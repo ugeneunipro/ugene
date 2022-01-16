@@ -55,7 +55,7 @@ MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleAlignmentDataTy
     : type(_type) {
 }
 
-MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleAlignmentDataType &_type, const DNASequence &sequence, const QList<U2MsaGap> &gaps)
+MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleAlignmentDataType &_type, const DNASequence &sequence, const QVector<U2MsaGap> &gaps)
     : type(_type), sequence(sequence), gaps(gaps) {
 }
 
@@ -116,12 +116,12 @@ bool MultipleAlignmentRowData::isEqualCore(const MultipleAlignmentRowData &other
     CHECK(sequence.seq == other.sequence.seq, false);
     CHECK(sequence.length() > 0, true);
 
-    QList<U2MsaGap> thisGaps = gaps;
+    QVector<U2MsaGap> thisGaps = gaps;
     if (!thisGaps.isEmpty() && charAt(0) == U2Msa::GAP_CHAR) {
         thisGaps.removeFirst();
     }
 
-    QList<U2MsaGap> otherGaps = other.getGapModel();
+    QVector<U2MsaGap> otherGaps = other.getGaps();
     if (!otherGaps.isEmpty() && other.charAt(0) == U2Msa::GAP_CHAR) {
         otherGaps.removeFirst();
     }
@@ -139,13 +139,13 @@ QByteArray MultipleAlignmentRowData::getSequenceWithGaps(bool keepLeadingGaps, b
 
     for (int i = 0; i < gaps.size(); ++i) {
         QByteArray gapsBytes;
-        if (!keepLeadingGaps && (0 == gaps[i].offset)) {
-            beginningOffset = gaps[i].gap;
+        if (!keepLeadingGaps && (0 == gaps[i].startPos)) {
+            beginningOffset = gaps[i].length;
             continue;
         }
 
-        gapsBytes.fill(U2Msa::GAP_CHAR, gaps[i].gap);
-        bytes.insert(gaps[i].offset - beginningOffset, gapsBytes);
+        gapsBytes.fill(U2Msa::GAP_CHAR, gaps[i].length);
+        bytes.insert(gaps[i].startPos - beginningOffset, gapsBytes);
     }
     MultipleAlignmentData *alignment = getMultipleAlignmentData();
     SAFE_POINT(alignment != nullptr, "Parent MAlignment is NULL", QByteArray());

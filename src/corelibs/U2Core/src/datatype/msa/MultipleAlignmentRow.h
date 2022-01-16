@@ -91,7 +91,7 @@ Derived MultipleAlignmentRow::dynamicCast(U2OpStatus &os) const {
 class U2CORE_EXPORT MultipleAlignmentRowData {
 public:
     MultipleAlignmentRowData(const MultipleAlignmentDataType &type);
-    MultipleAlignmentRowData(const MultipleAlignmentDataType &type, const DNASequence &sequence, const QList<U2MsaGap> &gaps);
+    MultipleAlignmentRowData(const MultipleAlignmentDataType &type, const DNASequence &sequence, const QVector<U2MsaGap> &gaps);
     virtual ~MultipleAlignmentRowData() = default;
 
     /** Length of the sequence without gaps */
@@ -111,7 +111,7 @@ public:
     DNASequence getUngappedSequence() const;
 
     /** Returns the list of gaps for the row */
-    virtual const QList<U2MsaGap> &getGapModel() const = 0;
+    virtual const QVector<U2MsaGap> &getGaps() const = 0;
     virtual void removeChars(int pos, int count, U2OpStatus &os) = 0;
 
     /** Name of the row, can be empty */
@@ -184,7 +184,7 @@ protected:
      * There should be no trailing gaps!
      * Trailing gaps are 'Virtual': they are stored 'inside' the alignment length
      */
-    QList<U2MsaGap> gaps;
+    QVector<U2MsaGap> gaps;
 };
 
 inline int MultipleAlignmentRowData::getUngappedLength() const {

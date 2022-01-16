@@ -430,7 +430,7 @@ void SmithWatermanReportCallbackMAImpl::alignSequences(QByteArray &refSequence, 
     }
 }
 
-void SmithWatermanReportCallbackMAImpl::alignSequences(QList<U2MsaGap> &refSequenceGapModel, QList<U2MsaGap> &ptrnSequenceGapModel, const QByteArray &pairwiseAlignment) {
+void SmithWatermanReportCallbackMAImpl::alignSequences(QVector<U2MsaGap> &refSequenceGapModel, QVector<U2MsaGap> &ptrnSequenceGapModel, const QByteArray &pairwiseAlignment) {
     bool lastSymbolIsGapRef = false;
     bool lastSymbolIsGapPtrn = false;
     quint32 intervalStart = 0;

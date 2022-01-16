@@ -31,7 +31,7 @@ namespace U2 {
 class RowWalker {
 public:
     RowWalker(const MultipleSequenceAlignmentRow &row, char gapChar)
-        : row(row), gaps(row->getGapModel()), seqPos(0), gapChar(gapChar) {
+        : row(row), gaps(row->getGaps()), seqPos(0), gapChar(gapChar) {
     }
 
     QByteArray nextData(int startPos, int length, U2OpStatus &os) {
@@ -50,10 +50,10 @@ public:
             splitGap(startPos, length, gap, inRegion, outRegion, os);
             CHECK_OP(os, "");
 
-            result.insert(gap.offset - startPos, gapsBytes(inRegion.gap));
-            gapsInserted += inRegion.gap;
+            result.insert(gap.startPos - startPos, gapsBytes(inRegion.length));
+            gapsInserted += inRegion.length;
 
-            if (outRegion.gap > 0) {
+            if (outRegion.length > 0) {
                 gaps.prepend(outRegion);
                 break;
             }
@@ -74,29 +74,29 @@ private:
         CHECK(!gaps.isEmpty(), false);
         const U2MsaGap &gap = gaps.first();
 
-        SAFE_POINT_EXT(gap.offset >= startPos, os.setError(L10N::badArgument(MultipleSequenceAlignmentObject::tr("Unexpected gap start"))), false);
+        SAFE_POINT_EXT(gap.startPos >= startPos, os.setError(L10N::badArgument(MultipleSequenceAlignmentObject::tr("Unexpected gap start"))), false);
 
-        if (gap.offset >= startPos + length) {
+        if (gap.startPos >= startPos + length) {
             return false;
         }
         return true;
     }
 
     static void splitGap(int startPos, int length, const U2MsaGap &gap, U2MsaGap &inRegion, U2MsaGap &outRegion, U2OpStatus &os) {
-        SAFE_POINT_EXT(gap.offset >= startPos, os.setError(L10N::badArgument(MultipleSequenceAlignmentObject::tr("Unexpected gap start (too small)"))), );
-        SAFE_POINT_EXT(gap.offset < startPos + length, os.setError(L10N::badArgument(MultipleSequenceAlignmentObject::tr("Unexpected gap start (too big)"))), );
+        SAFE_POINT_EXT(gap.startPos >= startPos, os.setError(L10N::badArgument(MultipleSequenceAlignmentObject::tr("Unexpected gap start (too small)"))), );
+        SAFE_POINT_EXT(gap.startPos < startPos + length, os.setError(L10N::badArgument(MultipleSequenceAlignmentObject::tr("Unexpected gap start (too big)"))), );
 
         int endPos = startPos + length - 1;
-        if (gap.offset + gap.gap <= endPos) {
+        if (gap.startPos + gap.length <= endPos) {
             inRegion = gap;
         } else {
-            int inRegionLength = endPos - gap.offset + 1;
-            int outRegionLength = gap.gap - inRegionLength;
-            inRegion = U2MsaGap(gap.offset, inRegionLength);
+            int inRegionLength = endPos - gap.startPos + 1;
+            int outRegionLength = gap.length - inRegionLength;
+            inRegion = U2MsaGap(gap.startPos, inRegionLength);
             outRegion = U2MsaGap(endPos + 1, outRegionLength);
         }
 
-        SAFE_POINT_EXT((startPos + length >= inRegion.offset + inRegion.gap) && (inRegion.gap + outRegion.gap == gap.gap),
+        SAFE_POINT_EXT((startPos + length >= inRegion.startPos + inRegion.length) && (inRegion.length + outRegion.length == gap.length),
                        os.setError(L10N::internalError() + MultipleSequenceAlignmentObject::tr(" Incorrect gap splitting")), );
     }
 
@@ -106,7 +106,7 @@ private:
 
 private:
     const MultipleSequenceAlignmentRow row;
-    QList<U2MsaGap> gaps;
+    QVector<U2MsaGap> gaps;
     int seqPos;
     const char gapChar;
 };

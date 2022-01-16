@@ -95,8 +95,8 @@ protected:
     MultipleSequenceAlignmentObject *maObj, *clonedObj;
     QString traslId;
     Document *tmpDoc;
-    QMap<qint64, QList<U2MsaGap>> rowsGapModel;
-    QMap<qint64, QList<U2MsaGap>> emptyGapModel;
+    QMap<qint64, QVector<U2MsaGap>> rowsGapModel;
+    QMap<qint64, QVector<U2MsaGap>> emptyGapModel;
 };
 
 }  // namespace U2

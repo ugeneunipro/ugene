@@ -87,7 +87,7 @@ qint64 MsaSQLiteSpecificTestData::getModStepsNum(const U2DataId &objId, U2OpStat
     return qModSteps.selectInt64();
 }
 
-U2MsaRow MsaSQLiteSpecificTestData::addRow(const U2DataId &msaId, const QByteArray &name, const QByteArray &seq, const QList<U2MsaGap> &gaps, U2OpStatus &os) {
+U2MsaRow MsaSQLiteSpecificTestData::addRow(const U2DataId &msaId, const QByteArray &name, const QByteArray &seq, const QVector<U2MsaGap> &gaps, U2OpStatus &os) {
     U2Sequence sequence;
     sequence.alphabet = BaseDNAAlphabetIds::NUCL_DNA_DEFAULT();
     sequence.visualName = name;
@@ -114,7 +114,7 @@ U2MsaRow MsaSQLiteSpecificTestData::createRow(qint64 seqLength, U2OpStatus &os) 
     U2DataId seqId = MsaSQLiteSpecificTestData::createTestSequence(false, seqLength, os);
     CHECK_OP(os, U2MsaRow());
 
-    QList<U2MsaGap> gaps;
+    QVector<U2MsaGap> gaps;
     qint64 gapLength = 2;
     gaps << U2MsaGap(1, gapLength);
 
@@ -136,8 +136,8 @@ U2DataId MsaSQLiteSpecificTestData::createTestMsa(bool enableModTracking, U2OpSt
     // The alignment has the following rows:
     // T-AAGAC-TTCTA
     // TAAGC--TACTA
-    addRow(msaId, "1", "TAAGACTTCTA", QList<U2MsaGap>() << U2MsaGap(1, 1) << U2MsaGap(7, 1), os);
-    addRow(msaId, "2", "TAAGCTACTA", QList<U2MsaGap>() << U2MsaGap(5, 2), os);
+    addRow(msaId, "1", "TAAGACTTCTA", QVector<U2MsaGap>() << U2MsaGap(1, 1) << U2MsaGap(7, 1), os);
+    addRow(msaId, "2", "TAAGCTACTA", QVector<U2MsaGap>() << U2MsaGap(5, 2), os);
 
     if (enableModTracking) {
         sqliteDbi->getObjectDbi()->setTrackModType(msaId, TrackOnUpdate, os);
@@ -182,13 +182,13 @@ U2DataId MsaSQLiteSpecificTestData::createNotSoSmallTestMsa(bool enableModTracki
     // ACTGGC-TACAGCGA-TCTAGG-GGAAATC-TACTATC-T-ACGAT-CTAGTATCACGAT
     // AC--TAGGTTCAGCTAG--CGGATCGACATTTTGTAGGACGACGT--ACTTTCCCA--CGCTA
     // TTT--C-G-T-GTGTCACATA-C----GTCAGT----------TAACGATCGATCACACAC
-    addRow(msaId, "1", "TAAGACTTCTAATTTATTCGGGGCTAGCTAGCATTTCAGCTAGCTACGGG", QList<U2MsaGap>() << U2MsaGap(1, 1) << U2MsaGap(7, 1) << U2MsaGap(13, 2) << U2MsaGap(27, 1) << U2MsaGap(38, 2) << U2MsaGap(52, 3), os);
-    addRow(msaId, "2", "TAAGCTACTAGGGACTGAGCTAGCATTCAGCTACGAGGGGGCAAACTACTG", QList<U2MsaGap>() << U2MsaGap(5, 2) << U2MsaGap(16, 1) << U2MsaGap(22, 1) << U2MsaGap(27, 1) << U2MsaGap(49, 2), os);
-    addRow(msaId, "3", "TTAGCTAGCTTAGCATCTTAGCTATGACGTACAGCGATTCGACGTATCAGCT", QList<U2MsaGap>() << U2MsaGap(18, 2) << U2MsaGap(28, 2) << U2MsaGap(43, 1) << U2MsaGap(48, 1) << U2MsaGap(52, 1) << U2MsaGap(57, 1), os);
-    addRow(msaId, "4", "ACTTTGACTCGAGCGAGCTTATTTTACGATCACGACCCATAAGAATAGAGCTAT", QList<U2MsaGap>() << U2MsaGap(8, 3) << U2MsaGap(21, 3) << U2MsaGap(39, 2) << U2MsaGap(55, 2), os);
-    addRow(msaId, "5", "ACTGGCTACAGCGATCTAGGGGAAATCTACTATCTACGATCTAGTATCACGAT", QList<U2MsaGap>() << U2MsaGap(6, 1) << U2MsaGap(15, 1) << U2MsaGap(22, 1) << U2MsaGap(30, 1) << U2MsaGap(38, 1) << U2MsaGap(40, 1) << U2MsaGap(46, 1), os);
-    addRow(msaId, "6", "ACTAGGTTCAGCTAGCGGATCGACATTTTGTAGGACGACGTACTTTCCCACGCTA", QList<U2MsaGap>() << U2MsaGap(2, 2) << U2MsaGap(17, 2) << U2MsaGap(45, 2) << U2MsaGap(56, 2), os);
-    addRow(msaId, "7", "TTTCGTGTGTCACATACGTCAGTTAACGATCGATCACACAC", QList<U2MsaGap>() << U2MsaGap(3, 2) << U2MsaGap(6, 1) << U2MsaGap(8, 1) << U2MsaGap(10, 1) << U2MsaGap(21, 1) << U2MsaGap(23, 4) << U2MsaGap(33, 10), os);
+    addRow(msaId, "1", "TAAGACTTCTAATTTATTCGGGGCTAGCTAGCATTTCAGCTAGCTACGGG", QVector<U2MsaGap>() << U2MsaGap(1, 1) << U2MsaGap(7, 1) << U2MsaGap(13, 2) << U2MsaGap(27, 1) << U2MsaGap(38, 2) << U2MsaGap(52, 3), os);
+    addRow(msaId, "2", "TAAGCTACTAGGGACTGAGCTAGCATTCAGCTACGAGGGGGCAAACTACTG", QVector<U2MsaGap>() << U2MsaGap(5, 2) << U2MsaGap(16, 1) << U2MsaGap(22, 1) << U2MsaGap(27, 1) << U2MsaGap(49, 2), os);
+    addRow(msaId, "3", "TTAGCTAGCTTAGCATCTTAGCTATGACGTACAGCGATTCGACGTATCAGCT", QVector<U2MsaGap>() << U2MsaGap(18, 2) << U2MsaGap(28, 2) << U2MsaGap(43, 1) << U2MsaGap(48, 1) << U2MsaGap(52, 1) << U2MsaGap(57, 1), os);
+    addRow(msaId, "4", "ACTTTGACTCGAGCGAGCTTATTTTACGATCACGACCCATAAGAATAGAGCTAT", QVector<U2MsaGap>() << U2MsaGap(8, 3) << U2MsaGap(21, 3) << U2MsaGap(39, 2) << U2MsaGap(55, 2), os);
+    addRow(msaId, "5", "ACTGGCTACAGCGATCTAGGGGAAATCTACTATCTACGATCTAGTATCACGAT", QVector<U2MsaGap>() << U2MsaGap(6, 1) << U2MsaGap(15, 1) << U2MsaGap(22, 1) << U2MsaGap(30, 1) << U2MsaGap(38, 1) << U2MsaGap(40, 1) << U2MsaGap(46, 1), os);
+    addRow(msaId, "6", "ACTAGGTTCAGCTAGCGGATCGACATTTTGTAGGACGACGTACTTTCCCACGCTA", QVector<U2MsaGap>() << U2MsaGap(2, 2) << U2MsaGap(17, 2) << U2MsaGap(45, 2) << U2MsaGap(56, 2), os);
+    addRow(msaId, "7", "TTTCGTGTGTCACATACGTCAGTTAACGATCGATCACACAC", QVector<U2MsaGap>() << U2MsaGap(3, 2) << U2MsaGap(6, 1) << U2MsaGap(8, 1) << U2MsaGap(10, 1) << U2MsaGap(21, 1) << U2MsaGap(23, 4) << U2MsaGap(33, 10), os);
 
     if (enableModTracking) {
         sqliteDbi->getObjectDbi()->setTrackModType(msaId, TrackOnUpdate, os);
@@ -551,7 +551,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, updateGapModel_noModTrack) {
     CHECK_NO_ERROR(os);
 
     // Update gaps
-    QList<U2MsaGap> newGaps;
+    QVector<U2MsaGap> newGaps;
     newGaps << U2MsaGap(4, 3) << U2MsaGap(11, 3);  // TAAG---ACTT---CTA
     CHECK_NO_ERROR(os);
     sqliteDbi->getMsaDbi()->updateGapModel(msaId, rowId, newGaps, os);
@@ -591,8 +591,8 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, updateGapModel_undo) {
     CHECK_NO_ERROR(os);
 
     // Update gaps
-    QList<U2MsaGap> oldGaps = sqliteDbi->getMsaDbi()->getRow(msaId, rowId, os).gaps;
-    QList<U2MsaGap> newGaps;
+    QVector<U2MsaGap> oldGaps = sqliteDbi->getMsaDbi()->getRow(msaId, rowId, os).gaps;
+    QVector<U2MsaGap> newGaps;
     newGaps << U2MsaGap(1, 4) << U2MsaGap(14, 11);  // T----AAGCTACTA-----------
     CHECK_NO_ERROR(os);
     sqliteDbi->getMsaDbi()->updateGapModel(msaId, rowId, newGaps, os);
@@ -664,7 +664,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, updateGapModel_redo) {
     CHECK_NO_ERROR(os);
 
     // Update gaps
-    QList<U2MsaGap> newGaps;  // TAAGACTTCTA
+    QVector<U2MsaGap> newGaps;  // TAAGACTTCTA
     CHECK_NO_ERROR(os);
     sqliteDbi->getMsaDbi()->updateGapModel(msaId, rowId, newGaps, os);
     CHECK_NO_ERROR(os);
@@ -717,10 +717,10 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, updateGapModel_severalSteps) {
     CHECK_NO_ERROR(os);
 
     // Prepare value list
-    QList<QList<U2MsaGap>> gapModels;
+    QList<QVector<U2MsaGap>> gapModels;
     gapModels << oldRows[0].gaps;  // base value
 
-    QList<U2MsaGap> gapModel;
+    QVector<U2MsaGap> gapModel;
     for (int i = 0; i < 6; ++i) {
         gapModel.clear();
         gapModel << U2MsaGap(0, i + 1) << U2MsaGap(i + 3, 2);
@@ -740,7 +740,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, updateGapModel_severalSteps) {
     qint64 expectedMsaLength = oldRows[0].gend - oldRows[1].gstart;
     CHECK_NO_ERROR(os);
     foreach (U2MsaGap gap, gapModels[expectedIndex]) {
-        expectedMsaLength += gap.gap;
+        expectedMsaLength += gap.length;
     }
     expectedMsaLength = qMax(expectedMsaLength, oldRows[1].length);
 
@@ -800,7 +800,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, updateRowContent_noModTrack) {
     // Update row content
     CHECK_NO_ERROR(os);
     QByteArray newSeq = "AAAAGGGGCCCCTTTT";
-    QList<U2MsaGap> newGaps;
+    QVector<U2MsaGap> newGaps;
     newGaps << U2MsaGap(4, 4) << U2MsaGap(20, 4);  // AAAA----GGGGCCCCTTTT----
     sqliteDbi->getMsaDbi()->updateRowContent(msaId, rowId, newSeq, newGaps, os);
     CHECK_NO_ERROR(os);
@@ -845,7 +845,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, updateRowContent_undo) {
     QByteArray oldSeq = sqliteDbi->getSequenceDbi()->getSequenceData(oldRow.sequenceId, U2_REGION_MAX, os);
     CHECK_NO_ERROR(os);
     QByteArray newSeq = "GGGGGTTTTTCCCCCAAAAA";
-    QList<U2MsaGap> newGaps;
+    QVector<U2MsaGap> newGaps;
     newGaps << U2MsaGap(0, 1) << U2MsaGap(2, 1);  // -G-GGGGTTTTTCCCCCAAAAA
 
     // Get current version
@@ -1048,14 +1048,14 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, updateRowContent_severalSteps) {
     CHECK_NO_ERROR(os);
 
     // Prepare value list
-    QList<QPair<QByteArray, QList<U2MsaGap>>> rowContents;
-    rowContents << QPair<QByteArray, QList<U2MsaGap>>(sqliteDbi->getSequenceDbi()->getSequenceData(oldRows[0].sequenceId, U2_REGION_MAX, os), oldRows[0].gaps);
+    QList<QPair<QByteArray, QVector<U2MsaGap>>> rowContents;
+    rowContents << QPair<QByteArray, QVector<U2MsaGap>>(sqliteDbi->getSequenceDbi()->getSequenceData(oldRows[0].sequenceId, U2_REGION_MAX, os), oldRows[0].gaps);
     CHECK_NO_ERROR(os);
     for (int i = 0; i < 6; ++i) {
         QByteArray firstPart((i + 1) * 2, 'A');
         QByteArray secondPart((i + 3) * 2, 'C');
-        QList<U2MsaGap> gapModel = QList<U2MsaGap>() << U2MsaGap((i + 2) * 2, 5);
-        rowContents << QPair<QByteArray, QList<U2MsaGap>>(firstPart + secondPart, gapModel);
+        QVector<U2MsaGap> gapModel = QVector<U2MsaGap>() << U2MsaGap((i + 2) * 2, 5);
+        rowContents << QPair<QByteArray, QVector<U2MsaGap>>(firstPart + secondPart, gapModel);
     }
 
     // Steps count
@@ -1071,7 +1071,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, updateRowContent_severalSteps) {
     qint64 expectedMsaLength = rowContents[expectedIndex].first.length();
     CHECK_NO_ERROR(os);
     foreach (U2MsaGap gap, rowContents[expectedIndex].second) {
-        expectedMsaLength += gap.gap;
+        expectedMsaLength += gap.length;
     }
     expectedMsaLength = qMax(expectedMsaLength, oldRows[1].length);
 
@@ -1960,7 +1960,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_append_noModTrack) {
     U2DataId seqId = MsaSQLiteSpecificTestData::createTestSequence(false, seqLength, os);
     CHECK_NO_ERROR(os);
 
-    QList<U2MsaGap> gaps;
+    QVector<U2MsaGap> gaps;
     qint64 gapLength = 2;
     gaps << U2MsaGap(1, gapLength);
 
@@ -2035,7 +2035,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_append_undo) {
     U2DataId seqId = MsaSQLiteSpecificTestData::createTestSequence(false, seqLength, os);
     CHECK_NO_ERROR(os);
 
-    QList<U2MsaGap> gaps;
+    QVector<U2MsaGap> gaps;
     qint64 gapLength = 2;
     gaps << U2MsaGap(1, gapLength);
 
@@ -2135,7 +2135,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_append_redo) {
     U2DataId seqId = MsaSQLiteSpecificTestData::createTestSequence(false, seqLength, os);
     CHECK_NO_ERROR(os);
 
-    QList<U2MsaGap> gaps;
+    QVector<U2MsaGap> gaps;
     qint64 gapLength = 2;
     gaps << U2MsaGap(1, gapLength);
 
@@ -2207,7 +2207,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_zeroPos_undo) {
     U2DataId seqId = MsaSQLiteSpecificTestData::createTestSequence(false, seqLength, os);
     CHECK_NO_ERROR(os);
 
-    QList<U2MsaGap> gaps;
+    QVector<U2MsaGap> gaps;
     qint64 gapLength = 2;
     gaps << U2MsaGap(1, gapLength);
 
@@ -2313,7 +2313,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_zeroPos_redo) {
     U2DataId seqId = MsaSQLiteSpecificTestData::createTestSequence(false, seqLength, os);
     CHECK_NO_ERROR(os);
 
-    QList<U2MsaGap> gaps;
+    QVector<U2MsaGap> gaps;
     qint64 gapLength = 2;
     gaps << U2MsaGap(1, gapLength);
 
@@ -2395,7 +2395,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_middlePos_undo) {
     U2DataId seqId = MsaSQLiteSpecificTestData::createTestSequence(false, seqLength, os);
     CHECK_NO_ERROR(os);
 
-    QList<U2MsaGap> gaps;
+    QVector<U2MsaGap> gaps;
     qint64 gapLength = 2;
     gaps << U2MsaGap(1, gapLength);
 
@@ -2457,7 +2457,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_middlePos_redo) {
     U2DataId seqId = MsaSQLiteSpecificTestData::createTestSequence(false, seqLength, os);
     CHECK_NO_ERROR(os);
 
-    QList<U2MsaGap> gaps;
+    QVector<U2MsaGap> gaps;
     qint64 gapLength = 2;
     gaps << U2MsaGap(1, gapLength);
 
@@ -2539,7 +2539,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_lastRowPos_undo) {
     U2DataId seqId = MsaSQLiteSpecificTestData::createTestSequence(false, seqLength, os);
     CHECK_NO_ERROR(os);
 
-    QList<U2MsaGap> gaps;
+    QVector<U2MsaGap> gaps;
     qint64 gapLength = 2;
     gaps << U2MsaGap(1, gapLength);
 
@@ -2601,7 +2601,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_lastRowPos_redo) {
     U2DataId seqId = MsaSQLiteSpecificTestData::createTestSequence(false, seqLength, os);
     CHECK_NO_ERROR(os);
 
-    QList<U2MsaGap> gaps;
+    QVector<U2MsaGap> gaps;
     qint64 gapLength = 2;
     gaps << U2MsaGap(1, gapLength);
 
@@ -2677,7 +2677,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_child_noModTrack) {
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(NoTrack, seqTrackModType, "sequence base track mod type");
 
-    QList<U2MsaGap> gaps;
+    QVector<U2MsaGap> gaps;
     qint64 gapLength = 2;
     gaps << U2MsaGap(1, gapLength);
 
@@ -2716,7 +2716,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_child_Track) {
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(NoTrack, seqTrackModType, "sequence base track mod type");
 
-    QList<U2MsaGap> gaps;
+    QVector<U2MsaGap> gaps;
     qint64 gapLength = 2;
     gaps << U2MsaGap(1, gapLength);
 

@@ -58,13 +58,13 @@ private:
     BlastAndSwReadTask *getBlastSwTask(int readNum);
     DNASequence getReadSequence(int readNum);
     DNAChromatogram getReadChromatogram(int readNum);
-    QList<U2MsaGap> getReferenceGaps();
-    QList<U2MsaGap> getShiftedGaps(int rowNum);
+    QVector<U2MsaGap> getReferenceGaps();
+    QVector<U2MsaGap> getShiftedGaps(int rowNum);
     void insertShiftedGapsIntoReference();
-    void insertShiftedGapsIntoRead(MultipleChromatogramAlignment &alignment, int readNum, int rowNum, const QList<U2MsaGap> &gaps);
+    void insertShiftedGapsIntoRead(MultipleChromatogramAlignment &alignment, int readNum, int rowNum, const QVector<U2MsaGap> &gaps);
     void createAlignmentAndAnnotations();
     void enlargeReferenceByGaps();
-    U2Region getReadRegion(const MultipleChromatogramAlignmentRow &readRow, const QList<U2MsaGap> &referenceGapModel) const;
+    U2Region getReadRegion(const MultipleChromatogramAlignmentRow &readRow, const QVector<U2MsaGap> &referenceGapModel) const;
     U2Location getLocation(const U2Region &region, bool isComplement);
 
 private:

@@ -247,7 +247,7 @@ IMPLEMENT_TEST(MsaUnitTests, trim_trailingGapInOne) {
     CHECK_EQUAL(4, almnt->getLength(), "alignment length");
     CHECK_EQUAL("ACGT", MsaTestUtils::getRowData(almnt, 0), "first row data");
     CHECK_EQUAL("CAC-", MsaTestUtils::getRowData(almnt, 1), "second row data");
-    CHECK_EQUAL(0, almnt->getMsaRow(1)->getGapModel().size(), "number of gaps in the second row");
+    CHECK_EQUAL(0, almnt->getMsaRow(1)->getGaps().size(), "number of gaps in the second row");
 }
 
 /** Tests simplify */
@@ -857,7 +857,7 @@ IMPLEMENT_TEST(MsaUnitTests, appendChars_validParams) {
     int length = 7;
     almnt->appendChars(0, str, length);
     CHECK_EQUAL("---AG-T---AC-GT-", MsaTestUtils::getRowData(almnt, 0), "first row");
-    CHECK_EQUAL(4, almnt->getMsaRow(0)->getGapModel().size(), "number of gaps");
+    CHECK_EQUAL(4, almnt->getMsaRow(0)->getGaps().size(), "number of gaps");
     CHECK_EQUAL(16, almnt->getLength(), "alignment length");
 }
 
@@ -871,7 +871,7 @@ IMPLEMENT_TEST(MsaUnitTests, operPlusEqual_validParams) {
     CHECK_EQUAL("---AG-T-----AG-T--", MsaTestUtils::getRowData(almnt, 0), "row1");
     CHECK_EQUAL("AG-CT-TAAAG-CT-TAA", MsaTestUtils::getRowData(almnt, 1), "row2");
 
-    CHECK_EQUAL(4, almnt->getMsaRow(0)->getGapModel().size(), "number of gaps");
+    CHECK_EQUAL(4, almnt->getMsaRow(0)->getGaps().size(), "number of gaps");
     CHECK_EQUAL(18, almnt->getLength(), "alignment length");
 }
 

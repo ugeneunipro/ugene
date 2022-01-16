@@ -202,7 +202,7 @@ int MultipleAlignmentObject::getRowPosById(qint64 rowId) const {
     return getMultipleAlignment()->getRowsIds().indexOf(rowId);
 }
 
-QList<QList<U2MsaGap>> MultipleAlignmentObject::getGapModel() const {
+QList<QVector<U2MsaGap>> MultipleAlignmentObject::getGapModel() const {
     return getMultipleAlignment()->getGapModel();
 }
 
@@ -653,7 +653,7 @@ int MultipleAlignmentObject::deleteGapByRowIndexList(U2OpStatus &os, const QList
         CHECK_OP(os, 0);
 
         MultipleAlignmentRow row = msa->getRow(rowIndex);
-        MaDbiUtils::updateRowGapModel(entityRef, row->getRowId(), row->getGapModel(), os);
+        MaDbiUtils::updateRowGapModel(entityRef, row->getRowId(), row->getGaps(), os);
         CHECK_OP(os, 0);
         modifiedRowIds << row->getRowId();
     }

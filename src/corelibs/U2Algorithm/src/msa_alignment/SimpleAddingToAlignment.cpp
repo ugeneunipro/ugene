@@ -88,11 +88,11 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
     QListIterator<QString> namesIterator(settings.addedSequencesNames);
 
     const QList<qint64> rowsIds = inputMsa->getRowsIds();
-    const QList<QList<U2MsaGap>> msaGapModel = inputMsa->getGapModel();
+    const QList<QVector<U2MsaGap>> msaGapModel = inputMsa->getGapModel();
     for (int i = 0; i < inputMsa->getNumRows(); i++) {
         U2MsaRow row = dbi->getRow(settings.msaRef.entityId, rowsIds[i], stateInfo);
         CHECK_OP(stateInfo, ReportResult_Finished);
-        QList<U2MsaGap> modelToChop(msaGapModel[i]);
+        QVector<U2MsaGap> modelToChop(msaGapModel[i]);
         MsaRowUtils::chopGapModel(modelToChop, row.length);
         CHECK_CONTINUE(modelToChop != row.gaps);
 
@@ -115,7 +115,7 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
             posInMsa++;
 
             if (sequencePositions.contains(seqName) && sequencePositions[seqName] > 0) {
-                QList<U2MsaGap> gapModel;
+                QVector<U2MsaGap> gapModel;
                 gapModel << U2MsaGap(0, sequencePositions[seqName]);
                 U2MsaRow msaRow = dbi->getRow(settings.msaRef.entityId, row.rowId, stateInfo);
                 CHECK_OP(stateInfo, ReportResult_Finished);

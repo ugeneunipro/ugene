@@ -162,7 +162,7 @@ public:
      */
     MultipleSequenceAlignment mid(int start, int len) const;
 
-    virtual void setRowGapModel(int rowNumber, const QList<U2MsaGap> &gapModel);
+    virtual void setRowGapModel(int rowNumber, const QVector<U2MsaGap> &gapModel);
 
     void setSequenceId(int rowIndex, const U2DataId &sequenceId);
 
@@ -176,7 +176,7 @@ public:
     void addRow(const QString &name, const QByteArray &bytes);
     void addRow(const QString &name, const QByteArray &bytes, int rowIndex);
     void addRow(const U2MsaRow &rowInDb, const DNASequence &sequence, U2OpStatus &os);
-    void addRow(const QString &name, const DNASequence &sequence, const QList<U2MsaGap> &gaps, U2OpStatus &os);
+    void addRow(const QString &name, const DNASequence &sequence, const QVector<U2MsaGap> &gaps, U2OpStatus &os);
 
     /**
      * Replaces all occurrences of 'origChar' by 'resultChar' in the row with the specified index.
@@ -232,7 +232,7 @@ private:
      * Sequence must not contain gaps.
      * All gaps in the gaps model (in 'rowInDb') must be valid and have an offset within the bound of the sequence.
      */
-    MultipleSequenceAlignmentRow createRow(const U2MsaRow &rowInDb, const DNASequence &sequence, const QList<U2MsaGap> &gaps, U2OpStatus &os);
+    MultipleSequenceAlignmentRow createRow(const U2MsaRow &rowInDb, const DNASequence &sequence, const QVector<U2MsaGap> &gaps, U2OpStatus &os);
 
     MultipleSequenceAlignmentRow createRow(const MultipleSequenceAlignmentRow &row);
 
