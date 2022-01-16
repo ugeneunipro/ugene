@@ -32,20 +32,20 @@ const QByteArray U2DbiPackUtils::VERSION("0");
 const char U2DbiPackUtils::SEP = '\t';
 const char U2DbiPackUtils::SECOND_SEP = 11;
 
-QByteArray U2DbiPackUtils::packGaps(const QList<U2MsaGap> &gaps) {
+QByteArray U2DbiPackUtils::packGaps(const QVector<U2MsaGap> &gaps) {
     QByteArray result;
     foreach (const U2MsaGap &gap, gaps) {
         if (!result.isEmpty()) {
             result += ";";
         }
-        result += QByteArray::number(gap.offset);
+        result += QByteArray::number(gap.startPos);
         result += ",";
-        result += QByteArray::number(gap.gap);
+        result += QByteArray::number(gap.length);
     }
     return "\"" + result + "\"";
 }
 
-bool U2DbiPackUtils::unpackGaps(const QByteArray &str, QList<U2MsaGap> &gaps) {
+bool U2DbiPackUtils::unpackGaps(const QByteArray &str, QVector<U2MsaGap> &gaps) {
     CHECK(str.startsWith('\"') && str.endsWith('\"'), false);
     QByteArray gapsStr = str.mid(1, str.length() - 2);
     if (gapsStr.isEmpty()) {
@@ -58,16 +58,16 @@ bool U2DbiPackUtils::unpackGaps(const QByteArray &str, QList<U2MsaGap> &gaps) {
         CHECK(2 == gapTokens.size(), false);
         bool ok = false;
         U2MsaGap gap;
-        gap.offset = gapTokens[0].toLongLong(&ok);
+        gap.startPos = gapTokens[0].toLongLong(&ok);
         CHECK(ok, false);
-        gap.gap = gapTokens[1].toLongLong(&ok);
+        gap.length = gapTokens[1].toLongLong(&ok);
         CHECK(ok, false);
         gaps << gap;
     }
     return true;
 }
 
-QByteArray U2DbiPackUtils::packGapDetails(qint64 rowId, const QList<U2MsaGap> &oldGaps, const QList<U2MsaGap> &newGaps) {
+QByteArray U2DbiPackUtils::packGapDetails(qint64 rowId, const QVector<U2MsaGap> &oldGaps, const QVector<U2MsaGap> &newGaps) {
     QByteArray result = VERSION;
     result += SEP;
     result += QByteArray::number(rowId);
@@ -78,7 +78,7 @@ QByteArray U2DbiPackUtils::packGapDetails(qint64 rowId, const QList<U2MsaGap> &o
     return result;
 }
 
-bool U2DbiPackUtils::unpackGapDetails(const QByteArray &modDetails, qint64 &rowId, QList<U2MsaGap> &oldGaps, QList<U2MsaGap> &newGaps) {
+bool U2DbiPackUtils::unpackGapDetails(const QByteArray &modDetails, qint64 &rowId, QVector<U2MsaGap> &oldGaps, QVector<U2MsaGap> &newGaps) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(4 == tokens.size(), QString("Invalid gap modDetails string '%1'").arg(QString(modDetails)), false);
     {  // version
@@ -100,7 +100,7 @@ bool U2DbiPackUtils::unpackGapDetails(const QByteArray &modDetails, qint64 &rowI
     return true;
 }
 
-QByteArray U2DbiPackUtils::packGapDetails(qint64 rowId, const U2DataId &relatedObjectId, const QList<U2MsaGap> &oldGaps, const QList<U2MsaGap> &newGaps) {
+QByteArray U2DbiPackUtils::packGapDetails(qint64 rowId, const U2DataId &relatedObjectId, const QVector<U2MsaGap> &oldGaps, const QVector<U2MsaGap> &newGaps) {
     QByteArray result = VERSION;
     result += SEP;
     result += QByteArray::number(rowId);
@@ -113,7 +113,7 @@ QByteArray U2DbiPackUtils::packGapDetails(qint64 rowId, const U2DataId &relatedO
     return result;
 }
 
-bool U2DbiPackUtils::unpackGapDetails(const QByteArray &modDetails, qint64 &rowId, U2DataId &relatedObjectId, QList<U2MsaGap> &oldGaps, QList<U2MsaGap> &newGaps) {
+bool U2DbiPackUtils::unpackGapDetails(const QByteArray &modDetails, qint64 &rowId, U2DataId &relatedObjectId, QVector<U2MsaGap> &oldGaps, QVector<U2MsaGap> &newGaps) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(5 == tokens.size(), QString("Invalid gap modDetails string '%1'").arg(QString(modDetails)), false);
     {  // version

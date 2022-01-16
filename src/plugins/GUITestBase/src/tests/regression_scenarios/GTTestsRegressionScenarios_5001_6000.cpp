@@ -2659,7 +2659,7 @@ GUI_TEST_CLASS_DEFINITION(test_5638) {
     GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(30, 10));
 
     // 3. Press Ctrl and drag and drop selection to the right for a few symbols
-    QList<QList<U2MsaGap>> startGapModel = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getGapModel();
+    QList<QVector<U2MsaGap>> startGapModel = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getGapModel();
 
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTMouseDriver::press();
@@ -2667,7 +2667,7 @@ GUI_TEST_CLASS_DEFINITION(test_5638) {
     QPoint moveMouseTo(curPos.x() + 200, curPos.y());
     GTMouseDriver::moveTo(moveMouseTo);
 
-    QList<QList<U2MsaGap>> gapModel = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getGapModel();
+    QList<QVector<U2MsaGap>> gapModel = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getGapModel();
     if (gapModel.size() < 11) {
         GTMouseDriver::release();
         GTKeyboardDriver::keyRelease(Qt::Key_Control);
@@ -2685,7 +2685,7 @@ GUI_TEST_CLASS_DEFINITION(test_5638) {
     GTMouseDriver::release();
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
-    QList<QList<U2MsaGap>> finishGapModel = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getGapModel();
+    QList<QVector<U2MsaGap>> finishGapModel = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getGapModel();
     CHECK_SET_ERR(finishGapModel == startGapModel, "Unexpected changes of alignment");
 }
 

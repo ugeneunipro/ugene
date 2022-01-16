@@ -261,7 +261,7 @@ void MafftAddToAlignmentTask::run() {
 
             U2MsaRow currentRow = dbi->getRow(settings.msaRef.entityId, rowId, stateInfo);
             CHECK_OP(stateInfo, );
-            QList<U2MsaGap> modelToChop(currentRow.gaps);
+            QVector<U2MsaGap> modelToChop(currentRow.gaps);
             MsaRowUtils::chopGapModel(modelToChop, row.length);
 
             if (modelToChop != row.gaps) {

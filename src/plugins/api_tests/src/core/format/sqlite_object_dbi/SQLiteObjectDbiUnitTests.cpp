@@ -189,7 +189,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, removeMsaObject) {
 
     U2MsaGap row1gap1(0, 2);
     U2MsaGap row1gap2(3, 1);
-    QList<U2MsaGap> row1gaps;
+    QVector<U2MsaGap> row1gaps;
     row1gaps << row1gap1 << row1gap2;
 
     row1.gaps = row1gaps;
@@ -201,7 +201,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, removeMsaObject) {
     row2.gend = 4;
 
     U2MsaGap row2gap(1, 2);
-    QList<U2MsaGap> row2gaps;
+    QVector<U2MsaGap> row2gaps;
     row2gaps << row2gap;
 
     row2.gaps = row2gaps;
@@ -235,7 +235,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, removeMsaObject) {
     al2Row.gend = 15;
 
     U2MsaGap al2RowGap(1, 12);
-    QList<U2MsaGap> al2RowGaps;
+    QVector<U2MsaGap> al2RowGaps;
     al2RowGaps << al2RowGap;
 
     al2Row.gaps = al2RowGaps;
@@ -347,7 +347,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, setTrackModType) {
     // Create alignment 1
     U2DataId msaId1 = msaDbi->createMsaObject("", "Test name 1", BaseDNAAlphabetIds::NUCL_DNA_DEFAULT(), os);
     CHECK_NO_ERROR(os);
-    Utils::addRow(msaDbi->getRootDbi(), msaId1, "1", "ACGTACGT", QList<U2MsaGap>(), os);
+    Utils::addRow(msaDbi->getRootDbi(), msaId1, "1", "ACGTACGT", QVector<U2MsaGap>(), os);
     CHECK_NO_ERROR(os);
     QList<U2MsaRow> rows1 = msaDbi->getRows(msaId1, os);
     CHECK_NO_ERROR(os);
@@ -355,7 +355,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, setTrackModType) {
     // Create alignment 2
     U2DataId msaId2 = msaDbi->createMsaObject("", "Test name 2", BaseDNAAlphabetIds::NUCL_DNA_DEFAULT(), os);
     CHECK_NO_ERROR(os);
-    Utils::addRow(msaDbi->getRootDbi(), msaId2, "2", "CCCCCCC", QList<U2MsaGap>(), os);
+    Utils::addRow(msaDbi->getRootDbi(), msaId2, "2", "CCCCCCC", QVector<U2MsaGap>(), os);
     CHECK_NO_ERROR(os);
     QList<U2MsaRow> rows2 = msaDbi->getRows(msaId2, os);
     CHECK_NO_ERROR(os);
@@ -1041,7 +1041,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_user3Single6) {
         sqliteDbi->getMsaDbi()->addRow(msaId, -1, row, os);  // multi/single step 4
         CHECK_NO_ERROR(os);
 
-        sqliteDbi->getMsaDbi()->updateRowContent(msaId, row.rowId, "ACGT", QList<U2MsaGap>(), os);  // multi step 5, single steps 5-6
+        sqliteDbi->getMsaDbi()->updateRowContent(msaId, row.rowId, "ACGT", QVector<U2MsaGap>(), os);  // multi step 5, single steps 5-6
         CHECK_NO_ERROR(os);
     }
 

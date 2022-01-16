@@ -142,7 +142,7 @@ void McaDbiUtils::updateMca(U2OpStatus &os, const U2EntityRef &mcaRef, const Mul
             dbRow.sequenceId = sequenceRef.entityId;
             dbRow.gstart = 0;
             dbRow.gend = mcaRow->getRowLength();
-            dbRow.gaps = mcaRow->getGapModel();
+            dbRow.gaps = mcaRow->getGaps();
 
             McaDbiUtils::addRow(os, mcaRef, -1, dbRow);
             CHECK_OP(os, );

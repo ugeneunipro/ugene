@@ -48,7 +48,7 @@ MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(MultipleSequenceAlign
     : MultipleAlignmentRow(msaRowData) {
 }
 
-MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(const U2MsaRow &rowInDb, const DNASequence &sequence, const QList<U2MsaGap> &gaps, MultipleSequenceAlignmentData *msaData)
+MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(const U2MsaRow &rowInDb, const DNASequence &sequence, const QVector<U2MsaGap> &gaps, MultipleSequenceAlignmentData *msaData)
     : MultipleAlignmentRow(new MultipleSequenceAlignmentRowData(rowInDb, sequence, gaps, msaData)) {
 }
 
@@ -96,7 +96,7 @@ MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(MultipleSeque
 
 MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const U2MsaRow &rowInDb,
                                                                    const DNASequence &sequence,
-                                                                   const QList<U2MsaGap> &gaps,
+                                                                   const QVector<U2MsaGap> &gaps,
                                                                    MultipleSequenceAlignmentData *msaData)
     : MultipleAlignmentRowData(MultipleAlignmentDataType::MSA, sequence, gaps),
       alignment(msaData),
@@ -110,7 +110,7 @@ MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const U2MsaRo
       alignment(msaData),
       initialRowInDb(rowInDb) {
     QByteArray sequenceData;
-    QList<U2MsaGap> gapModel;
+    QVector<U2MsaGap> gapModel;
     MaDbiUtils::splitBytesToCharsAndGaps(rawData, sequenceData, gapModel);
     sequence = DNASequence(rowName, sequenceData);
     setGapModel(gapModel);
@@ -131,7 +131,7 @@ void MultipleSequenceAlignmentRowData::setName(const QString &name) {
     sequence.setName(name);
 }
 
-void MultipleSequenceAlignmentRowData::setGapModel(const QList<U2MsaGap> &newGapModel) {
+void MultipleSequenceAlignmentRowData::setGapModel(const QVector<U2MsaGap> &newGapModel) {
     gaps = newGapModel;
     removeTrailingGaps();
 }
@@ -233,9 +233,9 @@ void MultipleSequenceAlignmentRowData::append(const MultipleSequenceAlignmentRow
     }
 
     // Merge gaps
-    QList<U2MsaGap> anotherRowGaps = anotherRow.getGapModel();
+    QVector<U2MsaGap> anotherRowGaps = anotherRow.getGaps();
     for (int i = 0; i < anotherRowGaps.count(); ++i) {
-        anotherRowGaps[i].offset += lengthBefore;
+        anotherRowGaps[i].startPos += lengthBefore;
     }
     gaps.append(anotherRowGaps);
     mergeConsecutiveGaps();
@@ -244,7 +244,7 @@ void MultipleSequenceAlignmentRowData::append(const MultipleSequenceAlignmentRow
     DNASequenceUtils::append(sequence, anotherRow.sequence);
 }
 
-void MultipleSequenceAlignmentRowData::setRowContent(const DNASequence &newSequence, const QList<U2MsaGap> &newGapModel, U2OpStatus &os) {
+void MultipleSequenceAlignmentRowData::setRowContent(const DNASequence &newSequence, const QVector<U2MsaGap> &newGapModel, U2OpStatus &os) {
     SAFE_POINT_EXT(!newSequence.constSequence().contains(U2Msa::GAP_CHAR), os.setError("The sequence must be without gaps"), );
     sequence = newSequence;
     setGapModel(newGapModel);
@@ -252,7 +252,7 @@ void MultipleSequenceAlignmentRowData::setRowContent(const DNASequence &newSeque
 
 void MultipleSequenceAlignmentRowData::setRowContent(const QByteArray &bytes, int offset, U2OpStatus &) {
     QByteArray newSequenceBytes;
-    QList<U2MsaGap> newGapsModel;
+    QVector<U2MsaGap> newGapsModel;
 
     splitBytesToCharsAndGaps(bytes, newSequenceBytes, newGapsModel);
     DNASequence newSequence(getName(), newSequenceBytes);
@@ -334,7 +334,7 @@ bool MultipleSequenceAlignmentRowData::isEqual(const MultipleAlignmentRowData &o
 bool MultipleSequenceAlignmentRowData::isEqual(const MultipleSequenceAlignmentRowData &other) const {
     CHECK(this != &other, true);
     CHECK(getName() == other.getName(), false);
-    CHECK(gaps == other.getGapModel(), false);
+    CHECK(gaps == other.getGaps(), false);
 
     CHECK(sequence.alphabet == other.sequence.alphabet, false);
     CHECK(sequence.seq == sequence.seq, false);
@@ -421,7 +421,7 @@ void MultipleSequenceAlignmentRowData::replaceChars(char origChar, char resultCh
         sequence.seq.replace(origChar, "");
 
         // Re-calculate the gaps model
-        QList<U2MsaGap> newGapsModel = gaps;
+        QVector<U2MsaGap> newGapsModel = gaps;
         for (int i = 0; i < gapsIndexes.size(); ++i) {
             int index = gapsIndexes[i];
             U2MsaGap gap(index, 1);
@@ -442,19 +442,19 @@ MultipleSequenceAlignmentRow MultipleSequenceAlignmentRowData::getExplicitCopy()
     return MultipleSequenceAlignmentRow(new MultipleSequenceAlignmentRowData(*this));
 }
 
-void MultipleSequenceAlignmentRowData::splitBytesToCharsAndGaps(const QByteArray &input, QByteArray &seqBytes, QList<U2MsaGap> &gapsModel) {
+void MultipleSequenceAlignmentRowData::splitBytesToCharsAndGaps(const QByteArray &input, QByteArray &seqBytes, QVector<U2MsaGap> &gapsModel) {
     MaDbiUtils::splitBytesToCharsAndGaps(input, seqBytes, gapsModel);
 }
 
-void MultipleSequenceAlignmentRowData::addOffsetToGapModel(QList<U2MsaGap> &gapModel, int offset) {
+void MultipleSequenceAlignmentRowData::addOffsetToGapModel(QVector<U2MsaGap> &gapModel, int offset) {
     if (0 == offset) {
         return;
     }
 
     if (!gapModel.isEmpty()) {
         U2MsaGap &firstGap = gapModel[0];
-        if (0 == firstGap.offset) {
-            firstGap.gap += offset;
+        if (0 == firstGap.startPos) {
+            firstGap.length += offset;
         } else {
             SAFE_POINT(offset >= 0, "Negative gap offset", );
             U2MsaGap beginningGap(0, offset);
@@ -464,9 +464,9 @@ void MultipleSequenceAlignmentRowData::addOffsetToGapModel(QList<U2MsaGap> &gapM
         // Shift other gaps
         if (gapModel.count() > 1) {
             for (int i = 1; i < gapModel.count(); ++i) {
-                qint64 newOffset = gapModel[i].offset + offset;
+                qint64 newOffset = gapModel[i].startPos + offset;
                 SAFE_POINT(newOffset >= 0, "Negative gap offset", );
-                gapModel[i].offset = newOffset;
+                gapModel[i].startPos = newOffset;
             }
         }
     } else {

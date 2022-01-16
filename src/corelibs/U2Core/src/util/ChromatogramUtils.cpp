@@ -285,13 +285,13 @@ U2Region ChromatogramUtils::sequenceRegion2TraceRegion(const DNAChromatogram &ch
     return U2Region(traceStartPos, traceLength);
 }
 
-void ChromatogramUtils::insertBase(DNAChromatogram &chromatogram, int posUngapped, const QList<U2MsaGap> &gapModel, int posWithGaps) {
+void ChromatogramUtils::insertBase(DNAChromatogram &chromatogram, int posUngapped, const QVector<U2MsaGap> &gapModel, int posWithGaps) {
     SAFE_POINT(posUngapped >= 0 && posUngapped < chromatogram.seqLength,
                QString("Invalid parameters for ChromatogramUtils::insertBase: pos - %1, chrom.sequence len - %2")
                    .arg(posUngapped)
                    .arg(chromatogram.seqLength), );
-    int leadingGap = gapModel.isEmpty() ? 0 : gapModel.first().offset == 0 ? gapModel.first().gap
-                                                                           : 0;
+    int leadingGap = gapModel.isEmpty() ? 0 : gapModel.first().startPos == 0 ? gapModel.first().length
+                                                                             : 0;
     DNAChromatogram gappedChrom = getGappedChromatogram(chromatogram, gapModel);
 
     // when you try to insert a character before the first symbol of the row,
@@ -315,30 +315,30 @@ void ChromatogramUtils::insertBase(DNAChromatogram &chromatogram, int posUngappe
     chromatogram.seqLength += 1;
 }
 
-DNAChromatogram ChromatogramUtils::getGappedChromatogram(const DNAChromatogram &chromatogram, const QList<U2MsaGap> &gapModel) {
+DNAChromatogram ChromatogramUtils::getGappedChromatogram(const DNAChromatogram &chromatogram, const QVector<U2MsaGap> &gapModel) {
     DNAChromatogram gappedChromatogram = chromatogram;
-    const U2MsaGap leadingGap = gapModel.isEmpty() ? U2MsaGap() : gapModel.first().offset == 0 ? gapModel.first()
+    const U2MsaGap leadingGap = gapModel.isEmpty() ? U2MsaGap() : gapModel.first().startPos == 0 ? gapModel.first()
                                                                                                : U2MsaGap();
     foreach (const U2MsaGap &gap, gapModel) {
-        if (gap.offset == 0) {
+        if (gap.startPos == 0) {
             continue;
         }
 
-        const int startBaseCallIndex = gap.offset - leadingGap.gap - 1;
+        const int startBaseCallIndex = gap.startPos - leadingGap.length - 1;
         const int endBaseCallIndex = startBaseCallIndex + 1;
         SAFE_POINT(endBaseCallIndex <= gappedChromatogram.baseCalls.size(), "Gap is out of the chromatgoram range", DNAChromatogram());
 
         const ushort startBaseCall = gappedChromatogram.baseCalls[startBaseCallIndex];
         const ushort endBaseCall = gappedChromatogram.baseCalls[endBaseCallIndex];
-        const double step = ((double)endBaseCall - startBaseCall) / (gap.gap + 1);
-        for (int i = 0; i < gap.gap; i++) {
+        const double step = ((double)endBaseCall - startBaseCall) / (gap.length + 1);
+        for (int i = 0; i < gap.length; i++) {
             gappedChromatogram.baseCalls.insert(startBaseCallIndex + i + 1, (ushort)(startBaseCall + step * (i + 1)));
-            gappedChromatogram.prob_A.insert(startBaseCallIndex + i + 1, gap.gap, DNAChromatogram::DEFAULT_PROBABILITY);
-            gappedChromatogram.prob_C.insert(startBaseCallIndex + i + 1, gap.gap, DNAChromatogram::DEFAULT_PROBABILITY);
-            gappedChromatogram.prob_G.insert(startBaseCallIndex + i + 1, gap.gap, DNAChromatogram::DEFAULT_PROBABILITY);
-            gappedChromatogram.prob_T.insert(startBaseCallIndex + i + 1, gap.gap, DNAChromatogram::DEFAULT_PROBABILITY);
+            gappedChromatogram.prob_A.insert(startBaseCallIndex + i + 1, gap.length, DNAChromatogram::DEFAULT_PROBABILITY);
+            gappedChromatogram.prob_C.insert(startBaseCallIndex + i + 1, gap.length, DNAChromatogram::DEFAULT_PROBABILITY);
+            gappedChromatogram.prob_G.insert(startBaseCallIndex + i + 1, gap.length, DNAChromatogram::DEFAULT_PROBABILITY);
+            gappedChromatogram.prob_T.insert(startBaseCallIndex + i + 1, gap.length, DNAChromatogram::DEFAULT_PROBABILITY);
         }
-        gappedChromatogram.seqLength += gap.gap;
+        gappedChromatogram.seqLength += gap.length;
     }
     return gappedChromatogram;
 }

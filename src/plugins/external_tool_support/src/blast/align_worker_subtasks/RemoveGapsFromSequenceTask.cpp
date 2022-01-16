@@ -43,7 +43,7 @@ void FindGapsInSequenceCallback::onRegion(SequenceDbiWalkerSubtask *subtask, Tas
     CHECK_OP(stateInfo, );
 
     QByteArray ungappedSequenceData;
-    QList<U2MsaGap> gaps;
+    QVector<U2MsaGap> gaps;
     MaDbiUtils::splitBytesToCharsAndGaps(sequenceData, ungappedSequenceData, gaps);
     MsaRowUtils::shiftGapModel(gaps, subtask->getGlobalRegion().startPos);
 
@@ -54,7 +54,7 @@ const QList<U2Region> &FindGapsInSequenceCallback::getGappedRegions() const {
     return gappedRegions;
 }
 
-void FindGapsInSequenceCallback::addGaps(const QList<U2MsaGap> &gaps) {
+void FindGapsInSequenceCallback::addGaps(const QVector<U2MsaGap> &gaps) {
     QMutexLocker mutexLocker(&mutex);
     for (const U2MsaGap &gap : qAsConst(gaps)) {
         gappedRegions << gap;

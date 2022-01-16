@@ -53,7 +53,7 @@ public:
      * Updates a gap model of the alignment.
      * The map must contain valid row IDs and corresponding gap models.
      */
-    void updateGapModel(U2OpStatus &os, const QMap<qint64, QList<U2MsaGap>> &rowsGapModel);
+    void updateGapModel(U2OpStatus &os, const QMap<qint64, QVector<U2MsaGap>> &rowsGapModel);
     void updateGapModel(const QList<MultipleSequenceAlignmentRow> &sourceRows);
 
     /** Keeps only given row ids and given column range in the alignment. */
@@ -63,7 +63,7 @@ public:
     void crop(const U2Region &columnRange);
 
     /** Methods to work with rows */
-    void updateRow(U2OpStatus &os, int rowIdx, const QString &name, const QByteArray &seqBytes, const QList<U2MsaGap> &gapModel);
+    void updateRow(U2OpStatus &os, int rowIdx, const QString &name, const QByteArray &seqBytes, const QVector<U2MsaGap> &gapModel);
 
     /** Replaces all characters in the alignment and updates alphabet if provided.*/
     void replaceAllCharacters(char oldChar, char newChar, const DNAAlphabet *newAlphabet = nullptr);
