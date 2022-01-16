@@ -88,7 +88,7 @@ public:
     void setName(const QString &name) override;
 
     /** Returns the list of gaps for the row */
-    const QVector<U2MsaGap> &getGaps() const;
+    const QVector<U2MsaGap> &getGaps() const override;
 
     /** Careful, the new gap model is not validated! */
     void setGapModel(const QVector<U2MsaGap> &newGapModel);

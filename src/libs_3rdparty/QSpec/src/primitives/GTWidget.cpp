@@ -226,8 +226,8 @@ QList<QLabel *> GTWidget::findLabelByText(GUITestOpStatus &os,
                                           QWidget *parentWidget,
                                           const GTGlobals::FindOptions &options) {
     QList<QLabel *> resultLabelList;
-    for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
-        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS && resultLabelList.isEmpty() : 0);
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && resultLabelList.isEmpty(); time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         resultLabelList = findChildren<QLabel>(os,
                                                parentWidget,
                                                [text](auto label) { return label->text().contains(text, Qt::CaseInsensitive); });
@@ -235,9 +235,7 @@ QList<QLabel *> GTWidget::findLabelByText(GUITestOpStatus &os,
             break;
         }
     }
-    if (options.failIfNotFound) {
-        GT_CHECK_RESULT(!resultLabelList.isEmpty(), QString("Label with this text <%1> not found").arg(text), {});
-    }
+    GT_CHECK_RESULT(!options.failIfNotFound || !resultLabelList.isEmpty(), QString("Label with text <%1> not found").arg(text), {});
     return resultLabelList;
 }
 #undef GT_METHOD_NAME

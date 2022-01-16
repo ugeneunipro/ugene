@@ -432,7 +432,7 @@ void MsaRowUtils::removeTrailingGapsFromModel(qint64 length, QVector<U2MsaGap> &
     }
 }
 
-QByteArray MsaRowUtils::getGappedSubsequence(const U2Region &region, const QByteArray &sequence, const QList<U2MsaGap> &gaps) {
+QByteArray MsaRowUtils::getGappedSubsequence(const U2Region &region, const QByteArray &sequence, const QVector<U2MsaGap> &gaps) {
     CHECK(region.startPos >= 0 && region.length > 0, {});
     CHECK(!sequence.isEmpty(), QByteArray(region.length, U2Msa::GAP_CHAR));
     const char *coreSequence = sequence.constData();
@@ -447,9 +447,9 @@ QByteArray MsaRowUtils::getGappedSubsequence(const U2Region &region, const QByte
     // Iterate interleaved gap & core sequence regions.
     while (gapIndex <= gaps.length() && pos < regionEnd && corePos < coreLength) {
         const U2MsaGap *gap = gapIndex == gaps.length() ? nullptr : &gaps[gapIndex];
-        if (gap == nullptr || gap->offset > pos) {
+        if (gap == nullptr || gap->startPos > pos) {
             // Processing core sequence part. At this point no gaps left or the next gap starts after 'pos'.
-            int corePartLength = gap == nullptr ? coreLength - corePos : gap->offset - pos;
+            int corePartLength = gap == nullptr ? coreLength - corePos : gap->startPos - pos;
             SAFE_POINT(corePos + corePartLength <= coreLength, "Invalid position in core sequence!", {});
             if (region.startPos < pos + corePartLength) {  // Add core sub-sequence to the result.
                 int nChars;
@@ -475,7 +475,7 @@ QByteArray MsaRowUtils::getGappedSubsequence(const U2Region &region, const QByte
             SAFE_POINT(corePos <= coreLength, "Core sequence overflow!", {});
         } else {
             // Processing gap region.
-            int gapPartLength = (int)gap->gap;
+            int gapPartLength = (int)gap->length;
             if (region.startPos < pos + gapPartLength) {
                 int nGaps;
                 if (region.startPos <= pos) {  // Add a prefix or whole gap region.
@@ -488,7 +488,7 @@ QByteArray MsaRowUtils::getGappedSubsequence(const U2Region &region, const QByte
                 SAFE_POINT(nGaps <= gapPartLength && result.length() + nGaps <= region.length, "Invalid gap region", {});
                 result.append(nGaps, U2Msa::GAP_CHAR);
             }
-            pos += gap->gap;
+            pos += gap->length;
             gapIndex++;
         }
         SAFE_POINT(pos < region.startPos ? result.isEmpty() : result.length() <= pos - region.startPos, "Invalid result region after processing gap.", {});

@@ -58,10 +58,6 @@ MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(const MultipleSequenc
     : MultipleAlignmentRow(new MultipleSequenceAlignmentRowData(row, msaData)) {
 }
 
-const QVector<U2MsaGap> &MultipleSequenceAlignmentRowData::getGaps() const {
-    return gaps;
-}
-
 MultipleSequenceAlignmentRowData *MultipleSequenceAlignmentRow::data() const {
     return getMsaRowData().data();
 }
@@ -572,7 +568,7 @@ MultipleAlignmentData *MultipleSequenceAlignmentRowData::getMultipleAlignmentDat
     return alignment;
 }
 
-const QList<U2MsaGap> &MultipleSequenceAlignmentRowData::getGapModel() const {
+const QVector<U2MsaGap> &MultipleSequenceAlignmentRowData::getGaps() const {
     return gaps;
 }
 

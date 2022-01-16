@@ -128,7 +128,6 @@
 #include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExportHighlightedDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
-#include "runnables/ugene/plugins/annotator/FindAnnotationCollocationsDialogFiller.h"
 #include "runnables/ugene/plugins/biostruct3d_view/StructuralAlignmentDialogFiller.h"
 #include "runnables/ugene/plugins/cap3/CAP3SupportDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportAnnotationsDialogFiller.h"
@@ -3208,18 +3207,18 @@ GUI_TEST_CLASS_DEFINITION(test_3545) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3552) {
+    // Check that "Render overview" task has a meaningful progress info: NN% instead of ? symbol).
     // Open a large alignment.
-    GTFileDialog::openFile(os, testDir + "_common_data/clustal", "10000_sequences.aln", GTFileDialog::Open, GTGlobals::UseMouse);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/10000_sequences.aln");
 
-    auto taskInfoLabel = GTWidget::findLabel(os, "taskInfoLabel");
-    while (!taskInfoLabel->text().contains("Render")) {
-        uiLog.trace("actual text: " + taskInfoLabel->text());
-    }
-    auto taskProgressBar = GTWidget::findExactWidget<QProgressBar *>(os, "taskProgressBar");
-    QString text = taskProgressBar->text();
-    CHECK_SET_ERR(text.contains("%"), "unexpected text: " + text);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    // Wait until 'Render overview' task is started.
+    auto statusBar = GTWidget::findWidget(os, "taskStatusBar");
+    GTWidget::findLabelByText(os, "Running task: Render overview", statusBar);
+
+    // Check progress bar text.
+    QString taskProgressBarText = GTWidget::findExactWidget<QProgressBar *>(os, "taskProgressBar", statusBar)->text();
+    CHECK_SET_ERR(taskProgressBarText.contains("%"), "Unexpected progress bar text: " + taskProgressBarText);
+    GTUtilsTaskTreeView::waitTaskFinished(os, 10000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3553) {
