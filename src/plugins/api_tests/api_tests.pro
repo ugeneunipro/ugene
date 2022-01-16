@@ -8,6 +8,7 @@ HEADERS += \
     src/core/datatype/annotations/AnnotationGroupUnitTests.h \
     src/core/datatype/annotations/AnnotationUnitTests.h \
     src/core/datatype/msa/MsaRowUnitTests.h \
+    src/core/datatype/msa/MsaRowUtilsUnitTests.h \
     src/core/datatype/msa/MsaUnitTests.h \
     src/core/datatype/udr/RawDataUdrSchemaUnitTests.h \
     src/core/datatype/udr/UdrSchemaUnitTests.h \
@@ -45,6 +46,7 @@ SOURCES += \
     src/core/datatype/annotations/AnnotationGroupUnitTests.cpp \
     src/core/datatype/annotations/AnnotationUnitTests.cpp \
     src/core/datatype/msa/MsaRowUnitTests.cpp \
+    src/core/datatype/msa/MsaRowUtilsUnitTests.cpp \
     src/core/datatype/msa/MsaUnitTests.cpp \
     src/core/datatype/udr/RawDataUdrSchemaUnitTests.cpp \
     src/core/datatype/udr/UdrSchemaUnitTests.cpp \

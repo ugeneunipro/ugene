@@ -1,0 +1,9 @@
+<unittest>
+
+    MsaRowUtilsUnitTests
+    + getGappedSubsequence_noGaps
+    + getGappedSubsequence_leadingGap
+    + getGappedSubsequence_midGap
+    + getGappedSubsequence_multiGaps
+
+</unittest>

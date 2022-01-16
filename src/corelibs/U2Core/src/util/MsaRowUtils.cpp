@@ -433,7 +433,7 @@ void MsaRowUtils::removeTrailingGapsFromModel(qint64 length, QVector<U2MsaGap> &
 }
 
 QByteArray MsaRowUtils::getGappedSubsequence(const U2Region &region, const QByteArray &sequence, const QVector<U2MsaGap> &gaps) {
-    CHECK(region.startPos >= 0 && region.length > 0, {});
+    CHECK(region.length > 0, {});
     CHECK(!sequence.isEmpty(), QByteArray(region.length, U2Msa::GAP_CHAR));
     const char *coreSequence = sequence.constData();
     int coreLength = sequence.length();
@@ -443,10 +443,13 @@ QByteArray MsaRowUtils::getGappedSubsequence(const U2Region &region, const QByte
     int corePos = 0;  // Current offset in core sequence.
     int pos = 0;  // Current gapped position in the row.
     int regionEnd = (int)region.endPos();  // Last (exclusive) global gapped position to include into the result.
-
+    if (region.startPos < 0) {
+        result.append(-region.startPos, U2Msa::GAP_CHAR);
+    }
     // Iterate interleaved gap & core sequence regions.
     while (gapIndex <= gaps.length() && pos < regionEnd && corePos < coreLength) {
         const U2MsaGap *gap = gapIndex == gaps.length() ? nullptr : &gaps[gapIndex];
+        SAFE_POINT(gapIndex == 0  || gap == nullptr || gap->startPos > gaps[gapIndex - 1].startPos + gaps[gapIndex - 1].length, "Invalid gap model", {});
         if (gap == nullptr || gap->startPos > pos) {
             // Processing core sequence part. At this point no gaps left or the next gap starts after 'pos'.
             int corePartLength = gap == nullptr ? coreLength - corePos : gap->startPos - pos;
