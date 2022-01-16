@@ -65,7 +65,7 @@ void CollocationsAlgorithm::findN(const QList<CollocationsAlgorithmItem> &items,
             onResult = onResult && foundItem;
         }
         if (onResult && res.startPos == i) {
-            CHECK(res.length > 0);
+            CHECK(res.length > 0, );
             if (!prevResult.contains(res)) {
                 CHECK(!res.contains(prevResult) || prevResult.length == 0, );
                 CHECK(prevResult.endPos() < res.endPos(), );
@@ -149,7 +149,6 @@ void CollocationsAlgorithm::findP(const QList<CollocationsAlgorithmItem> &items,
             onResult = onResult && foundItem;
         }
         // error mb use list of prev included anno?
-        //
         if (onResult && prevMax != max) {
             prevMax = max;
 

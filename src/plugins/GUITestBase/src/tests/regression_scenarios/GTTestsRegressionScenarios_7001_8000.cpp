@@ -476,11 +476,10 @@ GUI_TEST_CLASS_DEFINITION(test_7161) {
     //for some reason PopupChooser don not work properly, so we choose item by position
     public:
         ItemPopupChooserByPosition(HI::GUITestOpStatus &os, int _pos)
-            : PopupChooser(os, QStringList()), pos(_pos) {
+            : PopupChooser(os, {}), pos(_pos) {
         }
 
-        virtual void run() override {
-            GTMouseDriver::release();
+        void run() override {
             for (int i = 0; i < pos; i++) {
                 GTKeyboardDriver::keyClick(Qt::Key_Down);
             }
@@ -491,24 +490,21 @@ GUI_TEST_CLASS_DEFINITION(test_7161) {
         int pos;
     };
 
-    class CustomFiller : public FindAnnotationCollocationsDialogFiller {
+    class ChooseCDSAndCommentsWithin60kRegion : public FindAnnotationCollocationsDialogFiller {
     public:
-        CustomFiller(HI::GUITestOpStatus &os) : FindAnnotationCollocationsDialogFiller(os) {
+        ChooseCDSAndCommentsWithin60kRegion(HI::GUITestOpStatus &os) : FindAnnotationCollocationsDialogFiller(os) {
         }
 
-        virtual void run() override {
+        void run() override {
             QToolButton *plusButton = getPlusButton();
-            CHECK_SET_ERR(plusButton, "First plus toolbutton is NULL");
-
+            
             GTUtilsDialog::waitForDialog(os, new ItemPopupChooserByPosition(os, 3));
             GTWidget::click(os, plusButton);
             
             GTUtilsDialog::waitForDialog(os, new ItemPopupChooserByPosition(os, 3));
             GTWidget::click(os, plusButton);
 
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-            
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);            
             GTSpinBox::setValue(os, "regionSpin", 60000, GTGlobals::UseKeyBoard, dialog);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
             GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -525,12 +521,10 @@ GUI_TEST_CLASS_DEFINITION(test_7161) {
     //4. Set "Region size" to 60000
     //5. Press "Search button"
     //Expected state: no crash or assert on run
-    QToolBar *toolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");
-    CHECK_SET_ERR(toolbar, "Toolbar is NULL");
-    QWidget *farButton = GTToolbar::getWidgetForActionTooltip(os, toolbar, "Find annotated regions");
-    CHECK_SET_ERR(farButton, "Find annotated region button is NULL");
+    auto *toolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");
+    auto *farButton = GTToolbar::getWidgetForActionTooltip(os, toolbar, "Find annotated regions");
 
-    GTUtilsDialog::waitForDialog(os, new CustomFiller(os));
+    GTUtilsDialog::waitForDialog(os, new ChooseCDSAndCommentsWithin60kRegion(os));
     GTWidget::click(os, farButton);
 }
 
