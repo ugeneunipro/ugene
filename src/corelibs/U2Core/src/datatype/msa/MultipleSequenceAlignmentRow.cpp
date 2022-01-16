@@ -611,11 +611,11 @@ char MultipleSequenceAlignmentRowData::getCharFromCache(int gappedPosition) cons
         return gappedSequenceCache[gappedPosition - gappedCacheOffset];
     }
     invalidateGappedCache();
-    // TODO: cache both directions.
-    gappedSequenceCache = MsaRowUtils::getGappedSubsequence({gappedPosition, GAPPED_CACHE_SIZE}, sequence.constSequence(), gaps);
+    int newGappedCacheOffset = qMax(0, gappedPosition - (gappedPosition / (GAPPED_CACHE_SIZE / 10)));  // Cache one both sides. Prefer forward iteration.
+    gappedSequenceCache = MsaRowUtils::getGappedSubsequence({newGappedCacheOffset, GAPPED_CACHE_SIZE}, sequence.constSequence(), gaps);
     CHECK(!gappedSequenceCache.isEmpty(), MsaRowUtils::charAt(sequence.seq, gaps, gappedPosition));
-    gappedCacheOffset = gappedPosition;
-    return gappedSequenceCache[0];
+    gappedCacheOffset = newGappedCacheOffset;
+    return gappedSequenceCache[gappedPosition - gappedCacheOffset];
 }
 
 }  // namespace U2
