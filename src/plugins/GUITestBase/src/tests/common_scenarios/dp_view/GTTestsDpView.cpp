@@ -191,7 +191,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_1) {
 
     for (int i = 0; i < 4; i++) {
         GTUtilsDialog::waitForDialog(os, new GTUtilsEscClicker(os, "dotplot context menu"));
-        GTWidget::click(os, GTWidget::findWidget(os, GTUtilsAnnotationsTreeView::widgetName));
+        GTWidget::click(os, GTUtilsAnnotationsTreeView::getTreeWidget(os));
         QWidget *dpWidget = GTWidget::findWidget(os, "dotplot widget");
         GTMenu::showContextMenu(os, dpWidget);
         GTUtilsDialog::checkNoActiveWaiters(os);
@@ -211,7 +211,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2) {
 
     for (int i = 0; i < 4; i++) {
         GTUtilsDialog::waitForDialog(os, new GTUtilsEscClicker(os, "dotplot context menu", true));
-        GTWidget::click(os, GTWidget::findWidget(os, GTUtilsAnnotationsTreeView::widgetName));
+        GTWidget::click(os, GTUtilsAnnotationsTreeView::getTreeWidget(os));
         QWidget *dpWidget = GTWidget::findWidget(os, "dotplot widget");
         GTMenu::showContextMenu(os, dpWidget);
         GTUtilsDialog::checkNoActiveWaiters(os);
