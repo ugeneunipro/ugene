@@ -40,9 +40,6 @@ MaEditorOverviewArea::MaEditorOverviewArea(MaEditorWgt *ui, const QString &objec
     setContextMenuPolicy(Qt::PreventContextMenu);
 }
 
-void MaEditorOverviewArea::cancelRendering() {
-}
-
 void MaEditorOverviewArea::addOverview(QWidget *overviewWgt) {
     layout->addWidget(overviewWgt);
 }

@@ -5,7 +5,8 @@
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
+ * as published by the Free Software Foundation; either versi
+ * on 2
  * of the License, or (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -39,49 +40,43 @@
 #include "MaGraphCalculationTask.h"
 #include "ov_msa/ScrollController.h"
 
+#define MSA_GRAPH_OVERVIEW_COLOR_KEY "msa_graph_overview_color"
+#define MSA_GRAPH_OVERVIEW_TYPE_KEY "msa_graph_overview_type"
+#define MSA_GRAPH_OVERVIEW_ORIENTATION_KEY "msa_graph_overview_orientation_key"
+
 namespace U2 {
 
 MaGraphOverview::MaGraphOverview(MaEditorWgt *ui)
-    : MaOverview(ui),
-      redrawGraph(true),
-      isBlocked(false),
-      lastDrawnVersion(-1),
-      method(Strict),
-      graphCalculationTask(nullptr) {
+    : MaOverview(ui) {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     setFixedHeight(FIXED_HEIGHT);
 
-    displaySettings = new MaGraphOverviewDisplaySettings();
+    Settings *settings = AppContext::getSettings();
+    displaySettings.color = settings->getValue(MSA_GRAPH_OVERVIEW_COLOR_KEY, displaySettings.color).value<QColor>();
+    displaySettings.type = (MaGraphOverviewDisplaySettings::GraphType)settings->getValue(MSA_GRAPH_OVERVIEW_TYPE_KEY, displaySettings.type).toInt();
+    displaySettings.orientation = (MaGraphOverviewDisplaySettings::OrientationMode)settings->getValue(MSA_GRAPH_OVERVIEW_ORIENTATION_KEY, displaySettings.orientation).toInt();
 
-    Settings *s = AppContext::getSettings();
-    CHECK(s != nullptr, );
-    if (s->contains(MSA_GRAPH_OVERVIEW_COLOR_KEY)) {
-        displaySettings->color = s->getValue(MSA_GRAPH_OVERVIEW_COLOR_KEY).value<QColor>();
-    }
-
-    if (s->contains(MSA_GRAPH_OVERVIEW_TYPE_KEY)) {
-        displaySettings->type = (MaGraphOverviewDisplaySettings::GraphType)s->getValue(MSA_GRAPH_OVERVIEW_TYPE_KEY).toInt();
-    }
-
-    if (s->contains(MSA_GRAPH_OVERVIEW_ORIENTAION_KEY)) {
-        displaySettings->orientation = (MaGraphOverviewDisplaySettings::OrientationMode)s->getValue(MSA_GRAPH_OVERVIEW_ORIENTAION_KEY).toInt();
-    }
-
-    connect(&graphCalculationTaskRunner, SIGNAL(si_finished()), SLOT(sl_redraw()));
-
-    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), SLOT(sl_drawGraph()));
-
-    connect(ui, SIGNAL(si_startMaChanging()), SLOT(sl_blockRendering()));
-    connect(ui, SIGNAL(si_stopMaChanging(bool)), SLOT(sl_unblockRendering(bool)));
-
-    sl_drawGraph();
-}
-
-void MaGraphOverview::cancelRendering() {
-    if (isRendering) {
+    connect(&graphCalculationTaskRunner, &BackgroundTaskRunner_base::si_finished, this, [this]() {
+        if (graphCalculationTaskRunner.isSuccessful()) {
+            renderedState = inProgressState;
+        }
+        sl_redraw();
+    });
+    connect(editor->getMaObject(), &MultipleAlignmentObject::si_alignmentChanged, this, [this]() {
+        state.maObjectVersion = editor->getMaObject()->getObjectVersion();
+        recomputeGraphIfNeeded();
+    });
+    connect(ui, &MaEditorWgt::si_startMaChanging, this, [this]() {
+        isMaChangeInProgress = true;
         graphCalculationTaskRunner.cancel();
-        lastDrawnVersion = -1;
-    }
+    });
+    connect(ui, &MaEditorWgt::si_stopMaChanging, this, [this]() {
+        isMaChangeInProgress = false;
+        recomputeGraphIfNeeded();
+    });
+
+    state.width = width();
+    state.maObjectVersion = editor->getMaObject()->getObjectVersion();
 }
 
 void MaGraphOverview::sl_redraw() {
@@ -96,7 +91,7 @@ void MaGraphOverview::paintEvent(QPaintEvent *e) {
         QWidget::paintEvent(e);
         return;
     }
-    if (isBlocked) {
+    if (state != inProgressState) {
         GUIUtils::showMessage(this, p, tr("Waiting..."));
         QWidget::paintEvent(e);
         return;
@@ -120,17 +115,26 @@ void MaGraphOverview::paintEvent(QPaintEvent *e) {
     drawVisibleRange(pVisibleRange);
 
     p.drawPixmap(0, 0, cachedView);
-    lastDrawnVersion = editor->getMaObject()->getModificationVersion();
-
     QWidget::paintEvent(e);
 }
 
 void MaGraphOverview::resizeEvent(QResizeEvent *e) {
-    if (!isBlocked) {
-        redrawGraph = true;
-        sl_drawGraph();
-    }
     QWidget::resizeEvent(e);
+    if (isVisible()) {
+        redrawGraph = true;
+        state.width = width();
+        QTimer::singleShot(0, this, [this]() { recomputeGraphIfNeeded(); });
+    }
+}
+
+void MaGraphOverview::hideEvent(QHideEvent *event) {
+    graphCalculationTaskRunner.cancel();
+    MaOverview::hideEvent(event);
+}
+
+void MaGraphOverview::showEvent(QShowEvent *event) {
+    MaOverview::showEvent(event);
+    QTimer::singleShot(0, this, [this]() { recomputeGraphIfNeeded(); });
 }
 
 void MaGraphOverview::drawVisibleRange(QPainter &p) {
@@ -160,129 +164,81 @@ void MaGraphOverview::drawVisibleRange(QPainter &p) {
     p.drawRect(cachedVisibleRange.adjusted(0, 0, -1, -1));
 }
 
-void MaGraphOverview::sl_drawGraph() {
-    if (!isVisible() || isBlocked) {
-        return;
-    }
+void MaGraphOverview::recomputeGraphIfNeeded() {
+    CHECK(!isMaChangeInProgress && isVisible() && state != (graphCalculationTaskRunner.isIdle() ? renderedState : inProgressState), );
     graphCalculationTaskRunner.cancel();
-
-    switch (method) {
-        case Strict:
-            graphCalculationTask = new MaConsensusOverviewCalculationTask(editor->getMaObject(),
-                                                                          width(),
-                                                                          FIXED_HEIGHT);
+    auto maObject = editor->getMaObject();
+    MaGraphCalculationTask *task;
+    switch (state.method) {
+        case MaGraphCalculationMethod::Strict:
+            task = new MaConsensusOverviewCalculationTask(maObject, width(), height());
             break;
-        case Gaps:
-            graphCalculationTask = new MaGapOverviewCalculationTask(editor->getMaObject(),
-                                                                    width(),
-                                                                    FIXED_HEIGHT);
+        case MaGraphCalculationMethod::Gaps:
+            task = new MaGapOverviewCalculationTask(maObject, width(), height());
             break;
-        case Clustal:
-            graphCalculationTask = new MaClustalOverviewCalculationTask(editor->getMaObject(),
-                                                                        width(),
-                                                                        FIXED_HEIGHT);
+        case MaGraphCalculationMethod::Clustal:
+            task = new MaClustalOverviewCalculationTask(maObject, width(), height());
             break;
-        case Highlighting:
-            MsaHighlightingScheme *hScheme = sequenceArea->getCurrentHighlightingScheme();
-            QString hSchemeId = hScheme->getFactory()->getId();
-
-            MsaColorScheme *cScheme = sequenceArea->getCurrentColorScheme();
-            QString cSchemeId = cScheme->getFactory()->getId();
-
-            graphCalculationTask = new MaHighlightingOverviewCalculationTask(editor,
-                                                                             cSchemeId,
-                                                                             hSchemeId,
-                                                                             width(),
-                                                                             FIXED_HEIGHT);
+        case MaGraphCalculationMethod::Highlighting:
+            task = new MaHighlightingOverviewCalculationTask(editor, state.colorSchemeId, state.highlightingSchemeId, width(), height());
             break;
     }
+    SAFE_POINT(task != nullptr, "Unsupported overview method:" + QString::number((int)state.method), );
+    connect(task, &MaGraphCalculationTask::si_calculationStarted, this, [this]() { emit si_renderingStateChanged(true); });
+    connect(task, &MaGraphCalculationTask::si_calculationStoped, this, [this]() { emit si_renderingStateChanged(false); });
 
-    connect(graphCalculationTask, SIGNAL(si_calculationStarted()), SLOT(sl_startRendering()));
-    connect(graphCalculationTask, SIGNAL(si_calculationStoped()), SLOT(sl_stopRendering()));
-    graphCalculationTaskRunner.run(graphCalculationTask);
-
+    inProgressState = state;
+    graphCalculationTaskRunner.run(task);
     sl_redraw();
 }
 
 void MaGraphOverview::sl_highlightingChanged() {
-    if (method == Highlighting) {
-        sl_drawGraph();
-    }
-}
-
-void MaGraphOverview::sl_graphOrientationChanged(MaGraphOverviewDisplaySettings::OrientationMode orientation) {
-    if (orientation != displaySettings->orientation) {
-        displaySettings->orientation = orientation;
-
-        Settings *s = AppContext::getSettings();
-        s->setValue(MSA_GRAPH_OVERVIEW_ORIENTAION_KEY, orientation);
-
-        update();
-    }
-}
-
-void MaGraphOverview::sl_graphTypeChanged(MaGraphOverviewDisplaySettings::GraphType type) {
-    if (type != displaySettings->type) {
-        displaySettings->type = type;
-
-        Settings *s = AppContext::getSettings();
-        s->setValue(MSA_GRAPH_OVERVIEW_TYPE_KEY, type);
-
-        update();
-    }
-}
-
-void MaGraphOverview::sl_graphColorChanged(QColor color) {
-    if (color != displaySettings->color) {
-        displaySettings->color = color;
-
-        Settings *s = AppContext::getSettings();
-        s->setValue(MSA_GRAPH_OVERVIEW_COLOR_KEY, color);
-
-        update();
-    }
-}
-
-void MaGraphOverview::sl_calculationMethodChanged(MaGraphCalculationMethod _method) {
-    if (method != _method) {
-        method = _method;
-        sl_drawGraph();
-    }
-}
-
-void MaGraphOverview::sl_startRendering() {
-    isRendering = true;
-    emit si_renderingStateChanged(isRendering);
-}
-
-void MaGraphOverview::sl_stopRendering() {
-    isRendering = false;
-    emit si_renderingStateChanged(isRendering);
-}
-
-void MaGraphOverview::sl_blockRendering() {
-    disconnect(editor->getMaObject(), nullptr, this, nullptr);
-    isBlocked = true;
-}
-
-void MaGraphOverview::sl_unblockRendering(bool update) {
-    isBlocked = false;
-    if (!isVisible()) {
-        return;
-    }
-
-    int currentMaObjectVersion = editor->getMaObject()->getModificationVersion();
-    if (update && lastDrawnVersion != currentMaObjectVersion) {
-        sl_drawGraph();
+    if (state.method == MaGraphCalculationMethod::Highlighting) {
+        MaEditorSequenceArea *sequenceArea = ui->getSequenceArea();
+        MsaHighlightingScheme *highlightingScheme = sequenceArea->getCurrentHighlightingScheme();
+        MsaColorScheme *colorScheme = sequenceArea->getCurrentColorScheme();
+        state.highlightingSchemeId = highlightingScheme->getFactory()->getId();
+        state.colorSchemeId = colorScheme->getFactory()->getId();
     } else {
-        this->update();
+        state.highlightingSchemeId = "";
+        state.colorSchemeId = "";
     }
+    recomputeGraphIfNeeded();
+}
 
-    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), SLOT(sl_drawGraph()));
+void MaGraphOverview::sl_graphOrientationChanged(const MaGraphOverviewDisplaySettings::OrientationMode &orientation) {
+    CHECK(displaySettings.orientation != orientation, );
+    displaySettings.orientation = orientation;
+    AppContext::getSettings()->setValue(MSA_GRAPH_OVERVIEW_ORIENTATION_KEY, orientation);
+    update();
+}
+
+void MaGraphOverview::sl_graphTypeChanged(const MaGraphOverviewDisplaySettings::GraphType &type) {
+    CHECK(displaySettings.type != type, );
+    displaySettings.type = type;
+    AppContext::getSettings()->setValue(MSA_GRAPH_OVERVIEW_TYPE_KEY, type);
+    update();
+}
+
+void MaGraphOverview::sl_graphColorChanged(const QColor &color) {
+    CHECK(displaySettings.color != color, )
+    displaySettings.color = color;
+    AppContext::getSettings()->setValue(MSA_GRAPH_OVERVIEW_COLOR_KEY, color);
+    update();
+}
+
+void MaGraphOverview::sl_calculationMethodChanged(const MaGraphCalculationMethod &method) {
+    state.method = method;
+    if (method != MaGraphCalculationMethod::Highlighting) {
+        state.highlightingSchemeId = "";
+        state.colorSchemeId = "";
+    }
+    recomputeGraphIfNeeded();
 }
 
 void MaGraphOverview::drawOverview(QPainter &p) {
-    if (displaySettings->orientation == MaGraphOverviewDisplaySettings::FromTopToBottom) {
+    bool isTopToBottom = displaySettings.orientation == MaGraphOverviewDisplaySettings::FromTopToBottom;
+    if (isTopToBottom) {
         // transform coordinate system
         p.translate(0, height());
         p.scale(1, -1);
@@ -290,66 +246,62 @@ void MaGraphOverview::drawOverview(QPainter &p) {
 
     p.fillRect(cachedConsensus.rect(), Qt::white);
 
-    if (editor->getAlignmentLen() == 0) {
-        return;
-    }
-
-    p.setPen(displaySettings->color);
-    p.setBrush(displaySettings->color);
-
-    if (graphCalculationTaskRunner.getResult().isEmpty() && !editor->isAlignmentEmpty() && !isBlocked) {
-        sl_drawGraph();
-        return;
-    }
+    CHECK(editor->getAlignmentLen() > 0, )
 
     QPolygonF resultPolygon = graphCalculationTaskRunner.getResult();
-    if (!editor->isAlignmentEmpty() && resultPolygon.last().x() != width()) {
-        sl_drawGraph();
-        return;
-    }
+    CHECK(!resultPolygon.isEmpty(), );
+
+    p.setPen(displaySettings.color);
+    p.setBrush(displaySettings.color);
 
     // area graph
-    if (displaySettings->type == MaGraphOverviewDisplaySettings::Area) {
+    if (displaySettings.type == MaGraphOverviewDisplaySettings::Area) {
         p.drawPolygon(resultPolygon);
     }
 
     // line graph
-    if (displaySettings->type == MaGraphOverviewDisplaySettings::Line) {
+    if (displaySettings.type == MaGraphOverviewDisplaySettings::Line) {
         p.drawPolyline(resultPolygon);
     }
 
-    // hystogram
-    if (displaySettings->type == MaGraphOverviewDisplaySettings::Hystogram) {
-        int size = graphCalculationTaskRunner.getResult().size();
-        for (int i = 0; i < size; i++) {
-            const QPointF point = resultPolygon.at(i);
-            QPointF nextPoint;
-            if (i != size - 1) {
-                nextPoint = resultPolygon.at(i + 1);
-            } else {
-                nextPoint = QPointF(width(), point.y());
-            }
-
-            p.drawRect(point.x(), point.y(), static_cast<int>(nextPoint.x() - point.x()) - 2 * (width() > 2 * size), height() - point.y());
+    // histogram
+    if (displaySettings.type == MaGraphOverviewDisplaySettings::Histogram) {
+        int pointCount = graphCalculationTaskRunner.getResult().size();
+        for (int i = 0; i < pointCount; i++) {
+            auto p1 = resultPolygon.at(i).toPoint();
+            auto p2 = (i < pointCount - 1 ? resultPolygon.at(i + 1) : QPointF(width(), p1.y())).toPoint();
+            int w = p2.x() - p1.x();
+            int h = height() - p1.y();
+            p.drawRect(p1.x(), p1.y(), w, h);
         }
     }
 
-    // gray frame
+    // Frame.
     p.setPen(Qt::gray);
     p.setBrush(Qt::transparent);
-    p.drawRect(rect().adjusted(0, (displaySettings->orientation == MaGraphOverviewDisplaySettings::FromTopToBottom), -1, -1 * (displaySettings->orientation == MaGraphOverviewDisplaySettings::FromBottomToTop)));
+    int yp1 = isTopToBottom ? 1 : 0;
+    int yp2 = -1 * (isTopToBottom ? 0 : 1);
+    p.drawRect(rect().adjusted(0, yp1, -1, yp2));
 }
 
-void MaGraphOverview::moveVisibleRange(QPoint _pos) {
+void MaGraphOverview::moveVisibleRange(QPoint pos) {
     QRect newVisibleRange(cachedVisibleRange);
-    const QPoint newPos(qBound((cachedVisibleRange.width() - 1) / 2, _pos.x(), width() - (cachedVisibleRange.width() - 1) / 2), height() / 2);
+    QPoint newPos(qBound((cachedVisibleRange.width() - 1) / 2, pos.x(), width() - (cachedVisibleRange.width() - 1) / 2), height() / 2);
 
     newVisibleRange.moveCenter(newPos);
 
-    const int newScrollBarValue = newVisibleRange.x() * stepX;
+    int newScrollBarValue = qRound(newVisibleRange.x() * stepX);
     ui->getScrollController()->setHScrollbarValue(newScrollBarValue);
 
     update();
+}
+
+const MaGraphOverviewDisplaySettings &MaGraphOverview::getDisplaySettings() const {
+    return displaySettings;
+}
+
+const MaGraphOverviewState &MaGraphOverview::getState() const {
+    return state;
 }
 
 }  // namespace U2

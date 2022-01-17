@@ -209,13 +209,6 @@ void MSAEditor::onObjectRenamed(GObject *, const QString &) {
     OpenMaEditorTask::updateTitle(this);
 }
 
-bool MSAEditor::onCloseEvent() {
-    if (ui->getOverviewArea() != nullptr) {
-        ui->getOverviewArea()->cancelRendering();
-    }
-    return true;
-}
-
 MultipleSequenceAlignmentRow MSAEditor::getRowByViewRowIndex(int viewRowIndex) const {
     int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
     return getMaObject()->getMsaRow(maRowIndex);

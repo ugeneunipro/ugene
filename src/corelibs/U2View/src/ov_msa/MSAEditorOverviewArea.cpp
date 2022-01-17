@@ -57,10 +57,10 @@ MSAEditorOverviewArea::MSAEditorOverviewArea(MaEditorWgt *ui)
     contextMenu = new MaOverviewContextMenu(this, simpleOverview, graphOverview);
     setContextMenuPolicy(Qt::DefaultContextMenu);
 
-    connect(contextMenu, SIGNAL(si_graphTypeSelected(MaGraphOverviewDisplaySettings::GraphType)), graphOverview, SLOT(sl_graphTypeChanged(MaGraphOverviewDisplaySettings::GraphType)));
-    connect(contextMenu, SIGNAL(si_colorSelected(QColor)), graphOverview, SLOT(sl_graphColorChanged(QColor)));
-    connect(contextMenu, SIGNAL(si_graphOrientationSelected(MaGraphOverviewDisplaySettings::OrientationMode)), graphOverview, SLOT(sl_graphOrientationChanged(MaGraphOverviewDisplaySettings::OrientationMode)));
-    connect(contextMenu, SIGNAL(si_calculationMethodSelected(MaGraphCalculationMethod)), graphOverview, SLOT(sl_calculationMethodChanged(MaGraphCalculationMethod)));
+    connect(contextMenu, &MaOverviewContextMenu::si_graphTypeSelected, graphOverview, &MaGraphOverview::sl_graphTypeChanged);
+    connect(contextMenu, &MaOverviewContextMenu::si_colorSelected, graphOverview, &MaGraphOverview::sl_graphColorChanged);
+    connect(contextMenu, &MaOverviewContextMenu::si_graphOrientationSelected, graphOverview, &MaGraphOverview::sl_graphOrientationChanged);
+    connect(contextMenu, &MaOverviewContextMenu::si_calculationMethodSelected, graphOverview, &MaGraphOverview::sl_calculationMethodChanged);
 
     updateFixedHeightGeometry();
 
@@ -87,20 +87,9 @@ void MSAEditorOverviewArea::contextMenuEvent(QContextMenuEvent *event) {
     contextMenu->exec(event->globalPos());
 }
 
-void MSAEditorOverviewArea::cancelRendering() {
-    graphOverview->cancelRendering();
-    MaEditorOverviewArea::cancelRendering();
-}
-
 void MSAEditorOverviewArea::setVisible(bool isVisible) {
     MaEditorOverviewArea::setVisible(isVisible);
     updateFixedHeightGeometry();
-    if (isVisible) {
-        graphOverview->sl_unblockRendering(true);
-    } else {
-        graphOverview->sl_blockRendering();
-        cancelRendering();
-    }
 }
 
 }  // namespace U2

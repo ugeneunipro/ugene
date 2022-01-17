@@ -1971,6 +1971,23 @@ GUI_TEST_CLASS_DEFINITION(test_7509) {
     GTUtilsMdi::closeActiveWindow(os);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7517) {
+    // Check that MCA editor does not crash when closed in "replace-character" mode.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsLog::checkMessageWithTextCount(os, "Registering new task: Render overview", 1, "check1");
+
+    auto showOverviewButton = GTUtilsMsaEditor::getShowOverviewButton(os);
+    GTWidget::click(os, showOverviewButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsLog::checkMessageWithTextCount(os, "Registering new task: Render overview", 1, "check2");
+
+    GTWidget::click(os, showOverviewButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsLog::checkMessageWithTextCount(os, "Registering new task: Render overview", 1, "check3");
+}
+
 }  // namespace GUITest_regression_scenarios
 
 }  // namespace U2
