@@ -95,7 +95,11 @@ public:
 
     const MaGraphOverviewState &getState() const;
 
+<<<<<<< HEAD
     /** Restarts graph computation if the widget is visible and 'state' != 'renderedState'. */
+=======
+    /** Restarts graph computation if the widget is visible and 'currentState' != 'currentRenderedState'. */
+>>>>>>> UGENE-7517. Msa overview is rendered twice on opening (#711)
     void recomputeGraphIfNeeded();
 
 signals:
