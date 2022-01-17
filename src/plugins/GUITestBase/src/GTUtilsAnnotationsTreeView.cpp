@@ -413,10 +413,20 @@ QPoint GTUtilsAnnotationsTreeView::getItemCenter(HI::GUITestOpStatus &os, const 
 
 #define GT_METHOD_NAME "createQualifier"
 void GTUtilsAnnotationsTreeView::createQualifier(HI::GUITestOpStatus &os, const QString &qualifierName, const QString &qualifierValue, const QString &annotationName) {
-    selectItems(os, {annotationName});
+    QList<QTreeWidgetItem *> annotations = findItems(os, {annotationName});
+    CHECK_SET_ERR(annotations.size() == 1,
+                  "createQualifier can be run only for a 1 annotation today. Found: " +
+                      QString::number(annotations.size()) + " with name: " + annotationName);
+    createQualifier(os, qualifierName, qualifierValue, annotations[0]);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "createQualifier"
+void GTUtilsAnnotationsTreeView::createQualifier(HI::GUITestOpStatus &os, const QString &qualifierName, const QString &qualifierValue, QTreeWidgetItem *annotation) {
+    selectItems(os, {annotation});
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "add_qualifier_action"}));
     GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, qualifierName, qualifierValue));
-    GTMouseDriver::moveTo(getItemCenter(os, annotationName));
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, annotation));
     GTMouseDriver::click(Qt::RightButton);
 }
 #undef GT_METHOD_NAME

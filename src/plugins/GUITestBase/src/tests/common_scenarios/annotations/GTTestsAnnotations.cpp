@@ -34,6 +34,7 @@
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsLog.h"
+#include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
@@ -84,7 +85,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
 
-    // Expected state: there is three new annotations on sequence created by threee different ways
+    // Expected state: there is three new annotations on sequence created by three different ways
     GTUtilsAnnotationsTreeView::findItem(os, "ann1");
     GTUtilsAnnotationsTreeView::findItem(os, "ann2");
     GTUtilsAnnotationsTreeView::findItem(os, "ann3");
@@ -124,7 +125,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
 
-    // Expected state: there is three new annotations on sequence created by threee different ways
+    // Expected state: there is three new annotations on sequence created by three different ways
     GTUtilsAnnotationsTreeView::findItem(os, "ann1");
     GTUtilsAnnotationsTreeView::findItem(os, "ann2");
     GTUtilsAnnotationsTreeView::findItem(os, "ann3");
@@ -164,7 +165,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
 
-    // Expected state: there is three new annotations on sequence created by threee different ways
+    // Expected state: there is three new annotations on sequence created by three different ways
     GTUtilsAnnotationsTreeView::findItem(os, "ann1");
     GTUtilsAnnotationsTreeView::findItem(os, "ann2");
     GTUtilsAnnotationsTreeView::findItem(os, "ann3");
@@ -295,7 +296,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
 
-    // Expected state: there is three new annotations on sequence created by threee different ways
+    // Expected state: there is three new annotations on sequence created by three different ways
     GTUtilsAnnotationsTreeView::findItem(os, "ann1");
     GTUtilsAnnotationsTreeView::findItem(os, "ann2");
     GTUtilsAnnotationsTreeView::findItem(os, "ann3");
@@ -434,7 +435,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann2", "complement(1.. 20)"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
-    // Expected state: there is three new annotations on sequence created by threee different ways
+    // Expected state: there is three new annotations on sequence created by three different ways
     GTUtilsAnnotationsTreeView::findItem(os, "ann1");
     GTUtilsAnnotationsTreeView::findItem(os, "ann2");
     GTUtilsAnnotationsTreeView::findItem(os, "ann3");
@@ -571,7 +572,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann2", "complement(1.. 20)"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
-    // Expected state: there is three new annotations on sequence created by threee different ways
+    // Expected state: there is three new annotations on sequence created by three different ways
     GTUtilsAnnotationsTreeView::findItem(os, "ann1");
     GTUtilsAnnotationsTreeView::findItem(os, "ann2");
     GTUtilsAnnotationsTreeView::findItem(os, "ann3");
@@ -731,7 +732,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     //    3. Try to export it to GTF format
     //    Expected state: info message - "GTF format is not strict - some annotations do not have "gene_id" and/or "transcript_id" qualifiers"
 
-    GTLogTracer l("GTF format is not strict - some annotations do not have \"gene_id\" and/or \"transcript_id\" qualifiers");
+    GTLogTracer l("GTF format is not strict - some annotations do not have 'gene_id' and/or 'transcript_id' qualifiers");
 
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -765,7 +766,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     //    3. Try to export it to GTF format
     //    Expected state: info message - "GTF format is not strict - some annotations do not have "gene_id" and/or "transcript_id" qualifiers"
 
-    GTLogTracer l("GTF format is not strict - some annotations do not have \"gene_id\" and/or \"transcript_id\" qualifiers");
+    GTLogTracer l("GTF format is not strict - some annotations do not have 'gene_id' and/or 'transcript_id' qualifiers");
 
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -796,7 +797,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
 
     //    1. Open "human_T1.fa"
     //    2. Create an annotation
-    //    4. Add 'gene_id' and 'transcript_id' quilifiers
+    //    4. Add 'gene_id' and 'transcript_id' qualifiers
     //    3. Export it to GTF format
     //    Expected state: no errors in the log
 
@@ -950,16 +951,19 @@ GUI_TEST_CLASS_DEFINITION(test_0012_3) {
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
     GTUtilsProjectTreeView::checkItem(os, "scaffold_90 features");
 
-    QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, "scaffold_90 features");
+    QModelIndex documentProjectTreeIndex = GTUtilsProjectTreeView::findIndex(os, "scaffold_90 features");
     QWidget *sequenceView = GTUtilsSequenceView::getPanOrDetView(os);
 
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
-    GTUtilsProjectTreeView::dragAndDrop(os, idx, sequenceView);
+    GTUtilsProjectTreeView::dragAndDrop(os, documentProjectTreeIndex, sequenceView);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", "exon");
-    GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "TR321", "exon");
-    GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", "5'UTR");
-    GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "TR321", "5'UTR");
+    QList<QTreeWidgetItem *> exons = GTUtilsAnnotationsTreeView::findItems(os, "exon");
+    QList<QTreeWidgetItem *> utrs = GTUtilsAnnotationsTreeView::findItems(os, "5'UTR");
+    GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", exons[0]);
+    GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "TR321", exons[0]);
+    GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", utrs[0]);
+    GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "TR321", utrs[0]);
 
     GTUtilsAnnotationsTreeView::selectItems(os, {"5'UTR", "exon"});
 
@@ -973,9 +977,11 @@ GUI_TEST_CLASS_DEFINITION(test_0012_3) {
     GTUtilsDocument::removeDocument(os, "scaffold_90.gff");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
-    GTFileDialog::openFile(os, sandBoxDir, "ann_export_test_0012_3.gtf");
+    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
+    GTUtilsProject::openFile(os, sandBoxDir + "ann_export_test_0012_3.gtf");
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "NC_004718 features"), "Object not found");
     GTUtilsProjectTreeView::checkNoItem(os, "scaffold_90 features");
 }

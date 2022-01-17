@@ -74,6 +74,7 @@ public:
     static QString getAnnotationType(HI::GUITestOpStatus &os, const QString &annotationName);
 
     static void createQualifier(HI::GUITestOpStatus &os, const QString &qualifierName, const QString &qualifierValue, const QString &annotationName);
+    static void createQualifier(HI::GUITestOpStatus &os, const QString &qualifierName, const QString &qualifierValue, QTreeWidgetItem* annotation);
 
     static void selectItems(HI::GUITestOpStatus &os, const QStringList &items);
     static void selectItems(HI::GUITestOpStatus &os, const QList<QTreeWidgetItem *> &items);
