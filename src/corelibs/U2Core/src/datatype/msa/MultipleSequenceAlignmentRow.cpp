@@ -456,9 +456,7 @@ void MultipleSequenceAlignmentRowData::splitBytesToCharsAndGaps(const QByteArray
 }
 
 void MultipleSequenceAlignmentRowData::addOffsetToGapModel(QVector<U2MsaGap> &gapModel, int offset) {
-    if (offset == 0) {
-        return;
-    }
+    CHECK(offset != 0, );
 
     if (!gapModel.isEmpty()) {
         U2MsaGap &firstGap = gapModel[0];
