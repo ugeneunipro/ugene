@@ -287,10 +287,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     //    5. Open the exported file.
     //    Expected state: there are the same sequences in the file as in the library.
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    const QStringList names = QStringList() << "primer1"
-                                            << "primer2"
-                                            << "primer3"
-                                            << "primer4";
+    const QStringList names = {"primer1", "primer2", "primer3", "primer4"};
     GTUtilsProject::openFileExpectSequences(os, sandBoxDir + "pcrlib/test_0006/", "primers.fa", names);
 
     const QString firstSeq = GTUtilsSequenceView::getSequenceAsString(os, 0);
@@ -343,8 +340,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     //    5. Open the exported file.
     //    Expected state: there are two sequences (primer1: AAAA, primer3: GGGG) with annotations, that contains qualifiers with primer's parameters.
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    const QStringList names = QStringList() << "primer1"
-                                            << "primer3";
+    const QStringList names = {"primer1", "primer3"};
     GTUtilsProject::openFileExpectSequences(os, sandBoxDir + "pcrlib/test_0007/", "primers.gb", names);
 
     const QString firstSeq = GTUtilsSequenceView::getSequenceAsString(os, 0);
@@ -356,7 +352,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     const QList<QTreeWidgetItem *> items = GTUtilsAnnotationsTreeView::findItems(os, "primer_bind");
     CHECK_SET_ERR(items.size() == 2, QString("Unexpected annotations count: epxect %1, got %2").arg(2).arg(items.size()));
 
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "primer_bind");
+    GTUtilsAnnotationsTreeView::selectItems(os, {"primer_bind"});
     const QString sequenceQualifier = GTUtilsAnnotationsTreeView::getQualifierValue(os, "sequence", "primer_bind");
     const QString gcQualifier = GTUtilsAnnotationsTreeView::getQualifierValue(os, "gc%", "primer_bind");
     const QString tmQualifier = GTUtilsAnnotationsTreeView::getQualifierValue(os, "tm", "primer_bind");
@@ -413,14 +409,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     QString secondSeq = GTUtilsSequenceView::getSequenceAsString(os);
     CHECK_SET_ERR(secondSeq == "CCCC", QString("Incorrect sequence data: expect '%1', got '%2'").arg("CCCC", secondSeq));
 
-    QStringList itemPaths = QStringList() << "/pcrlib/test_0008/primer1"
-                                          << "/pcrlib/test_0008/primer2"
-                                          << "/pcrlib/test_0008/primer3"
-                                          << "/pcrlib/test_0008/primer4"
-                                          << "/pcrlib/test_0008/primer1 features"
-                                          << "/pcrlib/test_0008/primer2 features"
-                                          << "/pcrlib/test_0008/primer3 features"
-                                          << "/pcrlib/test_0008/primer4 features";
+    QStringList itemPaths = {"/pcrlib/test_0008/primer1", "/pcrlib/test_0008/primer2", "/pcrlib/test_0008/primer3", "/pcrlib/test_0008/primer4", "/pcrlib/test_0008/primer1 features", "/pcrlib/test_0008/primer2 features", "/pcrlib/test_0008/primer3 features", "/pcrlib/test_0008/primer4 features"};
     GTUtilsSharedDatabaseDocument::checkThereAreNoItemsExceptListed(os, databaseConnection, "/pcrlib/test_0008/", itemPaths);
 }
 
@@ -538,10 +527,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
         void run(HI::GUITestOpStatus &os) {
             ImportPrimersDialogFiller::setImportTarget(os, ImportPrimersDialogFiller::SharedDb);
             ImportPrimersDialogFiller::connectDatabase(os, "ugene_gui_test");
-            ImportPrimersDialogFiller::addObjects(os, "ugene_gui_test", QStringList() << "primerToImport1"
-                                                                                      << "primerToImport2"
-                                                                                      << "primerToImport3"
-                                                                                      << "primerToImport4");
+            ImportPrimersDialogFiller::addObjects(os, "ugene_gui_test", {"primerToImport1", "primerToImport2", "primerToImport3", "primerToImport4"});
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
@@ -586,7 +572,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
         void run(HI::GUITestOpStatus &os) {
             ImportPrimersDialogFiller::setImportTarget(os, ImportPrimersDialogFiller::SharedDb);
             ImportPrimersDialogFiller::connectDatabase(os, "ugene_gui_test");
-            ImportPrimersDialogFiller::addObjects(os, "ugene_gui_test", QStringList() << "test_0012");
+            ImportPrimersDialogFiller::addObjects(os, "ugene_gui_test", {"test_0012"});
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };

@@ -65,10 +65,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     Runnable *swDialog = new SmithWatermanDialogFiller(os, SmithWatermanDialogFiller::CLASSIC, SmithWatermanSettings::MULTIPLE_ALIGNMENT, testDir + "_common_data/scenarios/sandbox/", patternSequence);
     GTUtilsDialog::waitForDialog(os, swDialog);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Analyze"
-                                                << "Find pattern [Smith-Waterman]...",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find pattern [Smith-Waterman]..."}, GTGlobals::UseMouse);
 
     // 4. Check names of alignment files and names of found subsequences
     const QString seqNameMismatchErrorMessage = "sequences name list mismatch detected in file ";
@@ -125,10 +122,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     Runnable *swDialog = new SmithWatermanDialogFiller(os, SmithWatermanDialogFiller::CLASSIC, SmithWatermanSettings::ANNOTATIONS, testDir + "_common_data/scenarios/sandbox/", patternSequence);
     GTUtilsDialog::waitForDialog(os, swDialog);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Analyze"
-                                                << "Find pattern [Smith-Waterman]...",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find pattern [Smith-Waterman]..."}, GTGlobals::UseMouse);
 
     // 4. Close sequence view, then reopen it
     GTUtilsMdi::click(os, GTGlobals::Close);

@@ -55,9 +55,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "output.ugenedb"));
     CHECK_OP(os, );
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "NGS data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     CHECK_OP(os, );
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -83,9 +81,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     CHECK_OP(os, );
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "GUITest_dna_assembly_conversions/test_0002.ugenedb"));
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "NGS data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     CHECK_OP(os, );
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -113,9 +109,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     CHECK_OP(os, );
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     CHECK_OP(os, );
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "NGS data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     CHECK_OP(os, );
     GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
     //     3. Click start:
@@ -137,9 +131,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     CHECK_OP(os, );
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "NGS data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     CHECK_OP(os, );
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "resule.ugenedb"));
     // UGENE can hang up here

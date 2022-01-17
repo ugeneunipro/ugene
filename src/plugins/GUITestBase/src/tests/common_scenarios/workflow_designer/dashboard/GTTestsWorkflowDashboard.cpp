@@ -231,8 +231,7 @@ private:
 
 void setWorkflowOutputDir(GUITestOpStatus &os, const QString &path) {
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new SetWorkflowOutputDirScenario(path)));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...");
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
 }
 
 QString getQuotedString(const QString &string) {

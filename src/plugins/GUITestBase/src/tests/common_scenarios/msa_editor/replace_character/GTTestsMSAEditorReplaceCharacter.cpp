@@ -105,10 +105,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     // Expected result : the menu contains an item "Actions > Edit > Replace character".The item is enabled.A hotkey Shift + R is shown nearby.
     // 4. Select the item.
     // Expected result : the character is selected in the replacement mode.
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Edit"
-                                                << "Replace selected character",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Replace selected character"}, GTGlobals::UseMouse);
 
     // 5. Press a key on the keyboard with another character of the same alphabet(e.g C key).
     // Expected result : the original character of the alignment was replaced with the new one(e.g 'A' was replaced with 'C').Selection is in normal mode.

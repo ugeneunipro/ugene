@@ -204,9 +204,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Appearance"
-                                                << "Show offsets");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Appearance", "Show offsets"});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     bool offsetsVisible = GTUtilsMSAEditorSequenceArea::offsetsVisible(os);
@@ -226,9 +224,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_3) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Appearance"
-                                                << "Show offsets");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Appearance", "Show offsets"});
 
     bool offsetsVisible = GTUtilsMSAEditorSequenceArea::offsetsVisible(os);
     CHECK_SET_ERR(!offsetsVisible, "Offsets are visible");
@@ -242,9 +238,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_3) {
     GTMouseDriver::moveTo(p);
     GTMouseDriver::doubleClick();
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Appearance"
-                                                << "Show offsets");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Appearance", "Show offsets"});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     offsetsVisible = GTUtilsMSAEditorSequenceArea::offsetsVisible(os);
@@ -845,12 +839,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_2) {
     CHECK_SET_ERR(clipboardText == expectedMSA, "Clipboard string and expected MSA string are different. Clipboard text: " + clipboardText);
 
     QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    QStringList expectedNameList = QStringList() << "L(translated)"
-                                                 << "S(translated)"
-                                                 << "D(translated)"
-                                                 << "S(translated)"
-                                                 << "P(translated)"
-                                                 << "K(translated)";
+    QStringList expectedNameList = {"L(translated)", "S(translated)", "D(translated)", "S(translated)", "P(translated)", "K(translated)"};
     CHECK_SET_ERR(nameList == expectedNameList, "Name lists are different. Expected: " + expectedNameList.join(",") + ", actual: " + nameList.join(","));
 }
 
@@ -947,9 +936,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     // 2. Select first sequence and do context menu {Edit->Replace selected rows with reverce complement}
     // CHANGES: using main menu
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(-1, 0));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Edit"
-                                                << "Replace selected rows with reverse-complement");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Replace selected rows with reverse-complement"});
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //  Expected state: sequence changed from TTG -> CAA
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(0, 0));
@@ -965,9 +952,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
 
     // 3. Do step 2 again
     // CHANGES: using main menu
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Edit"
-                                                << "Replace selected rows with reverse-complement");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Replace selected rows with reverse-complement"});
 
     // Expected state: sequence changed from CAA -> TTG
     // GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(-1, 0));
@@ -1001,9 +986,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     // CAA---
     // --TGA-
     // ---ATC
-    const QStringList expectedData = QStringList() << "CAA---"
-                                                   << "--TGA-"
-                                                   << "---ATC";
+    const QStringList expectedData = {"CAA---", "--TGA-", "---ATC"};
     const QStringList actualData = GTUtilsMsaEditor::getWholeData(os);
     CHECK_SET_ERR(actualData == expectedData, "Clipboard data and expected MSA data differs");
 }
@@ -1082,9 +1065,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
     GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
 
     // CHANGES: using main menu
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Align"
-                                                << "Align with Kalign...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Align", "Align with Kalign..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: UGENE not crash
@@ -1126,9 +1107,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_1) {
     GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
 
     // CHANGES: using main menu
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Align"
-                                                << "Align with Kalign...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Align", "Align with Kalign..."});
 
     // 2. after kalign finishes and msa opens insert gaps and click in alignment
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1186,9 +1165,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
 
     GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/", "COI.aln"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Multiple sequence alignment"
-                                                << "Align with Kalign...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Multiple sequence alignment", "Align with Kalign..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 3. aligned document opens
@@ -1238,9 +1215,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
 
     GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/", "COI.aln"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Multiple sequence alignment"
-                                                << "Align with Kalign...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Multiple sequence alignment", "Align with Kalign..."});
     GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
@@ -1388,9 +1363,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017_1) {
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "murine.gb", "NC_001363"));
 
     // CHANGES: using main menu instead of popup
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "Sequence from current project...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "Sequence from current project..."});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0017_2) {
@@ -1413,9 +1386,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017_2) {
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "murine.gb", "NC_001363"));
 
     // CHANGES: using main menu instead of popup
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "Sequence from current project...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "Sequence from current project..."});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0018) {
@@ -1495,8 +1466,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     // 2. Select Edit -> remove columns of gaps -> remove columns with number of gaps 1.
     // 3. Click OK
     GTUtilsDialog::waitForDialog(os, new DeleteGapsDialogFiller(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_EDIT"
-                                                                        << "remove_columns_of_gaps"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "remove_columns_of_gaps"}));
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsDialog::checkNoActiveWaiters(os);
@@ -1530,8 +1500,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020_1) {
     QString initial = GTClipboard::text(os);
     // 4. Click OK
     GTUtilsDialog::waitForDialog(os, new DeleteGapsDialogFiller(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_EDIT"
-                                                                        << "remove_columns_of_gaps"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "remove_columns_of_gaps"}));
     GTMouseDriver::click(Qt::RightButton);
 
     // Expected state: UGENE not crashes, deletion is not performed
@@ -1921,8 +1890,7 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 42, 44));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select"
-                                                                        << "Sequence region"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Select", "Sequence region"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << "Copy sequence"));
@@ -1957,9 +1925,7 @@ GUI_TEST_CLASS_DEFINITION(test_0029_1) {  // DIFFERENCE:gaps are trimmed, FASTQ 
     GTMouseDriver::doubleClick();
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select"
-                                                                        << "Sequence region",
-                                                      GTGlobals::UseKey));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Select", "Sequence region"}, GTGlobals::UseKey));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << "Copy sequence", GTGlobals::UseKey));
@@ -2540,8 +2506,7 @@ void test_0039_function(HI::GUITestOpStatus &os, int comboNum, const QString &ex
     //     File format: CLUSTALW(use other formats too, check extension change)
     //     Amino translation: Standard genetic code
     //     Add document to project: checked
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__export_import_menu_action"
-                                                                        << "action_project__export_to_amino_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"action_project__export_import_menu_action", "action_project__export_to_amino_action"}));
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, comboNum, UGUITest::testDir + "_common_data/scenarios/sandbox/COI_transl.aln"));
     GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2594,8 +2559,7 @@ GUI_TEST_CLASS_DEFINITION(test_0039_7) {
 GUI_TEST_CLASS_DEFINITION(test_0040) {  // UGENE crashes when opening several files
     QFile human_T1(dataDir + "/samples/FASTA/human_T1.fa");
     human_T1.copy(dataDir + "/samples/CLUSTALW/human_T1.fa");
-    GTFileDialog::openFileList(os, dataDir + "samples/CLUSTALW/", QStringList() << "COI.aln"
-                                                                                << "human_T1.fa");
+    GTFileDialog::openFileList(os, dataDir + "samples/CLUSTALW/", {"COI.aln", "human_T1.fa"});
 
     GTUtilsProjectTreeView::findIndex(os, "human_T1.fa");  // checks inside
     GTUtilsProjectTreeView::findIndex(os, "COI.aln");
@@ -2747,8 +2711,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045_1) {
             GTUtilsDialog::waitForDialog(os,
                                          new SelectSubalignmentFiller(os,
                                                                       RegionMsa(U2Region(1, 593),
-                                                                                QStringList() << "Montana_montana"
-                                                                                              << "Conocephalus_percaudata")));
+                                                                                {"Montana_montana", "Conocephalus_percaudata"})));
             QPushButton *select = dialog->findChild<QPushButton *>("selectRegionButton");
             GTWidget::click(os, select);
 
@@ -2916,16 +2879,13 @@ GUI_TEST_CLASS_DEFINITION(test_0050) {
 
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Set this sequence as reference"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Set this sequence as reference"}));
     GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os), Qt::RightButton, QPoint(10, 10));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance"
-                                                                              << "Highlighting"
-                                                                              << "Agreements"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Appearance", "Highlighting", "Agreements"}));
     GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os), Qt::RightButton);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export"
-                                                                              << "Export highlighted"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export", "Export highlighted"}));
     GTUtilsDialog::waitForDialog(os, new ExportHighlightedDialogFiller(os, sandBoxDir + "common_msa_test_0050_1.txt"));
     GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2933,8 +2893,7 @@ GUI_TEST_CLASS_DEFINITION(test_0050) {
     CHECK_SET_ERR(GTFile::equals(os, sandBoxDir + "common_msa_test_0050_1.txt", testDir + "_common_data/clustal/COI_highlighted_1"),
                   "Transposed export is incorrect");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export"
-                                                                              << "Export highlighted"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export", "Export highlighted"}));
     GTUtilsDialog::waitForDialog(os, new ExportHighlightedDialogFiller(os, sandBoxDir + "common_msa_test_0050_2.txt", false));
     GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2976,10 +2935,7 @@ GUI_TEST_CLASS_DEFINITION(test_0052) {
             GTUtilsDialog::waitForDialog(os,
                                          new SelectSubalignmentFiller(os,
                                                                       RegionMsa(U2Region(1, 593),
-                                                                                QStringList() << "Sequence__1"
-                                                                                              << "Sequence__2"
-                                                                                              << "Sequnce__3"
-                                                                                              << "Sequence__4")));
+                                                                                {"Sequence__1", "Sequence__2", "Sequnce__3", "Sequence__4"})));
 
             QPushButton *select = dialog->findChild<QPushButton *>("selectRegionButton");
             GTWidget::click(os, select);

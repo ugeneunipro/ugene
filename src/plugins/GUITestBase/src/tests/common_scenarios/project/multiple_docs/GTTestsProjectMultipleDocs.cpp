@@ -52,8 +52,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     // 	{Project file} proj2
     // 4. Click Save button
     GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj2", testDir + "_common_data/scenarios/sandbox/proj2"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Save project as...");
+    GTMenu::clickMainMenuItem(os, {"File", "Save project as..."});
 
     // 5. Use menu {File->Open}. Open file samples/PDB/1CF7.PDB
     GTFileDialog::openFile(os, dataDir + "samples/PDB/", "1CF7.PDB");
@@ -65,8 +64,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsDocument::checkDocument(os, "1.gb");
 
     // 6. Close project
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Close project");
+    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
 
     // 7. Open project from the location used in item 3
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/", "proj2.uprj");

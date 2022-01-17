@@ -78,9 +78,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_single_input) {
     const auto bamScenario =
         new ExtractConsensusWizardScenario(QStringList() << dataDir + "samples/Assembly/chrM.sorted.bam");
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", bamScenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "NGS data analysis"
-                                                << "Extract consensus from assemblies...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
 
     //  4. Wait for workflow finished
     GTUtilsTaskTreeView::waitTaskFinished(os, 120000);
@@ -147,9 +145,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_multiple_input) {
                                                                        << dataDir + "samples/Assembly/chrM.sorted.bam");
 
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", multiInputScenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "NGS data analysis"
-                                                << "Extract consensus from assemblies...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
 
     //  5. Wait for workflow finished
     GTUtilsTaskTreeView::waitTaskFinished(os, 180000);

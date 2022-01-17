@@ -221,10 +221,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     // 2. Select "Remove subsequence" in the context menu.
     // 3. Insert region "2..2" into the "Region to remove" field.
     GTUtilsDialog::waitForDialog(os, new RemovePartFromSequenceDialogFiller(os, "2..2"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Edit"
-                                                << "Remove subsequence...",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Remove subsequence..."}, GTGlobals::UseMouse);
 
     // Expected result: the sequence is started from "AAT", the sequence length is 29, DUMMY_1 annotation is [2..5].
     QString sequenceBegin = GTUtilsSequenceView::getBeginOfSequenceAsString(os, 3);
@@ -297,8 +294,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTFileDialog::openFile(os, testDir + "_common_data/edit_sequence/", "test.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_COPY"
-                                                                        << "action_copy_annotation_sequence"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_COPY", "action_copy_annotation_sequence"}));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "DUMMY_1"));
     GTMouseDriver::click(Qt::RightButton);
 
