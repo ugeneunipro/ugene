@@ -120,6 +120,9 @@ protected:
     void drawOverview(QPainter &p) override;
     void moveVisibleRange(QPoint pos) override;
 
+    /** Updates current highlighting schemes in state based on the selected method & MSA Editor state. */
+    void updateHighlightingSchemes();
+
     QPixmap cachedConsensus;
 
     /** Current pending state. May be not rendered yet. */

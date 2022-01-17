@@ -405,15 +405,14 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     // Select {Calculation method -> Strict}.
     // Expected state: graph displays the percent of the most frequent nucleotide in column.
     // Current graph corresponds to column over the consensus in sequence area.
-    QColor c = GTWidget::getColor(os, overviewGraph, QPoint(5, overviewGraph->rect().height() - 5));
-    CHECK_SET_ERR(c.name() == "#ededed", "simple overview has wrong color. Expected: #ededed, Found: " + c.name());
+    QColor color = GTWidget::getColor(os, overviewGraph, QPoint(5, overviewGraph->rect().height() - 5));
+    CHECK_SET_ERR(color.name() == "#ededed", "simple overview has wrong color. Expected: #ededed, Found: " + color.name());
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Calculation method", "Highlighting"}, GTGlobals::UseKey));
     GTMenu::showContextMenu(os, overviewGraph);
 
-    overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
-    c = GTWidget::getColor(os, overviewGraph, QPoint(5, overviewGraph->rect().height() - 5));
-    CHECK_SET_ERR(c.name() == "#d1d1d2", "simple overview has wrong color. Expected: #d1d1d2, Found: " + c.name());
+    color = GTWidget::getColor(os, overviewGraph, QPoint(5, overviewGraph->rect().height() - 5));
+    CHECK_SET_ERR(color.name() == "#d1d1d2", "simple overview has wrong color. Expected: #d1d1d2, Found: " + color.name());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0017) {
