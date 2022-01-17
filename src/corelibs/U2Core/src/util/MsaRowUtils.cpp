@@ -449,7 +449,8 @@ QByteArray MsaRowUtils::getGappedSubsequence(const U2Region &region, const QByte
     // Iterate interleaved gap & core sequence regions.
     while (gapIndex <= gaps.length() && pos < regionEnd && corePos < coreLength) {
         const U2MsaGap *gap = gapIndex == gaps.length() ? nullptr : &gaps[gapIndex];
-        SAFE_POINT(gapIndex == 0  || gap == nullptr || gap->startPos > gaps[gapIndex - 1].startPos + gaps[gapIndex - 1].length, "Invalid gap model", {});
+        bool isValidGapModel = gapIndex == 0 || gap == nullptr || gap->startPos > gaps[gapIndex - 1].endPos();
+        SAFE_POINT(isValidGapModel, "Invalid gap model", {});
         if (gap == nullptr || gap->startPos > pos) {
             // Processing core sequence part. At this point no gaps left or the next gap starts after 'pos'.
             int corePartLength = gap == nullptr ? coreLength - corePos : gap->startPos - pos;
