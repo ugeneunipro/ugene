@@ -172,8 +172,8 @@ QList<Task *> BlastAndSwReadTask::onSubTaskFinished(Task *subTask) {
         int rowCount = msaObject->getNumRows();
         CHECK_EXT(2 == rowCount, setError(L10N::internalError("Wrong rows count: " + QString::number(rowCount))), result);
 
-        referenceGaps = msaObject->getMsaRow(0)->getGapModel();
-        readGaps = msaObject->getMsaRow(1)->getGapModel();
+        referenceGaps = msaObject->getMsaRow(0)->getGaps();
+        readGaps = msaObject->getMsaRow(1)->getGaps();
 
         if (offset > 0) {
             shiftGaps(referenceGaps);
@@ -220,11 +220,11 @@ const SharedDbiDataHandler &BlastAndSwReadTask::getRead() const {
     return read;
 }
 
-const QList<U2MsaGap> &BlastAndSwReadTask::getReferenceGaps() const {
+const QVector<U2MsaGap> &BlastAndSwReadTask::getReferenceGaps() const {
     return referenceGaps;
 }
 
-const QList<U2MsaGap> &BlastAndSwReadTask::getReadGaps() const {
+const QVector<U2MsaGap> &BlastAndSwReadTask::getReadGaps() const {
     return readGaps;
 }
 
@@ -357,7 +357,7 @@ void BlastAndSwReadTask::createAlignment(const U2Region &refRegion) {
     if (readShift != 0) {
         alignment->addRow(readObject->getSequenceName(),
                           complement ? DNASequenceUtils::reverseComplement(readData) : readData,
-                          QList<U2MsaGap>() << U2MsaGap(0, readShift),
+                          QVector<U2MsaGap>() << U2MsaGap(0, readShift),
                           stateInfo);
     } else {
         alignment->addRow(readObject->getSequenceName(), complement ? DNASequenceUtils::reverseComplement(readData) : readData);
@@ -371,9 +371,9 @@ void BlastAndSwReadTask::createAlignment(const U2Region &refRegion) {
     offset = refRegion.startPos;
 }
 
-void BlastAndSwReadTask::shiftGaps(QList<U2MsaGap> &gaps) const {
+void BlastAndSwReadTask::shiftGaps(QVector<U2MsaGap> &gaps) const {
     for (int i = 0; i < gaps.size(); i++) {
-        gaps[i].offset += offset;
+        gaps[i].startPos += offset;
     }
 }
 

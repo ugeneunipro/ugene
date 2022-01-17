@@ -50,8 +50,8 @@ public:
     static DNAChromatogram complement(const DNAChromatogram &chromatogram);
     static DNAChromatogram reverseComplement(const DNAChromatogram &chromatogram);
     static U2Region sequenceRegion2TraceRegion(const DNAChromatogram &chromatogram, const U2Region &sequenceRegion);
-    static void insertBase(DNAChromatogram &chromatogram, int posUngapped, const QList<U2MsaGap> &gapModel, int posWithGaps);
-    static DNAChromatogram getGappedChromatogram(const DNAChromatogram &chrom, const QList<U2MsaGap> &gapModel);
+    static void insertBase(DNAChromatogram &chromatogram, int posUngapped, const QVector<U2MsaGap> &gapModel, int posWithGaps);
+    static DNAChromatogram getGappedChromatogram(const DNAChromatogram &chrom, const QVector<U2MsaGap> &gapModel);
 };
 
 }  // namespace U2

@@ -366,33 +366,33 @@ int MaEditorSequenceArea::shiftRegion(int shift) {
     bool isCtrlPressed = QApplication::keyboardModifiers().testFlag(Qt::ControlModifier);
     if (isCtrlPressed) {
         if (shift > 0) {
-            QList<U2MsaGap> gapModelToRemove = findRemovableGapColumns(shift);
+            QVector<U2MsaGap> gapModelToRemove = findRemovableGapColumns(shift);
             if (!gapModelToRemove.isEmpty()) {
                 foreach (U2MsaGap gap, gapModelToRemove) {
                     QRect currentSelectionRect = selection.toRect();
                     x = currentSelectionRect.x();
                     U2OpStatus2Log os;
                     const int length = maObj->getLength();
-                    if (length != gap.offset) {
-                        maObj->deleteGapByRowIndexList(os, selectedMaRowIndexes, gap.offset, gap.gap);
+                    if (length != gap.startPos) {
+                        maObj->deleteGapByRowIndexList(os, selectedMaRowIndexes, gap.startPos, gap.length);
                     }
                     CHECK_OP(os, resultShift);
-                    resultShift += maObj->shiftRegion(x, y, selectionWidth, height, gap.gap);
-                    QRect newSelectionRect(gap.gap + x, currentSelectionRect.y(), selectionWidth, height);
+                    resultShift += maObj->shiftRegion(x, y, selectionWidth, height, gap.length);
+                    QRect newSelectionRect(gap.length + x, currentSelectionRect.y(), selectionWidth, height);
                     setSelectionRect(newSelectionRect);
                 }
             }
         } else if (shift < 0 && !ctrlModeGapModel.isEmpty()) {
-            QList<U2MsaGap> gapModelToRestore = findRestorableGapColumns(shift);
+            QVector<U2MsaGap> gapModelToRestore = findRestorableGapColumns(shift);
             if (!gapModelToRestore.isEmpty()) {
                 resultShift = maObj->shiftRegion(x, y, selectionWidth, height, shift);
                 foreach (U2MsaGap gap, gapModelToRestore) {
                     if (gap.endPos() < lengthOnMousePress) {
-                        maObj->insertGapByRowIndexList(selectedMaRowIndexes, gap.offset, gap.gap);
-                    } else if (gap.offset >= lengthOnMousePress) {
+                        maObj->insertGapByRowIndexList(selectedMaRowIndexes, gap.startPos, gap.length);
+                    } else if (gap.startPos >= lengthOnMousePress) {
                         U2OpStatus2Log os;
                         U2Region allRows(0, maObj->getNumRows());
-                        maObj->deleteGap(os, allRows, maObj->getLength() - gap.gap, gap.gap);
+                        maObj->deleteGap(os, allRows, maObj->getLength() - gap.length, gap.length);
                         CHECK_OP(os, resultShift);
                     }
                 }
@@ -405,27 +405,27 @@ int MaEditorSequenceArea::shiftRegion(int shift) {
     return resultShift;
 }
 
-QList<U2MsaGap> MaEditorSequenceArea::findRemovableGapColumns(int &shift) {
-    CHECK(shift > 0, QList<U2MsaGap>());
+QVector<U2MsaGap> MaEditorSequenceArea::findRemovableGapColumns(int &shift) {
+    CHECK(shift > 0, QVector<U2MsaGap>());
 
     int numOfRemovableColumns = 0;
-    QList<U2MsaGap> commonGapColumns = findCommonGapColumns(numOfRemovableColumns);
+    QVector<U2MsaGap> commonGapColumns = findCommonGapColumns(numOfRemovableColumns);
     if (numOfRemovableColumns < shift) {
         int count = shift - numOfRemovableColumns;
         commonGapColumns << addTrailingGapColumns(count);
     }
 
-    QList<U2MsaGap> gapColumnsToRemove;
+    QVector<U2MsaGap> gapColumnsToRemove;
     int count = shift;
     foreach (U2MsaGap gap, commonGapColumns) {
-        if (count >= gap.gap) {
+        if (count >= gap.length) {
             gapColumnsToRemove.append(gap);
-            count -= gap.gap;
+            count -= gap.length;
             if (count == 0) {
                 break;
             }
         } else {
-            gapColumnsToRemove.append(U2MsaGap(gap.offset, count));
+            gapColumnsToRemove.append(U2MsaGap(gap.startPos, count));
             break;
         }
     }
@@ -438,23 +438,23 @@ QList<U2MsaGap> MaEditorSequenceArea::findRemovableGapColumns(int &shift) {
     return gapColumnsToRemove;
 }
 
-QList<U2MsaGap> MaEditorSequenceArea::findCommonGapColumns(int &numOfColumns) {
+QVector<U2MsaGap> MaEditorSequenceArea::findCommonGapColumns(int &numOfColumns) {
     numOfColumns = 0;
     QList<int> selectedMaRowIndexes = editor->getSelectionController()->getSelectedMaRowIndexes();
     CHECK(!selectedMaRowIndexes.isEmpty(), {});
 
     U2Region columnRegion = editor->getSelection().getColumnRegion();
-    QList<QList<U2MsaGap>> listGapModel = editor->getMaObject()->getGapModel();
+    QList<QVector<U2MsaGap>> listGapModel = editor->getMaObject()->getGapModel();
 
-    QList<U2MsaGap> gapModelToUpdate;
-    const QList<U2MsaGap> &firstRowGapList = listGapModel[selectedMaRowIndexes[0]];
+    QVector<U2MsaGap> gapModelToUpdate;
+    const QVector<U2MsaGap> &firstRowGapList = listGapModel[selectedMaRowIndexes[0]];
     for (const U2MsaGap &gap : qAsConst(firstRowGapList)) {
-        if (gap.offset + gap.gap <= columnRegion.endPos()) {
+        if (gap.startPos + gap.length <= columnRegion.endPos()) {
             continue;
         }
-        if (gap.offset < columnRegion.endPos() && gap.offset + gap.gap > columnRegion.endPos()) {
+        if (gap.startPos < columnRegion.endPos() && gap.startPos + gap.length > columnRegion.endPos()) {
             qint64 startPos = columnRegion.endPos();
-            U2MsaGap trailingGap(startPos, gap.offset + gap.gap - startPos);
+            U2MsaGap trailingGap(startPos, gap.startPos + gap.length - startPos);
             gapModelToUpdate << trailingGap;
         } else {
             gapModelToUpdate << gap;
@@ -463,16 +463,16 @@ QList<U2MsaGap> MaEditorSequenceArea::findCommonGapColumns(int &numOfColumns) {
 
     for (int i = 1; i < selectedMaRowIndexes.size(); i++) {
         int maRowIndex = selectedMaRowIndexes[i];
-        QList<U2MsaGap> currentGapModelToRemove;
+        QVector<U2MsaGap> currentGapModelToRemove;
         qint64 currentNumOfColumns = 0;
-        const QList<U2MsaGap> &rowGrapList = listGapModel[maRowIndex];
+        const QVector<U2MsaGap> &rowGrapList = listGapModel[maRowIndex];
         for (const U2MsaGap &gap : qAsConst(rowGrapList)) {
             for (const U2MsaGap &gapToRemove : qAsConst(gapModelToUpdate)) {
                 U2MsaGap intersectedGap = gap.intersect(gapToRemove);
-                if (intersectedGap.gap == 0) {
+                if (intersectedGap.length == 0) {
                     continue;
                 }
-                currentNumOfColumns += intersectedGap.gap;
+                currentNumOfColumns += intersectedGap.length;
                 currentGapModelToRemove << intersectedGap;
             }
         }
@@ -489,26 +489,26 @@ U2MsaGap MaEditorSequenceArea::addTrailingGapColumns(int count) {
     return U2MsaGap(length, count);
 }
 
-QList<U2MsaGap> MaEditorSequenceArea::findRestorableGapColumns(const int shift) {
-    CHECK(shift < 0, QList<U2MsaGap>());
-    CHECK(!ctrlModeGapModel.isEmpty(), QList<U2MsaGap>());
+QVector<U2MsaGap> MaEditorSequenceArea::findRestorableGapColumns(const int shift) {
+    CHECK(shift < 0, QVector<U2MsaGap>());
+    CHECK(!ctrlModeGapModel.isEmpty(), QVector<U2MsaGap>());
 
-    QList<U2MsaGap> gapColumnsToRestore;
+    QVector<U2MsaGap> gapColumnsToRestore;
     int absShift = qAbs(shift);
     const int size = ctrlModeGapModel.size();
     for (int i = size - 1; i >= 0; i--) {
-        if (ctrlModeGapModel[i].gap >= absShift) {
-            const int offset = ctrlModeGapModel[i].gap - absShift;
-            U2MsaGap gapToRestore(ctrlModeGapModel[i].offset + offset, absShift);
+        if (ctrlModeGapModel[i].length >= absShift) {
+            const int offset = ctrlModeGapModel[i].length - absShift;
+            U2MsaGap gapToRestore(ctrlModeGapModel[i].startPos + offset, absShift);
             gapColumnsToRestore.push_front(gapToRestore);
-            ctrlModeGapModel[i].gap -= absShift;
-            if (ctrlModeGapModel[i].gap == 0) {
+            ctrlModeGapModel[i].length -= absShift;
+            if (ctrlModeGapModel[i].length == 0) {
                 ctrlModeGapModel.removeOne(ctrlModeGapModel[i]);
             }
             break;
         } else {
             gapColumnsToRestore.push_front(ctrlModeGapModel[i]);
-            absShift -= ctrlModeGapModel[i].gap;
+            absShift -= ctrlModeGapModel[i].length;
             ctrlModeGapModel.removeOne(ctrlModeGapModel[i]);
         }
     }

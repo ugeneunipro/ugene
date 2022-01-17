@@ -119,8 +119,8 @@ public:
     static void alignSequences(QByteArray &refSequenceData,
                                QByteArray &ptrnSequence,
                                const QByteArray &pairwiseAlignment);
-    static void alignSequences(QList<U2MsaGap> &refSequenceGapModel,
-                               QList<U2MsaGap> &ptrnSequenceGapModel,
+    static void alignSequences(QVector<U2MsaGap> &refSequenceGapModel,
+                               QVector<U2MsaGap> &ptrnSequenceGapModel,
                                const QByteArray &pairwiseAlignment);
     static void changeGivenUrlIfDocumentExists(QString &givenUrl,
                                                const Project *curProject);

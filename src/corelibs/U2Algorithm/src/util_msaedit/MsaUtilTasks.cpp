@@ -150,9 +150,9 @@ void AlignInAminoFormTask::run() {
         MultipleSequenceAlignmentRow curRow = maObj->getMsa()->getMsaRow(row->getName());
         SAFE_POINT_EXT(rowIdx >= 0, setError(tr("Can not find row %1 in original alignment.").arg(row->getName())), );
 
-        QList<U2MsaGap> gapsList;
-        foreach (const U2MsaGap &gap, row->getGapModel()) {
-            gapsList << U2MsaGap(gap.offset * 3, gap.gap * 3);
+        QVector<U2MsaGap> gapsList;
+        foreach (const U2MsaGap &gap, row->getGaps()) {
+            gapsList << U2MsaGap(gap.startPos * 3, gap.length * 3);
         }
         rowsGapModel[curRow->getRowId()] = gapsList;
     }

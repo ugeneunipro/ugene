@@ -71,7 +71,7 @@ public:
     int getRowPosById(qint64 rowId) const;
     virtual char charAt(int seqNum, qint64 position) const = 0;
 
-    QList<QList<U2MsaGap>> getGapModel() const;
+    QList<QVector<U2MsaGap>> getGapModel() const;
 
     /**
      * Converts MA indexes into ids.

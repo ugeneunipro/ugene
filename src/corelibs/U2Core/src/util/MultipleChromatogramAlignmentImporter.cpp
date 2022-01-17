@@ -145,7 +145,7 @@ QList<McaRowDatabaseData> MultipleChromatogramAlignmentImporter::importRowChildO
         importRowAdditionalInfo(os, connection, mcaRowDatabaseData.chromatogram, mcaRowDatabaseData.additionalInfo);
         CHECK_OP(os, mcaRowsDatabaseData);
 
-        mcaRowDatabaseData.gapModel = row->getGapModel();
+        mcaRowDatabaseData.gapModel = row->getGaps();
         mcaRowDatabaseData.rowLength = row->getRowLengthWithoutTrailing();
 
         mcaRowsDatabaseData << mcaRowDatabaseData;

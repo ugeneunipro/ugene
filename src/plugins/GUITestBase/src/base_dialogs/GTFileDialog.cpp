@@ -29,12 +29,9 @@
 #include <utils/GTThread.h>
 
 #include <QApplication>
-#include <QComboBox>
 #include <QFileSystemModel>
 #include <QHeaderView>
-#include <QLineEdit>
 #include <QPushButton>
-#include <QTreeView>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/ProjectModel.h>
@@ -219,11 +216,7 @@ void GTFileDialogUtils::selectFile() {
         }
 
         case GTGlobals::UseMouse:
-#ifdef Q_OS_DARWIN
-            w->scrollTo(index, QAbstractItemView::ScrollHint::PositionAtCenter);
-#else
             GTWidget::scrollToIndex(os, treeWidget, index);
-#endif
             indexCenter = treeWidget->visualRect(index).center();
             indexCenter.setY(indexCenter.y() + treeWidget->header()->rect().height());
             indexCenter.setX(indexCenter.x() + 1);

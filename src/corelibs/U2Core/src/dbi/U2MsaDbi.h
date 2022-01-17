@@ -131,13 +131,13 @@ public:
      * Updates a row with the specified ID and its sequence.
      * Requires: U2DbiFeature_WriteMsa feature support
      */
-    virtual void updateRowContent(const U2DataId &msaId, qint64 rowId, const QByteArray &seqBytes, const QList<U2MsaGap> &gaps, U2OpStatus &os) = 0;
+    virtual void updateRowContent(const U2DataId &msaId, qint64 rowId, const QByteArray &seqBytes, const QVector<U2MsaGap> &gaps, U2OpStatus &os) = 0;
 
     /**
      * Removes all previous values and sets a new gap model for a row in a MSA
      * Requires: U2DbiFeature_WriteMsa feature support
      */
-    virtual void updateGapModel(const U2DataId &msaId, qint64 msaRowId, const QList<U2MsaGap> &gapModel, U2OpStatus &os) = 0;
+    virtual void updateGapModel(const U2DataId &msaId, qint64 msaRowId, const QVector<U2MsaGap> &gapModel, U2OpStatus &os) = 0;
 
     /**
      * Updates positions of the rows in the database according to the order in the list

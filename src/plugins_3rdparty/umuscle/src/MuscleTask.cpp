@@ -281,7 +281,7 @@ void MuscleTask::alignOwnRowsToAlignment(U2OpStatus &os) {
         SAFE_POINT_EXT(trimmedMsaRowIndex <= trimmedInputMsaRowCount, os.setError(L10N::internalError("Invalid trimmedMsaRowIndex")), );
         SAFE_POINT_EXT(resultUnorderedMsaRowIndex < inputMA->getNumRows(), os.setError(L10N::internalError("Invalid resultUnorderedMsaRowIndex")), );
         MultipleAlignmentRow row = resultUnorderedMa->getRow(resultUnorderedMsaRowIndex);
-        resultMA->addRow(row->getName(), row->getUngappedSequence(), row->getGapModel(), stateInfo);
+        resultMA->addRow(row->getName(), row->getUngappedSequence(), row->getGaps(), stateInfo);
         CHECK_OP(stateInfo, );
 
         // Restore original row ids.
@@ -485,10 +485,10 @@ Task::ReportResult MuscleGObjectTask::report() {
         MSAUtils::assignOriginalDataIds(muscleTask->inputMA, muscleTask->resultMA, stateInfo);
         CHECK_OP(stateInfo, ReportResult_Finished);
 
-        QMap<qint64, QList<U2MsaGap>> rowsGapModel;
+        QMap<qint64, QVector<U2MsaGap>> rowsGapModel;
         for (int i = 0, n = muscleTask->resultMA->getNumRows(); i < n; ++i) {
             qint64 rowId = muscleTask->resultMA->getMsaRow(i)->getRowDbInfo().rowId;
-            const QList<U2MsaGap> &newGapModel = muscleTask->resultMA->getMsaRow(i)->getGapModel();
+            const QVector<U2MsaGap> &newGapModel = muscleTask->resultMA->getMsaRow(i)->getGaps();
             rowsGapModel.insert(rowId, newGapModel);
         }
 

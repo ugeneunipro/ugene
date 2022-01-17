@@ -191,10 +191,10 @@ private:
     void moveBorder(const QPoint &p);
 
     int shiftRegion(int shift);
-    QList<U2MsaGap> findRemovableGapColumns(int &shift);
-    QList<U2MsaGap> findCommonGapColumns(int &numOfColumns);
+    QVector<U2MsaGap> findRemovableGapColumns(int &shift);
+    QVector<U2MsaGap> findCommonGapColumns(int &numOfColumns);
     U2MsaGap addTrailingGapColumns(int count);
-    QList<U2MsaGap> findRestorableGapColumns(const int shift);
+    QVector<U2MsaGap> findRestorableGapColumns(const int shift);
 
 signals:
     void si_selectionChanged(const QStringList &selectedRows);
@@ -331,7 +331,7 @@ protected:
     int maVersionBeforeShifting = -1;
     SelectionModificationHelper::MovableSide movableBorder;
 
-    QList<U2MsaGap> ctrlModeGapModel;
+    QVector<U2MsaGap> ctrlModeGapModel;
     qint64 lengthOnMousePress;
 
     QAction *replaceCharacterAction = nullptr;
