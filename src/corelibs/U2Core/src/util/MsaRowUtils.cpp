@@ -434,6 +434,12 @@ void MsaRowUtils::removeTrailingGapsFromModel(qint64 length, QVector<U2MsaGap> &
 
 QByteArray MsaRowUtils::getGappedSubsequence(const U2Region &region, const QByteArray &sequence, const QVector<U2MsaGap> &gaps) {
     CHECK(region.length > 0, {});
+    // Check if we have no gaps effect at all in the requested region.
+    // Return a sequence.mid() in this case: this will prevent any heap allocation for the result sequence.
+    bool canUseSubsequence = (gaps.isEmpty() || gaps[0].startPos >= region.endPos()) && (region.startPos >= 0 && region.endPos() <= sequence.length());
+    if (canUseSubsequence) {
+        return sequence.mid(region.startPos, region.length);
+    }
     CHECK(!sequence.isEmpty(), QByteArray(region.length, U2Msa::GAP_CHAR));
     const char *coreSequence = sequence.constData();
     int coreLength = sequence.length();
