@@ -43,10 +43,10 @@ public:
     // fails if the item wasn't found
     static QPoint getItemCenter(HI::GUITestOpStatus &os, const QString &itemName);
 
-    static QTreeWidgetItem *findFirstAnnotation(HI::GUITestOpStatus &os, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
-    static QTreeWidgetItem *findItem(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
-    static QTreeWidgetItem *findItem(HI::GUITestOpStatus &os, const QString &itemName, QTreeWidgetItem *parentItem, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
-    static QTreeWidgetItem *findItemWithIndex(HI::GUITestOpStatus &os, const QString &itemName, const int index);
+    static QTreeWidgetItem *findFirstAnnotation(HI::GUITestOpStatus &os, const GTGlobals::FindOptions &options = GTGlobals::FindOptions(), bool expandParent = true);
+    static QTreeWidgetItem *findItem(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions & = GTGlobals::FindOptions(), bool expandParent = true);
+    static QTreeWidgetItem *findItem(HI::GUITestOpStatus &os, const QString &itemName, QTreeWidgetItem *parentItem, const GTGlobals::FindOptions & = GTGlobals::FindOptions(), bool expandParent = true);
+    static QTreeWidgetItem *findItemWithIndex(HI::GUITestOpStatus &os, const QString &itemName, int index, bool expandParent = true);
     static QList<QTreeWidgetItem *> findItems(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
 
     static QStringList getGroupNames(HI::GUITestOpStatus &os, const QString &annotationTableName = "");
@@ -61,8 +61,13 @@ public:
     static QString getSelectedItem(HI::GUITestOpStatus &os);
     static QList<QTreeWidgetItem *> getAllSelectedItems(HI::GUITestOpStatus &os);
     static QString getAVItemName(HI::GUITestOpStatus &os, AVItem *avItem);
-    static QString getQualifierValue(HI::GUITestOpStatus &os, const QString &qualifierName, QTreeWidgetItem *parentItem);
-    static QString getQualifierValue(HI::GUITestOpStatus &os, const QString &qualName, const QString &parentName);
+
+    /** Returns qualifier value of the annotation item. Expands item if it is not expanded to make qualifiers visible. */
+    static QString getQualifierValue(HI::GUITestOpStatus &os, const QString &qualifierName, QTreeWidgetItem *annotationItem);
+
+    /** Returns qualifier value of the item by item name. Expands item if it is not expanded to make qualifiers visible. */
+    static QString getQualifierValue(HI::GUITestOpStatus &os, const QString &qualifierName, const QString &annotationName);
+
     static QList<U2Region> getAnnotatedRegions(HI::GUITestOpStatus &os);
     static QList<U2Region> getSelectedAnnotatedRegions(HI::GUITestOpStatus &os);
     static QString getAnnotationRegionString(HI::GUITestOpStatus &os, const QString &annotationName);

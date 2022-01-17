@@ -1931,25 +1931,20 @@ GUI_TEST_CLASS_DEFINITION(test_0840) {
 
     class DigestCircularSequenceScenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            QListWidget *availableEnzymeWidget = GTWidget::findExactWidget<QListWidget *>(os, "availableEnzymeWidget", dialog);
-            CHECK_SET_ERR(nullptr != availableEnzymeWidget, "Cannot find available enzyme list widget");
-
-            QList<QListWidgetItem *> items = availableEnzymeWidget->findItems("EcoRV : 1 cut(s)", Qt::MatchExactly);
-            CHECK_SET_ERR(items.size() == 1, "Unexpected number of enzymes");
-
+        void run(HI::GUITestOpStatus &os) override {
+            auto dialog = GTWidget::getActiveModalWidget(os);
+            auto availableEnzymeWidget = GTWidget::findListWidget(os, "availableEnzymeWidget", dialog);
+            availableEnzymeWidget->findItems("EcoRV : 1 cut(s)", Qt::MatchExactly);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
     };
 
     class CreateAnnotationScenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "leAnnotationName", dialog), "EcoRV");
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "leGroupName", dialog), "enzyme");
-
+        void run(HI::GUITestOpStatus &os) override {
+            auto dialog = GTWidget::getActiveModalWidget(os);
+            GTLineEdit::setText(os, "leAnnotationName", "EcoRV", dialog);
+            GTLineEdit::setText(os, "leGroupName", "enzyme", dialog);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
@@ -1962,27 +1957,27 @@ GUI_TEST_CLASS_DEFINITION(test_0840) {
     // 3. Click OK button in dialog appeared.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                                         << "Find restriction sites"));
-    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList("EcoRV")));
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, {"EcoRV"}));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: One new auto-annotation appears ("enzyme/EcoRV")
     // 4. Select this annotation.
-    CHECK_SET_ERR(1 == GTUtilsAnnotationsTreeView::findItems(os, "EcoRV").size(), "Unexpected annotation count");
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "EcoRV");
-    GTMouseDriver::doubleClick();
+    QList<QTreeWidgetItem *> items1 = GTUtilsAnnotationsTreeView::findItems(os, "EcoRV");
+    CHECK_SET_ERR(items1.size() == 1, "1. Unexpected annotation count: " + QString::number(items1.size()));
+    GTTreeWidget::doubleClick(os, items1[0]);  // Select annotation & sequence under annotation.
 
     // 5. Select "New annotation" in context menu.
     // 6. Fill fields with: "Group name" - "enzyme", "Annotation name" - "EcoRV".
     // 7. Click Create button.
-    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new CreateAnnotationScenario));
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new CreateAnnotationScenario()));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "New annotation");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: Non-auto annotation appears ("enzyme/EcoRV") for the same region.
-    QList<QTreeWidgetItem *> items = GTUtilsAnnotationsTreeView::findItems(os, "EcoRV");
-    CHECK_SET_ERR(2 == items.size(), "Unexpected annotation count");
-    CHECK_SET_ERR(items[0]->parent() != items[1]->parent(), "Annotations are siblings unexpectedly");
+    QList<QTreeWidgetItem *> items2 = GTUtilsAnnotationsTreeView::findItems(os, "EcoRV");
+    CHECK_SET_ERR(items2.size() == 2, "2. Unexpected annotation count: " + QString::number(items2.size()));
+    CHECK_SET_ERR(items2[0]->parent() != items2[1]->parent(), "Annotations are siblings unexpectedly");
 
     // 8. Select "Actions"->"Cloning"->"Digest into Fragments..." in main menu.
     // Expected state: there is only one enzyme in the "Available enzymes" field with 1 cut.

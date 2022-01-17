@@ -133,10 +133,11 @@ void GTUtilsNotifications::checkNotificationDialogText(HI::GUITestOpStatus &os, 
 #define GT_METHOD_NAME "clickOnNotificationWidget"
 void GTUtilsNotifications::clickOnNotificationWidget(HI::GUITestOpStatus &os) {
     for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         CHECK(QApplication::activeModalWidget() == nullptr, );
-        const QWidgetList widgetList = QApplication::allWidgets();
+        QWidgetList widgetList = QApplication::allWidgets();
         for (QWidget *widget : qAsConst(widgetList)) {
-            Notification *notification = qobject_cast<Notification *>(widget);
+            auto notification = qobject_cast<Notification *>(widget);
             if (notification != nullptr && notification->isVisible()) {
                 GTWidget::click(os, notification);
                 return;

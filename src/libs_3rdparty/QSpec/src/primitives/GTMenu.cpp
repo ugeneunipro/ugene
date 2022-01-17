@@ -187,9 +187,6 @@ QAction *GTMenu::getMenuItem(GUITestOpStatus &os, const QMenu *menu, const QStri
     // If menu is built dynamically not all actions may be available immediately.
     // In this case wait up to 2 seconds before returning nullptr.
     for (int time = 0; time < 2000 && action == nullptr; time += GT_OP_CHECK_MILLIS) {
-        if (time > 0) {
-            qDebug("GT_DEBUG_MESSAGE: Action not found, waiting...");
-        }
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
 
         QList<QAction *> menuActions = menu->actions();

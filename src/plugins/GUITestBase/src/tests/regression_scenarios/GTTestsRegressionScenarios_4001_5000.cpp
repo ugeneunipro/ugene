@@ -4365,94 +4365,42 @@ GUI_TEST_CLASS_DEFINITION(test_4701_1) {
     CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Mecopoda_elongata__Sumatra_"),
                   "1 Mecopoda_elongata__Sumatra_ is not collapsed");
 }
-GUI_TEST_CLASS_DEFINITION(test_4702_1) {
+GUI_TEST_CLASS_DEFINITION(test_4702) {
     // 1. Open "samples/Genbank/NC_014267.1.gb"
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/NC_014267.1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    // 2. Select one annotation
-    QList<QTreeWidgetItem *> commentItem = GTUtilsAnnotationsTreeView::findItems(os, "comment");
-    GTUtilsAnnotationsTreeView::selectItems(os, commentItem);
-    int selectedItemsCount = GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size();
-    CHECK_SET_ERR(1 == selectedItemsCount, QString("Incorrect selected annotations count: expected - %1, obtained - %2 ").arg(1).arg(selectedItemsCount));
-    // 3. Use context menu on AnnotationsTreeView {Invert annotations selection}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "invert_selection_action"));
-    GTMouseDriver::click(Qt::RightButton);
-    // Expected state: all annotations other besides the originally selected annotation are selected
-    selectedItemsCount = GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size();
-    CHECK_SET_ERR(359 == selectedItemsCount, QString("Incorrect selected annotations count: expected - %1, obtained - %2 ").arg(359).arg(selectedItemsCount));
-}
 
-GUI_TEST_CLASS_DEFINITION(test_4702_2) {
-    // 1. Open "samples/Genbank/NC_014267.1.gb"
-    GTFileDialog::openFile(os, dataDir + "samples/Genbank/NC_014267.1.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    // 2. Select two annotation from different groups (denote them as "A" and "B").
-    QList<QTreeWidgetItem *> annotationItems = GTUtilsAnnotationsTreeView::findItems(os, "comment");
-    annotationItems << GTUtilsAnnotationsTreeView::findItems(os, "source");
-    GTUtilsAnnotationsTreeView::selectItems(os, annotationItems);
-    int selectedItemsCount = GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size();
-    CHECK_SET_ERR(2 == selectedItemsCount, QString("Incorrect selected annotations count: expected - %1, obtained - %2 ").arg(2).arg(selectedItemsCount));
-    // 3. Use context menu on AnnotationsTreeView {Invert annotations selection}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "invert_selection_action"));
-    GTMouseDriver::click(Qt::RightButton);
-    // Expected state: All annotations, except comment and source, are selected.
-    selectedItemsCount = GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size();
-    CHECK_SET_ERR(358 == selectedItemsCount, QString("Incorrect selected annotations count: expected - %1, obtained - %2 ").arg(358).arg(selectedItemsCount));
-}
+    // Give the test more space (for debugging).
+    GTUtilsCv::commonCvBtn::click(os);  // Close circular view.
 
-GUI_TEST_CLASS_DEFINITION(test_4702_3) {
-    // 1. Open "samples/Genbank/NC_014267.1.gb"
-    GTFileDialog::openFile(os, dataDir + "samples/Genbank/NC_014267.1.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    // 2. Make sure nothing is selected in the Annotations Editor.
-    int selectedItemsCount = GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size();
-    CHECK_SET_ERR(0 == selectedItemsCount, QString("Incorrect selected annotations count: expected - %1, obtained - %2 ").arg(0).arg(selectedItemsCount));
-    // 3. Use context menu on AnnotationsTreeView {Invert annotations selection}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "invert_selection_action"));
-    QPoint p = GTUtilsAnnotationsTreeView::getItemCenter(os, "comment");
-    GTMouseDriver::moveTo(p);
-    GTMouseDriver::click(Qt::RightButton);
-    // Expected state: All annotations are selected.
-    selectedItemsCount = GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size();
-    CHECK_SET_ERR(359 == selectedItemsCount, QString("Incorrect selected annotations count: expected - %1, obtained - %2 ").arg(359).arg(selectedItemsCount));
-}
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAllSelectedItems(os).isEmpty(), "No annotation must be selected by default");
 
-GUI_TEST_CLASS_DEFINITION(test_4702_4) {
-    // 1. Open "samples/Genbank/NC_014267.1.gb"
-    GTFileDialog::openFile(os, dataDir + "samples/Genbank/NC_014267.1.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    // 2. Select an annotations group in the Annotations Editor.
-    QList<QTreeWidgetItem *> annotationGroup;
-    annotationGroup << GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 139)");
-    CHECK_SET_ERR(1 == annotationGroup.size(), QString("CDS group is not found"));
-    GTUtilsAnnotationsTreeView::selectItems(os, annotationGroup);
-    int selectedItemsCount = GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size();
-    CHECK_SET_ERR(1 == selectedItemsCount, QString("Incorrect selected annotations count: expected - %1, obtained - %2 ").arg(1).arg(selectedItemsCount));
-    // 3. Use context menu on AnnotationsTreeView {Invert annotations selection}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "invert_selection_action"));
-    GTMouseDriver::click(Qt::RightButton);
-    // Expected state: All annotations are selected.
-    selectedItemsCount = GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size();
-    CHECK_SET_ERR(361 == selectedItemsCount, QString("Incorrect selected annotations count: expected - %1, obtained - %2 ").arg(361).arg(selectedItemsCount));
-}
+    QTreeWidget *treeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
+    int totalItemCount = GTTreeWidget::getItems(treeWidget->invisibleRootItem()).size() - 5;  // - 2: source & group, -2: comment & group, -1: empty auto annotations doc.
 
-GUI_TEST_CLASS_DEFINITION(test_4702_5) {
-    // 1. Open "samples/Genbank/NC_014267.1.gb"
-    GTFileDialog::openFile(os, dataDir + "samples/Genbank/NC_014267.1.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    // 2. Select an annotations document in the Annotations Editor.
-    QList<QTreeWidgetItem *> annotationGroup;
-    annotationGroup << GTUtilsAnnotationsTreeView::findItem(os, "NC_014267 features [NC_014267.1.gb]");
-    CHECK_SET_ERR(1 == annotationGroup.size(), QString("NC_014267 features group is not found"));
-    GTUtilsAnnotationsTreeView::selectItems(os, annotationGroup);
-    int selectedItemsCount = GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size();
-    CHECK_SET_ERR(1 == selectedItemsCount, QString("Incorrect selected annotations count: expected - %1, obtained - %2 ").arg(1).arg(selectedItemsCount));
-    // 3. Use context menu on AnnotationsTreeView {Invert annotations selection}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "invert_selection_action"));
-    GTMouseDriver::click(Qt::RightButton);
-    // Expected state: All annotations are selected.
-    selectedItemsCount = GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size();
-    CHECK_SET_ERR(361 == selectedItemsCount, QString("Incorrect selected annotations count: expected - %1, obtained - %2 ").arg(361).arg(selectedItemsCount));
+    // Check inversion of 1 annotation.
+    GTUtilsAnnotationsTreeView::selectItems(os, {"ncRNA"});
+    int selectedItemCount = GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size();
+    CHECK_SET_ERR(selectedItemCount == 1,
+                  QString("1. Incorrect selected annotations count: expected - %1, got - %2 ").arg(1).arg(selectedItemCount));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"invert_selection_action"}));
+    GTUtilsAnnotationsTreeView::callContextMenuOnItem(os, "ncRNA");
+    int invertedSelectedItemCount = GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size();
+    CHECK_SET_ERR(invertedSelectedItemCount == totalItemCount - 8,  // -1 annotation, -1 group, -1 document, -5 for qualifiers.
+                  QString("2. Incorrect selected annotations count: expected - %1, got - %2 ").arg(totalItemCount - 8).arg(invertedSelectedItemCount));
+
+    // Check inversion of multiple annotations.
+    GTUtilsAnnotationsTreeView::selectItems(os, {"repeat_region"});
+    selectedItemCount = GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size();
+    CHECK_SET_ERR(selectedItemCount == 2,  // 2 annotations.
+                  QString("3. Incorrect selected annotations count: expected - %1, got - %2 ").arg(2).arg(selectedItemCount));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"invert_selection_action"}));
+    GTUtilsAnnotationsTreeView::callContextMenuOnItem(os, "repeat_region");
+    invertedSelectedItemCount = GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size();
+    CHECK_SET_ERR(invertedSelectedItemCount == totalItemCount - 9,  // -2 annotations, -1 group, -1 document, -5 ncRNA qualifiers.
+                  QString("4. Incorrect selected annotations count: expected - %1, got - %2 ").arg(totalItemCount - 9).arg(invertedSelectedItemCount));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4710) {

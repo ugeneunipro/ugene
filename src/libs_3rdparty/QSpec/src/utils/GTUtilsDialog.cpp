@@ -301,7 +301,7 @@ void GTUtilsDialog::waitForDialogWhichMayRunOrNot(GUITestOpStatus &os, Runnable 
 void GTUtilsDialog::checkNoActiveWaiters(GUITestOpStatus &os, int timeoutMillis) {
     bool isAllFinished = pool.isEmpty();
     for (int time = 0; time < timeoutMillis && !isAllFinished; time += GT_OP_CHECK_MILLIS) {
-        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        GTGlobals::sleep(GT_OP_CHECK_MILLIS);
         isAllFinished = true;
         foreach (GUIDialogWaiter *waiter, pool) {
             if (!waiter->isFinished && waiter->getSettings().destiny == GUIDialogWaiter::MustBeRun) {

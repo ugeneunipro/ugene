@@ -1205,8 +1205,7 @@ GUI_TEST_CLASS_DEFINITION(test_2187) {
     // 2. Open {Actions -> Analyze -> Find tandems...}
     // 3. Click ok
 
-    Runnable *tDialog = new FindTandemsDialogFiller(os, testDir + "_common_data/scenarios/sandbox/result_2187.gb");
-    GTUtilsDialog::waitForDialog(os, tDialog);
+    GTUtilsDialog::waitForDialog(os, new FindTandemsDialogFiller(os, testDir + "_common_data/scenarios/sandbox/result_2187.gb"));
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Analyze"
@@ -1214,15 +1213,14 @@ GUI_TEST_CLASS_DEFINITION(test_2187) {
                               GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsAnnotationsTreeView::getTreeWidget(os);
     QTreeWidgetItem *annotationsRoot = GTUtilsAnnotationsTreeView::findItem(os, "repeat_unit  (0, 5)");
+    GTTreeWidget::expand(os, annotationsRoot);
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, annotationsRoot->child(0)));
     GTMouseDriver::doubleClick();
 
-    Runnable *filler = new EditAnnotationChecker(os, "repeat_unit", "251..251,252..252,253..253,254..254,255..255,256..256,257..257,258..258,259..259");
-    GTUtilsDialog::waitForDialog(os, filler);
-    static QList<QTreeWidgetItem *> items = GTUtilsAnnotationsTreeView::findItems(os, "repeat_unit");
-    foreach (QTreeWidgetItem *item, items) {
+    GTUtilsDialog::waitForDialog(os, new EditAnnotationChecker(os, "repeat_unit", "251..251,252..252,253..253,254..254,255..255,256..256,257..257,258..258,259..259"));
+    QList<QTreeWidgetItem *> items = GTUtilsAnnotationsTreeView::findItems(os, "repeat_unit");
+    for (QTreeWidgetItem *item : qAsConst(items)) {
         if (item->text(2) == "251..251,252..252,253..253,254..254,255..255,256..256,257..257,258..258,259..259") {
             CHECK_SET_ERR("9" == GTUtilsAnnotationsTreeView::getQualifierValue(os, "num_of_repeats", item), "Wrong num_of_repeats value");
             CHECK_SET_ERR("1" == GTUtilsAnnotationsTreeView::getQualifierValue(os, "repeat_length", item), "Wrong repeat_length value");
@@ -1232,9 +1230,7 @@ GUI_TEST_CLASS_DEFINITION(test_2187) {
     }
 
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-
     GTUtilsMdi::click(os, GTGlobals::Close);
-    GTMouseDriver::click();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2192) {
@@ -4637,17 +4633,14 @@ GUI_TEST_CLASS_DEFINITION(test_2829) {
     GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
 
     // 4) Choose some annotation by left mouse button on the upper sequence view
-    // Expected state: horisontal or vertical selection is shown on DotPlot
-    QList<QTreeWidgetItem *> geneItems = GTUtilsAnnotationsTreeView::findItems(os, "gene", {false});
-    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, geneItems.at(1)));
-    GTMouseDriver::click();
+    // Expected state: horizontal or vertical selection is shown on DotPlot
+    GTTreeWidget::click(os, GTUtilsAnnotationsTreeView::findItem(os, "gene"));
 
     // 5) In second sequence view click Remove sequence on the toolbar
     // Expected state: DotPlot closed and UGENE didn't crash
     GTUtilsMdi::activateWindow(os, "NC_001363 [murine.gb]");
 
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363", GTUtilsMdi::activeWindow(os));
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363");
     GTWidget::click(os, GTWidget::findWidget(os, "remove_sequence", toolbar));
 }
 

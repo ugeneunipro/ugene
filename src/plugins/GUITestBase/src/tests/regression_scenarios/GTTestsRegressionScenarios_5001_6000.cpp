@@ -510,26 +510,22 @@ GUI_TEST_CLASS_DEFINITION(test_5110) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, QString("NC_001363 features [murine.gb]")));
-    GTMouseDriver::doubleClick();
+    GTTreeWidget::expand(os, GTUtilsAnnotationsTreeView::findItem(os, "NC_001363 features [murine.gb]"));
+    QTreeWidgetItem *cdsGroupItem = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
+    GTTreeWidget::expand(os, cdsGroupItem);
 
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "CDS  (0, 4)"));
-    GTMouseDriver::doubleClick();
-
-    QList<QTreeWidgetItem *> items = GTUtilsAnnotationsTreeView::findItems(os, "CDS");
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "CDS");
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue(os, "codon_start", items[0]) == "1", "wrong qualifier value");
+    QTreeWidgetItem *cdsItem = GTUtilsAnnotationsTreeView::findItem(os, "CDS", cdsGroupItem);
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue(os, "codon_start", cdsItem) == "1", "wrong qualifier value");
 
     //    4. Open the "Annotation highlighting" OP widget.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_ANNOT_HIGHLIGHT"));
 
-    QCheckBox *showAnnotations = GTWidget::findExactWidget<QCheckBox *>(os, "checkShowHideAnnots");
+    auto showAnnotations = GTWidget::findCheckBox(os, "checkShowHideAnnots");
     GTCheckBox::setChecked(os, showAnnotations, false);
     GTCheckBox::setChecked(os, showAnnotations, true);
 
-    QTreeWidgetItem *item = items[0];
     QBrush expectedBrush = QApplication::palette().brush(QPalette::Active, QPalette::Foreground);
-    QBrush actualBrush = item->foreground(1);
+    QBrush actualBrush = cdsItem->foreground(1);
     CHECK_SET_ERR(expectedBrush == actualBrush, "wrong item color");
 }
 

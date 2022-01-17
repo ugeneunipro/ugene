@@ -586,7 +586,7 @@ void GTUtilsWorkflowDesigner::click(HI::GUITestOpStatus &os, QGraphicsItem *item
 #define GT_METHOD_NAME "getWorker"
 WorkflowProcessItem *GTUtilsWorkflowDesigner::getWorker(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options) {
     QWidget *wdWindow = getActiveWorkflowDesignerWindow(os);
-    QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView", wdWindow));
+    auto sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView", wdWindow));
     GT_CHECK_RESULT(sceneView, "sceneView not found", nullptr);
     // Wait for the item up to GT_OP_WAIT_MILLIS.
     for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
@@ -594,7 +594,7 @@ WorkflowProcessItem *GTUtilsWorkflowDesigner::getWorker(HI::GUITestOpStatus &os,
         QList<QGraphicsItem *> items = sceneView->items();
         foreach (QGraphicsItem *item, items) {
             QGraphicsObject *graphicsObject = item->toGraphicsObject();
-            QGraphicsTextItem *graphicsTextItem = qobject_cast<QGraphicsTextItem *>(graphicsObject);
+            auto graphicsTextItem = qobject_cast<QGraphicsTextItem *>(graphicsObject);
             if (graphicsTextItem != nullptr) {
                 QString text = graphicsTextItem->toPlainText();
                 int lineSeparatorIndex = text.indexOf('\n');
@@ -603,7 +603,7 @@ WorkflowProcessItem *GTUtilsWorkflowDesigner::getWorker(HI::GUITestOpStatus &os,
                 }
                 text = text.left(lineSeparatorIndex);
                 if (text == itemName) {
-                    WorkflowProcessItem *result = qgraphicsitem_cast<WorkflowProcessItem *>(item->parentItem()->parentItem());
+                    auto result = qgraphicsitem_cast<WorkflowProcessItem *>(item->parentItem()->parentItem());
                     if (result != nullptr) {
                         return result;
                     }

@@ -1811,7 +1811,7 @@ GUI_TEST_CLASS_DEFINITION(test_3288) {
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
 
     // 3. Select the "PhyML" tool, set "Equilibrium frequencies" option to "optimized", build the tree
-    QProgressBar *taskProgressBar = GTWidget::findExactWidget<QProgressBar *>(os, "taskProgressBar");
+    auto taskProgressBar = GTWidget::findExactWidget<QProgressBar *>(os, "taskProgressBar");
     int percent = 0;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && percent == 0; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
