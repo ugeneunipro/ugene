@@ -501,25 +501,25 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
 
     // 4. Right click on the reference area.
     // Expected: "Unassociate" is disabled.
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction", PopupChecker::IsDisabled));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"unassociateReferenceAction"}, PopupChecker::IsDisabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 
     // 5. Click "Set reference sequence".
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "setReferenceAction"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"setReferenceAction"}));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 
     // 6. Right click on the reference area.
     // Expected: "Unassociate" is enabled.
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction", PopupChecker::IsEnabled));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"unassociateReferenceAction"}, PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 
     // 7. Click "Unassociate".
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "unassociateReferenceAction"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"unassociateReferenceAction"}));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 
     // 8. Right click on the reference area.
     // Expected: "Unassociate" is disabled.
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction", PopupChecker::IsDisabled));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"unassociateReferenceAction"}, PopupChecker::IsDisabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 }
 
@@ -567,18 +567,16 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
 
     // 8. Right click on the reference area while the file is loading.
     // Expected: "Unassociate" and "Set reference sequence" are disabled.
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "setReferenceAction", PopupChecker::IsDisabled));
-    // GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "setReferenceAction", PopupChecker::IsDisabled));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"setReferenceAction"}, PopupChecker::IsDisabled));
+    // GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"setReferenceAction"}, PopupChecker::IsDisabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
-    // GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction" , PopupChecker::IsDisabled));
+    // GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"unassociateReferenceAction"}, PopupChecker::IsDisabled));
     // GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 
     // 9. Right click on the reference area after loading.
     // Expected: "Unassociate" and "Set reference sequence" are enabled.
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList(), QStringList() << "Set reference"
-                                                                                             << "Unassociate",
-                                                            PopupChecker::IsEnabled));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList(), {"Set reference", "Unassociate"}, PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 }
 
@@ -602,8 +600,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
 
     // 5. Click the "Set reference sequence" actions menu item.
     // Expected: it becomes reference.
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Set reference");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Set reference"});
 
     // 6. Add the "human_T1" object to the selection.
     GTKeyboardDriver::keyPress(Qt::Key_Control);
@@ -613,8 +610,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     // 7. Click the "Set reference sequence" actions menu item.
     // Expected: message box about two sequences appears.
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "You have more than one sequence"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Set reference");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Set reference"});
 
     // 8. Click the "chrM.fa" sequence object in Project View.
     GTUtilsProjectTreeView::click(os, "chrM.fa");
@@ -622,8 +618,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     // 9. Click the "Set reference sequence" actions menu item.
     // Expected: file dialog appears.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Genbank/murine.gb"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Set reference");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Set reference"});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0020) {
@@ -903,7 +898,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {
     //    2. Click "zoom to reads" link
     GTUtilsAssemblyBrowser::zoomToReads(os);
     //    Check zoom
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "Export"));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"Export"}));
     GTUtilsAssemblyBrowser::callContextMenu(os, GTUtilsAssemblyBrowser::Reads);
     GTUtilsDialog::checkNoActiveWaiters(os);
 }
@@ -970,7 +965,7 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
     };
     //    Export consensus
     GTUtilsDialog::waitForDialog(os, new ExportConsensusDialogFiller(os, new Scenario()));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export consensus variations..."));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export consensus variations..."}));
     GTUtilsAssemblyBrowser::callContextMenu(os, GTUtilsAssemblyBrowser::Consensus);
 
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "chrM.snp"), "chrM.snp is not found");
@@ -1037,7 +1032,7 @@ GUI_TEST_CLASS_DEFINITION(test_0037) {
     GTUtilsAssemblyBrowser::goToPosition(os, 5000);
 
     // Copy read information and check that it is valid.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "copy_read_information", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"copy_read_information"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "assembly_reads_area"));
     QString clipboard = GTClipboard::text(os);
     CHECK_SET_ERR(clipboard.startsWith('>') && clipboard.contains("From") &&
@@ -1046,7 +1041,7 @@ GUI_TEST_CLASS_DEFINITION(test_0037) {
                   "Unexpected clipboard: " + clipboard)
 
     // Check that read position is copied as a number.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy current position to clipboard", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy current position to clipboard"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "assembly_reads_area"));
     clipboard = GTClipboard::text(os);
     bool ok;

@@ -118,8 +118,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     CHECK_SET_ERR(title == "Start Page", "unexpected window title: " + title);
 
     //    Use main menu: Help->Open start page
-    GTMenu::clickMainMenuItem(os, QStringList() << "Help"
-                                                << "Open Start Page");
+    GTMenu::clickMainMenuItem(os, {"Help", "Open Start Page"});
 
     //    Expected state: nothing happens
     title = GTUtilsMdi::activeWindowTitle(os);
@@ -129,8 +128,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     QWidget *window = GTUtilsMdi::activeWindow(os, {false});
     CHECK_SET_ERR(window == nullptr, "start page was not closed");
     //    Repeat step 2
-    GTMenu::clickMainMenuItem(os, QStringList() << "Help"
-                                                << "Open Start Page");
+    GTMenu::clickMainMenuItem(os, {"Help", "Open Start Page"});
     //    Expected state: Start page is opened
     title = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title == "Start Page", "unexpected window title: " + title);

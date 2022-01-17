@@ -137,8 +137,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 GUI_TEST_CLASS_DEFINITION(test_0006) {
     // 1. Do menu Settings->Preferences
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, AppSettingsDialogFiller::minimal));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...");
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
 
     // 2. Open WD settings
     // 3. Change Default visualization Item style from Extended to Minimal.
@@ -165,8 +164,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     // 1. Do menu Settings->Preferences
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, AppSettingsDialogFiller::extended));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...");
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
 
     // 2. Open WD settings
     // 3. Change Default visualization Item style from Extended to Minimal.
@@ -370,8 +368,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     GTLogTracer l;
     GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os, testDir + "_common_data/scenarios/sandbox/somedir"));
     // 1. Open Workflow Designer
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Workflow Designer...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Workflow Designer..."});
 
     // 2. Write the path to the folder which does not exist(in the StartupDialogFiller).
     // 3. Click OK(in the StartupDialogFiller).

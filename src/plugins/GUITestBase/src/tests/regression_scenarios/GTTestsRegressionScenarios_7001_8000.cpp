@@ -120,9 +120,7 @@ GUI_TEST_CLASS_DEFINITION(test_7003) {
     };
 
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new CheckPythonInvalidation()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."}, GTGlobals::UseMouse);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7014) {
@@ -150,10 +148,7 @@ GUI_TEST_CLASS_DEFINITION(test_7014) {
 
     // Expected state: the saved sub-alignment is opened. Check the content.
     QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    QStringList expectedNameList = QStringList() << "LR882519 exotic DQB1"
-                                                 << "LR882531 local DQB1"
-                                                 << "LR882507 local DQB1"
-                                                 << "LR882509 local DQB1";
+    QStringList expectedNameList = {"LR882519 exotic DQB1", "LR882531 local DQB1", "LR882507 local DQB1", "LR882509 local DQB1"};
     CHECK_SET_ERR(nameList == expectedNameList, "Unexpected name list in the exported alignment: " + nameList.join(","));
 
     int msaLength = GTUtilsMSAEditorSequenceArea::getLength(os);
@@ -281,9 +276,7 @@ GUI_TEST_CLASS_DEFINITION(test_7045) {
 
     // Expected state : new alignment where s1, s1_1 and s2 are present.
     QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    QStringList expectedNameList = QStringList() << "s1"
-                                                 << "s1_1"
-                                                 << "s2";
+    QStringList expectedNameList = {"s1", "s1_1", "s2"};
     CHECK_SET_ERR(nameList == expectedNameList, "Unexpected name list in the exported alignment: " + nameList.join(","));
 }
 

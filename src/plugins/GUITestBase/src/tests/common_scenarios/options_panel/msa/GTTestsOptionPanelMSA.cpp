@@ -870,10 +870,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0006) {
     const QString currentScheme = GTUtilsOptionPanelMsa::getColorScheme(os);
     CHECK_SET_ERR(currentScheme == "UGENE", QString("An unexpected color scheme is set: expect '%1', got '%2'").arg("UGENE").arg(currentScheme));
 
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Appearance"
-                                                                              << "Colors"
-                                                                              << "UGENE",
-                                                            PopupChecker::IsChecked));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Appearance", "Colors", "UGENE"}, PopupChecker::IsChecked));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::Highlighting);
@@ -2070,9 +2067,7 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0004) {
     };
 
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new Custom()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    1. Open data/samples/CLUSTALW/COI.aln

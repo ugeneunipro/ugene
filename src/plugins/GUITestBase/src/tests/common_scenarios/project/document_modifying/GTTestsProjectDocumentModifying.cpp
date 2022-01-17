@@ -52,7 +52,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsDocument::checkDocument(os, "1.gb");
 
     // 2. Open view for 1.gb document.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_load_selected_documents", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"action_load_selected_documents"}, GTGlobals::UseMouse));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1.gb"));
     GTMouseDriver::click(Qt::RightButton);
 
@@ -76,7 +76,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {  // CHANGES another annotation created
     GTUtilsDocument::checkDocument(os, "1.gb");
 
     // 2. Open view for 1.gb document.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_load_selected_documents", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"action_load_selected_documents"}, GTGlobals::UseMouse));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1.gb"));
     GTMouseDriver::click(Qt::RightButton);
 
@@ -104,13 +104,11 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     // 3. Fill the next field in dialog and click Save button:
     //     {Project Folder:} _common_data/scenarios/sandbox
     GTUtilsDialog::waitForDialog(os, new ExportProjectDialogFiller(os, testDir + "_common_data/scenarios/sandbox/proj2.uprj"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Export project...");
+    GTMenu::clickMainMenuItem(os, {"File", "Export project..."});
     GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 4. Close project. No questions must be asked
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Close project");
+    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
     GTUtilsProjectTreeView::checkProjectViewIsClosed(os);
 
     // 5. Open exported project
@@ -121,7 +119,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsDocument::checkDocument(os, "1.gb");
 
     // 6. Load 1.gb document using context menu.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_load_selected_documents", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"action_load_selected_documents"}, GTGlobals::UseMouse));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1.gb"));
     GTMouseDriver::click(Qt::RightButton);
 
@@ -137,8 +135,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     // Expected state: "Question?" dialog has appeared that proposes to save 1.gb file
     // 8. Click Yes button
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Close project");
+    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
     GTUtilsProjectTreeView::checkProjectViewIsClosed(os);
 
     // 9. Load _common_data/scenarios/sandbox/proj2.uprj
@@ -149,7 +146,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsDocument::checkDocument(os, "1.gb");
 
     // 10) Open 1.gb view by context menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_load_selected_documents", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"action_load_selected_documents"}, GTGlobals::UseMouse));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1.gb"));
     GTMouseDriver::click(Qt::RightButton);
 

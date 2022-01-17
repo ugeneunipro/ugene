@@ -286,8 +286,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsMdi::closeWindow(os, "NC_001363");
 
     // 7. Call right click menu on the item and select { Open view -> Open new view: Sequence View }
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view"
-                                                                              << "Open new view: Sequence View"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Open view", "Open new view: Sequence View"}));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, objectIndexes.first()));
     GTMouseDriver::click(Qt::RightButton);
 
@@ -305,7 +304,7 @@ void checkEditMenu(HI::GUITestOpStatus &os, const QString &groupName, const QStr
     CHECK_SET_ERR(!objectIndexes.isEmpty(), QString("Expected a single object named '%1' in the '%2' group").arg(objectName, groupName));
     GTUtilsProjectTreeView::getTreeView(os)->scrollTo(objectIndexes.first());
 
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Edit", PopupChecker::NotExists));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Edit"}, PopupChecker::NotExists));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, objectIndexes.first()));
     GTMouseDriver::click(Qt::RightButton);
 }
@@ -403,8 +402,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsProjectTreeView::getTreeView(os)->scrollTo(objectIndex);
 
     GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "U2__ExportMSA2SequencesDialog", QDialogButtonBox::Cancel));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export/Import"
-                                                                              << "Export alignment to sequence format..."));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export/Import", "Export alignment to sequence format..."}));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, objectIndex));
     GTMouseDriver::click(Qt::RightButton);
 
@@ -425,8 +423,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsProjectTreeView::getTreeView(os)->scrollTo(objectIndex);
 
     GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "U2__ExportSequencesDialog", QDialogButtonBox::Cancel));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export/Import"
-                                                                              << "Export sequences..."));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export/Import", "Export sequences..."}));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, objectIndex));
     GTMouseDriver::click(Qt::RightButton);
 }

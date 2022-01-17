@@ -126,9 +126,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     // 1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Sanger data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
@@ -232,9 +230,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     // 1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Sanger data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state : No Еrrors in the Log
@@ -402,9 +398,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsMdi::closeActiveWindow(os);
 
     //    10. Select "Open view" from context menu and select "Open new view: "Sanger Reads Editor" from context view
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view"
-                                                                              << "Open new view: Sanger Reads Editor",
-                                                            GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Open view", "Open new view: Sanger Reads Editor"}, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::callContextMenu(os, "Mapped reads");
 
     //    Expected state:  Chromatogram sanger view is opened
@@ -536,9 +530,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     // 1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTLogTracer trace;
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Sanger data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: Error: The input reference sequence 'seq3' contains characters that don't belong to DNA alphabet.
@@ -616,9 +608,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     // 1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTLogTracer trace;
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Sanger data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: Error: More than one sequence in the reference file:  <path>/alphabets/standard_dna_rna_amino_1000.fa
@@ -749,9 +739,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     // 1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTLogTracer trace;
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Sanger data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: Error: The input reference sequence 'seq3' contains characters that don't belong to DNA alphabet.
@@ -861,9 +849,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     // 1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Sanger data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
     GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 5. Select "SZYD_Cas9_5B71" read
@@ -950,33 +936,15 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
     // Expected state : Combo with selected "A", "C", "G", "T" items and "Show all" item appeared
     QList<QStringList> paths;
     QList<QStringList> onlyLetterPaths;
-    paths.append(QStringList() << "Appearance"
-                               << "Show/hide trace"
-                               << "A");
-    onlyLetterPaths.append(QStringList() << "Appearance"
-                                         << "Show/hide trace"
-                                         << "A");
-    paths.append(QStringList() << "Appearance"
-                               << "Show/hide trace"
-                               << "C");
-    onlyLetterPaths.append(QStringList() << "Appearance"
-                                         << "Show/hide trace"
-                                         << "C");
-    paths.append(QStringList() << "Appearance"
-                               << "Show/hide trace"
-                               << "G");
-    onlyLetterPaths.append(QStringList() << "Appearance"
-                                         << "Show/hide trace"
-                                         << "G");
-    paths.append(QStringList() << "Appearance"
-                               << "Show/hide trace"
-                               << "T");
-    onlyLetterPaths.append(QStringList() << "Appearance"
-                                         << "Show/hide trace"
-                                         << "T");
-    paths.append(QStringList() << "Appearance"
-                               << "Show/hide trace"
-                               << "Show all");
+    paths.append({"Appearance", "Show/hide trace", "A"});
+    onlyLetterPaths.append({"Appearance", "Show/hide trace", "A"});
+    paths.append({"Appearance", "Show/hide trace", "C"});
+    onlyLetterPaths.append({"Appearance", "Show/hide trace", "C"});
+    paths.append({"Appearance", "Show/hide trace", "G"});
+    onlyLetterPaths.append({"Appearance", "Show/hide trace", "G"});
+    paths.append({"Appearance", "Show/hide trace", "T"});
+    onlyLetterPaths.append({"Appearance", "Show/hide trace", "T"});
+    paths.append({"Appearance", "Show/hide trace", "Show all"});
     // GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, paths, PopupChecker::CheckOptions(PopupChecker::Exists)));
     QStringList menuPath;
     menuPath << "Appearance"
@@ -993,9 +961,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
 
     // 5. Select "A"
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance"
-                                                                              << "Show/hide trace"
-                                                                              << "A"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Appearance", "Show/hide trace", "A"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1011,9 +977,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance"
-                                                                              << "Show/hide trace"
-                                                                              << "C"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Appearance", "Show/hide trace", "C"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1028,9 +992,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance"
-                                                                              << "Show/hide trace"
-                                                                              << "G"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Appearance", "Show/hide trace", "G"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1045,9 +1007,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance"
-                                                                              << "Show/hide trace"
-                                                                              << "T"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Appearance", "Show/hide trace", "T"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1062,9 +1022,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance"
-                                                                              << "Show/hide trace"
-                                                                              << "Show all"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Appearance", "Show/hide trace", "Show all"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1095,36 +1053,24 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
 
     // 4. Push "Show/Hide Trace"combo from main menu
     // Expected state : Combo with selected "A", "C", "G", "T" items and "Show all" item appeared
-    const QStringList menuPath = QStringList() << "Actions"
-                                               << "Appearance"
-                                               << "Show/hide trace";
-    const QStringList itemsNames = QStringList() << "A"
-                                                 << "C"
-                                                 << "G"
-                                                 << "T"
-                                                 << "Show all";
+    const QStringList menuPath = {"Actions", "Appearance", "Show/hide trace"};
+    const QStringList itemsNames = {"A", "C", "G", "T", "Show all"};
     GTMenu::checkMainMenuItemsState(os, menuPath, itemsNames, PopupChecker::CheckOption(PopupChecker::Exists));
 
     // 5. Select "A"
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Appearance"
-                                                << "Show/hide trace"
-                                                << "A");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Appearance", "Show/hide trace", "A"});
     ;
 
     // Expected state : Green trace vanished from all chromatograms
 
     // 6. Select "C"
     // Expected state : "A" is unchecked
-    QStringList intermediateCheck = QStringList() << "A";
+    QStringList intermediateCheck = {"A"};
     GTMenu::checkMainMenuItemsState(os, menuPath, intermediateCheck, PopupChecker::CheckOption(PopupChecker::IsUnchecked));
 
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Appearance"
-                                                << "Show/hide trace"
-                                                << "C");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Appearance", "Show/hide trace", "C"});
     ;
 
     // Expected state : Blue trace vanished from all chromatograms
@@ -1135,10 +1081,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
     GTMenu::checkMainMenuItemsState(os, menuPath, intermediateCheck, PopupChecker::CheckOption(PopupChecker::IsUnchecked));
 
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Appearance"
-                                                << "Show/hide trace"
-                                                << "G");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Appearance", "Show/hide trace", "G"});
     ;
 
     // Expected state : Grey trace vanished from all chromatograms
@@ -1150,10 +1093,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
     GTMenu::checkMainMenuItemsState(os, menuPath, intermediateCheck, PopupChecker::CheckOption(PopupChecker::IsUnchecked));
 
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Appearance"
-                                                << "Show/hide trace"
-                                                << "T");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Appearance", "Show/hide trace", "T"});
     ;
 
     // Expected state : Red trace vanished from all chromatograms; there are no any traces on the screen
@@ -1164,10 +1104,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
     GTMenu::checkMainMenuItemsState(os, menuPath, intermediateCheck, PopupChecker::CheckOption(PopupChecker::IsUnchecked));
 
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2120, 1));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Appearance"
-                                                << "Show/hide trace"
-                                                << "Show all");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Appearance", "Show/hide trace", "Show all"});
     ;
 
     // 10. Expand combo once more
@@ -1190,8 +1127,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR50");
 
     // 3. Push Remove seuence(s) button on main menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Remove read"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Remove read"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1213,8 +1149,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     // 5 Push Remove seuence(s) button
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Remove read"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Remove read"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1270,9 +1205,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
     GTUtilsMcaEditor::clickReadName(os, "SZYD_Cas9_CR50");
 
     // 3. Push Remove seuence(s) button on context menu
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Edit"
-                                                << "Remove read");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Remove read"});
     ;
 
     // Expected state : the read is deleted
@@ -1293,9 +1226,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     // 5. Push Remove seuence(s) button
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Edit"
-                                                << "Remove read");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Remove read"});
     ;
 
     // Expected state : 3 reads are deleted
@@ -1350,9 +1281,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_3) {
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(5500, 2));
 
     // 6. Push Remove seuence(s) from main or context menu
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Edit"
-                                                << "Remove read");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Remove read"});
 
     // Expected state: the read is deleted
     QStringList reads = GTUtilsMcaEditor::getReadsNames(os);
@@ -1434,8 +1363,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
     CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == 'G', QString("Incorrect symbols, Expected ref = T, con = G, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
 
     // 5. Push "Jump to next variation" from context menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation"
-                                                                              << "Jump to next variation"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Navigation", "Jump to next variation"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1446,9 +1374,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
     CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == 'C', QString("Incorrect symbols, Expected ref = T, con = C, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
 
     // 6. Push "Jump to next variation" from main menu
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Navigation"
-                                                << "Jump to next variation");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Navigation", "Jump to next variation"});
 
     // Expected state : difference between reference "G" and consensus "A"
     referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
@@ -1530,8 +1456,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     CHECK_SET_ERR(referenceChar[0] == 'C' && consensusChar[0] == U2Mca::GAP_CHAR, QString("Incorrect symbols, Expected ref = C, con = GAP, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
 
     // 4. Push "Jump to previous variation" from context menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation"
-                                                                              << "Jump to previous variation"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Navigation", "Jump to previous variation"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1542,9 +1467,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     CHECK_SET_ERR(referenceChar[0] == 'G' && consensusChar[0] == U2Mca::GAP_CHAR, QString("Incorrect symbols, Expected ref = G, con = GAP, current ref = %1, cons = %2").arg(referenceChar[0]).arg(referenceChar[0]));
 
     // 9. Push "Jump to next variation" from main menu
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Navigation"
-                                                << "Jump to previous variation");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Navigation", "Jump to previous variation"});
 
     // Expected state : difference between reference "T" and consensus GAP
     referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
@@ -1586,8 +1509,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     // Expected state : Notification "There are no variations in the consensus sequence" will be shown
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation"
-                                                                              << "Jump to previous variation"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Navigation", "Jump to previous variation"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1595,9 +1517,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     // Expected state : Notification "There are no variations in the consensus sequence" will be shown
     GTUtilsNotifications::waitForNotification(os, true, "There are no variations in the consensus sequence");
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Navigation"
-                                                << "Jump to previous variation");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Navigation", "Jump to previous variation"});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -1636,8 +1556,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017_1) {
     // Expected state : Notification "There are no ambiguous characters in the alignment.
     GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation"
-                                                                              << "Jump to next ambiguous character"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Navigation", "Jump to next ambiguous character"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1647,9 +1566,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017_1) {
     // Expected state : Notification "There are no ambiguous characters in the alignment.
     GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Navigation"
-                                                << "Jump to next ambiguous character");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Navigation", "Jump to next ambiguous character"});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -1696,8 +1613,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017_2) {
     CHECK_SET_ERR(referenceChar[0] == 'C' && consensusChar[0] == 'M' && readChar == 'M', QString("Incorrect symbols, Expected ref = C, con = M, read = M current ref = %1, cons = %2, read = %3").arg(referenceChar[0]).arg(referenceChar[0]).arg(readChar));
 
     // 4. Push "Jump to next ambiguous character" button from context menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation"
-                                                                              << "Jump to next ambiguous character"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Navigation", "Jump to next ambiguous character"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1711,9 +1627,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017_2) {
     CHECK_SET_ERR(referenceChar[0] == 'T' && consensusChar[0] == 'W' && readChar == 'W', QString("Incorrect symbols, Expected ref = T, con = W, read = W current ref = %1, cons = %2, read = %3").arg(referenceChar[0]).arg(referenceChar[0]).arg(readChar));
 
     // 5.Push "Jump to next ambiguous character" button from main menu
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Navigation"
-                                                << "Jump to next ambiguous character");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Navigation", "Jump to next ambiguous character"});
 
     // Expected state : reference "C", consensus "N", read "N"
     referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
@@ -1757,8 +1671,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018_1) {
     // Expected state : Notification "There are no ambiguous characters in the alignment.
     GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation"
-                                                                              << "Jump to previous ambiguous character"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Navigation", "Jump to previous ambiguous character"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsDialog::checkNoActiveWaiters(os);
 
@@ -1766,9 +1679,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018_1) {
     // Expected state : Notification "There are no ambiguous characters in the alignment.
     GTUtilsNotifications::waitForNotification(os, true, "There are no ambiguous characters in the alignment.");
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Navigation"
-                                                << "Jump to previous ambiguous character");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Navigation", "Jump to previous ambiguous character"});
 
     GTUtilsDialog::checkNoActiveWaiters(os);
 }
@@ -1812,8 +1723,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018_2) {
     CHECK_SET_ERR(referenceChar[0] == 'G' && consensusChar[0] == 'N' && readChar == 'N', QString("Incorrect symbols, Expected ref = G, con = N, read = N current ref = %1, cons = %2, read = %3").arg(referenceChar[0]).arg(referenceChar[0]).arg(readChar));
 
     // 4. Push "Jump to next variation" from context menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Navigation"
-                                                                              << "Jump to previous ambiguous character"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Navigation", "Jump to previous ambiguous character"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1827,9 +1737,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018_2) {
     CHECK_SET_ERR(referenceChar[0] == 'C' && consensusChar[0] == 'N' && readChar == 'N', QString("Incorrect symbols, Expected ref = C, con = N, read = N current ref = %1, cons = %2, read = %3").arg(referenceChar[0]).arg(referenceChar[0]).arg(readChar));
 
     // 5. Push "Jump to previous variation" from main menu
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Navigation"
-                                                << "Jump to previous ambiguous character");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Navigation", "Jump to previous ambiguous character"});
 
     // Expected state: reference "T", consensus "W", read "W"
     referenceChar = GTUtilsMcaEditorSequenceArea::getSelectedReferenceReg(os);
@@ -1981,16 +1889,13 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2) {
 
     // 3. Open the context menu in the sequence area.
     // Expected state: the menu contains an item "Edit > Replace character/gap".The item is enabled.A hotkey Shift + R is shown nearby.
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Edit"
-                                                                              << "Replace character/gap",
-                                                            PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Edit", "Replace character/gap"}, PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
 
     // 4. Select the item.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Replace character/gap"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Replace character/gap"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2051,9 +1956,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022_3) {
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
 
     // 4. Select the item.
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Edit"
-                                                << "Replace character/gap");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Replace character/gap"});
 
     // Expected state : the character is selected in the replacement mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -2138,9 +2041,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023_2) {
 
     // 3. Open the context menu in the sequence area.
     // Expected state: the menu contains an item "Edit > Replace character/gap".The item is enabled.A hotkey Shift + R is shown nearby.
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Edit"
-                                                                              << "Replace character/gap",
-                                                            PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Edit", "Replace character/gap"}, PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -2148,8 +2049,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023_2) {
 
     // 4. Select the item.
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Replace character/gap"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Replace character/gap"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2193,9 +2093,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023_3) {
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2116, 1));
 
     // 4. Select the item.
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Edit"
-                                                << "Replace character/gap");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Replace character/gap"});
 
     // Expected state : the character is selected in the replacement mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -2313,16 +2211,13 @@ GUI_TEST_CLASS_DEFINITION(test_0024_2) {
 
     // 3. Open the context menu in the sequence area.
     // Expected state: the menu contains an item "Edit > Insert character/gap".The item is enabled.A hotkey Shift + R is shown nearby.
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Edit"
-                                                                              << "Insert character/gap",
-                                                            PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Edit", "Insert character/gap"}, PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
 
     // 4. Select the item.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Insert character/gap"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Insert character/gap"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2415,9 +2310,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024_3) {
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
 
     // 4. Select the item.
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Edit"
-                                                << "Insert character/gap");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Insert character/gap"});
 
     // Expected state : the character is selected in the insertion mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -2536,16 +2429,13 @@ GUI_TEST_CLASS_DEFINITION(test_0025_2) {
 
     // 3. Open the context menu in the sequence area.
     // Expected state: the menu contains an item "Edit > Insert character/gap".The item is enabled.A hotkey Shift + I is shown nearby.
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Edit"
-                                                                              << "Insert character/gap",
-                                                            PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Edit", "Insert character/gap"}, PopupChecker::CheckOptions(PopupChecker::IsEnabled)));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
 
     // 4. Select the item.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Insert character/gap"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Insert character/gap"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2589,9 +2479,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_3) {
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2118, 1));
 
     // 4. Select the item.
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Edit"
-                                                << "Insert character/gap");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Insert character/gap"});
 
     // Expected state : the character is selected in the insertion mode.
     modState = GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(os);
@@ -2704,8 +2592,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     qint64 refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
 
     // 3. Press "Remove selection" from context menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Remove selection"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Remove selection"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2784,9 +2671,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
     qint64 refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
 
     // 3. Press "Remove selection" from main
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Edit"
-                                                << "Remove selection");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Remove selection"});
 
     // Expected state: the character is replaced by close character, the sequence is shifted one character to the left
     selectedChar = GTUtilsMcaEditorSequenceArea::getSelectedReadChar(os);
@@ -2911,8 +2796,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027_2) {
     GTKeyboardDriver::keyClick(U2Mca::GAP_CHAR);
 
     // 4. Press "Remove all columns of gaps" from context menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Remove all columns of gaps"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Remove all columns of gaps"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2966,9 +2850,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027_3) {
     GTKeyboardDriver::keyClick(U2Mca::GAP_CHAR);
 
     // 4. Press "Remove all columns of gaps" from main menu
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Edit"
-                                                << "Remove all columns of gaps");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Remove all columns of gaps"});
 
     // Expected state: Gap column is vanished
     QRect sel = GTUtilsMcaEditorSequenceArea::getSelectedRect(os);
@@ -3182,9 +3064,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // 2. Push Show / Hide overview button on the main menu
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Appearance"
-                                                << "Show overview");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Appearance", "Show overview"});
 
     // Expected state: There are no map on the screen. Show / Hide overview button is is in released state
     //  simple = GTWidget::findWidget(os, "mca_overview_area_sanger");
@@ -3255,15 +3135,14 @@ GUI_TEST_CLASS_DEFINITION(test_0040_1) {
     bool overviewCheckedState = showOverviewButton->isChecked();
 
     // offsets show/hide
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance"
-                                                                              << "Show offsets"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Appearance", "Show offsets"}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
 
     QAction *offsetAction = GTUtilsMcaEditor::getOffsetAction(os);
     bool offsetCheckedState = offsetAction->isChecked();
 
     // close the view
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__remove_selected_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"action_project__remove_selected_action"}));
     GTUtilsProjectTreeView::click(os, "sanger_alignment.ugenedb", Qt::RightButton);
 
     // open the view again
@@ -3298,7 +3177,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040_2) {
     GTUtilsOptionPanelMca::setThreshold(os, 57);
 
     // close the view with ugenedb
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__remove_selected_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"action_project__remove_selected_action"}));
     GTUtilsProjectTreeView::click(os, "sanger_alignment.ugenedb", Qt::RightButton);
     GTUtilsDialog::checkNoActiveWaiters(os);
 
@@ -3318,7 +3197,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040_2) {
     GTSpinBox::setValue(os, thresholdSpinBox, 68, GTGlobals::UseKeyBoard);
 
     // close the view with COI
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__remove_selected_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"action_project__remove_selected_action"}));
     GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
     GTUtilsDialog::checkNoActiveWaiters(os);
 
@@ -3329,7 +3208,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040_2) {
     CHECK_SET_ERR(GTUtilsOptionPanelMca::getConsensusType(os) == "Strict", "Consensus algorithm type for MCA was not saved");
     CHECK_SET_ERR(GTUtilsOptionPanelMca::getThreshold(os) == 57, "Consensus threshold for MCA was not saved");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__remove_selected_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"action_project__remove_selected_action"}));
     GTUtilsProjectTreeView::click(os, "sanger_alignment.ugenedb", Qt::RightButton);
     GTUtilsDialog::checkNoActiveWaiters(os);
 
@@ -3355,8 +3234,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040_3) {
 
     GTUtilsDialog::waitForDialog(os, new FontDialogFiller(os));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance"
-                                                                              << "Change characters font..."));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Appearance", "Change characters font..."}));
     GTUtilsMcaEditorSequenceArea::callContextMenu(os);
     GTUtilsDialog::checkNoActiveWaiters(os);
 
@@ -3372,7 +3250,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040_3) {
     int peakHight = scaleBar->value();
 
     // close ugenedb
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__remove_selected_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"action_project__remove_selected_action"}));
     GTUtilsProjectTreeView::click(os, "sanger_alignment.ugenedb", Qt::RightButton);
     GTUtilsDialog::checkNoActiveWaiters(os);
 
@@ -3856,9 +3734,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045_3) {
     GTUtilsOptionPanelMca::showAlternativeMutations(os, true, 90, true);
 
     // 3. Open view it the other window
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view"
-                                                                              << "Open new view: Sanger Reads Editor",
-                                                            GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Open view", "Open new view: Sanger Reads Editor"}, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::callContextMenu(os, "Mapped reads");
 
     // 4. Open the "Reads" tab, check "Show alternative mutations", set threshold to 80 by spinbox and click "Update"

@@ -60,9 +60,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     settings.outAlignment = QFileInfo(sandBoxDir + "sanger_test_0001").absoluteFilePath();
 
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(settings, os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Sanger data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -110,9 +108,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     settings.readUrls << testDir + "_common_data/sanger/sanger_05.ab1";
 
     GTUtilsDialog::waitForDialog(os, new CheckerFiller(os, settings));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Sanger data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -130,9 +126,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     settings.outAlignment = QFileInfo(sandBoxDir + "sanger_test_0003").absoluteFilePath();
 
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(settings, os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Sanger data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::checkContainsError(os, l, "No read satisfy minimum similarity criteria");
@@ -141,9 +135,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     settings.minIdentity = 30;
 
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(settings, os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Sanger data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::checkItem(os, "sanger_test_0003");
@@ -211,29 +203,27 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     };
 
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Sanger data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
 
     //    Expected state: the result alignment rows are named like "SZYD_Cas9_*".
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    const QStringList expectedReadsnames = QStringList() << "SZYD_Cas9_5B70"
-                                                         << "SZYD_Cas9_5B71"
-                                                         << "SZYD_Cas9_CR50"
-                                                         << "SZYD_Cas9_CR51"
-                                                         << "SZYD_Cas9_CR52"
-                                                         << "SZYD_Cas9_CR53"
-                                                         << "SZYD_Cas9_CR54"
-                                                         << "SZYD_Cas9_CR55"
-                                                         << "SZYD_Cas9_CR56"
-                                                         << "SZYD_Cas9_CR60"
-                                                         << "SZYD_Cas9_CR61"
-                                                         << "SZYD_Cas9_CR62"
-                                                         << "SZYD_Cas9_CR63"
-                                                         << "SZYD_Cas9_CR64"
-                                                         << "SZYD_Cas9_CR65"
-                                                         << "SZYD_Cas9_CR66";
+    const QStringList expectedReadsnames = {"SZYD_Cas9_5B70",
+                                            "SZYD_Cas9_5B71",
+                                            "SZYD_Cas9_CR50",
+                                            "SZYD_Cas9_CR51",
+                                            "SZYD_Cas9_CR52",
+                                            "SZYD_Cas9_CR53",
+                                            "SZYD_Cas9_CR54",
+                                            "SZYD_Cas9_CR55",
+                                            "SZYD_Cas9_CR56",
+                                            "SZYD_Cas9_CR60",
+                                            "SZYD_Cas9_CR61",
+                                            "SZYD_Cas9_CR62",
+                                            "SZYD_Cas9_CR63",
+                                            "SZYD_Cas9_CR64",
+                                            "SZYD_Cas9_CR65",
+                                            "SZYD_Cas9_CR66"};
     const QStringList readsNames = GTUtilsMcaEditor::getReadsNames(os);
     CHECK_SET_ERR(expectedReadsnames == readsNames, "Incorrect reads names");
 }
@@ -274,29 +264,27 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
     };
 
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Sanger data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
 
     //    Expected state: the result alignment rows are named like "sanger_*".
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    const QStringList expectedReadsnames = QStringList() << "sanger_01"
-                                                         << "sanger_02"
-                                                         << "sanger_04"
-                                                         << "sanger_05"
-                                                         << "sanger_06"
-                                                         << "sanger_07"
-                                                         << "sanger_08"
-                                                         << "sanger_09"
-                                                         << "sanger_10"
-                                                         << "sanger_14"
-                                                         << "sanger_15"
-                                                         << "sanger_16"
-                                                         << "sanger_17"
-                                                         << "sanger_18"
-                                                         << "sanger_19"
-                                                         << "sanger_20";
+    const QStringList expectedReadsnames = {"sanger_01",
+                                            "sanger_02",
+                                            "sanger_04",
+                                            "sanger_05",
+                                            "sanger_06",
+                                            "sanger_07",
+                                            "sanger_08",
+                                            "sanger_09",
+                                            "sanger_10",
+                                            "sanger_14",
+                                            "sanger_15",
+                                            "sanger_16",
+                                            "sanger_17",
+                                            "sanger_18",
+                                            "sanger_19",
+                                            "sanger_20"};
     const QStringList readsNames = GTUtilsMcaEditor::getReadsNames(os);
     CHECK_SET_ERR(expectedReadsnames == readsNames, "Incorrect reads names");
 }
@@ -349,22 +337,22 @@ GUI_TEST_CLASS_DEFINITION(test_0005_3) {
     GTUtilsDashboard::clickOutputFile(os, "sanger_test_0005_3.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    const QStringList expectedReadsnames = QStringList() << "SZYD_Cas9_5B70"
-                                                         << "SZYD_Cas9_5B71"
-                                                         << "SZYD_Cas9_CR50"
-                                                         << "SZYD_Cas9_CR51"
-                                                         << "SZYD_Cas9_CR52"
-                                                         << "SZYD_Cas9_CR53"
-                                                         << "SZYD_Cas9_CR54"
-                                                         << "SZYD_Cas9_CR55"
-                                                         << "SZYD_Cas9_CR56"
-                                                         << "SZYD_Cas9_CR60"
-                                                         << "SZYD_Cas9_CR61"
-                                                         << "SZYD_Cas9_CR62"
-                                                         << "SZYD_Cas9_CR63"
-                                                         << "SZYD_Cas9_CR64"
-                                                         << "SZYD_Cas9_CR65"
-                                                         << "SZYD_Cas9_CR66";
+    const QStringList expectedReadsnames = {"SZYD_Cas9_5B70",
+                                            "SZYD_Cas9_5B71",
+                                            "SZYD_Cas9_CR50",
+                                            "SZYD_Cas9_CR51",
+                                            "SZYD_Cas9_CR52",
+                                            "SZYD_Cas9_CR53",
+                                            "SZYD_Cas9_CR54",
+                                            "SZYD_Cas9_CR55",
+                                            "SZYD_Cas9_CR56",
+                                            "SZYD_Cas9_CR60",
+                                            "SZYD_Cas9_CR61",
+                                            "SZYD_Cas9_CR62",
+                                            "SZYD_Cas9_CR63",
+                                            "SZYD_Cas9_CR64",
+                                            "SZYD_Cas9_CR65",
+                                            "SZYD_Cas9_CR66"};
     const QStringList readsNames = GTUtilsMcaEditor::getReadsNames(os);
     CHECK_SET_ERR(expectedReadsnames == readsNames, "Incorrect reads names");
 }
@@ -420,22 +408,22 @@ GUI_TEST_CLASS_DEFINITION(test_0005_4) {
     GTUtilsDashboard::clickOutputFile(os, "sanger_test_0005_4.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    const QStringList expectedReadsnames = QStringList() << "sanger_01"
-                                                         << "sanger_02"
-                                                         << "sanger_04"
-                                                         << "sanger_05"
-                                                         << "sanger_06"
-                                                         << "sanger_07"
-                                                         << "sanger_08"
-                                                         << "sanger_09"
-                                                         << "sanger_10"
-                                                         << "sanger_14"
-                                                         << "sanger_15"
-                                                         << "sanger_16"
-                                                         << "sanger_17"
-                                                         << "sanger_18"
-                                                         << "sanger_19"
-                                                         << "sanger_20";
+    const QStringList expectedReadsnames = {"sanger_01",
+                                            "sanger_02",
+                                            "sanger_04",
+                                            "sanger_05",
+                                            "sanger_06",
+                                            "sanger_07",
+                                            "sanger_08",
+                                            "sanger_09",
+                                            "sanger_10",
+                                            "sanger_14",
+                                            "sanger_15",
+                                            "sanger_16",
+                                            "sanger_17",
+                                            "sanger_18",
+                                            "sanger_19",
+                                            "sanger_20"};
     const QStringList readsNames = GTUtilsMcaEditor::getReadsNames(os);
     CHECK_SET_ERR(expectedReadsnames == readsNames, "Incorrect reads names");
 }
@@ -469,9 +457,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     };
 
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Sanger data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -490,9 +476,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     settings.outAlignment = QFileInfo(sandBoxDir + "sanger_test_0007").absoluteFilePath();
 
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(settings, os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Sanger data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -501,9 +485,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     settings.minIdentity = 70;
 
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(settings, os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Sanger data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -534,9 +516,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     settings.outAlignment = QFileInfo(sandBoxDir + "sanger_test_0008").absoluteFilePath();
 
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(settings, os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Sanger data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(l.checkMessage("trimming was skipped"), "Could not find the message about skipped trimming");
