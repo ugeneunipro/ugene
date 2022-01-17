@@ -609,8 +609,19 @@ char MultipleSequenceAlignmentRowData::getCharFromCache(int gappedPosition) cons
         return gappedSequenceCache[gappedPosition - gappedCacheOffset];
     }
     invalidateGappedCache();
-    int newGappedCacheOffset = qMax(0, gappedPosition - (gappedPosition / (GAPPED_CACHE_SIZE / 10)));  // Cache one both sides. Prefer forward iteration.
-    gappedSequenceCache = MsaRowUtils::getGappedSubsequence({newGappedCacheOffset, GAPPED_CACHE_SIZE}, sequence.constSequence(), gaps);
+    int newGappedCacheSize = GAPPED_CACHE_SIZE;
+    int newGappedCacheOffset = qMax(0, gappedPosition - (gappedPosition / (newGappedCacheSize / 10)));  // Cache one both sides. Prefer forward iteration.
+
+    // Optimize cache size for sequences < GAPPED_CACHE_SIZE.
+    int rowLength = getRowLength();
+    if (newGappedCacheOffset + newGappedCacheSize > rowLength) {
+        newGappedCacheOffset = rowLength - newGappedCacheSize;
+        if (newGappedCacheOffset < 0) {
+            newGappedCacheOffset = 0;
+            newGappedCacheSize = rowLength;
+        }
+    }
+    gappedSequenceCache = MsaRowUtils::getGappedSubsequence({newGappedCacheOffset, newGappedCacheSize}, sequence.constSequence(), gaps);
     CHECK(!gappedSequenceCache.isEmpty(), MsaRowUtils::charAt(sequence.seq, gaps, gappedPosition));
     gappedCacheOffset = newGappedCacheOffset;
     return gappedSequenceCache[gappedPosition - gappedCacheOffset];
