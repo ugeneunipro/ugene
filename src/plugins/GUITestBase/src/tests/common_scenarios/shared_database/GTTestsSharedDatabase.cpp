@@ -26,6 +26,7 @@
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTListWidget.h>
 #include <primitives/GTMenu.h>
+#include <primitives/GTTreeView.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTFile.h>
@@ -751,7 +752,7 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0003) {
 
     QModelIndex dirItem = GTUtilsProjectTreeView::findIndex(os, "proj_test_0003");
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    GTUtilsProjectTreeView::checkItemIsExpanded(os, treeView, dirItem);
+    GTTreeView::checkItemIsExpanded(os, treeView, dirItem);
 
     QAbstractItemModel *model = treeView->model();
     CHECK_SET_ERR(model->rowCount(dirItem) == 1, "Invalid child item count");
@@ -794,7 +795,7 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0004) {
     QModelIndex dirItem1 = GTUtilsProjectTreeView::findIndex(os, "pt0004_dir1");
     QModelIndex dirItem2 = GTUtilsProjectTreeView::findIndex(os, "pt0004_dir2", dirItem1);
     QModelIndex objItem = GTUtilsProjectTreeView::findIndex(os, "pt0004_human_T1");
-    GTUtilsProjectTreeView::checkItemIsExpanded(os, treeView, dirItem2);
+    GTTreeView::checkItemIsExpanded(os, treeView, dirItem2);
     GTUtilsProjectTreeView::dragAndDrop(os, objItem, dirItem1);
 
     dirItem1 = GTUtilsProjectTreeView::findIndex(os, "pt0004_dir1");
@@ -833,8 +834,8 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0005) {
         const QModelIndex objItem1 = GTUtilsProjectTreeView::findIndex(os, "pt0005_human_T1");
         const QModelIndex objItem2 = GTUtilsProjectTreeView::findIndex(os, "pt0005_COI");
 
-        GTUtilsProjectTreeView::checkItemIsExpanded(os, treeView, dirItem2);
-        GTUtilsProjectTreeView::checkItemIsExpanded(os, treeView, dirItem3);
+        GTTreeView::checkItemIsExpanded(os, treeView, dirItem2);
+        GTTreeView::checkItemIsExpanded(os, treeView, dirItem3);
 
         GTUtilsProjectTreeView::dragAndDropSeveralElements(os, QModelIndexList() << objItem1 << objItem2, dirItem1);
     }

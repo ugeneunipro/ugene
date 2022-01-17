@@ -283,6 +283,14 @@ QList<QTreeWidgetItem *> GTUtilsAnnotationsTreeView::findItems(HI::GUITestOpStat
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "expandItem"
+QTreeWidgetItem *GTUtilsAnnotationsTreeView::expandItem(HI::GUITestOpStatus &os, const QString &itemName) {
+    auto item = findItem(os, itemName);
+    GTTreeWidget::expand(os, item);
+    return item;
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getGroupNames"
 QStringList GTUtilsAnnotationsTreeView::getGroupNames(HI::GUITestOpStatus &os, const QString &annotationTableName) {
     QList<QTreeWidgetItem *> annotationTableItems;

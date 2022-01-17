@@ -39,16 +39,24 @@ void GTTreeWidget::expand(GUITestOpStatus &os, QTreeWidgetItem *item) {
     GT_CHECK(treeWidget != nullptr, "Tree widget is null!");
 
     QTreeWidgetItem *parentItem = item->parent();
-    if (parentItem != nullptr) {
+    if (parentItem != nullptr && !parentItem->isExpanded()) {
         expand(os, parentItem);
     }
     if (!item->isExpanded()) {
-        GT_CHECK(parentItem == nullptr || parentItem->isExpanded(), "Parent must be expanded at this point!");
+        GT_CHECK(parentItem == nullptr || parentItem->isExpanded(), "Parent must be expanded at this point! item: " + toString(item) + ", parent: " + toString(parentItem));
         GTTreeWidget::scrollToItem(os, item);
-        QRect itemRect = getItemRect(os, item);
-        QPoint expanderPoint = QPoint(itemRect.left() - 8, itemRect.center().y());
-        GTMouseDriver::moveTo(treeWidget->viewport()->mapToGlobal(expanderPoint));
-        GTMouseDriver::click();
+        QRect itemRect;
+        for (int time = 0; time < 5000; time += GT_OP_CHECK_MILLIS) {  // Guard against dynamic tree restructuring during massive expands.
+            itemRect = getItemRect(os, item);
+            QPoint expanderPoint = QPoint(itemRect.left() - 8, itemRect.center().y());
+            GTMouseDriver::moveTo(item->treeWidget()->viewport()->mapToGlobal(expanderPoint));
+            if (itemRect == getItemRect(os, item)) {  // Check there were no changes in the tree while moving the mouse cursor.
+                GTMouseDriver::click();
+                break;
+            }
+            GTGlobals::sleep(GT_OP_CHECK_MILLIS);
+        }
+        checkItemIsExpanded(os, item);
     }
 }
 #undef GT_METHOD_NAME
@@ -145,7 +153,7 @@ QStringList GTTreeWidget::getItemNames(GUITestOpStatus &os, QTreeWidget *treeWid
 
 #define GT_METHOD_NAME "findItemPrivate"
 QTreeWidgetItem *GTTreeWidget::findItemPrivate(GUITestOpStatus &os, QTreeWidget *tree, const QString &text, QTreeWidgetItem *parent, int column, const GTGlobals::FindOptions &options) {
-    GT_CHECK_RESULT(tree != nullptr, "tree widget is NULL", NULL);
+    GT_CHECK_RESULT(tree != nullptr, "tree widget is NULL", nullptr);
 
     if (parent == nullptr) {
         parent = tree->invisibleRootItem();
@@ -304,6 +312,24 @@ void GTTreeWidget::scrollToItem(GUITestOpStatus &os, QTreeWidgetItem *item) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "checkItemIsExpanded"
+void GTTreeWidget::checkItemIsExpanded(HI::GUITestOpStatus &os, QTreeWidgetItem *item) {
+    GT_CHECK(item != nullptr, "Item is null!");
+
+    bool isExpanded = item->isExpanded();
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && !isExpanded; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(GT_OP_CHECK_MILLIS);
+        isExpanded = item->isExpanded();
+    }
+    GT_CHECK(isExpanded, "Item is not expanded: " + toString(item));
+}
+#undef GT_METHOD_NAME
+
+QString GTTreeWidget::toString(QTreeWidgetItem *item) {
+    return item == nullptr            ? "<nullptr>"
+           : item->columnCount() == 0 ? "?"
+                                      : item->text(0);
+}
 #undef GT_CLASS_NAME
 
 }  // namespace HI

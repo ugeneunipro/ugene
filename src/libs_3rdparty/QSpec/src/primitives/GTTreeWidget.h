@@ -43,6 +43,9 @@ public:
      */
     static void expand(GUITestOpStatus &os, QTreeWidgetItem *item);
 
+    /** Checks that tree item is expanded or fails. Waits for the item to be expanded if needed. */
+    static void checkItemIsExpanded(HI::GUITestOpStatus &os, QTreeWidgetItem *item);
+
     // Checks the tree item or unchecks it if it is already checked
     static void checkItem(GUITestOpStatus &os, QTreeWidgetItem *item, int column = 0, GTGlobals::UseMethod method = GTGlobals::UseMouse);
 
@@ -75,6 +78,8 @@ public:
     /** Scroll to the item to guarantee the item is visible. */
     static void scrollToItem(GUITestOpStatus &os, QTreeWidgetItem *item);
 
+    /** Returns visual string representation of the item for logging. */
+    static QString toString(QTreeWidgetItem* item);
 private:
     static QTreeWidgetItem *findItemPrivate(GUITestOpStatus &os,
                                             QTreeWidget *tree,

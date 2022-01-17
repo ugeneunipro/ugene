@@ -23,6 +23,8 @@
 
 #include <QAbstractItemModel>
 
+#include "utils/GTThread.h"
+
 namespace HI {
 
 #define GT_CLASS_NAME "GTTreeView"
@@ -83,6 +85,21 @@ QPoint GTTreeView::getItemCenter(GUITestOpStatus &, QTreeView *treeView, const Q
     QRect r = treeView->visualRect(itemIndex);
 
     return treeView->mapToGlobal(r.center());
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkItemIsExpanded"
+void GTTreeView::checkItemIsExpanded(HI::GUITestOpStatus &os, QTreeView *treeView, const QModelIndex &itemIndex) {
+    GT_CHECK(treeView != nullptr, "Tree view is null!");
+    GT_CHECK(itemIndex.isValid(), "Item index is not valid!");
+
+    bool isExpanded = false;
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && !isExpanded; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        isExpanded = treeView->isExpanded(itemIndex);
+    }
+    GT_CHECK(isExpanded, "Item is not expanded");
+    GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 

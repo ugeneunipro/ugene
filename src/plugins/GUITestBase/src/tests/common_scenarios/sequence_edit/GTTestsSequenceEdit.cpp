@@ -421,8 +421,8 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
-    GTTreeWidget::getItemCenter(os, annotationGroup);
-    GTTreeWidget::getItemCenter(os, annotationGroup->child(0));
+    GTTreeWidget::expand(os, annotationGroup);
+    GTTreeWidget::expand(os, annotationGroup->child(0));
     QTreeWidgetItem *qualItem = annotationGroup->child(0)->child(5);
     CHECK_SET_ERR(qualItem->text(0) == "translation", "Unexpected qualifier found");
     CHECK_SET_ERR(qualItem->text(2).startsWith("WARLLPLP*V*P*"), "Unexpected 'translation' qualifier value");
@@ -439,8 +439,8 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2_neg) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
-    GTTreeWidget::getItemCenter(os, annotationGroup);
-    GTTreeWidget::getItemCenter(os, annotationGroup->child(0));
+    GTTreeWidget::expand(os, annotationGroup);
+    GTTreeWidget::expand(os, annotationGroup->child(0));
     QTreeWidgetItem *qualItem = annotationGroup->child(0)->child(5);
     CHECK_SET_ERR("translation" == qualItem->text(0), "Unexpected qualifier found");
     CHECK_SET_ERR(qualItem->text(2).startsWith("MGQTVTTPLSLTLDHWKD"), "Unexpected 'translation' qualifier value");
@@ -497,8 +497,8 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
-    GTTreeWidget::getItemCenter(os, annotationGroup);
-    GTTreeWidget::getItemCenter(os, annotationGroup->child(0));
+    GTTreeWidget::expand(os, annotationGroup);
+    GTTreeWidget::expand(os, annotationGroup->child(0));
     QTreeWidgetItem *qualItem = annotationGroup->child(0)->child(5);
     CHECK_SET_ERR(qualItem->text(0) == "translation", "Unexpected qualifier found");
     CHECK_SET_ERR(qualItem->text(2).startsWith("MGQDCYHSLKFDLRSLER"), "Unexpected 'translation' qualifier value");
@@ -517,8 +517,8 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2_neg) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
-    GTTreeWidget::getItemCenter(os, annotationGroup);
-    GTTreeWidget::getItemCenter(os, annotationGroup->child(0));
+    GTTreeWidget::expand(os, annotationGroup);
+    GTTreeWidget::expand(os, annotationGroup->child(0));
     QTreeWidgetItem *qualItem = annotationGroup->child(0)->child(5);
     CHECK_SET_ERR(qualItem->text(0) == "translation", "Unexpected qualifier found");
     CHECK_SET_ERR(qualItem->text(2).startsWith("MGQTVTTPLSLTLDHWKD"), "Unexpected 'translation' qualifier value");
@@ -583,8 +583,8 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
-    GTTreeWidget::getItemCenter(os, annotationGroup);
-    GTTreeWidget::getItemCenter(os, annotationGroup->child(0));
+    GTTreeWidget::expand(os, annotationGroup);
+    GTTreeWidget::expand(os, annotationGroup->child(0));
     QTreeWidgetItem *qualItem = annotationGroup->child(0)->child(5);
     CHECK_SET_ERR(qualItem->text(0) == "translation", "Unexpected qualifier found");
     CHECK_SET_ERR(qualItem->text(2).startsWith("MGQKLLPLP*V*P*ITGKMS"), "Unexpected 'translation' qualifier value");
@@ -604,8 +604,8 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2_neg) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
-    GTTreeWidget::getItemCenter(os, annotationGroup);
-    GTTreeWidget::getItemCenter(os, annotationGroup->child(0));
+    GTTreeWidget::expand(os, annotationGroup);
+    GTTreeWidget::expand(os, annotationGroup->child(0));
     QTreeWidgetItem *qualItem = annotationGroup->child(0)->child(5);
     CHECK_SET_ERR(qualItem->text(0) == "translation", "Unexpected qualifier found");
     CHECK_SET_ERR(qualItem->text(2).startsWith("MGQTVTTPLSLTLDHWKD"), "Unexpected 'translation' qualifier value");

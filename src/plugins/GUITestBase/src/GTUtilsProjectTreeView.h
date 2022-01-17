@@ -50,11 +50,8 @@ public:
     static void openView(HI::GUITestOpStatus &os, GTGlobals::UseMethod method = GTGlobals::UseMouse);
     static void toggleView(HI::GUITestOpStatus &os, GTGlobals::UseMethod method = GTGlobals::UseMouse);
 
-    /** Checks that tree item is expanded or fails. Waits for the item to be expanded if needed. */
-    static void checkItemIsExpanded(HI::GUITestOpStatus &os, QTreeView *treeView, const QModelIndex &itemIndex);
-
     // returns center or item's rect
-    // fails if the iteProjectm wasn't found
+    // fails if the item wasn't found
     static QPoint getItemCenter(HI::GUITestOpStatus &os, const QModelIndex &itemIndex);
     static QPoint getItemCenter(HI::GUITestOpStatus &os, QTreeView *treeView, const QModelIndex &itemIndex);
     static QPoint getItemCenter(HI::GUITestOpStatus &os, const QString &itemName);

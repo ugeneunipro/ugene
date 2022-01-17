@@ -38,6 +38,9 @@ public:
 
     static QPoint getItemCenter(GUITestOpStatus &os, QTreeView *treeView, const QModelIndex &itemIndex);
 
+    /** Checks that tree item is expanded or fails. Waits for the item to be expanded if needed. */
+    static void checkItemIsExpanded(HI::GUITestOpStatus &os, QTreeView *treeView, const QModelIndex &itemIndex);
+
 private:
     static QModelIndexList findIndexes(GUITestOpStatus &os, QTreeView *treeView, QVariant data, Qt::ItemDataRole role = Qt::DisplayRole, QModelIndex parent = QModelIndex(), int depth = 0, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
 };

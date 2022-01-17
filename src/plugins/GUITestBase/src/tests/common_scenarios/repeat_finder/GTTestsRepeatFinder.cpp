@@ -26,8 +26,6 @@
 
 #include <QTreeWidgetItem>
 
-#include <U2View/ADVConstants.h>
-
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsMdi.h"
@@ -52,9 +50,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsDocument::checkDocument(os, "seq4.fa");
 
     // 2. Run Find Repeats dialog
-    Runnable *swDialog = new FindRepeatsDialogFiller(os, testDir + "_common_data/scenarios/sandbox/");
-    GTUtilsDialog::waitForDialog(os, swDialog);
-
+    GTUtilsDialog::waitForDialog(os, new FindRepeatsDialogFiller(os, testDir + "_common_data/scenarios/sandbox/"));
     GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find repeats..."}, GTGlobals::UseMouse);
 
     // 3. Close sequence view, then reopen it
@@ -64,17 +60,12 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "seq4.fa"));
     GTMouseDriver::doubleClick();
 
-    // 4. Check that annotation have the qualifier "repeat homology"
-    GTUtilsAnnotationsTreeView::getTreeWidget(os);
+    // 4. Check that annotation has the qualifier "repeat homology"
+    QTreeWidgetItem *repeatsGroupItem = GTUtilsAnnotationsTreeView::findItem(os, "repeat_unit  (0, 325)");
+    GTTreeWidget::expand(os, repeatsGroupItem);
+    GTTreeWidget::expand(os, repeatsGroupItem->child(0));
 
-    QTreeWidgetItem *annotationsRoot = GTUtilsAnnotationsTreeView::findItem(os, "repeat_unit  (0, 325)");
-    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, annotationsRoot->child(0)));
-    GTMouseDriver::doubleClick();
     GTUtilsAnnotationsTreeView::findItem(os, "repeat_identity");
-
-    // 5. Close sequence view (it's needed to refresh screen since Ugene cannot close correctly on Win7 32bit)
-    GTUtilsMdi::click(os, GTGlobals::Close);
-    GTMouseDriver::click();
 }
 
 }  // namespace GUITest_common_scenarios_repeat_finder

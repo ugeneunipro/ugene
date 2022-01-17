@@ -49,6 +49,9 @@ public:
     static QTreeWidgetItem *findItemWithIndex(HI::GUITestOpStatus &os, const QString &itemName, int index, bool expandParent = true);
     static QList<QTreeWidgetItem *> findItems(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
 
+    /** Find and expands single item by name. Fails if the item is not found or if multiple items with this name are present. */
+    static QTreeWidgetItem *expandItem(HI::GUITestOpStatus &os, const QString &itemName);
+
     static QStringList getGroupNames(HI::GUITestOpStatus &os, const QString &annotationTableName = "");
 
     static QStringList getAnnotationNamesOfGroup(HI::GUITestOpStatus &os, const QString &groupName);
@@ -74,7 +77,7 @@ public:
     static QString getAnnotationType(HI::GUITestOpStatus &os, const QString &annotationName);
 
     static void createQualifier(HI::GUITestOpStatus &os, const QString &qualifierName, const QString &qualifierValue, const QString &annotationName);
-    static void createQualifier(HI::GUITestOpStatus &os, const QString &qualifierName, const QString &qualifierValue, QTreeWidgetItem* annotation);
+    static void createQualifier(HI::GUITestOpStatus &os, const QString &qualifierName, const QString &qualifierValue, QTreeWidgetItem *annotation);
 
     static void selectItems(HI::GUITestOpStatus &os, const QStringList &items);
     static void selectItems(HI::GUITestOpStatus &os, const QList<QTreeWidgetItem *> &items);
