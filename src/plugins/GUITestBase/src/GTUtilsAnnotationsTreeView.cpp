@@ -412,11 +412,11 @@ QPoint GTUtilsAnnotationsTreeView::getItemCenter(HI::GUITestOpStatus &os, const 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "createQualifier"
-void GTUtilsAnnotationsTreeView::createQualifier(HI::GUITestOpStatus &os, const QString &qualName, const QString &qualValue, const QString &parentName) {
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD"
-                                                                        << "add_qualifier_action"));
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, qualName, qualValue));
-    GTMouseDriver::moveTo(getItemCenter(os, parentName));
+void GTUtilsAnnotationsTreeView::createQualifier(HI::GUITestOpStatus &os, const QString &qualifierName, const QString &qualifierValue, const QString &annotationName) {
+    selectItems(os, {annotationName});
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "add_qualifier_action"}));
+    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, qualifierName, qualifierValue));
+    GTMouseDriver::moveTo(getItemCenter(os, annotationName));
     GTMouseDriver::click(Qt::RightButton);
 }
 #undef GT_METHOD_NAME

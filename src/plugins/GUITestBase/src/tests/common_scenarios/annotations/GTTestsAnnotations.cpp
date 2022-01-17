@@ -698,20 +698,16 @@ GUI_TEST_CLASS_DEFINITION(test_0010_3) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "det_view_GXL_141618"), Qt::RightButton);
 
-    QStringList annList;
-    annList << "ann_1"
-            << "ann_2";
-    GTUtilsAnnotationsTreeView::selectItems(os, annList);
     GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "YT483", "ann_1");
     GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "001T", "ann_1");
     GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "YT496", "ann_2");
     GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "0012", "ann_2");
 
-    GTUtilsAnnotationsTreeView::selectItems(os, annList);
+    GTUtilsAnnotationsTreeView::selectItems(os, {"ann_1", "ann_2"});
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0010_3.gtf", ExportAnnotationsFiller::gtf, false, false, false));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
-    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EXPORT, "action_export_annotations"}));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
 
     GTUtilsDocument::removeDocument(os, "DNA.fa");
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "No"));
@@ -955,25 +951,20 @@ GUI_TEST_CLASS_DEFINITION(test_0012_3) {
     GTUtilsProjectTreeView::checkItem(os, "scaffold_90 features");
 
     QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, "scaffold_90 features");
-    QWidget *sequence = GTUtilsSequenceView::getPanOrDetView(os);
-    CHECK_SET_ERR(sequence != nullptr, "Sequence widget not found");
+    QWidget *sequenceView = GTUtilsSequenceView::getPanOrDetView(os);
 
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
-    GTUtilsProjectTreeView::dragAndDrop(os, idx, sequence);
+    GTUtilsProjectTreeView::dragAndDrop(os, idx, sequenceView);
 
     GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", "exon");
     GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "TR321", "exon");
     GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", "5'UTR");
     GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "TR321", "5'UTR");
 
-    QStringList annList;
-    annList << "5'UTR"
-            << "exon";
-
-    GTUtilsAnnotationsTreeView::selectItems(os, annList);
+    GTUtilsAnnotationsTreeView::selectItems(os, {"5'UTR", "exon"});
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0012_3.gtf", ExportAnnotationsFiller::gtf, false, false, false));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EXPORT, "action_export_annotations"}));
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "No"));

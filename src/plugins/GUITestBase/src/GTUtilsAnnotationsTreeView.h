@@ -73,7 +73,7 @@ public:
     static QString getAnnotationRegionString(HI::GUITestOpStatus &os, const QString &annotationName);
     static QString getAnnotationType(HI::GUITestOpStatus &os, const QString &annotationName);
 
-    static void createQualifier(HI::GUITestOpStatus &os, const QString &qualName, const QString &qualValue, const QString &parentName);
+    static void createQualifier(HI::GUITestOpStatus &os, const QString &qualifierName, const QString &qualifierValue, const QString &annotationName);
 
     static void selectItems(HI::GUITestOpStatus &os, const QStringList &items);
     static void selectItems(HI::GUITestOpStatus &os, const QList<QTreeWidgetItem *> &items);
