@@ -177,7 +177,7 @@ void GTUtilsWorkflowDesigner::returnToWorkflow(HI::GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
-static bool compare(QString s1, QString s2, bool isExactMatch) {
+static bool compare(const QString &s1, const QString &s2, bool isExactMatch) {
     return isExactMatch ? s1 == s2 : s1.toLower().contains(s2.toLower());
 }
 
@@ -185,16 +185,9 @@ static bool compare(QString s1, QString s2, bool isExactMatch) {
 QTreeWidgetItem *GTUtilsWorkflowDesigner::findTreeItem(HI::GUITestOpStatus &os, const QString &itemName, tab t, bool exactMatch, bool failIfNULL) {
     QWidget *wdWindow = getActiveWorkflowDesignerWindow(os);
     QTreeWidgetItem *foundItem = nullptr;
-    QTreeWidget *w;
-    if (t == algorithms) {
-        w = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "WorkflowPaletteElements", wdWindow));
-    } else {
-        w = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "samples", wdWindow));
-    }
-    GT_CHECK_RESULT(w != nullptr, "WorkflowPaletteElements is null", nullptr);
+    auto treeWidget = GTWidget::findTreeWidget(os, t == algorithms ? "WorkflowPaletteElements" : "samples", wdWindow);
 
-    QList<QTreeWidgetItem *> outerList = w->findItems("", Qt::MatchContains);
-
+    QList<QTreeWidgetItem *> outerList = treeWidget->findItems("", Qt::MatchContains);
     for (int i = 0; i < outerList.count(); i++) {
         QList<QTreeWidgetItem *> innerList;
 
@@ -202,25 +195,23 @@ QTreeWidgetItem *GTUtilsWorkflowDesigner::findTreeItem(HI::GUITestOpStatus &os, 
             innerList.append(outerList.value(i)->child(j));
         }
 
-        foreach (QTreeWidgetItem *item, innerList) {
+        for (QTreeWidgetItem *item : qAsConst(innerList)) {
             if (t == algorithms) {
                 QString s = item->data(0, Qt::UserRole).value<QAction *>()->text();
                 if (compare(s, itemName, exactMatch)) {
-                    GT_CHECK_RESULT(foundItem == nullptr, "several items have this discription", item);
+                    GT_CHECK_RESULT(foundItem == nullptr, "several items have this description", item);
                     foundItem = item;
                 }
             } else {
                 QString s = item->text(0);
                 if (compare(s, itemName, exactMatch)) {
-                    GT_CHECK_RESULT(foundItem == nullptr, "several items have this discription", item);
+                    GT_CHECK_RESULT(foundItem == nullptr, "several items have this description", item);
                     foundItem = item;
                 }
             }
         }
     }
-    if (failIfNULL) {
-        GT_CHECK_RESULT(foundItem != nullptr, "Item \"" + itemName + "\" not found in treeWidget", nullptr);
-    }
+    GT_CHECK_RESULT(!failIfNULL || foundItem != nullptr, "Item \"" + itemName + "\" not found in treeWidget", nullptr);
     return foundItem;
 }
 #undef GT_METHOD_NAME
@@ -254,17 +245,13 @@ QList<QTreeWidgetItem *> GTUtilsWorkflowDesigner::getVisibleSamples(HI::GUITestO
 void GTUtilsWorkflowDesigner::addAlgorithm(HI::GUITestOpStatus &os, const QString &algName, bool exactMatch, bool useDragAndDrop) {
     QWidget *wdWindow = getActiveWorkflowDesignerWindow(os);
     expandTabs(os);
-    QTabWidget *tabs = qobject_cast<QTabWidget *>(GTWidget::findWidget(os, "tabs", wdWindow));
-    GT_CHECK(tabs != nullptr, "tabs widget not found");
 
-    GTTabWidget::setCurrentIndex(os, tabs, 0);
+    QTabWidget *tabWidget = GTWidget::findTabWidget(os, "tabs", wdWindow);
+    GTTabWidget::setCurrentIndex(os, tabWidget, 0);
 
-    QTreeWidgetItem *alg = findTreeItem(os, algName, algorithms, exactMatch);
-    GT_CHECK(alg != nullptr, "algorithm is NULL");
+    GTTreeWidget::click(os, findTreeItem(os, algName, algorithms, exactMatch));
 
-    selectAlgorithm(os, alg);
-    QWidget *w = GTWidget::findWidget(os, "sceneView", wdWindow);
-
+    QWidget *sceneView = GTWidget::findWidget(os, "sceneView", wdWindow);
     // Put the new worker in to the grid.
     int columnWidth = 250;
     int columnHeight = 250;
@@ -273,11 +260,11 @@ void GTUtilsWorkflowDesigner::addAlgorithm(HI::GUITestOpStatus &os, const QStrin
     int numberOfWorkers = getWorkers(os).size();
     int currentWorkerRow = numberOfWorkers / workersPerRow;
     int currentWorkerColumn = numberOfWorkers % workersPerRow;
-    QPoint newWorkerPosition(w->rect().topLeft() + QPoint(currentWorkerColumn * columnWidth, currentWorkerRow * columnHeight) + QPoint(100, 100));
+    QPoint newWorkerPosition(sceneView->rect().topLeft() + QPoint(currentWorkerColumn * columnWidth, currentWorkerRow * columnHeight) + QPoint(100, 100));
     if (useDragAndDrop) {
-        GTMouseDriver::dragAndDrop(GTMouseDriver::getMousePosition(), w->mapToGlobal(newWorkerPosition));
+        GTMouseDriver::dragAndDrop(GTMouseDriver::getMousePosition(), sceneView->mapToGlobal(newWorkerPosition));
     } else {
-        GTWidget::click(os, w, Qt::LeftButton, newWorkerPosition);
+        GTWidget::click(os, sceneView, Qt::LeftButton, newWorkerPosition);
     }
     GTThread::waitForMainThread();
 }
@@ -297,26 +284,6 @@ WorkflowProcessItem *GTUtilsWorkflowDesigner::addElementByUsingNameFilter(HI::GU
     WorkflowProcessItem *item = GTUtilsWorkflowDesigner::addElement(os, elementName, exactMatch);
     GTUtilsWorkflowDesigner::cleanNameFilter(os);
     return item;
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "selectAlgorithm"
-void GTUtilsWorkflowDesigner::selectAlgorithm(HI::GUITestOpStatus &os, QTreeWidgetItem *algorithm) {
-    GT_CHECK(algorithm != nullptr, "algorithm is nullptr");
-
-    class MainThreadAction : public CustomScenario {
-    public:
-        MainThreadAction(QTreeWidgetItem *algorithm)
-            : CustomScenario(), algorithm(algorithm) {
-        }
-        void run(HI::GUITestOpStatus &os) {
-            Q_UNUSED(os);
-            algorithm->treeWidget()->scrollToItem(algorithm, QAbstractItemView::PositionAtCenter);
-        }
-        QTreeWidgetItem *algorithm;
-    };
-    GTThread::runInMainThread(os, new MainThreadAction(algorithm));
-    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, algorithm));
 }
 #undef GT_METHOD_NAME
 
@@ -436,7 +403,7 @@ void GTUtilsWorkflowDesigner::cleanNameFilter(HI::GUITestOpStatus &os) {
 
 #define GT_METHOD_NAME "clickOnPalette"
 void GTUtilsWorkflowDesigner::clickOnPalette(HI::GUITestOpStatus &os, const QString &itemName, Qt::MouseButton mouseButton) {
-    selectAlgorithm(os, findTreeItem(os, itemName, algorithms, true));
+    GTTreeWidget::click(os, findTreeItem(os, itemName, algorithms, true));
     GTMouseDriver::click(mouseButton);
 }
 #undef GT_METHOD_NAME
@@ -444,7 +411,7 @@ void GTUtilsWorkflowDesigner::clickOnPalette(HI::GUITestOpStatus &os, const QStr
 #define GT_METHOD_NAME "getPaletteGroup"
 QTreeWidgetItem *GTUtilsWorkflowDesigner::getPaletteGroup(HI::GUITestOpStatus &os, const QString &groupName) {
     QTreeWidget *tree = getCurrentTabTreeWidget(os);
-    GT_CHECK_RESULT(nullptr != tree, "WorkflowPaletteElements is NULL", nullptr);
+    GT_CHECK_RESULT(tree != nullptr, "WorkflowPaletteElements is NULL", nullptr);
 
     GTGlobals::FindOptions options;
     options.depth = 1;
@@ -484,10 +451,10 @@ QStringList GTUtilsWorkflowDesigner::getPaletteGroupNames(HI::GUITestOpStatus &o
 QList<QTreeWidgetItem *> GTUtilsWorkflowDesigner::getPaletteGroupEntries(HI::GUITestOpStatus &os, QTreeWidgetItem *groupItem) {
     QList<QTreeWidgetItem *> items;
 
-    GT_CHECK_RESULT(nullptr != groupItem, "Group item is NULL", items);
+    GT_CHECK_RESULT(groupItem != nullptr, "Group item is NULL", items);
 
     QTreeWidget *tree = getCurrentTabTreeWidget(os);
-    GT_CHECK_RESULT(nullptr != tree, "WorkflowPaletteElements is NULL", items);
+    GT_CHECK_RESULT(tree != nullptr, "WorkflowPaletteElements is NULL", items);
 
     GTGlobals::FindOptions options;
     options.depth = 0;

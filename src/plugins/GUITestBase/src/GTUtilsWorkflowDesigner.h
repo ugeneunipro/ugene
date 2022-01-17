@@ -218,7 +218,6 @@ public:
     static void importCmdlineBasedElement(HI::GUITestOpStatus &os, const QString &path);
 
 private:
-    static void selectAlgorithm(HI::GUITestOpStatus &os, QTreeWidgetItem *algorithm);
     static void selectSample(HI::GUITestOpStatus &os, QTreeWidgetItem *sample, QWidget *parentWidget = nullptr);
     static QRect getItemRect(HI::GUITestOpStatus &os, const QString &itemName);
     static QTreeWidget *getCurrentTabTreeWidget(HI::GUITestOpStatus &os);
