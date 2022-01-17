@@ -710,6 +710,8 @@ void SeqWriter::data2doc(Document *doc, const QVariantMap &data) {
         RawSeqWriter::data2document(doc, data, context);
     } else if (BaseDocumentFormats::GFF == fid) {
         GFFWriter::data2document(doc, data, context);
+    }else if (BaseDocumentFormats::UGENEDB == fid) {
+        UgeneDBWriter::data2document(doc, data, context);
     } else {
         assert(0);
         ioLog.error(QString("Unknown data format for writing: %1").arg(fid));
@@ -871,6 +873,14 @@ QSet<GObject *> MSAWriter::getObjectsToWrite(const QVariantMap &data) const {
 
 bool MSAWriter::isStreamingSupport() const {
     return false;
+}
+
+/*************************************
+ * UgeneDBWriter
+ *************************************/
+UgeneDBWriter::UgeneDBWriter(Actor *a)
+    : GenbankWriter(a) {
+    format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::UGENEDB);
 }
 
 /*************************************

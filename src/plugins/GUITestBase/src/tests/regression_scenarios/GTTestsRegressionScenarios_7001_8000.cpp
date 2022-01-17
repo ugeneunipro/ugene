@@ -555,6 +555,32 @@ GUI_TEST_CLASS_DEFINITION(test_7212) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7227) {
+    /*
+    1. Open WD
+    2. Add scheme "Read sequence"->"Write sequence"
+    3. Set input file: sample/Genbank/murine.gb
+    4. Set some output file in "UGENE Database" format
+    5. Run
+    Expected state: execution without any errors
+    */
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    WorkflowProcessItem *readSeq = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
+    WorkflowProcessItem *writeSeq = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence", true);
+
+    GTUtilsWorkflowDesigner::connect(os, readSeq, writeSeq);
+
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", dataDir + "/samples/Genbank/murine.gb");
+    GTUtilsWorkflowDesigner::click(os, "Write Sequence");
+    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "UGENE Database", GTUtilsWorkflowDesigner::comboValue);
+
+    const GTLogTracer logTracer;
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!logTracer.hasErrors(), "Errors in log: " + logTracer.getJoinedErrorString());
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7234) {
     class InSilicoWizardScenario : public CustomScenario {
     public:

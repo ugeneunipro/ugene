@@ -212,6 +212,12 @@ public:
     static void data2document(Document *, const QVariantMap &, WorkflowContext *);
 };
 
+class UgeneDBWriter : public GenbankWriter {
+    Q_OBJECT
+public:
+    UgeneDBWriter(Actor *a);
+};
+
 class DataWorkerFactory : public DomainFactory {
 public:
     DataWorkerFactory(const Descriptor &d)
