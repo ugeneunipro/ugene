@@ -193,17 +193,22 @@ void MaGraphOverview::recomputeGraphIfNeeded() {
 }
 
 void MaGraphOverview::sl_highlightingChanged() {
+    updateHighlightingSchemes();
+    recomputeGraphIfNeeded();
+}
+
+void MaGraphOverview::updateHighlightingSchemes() {
     if (state.method == MaGraphCalculationMethod::Highlighting) {
         MaEditorSequenceArea *sequenceArea = ui->getSequenceArea();
         MsaHighlightingScheme *highlightingScheme = sequenceArea->getCurrentHighlightingScheme();
         MsaColorScheme *colorScheme = sequenceArea->getCurrentColorScheme();
         state.highlightingSchemeId = highlightingScheme->getFactory()->getId();
         state.colorSchemeId = colorScheme->getFactory()->getId();
+        SAFE_POINT(!state.highlightingSchemeId.isEmpty() && !state.colorSchemeId.isEmpty(), "There must be valid highlighting and color schemes", );
     } else {
         state.highlightingSchemeId = "";
         state.colorSchemeId = "";
     }
-    recomputeGraphIfNeeded();
 }
 
 void MaGraphOverview::sl_graphOrientationChanged(const MaGraphOverviewDisplaySettings::OrientationMode &orientation) {
@@ -229,10 +234,7 @@ void MaGraphOverview::sl_graphColorChanged(const QColor &color) {
 
 void MaGraphOverview::sl_calculationMethodChanged(const MaGraphCalculationMethod &method) {
     state.method = method;
-    if (method != MaGraphCalculationMethod::Highlighting) {
-        state.highlightingSchemeId = "";
-        state.colorSchemeId = "";
-    }
+    updateHighlightingSchemes();
     recomputeGraphIfNeeded();
 }
 
