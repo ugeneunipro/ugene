@@ -120,6 +120,25 @@ void GTUtilsLog::checkMessageWithWait(HI::GUITestOpStatus &os, const GTLogTracer
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "checkMessageWithTextCount"
+void GTUtilsLog::checkMessageWithTextCount(HI::GUITestOpStatus &os, const QString &messagePart, int expectedMessageCount, const QString &context) {
+    int messageCount = 0;
+    QList<LogMessage *> messages = GTLogTracer::getMessages();
+    for (auto message : qAsConst(messages)) {
+        if (message->text.contains("checkMessageWithTextCount: Unexpected message count for text: '")) {
+            continue;  // A harness message from one of the previous GT_CHECK calls. Contains the check message part.
+        }
+        messageCount += message->text.contains(messagePart, Qt::CaseInsensitive) ? 1 : 0;
+    }
+    GT_CHECK(messageCount == expectedMessageCount,
+             QString("checkMessageWithTextCount: Unexpected message count for text: '%1', expected: %2, got: %3%4")
+                 .arg(messagePart)
+                 .arg(expectedMessageCount)
+                 .arg(messageCount)
+                 .arg(context.isEmpty() ? "" : ", context: " + context));
+}
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 
 }  // namespace U2
