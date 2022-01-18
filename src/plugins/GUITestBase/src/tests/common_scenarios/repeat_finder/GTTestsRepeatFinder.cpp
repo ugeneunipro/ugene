@@ -43,7 +43,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     // The Test Runs Repeat Finder then checks if the qualifier "repeat homology" exists in resulting annotations
     //
     // Steps:
-    //
     // 1. Use menu {File->Open}. Open file _common_data/fasta/seq4.fa.
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "seq4.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
