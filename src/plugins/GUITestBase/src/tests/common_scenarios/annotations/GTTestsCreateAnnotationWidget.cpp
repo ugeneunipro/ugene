@@ -1855,7 +1855,9 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {
 
             //    8. Click "Predefined group names" button.
             //    Expected state: a popup menu contains all groups from the "NC_001363 annotations 2" table.
-            expectedGroups = QStringList() << "<auto>" << "group" << "just an annotation";
+            expectedGroups = QStringList() << "<auto>"
+                                           << "group"
+                                           << "just an annotation";
             GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new GroupMenuChecker(expectedGroups)));
             clickSelectGroupButton(os, dialog);
 
@@ -1954,7 +1956,9 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
 
             //    8. Click "Predefined group names" button.
             //    Expected state: a popup menu contains all groups from the "NC_001363 annotations 2" table.
-            expectedGroups = QStringList() << "<auto>" << "group" << "just an annotation";
+            expectedGroups = QStringList() << "<auto>"
+                                           << "group"
+                                           << "just an annotation";
             GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new GroupMenuChecker(expectedGroups)));
             clickSelectGroupButton(os, dialog);
 
@@ -2052,7 +2056,9 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
 
     //    8. Click "Predefined group names" button.
     //    Expected state: a popup menu contains all groups from the "NC_001363 annotations 2" table.
-    expectedGroups = QStringList() << "<auto>" << "group" << "just an annotation";
+    expectedGroups = QStringList() << "<auto>"
+                                   << "group"
+                                   << "just an annotation";
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new GroupMenuChecker(expectedGroups)));
     clickSelectGroupButton(os);
 
@@ -2064,7 +2070,9 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: there is a new annotation in the new correctly named group in the "NC_001363 annotations 2" table.
-    expectedGroups = QStringList() << "group  (0, 1)", "just an annotation  (0, 1)", "test_0033  (0, 1)";
+    expectedGroups = QStringList() << "group  (0, 1)"
+                                   << "just an annotation  (0, 1)"
+                                   << "test_0033  (0, 1)";
     QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "NC_001363 annotations 2 [2annot_1seq.gb] *");
     CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'").arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
