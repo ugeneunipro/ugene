@@ -878,9 +878,138 @@ bool MSAWriter::isStreamingSupport() const {
 /*************************************
  * UgeneDBWriter
  *************************************/
-UgeneDBWriter::UgeneDBWriter(Actor *a)
-    : GenbankWriter(a) {
-    format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::UGENEDB);
+void UgeneDBWriter::data2doc(Document *doc, const QVariantMap &data) {
+    data2document(doc, data, context);
+}
+
+void UgeneDBWriter::storeEntry(IOAdapter *io, const QVariantMap &data, int entryNum) {
+    streamingStoreEntry(format, io, data, context, entryNum);
+}
+
+void UgeneDBWriter::data2document(Document *doc, const QVariantMap &data, WorkflowContext *context) {
+    QScopedPointer<U2SequenceObject> seqObj(nullptr);
+    U2SequenceObject *dna = nullptr;
+    QString annotationName;
+
+    if (data.contains(BaseSlots::DNA_SEQUENCE_SLOT().getId())) {
+        SharedDbiDataHandler seqId = data[BaseSlots::DNA_SEQUENCE_SLOT().getId()].value<SharedDbiDataHandler>();
+        seqObj.reset(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
+        SAFE_POINT(nullptr != seqObj.data(), tr("UgeneDB writer: NULL sequence object"), );
+
+        U2OpStatusImpl os;
+        DNASequence seq = seqObj->getWholeSequence(os);
+        SAFE_POINT_OP(os, );
+        QMapIterator<QString, QVariant> it(seq.info);
+        while (it.hasNext()) {
+            it.next();
+            if (!(it.value().type() == QVariant::String || it.value().type() == QVariant::StringList)) {
+                seq.info.remove(it.key());
+            }
+        }
+
+        if (seq.getName().isEmpty()) {
+            int num = doc->findGObjectByType(GObjectTypes::SEQUENCE).size();
+            seq.setName(QString("unknown sequence %1").arg(num));
+        } else {
+            annotationName = getAnnotationName(seq.getName());
+        }
+
+        dna = qobject_cast<U2SequenceObject *>(doc->findGObjectByName(seq.getName()));
+        if (!dna && !seq.isNull()) {
+            dna = addSeqObject(doc, seq);
+        }
+    }
+
+    if (data.contains(BaseSlots::ANNOTATION_TABLE_SLOT().getId())) {
+        const QVariant &annsVar = data[BaseSlots::ANNOTATION_TABLE_SLOT().getId()];
+        const QList<SharedAnnotationData> atl = StorageUtils::getAnnotationTable(context->getDataStorage(), annsVar);
+
+        if (!atl.isEmpty()) {
+            AnnotationTableObject *att = nullptr;
+            if (dna) {
+                QList<GObject *> relAnns = GObjectUtils::findObjectsRelatedToObjectByRole(dna,
+                                                                                          GObjectTypes::ANNOTATION_TABLE,
+                                                                                          ObjectRole_Sequence,
+                                                                                          doc->getObjects(),
+                                                                                          UOF_LoadedOnly);
+                att = relAnns.isEmpty() ? nullptr : qobject_cast<AnnotationTableObject *>(relAnns.first());
+            }
+            if (!att) {
+                if (annotationName.isEmpty()) {
+                    int featuresNum = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE).size();
+                    annotationName = QString("unknown features %1").arg(featuresNum);
+                }
+                att = qobject_cast<AnnotationTableObject *>(doc->findGObjectByName(annotationName));
+                if (att == nullptr) {
+                    doc->addObject(att = new AnnotationTableObject(annotationName, context->getDataStorage()->getDbiRef()));
+                    if (dna) {
+                        att->addObjectRelation(dna, ObjectRole_Sequence);
+                    }
+                }
+                algoLog.trace(QString("Adding features [%1] to UgeneDB doc %2").arg(annotationName).arg(doc->getURLString()));
+            }
+            att->addAnnotations(atl);
+        }
+    }
+}
+
+bool UgeneDBWriter::hasDataToWrite(const QVariantMap &data) const {
+    return SeqWriter::hasSequenceOrAnns(data);
+}
+
+QSet<GObject *> UgeneDBWriter::getObjectsToWrite(const QVariantMap &data) const {
+    return QSet<GObject *>() << SeqWriter::getSeqObject(data, context) << SeqWriter::getAnnObject(data, context);
+}
+
+void UgeneDBWriter::streamingStoreEntry(DocumentFormat *format, IOAdapter *io, const QVariantMap &data, WorkflowContext *context, int entryNum) {
+    U2OpStatus2Log os;
+    QScopedPointer<U2SequenceObject> seqObj(nullptr);
+    QString annotationName;
+    if (data.contains(BaseSlots::DNA_SEQUENCE_SLOT().getId())) {
+        seqObj.reset(getCopiedSequenceObject(data, context, os));
+        SAFE_POINT_OP(os, );
+
+        if (seqObj->getGObjectName().isEmpty()) {
+            seqObj->setGObjectName(QString("unknown sequence %1").arg(entryNum));
+            annotationName = QString("unknown features %1").arg(entryNum);
+        } else {
+            annotationName = getAnnotationName(seqObj->getGObjectName());
+        }
+    }
+
+    QList<GObject *> anObjList;
+    if (data.contains(BaseSlots::ANNOTATION_TABLE_SLOT().getId())) {
+        const QVariant &annsVar = data[BaseSlots::ANNOTATION_TABLE_SLOT().getId()];
+        const QList<SharedAnnotationData> atl = StorageUtils::getAnnotationTable(context->getDataStorage(), annsVar);
+
+        if (!atl.isEmpty()) {
+            if (annotationName.isEmpty()) {
+                annotationName = QString("unknown features %1").arg(entryNum);
+            }
+            AnnotationTableObject *att = new AnnotationTableObject(annotationName, context->getDataStorage()->getDbiRef());
+            anObjList << att;
+            att->addAnnotations(atl);
+        }
+    }
+
+    QMap<GObjectType, QList<GObject *>> objectsMap;
+    {
+        if (nullptr != seqObj.data()) {
+            QList<GObject *> seqs;
+            seqs << seqObj.data();
+            objectsMap[GObjectTypes::SEQUENCE] = seqs;
+        }
+        if (!anObjList.isEmpty()) {
+            objectsMap[GObjectTypes::ANNOTATION_TABLE] = anObjList;
+        }
+    }
+    CHECK(!objectsMap.isEmpty(), );
+
+    format->storeEntry(io, objectsMap, os);
+
+    foreach (GObject *o, anObjList) {
+        delete o;
+    }
 }
 
 /*************************************

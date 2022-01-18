@@ -579,6 +579,32 @@ GUI_TEST_CLASS_DEFINITION(test_7227) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(!logTracer.hasErrors(), "Errors in log: " + logTracer.getJoinedErrorString());
+
+    const QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(1 == outputFiles.size(), QString("Too many output files, exptected 1, got %1").arg(outputFiles.size()));
+
+    const QString expectedResultFileName = "Dataset 1.ugenedb";
+    const QString actualResultFileName = outputFiles.first();
+    CHECK_SET_ERR(expectedResultFileName == actualResultFileName, QString("An incorrect output file name, exptected '%1', got '%2'").arg(expectedResultFileName).arg(actualResultFileName));
+
+    GTUtilsDashboard::clickOutputFile(os, actualResultFileName);
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QMap<QString, QStringList> documents = GTUtilsProjectTreeView::getDocuments(os);
+    CHECK_SET_ERR(1 == documents.count(), QString("An incorrect documents count: expected 1, got %1").arg(documents.count()));
+
+    const QString actualDocumentName = documents.keys().first();
+    CHECK_SET_ERR(expectedResultFileName == actualDocumentName, QString("An unexpected document name: expected '%1', got '%2'").arg(expectedResultFileName).arg(actualDocumentName));
+
+    CHECK_SET_ERR(2 == documents.first().count(), QString("An incorrect objects count in '%1' document: expected 1, got %2").arg(documents.keys().first()).arg(documents.first().count()));
+
+    const QString expectedObjectName = "[s] NC_001363";
+    const QString actualObjectName = documents.first().first();
+    CHECK_SET_ERR(expectedObjectName == actualObjectName, QString("An unexpected object name: expected '%1', got '%2'").arg(expectedObjectName).arg(actualObjectName));
+    
+    const QString expectedObjectName2 = "[a] NC_001363 features";
+    const QString actualObjectName2 = documents.first()[1];
+    CHECK_SET_ERR(expectedObjectName2 == actualObjectName2, QString("An unexpected object name: expected '%1', got '%2'").arg(expectedObjectName2).arg(actualObjectName2));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7234) {
