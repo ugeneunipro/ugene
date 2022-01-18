@@ -50,13 +50,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsDocument::checkDocument(os, "seq4.fa");
 
     // 2. Run Find Repeats dialog
-<<<<<<< HEAD
     GTUtilsDialog::waitForDialog(os, new FindRepeatsDialogFiller(os, testDir + "_common_data/scenarios/sandbox/"));
-=======
-    Runnable *swDialog = new FindRepeatsDialogFiller(os, testDir + "_common_data/scenarios/sandbox/");
-    GTUtilsDialog::waitForDialog(os, swDialog);
-
->>>>>>> Modernize GUI tests code: use std list initializers to create lists (#714)
     GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find repeats..."}, GTGlobals::UseMouse);
 
     // 3. Close sequence view, then reopen it
