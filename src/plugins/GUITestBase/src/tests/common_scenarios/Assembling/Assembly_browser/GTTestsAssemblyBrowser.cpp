@@ -401,12 +401,12 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     QString outputFileValue = GTUtilsWorkflowDesigner::getParameter(os, "Output file");
     QString formatValue = GTUtilsWorkflowDesigner::getParameter(os, "Format");
     QString thresholdValue = GTUtilsWorkflowDesigner::getParameter(os, "Threshold");
-    CHECK_SET_ERR("assembly_coverage.bedgraph" == outputFileValue, QString("1. Unexpected default value of the 'Output file' parameter: expected '%1', got '%2'").arg("assembly_coverage.bedgraph").arg(outputFileValue));
-    CHECK_SET_ERR("Bedgraph" == formatValue, QString("Unexpected default value of the 'Format' parameter: expected '%1', got '%2'").arg("Bedgraph").arg(formatValue));
-    CHECK_SET_ERR("1" == thresholdValue, QString("Unexpected default value of the 'Threshold' parameter: expected '%1', got '%2'").arg("1").arg(thresholdValue));
+    CHECK_SET_ERR(outputFileValue == "assembly_coverage.bedgraph", QString("1. Unexpected default value of the 'Output file' parameter: expected '%1', got '%2'").arg("assembly_coverage.bedgraph").arg(outputFileValue));
+    CHECK_SET_ERR(formatValue == "Bedgraph", QString("Unexpected default value of the 'Format' parameter: expected '%1', got '%2'").arg("Bedgraph").arg(formatValue));
+    CHECK_SET_ERR(thresholdValue == "1", QString("Unexpected default value of the 'Threshold' parameter: expected '%1', got '%2'").arg("1").arg(thresholdValue));
 
     GTUtilsWorkflowDesigner::clickParameter(os, "Threshold");
-    QSpinBox *sbThreshold = qobject_cast<QSpinBox *>(GTUtilsWorkflowDesigner::getParametersTable(os)->findChild<QSpinBox *>());
+    auto sbThreshold = qobject_cast<QSpinBox *>(GTUtilsWorkflowDesigner::getParametersTable(os)->findChild<QSpinBox *>());
     GTSpinBox::checkLimits(os, sbThreshold, 0, 65535);
 
     //    5. Set format "Histogram".

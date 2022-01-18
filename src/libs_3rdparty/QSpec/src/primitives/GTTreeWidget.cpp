@@ -48,7 +48,11 @@ void GTTreeWidget::expand(GUITestOpStatus &os, QTreeWidgetItem *item) {
         QRect itemRect;
         for (int time = 0; time < 5000; time += GT_OP_CHECK_MILLIS) {  // Guard against dynamic tree restructuring during massive expands.
             itemRect = getItemRect(os, item);
+
+            // We have 2 kind of tree items:
+            // with an expander widget on the left (x=-8px) and no expander widget at all (x=+5px, same as clicking on the widget itself).
             QPoint expanderPoint = QPoint(itemRect.left() - 8, itemRect.center().y());
+            expanderPoint.setX(qMax(5, expanderPoint.x()));
             GTMouseDriver::moveTo(item->treeWidget()->viewport()->mapToGlobal(expanderPoint));
             if (itemRect == getItemRect(os, item)) {  // Check there were no changes in the tree while moving the mouse cursor.
                 GTMouseDriver::click();

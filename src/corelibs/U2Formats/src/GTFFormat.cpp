@@ -518,10 +518,10 @@ void GTFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
     }
 
     QByteArray lineData;
-    bool geneIdOrTranscriptIdQualNotFound = false;
+    bool hasNoGeneIdOrTranscriptId = false;
 
-    foreach (GObject *annotTable, annotTables) {
-        AnnotationTableObject *annTable = qobject_cast<AnnotationTableObject *>(annotTable);
+    for (GObject *annotTable : qAsConst(annotTables)) {
+        auto annTable = qobject_cast<AnnotationTableObject *>(annotTable);
         QList<Annotation *> annotationsList = annTable->getAnnotations();
 
         QString annotTableName;
@@ -568,22 +568,19 @@ void GTFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
                     } else {
                         // All other qualifiers are saved as attributes
                         QString attrStr = qualifier.name + " \"" + qualifier.value + "\";";
-                        if (qualifier.name != GENE_ID_QUALIFIER_NAME) {
-                            attrStr = " " + attrStr;  // Exactly one space char between different attributes
-                        }
-
                         if (qualifier.name == GENE_ID_QUALIFIER_NAME) {
                             geneIdAttributeStr = attrStr;
-                        } else if (qualifier.name == TRANSCRIPT_ID_QUALIFIER_NAME) {
-                            transcriptIdAttributeStr = attrStr;
                         } else {
-                            otherAttributesStr += attrStr;
+                            attrStr = " " + attrStr;  // Exactly one space char between different attributes
+                            if (qualifier.name == TRANSCRIPT_ID_QUALIFIER_NAME) {
+                                transcriptIdAttributeStr = attrStr;
+                            } else {
+                                otherAttributesStr += attrStr;
+                            }
                         }
                     }
                 }
-                if (!geneIdOrTranscriptIdQualNotFound && (geneIdAttributeStr.isEmpty() || transcriptIdAttributeStr.isEmpty())) {
-                    geneIdOrTranscriptIdQualNotFound = true;
-                }
+                hasNoGeneIdOrTranscriptId = hasNoGeneIdOrTranscriptId || (geneIdAttributeStr.isEmpty() || transcriptIdAttributeStr.isEmpty());
                 lineFields[GTF_ATTRIBUTES_INDEX] = geneIdAttributeStr +
                                                    transcriptIdAttributeStr +
                                                    otherAttributesStr;
@@ -597,8 +594,9 @@ void GTFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
             }
         }
     }
-    if (geneIdOrTranscriptIdQualNotFound) {
-        ioLog.info(QString("The '%1' file GTF format is not strict - some annotations do not have \"gene_id\" and/or \"transcript_id\" qualifiers.").arg(io->getURL().getURLString()));
+    if (hasNoGeneIdOrTranscriptId) {
+        ioLog.info(QString("The '%1' file GTF format is not strict - some annotations do not have 'gene_id' and/or 'transcript_id' qualifiers.")
+                       .arg(io->getURL().getURLString()));
     }
 }
 
