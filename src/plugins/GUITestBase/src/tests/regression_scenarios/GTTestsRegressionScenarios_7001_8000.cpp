@@ -1531,7 +1531,7 @@ GUI_TEST_CLASS_DEFINITION(test_7456) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7460) {
-    // Check that UGENE can open an alignment of [1_000 x 10_000] and no MSA overview is shown for a such big alignment.
+    // Check that UGENE can open an alignment of [1_000 x 10_000] fast enough.
     DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7460.fa");
     model.length = 1000;
     model.window = 1000;
@@ -1547,7 +1547,7 @@ GUI_TEST_CLASS_DEFINITION(test_7460) {
     CHECK_SET_ERR(sequenceCount == model.numberOfSequences, "Invalid sequence count in MSA: " + QString::number(sequenceCount));
 
     QWidget *overviewWidget = GTUtilsMsaEditor::getOverviewArea(os);
-    CHECK_SET_ERR(overviewWidget->isHidden(), "Overview widget is visible, but must be hidden");
+    CHECK_SET_ERR(overviewWidget->isVisible(), "Overview widget ,must be visible, but must be hidden");
     GTUtilsTaskTreeView::waitTaskFinished(os, 10000);  // Check that there is no long-running active tasks.
 }
 

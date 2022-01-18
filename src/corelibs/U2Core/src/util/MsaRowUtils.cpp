@@ -432,4 +432,86 @@ void MsaRowUtils::removeTrailingGapsFromModel(qint64 length, QVector<U2MsaGap> &
     }
 }
 
+QByteArray MsaRowUtils::getGappedSubsequence(const U2Region &region, const QByteArray &sequence, const QVector<U2MsaGap> &gaps) {
+    CHECK(region.length > 0, {});
+    // Check if we have no gaps effect at all in the requested region.
+    // Return a sequence.mid() in this case: this will prevent any heap allocation for the result sequence.
+    bool canUseSubsequence = (gaps.isEmpty() || gaps[0].startPos >= region.endPos()) && (region.startPos >= 0 && region.endPos() <= sequence.length());
+    if (canUseSubsequence) {
+        return sequence.mid(region.startPos, region.length);
+    }
+    CHECK(!sequence.isEmpty(), QByteArray(region.length, U2Msa::GAP_CHAR));
+    const char *coreSequence = sequence.constData();
+    int coreLength = sequence.length();
+    QByteArray result;
+    result.reserve(region.length);
+    int gapIndex = 0;  // Current gap index.
+    int corePos = 0;  // Current offset in core sequence.
+    int pos = 0;  // Current gapped position in the row.
+    int regionEnd = (int)region.endPos();  // Last (exclusive) global gapped position to include into the result.
+    if (region.startPos < 0) {
+        result.append(-region.startPos, U2Msa::GAP_CHAR);
+    }
+    // Iterate interleaved gap & core sequence regions.
+    while (gapIndex <= gaps.length() && pos < regionEnd && corePos < coreLength) {
+        const U2MsaGap *gap = gapIndex == gaps.length() ? nullptr : &gaps[gapIndex];
+        bool isValidGapModel = gapIndex == 0 || gap == nullptr || gap->startPos > gaps[gapIndex - 1].endPos();
+        SAFE_POINT(isValidGapModel, "Invalid gap model", {});
+        if (gap == nullptr || gap->startPos > pos) {
+            // Processing core sequence part. At this point no gaps left or the next gap starts after 'pos'.
+            int corePartLength = gap == nullptr ? coreLength - corePos : gap->startPos - pos;
+            SAFE_POINT(corePos + corePartLength <= coreLength, "Invalid position in core sequence!", {});
+            if (region.startPos < pos + corePartLength) {  // Add core sub-sequence to the result.
+                int nChars;
+                int corePartOffset;
+                if (region.startPos <= pos) {  // Add a prefix or whole core sequence region.
+                    nChars = qMin(corePartLength, regionEnd - pos);
+                    corePartOffset = 0;
+                } else if (regionEnd > pos + corePartLength) {  // Add suffix of the core sequence region.
+                    nChars = pos + corePartLength - region.startPos;
+                    corePartOffset = corePartLength - nChars;
+                } else {  // Add middle part of the core sequence region.
+                    SAFE_POINT(region.startPos > pos && regionEnd <= pos + corePartLength, "Invalid middle region coordinates", {};)
+                    nChars = region.length;
+                    corePartOffset = region.startPos - pos;
+                }
+                SAFE_POINT(nChars > 0 && corePartOffset >= 0 && corePartOffset + nChars <= corePartLength && result.length() + nChars <= region.length,
+                           "Invalid sub-region in the core region",
+                           {});
+                result.append(coreSequence + corePos + corePartOffset, nChars);
+            }
+            corePos += corePartLength;
+            pos += corePartLength;
+            SAFE_POINT(corePos <= coreLength, "Core sequence overflow!", {});
+        } else {
+            // Processing gap region.
+            int gapPartLength = (int)gap->length;
+            if (region.startPos < pos + gapPartLength) {
+                int nGaps;
+                if (region.startPos <= pos) {  // Add a prefix or whole gap region.
+                    nGaps = qMin(gapPartLength, regionEnd - pos);
+                } else if (regionEnd > pos + gapPartLength) {  // Add suffix of the gap region
+                    nGaps = pos + gapPartLength - region.startPos;
+                } else {  // Add middle part of the gap region.
+                    nGaps = region.length;
+                }
+                SAFE_POINT(nGaps <= gapPartLength && result.length() + nGaps <= region.length, "Invalid gap region", {});
+                result.append(nGaps, U2Msa::GAP_CHAR);
+            }
+            pos += gap->length;
+            gapIndex++;
+        }
+        SAFE_POINT(pos < region.startPos ? result.isEmpty() : result.length() <= pos - region.startPos, "Invalid result region after processing gap.", {});
+    }
+    SAFE_POINT(result.length() <= region.length, "Invalid result length after processing gaps", {});
+
+    // Add trailing gaps to finalize the region.
+    if (result.length() < region.length) {
+        int nGaps = region.length - result.length();
+        result.append(nGaps, U2Msa::GAP_CHAR);
+    }
+    SAFE_POINT(result.length() == region.length, "Invalid result length in getGappedSubsequence", {});
+    return result;
+}
+
 }  // namespace U2

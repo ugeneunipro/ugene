@@ -67,6 +67,9 @@ public:
     static QVector<U2MsaGap> reverseGapModel(const QVector<U2MsaGap> &gapModel, qint64 rowLengthWithoutTrailing);  // this method reverses only core gaps. Leading and trailing gaps are not involved to calculations
     static bool hasLeadingGaps(const QVector<U2MsaGap> &gapModel);
     static void removeTrailingGapsFromModel(qint64 length, QVector<U2MsaGap> &gapModel);
+
+    /** Returns part of the gapped subsequence from the specified region. */
+    static QByteArray getGappedSubsequence(const U2Region &region, const QByteArray &sequence, const QVector<U2MsaGap> &gaps);
 };
 
 }  // namespace U2

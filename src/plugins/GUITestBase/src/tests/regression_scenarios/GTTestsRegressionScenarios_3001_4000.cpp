@@ -128,7 +128,6 @@
 #include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExportHighlightedDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
-#include "runnables/ugene/plugins/annotator/FindAnnotationCollocationsDialogFiller.h"
 #include "runnables/ugene/plugins/biostruct3d_view/StructuralAlignmentDialogFiller.h"
 #include "runnables/ugene/plugins/cap3/CAP3SupportDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportAnnotationsDialogFiller.h"
@@ -572,12 +571,7 @@ GUI_TEST_CLASS_DEFINITION(test_3112) {
 
     auto showOverviewButton = qobject_cast<QToolButton *>(GTAction::button(os, "Show overview"));
     CHECK_SET_ERR(showOverviewButton != nullptr, "Overview button is not found");
-    CHECK_SET_ERR(!showOverviewButton->isChecked(), "Overview button is pressed");
-
-    // Enable "Overview" widget.
-    GTWidget::click(os, showOverviewButton);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(showOverviewButton->isChecked(), "Overview button is not pressed");
+    CHECK_SET_ERR(showOverviewButton->isChecked(), "Overview button is not checked");
 
     // Modify the alignment.
     // Expected state: the overview task starts.
@@ -846,16 +840,6 @@ GUI_TEST_CLASS_DEFINITION(test_3140) {
     GTUtilsTaskTreeView::openView(os);
     GTFileDialog::openFile(os, testDir + "_common_data/clustal", "big.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    // By default, the overview is hidden - the sequence is too large.
-    auto showOverviewButton = qobject_cast<QToolButton *>(GTAction::button(os, "Show overview"));
-    CHECK_SET_ERR(showOverviewButton != nullptr, "Overview button is not found");
-    CHECK_SET_ERR(!showOverviewButton->isChecked(), "Overview button is pressed");
-
-    // Enable "Overview" widget.
-    GTWidget::click(os, showOverviewButton);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(showOverviewButton->isChecked(), "Overview button is not pressed");
 
     // Select the first symbol of the first line.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(0, 0));
@@ -3223,26 +3207,18 @@ GUI_TEST_CLASS_DEFINITION(test_3545) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3552) {
+    // Check that "Render overview" task has a meaningful progress info: NN% instead of ? symbol).
     // Open a large alignment.
-    GTFileDialog::openFile(os, testDir + "_common_data/clustal", "10000_sequences.aln", GTFileDialog::Open, GTGlobals::UseMouse);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/10000_sequences.aln");
 
-    // By default, the overview is hidden - the sequence is too large.
-    auto showOverviewButton = qobject_cast<QToolButton *>(GTAction::button(os, "Show overview"));
-    CHECK_SET_ERR(showOverviewButton != nullptr, "Overview button is not found");
-    CHECK_SET_ERR(!showOverviewButton->isChecked(), "Overview button is pressed");
+    // Wait until 'Render overview' task is started.
+    auto statusBar = GTWidget::findWidget(os, "taskStatusBar");
+    GTWidget::findLabelByText(os, "Running task: Render overview", statusBar);
 
-    // Enable "Overview" widget.
-    GTWidget::click(os, showOverviewButton);
-
-    auto taskInfoLabel = GTWidget::findLabel(os, "taskInfoLabel");
-    while (!taskInfoLabel->text().contains("Render")) {
-        uiLog.trace("actual text: " + taskInfoLabel->text());
-    }
-    auto taskProgressBar = GTWidget::findExactWidget<QProgressBar *>(os, "taskProgressBar");
-    QString text = taskProgressBar->text();
-    CHECK_SET_ERR(text.contains("%"), "unexpected text: " + text);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    // Check progress bar text.
+    QString taskProgressBarText = GTWidget::findExactWidget<QProgressBar *>(os, "taskProgressBar", statusBar)->text();
+    CHECK_SET_ERR(taskProgressBarText.contains("%"), "Unexpected progress bar text: " + taskProgressBarText);
+    GTUtilsTaskTreeView::waitTaskFinished(os, 10000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3553) {

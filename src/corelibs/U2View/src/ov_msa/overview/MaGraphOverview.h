@@ -68,10 +68,10 @@ public:
     /** Algorithm type. */
     MaGraphCalculationMethod method = MaGraphCalculationMethod::Strict;
 
-    /** Highlighting scheme id. Set only for  MaGraphCalculationMethod::Highlighting. */
+    /** Highlighting scheme id. Set only for MaGraphCalculationMethod::Highlighting. */
     QString highlightingSchemeId;
 
-    /** Color scheme id. Set only for  MaGraphCalculationMethod::Highlighting. */
+    /** Color scheme id. Set only for MaGraphCalculationMethod::Highlighting. */
     QString colorSchemeId;
 };
 
@@ -95,7 +95,7 @@ public:
 
     const MaGraphOverviewState &getState() const;
 
-    /** Restarts graph computation if the widget is visible and 'currentState' != 'currentRenderedState'. */
+    /** Restarts graph computation if the widget is visible and 'state' != 'renderedState'. */
     void recomputeGraphIfNeeded();
 
 signals:
