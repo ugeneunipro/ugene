@@ -130,7 +130,6 @@
 #include "runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
-#include "runnables/ugene/plugins/annotator/FindAnnotationCollocationsDialogFiller.h"
 #include "runnables/ugene/plugins/cap3/CAP3SupportDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportBlastResultDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportMSA2MSADialogFiller.h"
@@ -1217,7 +1216,8 @@ GUI_TEST_CLASS_DEFINITION(test_1071) {
     GTLogTracer l;
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "CDS");
+
+    GTTreeWidget::click(os, GTUtilsAnnotationsTreeView::findItem(os, "CDS"));
 
     // 1. Open edit annotation name and region dialog (by F2).
     // 2. Enter an invalid region (e.g. asdfsadf12..25).
@@ -1225,7 +1225,7 @@ GUI_TEST_CLASS_DEFINITION(test_1071) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             GTRadioButton::click(os, "rbGenbankFormat", dialog);

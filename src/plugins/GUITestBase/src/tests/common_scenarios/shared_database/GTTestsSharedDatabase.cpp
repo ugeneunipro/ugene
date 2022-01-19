@@ -789,7 +789,6 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0004) {
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(treeView != nullptr, "Invalid project tree view");
     QAbstractItemModel *model = treeView->model();
 
     QModelIndex dirItem1 = GTUtilsProjectTreeView::findIndex(os, "pt0004_dir1");
