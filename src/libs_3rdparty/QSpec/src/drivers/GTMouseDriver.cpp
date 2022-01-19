@@ -88,7 +88,7 @@ bool GTMouseDriver::doubleClick() {
 
     DRIVER_CHECK(press(Qt::LeftButton), "Left button could not be pressed on first click");
     DRIVER_CHECK(release(Qt::LeftButton), "Left button could not be released on first click");
-    GTGlobals::sleep(QApplication::doubleClickInterval() / 2);  // Use an interval below "doubleClickInterval" becase we want it to be a "double-click".
+    GTGlobals::sleep(QApplication::doubleClickInterval() / 2);  // Use an interval below "doubleClickInterval" because we want it to be a "double-click".
 
     DRIVER_CHECK(press(Qt::LeftButton), "Left button could not be pressed on second click");
     DRIVER_CHECK(release(Qt::LeftButton), "Left button could not be released on second click");
