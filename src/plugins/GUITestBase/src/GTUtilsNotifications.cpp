@@ -134,7 +134,6 @@ void GTUtilsNotifications::checkNotificationDialogText(HI::GUITestOpStatus &os, 
 void GTUtilsNotifications::clickOnNotificationWidget(HI::GUITestOpStatus &os) {
     for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        CHECK(QApplication::activeModalWidget() == nullptr, );
         QWidgetList widgetList = QApplication::allWidgets();
         for (QWidget *widget : qAsConst(widgetList)) {
             auto notification = qobject_cast<Notification *>(widget);
