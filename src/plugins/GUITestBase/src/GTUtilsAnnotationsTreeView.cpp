@@ -481,13 +481,12 @@ void GTUtilsAnnotationsTreeView::selectItems(HI::GUITestOpStatus &os, const QLis
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickItem"
-void GTUtilsAnnotationsTreeView::clickItem(HI::GUITestOpStatus &os, const QString &itemName, int numOfItem, bool isDoubleClick) {
+void GTUtilsAnnotationsTreeView::clickItem(HI::GUITestOpStatus &os, const QString &itemName, int itemIndex, bool isDoubleClick) {
     GT_CHECK_RESULT(!itemName.isEmpty(), "Empty item name", );
 
-    QTreeWidgetItem *item = findItemWithIndex(os, itemName, numOfItem);
+    QTreeWidgetItem *item = findItemWithIndex(os, itemName, itemIndex);
     GTTreeWidget::scrollToItem(os, item);
-    QPoint p = GTTreeWidget::getItemCenter(os, item);
-    GTMouseDriver::moveTo(p);
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     if (isDoubleClick) {
         GTMouseDriver::doubleClick();
     } else {

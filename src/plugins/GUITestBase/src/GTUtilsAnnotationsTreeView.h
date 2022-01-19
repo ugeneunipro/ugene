@@ -82,7 +82,7 @@ public:
     static void selectItems(HI::GUITestOpStatus &os, const QStringList &items);
     static void selectItems(HI::GUITestOpStatus &os, const QList<QTreeWidgetItem *> &items);
 
-    static void clickItem(HI::GUITestOpStatus &os, const QString &item, int numOfItem, bool isDoubleClick);
+    static void clickItem(HI::GUITestOpStatus &os, const QString &item, int itemIndex, bool isDoubleClick);
 
     // location string format: 1..51
     static void createAnnotation(HI::GUITestOpStatus &os, const QString &groupName, const QString &annotationName, const QString &location, bool createNewTable = true, const QString &saveTo = "");
