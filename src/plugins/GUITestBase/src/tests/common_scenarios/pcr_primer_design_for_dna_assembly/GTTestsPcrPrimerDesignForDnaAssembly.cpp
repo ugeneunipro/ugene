@@ -208,7 +208,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     checkExpectedTabs(three);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0007) {
+GUI_TEST_CLASS_DEFINITION(test_0006) {
     // Open common_data/pcr_primer_design/gfp.fa.
     // Click the PCR Primer Design tab of the Options Panel.
     // Click "Primer search areas for insert" -> "Left area" -> "Select manually".
@@ -429,7 +429,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     // Open common_data/pcr_primer_design/gfp.fa.
     // Open the PCR Primer Design tab.
     // Set common_data/pcr_primer_design/backbone_bad.fa as "Open the backbone sequence".
-    // Set "Insert to backbone bearings" -> "5' backbone length" = 12.
+    // Set "Backbone length" -> "5' backbone length" = 12.
     // Click "Start".
     //     Expected: the "The unwanted structures have been found in the following backbone sequence candidate" dialog
     //               has appeared.
@@ -462,7 +462,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     // Open the PCR Primer Design tab.
     // Set common_data/pcr_primer_design/backbone_bad.fa as "Open the backbone sequence".
     // Click "Insert to backbone bearings" -> "5' insert to 3' backbone".
-    // Set "Insert to backbone bearings" -> "3' backbone length" = 12.
+    // Set "Backbone length" -> "3' backbone length" = 12.
     // Click "Start".
     //     Expected: the "The unwanted structures have been found in the following backbone sequence candidate" dialog
     //               has appeared.
