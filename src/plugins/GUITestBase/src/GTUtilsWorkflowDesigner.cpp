@@ -187,6 +187,7 @@ QTreeWidgetItem *GTUtilsWorkflowDesigner::findTreeItem(HI::GUITestOpStatus &os, 
     QTreeWidgetItem *foundItem = nullptr;
     auto treeWidget = GTWidget::findTreeWidget(os, t == algorithms ? "WorkflowPaletteElements" : "samples", wdWindow);
 
+    GTGlobals::sleep(1000);  // TODO: this method must be re-written to use the common wait & check pattern.
     QList<QTreeWidgetItem *> outerList = treeWidget->findItems("", Qt::MatchContains);
     for (int i = 0; i < outerList.count(); i++) {
         QList<QTreeWidgetItem *> innerList;
@@ -279,7 +280,6 @@ void GTUtilsWorkflowDesigner::addAlgorithm(HI::GUITestOpStatus &os, const QStrin
 #define GT_METHOD_NAME "addElement"
 WorkflowProcessItem *GTUtilsWorkflowDesigner::addElement(HI::GUITestOpStatus &os, const QString &algName, bool exactMatch) {
     addAlgorithm(os, algName, exactMatch);
-    CHECK_OP(os, nullptr);
     return getWorker(os, algName);
 }
 #undef GT_METHOD_NAME
@@ -782,20 +782,16 @@ void GTUtilsWorkflowDesigner::removeCmdlineWorkerFromPalette(HI::GUITestOpStatus
 
 #define GT_METHOD_NAME "increaseOutputPortBoxHeight"
 void GTUtilsWorkflowDesigner::changeInputPortBoxHeight(HI::GUITestOpStatus &os, const int offset) {
-    QWidget *wdWindow = getActiveWorkflowDesignerWindow(os);
-    QTextEdit *doc = GTWidget::findExactWidget<QTextEdit *>(os, "doc", wdWindow);
-    GT_CHECK(doc != nullptr, "doc is not found");
+    auto wdWindow = getActiveWorkflowDesignerWindow(os);
+    auto doc = GTWidget::findTextEdit(os, "doc", wdWindow);
 
-    QGroupBox *paramBox = GTWidget::findExactWidget<QGroupBox *>(os, "paramBox", wdWindow);
-    GT_CHECK(paramBox != nullptr, "Param Box is not found");
-
-    QGroupBox *inputPortBox = GTWidget::findExactWidget<QGroupBox *>(os, "inputPortBox", wdWindow);
-    GT_CHECK(paramBox != nullptr, "inputPortBox is not found");
+    auto paramBox = GTWidget::findGroupBox(os, "paramBox", wdWindow);
+    auto inputPortBox = GTWidget::findGroupBox(os, "inputPortBox", wdWindow);
 
     QPoint docGlobal = doc->mapToGlobal(doc->pos());
-    QPoint bottomDevidePos(docGlobal.x() + (inputPortBox->width() / 2), docGlobal.y() + doc->height() + paramBox->height() + inputPortBox->height() + 10);
-    QPoint newBottomDevidePos(bottomDevidePos.x(), bottomDevidePos.y() + offset);
-    GTMouseDriver::dragAndDrop(bottomDevidePos, newBottomDevidePos);
+    QPoint bottomDividerPos(docGlobal.x() + (inputPortBox->width() / 2), docGlobal.y() + doc->height() + paramBox->height() + inputPortBox->height() + 10);
+    QPoint newBottomDividerPos(bottomDividerPos.x(), bottomDividerPos.y() + offset);
+    GTMouseDriver::dragAndDrop(bottomDividerPos, newBottomDividerPos);
     GTGlobals::sleep();
 }
 #undef GT_METHOD_NAME
@@ -810,13 +806,13 @@ void GTUtilsWorkflowDesigner::importCmdlineBasedElement(GUITestOpStatus &os, con
 
 #define GT_METHOD_NAME "connect"
 void GTUtilsWorkflowDesigner::connect(HI::GUITestOpStatus &os, WorkflowProcessItem *from, WorkflowProcessItem *to) {
-    QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(from->scene()->views().at(0));
+    auto sceneView = qobject_cast<QGraphicsView *>(from->scene()->views().at(0));
     GT_CHECK(sceneView, "sceneView not found")
     QList<WorkflowPortItem *> fromList = from->getPortItems();
     QList<WorkflowPortItem *> toList = to->getPortItems();
 
-    foreach (WorkflowPortItem *fromPort, fromList) {
-        foreach (WorkflowPortItem *toPort, toList) {
+    for (WorkflowPortItem *fromPort : qAsConst(fromList)) {
+        for (WorkflowPortItem *toPort : qAsConst(toList)) {
             if (fromPort->getPort()->canBind(toPort->getPort())) {
                 GTMouseDriver::moveTo(GTGraphicsItem::getItemCenter(os, fromPort));
                 GTMouseDriver::press();

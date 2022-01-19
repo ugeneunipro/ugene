@@ -538,6 +538,7 @@ void GTUtilsAnnotationsTreeView::callContextMenuOnItem(HI::GUITestOpStatus &os, 
 #define GT_METHOD_NAME "callContextMenuOnQualifier"
 void GTUtilsAnnotationsTreeView::callContextMenuOnQualifier(HI::GUITestOpStatus &os, const QString &annotationName, const QString &qualifierName) {
     QTreeWidgetItem *annotationItem = findItem(os, annotationName);
+    GTTreeWidget::expand(os, annotationItem);
     QTreeWidgetItem *qualifierItem = findItem(os, qualifierName, annotationItem);
     callContextMenuOnItem(os, qualifierItem);
 }

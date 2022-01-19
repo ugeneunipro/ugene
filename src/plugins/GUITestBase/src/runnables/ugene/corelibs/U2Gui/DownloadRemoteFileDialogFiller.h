@@ -51,7 +51,7 @@ public:
     DownloadRemoteFileDialogFiller(HI::GUITestOpStatus &os, const QList<Action> &actions);
     DownloadRemoteFileDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c);
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     void setResourceIds(const QVariant &actionData);
@@ -70,7 +70,7 @@ private:
     void clickCancel();
 
     const QList<Action> actions;
-    QWidget *dialog;
+    QWidget *dialog = nullptr;
 };
 
 // Use DownloadRemoteFileDialogFiller instead

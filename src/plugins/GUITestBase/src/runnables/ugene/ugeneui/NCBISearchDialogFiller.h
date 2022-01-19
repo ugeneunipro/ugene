@@ -54,7 +54,7 @@ public:
 
     NcbiSearchDialogFiller(HI::GUITestOpStatus &os, const QList<Action> &actions);
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     void setField(const QVariant &actionData);
@@ -77,7 +77,7 @@ private:
     void clickClose();
     void waitTasksFinish();
 
-    QWidget *dialog;
+    QWidget *dialog = nullptr;
     QList<Action> actions;
 };
 

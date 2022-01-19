@@ -250,9 +250,9 @@ void GTUtilsDialog::clickButtonBox(GUITestOpStatus &os, QWidget *dialog, QDialog
     }
 #else
     QDialogButtonBox *box = buttonBox(os, dialog);
-    GT_CHECK(box != NULL, "buttonBox is NULL");
+    GT_CHECK(box != nullptr, "buttonBox is NULL");
     QPushButton *pushButton = box->button(button);
-    GT_CHECK(pushButton != NULL, "pushButton is NULL");
+    GT_CHECK(pushButton != nullptr, "pushButton is NULL");
     GTWidget::click(os, pushButton);
 #endif
 }

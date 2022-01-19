@@ -42,21 +42,18 @@ namespace U2 {
 #define GT_CLASS_NAME "DownloadRemoteFileDialogFiller"
 DownloadRemoteFileDialogFiller::DownloadRemoteFileDialogFiller(HI::GUITestOpStatus &os, const QList<DownloadRemoteFileDialogFiller::Action> &actions)
     : Filler(os, "DownloadRemoteFileDialog"),
-      actions(actions),
-      dialog(nullptr) {
+      actions(actions) {
 }
 
 DownloadRemoteFileDialogFiller::DownloadRemoteFileDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c)
-    : Filler(os, "DownloadRemoteFileDialog", c),
-      dialog(nullptr) {
+    : Filler(os, "DownloadRemoteFileDialog", c) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void DownloadRemoteFileDialogFiller::commonScenario() {
-    dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    dialog = GTWidget::getActiveModalWidget(os);
 
-    foreach (const Action &action, actions) {
+    for (const Action &action : qAsConst(actions)) {
         switch (action.first) {
             case SetResourceIds:
                 setResourceIds(action.second);

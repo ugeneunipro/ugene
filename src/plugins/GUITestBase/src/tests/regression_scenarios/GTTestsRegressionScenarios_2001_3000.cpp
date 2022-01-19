@@ -3314,21 +3314,20 @@ GUI_TEST_CLASS_DEFINITION(test_2579) {
 
     class MafftInactivation : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
+            auto dialog = GTWidget::getActiveModalWidget(os);
+
             QString path = AppSettingsDialogFiller::getExternalToolPath(os, "MAFFT");
             AppSettingsDialogFiller::clearToolPath(os, "MAFFT");
             AppSettingsDialogFiller::setExternalToolPath(os, "MAFFT", path);
 
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
 
     GTLogTracer l;
-
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new MafftInactivation()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...");
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
     GTUtilsLog::check(os, l);
 }
 GUI_TEST_CLASS_DEFINITION(test_2581) {
@@ -3522,16 +3521,16 @@ GUI_TEST_CLASS_DEFINITION(test_2612) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2619) {
-    //    1. Open file samples/genbank/sars.gb
+    // 1. Open file samples/genbank/sars.gb
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "sars.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    2. Open context menu for any qualifier on annotation table view.
-    //    Expected state: submenu "Copy" didn't contains items "Edit qualifier" and "Add 'evidence' column"
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_COPY << "edit_qualifier_action", PopupChecker::NotExists));
+    // 2. Open context menu for any qualifier on annotation table view.
+    // Expected state: submenu "Copy" didn't contain items "Edit qualifier" and "Add 'evidence' column"
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {ADV_MENU_COPY, "edit_qualifier_action"}, PopupChecker::NotExists));
     GTUtilsAnnotationsTreeView::callContextMenuOnQualifier(os, "5'UTR", "evidence");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_COPY << "toggle_column", PopupChecker::NotExists));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {ADV_MENU_COPY, "toggle_column"}, PopupChecker::NotExists));
     GTUtilsAnnotationsTreeView::callContextMenuOnQualifier(os, "5'UTR", "evidence");
 }
 
@@ -3705,26 +3704,23 @@ GUI_TEST_CLASS_DEFINITION(test_2651) {
     // 5. Close the dialog
     GTLogTracer l;
 
-    QList<int> resultNumbersToSelect;
-    resultNumbersToSelect << 0 << 1 << 2;
-    const QVariant variantNumbers = QVariant::fromValue<QList<int>>(resultNumbersToSelect);
-    const QVariant searchField = QVariant::fromValue<QPair<int, QString>>(QPair<int, QString>(0, "AB797204.1 AB797210.1 AB797201.1"));
+    QList<int> resultNumbersToSelect = {0, 1, 2};
+    QVariant variantNumbers = QVariant::fromValue<QList<int>>(resultNumbersToSelect);
+    QVariant searchField = QVariant::fromValue<QPair<int, QString>>(QPair<int, QString>(0, "AB797204.1 AB797210.1 AB797201.1"));
 
-    QList<DownloadRemoteFileDialogFiller::Action> remoteDialogActions;
-    remoteDialogActions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, QVariant());
-    const QVariant remoteDialogActionsVariant = QVariant::fromValue<QList<DownloadRemoteFileDialogFiller::Action>>(remoteDialogActions);
+    QList<DownloadRemoteFileDialogFiller::Action> remoteDialogActions = {DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, {})};
+    QVariant remoteDialogActionsVariant = QVariant::fromValue<QList<DownloadRemoteFileDialogFiller::Action>>(remoteDialogActions);
 
     QList<NcbiSearchDialogFiller::Action> actions;
     actions << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::SetTerm, searchField)
-            << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::ClickSearch, QVariant())
-            << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::WaitTasksFinish, QVariant())
+            << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::ClickSearch, {})
+            << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::WaitTasksFinish, {})
             << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::SelectResultsByNumbers, variantNumbers)
             << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::ClickDownload, remoteDialogActionsVariant)
-            << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::ClickClose, QVariant());
+            << NcbiSearchDialogFiller::Action(NcbiSearchDialogFiller::ClickClose, {});
     GTUtilsDialog::waitForDialog(os, new NcbiSearchDialogFiller(os, actions));
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Search NCBI GenBank...");
+    GTMenu::clickMainMenuItem(os, {"File", "Search NCBI GenBank..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -3739,16 +3735,17 @@ GUI_TEST_CLASS_DEFINITION(test_2651) {
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
     // 7. delete this objects through context menu
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__remove_selected_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"action_project__remove_selected_action"}));
     GTMouseDriver::click(Qt::RightButton);
 
     // Expected state : the objects are deleted, the popup is shown
-    GTGlobals::FindOptions safeOptions(false);
-    const QModelIndex firstIndex = GTUtilsProjectTreeView::findIndex(os, "AB797210 features", safeOptions);
+    QModelIndex firstIndex = GTUtilsProjectTreeView::findIndex(os, "AB797210 features", {false});
     CHECK_SET_ERR(!firstIndex.isValid(), "The \"AB797210 features\" item has not been deleted");
-    const QModelIndex secondIndex = GTUtilsProjectTreeView::findIndex(os, "AB797204 features", safeOptions);
+
+    QModelIndex secondIndex = GTUtilsProjectTreeView::findIndex(os, "AB797204 features", {false});
     CHECK_SET_ERR(!secondIndex.isValid(), "The \"AB797204 features\" item has not been deleted");
-    const QModelIndex thirdIndex = GTUtilsProjectTreeView::findIndex(os, "AB797201 features", safeOptions);
+
+    QModelIndex thirdIndex = GTUtilsProjectTreeView::findIndex(os, "AB797201 features", {false});
     CHECK_SET_ERR(!thirdIndex.isValid(), "The \"AB797201 features\" item has not been deleted");
 
     GTUtilsLog::check(os, l);

@@ -230,7 +230,7 @@ GUI_TEST_CLASS_DEFINITION(test_1003) {
 
     class Scenario_test_1003 : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QWidget *enzymesSelectorWidget = GTWidget::findWidget(os, "enzymesSelectorWidget");
             GTWidget::click(os, GTWidget::findWidget(os, "selectAllButton", enzymesSelectorWidget));
@@ -650,7 +650,7 @@ GUI_TEST_CLASS_DEFINITION(test_1029) {
 
     class MainThreadScenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QScrollArea *scroll = qobject_cast<QScrollArea *>(GTWidget::findWidget(os, "annotated_DNA_scrollarea"));
             CHECK_SET_ERR(scroll != nullptr, "annotated_DNA_scrollarea not found");
             int seqNum = GTUtilsSequenceView::getSeqWidgetsNumber(os);
@@ -851,7 +851,7 @@ GUI_TEST_CLASS_DEFINITION(test_1049) {
     //    3. Click {Statistics->Generate distance matrix} in the context menu.
     class custom : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //    4. Check the "Show group statistics of multiple alignment" checkbox and press the "Generate" button.
             QCheckBox *groupStatisticsCheck = GTWidget::findExactWidget<QCheckBox *>(os, "groupStatisticsCheck", dialog);
@@ -880,7 +880,7 @@ GUI_TEST_CLASS_DEFINITION(test_1052) {
     //    2. Open "Find restriction sites" dialog
     class custom : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //    3. Select all sites.
             GTWidget::click(os, GTWidget::findWidget(os, "selectAllButton", dialog));
@@ -953,7 +953,7 @@ GUI_TEST_CLASS_DEFINITION(test_1061) {
             : Filler(os, "EditMarkerDialog") {
         }
 
-        void run() {
+        void run() override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QLineEdit *markerNameEdit = GTWidget::findExactWidget<QLineEdit *>(os, "markerNameEdit", dialog);
             GTLineEdit::setText(os, markerNameEdit, "1");
@@ -971,7 +971,7 @@ GUI_TEST_CLASS_DEFINITION(test_1061) {
             : Filler(os, "EditMarkerGroupDialog") {
         }
 
-        void run() {
+        void run() override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QComboBox *typeBox = GTWidget::findExactWidget<QComboBox *>(os, "typeBox", dialog);
             GTComboBox::selectItemByText(os, typeBox, "Qualifier text value markers");
@@ -1021,7 +1021,7 @@ GUI_TEST_CLASS_DEFINITION(test_1061) {
 GUI_TEST_CLASS_DEFINITION(test_1063) {
     class EnableWdDebuggerFiller : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QTreeWidget *tree = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "tree", dialog));
             CHECK_SET_ERR(nullptr != tree, "tree widger not found");
@@ -1269,7 +1269,7 @@ GUI_TEST_CLASS_DEFINITION(test_1080) {
         OkClicker2(HI::GUITestOpStatus &_os)
             : Filler(_os, "EditMarkerDialog") {
         }
-        virtual void run() {
+        void run() override {
             GTKeyboardDriver::keyClick(Qt::Key_Tab);
             GTKeyboardDriver::keyClick(Qt::Key_Tab);
             GTKeyboardDriver::keyClick(Qt::Key_Tab);
@@ -2746,11 +2746,11 @@ GUI_TEST_CLASS_DEFINITION(test_1252_real) {
     // Excepted state : Input "Annotations" slot of WS is not empty and contains annotations from ORF Finder
     GTUtilsWorkflowDesigner::click(os, "Write Sequence");
 
-    const QList<QPair<QString, bool>> items = GTUtilsWorkflowDesigner::getCheckableComboboxValuesFromInputPortTable(os, 0, "Set of annotations");
+    QList<QPair<QString, bool>> items = GTUtilsWorkflowDesigner::getCheckableComboboxValuesFromInputPortTable(os, 0, "Set of annotations");
     bool found = false;
-    const QString expectedText = "Set of annotations (by ORF Marker)";
-    foreach (const auto &item, items) {
-        if (expectedText == item.first) {
+    QString expectedText = "Set of annotations (by ORF Marker)";
+    for (const auto &item : qAsConst(items)) {
+        if (item.first == expectedText) {
             found = true;
             CHECK_SET_ERR(item.second, QString("'%1' is not checked").arg(expectedText));
         }
@@ -2892,21 +2892,15 @@ GUI_TEST_CLASS_DEFINITION(test_1263) {
     QTreeWidgetItem *second = parent->child(1);
 
     // Use context menu {Cloning->Create PCR product}
-    GTKeyboardDriver::keyPress(Qt::Key_Control);
-    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, first));
-    GTMouseDriver::click();
-    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, second));
-    GTMouseDriver::click();
-    GTKeyboardDriver::keyRelease(Qt::Key_Control);
-
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Cloning"
-                                                                        << "Create PCR product"));
+    GTUtilsAnnotationsTreeView::selectItems(os, {first, second});
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Cloning", "Create PCR product"}));
     GTMouseDriver::click(Qt::RightButton);
+
     // Press 'Ok'
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 
     // Excepted state: PCR product has been created
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "Fragment (185965-186160)") != nullptr, "Item Fragment (185965-186160) not found in tree widget");
+    GTUtilsAnnotationsTreeView::findItem(os, "Fragment (185965-186160)");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1266) {
