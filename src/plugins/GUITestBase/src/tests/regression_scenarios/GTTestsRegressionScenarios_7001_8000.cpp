@@ -411,22 +411,14 @@ GUI_TEST_CLASS_DEFINITION(test_7151) {
     // In Select Document Format dialog click OK.
     //     Expected: no crash.
 
-    class WaitInSelectFormatDialog : public CustomScenario {
-    public:
-        void run(GUITestOpStatus &os) override {
-            GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-        }
-    };
-
     GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
     GTFileDialog::openFileWithDialog(os, dataDir + "samples/ACE", "BL060C3.ace");
-    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTUtilsProject::closeProject(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QList<QLabel *> labels = GTWidget::findLabelByText(os, "- BL060C3.ace");
-    CHECK_SET_ERR(!labels.isEmpty(), "Expected recent files BL060C3.ace on Start Page")
 
     AlignToReferenceBlastDialogFiller::Settings settings;
     settings.referenceUrl = testDir + "_common_data/sanger/reference.gb";
@@ -438,7 +430,15 @@ GUI_TEST_CLASS_DEFINITION(test_7151) {
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(settings, os));
     GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
 
-    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, new WaitInSelectFormatDialog));
+    class WaitInSelectFormatDialog : public CustomScenario {
+    public:
+        void run(GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, new WaitInSelectFormatDialog()));
     GTWidget::click(os, labels.first());
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 }
