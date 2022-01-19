@@ -86,9 +86,7 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
     setMinimumWidth(400);
     parametersMinMaxSpinBoxes = { { sbMinRequireGibbs, sbMaxRequireGibbs },
                                   { spMinRequireMeltingTeml, spMaxRequireMeltingTeml },
-                                  { spMinRequireOverlapLength, spMaxRequireOverlapLength },
-                                  { sbLeftAreaStart, sbLeftAreaEnd },
-                                  { sbRightAreaStart, sbRightAreaEnd } };
+                                  { spMinRequireOverlapLength, spMaxRequireOverlapLength } };
 
     userPrimersShowHideGroup->init(USER_PRIMERS_SHOW_HIDE_ID, tr("User primers"), wgtUserPrimers, true);
     generateSequenceShowHideGroup->init(GENERATE_SEQUENCE_SHOW_HIDE_ID,
@@ -134,6 +132,7 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
     connect(tbLeftAreaSelectManually, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectManually);
     connect(tbRightAreaSelectManually, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectManually);
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
+    initAreaSpinboxes();  // Must be after sbArea->setValue and restoreWidgetState.
 
     sl_updateParametersRanges();
     const auto& parametersMinMaxSpinBoxesKeys = parametersMinMaxSpinBoxes.keys();
@@ -187,11 +186,13 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_sequenceModified() {
     if (seqLength != sbLeftAreaEnd->maximum()) {
         int start = sbLeftAreaStart->value() - 1;
         int len = sbLeftAreaEnd->value() - start;
-        setRegion(sbLeftAreaStart, {start, len});
+        setRegion(sbLeftAreaStart, sbLeftAreaEnd, {start, len}, seqLength);
 
         start = sbRightAreaStart->value() - 1;
         len = sbRightAreaEnd->value() - start;
-        setRegion(sbRightAreaStart, {start, len});
+        setRegion(sbRightAreaStart, sbRightAreaEnd, {start, len}, seqLength);
+
+        sl_updateParametersRanges();
     }
 }
 
@@ -236,6 +237,13 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
     auto sequence = sequenceObject->getWholeSequenceData(os);
     CHECK_OP(os, );
 
+    qint64 sequenceLength = activeSequenceContext->getSequenceLength();
+    auto checkArea = [sequenceLength](const U2Region &area) {
+        return area.startPos >= 0 && area.length >= 0 && area.endPos() < sequenceLength;
+    };
+    SAFE_POINT(checkArea(settings.leftArea) && checkArea(settings.rightArea),
+               "Invalid areas, PCR Primer Design For DNA Assembly Task cannot be started", )
+
     pcrTask = new PCRPrimerDesignForDNAAssemblyTask(settings, sequence);
     connect(pcrTask, SIGNAL(si_stateChanged()), SLOT(sl_onFindTaskFinished()));
     AppContext::getTaskScheduler()->registerTopLevelTask(pcrTask);
@@ -272,11 +280,9 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectManually() {
         sbEndRegion = sbRightAreaEnd;
     }
     auto sequenceSelection = annDnaView->getActiveSequenceContext()->getSequenceSelection();
-    int startRegionValue = sbStartRegion->value();
+    int startRegionValue = sbStartRegion->value() - 1;
     int endRegionValue = sbEndRegion->value();
-    if (startRegionValue > 0) {
-        sequenceSelection->setSelectedRegions({U2Region(startRegionValue - 1, endRegionValue - startRegionValue + 1)});
-    }
+    sequenceSelection->setSelectedRegions({U2Region(startRegionValue, endRegionValue - startRegionValue)});
     updateRegionConnection = connect(sequenceSelection, &DNASequenceSelection::si_onSelectionChanged, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_updateRegion);
 }
 
@@ -290,7 +296,7 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_updateRegion() {
     const auto& region = selectedRegions.first();
     SAFE_POINT(sbStartRegion != nullptr, L10N::nullPointerError("QSpinBox"), );
 
-    setRegion(sbStartRegion, region);
+    setRegion(sbStartRegion, sbEndRegion, region);
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_updateParametersRanges() {
@@ -488,19 +494,47 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::makeWarningInvisibleIfDna() {
     alphabetWarningLabel->setVisible(!isDna);
 }
 
-void PCRPrimerDesignForDNAAssemblyOPWidget::setRegion(QSpinBox *start, const U2Region &region) {
-    QSpinBox *end = parametersMinMaxSpinBoxes[start];
+void PCRPrimerDesignForDNAAssemblyOPWidget::setRegion(QSpinBox *start, QSpinBox* end, const U2Region &region) const {
     ADVSequenceObjectContext *sequenceContext = annDnaView->getActiveSequenceContext();
     SAFE_POINT(start != nullptr && end != nullptr, L10N::nullPointerError("QSpinBox"), )
     CHECK(sequenceContext != nullptr, )
 
     qint64 seqLength = sequenceContext->getSequenceLength();
+    setRegion(start, end, region, seqLength);
+}
+
+void PCRPrimerDesignForDNAAssemblyOPWidget::setRegion(QSpinBox *start,
+                                                      QSpinBox *end,
+                                                      const U2Region &region,
+                                                      qint64 seqLength) const {
     start->setRange(1, seqLength);
     end->setRange(1, seqLength);
 
     start->setValue(region.startPos + 1);
     end->setValue(region.endPos());
-    sl_updateParametersRanges();
+    updateAreaSpinboxRanges(start, end, seqLength);
+}
+
+void PCRPrimerDesignForDNAAssemblyOPWidget::updateAreaSpinboxRanges(QSpinBox *start,
+                                                                    QSpinBox *end,
+                                                                    qint64 seqLength) const {
+    end->setMaximum(seqLength);
+    start->setMaximum(end->value());
+    end->setMinimum(start->value());
+}
+
+void PCRPrimerDesignForDNAAssemblyOPWidget::initAreaSpinboxes() const {
+    ADVSequenceObjectContext *context = annDnaView->getActiveSequenceContext();
+    SAFE_POINT(context != nullptr, L10N::nullPointerError("ADVSequenceObjectContext"), )
+    qint64 sequenceLength = context->getSequenceLength();
+    updateAreaSpinboxRanges(sbLeftAreaStart, sbLeftAreaEnd, sequenceLength);
+    updateAreaSpinboxRanges(sbRightAreaStart, sbRightAreaEnd, sequenceLength);
+
+    auto updateSignal = &QSpinBox::editingFinished;
+    connect(sbLeftAreaStart, updateSignal, [this] { sbLeftAreaEnd->setMinimum(sbLeftAreaStart->value()); });
+    connect(sbLeftAreaEnd, updateSignal, [this] { sbLeftAreaStart->setMaximum(sbLeftAreaEnd->value()); });
+    connect(sbRightAreaStart, updateSignal, [this] { sbRightAreaEnd->setMinimum(sbRightAreaStart->value()); });
+    connect(sbRightAreaEnd, updateSignal, [this] { sbRightAreaStart->setMaximum(sbRightAreaEnd->value()); });
 }
 
 QString PCRPrimerDesignForDNAAssemblyOPWidget::getSelectedSequence() const {

@@ -127,11 +127,21 @@ private:
      */
     void makeWarningInvisibleIfDna();
     /**
-     * Set region to starting spinbox and paired with it. If region is beyond the sequence length, bound it. Adjust
-     * maximum and minimum of spinboxes in accordance with the current values and active sequence length.
-     * start must be non-null.
+     * Sets region to area spinboxes; updates the spinbox ranges. If region is beyond the sequence length, limits it.
+     * Does not check the validity of passed arguments.
      */
-    void setRegion(QSpinBox *start, const U2Region &region);
+    void setRegion(QSpinBox *start, QSpinBox *end, const U2Region &region) const;
+    void setRegion(QSpinBox *start, QSpinBox *end, const U2Region &region, qint64 seqLength) const;
+    /**
+     * Adjusts maximum and minimum of area spinboxes according to the current values of these spinboxes and the length
+     * of the active sequence (start from [1, end.value], end from [start.value, seqLength]).
+     * Does not check the validity of passed arguments.
+     */
+    void updateAreaSpinboxRanges(QSpinBox *start, QSpinBox *end, qint64 seqLength) const;
+    /**
+     * Updates ranges of the area spinboxes, connects signals.
+     */
+    void initAreaSpinboxes() const;
 
     /**
      * Return the selected in @twGeneratedSequences sequence

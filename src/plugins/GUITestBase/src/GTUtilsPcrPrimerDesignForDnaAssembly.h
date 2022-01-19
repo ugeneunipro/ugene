@@ -133,7 +133,8 @@ public:
     /**
      * Sets a range in two spinboxes for left (if areaType=Left) or right (if areaType=Right) primer search area for
      * insert. If params.selectManually==true, clicks the "Select manually" button, brings up the "Region Selection"
-     * dialog, then clicks the "Select manually" button again.
+     * dialog for the first sequence, sets params.region as the region in that dialog, then clicks the "Select manually"
+     * button again.
      */
     static void setSearchArea(GUITestOpStatus &os, const SearchArea &params, const AreaType &areaType);
 

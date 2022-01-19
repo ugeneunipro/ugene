@@ -740,7 +740,7 @@
               <item>
                <widget class="QSpinBox" name="sbLeftAreaEnd">
                 <property name="minimum">
-                 <number>2</number>
+                 <number>1</number>
                 </property>
                 <property name="maximum">
                  <number>999999999</number>
@@ -750,7 +750,7 @@
               <item>
                <widget class="QSpinBox" name="sbRightAreaEnd">
                 <property name="minimum">
-                 <number>2</number>
+                 <number>1</number>
                 </property>
                 <property name="maximum">
                  <number>999999999</number>

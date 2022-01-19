@@ -31,10 +31,15 @@
 #include "GTUtilsTaskTreeView.h"
 #include "base_dialogs/MessageBoxFiller.h"
 #include "primitives/GTLineEdit.h"
+#include "primitives/GTMenu.h"
 #include "primitives/GTSpinBox.h"
 #include "primitives/GTTableView.h"
 #include "primitives/GTTextEdit.h"
 #include "primitives/GTWidget.h"
+#include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/RemovePartFromSequenceDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ReplaceSubsequenceDialogFiller.h"
+#include "utils/GTKeyboardUtils.h"
 
 namespace U2 {
 using namespace HI;
@@ -50,6 +55,42 @@ static void checkAnnotation(GUITestOpStatus &os, const QString &annotationName, 
     QString region = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, annotationName);
     CHECK_SET_ERR(expectedRegion == region, QString("Invalid region for '%1' annotation: expected '%2', current '%3'")
         .arg(annotationName, expectedRegion, region))
+}
+
+// Checks that the values of the area spinboxes are as expected. Specify area position as name (left/right).
+static void checkAreaSpinboxValues(GUITestOpStatus &os,
+                                   const QString &name,
+                                   int expectedStart,
+                                   int expectedEnd,
+                                   int currentStart,
+                                   int currentEnd) {
+    CHECK_SET_ERR(expectedStart == currentStart && expectedEnd == currentEnd,
+                  QString("%1 area spinbox: expected %2-%3, current %4-%5")
+                      .arg(name)
+                      .arg(expectedStart)
+                      .arg(expectedEnd)
+                      .arg(currentStart)
+                      .arg(currentEnd))
+}
+
+// Finds left area spinboxes and checks for expected values.
+static void checkLeftAreaSpinboxValues(GUITestOpStatus &os, int expectedStart, int expectedEnd, QWidget *parent) {
+    checkAreaSpinboxValues(os,
+                           "Left",
+                           expectedStart,
+                           expectedEnd,
+                           GTSpinBox::getValue(os, "sbLeftAreaStart", parent),
+                           GTSpinBox::getValue(os, "sbLeftAreaEnd", parent));
+}
+
+// Finds right area spinboxes and checks for expected values.
+static void checkRightAreaSpinboxValues(GUITestOpStatus &os, int expectedStart, int expectedEnd, QWidget *parent) {
+    checkAreaSpinboxValues(os,
+                           "Right",
+                           expectedStart,
+                           expectedEnd,
+                           GTSpinBox::getValue(os, "sbRightAreaStart", parent),
+                           GTSpinBox::getValue(os, "sbRightAreaEnd", parent));
 }
 
 namespace GUITest_common_scenarios_pcr_primer_design_tab {
@@ -111,27 +152,13 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsPcrPrimerDesign::setOtherSequences(os, "");  // For scroll down.
     GTWidget::click(os, GTWidget::findToolButton(os, "tbLeftAreaSelectManually", sequence));
     GTUtilsSequenceView::selectSequenceRegion(os, expectedStart, expectedEnd);
-    int currentStart = GTSpinBox::getValue(os, "sbLeftAreaStart", sequence),
-        currentEnd = GTSpinBox::getValue(os, "sbLeftAreaEnd", sequence);
-    CHECK_SET_ERR(expectedStart == currentStart && expectedEnd == currentEnd, QString("Left area spinbox: "
-                                                                                      "expected %1-%2, current %3-%4")
-                                                                                  .arg(expectedStart)
-                                                                                  .arg(expectedEnd)
-                                                                                  .arg(currentStart)
-                                                                                  .arg(currentEnd))
+    checkLeftAreaSpinboxValues(os, expectedStart, expectedEnd, sequence);
 
     expectedStart = 100,
     expectedEnd = 200;
     GTWidget::click(os, GTWidget::findToolButton(os, "tbRightAreaSelectManually", sequence));
     GTUtilsSequenceView::selectSequenceRegion(os, expectedStart, expectedEnd);
-    currentStart = GTSpinBox::getValue(os, "sbRightAreaStart", sequence),
-    currentEnd = GTSpinBox::getValue(os, "sbRightAreaEnd", sequence);
-    CHECK_SET_ERR(expectedStart == currentStart && expectedEnd == currentEnd, QString("Right area spinbox: "
-                                                                                      "expected %1-%2, current %3-%4")
-                                                                                  .arg(expectedStart)
-                                                                                  .arg(expectedEnd)
-                                                                                  .arg(currentStart)
-                                                                                  .arg(currentEnd))
+    checkRightAreaSpinboxValues(os, expectedStart, expectedEnd, sequence);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
@@ -269,12 +296,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTUtilsSequenceView::selectSequenceRegion(os, 2, 3);
     int currentStart = GTSpinBox::getValue(os, start),
         currentEnd = GTSpinBox::getValue(os, end);
-    CHECK_SET_ERR(expectedStart == currentStart && expectedEnd == currentEnd, QString("Left area spinbox: "
-                                                                                      "expected %1-%2, current %3-%4")
-                                                                                  .arg(expectedStart)
-                                                                                  .arg(expectedEnd)
-                                                                                  .arg(currentStart)
-                                                                                  .arg(currentEnd))
+    checkAreaSpinboxValues(os, "Left", expectedStart, expectedEnd, currentStart, currentEnd);
 
     GTUtilsPcrPrimerDesign::setOtherSequences(os, "");  // For scroll down.
     GTWidget::click(os, GTWidget::findToolButton(os, "tbRightAreaSelectManually", sequence));
@@ -290,40 +312,48 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTUtilsSequenceView::selectSequenceRegion(os, 3, 4);
     currentStart = GTSpinBox::getValue(os, start),
     currentEnd = GTSpinBox::getValue(os, end);
-    CHECK_SET_ERR(expectedStart == currentStart && expectedEnd == currentEnd, QString("Right area spinbox: "
-                                                                                      "expected %1-%2, current %3-%4")
-                                                                                  .arg(expectedStart)
-                                                                                  .arg(expectedEnd)
-                                                                                  .arg(currentStart)
-                                                                                  .arg(currentEnd))
+    checkAreaSpinboxValues(os, "Right", expectedStart, expectedEnd, currentStart, currentEnd);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
     // Open common_data/pcr_primer_design/gfp.fa.
-    GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/pcr_primer_design/gfp.fa", "gfp");
     // Open the PCR Primer Design tab.
+    // Click "Primer search areas for insert" -> "Left area" -> "Select manually".
+    //     Expected: region 1-71 is selected in the Sequence View.
+    // Select area 1-1.
+    //     Expected: left area values have changed to 1-1.
+    // Click "Zoom to Selection".
+    //     Expected state: no crash.
+
+    // Click "Primer search areas for insert" -> "Right area" -> "Select manually".
+    //     Expected: region 355-426 is selected in the Sequence View.
+    // Select area 717-717.
+    //     Expected: right area values have changed to 717-717.
+    // Click "Start" and wait the task for finish.
+    // Open the task report.
+    //     Expected: "There are no primers that meet the specified parameters" in the report.
+    GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/pcr_primer_design/gfp.fa", "gfp");
     GTUtilsPcrPrimerDesign::openTab(os);
     auto sequenceWidget = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
     auto selectManually = GTWidget::findToolButton(os, "tbLeftAreaSelectManually", sequenceWidget);
     GTUtilsPcrPrimerDesign::setOtherSequences(os, "");  // For scroll down.
 
-    // Click "Primer search areas for insert" -> "Left area" -> "Select manually".
     GTWidget::click(os, selectManually);
-    //     Expected: region 1-71 is selected in the Sequence View.
     QVector<U2Region> selection = GTUtilsSequenceView::getSelection(os);
     int regionNumber = selection.size();
     CHECK_SET_ERR(regionNumber == 1, QString("Left. Expected: one region is selected, current: %1").arg(regionNumber))
     U2Region region = selection.first();
     CHECK_SET_ERR(region == U2Region(0, 71),
                   QString("Selected region: expected 1-71, current: %1").arg(region.toString()))
-    // Select area 1-1.
-    GTUtilsSequenceView::selectSequenceRegion(os, 1, 1);
-    // Click "Primer search areas for insert" -> "Left area" -> "Select manually".
-    GTWidget::click(os, selectManually);
-    // Set Left area to 717-717.
-    GTUtilsPcrPrimerDesign::setSearchArea(os, {{717, 717}, true}, GTUtilsPcrPrimerDesign::AreaType::Left);
 
-    // Repeat steps for right area.
+    int expectedStart = 1,
+        expectedEnd = 1;
+    GTUtilsSequenceView::selectSequenceRegion(os, expectedStart, expectedEnd);
+    checkLeftAreaSpinboxValues(os, expectedStart, expectedEnd, sequenceWidget);
+
+    auto zoomButton = GTWidget::findButtonByText(os, "Zoom to Selection", sequenceWidget);
+    GTWidget::click(os, zoomButton);
+
     selectManually = GTWidget::findToolButton(os, "tbRightAreaSelectManually", sequenceWidget);
     GTWidget::click(os, selectManually);
     selection = GTUtilsSequenceView::getSelection(os);
@@ -332,9 +362,137 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     region = selection.first();
     CHECK_SET_ERR(region == U2Region(354, 72),
                   QString("Selected region: expected 355-426, current: %1").arg(region.toString()))
-    GTUtilsSequenceView::selectSequenceRegion(os, 1, 1);
-    GTWidget::click(os, selectManually);
-    GTUtilsPcrPrimerDesign::setSearchArea(os, {{717, 717}, true}, GTUtilsPcrPrimerDesign::AreaType::Right);
+
+    expectedStart = 717;
+    expectedEnd = 717;
+    GTUtilsSequenceView::selectSequenceRegion(os, expectedStart, expectedEnd);
+    checkRightAreaSpinboxValues(os, expectedStart, expectedEnd, sequenceWidget);
+
+    GTUtilsPcrPrimerDesign::clickStart(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsNotifications::checkNotificationReportText(os, "There are no primers that meet the specified parameters");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0009) {
+    // Open common_data/fasta/random_primers2.fa.
+    // Open the PCR Primer Design tab.
+    //     Expected: area ranges 1:1 - 1:19 (for left area spinboxes),
+    //                           1:6 - 5:19 (for right).
+    // For convenience, set the areas to 6-10.
+    //     Expected: area ranges 1:10 - 6:19.
+
+    // ---- Increase/Decrease ----
+    // Increment the values of each spinbox one by one by 1.
+    //     Expected: area ranges are increased by 1.
+    // Decrement the values of each spinbox one by one by 1.
+    //     Expected: region ranges are decreased by 1.
+
+    // ---- Select manually ----
+    // Click "Primer search areas for insert" -> "Left area" -> "Select manually".
+    // Select area to the left of the current one, for example 3-5.
+    //     Expected: left area ranges are now 1:5 - 3:19.
+    // Click "Primer search areas for insert" -> "Right area" -> "Select manually".
+    // Select area to the right of the current until to the end of the sequence, for example 17-19.
+    //     Expected: right area ranges are now 1:19 - 17:19.
+
+    // ---- Changes/edit sequence ----
+    // Click on primer5.
+    //     Expected: area ranges are now 1:5  -  3:16,
+    //                                   1:16 - 16:16.
+    // Remove subsequence.
+    //     Expected: area ranges have changed.
+    // Insert subsequence.
+    //     Expected: area ranges have changed.
+
+    GTUtilsProject::openMultiSequenceFileAsSequences(os, testDir + "_common_data/fasta/random_primers2.fa");
+    GTUtilsPcrPrimerDesign::openTab(os);
+    const QWidget *sequenceWidget = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
+    auto leftStart = GTWidget::findSpinBox(os, "sbLeftAreaStart", sequenceWidget),
+         leftEnd = GTWidget::findSpinBox(os, "sbLeftAreaEnd", sequenceWidget),
+         rightStart = GTWidget::findSpinBox(os, "sbRightAreaStart", sequenceWidget),
+         rightEnd = GTWidget::findSpinBox(os, "sbRightAreaEnd", sequenceWidget);
+    auto checkLeftRanges = [&os, leftStart, leftEnd](int startMax, int endMin, int endMax) {
+        GTSpinBox::checkLimits(os, leftStart, 1, startMax);
+        GTSpinBox::checkLimits(os, leftEnd, endMin, endMax);
+    };
+    auto checkRightRanges = [&os, rightStart, rightEnd](int startMax, int endMin, int endMax) {
+        GTSpinBox::checkLimits(os, rightStart, 1, startMax);
+        GTSpinBox::checkLimits(os, rightEnd, endMin, endMax);
+    };
+
+    checkLeftRanges(1, 1, 19);
+    checkRightRanges(6, 5, 19);
+    GTUtilsPcrPrimerDesign::setSearchArea(os, {{6, 10}}, GTUtilsPcrPrimerDesign::AreaType::Left);
+    GTUtilsPcrPrimerDesign::setSearchArea(os, {{6, 10}}, GTUtilsPcrPrimerDesign::AreaType::Right);
+    GTWidget::click(os, leftStart);  // Change focus.
+    checkLeftRanges(10, 6, 19);
+    checkRightRanges(10, 6, 19);
+
+    // Increase/Decrease.
+    {
+        auto setLeftStart = [&os, leftStart, leftEnd](int start) {
+            GTSpinBox::setValue(os, leftStart, start);
+            GTWidget::click(os, leftEnd);  // Change focus. Similarly in other lambdas.
+        };
+        auto setLeftEnd = [&os, leftStart, leftEnd](int end) {
+            GTSpinBox::setValue(os, leftEnd, end);
+            GTWidget::click(os, leftStart);
+        };
+        auto setRightStart = [&os, rightStart, rightEnd](int start) {
+            GTSpinBox::setValue(os, rightStart, start);
+            GTWidget::click(os, rightEnd);
+        };
+        auto setRightEnd = [&os, rightStart, rightEnd](int end) {
+            GTSpinBox::setValue(os, rightEnd, end);
+            GTWidget::click(os, rightStart);
+        };
+
+        setLeftStart(7);
+        checkLeftRanges(10, 7, 19);
+        setLeftEnd(11);
+        checkLeftRanges(11, 7, 19);
+        setRightEnd(11);
+        checkRightRanges(11, 6, 19);
+        setRightStart(7);
+        checkRightRanges(11, 7, 19);
+
+        setLeftStart(6);
+        checkLeftRanges(11, 6, 19);
+        setLeftEnd(10);
+        checkLeftRanges(10, 6, 19);
+        setRightEnd(10);
+        checkRightRanges(10, 7, 19);
+        setRightStart(6);
+        checkRightRanges(10, 6, 19);
+    }
+
+    // Select manually.
+    GTWidget::click(os, GTWidget::findToolButton(os, "tbLeftAreaSelectManually", sequenceWidget));
+    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 3, 5));
+    GTKeyboardUtils::selectAll();
+    checkLeftRanges(5, 3, 19);
+
+    GTWidget::click(os, GTWidget::findToolButton(os, "tbRightAreaSelectManually", sequenceWidget));
+    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 17, 19));
+    GTKeyboardUtils::selectAll();
+    checkRightRanges(19, 17, 19);
+
+    // Changes/edit sequence.
+    GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os));
+    checkLeftRanges(5, 3, 16);
+    checkRightRanges(16, 16, 16);
+
+    GTUtilsDialog::waitForDialog(os, new RemovePartFromSequenceDialogFiller(os, "1..5"));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Remove subsequence..."});
+    checkLeftRanges(5, 3, 11);
+    checkRightRanges(11, 11, 11);
+
+    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 1));
+    GTKeyboardUtils::selectAll();
+    GTUtilsDialog::waitForDialog(os, new ReplaceSubsequenceDialogFiller(os, "AAAAAAAAAA"));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Replace subsequence..."});
+    checkLeftRanges(5, 3, 20);
+    checkRightRanges(11, 11, 20);
 }
 
 }  // namespace GUITest_common_scenarios_pcr_primer_design_tab
