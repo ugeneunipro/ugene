@@ -35,7 +35,7 @@ void CollocationsAlgorithm::findN(const QList<CollocationsAlgorithmItem> &items,
     qint64 i = searchRegion.endPos();
     foreach (const CollocationsAlgorithmItem &item, items) {
         foreach (const U2Region &r, item.regions) {
-            SAFE_POINT(searchRegion.contains(r), "Items to search in contains nested regions", );
+            SAFE_POINT(searchRegion.contains(r), "Region is not in the search region", );
             i = qMin(i, r.startPos);
         }
     }
@@ -107,7 +107,7 @@ void CollocationsAlgorithm::findP(const QList<CollocationsAlgorithmItem> &items,
     qint64 i = searchRegion.endPos();
     foreach (const CollocationsAlgorithmItem &item, items) {
         foreach (const U2Region &r, item.regions) {
-            SAFE_POINT(searchRegion.contains(r), "Items to search in contains nested regions", );
+            SAFE_POINT(searchRegion.contains(r), "Region is not in the search region", );
             if (i > r.endPos() - 1) {
                 i = r.endPos() - 1;
             }
