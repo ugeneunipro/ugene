@@ -32,7 +32,6 @@ namespace HI {
 
 #ifdef __linux__
 
-#    define GT_CLASS_NAME "GTMouseDriver Linux"
 QPoint GTMouseDriver::mousePos = QPoint(-1, -1);
 
 #    define DELAY_ON_EVERY_N_PX 16
@@ -44,7 +43,6 @@ static int getMouseMoveDelayMillis(int pos) {
     return pos % DELAY_ON_EVERY_N_PX == 0 ? 1 : 0;
 }
 
-#    define GT_METHOD_NAME "moveTo"
 bool GTMouseDriver::moveTo(const QPoint &p) {
     QByteArray display_name = qgetenv("DISPLAY");
     DRIVER_CHECK(!display_name.isEmpty(), "Environment variable \"DISPLAY\" not found");
@@ -96,9 +94,7 @@ bool GTMouseDriver::moveTo(const QPoint &p) {
     GTGlobals::sleep(100);
     return true;
 }
-#    undef GT_METHOD_NAME
 
-#    define GT_METHOD_NAME "press"
 bool GTMouseDriver::press(Qt::MouseButton button) {
     QByteArray display_name = qgetenv("DISPLAY");
     DRIVER_CHECK(!display_name.isEmpty(), "Environment variable \"DISPLAY\" not found");
@@ -119,9 +115,7 @@ bool GTMouseDriver::press(Qt::MouseButton button) {
 
     return true;
 }
-#    undef GT_METHOD_NAME
 
-#    define GT_METHOD_NAME "release"
 bool GTMouseDriver::release(Qt::MouseButton button) {
     // TODO: check if this key has been already pressed
     QByteArray display_name = qgetenv("DISPLAY");
@@ -142,9 +136,7 @@ bool GTMouseDriver::release(Qt::MouseButton button) {
 
     return true;
 }
-#    undef GT_METHOD_NAME
 
-#    define GT_METHOD_NAME "scroll"
 bool GTMouseDriver::scroll(int value) {
     QByteArray display_name = qgetenv("DISPLAY");
     DRIVER_CHECK(!display_name.isEmpty(), "Environment variable \"DISPLAY\" not found");
@@ -166,9 +158,6 @@ bool GTMouseDriver::scroll(int value) {
     GTThread::waitForMainThread();
     return true;
 }
-#    undef GT_METHOD_NAME
-
-#    undef GT_CLASS_NAME
 
 #endif
 }  // namespace HI

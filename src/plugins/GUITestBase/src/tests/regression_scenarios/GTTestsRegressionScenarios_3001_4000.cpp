@@ -5225,14 +5225,8 @@ GUI_TEST_CLASS_DEFINITION(test_3870) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3886) {
-    // 1. Open WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    // 2. Open 'Extract consensus as sequence' sample.
-    GTUtilsWorkflowDesigner::addSample(os, "Extract consensus as sequence");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    // 3. Show wizard.
     class TestWizardFiller : public Filler {
     public:
         TestWizardFiller(HI::GUITestOpStatus &os)
@@ -5240,14 +5234,19 @@ GUI_TEST_CLASS_DEFINITION(test_3886) {
         }
 
         void run() override {
-            // 4. Click Next.
+            // Click Next.
             // Expected: UGENE does not crash.
             GTWidget::click(os, GTWidget::findWidget(os, "__qt__passive_wizardbutton1"));
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
         }
     };
     GTUtilsDialog::waitForDialog(os, new TestWizardFiller(os));
-    GTWidget::click(os, GTAction::button(os, "Show wizard"));
+
+    // Open 'Extract consensus as sequence' sample. I will automatically show the wizard.
+    GTUtilsWorkflowDesigner::addSample(os, "Extract consensus as sequence");
+
+    // Wait until wizard is closed.
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3895) {
