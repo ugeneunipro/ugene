@@ -1845,19 +1845,17 @@ GUI_TEST_CLASS_DEFINITION(test_3306) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "sars.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsAnnotationsTreeView::getItemCenter(os, "CDS  (0, 14)");
-    GTUtilsAnnotationsTreeView::getItemCenter(os, "gene  (0, 13)");
-    GTUtilsAnnotationsTreeView::getItemCenter(os, "mat_peptide  (0, 16)");
-    GTUtilsAnnotationsTreeView::getItemCenter(os, "misc_feature  (0, 16)");
+    GTUtilsAnnotationsTreeView::expandItem(os, "CDS  (0, 14)");
+    GTUtilsAnnotationsTreeView::expandItem(os, "gene  (0, 13)");
+    GTUtilsAnnotationsTreeView::expandItem(os, "mat_peptide  (0, 16)");
+    GTUtilsAnnotationsTreeView::expandItem(os, "misc_feature  (0, 16)");
 
-    QTreeWidget *annotTreeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
-    QScrollBar *scrollBar = annotTreeWidget->verticalScrollBar();
-    const int initialPos = scrollBar->value();
-
+    auto annotTreeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
+    auto scrollBar = annotTreeWidget->verticalScrollBar();
+    int initialPos = scrollBar->value();
     for (int i = 0; i < 15; ++i) {
         GTKeyboardDriver::keyClick(Qt::Key_Down);
     }
-
     CHECK_SET_ERR(initialPos != scrollBar->value(), "ScrollBar hasn't moved");
 }
 
