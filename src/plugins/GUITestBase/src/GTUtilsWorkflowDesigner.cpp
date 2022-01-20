@@ -212,7 +212,7 @@ QTreeWidgetItem *GTUtilsWorkflowDesigner::findTreeItem(HI::GUITestOpStatus &os, 
         }
     }
     GT_CHECK_RESULT(!failIfNULL || foundItem != nullptr, "Item \"" + itemName + "\" not found in treeWidget", nullptr);
-    if (foundItem && foundItem->parent() != nullptr) {
+    if (foundItem) {
         GTTreeWidget::scrollToItem(os, foundItem);
     }
     return foundItem;
