@@ -187,7 +187,6 @@ QTreeWidgetItem *GTUtilsWorkflowDesigner::findTreeItem(HI::GUITestOpStatus &os, 
     QTreeWidgetItem *foundItem = nullptr;
     auto treeWidget = GTWidget::findTreeWidget(os, t == algorithms ? "WorkflowPaletteElements" : "samples", wdWindow);
 
-    GTGlobals::sleep(1000);  // TODO: this method must be re-written to use the common wait & check pattern.
     QList<QTreeWidgetItem *> outerList = treeWidget->findItems("", Qt::MatchContains);
     for (int i = 0; i < outerList.count(); i++) {
         QList<QTreeWidgetItem *> innerList;
@@ -214,7 +213,7 @@ QTreeWidgetItem *GTUtilsWorkflowDesigner::findTreeItem(HI::GUITestOpStatus &os, 
     }
     GT_CHECK_RESULT(!failIfNULL || foundItem != nullptr, "Item \"" + itemName + "\" not found in treeWidget", nullptr);
     if (foundItem && foundItem->parent() != nullptr) {
-        GTTreeWidget::expand(os, foundItem->parent());
+        GTTreeWidget::scrollToItem(os, foundItem);
     }
     return foundItem;
 }
@@ -558,13 +557,12 @@ void GTUtilsWorkflowDesigner::click(HI::GUITestOpStatus &os, QGraphicsItem *item
 #define GT_METHOD_NAME "getWorker"
 WorkflowProcessItem *GTUtilsWorkflowDesigner::getWorker(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options) {
     QWidget *wdWindow = getActiveWorkflowDesignerWindow(os);
-    auto sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView", wdWindow));
-    GT_CHECK_RESULT(sceneView, "sceneView not found", nullptr);
     // Wait for the item up to GT_OP_WAIT_MILLIS.
     for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        auto sceneView = GTWidget::findExactWidget<QGraphicsView *>(os, "sceneView", wdWindow);
         QList<QGraphicsItem *> items = sceneView->items();
-        foreach (QGraphicsItem *item, items) {
+        for (QGraphicsItem *item : qAsConst(items)) {
             QGraphicsObject *graphicsObject = item->toGraphicsObject();
             auto graphicsTextItem = qobject_cast<QGraphicsTextItem *>(graphicsObject);
             if (graphicsTextItem != nullptr) {

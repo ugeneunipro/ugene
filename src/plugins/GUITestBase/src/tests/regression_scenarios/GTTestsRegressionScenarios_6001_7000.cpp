@@ -2455,10 +2455,10 @@ GUI_TEST_CLASS_DEFINITION(test_6488_2) {
     //    9. Set "a modified description on the scene" text as element description on the scene.
     //    10. Go to the last page, accept the dialog.
     class ModifyScenario : public CustomScenario {
-        void run(GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            QWizard *wizard = qobject_cast<QWizard *>(dialog);
-            CHECK_SET_ERR(nullptr != wizard, "Can't cast current dialog to QWizard");
+        void run(GUITestOpStatus &os) override {
+            auto dialog = GTWidget::getActiveModalWidget(os);
+            auto wizard = qobject_cast<QWizard *>(dialog);
+            CHECK_SET_ERR(wizard != nullptr, "Can't cast current dialog to QWizard");
 
             GTWidget::click(os, wizard->button(QWizard::NextButton));
             GTWidget::click(os, wizard->button(QWizard::NextButton));
@@ -2476,16 +2476,16 @@ GUI_TEST_CLASS_DEFINITION(test_6488_2) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit configuration..."}));
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new ModifyScenario()));
-    GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 2", QPoint(), Qt::RightButton);
+    GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 2", {}, Qt::RightButton);
 
     //    11. Edit the element again.
     //    12. Go to the "Element appearance" page in the wizard.
     //    Expected state: the element description on the scene is "a modified description on the scene".
     class CheckScenario : public CustomScenario {
-        void run(GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            QWizard *wizard = qobject_cast<QWizard *>(dialog);
-            CHECK_SET_ERR(nullptr != wizard, "Can't cast current dialog to QWizard");
+        void run(GUITestOpStatus &os) override {
+            auto dialog = GTWidget::getActiveModalWidget(os);
+            auto wizard = qobject_cast<QWizard *>(dialog);
+            CHECK_SET_ERR(wizard != nullptr, "Can't cast current dialog to QWizard");
 
             GTWidget::click(os, wizard->button(QWizard::NextButton));
             GTWidget::click(os, wizard->button(QWizard::NextButton));
