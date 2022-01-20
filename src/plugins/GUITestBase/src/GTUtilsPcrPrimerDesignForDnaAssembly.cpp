@@ -263,11 +263,10 @@ void GTUtilsPcrPrimerDesign::configureInsertToBackboneBearings(GUITestOpStatus &
     QWidget *parent = GTWidget::findWidget(os, "wgtOpenBackboneSequence", tab);
     scrollToWidget(os, parent, tab);
 
-    auto currentGb = GTWidget::findExactWidget<QGroupBox *>(os, "groupBox", parent);
     GTRadioButton::click(os, params.insertTo == InsertToBackboneBearings::InsertTo::Backbone5 ? "backbone5" :
-                                                                                                "backbone3", currentGb);
-    GTSpinBox::setValue(os, "sbBackbone5Length", params.backbone5Len, currentGb);
-    GTSpinBox::setValue(os, "sbBackbone3Length", params.backbone3Len, currentGb);
+                                                                                                "backbone3", parent);
+    GTSpinBox::setValue(os, "sbBackbone5Length", params.backbone5Len, parent);
+    GTSpinBox::setValue(os, "sbBackbone3Length", params.backbone3Len, parent);
 }
 
 void GTUtilsPcrPrimerDesign::setSearchArea(GUITestOpStatus &os, const SearchArea &params, const AreaType &areaType) {

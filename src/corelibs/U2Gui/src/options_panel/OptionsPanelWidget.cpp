@@ -23,7 +23,6 @@
 
 #include <QCoreApplication>
 #include <QHBoxLayout>
-#include <QScrollBar>
 #include <QSpacerItem>
 #include <QVBoxLayout>
 
@@ -48,11 +47,7 @@ OptionsScrollArea::OptionsScrollArea(QWidget* parent)
 
 QSize OptionsScrollArea::sizeHint() const {
     int BORDERS_APPROX_SIZE = 15;
-    return QSize(std::max(GroupOptionsWidget::getMinWidgetWidth(), sizeHintWidthFromChild) + BORDERS_APPROX_SIZE, 0);
-}
-
-void OptionsScrollArea::setSizeHintWidthFromChild(int w) {
-    sizeHintWidthFromChild = w;
+    return QSize(GroupOptionsWidget::getMinWidgetWidth() + BORDERS_APPROX_SIZE, 0);
 }
 
 OptionsPanelWidget::OptionsPanelWidget() {
@@ -168,25 +163,6 @@ GroupOptionsWidget* OptionsPanelWidget::createOptionsWidget(const QString& group
     optionsLayout->insertWidget(0, groupWidget);
 
     optionsWidgets.insert(0, groupWidget);
-
-    // Increase the ScrollArea width so that there is no unnecessary horizontal scroll. It is necessary to consider:
-    // . mainWidget minimum width
-    // . all left and right margins
-    // . vertical scroll width
-    {
-        int marginSum = 0;
-        for (QWidget *curWidget = innerWidgets;
-             curWidget != nullptr && curWidget != optionsScrollArea;
-             curWidget = curWidget->parentWidget()) {
-            QMargins margins = curWidget->contentsMargins();
-            marginSum += margins.left() + margins.right();
-        }
-        if (QScrollBar *vertScroll = optionsScrollArea->verticalScrollBar()) {
-            optionsScrollArea->setSizeHintWidthFromChild(mainWidget->minimumWidth() + marginSum +
-                                                         vertScroll->sizeHint().width());
-            optionsScrollArea->updateGeometry();
-        }
-    }
 
     groupWidget->setFocus();
 
