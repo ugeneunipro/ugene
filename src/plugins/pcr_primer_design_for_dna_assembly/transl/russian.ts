@@ -31,7 +31,7 @@
     <message>
         <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.ui" line="227"/>
         <source>Sequence</source>
-        <translation type="unfinished"></translation>
+        <translation>Последовательность</translation>
     </message>
     <message>
         <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.ui" line="235"/>
@@ -113,7 +113,7 @@
     <message>
         <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.ui" line="566"/>
         <source>Max complementary motifs length</source>
-        <translation>Максимальная длина комплементарных мотивов</translation>
+        <translation>Макс. длина комплементарных мотивов</translation>
     </message>
     <message>
         <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.ui" line="827"/>
@@ -172,165 +172,10 @@
         <source>Info: choose a nucleic sequence for running PCR Primer Design</source>
         <translation>Инфо: выберите нуклеотидную последовательность для запуска &quot;Дизайна Праймеров для ПЦР&quot;</translation>
     </message>
-</context>
-<context>
-    <name>QObject</name>
     <message>
-        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="77"/>
+        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="78"/>
         <source>PCR Primer Design for DNA assembly</source>
         <translation>Дизайн праймеров для ПЦР для сборки ДНК</translation>
-    </message>
-    <message>
-        <source>A Forward</source>
-        <translation type="vanished">А Прямой</translation>
-    </message>
-    <message>
-        <source>A Reverse</source>
-        <translation type="vanished">А Обратный</translation>
-    </message>
-    <message>
-        <source>B1 Forward</source>
-        <translation type="vanished">В1 Прямой</translation>
-    </message>
-    <message>
-        <source>B1 Reverse</source>
-        <translation type="vanished">B1 Обратный</translation>
-    </message>
-    <message>
-        <source>B2 Forward</source>
-        <translation type="vanished">В2 Прямой</translation>
-    </message>
-    <message>
-        <source>B2 Reverse</source>
-        <translation type="vanished">В2 Обратный</translation>
-    </message>
-    <message>
-        <source>B3 Forward</source>
-        <translation type="vanished">В3 Прямой</translation>
-    </message>
-    <message>
-        <source>B3 Reverse</source>
-        <translation type="vanished">В3 Обратный</translation>
-    </message>
-    <message>
-        <location filename="../src/UnwantedStructuresInBackboneDialog.cpp" line="39"/>
-        <source>are no sequences</source>
-        <translation>0</translation>
-    </message>
-    <message>
-        <location filename="../src/UnwantedStructuresInBackboneDialog.cpp" line="42"/>
-        <source>is 1 sequence</source>
-        <translation>1</translation>
-    </message>
-    <message>
-        <location filename="../src/UnwantedStructuresInBackboneDialog.cpp" line="45"/>
-        <source>are %1 sequences</source>
-        <translation>%1</translation>
-    </message>
-    <message>
-        <location filename="../src/UnwantedStructuresInBackboneDialog.cpp" line="47"/>
-        <source>There %1 in the file left. Use this sequence as the backbone?</source>
-        <translation>Последовательностей осталось: %1. Использовать текущую в качестве остова?</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/UnwantedConnectionsUtils.cpp" line="45"/>
-        <source>&lt;b&gt;Self-dimer:&lt;/b&gt;&lt;br&gt;</source>
-        <translation>&lt;b&gt;Гомодимер:&lt;/b&gt;&lt;br&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/UnwantedConnectionsUtils.cpp" line="67"/>
-        <source>&lt;b&gt;Hetero-dimer:&lt;/b&gt;&lt;br&gt;</source>
-        <translation>&lt;b&gt;Гетеродимер:&lt;/b&gt;&lt;br&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="30"/>
-        <source>&lt;p&gt;Error, see log.&lt;/p&gt;</source>
-        <translation>&lt;b&gt;Ошибка, смотрите лог:&lt;/b&gt;&lt;br&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="45"/>
-        <source>Forward user primer</source>
-        <translation>Прямой праймер пользователя</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="48"/>
-        <source>Reverse user primer</source>
-        <translation>Обратный праймер пользователя</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="51"/>
-        <source>File sequence</source>
-        <translation>Файл последовательности</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="54"/>
-        <source>Reverse complementary file sequence</source>
-        <translation>Обратно комплементарный файл последовательности</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="57"/>
-        <source>Other sequences in PCR reaction</source>
-        <translation>Другие последовательностив реакции ПЦР</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="62"/>
-        <source> and </source>
-        <translation> и </translation>
-    </message>
-    <message>
-        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="85"/>
-        <source>Invalid region %1 for sequence length %2 (%3 primer)</source>
-        <translation>Не валидный регион %1 для последовательности длиной %2 (праймер %3)</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="108"/>
-        <source>Empty sequence</source>
-        <translation>Пустая последовательность</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="113"/>
-        <source>The number of resulting primers (%1) isn&apos;t equal to the number of primer names (%2)</source>
-        <translation>Количество полученных в результате праймеров (%1) не равно количеству имен праймеров (%2)</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="121"/>
-        <source>&lt;p&gt;There are no primers that meet the specified parameters.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Нет праймеров, подходящих под заданные параметры.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="126"/>
-        <source>&lt;h3&gt;Details:&lt;/h3&gt;&lt;p&gt;&lt;u&gt;Underlined&lt;/u&gt;&amp;#8211;backbone sequence&amp;#59;&lt;br&gt;&lt;b&gt;Bold&lt;/b&gt;&amp;#8211;primer sequence.&lt;/p&gt;</source>
-        <translation>&lt;h3&gt;Детали:&lt;/h3&gt;&lt;p&gt;&lt;u&gt;Подчеркнутый шрифт&lt;/u&gt;&amp;#8211;последовательность остова&amp;#59;&lt;br&gt;&lt;b&gt;Жирный шрифт &lt;/b&gt;&amp;#8211;последовательность праймера.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="183"/>
-        <source>&lt;h2&gt;Unwanted connections of user primers&lt;/h2&gt;</source>
-        <translation>&lt;h2&gt;Нежелательные соединения пользовательских праймеров&lt;/h2&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="186"/>
-        <source>Selfdimers</source>
-        <translation>Гомодимер</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="201"/>
-        <source>Heterodimers</source>
-        <translation>Гетеродимер</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="201"/>
-        <source>Another user primer</source>
-        <translation>Другой праймер пользователя</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="237"/>
-        <source>Yes</source>
-        <translation>Да</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="237"/>
-        <source>No</source>
-        <translation>Нет</translation>
     </message>
 </context>
 <context>
@@ -352,6 +197,21 @@
 <context>
     <name>U2::FindPresenceOfUnwantedParametersTask</name>
     <message>
+        <location filename="../src/tasks/FindPresenceOfUnwantedParametersTask.cpp" line="32"/>
+        <source>Find Presence of Unwanted Parameters Task</source>
+        <translation>Задача Найти Наличие Нежелательных Параметров</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/FindPresenceOfUnwantedParametersTask.cpp" line="40"/>
+        <source>Sequence length is less than 5&apos; backbone length, the entire sequence is used</source>
+        <translation>Длина последовательности меньше длины 5&apos; остова, используется вся последовательность</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/FindPresenceOfUnwantedParametersTask.cpp" line="43"/>
+        <source>Sequence length is less than 3&apos; backbone length, the entire sequence is used</source>
+        <translation>Длина последовательности меньше длины 3&apos; остова, используется вся последовательность</translation>
+    </message>
+    <message>
         <location filename="../src/tasks/FindPresenceOfUnwantedParametersTask.cpp" line="54"/>
         <source>&lt;u&gt;5&apos; backbone&lt;/u&gt;&lt;br&gt;&lt;br&gt;</source>
         <translation>&lt;u&gt;5&apos; остов&lt;/u&gt;&lt;br&gt;&lt;br&gt;</translation>
@@ -372,91 +232,94 @@
     <message>
         <location filename="../src/tasks/FindUnwantedIslandsTask.cpp" line="41"/>
         <source>Searching of unwanted islands and areas between them in the region &quot;%1&quot; (+ %2 nucleotides to the %3, deep into the amplified fragment) has been started</source>
-        <translation>Поиск нежелательных островков и областей между ними &quot;%1&quot; (+ %2 нуклеотида к %3, вглубь амплифицируемого фрагмента) начался</translation>
+        <translation>Поиск нежелательных островков и областей между ними &quot;%1&quot; (+ %2 нуклеотида %3, вглубь амплифицируемого фрагмента) начался</translation>
     </message>
     <message>
-        <location filename="../src/tasks/FindUnwantedIslandsTask.cpp" line="44"/>
-        <source>The following unwanted parametes are used. Free Gibbs energy: %1 kj/mol, melting temperature: %2 C, maximum dimer length: %3 nt</source>
-        <translation>Следующие нежелательные параметры используются. Свободная энергия Гиббса: %1 кдж/моль, температрура плавления: %2 C, максимальная длина димера: %3 нт</translation>
+        <location filename="../src/tasks/FindUnwantedIslandsTask.cpp" line="34"/>
+        <source>Find Unwanted Islands Task</source>
+        <translation>Задача Найти Нежелательные Островки</translation>
     </message>
     <message>
-        <location filename="../src/tasks/FindUnwantedIslandsTask.cpp" line="57"/>
+        <location filename="../src/tasks/FindUnwantedIslandsTask.cpp" line="45"/>
+        <source>left</source>
+        <translation>влево</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/FindUnwantedIslandsTask.cpp" line="45"/>
+        <source>right</source>
+        <translation>вправо</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/FindUnwantedIslandsTask.cpp" line="46"/>
+        <source>The following unwanted parameters are used. Free Gibbs energy: %1 kj/mol, melting temperature: %2 C, maximum dimer length: %3 nt</source>
+        <translation>Следующие нежелательные параметры используются. Свободная энергия Гиббса: %1 кдж/моль, температура плавления: %2 C, максимальная длина димера: %3 нт</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/FindUnwantedIslandsTask.cpp" line="59"/>
         <source>The region between unwanted islands has been found: %1</source>
         <translation>Регион между нежелательными островками найден: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/FindUnwantedIslandsTask.cpp" line="93"/>
+        <location filename="../src/tasks/FindUnwantedIslandsTask.cpp" line="95"/>
         <source>The following regions are located between unwanted islands: %1</source>
         <translation>Следующие регионы располагаются между нежелательными островками: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/FindUnwantedIslandsTask.cpp" line="95"/>
+        <location filename="../src/tasks/FindUnwantedIslandsTask.cpp" line="97"/>
         <source>The whole region is filled with unwanted islands, no regions between them has been found</source>
         <translation>Регион полностью состоит из нежелательных островком, регионов между ними не найдено</translation>
     </message>
 </context>
 <context>
-    <name>U2::GTest</name>
-    <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTaskTest.cpp" line="91"/>
-        <source>context not found %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTaskTest.cpp" line="96"/>
-        <source>Sequence %1 not found</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>U2::PCRPrimerDesignForDNAAssemblyOPWidget</name>
     <message>
-        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="91"/>
+        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="92"/>
         <source>User primers</source>
         <translation>Праймеры пользователя</translation>
     </message>
     <message>
-        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="93"/>
+        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="94"/>
         <source>Choose generated sequences as user primer&apos;s end</source>
-        <translation>Выбрать последовательность на край праймера пользователя</translation>
+        <translation>Выбрать последовательность на край праймера
+пользователя</translation>
     </message>
     <message>
-        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="97"/>
+        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="98"/>
         <source>Parameters of priming sequences</source>
-        <translation>Парамертры последовательностей праймеров</translation>
+        <translation>Параметры последовательностей праймеров</translation>
     </message>
     <message>
-        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="101"/>
+        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="102"/>
         <source>Parameters to exclude in whole primers</source>
         <translation>Параметры, подлежащие исключению</translation>
     </message>
     <message>
-        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="105"/>
+        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="106"/>
         <source>Select areas for priming search</source>
         <translation>Выбрать области для поиска праймеров</translation>
     </message>
     <message>
-        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="109"/>
+        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="110"/>
         <source>Open the backbone sequence</source>
         <translation>Открыть последовательность остова</translation>
     </message>
     <message>
-        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="113"/>
+        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="114"/>
         <source>Other sequences in PCR reaction</source>
         <translation>Другие последовательности в реакции ПЦР</translation>
     </message>
     <message>
-        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="284"/>
+        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="285"/>
         <source>Multiple regions selection, the only first is set as primer search area.</source>
-        <translation>Выбрано несколько регионов, в качестве обюласти поиска праймеров выбран первый из них.</translation>
+        <translation>Выбрано несколько регионов, в качестве области поиска праймеров выбран первый из них.</translation>
     </message>
     <message>
-        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="329"/>
+        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="330"/>
         <source>Select a backbone sequence file</source>
         <translation>Выбрать файл с последовательностью остова</translation>
     </message>
     <message>
-        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="339"/>
+        <location filename="../src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp" line="340"/>
         <source>Select an &quot;Other sequences in PCR reaction&quot; file</source>
         <translation>Выбрать файл &quot;Другие последовательности в реакции ПЦР&quot;</translation>
     </message>
@@ -479,164 +342,209 @@
     <message>
         <location filename="../src/PCRPrimerDesignForDNAAssemblyPlugin.cpp" line="44"/>
         <source>PCR Primer Design for DNA assembly.</source>
-        <translation>Дизайн праймеров для ПЦР для сборки ДНК,.</translation>
+        <translation>Дизайн праймеров для ПЦР для сборки ДНК.</translation>
+    </message>
+    <message>
+        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="33"/>
+        <source>&lt;p&gt;Error, see log.&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Ошибка, смотрите лог.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="48"/>
+        <source>Forward user primer</source>
+        <translation>Прямой праймер пользователя</translation>
+    </message>
+    <message>
+        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="51"/>
+        <source>Reverse user primer</source>
+        <translation>Обратный праймер пользователя</translation>
+    </message>
+    <message>
+        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="54"/>
+        <source>Sequence</source>
+        <translation>Последовательность</translation>
+    </message>
+    <message>
+        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="57"/>
+        <source>Reverse complementary sequence</source>
+        <translation>Обратно-комплементарная последовательность</translation>
+    </message>
+    <message>
+        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="60"/>
+        <source>Other sequences in PCR reaction</source>
+        <translation>Другие последовательности в реакции ПЦР</translation>
+    </message>
+    <message>
+        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="65"/>
+        <source> and </source>
+        <translation> и </translation>
+    </message>
+    <message>
+        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="124"/>
+        <source>&lt;p&gt;There are no primers that meet the specified parameters.&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Нет праймеров, подходящих под заданные параметры.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="130"/>
+        <source>&lt;h3&gt;Details:&lt;/h3&gt;&lt;p&gt;&lt;u&gt;Underlined&lt;/u&gt;&amp;#8211;backbone sequence&amp;#59;&lt;br&gt;&lt;b&gt;Bold&lt;/b&gt;&amp;#8211;primer sequence.&lt;/p&gt;</source>
+        <translation>&lt;h3&gt;Детали:&lt;/h3&gt;&lt;p&gt;&lt;u&gt;Подчеркнутый шрифт&lt;/u&gt; &amp;#8211; последовательность остова&amp;#59;&lt;br&gt;&lt;b&gt;Жирный шрифт &lt;/b&gt;&amp;#8211; последовательность праймера.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="187"/>
+        <source>&lt;h2&gt;Unwanted connections of user primers&lt;/h2&gt;</source>
+        <translation>&lt;h2&gt;Нежелательные соединения пользовательских праймеров&lt;/h2&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="190"/>
+        <source>Self-dimers</source>
+        <translation>Гомодимеры</translation>
+    </message>
+    <message>
+        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="205"/>
+        <source>Hetero-dimers</source>
+        <translation>Гетеродимеры</translation>
+    </message>
+    <message>
+        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="206"/>
+        <source>Another user primer</source>
+        <translation>Другой праймер пользователя</translation>
+    </message>
+    <message>
+        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="245"/>
+        <source>Yes</source>
+        <translation>Есть</translation>
+    </message>
+    <message>
+        <location filename="../src/utils/PCRPrimerDesignTaskReportUtils.cpp" line="245"/>
+        <source>No</source>
+        <translation>Нет</translation>
+    </message>
+    <message>
+        <location filename="../src/utils/UnwantedConnectionsUtils.cpp" line="47"/>
+        <source>&lt;b&gt;Self-dimer:&lt;/b&gt;&lt;br&gt;</source>
+        <translation>&lt;b&gt;Гомодимер:&lt;/b&gt;&lt;br&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/utils/UnwantedConnectionsUtils.cpp" line="69"/>
+        <source>&lt;b&gt;Hetero-dimer:&lt;/b&gt;&lt;br&gt;</source>
+        <translation>&lt;b&gt;Гетеродимер:&lt;/b&gt;&lt;br&gt;</translation>
     </message>
 </context>
 <context>
     <name>U2::PCRPrimerDesignForDNAAssemblyTask</name>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="68"/>
-        <source>Unknown file format!</source>
-        <translation>Неизвестный формат файла!</translation>
-    </message>
-    <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="166"/>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="156"/>
         <source>The &quot;B1 Forward&quot; primer with the region &quot;%1&quot; doesn&apos;t fit because there are no corresponding &quot;B1 Reverse&quot; primers</source>
         <translation>Праймер &quot;В1 прямой&quot;, находящийся на позиции %1 не подходит, т.к. соответствующий &quot;В1 Обратный&quot; праймер не был найден</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="176"/>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="166"/>
         <source>The &quot;A Forward&quot; and the &quot;A Reverse&quot; primers have been found</source>
         <translation>Праймеры &quot;А Прямой&quot; и &quot;А Обратный&quot; были найдены</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="189"/>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="179"/>
         <source>B2 and B3 primer pairs haven&apos;t been found, search again</source>
         <translation>Пары праймеров В2 и В3 не были найдены, ищем снова</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="225"/>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="214"/>
         <source>The backbone sequence without unwanted hairpins, self- and hetero-dimers has been found: %1</source>
         <translation>Последовательность остова без нежелательных шпилек, гомо- и гетеро-димеров была найдена: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="232"/>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="221"/>
         <source>The following backbone sequence candidate contains parameters: %1</source>
         <translation>Текущий кандидат на последовательность остова содержит параметры: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="251"/>
-        <source>The file &quot;%1&quot; doesn&apos;t contain the backbone sequence, which matchs the parameters. Skip the backbone sequence parameter.</source>
-        <translation>Файл &quot;%1&quot; не содержит последовательность остова, отвечающую параметрам. Пропск параметра последовательность остова.</translation>
-    </message>
-    <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="353"/>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="342"/>
         <source>&quot;B1 Forward&quot; and &quot;B1 Reverse&quot; have unwanted hetero-dimers, move on</source>
-        <translation>&quot;В1 Прямой&quot; и &quot;В1 Обратный&quot; содержат нежелательные гетеро-димеры, двигаемся дальше</translation>
+        <translation>&quot;В1 Прямой&quot; и &quot;В1 Обратный&quot; содержат нежелательные гетеродимеры, двигаемся дальше</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="361"/>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="350"/>
         <source>The &quot;B1 Reverse&quot; candidate primer region &quot;%1&quot; contains unwanted connections</source>
         <translation>Регион &quot;%1&quot; кандидата в праймер &quot;В1 Прямой&quot; содержит нежелательные соединения</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="342"/>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="331"/>
         <source>The &quot;B1 Reverse&quot; candidate primer region &quot;%1&quot; fits to &quot;Parameters of priming sequences&quot; values, checking for unwanted connections</source>
-        <translation>Кандидат в праймер &quot;В1 Обратный&quot;, находящийся в &quot;%1&quot; подходит к &quot;Парамертрам последовательностей праймеров&quot;, проверяем на наличие нежелательных соединений</translation>
+        <translation>Кандидат в праймер &quot;В1 Обратный&quot;, находящийся в &quot;%1&quot; подходит к &quot;Параметрам последовательностей праймеров&quot;, проверяем на наличие нежелательных соединений</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="45"/>
-        <source>A Forward</source>
-        <translation>А Прямой</translation>
-    </message>
-    <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="46"/>
-        <source>A Reverse</source>
-        <translation>А Обратный</translation>
-    </message>
-    <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="47"/>
-        <source>B1 Forward</source>
-        <translation>В1 Прямой</translation>
-    </message>
-    <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="48"/>
-        <source>B1 Reverse</source>
-        <translation>B1 Обратный</translation>
-    </message>
-    <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="49"/>
-        <source>B2 Forward</source>
-        <translation>В2 Прямой</translation>
-    </message>
-    <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="50"/>
-        <source>B2 Reverse</source>
-        <translation>В2 Обратный</translation>
-    </message>
-    <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="51"/>
-        <source>B3 Forward</source>
-        <translation>В3 Прямой</translation>
-    </message>
-    <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="52"/>
-        <source>B3 Reverse</source>
-        <translation>В3 Обратный</translation>
-    </message>
-    <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="407"/>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="485"/>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="396"/>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="474"/>
         <source>The &quot;%1&quot; candidate primer region &quot;%2&quot; fits to &quot;Parameters of priming sequences&quot; values, checking for unwanted connections</source>
-        <translation>Кандидат в праймер &quot;%1&quot;, находящийся в &quot;%2&quot; подходит к &quot;Парамертрам последовательностей праймеров&quot;, проверяем на наличие нежелательных соединений</translation>
+        <translation>Кандидат в праймер &quot;%1&quot;, находящийся в &quot;%2&quot; подходит к &quot;Параметрам последовательностей праймеров&quot;, проверяем на наличие нежелательных соединений</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="425"/>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="414"/>
         <source>The &quot;%1&quot; primer with the region &quot;%2&quot; doesn&apos;t fit because there are no corresponding &quot;%3&quot; primers</source>
-        <translation>Кандидат в праймер &quot;%1&quot;, находящийся в &quot;%2&quot;  не подходит потому, что нет подходящего праймера &quot;%3&quot;</translation>
+        <translation>Кандидат в праймер &quot;%1&quot;, находящийся в &quot;%2&quot; не подходит потому, что нет подходящего праймера &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="443"/>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="432"/>
         <source>The &quot;%1&quot; candidate primer region &quot;%2&quot; contains unwanted connections</source>
         <translation>Кандидат в праймер &quot;%1&quot;, находящийся в &quot;%2&quot; содержит нежелательные соединения</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="495"/>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="484"/>
         <source>&quot;%1&quot; and &quot;%2&quot; have unwanted hetero-dimers, move on</source>
-        <translation>&quot;%1&quot; and &quot;%2&quot; have unwanted hetero-dimers, move on</translation>
+        <translation>&quot;%1&quot; и &quot;%2&quot; содержат нежелательные гетеродимеры, двигаемся дальше</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="511"/>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="500"/>
         <source>The &quot;B2 Reverse&quot; candidate primer region &quot;%1&quot; contains unwanted connections</source>
         <translation>Регион &quot;%1&quot; кандидата в праймер &quot;В2 Обратный&quot; содержит нежелательные соединения</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="522"/>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="511"/>
         <source>No user primers</source>
         <translation>Нет праймеров пользователя</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="524"/>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="513"/>
         <source>No forward user primer. Reverse user primer ignored</source>
         <translation>Нет прямого праймера пользователя. Обратный праймер пользователя игнорируется</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="526"/>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="515"/>
         <source>No reverse user primer. Forward user primer ignored</source>
         <translation>Нет обратного праймера пользователя. Прямой праймер пользователя игнорируется</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="289"/>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="278"/>
         <source>The file &quot;%1&quot; wasn&apos;t loaded</source>
         <translation>Файл &quot;%1&quot; не был загружен</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="154"/>
-        <source>The &quot;B1 Forward&quot; candidate primer region &quot;%1&quot; fits to &quot;Parameters of priming sequences&quot; values, checking for unwanted connections</source>
-        <translation>Кандидат в праймер &quot;В1 Прямой&quot;, находящийся в &quot;%1&quot; подходит к &quot;Парамертрам последовательностей праймеров&quot;, проверяем на наличие нежелательных соединений</translation>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="56"/>
+        <source>PCR Primer Design For DNA Assembly Task</source>
+        <translation>Задача Дизайн Праймеров для ПЦР для Сборки ДНК</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="292"/>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="144"/>
+        <source>The &quot;B1 Forward&quot; candidate primer region &quot;%1&quot; fits to &quot;Parameters of priming sequences&quot; values, checking for unwanted connections</source>
+        <translation>Кандидат в праймер &quot;В1 Прямой&quot;, находящийся в &quot;%1&quot; подходит к &quot;Параметрам последовательностей праймеров&quot;, проверяем на наличие нежелательных соединений</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="240"/>
+        <source>The file &quot;%1&quot; doesn&apos;t contain the backbone sequence, which matches the parameters. Skip the backbone sequence parameter.</source>
+        <translation>Файл &quot;%1&quot; не содержит последовательность остова, отвечающую параметрам. Пропуск параметра последовательность остова.</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="281"/>
         <source>No objects in the file &quot;%1&quot;</source>
         <translation>Нет объектов в файле &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="304"/>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="293"/>
         <source>No sequences in the file &quot;%1&quot;</source>
         <translation>Нет последовательностей в файле &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="198"/>
+        <location filename="../src/tasks/PCRPrimerDesignForDNAAssemblyTask.cpp" line="188"/>
         <source>The candidate primer region &quot;%1&quot; contains unwanted connections</source>
         <translation>Регион &quot;%1&quot; кандидатного праймера содержит нежелательные соединения</translation>
     </message>
@@ -653,10 +561,28 @@
         <source>Region</source>
         <translation>Регион</translation>
     </message>
+</context>
+<context>
+    <name>U2::UnwantedStructuresInBackboneDialog</name>
     <message>
-        <location filename="../src/options_panel/ResultTable.cpp" line="57"/>
-        <source>%1-%2</source>
-        <translation></translation>
+        <location filename="../src/UnwantedStructuresInBackboneDialog.cpp" line="39"/>
+        <source>are no sequences</source>
+        <translation>0</translation>
+    </message>
+    <message>
+        <location filename="../src/UnwantedStructuresInBackboneDialog.cpp" line="42"/>
+        <source>is 1 sequence</source>
+        <translation>1</translation>
+    </message>
+    <message>
+        <location filename="../src/UnwantedStructuresInBackboneDialog.cpp" line="45"/>
+        <source>are %1 sequences</source>
+        <translation>%1</translation>
+    </message>
+    <message>
+        <location filename="../src/UnwantedStructuresInBackboneDialog.cpp" line="47"/>
+        <source>There %1 in the file left. Use this sequence as the backbone?</source>
+        <translation>Последовательностей осталось: %1. Использовать текущую в качестве остова?</translation>
     </message>
 </context>
 <context>
@@ -696,7 +622,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/UnwantedStructuresInBackboneDialog.ui" line="59"/>
-        <source>There no sequences in the file left. Use this sequence as the backbone?</source>
+        <source>There are no sequences in the file left. Use this sequence as the backbone?</source>
         <translation>В файле больше не осталось последовательностей. Использовать текущую в качестве остова?</translation>
     </message>
 </context>

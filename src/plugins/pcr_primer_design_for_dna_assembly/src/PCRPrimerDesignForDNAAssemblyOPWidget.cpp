@@ -74,16 +74,14 @@ const QString PCRPrimerDesignForDNAAssemblyOPWidget::SELECT_AREAS_FOR_PRIMING_SH
 const QString PCRPrimerDesignForDNAAssemblyOPWidget::OPEN_BACKBONE_SEQUENCE_SHOW_HIDE_ID = "open-backbone-sequence-show-hide-id";
 const QString PCRPrimerDesignForDNAAssemblyOPWidget::GENERATE_SEQUENCE_SHOW_HIDE_ID = "generate-sequence-show-hide-id";
 const QString PCRPrimerDesignForDNAAssemblyOPWidget::OTHER_SEQUENCES_IN_PCR_REACTION_SHOW_HIDE_ID = "other-sequences-in-pcr-reaction-show-hide-id";
-QString PCRPrimerDesignForDNAAssemblyOPWidget::PCR_TABLE_OBJECT_NAME() {
-    return PCRPrimerDesignForDNAAssemblyOPWidget::tr("PCR Primer Design for DNA assembly");
-}
+const QString PCRPrimerDesignForDNAAssemblyOPWidget::PCR_TABLE_OBJECT_NAME =
+    QApplication::translate("PCRPrimerDesignForDNAAssemblyOPWidget", "PCR Primer Design for DNA assembly");
 
 PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(AnnotatedDNAView* _annDnaView)
     : QWidget(nullptr),
       annDnaView(_annDnaView),
       savableWidget(this, GObjectViewUtils::findViewByName(annDnaView->getName())) {
     setupUi(this);
-    setMinimumWidth(400);
     parametersMinMaxSpinBoxes = { { sbMinRequireGibbs, sbMaxRequireGibbs },
                                   { spMinRequireMeltingTeml, spMaxRequireMeltingTeml },
                                   { spMinRequireOverlapLength, spMaxRequireOverlapLength } };
@@ -464,7 +462,7 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::createResultAnnotations() {
     U2OpStatusImpl os;
     const U2DbiRef localDbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
     SAFE_POINT_OP(os, );
-    auto resultsTableObject = new AnnotationTableObject(PCR_TABLE_OBJECT_NAME(), localDbiRef);
+    auto resultsTableObject = new AnnotationTableObject(PCR_TABLE_OBJECT_NAME, localDbiRef);
     QSet<QString> excludeList;
     for (Document *d : qAsConst(AppContext::getProject()->getDocuments())) {
         excludeList.insert(d->getURLString());
