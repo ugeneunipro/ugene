@@ -31,7 +31,10 @@
 #include <U2Core/L10n.h>
 #include <U2Core/PrimerStatistics.h>
 
+#include <U2Gui/MainWindow.h>
+
 #include <QApplication>
+#include <QMainWindow>
 #include <QMessageBox>
 
 #include "utils/UnwantedConnectionsUtils.h"
@@ -222,7 +225,8 @@ QList<Task*> PCRPrimerDesignForDNAAssemblyTask::onSubTaskFinished(Task* subTask)
                                 .arg(QString(consideredBackboneSequence)));
             int userResponse = UnwantedStructuresInBackboneDialog(consideredBackboneSequence,
                                                                   checkBackboneSequence->getUnwantedStructures(),
-                                                                  backboneSequencesCandidates.length())
+                                                                  backboneSequencesCandidates.length(),
+                                                                  AppContext::getMainWindow()->getQMainWindow())
                                    .exec();
             // User accepted -> Set as backbone, finish search for backbone.
             if (userResponse == QDialog::Accepted) {

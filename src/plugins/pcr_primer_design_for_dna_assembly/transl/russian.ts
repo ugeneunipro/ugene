@@ -584,6 +584,16 @@
         <source>There %1 in the file left. Use this sequence as the backbone?</source>
         <translation>Последовательностей осталось: %1. Использовать текущую в качестве остова?</translation>
     </message>
+    <message>
+        <location filename="../src/UnwantedStructuresInBackboneDialog.cpp" line="49"/>
+        <source>Yes</source>
+        <translation>Да</translation>
+    </message>
+    <message>
+        <location filename="../src/UnwantedStructuresInBackboneDialog.cpp" line="50"/>
+        <source>No</source>
+        <translation>Нет</translation>
+    </message>
 </context>
 <context>
     <name>UnwantedStructuresInBackboneDialog</name>
