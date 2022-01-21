@@ -43,6 +43,7 @@ if (CMAKE_COMPILER_IS_GNUCXX)
             " -Werror=shadow=local" # Requires GCC 7.1+
             " -Werror=uninitialized"
             " -Werror=unused-parameter"
+            " -Werror=unused-value"
             " -Werror=unused-variable"
             )
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_WARNING_FLAGS}")
