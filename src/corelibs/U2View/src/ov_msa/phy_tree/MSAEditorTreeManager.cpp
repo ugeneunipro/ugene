@@ -282,7 +282,7 @@ void MSAEditorTreeManager::sl_openTreeTaskFinished(Task *task) {
 
     // Once tree is added to the splitter make the tree-view viewport state consistent:
     // scroll to the top-right corner to make sequence names visible.
-    QTimer::singleShot(0, [treeViewer]() {
+    QTimer::singleShot(0, treeViewer, [treeViewer]() {
         QGraphicsView *ui = treeViewer->getTreeViewerUI();
         ui->centerOn(ui->scene()->width(), 0);
     });

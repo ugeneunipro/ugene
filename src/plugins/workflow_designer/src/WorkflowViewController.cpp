@@ -1996,13 +1996,12 @@ void WorkflowView::sl_saveSceneAs() {
 }
 
 void WorkflowView::startWizard(Wizard *wizard) {
-    auto viewPointer = new QPointer<WorkflowView>(this);
-    QTimer::singleShot(100, [this, wizard, viewPointer]() {
-        // Check that the view is not closed/destroyed before running the wizard. */
-        if (!viewPointer->isNull()) {
-            runWizardAndHandleResult(wizard);
+    QPointer<Wizard> wizardPointer(wizard);
+    QTimer::singleShot(100, this, [this, wizardPointer]() {
+        // Check that the wizard is not closed/destroyed.
+        if (!wizardPointer.isNull()) {
+            runWizardAndHandleResult(wizardPointer.data());
         }
-        delete viewPointer;
     });
 }
 

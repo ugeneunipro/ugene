@@ -75,7 +75,7 @@ void WelcomePageMdiController::sl_onMdiClose(MWMDIWindow *mdi) {
 void WelcomePageMdiController::sl_onRecentChanged() {
     // Update recent list asynchronously: sl_onRecentChanged may be called within 'label->click'
     // event processing and welcomePage->updateRecent deletes the labels for missed files.
-    QTimer::singleShot(0, [this]() {
+    QTimer::singleShot(0, this, [this]() {
         CHECK(welcomePage != nullptr, );
         auto settings = AppContext::getSettings();
         QStringList recentProjects = settings->getValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME).toStringList();

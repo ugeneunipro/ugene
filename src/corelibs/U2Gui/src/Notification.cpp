@@ -440,7 +440,7 @@ QPoint NotificationStack::getStackBottomRightPoint() const {
 bool NotificationStack::eventFilter(QObject *target, QEvent *event) {
     if (target == parentWidget) {
         if (event->type() == QEvent::Resize || event->type() == QEvent::Move) {
-            QTimer::singleShot(100, [=]() { updateOnScreenNotificationPositions(); });
+            QTimer::singleShot(100, this, [this]() { updateOnScreenNotificationPositions(); });
         }
     }
     return false;
