@@ -32,7 +32,7 @@ namespace U2 {
 
 class WizardPage;
 
-class U2LANG_EXPORT Wizard {
+class U2LANG_EXPORT Wizard : public QObject {
 public:
     Wizard(const QString &name, const QList<WizardPage *> &pages, const QString &helpPageId);
     virtual ~Wizard();
