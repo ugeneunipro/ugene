@@ -46,6 +46,8 @@ UnwantedStructuresInBackboneDialog::UnwantedStructuresInBackboneDialog(const QBy
     }
     questionLabel->setText(tr("There %1 in the file left. Use this sequence as the backbone?").arg(sequenceDeclension));
 
+    buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Yes"));
+    buttonBox->button(QDialogButtonBox::No)->setText(tr("No"));
     new HelpButton(this, buttonBox, "71958585");
 }
 
