@@ -204,6 +204,8 @@ WorkflowPaletteElements::WorkflowPaletteElements(ActorPrototypeRegistry *reg, Sc
     setFocusPolicy(Qt::NoFocus);
     setSelectionMode(QAbstractItemView::NoSelection);
     setItemDelegate(new PaletteDelegate(this));
+    // Scroll per item does not work well in QT (QTreeWidget::scrollToItem()) when items have non-equal height.
+    setVerticalScrollMode(ScrollPerPixel);
     setRootIsDecorated(false);
     // setAnimated(true);
     setMouseTracking(true);

@@ -2725,25 +2725,24 @@ GUI_TEST_CLASS_DEFINITION(test_1252_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1252_real) {
-    // 1) Open WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    // 2) Add Read Sequence(RS).
+    // Add Read Sequence(RS).
     WorkflowProcessItem *reader = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
 
-    // 3) Add Write Sequence(WS).
-    WorkflowProcessItem *writer = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence", true);
-
-    // 4) Add ORF Finder(OF).
+    // Add ORF Finder(OF).
     WorkflowProcessItem *orfMarker = GTUtilsWorkflowDesigner::addElement(os, "ORF Marker", true);
 
-    // 5) Connect RS with OF.
+    // Add Write Sequence(WS).
+    WorkflowProcessItem *writer = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence", true);
+
+    // Connect RS with OF.
     GTUtilsWorkflowDesigner::connect(os, reader, orfMarker);
 
-    // 6) Connect OF with WS.
+    // Connect OF with WS.
     GTUtilsWorkflowDesigner::connect(os, orfMarker, writer);
 
-    // Excepted state : Input "Annotations" slot of WS is not empty and contains annotations from ORF Finder
+    // Excepted state: Input "Annotations" slot of WS is not empty and contains annotations from ORF Finder
     GTUtilsWorkflowDesigner::click(os, "Write Sequence");
 
     QList<QPair<QString, bool>> items = GTUtilsWorkflowDesigner::getCheckableComboboxValuesFromInputPortTable(os, 0, "Set of annotations");
