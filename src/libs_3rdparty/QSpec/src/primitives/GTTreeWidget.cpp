@@ -108,6 +108,8 @@ QPoint GTTreeWidget::getItemCenter(GUITestOpStatus &os, QTreeWidgetItem *item) {
     QTreeWidget *treeWidget = item->treeWidget();
     GT_CHECK_RESULT(treeWidget != nullptr, "treeWidget is NULL", {});
 
+    GTTreeWidget::scrollToItem(os, item);
+
     QPoint itemRectCenterPoint = getItemRect(os, item).center();
     return treeWidget->viewport()->mapToGlobal(itemRectCenterPoint);
 }
