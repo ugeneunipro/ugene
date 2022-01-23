@@ -342,6 +342,7 @@ QString GUITestLauncher::runTest(const QString &testName, int timeoutMillis) {
     int maxReruns = qMax(qgetenv("UGENE_TEST_NUMBER_RERUN_FAILED_TEST").toInt(), 0);
     QString testOutput;
     bool isVideoRecordingOn = qgetenv("UGENE_TEST_ENABLE_VIDEO_RECORDING") == "1";
+    bool isVideoRecordingAlwaysOn = isVideoRecordingOn && qgetenv("UGENE_TEST_ENABLE_VIDEO_RECORDING_ALL_ITERATIONS") == "1";
     for (int iteration = 0; iteration < 1 + maxReruns; iteration++) {
         if (iteration >= 1) {
             coreLog.error(QString("Re-running the test. Current re-run: %1, max re-runs: %2, check logs in: %3")
@@ -350,7 +351,7 @@ QString GUITestLauncher::runTest(const QString &testName, int timeoutMillis) {
                               .arg(testOutputDir));
         }
         U2OpStatusImpl os;
-        testOutput = runTestOnce(os, testName, iteration, timeoutMillis, isVideoRecordingOn && iteration > 0);
+        testOutput = runTestOnce(os, testName, iteration, timeoutMillis, isVideoRecordingOn && (isVideoRecordingAlwaysOn || iteration > 0));
         bool isFailed = os.hasError() || GUITestTeamcityLogger::isTestFailed(testOutput);
         if (!isFailed) {
             break;
@@ -410,7 +411,8 @@ QString GUITestLauncher::runTestOnce(U2OpStatus &os, const QString &testName, in
             screenRecorderProcess.kill();
             screenRecorderProcess.waitForFinished(2000);
         }
-        if (!GUITestTeamcityLogger::isTestFailed(testResult)) {
+        bool keepVideoFile = qgetenv("UGENE_TEST_KEEP_VIDEOS") == "1";
+        if (!keepVideoFile && !GUITestTeamcityLogger::isTestFailed(testResult)) {
             QFile(getVideoPath(testName)).remove();
         }
     }

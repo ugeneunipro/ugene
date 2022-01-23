@@ -95,7 +95,7 @@ for (i = 0; childrens_of_main_window[i]; i++) {
 }
 if (!goodResult) {
     curBar = main_window.left_dock_bar;
-    elem = curBar.doc_lable_project_view;
+    elem = curBar.doc_label__project_view;
     QTest.mouseMove(elem, new QPoint(0, 0), main_delay);
     QTest.mouseClick(elem, 1, 0, new QPoint(0, 0), main_delay);
 }

@@ -2361,9 +2361,9 @@ GUI_TEST_CLASS_DEFINITION(test_0878) {
     QWidget *win = GTUtilsMdi::activeWindow(os);
     CHECK_SET_ERR(win != nullptr, "Active window not found");
 
-    GTWidget::click(os, GTWidget::findWidget(os, "doc_lable_dock_log_view"));
+    GTWidget::click(os, GTWidget::findWidget(os, "doc_label__dock_log_view"));
     CHECK_SET_ERR(win == GTUtilsMdi::activeWindow(os), "Incorrect active window");
-    GTWidget::click(os, GTWidget::findWidget(os, "doc_lable_dock_log_view"));
+    GTWidget::click(os, GTWidget::findWidget(os, "doc_label__dock_log_view"));
     CHECK_SET_ERR(win == GTUtilsMdi::activeWindow(os), "Incorrect active window");
 }
 
