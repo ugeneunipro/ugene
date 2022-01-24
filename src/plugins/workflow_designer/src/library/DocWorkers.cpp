@@ -996,7 +996,7 @@ void UgeneDBWriter::streamingStoreEntry(DocumentFormat *format, IOAdapter *io, c
             objectsMap[GObjectTypes::ANNOTATION_TABLE] = anObjList;
         }
     }
-    CHECK_OPERATION(!objectsMap.isEmpty(), qDeleteAll(anObjList), );
+    CHECK_OPERATION(!objectsMap.isEmpty(), qDeleteAll(anObjList));
 
     format->storeEntry(io, objectsMap, os);
 
