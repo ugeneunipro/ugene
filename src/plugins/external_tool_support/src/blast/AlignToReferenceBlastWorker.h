@@ -28,7 +28,7 @@
 namespace U2 {
 
 namespace Workflow {
-class BlastReadsSubtask;
+class BlastAndSmithWatermanAlignmentTask;
 class MakeBlastDbAlignerSubtask;
 class ComposeResultSubtask;
 }  // namespace Workflow
@@ -67,7 +67,7 @@ private:
     const int minIdentityPercent;
 
     MakeBlastDbAlignerSubtask *formatDbSubTask = nullptr;
-    BlastReadsSubtask *blastTask = nullptr;
+    BlastAndSmithWatermanAlignmentTask *blastTask = nullptr;
     ComposeResultSubtask *composeSubTask = nullptr;
     SaveDocumentTask *saveTask = nullptr;
 

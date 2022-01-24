@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "BlastReadsSubtask.h"
+#include "BlastAndSmithWatermanAlignmentTask.h"
 
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
 #include <U2Algorithm/BuiltInDistanceAlgorithms.h>
@@ -42,92 +42,120 @@ namespace U2 {
 namespace Workflow {
 
 /************************************************************************/
-/* BlastReadsSubTask */
+/* BlastAndSmithWatermanAlignmentTask */
 /************************************************************************/
-BlastReadsSubtask::BlastReadsSubtask(const QString &dbPath,
-                                     const QList<SharedDbiDataHandler> &reads,
-                                     const SharedDbiDataHandler &reference,
-                                     const int minIdentityPercent,
-                                     const QMap<SharedDbiDataHandler, QString> &readsNames,
-                                     DbiDataStorage *storage)
-    : Task(tr("Map reads with BLAST & SW task"), TaskFlag_NoRun | TaskFlag_CancelOnSubtaskCancel),
-      dbPath(dbPath),
-      reads(reads),
-      readsNames(readsNames),
-      reference(reference),
-      minIdentityPercent(minIdentityPercent),
-      readIndex(0),
-      storage(storage) {
-    setMaxParallelSubtasks(AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
+BlastAndSmithWatermanAlignmentTask::BlastAndSmithWatermanAlignmentTask(const QString &_dbPath,
+                                                                       const QList<SharedDbiDataHandler> &_reads,
+                                                                       const SharedDbiDataHandler &_reference,
+                                                                       int _minIdentityPercent,
+                                                                       DbiDataStorage *_storage)
+    : Task(tr("Align reads with BLAST & Smith-Waterman task"), TaskFlag_NoRun | TaskFlag_CancelOnSubtaskCancel),
+      dbPath(_dbPath),
+      reads(_reads),
+      reference(_reference),
+      minIdentityPercent(_minIdentityPercent),
+      storage(_storage) {
     tpm = Progress_Manual;
+
+    // Each sub-task will compute by N (100) reads at time.
+    // Invocation of BLAST external tool per every read is very time-consuming and a single BLAST
+    // invocation can process multiple queries at a time.
+    static int constexpr readCountPerBlast = 100;
+    readsRangePerSubtask = U2Region::split({0, reads.size()}, readCountPerBlast);
 }
 
-void BlastReadsSubtask::prepare() {
+void BlastAndSmithWatermanAlignmentTask::prepare() {
+    CHECK(!readsRangePerSubtask.isEmpty(), );
     QString tempPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
     CHECK_EXT(!GUrlUtils::containSpaces(tempPath), setError(tr("The task uses a temporary folder to process the data. The folder path is required not to have spaces. "
                                                                "Please set up an appropriate path for the \"Temporary files\" parameter on the \"Directories\" tab of the UGENE Application Settings.")), );
 
-    // First create all tasks to keep the original reads order.
-    for (const SharedDbiDataHandler &read : qAsConst(reads)) {
-        blastSubTasks << new BlastAndSwReadTask(dbPath, read, reference, minIdentityPercent, readsNames[read], storage);
-    }
-
-    // Avoid adding too many subtasks to the scheduler at once.
-    // Large numbers of subtasks will make task scheduler slow and freeze the UI.
-    int firstBucketSize = qMin(getMaxParallelSubtasks(), reads.size());
-    for (readIndex = 0; readIndex < firstBucketSize; readIndex++) {
-        addSubTask(blastSubTasks[readIndex]);
-    }
+    U2Region readsRange = readsRangePerSubtask.takeFirst();
+    QList<SharedDbiDataHandler> readsPerSubtask = reads.mid(readsRange.startPos, readsRange.length);
+    addSubTask(new BlastAndSmithWatermanAlignmentSubtask(dbPath, readsPerSubtask, reference, minIdentityPercent, storage));
 }
 
-QList<Task *> BlastReadsSubtask::onSubTaskFinished(Task * /*task*/) {
-    QList<Task *> newSubtasks;
-    CHECK(!isCanceled() && !hasError(), newSubtasks);
-    stateInfo.progress = qRound(100.0 * (readIndex + 1) / reads.size());
-
-    if (readIndex < reads.size()) {
-        newSubtasks << blastSubTasks[readIndex];
-        readIndex++;
-    }
-    return newSubtasks;
+QList<Task *> BlastAndSmithWatermanAlignmentTask::onSubTaskFinished(Task *task) {
+    CHECK(!readsRangePerSubtask.isEmpty(), {});
+    U2Region readsRegion = readsRangePerSubtask.takeFirst();
+    QList<SharedDbiDataHandler> readsInRegion = reads.mid(readsRegion.startPos, readsRegion.length);
+    return {new BlastAndSmithWatermanAlignmentSubtask(dbPath, readsInRegion, reference, minIdentityPercent, storage)};
 }
 
-const QList<BlastAndSwReadTask *> &BlastReadsSubtask::getBlastSubtasks() const {
-    return blastSubTasks;
+Task::ReportResult BlastAndSmithWatermanAlignmentTask::report() {
+    QList<QPointer<Task>> subtasks = getSubtasks();
+    for (const auto &task : qAsConst(subtasks)) {
+        auto subtask = qobject_cast<BlastAndSmithWatermanAlignmentSubtask *>(task.data());
+        if (subtask != nullptr) {
+            alignmentResults << subtask->getAlignmentResults();
+        }
+    }
+    return ReportResult_Finished;
+}
+
+const QList<BlastAndSmithWatermanAlignmentResult *> &BlastAndSmithWatermanAlignmentTask::getAlignmentResults() const {
+    return alignmentResults;
 }
 
 /************************************************************************/
 /* BlastAndSwReadTask */
 /************************************************************************/
-BlastAndSwReadTask::BlastAndSwReadTask(const QString &dbPath,
-                                       const SharedDbiDataHandler &read,
-                                       const SharedDbiDataHandler &reference,
-                                       const int minIdentityPercent,
-                                       const QString &readName,
-                                       DbiDataStorage *storage)
-    : Task(tr("Map one read with BLAST & SW task"), TaskFlags_NR_FOSE_COSC),
-      dbPath(dbPath),
-      read(read),
-      reference(reference),
-      minIdentityPercent(minIdentityPercent),
-      readIdentity(0),
-      offset(0),
-      readShift(0),
-      storage(storage),
-      blastTask(nullptr),
-      readName(readName),
-      complement(false),
-      skipped(false) {
+BlastAndSmithWatermanAlignmentSubtask::BlastAndSmithWatermanAlignmentSubtask(const QString &_dbPath,
+                                                                             const QList<SharedDbiDataHandler> &_reads,
+                                                                             const SharedDbiDataHandler &_reference,
+                                                                             int _minIdentityPercent,
+                                                                             DbiDataStorage *_storage)
+    : Task(tr("Align reads with BLAST & Smith-Waterman sub-task"), TaskFlags_NR_FOSE_COSC),
+      dbPath(_dbPath),
+      reads(_reads),
+      reference(_reference),
+      minIdentityPercent(_minIdentityPercent),
+      storage(_storage) {
     QScopedPointer<U2SequenceObject> refObject(StorageUtils::getSequenceObject(storage, reference));
     referenceLength = refObject->getSequenceLength();
 }
 
-void BlastAndSwReadTask::prepare() {
+void BlastAndSmithWatermanAlignmentSubtask::prepare() {
     blastResultDir = ExternalToolSupportUtils::createTmpDir("blast_reads", stateInfo);
     CHECK_OP(stateInfo, );
-    blastTask = getBlastTask();
+
+    BlastTaskSettings settings;
+
+    settings.programName = "blastn";
+    settings.databaseNameAndPath = dbPath;
+    // settings.megablast = true;
+    settings.wordSize = 11;
+    settings.xDropoffGA = 20;
+    settings.xDropoffUnGA = 10;
+    settings.xDropoffFGA = 100;
+    settings.numberOfProcessors = AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount();
+    settings.numberOfHits = 100;
+    settings.gapOpenCost = 2;
+    settings.gapExtendCost = 2;
+
+    QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, read));
+    CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("U2SequenceObject")), nullptr);
+
+    settings.querySequence = readObject->getWholeSequenceData(stateInfo);
+    CHECK_OP(stateInfo, nullptr);
+
+    checkRead(settings.querySequence);
+    CHECK_OP(stateInfo, nullptr);
+
+    settings.alphabet = readObject->getAlphabet();
+    settings.isNucleotideSeq = settings.alphabet->isNucleic();
+
+    settings.needCreateAnnotations = false;
+    settings.groupName = "blast";
+
+    settings.outputResFile = GUrlUtils::prepareTmpFileLocation(blastResultDir, "read_sequence", "gb", stateInfo);
+    settings.outputType = 5;
+    settings.strandSource = BlastTaskSettings::HitFrame;
+
+    return new BlastNTask(settings);
+
     CHECK_OP(stateInfo, );
-    SAFE_POINT_EXT(nullptr != blastTask, setError("BLAST subtask is NULL"), );
+    SAFE_POINT_EXT(blastTask != nullptr, "BLAST subtask is NULL", );
     addSubTask(blastTask);
 }
 
@@ -249,47 +277,6 @@ qint64 BlastAndSwReadTask::getOffset() const {
 
 int BlastAndSwReadTask::getReadIdentity() const {
     return readIdentity;
-}
-
-BlastNTask *BlastAndSwReadTask::getBlastTask() {
-    BlastTaskSettings settings;
-
-    settings.programName = "blastn";
-    settings.databaseNameAndPath = dbPath;
-    // settings.megablast = true;
-    settings.wordSize = 11;
-    settings.xDropoffGA = 20;
-    settings.xDropoffUnGA = 10;
-    settings.xDropoffFGA = 100;
-    settings.numberOfProcessors = AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount();
-    settings.numberOfHits = 100;
-    settings.gapOpenCost = 2;
-    settings.gapExtendCost = 2;
-
-    QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, read));
-    CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("U2SequenceObject")), nullptr);
-
-    if (readName.isEmpty()) {
-        readName = readObject->getSequenceName();
-    }
-
-    settings.querySequence = readObject->getWholeSequenceData(stateInfo);
-    CHECK_OP(stateInfo, nullptr);
-
-    checkRead(settings.querySequence);
-    CHECK_OP(stateInfo, nullptr);
-
-    settings.alphabet = readObject->getAlphabet();
-    settings.isNucleotideSeq = settings.alphabet->isNucleic();
-
-    settings.needCreateAnnotations = false;
-    settings.groupName = "blast";
-
-    settings.outputResFile = GUrlUtils::prepareTmpFileLocation(blastResultDir, "read_sequence", "gb", stateInfo);
-    settings.outputType = 5;
-    settings.strandSource = BlastTaskSettings::HitFrame;
-
-    return new BlastNTask(settings);
 }
 
 void BlastAndSwReadTask::checkRead(const QByteArray &sequenceData) {

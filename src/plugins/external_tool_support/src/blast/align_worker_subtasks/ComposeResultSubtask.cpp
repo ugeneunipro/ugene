@@ -36,7 +36,7 @@
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2AttributeUtils.h>
 
-#include "BlastReadsSubtask.h"
+#include "BlastAndSmithWatermanAlignmentTask.h"
 
 namespace U2 {
 namespace Workflow {
@@ -57,7 +57,7 @@ static int toMb(qint64 bytes) {
 /************************************************************************/
 ComposeResultSubtask::ComposeResultSubtask(const SharedDbiDataHandler &reference,
                                            const QList<SharedDbiDataHandler> &reads,
-                                           const QList<BlastAndSwReadTask *> subTasks,
+                                           const QList<BlastAndSmithWatermanAlignmentSubtask *> subTasks,
                                            DbiDataStorage *storage)
     : Task(tr("Compose alignment"), TaskFlags_FOSE_COSC),
       reference(reference),
@@ -148,7 +148,7 @@ void ComposeResultSubtask::createAlignmentAndAnnotations() {
 
     int rowsCounter = 0;
     for (int i = 0; i < reads.size(); i++) {
-        BlastAndSwReadTask *subTask = getBlastSwTask(i);
+        BlastAndSmithWatermanAlignmentSubtask *subTask = getBlastSwTask(i);
         CHECK_OP(stateInfo, );
         if (!subTask->isReadAligned()) {
             continue;
@@ -278,13 +278,13 @@ U2Location ComposeResultSubtask::getLocation(const U2Region &region, bool isComp
     return result;
 }
 
-BlastAndSwReadTask *ComposeResultSubtask::getBlastSwTask(int readNum) {
+BlastAndSmithWatermanAlignmentSubtask *ComposeResultSubtask::getBlastSwTask(int readNum) {
     CHECK_EXT(readNum < subTasks.size(), setError(L10N::internalError("Wrong reads number")), nullptr);
     return subTasks[readNum];
 }
 
 DNASequence ComposeResultSubtask::getReadSequence(int readNum) {
-    BlastAndSwReadTask *subTask = getBlastSwTask(readNum);
+    BlastAndSmithWatermanAlignmentSubtask *subTask = getBlastSwTask(readNum);
     CHECK_OP(stateInfo, {});
 
     QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, subTask->getRead()));
@@ -295,7 +295,7 @@ DNASequence ComposeResultSubtask::getReadSequence(int readNum) {
 }
 
 DNAChromatogram ComposeResultSubtask::getReadChromatogram(int readNum) {
-    BlastAndSwReadTask *subTask = getBlastSwTask(readNum);
+    BlastAndSmithWatermanAlignmentSubtask *subTask = getBlastSwTask(readNum);
     CHECK_OP(stateInfo, DNAChromatogram());
 
     QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, subTask->getRead()));
@@ -331,7 +331,7 @@ QVector<U2MsaGap> ComposeResultSubtask::getReferenceGaps() {
 QVector<U2MsaGap> ComposeResultSubtask::getShiftedGaps(int rowNum) {
     QVector<U2MsaGap> result;
 
-    BlastAndSwReadTask *subTask = getBlastSwTask(rowNum);
+    BlastAndSmithWatermanAlignmentSubtask *subTask = getBlastSwTask(rowNum);
     CHECK_OP(stateInfo, result);
 
     qint64 wholeGap = 0;

@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BLAST_READS_SUBTASK_H_
-#define _U2_BLAST_READS_SUBTASK_H_
+#ifndef _U2_BLAST_AND_SMITH_WATERMAN_ALIGNMENT_TASK_H_
+#define _U2_BLAST_AND_SMITH_WATERMAN_ALIGNMENT_TASK_H_
 
 #include <U2Core/Task.h>
 
@@ -36,52 +36,68 @@ class PairwiseAlignmentTaskSettings;
 
 namespace Workflow {
 
-/************************************************************************/
-/* BlastReadsSubTask */
-/************************************************************************/
-class BlastAndSwReadTask;
-class BlastReadsSubtask : public Task {
+struct BlastAndSmithWatermanAlignmentResult {
+    SharedDbiDataHandler readHandle;
+    QVector<U2MsaGap> readGaps;
+    QVector<U2MsaGap> referenceGaps;
+    bool isOnComplementaryStrand = false;
+    bool isSkipped = false;
+
+    int readIdentity;
+    qint64 offset;
+    qint64 readShift;
+};
+
+/**
+ * Aligns reads with BLAST and Smith Waterman. First searches for a local position of the read sub-sequence
+ * with BLAST and next runs a precise Smith-Waterman on that position to align the whole read's sequence.
+ */
+class BlastAndSmithWatermanAlignmentTask : public Task {
     Q_OBJECT
 public:
-    BlastReadsSubtask(const QString &dbPath,
-                      const QList<SharedDbiDataHandler> &reads,
-                      const SharedDbiDataHandler &reference,
-                      const int minIdentityPercent,
-                      const QMap<SharedDbiDataHandler, QString> &readsNames,
-                      DbiDataStorage *storage);
+    BlastAndSmithWatermanAlignmentTask(const QString &dbPath,
+                                       const QList<SharedDbiDataHandler> &reads,
+                                       const SharedDbiDataHandler &reference,
+                                       const int minIdentityPercent,
+                                       DbiDataStorage *storage);
 
     void prepare() override;
+
     QList<Task *> onSubTaskFinished(Task *task) override;
 
-    const QList<BlastAndSwReadTask *> &getBlastSubtasks() const;
+    ReportResult report() override;
+
+    const QList<BlastAndSmithWatermanAlignmentResult *> &getAlignmentResults() const;
 
 private:
     const QString dbPath;
     const QList<SharedDbiDataHandler> reads;
-    const QMap<SharedDbiDataHandler, QString> readsNames;
     const SharedDbiDataHandler reference;
     const int minIdentityPercent;
 
-    /** Index of the next read to process (run BlastAndSwReadTask) in the list of reads. */
-    int readIndex;
-
     DbiDataStorage *const storage;
 
-    QList<BlastAndSwReadTask *> blastSubTasks;
+    /** List of pending read regions to run blast tasks. */
+    QList<U2Region> readsRangePerSubtask;
+
+    QList<BlastAndSmithWatermanAlignmentResult *> alignmentResults;
 };
 
-/************************************************************************/
-/* BlastAndSwReadTask */
-/************************************************************************/
-class BlastAndSwReadTask : public Task {
+/**
+ * Run a single BLAST tool instance for a list of reads
+ * and next re-aligns each read with Smith Waterman algorithm
+ * using global position in the reference found by BLAST.
+ */
+class BlastAndSmithWatermanAlignmentSubtask : public Task {
     Q_OBJECT
 public:
-    BlastAndSwReadTask(const QString &dbPath,
-                       const SharedDbiDataHandler &read,
-                       const SharedDbiDataHandler &reference,
-                       const int minIdentityPercent,
-                       const QString &readName,
-                       DbiDataStorage *storage);
+    BlastAndSmithWatermanAlignmentSubtask(const QString &dbPath,
+                                          const QList<SharedDbiDataHandler> &reads,
+                                          const SharedDbiDataHandler &reference,
+                                          int minIdentityPercent,
+                                          DbiDataStorage *storage);
+
+    const QList<BlastAndSmithWatermanAlignmentResult *> &getAlignmentResults() const;
 
     bool isComplement() const;
     const SharedDbiDataHandler &getRead() const;
@@ -110,27 +126,21 @@ private:
     static PairwiseAlignmentTaskSettings *createSettings(DbiDataStorage *storage, const SharedDbiDataHandler &msa, U2OpStatus &os);
 
     const QString dbPath;
-    const SharedDbiDataHandler read;
+    const QList<SharedDbiDataHandler> reads;
     const SharedDbiDataHandler reference;
     const int minIdentityPercent;
-    qint64 referenceLength;
-    int readIdentity;
+
+    qint64 referenceLength = 0;
 
     SharedDbiDataHandler msa;
-    qint64 offset;
-    qint64 readShift;
 
-    DbiDataStorage *storage;
+    DbiDataStorage *storage = nullptr;
 
-    BlastNTask *blastTask;
+    BlastNTask *blastTask = nullptr;
     AbstractAlignmentTask *alignTask = nullptr;
     QString blastResultDir;
 
-    QVector<U2MsaGap> referenceGaps;
-    QVector<U2MsaGap> readGaps;
-    QString readName;
-    bool complement;
-    bool skipped;
+    QList<BlastAndSmithWatermanAlignmentResult *> alignmentResults;
 };
 
 }  // namespace Workflow

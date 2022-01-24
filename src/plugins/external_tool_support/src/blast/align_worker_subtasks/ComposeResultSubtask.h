@@ -36,14 +36,14 @@ class MultipleChromatogramAlignmentRow;
 
 namespace Workflow {
 
-class BlastAndSwReadTask;
+class BlastAndSmithWatermanAlignmentSubtask;
 
 class ComposeResultSubtask : public Task {
     Q_OBJECT
 public:
     ComposeResultSubtask(const SharedDbiDataHandler &reference,
                          const QList<SharedDbiDataHandler> &reads,
-                         const QList<BlastAndSwReadTask *> subTasks,
+                         const QList<BlastAndSmithWatermanAlignmentSubtask *> subTasks,
                          DbiDataStorage *storage);
 
     void prepare() override;
@@ -55,7 +55,7 @@ public:
     MultipleChromatogramAlignmentObject *takeMcaObject();
 
 private:
-    BlastAndSwReadTask *getBlastSwTask(int readNum);
+    BlastAndSmithWatermanAlignmentSubtask *getBlastSwTask(int readNum);
     DNASequence getReadSequence(int readNum);
     DNAChromatogram getReadChromatogram(int readNum);
     QVector<U2MsaGap> getReferenceGaps();
@@ -70,7 +70,7 @@ private:
 private:
     const SharedDbiDataHandler reference;
     const QList<SharedDbiDataHandler> reads;
-    const QList<BlastAndSwReadTask *> subTasks;
+    const QList<BlastAndSmithWatermanAlignmentSubtask *> subTasks;
     DbiDataStorage *storage = nullptr;
     MultipleChromatogramAlignmentObject *mcaObject = nullptr;
     U2SequenceObject *referenceSequenceObject = nullptr;

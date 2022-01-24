@@ -45,7 +45,7 @@
 #include <U2Lang/WorkflowMonitor.h>
 
 #include "BlastSupport.h"
-#include "align_worker_subtasks/BlastReadsSubtask.h"
+#include "align_worker_subtasks/BlastAndSmithWatermanAlignmentTask.h"
 #include "align_worker_subtasks/ComposeResultSubtask.h"
 #include "align_worker_subtasks/MakeBlastDbAlignerSubtask.h"
 #include "align_worker_subtasks/PrepareReferenceSequenceTask.h"
@@ -269,7 +269,7 @@ QList<Task *> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
 
     if (subTask == formatDbSubTask) {
         QString dbPath = formatDbSubTask->getResultPath();
-        blastTask = new BlastReadsSubtask(dbPath, reads, reference, minIdentityPercent, readsNames, storage);
+        blastTask = new BlastAndSmithWatermanAlignmentTask(dbPath, reads, reference, minIdentityPercent, readsNames, storage);
         result << blastTask;
     } else if (subTask == blastTask) {
         composeSubTask = new ComposeResultSubtask(reference, reads, blastTask->getBlastSubtasks(), storage);
@@ -347,7 +347,7 @@ SharedDbiDataHandler AlignToReferenceBlastTask::getAnnotations() const {
 QList<QPair<QString, QPair<int, bool>>> AlignToReferenceBlastTask::getAcceptedReads() const {
     QList<QPair<QString, QPair<int, bool>>> acceptedReads;
     CHECK(nullptr != blastTask, acceptedReads);
-    foreach (BlastAndSwReadTask *subTask, blastTask->getBlastSubtasks()) {
+    foreach (BlastAndSmithWatermanAlignmentSubtask *subTask, blastTask->getBlastSubtasks()) {
         if (subTask->getReadIdentity() >= minIdentityPercent) {
             QPair<int, bool> pair(subTask->getReadIdentity(), subTask->isComplement());
             acceptedReads.append((QPair<QString, QPair<int, bool>>(subTask->getReadName(), pair)));
@@ -359,7 +359,7 @@ QList<QPair<QString, QPair<int, bool>>> AlignToReferenceBlastTask::getAcceptedRe
 QList<QPair<QString, int>> AlignToReferenceBlastTask::getDiscardedReads() const {
     QList<QPair<QString, int>> discardedReads;
     CHECK(nullptr != blastTask, discardedReads);
-    foreach (BlastAndSwReadTask *subTask, blastTask->getBlastSubtasks()) {
+    foreach (BlastAndSmithWatermanAlignmentSubtask *subTask, blastTask->getBlastSubtasks()) {
         if (subTask->getReadIdentity() < minIdentityPercent) {
             discardedReads << QPair<QString, int>(subTask->getReadName(), subTask->getReadIdentity());
         }

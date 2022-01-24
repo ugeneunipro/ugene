@@ -12058,7 +12058,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
     </message>
 </context>
 <context>
-    <name>U2::Workflow::BlastAndSwReadTask</name>
+    <name>U2::Workflow::BlastAndSmithWatermanAlignmentSubtask</name>
     <message>
         <location filename="../src/blast/align_worker_subtasks/BlastReadsSubTask.cpp" line="108"/>
         <source>Map one read with BLAST &amp; SW task</source>
