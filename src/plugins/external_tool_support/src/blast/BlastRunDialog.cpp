@@ -261,7 +261,7 @@ void BlastWithExtFileRunDialog::tryApplyDoc(Document *doc) {
 
         BlastTaskSettings localSettings;
         U2OpStatusImpl os;
-        localSettings.querySequence = seq->getWholeSequenceData(os);
+        localSettings.querySequences = {seq->getWholeSequenceData(os)};
         CHECK_OP_EXT(os, QMessageBox::critical(this, L10N::errorTitle(), os.getError()), );
         localSettings.alphabet = seq->getAlphabet();
         if (localSettings.alphabet->getType() != DNAAlphabet_AMINO) {

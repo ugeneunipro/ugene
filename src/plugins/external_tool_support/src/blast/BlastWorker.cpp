@@ -311,7 +311,7 @@ Task *BlastWorker::tick() {
         if (seq.length() < 1) {
             return new FailTask(tr("Empty sequence supplied to BLAST"));
         }
-        cfg.querySequence = seq.seq;
+        cfg.querySequences = {seq.seq};
         cfg.isSequenceCircular = seq.circular;
 
         const DNAAlphabet *alp = U2AlphabetUtils::findBestAlphabet(seq.seq);
@@ -330,7 +330,7 @@ Task *BlastWorker::tick() {
         cfg.outputType = getValue<int>(BLAST_OUT_TYPE);
         cfg.outputOriginalFile = getValue<QString>(BLAST_ORIGINAL_OUT);
         if (cfg.outputType != 5 && cfg.outputOriginalFile.isEmpty()) {
-            return new FailTask(tr("Not selected BLAST output file"));
+            return new FailTask(tr("No selected BLAST output file"));
         }
 
         // TODO: big copy-paste with what we have in BlastSupport.
@@ -394,8 +394,8 @@ void BlastWorker::sl_taskFinished() {
         return;
     }
 
-    if (nullptr != output) {
-        QList<SharedAnnotationData> res = t->getResultedAnnotations();
+    if (output != nullptr) {
+        QList<SharedAnnotationData> res = t->getResultAnnotations();
         QString annName = actor->getParameter(BLAST_GROUP_NAME)->getAttributeValue<QString>(context);
         if (!annName.isEmpty()) {
             for (int i = 0; i < res.count(); i++) {

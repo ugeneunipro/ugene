@@ -47,7 +47,7 @@ ExternalToolRunTask *RPSBlastTask::createBlastTask() {
 LocalCDSearch::LocalCDSearch(const CDSearchSettings &cdSearchSettings) {
     BlastTaskSettings settings;
     settings.databaseNameAndPath = cdSearchSettings.localDbFolder + "/" + cdSearchSettings.dbName;
-    settings.querySequence = cdSearchSettings.query;
+    settings.querySequences = {cdSearchSettings.query};
     settings.expectValue = cdSearchSettings.ev;
     settings.alphabet = cdSearchSettings.alp;
     settings.needCreateAnnotations = false;
@@ -55,7 +55,7 @@ LocalCDSearch::LocalCDSearch(const CDSearchSettings &cdSearchSettings) {
 }
 
 QList<SharedAnnotationData> LocalCDSearch::getCDSResults() const {
-    return task->getResultedAnnotations();
+    return task->getResultAnnotations();
 }
 
 }  // namespace U2

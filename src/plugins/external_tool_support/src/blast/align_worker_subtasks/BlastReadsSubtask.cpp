@@ -146,7 +146,7 @@ QList<Task *> BlastAndSwReadTask::onSubTaskFinished(Task *subTask) {
     CHECK(!subTask->hasError() && !subTask->isCanceled(), result);
 
     if (subTask == blastTask) {
-        U2Region referenceRegion = getReferenceRegion(blastTask->getResultedAnnotations());
+        U2Region referenceRegion = getReferenceRegion(blastTask->getResultAnnotations());
         if (referenceRegion.isEmpty()) {
             skipped = true;
             readIdentity = 0;
@@ -273,10 +273,10 @@ BlastNTask *BlastAndSwReadTask::getBlastTask() {
         readName = readObject->getSequenceName();
     }
 
-    settings.querySequence = readObject->getWholeSequenceData(stateInfo);
+    settings.querySequences = {readObject->getWholeSequenceData(stateInfo)};
     CHECK_OP(stateInfo, nullptr);
 
-    checkRead(settings.querySequence);
+    checkRead(settings.querySequences[0]);
     CHECK_OP(stateInfo, nullptr);
 
     settings.alphabet = readObject->getAlphabet();

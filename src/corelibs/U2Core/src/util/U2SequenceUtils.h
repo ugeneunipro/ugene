@@ -168,15 +168,28 @@ public:
     static const QString EMPTY_SEQUENCE;
 };
 
-// untwist/expand circular sequence
-class U2CORE_EXPORT U2PseudoCircularization : public QObject {
-public:
-    U2PseudoCircularization(QObject *parent, bool isCircular, QByteArray &seq, qint64 circOverlap = -1);
-    QVector<U2Region> uncircularizeRegion(const U2Region &region, bool &uncircularized) const;
-    void uncircularizeLocation(U2Location &location) const;
+/**
+ * Utility class to deal with circular sequences.
+ * Supports mapping of the original sequence coordinates to a circular sequence coordinates with a specified 'overlap' range.
+ */
+class U2CORE_EXPORT U2PseudoCircularization {
+    U2PseudoCircularization() = default;
 
-private:
-    qint64 seqLen;
+public:
+    /**
+     * Creates a sequence that has all linear regions in the original sequence with at least 'maxLinearRegionLength' length.
+     * If 'maxLinearRegionLength' is < 0 the uses 'sequence.length' as the 'maxLinearRegionLength'.
+     */
+    static QByteArray createSequenceWithCircularOverlaps(const QByteArray &sequence, int maxLinearRegionLength = -1);
+
+    /** Maps region of the sequence created by 'createSequenceWithCircularOverlaps' to the original sequence coordinates. */
+    static QVector<U2Region> getOriginalSequenceCoordinates(const U2Region &circularRegion, qint64 originalSequenceLength);
+
+    /**
+     * Converts (in-place) location built for a sequence created with 'createSequenceWithCircularOverlaps'
+     * into the original sequence coordinates.
+     */
+    static void convertToOriginalSequenceCoordinates(U2Location &location, qint64 originalSequenceLength);
 };
 
 }  // namespace U2

@@ -4,6 +4,7 @@
                  out="!tmp_data_dir!blast-search_qbegin_tmp_begin.gb"
                  dbpath="!common_data_dir!cmdline/external-tool-support/blastplus/"
                  dbname="sars_begin"
+                 blast-out-type="5"
                  p="blastn"
     />
     <load-document index="doc1" url="blast-search_qbegin_tmp_begin.gb" io="local_file" format="genbank" dir="temp"/>

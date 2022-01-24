@@ -308,10 +308,10 @@ void BlastSupportContext::sl_showDialog() {
     U2Region region = dlg->getSelectedRegion();
 
     U2OpStatus2Log os(LogLevel_DETAILS);
-    settings.querySequence = seqCtx->getSequenceData(region, os);
+    settings.querySequences = {seqCtx->getSequenceData(region, os)};
     CHECK_OP_EXT(os, QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );
 
-    settings.offsInGlobalSeq = region.startPos;
+    settings.resultRegionOffset = region.startPos;
     SAFE_POINT(seqCtx->getSequenceObject() != nullptr, tr("Sequence object is NULL"), );
 
     settings.isSequenceCircular = seqCtx->getSequenceObject()->isCircular();

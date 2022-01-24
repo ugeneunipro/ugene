@@ -22,6 +22,7 @@
 #include <base_dialogs/GTFileDialog.h>
 #include <harness/UGUITestBase.h>
 #include <primitives/GTComboBox.h>
+#include <primitives/GTLineEdit.h>
 #include <primitives/GTWidget.h>
 
 #include <QApplication>
@@ -60,6 +61,11 @@ void BlastLocalSearchDialogFiller::commonScenario() {
     if (parameters.withInputFile) {
         GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, parameters.inputPath));
         GTWidget::click(os, GTWidget::findWidget(os, "browseInput"));
+    }
+
+    if (!parameters.searchRegion.isEmpty()) {
+        GTLineEdit::setText(os, "start_edit_line", QString::number(parameters.searchRegion.startPos), dialog);
+        GTLineEdit::setText(os, "end_edit_line", QString::number(parameters.searchRegion.endPos()), dialog);
     }
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

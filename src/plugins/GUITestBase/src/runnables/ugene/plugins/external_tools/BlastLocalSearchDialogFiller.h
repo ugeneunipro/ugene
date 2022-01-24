@@ -46,6 +46,7 @@ public:
         QString dbPath;
         bool withInputFile;
         QString inputPath;
+        U2Region searchRegion;
     };
 
     BlastLocalSearchDialogFiller(const Parameters &parameters, HI::GUITestOpStatus &os);
