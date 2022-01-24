@@ -34,6 +34,9 @@ namespace HI {
 #define GT_METHOD_NAME "expand"
 void GTTreeWidget::expand(GUITestOpStatus &os, QTreeWidgetItem *item) {
     GT_CHECK_RESULT(item != nullptr, "item is NULL", );
+    if (item->isExpanded()) {
+        return;
+    }
     // Using API call to expand instead of the mouse: because we do not know expander position inside of the item exactly.
     class ExpandInMainThreadScenario : public CustomScenario {
     public:
