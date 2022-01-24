@@ -725,38 +725,38 @@ qint64 U2MemorySequenceImporter::getCurrentLength() const {
     return sequenceData.length();
 }
 
-U2PseudoCircularization::U2PseudoCircularization(QObject *parent, bool isCircular, QByteArray &seq, qint64 circOverlap)
-    : QObject(parent) {
-    seqLen = seq.size();
-    if (isCircular) {
-        circOverlap = (circOverlap == -1 ? seqLen - 1 : circOverlap);
-        seq.append(QByteArray(seq).left(circOverlap));
+QByteArray U2PseudoCircularization::createSequenceWithCircularOverlaps(const QByteArray &sequence, int maxLinearRegionLength) {
+    int linearRegionLength = maxLinearRegionLength < 0 ? sequence.length() : maxLinearRegionLength;
+    QByteArray result = sequence;
+    result.append(result.left(linearRegionLength));
+    return result;
+}
+
+QVector<U2Region> U2PseudoCircularization::getOriginalSequenceCoordinates(const U2Region &circularRegion, qint64 originalSequenceLength) {
+    SAFE_POINT(circularRegion.endPos() <= originalSequenceLength * 2, "Invalid circular region", {});
+    if (circularRegion.endPos() <= originalSequenceLength) {
+        return {circularRegion};
+    }
+    if (circularRegion.startPos > originalSequenceLength) {
+        return {{circularRegion.startPos - originalSequenceLength, circularRegion.length}};
+    } else {
+        return {
+            {circularRegion.startPos, originalSequenceLength - circularRegion.startPos},
+            {0, circularRegion.endPos() - originalSequenceLength},
+        };
     }
 }
 
-QVector<U2Region> U2PseudoCircularization::uncircularizeRegion(const U2Region &region, bool &uncircularized) const {
-    uncircularized = false;
-    if ((region.startPos >= seqLen && region.endPos() >= seqLen) || (region.length > seqLen)) {  // dublicate
-        return QVector<U2Region>();
-    }
-    if (region.endPos() > seqLen) {
-        uncircularized = true;
-        return QVector<U2Region>() << U2Region(region.startPos, seqLen - region.startPos)
-                                   << U2Region(0, region.endPos() - seqLen);
-    }
-    return QVector<U2Region>() << region;
-}
-
-void U2PseudoCircularization::uncircularizeLocation(U2Location &location) const {
-    QVector<U2Region> res;
-    foreach (const U2Region &r, location->regions) {
-        bool regionWasSplitted = false;
-        res << uncircularizeRegion(r, regionWasSplitted);
-        if (regionWasSplitted) {
+void U2PseudoCircularization::convertToOriginalSequenceCoordinates(U2Location &location, qint64 originalSequenceLength) {
+    QVector<U2Region> regions;
+    for (const U2Region &region : qAsConst(location->regions)) {
+        QVector<U2Region> originalRegions = getOriginalSequenceCoordinates(region, originalSequenceLength);
+        if (originalRegions.length() > 1) {
             location->op = U2LocationOperator_Join;
         }
+        regions << originalRegions;
     }
-    location->regions = res;
+    location->regions = regions;
 }
 
 }  // namespace U2

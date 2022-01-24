@@ -26,7 +26,6 @@
 #include <primitives/GTMenu.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/PopupChooser.h>
-#include <system/GTClipboard.h>
 #include <system/GTFile.h>
 
 #include "GTTestsMsaExcludeList.h"
@@ -59,10 +58,10 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     auto toggleExcludeListButton = GTToolbar::getToolButtonByAction(os, toolbar, "exclude_list_toggle_action");
     CHECK_SET_ERR(!toggleExcludeListButton->isChecked(), "Toggle exclude list button must not be checked by default");
 
-    // Open exclude list.
+    // Open Exclude List.
     GTWidget::click(os, toggleExcludeListButton);
 
-    // Check the exclude list state.
+    // Check Exclude List state.
     CHECK_SET_ERR(toggleExcludeListButton->isChecked(), "Toggle exclude list button must be checked");
     excludeListWidget = GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow);
 
@@ -266,6 +265,49 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMsaEditor::checkExcludeList(os, {"b", "c"});
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0008) {
+    // Multi-selection in MSA Exclude List.
+    QString baseFileName = GTUtils::genUniqueString("exclude-list-test-0008");
+    GTFile::copy(os, testDir + "_common_data/clustal/collapse_mode_1.aln", sandBoxDir + baseFileName + ".aln");
+    GTFileDialog::openFile(os, sandBoxDir + baseFileName + ".aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsMsaEditor::openExcludeList(os);
+    GTUtilsMsaEditor::moveRowsToExcludeList(os, {"a", "b", "c"});
+
+    GTUtilsMsaEditor::checkExcludeList(os, {"a", "b", "c"});
+
+    auto msaEditorWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
+    auto excludeListWidget = GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow, false);
+    auto sequenceViewArea = GTWidget::findPlainTextEdit(os, "exclude_list_sequence_view", excludeListWidget);
+    auto moveToMsaButton = GTWidget::findToolButton(os, "exclude_list_move_to_msa_button", msaEditorWindow);
+
+    GTUtilsMsaEditor::selectRowsByNameInExcludeList(os, {"a"});
+    CHECK_SET_ERR(sequenceViewArea->isEnabled(), "sequenceViewArea must be enabled/1");
+    CHECK_SET_ERR(moveToMsaButton->isEnabled(), "moveToMsaButton must be enabled/1");
+
+    GTUtilsMsaEditor::selectRowsByNameInExcludeList(os, {"a", "c"});
+    CHECK_SET_ERR(!sequenceViewArea->isEnabled(), "sequenceViewArea must be disabled");
+    CHECK_SET_ERR(sequenceViewArea->toPlainText() == "2 sequences selected", "Unexpected sequence view area text");
+    CHECK_SET_ERR(moveToMsaButton->isEnabled(), "moveToMsaButton must be enabled/2");
+
+    GTWidget::click(os, moveToMsaButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsMsaEditor::checkExcludeList(os, {"b"});
+    GTUtilsMsaEditor::checkExcludeListSelection(os, {"b"});
+    CHECK_SET_ERR(sequenceViewArea->isEnabled(), "sequenceViewArea must be enabled/3");
+    CHECK_SET_ERR(sequenceViewArea->toPlainText().startsWith("TAAGCTTACTAATC"), "Invalid sequence in sequence view area/1");
+    CHECK_SET_ERR(moveToMsaButton->isEnabled(), "moveToMsaButton must be enabled/3");
+
+    GTUtilsMsaEditor::undo(os);
+    GTUtilsMsaEditor::checkExcludeList(os, {"b", "a", "c"});
+    GTUtilsMsaEditor::checkExcludeListSelection(os, {"b"});
+    CHECK_SET_ERR(sequenceViewArea->isEnabled(), "sequenceViewArea must be enabled/4");
+    CHECK_SET_ERR(sequenceViewArea->toPlainText().startsWith("TAAGCTTACTAATC"), "Invalid sequence in sequence view area/2");
+    CHECK_SET_ERR(moveToMsaButton->isEnabled(), "moveToMsaButton must be enabled/4");
 }
 
 }  // namespace GUITest_common_scenarios_msa_exclude_list

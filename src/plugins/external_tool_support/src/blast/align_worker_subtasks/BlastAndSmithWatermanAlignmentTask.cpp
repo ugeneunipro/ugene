@@ -174,7 +174,7 @@ QList<Task *> BlastAndSwReadTask::onSubTaskFinished(Task *subTask) {
     CHECK(!subTask->hasError() && !subTask->isCanceled(), result);
 
     if (subTask == blastTask) {
-        U2Region referenceRegion = getReferenceRegion(blastTask->getResultedAnnotations());
+        U2Region referenceRegion = getReferenceRegion(blastTask->getResultAnnotations());
         if (referenceRegion.isEmpty()) {
             skipped = true;
             readIdentity = 0;

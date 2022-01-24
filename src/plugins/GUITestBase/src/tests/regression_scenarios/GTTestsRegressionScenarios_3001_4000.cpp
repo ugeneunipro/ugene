@@ -1846,11 +1846,11 @@ GUI_TEST_CLASS_DEFINITION(test_3306) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsAnnotationsTreeView::expandItem(os, "CDS  (0, 14)");
-    auto geneGroupItem = GTUtilsAnnotationsTreeView::expandItem(os, "gene  (0, 13)");
+    GTUtilsAnnotationsTreeView::expandItem(os, "gene  (0, 13)");
     GTUtilsAnnotationsTreeView::expandItem(os, "mat_peptide  (0, 16)");
     GTUtilsAnnotationsTreeView::expandItem(os, "misc_feature  (0, 16)");
 
-    GTTreeWidget::click(os, geneGroupItem);
+    GTTreeWidget::click(os, GTUtilsAnnotationsTreeView::findItem(os, "gene  (0, 13)"));
 
     auto annotTreeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
     auto scrollBar = annotTreeWidget->verticalScrollBar();

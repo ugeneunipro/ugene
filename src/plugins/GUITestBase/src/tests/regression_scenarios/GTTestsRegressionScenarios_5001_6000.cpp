@@ -1323,7 +1323,7 @@ GUI_TEST_CLASS_DEFINITION(test_5363_2) {
     //    5. Open murine.gb
     //    6. {Analyze --> Query with local BLAST}
     //    7. Select the created database and accept the dialog
-    //    Expected state: blast annotations were found and the annotations locations are equal to 'hit-from' and 'hit-to' qualifier values
+    //    Expected state: blast annotations were found and there is an annotation with the region equal to 'hit-from' and 'hit-to' qualifier values
 
     MakeBlastDbDialogFiller::Parameters parametersDB;
     parametersDB.inputFilePath = dataDir + "/samples/Genbank/murine.gb";
@@ -1338,23 +1338,35 @@ GUI_TEST_CLASS_DEFINITION(test_5363_2) {
     BlastLocalSearchDialogFiller::Parameters parametersSearch;
     parametersSearch.runBlast = true;
     parametersSearch.dbPath = sandBoxDir + "/murine.nin";
+    U2Region searchRegion = {500, 100};
+    parametersSearch.searchRegion = searchRegion;
 
     GTUtilsDialog::waitForDialog(os, new BlastLocalSearchDialogFiller(parametersSearch, os));
     GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Query with local BLAST..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTreeWidgetItem *treeItem = GTUtilsAnnotationsTreeView::findItem(os, "blast result");
+    QList<QTreeWidgetItem *> blastResultItems = GTUtilsAnnotationsTreeView::findItems(os, "blast result");
+    CHECK_SET_ERR(blastResultItems.length() > 1, "Expected multiple blast results");
+
+    QString expectedLocationText = QString::number(searchRegion.startPos) + ".." + QString::number(searchRegion.endPos());
+    QTreeWidgetItem *wholeRegionItem = nullptr;
+    for (auto item : blastResultItems) {
+        if (item->text(2).contains(expectedLocationText)) {
+            wholeRegionItem = item;
+            break;
+        }
+    }
+    CHECK_SET_ERR(wholeRegionItem != nullptr, "Whole region result item not found");
 
     bool ok;
-    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"blast result"});
-    int hitFrom = GTUtilsAnnotationsTreeView::getQualifierValue(os, "hit-to", treeItem).toInt(&ok);
+    int hitFrom = GTUtilsAnnotationsTreeView::getQualifierValue(os, "hit-from", wholeRegionItem).toInt(&ok);
     CHECK_SET_ERR(ok, "Cannot get hit-to qualifier value");
 
-    int hitTo = GTUtilsAnnotationsTreeView::getQualifierValue(os, "hit-from", treeItem).toInt(&ok);
+    int hitTo = GTUtilsAnnotationsTreeView::getQualifierValue(os, "hit-to", wholeRegionItem).toInt(&ok);
     CHECK_SET_ERR(ok, "Cannot get hit-from qualifier value");
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findRegion(os, "blast result", U2Region(hitFrom, hitTo - hitFrom)),
-                  QString("Cannot find blast result [%1, %2]").arg(hitFrom).arg(hitTo));
+    CHECK_SET_ERR(hitFrom == searchRegion.startPos && hitTo == searchRegion.endPos(),
+                  QString("Unexpected hit-from/to qualifiers: [%1, %2]").arg(hitFrom).arg(hitTo));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5367) {
