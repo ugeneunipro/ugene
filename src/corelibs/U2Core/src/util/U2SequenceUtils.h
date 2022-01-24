@@ -173,7 +173,7 @@ public:
  * Supports mapping of the original sequence coordinates to a circular sequence coordinates with a specified 'overlap' range.
  */
 class U2CORE_EXPORT U2PseudoCircularization {
-    U2PseudoCircularization() = default;
+    U2PseudoCircularization() = delete;
 
 public:
     /**

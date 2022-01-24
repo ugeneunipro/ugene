@@ -383,7 +383,7 @@ int BlastCommonTask::parseQuerySequenceIndex(const QString &querySequenceName) c
     SAFE_POINT_EXT(querySequenceName.startsWith(QUERY_SEQUENCE_NAME_PREFIX), uiLog.trace("Unexpected query sequence name: " + querySequenceName), -1);
     bool isOk;
     int querySequenceIndex = querySequenceName.mid(QUERY_SEQUENCE_NAME_PREFIX.length()).toInt(&isOk);
-    SAFE_POINT_EXT(querySequenceIndex >= 0 && querySequenceIndex < settings.querySequences.size(),
+    SAFE_POINT_EXT(isOk && querySequenceIndex >= 0 && querySequenceIndex < settings.querySequences.size(),
                    uiLog.trace("Unexpected query sequence index: " + querySequenceName),
                    -1);
     return querySequenceIndex;
