@@ -87,7 +87,7 @@ void CreateAnnotationWidget::sl_complementLocation() {
 
 QString CreateAnnotationWidget::getGenbankLocationString(const U2Location &location) {
     QString locationString = U1AnnotationUtils::buildLocationString(location->regions);
-    if (location->strand.isCompementary()) {
+    if (location->strand.isComplementary()) {
         locationString = "complement(" + locationString + ")";
     }
     return locationString;

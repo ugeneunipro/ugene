@@ -546,7 +546,7 @@ void GTFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
             QVector<U2Qualifier> annotQualifiers = annot->getQualifiers();
 
             lineFields[GTF_SEQ_NAME_INDEX] = annotTableName;
-            lineFields[GTF_STRAND_INDEX] = (annot->getStrand().isCompementary() ? "-" : "+");
+            lineFields[GTF_STRAND_INDEX] = (annot->getStrand().isComplementary() ? "-" : "+");
 
             // Joined annotations are currently stored as other annotations (we do not store that they are joined)
             for (const U2Region &region : qAsConst(annotRegions)) {

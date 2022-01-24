@@ -42,7 +42,7 @@ void ExtractAnnotatedRegionTask::prepareTranslations() {
     if (aminoSeq) {
         return;
     }
-    if (cfg.complement && inputAnn->getStrand().isCompementary()) {
+    if (cfg.complement && inputAnn->getStrand().isComplementary()) {
         DNATranslation *compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(inputSeq.alphabet);
         if (compTT != nullptr) {
             complT = compTT;

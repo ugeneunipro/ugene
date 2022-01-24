@@ -32,11 +32,13 @@
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTTextEdit.h>
 #include <primitives/GTToolbar.h>
+#include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
 #include <utils/GTUtilsDialog.h>
+#include <utils/GTUtilsToolTip.h>
 
 #include <QApplication>
 #include <QDir>
@@ -466,7 +468,7 @@ GUI_TEST_CLASS_DEFINITION(test_7152) {
 
 GUI_TEST_CLASS_DEFINITION(test_7161) {
     class ItemPopupChooserByPosition : public PopupChooser {
-    //for some reason PopupChooser don not work properly, so we choose item by position
+        // for some reason PopupChooser don not work properly, so we choose item by position
     public:
         ItemPopupChooserByPosition(HI::GUITestOpStatus &os, int _pos)
             : PopupChooser(os, {}), pos(_pos) {
@@ -485,19 +487,20 @@ GUI_TEST_CLASS_DEFINITION(test_7161) {
 
     class ChooseCDSAndCommentsWithin60kRegion : public FindAnnotationCollocationsDialogFiller {
     public:
-        ChooseCDSAndCommentsWithin60kRegion(HI::GUITestOpStatus &os) : FindAnnotationCollocationsDialogFiller(os) {
+        ChooseCDSAndCommentsWithin60kRegion(HI::GUITestOpStatus &os)
+            : FindAnnotationCollocationsDialogFiller(os) {
         }
 
         void run() override {
             QToolButton *plusButton = getPlusButton();
-            
-            GTUtilsDialog::waitForDialog(os, new ItemPopupChooserByPosition(os, 3));
-            GTWidget::click(os, plusButton);
-            
+
             GTUtilsDialog::waitForDialog(os, new ItemPopupChooserByPosition(os, 3));
             GTWidget::click(os, plusButton);
 
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);            
+            GTUtilsDialog::waitForDialog(os, new ItemPopupChooserByPosition(os, 3));
+            GTWidget::click(os, plusButton);
+
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTSpinBox::setValue(os, "regionSpin", 60000, GTGlobals::UseKeyBoard, dialog);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
             GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -505,15 +508,15 @@ GUI_TEST_CLASS_DEFINITION(test_7161) {
         }
     };
 
-    //1. Open data/samples/sars.gb
+    // 1. Open data/samples/sars.gb
     GTFileDialog::openFile(os, dataDir + "/samples/Genbank/", "sars.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Use context menu: {Analyze -> Find annotated regions}
-    //3. Click plus button, select "comment", repeat and select "cds"
-    //4. Set "Region size" to 60000
-    //5. Press "Search button"
-    //Expected state: no crash or assert on run
+    // 2. Use context menu: {Analyze -> Find annotated regions}
+    // 3. Click plus button, select "comment", repeat and select "cds"
+    // 4. Set "Region size" to 60000
+    // 5. Press "Search button"
+    // Expected state: no crash or assert on run
     auto *toolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");
     auto *farButton = GTToolbar::getWidgetForActionTooltip(os, toolbar, "Find annotated regions");
 
@@ -2037,6 +2040,32 @@ GUI_TEST_CLASS_DEFINITION(test_7517) {
     GTWidget::click(os, showOverviewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::checkMessageWithTextCount(os, "Registering new task: Render overview", 1, "check3");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7535) {
+    // Check that UGENE does not crash when tooltip is invoked on non-standard annotations.
+    GTFileDialog::openFile(os, testDir + "_common_data/genbank/zero_length_feature.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    auto zeroLength0Item = GTUtilsAnnotationsTreeView::findItem(os, "zero_length_0");
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, zeroLength0Item));
+    QString tooltip = GTUtilsToolTip::getToolTip();
+    CHECK_SET_ERR(tooltip.isEmpty(), "Expected no tooltip for zero-length annotation: " + tooltip);
+
+    auto zeroLengthXItem = GTUtilsAnnotationsTreeView::findItem(os, "zero_length_x");
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, zeroLengthXItem));
+    tooltip = GTUtilsToolTip::getToolTip();
+    CHECK_SET_ERR(tooltip.isEmpty(), "Expected no tooltip for out of bound annotation: " + tooltip);
+
+    auto normalLengthItem = GTUtilsAnnotationsTreeView::findItem(os, "normal_length");
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, normalLengthItem));
+    tooltip = GTUtilsToolTip::getToolTip();
+    CHECK_SET_ERR(tooltip.contains("<b>Sequence</b> = TTGCAGAATTC"), "Expected sequence info in tooltip for a normal annotation: " + tooltip);
+
+    auto normalLengthComplementaryItem = GTUtilsAnnotationsTreeView::findItem(os, "normal_length_c");
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, normalLengthComplementaryItem));
+    tooltip = GTUtilsToolTip::getToolTip();
+    CHECK_SET_ERR(tooltip.contains("<b>Sequence</b> = GAATTCTGCAA"), "Expected complementary sequence info in tooltip for a normal annotation: " + tooltip);
 }
 
 }  // namespace GUITest_regression_scenarios

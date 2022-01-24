@@ -272,7 +272,7 @@ public:
         return value == Direct;
     }
 
-    bool isCompementary() const {
+    bool isComplementary() const {
         return value == Complementary;
     }
 

@@ -77,7 +77,7 @@ public:
             case 1:
                 return res.modelInfo < o->res.modelInfo;
             case 2:
-                return res.strand != o->res.strand ? res.strand.isCompementary() : (res.region.startPos < o->res.region.startPos);
+                return res.strand != o->res.strand ? res.strand.isComplementary() : (res.region.startPos < o->res.region.startPos);
             case 3:
                 return res.score < o->res.score;
         }
@@ -582,7 +582,7 @@ WeightMatrixResultItem::WeightMatrixResultItem(const WeightMatrixSearchResult &r
     QString range = QString("%1..%2").arg(r.region.startPos + 1).arg(r.region.endPos());
     setText(0, range);
     setText(1, r.modelInfo);
-    QString strand = res.strand.isCompementary() ? PWMSearchDialogController::tr("Reverse complement strand") : PWMSearchDialogController::tr("Direct strand");
+    QString strand = res.strand.isComplementary() ? PWMSearchDialogController::tr("Reverse complement strand") : PWMSearchDialogController::tr("Direct strand");
     setText(2, strand);
     setText(3, QString::number(res.score, 'f', 2) + "%");
 }

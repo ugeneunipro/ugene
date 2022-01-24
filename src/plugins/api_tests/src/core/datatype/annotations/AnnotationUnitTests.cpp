@@ -140,7 +140,7 @@ IMPLEMENT_TEST(AnnotationUnitTest, getSet_Strand) {
     annotation->setStrand(newStrand);
 
     CHECK_EQUAL(newStrand.getDirectionValue(), annotation->getStrand().getDirectionValue(), "Annotation's location op");
-    CHECK_TRUE(annotation->getStrand().isCompementary(), "Unexpected location op");
+    CHECK_TRUE(annotation->getStrand().isComplementary(), "Unexpected location op");
 }
 
 IMPLEMENT_TEST(AnnotationUnitTest, getSet_Location) {

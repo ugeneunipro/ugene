@@ -785,14 +785,14 @@ void CircularViewRenderArea::buildAnnotationItem(DrawAnnotationPass pass, Annota
 
     const QVector<U2Region> aDataLocation = aData->getRegions();
     QVector<U2Region> location = aData->getRegions();
-    bool isComplementaryStrand = aData->getStrand().isCompementary();
+    bool isComplementaryStrand = aData->getStrand().isComplementary();
     removeRegionsOutOfRange(location, seqLen);
 
     int yLevel = predefinedOrbit == -1 ? findOrbit(location, a) : predefinedOrbit;
     QList<CircularAnnotationRegionItem *> regions;
     if (circularView->isCircularTopology()) {
         // For a circular sequence merge regions around 0 point.
-        QList<RegionsPair> mergedRegions = U1AnnotationUtils::mergeAnnotatiedRegionsAroundJunctionPoint(location, seqLen);
+        QList<RegionsPair> mergedRegions = U1AnnotationUtils::mergeAnnotatedRegionsAroundJunctionPoint(location, seqLen);
         for (const RegionsPair &pair : qAsConst(mergedRegions)) {
             int idx = aDataLocation.indexOf(pair.first);
             CircularAnnotationRegionItem *regItem = createAnnotationRegionItem(U2Region(pair.first.startPos, pair.first.length + pair.second.length), seqLen, yLevel, isComplementaryStrand, idx);
@@ -1003,7 +1003,7 @@ void CircularViewRenderArea::buildAnnotationLabel(const QFont &font, Annotation 
     QVector<U2Region> newLocation;
     if (circularView->isCircularTopology()) {
         // Use merged regions for circular topology.
-        QList<RegionsPair> mergedRegions = U1AnnotationUtils::mergeAnnotatiedRegionsAroundJunctionPoint(location, seqLen);
+        QList<RegionsPair> mergedRegions = U1AnnotationUtils::mergeAnnotatedRegionsAroundJunctionPoint(location, seqLen);
         for (const RegionsPair &pair : qAsConst(mergedRegions)) {
             newLocation.append(U2Region(pair.first.startPos, pair.first.length + pair.second.length));
         }

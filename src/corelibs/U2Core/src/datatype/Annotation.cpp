@@ -535,57 +535,57 @@ QString Annotation::getQualifiersTip(const SharedAnnotationData &data, int maxRo
         rows++;
     }
 
-    bool canShowSeq = true;
-    const int seqLen = (nullptr != seqObj) ? seqObj->getSequenceLength() : 0;
-    foreach (const U2Region &r, data->location->regions) {
-        if (r.endPos() > seqLen) {
-            canShowSeq = false;
-        }
-    }
+    qint64 sequenceLength = seqObj != nullptr ? seqObj->getSequenceLength() : 0;
 
-    if (nullptr != seqObj && rows <= maxRows && (data->location->strand.isCompementary() || complTT != nullptr) && canShowSeq) {
-        QVector<U2Region> loc = data->location->regions;
+    // Sequence is shown only if sequence object is present and location is valid.
+    QVector<U2Region> regions = data->location->regions;
+    U2Region wholeSequenceRegion(0, sequenceLength);
+    bool showSequence = seqObj != nullptr && rows <= maxRows && (!data->location->strand.isComplementary() || complTT != nullptr) &&
+                        std::all_of(regions.begin(), regions.end(), [&wholeSequenceRegion](const U2Region &region) {
+                            return region.length > 0 && wholeSequenceRegion.contains(region);
+                        });
+    if (showSequence) {
         QString seqVal;
         QString aminoVal;
         bool complete = true;
-        QList<RegionsPair> merged = U1AnnotationUtils::mergeAnnotatiedRegionsAroundJunctionPoint(loc, seqLen);
-        bool isComplementary = data->location->strand.isCompementary() && nullptr != complTT;
+        QList<RegionsPair> merged = U1AnnotationUtils::mergeAnnotatedRegionsAroundJunctionPoint(regions, sequenceLength);
+        bool isComplementary = data->location->strand.isComplementary() && complTT != nullptr;
         if (isComplementary) {
             std::reverse(merged.begin(), merged.end());
         }
-        bool hasAnnotatiedRegionsContainJunctionPoint = seqObj->isCircular() && U1AnnotationUtils::isAnnotationContainsJunctionPoint(merged);
-        foreach (const RegionsPair &pair, merged) {
+        bool hasAnnotatedRegionsContainJunctionPoint = seqObj->isCircular() && U1AnnotationUtils::isAnnotationContainsJunctionPoint(merged);
+        for (const RegionsPair &pair : qAsConst(merged)) {
             if (!seqVal.isEmpty()) {
                 seqVal += "^";
             }
             if (!aminoVal.isEmpty()) {
                 aminoVal += "^";
             }
-            qint64 firstRegionLength = qMin<qint64>(pair.first.length, QUALIFIER_VALUE_CUT - seqVal.length());
-            qint64 secondPartRegionLength = 0;
+            int firstRegionLength = (int)qMin<qint64>(pair.first.length, QUALIFIER_VALUE_CUT - seqVal.length());
+            int secondPartRegionLength = 0;
             if (firstRegionLength != pair.first.length) {
                 complete = false;
             }
             U2Region firstRegion;
             U2Region secondRegion;
-            if (hasAnnotatiedRegionsContainJunctionPoint && !pair.second.isEmpty()) {
+            if (hasAnnotatedRegionsContainJunctionPoint && !pair.second.isEmpty()) {
                 if (isComplementary) {
                     /*
                      * If the sequence is circular and the annotation is complementary the region from 0 to N should be shown first from N to 0 and the region from M to 'sequeceLength' should be shown second from 'sequeceLength' to M
                      */
-                    firstRegionLength = qMin<qint64>(pair.second.length, QUALIFIER_VALUE_CUT - seqVal.length());
+                    firstRegionLength = (int)qMin<qint64>(pair.second.length, QUALIFIER_VALUE_CUT - seqVal.length());
                     if (firstRegionLength != pair.second.length) {
                         complete = false;
                     }
-                    firstRegion = U2Region((pair.second.endPos() - firstRegionLength), firstRegionLength);
-                    secondPartRegionLength = qMin<qint64>(pair.first.length, QUALIFIER_VALUE_CUT - (seqVal.length() + firstRegionLength));
+                    firstRegion = U2Region(pair.second.endPos() - firstRegionLength, firstRegionLength);
+                    secondPartRegionLength = (int)qMin<qint64>(pair.first.length, QUALIFIER_VALUE_CUT - (seqVal.length() + firstRegionLength));
                     if (secondPartRegionLength != pair.first.length) {
                         complete = false;
                     }
                     secondRegion = U2Region((pair.first.endPos() - secondPartRegionLength), secondPartRegionLength);
                 } else {
                     firstRegion = U2Region(pair.first.startPos, firstRegionLength);
-                    secondPartRegionLength = qMin<qint64>(pair.second.length, QUALIFIER_VALUE_CUT - (seqVal.length() + firstRegion.length));
+                    secondPartRegionLength = (int)qMin<qint64>(pair.second.length, QUALIFIER_VALUE_CUT - (seqVal.length() + firstRegion.length));
                     if (secondPartRegionLength != pair.second.length) {
                         complete = false;
                     }
@@ -593,7 +593,7 @@ QString Annotation::getQualifiersTip(const SharedAnnotationData &data, int maxRo
                 }
             } else {
                 if (isComplementary) {
-                    firstRegion = U2Region((pair.first.endPos() - firstRegionLength), firstRegionLength);
+                    firstRegion = U2Region(pair.first.endPos() - firstRegionLength, firstRegionLength);
                 } else {
                     firstRegion = U2Region(pair.first.startPos, firstRegionLength);
                 }
@@ -631,7 +631,7 @@ QString Annotation::getQualifiersTip(const SharedAnnotationData &data, int maxRo
         if (!tip.isEmpty()) {
             tip += "<br>";
         }
-        SAFE_POINT(!seqVal.isEmpty(), "Empty sequence detected!", QString());
+
         tip += "<nobr><b>" + QObject::tr("Sequence") + "</b> = " + seqVal.toHtmlEscaped() + "</nobr>";
         rows++;
 
