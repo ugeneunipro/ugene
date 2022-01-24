@@ -219,15 +219,16 @@ public:
         : BaseDocWriter(a, BaseDocumentFormats::UGENEDB) {
     }
 
+    /* Save given data to document */
+    static void data2document(Document *, const QVariantMap &, WorkflowContext *);
+    /* Save document entry in a 'streaming' way */
+    static void streamingStoreEntry(DocumentFormat *format, IOAdapter *io, const QVariantMap &data, WorkflowContext *context, int entryNum);
+
 protected:
     void data2doc(Document *, const QVariantMap &) override;
     void storeEntry(IOAdapter *io, const QVariantMap &data, int entryNum) override;
     bool hasDataToWrite(const QVariantMap &data) const override;
     QSet<GObject *> getObjectsToWrite(const QVariantMap &data) const override;
-
-public:
-    static void data2document(Document *, const QVariantMap &, WorkflowContext *);
-    static void streamingStoreEntry(DocumentFormat *format, IOAdapter *io, const QVariantMap &data, WorkflowContext *context, int entryNum);
 };
 
 class DataWorkerFactory : public DomainFactory {

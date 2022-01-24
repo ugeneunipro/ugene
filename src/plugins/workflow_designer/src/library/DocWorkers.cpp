@@ -899,13 +899,6 @@ void UgeneDBWriter::data2document(Document *doc, const QVariantMap &data, Workfl
         U2OpStatusImpl os;
         DNASequence seq = seqObj->getWholeSequence(os);
         SAFE_POINT_OP(os, );
-        QMapIterator<QString, QVariant> it(seq.info);
-        while (it.hasNext()) {
-            it.next();
-            if (!(it.value().type() == QVariant::String || it.value().type() == QVariant::StringList)) {
-                seq.info.remove(it.key());
-            }
-        }
 
         if (seq.getName().isEmpty()) {
             int num = doc->findGObjectByType(GObjectTypes::SEQUENCE).size();
@@ -986,7 +979,7 @@ void UgeneDBWriter::streamingStoreEntry(DocumentFormat *format, IOAdapter *io, c
             if (annotationName.isEmpty()) {
                 annotationName = QString("unknown features %1").arg(entryNum);
             }
-            AnnotationTableObject *att = new AnnotationTableObject(annotationName, context->getDataStorage()->getDbiRef());
+            auto *att = new AnnotationTableObject(annotationName, context->getDataStorage()->getDbiRef());
             anObjList << att;
             att->addAnnotations(atl);
         }
@@ -1003,13 +996,11 @@ void UgeneDBWriter::streamingStoreEntry(DocumentFormat *format, IOAdapter *io, c
             objectsMap[GObjectTypes::ANNOTATION_TABLE] = anObjList;
         }
     }
-    CHECK(!objectsMap.isEmpty(), );
+    CHECK_OPERATIONS(!objectsMap.isEmpty(), qDeleteAll(anObjList));
 
     format->storeEntry(io, objectsMap, os);
 
-    foreach (GObject *o, anObjList) {
-        delete o;
-    }
+    qDeleteAll(anObjList);
 }
 
 /*************************************
