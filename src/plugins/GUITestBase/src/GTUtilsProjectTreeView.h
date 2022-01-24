@@ -72,22 +72,22 @@ public:
     static void callContextMenu(HI::GUITestOpStatus &os, const QModelIndex &itemIndex);
 
     static QTreeView *getTreeView(HI::GUITestOpStatus &os);
-    static QModelIndex findIndex(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
-    static QModelIndex findIndex(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
-    static QModelIndex findIndex(HI::GUITestOpStatus &os, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
-    static QModelIndex findIndex(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
-    static QModelIndex findIndex(HI::GUITestOpStatus &os, const QStringList &itemPath, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+    static QModelIndex findIndex(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options = {});
+    static QModelIndex findIndex(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const GTGlobals::FindOptions &options = {});
+    static QModelIndex findIndex(HI::GUITestOpStatus &os, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options = {});
+    static QModelIndex findIndex(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options = {});
+    static QModelIndex findIndex(HI::GUITestOpStatus &os, const QStringList &itemPath, const GTGlobals::FindOptions &options = {});
     static QModelIndexList findIndeciesInProjectViewNoWait(HI::GUITestOpStatus &os,
                                                            const QString &itemName,
                                                            const QModelIndex &parent = QModelIndex(),
                                                            int parentDepth = 0,
-                                                           const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+                                                           const GTGlobals::FindOptions &options = {});
     static QModelIndexList findIndiciesInTreeNoWait(HI::GUITestOpStatus &os,
                                                     QTreeView *treeView,
                                                     const QString &itemName,
                                                     const QModelIndex &parent = QModelIndex(),
                                                     int parentDepth = 0,
-                                                    const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+                                                    const GTGlobals::FindOptions &options = {});
 
     static void filterProject(HI::GUITestOpStatus &os, const QString &searchField);
     static void filterProjectSequental(HI::GUITestOpStatus &os, const QStringList &searchField, bool waitUntilSearchEnd);
@@ -96,10 +96,10 @@ public:
     static void ensureFilteringIsDisabled(HI::GUITestOpStatus &os);
 
     // returns true if the item exists, does not set error unlike findIndex method
-    static bool checkItem(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
-    static bool checkItem(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
-    static bool checkItem(HI::GUITestOpStatus &os, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
-    static bool checkItem(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+    static bool checkItem(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options = {});
+    static bool checkItem(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const GTGlobals::FindOptions &options = {});
+    static bool checkItem(HI::GUITestOpStatus &os, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options = {});
+    static bool checkItem(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options = {});
 
     static void checkNoItem(HI::GUITestOpStatus &os, const QString &itemName);
 

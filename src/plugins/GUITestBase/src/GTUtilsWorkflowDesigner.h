@@ -112,9 +112,9 @@ public:
     static void click(HI::GUITestOpStatus &os, QGraphicsItem *item, QPoint p = QPoint(0, 0), Qt::MouseButton button = Qt::LeftButton);
 
     // returs worker placed on workflow scene which contains item name
-    static WorkflowProcessItem *getWorker(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+    static WorkflowProcessItem *getWorker(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options = {});
 
-    static QString getWorkerText(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+    static QString getWorkerText(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options = {});
 
     static void clickLink(HI::GUITestOpStatus &os, const QString &itemName, Qt::MouseButton button = Qt::LeftButton, int step = 10);
 

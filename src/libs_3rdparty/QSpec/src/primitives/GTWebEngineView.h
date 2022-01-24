@@ -44,7 +44,7 @@ private:
 
 class HI_EXPORT GTWebEngineView {
 public:
-    static QList<HIWebElement> findElementsBySelector(GUITestOpStatus &os, QWebEngineView *view, const QString &selector, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+    static QList<HIWebElement> findElementsBySelector(GUITestOpStatus &os, QWebEngineView *view, const QString &selector, const GTGlobals::FindOptions &options = {});
 
 private:
     static HIWebElement toHiWebElement(const QMap<QString, QVariant> &map);

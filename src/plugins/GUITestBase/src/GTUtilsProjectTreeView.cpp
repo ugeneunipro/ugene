@@ -97,7 +97,7 @@ void GTUtilsProjectTreeView::toggleView(HI::GUITestOpStatus &os, GTGlobals::UseM
             GTKeyboardDriver::keyClick('1', Qt::AltModifier);
             break;
         case GTGlobals::UseMouse:
-            GTWidget::click(os, GTWidget::findWidget(os, "doc_lable_project_view"));
+            GTWidget::click(os, GTWidget::findWidget(os, "doc_label__project_view"));
             break;
         default:
             break;

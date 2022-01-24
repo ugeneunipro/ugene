@@ -79,8 +79,8 @@ public:
     static QList<HIWebElement> findElementsById(GUITestOpStatus &os, WebView *view, const QString &id, const QString &tag = "*", const HIWebElement &parentElement = HIWebElement());
 
     // Selectors: https://www.w3.org/TR/selectors/
-    static HIWebElement findElementBySelector(GUITestOpStatus &os, WebView *view, const QString &selector, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
-    static QList<HIWebElement> findElementsBySelector(GUITestOpStatus &os, WebView *view, const QString &selector, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+    static HIWebElement findElementBySelector(GUITestOpStatus &os, WebView *view, const QString &selector, const GTGlobals::FindOptions &options = {});
+    static QList<HIWebElement> findElementsBySelector(GUITestOpStatus &os, WebView *view, const QString &selector, const GTGlobals::FindOptions &options = {});
 
     static void checkElement(GUITestOpStatus &os, WebView *view, QString text, QString tag = "*", bool exists = true, bool exactMatch = false);
     static bool doesElementExist(GUITestOpStatus &os, WebView *view, const QString &text, const QString &tag = "*", bool exactMatch = false);

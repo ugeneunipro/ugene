@@ -414,7 +414,6 @@ QList<QTreeWidgetItem *> GTUtilsAnnotationsTreeView::getAllSelectedItems(HI::GUI
 #define GT_METHOD_NAME "getItemCenter"
 QPoint GTUtilsAnnotationsTreeView::getItemCenter(HI::GUITestOpStatus &os, const QString &itemName) {
     QTreeWidgetItem *item = findItem(os, itemName);
-    GTTreeWidget::scrollToItem(os, item);
     return GTTreeWidget::getItemCenter(os, item);
 }
 #undef GT_METHOD_NAME

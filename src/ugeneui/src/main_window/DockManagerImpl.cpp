@@ -149,7 +149,7 @@ QAction *MWDockManagerImpl::registerDock(MWDockArea area, QWidget *w, const QKey
     data->label = new QLabel(tb);
     data->wrapWidget = new DockWrapWidget(w);
     data->wrapWidget->setObjectName("wrap_widget_" + w->objectName());
-    data->label->setObjectName("doc_lable_" + w->objectName());
+    data->label->setObjectName("doc_label__" + w->objectName());
     data->label->installEventFilter(this);
     if (area != MWDockArea_Bottom) {
         tb->addWidget(data->label);
