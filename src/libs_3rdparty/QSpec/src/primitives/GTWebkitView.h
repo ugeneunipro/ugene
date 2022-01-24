@@ -32,7 +32,7 @@ namespace HI {
 
 class HI_EXPORT GTWebkitView {
 public:
-    static QList<HIWebElement> findElementsBySelector(GUITestOpStatus &os, QWebView *view, const QString &selector, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+    static QList<HIWebElement> findElementsBySelector(GUITestOpStatus &os, QWebView *view, const QString &selector, const GTGlobals::FindOptions &options = {});
 
 private:
     static HIWebElement toHiWebElement(const QWebElement &element);

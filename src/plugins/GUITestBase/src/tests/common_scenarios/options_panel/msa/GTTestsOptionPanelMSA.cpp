@@ -1720,8 +1720,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
     CHECK_SET_ERR(finalImg == initImg, "tree is aligned");
 }
 
-namespace {
-void expandFontSettings(HI::GUITestOpStatus &os) {
+static void expandFontSettings(HI::GUITestOpStatus &os) {
     QWidget *labelsColorButton = GTWidget::findWidget(os, "labelsColorButton");
     CHECK_SET_ERR(labelsColorButton != nullptr, "labelsColorButton not found");
     if (!labelsColorButton->isVisible()) {
@@ -1729,102 +1728,108 @@ void expandFontSettings(HI::GUITestOpStatus &os) {
     }
 }
 
-void setLabelsColor(HI::GUITestOpStatus &os, int r, int g, int b) {
+static void setLabelsColor(HI::GUITestOpStatus &os, int r, int g, int b) {
     expandFontSettings(os);
     GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, r, g, b));
     QWidget *labelsColorButton = GTWidget::findWidget(os, "labelsColorButton");
     GTWidget::click(os, labelsColorButton);
 }
 
-bool checkLabelColor(HI::GUITestOpStatus &os, const QString &expectedColorName) {
-    QGraphicsView *w = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR_RESULT(w != nullptr, "tree view not found", false);
-    QList<QGraphicsSimpleTextItem *> labels = GTUtilsPhyTree::getVisibleLabels(os, w);
+static bool checkLabelColor(HI::GUITestOpStatus &os, const QString &expectedColorName) {
+    auto graphicsView = GTWidget::findGraphicsView(os, "treeView");
+    QList<QGraphicsSimpleTextItem *> labels = GTUtilsPhyTree::getVisibleLabels(os, graphicsView);
     CHECK_SET_ERR_RESULT(!labels.isEmpty(), "there are no visiable labels", false);
 
-    const QImage img = GTWidget::getImage(os, AppContext::getMainWindow()->getQMainWindow());
+    QImage img = GTWidget::getImage(os, AppContext::getMainWindow()->getQMainWindow());
+    for (int time = 0; time < 5000; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        for (QGraphicsSimpleTextItem *label : qAsConst(labels)) {
+            QRectF rect = label->boundingRect();
+            graphicsView->ensureVisible(label);
+            for (int i = 0; i < rect.right(); i++) {
+                for (int j = 0; j < rect.bottom(); j++) {
+                    QPoint p(i, j);
+                    QPoint global = graphicsView->viewport()->mapToGlobal(graphicsView->mapFromScene(label->mapToScene(p)));
 
-    // hack
-    foreach (QGraphicsSimpleTextItem *label, labels) {
-        QRectF rect = label->boundingRect();
-        w->ensureVisible(label);
-        for (int i = 0; i < rect.right(); i++) {
-            for (int j = 0; j < rect.bottom(); j++) {
-                QPoint p(i, j);
-                QPoint global = w->viewport()->mapToGlobal(w->mapFromScene(label->mapToScene(p)));
-
-                QRgb rgb = img.pixel(global);
-                QColor c = QColor(rgb);
-                QString name = c.name();
-                if (name == expectedColorName) {
-                    return true;
+                    QRgb rgb = img.pixel(global);
+                    QColor c = QColor(rgb);
+                    QString name = c.name();
+                    if (name == expectedColorName) {
+                        return true;
+                    }
                 }
             }
         }
     }
     return false;
 }
-}  // namespace
 
 GUI_TEST_CLASS_DEFINITION(tree_settings_test_0006) {
-    //    1. Open data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2. Open tree settings option panel tab. build tree
+
+    // Open tree settings option panel tab. build tree.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
-//    3. Change labels color.
-#ifndef Q_OS_DARWIN
-    setLabelsColor(os, 255, 0, 0);
-    //    Expected: color changed
-    bool b = checkLabelColor(os, "#ff0000");
-    CHECK_SET_ERR(b, "color not changed");
-#else
-    expandFontSettings(os);
-#endif
-    //    4. Change labels font
-    QComboBox *fontComboBox = GTWidget::findExactWidget<QComboBox *>(os, "fontComboBox");
-    QLineEdit *l = fontComboBox->findChild<QLineEdit *>();
-    GTLineEdit::setText(os, l, "Serif");
+
+    // Change labels color.
+    if (!isOsMac()) {
+        setLabelsColor(os, 255, 0, 0);
+        // Expected: color changed
+        CHECK_SET_ERR(checkLabelColor(os, "#ff0000"), "color not changed");
+    } else {
+        expandFontSettings(os);
+    }
+    // Change labels font.
+    auto fontComboBox = GTWidget::findComboBox(os, "fontComboBox");
+    auto fontNameEdit = fontComboBox->findChild<QLineEdit *>();
+    CHECK_SET_ERR(fontNameEdit != nullptr, "font name edit is not found");
+    GTLineEdit::setText(os, fontNameEdit, "Serif");
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
-    //    Expected: font changed
+
+    // Expected: font changed.
     QGraphicsSimpleTextItem *label = GTUtilsPhyTree::getVisibleLabels(os).at(0);
     QString family = label->font().family();
     CHECK_SET_ERR(family == "Serif", "unexpected style: " + family);
-    //    5. Change labels size
-    QWidget *fontSizeSpinBox = GTWidget::findWidget(os, "fontSizeSpinBox");
-    CHECK_SET_ERR(fontSizeSpinBox != nullptr, "fontSizeSpinBox not found");
 
-    QLineEdit *fontLineedit = fontSizeSpinBox->findChild<QLineEdit *>();
-    GTLineEdit::setText(os, fontLineedit, "20");
+    // Change labels size.
+    auto fontSizeSpinBox = GTWidget::findSpinBox(os, "fontSizeSpinBox");
+    auto fontSizeEdit = fontSizeSpinBox->findChild<QLineEdit *>();
+    CHECK_SET_ERR(fontSizeEdit != nullptr, "font size edit is not found");
+    GTLineEdit::setText(os, fontSizeEdit, "20");
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
-    //    Expected: size changed
+
+    // Expected: size changed.
     int pointSize = label->font().pointSize();
     CHECK_SET_ERR(pointSize == 20, QString("unexpected point size: %1").arg(pointSize));
-    // check font settings buttons
-    QWidget *boldAttrButton = GTWidget::findWidget(os, "boldAttrButton");
-    QWidget *italicAttrButton = GTWidget::findWidget(os, "italicAttrButton");
-    QWidget *underlineAttrButton = GTWidget::findWidget(os, "underlineAttrButton");
 
-    // bold
+    // Check font settings buttons
+    auto boldAttrButton = GTWidget::findWidget(os, "boldAttrButton");
+    auto italicAttrButton = GTWidget::findWidget(os, "italicAttrButton");
+    auto underlineAttrButton = GTWidget::findWidget(os, "underlineAttrButton");
+
+    // Bold.
     GTWidget::click(os, boldAttrButton);
     CHECK_SET_ERR(label->font().bold(), "expected bold font");
-    // not bold
+
+    // Not bold.
     GTWidget::click(os, boldAttrButton);
     CHECK_SET_ERR(!label->font().bold(), "bold font not canceled");
 
-    // italic
+    // Italic.
     GTWidget::click(os, italicAttrButton);
     CHECK_SET_ERR(label->font().italic(), "expected italic font");
-    // not italic
+
+    // Not italic.
     GTWidget::click(os, italicAttrButton);
     CHECK_SET_ERR(!label->font().italic(), "italic font not canceled");
 
-    // underline
+    // Underline.
     GTWidget::click(os, underlineAttrButton);
     CHECK_SET_ERR(label->font().underline(), "expected underline font");
-    // not underline
+
+    // Not underline.
     GTWidget::click(os, underlineAttrButton);
     CHECK_SET_ERR(!label->font().underline(), "underline font not canceled");
 }

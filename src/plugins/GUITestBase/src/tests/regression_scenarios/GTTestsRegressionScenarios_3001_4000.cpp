@@ -1846,14 +1846,16 @@ GUI_TEST_CLASS_DEFINITION(test_3306) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsAnnotationsTreeView::expandItem(os, "CDS  (0, 14)");
-    GTUtilsAnnotationsTreeView::expandItem(os, "gene  (0, 13)");
+    auto geneGroupItem = GTUtilsAnnotationsTreeView::expandItem(os, "gene  (0, 13)");
     GTUtilsAnnotationsTreeView::expandItem(os, "mat_peptide  (0, 16)");
     GTUtilsAnnotationsTreeView::expandItem(os, "misc_feature  (0, 16)");
+
+    GTTreeWidget::click(os, geneGroupItem);
 
     auto annotTreeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
     auto scrollBar = annotTreeWidget->verticalScrollBar();
     int initialPos = scrollBar->value();
-    for (int i = 0; i < 15; ++i) {
+    for (int i = 0; i < 16; ++i) {
         GTKeyboardDriver::keyClick(Qt::Key_Down);
     }
     CHECK_SET_ERR(initialPos != scrollBar->value(), "ScrollBar hasn't moved");

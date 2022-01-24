@@ -43,11 +43,11 @@ public:
     // fails if the item wasn't found
     static QPoint getItemCenter(HI::GUITestOpStatus &os, const QString &itemName);
 
-    static QTreeWidgetItem *findFirstAnnotation(HI::GUITestOpStatus &os, const GTGlobals::FindOptions &options = GTGlobals::FindOptions(), bool expandParent = true);
-    static QTreeWidgetItem *findItem(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions & = GTGlobals::FindOptions(), bool expandParent = true);
-    static QTreeWidgetItem *findItem(HI::GUITestOpStatus &os, const QString &itemName, QTreeWidgetItem *parentItem, const GTGlobals::FindOptions & = GTGlobals::FindOptions(), bool expandParent = true);
+    static QTreeWidgetItem *findFirstAnnotation(HI::GUITestOpStatus &os, const GTGlobals::FindOptions &options = {}, bool expandParent = true);
+    static QTreeWidgetItem *findItem(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions & = {}, bool expandParent = true);
+    static QTreeWidgetItem *findItem(HI::GUITestOpStatus &os, const QString &itemName, QTreeWidgetItem *parentItem, const GTGlobals::FindOptions & = {}, bool expandParent = true);
     static QTreeWidgetItem *findItemWithIndex(HI::GUITestOpStatus &os, const QString &itemName, int index, bool expandParent = true);
-    static QList<QTreeWidgetItem *> findItems(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
+    static QList<QTreeWidgetItem *> findItems(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions & = {});
 
     /** Find and expands single item by name. Fails if the item is not found or if multiple items with this name are present. */
     static QTreeWidgetItem *expandItem(HI::GUITestOpStatus &os, const QString &itemName);

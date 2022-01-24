@@ -272,59 +272,23 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDocument::checkDocument(os, "1.gb");
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 sequence"));
-    GTMouseDriver::doubleClick();
+    GTUtilsProjectTreeView::doubleClickItem(os, "NC_001363 sequence");
 
-    GTUtilsAnnotationsTreeView::expandItem(os, "C");
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "qual1"));
-    GTKeyboardDriver::keyPress(Qt::Key_Delete);
-
-    QTreeWidgetItem *qual1 = GTUtilsAnnotationsTreeView::findItem(os, "qual1", {false});
-    CHECK_SET_ERR(qual1 == nullptr, "There is annotation with qual1, expected state there is no annotation with qual1");
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0004_1) {
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
-
-    GTFileDialog::openFile(os, sandBoxDir, "proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "1.gb");
-
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 sequence"));
-    GTMouseDriver::doubleClick();
-
-    GTUtilsAnnotationsTreeView::expandItem(os, "B");
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "qual"));
-    GTKeyboardDriver::keyPress(Qt::Key_Delete);
-
-    QTreeWidgetItem *qual = GTUtilsAnnotationsTreeView::findItem(os, "qual", {false});
-    CHECK_SET_ERR(qual == nullptr, "There is annotation qual1, expected state there is no annotation qual");
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0004_2) {
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
-
-    GTFileDialog::openFile(os, sandBoxDir, "proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "1.gb");
-
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
-    GTMouseDriver::doubleClick();
-
-    GTUtilsAnnotationsTreeView::expandItem(os, "C");
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "qual1"));
+    auto annotationCItem = GTUtilsAnnotationsTreeView::expandItem(os, "C");
+    auto qualifierCItem = GTUtilsAnnotationsTreeView::findItem(os, "qual1", annotationCItem);
+    GTTreeWidget::click(os, qualifierCItem);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-    QTreeWidgetItem *qual1 = GTUtilsAnnotationsTreeView::findItem(os, "qual1", {false});
-    CHECK_SET_ERR(qual1 == nullptr, "There is annotation qual1, expected state there is no annotation qual1");
-    GTUtilsAnnotationsTreeView::expandItem(os, "B");
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "qual"));
+    qualifierCItem = GTUtilsAnnotationsTreeView::findItem(os, "qual1", annotationCItem, {false}, false);
+    CHECK_SET_ERR(qualifierCItem == nullptr, "There is annotation qual1, expected state there is no annotation qual1");
+
+    auto annotationBItem = GTUtilsAnnotationsTreeView::expandItem(os, "B");
+    auto qualifierBItem = GTUtilsAnnotationsTreeView::findItem(os, "qual", annotationBItem);
+    GTTreeWidget::click(os, qualifierBItem);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-    QTreeWidgetItem *qual = GTUtilsAnnotationsTreeView::findItem(os, "qual", {false});
-    CHECK_SET_ERR(qual == nullptr, "There is annotation qual1, expected state there is no annotation qual");
+    qualifierBItem = GTUtilsAnnotationsTreeView::findItem(os, "qual", annotationBItem, {false}, false);
+    CHECK_SET_ERR(qualifierBItem == nullptr, "There is annotation qual1, expected state there is no annotation qual");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
