@@ -215,7 +215,7 @@ MsaExcludeListWidget::MsaExcludeListWidget(QWidget *parent, MSAEditor *_msaEdito
 
     nameListView = new QListWidget();
     nameListView->setObjectName("exclude_list_name_list_widget");
-    nameListView->setSelectionMode(QAbstractItemView::SingleSelection);
+    nameListView->setSelectionMode(QAbstractItemView::ExtendedSelection);
     nameListView->setAcceptDrops(true);
     nameListView->setDefaultDropAction(Qt::MoveAction);
     nameListView->setDragEnabled(true);
@@ -307,10 +307,23 @@ int MsaExcludeListWidget::addMsaRowEntry(const MultipleAlignmentRow &row, int ex
 
 void MsaExcludeListWidget::removeEntries(const QList<QListWidgetItem *> &items) {
     CHECK(!items.isEmpty(), );
+    bool hasSelectionBefore = !nameListView->selectedItems().isEmpty();
+    int firstRemovedIndex = -1;
+    QHash<QListWidgetItem *, int> indexByItem;
+    for (int i = 0; i < nameListView->count(); i++) {
+        indexByItem[nameListView->item(i)] = i;
+    }
     for (auto item : qAsConst(items)) {
         sequenceByExcludeListRowId.remove(item->data(LIST_ITEM_DATA_ROW_ID).toInt());
+        int itemIndex = indexByItem.value(item, INT_MAX);
+        firstRemovedIndex = firstRemovedIndex == -1 ? itemIndex : qMin(itemIndex, firstRemovedIndex);
     }
     qDeleteAll(items);
+    bool hasSelectionAfter = !nameListView->selectedItems().isEmpty();
+    if (hasSelectionBefore && !hasSelectionAfter && firstRemovedIndex >= 0 && nameListView->count() > 0) {
+        int newSelectedItemIndex = qMin(firstRemovedIndex, nameListView->count() - 1);
+        nameListView->item(newSelectedItemIndex)->setSelected(true);
+    }
     isDirty = true;
 }
 
@@ -322,7 +335,7 @@ void MsaExcludeListWidget::updateState() {
     namesAndSequenceSplitter->setVisible(isLoaded);
 
     if (isLoaded) {
-        stateLabel->setText(nameListView->count() == 0 ? tr("Exclude list is empty. Try moving selected sequences to the list using the 'arrow-down' button above")
+        stateLabel->setText(nameListView->count() == 0 ? tr("Exclude list is empty. Try moving selected sequences to the list using the 'Arrow Down' button above")
                                                        : "");
     }
     stateLabel->setVisible(!stateLabel->text().isEmpty());
@@ -348,8 +361,12 @@ DNASequence MsaExcludeListWidget::getExcludeListRowSequence(const QListWidgetIte
 
 void MsaExcludeListWidget::updateSequenceView() {
     QList<QListWidgetItem *> selectedItems = nameListView->selectedItems();
+    sequenceView->setEnabled(selectedItems.count() == 1);
     if (selectedItems.isEmpty()) {
-        sequenceView->setPlainText("");
+        sequenceView->clear();
+        return;
+    } else if (selectedItems.length() > 1) {
+        sequenceView->setPlainText(tr("%1 sequences selected").arg(selectedItems.length()));
         return;
     }
     int excludeListRowId = getExcludeListRowId(selectedItems.first());
@@ -489,6 +506,7 @@ void MsaExcludeListWidget::handleUndoRedoInMsaEditor(const MultipleAlignment &ma
         }
         removeEntries(listItemsToRemove);
     }
+    updateState();
 }
 
 void MsaExcludeListWidget::unloadExcludeList() {
@@ -503,7 +521,6 @@ void MsaExcludeListWidget::unloadExcludeList() {
     isDirty = false;
     isLoaded = false;
     nameListView->clear();
-    sequenceView->clear();
     stateLabel->clear();
     updateState();
 }

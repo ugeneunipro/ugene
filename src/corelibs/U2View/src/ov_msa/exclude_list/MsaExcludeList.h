@@ -60,8 +60,6 @@ protected:
 private:
     void toggleExcludeListView(MSAEditor *msaEditor);
 
-    void moveMaSelectionToExcludeList(MSAEditor *msaEditor);
-
     /** Updates Exclude List actions associated with Msa Editor based on the current editor's state. */
     void updateState(MSAEditor *msaEditor);
 

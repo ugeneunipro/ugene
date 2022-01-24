@@ -27,6 +27,7 @@
 
 #include <QColor>
 #include <QRect>
+#include <QListWidget>
 #include <QToolButton>
 
 namespace U2 {
@@ -164,6 +165,15 @@ public:
 
     /** Check current exclude list content. The Exclude List must be opened. */
     static void checkExcludeList(HI::GUITestOpStatus &os, const QStringList &rowNames);
+
+    /** Selects rows by name in exclude list. */
+    static void selectRowsByNameInExcludeList(HI::GUITestOpStatus &os, const QStringList &rowNames);
+
+    /** Checks that the given set of rows is currently selected in Exclude List. */
+    static void checkExcludeListSelection(HI::GUITestOpStatus &os, const QStringList &rowNames);
+
+    /** Returns active Exclude List widget instance. */
+    static QListWidget *getExcludeListWidget(HI::GUITestOpStatus &os);
 };
 
 }  // namespace U2

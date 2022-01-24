@@ -439,7 +439,7 @@ void GTUtilsAnnotationsTreeView::createQualifier(HI::GUITestOpStatus &os, const 
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "selectItemsByName"
+#define GT_METHOD_NAME "selectItemsByText"
 void GTUtilsAnnotationsTreeView::selectItemsByName(HI::GUITestOpStatus &os, const QStringList &itemNames) {
     GT_CHECK_RESULT(!itemNames.empty(), "List of items to select is empty", );
     QList<QTreeWidgetItem *> items;
