@@ -283,7 +283,6 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     auto excludeListWidget = GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow, false);
     auto sequenceViewArea = GTWidget::findPlainTextEdit(os, "exclude_list_sequence_view", excludeListWidget);
     auto moveToMsaButton = GTWidget::findToolButton(os, "exclude_list_move_to_msa_button", msaEditorWindow);
-    auto moveFromMsaButton = GTWidget::findToolButton(os, "exclude_list_move_from_msa_button", msaEditorWindow);
 
     GTUtilsMsaEditor::selectRowsByNameInExcludeList(os, {"a"});
     CHECK_SET_ERR(sequenceViewArea->isEnabled(), "sequenceViewArea must be enabled/1");
