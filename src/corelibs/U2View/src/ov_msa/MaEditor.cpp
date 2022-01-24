@@ -463,7 +463,7 @@ void MaEditor::updateFontMetrics() {
     const int minimumSafeFontPointSize = 8;  // This value was historically used in UGENE as minimum with no known issues.
     QFont fontToEstimate = font;
     int estimatedMinimumFontPointSize = minimumSafeFontPointSize;  // Start with a safe value and estimate smaller values.
-    while (fontToEstimate.pointSize() > 0) {
+    while (fontToEstimate.pointSize() > 1) {
         int charWidth = getUnifiedSequenceFontCharRect(fontToEstimate).width();
         if (charWidth < minimumFontCharWidthInsideCell) {
             // The estimated char size is too small. Stop on the previous value.
