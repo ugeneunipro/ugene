@@ -1846,19 +1846,22 @@ GUI_TEST_CLASS_DEFINITION(test_3306) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsAnnotationsTreeView::expandItem(os, "CDS  (0, 14)");
-    GTUtilsAnnotationsTreeView::expandItem(os, "gene  (0, 13)");
+    auto geneItem = GTUtilsAnnotationsTreeView::expandItem(os, "gene  (0, 13)");
     GTUtilsAnnotationsTreeView::expandItem(os, "mat_peptide  (0, 16)");
     GTUtilsAnnotationsTreeView::expandItem(os, "misc_feature  (0, 16)");
 
-    GTTreeWidget::click(os, GTUtilsAnnotationsTreeView::findItem(os, "gene  (0, 13)"));
+    GTTreeWidget::click(os, geneItem);
 
     auto annotTreeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
     auto scrollBar = annotTreeWidget->verticalScrollBar();
     int initialPos = scrollBar->value();
-    for (int i = 0; i < 16; ++i) {
+    for (int i = 0; i < 50; ++i) {
         GTKeyboardDriver::keyClick(Qt::Key_Down);
+        if (initialPos != scrollBar->value()) {
+            break;
+        }
     }
-    CHECK_SET_ERR(initialPos != scrollBar->value(), "ScrollBar hasn't moved");
+    CHECK_SET_ERR(initialPos != scrollBar->value(), "ScrollBar value is not changed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3307) {
