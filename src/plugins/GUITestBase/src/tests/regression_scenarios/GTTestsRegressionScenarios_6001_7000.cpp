@@ -274,7 +274,7 @@ GUI_TEST_CLASS_DEFINITION(test_6058) {
     CHECK_SET_ERR(actionText.contains("25. Candidate Division SR1 and Gracilibacteria Code"), "expected translation not found");
 
     // just for closing popup menu
-    GTMenu::clickMenuItemByName(os, menu, QStringList() << "14. The Alternative Flatworm Mitochondrial Code");
+    GTMenu::clickMenuItemByName(os, menu, {"14. The Alternative Flatworm Mitochondrial Code"});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6062) {
@@ -363,8 +363,7 @@ GUI_TEST_CLASS_DEFINITION(test_6066) {
 
     //    2. Select "Edit" -> "Annotations settings on sequence editing..." menu item in the Details View context menu.
     //    3. Choose "Split (separate annotations parts)" and press "OK".
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Annotation settings on editing..."));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::SplitSeparateAnnotationParts, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
@@ -569,10 +568,7 @@ GUI_TEST_CLASS_DEFINITION(test_6102) {
     };
 
     GTUtilsDialog::waitForDialog(os, new SmithWatermanDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Analyze"
-                                                << "Find pattern [Smith-Waterman]...",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find pattern [Smith-Waterman]..."}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsProjectTreeView::doubleClickItem(os, "P1_NC_1.aln");
@@ -753,9 +749,7 @@ GUI_TEST_CLASS_DEFINITION(test_6167) {
     };
 
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new Custom()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Open "test\_common_data\regression\6167\6167.uwl" and run
@@ -799,7 +793,7 @@ GUI_TEST_CLASS_DEFINITION(test_6167) {
 
     // Expected: There are no adapter files in the output directory
     QDir sandbox(sandBoxDir);
-    QStringList filter = QStringList() << "????.??.??_?\?-??";
+    QStringList filter = {"????.??.??_?\?-??"};
     QStringList sandboxEntry = sandbox.entryList(filter, QDir::AllEntries);
     CHECK_SET_ERR(sandboxEntry.size() == 1, QString("Unexpected nomber of folders, expected: 1, current62: %1").arg(sandboxEntry.size()));
 
@@ -914,7 +908,7 @@ GUI_TEST_CLASS_DEFINITION(test_6229) {
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/reads.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction", PopupChecker::IsEnabled));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"unassociateReferenceAction"}, PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 }
 
@@ -941,9 +935,7 @@ GUI_TEST_CLASS_DEFINITION(test_6230) {
     };
 
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Sanger data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -956,18 +948,13 @@ GUI_TEST_CLASS_DEFINITION(test_6232_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
-    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "Esp3I"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Analyze"
-                                                << "Find restriction sites...",
-                              GTGlobals::UseMouse);
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, {"Esp3I"}));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find restriction sites..."}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 3. Select "Actions > Cloning > Digest into fragments".Add "Esp3I" to the "Selected enzymes" in the appeared dialog, click "OK".
     GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Cloning"
-                                                << "Digest into fragments...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Cloning", "Digest into fragments..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state : the corresponding "Fragment" annotations have been created
@@ -981,18 +968,13 @@ GUI_TEST_CLASS_DEFINITION(test_6232_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
-    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "Esp3I"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Analyze"
-                                                << "Find restriction sites...",
-                              GTGlobals::UseMouse);
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, {"Esp3I"}));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find restriction sites..."}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 3. Select "Actions > Cloning > Digest into fragments".Add "Esp3I" to the "Selected enzymes" in the appeared dialog, click "OK".
     GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Cloning"
-                                                << "Digest into fragments...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Cloning", "Digest into fragments..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: "left_end_seq" qualifier of the first fragment and "right_end_seq" of the second fragment should have "TGAC" value
@@ -1014,11 +996,8 @@ GUI_TEST_CLASS_DEFINITION(test_6232_3) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
-    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "Esp3I"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Analyze"
-                                                << "Find restriction sites...",
-                              GTGlobals::UseMouse);
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, {"Esp3I"}));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find restriction sites..."}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 3. Select "Actions > Cloning > Digest into fragments".Add "Esp3I" to the "Selected enzymes", disable "Circular Molecule" checkBox and click "OK".
@@ -1032,9 +1011,7 @@ GUI_TEST_CLASS_DEFINITION(test_6232_3) {
     };
 
     GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Cloning"
-                                                << "Digest into fragments...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Cloning", "Digest into fragments..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: despite the sequence is circular, fragments were found without the gap it the junction  point
@@ -1051,18 +1028,13 @@ GUI_TEST_CLASS_DEFINITION(test_6232_4) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
-    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "Esp3I"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Analyze"
-                                                << "Find restriction sites...",
-                              GTGlobals::UseMouse);
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, {"Esp3I"}));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find restriction sites..."}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 3. Select "Actions > Cloning > Digest into fragments".Add "Esp3I" to the "Selected enzymes" checkBox and click "OK".
     GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Cloning"
-                                                << "Digest into fragments...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Cloning", "Digest into fragments..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 4. Select "Actions > Cloning > Construct molecule...". Click "Add all" button, click "OK".
@@ -1070,9 +1042,7 @@ GUI_TEST_CLASS_DEFINITION(test_6232_4) {
     actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::AddAllFragments, "");
     actions << ConstructMoleculeDialogFiller::Action(ConstructMoleculeDialogFiller::ClickOk, "");
     GTUtilsDialog::waitForDialog(os, new ConstructMoleculeDialogFiller(os, actions));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Cloning"
-                                                << "Construct molecule...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Cloning", "Construct molecule..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: the first fragment begins from 3 base, there are "AC" bases before it
@@ -1143,11 +1113,8 @@ GUI_TEST_CLASS_DEFINITION(test_6235_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
-    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "Esp3I"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Analyze"
-                                                << "Find restriction sites...",
-                              GTGlobals::UseMouse);
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, {"Esp3I"}));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find restriction sites..."}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 3. Select "Actions > Cloning > Digest into fragments". Add "Esp3I" to the "Selected enzymes" in the appeared dialog, check "Circular molecule", click "OK".
@@ -1164,9 +1131,7 @@ GUI_TEST_CLASS_DEFINITION(test_6235_1) {
     };
 
     GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Cloning"
-                                                << "Digest into fragments...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Cloning", "Digest into fragments..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: there are two annotations with the following regions were created - U2Region(2, 2467) and U2Region(2473, 410)
@@ -1182,11 +1147,8 @@ GUI_TEST_CLASS_DEFINITION(test_6235_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
-    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "Esp3I"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Analyze"
-                                                << "Find restriction sites...",
-                              GTGlobals::UseMouse);
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, {"Esp3I"}));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find restriction sites..."}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 3. Select "Actions > Cloning > Digest into fragments". Add "Esp3I" to the "Selected enzymes" in the appeared dialog, uncheck "Circular molecule", click "OK".
@@ -1203,9 +1165,7 @@ GUI_TEST_CLASS_DEFINITION(test_6235_2) {
     };
 
     GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Cloning"
-                                                << "Digest into fragments...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Cloning", "Digest into fragments..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: there are two annotations with the following regions were created - U2Region(2, 2467) and U2Region(2473, 412)
@@ -1221,11 +1181,8 @@ GUI_TEST_CLASS_DEFINITION(test_6235_3) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
-    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "Esp3I"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Analyze"
-                                                << "Find restriction sites...",
-                              GTGlobals::UseMouse);
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, {"Esp3I"}));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find restriction sites..."}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 3. Select "Actions > Cloning > Digest into fragments". Add "Esp3I" to the "Selected enzymes" in the appeared dialog, check "Circular molecule", click "OK".
@@ -1242,9 +1199,7 @@ GUI_TEST_CLASS_DEFINITION(test_6235_3) {
     };
 
     GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Cloning"
-                                                << "Digest into fragments...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Cloning", "Digest into fragments..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: there are two annotations with the following regions were created - U2Region(2, 2467) and U2Region(2473, 412)
@@ -1260,11 +1215,8 @@ GUI_TEST_CLASS_DEFINITION(test_6235_4) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Select "Actions > Analyze > Find restriction sites", check "Esp3I" enzyme in the appeared dialog, click "OK".
-    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "Esp3I"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Analyze"
-                                                << "Find restriction sites...",
-                              GTGlobals::UseMouse);
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, {"Esp3I"}));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find restriction sites..."}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 3. Select "Actions > Cloning > Digest into fragments". Add "Esp3I" to the "Selected enzymes" in the appeared dialog, uncheck "Circular molecule", click "OK".
@@ -1283,9 +1235,7 @@ GUI_TEST_CLASS_DEFINITION(test_6235_4) {
     };
 
     GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Cloning"
-                                                << "Digest into fragments...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "Cloning", "Digest into fragments..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: there are two annotations with the following regions were created - U2Region(2, 2467) and U2Region(2473, 412)
@@ -1354,9 +1304,7 @@ GUI_TEST_CLASS_DEFINITION(test_6240) {
     // 3. Choose "samples/Assembly/chrM.sam" as input and click "Run"
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Quality Control by FastQC Wizard", new Scenario()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "NGS data analysis"
-                                                << "Reads quality control...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Reads quality control..."});
 
     // Expected: The dashboard appears
     GTUtilsDashboard::getDashboard(os);
@@ -1376,9 +1324,7 @@ GUI_TEST_CLASS_DEFINITION(test_6243) {
         actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
 
         GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
-        GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                    << "Access remote database...",
-                                  GTGlobals::UseMouse);
+        GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."}, GTGlobals::UseMouse);
         GTUtilsTaskTreeView::waitTaskFinished(os);
     }
 
@@ -1528,9 +1474,7 @@ GUI_TEST_CLASS_DEFINITION(test_6256) {
     Custom *c = new Custom();
     c->tempDir = tempDir;
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, c));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."}, GTGlobals::UseMouse);
     // 3. Add "Read File URL" element and validate workflow
     // Expected state: there are 2 erorrs after validation
     GTUtilsWorkflowDesigner::addElement(os, "Read File URL(s)", true);
@@ -1719,9 +1663,7 @@ GUI_TEST_CLASS_DEFINITION(test_6283) {
 
     // 1. Open "UGENE Application Settings", select "External Tools" tab.
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new Custom()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."}, GTGlobals::UseMouse);
 
     CHECK_SET_ERR(!os.hasError(), os.getError());
 }
@@ -1738,10 +1680,7 @@ GUI_TEST_CLASS_DEFINITION(test_6291) {
     // QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "db_xref");
     GTUtilsAnnotationsTreeView::clickItem(os, "product", 1, false);
     // 4. Click active action "Copy qualifier..." in menu actions
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Copy/Paste"
-                                                << "Copy qualifier 'product' value",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Copy/Paste", "Copy qualifier 'product' value"}, GTGlobals::UseMouse);
     QString actualValue = GTClipboard::text(os);
     CHECK_SET_ERR(actualValue == qValue, QString("Qualifier text %1 differs with expected %2.").arg(actualValue).arg(qValue));
 }
@@ -1790,9 +1729,7 @@ GUI_TEST_CLASS_DEFINITION(test_6301) {
 
     // 1. Open "UGENE Application Settings", select "External Tools" tab.
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new Custom()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."}, GTGlobals::UseMouse);
 
     CHECK_SET_ERR(!os.hasError(), os.getError());
 }
@@ -1827,8 +1764,7 @@ GUI_TEST_CLASS_DEFINITION(test_6309) {
     // Expected state: Ok button and left Tree element with preferences pages are disabled while external tools validating
 
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new SetToolUrlScenario()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...");
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6314) {
@@ -1874,10 +1810,7 @@ GUI_TEST_CLASS_DEFINITION(test_6350) {
 
     // 4. Export selected region as sequence
     GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, sandBoxDir + "human_T1_reg.fa", QString()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Export"
-                                                << "Export selected sequence region...",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Export", "Export selected sequence region..."}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: there is the only sequence in the exported file
@@ -1947,10 +1880,7 @@ GUI_TEST_CLASS_DEFINITION(test_6397) {
     // 5. Open repeat finder dialog
     // Expected state: minimum value for max distance combobox is 0
     GTUtilsDialog::waitForDialog(os, new FindRepeatsDialogFiller(os, new Custom()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Analyze"
-                                                << "Find repeats...",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find repeats..."}, GTGlobals::UseMouse);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6398) {
@@ -2010,7 +1940,7 @@ GUI_TEST_CLASS_DEFINITION(test_6455) {
 
     // 4. Click "Set reference sequence", and zoom view until it possible.
     // Expected result: first visible symbol "C" with green background color.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "setReferenceAction"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"setReferenceAction"}));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
     GTUtilsDialog::checkNoActiveWaiters(os);
 
@@ -2022,7 +1952,7 @@ GUI_TEST_CLASS_DEFINITION(test_6455) {
     CHECK_SET_ERR(GuiTests::compareColorsInRange(color, colorOfG, 10), QString("color is %1, expected: %2").arg(color).arg(colorOfG));
 
     // 5. Edit chrM by add 5 symbols at start
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Activate view: chrM [regression_6455.fa]"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Activate view: chrM [regression_6455.fa]"}));
     GTUtilsProjectTreeView::doubleClickItem(os, "regression_6455.fa");
     GTUtilsDialog::checkNoActiveWaiters(os);
 
@@ -2043,7 +1973,7 @@ GUI_TEST_CLASS_DEFINITION(test_6455) {
     color = GTWidget::getColor(os, refArea, QPoint(5, 5)).name();
 
     // Remove association for assembly file or GUI framework will fail on shutdown on de-association dialog called from window->close().
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "unassociateReferenceAction"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"unassociateReferenceAction"}));
     GTWidget::click(os, refArea, Qt::RightButton);
     GTUtilsDialog::checkNoActiveWaiters(os);
 
@@ -3259,7 +3189,7 @@ GUI_TEST_CLASS_DEFINITION(test_6616_2) {
     QWidget *translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
     CHECK_SET_ERR(translationsMenuToolbarButton != nullptr, "Cannot find translationsMenuToolbarButton");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "translate_selection_radiobutton"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"translate_selection_radiobutton"}));
     GTWidget::click(os, translationsMenuToolbarButton);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
@@ -3280,7 +3210,7 @@ GUI_TEST_CLASS_DEFINITION(test_6616_2) {
     translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
     CHECK_SET_ERR(translationsMenuToolbarButton != nullptr, "Cannot find translationsMenuToolbarButton");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "translate_selection_radiobutton", PopupChecker::IsChecked));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"translate_selection_radiobutton"}, PopupChecker::IsChecked));
     GTWidget::click(os, translationsMenuToolbarButton);
 }
 
@@ -3293,7 +3223,7 @@ GUI_TEST_CLASS_DEFINITION(test_6616_3) {
     GTUtilsSequenceView::getActiveSequenceViewWindow(os);
     QWidget *translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "set_up_frames_manually_radiobutton"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"set_up_frames_manually_radiobutton"}));
     GTWidget::click(os, translationsMenuToolbarButton);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
@@ -3314,7 +3244,7 @@ GUI_TEST_CLASS_DEFINITION(test_6616_3) {
     translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
     CHECK_SET_ERR(translationsMenuToolbarButton != nullptr, "Cannot find translationsMenuToolbarButton");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "set_up_frames_manually_radiobutton", PopupChecker::IsChecked));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"set_up_frames_manually_radiobutton"}, PopupChecker::IsChecked));
     GTWidget::click(os, translationsMenuToolbarButton);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
@@ -3332,7 +3262,7 @@ GUI_TEST_CLASS_DEFINITION(test_6616_4) {
     QWidget *translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
     CHECK_SET_ERR(translationsMenuToolbarButton != nullptr, "Cannot find translationsMenuToolbarButton");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "show_all_frames_radiobutton"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"show_all_frames_radiobutton"}));
     GTWidget::click(os, translationsMenuToolbarButton);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
@@ -3345,7 +3275,7 @@ GUI_TEST_CLASS_DEFINITION(test_6616_4) {
     translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
     CHECK_SET_ERR(translationsMenuToolbarButton != nullptr, "Cannot find translationsMenuToolbarButton");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "show_all_frames_radiobutton", PopupChecker::IsChecked));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"show_all_frames_radiobutton"}, PopupChecker::IsChecked));
     GTWidget::click(os, translationsMenuToolbarButton);
 }
 
@@ -4613,9 +4543,7 @@ GUI_TEST_CLASS_DEFINITION(test_6689) {
 
 GUI_TEST_CLASS_DEFINITION(test_6705) {
     // 1. Select "Tools > NGS data analysis > Reads quality control" in the main menu.
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "NGS data analysis"
-                                                << "Reads quality control...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Reads quality control..."});
 
     // Expected result: the "Choose Output Directory" dialog appears.
 
@@ -4677,9 +4605,7 @@ GUI_TEST_CLASS_DEFINITION(test_6707) {
     };
 
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new Custom()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."}, GTGlobals::UseMouse);
     // Expected result: the file is still in the folder and is not removed/modified.
     CHECK_SET_ERR(IOAdapterUtils::readTextFile(sandBoxDir + "test_6707/file.txt") == "Hello!", "The file was removed or modified");
 }
@@ -4845,8 +4771,7 @@ GUI_TEST_CLASS_DEFINITION(test_6715) {
 
     // 1. Open {Settings -> Preferences -> Alignment Color Scheme}.
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, new Scenario()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...");
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
     // 2. Choose read only folder by pressing "..." button
     // Expected state: warning message about read only folder has appeared
 }
@@ -5000,27 +4925,11 @@ GUI_TEST_CLASS_DEFINITION(test_6742) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QStringList mainItems = QStringList() << "Overview"
-                                          << "Show offsets"
-                                          << "Zoom In"
-                                          << "Zoom Out"
-                                          << "Zoom To Selection"
-                                          << "Reset Zoom"
-                                          << "Colors"
-                                          << "Highlighting"
-                                          << "Change Font"
-                                          << "Clear selection";
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Appearance", mainItems));
+    QStringList mainItems = {"Overview", "Show offsets", "Zoom In", "Zoom Out", "Zoom To Selection", "Reset Zoom", "Colors", "Highlighting", "Change Font", "Clear selection"};
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Appearance"}, mainItems));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
 
-    QStringList colorsItems = QStringList() << "No colors"
-                                            << "Jalview"
-                                            << "Percentage identity"
-                                            << "Percentage identity (colored)"
-                                            << "Percentage identity (gray)"
-                                            << "UGENE"
-                                            << "UGENE Sanger"
-                                            << "Weak similarities";
+    QStringList colorsItems = {"No colors", "Jalview", "Percentage identity", "Percentage identity (colored)", "Percentage identity (gray)", "UGENE", "UGENE Sanger", "Weak similarities"};
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Appearance", "Colors"}, colorsItems));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
 
