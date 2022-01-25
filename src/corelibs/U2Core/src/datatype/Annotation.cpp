@@ -497,7 +497,7 @@ QString Annotation::getQualifiersTip(const SharedAnnotationData &data, int maxRo
     QString tip;
 
     int rows = 0;
-    const qint64 QUALIFIER_VALUE_CUT = 40;
+    static constexpr qint64 MAX_QUALIFIER_VALUE_LENGTH_IN_TOOLTIP = 40;
 
     QString cigar;
     QString ref;
@@ -515,8 +515,8 @@ QString Annotation::getQualifiersTip(const SharedAnnotationData &data, int maxRo
                 continue;
             }
             QString val = q.value;
-            if (val.length() > QUALIFIER_VALUE_CUT) {
-                val = val.left(QUALIFIER_VALUE_CUT) + " ...";
+            if (val.length() > MAX_QUALIFIER_VALUE_LENGTH_IN_TOOLTIP) {
+                val = val.left(MAX_QUALIFIER_VALUE_LENGTH_IN_TOOLTIP) + " ...";
             }
             if (first) {
                 first = false;
@@ -530,7 +530,7 @@ QString Annotation::getQualifiersTip(const SharedAnnotationData &data, int maxRo
 
     if (!cigar.isEmpty() && !ref.isEmpty()) {
         const QList<U2CigarToken> tokens = parseCigar(cigar);
-        const QString alignmentTip = getAlignmentTip(ref, tokens, QUALIFIER_VALUE_CUT);
+        const QString alignmentTip = getAlignmentTip(ref, tokens, MAX_QUALIFIER_VALUE_LENGTH_IN_TOOLTIP);
         tip += "<br><b>Reference</b> = " + alignmentTip;
         rows++;
     }
@@ -547,7 +547,7 @@ QString Annotation::getQualifiersTip(const SharedAnnotationData &data, int maxRo
     if (showSequence) {
         QString seqVal;
         QString aminoVal;
-        bool complete = true;
+        bool isTruncated = false;
         QList<RegionsPair> merged = U1AnnotationUtils::mergeAnnotatedRegionsAroundJunctionPoint(regions, sequenceLength);
         bool isComplementary = data->location->strand.isComplementary() && complTT != nullptr;
         if (isComplementary) {
@@ -557,15 +557,16 @@ QString Annotation::getQualifiersTip(const SharedAnnotationData &data, int maxRo
         for (const RegionsPair &pair : qAsConst(merged)) {
             if (!seqVal.isEmpty()) {
                 seqVal += "^";
+                if (!aminoVal.isEmpty()) {
+                    aminoVal += "^";
+                }
             }
-            if (!aminoVal.isEmpty()) {
-                aminoVal += "^";
+            int firstRegionLength = (int)qMin<qint64>(pair.first.length, MAX_QUALIFIER_VALUE_LENGTH_IN_TOOLTIP - seqVal.length());
+            isTruncated = firstRegionLength != pair.first.length;
+            if (firstRegionLength <= 0) {
+                break;
             }
-            int firstRegionLength = (int)qMin<qint64>(pair.first.length, QUALIFIER_VALUE_CUT - seqVal.length());
             int secondPartRegionLength = 0;
-            if (firstRegionLength != pair.first.length) {
-                complete = false;
-            }
             U2Region firstRegion;
             U2Region secondRegion;
             if (hasAnnotatedRegionsContainJunctionPoint && !pair.second.isEmpty()) {
@@ -573,23 +574,24 @@ QString Annotation::getQualifiersTip(const SharedAnnotationData &data, int maxRo
                     /*
                      * If the sequence is circular and the annotation is complementary the region from 0 to N should be shown first from N to 0 and the region from M to 'sequeceLength' should be shown second from 'sequeceLength' to M
                      */
-                    firstRegionLength = (int)qMin<qint64>(pair.second.length, QUALIFIER_VALUE_CUT - seqVal.length());
-                    if (firstRegionLength != pair.second.length) {
-                        complete = false;
+                    firstRegionLength = (int)qMin<qint64>(pair.second.length, MAX_QUALIFIER_VALUE_LENGTH_IN_TOOLTIP - seqVal.length());
+                    isTruncated = firstRegionLength != pair.second.length;
+                    if (firstRegionLength <= 0) {
+                        break;
                     }
                     firstRegion = U2Region(pair.second.endPos() - firstRegionLength, firstRegionLength);
-                    secondPartRegionLength = (int)qMin<qint64>(pair.first.length, QUALIFIER_VALUE_CUT - (seqVal.length() + firstRegionLength));
-                    if (secondPartRegionLength != pair.first.length) {
-                        complete = false;
+                    if (!isTruncated) {
+                        secondPartRegionLength = (int)qMin<qint64>(pair.first.length, MAX_QUALIFIER_VALUE_LENGTH_IN_TOOLTIP - (seqVal.length() + firstRegionLength));
+                        isTruncated = secondPartRegionLength != pair.first.length;
+                        secondRegion = U2Region((pair.first.endPos() - secondPartRegionLength), secondPartRegionLength);
                     }
-                    secondRegion = U2Region((pair.first.endPos() - secondPartRegionLength), secondPartRegionLength);
                 } else {
                     firstRegion = U2Region(pair.first.startPos, firstRegionLength);
-                    secondPartRegionLength = (int)qMin<qint64>(pair.second.length, QUALIFIER_VALUE_CUT - (seqVal.length() + firstRegion.length));
-                    if (secondPartRegionLength != pair.second.length) {
-                        complete = false;
+                    if (!isTruncated) {
+                        secondPartRegionLength = (int)qMin<qint64>(pair.second.length, MAX_QUALIFIER_VALUE_LENGTH_IN_TOOLTIP - (seqVal.length() + firstRegionLength));
+                        isTruncated = secondPartRegionLength != pair.second.length;
+                        secondRegion = U2Region(pair.second.startPos, secondPartRegionLength);
                     }
-                    secondRegion = U2Region(pair.second.startPos, secondPartRegionLength);
                 }
             } else {
                 if (isComplementary) {
@@ -598,35 +600,23 @@ QString Annotation::getQualifiersTip(const SharedAnnotationData &data, int maxRo
                     firstRegion = U2Region(pair.first.startPos, firstRegionLength);
                 }
             }
-            QByteArray first = seqObj->getSequenceData(firstRegion);
+            QByteArray resultSequence = seqObj->getSequenceData(firstRegion) + seqObj->getSequenceData(secondRegion);
             if (isComplementary) {
-                complTT->translate(first.data(), firstRegionLength);
-                TextUtils::reverse(first.data(), firstRegionLength);
+                complTT->translate(resultSequence.data(), resultSequence.length());
+                TextUtils::reverse(resultSequence.data(), resultSequence.length());
             }
-            QByteArray second;
-            if (!secondRegion.isEmpty()) {
-                second = seqObj->getSequenceData(secondRegion);
-                if (isComplementary) {
-                    complTT->translate(second.data(), secondPartRegionLength);
-                    TextUtils::reverse(second.data(), secondPartRegionLength);
-                }
+            seqVal += QString::fromLocal8Bit(resultSequence);
+            if (aminoTT != nullptr) {
+                int aminoLen = aminoTT->translate(resultSequence.data(), resultSequence.length());
+                aminoVal += QString::fromLocal8Bit(resultSequence.data(), aminoLen);
             }
-            QByteArray resultSequenceTip = first + second;
-            seqVal += QString::fromLocal8Bit(resultSequenceTip);
-            if (nullptr != aminoTT) {
-                const int aminoLen = aminoTT->translate(resultSequenceTip.data(), firstRegionLength + secondPartRegionLength);
-                aminoVal += QString::fromLocal8Bit(resultSequenceTip, aminoLen);
-            }
-            if (seqVal.length() >= QUALIFIER_VALUE_CUT) {
-                complete = complete && merged.last() == pair;
+            if (isTruncated) {
                 break;
             }
         }
-        if (!complete || seqVal.length() > QUALIFIER_VALUE_CUT) {
-            seqVal = seqVal.left(QUALIFIER_VALUE_CUT) + " ...";
-        }
-        if (!complete || aminoVal.length() > QUALIFIER_VALUE_CUT) {
-            aminoVal = aminoVal.left(QUALIFIER_VALUE_CUT) + " ...";
+        if (isTruncated) {
+            seqVal += " ...";
+            aminoVal += " ...";
         }
         if (!tip.isEmpty()) {
             tip += "<br>";
@@ -635,7 +625,7 @@ QString Annotation::getQualifiersTip(const SharedAnnotationData &data, int maxRo
         tip += "<nobr><b>" + QObject::tr("Sequence") + "</b> = " + seqVal.toHtmlEscaped() + "</nobr>";
         rows++;
 
-        if (rows <= maxRows && nullptr != aminoTT) {
+        if (rows <= maxRows && aminoTT != nullptr) {
             tip += "<br>";
             tip += "<nobr><b>" + QObject::tr("Translation") + "</b> = " + aminoVal.toHtmlEscaped() + "</nobr>";
         }
