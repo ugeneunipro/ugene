@@ -62,6 +62,7 @@
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsNotifications.h"
 #include "GTUtilsOptionPanelMSA.h"
+#include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsPhyTree.h"
 #include "GTUtilsProject.h"
@@ -2040,6 +2041,42 @@ GUI_TEST_CLASS_DEFINITION(test_7517) {
     GTWidget::click(os, showOverviewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::checkMessageWithTextCount(os, "Registering new task: Render overview", 1, "check3");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7531) {
+
+    // Open "samples/FASTA/human_T1.fa".
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Click "Ctrl+N" and create the annotation on "80..90"
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "test_7531", "80..90"));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+
+    // Select the created annotation and click "Delete".
+    GTUtilsAnnotationsTreeView::clickItem(os, "test_7531", 1, false);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+
+    // Open the "In silico PCR" tab.
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::InSilicoPcr);
+
+    // Set "TTGTCAGATTCACCAAAGTT" as a forward primer and "CTCTCTTCTGGCCTGTAGGGTTTCTG" as a reverse primer.
+    GTUtilsOptionPanelSequenceView::setForwardPrimer(os, "TTGTCAGATTCACCAAAGTT");
+    GTUtilsOptionPanelSequenceView::setReversePrimer(os, "CTCTCTTCTGGCCTGTAGGGTTTCTG");
+
+    // Click "Find product(s) anyway".
+    GTUtilsOptionPanelSequenceView::pressFindProducts(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: the only product has been found.
+    const int count = GTUtilsOptionPanelSequenceView::productsCount(os);
+    CHECK_SET_ERR(count == 1, QString("Unexpected products quantity, expected: 1, current: %1").arg(count));
+
+    // Click "Extract primer".
+    GTUtilsOptionPanelSequenceView::pressExtractProduct(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: no crash
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7535) {
