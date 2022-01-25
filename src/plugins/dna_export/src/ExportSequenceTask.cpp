@@ -554,7 +554,7 @@ U2Sequence ExportAnnotationSequenceSubTask::importAnnotatedSeq2Dbi(const SharedA
                                                                    U2OpStatus &os) {
     U2SequenceImporter importer(QVariantMap(), true);
 
-    bool isReverseComplement = ad->getStrand().isCompementary() && ei.complTT != nullptr;
+    bool isReverseComplement = ad->getStrand().isComplementary() && ei.complTT != nullptr;
     importer.enableReverseComplement(isReverseComplement ? ei.complTT : nullptr);
 
     importer.enableAminoTranslation(ei.aminoTT);

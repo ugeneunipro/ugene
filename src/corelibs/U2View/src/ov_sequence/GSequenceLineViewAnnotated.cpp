@@ -328,7 +328,7 @@ void GSequenceLineViewAnnotated::ensureVisible(Annotation *a, int locationIdx) {
     }
     const U2Region &region = location[qMax(0, locationIdx)];
     if (!visibleRange.intersects(region)) {
-        const qint64 pos = a->getStrand().isCompementary() ? region.endPos() : region.startPos;
+        const qint64 pos = a->getStrand().isComplementary() ? region.endPos() : region.startPos;
         setCenterPos(qBound(qint64(0), pos, seqLen - 1));
     }
 }

@@ -190,7 +190,7 @@ void CreateAnnotationFullWidget::setLocation(const U2Location &location) {
 
     leRegionStart->setText(startPos);
     leRegionEnd->setText(endPos);
-    chbComplement->setChecked(location->strand.isCompementary());
+    chbComplement->setChecked(location->strand.isComplementary());
     leLocation->setText(getGenbankLocationString(location));
 
     // Examples: (200..len,1..100,5..10), (200..300,400..500) are not representable in simple format

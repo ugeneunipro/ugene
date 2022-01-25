@@ -549,7 +549,7 @@ void ADVExportContext::prepareMAFromAnnotations(MultipleSequenceAlignment &ma, b
 
         maxLen = qMax(maxLen, annotation->getRegionsLen());
         CHECK_EXT(maxLen * ma->getNumRows() <= MAX_ALI_MODEL, os.setError(tr("Alignment is too large")), );
-        const DNATranslation *complTT = annotation->getStrand().isCompementary() ? seqCtx->getComplementTT() : nullptr;
+        const DNATranslation *complTT = annotation->getStrand().isComplementary() ? seqCtx->getComplementTT() : nullptr;
         const DNATranslation *aminoTT = translate ? seqCtx->getAminoTT() : nullptr;
         QByteArray rowSequence =  AnnotationSelection::getSequenceUnderAnnotation(seqRef, annotation, complTT, aminoTT, os);
         CHECK_OP(os, );

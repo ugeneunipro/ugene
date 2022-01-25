@@ -123,7 +123,7 @@ void ExportAnnotations2CSVTask::run() {
             values << QString::number(region.startPos + region.length);
             values << QString::number(region.length);
 
-            const bool isComplementary = annotation->getStrand().isCompementary();
+            const bool isComplementary = annotation->getStrand().isComplementary();
             values << ((isComplementary) ? tr("yes") : tr("no"));
 
             if (exportSequenceName) {
