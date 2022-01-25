@@ -582,7 +582,7 @@ void GenbankWriter::streamingStoreEntry(DocumentFormat *format, IOAdapter *io, c
     QList<GObject *> anObjList;
     if (data.contains(BaseSlots::ANNOTATION_TABLE_SLOT().getId())) {
         const QVariant &annsVar = data[BaseSlots::ANNOTATION_TABLE_SLOT().getId()];
-        const QList<SharedAnnotationData> atl = StorageUtils::getAnnotationTable(context->getDataStorage(), annsVar);
+        QList<SharedAnnotationData> atl = StorageUtils::getAnnotationTable(context->getDataStorage(), annsVar);
 
         if (!atl.isEmpty()) {
             if (annotationName.isEmpty()) {
@@ -710,7 +710,7 @@ void SeqWriter::data2doc(Document *doc, const QVariantMap &data) {
         RawSeqWriter::data2document(doc, data, context);
     } else if (BaseDocumentFormats::GFF == fid) {
         GFFWriter::data2document(doc, data, context);
-    }else if (BaseDocumentFormats::UGENEDB == fid) {
+    } else if (fid == BaseDocumentFormats::UGENEDB) {
         UgeneDBWriter::data2document(doc, data, context);
     } else {
         assert(0);
@@ -894,7 +894,7 @@ void UgeneDBWriter::data2document(Document *doc, const QVariantMap &data, Workfl
     if (data.contains(BaseSlots::DNA_SEQUENCE_SLOT().getId())) {
         SharedDbiDataHandler seqId = data[BaseSlots::DNA_SEQUENCE_SLOT().getId()].value<SharedDbiDataHandler>();
         seqObj.reset(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
-        SAFE_POINT(nullptr != seqObj.data(), tr("UgeneDB writer: NULL sequence object"), );
+        SAFE_POINT(seqObj.data() != nullptr, "UgeneDB writer: NULL sequence object", );
 
         U2OpStatusImpl os;
         DNASequence seq = seqObj->getWholeSequence(os);
@@ -906,42 +906,36 @@ void UgeneDBWriter::data2document(Document *doc, const QVariantMap &data, Workfl
         } else {
             annotationName = getAnnotationName(seq.getName());
         }
-
-        dna = qobject_cast<U2SequenceObject *>(doc->findGObjectByName(seq.getName()));
-        if (!dna && !seq.isNull()) {
-            dna = addSeqObject(doc, seq);
-        }
+        dna = addSeqObject(doc, seq);
     }
 
     if (data.contains(BaseSlots::ANNOTATION_TABLE_SLOT().getId())) {
         const QVariant &annsVar = data[BaseSlots::ANNOTATION_TABLE_SLOT().getId()];
-        const QList<SharedAnnotationData> atl = StorageUtils::getAnnotationTable(context->getDataStorage(), annsVar);
+        QList<SharedAnnotationData> annotationData = StorageUtils::getAnnotationTable(context->getDataStorage(), annsVar);
 
-        if (!atl.isEmpty()) {
-            AnnotationTableObject *att = nullptr;
+        if (!annotationData.isEmpty()) {
+            AnnotationTableObject *ato = nullptr;
             if (dna) {
                 QList<GObject *> relAnns = GObjectUtils::findObjectsRelatedToObjectByRole(dna,
                                                                                           GObjectTypes::ANNOTATION_TABLE,
                                                                                           ObjectRole_Sequence,
                                                                                           doc->getObjects(),
                                                                                           UOF_LoadedOnly);
-                att = relAnns.isEmpty() ? nullptr : qobject_cast<AnnotationTableObject *>(relAnns.first());
+                ato = relAnns.isEmpty() ? nullptr : qobject_cast<AnnotationTableObject *>(relAnns.first());
             }
-            if (!att) {
+            if (!ato) {
                 if (annotationName.isEmpty()) {
                     int featuresNum = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE).size();
                     annotationName = QString("unknown features %1").arg(featuresNum);
                 }
-                att = qobject_cast<AnnotationTableObject *>(doc->findGObjectByName(annotationName));
-                if (att == nullptr) {
-                    doc->addObject(att = new AnnotationTableObject(annotationName, context->getDataStorage()->getDbiRef()));
-                    if (dna) {
-                        att->addObjectRelation(dna, ObjectRole_Sequence);
-                    }
+                ato = new AnnotationTableObject(annotationName, context->getDataStorage()->getDbiRef());
+                doc->addObject(ato);
+                if (dna) {
+                    ato->addObjectRelation(dna, ObjectRole_Sequence);
                 }
                 algoLog.trace(QString("Adding features [%1] to UgeneDB doc %2").arg(annotationName).arg(doc->getURLString()));
             }
-            att->addAnnotations(atl);
+            ato->addAnnotations(annotationData);
         }
     }
 }
@@ -951,7 +945,7 @@ bool UgeneDBWriter::hasDataToWrite(const QVariantMap &data) const {
 }
 
 QSet<GObject *> UgeneDBWriter::getObjectsToWrite(const QVariantMap &data) const {
-    return QSet<GObject *>() << SeqWriter::getSeqObject(data, context) << SeqWriter::getAnnObject(data, context);
+    return {{SeqWriter::getSeqObject(data, context)}, {SeqWriter::getAnnObject(data, context)}};
 }
 
 void UgeneDBWriter::streamingStoreEntry(DocumentFormat *format, IOAdapter *io, const QVariantMap &data, WorkflowContext *context, int entryNum) {
@@ -973,7 +967,7 @@ void UgeneDBWriter::streamingStoreEntry(DocumentFormat *format, IOAdapter *io, c
     QList<GObject *> anObjList;
     if (data.contains(BaseSlots::ANNOTATION_TABLE_SLOT().getId())) {
         const QVariant &annsVar = data[BaseSlots::ANNOTATION_TABLE_SLOT().getId()];
-        const QList<SharedAnnotationData> atl = StorageUtils::getAnnotationTable(context->getDataStorage(), annsVar);
+        QList<SharedAnnotationData> atl = StorageUtils::getAnnotationTable(context->getDataStorage(), annsVar);
 
         if (!atl.isEmpty()) {
             if (annotationName.isEmpty()) {
@@ -986,15 +980,11 @@ void UgeneDBWriter::streamingStoreEntry(DocumentFormat *format, IOAdapter *io, c
     }
 
     QMap<GObjectType, QList<GObject *>> objectsMap;
-    {
-        if (nullptr != seqObj.data()) {
-            QList<GObject *> seqs;
-            seqs << seqObj.data();
-            objectsMap[GObjectTypes::SEQUENCE] = seqs;
-        }
-        if (!anObjList.isEmpty()) {
-            objectsMap[GObjectTypes::ANNOTATION_TABLE] = anObjList;
-        }
+    if(seqObj.data() != nullptr) {
+        objectsMap[GObjectTypes::SEQUENCE] = {seqObj.data()};
+    }
+    if (!anObjList.isEmpty()) {
+        objectsMap[GObjectTypes::ANNOTATION_TABLE] = anObjList;
     }
     CHECK_OPERATION(!objectsMap.isEmpty(), qDeleteAll(anObjList));
 
