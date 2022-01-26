@@ -1961,7 +1961,26 @@ void WorkflowView::sl_exportScene() {
     dialog->exec();
 }
 
-void WorkflowView::sl_saveScene() {
+void WorkflowView::sl_saveScene(bool saveImmideately) {
+    if (meta.url.contains(QDir("data:workflow_samples").path())) {
+        QMessageBox changePathMsgBox;
+        changePathMsgBox.setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
+        changePathMsgBox.setIcon(QMessageBox::Warning);
+        changePathMsgBox.setWindowTitle(tr("Confirm file save path"));
+        changePathMsgBox.setText(tr("It seems you trying to save workflow schema to \"workflow_samples\" directory which used by UGENE. Rewriting existing files can cause problems with analyzing algorithms.\r\n"
+                            "- \"Save anyway\" will rewrite existing schema\r\n"
+                            "- \"Choose new path\" will allow you to save schema by another path\r\n"
+                            "- \"Cancel\" will cancel save and leave schema untouched"));
+        changePathMsgBox.addButton(tr("Save anyway"), QMessageBox::YesRole);
+        QAbstractButton *newPath = changePathMsgBox.addButton(tr("Choose new path"), QMessageBox::NoRole);
+        QAbstractButton *cancel = changePathMsgBox.addButton(tr("Cancel"), QMessageBox::ActionRole);
+        changePathMsgBox.exec();
+        if (changePathMsgBox.clickedButton() == newPath) {
+            meta.url.clear();
+        } else if (changePathMsgBox.clickedButton() == cancel) {
+            return;
+        }
+    }
     if (meta.url.isEmpty()) {
         QObjectScopedPointer<WorkflowMetaDialog> md = new WorkflowMetaDialog(this, meta);
         const int rc = md->exec();
@@ -1975,8 +1994,14 @@ void WorkflowView::sl_saveScene() {
     }
     propertyEditor->commit();
     Task *t = new SaveWorkflowSceneTask(getSchema(), getMeta());
-    AppContext::getTaskScheduler()->registerTopLevelTask(t);
-    connect(t, SIGNAL(si_stateChanged()), SLOT(sl_onSceneSaved()));
+    if (saveImmideately) {
+        t->run();
+        delete t;
+        sl_onSceneSaved();
+    } else {
+        AppContext::getTaskScheduler()->registerTopLevelTask(t);
+        connect(t, SIGNAL(si_stateChanged()), SLOT(sl_onSceneSaved()));
+    }
 }
 
 void WorkflowView::sl_saveSceneAs() {
@@ -2246,7 +2271,7 @@ void WorkflowView::saveState() {
 
 bool WorkflowView::onCloseEvent() {
     saveState();
-    if (!confirmModified()) {
+    if (!confirmModified(true)) {
         return false;
     }
     if (go) {
@@ -2255,7 +2280,7 @@ bool WorkflowView::onCloseEvent() {
     return true;
 }
 
-bool WorkflowView::confirmModified() {
+bool WorkflowView::confirmModified(bool saveImmideately) {
     propertyEditor->commit();
     if (scene->isModified() && !scene->items().isEmpty()) {
         AppContext::getMainWindow()->getMDIManager()->activateWindow(this);
@@ -2266,7 +2291,7 @@ bool WorkflowView::confirmModified() {
         if (QMessageBox::Cancel == ret) {
             return false;
         } else if (QMessageBox::Discard != ret) {
-            sl_saveScene();
+            sl_saveScene(true);
         }
     }
     return true;
