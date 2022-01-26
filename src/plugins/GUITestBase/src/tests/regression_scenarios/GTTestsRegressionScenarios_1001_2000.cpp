@@ -1297,7 +1297,7 @@ GUI_TEST_CLASS_DEFINITION(test_1080) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     // Allow task to start and check there are no errors
     QString taskName = "Execute workflow";
-    GTUtilsTaskTreeView::checkTask(os, taskName);
+    GTUtilsTaskTreeView::checkTaskIsPresent(os, taskName);
     QString taskStatus = GTUtilsTaskTreeView::getTaskStatus(os, taskName);
     CHECK_SET_ERR(taskStatus == "Running", "The task status is incorrect: " + taskStatus);
     GTUtilsTaskTreeView::cancelTask(os, taskName);  // Cancel task because we don't need the result

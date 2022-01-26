@@ -62,15 +62,17 @@ public:
     static void cancelTask(HI::GUITestOpStatus &os, const QString &itemName, bool failIfNotFound = true, const QStringList &parentTaskNames = {});
 
     static QTreeWidgetItem *getTreeWidgetItem(HI::GUITestOpStatus &os, const QString &itemName, bool failOnNull = true);
-    static QTreeWidget *getTreeWidget(HI::GUITestOpStatus &os);
+
+    /** Returns instance of the task tree view if found. Asserts if not found and if 'failIfNotFound' is 'true'. */
+    static QTreeWidget *getTreeWidget(HI::GUITestOpStatus &os, bool failIfNotFound = false);
+
     static void moveToOpenedView(HI::GUITestOpStatus &os, const QString &itemName);
     static QPoint getTreeViewItemPosition(HI::GUITestOpStatus &os, const QString &itemName);
     static void moveTo(HI::GUITestOpStatus &os, const QString &itemName);
     static int getTopLevelTasksCount(HI::GUITestOpStatus &os);
-    static bool checkTask(HI::GUITestOpStatus &os, const QString &itemName);
 
-    /** Check that there/there-is-no task with the given name. Wait up to 30 seconds for the condition. */
-    static void checkTopLevelTaskWithWait(HI::GUITestOpStatus &os, const QString &itemNamePart, bool checkIfPresent = true);
+    /** Check that there/there-is-no top-level task with the given name. */
+    static void checkTaskIsPresent(HI::GUITestOpStatus &os, const QString &topLevelTaskName, bool checkIfPresent = true);
 
     static int countTasks(HI::GUITestOpStatus &os, const QString &itemName);
     static QString getTaskStatus(HI::GUITestOpStatus &os, const QString &itemName);

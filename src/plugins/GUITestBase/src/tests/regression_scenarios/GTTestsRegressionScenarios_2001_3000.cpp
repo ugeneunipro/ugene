@@ -4410,7 +4410,7 @@ GUI_TEST_CLASS_DEFINITION(test_2801) {
 
     // 3. Cancel the align task.
     GTUtilsTaskTreeView::openView(os);
-    GTUtilsTaskTreeView::checkTask(os, "Run MAFFT alignment task");
+    GTUtilsTaskTreeView::checkTaskIsPresent(os, "Run MAFFT alignment task");
     GTUtilsTaskTreeView::cancelTask(os, "Run MAFFT alignment task");
     // Expected state: the task is cancelled, there is no MAFFT processes with its subprocesses (check for the "disttbfast" process)
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4429,7 +4429,7 @@ GUI_TEST_CLASS_DEFINITION(test_2801_1) {
 
     // 3. Cancel the "align" task.
     GTUtilsTaskTreeView::openView(os);
-    GTUtilsTaskTreeView::checkTask(os, "Run MAFFT alignment task");
+    GTUtilsTaskTreeView::checkTaskIsPresent(os, "Run MAFFT alignment task");
     GTUtilsTaskTreeView::cancelTask(os, "Run MAFFT alignment task");
     // Expected state: the task is cancelled, there is no MAFFT processes with its subprocesses (check for the "disttbfast" process)
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4826,7 +4826,7 @@ GUI_TEST_CLASS_DEFINITION(test_2903) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             GTWidget::getActiveModalWidget(os);
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
         }
@@ -4841,14 +4841,11 @@ GUI_TEST_CLASS_DEFINITION(test_2903) {
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ren"
                                                          "der_area_virus_X"));
     QString blastTaskName = "RemoteBLASTTask";
-    GTUtilsTaskTreeView::checkTask(os, blastTaskName);
+    GTUtilsTaskTreeView::checkTaskIsPresent(os, blastTaskName);
     GTGlobals::sleep(10000);  // Give a task some time to run.
 
     // Cancel the task. If not cancelled the run may last too long to trigger timeout in nightly tests.
-    bool isTaskRunning = GTUtilsTaskTreeView::checkTask(os, blastTaskName);
-    if (isTaskRunning) {
-        GTUtilsTaskTreeView::cancelTask(os, blastTaskName);
-    }
+    GTUtilsTaskTreeView::cancelTask(os, blastTaskName, false);
 
     GTUtilsLog::check(os, logTracer);
 }

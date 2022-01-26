@@ -781,7 +781,7 @@ GUI_TEST_CLASS_DEFINITION(test_4091) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__ADD_MENU << ACTION_PROJECT__ADD_OBJECT));
     GTUtilsProjectTreeView::click(os, "CVU55762.gb", Qt::RightButton);
 
-    GTUtilsTaskTreeView::checkTask(os, "Add objects to document");
+    GTUtilsTaskTreeView::checkTaskIsPresent(os, "Add objects to document");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     const QModelIndex docIndex = GTUtilsProjectTreeView::findIndex(os, "CVU55762.gb");
@@ -2390,16 +2390,14 @@ GUI_TEST_CLASS_DEFINITION(test_4276) {
     // 3. Select file "_common_data/fasta/PF07724_full_family.fa"
     // 4. Press "Open"
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/PF07724_full_family.fa"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_LOAD << "Sequence from file"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_LOAD, "Sequence from file"}));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
 
-    // 5. Delete the alignment object
+    // 5. Delete the alignment object: current state: UGENE crashes.
     GTUtilsProjectTreeView::click(os, "COI");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-    bool executed = GTUtilsTaskTreeView::checkTask(os, "Add sequences to alignment task");
-    CHECK_SET_ERR(false == executed, "The task is not cancelled");
-    // Current state: UGENE crashes
+    GTUtilsTaskTreeView::checkTaskIsPresent(os, "Add sequences to alignment task", false);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4284) {
@@ -4964,7 +4962,7 @@ GUI_TEST_CLASS_DEFINITION(test_4785_1) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align profile to profile with MUSCLE"}));
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW", "COI.aln"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-    GTUtilsTaskTreeView::checkTopLevelTaskWithWait(os, "MUSCLE");
+    GTUtilsTaskTreeView::checkTaskIsPresent(os, "MUSCLE");
 
     // 4. Delete "test_4785.aln"
     // Expected result : An error notification appears :
@@ -5601,7 +5599,7 @@ GUI_TEST_CLASS_DEFINITION(test_4913) {
     RemoteBLASTDialogFiller *filler = new RemoteBLASTDialogFiller(os, scenario);
 
     GTUtilsDialog::waitForDialog(os, filler);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE","Query NCBI BLAST database"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Query NCBI BLAST database"}));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
 }
 
