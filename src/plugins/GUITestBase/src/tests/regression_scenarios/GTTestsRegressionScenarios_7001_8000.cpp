@@ -1292,6 +1292,24 @@ GUI_TEST_CLASS_DEFINITION(test_7415_3) {
     CHECK_SET_ERR(window1Sequence != window2Sequence, "Sequences are equal");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7419) {
+    // Copy "samples/Sanger/alignment.ugenedb" to sandbox
+    GTFile::copy(os, dataDir + "samples/Sanger/alignment.ugenedb", sandBoxDir + "test_7419.ugenedb");
+
+    // Open the copied file
+    GTFileDialog::openFile(os, sandBoxDir + "test_7419.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Now remove it from the disk manually
+    QFile::remove(sandBoxDir + "test_7419.ugenedb");
+
+    // Expected: the message box about lost database -> click OK -> view is closed.
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "The document 'test_7419.ugenedb' was removed from its original folder. Therefore, it will be deleted from the current project"));
+
+    // The document update happens each 3 seconds, the messagebox will appear on the closest update
+    GTGlobals::sleep(3000);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7438) {
     // Checks that selection with Shift does not cause a crash.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");

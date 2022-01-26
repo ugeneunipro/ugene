@@ -21,6 +21,7 @@
 
 #include "GObject.h"
 
+#include <QFileInfo>
 #include <QMutexLocker>
 
 #include <U2Core/GObjectTypes.h>
@@ -321,7 +322,7 @@ void GObject::removeRelations(const QString &removedDocUrl) {
             changed = true;
         }
     }
-    if (changed) {
+    if (changed && QFileInfo::exists(removedDocUrl)) {
         setObjectRelations(rels);
     }
 }
