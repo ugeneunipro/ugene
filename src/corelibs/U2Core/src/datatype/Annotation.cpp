@@ -34,6 +34,7 @@
 #include <U2Core/U2FeatureUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/U2SequenceUtils.h>
 
 const QString QUALIFIER_NAME_CIGAR = "cigar";
 const QString QUALIFIER_NAME_SUBJECT = "subj_seq";
@@ -545,89 +546,35 @@ QString Annotation::getQualifiersTip(const SharedAnnotationData &data, int maxRo
                             return region.length > 0 && wholeSequenceRegion.contains(region);
                         });
     if (showSequence) {
-        QString seqVal;
-        QString aminoVal;
-        bool isTruncated = false;
-        QList<RegionsPair> merged = U1AnnotationUtils::mergeAnnotatedRegionsAroundJunctionPoint(regions, sequenceLength);
-        bool isComplementary = data->location->strand.isComplementary() && complTT != nullptr;
-        if (isComplementary) {
-            std::reverse(merged.begin(), merged.end());
-        }
-        bool hasAnnotatedRegionsContainJunctionPoint = seqObj->isCircular() && U1AnnotationUtils::isAnnotationContainsJunctionPoint(merged);
-        for (const RegionsPair &pair : qAsConst(merged)) {
-            if (!seqVal.isEmpty()) {
-                seqVal += "^";
-                if (!aminoVal.isEmpty()) {
-                    aminoVal += "^";
-                }
+        QVector<U2Region> tooltipRegions = data->location->strand.isComplementary()
+                                               ? U2Region::tailOf(regions, MAX_QUALIFIER_VALUE_LENGTH_IN_TOOLTIP)
+                                               : U2Region::headOf(regions, MAX_QUALIFIER_VALUE_LENGTH_IN_TOOLTIP);
+        auto effectiveComplTT = data->location->strand.isComplementary() ? complTT : nullptr;
+        const U2EntityRef &sequenceRef = seqObj->getEntityRef();
+        U2OpStatus2Log os;
+        QByteArray seqVal = U2SequenceUtils::extractRegions(sequenceRef, tooltipRegions, effectiveComplTT, nullptr, data->isJoin(), os).join("^");
+        QByteArray aminoVal = os.hasError() || aminoTT == nullptr
+                                  ? ""
+                                  : U2SequenceUtils::extractRegions(sequenceRef, tooltipRegions, effectiveComplTT, aminoTT, data->isJoin(), os).join("^");
+        if (!os.hasError() && seqVal.length() > 0) {
+            if (!tip.isEmpty()) {
+                tip += "<br>";
             }
-            int firstRegionLength = (int)qMin<qint64>(pair.first.length, MAX_QUALIFIER_VALUE_LENGTH_IN_TOOLTIP - seqVal.length());
-            isTruncated = firstRegionLength != pair.first.length;
-            if (firstRegionLength <= 0) {
-                break;
-            }
-            int secondPartRegionLength = 0;
-            U2Region firstRegion;
-            U2Region secondRegion;
-            if (hasAnnotatedRegionsContainJunctionPoint && !pair.second.isEmpty()) {
-                if (isComplementary) {
-                    /*
-                     * If the sequence is circular and the annotation is complementary the region from 0 to N should be shown first from N to 0 and the region from M to 'sequeceLength' should be shown second from 'sequeceLength' to M
-                     */
-                    firstRegionLength = (int)qMin<qint64>(pair.second.length, MAX_QUALIFIER_VALUE_LENGTH_IN_TOOLTIP - seqVal.length());
-                    isTruncated = firstRegionLength != pair.second.length;
-                    if (firstRegionLength <= 0) {
-                        break;
-                    }
-                    firstRegion = U2Region(pair.second.endPos() - firstRegionLength, firstRegionLength);
-                    if (!isTruncated) {
-                        secondPartRegionLength = (int)qMin<qint64>(pair.first.length, MAX_QUALIFIER_VALUE_LENGTH_IN_TOOLTIP - (seqVal.length() + firstRegionLength));
-                        isTruncated = secondPartRegionLength != pair.first.length;
-                        secondRegion = U2Region((pair.first.endPos() - secondPartRegionLength), secondPartRegionLength);
-                    }
-                } else {
-                    firstRegion = U2Region(pair.first.startPos, firstRegionLength);
-                    if (!isTruncated) {
-                        secondPartRegionLength = (int)qMin<qint64>(pair.second.length, MAX_QUALIFIER_VALUE_LENGTH_IN_TOOLTIP - (seqVal.length() + firstRegionLength));
-                        isTruncated = secondPartRegionLength != pair.second.length;
-                        secondRegion = U2Region(pair.second.startPos, secondPartRegionLength);
-                    }
-                }
-            } else {
-                if (isComplementary) {
-                    firstRegion = U2Region(pair.first.endPos() - firstRegionLength, firstRegionLength);
-                } else {
-                    firstRegion = U2Region(pair.first.startPos, firstRegionLength);
-                }
-            }
-            QByteArray resultSequence = seqObj->getSequenceData(firstRegion) + seqObj->getSequenceData(secondRegion);
-            if (isComplementary) {
-                complTT->translate(resultSequence.data(), resultSequence.length());
-                TextUtils::reverse(resultSequence.data(), resultSequence.length());
-            }
-            seqVal += QString::fromLocal8Bit(resultSequence);
-            if (aminoTT != nullptr) {
-                int aminoLen = aminoTT->translate(resultSequence.data(), resultSequence.length());
-                aminoVal += QString::fromLocal8Bit(resultSequence.data(), aminoLen);
-            }
+
+            bool isTruncated = tooltipRegions != regions;
             if (isTruncated) {
-                break;
+                seqVal += " ...";
             }
-        }
-        if (isTruncated) {
-            seqVal += " ...";
-            aminoVal += " ...";
-        }
-        if (!tip.isEmpty()) {
-            tip += "<br>";
-        }
+            tip += "<nobr><b>" + QObject::tr("Sequence") + "</b> = " + QString::fromLocal8Bit(seqVal).toHtmlEscaped() + "</nobr>";
+            rows++;
 
-        tip += "<nobr><b>" + QObject::tr("Sequence") + "</b> = " + seqVal.toHtmlEscaped() + "</nobr>";
-        rows++;
-
-        if (rows <= maxRows && aminoTT != nullptr) {
-            tip += "<br>";
-            tip += "<nobr><b>" + QObject::tr("Translation") + "</b> = " + aminoVal.toHtmlEscaped() + "</nobr>";
+            if (rows <= maxRows && !aminoVal.isEmpty()) {
+                if (isTruncated) {
+                    aminoVal += " ...";
+                }
+                tip += "<br>";
+                tip += "<nobr><b>" + QObject::tr("Translation") + "</b> = " + QString::fromLocal8Bit(aminoVal).toHtmlEscaped() + "</nobr>";
+            }
         }
     }
     return tip;
