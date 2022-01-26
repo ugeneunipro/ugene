@@ -2497,7 +2497,7 @@ GUI_TEST_CLASS_DEFINITION(test_3414) {
     GTGlobals::sleep(3000);  // Wait for label to change.
     QString timeAfter = timeLabel->text();
     CHECK_SET_ERR(timeBefore != timeAfter, "timer is not changed, timeBefore: " + timeBefore + ", timeAfter: " + timeAfter);
-    GTUtilsTask::cancelTask(os, "Execute workflow");
+    GTUtilsTaskTreeView::cancelTask(os, "Execute workflow");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3428) {
@@ -4584,7 +4584,7 @@ GUI_TEST_CLASS_DEFINITION(test_3770) {
     //    Current state: the task doesn't cancel.
 
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "NW_003943623", 0, true, true, false, sandBoxDir));
-    GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."},  GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::cancelTask(os, "Download remote documents");
 
     CHECK_SET_ERR(GTUtilsTaskTreeView::countTasks(os, "Download remote documents") == 0, "Task was not canceled");

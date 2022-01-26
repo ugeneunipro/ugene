@@ -6750,7 +6750,7 @@ GUI_TEST_CLASS_DEFINITION(test_1693) {
     QWidget *samplesWidget = GTWidget::findWidget(os, "samples");
     CHECK_SET_ERR(samplesWidget != nullptr, "Samples widget is NULL");
     CHECK_SET_ERR(!samplesWidget->isEnabled(), "Samples widget is unexpectedly enabled");
-    GTUtilsTask::cancelTask(os, "Execute workflow");
+    GTUtilsTaskTreeView::cancelTask(os, "Execute workflow");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1700) {

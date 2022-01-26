@@ -54,7 +54,13 @@ public:
     static QTreeWidget *openView(HI::GUITestOpStatus &os);
 
     static void toggleView(HI::GUITestOpStatus &os);
-    static void cancelTask(HI::GUITestOpStatus &os, const QString &itemName, bool failIfNotFound = true);
+
+    /**
+     * Cancels tasks with the given name.
+     * If "parentTaskNames" is provided first expands the top-level tasks so the task tree is populated.
+     */
+    static void cancelTask(HI::GUITestOpStatus &os, const QString &itemName, bool failIfNotFound = true, const QStringList &parentTaskNames = {});
+
     static QTreeWidgetItem *getTreeWidgetItem(HI::GUITestOpStatus &os, const QString &itemName, bool failOnNull = true);
     static QTreeWidget *getTreeWidget(HI::GUITestOpStatus &os);
     static void moveToOpenedView(HI::GUITestOpStatus &os, const QString &itemName);

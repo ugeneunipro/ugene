@@ -1030,10 +1030,10 @@ GUI_TEST_CLASS_DEFINITION(test_2150) {
 
     // 5. Run the workflow.
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
-    GTGlobals::sleep(5000);
+    GTUtilsTask::waitTaskStart(os, "MUSCLE alignment", 10000);
 
     // 6. During the workflow execution open the "Tasks" panel in the bottom, find in the task tree the "MUSCLE alignment" subtask and cancel it.
-    GTUtilsTask::cancelSubTask(os, "MUSCLE alignment");
+    GTUtilsTaskTreeView::cancelTask(os, "MUSCLE alignment", true, {"Execute workflow", "Workflow run", "Wrapper task for: \"MUSCLE alignment\""});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2152) {
@@ -2805,7 +2805,7 @@ GUI_TEST_CLASS_DEFINITION(test_2487) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QList<GraphicsButtonItem *> items = GTUtilsPhyTree::getNodes(os);
-    CHECK_SET_ERR(items.size() != 0, "Tree is empty");
+    CHECK_SET_ERR(!items.empty(), "Tree is empty");
 
     QPoint rootCoords = GTUtilsPhyTree::getGlobalCenterCoord(os, items.first());
     GTMouseDriver::moveTo(rootCoords);
@@ -4684,16 +4684,17 @@ GUI_TEST_CLASS_DEFINITION(test_2894) {
     // Press refresh tree button on the tree's toolbar.
     // Expected state: "Calculating Phylogenetic Tree" task has been started.
     GTWidget::click(os, GTAction::button(os, "Refresh tree"));
-    GTUtilsTask::checkTask(os, "Calculating Phylogenetic Tree");
+    int taskCount = GTUtilsTaskTreeView::countTasks(os, "Calculating Phylogenetic Tree");
+    CHECK_SET_ERR(taskCount == 1, QString("1. Wrong tasks number. Expected 1, actual: ").arg(taskCount));
 
     // Press refresh button again.
     // Expected state: a new refresh task is not started, the old one is in process.
     GTWidget::click(os, GTAction::button(os, "Refresh tree"));
 
-    int num = GTUtilsTaskTreeView::countTasks(os, "Calculating Phylogenetic Tree");
-    CHECK_SET_ERR(num == 1, QString("Wrong tasks number. Expected 1, actual: ").arg(num));
-    // Close the tree view while the task is performed.
-    // Expected state: UGENE doesn't crash, view is closed, task cancels.
+    taskCount = GTUtilsTaskTreeView::countTasks(os, "Calculating Phylogenetic Tree");
+    CHECK_SET_ERR(taskCount == 1, QString("2. Wrong tasks number. Expected 1, actual: ").arg(taskCount));
+    // Close the tree view while the task is running.
+    // Expected state: UGENE doesn't crash, view is closed, task is canceled.
     GTUtilsProjectTreeView::click(os, "test_2894_COI.nwk");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));  // Save the nwk file? Select 'No'.
