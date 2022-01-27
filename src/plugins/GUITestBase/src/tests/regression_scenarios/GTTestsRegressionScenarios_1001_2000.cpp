@@ -100,7 +100,6 @@
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
-#include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
@@ -7899,7 +7898,7 @@ GUI_TEST_CLASS_DEFINITION(test_1984) {
 
 GUI_TEST_CLASS_DEFINITION(test_1986) {
     // Download a sequence from NCBI. Use "limit" for results.
-    GTUtilsDialog::waitForDialog(os, new NCBISearchDialogSimpleFiller(os, "rat", false, 10, "Organism"));
+    GTUtilsDialog::waitForDialog(os, new NCBISearchDialogSimpleFiller(os, "rabbit", false, 10, "Organism"));
     GTMenu::clickMainMenuItem(os, {"File", "Search NCBI GenBank..."});
 
     // Expected state: the chosen sequence has been downloaded, saved in FASTA format and displayed in sequence view
