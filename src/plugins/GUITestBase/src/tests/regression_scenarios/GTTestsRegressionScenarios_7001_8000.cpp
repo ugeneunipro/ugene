@@ -2073,7 +2073,7 @@ GUI_TEST_CLASS_DEFINITION(test_7535) {
     CHECK_SET_ERR(tooltip.contains("<b>Sequence</b> = TCT"), "Expected dna sequence info in tooltip for a joined annotation: " + tooltip);
     CHECK_SET_ERR(tooltip.contains("<b>Translation</b> = S"), "Expected amino sequence info in tooltip for a joined annotation: " + tooltip);
 
-    auto joinedComplementaryItem = GTUtilsAnnotationsTreeView::findItem(os, "joined_C");
+    auto joinedComplementaryItem = GTUtilsAnnotationsTreeView::findItem(os, "joined_c");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, joinedComplementaryItem));
     tooltip = GTUtilsToolTip::getToolTip();
     CHECK_SET_ERR(tooltip.contains("<b>Sequence</b> = AGA"), "Expected dna sequence info in tooltip for a joined complementary annotation: " + tooltip);
