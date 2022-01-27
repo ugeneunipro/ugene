@@ -2080,6 +2080,23 @@ GUI_TEST_CLASS_DEFINITION(test_7535) {
     CHECK_SET_ERR(tooltip.contains("<b>Translation</b> = R"), "Expected amino sequence info in tooltip for a joined complementary annotation: " + tooltip);
 }
 
+
+GUI_TEST_CLASS_DEFINITION(test_7539) {
+    // Check that UGENE shows a tooltip when a small 1-char annotation region is hovered in sequence view.
+    GTFileDialog::openFile(os, testDir + "_common_data/genbank/zero_length_feature.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+   GTUtilsSequenceView::moveMouseToAnnotationInDetView(os, "joined", 30);
+   QString tooltip = GTUtilsToolTip::getToolTip();
+   CHECK_SET_ERR(tooltip.contains("<b>Sequence</b> = TCT"), "Expected dna sequence info in tooltip for a joined annotation: " + tooltip);
+   CHECK_SET_ERR(tooltip.contains("<b>Translation</b> = S"), "Expected amino sequence info in tooltip for a joined annotation: " + tooltip);
+
+   GTUtilsSequenceView::moveMouseToAnnotationInDetView(os, "joined_c", 30);
+   tooltip = GTUtilsToolTip::getToolTip();
+   CHECK_SET_ERR(tooltip.contains("<b>Sequence</b> = AGA"), "Expected dna sequence info in tooltip for a joined complementary annotation: " + tooltip);
+   CHECK_SET_ERR(tooltip.contains("<b>Translation</b> = R"), "Expected amino sequence info in tooltip for a joined complementary annotation: " + tooltip);
+}
+
 }  // namespace GUITest_regression_scenarios
 
 }  // namespace U2

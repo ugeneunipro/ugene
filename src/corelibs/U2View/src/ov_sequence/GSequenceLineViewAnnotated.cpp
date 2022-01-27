@@ -163,10 +163,10 @@ bool GSequenceLineViewAnnotated::isAnnotationVisible(const Annotation *a) const 
     return false;
 }
 
-QList<Annotation *> GSequenceLineViewAnnotated::findAnnotationsByCoord(const QPoint &coord) const {
+QList<Annotation *> GSequenceLineViewAnnotated::findAnnotationsByCoord(const QPoint &renderAreaPoint) const {
     auto renderAreaAnnotated = qobject_cast<GSequenceLineViewAnnotatedRenderArea *>(renderArea);
-    SAFE_POINT(renderAreaAnnotated != nullptr, "GSequenceLineViewAnnotated must have GSequenceLineViewAnnotatedRenderArea!", QList<Annotation *>());
-    return renderAreaAnnotated->findAnnotationsByCoord(coord);
+    SAFE_POINT(renderAreaAnnotated != nullptr, "GSequenceLineViewAnnotated must have GSequenceLineViewAnnotatedRenderArea!", {});
+    return renderAreaAnnotated->findAnnotationsByCoord(renderAreaPoint);
 }
 
 void GSequenceLineViewAnnotated::mousePressEvent(QMouseEvent *me) {
@@ -335,19 +335,20 @@ void GSequenceLineViewAnnotated::ensureVisible(Annotation *a, int locationIdx) {
 
 bool GSequenceLineViewAnnotated::event(QEvent *e) {
     if (e->type() == QEvent::ToolTip) {
-        QHelpEvent *he = static_cast<QHelpEvent *>(e);
-        QString tip = createToolTip(he);
+        auto helpEvent = static_cast<QHelpEvent *>(e);
+        QPoint renderAreaPount = renderArea->mapFrom(this, helpEvent->pos());
+        QString tip = createToolTip(renderAreaPount);
         if (!tip.isEmpty()) {
-            QToolTip::showText(he->globalPos(), tip);
+            QToolTip::showText(helpEvent->globalPos(), tip);
         }
         return true;
     }
     return GSequenceLineView::event(e);
 }
 
-QString GSequenceLineViewAnnotated::createToolTip(QHelpEvent *e) {
+QString GSequenceLineViewAnnotated::createToolTip(const QPoint &renderAreaPoint) {
     const int ROWS_LIMIT = 25;
-    QList<Annotation *> la = findAnnotationsByCoord(e->pos());
+    QList<Annotation *> la = findAnnotationsByCoord(renderAreaPoint);
     QList<SharedAnnotationData> annotationList;
     if (la.isEmpty()) {
         return QString();

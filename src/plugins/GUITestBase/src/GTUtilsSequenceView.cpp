@@ -420,8 +420,11 @@ QString GTUtilsSequenceView::getSeqName(HI::GUITestOpStatus &os, ADVSingleSequen
 
 #define MIN_ANNOTATION_WIDTH 5
 
-#define GT_METHOD_NAME "clickAnnotationDet"
-void GTUtilsSequenceView::clickAnnotationDet(HI::GUITestOpStatus &os, const QString &annotationName, int annotationRegionStartPos, int sequenceWidgetIndex, const bool isDoubleClick, Qt::MouseButton button) {
+#define GT_METHOD_NAME "moveMouseToAnnotationInDetView"
+void GTUtilsSequenceView::moveMouseToAnnotationInDetView(HI::GUITestOpStatus &os,
+                                                         const QString &annotationName,
+                                                         int annotationRegionStartPos,
+                                                         int sequenceWidgetIndex) {
     ADVSingleSequenceWidget *sequenceView = getSeqWidgetByNumber(os, sequenceWidgetIndex);
     DetView *detView = sequenceView->getDetView();
     GT_CHECK(detView != nullptr, "detView not found");
@@ -480,6 +483,17 @@ void GTUtilsSequenceView::clickAnnotationDet(HI::GUITestOpStatus &os, const QStr
 
     const QRect clickRect(x1, yRegion.startPos, x2 - x1, yRegion.length);
     GTMouseDriver::moveTo(renderArea->mapToGlobal(clickRect.center()));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickAnnotationDet"
+void GTUtilsSequenceView::clickAnnotationDet(HI::GUITestOpStatus &os,
+                                             const QString &annotationName,
+                                             int annotationRegionStartPos,
+                                             int sequenceWidgetIndex,
+                                             const bool isDoubleClick,
+                                             Qt::MouseButton button) {
+    moveMouseToAnnotationInDetView(os, annotationName, annotationRegionStartPos, sequenceWidgetIndex);
     if (isDoubleClick) {
         GTMouseDriver::doubleClick();
     } else {
