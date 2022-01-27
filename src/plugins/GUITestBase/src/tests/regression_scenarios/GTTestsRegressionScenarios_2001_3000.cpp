@@ -242,10 +242,8 @@ GUI_TEST_CLASS_DEFINITION(test_2012) {
 
     // 2. Open the "General" tab on the options panel.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_GENERAL"));
-    QLineEdit *sequencelineEdit = (QLineEdit *)GTWidget::findWidget(os, "sequenceLineEdit");
-    CHECK(nullptr != sequencelineEdit, );
-
-    GTLineEdit::setText(os, sequencelineEdit, "m");
+    auto sequenceLineEdit = GTWidget::findLineEdit(os, "sequenceLineEdit");
+    GTLineEdit::setText(os, sequenceLineEdit, "m");
 
     GTKeyboardDriver::keyClick(Qt::Key_Down);
 
@@ -255,8 +253,8 @@ GUI_TEST_CLASS_DEFINITION(test_2012) {
 
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 
-    QString selectedSequence = sequencelineEdit->text();
-    CHECK("Mecopoda_elongata__Sumatra_" == selectedSequence, );
+    QString selectedSequence = sequenceLineEdit->text();
+    CHECK_SET_ERR(selectedSequence == "Mecopoda_elongata__Sumatra_", "Unexpected selected sequence: " + selectedSequence);
 
     // 3. Set focus to the reference sequence name line edit and enter 'm' into it.
 }
@@ -800,8 +798,6 @@ GUI_TEST_CLASS_DEFINITION(test_2091) {
 
     // Expected state: document are opened in the project view; MSA Editor are shown with test_alignment.
     GTUtilsProjectTreeView::findIndex(os, "COI.aln");
-    QWidget *msaView = GTUtilsMdi::activeWindow(os);
-    CHECK(nullptr != msaView, );
 
     // 2. Select any sequence.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(-5, 4));
@@ -4469,14 +4465,8 @@ GUI_TEST_CLASS_DEFINITION(test_2808) {
         OkClicker(HI::GUITestOpStatus &_os)
             : Filler(_os, "EditMarkerGroupDialog") {
         }
-        virtual void run() {
-            QWidget *w = QApplication::activeWindow();
-            CHECK(nullptr != w, );
-            QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(nullptr != buttonBox, );
-            QPushButton *button = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK(nullptr != button, );
-            GTWidget::click(os, button);
+        void run() override {
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
         }
     };
     GTUtilsDialog::waitForDialog(os, new OkClicker(os));
@@ -4487,7 +4477,7 @@ GUI_TEST_CLASS_DEFINITION(test_2808) {
     CHECK_SET_ERR(!removeButton->isEnabled(), "AddButton is enabled!");
 
     QTableView *groupTable = qobject_cast<QTableView *>(GTWidget::findWidget(os, "markerTable"));
-    CHECK_SET_ERR(groupTable != nullptr, "MerkerTable not found");
+    CHECK_SET_ERR(groupTable != nullptr, "MarkerTable is not found");
     GTWidget::click(os, groupTable);
 
     QPoint p = GTTableView::getCellPosition(os, groupTable, 0, 0);
@@ -4522,21 +4512,15 @@ GUI_TEST_CLASS_DEFINITION(test_2809) {
         OkClicker(HI::GUITestOpStatus &_os)
             : Filler(_os, "EditMarkerGroupDialog") {
         }
-        virtual void run() {
-            QWidget *w = QApplication::activeWindow();
-            CHECK(nullptr != w, );
-            QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(nullptr != buttonBox, );
-            QPushButton *button = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK(nullptr != button, );
-            GTWidget::click(os, button);
+        void run() override {
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
         }
     };
     GTUtilsDialog::waitForDialog(os, new OkClicker(os));
     GTWidget::click(os, addButton);
 
     QTableView *groupTable = qobject_cast<QTableView *>(GTWidget::findWidget(os, "markerTable"));
-    CHECK_SET_ERR(groupTable != nullptr, "MerkerTable not found");
+    CHECK_SET_ERR(groupTable != nullptr, "MarkerTable not found");
     GTWidget::click(os, groupTable);
 
     QScrollBar *scroll = groupTable->verticalScrollBar();

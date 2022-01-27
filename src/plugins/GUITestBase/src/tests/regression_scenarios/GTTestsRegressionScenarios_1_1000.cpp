@@ -73,6 +73,7 @@
 #include "GTUtilsExternalTools.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
+#include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsOptionsPanel.h"
@@ -1146,11 +1147,10 @@ GUI_TEST_CLASS_DEFINITION(test_0734) {
     // Expected state: two documents are opened in the project view; MSA Editor are shown with test_alignment.
     GTUtilsProjectTreeView::findIndex(os, "test.TXT");  // checks are inside
     GTUtilsProjectTreeView::findIndex(os, "test_alignment.aln");  // checks are inside
-    QWidget *msaView = GTUtilsMdi::activeWindow(os);
-    CHECK(nullptr != msaView, );
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // 3. Drag'n'drop "Sequence4" object of "test.TXT" document from the project tree to the MSA Editor.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_LOAD << "Sequence from current project"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_LOAD, "Sequence from current project"}));
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "test.TXT", "Sequence4"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2433,14 +2433,9 @@ GUI_TEST_CLASS_DEFINITION(test_0889) {
         OkClicker(HI::GUITestOpStatus &_os)
             : Filler(_os, "CreateAnnotationDialog") {
         }
-        virtual void run() {
-            QWidget *w = QApplication::activeWindow();
-            CHECK(nullptr != w, );
-            QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(nullptr != buttonBox, );
-            QPushButton *button = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK(nullptr != button, );
-            GTWidget::click(os, button);
+        void run() override {
+            QWidget *w = GTWidget::getActiveModalWidget(os);
+            GTUtilsDialog::clickButtonBox(os, w, QDialogButtonBox::Ok);
         }
     };
 
@@ -2628,14 +2623,8 @@ GUI_TEST_CLASS_DEFINITION(test_0928) {
         OkClicker(HI::GUITestOpStatus &_os)
             : Filler(_os, "ORFDialogBase") {
         }
-        virtual void run() {
-            QWidget *w = QApplication::activeWindow();
-            CHECK(nullptr != w, );
-            QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(nullptr != buttonBox, );
-            QPushButton *button = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK(nullptr != button, );
-            GTWidget::click(os, button);
+        void run() override {
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
         }
     };
 
@@ -2762,17 +2751,6 @@ GUI_TEST_CLASS_DEFINITION(test_0940) {
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
 }
 
-namespace {
-
-QString getFileContent(const QString &path) {
-    QFile file(path);
-    CHECK(file.open(QFile::ReadOnly), QString("Can not open file"));
-    QTextStream fileReader(&file);
-    return fileReader.readAll();
-}
-
-}  // namespace
-
 GUI_TEST_CLASS_DEFINITION(test_0941) {
     // 1. Open COI.aln
     // 2. Select the first sequence and choose {Edit->Replace slected row with reverse}. Expected state: The sequences is reversed
@@ -2788,14 +2766,14 @@ GUI_TEST_CLASS_DEFINITION(test_0941) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "replace_selected_rows_with_reverse-complement"));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}));
     GTUtilsDialog::waitForDialog(os, new ExtractSelectedAsMSADialogFiller(os, sandBoxDir + "test_0941.aln", GTUtilsMSAEditorSequenceArea::getNameList(os)));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QString resFileContent = getFileContent(sandBoxDir + "test_0941.aln");
-    QString testFileContent = getFileContent(testDir + "_common_data/scenarios/_regression/941/test_0941.aln");
-    CHECK_SET_ERR(resFileContent == testFileContent, "Incorrect result file");
+    QString resultFileContent = GTFile::readAll(os, sandBoxDir + "test_0941.aln");
+    QString expectedFileContent = GTFile::readAll(os, testDir + "_common_data/scenarios/_regression/941/test_0941.aln");
+    CHECK_SET_ERR(resultFileContent == expectedFileContent, "Incorrect result file content");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0947) {

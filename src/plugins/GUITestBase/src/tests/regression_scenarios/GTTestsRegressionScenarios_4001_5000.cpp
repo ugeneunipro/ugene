@@ -464,15 +464,8 @@ GUI_TEST_CLASS_DEFINITION(test_4045) {
         OkClicker(HI::GUITestOpStatus &_os)
             : Filler(_os, "ORFDialogBase") {
         }
-        virtual void run() {
-            QWidget *w = QApplication::activeWindow();
-            CHECK(nullptr != w, );
-            QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(nullptr != buttonBox, );
-
-            QPushButton *button = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK(nullptr != button, );
-            GTWidget::click(os, button);
+        void run() override {
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
         }
     };
 
@@ -844,15 +837,6 @@ GUI_TEST_CLASS_DEFINITION(test_4095) {
     CHECK_SET_ERR("GTCA" == selectionContent, "Sequence reversing is failed");
 }
 
-namespace {
-QString getFileContent(const QString &path) {
-    QFile file(path);
-    CHECK(file.open(QFile::ReadOnly), QString());
-    QTextStream fileReader(&file);
-    return fileReader.readAll();
-}
-
-}  // namespace
 GUI_TEST_CLASS_DEFINITION(test_4096) {
     // 1. Open "human_T1.fa"
     // 2. Use context menu on sequence object
@@ -886,10 +870,11 @@ GUI_TEST_CLASS_DEFINITION(test_4096) {
 
     GTUtilsProjectTreeView::checkItem(os, "test_4096.aln");
 
-    const QString referenceMsaContent = getFileContent(testDir + "_common_data/regression/4096/test_4096.aln");
-    const QString resultMsaContent = getFileContent(sandBoxDir + "test_4096.aln");
+    QString referenceMsaContent = GTFile::readAll(os, testDir + "_common_data/regression/4096/test_4096.aln");
+    QString resultMsaContent = GTFile::readAll(os, sandBoxDir + "test_4096.aln");
     CHECK_SET_ERR(!referenceMsaContent.isEmpty() && referenceMsaContent == resultMsaContent, "Unexpected MSA content");
 }
+
 GUI_TEST_CLASS_DEFINITION(test_4097) {
     /* 1. Open "_common_data/vector_nti_sequence/unrefined.gb".
      * 2. Export the document somewhere to the vector NTI sequence format.
@@ -903,8 +888,8 @@ GUI_TEST_CLASS_DEFINITION(test_4097) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "unrefined.gb"));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    const QString resultFileContent = getFileContent(sandBoxDir + "test_4097.gb");
-    CHECK_SET_ERR(false == resultFileContent.contains("Vector_NTI_Display_Data_(Do_Not_Edit!)", Qt::CaseInsensitive), "Unexpected file content");
+    QString resultFileContent = GTFile::readAll(os, sandBoxDir + "test_4097.gb");
+    CHECK_SET_ERR(!resultFileContent.contains("Vector_NTI_Display_Data_(Do_Not_Edit!)", Qt::CaseInsensitive), "Unexpected file content");
     QRegExp rx("COMMENT");
     int pos = 0;
     int count = 0;
@@ -2865,11 +2850,8 @@ GUI_TEST_CLASS_DEFINITION(test_4359) {
             : Filler(_os, "Primer3Dialog") {
         }
         virtual void run() {
-            QWidget *w = QApplication::activeWindow();
-            CHECK(nullptr != w, );
-
-            QPushButton *button = qobject_cast<QPushButton *>(GTWidget::findWidget(os, "pickPrimersButton"));
-            CHECK(nullptr != button, );
+            QWidget *w = GTWidget::getActiveModalWidget(os);
+            auto button = GTWidget::findPushButton(os, "pickPrimersButton", w);
             CHECK_SET_ERR(button->isDefault(), "Pick primers button doesn't default");
 
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -3674,23 +3656,18 @@ GUI_TEST_CLASS_DEFINITION(test_4588_2) {
         OkClicker(HI::GUITestOpStatus &_os, const QString &dbPath, const QString &outputPath)
             : Filler(_os, "BlastDBCmdDialog"), dbPath(dbPath), outputPath(outputPath) {
         }
-        virtual void run() {
-            QWidget *w = QApplication::activeWindow();
-            CHECK(nullptr != w, );
+        void run() override {
+            QWidget *w = GTWidget::getActiveModalWidget(os);
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dbPath));
             GTWidget::click(os, GTWidget::findWidget(os, "selectDatabasePushButton", w));
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, outputPath, GTGlobals::UseMouse, GTFileDialogUtils::Save));
             GTWidget::click(os, GTWidget::findWidget(os, "browseOutputButton", w));
 
-            QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(nullptr != buttonBox, );
-            QPushButton *button = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK(nullptr != button, );
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-            GTWidget::click(os, button);
-            button = buttonBox->button(QDialogButtonBox::Cancel);
-            GTWidget::click(os, button);
+            GTUtilsDialog::clickButtonBox(os, w, QDialogButtonBox::Ok);
+
+            GTUtilsDialog::clickButtonBox(os, w, QDialogButtonBox::Cancel);
         }
 
     private:
@@ -3926,9 +3903,9 @@ GUI_TEST_CLASS_DEFINITION(test_4624) {
     GTUtilsAssemblyBrowser::callExportCoverageDialog(os);
 
     // 3. Check the coverage
-    QString templateCoverage = getFileContent(testDir + "_common_data/scenarios/_regression/4624/4624.txt");
-    QString resCoverage = getFileContent(sandBoxDir + "test_4624.txt");
-    CHECK_SET_ERR(templateCoverage == resCoverage, "Incorrect coverage has been exported");
+    QString expectedFileContent = GTFile::readAll(os, testDir + "_common_data/scenarios/_regression/4624/4624.txt");
+    QString resultFileContent = GTFile::readAll(os, sandBoxDir + "test_4624.txt");
+    CHECK_SET_ERR(resultFileContent == expectedFileContent, "Incorrect coverage has been exported");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4628) {
@@ -5334,15 +5311,13 @@ GUI_TEST_CLASS_DEFINITION(test_4839_1) {
 
     // Expected state: document are opened in the project view; MSA Editor are shown with test_alignment.
     GTUtilsProjectTreeView::findIndex(os, "COI.aln");
-    QWidget *msaView = GTUtilsMdi::activeWindow(os);
-    CHECK(nullptr != msaView, );
 
     // 2. Select some sequences on sequence view.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(2, 4), QPoint(2, 6));
     QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
 
     // 3. Call context menu on the name list area, select the {Edit -> Remove sequence} menu item.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "Remove sequence"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EDIT, "Remove sequence"}));
     GTMouseDriver::click(Qt::RightButton);
     // Expected state: the sequences are removed.
     QStringList modifiedNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
@@ -5357,8 +5332,6 @@ GUI_TEST_CLASS_DEFINITION(test_4839_2) {
 
     // Expected state: document are opened in the project view; MSA Editor are shown with test_alignment.
     GTUtilsProjectTreeView::findIndex(os, "COI.aln");
-    QWidget *msaView = GTUtilsMdi::activeWindow(os);
-    CHECK(nullptr != msaView, );
 
     // 2. Select some sequences on sequence view.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(2, 4), QPoint(2, 6));
@@ -5601,7 +5574,7 @@ GUI_TEST_CLASS_DEFINITION(test_4913) {
     RemoteBLASTDialogFiller *filler = new RemoteBLASTDialogFiller(os, scenario);
 
     GTUtilsDialog::waitForDialog(os, filler);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE","Query NCBI BLAST database"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Query NCBI BLAST database"}));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
 }
 

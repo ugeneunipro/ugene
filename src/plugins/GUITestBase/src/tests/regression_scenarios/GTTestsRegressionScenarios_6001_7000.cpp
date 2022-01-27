@@ -3808,13 +3808,11 @@ GUI_TEST_CLASS_DEFINITION(test_6659) {
 
     // 2. Open the "General" tab on the options panel.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_GENERAL"));
-    QLineEdit *sequencelineEdit = (QLineEdit *)GTWidget::findWidget(os, "sequenceLineEdit");
-    CHECK(nullptr != sequencelineEdit, );
-
+    
     // 3. The "Copy" button is disabled.
     QToolButton *copyButton = qobject_cast<QToolButton *>(GTWidget::findWidget(os, "copyButton"));
     CHECK_SET_ERR(copyButton != nullptr, "copyButton not found");
-    CHECK_SET_ERR(!copyButton->isEnabled(), "copyButton is unexpectidly enabled");
+    CHECK_SET_ERR(!copyButton->isEnabled(), "copyButton is unexpectedly enabled");
 
     // 4. Select any region and press ctrl+c
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 6), QPoint(1, 9));

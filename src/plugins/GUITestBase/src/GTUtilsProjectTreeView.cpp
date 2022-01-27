@@ -357,21 +357,20 @@ bool compareStrings(const QString &pattern, const QString &data, Qt::MatchFlags 
 }
 }  // namespace
 
-#define GT_METHOD_NAME "findIndiciesInTreeNoWait"
+#define GT_METHOD_NAME "findIndicesInTreeNoWait"
 QModelIndexList GTUtilsProjectTreeView::findIndiciesInTreeNoWait(HI::GUITestOpStatus &os,
                                                                  QTreeView *treeView,
                                                                  const QString &itemName,
                                                                  const QModelIndex &parent,
                                                                  int parentDepth,
                                                                  const GTGlobals::FindOptions &options) {
-    QModelIndexList foundIndecies;
-    CHECK(options.depth == GTGlobals::FindOptions::INFINITE_DEPTH || parentDepth < options.depth, foundIndecies);
+    CHECK(options.depth == GTGlobals::FindOptions::INFINITE_DEPTH || parentDepth < options.depth, {});
 
     QAbstractItemModel *model = treeView->model();
-    CHECK_SET_ERR_RESULT(model != nullptr, "Model is NULL", foundIndecies);
+    CHECK_SET_ERR_RESULT(model != nullptr, "Model is NULL", {});
 
-    QSortFilterProxyModel *proxyModel = qobject_cast<QSortFilterProxyModel *>(treeView->model());
-
+    auto proxyModel = qobject_cast<QSortFilterProxyModel *>(treeView->model());
+    QModelIndexList foundIndicies;
     int rowCount = proxyModel == nullptr ? model->rowCount(parent) : proxyModel->rowCount(parent);
     for (int i = 0; i < rowCount; i++) {
         QModelIndex index = proxyModel == nullptr ? model->index(i, 0, parent) : proxyModel->index(i, 0, parent);
@@ -396,17 +395,17 @@ QModelIndexList GTUtilsProjectTreeView::findIndiciesInTreeNoWait(HI::GUITestOpSt
 
         if (!itemName.isEmpty()) {
             if (compareStrings(itemName, s, options.matchPolicy)) {
-                foundIndecies << index;
+                foundIndicies << index;
             } else {
-                foundIndecies << findIndiciesInTreeNoWait(os, treeView, itemName, index, parentDepth + 1, options);
+                foundIndicies << findIndiciesInTreeNoWait(os, treeView, itemName, index, parentDepth + 1, options);
             }
         } else {
-            foundIndecies << index;
-            foundIndecies << findIndiciesInTreeNoWait(os, treeView, itemName, index, parentDepth + 1, options);
+            foundIndicies << index;
+            foundIndicies << findIndiciesInTreeNoWait(os, treeView, itemName, index, parentDepth + 1, options);
         }
     }
 
-    return foundIndecies;
+    return foundIndicies;
 }
 #undef GT_METHOD_NAME
 
@@ -564,14 +563,13 @@ void GTUtilsProjectTreeView::checkObjectTypes(HI::GUITestOpStatus &os, const QSe
 #define GT_METHOD_NAME "checkObjectTypes"
 void GTUtilsProjectTreeView::checkObjectTypes(HI::GUITestOpStatus &os, QTreeView *treeView, const QSet<GObjectType> &acceptableTypes, const QModelIndex &parent) {
     CHECK_SET_ERR(treeView != nullptr, "Tree view is null");
-    CHECK(!acceptableTypes.isEmpty(), );
+    CHECK_SET_ERR(!acceptableTypes.isEmpty(), "List of acceptable types is empty");
 
     QAbstractItemModel *model = treeView->model();
     CHECK_SET_ERR(model != nullptr, "Tree model is null");
 
-    QSortFilterProxyModel *proxyModel = qobject_cast<QSortFilterProxyModel *>(model);
-
-    const int rowCount = proxyModel == nullptr ? model->rowCount(parent) : proxyModel->rowCount(parent);
+    auto proxyModel = qobject_cast<QSortFilterProxyModel *>(model);
+    int rowCount = proxyModel == nullptr ? model->rowCount(parent) : proxyModel->rowCount(parent);
     for (int i = 0; i < rowCount; i++) {
         const QModelIndex index = proxyModel == nullptr ? model->index(i, 0, parent) : proxyModel->mapToSource(proxyModel->index(i, 0, parent));
         GObject *object = ProjectViewModel::toObject(index);

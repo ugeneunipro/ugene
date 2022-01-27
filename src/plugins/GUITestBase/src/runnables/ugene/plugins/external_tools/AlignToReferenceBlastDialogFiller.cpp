@@ -90,18 +90,15 @@ void AlignToReferenceBlastDialogFiller::setReference(GUITestOpStatus &os, const 
 #define GT_METHOD_NAME "setReads"
 void AlignToReferenceBlastDialogFiller::setReads(GUITestOpStatus &os, const QStringList &readUrls, QWidget *dialog) {
     QWidget *addReadButton = GTWidget::findWidget(os, "addReadButton");
-    GT_CHECK(addReadButton, "addReadButton is NULL");
-
-    QListWidget *readsListWidget = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "readsListWidget", dialog));
-    GT_CHECK(readsListWidget, "readsListWidget is NULL");
+    auto readsListWidget = GTWidget::findListWidget(os, "readsListWidget", dialog);
 
     QStringList uniqueReads;
-    foreach (const QString &read, readUrls) {
+    for (const QString &read : qAsConst(readUrls)) {
         if (readsListWidget->findItems(read, Qt::MatchExactly).isEmpty()) {
             uniqueReads << read;
         }
     }
-    CHECK(!uniqueReads.isEmpty(), );
+    GT_CHECK(!uniqueReads.isEmpty(), "List of unique reads is empty!");
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, uniqueReads));
     GTWidget::click(os, addReadButton);

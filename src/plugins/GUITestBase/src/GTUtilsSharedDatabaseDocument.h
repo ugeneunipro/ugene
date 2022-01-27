@@ -48,7 +48,7 @@ public:
 
     static QString getItemPath(HI::GUITestOpStatus &os, const QModelIndex &itemIndex);
 
-    static void expantToItem(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &itemPath);
+    static void expandToItem(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &itemPath);
     static void expantToItem(HI::GUITestOpStatus &os, Document *databaseDoc, const QModelIndex &itemIndex);
 
     static void doubleClickItem(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &itemPath);

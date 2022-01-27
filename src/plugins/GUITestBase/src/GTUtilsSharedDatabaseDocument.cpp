@@ -286,12 +286,14 @@ QString GTUtilsSharedDatabaseDocument::getItemPath(HI::GUITestOpStatus &os, cons
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "expantToItem"
-void GTUtilsSharedDatabaseDocument::expantToItem(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &itemPath) {
+#define GT_METHOD_NAME "expandToItem"
+void GTUtilsSharedDatabaseDocument::expandToItem(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &itemPath) {
     GT_CHECK(databaseDoc != nullptr, "databaseDoc is NULL");
     GT_CHECK(!itemPath.isEmpty(), "Item path is empty");
 
     QStringList folders = itemPath.split(U2ObjectDbi::PATH_SEP, QString::SkipEmptyParts);
+    GT_CHECK(!folders.isEmpty(), "folders is empty");
+
     GTGlobals::FindOptions findOptions;
     findOptions.depth = 1;
     QModelIndex databaseDocIndex = GTUtilsProjectTreeView::findIndex(os, databaseDoc->getName(), findOptions);
@@ -299,11 +301,10 @@ void GTUtilsSharedDatabaseDocument::expantToItem(HI::GUITestOpStatus &os, Docume
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
     GTUtilsProjectTreeView::scrollToIndexAndMakeExpanded(os, treeView, databaseDocIndex);
 
-    CHECK(!folders.isEmpty(), );
     folders.pop_back();
 
     QModelIndex prevFolderIndex = databaseDocIndex;
-    foreach (const QString &folder, folders) {
+    for (const QString &folder : qAsConst(folders)) {
         QModelIndex folderIndex = GTUtilsProjectTreeView::findIndex(os, folder, prevFolderIndex, findOptions);
         GTUtilsProjectTreeView::doubleClickItem(os, folderIndex);
         prevFolderIndex = folderIndex;
@@ -311,13 +312,13 @@ void GTUtilsSharedDatabaseDocument::expantToItem(HI::GUITestOpStatus &os, Docume
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "expantToItem"
+#define GT_METHOD_NAME "expandToItem"
 void GTUtilsSharedDatabaseDocument::expantToItem(HI::GUITestOpStatus &os, Document *databaseDoc, const QModelIndex &itemIndex) {
     GT_CHECK(databaseDoc != nullptr, "databaseDoc is NULL");
     GT_CHECK(itemIndex.isValid(), "Item index is invalid");
 
     QString itemPath = getItemPath(os, itemIndex);
-    expantToItem(os, databaseDoc, itemPath);
+    expandToItem(os, databaseDoc, itemPath);
 }
 #undef GT_METHOD_NAME
 
@@ -326,7 +327,7 @@ void GTUtilsSharedDatabaseDocument::doubleClickItem(HI::GUITestOpStatus &os, Doc
     GT_CHECK(nullptr != databaseDoc, "databaseDoc is NULL");
     GT_CHECK(!itemPath.isEmpty(), "Item path is empty");
 
-    expantToItem(os, databaseDoc, itemPath);
+    expandToItem(os, databaseDoc, itemPath);
     const QModelIndex itemIndex = getItemIndex(os, databaseDoc, itemPath);
     GTUtilsProjectTreeView::doubleClickItem(os, itemIndex);
 }

@@ -946,15 +946,9 @@ GUI_TEST_CLASS_DEFINITION(test_3155) {
             : Filler(_os, "ORFDialogBase") {
         }
         void run() override {
-            QWidget *w = QApplication::activeWindow();
-            CHECK(nullptr != w, );
-            QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(nullptr != buttonBox, );
-            QPushButton *button = buttonBox->button(QDialogButtonBox::Cancel);
-            CHECK(nullptr != button, );
-            QCheckBox *check = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "ckCircularSearch", nullptr, {false}));
-            CHECK(nullptr == check, );
-            GTWidget::click(os, button);
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Cancel);
+            auto checkBox = GTWidget::findCheckBox(os, "ckCircularSearch");
+            GTWidget::click(os, checkBox);
         }
     };
     GTUtilsDialog::waitForDialog(os, new CancelClicker(os));
@@ -4548,18 +4542,9 @@ GUI_TEST_CLASS_DEFINITION(test_3768) {
             : Filler(_os, "ORFDialogBase") {
         }
         void run() override {
-            QWidget *w = QApplication::activeWindow();
-            CHECK(nullptr != w, );
-            QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(nullptr != buttonBox, );
-
-            QCheckBox *ckInit = GTWidget::findExactWidget<QCheckBox *>(os, "ckInit", w);
-            CHECK(nullptr != ckInit, );
-            GTCheckBox::setChecked(os, ckInit, false);
-
-            QPushButton *button = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK(nullptr != button, );
-            GTWidget::click(os, button);
+            QWidget *w = GTWidget::getActiveModalWidget(os);
+            GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "ckInit", w), false);
+            GTUtilsDialog::clickButtonBox(os, w, QDialogButtonBox::Ok);
         }
     };
 
@@ -4584,7 +4569,7 @@ GUI_TEST_CLASS_DEFINITION(test_3770) {
     //    Current state: the task doesn't cancel.
 
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "NW_003943623", 0, true, true, false, sandBoxDir));
-    GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."},  GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::cancelTask(os, "Download remote documents");
 
     CHECK_SET_ERR(GTUtilsTaskTreeView::countTasks(os, "Download remote documents") == 0, "Task was not canceled");
@@ -4643,20 +4628,8 @@ GUI_TEST_CLASS_DEFINITION(test_3773_1) {
         }
         void run() override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            QLineEdit *outHmmfileEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "outHmmfileEdit", dialog));
-            CHECK(outHmmfileEdit, );
-
-            GTLineEdit::setText(os, outHmmfileEdit, "37773_1_out.hmm");
-            // GTWidget::click(os, GTWidget::findWidget(os, "outHmmfileToolButton"));
-
-            QWidget *w = QApplication::activeWindow();
-            CHECK(nullptr != w, );
-            QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(nullptr != buttonBox, );
-
-            QPushButton *button = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK(nullptr != button, );
-            GTWidget::click(os, button);
+            GTLineEdit::setText(os, "outHmmfileEdit", "37773_1_out.hmm", dialog);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
@@ -5291,22 +5264,10 @@ GUI_TEST_CLASS_DEFINITION(test_3920) {
             : Filler(_os, "ORFDialogBase") {
         }
         void run() override {
-            QWidget *w = QApplication::activeWindow();
-            CHECK(nullptr != w, );
-
-            QLineEdit *start = w->findChild<QLineEdit *>("start_edit_line");
-            CHECK_SET_ERR(start != nullptr, "start_edit_line not found");
-            GTLineEdit::setText(os, start, "1000");
-
-            QLineEdit *end = w->findChild<QLineEdit *>("end_edit_line");
-            CHECK_SET_ERR(end != nullptr, "end_edit_line not found");
-            GTLineEdit::setText(os, end, "4000");
-
-            QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(nullptr != buttonBox, );
-            QPushButton *button = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK(nullptr != button, );
-            GTWidget::click(os, button);
+            QWidget *w = GTWidget::getActiveModalWidget(os);
+            GTLineEdit::setText(os, "start_edit_line", "1000", w);
+            GTLineEdit::setText(os, "end_edit_line", "4000", w);
+            GTUtilsDialog::clickButtonBox(os, w, QDialogButtonBox::Ok);
         }
     };
 

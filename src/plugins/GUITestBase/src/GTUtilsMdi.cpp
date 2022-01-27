@@ -361,7 +361,7 @@ void GTUtilsMdi::selectRandomRegion(HI::GUITestOpStatus &os, const QString &wind
 namespace {
 
 bool isWidgetPartVisible(QWidget *widget) {
-    CHECK(nullptr != widget, false);
+    CHECK(widget != nullptr, false);
 
     if (!widget->visibleRegion().isEmpty()) {
         return true;
@@ -380,10 +380,7 @@ bool isWidgetPartVisible(QWidget *widget) {
 
 #define GT_METHOD_NAME "isAnyPartOfWindowVisible"
 bool GTUtilsMdi::isAnyPartOfWindowVisible(HI::GUITestOpStatus &os, const QString &windowName) {
-    GTGlobals::FindOptions options;
-    options.failIfNotFound = false;
-    QWidget *window = findWindow(os, windowName, options);
-    CHECK(nullptr != window, false);
+    QWidget *window = findWindow(os, windowName, {false});
     return isWidgetPartVisible(window);
 }
 #undef GT_METHOD_NAME
