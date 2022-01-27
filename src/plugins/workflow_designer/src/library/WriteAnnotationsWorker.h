@@ -82,6 +82,7 @@ private:
     IntegralBus *annotationsPort;
     QList<AnnotationTableObject *> createdAnnotationObjects;
     QMap<QString, QList<AnnotationTableObject *>> annotationsByUrl;
+    QSet<QString> existedResultFiles;
 
 };  // WriteAnnotationsWorker
 

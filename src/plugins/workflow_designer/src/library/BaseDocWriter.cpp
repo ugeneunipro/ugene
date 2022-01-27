@@ -155,7 +155,7 @@ QString BaseDocWriter::getBaseName(const MessageMetadata &metadata, bool groupBy
         return metadata.getDatasetName();
     } else if (!metadata.getFileUrl().isEmpty()) {
         QFileInfo info(metadata.getFileUrl());
-        return info.baseName();
+        return info.completeBaseName();
     } else if (!metadata.getDatabaseId().isEmpty()) {
         return metadata.getDatabaseId();
     }

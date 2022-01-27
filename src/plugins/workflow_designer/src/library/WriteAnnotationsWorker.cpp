@@ -152,9 +152,12 @@ Task *WriteAnnotationsWorker::tick() {
             updateResultPath(inputMessage.getMetadataId(), formatId, storage, resultPath, merge);
             CHECK(!resultPath.isEmpty(), new FailTask(tr("Unspecified URL to write")));
             resultPath = context->absolutePath(resultPath);
+            // to avoide uniting at the same file in case of similar names
+            resultPath = GUrlUtils::rollFileName(resultPath, "_", existedResultFiles);
         }
 
         fetchIncomingAnnotations(qm, resultPath);
+        existedResultFiles << resultPath;
     }
 
     bool done = annotationsPort->isEnded();
