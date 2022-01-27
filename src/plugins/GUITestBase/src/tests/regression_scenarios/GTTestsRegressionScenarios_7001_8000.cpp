@@ -1293,21 +1293,26 @@ GUI_TEST_CLASS_DEFINITION(test_7415_3) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7419) {
-    // Copy "samples/Sanger/alignment.ugenedb" to sandbox
-    GTFile::copy(os, dataDir + "samples/Sanger/alignment.ugenedb", sandBoxDir + "test_7419.ugenedb");
+    // Copy "_common_data/ugenedb/murine.ugenedb" to sandbox
+    GTFile::copy(os, testDir + "_common_data/ugenedb/murine.ugenedb", sandBoxDir + "test_7419.ugenedb");
 
     // Open the copied file
     GTFileDialog::openFile(os, sandBoxDir + "test_7419.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Now remove it from the disk manually
+    GTLogTracer lt;
     QFile::remove(sandBoxDir + "test_7419.ugenedb");
 
     // Expected: the message box about lost database -> click OK -> view is closed.
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "The document 'test_7419.ugenedb' was removed from its original folder. Therefore, it will be deleted from the current project"));
 
     // The document update happens each 3 seconds, the messagebox will appear on the closest update
-    GTGlobals::sleep(3000);
+    GTUtilsDialog::checkNoActiveWaiters(os, 3000);
+
+    // Expected: no safe points
+    auto joinedErrorList = lt.getJoinedErrorString();
+    CHECK_SET_ERR(!joinedErrorList.contains("Trying to recover from error"), "Unexpected SAFE_POINT has appeared");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7438) {
