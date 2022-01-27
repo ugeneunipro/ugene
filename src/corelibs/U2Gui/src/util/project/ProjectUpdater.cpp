@@ -134,7 +134,7 @@ void ProjectUpdater::fetchObjectsInUse(const U2DbiRef &dbiRef, U2OpStatus &os) {
 
 void ProjectUpdater::updateAccessedObjects() {
     const QList<GObjectViewWindow *> activeViews = GObjectViewUtils::getAllActiveViews();
-    QMap<U2DbiRef, DbiConnection *> dbiRef2Connections;  // when changing the code below, beware mem leaks
+    QMap<U2DbiRef, QSharedPointer<DbiConnection>> dbiRef2Connections;  // when changing the code below, beware mem leaks
     foreach (GObjectViewWindow *view, activeViews) {
         foreach (GObject *object, view->getObjects()) {
             U2OpStatus2Log os;
@@ -144,17 +144,16 @@ void ProjectUpdater::updateAccessedObjects() {
             }
             const U2EntityRef ref = object->getEntityRef();
             if (!dbiRef2Connections.contains(ref.dbiRef)) {
-                auto dbiCon = new DbiConnection(ref.dbiRef, os);
+                QSharedPointer<DbiConnection> dbiCon(new DbiConnection(ref.dbiRef, os));
                 CHECK_CONTINUE(!os.hasError());
 
                 dbiRef2Connections.insert(ref.dbiRef, dbiCon);
             }
-            DbiConnection *con = dbiRef2Connections.value(ref.dbiRef);
+            auto con = dbiRef2Connections.value(ref.dbiRef);
             SAFE_POINT(con->dbi != nullptr, "Error: connection is NULL!", );
             con->dbi->getObjectDbi()->updateObjectAccessTime(ref.entityId, os);
         }
     }
-    qDeleteAll(dbiRef2Connections.values());
 }
 
 }  // namespace U2
