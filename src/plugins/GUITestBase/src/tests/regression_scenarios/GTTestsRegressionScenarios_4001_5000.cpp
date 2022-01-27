@@ -778,13 +778,11 @@ GUI_TEST_CLASS_DEFINITION(test_4091) {
                            << "NC_004718 features";
 
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, doc2Objects, acceptableTypes, ProjectTreeItemSelectorDialogFiller::Separate));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__ADD_MENU << ACTION_PROJECT__ADD_OBJECT));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__ADD_MENU, ACTION_PROJECT__ADD_OBJECT}));
     GTUtilsProjectTreeView::click(os, "CVU55762.gb", Qt::RightButton);
-
-    GTUtilsTaskTreeView::checkTaskIsPresent(os, "Add objects to document");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    const QModelIndex docIndex = GTUtilsProjectTreeView::findIndex(os, "CVU55762.gb");
+    QModelIndex docIndex = GTUtilsProjectTreeView::findIndex(os, "CVU55762.gb");
     GTUtilsProjectTreeView::checkItem(os, "CVU55762", docIndex);
     GTUtilsProjectTreeView::checkItem(os, "CVU55762 features", docIndex);
     GTUtilsProjectTreeView::checkItem(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)", docIndex);
