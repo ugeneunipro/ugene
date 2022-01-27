@@ -637,7 +637,8 @@ GUI_TEST_CLASS_DEFINITION(test_0598) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Graph", "visual_properties_action"}));
     QWidget *graphView = GTUtilsSequenceView::getGraphView(os);
     GTWidget::click(os, graphView, Qt::RightButton);
-    GTUtilsTaskTreeView::checkTask(os, "Calculate graph points");
+    GTUtilsTaskTreeView::checkTaskIsPresent(os, "Calculate graph points");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0605) {

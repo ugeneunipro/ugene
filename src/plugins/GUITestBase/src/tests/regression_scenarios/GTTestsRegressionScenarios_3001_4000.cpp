@@ -2491,7 +2491,7 @@ GUI_TEST_CLASS_DEFINITION(test_3414) {
     GTGlobals::sleep(3000);  // Wait for label to change.
     QString timeAfter = timeLabel->text();
     CHECK_SET_ERR(timeBefore != timeAfter, "timer is not changed, timeBefore: " + timeBefore + ", timeAfter: " + timeAfter);
-    GTUtilsTask::cancelTask(os, "Execute workflow");
+    GTUtilsTaskTreeView::cancelTask(os, "Execute workflow");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3428) {
@@ -3138,7 +3138,7 @@ GUI_TEST_CLASS_DEFINITION(test_3519_2) {
     GTUtilsDialog::waitForDialog(os, new SiteconCustomFiller(os));
     GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find TFBS with SITECON..."});
 
-    CHECK_SET_ERR(GTUtilsTaskTreeView::checkTask(os, "SITECON search") == false, "SITECON task is still running");
+    GTUtilsTaskTreeView::checkTaskIsPresent(os, "SITECON search", false);
     GTUtilsTaskTreeView::cancelTask(os, "Auto-annotations update task");
     GTUtilsTaskTreeView::waitTaskFinished(os, 60000);
 }
@@ -3999,12 +3999,12 @@ GUI_TEST_CLASS_DEFINITION(test_3656) {
     GTUtils::checkExportServiceIsEnabled(os);
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, idx));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE}));
     GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, testDir + "_common_data/scenarios/sandbox/", "test_3656.fa"));
     GTMouseDriver::click(Qt::RightButton);
 
     QString exportTaskName = "Opening view for document: test_3656.fa";
-    CHECK_SET_ERR(GTUtilsTaskTreeView::checkTask(os, exportTaskName), "Task is not running: " + exportTaskName);
+    GTUtilsTaskTreeView::checkTaskIsPresent(os, exportTaskName);
 
     GTUtilsTaskTreeView::cancelTask(os, exportTaskName);
 }

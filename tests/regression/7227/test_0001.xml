@@ -1,0 +1,28 @@
+<multi-test>
+<run-cmdline
+task="!common_data_dir!/regression/7227/7227.uwl"
+in="!common_data_dir!genbank/murine_sarcoma.gb"
+out="!tmp_data_dir!7227_out.ugenedb"
+/>
+
+<load-document index="doc" url="7227_out.ugenedb" io="local_file" format="usqlite" dir="temp"/>
+
+<check-num-objects doc="doc" value="2"/>
+
+<check-document-object-types doc="doc" value="OT_SEQUENCE,OT_ANNOTATIONS"/>
+
+<find-object-by-name index="obj" doc="doc" name="NC_001363 features" type="OT_ANNOTATIONS" />
+
+<find-annotation-by-name index="ann" obj="obj" name="misc_feature" number="1" /> 
+<check-annotation-location annotation="ann" location="5245..5833" complement="0" />
+
+<find-annotation-by-name index="ann2" obj="obj" name="misc_feature" number="0" /> 
+<check-annotation-location annotation="ann2" location="2..590" complement="0" />
+
+<find-annotation-by-name index="ann3" obj="obj" name="CDS" number="1" /> 
+<check-annotation-location annotation="ann3" location="1042..2658" complement="0" />
+
+<find-annotation-by-name index="ann4" obj="obj" name="CDS" number="2" /> 
+<check-annotation-location annotation="ann4" location="3875..4999" complement="0" />
+
+</multi-test>
