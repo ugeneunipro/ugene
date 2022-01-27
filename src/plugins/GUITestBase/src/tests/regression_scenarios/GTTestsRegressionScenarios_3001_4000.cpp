@@ -95,7 +95,6 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsSharedDatabaseDocument.h"
-#include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
@@ -935,7 +934,7 @@ GUI_TEST_CLASS_DEFINITION(test_3144) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3155) {
-    // 1. Open "humam_T1"
+    // 1. Open "human_T1"
     // Expected state: "Circular search" checkbox does not exist
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -946,9 +945,9 @@ GUI_TEST_CLASS_DEFINITION(test_3155) {
             : Filler(_os, "ORFDialogBase") {
         }
         void run() override {
-            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Cancel);
-            auto checkBox = GTWidget::findCheckBox(os, "ckCircularSearch");
-            GTWidget::click(os, checkBox);
+            auto dialog = GTWidget::getActiveModalWidget(os);
+            CHECK_SET_ERR(GTWidget::findWidget(os, "ckCircularSearch", dialog, {false}) == nullptr, "ckCircularSearch must not exist");
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
     };
     GTUtilsDialog::waitForDialog(os, new CancelClicker(os));

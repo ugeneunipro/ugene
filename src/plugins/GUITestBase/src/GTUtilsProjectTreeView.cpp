@@ -22,6 +22,7 @@
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTLineEdit.h>
+#include <primitives/GTTreeView.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 #include <utils/GTThread.h>
@@ -41,7 +42,6 @@
 
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
-
 namespace U2 {
 using namespace HI;
 
@@ -184,25 +184,8 @@ void GTUtilsProjectTreeView::scrollTo(HI::GUITestOpStatus &os, const QString &it
 
 #define GT_METHOD_NAME "scrollToIndexAndMakeExpanded"
 void GTUtilsProjectTreeView::scrollToIndexAndMakeExpanded(HI::GUITestOpStatus &os, QTreeView *treeView, const QModelIndex &index) {
-    GT_CHECK(index.isValid(), "Item index is invalid");
-    GT_CHECK(treeView != nullptr, "Tree view is null");
-
-    class MainThreadActionExpand : public CustomScenario {
-    public:
-        MainThreadActionExpand(QTreeView *_treeView, const QModelIndex &_index)
-            : treeView(_treeView), index(_index) {
-        }
-        void run(HI::GUITestOpStatus &) override {
-            treeView->setExpanded(index, true);
-        }
-        QTreeView *treeView = nullptr;
-        QModelIndex index;
-    };
-
-    GTThread::runInMainThread(os, new MainThreadActionExpand(treeView, index));
-    GTThread::waitForMainThread();
-
-    GTWidget::scrollToIndex(os, treeView, index);
+    GTTreeView::scrollToItem(os, treeView, index);
+    GTTreeView::expand(os, treeView, index);
 }
 #undef GT_METHOD_NAME
 
@@ -301,7 +284,11 @@ QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus &os, const QSt
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findIndex4"
-QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options) {
+QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus &os,
+                                              QTreeView *treeView,
+                                              const QString &itemName,
+                                              const QModelIndex &parent,
+                                              const GTGlobals::FindOptions &options) {
     GT_CHECK_RESULT(treeView != nullptr, "Tree view is NULL", QModelIndex());
     GT_CHECK_RESULT(!itemName.isEmpty(), "Item name is empty", QModelIndex());
 
@@ -571,7 +558,7 @@ void GTUtilsProjectTreeView::checkObjectTypes(HI::GUITestOpStatus &os, QTreeView
     auto proxyModel = qobject_cast<QSortFilterProxyModel *>(model);
     int rowCount = proxyModel == nullptr ? model->rowCount(parent) : proxyModel->rowCount(parent);
     for (int i = 0; i < rowCount; i++) {
-        const QModelIndex index = proxyModel == nullptr ? model->index(i, 0, parent) : proxyModel->mapToSource(proxyModel->index(i, 0, parent));
+        QModelIndex index = proxyModel == nullptr ? model->index(i, 0, parent) : proxyModel->mapToSource(proxyModel->index(i, 0, parent));
         GObject *object = ProjectViewModel::toObject(index);
         if (object != nullptr && Qt::NoItemFlags != model->flags(index) && !acceptableTypes.contains(object->getGObjectType()))
             CHECK_SET_ERR(object == nullptr || Qt::NoItemFlags == model->flags(index) || acceptableTypes.contains(object->getGObjectType()), "Object has unexpected type");
