@@ -159,7 +159,7 @@ void GObject::setObjectRelations(const QList<GObjectRelation> &list) {
 void GObject::setRelationsInDb(QList<GObjectRelation> &list) const {
     U2OpStatus2Log os;
     DbiConnection con(entityRef.dbiRef, os);
-    SAFE_POINT_OP(os, );
+    CHECK_OP(os, );  // Database is not available for some reason. It is may be deleted.
     U2ObjectRelationsDbi *rDbi = con.dbi->getObjectRelationsDbi();
     SAFE_POINT(rDbi != nullptr, "Invalid object relations DBI detected!", );
     rDbi->removeReferencesForObject(entityRef.entityId, os);
