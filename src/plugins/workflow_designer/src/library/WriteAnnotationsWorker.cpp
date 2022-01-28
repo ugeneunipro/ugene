@@ -148,12 +148,22 @@ Task *WriteAnnotationsWorker::tick() {
         const QVariantMap qm = inputMessage.getData().toMap();
 
         if (LocalFs == storage) {
-            resultPath = resultPath.isEmpty() ? qm.value(BaseSlots::URL_SLOT().getId()).value<QString>() : resultPath;
+            resultPath = qm.value(BaseSlots::URL_SLOT().getId(), resultPath).value<QString>();
+            // We have two cases, when we need to write several annotation objects to the same file:
+            // 1) If the path to the output file has been defined as a parameter,
+            // 2) If there are several (two or more) annotaiton objects has come from the same file.
+            // 
+            // And we have a case, when we need to write each annotation object to the separate file (roll file name):
+            // 1) When we recieve annotations from files, which have the same name, but located in different directories.
+            // The flag below handle all these cases.
+            bool write2TheSameFile = !resultPath.isEmpty();
             updateResultPath(inputMessage.getMetadataId(), formatId, storage, resultPath, merge);
             CHECK(!resultPath.isEmpty(), new FailTask(tr("Unspecified URL to write")));
             resultPath = context->absolutePath(resultPath);
             // to avoide uniting at the same file in case of similar names
-            resultPath = GUrlUtils::rollFileName(resultPath, "_", existedResultFiles);
+            if (!write2TheSameFile) {
+                resultPath = GUrlUtils::rollFileName(resultPath, "_", existedResultFiles);
+            }
         }
 
         fetchIncomingAnnotations(qm, resultPath);
