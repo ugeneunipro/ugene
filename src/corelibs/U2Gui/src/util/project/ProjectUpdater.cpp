@@ -134,7 +134,7 @@ void ProjectUpdater::fetchObjectsInUse(const U2DbiRef &dbiRef, U2OpStatus &os) {
 
 void ProjectUpdater::updateAccessedObjects() {
     const QList<GObjectViewWindow *> activeViews = GObjectViewUtils::getAllActiveViews();
-    QMap<U2DbiRef, QSharedPointer<DbiConnection>> dbiRef2Connections;  // when changing the code below, beware mem leaks
+    QMap<U2DbiRef, QSharedPointer<DbiConnection>> dbiRef2Connections;
     foreach (GObjectViewWindow *view, activeViews) {
         foreach (GObject *object, view->getObjects()) {
             U2OpStatus2Log os;
