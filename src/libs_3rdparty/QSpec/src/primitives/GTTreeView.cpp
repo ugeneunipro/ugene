@@ -171,5 +171,18 @@ void GTTreeView::click(GUITestOpStatus &os, QTreeView *tree, const QModelIndex &
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "doubleClick"
+void GTTreeView::doubleClick(GUITestOpStatus &os, QTreeView *tree, const QModelIndex &itemIndex) {
+    GT_CHECK_RESULT(tree != nullptr, "tree is NULL", );
+    GT_CHECK_RESULT(itemIndex.isValid(), "itemIndex is not valid", );
+
+    scrollToItem(os, tree, itemIndex);
+
+    QPoint point = getItemCenter(os, tree, itemIndex);
+    GTMouseDriver::moveTo(point);
+    GTMouseDriver::doubleClick();
+}
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 }  // namespace HI

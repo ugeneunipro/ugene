@@ -191,10 +191,7 @@ void GTUtilsProjectTreeView::scrollToIndexAndMakeExpanded(HI::GUITestOpStatus &o
 
 #define GT_METHOD_NAME "doubleClickItem"
 void GTUtilsProjectTreeView::doubleClickItem(HI::GUITestOpStatus &os, const QModelIndex &itemIndex) {
-    scrollToIndexAndMakeExpanded(os, getTreeView(os), itemIndex);
-    GTMouseDriver::moveTo(getItemCenter(os, itemIndex));
-    GTMouseDriver::doubleClick();
-    GTThread::waitForMainThread();
+    GTTreeView::doubleClick(os, getTreeView(os), itemIndex);
 }
 #undef GT_METHOD_NAME
 

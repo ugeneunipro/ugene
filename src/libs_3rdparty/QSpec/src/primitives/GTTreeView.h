@@ -44,6 +44,9 @@ public:
     /** Clicks given item. */
     static void click(GUITestOpStatus &os, QTreeView *tree, const QModelIndex &itemIndex, const Qt::Key &keyModifier = Qt::Key_unknown);
 
+    /** Clicks given item. */
+    static void doubleClick(GUITestOpStatus &os, QTreeView *tree, const QModelIndex &itemIndex);
+
     /** Scrolls the item into view. */
     static void scrollToItem(GUITestOpStatus &os, QTreeView *tree, const QModelIndex &itemIndex);
 
