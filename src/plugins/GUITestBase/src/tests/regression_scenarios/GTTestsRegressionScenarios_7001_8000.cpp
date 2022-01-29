@@ -62,6 +62,7 @@
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsNotifications.h"
 #include "GTUtilsOptionPanelMSA.h"
+#include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsPhyTree.h"
 #include "GTUtilsProject.h"
@@ -2042,6 +2043,42 @@ GUI_TEST_CLASS_DEFINITION(test_7517) {
     GTUtilsLog::checkMessageWithTextCount(os, "Registering new task: Render overview", 1, "check3");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7531) {
+
+    // Open "samples/FASTA/human_T1.fa".
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Click "Ctrl+N" and create the annotation on "80..90"
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "test_7531", "80..90"));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+
+    // Select the created annotation and click "Delete".
+    GTUtilsAnnotationsTreeView::clickItem(os, "test_7531", 1, false);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+
+    // Open the "In silico PCR" tab.
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::InSilicoPcr);
+
+    // Set "TTGTCAGATTCACCAAAGTT" as a forward primer and "CTCTCTTCTGGCCTGTAGGGTTTCTG" as a reverse primer.
+    GTUtilsOptionPanelSequenceView::setForwardPrimer(os, "TTGTCAGATTCACCAAAGTT");
+    GTUtilsOptionPanelSequenceView::setReversePrimer(os, "CTCTCTTCTGGCCTGTAGGGTTTCTG");
+
+    // Click "Find product(s) anyway".
+    GTUtilsOptionPanelSequenceView::pressFindProducts(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: the only product has been found.
+    const int count = GTUtilsOptionPanelSequenceView::productsCount(os);
+    CHECK_SET_ERR(count == 1, QString("Unexpected products quantity, expected: 1, current: %1").arg(count));
+
+    // Click "Extract primer".
+    GTUtilsOptionPanelSequenceView::pressExtractProduct(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: no crash
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7535) {
     // Check that UGENE does not crash when tooltip is invoked on non-standard annotations.
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/zero_length_feature.gb");
@@ -2066,6 +2103,35 @@ GUI_TEST_CLASS_DEFINITION(test_7535) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, normalLengthComplementaryItem));
     tooltip = GTUtilsToolTip::getToolTip();
     CHECK_SET_ERR(tooltip.contains("<b>Sequence</b> = GAATTCTGCAA"), "Expected complementary sequence info in tooltip for a normal annotation: " + tooltip);
+
+    auto joinedItem = GTUtilsAnnotationsTreeView::findItem(os, "joined");
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, joinedItem));
+    tooltip = GTUtilsToolTip::getToolTip();
+    CHECK_SET_ERR(tooltip.contains("<b>Sequence</b> = TCT"), "Expected dna sequence info in tooltip for a joined annotation: " + tooltip);
+    CHECK_SET_ERR(tooltip.contains("<b>Translation</b> = S"), "Expected amino sequence info in tooltip for a joined annotation: " + tooltip);
+
+    auto joinedComplementaryItem = GTUtilsAnnotationsTreeView::findItem(os, "joined_c");
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, joinedComplementaryItem));
+    tooltip = GTUtilsToolTip::getToolTip();
+    CHECK_SET_ERR(tooltip.contains("<b>Sequence</b> = AGA"), "Expected dna sequence info in tooltip for a joined complementary annotation: " + tooltip);
+    CHECK_SET_ERR(tooltip.contains("<b>Translation</b> = R"), "Expected amino sequence info in tooltip for a joined complementary annotation: " + tooltip);
+}
+
+
+GUI_TEST_CLASS_DEFINITION(test_7539) {
+    // Check that UGENE shows a tooltip when a small 1-char annotation region is hovered in sequence view.
+    GTFileDialog::openFile(os, testDir + "_common_data/genbank/zero_length_feature.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+   GTUtilsSequenceView::moveMouseToAnnotationInDetView(os, "joined", 30);
+   QString tooltip = GTUtilsToolTip::getToolTip();
+   CHECK_SET_ERR(tooltip.contains("<b>Sequence</b> = TCT"), "Expected dna sequence info in tooltip for a joined annotation: " + tooltip);
+   CHECK_SET_ERR(tooltip.contains("<b>Translation</b> = S"), "Expected amino sequence info in tooltip for a joined annotation: " + tooltip);
+
+   GTUtilsSequenceView::moveMouseToAnnotationInDetView(os, "joined_c", 30);
+   tooltip = GTUtilsToolTip::getToolTip();
+   CHECK_SET_ERR(tooltip.contains("<b>Sequence</b> = AGA"), "Expected dna sequence info in tooltip for a joined complementary annotation: " + tooltip);
+   CHECK_SET_ERR(tooltip.contains("<b>Translation</b> = R"), "Expected amino sequence info in tooltip for a joined complementary annotation: " + tooltip);
 }
 
 }  // namespace GUITest_regression_scenarios

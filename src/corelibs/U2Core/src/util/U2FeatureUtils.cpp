@@ -195,10 +195,9 @@ void U2FeatureUtils::addSubFeatures(const QVector<U2Region> &regions, const U2St
 }
 
 QList<FeatureAndKey> U2FeatureUtils::getSortedSubgroups(QList<FeatureAndKey> &fkList, const U2DataId &parentId) {
+    CHECK(!fkList.isEmpty(), {});
+
     QList<FeatureAndKey> result;
-    if (fkList.size() == 0) {
-        return result;
-    }
     int i = 0;
     FeatureAndKey fkI = fkList[i];
     while (fkI.feature.featureClass == U2Feature::Group) {
@@ -208,6 +207,8 @@ QList<FeatureAndKey> U2FeatureUtils::getSortedSubgroups(QList<FeatureAndKey> &fk
         } else {
             i++;
         }
+        CHECK_BREAK(!fkList.isEmpty());
+
         fkI = fkList[i];
     }
     QList<FeatureAndKey> resultCopy = result;

@@ -209,4 +209,36 @@ QDataStream &operator>>(QDataStream &in, U2Region &myObj) {
     return in;
 }
 
+QVector<U2Region> U2Region::headOf(const QVector<U2Region> &regions, qint64 headLength) {
+    QVector<U2Region> result;
+    qint64 currentLength = 0;
+    for (const U2Region &region : qAsConst(regions)) {
+        if (currentLength + region.length >= headLength) {
+            qint64 trimmedRegionLength = headLength - currentLength;
+            result << U2Region(region.startPos, trimmedRegionLength);
+            break;
+        }
+        result << region;
+        currentLength += region.length;
+    }
+    return result;
+}
+
+QVector<U2Region> U2Region::tailOf(const QVector<U2Region> &regions, qint64 tailLength) {
+    QVector<U2Region> result;
+    qint64 currentLength = 0;
+    for (int i = regions.length(); --i >= 0;) {
+        const U2Region &region = regions[i];
+        if (currentLength + region.length >= tailLength) {
+            qint64 trimmedRegionLength = tailLength - currentLength;
+            result << U2Region(region.endPos() - trimmedRegionLength, trimmedRegionLength);
+            break;
+        }
+        result << region;
+        currentLength += region.length;
+    }
+    std::reverse(result.begin(), result.end());
+    return result;
+}
+
 }  // namespace U2

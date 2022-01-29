@@ -1238,21 +1238,24 @@ bool AnnotationsTreeView::eventFilter(QObject *o, QEvent *e) {
     const QEvent::Type etype = e->type();
     switch (etype) {
         case QEvent::ToolTip: {
-            const QHelpEvent *he = static_cast<const QHelpEvent *>(e);
-            const QPoint globalPos = he->globalPos();
-            const QPoint viewportPos = tree->viewport()->mapFromGlobal(globalPos);
-            const QTreeWidgetItem *item = tree->itemAt(viewportPos);
-            if (nullptr != item) {
-                const AVItem *avi = static_cast<const AVItem *>(item);
-                if (AVItemType_Annotation == avi->type) {
-                    const AVAnnotationItem *ai = static_cast<const AVAnnotationItem *>(avi);
-                    const ADVSequenceObjectContext *sc = ctx->getSequenceContext(ai->getAnnotationTableObject());
-                    const bool seqObjectContextValid = (nullptr != sc);
-                    const QString tip = Annotation::getQualifiersTip(ai->annotation->getData(), 15, seqObjectContextValid ? sc->getSequenceObject() : nullptr, seqObjectContextValid ? sc->getComplementTT() : nullptr);
-                    if (!tip.isEmpty()) {
-                        QToolTip::showText(he->globalPos(), tip);
-                        return true;
-                    }
+            auto *helpEvent = static_cast<const QHelpEvent *>(e);
+            QPoint globalPos = helpEvent->globalPos();
+            QPoint viewportPos = tree->viewport()->mapFromGlobal(globalPos);
+            auto avItem = static_cast<const AVItem *>(tree->itemAt(viewportPos));
+            if (avItem != nullptr && avItem->type == AVItemType_Annotation) {
+                auto *annotationItem = static_cast<const AVAnnotationItem *>(avItem);
+                ADVSequenceObjectContext *sequenceContext = ctx->getSequenceContext(annotationItem->getAnnotationTableObject());
+                bool isValidSequence = sequenceContext != nullptr;
+
+                const SharedAnnotationData &annotationData = annotationItem->annotation->getData();
+                int maxTextRows = 15;
+                U2SequenceObject *sequenceObject = isValidSequence ? sequenceContext->getSequenceObject() : nullptr;
+                DNATranslation *complTT = isValidSequence ? sequenceContext->getComplementTT() : nullptr;
+                DNATranslation *aminoTT = isValidSequence ? sequenceContext->getAminoTT() : nullptr;
+                QString tip = Annotation::getQualifiersTip(annotationData, maxTextRows, sequenceObject, complTT, aminoTT);
+                if (!tip.isEmpty()) {
+                    QToolTip::showText(helpEvent->globalPos(), tip);
+                    return true;
                 }
             }
             return false;

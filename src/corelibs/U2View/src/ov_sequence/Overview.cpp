@@ -315,20 +315,20 @@ void Overview::wheelEvent(QWheelEvent *we) {
 
 bool Overview::event(QEvent *e) {
     if (e->type() == QEvent::ToolTip) {
-        QHelpEvent *he = static_cast<QHelpEvent *>(e);
-        QString tip = createToolTip(he);
+        auto helpEvent = static_cast<QHelpEvent *>(e);
+        int x = overviewRenderArea->mapFrom(this, helpEvent->pos()).x();
+        QString tip = createToolTip(x);
         if (!tip.isEmpty()) {
-            QToolTip::showText(he->globalPos(), tip);
+            QToolTip::showText(helpEvent->globalPos(), tip);
         }
     }
     return GSequenceLineView::event(e);
 }
 
-QString Overview::createToolTip(QHelpEvent *he) {
-    QPoint renderAreaPos = toRenderAreaPoint(he->pos());
+QString Overview::createToolTip(int renderAreaXOffset) {
     int halfChar = overviewRenderArea->getCurrentScale() / 2;
-    qint64 pos = overviewRenderArea->coordXToPos(renderAreaPos.x() + halfChar);
-    qint64 pos2 = overviewRenderArea->coordXToPos(renderAreaPos.x() + halfChar + 1);
+    qint64 pos = overviewRenderArea->coordXToPos(renderAreaXOffset + halfChar);
+    qint64 pos2 = overviewRenderArea->coordXToPos(renderAreaXOffset + halfChar + 1);
     qint64 delta = 0;
     if (pos2 - 1 > pos) {
         delta = pos2 - pos - 1;

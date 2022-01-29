@@ -100,7 +100,6 @@
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
-#include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
@@ -1297,7 +1296,7 @@ GUI_TEST_CLASS_DEFINITION(test_1080) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     // Allow task to start and check there are no errors
     QString taskName = "Execute workflow";
-    GTUtilsTaskTreeView::checkTask(os, taskName);
+    GTUtilsTaskTreeView::checkTaskIsPresent(os, taskName);
     QString taskStatus = GTUtilsTaskTreeView::getTaskStatus(os, taskName);
     CHECK_SET_ERR(taskStatus == "Running", "The task status is incorrect: " + taskStatus);
     GTUtilsTaskTreeView::cancelTask(os, taskName);  // Cancel task because we don't need the result
@@ -6750,7 +6749,7 @@ GUI_TEST_CLASS_DEFINITION(test_1693) {
     QWidget *samplesWidget = GTWidget::findWidget(os, "samples");
     CHECK_SET_ERR(samplesWidget != nullptr, "Samples widget is NULL");
     CHECK_SET_ERR(!samplesWidget->isEnabled(), "Samples widget is unexpectedly enabled");
-    GTUtilsTask::cancelTask(os, "Execute workflow");
+    GTUtilsTaskTreeView::cancelTask(os, "Execute workflow");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1700) {
@@ -7899,7 +7898,7 @@ GUI_TEST_CLASS_DEFINITION(test_1984) {
 
 GUI_TEST_CLASS_DEFINITION(test_1986) {
     // Download a sequence from NCBI. Use "limit" for results.
-    GTUtilsDialog::waitForDialog(os, new NCBISearchDialogSimpleFiller(os, "rat", false, 10, "Organism"));
+    GTUtilsDialog::waitForDialog(os, new NCBISearchDialogSimpleFiller(os, "rabbit", false, 10, "Organism"));
     GTMenu::clickMainMenuItem(os, {"File", "Search NCBI GenBank..."});
 
     // Expected state: the chosen sequence has been downloaded, saved in FASTA format and displayed in sequence view
