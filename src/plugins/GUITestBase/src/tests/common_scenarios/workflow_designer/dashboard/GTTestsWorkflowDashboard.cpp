@@ -55,11 +55,7 @@ namespace U2 {
 namespace GUITest_common_scenarios_workflow_dashboard {
 using namespace HI;
 
-namespace {
-
-QString getExternalToolPath(GUITestOpStatus &os, const QString &toolName) {
-    Q_UNUSED(os);
-
+static QString getExternalToolPath(GUITestOpStatus &os, const QString &toolName) {
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     CHECK_SET_ERR_RESULT(etRegistry != nullptr, "ExternalToolRegistry is nullptr", QString());
 
@@ -73,8 +69,8 @@ QString getExternalToolPath(GUITestOpStatus &os, const QString &toolName) {
     return toolPath;
 }
 
-QString getExternalToolDirPath(GUITestOpStatus &os, const QString &toolName, const QString &dirNamePart) {
-    const QString toolPath = getExternalToolPath(os, toolName);
+static QString getExternalToolDirPath(GUITestOpStatus &os, const QString &toolName, const QString &dirNamePart) {
+    QString toolPath = getExternalToolPath(os, toolName);
     QDir toolDir = QFileInfo(toolPath).dir();
     while (!toolDir.dirName().contains(dirNamePart)) {
         if (!toolDir.cdUp()) {
@@ -84,8 +80,8 @@ QString getExternalToolDirPath(GUITestOpStatus &os, const QString &toolName, con
     return toolDir.path();
 }
 
-QString putToolToFolderWithSpaces(GUITestOpStatus &os, const QString &toolName, const QString &toolDirPath, const QString &sandboxDir) {
-    const QString toolPath = getExternalToolPath(os, toolName);
+static QString putToolToFolderWithSpaces(GUITestOpStatus &os, const QString &toolName, const QString &toolDirPath, const QString &sandboxDir) {
+    QString toolPath = getExternalToolPath(os, toolName);
     CHECK(!toolPath.contains(" "), toolPath);
 
     QTemporaryDir dirWithSpaces(QFileInfo(sandboxDir).absolutePath() + "/folder XXXXXX");
@@ -99,7 +95,7 @@ QString putToolToFolderWithSpaces(GUITestOpStatus &os, const QString &toolName, 
     return newToolPath;
 }
 
-QString putToolToFolderWithoutSpaces(GUITestOpStatus &os, const QString &toolName, const QString &toolDirPath, const QString &sandboxDir) {
+static QString putToolToFolderWithoutSpaces(GUITestOpStatus &os, const QString &toolName, const QString &toolDirPath, const QString &sandboxDir) {
     const QString toolPath = getExternalToolPath(os, toolName);
     CHECK(toolPath.contains(" "), toolPath);
 
@@ -126,7 +122,7 @@ QString putToolToFolderWithoutSpaces(GUITestOpStatus &os, const QString &toolNam
     return newToolPath;
 }
 
-QMap<QString, QList<QPair<QString, QStringList>>> getNodesTexts(GUITestOpStatus &os) {
+static QMap<QString, QList<QPair<QString, QStringList>>> getNodesTexts(GUITestOpStatus &os) {
     const int firstLevelNodesCount = GTUtilsDashboard::getChildrenNodesCount(os, GTUtilsDashboard::TREE_ROOT_ID);
     QMap<QString, QList<QPair<QString, QStringList>>> nodesTexts;
     for (int i = 0; i < firstLevelNodesCount; i++) {
@@ -151,7 +147,7 @@ QMap<QString, QList<QPair<QString, QStringList>>> getNodesTexts(GUITestOpStatus 
     return nodesTexts;
 }
 
-void checkTreeStructure(GUITestOpStatus &os, const QMap<QString, QList<QPair<QString, QStringList>>> &expectedNodesTexts) {
+static void checkTreeStructure(GUITestOpStatus &os, const QMap<QString, QList<QPair<QString, QStringList>>> &expectedNodesTexts) {
     const QMap<QString, QList<QPair<QString, QStringList>>> nodesTexts = getNodesTexts(os);
 
     // Do explicitely comparison to be able to log the incorrect values
@@ -229,19 +225,17 @@ private:
     const QString path;
 };
 
-void setWorkflowOutputDir(GUITestOpStatus &os, const QString &path) {
+static void setWorkflowOutputDir(GUITestOpStatus &os, const QString &path) {
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new SetWorkflowOutputDirScenario(path)));
     GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
 }
 
-QString getQuotedString(const QString &string) {
+static QString getQuotedString(const QString &string) {
     if (string.contains(QRegularExpression("\\s"))) {
         return "\"" + string + "\"";
     }
     return string;
 }
-
-}  // namespace
 
 GUI_TEST_CLASS_DEFINITION(misc_test_0001) {
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));

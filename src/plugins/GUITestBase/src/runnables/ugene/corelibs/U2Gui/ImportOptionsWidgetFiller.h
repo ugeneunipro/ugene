@@ -37,7 +37,7 @@ public:
 private:
     static void setDestinationFolder(HI::GUITestOpStatus &os, ImportOptionsWidget *optionsWidget, const QVariantMap &data);
     static void setKeepFoldersStructure(HI::GUITestOpStatus &os, ImportOptionsWidget *optionsWidget, const QVariantMap &data);
-    static void setProcessFoldersRecusively(HI::GUITestOpStatus &os, ImportOptionsWidget *optionsWidget, const QVariantMap &data);
+    static void setProcessFoldersRecursively(HI::GUITestOpStatus &os, ImportOptionsWidget *optionsWidget, const QVariantMap &data);
     static void setCreateSubfolderForTopLevelFolder(HI::GUITestOpStatus &os, ImportOptionsWidget *optionsWidget, const QVariantMap &data);
     static void setCreateSubfolderForEachFile(HI::GUITestOpStatus &os, ImportOptionsWidget *optionsWidget, const QVariantMap &data);
     static void setImportUnknownAsUdr(HI::GUITestOpStatus &os, ImportOptionsWidget *optionsWidget, const QVariantMap &data);

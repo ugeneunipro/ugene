@@ -47,10 +47,10 @@ NotificationChecker::NotificationChecker(HI::GUITestOpStatus &_os)
 
 #define GT_METHOD_NAME "sl_checkNotification"
 void NotificationChecker::sl_checkNotification() {
-    CHECK(QApplication::activeModalWidget() == nullptr, );
-    const QWidgetList widgetList = QApplication::allWidgets();
+    CHECK(QApplication::activeModalWidget() == nullptr, );  // Active modal widget will prevent click on the notification.
+    QWidgetList widgetList = QApplication::allWidgets();
     for (QWidget *widget : qAsConst(widgetList)) {
-        Notification *notification = qobject_cast<Notification *>(widget);
+        auto notification = qobject_cast<Notification *>(widget);
         if (notification != nullptr && notification->isVisible()) {
             uiLog.trace("notification is found");
             t->stop();

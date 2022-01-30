@@ -1250,26 +1250,18 @@ GUI_TEST_CLASS_DEFINITION(test_1080) {
         OkClicker(HI::GUITestOpStatus &_os)
             : Filler(_os, "EditMarkerGroupDialog") {
         }
-        virtual void run() {
+        void run() override {
             GTUtilsDialog::waitForDialog(os, new OkClicker2(os));
 
-            QWidget *w = QApplication::activeWindow();
-            CHECK(nullptr != w, );
+            QWidget *w = GTWidget::getActiveModalWidget(os);
 
             QTableView *table = qobject_cast<QTableView *>(GTWidget::findWidget(os, "table", w));
             GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 0, 0));
             GTMouseDriver::click();
 
-            QToolButton *editButton = qobject_cast<QToolButton *>(GTWidget::findWidget(os, "editButton", w));
-            CHECK_SET_ERR(editButton != nullptr, "editButton not found!");
-            GTWidget::click(os, editButton);
+            GTWidget::click(os, GTWidget::findToolButton(os, "editButton", w));
 
-            QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(nullptr != buttonBox, );
-
-            QPushButton *button = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK(nullptr != button, );
-            GTWidget::click(os, button);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
 
@@ -3794,17 +3786,6 @@ GUI_TEST_CLASS_DEFINITION(test_1390) {
     CHECK_SET_ERR(!hint->text().isEmpty(), "Hint is empty, but must not be");
 }
 
-namespace {
-
-QString getFileContent(const QString &path) {
-    QFile file(path);
-    CHECK(file.open(QFile::ReadOnly), QString());
-    QTextStream fileReader(&file);
-    return fileReader.readAll();
-}
-
-}  // namespace
-
 GUI_TEST_CLASS_DEFINITION(test_1393) {
     class ExportSeqsAsMsaScenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
@@ -3837,8 +3818,8 @@ GUI_TEST_CLASS_DEFINITION(test_1393) {
     // are the same as if you open the *.aln file in text editor.
     GTUtilsProjectTreeView::checkItem(os, "test_1393.aln");
 
-    const QString referenceMsaContent = getFileContent(testDir + "_common_data/regression/1393/test_1393.aln");
-    const QString resultMsaContent = getFileContent(sandBoxDir + "test_1393.aln");
+    QString referenceMsaContent = GTFile::readAll(os, testDir + "_common_data/regression/1393/test_1393.aln");
+    QString resultMsaContent = GTFile::readAll(os, sandBoxDir + "test_1393.aln");
     CHECK_SET_ERR(!referenceMsaContent.isEmpty() && referenceMsaContent == resultMsaContent, "Unexpected MSA content");
 }
 
@@ -4153,14 +4134,8 @@ GUI_TEST_CLASS_DEFINITION(test_1432) {
         OkClicker(HI::GUITestOpStatus &_os)
             : Filler(_os, "EditMarkerGroupDialog") {
         }
-        virtual void run() {
-            QWidget *w = QApplication::activeWindow();
-            CHECK(nullptr != w, );
-            QDialogButtonBox *buttonBox = w->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
-            CHECK(nullptr != buttonBox, );
-            QPushButton *button = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK(nullptr != button, );
-            GTWidget::click(os, button);
+        void run() override {
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
         }
     };
     GTUtilsDialog::waitForDialog(os, new OkClicker(os));

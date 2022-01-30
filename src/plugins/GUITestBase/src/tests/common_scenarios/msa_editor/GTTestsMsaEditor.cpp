@@ -1338,7 +1338,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 3. On MSA editor {Context Menu->Add->Sequence from current project}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_LOAD << "Sequence from current project"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_LOAD, "Sequence from current project"}));
 
     // 4. Select item dialog appeared
     // Expected state: loaded sequences present in list
