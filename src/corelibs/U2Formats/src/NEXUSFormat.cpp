@@ -471,7 +471,7 @@ bool NEXUSParser::readDataContents(Context &ctx) {
                 char ourMissing = ma->getAlphabet()->getDefaultSymbol();
 
                 // replace missing
-                for (int i = 0; i < ma->getNumRows(); ++i) {
+                for (int i = 0; i < ma->getRowCount(); ++i) {
                     ma->replaceChars(i, missing, ourMissing);
                 }
             } else {
@@ -768,7 +768,7 @@ void writeMAligment(const MultipleSequenceAlignment &ma, bool simpleName, IOAdap
     tabs.append(tab);
 
     int ntax, nchar;
-    ntax = ma->getNumRows();
+    ntax = ma->getRowCount();
     nchar = ma->getLength();
 
     QTextStream(&line) << tabs << "dimensions ntax=" << ntax << " nchar=" << nchar << ";\n";

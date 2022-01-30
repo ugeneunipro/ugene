@@ -116,7 +116,7 @@ private:
 /************************************************************************/
 MultipleSequenceAlignmentWalker::MultipleSequenceAlignmentWalker(const MultipleSequenceAlignment &msa, char gapChar)
     : msa(msa), currentOffset(0) {
-    for (int i = 0; i < msa->getNumRows(); i++) {
+    for (int i = 0; i < msa->getRowCount(); i++) {
         rowWalkerList << new RowWalker(msa->getMsaRow(i), gapChar);
     }
 }
@@ -132,12 +132,12 @@ bool MultipleSequenceAlignmentWalker::isEnded() const {
 QList<QByteArray> MultipleSequenceAlignmentWalker::nextData(int length, U2OpStatus &os) {
     QList<QByteArray> result;
     SAFE_POINT_EXT(!isEnded(), os.setError(L10N::internalError() + MultipleSequenceAlignmentObject::tr(" Alignment walker is ended")), result);
-    SAFE_POINT_EXT(msa->getNumRows() == rowWalkerList.size(), os.setError(L10N::internalError() + MultipleSequenceAlignmentObject::tr(" Alignment changed")), result);
+    SAFE_POINT_EXT(msa->getRowCount() == rowWalkerList.size(), os.setError(L10N::internalError() + MultipleSequenceAlignmentObject::tr(" Alignment changed")), result);
 
     int charsRemain = msa->getLength() - currentOffset;
     int chunkSize = (charsRemain < length) ? charsRemain : length;
 
-    for (int i = 0; i < msa->getNumRows(); i++) {
+    for (int i = 0; i < msa->getRowCount(); i++) {
         QByteArray rowBytes = rowWalkerList[i]->nextData(currentOffset, chunkSize, os);
         CHECK_OP(os, QList<QByteArray>());
         result << rowBytes;

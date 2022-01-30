@@ -169,7 +169,7 @@ QList<Task *> BlastAndSwReadTask::onSubTaskFinished(Task *subTask) {
     } else if (qobject_cast<AbstractAlignmentTask *>(subTask) != nullptr) {
         QScopedPointer<MultipleSequenceAlignmentObject> msaObject(StorageUtils::getMsaObject(storage, msa));
         CHECK_EXT(!msaObject.isNull(), setError(L10N::nullPointerError("MSA object for %1").arg(getReadName())), result);
-        int rowCount = msaObject->getNumRows();
+        int rowCount = msaObject->getRowCount();
         CHECK_EXT(2 == rowCount, setError(L10N::internalError("Wrong rows count: " + QString::number(rowCount))), result);
 
         referenceGaps = msaObject->getMsaRow(0)->getGaps();

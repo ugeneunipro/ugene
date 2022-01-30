@@ -162,7 +162,7 @@ int MaEditor::getAlignmentLen() const {
 }
 
 int MaEditor::getNumSequences() const {
-    return maObject->getNumRows();
+    return maObject->getRowCount();
 }
 
 bool MaEditor::isAlignmentEmpty() const {
@@ -553,7 +553,7 @@ void MaEditor::sl_gotoSelectedRead() {
     int viewRowIndex = selectionRect.y();
 
     int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
-    CHECK(maRowIndex >= 0 && maRowIndex < maObject->getNumRows(), );
+    CHECK(maRowIndex >= 0 && maRowIndex < maObject->getRowCount(), );
 
     MultipleAlignmentRow maRow = maObject->getRow(maRowIndex);
     int posToCenter = maRow->isComplemented() ? maRow->getCoreEnd() - 1 : maRow->getCoreStart();

@@ -78,7 +78,7 @@ void PhyTreeGeneratorLauncherTask::sl_onCalculationCanceled() {
 void SeqNamesConvertor::replaceNamesWithAlphabeticIds(MultipleSequenceAlignment &ma) {
     QStringList rows = ma->getRowNames();
 
-    int rowsNum = ma->getNumRows();
+    int rowsNum = ma->getRowCount();
     for (int i = 0; i < rowsNum; i++) {
         namesMap[generateNewAlphabeticId()] = rows.at(i);
         ma->renameRow(i, lastIdStr);

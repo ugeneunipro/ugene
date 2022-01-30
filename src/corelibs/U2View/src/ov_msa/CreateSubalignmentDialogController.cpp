@@ -63,7 +63,7 @@ CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleS
     connect(startLineEdit, SIGNAL(textEdited(const QString &)), SLOT(sl_regionChanged()));
     connect(endLineEdit, SIGNAL(textEdited(const QString &)), SLOT(sl_regionChanged()));
 
-    int rowCount = (int)msaObject->getNumRows();
+    int rowCount = (int)msaObject->getRowCount();
     int msaLength = (int)msaObject->getLength();
 
     sequencesTableWidget->clearContents();

@@ -56,7 +56,7 @@ char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleAlignm
     // TODO: use var-length array!
     QVector<QPair<int, char>> freqs(32);
     int ch = U2Msa::GAP_CHAR;
-    int nSeq = seqIdx.isEmpty() ? msa->getNumRows() : seqIdx.size();
+    int nSeq = seqIdx.isEmpty() ? msa->getRowCount() : seqIdx.size();
     for (int seq = 0; seq < nSeq; seq++) {
         uchar c = (uchar)msa->charAt(seqIdx.isEmpty() ? seq : seqIdx[seq],
                                      pos);

@@ -235,7 +235,7 @@ void MaEditorNameList::sl_removeSelectedRows() {
         U2Region yRegion = U2Region::fromYRange(selectedRect);
         selectedMaRowIndexes << editor->getCollapseModel()->getMaRowIndexesByViewRowIndexes(yRegion, true);
     }
-    CHECK(maObj->getNumRows() > selectedMaRowIndexes.size(), );  // Do allow to remove all rows.
+    CHECK(maObj->getRowCount() > selectedMaRowIndexes.size(), );  // Do allow to remove all rows.
 
     U2OpStatusImpl os;
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);

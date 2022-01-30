@@ -56,7 +56,7 @@ static bool maContainsPattern(const MultipleAlignmentObject *maObject, const QSt
     const MultipleAlignmentData *mData = maObject->getMultipleAlignment().data();
     const QByteArray searchStr = pattern.toUpper().toLatin1();
 
-    for (int i = 0, n = mData->getNumRows(); i < n; ++i) {
+    for (int i = 0, n = mData->getRowCount(); i < n; ++i) {
         const MultipleAlignmentRow &row = mData->getRow(i);
         for (int j = 0; j < (mData->getLength() - searchStr.length() + 1); ++j) {
             char c = row->charAt(j);

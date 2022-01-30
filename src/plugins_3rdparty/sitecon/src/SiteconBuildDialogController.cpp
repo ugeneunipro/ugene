@@ -194,7 +194,7 @@ void SiteconBuildTask::run() {
         stateInfo.setError(tr("Alignment is empty"));
         return;
     }
-    if (ma->getNumRows() < 2) {
+    if (ma->getRowCount() < 2) {
         stateInfo.setError(tr("Alignment must have at least 2 sequences"));
         return;
     }
@@ -215,7 +215,7 @@ void SiteconBuildTask::run() {
     assert(ma->getLength() == settings.windowSize);
 
     SiteconAlgorithm::calculateACGTContent(ma, settings);
-    settings.numSequencesInAlignment = ma->getNumRows();
+    settings.numSequencesInAlignment = ma->getRowCount();
     m.settings = settings;
     stateInfo.setDescription(tr("Calculating average and dispersion matrixes"));
     m.matrix = SiteconAlgorithm::calculateDispersionAndAverage(ma, settings, stateInfo);

@@ -257,7 +257,7 @@ QList<Task *> ClustalOSupportTask::onSubTaskFinished(Task *subTask) {
                     }
 
                     QMap<qint64, QVector<U2MsaGap>> rowsGapModel;
-                    for (int i = 0, n = resultMsa->getNumRows(); i < n; ++i) {
+                    for (int i = 0, n = resultMsa->getRowCount(); i < n; ++i) {
                         qint64 rowId = resultMsa->getMsaRow(i)->getRowDbInfo().rowId;
                         const QVector<U2MsaGap> &newGapModel = resultMsa->getMsaRow(i)->getGaps();
                         rowsGapModel.insert(rowId, newGapModel);

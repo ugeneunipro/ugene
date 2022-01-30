@@ -165,7 +165,7 @@ void ComposeResultSubtask::createAlignmentAndAnnotations() {
         CHECK_OP(stateInfo, );
 
         if (subTask->isComplement()) {
-            result->getMcaRow(result->getNumRows() - 1)->reverseComplement();
+            result->getMcaRow(result->getRowCount() - 1)->reverseComplement();
         }
 
         const QVector<U2MsaGap> &gaps = subTask->getReadGaps();

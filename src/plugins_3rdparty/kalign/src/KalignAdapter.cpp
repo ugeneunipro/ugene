@@ -97,7 +97,7 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
     unsigned int &numseq = ctx->numseq;
     unsigned int &numprofiles = ctx->numprofiles;
 
-    if (ma->getNumRows() < 2) {
+    if (ma->getRowCount() < 2) {
         if (!numseq) {
             k_printf("No sequences found.\n\n");
         } else {
@@ -124,7 +124,7 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
     /* Convert MA to aln                                                    */
     /************************************************************************/
     k_printf("Prepare data");
-    numseq = ma->getNumRows();
+    numseq = ma->getRowCount();
     numprofiles = (numseq << 1) - 1;
     aln = aln_alloc(aln);
     for (quint32 i = 0; i < numseq; i++) {

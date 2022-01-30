@@ -40,7 +40,7 @@ MultipleSequenceAlignmentObject *MultipleSequenceAlignmentImporter::createAlignm
 }
 
 MultipleSequenceAlignmentObject *MultipleSequenceAlignmentImporter::createAlignment(const U2DbiRef &dbiRef, const QString &folder, MultipleSequenceAlignment &al, U2OpStatus &os, const QList<U2Sequence> &alignedSeqs) {
-    if (!alignedSeqs.isEmpty() && alignedSeqs.size() != al->getNumRows()) {
+    if (!alignedSeqs.isEmpty() && alignedSeqs.size() != al->getRowCount()) {
         os.setError(QObject::tr("Unexpected number of sequences in a multiple alignment"));
         return nullptr;
     }
@@ -79,7 +79,7 @@ MultipleSequenceAlignmentObject *MultipleSequenceAlignmentImporter::createAlignm
 
     QList<U2MsaRow> rows = importRows(con, al, msaId, sequences, gapsPerRow, os);
     CHECK_OP(os, nullptr);
-    SAFE_POINT_EXT(rows.size() == al->getNumRows(), os.setError(QObject::tr("Unexpected error on MSA rows import")), nullptr);
+    SAFE_POINT_EXT(rows.size() == al->getRowCount(), os.setError(QObject::tr("Unexpected error on MSA rows import")), nullptr);
 
     if (!rows.isEmpty()) {
         // if the imported alignment is not empty -> set it length to the max(len, orig-len).
@@ -92,7 +92,7 @@ MultipleSequenceAlignmentObject *MultipleSequenceAlignmentImporter::createAlignm
         }
     }
 
-    for (int i = 0, n = al->getNumRows(); i < n; ++i) {
+    for (int i = 0, n = al->getRowCount(); i < n; ++i) {
         al->getMsaRow(i)->setRowDbInfo(rows.at(i));
     }
 
@@ -150,7 +150,7 @@ QList<U2Sequence> MultipleSequenceAlignmentImporter::importSequences(const DbiCo
     SAFE_POINT(nullptr != seqDbi, "NULL Sequence Dbi during importing an alignment!", QList<U2Sequence>());
 
     QList<U2Sequence> sequences;
-    for (int i = 0; i < al->getNumRows(); ++i) {
+    for (int i = 0; i < al->getRowCount(); ++i) {
         DNASequence dnaSeq = al->getMsaRow(i)->getSequence();
 
         U2Sequence sequence = U2Sequence();
@@ -211,7 +211,7 @@ QList<U2MsaRow> MultipleSequenceAlignmentImporter::importRows(const DbiConnectio
     QList<U2MsaRow> rows;
     SAFE_POINT_EXT(sequences.size() == msaGapModel.size(), os.setError("Gap model doesn't fit sequences count"), rows);
 
-    for (int rowIdx = 0, seqIdx = 0; rowIdx < al->getNumRows(); ++rowIdx, ++seqIdx) {
+    for (int rowIdx = 0, seqIdx = 0; rowIdx < al->getRowCount(); ++rowIdx, ++seqIdx) {
         U2Sequence seq = sequences[seqIdx];
         MultipleSequenceAlignmentRow alignmentRow = al->getMsaRow(rowIdx);
         const QVector<U2MsaGap> &gapModel = msaGapModel[rowIdx];

@@ -186,8 +186,8 @@ qint64 MultipleAlignmentObject::getLength() const {
     return getMultipleAlignment()->getLength();
 }
 
-qint64 MultipleAlignmentObject::getNumRows() const {
-    return getMultipleAlignment()->getNumRows();
+qint64 MultipleAlignmentObject::getRowCount() const {
+    return getMultipleAlignment()->getRowCount();
 }
 
 const QList<MultipleAlignmentRow> &MultipleAlignmentObject::getRows() const {
@@ -210,7 +210,7 @@ void MultipleAlignmentObject::removeRow(int rowIdx) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
     const MultipleAlignment &ma = getMultipleAlignment();
-    SAFE_POINT(rowIdx >= 0 && rowIdx < ma->getNumRows(), "Invalid row index", );
+    SAFE_POINT(rowIdx >= 0 && rowIdx < ma->getRowCount(), "Invalid row index", );
     qint64 rowId = ma->getRow(rowIdx)->getRowId();
 
     U2OpStatus2Log os;
@@ -255,7 +255,7 @@ void MultipleAlignmentObject::removeRows(const QList<int> &rowIndexes) {
     const MultipleAlignment &ma = getMultipleAlignment();
     QList<qint64> rowIdsToRemove;
     foreach (int rowIdx, rowIndexes) {
-        SAFE_POINT(rowIdx >= 0 && rowIdx < ma->getNumRows(), "Invalid row index", );
+        SAFE_POINT(rowIdx >= 0 && rowIdx < ma->getRowCount(), "Invalid row index", );
         qint64 rowId = ma->getRow(rowIdx)->getRowId();
         rowIdsToRemove << rowId;
     }
@@ -267,7 +267,7 @@ void MultipleAlignmentObject::renameRow(int rowIdx, const QString &newName) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
     const MultipleAlignment &ma = getMultipleAlignment();
-    SAFE_POINT(rowIdx >= 0 && rowIdx < ma->getNumRows(), "Invalid row index", );
+    SAFE_POINT(rowIdx >= 0 && rowIdx < ma->getRowCount(), "Invalid row index", );
     qint64 rowId = ma->getRow(rowIdx)->getRowId();
 
     U2OpStatus2Log os;
@@ -326,7 +326,7 @@ QList<qint64> MultipleAlignmentObject::getRowIds() const {
 QList<qint64> MultipleAlignmentObject::getRowIdsByRowIndexes(const QList<int> &rowIndexes) const {
     QList<qint64> allRowIds = getRowIds();
     QList<qint64> resultRowIds;
-    int rowCount = getNumRows();
+    int rowCount = getRowCount();
     for (int rowIndex : qAsConst(rowIndexes)) {
         SAFE_POINT(rowIndex >= 0 && rowIndex < rowCount, "Invalid row index: " + QString::number(rowIndex), {});
         resultRowIds << allRowIds[rowIndex];
@@ -356,7 +356,7 @@ void MultipleAlignmentObject::changeLength(U2OpStatus &os, qint64 newLength) {
 
     bool rowContentChangeStatus = false;
     if (newLength < length) {
-        qint64 numRows = getNumRows();
+        qint64 numRows = getRowCount();
         for (int i = 0; i < numRows; i++) {
             MultipleAlignmentRow row = getRow(i);
             qint64 rowLengthWithoutTrailing = row->getRowLengthWithoutTrailing();
@@ -646,7 +646,7 @@ int MultipleAlignmentObject::deleteGapByRowIndexList(U2OpStatus &os, const QList
     QList<qint64> modifiedRowIds;
     MultipleAlignment msa = getMultipleAlignmentCopy();
     // iterate through given rows to update each of them in DB
-    QList<int> uniqueRowIndexes = toUniqueRowIndexes(rowIndexes, getNumRows());
+    QList<int> uniqueRowIndexes = toUniqueRowIndexes(rowIndexes, getRowCount());
     for (int i = 0; i < rowIndexes.size(); i++) {
         int rowIndex = uniqueRowIndexes[i];
         msa->removeChars(rowIndex, pos, removingGapColumnCount, os);
@@ -658,7 +658,7 @@ int MultipleAlignmentObject::deleteGapByRowIndexList(U2OpStatus &os, const QList
         modifiedRowIds << row->getRowId();
     }
 
-    if (uniqueRowIndexes.size() == getNumRows()) {
+    if (uniqueRowIndexes.size() == getRowCount()) {
         // delete columns
         MaDbiUtils::updateMaLength(entityRef, getLength() - removingGapColumnCount, os);
         CHECK_OP(os, 0);
@@ -752,7 +752,7 @@ int MultipleAlignmentObject::getMaxWidthOfGapRegion(U2OpStatus &os, const QList<
     if (maxRemovedGaps == 0) {
         return 0;
     }
-    QList<int> uniqueRowIndexes = toUniqueRowIndexes(rowIndexes, getNumRows());
+    QList<int> uniqueRowIndexes = toUniqueRowIndexes(rowIndexes, getRowCount());
     int removingGapColumnCount = maxRemovedGaps;
     bool isRegionInRowTrailingGaps = true;
     // iterate through given rows to determine the width of the continuous gap region
@@ -788,7 +788,7 @@ int MultipleAlignmentObject::getMaxWidthOfGapRegion(U2OpStatus &os, const QList<
     }
 
     if (isRegionInRowTrailingGaps) {
-        if (uniqueRowIndexes.size() == getNumRows()) {
+        if (uniqueRowIndexes.size() == getRowCount()) {
             return qMin((int)getLength() - pos, maxGaps);
         } else {
             return 0;

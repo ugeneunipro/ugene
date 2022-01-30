@@ -111,14 +111,14 @@ void MSAImageExportToBitmapTask::run() {
 
     bool exportAll = msaSettings.exportAll;
 
-    bool ok = (exportAll && mObj->getLength() > 0 && mObj->getNumRows() > 0) || (!msaSettings.region.isEmpty() && !msaSettings.seqIdx.isEmpty());
+    bool ok = (exportAll && mObj->getLength() > 0 && mObj->getRowCount() > 0) || (!msaSettings.region.isEmpty() && !msaSettings.seqIdx.isEmpty());
     CHECK_OPERATION(ok, mObj->unlockState(lock));
     CHECK_EXT(ok, setError(tr("Nothing to export")), );
 
     if (exportAll) {
         msaSettings.region = U2Region(0, mObj->getLength());
         QList<int> seqIdx;
-        for (int i = 0; i < mObj->getNumRows(); i++) {
+        for (int i = 0; i < mObj->getRowCount(); i++) {
             seqIdx << i;
         }
         msaSettings.seqIdx = seqIdx;

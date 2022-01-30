@@ -346,7 +346,7 @@ void GTest_uMuscleAddUnalignedSequenceToProfile::prepare() {
         return;
     }
     aliObj = qobject_cast<MultipleSequenceAlignmentObject*>(aliObjs[0]);
-    origAliSeqs = aliObj->getNumRows();
+    origAliSeqs = aliObj->getRowCount();
 
     QList<GObject*> seqObjs = seqDoc->findGObjectByType(GObjectTypes::SEQUENCE);
     if (seqObjs.isEmpty()) {
@@ -361,12 +361,12 @@ void GTest_uMuscleAddUnalignedSequenceToProfile::prepare() {
         CHECK_OP(stateInfo, );
         unalignedMA->addRow(dnaObj->getSequenceName(), seqData);
     }
-    if (unalignedMA->getNumRows()!=gapPositionsForSeqs.size()) {
+    if (unalignedMA->getRowCount()!=gapPositionsForSeqs.size()) {
         stateInfo.setError( QString("number of sequences not matches number of gaps in test: %1 sequences and %2 gap lines")
-            .arg(unalignedMA->getNumRows()).arg(gapPositionsForSeqs.size()) );
+            .arg(unalignedMA->getRowCount()).arg(gapPositionsForSeqs.size()) );
         return;
     }
-    resultAliSeqs = origAliSeqs + unalignedMA->getNumRows();
+    resultAliSeqs = origAliSeqs + unalignedMA->getRowCount();
 
     MuscleTaskSettings s;
     s.op = MuscleTaskOp_AddUnalignedToProfile;
@@ -391,13 +391,13 @@ Task::ReportResult GTest_uMuscleAddUnalignedSequenceToProfile::report() {
         return ReportResult_Finished;
     }
 
-    if (resultAliSeqs!=msa->getNumRows()) {
-        stateInfo.setError(  QString("unexpected number of sequences in result: %1, expected: %2").arg(msa->getNumRows()).arg(resultAliSeqs) );
+    if (resultAliSeqs!=msa->getRowCount()) {
+        stateInfo.setError(  QString("unexpected number of sequences in result: %1, expected: %2").arg(msa->getRowCount()).arg(resultAliSeqs) );
         return ReportResult_Finished;
     }
 
     U2OpStatus2Log os;
-    for (int i = origAliSeqs, j = 0; i < msa->getNumRows(); i++, j++) {
+    for (int i = origAliSeqs, j = 0; i < msa->getRowCount(); i++, j++) {
         const MultipleSequenceAlignmentRow row = msa->getMsaRow(i);
         QByteArray seq = row->toByteArray(os, msa->getLength());
         QList<int> seqGaps = gapPositionsForSeqs[j];
