@@ -32,6 +32,7 @@
 #include "ScrollController.h"
 #include "phy_tree/MSAEditorMultiTreeViewer.h"
 #include "phy_tree/MsaEditorTreeTabArea.h"
+#include <U2Gui/GScrollBar.h>
 
 namespace U2 {
 
@@ -47,6 +48,78 @@ MsaEditorMultilineWgt::MsaEditorMultilineWgt(MSAEditor *editor, bool multiline)
     createChildren();
 }
 
+MaEditorWgt *MsaEditorMultilineWgt::createChild(MaEditor *editor,
+                                                MaEditorOverviewArea *overviewArea,
+                                                MaEditorStatusBar *statusBar)
+{
+    MsaEditorWgt *child = new MsaEditorWgt(qobject_cast<MSAEditor *>(editor),
+                                           overviewArea,
+                                           statusBar);
+    SAFE_POINT(child != nullptr, "Can't create sequence widget", nullptr);
+    return child;
+}
+
+void MsaEditorMultilineWgt::deleteChild(int index)
+{
+    if (index < 0 || index >= (int) uiChildCount) {
+        return;
+    }
+
+    MaEditorWgt *toDelete = getUI(index);
+    QVBoxLayout *layout = (QVBoxLayout *) uiChildrenArea->layout();
+
+    uiLog.details(tr("Deleting widget from grid, count %1, index %2").arg(layout->count()).arg(index));
+    toDelete->hide();
+    layout->removeWidget(toDelete);
+
+    uiLog.details(
+        tr("Deleting widget from uiChild, count %1, index %2").arg(uiChild.size()).arg(index));
+    uiChild.remove(index);
+    uiChild.resize(uiChildLength);
+    uiChildCount--;
+    uiLog.details(tr("Deleted widget, uiChildCount %1").arg(uiChildCount));
+
+    delete toDelete;
+    Q_UNUSED(toDelete);
+}
+
+void MsaEditorMultilineWgt::addChild(MaEditorWgt *child, int index) {
+    if (uiChildLength == 0) {
+        uiChildLength = 8;
+        uiChild.resize(uiChildLength);
+        uiChildCount = 0;
+    }
+
+    if (index < 0 || index > (int)uiChildCount) {
+        index = uiChildCount;
+    }
+
+    if (index >= (int)uiChildLength) {
+        uiChildLength = index * 2;
+        uiChild.resize(uiChildLength);
+    }
+
+    uiChild[index] = child;
+    uiChildCount++;
+
+    QVBoxLayout *vbox = (QVBoxLayout *)uiChildrenArea->layout();
+    vbox->addWidget(child);
+
+    child->setObjectName(QString("msa_editor_" + editor->getMaObject()->getGObjectName() + "%1").arg(index));
+    child->getScrollController()->setHScrollBarVisible(!getMultilineMode());
+
+    connect(child->getScrollController(), SIGNAL(si_visibleAreaChanged()),
+            getScrollController(), SLOT(sl_updateScrollBars()));
+
+    if (getMultilineMode()) {
+        connect(child->getScrollController(), SIGNAL(si_visibleAreaChanged()),
+                scrollController, SIGNAL(si_hScrollValueChanged()));
+    }
+    scrollController->sl_updateScrollBars();
+
+    setActiveChild(child);
+}
+
 void MsaEditorMultilineWgt::createChildren()
 {
     // TODO:ichebyki
@@ -56,9 +129,7 @@ void MsaEditorMultilineWgt::createChildren()
     MaEditorOverviewArea *overviewArea = this->getOverviewArea();
     MaEditorStatusBar *statusBar = this->getStatusBar();
     for (uint i = 0; i < childrenCount; i++) {
-        MsaEditorWgt *child = new MsaEditorWgt(qobject_cast<MSAEditor *>(editor),
-                                               overviewArea,
-                                               statusBar);
+        MaEditorWgt *child = createChild(editor, overviewArea, statusBar);
         SAFE_POINT(child != nullptr, "Can't create sequence widget", );
         addChild(child);
     }
