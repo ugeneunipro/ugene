@@ -229,11 +229,11 @@ void MaSimpleOverview::moveVisibleRange(QPoint pos) {
     newVisibleRange.moveCenter(newPos);
 
     const int newScrollBarValue = newVisibleRange.x() * stepX;
-    multiUi->getScrollController()->setHScrollbarValue(newScrollBarValue);
+    multiUi->getScrollController()->setMultilineHScrollbarValue(newScrollBarValue);
 
     if (!multiUi->getMultilineMode()) {
         const int newVScrollBarValue = newVisibleRange.y() * stepY;
-        multiUi->getScrollController()->setVScrollbarValue(newVScrollBarValue);
+        multiUi->getScrollController()->setMultilineVScrollbarValue(newVScrollBarValue);
     }
 
     update();
