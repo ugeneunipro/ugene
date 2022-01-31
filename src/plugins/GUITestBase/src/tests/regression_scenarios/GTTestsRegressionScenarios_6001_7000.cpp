@@ -5172,7 +5172,7 @@ GUI_TEST_CLASS_DEFINITION(test_6758_2) {
     GTFile::copy(os, dataDir + "samples/Genbank/murine.gb", sandBoxDir + "murine.1.gb");
 
     // copy murine.gb to sandbox/folder as murine.1.gb
-    QDir(sandBoxDir + "folder").mkdir(".");
+    QDir(sandBoxDir + "folder").mkpath(".");
     GTFile::copy(os, dataDir + "samples/Genbank/murine.gb", sandBoxDir + "folder/murine.1.gb");
 
     // open WD
