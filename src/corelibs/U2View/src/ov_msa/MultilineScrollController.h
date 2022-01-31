@@ -55,8 +55,8 @@ public:
     void centerViewRow(int viewRowIndex, int widgetHeight);
     void centerPoint(const QPoint &maPoint, const QSize &widgetSize);
 
-    void setHScrollbarValue(int value);
-    void setVScrollbarValue(int value);
+    void setMultilineHScrollbarValue(int value);
+    void setMultilineVScrollbarValue(int value);
 
     void setFirstVisibleBase(int firstVisibleBase);
     void setFirstVisibleViewRow(int viewRowIndex);

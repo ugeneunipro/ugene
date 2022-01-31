@@ -27,6 +27,7 @@ void MsaMultilineScrollArea::wheelEvent(QWheelEvent *event)
                                   : inverted * (event->angleDelta().y() > 0 ? 1 : -1);
         int val = maEditorUi->getScrollController()->getVerticalScrollBar()->value();
         const int columnWidth = maEditor->getColumnWidth();
+        //const int rowHeight = maEditor->getSequenceRowHeight();
 
         if (direction == 0) {
             event->accept();
