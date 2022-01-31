@@ -103,7 +103,22 @@ public:
     int getLastVisibleBase(uint index = 0) const;
     int getSequenceAreaBaseWidth(uint index = 0) const;
 
-    void addChild(MaEditorWgt *child, int index = -1);
+    virtual MaEditorWgt *createChild(MaEditor *editor,
+                                     MaEditorOverviewArea *overviewArea,
+                                     MaEditorStatusBar *statusBar)
+    {
+        Q_UNUSED(editor);
+        Q_UNUSED(overviewArea);
+        Q_UNUSED(statusBar);
+        return nullptr;
+    };
+    virtual void deleteChild(int index) {
+        Q_UNUSED(index);
+    };
+    virtual void addChild(MaEditorWgt *child, int index = -1) {
+        Q_UNUSED(child);
+        Q_UNUSED(index);
+    };
 
     uint getChildrenCount() const {
         return uiChildCount;
