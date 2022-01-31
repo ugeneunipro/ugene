@@ -62,6 +62,11 @@ protected:
     void initChildrenArea(QGroupBox *_uiChildrenArea) override;
     void createChildren() override;
     void updateChildren() override;
+    MaEditorWgt *createChild(MaEditor *editor,
+                             MaEditorOverviewArea *overviewArea,
+                             MaEditorStatusBar *statusBar) override;
+    void deleteChild(int index) override;
+    void addChild(MaEditorWgt *child, int index = -1) override;
 
 private:
 

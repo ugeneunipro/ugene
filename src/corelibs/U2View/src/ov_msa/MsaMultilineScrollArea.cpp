@@ -3,8 +3,10 @@
 
 #include <U2Gui/GScrollBar.h>
 #include "MaEditor.h"
+#include "MaEditorWgt.h"
 #include "MsaMultilineScrollArea.h"
 #include "MultilineScrollController.h"
+#include "ScrollController.h"
 
 namespace U2 {
 
@@ -25,19 +27,30 @@ void MsaMultilineScrollArea::wheelEvent(QWheelEvent *event)
                             : event->angleDelta().y() == 0
                                   ? 0
                                   : inverted * (event->angleDelta().y() > 0 ? 1 : -1);
-        int val = maEditorUi->getScrollController()->getVerticalScrollBar()->value();
-        const int columnWidth = maEditor->getColumnWidth();
-        //const int rowHeight = maEditor->getSequenceRowHeight();
 
         if (direction == 0) {
             event->accept();
             return;
         } else if (verticalScrollBar()->value() == verticalScrollBar()->maximum() && direction < 0) {
-            maEditorUi->getScrollController()->getVerticalScrollBar()->setValue(val + columnWidth);
+            int index = maEditorUi->getChildrenCount() - 1;
+            int width = maEditorUi->getSequenceAreaBaseWidth(index);
+            int newScrollValue = maEditorUi->getScrollController()->getFirstVisibleBase(0) + width;
+
+            maEditorUi->setUpdatesEnabled(false);
+            maEditorUi->getScrollController()->setFirstVisibleBase(newScrollValue);
+            maEditorUi->setUpdatesEnabled(true);
+
             event->accept();
             return;
         } else if (verticalScrollBar()->value() == verticalScrollBar()->minimum() && direction > 0) {
-            maEditorUi->getScrollController()->getVerticalScrollBar()->setValue(val - columnWidth);
+            int index = 0;
+            int width = maEditorUi->getSequenceAreaBaseWidth(index);
+            int newScrollValue = maEditorUi->getScrollController()->getFirstVisibleBase(index) - width;
+
+            maEditorUi->setUpdatesEnabled(false);
+            maEditorUi->getScrollController()->setFirstVisibleBase(newScrollValue);
+            maEditorUi->setUpdatesEnabled(true);
+
             event->accept();
             return;
         }
