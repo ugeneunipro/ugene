@@ -44,7 +44,7 @@ public:
     U2DbiRef getDbiRef() const;
 
     /** Returns entity-ref this data handler holds. */
-    U2EntityRef getEntityRef() const;
+    const U2EntityRef& getEntityRef() const;
 
     bool equals(const DbiDataHandler *other) const;
 

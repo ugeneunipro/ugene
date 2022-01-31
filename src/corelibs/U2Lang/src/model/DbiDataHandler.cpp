@@ -66,7 +66,7 @@ U2DbiRef DbiDataHandler::getDbiRef() const {
     return entityRef.dbiRef;
 }
 
-U2EntityRef DbiDataHandler::getEntityRef() const {
+const U2EntityRef &DbiDataHandler::getEntityRef() const {
     return entityRef;
 }
 

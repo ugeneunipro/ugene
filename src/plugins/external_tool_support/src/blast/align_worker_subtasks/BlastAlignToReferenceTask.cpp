@@ -275,7 +275,7 @@ QList<Task *> BlastAlignToReferenceTask::onSubTaskFinished(Task *subTask) {
         factory->resetFlag(DistanceAlgorithmFlag_ExcludeGaps);
 
         MSADistanceAlgorithm *similarityTask = factory->createAlgorithm(pairwiseMsaObject->getMsa());
-        CHECK_EXT(similarityTask != nullptr, setError("MSADistanceAlgorithm is NULL"), result);
+        CHECK_EXT(similarityTask != nullptr, setError(L10N::nullPointerError("MSADistanceAlgorithm")), result);
         similarityTask->setProperty(READ_ID_KEY, readIdKey);
         result << similarityTask;
     } else if (auto similarityTask = qobject_cast<MSADistanceAlgorithm *>(subTask)) {

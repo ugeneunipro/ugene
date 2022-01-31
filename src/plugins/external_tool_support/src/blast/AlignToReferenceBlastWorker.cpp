@@ -348,17 +348,17 @@ QString AlignToReferenceBlastTask::generateReport() const {
 }
 
 QString AlignToReferenceBlastTask::getResultUrl() const {
-    CHECK(nullptr != saveTask, "");
+    CHECK(saveTask != nullptr, "");
     return saveTask->getURL().getURLString();
 }
 
 SharedDbiDataHandler AlignToReferenceBlastTask::getAnnotations() const {
-    CHECK(nullptr != composeSubTask, SharedDbiDataHandler());
+    CHECK(composeSubTask != nullptr, {});
     return composeSubTask->getAnnotations();
 }
 
 QList<QPair<QString, QPair<int, bool>>> AlignToReferenceBlastTask::getAcceptedReads() const {
-    CHECK(blastTask != nullptr, {});
+    SAFE_POINT(blastTask != nullptr, "Task is not finished!", {});
     QList<QPair<QString, QPair<int, bool>>> acceptedReads;
     const QList<AlignToReferenceResult> &alignmentResults = blastTask->getAlignmentResults();
     for (auto alignmentResult : qAsConst(alignmentResults)) {
@@ -372,7 +372,7 @@ QList<QPair<QString, QPair<int, bool>>> AlignToReferenceBlastTask::getAcceptedRe
 }
 
 QList<QPair<QString, int>> AlignToReferenceBlastTask::getDiscardedReads() const {
-    CHECK(blastTask != nullptr, {});
+    SAFE_POINT(blastTask != nullptr, "Task is not finished!", {});
     QList<QPair<QString, int>> discardedReads;
     const QList<AlignToReferenceResult> &alignmentResults = blastTask->getAlignmentResults();
     for (auto alignmentResult : qAsConst(alignmentResults)) {
