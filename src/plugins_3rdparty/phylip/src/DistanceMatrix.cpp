@@ -44,7 +44,7 @@ void DistanceMatrix::calculateOutOfAlignment(const MultipleSequenceAlignment &ma
     try {
         malignment = &ma;
         int index = 0;
-        int size = ma->getNumRows();
+        int size = ma->getRowCount();
         this->size = size;
         printdata = false;
 
@@ -68,7 +68,7 @@ void DistanceMatrix::calculateOutOfAlignment(const MultipleSequenceAlignment &ma
 
             rawMatrix.append(row);
         }
-        spp = ma->getNumRows();
+        spp = ma->getRowCount();
         sites = ma->getLength();
         chars = sites;
         nonodes = 2 * sites - 1;

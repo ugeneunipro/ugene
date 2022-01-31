@@ -105,7 +105,7 @@ void ClustalWAlnFormat::load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QL
             len--;
         }
         if (len == 0) {
-            if (al->getNumRows() == 0) {
+            if (al->getRowCount() == 0) {
                 continue;  // initial empty lines
             }
             os.setError(ClustalWAlnFormat::tr("Error parsing file"));
@@ -139,14 +139,14 @@ void ClustalWAlnFormat::load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QL
         QString name = buf.left(valStartPos).trimmed();
         QByteArray value = buf.mid(valStartPos, valEndPos - valStartPos).toLatin1();  // DNA sequences use 1-byte chars.
 
-        int seqsInModel = al->getNumRows();
+        int seqsInModel = al->getRowCount();
         bool lastBlockLine = (!firstBlock && sequenceIdx == seqsInModel) || numNs >= 2 || name.isEmpty() || value.contains(' ') || value.contains(':') || value.contains('.');
 
         if (firstBlock) {
             if (lastBlockLine && name.isEmpty()) {  // if name is not empty -> this is a sequence but consensus (for Clustal files without consensus)
                 // this is consensus line - skip it
             } else {
-                assert(al->getNumRows() == sequenceIdx);
+                assert(al->getRowCount() == sequenceIdx);
                 al->addRow(name, value);
             }
         } else {

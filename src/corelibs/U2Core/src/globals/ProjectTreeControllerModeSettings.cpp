@@ -93,7 +93,7 @@ bool ProjectTreeControllerModeSettings::isObjectShown(GObject *o) const {
     // filter by readonly flag
     Document *doc = o->getDocument();
     // TODO: revise readonly filters -> use isStateLocked or hasReadonlyLock ?
-    res = readOnlyFilter == TriState_Unknown ? true : (readOnlyFilter == TriState_Yes && !doc->isStateLocked()) || (readOnlyFilter == TriState_No && doc->isStateLocked());
+    res = readOnlyFilter == TriState_Unknown || (readOnlyFilter == TriState_Yes && !doc->isStateLocked()) || (readOnlyFilter == TriState_No && doc->isStateLocked());
     if (!res) {
         return false;
     }
@@ -110,13 +110,11 @@ bool ProjectTreeControllerModeSettings::isObjectShown(GObject *o) const {
 
     // filter by internal obj properties
     if (!objectConstraints.isEmpty()) {
-        res = true;
         foreach (const GObjectConstraints *c, objectConstraints) {
             if (o->getGObjectType() != c->objectType) {
                 continue;
             }
-            res = o->checkConstraints(c);
-            if (!res) {
+            if (!o->checkConstraints(c)) {
                 return false;
             }
         }
@@ -144,7 +142,7 @@ bool ProjectTreeControllerModeSettings::nameFilterAcceptsString(const QString &s
     return true;
 }
 
-bool ProjectTreeControllerModeSettings::isTypeShown(GObjectType t) const {
+bool ProjectTreeControllerModeSettings::isTypeShown(const GObjectType& t) const {
     if (objectTypesToShow.isEmpty()) {
         return true;
     }

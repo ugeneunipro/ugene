@@ -135,7 +135,7 @@ public:
     void setLength(int length);
 
     /** Returns the number of rows in the alignment */
-    int getNumRows() const;
+    int getRowCount() const;
 
     QList<QVector<U2MsaGap>> getGapModel() const;
 

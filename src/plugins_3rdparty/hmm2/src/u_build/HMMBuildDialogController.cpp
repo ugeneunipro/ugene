@@ -341,7 +341,7 @@ void HMMBuildTask::run() {
 }
 
 void HMMBuildTask::_run() {
-    if (ma->getNumRows() == 0) {
+    if (ma->getRowCount() == 0) {
         stateInfo.setError(tr("Multiple alignment is empty"));
         return;
     }
@@ -357,13 +357,13 @@ void HMMBuildTask::_run() {
 
     // everything ok here: fill msa
 
-    msa_struct *msa = MSAAlloc(ma->getNumRows(), ma->getLength());
+    msa_struct *msa = MSAAlloc(ma->getRowCount(), ma->getLength());
     if (msa == nullptr) {
         stateInfo.setError(tr("Error creating MSA structure"));
         return;
     }
     U2OpStatus2Log os;
-    for (int i = 0; i < ma->getNumRows(); i++) {
+    for (int i = 0; i < ma->getRowCount(); i++) {
         const MultipleSequenceAlignmentRow row = ma->getMsaRow(i);
         QByteArray seq = row->toByteArray(os, ma->getLength());
         free(msa->aseq[i]);

@@ -72,7 +72,7 @@ MafftAddToAlignmentTask::MafftAddToAlignmentTask(const AlignSequencesToAlignment
 
     MultipleSequenceAlignmentExporter alnExporter;
     inputMsa = alnExporter.getAlignment(settings.msaRef.dbiRef, settings.msaRef.entityId, stateInfo);
-    int rowNumber = inputMsa->getNumRows();
+    int rowNumber = inputMsa->getRowCount();
     for (int i = 0; i < rowNumber; i++) {
         inputMsa->renameRow(i, QString::number(i));
     }
@@ -94,7 +94,7 @@ static QString generateTmpFileUrl(const QString &filePathAndPattern) {
 void MafftAddToAlignmentTask::prepare() {
     algoLog.info(tr("Align sequences to alignment with MAFFT started"));
 
-    MSAUtils::removeColumnsWithGaps(inputMsa, inputMsa->getNumRows());
+    MSAUtils::removeColumnsWithGaps(inputMsa, inputMsa->getRowCount());
 
     tmpDirUrl = ExternalToolSupportUtils::createTmpDir("add_to_alignment", stateInfo);
 
@@ -106,7 +106,7 @@ void MafftAddToAlignmentTask::prepare() {
     Document *tempDocument = dfd->createNewLoadedDocument(IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), GUrl(tmpAddedUrl), stateInfo);
 
     QListIterator<QString> namesIterator(settings.addedSequencesNames);
-    int currentRowNumber = inputMsa->getNumRows();
+    int currentRowNumber = inputMsa->getRowCount();
     foreach (const U2EntityRef &sequenceRef, settings.addedSequencesRefs) {
         uniqueIdsToNames[QString::number(currentRowNumber)] = namesIterator.next();
         U2SequenceObject seqObject(QString::number(currentRowNumber), sequenceRef);
@@ -157,7 +157,7 @@ QList<Task *> MafftAddToAlignmentTask::onSubTaskFinished(Task *subTask) {
         arguments << saveAlignmentDocumentTask->getDocument()->getURLString();
         QString outputUrl = resultFilePath + ".out.fa";
 
-        logParser = new MAFFTLogParser(inputMsa->getNumRows(), 1, outputUrl);
+        logParser = new MAFFTLogParser(inputMsa->getRowCount(), 1, outputUrl);
         mafftTask = new ExternalToolRunTask(MAFFTSupport::ET_MAFFT_ID, arguments, logParser);
         mafftTask->setStandartOutputFile(resultFilePath);
         mafftTask->setSubtaskProgressWeight(65);

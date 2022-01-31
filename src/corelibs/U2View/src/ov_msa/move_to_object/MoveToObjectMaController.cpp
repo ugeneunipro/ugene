@@ -121,7 +121,7 @@ void MoveToObjectMaController::showMoveSelectedRowsToAnotherObjectMenu() {
 
 void MoveToObjectMaController::updateActions() {
     int countOfSelectedRows = getSelection().getCountOfSelectedRows();
-    bool isMoveOk = !maObject->isStateLocked() && countOfSelectedRows > 0 && countOfSelectedRows < maObject->getNumRows();
+    bool isMoveOk = !maObject->isStateLocked() && countOfSelectedRows > 0 && countOfSelectedRows < maObject->getRowCount();
     moveSelectionToAnotherObjectAction->setEnabled(isMoveOk);
     moveSelectionToNewFileAction->setEnabled(isMoveOk);
 }
@@ -191,7 +191,7 @@ void RemoveRowsFromMaObjectTask::run() {
     CHECK(!maEditor.isNull(), );  // The editor may be closed while the task in the queue.
 
     MultipleAlignmentObject *maObject = maEditor->getMaObject();
-    CHECK_EXT(rowIds.size() < maObject->getNumRows(), setError(tr("Can't remove all rows from the alignment")), );
+    CHECK_EXT(rowIds.size() < maObject->getRowCount(), setError(tr("Can't remove all rows from the alignment")), );
     U2UseCommonUserModStep userModStep(maObject->getEntityRef(), stateInfo);
     CHECK_OP(stateInfo, );
 

@@ -174,7 +174,7 @@ void MSAEditor::updateActions() {
 
     alignNewSequencesToAlignmentAction->setEnabled(!isReadOnly);
 
-    buildTreeAction->setEnabled(maObject->getNumRows() >= 3);
+    buildTreeAction->setEnabled(maObject->getRowCount() >= 3);
 
     sl_updateRealignAction();
 

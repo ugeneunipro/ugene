@@ -63,8 +63,8 @@ Task::ReportResult GTest_CompareTwoMca::report() {
     MultipleChromatogramAlignmentObject *mca2 = qobject_cast<MultipleChromatogramAlignmentObject *>(objs2.first());
     CHECK_EXT(nullptr != mca2, setError(QString("document '%1' contains an incorrect object: expected '%2', got '%3'").arg(secondDocContextName).arg(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT).arg(objs2.first()->getGObjectType())), ReportResult_Finished);
 
-    const qint64 rowsNumber1 = mca1->getNumRows();
-    const qint64 rowsNumber2 = mca2->getNumRows();
+    const qint64 rowsNumber1 = mca1->getRowCount();
+    const qint64 rowsNumber2 = mca2->getRowCount();
     CHECK_EXT(rowsNumber1 == rowsNumber2,
               setError(QString("The rows numbers differ: the object '%1' from the document '%2' contains %3 rows, the object '%4' from the document '%5' contains %6 rows")
                            .arg(mca1->getGObjectName())

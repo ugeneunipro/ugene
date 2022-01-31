@@ -65,7 +65,7 @@ public:
     /** Const getters */
     const DNAAlphabet *getAlphabet() const;
     qint64 getLength() const;
-    qint64 getNumRows() const;
+    qint64 getRowCount() const;
     const QList<MultipleAlignmentRow> &getRows() const;
     const MultipleAlignmentRow getRow(int row) const;
     int getRowPosById(qint64 rowId) const;

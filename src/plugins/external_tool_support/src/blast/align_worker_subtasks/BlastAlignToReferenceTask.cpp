@@ -224,7 +224,7 @@ QList<Task *> BlastAlignToReferenceTask::onSubTaskFinished(Task *subTask) {
             const DNAAlphabet *msaAlphabet = blastTask->getSettings().alphabet;
             QScopedPointer<MultipleSequenceAlignmentObject> pairwiseMsaObject(
                 createPairwiseAlignment(referenceSequence, readSequence, msaAlphabet, alignmentResult));
-            SAFE_POINT(pairwiseMsaObject->getNumRows() == 2 && pairwiseMsaObject->getEntityRef().dbiRef == storage->getDbiRef(), "Invalid MSA for pairwise align", {});
+            SAFE_POINT(pairwiseMsaObject->getRowCount() == 2 && pairwiseMsaObject->getEntityRef().dbiRef == storage->getDbiRef(), "Invalid MSA for pairwise align", {});
 
             auto pairwiseAlignmentSettings = new PairwiseAlignmentTaskSettings();
             pairwiseAlignmentSettings->alphabet = msaAlphabet->getId();
@@ -247,7 +247,7 @@ QList<Task *> BlastAlignToReferenceTask::onSubTaskFinished(Task *subTask) {
         // Read 'pairwiseMsaObject' from the DB. It was created when 'blast' task was finished and now has a complete pairwise alignment.
         QScopedPointer<MultipleSequenceAlignmentObject> pairwiseMsaObject(new MultipleSequenceAlignmentObject("pairwise-msa", msaRef));
 
-        SAFE_POINT(pairwiseMsaObject->getNumRows() == 2, "Invalid pairwise MSA", {});
+        SAFE_POINT(pairwiseMsaObject->getRowCount() == 2, "Invalid pairwise MSA", {});
         // TODO: pairwiseMsaObject is never deallocated in DB: workflow DB is growing until the task ends! See DbiDataStorage::deleteObject!
 
         SAFE_POINT_EXT(pendingAlignmentResultByRead.contains(readIdKey), setError("Internal error! Read not found"), {});

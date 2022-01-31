@@ -136,7 +136,7 @@ char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment &ma
     memset(localFreqs.data(), 0, localFreqs.size() * 4);
 
     int *freqsData = localFreqs.data();
-    int nSeq = (seqIdx.isEmpty() ? ma->getNumRows() : seqIdx.size());
+    int nSeq = (seqIdx.isEmpty() ? ma->getRowCount() : seqIdx.size());
     for (int seq = 0; seq < nSeq; seq++) {
         char c = ma->charAt(seqIdx.isEmpty() ? seq : seqIdx[seq], column);
         registerHit(freqsData, c);

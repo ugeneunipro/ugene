@@ -75,7 +75,7 @@ KalignTask::KalignTask(const MultipleSequenceAlignment &ma, const KalignTaskSett
     resultMA->setName(inputMAName);
     resultSubMA->setName(inputMAName);
     tpm = Task::Progress_Manual;
-    quint64 mem = inputMA->getNumRows() * sizeof(float);
+    quint64 mem = inputMA->getRowCount() * sizeof(float);
     quint64 profileMem = (ma->getLength() + 2) * 22 * sizeof(float);  // the size of profile that is built during kalign
     addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, (profileMem + (mem * mem + 3 * mem)) / (1024 * 1024)));
 }
@@ -194,13 +194,13 @@ Task::ReportResult KalignGObjectTask::report() {
     MSAUtils::assignOriginalDataIds(inputMA, resultMA, stateInfo);
     CHECK_OP(stateInfo, ReportResult_Finished);
 
-    if (resultMA->getNumRows() != inputMA->getNumRows()) {
+    if (resultMA->getRowCount() != inputMA->getRowCount()) {
         stateInfo.setError("Unexpected number of rows in the result multiple alignment!");
         return ReportResult_Finished;
     }
 
     QMap<qint64, QVector<U2MsaGap>> rowsGapModel;
-    for (int i = 0, n = resultMA->getNumRows(); i < n; ++i) {
+    for (int i = 0, n = resultMA->getRowCount(); i < n; ++i) {
         qint64 rowId = resultMA->getMsaRow(i)->getRowDbInfo().rowId;
         const QVector<U2MsaGap> &newGapModel = resultMA->getMsaRow(i)->getGaps();
         rowsGapModel.insert(rowId, newGapModel);

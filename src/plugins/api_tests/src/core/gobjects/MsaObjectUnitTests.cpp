@@ -150,7 +150,7 @@ IMPLEMENT_TEST(MsaObjectUnitTests, deleteGap_trailingGaps) {
     QScopedPointer<MultipleSequenceAlignmentObject> alnObj(MsaObjectTestData::getTestAlignmentObject(dbiRef, malignment, os));
     CHECK_NO_ERROR(os);
 
-    alnObj->deleteGap(os, U2Region(0, alnObj->getNumRows()), 10, 3);
+    alnObj->deleteGap(os, U2Region(0, alnObj->getRowCount()), 10, 3);
 
     const MultipleSequenceAlignment resultAlignment = alnObj->getMultipleAlignment();
     CHECK_TRUE(resultAlignment->getMsaRow(0)->getData() == "AC-GT--AAA-", "First row content is unexpected!");
@@ -173,7 +173,7 @@ IMPLEMENT_TEST(MsaObjectUnitTests, deleteGap_regionWithNonGapSymbols) {
     QScopedPointer<MultipleSequenceAlignmentObject> alnObj(MsaObjectTestData::getTestAlignmentObject(dbiRef, alignmentName, os));
     CHECK_NO_ERROR(os);
 
-    const int countOfDeleted = alnObj->deleteGap(os, U2Region(1, alnObj->getNumRows() - 1), 6, 2);
+    const int countOfDeleted = alnObj->deleteGap(os, U2Region(1, alnObj->getRowCount() - 1), 6, 2);
     SAFE_POINT_OP(os, );
 
     CHECK_TRUE(0 == countOfDeleted, "Unexpected count of removed symbols!");
@@ -201,7 +201,7 @@ IMPLEMENT_TEST(MsaObjectUnitTests, deleteGap_gapRegion) {
     QScopedPointer<MultipleSequenceAlignmentObject> alnObj(MsaObjectTestData::getTestAlignmentObject(dbiRef, alignmentName, os));
     CHECK_NO_ERROR(os);
 
-    const int countOfDeleted = alnObj->deleteGap(os, U2Region(0, alnObj->getNumRows() - 1), 5, 2);
+    const int countOfDeleted = alnObj->deleteGap(os, U2Region(0, alnObj->getRowCount() - 1), 5, 2);
     SAFE_POINT_OP(os, );
 
     CHECK_TRUE(2 == countOfDeleted, "Unexpected count of removed symbols!");

@@ -194,7 +194,7 @@ PanView::PanView(QWidget *p, SequenceObjectContext *ctx, const PanViewRenderArea
     updateActions();
     updateRowBar();
 
-    settings->numLines = qMin(MAX_VISIBLE_ROWS_ON_START, rowsManager->getNumRows() + settings->getAdditionalLines());
+    settings->numLines = qMin(MAX_VISIBLE_ROWS_ON_START, rowsManager->getRowCount() + settings->getAdditionalLines());
 
     resize(width(), getRenderArea()->getRowLineHeight() * settings->numLines);
 
@@ -251,13 +251,13 @@ void PanView::updateRows() {
 
 int PanView::calculateNumRowBarSteps() const {
     int visibleRows = settings->getNumVisibleRows();
-    int numRows = rowsManager->getNumRows();
+    int numRows = rowsManager->getRowCount();
     int res = qMax(0, numRows - visibleRows);
     return res;
 }
 
 void PanView::setNumVisibleRows(int rowNum) {
-    settings->numLines = qMin(rowNum, rowsManager->getNumRows() + settings->getAdditionalLines());
+    settings->numLines = qMin(rowNum, rowsManager->getRowCount() + settings->getAdditionalLines());
 
     addUpdateFlags(GSLV_UF_ViewResized);
     update();

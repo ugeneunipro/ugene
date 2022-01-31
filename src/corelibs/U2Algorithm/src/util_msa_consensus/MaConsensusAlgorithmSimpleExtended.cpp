@@ -136,13 +136,13 @@ QVector<QVector<char>> getFrequences(const MultipleAlignment &ma, int column, QV
     QVarLengthArray<int> frequencies(256);
     memset(frequencies.data(), 0, frequencies.size() * sizeof(int));
 
-    const int nSeq = (seqIdx.isEmpty() ? ma->getNumRows() : seqIdx.size());
+    const int nSeq = (seqIdx.isEmpty() ? ma->getRowCount() : seqIdx.size());
     for (int seq = 0; seq < nSeq; seq++) {
         const char c = ma->charAt(seqIdx.isEmpty() ? seq : seqIdx[seq], column);
         frequencies[static_cast<int>(c)]++;
     }
 
-    QVector<QVector<char>> sortedFrequencies(seqIdx.isEmpty() ? ma->getNumRows() + 1 : seqIdx.size() + 1);
+    QVector<QVector<char>> sortedFrequencies(seqIdx.isEmpty() ? ma->getRowCount() + 1 : seqIdx.size() + 1);
     for (int c = 'A'; c <= 'Y'; c++) {
         sortedFrequencies[frequencies[c]] << static_cast<char>(c);
     }

@@ -136,7 +136,7 @@ void DNASequenceGenerator::evaluateBaseContent(const MultipleSequenceAlignment &
         }
     }
 
-    int rowsNum = ma->getNumRows();
+    int rowsNum = ma->getRowCount();
     QMutableMapIterator<char, qreal> i(result);
     while (i.hasNext()) {
         i.next();

@@ -74,8 +74,8 @@ static int countNonSpaceChars(const QString &text) {
 
 /** Checks that MSA has expected sequence and column counts. Sets error into 'os' if not. */
 static void validateMsaByHeaderData(const MultipleSequenceAlignment &msa, int sequenceCountInHeader, int columnCountInHeader, U2OpStatus &os) {
-    CHECK_EXT(msa->getNumRows() == sequenceCountInHeader,
-              os.setError(PhylipFormat::tr("Wrong row count. Header: %1, actual: %2").arg(sequenceCountInHeader).arg(msa->getNumRows())), );
+    CHECK_EXT(msa->getRowCount() == sequenceCountInHeader,
+              os.setError(PhylipFormat::tr("Wrong row count. Header: %1, actual: %2").arg(sequenceCountInHeader).arg(msa->getRowCount())), );
     CHECK_EXT(msa->getLength() == columnCountInHeader,
               os.setError(PhylipFormat::tr("Wrong column count. Header: %1, actual: %2").arg(columnCountInHeader).arg(msa->getLength())), );
 }
@@ -145,7 +145,7 @@ void PhylipSequentialFormat::storeTextEntry(IOAdapterWriter &writer, const QMap<
     const MultipleSequenceAlignment &msa = msaObject->getMultipleAlignment();
 
     // Write header.
-    int sequenceCount = msa->getNumRows();
+    int sequenceCount = msa->getRowCount();
     int columnCount = msa->getLength();
     QString headerLine = QString::number(sequenceCount) + " " + QString::number(columnCount) + "\n";
     writer.write(os, headerLine);
@@ -258,7 +258,7 @@ void PhylipInterleavedFormat::storeTextEntry(IOAdapterWriter &writer, const QMap
     const MultipleSequenceAlignment &msa = msaObject->getMultipleAlignment();
 
     // Write header.
-    int sequenceCount = msa->getNumRows();
+    int sequenceCount = msa->getRowCount();
     int columnCount = msa->getLength();
     QString headerLine = QString::number(sequenceCount) + " " + QString::number(columnCount) + "\n";
     writer.write(os, headerLine);

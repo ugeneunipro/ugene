@@ -159,10 +159,10 @@ void ComposeResultSubtask::createAlignmentAndAnnotations() {
 
         resultMca->addRow(readObject->getSequenceName(), readChromatogram, readSequence, QVector<U2MsaGap>(), stateInfo);
         CHECK_OP(stateInfo, );
-        int mcaRowIndex = resultMca->getNumRows() - 1;
+        int mcaRowIndex = resultMca->getRowCount() - 1;
 
         if (pairwiseAlignment.isOnComplementaryStrand) {
-            resultMca->getMcaRow(resultMca->getNumRows() - 1)->reverseComplement();
+            resultMca->getMcaRow(mcaRowIndex)->reverseComplement();
         }
 
         const QVector<U2MsaGap> &gaps = pairwiseAlignment.readGaps;
@@ -234,7 +234,7 @@ U2Region ComposeResultSubtask::getReadRegion(const MultipleChromatogramAlignment
     // calculate read start
     if (!readRow->getGaps().isEmpty()) {
         U2MsaGap firstGap = readRow->getGaps().first();
-        if (0 == firstGap.startPos) {
+        if (firstGap.startPos == 0) {
             region.startPos += firstGap.length;
             region.length -= firstGap.length;
         }
@@ -242,7 +242,7 @@ U2Region ComposeResultSubtask::getReadRegion(const MultipleChromatogramAlignment
 
     qint64 leftGap = 0;
     qint64 innerGap = 0;
-    foreach (const U2MsaGap &gap, referenceGapModel) {
+    for (const U2MsaGap &gap : qAsConst(referenceGapModel)) {
         qint64 endPos = gap.startPos + gap.length;
         if (gap.startPos < region.startPos) {
             leftGap += gap.length;

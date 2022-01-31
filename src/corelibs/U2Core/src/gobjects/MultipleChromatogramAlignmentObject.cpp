@@ -112,7 +112,7 @@ U2SequenceObject *MultipleChromatogramAlignmentObject::getReferenceObj() const {
 }
 
 char MultipleChromatogramAlignmentObject::charAt(int seqNum, qint64 position) const {
-    SAFE_POINT(seqNum >= 0 && seqNum < getNumRows(), QString("Invalid sequence num: %1").arg(seqNum), U2Msa::GAP_CHAR);
+    SAFE_POINT(seqNum >= 0 && seqNum < getRowCount(), QString("Invalid sequence num: %1").arg(seqNum), U2Msa::GAP_CHAR);
     SAFE_POINT(position >= 0 && position < getLength(), QString("Invalid position: %1").arg(position), U2Msa::GAP_CHAR);
     return getMcaRow(seqNum)->charAt(position);
 }
@@ -152,7 +152,7 @@ QVector<U2MsaGap> MultipleChromatogramAlignmentObject::getReferenceGapModel() co
 
 void MultipleChromatogramAlignmentObject::insertCharacter(int rowIndex, int pos, char newChar) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
-    insertGap(U2Region(0, getNumRows()), pos, 1);
+    insertGap(U2Region(0, getRowCount()), pos, 1);
     replaceCharacter(pos, rowIndex, newChar);
 }
 
@@ -162,7 +162,7 @@ void MultipleChromatogramAlignmentObject::deleteColumnsWithGaps(U2OpStatus &os) 
     CHECK(regionsToDelete.first().length != getLength(), );
 
     for (int n = regionsToDelete.size(), i = n - 1; i >= 0; i--) {
-        removeRegion(regionsToDelete[i].startPos, 0, regionsToDelete[i].length, getNumRows(), true, false);
+        removeRegion(regionsToDelete[i].startPos, 0, regionsToDelete[i].length, getRowCount(), true, false);
         getReferenceObj()->replaceRegion(getEntityRef().entityId, regionsToDelete[i], DNASequence(), os);
         os.setProgress(100 * (n - i) / n);
     }
@@ -209,7 +209,7 @@ void MultipleChromatogramAlignmentObject::trimRow(const int rowIndex, int curren
 }
 
 void MultipleChromatogramAlignmentObject::updateAlternativeMutations(bool showAlternativeMutations, int threshold, U2OpStatus &os) {
-    for (int i = 0; i < getNumRows(); i++) {
+    for (int i = 0; i < getRowCount(); i++) {
         const MultipleChromatogramAlignmentRow &mcaRow = static_cast<const MultipleChromatogramAlignmentRow &>(getRow(i));
         qint64 ungappedLength = mcaRow->getUngappedLength();
 
