@@ -37,18 +37,21 @@ class U2LANG_EXPORT DbiDataHandler : public QSharedData {
     friend class DbiDataStorage;
 
 public:
-    DbiDataHandler(const U2EntityRef &entRef, U2ObjectDbi *dbi, bool useGC);
+    DbiDataHandler(const U2EntityRef &entityRef, U2ObjectDbi *dbi, bool useGC);
     virtual ~DbiDataHandler();
 
     int getReferenceCount() const;
     U2DbiRef getDbiRef() const;
+
+    /** Returns entity-ref this data handler holds. */
+    U2EntityRef getEntityRef() const;
 
     bool equals(const DbiDataHandler *other) const;
 
     bool isValid() const;
 
 private:
-    const U2EntityRef entRef;
+    const U2EntityRef entityRef;
     U2ObjectDbi *dbi;
     bool useGC;
 

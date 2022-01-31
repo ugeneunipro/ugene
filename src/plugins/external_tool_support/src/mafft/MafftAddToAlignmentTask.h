@@ -40,18 +40,20 @@ class U2UseCommonUserModStep;
 class MafftAddToAlignmentTask : public AbstractAlignmentTask {
     Q_OBJECT
 public:
-    MafftAddToAlignmentTask(const AlignSequencesToAlignmentTaskSettings &settings);
+    MafftAddToAlignmentTask(const AlignSequencesToAlignmentTaskSettings *settings);
 
-    void prepare();
-    void run();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    void prepare() override;
 
-    ReportResult report();
+    void run() override;
+
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
+
+    ReportResult report() override;
 
 private:
     bool useMemsaveOption() const;
 
-    AlignSequencesToAlignmentTaskSettings settings;
+    const AlignSequencesToAlignmentTaskSettings* settings;
 
     MultipleSequenceAlignment inputMsa;
 

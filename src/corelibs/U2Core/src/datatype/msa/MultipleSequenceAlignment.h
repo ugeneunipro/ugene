@@ -172,11 +172,12 @@ public:
      * Otherwise, if rowIndex is incorrect, the closer bound is used (the first or the last row).
      * Does not trim the original alignment.
      * Can increase the overall alignment length.
+     * Returns new row id.
      */
-    void addRow(const QString &name, const QByteArray &bytes);
-    void addRow(const QString &name, const QByteArray &bytes, int rowIndex);
-    void addRow(const U2MsaRow &rowInDb, const DNASequence &sequence, U2OpStatus &os);
-    void addRow(const QString &name, const DNASequence &sequence, const QVector<U2MsaGap> &gaps, U2OpStatus &os);
+    qint64 addRow(const QString &name, const QByteArray &bytes);
+    qint64 addRow(const QString &name, const QByteArray &bytes, int rowIndex);
+    qint64 addRow(const U2MsaRow &rowInDb, const DNASequence &sequence, U2OpStatus &os);
+    qint64 addRow(const QString &name, const DNASequence &sequence, const QVector<U2MsaGap> &gaps, U2OpStatus &os);
 
     /**
      * Replaces all occurrences of 'origChar' by 'resultChar' in the row with the specified index.

@@ -200,6 +200,10 @@ QList<SharedAnnotationData> BlastCommonTask::getResultAnnotations() const {
     return resultAnnotations;
 }
 
+QList<SharedAnnotationData> BlastCommonTask::getResultPerQuerySequence(int querySequenceIndex) const {
+    return resultsPerQuerySequence.value(querySequenceIndex);
+}
+
 Task::ReportResult BlastCommonTask::report() {
     if (url.isEmpty()) {
         return ReportResult_Finished;

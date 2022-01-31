@@ -47,9 +47,6 @@ AbstractAlignmentTaskSettings::AbstractAlignmentTaskSettings(const AbstractAlign
       customSettings(s.customSettings) {
 }
 
-AbstractAlignmentTaskSettings::~AbstractAlignmentTaskSettings() {
-}
-
 QVariant AbstractAlignmentTaskSettings::getCustomValue(const QString &optionName, const QVariant &defaultVal) const {
     return customSettings.value(optionName, defaultVal);
 }
@@ -88,11 +85,16 @@ bool AbstractAlignmentTaskSettings::isValid() const {
     return msaRef.isValid() && alphabet.isValid() && (!resultFileName.isEmpty() || !inNewWindow);
 }
 
-AbstractAlignmentTask::AbstractAlignmentTask(const QString &taskName, TaskFlags flags)
-    : Task(taskName, flags) {
+AbstractAlignmentTask::AbstractAlignmentTask(const QString &taskName, const TaskFlags &flags, const AbstractAlignmentTaskSettings *_settings)
+    : Task(taskName, flags), settings(_settings) {
 }
 
-AbstractAlignmentTaskFactory::~AbstractAlignmentTaskFactory() {
+AbstractAlignmentTask::~AbstractAlignmentTask() {
+    delete settings;
+};
+
+const AbstractAlignmentTaskSettings *AbstractAlignmentTask::getSettings() const {
+    return settings;
 }
 
 }  // namespace U2

@@ -331,26 +331,29 @@ void MultipleSequenceAlignmentData::setRows(const QList<MultipleSequenceAlignmen
     rows = convertToMaRows(msaRows);
 }
 
-void MultipleSequenceAlignmentData::addRow(const QString &name, const QByteArray &bytes) {
+qint64 MultipleSequenceAlignmentData::addRow(const QString &name, const QByteArray &bytes) {
     MultipleSequenceAlignmentRow newRow = createRow(name, bytes);
     addRowPrivate(newRow, bytes.size(), -1);
+    return newRow->getRowId();
 }
 
-void MultipleSequenceAlignmentData::addRow(const QString &name, const QByteArray &bytes, int rowIndex) {
+qint64 MultipleSequenceAlignmentData::addRow(const QString &name, const QByteArray &bytes, int rowIndex) {
     MultipleSequenceAlignmentRow newRow = createRow(name, bytes);
     addRowPrivate(newRow, bytes.size(), rowIndex);
+    return newRow->getRowId();
 }
 
-void MultipleSequenceAlignmentData::addRow(const U2MsaRow &rowInDb, const DNASequence &sequence, U2OpStatus &os) {
+qint64 MultipleSequenceAlignmentData::addRow(const U2MsaRow &rowInDb, const DNASequence &sequence, U2OpStatus &os) {
     MultipleSequenceAlignmentRow newRow = createRow(rowInDb, sequence, rowInDb.gaps, os);
-    CHECK_OP(os, );
+    CHECK_OP(os, U2MsaRow::INVALID_ROW_ID);
     addRowPrivate(newRow, rowInDb.length, -1);
+    return newRow->getRowId();
 }
 
-void MultipleSequenceAlignmentData::addRow(const QString &name, const DNASequence &sequence, const QVector<U2MsaGap> &gaps, U2OpStatus &os) {
+qint64 MultipleSequenceAlignmentData::addRow(const QString &name, const DNASequence &sequence, const QVector<U2MsaGap> &gaps, U2OpStatus &os) {
     U2MsaRow row;
     MultipleSequenceAlignmentRow newRow = createRow(row, sequence, gaps, os);
-    CHECK_OP(os, );
+    CHECK_OP(os, U2MsaRow::INVALID_ROW_ID);
 
     int len = sequence.length();
     foreach (const U2MsaGap &gap, gaps) {
@@ -359,6 +362,7 @@ void MultipleSequenceAlignmentData::addRow(const QString &name, const DNASequenc
 
     newRow->setName(name);
     addRowPrivate(newRow, len, -1);
+    return newRow->getRowId();
 }
 
 void MultipleSequenceAlignmentData::insertGaps(int row, int pos, int count, U2OpStatus &os) {

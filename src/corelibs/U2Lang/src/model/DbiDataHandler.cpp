@@ -29,8 +29,8 @@
 namespace U2 {
 namespace Workflow {
 
-DbiDataHandler::DbiDataHandler(const U2EntityRef &entRef, U2ObjectDbi *dbi, bool useGC)
-    : entRef(entRef), dbi(dbi), useGC(useGC) {
+DbiDataHandler::DbiDataHandler(const U2EntityRef &entityRef, U2ObjectDbi *dbi, bool useGC)
+    : entityRef(entityRef), dbi(dbi), useGC(useGC) {
 }
 
 DbiDataHandler::~DbiDataHandler() {
@@ -55,7 +55,7 @@ bool DbiDataHandler::equals(const DbiDataHandler *other) const {
         return false;
     }
 
-    return (other->entRef == entRef) && (other->dbi == dbi);
+    return (other->entityRef == entityRef) && (other->dbi == dbi);
 }
 
 int DbiDataHandler::getReferenceCount() const {
@@ -63,11 +63,15 @@ int DbiDataHandler::getReferenceCount() const {
 }
 
 U2DbiRef DbiDataHandler::getDbiRef() const {
-    return entRef.dbiRef;
+    return entityRef.dbiRef;
+}
+
+U2EntityRef DbiDataHandler::getEntityRef() const {
+    return entityRef;
 }
 
 bool DbiDataHandler::isValid() const {
-    return entRef.isValid();
+    return entityRef.isValid();
 }
 
 }  // namespace Workflow

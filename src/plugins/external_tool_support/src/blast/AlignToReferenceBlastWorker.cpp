@@ -45,7 +45,7 @@
 #include <U2Lang/WorkflowMonitor.h>
 
 #include "BlastSupport.h"
-#include "align_worker_subtasks/BlastAndSmithWatermanAlignmentTask.h"
+#include "align_worker_subtasks/BlastAlignToReferenceTask.h"
 #include "align_worker_subtasks/ComposeResultSubtask.h"
 #include "align_worker_subtasks/MakeBlastDbAlignerSubtask.h"
 #include "align_worker_subtasks/PrepareReferenceSequenceTask.h"
@@ -179,17 +179,17 @@ void AlignToReferenceBlastWorker::onPrepared(Task *task, U2OpStatus &os) {
 
 Task *AlignToReferenceBlastWorker::createTask(const QList<Message> &messages) const {
     QList<SharedDbiDataHandler> reads;
-    QMap<SharedDbiDataHandler, QString> readsNames;
-    foreach (const Message &message, messages) {
+    QMap<SharedDbiDataHandler, QString> readNameById;
+    for (const Message &message : qAsConst(messages)) {
         QVariantMap data = message.getData().toMap();
         if (data.contains(BaseSlots::DNA_SEQUENCE_SLOT().getId())) {
             const SharedDbiDataHandler read = data[BaseSlots::DNA_SEQUENCE_SLOT().getId()].value<SharedDbiDataHandler>();
             reads << read;
-            readsNames.insert(read, getReadName(message));
+            readNameById.insert(read, getReadName(message));
         }
     }
     int readIdentity = getValue<int>(IDENTITY_ID);
-    return new AlignToReferenceBlastTask(referenceUrl, getValue<QString>(RESULT_URL_ATTR_ID), reference, reads, readsNames, readIdentity, context->getDataStorage());
+    return new AlignToReferenceBlastTask(referenceUrl, getValue<QString>(RESULT_URL_ATTR_ID), reference, reads, readNameById, readIdentity, context->getDataStorage());
 }
 
 QVariantMap AlignToReferenceBlastWorker::getResult(Task *task, U2OpStatus &os) const {
@@ -245,15 +245,21 @@ QString AlignToReferenceBlastWorker::getReadName(const Message &message) const {
 /************************************************************************/
 /* AlignToReferenceBlastTask */
 /************************************************************************/
-AlignToReferenceBlastTask::AlignToReferenceBlastTask(const QString &refUrl, const QString &resultUrl, const SharedDbiDataHandler &reference, const QList<SharedDbiDataHandler> &reads, const QMap<SharedDbiDataHandler, QString> &readsNames, int minIdentityPercent, DbiDataStorage *storage)
+AlignToReferenceBlastTask::AlignToReferenceBlastTask(const QString &_referenceUrl,
+                                                     const QString &_resultUrl,
+                                                     const SharedDbiDataHandler &_reference,
+                                                     const QList<SharedDbiDataHandler> &_reads,
+                                                     const QMap<SharedDbiDataHandler, QString> &_readNameById,
+                                                     int _minIdentityPercent,
+                                                     DbiDataStorage *_storage)
     : Task(tr("Map to reference"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
-      referenceUrl(refUrl),
-      resultUrl(resultUrl),
-      reference(reference),
-      reads(reads),
-      readsNames(readsNames),
-      minIdentityPercent(minIdentityPercent),
-      storage(storage) {
+      referenceUrl(_referenceUrl),
+      resultUrl(_resultUrl),
+      reference(_reference),
+      reads(_reads),
+      readNameById(_readNameById),
+      minIdentityPercent(_minIdentityPercent),
+      storage(_storage) {
     GCOUNTER(cvar, "AlignToReferenceBlastTask");
 }
 
@@ -269,10 +275,17 @@ QList<Task *> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
 
     if (subTask == formatDbSubTask) {
         QString dbPath = formatDbSubTask->getResultPath();
-        blastTask = new BlastAndSmithWatermanAlignmentTask(dbPath, reads, reference, minIdentityPercent, readsNames, storage);
+        blastTask = new BlastAlignToReferenceMuxTask(dbPath, reads, reference, storage);
         result << blastTask;
     } else if (subTask == blastTask) {
-        composeSubTask = new ComposeResultSubtask(reference, reads, blastTask->getBlastSubtasks(), storage);
+        const QList<AlignToReferenceResult> &alignmentResults = blastTask->getAlignmentResults();
+        QList<AlignToReferenceResult> acceptedResults;
+        for (const auto &alignmentResult : qAsConst(alignmentResults)) {
+            if (alignmentResult.identityPercent >= minIdentityPercent) {
+                acceptedResults << alignmentResult;
+            }
+        }
+        composeSubTask = new ComposeResultSubtask(reference, acceptedResults, storage);
         composeSubTask->setSubtaskProgressWeight(0.5f);
         result << composeSubTask;
     } else if (subTask == composeSubTask) {
@@ -345,23 +358,27 @@ SharedDbiDataHandler AlignToReferenceBlastTask::getAnnotations() const {
 }
 
 QList<QPair<QString, QPair<int, bool>>> AlignToReferenceBlastTask::getAcceptedReads() const {
+    CHECK(blastTask != nullptr, {});
     QList<QPair<QString, QPair<int, bool>>> acceptedReads;
-    CHECK(nullptr != blastTask, acceptedReads);
-    foreach (BlastAndSmithWatermanAlignmentSubtask *subTask, blastTask->getBlastSubtasks()) {
-        if (subTask->getReadIdentity() >= minIdentityPercent) {
-            QPair<int, bool> pair(subTask->getReadIdentity(), subTask->isComplement());
-            acceptedReads.append((QPair<QString, QPair<int, bool>>(subTask->getReadName(), pair)));
+    const QList<AlignToReferenceResult> &alignmentResults = blastTask->getAlignmentResults();
+    for (auto alignmentResult : qAsConst(alignmentResults)) {
+        if (alignmentResult.identityPercent >= minIdentityPercent) {
+            QPair<int, bool> identityAndStrandPair(alignmentResult.identityPercent, alignmentResult.isOnComplementaryStrand);
+            QString readName = readNameById.value(alignmentResult.readHandle);
+            acceptedReads.append({readName, identityAndStrandPair});
         }
     }
     return acceptedReads;
 }
 
 QList<QPair<QString, int>> AlignToReferenceBlastTask::getDiscardedReads() const {
+    CHECK(blastTask != nullptr, {});
     QList<QPair<QString, int>> discardedReads;
-    CHECK(nullptr != blastTask, discardedReads);
-    foreach (BlastAndSmithWatermanAlignmentSubtask *subTask, blastTask->getBlastSubtasks()) {
-        if (subTask->getReadIdentity() < minIdentityPercent) {
-            discardedReads << QPair<QString, int>(subTask->getReadName(), subTask->getReadIdentity());
+    const QList<AlignToReferenceResult> &alignmentResults = blastTask->getAlignmentResults();
+    for (auto alignmentResult : qAsConst(alignmentResults)) {
+        if (alignmentResult.identityPercent < minIdentityPercent) {
+            QString readName = readNameById.value(alignmentResult.readHandle);
+            discardedReads.append({readName, alignmentResult.identityPercent});
         }
     }
     return discardedReads;

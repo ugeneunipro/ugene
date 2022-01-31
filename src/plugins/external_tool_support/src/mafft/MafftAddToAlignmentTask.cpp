@@ -57,9 +57,9 @@ static const int UNBREAKABLE_SEQUENCE_LENGTH_LIMIT = 50;
 /************************************************************************/
 /* MafftAddToAlignmentTask */
 /************************************************************************/
-MafftAddToAlignmentTask::MafftAddToAlignmentTask(const AlignSequencesToAlignmentTaskSettings &settings)
-    : AbstractAlignmentTask(tr("Align sequences to alignment task"), TaskFlag_None),
-      settings(settings),
+MafftAddToAlignmentTask::MafftAddToAlignmentTask(const AlignSequencesToAlignmentTaskSettings *_settings)
+    : AbstractAlignmentTask(tr("Align sequences to alignment task"), TaskFlag_None, _settings),
+      settings(_settings),
       logParser(nullptr),
       saveSequencesDocumentTask(nullptr),
       saveAlignmentDocumentTask(nullptr),
@@ -68,10 +68,10 @@ MafftAddToAlignmentTask::MafftAddToAlignmentTask(const AlignSequencesToAlignment
       modStep(nullptr) {
     GCOUNTER(cvar, "MafftAddToAlignmentTask");
 
-    SAFE_POINT_EXT(settings.isValid(), setError("Incorrect settings were passed into MafftAddToAlignmentTask"), );
+    SAFE_POINT_EXT(settings->isValid(), setError("Incorrect settings were passed into MafftAddToAlignmentTask"), );
 
     MultipleSequenceAlignmentExporter alnExporter;
-    inputMsa = alnExporter.getAlignment(settings.msaRef.dbiRef, settings.msaRef.entityId, stateInfo);
+    inputMsa = alnExporter.getAlignment(settings->msaRef.dbiRef, settings->msaRef.entityId, stateInfo);
     int rowNumber = inputMsa->getNumRows();
     for (int i = 0; i < rowNumber; i++) {
         inputMsa->renameRow(i, QString::number(i));
@@ -105,9 +105,9 @@ void MafftAddToAlignmentTask::prepare() {
     DocumentFormat *dfd = dfr->getFormatById(BaseDocumentFormats::FASTA);
     Document *tempDocument = dfd->createNewLoadedDocument(IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), GUrl(tmpAddedUrl), stateInfo);
 
-    QListIterator<QString> namesIterator(settings.addedSequencesNames);
+    QListIterator<QString> namesIterator(settings->addedSequencesNames);
     int currentRowNumber = inputMsa->getNumRows();
-    foreach (const U2EntityRef &sequenceRef, settings.addedSequencesRefs) {
+    foreach (const U2EntityRef &sequenceRef, settings->addedSequencesRefs) {
         uniqueIdsToNames[QString::number(currentRowNumber)] = namesIterator.next();
         U2SequenceObject seqObject(QString::number(currentRowNumber), sequenceRef);
         GObject *cloned = seqObject.clone(tempDocument->getDbiRef(), stateInfo);
@@ -135,15 +135,15 @@ QList<Task *> MafftAddToAlignmentTask::onSubTaskFinished(Task *subTask) {
     }
 
     if ((subTask == saveAlignmentDocumentTask || subTask == saveSequencesDocumentTask) && saveAlignmentDocumentTask->isFinished() && saveSequencesDocumentTask->isFinished()) {
-        resultFilePath = settings.resultFileName.isEmpty() ? tmpDirUrl + QDir::separator() + "result_aln.fa" : settings.resultFileName.getURLString();
+        resultFilePath = settings->resultFileName.isEmpty() ? tmpDirUrl + QDir::separator() + "result_aln.fa" : settings->resultFileName.getURLString();
         QStringList arguments;
-        if (settings.addAsFragments) {
+        if (settings->addAsFragments) {
             arguments << "--addfragments";
         } else {
             arguments << "--add";
         }
         arguments << saveSequencesDocumentTask->getURL().getURLString();
-        const DNAAlphabet *alphabet = U2AlphabetUtils::getById(settings.alphabet);
+        const DNAAlphabet *alphabet = U2AlphabetUtils::getById(settings->alphabet);
         SAFE_POINT_EXT(alphabet != nullptr, setError("Albhabet is invalid."), subTasks);
         if (alphabet->isRaw()) {
             arguments << "--anysymbol";
@@ -151,7 +151,7 @@ QList<Task *> MafftAddToAlignmentTask::onSubTaskFinished(Task *subTask) {
         if (useMemsaveOption()) {
             arguments << "--memsave";
         }
-        if (settings.reorderSequences) {
+        if (settings->reorderSequences) {
             arguments << "--reorder";
         }
         arguments << saveAlignmentDocumentTask->getDocument()->getURLString();
@@ -182,7 +182,7 @@ QList<Task *> MafftAddToAlignmentTask::onSubTaskFinished(Task *subTask) {
         loadTmpDocumentTask->setSubtaskProgressWeight(5);
         subTasks.append(loadTmpDocumentTask);
     } else if (subTask == loadTmpDocumentTask) {
-        modStep = new U2UseCommonUserModStep(settings.msaRef, stateInfo);
+        modStep = new U2UseCommonUserModStep(settings->msaRef, stateInfo);
     }
 
     return subTasks;
@@ -204,12 +204,12 @@ void MafftAddToAlignmentTask::run() {
     int objectsCount = tmpDoc->getObjects().count();
     bool hasDbiUpdates = false;
 
-    U2AlphabetId currentAlphabet = dbi->getMsaAlphabet(settings.msaRef.entityId, stateInfo);
+    U2AlphabetId currentAlphabet = dbi->getMsaAlphabet(settings->msaRef.entityId, stateInfo);
     CHECK_OP(stateInfo, );
 
-    if (currentAlphabet != settings.alphabet) {
+    if (currentAlphabet != settings->alphabet) {
         hasDbiUpdates = true;
-        dbi->updateMsaAlphabet(settings.msaRef.entityId, settings.alphabet, stateInfo);
+        dbi->updateMsaAlphabet(settings->msaRef.entityId, settings->alphabet, stateInfo);
         CHECK_OP(stateInfo, );
     }
     QMap<QString, qint64> uniqueNamesToIds;
@@ -231,7 +231,7 @@ void MafftAddToAlignmentTask::run() {
             sequenceObject->setGObjectName(uniqueIdsToNames[sequenceObject->getGObjectName()]);
             SAFE_POINT(sequenceObject != nullptr, "U2SequenceObject is null", );
 
-            U2MsaRow row = MSAUtils::copyRowFromSequence(sequenceObject, settings.msaRef.dbiRef, stateInfo);
+            U2MsaRow row = MSAUtils::copyRowFromSequence(sequenceObject, settings->msaRef.dbiRef, stateInfo);
 
             rowWasAdded = row.length != 0;
             if (row.length - MsaRowUtils::getGapsLength(row.gaps) <= UNBREAKABLE_SEQUENCE_LENGTH_LIMIT) {
@@ -245,28 +245,28 @@ void MafftAddToAlignmentTask::run() {
 
             if (rowWasAdded) {
                 hasDbiUpdates = true;
-                dbi->addRow(settings.msaRef.entityId, posInMsa, row, stateInfo);
+                dbi->addRow(settings->msaRef.entityId, posInMsa, row, stateInfo);
                 CHECK_OP(stateInfo, );
             } else {
                 unalignedSequences << object->getGObjectName();
             }
         } else {
             // maybe need add leading gaps to original rows
-            U2MsaRow row = MSAUtils::copyRowFromSequence(sequenceObject, settings.msaRef.dbiRef, stateInfo);
+            U2MsaRow row = MSAUtils::copyRowFromSequence(sequenceObject, settings->msaRef.dbiRef, stateInfo);
             qint64 rowId = uniqueNamesToIds.value(sequenceObject->getSequenceName(), -1);
             if (rowId == -1) {
                 stateInfo.setError(tr("Row for updating doesn't found"));
                 CHECK_OP(stateInfo, );
             }
 
-            U2MsaRow currentRow = dbi->getRow(settings.msaRef.entityId, rowId, stateInfo);
+            U2MsaRow currentRow = dbi->getRow(settings->msaRef.entityId, rowId, stateInfo);
             CHECK_OP(stateInfo, );
             QVector<U2MsaGap> modelToChop(currentRow.gaps);
             MsaRowUtils::chopGapModel(modelToChop, row.length);
 
             if (modelToChop != row.gaps) {
                 hasDbiUpdates = true;
-                dbi->updateGapModel(settings.msaRef.entityId, rowId, row.gaps, stateInfo);
+                dbi->updateGapModel(settings->msaRef.entityId, rowId, row.gaps, stateInfo);
                 CHECK_OP(stateInfo, );
             }
         }
@@ -286,7 +286,7 @@ void MafftAddToAlignmentTask::run() {
     }
 
     if (hasDbiUpdates) {
-        MsaDbiUtils::trim(settings.msaRef, stateInfo);
+        MsaDbiUtils::trim(settings->msaRef, stateInfo);
         CHECK_OP(stateInfo, );
     }
 
@@ -304,18 +304,16 @@ Task::ReportResult MafftAddToAlignmentTask::report() {
 }
 
 bool MafftAddToAlignmentTask::useMemsaveOption() const {
-    qint64 maxLength = qMax(qint64(inputMsa->getLength()), settings.maxSequenceLength);
+    qint64 maxLength = qMax(qint64(inputMsa->getLength()), settings->maxSequenceLength);
     qint64 memoryInMB = 10 * maxLength * maxLength / 1024 / 1024;
     AppResourcePool *pool = AppContext::getAppSettings()->getAppResourcePool();
     return memoryInMB > qMin(pool->getMaxMemorySizeInMB(), pool->getTotalPhysicalMemory() / 2);
 }
 
-AbstractAlignmentTask *MafftAddToAlignmentTaskFactory::getTaskInstance(AbstractAlignmentTaskSettings *_settings) const {
-    AlignSequencesToAlignmentTaskSettings *addSettings = dynamic_cast<AlignSequencesToAlignmentTaskSettings *>(_settings);
-    SAFE_POINT(addSettings != nullptr,
-               "Add sequences to alignment: incorrect settings",
-               nullptr);
-    return new MafftAddToAlignmentTask(*addSettings);
+AbstractAlignmentTask *MafftAddToAlignmentTaskFactory::getTaskInstance(AbstractAlignmentTaskSettings *settings) const {
+    auto alignToAlignmentSettings = dynamic_cast<AlignSequencesToAlignmentTaskSettings *>(settings);
+    SAFE_POINT_EXT(alignToAlignmentSettings != nullptr, delete settings, nullptr);
+    return new MafftAddToAlignmentTask(alignToAlignmentSettings);
 }
 
 MafftAlignSequencesToAlignmentAlgorithm::MafftAlignSequencesToAlignmentAlgorithm(const AlignmentAlgorithmType &type)

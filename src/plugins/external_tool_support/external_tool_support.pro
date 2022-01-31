@@ -37,7 +37,7 @@ HEADERS += src/ETSProjectViewItemsController.h \
            src/blast/RPSBlastTask.h \
            src/blast/TBlastNTask.h \
            src/blast/TBlastXTask.h \
-           src/blast/align_worker_subtasks/BlastAndSmithWatermanAlignmentTask.h \
+           src/blast/align_worker_subtasks/BlastAlignToReferenceTask.h \
            src/blast/align_worker_subtasks/ComposeResultSubtask.h \
            src/blast/align_worker_subtasks/MakeBlastDbAlignerSubtask.h \
            src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.h \
@@ -270,7 +270,7 @@ SOURCES += src/ETSProjectViewItemsController.cpp \
            src/blast/RPSBlastTask.cpp \
            src/blast/TBlastNTask.cpp \
            src/blast/TBlastXTask.cpp \
-           src/blast/align_worker_subtasks/BlastAndSmithWatermanAlignmentTask.cpp \
+           src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp \
            src/blast/align_worker_subtasks/ComposeResultSubtask.cpp \
            src/blast/align_worker_subtasks/MakeBlastDbAlignerSubtask.cpp \
            src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.cpp \
