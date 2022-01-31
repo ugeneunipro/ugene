@@ -101,19 +101,44 @@ void MaEditorMultilineWgt::initWidgets() {
     multilineArea->setLayout(layoutMultilineArea);
     layoutMultilineArea->addWidget(scrollArea, 0, 0);
     layoutMultilineArea->addWidget(cvBar, 0, 1);
-    layoutChildren->addWidget(shBar, 0, 0);
+    cvBar->setStyleSheet("border: none");
 
     scrollArea->setWidget(uiChildrenArea);
-
-    // the following must be after initing children area
-    scrollController->init(shBar, cvBar);
 
     treeSplitter = new QSplitter(Qt::Horizontal, this);
     treeSplitter->setContentsMargins(0, 0, 0, 0);
 
     QSplitter *mainSplitter = new QSplitter(Qt::Vertical, this);
+    mainSplitter->setContentsMargins(0, 0, 0, 0);
+    mainSplitter->setHandleWidth(0);
     mainSplitter->addWidget(multilineArea);
-    mainSplitter->addWidget(statusBar);
+
+    QSplitter *shBarSplitter = new QSplitter(Qt::Horizontal, this);
+    shBarSplitter->setFixedHeight(20);
+    shBarSplitter->setContentsMargins(0, 0, 0, 0);
+    shBarSplitter->setHandleWidth(0);
+    shBarSplitter->addWidget(new QWidget());
+    shBarSplitter->addWidget(shBar);
+    shBarSplitter->addWidget(new QWidget());
+    shBarSplitter->widget(0)->setMinimumSize(1, 1);
+    shBarSplitter->widget(2)->setMinimumSize(1, 1);
+    shBarSplitter->setStretchFactor(0, 0);
+    shBarSplitter->setStretchFactor(1, 100);
+    shBarSplitter->setStretchFactor(2, 0);
+    shBarSplitter->setSizes({100, 100, cvBar->width()});
+    shBarSplitter->setStyleSheet("background: transparent; background-color: transparent; border: 0;");
+    shBarSplitter->widget(0)->setStyleSheet("background: white; background-color: white; border: none");
+    shBarSplitter->widget(1)->setStyleSheet("border: none");
+    shBarSplitter->handle(1)->setStyleSheet("border: none");
+    shBarSplitter->handle(2)->setStyleSheet("border: none");
+    shBarSplitter->handle(1)->setEnabled(false);
+    shBarSplitter->handle(2)->setEnabled(false);
+    shBarSplitter->widget(0)->setMinimumSize(1, 1);
+    shBarSplitter->widget(2)->setMinimumSize(1, 1);
+
+    mainSplitter->addWidget(shBarSplitter);
+    mainSplitter->handle(1)->setStyleSheet("border: none");
+    mainSplitter->handle(1)->setEnabled(false);
 
     QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->setSpacing(0);
@@ -124,6 +149,9 @@ void MaEditorMultilineWgt::initWidgets() {
     mainLayout->addWidget(treeSplitter);
     mainLayout->addWidget(statusBar);
     mainLayout->addWidget(overviewArea);
+
+    // the following must be after initing children area
+    scrollController->init(shBar, cvBar);
 
     setLayout(mainLayout);
 
@@ -137,10 +165,11 @@ void MaEditorMultilineWgt::addChild(MaEditorWgt *child, int index) {
         uiChildCount = 0;
     }
 
-    if (index == -1) {
+    if (index < 0 || index > (int)uiChildCount) {
         index = uiChildCount;
     }
-    if (index > 0 && (uint) index >= uiChildLength) {
+
+    if (index > 0 && index >= (int)uiChildLength) {
         uiChildLength = index * 2;
         uiChild.resize(uiChildLength);
     }
@@ -150,10 +179,20 @@ void MaEditorMultilineWgt::addChild(MaEditorWgt *child, int index) {
 
     QGridLayout *grid = (QGridLayout *)uiChildrenArea->layout();
     grid->addWidget(child, index, 0);
-    grid->addWidget(scrollController->getHorizontalScrollBar(), index + 1, 0);
 
-    connect(child->getScrollController(), SIGNAL(si_visibleAreaChanged()), getScrollController(), SLOT(sl_updateScrollBars()));
+    child->setObjectName(QString("msa_editor_" + editor->getMaObject()->getGObjectName() + "%1").arg(index));
+    child->getScrollController()->setHScrollBarVisible(!getMultilineMode());
+
+    connect(child->getScrollController(), SIGNAL(si_visibleAreaChanged()),
+            getScrollController(), SLOT(sl_updateScrollBars()));
+
+    if (getMultilineMode()) {
+        connect(child->getScrollController(), SIGNAL(si_visibleAreaChanged()),
+                scrollController, SIGNAL(si_hScrollValueChanged()));
+    }
     scrollController->sl_updateScrollBars();
+
+    setActiveChild(child);
 }
 
 bool MaEditorMultilineWgt::setMultilineMode(bool newmode)
@@ -161,12 +200,14 @@ bool MaEditorMultilineWgt::setMultilineMode(bool newmode)
     bool oldmode = multilineMode;
     multilineMode = newmode;
     if (oldmode != newmode) {
-        updateChildren();
+        int currentScroll = getUI(0)->getScrollController()->getHorizontalScrollBar()->value();
         if (multilineMode) {
             uiChildrenArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
         } else {
             uiChildrenArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
         }
+        updateChildren();
+        scrollController->setMultilineVScrollbarValue(currentScroll);
         return true;
     }
     return false;
@@ -196,14 +237,25 @@ int MaEditorMultilineWgt::getSequenceAreaWidth(uint index) const
     return getUI(index)->getSequenceArea()->width();
 }
 
+int MaEditorMultilineWgt::getFirstVisibleBase(uint index) const {
+    if (index >= getChildrenCount()) {
+        return 0;
+    }
+    return getUI(index)->getSequenceArea()->getFirstVisibleBase();
+}
+
+int MaEditorMultilineWgt::getLastVisibleBase(uint index) const {
+    if (index >= getChildrenCount()) {
+        return 0;
+    }
+    return getUI(index)->getSequenceArea()->getLastVisibleBase(false);
+}
+
 int MaEditorMultilineWgt::getSequenceAreaBaseWidth(uint index) const {
     if (index >= getChildrenCount()) {
         return 0;
     }
-
-    int l = getUI(index)->getSequenceArea()->getLastVisibleBase(false);
-    int f = getUI(index)->getSequenceArea()->getFirstVisibleBase();
-    return l - f + 1;
+    return getLastVisibleBase(index) - getFirstVisibleBase(index) + 1;
 }
 
 void MaEditorMultilineWgt::sl_toggleSequenceRowOrder(bool isOrderBySequence)

@@ -195,7 +195,11 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& painter) {
         const U2Region yRange = ui->getRowHeightController()->getScreenYRegionByMaRowIndex(rowNumber);
         int offs = getBaseCounts(rowNumber, pos, !showStartPos);
         int seqSize = getBaseCounts(rowNumber, alignmentLength - 1, true);
-        QString offset = offs + 1 > seqSize ? QString::number(seqSize) : QString::number(offs + 1);
+        QString offset = offs + 1 > seqSize
+                             ? QString::number(seqSize)
+                             : showStartPos
+                                   ? QString::number(offs + 1)
+                                   : QString::number(offs);
         if (showStartPos && offs == 0) {
             painter.setPen(Qt::black);
             QRect lbr(OFFS_WIDGET_BORDER, yRange.startPos, lbw, yRange.length);
