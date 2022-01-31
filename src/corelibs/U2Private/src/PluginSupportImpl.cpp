@@ -22,6 +22,7 @@
 #include "PluginSupportImpl.h"
 #include <algorithm>
 
+#include <QCoreApplication>
 #include <QDir>
 #include <QLibrary>
 #include <QSet>
@@ -329,8 +330,7 @@ QDir PluginSupportImpl::getDefaultPluginsDir() {
         }
     }
 #endif
-    QString pluginsDirPath = qEnvironmentVariable("UGENE_PLUGINS_DIR", AppContext::getWorkingDirectoryPath() + "/plugins");
-    return QDir(pluginsDirPath);
+    return QDir(AppContext::getWorkingDirectoryPath() + "/plugins");
 }
 
 bool PluginSupportImpl::isDefaultPluginsDir(const QString &url) {

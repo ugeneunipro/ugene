@@ -40,7 +40,7 @@ public:
     AbstractAlignmentTaskSettings();
     AbstractAlignmentTaskSettings(const QVariantMap &someSettings);
     AbstractAlignmentTaskSettings(const AbstractAlignmentTaskSettings &s);
-    virtual ~AbstractAlignmentTaskSettings() = default;
+    virtual ~AbstractAlignmentTaskSettings();
 
     void appendCustomSettings(const QVariantMap &settings);
     QVariant getCustomValue(const QString &optionName, const QVariant &defaultVal) const;
@@ -69,26 +69,13 @@ class U2ALGORITHM_EXPORT AbstractAlignmentTask : public Task {
     Q_OBJECT
 
 public:
-    AbstractAlignmentTask(const QString &taskName, const TaskFlags &flags, const AbstractAlignmentTaskSettings *settings);
-
-    ~AbstractAlignmentTask();
-
-    virtual const AbstractAlignmentTaskSettings *getSettings() const;
-
-protected:
-    const AbstractAlignmentTaskSettings *settings = nullptr;
+    AbstractAlignmentTask(const QString &taskName, TaskFlags flags);
 };
 
 class U2ALGORITHM_EXPORT AbstractAlignmentTaskFactory {
 public:
-    /**
-     * Creates new task instance with the given settings.
-     * Settings instance is owned by the task and is deallocated during the task destruction.
-     * This method may return 'nullptr' if the settings are not correct. In this case the settings instance is deleted by the callee immediately.
-     */
     virtual AbstractAlignmentTask *getTaskInstance(AbstractAlignmentTaskSettings *settings) const = 0;
-
-    virtual ~AbstractAlignmentTaskFactory() = default;
+    virtual ~AbstractAlignmentTaskFactory();
 };
 
 }  // namespace U2

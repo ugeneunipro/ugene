@@ -28,20 +28,22 @@
 
 namespace U2 {
 
+class PairwiseAlignmentSettings;
 class PairwiseAlignmentTask;
 
 class U2ALGORITHM_EXPORT PairwiseAlignmentTaskSettings : public AbstractAlignmentTaskSettings {
 public:
-    PairwiseAlignmentTaskSettings() = default;
+    PairwiseAlignmentTaskSettings();
     PairwiseAlignmentTaskSettings(const QVariantMap &someSettings);
     PairwiseAlignmentTaskSettings(const PairwiseAlignmentTaskSettings &s);
-    ~PairwiseAlignmentTaskSettings() = default;
 
-    bool isValid() const override;
+    virtual bool isValid() const;
 
     U2EntityRef firstSequenceRef;  // couldn't be in customSettings. Set manually.
     U2EntityRef secondSequenceRef;  // couldn't be in customSettings. Set manually.
 
+    static const QString PA_FIRST_SEQUENCE_REF;
+    static const QString PA_SECOND_SEQUENCE_REF;
     static const QString DEFAULT_NAME;
 };
 
@@ -49,7 +51,7 @@ class U2ALGORITHM_EXPORT PairwiseAlignmentTask : public AbstractAlignmentTask {
     Q_OBJECT
 
 public:
-    PairwiseAlignmentTask(const PairwiseAlignmentTaskSettings *settings, const TaskFlags &flags = TaskFlags_FOSCOE);
+    PairwiseAlignmentTask(TaskFlags flags = TaskFlags_FOSCOE);
 
 protected:
     QByteArray first;

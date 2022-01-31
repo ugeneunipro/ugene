@@ -52,11 +52,13 @@ public:
     static const QString PA_H_GAP_TERM;
     static const QString PA_H_BONUS_SCORE;
     static const QString PA_H_REALIZATION_NAME;
+    static const QString PA_H_DEFAULT_RESULT_FILE_NAME;
 };
 
 class PairwiseAlignmentHirschbergTask : public PairwiseAlignmentTask {
 public:
     PairwiseAlignmentHirschbergTask(PairwiseAlignmentHirschbergTaskSettings *_settings);
+    ~PairwiseAlignmentHirschbergTask();
 
     virtual QList<Task *> onSubTaskFinished(Task *subTask);
     virtual ReportResult report();

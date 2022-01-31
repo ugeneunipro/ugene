@@ -33,17 +33,14 @@ namespace U2 {
 class SimpleAddToAlignmentTask : public AbstractAlignmentTask {
     Q_OBJECT
 public:
-    SimpleAddToAlignmentTask(const AlignSequencesToAlignmentTaskSettings *settings);
+    SimpleAddToAlignmentTask(const AlignSequencesToAlignmentTaskSettings &settings);
+    void prepare();
+    QList<Task *> onSubTaskFinished(Task *subTask);
 
-    void prepare() override;
-
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
-
-    ReportResult report() override;
+    ReportResult report();
 
 private:
-    const AlignSequencesToAlignmentTaskSettings* simpleSettings() const;
-
+    AlignSequencesToAlignmentTaskSettings settings;
     QMap<QString, int> sequencePositions;
 
     MultipleSequenceAlignment inputMsa;

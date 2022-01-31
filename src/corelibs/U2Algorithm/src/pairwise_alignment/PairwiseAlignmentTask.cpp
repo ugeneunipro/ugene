@@ -23,7 +23,12 @@
 
 namespace U2 {
 
+const QString PairwiseAlignmentTaskSettings::PA_FIRST_SEQUENCE_REF("firstSequenceRef");
+const QString PairwiseAlignmentTaskSettings::PA_SECOND_SEQUENCE_REF("secondSequenceRef");
 const QString PairwiseAlignmentTaskSettings::DEFAULT_NAME("PairwiseAlignmentResult.aln");
+
+PairwiseAlignmentTaskSettings::PairwiseAlignmentTaskSettings() {
+}
 
 PairwiseAlignmentTaskSettings::PairwiseAlignmentTaskSettings(const QVariantMap &someSettings)
     : AbstractAlignmentTaskSettings(someSettings) {
@@ -39,8 +44,8 @@ bool PairwiseAlignmentTaskSettings::isValid() const {
     return firstSequenceRef.isValid() && secondSequenceRef.isValid() && AbstractAlignmentTaskSettings::isValid();
 }
 
-PairwiseAlignmentTask::PairwiseAlignmentTask(const PairwiseAlignmentTaskSettings *settings, const TaskFlags &flags)
-    : AbstractAlignmentTask(tr("Pairwise alignment task"), flags, settings) {
+PairwiseAlignmentTask::PairwiseAlignmentTask(TaskFlags flags)
+    : AbstractAlignmentTask(tr("Pairwise alignment task"), flags) {
 }
 
 }  // namespace U2

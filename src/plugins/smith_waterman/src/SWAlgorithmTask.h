@@ -56,7 +56,7 @@ public:
 
     void prepare();
 
-    virtual void onRegion(SequenceWalkerSubtask *subtask, TaskStateInfo &ti);
+    virtual void onRegion(SequenceWalkerSubtask *t, TaskStateInfo &ti);
 
     QList<PairAlignSequences> &getResult();
     ReportResult report();
@@ -65,7 +65,7 @@ public:
 
 private:
     void addResult(QList<PairAlignSequences> &res);
-    static int calculateMatrixLength(int searchSeqLen, int patternLen, int gapOpen, int gapExtension, int maxScore, int minScore);
+    int calculateMatrixLength(int searchSeqLen, int patternLen, int gapOpen, int gapExtension, int maxScore, int minScore);
     void removeResultFromOverlap(QList<PairAlignSequences> &res);
     int calculateMaxScore(const QByteArray &seq, const SMatrix &substitutionMatrix);
 
@@ -108,7 +108,7 @@ private:
 class PairwiseAlignmentSmithWatermanTaskSettings : public PairwiseAlignmentTaskSettings {
 public:
     PairwiseAlignmentSmithWatermanTaskSettings(const PairwiseAlignmentTaskSettings &s);
-    ~PairwiseAlignmentSmithWatermanTaskSettings();
+    virtual ~PairwiseAlignmentSmithWatermanTaskSettings();
 
     virtual bool convertCustomSettings();
 
@@ -134,23 +134,20 @@ public:
 class PairwiseAlignmentSmithWatermanTask : public PairwiseAlignmentTask, public SequenceWalkerCallback {
     Q_OBJECT
 public:
-    PairwiseAlignmentSmithWatermanTask(PairwiseAlignmentSmithWatermanTaskSettings *settings, const SW_AlgType &algType);
-
-    void onRegion(SequenceWalkerSubtask *subtask, TaskStateInfo &ti) override;
-
-    void prepare() override;
-
+    PairwiseAlignmentSmithWatermanTask(PairwiseAlignmentSmithWatermanTaskSettings *_settings, SW_AlgType algType);
+    ~PairwiseAlignmentSmithWatermanTask();
+    virtual void onRegion(SequenceWalkerSubtask *t, TaskStateInfo &ti);
+    void prepare();
     QList<PairAlignSequences> &getResult();
+    ReportResult report();
 
-    ReportResult report() override;
-
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task *> onSubTaskFinished(Task *subTask);
 
 protected:
     void addResult(QList<PairAlignSequences> &res);
-    static int calculateMaxScore(const QByteArray &seq, const SMatrix &substitutionMatrix);
+    int calculateMaxScore(const QByteArray &seq, const SMatrix &substitutionMatrix);
     void setupTask();
-    static int calculateMatrixLength(const QByteArray &searchSeq, const QByteArray &patternSeq, int gapOpen, int gapExtension, int maxScore, int minScore);
+    int calculateMatrixLength(const QByteArray &searchSeq, const QByteArray &patternSeq, int gapOpen, int gapExtension, int maxScore, int minScore);
     void removeResultFromOverlap(QList<PairAlignSequences> &res);
     QList<PairAlignSequences> expandResults(QList<PairAlignSequences> &res);
 

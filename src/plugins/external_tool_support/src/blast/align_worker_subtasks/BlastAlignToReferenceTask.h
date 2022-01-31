@@ -162,7 +162,8 @@ private:
     QList<AlignToReferenceResult> alignmentResults;
 
     /** Map of pending alignment result by read sequence data id. */
-    QMap<U2DataId, AlignToReferenceResult> pendingAlignmentResultMap;
+    QMap<U2DataId, AlignToReferenceResult> pendingAlignmentResultByRead;
+    QMap<U2DataId, U2EntityRef> pairwiseMsaByRead;
 };
 
 }  // namespace Workflow

@@ -26,6 +26,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
+#include <U2Core/GUrl.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
@@ -51,32 +52,38 @@ PairwiseAlignmentSmithWatermanTaskFactory::PairwiseAlignmentSmithWatermanTaskFac
 PairwiseAlignmentSmithWatermanTaskFactory::~PairwiseAlignmentSmithWatermanTaskFactory() {
 }
 
-AbstractAlignmentTask *PairwiseAlignmentSmithWatermanTaskFactory::getTaskInstance(AbstractAlignmentTaskSettings *settings) const {
-    PairwiseAlignmentTaskSettings *pairwiseSettings = dynamic_cast<PairwiseAlignmentTaskSettings *>(settings);
-    SAFE_POINT_EXT(pairwiseSettings != nullptr, delete settings, nullptr);
-    SAFE_POINT_EXT(!settings->inNewWindow || !settings->resultFileName.isEmpty(), delete settings, nullptr);
-    auto smithWatermanTaskSettings = new PairwiseAlignmentSmithWatermanTaskSettings(*pairwiseSettings);
-    delete settings;
-
-    if (smithWatermanTaskSettings->inNewWindow) {
-        smithWatermanTaskSettings->reportCallback = new SmithWatermanReportCallbackMAImpl(smithWatermanTaskSettings->resultFileName.dirPath() + "/",
-                                                                                          smithWatermanTaskSettings->resultFileName.baseFileName(),
-                                                                                          smithWatermanTaskSettings->firstSequenceRef,
-                                                                                          smithWatermanTaskSettings->secondSequenceRef,
-                                                                                          smithWatermanTaskSettings->msaRef);
-    } else if (smithWatermanTaskSettings->msaRef.isValid()) {
-        smithWatermanTaskSettings->reportCallback = new SmithWatermanReportCallbackMAImpl(smithWatermanTaskSettings->firstSequenceRef,
-                                                                                          smithWatermanTaskSettings->secondSequenceRef,
-                                                                                          smithWatermanTaskSettings->msaRef);
+AbstractAlignmentTask *PairwiseAlignmentSmithWatermanTaskFactory::getTaskInstance(AbstractAlignmentTaskSettings *_settings) const {
+    PairwiseAlignmentTaskSettings *pairwiseSettings = dynamic_cast<PairwiseAlignmentTaskSettings *>(_settings);
+    SAFE_POINT(pairwiseSettings != nullptr,
+               "Pairwise alignment: incorrect settings",
+               nullptr);
+    PairwiseAlignmentSmithWatermanTaskSettings *settings = new PairwiseAlignmentSmithWatermanTaskSettings(*pairwiseSettings);
+    SAFE_POINT(false == settings->inNewWindow || false == settings->resultFileName.isEmpty(),
+               "Pairwise alignment: incorrect settings, empty output file name",
+               nullptr);
+    if (settings->inNewWindow) {
+        settings->reportCallback = new SmithWatermanReportCallbackMAImpl(settings->resultFileName.dirPath() + "/",
+                                                                         settings->resultFileName.baseFileName(),
+                                                                         settings->firstSequenceRef,
+                                                                         settings->secondSequenceRef,
+                                                                         settings->msaRef);
+    } else {
+        if (settings->msaRef.isValid()) {
+            settings->reportCallback = new SmithWatermanReportCallbackMAImpl(settings->firstSequenceRef,
+                                                                             settings->secondSequenceRef,
+                                                                             settings->msaRef);
+        }
     }
 
+    settings->resultListener = new SmithWatermanResultListener;
     SWResultFilterRegistry *resFilterReg = AppContext::getSWResultFilterRegistry();
-    SAFE_POINT_EXT(resFilterReg != nullptr, delete smithWatermanTaskSettings, nullptr);
-    smithWatermanTaskSettings->resultFilter = resFilterReg->getFilter(PairwiseAlignmentSmithWatermanTaskSettings::PA_SW_DEFAULT_RESULT_FILTER);
-    smithWatermanTaskSettings->percentOfScore = PairwiseAlignmentSmithWatermanTaskSettings::PA_SW_DEFAULT_PERCENT_OF_SCORE;
-    smithWatermanTaskSettings->resultListener = new SmithWatermanResultListener();
-    SAFE_POINT_EXT(smithWatermanTaskSettings->convertCustomSettings(), delete smithWatermanTaskSettings, nullptr)
-    return new PairwiseAlignmentSmithWatermanTask(smithWatermanTaskSettings, algType);
+    SAFE_POINT(nullptr != resFilterReg, "SWResultFilterRegistry is NULL.", nullptr);
+    settings->resultFilter = resFilterReg->getFilter(PairwiseAlignmentSmithWatermanTaskSettings::PA_SW_DEFAULT_RESULT_FILTER);
+    settings->percentOfScore = PairwiseAlignmentSmithWatermanTaskSettings::PA_SW_DEFAULT_PERCENT_OF_SCORE;
+    if (settings->convertCustomSettings()) {
+        return new PairwiseAlignmentSmithWatermanTask(settings, algType);
+    }
+    return nullptr;
 }
 
 }  // namespace U2

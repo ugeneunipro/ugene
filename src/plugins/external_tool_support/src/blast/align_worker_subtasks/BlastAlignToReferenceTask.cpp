@@ -167,7 +167,7 @@ void BlastAlignToReferenceTask::prepare() {
     addSubTask(new BlastNTask(settings));
 }
 
-static const char *READ_RESULT_KEY = "read-sequence-data-id-property-key";
+static const char *READ_ID_KEY = "read-sequence-data-id-property-key";
 
 QList<Task *> BlastAlignToReferenceTask::onSubTaskFinished(Task *subTask) {
     if (subTask->hasError()) {
@@ -216,7 +216,7 @@ QList<Task *> BlastAlignToReferenceTask::onSubTaskFinished(Task *subTask) {
             assignReferencePairwiseAlignmentRegion(alignmentResult, readSequence.length(), referenceSequence.length());
 
             QByteArray readResultKey = read->getEntityRef().entityId;
-            pendingAlignmentResultMap[readResultKey] = alignmentResult;
+            pendingAlignmentResultByRead[readResultKey] = alignmentResult;
 
             auto pairwiseAlignmentFactory = getAbstractAlignmentTaskFactory("Smith-Waterman", "SW_classic", stateInfo);
             CHECK_OP(stateInfo, result);
@@ -235,22 +235,23 @@ QList<Task *> BlastAlignToReferenceTask::onSubTaskFinished(Task *subTask) {
             pairwiseAlignmentSettings->setCustomValue("SW_gapOpen", -10);
             pairwiseAlignmentSettings->setCustomValue("SW_gapExtd", -1);
             pairwiseAlignmentSettings->setCustomValue("SW_scoringMatrix", "dna");
+            pairwiseMsaByRead.insert(readResultKey, pairwiseMsaObject->getEntityRef());
             auto pairwiseAlignmentTask = pairwiseAlignmentFactory->getTaskInstance(pairwiseAlignmentSettings);
-            pairwiseAlignmentTask->setProperty(READ_RESULT_KEY, readResultKey);
+            pairwiseAlignmentTask->setProperty(READ_ID_KEY, readResultKey);
             result << pairwiseAlignmentTask;
         }
     } else if (auto pairwiseAlignTask = qobject_cast<AbstractAlignmentTask *>(subTask)) {
-        auto pairwiseAlignmentSettings = pairwiseAlignTask->getSettings();
+        U2DataId readIdKey = pairwiseAlignTask->property(READ_ID_KEY).toByteArray();
+        U2EntityRef msaRef = pairwiseMsaByRead.value(readIdKey);
 
         // Read 'pairwiseMsaObject' from the DB. It was created when 'blast' task was finished and now has a complete pairwise alignment.
-        QScopedPointer<MultipleSequenceAlignmentObject> pairwiseMsaObject(new MultipleSequenceAlignmentObject("tmp-msa", pairwiseAlignmentSettings->msaRef));
+        QScopedPointer<MultipleSequenceAlignmentObject> pairwiseMsaObject(new MultipleSequenceAlignmentObject("pairwise-msa", msaRef));
 
         SAFE_POINT(pairwiseMsaObject->getNumRows() == 2, "Invalid pairwise MSA", {});
         // TODO: pairwiseMsaObject is never deallocated in DB: workflow DB is growing until the task ends! See DbiDataStorage::deleteObject!
 
-        U2DataId readResultKey = pairwiseAlignTask->property(READ_RESULT_KEY).toByteArray();
-        SAFE_POINT_EXT(pendingAlignmentResultMap.contains(readResultKey), setError("Internal error! Read not found"), {});
-        AlignToReferenceResult &alignmentResult = pendingAlignmentResultMap[readResultKey];
+        SAFE_POINT_EXT(pendingAlignmentResultByRead.contains(readIdKey), setError("Internal error! Read not found"), {});
+        AlignToReferenceResult &alignmentResult = pendingAlignmentResultByRead[readIdKey];
 
         QVector<U2MsaGap> referenceGaps = pairwiseMsaObject->getMsaRow(0)->getGaps();
         QVector<U2MsaGap> readGaps = pairwiseMsaObject->getMsaRow(1)->getGaps();
@@ -275,12 +276,12 @@ QList<Task *> BlastAlignToReferenceTask::onSubTaskFinished(Task *subTask) {
 
         MSADistanceAlgorithm *similarityTask = factory->createAlgorithm(pairwiseMsaObject->getMsa());
         CHECK_EXT(similarityTask != nullptr, setError("MSADistanceAlgorithm is NULL"), result);
-        similarityTask->setProperty(READ_RESULT_KEY, readResultKey);
+        similarityTask->setProperty(READ_ID_KEY, readIdKey);
         result << similarityTask;
     } else if (auto similarityTask = qobject_cast<MSADistanceAlgorithm *>(subTask)) {
-        U2DataId readResultKey = similarityTask->property(READ_RESULT_KEY).toByteArray();
-        SAFE_POINT_EXT(pendingAlignmentResultMap.contains(readResultKey), setError("Internal error! Read not found"), {});
-        AlignToReferenceResult &alignmentResult = pendingAlignmentResultMap[readResultKey];
+        U2DataId readResultKey = similarityTask->property(READ_ID_KEY).toByteArray();
+        SAFE_POINT_EXT(pendingAlignmentResultByRead.contains(readResultKey), setError("Internal error! Read not found"), {});
+        AlignToReferenceResult &alignmentResult = pendingAlignmentResultByRead[readResultKey];
 
         const MSADistanceMatrix &matrix = similarityTask->getMatrix();
         alignmentResult.identityPercent = matrix.getSimilarity(0, 1, true);

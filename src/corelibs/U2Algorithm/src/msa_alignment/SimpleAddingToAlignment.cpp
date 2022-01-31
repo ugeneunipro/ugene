@@ -29,6 +29,7 @@
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MultipleSequenceAlignmentExporter.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
@@ -36,14 +37,14 @@ namespace U2 {
 /************************************************************************/
 /* SimpleAddToAlignmentTask */
 /************************************************************************/
-SimpleAddToAlignmentTask::SimpleAddToAlignmentTask(const AlignSequencesToAlignmentTaskSettings *settings)
-    : AbstractAlignmentTask(tr("Simple add to alignment task"), TaskFlags_NR_FOSCOE, settings) {
+SimpleAddToAlignmentTask::SimpleAddToAlignmentTask(const AlignSequencesToAlignmentTaskSettings &settings)
+    : AbstractAlignmentTask("Simple add to alignment task", TaskFlags_NR_FOSCOE), settings(settings) {
     GCOUNTER(cvar, "SimpleAddToAlignmentTask");
 
-    SAFE_POINT_EXT(settings->isValid(), setError("Incorrect settings were passed into SimpleAddToAlignmentTask"), );
+    SAFE_POINT_EXT(settings.isValid(), setError("Incorrect settings were passed into SimpleAddToAlignmentTask"), );
 
     MultipleSequenceAlignmentExporter alnExporter;
-    inputMsa = alnExporter.getAlignment(settings->msaRef.dbiRef, settings->msaRef.entityId, stateInfo);
+    inputMsa = alnExporter.getAlignment(settings.msaRef.dbiRef, settings.msaRef.entityId, stateInfo);
 }
 
 void SimpleAddToAlignmentTask::prepare() {
@@ -51,13 +52,13 @@ void SimpleAddToAlignmentTask::prepare() {
 
     MSAUtils::removeColumnsWithGaps(inputMsa, inputMsa->getNumRows());
 
-    QListIterator<QString> namesIterator(simpleSettings()->addedSequencesNames);
-    foreach (const U2EntityRef &sequence, simpleSettings()->addedSequencesRefs) {
+    QListIterator<QString> namesIterator(settings.addedSequencesNames);
+    foreach (const U2EntityRef &sequence, settings.addedSequencesRefs) {
         if (hasError() || isCanceled()) {
             return;
         }
-        BestPositionFindTask *findTask = new BestPositionFindTask(inputMsa, sequence, namesIterator.next(), simpleSettings()->referenceRowId);
-        findTask->setSubtaskProgressWeight(100.0 / simpleSettings()->addedSequencesRefs.size());
+        BestPositionFindTask *findTask = new BestPositionFindTask(inputMsa, sequence, namesIterator.next(), settings.referenceRowId);
+        findTask->setSubtaskProgressWeight(100.0 / settings.addedSequencesRefs.size());
         addSubTask(findTask);
     }
 }
@@ -70,58 +71,58 @@ QList<Task *> SimpleAddToAlignmentTask::onSubTaskFinished(Task *subTask) {
 
 Task::ReportResult SimpleAddToAlignmentTask::report() {
     CHECK(!hasError() && !isCanceled(), ReportResult_Finished);
-    U2UseCommonUserModStep modStep(settings->msaRef, stateInfo);
+    U2UseCommonUserModStep modStep(settings.msaRef, stateInfo);
     CHECK_OP(stateInfo, ReportResult_Finished);
     U2MsaDbi *dbi = modStep.getDbi()->getMsaDbi();
     int posInMsa = inputMsa->getNumRows();
     bool hasDbiUpdates = false;
 
-    U2AlphabetId currentAlphabetId = dbi->getMsaAlphabet(settings->msaRef.entityId, stateInfo);
+    U2AlphabetId currentAlphabetId = dbi->getMsaAlphabet(settings.msaRef.entityId, stateInfo);
     CHECK_OP(stateInfo, ReportResult_Finished);
 
-    if (currentAlphabetId != settings->alphabet) {
+    if (currentAlphabetId != settings.alphabet) {
         hasDbiUpdates = true;
-        dbi->updateMsaAlphabet(settings->msaRef.entityId, settings->alphabet, stateInfo);
+        dbi->updateMsaAlphabet(settings.msaRef.entityId, settings.alphabet, stateInfo);
         CHECK_OP(stateInfo, ReportResult_Finished);
     }
-    QListIterator<QString> namesIterator(simpleSettings()->addedSequencesNames);
+    QListIterator<QString> namesIterator(settings.addedSequencesNames);
 
     const QList<qint64> rowsIds = inputMsa->getRowsIds();
     const QList<QVector<U2MsaGap>> msaGapModel = inputMsa->getGapModel();
     for (int i = 0; i < inputMsa->getNumRows(); i++) {
-        U2MsaRow row = dbi->getRow(settings->msaRef.entityId, rowsIds[i], stateInfo);
+        U2MsaRow row = dbi->getRow(settings.msaRef.entityId, rowsIds[i], stateInfo);
         CHECK_OP(stateInfo, ReportResult_Finished);
         QVector<U2MsaGap> modelToChop(msaGapModel[i]);
         MsaRowUtils::chopGapModel(modelToChop, row.length);
         CHECK_CONTINUE(modelToChop != row.gaps);
 
         hasDbiUpdates = true;
-        MaDbiUtils::updateRowGapModel(settings->msaRef, rowsIds[i], msaGapModel[i], stateInfo);
+        MaDbiUtils::updateRowGapModel(settings.msaRef, rowsIds[i], msaGapModel[i], stateInfo);
         CHECK_OP(stateInfo, ReportResult_Finished);
     }
 
     QStringList unalignedSequences;
-    foreach (const U2EntityRef &sequence, simpleSettings()->addedSequencesRefs) {
+    foreach (const U2EntityRef &sequence, settings.addedSequencesRefs) {
         QString seqName = namesIterator.peekNext();
         U2SequenceObject seqObject(seqName, sequence);
-        U2MsaRow row = MSAUtils::copyRowFromSequence(&seqObject, settings->msaRef.dbiRef, stateInfo);
+        U2MsaRow row = MSAUtils::copyRowFromSequence(&seqObject, settings.msaRef.dbiRef, stateInfo);
         CHECK_OP(stateInfo, ReportResult_Finished);
 
         if (row.length != 0) {
             hasDbiUpdates = true;
-            dbi->addRow(settings->msaRef.entityId, posInMsa, row, stateInfo);
+            dbi->addRow(settings.msaRef.entityId, posInMsa, row, stateInfo);
             CHECK_OP(stateInfo, ReportResult_Finished);
             posInMsa++;
 
             if (sequencePositions.contains(seqName) && sequencePositions[seqName] > 0) {
                 QVector<U2MsaGap> gapModel;
                 gapModel << U2MsaGap(0, sequencePositions[seqName]);
-                U2MsaRow msaRow = dbi->getRow(settings->msaRef.entityId, row.rowId, stateInfo);
+                U2MsaRow msaRow = dbi->getRow(settings.msaRef.entityId, row.rowId, stateInfo);
                 CHECK_OP(stateInfo, ReportResult_Finished);
 
                 if (msaRow.gaps != gapModel) {
                     hasDbiUpdates = true;
-                    dbi->updateGapModel(settings->msaRef.entityId, msaRow.rowId, gapModel, stateInfo);
+                    dbi->updateGapModel(settings.msaRef.entityId, msaRow.rowId, gapModel, stateInfo);
                     CHECK_OP(stateInfo, ReportResult_Finished);
                 }
             }
@@ -137,17 +138,11 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
     }
 
     if (hasDbiUpdates) {
-        MsaDbiUtils::trim(settings->msaRef, stateInfo);
+        MsaDbiUtils::trim(settings.msaRef, stateInfo);
     }
     CHECK_OP(stateInfo, ReportResult_Finished);
 
     return ReportResult_Finished;
-}
-
-const AlignSequencesToAlignmentTaskSettings *SimpleAddToAlignmentTask::simpleSettings() const {
-    auto simpleAddToAlignmentSettings = dynamic_cast<const AlignSequencesToAlignmentTaskSettings *>(settings);
-    SAFE_POINT(simpleAddToAlignmentSettings != nullptr, "Add sequences to alignment: incorrect settings", nullptr);
-    return simpleAddToAlignmentSettings;
 }
 
 /************************************************************************/
@@ -212,10 +207,12 @@ const QString &BestPositionFindTask::getSequenceId() const {
     return sequenceId;
 }
 
-AbstractAlignmentTask *SimpleAddToAlignmentTaskFactory::getTaskInstance(AbstractAlignmentTaskSettings *settings) const {
-    auto simpleAddToAlignmentSettings = dynamic_cast<AlignSequencesToAlignmentTaskSettings *>(settings);
-    SAFE_POINT_EXT(simpleAddToAlignmentSettings != nullptr, delete settings, nullptr);
-    return new SimpleAddToAlignmentTask(simpleAddToAlignmentSettings);
+AbstractAlignmentTask *SimpleAddToAlignmentTaskFactory::getTaskInstance(AbstractAlignmentTaskSettings *_settings) const {
+    AlignSequencesToAlignmentTaskSettings *addSettings = dynamic_cast<AlignSequencesToAlignmentTaskSettings *>(_settings);
+    SAFE_POINT(addSettings != nullptr,
+               "Add sequences to alignment: incorrect settings",
+               nullptr);
+    return new SimpleAddToAlignmentTask(*addSettings);
 }
 
 SimpleAddToAlignmentAlgorithm::SimpleAddToAlignmentAlgorithm()

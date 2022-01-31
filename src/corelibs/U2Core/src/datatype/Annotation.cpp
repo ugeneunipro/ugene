@@ -48,7 +48,6 @@ Annotation::Annotation(const U2DataId &featureId, const SharedAnnotationData &da
     SAFE_POINT(hasValidId(), "Invalid DB reference", );
 }
 
-
 AnnotationTableObject *Annotation::getGObject() const {
     return parentObject;
 }
