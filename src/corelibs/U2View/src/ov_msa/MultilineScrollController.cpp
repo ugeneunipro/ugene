@@ -75,10 +75,14 @@ void MultilineScrollController::sl_hScrollValueChanged()
     if (ui->getMultilineMode()) {
         setMultilineVScrollbarValue(h);
     }
+
+    ui->setUpdatesEnabled(false);
     for (uint i = 0; i < ui->getChildrenCount(); i++) {
         ui->getUI(i)->getScrollController()->setHScrollbarValue(h);
         h += ui->getSequenceAreaBaseWidth(i) * columnWidth;
     }
+
+    ui->setUpdatesEnabled(true);
     ui->getOverviewArea()->update();
 }
 

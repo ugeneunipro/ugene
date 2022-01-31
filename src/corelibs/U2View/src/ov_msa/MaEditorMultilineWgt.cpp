@@ -82,7 +82,7 @@ void MaEditorMultilineWgt::initWidgets() {
     initStatusBar();
     initChildrenArea();
 
-    QGridLayout *layoutChildren = new QGridLayout;
+    QVBoxLayout *layoutChildren = new QVBoxLayout;
     uiChildrenArea->setLayout(layoutChildren);
     uiChildrenArea->layout()->setContentsMargins(0, 0, 0, 0);
     uiChildrenArea->layout()->setSpacing(0);
@@ -156,43 +156,6 @@ void MaEditorMultilineWgt::initWidgets() {
     setLayout(mainLayout);
 
     connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), scrollController, SLOT(sl_zoomScrollBars()));
-}
-
-void MaEditorMultilineWgt::addChild(MaEditorWgt *child, int index) {
-    if (uiChildLength == 0) {
-        uiChildLength = 8;
-        uiChild.resize(uiChildLength);
-        uiChildCount = 0;
-    }
-
-    if (index < 0 || index > (int)uiChildCount) {
-        index = uiChildCount;
-    }
-
-    if (index > 0 && index >= (int)uiChildLength) {
-        uiChildLength = index * 2;
-        uiChild.resize(uiChildLength);
-    }
-
-    uiChild[index] = child;
-    uiChildCount++;
-
-    QGridLayout *grid = (QGridLayout *)uiChildrenArea->layout();
-    grid->addWidget(child, index, 0);
-
-    child->setObjectName(QString("msa_editor_" + editor->getMaObject()->getGObjectName() + "%1").arg(index));
-    child->getScrollController()->setHScrollBarVisible(!getMultilineMode());
-
-    connect(child->getScrollController(), SIGNAL(si_visibleAreaChanged()),
-            getScrollController(), SLOT(sl_updateScrollBars()));
-
-    if (getMultilineMode()) {
-        connect(child->getScrollController(), SIGNAL(si_visibleAreaChanged()),
-                scrollController, SIGNAL(si_hScrollValueChanged()));
-    }
-    scrollController->sl_updateScrollBars();
-
-    setActiveChild(child);
 }
 
 bool MaEditorMultilineWgt::setMultilineMode(bool newmode)
