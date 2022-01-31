@@ -60,17 +60,8 @@ void MsaEditorMultilineWgt::createChildren()
                                                overviewArea,
                                                statusBar);
         SAFE_POINT(child != nullptr, "Can't create sequence widget", );
-        QString objName = QString("msa_editor_" + editor->getMaObject()->getGObjectName() + "%1")
-                              .arg(i);
-        child->setObjectName(objName);
-        child->getScrollController()->setHScrollBarVisible(!getMultilineMode());
-
-        this->addChild(child);
-        if (i == 0) {
-            this->setActiveChild(child);
-        }
+        addChild(child);
     }
-    emit scrollController->si_hScrollValueChanged();
 }
 
 void MsaEditorMultilineWgt::updateChildren()
