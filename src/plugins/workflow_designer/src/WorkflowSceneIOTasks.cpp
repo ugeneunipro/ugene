@@ -43,7 +43,7 @@ using namespace Workflow;
 SaveWorkflowSceneTask::SaveWorkflowSceneTask(const QSharedPointer<Schema> &s, const Metadata &m)
     : Task(tr("Save workflow scene task"), TaskFlag_None), schema(s), meta(m) {
     GCOUNTER(cvar, "SaveWorkflowSceneTask");
-    HRSchemaSerializer::updateWorkflowSchemaPathSettings(schema, meta);
+    HRSchemaSerializer::updateWorkflowSchemaPathSettings(meta);
 }
 
 void SaveWorkflowSceneTask::run() {

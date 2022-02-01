@@ -2197,8 +2197,7 @@ QString HRSchemaSerializer::markersDefinition(Attribute *attribute) {
     return res + Constants::NEW_LINE;
 }
 
-void HRSchemaSerializer::updateWorkflowSchemaPathSettings(const QSharedPointer<Schema> &schema, const Metadata &meta) {
-    assert(schema != nullptr);
+void HRSchemaSerializer::updateWorkflowSchemaPathSettings(const Metadata &meta) {
     Settings *settings = AppContext::getSettings();
     assert(settings != nullptr);
     QVariantMap pathsMap = settings->getValue(SCHEMA_PATHS_SETTINGS_TAG).toMap();

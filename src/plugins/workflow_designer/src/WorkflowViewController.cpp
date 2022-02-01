@@ -1996,7 +1996,7 @@ void WorkflowView::sl_saveScene(bool saveImmideately) {
     }
     propertyEditor->commit();
     if (saveImmideately) {
-        HRSchemaSerializer::updateWorkflowSchemaPathSettings(schema, meta);
+        HRSchemaSerializer::updateWorkflowSchemaPathSettings(meta);
         U2OpStatus2Log os;
         HRSchemaSerializer::saveSchema(schema.get(), &meta, meta.url, os);
         CHECK_OP(os, );
