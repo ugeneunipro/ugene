@@ -36,7 +36,6 @@
 #include <U2Core/U2AssemblyDbi.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2FeatureDbi.h>
-#include <U2Core/U2FeatureUtils.h>
 #include <U2Core/U2MsaDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2RawData.h>

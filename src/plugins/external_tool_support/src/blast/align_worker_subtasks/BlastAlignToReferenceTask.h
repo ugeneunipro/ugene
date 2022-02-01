@@ -43,6 +43,9 @@ struct AlignToReferenceResult {
     /** Read's DBI handle. */
     SharedDbiDataHandler readHandle;
 
+    /** Name of the read in the result alignment. May be different from the original read name. */
+    QString readName;
+
     /** Gaps in the read. */
     QVector<U2MsaGap> readGaps;
 
@@ -82,6 +85,7 @@ public:
     BlastAlignToReferenceMuxTask(const QString &blastDbPath,
                                  const QList<SharedDbiDataHandler> &reads,
                                  const SharedDbiDataHandler &reference,
+                                 const QMap<SharedDbiDataHandler, QString> &readRenameMap,
                                  DbiDataStorage *storage);
 
     void prepare() override;
@@ -100,6 +104,7 @@ private:
     const QString blastDbPath;
     const QList<SharedDbiDataHandler> reads;
     const SharedDbiDataHandler reference;
+    const QMap<SharedDbiDataHandler, QString> readRenameMap;
 
     DbiDataStorage *const storage;
 
@@ -122,6 +127,7 @@ public:
     BlastAlignToReferenceTask(const QString &blastDbPath,
                               const QList<SharedDbiDataHandler> &reads,
                               const SharedDbiDataHandler &reference,
+                              const QMap<SharedDbiDataHandler, QString> &readRenameMap,
                               DbiDataStorage *storage,
                               const QString &taskNameSuffix = "");
 
@@ -139,10 +145,12 @@ private:
      * Creates MSA object with 2 sequences: read & region of the reference sequence.
      * The MSA is created in the "storage" and must be cleaned up by the caller.
      */
-    MultipleSequenceAlignmentObject *createPairwiseAlignment(const DNASequence &referenceSequence,
-                                                             const DNASequence &readSequence,
-                                                             const DNAAlphabet *alphabet,
-                                                             const AlignToReferenceResult &alignmentResult);
+    static MultipleSequenceAlignmentObject *createPairwiseAlignment(U2OpStatus &os,
+                                                                    const U2DbiRef &dbiRef,
+                                                                    const DNASequence &referenceSequence,
+                                                                    const DNASequence &readSequence,
+                                                                    const DNAAlphabet *alphabet,
+                                                                    const AlignToReferenceResult &alignmentResult);
 
     static AbstractAlignmentTaskFactory *getAbstractAlignmentTaskFactory(const QString &algoId, const QString &implId, U2OpStatus &os);
 
@@ -155,15 +163,19 @@ private:
     const QString dbPath;
     const QList<SharedDbiDataHandler> reads;
     const SharedDbiDataHandler reference;
+    const QMap<SharedDbiDataHandler, QString> readRenameMap;
 
     DbiDataStorage *const storage;
 
     /** Final and complete alignment results with identityPercent >= minIdentityPercent. */
     QList<AlignToReferenceResult> alignmentResults;
 
-    /** Map of pending alignment result by read sequence data id. */
-    QMap<U2DataId, AlignToReferenceResult> pendingAlignmentResultByRead;
+    /** Map of alignment result by read sequence data id. */
+    QMap<U2DataId, AlignToReferenceResult *> alignmentResultByRead;
     QMap<U2DataId, U2EntityRef> pairwiseMsaByRead;
+
+    /** Keeps mapping of read index -> blast query sequence index. Used because not all reads are passed to BLAST, but only validated ones. */
+    QVector<int> blastQuerySequenceIndexByReadIndex;
 };
 
 }  // namespace Workflow

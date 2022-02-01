@@ -99,7 +99,7 @@ ExternalToolRunTask *BlastNTask::createBlastTask() {
         arguments << "-out" << settings.outputOriginalFile;
     }
 
-    algoLog.trace("BlastN+ arguments: " + arguments.join(" "));
+    algoLog.trace("BlastN arguments: " + arguments.join(" "));
     QString workingDirectory = QFileInfo(url).absolutePath();
     auto toolRunTask = new ExternalToolRunTask(BlastSupport::ET_BLASTN_ID, arguments, new ExternalToolLogParser(), workingDirectory);
     setListenerForTask(toolRunTask);

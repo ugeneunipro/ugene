@@ -28,7 +28,6 @@
 #include <U2Core/U2SafePoints.h>
 
 #include "MaStateCheck.h"
-#include "MultipleAlignmentInfo.h"
 #include "MultipleChromatogramAlignment.h"
 
 namespace U2 {
@@ -302,7 +301,7 @@ MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData::createRow(co
 
 MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData::createRow(const U2MsaRow &rowInDb, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QVector<U2MsaGap> &gaps, U2OpStatus &os) {
     QString errorDescr = "Failed to create a multiple alignment row";
-    if (-1 != sequence.constSequence().indexOf(U2Msa::GAP_CHAR)) {
+    if (sequence.constSequence().indexOf(U2Msa::GAP_CHAR) != -1) {
         coreLog.trace("Attempted to create an alignment row from a sequence with gaps");
         os.setError(errorDescr);
         return MultipleChromatogramAlignmentRow();

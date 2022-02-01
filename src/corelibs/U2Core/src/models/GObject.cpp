@@ -38,7 +38,7 @@ namespace U2 {
 
 GObject::GObject(QString _type, const QString &_name, const QVariantMap &hintsMap)
     : dataLoaded(false), type(_type), name(_name), arePermanentRelationsFetched(false) {
-    SAFE_POINT(!name.isEmpty(), "Invalid object name detected", );
+    SAFE_POINT(!name.isEmpty(), "Got an empty object name, type: " + type, );
     setupHints(hintsMap);
 }
 

@@ -145,7 +145,6 @@ void ComposeResultSubtask::createAlignmentAndAnnotations() {
     QList<SharedAnnotationData> annotations;
 
     for (const AlignToReferenceResult &pairwiseAlignment : qAsConst(pairwiseAlignments)) {
-        // Add the read row.
         QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, pairwiseAlignment.readHandle));
         CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("Read sequence")), );
         DNASequence readSequence = readObject->getWholeSequence(stateInfo);
@@ -157,7 +156,7 @@ void ComposeResultSubtask::createAlignmentAndAnnotations() {
         DNAChromatogram readChromatogram = ChromatogramUtils::exportChromatogram(stateInfo, chromatogramRef);
         CHECK_OP(stateInfo, );
 
-        resultMca->addRow(readObject->getSequenceName(), readChromatogram, readSequence, QVector<U2MsaGap>(), stateInfo);
+        resultMca->addRow(pairwiseAlignment.readName, readChromatogram, readSequence, {}, stateInfo);
         CHECK_OP(stateInfo, );
         int mcaRowIndex = resultMca->getRowCount() - 1;
 
@@ -181,7 +180,7 @@ void ComposeResultSubtask::createAlignmentAndAnnotations() {
         SharedAnnotationData annotation(new AnnotationData());
         annotation->location = getLocation(region, pairwiseAlignment.isOnComplementaryStrand);
         annotation->name = GBFeatureUtils::getKeyInfo(GBFeatureKey_misc_feature).text;
-        annotation->qualifiers << U2Qualifier("label", readObject->getSequenceName());
+        annotation->qualifiers << U2Qualifier("label", pairwiseAlignment.readName);
         annotations.append(annotation);
     }
     if (resultMca->isEmpty()) {

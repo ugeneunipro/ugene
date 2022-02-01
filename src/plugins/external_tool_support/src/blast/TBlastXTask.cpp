@@ -82,7 +82,7 @@ ExternalToolRunTask *TBlastXTask::createBlastTask() {
         arguments << "-out" << settings.outputOriginalFile;
     }
 
-    algoLog.trace("TBlastX+ arguments: " + arguments.join(" "));
+    algoLog.trace("TBlastX arguments: " + arguments.join(" "));
     QString workingDirectory = QFileInfo(url).absolutePath();
 
     auto runTask = new ExternalToolRunTask(BlastSupport::ET_TBLASTX_ID, arguments, new ExternalToolLogParser(), workingDirectory);
