@@ -67,6 +67,7 @@ protected:
                              MaEditorStatusBar *statusBar) override;
     void deleteChild(int index) override;
     void addChild(MaEditorWgt *child, int index = -1) override;
+    bool updateChildrenCount() override;
 
 private:
 

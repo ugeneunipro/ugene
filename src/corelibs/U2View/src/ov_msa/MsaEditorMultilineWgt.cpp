@@ -128,11 +128,34 @@ void MsaEditorMultilineWgt::createChildren()
 
     MaEditorOverviewArea *overviewArea = this->getOverviewArea();
     MaEditorStatusBar *statusBar = this->getStatusBar();
+    MaEditorWgt *child = nullptr;
     for (uint i = 0; i < childrenCount; i++) {
-        MaEditorWgt *child = createChild(editor, overviewArea, statusBar);
+        child = createChild(editor, overviewArea, statusBar);
         SAFE_POINT(child != nullptr, "Can't create sequence widget", );
         addChild(child);
     }
+}
+
+bool MsaEditorMultilineWgt::updateChildrenCount()
+{
+    bool updated = false;
+    int childrenCount = getChildrenCount();
+
+    if (getMultilineMode() && childrenCount < 8) {
+        MaEditorWgt *child = nullptr;
+        int rowCount = editor->getNumSequences();
+        int rowHeight = editor->getSequenceRowHeight();
+        int headHeight = getUI(0)->getHeaderWidget()->height();
+        while (childrenCount <= 8
+               && (rowCount * rowHeight + headHeight) * (int) (childrenCount - 1) < height()) {
+            child = createChild(editor, overviewArea, statusBar);
+            SAFE_POINT(child != nullptr, "Can't create sequence widget", updated);
+            addChild(child);
+            childrenCount++;
+            updated = true;
+        }
+    }
+    return updated;
 }
 
 void MsaEditorMultilineWgt::updateChildren()
