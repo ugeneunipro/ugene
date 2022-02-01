@@ -225,6 +225,17 @@ class GTest_CheckAnnotationsNamesInTwoObjects : public XmlTest {
     QString secondDocContextName;
 };
 
+// Compares all annotation tables in two documents. The order of tables is taken into account, the order of annotations
+// in tables is not taken into account, groups of annotations are taken into account.
+class GTest_CheckAnnotationsInTwoObjects : public XmlTest {
+    Q_OBJECT
+    SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_CheckAnnotationsInTwoObjects, "compare-annotations-in-two-objects")
+
+    ReportResult report() override;
+    QString docContextName;
+    QString secondDocContextName;
+};
+
 class GTest_CreateTmpAnnotationObject : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_CreateTmpAnnotationObject, "create-tmp-annotation-object")

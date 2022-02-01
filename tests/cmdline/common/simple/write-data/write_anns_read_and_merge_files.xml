@@ -10,7 +10,6 @@
     <load-document index="doc1" url="write_anns_merge_files.gb" io="local_file" format="genbank" dir="temp"/>
     <load-document index="doc2" url="cmdline/read-write/write/merge_files_result.gb" io="local_file" format="genbank"/>
 
-    <compare-annotations-num-in-two-objects doc="doc1" value="doc2"/>
-    <check-num-objects doc="doc1" value="1"/>
+    <compare-annotations-in-two-objects doc="doc1" value="doc2"/>
 
 </multi-test>
