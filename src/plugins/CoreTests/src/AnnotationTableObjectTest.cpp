@@ -906,15 +906,15 @@ Task::ReportResult GTest_CheckAnnotationsInTwoObjects::report() {
         return ReportResult_Finished;
     }
 
-    auto getAnnotationTables = [this](Document *doc) -> QList<AnnotationTableObject *> {
-        QList<GObject *> objs = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
+    auto getAnnotationTables = [this](Document *document) -> QList<AnnotationTableObject *> {
+        QList<GObject *> objs = document->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
         QList<AnnotationTableObject *> tables;
         for (GObject *obj : qAsConst(objs))
             if (auto table = qobject_cast<AnnotationTableObject *>(obj)) {
                 tables.push_back(table);
             } else {
                 setError(QString("Failed to cast object '%1' of document '%2' to an annotation table")
-                             .arg(obj->getGObjectName(), doc->getName()));
+                             .arg(obj->getGObjectName(), document->getName()));
                 return {};
             }
         return tables;
