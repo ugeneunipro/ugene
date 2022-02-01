@@ -1760,7 +1760,7 @@ static void checkLabelColor(HI::GUITestOpStatus &os, const QString &expectedColo
                         return;
                     }
                     auto getColorDistance = [](const QColor &c1, const QColor &c2) {
-                        return qAbs(c1.green() - c2.green()) + qAbs(c1.blue() - c2.blue()) + qAbs(c1.red() + c2.red());
+                        return qAbs(c1.green() - c2.green()) + qAbs(c1.blue() - c2.blue()) + qAbs(c1.red() - c2.red());
                     };
                     if (getColorDistance(pointColor, expectedColor) < getColorDistance(closestColor, expectedColor)) {
                         closestColor = pointColor;
