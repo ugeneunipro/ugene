@@ -7,6 +7,7 @@
 #include "MsaMultilineScrollArea.h"
 #include "MultilineScrollController.h"
 #include "ScrollController.h"
+#include "RowHeightController.h"
 
 namespace U2 {
 
@@ -15,7 +16,10 @@ MsaMultilineScrollArea::MsaMultilineScrollArea(MaEditor *maEditor, MaEditorMulti
       maEditor(maEditor),
       maEditorUi(maEditorUi)
 {
+    int rowHeight = maEditor->getSequenceRowHeight();
+    int step = rowHeight / 2;
 
+    verticalScrollBar()->setSingleStep(step);
 }
 
 void MsaMultilineScrollArea::wheelEvent(QWheelEvent *event)
@@ -32,25 +36,40 @@ void MsaMultilineScrollArea::wheelEvent(QWheelEvent *event)
             event->accept();
             return;
         } else if (verticalScrollBar()->value() == verticalScrollBar()->maximum() && direction < 0) {
-            int index = maEditorUi->getChildrenCount() - 1;
+            maEditorUi->setUpdatesEnabled(false);
+
+            maEditorUi->updateChildrenCount();
+
+            int linesCount = maEditorUi->getChildrenCount();
+            int index = linesCount - 1;
             int width = maEditorUi->getSequenceAreaBaseWidth(index);
+            int fullLength = maEditor->getAlignmentLen();
             int newScrollValue = maEditorUi->getScrollController()->getFirstVisibleBase(0) + width;
 
-            maEditorUi->setUpdatesEnabled(false);
+            if (maEditorUi->getLastVisibleBase(index) < (fullLength - width)) {
+                int lineHeight = maEditorUi->getUI(0)->height();
+                int vertValue = verticalScrollBar()->value();
+                verticalScrollBar()->setValue(vertValue - lineHeight + verticalScrollBar()->singleStep());
+            }
             maEditorUi->getScrollController()->setFirstVisibleBase(newScrollValue);
-            maEditorUi->setUpdatesEnabled(true);
 
+            maEditorUi->setUpdatesEnabled(true);
             event->accept();
             return;
         } else if (verticalScrollBar()->value() == verticalScrollBar()->minimum() && direction > 0) {
+            maEditorUi->setUpdatesEnabled(false);
+
             int index = 0;
             int width = maEditorUi->getSequenceAreaBaseWidth(index);
             int newScrollValue = maEditorUi->getScrollController()->getFirstVisibleBase(index) - width;
 
-            maEditorUi->setUpdatesEnabled(false);
+            if (maEditorUi->getFirstVisibleBase(index) > width) {
+                int lineHeight = maEditorUi->getUI(0)->height();
+                verticalScrollBar()->setValue(lineHeight - verticalScrollBar()->singleStep());
+            }
             maEditorUi->getScrollController()->setFirstVisibleBase(newScrollValue);
-            maEditorUi->setUpdatesEnabled(true);
 
+            maEditorUi->setUpdatesEnabled(true);
             event->accept();
             return;
         }
