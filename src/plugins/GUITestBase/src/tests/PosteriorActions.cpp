@@ -160,6 +160,8 @@ POSTERIOR_ACTION_DEFINITION(post_action_0003) {
 
         // Files from the projects above.
         GTFile::restore(os, testDir + "_common_data/scenarios/project/1.gb");
+
+        GTFile::restore(os, dataDir + "workflow_samples/NGS/consensus.uwl");
     }
 }
 

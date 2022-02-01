@@ -1858,6 +1858,33 @@ GUI_TEST_CLASS_DEFINITION(test_7490) {
     CHECK_SET_ERR(currentLineNumberText == "-", "Unexpected <Ln> string in MCA editor status bar: " + currentLineNumberText);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7491) {
+    /*
+     * 1. Select "Tools->NGS data analysis->Extract consensus from assemblies..."
+     * 2. Set "samples/Assembly/chrM.sorted.bam" as an input
+     * 3. Click "Run"
+     * 4. Close WD
+     * 5. Click 'Save' and 'Save anyway' in save dialogs
+     * 6. repeat steps 1-4
+     * Expected state: no errors in the log
+     */
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Save));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Save anyway"));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", QStringList(), {{"Assembly", dataDir + "samples/Assembly/chrM.sorted.bam"}}));
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMdi::click(os, GTGlobals::Close);
+
+    GTLogTracer lt;
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", QStringList(), {{"Assembly", dataDir + "samples/Assembly/chrM.sorted.bam"}}));
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7499) {
     // Create a multi-selection and check that the current line label in the MCA editor's status bar shows '-'.
 

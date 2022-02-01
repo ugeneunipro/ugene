@@ -118,8 +118,12 @@ public:
     static void saveSchema(Schema *schema, Metadata *meta, const QString &url, U2OpStatus &os);
 
     static Marker *parseMarker(ParsedPairs &pairs, const QString &MARKER_TYPE, const QString &MARKER_NAME);
+    /* Adds (name, path) pair to settings. need for running schemas in cmdline by name.  */
+    static void updateWorkflowSchemaPathSettings(const QSharedPointer<Schema> &schema, const Metadata &meta);
 
 private:
+    static const QString SCHEMA_PATHS_SETTINGS_TAG;
+
     static GrouperSlotAction parseAction(Tokenizer &tokenizer);
     static QList<Dataset> parseUrlAttribute(const QString attrId, QList<StrStrPair> &blockPairs);
     static void deprecatedUrlAttribute(Actor *proc, const QString &urls);

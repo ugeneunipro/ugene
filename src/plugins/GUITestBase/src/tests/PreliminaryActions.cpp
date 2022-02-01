@@ -100,9 +100,11 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0003) {
         GTFile::backup(os, testDir + "_common_data/scenarios/project/proj3.uprj");
         GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
         GTFile::backup(os, testDir + "_common_data/scenarios/project/proj5.uprj");
-
+        
         // Files from the projects above.
         GTFile::backup(os, testDir + "_common_data/scenarios/project/1.gb");
+
+        GTFile::backup(os, dataDir + "workflow_samples/NGS/consensus.uwl");
     }
 }
 

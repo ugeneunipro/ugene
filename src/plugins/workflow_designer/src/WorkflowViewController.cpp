@@ -1972,7 +1972,9 @@ void WorkflowView::sl_saveScene(bool saveImmideately) {
                             "- \"Choose new path\" will allow you to save schema by another path\r\n"
                             "- \"Cancel\" will cancel save and leave schema untouched"));
         changePathMsgBox.addButton(tr("Save anyway"), QMessageBox::YesRole);
-        QAbstractButton *newPath = changePathMsgBox.addButton(tr("Choose new path"), QMessageBox::NoRole);
+        QPushButton *newPath = changePathMsgBox.addButton(tr("Choose new path"), QMessageBox::NoRole);
+        newPath->setAutoDefault(true);
+        newPath->setDefault(true);
         QAbstractButton *cancel = changePathMsgBox.addButton(tr("Cancel"), QMessageBox::ActionRole);
         changePathMsgBox.exec();
         if (changePathMsgBox.clickedButton() == newPath) {
@@ -1993,14 +1995,16 @@ void WorkflowView::sl_saveScene(bool saveImmideately) {
         sl_updateTitle();
     }
     propertyEditor->commit();
-    Task *t = new SaveWorkflowSceneTask(getSchema(), getMeta());
     if (saveImmideately) {
-        t->run();
-        delete t;
+        HRSchemaSerializer::updateWorkflowSchemaPathSettings(schema, meta);
+        U2OpStatus2Log os;
+        HRSchemaSerializer::saveSchema(schema.get(), &meta, meta.url, os);
+        CHECK_OP(os, );
         sl_onSceneSaved();
     } else {
-        AppContext::getTaskScheduler()->registerTopLevelTask(t);
-        connect(t, SIGNAL(si_stateChanged()), SLOT(sl_onSceneSaved()));
+        auto *saveTask = new SaveWorkflowSceneTask(getSchema(), getMeta());
+        AppContext::getTaskScheduler()->registerTopLevelTask(saveTask);
+        connect(saveTask, SIGNAL(si_stateChanged()), SLOT(sl_onSceneSaved()));
     }
 }
 
@@ -2291,7 +2295,7 @@ bool WorkflowView::confirmModified(bool saveImmideately) {
         if (QMessageBox::Cancel == ret) {
             return false;
         } else if (QMessageBox::Discard != ret) {
-            sl_saveScene(true);
+            sl_saveScene(saveImmideately);
         }
     }
     return true;

@@ -31,6 +31,7 @@
 #include <U2Core/Log.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/Settings.h>
 
 #include <U2Lang/ActorModel.h>
 #include <U2Lang/ActorPrototypeRegistry.h>
@@ -116,6 +117,8 @@ enum IncludeElementType {
     SCRIPT
 };
 }  // namespace
+
+const QString HRSchemaSerializer::SCHEMA_PATHS_SETTINGS_TAG = "workflow_settings/schema_paths";
 
 QString HRSchemaSerializer::valueString(const QString &s, bool quoteEmpty) {
     QString str = s;
@@ -2192,6 +2195,15 @@ QString HRSchemaSerializer::markersDefinition(Attribute *attribute) {
         res += makeBlock(attribute->getId(), Constants::NO_NAME, markerDefinitionBlock(marker, 3), 2);
     }
     return res + Constants::NEW_LINE;
+}
+
+void HRSchemaSerializer::updateWorkflowSchemaPathSettings(const QSharedPointer<Schema> &schema, const Metadata &meta) {
+    assert(schema != nullptr);
+    Settings *settings = AppContext::getSettings();
+    assert(settings != nullptr);
+    QVariantMap pathsMap = settings->getValue(SCHEMA_PATHS_SETTINGS_TAG).toMap();
+    pathsMap.insert(meta.name, meta.url);
+    settings->setValue(SCHEMA_PATHS_SETTINGS_TAG, pathsMap);
 }
 
 }  // namespace U2
