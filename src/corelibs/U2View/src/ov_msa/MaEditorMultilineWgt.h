@@ -105,20 +105,10 @@ public:
 
     virtual MaEditorWgt *createChild(MaEditor *editor,
                                      MaEditorOverviewArea *overviewArea,
-                                     MaEditorStatusBar *statusBar)
-    {
-        Q_UNUSED(editor);
-        Q_UNUSED(overviewArea);
-        Q_UNUSED(statusBar);
-        return nullptr;
-    };
-    virtual void deleteChild(int index) {
-        Q_UNUSED(index);
-    };
-    virtual void addChild(MaEditorWgt *child, int index = -1) {
-        Q_UNUSED(child);
-        Q_UNUSED(index);
-    };
+                                     MaEditorStatusBar *statusBar) = 0;
+    virtual void deleteChild(int index) = 0;
+    virtual void addChild(MaEditorWgt *child, int index = -1) = 0;
+    virtual bool updateChildrenCount() = 0;
 
     uint getChildrenCount() const {
         return uiChildCount;
