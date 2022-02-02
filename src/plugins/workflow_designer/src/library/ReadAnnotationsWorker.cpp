@@ -139,6 +139,7 @@ void ReadAnnotationsWorker::sl_datasetEnded() {
     std::unique_ptr<AnnotationTableObject> mergedTable = mergeAnnotationTables(context->getDataStorage()->getDbiRef(),
                                                                                anns,
                                                                                getValue<QString>(ANN_TABLE_NAME_ATTR));
+    qDeleteAll(anns);
     const SharedDbiDataHandler resultTableId = context->getDataStorage()->putAnnotationTable(mergedTable.get());
 
     QVariantMap m;
