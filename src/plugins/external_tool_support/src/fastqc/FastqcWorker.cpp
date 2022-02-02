@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,27 +22,17 @@
 #include "FastqcWorker.h"
 
 #include <U2Core/AppContext.h>
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DataPathRegistry.h>
-#include <U2Core/DocumentImport.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/DocumentUtils.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/FileAndDirectoryUtils.h>
-#include <U2Core/GObject.h>
-#include <U2Core/GObjectTypes.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
-
-#include <U2Formats/BAMUtils.h>
-
-#include <U2Gui/DialogUtils.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
@@ -86,7 +76,7 @@ QString FastQCPrompter::composeRichDoc() {
 }
 
 ////////////////////////////////////////
-//FastQCFactory
+// FastQCFactory
 void FastQCFactory::init() {
     Descriptor desc(ACTOR_ID, FastQCWorker::tr("FastQC Quality Control"), FastQCWorker::tr("Builds quality control reports."));
 
@@ -148,7 +138,7 @@ void FastQCFactory::init() {
 
         DelegateTags outputUrlTags;
         outputUrlTags.set(DelegateTags::PLACEHOLDER_TEXT, FastQCWorker::tr("Auto"));
-        outputUrlTags.set(DelegateTags::FILTER, DialogUtils::prepareFileFilter("HTML", QStringList("html"), false, QStringList()));
+        outputUrlTags.set(DelegateTags::FILTER, FileFilters::createFileFilter("HTML", {"html"}, false));
         delegates[FastQCWorker::OUT_FILE] = new URLDelegate(outputUrlTags, "fastqc/output");
     }
 
@@ -165,7 +155,7 @@ void FastQCFactory::init() {
 }
 
 //////////////////////////////////////////////////////////////////////////
-//FastQCWorker
+// FastQCWorker
 FastQCWorker::FastQCWorker(Actor *a)
     : BaseWorker(a), inputUrlPort(nullptr) {
 }
@@ -232,5 +222,5 @@ QString FastQCWorker::getUrlAndSetupScriptValues() {
     return data[BaseSlots::URL_SLOT().getId()].toString();
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

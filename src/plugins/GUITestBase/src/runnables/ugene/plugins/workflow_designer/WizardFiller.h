@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,7 +41,7 @@ public:
     WizardFiller(HI::GUITestOpStatus &_os, QString name, CustomScenario *c)
         : Filler(_os, name, c) {
     }
-    void commonScenario();
+    void commonScenario() override;
 
     static QToolButton *getExpandButton(HI::GUITestOpStatus &_os);
 

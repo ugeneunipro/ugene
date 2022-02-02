@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -53,7 +53,7 @@ public:
      * Updates a gap model of the alignment.
      * The map must contain valid row IDs and corresponding gap models.
      */
-    void updateGapModel(U2OpStatus &os, const U2MsaMapGapModel &rowsGapModel);
+    void updateGapModel(U2OpStatus &os, const QMap<qint64, QVector<U2MsaGap>> &rowsGapModel);
     void updateGapModel(const QList<MultipleSequenceAlignmentRow> &sourceRows);
 
     /** Keeps only given row ids and given column range in the alignment. */
@@ -63,7 +63,7 @@ public:
     void crop(const U2Region &columnRange);
 
     /** Methods to work with rows */
-    void updateRow(U2OpStatus &os, int rowIdx, const QString &name, const QByteArray &seqBytes, const U2MsaRowGapModel &gapModel);
+    void updateRow(U2OpStatus &os, int rowIdx, const QString &name, const QByteArray &seqBytes, const QVector<U2MsaGap> &gapModel);
 
     /** Replaces all characters in the alignment and updates alphabet if provided.*/
     void replaceAllCharacters(char oldChar, char newChar, const DNAAlphabet *newAlphabet = nullptr);

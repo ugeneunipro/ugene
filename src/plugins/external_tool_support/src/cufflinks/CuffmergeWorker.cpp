@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,13 +22,11 @@
 #include "CuffmergeWorker.h"
 
 #include <U2Core/AnnotationTableObject.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/L10n.h>
-#include <U2Core/QVariantUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
-
-#include <U2Gui/DialogUtils.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
@@ -140,8 +138,9 @@ void CuffmergeWorkerFactory::init() {
     QMap<QString, PropertyDelegate *> delegates;
     {
         delegates[OUT_DIR] = new URLDelegate("", "", false, true /*path*/);
-        delegates[REF_ANNOTATION] = new URLDelegate(DialogUtils::prepareDocumentsFileFilter(true), "", false, false, false);
-        delegates[REF_SEQ] = new URLDelegate(DialogUtils::prepareDocumentsFileFilter(true), "", false, false, false);
+        QString allFormatsFilter = FileFilters::createAllSupportedFormatsFileFilter();
+        delegates[REF_ANNOTATION] = new URLDelegate(allFormatsFilter, "", false, false, false);
+        delegates[REF_SEQ] = new URLDelegate(allFormatsFilter, "", false, false, false);
         QVariantMap vm;
         vm["minimum"] = 0.0;
         vm["maximum"] = 1.0;

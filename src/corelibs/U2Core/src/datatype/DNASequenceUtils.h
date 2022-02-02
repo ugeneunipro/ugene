@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,19 +28,11 @@
 
 namespace U2 {
 
-enum DnaSequencesMatchStatus {
-    MatchExactly,
-    DoNotMatch
-};
-
 /** Utilities for DNASequences */
 class U2CORE_EXPORT DNASequenceUtils {
 public:
     /** Appends "appendedSequence" to "sequence" */
     static void append(DNASequence &sequence, const DNASequence &appendedSequence);
-
-    /** Compares two sequences */
-    static DnaSequencesMatchStatus compare(const DNASequence &firstSeq, const DNASequence &secondSec);
 
     /** Removes chars from 'startPos' (inclusive) to 'endPos' (non-inclusive) */
     static void removeChars(DNASequence &sequence, int startPos, int endPos, U2OpStatus &os);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -492,14 +492,13 @@ void ADVExportContext::prepareMAFromBlastAnnotations(MultipleSequenceAlignment &
         U2EntityRef seqRef = seqCtx->getSequenceObject()->getSequenceRef();
 
         maxLen = qMax(maxLen, annotation->getRegionsLen());
-        CHECK_EXT(maxLen * ma->getNumRows() <= MAX_ALI_MODEL, os.setError(tr("Alignment is too large")), );
+        CHECK_EXT(maxLen * ma->getRowCount() <= MAX_ALI_MODEL, os.setError(tr("Alignment is too large")), );
 
-        QByteArray rowSequence;
         QString subjSeq = annotation->findFirstQualifierValue("subj_seq");
         if (!subjSeq.isEmpty()) {
             ma->addRow(rowName, subjSeq.toLatin1());
         } else {
-            AnnotationSelection::getSequenceInRegions(rowSequence, annotation->getRegions(), U2Msa::GAP_CHAR, seqRef, nullptr, nullptr, os);
+            QByteArray rowSequence = AnnotationSelection::getSequenceUnderAnnotation(seqRef, annotation, nullptr, nullptr, os);
             CHECK_OP(os, );
             ma->addRow(rowName, rowSequence);
         }
@@ -549,11 +548,10 @@ void ADVExportContext::prepareMAFromAnnotations(MultipleSequenceAlignment &ma, b
         U2EntityRef seqRef = seqCtx->getSequenceObject()->getSequenceRef();
 
         maxLen = qMax(maxLen, annotation->getRegionsLen());
-        CHECK_EXT(maxLen * ma->getNumRows() <= MAX_ALI_MODEL, os.setError(tr("Alignment is too large")), );
-        const DNATranslation *complTT = annotation->getStrand().isCompementary() ? seqCtx->getComplementTT() : nullptr;
+        CHECK_EXT(maxLen * ma->getRowCount() <= MAX_ALI_MODEL, os.setError(tr("Alignment is too large")), );
+        const DNATranslation *complTT = annotation->getStrand().isComplementary() ? seqCtx->getComplementTT() : nullptr;
         const DNATranslation *aminoTT = translate ? seqCtx->getAminoTT() : nullptr;
-        QByteArray rowSequence;
-        AnnotationSelection::getSequenceInRegions(rowSequence, annotation->getRegions(), U2Msa::GAP_CHAR, seqRef, complTT, aminoTT, os);
+        QByteArray rowSequence =  AnnotationSelection::getSequenceUnderAnnotation(seqRef, annotation, complTT, aminoTT, os);
         CHECK_OP(os, );
 
         ma->addRow(rowName, rowSequence);
@@ -605,7 +603,7 @@ void ADVExportContext::prepareMAFromSequences(MultipleSequenceAlignment &ma, boo
         DNATranslation *aminoTT = ((translate || forceTranslation) && seqAl->isNucleic()) ? seqCtx->getAminoTT() : nullptr;
         foreach (const U2Region &r, seqCtx->getSequenceSelection()->getSelectedRegions()) {
             maxLen = qMax(maxLen, r.length);
-            CHECK_EXT(maxLen * ma->getNumRows() <= MAX_ALI_MODEL, os.setError(tr("Alignment is too large")), );
+            CHECK_EXT(maxLen * ma->getRowCount() <= MAX_ALI_MODEL, os.setError(tr("Alignment is too large")), );
             QByteArray seq = seqCtx->getSequenceData(r, os);
             CHECK_OP(os, );
             if (aminoTT != nullptr) {
@@ -753,7 +751,7 @@ void ADVExportContext::sl_exportBlastResultToAlignment() {
     MultipleSequenceAlignment ma(MA_OBJECT_NAME);
     U2OpStatusImpl os;
 
-    prepareMAFromBlastAnnotations(ma, d->qualiferId, d->addRefFlag, os);
+    prepareMAFromBlastAnnotations(ma, d->qualifierId, d->addRefFlag, os);
 
     if (os.hasError()) {
         QMessageBox::critical(nullptr, L10N::errorTitle(), os.getError());

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -51,31 +51,37 @@ struct RegionSelectorGui {
     QComboBox *presetsComboBox;
 };
 
-struct RegionPreset {
+struct U2GUI_EXPORT RegionPreset {
     RegionPreset() {
     }
     RegionPreset(const QString &text, const U2Region &region)
         : text(text),
           region(region) {
     }
+
     QString text;
     U2Region region;
 
     bool operator==(const RegionPreset &other) const {
         return (text == other.text);
     }
+
+    /** Whole sequence localized preset name. */
+    static QString WHOLE_SEQUENCE();
+
+    /** Selected sequence localized preset name. */
+    static QString SELECTED_REGION();
+
+    /** Custom sequence localized preset name. */
+    static QString CUSTOM_REGION();
 };
 
 struct RegionSelectorSettings {
-    static const QString WHOLE_SEQUENCE;
-    static const QString SELECTED_REGION;
-    static const QString CUSTOM_REGION;
-
     RegionSelectorSettings(qint64 maxLen,
                            bool circular = false,
                            DNASequenceSelection *selection = nullptr,
                            QList<RegionPreset> presetRegions = QList<RegionPreset>(),
-                           QString defaultPreset = SELECTED_REGION);
+                           QString defaultPreset = RegionPreset::SELECTED_REGION());
 
     qint64 maxLen;
     DNASequenceSelection *selection;

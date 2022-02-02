@@ -28,22 +28,12 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
 
-#ifdef Q_OS_WIN
-#    include <windows.h>
-#else
-#    include <unistd.h>
-#endif
+#include "core/CustomScenario.h"
+#include "utils/GTThread.h"
 
 namespace HI {
-namespace {
-void sysSleep(int sec) {
-#ifdef Q_OS_WIN
-    Sleep(1000 * sec);
-#else
-    sleep(sec);
-#endif
-}
-}  // namespace
+
+#define GT_CLASS_NAME "GTGlobals"
 
 void GTGlobals::sleep(int msec) {
     if (msec > 0) {
@@ -51,18 +41,36 @@ void GTGlobals::sleep(int msec) {
     }
 }
 
-void GTGlobals::systemSleep(int sec) {
-    sysSleep(sec);
-}
-
 void GTGlobals::sendEvent(QObject *obj, QEvent *e) {
     QSpontaneKeyEvent::setSpontaneous(e);
     qApp->notify(obj, e);
 }
 
-void GTGlobals::takeScreenShot(const QString &path) {
-    QPixmap originalPixmap = QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId());
-    originalPixmap.save(path);
+#define GT_METHOD_NAME "takeScreenShot"
+QImage GTGlobals::takeScreenShot(HI::GUITestOpStatus &os) {
+    if (GTThread::isMainThread()) {
+        return QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId()).toImage();
+    }
+    class TakeScreenshotScenario : public CustomScenario {
+    public:
+        TakeScreenshotScenario(QImage &_image)
+            : image(_image) {
+        }
+        void run(HI::GUITestOpStatus &) override {
+            image = QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId()).toImage();
+        }
+        QImage &image;
+    };
+    QImage image;
+    GTThread::runInMainThread(os, new TakeScreenshotScenario(image));
+    return image;
+}
+#undef GT_METHOD_NAME
+
+void GTGlobals::takeScreenShot(HI::GUITestOpStatus &os, const QString &path) {
+    QImage originalImage = takeScreenShot(os);
+    bool ok = originalImage.save(path);
+    CHECK_SET_ERR(ok, "Failed to save pixmap to file: " + path);
 }
 
 GTGlobals::FindOptions::FindOptions(bool _failIfNotFound, Qt::MatchFlags _matchPolicy, int _depth)
@@ -74,5 +82,7 @@ GTGlobals::FindOptions::FindOptions(bool _failIfNotFound, Qt::MatchFlags _matchP
 void GTGlobals::GUITestFail() {
     qCritical("\nGT_DEBUG_MESSAGE !!!FIRST FAIL");
 }
+
+#undef GT_CLASS_NAME
 
 }  // namespace HI

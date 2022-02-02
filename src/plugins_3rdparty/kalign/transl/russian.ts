@@ -100,38 +100,38 @@
 <context>
     <name>U2::KalignAlignWithExtFileSpecifyDialogController</name>
     <message>
-        <location filename="../src/KalignDialogController.cpp" line="122"/>
+        <location filename="../src/KalignDialogController.cpp" line="119"/>
         <source>Align</source>
         <translation>Выровнять</translation>
     </message>
     <message>
-        <location filename="../src/KalignDialogController.cpp" line="123"/>
+        <location filename="../src/KalignDialogController.cpp" line="120"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/KalignDialogController.cpp" line="140"/>
+        <location filename="../src/KalignDialogController.cpp" line="137"/>
         <source>Open an alignment file</source>
         <translation>Открыть выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/KalignDialogController.cpp" line="153"/>
+        <location filename="../src/KalignDialogController.cpp" line="150"/>
         <source>Save an multiple alignment file</source>
         <translation>Сохранить выранивание</translation>
     </message>
     <message>
-        <location filename="../src/KalignDialogController.cpp" line="184"/>
-        <location filename="../src/KalignDialogController.cpp" line="186"/>
+        <location filename="../src/KalignDialogController.cpp" line="181"/>
+        <location filename="../src/KalignDialogController.cpp" line="183"/>
         <source>Kalign with Align</source>
         <translation>Выравнивание с помощью Kalign</translation>
     </message>
     <message>
-        <location filename="../src/KalignDialogController.cpp" line="184"/>
+        <location filename="../src/KalignDialogController.cpp" line="181"/>
         <source>Input file is not set!</source>
         <translation>Входной файл не выбран!</translation>
     </message>
     <message>
-        <location filename="../src/KalignDialogController.cpp" line="186"/>
+        <location filename="../src/KalignDialogController.cpp" line="183"/>
         <source>Output file is not set!</source>
         <translation>Выходной файл не указан!</translation>
     </message>
@@ -139,12 +139,12 @@
 <context>
     <name>U2::KalignDialogController</name>
     <message>
-        <location filename="../src/KalignDialogController.cpp" line="61"/>
+        <location filename="../src/KalignDialogController.cpp" line="58"/>
         <source>Align</source>
         <translation>Выровнять</translation>
     </message>
     <message>
-        <location filename="../src/KalignDialogController.cpp" line="62"/>
+        <location filename="../src/KalignDialogController.cpp" line="59"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -154,7 +154,7 @@
     <message>
         <location filename="../src/KalignTask.cpp" line="254"/>
         <source>Unsupported alphabet: %1</source>
-        <translation type="unfinished">Неподдерживаемый алфавит: %1</translation>
+        <translation>Неподдерживаемый алфавит: %1</translation>
     </message>
     <message>
         <location filename="../src/KalignTask.cpp" line="257"/>
@@ -178,41 +178,47 @@
 <context>
     <name>U2::KalignMSAEditorContext</name>
     <message>
-        <location filename="../src/KalignPlugin.cpp" line="154"/>
+        <location filename="../src/KalignPlugin.cpp" line="146"/>
         <source>Align with Kalign...</source>
         <translation>Выравнивание с помощью Kalign...</translation>
     </message>
     <message>
-        <location filename="../src/KalignPlugin.cpp" line="182"/>
+        <location filename="../src/KalignPlugin.cpp" line="165"/>
         <source>Unable to align with Kalign</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно выровнять при помощи Kalign</translation>
     </message>
     <message>
-        <location filename="../src/KalignPlugin.cpp" line="183"/>
+        <location filename="../src/KalignPlugin.cpp" line="166"/>
         <source>Unable to align this Multiple alignment with Kalign.<byte value="xd"/>
 Please, convert alignment from %1 alphabet to supported one and try again.</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to align this Multiple alignment with Kalign.
+Please, convert alignment from %1 alphabet to supported one and try again.</source>
+        <translation type="vanished">Невозможно выровнять это выравнивание при помощи Kalign.
+Сконвертируйте выравнивание из алфавита %1 в подходящий и попробуйте снова.</translation>
     </message>
 </context>
 <context>
     <name>U2::KalignPlugin</name>
     <message>
-        <location filename="../src/KalignPlugin.cpp" line="73"/>
+        <location filename="../src/KalignPlugin.cpp" line="64"/>
         <source>Kalign</source>
         <translation>Kalign</translation>
     </message>
     <message>
-        <location filename="../src/KalignPlugin.cpp" line="74"/>
+        <location filename="../src/KalignPlugin.cpp" line="65"/>
         <source>A port of Kalign package for multiple sequence alignment. Check http://msa.sbc.su.se for the original version</source>
         <translation>Встроенный в UGENE программный пакет для множественного выравнивания последовательности. Здесь http://msa.sbc.su.se находится оригинальная версия</translation>
     </message>
     <message>
-        <location filename="../src/KalignPlugin.cpp" line="82"/>
+        <location filename="../src/KalignPlugin.cpp" line="73"/>
         <source>Align with Kalign...</source>
         <translation>Выравнивание с помощью Kalign...</translation>
     </message>
     <message>
-        <location filename="../src/KalignPlugin.cpp" line="215"/>
+        <location filename="../src/KalignPlugin.cpp" line="198"/>
         <source>Hirschberg (KAlign)</source>
         <translation>Hirschberg (KAlign)</translation>
     </message>

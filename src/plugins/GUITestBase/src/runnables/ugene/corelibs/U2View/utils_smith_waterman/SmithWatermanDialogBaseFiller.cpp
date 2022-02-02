@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,13 +29,9 @@
 #include <primitives/GTTextEdit.h>
 #include <primitives/GTWidget.h>
 
-#include <QAbstractButton>
 #include <QApplication>
 #include <QComboBox>
 #include <QDialogButtonBox>
-#include <QGroupBox>
-#include <QPushButton>
-#include <QRadioButton>
 #include <QSpinBox>
 
 const QString TEST_NAME_FOR_MA_RESULTS = "_test]";
@@ -74,11 +70,7 @@ void SmithWatermanDialogFiller::commonScenario() {
     GT_CHECK(dialog, "activeModalWidget is NULL");
 
     if (button == Cancel) {
-        QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-        GT_CHECK(box != nullptr, "buttonBox is NULL");
-        QPushButton *button = box->button(QDialogButtonBox::Cancel);
-        GT_CHECK(button != nullptr, "cancel button is NULL");
-        GTWidget::click(os, button);
+        GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         return;
     }
 
@@ -86,45 +78,39 @@ void SmithWatermanDialogFiller::commonScenario() {
 
     GTTabWidget::setCurrentIndex(os, tabWidget, 1);
     QComboBox *resultViewVariants = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "resultViewVariants", dialog));
-    int resultViewIndex = 0;
-    if (SmithWatermanSettings::MULTIPLE_ALIGNMENT == resultView) {
+    int resultViewIndex;
+    if (resultView == SmithWatermanSettings::MULTIPLE_ALIGNMENT) {
         resultViewIndex = 0;
-    } else if (SmithWatermanSettings::ANNOTATIONS == resultView) {
+    } else if (resultView == SmithWatermanSettings::ANNOTATIONS) {
         resultViewIndex = 1;
     } else {
-        assert(0);
+        GT_FAIL("Unsupported mode: " + QString::number(resultView), );
     }
     GTComboBox::selectItemByIndex(os, resultViewVariants, resultViewIndex);
 
     if (!resultFilesPath.isEmpty()) {
-        QLineEdit *resultFilePathContainer = nullptr;
-        if (SmithWatermanSettings::MULTIPLE_ALIGNMENT == resultView) {
-            resultFilePathContainer = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "alignmentFilesPath", dialog));
-        } else if (SmithWatermanSettings::ANNOTATIONS == resultView) {
-            QRadioButton *newFileRB = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "rbCreateNewTable", dialog));
-            newFileRB->setChecked(true);
-            resultFilePathContainer = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "leNewTablePath", dialog));
+        QLineEdit *resultFilePathContainer;
+        if (resultView == SmithWatermanSettings::MULTIPLE_ALIGNMENT) {
+            resultFilePathContainer = GTWidget::findLineEdit(os, "alignmentFilesPath", dialog);
+        } else {
+            GTRadioButton::click(os, "rbCreateNewTable", dialog);
+            resultFilePathContainer = GTWidget::findLineEdit(os, "leNewTablePath", dialog);
             resultFilesPath += ANNOTATION_RESULT_FILE_NAME;
         }
-        assert(nullptr != resultFilePathContainer);
         GTLineEdit::setText(os, resultFilePathContainer, resultFilesPath);
     }
 
     if (autoSetupAlgorithmParams) {
-        if (SmithWatermanSettings::MULTIPLE_ALIGNMENT == resultView) {
-            QGroupBox *advOptions = qobject_cast<QGroupBox *>(GTWidget::findWidget(os, "advOptions", dialog));
-            GTGroupBox::setChecked(os, advOptions, true);
+        if (resultView == SmithWatermanSettings::MULTIPLE_ALIGNMENT) {
+            GTGroupBox::setChecked(os, "advOptions", true, dialog);
+            auto objectNameEdit = GTWidget::findLineEdit(os, "mObjectNameTmpl", dialog);
+            GTLineEdit::setText(os, objectNameEdit, objectNameEdit->text() + TEST_NAME_FOR_MA_RESULTS);
 
-            QLineEdit *mObjectNameTmpl = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "mObjectNameTmpl", dialog));
-            GTLineEdit::setText(os, mObjectNameTmpl, mObjectNameTmpl->text() + TEST_NAME_FOR_MA_RESULTS);
-
-            QLineEdit *refSubseqNameTmpl = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "refSubseqNameTmpl", dialog));
-            GTLineEdit::setText(os, refSubseqNameTmpl, refSubseqNameTmpl->text() + TEST_NAME_FOR_MA_RESULTS);
-        } else if (SmithWatermanSettings::ANNOTATIONS == resultView) {
-            QLineEdit *annotationNameEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "leAnnotationName", dialog));
-            GTLineEdit::setText(os, annotationNameEdit, TEST_NAME_FOR_ANNOT_RESULTS);
+            auto referenceSequenceNameEdit = GTWidget::findLineEdit(os, "refSubseqNameTmpl", dialog);
+            GTLineEdit::setText(os, referenceSequenceNameEdit, referenceSequenceNameEdit->text() + TEST_NAME_FOR_MA_RESULTS);
         } else {
-            assert(0);
+            auto annotationNameEdit = GTWidget::findLineEdit(os, "leAnnotationName", dialog);
+            GTLineEdit::setText(os, annotationNameEdit, TEST_NAME_FOR_ANNOT_RESULTS);
         }
     }
 

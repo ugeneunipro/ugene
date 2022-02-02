@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -136,7 +136,7 @@ char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment &ma
     memset(localFreqs.data(), 0, localFreqs.size() * 4);
 
     int *freqsData = localFreqs.data();
-    int nSeq = (seqIdx.isEmpty() ? ma->getNumRows() : seqIdx.size());
+    int nSeq = (seqIdx.isEmpty() ? ma->getRowCount() : seqIdx.size());
     for (int seq = 0; seq < nSeq; seq++) {
         char c = ma->charAt(seqIdx.isEmpty() ? seq : seqIdx[seq], column);
         registerHit(freqsData, c);

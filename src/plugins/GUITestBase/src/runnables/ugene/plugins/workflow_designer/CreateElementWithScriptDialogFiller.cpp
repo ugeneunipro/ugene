@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -69,7 +69,7 @@ void ScriptEditorDialogFiller::commonScenario() {
     if (checkSyntax) {
         GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, checkSyntaxResult));
         GTWidget::click(os, GTWidget::findWidget(os, "checkButton", dialog));
-        GTUtilsDialog::waitAllFinished(os);
+        GTUtilsDialog::checkNoActiveWaiters(os);
     }
 
     QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));

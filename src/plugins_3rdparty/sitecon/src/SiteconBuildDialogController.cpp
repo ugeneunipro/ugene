@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,20 +22,18 @@
 #include "SiteconBuildDialogController.h"
 
 #include <QMessageBox>
-#include <QPushButton>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/GObjectTypes.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Settings.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SaveDocumentController.h>
@@ -73,7 +71,7 @@ SiteconBuildDialogController::SiteconBuildDialogController(SiteconPlugin *pl, QW
 
 void SiteconBuildDialogController::sl_inFileButtonClicked() {
     LastUsedDirHelper lod;
-    lod.url = U2FileDialog::getOpenFileName(this, tr("Select file with alignment"), lod, DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true));
+    lod.url = U2FileDialog::getOpenFileName(this, tr("Select file with alignment"), lod, FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT}));
     if (lod.url.isEmpty()) {
         return;
     }
@@ -196,7 +194,7 @@ void SiteconBuildTask::run() {
         stateInfo.setError(tr("Alignment is empty"));
         return;
     }
-    if (ma->getNumRows() < 2) {
+    if (ma->getRowCount() < 2) {
         stateInfo.setError(tr("Alignment must have at least 2 sequences"));
         return;
     }
@@ -217,7 +215,7 @@ void SiteconBuildTask::run() {
     assert(ma->getLength() == settings.windowSize);
 
     SiteconAlgorithm::calculateACGTContent(ma, settings);
-    settings.numSequencesInAlignment = ma->getNumRows();
+    settings.numSequencesInAlignment = ma->getRowCount();
     m.settings = settings;
     stateInfo.setDescription(tr("Calculating average and dispersion matrixes"));
     m.matrix = SiteconAlgorithm::calculateDispersionAndAverage(ma, settings, stateInfo);

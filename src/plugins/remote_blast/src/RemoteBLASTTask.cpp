@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -277,7 +277,7 @@ void CreateAnnotationsFromHttpBlastResultTask::createAnnotations(const RemoteBla
 
             if (q.complement) {
                 s = q.seq.size() - s - l;
-                d->setStrand(d->getStrand().isCompementary() ? U2Strand::Direct : U2Strand::Complementary);
+                d->setStrand(d->getStrand().isComplementary() ? U2Strand::Direct : U2Strand::Complementary);
             }
             if (q.amino) {
                 s = s * 3 + (q.complement ? 2 - q.offs : q.offs);

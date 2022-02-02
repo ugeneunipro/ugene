@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -123,7 +123,7 @@ IMPLEMENT_TEST(MsaDbiUnitTests, addRows) {
 
     U2MsaGap row1gap1(0, 2);
     U2MsaGap row1gap2(3, 1);
-    QList<U2MsaGap> row1gaps;
+    QVector<U2MsaGap> row1gaps;
     row1gaps << row1gap1 << row1gap2;
 
     row1.gaps = row1gaps;
@@ -155,11 +155,11 @@ IMPLEMENT_TEST(MsaDbiUnitTests, addRows) {
     CHECK_EQUAL(5, actualRow1.gend, "first row global end");
     CHECK_EQUAL(2, actualRow1.gaps.count(), "first row gaps count");
     U2MsaGap actualRow1Gap1 = actualRow1.gaps[0];
-    CHECK_EQUAL(0, actualRow1Gap1.offset, "first row gap1 offset");
-    CHECK_EQUAL(2, actualRow1Gap1.gap, "first row gap1 length");
+    CHECK_EQUAL(0, actualRow1Gap1.startPos, "first row gap1 offset");
+    CHECK_EQUAL(2, actualRow1Gap1.length, "first row gap1 length");
     U2MsaGap actualRow1Gap2 = actualRow1.gaps[1];
-    CHECK_EQUAL(3, actualRow1Gap2.offset, "first row gap2 offset");
-    CHECK_EQUAL(1, actualRow1Gap2.gap, "first row gap2 length");
+    CHECK_EQUAL(3, actualRow1Gap2.startPos, "first row gap2 offset");
+    CHECK_EQUAL(1, actualRow1Gap2.length, "first row gap2 length");
 
     const U2MsaRow &actualRow2 = actualRows[1];
     CHECK_EQUAL(rows.at(1).rowId, actualRow2.rowId, "second row id");
@@ -198,7 +198,7 @@ IMPLEMENT_TEST(MsaDbiUnitTests, removeRows) {
 
     U2MsaGap row1gap1(0, 2);
     U2MsaGap row1gap2(3, 1);
-    QList<U2MsaGap> row1gaps;
+    QVector<U2MsaGap> row1gaps;
     row1gaps << row1gap1 << row1gap2;
 
     row1.gaps = row1gaps;
@@ -209,7 +209,7 @@ IMPLEMENT_TEST(MsaDbiUnitTests, removeRows) {
     row2.gend = 4;
 
     U2MsaGap row2gap(1, 2);
-    QList<U2MsaGap> row2gaps;
+    QVector<U2MsaGap> row2gaps;
     row2gaps << row2gap;
 
     row2.gaps = row2gaps;
@@ -248,8 +248,8 @@ IMPLEMENT_TEST(MsaDbiUnitTests, removeRows) {
     CHECK_EQUAL(4, actualRow.gend, "row global end");
     CHECK_EQUAL(1, actualRow.gaps.count(), "row gaps");
     U2MsaGap actualRowGap = actualRow.gaps[0];
-    CHECK_EQUAL(1, actualRowGap.offset, "row gap offset");
-    CHECK_EQUAL(2, actualRowGap.gap, "row gap length");
+    CHECK_EQUAL(1, actualRowGap.startPos, "row gap offset");
+    CHECK_EQUAL(2, actualRowGap.length, "row gap length");
 }
 
 }  // namespace U2

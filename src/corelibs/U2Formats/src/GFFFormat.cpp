@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -653,7 +653,7 @@ void GFFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
 
             foreach (const U2Region &r, location) {
                 // filling strand field
-                if (ann->getStrand().isCompementary()) {
+                if (ann->getStrand().isComplementary()) {
                     row[6] = "-";
                 }
                 // filling location fields

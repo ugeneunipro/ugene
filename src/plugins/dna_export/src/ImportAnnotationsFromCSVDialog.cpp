@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,11 +23,11 @@
 
 #include <QFileInfo>
 #include <QMessageBox>
-#include <QPushButton>
 
 #include <U2Core/Annotation.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
@@ -36,7 +36,6 @@
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SaveDocumentController.h>
@@ -157,7 +156,8 @@ void ImportAnnotationsFromCSVDialog::accept() {
         }
     }
     if (endPos + startPos + length < 2 || endPos > 1 || startPos > 1 || length > 1) {
-        QMessageBox::critical(this, L10N::errorTitle(), tr("Invalid start position/end position/length configuration!"));
+        QMessageBox::critical(this, L10N::errorTitle(), tr("Invalid [start position] or [end position] or [length] column assignment!\n\n"
+                                                           "Please assign a column role by clicking on a column header in 'Results preview'"));
         return;
     }
     if (names > 1) {
@@ -251,6 +251,7 @@ void ImportAnnotationsFromCSVDialog::initSaveController() {
     config.formatCombo = saveFormatCombo;
     config.parentWidget = this;
     config.saveTitle = tr("Save imported annotations to");
+    config.defaultFormatId = BaseDocumentFormats::PLAIN_GENBANK;
 
     DocumentFormatConstraints formatConstraints;
     formatConstraints.supportedObjectTypes << GObjectTypes::ANNOTATION_TABLE;
@@ -342,7 +343,7 @@ void ImportAnnotationsFromCSVDialog::sl_prefixToSkipChanged(const QString &v) {
 void ImportAnnotationsFromCSVDialog::sl_readFileClicked() {
     // show the dialog
     LastUsedDirHelper lod("CSV");
-    QString filter = DialogUtils::prepareFileFilter(tr("CSV Files"), QStringList() << "csv", true, QStringList());
+    QString filter = FileFilters::createFileFilter(tr("CSV Files"), {"csv"});
     lod.url = U2FileDialog::getOpenFileName(this, tr("Select CSV file to read"), lod, filter);
     if (lod.url.isEmpty()) {
         return;
@@ -453,7 +454,7 @@ void ImportAnnotationsFromCSVDialog::preview(bool silent) {
     for (int row = 0; row < lines.size(); row++) {
         const QStringList &rowData = lines.at(row);
         for (int column = 0; column < rowData.size(); column++) {
-            QString token = rowData.at(column);
+            const QString &token = rowData.at(column);
             QTableWidgetItem *item = new QTableWidgetItem(token);
             item->setFlags(Qt::ItemIsEnabled);
             previewTable->setItem(row, column, item);

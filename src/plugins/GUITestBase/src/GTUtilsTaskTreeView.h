@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,16 +49,31 @@ class GTUtilsTaskTreeView {
 public:
     static void waitTaskFinished(HI::GUITestOpStatus &os, long timeoutMillis = 180000);
     static void click(HI::GUITestOpStatus &os, const QString &itemName, Qt::MouseButton b = Qt::LeftButton);
-    static void openView(HI::GUITestOpStatus &os);
+
+    /** Opens view if it is not opened and returns tree widget. */
+    static QTreeWidget *openView(HI::GUITestOpStatus &os);
+
     static void toggleView(HI::GUITestOpStatus &os);
-    static void cancelTask(HI::GUITestOpStatus &os, const QString &itemName);
+
+    /**
+     * Cancels tasks with the given name.
+     * If "parentTaskNames" is provided first expands the top-level tasks so the task tree is populated.
+     */
+    static void cancelTask(HI::GUITestOpStatus &os, const QString &itemName, bool failIfNotFound = true, const QStringList &parentTaskNames = {});
+
     static QTreeWidgetItem *getTreeWidgetItem(HI::GUITestOpStatus &os, const QString &itemName, bool failOnNull = true);
-    static QTreeWidget *getTreeWidget(HI::GUITestOpStatus &os);
+
+    /** Returns instance of the task tree view if found. Asserts if not found and if 'failIfNotFound' is 'true'. */
+    static QTreeWidget *getTreeWidget(HI::GUITestOpStatus &os, bool failIfNotFound = false);
+
     static void moveToOpenedView(HI::GUITestOpStatus &os, const QString &itemName);
     static QPoint getTreeViewItemPosition(HI::GUITestOpStatus &os, const QString &itemName);
     static void moveTo(HI::GUITestOpStatus &os, const QString &itemName);
     static int getTopLevelTasksCount(HI::GUITestOpStatus &os);
-    static bool checkTask(HI::GUITestOpStatus &os, const QString &itemName);
+
+    /** Check that there/there-is-no top-level task with the given name. */
+    static void checkTaskIsPresent(HI::GUITestOpStatus &os, const QString &topLevelTaskName, bool checkIfPresent = true);
+
     static int countTasks(HI::GUITestOpStatus &os, const QString &itemName);
     static QString getTaskStatus(HI::GUITestOpStatus &os, const QString &itemName);
 

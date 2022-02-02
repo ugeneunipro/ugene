@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -203,7 +203,7 @@ const QStringList GTUtilsMcaEditor::getReadsNames(GUITestOpStatus &os) {
 const QStringList GTUtilsMcaEditor::getDirectReadsNames(GUITestOpStatus &os) {
     QStringList directReadsNames;
     MultipleChromatogramAlignmentObject *mcaObject = getEditor(os)->getMaObject();
-    const int rowsCount = mcaObject->getNumRows();
+    const int rowsCount = mcaObject->getRowCount();
     for (int i = 0; i < rowsCount; i++) {
         if (!mcaObject->getMcaRow(i)->isReversed()) {
             directReadsNames << mcaObject->getMcaRow(i)->getName();
@@ -217,7 +217,7 @@ const QStringList GTUtilsMcaEditor::getDirectReadsNames(GUITestOpStatus &os) {
 const QStringList GTUtilsMcaEditor::getReverseComplementReadsNames(GUITestOpStatus &os) {
     QStringList reverseComplementedReadsNames;
     MultipleChromatogramAlignmentObject *mcaObject = getEditor(os)->getMaObject();
-    const int rowsCount = mcaObject->getNumRows();
+    const int rowsCount = mcaObject->getRowCount();
     for (int i = 0; i < rowsCount; i++) {
         if (mcaObject->getMcaRow(i)->isReversed()) {
             reverseComplementedReadsNames << mcaObject->getMcaRow(i)->getName();
@@ -282,15 +282,23 @@ void GTUtilsMcaEditor::moveToReadName(GUITestOpStatus &os, int readNumber) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickReadName"
-void GTUtilsMcaEditor::clickReadName(GUITestOpStatus &os, const QString &readName, Qt::MouseButton mouseButton) {
-    clickReadName(os, readName2readNumber(os, readName), mouseButton);
+void GTUtilsMcaEditor::clickReadName(GUITestOpStatus &os, const QString &readName, Qt::MouseButton mouseButton, const Qt::KeyboardModifiers &modifiers) {
+    clickReadName(os, readName2readNumber(os, readName), mouseButton, modifiers);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickReadName"
-void GTUtilsMcaEditor::clickReadName(GUITestOpStatus &os, int readNumber, Qt::MouseButton mouseButton) {
+void GTUtilsMcaEditor::clickReadName(GUITestOpStatus &os, int readNumber, Qt::MouseButton mouseButton, const Qt::KeyboardModifiers &modifiers) {
     moveToReadName(os, readNumber);
+
+    QList<Qt::Key> modifierKeys = GTKeyboardDriver::modifiersToKeys(modifiers);
+    for (auto key : qAsConst(modifierKeys)) {
+        GTKeyboardDriver::keyPress(key);
+    }
     GTMouseDriver::click(mouseButton);
+    for (auto key : qAsConst(modifierKeys)) {
+        GTKeyboardDriver::keyRelease(key);
+    }
 }
 #undef GT_METHOD_NAME
 
@@ -363,6 +371,14 @@ int GTUtilsMcaEditor::readName2readNumber(GUITestOpStatus &os, const QString &re
     const int rowNumber = names.indexOf(readName);
     GT_CHECK_RESULT(0 <= rowNumber, QString("Read '%1' not found").arg(readName), -1);
     return rowNumber;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "selectReadsByName"
+void GTUtilsMcaEditor::selectReadsByName(HI::GUITestOpStatus &os, const QStringList &rowNames) {
+    for (const QString &rowName : qAsConst(rowNames)) {
+        clickReadName(os, rowName, Qt::LeftButton, Qt::ControlModifier);
+    }
 }
 #undef GT_METHOD_NAME
 

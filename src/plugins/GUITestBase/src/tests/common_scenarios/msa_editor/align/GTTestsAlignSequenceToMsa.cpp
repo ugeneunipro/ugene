@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -279,7 +279,10 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/empty.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // 3. Click "Align sequence(s) to this alignment" button on the toolbar.
+    int sequenceCount = GTUtilsMsaEditor::getSequencesCount(os);
+    CHECK_SET_ERR(sequenceCount == 2, "1. Incorrect sequences count: " + QString::number(sequenceCount));
+
+    // 3. Click "align_new_sequences_to_alignment_action" button on the toolbar.
     // 4. Select "data/samples/FASTQ/eas.fastq".
     GTUtilsMsaEditor::checkAlignSequencesToAlignmentMenu(os, "MAFFT", PopupChecker::IsDisabled);
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq"));
@@ -287,7 +290,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: three sequences are added to the msa.
-    CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 3, "Incorrect sequences count");
+    sequenceCount = GTUtilsMsaEditor::getSequencesCount(os);
+    CHECK_SET_ERR(sequenceCount == 5, "2. Incorrect sequences count: " + QString::number(sequenceCount));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011) {
@@ -296,31 +300,31 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //  Click "Align sequence(s) to this alignment" button on the toolbar.
+    //  Click "align_new_sequences_to_alignment_action" button on the toolbar.
     //  Select "_common_data/scenarios/add_and_align/add_and_align_1.fa" in the dialog.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/add_and_align_1.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
 
     //    Expected state: an additional row appeared in the alignment, all old rows were shifted to be aligned with the new row.
-    QStringList expectedMsaData = QStringList() << "----TAAGACTTCTAA------------"
-                                                << "----TAAGCTTACTAA------------"
-                                                << "----TTAGTTTATTAA------------"
-                                                << "----TCAGTCTATTAA------------"
-                                                << "----TCAGTTTATTAA------------"
-                                                << "----TTAGTCTACTAA------------"
-                                                << "----TCAGATTATTAA------------"
-                                                << "----TTAGATTGCTAA------------"
-                                                << "----TTAGATTATTAA------------"
-                                                << "----TAAGTCTATTAA------------"
-                                                << "----TTAGCTTATTAA------------"
-                                                << "----TTAGCTTATTAA------------"
-                                                << "----TTAGCTTATTAA------------"
-                                                << "----TAAGTCTTTTAA------------"
-                                                << "----TAAGTCTTTTAA------------"
-                                                << "----TAAGTCTTTTAA------------"
-                                                << "----TAAGAATAATTA------------"
-                                                << "----TAAGCCTTTTAA------------"
-                                                << "GCGCTAAGCCTTTTAAGCGCGCGCGCGC";
+    QStringList expectedMsaData = {"----TAAGACTTCTAA------------",
+                                   "----TAAGCTTACTAA------------",
+                                   "----TTAGTTTATTAA------------",
+                                   "----TCAGTCTATTAA------------",
+                                   "----TCAGTTTATTAA------------",
+                                   "----TTAGTCTACTAA------------",
+                                   "----TCAGATTATTAA------------",
+                                   "----TTAGATTGCTAA------------",
+                                   "----TTAGATTATTAA------------",
+                                   "----TAAGTCTATTAA------------",
+                                   "----TTAGCTTATTAA------------",
+                                   "----TTAGCTTATTAA------------",
+                                   "----TTAGCTTATTAA------------",
+                                   "----TAAGTCTTTTAA------------",
+                                   "----TAAGTCTTTTAA------------",
+                                   "----TAAGTCTTTTAA------------",
+                                   "----TAAGAATAATTA------------",
+                                   "----TAAGCCTTTTAA------------",
+                                   "GCGCTAAGCCTTTTAAGCGCGCGCGCGC"};
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
     CHECK_SET_ERR(expectedMsaData == msaData, "Expected:\n" + expectedMsaData.join("\n") + "\nFound:\n" + msaData.join("\n"));
@@ -333,31 +337,31 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Click "Align sequence(s) to this alignment" button on the toolbar.
+    // Click "align_new_sequences_to_alignment_action" button on the toolbar.
     // Select "_common_data/scenarios/add_and_align/add_and_align_2.fa" in the dialog.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/add_and_align_2.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
 
     //    Expected state: an additional row appeared in the alignment, all old rows were shifted to be aligned with the new row.
-    QStringList expectedMsaData = QStringList() << "------TAAGACTTCTAA"
-                                                << "------TAAGCTTACTAA"
-                                                << "------TTAGTTTATTAA"
-                                                << "------TCAGTCTATTAA"
-                                                << "------TCAGTTTATTAA"
-                                                << "------TTAGTCTACTAA"
-                                                << "------TCAGATTATTAA"
-                                                << "------TTAGATTGCTAA"
-                                                << "------TTAGATTATTAA"
-                                                << "------TAAGTCTATTAA"
-                                                << "------TTAGCTTATTAA"
-                                                << "------TTAGCTTATTAA"
-                                                << "------TTAGCTTATTAA"
-                                                << "------TAAGTCTTTTAA"
-                                                << "------TAAGTCTTTTAA"
-                                                << "------TAAGTCTTTTAA"
-                                                << "------TAAGAATAATTA"
-                                                << "------TAAGCCTTTTAA"
-                                                << "GCGCGCTAAGCC------";
+    QStringList expectedMsaData = {"------TAAGACTTCTAA",
+                                   "------TAAGCTTACTAA",
+                                   "------TTAGTTTATTAA",
+                                   "------TCAGTCTATTAA",
+                                   "------TCAGTTTATTAA",
+                                   "------TTAGTCTACTAA",
+                                   "------TCAGATTATTAA",
+                                   "------TTAGATTGCTAA",
+                                   "------TTAGATTATTAA",
+                                   "------TAAGTCTATTAA",
+                                   "------TTAGCTTATTAA",
+                                   "------TTAGCTTATTAA",
+                                   "------TTAGCTTATTAA",
+                                   "------TAAGTCTTTTAA",
+                                   "------TAAGTCTTTTAA",
+                                   "------TAAGTCTTTTAA",
+                                   "------TAAGAATAATTA",
+                                   "------TAAGCCTTTTAA",
+                                   "GCGCGCTAAGCC------"};
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
     CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
@@ -370,23 +374,23 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_8_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Click "Align sequence(s) to this alignment" button on the toolbar.
+    // Click "align_new_sequences_to_alignment_action" button on the toolbar.
     // Select "_common_data/scenarios/add_and_align/add_and_align_1.fa" in the dialog.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/add_and_align_1.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
 
     // Expected state: an additional row appeared in the alignment, all old rows were shifted to be aligned with the new row, columns with gaps were removed
-    const QStringList expectedMsaData = QStringList() << "-----AAGCTTCTTTTAA----------"
-                                                      << "-----AAGTTACTAA-------------"
-                                                      << "-----TAG---TTATTAA----------"
-                                                      << "-----AAGC---TATTAA----------"
-                                                      << "-----TAGTTATTAA-------------"
-                                                      << "-----TAGTTATTAA-------------"
-                                                      << "-----TAGTTATTAA-------------"
-                                                      << "-----AAGCTTT---TAA----------"
-                                                      << "-----A--AGAATAATTA----------"
-                                                      << "-----AAGCTTTTAA-------------"
-                                                      << "GCGCTAAGCCTTTTAAGCGCGCGCGCGC";
+    const QStringList expectedMsaData = {"-----AAGCTTCTTTTAA----------",
+                                         "-----AAGTTACTAA-------------",
+                                         "-----TAG---TTATTAA----------",
+                                         "-----AAGC---TATTAA----------",
+                                         "-----TAGTTATTAA-------------",
+                                         "-----TAGTTATTAA-------------",
+                                         "-----TAGTTATTAA-------------",
+                                         "-----AAGCTTT---TAA----------",
+                                         "-----A--AGAATAATTA----------",
+                                         "-----AAGCTTTTAA-------------",
+                                         "GCGCTAAGCCTTTTAAGCGCGCGCGCGC"};
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
     CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
@@ -399,23 +403,23 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_8_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Click "Align sequence(s) to this alignment" button on the toolbar.
+    // Click "align_new_sequences_to_alignment_action" button on the toolbar.
     // Select "_common_data/scenarios/add_and_align/add_and_align_3.fa" in the dialog.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/add_and_align_3.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
 
     //    Expected state: an additional row appeared in the alignment, the forth column doesn't consist only of gaps, there are no columns of gaps even in the end of the alignment.
-    QStringList expectedMsaData = QStringList() << "AAGCTTCTTTTAA"
-                                                << "AAGTTACTAA---"
-                                                << "TAG---TTATTAA"
-                                                << "AAGC---TATTAA"
-                                                << "TAGTTATTAA---"
-                                                << "TAGTTATTAA---"
-                                                << "TAGTTATTAA---"
-                                                << "AAGCTTT---TAA"
-                                                << "A--AGAATAATTA"
-                                                << "AAGCTTTTAA---"
-                                                << "AAGAATA------";
+    QStringList expectedMsaData = {"AAGCTTCTTTTAA",
+                                   "AAGTTACTAA---",
+                                   "TAG---TTATTAA",
+                                   "AAGC---TATTAA",
+                                   "TAGTTATTAA---",
+                                   "TAGTTATTAA---",
+                                   "TAGTTATTAA---",
+                                   "AAGCTTT---TAA",
+                                   "A--AGAATAATTA",
+                                   "AAGCTTTTAA---",
+                                   "AAGAATA------"};
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
     CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
@@ -431,24 +435,24 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gap_8_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    3. Click "Align sequence(s) to this alignment" button on the toolbar.
+    //    3. Click "align_new_sequences_to_alignment_action" button on the toolbar.
     GTUtilsMsaEditor::checkAlignSequencesToAlignmentMenu(os, "MAFFT", PopupChecker::NotExists);
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/add_and_align_3.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "UGENE");
 
     //    4. Select "_common_data/scenarios/add_and_align/add_and_align_3.fa" in the dialog.
     //    Expected state: an additional row appeared in the alignment, the forth column doesn't consist only of gaps, there are no columns of gaps even in the end of the alignment.
-    QStringList expectedMsaData = QStringList() << "AAGCTTCTTTTAA"
-                                                << "AAGTTACTAA---"
-                                                << "TAG---TTATTAA"
-                                                << "AAGC---TATTAA"
-                                                << "TAGTTATTAA---"
-                                                << "TAGTTATTAA---"
-                                                << "TAGTTATTAA---"
-                                                << "AAGCTTT---TAA"
-                                                << "A--AGAATAATTA"
-                                                << "AAGCTTTTAA---"
-                                                << "AAGAATA------";
+    QStringList expectedMsaData = {"AAGCTTCTTTTAA",
+                                   "AAGTTACTAA---",
+                                   "TAG---TTATTAA",
+                                   "AAGC---TATTAA",
+                                   "TAGTTATTAA---",
+                                   "TAGTTATTAA---",
+                                   "TAGTTATTAA---",
+                                   "AAGCTTT---TAA",
+                                   "A--AGAATAATTA",
+                                   "AAGCTTTTAA---",
+                                   "AAGAATA------"};
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
     CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
@@ -461,7 +465,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI na.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    2. Click "Align sequence(s) to this alignment" button on the toolbar.
+    //    2. Click "align_new_sequences_to_alignment_action" button on the toolbar.
     //    3. Select "_common_data/scenarios/add_and_align/seq1.fa" as sequence to align.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/seq1.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
@@ -480,7 +484,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI na.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Click "Align sequence(s) to this alignment" button on the toolbar.
+    // Click "align_new_sequences_to_alignment_action" button on the toolbar.
     // Select "_common_data/scenarios/add_and_align/seq2.fa" as sequence to align.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/seq2.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
@@ -502,7 +506,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_3) {
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI na.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Click "Align sequence(s) to this alignment" button on the toolbar.
+    // Click "align_new_sequences_to_alignment_action" button on the toolbar.
     // Select "_common_data/scenarios/add_and_align/two_seqs.aln" as input data.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/two_seqs.aln"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");

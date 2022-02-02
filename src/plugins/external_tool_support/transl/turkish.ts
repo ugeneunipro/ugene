@@ -4,83 +4,83 @@
 <context>
     <name>AlignToReferenceBlastDialog</name>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="20"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="20"/>
         <source>Input data</source>
         <translation>Giriş verileri</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="26"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="26"/>
         <source>Reference</source>
         <translation>Referans</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="14"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="14"/>
         <source>Map Sanger Reads to Reference</source>
         <translation>Map Sanger Okumaya Yönelik Okur</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="38"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="38"/>
         <source>Input a file with a reference sequence</source>
         <translation>Referans sıralı bir dosya girin</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="45"/>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="169"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="45"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="169"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="54"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="54"/>
         <source>Reads</source>
         <translation>Okur</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="79"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="79"/>
         <source>Add</source>
         <translation>Ekle</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="86"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="86"/>
         <source>Remove</source>
         <translation>Kaldır</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="98"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="98"/>
         <source>Settings</source>
         <translation>Ayarlar</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="114"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="114"/>
         <source>Mapping min similarity</source>
         <translation>Minimum benzerliği eşleme</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="134"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="134"/>
         <source>Trimming quality threshold</source>
         <translation>Kalite eşiği kırpılıyor</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="141"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="141"/>
         <source>Read name in result alignment</source>
         <translation>Sonuç hizalamasında adı oku</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="162"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="162"/>
         <source>Input the result file path</source>
         <translation>Sonuç dosyası yolunu girin</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="121"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="121"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="154"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="154"/>
         <source>Result alignment</source>
         <translation>Sonuç hizalama</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.ui" line="178"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.ui" line="178"/>
         <source>Add to project</source>
         <translation>Projeye ekle</translation>
     </message>
@@ -408,32 +408,32 @@
 <context>
     <name>BlastDBCmdDialog</name>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="32"/>
+        <location filename="../src/blast/BlastDBCmdDialog.ui" line="32"/>
         <source>Fetch Sequences from BLAST Database</source>
         <translation>BLAST Veritabanından Dizileri Getirme</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="44"/>
+        <location filename="../src/blast/BlastDBCmdDialog.ui" line="44"/>
         <source>Query ID</source>
         <translation>Sorgu kimliği</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="121"/>
+        <location filename="../src/blast/BlastDBCmdDialog.ui" line="121"/>
         <source>Select database</source>
         <translation>Veritabanı seçin</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="71"/>
+        <location filename="../src/blast/BlastDBCmdDialog.ui" line="71"/>
         <source>Output path</source>
         <translation>Çıktı yolu</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="99"/>
+        <location filename="../src/blast/BlastDBCmdDialog.ui" line="99"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="158"/>
+        <location filename="../src/blast/BlastDBCmdDialog.ui" line="158"/>
         <source>Add to project</source>
         <translation>Projeye ekle</translation>
     </message>
@@ -1920,91 +1920,91 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>FormatDBSupportRunDialog</name>
+    <name>FormatDBRunDialog</name>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="20"/>
+        <location filename="../src/blast/FormatDBRunDialog.ui" line="20"/>
         <source>Format Database</source>
         <translation>Veritabanını Biçimlendir</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="29"/>
+        <location filename="../src/blast/FormatDBRunDialog.ui" line="29"/>
         <source>Input data</source>
         <translation>Giriş verileri</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="38"/>
+        <location filename="../src/blast/FormatDBRunDialog.ui" line="38"/>
         <source>Select input file(s) for formatting database:</source>
         <translation>Veritabanını biçimlendirmek için girdi dosyalarını seçin:</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="59"/>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="93"/>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="220"/>
+        <location filename="../src/blast/FormatDBRunDialog.ui" line="59"/>
+        <location filename="../src/blast/FormatDBRunDialog.ui" line="93"/>
+        <location filename="../src/blast/FormatDBRunDialog.ui" line="220"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="68"/>
+        <location filename="../src/blast/FormatDBRunDialog.ui" line="68"/>
         <source>Or select directory with input files:</source>
         <translation>Veya giriş dosyalarını içeren dizini seçin:</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="105"/>
+        <location filename="../src/blast/FormatDBRunDialog.ui" line="105"/>
         <source>File filter</source>
         <translation>Dosya filtresi</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="119"/>
+        <location filename="../src/blast/FormatDBRunDialog.ui" line="119"/>
         <source>Include files filter</source>
         <translation>Dosyaları dahil et filtresi</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="129"/>
+        <location filename="../src/blast/FormatDBRunDialog.ui" line="129"/>
         <source>*.fa;*.fasta</source>
         <translation>*.fa;*.fasta</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="136"/>
+        <location filename="../src/blast/FormatDBRunDialog.ui" line="136"/>
         <source>Exclude files filter</source>
         <translation>Dosyaları hariç tut filtresi</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="146"/>
+        <location filename="../src/blast/FormatDBRunDialog.ui" line="146"/>
         <source>*.pal</source>
         <translation>*.pal</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="158"/>
+        <location filename="../src/blast/FormatDBRunDialog.ui" line="158"/>
         <source>Type of file(s)</source>
         <translation>Dosya türü</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="167"/>
+        <location filename="../src/blast/FormatDBRunDialog.ui" line="167"/>
         <source>protein</source>
         <translation>protein</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="177"/>
+        <location filename="../src/blast/FormatDBRunDialog.ui" line="177"/>
         <source>nucleotide</source>
         <translation>nükleotid</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="190"/>
+        <location filename="../src/blast/FormatDBRunDialog.ui" line="190"/>
         <source>Output settings</source>
         <translation>Çıktı ayarları</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="205"/>
+        <location filename="../src/blast/FormatDBRunDialog.ui" line="205"/>
         <source>Select the path to save the database into:</source>
         <translation>Veritabanının kaydedileceği yolu seçin:</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="234"/>
+        <location filename="../src/blast/FormatDBRunDialog.ui" line="234"/>
         <source>Base name for BLAST files:</source>
         <translation>BLAST dosyaları için temel ad:</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.ui" line="244"/>
+        <location filename="../src/blast/FormatDBRunDialog.ui" line="244"/>
         <source>Title for database file:</source>
         <translation>Veritabanı dosyası başlığı:</translation>
     </message>
@@ -2991,12 +2991,12 @@ p, li { white-space: pre-wrap; }
         <translation>Örnekte veri kümesi yok: </translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="58"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="58"/>
         <source>Sequence name from file</source>
         <translation>Dosyadan sıra adı</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="59"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="59"/>
         <source>File name</source>
         <translation>Dosya adı</translation>
     </message>
@@ -3668,34 +3668,34 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::AlignToReferenceBlastCmdlineTask</name>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="95"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="95"/>
         <source>Map Sanger reads to reference</source>
         <translation>Map Sanger referans için okur</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="111"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="111"/>
         <source>The &apos;%1&apos; reference file doesn&apos;t exist.</source>
         <translation>&apos;%1&apos; referans dosyası yok.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="116"/>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="119"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="116"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="119"/>
         <source>wrong reference format</source>
         <translation>yanlış referans formatı</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="172"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="172"/>
         <source>&lt;u&gt;Filtered by quality (%1):&lt;/u&gt;</source>
         <translation>&lt;u&gt;Kaliteye göre filtrelendi (%1):&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="199"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="199"/>
         <source>Failed to create output folder: %1.</source>
         <translation>Çıktı klasörü oluşturulamadı: %1.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="227"/>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="230"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="227"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="230"/>
         <source>wrong output format</source>
         <translation>yanlış çıktı biçimi</translation>
     </message>
@@ -3703,75 +3703,75 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::AlignToReferenceBlastDialog</name>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="259"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="259"/>
         <source>Map</source>
         <translation>Harita</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="260"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="260"/>
         <source>Cancel</source>
         <translation>İptal Et</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="266"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="266"/>
         <source>File name</source>
         <translation>Dosya adı</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="267"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="267"/>
         <source>Sequence name from file</source>
         <translation>Dosyadan sıra adı</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="285"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="285"/>
         <source>Select Output File...</source>
         <translation>Çıktı Dosyasını Seç...</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="298"/>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="304"/>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="322"/>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="344"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="298"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="304"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="322"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="344"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="298"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="298"/>
         <source>Reference sequence is not set.</source>
         <translation>Referans sırası belirlenmemiş.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="304"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="304"/>
         <source>No reads provided.</source>
         <translation>Okuma sağlanmadı.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="322"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="322"/>
         <source>Output file is not set.</source>
         <translation>Çıktı dosyası ayarlanmadı.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="333"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="333"/>
         <source>Overwrite the file?</source>
         <translation>Dosyanın üzerine yazılsın mı?</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="334"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="334"/>
         <source>The result file already exists. Would you like to overwrite it?</source>
         <translation>Sonuç dosyası zaten var. Üzerine yazmak ister misiniz?</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="344"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="344"/>
         <source>Unable to delete the file.</source>
         <translation>Dosya silinemiyor.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="356"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="356"/>
         <source>Open Reference Sequence</source>
         <translation>Açık Referans Sırası</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastDialog.cpp" line="367"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="367"/>
         <source>Select File(s) with Read(s)</source>
         <translation>Okunan Dosyaları Seçin</translation>
     </message>
@@ -3851,17 +3851,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BlastDBCmdDialog</name>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="42"/>
+        <location filename="../src/blast/BlastDBCmdDialog.cpp" line="42"/>
         <source>Fetch</source>
         <translation>Getir</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="43"/>
+        <location filename="../src/blast/BlastDBCmdDialog.cpp" line="43"/>
         <source>Cancel</source>
         <translation>İptal Et</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="91"/>
+        <location filename="../src/blast/BlastDBCmdDialog.cpp" line="91"/>
         <source>Set a result FASTA file name</source>
         <translation>Bir sonuç FAŞTA dosya adı belirleme</translation>
     </message>
@@ -3892,275 +3892,275 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::BlastDbCmdSupport</name>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdSupport.cpp" line="63"/>
-        <source>The &lt;i&gt;BlastDBCmd&lt;/i&gt; fetches protein or nucleotide sequences from BLAST+ database based on a query.</source>
+        <location filename="../src/blast/BlastDBCmdSupport.cpp" line="63"/>
+        <source>The &lt;i&gt;BlastDBCmd&lt;/i&gt; fetches protein or nucleotide sequences from BLAST database based on a query.</source>
         <translation>&lt;i&gt;BlastDBCmd&lt;/i&gt;, bir sorguya dayalı olarak BLAST + veritabanından protein veya nükleotid dizilerini alır.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdSupport.cpp" line="75"/>
-        <source>Path for BLAST+ %1 tool not selected.</source>
-        <translation>BLAST+ %1 aracının yolu seçilmedi.</translation>
+        <location filename="../src/blast/BlastDBCmdSupport.cpp" line="75"/>
+        <source>Path for BLAST %1 tool not selected.</source>
+        <translation>BLAST %1 aracının yolu seçilmedi.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdSupport.cpp" line="76"/>
+        <location filename="../src/blast/BlastDBCmdSupport.cpp" line="76"/>
         <source>Do you want to select it now?</source>
         <translation>Şimdi seçmek istiyor musunuz?</translation>
     </message>
 </context>
 <context>
-    <name>U2::BlastPlusSupport</name>
+    <name>U2::BlastSupport</name>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="196"/>
-        <source>Path for BLAST+ tools not selected.</source>
-        <translation>BLAST+ araçları için yol seçilmedi.</translation>
+        <location filename="../src/blast/BlastSupport.cpp" line="196"/>
+        <source>Path for BLAST tools not selected.</source>
+        <translation>BLAST araçları için yol seçilmedi.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="197"/>
+        <location filename="../src/blast/BlastSupport.cpp" line="197"/>
         <source>Do you want to select it now?</source>
         <translation>Şimdi seçmek istiyor musunuz?</translation>
     </message>
 </context>
 <context>
-    <name>U2::BlastPlusSupportCommonTask</name>
+    <name>U2::BlastCommonTask</name>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="68"/>
-        <source>A problem occurred during doing BLAST+. The sequence is no more available.</source>
-        <translation>BLAST+ yapılırken bir sorun oluştu. Sıra artık mevcut değil.</translation>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="68"/>
+        <source>A problem occurred during doing BLAST. The sequence is no more available.</source>
+        <translation>BLAST yapılırken bir sorun oluştu. Sıra artık mevcut değil.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="81"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="81"/>
         <source>The task uses a temporary folder to process the data. The folder path is required not to have spaces. Please set up an appropriate path for the &quot;Temporary files&quot; parameter on the &quot;Directories&quot; tab of the UGENE Application Settings.</source>
         <translation>Görev, verileri işlemek için geçici bir klasör kullanır. Klasör yolunda boşluk olmaması gerekir. Lütfen UGENE Uygulama Ayarlarının &quot;Dizinler&quot; sekmesinde &quot;Geçici dosyalar&quot; parametresi için uygun bir yol ayarlayın.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="90"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="90"/>
         <source>Subfolder for temporary files exists. Can not remove this folder.</source>
         <translation>Geçici dosyalar için alt klasör mevcuttur. Bu klasörü kaldıramazsınız.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="95"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="95"/>
         <source>Can not create folder for temporary files.</source>
         <translation>Geçici dosyalar için klasör oluşturulamaz.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="108"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="108"/>
         <source>Can not create fake NCBI ini file</source>
         <translation>Sahte NCBI ini dosyası oluşturulamıyor</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="164"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="164"/>
         <source>Output file not found</source>
         <translation>Çıktı dosyası bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="166"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="166"/>
         <source>Output file not found. May be %1 tool path &apos;%2&apos; not valid?</source>
         <translation>Çıktı dosyası bulunamadı. %1 takım yolu &apos;%2&apos; geçerli değil mi?</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="195"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="220"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="195"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="220"/>
         <source>There were no hits found for your BLAST search.</source>
         <translation>BLAST aramanız için hiçbir isabet bulunamadı.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="212"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="212"/>
         <source>Can not remove folder for temporary files.</source>
         <translation>Geçici dosyalar için klasör kaldırılamaz.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="253"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="253"/>
         <source>Incorrect number of fields in line: %1</source>
         <translation>Satırda yanlış alan sayısı: %1</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="258"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="263"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="418"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="425"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="258"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="263"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="418"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="425"/>
         <source>Can&apos;t get location</source>
         <translation>Konum alamıyorum</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="275"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="275"/>
         <source>Can&apos;t evaluate location</source>
         <translation>Konum değerlendirilemiyor</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="281"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="286"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="281"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="286"/>
         <source>Can&apos;t get hit location</source>
         <translation>İsabet yeri alınamıyor</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="302"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="302"/>
         <source>Can&apos;t evaluate hit location</source>
         <translation>İsabet yeri değerlendirilemiyor</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="316"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="481"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="316"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="481"/>
         <source>Can&apos;t get align length</source>
         <translation>Uzunluğu hizalayamıyorum</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="321"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="473"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="321"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="473"/>
         <source>Can&apos;t get gaps</source>
         <translation>Boşluk alamıyorum</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="326"/>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="465"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="326"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="465"/>
         <source>Can&apos;t get identity</source>
         <translation>Kimlik alamıyorum</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="355"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="355"/>
         <source>Can&apos;t open output file</source>
         <translation>Çıktı dosyası açılamıyor</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="359"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="359"/>
         <source>Can&apos;t read output file</source>
         <translation>Çıktı dosyası okunamıyor</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="448"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="448"/>
         <source>Unknown strand source setting</source>
         <translation>Bilinmeyen iplik kaynağı ayarı</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="454"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="454"/>
         <source>Can&apos;t get location. %1[%2]</source>
         <translation>Konum alınamıyor. %1 [%2]</translation>
     </message>
 </context>
 <context>
-    <name>U2::BlastPlusSupportContext</name>
+    <name>U2::BlastSupportContext</name>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="267"/>
+        <location filename="../src/blast/BlastSupport.cpp" line="267"/>
         <source>Fetch sequences by &apos;id&apos;</source>
         <translation>Dizileri &quot;id&quot; ile getir</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="277"/>
-        <source>Query with local BLAST+...</source>
-        <translation>Yerel BLAST+ ile sorgulama...</translation>
+        <location filename="../src/blast/BlastSupport.cpp" line="277"/>
+        <source>Query with local BLAST...</source>
+        <translation>Yerel BLAST ile sorgulama...</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="320"/>
+        <location filename="../src/blast/BlastSupport.cpp" line="320"/>
         <source>Fetch sequences from local BLAST database</source>
         <translation>Yerel BLAST veritabanından sekansları getir</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="325"/>
+        <location filename="../src/blast/BlastSupport.cpp" line="325"/>
         <source>Fetch sequences by &apos;id&apos; %1</source>
         <translation>Dizileri %1 &quot;kimlik&quot; ile getir</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="344"/>
-        <source>Path for BLAST+ tools not selected.</source>
-        <translation>BLAST+ araçları için yol seçilmedi.</translation>
+        <location filename="../src/blast/BlastSupport.cpp" line="344"/>
+        <source>Path for BLAST tools not selected.</source>
+        <translation>BLAST araçları için yol seçilmedi.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="345"/>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="418"/>
+        <location filename="../src/blast/BlastSupport.cpp" line="345"/>
+        <location filename="../src/blast/BlastSupport.cpp" line="418"/>
         <source>Do you want to select it now?</source>
         <translation>Şimdi seçmek istiyor musunuz?</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="391"/>
+        <location filename="../src/blast/BlastSupport.cpp" line="391"/>
         <source>Sequence object is NULL</source>
         <translation>Sıra nesnesi BOŞ</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupport.cpp" line="417"/>
-        <source>Path for BLAST+ %1 tool not selected.</source>
-        <translation>BLAST+ %1 aracının yolu seçilmedi.</translation>
+        <location filename="../src/blast/BlastSupport.cpp" line="417"/>
+        <source>Path for BLAST %1 tool not selected.</source>
+        <translation>BLAST %1 aracının yolu seçilmedi.</translation>
     </message>
 </context>
 <context>
-    <name>U2::BlastPlusSupportMultiTask</name>
+    <name>U2::BlastMultiTask</name>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="633"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="633"/>
         <source>Source file</source>
         <translation>Kaynak dosya</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="634"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="634"/>
         <source>Used database</source>
         <translation>Kullanılan veritabanı</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="636"/>
+        <location filename="../src/blast/BlastCommonTask.cpp" line="636"/>
         <source>No any results found</source>
         <translation>Hiçbir sonuç bulunamadı</translation>
     </message>
 </context>
 <context>
-    <name>U2::BlastPlusSupportRunDialog</name>
+    <name>U2::BlastRunDialog</name>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="122"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="122"/>
         <source>Do you want to select it now?</source>
         <translation>Şimdi seçmek istiyor musunuz?</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="162"/>
-        <source>Path for &lt;i&gt;BLAST+ %1&lt;/i&gt; tool not selected.</source>
-        <translation>&lt;i&gt;BLAST+ %1&lt;/i&gt; aracının yolu seçilmedi.</translation>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="162"/>
+        <source>Path for &lt;i&gt;BLAST %1&lt;/i&gt; tool not selected.</source>
+        <translation>&lt;i&gt;BLAST %1&lt;/i&gt; aracının yolu seçilmedi.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="195"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="195"/>
         <source>Wrong parameters for creating annotations</source>
         <translation>Ek açıklamalar oluşturmak için yanlış parametreler</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="208"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="208"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="208"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="208"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Ek açıklama nesnesi oluşturulamaz. Lütfen ayarları kontrol edin</translation>
     </message>
 </context>
 <context>
-    <name>U2::BlastPlusWithExtFileSpecifySupportRunDialog</name>
+    <name>U2::BlastWithExtFileRunDialog</name>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="252"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="252"/>
         <source>Select input file</source>
         <translation>Giriş dosyasını seçin</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="305"/>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="351"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="305"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="351"/>
         <source>Wrong input file</source>
         <translation>Yanlış girdi dosyası</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="305"/>
-        <source>This file has the incompatible format for the BLAST+ search.</source>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="305"/>
+        <source>This file has the incompatible format for the BLAST search.</source>
         <translation>Bu dosya, BLAST + araması için uyumsuz biçime sahip.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="351"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="351"/>
         <source>This file does not contain sequences.</source>
         <translation>Bu dosya sekans içermiyor.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="401"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="401"/>
         <source>Do you want to select it now?</source>
         <translation>Şimdi seçmek istiyor musunuz?</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="436"/>
-        <source>Path for &lt;i&gt;BLAST+ %1&lt;/i&gt; tool not selected.</source>
-        <translation>&lt;i&gt;BLAST+ %1&lt;/i&gt; aracının yolu seçilmedi.</translation>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="436"/>
+        <source>Path for &lt;i&gt;BLAST %1&lt;/i&gt; tool not selected.</source>
+        <translation>&lt;i&gt;BLAST %1&lt;/i&gt; aracının yolu seçilmedi.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="469"/>
+        <location filename="../src/blast/BlastRunDialog.cpp" line="469"/>
         <source>Wrong parameters for creating annotations</source>
         <translation>Ek açıklamalar oluşturmak için yanlış parametreler</translation>
     </message>
@@ -4974,34 +4974,30 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
     </message>
 </context>
 <context>
-    <name>U2::ETSProjectViewItemsContoller</name>
+    <name>U2::ETSProjectViewItemsController</name>
     <message>
-        <location filename="../src/ETSProjectViewItemsContoller.cpp" line="54"/>
-        <source>BLAST+ make DB...</source>
-        <translation>BLAST+ yap DB...</translation>
+        <location filename="../src/ETSProjectViewItemsController.cpp" line="54"/>
+        <source>BLAST make DB...</source>
+        <translation>BLAST yap DB...</translation>
     </message>
     <message>
-        <location filename="../src/ETSProjectViewItemsContoller.cpp" line="77"/>
+        <location filename="../src/ETSProjectViewItemsController.cpp" line="77"/>
         <source>BLAST</source>
         <translation>BLAST</translation>
     </message>
     <message>
-        <location filename="../src/ETSProjectViewItemsContoller.cpp" line="92"/>
-        <source>Path for BLAST+ %1 tool not selected.</source>
-        <translation>BLAST+ %1 aracının yolu seçilmedi.</translation>
+        <location filename="../src/ETSProjectViewItemsController.cpp" line="92"/>
+        <source>Path for BLAST %1 tool not selected.</source>
+        <translation>BLAST %1 aracının yolu seçilmedi.</translation>
     </message>
     <message>
-        <location filename="../src/ETSProjectViewItemsContoller.cpp" line="93"/>
+        <location filename="../src/ETSProjectViewItemsController.cpp" line="93"/>
         <source>Do you want to select it now?</source>
         <translation>Şimdi seçmek istiyor musunuz?</translation>
     </message>
     <message>
         <source>FormatDB...</source>
         <translation>FormatDB...</translation>
-    </message>
-    <message>
-        <source>Path for BLAST %1 tool not selected.</source>
-        <translation>BLAST %1 aracının yolu seçilmedi.</translation>
     </message>
 </context>
 <context>
@@ -5135,8 +5131,8 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="359"/>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="361"/>
-        <source>&lt;i&gt;BLAST+&lt;/i&gt; is a new version of the BLAST package from the NCBI.</source>
-        <translation>&lt;i&gt;BLAST+&lt;/i&gt;, NCBI&apos;den BLAST paketinin yeni bir sürümüdür.</translation>
+        <source>&lt;i&gt;BLAST&lt;/i&gt; is a new version of the BLAST package from the NCBI.</source>
+        <translation>&lt;i&gt;BLAST&lt;/i&gt;, NCBI&apos;den BLAST paketinin yeni bir sürümüdür.</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="363"/>
@@ -5160,8 +5156,8 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
     </message>
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="388"/>
-        <source>BLAST+ make database...</source>
-        <translation>BLAST+ veritabanı yap...</translation>
+        <source>BLAST make database...</source>
+        <translation>BLAST veritabanı yap...</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="392"/>
@@ -5175,12 +5171,12 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
     </message>
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="403"/>
-        <source>BLAST+ search...</source>
-        <translation>BLAST+ arama...</translation>
+        <source>BLAST search...</source>
+        <translation>BLAST arama...</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="407"/>
-        <source>BLAST+ query database...</source>
+        <source>BLAST query database...</source>
         <translation>BLAST + sorgu veritabanı...</translation>
     </message>
     <message>
@@ -5196,14 +5192,6 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
     <message>
         <source>Search tools in PATH</source>
         <translation>YOL içindeki arama araçları</translation>
-    </message>
-    <message>
-        <source>BLAST make database...</source>
-        <translation>BLAST veritabanı yap...</translation>
-    </message>
-    <message>
-        <source>BLAST search...</source>
-        <translation>BLAST arama...</translation>
     </message>
 </context>
 <context>
@@ -5424,17 +5412,17 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::FormatDBSupport</name>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupport.cpp" line="62"/>
-        <source>The &lt;i&gt;makeblastdb&lt;/i&gt; formats protein or nucleotide source databases before these databases can be searched by other BLAST+ tools.</source>
-        <translation>&lt;i&gt;makeblastdb&lt;/i&gt;, bu veritabanları diğer BLAST+ araçlarıyla aranmadan önce protein veya nükleotid kaynak veritabanlarını biçimlendirir.</translation>
+        <location filename="../src/blast/FormatDBSupport.cpp" line="62"/>
+        <source>The &lt;i&gt;makeblastdb&lt;/i&gt; formats protein or nucleotide source databases before these databases can be searched by other BLAST tools.</source>
+        <translation>&lt;i&gt;makeblastdb&lt;/i&gt;, bu veritabanları diğer BLAST araçlarıyla aranmadan önce protein veya nükleotid kaynak veritabanlarını biçimlendirir.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupport.cpp" line="74"/>
-        <source>Path for BLAST+ %1 tool not selected.</source>
-        <translation>BLAST+ %1 aracının yolu seçilmedi.</translation>
+        <location filename="../src/blast/FormatDBSupport.cpp" line="74"/>
+        <source>Path for BLAST %1 tool not selected.</source>
+        <translation>BLAST %1 aracının yolu seçilmedi.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupport.cpp" line="75"/>
+        <location filename="../src/blast/FormatDBSupport.cpp" line="75"/>
         <source>Do you want to select it now?</source>
         <translation>Şimdi seçmek istiyor musunuz?</translation>
     </message>
@@ -5442,41 +5430,37 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
         <source>The &lt;i&gt;formatdb&lt;/i&gt; formats protein or nucleotide source databases before these databases can be searched by &lt;i&gt;blastall&lt;/i&gt;.</source>
         <translation>&lt;i&gt;formatdb&lt;/i&gt;, bu veritabanları &lt;i&gt;blastall&lt;/i&gt; tarafından aranmadan önce protein veya nükleotid kaynak veritabanlarını formatlar.</translation>
     </message>
-    <message>
-        <source>Path for BLAST %1 tool not selected.</source>
-        <translation>BLAST %1 aracının yolu seçilmedi.</translation>
-    </message>
 </context>
 <context>
-    <name>U2::FormatDBSupportRunDialog</name>
+    <name>U2::FormatDBRunDialog</name>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.cpp" line="43"/>
+        <location filename="../src/blast/FormatDBRunDialog.cpp" line="43"/>
         <source>Format</source>
         <translation>Biçim</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.cpp" line="44"/>
+        <location filename="../src/blast/FormatDBRunDialog.cpp" line="44"/>
         <source>Cancel</source>
         <translation>İptal Et</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.cpp" line="74"/>
+        <location filename="../src/blast/FormatDBRunDialog.cpp" line="74"/>
         <source>Select file(s)</source>
         <translation>Dosyaları seçin</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.cpp" line="97"/>
+        <location filename="../src/blast/FormatDBRunDialog.cpp" line="97"/>
         <source>Select a folder with input files</source>
         <translation>Giriş dosyalarını içeren bir klasör seçin</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.cpp" line="108"/>
+        <location filename="../src/blast/FormatDBRunDialog.cpp" line="108"/>
         <source>Select a folder to save database files</source>
         <translation>Veritabanı dosyalarını kaydetmek için bir klasör seçin</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.cpp" line="118"/>
-        <location filename="../src/blast_plus/FormatDBSupportRunDialog.cpp" line="123"/>
+        <location filename="../src/blast/FormatDBRunDialog.cpp" line="118"/>
+        <location filename="../src/blast/FormatDBRunDialog.cpp" line="123"/>
         <source>Output database path contain space characters.</source>
         <translation>Çıktı veritabanı yolu boşluk karakterleri içerir.</translation>
     </message>
@@ -5486,65 +5470,65 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
     </message>
 </context>
 <context>
-    <name>U2::FormatDBSupportTask</name>
+    <name>U2::FormatDBTask</name>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="53"/>
+        <location filename="../src/blast/FormatDBTask.cpp" line="53"/>
         <source>Run NCBI FormatDB task</source>
         <translation>NCBI FormatDB görevini çalıştır</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="148"/>
+        <location filename="../src/blast/FormatDBTask.cpp" line="148"/>
         <source>Cannot create temp folder</source>
         <translation>Geçici klasör oluşturulamıyor</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="165"/>
+        <location filename="../src/blast/FormatDBTask.cpp" line="165"/>
         <source>Trying to initialize Format DB task second time</source>
         <translation>İkinci kez DB Biçimlendirme görevini başlatmaya çalışıyor</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="167"/>
+        <location filename="../src/blast/FormatDBTask.cpp" line="167"/>
         <source>Output database path contain space characters.</source>
         <translation>Çıktı veritabanı yolu boşluk karakterleri içerir.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="100"/>
+        <location filename="../src/blast/FormatDBTask.cpp" line="100"/>
         <source>Blast database creation has been cancelled</source>
         <translation>Blast veritabanı oluşturma iptal edildi</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="90"/>
+        <location filename="../src/blast/FormatDBTask.cpp" line="90"/>
         <source>Can not remove folder for temporary files.</source>
         <translation>Geçici dosyalar için klasör kaldırılamaz.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="107"/>
+        <location filename="../src/blast/FormatDBTask.cpp" line="107"/>
         <source>Blast database has been successfully created</source>
         <translation>Blast veritabanı başarıyla oluşturuldu</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="108"/>
+        <location filename="../src/blast/FormatDBTask.cpp" line="108"/>
         <source>Source sequences: </source>
         <translation>Kaynak dizileri: </translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="116"/>
+        <location filename="../src/blast/FormatDBTask.cpp" line="116"/>
         <source>Database file path: %1</source>
         <translation>Veritabanı dosya yolu: %1</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="118"/>
+        <location filename="../src/blast/FormatDBTask.cpp" line="118"/>
         <source>Type: %1</source>
         <translation>Tür: %1</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="120"/>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="126"/>
+        <location filename="../src/blast/FormatDBTask.cpp" line="120"/>
+        <location filename="../src/blast/FormatDBTask.cpp" line="126"/>
         <source>Formatdb log file path: </source>
         <translation>Formatdb günlük dosyası yolu: </translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/FormatDBSupportTask.cpp" line="124"/>
+        <location filename="../src/blast/FormatDBTask.cpp" line="124"/>
         <source>Blast database creation has been failed</source>
         <translation>Blast veritabanı oluşturma başarısız oldu</translation>
     </message>
@@ -6059,82 +6043,82 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::LocalWorkflow::AlignToReferenceBlastPrompter</name>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="85"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="85"/>
         <source>Input sequence</source>
         <translation>Giriş sırası</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="85"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="85"/>
         <source>Input sequence.</source>
         <translation>Giriş sırası.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="86"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="86"/>
         <source>Aligned data</source>
         <translation>Hizalanmış veriler</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="86"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="86"/>
         <source>Aligned data.</source>
         <translation>Hizalanmış veriler.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="95"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="95"/>
         <source>Multiple Chromatogram Alignment URL</source>
         <translation>Çoklu Kromatogram Hizalama URL&apos;si</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="96"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="96"/>
         <source>Location of a result file with a Multiple Chromatogram Alignment.</source>
         <translation>Çoklu Kromatogram Hizalamalı bir sonuç dosyasının konumu.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="103"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="103"/>
         <source>Reference URL</source>
         <translation>Referans URL</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="103"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="103"/>
         <source>A URL to the file with a reference sequence.</source>
         <translation>Bir referans sırasına sahip dosyanın URL&apos;si.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="106"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="106"/>
         <source>Result alignment URL</source>
         <translation>Sonuç hizalama URL&apos;si</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="106"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="106"/>
         <source>An URL to write the result alignment.</source>
         <translation>Sonuç hizalamasını yazmak için bir URL.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="109"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="109"/>
         <source>Mapping min similarity</source>
         <translation>Minimum benzerliği eşleme</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="109"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="109"/>
         <source>Reads, whose similarity with the reference is less than the stated value, will be ignored.</source>
         <translation>Referansla benzerliği belirtilen değerden küçük olan okumalar dikkate alınmayacaktır.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="112"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="112"/>
         <source>Read name in result alignment</source>
         <translation>Sonuç hizalamasında adı oku</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="112"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="112"/>
         <source>Reads in the result alignment can be named either by names of the sequences in the input files or by the input files names. For example, if the sequences have the same name, set this value to &quot;File name&quot; to be able to distinguish the reads in the result alignment.</source>
         <translation>Sonuç hizalamasındaki okumalar, giriş dosyalarındaki dizilerin adlarıyla veya giriş dosyası adlarıyla adlandırılabilir. Örneğin, diziler aynı ada sahipse, sonuç hizalamasında okumaları ayırt edebilmek için bu değeri &quot;Dosya adı&quot; olarak ayarlayın.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="156"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="156"/>
         <source>unset</source>
         <translation>ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="159"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="159"/>
         <source>Aligns each sequence from &lt;u&gt;%1&lt;/u&gt; to the reference sequence from &lt;u&gt;%2&lt;/u&gt;.</source>
         <translation>&lt;u&gt;%1&lt;/u&gt; &apos;den her diziyi &lt;u&gt;%2&lt;/u&gt; referans dizisine hizalar.</translation>
     </message>
@@ -6142,33 +6126,33 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::LocalWorkflow::AlignToReferenceBlastTask</name>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="250"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="250"/>
         <source>Map to reference</source>
         <translation>Referans için harita</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="322"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="322"/>
         <source>Details</source>
         <translation>Detaylar</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="323"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="323"/>
         <source>Reference sequence:</source>
         <translation>Referans sırası:</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="324"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="324"/>
         <source>Mapped reads (%1):</source>
         <translation>Eşlenen okumalar (%1):</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="330"/>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="337"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="330"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="337"/>
         <source>similarity</source>
         <translation>benzerlik</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="335"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="335"/>
         <source>Filtered by low similarity (%1):</source>
         <translation>Düşük benzerliğe göre filtrelendi (%1):</translation>
     </message>
@@ -6176,17 +6160,17 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
 <context>
     <name>U2::LocalWorkflow::AlignToReferenceBlastWorker</name>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="133"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="133"/>
         <source>Map to Reference</source>
         <translation>Referans Haritası</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="133"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="133"/>
         <source>Align input sequences (e.g. Sanger reads) to the reference sequence.</source>
         <translation>Giriş sıralarını (ör. Sanger okumaları) referans sırayla hizalayın.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/AlignToReferenceBlastWorker.cpp" line="223"/>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="223"/>
         <source>The result file was not produced</source>
         <translation>Sonuç dosyası üretilmedi</translation>
     </message>
@@ -6562,212 +6546,212 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
     </message>
 </context>
 <context>
-    <name>U2::LocalWorkflow::BlastPlusPrompter</name>
+    <name>U2::LocalWorkflow::BlastPrompter</name>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="248"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="248"/>
         <source>unset</source>
         <translation>ayarlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="249"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="249"/>
         <source> from &lt;u&gt;%1&lt;/u&gt;</source>
         <translation> &lt;u&gt;%1&lt;/u&gt; &apos;den</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="250"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="250"/>
         <source>For sequence &lt;u&gt;%1&lt;/u&gt; find annotations in database &lt;u&gt;%2&lt;/u&gt;.</source>
         <translation>&lt;u&gt;%1&lt;/u&gt; dizisi için &lt;u&gt;%2&lt;/u&gt; veritabanında ek açıklamalar bulun.</translation>
     </message>
 </context>
 <context>
-    <name>U2::LocalWorkflow::BlastPlusWorker</name>
+    <name>U2::LocalWorkflow::BlastWorker</name>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="89"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="89"/>
         <source>Input sequence</source>
         <translation>Giriş sırası</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="89"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="89"/>
         <source>Sequence for which annotations is searched.</source>
         <translation>Ek açıklamaların arandığı sıra.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="90"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="90"/>
         <source>Annotations</source>
         <translation>Açıklamalar</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="90"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="90"/>
         <source>Found annotations.</source>
         <translation>Ek açıklamalar bulundu.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="99"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="99"/>
         <source>Search type</source>
         <translation>Arama türü</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="100"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="100"/>
         <source>Database Path</source>
         <translation>Veritabanı Yolu</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="101"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="101"/>
         <source>Database Name</source>
         <translation>Veri tabanı ismi</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="102"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="102"/>
         <source>Expected value</source>
         <translation>Beklenen değer</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="102"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="102"/>
         <source>This setting specifies the statistical significance threshold for reporting matches against database sequences.</source>
         <translation>Bu ayar, veritabanı dizilerine göre eşleşmeleri raporlamak için istatistiksel anlamlılık eşiğini belirtir.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="105"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="105"/>
         <source>Annotate as</source>
         <translation>Olarak ek açıklama</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="106"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="106"/>
         <source>Tool Path</source>
         <translation>Araç Yolu</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="107"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="107"/>
         <source>Temporary folder</source>
         <translation>Geçici dosya</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="108"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="108"/>
         <source>BLAST output</source>
         <translation>BLAST çıktısı</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="108"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="108"/>
         <source>Location of BLAST output file.</source>
         <translation>BLAST çıktı dosyasının konumu.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="109"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="109"/>
         <source>BLAST output type</source>
         <translation>BLAST çıktı türü</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="109"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="109"/>
         <source>Type of BLAST output file.</source>
         <translation>BLAST çıktı dosyasının türü.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="110"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="110"/>
         <source>Gapped alignment</source>
         <translation>Aralıklı hizalama</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="99"/>
-        <source>Select type of BLAST+ searches.</source>
-        <translation>BLAST+ aramalarının türünü seçin.</translation>
+        <location filename="../src/blast/BlastWorker.cpp" line="99"/>
+        <source>Select type of BLAST searches.</source>
+        <translation>BLAST aramalarının türünü seçin.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="62"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="62"/>
         <source>Culling limit</source>
         <translation>İtlaf sınırı</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="66"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="66"/>
         <source>If the query range of a hit is enveloped by that of at least this many higher-scoring hits, delete the hit</source>
         <translation>Bir isabetin sorgu aralığı, en azından bu kadar yüksek puanlı isabetle çevrelenmişse, isabeti silin</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="100"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="100"/>
         <source>Path with database files.</source>
         <translation>Veritabanı dosyalarının bulunduğu yol.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="101"/>
-        <source>Base name for BLAST+ DB files.</source>
-        <translation>BLAST+ DB dosyaları için temel ad.</translation>
+        <location filename="../src/blast/BlastWorker.cpp" line="101"/>
+        <source>Base name for BLAST DB files.</source>
+        <translation>BLAST DB dosyaları için temel ad.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="103"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="103"/>
         <source>Composition-based statistics</source>
         <translation>Bileşime dayalı istatistikler</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="103"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="103"/>
         <source>Composition-based statistics.</source>
         <translation>Bileşime dayalı istatistikler.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="105"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="105"/>
         <source>Name for annotations.</source>
         <translation>Ek açıklamalar için ad.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="106"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="106"/>
         <source>External tool path.</source>
         <translation>Harici araç yolu.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="107"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="107"/>
         <source>Folder for temporary files.</source>
         <translation>Geçici dosyalar için klasör.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="110"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="110"/>
         <source>Perform gapped alignment.</source>
         <translation>Aralıklı hizalama gerçekleştirin.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="112"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="112"/>
         <source>Gap costs</source>
         <translation>Boşluk maliyetleri</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="112"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="112"/>
         <source>Cost to create and extend a gap in an alignment.</source>
         <translation>Bir hizalamada boşluk yaratma ve genişletme maliyeti.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="113"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="113"/>
         <source>Match scores</source>
         <translation>Eşleşme skorları</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="113"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="113"/>
         <source>Reward and penalty for matching and mismatching bases.</source>
         <translation>Eşleşen ve uyuşmayan üsler için ödül ve ceza.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="150"/>
-        <source>Local BLAST+ Search</source>
-        <translation>Yerel BLAST+ Arama</translation>
+        <location filename="../src/blast/BlastWorker.cpp" line="150"/>
+        <source>Local BLAST Search</source>
+        <translation>Yerel BLAST Arama</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="150"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="150"/>
         <source>Finds annotations for DNA sequence in local database.</source>
         <translation>Yerel veri tabanında DNA dizisi için ek açıklamalar bulur.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="321"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="321"/>
         <source>Empty sequence supplied to BLAST</source>
         <translation>BLAST&apos;a verilen boş sıra</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="331"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="331"/>
         <source>Selected BLAST search with nucleotide input sequence</source>
         <translation>Nükleotid giriş dizisi ile seçilmiş BLAST araması</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="335"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="335"/>
         <source>Selected BLAST search with amino acid input sequence</source>
         <translation>Amino asit giriş dizisi ile seçilmiş BLAST araması</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusWorker.cpp" line="342"/>
+        <location filename="../src/blast/BlastWorker.cpp" line="342"/>
         <source>Not selected BLAST output file</source>
         <translation>BLAST çıktı dosyası seçilmedi</translation>
     </message>
@@ -12590,12 +12574,12 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::PrepareInputFastaFilesTask</name>
     <message>
-        <location filename="../src/blast_plus/PrepareInputFastaFilesTask.cpp" line="36"/>
+        <location filename="../src/blast/PrepareInputFastaFilesTask.cpp" line="36"/>
         <source>Prepare input FASTA files</source>
         <translation>Giriş FAŞTA dosyalarını hazırlayın</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/PrepareInputFastaFilesTask.cpp" line="89"/>
+        <location filename="../src/blast/PrepareInputFastaFilesTask.cpp" line="89"/>
         <source>File &apos;%1&apos; was skipped. Cannot detect the file format.</source>
         <translation>&apos;%1&apos; dosyası atlandı. Dosya formatı tespit edilemiyor.</translation>
     </message>
@@ -12625,27 +12609,27 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::PrepareReferenceSequenceTask</name>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/PrepareReferenceSequenceTask.cpp" line="46"/>
+        <location filename="../src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.cpp" line="46"/>
         <source>Prepare reference sequence</source>
         <translation>Referans sırasını hazırlayın</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/PrepareReferenceSequenceTask.cpp" line="85"/>
+        <location filename="../src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.cpp" line="85"/>
         <source>No reference sequence in the file: </source>
         <translation>Dosyada referans dizisi yok: </translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/PrepareReferenceSequenceTask.cpp" line="86"/>
+        <location filename="../src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.cpp" line="86"/>
         <source>More than one sequence in the reference file: </source>
         <translation>Referans dosyasında birden fazla sekans: </translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/PrepareReferenceSequenceTask.cpp" line="89"/>
+        <location filename="../src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.cpp" line="89"/>
         <source>Unable to cast gobject to sequence object</source>
         <translation>Gobject nesneyi sıralı hale getiremiyor</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/PrepareReferenceSequenceTask.cpp" line="90"/>
+        <location filename="../src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.cpp" line="90"/>
         <source>The input reference sequence &apos;%1&apos; contains characters that don&apos;t belong to DNA alphabet.</source>
         <translation>Giriş referans dizisi &apos;%1&apos; DNA alfabesine ait olmayan karakterler içeriyor.</translation>
     </message>
@@ -12834,12 +12818,12 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::RemoveGapsFromSequenceTask</name>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/RemoveGapsFromSequenceTask.cpp" line="65"/>
+        <location filename="../src/blast/align_worker_subtasks/RemoveGapsFromSequenceTask.cpp" line="65"/>
         <source>Remove gaps from the sequence</source>
         <translation>Dizideki boşlukları kaldırın</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/RemoveGapsFromSequenceTask.cpp" line="81"/>
+        <location filename="../src/blast/align_worker_subtasks/RemoveGapsFromSequenceTask.cpp" line="81"/>
         <source>Find gaps in the sequence</source>
         <translation>Sıradaki boşlukları bulun</translation>
     </message>
@@ -13076,9 +13060,9 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
     </message>
 </context>
 <context>
-    <name>U2::TBlastXPlusSupportTask</name>
+    <name>U2::TBlastXTask</name>
     <message>
-        <location filename="../src/blast_plus/TBlastXPlusSupportTask.cpp" line="63"/>
+        <location filename="../src/blast/TBlastXTask.cpp" line="63"/>
         <source>Unexpected settings combination</source>
         <translation>Beklenmeyen ayarlar kombinasyonu</translation>
     </message>
@@ -13401,39 +13385,39 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
     </message>
 </context>
 <context>
-    <name>U2::Workflow::BlastAndSwReadTask</name>
+    <name>U2::Workflow::BlastAlignToReferenceTask</name>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="108"/>
+        <location filename="../src/blast/align_worker_subtasks/BlastReadsSubTask.cpp" line="108"/>
         <source>Map one read with BLAST &amp; SW task</source>
         <translation>BLAST &amp; SW göreviyle bir okumayı eşleyin</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="139"/>
+        <location filename="../src/blast/align_worker_subtasks/BlastReadsSubTask.cpp" line="139"/>
         <source>A problem occurred while mapping &quot;%1&quot; to &quot;%2&quot;.</source>
         <translation>&quot;%1&quot; ile &quot;%2&quot; eşlenirken bir sorun oluştu.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="149"/>
+        <location filename="../src/blast/align_worker_subtasks/BlastReadsSubTask.cpp" line="149"/>
         <source>%1 was skipped. No BLAST results.</source>
         <translation>%1 atlandı. BLAST sonucu yok.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="193"/>
+        <location filename="../src/blast/align_worker_subtasks/BlastReadsSubTask.cpp" line="193"/>
         <source>%1 was skipped. Low similarity: %2. Minimum similarity was set to %3</source>
         <translation>%1 atlandı. Düşük benzerlik: %2. Minimum benzerlik %3 olarak ayarlandı</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="294"/>
+        <location filename="../src/blast/align_worker_subtasks/BlastReadsSubTask.cpp" line="294"/>
         <source>Read doesn&apos;t contain meaningful data</source>
         <translation>Okuma anlamlı veriler içermez</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="377"/>
+        <location filename="../src/blast/align_worker_subtasks/BlastReadsSubTask.cpp" line="377"/>
         <source>The %1 algorithm is not found. Add the %1 plugin.</source>
         <translation>%1 algoritması bulunamadı. %1 eklentisini ekleyin.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="380"/>
+        <location filename="../src/blast/align_worker_subtasks/BlastReadsSubTask.cpp" line="380"/>
         <source>The %1 algorithm is not found. Check that the %1 plugin is up to date.</source>
         <translation>%1 algoritması bulunamadı. %1 eklentisinin güncel olup olmadığını kontrol edin.</translation>
     </message>
@@ -13441,12 +13425,12 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::Workflow::BlastReadsSubTask</name>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="53"/>
+        <location filename="../src/blast/align_worker_subtasks/BlastReadsSubTask.cpp" line="53"/>
         <source>Map reads with BLAST &amp; SW task</source>
         <translation>BLAST &amp; SW göreviyle harita okur</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="67"/>
+        <location filename="../src/blast/align_worker_subtasks/BlastReadsSubTask.cpp" line="67"/>
         <source>The task uses a temporary folder to process the data. The folder path is required not to have spaces. Please set up an appropriate path for the &quot;Temporary files&quot; parameter on the &quot;Directories&quot; tab of the UGENE Application Settings.</source>
         <translation>Görev, verileri işlemek için geçici bir klasör kullanır. Klasör yolunda boşluk olmaması gerekir. Lütfen UGENE Uygulama Ayarlarının &quot;Dizinler&quot; sekmesinde &quot;Geçici dosyalar&quot; parametresi için uygun bir yol ayarlayın.</translation>
     </message>
@@ -13454,17 +13438,17 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::Workflow::ComposeResultSubTask</name>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/ComposeResultSubTask.cpp" line="65"/>
+        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubTask.cpp" line="65"/>
         <source>Compose alignment</source>
         <translation>Hizalama oluştur</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/ComposeResultSubTask.cpp" line="197"/>
+        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubTask.cpp" line="197"/>
         <source>No read satisfy minimum similarity criteria.</source>
         <translation>Minimum benzerlik kriterlerini karşılayan okuma yok.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/ComposeResultSubTask.cpp" line="311"/>
+        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubTask.cpp" line="311"/>
         <source>The related chromatogram not found</source>
         <translation>İlgili kromatogram bulunamadı</translation>
     </message>
@@ -13472,12 +13456,12 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::Workflow::FormatDBSubTask</name>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/FormatDBSubTask.cpp" line="47"/>
+        <location filename="../src/blast/align_worker_subtasks/FormatDBSubTask.cpp" line="47"/>
         <source>Format DB task wrapper</source>
         <translation>DB görev sarmalayıcısını biçimlendir</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/FormatDBSubTask.cpp" line="65"/>
+        <location filename="../src/blast/align_worker_subtasks/FormatDBSubTask.cpp" line="65"/>
         <source>The task uses a temporary folder to process the data. It is required that the folder path doesn&apos;t have spaces. Please set up an appropriate path for the &quot;Temporary files&quot; parameter on the &quot;Directories&quot; tab of the UGENE Application Settings.</source>
         <translation>Görev, verileri işlemek için geçici bir klasör kullanır. Klasör yolunda boşluk olmaması gerekir. Lütfen UGENE Uygulama Ayarlarının &quot;Dizinler&quot; sekmesinde &quot;Geçici dosyalar&quot; parametresi için uygun bir yol ayarlayın.</translation>
     </message>
@@ -13519,7 +13503,7 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
 <context>
     <name>U2::BlastAllSupport</name>
     <message>
-        <source>The &lt;i&gt;blastall&lt;/i&gt; is the old program developed and distributed by the NCBI for running BLAST searches. The NCBI recommends that people start using the programs of the BLAST+ package instead.</source>
+        <source>The &lt;i&gt;blastall&lt;/i&gt; is the old program developed and distributed by the NCBI for running BLAST searches. The NCBI recommends that people start using the programs of the BLAST package instead.</source>
         <translation>&lt;i&gt;blastall&lt;/i&gt;, BLAST aramalarını çalıştırmak için NCBI tarafından geliştirilen ve dağıtılan eski programdır. NCBI, insanların bunun yerine BLAST + paketinin programlarını kullanmaya başlamasını önerir.</translation>
     </message>
 </context>
@@ -13670,7 +13654,7 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
         <translation>Giriş dosyasını seçin</translation>
     </message>
     <message>
-        <source>This file has the incompatible format for the BLAST+ search.</source>
+        <source>This file has the incompatible format for the BLAST search.</source>
         <translation>Bu dosya, BLAST + araması için uyumsuz biçime sahip.</translation>
     </message>
     <message>

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@ namespace U2 {
 
 MaGraphCalculationTask::MaGraphCalculationTask(MultipleAlignmentObject *maObject, int width, int height)
     : BackgroundTask<QPolygonF>(tr("Render overview"), TaskFlag_None),
-      ma(maObject->getMultipleAlignmentCopy()),  // SANGER_TODO: getiing before any check
+      ma(maObject->getMultipleAlignmentCopy()),  // SANGER_TODO: getting before any check
       memLocker(stateInfo),
       msaLength(0),
       seqNumber(0),
@@ -47,8 +47,8 @@ MaGraphCalculationTask::MaGraphCalculationTask(MultipleAlignmentObject *maObject
       height(height) {
     SAFE_POINT_EXT(maObject != nullptr, setError(tr("MSA is NULL")), );
     msaLength = maObject->getLength();
-    seqNumber = maObject->getNumRows();
-    if (!memLocker.tryAcquire(maObject->getMultipleAlignment()->getLength() * maObject->getMultipleAlignment()->getNumRows())) {
+    seqNumber = maObject->getRowCount();
+    if (!memLocker.tryAcquire(maObject->getMultipleAlignment()->getLength() * maObject->getMultipleAlignment()->getRowCount())) {
         setError(memLocker.getError());
         return;
     }

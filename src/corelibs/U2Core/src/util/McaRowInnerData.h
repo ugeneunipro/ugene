@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@ public:
     McaRowMemoryData();
 
     DNAChromatogram chromatogram;
-    U2MsaRowGapModel gapModel;
+    QVector<U2MsaGap> gapModel;
     DNASequence sequence;
     qint64 rowLength;
     QVariantMap additionalInfo;
@@ -46,7 +46,7 @@ public:
 
     U2Chromatogram chromatogram;
     U2Sequence sequence;
-    U2MsaRowGapModel gapModel;
+    QVector<U2MsaGap> gapModel;
     qint64 rowLength;
     QVariantMap additionalInfo;
 };

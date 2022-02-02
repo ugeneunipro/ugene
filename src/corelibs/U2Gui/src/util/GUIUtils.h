@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -46,6 +46,9 @@ public:
     static QAction *findActionAfter(const QList<QAction *> &actions, const QString &name);
 
     static QMenu *findSubMenu(QMenu *m, const QString &name);
+
+    /** Inserts 'actionToInsert' right after 'insertionPointMarkerAction' in the menu. */
+    static void insertActionAfter(QMenu *menu, QAction *insertionPointMarkerAction, QAction *actionToInsert);
 
     static void updateActionToolTip(QAction *action);
     static void updateButtonToolTip(QAbstractButton *button, const QKeySequence &shortcut);

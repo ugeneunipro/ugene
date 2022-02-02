@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -69,7 +69,9 @@ StructuralAlignmentDialog::StructuralAlignmentDialog(const BioStruct3DObject *fi
 
     QList<BioStruct3DObject *> biostructs = findAvailableBioStructs();
     ref = new BioStruct3DSubsetEditor(biostructs, fixedRef, fixedRefModel);
+    ref->setObjectName("ref_editor");
     mob = new BioStruct3DSubsetEditor(biostructs);
+    mob->setObjectName("mob_editor");
 
     if (fixedRef) {
         ref->setBiostructDisabled();

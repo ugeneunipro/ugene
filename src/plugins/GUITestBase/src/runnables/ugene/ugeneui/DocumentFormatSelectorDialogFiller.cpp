@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@ namespace U2 {
 #define GT_METHOD_NAME "getButton"
 QRadioButton *DocumentFormatSelectorDialogFiller::getButton(HI::GUITestOpStatus &os) {
     QWidget *dialog = GTWidget::getActiveModalWidget(os);
-    return GTWidget::findExactWidget<QRadioButton *>(os, format, dialog, GTGlobals::FindOptions(false));
+    return GTWidget::findExactWidget<QRadioButton *>(os, format, dialog, {false});
 }
 #undef GT_METHOD_NAME
 

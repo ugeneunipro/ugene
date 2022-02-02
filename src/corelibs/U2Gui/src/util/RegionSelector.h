@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -71,10 +71,6 @@ public:
     void removePreset(const QString &itemName);
 
     void showErrorMessage();
-
-    static const QString WHOLE_SEQUENCE;
-    static const QString SELECTED_REGION;
-    static const QString CUSTOM_REGION;
 
 signals:
     void si_regionChanged(const U2Region &newRegion);

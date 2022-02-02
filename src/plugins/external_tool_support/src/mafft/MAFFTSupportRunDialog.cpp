@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,13 +22,10 @@
 #include "MAFFTSupportRunDialog.h"
 
 #include <QMessageBox>
-#include <QPushButton>
-#include <QToolButton>
 
 #include <U2Core/DocumentUtils.h>
-#include <U2Core/GUrlUtils.h>
+#include <U2Core/FileFilters.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SaveDocumentController.h>
@@ -37,7 +34,7 @@
 namespace U2 {
 
 ////////////////////////////////////////
-//MAFFTSupportRunDialog
+// MAFFTSupportRunDialog
 MAFFTSupportRunDialog::MAFFTSupportRunDialog(MAFFTSupportTaskSettings &_settings, QWidget *_parent)
     : QDialog(_parent), settings(_settings) {
     setupUi(this);
@@ -63,7 +60,7 @@ void MAFFTSupportRunDialog::accept() {
 }
 
 ////////////////////////////////////////
-//MAFFTWithExtFileSpecifySupportRunDialog
+// MAFFTWithExtFileSpecifySupportRunDialog
 MAFFTWithExtFileSpecifySupportRunDialog::MAFFTWithExtFileSpecifySupportRunDialog(MAFFTSupportTaskSettings &_settings, QWidget *_parent)
     : QDialog(_parent),
       settings(_settings),
@@ -81,7 +78,7 @@ MAFFTWithExtFileSpecifySupportRunDialog::MAFFTWithExtFileSpecifySupportRunDialog
 
 void MAFFTWithExtFileSpecifySupportRunDialog::sl_inputPathButtonClicked() {
     LastUsedDirHelper lod;
-    lod.url = U2FileDialog::getOpenFileName(this, tr("Open an alignment file"), lod.dir, DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true));
+    lod.url = U2FileDialog::getOpenFileName(this, tr("Open an alignment file"), lod.dir, FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT}));
     if (lod.url.isEmpty()) {
         return;
     }
@@ -123,4 +120,4 @@ void MAFFTWithExtFileSpecifySupportRunDialog::accept() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

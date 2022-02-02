@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -95,8 +95,8 @@ protected:
     MultipleSequenceAlignmentObject *maObj, *clonedObj;
     QString traslId;
     Document *tmpDoc;
-    QMap<qint64, QList<U2MsaGap>> rowsGapModel;
-    QMap<qint64, QList<U2MsaGap>> emptyGapModel;
+    QMap<qint64, QVector<U2MsaGap>> rowsGapModel;
+    QMap<qint64, QVector<U2MsaGap>> emptyGapModel;
 };
 
 }  // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -52,7 +52,7 @@ void ConvertMca2MsaTask::run() {
     }
 
     foreach (const MultipleChromatogramAlignmentRow &mcaRow, mcaObject->getMca()->getMcaRows()) {
-        msa->addRow(mcaRow->getName(), mcaRow->getSequence(), mcaRow->getGapModel(), stateInfo);
+        msa->addRow(mcaRow->getName(), mcaRow->getSequence(), mcaRow->getGaps(), stateInfo);
         CHECK_OP(stateInfo, );
     }
 }

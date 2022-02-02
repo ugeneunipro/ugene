@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,6 +27,8 @@
 
 #include <QColor>
 #include <QRect>
+#include <QListWidget>
+#include <QToolButton>
 
 namespace U2 {
 
@@ -48,6 +50,9 @@ public:
 
     /** Checks that there are no MSA editor window opened (active or not active). */
     static void checkNoMsaEditorWindowIsOpened(HI::GUITestOpStatus &os);
+
+    /** Returns "Show overview" toolbar button. */
+    static QToolButton *getShowOverviewButton(HI::GUITestOpStatus &os);
 
     static QColor getGraphOverviewPixelColor(HI::GUITestOpStatus &os, const QPoint &point);
     static QColor getSimpleOverviewPixelColor(HI::GUITestOpStatus &os, const QPoint &point);
@@ -97,7 +102,13 @@ public:
     /** Checks that MSA editor selection is equal to the given rect. Fails if not. */
     static void checkSelection(HI::GUITestOpStatus &os, const QList<QRect> &expectedRects);
 
+    /** Checks that the current selection names & order are equal to 'selectedNames' list. */
+    static void checkSelectionByNames(HI::GUITestOpStatus &os, const QStringList &selectedNames);
+
     static void clearSelection(HI::GUITestOpStatus &os);
+
+    /** Checks current sequence (row) name list (with order). */
+    static void checkNameList(HI::GUITestOpStatus &os, const QStringList &nameList);
 
     static QString getReferenceSequenceName(HI::GUITestOpStatus &os);
     static void setReference(HI::GUITestOpStatus &os, const QString &sequenceName);
@@ -133,6 +144,36 @@ public:
 
     /** Clicks "Align sequence(s) to alignment" button has the given state. */
     static void checkAlignSequencesToAlignmentMenu(HI::GUITestOpStatus &os, const QString &partOfMenuItemText, const HI::PopupChecker::CheckOption &checkOption);
+
+    /**
+     * Clicks "Exclude list" button on the toolbar (if needed) and checks that "Exclude List" widget is present.
+     * 'waitUntilLoaded' calls to 'waitTaskFinished' and is needed to wait until the content of exclude list is loaded.
+     */
+    static void openExcludeList(HI::GUITestOpStatus &os, bool waitUntilLoaded = true);
+
+    /**
+     * Ensures exclude list is closed.
+     * 'waitUntilSaved' calls to 'waitTaskFinished' and is needed to wait until the content of exclude list is saved.
+     */
+    static void closeExcludeList(HI::GUITestOpStatus &os, bool waitUntilSaved = true);
+
+    /** Moves rows with the given names from MSA to Exclude List. */
+    static void moveRowsToExcludeList(HI::GUITestOpStatus &os, const QStringList &rowNames);
+
+    /** Moves row with the given name from Exclude List to MSA. */
+    static void moveRowFromExcludeList(HI::GUITestOpStatus &os, const QString &rowName);
+
+    /** Check current exclude list content. The Exclude List must be opened. */
+    static void checkExcludeList(HI::GUITestOpStatus &os, const QStringList &rowNames);
+
+    /** Selects rows by name in exclude list. */
+    static void selectRowsByNameInExcludeList(HI::GUITestOpStatus &os, const QStringList &rowNames);
+
+    /** Checks that the given set of rows is currently selected in Exclude List. */
+    static void checkExcludeListSelection(HI::GUITestOpStatus &os, const QStringList &rowNames);
+
+    /** Returns active Exclude List widget instance. */
+    static QListWidget *getExcludeListWidget(HI::GUITestOpStatus &os);
 };
 
 }  // namespace U2

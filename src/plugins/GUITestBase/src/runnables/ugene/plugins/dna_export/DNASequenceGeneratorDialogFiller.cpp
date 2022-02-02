@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,10 +20,14 @@
  */
 
 #include <primitives/GTCheckBox.h>
+#include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
+
+#include <U2Core/AppContext.h>
+#include <U2Core/DocumentModel.h>
 
 #include "DNASequenceGeneratorDialogFiller.h"
 
@@ -64,6 +68,12 @@ void DNASequenceGeneratorDialogFiller::commonScenario() {
         GTSpinBox::setValue(os, "seedSpinBox", model.seed, dialog);
     }
     GTLineEdit::setText(os, "outputEdit", model.url, dialog);
+
+    if (!model.formatId.isEmpty()) {
+        DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(model.formatId);
+        CHECK_SET_ERR(format != nullptr, "Format not found: " + model.formatId);
+        GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "formatCombo"), format->getFormatName());
+    }
 
     GTWidget::click(os, GTWidget::findButtonByText(os, "Generate", dialog));
 }

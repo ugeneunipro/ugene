@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -77,7 +77,7 @@ void FormatsMsaClipboardTask::prepare() {
         msa->crop(rowIds, columnRange, stateInfo);
         CHECK_OP(stateInfo, )
 
-        for (int i = 0; i < msa->getNumRows(); i++) {
+        for (int i = 0; i < msa->getRowCount(); i++) {
             const MultipleSequenceAlignmentRow &row = msa->getMsaRow(i);
             if (i > 0) {
                 resultText.append("\n");
@@ -179,7 +179,7 @@ void RichTextMsaClipboardTask::prepare() {
     int refSeqIndex = refSeqRowId != U2MsaRow::INVALID_ROW_ID ? msa->getRowIndexByRowId(refSeqRowId, os) : -1;
 
     resultText.append(QString("<span style=\"font-size:%1pt; font-family:%2;\">\n").arg(pointSize).arg(fontFamily).toUtf8());
-    int numRows = msa->getNumRows();
+    int numRows = msa->getRowCount();
     for (int maRowIndex = 0; maRowIndex < numRows; maRowIndex++) {
         MultipleAlignmentRow row = msa->getRow(maRowIndex);
         if (!rowIds.contains(row->getRowId())) {

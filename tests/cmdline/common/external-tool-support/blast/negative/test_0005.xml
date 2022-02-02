@@ -1,0 +1,11 @@
+<multi-test>
+    <run-cmdline task="local-blast"
+                 in="!common_data_dir!cmdline/external-tool-support/blastplus/query_begin.fa"
+                 out="!tmp_data_dir!blast-searchn0005_tmp_begin.gb"
+                 dbpath="!common_data_dir!cmdline/external-tool-support/blastplus/"
+                 dbname="sars_begin"
+                 p="blastn"
+                 e="-23"
+                 message="expect value or cutoff score must be greater than zero"
+    />
+</multi-test>

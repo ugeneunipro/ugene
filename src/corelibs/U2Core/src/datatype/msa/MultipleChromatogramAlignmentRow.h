@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,7 +45,7 @@ public:
     MultipleChromatogramAlignmentRow(MultipleChromatogramAlignmentRowData *mcaRowData);
 
     /** Creates a row in memory. */
-    MultipleChromatogramAlignmentRow(const U2McaRow &rowInDb, const DNAChromatogram &chromatogram, const DNASequence &sequence, const U2MsaRowGapModel &gaps, MultipleChromatogramAlignmentData *mcaData);
+    MultipleChromatogramAlignmentRow(const U2McaRow &rowInDb, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QVector<U2MsaGap> &gaps, MultipleChromatogramAlignmentData *mcaData);
     MultipleChromatogramAlignmentRow(const U2McaRow &rowInDb, const QString &rowName, const DNAChromatogram &chromatogram, const QByteArray &rawData, MultipleChromatogramAlignmentData *mcaData);
     MultipleChromatogramAlignmentRow(const MultipleChromatogramAlignmentRow &row, MultipleChromatogramAlignmentData *mcaData);
 
@@ -79,7 +79,7 @@ protected:
     MultipleChromatogramAlignmentRowData(MultipleChromatogramAlignmentData *mcaData = nullptr);
 
     /** Creates a row in memory. */
-    MultipleChromatogramAlignmentRowData(const U2McaRow &rowInDb, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QList<U2MsaGap> &gaps, MultipleChromatogramAlignmentData *mcaData);
+    MultipleChromatogramAlignmentRowData(const U2McaRow &rowInDb, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QVector<U2MsaGap> &gaps, MultipleChromatogramAlignmentData *mcaData);
     MultipleChromatogramAlignmentRowData(const U2McaRow &rowInDb, const QString &rowName, const DNAChromatogram &chromatogram, const QByteArray &rawData, MultipleChromatogramAlignmentData *mcaData);
     MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentRow &row, MultipleChromatogramAlignmentData *mcaData);
 
@@ -89,10 +89,10 @@ public:
     void setName(const QString &name);
 
     /** Returns the list of gaps for the row */
-    inline const U2MsaRowGapModel &getGapModel() const;
+    inline const QVector<U2MsaGap> &getGaps() const;
 
     /** Careful, the new gap model is not validated! */
-    void setGapModel(const QList<U2MsaGap> &newGapModel);
+    void setGapModel(const QVector<U2MsaGap> &newGapModel);
 
     /** Returns the row sequence (without gaps) */
     inline const DNASequence &getSequence() const;
@@ -155,7 +155,7 @@ public:
      * Sets new sequence and gap model.
      * If the sequence is empty, the offset is ignored (if any).
      */
-    void setRowContent(const DNAChromatogram &chromatogram, const DNASequence &sequence, const U2MsaRowGapModel &gapModel, U2OpStatus &os);
+    void setRowContent(const DNAChromatogram &chromatogram, const DNASequence &sequence, const QVector<U2MsaGap> &gapModel, U2OpStatus &os);
 
     /**
      * Inserts 'count' gaps into the specified position, if possible.
@@ -196,27 +196,23 @@ public:
     /** Returns pair of the first and the second (by peak height) chromatogram trace characted in the @pos position */
     QPair<DNAChromatogram::ChromatogramTraceAndValue, DNAChromatogram::ChromatogramTraceAndValue> getTwoHighestPeaks(qint64 position, bool &hasTwoPeaks) const;
 
-    /**
-     * Exactly compares the rows. Sequences and gap models must match.
-     * However, the rows are considered equal if they differ by trailing gaps only.
-     */
-    bool isRowContentEqual(const MultipleChromatogramAlignmentRow &row) const;
-    bool isRowContentEqual(const MultipleChromatogramAlignmentRowData &rowData) const;
+    /** Adds sequence chromatogram equality check to the base MultipleAlignmentRowData::isEqualCore method. */
+    bool isEqualCore(const MultipleAlignmentRowData &other) const override;
 
     bool isDefault() const override;
 
-    /** Compares 2 rows. Rows are equal if their contents and names are equal. */
-    bool operator!=(const MultipleChromatogramAlignmentRowData &mcaRowData) const;
-    bool operator!=(const MultipleAlignmentRowData &maRowData) const override;
-    bool operator==(const MultipleChromatogramAlignmentRowData &mcaRowData) const;
-    bool operator==(const MultipleAlignmentRowData &maRowData) const override;
+    /** Checks that 'other' is MultipleChromatogramAlignmentRowData and calls the MCA version of the method. */
+    bool isEqual(const MultipleAlignmentRowData &other) const override;
+
+    /** Compares 2 rows. Rows are equal if their names, sequences, no-leading-gap models and chromatograms are equal. */
+    bool isEqual(const MultipleChromatogramAlignmentRowData &other) const;
 
     /**
      * Crops the row -> keeps only specified region in the row.
      * 'pos' and 'pos + count' can be greater than the row length.
      * Keeps trailing gaps.
      */
-    void crop(U2OpStatus &os, qint64 startPosition, qint64 count);
+    void crop(U2OpStatus &os, qint64 startPosition, qint64 count) override;
 
     /**
      * Returns new row of the specified 'count' length, started from 'pos'.
@@ -249,17 +245,17 @@ public:
     void reverseComplement();
 
     bool isReversed() const;
-    bool isComplemented() const;
+    bool isComplemented() const override;
 
 private:
     /** Splits input to sequence bytes and gaps model */
-    static void splitBytesToCharsAndGaps(const QByteArray &input, QByteArray &seqBytes, QList<U2MsaGap> &gapModel);
+    static void splitBytesToCharsAndGaps(const QByteArray &input, QByteArray &seqBytes, QVector<U2MsaGap> &gapModel);
 
     /**
      * Add "offset" of gaps to the beginning of the row
      * Warning: it is not verified that the row sequence is not empty.
      */
-    static void addOffsetToGapModel(QList<U2MsaGap> &gapModel, int offset);
+    static void addOffsetToGapModel(QVector<U2MsaGap> &gapModel, int offset);
 
     /** Gets the length of all gaps */
     inline int getGapsLength() const;
@@ -294,7 +290,7 @@ private:
     QVariantMap additionalInfo;
 };
 
-inline const U2MsaRowGapModel &MultipleChromatogramAlignmentRowData::getGapModel() const {
+inline const QVector<U2MsaGap> &MultipleChromatogramAlignmentRowData::getGaps() const {
     return gaps;
 }
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,6 @@
 #include <QApplication>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/AppResources.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GHints.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -104,7 +103,9 @@ DNASequence U2SequenceObject::getSequence(const U2Region &region, U2OpStatus &os
     const DNAAlphabet *alpha = cachedAlphabet;
     if (!cachedAlphabet) {
         FETCH_SEQUENCE(seqGet, seq, entityRef);
-        cachedAlphabet = alpha = U2AlphabetUtils::getById(seq.alphabet);
+        alpha = U2AlphabetUtils::getById(seq.alphabet);
+        cachedAlphabet = alpha;
+        CHECK_EXT(alpha != nullptr, os.setError(tr("Failed to derive sequence alphabet: ") + getGObjectName()), {});
     }
     QString seqName = cachedName;
     if (cachedName.isEmpty()) {

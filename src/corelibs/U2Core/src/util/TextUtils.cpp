@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -248,6 +248,24 @@ bool TextUtils::isLineBreak(const QString &text, int charIndex) {
 bool TextUtils::isWhiteSpace(const QString &text, int charIndex) {
     uchar bitIndex = uchar((text.at(charIndex).toLatin1()));
     return WHITES.testBit(bitIndex);
+}
+
+bool TextUtils::isWhiteSpace(const QString &text) {
+    for (int i = 0; i < text.length(); i++) {
+        if (!isWhiteSpace(text, i)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int TextUtils::findIndexOfFirstWhiteSpace(const QString &text) {
+    for (int i = 0; i < text.length(); i++) {
+        if (isWhiteSpace(text, i)) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 QString TextUtils::skip(const QBitArray &map, const QString &text) {

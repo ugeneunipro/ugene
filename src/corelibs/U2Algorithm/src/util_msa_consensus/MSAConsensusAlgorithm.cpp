@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -89,7 +89,7 @@ bool MSAConsensusAlgorithm::filterIdx(QVector<int> &seqIdx, const MultipleAlignm
     CHECK(ignoreTrailingAndLeadingGaps, true);
 
     QVector<int> tmp;
-    int nSeq = seqIdx.isEmpty() ? ma->getNumRows() : seqIdx.size();
+    int nSeq = seqIdx.isEmpty() ? ma->getRowCount() : seqIdx.size();
     for (int seq = 0; seq < nSeq; seq++) {
         int rowNum = seqIdx.isEmpty() ? seq : seqIdx[seq];
         const MultipleAlignmentRow &row = ma->getRow(rowNum);

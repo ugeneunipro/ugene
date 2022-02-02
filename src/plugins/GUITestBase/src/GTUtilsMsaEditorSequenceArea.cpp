@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -134,9 +134,9 @@ void GTUtilsMSAEditorSequenceArea::selectArea(GUITestOpStatus &os, QPoint p1, QP
             GTMouseDriver::dragAndDrop(convertCoordinates(os, p1), convertCoordinates(os, p2));
             break;
         case GTGlobals::UseKeyBoard:
-            GT_CHECK(false, "Not implemented");
+            GT_FAIL("Not implemented", );
         default:
-            GT_CHECK(false, "An unknown method");
+            GT_FAIL("An unknown method", );
     }
 }
 #undef GT_METHOD_NAME
@@ -502,9 +502,8 @@ bool GTUtilsMSAEditorSequenceArea::isSequenceSelected(GUITestOpStatus &os, const
 
     // Seq names are drawn on widget, so this hack is needed
     QStringList selectedRowNames;
-    QList<int> selectedMaRows = msaEditArea->getSelectedMaRowIndexes();
-    for (int i = 0; i < selectedMaRows.size(); i++) {
-        int maIndex = selectedMaRows[i];
+    QList<int> selectedMaRowIndexes = editor->getSelectionController()->getSelectedMaRowIndexes();
+    for (int maIndex : qAsConst(selectedMaRowIndexes)) {
         QString selectedSequenceName = editor->getMaObject()->getRow(maIndex)->getName();
         if (selectedSequenceName == seqName) {
             return true;
@@ -519,7 +518,7 @@ int GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(GUITestOpStatus &os) {
     MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea *>(GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR_RESULT(msaEditArea != nullptr, "MsaEditorSequenceArea not found", 0);
 
-    return msaEditArea->getSelectedMaRowIndexes().size();
+    return msaEditArea->getEditor()->getSelection().getCountOfSelectedRows();
 }
 #undef GT_METHOD_NAME
 
@@ -690,13 +689,10 @@ int GTUtilsMSAEditorSequenceArea::getRowHeight(GUITestOpStatus &os, int rowNumbe
 
 #define GT_METHOD_NAME "renameSequence"
 void GTUtilsMSAEditorSequenceArea::renameSequence(GUITestOpStatus &os, const QString &seqToRename, const QString &newName, bool useCopyPaste) {
-    int num = getVisibleNames(os).indexOf(seqToRename);
-    GT_CHECK(num != -1, "sequence not found");
-
+    GTUtilsMsaEditor::clearSelection(os);
+    GTUtilsMsaEditor::selectRowsByName(os, {seqToRename});
     GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, newName, seqToRename, useCopyPaste));
-    moveTo(os, QPoint(-10, num));
-    GTMouseDriver::doubleClick();
-    GTGlobals::sleep(500);
+    GTKeyboardDriver::keyClick(Qt::Key_F2);
 }
 #undef GT_METHOD_NAME
 
@@ -718,7 +714,7 @@ void GTUtilsMSAEditorSequenceArea::createColorScheme(GUITestOpStatus &os, const 
                                                                         << "Create new color scheme"));
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, colorSchemeName, al));
     GTMouseDriver::click(Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 #undef GT_METHOD_NAME
 

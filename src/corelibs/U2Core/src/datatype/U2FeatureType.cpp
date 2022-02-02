@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,6 +21,7 @@
 
 #include "U2FeatureType.h"
 
+#include <U2Core/FeatureColors.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
@@ -38,10 +39,34 @@ QList<U2FeatureTypes::U2FeatureType> U2FeatureTypes::getTypes(const Alphabets &a
     return types;
 }
 
-QString U2FeatureTypes::getVisualName(U2FeatureType type) {
-    const int typeInfoIndex = typeInfoIndexByType.value(type, -1);
-    SAFE_POINT(typeInfoIndex >= 0, "Unexpected feature type", QString());
+QString U2FeatureTypes::getVisualName(const U2FeatureType &type) {
+    int typeInfoIndex = typeInfoIndexByType.value(type, -1);
+    SAFE_POINT(typeInfoIndex >= 0, "Unexpected feature type", "");
     return typeInfos[typeInfoIndex].visualName;
+}
+
+U2FeatureTypes::Alphabets U2FeatureTypes::getAlphabets(const U2FeatureType &type) {
+    int typeInfoIndex = typeInfoIndexByType.value(type, -1);
+    SAFE_POINT(typeInfoIndex >= 0, "Unexpected feature type", Alphabet_None);
+    return typeInfos[typeInfoIndex].alphabets;
+}
+
+QColor U2FeatureTypes::getColor(const U2FeatureType &type) {
+    int typeInfoIndex = typeInfoIndexByType.value(type, -1);
+    SAFE_POINT(typeInfoIndex >= 0, "Unexpected feature type", {});
+    return typeInfos[typeInfoIndex].color;
+}
+
+QColor U2FeatureTypes::getDescription(const U2FeatureType &type) {
+    int typeInfoIndex = typeInfoIndexByType.value(type, -1);
+    SAFE_POINT(typeInfoIndex >= 0, "Unexpected feature type", {});
+    return typeInfos[typeInfoIndex].description;
+}
+
+bool U2FeatureTypes::isShowOnAminoFrame(const U2FeatureType &type) {
+    int typeInfoIndex = typeInfoIndexByType.value(type, -1);
+    SAFE_POINT(typeInfoIndex >= 0, "Unexpected feature type", {});
+    return typeInfos[typeInfoIndex].isShowOnAminoFrame;
 }
 
 U2FeatureType U2FeatureTypes::getTypeByName(const QString &visualName) {
@@ -55,385 +80,236 @@ U2FeatureType U2FeatureTypes::getTypeByName(const QString &visualName) {
 }
 
 QList<U2FeatureTypes::U2FeatureTypeInfo> U2FeatureTypes::initFeatureTypes() {
-    QList<U2FeatureTypeInfo> featureTypeInfos;
+    QList<U2FeatureTypeInfo> typeInfoList;
+    int typeInfoIndex = 0;
 
-    int infoCounter = 0;
-    featureTypeInfos << U2FeatureTypeInfo(AaRich, "AA-Rich", Alphabet_Amino);
-    typeInfoIndexByType[AaRich] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Acetylation, "Acetylation", Alphabet_Amino);
-    typeInfoIndexByType[Acetylation] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Acetylation, "Active Site", Alphabet_Amino);
-    typeInfoIndexByType[Acetylation] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Acetylation, "Adenylation", Alphabet_Amino);
-    typeInfoIndexByType[Acetylation] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Allele, "Allele", Alphabet_Nucleic);
-    typeInfoIndexByType[Allele] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(AlphaHelix, "Alpha-Helix", Alphabet_Amino);
-    typeInfoIndexByType[AlphaHelix] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(AlteredSite, "Altered Site", Alphabet_Amino);
-    typeInfoIndexByType[AlteredSite] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Amidation, "Amidation", Alphabet_Amino);
-    typeInfoIndexByType[Amidation] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(AssemblyGap, "Assembly gap", Alphabet_Nucleic);
-    typeInfoIndexByType[AssemblyGap] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Attenuator, "Attenuator", Alphabet_Nucleic);
-    typeInfoIndexByType[Attenuator] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(BHlhDomain, "bHLH Domain", Alphabet_Nucleic);
-    typeInfoIndexByType[BHlhDomain] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Basic, "Basic", Alphabet_Amino);
-    typeInfoIndexByType[Basic] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(BetaSheet, "Beta-Sheet", Alphabet_Amino);
-    typeInfoIndexByType[BetaSheet] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(BetaStrandRegion, "Beta-strand region", Alphabet_Amino);
-    typeInfoIndexByType[BetaStrandRegion] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(BiotinBindingSite, "Biotin Binding Site", Alphabet_Amino);
-    typeInfoIndexByType[BiotinBindingSite] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Blocked, "Blocked", Alphabet_Amino);
-    typeInfoIndexByType[Blocked] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(C2, "C2", Alphabet_Amino);
-    typeInfoIndexByType[C2] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(CRegion, "C-Region", Alphabet_Nucleic);
-    typeInfoIndexByType[CRegion] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(CaatSignal, "CAAT Signal", Alphabet_Nucleic);
-    typeInfoIndexByType[CaatSignal] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Calcium, "Calcium", Alphabet_Amino);
-    typeInfoIndexByType[Calcium] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(CatalyticRegion, "Catalytic Region", Alphabet_Amino);
-    typeInfoIndexByType[CatalyticRegion] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Cds, "CDS", Alphabet_Nucleic);
-    typeInfoIndexByType[Cds] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(CellAttachment, "Cell Attachment", Alphabet_Amino);
-    typeInfoIndexByType[CellAttachment] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Cellular, "Cellular", Alphabet_Nucleic);
-    typeInfoIndexByType[Cellular] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Centromere, "Centromere", Alphabet_Nucleic);
-    typeInfoIndexByType[Centromere] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(CholesterolBindingSite, "Cholesterol Binding Site", Alphabet_Amino);
-    typeInfoIndexByType[CholesterolBindingSite] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(CleavageSite, "Cleavage Site", Alphabet_Amino);
-    typeInfoIndexByType[CleavageSite] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(CoiledCoil, "Coiled coil", Alphabet_Amino);
-    typeInfoIndexByType[CoiledCoil] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(CollagenType, "Collagen-type", Alphabet_Amino);
-    typeInfoIndexByType[CollagenType] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Comment, "Comment", Alphabet_None);
-    typeInfoIndexByType[Comment] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Conflict, "Conflict", Alphabet_Nucleic | Alphabet_Amino);
-    typeInfoIndexByType[Conflict] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(ConnectingPeptide, "Connecting Peptide", Alphabet_Amino);
-    typeInfoIndexByType[ConnectingPeptide] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Cub, "CUB", Alphabet_Amino);
-    typeInfoIndexByType[Cub] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Cytoplasmic, "Cytoplasmic", Alphabet_Amino);
-    typeInfoIndexByType[Cytoplasmic] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(DLoop, "D-Loop", Alphabet_Nucleic);
-    typeInfoIndexByType[DLoop] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(DSegment, "D-Segment", Alphabet_Nucleic);
-    typeInfoIndexByType[DSegment] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Disulfide, "Disulfide", Alphabet_Amino);
-    typeInfoIndexByType[Disulfide] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Egf, "EGF", Alphabet_Amino);
-    typeInfoIndexByType[Egf] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Enhancer, "Enhancer", Alphabet_Nucleic);
-    typeInfoIndexByType[Enhancer] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Exon, "Exon", Alphabet_Nucleic);
-    typeInfoIndexByType[Exon] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Exoplasmic, "Exoplasmic", Alphabet_Amino);
-    typeInfoIndexByType[Exoplasmic] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Extracellular, "Extracellular", Alphabet_Amino);
-    typeInfoIndexByType[Extracellular] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Farnesyl, "Farnesyl", Alphabet_Amino);
-    typeInfoIndexByType[Farnesyl] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Fibronectin, "Fibronectin", Alphabet_Amino);
-    typeInfoIndexByType[Fibronectin] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(FivePrimeClip, "5' Clip", Alphabet_Nucleic);
-    typeInfoIndexByType[FivePrimeClip] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(FivePrimeUtr, "5' UTR", Alphabet_Nucleic);
-    typeInfoIndexByType[FivePrimeUtr] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Formylation, "Formylation", Alphabet_Amino);
-    typeInfoIndexByType[Formylation] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(GammaCarboxyglumaticAcid, "Gamma-Carboxyglumatic Acid", Alphabet_Amino);
-    typeInfoIndexByType[GammaCarboxyglumaticAcid] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Gap, "Gap", Alphabet_Nucleic);
-    typeInfoIndexByType[Gap] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(GcSignal, "GC-Signal", Alphabet_Nucleic);
-    typeInfoIndexByType[GcSignal] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Gene, "Gene", Alphabet_Nucleic);
-    typeInfoIndexByType[Gene] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(GeranylGeranyl, "Geranyl-Geranyl", Alphabet_Amino);
-    typeInfoIndexByType[GeranylGeranyl] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Glycosylation, "Glycosylation", Alphabet_Amino);
-    typeInfoIndexByType[Glycosylation] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(GlycosylationSite, "Glycosylation Site", Alphabet_Nucleic);
-    typeInfoIndexByType[GlycosylationSite] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(GpiAnchor, "GPI-Anchor", Alphabet_Amino);
-    typeInfoIndexByType[GpiAnchor] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(HelicalRegion, "Helical region", Alphabet_Amino);
-    typeInfoIndexByType[HelicalRegion] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(HemeBindingSite, "Heme Binding Site", Alphabet_Amino);
-    typeInfoIndexByType[HemeBindingSite] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(HmgBox, "HMG-Box", Alphabet_Amino);
-    typeInfoIndexByType[HmgBox] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Homeodomain, "Homeodomain", Alphabet_Nucleic | Alphabet_Amino);
-    typeInfoIndexByType[Homeodomain] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Hth, "H-T-H", Alphabet_Amino);
-    typeInfoIndexByType[Hth] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(HydrogenBondedTurn, "Hydrogen bonded turn", Alphabet_Amino);
-    typeInfoIndexByType[HydrogenBondedTurn] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Hydroxylation, "Hydroxylation", Alphabet_Amino);
-    typeInfoIndexByType[Hydroxylation] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(IDna, "iDNA", Alphabet_Nucleic);
-    typeInfoIndexByType[IDna] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Immunoglobulin, "Immunoglobulin", Alphabet_Amino);
-    typeInfoIndexByType[Immunoglobulin] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Insertion, "Insertion", Alphabet_Nucleic);
-    typeInfoIndexByType[Insertion] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Intracellular, "Intracellular", Alphabet_Amino);
-    typeInfoIndexByType[Intracellular] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Intron, "Intron", Alphabet_Nucleic);
-    typeInfoIndexByType[Intron] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(JRegion, "J-Region", Alphabet_Nucleic);
-    typeInfoIndexByType[JRegion] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(JSegment, "J-Segment", Alphabet_Nucleic);
-    typeInfoIndexByType[JSegment] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Kh, "KH", Alphabet_Amino);
-    typeInfoIndexByType[Kh] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Kinase, "Kinase", Alphabet_Amino);
-    typeInfoIndexByType[Kinase] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(LeucineZipper, "Leucine Zipper", Alphabet_Amino);
-    typeInfoIndexByType[LeucineZipper] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(LeucineZipperDomain, "Leucine Zipper Domain", Alphabet_Nucleic);
-    typeInfoIndexByType[LeucineZipperDomain] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Loci, "Loci", Alphabet_Nucleic);
-    typeInfoIndexByType[Loci] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Ltr, "LTR", Alphabet_Nucleic);
-    typeInfoIndexByType[Ltr] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(MRna, "mRNA", Alphabet_Nucleic);
-    typeInfoIndexByType[MRna] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(MatureChain, "Mature chain", Alphabet_Amino);
-    typeInfoIndexByType[MatureChain] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(MaturePeptide, "Mature Peptide", Alphabet_Nucleic);
-    typeInfoIndexByType[MaturePeptide] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Methylation, "Methylation", Alphabet_Amino);
-    typeInfoIndexByType[Methylation] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Minus10Signal, "-10 Signal", Alphabet_Nucleic);
-    typeInfoIndexByType[Minus10Signal] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Minus35Signal, "-35 Signal", Alphabet_Nucleic);
-    typeInfoIndexByType[Minus35Signal] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(MiscBindingSite, "Misc. Binding Site", Alphabet_Nucleic | Alphabet_Amino);
-    typeInfoIndexByType[MiscBindingSite] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(MiscBond, "Bond: Misc", Alphabet_Amino);
-    typeInfoIndexByType[MiscBond] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(MiscDifference, "Misc. Difference", Alphabet_Nucleic);
-    typeInfoIndexByType[MiscDifference] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(MiscDnaRnaBindingRegion, "DNA/RNA binding region: Misc", Alphabet_Amino);
-    typeInfoIndexByType[MiscDnaRnaBindingRegion] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(MiscDomain, "Domain: Misc", Alphabet_Amino);
-    typeInfoIndexByType[MiscDomain] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(MiscFeature, "Misc. Feature", Alphabet_Nucleic | Alphabet_Amino);
-    typeInfoIndexByType[MiscFeature] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(MiscLipid, "Lipid: Misc", Alphabet_Amino);
-    typeInfoIndexByType[MiscLipid] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(MiscMarker, "Misc. Marker", Alphabet_Nucleic);
-    typeInfoIndexByType[MiscMarker] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(MiscMetal, "Metal: Misc", Alphabet_Amino);
-    typeInfoIndexByType[MiscMetal] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(MiscNpBindingRegion, "NP binding region: Misc", Alphabet_Amino);
-    typeInfoIndexByType[MiscNpBindingRegion] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(MiscRecombination, "Misc. Recombination", Alphabet_Nucleic);
-    typeInfoIndexByType[MiscRecombination] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(MiscRegion, "Region: Misc", Alphabet_Amino);
-    typeInfoIndexByType[MiscRegion] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(MiscResidueModification, "Residue Modification: Misc", Alphabet_Amino);
-    typeInfoIndexByType[MiscResidueModification] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(MiscRna, "Misc. RNA", Alphabet_Nucleic);
-    typeInfoIndexByType[MiscRna] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(MiscSignal, "Misc. Signal", Alphabet_Nucleic | Alphabet_Amino);
-    typeInfoIndexByType[MiscSignal] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(MiscSite, "Site: Misc", Alphabet_Amino);
-    typeInfoIndexByType[MiscSite] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(MiscStructure, "Misc. Structure", Alphabet_Nucleic);
-    typeInfoIndexByType[MiscStructure] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(MobileElement, "Mobile element", Alphabet_Nucleic);
-    typeInfoIndexByType[MobileElement] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(ModifiedBase, "Modified Base", Alphabet_Nucleic);
-    typeInfoIndexByType[ModifiedBase] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Mutation, "Mutation", Alphabet_Nucleic);
-    typeInfoIndexByType[Mutation] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Myristate, "Myristate", Alphabet_Amino);
-    typeInfoIndexByType[Myristate] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(NAcylDiglyceride, "N-Acyl Diglyceride", Alphabet_Amino);
-    typeInfoIndexByType[NAcylDiglyceride] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(NRegion, "N-Region", Alphabet_Nucleic);
-    typeInfoIndexByType[NRegion] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(NcRna, "ncRNA", Alphabet_Nucleic);
-    typeInfoIndexByType[NcRna] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(NonConsecutiveResidues, "Non Consecutive Residues", Alphabet_Amino);
-    typeInfoIndexByType[NonConsecutiveResidues] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Nuclease, "Nuclease", Alphabet_Amino);
-    typeInfoIndexByType[Nuclease] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(OldSequence, "Old Sequence", Alphabet_Nucleic);
-    typeInfoIndexByType[OldSequence] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Operon, "Operon", Alphabet_Nucleic);
-    typeInfoIndexByType[Operon] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(OriT, "oriT", Alphabet_Nucleic);
-    typeInfoIndexByType[OriT] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Overhang, "Overhang", Alphabet_Nucleic);
-    typeInfoIndexByType[Overhang] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Palmitate, "Palmitate", Alphabet_Amino);
-    typeInfoIndexByType[Palmitate] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Periplasmic, "Periplasmic", Alphabet_Amino);
-    typeInfoIndexByType[Periplasmic] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Ph, "PH", Alphabet_Amino);
-    typeInfoIndexByType[Ph] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Phosphorylation, "Phosphorylation", Alphabet_Amino);
-    typeInfoIndexByType[Phosphorylation] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(PolyASignal, "PolyA Signal", Alphabet_Nucleic);
-    typeInfoIndexByType[PolyASignal] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(PolyASite, "PolyA Site", Alphabet_Nucleic);
-    typeInfoIndexByType[PolyASite] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(PolyAa, "Poly-AA", Alphabet_Amino);
-    typeInfoIndexByType[PolyAa] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Precursor, "Precursor", Alphabet_Amino);
-    typeInfoIndexByType[Precursor] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(PrecursorRna, "Precursor RNA", Alphabet_Nucleic);
-    typeInfoIndexByType[PrecursorRna] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Primer, "Primer", Alphabet_Nucleic);
-    typeInfoIndexByType[Primer] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(PrimerBindingSite, "Primer Binding Site", Alphabet_Nucleic);
-    typeInfoIndexByType[PrimerBindingSite] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(PrimaryTranscript, "Primary Transcript", Alphabet_Nucleic);
-    typeInfoIndexByType[PrimaryTranscript] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(ProcessedActivePeptide, "Processed active peptide", Alphabet_Amino);
-    typeInfoIndexByType[ProcessedActivePeptide] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Promoter, "Promoter", Alphabet_Nucleic);
-    typeInfoIndexByType[Promoter] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(PromoterEukaryotic, "Promoter Eukaryotic", Alphabet_Nucleic);
-    typeInfoIndexByType[PromoterEukaryotic] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(PromoterProkaryotic, "Promoter Prokaryotic", Alphabet_Nucleic);
-    typeInfoIndexByType[PromoterProkaryotic] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Propeptide, "Propeptide", Alphabet_Nucleic | Alphabet_Amino);
-    typeInfoIndexByType[Propeptide] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Proprotein, "Proprotein", Alphabet_Amino);
-    typeInfoIndexByType[Proprotein] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Protease, "Protease", Alphabet_Amino);
-    typeInfoIndexByType[Protease] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Protein, "Protein", Alphabet_Nucleic);
-    typeInfoIndexByType[Protein] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(ProteinBindingSite, "Protein Binding Site", Alphabet_Nucleic);
-    typeInfoIndexByType[ProteinBindingSite] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Provirus, "Provirus", Alphabet_Nucleic);
-    typeInfoIndexByType[Provirus] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(PyridoxalPhBindingSite, "Pyridoxal Ph. Binding Site", Alphabet_Amino);
-    typeInfoIndexByType[PyridoxalPhBindingSite] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(PyrrolidoneCarboxylicAcid, "Pyrrolidone Carboxylic Acid", Alphabet_Amino);
-    typeInfoIndexByType[PyrrolidoneCarboxylicAcid] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(RRna, "rRNA", Alphabet_Nucleic);
-    typeInfoIndexByType[RRna] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Rbs, "RBS", Alphabet_Nucleic);
-    typeInfoIndexByType[Rbs] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Region, "Region", Alphabet_Nucleic);
-    typeInfoIndexByType[Region] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Regulatory, "Regulatory", Alphabet_Nucleic);
-    typeInfoIndexByType[Regulatory] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(RepeatRegion, "Repeat Region", Alphabet_Nucleic);
-    typeInfoIndexByType[RepeatRegion] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(RepeatUnit, "Repeat Unit", Alphabet_Nucleic);
-    typeInfoIndexByType[RepeatUnit] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(RepetitiveRegion, "Repetitive region", Alphabet_Amino);
-    typeInfoIndexByType[RepetitiveRegion] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(ReplicationOrigin, "Replication Origin", Alphabet_Nucleic);
-    typeInfoIndexByType[ReplicationOrigin] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(SRegion, "S-Region", Alphabet_Nucleic);
-    typeInfoIndexByType[SRegion] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Satellite, "Satellite", Alphabet_Nucleic);
-    typeInfoIndexByType[Satellite] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(ScRna, "scRNA", Alphabet_Nucleic);
-    typeInfoIndexByType[ScRna] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(SeconadaryStructure, "Seconadary structure", Alphabet_Amino);
-    typeInfoIndexByType[SeconadaryStructure] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Sh2, "SH2", Alphabet_Amino);
-    typeInfoIndexByType[Sh2] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Sh3, "SH3", Alphabet_Amino);
-    typeInfoIndexByType[Sh3] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(SignalPeptide, "Signal Peptide", Alphabet_Nucleic);
-    typeInfoIndexByType[SignalPeptide] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(SignalSequence, "Signal Sequence", Alphabet_Amino);
-    typeInfoIndexByType[SignalSequence] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Silencer, "Silencer", Alphabet_Nucleic);
-    typeInfoIndexByType[Silencer] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Similarity, "Similarity", Alphabet_Amino);
-    typeInfoIndexByType[Similarity] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Site, "Site", Alphabet_Nucleic);
-    typeInfoIndexByType[Site] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(SnRna, "snRNA", Alphabet_Nucleic);
-    typeInfoIndexByType[SnRna] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(SnoRna, "snoRNA", Alphabet_Nucleic);
-    typeInfoIndexByType[SnoRna] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Source, "Source", Alphabet_Nucleic | Alphabet_Amino);
-    typeInfoIndexByType[Source] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(SplicingSignal, "Splicing Signal", Alphabet_Nucleic);
-    typeInfoIndexByType[SplicingSignal] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(SplicingVariant, "Splicing Variant", Alphabet_Amino);
-    typeInfoIndexByType[SplicingVariant] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(StemLoop, "Stem Loop", Alphabet_Nucleic);
-    typeInfoIndexByType[StemLoop] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Sts, "STS", Alphabet_Nucleic);
-    typeInfoIndexByType[Sts] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Sulfatation, "Sulfatation", Alphabet_Amino);
-    typeInfoIndexByType[Sulfatation] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(TRna, "tRNA", Alphabet_Nucleic);
-    typeInfoIndexByType[TRna] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(TataSignal, "TATA Signal", Alphabet_Nucleic);
-    typeInfoIndexByType[TataSignal] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Telomere, "Telomere", Alphabet_Nucleic);
-    typeInfoIndexByType[Telomere] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Terminator, "Terminator", Alphabet_Nucleic);
-    typeInfoIndexByType[Terminator] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Thioether, "Thioether", Alphabet_Amino);
-    typeInfoIndexByType[Thioether] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Thiolester, "Thiolester", Alphabet_Amino);
-    typeInfoIndexByType[Thiolester] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(ThreePrimeClip, "3' Clip", Alphabet_Nucleic);
-    typeInfoIndexByType[ThreePrimeClip] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(ThreePrimeUtr, "3' UTR", Alphabet_Nucleic);
-    typeInfoIndexByType[ThreePrimeUtr] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(TmRna, "tmRNA", Alphabet_Nucleic);
-    typeInfoIndexByType[TmRna] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(TransitPeptide, "Transit Peptide", Alphabet_Nucleic | Alphabet_Amino);
-    typeInfoIndexByType[TransitPeptide] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(TransmembraneRegion, "Transmembrane Region", Alphabet_Amino);
-    typeInfoIndexByType[TransmembraneRegion] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Transposon, "Transposon", Alphabet_Nucleic);
-    typeInfoIndexByType[Transposon] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Uncertainty, "Uncertainty", Alphabet_Amino);
-    typeInfoIndexByType[Uncertainty] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Unsure, "Unsure", Alphabet_Nucleic);
-    typeInfoIndexByType[Unsure] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(VRegion, "V-Region", Alphabet_Nucleic);
-    typeInfoIndexByType[VRegion] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(VSegment, "V-Segment", Alphabet_Nucleic);
-    typeInfoIndexByType[VSegment] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Variant, "Variant", Alphabet_Amino);
-    typeInfoIndexByType[Variant] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Variation, "Variation", Alphabet_Nucleic | Alphabet_Amino);
-    typeInfoIndexByType[Variation] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(Virion, "Virion", Alphabet_Nucleic);
-    typeInfoIndexByType[Virion] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(ZincFinger, "Zinc Finger", Alphabet_Amino);
-    typeInfoIndexByType[ZincFinger] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(ZincFingerDomain, "Zinc Finger Domain", Alphabet_Nucleic);
-    typeInfoIndexByType[ZincFingerDomain] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(RestrictionSite, "Restriction Site", Alphabet_Nucleic);
-    typeInfoIndexByType[RestrictionSite] = infoCounter++;
+    // Registers U2FeatureType.
+    auto r = [&typeInfoList, &typeInfoIndex](const U2FeatureType &type,
+                                             const QString &name,
+                                             const Alphabets &alphabets,
+                                             const QString &description = "",
+                                             const QString &colorName = "",
+                                             bool isShowOnAminoFrame = false) {
+        SAFE_POINT(colorName.isEmpty() || colorName.startsWith("#"), "Got invalid color name: " + colorName, );
+        QColor color(colorName);
+        if (!color.isValid()) {
+            color = FeatureColors::genLightColor(colorName);
+        }
+        SAFE_POINT(color.isValid(), "Got invalid color for feature: " + name, );
+        SAFE_POINT(alphabets.testFlag(U2FeatureTypes::Alphabet_Nucleic) || !isShowOnAminoFrame, "Only features with nucleic alphabet may have isShowOnAminoFrame ON", );
+        typeInfoList << U2FeatureTypeInfo(type, name, alphabets, color, description, isShowOnAminoFrame);
+        typeInfoIndexByType[type] = typeInfoIndex;
+        typeInfoIndex++;
+    };
 
-    return featureTypeInfos;
+    // The DDBJ/ENA/GenBank/EMBL Feature Table Definition.
+    // See https://www.insdc.org/files/feature_table.html#7.2 (Genbank)
+    // or https://www.ebi.ac.uk/ena/WebFeat/ (EMBL).
+    r(AssemblyGap, "assembly_gap", Alphabet_Nucleic, QObject::tr("Gap between two components of a genome or transcriptome assembly"));
+    r(CRegion, "C_region", Alphabet_Nucleic, QObject::tr("Span of the C immunological feature"));
+    r(Cds, "CDS", Alphabet_Nucleic, QObject::tr("Sequence coding for amino acids in protein (includes stop codon)"), "#9bffff", true);
+    r(Centromere, "centromere", Alphabet_Nucleic, QObject::tr("Region of biological interest identified as a centromere and which has been experimentally characterized"));
+    r(DLoop, "D-Loop", Alphabet_Nucleic, QObject::tr("Displacement loop"));
+    r(DSegment, "D_segment", Alphabet_Nucleic, QObject::tr("Span of the D immunological feature"));
+    r(Exon, "exon", Alphabet_Nucleic, QObject::tr("Region that codes for part of spliced mRNA"));
+    r(Gap, "gap", Alphabet_Nucleic, QObject::tr("Gap in the sequence"));
+    r(Gene, "gene", Alphabet_Nucleic, QObject::tr("Region that defines a functional gene, possibly including upstream (promoter, enhancer, etc) and downstream control elements, and for which a name has been assigned."), "#00ffc8");
+    r(IDna, "iDNA", Alphabet_Nucleic, QObject::tr("Intervening DNA eliminated by recombination"));
+    r(Intron, "intron", Alphabet_Nucleic, QObject::tr("Transcribed region excised by mRNA splicing"));
+    r(JSegment, "J_segment", Alphabet_Nucleic, QObject::tr("Joining segment of immunoglobulin light and heavy chains, and T-cell receptor alpha, beta, and gamma chains"));
+    r(MaturePeptide, "mat_peptide", Alphabet_Nucleic, QObject::tr("Mature peptide coding region (does not include stop codon)"), "", true);
+    r(MiscBindingSite, "misc_binding", Alphabet_Nucleic | Alphabet_Amino, QObject::tr("Miscellaneous binding site"));
+    r(MiscDifference, "misc_difference", Alphabet_Nucleic, QObject::tr("Miscellaneous difference feature"));
+    r(MiscFeature, "misc_feature", Alphabet_Nucleic | Alphabet_Amino, QObject::tr("Region of biological significance that cannot be described by any other feature"), "#ffff99");
+    r(MiscRecombination, "misc_recomb", Alphabet_Nucleic, QObject::tr("Miscellaneous, recombination feature"));
+    r(MiscRna, "misc_RNA", Alphabet_Nucleic, QObject::tr("Miscellaneous transcript feature not defined by other RNA keys"));
+    r(MiscStructure, "misc_structure", Alphabet_Nucleic, QObject::tr("Miscellaneous DNA or RNA structure"));
+    r(MobileElement, "mobile_element", Alphabet_Nucleic, QObject::tr("Region of genome containing mobile elements"));
+    r(ModifiedBase, "modified_base", Alphabet_Nucleic, QObject::tr("The indicated base is a modified nucleotide"));
+    r(MRna, "mRNA", Alphabet_Nucleic, QObject::tr("Messenger RNA"));
+    r(NcRna, "ncRNA", Alphabet_Nucleic, QObject::tr("A non-protein-coding gene, other than ribosomal RNA and transfer RNA, the functional molecule of which is the RNA transcript"));
+    r(NRegion, "N_region", Alphabet_Nucleic, QObject::tr("Span of the N immunological feature"));
+    r(OldSequence, "old_sequence", Alphabet_Nucleic, QObject::tr("Presented sequence revises a previous version"));
+    r(Operon, "operon", Alphabet_Nucleic, QObject::tr("Region containing polycistronic transcript including a cluster of genes that are under the control of the same regulatory sequences/promoter and in the same biological pathway"));
+    r(OriT, "oriT", Alphabet_Nucleic, QObject::tr("Origin of transfer; region of a DNA molecule where transfer is initiated during the process of conjugation or mobilization"));
+    r(PolyASite, "polyA_site", Alphabet_Nucleic, QObject::tr("Site at which polyadenine is added to mRNA"));
+    r(PrecursorRna, "precursor_RNA", Alphabet_Nucleic, QObject::tr("Any RNA species that is not yet the mature RNA product"));
+    r(PrimaryTranscript, "prim_transcript", Alphabet_Nucleic, QObject::tr("Primary (unprocessed) transcript"));
+    r(PrimerBindingSite, "primer_bind", Alphabet_Nucleic, QObject::tr("Non-covalent primer binding site"));
+    r(Propeptide, "propeptide", Alphabet_Nucleic | Alphabet_Amino, QObject::tr("Coding sequence for the domain of a proprotein that is cleaved to form the mature protein product"));
+    r(ProteinBindingSite, "protein_bind", Alphabet_Nucleic, QObject::tr("Non-covalent protein binding site on DNA or RNA"));
+    // This feature has replaced the following Feature Keys on 15-DEC-2014:
+    // enhancer, promoter, CAAT_signal, TATA_signal, -35_signal, -10_signal, RBS, GC_signal, polyA_signal, attenuator, terminator, misc_signal.
+    r(Regulatory, "regulatory", Alphabet_Nucleic, QObject::tr("Any region of sequence that functions in the regulation of transcription or translation"));
+    r(RepeatRegion, "repeat_region", Alphabet_Nucleic, QObject::tr("Sequence containing repeated subsequences"), "#ccccff");
+    r(ReplicationOrigin, "rep_origin", Alphabet_Nucleic, QObject::tr("Replication origin for duplex DNA"));
+    r(RRna, "rRNA", Alphabet_Nucleic, QObject::tr("Ribosomal RNA"));
+    r(SRegion, "S_region", Alphabet_Nucleic, QObject::tr("Span of the S immunological feature"));
+    r(SignalPeptide, "sig_peptide", Alphabet_Nucleic, QObject::tr("Signal peptide coding region"));
+    r(Source, "source", Alphabet_Nucleic | Alphabet_Amino, QObject::tr("Identifies the biological source of the specified span of the sequence"), "#cccccc");
+    r(StemLoop, "stem_loop", Alphabet_Nucleic, QObject::tr("Hair-pin loop structure in DNA or RNA"));
+    r(Sts, "STS", Alphabet_Nucleic, QObject::tr("Sequence Tagged Site; operationally unique sequence that identifies the combination of primer spans used in a PCR assay"), "#00dcdc");
+    r(Telomere, "telomere", Alphabet_Nucleic, QObject::tr("Region of biological interest identified as a telomere and which has been experimentally characterized"));
+    r(TmRna, "tmRNA", Alphabet_Nucleic, QObject::tr("Transfer messenger RNA; tmRNA acts as a tRNA first, and then as an mRNA that encodes a peptide tag; the ribosome translates this mRNA region of tmRNA and attaches the encoded peptide tag to the C-terminus of the unfinished protein; this attached tag targets the protein for destruction or proteolysis"));
+    r(TransitPeptide, "transit_peptide", Alphabet_Nucleic | Alphabet_Amino, QObject::tr("Transit peptide coding region"));
+    r(TRna, "tRNA", Alphabet_Nucleic, QObject::tr("Transfer RNA"), "#c8fac8");
+    r(Unsure, "unsure", Alphabet_Nucleic, QObject::tr("Authors are unsure about the sequence in this region"));
+    r(VRegion, "V_region", Alphabet_Nucleic, QObject::tr("Span of the V immunological feature"));
+    r(VSegment, "V_segment", Alphabet_Nucleic, QObject::tr("Variable segment of immunoglobulin light and heavy chains, and T-cell receptor alpha, beta, and gamma chains; codes for most of the variable region (V_region) and the last few amino acids of the leader peptide"));
+    r(Variation, "variation", Alphabet_Nucleic | Alphabet_Amino, QObject::tr("A related population contains stable mutation"), "#e32636");
+    r(ThreePrimeUtr, "3'UTR", Alphabet_Nucleic, QObject::tr("3' untranslated region (trailer)"), "#ffcde6");
+    r(FivePrimeUtr, "5'UTR", Alphabet_Nucleic, QObject::tr("5' untranslated region (leader)"), "#ffc8c8");
+
+    // Extra types not related to any public format/specification.
+    // Mapped to 'misc_feature' when saved to EMBL/Genbank format. The original name is saved/loaded using a special qualifier (GBFeatureUtils::QUALIFIER_NAME).
+    r(AaRich, "AA-Rich", Alphabet_Amino);
+    r(Acetylation, "Acetylation", Alphabet_Amino);
+    r(Acetylation, "Active Site", Alphabet_Amino);
+    r(Acetylation, "Adenylation", Alphabet_Amino);
+    r(Allele, "Allele", Alphabet_Nucleic);
+    r(AlphaHelix, "Alpha-Helix", Alphabet_Amino);
+    r(AlteredSite, "Altered Site", Alphabet_Amino);
+    r(Amidation, "Amidation", Alphabet_Amino);
+    r(Attenuator, "Attenuator", Alphabet_Nucleic, QObject::tr("Sequence related to transcription termination"));
+    r(BHlhDomain, "bHLH Domain", Alphabet_Nucleic);
+    r(Basic, "Basic", Alphabet_Amino);
+    r(BetaSheet, "Beta-Sheet", Alphabet_Amino);
+    r(BetaStrandRegion, "Beta-strand region", Alphabet_Amino);
+    r(BiotinBindingSite, "Biotin Binding Site", Alphabet_Amino);
+    r(Blocked, "Blocked", Alphabet_Amino);
+    r(C2, "C2", Alphabet_Amino);
+    r(CaatSignal, "CAAT Signal", Alphabet_Nucleic, QObject::tr("`CAAT box' in eukaryotic promoters"));
+    r(Calcium, "Calcium", Alphabet_Amino);
+    r(CatalyticRegion, "Catalytic Region", Alphabet_Amino);
+    r(CellAttachment, "Cell Attachment", Alphabet_Amino);
+    r(Cellular, "Cellular", Alphabet_Nucleic);
+    r(CholesterolBindingSite, "Cholesterol Binding Site", Alphabet_Amino);
+    r(CleavageSite, "Cleavage Site", Alphabet_Amino);
+    r(CoiledCoil, "Coiled coil", Alphabet_Amino);
+    r(CollagenType, "Collagen-type", Alphabet_Amino);
+    r(Comment, "Comment", Alphabet_None);
+    r(Conflict, "Conflict", Alphabet_Nucleic | Alphabet_Amino, QObject::tr("Independent sequence determinations differ"));
+    r(ConnectingPeptide, "Connecting Peptide", Alphabet_Amino);
+    r(Cub, "CUB", Alphabet_Amino);
+    r(Cytoplasmic, "Cytoplasmic", Alphabet_Amino);
+    r(Disulfide, "Disulfide", Alphabet_Amino, QObject::tr("Describes disulfide bonds (for protein files)"));
+    r(Egf, "EGF", Alphabet_Amino);
+    r(Enhancer, "Enhancer", Alphabet_Nucleic, QObject::tr("Cis-acting enhancer of promoter function"));
+    r(Exoplasmic, "Exoplasmic", Alphabet_Amino);
+    r(Extracellular, "Extracellular", Alphabet_Amino);
+    r(Farnesyl, "Farnesyl", Alphabet_Amino);
+    r(Fibronectin, "Fibronectin", Alphabet_Amino);
+    r(FivePrimeClip, "5' Clip", Alphabet_Nucleic, QObject::tr("5'-most region of a precursor transcript removed in processing"));
+    r(Formylation, "Formylation", Alphabet_Amino);
+    r(GammaCarboxyglumaticAcid, "Gamma-Carboxyglumatic Acid", Alphabet_Amino);
+    r(GcSignal, "GC-Signal", Alphabet_Nucleic, QObject::tr("`GC box' in eukaryotic promoters"));
+    r(GeranylGeranyl, "Geranyl-Geranyl", Alphabet_Amino);
+    r(Glycosylation, "Glycosylation", Alphabet_Amino);
+    r(GlycosylationSite, "Glycosylation Site", Alphabet_Nucleic);
+    r(GpiAnchor, "GPI-Anchor", Alphabet_Amino);
+    r(HelicalRegion, "Helical region", Alphabet_Amino);
+    r(HemeBindingSite, "Heme Binding Site", Alphabet_Amino);
+    r(HmgBox, "HMG-Box", Alphabet_Amino);
+    r(Homeodomain, "Homeodomain", Alphabet_Nucleic | Alphabet_Amino);
+    r(Hth, "H-T-H", Alphabet_Amino);
+    r(HydrogenBondedTurn, "Hydrogen bonded turn", Alphabet_Amino);
+    r(Hydroxylation, "Hydroxylation", Alphabet_Amino);
+    r(Immunoglobulin, "Immunoglobulin", Alphabet_Amino);
+    r(Insertion, "Insertion", Alphabet_Nucleic);
+    r(Intracellular, "Intracellular", Alphabet_Amino);
+    r(JRegion, "J-Region", Alphabet_Nucleic, QObject::tr("Span of the J immunological feature"));
+    r(Kh, "KH", Alphabet_Amino);
+    r(Kinase, "Kinase", Alphabet_Amino);
+    r(LeucineZipper, "Leucine Zipper", Alphabet_Amino);
+    r(LeucineZipperDomain, "Leucine Zipper Domain", Alphabet_Nucleic);
+    r(Loci, "Loci", Alphabet_Nucleic);
+    r(Ltr, "LTR", Alphabet_Nucleic, QObject::tr("Long terminal repeat"));
+    r(MatureChain, "Mature chain", Alphabet_Amino);
+    r(Methylation, "Methylation", Alphabet_Amino);
+    r(Minus10Signal, "-10 Signal", Alphabet_Nucleic, QObject::tr("`Pribnow box' in prokaryotic promoters"));
+    r(Minus35Signal, "-35 Signal", Alphabet_Nucleic, QObject::tr("`-35 box' in prokaryotic promoters"));
+    r(MiscBond, "Bond: Misc", Alphabet_Amino);
+    r(MiscDnaRnaBindingRegion, "DNA/RNA binding region: Misc", Alphabet_Amino);
+    r(MiscDomain, "Domain: Misc", Alphabet_Amino);
+    r(MiscLipid, "Lipid: Misc", Alphabet_Amino);
+    r(MiscMarker, "Misc. Marker", Alphabet_Nucleic);
+    r(MiscMetal, "Metal: Misc", Alphabet_Amino);
+    r(MiscNpBindingRegion, "NP binding region: Misc", Alphabet_Amino);
+    r(MiscRegion, "Region: Misc", Alphabet_Amino);
+    r(MiscResidueModification, "Residue Modification: Misc", Alphabet_Amino);
+    r(MiscSignal, "Misc. Signal", Alphabet_Nucleic | Alphabet_Amino, QObject::tr("Miscellaneous signal"));
+    r(MiscSite, "Site: Misc", Alphabet_Amino);
+    r(Mutation, "Mutation", Alphabet_Nucleic);
+    r(Myristate, "Myristate", Alphabet_Amino);
+    r(NAcylDiglyceride, "N-Acyl Diglyceride", Alphabet_Amino);
+    r(NonConsecutiveResidues, "Non Consecutive Residues", Alphabet_Amino);
+    r(Nuclease, "Nuclease", Alphabet_Amino);
+    r(Overhang, "Overhang", Alphabet_Nucleic);
+    r(Palmitate, "Palmitate", Alphabet_Amino);
+    r(Periplasmic, "Periplasmic", Alphabet_Amino);
+    r(Ph, "PH", Alphabet_Amino);
+    r(Phosphorylation, "Phosphorylation", Alphabet_Amino);
+    r(PolyASignal, "PolyA Signal", Alphabet_Nucleic, QObject::tr("Signal for cleavage & polyadenylation"));
+    r(PolyAa, "Poly-AA", Alphabet_Amino);
+    r(Precursor, "Precursor", Alphabet_Amino);
+    r(Primer, "Primer", Alphabet_Nucleic, QObject::tr("Primer binding region used with PCR"));
+    r(ProcessedActivePeptide, "Processed active peptide", Alphabet_Amino);
+    r(Promoter, "Promoter", Alphabet_Nucleic, QObject::tr("A region involved in transcription initiation"));
+    r(PromoterEukaryotic, "Promoter Eukaryotic", Alphabet_Nucleic);
+    r(PromoterProkaryotic, "Promoter Prokaryotic", Alphabet_Nucleic);
+    r(Proprotein, "Proprotein", Alphabet_Amino);
+    r(Protease, "Protease", Alphabet_Amino);
+    r(Protein, "Protein", Alphabet_Nucleic);
+    r(Provirus, "Provirus", Alphabet_Nucleic);
+    r(PyridoxalPhBindingSite, "Pyridoxal Ph. Binding Site", Alphabet_Amino);
+    r(PyrrolidoneCarboxylicAcid, "Pyrrolidone Carboxylic Acid", Alphabet_Amino);
+    r(Rbs, "RBS", Alphabet_Nucleic, QObject::tr("Ribosome binding site"));
+    r(Region, "Region", Alphabet_Nucleic);
+    r(RepeatUnit, "Repeat Unit", Alphabet_Nucleic, QObject::tr("One repeated unit of a repeat_region"), "#ccccff");
+    r(RepetitiveRegion, "Repetitive region", Alphabet_Amino);
+    r(RestrictionSite, "Restriction Site", Alphabet_Nucleic);
+    r(Satellite, "Satellite", Alphabet_Nucleic, QObject::tr("Satellite repeated sequence"));
+    r(ScRna, "scRNA", Alphabet_Nucleic, QObject::tr("Small cytoplasmic RNA"));
+    r(SecondaryStructure, "Secondary structure", Alphabet_Amino);
+    r(Sh2, "SH2", Alphabet_Amino);
+    r(Sh3, "SH3", Alphabet_Amino);
+    r(SignalSequence, "Signal Sequence", Alphabet_Amino);
+    r(Silencer, "Silencer", Alphabet_Nucleic);
+    r(Similarity, "Similarity", Alphabet_Amino);
+    r(Site, "Site", Alphabet_Nucleic);
+    r(SnRna, "snRNA", Alphabet_Nucleic, QObject::tr("Small nuclear RNA"));
+    r(SnoRna, "snoRNA", Alphabet_Nucleic);
+    r(SplicingSignal, "Splicing Signal", Alphabet_Nucleic);
+    r(SplicingVariant, "Splicing Variant", Alphabet_Amino);
+    r(Sulfatation, "Sulfatation", Alphabet_Amino);
+    r(TataSignal, "TATA Signal", Alphabet_Nucleic, QObject::tr("`TATA box' in eukaryotic promoters"));
+    r(Terminator, "Terminator", Alphabet_Nucleic, QObject::tr("Sequence causing transcription termination"));
+    r(Thioether, "Thioether", Alphabet_Amino);
+    r(Thiolester, "Thiolester", Alphabet_Amino);
+    r(ThreePrimeClip, "3' Clip", Alphabet_Nucleic, QObject::tr("3'-most region of a precursor transcript removed in processing"));
+    r(TransmembraneRegion, "Transmembrane Region", Alphabet_Amino);
+    r(Transposon, "Transposon", Alphabet_Nucleic, QObject::tr("Transposable element (TN)"));
+    r(Uncertainty, "Uncertainty", Alphabet_Amino);
+    r(Variant, "Variant", Alphabet_Amino);
+    r(Virion, "Virion", Alphabet_Nucleic);
+    r(ZincFinger, "Zinc Finger", Alphabet_Amino);
+    r(ZincFingerDomain, "Zinc Finger Domain", Alphabet_Nucleic);
+
+    return typeInfoList;
 }
 
-U2FeatureTypes::U2FeatureTypeInfo::U2FeatureTypeInfo(U2FeatureType featureType, const QString &visualName, Alphabets alphabets)
-    : featureType(featureType),
-      visualName(visualName),
-      alphabets(alphabets) {
+U2FeatureTypes::U2FeatureTypeInfo::U2FeatureTypeInfo(const U2FeatureType &_featureType,
+                                                     const QString &_visualName,
+                                                     const Alphabets &_alphabets,
+                                                     const QColor &_color,
+                                                     const QString &_description,
+                                                     bool _isShowOnAminoFrame)
+    : featureType(_featureType),
+      visualName(_visualName),
+      alphabets(_alphabets),
+      color(_color),
+      description(_description),
+      isShowOnAminoFrame(_isShowOnAminoFrame) {
 }
 
 }  // namespace U2

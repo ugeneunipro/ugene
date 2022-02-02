@@ -107,7 +107,6 @@ if [ "${UGENE_BUILD_AND_TEST_SKIP_TESTING}" -ne "1" ]; then
 
   # Create a copy on _common_data dir for each suite
   echo "##teamcity[blockOpened name='Copying test data']"
-  mkdir "${UGENE_DIR}/data/cistrome"
   i=1
   while [ ${i} -le ${NUMBER_OF_DISPLAYS} ]; do
     mkdir -p "test${i}/_common_data"

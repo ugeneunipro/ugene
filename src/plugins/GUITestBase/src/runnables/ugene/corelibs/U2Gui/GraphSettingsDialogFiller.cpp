@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,6 +21,7 @@
 
 #include <base_dialogs/ColorDialogFiller.h>
 #include <primitives/GTDoubleSpinBox.h>
+#include <primitives/GTGroupBox.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
 
@@ -78,8 +79,8 @@ void GraphSettingsDialogFiller::commonScenario() {
     }
 
     if (cutoff_max != 0 || cutoff_min != 0) {
-        QGroupBox *minmaxGroup = GTWidget::findExactWidget<QGroupBox *>(os, "minmaxGroup", dialog);
-        minmaxGroup->setChecked(true);
+        auto minmaxGroup = GTWidget::findExactWidget<QGroupBox *>(os, "minmaxGroup", dialog);
+        GTGroupBox::setChecked(os, minmaxGroup);
     }
 
     if (cutoff_min != 0) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -211,7 +211,7 @@ QList<U2SingleModStep> ModSQLiteSpecificTestData::getAllModSteps(const U2DataId 
     return res;
 }
 
-U2MsaRow ModSQLiteSpecificTestData::addRow(const U2DataId &msaId, const QByteArray &name, const QByteArray &seq, const QList<U2MsaGap> &gaps, U2OpStatus &os) {
+U2MsaRow ModSQLiteSpecificTestData::addRow(const U2DataId &msaId, const QByteArray &name, const QByteArray &seq, const QVector<U2MsaGap> &gaps, U2OpStatus &os) {
     U2Sequence sequence;
     sequence.alphabet = BaseDNAAlphabetIds::NUCL_DNA_DEFAULT();
     sequence.visualName = name;
@@ -248,13 +248,13 @@ U2DataId ModSQLiteSpecificTestData::createTestMsa(bool enableModTracking, U2OpSt
     // ACTGGC-TACAGCGA-TCTAGG-GGAAATC-TACTATC-T-ACGAT-CTAGTATCACGAT
     // AC--TAGGTTCAGCTAG--CGGATCGACATTTTGTAGGACGACGT--ACTTTCCCA--CGCTA
     // TTT--C-G-T-GTGTCACATA-C----GTCAGT----------TAACGATCGATCACACAC
-    addRow(msaId, "1", "TAAGACTTCTAATTTATTCGGGGCTAGCTAGCATTTCAGCTAGCTACGGG", QList<U2MsaGap>() << U2MsaGap(1, 1) << U2MsaGap(7, 1) << U2MsaGap(13, 2) << U2MsaGap(27, 1) << U2MsaGap(38, 2) << U2MsaGap(52, 3), os);
-    addRow(msaId, "2", "TAAGCTACTAGGGACTGAGCTAGCATTCAGCTACGAGGGGGCAAACTACTG", QList<U2MsaGap>() << U2MsaGap(5, 2) << U2MsaGap(16, 1) << U2MsaGap(22, 1) << U2MsaGap(27, 1) << U2MsaGap(49, 2), os);
-    addRow(msaId, "3", "TTAGCTAGCTTAGCATCTTAGCTATGACGTACAGCGATTCGACGTATCAGCT", QList<U2MsaGap>() << U2MsaGap(18, 2) << U2MsaGap(28, 2) << U2MsaGap(43, 1) << U2MsaGap(48, 1) << U2MsaGap(52, 1) << U2MsaGap(57, 1), os);
-    addRow(msaId, "4", "ACTTTGACTCGAGCGAGCTTATTTTACGATCACGACCCATAAGAATAGAGCTAT", QList<U2MsaGap>() << U2MsaGap(8, 3) << U2MsaGap(21, 3) << U2MsaGap(39, 2) << U2MsaGap(55, 2), os);
-    addRow(msaId, "5", "ACTGGCTACAGCGATCTAGGGGAAATCTACTATCTACGATCTAGTATCACGAT", QList<U2MsaGap>() << U2MsaGap(6, 1) << U2MsaGap(15, 1) << U2MsaGap(22, 1) << U2MsaGap(30, 1) << U2MsaGap(38, 1) << U2MsaGap(40, 1) << U2MsaGap(46, 1), os);
-    addRow(msaId, "6", "ACTAGGTTCAGCTAGCGGATCGACATTTTGTAGGACGACGTACTTTCCCACGCTA", QList<U2MsaGap>() << U2MsaGap(2, 2) << U2MsaGap(17, 2) << U2MsaGap(45, 2) << U2MsaGap(56, 2), os);
-    addRow(msaId, "7", "TTTCGTGTGTCACATACGTCAGTTAACGATCGATCACACAC", QList<U2MsaGap>() << U2MsaGap(3, 2) << U2MsaGap(6, 1) << U2MsaGap(8, 1) << U2MsaGap(10, 1) << U2MsaGap(21, 1) << U2MsaGap(23, 4) << U2MsaGap(33, 10), os);
+    addRow(msaId, "1", "TAAGACTTCTAATTTATTCGGGGCTAGCTAGCATTTCAGCTAGCTACGGG", QVector<U2MsaGap>() << U2MsaGap(1, 1) << U2MsaGap(7, 1) << U2MsaGap(13, 2) << U2MsaGap(27, 1) << U2MsaGap(38, 2) << U2MsaGap(52, 3), os);
+    addRow(msaId, "2", "TAAGCTACTAGGGACTGAGCTAGCATTCAGCTACGAGGGGGCAAACTACTG", QVector<U2MsaGap>() << U2MsaGap(5, 2) << U2MsaGap(16, 1) << U2MsaGap(22, 1) << U2MsaGap(27, 1) << U2MsaGap(49, 2), os);
+    addRow(msaId, "3", "TTAGCTAGCTTAGCATCTTAGCTATGACGTACAGCGATTCGACGTATCAGCT", QVector<U2MsaGap>() << U2MsaGap(18, 2) << U2MsaGap(28, 2) << U2MsaGap(43, 1) << U2MsaGap(48, 1) << U2MsaGap(52, 1) << U2MsaGap(57, 1), os);
+    addRow(msaId, "4", "ACTTTGACTCGAGCGAGCTTATTTTACGATCACGACCCATAAGAATAGAGCTAT", QVector<U2MsaGap>() << U2MsaGap(8, 3) << U2MsaGap(21, 3) << U2MsaGap(39, 2) << U2MsaGap(55, 2), os);
+    addRow(msaId, "5", "ACTGGCTACAGCGATCTAGGGGAAATCTACTATCTACGATCTAGTATCACGAT", QVector<U2MsaGap>() << U2MsaGap(6, 1) << U2MsaGap(15, 1) << U2MsaGap(22, 1) << U2MsaGap(30, 1) << U2MsaGap(38, 1) << U2MsaGap(40, 1) << U2MsaGap(46, 1), os);
+    addRow(msaId, "6", "ACTAGGTTCAGCTAGCGGATCGACATTTTGTAGGACGACGTACTTTCCCACGCTA", QVector<U2MsaGap>() << U2MsaGap(2, 2) << U2MsaGap(17, 2) << U2MsaGap(45, 2) << U2MsaGap(56, 2), os);
+    addRow(msaId, "7", "TTTCGTGTGTCACATACGTCAGTTAACGATCGATCACACAC", QVector<U2MsaGap>() << U2MsaGap(3, 2) << U2MsaGap(6, 1) << U2MsaGap(8, 1) << U2MsaGap(10, 1) << U2MsaGap(21, 1) << U2MsaGap(23, 4) << U2MsaGap(33, 10), os);
 
     if (enableModTracking) {
         sqliteDbi->getObjectDbi()->setTrackModType(msaId, TrackOnUpdate, os);
@@ -655,7 +655,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateGapModel_noModTrack) {
     CHECK_NO_ERROR(os);
 
     // Update gaps
-    QList<U2MsaGap> newGaps;
+    QVector<U2MsaGap> newGaps;
     newGaps << U2MsaGap(4, 3) << U2MsaGap(11, 3);  // TAAG---ACTT---CTA
     CHECK_NO_ERROR(os);
     sqliteDbi->getMsaDbi()->updateGapModel(msaId, baseRows[0].rowId, newGaps, os);
@@ -683,10 +683,10 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateGapModel_severalSteps) {
     CHECK_NO_ERROR(os);
 
     // Prepare value list
-    QList<QList<U2MsaGap>> gapModels;
+    QList<QVector<U2MsaGap>> gapModels;
     gapModels << baseRows[0].gaps;  // base value
 
-    QList<U2MsaGap> gapModel;
+    QVector<U2MsaGap> gapModel;
     for (int i = 0; i < 6; ++i) {
         gapModel.clear();
         gapModel << U2MsaGap(0, i + 1) << U2MsaGap(i + 3, 2);
@@ -717,7 +717,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateGapModel_severalSteps) {
             if (gapsToByteArrayFirst.length() > 1) {
                 gapsToByteArrayFirst += ";";
             }
-            gapsToByteArrayFirst += QByteArray::number(gap.offset) + "," + QByteArray::number(gap.gap);
+            gapsToByteArrayFirst += QByteArray::number(gap.startPos) + "," + QByteArray::number(gap.length);
         }
         gapsToByteArrayFirst += "\"";
         gapsToByteArraySecond += "\"";
@@ -725,7 +725,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateGapModel_severalSteps) {
             if (gapsToByteArraySecond.length() > 1) {
                 gapsToByteArraySecond += ";";
             }
-            gapsToByteArraySecond += QByteArray::number(gap.offset) + "," + QByteArray::number(gap.gap);
+            gapsToByteArraySecond += QByteArray::number(gap.startPos) + "," + QByteArray::number(gap.length);
         }
         gapsToByteArraySecond += "\"";
 
@@ -786,16 +786,16 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateGapModel_severalUndoThenActi
     CHECK_NO_ERROR(os);
 
     // Prepare value list
-    QList<QList<U2MsaGap>> gapModels;
+    QList<QVector<U2MsaGap>> gapModels;
     gapModels << baseRows[0].gaps;  // base value
 
-    QList<U2MsaGap> gapModel;
+    QVector<U2MsaGap> gapModel;
     for (int i = 0; i < 6; ++i) {
         gapModel.clear();
         gapModel << U2MsaGap(0, i + 1) << U2MsaGap(i + 3, 2);
         gapModels << gapModel;
     }
-    QList<U2MsaGap> newGapModel = QList<U2MsaGap>() << U2MsaGap(1, 1) << U2MsaGap(2, 1) << U2MsaGap(3, 1);
+    QVector<U2MsaGap> newGapModel = QVector<U2MsaGap>() << U2MsaGap(1, 1) << U2MsaGap(2, 1) << U2MsaGap(3, 1);
 
     // Steps count
     int valuesCount = gapModels.length();  // changes = valuesCount - 1;
@@ -821,7 +821,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateGapModel_severalUndoThenActi
             if (gapsToByteArrayFirst.length() > 1) {
                 gapsToByteArrayFirst += ";";
             }
-            gapsToByteArrayFirst += QByteArray::number(gap.offset) + "," + QByteArray::number(gap.gap);
+            gapsToByteArrayFirst += QByteArray::number(gap.startPos) + "," + QByteArray::number(gap.length);
         }
         gapsToByteArrayFirst += "\"";
         gapsToByteArraySecond += "\"";
@@ -829,7 +829,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateGapModel_severalUndoThenActi
             if (gapsToByteArraySecond.length() > 1) {
                 gapsToByteArraySecond += ";";
             }
-            gapsToByteArraySecond += QByteArray::number(gap.offset) + "," + QByteArray::number(gap.gap);
+            gapsToByteArraySecond += QByteArray::number(gap.startPos) + "," + QByteArray::number(gap.length);
         }
         gapsToByteArraySecond += "\"";
 
@@ -854,7 +854,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateGapModel_severalUndoThenActi
         if (gapsToByteArrayFirst.length() > 1) {
             gapsToByteArrayFirst += ";";
         }
-        gapsToByteArrayFirst += QByteArray::number(gap.offset) + "," + QByteArray::number(gap.gap);
+        gapsToByteArrayFirst += QByteArray::number(gap.startPos) + "," + QByteArray::number(gap.length);
     }
     gapsToByteArrayFirst += "\"";
     gapsToByteArraySecond += "\"";
@@ -862,7 +862,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateGapModel_severalUndoThenActi
         if (gapsToByteArraySecond.length() > 1) {
             gapsToByteArraySecond += ";";
         }
-        gapsToByteArraySecond += QByteArray::number(gap.offset) + "," + QByteArray::number(gap.gap);
+        gapsToByteArraySecond += QByteArray::number(gap.startPos) + "," + QByteArray::number(gap.length);
     }
     gapsToByteArraySecond += "\"";
 
@@ -921,7 +921,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_noModTrack) {
 
     // Update row content
     QByteArray newSeq = "AAAAGGGGCCCCTTTT";
-    QList<U2MsaGap> newGaps;
+    QVector<U2MsaGap> newGaps;
     newGaps << U2MsaGap(4, 4) << U2MsaGap(20, 4);  // AAAA----GGGGCCCCTTTT----
     sqliteDbi->getMsaDbi()->updateRowContent(msaId, baseRows[0].rowId, newSeq, newGaps, os);
     CHECK_NO_ERROR(os);
@@ -961,7 +961,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalSteps) {
     for (int i = 0; i < 6; ++i) {
         QByteArray firstPart((i + 1) * 2, 'A');
         QByteArray secondPart((i + 3) * 2, 'C');
-        QList<U2MsaGap> gapModel = QList<U2MsaGap>() << U2MsaGap((i + 2) * 2, 5);
+        QVector<U2MsaGap> gapModel = QVector<U2MsaGap>() << U2MsaGap((i + 2) * 2, 5);
 
         U2MsaRow row;
         row.gaps = gapModel;
@@ -969,8 +969,8 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalSteps) {
         row.gend = firstPart.length() + secondPart.length();
         row.length = row.gend;
         foreach (const U2MsaGap &gap, gapModel) {
-            if (gap.offset < row.length) {  // ignore trailing gaps
-                row.length += gap.gap;
+            if (gap.startPos < row.length) {  // ignore trailing gaps
+                row.length += gap.length;
             }
         }
         row.rowId = baseRows[rowNumber].rowId;
@@ -1101,7 +1101,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalUndoThenAc
     for (int i = 0; i < 6; ++i) {
         QByteArray firstPart((i + 1) * 2, 'A');
         QByteArray secondPart((i + 3) * 2, 'C');
-        QList<U2MsaGap> gapModel = QList<U2MsaGap>() << U2MsaGap((i + 2) * 2, 5);
+        QVector<U2MsaGap> gapModel = QVector<U2MsaGap>() << U2MsaGap((i + 2) * 2, 5);
 
         U2MsaRow row;
         row.gaps = gapModel;
@@ -1109,8 +1109,8 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalUndoThenAc
         row.gend = firstPart.length() + secondPart.length();
         row.length = row.gend;
         foreach (const U2MsaGap &gap, gapModel) {
-            if (gap.offset < row.length) {  // ignore trailing gaps
-                row.length += gap.gap;
+            if (gap.startPos < row.length) {  // ignore trailing gaps
+                row.length += gap.length;
             }
         }
         row.rowId = baseRows[rowNumber].rowId;
@@ -1121,7 +1121,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalUndoThenAc
     }
     QByteArray newSeqData = "AA";
     U2MsaRow newRow;
-    newRow.gaps = QList<U2MsaGap>() << U2MsaGap(1, 1);
+    newRow.gaps = QVector<U2MsaGap>() << U2MsaGap(1, 1);
     newRow.gstart = 0;
     newRow.gend = newSeqData.length();
     newRow.length = newRow.gend + 1;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,8 +27,6 @@
 #include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/Counter.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/TaskWatchdog.h>
@@ -39,7 +37,6 @@
 
 #include <U2Formats/DocumentFormatUtils.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/SaveDocumentController.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>
@@ -47,8 +44,8 @@
 #include <U2View/MaEditorTasks.h>
 
 #include "ov_msa/MaEditor.h"
-#include "ov_msa/view_rendering/MaEditorConsensusArea.h"
-#include "ov_msa/view_rendering/MaEditorWgt.h"
+#include "ov_msa/MaEditorConsensusArea.h"
+#include "ov_msa/MaEditorWgt.h"
 
 namespace U2 {
 

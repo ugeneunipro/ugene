@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -112,7 +112,7 @@ void DNAStatMSAProfileDialog::accept() {
     s.reportGaps = gapCB->isChecked();
     s.stripUnused = !unusedCB->isChecked();
     s.countGapsInConsensusNumbering = !skipGapPositionsCB->isChecked();
-    if (saveBox->isChecked()) {
+    if (!saveBox->isCheckable() || saveBox->isChecked()) {
         s.outURL = saveController->getSaveFileName();
         if (s.outURL.isEmpty()) {
             QMessageBox::critical(this, tr("Error"), tr("File URL is empty"));
@@ -162,7 +162,7 @@ void DNAStatMSAProfileTask::run() {
                 return;
             }
         }
-        int maxVal = s.usePercents ? 100 : s.ma->getNumRows();
+        int maxVal = s.usePercents ? 100 : s.ma->getRowCount();
         QString colors[] = {"#ff5555", "#ff9c00", "#60ff00", "#a1d1e5", "#dddddd"};
 
         // Using subset of the supported HTML features: https://doc.qt.io/qt-5/richtext-html-subset.html
@@ -368,7 +368,7 @@ void DNAStatMSAProfileTask::computeStats() {
         ColumnStat &cs = columns[pos];
         cs.charFreqs.resize(aChars.size());
         cs.consChar = U2Msa::GAP_CHAR;
-        for (int i = 0; i < s.ma->getNumRows(); i++) {
+        for (int i = 0; i < s.ma->getRowCount(); i++) {
             char c = s.ma->getMsaRow(i)->charAt(pos);
             unusedChars.remove(c);
             int idx = char2index.value(c);
@@ -383,7 +383,7 @@ void DNAStatMSAProfileTask::computeStats() {
     }
 
     if (s.usePercents) {
-        int charsInColumn = s.ma->getNumRows();
+        int charsInColumn = s.ma->getRowCount();
         for (int pos = 0; pos < s.ma->getLength(); pos++) {
             ColumnStat &cs = columns[pos];
             for (int i = 0; i < aChars.size(); i++) {

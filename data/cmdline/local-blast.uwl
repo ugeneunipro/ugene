@@ -1,0 +1,126 @@
+#@UGENE_WORKFLOW
+#Run local NCBI BLAST search. BLAST finds regions of similarity between biological sequences. Must have an installed NCBI BLAST package.
+
+workflow local-blast{
+
+    read-sequence {
+        type:read-sequence;
+        name:"Read sequence";
+        url-in {
+            dataset:"Dataset 1";
+        }
+    }
+    write-genbank {
+        type:write-sequence;
+        name:"Write Genbank";
+        document-format:genbank;
+    }
+    blast-plus {
+        type:blast-plus;
+        name:"Local BLAST search";
+    }
+
+
+    .actor-bindings {
+        read-sequence.out-sequence->blast-plus.in-sequence
+        blast-plus.out-annotations->write-genbank.in-sequence
+    }
+
+    blast-plus.annotations->write-genbank.in-sequence.annotations
+    read-sequence.annotations->write-genbank.in-sequence.annotations
+    read-sequence.sequence->write-genbank.in-sequence.sequence
+    read-sequence.sequence->blast-plus.in-sequence.sequence
+
+    .meta {
+        parameter-aliases {
+            read-sequence.url-in {
+                alias:in;
+                description:"Input sequence";
+            }
+            write-genbank.accumulate {
+                alias:accumulate;
+                description:"Accumulate all incoming data in one file or create separate files for each input. In the latter case, an incremental numerical suffix is added to the file name (using 'True' by default)";
+            }
+            write-genbank.url-out {
+                alias:out;
+                description:"Output file with annotations";
+            }
+            blast-plus.blast-output {
+                alias:blast-out;
+                description:"Location of BLAST output file";
+            }
+            blast-plus.blast-type {
+                alias:p;
+                description:"Type of BLAST searches (using 'blastn' by default)";
+            }
+            blast-plus.db-name {
+                alias:dbname;
+                description:"Base name for BLAST DB files";
+            }
+            blast-plus.db-path {
+                alias:dbpath;
+                description:"Path with database files";
+            }
+            blast-plus.e-val {
+                alias:e;
+                description:"The statistical significance threshold for reporting matches against database sequences (using '10.0' by default)";
+            }
+            blast-plus.max-hits {
+                alias:max-hits;
+                description:"If the query range of a hit is enveloped by that of at least this many higher-scoring hits, delete the hit.";
+            }
+            blast-plus.gapped-aln {
+                alias:gap-aln;
+                description:"Perform gapped alignment (using 'use' by default)";
+            }
+            blast-plus.result-name {
+                alias:name;
+                description:"Name of the result annotations marking found regions (using 'blast_result' by default)";
+            }
+            blast-plus.temp-dir {
+                alias:tmpdir;
+                description:"Directory to store temporary files (using UGENE temporary directory by default)";
+            }
+            blast-plus.tool-path {
+                alias:toolpath;
+                description:"BLAST location (using the path specified in UGENE by default)";
+            }
+            blast-plus.type-output {
+                alias:blast-out-type;
+                description:"Type of BLAST output file (using 'XML (-outfmt 5)' by default)";
+            }
+            blast-plus.comp-based-stats {
+                alias:comp-based-stats;
+                description:"Composition-based statistics: D (default, equal to 2), 0, 1, 2 or 3.";
+            }
+        }
+        visual {
+            blast-plus {
+                pos:"-585 -615";
+                style:ext;
+                bg-color-ext:"0 128 128 64";
+                in-sequence.angle:180;
+                out-annotations.angle:360;
+            }
+            read-sequence {
+                pos:"-765 -615";
+                style:ext;
+                bg-color-ext:"0 128 128 64";
+                out-sequence.angle:360;
+            }
+            write-genbank {
+                pos:"-330 -615";
+                style:ext;
+                bg-color-ext:"0 128 128 64";
+                in-sequence.angle:180;
+            }
+            blast-plus.out-annotations->write-genbank.in-sequence {
+                text-pos:"-33 -24";
+            }
+            read-sequence.out-sequence->blast-plus.in-sequence {
+                text-pos:"-27.5 -24";
+            }
+        }
+    }
+}
+

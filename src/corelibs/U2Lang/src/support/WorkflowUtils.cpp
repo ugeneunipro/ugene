@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -186,12 +186,12 @@ bool validateExternalTools(Actor *actor, NotificationsList &infoList) {
         } else if (!isToolFromAttribute && !tool->isValid()) {
             if (tool->isCustom()) {
                 infoList << WorkflowNotification(WorkflowUtils::customExternalToolInvalidError(tool->getName(), actor->getLabel()),
-                                                 actor->getProto()->getId(),
+                                                 actor->getId(),
                                                  WorkflowNotification::U2_ERROR);
                 isValid = false;
             } else {
                 infoList << WorkflowNotification(WorkflowUtils::externalToolInvalidError(tool->getName()),
-                                                 actor->getProto()->getId(),
+                                                 actor->getId(),
                                                  WorkflowNotification::U2_WARNING);
             }
         }

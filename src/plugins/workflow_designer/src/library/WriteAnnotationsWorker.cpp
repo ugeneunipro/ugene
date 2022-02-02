@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,6 +29,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/FailTask.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
@@ -40,7 +41,6 @@
 
 #include <U2Designer/DelegateEditors.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportAnnotations2CSVTask.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
@@ -148,13 +148,26 @@ Task *WriteAnnotationsWorker::tick() {
         const QVariantMap qm = inputMessage.getData().toMap();
 
         if (LocalFs == storage) {
-            resultPath = resultPath.isEmpty() ? qm.value(BaseSlots::URL_SLOT().getId()).value<QString>() : resultPath;
+            resultPath = qm.value(BaseSlots::URL_SLOT().getId(), resultPath).value<QString>();
+            // We have two cases, when we need to write several annotation objects to the same file:
+            // 1) If the path to the output file has been defined as a parameter,
+            // 2) If there are several (two or more) annotaiton objects has come from the same file.
+            // 
+            // And we have a case, when we need to write each annotation object to the separate file (roll file name):
+            // 1) When we recieve annotations from files, which have the same name, but located in different directories.
+            // The flag below handle all these cases.
+            bool write2TheSameFile = !resultPath.isEmpty();
             updateResultPath(inputMessage.getMetadataId(), formatId, storage, resultPath, merge);
             CHECK(!resultPath.isEmpty(), new FailTask(tr("Unspecified URL to write")));
             resultPath = context->absolutePath(resultPath);
+            // to avoide uniting at the same file in case of similar names
+            if (!write2TheSameFile) {
+                resultPath = GUrlUtils::rollFileName(resultPath, "_", existedResultFiles);
+            }
         }
 
         fetchIncomingAnnotations(qm, resultPath);
+        existedResultFiles << resultPath;
     }
 
     bool done = annotationsPort->isEnded();
@@ -480,7 +493,7 @@ void WriteAnnotationsWorkerFactory::init() {
         formatDelegate->setSortFlag(true);
         delegates[BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId()] = formatDelegate;
         delegates[BaseAttributes::URL_OUT_ATTRIBUTE().getId()] =
-            new URLDelegate(DialogUtils::prepareDocumentsFileFilter(format, true), QString(), false, false, true, nullptr, format);
+            new URLDelegate(FileFilters::createFileFilterByDocumentFormatId(format), "", false, false, true, nullptr, format);
         delegates[BaseAttributes::FILE_MODE_ATTRIBUTE().getId()] = new FileModeDelegate(attrs.size() > 2);
 
         delegates[BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId()] = new ComboBoxDelegate(BaseAttributes::DATA_STORAGE_ATTRIBUTE_VALUES_MAP());

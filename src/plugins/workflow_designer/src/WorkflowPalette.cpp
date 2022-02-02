@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -204,6 +204,8 @@ WorkflowPaletteElements::WorkflowPaletteElements(ActorPrototypeRegistry *reg, Sc
     setFocusPolicy(Qt::NoFocus);
     setSelectionMode(QAbstractItemView::NoSelection);
     setItemDelegate(new PaletteDelegate(this));
+    // Scroll per item does not work well in QT (QTreeWidget::scrollToItem()) when items have non-equal height.
+    setVerticalScrollMode(ScrollPerPixel);
     setRootIsDecorated(false);
     // setAnimated(true);
     setMouseTracking(true);

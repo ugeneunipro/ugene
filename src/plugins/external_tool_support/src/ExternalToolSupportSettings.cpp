@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,6 +34,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2OpStatus.h>
+#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
@@ -137,8 +138,13 @@ void ExternalToolSupportSettings::checkTemporaryDir(U2OpStatus &os) {
     }
 }
 
+bool ExternalToolSupportSettings::checkTemporaryDir(const LogLevel& logLevel) {
+    U2OpStatus2Log os(logLevel);
+    ExternalToolSupportSettings::checkTemporaryDir(os);
+    return !os.hasError();
+}
 //////////////////////////////////////////////////////////////////////////
-//LimitedDirIterator
+// LimitedDirIterator
 LimitedDirIterator::LimitedDirIterator(const QDir &dir, int deepLevels)
     : deepLevel(deepLevels), curPath("") {
     if (deepLevel < 0) {
@@ -177,4 +183,4 @@ void LimitedDirIterator::fetchNext() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

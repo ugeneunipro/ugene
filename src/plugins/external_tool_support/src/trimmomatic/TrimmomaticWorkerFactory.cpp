@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,10 +27,9 @@
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/FileFilters.h>
 
 #include <U2Designer/DelegateEditors.h>
-
-#include <U2Gui/DialogUtils.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
@@ -231,7 +230,7 @@ void TrimmomaticWorkerFactory::init() {
         {
             DelegateTags outputUrlTags;
             outputUrlTags.set(DelegateTags::PLACEHOLDER_TEXT, "Auto");
-            outputUrlTags.set(DelegateTags::FILTER, DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::FASTQ, true, QStringList()));
+            outputUrlTags.set(DelegateTags::FILTER, FileFilters::createFileFilterByObjectTypes({BaseDocumentFormats::FASTQ}, true));
             outputUrlTags.set(DelegateTags::FORMAT, BaseDocumentFormats::FASTQ);
             delegates[OUTPUT_URL_ATTR_ID] = new URLDelegate(outputUrlTags, "trimmomatic/output");
             delegates[PAIRED_URL_1_ATTR_ID] = new URLDelegate(outputUrlTags, "trimmomatic/output");
@@ -246,7 +245,7 @@ void TrimmomaticWorkerFactory::init() {
         {
             DelegateTags outputUrlTags;
             outputUrlTags.set(DelegateTags::PLACEHOLDER_TEXT, "Auto");
-            outputUrlTags.set(DelegateTags::FILTER, DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::PLAIN_TEXT, true, QStringList()));
+            outputUrlTags.set(DelegateTags::FILTER, FileFilters::createFileFilterByObjectTypes({BaseDocumentFormats::PLAIN_TEXT}, true));
             outputUrlTags.set(DelegateTags::FORMAT, BaseDocumentFormats::PLAIN_TEXT);
             delegates[LOG_URL_ATTR_ID] = new URLDelegate(outputUrlTags, "trimmomatic/output");
         }
@@ -259,7 +258,7 @@ void TrimmomaticWorkerFactory::init() {
 
     const Descriptor desc(ACTOR_ID,
                           TrimmomaticPrompter::tr("Improve Reads with Trimmomatic"),
-                          TrimmomaticPrompter::tr("Trimmomatic is a fast, multithreaded command line tool that can be used"
+                          TrimmomaticPrompter::tr("Trimmomatic is a fast, multi-threaded command line tool that can be used"
                                                   " to trim and crop Illumina (FASTQ) data as well as to remove adapters."));
 
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
@@ -281,5 +280,5 @@ void TrimmomaticWorkerFactory::cleanup() {
     delete localDomain->unregisterEntry(ACTOR_ID);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

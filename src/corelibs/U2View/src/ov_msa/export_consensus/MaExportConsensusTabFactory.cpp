@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@
 #include <U2View/MSAEditor.h>
 
 #include "MaExportConsensusWidget.h"
-#include "ov_msa/general/MaConsensusModeWidget.h"
+#include "ov_msa/general_tab/MaConsensusModeWidget.h"
 
 namespace U2 {
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/FailTask.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
@@ -31,8 +32,6 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
-
-#include <U2Gui/DialogUtils.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
@@ -140,7 +139,7 @@ void FindPrimerPairsWorkerFactory::init() {
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, attrs);
 
     QMap<QString, PropertyDelegate *> delegates;
-    QString filter = DialogUtils::prepareFileFilter(FindPrimerPairsWorker::tr("Report file"), QStringList("html"), true);
+    QString filter = FileFilters::createFileFilter(FindPrimerPairsWorker::tr("Report file"), {"html"});
     DelegateTags tags;
     tags.set("filter", filter);
     tags.set("extensions", QStringList() << "html");

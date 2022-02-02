@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,7 +37,6 @@
 
 #define SEPARATE_MODE "separateMode"
 #define MERGE_MODE "mergeMode"
-#define INTERAL_GAP "internalGap"
 #define FILE_GAP "fileGap"
 #define NEW_DOC_NAME "newUrl"
 #define SAVE_BOX "saveBox"
@@ -53,9 +52,7 @@ GTSequenceReadingModeDialogUtils::GTSequenceReadingModeDialogUtils(HI::GUITestOp
 
 #define GT_METHOD_NAME "run"
 void GTSequenceReadingModeDialogUtils::commonScenario() {
-    GTGlobals::sleep(1000);
-    QWidget *openDialog = QApplication::activeModalWidget();
-    GT_CHECK(openDialog != nullptr, "dialog not found");
+    QWidget *openDialog = GTWidget::getActiveModalWidget(os);
 
     dialog = openDialog;
 
@@ -74,13 +71,8 @@ void GTSequenceReadingModeDialogUtils::commonScenario() {
 
 #define GT_METHOD_NAME "selectMode"
 void GTSequenceReadingModeDialogUtils::selectMode() {
-    QString buttonName = SEPARATE_MODE;
-    if (GTSequenceReadingModeDialog::mode == GTSequenceReadingModeDialog::Merge) {
-        buttonName = MERGE_MODE;
-    }
-
-    QRadioButton *radioButton = dialog->findChild<QRadioButton *>(buttonName);
-    GT_CHECK(radioButton != nullptr, "radio button not found");
+    QString buttonName = GTSequenceReadingModeDialog::mode == GTSequenceReadingModeDialog::Merge ? MERGE_MODE : SEPARATE_MODE;
+    auto radioButton = GTWidget::findRadioButton(os, buttonName, dialog);
 
     if (!radioButton->isChecked()) {
         switch (GTSequenceReadingModeDialog::useMethod) {
@@ -96,10 +88,7 @@ void GTSequenceReadingModeDialogUtils::selectMode() {
                 break;
         }
     }
-
-    while (!radioButton->isChecked()) {
-        GTGlobals::sleep(100);
-    }
+    GTRadioButton::checkIsChecked(os, radioButton);
 }
 #undef GT_METHOD_NAME
 
@@ -137,8 +126,7 @@ void GTSequenceReadingModeDialogUtils::setNewDocumentName() {
 
 #define GT_METHOD_NAME "selectSaveDocument"
 void GTSequenceReadingModeDialogUtils::selectSaveDocument() {
-    QCheckBox *saveBox = dialog->findChild<QCheckBox *>(SAVE_BOX);
-    GT_CHECK(saveBox != nullptr, "save check box not found");
+    auto saveBox = GTWidget::findCheckBox(os, SAVE_BOX, dialog);
 
     if (GTSequenceReadingModeDialog::saveDocument != saveBox->isChecked()) {
         switch (GTSequenceReadingModeDialog::useMethod) {
@@ -150,7 +138,6 @@ void GTSequenceReadingModeDialogUtils::selectSaveDocument() {
             case GTGlobals::UseKey:
                 while (!saveBox->hasFocus()) {
                     GTKeyboardDriver::keyClick(Qt::Key_Tab);
-                    GTGlobals::sleep(100);
                 }
                 GTKeyboardDriver::keyClick(Qt::Key_Space);
             default:
@@ -186,8 +173,10 @@ void GTSequenceReadingModeDialogUtils::changeSpinBoxValue(QSpinBox *sb, int val)
     QRect spinBoxRect;
 
     if (sb->value() != val) {
+        int maxClicksCount = 20;  // Avoid tests with too many clicks.
+        int currentClickCount = 0;
         switch (GTSequenceReadingModeDialog::useMethod) {
-            case GTGlobals::UseMouse:
+            case GTGlobals::UseMouse: {
                 spinBoxRect = sb->rect();
                 if (val > sb->value()) {
                     arrowPos = QPoint(spinBoxRect.right() - 5, spinBoxRect.height() / 4);  // -5 it's needed that area under cursor was clickable
@@ -196,25 +185,20 @@ void GTSequenceReadingModeDialogUtils::changeSpinBoxValue(QSpinBox *sb, int val)
                 }
 
                 GTMouseDriver::moveTo(sb->mapToGlobal(arrowPos));
-                while (sb->value() != val) {
+                while (sb->value() != val && currentClickCount++ < maxClicksCount) {
                     GTMouseDriver::click();
-                    GTGlobals::sleep(100);
                 }
+                CHECK_SET_ERR(sb->value() == val, "Failed to set correct value in spinbox with mouse");
                 break;
-
+            }
             case GTGlobals::UseKey: {
                 Qt::Key key;
-                if (val > sb->value()) {
-                    key = Qt::Key_Up;
-                } else {
-                    key = Qt::Key_Down;
-                }
-
+                key = val > sb->value() ? Qt::Key_Up : Qt::Key_Down;
                 GTWidget::setFocus(os, sb);
-                while (sb->value() != val) {
+                while (sb->value() != val && currentClickCount++ < maxClicksCount) {
                     GTKeyboardDriver::keyClick(key);
-                    GTGlobals::sleep(100);
                 }
+                CHECK_SET_ERR(sb->value() == val, "Failed to set correct value in spinbox with keyboard");
             }
             default:
                 break;

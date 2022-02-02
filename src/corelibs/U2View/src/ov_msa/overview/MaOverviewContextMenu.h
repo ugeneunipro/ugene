@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -50,7 +50,7 @@ public slots:
     void sl_graphTypeActionTriggered(QAction *);
     void sl_graphOrientationActionTriggered(QAction *);
     void sl_colorActionTriggered();
-    void sl_caclulationMethodActionTriggered(QAction *);
+    void sl_calculationMethodActionTriggered(QAction *);
 
 private:
     void initSimpleOverviewAction();

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -518,10 +518,10 @@ void GTFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
     }
 
     QByteArray lineData;
-    bool geneIdOrTranscriptIdQualNotFound = false;
+    bool hasNoGeneIdOrTranscriptId = false;
 
-    foreach (GObject *annotTable, annotTables) {
-        AnnotationTableObject *annTable = qobject_cast<AnnotationTableObject *>(annotTable);
+    for (GObject *annotTable : qAsConst(annotTables)) {
+        auto annTable = qobject_cast<AnnotationTableObject *>(annotTable);
         QList<Annotation *> annotationsList = annTable->getAnnotations();
 
         QString annotTableName;
@@ -546,7 +546,7 @@ void GTFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
             QVector<U2Qualifier> annotQualifiers = annot->getQualifiers();
 
             lineFields[GTF_SEQ_NAME_INDEX] = annotTableName;
-            lineFields[GTF_STRAND_INDEX] = (annot->getStrand().isCompementary() ? "-" : "+");
+            lineFields[GTF_STRAND_INDEX] = (annot->getStrand().isComplementary() ? "-" : "+");
 
             // Joined annotations are currently stored as other annotations (we do not store that they are joined)
             for (const U2Region &region : qAsConst(annotRegions)) {
@@ -568,22 +568,19 @@ void GTFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
                     } else {
                         // All other qualifiers are saved as attributes
                         QString attrStr = qualifier.name + " \"" + qualifier.value + "\";";
-                        if (qualifier.name != GENE_ID_QUALIFIER_NAME) {
-                            attrStr = " " + attrStr;  // Exactly one space char between different attributes
-                        }
-
                         if (qualifier.name == GENE_ID_QUALIFIER_NAME) {
                             geneIdAttributeStr = attrStr;
-                        } else if (qualifier.name == TRANSCRIPT_ID_QUALIFIER_NAME) {
-                            transcriptIdAttributeStr = attrStr;
                         } else {
-                            otherAttributesStr += attrStr;
+                            attrStr = " " + attrStr;  // Exactly one space char between different attributes
+                            if (qualifier.name == TRANSCRIPT_ID_QUALIFIER_NAME) {
+                                transcriptIdAttributeStr = attrStr;
+                            } else {
+                                otherAttributesStr += attrStr;
+                            }
                         }
                     }
                 }
-                if (!geneIdOrTranscriptIdQualNotFound && (geneIdAttributeStr.isEmpty() || transcriptIdAttributeStr.isEmpty())) {
-                    geneIdOrTranscriptIdQualNotFound = true;
-                }
+                hasNoGeneIdOrTranscriptId = hasNoGeneIdOrTranscriptId || (geneIdAttributeStr.isEmpty() || transcriptIdAttributeStr.isEmpty());
                 lineFields[GTF_ATTRIBUTES_INDEX] = geneIdAttributeStr +
                                                    transcriptIdAttributeStr +
                                                    otherAttributesStr;
@@ -597,8 +594,9 @@ void GTFFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
             }
         }
     }
-    if (geneIdOrTranscriptIdQualNotFound) {
-        ioLog.info(QString("The '%1' file GTF format is not strict - some annotations do not have \"gene_id\" and/or \"transcript_id\" qualifiers.").arg(io->getURL().getURLString()));
+    if (hasNoGeneIdOrTranscriptId) {
+        ioLog.info(QString("The '%1' file GTF format is not strict - some annotations do not have 'gene_id' and/or 'transcript_id' qualifiers.")
+                       .arg(io->getURL().getURLString()));
     }
 }
 

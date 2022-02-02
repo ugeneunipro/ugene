@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,13 +24,12 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Designer/DelegateEditors.h>
-
-#include <U2Gui/DialogUtils.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
@@ -253,10 +252,11 @@ void CufflinksWorkerFactory::init() {
     }
 
     delegates[OUT_DIR] = new URLDelegate("", "", false, true /*path*/);
-    delegates[REF_ANNOTATION] = new URLDelegate(DialogUtils::prepareDocumentsFileFilter(true), "", false, false, false);
-    delegates[RABT_ANNOTATION] = new URLDelegate(DialogUtils::prepareDocumentsFileFilter(true), "", false, false, false);
-    delegates[MASK_FILE] = new URLDelegate(DialogUtils::prepareDocumentsFileFilter(true), "", false, false, false);
-    delegates[FRAG_BIAS_CORRECT] = new URLDelegate(DialogUtils::prepareDocumentsFileFilter(true), "", false, false, false);
+    QString allFormatsFilter = FileFilters::createAllSupportedFormatsFileFilter();
+    delegates[REF_ANNOTATION] = new URLDelegate(allFormatsFilter, "", false, false, false);
+    delegates[RABT_ANNOTATION] = new URLDelegate(allFormatsFilter, "", false, false, false);
+    delegates[MASK_FILE] = new URLDelegate(allFormatsFilter, "", false, false, false);
+    delegates[FRAG_BIAS_CORRECT] = new URLDelegate(allFormatsFilter, "", false, false, false);
     delegates[EXT_TOOL_PATH] = new URLDelegate("", "executable", false, false, false);
     delegates[TMP_DIR_PATH] = new URLDelegate("", "TmpDir", false, true);
 
@@ -265,7 +265,7 @@ void CufflinksWorkerFactory::init() {
     proto->setPrompter(new CufflinksPrompter());
     proto->setPortValidator(BasePorts::IN_ASSEMBLY_PORT_ID(), new InputSlotValidator());
 
-    {    // external tools
+    {  // external tools
         proto->addExternalTool(CufflinksSupport::ET_CUFFLINKS_ID, EXT_TOOL_PATH);
     }
 
@@ -343,7 +343,7 @@ void CufflinksWorker::init() {
 }
 
 Task *CufflinksWorker::tick() {
-    if (false == settingsAreCorrect) {
+    if (!settingsAreCorrect) {
         return nullptr;
     }
 
@@ -395,5 +395,5 @@ void CufflinksWorker::sl_cufflinksTaskFinished() {
 void CufflinksWorker::cleanup() {
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

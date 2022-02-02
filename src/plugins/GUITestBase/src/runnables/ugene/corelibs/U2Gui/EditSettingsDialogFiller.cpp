@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -57,7 +57,7 @@ void EditSettingsDialogFiller::commonScenario() {
             radioButtonName = "split_separateRadioButton";
             break;
         default:
-            GT_CHECK(false, "An unexpected AnnotationPolicy");
+            GT_FAIL("An unexpected AnnotationPolicy", );
     }
 
     GTRadioButton::click(os, radioButtonName, dialog);

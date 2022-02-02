@@ -1,3 +1,0 @@
-<!-- The test checks that CLARK can build a database, if there are spaces in the path to taxonomy data. -->
-
-<fail msg="The test is not implemented, because it is impossible to use custom taxonomy data in the current state."/>

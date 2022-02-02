@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,8 +22,6 @@
 #ifndef _U2_FORMAT_UTILS_H_
 #define _U2_FORMAT_UTILS_H_
 
-#include <QStringList>
-
 #include <U2Core/global.h>
 
 namespace U2 {
@@ -42,14 +40,6 @@ public:
     // This is English version of this function, required by EMBL and Genbank
     // for correct date formatting
     static QString getShortMonthName(int num);
-
-    static QString prepareFileFilter(const QMap<QString, QStringList> &formatNamesWithExtensions, bool allowAnyFiles = true, const QStringList &extraExtensions = QStringList(".gz"));
-    static QString prepareFileFilter(const QString &name, const QStringList &exts, bool any = true, const QStringList &extraExts = QStringList(".gz"));
-    static QString prepareDocumentsFileFilter(const DocumentFormatId &fid, bool any, const QStringList &extra = QStringList(".gz"));
-    // returns filter for all formats supported. All-docs filter is returned first if any==true
-    static QString prepareDocumentsFileFilter(bool any, const QStringList &extraExts = QStringList(".gz"));
-    static QString prepareDocumentsFileFilter(const DocumentFormatConstraints &c, bool any);
-    static QString prepareDocumentsFileFilterByObjType(const GObjectType &t, bool any);
 };
 
 }  // namespace U2

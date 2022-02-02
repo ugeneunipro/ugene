@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -279,15 +279,15 @@ Task::ReportResult GTest_ExportNucleicToAminoAlignmentTask::report() {
         return ReportResult_Finished;
     }
 
-    if (resAl->getNumRows() != expAl->getNumRows()) {
-        stateInfo.setError(GTest::tr("Unexpected alignment size %1, expected %2").arg(resAl->getNumRows()).arg(expAl->getNumRows()));
+    if (resAl->getRowCount() != expAl->getRowCount()) {
+        stateInfo.setError(GTest::tr("Unexpected alignment size %1, expected %2").arg(resAl->getRowCount()).arg(expAl->getRowCount()));
         return ReportResult_Finished;
     }
 
     QStringList resNames = resAl->getRowNames();
     QStringList expNames = expAl->getRowNames();
 
-    for (int i = 0; i < resAl->getNumRows(); i++) {
+    for (int i = 0; i < resAl->getRowCount(); i++) {
         if (resNames[i] != expNames[i]) {
             stateInfo.setError(GTest::tr("Invalid name for row %1: %2, expected %3").arg(i + 1).arg(resNames[i]).arg(expNames[i]));
             return ReportResult_Finished;

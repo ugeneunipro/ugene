@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -78,7 +78,7 @@ void PhyTreeGeneratorLauncherTask::sl_onCalculationCanceled() {
 void SeqNamesConvertor::replaceNamesWithAlphabeticIds(MultipleSequenceAlignment &ma) {
     QStringList rows = ma->getRowNames();
 
-    int rowsNum = ma->getNumRows();
+    int rowsNum = ma->getRowCount();
     for (int i = 0; i < rowsNum; i++) {
         namesMap[generateNewAlphabeticId()] = rows.at(i);
         ma->renameRow(i, lastIdStr);

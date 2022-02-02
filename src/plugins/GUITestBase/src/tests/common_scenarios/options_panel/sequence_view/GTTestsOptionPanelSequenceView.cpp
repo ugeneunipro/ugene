@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -115,7 +115,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsOptionPanelSequenceView::clickGetAnnotation(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTWidget::click(os, GTWidget::findWidget(os, "annotations_tree_widget"));
-    GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature  (0, 2)");
+    GTUtilsAnnotationsTreeView::findItem(os, "misc_feature  (0, 2)");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
@@ -195,13 +195,13 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
     GTUtilsOptionPanelSequenceView::setSearchInLocation(os, "Custom region");
 
-    QLineEdit *regLE = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "editEnd", nullptr, GTGlobals::FindOptions(false)));
+    QLineEdit *regLE = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "editEnd", nullptr, {false}));
     CHECK_SET_ERR(regLE != nullptr, "LineEdit is NULL");
     GTLineEdit::setText(os, regLE, "40000");
     CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/12"), "Results string not match");
 
     regLE = nullptr;
-    regLE = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "editStart", nullptr, GTGlobals::FindOptions(false)));
+    regLE = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "editStart", nullptr, {false}));
     CHECK_SET_ERR(regLE != nullptr, "LineEdit is NULL");
     GTLineEdit::setText(os, regLE, "9000");
     CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/10"), "Results string not match");

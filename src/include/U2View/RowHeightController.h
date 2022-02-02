@@ -1,1 +1,1 @@
-#include "../../corelibs/U2View/src/ov_msa/helpers/RowHeightController.h"
+#include "../../corelibs/U2View/src/ov_msa/RowHeightController.h"

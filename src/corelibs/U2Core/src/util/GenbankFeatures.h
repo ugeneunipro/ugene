@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -118,19 +118,15 @@ enum GBFeatureKey {
 
 class U2CORE_EXPORT GBFeatureKeyInfo {
 public:
-    GBFeatureKeyInfo()
-        : id(GBFeatureKey_UNKNOWN), showOnaminoFrame(false) {
-    }
-    GBFeatureKeyInfo(GBFeatureKey _id, U2FeatureType type, const QString &_text, const QColor &_color, bool _aminoFrame, QString _desc)
-        : id(_id), type(type), text(_text), color(_color), showOnaminoFrame(_aminoFrame), desc(_desc) {
+    GBFeatureKeyInfo() = default;
+
+    GBFeatureKeyInfo(const GBFeatureKey &_id, const U2FeatureType &type, const QString &_text)
+        : id(_id), type(type), text(_text) {
     }
 
-    GBFeatureKey id;
-    U2FeatureType type;
+    GBFeatureKey id = GBFeatureKey_UNKNOWN;
+    U2FeatureType type = U2FeatureTypes::Invalid;
     QString text;
-    QColor color;
-    bool showOnaminoFrame;
-    QString desc;
     QStringList namingQuals;
 };
 
@@ -140,14 +136,11 @@ public:
     static QMutex allKeys_mutex;
     static const QVector<GBFeatureKeyInfo> &allKeys();
 
-    static QMutex getKeyGroups_mutex;
     static const GBFeatureKeyInfo &getKeyInfo(GBFeatureKey key) {
         return allKeys().at(key);
     }
 
     static QMutex getKey_mutex;
-    static const QMultiMap<QString, GBFeatureKey> &getKeyGroups();
-
     static GBFeatureKey getKey(const QString &text);
     static GBFeatureKey getKey(U2FeatureType featureType);
 
@@ -155,8 +148,6 @@ public:
     static bool isFeatureHasNoValue(const QString &featureName);
 
     static const QByteArray QUALIFIER_AMINO_STRAND;
-    static const QByteArray QUALIFIER_AMINO_STRAND_YES;
-    static const QByteArray QUALIFIER_AMINO_STRAND_NO;
 
     static const QByteArray QUALIFIER_NAME;
     static const QByteArray QUALIFIER_GROUP;

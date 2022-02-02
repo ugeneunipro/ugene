@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -134,25 +134,26 @@ void ProjectUpdater::fetchObjectsInUse(const U2DbiRef &dbiRef, U2OpStatus &os) {
 
 void ProjectUpdater::updateAccessedObjects() {
     const QList<GObjectViewWindow *> activeViews = GObjectViewUtils::getAllActiveViews();
-    QMap<U2DbiRef, DbiConnection *> dbiRef2Connections;  // when changing the code below, beware mem leaks
-    U2OpStatus2Log os;
+    QMap<U2DbiRef, QSharedPointer<DbiConnection>> dbiRef2Connections;
     foreach (GObjectViewWindow *view, activeViews) {
         foreach (GObject *object, view->getObjects()) {
+            U2OpStatus2Log os;
             Document *doc = object->getDocument();
             if (nullptr != doc && doc->isStateLocked()) {
                 continue;
             }
             const U2EntityRef ref = object->getEntityRef();
             if (!dbiRef2Connections.contains(ref.dbiRef)) {
-                dbiRef2Connections.insert(ref.dbiRef, new DbiConnection(ref.dbiRef, os));
+                QSharedPointer<DbiConnection> dbiCon(new DbiConnection(ref.dbiRef, os));
                 CHECK_CONTINUE(!os.hasError());
+
+                dbiRef2Connections.insert(ref.dbiRef, dbiCon);
             }
-            DbiConnection *con = dbiRef2Connections.value(ref.dbiRef);
+            auto con = dbiRef2Connections.value(ref.dbiRef);
             SAFE_POINT(con->dbi != nullptr, "Error: connection is NULL!", );
             con->dbi->getObjectDbi()->updateObjectAccessTime(ref.entityId, os);
         }
     }
-    qDeleteAll(dbiRef2Connections.values());
 }
 
 }  // namespace U2

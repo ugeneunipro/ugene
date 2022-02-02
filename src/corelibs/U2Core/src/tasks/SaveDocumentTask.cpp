@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -250,7 +250,7 @@ SaveMultipleDocuments::SaveMultipleDocuments(const QList<Document *> &docs, bool
                 url = chooseAnotherUrl(doc);
                 if (!url.isEmpty()) {
                     if (saveAndOpenFlag == SavedNewDoc_Open) {
-                        addSubTask(new SaveDocumentTask(doc, doc->getIOAdapterFactory(), url, SaveDocFlags(SaveDoc_Overwrite) | SaveDoc_DestroyAfter | SaveDoc_OpenAfter));
+                        addSubTask(new SaveDocumentTask(doc, doc->getIOAdapterFactory(), url, SaveDocFlags(SaveDoc_DestroyAfter | SaveDoc_OpenAfter)));
                     } else {
                         addSubTask(new SaveDocumentTask(doc, doc->getIOAdapterFactory(), url));
                     }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -114,7 +114,7 @@ char U2AlphabetUtils::getDefaultSymbol(const U2AlphabetId &alphaId) {
 
 void U2AlphabetUtils::assignAlphabet(MultipleSequenceAlignment &ma) {
     const DNAAlphabet *resAl = nullptr;
-    for (int i = 0, n = ma->getNumRows(); i < n; i++) {
+    for (int i = 0, n = ma->getRowCount(); i < n; i++) {
         const MultipleSequenceAlignmentRow item = ma->getMsaRow(i);
         const QByteArray &itemSeq = item->getCore();
         const DNAAlphabet *itemAl = findBestAlphabet(itemSeq);
@@ -135,7 +135,7 @@ void U2AlphabetUtils::assignAlphabet(MultipleSequenceAlignment &ma) {
 
 void U2AlphabetUtils::assignAlphabet(MultipleSequenceAlignment &ma, char ignore) {
     const DNAAlphabet *resAl = nullptr;
-    for (int i = 0, n = ma->getNumRows(); i < n; i++) {
+    for (int i = 0, n = ma->getRowCount(); i < n; i++) {
         const MultipleSequenceAlignmentRow item = ma->getMsaRow(i);
         QByteArray itemSeq = item->getCore();
         itemSeq.replace(ignore, U2Msa::GAP_CHAR);

@@ -121,16 +121,14 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h \
 #   Runnables / UGENE / plugins / external_tools
             src/runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h \
-            src/runnables/ugene/plugins/external_tools/BlastAllSupportDialogFiller.h \
+            src/runnables/ugene/plugins/external_tools/BlastLocalSearchDialogFiller.h \
             src/runnables/ugene/plugins/external_tools/ClustalOSupportRunDialogFiller.h \
-            src/runnables/ugene/plugins/external_tools/FormatDBDialogFiller.h \
+            src/runnables/ugene/plugins/external_tools/MakeBlastDbDialogFiller.h \
             src/runnables/ugene/plugins/external_tools/RemoteBLASTDialogFiller.h \
             src/runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.h \
             src/runnables/ugene/plugins/external_tools/SpadesGenomeAssemblyDialogFiller.h \
             src/runnables/ugene/plugins/external_tools/TCoffeeDailogFiller.h \
             src/runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h \
-#   Runnables / UGENE / plugins / ngs_classification
-            src/runnables/ugene/plugins/ngs_classification/GenomicLibraryDialogFiller.h \
 #   Runnables / UGENE / plugins / orf_marker
             src/runnables/ugene/plugins/orf_marker/OrfDialogFiller.h \
 #   Runnables / UGENE / plugins / pcr
@@ -211,7 +209,6 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/Assembling/dna_assembly/conversions/GTTestsDnaAssemblyConversions.h \
             src/tests/common_scenarios/Assembling/extract_consensus/GTTestsAssemblyExtractConsensus.h \
             src/tests/common_scenarios/Assembling/sam/GTTestsSAM.h \
-            src/tests/common_scenarios/NIAID_pipelines/GTTestsNiaidPipelines.h \
             src/tests/common_scenarios/Query_Designer/GTTestsQuerryDesigner.h \
             src/tests/common_scenarios/annotations/GTTestsAnnotations.h \
             src/tests/common_scenarios/annotations/GTTestsCreateAnnotationWidget.h \
@@ -223,17 +220,17 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/create_shortcut/GTTestsCreateShortcut.h \
             src/tests/common_scenarios/document_from_text/GTTestsDocumentFromText.h \
             src/tests/common_scenarios/dp_view/GTTestsDpView.h \
+            src/tests/common_scenarios/iqtree/GTTestsIQTree.h \
             src/tests/common_scenarios/mca_editor/GTTestsMcaEditor.h \
             src/tests/common_scenarios/msa_editor/GTTestsMsaEditor.h \
             src/tests/common_scenarios/msa_editor/align/GTTestsAlignSequenceToMsa.h \
             src/tests/common_scenarios/msa_editor/colors/GTTestsMSAEditorColors.h \
             src/tests/common_scenarios/msa_editor/consensus/GTTestsMSAEditorConsensus.h \
-            src/tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.h \
             src/tests/common_scenarios/msa_editor/edit/GTTestsMSAEditorEdit.h \
-            src/tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.h \
+            src/tests/common_scenarios/msa_editor/exclude_list/GTTestsMsaExcludeList.h \
             src/tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.h \
-            src/tests/common_scenarios/ngs_classification/metaphlan2/GTTestsMetaPhlAn2.h \
-            src/tests/common_scenarios/ngs_classification/workflow_designer/GTTestsNGS_WD.h \
+            src/tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.h \
+            src/tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.h \
             src/tests/common_scenarios/options_panel/GTTestsOptionPanel.h \
             src/tests/common_scenarios/options_panel/msa/GTTestsOptionPanelMSA.h \
             src/tests/common_scenarios/options_panel/sequence_view/GTTestsOptionPanelSequenceView.h \
@@ -403,16 +400,14 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.cpp \
 #   Runnables / UGENE / plugins / external_tools
             src/runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.cpp \
-            src/runnables/ugene/plugins/external_tools/BlastAllSupportDialogFiller.cpp \
+            src/runnables/ugene/plugins/external_tools/BlastLocalSearchDialogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/ClustalOSupportRunDialogFiller.cpp \
-            src/runnables/ugene/plugins/external_tools/FormatDBDialogFiller.cpp \
+            src/runnables/ugene/plugins/external_tools/MakeBlastDbDialogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/RemoteBLASTDialogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/SpadesGenomeAssemblyDialogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/TCoffeeDailogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.cpp \
-#   Runnables / UGENE / plugins / ngs_classification
-            src/runnables/ugene/plugins/ngs_classification/GenomicLibraryDialogFiller.cpp \
 #   Runnables / UGENE / plugins / orf_marker
             src/runnables/ugene/plugins/orf_marker/OrfDialogFiller.cpp \
 #   Runnables / UGENE / plugins / pcr
@@ -493,7 +488,6 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/Assembling/dna_assembly/conversions/GTTestsDnaAssemblyConversions.cpp \
             src/tests/common_scenarios/Assembling/extract_consensus/GTTestsAssemblyExtractConsensus.cpp \
             src/tests/common_scenarios/Assembling/sam/GTTestsSAM.cpp \
-            src/tests/common_scenarios/NIAID_pipelines/GTTestsNiaidPipelines.cpp \
             src/tests/common_scenarios/Query_Designer/GTTestsQuerryDesigner.cpp \
             src/tests/common_scenarios/annotations/GTTestsAnnotations.cpp \
             src/tests/common_scenarios/annotations/GTTestsCreateAnnotationWidget.cpp \
@@ -505,17 +499,17 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/create_shortcut/GTTestsCreateShortcut.cpp \
             src/tests/common_scenarios/document_from_text/GTTestsDocumentFromText.cpp \
             src/tests/common_scenarios/dp_view/GTTestsDpView.cpp \
+            src/tests/common_scenarios/iqtree/GTTestsIQTree.cpp \
             src/tests/common_scenarios/mca_editor/GTTestsMcaEditor.cpp \
             src/tests/common_scenarios/msa_editor/GTTestsMsaEditor.cpp \
             src/tests/common_scenarios/msa_editor/align/GTTestsAlignSequenceToMsa.cpp \
             src/tests/common_scenarios/msa_editor/colors/GTTestsMSAEditorColors.cpp \
             src/tests/common_scenarios/msa_editor/consensus/GTTestsMSAEditorConsensus.cpp \
-            src/tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.cpp \
             src/tests/common_scenarios/msa_editor/edit/GTTestsMSAEditorEdit.cpp  \
-            src/tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.cpp \
+            src/tests/common_scenarios/msa_editor/exclude_list/GTTestsMsaExcludeList.cpp \
             src/tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.cpp \
-            src/tests/common_scenarios/ngs_classification/metaphlan2/GTTestsMetaPhlAn2.cpp \
-            src/tests/common_scenarios/ngs_classification/workflow_designer/GTTestsNGS_WD.cpp \
+            src/tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.cpp \
+            src/tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.cpp \
             src/tests/common_scenarios/options_panel/GTTestsOptionPanel.cpp \
             src/tests/common_scenarios/options_panel/msa/GTTestsOptionPanelMSA.cpp \
             src/tests/common_scenarios/options_panel/sequence_view/GTTestsOptionPanelSequenceView.cpp \

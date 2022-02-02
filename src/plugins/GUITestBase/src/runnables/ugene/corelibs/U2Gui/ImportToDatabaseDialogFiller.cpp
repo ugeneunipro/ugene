@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -112,7 +112,7 @@ void ImportToDatabaseDialogFiller::commonScenario() {
                 cancel(action);
                 break;
             default:
-                GT_CHECK(false, "An unrecognized action");
+                GT_FAIL("An unrecognized action", );
         }
         CHECK_OP(os, );
         GTGlobals::sleep(200);

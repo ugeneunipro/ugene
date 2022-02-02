@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -192,7 +192,7 @@ void MSFFormat::load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QList<GObj
 
     // checksum
     U2OpStatus2Log seqCheckOs;
-    const int numRows = al->getNumRows();
+    const int numRows = al->getRowCount();
     for (int i = 0; i < numRows; i++) {
         const MultipleSequenceAlignmentRow row = al->getMsaRow(i);
         const int expectedCheckSum = msfRows[i].checksum;

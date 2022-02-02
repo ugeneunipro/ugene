@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,16 +35,14 @@ using namespace HI;
 
 #define GT_METHOD_NAME "commonScenario"
 void ConfigurationWizardFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
     GTGlobals::sleep(500);
 
     GTMouseDriver::moveTo(QPoint(dialog->pos().x() + dialog->rect().width() / 2, dialog->pos().y() + 5));
     GTMouseDriver::click();
 
-    foreach (const QString &s, radioNames) {
-        QRadioButton *b = GTWidget::findExactWidget<QRadioButton *>(os, s, dialog);
-        GTRadioButton::click(os, b);
+    for (const QString &radioButtonName : qAsConst(radioNames)) {
+        GTRadioButton::click(os, GTWidget::findRadioButton(os, radioButtonName, dialog));
     }
 
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Setup);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,19 +25,21 @@
 #include <U2Algorithm/BaseAlignmentAlgorithmsIds.h>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GObjectSelection.h>
-#include <U2Core/Task.h>
 #include <U2Core/TaskWatchdog.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/ProjectView.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include <U2View/MSAEditor.h>
+#include <U2View/MaCollapseModel.h>
 #include <U2View/MaEditorFactory.h>
+#include <U2View/MaEditorSelection.h>
 
 #include "AlignSequencesToAlignmentTask.h"
+#include "RealignSequencesInAlignmentTask.h"
 
 namespace U2 {
 
@@ -49,19 +51,84 @@ void AlignSequencesToAlignmentSupport::initViewContext(GObjectView *view) {
     auto msaEditor = qobject_cast<MSAEditor *>(view);
     SAFE_POINT(msaEditor != nullptr, "View is not MSAEditor!", );
     CHECK(msaEditor->getMaObject() != nullptr, );
+    msaEditor->registerActionProvider(this);
 
     AlignmentAlgorithmsRegistry *alignmentAlgorithmsRegistry = AppContext::getAlignmentAlgorithmsRegistry();
-    QStringList addToAlignmentAlgorithmIds = alignmentAlgorithmsRegistry->getAvailableAlgorithmIds(AddToAlignment);
-    for (const QString &algorithmId : qAsConst(addToAlignmentAlgorithmIds)) {
+
+    QStringList alignNewSequencesAlgorithmIds = alignmentAlgorithmsRegistry->getAvailableAlgorithmIds(AlignNewSequencesToAlignment);
+    for (auto &algorithmId : qAsConst(alignNewSequencesAlgorithmIds)) {
         AlignmentAlgorithm *algorithm = alignmentAlgorithmsRegistry->getAlgorithm(algorithmId);
-        auto alignAction = new AlignSequencesToAlignmentAction(this, msaEditor, algorithmId, algorithm->getActionName(), 100);
+        auto alignAction = new AlignSequencesToAlignmentAction(this, msaEditor, algorithmId, algorithm->getActionName(), 3000);
         alignAction->setIcon(QIcon(":/core/images/add_to_alignment.png"));  // TODO: add a dedicated icon per algorithm.
         alignAction->setObjectName(algorithmId);
-        alignAction->setMenuTypes({MsaEditorMenuType::ALIGN_SEQUENCES_TO_ALIGNMENT});
-        alignAction->sl_updateState();
-
+        alignAction->setMenuTypes({MsaEditorMenuType::ALIGN_NEW_SEQUENCES_TO_ALIGNMENT});
         addViewAction(alignAction);
     }
+
+    QStringList alignNewAlignmentAlgorithmIds = alignmentAlgorithmsRegistry->getAvailableAlgorithmIds(AlignNewAlignmentToAlignment);
+    for (auto &algorithmId : qAsConst(alignNewAlignmentAlgorithmIds)) {
+        AlignmentAlgorithm *algorithm = alignmentAlgorithmsRegistry->getAlgorithm(algorithmId);
+        auto alignAction = new AlignSequencesToAlignmentAction(this, msaEditor, algorithmId, algorithm->getActionName(), 3000);
+        alignAction->setIcon(QIcon(":/core/images/add_to_alignment.png"));  // TODO: add a dedicated icon per algorithm.
+        alignAction->setObjectName(algorithmId);
+        alignAction->setMenuTypes({MsaEditorMenuType::ALIGN_NEW_ALIGNMENT_TO_ALIGNMENT});
+        addViewAction(alignAction);
+    }
+
+    QStringList alignSelectedSequencesAlgorithmIds = alignmentAlgorithmsRegistry->getAvailableAlgorithmIds(AlignSelectionToAlignment);
+    for (const QString &algorithmId : qAsConst(alignSelectedSequencesAlgorithmIds)) {
+        AlignmentAlgorithm *algorithm = alignmentAlgorithmsRegistry->getAlgorithm(algorithmId);
+        auto alignAction = new AlignSelectedSequencesAction(this, msaEditor, algorithmId, algorithm->getActionName(), 3000);
+        alignAction->setIcon(QIcon(":/core/images/realign_some_sequences.png"));  // TODO: add a dedicated icon per algorithm.
+        alignAction->setObjectName(algorithmId);
+        alignAction->setMenuTypes({MsaEditorMenuType::ALIGN_SELECTED_SEQUENCES_TO_ALIGNMENT});
+        addViewAction(alignAction);
+    }
+}
+
+/////////////////////////////////////
+/// AlignSequencesToAlignmentAction
+/////////////////////////////////////
+BaseObjectViewAlignmentAction::BaseObjectViewAlignmentAction(QObject *parent, MSAEditor *view, const QString &_algorithmId, const QString &text, int order)
+    : GObjectViewAction(parent, view, text, order), msaEditor(view), algorithmId(_algorithmId) {
+}
+
+MSAEditor *BaseObjectViewAlignmentAction::getEditor() const {
+    return msaEditor;
+}
+
+/////////////////////////////////////
+/// AlignSequencesToAlignmentAction
+/////////////////////////////////////
+AlignSequencesToAlignmentAction::AlignSequencesToAlignmentAction(QObject *parent, MSAEditor *view, const QString &algorithmId, const QString &text, int order)
+    : BaseObjectViewAlignmentAction(parent, view, algorithmId, text, order) {
+    connect(this, &QAction::triggered, this, &BaseObjectViewAlignmentAction::sl_activate);
+
+    MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
+    connect(msaObject, &MultipleSequenceAlignmentObject::si_lockedStateChanged, this, &AlignSequencesToAlignmentAction::sl_updateState);
+    connect(msaObject, &MultipleSequenceAlignmentObject::si_alignmentChanged, this, &AlignSequencesToAlignmentAction::sl_updateState);
+
+    sl_updateState();
+}
+
+void AlignSequencesToAlignmentAction::sl_updateState() {
+    auto msaObject = msaEditor->getMaObject();
+    if (msaObject == nullptr || msaObject->isStateLocked()) {
+        setEnabled(false);
+        return;
+    }
+    bool canBeUsedWithEmptyObject = algorithmId == BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE;
+    if (msaObject->getMultipleAlignment()->isEmpty() && !canBeUsedWithEmptyObject) {
+        setEnabled(false);
+        return;
+    }
+    AlignmentAlgorithmsRegistry *alignmentAlgorithmsRegistry = AppContext::getAlignmentAlgorithmsRegistry();
+    AlignmentAlgorithm *algorithm = alignmentAlgorithmsRegistry->getAlgorithm(algorithmId);
+    if (!algorithm->checkAlphabet(msaObject->getAlphabet())) {
+        setEnabled(false);
+        return;
+    }
+    setEnabled(true);
 }
 
 void AlignSequencesToAlignmentAction::sl_activate() {
@@ -97,7 +164,7 @@ void AlignSequencesToAlignmentAction::sl_activate() {
             AppContext::getTaskScheduler()->registerTopLevelTask(task);
         }
     } else {
-        QString filter = DialogUtils::prepareDocumentsFileFilterByObjTypes({ GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GObjectTypes::SEQUENCE }, true);
+        QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GObjectTypes::SEQUENCE});
         LastUsedDirHelper lod;
         QStringList urls = U2FileDialog::getOpenFileNames(nullptr, tr("Open file with sequences"), lod.dir, filter);
 
@@ -110,36 +177,29 @@ void AlignSequencesToAlignmentAction::sl_activate() {
     }
 }
 
-AlignSequencesToAlignmentAction::AlignSequencesToAlignmentAction(QObject *parent, MSAEditor *view, const QString &_algorithmId, const QString &text, int order)
-    : GObjectViewAction(parent, view, text, order), msaEditor(view), algorithmId(_algorithmId) {
-    MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
-    connect(msaObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_updateState()));
-    connect(msaObject, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), SLOT(sl_updateState()));
-    connect(this, SIGNAL(triggered()), this, SLOT(sl_activate()));
+/////////////////////////////////////
+/// AlignSelectedSequencesAction
+/////////////////////////////////////
+AlignSelectedSequencesAction::AlignSelectedSequencesAction(QObject *parent, MSAEditor *view, const QString &algorithmId, const QString &text, int order)
+    : BaseObjectViewAlignmentAction(parent, view, algorithmId, text, order) {
+    connect(this, &QAction::triggered, this, &BaseObjectViewAlignmentAction::sl_activate);
+    connect(msaEditor->alignSelectedSequencesToAlignmentAction,
+            &QAction::changed,
+            this,
+            [this]() { setEnabled(msaEditor->alignSelectedSequencesToAlignmentAction->isEnabled()); });
+    setEnabled(msaEditor->alignSelectedSequencesToAlignmentAction->isEnabled());
 }
 
-MSAEditor *AlignSequencesToAlignmentAction::getEditor() const {
-    return msaEditor;
-}
-
-void AlignSequencesToAlignmentAction::sl_updateState() {
+void AlignSelectedSequencesAction::sl_activate() {
     auto msaObject = msaEditor->getMaObject();
-    if (msaObject == nullptr || msaObject->isStateLocked()) {
-        setEnabled(false);
-        return;
-    }
-    bool canBeUsedWithEmptyObject = algorithmId == BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE;
-    if (msaObject->getMultipleAlignment()->isEmpty() && !canBeUsedWithEmptyObject) {
-        setEnabled(false);
-        return;
-    }
-    AlignmentAlgorithmsRegistry *alignmentAlgorithmsRegistry = AppContext::getAlignmentAlgorithmsRegistry();
-    AlignmentAlgorithm *algorithm = alignmentAlgorithmsRegistry->getAlgorithm(algorithmId);
-    if (!algorithm->checkAlphabet(msaObject->getAlphabet())) {
-        setEnabled(false);
-        return;
-    }
-    setEnabled(true);
+    SAFE_POINT(!msaObject->isStateLocked(), "The action must never be called for a readonly object!", );
+
+    const MaEditorSelection &selection = msaEditor->getSelection();
+    QList<int> selectedMaRowIndexes = msaEditor->getCollapseModel()->getMaRowIndexesFromSelectionRects(selection.getRectList());
+    QList<qint64> selectedRowIds = msaObject->getRowIdsByRowIndexes(selectedMaRowIndexes);
+    auto realignTask = new RealignSequencesInAlignmentTask(msaObject, selectedRowIds.toSet(), algorithmId);
+    TaskWatchdog::trackResourceExistence(msaObject, realignTask, tr("A problem occurred during realigning sequences. The multiple alignment is no more available."));
+    AppContext::getTaskScheduler()->registerTopLevelTask(realignTask);
 }
 
 }  // namespace U2

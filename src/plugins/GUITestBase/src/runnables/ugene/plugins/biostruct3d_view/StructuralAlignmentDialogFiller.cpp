@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,13 +34,12 @@ StructuralAlignmentDialogFiller::StructuralAlignmentDialogFiller(HI::GUITestOpSt
 
 #define GT_METHOD_NAME "commonScenario"
 void StructuralAlignmentDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     if (!chainIndexes.isEmpty()) {
-        QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "chainCombo", dialog));
-        CHECK_SET_ERR(combo != nullptr, "chainCombo not found!");
-        foreach (const QString &curString, chainIndexes) {
+        QWidget *refEditor = GTWidget::findWidget(os, "ref_editor", dialog);
+        auto combo = GTWidget::findComboBox(os, "chainCombo", refEditor);
+        for (const QString &curString : qAsConst(chainIndexes)) {
             int index = combo->findText(curString, Qt::MatchContains);
             GT_CHECK(index != -1, "Index '" + curString + "' was not found");
         }

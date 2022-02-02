@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -298,7 +298,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature");
+    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
 }
 
@@ -312,7 +312,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature");
+    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));

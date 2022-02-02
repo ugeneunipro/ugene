@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -61,26 +61,24 @@ static QString makeFilePathCanonical(const QString &originalUrl) {
         result = QFileInfo(result).absoluteFilePath();
     }
 
-#ifdef Q_OS_WIN
     bool isSambaPath = false;
-    if (result.startsWith("//") && prefix.isEmpty()) {
+    if (isOsWindows() && result.startsWith("//") && prefix.isEmpty()) {
         // keep Samba share designation
         prefix = "//";
         isSambaPath = true;
     }
-#endif
 
     QStringList parts = result.split('/', QString::SkipEmptyParts);
-    if (parts.size() > 0) {
+    if (!parts.empty()) {
         QStringList canonicalParts;
-#ifdef Q_OS_WIN
-        // append drive spec letter or Samba server name to the prefix
-        if (isSambaPath) {
-            prefix += parts.takeFirst();
-        } else if (parts.at(0).endsWith(':') && parts.at(0).length() == 2 && prefix.isEmpty()) {  // Windows drive letter designation
-            prefix = parts.takeFirst();
+        if (isOsWindows()) {
+            // append drive spec letter or Samba server name to the prefix
+            if (isSambaPath) {
+                prefix += parts.takeFirst();
+            } else if (parts.at(0).endsWith(':') && parts.at(0).length() == 2 && prefix.isEmpty()) {  // Windows drive letter designation
+                prefix = parts.takeFirst();
+            }
         }
-#endif
         // get rid of redundant '.' and '..' now
         QStringListIterator it(parts);
         while (it.hasNext()) {
@@ -125,7 +123,7 @@ GUrl::GUrl(const QString &_urlString) {
 }
 
 // constructs url specified by string. The type provided as param
-GUrl::GUrl(const QString &_urlString, const GUrlType& _type) {
+GUrl::GUrl(const QString &_urlString, const GUrlType &_type) {
     urlString = _urlString;
     type = _type;
     if (type == GUrl_File) {

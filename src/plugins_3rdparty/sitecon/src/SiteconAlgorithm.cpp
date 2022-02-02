@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -66,7 +66,7 @@ QVector<PositionStats> SiteconAlgorithm::calculateDispersionAndAverage(const Mul
     const QList<DiPropertySitecon *> &props = config.props;
     assert(!props.isEmpty());
     QVector<PositionStats> matrix;
-    int N = ma->getNumRows();
+    int N = ma->getRowCount();
     for (int i = 0, n = ma->getLength() - 1; i < n && !ts.cancelFlag; i++) {  // for every di-nucl
         PositionStats posResult;
         foreach (DiPropertySitecon *p, props) {  // for every property
@@ -77,7 +77,7 @@ QVector<PositionStats> SiteconAlgorithm::calculateDispersionAndAverage(const Mul
             average /= N;
 
             qreal dispersion = 0;  // dispersion in a column
-            for (int j = 0; j < ma->getNumRows(); j++) {  // collect di-position stat for all sequence in alignment
+            for (int j = 0; j < ma->getRowCount(); j++) {  // collect di-position stat for all sequence in alignment
                 const MultipleSequenceAlignmentRow row = ma->getMsaRow(j);
                 char c1 = row->charAt(i);
                 char c2 = row->charAt(i + 1);
@@ -151,7 +151,7 @@ QVector<qreal> SiteconAlgorithm::calculateFirstTypeError(const MultipleSequenceA
 
     U2OpStatus2Log os;
     int maLen = ma->getLength();
-    for (int i = 0; i < ma->getNumRows() && !ts.cancelFlag; i++) {
+    for (int i = 0; i < ma->getRowCount() && !ts.cancelFlag; i++) {
         const MultipleSequenceAlignmentRow row = ma->getMsaRow(i);
         MultipleSequenceAlignment subMA = ma->getCopy();
         subMA->removeRow(i, os);
@@ -244,7 +244,7 @@ void SiteconAlgorithm::calculateACGTContent(const MultipleSequenceAlignment &ma,
     assert(ma->getAlphabet()->isNucleic());
     bs.acgtContent[0] = bs.acgtContent[1] = bs.acgtContent[2] = bs.acgtContent[3] = 0;
     int maLen = ma->getLength();
-    int total = ma->getNumRows() * ma->getLength();
+    int total = ma->getRowCount() * ma->getLength();
     foreach (const MultipleSequenceAlignmentRow &row, ma->getMsaRows()) {
         for (int i = 0; i < maLen; i++) {
             char c = row->charAt(i);
@@ -372,7 +372,7 @@ int SiteconAlgorithm::calculateWeights(const MultipleSequenceAlignment &ma, QVec
 
     // Part1
     // 1. compute props ave on random sequence
-    int rndSeqLen = modelSize * ma->getNumRows() + 10;
+    int rndSeqLen = modelSize * ma->getRowCount() + 10;
     QByteArray rndSeqArray = generateRandomSequence(settings.acgtContent, rndSeqLen, si);
     const char *rndSeq = rndSeqArray.constData();
 
@@ -430,7 +430,7 @@ int SiteconAlgorithm::calculateWeights(const MultipleSequenceAlignment &ma, QVec
             const DiStat &ds = ps[j];
             qreal maxProp = 100;
             if (ds.sdeviation < devThreshold) {
-                for (int k = 0; k < ma->getNumRows(); k++) {
+                for (int k = 0; k < ma->getRowCount(); k++) {
                     char c1 = ma->charAt(k, i);
                     char c2 = ma->charAt(k, i + 1);
 

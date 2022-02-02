@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -75,12 +75,12 @@ const MultipleSequenceAlignmentRow MultipleSequenceAlignmentObject::getMsaRow(in
     return getRow(row).dynamicCast<MultipleSequenceAlignmentRow>();
 }
 
-void MultipleSequenceAlignmentObject::updateGapModel(U2OpStatus &os, const U2MsaMapGapModel &rowsGapModel) {
+void MultipleSequenceAlignmentObject::updateGapModel(U2OpStatus &os, const QMap<qint64, QVector<U2MsaGap>> &rowsGapModel) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
     const MultipleSequenceAlignment msa = getMultipleAlignment();
 
-    const QList<qint64> rowIds = msa->getRowsIds();
+    QList<qint64> rowIds = msa->getRowsIds();
     QList<qint64> modifiedRowIds;
     foreach (qint64 rowId, rowsGapModel.keys()) {
         if (!rowIds.contains(rowId)) {
@@ -104,11 +104,11 @@ void MultipleSequenceAlignmentObject::updateGapModel(const QList<MultipleSequenc
 
     SAFE_POINT(oldRows.count() == sourceRows.count(), "Different rows count", );
 
-    U2MsaMapGapModel newGapModel;
+    QMap<qint64, QVector<U2MsaGap>> newGapModel;
     QList<MultipleSequenceAlignmentRow>::ConstIterator oldRowsIterator = oldRows.begin();
     QList<MultipleSequenceAlignmentRow>::ConstIterator sourceRowsIterator = sourceRows.begin();
     for (; oldRowsIterator != oldRows.end(); oldRowsIterator++, sourceRowsIterator++) {
-        newGapModel[(*oldRowsIterator)->getRowId()] = (*sourceRowsIterator)->getGapModel();
+        newGapModel[(*oldRowsIterator)->getRowId()] = (*sourceRowsIterator)->getGaps();
     }
 
     U2OpStatus2Log os;
@@ -136,11 +136,11 @@ void MultipleSequenceAlignmentObject::crop(const U2Region &columnRange) {
     crop(getRowIds(), columnRange);
 }
 
-void MultipleSequenceAlignmentObject::updateRow(U2OpStatus &os, int rowIdx, const QString &name, const QByteArray &seqBytes, const U2MsaRowGapModel &gapModel) {
+void MultipleSequenceAlignmentObject::updateRow(U2OpStatus &os, int rowIdx, const QString &name, const QByteArray &seqBytes, const QVector<U2MsaGap> &gapModel) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
     const MultipleSequenceAlignment msa = getMultipleAlignment();
-    SAFE_POINT(rowIdx >= 0 && rowIdx < msa->getNumRows(), "Invalid row index", );
+    SAFE_POINT(rowIdx >= 0 && rowIdx < msa->getRowCount(), "Invalid row index", );
     qint64 rowId = msa->getRow(rowIdx)->getRowId();
 
     MsaDbiUtils::updateRowContent(entityRef, rowId, seqBytes, gapModel, os);
@@ -214,7 +214,7 @@ void MultipleSequenceAlignmentObject::deleteColumnsWithGaps(U2OpStatus &os, int 
     CHECK(regionsToDelete.first().length != getLength(), );
 
     for (int n = regionsToDelete.size(), i = n - 1; i >= 0; i--) {
-        removeRegion(regionsToDelete[i].startPos, 0, regionsToDelete[i].length, getNumRows(), true, false);
+        removeRegion(regionsToDelete[i].startPos, 0, regionsToDelete[i].length, getRowCount(), true, false);
         os.setProgress(100 * (n - i) / n);
     }
     updateCachedMultipleAlignment();

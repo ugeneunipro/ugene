@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,6 @@
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2Region.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/SeqPasterWidgetController.h>
 
 class Ui_EditSequenceDialog;

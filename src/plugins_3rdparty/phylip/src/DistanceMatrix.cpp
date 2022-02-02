@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,7 +44,7 @@ void DistanceMatrix::calculateOutOfAlignment(const MultipleSequenceAlignment &ma
     try {
         malignment = &ma;
         int index = 0;
-        int size = ma->getNumRows();
+        int size = ma->getRowCount();
         this->size = size;
         printdata = false;
 
@@ -68,7 +68,7 @@ void DistanceMatrix::calculateOutOfAlignment(const MultipleSequenceAlignment &ma
 
             rawMatrix.append(row);
         }
-        spp = ma->getNumRows();
+        spp = ma->getRowCount();
         sites = ma->getLength();
         chars = sites;
         nonodes = 2 * sites - 1;

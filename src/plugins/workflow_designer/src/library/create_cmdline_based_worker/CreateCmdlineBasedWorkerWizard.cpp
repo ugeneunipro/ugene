@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -251,11 +251,11 @@ void CreateCmdlineBasedWorkerWizard::init() {
     setOption(QWizard::HaveHelpButton, true);
     new U2::HelpButton(this, this->button(QWizard::HelpButton), "28967044");
 
-    DialogUtils::setWizardMinimumSize(this, QSize(780, 350));
+    WizardUtils::setWizardMinimumSize(this, QSize(780, 350));
 }
 
 ExternalProcessConfig *CreateCmdlineBasedWorkerWizard::createActualConfig() const {
-    ExternalProcessConfig *config = new ExternalProcessConfig();
+    auto config = new ExternalProcessConfig();
     config->id = field(WORKER_ID_FIELD).toString();
     config->name = field(WORKER_NAME_FIELD).toString();
     config->description = removeEmptyLines(field(WORKER_DESCRIPTION_FIELD).toString());

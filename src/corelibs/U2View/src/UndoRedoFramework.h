@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,17 +31,14 @@ namespace U2 {
 
 class MultipleAlignmentObject;
 
-class MsaUndoRedoFramework : public QObject {
+class MaUndoRedoFramework : public QObject {
     Q_OBJECT
 public:
-    MsaUndoRedoFramework(QObject *p, MultipleAlignmentObject *_maObj);
+    MaUndoRedoFramework(QObject *parent, MultipleAlignmentObject *maObject);
 
-    QAction *getUndoAction() const {
-        return undoAction;
-    }
-    QAction *getRedoAction() const {
-        return redoAction;
-    }
+    QAction *getUndoAction() const;
+
+    QAction *getRedoAction() const;
 
 private slots:
     void sl_updateUndoRedoState();
@@ -53,14 +50,11 @@ private slots:
 private:
     void checkUndoRedoEnabled();
 
-    MultipleAlignmentObject *maObj;
-    bool stateComplete;
+    MultipleAlignmentObject *maObject = nullptr;
+    bool stateComplete = true;
 
-    QAction *undoAction;
-    QAction *redoAction;
-
-    qint64 undoStepsAvailable;
-    qint64 redoStepsAvailable;
+    QAction *undoAction = nullptr;
+    QAction *redoAction = nullptr;
 };
 
 }  // namespace U2

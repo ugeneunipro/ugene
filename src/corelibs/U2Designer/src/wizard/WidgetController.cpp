@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,12 +41,13 @@ WidgetController::~WidgetController() {
 /************************************************************************/
 LabeledPropertyWidget::LabeledPropertyWidget(const QString &labelText, PropertyWidget *widget, QWidget *parent)
     : QWidget(parent) {
-    QHBoxLayout *layout = new QHBoxLayout(this);
+    setObjectName(labelText + "_propertyWidget");
+    auto layout = new QHBoxLayout(this);
     setLayout(layout);
 
     label = new QLabel(labelText, this);
     label->setObjectName(labelText + " label");
-    QWidget *mainWidget = widget->findChild<QWidget *>("mainWidget");
+    auto mainWidget = widget->findChild<QWidget *>("mainWidget");
     if (mainWidget != nullptr) {
         mainWidget->setObjectName(labelText + " widget");
     }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,7 +56,7 @@ static bool maContainsPattern(const MultipleAlignmentObject *maObject, const QSt
     const MultipleAlignmentData *mData = maObject->getMultipleAlignment().data();
     const QByteArray searchStr = pattern.toUpper().toLatin1();
 
-    for (int i = 0, n = mData->getNumRows(); i < n; ++i) {
+    for (int i = 0, n = mData->getRowCount(); i < n; ++i) {
         const MultipleAlignmentRow &row = mData->getRow(i);
         for (int j = 0; j < (mData->getLength() - searchStr.length() + 1); ++j) {
             char c = row->charAt(j);

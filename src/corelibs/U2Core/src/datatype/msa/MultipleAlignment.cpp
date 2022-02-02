@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,9 +35,6 @@ MultipleAlignment::MultipleAlignment(MultipleAlignmentData *maData)
     : maData(maData) {
 }
 
-MultipleAlignment::~MultipleAlignment() {
-}
-
 MultipleAlignmentData *MultipleAlignment::data() const {
     return maData.data();
 }
@@ -58,10 +55,11 @@ const MultipleAlignmentData *MultipleAlignment::operator->() const {
     return maData.data();
 }
 
-MultipleAlignmentData::MultipleAlignmentData(const QString &name, const DNAAlphabet *alphabet, const QList<MultipleAlignmentRow> &rows)
-    : alphabet(alphabet),
-      rows(rows),
-      length(0) {
+MultipleAlignmentData::MultipleAlignmentData(const MultipleAlignmentDataType &_type,
+                                             const QString &name,
+                                             const DNAAlphabet *_alphabet,
+                                             const QList<MultipleAlignmentRow> &_rows)
+    : type(_type), alphabet(_alphabet), rows(_rows) {
     MaStateCheck check(this);
     Q_UNUSED(check);
 
@@ -71,9 +69,6 @@ MultipleAlignmentData::MultipleAlignmentData(const QString &name, const DNAAlpha
     for (int i = 0, n = rows.size(); i < n; i++) {
         length = qMax(length, rows[i]->getRowLengthWithoutTrailing());  // TODO: implement or replace the method for row length
     }
-}
-
-MultipleAlignmentData::~MultipleAlignmentData() {
 }
 
 void MultipleAlignmentData::clear() {
@@ -128,22 +123,22 @@ void MultipleAlignmentData::setLength(int newLength) {
     }
 
     U2OpStatus2Log os;
-    for (int i = 0, n = getNumRows(); i < n; i++) {
+    for (int i = 0, n = getRowCount(); i < n; i++) {
         rows[i]->crop(os, 0, newLength);
         CHECK_OP(os, );
     }
     length = newLength;
 }
 
-int MultipleAlignmentData::getNumRows() const {
+int MultipleAlignmentData::getRowCount() const {
     return rows.size();
 }
 
-U2MsaListGapModel MultipleAlignmentData::getGapModel() const {
-    U2MsaListGapModel gapModel;
+QList<QVector<U2MsaGap>> MultipleAlignmentData::getGapModel() const {
+    QList<QVector<U2MsaGap>> gapModel;
     const int alignmentLength = getLength();
     for (const MultipleAlignmentRow &row : qAsConst(rows)) {
-        gapModel << row->getGapModel();
+        gapModel << row->getGaps();
         const int rowPureLength = row->getRowLengthWithoutTrailing();
         if (rowPureLength < alignmentLength) {
             gapModel.last() << U2MsaGap(rowPureLength, alignmentLength - rowPureLength);
@@ -288,11 +283,11 @@ int MultipleAlignmentData::getRowIndexByRowId(qint64 rowId, U2OpStatus &os) cons
 }
 
 void MultipleAlignmentData::renameRow(int rowIndex, const QString &name) {
-    SAFE_POINT(rowIndex >= 0 && rowIndex < getNumRows(),
+    SAFE_POINT(rowIndex >= 0 && rowIndex < getRowCount(),
                QString("Incorrect row index '%1' was passed to MultipleAlignmentData::renameRow: "
                        "the number of rows is '%2'")
                    .arg(rowIndex)
-                   .arg(getNumRows()), );
+                   .arg(getRowCount()), );
     SAFE_POINT(!name.isEmpty(),
                "Incorrect parameter 'name' was passed to MultipleAlignmentData::renameRow: "
                "Can't set the name of a row to an empty string", );
@@ -300,16 +295,16 @@ void MultipleAlignmentData::renameRow(int rowIndex, const QString &name) {
 }
 
 void MultipleAlignmentData::setRowId(int rowIndex, qint64 rowId) {
-    SAFE_POINT(rowIndex >= 0 && rowIndex < getNumRows(), "Invalid row index", );
+    SAFE_POINT(rowIndex >= 0 && rowIndex < getRowCount(), "Invalid row index", );
     rows[rowIndex]->setRowId(rowId);
 }
 
 void MultipleAlignmentData::removeRow(int rowIndex, U2OpStatus &os) {
-    if (rowIndex < 0 || rowIndex >= getNumRows()) {
+    if (rowIndex < 0 || rowIndex >= getRowCount()) {
         coreLog.trace(QString("Internal error: incorrect parameters was passed to MultipleAlignmentData::removeRow, "
                               "rowIndex '%1', the number of rows is '%2'")
                           .arg(rowIndex)
-                          .arg(getNumRows()));
+                          .arg(getRowCount()));
         os.setError("Failed to remove a row");
         return;
     }
@@ -325,7 +320,7 @@ void MultipleAlignmentData::removeRow(int rowIndex, U2OpStatus &os) {
 }
 
 void MultipleAlignmentData::removeChars(int rowNumber, int pos, int n, U2OpStatus &os) {
-    if (rowNumber >= getNumRows() || rowNumber < 0 || pos > length || pos < 0 || n < 0) {
+    if (rowNumber >= getRowCount() || rowNumber < 0 || pos > length || pos < 0 || n < 0) {
         coreLog.trace(QString("Internal error: incorrect parameters were passed "
                               "to MultipleAlignmentData::removeChars: row index '%1', pos '%2', count '%3'")
                           .arg(rowNumber)
@@ -376,24 +371,30 @@ void MultipleAlignmentData::moveRowsBlock(int startRow, int numRows, int delta) 
     }
 }
 
-bool MultipleAlignmentData::operator==(const MultipleAlignmentData &other) const {
-    const bool lengthsAreEqual = (length == other.length);
-    const bool alphabetsAreEqual = (alphabet == other.alphabet);
-    bool rowsAreEqual = (rows.size() == other.rows.size());
-    for (int i = 0; i < rows.size() && rowsAreEqual; i++) {
-        rowsAreEqual &= (*rows[i] == *other.rows[i]);
+bool MultipleAlignmentData::isEqual(const MultipleAlignmentData &other) const {
+    CHECK(this != &other, true);
+    CHECK(type == other.type, false);
+    CHECK(alphabet == other.alphabet, false);
+    CHECK(length == other.length, false);
+    CHECK(rows.size() == other.rows.size(), false);
+    for (int i = 0; i < rows.size(); i++) {
+        CHECK(rows[i]->isEqual(*other.rows[i]), false);
     }
-    return lengthsAreEqual && alphabetsAreEqual && rowsAreEqual;
+    return true;
+}
+
+bool MultipleAlignmentData::operator==(const MultipleAlignmentData &other) const {
+    return isEqual(other);
 }
 
 bool MultipleAlignmentData::operator!=(const MultipleAlignmentData &other) const {
-    return !operator==(other);
+    return !isEqual(other);
 }
 
 void MultipleAlignmentData::check() const {
 #ifdef DEBUG
-    assert(getNumRows() != 0 || length == 0);
-    for (int i = 0, n = getNumRows(); i < n; i++) {
+    assert(getRowCount() != 0 || length == 0);
+    for (int i = 0, n = getRowCount(); i < n; i++) {
         assert(rows[i].getCoreEnd() <= length);
     }
 #endif
@@ -425,7 +426,7 @@ void MultipleAlignmentData::addRowPrivate(const MultipleAlignmentRow &row, qint6
     Q_UNUSED(check);
 
     length = qMax(rowLenWithTrailingGaps, length);
-    int idx = rowIndex == -1 ? getNumRows() : qBound(0, rowIndex, getNumRows());
+    int idx = rowIndex == -1 ? getRowCount() : qBound(0, rowIndex, getRowCount());
     rows.insert(idx, row);
 }
 

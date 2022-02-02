@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,27 +38,45 @@ protected:
     void initViewContext(GObjectView *view) override;
 };
 
-class AlignSequencesToAlignmentAction : public GObjectViewAction {
+/** Base action for all 'align-to-alignment' actions. */
+class BaseObjectViewAlignmentAction : public GObjectViewAction {
     Q_OBJECT
 public:
-    AlignSequencesToAlignmentAction(QObject *parent, MSAEditor *msaEditor, const QString &algorithmId, const QString &text, int order);
+    BaseObjectViewAlignmentAction(QObject *parent, MSAEditor *msaEditor, const QString &algorithmId, const QString &text, int order);
 
     /** Returns MSA editor this action is created for. */
     MSAEditor *getEditor() const;
 
 public slots:
-    void sl_updateState();
+    virtual void sl_activate() = 0;
 
-    /**
-     * Runs alignment selected alignment algorithm.
-     * Finds the selected algorithm using the sender action data.
-     */
-    void sl_activate();
-
-private:
+protected:
     MSAEditor *msaEditor = nullptr;
 
     QString algorithmId;
+};
+
+class AlignSequencesToAlignmentAction : public BaseObjectViewAlignmentAction {
+    Q_OBJECT
+public:
+    AlignSequencesToAlignmentAction(QObject *parent, MSAEditor *msaEditor, const QString &algorithmId, const QString &text, int order);
+
+public slots:
+
+    void sl_updateState();
+
+    /** Runs AlignNewSequencesToAlignment or AlignNewAlignmentToAlignment algorithm. */
+    void sl_activate() override;
+};
+
+class AlignSelectedSequencesAction : public BaseObjectViewAlignmentAction {
+    Q_OBJECT
+public:
+    AlignSelectedSequencesAction(QObject *parent, MSAEditor *msaEditor, const QString &algorithmId, const QString &text, int order);
+public slots:
+
+    /** Runs AlignSelectionToAlignment algorithm. */
+    void sl_activate() override;
 };
 
 }  // namespace U2

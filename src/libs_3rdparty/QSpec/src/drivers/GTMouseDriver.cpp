@@ -31,18 +31,13 @@ bool GTMouseDriver::click(Qt::MouseButton button) {
     DRIVER_CHECK(press(button), "Button could not be pressed");
     DRIVER_CHECK(release(button), "Button could not be released");
     GTThread::waitForMainThread();
-    GTGlobals::sleep(100);  // Adding extra sleep to avoid occasional doubleclicks
     return true;
 }
 
 #ifndef Q_OS_DARWIN
 bool GTMouseDriver::click(const QPoint &p, Qt::MouseButton button) {
     DRIVER_CHECK(moveTo(p), "Mouse move was failed");
-    DRIVER_CHECK(press(button), "Button could not be pressed");
-    DRIVER_CHECK(release(button), "Button could not be released");
-    GTThread::waitForMainThread();
-    GTGlobals::sleep(100);  // Adding extra sleep to avoid occasional doubleclicks
-    return true;
+    return click(button);
 }
 #endif
 
@@ -57,11 +52,8 @@ bool isFarEnoughToStartDnd(const QPoint &start, const QPoint &end) {
 }  // namespace
 
 bool GTMouseDriver::dragAndDrop(const QPoint &start, const QPoint &end) {
+    GTGlobals::sleep(QApplication::doubleClickInterval() + 1);  // Protect from double-clicks.
     DRIVER_CHECK(moveTo(start), QString("Mouse was not moved to the start point (%1, %2)").arg(start.x()).arg(start.y()));
-
-    // Wait to avoid next press to be merged with a possible click in user code into a double click.
-    GTGlobals::sleep(500);
-
     DRIVER_CHECK(press(), "Mouse button was not be pressed");
 
 // After Linux version was improved the Windows has a lot of regressions. Keeping Windows version with no changes below during investigation.
@@ -89,11 +81,12 @@ bool GTMouseDriver::selectArea(const QPoint &start, const QPoint &end) {
 bool GTMouseDriver::doubleClick() {
     DRIVER_CHECK(press(Qt::LeftButton), "Left button could not be pressed on first click");
     DRIVER_CHECK(release(Qt::LeftButton), "Left button could not be released on first click");
-    GTGlobals::sleep(100);
+    // Use an interval below "doubleClickInterval" between clicks because we want it to be a "double-click".
+    GTGlobals::sleep(QApplication::doubleClickInterval() / 2);
 
     DRIVER_CHECK(press(Qt::LeftButton), "Left button could not be pressed on second click");
     DRIVER_CHECK(release(Qt::LeftButton), "Left button could not be released on second click");
-    GTGlobals::sleep(250);
+    GTThread::waitForMainThread();
     return true;
 }
 #endif

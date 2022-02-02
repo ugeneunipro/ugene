@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@ namespace U2 {
 
 class U2DESIGNER_EXPORT DesignerUtils {
 public:
-    static QString getSchemaFileFilter(bool any, bool addOldExt = false);
+    static QString getSchemaFileFilter();
 };  // DesignerUtils
 
 }  // namespace U2

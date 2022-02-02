@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -51,7 +51,7 @@ char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleAlignment &ma,
         if (pc == U2Msa::GAP_CHAR) {
             pc = defChar;
         }
-        int nSeq = (seqIdx.isEmpty() ? ma->getNumRows() : seqIdx.size());
+        int nSeq = (seqIdx.isEmpty() ? ma->getRowCount() : seqIdx.size());
         for (int s = 1; s < nSeq; s++) {
             char c = ma->getRow(seqIdx.isEmpty() ? s : seqIdx[s])->charAt(pos);
             if (c != pc) {
@@ -75,7 +75,7 @@ char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleAlignment &ma,
         static int maxWeakGroupLen = 6;
 
         QByteArray currentGroup;  // TODO: optimize 'currentGroup' related code!
-        int nSeq = (seqIdx.isEmpty() ? ma->getNumRows() : seqIdx.size());
+        int nSeq = (seqIdx.isEmpty() ? ma->getRowCount() : seqIdx.size());
         for (int s = 0; s < nSeq; s++) {
             char c = ma->getRow(seqIdx.isEmpty() ? s : seqIdx[s])->charAt(pos);
             if (!currentGroup.contains(c)) {

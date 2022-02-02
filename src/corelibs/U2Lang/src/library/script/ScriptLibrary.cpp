@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -510,7 +510,7 @@ QScriptValue WorkflowScriptLibrary::getSequenceFromAlignment(QScriptContext *ctx
     if (!ok) {
         return ctx->throwError(QObject::tr("Second argument must be a number"));
     }
-    if (row < 0 || row >= align->getNumRows()) {
+    if (row < 0 || row >= align->getRowCount()) {
         return ctx->throwError(QObject::tr("Row is out of range"));
     }
 
@@ -576,7 +576,7 @@ QScriptValue WorkflowScriptLibrary::findInAlignment(QScriptContext *ctx, QScript
             }
             row++;
         }
-        if (row == aln->getNumRows()) {
+        if (row == aln->getRowCount()) {
             row = -1;
         }
     }
@@ -681,7 +681,7 @@ QScriptValue WorkflowScriptLibrary::rowNum(QScriptContext *ctx, QScriptEngine *e
     if (aln->isEmpty()) {
         return ctx->throwError(QObject::tr("Invalid alignment"));
     }
-    int num = aln->getNumRows();
+    int num = aln->getRowCount();
 
     QScriptValue calee = ctx->callee();
     calee.setProperty("res", engine->newVariant(num));

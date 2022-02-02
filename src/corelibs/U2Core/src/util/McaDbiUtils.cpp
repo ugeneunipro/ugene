@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -124,7 +124,7 @@ void McaDbiUtils::updateMca(U2OpStatus &os, const U2EntityRef &mcaRef, const Mul
     // Add rows that are stored in memory, but are not present in the database,
     // remember the rows order
     QList<qint64> rowsOrder;
-    for (int i = 0, n = mca->getNumRows(); i < n; ++i) {
+    for (int i = 0, n = mca->getRowCount(); i < n; ++i) {
         const MultipleChromatogramAlignmentRow mcaRow = mca->getMcaRow(i);
         U2McaRow dbRow = mcaRow->getRowDbInfo();
 
@@ -142,7 +142,7 @@ void McaDbiUtils::updateMca(U2OpStatus &os, const U2EntityRef &mcaRef, const Mul
             dbRow.sequenceId = sequenceRef.entityId;
             dbRow.gstart = 0;
             dbRow.gend = mcaRow->getRowLength();
-            dbRow.gaps = mcaRow->getGapModel();
+            dbRow.gaps = mcaRow->getGaps();
 
             McaDbiUtils::addRow(os, mcaRef, -1, dbRow);
             CHECK_OP(os, );

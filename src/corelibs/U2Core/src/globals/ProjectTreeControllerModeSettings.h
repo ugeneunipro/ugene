@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -83,7 +83,7 @@ public:
     QSet<GObjectConstraints *> objectConstraints;  // show only objects that fits constraints
     QList<QPointer<GObject>> excludeObjectList;  // do not show these objects
     QList<QPointer<Document>> excludeDocList;  // do not show these documents
-    QStringList tokensToShow;  // show documents/objects with all of tokens in a name
+    QStringList tokensToShow;  // show documents/objects with all tokens in a name
     bool allowMultipleSelection;  // use multiple selection in tree
     TriState readOnlyFilter;  // unknown->all, true->filter(exclude) readonly, false -> keep only readonly
     LoadDocumentTaskProvider *loadTaskProvider;  // use custom LoadDocumentTask factory instead of default
@@ -100,7 +100,7 @@ public:
     QFont activeFont;
 
     bool isDocumentShown(Document *doc) const;
-    bool isTypeShown(GObjectType t) const;
+    bool isTypeShown(const GObjectType &t) const;
     bool isObjectShown(GObject *o) const;
     bool isObjectFilterActive() const;
     bool nameFilterAcceptsString(const QString &str) const;

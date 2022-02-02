@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -100,7 +100,7 @@ public:
      */
     static bool isAnnotationContainsJunctionPoint(const Annotation *annotation, const qint64 sequenceLength);
     static bool isAnnotationContainsJunctionPoint(const QList<RegionsPair> &mergedRegions);
-    static QList<RegionsPair> mergeAnnotatiedRegionsAroundJunctionPoint(const QVector<U2Region> &regions, const qint64 sequenceLength);
+    static QList<RegionsPair> mergeAnnotatedRegionsAroundJunctionPoint(const QVector<U2Region> &regions, const qint64 sequenceLength);
 
     static char *applyLowerCaseRegions(char *seq, qint64 first, qint64 len, qint64 globalOffset, const QList<U2Region> &regs);
 

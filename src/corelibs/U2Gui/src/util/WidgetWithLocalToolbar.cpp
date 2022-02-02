@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,6 +32,7 @@ namespace U2 {
 WidgetWithLocalToolbar::WidgetWithLocalToolbar(QWidget *p)
     : QWidget(p) {
     toolBar = new LocalToolbar(this);
+    toolBar->setObjectName("WidgetWithLocalToolbar_toolbar");
     contentWidget = new QWidget(this);
 
     QHBoxLayout *layout = new QHBoxLayout();

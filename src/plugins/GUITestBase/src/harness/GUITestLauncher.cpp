@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -134,23 +134,21 @@ void GUITestLauncher::firstTestRunCheck(const QString &testName) {
 /** Returns ideal tests list for the given suite or an empty list if there is no ideal configuration is found. */
 QList<GUITest *> getIdealNightlyTestsSplit(int suiteIndex, int suiteCount, const QList<GUITest *> &allTests) {
     QList<int> testsPerSuite;
-    if (suiteCount == 3) {
-        testsPerSuite << 980 << 800 << -1;
+    if (suiteCount == 3) {  // Windows.
+        testsPerSuite << 1000 << 820 << -1;
     } else if (suiteCount == 4) {
         testsPerSuite << 640 << 680 << 640 << -1;
     } else if (suiteCount == 5) {
-        testsPerSuite << 550 << 575 << 480 << 550 << -1;
+        testsPerSuite << 555 << 580 << 485 << 555 << -1;  // Linux.
     }
+    CHECK(suiteCount == testsPerSuite.size(), {});  // Check that we know the distribution. Return an empty list if we do not.
     QList<GUITest *> tests;
-    if (testsPerSuite.size() == suiteCount) {
-        SAFE_POINT(testsPerSuite.size() == suiteCount, QString("Illegal testsPerSuite size: %1").arg(testsPerSuite.size()), tests);
-        int offset = 0;
-        for (int i = 0; i < suiteIndex; i++) {
-            offset += testsPerSuite[i];
-        }
-        int testCount = testsPerSuite[suiteIndex];  // last index is -1 => list.mid(x, -1) returns a tail.
-        tests << allTests.mid(offset, testCount);
+    int offset = 0;
+    for (int i = 0; i < suiteIndex; i++) {
+        offset += testsPerSuite[i];
     }
+    int testCount = testsPerSuite[suiteIndex];  // last index is -1 => list.mid(x, -1) returns a tail.
+    tests << allTests.mid(offset, testCount);
     return tests;
 }
 
@@ -344,6 +342,7 @@ QString GUITestLauncher::runTest(const QString &testName, int timeoutMillis) {
     int maxReruns = qMax(qgetenv("UGENE_TEST_NUMBER_RERUN_FAILED_TEST").toInt(), 0);
     QString testOutput;
     bool isVideoRecordingOn = qgetenv("UGENE_TEST_ENABLE_VIDEO_RECORDING") == "1";
+    bool isVideoRecordingAlwaysOn = isVideoRecordingOn && qgetenv("UGENE_TEST_ENABLE_VIDEO_RECORDING_ALL_ITERATIONS") == "1";
     for (int iteration = 0; iteration < 1 + maxReruns; iteration++) {
         if (iteration >= 1) {
             coreLog.error(QString("Re-running the test. Current re-run: %1, max re-runs: %2, check logs in: %3")
@@ -352,7 +351,7 @@ QString GUITestLauncher::runTest(const QString &testName, int timeoutMillis) {
                               .arg(testOutputDir));
         }
         U2OpStatusImpl os;
-        testOutput = runTestOnce(os, testName, iteration, timeoutMillis, isVideoRecordingOn && iteration > 0);
+        testOutput = runTestOnce(os, testName, iteration, timeoutMillis, isVideoRecordingOn && (isVideoRecordingAlwaysOn || iteration > 0));
         bool isFailed = os.hasError() || GUITestTeamcityLogger::isTestFailed(testOutput);
         if (!isFailed) {
             break;
@@ -412,7 +411,8 @@ QString GUITestLauncher::runTestOnce(U2OpStatus &os, const QString &testName, in
             screenRecorderProcess.kill();
             screenRecorderProcess.waitForFinished(2000);
         }
-        if (!GUITestTeamcityLogger::isTestFailed(testResult)) {
+        bool keepVideoFile = qgetenv("UGENE_TEST_KEEP_VIDEOS") == "1";
+        if (!keepVideoFile && !GUITestTeamcityLogger::isTestFailed(testResult)) {
             QFile(getVideoPath(testName)).remove();
         }
     }

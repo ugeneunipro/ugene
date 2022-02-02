@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -48,13 +48,6 @@ ExportToSequenceFormatFiller::ExportToSequenceFormatFiller(HI::GUITestOpStatus &
     comboBoxItems[Swiss_Prot] = "Swiss_Prot";
 }
 
-ExportToSequenceFormatFiller::ExportToSequenceFormatFiller(HI::GUITestOpStatus &_os, CustomScenario *scenario)
-    : Filler(_os, "U2__ExportMSA2SequencesDialog", scenario),
-      format(EMBL),
-      saveFile(false),
-      keepCharacters(false) {
-}
-
 #define GT_METHOD_NAME "commonScenario"
 void ExportToSequenceFormatFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
@@ -79,14 +72,7 @@ void ExportToSequenceFormatFiller::commonScenario() {
         GTCheckBox::setChecked(os, saveFileCheckBox);
     }
 
-    if (keepCharacters) {
-        QRadioButton *keepButton = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "keepGapsRB", dialog));
-        keepButton->setChecked(true);
-    } else {
-        QRadioButton *trimButton = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "trimGapsRB", dialog));
-        trimButton->setChecked(true);
-    }
-
+    GTRadioButton::click(os, keepCharacters ? "keepGapsRB" : "trimGapsRB", dialog);
     GTGlobals::sleep(100);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

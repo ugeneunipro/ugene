@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,18 +26,12 @@
 #include <U2Core/DocumentImport.h>
 #include <U2Core/DocumentProviderTask.h>
 #include <U2Core/DocumentUtils.h>
-#include <U2Core/FileStorageUtils.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/U2DbiRegistry.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
 
-#include <U2Formats/BAMUtils.h>
-
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>

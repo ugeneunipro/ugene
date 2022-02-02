@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #define _U2_MSA_EDITOR_OVERVIEW_H_
 
 #include <QAction>
+
 #include "overview/MaEditorOverviewArea.h"
 
 namespace U2 {
@@ -39,13 +40,16 @@ public:
 
     void contextMenuEvent(QContextMenuEvent *event) override;
 
-    void cancelRendering() override;
-
     static const QString OVERVIEW_AREA_OBJECT_NAME;
 
     void setVisible(bool isVisible) override;
 
 private:
+    bool eventFilter(QObject *watched, QEvent *event) override;
+
+    /** Updates fixed-height value of the widget. Recomputes the new height by checking children visibility. */
+    void updateFixedHeightGeometry();
+
     MaGraphOverview *graphOverview = nullptr;
     MaSimpleOverview *simpleOverview = nullptr;
     MaOverviewContextMenu *contextMenu = nullptr;

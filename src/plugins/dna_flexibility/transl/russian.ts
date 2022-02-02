@@ -116,18 +116,6 @@
         <source>Searches a DNA sequence for regions of high DNA helix flexibility.</source>
         <translation>Позволяет искать в ДНК районы высокой флексибильности.</translation>
     </message>
-    <message>
-        <source>UGENE ran out of memory during the DNA flexibility calculating. The 32-bit UGENE version has a restriction on its memory consumption. Try using the 64-bit version instead.</source>
-        <translation type="vanished">UGENE ran out of memory during the DNA flexibility calculating. The 32-bit UGENE version has a restriction on its memory consumption. Try using the 64-bit version instead.</translation>
-    </message>
-    <message>
-        <source>Out of memory during the DNA flexibility calculating.</source>
-        <translation type="vanished">Out of memory during the DNA flexibility calculating.</translation>
-    </message>
-    <message>
-        <source>Internal error occurred during the DNA flexibility calculating.</source>
-        <translation type="vanished">Internal error occurred during the DNA flexibility calculating.</translation>
-    </message>
 </context>
 <context>
     <name>U2::DNAFlexTask</name>

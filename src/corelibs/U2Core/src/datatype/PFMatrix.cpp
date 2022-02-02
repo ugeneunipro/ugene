@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -78,7 +78,7 @@ PFMatrix::PFMatrix(const MultipleSequenceAlignment &align, const PFMatrixType& _
     memset(data.data(), 0, size * length * sizeof(int));
     U2OpStatus2Log os;
     if (type == PFM_MONONUCLEOTIDE) {
-        for (int i = 0, n = align->getNumRows(); i < n; i++) {
+        for (int i = 0, n = align->getRowCount(); i < n; i++) {
             const QByteArray row = align->getMsaRow(i)->getSequence().seq;
             for (int j = 0; j < length; j++) {
                 char curr = row[j];
@@ -86,7 +86,7 @@ PFMatrix::PFMatrix(const MultipleSequenceAlignment &align, const PFMatrixType& _
             }
         }
     } else {
-        for (int i = 0, n = align->getNumRows(); i < n; i++) {
+        for (int i = 0, n = align->getRowCount(); i < n; i++) {
             const QByteArray row = align->getMsaRow(i)->getSequence().seq;
             for (int j = 0; j < length; j++) {
                 char curr = row[j];

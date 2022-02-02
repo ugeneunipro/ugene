@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -91,7 +91,6 @@ class QMainWindow;
 #define ACTION_PROJECT__EXPORT_TO_AMINO_ACTION "action_project__export_to_amino_action"
 
 #define ACTION_BLAST_SUBMENU "BLAST"
-#define ACTION_BLAST_FORMAT_DB "FormatDB"
 
 #define ACTION_EXPORT_SEQUENCE "export sequences"
 #define ACTION_EXPORT_CORRESPONDING_SEQ "export corresponding sequence"

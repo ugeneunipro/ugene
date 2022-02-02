@@ -45,17 +45,9 @@
 <context>
     <name>U2::TestRunnerPlugin</name>
     <message>
-        <source>test_runner_plug_name</source>
-        <translation type="vanished">Test runner</translation>
-    </message>
-    <message>
-        <source>test_runner_desc</source>
-        <translation type="vanished">Test runner allows one to run and manage tests suites and individual tests for Unipro UGENE. Enabled if environment variable UGENE_DEV is set</translation>
-    </message>
-    <message>
         <location filename="../src/TestRunnerPlugin.cpp" line="56"/>
         <source>Test Runner</source>
-        <translation type="unfinished">Test Runner</translation>
+        <translation>Test Runner</translation>
     </message>
     <message>
         <location filename="../src/TestRunnerPlugin.cpp" line="56"/>

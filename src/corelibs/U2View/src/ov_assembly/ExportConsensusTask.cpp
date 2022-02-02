@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -93,8 +93,7 @@ void ExportConsensusTask::prepare() {
     CHECK_OP(stateInfo, );
 
     if (settings.saveToFile) {
-        SaveDocFlags saveFlags = SaveDoc_Overwrite;
-        addSubTask(new SaveDocumentTask(resultDocument, saveFlags));
+        addSubTask(new SaveDocumentTask(resultDocument));
 
         Project *p = AppContext::getProject();
         if (p != nullptr && p->findDocumentByURL(resultDocument->getURL()) != nullptr) {

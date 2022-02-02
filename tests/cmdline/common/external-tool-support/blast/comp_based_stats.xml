@@ -1,0 +1,14 @@
+<multi-test>
+    <!-- blastp: comp_based_stats. Just check that it can be set -->
+    <run-cmdline
+            task="local-blast"
+            in="!common_data_dir!swiss_prot/Q9XHP0.sw"
+            out="!tmp_data_dir!blastp_maxhits.gb"
+            dbpath="!common_data_dir!cmdline/external-tool-support/blastplus/sushi"
+            dbname="sushi"
+            p="blastp"
+            comp-based-stats="1"
+            max-hits="1"
+    />
+    <load-document index="doc1" url="blastp_maxhits.gb" io="local_file" format="genbank" dir="temp"/>
+</multi-test>

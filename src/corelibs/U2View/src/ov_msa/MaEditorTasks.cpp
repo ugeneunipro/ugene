@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,7 +49,7 @@
 #include "MSAEditorConsensusArea.h"
 #include "MaEditorFactory.h"
 #include "MaEditorState.h"
-#include "McaEditor.h"
+#include "ov_mca/McaEditor.h"
 
 namespace U2 {
 
@@ -89,7 +89,7 @@ void OpenMaEditorTask::open() {
     if (maObject.isNull()) {
         Document *doc = documentsToLoad.first();
         if (!doc) {
-            stateInfo.setError(tr("Documet removed from project"));
+            stateInfo.setError(tr("Document removed from project"));
             return;
         }
         if (unloadedReference.isValid()) {
@@ -109,10 +109,12 @@ void OpenMaEditorTask::open() {
     viewName = GObjectViewUtils::genUniqueViewName(maObject->getDocument(), maObject);
     uiLog.details(tr("Opening MSA editor for object: %1").arg(maObject->getGObjectName()));
 
-    MaEditor *v = getEditor(viewName, maObject);
-    GObjectViewWindow *w = new GObjectViewWindow(v, viewName, false);
+    MaEditor *maEditor = getEditor(viewName, maObject);
+    CHECK_OP(stateInfo, );
+
+    auto objectViewWindow = new GObjectViewWindow(maEditor, viewName, false);
     MWMDIManager *mdiManager = AppContext::getMainWindow()->getMDIManager();
-    mdiManager->addMDIWindow(w);
+    mdiManager->addMDIWindow(objectViewWindow);
 }
 
 void OpenMaEditorTask::updateTitle(MSAEditor *msaEd) {
@@ -139,7 +141,7 @@ OpenMsaEditorTask::OpenMsaEditorTask(Document *doc)
 }
 
 MaEditor *OpenMsaEditorTask::getEditor(const QString &viewName, GObject *obj) {
-    return MsaEditorFactory().getEditor(viewName, obj);
+    return MsaEditorFactory().getEditor(viewName, obj, stateInfo);
 }
 
 OpenMcaEditorTask::OpenMcaEditorTask(MultipleAlignmentObject *obj)
@@ -157,7 +159,7 @@ OpenMcaEditorTask::OpenMcaEditorTask(Document *doc)
 MaEditor *OpenMcaEditorTask::getEditor(const QString &viewName, GObject *obj) {
     QList<GObjectRelation> relations = obj->findRelatedObjectsByRole(ObjectRole_ReferenceSequence);
     SAFE_POINT(relations.size() <= 1, "Wrong amount of reference sequences", nullptr);
-    return McaEditorFactory().getEditor(viewName, obj);
+    return McaEditorFactory().getEditor(viewName, obj, stateInfo);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -212,12 +214,15 @@ void OpenSavedMaEditorTask::open() {
     MultipleAlignmentObject *maObject = qobject_cast<MultipleAlignmentObject *>(obj);
     assert(maObject != nullptr);
 
-    MaEditor *v = factory->getEditor(viewName, maObject);
-    GObjectViewWindow *w = new GObjectViewWindow(v, viewName, true);
+    MaEditor *maEditor = factory->getEditor(viewName, maObject, stateInfo);
+    CHECK_OP(stateInfo, );
+    SAFE_POINT(maEditor != nullptr, "MaEditor is null!", );
+
+    GObjectViewWindow *w = new GObjectViewWindow(maEditor, viewName, true);
     MWMDIManager *mdiManager = AppContext::getMainWindow()->getMDIManager();
     mdiManager->addMDIWindow(w);
 
-    updateRanges(stateData, v);
+    updateRanges(stateData, maEditor);
 }
 
 void OpenSavedMaEditorTask::updateRanges(const QVariantMap &stateData, MaEditor *ctx) {
@@ -276,7 +281,6 @@ QList<Task *> ExportMaConsensusTask::onSubTaskFinished(Task *subTask) {
     Document *consensusDocument = createDocument();
     CHECK_OP(stateInfo, taskList);
     auto saveTask = new SaveDocumentTask(consensusDocument, consensusDocument->getIOAdapterFactory(), consensusDocument->getURL());
-    saveTask->addFlag(SaveDoc_Overwrite);
     taskList << saveTask;
 
     Project *proj = AppContext::getProject();
@@ -341,7 +345,7 @@ void ExtractConsensusTask::run() {
             return;
         }
         int count = 0;
-        int nSeq = alignment->getNumRows();
+        int nSeq = alignment->getRowCount();
         SAFE_POINT(0 != nSeq, tr("No sequences in alignment"), );
 
         QChar c = algorithm->getConsensusCharAndScore(alignment, i, count);

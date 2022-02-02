@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -91,9 +91,7 @@ public:
 
     // default
     ExportMsaImage(HI::GUITestOpStatus &os, QString filePath, QString comboValue = "", int spinValue = 0)
-        : ExportImage(os, filePath, comboValue, spinValue),
-          exportWholeAlignment(true),
-          exportCurrentSelection(false) {
+        : ExportImage(os, filePath, comboValue, spinValue) {
     }
 
     //  exportWholeAlignment = false,   exportCurrentSelection = false  : export of specified msa region, there should be no any selection on msa
@@ -108,12 +106,12 @@ public:
           region(region) {
     }
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     Settings settings;
-    bool exportWholeAlignment;
-    bool exportCurrentSelection;
+    bool exportWholeAlignment = true;
+    bool exportCurrentSelection = false;
     RegionMsa region;
 };
 

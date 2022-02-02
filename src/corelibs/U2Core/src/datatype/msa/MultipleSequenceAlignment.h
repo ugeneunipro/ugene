@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -82,7 +82,7 @@ public:
     MultipleSequenceAlignmentData &operator=(const MultipleSequenceAlignmentData &msaData);
 
     /** Returns the number of rows in the alignment */
-    int getNumRows() const;
+    int getRowCount() const;
 
     /**
      * Recomputes the length of the alignment and makes it as minimal
@@ -162,7 +162,7 @@ public:
      */
     MultipleSequenceAlignment mid(int start, int len) const;
 
-    virtual void setRowGapModel(int rowNumber, const QList<U2MsaGap> &gapModel);
+    virtual void setRowGapModel(int rowNumber, const QVector<U2MsaGap> &gapModel);
 
     void setSequenceId(int rowIndex, const U2DataId &sequenceId);
 
@@ -176,7 +176,7 @@ public:
     void addRow(const QString &name, const QByteArray &bytes);
     void addRow(const QString &name, const QByteArray &bytes, int rowIndex);
     void addRow(const U2MsaRow &rowInDb, const DNASequence &sequence, U2OpStatus &os);
-    void addRow(const QString &name, const DNASequence &sequence, const QList<U2MsaGap> &gaps, U2OpStatus &os);
+    void addRow(const QString &name, const DNASequence &sequence, const QVector<U2MsaGap> &gaps, U2OpStatus &os);
 
     /**
      * Replaces all occurrences of 'origChar' by 'resultChar' in the row with the specified index.
@@ -213,9 +213,7 @@ public:
      */
     MultipleSequenceAlignmentData &operator+=(const MultipleSequenceAlignmentData &ma);
 
-    /**
-     * Compares two alignments: lengths, alphabets, rows and infos (that include names).
-     */
+    /** Compares two alignments: calls isEqual() method. */
     bool operator==(const MultipleSequenceAlignmentData &msaData) const;
     bool operator!=(const MultipleSequenceAlignmentData &msaData) const;
 
@@ -234,7 +232,7 @@ private:
      * Sequence must not contain gaps.
      * All gaps in the gaps model (in 'rowInDb') must be valid and have an offset within the bound of the sequence.
      */
-    MultipleSequenceAlignmentRow createRow(const U2MsaRow &rowInDb, const DNASequence &sequence, const QList<U2MsaGap> &gaps, U2OpStatus &os);
+    MultipleSequenceAlignmentRow createRow(const U2MsaRow &rowInDb, const DNASequence &sequence, const QVector<U2MsaGap> &gaps, U2OpStatus &os);
 
     MultipleSequenceAlignmentRow createRow(const MultipleSequenceAlignmentRow &row);
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,9 +21,7 @@
 
 #include "CreateFragmentDialog.h"
 
-#include <QDir>
 #include <QMessageBox>
-#include <QPushButton>
 
 #include <U2Algorithm/EnzymeModel.h>
 
@@ -34,12 +32,10 @@
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
-#include <U2Core/Settings.h>
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 
 #include <U2Gui/CreateAnnotationWidgetController.h>
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 
 #include <U2View/ADVSequenceObjectContext.h>

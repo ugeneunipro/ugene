@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -722,7 +722,7 @@ Task::ReportResult GTest_DNASequencInMulSequence::report() {
         stateInfo.setError(QString("can't cast to sequence from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
     }
-    int tempSize = myMSequence->getNumRows();
+    int tempSize = myMSequence->getRowCount();
     if (tempSize != seqInMSeq) {
         stateInfo.setError(QString("numbers of Sequence not match: %1, expected %2 ").arg(tempSize).arg(seqInMSeq));
     }

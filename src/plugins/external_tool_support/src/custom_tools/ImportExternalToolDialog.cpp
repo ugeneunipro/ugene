@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,8 +25,8 @@
 #include <QPushButton>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/FileFilters.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/U2FileDialog.h>
@@ -49,7 +49,7 @@ ImportExternalToolDialog::ImportExternalToolDialog(QWidget *_parent)
 
 void ImportExternalToolDialog::sl_browse() {
     LastUsedDirHelper lod("import external tool");
-    const QString filter = DialogUtils::prepareFileFilter("UGENE external tool config file", {"xml"}, true, {});
+    QString filter = FileFilters::createFileFilter(tr("UGENE external tool config file"), {"xml"}, false);
     lod.url = U2FileDialog::getOpenFileName(this, tr("Select configuration file to import"), lod.dir, filter);
     if (!lod.url.isEmpty()) {
         lePath->setText(QDir::toNativeSeparators(lod.url));
@@ -65,4 +65,4 @@ void ImportExternalToolDialog::accept() {
     QDialog::accept();
 }
 
-}    // namespace U2
+}  // namespace U2

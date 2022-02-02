@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -77,7 +77,7 @@ public:
             case 1:
                 return res.modelInfo < o->res.modelInfo;
             case 2:
-                return res.strand != o->res.strand ? res.strand.isCompementary() : (res.region.startPos < o->res.region.startPos);
+                return res.strand != o->res.strand ? res.strand.isComplementary() : (res.region.startPos < o->res.region.startPos);
             case 3:
                 return res.score < o->res.score;
         }
@@ -211,7 +211,10 @@ bool PWMSearchDialogController::eventFilter(QObject *obj, QEvent *ev) {
 
 void PWMSearchDialogController::sl_selectModelFile() {
     LastUsedDirHelper lod(WeightMatrixIO::WEIGHT_MATRIX_ID);
-    lod.url = U2FileDialog::getOpenFileName(this, tr("Select file with frequency or weight matrix"), lod, WeightMatrixIO::getAllMatrixFileFilter(false) + ";;" + WeightMatrixIO::getPFMFileFilter(false) + ";;" + WeightMatrixIO::getPWMFileFilter(true));
+    QString fileFilter = WeightMatrixIO::getAllMatrixFileFilter(true) + ";;" +
+                         WeightMatrixIO::getPFMFileFilter(true) + ";;" +
+                         WeightMatrixIO::getPWMFileFilter();
+    lod.url = U2FileDialog::getOpenFileName(this, tr("Select file with frequency or weight matrix"), lod, fileFilter);
     if (lod.url.isEmpty()) {
         return;
     }
@@ -579,7 +582,7 @@ WeightMatrixResultItem::WeightMatrixResultItem(const WeightMatrixSearchResult &r
     QString range = QString("%1..%2").arg(r.region.startPos + 1).arg(r.region.endPos());
     setText(0, range);
     setText(1, r.modelInfo);
-    QString strand = res.strand.isCompementary() ? PWMSearchDialogController::tr("Reverse complement strand") : PWMSearchDialogController::tr("Direct strand");
+    QString strand = res.strand.isComplementary() ? PWMSearchDialogController::tr("Reverse complement strand") : PWMSearchDialogController::tr("Direct strand");
     setText(2, strand);
     setText(3, QString::number(res.score, 'f', 2) + "%");
 }

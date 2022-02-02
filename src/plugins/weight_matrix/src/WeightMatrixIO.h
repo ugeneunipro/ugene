@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,9 +44,9 @@ public:
     static const QString WEIGHT_MATRIX_EXT;
     static const QString FREQUENCY_MATRIX_EXT;
 
-    static QString getAllMatrixFileFilter(bool includeAll = true);
-    static QString getPFMFileFilter(bool includeAll = true);
-    static QString getPWMFileFilter(bool includeAll = true);
+    static QString getAllMatrixFileFilter(bool isSingleFileFilterMode = false);
+    static QString getPFMFileFilter(bool isSingleFileFilterMode = false);
+    static QString getPWMFileFilter();
     static PFMatrix readPFMatrix(IOAdapterFactory *iof, const QString &url, TaskStateInfo &si);
     static PWMatrix readPWMatrix(IOAdapterFactory *iof, const QString &url, TaskStateInfo &si);
     static void writePFMatrix(IOAdapterFactory *iof, const QString &url, TaskStateInfo &si, const PFMatrix &model);

@@ -1,0 +1,16 @@
+<multi-test>
+    <run-cmdline task="local-blast"
+                 in="!common_data_dir!cmdline/external-tool-support/blastplus/query_begin.fa"
+                 out="!tmp_data_dir!blast-search_qbegin_tmp_begin.gb"
+                 dbpath="!common_data_dir!cmdline/external-tool-support/blastplus/"
+                 dbname="sars_begin"
+                 blast-out="!tmp_data_dir!blast-output.xml"
+                 blast-out-type="6"
+                 p="blastn"
+    />
+    <load-document index="doc1" url="blast-search_qbegin_tmp_begin.gb" io="local_file" format="genbank" dir="temp"/>
+    <load-document index="doc2" url="cmdline/external-tool-support/blastplus/res_begin.gb" io="local_file" format="genbank"/>
+
+    <compare-annotations-num-in-two-objects doc="doc1" value="doc2"/>
+    <compare-annotations-locations-in-two-objects doc="doc1" value="doc2"/>
+</multi-test>

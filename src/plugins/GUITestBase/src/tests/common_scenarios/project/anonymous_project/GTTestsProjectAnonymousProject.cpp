@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -58,14 +58,12 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     // 5. Click NO in opened messagebox
     GTUtilsDialog::waitForDialog(os, new ExportProjectDialogFiller(os, testDir + "_common_data/scenarios/sandbox/proj2.uprj"));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Export project...");
+    GTMenu::clickMainMenuItem(os, {"File", "Export project..."});
 
     // 6. Use menu {File->Close project}
     // 7. Click NO in opened messagebox
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Close project");
+    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
 
     // 8. Use menu {File->Open}. Open project _common_data/scenarios/sandbox/proj2.uprj
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/", "proj2.uprj");
@@ -98,12 +96,10 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //     {Project file} proj2
     // 4. Click Save button
     GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj2", testDir + "_common_data/scenarios/sandbox/proj2"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Save project as...");
+    GTMenu::clickMainMenuItem(os, {"File", "Save project as..."});
 
     // 5. Use menu {File->Close project}
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Close project");
+    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
 
     // Expected state: project and sequence view closed
     GTUtilsProject::checkProject(os, GTUtilsProject::NotExists);

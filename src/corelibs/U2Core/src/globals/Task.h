@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -588,8 +588,14 @@ public:
     virtual void resumeThreadWithTask(const Task *task) = 0;
 
 signals:
-    void si_noTasksInScheduler();
+    // TODO: remove this signal from TaskScheduler. It is not scheduler responsibliity to track global UGENE state.
     void si_ugeneIsReadyToWork();
+
+    void si_topLevelTaskRegistered(Task *);
+
+    void si_topLevelTaskUnregistered(Task *);
+
+    void si_stateChanged(Task *task);
 
 protected:
     TaskResources &getTaskResources(Task *t) {
@@ -623,13 +629,6 @@ protected:
     void setTaskStateDesc(Task *t, const QString &desc);
 
     void setTaskInsidePrepare(Task *t, bool val);
-
-signals:
-    void si_topLevelTaskRegistered(Task *);
-
-    void si_topLevelTaskUnregistered(Task *);
-
-    void si_stateChanged(Task *task);
 };
 
 }  // namespace U2

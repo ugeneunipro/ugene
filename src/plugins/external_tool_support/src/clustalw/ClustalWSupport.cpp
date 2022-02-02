@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,8 +31,6 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
-
-#include <U2Gui/GUIUtils.h>
 
 #include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
@@ -71,7 +69,7 @@ ClustalWSupport::ClustalWSupport()
 }
 
 void ClustalWSupport::sl_runWithExtFileSpecify() {
-    //Check that Clustal and temporary folder path defined
+    // Check that Clustal and temporary folder path defined
     if (path.isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(name);
@@ -99,7 +97,7 @@ void ClustalWSupport::sl_runWithExtFileSpecify() {
     ExternalToolSupportSettings::checkTemporaryDir(os);
     CHECK_OP(os, );
 
-    //Call select input file and setup settings dialog
+    // Call select input file and setup settings dialog
     ClustalWSupportTaskSettings settings;
     QObjectScopedPointer<ClustalWWithExtFileSpecifySupportRunDialog> clustalWRunDialog = new ClustalWWithExtFileSpecifySupportRunDialog(settings, AppContext::getMainWindow()->getQMainWindow());
     clustalWRunDialog->exec();
@@ -115,7 +113,7 @@ void ClustalWSupport::sl_runWithExtFileSpecify() {
 }
 
 ////////////////////////////////////////
-//ExternalToolSupportMSAContext
+// ExternalToolSupportMSAContext
 ClustalWSupportContext::ClustalWSupportContext(QObject *p)
     : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
@@ -123,25 +121,17 @@ ClustalWSupportContext::ClustalWSupportContext(QObject *p)
 void ClustalWSupportContext::initViewContext(GObjectView *view) {
     auto msaEditor = qobject_cast<MSAEditor *>(view);
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
+    msaEditor->registerActionProvider(this);
 
-    auto alignAction = new AlignMsaAction(this, ClustalWSupport::ET_CLUSTAL_ID, msaEditor, tr("Align with ClustalW..."), 2000);
+    auto alignAction = new AlignMsaAction(this, ClustalWSupport::ET_CLUSTAL_ID, msaEditor, tr("Align with ClustalW..."), 3000);
     alignAction->setObjectName("Align with ClustalW");
     alignAction->setMenuTypes({MsaEditorMenuType::ALIGN});
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align()));
     addViewAction(alignAction);
 }
 
-void ClustalWSupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *m) {
-    QList<GObjectViewAction *> actions = getViewActions(view);
-    QMenu *alignMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ALIGN);
-    SAFE_POINT(alignMenu != nullptr, "alignMenu", );
-    foreach (GObjectViewAction *a, actions) {
-        a->addToMenuWithOrder(alignMenu);
-    }
-}
-
 void ClustalWSupportContext::sl_align() {
-    //Check that Clustal and temporary folder path defined
+    // Check that Clustal and temporary folder path defined
     if (AppContext::getExternalToolRegistry()->getById(ClustalWSupport::ET_CLUSTAL_ID)->getPath().isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle("ClustalW");
@@ -169,7 +159,7 @@ void ClustalWSupportContext::sl_align() {
     ExternalToolSupportSettings::checkTemporaryDir(os);
     CHECK_OP(os, );
 
-    //Call run ClustalW align dialog
+    // Call run ClustalW align dialog
     AlignMsaAction *action = qobject_cast<AlignMsaAction *>(sender());
     SAFE_POINT(action != nullptr, "Sender is not 'AlignMsaAction'", );
     MSAEditor *msaEditor = action->getMsaEditor();
@@ -195,4 +185,4 @@ void ClustalWSupportContext::sl_align() {
     msaEditor->resetCollapseModel();
 }
 
-}    // namespace U2
+}  // namespace U2

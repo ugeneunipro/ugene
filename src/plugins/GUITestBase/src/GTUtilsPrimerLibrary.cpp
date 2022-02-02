@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -101,7 +101,7 @@ void GTUtilsPrimerLibrary::clickPrimer(HI::GUITestOpStatus &os, int number) {
 }
 
 void GTUtilsPrimerLibrary::clearLibrary(HI::GUITestOpStatus &os) {
-    const int size = librarySize(os);
+    int size = librarySize(os);
     CHECK(size > 0, );
     GTWidget::click(os, table(os));
     selectAll(os);

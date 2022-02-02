@@ -47,7 +47,7 @@ system($$[QT_INSTALL_BINS]/lrelease-qt5 -version > $$UGENE_DEV_NULL 2> $$UGENE_D
 
 unix {
     # Rules how to copy files on make install.
-    ugene_build_dir.files = ./src/_release/*
+    ugene_build_dir.files = src/_release/*
     ugene_build_dir.path = $${PREFIX}
 
     data.files += data/*

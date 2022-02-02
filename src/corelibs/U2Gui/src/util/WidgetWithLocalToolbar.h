@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,10 +44,11 @@ public:
 
 protected:
     void setLocalToolbarVisible(bool visible);
-    QWidget *contentWidget;
+
+    QWidget *contentWidget = nullptr;
 
 private:
-    LocalToolbar *toolBar;
+    LocalToolbar *toolBar = nullptr;
 };
 
 }  // namespace U2

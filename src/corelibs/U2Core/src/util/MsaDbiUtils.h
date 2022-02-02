@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@ class U2CORE_EXPORT MaDbiUtils : public QObject {
     Q_OBJECT
 public:
     /** Split 'input' bytes into sequence bytes (chars) and a gap model */
-    static void splitBytesToCharsAndGaps(const QByteArray &input, QByteArray &seqBytes, QList<U2MsaGap> &gapModel);
+    static void splitBytesToCharsAndGaps(const QByteArray &input, QByteArray &seqBytes, QVector<U2MsaGap> &gapModel);
 
     /**
      * Get the length of the alignment in the database.
@@ -63,7 +63,7 @@ public:
      * Updates a gap model of the specified row in the database.
      * Parameter 'rowId' must contain a valid row ID in the database.
      */
-    static void updateRowGapModel(const U2EntityRef &maRef, qint64 rowId, const QList<U2MsaGap> &gaps, U2OpStatus &os);
+    static void updateRowGapModel(const U2EntityRef &maRef, qint64 rowId, const QVector<U2MsaGap> &gaps, U2OpStatus &os);
 
     /**
      * Updates positions of the rows in the database according to the order in the list.
@@ -90,13 +90,13 @@ public:
      * Calculates start and end position in the sequence,
      * depending on the start position in the row and the 'count' character from it
      */
-    static void getStartAndEndSequencePositions(const QByteArray &seq, const QList<U2MsaGap> &gaps, qint64 pos, qint64 count, qint64 &startPosInSeq, qint64 &endPosInSeq);
+    static void getStartAndEndSequencePositions(const QByteArray &seq, const QVector<U2MsaGap> &gaps, qint64 pos, qint64 count, qint64 &startPosInSeq, qint64 &endPosInSeq);
 
     static DbiConnection *getCheckedConnection(const U2DbiRef &dbiRef, U2OpStatus &os);
     static bool validateRowIds(const MultipleSequenceAlignment &al, const QList<qint64> &rowIds);
     static void validateRowIds(U2MsaDbi *msaDbi, const U2DataId &msaId, const QList<qint64> &rowIds, U2OpStatus &os);
 
-    static void calculateGapModelAfterReplaceChar(QList<U2MsaGap> &gapModel, qint64 pos);
+    static void calculateGapModelAfterReplaceChar(QVector<U2MsaGap> &gapModel, qint64 pos);
 };
 
 class U2CORE_EXPORT MsaDbiUtils : public QObject {
@@ -183,7 +183,7 @@ public:
      * Updates the row sequence data and the row info (gaps, etc.) in the database.
      * Parameter 'rowId' must contain a valid row ID in the database.
      */
-    static void updateRowContent(const U2EntityRef &msaRef, qint64 rowId, const QByteArray &seqBytes, const QList<U2MsaGap> &gaps, U2OpStatus &os);
+    static void updateRowContent(const U2EntityRef &msaRef, qint64 rowId, const QByteArray &seqBytes, const QVector<U2MsaGap> &gaps, U2OpStatus &os);
 
     /**
      * If some of specified rows is empty it will be removed.
@@ -192,7 +192,7 @@ public:
     static QList<qint64> removeEmptyRows(const U2EntityRef &msaRef, const QList<qint64> &rowIds, U2OpStatus &os);
 
     /** Calculates a new gap model when 'count' gaps are inserted to 'pos' position */
-    static void calculateGapModelAfterInsert(QList<U2MsaGap> &gapModel, qint64 pos, qint64 count);
+    static void calculateGapModelAfterInsert(QVector<U2MsaGap> &gapModel, qint64 pos, qint64 count);
 
 private:
     /**
@@ -215,22 +215,22 @@ private:
      * Removes gaps from the row between position 'pos' and 'pos + count'.
      * Shifts the remaining gaps, if required.
      */
-    static void calculateGapModelAfterRemove(QList<U2MsaGap> &gapModel, qint64 pos, qint64 count);
+    static void calculateGapModelAfterRemove(QVector<U2MsaGap> &gapModel, qint64 pos, qint64 count);
 
     /** Length of all gaps in the gap model */
-    static qint64 calculateGapsLength(const QList<U2MsaGap> &gapModel);
+    static qint64 calculateGapsLength(const QVector<U2MsaGap> &gapModel);
 
     /** Length of the sequence and gap model for the row */
     static qint64 calculateRowLength(const U2MsaRow &row);
 
     /** If there are consecutive gaps in the gaps model, merges them into one gap */
-    static void mergeConsecutiveGaps(QList<U2MsaGap> &gapModel);
+    static void mergeConsecutiveGaps(QVector<U2MsaGap> &gapModel);
 
     /** Removes chars/gaps from the row */
-    static void removeCharsFromRow(QByteArray &seq, QList<U2MsaGap> &gaps, qint64 pos, qint64 count);
+    static void removeCharsFromRow(QByteArray &seq, QVector<U2MsaGap> &gaps, qint64 pos, qint64 count);
 
     /** Replace characters in the row with a new character. Updates sequence & gap model. */
-    static void replaceCharsInRow(QByteArray &sequence, QList<U2MsaGap> &gaps, const U2Region &range, char newChar, U2OpStatus &os);
+    static void replaceCharsInRow(QByteArray &sequence, QVector<U2MsaGap> &gaps, const U2Region &range, char newChar, U2OpStatus &os);
 
     /**
      * Crops a row to region from 'pos' to 'pos' + 'count',
@@ -241,7 +241,7 @@ private:
     static void cropCharsFromRow(MultipleSequenceAlignmentRow &alRow, qint64 pos, qint64 count);
 
     /** Returns "true" if there is a gap on position "pos" */
-    static bool gapInPosition(const QList<U2MsaGap> &gapModel, qint64 pos);
+    static bool gapInPosition(const QVector<U2MsaGap> &gapModel, qint64 pos);
 };
 
 }  // namespace U2

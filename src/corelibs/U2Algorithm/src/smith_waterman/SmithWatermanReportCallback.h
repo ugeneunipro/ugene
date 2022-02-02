@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -119,8 +119,8 @@ public:
     static void alignSequences(QByteArray &refSequenceData,
                                QByteArray &ptrnSequence,
                                const QByteArray &pairwiseAlignment);
-    static void alignSequences(QList<U2MsaGap> &refSequenceGapModel,
-                               QList<U2MsaGap> &ptrnSequenceGapModel,
+    static void alignSequences(QVector<U2MsaGap> &refSequenceGapModel,
+                               QVector<U2MsaGap> &ptrnSequenceGapModel,
                                const QByteArray &pairwiseAlignment);
     static void changeGivenUrlIfDocumentExists(QString &givenUrl,
                                                const Project *curProject);

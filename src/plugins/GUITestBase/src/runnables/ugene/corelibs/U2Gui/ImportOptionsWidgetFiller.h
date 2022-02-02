@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,7 +37,7 @@ public:
 private:
     static void setDestinationFolder(HI::GUITestOpStatus &os, ImportOptionsWidget *optionsWidget, const QVariantMap &data);
     static void setKeepFoldersStructure(HI::GUITestOpStatus &os, ImportOptionsWidget *optionsWidget, const QVariantMap &data);
-    static void setProcessFoldersRecusively(HI::GUITestOpStatus &os, ImportOptionsWidget *optionsWidget, const QVariantMap &data);
+    static void setProcessFoldersRecursively(HI::GUITestOpStatus &os, ImportOptionsWidget *optionsWidget, const QVariantMap &data);
     static void setCreateSubfolderForTopLevelFolder(HI::GUITestOpStatus &os, ImportOptionsWidget *optionsWidget, const QVariantMap &data);
     static void setCreateSubfolderForEachFile(HI::GUITestOpStatus &os, ImportOptionsWidget *optionsWidget, const QVariantMap &data);
     static void setImportUnknownAsUdr(HI::GUITestOpStatus &os, ImportOptionsWidget *optionsWidget, const QVariantMap &data);

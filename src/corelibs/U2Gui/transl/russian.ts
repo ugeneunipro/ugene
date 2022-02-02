@@ -1167,14 +1167,6 @@ The items cannot be recovered once deleted.</source>
         <translation>Вы уверены, что хотите удалить элементы в корзину?
 Элементы не могут быть восстановлены после удаления.</translation>
     </message>
-    <message>
-        <source>Unable to Remove</source>
-        <translation type="vanished">Невозможно удалить</translation>
-    </message>
-    <message>
-        <source>Some of selected objects are being used by the other users of the database. Try to remove them later.</source>
-        <translation type="vanished">Некоторые из выбранных объектов используются другими пользователями базы данных. Попробуйте удалить их позже.</translation>
-    </message>
 </context>
 <context>
     <name>RangeSelectionDialog</name>
@@ -1225,52 +1217,34 @@ The items cannot be recovered once deleted.</source>
     </message>
 </context>
 <context>
-    <name>RegionSelector</name>
-    <message>
-        <location filename="../src/util/RegionSelector.cpp" line="50"/>
-        <source>Whole sequence</source>
-        <translation>Вся последовательность</translation>
-    </message>
-    <message>
-        <location filename="../src/util/RegionSelector.cpp" line="51"/>
-        <source>Selected region</source>
-        <translation>Выбранный регион</translation>
-    </message>
-    <message>
-        <location filename="../src/util/RegionSelector.cpp" line="52"/>
-        <source>Custom region</source>
-        <translation>Заданный регион</translation>
-    </message>
-</context>
-<context>
     <name>RegionSelectorController</name>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="34"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="71"/>
         <source>Whole sequence</source>
         <translation>Вся последовательность</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="35"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="75"/>
         <source>Selected region</source>
         <translation>Выбранный регион</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="36"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="79"/>
         <source>Custom region</source>
         <translation>Заданный регион</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="174"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="182"/>
         <source>Invalid Start position of region</source>
         <translation>Некорректная стартовая позиция в регионе</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="175"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="183"/>
         <source>Invalid End position of region</source>
         <translation>Некорректная конечная позиция в регионе</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="176"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="184"/>
         <source>Start position is greater than End position</source>
         <translation>Начальная позичия больше чем конечная</translation>
     </message>
@@ -1561,32 +1535,32 @@ The items cannot be recovered once deleted.</source>
 <context>
     <name>U2::AddNewDocumentDialogImpl</name>
     <message>
-        <location filename="../src/util/AddNewDocumentDialogImpl.cpp" line="61"/>
+        <location filename="../src/util/AddNewDocumentDialogImpl.cpp" line="60"/>
         <source>Create</source>
         <translation>Создать</translation>
     </message>
     <message>
-        <location filename="../src/util/AddNewDocumentDialogImpl.cpp" line="62"/>
+        <location filename="../src/util/AddNewDocumentDialogImpl.cpp" line="61"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/util/AddNewDocumentDialogImpl.cpp" line="71"/>
+        <location filename="../src/util/AddNewDocumentDialogImpl.cpp" line="70"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="../src/util/AddNewDocumentDialogImpl.cpp" line="82"/>
+        <location filename="../src/util/AddNewDocumentDialogImpl.cpp" line="81"/>
         <source>Invalid Document Location</source>
         <translation>Неверное расположение документа</translation>
     </message>
     <message>
-        <location filename="../src/util/AddNewDocumentDialogImpl.cpp" line="82"/>
+        <location filename="../src/util/AddNewDocumentDialogImpl.cpp" line="81"/>
         <source>Document location is empty</source>
         <translation>Расположение документа пусто</translation>
     </message>
     <message>
-        <location filename="../src/util/AddNewDocumentDialogImpl.cpp" line="96"/>
+        <location filename="../src/util/AddNewDocumentDialogImpl.cpp" line="95"/>
         <source>Project is locked</source>
         <translation>Проект заблокирован</translation>
     </message>
@@ -1693,38 +1667,38 @@ The items cannot be recovered once deleted.</source>
 <context>
     <name>U2::CreateAnnotationWidgetController</name>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="106"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="92"/>
         <source>&lt;auto&gt;</source>
         <translation>&lt;авто&gt;</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="243"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="229"/>
         <source>Select annotation saving parameters</source>
         <translation>Выберите параметры сохранения аннотации</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="246"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="232"/>
         <source>Document is already added to the project: &apos;%1&apos;</source>
         <translation>Документ уже существует: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="251"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="237"/>
         <source>Illegal folder: %1</source>
         <translation>Не найден путь: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="256"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="242"/>
         <source>Illegal annotation name! </source>
         <translation>Нелегальные символы в имени аннотации. Допустимы только цифры, буквы и подчёркивания! </translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="261"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="247"/>
         <source>Illegal group name</source>
         <translation>Нелегальные символы в имени группы</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="266"/>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="271"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="252"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="257"/>
         <source>Invalid location! Location must be in GenBank format.
 Simple examples:
 1..10
@@ -1737,7 +1711,7 @@ join(1..10,15..45)
 complement(5..15)</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="358"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="344"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
@@ -1809,19 +1783,6 @@ complement(5..15)</translation>
         <location filename="../src/util/CreateSequenceFromTextAndOpenViewTask.cpp" line="56"/>
         <source>Can&apos;t create a project</source>
         <translation>Can&apos;t create a project</translation>
-    </message>
-</context>
-<context>
-    <name>U2::DialogUtils</name>
-    <message>
-        <location filename="../src/util/DialogUtils.cpp" line="42"/>
-        <source>Error</source>
-        <translation>Ошибка</translation>
-    </message>
-    <message>
-        <location filename="../src/util/DialogUtils.cpp" line="42"/>
-        <source>Project is locked</source>
-        <translation>Проект заблокирован</translation>
     </message>
 </context>
 <context>
@@ -2114,17 +2075,17 @@ Are you sure you want to open all of them?</source>
         <translation>Сохранить имена последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="48"/>
+        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="45"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="49"/>
+        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="46"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="69"/>
+        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="66"/>
         <source>Select file to save annotations</source>
         <translation>Выберите файл для сохранения аннотаций</translation>
     </message>
@@ -2132,14 +2093,14 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::ExportDocumentDialogController</name>
     <message>
-        <location filename="../src/util/ExportDocumentDialogController.cpp" line="48"/>
-        <location filename="../src/util/ExportDocumentDialogController.cpp" line="65"/>
+        <location filename="../src/util/ExportDocumentDialogController.cpp" line="45"/>
+        <location filename="../src/util/ExportDocumentDialogController.cpp" line="62"/>
         <source>Export</source>
         <translation>Экспорт</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportDocumentDialogController.cpp" line="49"/>
-        <location filename="../src/util/ExportDocumentDialogController.cpp" line="66"/>
+        <location filename="../src/util/ExportDocumentDialogController.cpp" line="46"/>
+        <location filename="../src/util/ExportDocumentDialogController.cpp" line="63"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -2193,8 +2154,8 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::FileLineEdit</name>
     <message>
-        <location filename="../src/util/DialogUtils.cpp" line="98"/>
-        <location filename="../src/util/DialogUtils.cpp" line="104"/>
+        <location filename="../src/util/DialogUtils.cpp" line="61"/>
+        <location filename="../src/util/DialogUtils.cpp" line="67"/>
         <source>Select file(s)</source>
         <translation>Выберите файл(ы)</translation>
     </message>
@@ -2287,7 +2248,7 @@ Are you sure you want to open all of them?</source>
         <location filename="../src/NotificationWidget.cpp" line="54"/>
         <location filename="../src/NotificationWidget.cpp" line="55"/>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Уведомления</translation>
     </message>
 </context>
 <context>
@@ -2978,29 +2939,29 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::RegionSelector</name>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="110"/>
+        <location filename="../src/util/RegionSelector.cpp" line="105"/>
         <source>Set minimum</source>
         <translation>Установить минимум</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="115"/>
+        <location filename="../src/util/RegionSelector.cpp" line="110"/>
         <source>Set maximum</source>
         <translation>Установить максимум</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="122"/>
-        <location filename="../src/util/RegionSelector.cpp" line="144"/>
+        <location filename="../src/util/RegionSelector.cpp" line="117"/>
+        <location filename="../src/util/RegionSelector.cpp" line="139"/>
         <source>Region</source>
         <translation>Регион</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="130"/>
-        <location filename="../src/util/RegionSelector.cpp" line="150"/>
+        <location filename="../src/util/RegionSelector.cpp" line="125"/>
+        <location filename="../src/util/RegionSelector.cpp" line="145"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="98"/>
+        <location filename="../src/util/RegionSelector.cpp" line="93"/>
         <source>Invalid sequence region!</source>
         <translation>Некорректный регион последовательности!</translation>
     </message>
@@ -3008,26 +2969,26 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::RegionSelectorController</name>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="125"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="133"/>
         <source>Region is not in sequence range</source>
         <translation>Region is not in sequence range</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="143"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="151"/>
         <source>Cannot get preset name, ComboBox is NULL</source>
         <translation>Cannot get preset name, ComboBox is NULL</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="148"/>
-        <location filename="../src/util/RegionSelectorController.cpp" line="165"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="156"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="173"/>
         <source>Cannot set preset, ComboBox is NULL</source>
         <translation>Cannot set preset, ComboBox is NULL</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="223"/>
-        <location filename="../src/util/RegionSelectorController.cpp" line="270"/>
-        <location filename="../src/util/RegionSelectorController.cpp" line="284"/>
-        <location filename="../src/util/RegionSelectorController.cpp" line="319"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="231"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="278"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="292"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="327"/>
         <source>Region lineEdit is NULL</source>
         <translation>Region lineEdit is NULL</translation>
     </message>
@@ -3038,13 +2999,6 @@ Are you sure you want to open all of them?</source>
         <location filename="../src/util/RegionSelectorWithExcludedRegion.cpp" line="98"/>
         <source>&apos;Exclude&apos; region contains &apos;Search In&apos; region. Search region is empty.</source>
         <translation>&apos;Exclude&apos; region contains &apos;Search In&apos; region. Search region is empty.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::RegionSelectorWithExludedRegion</name>
-    <message>
-        <source>&apos;Exclude&apos; region contains &apos;Search In&apos; region. Search region is empty.</source>
-        <translation type="vanished">&apos;Exclude&apos; region contains &apos;Search In&apos; region. Search region is empty.</translation>
     </message>
 </context>
 <context>
@@ -3073,39 +3027,47 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::RemovePartFromSequenceDialogController</name>
     <message>
-        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="60"/>
+        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="56"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="61"/>
+        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="57"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="77"/>
+        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="73"/>
         <source>There must be only one region to delete</source>
         <translation>Допускается только один регион</translation>
     </message>
     <message>
-        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="81"/>
+        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="77"/>
         <source>Unable to parse region to delete</source>
         <translation>Некорректный регион</translation>
     </message>
     <message>
-        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="87"/>
+        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="83"/>
         <source>Cannot remove the whole sequence</source>
         <translation>Невозможно уделить всю последовательность</translation>
     </message>
     <message>
-        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="92"/>
+        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="88"/>
         <source>Region to delete is out of sequence bounds</source>
         <translation>Регион выходит за границы последовательности</translation>
     </message>
     <message>
-        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="138"/>
+        <location filename="../src/util/RemovePartFromSequenceDialogController.cpp" line="134"/>
         <source>Select file to save...</source>
         <translation>Выберите файл для сохранения...</translation>
+    </message>
+</context>
+<context>
+    <name>U2::SaveDocumentController</name>
+    <message>
+        <location filename="../src/util/SaveDocumentController.cpp" line="148"/>
+        <source>Output file name is empty</source>
+        <translation>Выходное имя файла пусто</translation>
     </message>
 </context>
 <context>
@@ -3318,42 +3280,42 @@ check connection settings</translation>
 <context>
     <name>U2::ToolsMenu</name>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="108"/>
+        <location filename="../src/ToolsMenu.cpp" line="107"/>
         <source>Sanger data analysis</source>
         <translation>Анализ данных секвенирования по Сэнгеру</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="118"/>
+        <location filename="../src/ToolsMenu.cpp" line="117"/>
         <source>NGS data analysis</source>
         <translation>Анализ данных NGS</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="148"/>
+        <location filename="../src/ToolsMenu.cpp" line="145"/>
         <source>BLAST</source>
         <translation>BLAST</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="162"/>
+        <location filename="../src/ToolsMenu.cpp" line="159"/>
         <source>Multiple sequence alignment</source>
         <translation>Множественное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="174"/>
+        <location filename="../src/ToolsMenu.cpp" line="171"/>
         <source>Cloning</source>
         <translation>Клонирование</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="182"/>
+        <location filename="../src/ToolsMenu.cpp" line="179"/>
         <source>Primer</source>
         <translation>Олигонуклеотиды</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="188"/>
+        <location filename="../src/ToolsMenu.cpp" line="185"/>
         <source>Search for TFBS</source>
         <translation>Поиск сайтов связывания транскрипционных факторов (TFBS)</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="197"/>
+        <location filename="../src/ToolsMenu.cpp" line="194"/>
         <source>HMMER tools</source>
         <translation>Инструменты HMMER</translation>
     </message>

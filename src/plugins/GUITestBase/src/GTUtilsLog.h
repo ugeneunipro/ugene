@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -61,6 +61,15 @@ public:
     static void checkContainsError(HI::GUITestOpStatus &os, const GTLogTracer &logTracer, const QString &messagePart);
     static void checkContainsMessage(HI::GUITestOpStatus &os, const GTLogTracer &logTracer, bool expected = true);
     static QStringList getErrors(HI::GUITestOpStatus &os, const GTLogTracer &logTracer);
+
+    /** Waits for the message to appear in the log with the given timeout. */
+    static void checkMessageWithWait(HI::GUITestOpStatus &os, const GTLogTracer &logTracer, const QString &message, int timeoutMillis = 30000);
+
+    /**
+     * Checks that there are exactly 'expectedMessageCount' in the log with 'messagePart' text token inside.
+     * 'context' is a message marker added to the failure string. Used to identify individual method calls.
+     */
+    static void checkMessageWithTextCount(HI::GUITestOpStatus &os, const QString &messagePart, int expectedMessageCount, const QString &context = "");
 };
 
 }  // namespace U2

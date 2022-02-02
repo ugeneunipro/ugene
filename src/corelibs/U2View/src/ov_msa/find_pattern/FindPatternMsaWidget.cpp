@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,6 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/DocumentUtils.h>
-#include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/TaskWatchdog.h>
 #include <U2Core/TextUtils.h>
@@ -43,7 +42,6 @@
 
 #include <U2Formats/FastaFormat.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/ObjectViewModel.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
@@ -823,14 +821,16 @@ bool FindPatternMsaWidget::checkAlphabet(const QString &pattern) {
 }
 
 QString FindPatternMsaWidget::checkSearchRegion() const {
+    CHECK(!isSearchInNamesMode, "");
+
     U2Region region = getSearchRegion();
-    if (region.isEmpty()) {
-        return tr("Warning: Invalid search region.");
-    }
+    CHECK(!region.isEmpty(), tr("Warning: Invalid search region."));
 
     CHECK(selectedAlgorithm != FindAlgorithmPatternSettings_RegExp, "");
+
     QStringList patternLines = textPattern->toPlainText().split("\n", QString::SkipEmptyParts);
     CHECK(!patternLines.isEmpty(), "");
+
     int minPatternLength = INT_MAX;
     for (const QString &line : qAsConst(patternLines)) {
         minPatternLength = qMin(minPatternLength, line.length());
@@ -892,7 +892,7 @@ void FindPatternMsaWidget::runSearchInSequenceNames(const QStringList &patterns)
         if (pattern.isEmpty()) {
             continue;
         }
-        for (int i = 0, n = multipleAlignment->getNumRows(); i < n; i++) {
+        for (int i = 0, n = multipleAlignment->getRowCount(); i < n; i++) {
             const MultipleAlignmentRow &row = multipleAlignment->getRow(i);
             if (row->getName().contains(pattern, Qt::CaseInsensitive)) {
                 resultRowIndexSet << i;

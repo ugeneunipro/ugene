@@ -139,7 +139,7 @@ void GTMenuPrivateMac::checkMenuItemState(GUITestOpStatus &os, NSMenu *container
     }
 
     case PopupChecker::IsCheckable: {
-        GT_CHECK(false, "Not implemented. Do you really need to check is menu item checkable or not?");
+        GT_FAIL("Not implemented. Do you really need to check is menu item checkable or not?", );
         break;
     }
 

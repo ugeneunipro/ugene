@@ -1,1 +1,1 @@
-#include "../../corelibs/U2View/src/ov_msa/helpers/DrawHelper.h"
+#include "../../corelibs/U2View/src/ov_msa/DrawHelper.h"

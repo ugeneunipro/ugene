@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,11 +24,10 @@
 #include <QTextStream>
 
 #include <U2Algorithm/BuiltInConsensusAlgorithms.h>
-#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
-#include <U2Algorithm/MSAConsensusUtils.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/IOAdapter.h>
+#include <U2Core/IOAdapterTextStream.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MultipleSequenceAlignment.h>
@@ -41,367 +40,342 @@
 
 namespace U2 {
 
-// PhylipFormat
+static MultipleSequenceAlignmentObject *getMsaObjectToStore(const QMap<GObjectType, QList<GObject *>> &objectsMap) {
+    SAFE_POINT(objectsMap.contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT), "PHYLIP entry storing: no alignment", nullptr);
+    const QList<GObject *> &alignmentObjects = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
+    SAFE_POINT(alignmentObjects.size() == 1, "PHYLIP entry storing: alignment objects count error", nullptr);
+
+    auto msaObject = dynamic_cast<MultipleSequenceAlignmentObject *>(alignmentObjects.first());
+    SAFE_POINT(msaObject != nullptr, "PHYLIP entry storing: no alignment object is found", nullptr);
+    return msaObject;
+}
+
+/** Sequence characters per line. Used by 'storeTextEntry'. */
+static constexpr int PHYLIP_SEQUENCE_CHARS_PER_LINE = 80;
+
+/** Number of columns reserved for the name.*/
+static constexpr int PHYLIP_NAME_COLUMNS_COUNT = 10;
+
+/** Max supported line length by UGENE. Used when reading Phylip files. */
+static constexpr int PHYLIP_MAX_SUPPORTED_LINE_LENGTH = 1000 * 1000;
+
+static void writeSequenceName(IOAdapterWriter &writer, const QString &sequenceName, U2OpStatus &os) {
+    QString nameToWrite = sequenceName;
+    if (nameToWrite.length() > PHYLIP_NAME_COLUMNS_COUNT) {
+        nameToWrite = nameToWrite.left(PHYLIP_NAME_COLUMNS_COUNT);
+    }
+    writer.write(os, nameToWrite + TextUtils::getLineOfSpaces(PHYLIP_NAME_COLUMNS_COUNT - nameToWrite.length()));
+}
+
+/** Returns number of non-space (' ') characters in the 'text'. */
+static int countNonSpaceChars(const QString &text) {
+    return text.length() - text.count(' ');
+}
+
+/** Checks that MSA has expected sequence and column counts. Sets error into 'os' if not. */
+static void validateMsaByHeaderData(const MultipleSequenceAlignment &msa, int sequenceCountInHeader, int columnCountInHeader, U2OpStatus &os) {
+    CHECK_EXT(msa->getRowCount() == sequenceCountInHeader,
+              os.setError(PhylipFormat::tr("Wrong row count. Header: %1, actual: %2").arg(sequenceCountInHeader).arg(msa->getRowCount())), );
+    CHECK_EXT(msa->getLength() == columnCountInHeader,
+              os.setError(PhylipFormat::tr("Wrong column count. Header: %1, actual: %2").arg(columnCountInHeader).arg(msa->getLength())), );
+}
+
 PhylipFormat::PhylipFormat(QObject *p, const DocumentFormatId &id)
-    : TextDocumentFormatDeprecated(p, id, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList() << "phy"
-                                                                                                                                                   << "ph") {
+    : TextDocumentFormat(p, id, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, {"phy", "ph"}) {
     formatDescription = tr("PHYLIP multiple alignment format for phylogenetic applications.");
     supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 }
 
-void PhylipFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &os) {
-    CHECK_EXT(d != nullptr, os.setError(L10N::badArgument("doc")), );
-    CHECK_EXT(io != nullptr && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), );
+void PhylipFormat::storeTextDocument(IOAdapterWriter &writer, Document *doc, U2OpStatus &os) {
+    CHECK_EXT(doc->getObjects().size() == 1, os.setError(tr("Incorrect number of objects in document: %1").arg(doc->getObjects().size())), );
 
-    MultipleSequenceAlignmentObject *obj = nullptr;
-    CHECK_EXT(d->getObjects().size() == 1, os.setError("Incorrect number of objects in document"), );
-    CHECK_EXT((obj = qobject_cast<MultipleSequenceAlignmentObject *>(d->getObjects().first())) != nullptr, os.setError("No data to write"), );
+    auto obj = qobject_cast<MultipleSequenceAlignmentObject *>(doc->getObjects().first());
+    CHECK_EXT(obj != nullptr, os.setError(L10N::internalError("No MSA object in document")), );
 
-    QList<GObject *> als;
-    als << obj;
+    QList<GObject *> als = {obj};
     QMap<GObjectType, QList<GObject *>> objectsMap;
     objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT] = als;
-    storeEntry(io, objectsMap, os);
-    CHECK_EXT(!os.isCoR(), os.setError(L10N::errorWritingFile(d->getURL())), );
+    storeTextEntry(writer, objectsMap, os);
+    CHECK_EXT(!os.isCoR(), os.setError(L10N::errorWritingFile(doc->getURL())), );
 }
 
-MultipleSequenceAlignmentObject *PhylipFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
-    SAFE_POINT(io != nullptr, "IO adapter is NULL!", nullptr);
-
-    MultipleSequenceAlignment al = parse(io, os);
+MultipleSequenceAlignmentObject *PhylipFormat::load(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) {
+    MultipleSequenceAlignment msa = parse(reader, os);
     CHECK_OP(os, nullptr);
-    MSAUtils::checkPackedModelSymmetry(al, os);
+    MSAUtils::checkPackedModelSymmetry(msa, os);
     CHECK_OP(os, nullptr);
 
-    U2AlphabetUtils::assignAlphabet(al);
-    CHECK_EXT(al->getAlphabet() != nullptr, os.setError(PhylipFormat::tr("Alphabet is unknown")), nullptr);
+    U2AlphabetUtils::assignAlphabet(msa);
+    CHECK_EXT(msa->getAlphabet() != nullptr, os.setError(tr("Alphabet is unknown")), nullptr);
 
-    const QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-    MultipleSequenceAlignmentObject *obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, al, os);
+    QString folder = hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
+    auto msaObject = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, msa, os);
     CHECK_OP(os, nullptr);
-    return obj;
+    return msaObject;
 }
 
-bool PhylipFormat::parseHeader(QByteArray data, int &species, int &characters) const {
-    QTextStream stream(data);
-    stream >> species >> characters;
-    if ((species == 0) && (characters == 0)) {
-        return false;
-    }
-    return true;
+bool PhylipFormat::parseHeader(const QString &line, int &sequenceCount, int &columnCount) const {
+    QStringList tokens = line.simplified().split(" ");
+    CHECK(tokens.length() == 2, false);
+
+    bool parserResult = true;
+    sequenceCount = tokens[0].toInt(&parserResult);
+    CHECK(parserResult, false);
+
+    columnCount = tokens[1].toInt(&parserResult);
+    return parserResult;
 }
 
-void PhylipFormat::removeSpaces(QByteArray &data) const {
-    while (data.contains(' ')) {
-        data.remove(data.indexOf(' '), 1);
-    }
+Document *PhylipFormat::loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) {
+    auto msaObject = load(reader, dbiRef, hints, os);
+    CHECK_OP(os, nullptr);
+
+    QList<GObject *> objects = {msaObject};
+    return new Document(this, reader.getFactory(), reader.getURL(), dbiRef, objects, hints);
 }
 
-Document *PhylipFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
-    SAFE_POINT(io != nullptr, "IO adapter is NULL!", nullptr);
-    QList<GObject *> objects;
-    objects.append(load(io, dbiRef, fs, os));
-    CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
-    assert(objects.size() == 1);
-    return new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs);
-}
-
-#define MAX_NAME_LEN 10  // max name length for phylip format is 10
-
-#define SEQ_BLOCK_SIZE 100
-#define INT_BLOCK_SIZE 50
-
-const QBitArray &LINE_BREAKS = TextUtils::LINE_BREAKS;
-
-// PhylipSequentialFormat
 PhylipSequentialFormat::PhylipSequentialFormat(QObject *p)
     : PhylipFormat(p, BaseDocumentFormats::PHYLIP_SEQUENTIAL) {
     formatName = tr("PHYLIP Sequential");
 }
 
-void PhylipSequentialFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) {
-    SAFE_POINT(io != nullptr, "IO adapter is NULL!", );
-    SAFE_POINT(objectsMap.contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT), "PHYLIP entry storing: no alignment", );
-    const QList<GObject *> &als = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
-    SAFE_POINT(1 == als.size(), "PHYLIP entry storing: alignment objects count error", );
+void PhylipSequentialFormat::storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) {
+    auto msaObject = getMsaObjectToStore(objectsMap);
+    CHECK_EXT(msaObject != nullptr, os.setError(PhylipFormat::tr("Failed to find MSA object to store")), );
+    const MultipleSequenceAlignment &msa = msaObject->getMultipleAlignment();
 
-    const MultipleSequenceAlignmentObject *obj = dynamic_cast<MultipleSequenceAlignmentObject *>(als.first());
-    SAFE_POINT(nullptr != obj, "PHYLIP entry storing: NULL alignment object", );
+    // Write header.
+    int sequenceCount = msa->getRowCount();
+    int columnCount = msa->getLength();
+    QString headerLine = QString::number(sequenceCount) + " " + QString::number(columnCount) + "\n";
+    writer.write(os, headerLine);
+    CHECK_OP(os, );
+    CHECK(sequenceCount > 0, );
 
-    const MultipleSequenceAlignment msa = obj->getMultipleAlignment();
+    // Write sequences.
+    for (int sequenceIndex = 0; sequenceIndex < sequenceCount; sequenceIndex++) {
+        if (sequenceIndex > 0) {
+            writer.write(os, "\n");  // Blocks separator empty line.
+            CHECK_OP(os, );
+        }
+        auto row = msa->getMsaRow(sequenceIndex);
+        writeSequenceName(writer, row->getName(), os);
+        CHECK_OP(os, );
+        QByteArray sequence = row->toByteArray(os, columnCount);
+        for (int pos = 0; pos < sequence.length(); pos += PHYLIP_SEQUENCE_CHARS_PER_LINE) {
+            QByteArray line = sequence.mid(pos, qMin(sequence.length() - pos, PHYLIP_SEQUENCE_CHARS_PER_LINE));
+            writer.write(os, line);
+            CHECK_OP(os, );
+            writer.write(os, "\n");
+            CHECK_OP(os, );
+        }
+    }
+}
 
-    // write header
-    int numberOfSpecies = msa->getNumRows();
-    int numberOfCharacters = msa->getLength();
-    QByteArray header((QString::number(numberOfSpecies) + " " + QString::number(numberOfCharacters)).toLatin1() + "\n");
-    int len = io->writeBlock(header);
-    CHECK_EXT(len == header.length(), os.setError(L10N::errorTitle()), );
-
-    // write sequences
-    for (int i = 0; i < numberOfSpecies; i++) {
-        QByteArray line = msa->getMsaRow(i)->getName().toLatin1();
-        if (line.length() < MAX_NAME_LEN) {
-            int difference = MAX_NAME_LEN - line.length();
-            for (int j = 0; j < difference; j++) {
-                line.append(" ");
+FormatCheckResult PhylipSequentialFormat::checkRawTextData(const QString &dataPrefix, const GUrl &) const {
+    QString dataPrefixCopyForTextStream = dataPrefix;  // Make a copy. QTextStream requires a writable copy.
+    QTextStream textStream(&dataPrefixCopyForTextStream);
+    QString line = textStream.readLine(PHYLIP_MAX_SUPPORTED_LINE_LENGTH);
+    int sequenceCountInHeader = 0;
+    int columnCountInHeader = 0;
+    if (!parseHeader(line, sequenceCountInHeader, columnCountInHeader)) {
+        return FormatDetection_NotMatched;
+    }
+    // Check that data prefix has no more than expected sequence count and each of the sequences has an expected length.
+    int readColumnCount = 0;
+    int readSequenceCount = 0;
+    bool isMultiLineSequence = false;
+    for (; readSequenceCount < sequenceCountInHeader && !textStream.atEnd();) {
+        CHECK(readSequenceCount < sequenceCountInHeader, FormatDetection_NotMatched);
+        line = textStream.readLine(PHYLIP_MAX_SUPPORTED_LINE_LENGTH);
+        CHECK_CONTINUE(!TextUtils::isWhiteSpace(line));  // Allow empty lines between blocks.
+        CHECK(line.length() > PHYLIP_NAME_COLUMNS_COUNT, FormatDetection_NotMatched);
+        readColumnCount += countNonSpaceChars(line.mid(PHYLIP_NAME_COLUMNS_COUNT));
+        while (readColumnCount < columnCountInHeader) {
+            isMultiLineSequence = true;
+            line = textStream.readLine(PHYLIP_MAX_SUPPORTED_LINE_LENGTH);
+            CHECK(!TextUtils::isWhiteSpace(line), FormatDetection_NotMatched);
+            readColumnCount += countNonSpaceChars(line);
+            CHECK(readColumnCount <= columnCountInHeader, FormatDetection_NotMatched);
+            if (readColumnCount == columnCountInHeader) {
+                break;
             }
         }
-        if (line.length() > MAX_NAME_LEN) {
-            line = line.left(MAX_NAME_LEN);
-        }
-        io->writeBlock(line);
-        QByteArray sequence = msa->getMsaRow(i)->toByteArray(os, numberOfCharacters);
-        int blockCounter = 0;
-        while ((blockCounter * SEQ_BLOCK_SIZE) <= numberOfCharacters) {
-            line.clear();
-            line.append(sequence.mid(blockCounter * SEQ_BLOCK_SIZE, SEQ_BLOCK_SIZE));
-            line.append('\n');
-            io->writeBlock(line);
-            blockCounter++;
-        }
+        readSequenceCount++;
     }
+    return readSequenceCount == sequenceCountInHeader
+               // Return 'Matched' only for multiline. Otherwise, give a higher priority to the interleaved version of the Phylip format.
+               ? (isMultiLineSequence ? FormatDetection_Matched : FormatDetection_VeryHighSimilarity)
+               : FormatDetection_HighSimilarity;
 }
 
-FormatCheckResult PhylipSequentialFormat::checkRawTextData(const QByteArray &rawData, const GUrl &) const {
-    if (TextUtils::contains(TextUtils::BINARY, rawData.constData(), rawData.size())) {
-        return FormatDetection_NotMatched;
-    }
-    int species = 0, characters = 0;
-    if (!parseHeader(rawData, species, characters)) {
-        return FormatDetection_NotMatched;
-    }
-    QTextStream s(rawData);
-    for (int i = 0; i < species + 1; i++) {
-        if (s.atEnd()) {
-            return FormatDetection_AverageSimilarity;
-        }
-        s.readLine();
-    }
-    // if line after row names is not empty and contains characters at the beginning,
-    // it is more probably a sequential phylip example
-    QString line = s.readLine();
-    if ((line.size() != 0) && (line.at(0) != ' ')) {
-        return FormatDetection_Matched;
-    }
+MultipleSequenceAlignment PhylipSequentialFormat::parse(IOAdapterReader &reader, U2OpStatus &os) const {
+    QString msaName = reader.getURL().baseFileName();
+    MultipleSequenceAlignment msa(msaName);
 
-    return FormatDetection_AverageSimilarity;
+    QString firstLine = reader.readLine(os, PHYLIP_MAX_SUPPORTED_LINE_LENGTH);
+    CHECK_OP(os, {});
+
+    int sequenceCountInHeader = 0;
+    int columnCountInHeader = 0;
+    CHECK_EXT(parseHeader(firstLine, sequenceCountInHeader, columnCountInHeader), os.setError(PhylipFormat::tr("Failed to parse header line")), {});
+
+    for (int sequenceIndex = 0; sequenceIndex < sequenceCountInHeader;) {
+        CHECK_EXT(!reader.atEnd(), os.setError(PhylipFormat::tr("Unexpected end of data in Phylip file")), {});
+
+        // Read name.
+        QString line = reader.readLine(os, PHYLIP_MAX_SUPPORTED_LINE_LENGTH);
+        CHECK_OP(os, {});
+        CHECK_CONTINUE(!TextUtils::isWhiteSpace(line));  // Allow empty lines between different sequences.
+        CHECK_EXT(line.length() > PHYLIP_NAME_COLUMNS_COUNT, os.setError(PhylipFormat::tr("Line with a name is too short %1").arg(line)), {});
+        QString name = line.left(PHYLIP_NAME_COLUMNS_COUNT).trimmed();
+
+        // Read sequence.
+        QByteArray sequence = line.mid(PHYLIP_NAME_COLUMNS_COUNT).replace(" ", "").toLatin1();
+        while (sequence.length() != columnCountInHeader) {
+            CHECK_EXT(!reader.atEnd(), os.setError(PhylipFormat::tr("Unexpected end of file")), {});
+            line = reader.readLine(os, PHYLIP_MAX_SUPPORTED_LINE_LENGTH);
+            CHECK_OP(os, {});
+            sequence += line.replace(" ", "").toLatin1();
+        }
+        msa->addRow(name, sequence);
+        os.setProgress(reader.getProgress());
+        sequenceIndex++;
+    }
+    validateMsaByHeaderData(msa, sequenceCountInHeader, columnCountInHeader, os);
+    CHECK_OP(os, {});
+    return msa;
 }
 
-MultipleSequenceAlignment PhylipSequentialFormat::parse(IOAdapter *io, U2OpStatus &os) const {
-    SAFE_POINT(io != nullptr, "IO adapter is NULL!", MultipleSequenceAlignment());
-    QByteArray readBuffer(READ_BUFF_SIZE, '\0');
-    char *buff = readBuffer.data();
-    QString objName = io->getURL().baseFileName();
-    MultipleSequenceAlignment al(objName);
-    bool resOk = false;
-
-    // Header: "<number of species> <number of characters>"
-    int len = io->readLine(buff, READ_BUFF_SIZE, &resOk);
-    CHECK_EXT(len != 0, os.setError(PhylipSequentialFormat::tr("Error parsing file")), MultipleSequenceAlignment());
-    CHECK_EXT(resOk, os.setError(PhylipSequentialFormat::tr("Illegal line")), MultipleSequenceAlignment());
-
-    QByteArray line = QByteArray(buff, len).trimmed();
-
-    int numberOfSpecies = 0;
-    int numberOfCharacters = 0;
-    resOk = parseHeader(line, numberOfSpecies, numberOfCharacters);
-    CHECK_EXT(resOk, os.setError(PhylipSequentialFormat::tr("Wrong header")), MultipleSequenceAlignment());
-
-    for (int i = 0; i < numberOfSpecies; i++) {
-        CHECK_EXT(!io->isEof(), os.setError(PhylipSequentialFormat::tr("There is not enough data")), MultipleSequenceAlignment());
-        // get name
-        len = io->readBlock(buff, MAX_NAME_LEN);
-        CHECK_EXT(!io->hasError(), os.setError(io->errorString()), MultipleSequenceAlignment());
-        CHECK_EXT(len != 0, os.setError(PhylipSequentialFormat::tr("Error parsing file")), MultipleSequenceAlignment());
-
-        QByteArray name = QByteArray(buff, len).trimmed();
-        // get sequence
-        QByteArray value;
-        while (numberOfCharacters != value.size() && !io->isEof()) {
-            len = io->readUntil(buff, READ_BUFF_SIZE, LINE_BREAKS, IOAdapter::Term_Skip, &resOk);
-            CHECK_EXT(!io->hasError(), os.setError(io->errorString()), MultipleSequenceAlignment());
-
-            QByteArray sequenceLine(buff, len);
-            removeSpaces(sequenceLine);
-            value.append(sequenceLine);
-        }
-        al->addRow(name, value);
-
-        os.setProgress(io->getProgress());
-    }
-    CHECK_EXT(al->getLength() == numberOfCharacters, os.setError(PhylipSequentialFormat::tr("Number of characters does not correspond to the stated number")), MultipleSequenceAlignment());
-    return al;
-}
-
-// PhylipInterleavedFormat
 PhylipInterleavedFormat::PhylipInterleavedFormat(QObject *p)
     : PhylipFormat(p, BaseDocumentFormats::PHYLIP_INTERLEAVED) {
     formatName = tr("PHYLIP Interleaved");
 }
 
-void PhylipInterleavedFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) {
-    SAFE_POINT(io != nullptr, "IO adapter is NULL!", );
-    SAFE_POINT(objectsMap.contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT), "PHYLIP entry storing: no alignment", );
-    const QList<GObject *> &als = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
-    SAFE_POINT(1 == als.size(), "PHYLIP entry storing: alignment objects count error", );
+void PhylipInterleavedFormat::storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) {
+    auto msaObject = getMsaObjectToStore(objectsMap);
+    CHECK_EXT(msaObject != nullptr, os.setError(PhylipFormat::tr("Failed to find MSA object to store")), );
+    const MultipleSequenceAlignment &msa = msaObject->getMultipleAlignment();
 
-    const MultipleSequenceAlignmentObject *obj = dynamic_cast<MultipleSequenceAlignmentObject *>(als.first());
-    SAFE_POINT(nullptr != obj, "PHYLIP entry storing: NULL alignment object", );
+    // Write header.
+    int sequenceCount = msa->getRowCount();
+    int columnCount = msa->getLength();
+    QString headerLine = QString::number(sequenceCount) + " " + QString::number(columnCount) + "\n";
+    writer.write(os, headerLine);
+    CHECK_OP(os, );
+    CHECK(sequenceCount > 0, );
 
-    const MultipleSequenceAlignment msa = obj->getMultipleAlignment();
-
-    // write header
-    int numberOfSpecies = msa->getNumRows();
-    int numberOfCharacters = msa->getLength();
-    QByteArray header((QString::number(numberOfSpecies) + " " + QString::number(numberOfCharacters)).toLatin1() + "\n");
-    int len = io->writeBlock(header);
-
-    CHECK_EXT(len == header.length(), os.setError(L10N::errorTitle()), );
-
-    // write first block with names
-    for (int i = 0; i < numberOfSpecies; i++) {
-        QByteArray line = msa->getMsaRow(i)->getName().toLatin1();
-        if (line.length() < MAX_NAME_LEN) {
-            int difference = MAX_NAME_LEN - line.length();
-            for (int j = 0; j < difference; j++)
-                line.append(" ");
+    // Write sequences.
+    QList<QByteArray> sequenceList;
+    int pos = 0;
+    do {
+        if (pos > 0) {
+            writer.write(os, "\n");  // Blocks separator empty line.
+            CHECK_OP(os, );
         }
-        if (line.length() > MAX_NAME_LEN) {
-            line = line.left(MAX_NAME_LEN);
+        for (int sequenceIndex = 0; sequenceIndex < sequenceCount; sequenceIndex++) {
+            auto row = msa->getMsaRow(sequenceIndex);
+            if (pos == 0) {
+                writeSequenceName(writer, row->getName(), os);
+                CHECK_OP(os, );
+                sequenceList << row->toByteArray(os, columnCount);
+                CHECK_OP(os, );
+            }
+            QByteArray sequence = sequenceList[sequenceIndex];
+            QByteArray line = sequence.mid(pos, qMin(sequence.length() - pos, PHYLIP_SEQUENCE_CHARS_PER_LINE));
+            writer.write(os, line + "\n");
+            CHECK_OP(os, );
         }
+        pos += PHYLIP_SEQUENCE_CHARS_PER_LINE;
+    } while (pos < columnCount);
+}
 
-        QByteArray sequence = msa->getMsaRow(i)->toByteArray(os, numberOfCharacters);
-        line.append(sequence.left(INT_BLOCK_SIZE));
-        line.append('\n');
-
-        io->writeBlock(line);
+FormatCheckResult PhylipInterleavedFormat::checkRawTextData(const QString &dataPrefix, const GUrl &) const {
+    QString dataPrefixCopyForTextStream = dataPrefix;  // Make a copy. QTextStream requires a writable copy.
+    QTextStream textStream(&dataPrefixCopyForTextStream);
+    QString line = textStream.readLine(PHYLIP_MAX_SUPPORTED_LINE_LENGTH);
+    int sequenceCountInHeader = 0;
+    int columnCountInHeader = 0;
+    if (!parseHeader(line, sequenceCountInHeader, columnCountInHeader)) {
+        return FormatDetection_NotMatched;
     }
+    // Check that first 'sequenceCountInHeader' lines contain unique names and all lines have equal sequence lengths within their block.
+    int readLineCount = 0;
+    int readColumnCount = 0;
+    QSet<QString> nameSet;
+    int sequenceLengthInBlock = -1;
+    while (true) {
+        bool isFirstBlock = readLineCount < sequenceCountInHeader;
+        bool isFirstLineInBlock = readLineCount % sequenceCountInHeader == 0;
 
-    // write sequence blockss
-    int blockCounter = 1;
-    QByteArray spacer(MAX_NAME_LEN, ' ');
-    while (blockCounter * INT_BLOCK_SIZE <= numberOfCharacters) {
-        io->writeBlock("\n", 1);
-        for (int i = 0; i < numberOfSpecies; i++) {
-            QByteArray sequence = msa->getMsaRow(i)->toByteArray(os, numberOfCharacters);
-            QByteArray line;
-            line.append(spacer);
-            line.append(sequence.mid(blockCounter * INT_BLOCK_SIZE, INT_BLOCK_SIZE));
-            line.append('\n');
+        CHECK(!textStream.atEnd(),
+              isFirstBlock
+                  ? FormatDetection_AverageSimilarity
+              : isFirstLineInBlock && readColumnCount == columnCountInHeader
+                  ? FormatDetection_Matched
+                  : FormatDetection_HighSimilarity);
 
-            io->writeBlock(line, line.size());
+        line = textStream.readLine(PHYLIP_MAX_SUPPORTED_LINE_LENGTH);
+        if (TextUtils::isWhiteSpace(line)) {
+            CHECK(isFirstLineInBlock, FormatDetection_NotMatched);
+            continue;  // Allow empty lines between blocks.
         }
-        blockCounter++;
+        if (isFirstBlock) {
+            CHECK(line.length() > PHYLIP_NAME_COLUMNS_COUNT, textStream.atEnd() ? FormatDetection_NotMatched : FormatDetection_AverageSimilarity)
+            QString name = line.left(PHYLIP_NAME_COLUMNS_COUNT);
+            CHECK(!nameSet.contains(name), FormatDetection_NotMatched);
+            nameSet.insert(name);
+        }
+        int sequenceLengthInLine = countNonSpaceChars(line.mid(isFirstBlock ? PHYLIP_NAME_COLUMNS_COUNT : 0));
+        if (isFirstLineInBlock) {
+            sequenceLengthInBlock = sequenceLengthInLine;
+            readColumnCount += sequenceLengthInBlock;
+            CHECK(readColumnCount <= columnCountInHeader, FormatDetection_NotMatched);
+        } else {
+            CHECK(sequenceLengthInLine == sequenceLengthInBlock, FormatDetection_NotMatched);
+        }
+        readLineCount++;
     }
 }
 
-FormatCheckResult PhylipInterleavedFormat::checkRawTextData(const QByteArray &rawData, const GUrl &) const {
-    if (TextUtils::contains(TextUtils::BINARY, rawData.constData(), rawData.size())) {
-        return FormatDetection_NotMatched;
-    }
-    int species, characters;
-    if (!parseHeader(rawData, species, characters)) {
-        return FormatDetection_NotMatched;
-    }
+MultipleSequenceAlignment PhylipInterleavedFormat::parse(IOAdapterReader &reader, U2OpStatus &os) const {
+    QString msaName = reader.getURL().baseFileName();
+    MultipleSequenceAlignment msa(msaName);
 
-    QTextStream s(rawData);
-    for (int i = 0; i < species + 1; i++) {
-        if (s.atEnd()) {
-            return FormatDetection_AverageSimilarity;
+    QString firstLine = reader.readLine(os, PHYLIP_MAX_SUPPORTED_LINE_LENGTH);
+    CHECK_OP(os, {});
+
+    int sequenceCountInHeader = 0;
+    int columnCountInHeader = 0;
+    CHECK_EXT(parseHeader(firstLine, sequenceCountInHeader, columnCountInHeader), os.setError(PhylipFormat::tr("Failed to parse header line")), {});
+
+    // Read the first block with names.
+    for (int sequenceIndex = 0; sequenceIndex < sequenceCountInHeader && !reader.atEnd(); sequenceIndex++) {
+        QString line = reader.readLine(os, PHYLIP_MAX_SUPPORTED_LINE_LENGTH);
+        CHECK_OP(os, {});
+        CHECK_EXT(line.length() > PHYLIP_NAME_COLUMNS_COUNT, os.setError(PhylipFormat::tr("Line with a name is too short %1").arg(line)), {});
+        QString name = line.left(PHYLIP_NAME_COLUMNS_COUNT).trimmed();
+        QByteArray sequence = line.mid(PHYLIP_NAME_COLUMNS_COUNT).replace(" ", "").toLatin1();
+        msa->addRow(name, sequence);
+    }
+    os.setProgress(reader.getProgress());
+
+    // Sequence blocks.
+    while (!reader.atEnd()) {
+        int msaLength = msa->getLength();
+        for (int sequenceIndex = 0; sequenceIndex < sequenceCountInHeader && !reader.atEnd();) {
+            QString line = reader.readLine(os, PHYLIP_MAX_SUPPORTED_LINE_LENGTH);
+            CHECK_OP(os, {});
+            CHECK_CONTINUE(!TextUtils::isWhiteSpace(line) || sequenceIndex > 0);  // Allow empty lines only before the first block.
+            QByteArray sequence = line.replace(" ", "").toLatin1();
+            msa->appendChars(sequenceIndex, msaLength, sequence.constData(), sequence.length());
+            sequenceIndex++;
         }
-        s.readLine();
+        os.setProgress(reader.getProgress());
     }
-    // if line after row names is empty or contains spaces at the beginning,
-    // it is more probably an interleaved phylip example
-    QString line = s.readLine();
-    if (((line.size() != 0) && (line.at(0) == ' ')) || (line.isEmpty())) {
-        return FormatDetection_Matched;
-    }
-
-    return FormatDetection_AverageSimilarity;
-}
-
-MultipleSequenceAlignment PhylipInterleavedFormat::parse(IOAdapter *io, U2OpStatus &os) const {
-    SAFE_POINT(io != nullptr, "IO adapter is NULL!", MultipleSequenceAlignment());
-
-    QByteArray readBuffer(READ_BUFF_SIZE, '\0');
-    char *buff = readBuffer.data();
-    QString objName = io->getURL().baseFileName();
-    MultipleSequenceAlignment al(objName);
-
-    bool resOk = false;
-
-    // First line: "<number of species> <number of characters>"
-    int len = io->readLine(buff, READ_BUFF_SIZE, &resOk);
-    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), MultipleSequenceAlignment());
-    CHECK_EXT(resOk, os.setError(PhylipInterleavedFormat::tr("Illegal line")), MultipleSequenceAlignment());
-
-    QByteArray line = QByteArray(buff, len).trimmed();
-
-    int numberOfSpecies;
-    int numberOfCharacters;
-    resOk = parseHeader(line, numberOfSpecies, numberOfCharacters);
-    CHECK_EXT(resOk, os.setError(PhylipInterleavedFormat::tr("Wrong header")), MultipleSequenceAlignment());
-
-    // the first block with the names
-    for (int i = 0; i < numberOfSpecies; i++) {
-        CHECK_EXT(!io->isEof(), os.setError(PhylipSequentialFormat::tr("There is not enough data")), MultipleSequenceAlignment());
-        len = io->readBlock(buff, MAX_NAME_LEN);
-        CHECK_EXT(!io->hasError(), os.setError(io->errorString()), MultipleSequenceAlignment());
-        CHECK_EXT(len != 0, os.setError(PhylipFormat::tr("Error parsing file")), MultipleSequenceAlignment());
-
-        QByteArray name = QByteArray(buff, len).trimmed();
-
-        QByteArray value;
-        do {
-            len = io->readUntil(buff, READ_BUFF_SIZE, LINE_BREAKS, IOAdapter::Term_Skip, &resOk);
-            CHECK_EXT(!io->hasError(), os.setError(io->errorString()), MultipleSequenceAlignment());
-            CHECK_EXT(len != 0, os.setError(PhylipSequentialFormat::tr("Error parsing file")), MultipleSequenceAlignment());
-
-            value.append(QByteArray(buff, len));
-        } while (!resOk);
-
-        removeSpaces(value);
-        al->addRow(name, value);
-
-        os.setProgress(io->getProgress());
-    }
-    int currentLen = al->getLength();
-
-    // sequence blocks
-    while (!os.isCoR() && len > 0 && !io->isEof()) {
-        int blockSize = -1;
-        for (int i = 0; i < numberOfSpecies; i++) {
-            QByteArray value;
-            do {
-                len = io->readUntil(buff, READ_BUFF_SIZE, LINE_BREAKS, IOAdapter::Term_Skip, &resOk);
-                CHECK_EXT(!io->hasError(), os.setError(io->errorString()), MultipleSequenceAlignment());
-
-                value.append(QByteArray(buff, len));
-            } while (!resOk && !io->isEof());
-            if (value.size() == 0) {
-                if (i != 0) {
-                    os.setError(PhylipInterleavedFormat::tr("Block is incomplete"));
-                }
-                break;
-            }
-
-            removeSpaces(value);
-
-            al->appendChars(i, currentLen, value.constData(), value.size());
-            if (blockSize == -1) {
-                blockSize = value.size();
-            } else if (blockSize != value.size()) {
-                os.setError(PhylipInterleavedFormat::tr("Block is incomlete"));
-                break;
-            }
-        }
-        os.setProgress(io->getProgress());
-        currentLen += blockSize;
-    }
-    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), MultipleSequenceAlignment());
-    CHECK_EXT(al->getLength() == numberOfCharacters, os.setError(PhylipInterleavedFormat::tr("Number of characters does not correspond to the stated number")), MultipleSequenceAlignment());
-    return al;
+    validateMsaByHeaderData(msa, sequenceCountInHeader, columnCountInHeader, os);
+    CHECK_OP(os, {});
+    return msa;
 }
 
 }  // namespace U2

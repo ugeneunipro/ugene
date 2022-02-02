@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -237,7 +237,7 @@ void WorkflowTabView::sl_dashboardsChanged(const QStringList &dashboardIds) {
             continue;
         }
 
-        if (!dashboardInfo.opened) {
+        if (!dashboardInfo.opened && dashboard->isOpened()) {
             dashboard->setClosed();
             removeDashboard(dashboard);
         } else if (dashboardInfo.name != dashboard->getName()) {

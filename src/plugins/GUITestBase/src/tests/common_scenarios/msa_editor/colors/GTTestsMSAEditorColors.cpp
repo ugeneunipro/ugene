@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -280,8 +280,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTUtilsOptionPanelMsa::setUseDotsOption(os, expectedIsUseDotsOptionsSet);
 
     //    6. Drag and drop "RAW263" sequence object from the Project View to the MSA Editor.
-    GTUtilsMsaEditor::dragAndDropSequenceFromProject(os, QStringList() << "RAW.fa"
-                                                                       << "RAW263");
+    GTUtilsMsaEditor::dragAndDropSequenceFromProject(os, {"RAW.fa", "RAW263"});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: the alignment alphabet is changed to Raw, highlighting scheme options are the same.

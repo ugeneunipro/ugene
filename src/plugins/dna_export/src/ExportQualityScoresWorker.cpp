@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,13 +22,12 @@
 #include "ExportQualityScoresWorker.h"
 
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GUrl.h>
 #include <U2Core/Log.h>
 #include <U2Core/MultiTask.h>
 
 #include <U2Designer/DelegateEditors.h>
-
-#include <U2Gui/DialogUtils.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
@@ -67,7 +66,7 @@ void ExportPhredQualityWorkerFactory::init() {
 
     QMap<QString, PropertyDelegate *> delegates;
     {
-        delegates[BaseAttributes::URL_OUT_ATTRIBUTE().getId()] = new URLDelegate(DialogUtils::prepareDocumentsFileFilter(true), QString(), false, false);
+        delegates[BaseAttributes::URL_OUT_ATTRIBUTE().getId()] = new URLDelegate(FileFilters::createAllSupportedFormatsFileFilter(), "", false, false);
     }
 
     Descriptor actorDesc(ACTOR_ID, ExportPhredQualityWorker::tr("Export PHRED Qualities"), ExportPhredQualityWorker::tr("Export corresponding PHRED quality scores from input sequences."));

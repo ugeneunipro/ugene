@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,7 +27,6 @@
 #include <U2Algorithm/SmithWatermanReportCallback.h>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/L10n.h>
@@ -40,7 +39,6 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/CreateAnnotationWidgetController.h>
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/U2FileDialog.h>
 

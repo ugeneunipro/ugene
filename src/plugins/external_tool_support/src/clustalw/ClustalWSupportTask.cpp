@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -193,7 +193,7 @@ QList<Task *> ClustalWSupportTask::onSubTaskFinished(Task *subTask) {
         if (settings.noHGaps)
             arguments << "-NOHGAP";
         arguments << "-OUTFILE=" + outputUrl;
-        clustalWTask = new ExternalToolRunTask(ClustalWSupport::ET_CLUSTAL_ID, arguments, new ClustalWLogParser(inputMsa->getNumRows()));
+        clustalWTask = new ExternalToolRunTask(ClustalWSupport::ET_CLUSTAL_ID, arguments, new ClustalWLogParser(inputMsa->getRowCount()));
         setListenerForTask(clustalWTask);
         clustalWTask->setSubtaskProgressWeight(95);
         res.append(clustalWTask);
@@ -240,10 +240,10 @@ QList<Task *> ClustalWSupportTask::onSubTaskFinished(Task *subTask) {
                 MSAUtils::assignOriginalDataIds(inputMsa, resultMA, stateInfo);
                 CHECK_OP(stateInfo, res);
 
-                QMap<qint64, QList<U2MsaGap>> rowsGapModel;
-                for (int i = 0, n = resultMA->getNumRows(); i < n; ++i) {
+                QMap<qint64, QVector<U2MsaGap>> rowsGapModel;
+                for (int i = 0, n = resultMA->getRowCount(); i < n; ++i) {
                     qint64 rowId = resultMA->getMsaRow(i)->getRowDbInfo().rowId;
-                    const QList<U2MsaGap> &newGapModel = resultMA->getMsaRow(i)->getGapModel();
+                    const QVector<U2MsaGap> &newGapModel = resultMA->getMsaRow(i)->getGaps();
                     rowsGapModel.insert(rowId, newGapModel);
                 }
 

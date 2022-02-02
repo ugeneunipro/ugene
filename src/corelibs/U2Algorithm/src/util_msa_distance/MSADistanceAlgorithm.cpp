@@ -1,6 +1,6 @@
 ﻿/**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -57,7 +57,7 @@ void MSADistanceAlgorithmFactory::resetFlag(DistanceAlgorithmFlag flag) {
 
 MSADistanceAlgorithm::MSADistanceAlgorithm(MSADistanceAlgorithmFactory *_factory, const MultipleSequenceAlignment &_ma)
     : Task(tr("MSA distance algorithm \"%1\" task").arg(_factory->getName()), TaskFlag_None), factory(_factory), ma(_ma->getCopy()), excludeGaps(true), isSimilarity(true) {
-    int rowsNumber = ma->getNumRows();
+    int rowsNumber = ma->getRowCount();
     qint64 requiredMemory = sizeof(int) * rowsNumber * rowsNumber / 2 + sizeof(QVarLengthArray<int>) * rowsNumber;
     bool memoryAcquired = memoryLocker.tryAcquire(requiredMemory);
     CHECK_EXT(memoryAcquired, setError(QString("There is not enough memory to calculating distances matrix, required %1 megabytes").arg(requiredMemory / 1024 / 1024)), );
@@ -85,7 +85,7 @@ void MSADistanceAlgorithm::setDistanceValue(int row1, int row2, int distance) {
 }
 
 void MSADistanceAlgorithm::fillTable() {
-    int nSeq = ma->getNumRows();
+    int nSeq = ma->getRowCount();
     for (int i = 0; i < nSeq; i++) {
         for (int j = i; j < nSeq; j++) {
             if (isCanceled()) {
@@ -110,7 +110,7 @@ MSADistanceMatrix::MSADistanceMatrix()
 
 MSADistanceMatrix::MSADistanceMatrix(const MultipleSequenceAlignment &ma, bool _excludeGaps, bool _usePercents)
     : usePercents(_usePercents), excludeGaps(_excludeGaps), alignmentLength(ma->getLength()) {
-    int nSeq = ma->getNumRows();
+    int nSeq = ma->getRowCount();
     table.reserve(nSeq);
     for (int i = 0; i < nSeq; i++) {
         table.append(QVarLengthArray<int>(i + 1));

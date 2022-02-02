@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,7 +25,6 @@
 #include <U2Core/DeleteObjectsTask.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
-#include <U2Core/FailTask.h>
 #include <U2Core/GHints.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
@@ -35,21 +34,15 @@
 #include <U2Core/MultiTask.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/TaskSignalMapper.h>
-#include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/DialogUtils.h>
-
 #include <U2Lang/BaseAttributes.h>
 #include <U2Lang/BaseSlots.h>
-#include <U2Lang/CoreLibConstants.h>
 #include <U2Lang/SharedDbUrlUtils.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
 #include <U2Lang/WorkflowUtils.h>
-
-#include "CoreLib.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -162,7 +155,7 @@ QString BaseDocWriter::getBaseName(const MessageMetadata &metadata, bool groupBy
         return metadata.getDatasetName();
     } else if (!metadata.getFileUrl().isEmpty()) {
         QFileInfo info(metadata.getFileUrl());
-        return info.baseName();
+        return info.completeBaseName();
     } else if (!metadata.getDatabaseId().isEmpty()) {
         return metadata.getDatabaseId();
     }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/FormatUtils.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GUrl.h>
 
 #include <U2Lang/ConfigurationEditor.h>
@@ -127,16 +127,14 @@ QVariant FileExtensionRelation::getAffectResult(const QVariant &influencingValue
 }
 
 void FileExtensionRelation::updateDelegateTags(const QVariant &influencingValue, DelegateTags *dependentTags) const {
-    QString newFormatId = influencingValue.toString();
-    DocumentFormat *newFormat = AppContext::getDocumentFormatRegistry()->getFormatById(newFormatId);
-    if (nullptr != dependentTags) {
-        dependentTags->set("format", newFormatId);
-        QString filter = newFormatId + " files (*." + newFormatId + ")";
-        if (nullptr != newFormat) {
-            filter = FormatUtils::prepareDocumentsFileFilter(newFormatId, true);
-        }
-        dependentTags->set("filter", filter);
-    }
+    CHECK(dependentTags != nullptr, );
+
+    QString formatId = influencingValue.toString();
+    dependentTags->set("format", formatId);
+
+    DocumentFormat *newFormat = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
+    QString filter = newFormat != nullptr ? FileFilters::createFileFilterByDocumentFormatId(formatId) : FileFilters::createAllFilesFilter();
+    dependentTags->set("filter", filter);
 }
 
 FileExtensionRelation *FileExtensionRelation::clone() const {

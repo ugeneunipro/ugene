@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -31,8 +32,6 @@
 #include <U2Core/Version.h>
 
 #include <U2Designer/DelegateEditors.h>
-
-#include <U2Gui/DialogUtils.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
@@ -496,7 +495,7 @@ void TopHatWorkerFactory::init() {
     delegates[BOWTIE_INDEX_DIR] = new URLDelegate("", "", false, true, false, nullptr, "", true);
     delegates[BOWTIE_TOOL_PATH] = new URLDelegate("", "executable", false, false, false);
     delegates[SAMTOOLS_TOOL_PATH] = new URLDelegate("", "executable", false, false, false);
-    delegates[REF_SEQ] = new URLDelegate(DialogUtils::prepareDocumentsFileFilter(true), "", false, false, false);
+    delegates[REF_SEQ] = new URLDelegate(FileFilters::createAllSupportedFormatsFileFilter(), "", false, false, false);
     delegates[EXT_TOOL_PATH] = new URLDelegate("", "executable", false, false, false);
     delegates[TMP_DIR_PATH] = new URLDelegate("", "TmpDir", false, true);
     delegates[RAW_JUNCTIONS] = new URLDelegate("", "", false, false, false);
@@ -508,7 +507,7 @@ void TopHatWorkerFactory::init() {
     proto->setPortValidator(BasePorts::IN_SEQ_PORT_ID(), new InputSlotsValidator());
     proto->setValidator(new BowtieToolsValidator());
 
-    {    // external tools
+    {  // external tools
         proto->addExternalTool(SamToolsExtToolSupport::ET_SAMTOOLS_EXT_ID, SAMTOOLS_TOOL_PATH);
         proto->addExternalTool(TopHatSupport::ET_TOPHAT_ID, EXT_TOOL_PATH);
     }
@@ -904,5 +903,5 @@ RelationType BowtieVersionRelation::getType() const {
 BowtieVersionRelation *BowtieVersionRelation::clone() const {
     return new BowtieVersionRelation(*this);
 }
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

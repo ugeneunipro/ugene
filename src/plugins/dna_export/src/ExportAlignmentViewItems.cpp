@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,7 +21,6 @@
 
 #include "ExportAlignmentViewItems.h"
 
-#include <QDir>
 #include <QMainWindow>
 
 #include <U2Core/AppContext.h>
@@ -29,8 +28,6 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/DocumentUtils.h>
-#include <U2Core/GObjectTypes.h>
-#include <U2Core/GObjectUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -38,7 +35,6 @@
 
 #include <U2Formats/ExportTasks.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 
 #include <U2View/MSAEditor.h>

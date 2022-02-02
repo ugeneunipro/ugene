@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -108,8 +108,7 @@ void test_3(HI::GUITestOpStatus &os, int i = 0, QString expectedSec = "") {
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(13, i));
 
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_EDIT"
-                                                                        << "fill_selection_with_gaps"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "fill_selection_with_gaps"}));
     GTMenu::showContextMenu(os, seq);
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, i), QPoint(14, i));
@@ -151,8 +150,7 @@ void test_4(HI::GUITestOpStatus &os, int startPos, int endPos, const QString &ex
 
     if (0 != context) {
         QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
-        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_EDIT"
-                                                                            << "Remove selection"));
+        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "Remove selection"}));
         GTMenu::showContextMenu(os, seq);
     } else {
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
@@ -247,8 +245,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Use msa editor context menu {Edit->Remove all gaps}.
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_EDIT"
-                                                                        << "Remove all gaps"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "Remove all gaps"}));
     GTMenu::showContextMenu(os, seq);
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(13, 9));
@@ -287,8 +284,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Use msa editor context menu {Edit->Remove all gaps}.
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_EDIT"
-                                                                        << "Remove all gaps"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "Remove all gaps"}));
     GTMenu::showContextMenu(os, seq);
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(12, 9));
@@ -328,8 +324,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(3, 3));
 
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_EDIT"
-                                                                        << "remove_columns_of_gaps"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "remove_columns_of_gaps"}));
     GTUtilsDialog::waitForDialog(os, new DeleteGapsDialogFiller(os, 1));
     GTMenu::showContextMenu(os, seq);
 
@@ -381,8 +376,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {
     //     GTWidget::click(os,seq);
     //    GTKeyboardDriver::keyClick(Qt::Key_Delete,Qt::Key_Shift);
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_EDIT"
-                                                                        << "remove_columns_of_gaps"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "remove_columns_of_gaps"}));
     GTUtilsDialog::waitForDialog(os, new DeleteGapsDialogFiller(os, 1));
     GTMenu::showContextMenu(os, seq);
 
@@ -448,8 +442,7 @@ void test_9(HI::GUITestOpStatus &os, int i = 0) {
     CHECK_SET_ERR(clipboardText == gaps, "Expected:\n" + gaps + "\nFound:\n" + clipboardText);
 
     // 3. Move cursor at 15th symbol in first sequence. Use msa editor context menu {Edit->Delete column of gaps}.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_EDIT"
-                                                                        << "remove_columns_of_gaps"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "remove_columns_of_gaps"}));
     GTUtilsDialog::waitForDialog(os, new DeleteGapsDialogFiller(os, 1));
     GTMenu::showContextMenu(os, seq);
 
@@ -617,8 +610,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Use msa editor context menu {Edit->Remove all gaps}.
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_EDIT"
-                                                                        << "Remove all gaps"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "Remove all gaps"}));
     GTMenu::showContextMenu(os, seq);
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(13, 9));
@@ -721,7 +713,7 @@ static void test_13(HI::GUITestOpStatus &os, int comboVal, int spinVal, const QS
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
@@ -732,11 +724,9 @@ static void test_13(HI::GUITestOpStatus &os, int comboVal, int spinVal, const QS
     CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");
     GTSpinBox::setValue(os, thresholdSpinBox, spinVal, GTGlobals::UseKeyBoard);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_COPY"
-                                                                        << "Copy consensus",
-                                                      GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_COPY", "Copy consensus"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QString clipboardText = GTClipboard::text(os);
@@ -775,10 +765,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     // 2. Right click on aligniment view. Open context menu {Export->save subalignment}
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 5), QPoint(10, 5));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
-    GTUtilsDialog::waitForDialog(os, new ExtractSelectedAsMSADialogFiller(os, testDir + "_common_data/scenarios/sandbox/result.aln", QStringList() << "Zychia_baranovi"
-                                                                                                                                                   << "Montana_montana",
-                                                                          6,
-                                                                          16));
+    GTUtilsDialog::waitForDialog(os, new ExtractSelectedAsMSADialogFiller(os, testDir + "_common_data/scenarios/sandbox/result.aln", {"Zychia_baranovi", "Montana_montana"}, 6, 16));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
     // Expected state: Create subaligniment dialog has appeared
 
@@ -838,8 +825,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
             GTMouseDriver::moveTo(p);
             GTMouseDriver::doubleClick();
 
-            const QStringList list = QStringList() << "Zychia_baranovi"
-                                                   << "Montana_montana";
+            const QStringList list = {"Zychia_baranovi", "Montana_montana"};
             for (int i = 0; i < table->rowCount(); i++) {
                 GTKeyboardDriver::keyClick(Qt::Key_Down);
                 QCheckBox *box = qobject_cast<QCheckBox *>(table->cellWidget(i, 0));

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or * modify it under the terms of the GNU General Public License
@@ -58,7 +58,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsDialog::waitForDialog(os, filler);
     GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
 
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTUtilsDocument::checkDocument(os, "result");
     GTUtilsSequenceView::checkSequence(os, "ACAAGTCGGATTTATA");

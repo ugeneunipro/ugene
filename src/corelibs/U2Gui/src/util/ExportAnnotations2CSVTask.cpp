@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -123,7 +123,7 @@ void ExportAnnotations2CSVTask::run() {
             values << QString::number(region.startPos + region.length);
             values << QString::number(region.length);
 
-            const bool isComplementary = annotation->getStrand().isCompementary();
+            const bool isComplementary = annotation->getStrand().isComplementary();
             values << ((isComplementary) ? tr("yes") : tr("no"));
 
             if (exportSequenceName) {

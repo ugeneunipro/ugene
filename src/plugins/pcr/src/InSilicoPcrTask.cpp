@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -83,7 +83,7 @@ FindAlgorithmTaskSettings InSilicoPcrTask::getFindPatternSettings(U2Strand::Dire
     result.searchRegion.length = settings.sequence.length();
     result.patternSettings = FindAlgorithmPatternSettings_Subst;
     result.strand = FindAlgorithmStrand_Both;
-    result.useAmbiguousBases = true;
+    result.useAmbiguousBases = settings.useAmbiguousBases;
 
     int pos = 0;
     if (U2Strand::Direct == direction) {
@@ -153,7 +153,7 @@ void InSilicoPcrTask::run() {
 
 InSilicoPcrTask::PrimerBind InSilicoPcrTask::getPrimerBind(const FindAlgorithmResult &forward, const FindAlgorithmResult &reverse, U2Strand::Direction direction) const {
     PrimerBind result;
-    bool switched = forward.strand.isCompementary();
+    bool switched = forward.strand.isComplementary();
     if ((U2Strand::Direct == direction && switched) ||
         (U2Strand::Complementary == direction && !switched)) {
         result.primer = settings.reversePrimer;

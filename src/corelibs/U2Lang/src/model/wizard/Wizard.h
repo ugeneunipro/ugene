@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@ namespace U2 {
 
 class WizardPage;
 
-class U2LANG_EXPORT Wizard {
+class U2LANG_EXPORT Wizard : public QObject {
 public:
     Wizard(const QString &name, const QList<WizardPage *> &pages, const QString &helpPageId);
     virtual ~Wizard();

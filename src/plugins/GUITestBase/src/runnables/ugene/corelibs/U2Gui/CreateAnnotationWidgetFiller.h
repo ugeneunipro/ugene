@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,7 +38,7 @@ public:
                                  const QString &description = "");
     CreateAnnotationWidgetFiller(HI::GUITestOpStatus &os, CustomScenario *scenario);
 
-    virtual void commonScenario();
+    void commonScenario() override;
 
 private:
     const QString groupName;

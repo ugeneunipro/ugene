@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -82,6 +82,7 @@ private:
     IntegralBus *annotationsPort;
     QList<AnnotationTableObject *> createdAnnotationObjects;
     QMap<QString, QList<AnnotationTableObject *>> annotationsByUrl;
+    QSet<QString> existedResultFiles;
 
 };  // WriteAnnotationsWorker
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@ class SiteconIO : public QObject {
 public:
     static const QString SITECON_ID;
     static const QString SITECON_EXT;
-    static QString getFileFilter(bool includeAll = true);
+    static QString getFileFilter();
     static SiteconModel readModel(IOAdapterFactory *iof, const QString &url, TaskStateInfo &si);
     static void writeModel(IOAdapterFactory *iof, const QString &url, TaskStateInfo &si, const SiteconModel &model);
 };

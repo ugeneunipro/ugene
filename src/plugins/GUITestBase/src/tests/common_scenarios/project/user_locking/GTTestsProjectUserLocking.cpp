@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -150,8 +150,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "1.gb");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View"
-                                                                        << "action_open_view"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Open View", "action_open_view"}));
     GTMouseDriver::moveTo(itemPos);
     GTMouseDriver::click(Qt::RightButton);
 
@@ -205,13 +204,11 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     CHECK_SET_ERR(expectedImage == foundImage, "Icon is unlocked");
 
     GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj2", testDir + "_common_data/scenarios/sandbox/proj2"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Save project as...");
-    GTUtilsDialog::waitAllFinished(os);
+    GTMenu::clickMainMenuItem(os, {"File", "Save project as..."});
+    GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Close project");
+    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
     GTUtilsProjectTreeView::checkProjectViewIsClosed(os);
 
     GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/sandbox/proj2.uprj");

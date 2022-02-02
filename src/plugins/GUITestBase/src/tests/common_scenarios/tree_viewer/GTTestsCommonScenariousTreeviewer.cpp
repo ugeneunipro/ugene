@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -163,7 +163,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-    GTUtilsProjectTreeView::findIndex(os, "COI.nwk", GTGlobals::FindOptions(false));
+    GTUtilsProjectTreeView::findIndex(os, "COI.nwk", {false});
     // Expected state: document "COI.nwk" not presents at project tree, tree editor view window closes
 
     // 5. Double click on COI object.
@@ -210,10 +210,10 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-    QWidget *w = GTWidget::findWidget(os, "treeView", nullptr, GTGlobals::FindOptions(false));
+    QWidget *w = GTWidget::findWidget(os, "treeView", nullptr, {false});
     CHECK_SET_ERR(w == 0, "treeView not deleted")
 
-    GTUtilsProjectTreeView::findIndex(os, "COI.nwk", GTGlobals::FindOptions(false));
+    GTUtilsProjectTreeView::findIndex(os, "COI.nwk", {false});
     // Expected state: document "COI.nwk" not presents at project tree, tree editor view window closes
 
     // 5. Double click on COI object.
@@ -261,7 +261,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: document "COI.nwk" not presents at project tree, tree editor view window closes
-    treeView = GTWidget::findWidget(os, "treeView", nullptr, GTGlobals::FindOptions(false));
+    treeView = GTWidget::findWidget(os, "treeView", nullptr, {false});
     CHECK_SET_ERR(treeView == nullptr, "treeView not deleted")
 
     GTUtilsProjectTreeView::checkNoItem(os, "test_0002_2.nwk");

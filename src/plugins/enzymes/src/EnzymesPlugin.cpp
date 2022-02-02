@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,20 +21,15 @@
 
 #include "EnzymesPlugin.h"
 
-#include <QDir>
 #include <QMenu>
 #include <QMessageBox>
 
 #include <U2Core/AnnotationSelection.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/AutoAnnotationsSupport.h>
-#include <U2Core/DNAAlphabet.h>
 #include <U2Core/GAutoDeleteList.h>
 #include <U2Core/QObjectScopedPointer.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/MainWindow.h>
 #include <U2Gui/ToolsMenu.h>
 
 #include <U2Test/GTestFrameworkComponents.h>

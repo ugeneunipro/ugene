@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -89,7 +89,7 @@ QList<U2Region> DetViewSingleLineRenderer::getAnnotationYRegions(Annotation *ann
 U2Region DetViewSingleLineRenderer::getAnnotationYRange(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, int availableHeight) const {
     const SharedAnnotationData &annotationData = annotation->getData();
     const U2Strand strand = annotationData->getStrand();
-    const bool isOnComplementStrand = strand.isCompementary() && detView->hasComplementaryStrand();
+    const bool isOnComplementStrand = strand.isComplementary() && detView->hasComplementaryStrand();
     const int frame = U1AnnotationUtils::getRegionFrame(detView->getSequenceLength(), strand, annotationData->isOrder(), locationRegionIndex, annotationData->getRegions());
 
     // Annotations are drawn on translation frames only in TS_ShowAllFrames or in TS_SetUpFramesManually modes.
@@ -730,7 +730,7 @@ bool DetViewSingleLineRenderer::deriveTranslationCharColor(qint64 pos,
     // 2+ annotations found on nucleic -> black
 
     int nAnnotations = 0;
-    const U2Region tripletRange = strand.isCompementary() ? U2Region(pos - 2, 2) : U2Region(pos, 2);
+    const U2Region tripletRange = strand.isComplementary() ? U2Region(pos - 2, 2) : U2Region(pos, 2);
     AnnotationSettings *as = nullptr;
     AnnotationSettingsRegistry *registry = AppContext::getAnnotationsSettingsRegistry();
     const int sequenceLen = detView->getSequenceLength();
@@ -748,7 +748,7 @@ bool DetViewSingleLineRenderer::deriveTranslationCharColor(qint64 pos,
                 continue;
             }
             const int regionFrame = U1AnnotationUtils::getRegionFrame(sequenceLen, strand, order, i, location);
-            const int posFrame = strand.isCompementary() ? (sequenceLen - pos) % 3 : pos % 3;
+            const int posFrame = strand.isComplementary() ? (sequenceLen - pos) % 3 : pos % 3;
             if (regionFrame == posFrame) {
                 tas = registry->getAnnotationSettings(aData);
                 if (tas->visible) {

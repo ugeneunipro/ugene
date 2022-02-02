@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,6 +22,7 @@
 #include "SampleActionsManager.h"
 
 #include <QApplication>
+#include <QDir>
 #include <QMenu>
 #include <QMessageBox>
 
@@ -48,6 +49,10 @@ SampleActionsManager::SampleActionsManager(QObject *parent)
 }
 
 void SampleActionsManager::registerAction(const SampleAction &action) {
+    // Do not register samples with not available workflow files.
+    QString samplePath = QDir("data:workflow_samples").path() + "/" + action.samplePath;
+    CHECK(QFileInfo::exists(samplePath), );
+
     actions.append(action);
     int id = actions.size() - 1;
 

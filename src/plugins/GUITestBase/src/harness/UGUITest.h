@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -46,12 +46,6 @@ public:
      * Only tests with this labels are executed as a part of nightly GUI testing.
      */
     static const QString Nightly;
-
-    /** A label to mark test as included into the 'Metagenomics' teamcity build suite. */
-    static const QString Metagenomics;
-
-    /** A label to mark test as included into the 'Cistrome' teamcity build suite. */
-    static const QString Cistrome;
 
     /** A test with this label is safe to run on Linux. */
     static const QString Linux;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -66,7 +66,7 @@ private slots:
 class MainWindowImpl : public MainWindow {
     Q_OBJECT
 public:
-    MainWindowImpl();
+    MainWindowImpl() = default;
     ~MainWindowImpl();
 
     virtual QMenu *getTopLevelMenu(const QString &sysName) const;
@@ -93,7 +93,7 @@ public:
 
     void runClosingTask();
     void setShutDownInProcess(bool flag);
-    void registerStartupChecks(QList<Task *> tasks);
+    void registerStartupChecks(const QList<Task *>& tasks);
     void addNotification(const QString &message, NotificationType type);
 signals:
     void si_show();
@@ -116,36 +116,35 @@ private slots:
     void sl_installToPathAction();
 #endif
 protected:
-    bool eventFilter(QObject *object, QEvent *event);
+    bool eventFilter(QObject *object, QEvent *event) override;
 
 private:
     void createActions();
     void prepareGUI();
-    void openManual(const QString &name);
 
-    QMainWindow *mw;
-    FixedMdiArea *mdi;
+    QMainWindow *mw = nullptr;
+    FixedMdiArea *mdi = nullptr;
 
-    MWMenuManagerImpl *menuManager;
-    MWToolBarManagerImpl *toolbarManager;
-    MWMDIManager *mdiManager;
-    MWDockManager *dockManager;
+    MWMenuManagerImpl *menuManager = nullptr;
+    MWToolBarManagerImpl *toolbarManager = nullptr;
+    MWMDIManager *mdiManager = nullptr;
+    MWDockManager *dockManager = nullptr;
 
-    NotificationStack *nStack;
+    NotificationStack *nStack = nullptr;
 
-    QAction *exitAction;
-    QAction *aboutAction;
-    QAction *checkUpdateAction;
-    QAction *createDesktopShortcutAction;
-    QAction *visitWebAction;
-    QAction *viewOnlineDocumentation;
-    QAction *welcomePageAction;
-    QAction *crashUgeneAction;
-    QAction *showWhatsNewAction;
+    QAction *exitAction = nullptr;
+    QAction *aboutAction = nullptr;
+    QAction *checkUpdateAction = nullptr;
+    QAction *createDesktopShortcutAction = nullptr;
+    QAction *visitWebAction = nullptr;
+    QAction *viewOnlineDocumentation = nullptr;
+    QAction *welcomePageAction = nullptr;
+    QAction *crashUgeneAction = nullptr;
+    QAction *showWhatsNewAction = nullptr;
 #ifdef _INSTALL_TO_PATH_ACTION
-    QAction *installToPathAction;
+    QAction *installToPathAction = nullptr;
 #endif
-    bool shutDownInProcess;
+    bool shutDownInProcess = false;
 
     QList<Task *> startupTasklist;
 };

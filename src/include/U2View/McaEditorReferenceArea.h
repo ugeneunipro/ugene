@@ -1,1 +1,1 @@
-#include "../../corelibs/U2View/src/ov_msa/McaEditorReferenceArea.h"
+#include "../../corelibs/U2View/src/ov_mca/McaEditorReferenceArea.h"

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,14 +39,8 @@ class U2VIEW_EXPORT MaEditorOverviewArea : public QWidget {
 public:
     MaEditorOverviewArea(MaEditorWgt *ui, const QString &objectName);
 
-    virtual void cancelRendering();
-
-    bool isResizable() const;
-
 protected:
     void addOverview(QWidget *overviewWgt);
-
-    bool isWidgetResizable;
 
 private:
     QVBoxLayout *layout;

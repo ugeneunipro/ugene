@@ -1,0 +1,14 @@
+<multi-test>
+    <run-cmdline task="local-blast"
+                 in="!common_data_dir!cmdline/external-tool-support/blastplus/DNA_circ.gb"
+                 out="!tmp_data_dir!blast-search_prot_DNA_circj_tmp.gb"
+                 dbpath="!common_data_dir!cmdline/external-tool-support/blastplus/"
+                 dbname="junction_prot"
+                 p="blastx"
+    />
+    <load-document index="doc1" url="blast-search_prot_DNA_circj_tmp.gb" io="local_file" format="genbank" dir="temp"/>
+    <load-document index="doc2" url="cmdline/external-tool-support/blastplus/res_junction_prot.gb" io="local_file" format="genbank"/>
+
+    <compare-annotations-num-in-two-objects doc="doc1" value="doc2"/>
+    <compare-annotations-locations-in-two-objects doc="doc1" value="doc2"/>
+</multi-test>

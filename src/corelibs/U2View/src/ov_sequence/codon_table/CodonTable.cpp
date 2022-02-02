@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,6 @@
 #include "CodonTable.h"
 
 #include <QApplication>
-#include <QDesktopServices>
 #include <QHeaderView>
 #include <QScrollArea>
 #include <QScrollBar>
@@ -60,7 +59,7 @@ CodonTableView::CodonTableView(AnnotatedDNAView *view)
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     table->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 
-    const int rowHeight = 18;
+    int rowHeight = 18;
     table->verticalHeader()->setDefaultSectionSize(rowHeight);
 
     table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
@@ -71,25 +70,21 @@ CodonTableView::CodonTableView(AnnotatedDNAView *view)
     table->horizontalHeader()->setSectionResizeMode(9, QHeaderView::ResizeToContents);
 
     // Fill the table
-    QStringList nucleobases;
-    nucleobases << "U"
-                << "C"
-                << "A"
-                << "G";
+    QStringList nucleicBases = {"U", "C", "A", "G"};
     addItemToTable(0, 0, tr("1st base"), 2, 1);
     addItemToTable(0, 1, tr("2nd base"), 1, 8);
     addItemToTable(0, 9, tr("3rd base"), 2, 1);
     for (int i = 0; i < 4; i++) {
         // 1 column
-        addItemToTable(2 + i * 4, 0, nucleobases[i], 4, 1);
+        addItemToTable(2 + i * 4, 0, nucleicBases[i], 4, 1);
         // 2 row
-        addItemToTable(1, 1 + 2 * i, nucleobases[i], 1, 2);
+        addItemToTable(1, 1 + 2 * i, nucleicBases[i], 1, 2);
         for (int j = 0; j < 4; j++) {
             // last column
-            addItemToTable(2 + i * 4 + j, 9, nucleobases[j], 1, 1);
+            addItemToTable(2 + i * 4 + j, 9, nucleicBases[j], 1, 1);
             for (int k = 0; k < 4; k++) {
                 // codon variations
-                addItemToTable(2 + i * 4 + k, 1 + j * 2, nucleobases[i] + nucleobases[j] + nucleobases[k], 1, 1);
+                addItemToTable(2 + i * 4 + k, 1 + j * 2, nucleicBases[i] + nucleicBases[j] + nucleicBases[k], 1, 1);
             }
         }
     }
@@ -113,7 +108,7 @@ CodonTableView::CodonTableView(AnnotatedDNAView *view)
             return;
         }
     }
-    // set standart genetic code table
+    // set standard genetic code table
     setAminoTranslation(DNATranslationID(1));
 }
 
@@ -197,18 +192,16 @@ void CodonTableView::spanEqualCells() {
 }
 
 void CodonTableView::addItemToTable(int row, int column, const QString &text, const QColor &backgroundColor, int rowSpan, int columnSpan) {
-    QTableWidgetItem *item = new QTableWidgetItem(text);
-
+    auto item = new QTableWidgetItem(text);
     QFont font = item->font();
     font.setPointSize(10);
     item->setFont(font);
-
     item->setFlags(item->flags() & ~Qt::ItemIsEditable);
-
     item->setBackgroundColor(backgroundColor);
     item->setTextAlignment(Qt::AlignCenter);
-    if ((rowSpan != 1) || (columnSpan != 1))
+    if (rowSpan != 1 || columnSpan != 1) {
         table->setSpan(row, column, rowSpan, columnSpan);
+    }
     table->setItem(row, column, item);
 }
 
@@ -220,41 +213,37 @@ void CodonTableView::addItemToTable(int row, int column, const QString &text, co
     table->removeCellWidget(row, column);
 
     QColor appTextColor = QApplication::palette().text().color();
-    QLabel *item = new QLabel("<a href=\"" + link + "\" style=\"color: " + appTextColor.name() + "\">" + text + "</a>");
-    item->setObjectName(text);
+    auto label = new QLabel("<a href=\"" + link + "\" style=\"color: " + appTextColor.name() + "\">" + text + "</a>");
+    label->setObjectName("row_" + QString::number(row) + "_column_" + QString::number(column));
+    label->setAlignment(Qt::AlignCenter);
+    label->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Expanding);
 
-    item->setAlignment(Qt::AlignCenter);
-    item->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Expanding);
-
-    QFont font = item->font();
+    QFont font = label->font();
     font.setPointSize(10);
-    item->setFont(font);
-    item->setStyleSheet("QLabel {background-color: " + backgroundColor.name() + ";}");
+    label->setFont(font);
+    label->setStyleSheet("QLabel {background-color: " + backgroundColor.name() + ";}");
 
-    item->setOpenExternalLinks(true);
-    item->setTextFormat(Qt::RichText);
-    item->setTextInteractionFlags(Qt::TextBrowserInteraction);
+    label->setOpenExternalLinks(true);
+    label->setTextFormat(Qt::RichText);
+    label->setTextInteractionFlags(Qt::TextBrowserInteraction);
 
-    if ((rowSpan != 1) || (columnSpan != 1))
+    if (rowSpan != 1 || columnSpan != 1) {
         table->setSpan(row, column, rowSpan, columnSpan);
+    }
 
     if (backgroundColor == POLAR_COLOR) {
-        item->setToolTip("Polar Codon");
-    }
-    if (backgroundColor == NONPOLAR_COLOR) {
-        item->setToolTip("Nonpolar Codon");
-    }
-    if (backgroundColor == BASIC_COLOR) {
-        item->setToolTip("Basic Codon");
-    }
-    if (backgroundColor == ACIDIC_COLOR) {
-        item->setToolTip("Acidic Codon");
-    }
-    if (backgroundColor == STOP_CODON_COLOR) {
-        item->setToolTip("Stop Codon");
+        label->setToolTip("Polar Codon");
+    } else if (backgroundColor == NONPOLAR_COLOR) {
+        label->setToolTip("Nonpolar Codon");
+    } else if (backgroundColor == BASIC_COLOR) {
+        label->setToolTip("Basic Codon");
+    } else if (backgroundColor == ACIDIC_COLOR) {
+        label->setToolTip("Acidic Codon");
+    } else if (backgroundColor == STOP_CODON_COLOR) {
+        label->setToolTip("Stop Codon");
     }
 
-    table->setCellWidget(row, column, item);
+    table->setCellWidget(row, column, label);
 }
 
 void CodonTableView::addItemToTable(int row, int column, DNACodon *codon) {

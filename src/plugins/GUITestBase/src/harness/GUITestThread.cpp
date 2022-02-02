@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -154,23 +154,9 @@ void GUITestThread::removeDir(const QString &dirName) {
 }
 
 void GUITestThread::saveScreenshot() {
-    class Scenario : public HI::CustomScenario {
-    public:
-        Scenario(HI::GUITest *test)
-            : test(test) {
-        }
-
-        void run(HI::GUITestOpStatus &) {
-            const QPixmap originalPixmap = QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId());
-            originalPixmap.save(HI::GUITest::screenshotDir + test->getFullName() + ".jpg");
-        }
-
-    private:
-        HI::GUITest *test;
-    };
-
     HI::GUITestOpStatus os;
-    HI::MainThreadRunnable::runInMainThread(os, new Scenario(testToRun));
+    QImage image = GTGlobals::takeScreenShot(os);
+    image.save(HI::GUITest::screenshotDir + testToRun->getFullName() + ".jpg");
 }
 
 void GUITestThread::cleanup() {

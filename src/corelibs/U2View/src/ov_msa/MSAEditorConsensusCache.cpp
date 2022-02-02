@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -88,7 +88,7 @@ void MSAEditorConsensusCache::updateCacheItem(int pos) {
 
         CacheItem &ci = cache[pos];
         int count = 0;
-        int nSeq = ma->getNumRows();
+        int nSeq = ma->getRowCount();
         SAFE_POINT(0 != nSeq, errorMessage, );
 
         ci.topChar = algorithm->getConsensusCharAndScore(ma, pos, count);

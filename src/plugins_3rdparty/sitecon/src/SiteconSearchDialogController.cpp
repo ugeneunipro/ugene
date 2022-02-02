@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -69,7 +69,7 @@ public:
             case 0:
                 return res.region.startPos < o->res.region.startPos;
             case 1:
-                return res.strand != o->res.strand ? res.strand.isCompementary() : (res.region.startPos < o->res.region.startPos);
+                return res.strand != o->res.strand ? res.strand.isComplementary() : (res.region.startPos < o->res.region.startPos);
             case 2:
                 return res.psum < o->res.psum;
             case 3:
@@ -378,7 +378,7 @@ SiteconResultItem::SiteconResultItem(const SiteconSearchResult &r)
     setTextAlignment(4, Qt::AlignRight);
 
     setText(0, range);
-    QString strand = res.strand.isCompementary() ? SiteconSearchDialogController::tr("Complement strand") : SiteconSearchDialogController::tr("Direct strand");
+    QString strand = res.strand.isComplementary() ? SiteconSearchDialogController::tr("Complement strand") : SiteconSearchDialogController::tr("Direct strand");
     setText(1, strand);
     setText(2, QString::number(res.psum, 'f', 2) + "%");
     setText(3, QString::number(res.err1, 'g', 4));

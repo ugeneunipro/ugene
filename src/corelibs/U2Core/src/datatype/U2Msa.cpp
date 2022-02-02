@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,38 +23,33 @@
 
 namespace U2 {
 
-U2MsaGap::U2MsaGap()
-    : offset(0),
-      gap(0) {
+U2MsaGap::U2MsaGap(int _startPos, int _length)
+    : startPos(_startPos),
+      length(_length) {
 }
 
-U2MsaGap::U2MsaGap(qint64 off, qint64 gap)
-    : offset(off),
-      gap(gap) {
-}
-
-qint64 U2MsaGap::endPos() const {
-    return offset + gap;
+int U2MsaGap::endPos() const {
+    return startPos + length;
 }
 
 void U2MsaGap::setEndPos(qint64 newEndPos) {
-    gap = newEndPos - offset;
+    length = newEndPos - startPos;
 }
 
 bool U2MsaGap::isValid() const {
-    return ((offset >= 0) && (gap > 0));
+    return startPos >= 0 && length > 0;
 }
 
 bool U2MsaGap::operator==(const U2MsaGap &g) const {
-    return ((offset == g.offset) && (gap == g.gap));
+    return ((startPos == g.startPos) && (length == g.length));
 }
 
 bool U2MsaGap::lessThan(const U2MsaGap &first, const U2MsaGap &second) {
-    return first.offset < second.offset;
+    return first.startPos < second.startPos;
 }
 
 U2MsaGap U2MsaGap::intersect(const U2MsaGap &anotherGap) const {
-    const qint64 newOffset = qMax(offset, anotherGap.offset);
+    const qint64 newOffset = qMax(startPos, anotherGap.startPos);
     const qint64 newEnd = qMin(endPos(), anotherGap.endPos());
     if (newOffset > newEnd) {
         return U2MsaGap();
@@ -63,7 +58,7 @@ U2MsaGap U2MsaGap::intersect(const U2MsaGap &anotherGap) const {
 }
 
 U2MsaGap::operator U2Region() const {
-    return U2Region(offset, gap);
+    return U2Region(startPos, length);
 }
 
 const qint64 U2MsaRow::INVALID_ROW_ID = -1;

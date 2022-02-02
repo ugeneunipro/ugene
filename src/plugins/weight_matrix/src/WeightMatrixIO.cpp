@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,6 +28,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DIProperties.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
@@ -35,11 +36,7 @@
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/TextUtils.h>
 
-#include <U2Gui/DialogUtils.h>
-
 #include "WeightMatrixPlugin.h"
-
-/* TRANSLATOR U2::IOAdapter */
 
 namespace U2 {
 
@@ -48,16 +45,22 @@ const QString WeightMatrixIO::FREQUENCY_MATRIX_ID("frequency_matrix");
 const QString WeightMatrixIO::WEIGHT_MATRIX_EXT("pwm");
 const QString WeightMatrixIO::FREQUENCY_MATRIX_EXT("pfm");
 
-QString WeightMatrixIO::getAllMatrixFileFilter(bool includeAll) {
-    return DialogUtils::prepareFileFilter(tr("Frequency and weight matrices"), QStringList() << FREQUENCY_MATRIX_EXT << WEIGHT_MATRIX_EXT, includeAll);
+QString WeightMatrixIO::getAllMatrixFileFilter(bool isSingleFileFilterMode) {
+    QString name = tr("Frequency and weight matrices");
+    QStringList extensions({FREQUENCY_MATRIX_EXT, WEIGHT_MATRIX_EXT});
+    return isSingleFileFilterMode ? FileFilters::createSingleFileFilter(name, extensions, false)
+                                  : FileFilters::createFileFilter(name, extensions);
 }
 
-QString WeightMatrixIO::getPFMFileFilter(bool includeAll) {
-    return DialogUtils::prepareFileFilter(tr("Frequency matrices"), QStringList(FREQUENCY_MATRIX_EXT), includeAll);
+QString WeightMatrixIO::getPFMFileFilter(bool isSingleFileFilterMode) {
+    QString name = tr("Frequency matrices");
+    QStringList extensions({FREQUENCY_MATRIX_EXT});
+    return isSingleFileFilterMode ? FileFilters::createSingleFileFilter(name, extensions, false)
+                                  : FileFilters::createFileFilter(name, extensions);
 }
 
-QString WeightMatrixIO::getPWMFileFilter(bool includeAll) {
-    return DialogUtils::prepareFileFilter(tr("Weight matrices"), QStringList(WEIGHT_MATRIX_EXT), includeAll);
+QString WeightMatrixIO::getPWMFileFilter() {
+    return FileFilters::createFileFilter(tr("Weight matrices"), {WEIGHT_MATRIX_EXT});
 }
 
 #define BUFF_SIZE 4096

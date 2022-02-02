@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -87,7 +87,7 @@ void MsaColorSchemeClustalX::updateCache() const {
     // compute colors for whole ali
     // use 4 bits per color
     const MultipleAlignment msa = maObj->getMultipleAlignment();
-    int nSeq = msa->getNumRows();
+    int nSeq = msa->getRowCount();
     aliLen = maObj->getLength();
     cacheVersion = objVersion;
 

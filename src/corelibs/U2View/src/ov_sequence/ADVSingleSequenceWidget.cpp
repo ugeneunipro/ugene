@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,7 +23,6 @@
 
 #include <QApplication>
 #include <QDialog>
-#include <QMessageBox>
 #include <QToolButton>
 #include <QWidgetAction>
 
@@ -41,7 +40,6 @@
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportImageDialog.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/OrderedToolbar.h>
@@ -169,7 +167,7 @@ ADVSingleSequenceWidget::ADVSingleSequenceWidget(ADVSequenceObjectContext *seqCt
 void ADVSingleSequenceWidget::init() {
     ADVSequenceObjectContext *seqCtx = getSequenceContext();
     detView = new DetView(this, seqCtx);
-    const QString objName = getSequenceObject()->getGObjectName();
+    QString objName = getSequenceObject()->getGObjectName();
     detView->setObjectName("det_view_" + objName);
     detView->setMouseTracking(true);
     detView->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);

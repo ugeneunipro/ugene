@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@ namespace U2 {
 
 static bool isFilteredByMASequenceName(const MultipleAlignmentObject *maObj, const ProjectTreeControllerModeSettings &settings) {
     CHECK(nullptr != maObj, false);
-    for (int i = 0, n = maObj->getNumRows(); i < n; ++i) {
+    for (int i = 0, n = maObj->getRowCount(); i < n; ++i) {
         if (settings.nameFilterAcceptsString(maObj->getRow(i)->getName())) {
             return true;
         }

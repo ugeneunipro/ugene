@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -46,29 +46,66 @@ class U2GUI_EXPORT CreateAnnotationModel {
 public:
     CreateAnnotationModel();
 
-    GObjectReference sequenceObjectRef;  // this object is selected by default
-    bool defaultIsNewDoc;  // new doc field is selected by default
+    CreateAnnotationModel(CreateAnnotationModel const &) = default;
 
-    bool hideGroupName;  // hides annotation group name field
-    bool hideLocation;  // hides location field and does not check it in validate()
-    bool hideAnnotationType;  // hides annotation type field
-    bool hideAnnotationName;  // hides annotation name field
-    bool hideDescription;  // hides description field
-    bool hideUsePatternNames;  // hides "use pattern names" checkbox
-    bool useUnloadedObjects;
-    bool useAminoAnnotationTypes;
+    CreateAnnotationModel &operator=(const CreateAnnotationModel &other) = default;
 
-    QString groupName;  // default groupname. If empty -> <auto> value is used (annotationObject->name value).
-    SharedAnnotationData data;  // holds name, location and preferred type of the annotation
-    QString description;  // some info that will be saved as qualifier /note
+    /** A sequence object the new annotation will be created for. */
+    GObjectReference sequenceObjectRef;
 
-    GObjectReference annotationObjectRef;  // the object to be loaded
-    QString newDocUrl;  // the URL of new document with annotation table to be created
-    qint64 sequenceLen;  // length of target sequence for validation purposes
+    /** If 'true' "New Document" option is selected. */
+    bool defaultIsNewDoc = false;
 
-    bool hideAnnotationTableOption;  // hides all options of annotation table object location
-    bool hideAutoAnnotationsOption;  // show automated highlighting for new annotation if possible
-    bool hideAnnotationParameters;  // hides annotation parameters groupbox
+    /** Disables "Annotation group field". */
+    bool hideGroupName = false;
+
+    /** Hides location field and does not run location validation at all. */
+    bool hideLocation = false;
+
+    /** Hides "Annotation Type" list. */
+    bool hideAnnotationType = false;
+
+    /** Hides annotation name input. */
+    bool hideAnnotationName = false;
+
+    /** Hides annotation description input. */
+    bool hideDescription;
+
+    /** Hides pattern names checkbox. */
+    bool hideUsePatternNames = true;
+
+    /** Enables unloaded documents in the "Existing document" selector. */
+    bool useUnloadedObjects = false;
+
+    /** Populates annotation type list with amino sequence specific feature types. */
+    bool useAminoAnnotationTypes = false;
+
+    /** Annotation group name. If empty the group name is automatically selected from the current annotation type (name). */
+    QString groupName;
+
+    /** Annotation description. Saved as a qualifier. */
+    QString description;
+
+    /** An existing annotation table object to save the annotation. */
+    GObjectReference annotationObjectRef;
+
+    /** A file path of the annotation table document to save the annotation. */
+    QString newDocUrl;
+
+    /** Length of the sequence object. Used for validation. */
+    qint64 sequenceLen;
+
+    /**  Hides the target annotation table document selector widget: a new file and existing docs options. */
+    bool hideAnnotationTableOption = false;
+
+    /** Hides "use auto-annotation table as a target" option. */
+    bool hideAutoAnnotationsOption = true;
+
+    /** Hides all annotation parameters except location selector. Effective only in Normal & Option Panel widgets. */
+    bool hideAnnotationParameters = false;
+
+    /** Current annotation data model. */
+    SharedAnnotationData data;
 
     AnnotationTableObject *getAnnotationObject() const;
 };
@@ -119,7 +156,7 @@ public:
     void updateWidgetForAnnotationModel(const CreateAnnotationModel &model);
 
     /** It is called from the constructor and updateWidgetForAnnotationModel(...) */
-    void commonWidgetUpdate(const CreateAnnotationModel &model);
+    void commonWidgetUpdate();
 
     QPair<QWidget *, QWidget *> getTaborderEntryAndExitPoints() const;
 

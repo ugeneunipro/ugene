@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,8 +37,13 @@ class U2VIEW_EXPORT CreatePhyTreeWidget : public QWidget {
 public:
     CreatePhyTreeWidget(QWidget *parent);
 
+    /** Saves the current UI widget state into the settings data model. */
     virtual void fillSettings(CreatePhyTreeSettings &settings) = 0;
+
+    /** Stores current UI widget state into U2::Settings. */
     virtual void storeSettings() = 0;
+
+    /** Resets current widget & U2::Settings state to the algorithm defaults. */
     virtual void restoreDefault() = 0;
 
     virtual bool checkSettings(QString &message, const CreatePhyTreeSettings &settings);

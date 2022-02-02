@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -88,7 +88,7 @@ private:
     void removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QList<qint64> &rows, int startPos, int nBases);
 
     QList<U2Region> getColumnsWithGaps() const;
-    U2MsaRowGapModel getReferenceGapModel() const;
+    QVector<U2MsaGap> getReferenceGapModel() const;
 
     mutable U2SequenceObject *referenceObj;
 };

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -131,7 +131,7 @@ void AlignmentLogoRenderArea::resizeEvent(QResizeEvent *e) {
 
 void AlignmentLogoRenderArea::evaluateHeights() {
     const MultipleSequenceAlignment &ma = settings.ma;
-    int numRows = ma->getNumRows();
+    int numRows = ma->getRowCount();
     error = (s - 1) / (2 * log(2.0) * numRows);
 
     foreach (char ch, *acceptableChars) {
@@ -159,7 +159,7 @@ void AlignmentLogoRenderArea::evaluateHeights() {
         }
     }
 
-    int rows = settings.ma->getNumRows();
+    int rows = settings.ma->getRowCount();
     for (int pos = 0; pos < settings.len; pos++) {
         qreal h = getH(pos);
         foreach (char c, columns[pos]) {
@@ -171,7 +171,7 @@ void AlignmentLogoRenderArea::evaluateHeights() {
 
 qreal AlignmentLogoRenderArea::getH(int pos) {
     qreal h = 0.0;
-    int rows = settings.ma->getNumRows();
+    int rows = settings.ma->getRowCount();
     foreach (char ch, columns.at(pos)) {
         qreal freq = frequencies[(int)uchar(ch)][pos] / rows;
         h += -freq * log(freq) / log(2.0);

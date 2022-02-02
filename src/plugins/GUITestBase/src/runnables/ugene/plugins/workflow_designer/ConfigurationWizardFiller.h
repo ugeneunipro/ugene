@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@ public:
     ConfigurationWizardFiller(HI::GUITestOpStatus &os, QString name, CustomScenario *c)
         : Filler(os, name, c) {
     }
-    virtual void commonScenario();
+    void commonScenario() override;
 
 private:
     QStringList radioNames;

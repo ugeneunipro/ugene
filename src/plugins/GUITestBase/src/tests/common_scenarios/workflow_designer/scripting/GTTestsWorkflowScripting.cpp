@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -58,9 +58,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     GTUtilsDialog::waitForDialog(os, new CreateElementWithScriptDialogFiller(os, "wd_scripting_test_0001"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Create element with script...",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Create element with script..."}, GTGlobals::UseMouse);
     //    4. Select created worker. Press toolbar button "Edit script text".
     //    Expected state: Script editor dialog appears.
 
@@ -71,10 +69,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTMouseDriver::click();
 
     GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogSyntaxChecker(os, "#$%not a script asdasd321 123", "Script syntax check failed!"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Edit script of the element...",
-                              GTGlobals::UseMouse);
-    GTUtilsDialog::waitAllFinished(os);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit script of the element..."}, GTGlobals::UseMouse);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
@@ -86,9 +82,9 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Write FASTA");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show scripting options"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show scripting options"}));
     GTWidget::click(os, GTAction::button(os, GTAction::findActionByText(os, "Scripting mode")));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     //  2. Select this worker, select menu item "user script" from "output file" parameter.
     //  Expected state: Script editor dialog appears.
@@ -100,7 +96,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogFiller(os, "", "#$%not a script asdasd321 123", true, "Script syntax check failed! Line: 1, error: Expected `end of file'"));
     GTUtilsWorkflowDesigner::setParameterScripting(os, "output file", "user script");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
@@ -114,16 +110,16 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     GTUtilsWorkflowDesigner::connect(os, reader, writer);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show scripting options"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show scripting options"}));
     GTWidget::click(os, GTAction::button(os, GTAction::findActionByText(os, "Scripting mode")));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write FASTA"));
     GTMouseDriver::click();
 
     GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogFiller(os, "", "url_out = url + \".result.fa\";"));
     GTUtilsWorkflowDesigner::setParameterScripting(os, "Output file", "user script", true);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
     GTMouseDriver::click();
@@ -139,17 +135,13 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     GTUtilsDialog::waitForDialog(os, new CreateElementWithScriptDialogFiller(os, "workflow_scripting_test_0004"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Create element with script...",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Create element with script..."}, GTGlobals::UseMouse);
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "workflow_scripting_test_0004"));
     GTMouseDriver::click();
 
     GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogFiller(os, "", "if(size(in_seq) >= 10000) {out_seq = in_seq;}"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Edit script of the element...",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit script of the element..."}, GTGlobals::UseMouse);
 
     WorkflowProcessItem *script = GTUtilsWorkflowDesigner::getWorker(os, "workflow_scripting_test_0004");
     QString text = script->getProcess()->getScript()->getScriptText();
@@ -165,12 +157,12 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     QString workflowPath = testDir + "_common_data/scenarios/sandbox/workflow_scripting_test_0004.uwl";
     GTUtilsDialog::waitForDialog(os, new WorkflowMetaDialogFiller(os, workflowPath, "workflow_scripting_test_0004"));
     GTWidget::click(os, GTAction::button(os, "Save workflow"));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, workflowPath));
     GTWidget::click(os, GTAction::button(os, "Load workflow"));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     WorkflowProcessItem *newScript = GTUtilsWorkflowDesigner::getWorker(os, "workflow_scripting_test_0004");

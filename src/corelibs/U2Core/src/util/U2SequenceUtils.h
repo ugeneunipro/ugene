@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -76,6 +76,18 @@ public:
     U2SequenceImporter(qint64 _insertBlockSize, const QVariantMap &fs = QVariantMap(), bool lazyMode = false, bool singleThread = true);
     virtual ~U2SequenceImporter();
 
+    /**
+     * Enables amino translation of the input sequence.
+     * When 'aminoTT' is set all content added with 'addBlock' methods will be automatically translated.
+     */
+    void enableAminoTranslation(const DNATranslation *aminoTT);
+
+    /**
+     * Enables reverse-complementary translation of input sequence blocks.
+     * When 'complTT' is set all content added with 'addBlock' methods will be automatically reversed and complemented.
+     */
+    void enableReverseComplement(const DNATranslation *complTT);
+
     void startSequence(U2OpStatus &os, const U2DbiRef &dbiRef, const QString &folder, const QString &visualName, bool circular, const U2AlphabetId &alphabetId = U2AlphabetId());
     virtual void addBlock(const char *data, qint64 len, U2OpStatus &os);
     void addSequenceBlock(const U2EntityRef &seqId, const U2Region &r, U2OpStatus &os);
@@ -105,6 +117,9 @@ protected:
     U2Sequence sequence;
     QByteArray sequenceBuffer;
 
+    /** Buffer of the pending non translated DNA characters. Maximum size is 2 characters. */
+    QByteArray aminoTranslationBuffer;
+
     // for lower case annotations
     qint64 currentLength;
     QList<SharedAnnotationData> annList;
@@ -117,6 +132,9 @@ protected:
 
     bool sequenceCreated;
     qint64 committedLength;  // singleThread only
+
+    const DNATranslation *aminoTT = nullptr;
+    const DNATranslation *complTT = nullptr;
 };
 
 /** Class to read sequences when there is already readers which use U2SequenceImporter interface */
@@ -150,15 +168,28 @@ public:
     static const QString EMPTY_SEQUENCE;
 };
 
-// untwist/expand circular sequence
-class U2CORE_EXPORT U2PseudoCircularization : public QObject {
-public:
-    U2PseudoCircularization(QObject *parent, bool isCircular, QByteArray &seq, qint64 circOverlap = -1);
-    QVector<U2Region> uncircularizeRegion(const U2Region &region, bool &uncircularized) const;
-    void uncircularizeLocation(U2Location &location) const;
+/**
+ * Utility class to deal with circular sequences.
+ * Supports mapping of the original sequence coordinates to a circular sequence coordinates with a specified 'overlap' range.
+ */
+class U2CORE_EXPORT U2PseudoCircularization {
+    U2PseudoCircularization() = delete;
 
-private:
-    qint64 seqLen;
+public:
+    /**
+     * Creates a sequence that has all linear regions in the original sequence with at least 'maxLinearRegionLength' length.
+     * If 'maxLinearRegionLength' is < 0 the uses 'sequence.length' as the 'maxLinearRegionLength'.
+     */
+    static QByteArray createSequenceWithCircularOverlaps(const QByteArray &sequence, int maxLinearRegionLength = -1);
+
+    /** Maps region of the sequence created by 'createSequenceWithCircularOverlaps' to the original sequence coordinates. */
+    static QVector<U2Region> getOriginalSequenceCoordinates(const U2Region &circularRegion, qint64 originalSequenceLength);
+
+    /**
+     * Converts (in-place) location built for a sequence created with 'createSequenceWithCircularOverlaps'
+     * into the original sequence coordinates.
+     */
+    static void convertToOriginalSequenceCoordinates(U2Location &location, qint64 originalSequenceLength);
 };
 
 }  // namespace U2

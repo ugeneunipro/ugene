@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -291,7 +291,6 @@ QList<Task *> ExtractProductWrapperTask::onSubTaskFinished(Task *subTask) {
     SaveDocFlags flags;
     flags |= SaveDoc_OpenAfter;
     flags |= SaveDoc_DestroyAfter;
-    flags |= SaveDoc_Overwrite;
     QFile::remove(settings.outputFile);
     result << new SaveDocumentTask(extractTask->takeResult(), flags);
     return result;

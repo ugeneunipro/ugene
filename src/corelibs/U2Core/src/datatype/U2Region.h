@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -182,6 +182,20 @@ public:
 
     /** Splits region into the set of regions of the given block size. */
     static QList<U2Region> split(const U2Region &region, qint64 blockSize);
+
+    /**
+     * Returns a sub-list of regions with a total length of 'headLength'.
+     * Starts with the first region in the list.
+     * The last returned region may be trimmed in order to satisfy the 'headLength' constraint.
+     */
+    static QVector<U2Region> headOf(const QVector<U2Region> &regions, qint64 headLength);
+
+    /**
+     * Returns a sub-list of regions with a total length of 'tailLength'.
+     * Starts with the last region in the list.
+     * The first returned region in the resulted list may be trimmed on the startPos side in order to satisfy the 'tailLength' constraint.
+     */
+    static QVector<U2Region> tailOf(const QVector<U2Region> &regions, qint64 tailLength);
 
     /** Returns sum of region lengths. */
     static qint64 sumLength(const QVector<U2Region> &regions);

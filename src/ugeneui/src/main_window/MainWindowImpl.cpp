@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -173,30 +173,8 @@ void MainWindowDragNDrop::dragMoveEvent(QDragMoveEvent *event) {
 //////////////////////////////////////////////////////////////////////////
 // MainWindowController
 //////////////////////////////////////////////////////////////////////////
-MainWindowImpl::MainWindowImpl() {
-    mw = nullptr;
-    mdi = nullptr;
-    menuManager = nullptr;
-    toolbarManager = nullptr;
-    mdiManager = nullptr;
-    dockManager = nullptr;
-    exitAction = nullptr;
-    visitWebAction = nullptr;
-    viewOnlineDocumentation = nullptr;
-    checkUpdateAction = nullptr;
-    createDesktopShortcutAction = nullptr;
-    aboutAction = nullptr;
-    welcomePageAction = nullptr;
-    crashUgeneAction = nullptr;
-    shutDownInProcess = false;
-#ifdef _INSTALL_TO_PATH_ACTION
-    installToPathAction = nullptr;
-#endif
-    nStack = nullptr;
-}
-
 MainWindowImpl::~MainWindowImpl() {
-    assert(mw == nullptr);
+    SAFE_POINT(mw == nullptr, "main window must be null!", );
 }
 
 void MainWindowImpl::prepare() {
@@ -426,10 +404,10 @@ void MainWindowImpl::setShutDownInProcess(bool flag) {
 }
 
 void MainWindowImpl::sl_visitWeb() {
-    GUIUtils::runWebBrowser("http://ugene.net");
+    GUIUtils::runWebBrowser("https://ugene.net");
 }
 void MainWindowImpl::sl_viewOnlineDocumentation() {
-    GUIUtils::runWebBrowser("http://ugene.net/documentation.html");
+    GUIUtils::runWebBrowser("https://ugene.net/documentation.html");
 }
 
 void MainWindowImpl::sl_tempDirPathCheckFailed(QString path) {
@@ -577,9 +555,6 @@ void FixedMdiArea::tileSubWindows() {
 }
 
 void MainWindowImpl::sl_show() {
-    if (qobject_cast<TaskScheduler *>(sender()) == qobject_cast<TaskScheduler *>(AppContext::getTaskScheduler())) {
-        QObject::disconnect(AppContext::getTaskScheduler(), SIGNAL(si_noTasksInScheduler()), this, SLOT(sl_show()));
-    }
     bool maximized = AppContext::getSettings()->getValue(SETTINGS_DIR + "maximized", false).toBool();
     QRect geom = AppContext::getSettings()->getValue(SETTINGS_DIR + "geometry", QRect()).toRect();
 
@@ -607,7 +582,7 @@ void MainWindowImpl::sl_crashUgene() {
     *killer = 0;
 }
 
-void MainWindowImpl::registerStartupChecks(QList<Task *> tasks) {
+void MainWindowImpl::registerStartupChecks(const QList<Task *> &tasks) {
     startupTasklist << tasks;
 }
 

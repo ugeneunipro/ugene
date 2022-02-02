@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -109,7 +109,13 @@ public:
 
 private:
     void init();
-    void processObjRef();
+
+    /**
+     * Processes config.checkObjRef and config.checkObjRef.objFactory related settings.
+     * See 'LoadDocumentTaskConfig' for details.
+     */
+    void processObjRef(Document *loadedDocument);
+
     int calculateMemory() const;
 
     static void renameObjects(Document *doc, const QStringList &names);

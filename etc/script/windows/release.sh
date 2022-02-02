@@ -49,9 +49,39 @@ fi
 echo "Version of UGENE is ${VERSION}"
 echo "##teamcity[blockClosed name='Get version']"
 
-echo "##teamcity[blockOpened name='Validate bundle content']"
+echo "##teamcity[blockOpened name='Dump symbols']"
+
+function dump_symbols() {
+  echo "Dumping symbols for ${1}"
+  BASE_NAME=$(basename "${1}")
+  SYMBOL_FILE="${SYMBOLS_DIR}/${BASE_NAME}.sym"
+
+  dump_syms.exe "$1" >"${SYMBOLS_DIR}/${BASE_NAME}.sym" 2>"${SYMBOLS_LOG}"
+
+  FILE_HEAD=$(head -n 1 "${SYMBOL_FILE}")
+  FILE_HASH=$(echo "${FILE_HEAD}" | awk '{ print $4 }')
+  FILE_NAME=$(echo "${FILE_HEAD}" | awk '{ print $5 }' | tr -d "\r" | sed -e 's/\.pdb//g')
+
+  DEST_PATH="${SYMBOLS_DIR}/${FILE_NAME}.pdb/${FILE_HASH}"
+  mkdir -p "${DEST_PATH}"
+  mv "${SYMBOL_FILE}" "${DEST_PATH}/${FILE_NAME}.sym"
+}
+
+find "${APP_BUNDLE_DIR_NAME}" | sed 's/.*\/tools\/.*$//g' | grep -e ugeneui.exe -e ugenecl.exe -e .dll$ | grep -v vcruntime | while read -r BINARY_FILE; do
+  dump_symbols "${BINARY_FILE}"
+done
+
+# Remove pdb files used for symbol generation.
+echo "Removing not needed PDB files."
+rm "${APP_BUNDLE_DIR_NAME}/"*.pdb
+rm "${APP_BUNDLE_DIR_NAME}/imageformats/"*.pdb
+rm "${APP_BUNDLE_DIR_NAME}/platforms/"*.pdb
+rm "${APP_BUNDLE_DIR_NAME}/styles/"*.pdb
+
+echo "##teamcity[blockClosed name='Dump symbols']"
 
 # Validate bundle content.
+echo "##teamcity[blockOpened name='Validate bundle content']"
 REFERENCE_BUNDLE_FILE="${SCRIPTS_DIR}/release-bundle.txt"
 CURRENT_BUNDLE_FILE="${TEAMCITY_WORK_DIR}/release-bundle.txt"
 find "${APP_BUNDLE_DIR}"/* | sed -e "s/.*${APP_BUNDLE_DIR_NAME}\///" | sed 's/^tools\/.*\/.*$//g' | grep "\S" | sort >"${CURRENT_BUNDLE_FILE}"
@@ -64,29 +94,6 @@ else
   exit 1
 fi
 echo "##teamcity[blockClosed name='Validate bundle content']"
-
-echo "##teamcity[blockOpened name='Dump symbols']"
-
-function dump_symbols() {
-  echo "Dumping symbols for ${1}"
-  BASE_NAME=$(basename "${1}")
-  SYMBOL_FILE="${SYMBOLS_DIR}/${BASE_NAME}.sym"
-
-  dump_syms.exe "$1" >"${SYMBOLS_DIR}/${BASE_NAME}.sym" 2>"${SYMBOLS_LOG}"
-
-  FILE_HEAD=$(head -n 1 "${SYMBOL_FILE}")
-  FILE_HASH=$(echo "${FILE_HEAD}" | awk '{ print $4 }')
-  FILE_NAME=$(echo "${FILE_HEAD}" | awk '{ print $5 }' | tr -d "\r" | tr -d ".pdb")
-
-  DEST_PATH="${SYMBOLS_DIR}/${FILE_NAME}/${FILE_HASH}"
-  mkdir -p "${DEST_PATH}"
-  mv "${SYMBOL_FILE}" "${DEST_PATH}/${FILE_NAME}.sym"
-}
-
-find "${APP_BUNDLE_DIR_NAME}" | sed 's/.*\/tools\/.*$//g' | grep -e ugeneui.exe -e ugenecl.exe -e .dll$ | grep -v vcruntime | while read -r BINARY_FILE; do
-  dump_symbols "${BINARY_FILE}"
-done
-echo "##teamcity[blockClosed name='Dump symbols']"
 
 echo "##teamcity[blockOpened name='Sign']"
 function code_sign() {

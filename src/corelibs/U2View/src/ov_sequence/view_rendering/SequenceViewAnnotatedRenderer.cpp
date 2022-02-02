@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -166,13 +166,13 @@ void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter &p, const QSize &can
             // find out if the arrow is needed
             const bool leftTrim = visibleLocation.startPos != r.startPos;
             const bool rightTrim = visibleLocation.endPos() != r.endPos();
-            const bool drawArrow = aData->getStrand().isCompementary() ? !leftTrim : !rightTrim;
+            const bool drawArrow = aData->getStrand().isComplementary() ? !leftTrim : !rightTrim;
             if (displaySettings.displayAnnotationArrows && drawArrow) {
                 bool isLeft = false;
                 if (1 == ri && aData->findFirstQualifierValue("rpt_type") == "inverted") {  // temporary solution for drawing inverted repeats correct
                     isLeft = true;
                 } else {
-                    isLeft = aData->getStrand().isCompementary();
+                    isLeft = aData->getStrand().isComplementary();
                 }
                 addArrowPath(rectPath, annotationRect, isLeft);
             }
@@ -244,7 +244,7 @@ void SequenceViewAnnotatedRenderer::drawAnnotationConnections(QPainter &p, Annot
     int dx1 = 0;
     int dx2 = 0;
     if (displaySettings.displayAnnotationArrows) {
-        if (aData->getStrand().isCompementary()) {
+        if (aData->getStrand().isComplementary()) {
             dx2 = -FEATURE_ARROW_HLEN;
         } else {
             dx1 = FEATURE_ARROW_HLEN;

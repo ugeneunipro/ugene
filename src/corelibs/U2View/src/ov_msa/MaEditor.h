@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,13 +55,14 @@ namespace U2 {
 #define MOBJECT_DEFAULT_FONT_SIZE 10
 #define MOBJECT_DEFAULT_ZOOM_FACTOR 1.0
 
-class MaEditorWgt;
-class MultipleAlignmentObject;
+class MaCollapseModel;
 class MaEditorSelection;
 class MaEditorSelectionController;
-class MultipleAlignment;
-class MaCollapseModel;
+class MaEditorWgt;
 class MaModificationInfo;
+class MaUndoRedoFramework;
+class MultipleAlignment;
+class MultipleAlignmentObject;
 
 class SNPSettings {
 public:
@@ -203,6 +204,9 @@ public:
     /** Returns collapse model instance. The returned value is never null. */
     MaCollapseModel *getCollapseModel() const;
 
+    /** Returns undo-redo framework. The returned value is never null. */
+    MaUndoRedoFramework *getUndoRedoFramework() const;
+
 signals:
     void si_fontChanged(const QFont &f);
     void si_zoomOperationPerformed(bool resizeModeChanged);
@@ -235,6 +239,9 @@ protected slots:
     /** The slot is called each time selection is changed. By default calls 'updateActions'. */
     virtual void sl_selectionChanged(const MaEditorSelection &ma, const MaEditorSelection &modInfo);
 
+    /** Callback for the 'gotoSelectedReadAction' action. See docs for 'gotoSelectedReadAction'. */
+    void sl_gotoSelectedRead();
+
 private slots:
     void sl_resetColumnWidthCache();
 
@@ -249,7 +256,6 @@ protected:
     virtual void addEditMenu(QMenu *m) = 0;
     virtual void addExportMenu(QMenu *m);
     void addLoadMenu(QMenu *m);
-    void addAlignMenu(QMenu *m);  // SANGER_TODO: should the align menu exist in MCA?
 
     void setFont(const QFont &f);
 
@@ -291,22 +297,44 @@ protected:
     /** Collapse model instance. Created in the constructor and is never changed. */
     MaCollapseModel *const collapseModel;
 
+    /** Undo-redo support. */
+    MaUndoRedoFramework *undoRedoFramework = nullptr;
+
 public:
-    QAction *saveAlignmentAction;
-    QAction *saveAlignmentAsAction;
-    QAction *zoomInAction;
-    QAction *zoomOutAction;
-    QAction *zoomToSelectionAction;
-    QAction *showOverviewAction;
-    QAction *changeFontAction;
-    QAction *resetZoomAction;
-    QAction *exportHighlightedAction;
+    QAction *saveAlignmentAction = nullptr;
+    QAction *saveAlignmentAsAction = nullptr;
+    QAction *zoomInAction = nullptr;
+    QAction *zoomOutAction = nullptr;
+    QAction *zoomToSelectionAction = nullptr;
+    QAction *showOverviewAction = nullptr;
+    QAction *changeFontAction = nullptr;
+    QAction *resetZoomAction = nullptr;
+    QAction *exportHighlightedAction = nullptr;
 
     /** Clears selection in normal mode or exits from editing mode in the edit mode. */
-    QAction *clearSelectionAction;
+    QAction *clearSelectionAction = nullptr;
 
-    QAction *copyConsensusAction;
-    QAction *copyConsensusWithGapsAction;
+    QAction *copyConsensusAction = nullptr;
+    QAction *copyConsensusWithGapsAction = nullptr;
+
+    /**
+     * When activated MA editor moves start of the currently selected read into the view.
+     * If the selection contains multiple reads - selects the first one.
+     *
+     * The start of the direct reads (reads located on 3'-5' strand) is the same with their visual start on the screen -
+     *  direct reads are read from the left to the right direction.
+     * The start of the complement reads is they visual end position: such read sequences are read from the right to the left.
+     * This way the action works the same as annotation selection in the sequence view.
+     *
+     * When the action is triggered for the already selected read it tries to center the opposite side of the read: 'start' -> 'end', 'end' -> 'start'.
+     */
+    QAction *gotoSelectedReadAction = nullptr;
+
+    /** Undo action in MA Editor. Never null after the initialization. */
+    QAction *undoAction = nullptr;
+
+    /** Redo action. Never null after the initialization.*/
+    QAction *redoAction = nullptr;
 };
 
 }  // namespace U2

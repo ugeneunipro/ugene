@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -62,7 +62,7 @@ void createPhyTreeFromPhylipTree(const MultipleSequenceAlignment &ma, node *p, d
             if (bootstrap_repl != 0) {
                 current->setName(QString::fromLatin1(p->nayme));
             } else {
-                assert(p->index - 1 < ma->getNumRows());
+                assert(p->index - 1 < ma->getRowCount());
                 current->setName(QString(ma->getMsaRow(p->index - 1)->getName()));
             }
         } else {
@@ -118,7 +118,7 @@ void NeighborJoinCalculateTreeTask::run() {
 
     PhyTree phyTree(nullptr);
 
-    if (inputMA->getNumRows() < 3) {
+    if (inputMA->getRowCount() < 3) {
         setError("Neighbor-Joining runs must have at least 3 species");
         result = phyTree;
         return;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -80,7 +80,7 @@ void ExportMSA2MSADialogFiller::commonScenario() {
     } else if (frame == -3) {
         widgetName = "rbThirdComplementFrame";
     } else {
-        GT_CHECK(false, "incorrect frame");
+        GT_FAIL("incorrect frame", );
     }
     GTRadioButton::click(os, widgetName, dialog);
 

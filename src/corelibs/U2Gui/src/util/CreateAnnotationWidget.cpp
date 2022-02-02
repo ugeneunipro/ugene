@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -87,7 +87,7 @@ void CreateAnnotationWidget::sl_complementLocation() {
 
 QString CreateAnnotationWidget::getGenbankLocationString(const U2Location &location) {
     QString locationString = U1AnnotationUtils::buildLocationString(location->regions);
-    if (location->strand.isCompementary()) {
+    if (location->strand.isComplementary()) {
         locationString = "complement(" + locationString + ")";
     }
     return locationString;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,6 @@
 #include <drivers/GTKeyboardDriver.h>
 #include <primitives/GTAction.h>
 
-#include <QApplication>
 #include <QClipboard>
 #include <QTreeWidgetItem>
 
@@ -35,7 +34,6 @@
 #include "GTGlobals.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsMdi.h"
-#include "GTUtilsNotifications.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
@@ -270,8 +268,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0001) {
 
     // 2. Open "Edit->Annotation settings on sequence editing" dialog.
     //    Be sure that "Expand or crop affected annotations" option is selected.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Annotation settings on editing..."));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::ExpandOrCropAffectedAnnotation, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
@@ -326,8 +323,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0002) {
 
     // 2. Open "Edit->Annotation settings on sequence editing" dialog.
     //    Be sure that "Expand or crop affected annotations" option is selected.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Annotation settings on editing..."));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::ExpandOrCropAffectedAnnotation, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
@@ -379,8 +375,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0003) {
 
     // 2. Open "Edit->Annotation settings on sequence editing" dialog.
     //    Be sure that "Remove affected annotation" option is selected.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Annotation settings on editing..."));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::RemoveAffectedAnnotation, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
@@ -411,8 +406,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0004) {
 
     // 2. Open "Edit->Annotation settings on sequence editing" dialog.
     //    Be sure that "Remove affected annotation" option is selected.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Annotation settings on editing..."));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::RemoveAffectedAnnotation, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
@@ -451,8 +445,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0005) {
 
     // 2. Open "Edit->Annotation settings on sequence editing" dialog.
     //    Be sure that "Split (join annotation parts)" option is selected.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Annotation settings on editing..."));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::SplitJoinAnnotationParts, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
@@ -493,8 +486,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0006) {
 
     // 2. Open "Edit->Annotation settings on sequence editing" dialog.
     //    Be sure that "Split (join annotation parts)" option is selected.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Annotation settings on editing..."));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::SplitSeparateAnnotationParts, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
@@ -540,48 +532,39 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0007) {
     // 2. Open "Edit->Annotation settings on sequence editing" dialog.
     //    Be sure that "Recalculate values of qualifiers" option is unchecked.
     //    Be sure that "Expand or crop affected annotations" option is unselected.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Annotation settings on editing..."));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::ExpandOrCropAffectedAnnotation, false));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
-    // 3. Select CDS (1042, 2674)  and do double-click on it
-    GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 1, true);
+    // 3. Select a CDS annotation item and do double-click on it
+    QTreeWidgetItem *annotationItem = GTUtilsAnnotationsTreeView::findItem(os, "CDS");
 
-    // 4. Select Add->Qualifier from context menu
-    // 5. In "Add new qualifier" dialog add �ame "Test" and Value : "1500..2000"  and save
-    GTUtilsAnnotationsTreeView::createQualifier(os, "Test", "1500..2000", "CDS");
+    // 4. Select Add->Qualifier from context menu.
+    // 5. In "Add new qualifier" dialog add name "Test" and Value : "1500..2000"  and save
+    GTUtilsAnnotationsTreeView::createQualifier(os, "Test", "1500..2000", annotationItem);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //   Be sure thar new qualifier "Test" appears
-    GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 1, true);
-    QList<QTreeWidgetItem *> selectedItem = GTUtilsAnnotationsTreeView::getAllSelectedItems(os);
-    CHECK_SET_ERR(selectedItem.size() == 1, QString("Unexpected selected items, expected: 1 item, current: %1 item").arg(selectedItem.size()));
+    QString qualifierValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "Test", annotationItem);
+    CHECK_SET_ERR(qualifierValue == "1500..2000", QString("Unexpected qualifier value, expected: 1500..2000, current: %1").arg(qualifierValue));
 
-    QString qualValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "Test", selectedItem.first());
-    CHECK_SET_ERR(qualValue == "1500..2000", QString("Unexpected qualifier value, expected: 1500..2000, current: %1").arg(qualValue));
-
-    // 6. Push "Edit sequence" button, sequence in the edit mode
+    // 6. Push "Edit sequence" button, sequence in the edit mode.
     GTUtilsSequenceView::enableEditingMode(os);
 
-    // 7. Select 1505 position
+    // 7. Select 1505 position.
     GTUtilsSequenceView::setCursor(os, 1504);
 
-    // 8. Add 3 gaps
+    // 8. Add 3 gaps.
     GTKeyboardDriver::keyClick(Qt::Key_Space);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 
     // Symbol gap "-" in position 1505 - 1507
-    const QString string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1505, 3));
+    QString string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1505, 3));
     CHECK_SET_ERR(string == "---", QString("Unexpected selection, expected: ---, current: %1").arg(string));
 
     // Expected state : Values for qualifier "Test" is not changed, "1500..2000"
-    GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 1, true);
-    selectedItem = GTUtilsAnnotationsTreeView::getAllSelectedItems(os);
-    CHECK_SET_ERR(selectedItem.size() == 1, QString("Unexpected selected items, expected: 1 item, current: %1 item").arg(selectedItem.size()));
-
-    qualValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "Test", selectedItem.first());
-    CHECK_SET_ERR(qualValue == "1500..2000", QString("Unexpected qualifier value, expected: 1500..2000, current: %1").arg(qualValue));
+    qualifierValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "Test", annotationItem);
+    CHECK_SET_ERR(qualifierValue == "1500..2000", QString("Unexpected qualifier value, expected: 1500..2000, current: %1").arg(qualifierValue));
 }
 
 GUI_TEST_CLASS_DEFINITION(with_anns_test_0008) {
@@ -592,25 +575,20 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0008) {
     // 2. Open "Edit->Annotation settings on sequence editing" dialog.
     //    Be sure that "Recalculate values of qualifiers" option is unchecked.
     //    Be sure that "Expand or crop affected annotations" option is selected.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"
-                                                                              << "Annotation settings on editing..."));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit", "Annotation settings on editing..."}));
     GTUtilsDialog::waitForDialog(os, new EditSettingsDialogFiller(os, EditSettingsDialogFiller::ExpandOrCropAffectedAnnotation, true));
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
-    // 3. Select CDS (1042, 2674)  and do double-click on it
-    GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 1, true);
+    // 3. Select a CDS annotation item and do double-click on it
+    QTreeWidgetItem *annotationItem = GTUtilsAnnotationsTreeView::findItem(os, "CDS");
 
     // 4. Select Add->Qualifier from context menu
-    // 5. In "Add new qualifier" dialog add �ame "Test" and Value : "1500..2000"  and save
-    GTUtilsAnnotationsTreeView::createQualifier(os, "Test", "1500..2000", "CDS");
+    // 5. In "Add new qualifier" dialog add name "Test" and Value : "1500..2000"  and save
+    GTUtilsAnnotationsTreeView::createQualifier(os, "Test", "1500..2000", annotationItem);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //   Be sure thar new qualifier "Test" appears
-    GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 1, true);
-    QList<QTreeWidgetItem *> selectedItem = GTUtilsAnnotationsTreeView::getAllSelectedItems(os);
-    CHECK_SET_ERR(selectedItem.size() == 1, QString("Unexpected selected items, expected: 1 item, current: %1 item").arg(selectedItem.size()));
-
-    QString qualValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "Test", selectedItem.first());
-    CHECK_SET_ERR(qualValue == "1500..2000", QString("Unexpected qualifier value, expected: 1500..2000, current: %1").arg(qualValue));
+    QString qualifierValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "Test", annotationItem);
+    CHECK_SET_ERR(qualifierValue == "1500..2000", QString("Unexpected qualifier value, expected: 1500..2000, current: %1").arg(qualifierValue));
 
     // 6. Push "Edit sequence" button, sequence in the edit mode
     GTUtilsSequenceView::enableEditingMode(os);
@@ -628,12 +606,8 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0008) {
     CHECK_SET_ERR(string == "---", QString("Unexpected selection, expected: ---, current: %1").arg(string));
 
     // Expected state : Values for qualifier "Test" is changed, "1500..2003"
-    GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 1, true);
-    selectedItem = GTUtilsAnnotationsTreeView::getAllSelectedItems(os);
-    CHECK_SET_ERR(selectedItem.size() == 1, QString("Unexpected selected items, expected: 1 item, current: %1 item").arg(selectedItem.size()));
-
-    qualValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "Test", selectedItem.first());
-    CHECK_SET_ERR(qualValue == "1500..2003", QString("Unexpected qualifier value, expected: 1500..2003, current: %1").arg(qualValue));
+    qualifierValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "Test", annotationItem);
+    CHECK_SET_ERR(qualifierValue == "1500..2003", QString("Unexpected qualifier value, expected: 1500..2003, current: %1").arg(qualifierValue));
 }
 
 }  // namespace GUITest_common_scenarios_sequence_edit_mode

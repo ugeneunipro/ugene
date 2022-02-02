@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -256,10 +256,10 @@ QList<Task *> ClustalOSupportTask::onSubTaskFinished(Task *subTask) {
                         dstMsaObject->updateCachedMultipleAlignment(mi);
                     }
 
-                    QMap<qint64, QList<U2MsaGap>> rowsGapModel;
-                    for (int i = 0, n = resultMsa->getNumRows(); i < n; ++i) {
+                    QMap<qint64, QVector<U2MsaGap>> rowsGapModel;
+                    for (int i = 0, n = resultMsa->getRowCount(); i < n; ++i) {
                         qint64 rowId = resultMsa->getMsaRow(i)->getRowDbInfo().rowId;
-                        const QList<U2MsaGap> &newGapModel = resultMsa->getMsaRow(i)->getGapModel();
+                        const QVector<U2MsaGap> &newGapModel = resultMsa->getMsaRow(i)->getGaps();
                         rowsGapModel.insert(rowId, newGapModel);
                     }
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,7 +55,7 @@ QString MultipleAlignmentMessageTranslator::getTranslation() const {
 
     QString result = QObject::tr(ALIGNMENT_NAME_LABEL) + displayingName + INFO_TAGS_SEPARATOR;
     result += QObject::tr(ALIGNMENT_LENGTH_LABEL) + QString::number(malignment->getLength()) + INFO_TAGS_SEPARATOR;
-    result += QObject::tr(COUNT_OF_ROWS_LABEL) + QString::number(malignment->getNumRows()) + INFO_TAGS_SEPARATOR;
+    result += QObject::tr(COUNT_OF_ROWS_LABEL) + QString::number(malignment->getRowCount()) + INFO_TAGS_SEPARATOR;
     result += QObject::tr(ROW_NAMES_LABEL) + "'" + malignment->getRowNames().join("', '") + "'";
 
     return result;

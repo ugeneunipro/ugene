@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -77,7 +77,7 @@ public:
     MultipleChromatogramAlignmentData &operator=(const MultipleChromatogramAlignmentData &mcaData);
 
     /** Returns the number of rows in the alignment */
-    int getNumRows() const;
+    int getRowCount() const;
 
     /**
      * Recomputes the length of the alignment and makes it as minimal
@@ -138,7 +138,7 @@ public:
      * Assumes that the row index is valid.
      * Can modify the overall alignment length (increase or decrease).
      */
-    void setRowContent(int rowNumber, const DNAChromatogram &chromatogram, const DNASequence &sequence, const U2MsaRowGapModel &gapModel);
+    void setRowContent(int rowNumber, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QVector<U2MsaGap> &gapModel);
     void setRowContent(int rowNumber, const McaRowMemoryData &mcaRowMemoryData);
 
     /** Converts all rows' sequences to upper case */
@@ -158,7 +158,7 @@ public:
      */
     MultipleChromatogramAlignment mid(int start, int len) const;
 
-    void setRowGapModel(int rowNumber, const QList<U2MsaGap> &gapModel);
+    void setRowGapModel(int rowNumber, const QVector<U2MsaGap> &gapModel);
 
     void setSequenceId(int rowIndex, const U2DataId &sequenceId);
 
@@ -172,7 +172,7 @@ public:
     void addRow(const QString &name, const DNAChromatogram &chromatogram, const QByteArray &bytes);
     void addRow(const QString &name, const DNAChromatogram &chromatogram, const QByteArray &bytes, int rowIndex);
     void addRow(const U2MsaRow &rowInDb, const DNAChromatogram &chromatogram, const DNASequence &sequence, U2OpStatus &os);
-    void addRow(const QString &name, const DNAChromatogram &chromatogram, const DNASequence &sequence, const U2MsaRowGapModel &gaps, U2OpStatus &os);
+    void addRow(const QString &name, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QVector<U2MsaGap> &gaps, U2OpStatus &os);
     void addRow(const U2MsaRow &rowInDb, const McaRowMemoryData &mcaRowMemoryData, U2OpStatus &os);
 
     /**
@@ -206,11 +206,9 @@ public:
      */
     MultipleChromatogramAlignmentData &operator+=(const MultipleChromatogramAlignmentData &mcaData);
 
-    /**
-     * Compares two alignments: lengths, alphabets, rows and infos (that include names).
-     */
-    bool operator==(const MultipleChromatogramAlignmentData &mcaData) const;
-    bool operator!=(const MultipleChromatogramAlignmentData &mcaData) const;
+    /** Compares two alignments: calls isEqual() method. */
+    bool operator==(const MultipleChromatogramAlignmentData &other) const;
+    bool operator!=(const MultipleChromatogramAlignmentData &other) const;
 
     MultipleAlignment getCopy() const;
     MultipleChromatogramAlignment getExplicitCopy() const;
@@ -227,7 +225,7 @@ private:
      * Sequence must not contain gaps.
      * All gaps in the gaps model (in 'rowInDb') must be valid and have an offset within the bound of the sequence.
      */
-    MultipleChromatogramAlignmentRow createRow(const U2MsaRow &rowInDb, const DNAChromatogram &chromatogram, const DNASequence &sequence, const U2MsaRowGapModel &gaps, U2OpStatus &os);
+    MultipleChromatogramAlignmentRow createRow(const U2MsaRow &rowInDb, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QVector<U2MsaGap> &gaps, U2OpStatus &os);
 
     MultipleChromatogramAlignmentRow createRow(const MultipleChromatogramAlignmentRow &row);
 

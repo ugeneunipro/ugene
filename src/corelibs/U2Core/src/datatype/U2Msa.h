@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,33 +34,42 @@ namespace U2 {
 
 class U2MsaGap;
 
-typedef QList<U2MsaGap> U2MsaRowGapModel;
-typedef QList<U2MsaRowGapModel> U2MsaListGapModel;
-typedef QMap<qint64, U2MsaRowGapModel> U2MsaMapGapModel;
-
+/**
+ * Gap represention in MSA row sequence.
+ * Same as U2Region but uses 32 bit values (we do not support MSA sizes above 32 bits).
+ *
+ * 'startPos' in the gap is a position in the gapped sequence.
+ *
+ * TODO: create a templated U2Region<size> variant and make U2MsaGap to extend it.
+ */
 class U2CORE_EXPORT U2MsaGap {
 public:
-    U2MsaGap();
-    U2MsaGap(qint64 off, qint64 gap);
+    U2MsaGap() = default;
 
-    qint64 endPos() const;  // not inclusive
+    U2MsaGap(int startPos, int length);
+
+    int endPos() const;  // not inclusive
+
     void setEndPos(qint64 endPos);  // not inclusive
 
+    /** The gap is valid if it has a length >= 0 & startPos >=0. */
     bool isValid() const;
 
     bool operator==(const U2MsaGap &g) const;
 
+    /** Compares 2 gaps by 'startPos'. */
     static bool lessThan(const U2MsaGap &first, const U2MsaGap &second);
 
+    /** Returns another gap (region) that is intersection of this and 'anotherGap' regions. */
     U2MsaGap intersect(const U2MsaGap &anotherGap) const;
 
     operator U2Region() const;
 
-    /** Offset of the gap in sequence*/
-    qint64 offset;
+    /** Offset of the gap in the gapped sequence*/
+    int startPos = 0;
 
-    /** number of gaps */
-    qint64 gap;
+    /** Number of gaps */
+    int length = 0;
 };
 
 /**
@@ -86,7 +95,7 @@ public:
     qint64 gend;
 
     /** A gap model for the row */
-    QList<U2MsaGap> gaps;
+    QVector<U2MsaGap> gaps;
 
     /** Length of the sequence characters and gaps of the row (without trailing) */
     qint64 length;

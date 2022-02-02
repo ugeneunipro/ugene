@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,6 +31,12 @@ namespace U2 {
 
 class GTUtilsPhyTree {
 public:
+    /** Returns active Tree Viewer window or fails. */
+    static QWidget *getActiveTreeViewerWindow(HI::GUITestOpStatus &os);
+
+    /** Checks that the active MDI window is a Tree Viewer window or fails. */
+    static void checkTreeViewerWindowIsActive(HI::GUITestOpStatus &os, const QString& titlePart = "");
+
     static QList<GraphicsButtonItem *> getSelectedNodes(HI::GUITestOpStatus &os);
     static QList<GraphicsButtonItem *> getUnselectedNodes(HI::GUITestOpStatus &os);
     static QList<GraphicsButtonItem *> getNodes(HI::GUITestOpStatus &os);

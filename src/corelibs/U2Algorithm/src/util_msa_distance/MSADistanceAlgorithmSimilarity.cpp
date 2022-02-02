@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -51,7 +51,7 @@ MSADistanceAlgorithm *MSADistanceAlgorithmFactorySimilarity::createAlgorithm(con
 // Algorithm
 
 void MSADistanceAlgorithmSimilarity::run() {
-    int nSeq = ma->getNumRows();
+    int nSeq = ma->getRowCount();
     for (int i = 0; i < nSeq; i++) {
         for (int j = i; j < nSeq; j++) {
             int sim = 0;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,8 +29,8 @@
 
 #include <U2Gui/HelpButton.h>
 
-#include "./view_rendering/MaEditorSelection.h"
 #include "MaEditor.h"
+#include "MaEditorSelection.h"
 
 namespace U2 {
 
@@ -131,7 +131,7 @@ void SelectSubalignmentDialog::init() {
     MultipleAlignmentObject *mobj = editor->getMaObject();
     SAFE_POINT(mobj != nullptr, tr("MSA Object is NULL"), );
 
-    int rowNumber = mobj->getNumRows();
+    int rowNumber = mobj->getRowCount();
     int alignLength = mobj->getLength();
 
     sequencesTableWidget->clearContents();

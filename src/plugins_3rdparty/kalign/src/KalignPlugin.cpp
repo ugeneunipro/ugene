@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,32 +28,23 @@
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/GAutoDeleteList.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Task.h>
-#include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/Notification.h>
 #include <U2Gui/ToolsMenu.h>
-
-#include <U2Lang/WorkflowSettings.h>
 
 #include <U2Test/GTestFrameworkComponents.h>
 
 #include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
 
-#include "KalignConstants.h"
 #include "KalignDialogController.h"
 #include "KalignTask.h"
 #include "KalignWorker.h"
@@ -147,11 +138,12 @@ void KalignMSAEditorContext::initViewContext(GObjectView *view) {
     MSAEditor *msaed = qobject_cast<MSAEditor *>(view);
     SAFE_POINT(msaed != NULL, "Invalid GObjectView", );
     CHECK(msaed->getMaObject() != NULL, );
+    msaed->registerActionProvider(this);
 
     bool objLocked = msaed->getMaObject()->isStateLocked();
     bool isMsaEmpty = msaed->isAlignmentEmpty();
 
-    auto alignAction = new KalignAction(this, view, tr("Align with Kalign..."), 2000);
+    auto alignAction = new KalignAction(this, view, tr("Align with Kalign..."), 4000);
     alignAction->setObjectName("align_with_kalign");
     alignAction->setIcon(QIcon(":kalign/images/kalign_16.png"));
     alignAction->setEnabled(!objLocked && !isMsaEmpty);
@@ -161,15 +153,6 @@ void KalignMSAEditorContext::initViewContext(GObjectView *view) {
     connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
     connect(msaed->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
     addViewAction(alignAction);
-}
-
-void KalignMSAEditorContext::buildStaticOrContextMenu(GObjectView *v, QMenu *m) {
-    QList<GObjectViewAction *> actions = getViewActions(v);
-    QMenu *alignMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ALIGN);
-    assert(alignMenu != NULL);
-    foreach (GObjectViewAction *a, actions) {
-        a->addToMenuWithOrder(alignMenu);
-    }
 }
 
 void KalignMSAEditorContext::sl_align() {

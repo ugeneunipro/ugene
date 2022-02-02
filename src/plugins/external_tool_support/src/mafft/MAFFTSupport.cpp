@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,8 +31,6 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
-
-#include <U2Gui/GUIUtils.h>
 
 #include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
@@ -65,11 +63,13 @@ MAFFTSupport::MAFFTSupport()
     versionRegExp = QRegExp("MAFFT v(\\d+\\.\\d+\\w)");
     toolKitName = "MAFFT";
 
-    AppContext::getAlignmentAlgorithmsRegistry()->registerAlgorithm(new MafftAddToAlignmentAlgorithm());
+    AlignmentAlgorithmsRegistry *registry = AppContext::getAlignmentAlgorithmsRegistry();
+    registry->registerAlgorithm(new MafftAlignSequencesToAlignmentAlgorithm(AlignNewSequencesToAlignment));
+    registry->registerAlgorithm(new MafftAlignSequencesToAlignmentAlgorithm(AlignSelectionToAlignment));
 }
 
 void MAFFTSupport::sl_runWithExtFileSpecify() {
-    //Check that Clustal and temporary folder path defined
+    // Check that Clustal and temporary folder path defined
     if (path.isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(name);
@@ -97,7 +97,7 @@ void MAFFTSupport::sl_runWithExtFileSpecify() {
     ExternalToolSupportSettings::checkTemporaryDir(os);
     CHECK_OP(os, );
 
-    //Call select input file and setup settings dialog
+    // Call select input file and setup settings dialog
     MAFFTSupportTaskSettings settings;
     QObjectScopedPointer<MAFFTWithExtFileSpecifySupportRunDialog> mAFFTRunDialog = new MAFFTWithExtFileSpecifySupportRunDialog(settings, AppContext::getMainWindow()->getQMainWindow());
     mAFFTRunDialog->exec();
@@ -113,7 +113,7 @@ void MAFFTSupport::sl_runWithExtFileSpecify() {
 }
 
 ////////////////////////////////////////
-//ExternalToolSupportMSAContext
+// ExternalToolSupportMSAContext
 MAFFTSupportContext::MAFFTSupportContext(QObject *p)
     : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
@@ -121,25 +121,17 @@ MAFFTSupportContext::MAFFTSupportContext(QObject *p)
 void MAFFTSupportContext::initViewContext(GObjectView *view) {
     auto msaEditor = qobject_cast<MSAEditor *>(view);
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
+    msaEditor->registerActionProvider(this);
 
-    auto alignAction = new AlignMsaAction(this, MAFFTSupport::ET_MAFFT_ID, msaEditor, tr("Align with MAFFT..."), 2000);
+    auto alignAction = new AlignMsaAction(this, MAFFTSupport::ET_MAFFT_ID, msaEditor, tr("Align with MAFFT..."), 5000);
     alignAction->setObjectName("Align with MAFFT");
     alignAction->setMenuTypes({MsaEditorMenuType::ALIGN});
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_MAFFT()));
     addViewAction(alignAction);
 }
 
-void MAFFTSupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *m) {
-    QList<GObjectViewAction *> actions = getViewActions(view);
-    QMenu *alignMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ALIGN);
-    SAFE_POINT(alignMenu != nullptr, "alignMenu", );
-    foreach (GObjectViewAction *a, actions) {
-        a->addToMenuWithOrder(alignMenu);
-    }
-}
-
 void MAFFTSupportContext::sl_align_with_MAFFT() {
-    //Check that MAFFT and temporary folder path defined
+    // Check that MAFFT and temporary folder path defined
     if (AppContext::getExternalToolRegistry()->getById(MAFFTSupport::ET_MAFFT_ID)->getPath().isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle("MAFFT");
@@ -167,7 +159,7 @@ void MAFFTSupportContext::sl_align_with_MAFFT() {
     ExternalToolSupportSettings::checkTemporaryDir(os);
     CHECK_OP(os, );
 
-    //Call run MAFFT align dialog
+    // Call run MAFFT align dialog
     AlignMsaAction *action = qobject_cast<AlignMsaAction *>(sender());
     SAFE_POINT(action != nullptr, "Sender is not 'AlignMsaAction'", );
 
@@ -193,4 +185,4 @@ void MAFFTSupportContext::sl_align_with_MAFFT() {
     msaEditor->resetCollapseModel();
 }
 
-}    // namespace U2
+}  // namespace U2

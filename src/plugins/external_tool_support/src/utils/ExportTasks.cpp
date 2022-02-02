@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -166,7 +166,7 @@ QList<Task *> SaveSequenceTask::onSubTaskFinished(Task *subTask) {
         document->setDocumentOwnsDbiResources(true);
         document->addObject(cloneTask->takeResult());
 
-        SaveDocumentTask *saveTask = new SaveDocumentTask(document, nullptr, GUrl(), SaveDocFlags(SaveDoc_Overwrite) | SaveDoc_DestroyAfter);
+        SaveDocumentTask *saveTask = new SaveDocumentTask(document, nullptr, GUrl(), SaveDoc_DestroyAfter);
         saveTask->setSubtaskProgressWeight(50);
         result << saveTask;
     }

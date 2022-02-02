@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,7 +31,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/DocumentUtils.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
@@ -39,7 +38,6 @@
 
 #include <U2Formats/GenbankLocationParser.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/OpenViewTask.h>
 #include <U2Gui/SaveDocumentController.h>
@@ -65,7 +63,7 @@ CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleS
     connect(startLineEdit, SIGNAL(textEdited(const QString &)), SLOT(sl_regionChanged()));
     connect(endLineEdit, SIGNAL(textEdited(const QString &)), SLOT(sl_regionChanged()));
 
-    int rowCount = (int)msaObject->getNumRows();
+    int rowCount = (int)msaObject->getRowCount();
     int msaLength = (int)msaObject->getLength();
 
     sequencesTableWidget->clearContents();

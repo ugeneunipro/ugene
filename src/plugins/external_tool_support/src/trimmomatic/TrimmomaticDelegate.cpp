@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,10 +22,8 @@
 #include "TrimmomaticDelegate.h"
 
 #include <QAbstractItemView>
-#include <QListView>
 #include <QMenu>
 
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/SignalBlocker.h>
 
@@ -121,8 +119,6 @@ TrimmomaticPropertyWidget::TrimmomaticPropertyWidget(QWidget *parent,
     toolButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
     connect(toolButton, SIGNAL(clicked()), SLOT(sl_showDialog()));
     layout()->addWidget(toolButton);
-
-    setObjectName("TrimmomaticPropertyWidget");
 }
 
 QVariant TrimmomaticPropertyWidget::value() {
@@ -237,9 +233,9 @@ void TrimmomaticPropertyDialog::sl_valuesChanged() {
 }
 
 void TrimmomaticPropertyDialog::sl_currentRowChanged() {
-    const int currentStepNumber = listSteps->currentRow();
-    CHECK(-1 != currentStepNumber, );
-    SAFE_POINT(0 <= currentStepNumber && currentStepNumber < listSteps->count(), "Unexpected selected item", );
+    int currentStepNumber = listSteps->currentRow();
+    CHECK(currentStepNumber != -1, );
+    SAFE_POINT(currentStepNumber >= 0 && currentStepNumber < listSteps->count(), "Unexpected selected item", );
     SAFE_POINT(currentStepNumber < steps.size(), "Unexpected selected row", );
 
     TrimmomaticStep *selectedStep = steps[currentStepNumber];
@@ -248,6 +244,7 @@ void TrimmomaticPropertyDialog::sl_currentRowChanged() {
 
     currentWidget->hide();
     currentWidget = selectedStep->getSettingsWidget();
+    currentWidget->setObjectName("TrimmomaticStepSettingsWidget_step_" + QString::number(currentStepNumber));
     widgetStepSettings->layout()->addWidget(currentWidget);
     currentWidget->show();
 }
@@ -361,5 +358,5 @@ void TrimmomaticPropertyDialog::parseCommand(const QString &command) {
     }
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,6 +22,7 @@
 #include "MSAEditorTreeManager.h"
 
 #include <QApplication>
+#include <QGraphicsView>
 #include <QMessageBox>
 
 #include <U2Algorithm/MSADistanceAlgorithm.h>
@@ -33,6 +34,7 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
@@ -45,7 +47,6 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/U2FileDialog.h>
 
@@ -55,7 +56,7 @@
 
 #include "MsaEditorTreeTabArea.h"
 #include "ov_msa/phy_tree/MSAEditorMultiTreeViewer.h"
-#include "ov_msa/phy_tree_options/TreeOptionsWidgetFactory.h"
+#include "ov_msa/phy_tree_tab/TreeOptionsWidgetFactory.h"
 #include "ov_phyltree/GraphicsRectangularBranchItem.h"
 #include "ov_phyltree/TreeViewer.h"
 #include "ov_phyltree/TreeViewerTasks.h"
@@ -279,6 +280,13 @@ void MSAEditorTreeManager::sl_openTreeTaskFinished(Task *task) {
     MsaEditorWgt *msaUI = editor->getUI();
     msaUI->addTreeView(viewWindow);
 
+    // Once tree is added to the splitter make the tree-view viewport state consistent:
+    // scroll to the top-right corner to make sequence names visible.
+    QTimer::singleShot(0, treeViewer, [treeViewer]() {
+        QGraphicsView *ui = treeViewer->getTreeViewerUI();
+        ui->centerOn(ui->scene()->width(), 0);
+    });
+
     if (!addExistingTree) {
         treeViewer->setCreatePhyTreeSettings(settings);
         treeViewer->setParentAignmentName(msaObject->getMultipleAlignment()->getName());
@@ -293,7 +301,7 @@ void MSAEditorTreeManager::sl_openTreeTaskFinished(Task *task) {
 
 void MSAEditorTreeManager::openTreeFromFile() {
     LastUsedDirHelper h;
-    QString filter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::NEWICK, false, QStringList());
+    QString filter = FileFilters::createFileFilterByObjectTypes({BaseDocumentFormats::NEWICK});
     QString file;
 #ifdef Q_OS_DARWIN
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {

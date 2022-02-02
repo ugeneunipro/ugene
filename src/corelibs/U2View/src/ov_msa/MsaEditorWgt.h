@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 #ifndef _U2_MSA_EDITOR_WGT_H_
 #define _U2_MSA_EDITOR_WGT_H_
 
-#include "view_rendering/MaEditorWgt.h"
+#include "MaEditorWgt.h"
 
 namespace U2 {
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,18 +37,21 @@ class U2LANG_EXPORT DbiDataHandler : public QSharedData {
     friend class DbiDataStorage;
 
 public:
-    DbiDataHandler(const U2EntityRef &entRef, U2ObjectDbi *dbi, bool useGC);
+    DbiDataHandler(const U2EntityRef &entityRef, U2ObjectDbi *dbi, bool useGC);
     virtual ~DbiDataHandler();
 
     int getReferenceCount() const;
     U2DbiRef getDbiRef() const;
+
+    /** Returns entity-ref this data handler holds. */
+    const U2EntityRef& getEntityRef() const;
 
     bool equals(const DbiDataHandler *other) const;
 
     bool isValid() const;
 
 private:
-    const U2EntityRef entRef;
+    const U2EntityRef entityRef;
     U2ObjectDbi *dbi;
     bool useGC;
 

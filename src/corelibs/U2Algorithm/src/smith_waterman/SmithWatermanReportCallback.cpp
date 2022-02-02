@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -234,7 +234,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_SequenceView_Search(const QLi
         alignmentDoc->addObject(docObject);
         currentProject->addDocument(alignmentDoc);
 
-        SaveDocFlags flags = SaveDoc_Overwrite;
+        SaveDocFlags flags;
         Task *saveMADocument = nullptr;
 
         if (countOfLoadedDocs < SmithWatermanReportCallbackMAImpl::countOfSimultLoadedMADocs) {
@@ -318,17 +318,14 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InNewWindow(
     CHECK_OP(stateInfo, tr("Failed to create an alignment."));
     alignmentDoc->addObject(docObject);
 
-    SaveDocFlags flags = SaveDoc_Overwrite;
-    flags |= SaveDoc_OpenAfter;
-    Task *saveMADocument = nullptr;
-
+    SaveDocFlags flags = SaveDoc_OpenAfter;
     if (countOfLoadedDocs < SmithWatermanReportCallbackMAImpl::countOfSimultLoadedMADocs) {
         ++countOfLoadedDocs;
     } else {
         flags |= SaveDoc_UnloadAfter;
     }
 
-    saveMADocument = new SaveDocumentTask(alignmentDoc, flags);
+    auto saveMADocument = new SaveDocumentTask(alignmentDoc, flags);
     taskScheduler->registerTopLevelTask(saveMADocument);
     return QString();
 }
@@ -433,7 +430,7 @@ void SmithWatermanReportCallbackMAImpl::alignSequences(QByteArray &refSequence, 
     }
 }
 
-void SmithWatermanReportCallbackMAImpl::alignSequences(QList<U2MsaGap> &refSequenceGapModel, QList<U2MsaGap> &ptrnSequenceGapModel, const QByteArray &pairwiseAlignment) {
+void SmithWatermanReportCallbackMAImpl::alignSequences(QVector<U2MsaGap> &refSequenceGapModel, QVector<U2MsaGap> &ptrnSequenceGapModel, const QByteArray &pairwiseAlignment) {
     bool lastSymbolIsGapRef = false;
     bool lastSymbolIsGapPtrn = false;
     quint32 intervalStart = 0;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -87,7 +87,7 @@ QSize PanViewRenderer::getBaseCanvasSize(const U2Region &visibleRange) const {
 
     PVRowsManager *rm = panView->getRowsManager();
     int width = (int)(firstLastWidth + 2 * halfChar + 5);
-    int height = commonMetrics.lineHeight * (rm->getNumRows() + s->showCustomRulers * s->customRulers.size() + s->showMainRuler + isSequenceCharsVisible() + 1) + 6;
+    int height = commonMetrics.lineHeight * (rm->getRowCount() + s->showCustomRulers * s->customRulers.size() + s->showMainRuler + isSequenceCharsVisible() + 1) + 6;
     return QSize(width, height);
 }
 
@@ -95,7 +95,7 @@ void PanViewRenderer::drawAll(QPainter &p, const U2Region &visibleRange) {
     int rowsOffsetOnScreen = s->rowLinesOffset;
     int numVisibleRows = s->numLines;
     s->rowLinesOffset = 0;
-    s->numLines = panView->getRowsManager()->getNumRows() + s->getAdditionalLines();
+    s->numLines = panView->getRowsManager()->getRowCount() + s->getAdditionalLines();
     QSize canvasSize = getBaseCanvasSize(visibleRange);
     drawAll(p, canvasSize, visibleRange);
     s->rowLinesOffset = rowsOffsetOnScreen;

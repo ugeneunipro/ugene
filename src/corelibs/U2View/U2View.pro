@@ -38,11 +38,32 @@ HEADERS += src/LicenseDialog.h \
            src/ov_assembly/ExtractAssemblyRegionDialog.h \
            src/ov_assembly/ExtractAssemblyRegionTask.h \
            src/ov_assembly/ZoomableAssemblyOverview.h \
+           src/ov_mca/MaConsensusMismatchController.h \
+           src/ov_mca/McaConsensusAreaRenderer.h \
+           src/ov_mca/McaEditor.h \
+           src/ov_mca/McaEditorConsensusArea.h \
+           src/ov_mca/McaEditorNameList.h \
+           src/ov_mca/McaEditorOverviewArea.h \
+           src/ov_mca/McaEditorReferenceArea.h \
+           src/ov_mca/McaEditorSequenceArea.h \
+           src/ov_mca/McaEditorStatusBar.h \
+           src/ov_mca/McaEditorWgt.h \
+           src/ov_mca/McaReferenceAreaRenderer.h \
+           src/ov_mca/McaReferenceCharController.h \
+           src/ov_mca/McaRowHeightController.h \
+           src/ov_mca/SequenceWithChromatogramAreaRenderer.h \
+           src/ov_mca/general_tab/McaGeneralTab.h \
+           src/ov_mca/general_tab/McaGeneralTabFactory.h \
+           src/ov_mca/overview/MaSangerOverview.h \
+           src/ov_mca/reads_tab/McaAlternativeMutationsWidget.h \
+           src/ov_mca/reads_tab/McaReadsTabFactory.h \
            src/ov_msa/AlignmentLogo.h \
+           src/ov_msa/BaseWidthController.h \
            src/ov_msa/ColorSchemaDialogController.h \
            src/ov_msa/ColorSchemaSettingsController.h \
            src/ov_msa/CreateSubalignmentDialogController.h \
            src/ov_msa/DeleteGapsDialog.h \
+           src/ov_msa/DrawHelper.h \
            src/ov_msa/ExportHighlightedDialogController.h \
            src/ov_msa/ExportSequencesTask.h \
            src/ov_msa/MSAEditor.h \
@@ -52,64 +73,56 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/MSAEditorOverviewArea.h \
            src/ov_msa/MSAEditorSequenceArea.h \
            src/ov_msa/MSASelectSubalignmentDialog.h \
+           src/ov_msa/MaAmbiguousCharactersController.h \
            src/ov_msa/MaCollapseModel.h \
-           src/ov_msa/MaConsensusMismatchController.h \
+           src/ov_msa/MaConsensusAreaRenderer.h \
            src/ov_msa/MaEditor.h \
+           src/ov_msa/MaEditorConsensusArea.h \
            src/ov_msa/MaEditorConsensusAreaSettings.h \
            src/ov_msa/MaEditorContext.h \
            src/ov_msa/MaEditorFactory.h \
            src/ov_msa/MaEditorNameList.h \
+           src/ov_msa/MaEditorSelection.h \
+           src/ov_msa/MaEditorSequenceArea.h \
+           src/ov_msa/MaEditorSplitters.h \
            src/ov_msa/MaEditorState.h \
            src/ov_msa/MaEditorStatusBar.h \
            src/ov_msa/MaEditorTasks.h \
-           src/ov_msa/McaEditor.h \
-           src/ov_msa/McaEditorConsensusArea.h \
-           src/ov_msa/McaEditorNameList.h \
-           src/ov_msa/McaEditorOverviewArea.h \
-           src/ov_msa/McaEditorReferenceArea.h \
-           src/ov_msa/McaEditorSequenceArea.h \
-           src/ov_msa/McaEditorStatusBar.h \
-           src/ov_msa/McaEditorWgt.h \
-           src/ov_msa/McaReferenceCharController.h \
+           src/ov_msa/MaEditorUtils.h \
+           src/ov_msa/MaEditorWgt.h \
            src/ov_msa/MsaEditorNameList.h \
            src/ov_msa/MsaEditorSimilarityColumn.h \
            src/ov_msa/MsaEditorStatusBar.h \
            src/ov_msa/MsaEditorUserModStepController.h \
            src/ov_msa/MsaEditorWgt.h \
            src/ov_msa/MsaOpSavableTab.h \
+           src/ov_msa/MsaRowHeightController.h \
            src/ov_msa/MsaUpdatedWidgetInterface.h \
+           src/ov_msa/RowHeightController.h \
            src/ov_msa/SaveSelectedSequenceFromMSADialogController.h \
+           src/ov_msa/ScrollController.h \
+           src/ov_msa/SequenceAreaRenderer.h \
            src/ov_msa/SequenceSelectorWidgetController.h \
            src/ov_msa/align_to_alignment/AlignSequencesToAlignmentSupport.h \
            src/ov_msa/align_to_alignment/AlignSequencesToAlignmentTask.h \
+           src/ov_msa/align_to_alignment/RealignSequencesInAlignmentTask.h \
            src/ov_msa/clipboard/SubalignmentToClipboardTask.h \
-           src/ov_msa/common/RefSeqCommonWidget.h \
-           src/ov_msa/export/MSAImageExportTask.h \
+           src/ov_msa/exclude_list/MsaExcludeList.h \
            src/ov_msa/export_consensus/MaExportConsensusTabFactory.h \
            src/ov_msa/export_consensus/MaExportConsensusWidget.h \
+           src/ov_msa/export_image/MSAImageExportTask.h \
            src/ov_msa/find_pattern/FindPatternMsaTask.h \
            src/ov_msa/find_pattern/FindPatternMsaWidget.h \
            src/ov_msa/find_pattern/FindPatternMsaWidgetFactory.h \
            src/ov_msa/find_pattern/FindPatternMsaWidgetSavableTab.h \
-           src/ov_msa/general/MSAGeneralTab.h \
-           src/ov_msa/general/MSAGeneralTabFactory.h \
-           src/ov_msa/general/MaConsensusModeWidget.h \
-           src/ov_msa/general/McaGeneralTab.h \
-           src/ov_msa/general/McaGeneralTabFactory.h \
-           src/ov_msa/helpers/BaseWidthController.h \
-           src/ov_msa/helpers/DrawHelper.h \
-           src/ov_msa/helpers/MaAmbiguousCharactersController.h \
-           src/ov_msa/helpers/McaRowHeightController.h \
-           src/ov_msa/helpers/MsaRowHeightController.h \
-           src/ov_msa/helpers/RowHeightController.h \
-           src/ov_msa/helpers/ScrollController.h \
+           src/ov_msa/general_tab/MSAGeneralTab.h \
+           src/ov_msa/general_tab/MSAGeneralTabFactory.h \
+           src/ov_msa/general_tab/MaConsensusModeWidget.h \
            src/ov_msa/highlighting/MSAHighlightingTab.h \
            src/ov_msa/highlighting/MSAHighlightingTabFactory.h \
            src/ov_msa/highlighting/MsaHighlightingSavableTab.h \
            src/ov_msa/highlighting/MsaSchemeComboBoxController.h \
            src/ov_msa/highlighting/MsaSchemesMenuBuilder.h \
-           src/ov_msa/mca_reads/McaAlternativeMutationsWidget.h \
-           src/ov_msa/mca_reads/McaReadsTabFactory.h \
            src/ov_msa/move_to_object/MoveToObjectMaController.h \
            src/ov_msa/overview/MaEditorOverviewArea.h \
            src/ov_msa/overview/MaGraphCalculationTask.h \
@@ -117,7 +130,6 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/overview/MaOverview.h \
            src/ov_msa/overview/MaOverviewContextMenu.h \
            src/ov_msa/overview/MaOverviewImageExportTask.h \
-           src/ov_msa/overview/MaSangerOverview.h \
            src/ov_msa/overview/MaSimpleOverview.h \
            src/ov_msa/pairwise_alignment/PairAlign.h \
            src/ov_msa/pairwise_alignment/PairAlignFactory.h \
@@ -125,22 +137,12 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/phy_tree/MSAEditorTreeManager.h \
            src/ov_msa/phy_tree/MSAEditorTreeViewer.h \
            src/ov_msa/phy_tree/MsaEditorTreeTabArea.h \
-           src/ov_msa/phy_tree_options/TreeOptionsWidget.h \
-           src/ov_msa/phy_tree_options/TreeOptionsWidgetFactory.h \
-           src/ov_msa/realign_to_alignment/RealignSequencesInAlignmentTask.h \
+           src/ov_msa/phy_tree_tab/TreeOptionsWidget.h \
+           src/ov_msa/phy_tree_tab/TreeOptionsWidgetFactory.h \
+           src/ov_msa/ref_seq_widget/RefSeqCommonWidget.h \
            src/ov_msa/sort/MsaEditorSortSequencesWidget.h \
            src/ov_msa/statistics/SeqStatisticsWidget.h \
            src/ov_msa/statistics/SeqStatisticsWidgetFactory.h \
-           src/ov_msa/view_rendering/MaConsensusAreaRenderer.h \
-           src/ov_msa/view_rendering/MaEditorConsensusArea.h \
-           src/ov_msa/view_rendering/MaEditorSelection.h \
-           src/ov_msa/view_rendering/MaEditorSequenceArea.h \
-           src/ov_msa/view_rendering/MaEditorUtils.h \
-           src/ov_msa/view_rendering/MaEditorWgt.h \
-           src/ov_msa/view_rendering/McaConsensusAreaRenderer.h \
-           src/ov_msa/view_rendering/McaReferenceAreaRenderer.h \
-           src/ov_msa/view_rendering/SequenceAreaRenderer.h \
-           src/ov_msa/view_rendering/SequenceWithChromatogramAreaRenderer.h \
            src/ov_phyltree/CreateBranchesTask.h \
            src/ov_phyltree/CreateCircularBranchesTask.h \
            src/ov_phyltree/CreateRectangularBranchesTask.h \
@@ -244,6 +246,8 @@ FORMS += src/LicenseDialog.ui \
          src/ov_assembly/ExportCoverageDialog.ui \
          src/ov_assembly/ExportReadsDialog.ui \
          src/ov_assembly/ExtractAssemblyRegionDialog.ui \
+         src/ov_mca/general_tab/McaGeneralTabOptionsPanelWidget.ui \
+         src/ov_mca/reads_tab/McaAlternativeMutationsWidget.ui \
          src/ov_msa/ColorSchemaDialog.ui \
          src/ov_msa/ColorSchemaSettingsWidget.ui \
          src/ov_msa/CreateMSAScheme.ui \
@@ -253,15 +257,13 @@ FORMS += src/LicenseDialog.ui \
          src/ov_msa/SaveSelectedSequenceFromMSADialog.ui \
          src/ov_msa/SelectSubalignmentDialog.ui \
          src/ov_msa/SequenceSelectorWidget.ui \
-         src/ov_msa/export/MSAExportSettings.ui \
          src/ov_msa/export_consensus/ExportConsensusWidget.ui \
+         src/ov_msa/export_image/MSAExportSettings.ui \
          src/ov_msa/find_pattern/FindPatternMsaForm.ui \
-         src/ov_msa/general/GeneralTabOptionsPanelWidget.ui \
-         src/ov_msa/general/MaConsensusModeWidget.ui \
-         src/ov_msa/general/McaGeneralTabOptionsPanelWidget.ui \
-         src/ov_msa/mca_reads/McaAlternativeMutationsWidget.ui \
+         src/ov_msa/general_tab/GeneralTabOptionsPanelWidget.ui \
+         src/ov_msa/general_tab/MaConsensusModeWidget.ui \
          src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui \
-         src/ov_msa/phy_tree_options/TreeOptionsWidget.ui \
+         src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui \
          src/ov_msa/statistics/MSADistancesColumnSettingsWidget.ui \
          src/ov_sequence/CreateRulerDialog.ui \
          src/ov_sequence/SaveGraphCutoffsDialog.ui \
@@ -319,11 +321,32 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_assembly/ExtractAssemblyRegionDialog.cpp \
            src/ov_assembly/ExtractAssemblyRegionTask.cpp \
            src/ov_assembly/ZoomableAssemblyOverview.cpp \
+           src/ov_mca/MaConsensusMismatchController.cpp \
+           src/ov_mca/McaConsensusAreaRenderer.cpp \
+           src/ov_mca/McaEditor.cpp \
+           src/ov_mca/McaEditorConsensusArea.cpp \
+           src/ov_mca/McaEditorNameList.cpp \
+           src/ov_mca/McaEditorOverviewArea.cpp \
+           src/ov_mca/McaEditorReferenceArea.cpp \
+           src/ov_mca/McaEditorSequenceArea.cpp \
+           src/ov_mca/McaEditorStatusBar.cpp \
+           src/ov_mca/McaEditorWgt.cpp \
+           src/ov_mca/McaReferenceAreaRenderer.cpp \
+           src/ov_mca/McaReferenceCharController.cpp \
+           src/ov_mca/McaRowHeightController.cpp \
+           src/ov_mca/SequenceWithChromatogramAreaRenderer.cpp \
+           src/ov_mca/general_tab/McaGeneralTab.cpp \
+           src/ov_mca/general_tab/McaGeneralTabFactory.cpp \
+           src/ov_mca/overview/MaSangerOverview.cpp \
+           src/ov_mca/reads_tab/McaAlternativeMutationsWidget.cpp \
+           src/ov_mca/reads_tab/McaReadsTabFactory.cpp \
            src/ov_msa/AlignmentLogo.cpp \
+           src/ov_msa/BaseWidthController.cpp \
            src/ov_msa/ColorSchemaDialogController.cpp \
            src/ov_msa/ColorSchemaSettingsController.cpp \
            src/ov_msa/CreateSubalignmentDialogController.cpp \
            src/ov_msa/DeleteGapsDialog.cpp \
+           src/ov_msa/DrawHelper.cpp \
            src/ov_msa/ExportHighlightedDialogController.cpp \
            src/ov_msa/ExportSequencesTask.cpp \
            src/ov_msa/MSAEditor.cpp \
@@ -333,62 +356,54 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/MSAEditorOverviewArea.cpp \
            src/ov_msa/MSAEditorSequenceArea.cpp \
            src/ov_msa/MSASelectSubalignmentDialog.cpp \
+           src/ov_msa/MaAmbiguousCharactersController.cpp \
            src/ov_msa/MaCollapseModel.cpp \
-           src/ov_msa/MaConsensusMismatchController.cpp \
+           src/ov_msa/MaConsensusAreaRenderer.cpp \
            src/ov_msa/MaEditor.cpp \
+           src/ov_msa/MaEditorConsensusArea.cpp \
            src/ov_msa/MaEditorConsensusAreaSettings.cpp \
            src/ov_msa/MaEditorContext.cpp \
            src/ov_msa/MaEditorFactory.cpp \
            src/ov_msa/MaEditorNameList.cpp \
+           src/ov_msa/MaEditorSelection.cpp \
+           src/ov_msa/MaEditorSequenceArea.cpp \
+           src/ov_msa/MaEditorSplitters.cpp \
            src/ov_msa/MaEditorState.cpp \
            src/ov_msa/MaEditorStatusBar.cpp \
            src/ov_msa/MaEditorTasks.cpp \
-           src/ov_msa/McaEditor.cpp \
-           src/ov_msa/McaEditorConsensusArea.cpp \
-           src/ov_msa/McaEditorNameList.cpp \
-           src/ov_msa/McaEditorOverviewArea.cpp \
-           src/ov_msa/McaEditorReferenceArea.cpp \
-           src/ov_msa/McaEditorSequenceArea.cpp \
-           src/ov_msa/McaEditorStatusBar.cpp \
-           src/ov_msa/McaEditorWgt.cpp \
-           src/ov_msa/McaReferenceCharController.cpp \
+           src/ov_msa/MaEditorUtils.cpp \
+           src/ov_msa/MaEditorWgt.cpp \
            src/ov_msa/MsaEditorNameList.cpp \
            src/ov_msa/MsaEditorSimilarityColumn.cpp \
            src/ov_msa/MsaEditorStatusBar.cpp \
            src/ov_msa/MsaEditorUserModStepController.cpp \
            src/ov_msa/MsaEditorWgt.cpp \
            src/ov_msa/MsaOpSavableTab.cpp \
+           src/ov_msa/MsaRowHeightController.cpp \
+           src/ov_msa/RowHeightController.cpp \
            src/ov_msa/SaveSelectedSequenceFromMSADialogController.cpp \
+           src/ov_msa/ScrollController.cpp \
+           src/ov_msa/SequenceAreaRenderer.cpp \
            src/ov_msa/SequenceSelectorWidgetController.cpp \
            src/ov_msa/align_to_alignment/AlignSequencesToAlignmentSupport.cpp \
            src/ov_msa/align_to_alignment/AlignSequencesToAlignmentTask.cpp \
+           src/ov_msa/align_to_alignment/RealignSequencesInAlignmentTask.cpp \
            src/ov_msa/clipboard/SubalignmentToClipboardTask.cpp \
-           src/ov_msa/common/RefSeqCommonWidget.cpp \
-           src/ov_msa/export/MSAImageExportTask.cpp \
+           src/ov_msa/exclude_list/MsaExcludeList.cpp \
            src/ov_msa/export_consensus/MaExportConsensusTabFactory.cpp \
            src/ov_msa/export_consensus/MaExportConsensusWidget.cpp \
+           src/ov_msa/export_image/MSAImageExportTask.cpp \
            src/ov_msa/find_pattern/FindPatternMsaTask.cpp \
            src/ov_msa/find_pattern/FindPatternMsaWidget.cpp \
            src/ov_msa/find_pattern/FindPatternMsaWidgetFactory.cpp \
            src/ov_msa/find_pattern/FindPatternMsaWidgetSavableTab.cpp \
-           src/ov_msa/general/MSAGeneralTab.cpp \
-           src/ov_msa/general/MSAGeneralTabFactory.cpp \
-           src/ov_msa/general/MaConsensusModeWidget.cpp \
-           src/ov_msa/general/McaGeneralTab.cpp \
-           src/ov_msa/general/McaGeneralTabFactory.cpp \
-           src/ov_msa/helpers/BaseWidthController.cpp \
-           src/ov_msa/helpers/DrawHelper.cpp \
-           src/ov_msa/helpers/MaAmbiguousCharactersController.cpp \
-           src/ov_msa/helpers/McaRowHeightController.cpp \
-           src/ov_msa/helpers/MsaRowHeightController.cpp \
-           src/ov_msa/helpers/RowHeightController.cpp \
-           src/ov_msa/helpers/ScrollController.cpp \
+           src/ov_msa/general_tab/MSAGeneralTab.cpp \
+           src/ov_msa/general_tab/MSAGeneralTabFactory.cpp \
+           src/ov_msa/general_tab/MaConsensusModeWidget.cpp \
            src/ov_msa/highlighting/MSAHighlightingTab.cpp \
            src/ov_msa/highlighting/MSAHighlightingTabFactory.cpp \
            src/ov_msa/highlighting/MsaHighlightingSavableTab.cpp \
            src/ov_msa/highlighting/MsaSchemesMenuBuilder.cpp \
-           src/ov_msa/mca_reads/McaAlternativeMutationsWidget.cpp \
-           src/ov_msa/mca_reads/McaReadsTabFactory.cpp \
            src/ov_msa/move_to_object/MoveToObjectMaController.cpp \
            src/ov_msa/overview/MaEditorOverviewArea.cpp \
            src/ov_msa/overview/MaGraphCalculationTask.cpp \
@@ -396,7 +411,6 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/overview/MaOverview.cpp \
            src/ov_msa/overview/MaOverviewContextMenu.cpp \
            src/ov_msa/overview/MaOverviewImageExportTask.cpp \
-           src/ov_msa/overview/MaSangerOverview.cpp \
            src/ov_msa/overview/MaSimpleOverview.cpp \
            src/ov_msa/pairwise_alignment/PairAlign.cpp \
            src/ov_msa/pairwise_alignment/PairAlignFactory.cpp \
@@ -404,22 +418,12 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/phy_tree/MSAEditorTreeManager.cpp \
            src/ov_msa/phy_tree/MSAEditorTreeViewer.cpp \
            src/ov_msa/phy_tree/MsaEditorTreeTabArea.cpp \
-           src/ov_msa/phy_tree_options/TreeOptionsWidget.cpp \
-           src/ov_msa/phy_tree_options/TreeOptionsWidgetFactory.cpp \
-           src/ov_msa/realign_to_alignment/RealignSequencesInAlignmentTask.cpp \
+           src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp \
+           src/ov_msa/phy_tree_tab/TreeOptionsWidgetFactory.cpp \
+           src/ov_msa/ref_seq_widget/RefSeqCommonWidget.cpp \
            src/ov_msa/sort/MsaEditorSortSequencesWidget.cpp \
            src/ov_msa/statistics/SeqStatisticsWidget.cpp \
            src/ov_msa/statistics/SeqStatisticsWidgetFactory.cpp \
-           src/ov_msa/view_rendering/MaConsensusAreaRenderer.cpp \
-           src/ov_msa/view_rendering/MaEditorConsensusArea.cpp \
-           src/ov_msa/view_rendering/MaEditorSelection.cpp \
-           src/ov_msa/view_rendering/MaEditorSequenceArea.cpp \
-           src/ov_msa/view_rendering/MaEditorUtils.cpp \
-           src/ov_msa/view_rendering/MaEditorWgt.cpp \
-           src/ov_msa/view_rendering/McaConsensusAreaRenderer.cpp \
-           src/ov_msa/view_rendering/McaReferenceAreaRenderer.cpp \
-           src/ov_msa/view_rendering/SequenceAreaRenderer.cpp \
-           src/ov_msa/view_rendering/SequenceWithChromatogramAreaRenderer.cpp \
            src/ov_phyltree/CreateCircularBranchesTask.cpp \
            src/ov_phyltree/CreateRectangularBranchesTask.cpp \
            src/ov_phyltree/CreateUnrootedBranchesTask.cpp \

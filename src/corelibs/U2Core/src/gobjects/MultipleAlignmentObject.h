@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -65,13 +65,13 @@ public:
     /** Const getters */
     const DNAAlphabet *getAlphabet() const;
     qint64 getLength() const;
-    qint64 getNumRows() const;
+    qint64 getRowCount() const;
     const QList<MultipleAlignmentRow> &getRows() const;
     const MultipleAlignmentRow getRow(int row) const;
     int getRowPosById(qint64 rowId) const;
     virtual char charAt(int seqNum, qint64 position) const = 0;
 
-    U2MsaListGapModel getGapModel() const;
+    QList<QVector<U2MsaGap>> getGapModel() const;
 
     /**
      * Converts MA indexes into ids.

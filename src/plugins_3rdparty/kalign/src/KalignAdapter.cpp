@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -97,7 +97,7 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
     unsigned int &numseq = ctx->numseq;
     unsigned int &numprofiles = ctx->numprofiles;
 
-    if (ma->getNumRows() < 2) {
+    if (ma->getRowCount() < 2) {
         if (!numseq) {
             k_printf("No sequences found.\n\n");
         } else {
@@ -124,7 +124,7 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
     /* Convert MA to aln                                                    */
     /************************************************************************/
     k_printf("Prepare data");
-    numseq = ma->getNumRows();
+    numseq = ma->getRowCount();
     numprofiles = (numseq << 1) - 1;
     aln = aln_alloc(aln);
     for (quint32 i = 0; i < numseq; i++) {

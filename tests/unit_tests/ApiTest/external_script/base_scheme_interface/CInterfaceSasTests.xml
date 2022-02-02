@@ -19,7 +19,6 @@
     + import_phred_qualities_sas
     + join_sequences_into_alignment_sas
     + local_blast_search_sas
-    + local_blast_plus_search_sas
     + merge_annotations_sas
     + merge_assemblies_with_cuffmerge_sas
     + orf_marker_sas

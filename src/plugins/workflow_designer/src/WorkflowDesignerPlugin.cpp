@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -341,37 +341,39 @@ void WorkflowDesignerService::initSampleActions() {
     ngsControl.requiredPlugins << externalToolsPlugin;
 
     // SPAdes is available only on Linux and Mac.
-#if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN)
-    SampleAction ngsDenovo(ToolsMenu::NGS_DENOVO, ToolsMenu::NGS_MENU, "NGS/from_tools_menu_only/ngs_assembly.uwl", tr("Reads de novo assembly (with SPAdes)..."));
-    ngsDenovo.requiredPlugins << externalToolsPlugin;
-    samples->registerAction(ngsDenovo);
-#endif
+    if (isOsLinux() || isOsUnix()) {
+        SampleAction ngsDenovo(ToolsMenu::NGS_DENOVO, ToolsMenu::NGS_MENU, "NGS/from_tools_menu_only/ngs_assembly.uwl", tr("Reads de novo assembly (with SPAdes)..."));
+        ngsDenovo.requiredPlugins << externalToolsPlugin;
+        samples->registerAction(ngsDenovo);
+    }
+
     SampleAction ngsScaffold(ToolsMenu::NGS_SCAFFOLD, ToolsMenu::NGS_MENU, "Scenarios/length_filter.uwl", tr("Filter short scaffolds..."));
     ngsScaffold.requiredPlugins << externalToolsPlugin;
+
     SampleAction ngsRawDna(ToolsMenu::NGS_RAW_DNA, ToolsMenu::NGS_MENU, "NGS/raw_dna.uwl", tr("Raw DNA-Seq data processing..."));
     ngsRawDna.requiredPlugins << externalToolsPlugin;
+
     SampleAction ngsVariants(ToolsMenu::NGS_CALL_VARIANTS, ToolsMenu::NGS_MENU, "NGS/ngs_variant_calling.uwl", tr("Variant calling..."));
     ngsVariants.requiredPlugins << externalToolsPlugin;
+
     SampleAction ngsEffect(ToolsMenu::NGS_VARIANT_EFFECT, ToolsMenu::NGS_MENU, "NGS/ngs_variant_annotation.uwl", tr("Annotate variants and predict effects..."));
     ngsEffect.requiredPlugins << externalToolsPlugin;
+
     SampleAction ngsRawRna(ToolsMenu::NGS_RAW_RNA, ToolsMenu::NGS_MENU, "NGS/raw_rna.uwl", tr("Raw RNA-Seq data processing..."));
     ngsRawRna.requiredPlugins << externalToolsPlugin;
+
     SampleAction ngsRna(ToolsMenu::NGS_RNA, ToolsMenu::NGS_MENU, "NGS/ngs_transcriptomics_tophat_stringtie.uwl", tr("RNA-Seq data analysis..."));
     ngsRna.requiredPlugins << externalToolsPlugin;
+
     SampleAction ngsTranscript(ToolsMenu::NGS_TRANSCRIPT, ToolsMenu::NGS_MENU, "NGS/extract_transcript_seq.uwl", tr("Extract transcript sequences..."));
     ngsTranscript.requiredPlugins << externalToolsPlugin;
+
     SampleAction ngsRawChip(ToolsMenu::NGS_RAW_CHIP, ToolsMenu::NGS_MENU, "NGS/raw_chip.uwl", tr("Raw ChIP-Seq data processing..."));
     ngsRawChip.requiredPlugins << externalToolsPlugin;
-    SampleAction ngsChip(ToolsMenu::NGS_CHIP, ToolsMenu::NGS_MENU, "NGS/cistrome.uwl", tr("ChIP-Seq data analysis..."));
-    ngsChip.requiredPlugins << externalToolsPlugin;
-    SampleAction ngsClassification(ToolsMenu::NGS_CLASSIFICATION, ToolsMenu::NGS_MENU, "NGS/from_tools_menu_only/ngs_classification.uwl", tr("Metagenomics classification..."));
-    ngsChip.requiredPlugins << externalToolsPlugin << "kraken_support"
-                            << "clark_support"
-                            << "diamond_support"
-                            << "wevote_support"
-                            << "ngs_reads_classification";
+
     SampleAction ngsCoverage(ToolsMenu::NGS_COVERAGE, ToolsMenu::NGS_MENU, "NGS/extract_coverage.uwl", tr("Extract coverage from assemblies..."));
     ngsCoverage.requiredPlugins << externalToolsPlugin;
+
     SampleAction ngsConsensus(ToolsMenu::NGS_CONSENSUS, ToolsMenu::NGS_MENU, "NGS/consensus.uwl", tr("Extract consensus from assemblies..."));
     ngsConsensus.requiredPlugins << externalToolsPlugin;
 
@@ -387,8 +389,6 @@ void WorkflowDesignerService::initSampleActions() {
     samples->registerAction(ngsRna);
     samples->registerAction(ngsTranscript);
     samples->registerAction(ngsRawChip);
-    samples->registerAction(ngsChip);
-    samples->registerAction(ngsClassification);
     samples->registerAction(ngsCoverage);
     samples->registerAction(ngsConsensus);
     samples->registerAction(blastNcbi);

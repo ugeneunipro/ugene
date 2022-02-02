@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSAROWUTILS_H_
-#define _U2_MSAROWUTILS_H_
+#ifndef _U2_MSA_ROW_UTILS_H_
+#define _U2_MSA_ROW_UTILS_H_
 
 #include <U2Core/U2Msa.h>
 #include <U2Core/global.h>
@@ -33,51 +33,45 @@ class U2Region;
 
 class U2CORE_EXPORT MsaRowUtils {
 public:
-    static int getRowLength(const QByteArray &seq, const U2MsaRowGapModel &gaps);
-    static int getGapsLength(const U2MsaRowGapModel &gaps);
-    static char charAt(const QByteArray &seq, const U2MsaRowGapModel &gaps, int pos);
-    static qint64 getRowLengthWithoutTrailing(const QByteArray &seq, const U2MsaRowGapModel &gaps);
-    static qint64 getRowLengthWithoutTrailing(qint64 dataLength, const U2MsaRowGapModel &gaps);
+    static int getRowLength(const QByteArray &seq, const QVector<U2MsaGap> &gaps);
+    static int getGapsLength(const QVector<U2MsaGap> &gaps);
+    static char charAt(const QByteArray &seq, const QVector<U2MsaGap> &gaps, int pos);
+    static qint64 getRowLengthWithoutTrailing(const QByteArray &seq, const QVector<U2MsaGap> &gaps);
+    static qint64 getRowLengthWithoutTrailing(qint64 dataLength, const QVector<U2MsaGap> &gaps);
     /**
      * The method maps `pos` in MSA coordinates to a character position in 'seq', i.e. gaps aren't taken into account.
      * If false == 'allowGapInPos' and the gap symbol is located in 'pos' then the method returns -1.
      * Otherwise if true == 'allowGapInPos' and the gap symbol is located in 'pos' then the method returns
      * the position of a non-gap character left-most to the 'pos'.
      */
-    static qint64 getUngappedPosition(const U2MsaRowGapModel &gaps, qint64 dataLength, qint64 position, bool allowGapInPos = false);
+    static qint64 getUngappedPosition(const QVector<U2MsaGap> &gaps, qint64 dataLength, qint64 position, bool allowGapInPos = false);
     // Only inner gaps, no leading and trailing
-    static U2Region getGappedRegion(const U2MsaRowGapModel &gaps, const U2Region &ungapped);
-    static U2Region getUngappedRegion(const U2MsaRowGapModel &gaps, const U2Region &selection);
-    static int getCoreStart(const U2MsaRowGapModel &gaps);
+    static U2Region getGappedRegion(const QVector<U2MsaGap> &gaps, const U2Region &ungapped);
+    static U2Region getUngappedRegion(const QVector<U2MsaGap> &gaps, const U2Region &selection);
+    static int getCoreStart(const QVector<U2MsaGap> &gaps);
 
-    static void insertGaps(U2OpStatus &os, U2MsaRowGapModel &gaps, int rowLengthWithoutTrailing, int position, int count);
-    static void removeGaps(U2OpStatus &os, U2MsaRowGapModel &gaps, int rowLengthWithoutTrailing, int position, int count);
+    static void insertGaps(U2OpStatus &os, QVector<U2MsaGap> &gaps, int rowLengthWithoutTrailing, int position, int count);
+    static void removeGaps(U2OpStatus &os, QVector<U2MsaGap> &gaps, int rowLengthWithoutTrailing, int position, int count);
 
     /**
      * Add "offset" of gaps to the beginning of the row
      * Warning: it is not verified that the row sequence is not empty.
      */
-    static void addOffsetToGapModel(U2MsaRowGapModel &gapModel, int offset);
-    static void shiftGapModel(U2MsaRowGapModel &gapModel, int shiftSize);
-    static bool isGap(int dataLength, const U2MsaRowGapModel &gapModel, int position);
-    static bool isLeadingOrTrailingGap(int dataLength, const U2MsaRowGapModel &gapModel, int position);
-    static void chopGapModel(U2MsaRowGapModel &gapModel, qint64 maxLength);
-    static void chopGapModel(U2MsaRowGapModel &gapModel, const U2Region &boundRegion);  // gaps will be shifted
-    static QByteArray joinCharsAndGaps(const DNASequence &sequence, const U2MsaRowGapModel &gapModel, int rowLength, bool keepLeadingGaps, bool keepTrailingGaps);
-    static U2MsaRowGapModel insertGapModel(const U2MsaRowGapModel &firstGapModel, const U2MsaRowGapModel &secondGapModel);
-    static void mergeConsecutiveGaps(U2MsaRowGapModel &gapModel);
-    static void getGapModelsDifference(const U2MsaRowGapModel &firstGapModel,
-                                       const U2MsaRowGapModel &secondGapModel,
-                                       U2MsaRowGapModel &commonPart,
-                                       U2MsaRowGapModel &firstDifference,
-                                       U2MsaRowGapModel &secondDifference);
-    static U2MsaRowGapModel mergeGapModels(const U2MsaListGapModel &gapModels);
-    static U2MsaRowGapModel subtitudeGapModel(const U2MsaRowGapModel &minuendGapModel, const U2MsaRowGapModel &subtrahendGapModel);
-    static U2MsaRowGapModel reverseGapModel(const U2MsaRowGapModel &gapModel, qint64 rowLengthWithoutTrailing);  // this method reverses only core gaps. Leading and trailing gaps are not involved to calculations
-    static bool hasLeadingGaps(const U2MsaRowGapModel &gapModel);
-    static void removeTrailingGapsFromModel(qint64 length, U2MsaRowGapModel &gapModel);
+    static void addOffsetToGapModel(QVector<U2MsaGap> &gapModel, int offset);
+    static void shiftGapModel(QVector<U2MsaGap> &gapModel, int shiftSize);
+    static bool isGap(int dataLength, const QVector<U2MsaGap> &gapModel, int position);
+    static bool isLeadingOrTrailingGap(int dataLength, const QVector<U2MsaGap> &gapModel, int position);
+    static void chopGapModel(QVector<U2MsaGap> &gapModel, qint64 maxLength);
+    static void chopGapModel(QVector<U2MsaGap> &gapModel, const U2Region &boundRegion);  // gaps will be shifted
+    static void mergeConsecutiveGaps(QVector<U2MsaGap> &gapModel);
+    static QVector<U2MsaGap> reverseGapModel(const QVector<U2MsaGap> &gapModel, qint64 rowLengthWithoutTrailing);  // this method reverses only core gaps. Leading and trailing gaps are not involved to calculations
+    static bool hasLeadingGaps(const QVector<U2MsaGap> &gapModel);
+    static void removeTrailingGapsFromModel(qint64 length, QVector<U2MsaGap> &gapModel);
+
+    /** Returns part of the gapped subsequence from the specified region. */
+    static QByteArray getGappedSubsequence(const U2Region &region, const QByteArray &sequence, const QVector<U2MsaGap> &gaps);
 };
 
 }  // namespace U2
 
-#endif  // _U2_MSAROWUTILS_H_
+#endif  // _U2_MSA_ROW_UTILS_H_

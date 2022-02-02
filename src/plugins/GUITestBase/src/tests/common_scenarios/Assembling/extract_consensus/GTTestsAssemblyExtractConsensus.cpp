@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -60,12 +60,9 @@ public:
     }
 
     void run(HI::GUITestOpStatus &os) override {
-        QWidget *const dialog = GTWidget::getActiveModalWidget(os);
-
-        // Dialog filling
-        GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "Assembly widget", dialog), inputPaths.join(';'));
-
-        GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "Output file widget", dialog), outFile);
+        QWidget *dialog = GTWidget::getActiveModalWidget(os);
+        GTLineEdit::setText(os, "Assembly widget", inputPaths.join(';'), dialog);
+        GTLineEdit::setText(os, "Output file widget", outFile, dialog);
 
         GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
     }
@@ -81,9 +78,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_single_input) {
     const auto bamScenario =
         new ExtractConsensusWizardScenario(QStringList() << dataDir + "samples/Assembly/chrM.sorted.bam");
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", bamScenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "NGS data analysis"
-                                                << "Extract consensus from assemblies...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
 
     //  4. Wait for workflow finished
     GTUtilsTaskTreeView::waitTaskFinished(os, 120000);
@@ -130,7 +125,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_multiple_input) {
             // Dialog filling
             GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "Assembly widget", dialog), inputPaths.join(';'));
 
-            GTWidget::findButtonByText(os, "Add", dialog)->click();
+            GTWidget::click(os, GTWidget::findButtonByText(os, "Add", dialog));
             GTUtilsDialog::waitForDialog(os,
                                          new GTFileDialogUtils(os, testDir + "_common_data/bam/small.bam.sorted.bam"));
 
@@ -150,9 +145,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_multiple_input) {
                                                                        << dataDir + "samples/Assembly/chrM.sorted.bam");
 
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", multiInputScenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "NGS data analysis"
-                                                << "Extract consensus from assemblies...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
 
     //  5. Wait for workflow finished
     GTUtilsTaskTreeView::waitTaskFinished(os, 180000);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,34 +26,27 @@
 #include <primitives/GTWidget.h>
 
 #include <QApplication>
-#include <QComboBox>
 #include <QDialogButtonBox>
-#include <QLineEdit>
-#include <QPushButton>
 
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::BuildIndexDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void BuildIndexDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    auto dialog = GTWidget::getActiveModalWidget(os);
 
-    QComboBox *methodNamesBox = dialog->findChild<QComboBox *>("methodNamesBox");
+    auto methodNamesBox = GTWidget::findComboBox(os, "methodNamesBox", dialog);
     for (int i = 0; i < methodNamesBox->count(); i++) {
         if (methodNamesBox->itemText(i) == method) {
             GTComboBox::selectItemByIndex(os, methodNamesBox, i);
         }
     }
 
-    GTFileDialogUtils *ob = new GTFileDialogUtils(os, refPath, refFileName);
-    GTUtilsDialog::waitForDialog(os, ob);
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, refPath, refFileName));
     GTWidget::click(os, GTWidget::findWidget(os, "addRefButton", dialog));
 
     if (!useDefaultIndexName) {
-        QLineEdit *indexFileNameEdit = dialog->findChild<QLineEdit *>("indexFileNameEdit");
-        indexFileNameEdit->clear();
-        indexFileNameEdit->setText(indPath + indFileName);
+        GTLineEdit::setText(os, "indexFileNameEdit", indPath + indFileName, dialog);
     }
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

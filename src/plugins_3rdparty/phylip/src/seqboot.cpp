@@ -929,7 +929,7 @@ void writedata( QVector<U2::MultipleSequenceAlignment>& mavect, int rep, const U
         printf("</data>\n   </sequence>\n");
       }
       //putchar('\n');
-      if (j >= mavect[rep]->getNumRows()) {
+      if (j >= mavect[rep]->getRowCount()) {
           mavect[rep]->addRow(ma->getMsaRow(j)->getName(), curAr);
       }
       else {

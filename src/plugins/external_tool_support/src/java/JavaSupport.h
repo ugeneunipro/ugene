@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,26 +31,14 @@ namespace U2 {
 class JavaSupport : public RunnerTool {
     Q_OBJECT
 public:
-    enum Architecture {
-        x32,
-        x64
-    };
     JavaSupport();
-    void extractAdditionalParameters(const QString &output);
-    Architecture getArchitecture() const;
 
     static const QString ET_JAVA_ID;
 
 private:
-    static QString architecture2string(Architecture architecture);
-    static Architecture string2architecture(const QString &string);
-
-    static const QString ARCHITECTURE;
-    static const QString ARCHITECTURE_X32;
-    static const QString ARCHITECTURE_X64;
     static const QStringList RUN_PARAMETERS;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_JAVASUPPORT_H_
+#endif  // _U2_JAVASUPPORT_H_

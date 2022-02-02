@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,9 +31,6 @@ MultipleAlignmentRow::MultipleAlignmentRow(MultipleAlignmentRowData *ma)
     : maRowData(ma) {
 }
 
-MultipleAlignmentRow::~MultipleAlignmentRow() {
-}
-
 MultipleAlignmentRowData *MultipleAlignmentRow::data() const {
     return maRowData.data();
 }
@@ -54,12 +51,12 @@ const MultipleAlignmentRowData *MultipleAlignmentRow::operator->() const {
     return maRowData.data();
 }
 
-MultipleAlignmentRowData::MultipleAlignmentRowData() {
+MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleAlignmentDataType &_type)
+    : type(_type) {
 }
 
-MultipleAlignmentRowData::MultipleAlignmentRowData(const DNASequence &sequence, const QList<U2MsaGap> &gaps)
-    : sequence(sequence),
-      gaps(gaps) {
+MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleAlignmentDataType &_type, const DNASequence &sequence, const QVector<U2MsaGap> &gaps)
+    : type(_type), sequence(sequence), gaps(gaps) {
 }
 
 int MultipleAlignmentRowData::getUngappedPosition(int pos) const {
@@ -72,6 +69,14 @@ DNASequence MultipleAlignmentRowData::getUngappedSequence() const {
 
 U2Region MultipleAlignmentRowData::getGapped(const U2Region &region) {
     return MsaRowUtils::getGappedRegion(gaps, region);
+}
+
+bool MultipleAlignmentRowData::operator==(const MultipleAlignmentRowData &other) const {
+    return isEqual(other);
+}
+
+bool MultipleAlignmentRowData::operator!=(const MultipleAlignmentRowData &other) const {
+    return !isEqual(other);
 }
 
 bool MultipleAlignmentRowData::isTrailingOrLeadingGap(qint64 position) const {
@@ -96,7 +101,7 @@ U2Region MultipleAlignmentRowData::getUngappedRegion(const U2Region &gappedRegio
 }
 
 /* Compares sequences of 2 rows ignoring gaps. */
-bool MultipleAlignmentRowData::isEqualsIgnoreGaps(const MultipleAlignmentRowData *row1, const MultipleAlignmentRowData *row2) {
+bool MultipleAlignmentRowData::isEqualIgnoreGaps(const MultipleAlignmentRowData *row1, const MultipleAlignmentRowData *row2) {
     SAFE_POINT(row1 != nullptr && row2 != nullptr, "One of the rows is nullptr!", false);
     if (row1 == row2) {
         return true;
@@ -105,6 +110,23 @@ bool MultipleAlignmentRowData::isEqualsIgnoreGaps(const MultipleAlignmentRowData
         return false;
     }
     return row1->getUngappedSequence().seq == row2->getUngappedSequence().seq;
+}
+
+bool MultipleAlignmentRowData::isEqualCore(const MultipleAlignmentRowData &other) const {
+    CHECK(sequence.seq == other.sequence.seq, false);
+    CHECK(sequence.length() > 0, true);
+
+    QVector<U2MsaGap> thisGaps = gaps;
+    if (!thisGaps.isEmpty() && charAt(0) == U2Msa::GAP_CHAR) {
+        thisGaps.removeFirst();
+    }
+
+    QVector<U2MsaGap> otherGaps = other.getGaps();
+    if (!otherGaps.isEmpty() && other.charAt(0) == U2Msa::GAP_CHAR) {
+        otherGaps.removeFirst();
+    }
+
+    return thisGaps == otherGaps;
 }
 
 QByteArray MultipleAlignmentRowData::getSequenceWithGaps(bool keepLeadingGaps, bool keepTrailingGaps) const {
@@ -117,13 +139,13 @@ QByteArray MultipleAlignmentRowData::getSequenceWithGaps(bool keepLeadingGaps, b
 
     for (int i = 0; i < gaps.size(); ++i) {
         QByteArray gapsBytes;
-        if (!keepLeadingGaps && (0 == gaps[i].offset)) {
-            beginningOffset = gaps[i].gap;
+        if (!keepLeadingGaps && (0 == gaps[i].startPos)) {
+            beginningOffset = gaps[i].length;
             continue;
         }
 
-        gapsBytes.fill(U2Msa::GAP_CHAR, gaps[i].gap);
-        bytes.insert(gaps[i].offset - beginningOffset, gapsBytes);
+        gapsBytes.fill(U2Msa::GAP_CHAR, gaps[i].length);
+        bytes.insert(gaps[i].startPos - beginningOffset, gapsBytes);
     }
     MultipleAlignmentData *alignment = getMultipleAlignmentData();
     SAFE_POINT(alignment != nullptr, "Parent MAlignment is NULL", QByteArray());
@@ -134,6 +156,10 @@ QByteArray MultipleAlignmentRowData::getSequenceWithGaps(bool keepLeadingGaps, b
     }
 
     return bytes;
+}
+
+bool MultipleAlignmentRowData::isComplemented() const {
+    return false;
 }
 
 }  // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -122,7 +122,7 @@ void GTest_CreateSubalignimentTask::prepare() {
     maobj = (MultipleSequenceAlignmentObject *)list.first();
 
     QMap<QString, qint64> rowIdByRowName;
-    for (int i = 0; i < maobj->getNumRows(); i++) {
+    for (int i = 0; i < maobj->getRowCount(); i++) {
         const MultipleAlignmentRow &row = maobj->getRow(i);
         rowIdByRowName.insert(row->getName(), row->getRowId());
     }

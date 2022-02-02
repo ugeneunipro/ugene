@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,13 +30,12 @@
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/FileAndDirectoryUtils.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
-
-#include <U2Gui/DialogUtils.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/AttributeRelation.h>
@@ -94,7 +93,7 @@ const QString COVERAGE_REF_OUTPUT("covered-transcripts-output");
 const QString COVERAGE_REF_OUTPUT_FILE("covered-transcripts-output-url");
 const QString BALLGOWN_OUTPUT("ballgown-output");
 const QString BALLGOWN_OUTPUT_FOLDER("ballgown-output-url");
-}    // namespace
+}  // namespace
 
 const QString StringTieWorkerFactory::ACTOR_ID("stringtie");
 
@@ -526,11 +525,11 @@ void StringTieWorkerFactory::init() {
 
     DelegateTags outputUrlTags;
     outputUrlTags.set(DelegateTags::PLACEHOLDER_TEXT, "Auto");
-    outputUrlTags.set(DelegateTags::FILTER, DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::PLAIN_TEXT, true, QStringList()));
+    outputUrlTags.set(DelegateTags::FILTER, FileFilters::createFileFilterByDocumentFormatId(BaseDocumentFormats::PLAIN_TEXT));
     outputUrlTags.set(DelegateTags::FORMAT, BaseDocumentFormats::PLAIN_TEXT);
     delegates[PRIMARY_OUTPUT] = new URLDelegate(outputUrlTags, "stringtie/primary-output");
     delegates[GENE_ABUDANCE_OUTPUT] = new ComboBoxWithBoolsDelegate();
-    delegates[GENE_ABUDANCE_OUTPUT_FILE] = new URLDelegate(outputUrlTags, "stringtie/gene-abidance-output");
+    delegates[GENE_ABUDANCE_OUTPUT_FILE] = new URLDelegate(outputUrlTags, "stringtie/gene-abundance-output");
 
     delegates[COVERAGE_REF_OUTPUT] = new ComboBoxWithBoolsDelegate();
     delegates[COVERAGE_REF_OUTPUT_FILE] = new URLDelegate(outputUrlTags, "stringtie/coverage-output");
@@ -562,5 +561,5 @@ Worker *StringTieWorkerFactory::createWorker(Actor *a) {
     return new StringTieWorker(a);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,6 +37,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNATranslation.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MultipleSequenceAlignment.h>
@@ -56,7 +57,6 @@
 
 #include <U2Formats/FastaFormat.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/Notification.h>
@@ -70,10 +70,10 @@
 #include "ExportSequencesTask.h"
 #include "MSAEditor.h"
 #include "MaEditorNameList.h"
+#include "MaEditorSelection.h"
+#include "ScrollController.h"
+#include "SequenceAreaRenderer.h"
 #include "clipboard/SubalignmentToClipboardTask.h"
-#include "helpers/ScrollController.h"
-#include "view_rendering/MaEditorSelection.h"
-#include "view_rendering/SequenceAreaRenderer.h"
 
 namespace U2 {
 
@@ -195,8 +195,8 @@ void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo &modInf
 void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView *v, QToolBar *t) {
     Q_UNUSED(v);
 
-    t->addAction(ui->getUndoAction());
-    t->addAction(ui->getRedoAction());
+    t->addAction(editor->undoAction);
+    t->addAction(editor->redoAction);
     t->addAction(removeAllGapsAction);
     t->addSeparator();
 
@@ -314,7 +314,7 @@ void MSAEditorSequenceArea::sl_updateActions() {
 }
 
 void MSAEditorSequenceArea::sl_delCol() {
-    QObjectScopedPointer<DeleteGapsDialog> dlg = new DeleteGapsDialog(this, editor->getMaObject()->getNumRows());
+    QObjectScopedPointer<DeleteGapsDialog> dlg = new DeleteGapsDialog(this, editor->getMaObject()->getRowCount());
     dlg->exec();
     CHECK(!dlg.isNull(), );
 
@@ -336,7 +336,7 @@ void MSAEditorSequenceArea::sl_delCol() {
                 gapCount = value;
                 break;
             case DeleteByRelativeVal: {
-                int absoluteValue = qRound((msaObj->getNumRows() * value) / 100.0);
+                int absoluteValue = qRound((msaObj->getRowCount() * value) / 100.0);
                 if (absoluteValue < 1) {
                     absoluteValue = 1;
                 }
@@ -344,7 +344,7 @@ void MSAEditorSequenceArea::sl_delCol() {
                 break;
             }
             case DeleteAll:
-                gapCount = msaObj->getNumRows();
+                gapCount = msaObj->getRowCount();
                 break;
             default:
                 FAIL("Unknown delete mode", );
@@ -403,9 +403,9 @@ void MSAEditorSequenceArea::sl_removeAllGaps() {
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
 
-    QMap<qint64, QList<U2MsaGap>> noGapModel;
+    QMap<qint64, QVector<U2MsaGap>> noGapModel;
     foreach (qint64 rowId, msa->getMultipleAlignment()->getRowsIds()) {
-        noGapModel[rowId] = QList<U2MsaGap>();
+        noGapModel[rowId] = QVector<U2MsaGap>();
     }
 
     msa->updateGapModel(os, noGapModel);
@@ -422,7 +422,7 @@ void MSAEditorSequenceArea::sl_removeAllGaps() {
 
 void MSAEditorSequenceArea::sl_createSubalignment() {
     MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
-    QList<int> maRowIndexes = getSelectedMaRowIndexes();
+    QList<int> maRowIndexes = editor->getSelectionController()->getSelectedMaRowIndexes();
     const MultipleAlignment &alignment = msaObject->getMultipleAlignment();
     QList<qint64> maRowIds = maRowIndexes.isEmpty() ? alignment->getRowsIds() : alignment->getRowIdsByRowIndexes(maRowIndexes);
     const MaEditorSelection &selection = editor->getSelection();
@@ -609,27 +609,22 @@ void MSAEditorSequenceArea::sl_cutSelection() {
 
 void MSAEditorSequenceArea::sl_addSeqFromFile() {
     MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
-    if (msaObject->isStateLocked()) {
-        return;
-    }
+    CHECK(!msaObject->isStateLocked(), );
 
-    QString filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
+    QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::SEQUENCE});
 
     LastUsedDirHelper lod;
-    QStringList urls;
-#ifdef Q_OS_DARWIN
-    if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
-        urls = U2FileDialog::getOpenFileNames(this, tr("Open file with sequences"), lod.dir, filter, 0, QFileDialog::DontUseNativeDialog);
-    } else
-#endif
-        urls = U2FileDialog::getOpenFileNames(this, tr("Open file with sequences"), lod.dir, filter);
+    QStringList urls = U2FileDialog::getOpenFileNames(this, tr("Open file with sequences"), lod.dir, filter);
 
     if (!urls.isEmpty()) {
         lod.url = urls.first();
-        editor->getSelectionController()->clearSelection();
+        int insertMaRowIndex = editor->getNumSequences();
         const MaEditorSelection &selection = editor->getSelection();
-        int insertViewRowIndex = selection.isEmpty() ? -1 : selection.getRectList().last().bottom() + 1;
-        int insertMaRowIndex = editor->getCollapseModel()->getMaRowIndexByViewRowIndex(insertViewRowIndex);
+        if (!selection.isEmpty()) {
+            // Insert after the last selected row.
+            int lastSelectedViewRowIndex = selection.getRectList().last().bottom();
+            insertMaRowIndex = editor->getCollapseModel()->getMaRowIndexByViewRowIndex(lastSelectedViewRowIndex + 1);
+        }
         auto task = new AddSequencesFromFilesToAlignmentTask(msaObject, urls, insertMaRowIndex);
         TaskWatchdog::trackResourceExistence(msaObject, task, tr("A problem occurred during adding sequences. The multiple alignment is no more available."));
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
@@ -710,11 +705,11 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType &type
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
 
-    QList<int> selectedMaRows = getSelectedMaRowIndexes();
+    QList<int> selectedMaRowIndexes = editor->getSelectionController()->getSelectedMaRowIndexes();
 
     QList<qint64> modifiedRowIds;
-    for (int i = 0; i < selectedMaRows.size(); i++) {
-        int maRowIndex = selectedMaRows[i];
+    for (int i = 0; i < selectedMaRowIndexes.size(); i++) {
+        int maRowIndex = selectedMaRowIndexes[i];
         MultipleSequenceAlignmentRow currentRow = ma->getMsaRow(maRowIndex);
         QByteArray currentRowContent = currentRow->toByteArray(os, ma->getLength());
         switch (type.getType()) {
@@ -758,7 +753,7 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType &type
 
         // Split the sequence into gaps and chars
         QByteArray seqBytes;
-        QList<U2MsaGap> gapModel;
+        QVector<U2MsaGap> gapModel;
         MaDbiUtils::splitBytesToCharsAndGaps(currentRowContent, seqBytes, gapModel);
 
         maObj->updateRow(os, maRowIndex, name, seqBytes, gapModel);
@@ -896,7 +891,7 @@ QString ExportHighlightingTask::generateExportHighlightingReport() const {
         rowStr.append(QString("%1").arg(posInResult));
         rowStr.append(QString("\t") + QString(msa->charAt(refSeq, pos)) + QString("\t"));
         bool informative = false;
-        for (int seq = 0; seq < msa->getNumRows(); seq++) {  // FIXME possible problems when sequences have moved in view
+        for (int seq = 0; seq < msa->getRowCount(); seq++) {  // FIXME possible problems when sequences have moved in view
             if (seq == refSeq)
                 continue;
             char c = msa->charAt(seq, pos);

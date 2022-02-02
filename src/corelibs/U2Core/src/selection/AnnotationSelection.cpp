@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -100,21 +100,33 @@ void AnnotationSelection::remove(Annotation *a) {
     }
 }
 
-void AnnotationSelection::getSequenceInRegions(QByteArray &res, const QVector<U2Region> &regions, char gapSym, const U2EntityRef &seqRef, const DNATranslation *complTT, const DNATranslation *aminoTT, U2OpStatus &os) {
-    QList<QByteArray> parts = U2SequenceUtils::extractRegions(seqRef, regions, complTT, aminoTT, false, os);
-    CHECK_OP(os, )
-    qint64 resLen = res.length();
+QByteArray AnnotationSelection::getSequenceUnderAnnotation(const U2EntityRef &sequenceObjectRef,
+                                                           const Annotation *annotation,
+                                                           const DNATranslation *complTT,
+                                                           const DNATranslation *aminoTT,
+                                                           U2OpStatus &os) {
+    bool isJoin = annotation->isJoin() || annotation->isBond();
+    QList<QByteArray> parts = U2SequenceUtils::extractRegions(sequenceObjectRef, annotation->getRegions(), complTT, aminoTT, isJoin, os);
+    CHECK_OP(os, {});
+    CHECK(!parts.isEmpty(), {});
+    SAFE_POINT(!isJoin || parts.size() == 1, L10N::internalError("Joined annotation should result into a single sequence."), {});
+    CHECK(parts.size() != 1, parts[0]);
+
+    quint64 resultBufferLength = parts.size() - 1;
     for (const QByteArray &part : qAsConst(parts)) {
-        resLen += part.length();
+        resultBufferLength += part.length();
     }
-    resLen += parts.size() - 1;  // gaps between parts.
-    res.reserve(resLen);
-    for (int i = 0; i < parts.size(); i++) {
-        if (i > 0) {
-            res.append(gapSym);
-        }
-        res.append(parts[i]);
+    CHECK_EXT(resultBufferLength < INT_MAX, os.setError(tr("Sequence is too long.")), {});
+
+    QByteArray result;
+    result.reserve((int)resultBufferLength);
+    CHECK_EXT(result.capacity() == (int)resultBufferLength, os.setError(tr("Can't reserve enough space for the result sequence.")), {});
+    result.append(parts[0]);
+    for (int i = 1; i < parts.size(); i++) {
+        result.append('-');
+        result.append(parts[i]);
     }
+    return result;
 }
 
 bool AnnotationSelection::contains(Annotation *a) const {

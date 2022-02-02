@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -54,7 +54,16 @@ public:
                        Genbank };
     enum MergeOptions { SaveAsSeparate,
                         Merge };
-    ExportSequenceOfSelectedAnnotationsFiller(HI::GUITestOpStatus &_os, const QString &_path, FormatToUse _format, MergeOptions _options, int _gapLength = 0, bool _addDocToProject = true, bool _exportWithAnnotations = false, GTGlobals::UseMethod method = GTGlobals::UseMouse);
+
+    ExportSequenceOfSelectedAnnotationsFiller(HI::GUITestOpStatus &_os,
+                                              const QString &_path,
+                                              FormatToUse _format,
+                                              MergeOptions _options,
+                                              int _gapLength = 0,
+                                              bool _addDocToProject = true,
+                                              bool _exportWithAnnotations = false,
+                                              GTGlobals::UseMethod method = GTGlobals::UseMouse,
+                                              bool translate = false);
     void commonScenario();
 
 private:
@@ -65,6 +74,7 @@ private:
     bool exportWithAnnotations;
     MergeOptions options;
     GTGlobals::UseMethod useMethod;
+    bool translate = false;
     QMap<FormatToUse, QString> comboBoxItems;
     QMap<MergeOptions, QString> mergeRadioButtons;
 };

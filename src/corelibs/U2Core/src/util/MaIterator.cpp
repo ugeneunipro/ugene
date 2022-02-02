@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,7 +38,7 @@ MaIterator::MaIterator(const MultipleAlignment &ma, NavigationDirection directio
       position(-1),
       maSquare(static_cast<qint64>(ma->getLength()) * rowsIndexes.size()) {
     if (rowsIndexes.isEmpty()) {
-        for (int index = 0; index < ma->getNumRows(); index++) {
+        for (int index = 0; index < ma->getRowCount(); index++) {
             rowsIndexes << index;
         }
         maSquare = static_cast<qint64>(ma->getLength()) * rowsIndexes.size();
@@ -66,7 +66,7 @@ char MaIterator::operator*() {
     SAFE_POINT(isInRange(position), "Out of boundaries", U2Msa::INVALID_CHAR);
     const QPoint maPoint = getMaPoint();
     SAFE_POINT(0 <= maPoint.x() && maPoint.x() < ma->getLength() &&
-                   0 <= maPoint.y() && maPoint.y() < ma->getNumRows(),
+                   0 <= maPoint.y() && maPoint.y() < ma->getRowCount(),
                "Out of boundaries",
                U2Msa::INVALID_CHAR);
     return ma->charAt(maPoint.y(), maPoint.x());

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -57,7 +57,7 @@ public:
         SortByLeadingGap = 3,
     };
 
-    virtual ~MultipleAlignment();
+    virtual ~MultipleAlignment() = default;
 
     MultipleAlignmentData *data() const;
     template<class Derived>
@@ -90,12 +90,13 @@ protected:
      * Creates a new alignment.
      * The name must be provided if this is not default alignment.
      */
-    MultipleAlignmentData(const QString &name = QString(),
+    MultipleAlignmentData(const MultipleAlignmentDataType &type,
+                          const QString &name = QString(),
                           const DNAAlphabet *alphabet = nullptr,
                           const QList<MultipleAlignmentRow> &rows = QList<MultipleAlignmentRow>());
 
 public:
-    virtual ~MultipleAlignmentData();
+    virtual ~MultipleAlignmentData() = default;
 
     /**
      * Clears the alignment. Makes alignment length == 0.
@@ -134,9 +135,9 @@ public:
     void setLength(int length);
 
     /** Returns the number of rows in the alignment */
-    int getNumRows() const;
+    int getRowCount() const;
 
-    U2MsaListGapModel getGapModel() const;
+    QList<QVector<U2MsaGap>> getGapModel() const;
 
     /** Sorts rows. If range is provided and is not empty sorts only given range. */
     void sortRows(MultipleAlignment::SortType type, MultipleAlignment::Order order = MultipleAlignment::Ascending, const U2Region &range = U2Region());
@@ -195,9 +196,15 @@ public:
     void moveRowsBlock(int startRow, int numRows, int delta);
 
     /**
-     * Compares two alignments: lengths, alphabets, rows and infos (that include names).
+     * Returns true if 2 alignments have the same alphabets, dimensions and the same ordered list of rows.
+     * To compare rows the method calls row.isEqual(otherRow) method.
      */
-    bool operator==(const MultipleAlignmentData &ma) const;
+    bool isEqual(const MultipleAlignmentData &other) const;
+
+    /** Calls isEqual() method. */
+    bool operator==(const MultipleAlignmentData &other) const;
+
+    /** Returns !isEqual() method result. */
     bool operator!=(const MultipleAlignmentData &ma) const;
 
     /** Checks model consistency */
@@ -214,14 +221,16 @@ protected:
     /** Helper-method for adding a row to the alignment */
     void addRowPrivate(const MultipleAlignmentRow &row, qint64 rowLenWithTrailingGaps, int rowIndex);
 
+    const MultipleAlignmentDataType type;
+
     /** Alphabet for all sequences in the alignment */
-    const DNAAlphabet *alphabet;
+    const DNAAlphabet *alphabet = nullptr;
 
     /** Alignment rows (each row = sequence + gap model) */
     QList<MultipleAlignmentRow> rows;
 
     /** The length of the longest row in the alignment */
-    qint64 length;
+    qint64 length = 0;
 
     /** Additional alignment info */
     QVariantMap info;

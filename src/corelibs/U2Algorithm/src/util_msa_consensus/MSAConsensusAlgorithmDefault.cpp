@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,7 +56,7 @@ char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleAlignm
     // TODO: use var-length array!
     QVector<QPair<int, char>> freqs(32);
     int ch = U2Msa::GAP_CHAR;
-    int nSeq = seqIdx.isEmpty() ? msa->getNumRows() : seqIdx.size();
+    int nSeq = seqIdx.isEmpty() ? msa->getRowCount() : seqIdx.size();
     for (int seq = 0; seq < nSeq; seq++) {
         uchar c = (uchar)msa->charAt(seqIdx.isEmpty() ? seq : seqIdx[seq],
                                      pos);

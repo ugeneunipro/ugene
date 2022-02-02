@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -114,42 +114,23 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
 #endif
 
     if (AppContext::getProject() != nullptr) {
-#ifdef Q_OS_DARWIN
         GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
         GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
-        GTGlobals::sleep(100);
-
-        GTUtilsDialog::waitForDialog(os, new AnyDialogFiller(os, nullptr, QDialogButtonBox::No));
-        // Need to close second dialog on Mac
-        GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new AnyDialogFiller(os, nullptr, QDialogButtonBox::No));
-
-        GTKeyboardDriver::keyClick(Qt::Key_Delete);
-        GTGlobals::sleep(500);
-        GTUtilsTaskTreeView::waitTaskFinished(os, 100000);
-        GTGlobals::sleep(2000);
-
-        GTUtilsDialog::waitForDialog(os, new AppCloseMessageBoxDialogFiller(os));
-        GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                    << "Close project");
-        GTGlobals::sleep(500);
-        GTUtilsTaskTreeView::waitTaskFinished(os, 10000);
-        GTGlobals::sleep(2000);
-
-        GTUtilsDialog::cleanup(os, GTUtilsDialog::NoFailOnUnfinished);
-#else
-        GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
-        GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
-        GTGlobals::sleep(100);
 
         GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
         GTUtilsDialog::waitForDialog(os, new AppCloseMessageBoxDialogFiller(os));
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
-        GTGlobals::sleep(500);
-        GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
-        GTGlobals::sleep(500);
 
+        if (isOsMac()) {
+            GTMenu::clickMainMenuItem(os, {"File", "Close project"});
+        } else {
+            if (isOsWindows()) {
+                GTGlobals::sleep(500);
+            }
+            GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
+        }
+        GTUtilsTaskTreeView::waitTaskFinished(os, 3000);
         GTUtilsDialog::cleanup(os, GTUtilsDialog::NoFailOnUnfinished);
-#endif
     }
 
 #ifdef Q_OS_DARWIN

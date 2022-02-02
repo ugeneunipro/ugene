@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,10 +27,11 @@
 #include "MSAEditorConsensusArea.h"
 #include "MSAEditorOverviewArea.h"
 #include "MSAEditorSequenceArea.h"
+#include "MaEditorSplitters.h"
 #include "MsaEditorNameList.h"
 #include "MsaEditorSimilarityColumn.h"
 #include "MsaEditorStatusBar.h"
-#include "helpers/MsaRowHeightController.h"
+#include "MsaRowHeightController.h"
 #include "phy_tree/MSAEditorMultiTreeViewer.h"
 
 namespace U2 {
@@ -54,7 +55,6 @@ MSAEditorSequenceArea *MsaEditorWgt::getSequenceArea() const {
 
 void MsaEditorWgt::sl_onTabsCountChanged(int curTabsNumber) {
     if (curTabsNumber < 1) {
-        maSplitter.removeWidget(multiTreeViewer);
         delete multiTreeViewer;
         multiTreeViewer = nullptr;
         emit si_hideTreeOP();
@@ -66,13 +66,13 @@ void MsaEditorWgt::createDistanceColumn(MSADistanceMatrix *matrix) {
     dataList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
     MsaEditorAlignmentDependentWidget *statisticsWidget = new MsaEditorAlignmentDependentWidget(dataList);
 
-    maSplitter.addWidget(nameAreaContainer, statisticsWidget, 0.04, 1);
+    MaSplitterUtils::insertWidgetWithScale(nameAndSequenceAreasSplitter, statisticsWidget, 0.04, nameAreaContainer, 1);
 }
 
 void MsaEditorWgt::addTreeView(GObjectViewWindow *treeView) {
-    if (nullptr == multiTreeViewer) {
+    if (multiTreeViewer == nullptr) {
         multiTreeViewer = new MSAEditorMultiTreeViewer(tr("Tree view"), getEditor());
-        maSplitter.addWidget(nameAreaContainer, multiTreeViewer, 0.35);
+        MaSplitterUtils::insertWidgetWithScale(nameAndSequenceAreasSplitter, multiTreeViewer, 0.41, nameAreaContainer);  // Tree will occupy 41% of the current view.
         multiTreeViewer->addTreeView(treeView);
         emit si_showTreeOP();
         connect(multiTreeViewer, SIGNAL(si_tabsCountChanged(int)), SLOT(sl_onTabsCountChanged(int)));
@@ -100,7 +100,7 @@ void MsaEditorWgt::showSimilarity() {
         dataList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
         similarityStatistics = new MsaEditorAlignmentDependentWidget(dataList);
 
-        maSplitter.addWidget(nameAreaContainer, similarityStatistics, 0.04, 1);
+        MaSplitterUtils::insertWidgetWithScale(nameAndSequenceAreasSplitter, similarityStatistics, 0.04, nameAreaContainer, 1);
     } else {
         similarityStatistics->show();
     }

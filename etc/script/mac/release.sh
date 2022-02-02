@@ -25,9 +25,9 @@ SIGN_IDENTITY="Developer ID Application: Alteametasoft"
 
 rm -rf "${SYMBOLS_DIR}"
 rm -rf "${SYMBOLS_LOG}"
-rm -rf *.tar.gz
-rm -rf *.dmg
-rm -rf *.zip
+rm -rf ./*.tar.gz
+rm -rf ./*.dmg
+rm -rf ./*.zip
 
 mkdir "${SYMBOLS_DIR}"
 
@@ -48,28 +48,15 @@ rm -rf "${APP_EXE_DIR}/plugins/"*GUITestBase*
 rm -rf "${APP_EXE_DIR}/plugins/"*api_tests*
 rm -rf "${APP_EXE_DIR}/plugins/"*perf_monitor*
 rm -rf "${APP_EXE_DIR}/plugins/"*test_runner*
+
 # Copy UGENE files & tools into 'bundle' dir.
 rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_EXE_DIR}" || {
   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to copy tools dir']"
 }
 
 # These tools can't be notarized today:
-# diamond:  "The binary uses an SDK older than the 10.9 SDK."
-rm -rf "${APP_EXE_DIR}/tools/diamond"
-# java8: "The executable does not have the hardened runtime enabled."
-rm -rf "${APP_EXE_DIR}/tools/java8"
-# kraken:  "The binary uses an SDK older than the 10.9 SDK."
-rm -rf "${APP_EXE_DIR}/tools/kraken"
 # python2.7: "The signature does not include a secure timestamp."
 rm -rf "${APP_EXE_DIR}/tools/python2"
-# stringtie:  "The binary uses an SDK older than the 10.9 SDK."
-rm -rf "${APP_EXE_DIR}/tools/stringtie"
-# tcoffee:  "The signature does not include a secure timestamp."
-rm -rf "${APP_EXE_DIR}/tools/tcoffee"
-# tophat2: "The binary uses an SDK older than the 10.9 SDK."
-rm -rf "${APP_EXE_DIR}/tools/tophat2"
-# wevote: "The binary uses an SDK older than the 10.9 SDK."
-rm -rf "${APP_EXE_DIR}/tools/wevote"
 
 echo " ##teamcity[blockClosed name='Copy files']"
 
@@ -125,13 +112,30 @@ echo "------------------ codesign:"
 codesign -dv --verbose=4 "${APP_DIR}"
 echo "------------------- pkgutil:"
 pkgutil --check-signature "${APP_DIR}"
+if pkgutil --check-signature "${APP_DIR}" | grep -q 'package is invalid'; then
+  echo "Sign failed"
+  exit 1
+fi
 echo " ##teamcity[blockClosed name='Check sign']"
 
 echo "##teamcity[blockOpened name='Pack']"
-cd ${APP_BUNDLE_DIR_NAME} || exit 1
-RELEASE_FILE_NAME=ugene-"${VERSION}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-b${TEAMCITY_UGENE_BUILD_COUNTER}-mac-${ARCHITECTURE_FILE_SUFFIX}.zip"
-ditto -c -k --sequesterRsrc --keepParent "${APP_NAME}" ../"${RELEASE_FILE_NAME}"
-cd "${TEAMCITY_WORK_DIR}" || exit 1
+# ZIP bundle variant.
+#cd ${APP_BUNDLE_DIR_NAME} || exit 1
+#RELEASE_FILE_NAME=ugene-"${VERSION}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-b${TEAMCITY_UGENE_BUILD_COUNTER}-mac-${ARCHITECTURE_FILE_SUFFIX}.zip"
+#ditto -c -k --sequesterRsrc --keepParent "${APP_NAME}" ../"${RELEASE_FILE_NAME}"
+#cd "${TEAMCITY_WORK_DIR}" || exit 1
+
+# DMG bundle variant.
+RELEASE_FILE_NAME=ugene-"${VERSION}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-b${TEAMCITY_UGENE_BUILD_COUNTER}-mac-${ARCHITECTURE_FILE_SUFFIX}.dmg"
+cd ./ugene_app || exit 1
+ln -s /Applications Applications
+cd .. || exit 1
+hdiutil create ugene-rw.dmg -ov -volname "Unipro UGENE ${VERSION}" -fs HFS+ -srcfolder "ugene_app"
+hdiutil convert ugene-rw.dmg -format UDZO -o "${RELEASE_FILE_NAME}"
+codesign --verbose=4 --sign "${SIGN_IDENTITY}" --timestamp --options runtime --strict \
+  --entitlements "${SCRIPTS_DIR}/dmg/Entitlements.plist" \
+  "${RELEASE_FILE_NAME}" || exit 1
+
 echo " ##teamcity[blockClosed name='Pack']"
 
 echo "##teamcity[blockOpened name='Notarize']"

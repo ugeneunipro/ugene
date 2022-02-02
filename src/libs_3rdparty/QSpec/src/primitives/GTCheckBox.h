@@ -33,14 +33,14 @@ namespace HI {
 class HI_EXPORT GTCheckBox {
 public:
     static void setChecked(GUITestOpStatus &os, QCheckBox *checkBox, bool checked = true);
-    static void setChecked(GUITestOpStatus &os, const QString &checkBoxName, bool checked = true, QWidget const *const parent = NULL);
-    static void setChecked(GUITestOpStatus &os, const QString &checkBoxName, QWidget const *const parent = NULL);
+    static void setChecked(GUITestOpStatus &os, const QString &checkBoxName, bool checked = true, QWidget *parent = nullptr);
+    static void setChecked(GUITestOpStatus &os, const QString &checkBoxName, QWidget *parent = nullptr);
 
-    static bool getState(GUITestOpStatus &os, QCheckBox const *const checkBox);
-    static bool getState(GUITestOpStatus &os, const QString &checkBoxName, QWidget *const parent = NULL);
+    static bool getState(GUITestOpStatus &os, QCheckBox *checkBox);
+    static bool getState(GUITestOpStatus &os, const QString &checkBoxName, QWidget *parent = nullptr);
 
-    static void checkState(GUITestOpStatus &os, QCheckBox const *const checkBox, const bool expectedState);
-    static void checkState(GUITestOpStatus &os, const QString &checkBoxName, bool expectedState, QWidget const *const parent = NULL);
+    static void checkState(GUITestOpStatus &os, QCheckBox *checkBox, bool expectedState);
+    static void checkState(GUITestOpStatus &os, const QString &checkBoxName, bool expectedState, QWidget *parent = nullptr);
 };
 
 }  // namespace HI

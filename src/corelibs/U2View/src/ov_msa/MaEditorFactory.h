@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #define _U2_MA_EDITOR_FACTORY_H_
 
 #include <U2Core/GObjectTypes.h>
+#include <U2Core/U2OpStatus.h>
 
 #include <U2Gui/ObjectViewModel.h>
 
@@ -51,7 +52,7 @@ public:
 
     virtual bool supportsSavedStates() const;
 
-    virtual MaEditor *getEditor(const QString &viewName, GObject *obj) = 0;
+    virtual MaEditor *getEditor(const QString &viewName, GObject *obj, U2OpStatus &os) = 0;
 
 protected:
     virtual OpenMaEditorTask *getOpenMaEditorTask(MultipleAlignmentObject *obj) = 0;
@@ -69,7 +70,7 @@ class U2VIEW_EXPORT MsaEditorFactory : public MaEditorFactory {
 public:
     MsaEditorFactory();
 
-    MaEditor *getEditor(const QString &viewName, GObject *obj);
+    MaEditor *getEditor(const QString &viewName, GObject *obj, U2OpStatus& os) override;
 
     static const GObjectViewFactoryId ID;
 
@@ -93,7 +94,7 @@ class U2VIEW_EXPORT McaEditorFactory : public MaEditorFactory {
 public:
     McaEditorFactory();
 
-    MaEditor *getEditor(const QString &viewName, GObject *obj);
+    MaEditor *getEditor(const QString &viewName, GObject *obj, U2OpStatus& os) override;
 
     static const GObjectViewFactoryId ID;
 

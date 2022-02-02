@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,12 +21,11 @@
 
 #include "ProjectTreeItemSelectorDialogFiller.h"
 #include <drivers/GTKeyboardDriver.h>
-#include <drivers/GTMouseDriver.h>
+#include <primitives/GTTreeView.h>
 #include <primitives/GTWidget.h>
 
 #include <QApplication>
 #include <QDialogButtonBox>
-#include <QPushButton>
 #include <QTreeWidget>
 
 #include <U2Core/U2IdTypes.h>
@@ -40,7 +39,7 @@ using namespace HI;
 
 ProjectTreeItemSelectorDialogFiller::ProjectTreeItemSelectorDialogFiller(HI::GUITestOpStatus &os, const QString &documentName, const QString &objectName, const QSet<GObjectType> &acceptableTypes, SelectionMode mode, int expectedDocCount)
     : Filler(os, "ProjectTreeItemSelectorDialogBase"), acceptableTypes(acceptableTypes), mode(mode), expectedDocCount(expectedDocCount) {
-    itemsToSelect.insert(documentName, QStringList() << objectName);
+    itemsToSelect.insert(documentName, {objectName});
 }
 
 ProjectTreeItemSelectorDialogFiller::ProjectTreeItemSelectorDialogFiller(HI::GUITestOpStatus &os, const QMap<QString, QStringList> &itemsToSelect, const QSet<GObjectType> &acceptableTypes, SelectionMode mode, int expectedDocCount)
@@ -54,66 +53,47 @@ ProjectTreeItemSelectorDialogFiller::ProjectTreeItemSelectorDialogFiller(HI::GUI
       expectedDocCount(0) {
 }
 
-namespace {
-
-bool checkTreeRowCount(QTreeView *tree, int expectedDocCount) {
+static bool checkTreeRowCount(QTreeView *tree, int expectedDocCount) {
     int visibleItemCount = 0;
     for (int i = 0; i < tree->model()->rowCount(); ++i) {
-        if (Qt::NoItemFlags != tree->model()->flags(tree->model()->index(i, 0))) {
-            ++visibleItemCount;
+        Qt::ItemFlags itemFlags = tree->model()->flags(tree->model()->index(i, 0));
+        if (itemFlags != Qt::NoItemFlags) {
+            visibleItemCount++;
         }
     }
     return visibleItemCount == expectedDocCount;
 }
 
-}  // namespace
-
 #define GT_METHOD_NAME "commonScenario"
 void ProjectTreeItemSelectorDialogFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
-    QTreeView *treeView = GTWidget::findWidgetByType<QTreeView *>(os, dialog, "No tree widget found in dialog");
-    if (expectedDocCount != -1) {
-        CHECK_SET_ERR(checkTreeRowCount(treeView, expectedDocCount), "Unexpected document count");
-    }
+    auto dialog = GTWidget::getActiveModalWidget(os);
+    auto treeView = GTWidget::findTreeView(os, "treeView", dialog);
+    CHECK_SET_ERR(expectedDocCount == -1 || checkTreeRowCount(treeView, expectedDocCount), "Unexpected document count");
 
     GTGlobals::FindOptions options;
     options.depth = GTGlobals::FindOptions::INFINITE_DEPTH;
 
-    if (mode == Separate) {
-        GTKeyboardDriver::keyPress(Qt::Key_Control);
-    }
-
-    bool firstIsSelected = false;
-    foreach (const QString &documentName, itemsToSelect.keys()) {
-        QModelIndex documentIndex = GTUtilsProjectTreeView::findIndex(os, treeView, documentName, options);
-        GTUtilsProjectTreeView::checkObjectTypes(os, treeView, acceptableTypes, documentIndex);
-        QStringList objects = itemsToSelect.value(documentName);
-        if (!objects.isEmpty()) {
-            foreach (const QString &objectName, itemsToSelect.value(documentName)) {
-                QModelIndex objectIndex = GTUtilsProjectTreeView::findIndex(os, treeView, objectName, documentIndex, options);
-                GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, treeView, objectIndex));
-                GTMouseDriver::click();
-                if (!firstIsSelected && mode == Continuous) {
-                    GTKeyboardDriver::keyPress(Qt::Key_Shift);
-                    firstIsSelected = true;
-                }
-            }
-        } else {
-            GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, treeView, documentIndex));
-            GTMouseDriver::click();
+    bool isFirstClick = true;
+    QList<QString> allItemKeys = itemsToSelect.keys();
+    auto getCurrentClickModifier = [this, &isFirstClick] { return isFirstClick ? Qt::Key_unknown : (mode == Continuous ? Qt::Key_Shift : Qt::Key_Control); };
+    for (const QString &itemKey : qAsConst(allItemKeys)) {
+        QModelIndex parentItemIndex = GTUtilsProjectTreeView::findIndex(os, treeView, itemKey, options);
+        if (!acceptableTypes.isEmpty()) {
+            GTUtilsProjectTreeView::checkObjectTypes(os, treeView, acceptableTypes, parentItemIndex);
+        }
+        QStringList objectNames = itemsToSelect.value(itemKey);
+        if (objectNames.isEmpty()) {  // Select the document itself.
+            GTTreeView::click(os, treeView, parentItemIndex, getCurrentClickModifier());
+            isFirstClick = false;
+            continue;
+        }
+        for (const QString &objectName : qAsConst(objectNames)) {
+            QModelIndex objectIndex = GTUtilsProjectTreeView::findIndex(os, treeView, objectName, parentItemIndex, options);
+            GTTreeView::click(os, treeView, objectIndex, getCurrentClickModifier());
+            isFirstClick = false;
         }
     }
-
-    switch (mode) {
-        case Separate:
-            GTKeyboardDriver::keyClick(Qt::Key_Control);
-            break;
-        case Continuous:
-            GTKeyboardDriver::keyClick(Qt::Key_Shift);
-            break;
-        default:;  // empty default section to avoid GCC warning
-    }
-
+    // Close the dialog.
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME

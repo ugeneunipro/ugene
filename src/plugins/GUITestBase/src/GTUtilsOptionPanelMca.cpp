@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,7 +30,6 @@
 #include <QApplication>
 #include <QComboBox>
 #include <QLabel>
-#include <QToolButton>
 
 #include "GTUtilsMcaEditor.h"
 #include "GTUtilsOptionPanelMca.h"
@@ -170,16 +169,14 @@ void GTUtilsOptionPanelMca::setFileFormat(HI::GUITestOpStatus &os, FileFormat fi
 #define GT_METHOD_NAME "pushResetButton"
 void GTUtilsOptionPanelMca::pushResetButton(HI::GUITestOpStatus &os) {
     openTab(os, Consensus);
-    QToolButton *result = GTWidget::findExactWidget<QToolButton *>(os, "thresholdResetButton");
-    result->click();
+    GTWidget::click(os, GTWidget::findToolButton(os, "thresholdResetButton"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "pushExportButton"
 void GTUtilsOptionPanelMca::pushExportButton(HI::GUITestOpStatus &os) {
     openTab(os, Consensus);
-    QToolButton *result = GTWidget::findExactWidget<QToolButton *>(os, "exportBtn");
-    result->click();
+    GTWidget::click(os, GTWidget::findToolButton(os, "exportBtn"));
 }
 #undef GT_METHOD_NAME
 

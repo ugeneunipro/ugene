@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -160,7 +160,7 @@ MultipleSequenceAlignment MSAUtils::seq2ma(const QList<GObject *> &list, U2OpSta
 
         ma->addRow(objName, QByteArray(""));
 
-        SAFE_POINT(i < ma->getNumRows(), "Row count differ from expected after adding row", MultipleSequenceAlignment());
+        SAFE_POINT(i < ma->getRowCount(), "Row count differ from expected after adding row", MultipleSequenceAlignment());
         appendSequenceToAlignmentRow(ma, i, 0, seq, os);
         CHECK_OP(os, MultipleSequenceAlignment());
         i++;
@@ -273,7 +273,7 @@ bool MSAUtils::checkPackedModelSymmetry(const MultipleSequenceAlignment &ali, U2
         ti.setError(tr("Alignment is empty!"));
         return false;
     }
-    for (int i = 0, n = ali->getNumRows(); i < n; i++) {
+    for (int i = 0, n = ali->getRowCount(); i < n; i++) {
         int rowCoreLength = ali->getMsaRow(i)->getCoreLength();
         if (rowCoreLength > coreLen) {
             ti.setError(tr("Sequences in alignment have different sizes!"));
@@ -366,7 +366,7 @@ void MSAUtils::assignOriginalDataIds(const MultipleSequenceAlignment &origMsa,
                                      QList<int> &addedRowIndexes) {
     QList<MultipleSequenceAlignmentRow> origMsaRows = origMsa->getMsaRows();
     QSet<qint64> remappedRowIds;
-    for (int newRowIndex = 0; newRowIndex < newMsa->getNumRows(); newRowIndex++) {
+    for (int newRowIndex = 0; newRowIndex < newMsa->getRowCount(); newRowIndex++) {
         MultipleSequenceAlignmentRow newMsaRow = newMsa->getMsaRow(newRowIndex);
         QString newRowNameForCompare = newMsaRow->getName().replace(" ", "_");
         bool isNewRowRemapped = false;
@@ -463,7 +463,7 @@ void MSAUtils::copyRowFromSequence(MultipleSequenceAlignmentObject *msaObj, U2Se
 
 MultipleSequenceAlignment MSAUtils::createCopyWithIndexedRowNames(const MultipleSequenceAlignment &ma, const QString &prefix) {
     MultipleSequenceAlignment res = ma->getExplicitCopy();
-    int rowNumber = res->getNumRows();
+    int rowNumber = res->getRowCount();
     for (int i = 0; i < rowNumber; i++) {
         res->renameRow(i, prefix + QString::number(i));
     }
@@ -471,7 +471,7 @@ MultipleSequenceAlignment MSAUtils::createCopyWithIndexedRowNames(const Multiple
 }
 
 bool MSAUtils::restoreOriginalRowNamesFromIndexedNames(MultipleSequenceAlignment &ma, const QStringList &names, const QString &prefix) {
-    int rowCount = ma->getNumRows();
+    int rowCount = ma->getRowCount();
     CHECK(rowCount == names.size() || !prefix.isEmpty(), false);
 
     QStringList resultNames;
@@ -498,7 +498,32 @@ bool MSAUtils::restoreOriginalRowNamesFromIndexedNames(MultipleSequenceAlignment
     return true;
 }
 
-QList<U2Region> MSAUtils::getColumnsWithGaps(const U2MsaListGapModel &maGapModel, int length, int requiredGapsCount) {
+bool MSAUtils::restoreOriginalRowProperties(MultipleSequenceAlignment &resultMa, const MultipleSequenceAlignment &originalMa, const QString &prefix) {
+    int rowCount = resultMa->getRowCount();
+    CHECK(rowCount == originalMa->getRowCount() || !prefix.isEmpty(), false);
+
+    for (int resultMaIndex = 0; resultMaIndex < rowCount; resultMaIndex++) {
+        MultipleSequenceAlignmentRow resultRow = resultMa->getMsaRow(resultMaIndex);
+        QString indexedName = resultRow->getName();
+        if (!prefix.isEmpty()) {
+            if (!indexedName.startsWith(prefix)) {
+                continue;  // Do not remap the name. Use it as it is.
+            }
+            indexedName = indexedName.mid(prefix.length());
+        }
+        bool ok = false;
+        int originalRowIndex = indexedName.toInt(&ok);
+        CHECK(ok && originalRowIndex >= 0 && originalRowIndex < rowCount, false);
+        MultipleSequenceAlignmentRow originalRow = originalMa->getMsaRow(originalRowIndex);
+        U2MsaRow originalRowInfo = originalRow->getRowDbInfo();
+        resultMa->setRowId(resultMaIndex, originalRowInfo.rowId);
+        resultMa->setSequenceId(resultMaIndex, originalRowInfo.sequenceId);
+        resultMa->renameRow(resultMaIndex, originalRow->getName());
+    }
+    return true;
+}
+
+QList<U2Region> MSAUtils::getColumnsWithGaps(const QList<QVector<U2MsaGap>> &maGapModel, int length, int requiredGapsCount) {
     const int rowsCount = maGapModel.size();
     if (requiredGapsCount == -1) {
         requiredGapsCount = rowsCount;
@@ -529,7 +554,7 @@ void MSAUtils::removeColumnsWithGaps(MultipleSequenceAlignment &msa, int require
     GTIMER(c, t, "MSAUtils::removeColumnsWithGaps");
     const QList<U2Region> regionsToDelete = getColumnsWithGaps(msa->getGapModel(), msa->getLength(), requiredGapsCount);
     for (int i = regionsToDelete.size() - 1; i >= 0; i--) {
-        msa->removeRegion(regionsToDelete[i].startPos, 0, regionsToDelete[i].length, msa->getNumRows(), true);
+        msa->removeRegion(regionsToDelete[i].startPos, 0, regionsToDelete[i].length, msa->getRowCount(), true);
     }
 }
 
@@ -556,7 +581,7 @@ void MSAUtils::addRowsToMsa(U2EntityRef &msaObjectRef, QList<MultipleSequenceAli
         SAFE_POINT_OP(os, );
         msaDbi->addRow(msaObjectRef.entityId, -1, msaRow, os);
         SAFE_POINT_OP(os, );
-        msaDbi->updateGapModel(msaObjectRef.entityId, msaRow.rowId, row->getGapModel(), os);
+        msaDbi->updateGapModel(msaObjectRef.entityId, msaRow.rowId, row->getGaps(), os);
         SAFE_POINT_OP(os, );
 
         row->setRowId(msaRow.rowId);

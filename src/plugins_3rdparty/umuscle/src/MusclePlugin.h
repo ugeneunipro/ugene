@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,6 +32,8 @@
 namespace U2 {
 
 class MSAEditor;
+class MultipleSequenceAlignmentObject;
+class MuscleAction;
 class MuscleMSAEditorContext;
 class XMLTestFactory;
 
@@ -39,7 +41,6 @@ class MusclePlugin : public Plugin {
     Q_OBJECT
 public:
     MusclePlugin();
-    ~MusclePlugin();
 
 public slots:
     void sl_runWithExtFileSpecify();
@@ -58,22 +59,19 @@ protected slots:
     void sl_alignSequencesToProfile();
     void sl_alignProfileToProfile();
 
+    /** Runs alignment task to align selected sequences to the rest of the alignment in MSA editor. */
+    void sl_alignSelectedSequences();
+
 protected:
     void initViewContext(GObjectView *view) override;
-    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
 };
 
 class MuscleAction : public GObjectViewAction {
     Q_OBJECT
 public:
-    MuscleAction(QObject *p, GObjectView *v, const QString &text, int order)
-        : GObjectViewAction(p, v, text, order) {
-    }
+    MuscleAction(QObject *p, GObjectView *v, const QString &text, int order, bool isAlignSelectionAction = false);
 
     MSAEditor *getMSAEditor() const;
-
-private slots:
-    void sl_updateState();
 };
 
 }  // namespace U2

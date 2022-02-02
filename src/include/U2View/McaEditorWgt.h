@@ -1,1 +1,1 @@
-#include "../../corelibs/U2View/src/ov_msa/McaEditorWgt.h"
+#include "../../corelibs/U2View/src/ov_mca/McaEditorWgt.h"

@@ -53,36 +53,52 @@ cp -r "${SOURCE_DIR}/data" "${BUNDLE_DIR}"
 cp "${PATH_TO_INCLUDE_LIBS}/"* "${BUNDLE_DIR}"
 
 echo copy Qt libraries
-cp "${QT_DIR}/bin/Qt5Core.dll" "${BUNDLE_DIR}"
-cp "${QT_DIR}/bin/Qt5Gui.dll" "${BUNDLE_DIR}"
-cp "${QT_DIR}/bin/Qt5Multimedia.dll" "${BUNDLE_DIR}"
-cp "${QT_DIR}/bin/Qt5MultimediaWidgets.dll" "${BUNDLE_DIR}"
-cp "${QT_DIR}/bin/Qt5Network.dll" "${BUNDLE_DIR}"
-cp "${QT_DIR}/bin/Qt5Positioning.dll" "${BUNDLE_DIR}"
-cp "${QT_DIR}/bin/Qt5PrintSupport.dll" "${BUNDLE_DIR}"
-cp "${QT_DIR}/bin/Qt5Qml.dll" "${BUNDLE_DIR}"
-cp "${QT_DIR}/bin/Qt5Quick.dll" "${BUNDLE_DIR}"
-cp "${QT_DIR}/bin/Qt5Script.dll" "${BUNDLE_DIR}"
-cp "${QT_DIR}/bin/Qt5ScriptTools.dll" "${BUNDLE_DIR}"
-cp "${QT_DIR}/bin/Qt5Sensors.dll" "${BUNDLE_DIR}"
-cp "${QT_DIR}/bin/Qt5Sql.dll" "${BUNDLE_DIR}"
-cp "${QT_DIR}/bin/Qt5Svg.dll" "${BUNDLE_DIR}"
-cp "${QT_DIR}/bin/Qt5Test.dll" "${BUNDLE_DIR}"
-cp "${QT_DIR}/bin/Qt5Widgets.dll" "${BUNDLE_DIR}"
-cp "${QT_DIR}/bin/Qt5Xml.dll" "${BUNDLE_DIR}"
+
+function copy_with_pdb() {
+  LIB_PATH="${1}"
+  TARGET_DIR="${2}"
+  echo "Copying ${LIB_PATH}"
+  cp "${LIB_PATH}" "${TARGET_DIR}"
+
+  if [ "${UGENE_BUILD_KEEP_PDB_FILES}" == "1" ]; then
+    PDB_PATH="${LIB_PATH/.dll/.pdb}"
+    if [ -f "${PDB_PATH}" ]; then
+      echo "Copying ${PDB_PATH}"
+      cp "${PDB_PATH}" "${TARGET_DIR}"
+    fi
+  fi
+}
+
+copy_with_pdb "${QT_DIR}/bin/Qt5Core.dll" "${BUNDLE_DIR}"
+copy_with_pdb "${QT_DIR}/bin/Qt5Gui.dll" "${BUNDLE_DIR}"
+copy_with_pdb "${QT_DIR}/bin/Qt5Multimedia.dll" "${BUNDLE_DIR}"
+copy_with_pdb "${QT_DIR}/bin/Qt5MultimediaWidgets.dll" "${BUNDLE_DIR}"
+copy_with_pdb "${QT_DIR}/bin/Qt5Network.dll" "${BUNDLE_DIR}"
+copy_with_pdb "${QT_DIR}/bin/Qt5Positioning.dll" "${BUNDLE_DIR}"
+copy_with_pdb "${QT_DIR}/bin/Qt5PrintSupport.dll" "${BUNDLE_DIR}"
+copy_with_pdb "${QT_DIR}/bin/Qt5Qml.dll" "${BUNDLE_DIR}"
+copy_with_pdb "${QT_DIR}/bin/Qt5Quick.dll" "${BUNDLE_DIR}"
+copy_with_pdb "${QT_DIR}/bin/Qt5Script.dll" "${BUNDLE_DIR}"
+copy_with_pdb "${QT_DIR}/bin/Qt5ScriptTools.dll" "${BUNDLE_DIR}"
+copy_with_pdb "${QT_DIR}/bin/Qt5Sensors.dll" "${BUNDLE_DIR}"
+copy_with_pdb "${QT_DIR}/bin/Qt5Sql.dll" "${BUNDLE_DIR}"
+copy_with_pdb "${QT_DIR}/bin/Qt5Svg.dll" "${BUNDLE_DIR}"
+copy_with_pdb "${QT_DIR}/bin/Qt5Test.dll" "${BUNDLE_DIR}"
+copy_with_pdb "${QT_DIR}/bin/Qt5Widgets.dll" "${BUNDLE_DIR}"
+copy_with_pdb "${QT_DIR}/bin/Qt5Xml.dll" "${BUNDLE_DIR}"
 
 mkdir "${BUNDLE_DIR}/styles"
-cp "${QT_DIR}/plugins/styles/qwindowsvistastyle.dll" "${BUNDLE_DIR}/styles"
+copy_with_pdb "${QT_DIR}/plugins/styles/qwindowsvistastyle.dll" "${BUNDLE_DIR}/styles"
 
 mkdir "${BUNDLE_DIR}/sqldrivers"
-cp "${QT_DIR}/plugins/sqldrivers/qsqlmysql.dll" "${BUNDLE_DIR}/sqldrivers"
+copy_with_pdb "${QT_DIR}/plugins/sqldrivers/qsqlmysql.dll" "${BUNDLE_DIR}/sqldrivers"
 
 mkdir "${BUNDLE_DIR}\imageformats"
-cp "${QT_DIR}/plugins/imageformats/qgif.dll" "${BUNDLE_DIR}/imageformats"
-cp "${QT_DIR}/plugins/imageformats/qjpeg.dll" "${BUNDLE_DIR}/imageformats"
-cp "${QT_DIR}/plugins/imageformats/qsvg.dll" "${BUNDLE_DIR}/imageformats"
-cp "${QT_DIR}/plugins/imageformats/qtiff.dll" "${BUNDLE_DIR}/imageformats"
+copy_with_pdb "${QT_DIR}/plugins/imageformats/qgif.dll" "${BUNDLE_DIR}/imageformats"
+copy_with_pdb "${QT_DIR}/plugins/imageformats/qjpeg.dll" "${BUNDLE_DIR}/imageformats"
+copy_with_pdb "${QT_DIR}/plugins/imageformats/qsvg.dll" "${BUNDLE_DIR}/imageformats"
+copy_with_pdb "${QT_DIR}/plugins/imageformats/qtiff.dll" "${BUNDLE_DIR}/imageformats"
 
 mkdir "${BUNDLE_DIR}/platforms"
-cp "${QT_DIR}/plugins/platforms\qwindows.dll" "${BUNDLE_DIR}/platforms"
+copy_with_pdb "${QT_DIR}/plugins/platforms/qwindows.dll" "${BUNDLE_DIR}/platforms"
 echo "##teamcity[blockClosed name='bundle']"

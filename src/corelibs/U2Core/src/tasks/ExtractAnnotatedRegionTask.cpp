@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,7 +42,7 @@ void ExtractAnnotatedRegionTask::prepareTranslations() {
     if (aminoSeq) {
         return;
     }
-    if (cfg.complement && inputAnn->getStrand().isCompementary()) {
+    if (cfg.complement && inputAnn->getStrand().isComplementary()) {
         DNATranslation *compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(inputSeq.alphabet);
         if (compTT != nullptr) {
             complT = compTT;

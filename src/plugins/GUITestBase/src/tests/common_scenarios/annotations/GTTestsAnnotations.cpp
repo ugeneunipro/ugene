@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,6 +34,7 @@
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsLog.h"
+#include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
@@ -68,9 +69,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     // 3. Create annotation using menu {Actions->Add->New Annotation}
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann1", "complement(1.. 20)"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "New annotation...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "New annotation..."});
 
     // 4. Create annotation using keyboard shortcut Ctrl+N
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann2", "complement(1.. 20)"));
@@ -83,11 +82,10 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann3", "complement(1.. 20)"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD"
-                                                                        << "create_annotation_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
 
-    // Expected state: there is three new annotations on sequence created by threee different ways
+    // Expected state: there is three new annotations on sequence created by three different ways
     GTUtilsAnnotationsTreeView::findItem(os, "ann1");
     GTUtilsAnnotationsTreeView::findItem(os, "ann2");
     GTUtilsAnnotationsTreeView::findItem(os, "ann3");
@@ -111,9 +109,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
 
     // 3. Create annotation using menu {Actions->Add->New Annotation}
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann1", "complement(1.. 20)"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "New annotation...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "New annotation..."});
 
     // 4. Create annotation using keyboard shortcut Ctrl+N
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann2", "complement(1.. 20)"));
@@ -126,11 +122,10 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
 
     // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann3", "complement(1.. 20)"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD"
-                                                                        << "create_annotation_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
 
-    // Expected state: there is three new annotations on sequence created by threee different ways
+    // Expected state: there is three new annotations on sequence created by three different ways
     GTUtilsAnnotationsTreeView::findItem(os, "ann1");
     GTUtilsAnnotationsTreeView::findItem(os, "ann2");
     GTUtilsAnnotationsTreeView::findItem(os, "ann3");
@@ -154,9 +149,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
 
     // 3. Create annotation using menu {Actions->Add->New Annotation}
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann1", "complement(1.. 20)"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "New annotation...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "New annotation..."});
 
     // 4. Create annotation using keyboard shortcut Ctrl+N
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann2", "complement(1.. 20)"));
@@ -169,11 +162,10 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
 
     // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann3", "complement(1.. 20)"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD"
-                                                                        << "create_annotation_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
 
-    // Expected state: there is three new annotations on sequence created by threee different ways
+    // Expected state: there is three new annotations on sequence created by three different ways
     GTUtilsAnnotationsTreeView::findItem(os, "ann1");
     GTUtilsAnnotationsTreeView::findItem(os, "ann2");
     GTUtilsAnnotationsTreeView::findItem(os, "ann3");
@@ -205,9 +197,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     //
     // 4. Click Create button
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "DDD", "D", "join(10..16,18..20)"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "New annotation...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "New annotation..."});
 
     // Expected state: annotation with 2 segments has been created
     GTUtilsAnnotationsTreeView::findItem(os, "D");
@@ -239,9 +229,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     //
     // 4. Click Create button
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "DDD", "D", "join(10..16,18..20)"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "New annotation...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "New annotation..."});
 
     // Expected state: annotation with 2 segments has been created
     GTUtilsAnnotationsTreeView::findItem(os, "D");
@@ -273,9 +261,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     //
     // 4. Click Create button
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "DDD", "D", "join(10..16,18..20)"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "New annotation...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "New annotation..."});
 
     // Expected state: annotation with 2 segments has been created
     GTUtilsAnnotationsTreeView::findItem(os, "D");
@@ -299,9 +285,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     // 3. Create annotation using menu {Actions->Add->New Annotation}
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann1", "complement(1.. 20)"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "New annotation...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "New annotation..."});
 
     // 4. Create annotation using keyboard shortcut Ctrl+N
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann2", "complement(1.. 20)"));
@@ -309,11 +293,10 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann3", "complement(1.. 20)"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD"
-                                                                        << "create_annotation_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
 
-    // Expected state: there is three new annotations on sequence created by threee different ways
+    // Expected state: there is three new annotations on sequence created by three different ways
     GTUtilsAnnotationsTreeView::findItem(os, "ann1");
     GTUtilsAnnotationsTreeView::findItem(os, "ann2");
     GTUtilsAnnotationsTreeView::findItem(os, "ann3");
@@ -338,18 +321,14 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     // 3. Create 2 annotations:
     //     1) a1 in group a1
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "a1_group", "a1", "10..16"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "New annotation...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "New annotation..."});
 
     //     2) a1 in group a2
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "a2_group", "a1", "18..20"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "New annotation...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "New annotation..."});
 
     // 4. Toggle highlight for a1.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggle_HL_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggle_HL_action"}));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "a1"));
     GTMouseDriver::click(Qt::RightButton);
 
@@ -375,18 +354,14 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
     // 3. Create 2 annotations:
     //     1) a1 in group a1
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "a1_group", "a1", "10..16"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "New annotation...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "New annotation..."});
 
     //     2) a1 in group a2
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "a2_group", "a1", "18..20"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "New annotation...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "New annotation..."});
 
     // 4. Toggle highlight for a1.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggle_HL_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggle_HL_action"}));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "a1"));
     GTMouseDriver::click(Qt::RightButton);
 
@@ -412,18 +387,14 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
     // 3. Create 2 annotations:
     //     1) a1 in group a1
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "a1_group", "a1", "10..16"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "New annotation...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "New annotation..."});
 
     //     2) a1 in group a2
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "a2_group", "a1", "18..20"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "New annotation...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "New annotation..."});
 
     // 4. Toggle highlight for a1.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggle_HL_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggle_HL_action"}));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "a1"));
     GTMouseDriver::click(Qt::RightButton);
 
@@ -453,21 +424,18 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
     // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann3", "complement(1.. 20)"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD"
-                                                                        << "create_annotation_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
 
     // 3. Create annotation using menu {Actions->Add->New Annotation}
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann1", "complement(1.. 20)"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "New annotation...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "New annotation..."});
 
     // 4. Create annotation using keyboard shortcut Ctrl+N
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann2", "complement(1.. 20)"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
-    // Expected state: there is three new annotations on sequence created by threee different ways
+    // Expected state: there is three new annotations on sequence created by three different ways
     GTUtilsAnnotationsTreeView::findItem(os, "ann1");
     GTUtilsAnnotationsTreeView::findItem(os, "ann2");
     GTUtilsAnnotationsTreeView::findItem(os, "ann3");
@@ -499,9 +467,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     //
     // 4. Click Create button
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "DDD", "D", "join(10..16,18..20)"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "New annotation...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "New annotation..."});
 
     // Expected state: annotation with 2 segments has been created
     GTUtilsAnnotationsTreeView::findItem(os, "D");
@@ -526,18 +492,14 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     // 3. Create 2 annotations:
     //     1) a1 in group a1
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "a1_group", "a1", "10..16"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "New annotation...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "New annotation..."});
 
     //     2) a1 in group a2
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "a2_group", "a1", "18..20"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "New annotation...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "New annotation..."});
 
     // 4. Toggle highlight for a1.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggle_HL_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggle_HL_action"}));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "a1"));
     GTMouseDriver::click(Qt::RightButton);
 
@@ -570,9 +532,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     //
     // 4. Click Create button
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "DDD", "D", "join(10..16,18..20)"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "New annotation...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "New annotation..."});
 
     // Expected state: annotation with 2 segments has been created
     GTUtilsAnnotationsTreeView::findItem(os, "D");
@@ -601,21 +561,18 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 
     // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann3", "complement(1.. 20)"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD"
-                                                                        << "create_annotation_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
 
     // 3. Create annotation using menu {Actions->Add->New Annotation}
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann1", "complement(1.. 20)"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "New annotation...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "New annotation..."});
 
     // 4. Create annotation using keyboard shortcut Ctrl+N
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann2", "complement(1.. 20)"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
-    // Expected state: there is three new annotations on sequence created by threee different ways
+    // Expected state: there is three new annotations on sequence created by three different ways
     GTUtilsAnnotationsTreeView::findItem(os, "ann1");
     GTUtilsAnnotationsTreeView::findItem(os, "ann2");
     GTUtilsAnnotationsTreeView::findItem(os, "ann3");
@@ -633,41 +590,38 @@ GUI_TEST_CLASS_DEFINITION(test_0010_1) {
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
     GTFileDialog::openFileWithDialog(os, testDir, "_common_data/fasta/DNA.fa");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "GXL_141619"), "No GXL_141619 object!");
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "GXL_141618"), "No GXL_141618 object!");
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann_1", "200..300", sandBoxDir + "ann_test_0010_1_19.gb"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD"
-                                                                        << "create_annotation_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "det_view_GXL_141619"), Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann_2", "100..200", sandBoxDir + "ann_test_0010_1_18.gb"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD"
-                                                                        << "create_annotation_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "det_view_GXL_141618"), Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "ann_1"
-                                                              << "ann_2");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"ann_1", "ann_2"});
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0010_1.bed", ExportAnnotationsFiller::bed, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
     GTMouseDriver::click(Qt::RightButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTUtilsDocument::removeDocument(os, "DNA.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "No"));
     GTUtilsDocument::removeDocument(os, "ann_test_0010_1_18.gb");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "No"));
     GTUtilsDocument::removeDocument(os, "ann_test_0010_1_19.gb");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTFileDialog::openFile(os, sandBoxDir, "ann_export_test_0010_1.bed");
 
@@ -694,17 +648,14 @@ GUI_TEST_CLASS_DEFINITION(test_0010_2) {
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "GXL_141618"), "No GXL_141618 object!");
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann_1", "200..300", sandBoxDir + "ann_test_0010_2_19.gb"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD"
-                                                                        << "create_annotation_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "det_view_GXL_141619"), Qt::RightButton);
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann_2", "100..200", sandBoxDir + "ann_test_0010_2_18.gb"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD"
-                                                                        << "create_annotation_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "det_view_GXL_141618"), Qt::RightButton);
 
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "ann_1"
-                                                              << "ann_2");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"ann_1", "ann_2"});
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0010_2.gff", ExportAnnotationsFiller::gff, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
@@ -741,29 +692,23 @@ GUI_TEST_CLASS_DEFINITION(test_0010_3) {
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "GXL_141618"), "No GXL_141618 object!");
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann_1", "200..300", sandBoxDir + "ann_test_0010_3_19.gb"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD"
-                                                                        << "create_annotation_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "det_view_GXL_141619"), Qt::RightButton);
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann_2", "100..200", sandBoxDir + "ann_test_0010_3_18.gb"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD"
-                                                                        << "create_annotation_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "det_view_GXL_141618"), Qt::RightButton);
 
-    QStringList annList;
-    annList << "ann_1"
-            << "ann_2";
-    GTUtilsAnnotationsTreeView::selectItems(os, annList);
     GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "YT483", "ann_1");
     GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "001T", "ann_1");
     GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "YT496", "ann_2");
     GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "0012", "ann_2");
 
-    GTUtilsAnnotationsTreeView::selectItems(os, annList);
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"ann_1", "ann_2"});
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0010_3.gtf", ExportAnnotationsFiller::gtf, false, false, false));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
-    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EXPORT, "action_export_annotations"}));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
 
     GTUtilsDocument::removeDocument(os, "DNA.fa");
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "No"));
@@ -787,31 +732,28 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     //    3. Try to export it to GTF format
     //    Expected state: info message - "GTF format is not strict - some annotations do not have "gene_id" and/or "transcript_id" qualifiers"
 
-    GTLogTracer l("GTF format is not strict - some annotations do not have \"gene_id\" and/or \"transcript_id\" qualifiers");
+    GTLogTracer l("GTF format is not strict - some annotations do not have 'gene_id' and/or 'transcript_id' qualifiers");
 
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Click "Hide zoom view
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_human_T1(UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "exon", "annotation", "200..300", sandBoxDir + "ann_test_0011_1.gb"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD"
-                                                                        << "create_annotation_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
-    GTWidget::click(os, GTUtilsAnnotationsTreeView::getTreeWidget(os));
-    GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "TR321", "annotation");
 
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "annotation");
+    GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "TR321", "annotation");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"annotation"});
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0011_1.gtf", ExportAnnotationsFiller::gtf, os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EXPORT, "action_export_annotations"}));
     GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(l.isExpectedMessageFound, "No expected message in the log");
+    CHECK_SET_ERR(l.isExpectedMessageFound, "No expected message in the log: " + l.expectedMessage);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011_2) {
@@ -822,29 +764,27 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     //    3. Try to export it to GTF format
     //    Expected state: info message - "GTF format is not strict - some annotations do not have "gene_id" and/or "transcript_id" qualifiers"
 
-    GTLogTracer l("GTF format is not strict - some annotations do not have \"gene_id\" and/or \"transcript_id\" qualifiers");
+    GTLogTracer l("GTF format is not strict - some annotations do not have 'gene_id' and/or 'transcript_id' qualifiers");
 
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Click "Hide zoom view
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_human_T1(UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann", "200..300", sandBoxDir + "ann_test_0011_1.gb"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD"
-                                                                        << "create_annotation_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
-    GTWidget::click(os, GTUtilsAnnotationsTreeView::getTreeWidget(os));
-    GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", "ann");
 
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "ann");
+    GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", "ann");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"ann"});
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0011_1.gtf", ExportAnnotationsFiller::gtf, os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EXPORT, "action_export_annotations"}));
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
     GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(l.isExpectedMessageFound, "No expected message in the log");
 }
@@ -854,7 +794,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
 
     //    1. Open "human_T1.fa"
     //    2. Create an annotation
-    //    4. Add 'gene_id' and 'transcript_id' quilifiers
+    //    4. Add 'gene_id' and 'transcript_id' qualifiers
     //    3. Export it to GTF format
     //    Expected state: no errors in the log
 
@@ -869,14 +809,13 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann", "200..300", sandBoxDir + "ann_test_0011_1.gb"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD"
-                                                                        << "create_annotation_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_ADD", "create_annotation_action"}));
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
     GTWidget::click(os, GTUtilsAnnotationsTreeView::getTreeWidget(os));
     GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", "ann");
     GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "TR321", "ann");
 
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "ann");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"ann"});
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0011_1.gtf", ExportAnnotationsFiller::gtf, false, false, false));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
@@ -919,7 +858,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
     annList << "5'UTR"
             << "exon";
 
-    GTUtilsAnnotationsTreeView::selectItems(os, annList);
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, annList);
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0012_1.bed", ExportAnnotationsFiller::bed, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
@@ -969,7 +908,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
     annList << "5'UTR"
             << "exon";
 
-    GTUtilsAnnotationsTreeView::selectItems(os, annList);
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, annList);
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0012_2.gff", ExportAnnotationsFiller::gff, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
@@ -1009,26 +948,24 @@ GUI_TEST_CLASS_DEFINITION(test_0012_3) {
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
     GTUtilsProjectTreeView::checkItem(os, "scaffold_90 features");
 
-    QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, "scaffold_90 features");
-    QWidget *sequence = GTUtilsSequenceView::getPanOrDetView(os);
-    CHECK_SET_ERR(sequence != nullptr, "Sequence widget not found");
+    QModelIndex documentProjectTreeIndex = GTUtilsProjectTreeView::findIndex(os, "scaffold_90 features");
+    QWidget *sequenceView = GTUtilsSequenceView::getPanOrDetView(os);
 
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
-    GTUtilsProjectTreeView::dragAndDrop(os, idx, sequence);
+    GTUtilsProjectTreeView::dragAndDrop(os, documentProjectTreeIndex, sequenceView);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", "exon");
-    GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "TR321", "exon");
-    GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", "5'UTR");
-    GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "TR321", "5'UTR");
+    QList<QTreeWidgetItem *> exons = GTUtilsAnnotationsTreeView::findItems(os, "exon");
+    QList<QTreeWidgetItem *> utrs = GTUtilsAnnotationsTreeView::findItems(os, "5'UTR");
+    GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", exons[0]);
+    GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "TR321", exons[0]);
+    GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", utrs[0]);
+    GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "TR321", utrs[0]);
 
-    QStringList annList;
-    annList << "5'UTR"
-            << "exon";
-
-    GTUtilsAnnotationsTreeView::selectItems(os, annList);
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"5'UTR", "exon"});
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0012_3.gtf", ExportAnnotationsFiller::gtf, false, false, false));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_EXPORT, "action_export_annotations"}));
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "No"));
@@ -1037,9 +974,11 @@ GUI_TEST_CLASS_DEFINITION(test_0012_3) {
     GTUtilsDocument::removeDocument(os, "scaffold_90.gff");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
-    GTFileDialog::openFile(os, sandBoxDir, "ann_export_test_0012_3.gtf");
+    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
+    GTUtilsProject::openFile(os, sandBoxDir + "ann_export_test_0012_3.gtf");
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "NC_004718 features"), "Object not found");
     GTUtilsProjectTreeView::checkNoItem(os, "scaffold_90 features");
 }
@@ -1059,9 +998,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
 
     // 3. Create annotation using menu {Actions->Add->New Annotation}, with description field filled
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann1", "complement(1.. 20)", "", "description"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Add"
-                                                << "New annotation...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "New annotation..."});
 
     // 4. Check what created annotation has corresponding qualifier 'note'
     QTreeWidget *treeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);

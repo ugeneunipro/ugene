@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,6 @@
 #include <U2Core/DataBaseRegistry.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/GAutoDeleteList.h>
-#include <U2Core/MultiTask.h>
 #include <U2Core/ScriptingToolRegistry.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -46,20 +45,17 @@
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/MaEditorFactory.h>
 
-#include "ETSProjectViewItemsContoller.h"
+#include "ETSProjectViewItemsController.h"
 #include "ExternalToolSupportSettings.h"
 #include "ExternalToolSupportSettingsController.h"
-#include "R/RSupport.h"
 #include "bedtools/BedToolsWorkersLibrary.h"
 #include "bedtools/BedtoolsSupport.h"
 #include "bigWigTools/BedGraphToBigWigWorker.h"
 #include "bigWigTools/BigWigSupport.h"
-#include "blast_plus/AlignToReferenceBlastWorker.h"
-#include "blast_plus/BlastDBCmdSupport.h"
-#include "blast_plus/BlastPlusSupport.h"
-#include "blast_plus/BlastPlusWorker.h"
-#include "blast_plus/FormatDBSupport.h"
-#include "blast_plus/RPSBlastSupportTask.h"
+#include "blast/AlignToReferenceBlastWorker.h"
+#include "blast/BlastSupport.h"
+#include "blast/BlastWorker.h"
+#include "blast/RPSBlastTask.h"
 #include "bowtie/BowtieSettingsWidget.h"
 #include "bowtie/BowtieSupport.h"
 #include "bowtie/BowtieTask.h"
@@ -78,16 +74,10 @@
 #include "bwa/bwa_tests/bwaTests.h"
 #include "cap3/CAP3Support.h"
 #include "cap3/CAP3Worker.h"
-#include "ceas/CEASReportWorker.h"
-#include "ceas/CEASSupport.h"
 #include "clustalo/ClustalOSupport.h"
 #include "clustalo/ClustalOWorker.h"
 #include "clustalw/ClustalWSupport.h"
 #include "clustalw/ClustalWWorker.h"
-#include "conduct_go/ConductGOSupport.h"
-#include "conduct_go/ConductGOWorker.h"
-#include "conservation_plot/ConservationPlotSupport.h"
-#include "conservation_plot/ConservationPlotWorker.h"
 #include "cufflinks/CuffdiffWorker.h"
 #include "cufflinks/CufflinksSupport.h"
 #include "cufflinks/CufflinksWorker.h"
@@ -101,21 +91,16 @@
 #include "hmmer/HmmerSearchWorker.h"
 #include "hmmer/HmmerSupport.h"
 #include "hmmer/HmmerTests.h"
+#include "iqtree/IQTreeSupport.h"
 #include "java/JavaSupport.h"
-#include "macs/MACSSupport.h"
-#include "macs/MACSWorker.h"
 #include "mafft/MAFFTSupport.h"
 #include "mafft/MAFFTWorker.h"
 #include "mrbayes/MrBayesSupport.h"
 #include "mrbayes/MrBayesTests.h"
-#include "peak2gene/Peak2GeneSupport.h"
-#include "peak2gene/Peak2GeneWorker.h"
 #include "perl/PerlSupport.h"
 #include "phyml/PhyMLSupport.h"
 #include "phyml/PhyMLTests.h"
 #include "python/PythonSupport.h"
-#include "seqpos/SeqPosSupport.h"
-#include "seqpos/SeqPosWorker.h"
 #include "snpeff/SnpEffSupport.h"
 #include "snpeff/SnpEffWorker.h"
 #include "spades/SpadesWorker.h"
@@ -131,7 +116,6 @@
 #include "trimmomatic/TrimmomaticSupport.h"
 #include "trimmomatic/TrimmomaticWorkerFactory.h"
 #include "utils/ExternalToolSupportAction.h"
-#include "utils/ExternalToolValidateTask.h"
 #include "vcftools/VcfConsensusSupport.h"
 #include "vcftools/VcfConsensusWorker.h"
 #include "vcfutils/VcfutilsSupport.h"
@@ -149,61 +133,45 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     // External tools serialize additional tool info into QSettings and using StrStrMap type.
     qRegisterMetaTypeStreamOperators<StrStrMap>("StrStrMap");
 
-    //External tools registry keeps order of items added
-    //it is important because there might be dependencies
+    // External tool registry keeps order of items added
+    // it is important because there might be dependencies
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     SAFE_POINT(etRegistry != nullptr, "ExternalToolRegistry is null", );
 
     // python with modules
     etRegistry->registerEntry(new PythonSupport());
-    etRegistry->registerEntry(new PythonModuleDjangoSupport());
-    etRegistry->registerEntry(new PythonModuleNumpySupport());
     etRegistry->registerEntry(new PythonModuleBioSupport());
 
-    // Rscript with modules
-    etRegistry->registerEntry(new RSupport());
-    etRegistry->registerEntry(new RModuleGostatsSupport());
-    etRegistry->registerEntry(new RModuleGodbSupport());
-    etRegistry->registerEntry(new RModuleHgu133adbSupport());
-    etRegistry->registerEntry(new RModuleHgu133bdbSupport());
-    etRegistry->registerEntry(new RModuleHgu133plus2dbSupport());
-    etRegistry->registerEntry(new RModuleHgu95av2dbSupport());
-    etRegistry->registerEntry(new RModuleMouse430a2dbSupport());
-    etRegistry->registerEntry(new RModuleCelegansdbSupport());
-    etRegistry->registerEntry(new RModuleDrosophila2dbSupport());
-    etRegistry->registerEntry(new RModuleOrghsegdbSupport());
-    etRegistry->registerEntry(new RModuleOrgmmegdbSupport());
-    etRegistry->registerEntry(new RModuleOrgceegdbSupport());
-    etRegistry->registerEntry(new RModuleOrgdmegdbSupport());
-    etRegistry->registerEntry(new RModuleSeqlogoSupport());
-
-    //perl
+    // perl
     etRegistry->registerEntry(new PerlSupport());
 
-    //java
+    // java
     etRegistry->registerEntry(new JavaSupport());
 
-    //ClustalW
+    // ClustalW
     ClustalWSupport *clustalWTool = new ClustalWSupport();
     etRegistry->registerEntry(clustalWTool);
 
-    //ClustalO
+    // ClustalO
     ClustalOSupport *clustalOTool = new ClustalOSupport();
     etRegistry->registerEntry(clustalOTool);
 
-    //MAFFT
+    // MAFFT
     MAFFTSupport *mAFFTTool = new MAFFTSupport();
     etRegistry->registerEntry(mAFFTTool);
 
-    //T-Coffee
+    // T-Coffee
     TCoffeeSupport *tCoffeeTool = new TCoffeeSupport();
     etRegistry->registerEntry(tCoffeeTool);
 
-    //MrBayes
+    // MrBayes
     etRegistry->registerEntry(new MrBayesSupport());
 
-    //PhyML
+    // PhyML
     etRegistry->registerEntry(new PhyMLSupport());
+
+    // IQTree
+    etRegistry->registerEntry(new IQTreeSupport());
 
     if (AppContext::getMainWindow()) {
         clustalWTool->getViewContext()->setParent(this);
@@ -239,25 +207,23 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, tCoffeeAction);
     }
 
-    //MakeBLASTDB from BLAST+
-    FormatDBSupport *makeBLASTDBTool = new FormatDBSupport();
-    etRegistry->registerEntry(makeBLASTDBTool);
-
-    //BlastAll
-    BlastPlusSupport *blastNPlusTool = new BlastPlusSupport(BlastPlusSupport::ET_BLASTN_ID, BlastPlusSupport::ET_BLASTN);
-    etRegistry->registerEntry(blastNPlusTool);
-    BlastPlusSupport *blastPPlusTool = new BlastPlusSupport(BlastPlusSupport::ET_BLASTP_ID, BlastPlusSupport::ET_BLASTP);
-    etRegistry->registerEntry(blastPPlusTool);
-    BlastPlusSupport *blastXPlusTool = new BlastPlusSupport(BlastPlusSupport::ET_BLASTX_ID, BlastPlusSupport::ET_BLASTX);
-    etRegistry->registerEntry(blastXPlusTool);
-    BlastPlusSupport *tBlastNPlusTool = new BlastPlusSupport(BlastPlusSupport::ET_TBLASTN_ID, BlastPlusSupport::ET_TBLASTN);
-    etRegistry->registerEntry(tBlastNPlusTool);
-    BlastPlusSupport *tBlastXPlusTool = new BlastPlusSupport(BlastPlusSupport::ET_TBLASTX_ID, BlastPlusSupport::ET_TBLASTX);
-    etRegistry->registerEntry(tBlastXPlusTool);
-    BlastPlusSupport *rpsblastTool = new BlastPlusSupport(BlastPlusSupport::ET_RPSBLAST_ID, BlastPlusSupport::ET_RPSBLAST);
+    // Blast tools.
+    auto blastNTool = new BlastSupport(BlastSupport::ET_BLASTN_ID);
+    etRegistry->registerEntry(blastNTool);
+    auto blastPTool = new BlastSupport(BlastSupport::ET_BLASTP_ID);
+    etRegistry->registerEntry(blastPTool);
+    auto blastXTool = new BlastSupport(BlastSupport::ET_BLASTX_ID);
+    etRegistry->registerEntry(blastXTool);
+    auto tBlastNTool = new BlastSupport(BlastSupport::ET_TBLASTN_ID);
+    etRegistry->registerEntry(tBlastNTool);
+    auto tBlastXTool = new BlastSupport(BlastSupport::ET_TBLASTX_ID);
+    etRegistry->registerEntry(tBlastXTool);
+    auto rpsblastTool = new BlastSupport(BlastSupport::ET_RPSBLAST_ID);
     etRegistry->registerEntry(rpsblastTool);
-    BlastDbCmdSupport *blastDbCmdSupport = new BlastDbCmdSupport();
-    etRegistry->registerEntry(blastDbCmdSupport);
+    auto blastDbCmdTool = new BlastSupport(BlastSupport::ET_BLASTDBCMD_ID);
+    etRegistry->registerEntry(blastDbCmdTool);
+    auto makeBlastDbTool = new BlastSupport(BlastSupport::ET_MAKEBLASTDB_ID);
+    etRegistry->registerEntry(makeBlastDbTool);
 
     // CAP3
     CAP3Support *cap3Tool = new CAP3Support(CAP3Support::ET_CAP3_ID, CAP3Support::ET_CAP3);
@@ -294,13 +260,13 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     SpideySupport *spideySupport = new SpideySupport();
     etRegistry->registerEntry(spideySupport);
 
-    //bedtools
+    // bedtools
     etRegistry->registerEntry(new BedtoolsSupport());
 
-    //cutadapt
+    // cutadapt
     etRegistry->registerEntry(new CutadaptSupport());
 
-    //bigwig
+    // bigwig
     etRegistry->registerEntry(new BigWigSupport());
 
     // TopHat
@@ -313,52 +279,29 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     etRegistry->registerEntry(new CufflinksSupport(CufflinksSupport::ET_CUFFMERGE_ID, CufflinksSupport::ET_CUFFMERGE));
     etRegistry->registerEntry(new CufflinksSupport(CufflinksSupport::ET_GFFREAD_ID, CufflinksSupport::ET_GFFREAD));
 
-    // CEAS
-    etRegistry->registerEntry(new CEASSupport());
-
-    // MACS
-    etRegistry->registerEntry(new MACSSupport());
-
-    // peak2gene
-    etRegistry->registerEntry(new Peak2GeneSupport());
-
-    //ConservationPlot
-    etRegistry->registerEntry(new ConservationPlotSupport());
-
-    //SeqPos
-    etRegistry->registerEntry(new SeqPosSupport());
-
-    //ConductGO
-    etRegistry->registerEntry(new ConductGOSupport());
-
-    //Vcfutils
+    // Vcfutils
     etRegistry->registerEntry(new VcfutilsSupport());
 
-    //SnpEff
+    // SnpEff
     etRegistry->registerEntry(new SnpEffSupport());
 
-    //FastQC
+    // FastQC
     etRegistry->registerEntry(new FastQCSupport());
 
     // StringTie
     etRegistry->registerEntry(new StringTieSupport());
 
-    //HMMER
+    // HMMER
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::BUILD_TOOL_ID, HmmerSupport::BUILD_TOOL));
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::SEARCH_TOOL_ID, HmmerSupport::SEARCH_TOOL));
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::PHMMER_TOOL_ID, HmmerSupport::PHMMER_TOOL));
 
-    //Trimmomatic
+    // Trimmomatic
     etRegistry->registerEntry(new TrimmomaticSupport());
 
     if (AppContext::getMainWindow() != nullptr) {
-        etRegistry->setToolkitDescription("BLAST", tr("The <i>Basic Local Alignment Search Tool</i> (BLAST) finds regions of local similarity between sequences. "
-                                                      "The program compares nucleotide or protein sequences to sequence databases and calculates the statistical significance of matches. "
-                                                      "BLAST can be used to infer functional and evolutionary relationships between sequences as well as help identify members of gene families."));
-
-        etRegistry->setToolkitDescription("BLAST+", tr("<i>BLAST+</i> is a new version of the BLAST package from the NCBI."));
-
-        etRegistry->setToolkitDescription("GPU-BLAST+", tr("<i>BLAST+</i> is a new version of the BLAST package from the NCBI."));
+        etRegistry->setToolkitDescription("BLAST", tr("<i>BLAST</i> finds regions of similarity between biological sequences. "
+                                                      "The program compares nucleotide or protein sequences to sequence databases and calculates the statistical significance."));
 
         etRegistry->setToolkitDescription("Bowtie", tr("<i>Bowtie<i> is an ultrafast, memory-efficient short read aligner. "
                                                        "It aligns short DNA sequences (reads) to the human genome at "
@@ -382,38 +325,39 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
                                                         " for the human genome, its memory footprint is typically around 3.2Gb."
                                                         " <br/><br/><i>Bowtie 2</i> supports gapped, local, and paired-end alignment modes."));
 
-        etRegistry->setToolkitDescription("Cistrome", tr("<i>Cistrome</i> is a UGENE version of Cistrome pipeline which also includes some tools useful for ChIP-seq analysis"
-                                                         "This pipeline is aimed to provide the following analysis steps: peak calling and annotating, motif search and gene ontology."));
+        auto blastMakeDbAction = new ExternalToolSupportAction(tr("BLAST make database..."), this, {BlastSupport::ET_MAKEBLASTDB_ID});
+        blastMakeDbAction->setObjectName(ToolsMenu::BLAST_DBP);
+        connect(blastMakeDbAction, &QAction::triggered, makeBlastDbTool, &BlastSupport::sl_runMakeBlastDb);
 
-        ExternalToolSupportAction *makeBLASTDBAction = new ExternalToolSupportAction(tr("BLAST+ make database..."), this, QStringList(FormatDBSupport::ET_MAKEBLASTDB_ID));
-        makeBLASTDBAction->setObjectName(ToolsMenu::BLAST_DBP);
-        connect(makeBLASTDBAction, SIGNAL(triggered()), makeBLASTDBTool, SLOT(sl_runWithExtFileSpecify()));
-
-        ExternalToolSupportAction *alignToRefBlastAction = new ExternalToolSupportAction(tr("Map reads to reference..."),
-                                                                                         this,
-                                                                                         QStringList() << FormatDBSupport::ET_MAKEBLASTDB_ID << BlastPlusSupport::ET_BLASTN_ID);
+        auto alignToRefBlastAction = new ExternalToolSupportAction(tr("Map reads to reference..."),
+                                                                   this,
+                                                                   {BlastSupport::ET_MAKEBLASTDB_ID, BlastSupport::ET_BLASTN_ID});
         alignToRefBlastAction->setObjectName(ToolsMenu::SANGER_ALIGN);
-        connect(alignToRefBlastAction, SIGNAL(triggered(bool)), blastNPlusTool, SLOT(sl_runAlign()));
+        connect(alignToRefBlastAction, &QAction::triggered, blastNTool, &BlastSupport::sl_runAlignToReference);
 
-        BlastPlusSupportContext *blastPlusViewCtx = new BlastPlusSupportContext(this);
-        blastPlusViewCtx->setParent(this);    //may be problems???
-        blastPlusViewCtx->init();
-        QStringList toolList;
-        toolList << BlastPlusSupport::ET_BLASTN_ID << BlastPlusSupport::ET_BLASTP_ID << BlastPlusSupport::ET_BLASTX_ID << BlastPlusSupport::ET_TBLASTN_ID << BlastPlusSupport::ET_TBLASTX_ID << BlastPlusSupport::ET_RPSBLAST_ID;
-        ExternalToolSupportAction *blastPlusAction = new ExternalToolSupportAction(tr("BLAST+ search..."), this, toolList);
-        blastPlusAction->setObjectName(ToolsMenu::BLAST_SEARCHP);
-        connect(blastPlusAction, SIGNAL(triggered()), blastNPlusTool, SLOT(sl_runWithExtFileSpecify()));
+        auto blastViewCtx = new BlastSupportContext(this);
+        blastViewCtx->init();
+        auto blastSearchAction = new ExternalToolSupportAction(tr("BLAST search..."),
+                                                               this,
+                                                               {BlastSupport::ET_BLASTN_ID,
+                                                                BlastSupport::ET_BLASTP_ID,
+                                                                BlastSupport::ET_BLASTX_ID,
+                                                                BlastSupport::ET_TBLASTN_ID,
+                                                                BlastSupport::ET_TBLASTX_ID,
+                                                                BlastSupport::ET_RPSBLAST_ID});
+        blastSearchAction->setObjectName(ToolsMenu::BLAST_SEARCHP);
+        connect(blastSearchAction, &QAction::triggered, blastNTool, &BlastSupport::sl_runBlastSearch);
 
-        ExternalToolSupportAction *blastPlusCmdAction = new ExternalToolSupportAction(tr("BLAST+ query database..."), this, QStringList(BlastDbCmdSupport::ET_BLASTDBCMD_ID));
-        blastPlusCmdAction->setObjectName(ToolsMenu::BLAST_QUERYP);
-        connect(blastPlusCmdAction, SIGNAL(triggered()), blastDbCmdSupport, SLOT(sl_runWithExtFileSpecify()));
+        auto blastDbCmdAction = new ExternalToolSupportAction(tr("BLAST query database..."), this, {BlastSupport::ET_BLASTDBCMD_ID});
+        blastDbCmdAction->setObjectName(ToolsMenu::BLAST_QUERYP);
+        connect(blastDbCmdAction, &QAction::triggered, blastDbCmdTool, &BlastSupport::sl_runBlastDbCmd);
 
-        //Add to menu NCBI Toolkit
-        ToolsMenu::addAction(ToolsMenu::BLAST_MENU, makeBLASTDBAction);
-        ToolsMenu::addAction(ToolsMenu::BLAST_MENU, blastPlusAction);
-        ToolsMenu::addAction(ToolsMenu::BLAST_MENU, blastPlusCmdAction);
+        // Add to menu NCBI Toolkit
+        ToolsMenu::addAction(ToolsMenu::BLAST_MENU, blastMakeDbAction);
+        ToolsMenu::addAction(ToolsMenu::BLAST_MENU, blastSearchAction);
+        ToolsMenu::addAction(ToolsMenu::BLAST_MENU, blastDbCmdAction);
 
-        ExternalToolSupportAction *cap3Action = new ExternalToolSupportAction(QString(tr("Reads de novo assembly (with %1)...")).arg(cap3Tool->getName()), this, QStringList(cap3Tool->getId()));
+        auto cap3Action = new ExternalToolSupportAction(QString(tr("Reads de novo assembly (with %1)...")).arg(cap3Tool->getName()), this, QStringList(cap3Tool->getId()));
         cap3Action->setObjectName(ToolsMenu::SANGER_DENOVO);
         connect(cap3Action, SIGNAL(triggered()), cap3Tool, SLOT(sl_runWithExtFileSpecify()));
         ToolsMenu::addAction(ToolsMenu::SANGER_MENU, cap3Action);
@@ -461,7 +405,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     registerWorkers();
 
     if (AppContext::getMainWindow()) {
-        services << new ExternalToolSupportService();    // Add project view service
+        services << new ExternalToolSupportService();  // Add project view service
     }
 }
 
@@ -481,7 +425,7 @@ void ExternalToolSupportPlugin::registerWorkers() {
     LocalWorkflow::MAFFTWorkerFactory::init();
 
     LocalWorkflow::AlignToReferenceBlastWorkerFactory::init();
-    LocalWorkflow::BlastPlusWorkerFactory::init();
+    LocalWorkflow::BlastWorkerFactory::init();
 
     LocalWorkflow::TCoffeeWorkerFactory::init();
     LocalWorkflow::CuffdiffWorkerFactory::init();
@@ -489,12 +433,6 @@ void ExternalToolSupportPlugin::registerWorkers() {
     LocalWorkflow::CuffmergeWorkerFactory::init();
     LocalWorkflow::GffreadWorkerFactory::init();
     LocalWorkflow::TopHatWorkerFactory::init();
-    LocalWorkflow::CEASReportWorkerFactory::init();
-    LocalWorkflow::MACSWorkerFactory::init();
-    LocalWorkflow::Peak2GeneWorkerFactory::init();
-    LocalWorkflow::ConservationPlotWorkerFactory::init();
-    LocalWorkflow::SeqPosWorkerFactory::init();
-    LocalWorkflow::ConductGOWorkerFactory::init();
     LocalWorkflow::CAP3WorkerFactory::init();
     LocalWorkflow::VcfConsensusWorkerFactory::init();
     LocalWorkflow::BwaMemWorkerFactory::init();
@@ -530,11 +468,11 @@ void ExternalToolSupportService::serviceStateChangedCallback(ServiceState oldSta
         return;
     }
     if (isEnabled()) {
-        projectViewController = new ETSProjectViewItemsContoller(this);
+        projectViewController = new ETSProjectViewItemsController(this);
     } else {
         delete projectViewController;
         projectViewController = nullptr;
     }
 }
 
-}    // namespace U2
+}  // namespace U2

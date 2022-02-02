@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,16 +47,9 @@
 namespace U2 {
 using namespace HI;
 
-#define GET_ACTIVE_DIALOG \
-    QWidget *dialog = QApplication::activeModalWidget(); \
-    GT_CHECK(dialog, "activeModalWidget is NULL"); \
-    QWizard *wizard = qobject_cast<QWizard *>(dialog); \
-    GT_CHECK(wizard, "activeModalWidget is not wizard");
-
 #define GT_CLASS_NAME "GTUtilsDialog::WizardFiller"
 
 #define GT_METHOD_NAME "commonScenario"
-
 void WizardFiller::commonScenario() {
     GTGlobals::sleep();
     if (inputFiles.count() != 0 && !inputFiles.first().isEmpty()) {
@@ -71,23 +64,20 @@ void WizardFiller::commonScenario() {
 
 #define GT_METHOD_NAME "WizardFiller::getExpandButton"
 QToolButton *WizardFiller::getExpandButton(HI::GUITestOpStatus &os) {
-    QToolButton *expandButton = nullptr;
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK_RESULT(dialog, "activeModalWidget is NULL", nullptr);
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
     QWizard *wizard = qobject_cast<QWizard *>(dialog);
     GT_CHECK_RESULT(wizard, "activeModalWidget is not of wizard type", nullptr);
 
     QList<QWidget *> widList = wizard->currentPage()->findChildren<QWidget *>();
     QList<QToolButton *> plusList;
-    foreach (QWidget *w, widList) {
+    for (QWidget *w : qAsConst(widList)) {
         QToolButton *but = qobject_cast<QToolButton *>(w);
-        if (but && but->text() == "+" && abs(but->rect().width() - 19) < 2)
+        if (but && but->text() == "+" && abs(but->rect().width() - 19) < 2) {
             plusList.append(but);
+        }
     }
-    // there can be one or more '+' buttons at wizard page which are invisiable. TODO:detect them
-    if (!plusList.isEmpty())
-        expandButton = plusList.takeLast();
-    return expandButton;
+    // There can be one or more '+' buttons at wizard page which are invisible. TODO:detect them
+    return plusList.isEmpty() ? nullptr : plusList.takeLast();
 }
 #undef GT_METHOD_NAME
 

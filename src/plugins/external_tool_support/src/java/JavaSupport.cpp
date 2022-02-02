@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,29 +29,20 @@ namespace U2 {
 
 const QString JavaSupport::ET_JAVA_ID = "USUPP_JAVA";
 
-const QString JavaSupport::ARCHITECTURE = "architecture";
-const QString JavaSupport::ARCHITECTURE_X32 = "x32";
-const QString JavaSupport::ARCHITECTURE_X64 = "x64";
 const QStringList JavaSupport::RUN_PARAMETERS = {"-jar"};
 
 JavaSupport::JavaSupport()
-    : RunnerTool(RUN_PARAMETERS, JavaSupport::ET_JAVA_ID, "java8", "java") {
+    : RunnerTool(RUN_PARAMETERS, JavaSupport::ET_JAVA_ID, "java", "java") {
     if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
         warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
     }
-
-#ifdef Q_OS_WIN
-    executableFileName = "java.exe";
-#elif defined(Q_OS_UNIX)
-    executableFileName = "java";
-#endif
-
+    executableFileName = isOsWindows() ? "java.exe" : "java";
     validMessage = "version \"\\d+.\\d+.\\d+(_\\d+)?";
     validationArguments << "-version";
 
-    description += tr("Java Platform lets you develop and deploy Java applications on desktops and servers.<br><i>(Requires Java 1.7 or higher)</i>.<br>"
+    description += tr("Java Platform lets you develop and deploy Java applications on desktops and servers.<br><i>(Requires Java 8 or higher)</i>.<br>"
                       "Java can be freely downloaded on the official web-site: https://www.java.com/en/download/");
     versionRegExp = QRegExp("(\\d+.\\d+.\\d+(_\\d+)?)");
     toolKitName = "Java";
@@ -59,37 +50,4 @@ JavaSupport::JavaSupport()
     muted = true;
 }
 
-void JavaSupport::extractAdditionalParameters(const QString &output) {
-    Architecture architecture = x32;
-    if (output.contains("64-Bit")) {
-        architecture = x64;
-    }
-    additionalInfo.insert(ARCHITECTURE, architecture2string(architecture));
-}
-
-JavaSupport::Architecture JavaSupport::getArchitecture() const {
-    return string2architecture(additionalInfo.value(ARCHITECTURE));
-}
-
-QString JavaSupport::architecture2string(Architecture architecture) {
-    switch (architecture) {
-        case JavaSupport::x32:
-            return ARCHITECTURE_X32;
-        case JavaSupport::x64:
-            return ARCHITECTURE_X64;
-        default:
-            FAIL("An unknown architecture", "");
-    }
-}
-
-JavaSupport::Architecture JavaSupport::string2architecture(const QString &string) {
-    if (string == ARCHITECTURE_X32) {
-        return x32;
-    } else if (string == ARCHITECTURE_X64) {
-        return x64;
-    } else {
-        return x32;
-    }
-}
-
-}    // namespace U2
+}  // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,6 +55,7 @@
 #    pragma GCC diagnostic ignored "-Wunused-but-set-variable"
 #    pragma GCC diagnostic ignored "-Wunused-function"
 #    pragma GCC diagnostic ignored "-Wunused-parameter"
+#    pragma GCC diagnostic ignored "-Wunused-value"
 #    pragma GCC diagnostic ignored "-Wunused-variable"
 #
 #    ifndef __cplusplus  // The macros below are not valid in C++ context but are needed for plain C files.

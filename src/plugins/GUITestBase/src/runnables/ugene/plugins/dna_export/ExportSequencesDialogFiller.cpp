@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -100,9 +100,17 @@ void ExportSelectedRegionFiller::setName(const QString &value) {
 #undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "GTUtilsDialog::exportSequenceOfSelectedAnnotationsFiller"
-ExportSequenceOfSelectedAnnotationsFiller::ExportSequenceOfSelectedAnnotationsFiller(HI::GUITestOpStatus &_os, const QString &_path, FormatToUse _format, MergeOptions _options, int _gapLength, bool _addDocToProject, bool _exportWithAnnotations, GTGlobals::UseMethod method)
+ExportSequenceOfSelectedAnnotationsFiller::ExportSequenceOfSelectedAnnotationsFiller(HI::GUITestOpStatus &_os,
+                                                                                     const QString &_path,
+                                                                                     FormatToUse _format,
+                                                                                     MergeOptions _options,
+                                                                                     int _gapLength,
+                                                                                     bool _addDocToProject,
+                                                                                     bool _exportWithAnnotations,
+                                                                                     GTGlobals::UseMethod method,
+                                                                                     bool _translate)
     : Filler(_os, "U2__ExportSequencesDialog"), gapLength(_gapLength), format(_format), addToProject(_addDocToProject),
-      exportWithAnnotations(false), options(_options), useMethod(method) {
+      exportWithAnnotations(false), options(_options), useMethod(method), translate(_translate) {
     exportWithAnnotations = _exportWithAnnotations;
     path = GTFileDialog::toAbsoluteNativePath(_path);
 
@@ -148,6 +156,8 @@ void ExportSequenceOfSelectedAnnotationsFiller::commonScenario() {
     }
 
     GTGlobals::sleep(200);
+
+    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "translateButton"), translate);
 
     QRadioButton *mergeButton = dialog->findChild<QRadioButton *>(mergeRadioButtons[options]);
 

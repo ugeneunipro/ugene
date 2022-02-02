@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -234,6 +234,18 @@ void GUIUtils::showMessage(QWidget *widgetToPaintOn, QPainter &painter, const QS
     QFontMetrics metrics(painter.font(), widgetToPaintOn);
     painter.drawText(widgetToPaintOn->rect(), Qt::AlignCenter, metrics.elidedText(message, Qt::ElideRight, widgetToPaintOn->rect().width()));
     return;
+}
+
+void GUIUtils::insertActionAfter(QMenu *menu, QAction *insertionPointMarkerAction, QAction *actionToInsert) {
+    SAFE_POINT(menu != nullptr, "menu is null", );
+    QList<QAction *> actions = menu->actions();
+    int markerIndex = actions.indexOf(insertionPointMarkerAction);
+    if (markerIndex == -1 || markerIndex == actions.size() - 1) {
+        menu->addAction(actionToInsert);
+        return;
+    }
+    QAction *actionBefore = actions[markerIndex + 1];
+    menu->insertAction(actionBefore, actionToInsert);
 }
 
 }  // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -277,7 +277,7 @@ QList<Task *> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task *subTask) {
                 return res;
             }
             resultText += " ";
-            for (int i = 0; i < s.ma->getNumRows(); i++) {
+            for (int i = 0; i < s.ma->getRowCount(); i++) {
                 QString name = s.ma->getMsaRow(i)->getName();
                 TextUtils::wrapForCSV(name);
                 resultText += "," + name;
@@ -285,11 +285,11 @@ QList<Task *> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task *subTask) {
             }
             resultText += "\n";
 
-            for (int i = 0; i < s.ma->getNumRows(); i++) {
+            for (int i = 0; i < s.ma->getRowCount(); i++) {
                 QString name = s.ma->getMsaRow(i)->getName();
                 TextUtils::wrapForCSV(name);
                 resultText += name;
-                for (int j = 0; j < s.ma->getNumRows(); j++) {
+                for (int j = 0; j < s.ma->getRowCount(); j++) {
                     int val = algo->getSimilarity(i, j, s.usePercents);
 
                     resultText += "," + QString::number(val) + (s.usePercents ? "%" : "");

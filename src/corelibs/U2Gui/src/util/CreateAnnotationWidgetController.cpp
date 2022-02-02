@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,13 +56,11 @@
 
 #include <U2Formats/GenbankLocationParser.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
 #include <U2Gui/ProjectTreeController.h>
 #include <U2Gui/ProjectTreeItemSelectorDialog.h>
 #include <U2Gui/SaveDocumentController.h>
-#include <U2Gui/ShowHideSubgroupWidget.h>
 
 #include "CreateAnnotationFullWidget.h"
 #include "CreateAnnotationNormalWidget.h"
@@ -72,25 +70,13 @@
 namespace U2 {
 
 CreateAnnotationModel::CreateAnnotationModel()
-    : defaultIsNewDoc(false),
-      hideGroupName(false),
-      hideLocation(false),
-      hideAnnotationType(false),
-      hideAnnotationName(false),
-      hideDescription(false),
-      hideUsePatternNames(true),
-      useUnloadedObjects(false),
-      useAminoAnnotationTypes(false),
-      data(new AnnotationData),
-      hideAnnotationTableOption(false),
-      hideAutoAnnotationsOption(true),
-      hideAnnotationParameters(false) {
+    : data(new AnnotationData()) {
 }
 
 AnnotationTableObject *CreateAnnotationModel::getAnnotationObject() const {
     GObject *res = GObjectUtils::selectObjectByReference(annotationObjectRef, UOF_LoadedOnly);
     AnnotationTableObject *aobj = qobject_cast<AnnotationTableObject *>(res);
-    SAFE_POINT(nullptr != aobj, "Invalid annotation table detected!", nullptr);
+    SAFE_POINT(aobj != nullptr, "Invalid annotation table detected!", nullptr);
     return aobj;
 }
 
@@ -119,7 +105,7 @@ CreateAnnotationWidgetController::CreateAnnotationWidgetController(const CreateA
     occc.uof = model.useUnloadedObjects ? UOF_LoadedAndUnloaded : UOF_LoadedOnly;
     occ = w->createGObjectComboBoxController(occc);
 
-    commonWidgetUpdate(model);
+    commonWidgetUpdate();
 
     connect(w, SIGNAL(si_selectExistingTableRequest()), SLOT(sl_onLoadObjectsClicked()));
     connect(w, SIGNAL(si_selectGroupNameMenuRequest()), SLOT(sl_groupName()));
@@ -149,10 +135,10 @@ void CreateAnnotationWidgetController::updateWidgetForAnnotationModel(const Crea
 
     occ->updateConstrains(occc);
 
-    commonWidgetUpdate(newModel);
+    commonWidgetUpdate();
 }
 
-void CreateAnnotationWidgetController::commonWidgetUpdate(const CreateAnnotationModel &model) {
+void CreateAnnotationWidgetController::commonWidgetUpdate() {
     w->setLocationVisible(!model.hideLocation);
     w->setAnnotationNameVisible(!model.hideAnnotationName);
 
@@ -273,7 +259,7 @@ QString CreateAnnotationWidgetController::validate() {
         }
     }
 
-    return QString();
+    return "";
 }
 
 void CreateAnnotationWidgetController::updateModel(bool forValidation) {
@@ -373,7 +359,7 @@ bool CreateAnnotationWidgetController::isAnnotationsTableVirtual() {
 bool CreateAnnotationWidgetController::prepareAnnotationObject() {
     updateModel(false);
     QString v = validate();
-    if ((w->isExistingTableOptionSelected()) && isAnnotationsTableVirtual()) {
+    if (w->isExistingTableOptionSelected() && isAnnotationsTableVirtual()) {
         Document *d = AppContext::getProject()->findDocumentByURL(model.sequenceObjectRef.docUrl);
         SAFE_POINT(d != nullptr, "cannot create a annotation table in same document", false);
         U2OpStatusImpl os;
@@ -408,9 +394,8 @@ bool CreateAnnotationWidgetController::prepareAnnotationObject() {
 
 void CreateAnnotationWidgetController::sl_groupName() {
     GObject *obj = occ->getSelectedObject();
-    QStringList groupNames;
-    groupNames << GROUP_NAME_AUTO;
-    if (nullptr != obj && !obj->isUnloaded() && !isAnnotationsTableVirtual()) {
+    QStringList groupNames = {GROUP_NAME_AUTO};
+    if (obj != nullptr && !obj->isUnloaded() && !isAnnotationsTableVirtual()) {
         AnnotationTableObject *ao = qobject_cast<AnnotationTableObject *>(obj);
         ao->getRootGroup()->getSubgroupPaths(groupNames);
     }
@@ -422,7 +407,7 @@ void CreateAnnotationWidgetController::sl_groupName() {
     std::sort(groupNames.begin(), groupNames.end());
 
     QMenu menu(w);
-    foreach (const QString &str, groupNames) {
+    for (const QString &str : qAsConst(groupNames)) {
         QAction *a = new QAction(str, &menu);
         connect(a, SIGNAL(triggered()), SLOT(sl_setPredefinedGroupName()));
         menu.addAction(a);
@@ -457,7 +442,7 @@ void CreateAnnotationWidgetController::setFocusToAnnotationType() {
 }
 
 void CreateAnnotationWidgetController::sl_documentsComboUpdated() {
-    commonWidgetUpdate(model);
+    commonWidgetUpdate();
 }
 
 void CreateAnnotationWidgetController::sl_annotationNameEdited() {

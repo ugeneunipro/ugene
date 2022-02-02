@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -51,17 +51,14 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     // 3. Click the "Name filter" line edit.
     QWidget *parent = GTWidget::findWidget(os, "palette");
-    QLineEdit *nameFilter = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "nameFilterLineEdit", parent));
-    CHECK(nameFilter, );
+    auto nameFilter = GTWidget::findLineEdit(os, "nameFilterLineEdit", parent);
     // hack. GTLineEdit can not set focus on widget. Don't know why
     GTWidget::click(os, nameFilter);
     GTKeyboardDriver::keySequence("HMM");
     // 4. Write "HMM".
 
     // Expected: There are two samples after filtering.
-    QTreeWidget *samples;
-    samples = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "samples"));
-    CHECK(samples, );
+    auto samples = GTWidget::findTreeWidget(os, "samples");
 
     int count = 0;
     QList<QTreeWidgetItem *> outerList = samples->findItems("", Qt::MatchContains);
@@ -94,9 +91,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTKeyboardDriver::keySequence("align muscle");
 
     // Expected: There are two samples after filtering.
-    QTreeWidget *samples;
-    samples = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "samples"));
-    CHECK(samples, );
+    auto samples = GTWidget::findTreeWidget(os, "samples");
 
     int count = 0;
     QList<QTreeWidgetItem *> outerList = samples->findItems("", Qt::MatchContains);
@@ -144,8 +139,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     // 3. Click the "Name filter" line edit.
     QWidget *parent = GTWidget::findWidget(os, "palette");
-    QLineEdit *nameFilter = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "nameFilterLineEdit", parent));
-    CHECK(nameFilter, );
+    auto nameFilter = GTWidget::findLineEdit(os, "nameFilterLineEdit", parent);
 
     // 4. Write "NGS".
     // hack. GTLineEdit can not set focus on widget. Don't know why
@@ -153,9 +147,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTKeyboardDriver::keySequence("NGS");
 
     // Expected: There are two samples after filtering.
-    QTreeWidget *samples;
-    samples = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "samples"));
-    CHECK(samples, );
+    auto samples = GTWidget::findTreeWidget(os, "samples");
 
     int count = 0;
     QList<QTreeWidgetItem *> outerList = samples->findItems("", Qt::MatchContains);
@@ -164,13 +156,13 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
         for (int j = 0; j < outerList.value(i)->childCount(); j++) {
             innerList.append(outerList.value(i)->child(j));
         }
-        foreach (QTreeWidgetItem *item, innerList) {
+        for (QTreeWidgetItem *item : qAsConst(innerList)) {
             if (!item->isHidden()) {
                 count++;
             }
         }
     }
-    CHECK_SET_ERR(count == 22, QString("Wrong number of visible items in sample tree: %1").arg(count));
+    CHECK_SET_ERR(count == 18, QString("Wrong number of visible items in sample tree: %1").arg(count));
 }
 
 }  // namespace GUITest_common_scenarios_workflow_name_filter

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,13 +22,11 @@
 #ifndef _U2_MAFFT_SUPPORT_RUN_DIALOG_H
 #define _U2_MAFFT_SUPPORT_RUN_DIALOG_H
 
-#include <ui_MAFFTSupportRunDialog.h>
-
 #include <QDialog>
 
-#include <U2Gui/DialogUtils.h>
-
 #include "MAFFTSupportTask.h"
+
+#include <ui_MAFFTSupportRunDialog.h>
 
 namespace U2 {
 
@@ -62,5 +60,5 @@ private:
     SaveDocumentController *saveController;
 };
 
-}    // namespace U2
-#endif    // _U2_MAFFT_SUPPORT_RUN_DIALOG_H
+}  // namespace U2
+#endif  // _U2_MAFFT_SUPPORT_RUN_DIALOG_H

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,17 +35,17 @@
 #include <U2View/MSAEditorSequenceArea.h>
 
 #include "MaGraphCalculationTask.h"
-#include "ov_msa/helpers/BaseWidthController.h"
-#include "ov_msa/helpers/RowHeightController.h"
-#include "ov_msa/helpers/ScrollController.h"
-#include "ov_msa/view_rendering/MaEditorSelection.h"
+#include "ov_msa/BaseWidthController.h"
+#include "ov_msa/MaEditorSelection.h"
+#include "ov_msa/RowHeightController.h"
+#include "ov_msa/ScrollController.h"
 
 namespace U2 {
 
 MaSimpleOverview::MaSimpleOverview(MaEditorWgt *ui)
     : MaOverview(ui) {
-    setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-    setFixedHeight(FIXED_HEIGTH);
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    setFixedHeight(FIXED_HEIGHT);
 }
 
 bool MaSimpleOverview::isValid() const {
@@ -54,7 +54,6 @@ bool MaSimpleOverview::isValid() const {
 }
 
 QPixmap MaSimpleOverview::getView() {
-    resize(ui->width(), FIXED_HEIGTH);
     if (cachedMSAOverview.isNull()) {
         cachedMSAOverview = QPixmap(size());
         QPainter pOverview(&cachedMSAOverview);
@@ -120,6 +119,7 @@ void MaSimpleOverview::drawOverview(QPainter &p) {
 
     recalculateScale();
 
+    MaEditorSequenceArea *sequenceArea = ui->getSequenceArea();
     QString highlightingSchemeId = sequenceArea->getCurrentHighlightingScheme()->getFactory()->getId();
 
     MultipleAlignmentObject *mAlignmentObj = editor->getMaObject();

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,10 +25,10 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/MainWindow.h>
@@ -171,7 +171,7 @@ const QString IlluminaClipSettingsWidget::DEFAULT_PE_ADAPTERS = "TruSeq3-PE-2.fa
 IlluminaClipSettingsWidget::IlluminaClipSettingsWidget() {
     setupUi(this);
 
-    fileName->setText(QDir::toNativeSeparators(QDir("data:").path() + "/adapters/illumina/" + DEFAULT_SE_ADAPTERS));    // The default adapters should be set depending on another attribute value
+    fileName->setText(QDir::toNativeSeparators(QDir("data:").path() + "/adapters/illumina/" + DEFAULT_SE_ADAPTERS));  // The default adapters should be set depending on another attribute value
     new LineEditHighlighter(fileName);
 
     connect(fileName, SIGNAL(textChanged(QString)), SIGNAL(si_valueChanged()));
@@ -237,8 +237,8 @@ void IlluminaClipSettingsWidget::sl_browseButtonClicked() {
     QString defaultDir = QDir::searchPaths(PATH_PREFIX_DATA).first() + "/adapters/illumina";
     LastUsedDirHelper dirHelper("trimmomatic/adapters", defaultDir);
 
-    const QString filter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::FASTA, true, QStringList());
-    QString defaultFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::FASTA, false);
+    QString filter = FileFilters::createFileFilterByObjectTypes({BaseDocumentFormats::FASTA});
+    QString defaultFilter = FileFilters::createSingleFileFilterByDocumentFormatId(BaseDocumentFormats::FASTA);
     const QString adaptersFilePath = U2FileDialog::getOpenFileName(this, tr("Open FASTA with adapters"), dirHelper.dir, filter, &defaultFilter);
     if (!adaptersFilePath.isEmpty()) {
         dirHelper.url = adaptersFilePath;
@@ -299,5 +299,5 @@ IlluminaClipStep *IlluminaClipStepFactory::createStep() const {
     return new IlluminaClipStep();
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,6 +22,7 @@
 #include "U2SequenceUtils.h"
 
 #include <QApplication>
+#include <QScopedPointer>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceObject.h>
@@ -422,6 +423,16 @@ U2SequenceImporter::~U2SequenceImporter() {
     }
 }
 
+void U2SequenceImporter::enableAminoTranslation(const DNATranslation *newAminoTT) {
+    SAFE_POINT(!sequenceCreated, "enableAminoTranslation can be set only during initialization", );
+    this->aminoTT = newAminoTT;
+}
+
+void U2SequenceImporter::enableReverseComplement(const DNATranslation *newComplTT) {
+    SAFE_POINT(!sequenceCreated, "enableReverseComplement can be set only during initialization", );
+    this->complTT = newComplTT;
+}
+
 void U2SequenceImporter::startSequence(U2OpStatus &os,
                                        const U2DbiRef &dbiRef,
                                        const QString &dstFolder,
@@ -451,6 +462,7 @@ void U2SequenceImporter::startSequence(U2OpStatus &os,
 }
 
 void U2SequenceImporter::addBlock(const char *data, qint64 len, U2OpStatus &os) {
+    CHECK(len > 0, );
     // derive common alphabet
     const DNAAlphabet *blockAl = U2AlphabetUtils::findBestAlphabet(data, len);
     CHECK_EXT(blockAl != nullptr, os.setError("Failed to match sequence alphabet!"), );
@@ -509,15 +521,63 @@ void U2SequenceImporter::addDefaultSymbolsBlock(int n, U2OpStatus &os) {
     currentLength += n;
 }
 
-void U2SequenceImporter::_addBlock2Buffer(const char *data, qint64 len, U2OpStatus &os) {
-    if (len + sequenceBuffer.length() < insertBlockSize) {
-        sequenceBuffer.append(data, len);
+void U2SequenceImporter::_addBlock2Buffer(const char *data, qint64 dataLength, U2OpStatus &os) {
+    CHECK(dataLength > 0, );
+    const char *newBlock = data;
+    int newBlockLength = (int)dataLength;
+
+    QScopedPointer<QByteArray> complBlockPointer;  // container of the reverse-complementary block sequence.
+    if (complTT != nullptr) {
+        complBlockPointer.reset(new QByteArray(newBlockLength, Qt::Uninitialized));
+        char *revComplBlock = complBlockPointer->data();
+        TextUtils::reverse(newBlock, revComplBlock, newBlockLength);
+        complTT->translate(revComplBlock, newBlockLength);
+        newBlock = revComplBlock;
+    }
+
+    QScopedPointer<QByteArray> aminoBlockPointer;  // container of the translated block sequence.
+    if (aminoTT != nullptr) {
+        if (newBlockLength + aminoTranslationBuffer.size() < 3) {
+            aminoTranslationBuffer.append(newBlock, newBlockLength);
+            return;
+        }
+        const char *const dnaBlock = newBlock;
+        aminoBlockPointer.reset(new QByteArray(newBlockLength / 3 + 1, Qt::Uninitialized));
+        char *aminoBlock = aminoBlockPointer->data();
+        int remainingDnaBlockLength = newBlockLength;
+        int dnaBlockOffset = 0;
+        bool hasCharFromAminoBuffer = false;
+        // Finish the pending block first.
+        if (!aminoTranslationBuffer.isEmpty()) {
+            SAFE_POINT(aminoTranslationBuffer.length() <= 2, "Invalid size of aminoTranslationBuffer", );
+            hasCharFromAminoBuffer = true;
+            dnaBlockOffset = 3 - aminoTranslationBuffer.size();
+            aminoTranslationBuffer.append(dnaBlock, dnaBlockOffset);
+            aminoTT->translate(aminoTranslationBuffer.constData(), 3, aminoBlock, 1);
+            aminoBlockPointer->append(dnaBlock, 1);
+            remainingDnaBlockLength -= dnaBlockOffset;
+            aminoTranslationBuffer.clear();
+        }
+        int aminoBlockLength = remainingDnaBlockLength / 3;
+        aminoTT->translate(dnaBlock + dnaBlockOffset, remainingDnaBlockLength, aminoBlock + (hasCharFromAminoBuffer ? 1 : 0), aminoBlockLength);
+        remainingDnaBlockLength = remainingDnaBlockLength % 3;
+
+        newBlock = aminoBlock;
+        newBlockLength = (hasCharFromAminoBuffer ? 1 : 0) + aminoBlockLength;
+
+        if (remainingDnaBlockLength != 0) {
+            aminoTranslationBuffer.append(dnaBlock + dataLength - remainingDnaBlockLength, remainingDnaBlockLength);
+        }
+    }
+
+    if (newBlockLength + sequenceBuffer.length() < insertBlockSize) {
+        sequenceBuffer.append(newBlock, newBlockLength);
         return;
     }
     _addBlock2Db(sequenceBuffer.data(), sequenceBuffer.length(), os);
     CHECK_OP(os, );
     sequenceBuffer.clear();
-    _addBlock2Db(data, len, os);
+    _addBlock2Db(newBlock, newBlockLength, os);
 }
 
 void U2SequenceImporter::_addBlock2Db(const char *data, qint64 len, U2OpStatus &os) {
@@ -622,6 +682,8 @@ qint64 U2SequenceImporter::getCurrentLength() const {
 }
 
 void U2MemorySequenceImporter::addBlock(const char *data, qint64 len, U2OpStatus &os) {
+    SAFE_POINT(aminoTT == nullptr, "Import with amino translation is not supported by U2MemorySequenceImporter", );
+    SAFE_POINT(complTT == nullptr, "Import with reverse-complementary translation is not supported by U2MemorySequenceImporter", );
     if (qstrlen(data) < len) {
         os.setError("Wrong data length in addBlock");
         return;
@@ -663,38 +725,38 @@ qint64 U2MemorySequenceImporter::getCurrentLength() const {
     return sequenceData.length();
 }
 
-U2PseudoCircularization::U2PseudoCircularization(QObject *parent, bool isCircular, QByteArray &seq, qint64 circOverlap)
-    : QObject(parent) {
-    seqLen = seq.size();
-    if (isCircular) {
-        circOverlap = (circOverlap == -1 ? seqLen - 1 : circOverlap);
-        seq.append(QByteArray(seq).left(circOverlap));
+QByteArray U2PseudoCircularization::createSequenceWithCircularOverlaps(const QByteArray &sequence, int maxLinearRegionLength) {
+    int linearRegionLength = maxLinearRegionLength < 0 ? sequence.length() : maxLinearRegionLength;
+    QByteArray result = sequence;
+    result.append(result.left(linearRegionLength));
+    return result;
+}
+
+QVector<U2Region> U2PseudoCircularization::getOriginalSequenceCoordinates(const U2Region &circularRegion, qint64 originalSequenceLength) {
+    SAFE_POINT(circularRegion.endPos() <= originalSequenceLength * 2, "Invalid circular region", {});
+    if (circularRegion.endPos() <= originalSequenceLength) {
+        return {circularRegion};
+    }
+    if (circularRegion.startPos > originalSequenceLength) {
+        return {{circularRegion.startPos - originalSequenceLength, circularRegion.length}};
+    } else {
+        return {
+            {circularRegion.startPos, originalSequenceLength - circularRegion.startPos},
+            {0, circularRegion.endPos() - originalSequenceLength},
+        };
     }
 }
 
-QVector<U2Region> U2PseudoCircularization::uncircularizeRegion(const U2Region &region, bool &uncircularized) const {
-    uncircularized = false;
-    if ((region.startPos >= seqLen && region.endPos() >= seqLen) || (region.length > seqLen)) {  // dublicate
-        return QVector<U2Region>();
-    }
-    if (region.endPos() > seqLen) {
-        uncircularized = true;
-        return QVector<U2Region>() << U2Region(region.startPos, seqLen - region.startPos)
-                                   << U2Region(0, region.endPos() - seqLen);
-    }
-    return QVector<U2Region>() << region;
-}
-
-void U2PseudoCircularization::uncircularizeLocation(U2Location &location) const {
-    QVector<U2Region> res;
-    foreach (const U2Region &r, location->regions) {
-        bool regionWasSplitted = false;
-        res << uncircularizeRegion(r, regionWasSplitted);
-        if (regionWasSplitted) {
+void U2PseudoCircularization::convertToOriginalSequenceCoordinates(U2Location &location, qint64 originalSequenceLength) {
+    QVector<U2Region> regions;
+    for (const U2Region &region : qAsConst(location->regions)) {
+        QVector<U2Region> originalRegions = getOriginalSequenceCoordinates(region, originalSequenceLength);
+        if (originalRegions.length() > 1) {
             location->op = U2LocationOperator_Join;
         }
+        regions << originalRegions;
     }
-    location->regions = res;
+    location->regions = regions;
 }
 
 }  // namespace U2

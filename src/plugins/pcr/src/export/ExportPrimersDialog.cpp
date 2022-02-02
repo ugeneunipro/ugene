@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,11 +27,7 @@
 #include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/DocumentUtils.h>
-#include <U2Core/FormatUtils.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/L10n.h>
-#include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/ProjectService.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -42,12 +38,10 @@
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
-#include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/ProjectTreeItemSelectorDialog.h>
 #include <U2Gui/ProjectUtils.h>
 #include <U2Gui/SaveDocumentController.h>
 #include <U2Gui/SharedConnectionsDialog.h>
-#include <U2Gui/U2FileDialog.h>
 
 #include "ExportPrimersToDatabaseTask.h"
 #include "ExportPrimersToLocalFileTask.h"

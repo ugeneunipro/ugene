@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,6 @@
 #include <QComboBox>
 #include <QDialogButtonBox>
 #include <QFile>
-#include <QFileInfoList>
 #include <QListWidget>
 #include <QTextBrowser>
 #include <QToolButton>
@@ -104,26 +103,23 @@ void AppSettingsDialogFiller::commonScenario() {
 
 #define GT_METHOD_NAME "setExternalToolPath"
 void AppSettingsDialogFiller::setExternalToolPath(HI::GUITestOpStatus &os, const QString &toolName, const QString &toolPath) {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    auto dialog = GTWidget::getActiveModalWidget(os);
 
     openTab(os, ExternalTools);
 
-    QTreeWidget *treeWidget = GTWidget::findExactWidget<QTreeWidget *>(os, "twIntegratedTools", dialog);
+    auto treeWidget = GTWidget::findTreeWidget(os, "twIntegratedTools", dialog);
     QList<QTreeWidgetItem *> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
-    bool set = false;
-    foreach (QTreeWidgetItem *item, listOfItems) {
+    for (QTreeWidgetItem *item : qAsConst(listOfItems)) {
         if (item->text(0) == toolName) {
+            GTTreeWidget::scrollToItem(os, item);
             QWidget *itemWid = treeWidget->itemWidget(item, 1);
-            QLineEdit *lineEdit = itemWid->findChild<QLineEdit *>("PathLineEdit");
-            treeWidget->scrollToItem(item);
-            GTThread::waitForMainThread();
+            auto lineEdit = GTWidget::findLineEdit(os, "PathLineEdit", itemWid);
             GTLineEdit::setText(os, lineEdit, toolPath);
             GTTreeWidget::click(os, item, 0);
-            set = true;
+            return;
         }
     }
-    GT_CHECK(set, "tool " + toolName + " not found in tree view");
+    GT_FAIL("tool " + toolName + " not found in tree view", );
 }
 #undef GT_METHOD_NAME
 
@@ -163,19 +159,17 @@ void AppSettingsDialogFiller::setExternalToolPath(HI::GUITestOpStatus &os, const
 
 #define GT_METHOD_NAME "getExternalToolPath"
 QString AppSettingsDialogFiller::getExternalToolPath(HI::GUITestOpStatus &os, const QString &toolName) {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK_RESULT(dialog, "activeModalWidget is NULL", "");
+    auto dialog = GTWidget::getActiveModalWidget(os);
 
     openTab(os, ExternalTools);
 
-    QTreeWidget *treeWidget = GTWidget::findExactWidget<QTreeWidget *>(os, "twIntegratedTools", dialog);
+    auto treeWidget = GTWidget::findTreeWidget(os, "twIntegratedTools", dialog);
     QList<QTreeWidgetItem *> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
 
-    foreach (QTreeWidgetItem *item, listOfItems) {
+    for (QTreeWidgetItem *item : qAsConst(listOfItems)) {
         if (item->text(0) == toolName) {
-            QWidget *itemWid = treeWidget->itemWidget(item, 1);
-            QLineEdit *lineEdit = itemWid->findChild<QLineEdit *>("PathLineEdit");
-            return lineEdit->text();
+            auto itemWid = treeWidget->itemWidget(item, 1);
+            return GTWidget::findLineEdit(os, "PathLineEdit", itemWid)->text();
         }
     }
     return "";

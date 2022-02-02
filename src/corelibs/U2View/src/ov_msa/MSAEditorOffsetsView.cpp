@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,14 +30,14 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include "DrawHelper.h"
 #include "MSAEditor.h"
 #include "MSAEditorOffsetsView.h"
 #include "MSAEditorSequenceArea.h"
 #include "MaEditorNameList.h"
-#include "McaEditor.h"
-#include "helpers/DrawHelper.h"
-#include "helpers/RowHeightController.h"
-#include "helpers/ScrollController.h"
+#include "RowHeightController.h"
+#include "ScrollController.h"
+#include "ov_mca/McaEditor.h"
 
 namespace U2 {
 

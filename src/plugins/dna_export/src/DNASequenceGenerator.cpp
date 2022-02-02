@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,6 +30,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
@@ -43,7 +44,6 @@
 #include <U2Core/U2SequenceDbi.h>
 #include <U2Core/U2SequenceUtils.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/OpenViewTask.h>
 
 static const int MBYTE_TO_BYTE = 1048576;
@@ -53,9 +53,7 @@ namespace U2 {
 const QString DNASequenceGenerator::ID("dna_generator");
 
 QString DNASequenceGenerator::prepareReferenceFileFilter() {
-    QString filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true) +
-                     ";;" + DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, false);
-    return filter;
+    return FileFilters::createFileFilterByObjectTypes({GObjectTypes::SEQUENCE, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT});
 }
 
 void DNASequenceGenerator::generateSequence(const QMap<char, qreal> &charFreqs,
@@ -138,7 +136,7 @@ void DNASequenceGenerator::evaluateBaseContent(const MultipleSequenceAlignment &
         }
     }
 
-    int rowsNum = ma->getNumRows();
+    int rowsNum = ma->getRowCount();
     QMutableMapIterator<char, qreal> i(result);
     while (i.hasNext()) {
         i.next();
@@ -282,7 +280,7 @@ QList<Task *> DNASequenceGeneratorTask::onGenerateTaskFinished() {
                        resultTasks);
             addSequencesToMsaDoc(doc);
         }
-        saveTask = new SaveDocumentTask(doc, SaveDoc_Overwrite);
+        saveTask = new SaveDocumentTask(doc);
         resultTasks << saveTask;
     } else {  // TODO: avoid high memory consumption here
         const DNAAlphabet *alp = cfg.getAlphabet();

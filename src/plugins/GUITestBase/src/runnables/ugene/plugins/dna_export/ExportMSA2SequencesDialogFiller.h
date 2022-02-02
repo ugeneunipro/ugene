@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,9 +36,8 @@ public:
                           Genbank,
                           Swiss_Prot };
     ExportToSequenceFormatFiller(HI::GUITestOpStatus &os, const QString &path, const QString &name, documentFormat format, bool saveFile, bool keepCharacters, GTGlobals::UseMethod method = GTGlobals::UseMouse);
-    ExportToSequenceFormatFiller(HI::GUITestOpStatus &os, CustomScenario *scenario);
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString path, name;

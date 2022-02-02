@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -43,11 +43,12 @@ public:
     StructuralAlignmentTask *getTask();
 
 public slots:
-    virtual void accept();
+    void accept() override;
 
 private:
-    StructuralAlignmentTask *task;
-    BioStruct3DSubsetEditor *ref, *mob;
+    StructuralAlignmentTask *task = nullptr;
+    BioStruct3DSubsetEditor *ref = nullptr;
+    BioStruct3DSubsetEditor *mob = nullptr;
 };
 
 }  // namespace U2

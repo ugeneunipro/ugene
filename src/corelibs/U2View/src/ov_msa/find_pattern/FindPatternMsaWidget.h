@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
 #include <U2View/MSAEditor.h>
 
 #include "FindPatternMsaWidgetSavableTab.h"
-#include "ov_msa/view_rendering/MaEditorSelection.h"
+#include "ov_msa/MaEditorSelection.h"
 #include "ui_FindPatternMsaForm.h"
 
 namespace U2 {

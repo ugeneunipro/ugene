@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,7 +41,7 @@ bool GTUtilsCv::isCvPresent(HI::GUITestOpStatus &os, ADVSingleSequenceWidget *se
     CHECK_SET_ERR_RESULT(seqWidget != nullptr, "NULL sequence widget!", false);
 
     QString cvWidgetName = "CV_" + seqWidget->objectName();
-    QWidget *cvWidget = GTWidget::findWidget(os, cvWidgetName, nullptr, GTGlobals::FindOptions(false));
+    QWidget *cvWidget = GTWidget::findWidget(os, cvWidgetName, nullptr, {false});
     CHECK_SET_ERR_RESULT(!os.isCoR(), "Error getting CV widget!", false);
 
     return cvWidget != nullptr;
@@ -101,7 +101,7 @@ void GTUtilsCv::commonCvBtn::click(HI::GUITestOpStatus &os) {
     CHECK_OP_SET_ERR(os, "Error getting global CV button!");
 
     if (!button->isVisible()) {
-        QWidget *ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "mwtoolbar_activemdi"), GTGlobals::FindOptions(false));
+        QWidget *ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "mwtoolbar_activemdi"), {false});
         if (ext_button != nullptr) {
             GTWidget::click(os, ext_button);
         }

@@ -246,17 +246,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::LocalWorkflow::QDPrompter</name>
     <message>
-        <location filename="../src/QDWorker.cpp" line="136"/>
+        <location filename="../src/QDWorker.cpp" line="133"/>
         <source>unset</source>
         <translation>не указан</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="137"/>
+        <location filename="../src/QDWorker.cpp" line="134"/>
         <source>from %1</source>
         <translation>из %1</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="140"/>
+        <location filename="../src/QDWorker.cpp" line="137"/>
         <source>Analyze each nucleotide sequence &lt;u&gt;%1&lt;/u&gt; with &lt;u&gt;%2&lt;/u&gt;.</source>
         <translation>Анализ каждой нуклеотидной послдовательности &lt;u&gt;%1&lt;/u&gt; с &lt;u&gt;%2&lt;/u&gt;.</translation>
     </message>
@@ -264,67 +264,67 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::LocalWorkflow::QDWorker</name>
     <message>
-        <location filename="../src/QDWorker.cpp" line="76"/>
+        <location filename="../src/QDWorker.cpp" line="73"/>
         <source>Input sequences</source>
         <translation>Входные последовательности</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="77"/>
+        <location filename="../src/QDWorker.cpp" line="74"/>
         <source>A nucleotide sequence to analyze.</source>
         <translation>Последовательность для анализа.</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="80"/>
+        <location filename="../src/QDWorker.cpp" line="77"/>
         <source>Result annotations</source>
         <translation>Выходные аннотации</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="81"/>
+        <location filename="../src/QDWorker.cpp" line="78"/>
         <source>A set of annotations marking found results.</source>
         <translation>Найден набор аннотаций.</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="92"/>
+        <location filename="../src/QDWorker.cpp" line="89"/>
         <source>Schema</source>
         <translation>Схема</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="92"/>
+        <location filename="../src/QDWorker.cpp" line="89"/>
         <source>Schema file.</source>
         <translation>Файл схемы.</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="93"/>
+        <location filename="../src/QDWorker.cpp" line="90"/>
         <source>Offset</source>
         <translation>Смещение</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="93"/>
+        <location filename="../src/QDWorker.cpp" line="90"/>
         <source>Specifies left and right offsets for merged annotation (if &apos;Merge&apos; parameter is set to true).</source>
         <translation>Задает правый и левый сдвиги для соединяемых аннотаций (если установлен соответствующий параметр для соединения).</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="94"/>
+        <location filename="../src/QDWorker.cpp" line="91"/>
         <source>Merge</source>
         <translation>Соединить</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="94"/>
+        <location filename="../src/QDWorker.cpp" line="91"/>
         <source>Merges regions of each result into single annotation if true.</source>
         <translation>Соединяет регионы каждого результата в одну аннотацию.</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="101"/>
+        <location filename="../src/QDWorker.cpp" line="98"/>
         <source>Annotate with UQL</source>
         <translation>Аннотирование с помощью UQL</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="101"/>
+        <location filename="../src/QDWorker.cpp" line="98"/>
         <source>Analyzes a nucleotide sequence using different algorithms(Repeat finder, ORF finder, etc.) imposing constraints on the positional relationship of the results.</source>
         <translation>Анализирует нуклеотидную последовательность используя различные алгоритмы учитывая ограничения на взаимное расположение результатов.</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="109"/>
+        <location filename="../src/QDWorker.cpp" line="106"/>
         <source>Query schemes</source>
         <translation>Схемы запросов</translation>
     </message>
@@ -332,44 +332,44 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QDDialog</name>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="296"/>
+        <location filename="../src/QDRunDialog.cpp" line="293"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="297"/>
+        <location filename="../src/QDRunDialog.cpp" line="294"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="337"/>
+        <location filename="../src/QDRunDialog.cpp" line="334"/>
         <source>Select query</source>
         <translation>Выбор схемы запроса</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="353"/>
-        <location filename="../src/QDRunDialog.cpp" line="360"/>
+        <location filename="../src/QDRunDialog.cpp" line="350"/>
+        <location filename="../src/QDRunDialog.cpp" line="357"/>
         <source>Can not load %1</source>
         <translation>Не удаётся загрузить схему %1</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="390"/>
+        <location filename="../src/QDRunDialog.cpp" line="387"/>
         <source>File with query is not selected!</source>
         <translation>Не выбран файл схемы!</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="395"/>
+        <location filename="../src/QDRunDialog.cpp" line="392"/>
         <source>Error in schema!</source>
         <translation>Ошибка в схеме!</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="401"/>
-        <location filename="../src/QDRunDialog.cpp" line="413"/>
+        <location filename="../src/QDRunDialog.cpp" line="398"/>
+        <location filename="../src/QDRunDialog.cpp" line="410"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="413"/>
+        <location filename="../src/QDRunDialog.cpp" line="410"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Невозможно создать аннотацию. Проверьте настройки</translation>
     </message>
@@ -755,32 +755,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QDRunDialog</name>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="130"/>
+        <location filename="../src/QDRunDialog.cpp" line="127"/>
         <source>Select output file</source>
         <translation>Выбрать выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="106"/>
+        <location filename="../src/QDRunDialog.cpp" line="103"/>
         <source>Select input file</source>
         <translation>Выбрать входной файл</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="83"/>
+        <location filename="../src/QDRunDialog.cpp" line="80"/>
         <source>Run</source>
         <translation>Выполнить</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="84"/>
+        <location filename="../src/QDRunDialog.cpp" line="81"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="142"/>
+        <location filename="../src/QDRunDialog.cpp" line="139"/>
         <source>The sequence is not specified!</source>
         <translation>Не задана последовательность!</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="146"/>
+        <location filename="../src/QDRunDialog.cpp" line="143"/>
         <source>The output file is not selected!</source>
         <translation>Не задан выходной файл!</translation>
     </message>
@@ -788,17 +788,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QDRunDialogTask</name>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="160"/>
+        <location filename="../src/QDRunDialog.cpp" line="157"/>
         <source>Query Designer</source>
         <translation>Дизайнер запросов</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="210"/>
+        <location filename="../src/QDRunDialog.cpp" line="207"/>
         <source>Sequence not found!</source>
         <translation>Последовательность не найдена!</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="219"/>
+        <location filename="../src/QDRunDialog.cpp" line="216"/>
         <source>Sequence not found, document: %1</source>
         <translation>Последовательность не найдена, документ: %1</translation>
     </message>

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -105,10 +105,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     // Expected result : the menu contains an item "Actions > Edit > Replace character".The item is enabled.A hotkey Shift + R is shown nearby.
     // 4. Select the item.
     // Expected result : the character is selected in the replacement mode.
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Edit"
-                                                << "Replace selected character",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Replace selected character"}, GTGlobals::UseMouse);
 
     // 5. Press a key on the keyboard with another character of the same alphabet(e.g C key).
     // Expected result : the original character of the alignment was replaced with the new one(e.g 'A' was replaced with 'C').Selection is in normal mode.
@@ -182,7 +179,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     // Here "%1" is one of the values : "Standard DNA", "Extended DNA", "Standard RNA", "Extended RNA", "Standard amino acid", "Extended amino acid", "Raw".
     GTKeyboardDriver::keyClick('r');  // Type 'R' character.
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Extended DNA\"");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // 5. Click "Undo".
     // Expected state : There is NO notifications.
@@ -193,7 +190,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     // Expected state : The warning notification appears again.
     GTUtilsMsaEditor::redo(os);
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Extended DNA\"");
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     QString selectionContent = GTClipboard::text(os);

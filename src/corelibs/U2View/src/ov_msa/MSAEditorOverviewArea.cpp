@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,6 +36,9 @@ const QString MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME = "msa_overview_a
 
 MSAEditorOverviewArea::MSAEditorOverviewArea(MaEditorWgt *ui)
     : MaEditorOverviewArea(ui, OVERVIEW_AREA_OBJECT_NAME) {
+    // The MSAEditorOverviewArea can't be resized vertically.
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
     graphOverview = new MaGraphOverview(ui);
     graphOverview->setObjectName(OVERVIEW_AREA_OBJECT_NAME + "_graph");
 
@@ -54,31 +57,39 @@ MSAEditorOverviewArea::MSAEditorOverviewArea(MaEditorWgt *ui)
     contextMenu = new MaOverviewContextMenu(this, simpleOverview, graphOverview);
     setContextMenuPolicy(Qt::DefaultContextMenu);
 
-    connect(contextMenu, SIGNAL(si_graphTypeSelected(MaGraphOverviewDisplaySettings::GraphType)), graphOverview, SLOT(sl_graphTypeChanged(MaGraphOverviewDisplaySettings::GraphType)));
-    connect(contextMenu, SIGNAL(si_colorSelected(QColor)), graphOverview, SLOT(sl_graphColorChanged(QColor)));
-    connect(contextMenu, SIGNAL(si_graphOrientationSelected(MaGraphOverviewDisplaySettings::OrientationMode)), graphOverview, SLOT(sl_graphOrientationChanged(MaGraphOverviewDisplaySettings::OrientationMode)));
-    connect(contextMenu, SIGNAL(si_calculationMethodSelected(MaGraphCalculationMethod)), graphOverview, SLOT(sl_calculationMethodChanged(MaGraphCalculationMethod)));
+    connect(contextMenu, &MaOverviewContextMenu::si_graphTypeSelected, graphOverview, &MaGraphOverview::sl_graphTypeChanged);
+    connect(contextMenu, &MaOverviewContextMenu::si_colorSelected, graphOverview, &MaGraphOverview::sl_graphColorChanged);
+    connect(contextMenu, &MaOverviewContextMenu::si_graphOrientationSelected, graphOverview, &MaGraphOverview::sl_graphOrientationChanged);
+    connect(contextMenu, &MaOverviewContextMenu::si_calculationMethodSelected, graphOverview, &MaGraphOverview::sl_calculationMethodChanged);
 
-    setMaximumHeight(U2::MaGraphOverview::FIXED_HEIGHT + U2::MaSimpleOverview::FIXED_HEIGTH + 5);
+    updateFixedHeightGeometry();
+
+    simpleOverview->installEventFilter(this);
+    graphOverview->installEventFilter(this);
+}
+
+bool MSAEditorOverviewArea::eventFilter(QObject *watched, QEvent *event) {
+    CHECK(watched == simpleOverview || watched == graphOverview, false);
+    auto type = event->type();
+    if (type == QEvent::Show || type == QEvent::Hide) {
+        updateFixedHeightGeometry();
+    }
+    return false;
+}
+
+void MSAEditorOverviewArea::updateFixedHeightGeometry() {
+    int height = (simpleOverview->isVisible() ? U2::MaSimpleOverview::FIXED_HEIGHT : 0) +
+                 (graphOverview->isVisible() ? U2::MaGraphOverview::FIXED_HEIGHT : 0);
+    setFixedHeight(height);
 }
 
 void MSAEditorOverviewArea::contextMenuEvent(QContextMenuEvent *event) {
     contextMenu->exec(event->globalPos());
 }
 
-void MSAEditorOverviewArea::cancelRendering() {
-    graphOverview->cancelRendering();
-    MaEditorOverviewArea::cancelRendering();
-}
-
 void MSAEditorOverviewArea::setVisible(bool isVisible) {
     MaEditorOverviewArea::setVisible(isVisible);
-    if (isVisible) {
-        graphOverview->sl_unblockRendering(true);
-    } else {
-        graphOverview->sl_blockRendering();
-        cancelRendering();
-    }
+    updateFixedHeightGeometry();
 }
 
 }  // namespace U2

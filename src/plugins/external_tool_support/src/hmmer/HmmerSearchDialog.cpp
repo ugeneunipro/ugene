@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,12 +28,12 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/U2FileDialog.h>
@@ -76,7 +76,7 @@ void HmmerSearchDialog::init(U2SequenceObject *seqObj) {
     useExplicitScoreTresholdButton->setChecked(true);
 
     model.sequence = QPointer<U2SequenceObject>(seqObj);
-    setModelValues();    // default settings here
+    setModelValues();  // default settings here
 
     // Annotations widget
     CreateAnnotationModel annModel;
@@ -111,8 +111,8 @@ void HmmerSearchDialog::init(U2SequenceObject *seqObj) {
 
 void HmmerSearchDialog::setModelValues() {
     domESpinBox->setValue(1);
-    scoreTresholdDoubleSpin->setValue(0);    // because default is OPTION_NOT_SET
-    domZDoubleSpinBox->setValue(0);    // because default is OPTION_NOT_SET
+    scoreTresholdDoubleSpin->setValue(0);  // because default is OPTION_NOT_SET
+    domZDoubleSpinBox->setValue(0);  // because default is OPTION_NOT_SET
     nobiasCheckBox->setChecked(model.searchSettings.noBiasFilter);
     nonull2CheckBox->setChecked(model.searchSettings.noNull2);
     maxCheckBox->setChecked(model.searchSettings.doMax);
@@ -246,7 +246,7 @@ void HmmerSearchDialog::sl_domESpinBoxChanged(int newVal) {
 
 void HmmerSearchDialog::sl_queryHmmFileToolButtonClicked() {
     LastUsedDirHelper helper(HMM_FILES_DIR_ID);
-    const QString fileFilter = DialogUtils::prepareFileFilter(tr("HMM profile"), QStringList() << "hmm", true, QStringList());
+    QString fileFilter = FileFilters::createFileFilter(tr("HMM profile"), {"hmm"}, false);
 
     helper.url = U2FileDialog::getOpenFileName(this, tr("Select query HMM profile"), helper, fileFilter);
     if (!helper.url.isEmpty()) {
@@ -260,4 +260,4 @@ void HmmerSearchDialog::sl_domZCheckBoxChanged(int state) {
     domZDoubleSpinBox->setEnabled(checked);
 }
 
-}    // namespace U2
+}  // namespace U2

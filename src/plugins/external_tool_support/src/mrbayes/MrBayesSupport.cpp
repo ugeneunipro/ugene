@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,7 +26,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/GAutoDeleteList.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 
 #include <U2Test/GTest.h>
@@ -55,7 +54,7 @@ MrBayesSupport::MrBayesSupport()
     executableFileName = "mb";
 #endif
 
-    validationArguments << "";    // anything to get info and exit with error
+    validationArguments << "";  // anything to get info and exit with error
     validMessage = "MrBayes";
     description = tr("<i>MrBayes</i> is a program for the Bayesian estimation of phylogeny."
                      "Bayesian inference of phylogeny is based upon a quantity called the posterior "
@@ -67,13 +66,13 @@ MrBayesSupport::MrBayesSupport()
     versionRegExp = QRegExp("MrBayes v(\\d+\\.\\d+\\.\\d+)");
     toolKitName = "MrBayes";
 
-    //register the method
+    // register the method
     PhyTreeGeneratorRegistry *registry = AppContext::getPhyTreeGeneratorRegistry();
     registry->registerPhyTreeGenerator(new MrBayesAdapter(), MrBayesSupport::ET_MRBAYES_ALGORITHM_NAME_AND_KEY);
 }
 
 ////////////////////////////////////////
-//MrBayesAdapter
+// MrBayesAdapter
 
 Task *MrBayesAdapter::createCalculatePhyTreeTask(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &s) {
     return new MrBayesSupportTask(ma, s);
@@ -84,7 +83,7 @@ CreatePhyTreeWidget *MrBayesAdapter::createPhyTreeSettingsWidget(const MultipleS
 }
 
 ////////////////////////////////////////
-//MrBayesModelTypes
+// MrBayesModelTypes
 
 QString MrBayesModelTypes::poisson("poisson");
 QString MrBayesModelTypes::jones("jones");
@@ -149,4 +148,4 @@ QStringList MrBayesVariationTypes::getVariationTypes() {
     return list;
 }
 
-}    // namespace U2
+}  // namespace U2

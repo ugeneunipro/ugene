@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -440,7 +440,7 @@ QPoint NotificationStack::getStackBottomRightPoint() const {
 bool NotificationStack::eventFilter(QObject *target, QEvent *event) {
     if (target == parentWidget) {
         if (event->type() == QEvent::Resize || event->type() == QEvent::Move) {
-            QTimer::singleShot(100, [=]() { updateOnScreenNotificationPositions(); });
+            QTimer::singleShot(100, this, [this]() { updateOnScreenNotificationPositions(); });
         }
     }
     return false;

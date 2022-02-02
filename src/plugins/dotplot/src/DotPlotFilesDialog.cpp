@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,14 +22,12 @@
 #include "DotPlotFilesDialog.h"
 
 #include <QMessageBox>
-#include <QPushButton>
 
 #include <U2Core/DocumentUtils.h>
-#include <U2Core/GObjectTypes.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/U2FileDialog.h>
@@ -50,7 +48,7 @@ DotPlotFilesDialog::DotPlotFilesDialog(QWidget *parent)
     connect(mergeFirstCheckBox, SIGNAL(clicked()), SLOT(sl_mergeFirst()));
     connect(mergeSecondCheckBox, SIGNAL(clicked()), SLOT(sl_mergeSecond()));
 
-    filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true).append("\n").append(DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, false));
+    filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GObjectTypes::SEQUENCE});
 }
 
 void DotPlotFilesDialog::sl_oneSequence() {

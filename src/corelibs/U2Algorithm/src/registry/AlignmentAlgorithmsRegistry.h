@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,9 +39,20 @@ class AlgorithmRealization;
 class DNAAlphabet;
 
 enum AlignmentAlgorithmType {
-    MultipleAlignmentType,
-    AddToAlignment,
-    PairwiseAlignment
+    /** Aligns a given alignment. */
+    Align,
+
+    /** Adds new sequences to an alignment. */
+    AlignNewSequencesToAlignment,
+
+    /** Adds a new alignment to an alignment. */
+    AlignNewAlignmentToAlignment,
+
+    /** Aligns some sequences from the alignment to the same alignment. */
+    AlignSelectionToAlignment,
+
+    /** Pairwise alignment algorithm. */
+    PairwiseAlignment,
 };
 
 class U2ALGORITHM_EXPORT AlignmentAlgorithmsRegistry : public QObject {

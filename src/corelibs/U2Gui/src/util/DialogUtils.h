@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,30 +35,9 @@ class DocumentFormatConstraints;
 class Logger;
 class TaskStateInfo;
 
-class U2GUI_EXPORT DialogUtils : public QObject {
+class U2GUI_EXPORT WizardUtils : public QObject {
     Q_OBJECT
 public:
-    static void showProjectIsLockedWarning(QWidget *p = nullptr);
-
-    static QString prepareFileFilter(const QString &name, const QStringList &exts, bool any = true, const QStringList &extraExts = QStringList(".gz"));
-
-    static QString prepareDocumentsFileFilter(const DocumentFormatId &fid, bool any, const QStringList &extraExts = QStringList(".gz"));
-
-    // returns filter for all formats supported. All-docs filter is returned first if any==true
-    static QString prepareDocumentsFileFilter(bool any, const QStringList &extraExts = QStringList(".gz"));
-
-    static QString prepareDocumentsFileFilter(const DocumentFormatConstraints &c, bool any);
-
-    static QString prepareDocumentsFileFilterByObjType(const GObjectType &t, bool any);
-
-    /**
-     * Create a list, separated by ";;" of the supported formats.
-     * @types the list of types, which format should be supported.
-     * @any contain the "All files" filter if true.
-     * @return the ";;" separated list of filters.
-     */
-    static QString prepareDocumentsFileFilterByObjTypes(const QList<GObjectType>& types, bool any);
-
     static void setWizardMinimumSize(QWizard *wizard, const QSize &minimumSize = QSize());
 };
 

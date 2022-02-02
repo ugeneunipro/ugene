@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,13 +21,13 @@
 
 #include "SiteconIO.h"
 
-#include <QFile>
 #include <QFileInfo>
 #include <QTextStream>
 #include <QVector>
 #include <QtMath>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
@@ -35,20 +35,17 @@
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/TextUtils.h>
 
-#include <U2Gui/DialogUtils.h>
-
 #include "DIPropertiesSitecon.h"
 #include "SiteconMath.h"
 #include "SiteconPlugin.h"
-
-/* TRANSLATOR U2::IOAdapter */
 
 namespace U2 {
 
 const QString SiteconIO::SITECON_ID("sitecon");
 const QString SiteconIO::SITECON_EXT = SiteconIO::SITECON_ID;
-QString SiteconIO::getFileFilter(bool includeAll) {
-    return DialogUtils::prepareFileFilter(tr("Sitecon models"), QStringList(SITECON_EXT), includeAll);
+
+QString SiteconIO::getFileFilter() {
+    return FileFilters::createFileFilter(tr("Sitecon models"), {SITECON_EXT}, true);
 }
 
 #define FILE_HEADER "SITECON MODEL"

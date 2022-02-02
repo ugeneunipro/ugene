@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -52,13 +52,8 @@ QList<LogMessage *> GTLogTracer::getMessages() {
 
 bool GTLogTracer::checkMessage(const QString &s) {
     QList<LogMessage *> messages = getMessages();
-    QList<QString> textMessages;
-    foreach (LogMessage *message, messages) {
-        textMessages.append(message->text);
-    }
-
-    foreach (QString message, textMessages) {
-        if (message.contains(s, Qt::CaseInsensitive)) {
+    for (LogMessage *message : qAsConst(messages)) {
+        if (message->text.contains(s, Qt::CaseInsensitive)) {
             return true;
         }
     }
@@ -110,6 +105,37 @@ QStringList GTUtilsLog::getErrors(HI::GUITestOpStatus & /*os*/, const GTLogTrace
         }
     }
     return result;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkMessageWithWait"
+void GTUtilsLog::checkMessageWithWait(HI::GUITestOpStatus &os, const GTLogTracer &logTracer, const QString &message, int timeoutMillis) {
+    for (int time = 0; time < timeoutMillis; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        if (logTracer.checkMessage(message)) {
+            return;
+        }
+    }
+    GT_FAIL("Message was not found in log: " + message, );
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkMessageWithTextCount"
+void GTUtilsLog::checkMessageWithTextCount(HI::GUITestOpStatus &os, const QString &messagePart, int expectedMessageCount, const QString &context) {
+    int messageCount = 0;
+    QList<LogMessage *> messages = GTLogTracer::getMessages();
+    for (auto message : qAsConst(messages)) {
+        if (message->text.contains("checkMessageWithTextCount: Unexpected message count for text: '")) {
+            continue;  // A harness message from one of the previous GT_CHECK calls. Contains the check message part.
+        }
+        messageCount += message->text.contains(messagePart, Qt::CaseInsensitive) ? 1 : 0;
+    }
+    GT_CHECK(messageCount == expectedMessageCount,
+             QString("checkMessageWithTextCount: Unexpected message count for text: '%1', expected: %2, got: %3%4")
+                 .arg(messagePart)
+                 .arg(expectedMessageCount)
+                 .arg(messageCount)
+                 .arg(context.isEmpty() ? "" : ", context: " + context));
 }
 #undef GT_METHOD_NAME
 

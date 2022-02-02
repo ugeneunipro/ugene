@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,7 +49,7 @@ public:
     void removeAnnotation(Annotation *f);
 
     bool contains(const QString &key) const;
-    int getNumRows() const;
+    int getRowCount() const;
     PVRowData *getRow(int row) const;
 
     /**

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -215,7 +215,7 @@ void GTest_SaveDocument::prepare() {
         return;
     }
 
-    SaveDocFlags saveTaskFlags = SaveDoc_Overwrite;
+    SaveDocFlags saveTaskFlags;
     if (!formatId.isEmpty() && formatId != doc->getDocumentFormatId()) {
         DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
         CHECK_EXT(nullptr != format, stateInfo.setError(QString("Document format not found: %1").arg(formatId)), );

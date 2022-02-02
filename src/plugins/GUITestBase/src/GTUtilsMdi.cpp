@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -265,7 +265,7 @@ QWidget *GTUtilsMdi::getActiveObjectViewWindow(GUITestOpStatus &os, const QStrin
 void GTUtilsMdi::checkNoObjectViewWindowIsOpened(GUITestOpStatus &os, const QString &viewId) {
     QList<QWidget *> allWindows = getAllObjectViewWindows(viewId);
     for (int time = 0; time < GT_OP_WAIT_MILLIS && !allWindows.isEmpty(); time += GT_OP_CHECK_MILLIS) {
-        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        GTGlobals::sleep(GT_OP_CHECK_MILLIS);
         allWindows = getAllObjectViewWindows(viewId);
     }
     GT_CHECK(allWindows.isEmpty(), "Found object view windows: " + viewId + ", when expected no window to be present");
@@ -361,7 +361,7 @@ void GTUtilsMdi::selectRandomRegion(HI::GUITestOpStatus &os, const QString &wind
 namespace {
 
 bool isWidgetPartVisible(QWidget *widget) {
-    CHECK(nullptr != widget, false);
+    CHECK(widget != nullptr, false);
 
     if (!widget->visibleRegion().isEmpty()) {
         return true;
@@ -380,10 +380,7 @@ bool isWidgetPartVisible(QWidget *widget) {
 
 #define GT_METHOD_NAME "isAnyPartOfWindowVisible"
 bool GTUtilsMdi::isAnyPartOfWindowVisible(HI::GUITestOpStatus &os, const QString &windowName) {
-    GTGlobals::FindOptions options;
-    options.failIfNotFound = false;
-    QWidget *window = findWindow(os, windowName, options);
-    CHECK(nullptr != window, false);
+    QWidget *window = findWindow(os, windowName, {false});
     return isWidgetPartVisible(window);
 }
 #undef GT_METHOD_NAME

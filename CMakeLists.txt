@@ -43,6 +43,7 @@ if (CMAKE_COMPILER_IS_GNUCXX)
             " -Werror=shadow=local" # Requires GCC 7.1+
             " -Werror=uninitialized"
             " -Werror=unused-parameter"
+            " -Werror=unused-value"
             " -Werror=unused-variable"
             )
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_WARNING_FLAGS}")
@@ -82,9 +83,7 @@ add_subdirectory(src/plugins/api_tests)
 add_subdirectory(src/plugins/biostruct3d_view)
 add_subdirectory(src/plugins/chroma_view)
 add_subdirectory(src/plugins/circular_view)
-add_subdirectory(src/plugins/clark_support)
 add_subdirectory(src/plugins/dbi_bam)
-add_subdirectory(src/plugins/diamond_support)
 add_subdirectory(src/plugins/dna_export)
 add_subdirectory(src/plugins/dna_flexibility)
 add_subdirectory(src/plugins/dna_graphpack)
@@ -93,10 +92,7 @@ add_subdirectory(src/plugins/dotplot)
 add_subdirectory(src/plugins/enzymes)
 add_subdirectory(src/plugins/external_tool_support)
 add_subdirectory(src/plugins/genome_aligner)
-add_subdirectory(src/plugins/kraken_support)
 add_subdirectory(src/plugins/linkdata_support)
-add_subdirectory(src/plugins/metaphlan2_support)
-add_subdirectory(src/plugins/ngs_reads_classification)
 add_subdirectory(src/plugins/orf_marker)
 add_subdirectory(src/plugins/pcr)
 add_subdirectory(src/plugins/perf_monitor)
@@ -106,7 +102,6 @@ add_subdirectory(src/plugins/repeat_finder)
 add_subdirectory(src/plugins/smith_waterman)
 add_subdirectory(src/plugins/test_runner)
 add_subdirectory(src/plugins/weight_matrix)
-add_subdirectory(src/plugins/wevote_support)
 add_subdirectory(src/plugins/workflow_designer)
 
 # Third party plugins.

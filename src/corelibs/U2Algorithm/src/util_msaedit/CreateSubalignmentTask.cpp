@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -89,7 +89,7 @@ void CreateSubalignmentTask::prepare() {
         }
         // Remap row ids.
         QMap<qint64, qint64> rowIdRemap;
-        for (int i = 0; i < origMAObj->getNumRows() && i < resultMAObj->getNumRows(); i++) {
+        for (int i = 0; i < origMAObj->getRowCount() && i < resultMAObj->getRowCount(); i++) {
             qint64 oldRowId = origMAObj->getRow(i)->getRowId();
             qint64 resultRowId = resultMAObj->getRow(i)->getRowId();
             rowIdRemap[oldRowId] = resultRowId;

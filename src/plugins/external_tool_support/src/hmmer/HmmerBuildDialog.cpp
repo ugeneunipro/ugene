@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,9 +25,9 @@
 #include <QPushButton>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/MultipleSequenceAlignment.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SaveDocumentController.h>
@@ -58,7 +58,7 @@ void HmmerBuildDialog::setSignalsAndSlots() {
     connect(eclustESWRadioButton, SIGNAL(toggled(bool)), SLOT(sl_eclustESWRadioButtonChanged(bool)));
     connect(esetESWRadioButton, SIGNAL(toggled(bool)), SLOT(sl_esetESWRadioButtonChanged(bool)));
 
-    //temporary disabling of strange label/spinbox
+    // temporary disabling of strange label/spinbox
     fragThreshDoubleSpinBox->setVisible(false);
     fragthreshLabel->setVisible(false);
 }
@@ -70,7 +70,7 @@ void HmmerBuildDialog::initialize() {
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     initSaveController();
-    setModelValues();    // build settings are default here
+    setModelValues();  // build settings are default here
     setSignalsAndSlots();
 }
 
@@ -122,7 +122,7 @@ void HmmerBuildDialog::setModelValues() {
 
 void HmmerBuildDialog::sl_maOpenFileButtonClicked() {
     LastUsedDirHelper helper(MA_FILES_DIR_ID);
-    helper.url = U2FileDialog::getOpenFileName(this, tr("Select multiple alignment file"), helper, DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true));
+    helper.url = U2FileDialog::getOpenFileName(this, tr("Select multiple alignment file"), helper, FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT}));
     if (!helper.url.isEmpty()) {
         maLoadFromFileEdit->setText(helper.url);
     }
@@ -244,4 +244,4 @@ void HmmerBuildDialog::sl_esetESWRadioButtonChanged(bool checked) {
     esetESWDoubleSpinBox->setEnabled(checked);
 }
 
-}    // namespace U2
+}  // namespace U2

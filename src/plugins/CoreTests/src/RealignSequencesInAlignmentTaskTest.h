@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,17 +39,16 @@ class GTest_Realign : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_Realign, "realign");
 
-    void prepare();
-    Task::ReportResult report();
-    void cleanup();
+    void prepare() override;
+    Task::ReportResult report() override;
+    void cleanup() override;
 
 private:
     QString inputObjectName;
-    MultipleSequenceAlignmentObject *msaObj;
-    QList<qint64> rowsIndexesToAlign;
-    Document *doc;
-    RealignSequencesInAlignmentTask *realignTask;
-    bool forceUseUgeneAligner;
+    MultipleSequenceAlignmentObject *msaObj = nullptr;
+    QList<int> rowsIndexesToAlign;
+    Document *doc = nullptr;
+    RealignSequencesInAlignmentTask *realignTask = nullptr;
 };
 
 class RealignTests {

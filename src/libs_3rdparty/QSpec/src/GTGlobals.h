@@ -74,9 +74,14 @@ public:
     };
 
     static void sleep(int msec = 2000);
-    static void systemSleep(int sec = 2);
     static void sendEvent(QObject *obj, QEvent *e);
-    static void takeScreenShot(const QString &path);
+
+    /** Takes a screenshot and saves to file. */
+    static void takeScreenShot(HI::GUITestOpStatus &os, const QString &path);
+
+    /** Takes a screenshot and returns an image. */
+    static QImage takeScreenShot(HI::GUITestOpStatus &os);
+
     static void GUITestFail();
 };
 

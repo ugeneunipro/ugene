@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,9 +55,9 @@ public slots:
     virtual void sl_redraw();
 
 protected:
-    void mousePressEvent(QMouseEvent *);
-    void mouseMoveEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
+    void mousePressEvent(QMouseEvent *) override;
+    void mouseMoveEvent(QMouseEvent *) override;
+    void mouseReleaseEvent(QMouseEvent *) override;
 
     virtual void drawOverview(QPainter &) {
     }
@@ -78,7 +78,6 @@ protected:
 
     MaEditor *editor;
     MaEditorWgt *ui;
-    MaEditorSequenceArea *sequenceArea;
 
     QPixmap cachedView;
     QRect cachedVisibleRange;

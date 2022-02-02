@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@ class IOAdapterFactory;
 class DocumentFormat;
 
 enum SaveDocFlag {
-    SaveDoc_Overwrite = 1 << 0,
+    SaveDoc_Overwrite = 1 << 0,  // Deprecated. Not used by the 'SaveDocumentTask', but still is used by a non-related code.
     SaveDoc_Append = 1 << 1,
     SaveDoc_Roll = 1 << 2,
     SaveDoc_DestroyAfter = 1 << 3,
@@ -50,7 +50,7 @@ Q_DECLARE_FLAGS(SaveDocFlags, SaveDocFlag)
 class U2CORE_EXPORT SaveDocumentTask : public Task {
     Q_OBJECT
 public:
-    SaveDocumentTask(Document *doc, IOAdapterFactory *iof = nullptr, const GUrl &url = GUrl(), SaveDocFlags flags = SaveDoc_Overwrite);
+    SaveDocumentTask(Document *doc, IOAdapterFactory *iof = nullptr, const GUrl &url = GUrl(), SaveDocFlags flags = 0);
     SaveDocumentTask(Document *doc, SaveDocFlags flags, const QSet<QString> &excludeFileNames = QSet<QString>());
 
     void prepare() override;

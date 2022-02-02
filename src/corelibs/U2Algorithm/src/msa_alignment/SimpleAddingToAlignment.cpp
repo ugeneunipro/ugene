@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -50,7 +50,7 @@ SimpleAddToAlignmentTask::SimpleAddToAlignmentTask(const AlignSequencesToAlignme
 void SimpleAddToAlignmentTask::prepare() {
     algoLog.info(tr("Align sequences to alignment with UGENE started"));
 
-    MSAUtils::removeColumnsWithGaps(inputMsa, inputMsa->getNumRows());
+    MSAUtils::removeColumnsWithGaps(inputMsa, inputMsa->getRowCount());
 
     QListIterator<QString> namesIterator(settings.addedSequencesNames);
     foreach (const U2EntityRef &sequence, settings.addedSequencesRefs) {
@@ -74,7 +74,7 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
     U2UseCommonUserModStep modStep(settings.msaRef, stateInfo);
     CHECK_OP(stateInfo, ReportResult_Finished);
     U2MsaDbi *dbi = modStep.getDbi()->getMsaDbi();
-    int posInMsa = inputMsa->getNumRows();
+    int posInMsa = inputMsa->getRowCount();
     bool hasDbiUpdates = false;
 
     U2AlphabetId currentAlphabetId = dbi->getMsaAlphabet(settings.msaRef.entityId, stateInfo);
@@ -88,11 +88,11 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
     QListIterator<QString> namesIterator(settings.addedSequencesNames);
 
     const QList<qint64> rowsIds = inputMsa->getRowsIds();
-    const U2MsaListGapModel msaGapModel = inputMsa->getGapModel();
-    for (int i = 0; i < inputMsa->getNumRows(); i++) {
+    const QList<QVector<U2MsaGap>> msaGapModel = inputMsa->getGapModel();
+    for (int i = 0; i < inputMsa->getRowCount(); i++) {
         U2MsaRow row = dbi->getRow(settings.msaRef.entityId, rowsIds[i], stateInfo);
         CHECK_OP(stateInfo, ReportResult_Finished);
-        U2MsaRowGapModel modelToChop(msaGapModel[i]);
+        QVector<U2MsaGap> modelToChop(msaGapModel[i]);
         MsaRowUtils::chopGapModel(modelToChop, row.length);
         CHECK_CONTINUE(modelToChop != row.gaps);
 
@@ -115,7 +115,7 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
             posInMsa++;
 
             if (sequencePositions.contains(seqName) && sequencePositions[seqName] > 0) {
-                QList<U2MsaGap> gapModel;
+                QVector<U2MsaGap> gapModel;
                 gapModel << U2MsaGap(0, sequencePositions[seqName]);
                 U2MsaRow msaRow = dbi->getRow(settings.msaRef.entityId, row.rowId, stateInfo);
                 CHECK_OP(stateInfo, ReportResult_Finished);
@@ -165,7 +165,7 @@ void BestPositionFindTask::run() {
         sequence = sequence.toUpper();
     }
     const int aliLen = inputMsa->getLength();
-    const int nSeq = inputMsa->getNumRows();
+    const int nSeq = inputMsa->getRowCount();
 
     int similarity = 0;
 
@@ -216,7 +216,7 @@ AbstractAlignmentTask *SimpleAddToAlignmentTaskFactory::getTaskInstance(Abstract
 }
 
 SimpleAddToAlignmentAlgorithm::SimpleAddToAlignmentAlgorithm()
-    : AlignmentAlgorithm(AddToAlignment,
+    : AlignmentAlgorithm(AlignNewSequencesToAlignment,
                          BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE,
                          AlignmentAlgorithmsRegistry::tr("Align sequences to alignment with UGENE…"),
                          new SimpleAddToAlignmentTaskFactory()) {

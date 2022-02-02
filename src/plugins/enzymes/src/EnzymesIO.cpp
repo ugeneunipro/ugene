@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,6 +26,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
@@ -34,12 +35,10 @@
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 
-#include <U2Gui/DialogUtils.h>
-
 namespace U2 {
 
 QString EnzymesIO::getFileDialogFilter() {
-    return DialogUtils::prepareFileFilter(tr("Bairoch format"), QStringList("bairoch"));
+    return FileFilters::createFileFilter(tr("Bairoch format"), {"bairoch"});
 }
 
 QList<SEnzymeData> EnzymesIO::readEnzymes(const QString &url, TaskStateInfo &ti) {

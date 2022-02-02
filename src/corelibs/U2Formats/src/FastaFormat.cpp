@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -273,7 +273,8 @@ static void load(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariant
     }
 
     CHECK_OP_EXT(os, qDeleteAll(objects); objects.clear(), );
-    CHECK_EXT(!objects.isEmpty() || mergeIntoSingleSequence, os.setError(Document::tr("Document is empty.")), );
+    bool isEmptyFileAllowed = hints.value(DocumentReadingMode_AllowEmptyFile).toBool();
+    CHECK_EXT(!objects.isEmpty() || mergeIntoSingleSequence || isEmptyFileAllowed, os.setError(Document::tr("Document is empty.")), );
     SAFE_POINT(headers.size() == mergedMapping.size(), "headers <-> regions mapping failed!", );
     ioLog.trace("All sequences are processed");
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,8 +37,7 @@ void GTBaseCompleter::click(HI::GUITestOpStatus &os, QWidget *widgetCompleterFor
     GT_CHECK(tree != nullptr, "tree widget is NULL");
     QTreeWidgetItem *item = GTTreeWidget::findItem(os, tree, seqName);
     GT_CHECK(item != nullptr, "item not found");
-    tree->scrollToItem(item);
-    GTGlobals::sleep(100);
+    GTTreeWidget::scrollToItem(os, item);
     QRect itemRect = tree->visualItemRect(item);
     QPoint globalCenter = tree->mapToGlobal(itemRect.center());
     GTMouseDriver::moveTo(globalCenter);

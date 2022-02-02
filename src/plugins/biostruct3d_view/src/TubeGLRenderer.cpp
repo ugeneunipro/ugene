@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -89,7 +89,7 @@ bool TubeGLRenderer::isAvailableFor(const BioStruct3D &bioStruct) {
     foreach (const SharedMolecule mol, bioStruct.moleculeMap) {
         foreach (const Molecule3DModel &model, mol->models.values()) {
             foreach (const SharedAtom atom, model.atoms) {
-                if ((atom->name.trimmed() == alphaCarbonTag) || (atom->name.trimmed() == phosporTag)) {
+                if (atom->name == alphaCarbonTag || atom->name == phosporTag) {
                     available = true;
                 }
             }
@@ -111,7 +111,7 @@ void TubeGLRenderer::create() {
         foreach (int modelId, mol->models.keys()) {
             const Molecule3DModel &model = mol->models.value(modelId);
             foreach (const SharedAtom atom, model.atoms) {
-                if ((atom->name.trimmed() == alphaCarbonTag) || (atom->name.trimmed() == phosporTag)) {
+                if (atom->name == alphaCarbonTag || atom->name == phosporTag) {
                     tubeMap[atom->chainIndex].modelsMap[modelId].append(atom);
                 }
             }

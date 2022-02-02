@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -112,9 +112,9 @@ public:
     static void click(HI::GUITestOpStatus &os, QGraphicsItem *item, QPoint p = QPoint(0, 0), Qt::MouseButton button = Qt::LeftButton);
 
     // returs worker placed on workflow scene which contains item name
-    static WorkflowProcessItem *getWorker(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+    static WorkflowProcessItem *getWorker(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options = {});
 
-    static QString getWorkerText(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+    static QString getWorkerText(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options = {});
 
     static void clickLink(HI::GUITestOpStatus &os, const QString &itemName, Qt::MouseButton button = Qt::LeftButton, int step = 10);
 
@@ -218,7 +218,6 @@ public:
     static void importCmdlineBasedElement(HI::GUITestOpStatus &os, const QString &path);
 
 private:
-    static void selectAlgorithm(HI::GUITestOpStatus &os, QTreeWidgetItem *algorithm);
     static void selectSample(HI::GUITestOpStatus &os, QTreeWidgetItem *sample, QWidget *parentWidget = nullptr);
     static QRect getItemRect(HI::GUITestOpStatus &os, const QString &itemName);
     static QTreeWidget *getCurrentTabTreeWidget(HI::GUITestOpStatus &os);

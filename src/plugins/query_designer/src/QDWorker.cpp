@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/FailTask.h>
-#include <U2Core/GObjectTypes.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultiTask.h>
@@ -38,15 +38,12 @@
 #include <U2Designer/DelegateEditors.h>
 #include <U2Designer/QDScheduler.h>
 
-#include <U2Gui/DialogUtils.h>
-
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BaseAttributes.h>
 #include <U2Lang/BasePorts.h>
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
-#include <U2Lang/CoreLibConstants.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/QDScheme.h>
 #include <U2Lang/WorkflowEnv.h>
@@ -106,7 +103,7 @@ void QDWorkerFactory::init() {
     QMap<QString, PropertyDelegate *> delegates;
     {
         delegates[SCHEMA_ATTR] = new URLDelegate(
-            DialogUtils::prepareFileFilter(QDWorker::tr("Query schemes"), QStringList(QUERY_SCHEME_EXTENSION), true),
+            FileFilters::createFileFilter(QDWorker::tr("Query schemes"), {QUERY_SCHEME_EXTENSION}, false),
             QUERY_DESIGNER_ID,
             false,
             false,

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -115,6 +115,12 @@ typedef QFlags<DocumentFormatFlag> DocumentFormatFlags;
 #define DocumentReadingMode_MaxObjectsInDoc "max-objects-in-doc"
 #define DocumentReadingMode_DontMakeUniqueNames "no-unique-names"
 #define DocumentReadingMode_LoadAsModified "load-as-modified"
+
+/**
+ * By default document format parsers treat empty files as error.
+ * This flag makes empty files valid. Supported by a limited set of formats only (FASTA).
+ */
+#define DocumentReadingMode_AllowEmptyFile "allow-empty-file"
 
 /** Set of hints that can be processed during document storing */
 #define DocumentWritingMode_SimpleNames "simple-names"

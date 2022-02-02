@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -136,6 +136,9 @@ public:
     void relatedObjectRelationChanged();
 
     static bool objectLessThan(GObject *first, GObject *second);
+
+    /** Returns object version in the ObjectDbi. Returns '-1' if the dbiRef is invalid. */
+    int getObjectVersion() const;
 
 signals:
     void si_nameChanged(const QString &oldName);

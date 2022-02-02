@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@ MultipleSequenceAlignmentObject *MultipleSequenceAlignmentImporter::createAlignm
 }
 
 MultipleSequenceAlignmentObject *MultipleSequenceAlignmentImporter::createAlignment(const U2DbiRef &dbiRef, const QString &folder, MultipleSequenceAlignment &al, U2OpStatus &os, const QList<U2Sequence> &alignedSeqs) {
-    if (!alignedSeqs.isEmpty() && alignedSeqs.size() != al->getNumRows()) {
+    if (!alignedSeqs.isEmpty() && alignedSeqs.size() != al->getRowCount()) {
         os.setError(QObject::tr("Unexpected number of sequences in a multiple alignment"));
         return nullptr;
     }
@@ -62,24 +62,24 @@ MultipleSequenceAlignmentObject *MultipleSequenceAlignmentImporter::createAlignm
 
     // MSA rows
     QList<U2Sequence> sequences;
-    U2MsaListGapModel gapModel;
+    QList<QVector<U2MsaGap>> gapsPerRow;
 
     if (alignedSeqs.isEmpty()) {
         sequences = importSequences(con, folder, al, os);
-        gapModel = al->getGapModel();
+        gapsPerRow = al->getGapModel();
         CHECK_OP(os, nullptr);
     } else {
         setChildRankForSequences(con, alignedSeqs, os);
         CHECK_OP(os, nullptr);
 
         sequences = alignedSeqs;
-        splitToCharsAndGaps(con, sequences, gapModel, os);
+        splitToCharsAndGaps(con, sequences, gapsPerRow, os);
         CHECK_OP(os, nullptr);
     }
 
-    QList<U2MsaRow> rows = importRows(con, al, msaId, sequences, gapModel, os);
+    QList<U2MsaRow> rows = importRows(con, al, msaId, sequences, gapsPerRow, os);
     CHECK_OP(os, nullptr);
-    SAFE_POINT_EXT(rows.size() == al->getNumRows(), os.setError(QObject::tr("Unexpected error on MSA rows import")), nullptr);
+    SAFE_POINT_EXT(rows.size() == al->getRowCount(), os.setError(QObject::tr("Unexpected error on MSA rows import")), nullptr);
 
     if (!rows.isEmpty()) {
         // if the imported alignment is not empty -> set it length to the max(len, orig-len).
@@ -92,7 +92,7 @@ MultipleSequenceAlignmentObject *MultipleSequenceAlignmentImporter::createAlignm
         }
     }
 
-    for (int i = 0, n = al->getNumRows(); i < n; ++i) {
+    for (int i = 0, n = al->getRowCount(); i < n; ++i) {
         al->getMsaRow(i)->setRowDbInfo(rows.at(i));
     }
 
@@ -150,7 +150,7 @@ QList<U2Sequence> MultipleSequenceAlignmentImporter::importSequences(const DbiCo
     SAFE_POINT(nullptr != seqDbi, "NULL Sequence Dbi during importing an alignment!", QList<U2Sequence>());
 
     QList<U2Sequence> sequences;
-    for (int i = 0; i < al->getNumRows(); ++i) {
+    for (int i = 0; i < al->getRowCount(); ++i) {
         DNASequence dnaSeq = al->getMsaRow(i)->getSequence();
 
         U2Sequence sequence = U2Sequence();
@@ -178,7 +178,7 @@ QList<U2Sequence> MultipleSequenceAlignmentImporter::importSequences(const DbiCo
     return sequences;
 }
 
-void MultipleSequenceAlignmentImporter::splitToCharsAndGaps(const DbiConnection &con, QList<U2Sequence> &sequences, U2MsaListGapModel &gapModel, U2OpStatus &os) {
+void MultipleSequenceAlignmentImporter::splitToCharsAndGaps(const DbiConnection &con, QList<U2Sequence> &sequences, QList<QVector<U2MsaGap>> &gapModel, U2OpStatus &os) {
     U2SequenceDbi *seqDbi = con.dbi->getSequenceDbi();
     SAFE_POINT(nullptr != seqDbi, "NULL Sequence Dbi during importing an alignment!", );
 
@@ -188,7 +188,7 @@ void MultipleSequenceAlignmentImporter::splitToCharsAndGaps(const DbiConnection 
         CHECK_OP(os, );
 
         QByteArray pureSequenceData;
-        U2MsaRowGapModel sequenceGapModel;
+        QVector<U2MsaGap> sequenceGapModel;
         MaDbiUtils::splitBytesToCharsAndGaps(sequenceData, pureSequenceData, sequenceGapModel);
         gapModel << sequenceGapModel;
 
@@ -207,38 +207,32 @@ void MultipleSequenceAlignmentImporter::splitToCharsAndGaps(const DbiConnection 
     }
 }
 
-QList<U2MsaRow> MultipleSequenceAlignmentImporter::importRows(const DbiConnection &con, MultipleSequenceAlignment &al, const U2DataId &msaId, const QList<U2Sequence> &sequences, const U2MsaListGapModel &msaGapModel, U2OpStatus &os) {
+QList<U2MsaRow> MultipleSequenceAlignmentImporter::importRows(const DbiConnection &con, MultipleSequenceAlignment &al, const U2DataId &msaId, const QList<U2Sequence> &sequences, const QList<QVector<U2MsaGap>> &msaGapModel, U2OpStatus &os) {
     QList<U2MsaRow> rows;
     SAFE_POINT_EXT(sequences.size() == msaGapModel.size(), os.setError("Gap model doesn't fit sequences count"), rows);
 
-    for (int rowIdx = 0, seqIdx = 0; rowIdx < al->getNumRows(); ++rowIdx, ++seqIdx) {
+    for (int rowIdx = 0, seqIdx = 0; rowIdx < al->getRowCount(); ++rowIdx, ++seqIdx) {
         U2Sequence seq = sequences[seqIdx];
-        if (seq.length > 0) {
-            MultipleSequenceAlignmentRow alignmentRow = al->getMsaRow(rowIdx);
-            const U2MsaRowGapModel gapModel = msaGapModel[rowIdx];
-            if (!gapModel.isEmpty() && (gapModel.last().offset + gapModel.last().gap) == MsaRowUtils::getRowLength(alignmentRow->getSequence().seq, gapModel)) {
-                // remove trailing gap if it exists
-                U2MsaRowGapModel newGapModel = gapModel;
-                newGapModel.removeLast();
-                alignmentRow->setGapModel(newGapModel);
-            }
-
-            U2MsaRow row;
-            row.sequenceId = seq.id;
-            row.gstart = 0;
-            row.gend = seq.length;
-            row.gaps = alignmentRow->getGapModel();
-            row.length = alignmentRow->getRowLengthWithoutTrailing();
-
-            rows.append(row);
-        } else {
-            al->removeRow(rowIdx, os);
-            --rowIdx;
+        MultipleSequenceAlignmentRow alignmentRow = al->getMsaRow(rowIdx);
+        const QVector<U2MsaGap> &gapModel = msaGapModel[rowIdx];
+        if (!gapModel.isEmpty() && (gapModel.last().startPos + gapModel.last().length) == MsaRowUtils::getRowLength(alignmentRow->getSequence().seq, gapModel)) {
+            // remove trailing gap if it exists
+            QVector<U2MsaGap> newGapModel = gapModel;
+            newGapModel.removeLast();
+            alignmentRow->setGapModel(newGapModel);
         }
+        U2MsaRow row;
+        row.sequenceId = seq.id;
+        row.gstart = 0;
+        row.gend = seq.length;
+        row.gaps = alignmentRow->getGaps();
+        row.length = alignmentRow->getRowLengthWithoutTrailing();
+
+        rows.append(row);
     }
 
     U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(nullptr != msaDbi, "NULL MSA Dbi during importing an alignment!", QList<U2MsaRow>());
+    SAFE_POINT(msaDbi != nullptr, "NULL MSA Dbi during importing an alignment!", QList<U2MsaRow>());
 
     msaDbi->addRows(msaId, rows, -1, os);
     CHECK_OP(os, QList<U2MsaRow>());

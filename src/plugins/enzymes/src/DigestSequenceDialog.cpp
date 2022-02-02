@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -155,13 +155,11 @@ void DigestSequenceDialog::accept() {
 
     int itemCount = conservedAnnsWidget->count();
     for (int row = 0; row < itemCount; ++row) {
-        const QString &annEncoded = conservedAnnsWidget->item(row)->text();
-        QStringList annData = annEncoded.split(" ");
-        assert(annData.size() == 2);
-        QString aName = annData.at(0);
-        QString locationStr(annData.at(1));
+        auto item = conservedAnnsWidget->item(row);
+        QString aName = item->data((int)ItemDataRole::AnnotationNameRole).toString();
+        QString aRegion = item->data((int)ItemDataRole::AnnotationLocationRole).toString();
         U2Location l;
-        Genbank::LocationParser::parseLocation(qPrintable(locationStr), locationStr.size(), l);
+        Genbank::LocationParser::parseLocation(qPrintable(aRegion), aRegion.size(), l);
         foreach (const U2Region &region, l->regions) {
             cfg.conservedRegions.insertMulti(aName, region);
         }
@@ -333,6 +331,7 @@ void DigestSequenceDialog::setUiEnabled(bool enabled) {
 
 void DigestSequenceDialog::sl_addAnnBtnClicked() {
     QObjectScopedPointer<QDialog> dlg = new QDialog(this);
+    dlg->setObjectName("select_annotations_dialog");
     dlg->setWindowTitle(tr("Select annotations"));
     QVBoxLayout *layout = new QVBoxLayout(dlg.data());
     QListWidget *listWidget(new QListWidget(dlg.data()));
@@ -341,12 +340,18 @@ void DigestSequenceDialog::sl_addAnnBtnClicked() {
         QList<Annotation *> anns = aObj->getAnnotations();
         foreach (Annotation *a, anns) {
             const SharedAnnotationData &d = a->getData();
-            listWidget->addItem(QString("%1 %2").arg(d->name).arg(U1AnnotationUtils::buildLocationString(d)));
+            auto location = U1AnnotationUtils::buildLocationString(d);
+            auto itemText = QString("%1 %2").arg(d->name).arg(location);
+            auto item = new QListWidgetItem(itemText, listWidget);
+            item->setData((int)ItemDataRole::AnnotationNameRole, d->name);
+            item->setData((int)ItemDataRole::AnnotationLocationRole, location);
+            listWidget->addItem(item);
         }
     }
     listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
     layout->addWidget(listWidget);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, dlg.data());
+    buttonBox->setObjectName("buttonBox");
     connect(buttonBox, SIGNAL(accepted()), dlg.data(), SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), dlg.data(), SLOT(reject()));
     layout->addWidget(buttonBox);
@@ -360,7 +365,12 @@ void DigestSequenceDialog::sl_addAnnBtnClicked() {
         foreach (QListWidgetItem *item, items) {
             const QString &itemText = item->text();
             if (conservedAnnsWidget->findItems(itemText, Qt::MatchExactly).isEmpty()) {
-                conservedAnnsWidget->addItem(itemText);
+                auto newItem = new QListWidgetItem(itemText, conservedAnnsWidget);
+                auto aName = item->data((int)ItemDataRole::AnnotationNameRole).toString();
+                auto aLocation = item->data((int)ItemDataRole::AnnotationLocationRole).toString();
+                newItem->setData((int)ItemDataRole::AnnotationNameRole, aName);
+                newItem->setData((int)ItemDataRole::AnnotationLocationRole, aLocation);
+                conservedAnnsWidget->addItem(newItem);
             }
         }
     }

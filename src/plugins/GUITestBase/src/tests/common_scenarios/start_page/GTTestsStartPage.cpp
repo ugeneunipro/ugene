@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -118,19 +118,17 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     CHECK_SET_ERR(title == "Start Page", "unexpected window title: " + title);
 
     //    Use main menu: Help->Open start page
-    GTMenu::clickMainMenuItem(os, QStringList() << "Help"
-                                                << "Open Start Page");
+    GTMenu::clickMainMenuItem(os, {"Help", "Open Start Page"});
 
     //    Expected state: nothing happens
     title = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title == "Start Page", "unexpected window title: " + title);
     //    Close Start page
     GTUtilsMdi::click(os, GTGlobals::Close);
-    QWidget *window = GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false));
+    QWidget *window = GTUtilsMdi::activeWindow(os, {false});
     CHECK_SET_ERR(window == nullptr, "start page was not closed");
     //    Repeat step 2
-    GTMenu::clickMainMenuItem(os, QStringList() << "Help"
-                                                << "Open Start Page");
+    GTMenu::clickMainMenuItem(os, {"Help", "Open Start Page"});
     //    Expected state: Start page is opened
     title = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title == "Start Page", "unexpected window title: " + title);

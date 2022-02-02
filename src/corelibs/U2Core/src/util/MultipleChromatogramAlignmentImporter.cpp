@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -67,9 +67,9 @@ MultipleChromatogramAlignmentObject *MultipleChromatogramAlignmentImporter::crea
 
     QList<U2McaRow> rows = importRows(os, connection, dbMca, mcaRowsDatabaseData);
     CHECK_OP(os, nullptr);
-    SAFE_POINT_EXT(rows.size() == mca->getNumRows(), os.setError(QObject::tr("Unexpected error on MCA rows import")), nullptr);
+    SAFE_POINT_EXT(rows.size() == mca->getRowCount(), os.setError(QObject::tr("Unexpected error on MCA rows import")), nullptr);
 
-    for (int i = 0, n = mca->getNumRows(); i < n; ++i) {
+    for (int i = 0, n = mca->getRowCount(); i < n; ++i) {
         mca->getMcaRow(i)->setRowDbInfo(rows.at(i));
     }
 
@@ -145,7 +145,7 @@ QList<McaRowDatabaseData> MultipleChromatogramAlignmentImporter::importRowChildO
         importRowAdditionalInfo(os, connection, mcaRowDatabaseData.chromatogram, mcaRowDatabaseData.additionalInfo);
         CHECK_OP(os, mcaRowsDatabaseData);
 
-        mcaRowDatabaseData.gapModel = row->getGapModel();
+        mcaRowDatabaseData.gapModel = row->getGaps();
         mcaRowDatabaseData.rowLength = row->getRowLengthWithoutTrailing();
 
         mcaRowsDatabaseData << mcaRowDatabaseData;

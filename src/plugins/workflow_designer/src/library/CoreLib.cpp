@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,14 +24,12 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/Log.h>
 #include <U2Core/Settings.h>
 #include <U2Core/global.h>
 
 #include <U2Designer/DelegateEditors.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
@@ -52,7 +50,6 @@
 
 #include "AminoTranslationWorker.h"
 #include "AssemblyToSequenceWorker.h"
-#include "BaseDocWriter.h"
 #include "CDSearchWorker.h"
 #include "ConvertFilesFormatWorker.h"
 #include "ConvertSnpeffVariationsToAnnotationsWorker.h"

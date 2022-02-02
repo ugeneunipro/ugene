@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -60,6 +60,11 @@ private slots:
     void sl_taskStateChanged();
 
 private:
+    enum class ItemDataRole {
+        AnnotationNameRole = Qt::UserRole,
+        AnnotationLocationRole
+    };
+
     void addAnnotationWidget();
     void searchForAnnotatedEnzymes(ADVSequenceObjectContext *ctx);
     void updateAvailableEnzymeWidget();

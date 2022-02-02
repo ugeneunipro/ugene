@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,8 +49,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     //  3. Close project
     GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Close project");
+    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
 }
 GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     // 1. Open a GenBank file with circular view (tested on NC_014267.gb from NCBI DB)
@@ -68,8 +67,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
 
     // 3. Close project
     GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Close project");
+    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
 }
 GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     // 1. Open a GenBank file with circular view (tested on NC_014267.gb from NCBI DB)
@@ -88,8 +86,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
 
     // 3. Close project
     GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Close project");
+    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
 }
 }  // namespace GUITest_common_scenarios_project_bookmarks
 }  // namespace U2

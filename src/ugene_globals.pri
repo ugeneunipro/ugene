@@ -90,6 +90,7 @@ linux-g++ {
         QMAKE_CXXFLAGS += -Werror=return-type
         QMAKE_CXXFLAGS += -Werror=uninitialized
         QMAKE_CXXFLAGS += -Werror=unused-parameter
+        QMAKE_CXXFLAGS += -Werror=unused-value
         QMAKE_CXXFLAGS += -Werror=unused-variable
 
         versionAtLeast(GCC_VERSION, 7.1) {

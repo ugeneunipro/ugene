@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,6 +35,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/Log.h>
@@ -52,7 +53,6 @@
 #include <U2Designer/RemoveDashboardsTask.h>
 #include <U2Designer/WizardController.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportImageDialog.h>
 #include <U2Gui/ScriptEditorDialog.h>
 #include <U2Gui/U2FileDialog.h>
@@ -107,7 +107,6 @@ namespace U2 {
 #define EDITOR_STATE SETTINGS + "editor"
 #define PALETTE_STATE SETTINGS + "palette"
 #define TABS_STATE SETTINGS + "tabs"
-#define CHECK_R_PACKAGE SETTINGS + "check_r_for_cistrome"
 
 enum { ElementsTab,
        SamplesTab };
@@ -854,7 +853,7 @@ QString copyIntoUgene(const QString &url, U2OpStatus &os) {
 }  // namespace
 
 void WorkflowView::sl_appendExternalToolWorker() {
-    QString filter = DialogUtils::prepareFileFilter(WorkflowUtils::tr("UGENE workflow element"), QStringList() << "etc", true);
+    QString filter = FileFilters::createFileFilter(WorkflowUtils::tr("UGENE workflow element"), {"etc"});
     QString url = U2FileDialog::getOpenFileName(this, tr("Add element"), QString(), filter);
     if (!url.isEmpty()) {
         IOAdapter *io = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(GUrl(url)))->createIOAdapter();
@@ -1997,13 +1996,12 @@ void WorkflowView::sl_saveSceneAs() {
 }
 
 void WorkflowView::startWizard(Wizard *wizard) {
-    auto viewPointer = new QPointer<WorkflowView>(this);
-    QTimer::singleShot(100, [this, wizard, viewPointer]() {
-        // Check that the view is not closed/destroyed before running the wizard. */
-        if (!viewPointer->isNull()) {
-            runWizardAndHandleResult(wizard);
+    QPointer<Wizard> wizardPointer(wizard);
+    QTimer::singleShot(100, this, [this, wizardPointer]() {
+        // Check that the wizard is not closed/destroyed.
+        if (!wizardPointer.isNull()) {
+            runWizardAndHandleResult(wizardPointer.data());
         }
-        delete viewPointer;
     });
 }
 
@@ -2152,7 +2150,7 @@ void WorkflowView::sl_loadScene() {
     }
 
     QString dir = AppContext::getSettings()->getValue(LAST_DIR, QString("")).toString();
-    QString filter = DesignerUtils::getSchemaFileFilter(true, true);
+    QString filter = DesignerUtils::getSchemaFileFilter();
     QString url;
 #ifdef Q_OS_DARWIN
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {

@@ -669,79 +669,79 @@
 <context>
     <name>U2::SiteconBuildDialogController</name>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="60"/>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="147"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="58"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="145"/>
         <source>Build</source>
         <translation>Построить</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="61"/>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="129"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="59"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="127"/>
         <source>Cancel</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="102"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="100"/>
         <source>Illegal alignment file</source>
         <translation>Укажите входной файл выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="107"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="105"/>
         <source>Illegal SITECON model file</source>
         <translation>Укажите файл результирующей модели</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="113"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="111"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="125"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="123"/>
         <source>Starting calibration process</source>
         <translation>Начинается построение</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="128"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="126"/>
         <source>Hide</source>
         <translation>Скрыть</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="141"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="139"/>
         <source>Build finished with error: %1</source>
         <translation>Построение завершено с ошибкой: %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="143"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="141"/>
         <source>Build canceled</source>
         <translation>Построение отменено</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="145"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="143"/>
         <source>Build finished successfully</source>
         <translation>Построение успешно завершено</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="148"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="146"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="154"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="152"/>
         <source>Running... State :%1 Progress: %2</source>
         <translation>Прогресс %2%: %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="167"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="165"/>
         <source>Sitecon models</source>
         <translation>Профайлы SITECON</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="76"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="74"/>
         <source>Select file with alignment</source>
         <translation>Выбор выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="164"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="162"/>
         <source>Select file to save model to...</source>
         <translation>Выбор файла для сохранения профайла...</translation>
     </message>
@@ -749,52 +749,52 @@
 <context>
     <name>U2::SiteconBuildTask</name>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="183"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="181"/>
         <source>Build SITECON model</source>
         <translation>Построить SITECON</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="192"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="190"/>
         <source>Alignment contains gaps</source>
         <translation>Выравнивание содержит пробелы</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="196"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="194"/>
         <source>Alignment is empty</source>
         <translation>Выравнивание не содержит данных</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="200"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="198"/>
         <source>Alignment must have at least 2 sequences</source>
         <translation>Выравнивание должно содержать минимум 2 последовательности</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="204"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="202"/>
         <source>Alignment is not nucleic</source>
         <translation>Поддерживаются только нуклеотидные выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="208"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="206"/>
         <source>Window size is greater than alignment length</source>
         <translation>Размер окна больше длины последовательности</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="222"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="220"/>
         <source>Calculating average and dispersion matrixes</source>
         <translation>Расчёт матрицы средних и дисперсии</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="227"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="225"/>
         <source>Calculating weights</source>
         <translation>Расчёт весов</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="233"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="231"/>
         <source>Calibrating first type error</source>
         <translation>Расчёт ошибки ошибки 1-го рода</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="239"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="237"/>
         <source>Calibrating second type error</source>
         <translation>Расчёт ошибки ошибки 2-го рода</translation>
     </message>
@@ -802,22 +802,22 @@
 <context>
     <name>U2::SiteconBuildToFileTask</name>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="247"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="245"/>
         <source>Build SITECON model to file</source>
         <translation>Построить SITECON</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="257"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="255"/>
         <source>Unknown alignment format</source>
         <translation>Неверный формат файла</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="265"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="263"/>
         <source>Loading alignment</source>
         <translation>Загрузка выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="284"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="282"/>
         <source>No alignment found</source>
         <translation>Выравнивание не найдено</translation>
     </message>
@@ -825,108 +825,108 @@
 <context>
     <name>U2::SiteconIO</name>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="113"/>
+        <location filename="../src/SiteconIO.cpp" line="110"/>
         <source>Not a sitecon model</source>
         <translation>Not a sitecon model</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="154"/>
+        <location filename="../src/SiteconIO.cpp" line="151"/>
         <source>Error parsing settings, line %1</source>
         <translation>Error parsing settings, line %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="165"/>
+        <location filename="../src/SiteconIO.cpp" line="162"/>
         <source>Error parsing window size: %1</source>
         <translation>Error parsing window size: %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="178"/>
+        <location filename="../src/SiteconIO.cpp" line="175"/>
         <source>Error parsing calibration len: %1</source>
         <translation>Error parsing calibration len: %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="184"/>
+        <location filename="../src/SiteconIO.cpp" line="181"/>
         <source>Error parsing RSEED: %1</source>
         <translation>Error parsing RSEED: %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="190"/>
+        <location filename="../src/SiteconIO.cpp" line="187"/>
         <source>Error parsing number of sequence in original alignment: %1</source>
         <translation>Error parsing number of sequence in original alignment: %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="196"/>
+        <location filename="../src/SiteconIO.cpp" line="193"/>
         <source>Error parsing in alignment %1</source>
         <translation>Error parsing in alignment %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="263"/>
+        <location filename="../src/SiteconIO.cpp" line="260"/>
         <source>Error parsing %1 in line %2</source>
         <translation>Error parsing %1 in line %2</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="279"/>
+        <location filename="../src/SiteconIO.cpp" line="276"/>
         <source>Error parsing in line %1</source>
         <translation>Error parsing in line %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="289"/>
-        <location filename="../src/SiteconIO.cpp" line="294"/>
+        <location filename="../src/SiteconIO.cpp" line="286"/>
+        <location filename="../src/SiteconIO.cpp" line="291"/>
         <source>Error parsing %1</source>
         <translation>Error parsing %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="298"/>
+        <location filename="../src/SiteconIO.cpp" line="295"/>
         <source>Illegal error %1</source>
         <translation>Illegal error %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="308"/>
+        <location filename="../src/SiteconIO.cpp" line="305"/>
         <source>Error parsing file in line %1</source>
         <translation>Error parsing file in line %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="317"/>
+        <location filename="../src/SiteconIO.cpp" line="314"/>
         <source>Number of &apos;average&apos; and  &apos;sdev&apos; properties not matches</source>
         <translation>Number of &apos;average&apos; and  &apos;sdev&apos; properties not matches</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="322"/>
+        <location filename="../src/SiteconIO.cpp" line="319"/>
         <source>Number of &apos;average&apos; and &apos;weight&apos; properties not matches</source>
         <translation>Number of &apos;average&apos; and &apos;weight&apos; properties not matches</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="327"/>
+        <location filename="../src/SiteconIO.cpp" line="324"/>
         <source>Property in file %1 is not the same as built-in: %2</source>
         <translation>Property in file %1 is not the same as built-in: %2</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="354"/>
+        <location filename="../src/SiteconIO.cpp" line="351"/>
         <source>Error info in file is not complete</source>
         <translation>Error info in file is not complete</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="361"/>
+        <location filename="../src/SiteconIO.cpp" line="358"/>
         <source>Model verification error</source>
         <translation>Model verification error</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="204"/>
+        <location filename="../src/SiteconIO.cpp" line="201"/>
         <source>Illegal weight algorithm: %1</source>
         <translation>Illegal weight algorithm: %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="214"/>
+        <location filename="../src/SiteconIO.cpp" line="211"/>
         <source>Model size not matched: %1, expected: %2</source>
         <translation>Model size not matched: %1, expected: %2</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="237"/>
+        <location filename="../src/SiteconIO.cpp" line="234"/>
         <source>Duplicate property: %1</source>
         <translation>Duplicate property: %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="247"/>
+        <location filename="../src/SiteconIO.cpp" line="244"/>
         <source>Property not recognized: %1</source>
         <translation>Property not recognized: %1</translation>
     </message>
@@ -943,7 +943,7 @@
         <translation>SITECON</translation>
     </message>
     <message>
-        <location filename="../src/SiteconIO.cpp" line="51"/>
+        <location filename="../src/SiteconIO.cpp" line="48"/>
         <source>Sitecon models</source>
         <translation>Профайлы SITECON</translation>
     </message>

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,7 +56,7 @@
 #include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MaEditorNameList.h>
 
-#include "ov_msa/view_rendering/MaEditorSelection.h"
+#include "ov_msa/MaEditorSelection.h"
 
 #define BadAlphabetWarning 0
 #define DuplicateSequenceWarning 1
@@ -282,7 +282,6 @@ void PairAlign::checkState() {
     pairwiseAlignmentWidgetsSettings->showSequenceWidget = showSequenceWidget;
     pairwiseAlignmentWidgetsSettings->showAlgorithmWidget = showAlgorithmWidget;
     pairwiseAlignmentWidgetsSettings->showOutputWidget = showOutputWidget;
-    pairwiseAlignmentWidgetsSettings->sequenceSelectionModeOn = firstSequenceSelectionOn || secondSequenceSelectionOn;
 }
 
 void PairAlign::updatePercentOfSimilarity() {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -65,7 +65,8 @@ protected:
     void mouseReleaseEvent(QMouseEvent *me);
     void wheelEvent(QWheelEvent *we);
 
-    QString createToolTip(QHelpEvent *he);
+    /** Creates a tool tip string for the given 'X' offset in the render area. */
+    QString createToolTip(int renderAreaXOffset);
     PanView *getPan() const;
     DetView *getDet() const;
 

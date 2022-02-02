@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,13 +24,12 @@
 #include <QVBoxLayout>
 
 #include "MaGraphOverview.h"
-#include "ov_msa/view_rendering/MaEditorWgt.h"
+#include "ov_msa/MaEditorWgt.h"
 
 namespace U2 {
 
 MaEditorOverviewArea::MaEditorOverviewArea(MaEditorWgt *ui, const QString &objectName)
-    : QWidget(ui),
-      isWidgetResizable(false) {
+    : QWidget(ui) {
     setObjectName(objectName);
 
     layout = new QVBoxLayout();
@@ -38,15 +37,7 @@ MaEditorOverviewArea::MaEditorOverviewArea(MaEditorWgt *ui, const QString &objec
     layout->setSpacing(0);
     setLayout(layout);
 
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     setContextMenuPolicy(Qt::PreventContextMenu);
-}
-
-void MaEditorOverviewArea::cancelRendering() {
-}
-
-bool MaEditorOverviewArea::isResizable() const {
-    return isWidgetResizable;
 }
 
 void MaEditorOverviewArea::addOverview(QWidget *overviewWgt) {

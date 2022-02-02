@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -63,13 +63,15 @@ public:
     GUrl(const QString &urlString);
 
     // constructs url specified by string. The type provided as param
-    GUrl(const QString &urlString, const GUrlType& type);
+    GUrl(const QString &urlString, const GUrlType &type);
 
     GUrl(const GUrl &url) = default;
 
     bool operator==(const GUrl &url) const;
 
     bool operator!=(const GUrl &url) const;
+
+    GUrl &operator=(const GUrl &url) = default;
 
     const QString &getURLString() const {
         return urlString;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,6 +29,7 @@
 #include <primitives/GTAction.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
+#include <primitives/GTGroupBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
@@ -352,8 +353,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTFileDialog::openFile(os, dataDir + "samples/PDB", "1CF7.PDB");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTreeWidgetItem *enz = GTUtilsAnnotationsTreeView::findItem(os, "enzymes", GTGlobals::FindOptions(false));
-    QTreeWidgetItem *orf = GTUtilsAnnotationsTreeView::findItem(os, "orfs", GTGlobals::FindOptions(false));
+    QTreeWidgetItem *enz = GTUtilsAnnotationsTreeView::findItem(os, "enzymes", {false});
+    QTreeWidgetItem *orf = GTUtilsAnnotationsTreeView::findItem(os, "orfs", {false});
     CHECK_SET_ERR(enz == nullptr, "enzymes unexpectedly present");
     CHECK_SET_ERR(orf == nullptr, "orfs unexpectedly present");
 }
@@ -413,8 +414,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: there is no auto-annotations for opened sequences
-    QTreeWidgetItem *enz = GTUtilsAnnotationsTreeView::findItem(os, "enzymes", GTGlobals::FindOptions(false));
-    QTreeWidgetItem *orf = GTUtilsAnnotationsTreeView::findItem(os, "orfs", GTGlobals::FindOptions(false));
+    QTreeWidgetItem *enz = GTUtilsAnnotationsTreeView::findItem(os, "enzymes", {false});
+    QTreeWidgetItem *orf = GTUtilsAnnotationsTreeView::findItem(os, "orfs", {false});
     CHECK_SET_ERR(enz == nullptr, "enzymes unexpectedly present");
     CHECK_SET_ERR(orf == nullptr, "orfs unexpectedly present");
 }
@@ -444,8 +445,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     GTWidget::click(os, toggleAutoAnnotationsButton);
 
     // Expected state: there is no auto-annotations for opened sequences
-    QTreeWidgetItem *enz = GTUtilsAnnotationsTreeView::findItem(os, "enzymes", GTGlobals::FindOptions(false));
-    QTreeWidgetItem *orf = GTUtilsAnnotationsTreeView::findItem(os, "orfs", GTGlobals::FindOptions(false));
+    QTreeWidgetItem *enz = GTUtilsAnnotationsTreeView::findItem(os, "enzymes", {false});
+    QTreeWidgetItem *orf = GTUtilsAnnotationsTreeView::findItem(os, "orfs", {false});
     CHECK_SET_ERR(enz == nullptr, "enzymes unexpectedly present");
     CHECK_SET_ERR(orf == nullptr, "orfs unexpectedly present");
 }
@@ -886,7 +887,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
 
     GTUtilsDialog::waitForDialog(os, new SvgLimitsChecker(os), 180000);
     GTWidget::click(os, GTAction::button(os, "export_image"));
-    GTUtilsDialog::waitAllFinished(os, 180000);
+    GTUtilsDialog::checkNoActiveWaiters(os, 180000);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     qint64 fileSize = GTFile::getSize(os, sandBoxDir + "seq_view_test_0030.svg");
@@ -996,7 +997,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new UncheckComplement()));
     GTWidget::click(os, translationsMenuToolbarButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     //  Check "Show direct only"
     class DirectPopupChecker : public CustomScenario {
@@ -1021,7 +1022,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
     };
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new DirectPopupChecker()));
     GTWidget::click(os, translationsMenuToolbarButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     //    Check "Show complement only"
     class UncheckDirectCheckComplement : public CustomScenario {
@@ -1039,7 +1040,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new UncheckDirectCheckComplement()));
     GTWidget::click(os, translationsMenuToolbarButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     class ComplPopupChecker : public CustomScenario {
         void run(HI::GUITestOpStatus &os) override {
@@ -1062,7 +1063,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
     };
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new ComplPopupChecker()));
     GTWidget::click(os, translationsMenuToolbarButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     //    Check "Show all".
     class ShowAllFramesScenario : public CustomScenario {
@@ -1074,7 +1075,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
     };
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new ShowAllFramesScenario()));
     GTWidget::click(os, translationsMenuToolbarButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     // Check results of Show all frames.
     class AllPopupChecker : public CustomScenario {
@@ -1099,7 +1100,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new AllPopupChecker()));
     GTWidget::click(os, translationsMenuToolbarButton);
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 #undef GET_ACTIONS
 
@@ -1164,8 +1165,7 @@ GUI_TEST_CLASS_DEFINITION(test_0036) {
     //    Select 2 annotations.
     GTUtilsAnnotationsTreeView::createAnnotation(os, "new_group", "ann1", "10..20");
     GTUtilsAnnotationsTreeView::createAnnotation(os, "new_group", "ann2", "40..50", false);
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "ann1"
-                                                              << "ann2");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"ann1", "ann2"});
     //    Check "Sequence between selected annotations"  and
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select"
                                                                         << "Sequence between selected annotations"));
@@ -1328,7 +1328,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
 
 GUI_TEST_CLASS_DEFINITION(test_0043) {
     //    Open murine.gb
-    GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    move mouse to annotation on det view
@@ -1338,11 +1338,11 @@ GUI_TEST_CLASS_DEFINITION(test_0043) {
     QString expected = "<table><tr><td bgcolor=#ffff99 bordercolor=black width=15></td><td><big>misc_feature</big></td></tr><tr><td></td><td><b>Location"
                        "</b> = 2..590</td></tr><tr><td/><td><nobr><b>note</b> = 5' terminal repeat</nobr><br><nobr><b>Sequence</b> = AATGAAAGACCCCACCCGTAGGTGGCAAGCTAGCTTAAGT"
                        " ...</nobr><br><nobr><b>Translation</b> = NERPHP*VAS*LK ...</nobr></td></tr></table>";
-    CHECK_SET_ERR(tooltip == expected, "Unexpected toolip: " + tooltip)
+    CHECK_SET_ERR(tooltip == expected, "Unexpected tooltip: " + tooltip)
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0044) {
-    // Overview weel event
+    // Overview wheel event
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1408,7 +1408,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
     QImage init = GTWidget::getImage(os, pan);
     // show restriction sites
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Restriction Sites"));
-    QWidget *qt_toolbar_ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "mwtoolbar_activemdi"), GTGlobals::FindOptions(false));
+    QWidget *qt_toolbar_ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "mwtoolbar_activemdi"), {false});
     if (qt_toolbar_ext_button != nullptr && qt_toolbar_ext_button->isVisible()) {
         GTWidget::click(os, qt_toolbar_ext_button);
     }
@@ -1539,7 +1539,7 @@ GUI_TEST_CLASS_DEFINITION(test_0050) {
 
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem *>() << GTUtilsAnnotationsTreeView::findItem(os, "CDS"));
+    GTUtilsAnnotationsTreeView::selectItems(os, {GTUtilsAnnotationsTreeView::findItem(os, "CDS")});
 
     GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, new WrongNameChecker));
     GTKeyboardDriver::keyClick(Qt::Key_F2);
@@ -1565,7 +1565,7 @@ GUI_TEST_CLASS_DEFINITION(test_0050_1) {
 
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem *>() << GTUtilsAnnotationsTreeView::findItem(os, "CDS"));
+    GTUtilsAnnotationsTreeView::selectItems(os, {GTUtilsAnnotationsTreeView::findItem(os, "CDS")});
 
     GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, new custom));
     GTKeyboardDriver::keyClick(Qt::Key_F2);
@@ -1638,7 +1638,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053) {
     //    Open any graph
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "GC Content (%)", GTGlobals::UseMouse));
     GTWidget::click(os, GTWidget::findWidget(os, "GraphMenuAction"));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 
     //    Add label with shift+left mouse
     QWidget *graphView = GTUtilsSequenceView::getGraphView(os);
@@ -1737,8 +1737,9 @@ GUI_TEST_CLASS_DEFINITION(test_0056) {
         void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid cutoff range"));
-            QGroupBox *minmaxGroup = GTWidget::findExactWidget<QGroupBox *>(os, "minmaxGroup", dialog);
-            minmaxGroup->setChecked(true);
+
+            auto minmaxGroup = GTWidget::findExactWidget<QGroupBox *>(os, "minmaxGroup", dialog);
+            GTGroupBox::setChecked(os, minmaxGroup);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -1868,7 +1869,7 @@ GUI_TEST_CLASS_DEFINITION(test_0061_1) {
 
     // 4. Check that there is 'molecule_name' qualifier with value 'PROTEIN (TRANSCRIPTION FACTOR E2F-4)'  in 'chain_info' annotation for chain A
     CHECK_SET_ERR(GTUtilsSequenceView::getSelection(os).isEmpty(), "Selection is not empty");
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "chain_info");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"chain_info"});
     QString moleculeName = GTUtilsAnnotationsTreeView::getQualifierValue(os, "molecule_name", GTUtilsAnnotationsTreeView::findItem(os, "chain_info"));
     CHECK_SET_ERR(moleculeName == "PROTEIN (TRANSCRIPTION FACTOR E2F-4)", QString("Incorrect molecule name is detected for chain A: %1").arg(moleculeName));
     QTreeWidgetItem *annotationsChainB = GTUtilsAnnotationsTreeView::findItem(os, "1CF7 chain B annotation [1CF7.PDB]");
@@ -1877,10 +1878,10 @@ GUI_TEST_CLASS_DEFINITION(test_0061_1) {
     CHECK_SET_ERR(nullptr != annotationsChainB, QString("Can't find '1CF7 chain B annotation [1CF7.PDB]' annotations document"));
     QTreeWidgetItem *chainInfoGroup = GTUtilsAnnotationsTreeView::findItem(os, "chain_info  (0, 1)", annotationsChainB);
     CHECK_SET_ERR(nullptr != chainInfoGroup, QString("Can't find 'chain_info' annotation group for chain B"));
-    GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem *>() << chainInfoGroup);
+    GTUtilsAnnotationsTreeView::selectItems(os, {chainInfoGroup});
     QTreeWidgetItem *chainInfo = GTUtilsAnnotationsTreeView::findItem(os, "chain_info", chainInfoGroup);
     CHECK_SET_ERR(nullptr != chainInfo, QString("Can't find 'chain_info' annotation for chain B"));
-    GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem *>() << chainInfo);
+    GTUtilsAnnotationsTreeView::selectItems(os, {chainInfo});
     QString moleculeNameChainB = GTUtilsAnnotationsTreeView::getQualifierValue(os, "molecule_name", chainInfo);
 
     CHECK_SET_ERR(moleculeNameChainB == "PROTEIN (TRANSCRIPTION FACTOR DP-2)", QString("Incorrect molecule name is detected for chain B: %1").arg(moleculeNameChainB));
@@ -1896,12 +1897,12 @@ GUI_TEST_CLASS_DEFINITION(test_0061_2) {
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "1CRN chain A annotation [1CRN_without_compnd_tag.PDB]"));
 
     // 3. Check that there is 'chain_id' qualifier with value 'A'  in 'chain_info' annotation for chain A
-    GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "chain_info");
+    GTUtilsAnnotationsTreeView::selectItemsByName(os, {"chain_info"});
     QString chainId = GTUtilsAnnotationsTreeView::getQualifierValue(os, "chain_id", "chain_info");
     CHECK_SET_ERR("A" == chainId, QString("Incorrect 'chain_info' qualifier value: %1").arg(chainId));
 
     // 4. Check that there is not 'molecule_name' qualifier
-    QTreeWidgetItem *moleculeName = GTUtilsAnnotationsTreeView::findItem(os, "molecule_name", GTGlobals::FindOptions(false));
+    QTreeWidgetItem *moleculeName = GTUtilsAnnotationsTreeView::findItem(os, "molecule_name", {false});
     CHECK_SET_ERR(nullptr == moleculeName, QString("There is 'moleculeName' qualifier"));
 }
 
@@ -2179,7 +2180,7 @@ GUI_TEST_CLASS_DEFINITION(test_0068) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "show_all_frames_radiobutton"));
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
-    GTUtilsDialog::waitAllFinished(os);
+    GTUtilsDialog::checkNoActiveWaiters(os);
     CHECK_SET_ERR(visibleRange != GTUtilsSequenceView::getVisibleRange(os), "Visible range was not changed on translation show/hide");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 }
@@ -2322,7 +2323,7 @@ GUI_TEST_CLASS_DEFINITION(test_0076) {
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "EcoRI"));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "EcoRI", GTGlobals::FindOptions(false)) == nullptr, "EcoRI is unexpectedly found");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "EcoRI", {false}) == nullptr, "EcoRI is unexpectedly found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0077) {
@@ -2346,8 +2347,8 @@ GUI_TEST_CLASS_DEFINITION(test_0077) {
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, defaultEnzymes, 4200, 10));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "ClaI", GTGlobals::FindOptions(false)) == nullptr, "ClaI is unexpectedly found");
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "DraI", GTGlobals::FindOptions(false)) == nullptr, "DraI is unexpectedly found");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "ClaI", {false}) == nullptr, "ClaI is unexpectedly found");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "DraI", {false}) == nullptr, "DraI is unexpectedly found");
     QString region = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "EcoRI");
     CHECK_SET_ERR(region == "join(4359..4361,1..3)", QString("EcoRI region is incorrect: %1").arg(region));
 
@@ -2356,7 +2357,7 @@ GUI_TEST_CLASS_DEFINITION(test_0077) {
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, defaultEnzymes, 3900, 300, 4300, 10));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "EcoRI", GTGlobals::FindOptions(false)) == nullptr, "EcoRI is unexpectedly found");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "EcoRI", {false}) == nullptr, "EcoRI is unexpectedly found");
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "ClaI") != nullptr, "ClaI is unexpectedly not found");
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "DraI") != nullptr, "DraI is unexpectedly not found");
 }

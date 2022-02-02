@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -128,7 +128,7 @@ QList<SharedAnnotationData> SecStructPredictUtils::saveAlgorithmResultsAsAnnotat
         if ((curChar != prevChar) || (i == numAcronyms - 1)) {
             if (prevChar != emptyCoil) {
                 SharedAnnotationData sd(new AnnotationData);
-                sd->type = U2FeatureTypes::SeconadaryStructure;
+                sd->type = U2FeatureTypes::SecondaryStructure;
                 sd->name = annotationName;
                 sd->location->regions.append(U2Region(lastRecordedPos, i - lastRecordedPos));
                 sd->qualifiers.append(U2Qualifier(BioStruct3D::SecStructTypeQualifierName, getStructNameForCharTag(prevChar)));

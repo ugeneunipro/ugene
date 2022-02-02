@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,16 +45,14 @@ namespace U2 {
 
 NcbiSearchDialogFiller::NcbiSearchDialogFiller(HI::GUITestOpStatus &os, const QList<Action> &actions)
     : Filler(os, "SearchGenbankSequenceDialog"),
-      dialog(nullptr),
       actions(actions) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void NcbiSearchDialogFiller::commonScenario() {
-    dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    dialog = GTWidget::getActiveModalWidget(os);
 
-    foreach (const Action &action, actions) {
+    for (const Action &action : qAsConst(actions)) {
         switch (action.first) {
             case SetField:
                 setField(action.second);
@@ -120,7 +118,6 @@ void NcbiSearchDialogFiller::commonScenario() {
 
 #define GT_METHOD_NAME "setField"
 void NcbiSearchDialogFiller::setField(const QVariant &actionData) {
-    CHECK_OP(os, );
     const bool canConvert = actionData.canConvert<QPair<int, QString>>();
     GT_CHECK(canConvert, "Can't get the block number and the field name from the action data");
     const QPair<int, QString> value = actionData.value<QPair<int, QString>>();
@@ -132,7 +129,6 @@ void NcbiSearchDialogFiller::setField(const QVariant &actionData) {
 
 #define GT_METHOD_NAME "setTerm"
 void NcbiSearchDialogFiller::setTerm(const QVariant &actionData) {
-    CHECK_OP(os, );
     const bool canConvert = actionData.canConvert<QPair<int, QString>>();
     GT_CHECK(canConvert, "Can't get the block number and the query term from the action data");
     const QPair<int, QString> value = actionData.value<QPair<int, QString>>();
@@ -144,14 +140,12 @@ void NcbiSearchDialogFiller::setTerm(const QVariant &actionData) {
 
 #define GT_METHOD_NAME "addTerm"
 void NcbiSearchDialogFiller::addTerm() {
-    CHECK_OP(os, );
     GTWidget::click(os, GTWidget::findWidget(os, "add_block_button", dialog));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "removeTerm"
 void NcbiSearchDialogFiller::removeTerm(const QVariant &actionData) {
-    CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<int>(), "Can't get the block number from the action data");
     QWidget *blockWidget = GTWidget::findWidget(os, "query_block_widget_" + QString::number(actionData.toInt()), dialog);
     GT_CHECK(nullptr != blockWidget, "Block widget is NULL");
@@ -161,7 +155,6 @@ void NcbiSearchDialogFiller::removeTerm(const QVariant &actionData) {
 
 #define GT_METHOD_NAME "setDatabase"
 void NcbiSearchDialogFiller::setDatabase(const QVariant &actionData) {
-    CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QString>(), "Can't get the database name from the action data");
     GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "databaseBox", dialog), actionData.toString());
 }
@@ -169,7 +162,6 @@ void NcbiSearchDialogFiller::setDatabase(const QVariant &actionData) {
 
 #define GT_METHOD_NAME "checkQuery"
 void NcbiSearchDialogFiller::checkQuery(const QVariant &actionData) {
-    CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QString>(), "Can't get the expected query text from the action data");
     QTextEdit *queryEdit = GTWidget::findExactWidget<QTextEdit *>(os, "queryEdit", dialog);
     GT_CHECK(nullptr != queryEdit, "Query edit is NULL");
@@ -179,22 +171,17 @@ void NcbiSearchDialogFiller::checkQuery(const QVariant &actionData) {
 
 #define GT_METHOD_NAME "clickResultByNum"
 void NcbiSearchDialogFiller::clickResultByNum(const QVariant &actionData) {
-    CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<int>(), "Can't get the result number from the action data");
-    QTreeWidget *treeWidget = GTWidget::findExactWidget<QTreeWidget *>(os, "treeWidget", dialog);
-    GT_CHECK(nullptr != treeWidget, "Tree widget is NULL");
-    QList<QTreeWidgetItem *> resultItems = GTTreeWidget::getItems(os, treeWidget);
-    GT_CHECK(actionData.toInt() < resultItems.size(), "Result number is out of range");
-    GTTreeWidget::click(os, resultItems[actionData.toInt()]);
-
-    GTGlobals::sleep();
-    GTMouseDriver::click();
+    auto treeWidget = GTWidget::findTreeWidget(os, "treeWidget", dialog);
+    int itemIndex = actionData.toInt();
+    QList<QTreeWidgetItem *> treeItems = GTTreeWidget::getItems(os, treeWidget);
+    GT_CHECK(itemIndex >= 0 && itemIndex < treeItems.size(), "Result number is out of range");
+    GTTreeWidget::click(os, treeItems[itemIndex]);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickResultById"
 void NcbiSearchDialogFiller::clickResultById(const QVariant &actionData) {
-    CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QString>(), "Can't get the result ID from the action data");
     QTreeWidget *treeWidget = GTWidget::findExactWidget<QTreeWidget *>(os, "treeWidget", dialog);
     GT_CHECK(nullptr != treeWidget, "Tree widget is NULL");
@@ -204,7 +191,6 @@ void NcbiSearchDialogFiller::clickResultById(const QVariant &actionData) {
 
 #define GT_METHOD_NAME "clickResultByDesc"
 void NcbiSearchDialogFiller::clickResultByDesc(const QVariant &actionData) {
-    CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QString>(), "Can't get the result description from the action data");
     QTreeWidget *treeWidget = GTWidget::findExactWidget<QTreeWidget *>(os, "treeWidget", dialog);
     GT_CHECK(nullptr != treeWidget, "Tree widget is NULL");
@@ -214,7 +200,6 @@ void NcbiSearchDialogFiller::clickResultByDesc(const QVariant &actionData) {
 
 #define GT_METHOD_NAME "clickResultBySize"
 void NcbiSearchDialogFiller::clickResultBySize(const QVariant &actionData) {
-    CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<int>(), "Can't get the result sequence size from the action data");
     QTreeWidget *treeWidget = GTWidget::findExactWidget<QTreeWidget *>(os, "treeWidget", dialog);
     GT_CHECK(nullptr != treeWidget, "Tree widget is NULL");
@@ -224,11 +209,10 @@ void NcbiSearchDialogFiller::clickResultBySize(const QVariant &actionData) {
 
 #define GT_METHOD_NAME "selectResultsByNum"
 void NcbiSearchDialogFiller::selectResultsByNumbers(const QVariant &actionData) {
-    CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QList<int>>(), "Can't get the list of result numbers from the action data");
+    QList<int> numbers = actionData.value<QList<int>>();
     GTKeyboardDriver::keyPress(Qt::Key_Control);
-    const QList<int> numbers = actionData.value<QList<int>>();
-    foreach (int number, numbers) {
+    for (int number : qAsConst(numbers)) {
         clickResultByNum(number);
     }
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
@@ -237,7 +221,6 @@ void NcbiSearchDialogFiller::selectResultsByNumbers(const QVariant &actionData) 
 
 #define GT_METHOD_NAME "selectResultsByIds"
 void NcbiSearchDialogFiller::selectResultsByIds(const QVariant &actionData) {
-    CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QStringList>(), "Can't get the list of result IDs from the action data");
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     foreach (const QString &id, actionData.toStringList()) {
@@ -249,7 +232,6 @@ void NcbiSearchDialogFiller::selectResultsByIds(const QVariant &actionData) {
 
 #define GT_METHOD_NAME "selectResultsByDescs"
 void NcbiSearchDialogFiller::selectResultsByDescs(const QVariant &actionData) {
-    CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QStringList>(), "Can't get the list of result descriptions from the action data");
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     foreach (const QString &desc, actionData.toStringList()) {
@@ -261,7 +243,6 @@ void NcbiSearchDialogFiller::selectResultsByDescs(const QVariant &actionData) {
 
 #define GT_METHOD_NAME "selectResultsBySizes"
 void NcbiSearchDialogFiller::selectResultsBySizes(const QVariant &actionData) {
-    CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QList<int>>(), "Can't get the list of result sizes from the action data");
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     const QList<int> sizes = actionData.value<QList<int>>();
@@ -274,7 +255,6 @@ void NcbiSearchDialogFiller::selectResultsBySizes(const QVariant &actionData) {
 
 #define GT_METHOD_NAME "setResultLimit"
 void NcbiSearchDialogFiller::setResultLimit(const QVariant &actionData) {
-    CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<int>(), "Can't get the results limit from the action data");
     GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "resultLimitBox", dialog), actionData.toInt());
 }
@@ -282,14 +262,12 @@ void NcbiSearchDialogFiller::setResultLimit(const QVariant &actionData) {
 
 #define GT_METHOD_NAME "clickSearch"
 void NcbiSearchDialogFiller::clickSearch() {
-    CHECK_OP(os, );
     GTWidget::click(os, GTWidget::findWidget(os, "searchButton", dialog));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickDownload"
 void NcbiSearchDialogFiller::clickDownload(const QVariant &actionData) {
-    CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QList<DownloadRemoteFileDialogFiller::Action>>(), "Can't get actions for the DownloadRemoteFileDialogFiller from the action data");
     GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actionData.value<QList<U2::DownloadRemoteFileDialogFiller::Action>>()));
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -298,7 +276,6 @@ void NcbiSearchDialogFiller::clickDownload(const QVariant &actionData) {
 
 #define GT_METHOD_NAME "clickClose"
 void NcbiSearchDialogFiller::clickClose() {
-    CHECK_OP(os, );
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
 }
 #undef GT_METHOD_NAME
@@ -312,56 +289,59 @@ void NcbiSearchDialogFiller::waitTasksFinish() {
 #undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "GTUtilsDialog::NCBISearchDialogSimpleFiller"
+
+NCBISearchDialogSimpleFiller::NCBISearchDialogSimpleFiller(HI::GUITestOpStatus &os,
+                                                           const QString &_query,
+                                                           bool _doubleEnter,
+                                                           int _resultLimit,
+                                                           const QString &_term,
+                                                           const QString &_resultToLoad)
+    : Filler(os, "SearchGenbankSequenceDialog"),
+      query(_query),
+      doubleEnter(_doubleEnter),
+      resultLimit(_resultLimit),
+      term(_term), resultToLoad(_resultToLoad) {
+}
+
 #define GT_METHOD_NAME "commonScenario"
 void NCBISearchDialogSimpleFiller::commonScenario() {
     QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit *queryEditLE = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "queryEditLineEdit", dialog));
-    GT_CHECK(queryEditLE != nullptr, "queryEdit line not found");
-    GTLineEdit::setText(os, queryEditLE, query);
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "queryEditLineEdit", dialog), query);
 
     if (term != "") {
-        QComboBox *term_box = GTWidget::findExactWidget<QComboBox *>(os, "term_box", dialog);
-        GTComboBox::selectItemByText(os, term_box, term);
+        GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "term_box", dialog), term);
     }
     if (resultLimit != -1) {
-        QSpinBox *resultLimitBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "resultLimitBox", dialog));
-        GTSpinBox::setValue(os, resultLimitBox, resultLimit, GTGlobals::UseKeyBoard);
+        GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "resultLimitBox", dialog), resultLimit, GTGlobals::UseKeyBoard);
     }
 
     // Run search
     GTWidget::click(os, GTWidget::findWidget(os, "searchButton", dialog));
-    // Wait the search is finished.
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     if (doubleEnter) {
-        QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-        GT_CHECK(box != nullptr, "buttonBox is NULL");
-        QPushButton *button = box->button(QDialogButtonBox::Cancel);
-        GT_CHECK(button != nullptr, "cancel button is NULL");
-        GTWidget::click(os, button);
+        GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         return;
     }
-
-    QTreeWidget *resultsTreeWidget = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "treeWidget", dialog));
 
     if (resultLimit != -1) {
         int resultCount = getResultNumber();
         GT_CHECK(resultCount == resultLimit, QString("unexpected number of results. Expected: %1, found: %2").arg(resultLimit).arg(resultCount))
     }
 
+    auto resultsTreeWidget = GTWidget::findExactWidget<QTreeWidget *>(os, "treeWidget", dialog);
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "", 0, true, false, false, "", GTGlobals::UseMouse, 1));
-    GTWidget::click(os, resultsTreeWidget, Qt::LeftButton, QPoint(10, 35));  // fast fix, clicking first result
+    if (resultToLoad.isEmpty()) {
+        // Click the first result. Original behavior.
+        GTWidget::click(os, resultsTreeWidget, Qt::LeftButton, QPoint(10, 35));
+    } else {
+        auto item = GTTreeWidget::findItem(os, resultsTreeWidget, resultToLoad, nullptr, 0, GTGlobals::FindOptions(true, Qt::MatchContains));
+        GTTreeWidget::click(os, item);
+    }
 
-    QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-    GT_CHECK(box != nullptr, "buttonBox is NULL");
-    QPushButton *button = box->button(QDialogButtonBox::Ok);
-    GT_CHECK(button != nullptr, "ok button is NULL");
-    GTWidget::click(os, button);
-
-    button = box->button(QDialogButtonBox::Cancel);
-    GT_CHECK(button != nullptr, "cancel button is NULL");
-    GTWidget::click(os, button);
+    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
 }
 #undef GT_METHOD_NAME
 

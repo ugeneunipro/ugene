@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,16 +22,15 @@
 #include <math.h>
 
 #include <QMessageBox>
-#include <QPushButton>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/U2FileDialog.h>
@@ -70,7 +69,7 @@ void PhmmerSearchDialog::init(U2SequenceObject *seqObj) {
     U2OpStatusImpl os;
     model.dbSequence = seqObj;
     SAFE_POINT_EXT(!os.hasError(), QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );
-    setModelValues();    // default model here
+    setModelValues();  // default model here
 
     // Annotations widget
     CreateAnnotationModel annModel;
@@ -119,7 +118,7 @@ void PhmmerSearchDialog::setModelValues() {
 
 void PhmmerSearchDialog::sl_queryToolButtonClicked() {
     LastUsedDirHelper helper(QUERY_FILES_DIR);
-    helper.url = U2FileDialog::getOpenFileName(this, tr("Select query sequence file"), helper, DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true));
+    helper.url = U2FileDialog::getOpenFileName(this, tr("Select query sequence file"), helper, FileFilters::createFileFilterByObjectTypes({GObjectTypes::SEQUENCE}));
     if (!helper.url.isEmpty()) {
         queryLineEdit->setText(helper.url);
     }
@@ -233,4 +232,4 @@ void PhmmerSearchDialog::sl_domESpinBoxChanged(int newVal) {
     domESpinBox->setPrefix(prefix);
 }
 
-}    // namespace U2
+}  // namespace U2

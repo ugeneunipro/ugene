@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,10 +27,10 @@
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorSequenceArea.h>
 
-#include "ov_msa/helpers/BaseWidthController.h"
-#include "ov_msa/helpers/RowHeightController.h"
-#include "ov_msa/helpers/ScrollController.h"
-#include "ov_msa/view_rendering/MaEditorSelection.h"
+#include "ov_msa/BaseWidthController.h"
+#include "ov_msa/MaEditorSelection.h"
+#include "ov_msa/RowHeightController.h"
+#include "ov_msa/ScrollController.h"
 
 namespace U2 {
 
@@ -38,9 +38,9 @@ MaOverview::MaOverview(MaEditorWgt *ui)
     : QWidget(ui),
       editor(ui->getEditor()),
       ui(ui),
-      sequenceArea(ui->getSequenceArea()),
       stepX(0),
       stepY(0) {
+    MaEditorSequenceArea *sequenceArea = ui->getSequenceArea();
     connect(sequenceArea, SIGNAL(si_visibleRangeChanged()), this, SLOT(sl_visibleRangeChanged()));
     connect(editor->getSelectionController(),
             SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),

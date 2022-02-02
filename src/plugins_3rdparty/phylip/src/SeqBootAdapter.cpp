@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -88,7 +88,7 @@ void SeqBoot::generateSequencesFromAlignment(const MultipleSequenceAlignment &ma
 
     reps = replicates;
 
-    spp = ma->getNumRows();
+    spp = ma->getRowCount();
     sites = ma->getLength();
 
     initGenerSeq(replicates, spp, sites);

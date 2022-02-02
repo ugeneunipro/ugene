@@ -31,7 +31,7 @@ namespace HI {
 #define GT_CLASS_NAME "GTAction"
 
 #define GT_METHOD_NAME "button"
-QAbstractButton *GTAction::button(GUITestOpStatus &os, const QString &objectName, QObject *parent, const GTGlobals::FindOptions &options) {
+QAbstractButton *GTAction::button(GUITestOpStatus &os, const QString &objectName, QWidget *parent, const GTGlobals::FindOptions &options) {
     QAction *action = findAction(os, objectName, parent, options);
     if (action == nullptr) {
         return nullptr;
@@ -56,7 +56,7 @@ QAbstractButton *GTAction::button(GUITestOpStatus &os, const QAction *action) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findAction"
-QAction *GTAction::findAction(GUITestOpStatus &os, const QString &objectName, QObject *parent, const GTGlobals::FindOptions &options) {
+QAction *GTAction::findAction(GUITestOpStatus &os, const QString &objectName, QWidget *parent, const GTGlobals::FindOptions &options) {
     QList<QAction *> actions = GTWidget::findChildren<QAction>(os, parent, [&objectName](auto action) { return action->objectName() == objectName; });
     GT_CHECK_RESULT(actions.size() < 2, QString("There are %1 actions with object name %2").arg(actions.size()).arg(objectName), nullptr);
     if (actions.size() == 1) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,7 +38,7 @@ namespace U2 {
 
 GObject::GObject(QString _type, const QString &_name, const QVariantMap &hintsMap)
     : dataLoaded(false), type(_type), name(_name), arePermanentRelationsFetched(false) {
-    SAFE_POINT(!name.isEmpty(), "Invalid object name detected", );
+    SAFE_POINT(!name.isEmpty(), "Got an empty object name, type: " + type, );
     setupHints(hintsMap);
 }
 
@@ -159,7 +159,7 @@ void GObject::setObjectRelations(const QList<GObjectRelation> &list) {
 void GObject::setRelationsInDb(QList<GObjectRelation> &list) const {
     U2OpStatus2Log os;
     DbiConnection con(entityRef.dbiRef, os);
-    SAFE_POINT_OP(os, );
+    CHECK_OP(os, );  // Database is not available for some reason. It is may be deleted.
     U2ObjectRelationsDbi *rDbi = con.dbi->getObjectRelationsDbi();
     SAFE_POINT(rDbi != nullptr, "Invalid object relations DBI detected!", );
     rDbi->removeReferencesForObject(entityRef.entityId, os);
@@ -386,6 +386,22 @@ void GObject::removeAllLocks() {
     }
     qDeleteAll(modLocks.values());
     modLocks.clear();
+}
+
+int GObject::getObjectVersion() const {
+    CHECK(entityRef.dbiRef.isValid(), -1);
+
+    U2OpStatus2Log os;
+    DbiConnection con(entityRef.dbiRef, os);
+    CHECK_OP(os, -1);
+    CHECK(con.dbi != nullptr, -1);
+
+    U2ObjectDbi *objectDbi = con.dbi->getObjectDbi();
+    CHECK(objectDbi != nullptr, -1);
+
+    int version = objectDbi->getObjectVersion(entityRef.entityId, os);
+    CHECK_OP(os, -1);
+    return version;
 }
 
 //////////////////////////////////////////////////////////////////////////

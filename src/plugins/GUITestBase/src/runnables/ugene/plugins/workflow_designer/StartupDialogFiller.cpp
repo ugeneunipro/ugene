@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,15 +42,11 @@ StartupDialogFiller::StartupDialogFiller(HI::GUITestOpStatus &os, const QString 
 
 #define GT_METHOD_NAME "commonScenario"
 void StartupDialogFiller::commonScenario() {
-    GTGlobals::sleep(1000);
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
-
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
     if (path != UGUITest::sandBoxDir) {
-        QLineEdit *pathEdit = GTWidget::findExactWidget<QLineEdit *>(os, "pathEdit", dialog);
-        CHECK(nullptr != pathEdit, );
+        auto pathEdit = GTWidget::findLineEdit(os, "pathEdit", dialog);
 
-        const QString rightPath = GTLineEdit::getText(os, pathEdit);
+        QString originalPath = GTLineEdit::getText(os, pathEdit);
         GTLineEdit::setText(os, pathEdit, path);
 
         if (!isPathValid) {
@@ -58,7 +54,7 @@ void StartupDialogFiller::commonScenario() {
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
             CHECK_OP(os, );
 
-            GTLineEdit::setText(os, pathEdit, rightPath);
+            GTLineEdit::setText(os, pathEdit, originalPath);
         }
     }
 

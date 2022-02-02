@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,12 +42,13 @@
 #include <U2View/MSAEditorOffsetsView.h>
 #include <U2View/MSAEditorOverviewArea.h>
 #include <U2View/MSAEditorSequenceArea.h>
+#include <U2View/UndoRedoFramework.h>
 
 #include "MaCollapseModel.h"
+#include "MaEditorSelection.h"
 #include "MaEditorState.h"
 #include "MaEditorTasks.h"
-#include "helpers/ScrollController.h"
-#include "view_rendering/MaEditorSelection.h"
+#include "ScrollController.h"
 
 namespace U2 {
 
@@ -67,9 +68,7 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, Mult
       cachedColumnWidth(0),
       cursorPosition(QPoint(0, 0)),
       rowOrderMode(MaEditorRowOrderMode::Original),
-      collapseModel(new MaCollapseModel(this, obj->getRowIds())),
-      exportHighlightedAction(nullptr),
-      clearSelectionAction(nullptr) {
+      collapseModel(new MaCollapseModel(this, obj->getRowIds())) {
     GCOUNTER(cvar, factoryId);
 
     maObject = qobject_cast<MultipleAlignmentObject *>(obj);
@@ -83,6 +82,10 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, Mult
         U2OpStatus2Log os;
         maObject->setTrackMod(os, TrackOnUpdate);
     }
+
+    undoRedoFramework = new MaUndoRedoFramework(this, obj);
+    undoAction = undoRedoFramework->getUndoAction();
+    redoAction = undoRedoFramework->getRedoAction();
 
     // SANGER_TODO: move to separate method
     // do that in createWidget along with initActions?
@@ -125,6 +128,11 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, Mult
     copyConsensusWithGapsAction = new QAction(tr("Copy consensus with gaps"), this);
     copyConsensusWithGapsAction->setObjectName("Copy consensus with gaps");
 
+    gotoSelectedReadAction = new QAction(tr("Go to selected read"), this);
+    gotoSelectedReadAction->setObjectName("center-read-start-end-action");
+    gotoSelectedReadAction->setEnabled(false);
+    connect(gotoSelectedReadAction, &QAction::triggered, this, &MaEditor::sl_gotoSelectedRead);
+
     connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     connect(maObject,
             SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)),
@@ -154,7 +162,7 @@ int MaEditor::getAlignmentLen() const {
 }
 
 int MaEditor::getNumSequences() const {
-    return maObject->getNumRows();
+    return maObject->getRowCount();
 }
 
 bool MaEditor::isAlignmentEmpty() const {
@@ -373,6 +381,11 @@ void MaEditor::initActions() {
     connect(selectionController,
             SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
             SLOT(sl_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)));
+
+    connect(undoAction, &QAction::triggered, [this]() { GCounter::increment("Undo", factoryId); });
+    connect(redoAction, &QAction::triggered, [this]() { GCounter::increment("Redo", factoryId); });
+    ui->addAction(undoAction);
+    ui->addAction(redoAction);
 }
 
 void MaEditor::initZoom() {
@@ -419,12 +432,6 @@ void MaEditor::addLoadMenu(QMenu *m) {
     lsm->menuAction()->setObjectName(MSAE_MENU_LOAD);
 }
 
-void MaEditor::addAlignMenu(QMenu *m) {
-    QMenu *em = m->addMenu(tr("Align"));
-    em->setIcon(QIcon(":core/images/align.png"));
-    em->menuAction()->setObjectName(MSAE_MENU_ALIGN);
-}
-
 void MaEditor::setFont(const QFont &f) {
     int pSize = f.pointSize();
     font = f;
@@ -456,7 +463,7 @@ void MaEditor::updateFontMetrics() {
     const int minimumSafeFontPointSize = 8;  // This value was historically used in UGENE as minimum with no known issues.
     QFont fontToEstimate = font;
     int estimatedMinimumFontPointSize = minimumSafeFontPointSize;  // Start with a safe value and estimate smaller values.
-    while (fontToEstimate.pointSize() > 0) {
+    while (fontToEstimate.pointSize() > 1) {
         int charWidth = getUnifiedSequenceFontCharRect(fontToEstimate).width();
         if (charWidth < minimumFontCharWidthInsideCell) {
             // The estimated char size is too small. Stop on the previous value.
@@ -488,6 +495,10 @@ void MaEditor::updateActions() {
     zoomOutAction->setEnabled(getColumnWidth() > MOBJECT_MIN_COLUMN_WIDTH);
     zoomToSelectionAction->setEnabled(font.pointSize() < maximumFontPointSize);
     changeFontAction->setEnabled(resizeMode == ResizeMode_FontAndContent);
+
+    MaEditorSelection selection = getSelection();
+    gotoSelectedReadAction->setEnabled(!selection.isEmpty());
+
     emit si_updateActions();
 }
 
@@ -533,7 +544,32 @@ void MaEditor::sl_onClearActionTriggered() {
     getSelectionController()->clearSelection();
 }
 
+void MaEditor::sl_gotoSelectedRead() {
+    GCOUNTER(cvar, "MAEditor:gotoSelectedRead");
+    MaEditorSelection selection = getSelection();
+    CHECK(!selection.isEmpty(), );
+
+    QRect selectionRect = selection.toRect();
+    int viewRowIndex = selectionRect.y();
+
+    int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
+    CHECK(maRowIndex >= 0 && maRowIndex < maObject->getRowCount(), );
+
+    MultipleAlignmentRow maRow = maObject->getRow(maRowIndex);
+    int posToCenter = maRow->isComplemented() ? maRow->getCoreEnd() - 1 : maRow->getCoreStart();
+    MaEditorSequenceArea *sequenceArea = ui->getSequenceArea();
+    if (sequenceArea->isPositionCentered(posToCenter)) {
+        posToCenter = maRow->isComplemented() ? maRow->getCoreStart() : maRow->getCoreEnd() - 1;
+    }
+    sequenceArea->centerPos(posToCenter);
+}
+
 MaCollapseModel *MaEditor::getCollapseModel() const {
     return collapseModel;
 }
+
+MaUndoRedoFramework *MaEditor::getUndoRedoFramework() const {
+    return undoRedoFramework;
+}
+
 }  // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -60,7 +60,6 @@ public:
     static const QString NGS_TRANSCRIPT;
     static const QString NGS_RAW_CHIP;
     static const QString NGS_CHIP;
-    static const QString NGS_CLASSIFICATION;
     static const QString NGS_COVERAGE;
     static const QString NGS_CONSENSUS;
     static const QString NGS_CONVERT_SAM;

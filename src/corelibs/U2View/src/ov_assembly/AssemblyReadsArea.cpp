@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,12 +29,10 @@
 #include <QPainter>
 #include <QResizeEvent>
 #include <QVBoxLayout>
-#include <QWheelEvent>
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/FormatUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
@@ -47,8 +45,6 @@
 #include <U2Core/U2AssemblyReadIterator.h>
 #include <U2Core/U2AssemblyUtils.h>
 #include <U2Core/U2SafePoints.h>
-
-#include <U2Gui/OpenViewTask.h>
 
 #include "AddReadsToDocumentTask.h"
 #include "AssemblyBrowser.h"
@@ -914,7 +910,7 @@ void AssemblyReadsArea::exportReads(const QList<U2AssemblyRead> &reads) {
         Document *doc = df->createNewLoadedDocument(iof, model.filepath, os);
         CHECK_OP(os, )
 
-        SaveDocFlags saveFlags(SaveDoc_Overwrite);
+        SaveDocFlags saveFlags;
         if (model.addToProject) {
             saveFlags |= SaveDoc_OpenAfter;
         }

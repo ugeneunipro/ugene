@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,15 +22,13 @@
 #ifndef _U2_MUSCLE_ALIGN_DIALOG_CONTROLLER_H_
 #define _U2_MUSCLE_ALIGN_DIALOG_CONTROLLER_H_
 
-#include <ui_MuscleAlignDialog.h>
-
 #include <QDialog>
 
 #include <U2Core/GAutoDeleteList.h>
 
-#include <U2Gui/DialogUtils.h>
-
 #include "MuscleTask.h"
+
+#include <ui_MuscleAlignDialog.h>
 
 namespace U2 {
 

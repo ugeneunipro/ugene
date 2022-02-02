@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -227,7 +227,7 @@ bool MegaFormat::skipComments(IOAdapter *io, QByteArray &line, U2OpStatus &ti) {
 void MegaFormat::workUpIndels(MultipleSequenceAlignment &al) {
     QByteArray firstSequence = al->getMsaRow(0)->getData();
 
-    for (int i = 1; i < al->getNumRows(); i++) {
+    for (int i = 1; i < al->getRowCount(); i++) {
         QByteArray newSeq = al->getMsaRow(i)->getData();
         for (int j = 0; j < newSeq.length(); j++) {
             if (MEGA_IDENTICAL == al->charAt(i, j)) {
@@ -279,7 +279,7 @@ void MegaFormat::load(U2::IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *
         }
 
         if (firstBlock) {
-            for (int i = 0; i < al->getNumRows(); i++) {
+            for (int i = 0; i < al->getRowCount(); i++) {
                 if (al->getMsaRow(i)->getName() == name) {
                     firstBlock = false;
                     sequenceIdx = 0;
@@ -293,7 +293,7 @@ void MegaFormat::load(U2::IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *
             rowLens.append(value.size());
             sequenceIdx++;
         } else {
-            if (sequenceIdx < al->getNumRows()) {
+            if (sequenceIdx < al->getRowCount()) {
                 if (al->getMsaRow(sequenceIdx)->getName() != name) {
                     os.setError(MegaFormat::tr("Incorrect order of sequences' names"));
                     return;
@@ -305,7 +305,7 @@ void MegaFormat::load(U2::IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *
                 break;
             }
             sequenceIdx++;
-            if (sequenceIdx == al->getNumRows()) {
+            if (sequenceIdx == al->getRowCount()) {
                 sequenceIdx = 0;
             }
         }

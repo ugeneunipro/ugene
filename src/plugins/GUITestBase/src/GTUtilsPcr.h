@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,6 +38,7 @@ public:
     static void setMismatches(HI::GUITestOpStatus &os, U2Strand::Direction direction, int mismatches);
     static void setPerfectMatch(HI::GUITestOpStatus &os, int number);
     static void setMaxProductSize(HI::GUITestOpStatus &os, int number);
+    static void setUseAmbiguousBases(HI::GUITestOpStatus& os, bool useAmbiguousBases);
     static QWidget *browseButton(HI::GUITestOpStatus &os, U2Strand::Direction direction);
     static int productsCount(HI::GUITestOpStatus &os);
     static QString getResultRegion(HI::GUITestOpStatus &os, int number);
@@ -48,7 +49,7 @@ public:
     static void clearPcrDir(HI::GUITestOpStatus &os);
 
 private:
-    static QTableView *table(HI::GUITestOpStatus &os);
+    static QTableView *getTable(HI::GUITestOpStatus &os);
 };
 
 }  // namespace U2

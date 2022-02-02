@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -51,7 +51,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/empty.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 
     // Expected state: msa is empty, overview is pure white.
@@ -69,21 +69,12 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTFileDialog::openFile(os, testDir + "_common_data/clustal", "10000_sequences.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    // Overview is hidden: the alignment is too big.
-    auto showOverviewButton = qobject_cast<QToolButton *>(GTAction::button(os, "Show overview"));
-    CHECK_SET_ERR(showOverviewButton != nullptr, "Overview button is not found");
-    CHECK_SET_ERR(!showOverviewButton->isChecked(), "Overview button is pressed");
-
-    // Show overview and wait until overview rendering is finished.
-    GTWidget::click(os, showOverviewButton);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
     // Expected state: simple overview is hidden, graph overview is visible.
-    QWidget *simple = GTWidget::findWidget(os, "msa_overview_area_simple");
-    CHECK_SET_ERR(!simple->isVisible(), "simple overview is visible");
+    auto simpleOverview = GTWidget::findWidget(os, "msa_overview_area_simple");
+    CHECK_SET_ERR(!simpleOverview->isVisible(), "simple overview is visible");
 
-    QWidget *graph = GTWidget::findWidget(os, "msa_overview_area_graph");
-    CHECK_SET_ERR(graph->isVisible(), "graph overview is visible");
+    auto graphOverview = GTWidget::findWidget(os, "msa_overview_area_graph");
+    CHECK_SET_ERR(graphOverview->isVisible(), "graph overview is visible");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
@@ -109,7 +100,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTFileDialog::openFile(os, testDir + "_common_data/clustal", "protein.fasta.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Go to MSA Overview context menu (right click on msa overview).
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 
     //    3. Click "Show simple overview..."
@@ -117,7 +108,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     QWidget *overview = GTWidget::findWidget(os, "msa_overview_area_simple");
     CHECK_SET_ERR(overview->isVisible(), "overview is not visiable");
     //    4. Repeat steps 2-3.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area_graph"));
 
     //    Expected state: simple overview is shown.
@@ -133,7 +124,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 
     //    3. Expected state: simple overview is enabled.
@@ -162,7 +153,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     //    1. Open "_common_data/clustal/COI_na.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/clustal", "COI na.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
     //    2. Resize main window.
     QWidget *overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
@@ -187,7 +178,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     //    1. Open "_common_data/clustal/COI_na.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/clustal", "COI na.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
     //    2. Delete symbols until msa becomes very small.
     //    Expected state: overview updates on each msa change, overview is displayed correctly .
@@ -218,7 +209,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     //    1. Open "_common_data/clustal/COI_na.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI na.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 
     QWidget *overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
@@ -257,7 +248,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI na.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 
     QWidget *overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
@@ -282,7 +273,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     //    1. Open "_common_data/clustal/COI_na.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI na.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 
     QWidget *overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
@@ -322,9 +313,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     const QImage img = GTWidget::getImage(os, overviewGraph);
 
     //    2. Go to MSA Overview context menu (right click on msa overview).
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Display settings"
-                                                                        << "Orientation"
-                                                                        << "Top to bottom"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Display settings", "Orientation", "Top to bottom"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 
     //    3. Go to {Display settings... -> Orientation}
@@ -341,8 +330,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
 
     //    2. Go to MSA Overview context menu (right click on msa overview).
     GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, 255, 0, 0));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Display settings"
-                                                                        << "Set color"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Display settings", "Set color"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area_graph"));
 
     //    3. Go to {Display settings -> Color}.
@@ -360,9 +348,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Go to MSA Overview context menu (right click on msa overview).
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Display settings"
-                                                                        << "Graph type"
-                                                                        << "Line graph"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Display settings", "Graph type", "Line graph"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area_graph"));
 
     //    3. Go to {Display settings -> Graph type};
@@ -378,7 +364,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     GTFileDialog::openFile(os, testDir + "_common_data/clustal", "COI na.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
     QWidget *overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
     //    2. Go to Highlighting tab on Options panel.
@@ -405,15 +391,14 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     // Select {Calculation method -> Strict}.
     // Expected state: graph displays the percent of the most frequent nucleotide in column.
     // Current graph corresponds to column over the consensus in sequence area.
-    QColor c = GTWidget::getColor(os, overviewGraph, QPoint(5, overviewGraph->rect().height() - 5));
-    CHECK_SET_ERR(c.name() == "#ededed", "simple overview has wrong color. Expected: #ededed, Found: " + c.name());
+    QColor color = GTWidget::getColor(os, overviewGraph, QPoint(5, overviewGraph->rect().height() - 5));
+    CHECK_SET_ERR(color.name() == "#ededed", "simple overview has wrong color. Expected: #ededed, Found: " + color.name());
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Calculation method", "Highlighting"}, GTGlobals::UseKey));
     GTMenu::showContextMenu(os, overviewGraph);
 
-    overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
-    c = GTWidget::getColor(os, overviewGraph, QPoint(5, overviewGraph->rect().height() - 5));
-    CHECK_SET_ERR(c.name() == "#d1d1d2", "simple overview has wrong color. Expected: #d1d1d2, Found: " + c.name());
+    color = GTWidget::getColor(os, overviewGraph, QPoint(5, overviewGraph->rect().height() - 5));
+    CHECK_SET_ERR(color.name() == "#d1d1d2", "simple overview has wrong color. Expected: #d1d1d2, Found: " + color.name());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0017) {
@@ -457,8 +442,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
 
     //    2. Go to MSA overview context menu (right click on MSA Overview).
     QWidget *overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Calculation method"
-                                                                        << "Highlighting"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Calculation method", "Highlighting"}));
     GTMenu::showContextMenu(os, overviewGraph);
 
     //    3. Select {Calculation method -> Highlighting}.
@@ -491,7 +475,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
      * 2. Show simple overview.
      * 3. Select whole alignment.
      * Expected state: whole simple overview is filled with a selection rect.
-     * 4. Click "Align sequence(s) to this alignment" button on the tool bar and select "data/samples/fastq/eas.fastq".
+     * 4. Click "align_new_sequences_to_alignment_action" button on the toolbar and select "data/samples/fastq/eas.fastq".
      * Expected state: sequences are added, two of five sequences are selected both in the sequence area and simple overview.
      * Current state: sequences are added, two of five sequences are selected in the sequence area, but the simple overview is filled with a selection rect like whole alignment is selected.
      */
@@ -499,7 +483,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     GTFileDialog::openFile(os, testDir + "_common_data/regression/1393/test_1393.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 
     GTUtilsMSAEditorSequenceArea::selectArea(os);
@@ -526,7 +510,7 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
 
     GTUtilsMSAEditorSequenceArea::selectArea(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 
     QWidget *overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
@@ -552,7 +536,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022) {
 
     GTUtilsMSAEditorSequenceArea::selectArea(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 
     GTUtilsProjectTreeView::toggleView(os);

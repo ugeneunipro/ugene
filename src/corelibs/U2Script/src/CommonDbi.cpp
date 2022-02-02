@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -151,7 +151,7 @@ U2SCRIPT_EXPORT void saveObjectsToFile(UgeneDbHandle *objects, int objectCount, 
             doc->addObject(object);
         }
     }
-    Task *saveDoc = new SaveDocumentTask(doc, SaveDoc_Overwrite);
+    Task *saveDoc = new SaveDocumentTask(doc);
     AppContext::getTaskScheduler()->registerTopLevelTask(saveDoc);
 }
 

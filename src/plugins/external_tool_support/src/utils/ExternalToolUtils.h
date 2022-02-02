@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,11 +30,6 @@ class ExternalToolUtils : public QObject {
     Q_OBJECT
 public:
     static void checkExtToolsPath(const QStringList &ids);
-
-    static void addDefaultCistromeDirToSettings();
-    static void addCistromeDataPath(const QString &dataName, const QString &dirName, bool entriesAreFolders = false);
-
-    static const QString CISTROME_DATA_DIR;
 };
 
 }    // namespace U2

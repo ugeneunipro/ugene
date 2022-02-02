@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -221,10 +221,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     // 2. Select "Remove subsequence" in the context menu.
     // 3. Insert region "2..2" into the "Region to remove" field.
     GTUtilsDialog::waitForDialog(os, new RemovePartFromSequenceDialogFiller(os, "2..2"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Edit"
-                                                << "Remove subsequence...",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Remove subsequence..."}, GTGlobals::UseMouse);
 
     // Expected result: the sequence is started from "AAT", the sequence length is 29, DUMMY_1 annotation is [2..5].
     QString sequenceBegin = GTUtilsSequenceView::getBeginOfSequenceAsString(os, 3);
@@ -261,7 +258,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     QString sequenceBegin = GTUtilsSequenceView::getBeginOfSequenceAsString(os, 3);
     CHECK_SET_ERR(sequenceBegin == "AAT", "Sequence starts with <" + sequenceBegin + ">, expected AAT");
 
-    QTreeWidgetItem *dummy1 = GTUtilsAnnotationsTreeView::findItem(os, "DUMMY_1", GTGlobals::FindOptions(false));
+    QTreeWidgetItem *dummy1 = GTUtilsAnnotationsTreeView::findItem(os, "DUMMY_1", {false});
     CHECK_SET_ERR(dummy1 == nullptr, "There is annotation DUMMY_1, expected state there is no annotation DUMMY_1");
 }
 
@@ -297,8 +294,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTFileDialog::openFile(os, testDir + "_common_data/edit_sequence/", "test.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_COPY"
-                                                                        << "action_copy_annotation_sequence"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_COPY", "action_copy_annotation_sequence"}));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "DUMMY_1"));
     GTMouseDriver::click(Qt::RightButton);
 
@@ -368,11 +364,13 @@ static void checkQualifierRegionsShift(HI::GUITestOpStatus &os, int shift) {
     }
 }
 
-static void doMagic(HI::GUITestOpStatus &os) {
-    QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature  (0, 2)");
-    GTTreeWidget::getItemCenter(os, annotationGroup);
-    for (int i = 0; i < annotationGroup->childCount(); ++i) {
-        GTTreeWidget::getItemCenter(os, annotationGroup->child(i));
+/** Expands all annotation in "Misc. Feature" group. This action lazily creates qualifier tree items. */
+static void expandAllAnnotationsInGroup(HI::GUITestOpStatus &os) {
+    QTreeWidgetItem *groupItem = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature  (0, 2)");
+    GTTreeWidget::expand(os, groupItem);
+    for (int i = 0; i < groupItem->childCount(); ++i) {
+        QTreeWidgetItem *annotationItem = groupItem->child(i);
+        GTTreeWidget::expand(os, annotationItem);
     }
 }
 
@@ -382,7 +380,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/qulifier_rebuilding.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    doMagic(os);  // for some reason annotation qualifiers are not found without actions done by this function
+    expandAllAnnotationsInGroup(os);
 
     GTUtilsDialog::waitForDialog(os, new RemovePartFromSequenceDialogFiller(os, "1..10", false));
     GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Remove subsequence..."}, GTGlobals::UseMouse);
@@ -403,7 +401,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1_neg) {
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/qulifier_rebuilding.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    doMagic(os);  // for some reason annotation qualifiers are not found without actions done by this function
+    expandAllAnnotationsInGroup(os);
 
     GTUtilsDialog::waitForDialog(os, new RemovePartFromSequenceDialogFiller(os, "1000..1100", true));
     GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Remove subsequence..."}, GTGlobals::UseMouse);
@@ -423,8 +421,8 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
-    GTTreeWidget::getItemCenter(os, annotationGroup);
-    GTTreeWidget::getItemCenter(os, annotationGroup->child(0));
+    GTTreeWidget::expand(os, annotationGroup);
+    GTTreeWidget::expand(os, annotationGroup->child(0));
     QTreeWidgetItem *qualItem = annotationGroup->child(0)->child(5);
     CHECK_SET_ERR(qualItem->text(0) == "translation", "Unexpected qualifier found");
     CHECK_SET_ERR(qualItem->text(2).startsWith("WARLLPLP*V*P*"), "Unexpected 'translation' qualifier value");
@@ -441,8 +439,8 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2_neg) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
-    GTTreeWidget::getItemCenter(os, annotationGroup);
-    GTTreeWidget::getItemCenter(os, annotationGroup->child(0));
+    GTTreeWidget::expand(os, annotationGroup);
+    GTTreeWidget::expand(os, annotationGroup->child(0));
     QTreeWidgetItem *qualItem = annotationGroup->child(0)->child(5);
     CHECK_SET_ERR("translation" == qualItem->text(0), "Unexpected qualifier found");
     CHECK_SET_ERR(qualItem->text(2).startsWith("MGQTVTTPLSLTLDHWKD"), "Unexpected 'translation' qualifier value");
@@ -453,7 +451,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_1) {
 
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/qulifier_rebuilding.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    doMagic(os);  // for some reason annotation qualifiers are not found without actions done by this function
+    expandAllAnnotationsInGroup(os);
 
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 1);
 
@@ -475,7 +473,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_1_neg) {
 
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/qulifier_rebuilding.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    doMagic(os);  // for some reason annotation qualifiers are not found without actions done by this function
+    expandAllAnnotationsInGroup(os);
 
     GTUtilsSequenceView::selectSequenceRegion(os, 100000, 100000);
 
@@ -499,8 +497,8 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
-    GTTreeWidget::getItemCenter(os, annotationGroup);
-    GTTreeWidget::getItemCenter(os, annotationGroup->child(0));
+    GTTreeWidget::expand(os, annotationGroup);
+    GTTreeWidget::expand(os, annotationGroup->child(0));
     QTreeWidgetItem *qualItem = annotationGroup->child(0)->child(5);
     CHECK_SET_ERR(qualItem->text(0) == "translation", "Unexpected qualifier found");
     CHECK_SET_ERR(qualItem->text(2).startsWith("MGQDCYHSLKFDLRSLER"), "Unexpected 'translation' qualifier value");
@@ -519,8 +517,8 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2_neg) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
-    GTTreeWidget::getItemCenter(os, annotationGroup);
-    GTTreeWidget::getItemCenter(os, annotationGroup->child(0));
+    GTTreeWidget::expand(os, annotationGroup);
+    GTTreeWidget::expand(os, annotationGroup->child(0));
     QTreeWidgetItem *qualItem = annotationGroup->child(0)->child(5);
     CHECK_SET_ERR(qualItem->text(0) == "translation", "Unexpected qualifier found");
     CHECK_SET_ERR(qualItem->text(2).startsWith("MGQTVTTPLSLTLDHWKD"), "Unexpected 'translation' qualifier value");
@@ -532,7 +530,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/qulifier_rebuilding.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    doMagic(os);  // for some reason annotation qualifiers are not found without actions done by this function
+    expandAllAnnotationsInGroup(os);
 
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 10);
 
@@ -559,7 +557,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1_neg) {
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/qulifier_rebuilding.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    doMagic(os);  // for some reason annotation qualifiers are not found without actions done by this function
+    expandAllAnnotationsInGroup(os);
 
     GTUtilsSequenceView::selectSequenceRegion(os, 1000, 1010);
 
@@ -585,8 +583,8 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
-    GTTreeWidget::getItemCenter(os, annotationGroup);
-    GTTreeWidget::getItemCenter(os, annotationGroup->child(0));
+    GTTreeWidget::expand(os, annotationGroup);
+    GTTreeWidget::expand(os, annotationGroup->child(0));
     QTreeWidgetItem *qualItem = annotationGroup->child(0)->child(5);
     CHECK_SET_ERR(qualItem->text(0) == "translation", "Unexpected qualifier found");
     CHECK_SET_ERR(qualItem->text(2).startsWith("MGQKLLPLP*V*P*ITGKMS"), "Unexpected 'translation' qualifier value");
@@ -606,8 +604,8 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2_neg) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
-    GTTreeWidget::getItemCenter(os, annotationGroup);
-    GTTreeWidget::getItemCenter(os, annotationGroup->child(0));
+    GTTreeWidget::expand(os, annotationGroup);
+    GTTreeWidget::expand(os, annotationGroup->child(0));
     QTreeWidgetItem *qualItem = annotationGroup->child(0)->child(5);
     CHECK_SET_ERR(qualItem->text(0) == "translation", "Unexpected qualifier found");
     CHECK_SET_ERR(qualItem->text(2).startsWith("MGQTVTTPLSLTLDHWKD"), "Unexpected 'translation' qualifier value");
@@ -619,7 +617,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/qulifier_rebuilding.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    doMagic(os);  // for some reason annotation qualifiers are not found without actions done by this function
+    expandAllAnnotationsInGroup(os);
 
     GTUtilsDialog::waitForDialog(os, new RemovePartFromSequenceDialogFiller(os, "1..600", true));
     GTUtilsNotifications::waitForNotification(os, false);
@@ -638,7 +636,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/qulifier_rebuilding.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    doMagic(os);  // for some reason annotation qualifiers are not found without actions done by this function
+    expandAllAnnotationsInGroup(os);
 
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 600);
 

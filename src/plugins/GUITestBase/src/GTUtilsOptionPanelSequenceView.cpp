@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -119,7 +119,7 @@ void GTUtilsOptionPanelSequenceView::closeTab(HI::GUITestOpStatus &os, GTUtilsOp
 
 #define GT_METHOD_NAME "isTabOpened"
 bool GTUtilsOptionPanelSequenceView::isTabOpened(HI::GUITestOpStatus &os, GTUtilsOptionPanelSequenceView::Tabs tab) {
-    QWidget *innerTabWidget = GTWidget::findWidget(os, innerWidgetNames[tab], GTUtilsSequenceView::getActiveSequenceViewWindow(os), GTGlobals::FindOptions(false));
+    QWidget *innerTabWidget = GTWidget::findWidget(os, innerWidgetNames[tab], GTUtilsSequenceView::getActiveSequenceViewWindow(os), {false});
     return innerTabWidget != nullptr && innerTabWidget->isVisible();
 }
 #undef GT_METHOD_NAME
@@ -411,7 +411,7 @@ void GTUtilsOptionPanelSequenceView::enterPatternFromFile(HI::GUITestOpStatus &o
 #define GT_METHOD_NAME "setStrand"
 
 void GTUtilsOptionPanelSequenceView::setStrand(HI::GUITestOpStatus &os, QString strandStr) {
-    QComboBox *strand = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxStrand", nullptr, GTGlobals::FindOptions(false)));
+    QComboBox *strand = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxStrand", nullptr, {false}));
     GT_CHECK(strand != nullptr, "combobox is NULL");
 
     if (!strand->isVisible()) {
@@ -497,10 +497,8 @@ QPair<int, int> GTUtilsOptionPanelSequenceView::getRegion(HI::GUITestOpStatus &o
 
 #define GT_METHOD_NAME "getHintText"
 const QString GTUtilsOptionPanelSequenceView::getHintText(HI::GUITestOpStatus &os) {
-    QLabel *lblHint = GTWidget::findExactWidget<QLabel *>(os, "lblErrorMessage");
-    GT_CHECK_RESULT(nullptr != lblHint, "Hintlabel is NULL", "");
-    CHECK(lblHint->isVisible(), "");
-    return lblHint->text();
+    auto lblHint = GTWidget::findLabel(os, "lblErrorMessage");
+    return lblHint->isVisible() ? lblHint->text() : "";
 }
 #undef GT_METHOD_NAME
 
@@ -522,7 +520,7 @@ void GTUtilsOptionPanelSequenceView::setUsePatternName(HI::GUITestOpStatus &os, 
 
 #define GT_METHOD_NAME "setSearchInTranslation"
 void GTUtilsOptionPanelSequenceView::setSearchInTranslation(HI::GUITestOpStatus &os, bool inTranslation /* = true*/) {
-    QComboBox *searchIn = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxSeqTransl", nullptr, GTGlobals::FindOptions(false)));
+    QComboBox *searchIn = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxSeqTransl", nullptr, {false}));
     GT_CHECK(searchIn != nullptr, "combobox is NULL");
 
     if (!searchIn->isVisible()) {
@@ -539,7 +537,7 @@ void GTUtilsOptionPanelSequenceView::setSearchInTranslation(HI::GUITestOpStatus 
 
 #define GT_METHOD_NAME "setSearchInLocation"
 void GTUtilsOptionPanelSequenceView::setSearchInLocation(HI::GUITestOpStatus &os, QString locationStr) {
-    QComboBox *region = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxRegion", nullptr, GTGlobals::FindOptions(false)));
+    QComboBox *region = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxRegion", nullptr, {false}));
     GT_CHECK(region != nullptr, "combobox is NULL");
 
     if (!region->isVisible()) {
@@ -552,7 +550,7 @@ void GTUtilsOptionPanelSequenceView::setSearchInLocation(HI::GUITestOpStatus &os
 
 #define GT_METHOD_NAME "setSetMaxResults"
 void GTUtilsOptionPanelSequenceView::setSetMaxResults(HI::GUITestOpStatus &os, int maxResults) {
-    QSpinBox *limit = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "boxMaxResult", nullptr, GTGlobals::FindOptions(false)));
+    QSpinBox *limit = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "boxMaxResult", nullptr, {false}));
     GT_CHECK(limit != nullptr, "spinbox is NULL");
 
     if (!limit->isVisible()) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -323,7 +323,7 @@ CollocationSearchTask::CollocationSearchTask(const QList<AnnotationTableObject *
         foreach (Annotation *a, ao->getAnnotations()) {
             const QString &name = a->getName();
             if ((a->getStrand().isDirect() && cfg.strand == StrandOption_ComplementOnly) ||
-                (a->getStrand().isCompementary() && cfg.strand == StrandOption_DirectOnly)) {
+                (a->getStrand().isComplementary() && cfg.strand == StrandOption_DirectOnly)) {
                 items.remove(name);
                 continue;
             }
@@ -349,7 +349,7 @@ CollocationSearchTask::CollocationSearchTask(const QList<SharedAnnotationData> &
     foreach (const SharedAnnotationData &a, table) {
         const QString &name = a->name;
         if ((a->getStrand().isDirect() && cfg.strand == StrandOption_ComplementOnly) ||
-            (a->getStrand().isCompementary() && cfg.strand == StrandOption_DirectOnly)) {
+            (a->getStrand().isComplementary() && cfg.strand == StrandOption_DirectOnly)) {
             items.remove(name);
             continue;
         }

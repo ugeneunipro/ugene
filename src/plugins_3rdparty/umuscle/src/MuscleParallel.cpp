@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -71,9 +71,10 @@ int MuscleParallelTask::estimateMemoryUsageInMb(const MultipleSequenceAlignment 
             usedBytes += qint64((rowsLengths[i] + 1025)) * (rowsLengths[j] + 1025);
         }
     }
-    const int maxInt = std::numeric_limits<int>::max();
-    usedBytes = usedBytes >= 0 ? usedBytes : maxInt;
-    return qMin(usedBytes / 1024 / 1024, qint64(maxInt));
+    //Check memory consumption for m_Dists in distfunc.cpp
+    qint64 mDistsUsedBytes = (qint64)sizeof(float) * rowsLengths.size() * rowsLengths.size();
+    usedBytes = qMax(usedBytes, mDistsUsedBytes);
+    return qMin(qint64(usedBytes / 1024 / 1024), qint64(std::numeric_limits<int>::max()));
 }
 
 QList<Task *> MuscleParallelTask::onSubTaskFinished(Task *subTask) {
@@ -361,7 +362,7 @@ void ProgressiveAlignTask::_run() {
     ValidateMuscleIds(workpool->a);
 
     if (1 == ctx->params.g_uMaxIters || 2 == uSeqCount) {
-        assert(int(workpool->a.GetSeqCount()) == workpool->ma->getNumRows());
+        assert(int(workpool->a.GetSeqCount()) == workpool->ma->getRowCount());
         prepareAlignResults(workpool->a, workpool->ma->getAlphabet(), workpool->res, workpool->mhack);
     }
 }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -71,11 +71,6 @@ private:
     QSet<DNAAlphabetType> alphabetFilter;
     int pos;
     ADVGlobalActionFlags flags;
-};
-
-class U2VIEW_EXPORT ADVSelectionUtils {
-public:
-    static QString getSequenceIdsFromSelection(const QList<Annotation *> &selection, bool localBase = false);
 };
 
 }  // namespace U2

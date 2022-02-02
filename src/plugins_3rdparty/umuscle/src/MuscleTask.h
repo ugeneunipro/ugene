@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,6 +44,7 @@ enum MuscleTaskOp {
     MuscleTaskOp_Align,
     MuscleTaskOp_Refine,
     MuscleTaskOp_AddUnalignedToProfile,
+    MuscleTaskOp_OwnRowsToAlignment,
     MuscleTaskOp_ProfileToProfile
 };
 
@@ -71,6 +72,9 @@ public:
     bool alignRegion;
     U2Region regionToAlign;
 
+    /** Row indexes to align. Effective only when 'mode' is 'MuscleTaskOp_OwnRowsToAlignment'. */
+    QSet<int> rowIndexesToAlign;
+
     // used only for MuscleTaskOp_AddUnalignedToProfile and MuscleTaskOp_ProfileToProfile
     MultipleSequenceAlignment profile;
 
@@ -91,6 +95,9 @@ public:
     void doAddUnalignedToProfile();
     void doProfile2Profile();
 
+    /** Aligns some rows from the alignment (settings.ownRowIds) to the rest of the alignment. */
+    void alignOwnRowsToAlignment(U2OpStatus& os);
+
     ReportResult report();
 
     MuscleTaskSettings config;
@@ -107,17 +114,26 @@ public:
 class MuscleAddSequencesToProfileTask : public Task {
     Q_OBJECT
 public:
-    enum MMode { Profile2Profile,
-                 Sequences2Profile };
-    MuscleAddSequencesToProfileTask(MultipleSequenceAlignmentObject *obj, const QString &fileWithSequencesOrProfile, MMode mode);
+    enum MMode {
+        Profile2Profile,
+        Sequences2Profile,
+    };
+    MuscleAddSequencesToProfileTask(MultipleSequenceAlignmentObject *obj, const QString &fileWithSequencesOrProfile, const MMode &mode);
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
 
-    ReportResult report();
+    ReportResult report() override;
 
     QPointer<MultipleSequenceAlignmentObject> maObj;
     LoadDocumentTask *loadTask;
     MMode mode;
+};
+
+/** Re-aligns set of own sequences to the same MSA object. */
+class MuscleAlignOwnSequencesToSelfAction : public Task {
+    Q_OBJECT
+public:
+    MuscleAlignOwnSequencesToSelfAction(MultipleSequenceAlignmentObject *msaObject, const QList<int> &maRowIndexes);
 };
 
 // locks MultipleSequenceAlignment object and propagate MuscleTask results to it

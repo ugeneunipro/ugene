@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,17 +25,14 @@
 #include <QFileInfo>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/DNAInfo.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObjectTypes.h>
 
 #include <U2Designer/DelegateEditors.h>
 
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 
-#include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BaseAttributes.h>
 #include <U2Lang/BasePorts.h>
 #include <U2Lang/BaseSlots.h>

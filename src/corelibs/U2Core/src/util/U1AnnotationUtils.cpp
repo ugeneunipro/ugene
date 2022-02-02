@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -139,13 +139,13 @@ QList<QVector<U2Region>> U1AnnotationUtils::fixLocationsForReplacedRegion(const 
 int U1AnnotationUtils::getRegionFrame(int sequenceLen, const U2Strand &strand, bool order, int region, const QVector<U2Region> &location) {
     int frame = 0;
     const U2Region &r = location.at(region);
-    if (strand.isCompementary()) {
+    if (strand.isComplementary()) {
         frame = (sequenceLen - r.endPos()) % 3;
     } else {
         frame = r.startPos % 3;
     }
     if (!order) {  // join -> need to join region with prev regions to derive frame
-        if (strand.isCompementary()) {
+        if (strand.isComplementary()) {
             int offset = 0;
             for (int i = location.size(); --i > region;) {
                 const U2Region &rb = location.at(i);
@@ -331,8 +331,8 @@ QList<U2Region> U1AnnotationUtils::getRelatedLowerCaseRegions(const U2SequenceOb
 
 bool U1AnnotationUtils::isAnnotationContainsJunctionPoint(const Annotation *annotation,
                                                           const qint64 sequenceLength) {
-    const QList<RegionsPair> mergedRegions = mergeAnnotatiedRegionsAroundJunctionPoint(annotation->getRegions(),
-                                                                                       sequenceLength);
+    const QList<RegionsPair> mergedRegions = mergeAnnotatedRegionsAroundJunctionPoint(annotation->getRegions(),
+                                                                                      sequenceLength);
     return isAnnotationContainsJunctionPoint(mergedRegions);
 }
 
@@ -346,7 +346,7 @@ bool U1AnnotationUtils::isAnnotationContainsJunctionPoint(const QList<RegionsPai
     return result;
 }
 
-QList<RegionsPair> U1AnnotationUtils::mergeAnnotatiedRegionsAroundJunctionPoint(const QVector<U2Region> &regions,
+QList<RegionsPair> U1AnnotationUtils::mergeAnnotatedRegionsAroundJunctionPoint(const QVector<U2Region> &regions,
                                                                                 const qint64 sequenceLength) {
     QList<RegionsPair> result;
 
@@ -463,7 +463,7 @@ void U1AnnotationUtils::removeAllQualifier(SharedAnnotationData &annotationData,
 }
 
 QString U1AnnotationUtils::buildLocationString(const U2LocationData &location) {
-    bool complement = location.strand.isCompementary();
+    bool complement = location.strand.isComplementary();
     bool multi = location.regions.size() > 1;
     QString locationStr = complement ? "complement(" : "";
     if (!location.regions.empty()) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,7 +21,9 @@
 
 #include "GenomeAlignerWorker.h"
 
-#include <U2Algorithm/OpenCLGpuRegistry.h>
+#ifdef OPENCL_SUPPORT
+#    include <U2Algorithm/OpenCLGpuRegistry.h>
+#endif
 
 #include <U2Core/AppContext.h>
 #include <U2Core/FailTask.h>
@@ -30,20 +32,14 @@
 
 #include <U2Designer/DelegateEditors.h>
 
-#include <U2Gui/DialogUtils.h>
-
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BaseAttributes.h>
-#include <U2Lang/BasePorts.h>
-#include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/CoreLibConstants.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
-
-#include "GenomeAlignerPlugin.h"
 
 namespace U2 {
 namespace LocalWorkflow {

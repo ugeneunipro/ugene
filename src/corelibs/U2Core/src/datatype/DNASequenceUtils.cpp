@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,14 +33,6 @@ namespace U2 {
 
 void DNASequenceUtils::append(DNASequence &sequence, const DNASequence &appendedSequence) {
     sequence.seq += appendedSequence.constSequence();
-}
-
-DnaSequencesMatchStatus DNASequenceUtils::compare(const DNASequence &firstSeq, const DNASequence &secondSec) {
-    if (firstSeq.constSequence() == secondSec.constSequence()) {
-        return MatchExactly;
-    } else {
-        return DoNotMatch;
-    }
 }
 
 void DNASequenceUtils::removeChars(DNASequence &sequence, int startPos, int endPos, U2OpStatus &os) {

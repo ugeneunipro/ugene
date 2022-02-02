@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -325,14 +325,13 @@ void GTUtilsAssemblyBrowser::scrollToStart(GUITestOpStatus &os, Qt::Orientation 
     QScrollBar *scrollBar = getScrollBar(os, orientation);
     class MainThreadAction : public CustomScenario {
     public:
-        MainThreadAction(QScrollBar *scrollbar)
-            : CustomScenario(), scrollbar(scrollbar) {
+        MainThreadAction(QScrollBar *_scrollbar)
+            : scrollbar(_scrollbar) {
         }
-        void run(HI::GUITestOpStatus &os) {
-            Q_UNUSED(os);
+        void run(HI::GUITestOpStatus &) override {
             scrollbar->setValue(0);
         }
-        QScrollBar *scrollbar;
+        QScrollBar *scrollbar = nullptr;
     };
     GTThread::runInMainThread(os, new MainThreadAction(scrollBar));
     GTThread::waitForMainThread();

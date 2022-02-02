@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,10 +47,10 @@ NotificationChecker::NotificationChecker(HI::GUITestOpStatus &_os)
 
 #define GT_METHOD_NAME "sl_checkNotification"
 void NotificationChecker::sl_checkNotification() {
-    CHECK(QApplication::activeModalWidget() == nullptr, );
-    const QWidgetList widgetList = QApplication::allWidgets();
+    CHECK(QApplication::activeModalWidget() == nullptr, );  // Active modal widget will prevent click on the notification.
+    QWidgetList widgetList = QApplication::allWidgets();
     for (QWidget *widget : qAsConst(widgetList)) {
-        Notification *notification = qobject_cast<Notification *>(widget);
+        auto notification = qobject_cast<Notification *>(widget);
         if (notification != nullptr && notification->isVisible()) {
             uiLog.trace("notification is found");
             t->stop();
@@ -133,17 +133,17 @@ void GTUtilsNotifications::checkNotificationDialogText(HI::GUITestOpStatus &os, 
 #define GT_METHOD_NAME "clickOnNotificationWidget"
 void GTUtilsNotifications::clickOnNotificationWidget(HI::GUITestOpStatus &os) {
     for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
-        CHECK(QApplication::activeModalWidget() == nullptr, );
-        const QWidgetList widgetList = QApplication::allWidgets();
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        QWidgetList widgetList = QApplication::allWidgets();
         for (QWidget *widget : qAsConst(widgetList)) {
-            Notification *notification = qobject_cast<Notification *>(widget);
+            auto notification = qobject_cast<Notification *>(widget);
             if (notification != nullptr && notification->isVisible()) {
                 GTWidget::click(os, notification);
                 return;
             }
         }
     }
-    GT_CHECK(false, "Notification widget is not found!");
+    GT_FAIL("Notification widget is not found!", );
 }
 #undef GT_METHOD_NAME
 

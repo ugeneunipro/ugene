@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -65,13 +65,15 @@ public:
         QString getFirstExtensionByName(const QString &formatName) const;
 
         QString getFormatNameById(const QString &id) const;
-        QString getFormatNameByExtension(const QString &ext) const;
+        QString getFormatNameByExtension(const QString &extension) const;
 
         QString getIdByName(const QString &name) const;
 
     private:
-        QMap<QString, QStringList> extensions;
-        QMap<QString, QString> names;
+        QMap<QString, QStringList> extensionsByFormatId;
+        QMap<QString, QString> formatIdByExtension;
+        QMap<QString, QString> nameByFormatId;
+        QMap<QString, QString> formatIdByName;
     };
 
     SaveDocumentController(const SaveDocumentControllerConfig &config,
@@ -84,12 +86,16 @@ public:
                            const SimpleFormatsInfo &formatsDesc,
                            QObject *parent);
 
-    void addFormat(const QString &id, const QString &name, const QStringList &extenstions);
+    void addFormat(const QString &id, const QString &name, const QStringList &extensions);
 
     void setPath(const QString &path, const QSet<QString> &excludeList = QSet<QString>());
     void setFormat(const QString &formatId);
 
     QString getSaveFileName() const;
+
+    /** Returns save-file-name and a validation state in op-status. */
+    QString getValidatedSaveFilePath(U2OpStatus &os) const;
+
     DocumentFormatId getFormatIdToSave() const;
 
     void forceRoll(const QSet<QString> &excludeList = QSet<QString>());
@@ -117,7 +123,7 @@ private:
 
     SaveDocumentControllerConfig conf;
     SimpleFormatsInfo formatsInfo;
-    QString currentFormat;
+    QString currentFormatName;
     bool overwritingConfirmed;
 };
 
