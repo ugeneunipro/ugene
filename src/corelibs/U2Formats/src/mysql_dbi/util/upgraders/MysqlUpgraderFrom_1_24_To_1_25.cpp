@@ -45,7 +45,7 @@ void MysqlUpgraderFrom_1_24_To_1_25::upgrade(U2OpStatus &os) const {
     upgradeCoverageAttribute(os);
     CHECK_OP(os, );
 
-    dbi->setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, versionTo.text, os);
+    dbi->setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, versionTo.toString(), os);
 }
 
 void MysqlUpgraderFrom_1_24_To_1_25::dropOldPrecedure(U2OpStatus &os, MysqlDbRef *dbRef) const {

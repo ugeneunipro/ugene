@@ -102,7 +102,7 @@ Task::ReportResult CheckUpdatesTask::report() {
     Answer answer = DoNothing;
     if (runOnStartup) {
         if (siteVersion > thisVersion && !UgeneUpdater::isUpdateSkipped(siteVersion)) {
-            UpdateMessage message(siteVersion.text);
+            UpdateMessage message(siteVersion.toString());
             answer = message.getAnswer();
         }
     } else {
@@ -187,7 +187,7 @@ QString VersionMessage::getMessageText(const Version &thisVersion, const Version
                               " <tr><td>%1</td><td><b>&nbsp;%2</b></td></tr>"
                               " <tr><td>%3</td><td><b>&nbsp;%4</b></td></tr>"
                               "</table>")
-                          .arg(tr("Your version:"), thisVersion.text, tr("Latest version:"), newVersion.text);
+                          .arg(tr("Your version:"), thisVersion.toString(), tr("Latest version:"), newVersion.toString());
 
     if (thisVersion >= newVersion) {
         message += "<p>" + tr("You have the latest version") + "</p>";

@@ -275,8 +275,8 @@ void SQLiteDbi::internalInit(const QHash<QString, QString> &props, U2OpStatus &o
                 coreLog.info(U2DbiL10n::tr("Warning! The database was created with a newer %1 version: "
                                            "%2. Not all database features may be supported! Current %1 version: %3.")
                                  .arg(U2_PRODUCT_NAME)
-                                 .arg(dbAppVersion.text)
-                                 .arg(currentVersion.text));
+                                 .arg(dbAppVersion.toString())
+                                 .arg(currentVersion.toString()));
             }
         }
 

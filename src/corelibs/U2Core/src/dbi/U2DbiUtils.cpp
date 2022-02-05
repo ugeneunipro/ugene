@@ -19,13 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <cmath>
-
 #include <QBitArray>
 #include <QFile>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -175,11 +172,6 @@ bool U2DbiUtils::parseFullDbiUrl(const QString &dbiUrl, QString &userName, QStri
     return parseDbiUrl(full2shortDbiUrl(dbiUrl, userName), host, port, dbName);
 }
 
-QString U2DbiUtils::full2shortDbiUrl(const QString &fullDbiUrl) {
-    QString unusedUserName;
-    return full2shortDbiUrl(fullDbiUrl, unusedUserName);
-}
-
 QString U2DbiUtils::full2shortDbiUrl(const QString &fullDbiUrl, QString &userName) {
     int sepIndex = fullDbiUrl.indexOf("@");
     if (-1 == sepIndex) {
@@ -188,10 +180,6 @@ QString U2DbiUtils::full2shortDbiUrl(const QString &fullDbiUrl, QString &userNam
 
     userName = fullDbiUrl.left(sepIndex);
     return fullDbiUrl.right(fullDbiUrl.length() - sepIndex - 1);
-}
-
-bool U2DbiUtils::isFullDbiUrl(const QString &dbiUrl) {
-    return dbiUrl.contains('@');
 }
 
 QString U2DbiUtils::makeFolderCanonical(const QString &folder) {
@@ -225,9 +213,9 @@ Version U2DbiUtils::getDbMinRequiredVersion(const U2DbiRef &dbiRef, U2OpStatus &
 }
 
 bool U2DbiUtils::isDatabaseTooNew(const U2DbiRef &dbiRef, const Version &ugeneVersion, QString &minRequiredVersionString, U2OpStatus &os) {
-    const Version minRequiredVersion = getDbMinRequiredVersion(dbiRef, os);
+    Version minRequiredVersion = getDbMinRequiredVersion(dbiRef, os);
     CHECK_OP(os, false);
-    minRequiredVersionString = minRequiredVersion.text;
+    minRequiredVersionString = minRequiredVersion.toString();
     return minRequiredVersion > ugeneVersion;
 }
 

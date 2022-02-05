@@ -77,7 +77,7 @@ ConvertToSQLiteDialog::ConvertToSQLiteDialog(const GUrl &_sourceUrl, BAMInfo &_b
     connect(ui.selectAllToolButton, SIGNAL(clicked()), SLOT(sl_selectAll()));
     connect(ui.selectNoneToolButton, SIGNAL(clicked()), SLOT(sl_unselectAll()));
     connect(ui.inverseSelectionToolButton, SIGNAL(clicked()), SLOT(sl_inverseSelection()));
-    ui.indexNotAvailableLabel->setVisible(sam ? false : !bamInfo.hasIndex());
+    ui.indexNotAvailableLabel->setVisible(!sam && !bamInfo.hasIndex());
 
     if (sam && bamInfo.getHeader().getReferences().isEmpty()) {
         hideReferencesTable();
@@ -185,7 +185,7 @@ void ConvertToSQLiteDialog::sl_bamInfoButtonClicked() {
         }
 
         list << QPair<QString, QString>(BAMDbiPlugin::tr("URL"), sourceUrl.getURLString())
-             << QPair<QString, QString>(BAMDbiPlugin::tr("Format version"), header.getFormatVersion().text)
+             << QPair<QString, QString>(BAMDbiPlugin::tr("Format version"), header.getFormatVersion().toString())
              << QPair<QString, QString>(BAMDbiPlugin::tr("Sorting order"), sort);
 
         table->setRowCount(list.count());
