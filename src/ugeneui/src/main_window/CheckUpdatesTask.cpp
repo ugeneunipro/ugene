@@ -97,11 +97,11 @@ Task::ReportResult CheckUpdatesTask::report() {
         return ReportResult_Finished;
     }
 
-    Version thisVersion = Version::appVersion();
+    Version currentUgeneVersion = Version::appVersion();
 
     Answer answer = DoNothing;
     if (runOnStartup) {
-        if (siteVersion > thisVersion && !UgeneUpdater::isUpdateSkipped(siteVersion)) {
+        if (siteVersion > currentUgeneVersion && !UgeneUpdater::isUpdateSkipped(siteVersion)) {
             UpdateMessage message(siteVersion.toString());
             answer = message.getAnswer();
         }
@@ -122,10 +122,6 @@ Task::ReportResult CheckUpdatesTask::report() {
             break;
     }
     return ReportResult_Finished;
-}
-
-void CheckUpdatesTask::sl_registerInTaskScheduler() {
-    AppContext::getTaskScheduler()->registerTopLevelTask(this);
 }
 
 /************************************************************************/
