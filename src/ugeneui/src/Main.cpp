@@ -425,7 +425,7 @@ int main(int argc, char **argv) {
 #endif
 
     QMainWindow window;
-    SplashScreen *splashScreen = new SplashScreen(&window);
+    auto splashScreen = new SplashScreen(&window);
     splashScreen->adjustSize();
     splashScreen->setGeometry(
         QStyle::alignedRect(
@@ -842,17 +842,25 @@ int main(int argc, char **argv) {
     t1.stop();
 
     // coreLog.info(AppContextImpl::tr("%1-bit version of UGENE started").arg(Version::appArchitecture));
-    Version v = Version::appVersion();
+    Version ugeneVersion = Version::appVersion();
     coreLog.info(QObject::tr("UGENE started"));
-    coreLog.info(QObject::tr("UGENE version: %1 %2-bit").arg(v.toString()).arg(Version::appArchitecture));
+    coreLog.info(QObject::tr("UGENE version: %1 %2-bit").arg(ugeneVersion.toString()).arg(Version::appArchitecture));
 
-    QObject::connect(ts, SIGNAL(si_ugeneIsReadyToWork()), splashScreen, SLOT(sl_close()));
-    QObject::connect(ts, SIGNAL(si_ugeneIsReadyToWork()), mw, SLOT(sl_show()));
+    QObject::connect(psp, &PluginSupport::si_allStartUpPluginsLoaded, [splashScreen, mw]() {
+        auto externalToolManager = AppContext::getExternalToolRegistry()->getManager();
+        if (externalToolManager == nullptr) {  // External tools plugin is not loaded.
+            splashScreen->sl_close();
+            mw->sl_show();
+        } else {
+            QObject::connect(externalToolManager, &ExternalToolManager::si_startupValidationFinished, splashScreen, &SplashScreen::sl_close);
+            QObject::connect(externalToolManager, &ExternalToolManager::si_startupValidationFinished, mw, &MainWindowImpl::sl_show);
+        }
+    });
 
-    WelcomePageMdiController *wpc = new WelcomePageMdiController();
-    QObject::connect(ts, SIGNAL(si_ugeneIsReadyToWork()), wpc, SLOT(sl_showPage()));
-    QObject::connect(mw, SIGNAL(si_showWelcomePage()), wpc, SLOT(sl_showPage()));
-    QObject::connect(pli, SIGNAL(si_recentListChanged()), wpc, SLOT(sl_onRecentChanged()));
+    auto welcomePageController = new WelcomePageMdiController();
+    QObject::connect(mw, &MainWindowImpl::si_show, welcomePageController, &WelcomePageMdiController::sl_showPage);
+    QObject::connect(mw, SIGNAL(si_showWelcomePage()), welcomePageController, SLOT(sl_showPage()));
+    QObject::connect(pli, SIGNAL(si_recentListChanged()), welcomePageController, SLOT(sl_onRecentChanged()));
 
     QList<Task *> tasks;
 
@@ -878,7 +886,7 @@ int main(int argc, char **argv) {
         Shtirlitz::saveGatheredInfo();
     }
 
-    delete wpc;
+    delete welcomePageController;
 
     appContext->setDashboardInfoRegistry(nullptr);
     delete dashboardInfoRegistry;

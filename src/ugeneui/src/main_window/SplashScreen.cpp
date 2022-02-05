@@ -42,9 +42,9 @@ SplashScreen::SplashScreen(QWidget *parent /* = NULL*/)
     setEnabled(false);
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
-#ifdef Q_OS_WIN
-    setWindowFlags(windowFlags() | Qt::MSWindowsFixedSizeDialogHint);
-#endif
+    if (isOsWindows()) {
+        setWindowFlags(windowFlags() | Qt::MSWindowsFixedSizeDialogHint);
+    }
     setWindowModality(Qt::ApplicationModal);
     QHBoxLayout *mainLayout = new QHBoxLayout();
     setLayout(mainLayout);
@@ -67,10 +67,8 @@ SplashScreen::SplashScreen(QWidget *parent /* = NULL*/)
 }
 
 void SplashScreen::sl_close() {
-    if (AppContext::getTaskScheduler() == qobject_cast<TaskScheduler *>(sender())) {
-        removeEventFilter(this);
-        close();
-    }
+    removeEventFilter(this);
+    close();
 }
 
 bool SplashScreen::eventFilter(QObject * /*obj*/, QEvent *ev) {

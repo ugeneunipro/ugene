@@ -588,9 +588,6 @@ public:
     virtual void resumeThreadWithTask(const Task *task) = 0;
 
 signals:
-    // TODO: remove this signal from TaskScheduler. It is not scheduler responsibliity to track global UGENE state.
-    void si_ugeneIsReadyToWork();
-
     void si_topLevelTaskRegistered(Task *);
 
     void si_topLevelTaskUnregistered(Task *);

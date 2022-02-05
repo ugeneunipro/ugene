@@ -193,14 +193,12 @@ private:
     QList<TaskInfo *> priorityQueue;
     QList<TaskInfo *> tasksWithNewSubtasks;
     QList<Task *> newTasks;
-    QList<Task *> loadingTasks;
     QStringList stateNames;
     QMap<quint64, Qt::HANDLE> threadIds;
 
     AppResourcePool *resourcePool;
     AppResource *threadsResource;
     bool stateChangesObserved;
-    bool stateIsLoaded;
     SleepPreventer *sleepPreventer;
 };
 

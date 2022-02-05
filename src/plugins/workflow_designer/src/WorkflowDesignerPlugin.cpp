@@ -29,6 +29,7 @@
 #include <U2Core/CMDLineHelpProvider.h>
 #include <U2Core/CMDLineRegistry.h>
 #include <U2Core/CMDLineUtils.h>
+#include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GAutoDeleteList.h>
 #include <U2Core/L10n.h>
@@ -132,8 +133,17 @@ void WorkflowDesignerPlugin::processCMDLineOptions() {
 
     bool consoleMode = !AppContext::isGUIMode();  // only in console mode we run workflows by default. Otherwise we show them
     if (cmdlineReg->hasParameter(RUN_WORKFLOW) || (consoleMode && !CMDLineRegistryUtils::getPureValues().isEmpty())) {
-        Task *t = new WorkflowRunFromCMDLineTask();
-        connect(AppContext::getTaskScheduler(), SIGNAL(si_ugeneIsReadyToWork()), new TaskStarter(t), SLOT(registerTask()));
+        SAFE_POINT(AppContext::getPluginSupport()->isAllPluginsLoaded(), "Plugins can't be loaded during plugin initialization", );
+        QObject::connect(AppContext::getPluginSupport(), &PluginSupport::si_allStartUpPluginsLoaded, []() {
+            auto externalToolsManager = AppContext::getExternalToolRegistry()->getManager();
+            if (externalToolsManager == nullptr) {  // Can be null if not external tools plugin is present.
+                AppContext::getTaskScheduler()->registerTopLevelTask(new WorkflowRunFromCMDLineTask());
+            } else {
+                connect(externalToolsManager, &ExternalToolManager::si_startupValidationFinished, [] {
+                    AppContext::getTaskScheduler()->registerTopLevelTask(new WorkflowRunFromCMDLineTask());
+                });
+            }
+        });
     } else {
         if (cmdlineReg->hasParameter(GalaxyConfigTask::GALAXY_CONFIG_OPTION) && consoleMode) {
             const QString schemePath = cmdlineReg->getParameterValue(GalaxyConfigTask::GALAXY_CONFIG_OPTION);
