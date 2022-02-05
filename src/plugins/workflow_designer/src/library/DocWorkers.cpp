@@ -945,7 +945,7 @@ bool UgeneDBWriter::hasDataToWrite(const QVariantMap &data) const {
 }
 
 QSet<GObject *> UgeneDBWriter::getObjectsToWrite(const QVariantMap &data) const {
-    return {{SeqWriter::getSeqObject(data, context)}, {SeqWriter::getAnnObject(data, context)}};
+    return {SeqWriter::getSeqObject(data, context), SeqWriter::getAnnObject(data, context)};
 }
 
 void UgeneDBWriter::streamingStoreEntry(DocumentFormat *format, IOAdapter *io, const QVariantMap &data, WorkflowContext *context, int entryNum) {

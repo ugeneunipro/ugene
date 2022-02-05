@@ -85,6 +85,7 @@ linux-g++ {
         # These warnings are processed as errors.
         # All entries must be added to "disable-warnings.h" to ignore problems in 3rd-party code.
 
+        QMAKE_CXXFLAGS += -Werror=braced-scalar-init
         QMAKE_CXXFLAGS += -Werror=maybe-uninitialized
         QMAKE_CXXFLAGS += -Werror=parentheses
         QMAKE_CXXFLAGS += -Werror=return-type
