@@ -133,7 +133,7 @@ void WorkflowDesignerPlugin::processCMDLineOptions() {
 
     bool consoleMode = !AppContext::isGUIMode();  // only in console mode we run workflows by default. Otherwise we show them
     if (cmdlineReg->hasParameter(RUN_WORKFLOW) || (consoleMode && !CMDLineRegistryUtils::getPureValues().isEmpty())) {
-        SAFE_POINT(AppContext::getPluginSupport()->isAllPluginsLoaded(), "Plugins can't be loaded during plugin initialization", );
+        SAFE_POINT(!AppContext::getPluginSupport()->isAllPluginsLoaded(), "Plugins can't be loaded during plugin initialization", );
         QObject::connect(AppContext::getPluginSupport(), &PluginSupport::si_allStartUpPluginsLoaded, []() {
             auto externalToolsManager = AppContext::getExternalToolRegistry()->getManager();
             if (externalToolsManager == nullptr) {  // Can be null if not external tools plugin is present.
