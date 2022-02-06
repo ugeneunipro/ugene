@@ -5135,6 +5135,67 @@ GUI_TEST_CLASS_DEFINITION(test_6754) {
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 1, 1));
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
+
+GUI_TEST_CLASS_DEFINITION(test_6758_1) {
+    // copy murine.gb to sandbox as murine.1.gb
+    GTFile::copy(os, dataDir + "samples/Genbank/murine.gb", sandBoxDir + "murine.1.gb");
+
+    // copy murine.gb to sandbox as murine.2.gb
+    GTFile::copy(os, dataDir + "samples/Genbank/murine.gb", sandBoxDir + "murine.2.gb");
+
+    // open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    // add "Read sequence" and "Write Annotations" elements and connect them.
+    auto addSequenceElement = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
+    auto writeAnnotationElement = GTUtilsWorkflowDesigner::addElement(os, "Write Annotations");
+    GTUtilsWorkflowDesigner::connect(os, addSequenceElement, writeAnnotationElement);
+
+    // add "murine.1.gb" and "murine.2.gb" as the input of the "Read sequence" element.
+    GTUtilsWorkflowDesigner::click(os, addSequenceElement);
+    GTUtilsWorkflowDesigner::setDatasetInputFiles(os, { sandBoxDir + "murine.1.gb" , sandBoxDir + "murine.2.gb" });
+
+    // run the workflow.
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // expected: there are two output files "murine.1.gb" and "murine.2.gb", each of them contains one annotation table.
+    auto outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(outputFiles.contains("murine.1.gb"), "\"murine.1.gb\" should be, but it's not");
+    CHECK_SET_ERR(outputFiles.contains("murine.2.gb"), "\"murine.1.gb\" should be, but it's not");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6758_2) {
+    // copy murine.gb to sandbox as murine.1.gb
+    GTFile::copy(os, dataDir + "samples/Genbank/murine.gb", sandBoxDir + "murine.1.gb");
+
+    // copy murine.gb to sandbox/folder as murine.1.gb
+    QDir(sandBoxDir + "folder").mkpath(".");
+    GTFile::copy(os, dataDir + "samples/Genbank/murine.gb", sandBoxDir + "folder/murine.1.gb");
+
+    // open WD
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    // add "Read sequence" and "Write Annotations" elements and connect them.
+    auto addSequenceElement = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
+    auto writeAnnotationElement = GTUtilsWorkflowDesigner::addElement(os, "Write Annotations");
+    GTUtilsWorkflowDesigner::connect(os, addSequenceElement, writeAnnotationElement);
+
+    // add "murine.1.gb" and "murine.2.gb" as the input of the "Read sequence" element.
+    GTUtilsWorkflowDesigner::click(os, addSequenceElement);
+    GTUtilsWorkflowDesigner::setDatasetInputFiles(os, { sandBoxDir + "murine.1.gb" , sandBoxDir + "folder/murine.1.gb" });
+
+    // run the workflow.
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // expected: there are two output files "murine.1.gb" and "murine.2.gb", each of them contains one annotation table.
+    auto outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(outputFiles.contains("murine.1.gb"), "\"murine.1.gb\" should be, but it's not");
+    CHECK_SET_ERR(outputFiles.contains("murine.1_1.gb"), "\"murine.1_1.gb\" should be, but it's not");
+
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6759) {
     GTLogTracer l;
 

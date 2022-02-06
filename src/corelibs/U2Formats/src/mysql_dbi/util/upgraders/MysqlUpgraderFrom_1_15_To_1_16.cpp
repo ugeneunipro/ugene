@@ -48,7 +48,7 @@ void MysqlUpgraderFrom_1_15_To_1_16::upgrade(U2OpStatus &os) const {
     upgradeFeatureDbi(os, dbi->getDbRef());
     CHECK_OP(os, );
 
-    dbi->setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, versionTo.text, os);
+    dbi->setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, versionTo.toString(), os);
 }
 
 void MysqlUpgraderFrom_1_15_To_1_16::upgradeFeatureDbi(U2OpStatus &os, MysqlDbRef *dbRef) const {

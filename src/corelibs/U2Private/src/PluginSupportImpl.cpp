@@ -22,7 +22,6 @@
 #include "PluginSupportImpl.h"
 #include <algorithm>
 
-#include <QCoreApplication>
 #include <QDir>
 #include <QLibrary>
 #include <QSet>
@@ -125,12 +124,7 @@ void LoadAllPluginsTask::addToOrderingQueue(const QString &url) {
 
     // now check plugin compatibility
     bool isUIMode = AppContext::getMainWindow() != nullptr || AppContext::isGUIMode();  // isGUIMode - for pluginChecker!
-    bool modeIsOk = false;
-    if (isUIMode) {
-        modeIsOk = desc.mode.testFlag(PluginMode_UI);
-    } else {
-        modeIsOk = desc.mode.testFlag(PluginMode_Console);
-    }
+    bool modeIsOk = desc.mode.testFlag(isUIMode ? PluginMode_UI : PluginMode_Console);
     if (!modeIsOk) {
         coreLog.trace(QString("Plugin is inactive in the current mode: %1, skipping load").arg(desc.id));
         return;
@@ -148,7 +142,10 @@ void LoadAllPluginsTask::addToOrderingQueue(const QString &url) {
         return;
     }
     if (ugeneVersion != desc.ugeneVersion) {
-        coreLog.trace(QString("Plugin was built with another UGENE version: %1, %2 vs %3").arg(desc.id).arg(desc.ugeneVersion.text).arg(ugeneVersion.text));
+        coreLog.trace(QString("Plugin was built with another UGENE version: %1, %2 vs %3")
+                          .arg(desc.id)
+                          .arg(desc.ugeneVersion.toString())
+                          .arg(ugeneVersion.toString()));
         return;
     }
 
@@ -397,7 +394,7 @@ void AddPluginTask::prepare() {
 
     if (verificationIsEnabled) {
         PLUG_VERIFY_FUNC verify_func = PLUG_VERIFY_FUNC(lib->resolve(U2_PLUGIN_VERIFY_NAME));
-        if (verify_func && !verificationMode && (checkVersion != Version::appVersion().text || forceVerification)) {
+        if (verify_func && !verificationMode && (checkVersion != Version::appVersion().toString() || forceVerification)) {
             verifyTask = new VerifyPluginTask(ps, desc);
             addSubTask(verifyTask);
         }
@@ -437,7 +434,7 @@ bool AddPluginTask::verifyPlugin() {
     QString libUrl = desc.libraryUrl.getURLString();
     PLUG_FAIL_MESSAGE_FUNC message_func = PLUG_FAIL_MESSAGE_FUNC(lib->resolve(U2_PLUGIN_FAIL_MASSAGE_NAME));
     if (!verificationMode && verifyTask != nullptr) {
-        settings->setValue(PLUGIN_VERIFICATION + desc.id, Version::appVersion().text);
+        settings->setValue(PLUGIN_VERIFICATION + desc.id, Version::appVersion().toString());
         if (!verifyTask->isCorrectPlugin()) {
             settings->setValue(settings->toVersionKey(SKIP_LIST_SETTINGS) + desc.id, desc.descriptorUrl.getURLString());
             QString message = message_func ? *(QScopedPointer<QString>(message_func())) : tr("Plugin loading error: %1. Verification failed.").arg(libUrl);

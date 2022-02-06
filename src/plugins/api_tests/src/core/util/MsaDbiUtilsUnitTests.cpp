@@ -977,7 +977,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_noGaps) {
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al->getLength(), "Wrong msa length.");
-    CHECK_EQUAL(expected.length(), al->getNumRows(), "Wrong rows count.");
+    CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
 
     QStringList actual;
     actual << al->getMsaRow(0)->toByteArray(os, al->getLength());
@@ -1008,7 +1008,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_leadingGaps) {
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al->getLength(), "Wrong msa length.");
-    CHECK_EQUAL(expected.length(), al->getNumRows(), "Wrong rows count.");
+    CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
 
     QStringList actual;
     actual << al->getMsaRow(0)->toByteArray(os, al->getLength());
@@ -1039,7 +1039,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_trailingGaps) {
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al->getLength(), "Wrong msa length.");
-    CHECK_EQUAL(expected.length(), al->getNumRows(), "Wrong rows count.");
+    CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
 
     QStringList actual;
     actual << al->getMsaRow(0)->toByteArray(os, al->getLength());
@@ -1070,7 +1070,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_leadingGapsCutOff) {
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al->getLength(), "Wrong msa length.");
-    CHECK_EQUAL(expected.length(), al->getNumRows(), "Wrong rows count.");
+    CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
 
     QStringList actual;
     actual << al->getMsaRow(0)->toByteArray(os, al->getLength());
@@ -1101,7 +1101,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_trailingGapsCutOff) {
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al->getLength(), "Wrong msa length.");
-    CHECK_EQUAL(expected.length(), al->getNumRows(), "Wrong rows count.");
+    CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
 
     QStringList actual;
     actual << al->getMsaRow(0)->toByteArray(os, al->getLength());
@@ -1132,7 +1132,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_leadingAndTrailingGaps) {
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al->getLength(), "Wrong msa length.");
-    CHECK_EQUAL(expected.length(), al->getNumRows(), "Wrong rows count.");
+    CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
 
     QStringList actual;
     actual << al->getMsaRow(0)->toByteArray(os, al->getLength());
@@ -1163,7 +1163,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_gapsOnly) {
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(0, al->getLength(), "Wrong msa length.");
-    CHECK_EQUAL(expected.length(), al->getNumRows(), "Wrong rows count.");
+    CHECK_EQUAL(expected.length(), al->getRowCount(), "Wrong rows count.");
 
     QStringList actual;
     actual << al->getMsaRow(0)->toByteArray(os, al->getLength());

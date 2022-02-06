@@ -123,14 +123,14 @@ void MultipleAlignmentData::setLength(int newLength) {
     }
 
     U2OpStatus2Log os;
-    for (int i = 0, n = getNumRows(); i < n; i++) {
+    for (int i = 0, n = getRowCount(); i < n; i++) {
         rows[i]->crop(os, 0, newLength);
         CHECK_OP(os, );
     }
     length = newLength;
 }
 
-int MultipleAlignmentData::getNumRows() const {
+int MultipleAlignmentData::getRowCount() const {
     return rows.size();
 }
 
@@ -283,11 +283,11 @@ int MultipleAlignmentData::getRowIndexByRowId(qint64 rowId, U2OpStatus &os) cons
 }
 
 void MultipleAlignmentData::renameRow(int rowIndex, const QString &name) {
-    SAFE_POINT(rowIndex >= 0 && rowIndex < getNumRows(),
+    SAFE_POINT(rowIndex >= 0 && rowIndex < getRowCount(),
                QString("Incorrect row index '%1' was passed to MultipleAlignmentData::renameRow: "
                        "the number of rows is '%2'")
                    .arg(rowIndex)
-                   .arg(getNumRows()), );
+                   .arg(getRowCount()), );
     SAFE_POINT(!name.isEmpty(),
                "Incorrect parameter 'name' was passed to MultipleAlignmentData::renameRow: "
                "Can't set the name of a row to an empty string", );
@@ -295,16 +295,16 @@ void MultipleAlignmentData::renameRow(int rowIndex, const QString &name) {
 }
 
 void MultipleAlignmentData::setRowId(int rowIndex, qint64 rowId) {
-    SAFE_POINT(rowIndex >= 0 && rowIndex < getNumRows(), "Invalid row index", );
+    SAFE_POINT(rowIndex >= 0 && rowIndex < getRowCount(), "Invalid row index", );
     rows[rowIndex]->setRowId(rowId);
 }
 
 void MultipleAlignmentData::removeRow(int rowIndex, U2OpStatus &os) {
-    if (rowIndex < 0 || rowIndex >= getNumRows()) {
+    if (rowIndex < 0 || rowIndex >= getRowCount()) {
         coreLog.trace(QString("Internal error: incorrect parameters was passed to MultipleAlignmentData::removeRow, "
                               "rowIndex '%1', the number of rows is '%2'")
                           .arg(rowIndex)
-                          .arg(getNumRows()));
+                          .arg(getRowCount()));
         os.setError("Failed to remove a row");
         return;
     }
@@ -320,7 +320,7 @@ void MultipleAlignmentData::removeRow(int rowIndex, U2OpStatus &os) {
 }
 
 void MultipleAlignmentData::removeChars(int rowNumber, int pos, int n, U2OpStatus &os) {
-    if (rowNumber >= getNumRows() || rowNumber < 0 || pos > length || pos < 0 || n < 0) {
+    if (rowNumber >= getRowCount() || rowNumber < 0 || pos > length || pos < 0 || n < 0) {
         coreLog.trace(QString("Internal error: incorrect parameters were passed "
                               "to MultipleAlignmentData::removeChars: row index '%1', pos '%2', count '%3'")
                           .arg(rowNumber)
@@ -393,8 +393,8 @@ bool MultipleAlignmentData::operator!=(const MultipleAlignmentData &other) const
 
 void MultipleAlignmentData::check() const {
 #ifdef DEBUG
-    assert(getNumRows() != 0 || length == 0);
-    for (int i = 0, n = getNumRows(); i < n; i++) {
+    assert(getRowCount() != 0 || length == 0);
+    for (int i = 0, n = getRowCount(); i < n; i++) {
         assert(rows[i].getCoreEnd() <= length);
     }
 #endif
@@ -426,7 +426,7 @@ void MultipleAlignmentData::addRowPrivate(const MultipleAlignmentRow &row, qint6
     Q_UNUSED(check);
 
     length = qMax(rowLenWithTrailingGaps, length);
-    int idx = rowIndex == -1 ? getNumRows() : qBound(0, rowIndex, getNumRows());
+    int idx = rowIndex == -1 ? getRowCount() : qBound(0, rowIndex, getRowCount());
     rows.insert(idx, row);
 }
 

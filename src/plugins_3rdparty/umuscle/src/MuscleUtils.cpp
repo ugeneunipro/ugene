@@ -100,8 +100,8 @@ void setupAlphaAndScore(const DNAAlphabet *al, TaskStateInfo &ti) {
 
 void convertMAlignment2MSA(MSA &muscleMSA, const MultipleSequenceAlignment &ma, bool fixAlpha) {
     MuscleContext *ctx = getMuscleContext();
-    ctx->fillUidsVectors(ma->getNumRows());
-    for (int i = 0, n = ma->getNumRows(); i < n; i++) {
+    ctx->fillUidsVectors(ma->getRowCount());
+    for (int i = 0, n = ma->getRowCount(); i < n; i++) {
         const MultipleSequenceAlignmentRow row = ma->getMsaRow(i);
 
         int coreLen = row->getCoreLength();
@@ -127,7 +127,7 @@ void convertMAlignment2SecVect(SeqVect &sv, const MultipleSequenceAlignment &ma,
     sv.Clear();
 
     MuscleContext *ctx = getMuscleContext();
-    ctx->fillUidsVectors(ma->getNumRows());
+    ctx->fillUidsVectors(ma->getRowCount());
 
     unsigned i = 0;
     unsigned seq_count = 0;

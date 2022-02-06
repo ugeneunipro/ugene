@@ -131,7 +131,7 @@ void SelectSubalignmentDialog::init() {
     MultipleAlignmentObject *mobj = editor->getMaObject();
     SAFE_POINT(mobj != nullptr, tr("MSA Object is NULL"), );
 
-    int rowNumber = mobj->getNumRows();
+    int rowNumber = mobj->getRowCount();
     int alignLength = mobj->getLength();
 
     sequencesTableWidget->clearContents();

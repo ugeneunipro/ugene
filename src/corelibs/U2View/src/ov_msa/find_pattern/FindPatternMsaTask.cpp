@@ -72,7 +72,7 @@ QList<Task *> FindPatternMsaTask::onSubTaskFinished(Task *subTask) {
 
     if (subTask == searchInSingleSequenceTask) {
         getResultFromTask();
-        if (currentSequenceIndex < settings.msaObj->getNumRows() && totalResultsCounter < settings.findSettings.maxResult2Find) {
+        if (currentSequenceIndex < settings.msaObj->getRowCount() && totalResultsCounter < settings.findSettings.maxResult2Find) {
             createSearchTaskForCurrentSequence();
             result.append(searchInSingleSequenceTask);
         }

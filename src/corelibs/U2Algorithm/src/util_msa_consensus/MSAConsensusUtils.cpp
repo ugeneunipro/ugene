@@ -63,13 +63,13 @@ QString MSAConsensusUtils::getConsensusPercentTip(const MultipleAlignment &ma, i
     }
     QVector<QPair<int, char>> freqs(32);  // TODO: try QVarLengthArray?
     assert(pos >= 0 && pos < ma->getLength());
-    int nSeq = ma->getNumRows();
+    int nSeq = ma->getRowCount();
     assert(nSeq > 0);
     if (nSeq == 0) {
         return QString();
     }
     int gaps = 0;
-    for (int seq = 0; seq < ma->getNumRows(); seq++) {
+    for (int seq = 0; seq < ma->getRowCount(); seq++) {
         uchar c = (uchar)ma->charAt(seq, pos);
         if (c >= 'A' && c <= 'Z') {
             int idx = c - 'A';
@@ -140,7 +140,7 @@ uchar MSAConsensusUtils::getColumnFreqs(const MultipleAlignment &ma, int pos, QV
     uchar maxC = 0;
     int maxCFreq = 0;
     int *freqs = freqsByChar.data();
-    int nSeq = seqIdx.isEmpty() ? ma->getNumRows() : seqIdx.size();
+    int nSeq = seqIdx.isEmpty() ? ma->getRowCount() : seqIdx.size();
     for (qint64 seq = 0; seq < nSeq; seq++) {
         uchar c = (uchar)ma->charAt(seqIdx.isEmpty() ? seq : seqIdx[seq],
                                     pos);
@@ -159,7 +159,7 @@ uchar MSAConsensusUtils::getColumnFreqs(const MultipleAlignment &ma, int pos, QV
 quint32 MSAConsensusUtils::packConsensusCharsToInt(const MultipleAlignment &ma, int pos, const int *mask4, bool gapsAffectPercents) {
     QVector<QPair<int, char>> freqs(32);
     int numNoGaps = 0;
-    int nSeq = ma->getNumRows();
+    int nSeq = ma->getRowCount();
     for (int seq = 0; seq < nSeq; seq++) {
         uchar c = (uchar)ma->charAt(seq, pos);
         if (c >= 'A' && c <= 'Z') {

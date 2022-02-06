@@ -134,7 +134,7 @@ void MuscleAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
     ValidateMuscleIds(msa);
 
     if (ctx->params.g_uMaxIters == 1 || uSeqCount == 2) {
-        assert(int(msa.GetSeqCount()) == ma->getNumRows());
+        assert(int(msa.GetSeqCount()) == ma->getRowCount());
         prepareAlignResults(msa, ma->getAlphabet(), res, mhack);
         return;
     }
@@ -320,7 +320,7 @@ void MuscleAdapter::align2ProfilesUnsafe(const MultipleSequenceAlignment &ma1, c
     MSA msa2;
     convertMAlignment2MSA(msa2, ma2, true);
 
-    MSA::SetIdCount(ma1->getNumRows() + ma2->getNumRows());
+    MSA::SetIdCount(ma1->getRowCount() + ma2->getRowCount());
 
     unsigned uLength1 = msa1.GetColCount();
     unsigned uLength2 = msa2.GetColCount();
@@ -425,7 +425,7 @@ static void addSequenceToMSA(MultipleSequenceAlignment &ma, const QByteArray &pa
         int prevLen = ma->getLength();
         int newLen = prevLen + numIns;
         QByteArray msaPathChangesNew;
-        for (int i = 0, n = ma->getNumRows(); i < n; i++) {
+        for (int i = 0, n = ma->getRowCount(); i < n; i++) {
             const MultipleSequenceAlignmentRow row = ma->getMsaRow(i);
             QByteArray newSeq;
             newSeq.reserve(newLen);
@@ -504,7 +504,7 @@ void MuscleAdapter::addUnalignedSequencesToProfileUnsafe(const MultipleSequenceA
     setupAlphaAndScore(al, ti);
     CHECK_OP(ti, );
 
-    MSA::SetIdCount(ma->getNumRows() + 1);
+    MSA::SetIdCount(ma->getRowCount() + 1);
 
     // prepare original MSA
     MSA profileMSA;
@@ -517,7 +517,7 @@ void MuscleAdapter::addUnalignedSequencesToProfileUnsafe(const MultipleSequenceA
     gauto_array<ProfPos> prof1(ProfileFromMSALocal_ProfileCPP(profileMSA, tree1));
     QVector<AlignedSeq> alignedSeqs;
     int dp = ti.progress;
-    for (int i = 0, n = unalignedSeqs->getNumRows(); i < n; i++) {
+    for (int i = 0, n = unalignedSeqs->getRowCount(); i < n; i++) {
         ti.setDescription(tr("Aligning sequence %1 of %2").arg(QString::number(i + 1)).arg(QString::number(n)));
         ti.progress = dp + i * (95 - dp) / n;
         const MultipleSequenceAlignmentRow useq = unalignedSeqs->getMsaRow(i);

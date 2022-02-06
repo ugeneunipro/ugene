@@ -47,8 +47,8 @@ MaGraphCalculationTask::MaGraphCalculationTask(MultipleAlignmentObject *maObject
       height(height) {
     SAFE_POINT_EXT(maObject != nullptr, setError(tr("MSA is NULL")), );
     msaLength = maObject->getLength();
-    seqNumber = maObject->getNumRows();
-    if (!memLocker.tryAcquire(maObject->getMultipleAlignment()->getLength() * maObject->getMultipleAlignment()->getNumRows())) {
+    seqNumber = maObject->getRowCount();
+    if (!memLocker.tryAcquire(maObject->getMultipleAlignment()->getLength() * maObject->getMultipleAlignment()->getRowCount())) {
         setError(memLocker.getError());
         return;
     }

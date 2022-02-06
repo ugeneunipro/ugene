@@ -192,7 +192,7 @@ void MSFFormat::load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QList<GObj
 
     // checksum
     U2OpStatus2Log seqCheckOs;
-    const int numRows = al->getNumRows();
+    const int numRows = al->getRowCount();
     for (int i = 0; i < numRows; i++) {
         const MultipleSequenceAlignmentRow row = al->getMsaRow(i);
         const int expectedCheckSum = msfRows[i].checksum;

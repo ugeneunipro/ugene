@@ -21,7 +21,6 @@
 
 #include "Shtirlitz.h"
 
-#include <QApplication>
 #include <QBuffer>
 #include <QDate>
 #include <QMainWindow>
@@ -107,7 +106,6 @@ QList<Task *> Shtirlitz::wakeup() {
     getFirstLaunchInfo(allVersionsFirstLaunch, minorVersionFirstLaunch);
 
     QString allVersionsKey = SETTINGS_NOT_FIRST_LAUNCH;
-    QString thisVersionsKey = s->toVersionKey(SETTINGS_NOT_FIRST_LAUNCH);
     QString minorVersionFirstLaunchKey = s->toMinorVersionKey(SETTINGS_NOT_FIRST_LAUNCH);
     if (allVersionsFirstLaunch) {
         s->setValue(allVersionsKey, QVariant(true));
@@ -223,7 +221,7 @@ QString Shtirlitz::formCountersReport() {
 
 QString Shtirlitz::formSystemReport() {
     QString dateAndTime = QDateTime::currentDateTime().toString(Qt::ISODate);
-    QString ugeneVer = Version::appVersion().text;
+    QString ugeneVer = Version::appVersion().toString();
     QString qtVersion = qVersion();
     QString osName;
     QString osVersion;

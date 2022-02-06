@@ -81,7 +81,7 @@ QMutex *U2Dbi::getDbMutex() const {
 }
 
 void U2Dbi::setVersionProperties(const Version &minVersion, U2OpStatus &os) {
-    setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, minVersion.text, os);
+    setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, minVersion.toString(), os);
 }
 
 //////////////////////////////////////////////////////////////////////////

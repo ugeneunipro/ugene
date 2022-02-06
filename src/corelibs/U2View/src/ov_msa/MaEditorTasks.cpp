@@ -345,7 +345,7 @@ void ExtractConsensusTask::run() {
             return;
         }
         int count = 0;
-        int nSeq = alignment->getNumRows();
+        int nSeq = alignment->getRowCount();
         SAFE_POINT(0 != nSeq, tr("No sequences in alignment"), );
 
         QChar c = algorithm->getConsensusCharAndScore(alignment, i, count);

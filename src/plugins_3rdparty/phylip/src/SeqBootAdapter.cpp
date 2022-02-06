@@ -88,7 +88,7 @@ void SeqBoot::generateSequencesFromAlignment(const MultipleSequenceAlignment &ma
 
     reps = replicates;
 
-    spp = ma->getNumRows();
+    spp = ma->getRowCount();
     sites = ma->getLength();
 
     initGenerSeq(replicates, spp, sites);

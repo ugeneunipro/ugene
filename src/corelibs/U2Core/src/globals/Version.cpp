@@ -45,16 +45,15 @@ Version::Version(int _major, int _minor, int _patch) {
     patch = _patch;
 }
 
-Version Version::parseVersion(const QString &text) {
-    Version v;
-    v.text = text;
+Version Version::parseVersion(const QString &versionText) {
+    Version version;
 
     // parse sub-numbers and suffix
     int versionType = 0;
     QString currentNum;
     int textPos = 0;
-    for (; textPos < v.text.length(); textPos++) {
-        QChar c = v.text.at(textPos);
+    for (; textPos < versionText.length(); textPos++) {
+        QChar c = versionText.at(textPos);
         if (c.isNumber()) {
             currentNum += c;
         } else {
@@ -64,37 +63,37 @@ Version Version::parseVersion(const QString &text) {
                 break;
             }
             if (versionType == 0) {
-                v.major = val;
+                version.major = val;
             } else if (versionType == 1) {
-                v.minor = val;
+                version.minor = val;
             } else {
-                v.patch = val;
+                version.patch = val;
                 break;
             }
             versionType++;
             currentNum.clear();
         }
     }
-    v.suffix = v.text.mid(textPos);
-    v.isDevVersion = v.suffix.contains(VERSION_DEV_SUFFIX);
-    if (v.suffix.isEmpty()) {  // See issue UGENE-870 (https://ugene.net/tracker/browse/UGENE-870)
+    version.suffix = versionText.mid(textPos);
+    version.isDevVersion = version.suffix.contains(VERSION_DEV_SUFFIX);
+    if (version.suffix.isEmpty()) {  // See issue UGENE-870 (https://ugene.net/tracker/browse/UGENE-870)
         bool ok;
         int val = currentNum.toInt(&ok);
         if (ok) {
             if (versionType == 0) {
-                v.major = val;
+                version.major = val;
             } else if (versionType == 1) {
-                v.minor = val;
+                version.minor = val;
             } else {
-                v.patch = val;
+                version.patch = val;
             }
         }
     }
 
 #ifdef _DEBUG
-    v.debug = true;
+    version.debug = true;
 #endif
-    return v;
+    return version;
 }
 
 Version Version::appVersion() {
@@ -141,12 +140,29 @@ bool Version::checkBuildAndRuntimeVersions() {
     Version buildVersion = parseVersion(QT_VERSION_STR);
     Version runtimeVersion = parseVersion(qVersion());
     if (runtimeVersion < buildVersion) {
+        QByteArray buildQtVersionText = buildVersion.toString().toUtf8();
+        QByteArray runtimeQtVersionText = runtimeVersion.toString().toUtf8();
         printf("Runtime Qt version must be >= build version. Build version %s, runtime version: %s \r\n",
-               buildVersion.text.toUtf8().constData(),
-               runtimeVersion.text.toUtf8().constData());
+               buildQtVersionText.constData(),
+               runtimeQtVersionText.constData());
         return false;
     }
     return true;
+}
+
+QString Version::toString() const {
+    QString versionText = QString::number(major) + "." + QString::number(minor);
+    if (patch > 0) {
+        versionText += "." + QString::number(patch);
+    }
+    if (isDevVersion) {
+        versionText += QString("-") + VERSION_DEV_SUFFIX;
+    }
+    return versionText;
+}
+
+bool Version::isValid() const {
+    return major != 0 || minor != 0 || patch != 0;
 }
 
 }  // namespace U2

@@ -135,7 +135,7 @@ void CrashHandler::setupPrivateHandler() {
 QString CrashHandler::generateReport(const QString &exceptionType, int maxReportSize) {
     QString reportText = exceptionType + "|";
 
-    reportText += Version::appVersion().text;
+    reportText += Version::appVersion().toString();
     reportText += "|";
 
     Settings *settings = AppContext::getSettings();

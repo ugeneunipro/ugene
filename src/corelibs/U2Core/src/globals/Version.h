@@ -37,7 +37,7 @@ public:
     // Current QT version
     static Version qtVersion();
 
-    static Version parseVersion(const QString &text);
+    static Version parseVersion(const QString &versionText);
 
     /**
      * Checks that build and runtime versions are compatible.
@@ -45,6 +45,12 @@ public:
      * Returns false if versions are not compatible or true otherwise.
      */
     static bool checkBuildAndRuntimeVersions();
+
+    /** String representation of the version: Example: 42.1-dev. This text can be parsed by parseVersion. */
+    QString toString() const;
+
+    /** Returns true if the version is not '0.0.0' (created with a default constructor). */
+    bool isValid() const;
 
     bool operator>(const Version &v) const;
     bool operator>=(const Version &v) const;
@@ -60,7 +66,6 @@ public:
     int patch;
 
     bool debug = false;
-    QString text = "unknown";
     QString suffix;
     bool isDevVersion = false;
     const static int appArchitecture;

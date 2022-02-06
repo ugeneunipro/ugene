@@ -28,7 +28,7 @@
 namespace U2 {
 
 namespace Workflow {
-class BlastReadsSubtask;
+class BlastAlignToReferenceMuxTask;
 class MakeBlastDbAlignerSubtask;
 class ComposeResultSubtask;
 }  // namespace Workflow
@@ -45,7 +45,7 @@ public:
                               const QString &resultUrl,
                               const SharedDbiDataHandler &reference,
                               const QList<SharedDbiDataHandler> &reads,
-                              const QMap<SharedDbiDataHandler, QString> &readsNames,
+                              const QMap<SharedDbiDataHandler, QString> &_readNameById,
                               int minIdentityPercent,
                               DbiDataStorage *storage);
     QString getResultUrl() const;
@@ -63,11 +63,11 @@ private:
     const QString resultUrl;
     const SharedDbiDataHandler reference;
     const QList<SharedDbiDataHandler> reads;
-    const QMap<SharedDbiDataHandler, QString> readsNames;
+    const QMap<SharedDbiDataHandler, QString> readNameById;
     const int minIdentityPercent;
 
     MakeBlastDbAlignerSubtask *formatDbSubTask = nullptr;
-    BlastReadsSubtask *blastTask = nullptr;
+    BlastAlignToReferenceMuxTask *blastTask = nullptr;
     ComposeResultSubtask *composeSubTask = nullptr;
     SaveDocumentTask *saveTask = nullptr;
 

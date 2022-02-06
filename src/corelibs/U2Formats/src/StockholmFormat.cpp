@@ -389,7 +389,7 @@ static void loadOneMsa(IOAdapterReader &reader, U2OpStatus &os, MultipleSequence
     skipBlankLines(reader, os);
     CHECK_OP(os, );
 
-    CHECK_EXT(msa->getNumRows() > 0, os.setError(StockholmFormat::tr("invalid file: empty sequence alignment")), );
+    CHECK_EXT(msa->getRowCount() > 0, os.setError(StockholmFormat::tr("invalid file: empty sequence alignment")), );
 
     U2AlphabetUtils::assignAlphabet(msa);
     CHECK_EXT(msa->getAlphabet() != nullptr, os.setError(StockholmFormat::tr("invalid file: unknown alphabet")), )

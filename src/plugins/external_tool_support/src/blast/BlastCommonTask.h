@@ -50,6 +50,9 @@ public:
     /** Maps current 'resultsPerQuerySequence' to a list of annotations. */
     QList<SharedAnnotationData> getResultAnnotations() const;
 
+    /** Returns result found for the query sequence with the given index. */
+    QList<SharedAnnotationData> getResultPerQuerySequence(int querySequenceIndex) const;
+
     BlastTaskSettings getSettings() const;
 
     virtual ExternalToolRunTask *createBlastTask() = 0;

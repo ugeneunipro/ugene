@@ -88,7 +88,7 @@ MuscleTask::MuscleTask(const MultipleSequenceAlignment &ma, const MuscleTaskSett
 
     // todo: make more precise estimation, use config.op mode
     int aliLen = ma->getLength();
-    int nSeq = ma->getNumRows();
+    int nSeq = ma->getRowCount();
     int memUseMB = qint64(aliLen) * qint64(nSeq) * 200 / (1024 * 1024);  // 200x per char in alignment
     TaskResourceUsage tru(RESOURCE_MEMORY, memUseMB);
 
@@ -168,9 +168,9 @@ void MuscleTask::doAlign(bool refine) {
 
         resultMA->setAlphabet(inputMA->getAlphabet());
         QByteArray emptySeq;
-        const int nSeq = inputMA->getNumRows();
+        const int nSeq = inputMA->getRowCount();
 
-        const int resNSeq = resultSubMA->getNumRows();
+        const int resNSeq = resultSubMA->getRowCount();
         const int maxSeq = qMax(nSeq, resNSeq);
         QVector<unsigned int> ids(maxSeq, 0);
         QVector<bool> existID(maxSeq, false);
@@ -198,11 +198,11 @@ void MuscleTask::doAlign(bool refine) {
             }
         }
 
-        SAFE_POINT_EXT(resultSubMA->getNumRows() == inputMA->getNumRows(),
+        SAFE_POINT_EXT(resultSubMA->getRowCount() == inputMA->getRowCount(),
                        stateInfo.setError(tr("Unexpected number of rows in the result multiple alignment!")), );
 
         if (config.alignRegion && config.regionToAlign.length != inputMA->getLength()) {
-            for (int i = 0, n = inputMA->getNumRows(); i < n; i++) {
+            for (int i = 0, n = inputMA->getRowCount(); i < n; i++) {
                 const MultipleSequenceAlignmentRow row = inputMA->getMsaRow(ids[i]);
                 resultMA->addRow(row->getName(), emptySeq);
             }
@@ -242,7 +242,7 @@ void MuscleTask::alignOwnRowsToAlignment(U2OpStatus &os) {
     // Move own sequences from inputMA to profile.
     MultipleSequenceAlignment inputTrimmedInputMa("inputTrimmedInputMa", inputMA->getAlphabet());
     MultipleSequenceAlignment inputUnalignedMa("inputUnalignedMa", inputMA->getAlphabet());
-    for (int rowIndex = 0; rowIndex < inputMA->getNumRows(); rowIndex++) {
+    for (int rowIndex = 0; rowIndex < inputMA->getRowCount(); rowIndex++) {
         MultipleAlignmentRow row = inputMA->getRow(rowIndex);
         if (config.rowIndexesToAlign.contains(rowIndex)) {
             DNASequence sequence = row->getUngappedSequence();
@@ -257,7 +257,7 @@ void MuscleTask::alignOwnRowsToAlignment(U2OpStatus &os) {
     MultipleSequenceAlignment resultUnorderedMa;  // Result alignment with incorrect (non-inputMA) rows order.
     MuscleAdapter::addUnalignedSequencesToProfile(inputTrimmedInputMa, inputUnalignedMa, resultUnorderedMa, stateInfo);
 
-    if (resultUnorderedMa->getNumRows() != inputMA->getNumRows()) {
+    if (resultUnorderedMa->getRowCount() != inputMA->getRowCount()) {
         os.setError(tr("Failed to align rows with MUSCLE. Result number of rows does not match"));
         return;
     }
@@ -265,11 +265,11 @@ void MuscleTask::alignOwnRowsToAlignment(U2OpStatus &os) {
     // Add all rows from 'resultUnorderedMa' to 'resultMA' using the original order (inputMA).
     SAFE_POINT_EXT(resultMA->isEmpty(), os.setError(L10N::internalError("resultMA must be empty")), );
     resultMA->setAlphabet(inputMA->getAlphabet());
-    int trimmedInputMsaRowCount = inputTrimmedInputMa->getNumRows();
+    int trimmedInputMsaRowCount = inputTrimmedInputMa->getRowCount();
     int trimmedMsaRowIndex = 0;
     int unalignedMsaIndex = 0;
     QList<qint64> inputMaRowIds = inputMA->getRowsIds();
-    for (int i = 0; i < inputMA->getNumRows(); i++) {
+    for (int i = 0; i < inputMA->getRowCount(); i++) {
         int resultUnorderedMsaRowIndex;
         if (config.rowIndexesToAlign.contains(i)) {
             resultUnorderedMsaRowIndex = trimmedInputMsaRowCount + unalignedMsaIndex;
@@ -279,13 +279,13 @@ void MuscleTask::alignOwnRowsToAlignment(U2OpStatus &os) {
             trimmedMsaRowIndex++;
         }
         SAFE_POINT_EXT(trimmedMsaRowIndex <= trimmedInputMsaRowCount, os.setError(L10N::internalError("Invalid trimmedMsaRowIndex")), );
-        SAFE_POINT_EXT(resultUnorderedMsaRowIndex < inputMA->getNumRows(), os.setError(L10N::internalError("Invalid resultUnorderedMsaRowIndex")), );
+        SAFE_POINT_EXT(resultUnorderedMsaRowIndex < inputMA->getRowCount(), os.setError(L10N::internalError("Invalid resultUnorderedMsaRowIndex")), );
         MultipleAlignmentRow row = resultUnorderedMa->getRow(resultUnorderedMsaRowIndex);
         resultMA->addRow(row->getName(), row->getUngappedSequence(), row->getGaps(), stateInfo);
         CHECK_OP(stateInfo, );
 
         // Restore original row ids.
-        int rowIndex = resultMA->getNumRows() - 1;
+        int rowIndex = resultMA->getRowCount() - 1;
         resultMA->setRowId(rowIndex, inputMaRowIds[rowIndex]);
     }
 }
@@ -486,7 +486,7 @@ Task::ReportResult MuscleGObjectTask::report() {
         CHECK_OP(stateInfo, ReportResult_Finished);
 
         QMap<qint64, QVector<U2MsaGap>> rowsGapModel;
-        for (int i = 0, n = muscleTask->resultMA->getNumRows(); i < n; ++i) {
+        for (int i = 0, n = muscleTask->resultMA->getRowCount(); i < n; ++i) {
             qint64 rowId = muscleTask->resultMA->getMsaRow(i)->getRowDbInfo().rowId;
             const QVector<U2MsaGap> &newGapModel = muscleTask->resultMA->getMsaRow(i)->getGaps();
             rowsGapModel.insert(rowId, newGapModel);
@@ -501,7 +501,7 @@ Task::ReportResult MuscleGObjectTask::report() {
             obj->updateRowsOrder(stateInfo, resultRowIds);
         }
     } else if (config.op == MuscleTaskOp_AddUnalignedToProfile || config.op == MuscleTaskOp_ProfileToProfile || config.op == MuscleTaskOp_OwnRowsToAlignment) {
-        SAFE_POINT_EXT(muscleTask->inputMA->getNumRows() + config.profile->getNumRows() == muscleTask->resultMA->getNumRows(),
+        SAFE_POINT_EXT(muscleTask->inputMA->getRowCount() + config.profile->getRowCount() == muscleTask->resultMA->getRowCount(),
                        stateInfo.setError(tr("Illegal number of sequences in the MUSCLE alignment result")),
                        ReportResult_Finished);
 

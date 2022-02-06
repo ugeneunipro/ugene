@@ -482,7 +482,7 @@ void MsaExcludeListWidget::handleUndoRedoInMsaEditor(const MultipleAlignment &ma
     if (isAddToExcludeList) {  // Add rows removed from MSA to Exclude list
         QList<MultipleAlignmentRow> msaRows;
         QSet<qint64> msaRowIdsAfter = msaObject->getRowIds().toSet();
-        for (int i = 0; i < maBefore->getNumRows(); i++) {
+        for (int i = 0; i < maBefore->getRowCount(); i++) {
             const MultipleAlignmentRow &row = maBefore->getRow(i);
             if (!msaRowIdsAfter.contains(row->getRowId())) {
                 msaRows << row;

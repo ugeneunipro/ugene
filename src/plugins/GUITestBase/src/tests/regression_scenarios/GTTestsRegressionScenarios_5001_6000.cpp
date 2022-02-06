@@ -3459,31 +3459,33 @@ GUI_TEST_CLASS_DEFINITION(test_5753) {
 
 GUI_TEST_CLASS_DEFINITION(test_5755) {
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+
             // Expected state : "Min read identity" option by default = 80 %
-            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
+            int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox", dialog);
             QString expected = "80";
             CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
             // Expected state : "Quality threshold" option by default = 30
-            int quality = GTSpinBox::getValue(os, "qualitySpinBox");
+            int quality = GTSpinBox::getValue(os, "qualitySpinBox", dialog);
             expected = "30";
             CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
 
             // Expected state : "Add to project" option is checked by default
-            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
-            CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
+            bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox", dialog);
+            CHECK_SET_ERR(addToProject, "incorrect addToProject state: expected true, got false");
 
-            // Expected state : "Result aligment" field is filled by default
-            QString output = GTLineEdit::getText(os, "outputLineEdit");
-            CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
+            // Expected state : "Result alignment" field is filled by default
+            QString output = GTLineEdit::getText(os, "outputLineEdit", dialog);
+            CHECK_SET_ERR(!output.isEmpty(), "incorrect output line: is empty");
 
             // 2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference_need_gaps.gb");
+            GTLineEdit::setText(os, "referenceLineEdit", testDir + "_common_data/sanger/reference_need_gaps.gb", dialog);
 
             // 3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
             QStringList reads;
-            for (int i = 1; i < 21; i++) {
+            for (int i = 1; i <= 20; i++) {
                 QString name = "sanger_";
                 QString num = QString::number(i);
                 if (num.size() == 1) {
@@ -3495,32 +3497,25 @@ GUI_TEST_CLASS_DEFINITION(test_5755) {
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list *ob = new GTFileDialogUtils_list(os, readDir, reads);
-            GTUtilsDialog::waitForDialog(os, ob);
 
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton *>(os, "addReadButton"));
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, readDir, reads));
+            GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton", dialog));
 
             // 4. Push "Align" button
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
 
-    // 1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
-    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
+    // 1. Select "Tools>Sanger data analysis>Reads quality control and alignment".
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario()));
     GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected : Trailing gaps were inserted into the end of reference
+    // Expected : Trailing gaps were inserted into the end of reference.
     qint64 refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength(os);
     QString refReg = GTUtilsMcaEditorSequenceArea::getReferenceReg(os, refLength - 20, 20);
-    bool isGaps = true;
-    foreach (QChar c, refReg) {
-        if (c != U2Mca::GAP_CHAR) {
-            isGaps = false;
-            break;
-        }
-    }
-    CHECK_SET_ERR(isGaps, "Incorrect characters");
+    bool isGap = std::all_of(refReg.begin(), refReg.end(), [](const auto &c) { return c == U2Mca::GAP_CHAR; });
+    CHECK_SET_ERR(isGap, "Expected only gaps, got: " + refReg);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5758) {

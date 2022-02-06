@@ -77,8 +77,6 @@
 #include <U2Core/DataPathRegistry.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/FileAndDirectoryUtils.h>
-#include <U2Core/GObjectTypes.h>
-#include <U2Core/GUrlUtils.h>
 #include <U2Core/LoadRemoteDocumentTask.h>
 #include <U2Core/Log.h>
 #include <U2Core/LogCache.h>
@@ -117,7 +115,6 @@
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/QueryDesignerRegistry.h>
 #include <U2Lang/WorkflowEnvImpl.h>
-#include <U2Lang/WorkflowSettings.h>
 
 #include <U2Test/GTestFrameworkComponents.h>
 #include <U2Test/XMLTestFormat.h>
@@ -847,7 +844,7 @@ int main(int argc, char **argv) {
     // coreLog.info(AppContextImpl::tr("%1-bit version of UGENE started").arg(Version::appArchitecture));
     Version v = Version::appVersion();
     coreLog.info(QObject::tr("UGENE started"));
-    coreLog.info(QObject::tr("UGENE version: %1 %2-bit").arg(v.text).arg(Version::appArchitecture));
+    coreLog.info(QObject::tr("UGENE version: %1 %2-bit").arg(v.toString()).arg(Version::appArchitecture));
 
     QObject::connect(ts, SIGNAL(si_ugeneIsReadyToWork()), splashScreen, SLOT(sl_close()));
     QObject::connect(ts, SIGNAL(si_ugeneIsReadyToWork()), mw, SLOT(sl_show()));

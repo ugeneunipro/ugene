@@ -362,7 +362,7 @@ void ProgressiveAlignTask::_run() {
     ValidateMuscleIds(workpool->a);
 
     if (1 == ctx->params.g_uMaxIters || 2 == uSeqCount) {
-        assert(int(workpool->a.GetSeqCount()) == workpool->ma->getNumRows());
+        assert(int(workpool->a.GetSeqCount()) == workpool->ma->getRowCount());
         prepareAlignResults(workpool->a, workpool->ma->getAlphabet(), workpool->res, workpool->mhack);
     }
 }

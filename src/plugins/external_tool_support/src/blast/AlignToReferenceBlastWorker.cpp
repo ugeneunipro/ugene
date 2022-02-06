@@ -45,7 +45,7 @@
 #include <U2Lang/WorkflowMonitor.h>
 
 #include "BlastSupport.h"
-#include "align_worker_subtasks/BlastReadsSubtask.h"
+#include "align_worker_subtasks/BlastAlignToReferenceTask.h"
 #include "align_worker_subtasks/ComposeResultSubtask.h"
 #include "align_worker_subtasks/MakeBlastDbAlignerSubtask.h"
 #include "align_worker_subtasks/PrepareReferenceSequenceTask.h"
@@ -149,11 +149,11 @@ AlignToReferenceBlastPrompter::AlignToReferenceBlastPrompter(Actor *a)
 }
 
 QString AlignToReferenceBlastPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
-    SAFE_POINT(nullptr != input, "No input port", "");
+    auto input = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
+    SAFE_POINT(input != nullptr, "No input port", "");
     Actor *producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     const QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
-    const QString producerName = (nullptr != producer) ? producer->getLabel() : unsetStr;
+    const QString producerName = producer != nullptr ? producer->getLabel() : unsetStr;
     const QString refLink = getHyperlink(REF_ATTR_ID, getURL(REF_ATTR_ID));
     return tr("Aligns each sequence from <u>%1</u> to the reference sequence from <u>%2</u>.").arg(producerName).arg(refLink);
 }
@@ -171,51 +171,56 @@ Task *AlignToReferenceBlastWorker::createPrepareTask(U2OpStatus & /*os*/) const 
 }
 
 void AlignToReferenceBlastWorker::onPrepared(Task *task, U2OpStatus &os) {
-    PrepareReferenceSequenceTask *prepareTask = qobject_cast<PrepareReferenceSequenceTask *>(task);
-    CHECK_EXT(nullptr != prepareTask, os.setError(L10N::internalError("Unexpected prepare task")), );
+    auto prepareTask = qobject_cast<PrepareReferenceSequenceTask *>(task);
+    CHECK_EXT(prepareTask != nullptr, os.setError(L10N::internalError("Unexpected prepare task")), );
     reference = context->getDataStorage()->getDataHandler(prepareTask->getReferenceEntityRef());
     referenceUrl = prepareTask->getPreparedReferenceUrl();
 }
 
 Task *AlignToReferenceBlastWorker::createTask(const QList<Message> &messages) const {
     QList<SharedDbiDataHandler> reads;
-    QMap<SharedDbiDataHandler, QString> readsNames;
-    foreach (const Message &message, messages) {
+    QMap<SharedDbiDataHandler, QString> readNameById;
+    for (const Message &message : qAsConst(messages)) {
         QVariantMap data = message.getData().toMap();
         if (data.contains(BaseSlots::DNA_SEQUENCE_SLOT().getId())) {
-            const SharedDbiDataHandler read = data[BaseSlots::DNA_SEQUENCE_SLOT().getId()].value<SharedDbiDataHandler>();
+            SharedDbiDataHandler read = data[BaseSlots::DNA_SEQUENCE_SLOT().getId()].value<SharedDbiDataHandler>();
             reads << read;
-            readsNames.insert(read, getReadName(message));
+            QString customReadName = getReadName(message);
+            if (!customReadName.isEmpty()) {
+                readNameById.insert(read, customReadName);
+            }
         }
     }
     int readIdentity = getValue<int>(IDENTITY_ID);
-    return new AlignToReferenceBlastTask(referenceUrl, getValue<QString>(RESULT_URL_ATTR_ID), reference, reads, readsNames, readIdentity, context->getDataStorage());
+    return new AlignToReferenceBlastTask(referenceUrl, getValue<QString>(RESULT_URL_ATTR_ID), reference, reads, readNameById, readIdentity, context->getDataStorage());
 }
 
 QVariantMap AlignToReferenceBlastWorker::getResult(Task *task, U2OpStatus &os) const {
-    AlignToReferenceBlastTask *alignTask = qobject_cast<AlignToReferenceBlastTask *>(task);
-    CHECK_EXT(nullptr != alignTask, os.setError(L10N::internalError("Unexpected task")), QVariantMap());
+    auto alignTask = qobject_cast<AlignToReferenceBlastTask *>(task);
+    CHECK_EXT(alignTask != nullptr, os.setError(L10N::internalError("Unexpected task")), QVariantMap());
 
-    const QList<QPair<QString, QPair<int, bool>>> acceptedReads = alignTask->getAcceptedReads();
-    const QList<QPair<QString, int>> discardedReads = alignTask->getDiscardedReads();
+    QList<QPair<QString, QPair<int, bool>>> acceptedReads = alignTask->getAcceptedReads();
+    QList<QPair<QString, int>> discardedReads = alignTask->getDiscardedReads();
 
-    algoLog.info(QString("Reads discarded by the mapper: %1").arg(discardedReads.count()));
-    QPair<QString, int> discardedPair;
-    foreach (discardedPair, discardedReads) {
+    algoLog.details(QString("Reads discarded by the mapper: %1").arg(discardedReads.count()));
+    for (const auto &discardedPair : qAsConst(discardedReads)) {
         algoLog.details(discardedPair.first);
     }
-    algoLog.info(QString("Reads accepted by the mapper: %1").arg(acceptedReads.count()));
-    QPair<QString, QPair<int, bool>> pair;
-    foreach (pair, acceptedReads) {
+    algoLog.trace(QString("Reads accepted by the mapper: %1").arg(acceptedReads.count()));
+    for (const auto &pair : qAsConst(acceptedReads)) {
         algoLog.details((pair.second.second ? "&#x2190;&nbsp;&nbsp;" : "&#x2192;&nbsp;&nbsp;") + pair.first);
     }
-    algoLog.info(QString("Total reads processed by the mapper: %1").arg(acceptedReads.count() + discardedReads.count()));
+    algoLog.details(QString("Total reads processed by the mapper: %1").arg(acceptedReads.count() + discardedReads.count()));
 
-    if (0 != discardedReads.count()) {
-        monitor()->addInfo(QString("%1 %2 not mapped").arg(discardedReads.count()).arg(discardedReads.count() == 1 ? "read was" : "reads were"), actor->getId(), WorkflowNotification::U2_WARNING);
+    if (!discardedReads.isEmpty()) {
+        monitor()->addInfo(QString("%1 %2 not mapped")
+                               .arg(discardedReads.count())
+                               .arg(discardedReads.count() == 1 ? "read was" : "reads were"),
+                           actor->getId(),
+                           WorkflowNotification::U2_WARNING);
     }
 
-    const QString resultUrl = alignTask->getResultUrl();
+    QString resultUrl = alignTask->getResultUrl();
     if (QFileInfo::exists(resultUrl)) {
         monitor()->addOutputFile(resultUrl, actor->getId());
     } else {
@@ -236,7 +241,7 @@ MessageMetadata AlignToReferenceBlastWorker::generateMetadata(const QString &dat
 }
 
 QString AlignToReferenceBlastWorker::getReadName(const Message &message) const {
-    CHECK(AlignToReferenceBlastWorkerFactory::ROW_NAMING_FILE_NAME_VALUE == getValue<QString>(ROW_NAMING_ID), "");
+    CHECK(getValue<QString>(ROW_NAMING_ID) == AlignToReferenceBlastWorkerFactory::ROW_NAMING_FILE_NAME_VALUE, "");
     const int metadataId = message.getMetadataId();
     const MessageMetadata metadata = context->getMetadataStorage().get(metadataId);
     return GUrlUtils::getUncompressedCompleteBaseName(metadata.getFileUrl());
@@ -245,15 +250,21 @@ QString AlignToReferenceBlastWorker::getReadName(const Message &message) const {
 /************************************************************************/
 /* AlignToReferenceBlastTask */
 /************************************************************************/
-AlignToReferenceBlastTask::AlignToReferenceBlastTask(const QString &refUrl, const QString &resultUrl, const SharedDbiDataHandler &reference, const QList<SharedDbiDataHandler> &reads, const QMap<SharedDbiDataHandler, QString> &readsNames, int minIdentityPercent, DbiDataStorage *storage)
+AlignToReferenceBlastTask::AlignToReferenceBlastTask(const QString &_referenceUrl,
+                                                     const QString &_resultUrl,
+                                                     const SharedDbiDataHandler &_reference,
+                                                     const QList<SharedDbiDataHandler> &_reads,
+                                                     const QMap<SharedDbiDataHandler, QString> &_readNameById,
+                                                     int _minIdentityPercent,
+                                                     DbiDataStorage *_storage)
     : Task(tr("Map to reference"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
-      referenceUrl(refUrl),
-      resultUrl(resultUrl),
-      reference(reference),
-      reads(reads),
-      readsNames(readsNames),
-      minIdentityPercent(minIdentityPercent),
-      storage(storage) {
+      referenceUrl(_referenceUrl),
+      resultUrl(_resultUrl),
+      reference(_reference),
+      reads(_reads),
+      readNameById(_readNameById),
+      minIdentityPercent(_minIdentityPercent),
+      storage(_storage) {
     GCOUNTER(cvar, "AlignToReferenceBlastTask");
 }
 
@@ -269,10 +280,17 @@ QList<Task *> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
 
     if (subTask == formatDbSubTask) {
         QString dbPath = formatDbSubTask->getResultPath();
-        blastTask = new BlastReadsSubtask(dbPath, reads, reference, minIdentityPercent, readsNames, storage);
+        blastTask = new BlastAlignToReferenceMuxTask(dbPath, reads, reference, readNameById, storage);
         result << blastTask;
     } else if (subTask == blastTask) {
-        composeSubTask = new ComposeResultSubtask(reference, reads, blastTask->getBlastSubtasks(), storage);
+        const QList<AlignToReferenceResult> &alignmentResults = blastTask->getAlignmentResults();
+        QList<AlignToReferenceResult> acceptedResults;
+        for (const auto &alignmentResult : qAsConst(alignmentResults)) {
+            if (alignmentResult.identityPercent >= minIdentityPercent) {
+                acceptedResults << alignmentResult;
+            }
+        }
+        composeSubTask = new ComposeResultSubtask(reference, acceptedResults, storage);
         composeSubTask->setSubtaskProgressWeight(0.5f);
         result << composeSubTask;
     } else if (subTask == composeSubTask) {
@@ -283,11 +301,11 @@ QList<Task *> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
         document->setDocumentOwnsDbiResources(false);
 
         MultipleChromatogramAlignmentObject *mcaObject = composeSubTask->takeMcaObject();
-        SAFE_POINT_EXT(nullptr != mcaObject, setError("Result MCA object is NULL"), result);
+        SAFE_POINT_EXT(mcaObject != nullptr, setError("Result MCA object is NULL"), result);
         document->addObject(mcaObject);
 
         U2SequenceObject *referenceSequenceObject = composeSubTask->takeReferenceSequenceObject();
-        SAFE_POINT_EXT(nullptr != referenceSequenceObject, setError("Result reference sequence object is NULL"), result);
+        SAFE_POINT_EXT(referenceSequenceObject != nullptr, setError("Result reference sequence object is NULL"), result);
         document->addObject(referenceSequenceObject);
 
         mcaObject->addObjectRelation(GObjectRelation(GObjectReference(referenceSequenceObject), ObjectRole_ReferenceSequence));
@@ -299,7 +317,7 @@ QList<Task *> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
 }
 
 Task::ReportResult AlignToReferenceBlastTask::report() {
-    if (nullptr != formatDbSubTask && !formatDbSubTask->getResultPath().isEmpty()) {
+    if (formatDbSubTask != nullptr && !formatDbSubTask->getResultPath().isEmpty()) {
         QFileInfo(formatDbSubTask->getResultPath()).dir().removeRecursively();
     }
     return ReportResult_Finished;
@@ -335,33 +353,35 @@ QString AlignToReferenceBlastTask::generateReport() const {
 }
 
 QString AlignToReferenceBlastTask::getResultUrl() const {
-    CHECK(nullptr != saveTask, "");
+    CHECK(saveTask != nullptr, "");
     return saveTask->getURL().getURLString();
 }
 
 SharedDbiDataHandler AlignToReferenceBlastTask::getAnnotations() const {
-    CHECK(nullptr != composeSubTask, SharedDbiDataHandler());
+    CHECK(composeSubTask != nullptr, {});
     return composeSubTask->getAnnotations();
 }
 
 QList<QPair<QString, QPair<int, bool>>> AlignToReferenceBlastTask::getAcceptedReads() const {
+    SAFE_POINT(blastTask != nullptr, "Task is not finished!", {});
     QList<QPair<QString, QPair<int, bool>>> acceptedReads;
-    CHECK(nullptr != blastTask, acceptedReads);
-    foreach (BlastAndSwReadTask *subTask, blastTask->getBlastSubtasks()) {
-        if (subTask->getReadIdentity() >= minIdentityPercent) {
-            QPair<int, bool> pair(subTask->getReadIdentity(), subTask->isComplement());
-            acceptedReads.append((QPair<QString, QPair<int, bool>>(subTask->getReadName(), pair)));
+    const QList<AlignToReferenceResult> &alignmentResults = blastTask->getAlignmentResults();
+    for (const auto &alignmentResult : qAsConst(alignmentResults)) {
+        if (alignmentResult.identityPercent >= minIdentityPercent) {
+            QPair<int, bool> identityAndStrandPair(alignmentResult.identityPercent, alignmentResult.isOnComplementaryStrand);
+            acceptedReads.append({alignmentResult.readName, identityAndStrandPair});
         }
     }
     return acceptedReads;
 }
 
 QList<QPair<QString, int>> AlignToReferenceBlastTask::getDiscardedReads() const {
+    SAFE_POINT(blastTask != nullptr, "Task is not finished!", {});
     QList<QPair<QString, int>> discardedReads;
-    CHECK(nullptr != blastTask, discardedReads);
-    foreach (BlastAndSwReadTask *subTask, blastTask->getBlastSubtasks()) {
-        if (subTask->getReadIdentity() < minIdentityPercent) {
-            discardedReads << QPair<QString, int>(subTask->getReadName(), subTask->getReadIdentity());
+    const QList<AlignToReferenceResult> &alignmentResults = blastTask->getAlignmentResults();
+    for (const auto &alignmentResult : qAsConst(alignmentResults)) {
+        if (alignmentResult.identityPercent < minIdentityPercent) {
+            discardedReads.append({alignmentResult.readName, alignmentResult.identityPercent});
         }
     }
     return discardedReads;

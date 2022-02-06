@@ -68,7 +68,7 @@ void UgeneUpdater::update() {
         setUpdateOnClose(true);
         emit si_update();
     } else {
-        GUIUtils::runWebBrowser("http://ugene.net/download.html");
+        GUIUtils::runWebBrowser("https://ugene.net/download.html");
     }
 }
 
@@ -82,12 +82,12 @@ bool UgeneUpdater::isUpdateOnClose() const {
 
 bool UgeneUpdater::isUpdateSkipped(const Version &version) {
     UserAppsSettings *settings = AppContext::getAppSettings()->getUserAppsSettings();
-    return settings->isUpdateSkipped(version.text);
+    return settings->isUpdateSkipped(version.toString());
 }
 
 void UgeneUpdater::skipUpdate(const Version &version) {
     UserAppsSettings *settings = AppContext::getAppSettings()->getUserAppsSettings();
-    settings->skipUpdate(version.text);
+    settings->skipUpdate(version.toString());
 }
 
 bool UgeneUpdater::isEnabled() {

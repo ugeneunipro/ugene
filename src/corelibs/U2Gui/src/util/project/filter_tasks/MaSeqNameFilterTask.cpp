@@ -36,7 +36,7 @@ namespace U2 {
 
 static bool isFilteredByMASequenceName(const MultipleAlignmentObject *maObj, const ProjectTreeControllerModeSettings &settings) {
     CHECK(nullptr != maObj, false);
-    for (int i = 0, n = maObj->getNumRows(); i < n; ++i) {
+    for (int i = 0, n = maObj->getRowCount(); i < n; ++i) {
         if (settings.nameFilterAcceptsString(maObj->getRow(i)->getName())) {
             return true;
         }

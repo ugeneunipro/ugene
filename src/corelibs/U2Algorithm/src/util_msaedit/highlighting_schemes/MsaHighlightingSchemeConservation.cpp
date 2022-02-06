@@ -40,7 +40,7 @@ void MsaHighlightingSchemeConservation::process(const char refChar, char &seqCha
         calculateStatisticForColumn(refCharColumn);
     }
 
-    int neededThr = (int)((float)(threshold * maObj->getNumRows()) / 100.0 + 0.5);
+    int neededThr = (int)((float)(threshold * maObj->getRowCount()) / 100.0 + 0.5);
     if (lessThenThreshold) {
         highlight = (msaCharCountMap[refCharColumn][seqChar] <= neededThr);
     } else {
@@ -78,7 +78,7 @@ void MsaHighlightingSchemeConservation::calculateStatisticForColumn(int refCharC
     CHECK(!msaCharCountMap.contains(refCharColumn), );
     CharCountMap columnStatistic;
     const MultipleAlignment ma = maObj->getMultipleAlignment();
-    for (int row = ma->getNumRows() - 1; row >= 0; row--) {
+    for (int row = ma->getRowCount() - 1; row >= 0; row--) {
         char seqChar = ma->charAt(row, refCharColumn);
         if (columnStatistic.contains(seqChar)) {
             columnStatistic[seqChar] += 1;

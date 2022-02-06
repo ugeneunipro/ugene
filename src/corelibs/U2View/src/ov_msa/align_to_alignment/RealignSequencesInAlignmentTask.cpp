@@ -51,7 +51,7 @@ RealignSequencesInAlignmentTask::RealignSequencesInAlignmentTask(MultipleSequenc
     msaObject = msaObjectToClone->clone(msaObjectToClone->getEntityRef().dbiRef, stateInfo);
     CHECK_OP(stateInfo, );
 
-    for (int index = 0; index < msaObject->getNumRows(); index++) {
+    for (int index = 0; index < msaObject->getRowCount(); index++) {
         const QString name = QString::number(index);
         msaObject->renameRow(index, name);
         originalRowOrder.append(name);

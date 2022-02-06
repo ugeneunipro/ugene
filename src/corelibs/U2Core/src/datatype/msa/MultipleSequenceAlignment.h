@@ -82,7 +82,7 @@ public:
     MultipleSequenceAlignmentData &operator=(const MultipleSequenceAlignmentData &msaData);
 
     /** Returns the number of rows in the alignment */
-    int getNumRows() const;
+    int getRowCount() const;
 
     /**
      * Recomputes the length of the alignment and makes it as minimal
