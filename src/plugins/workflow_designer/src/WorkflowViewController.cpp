@@ -1961,7 +1961,7 @@ void WorkflowView::sl_exportScene() {
     dialog->exec();
 }
 
-void WorkflowView::sl_saveScene(bool saveImmideately) {
+void WorkflowView::sl_saveScene() {
     if (meta.url.contains(QDir("data:workflow_samples").path())) {
         QMessageBox changePathMsgBox;
         changePathMsgBox.setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
@@ -1995,17 +1995,10 @@ void WorkflowView::sl_saveScene(bool saveImmideately) {
         sl_updateTitle();
     }
     propertyEditor->commit();
-    if (saveImmideately) {
-        HRSchemaSerializer::updateWorkflowSchemaPathSettings(meta);
-        U2OpStatus2Log os;
-        HRSchemaSerializer::saveSchema(schema.get(), &meta, meta.url, os);
-        CHECK_OP(os, );
-        sl_onSceneSaved();
-    } else {
-        auto *saveTask = new SaveWorkflowSceneTask(getSchema(), getMeta());
-        AppContext::getTaskScheduler()->registerTopLevelTask(saveTask);
-        connect(saveTask, SIGNAL(si_stateChanged()), SLOT(sl_onSceneSaved()));
-    }
+    HRSchemaSerializer::updateWorkflowSchemaPathSettings(meta);
+    U2OpStatus2Log os;
+    HRSchemaSerializer::saveSchema(schema.get(), &meta, meta.url, os);
+    CHECK_OP_EXT(os, scene->setModified(false), );
 }
 
 void WorkflowView::sl_saveSceneAs() {
@@ -2018,10 +2011,10 @@ void WorkflowView::sl_saveSceneAs() {
     }
     propertyEditor->commit();
     meta = md->meta;
-    Task *t = new SaveWorkflowSceneTask(getSchema(), getMeta());
-    AppContext::getTaskScheduler()->registerTopLevelTask(t);
-    sl_updateTitle();
-    connect(t, SIGNAL(si_stateChanged()), SLOT(sl_onSceneSaved()));
+    HRSchemaSerializer::updateWorkflowSchemaPathSettings(meta);
+    U2OpStatus2Log os;
+    HRSchemaSerializer::saveSchema(schema.get(), &meta, meta.url, os);
+    CHECK_OP_EXT(os, scene->setModified(false), );
 }
 
 void WorkflowView::startWizard(Wizard *wizard) {
@@ -2248,14 +2241,6 @@ void WorkflowView::sl_onSceneLoaded() {
     startFirstAutoRunWizard();
 }
 
-void WorkflowView::sl_onSceneSaved() {
-    Task *t = dynamic_cast<Task *>(sender());
-    CHECK(nullptr != t, );
-    if (t->isFinished() && !t->hasError()) {
-        scene->setModified(false);
-    }
-}
-
 void WorkflowView::sl_updateTitle() {
     setWindowTitle(tr("Workflow Designer - %1").arg(meta.name));
 }
@@ -2275,7 +2260,7 @@ void WorkflowView::saveState() {
 
 bool WorkflowView::onCloseEvent() {
     saveState();
-    if (!confirmModified(true)) {
+    if (!confirmModified()) {
         return false;
     }
     if (go) {
@@ -2284,7 +2269,7 @@ bool WorkflowView::onCloseEvent() {
     return true;
 }
 
-bool WorkflowView::confirmModified(bool saveImmideately) {
+bool WorkflowView::confirmModified() {
     propertyEditor->commit();
     if (scene->isModified() && !scene->items().isEmpty()) {
         AppContext::getMainWindow()->getMDIManager()->activateWindow(this);
@@ -2295,7 +2280,7 @@ bool WorkflowView::confirmModified(bool saveImmideately) {
         if (QMessageBox::Cancel == ret) {
             return false;
         } else if (QMessageBox::Discard != ret) {
-            sl_saveScene(saveImmideately);
+            sl_saveScene();
         }
     }
     return true;

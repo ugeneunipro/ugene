@@ -38,22 +38,6 @@ namespace U2 {
 using namespace Workflow;
 
 /**********************************
- * SaveWorkflowSceneTask
- **********************************/
-SaveWorkflowSceneTask::SaveWorkflowSceneTask(const QSharedPointer<Schema> &s, const Metadata &m)
-    : Task(tr("Save workflow scene task"), TaskFlag_None), schema(s), meta(m) {
-    GCOUNTER(cvar, "SaveWorkflowSceneTask");
-    HRSchemaSerializer::updateWorkflowSchemaPathSettings(meta);
-}
-
-void SaveWorkflowSceneTask::run() {
-    if (hasError()) {
-        return;
-    }
-    HRSchemaSerializer::saveSchema(schema.get(), &meta, meta.url, stateInfo);
-}
-
-/**********************************
  * LoadWorkflowSceneTask
  **********************************/
 LoadWorkflowSceneTask::LoadWorkflowSceneTask(const QSharedPointer<Schema> &_schema, Metadata *_meta, WorkflowScene *_scene, const QString &_url, bool _noUrl, bool _disableWizardAutorun)

@@ -172,7 +172,7 @@ public:
     void setupContextMenu(QMenu *menu);
 
     void onModified();
-    bool confirmModified(bool saveImmideately = false);
+    bool confirmModified();
 
     ActorPrototype *selectedProto() const {
         return currentProto;
@@ -218,13 +218,12 @@ private slots:
     void sl_showEditor();
     void sl_selectPrototype(Workflow::ActorPrototype *, bool);
     void sl_exportScene();
-    void sl_saveScene(bool saveImmideately = false);
+    void sl_saveScene();
     void sl_saveSceneAs();
     void sl_loadScene();
     void sl_newScene();
     void sl_updateTitle();
     void sl_onSceneLoaded();
-    void sl_onSceneSaved();
 
     void sl_copyItems();
     void sl_cutItems();

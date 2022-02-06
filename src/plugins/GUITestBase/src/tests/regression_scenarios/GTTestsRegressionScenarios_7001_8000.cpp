@@ -1868,6 +1868,7 @@ GUI_TEST_CLASS_DEFINITION(test_7491) {
      * 6. repeat steps 1-4
      * Expected state: no errors in the log
      */
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Save));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Save anyway"));
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", QStringList(), {{"Assembly", dataDir + "samples/Assembly/chrM.sorted.bam"}}));
