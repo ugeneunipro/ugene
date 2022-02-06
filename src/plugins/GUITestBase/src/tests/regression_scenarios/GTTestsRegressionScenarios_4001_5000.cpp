@@ -709,8 +709,7 @@ GUI_TEST_CLASS_DEFINITION(test_4084) {
     GTMenu::clickMainMenuItem(os, {"Actions", "Add", "New annotation..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "group  (0, 1)");
-    CHECK_SET_ERR(nullptr != annotationGroup, "Wrong annotations number");
+    GTUtilsAnnotationsTreeView::findItem(os, "group  (0, 1)");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4086) {
@@ -1266,15 +1265,8 @@ GUI_TEST_CLASS_DEFINITION(test_4122) {
     GTUtilsOptionPanelSequenceView::clickGetAnnotation(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTreeWidgetItem *annotationTable = GTUtilsAnnotationsTreeView::findItem(os, "NC_001363 features [murine.gb] *");
-    CHECK_SET_ERR(nullptr != annotationTable, "AnnotationTable (NC_001363 features [murine.gb]) is NULL or not changed");
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "NC_001363 features [murine.gb] *"));
-    GTMouseDriver::click();
-
-    QTreeWidgetItem *newItem = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature", annotationTable);
-    CHECK_SET_ERR(nullptr != newItem, "New annotation is NULL or not created");
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "misc_feature"));
-    GTMouseDriver::click();
+    auto annotationTableItem = GTUtilsAnnotationsTreeView::findItem(os, "NC_001363 features [murine.gb] *");
+    GTUtilsAnnotationsTreeView::findItem(os, "misc_feature", annotationTableItem);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4124) {
@@ -1381,7 +1373,7 @@ GUI_TEST_CLASS_DEFINITION(test_4131) {
 
     // Expected state : annotations are created, they are named exactly as you set.
     QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "-=_\\,.<>;:[]#()$  (0, 3)");
-    CHECK_SET_ERR(3 == annotationGroup->childCount(), "Unexpected annotations count");
+    CHECK_SET_ERR(annotationGroup->childCount() == 3, "Unexpected annotations count");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4134) {
@@ -1722,19 +1714,16 @@ GUI_TEST_CLASS_DEFINITION(test_4170) {
     auto annotationNameEdit = GTWidget::findLineEdit(os, "leAnnotationName");
     GTLineEdit::setText(os, annotationNameEdit, "pat");
 
-    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "chbUsePatternNames"), 1);
-
-    CHECK_SET_ERR(annotationNameEdit->isEnabled() != true, "annotationNameEdit is enabled!");
+    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "chbUsePatternNames"));
+    CHECK_SET_ERR(!annotationNameEdit->isEnabled(), "annotationNameEdit is enabled!");
 
     GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
-    QTreeWidgetItem *item1 = GTUtilsAnnotationsTreeView::findItem(os, "pattern1");
-    QTreeWidgetItem *item2 = GTUtilsAnnotationsTreeView::findItem(os, "pat", {false});
-    CHECK_SET_ERR(item1 != nullptr, "item1 not found!");
-    CHECK_SET_ERR(item2 == nullptr, "item2 found!");
+    GTUtilsAnnotationsTreeView::findItem(os, "pattern1");
 
-    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item1));
+    QTreeWidgetItem *item2 = GTUtilsAnnotationsTreeView::findItem(os, "pat", nullptr, {false});
+    CHECK_SET_ERR(item2 == nullptr, "item2 found!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4177) {
@@ -2358,7 +2347,7 @@ GUI_TEST_CLASS_DEFINITION(test_4272) {
     GTWidget::click(os, GTWidget::findWidget(os, "toggleAutoAnnotationsButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Expected state: no annotations are displayed
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "orf  (0, 837)", {false});
+    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "orf  (0, 837)", nullptr, {false});
     CHECK_SET_ERR(item == nullptr, "orfs are unexpectidly shown");
 }
 

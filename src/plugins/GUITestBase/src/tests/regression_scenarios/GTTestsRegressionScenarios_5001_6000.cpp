@@ -1222,15 +1222,13 @@ GUI_TEST_CLASS_DEFINITION(test_5263) {
 
     QString region = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "EcoRI");
     CHECK_SET_ERR(region == "join(4359..4361,1..3)", QString("EcoRI region is incorrect: %1").arg(region));
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "EcoRI") != nullptr, QString("'EcoRI' item isn't found, but should."));
+    GTUtilsAnnotationsTreeView::findItem(os, "EcoRI");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "SYNPBR322"));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Mark as circular"}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::FindOptions options;
-    options.failIfNotFound = false;
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "EcoRI", options) == nullptr, QString("'EcoRI' item is found, but should not."));
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "EcoRI", nullptr, {false}) == nullptr, "'EcoRI' item is found, but should not.");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "SYNPBR322"));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Mark as circular"}));
@@ -1239,7 +1237,7 @@ GUI_TEST_CLASS_DEFINITION(test_5263) {
 
     region = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "EcoRI");
     CHECK_SET_ERR(region == "join(4359..4361,1..3)", QString("EcoRI region is incorrect: %1").arg(region));
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "EcoRI") != nullptr, QString("'EcoRI' item isn't found, but should."));
+    GTUtilsAnnotationsTreeView::findItem(os, "EcoRI");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5356) {

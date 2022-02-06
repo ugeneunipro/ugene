@@ -43,8 +43,8 @@
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
 #include "primitives/PopupChooser.h"
-#include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/pcr/PrimersDetailsDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
 namespace U2 {
@@ -446,8 +446,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: there are 3 annotations in the exported document: 2 primers and center 51..150.
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "middle", {false}) == nullptr, "Unexpected annotation 1");
-    CHECK_SET_ERR("complement(51..150)" == GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "center"), "Wrong region 1");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "middle", nullptr, {false}) == nullptr, "Unexpected annotation 1");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "center") == "complement(51..150)", "Wrong region 1");
 
     // 8. Choose "All annotations" annotation extraction.
     GTUtilsProjectTreeView::doubleClickItem(os, "begin-end.gb");
@@ -476,8 +476,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: there are only 2 primers annotations in the exported document.
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "middle", {false}) == nullptr, "Unexpected annotation 2");
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "center", {false}) == nullptr, "Unexpected annotation 3");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "middle", nullptr, {false}) == nullptr, "Unexpected annotation 2");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "center", nullptr, {false}) == nullptr, "Unexpected annotation 3");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011) {
@@ -711,13 +711,13 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) override {
+        void run(HI::GUITestOpStatus &os) override {
             // Expected state: "In Silico PCR" dialog has appered
-            QWidget* wizard = GTWidget::getActiveModalWidget(os);
+            QWidget *wizard = GTWidget::getActiveModalWidget(os);
             GTWidget::click(os, wizard);
 
             // 3. Select "_common_data/cmdline/pcr/pcr_check_ambiguous.seq"
-            GTUtilsWizard::setInputFiles(os, {{ testDir + "_common_data/cmdline/pcr/pcr_check_ambiguous.seq" }});
+            GTUtilsWizard::setInputFiles(os, {{testDir + "_common_data/cmdline/pcr/pcr_check_ambiguous.seq"}});
 
             // 4. Push "Next"
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);

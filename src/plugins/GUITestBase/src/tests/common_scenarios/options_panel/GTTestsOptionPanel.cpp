@@ -280,26 +280,19 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
-    //
-    // Steps:
-    //
-    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj3.uprj
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj3.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    // Expected state:
-    //     1) Project view with document "1.gb" has been opened
     GTUtilsDocument::checkDocument(os, "1.gb");
-    // 2. Open view for "1.gb"
+
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 sequence"));
     GTMouseDriver::doubleClick();
 
-    // 3. Press ctrl+f. Check focus. Find subsequence TA
+    // Press ctrl+f. Check focus. Find subsequence TA
     GTUtilsOptionsPanel::runFindPatternWithHotKey("TA", os);
 
     GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
-    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
+
+    GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006_1) {

@@ -302,27 +302,23 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
     GTUtilsDocument::checkDocument(os, firstAnnFileName, AnnotatedDNAViewFactory::ID);
 
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "C");
-    CHECK_SET_ERR(item != nullptr, "AnnotationsTreeView is NULL");
-
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "C"));
-    GTMouseDriver::doubleClick();
+    GTTreeWidget::doubleClick(os, GTUtilsAnnotationsTreeView::findItem(os, "C"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_EXPORT", "action_export_annotations"}, GTGlobals::UseKey));
 
-    Runnable *filler = new ExportAnnotationsFiller(os,
-                                                   testDir + "_common_data/scenarios/sandbox/1.csv",
-                                                   ExportAnnotationsFiller::csv,
-                                                   true,
-                                                   true,
-                                                   false);
-    GTUtilsDialog::waitForDialog(os, filler);
+    GTUtilsDialog::waitForDialog(os,
+                                 new ExportAnnotationsFiller(os,
+                                                             testDir + "_common_data/scenarios/sandbox/1.csv",
+                                                             ExportAnnotationsFiller::csv,
+                                                             true,
+                                                             true,
+                                                             false));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    bool equals = GTFile::equals(os, testDir + "_common_data/scenarios/sandbox/1.csv", testDir + "_common_data/scenarios/project/test_0005.csv");
-    CHECK_SET_ERR(equals == true, "Exported file differs from the test file");
+    bool isEquals = GTFile::equals(os, testDir + "_common_data/scenarios/sandbox/1.csv", testDir + "_common_data/scenarios/project/test_0005.csv");
+    CHECK_SET_ERR(isEquals, "Exported file differs from the test file");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {

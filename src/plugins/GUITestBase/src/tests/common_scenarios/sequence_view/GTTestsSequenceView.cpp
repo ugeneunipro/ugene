@@ -353,8 +353,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTFileDialog::openFile(os, dataDir + "samples/PDB", "1CF7.PDB");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTreeWidgetItem *enz = GTUtilsAnnotationsTreeView::findItem(os, "enzymes", {false});
-    QTreeWidgetItem *orf = GTUtilsAnnotationsTreeView::findItem(os, "orfs", {false});
+    QTreeWidgetItem *enz = GTUtilsAnnotationsTreeView::findItem(os, "enzymes", nullptr, {false});
+    QTreeWidgetItem *orf = GTUtilsAnnotationsTreeView::findItem(os, "orfs", nullptr, {false});
     CHECK_SET_ERR(enz == nullptr, "enzymes unexpectedly present");
     CHECK_SET_ERR(orf == nullptr, "orfs unexpectedly present");
 }
@@ -414,8 +414,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: there is no auto-annotations for opened sequences
-    QTreeWidgetItem *enz = GTUtilsAnnotationsTreeView::findItem(os, "enzymes", {false});
-    QTreeWidgetItem *orf = GTUtilsAnnotationsTreeView::findItem(os, "orfs", {false});
+    QTreeWidgetItem *enz = GTUtilsAnnotationsTreeView::findItem(os, "enzymes", nullptr, {false});
+    QTreeWidgetItem *orf = GTUtilsAnnotationsTreeView::findItem(os, "orfs", nullptr, {false});
     CHECK_SET_ERR(enz == nullptr, "enzymes unexpectedly present");
     CHECK_SET_ERR(orf == nullptr, "orfs unexpectedly present");
 }
@@ -445,8 +445,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     GTWidget::click(os, toggleAutoAnnotationsButton);
 
     // Expected state: there is no auto-annotations for opened sequences
-    QTreeWidgetItem *enz = GTUtilsAnnotationsTreeView::findItem(os, "enzymes", {false});
-    QTreeWidgetItem *orf = GTUtilsAnnotationsTreeView::findItem(os, "orfs", {false});
+    QTreeWidgetItem *enz = GTUtilsAnnotationsTreeView::findItem(os, "enzymes", nullptr, {false});
+    QTreeWidgetItem *orf = GTUtilsAnnotationsTreeView::findItem(os, "orfs", nullptr, {false});
     CHECK_SET_ERR(enz == nullptr, "enzymes unexpectedly present");
     CHECK_SET_ERR(orf == nullptr, "orfs unexpectedly present");
 }
@@ -1875,12 +1875,9 @@ GUI_TEST_CLASS_DEFINITION(test_0061_1) {
     QTreeWidgetItem *annotationsChainB = GTUtilsAnnotationsTreeView::findItem(os, "1CF7 chain B annotation [1CF7.PDB]");
 
     // 5. Check that there is 'molecule_name' qualifier with value 'PROTEIN (TRANSCRIPTION FACTOR DP-2)'  in 'chain_info' annotation for chain B
-    CHECK_SET_ERR(nullptr != annotationsChainB, QString("Can't find '1CF7 chain B annotation [1CF7.PDB]' annotations document"));
     QTreeWidgetItem *chainInfoGroup = GTUtilsAnnotationsTreeView::findItem(os, "chain_info  (0, 1)", annotationsChainB);
-    CHECK_SET_ERR(nullptr != chainInfoGroup, QString("Can't find 'chain_info' annotation group for chain B"));
     GTUtilsAnnotationsTreeView::selectItems(os, {chainInfoGroup});
     QTreeWidgetItem *chainInfo = GTUtilsAnnotationsTreeView::findItem(os, "chain_info", chainInfoGroup);
-    CHECK_SET_ERR(nullptr != chainInfo, QString("Can't find 'chain_info' annotation for chain B"));
     GTUtilsAnnotationsTreeView::selectItems(os, {chainInfo});
     QString moleculeNameChainB = GTUtilsAnnotationsTreeView::getQualifierValue(os, "molecule_name", chainInfo);
 
@@ -1902,8 +1899,8 @@ GUI_TEST_CLASS_DEFINITION(test_0061_2) {
     CHECK_SET_ERR("A" == chainId, QString("Incorrect 'chain_info' qualifier value: %1").arg(chainId));
 
     // 4. Check that there is not 'molecule_name' qualifier
-    QTreeWidgetItem *moleculeName = GTUtilsAnnotationsTreeView::findItem(os, "molecule_name", {false});
-    CHECK_SET_ERR(nullptr == moleculeName, QString("There is 'moleculeName' qualifier"));
+    QTreeWidgetItem *moleculeName = GTUtilsAnnotationsTreeView::findItem(os, "molecule_name", nullptr, {false});
+    CHECK_SET_ERR(moleculeName == nullptr, QString("There is 'moleculeName' qualifier"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0061_3) {
@@ -2323,7 +2320,7 @@ GUI_TEST_CLASS_DEFINITION(test_0076) {
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "EcoRI"));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "EcoRI", {false}) == nullptr, "EcoRI is unexpectedly found");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "EcoRI", nullptr, {false}) == nullptr, "EcoRI is unexpectedly found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0077) {
@@ -2347,8 +2344,8 @@ GUI_TEST_CLASS_DEFINITION(test_0077) {
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, defaultEnzymes, 4200, 10));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "ClaI", {false}) == nullptr, "ClaI is unexpectedly found");
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "DraI", {false}) == nullptr, "DraI is unexpectedly found");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "ClaI", nullptr, {false}) == nullptr, "ClaI is unexpectedly found");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "DraI", nullptr, {false}) == nullptr, "DraI is unexpectedly found");
     QString region = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "EcoRI");
     CHECK_SET_ERR(region == "join(4359..4361,1..3)", QString("EcoRI region is incorrect: %1").arg(region));
 
@@ -2357,9 +2354,9 @@ GUI_TEST_CLASS_DEFINITION(test_0077) {
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, defaultEnzymes, 3900, 300, 4300, 10));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "EcoRI", {false}) == nullptr, "EcoRI is unexpectedly found");
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "ClaI") != nullptr, "ClaI is unexpectedly not found");
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "DraI") != nullptr, "DraI is unexpectedly not found");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "EcoRI", nullptr, {false}) == nullptr, "EcoRI is unexpectedly found");
+    GTUtilsAnnotationsTreeView::findItem(os, "ClaI");
+    GTUtilsAnnotationsTreeView::findItem(os, "DraI");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0078) {

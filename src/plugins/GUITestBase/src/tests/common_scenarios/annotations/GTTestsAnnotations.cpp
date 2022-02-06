@@ -1001,10 +1001,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTMenu::clickMainMenuItem(os, {"Actions", "Add", "New annotation..."});
 
     // 4. Check what created annotation has corresponding qualifier 'note'
-    QTreeWidget *treeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
-    QTreeWidgetItem *annotationsRoot = GTUtilsAnnotationsTreeView::findItem(os, "ann1  (0, 1)", treeWidget);
-    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, annotationsRoot->child(0)));
-    GTMouseDriver::doubleClick();
+    GTTreeWidget::doubleClick(os, GTUtilsAnnotationsTreeView::findItem(os, "ann1  (0, 1)"));
     GTUtilsAnnotationsTreeView::findItem(os, "note");
 }
 

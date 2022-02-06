@@ -44,8 +44,11 @@ public:
     static QPoint getItemCenter(HI::GUITestOpStatus &os, const QString &itemName);
 
     static QTreeWidgetItem *findFirstAnnotation(HI::GUITestOpStatus &os, const GTGlobals::FindOptions &options = {}, bool expandParent = true);
-    static QTreeWidgetItem *findItem(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions & = {}, bool expandParent = true);
-    static QTreeWidgetItem *findItem(HI::GUITestOpStatus &os, const QString &itemName, QTreeWidgetItem *parentItem, const GTGlobals::FindOptions & = {}, bool expandParent = true);
+    static QTreeWidgetItem *findItem(HI::GUITestOpStatus &os,
+                                     const QString &itemName,
+                                     QTreeWidgetItem *parentItem = nullptr,
+                                     const GTGlobals::FindOptions & = {},
+                                     bool expandParent = true);
     static QTreeWidgetItem *findItemWithIndex(HI::GUITestOpStatus &os, const QString &itemName, int index, bool expandParent = true);
     static QList<QTreeWidgetItem *> findItems(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions & = {});
 

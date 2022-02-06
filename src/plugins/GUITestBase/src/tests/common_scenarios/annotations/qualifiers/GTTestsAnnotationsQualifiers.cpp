@@ -140,7 +140,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qu"));
     GTKeyboardDriver::keyClick(Qt::Key_F2);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "qu") != nullptr, "Item qu not found in tree widget");
+    GTUtilsAnnotationsTreeView::findItem(os, "qu");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_1) {
@@ -161,7 +161,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qu"));
     GTKeyboardDriver::keyClick(Qt::Key_F2);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "qu") != nullptr, "Item qu not found in tree widget");
+    GTUtilsAnnotationsTreeView::findItem(os, "qu");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_2) {
@@ -308,8 +308,9 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "B"));
     GTMouseDriver::click(Qt::RightButton);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "qual") != nullptr, "Item qu not found in tree widget");
+    GTUtilsAnnotationsTreeView::findItem(os, "qual");
 }
+
 GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     GTFile::copy(os, testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
     GTFile::copy(os, testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
@@ -327,8 +328,9 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "C"));
     GTMouseDriver::click(Qt::RightButton);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "qual1") != nullptr, "Item qu not found in tree widget");
+    GTUtilsAnnotationsTreeView::findItem(os, "qual1");
 }
+
 GUI_TEST_CLASS_DEFINITION(test_0005_2) {
     GTFile::copy(os, testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
     GTFile::copy(os, testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
@@ -346,7 +348,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "B"));
     GTMouseDriver::click(Qt::RightButton);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "qual") != nullptr, "Item qu not found in tree widget");
+    GTUtilsAnnotationsTreeView::findItem(os, "qual");
 
     GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qual1", "val1"));
 
@@ -354,7 +356,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "C"));
     GTMouseDriver::click(Qt::RightButton);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "qual1") != nullptr, "Item qu not found in tree widget");
+    GTUtilsAnnotationsTreeView::findItem(os, "qual1");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
@@ -405,7 +407,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "B"));
     GTMouseDriver::click(Qt::RightButton);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "qual") != nullptr, "Item qu not found in tree widget");
+    GTUtilsAnnotationsTreeView::findItem(os, "qual");
 
     GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "new_qualifier", "qwe"));
 
@@ -413,7 +415,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "B"));
     GTMouseDriver::click(Qt::RightButton);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "new_qualifier") != nullptr, "Item qu not found in tree widget");
+    GTUtilsAnnotationsTreeView::findItem(os, "new_qualifier");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007_1) {
@@ -433,7 +435,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "C"));
     GTMouseDriver::click(Qt::RightButton);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "qual") != nullptr, "Item qu not found in tree widget");
+    GTUtilsAnnotationsTreeView::findItem(os, "qual");
 
     GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "new_qualifier", "qwe"));
 
@@ -441,7 +443,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "C"));
     GTMouseDriver::click(Qt::RightButton);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "new_qualifier") != nullptr, "Item qu not found in tree widget");
+    GTUtilsAnnotationsTreeView::findItem(os, "new_qualifier");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007_2) {
@@ -461,7 +463,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2) {
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "B"));
     GTMouseDriver::click(Qt::RightButton);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "qual") != nullptr, "Item qu not found in tree widget");
+    GTUtilsAnnotationsTreeView::findItem(os, "qual");
 
     GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "new_qualifier", "qwe"));
 
@@ -469,7 +471,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2) {
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "B"));
     GTMouseDriver::click(Qt::RightButton);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "new_qualifier") != nullptr, "Item qu not found in tree widget");
+    GTUtilsAnnotationsTreeView::findItem(os, "new_qualifier");
 
     GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "new_qualifier_1", "qwe_1"));
 
@@ -477,7 +479,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2) {
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "C"));
     GTMouseDriver::click(Qt::RightButton);
 
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "new_qualifier_1") != nullptr, "Item qu not found in tree widget");
+    GTUtilsAnnotationsTreeView::findItem(os, "new_qualifier_1");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
@@ -501,7 +503,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsDialog::checkNoActiveWaiters(os);
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "long") != nullptr, "Item long not found in tree widget1");
+    GTUtilsAnnotationsTreeView::findItem(os, "long");
 
     GTUtilsDocument::saveDocument(os, "1anot_1seq.gen");
     GTUtilsDocument::unloadDocument(os, "1anot_1seq.gen");
@@ -532,7 +534,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsDialog::checkNoActiveWaiters(os);
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "noSpaces") != nullptr, "Item long not found in tree widget1");
+    GTUtilsAnnotationsTreeView::findItem(os, "noSpaces");
 
     GTUtilsDocument::saveDocument(os, "1anot_1seq.gen");
     GTUtilsDocument::unloadDocument(os, "1anot_1seq.gen");

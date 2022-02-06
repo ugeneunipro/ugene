@@ -238,8 +238,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTFileDialog::openFile(os, testDir + "_common_data/edit_sequence/", "test.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    QTreeWidgetItem *dummyTest = GTUtilsAnnotationsTreeView::findItem(os, "DUMMY_1");
-    CHECK_SET_ERR(dummyTest != nullptr, "There is no annotation DUMMY_1");
+    GTUtilsAnnotationsTreeView::findItem(os, "DUMMY_1");
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 2, 2));
     GTKeyboardUtils::selectAll();
@@ -258,7 +257,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     QString sequenceBegin = GTUtilsSequenceView::getBeginOfSequenceAsString(os, 3);
     CHECK_SET_ERR(sequenceBegin == "AAT", "Sequence starts with <" + sequenceBegin + ">, expected AAT");
 
-    QTreeWidgetItem *dummy1 = GTUtilsAnnotationsTreeView::findItem(os, "DUMMY_1", {false});
+    QTreeWidgetItem *dummy1 = GTUtilsAnnotationsTreeView::findItem(os, "DUMMY_1", nullptr, {false});
     CHECK_SET_ERR(dummy1 == nullptr, "There is annotation DUMMY_1, expected state there is no annotation DUMMY_1");
 }
 
