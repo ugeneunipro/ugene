@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 #include <api/GTUtils.h>
+#include <cmath>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTAction.h>
@@ -1206,6 +1207,54 @@ GUI_TEST_CLASS_DEFINITION(test_7410) {
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 3, "Invalid number of sequence in the alignment");
 
     GTUtilsProjectTreeView::checkItem(os, "test_7410.aln");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7413) {
+    // Check that the distribution is uniform by the Kolmogorov-Smirnov test.
+    // https://colab.research.google.com/drive/1-F4pAh-n0BMXeZczQY-te-UcEJeUSP8Y?usp=sharing
+    DNASequenceGeneratorDialogFillerModel model(sandBoxDir + "/test_7413_1.fa");
+    model.percentA = 99;
+    model.percentC = 1;
+    model.percentG = 0;
+    model.percentT = 0;
+    model.length = 10000;
+
+    auto checkUniformDistribution = [&model, &os]() {
+        GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
+        GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
+
+        GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+        QString sequence = GTUtilsSequenceView::getSequenceAsString(os);
+
+        QVector<int> numericalSequence(model.length);
+        for (int i = 0; i < model.length; i++) {
+            numericalSequence[i] = sequence[i] == 'C' ? 1 : 0;
+        }
+
+        QVector<int> empiricalSum = numericalSequence;
+        for (int i = 1; i < model.length; i++) {
+            empiricalSum[i] += empiricalSum[i - 1];
+        }
+
+        int sumNumSeq = std::accumulate(numericalSequence.constBegin(), numericalSequence.constEnd(), 0);
+        QVector<double> difference(model.length);
+        for (int i = 0; i < model.length; i++) {
+            difference[i] = std::abs((double(i) + 1) / model.length - double(empiricalSum[i]) / sumNumSeq);
+        }
+
+        // https://drive.google.com/file/d/1YFIm8SXb3e-W0JKWWmiTXXh4BU2unHEm/view?usp=sharing
+        // 1.61 is the constant from the table for alpha value 0.01.
+        return *std::max_element(difference.constBegin(), difference.constEnd()) < 1.61 / std::sqrt(sumNumSeq);
+    };
+
+    // Because probability of a type I error < 0.01, then in case of failure,
+    // we run the test a second time to make the chance of a type I error less than 0.0001.
+    if (checkUniformDistribution()) {
+        return;
+    }
+    model.url = sandBoxDir + "/test_7413_2.fa";
+    bool result = checkUniformDistribution();
+    CHECK_SET_ERR(result, "The generated sequences are not uniform distributed. Checked twice")
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7414) {
