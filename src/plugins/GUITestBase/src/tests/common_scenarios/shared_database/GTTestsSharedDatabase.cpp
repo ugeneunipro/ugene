@@ -906,9 +906,7 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0007) {
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
     CHECK_OP(os, );
 
-    QLineEdit *filterEdit = dynamic_cast<QLineEdit *>(GTWidget::findWidget(os, "nameFilterEdit"));
-    CHECK(nullptr != filterEdit, );
-
+    auto filterEdit = GTWidget::findLineEdit(os, "nameFilterEdit");
     GTLineEdit::setText(os, filterEdit, "pt0007");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);

@@ -780,7 +780,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef &msaRef, const MultipleSequenceAli
     // Add rows that are stored in memory, but are not present in the database,
     // remember the rows order
     QList<qint64> rowsOrder;
-    for (int i = 0, n = ma->getNumRows(); i < n; ++i) {
+    for (int i = 0, n = ma->getRowCount(); i < n; ++i) {
         const MultipleSequenceAlignmentRow alRow = ma->getMsaRow(i);
         U2MsaRow row = alRow->getRowDbInfo();
 
@@ -1127,7 +1127,7 @@ void MsaDbiUtils::crop(const U2EntityRef &msaRef, const QList<qint64> &rowIds, c
     bool isRowLengthChanged = columnRange.length < al->getLength();
 
     // Crop or remove each row.
-    for (int i = 0, n = al->getNumRows(); i < n; i++) {
+    for (int i = 0, n = al->getRowCount(); i < n; i++) {
         MultipleSequenceAlignmentRow row = al->getMsaRow(i)->getExplicitCopy();
         qint64 rowId = row->getRowId();
         if (!rowIds.contains(rowId)) {

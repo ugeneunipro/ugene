@@ -47,7 +47,11 @@ public:
 
     QString generateReport() const override;
 
-    QList<SharedAnnotationData> getResultedAnnotations() const;
+    /** Maps current 'resultsPerQuerySequence' to a list of annotations. */
+    QList<SharedAnnotationData> getResultAnnotations() const;
+
+    /** Returns result found for the query sequence with the given index. */
+    QList<SharedAnnotationData> getResultPerQuerySequence(int querySequenceIndex) const;
 
     BlastTaskSettings getSettings() const;
 
@@ -62,16 +66,26 @@ private:
     ExternalToolRunTask *blastTask = nullptr;
     U2SequenceObject *sequenceObject = nullptr;
     Document *tmpDoc = nullptr;
-    QList<SharedAnnotationData> result;
-    U2PseudoCircularization *circularization = nullptr;
+
+    /** Results by sequence index in settings.querySequences list. */
+    QHash<int, QList<SharedAnnotationData>> resultsPerQuerySequence;
+
+    /** Pre-processed and 'circularized' query sequences. */
+    QList<QByteArray> querySequences;
 
     void parseTabularResult();
     void parseTabularLine(const QByteArray &line);
 
     void parseXMLResult();
-    void parseXMLHit(const QDomNode &xml);
-    void parseXMLHsp(const QDomNode &xml, const QString &id, const QString &def, const QString &accession);
+    void parseXMLHit(const QDomNode &xml, int querySequenceIndex);
+    void parseXMLHsp(const QDomNode &xml, int querySequenceIndex, const QString &id, const QString &def, const QString &accession);
     QString getAcceptableTempDir() const;
+
+    /**
+     * Parses query sequence index from the given BLAST query sequence name.
+     * Triggers SAFE_POINT & returns -1 in case of parsing error or invalid sequence index.
+     */
+    int parseQuerySequenceIndex(const QString &querySequenceName) const;
 };
 
 class BlastMultiTask : public Task {
@@ -81,7 +95,7 @@ public:
     void prepare();
     QList<Task *> onSubTaskFinished(Task *subTask);
 
-    Task::ReportResult report();
+    Task::ReportResult report() override;
     QString generateReport() const;
 
 private:

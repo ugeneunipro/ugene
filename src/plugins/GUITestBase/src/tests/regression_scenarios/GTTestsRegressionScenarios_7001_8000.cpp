@@ -32,11 +32,13 @@
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTTextEdit.h>
 #include <primitives/GTToolbar.h>
+#include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
 #include <utils/GTUtilsDialog.h>
+#include <utils/GTUtilsToolTip.h>
 
 #include <QApplication>
 #include <QDir>
@@ -60,6 +62,7 @@
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsNotifications.h"
 #include "GTUtilsOptionPanelMSA.h"
+#include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsPhyTree.h"
 #include "GTUtilsProject.h"
@@ -466,7 +469,7 @@ GUI_TEST_CLASS_DEFINITION(test_7152) {
 
 GUI_TEST_CLASS_DEFINITION(test_7161) {
     class ItemPopupChooserByPosition : public PopupChooser {
-    //for some reason PopupChooser don not work properly, so we choose item by position
+        // for some reason PopupChooser don not work properly, so we choose item by position
     public:
         ItemPopupChooserByPosition(HI::GUITestOpStatus &os, int _pos)
             : PopupChooser(os, {}), pos(_pos) {
@@ -485,19 +488,20 @@ GUI_TEST_CLASS_DEFINITION(test_7161) {
 
     class ChooseCDSAndCommentsWithin60kRegion : public FindAnnotationCollocationsDialogFiller {
     public:
-        ChooseCDSAndCommentsWithin60kRegion(HI::GUITestOpStatus &os) : FindAnnotationCollocationsDialogFiller(os) {
+        ChooseCDSAndCommentsWithin60kRegion(HI::GUITestOpStatus &os)
+            : FindAnnotationCollocationsDialogFiller(os) {
         }
 
         void run() override {
             QToolButton *plusButton = getPlusButton();
-            
-            GTUtilsDialog::waitForDialog(os, new ItemPopupChooserByPosition(os, 3));
-            GTWidget::click(os, plusButton);
-            
+
             GTUtilsDialog::waitForDialog(os, new ItemPopupChooserByPosition(os, 3));
             GTWidget::click(os, plusButton);
 
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);            
+            GTUtilsDialog::waitForDialog(os, new ItemPopupChooserByPosition(os, 3));
+            GTWidget::click(os, plusButton);
+
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTSpinBox::setValue(os, "regionSpin", 60000, GTGlobals::UseKeyBoard, dialog);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
             GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -505,15 +509,15 @@ GUI_TEST_CLASS_DEFINITION(test_7161) {
         }
     };
 
-    //1. Open data/samples/sars.gb
+    // 1. Open data/samples/sars.gb
     GTFileDialog::openFile(os, dataDir + "/samples/Genbank/", "sars.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Use context menu: {Analyze -> Find annotated regions}
-    //3. Click plus button, select "comment", repeat and select "cds"
-    //4. Set "Region size" to 60000
-    //5. Press "Search button"
-    //Expected state: no crash or assert on run
+    // 2. Use context menu: {Analyze -> Find annotated regions}
+    // 3. Click plus button, select "comment", repeat and select "cds"
+    // 4. Set "Region size" to 60000
+    // 5. Press "Search button"
+    // Expected state: no crash or assert on run
     auto *toolbar = GTToolbar::getToolbar(os, "mwtoolbar_activemdi");
     auto *farButton = GTToolbar::getWidgetForActionTooltip(os, toolbar, "Find annotated regions");
 
@@ -1287,6 +1291,29 @@ GUI_TEST_CLASS_DEFINITION(test_7415_3) {
     QString window2Sequence = sequence.mid(model.window, model.window);
 
     CHECK_SET_ERR(window1Sequence != window2Sequence, "Sequences are equal");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7419) {
+    // Copy "_common_data/ugenedb/murine.ugenedb" to sandbox
+    GTFile::copy(os, testDir + "_common_data/ugenedb/murine.ugenedb", sandBoxDir + "test_7419.ugenedb");
+
+    // Open the copied file
+    GTFileDialog::openFile(os, sandBoxDir + "test_7419.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Now remove it from the disk manually
+    GTLogTracer lt;
+    QFile::remove(sandBoxDir + "test_7419.ugenedb");
+
+    // Expected: the message box about lost database -> click OK -> view is closed.
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "The document 'test_7419.ugenedb' was removed from its original folder. Therefore, it will be deleted from the current project"));
+
+    // The document update happens each 3 seconds, the messagebox will appear on the closest update
+    GTUtilsDialog::checkNoActiveWaiters(os, 3000);
+
+    // Expected: no safe points
+    auto joinedErrorList = lt.getJoinedErrorString();
+    CHECK_SET_ERR(!joinedErrorList.contains("Trying to recover from error"), "Unexpected SAFE_POINT has appeared");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7438) {
@@ -2065,6 +2092,97 @@ GUI_TEST_CLASS_DEFINITION(test_7517) {
     GTWidget::click(os, showOverviewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::checkMessageWithTextCount(os, "Registering new task: Render overview", 1, "check3");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7531) {
+
+    // Open "samples/FASTA/human_T1.fa".
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Click "Ctrl+N" and create the annotation on "80..90"
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "test_7531", "80..90"));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+
+    // Select the created annotation and click "Delete".
+    GTUtilsAnnotationsTreeView::clickItem(os, "test_7531", 1, false);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+
+    // Open the "In silico PCR" tab.
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::InSilicoPcr);
+
+    // Set "TTGTCAGATTCACCAAAGTT" as a forward primer and "CTCTCTTCTGGCCTGTAGGGTTTCTG" as a reverse primer.
+    GTUtilsOptionPanelSequenceView::setForwardPrimer(os, "TTGTCAGATTCACCAAAGTT");
+    GTUtilsOptionPanelSequenceView::setReversePrimer(os, "CTCTCTTCTGGCCTGTAGGGTTTCTG");
+
+    // Click "Find product(s) anyway".
+    GTUtilsOptionPanelSequenceView::pressFindProducts(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: the only product has been found.
+    const int count = GTUtilsOptionPanelSequenceView::productsCount(os);
+    CHECK_SET_ERR(count == 1, QString("Unexpected products quantity, expected: 1, current: %1").arg(count));
+
+    // Click "Extract primer".
+    GTUtilsOptionPanelSequenceView::pressExtractProduct(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: no crash
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7535) {
+    // Check that UGENE does not crash when tooltip is invoked on non-standard annotations.
+    GTFileDialog::openFile(os, testDir + "_common_data/genbank/zero_length_feature.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    auto zeroLength0Item = GTUtilsAnnotationsTreeView::findItem(os, "zero_length_0");
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, zeroLength0Item));
+    QString tooltip = GTUtilsToolTip::getToolTip();
+    CHECK_SET_ERR(tooltip.isEmpty(), "Expected no tooltip for zero-length annotation: " + tooltip);
+
+    auto zeroLengthXItem = GTUtilsAnnotationsTreeView::findItem(os, "zero_length_x");
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, zeroLengthXItem));
+    tooltip = GTUtilsToolTip::getToolTip();
+    CHECK_SET_ERR(tooltip.isEmpty(), "Expected no tooltip for out of bound annotation: " + tooltip);
+
+    auto normalLengthItem = GTUtilsAnnotationsTreeView::findItem(os, "normal_length");
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, normalLengthItem));
+    tooltip = GTUtilsToolTip::getToolTip();
+    CHECK_SET_ERR(tooltip.contains("<b>Sequence</b> = TTGCAGAATTC"), "Expected sequence info in tooltip for a normal annotation: " + tooltip);
+
+    auto normalLengthComplementaryItem = GTUtilsAnnotationsTreeView::findItem(os, "normal_length_c");
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, normalLengthComplementaryItem));
+    tooltip = GTUtilsToolTip::getToolTip();
+    CHECK_SET_ERR(tooltip.contains("<b>Sequence</b> = GAATTCTGCAA"), "Expected complementary sequence info in tooltip for a normal annotation: " + tooltip);
+
+    auto joinedItem = GTUtilsAnnotationsTreeView::findItem(os, "joined");
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, joinedItem));
+    tooltip = GTUtilsToolTip::getToolTip();
+    CHECK_SET_ERR(tooltip.contains("<b>Sequence</b> = TCT"), "Expected dna sequence info in tooltip for a joined annotation: " + tooltip);
+    CHECK_SET_ERR(tooltip.contains("<b>Translation</b> = S"), "Expected amino sequence info in tooltip for a joined annotation: " + tooltip);
+
+    auto joinedComplementaryItem = GTUtilsAnnotationsTreeView::findItem(os, "joined_c");
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, joinedComplementaryItem));
+    tooltip = GTUtilsToolTip::getToolTip();
+    CHECK_SET_ERR(tooltip.contains("<b>Sequence</b> = AGA"), "Expected dna sequence info in tooltip for a joined complementary annotation: " + tooltip);
+    CHECK_SET_ERR(tooltip.contains("<b>Translation</b> = R"), "Expected amino sequence info in tooltip for a joined complementary annotation: " + tooltip);
+}
+
+
+GUI_TEST_CLASS_DEFINITION(test_7539) {
+    // Check that UGENE shows a tooltip when a small 1-char annotation region is hovered in sequence view.
+    GTFileDialog::openFile(os, testDir + "_common_data/genbank/zero_length_feature.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+   GTUtilsSequenceView::moveMouseToAnnotationInDetView(os, "joined", 30);
+   QString tooltip = GTUtilsToolTip::getToolTip();
+   CHECK_SET_ERR(tooltip.contains("<b>Sequence</b> = TCT"), "Expected dna sequence info in tooltip for a joined annotation: " + tooltip);
+   CHECK_SET_ERR(tooltip.contains("<b>Translation</b> = S"), "Expected amino sequence info in tooltip for a joined annotation: " + tooltip);
+
+   GTUtilsSequenceView::moveMouseToAnnotationInDetView(os, "joined_c", 30);
+   tooltip = GTUtilsToolTip::getToolTip();
+   CHECK_SET_ERR(tooltip.contains("<b>Sequence</b> = AGA"), "Expected dna sequence info in tooltip for a joined complementary annotation: " + tooltip);
+   CHECK_SET_ERR(tooltip.contains("<b>Translation</b> = R"), "Expected amino sequence info in tooltip for a joined complementary annotation: " + tooltip);
 }
 
 }  // namespace GUITest_regression_scenarios

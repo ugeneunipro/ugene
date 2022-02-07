@@ -34,9 +34,6 @@ namespace U2 {
 
 class CheckUpdatesTask : public Task {
     Q_OBJECT
-public slots:
-    void sl_registerInTaskScheduler();
-
 public:
     enum Answer { Update,
                   DoNothing,

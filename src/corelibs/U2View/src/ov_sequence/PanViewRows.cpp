@@ -168,7 +168,7 @@ int PVRowsManager::getNumAnnotationsInRow(int rowNum) const {
     return r->annotations.size();
 }
 
-int PVRowsManager::getNumRows() const {
+int PVRowsManager::getRowCount() const {
     return rows.size();
 }
 

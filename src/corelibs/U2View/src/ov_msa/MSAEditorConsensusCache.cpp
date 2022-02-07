@@ -88,7 +88,7 @@ void MSAEditorConsensusCache::updateCacheItem(int pos) {
 
         CacheItem &ci = cache[pos];
         int count = 0;
-        int nSeq = ma->getNumRows();
+        int nSeq = ma->getRowCount();
         SAFE_POINT(0 != nSeq, errorMessage, );
 
         ci.topChar = algorithm->getConsensusCharAndScore(ma, pos, count);

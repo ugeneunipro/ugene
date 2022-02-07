@@ -101,7 +101,7 @@ void GTUtilsPrimerLibrary::clickPrimer(HI::GUITestOpStatus &os, int number) {
 }
 
 void GTUtilsPrimerLibrary::clearLibrary(HI::GUITestOpStatus &os) {
-    const int size = librarySize(os);
+    int size = librarySize(os);
     CHECK(size > 0, );
     GTWidget::click(os, table(os));
     selectAll(os);

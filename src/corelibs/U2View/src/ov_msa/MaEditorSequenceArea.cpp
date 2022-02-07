@@ -298,7 +298,7 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
     Q_ASSERT(isInRange(QPoint(selectionRect.x() + selectionRect.width() - 1, selectionRect.y() + selectionRect.height() - 1)));
 
     QList<int> selectedMaRowIndexes = editor->getSelectionController()->getSelectedMaRowIndexes();
-    int numRows = (int)maObj->getNumRows();
+    int numRows = (int)maObj->getRowCount();
     if (selectedMaRowIndexes.size() == numRows) {
         bool isResultAlignmentEmpty = true;
         U2Region xRegion = U2Region::fromXRange(selectionRect);
@@ -391,7 +391,7 @@ int MaEditorSequenceArea::shiftRegion(int shift) {
                         maObj->insertGapByRowIndexList(selectedMaRowIndexes, gap.startPos, gap.length);
                     } else if (gap.startPos >= lengthOnMousePress) {
                         U2OpStatus2Log os;
-                        U2Region allRows(0, maObj->getNumRows());
+                        U2Region allRows(0, maObj->getRowCount());
                         maObj->deleteGap(os, allRows, maObj->getLength() - gap.length, gap.length);
                         CHECK_OP(os, resultShift);
                     }
@@ -1154,7 +1154,7 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
     SAFE_POINT_OP(os, );
 
     const MultipleAlignment &ma = maObj->getMultipleAlignment();
-    if (selectionRect.width() == ma->getLength() && selectionRect.height() == ma->getNumRows()) {
+    if (selectionRect.width() == ma->getLength() && selectionRect.height() == ma->getRowCount()) {
         return;
     }
 

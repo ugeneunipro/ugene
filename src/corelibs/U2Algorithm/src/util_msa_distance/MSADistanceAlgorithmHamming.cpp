@@ -51,7 +51,7 @@ MSADistanceAlgorithm *MSADistanceAlgorithmFactoryHamming::createAlgorithm(const 
 // Algorithm
 
 void MSADistanceAlgorithmHamming::run() {
-    int nSeq = ma->getNumRows();
+    int nSeq = ma->getRowCount();
     for (int i = 0; i < nSeq; i++) {
         for (int j = i; j < nSeq; j++) {
             int sim = 0;

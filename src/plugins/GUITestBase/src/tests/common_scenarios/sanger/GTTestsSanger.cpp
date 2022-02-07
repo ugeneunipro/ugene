@@ -129,7 +129,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::checkContainsError(os, l, "No read satisfy minimum similarity criteria");
+    GTUtilsLog::checkContainsError(os, l, "None of the reads satisfy minimum similarity criteria.");
     GTUtilsProject::checkProject(os, GTUtilsProject::NotExists);
 
     settings.minIdentity = 30;
@@ -208,7 +208,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     //    Expected state: the result alignment rows are named like "SZYD_Cas9_*".
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    const QStringList expectedReadsnames = {"SZYD_Cas9_5B70",
+    const QStringList expectedReadsNames = {"SZYD_Cas9_5B70",
                                             "SZYD_Cas9_5B71",
                                             "SZYD_Cas9_CR50",
                                             "SZYD_Cas9_CR51",
@@ -225,7 +225,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
                                             "SZYD_Cas9_CR65",
                                             "SZYD_Cas9_CR66"};
     const QStringList readsNames = GTUtilsMcaEditor::getReadsNames(os);
-    CHECK_SET_ERR(expectedReadsnames == readsNames, "Incorrect reads names");
+    CHECK_SET_ERR(expectedReadsNames == readsNames, "Incorrect reads names");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005_2) {
@@ -234,11 +234,11 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //    Expected state: 'Sequence name from file' value is set by default.
-            const QString expectedRowNamingPolicy = "Sequence name from file";
-            const QString currentRowNamingPolicy = GTComboBox::getCurrentText(os, "cbRowNaming", dialog);
+            QString expectedRowNamingPolicy = "Sequence name from file";
+            QString currentRowNamingPolicy = GTComboBox::getCurrentText(os, "cbRowNaming", dialog);
             CHECK_SET_ERR(expectedRowNamingPolicy == currentRowNamingPolicy,
                           QString("An incorrect default value of the 'Read name in result alignment' parameter: expected '%1', got '%2'")
                               .arg(expectedRowNamingPolicy)
@@ -269,24 +269,24 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
     //    Expected state: the result alignment rows are named like "sanger_*".
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    const QStringList expectedReadsnames = {"sanger_01",
-                                            "sanger_02",
-                                            "sanger_04",
-                                            "sanger_05",
-                                            "sanger_06",
-                                            "sanger_07",
-                                            "sanger_08",
-                                            "sanger_09",
-                                            "sanger_10",
-                                            "sanger_14",
-                                            "sanger_15",
-                                            "sanger_16",
-                                            "sanger_17",
-                                            "sanger_18",
-                                            "sanger_19",
-                                            "sanger_20"};
-    const QStringList readsNames = GTUtilsMcaEditor::getReadsNames(os);
-    CHECK_SET_ERR(expectedReadsnames == readsNames, "Incorrect reads names");
+    QStringList expectedReadsNames = {"sanger_01",
+                                      "sanger_02",
+                                      "sanger_04",
+                                      "sanger_05",
+                                      "sanger_06",
+                                      "sanger_07",
+                                      "sanger_08",
+                                      "sanger_09",
+                                      "sanger_10",
+                                      "sanger_14",
+                                      "sanger_15",
+                                      "sanger_16",
+                                      "sanger_17",
+                                      "sanger_18",
+                                      "sanger_19",
+                                      "sanger_20"};
+    QStringList readsNames = GTUtilsMcaEditor::getReadsNames(os);
+    CHECK_SET_ERR(expectedReadsNames == readsNames, "Incorrect reads names: " + readsNames.join(","));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005_3) {
@@ -337,24 +337,24 @@ GUI_TEST_CLASS_DEFINITION(test_0005_3) {
     GTUtilsDashboard::clickOutputFile(os, "sanger_test_0005_3.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    const QStringList expectedReadsnames = {"SZYD_Cas9_5B70",
-                                            "SZYD_Cas9_5B71",
-                                            "SZYD_Cas9_CR50",
-                                            "SZYD_Cas9_CR51",
-                                            "SZYD_Cas9_CR52",
-                                            "SZYD_Cas9_CR53",
-                                            "SZYD_Cas9_CR54",
-                                            "SZYD_Cas9_CR55",
-                                            "SZYD_Cas9_CR56",
-                                            "SZYD_Cas9_CR60",
-                                            "SZYD_Cas9_CR61",
-                                            "SZYD_Cas9_CR62",
-                                            "SZYD_Cas9_CR63",
-                                            "SZYD_Cas9_CR64",
-                                            "SZYD_Cas9_CR65",
-                                            "SZYD_Cas9_CR66"};
-    const QStringList readsNames = GTUtilsMcaEditor::getReadsNames(os);
-    CHECK_SET_ERR(expectedReadsnames == readsNames, "Incorrect reads names");
+    QStringList expectedReadsNames = {"SZYD_Cas9_5B70",
+                                      "SZYD_Cas9_5B71",
+                                      "SZYD_Cas9_CR50",
+                                      "SZYD_Cas9_CR51",
+                                      "SZYD_Cas9_CR52",
+                                      "SZYD_Cas9_CR53",
+                                      "SZYD_Cas9_CR54",
+                                      "SZYD_Cas9_CR55",
+                                      "SZYD_Cas9_CR56",
+                                      "SZYD_Cas9_CR60",
+                                      "SZYD_Cas9_CR61",
+                                      "SZYD_Cas9_CR62",
+                                      "SZYD_Cas9_CR63",
+                                      "SZYD_Cas9_CR64",
+                                      "SZYD_Cas9_CR65",
+                                      "SZYD_Cas9_CR66"};
+    QStringList readsNames = GTUtilsMcaEditor::getReadsNames(os);
+    CHECK_SET_ERR(readsNames == expectedReadsNames, "Incorrect reads names");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005_4) {
@@ -364,7 +364,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_4) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             //    Expected state: wizard has appeared.
             QWidget *wizard = GTWidget::getActiveModalWidget(os);
             GTWidget::clickWindowTitle(os, wizard);
@@ -408,24 +408,24 @@ GUI_TEST_CLASS_DEFINITION(test_0005_4) {
     GTUtilsDashboard::clickOutputFile(os, "sanger_test_0005_4.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    const QStringList expectedReadsnames = {"sanger_01",
-                                            "sanger_02",
-                                            "sanger_04",
-                                            "sanger_05",
-                                            "sanger_06",
-                                            "sanger_07",
-                                            "sanger_08",
-                                            "sanger_09",
-                                            "sanger_10",
-                                            "sanger_14",
-                                            "sanger_15",
-                                            "sanger_16",
-                                            "sanger_17",
-                                            "sanger_18",
-                                            "sanger_19",
-                                            "sanger_20"};
-    const QStringList readsNames = GTUtilsMcaEditor::getReadsNames(os);
-    CHECK_SET_ERR(expectedReadsnames == readsNames, "Incorrect reads names");
+    QStringList expectedReadsNames = {"sanger_01",
+                                      "sanger_02",
+                                      "sanger_04",
+                                      "sanger_05",
+                                      "sanger_06",
+                                      "sanger_07",
+                                      "sanger_08",
+                                      "sanger_09",
+                                      "sanger_10",
+                                      "sanger_14",
+                                      "sanger_15",
+                                      "sanger_16",
+                                      "sanger_17",
+                                      "sanger_18",
+                                      "sanger_19",
+                                      "sanger_20"};
+    QStringList readsNames = GTUtilsMcaEditor::getReadsNames(os);
+    CHECK_SET_ERR(readsNames == expectedReadsNames, "Incorrect reads names");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
@@ -434,7 +434,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //    2. Set '_common_data/sanger/dataset3/reference.gb' as reference and the next files as reads:
             //        '_common_data/sanger/dataset3/gaps.ab1'
@@ -445,10 +445,10 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
             //        Accept the dialog.
             AlignToReferenceBlastDialogFiller::setReference(os, QFileInfo(testDir + "_common_data/sanger/dataset3/reference.gb").absoluteFilePath(), dialog);
 
-            const QStringList reads = QStringList() << testDir + "_common_data/sanger/dataset3/gaps.ab1"
-                                                    << testDir + "_common_data/sanger/dataset3/N.ab1"
-                                                    << testDir + "_common_data/sanger/dataset3/N_and_gaps.ab1"
-                                                    << testDir + "_common_data/sanger/dataset3/pFB7-CDK5RAP2_P1713799_009.ab1";
+            QStringList reads = {testDir + "_common_data/sanger/dataset3/gaps.ab1",
+                                 testDir + "_common_data/sanger/dataset3/N.ab1",
+                                 testDir + "_common_data/sanger/dataset3/N_and_gaps.ab1",
+                                 testDir + "_common_data/sanger/dataset3/pFB7-CDK5RAP2_P1713799_009.ab1"};
             AlignToReferenceBlastDialogFiller::setReads(os, reads, dialog);
 
             GTComboBox::selectItemByText(os, "cbRowNaming", dialog, "File name");
@@ -463,8 +463,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
     //    Expected state: the report contains information about 3 filtered reads, their similarity is 0%. The result alignment contains one mapped read with the name 'pFB7-CDK5RAP2_P1713799_009'.
     // It is too hard to check the report, because we change it too often. Just check the rows count.
-    const int rowsCount = GTUtilsMcaEditor::getReadsCount(os);
-    CHECK_SET_ERR(1 == rowsCount, QString("Unexpected rows count: expect 1, got %1").arg(rowsCount));
+    int rowsCount = GTUtilsMcaEditor::getReadsCount(os);
+    CHECK_SET_ERR(rowsCount == 1, QString("Unexpected rows count: expect 1, got %1").arg(rowsCount));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {

@@ -140,7 +140,7 @@ void MultipleSequenceAlignmentObject::updateRow(U2OpStatus &os, int rowIdx, cons
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
     const MultipleSequenceAlignment msa = getMultipleAlignment();
-    SAFE_POINT(rowIdx >= 0 && rowIdx < msa->getNumRows(), "Invalid row index", );
+    SAFE_POINT(rowIdx >= 0 && rowIdx < msa->getRowCount(), "Invalid row index", );
     qint64 rowId = msa->getRow(rowIdx)->getRowId();
 
     MsaDbiUtils::updateRowContent(entityRef, rowId, seqBytes, gapModel, os);
@@ -214,7 +214,7 @@ void MultipleSequenceAlignmentObject::deleteColumnsWithGaps(U2OpStatus &os, int 
     CHECK(regionsToDelete.first().length != getLength(), );
 
     for (int n = regionsToDelete.size(), i = n - 1; i >= 0; i--) {
-        removeRegion(regionsToDelete[i].startPos, 0, regionsToDelete[i].length, getNumRows(), true, false);
+        removeRegion(regionsToDelete[i].startPos, 0, regionsToDelete[i].length, getRowCount(), true, false);
         os.setProgress(100 * (n - i) / n);
     }
     updateCachedMultipleAlignment();

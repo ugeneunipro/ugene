@@ -89,7 +89,7 @@ bool MSAConsensusAlgorithm::filterIdx(QVector<int> &seqIdx, const MultipleAlignm
     CHECK(ignoreTrailingAndLeadingGaps, true);
 
     QVector<int> tmp;
-    int nSeq = seqIdx.isEmpty() ? ma->getNumRows() : seqIdx.size();
+    int nSeq = seqIdx.isEmpty() ? ma->getRowCount() : seqIdx.size();
     for (int seq = 0; seq < nSeq; seq++) {
         int rowNum = seqIdx.isEmpty() ? seq : seqIdx[seq];
         const MultipleAlignmentRow &row = ma->getRow(rowNum);

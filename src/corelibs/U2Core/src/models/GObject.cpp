@@ -38,7 +38,7 @@ namespace U2 {
 
 GObject::GObject(QString _type, const QString &_name, const QVariantMap &hintsMap)
     : dataLoaded(false), type(_type), name(_name), arePermanentRelationsFetched(false) {
-    SAFE_POINT(!name.isEmpty(), "Invalid object name detected", );
+    SAFE_POINT(!name.isEmpty(), "Got an empty object name, type: " + type, );
     setupHints(hintsMap);
 }
 
@@ -159,7 +159,7 @@ void GObject::setObjectRelations(const QList<GObjectRelation> &list) {
 void GObject::setRelationsInDb(QList<GObjectRelation> &list) const {
     U2OpStatus2Log os;
     DbiConnection con(entityRef.dbiRef, os);
-    SAFE_POINT_OP(os, );
+    CHECK_OP(os, );  // Database is not available for some reason. It is may be deleted.
     U2ObjectRelationsDbi *rDbi = con.dbi->getObjectRelationsDbi();
     SAFE_POINT(rDbi != nullptr, "Invalid object relations DBI detected!", );
     rDbi->removeReferencesForObject(entityRef.entityId, os);

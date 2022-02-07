@@ -722,7 +722,7 @@ Task::ReportResult GTest_DNASequencInMulSequence::report() {
         stateInfo.setError(QString("can't cast to sequence from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
     }
-    int tempSize = myMSequence->getNumRows();
+    int tempSize = myMSequence->getRowCount();
     if (tempSize != seqInMSeq) {
         stateInfo.setError(QString("numbers of Sequence not match: %1, expected %2 ").arg(tempSize).arg(seqInMSeq));
     }

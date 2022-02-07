@@ -204,7 +204,7 @@ QList<Task *> AddSequencesFromFilesToAlignmentTask::onSubTaskFinished(Task *subT
     for (const GObject *object : qAsConst(msaObjects)) {
         auto msaObject = qobject_cast<const MultipleSequenceAlignmentObject *>(object);
         SAFE_POINT(msaObject != nullptr, "Not an alignment object:" + object->getGObjectName(), {});
-        for (int i = 0; i < msaObject->getNumRows(); i++) {
+        for (int i = 0; i < msaObject->getRowCount(); i++) {
             // Keep all gaps, so alignment sequences are added in the 'aligned' form.
             MultipleAlignmentRow row = msaObject->getRow(i);
             DNASequence sequence(row->getName(), row->getSequenceWithGaps(true, true), msaObject->getAlphabet());

@@ -145,7 +145,7 @@ bool NeighborJoinWidget::checkMemoryEstimation(QString &msg, const MultipleSeque
     // sizeof(sitelike) = 32
     // sizeof(ratelike) = 4
 
-    const qint64 spp = msa->getNumRows();
+    const qint64 spp = msa->getRowCount();
     const qint64 endsite = msa->getLength();
     const qint64 ugeneLowestMemoryUsageMb = 50;
     const qint64 minMemoryForDistanceMatrixMb = (qint64)(spp * endsite * 32 + endsite * 4) / (1024 * 1024);

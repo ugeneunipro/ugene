@@ -53,11 +53,16 @@
 
 namespace U2 {
 
+/** Name prefix used for query sequences when query sequences are stored to the BLAST input FASTA file. */
+static const QString QUERY_SEQUENCE_NAME_PREFIX = "query-";
+
 BlastCommonTask::BlastCommonTask(const BlastTaskSettings &_settings)
     : ExternalToolSupportTask(tr("Run NCBI Blast task"), TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported),
       settings(_settings) {
     GCOUNTER(cvar, "BlastCommonTask");
-    circularization = new U2PseudoCircularization(this, settings.isSequenceCircular, settings.querySequence);
+    for (const QByteArray &querySequence : qAsConst(settings.querySequences)) {
+        querySequences << (settings.isSequenceCircular ? U2PseudoCircularization::createSequenceWithCircularOverlaps(querySequence) : querySequence);
+    }
     addTaskResource(TaskResourceUsage(RESOURCE_THREAD, settings.numberOfProcessors));
     if (settings.querySequenceObject != nullptr) {
         TaskWatchdog::trackResourceExistence(settings.querySequenceObject, this, tr("A problem occurred during doing BLAST. The sequence is no more available."));
@@ -108,10 +113,14 @@ void BlastCommonTask::prepare() {
     tmpDoc = df->createNewLoadedDocument(IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), GUrl(url), stateInfo);
     CHECK_OP(stateInfo, );
 
-    U2EntityRef seqRef = U2SequenceUtils::import(stateInfo, tmpDoc->getDbiRef(), DNASequence(settings.querySequence, settings.alphabet));
-    CHECK_OP(stateInfo, );
-    sequenceObject = new U2SequenceObject("input sequence", seqRef);
-    tmpDoc->addObject(sequenceObject);
+    for (int i = 0; i < querySequences.length(); i++) {
+        QString querySequenceName = QUERY_SEQUENCE_NAME_PREFIX + QString::number(i);
+        const QByteArray &querySequence = querySequences[i];
+        U2EntityRef seqRef = U2SequenceUtils::import(stateInfo, tmpDoc->getDbiRef(), DNASequence(querySequenceName, querySequence, settings.alphabet));
+        CHECK_OP(stateInfo, );
+        sequenceObject = new U2SequenceObject("input sequence", seqRef);
+        tmpDoc->addObject(sequenceObject);
+    }
 
     saveTemporaryDocumentTask = new SaveDocumentTask(tmpDoc, AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE), url);
     saveTemporaryDocumentTask->setSubtaskProgressWeight(5);
@@ -160,7 +169,7 @@ QList<Task *> BlastCommonTask::onSubTaskFinished(Task *subTask) {
             } else if (settings.outputType == 6) {
                 parseTabularResult();
             }
-            if (!result.isEmpty() && settings.needCreateAnnotations) {
+            if (!resultsPerQuerySequence.isEmpty() && settings.needCreateAnnotations) {
                 if (!settings.outputResFile.isEmpty()) {
                     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
                     DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK);
@@ -170,11 +179,8 @@ QList<Task *> BlastCommonTask::onSubTaskFinished(Task *subTask) {
                     AppContext::getProject()->addDocument(d);
                 }
 
-                for (QMutableListIterator<SharedAnnotationData> it_ad(result); it_ad.hasNext();) {
-                    SharedAnnotationData &ad = it_ad.next();
-                    U2Region::shift(settings.offsInGlobalSeq, ad->location->regions);
-                }
-                res.append(new CreateAnnotationsTask(settings.aobj, result, settings.groupName));
+                QList<SharedAnnotationData> resultAnnotations = getResultAnnotations();
+                res.append(new CreateAnnotationsTask(settings.aobj, resultAnnotations, settings.groupName));
             }
             if (res.isEmpty()) {
                 setReportingEnabled(true);
@@ -183,6 +189,19 @@ QList<Task *> BlastCommonTask::onSubTaskFinished(Task *subTask) {
         }
     }
     return res;
+}
+
+QList<SharedAnnotationData> BlastCommonTask::getResultAnnotations() const {
+    QList<SharedAnnotationData> resultAnnotations;
+    QList<int> resultKeys = resultsPerQuerySequence.keys();
+    for (int key : qAsConst(resultKeys)) {
+        resultAnnotations << resultsPerQuerySequence.value(key);
+    }
+    return resultAnnotations;
+}
+
+QList<SharedAnnotationData> BlastCommonTask::getResultPerQuerySequence(int querySequenceIndex) const {
+    return resultsPerQuerySequence.value(querySequenceIndex);
 }
 
 Task::ReportResult BlastCommonTask::report() {
@@ -203,11 +222,7 @@ Task::ReportResult BlastCommonTask::report() {
 }
 
 QString BlastCommonTask::generateReport() const {
-    return result.isEmpty() ? tr("There were no hits found for your BLAST search.") : "";
-}
-
-QList<SharedAnnotationData> BlastCommonTask::getResultedAnnotations() const {
-    return result;
+    return resultsPerQuerySequence.isEmpty() ? tr("There were no hits found for your BLAST search.") : "";
 }
 
 BlastTaskSettings BlastCommonTask::getSettings() const {
@@ -238,6 +253,9 @@ void BlastCommonTask::parseTabularLine(const QByteArray &line) {
         stateInfo.setError(tr("Incorrect number of fields in line: %1").arg(elements.size()));
         return;
     }
+    int querySequenceIndex = parseQuerySequenceIndex(elements[0]);
+    SAFE_POINT(querySequenceIndex >= 0, "Invalid querySequenceIndex", );
+
     bool isOk;
     int from = elements.at(6).toInt(&isOk);
     if (!isOk) {
@@ -250,13 +268,14 @@ void BlastCommonTask::parseTabularLine(const QByteArray &line) {
         return;
     }
     if (from != -1 && to != -1) {
-        if (from <= to) {
-            ad->location->regions << U2Region(from - 1, to - from + 1);
-        } else {
-            ad->location->regions << U2Region(to - 1, from - to + 1);
-        }
-        circularization->uncircularizeLocation(ad->location);
-        CHECK(!ad->location->regions.isEmpty(), );
+        int querySequenceLength = settings.querySequences[querySequenceIndex].length();
+        U2Region resultRegion = {qMin(from, to) - 1, qAbs(to - from) + 1};
+        bool isOverflowAreaDuplicate = resultRegion.startPos >= querySequenceLength;
+        CHECK(!isOverflowAreaDuplicate, );
+        ad->location->regions = {resultRegion};
+        U2PseudoCircularization::convertToOriginalSequenceCoordinates(ad->location, querySequenceLength);
+        SAFE_POINT(!ad->location->regions.isEmpty(), "Result location can't be empty", );
+        U2Region::shift(settings.resultRegionOffset, ad->location->regions);
     } else {
         stateInfo.setError(tr("Can't evaluate location"));
         return;
@@ -320,7 +339,7 @@ void BlastCommonTask::parseTabularLine(const QByteArray &line) {
         }
         if (identitiesPercent != -1) {
             // float percent = (float)identities / (float)align_len * 100;
-            int identities = (float)align_len * identitiesPercent / 100.;
+            int identities = qRound(align_len * (double)identitiesPercent / 100);
             QString str = QString::number(identities) + '/' + QString::number(align_len) + " (" + QString::number(identitiesPercent, 'g', 4) + "%)";
             ad->qualifiers.push_back(U2Qualifier("identities", str));
         }
@@ -331,7 +350,10 @@ void BlastCommonTask::parseTabularLine(const QByteArray &line) {
 
     ad->qualifiers.push_back(U2Qualifier("id", elements.at(1)));
     ad->name = "blast result";
-    result.append(ad);
+
+    QList<SharedAnnotationData> resultPerQuerySequence = resultsPerQuerySequence.value(querySequenceIndex);
+    resultPerQuerySequence << ad;
+    resultsPerQuerySequence[querySequenceIndex] = resultPerQuerySequence;
 }
 
 void BlastCommonTask::parseXMLResult() {
@@ -348,36 +370,53 @@ void BlastCommonTask::parseXMLResult() {
         }
     }
 
-    QDomNodeList hits = xmlDoc.elementsByTagName("Hit");
-    for (int i = 0; i < hits.count(); i++) {
-        parseXMLHit(hits.at(i));
+    QDomNodeList iterationDomElements = xmlDoc.elementsByTagName("Iteration");
+    for (int iterationIndex = 0; iterationIndex < iterationDomElements.count(); iterationIndex++) {
+        QDomElement iterationDomElement = iterationDomElements.at(iterationIndex).toElement();
+
+        int querySequenceIndex = parseQuerySequenceIndex(iterationDomElement.firstChildElement("Iteration_query-def").text());
+        SAFE_POINT(querySequenceIndex >= 0, "Invalid querySequenceIndex", );
+        QDomNodeList hits = iterationDomElement.elementsByTagName("Hit");
+        for (int i = 0; i < hits.count(); i++) {
+            parseXMLHit(hits.at(i), querySequenceIndex);
+        }
     }
 }
 
-void BlastCommonTask::parseXMLHit(const QDomNode &xml) {
-    QString id, def, accession;
+int BlastCommonTask::parseQuerySequenceIndex(const QString &querySequenceName) const {
+    SAFE_POINT_EXT(querySequenceName.startsWith(QUERY_SEQUENCE_NAME_PREFIX), uiLog.trace("Unexpected query sequence name: " + querySequenceName), -1);
+    bool isOk;
+    int querySequenceIndex = querySequenceName.mid(QUERY_SEQUENCE_NAME_PREFIX.length()).toInt(&isOk);
+    SAFE_POINT_EXT(isOk && querySequenceIndex >= 0 && querySequenceIndex < settings.querySequences.size(),
+                   uiLog.trace("Unexpected query sequence index: " + querySequenceName),
+                   -1);
+    return querySequenceIndex;
+}
 
+void BlastCommonTask::parseXMLHit(const QDomNode &xml, int querySequenceIndex) {
     QDomElement tmp = xml.lastChildElement("Hit_id");
-    id = tmp.text();
+    QString id = tmp.text();
     tmp = xml.lastChildElement("Hit_def");
-    def = tmp.text();
+    QString def = tmp.text();
     tmp = xml.lastChildElement("Hit_accession");
-    accession = tmp.text();
+    QString accession = tmp.text();
 
     QDomNodeList nodes = xml.childNodes();
     for (int i = 0; i < nodes.count(); i++) {
         if (nodes.at(i).isElement()) {
             if (nodes.at(i).toElement().tagName() == "Hit_hsps") {
                 QDomNodeList hsps = nodes.at(i).childNodes();
-                for (int j = 0; j < hsps.count(); j++)
-                    if (hsps.at(j).toElement().tagName() == "Hsp")
-                        parseXMLHsp(hsps.at(j), id, def, accession);
+                for (int j = 0; j < hsps.count(); j++) {
+                    if (hsps.at(j).toElement().tagName() == "Hsp") {
+                        parseXMLHsp(hsps.at(j), querySequenceIndex, id, def, accession);
+                    }
+                }
             }
         }
     }
 }
 
-void BlastCommonTask::parseXMLHsp(const QDomNode &xml, const QString &id, const QString &def, const QString &accession) {
+void BlastCommonTask::parseXMLHsp(const QDomNode &xml, int querySequenceIndex, const QString &id, const QString &def, const QString &accession) {
     SharedAnnotationData ad(new AnnotationData);
 
     QDomElement elem = xml.lastChildElement("Hsp_bit-score");
@@ -466,18 +505,23 @@ void BlastCommonTask::parseXMLHsp(const QDomNode &xml, const QString &id, const 
         return;
     }
     // No need to check strand with BLAST
-    ad->location->regions << U2Region(from - 1, to - from + 1);
-    circularization->uncircularizeLocation(ad->location);
-    CHECK(!ad->location->regions.isEmpty(), );
+    U2Region resultRegion(from - 1, to - from + 1);
+    int querySequenceLength = settings.querySequences[querySequenceIndex].length();
+    bool isOverflowAreaDuplicate = resultRegion.startPos >= querySequenceLength;
+    CHECK(!isOverflowAreaDuplicate, );
+    ad->location->regions = {resultRegion};
+    U2PseudoCircularization::convertToOriginalSequenceCoordinates(ad->location, querySequenceLength);
+    SAFE_POINT(!ad->location->regions.isEmpty(), "Result location can't be empty", );
+    U2Region::shift(settings.resultRegionOffset, ad->location->regions);
 
     if (align_len != -1) {
         if (gaps != -1) {
-            float percent = (float)gaps / (float)align_len * 100.;
+            double percent = gaps / (double)align_len * 100;
             QString str = QString::number(gaps) + "/" + QString::number(align_len) + " (" + QString::number(percent, 'g', 4) + "%)";
             ad->qualifiers.push_back(U2Qualifier("gaps", str));
         }
         if (identities != -1) {
-            float percent = (float)identities / (float)align_len * 100.;
+            double percent = identities / (double)align_len * 100.;
             QString str = QString::number(identities) + '/' + QString::number(align_len) + " (" + QString::number(percent, 'g', 4) + "%)";
             ad->qualifiers.push_back(U2Qualifier("identities", str));
             ad->qualifiers.push_back(U2Qualifier("identity_percent", QString::number(percent)));
@@ -537,7 +581,10 @@ void BlastCommonTask::parseXMLHsp(const QDomNode &xml, const QString &id, const 
     ad->qualifiers.push_back(U2Qualifier("accession", accession));
     U1AnnotationUtils::addDescriptionQualifier(ad, settings.annDescription);
     ad->name = "blast result";
-    result.append(ad);
+
+    QList<SharedAnnotationData> resultPerQuerySequence = resultsPerQuerySequence.value(querySequenceIndex);
+    resultPerQuerySequence << ad;
+    resultsPerQuerySequence[querySequenceIndex] = resultPerQuerySequence;
 }
 
 ///////////////////////////////////////
@@ -582,18 +629,13 @@ QList<Task *> BlastMultiTask::onSubTaskFinished(Task *subTask) {
     if (hasError() || isCanceled()) {
         return res;
     }
-    BlastCommonTask *s = qobject_cast<BlastCommonTask *>(subTask);
-    if (s != nullptr) {
-        BlastTaskSettings settings = s->getSettings();
-        assert(settings.aobj != nullptr);
-        QList<SharedAnnotationData> result = s->getResultedAnnotations();
-        if (!result.isEmpty()) {
+    if (auto blastTask = qobject_cast<BlastCommonTask *>(subTask)) {
+        BlastTaskSettings settings = blastTask->getSettings();
+        SAFE_POINT_EXT(settings.aobj != nullptr, setError("Result annotation object is null!"), {});
+        QList<SharedAnnotationData> resultAnnotations = blastTask->getResultAnnotations();
+        if (!resultAnnotations.isEmpty()) {
             doc->addObject(settings.aobj);
-            for (QMutableListIterator<SharedAnnotationData> it_ad(result); it_ad.hasNext();) {
-                SharedAnnotationData &ad = it_ad.next();
-                U2Region::shift(settings.offsInGlobalSeq, ad->location->regions);
-            }
-            res.append(new CreateAnnotationsTask(settings.aobj, result, settings.groupName));
+            res.append(new CreateAnnotationsTask(settings.aobj, resultAnnotations, settings.groupName));
         }
     }
     return res;

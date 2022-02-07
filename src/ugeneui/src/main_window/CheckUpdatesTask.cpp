@@ -97,12 +97,12 @@ Task::ReportResult CheckUpdatesTask::report() {
         return ReportResult_Finished;
     }
 
-    Version thisVersion = Version::appVersion();
+    Version currentUgeneVersion = Version::appVersion();
 
     Answer answer = DoNothing;
     if (runOnStartup) {
-        if (siteVersion > thisVersion && !UgeneUpdater::isUpdateSkipped(siteVersion)) {
-            UpdateMessage message(siteVersion.text);
+        if (siteVersion > currentUgeneVersion && !UgeneUpdater::isUpdateSkipped(siteVersion)) {
+            UpdateMessage message(siteVersion.toString());
             answer = message.getAnswer();
         }
     } else {
@@ -122,10 +122,6 @@ Task::ReportResult CheckUpdatesTask::report() {
             break;
     }
     return ReportResult_Finished;
-}
-
-void CheckUpdatesTask::sl_registerInTaskScheduler() {
-    AppContext::getTaskScheduler()->registerTopLevelTask(this);
 }
 
 /************************************************************************/
@@ -187,7 +183,7 @@ QString VersionMessage::getMessageText(const Version &thisVersion, const Version
                               " <tr><td>%1</td><td><b>&nbsp;%2</b></td></tr>"
                               " <tr><td>%3</td><td><b>&nbsp;%4</b></td></tr>"
                               "</table>")
-                          .arg(tr("Your version:"), thisVersion.text, tr("Latest version:"), newVersion.text);
+                          .arg(tr("Your version:"), thisVersion.toString(), tr("Latest version:"), newVersion.toString());
 
     if (thisVersion >= newVersion) {
         message += "<p>" + tr("You have the latest version") + "</p>";

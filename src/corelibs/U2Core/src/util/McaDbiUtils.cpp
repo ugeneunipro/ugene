@@ -124,7 +124,7 @@ void McaDbiUtils::updateMca(U2OpStatus &os, const U2EntityRef &mcaRef, const Mul
     // Add rows that are stored in memory, but are not present in the database,
     // remember the rows order
     QList<qint64> rowsOrder;
-    for (int i = 0, n = mca->getNumRows(); i < n; ++i) {
+    for (int i = 0, n = mca->getRowCount(); i < n; ++i) {
         const MultipleChromatogramAlignmentRow mcaRow = mca->getMcaRow(i);
         U2McaRow dbRow = mcaRow->getRowDbInfo();
 

@@ -201,6 +201,7 @@ int main(int argc, char **argv) {
 
     if (argc == 1) {
         Version version = Version::appVersion();
+        QByteArray versionText = version.toString().toUtf8();
         fprintf(stderr, "Console interface for Unipro UGENE v%s\n"
 #ifdef Q_OS_WIN
                         "Hint: Use 'ugeneui.exe' command to run GUI version of UGENE\n"
@@ -210,7 +211,7 @@ int main(int argc, char **argv) {
                         "Hint: Run 'ugene --usage', 'ugene --help' or 'ugene --help=<sectionName>' for more information\n"
 #endif
                 ,
-                version.text.toLatin1().constData());
+                versionText.constData());
         return -1;
     }
 

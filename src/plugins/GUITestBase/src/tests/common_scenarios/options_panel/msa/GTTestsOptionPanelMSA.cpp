@@ -1735,11 +1735,13 @@ static void setLabelsColor(HI::GUITestOpStatus &os, int r, int g, int b) {
     GTWidget::click(os, labelsColorButton);
 }
 
-static bool checkLabelColor(HI::GUITestOpStatus &os, const QString &expectedColorName) {
+static void checkLabelColor(HI::GUITestOpStatus &os, const QString &expectedColorName) {
     auto graphicsView = GTWidget::findGraphicsView(os, "treeView");
     QList<QGraphicsSimpleTextItem *> labels = GTUtilsPhyTree::getVisibleLabels(os, graphicsView);
-    CHECK_SET_ERR_RESULT(!labels.isEmpty(), "there are no visiable labels", false);
+    CHECK_SET_ERR(!labels.isEmpty(), "there are no visiable labels");
 
+    QColor expectedColor(expectedColorName);
+    QColor closestColor;  // Used in error message in case if the test fails.
     QImage img = GTWidget::getImage(os, AppContext::getMainWindow()->getQMainWindow());
     for (int time = 0; time < 5000; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
@@ -1752,16 +1754,22 @@ static bool checkLabelColor(HI::GUITestOpStatus &os, const QString &expectedColo
                     QPoint global = graphicsView->viewport()->mapToGlobal(graphicsView->mapFromScene(label->mapToScene(p)));
 
                     QRgb rgb = img.pixel(global);
-                    QColor c = QColor(rgb);
-                    QString name = c.name();
+                    QColor pointColor = QColor(rgb);
+                    QString name = pointColor.name();
                     if (name == expectedColorName) {
-                        return true;
+                        return;
+                    }
+                    auto getColorDistance = [](const QColor &c1, const QColor &c2) {
+                        return qAbs(c1.green() - c2.green()) + qAbs(c1.blue() - c2.blue()) + qAbs(c1.red() - c2.red());
+                    };
+                    if (getColorDistance(pointColor, expectedColor) < getColorDistance(closestColor, expectedColor)) {
+                        closestColor = pointColor;
                     }
                 }
             }
         }
     }
-    return false;
+    GT_FAIL("Color is not found. Closest: " + closestColor.name(), );
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_settings_test_0006) {
@@ -1773,14 +1781,10 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0006) {
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
 
-    // Change labels color.
-    if (!isOsMac()) {
-        setLabelsColor(os, 255, 0, 0);
-        // Expected: color changed
-        CHECK_SET_ERR(checkLabelColor(os, "#ff0000"), "color not changed");
-    } else {
-        expandFontSettings(os);
-    }
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    expandFontSettings(os);
+
     // Change labels font.
     auto fontComboBox = GTWidget::findComboBox(os, "fontComboBox");
     auto fontNameEdit = fontComboBox->findChild<QLineEdit *>();
@@ -1832,6 +1836,13 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0006) {
     // Not underline.
     GTWidget::click(os, underlineAttrButton);
     CHECK_SET_ERR(!label->font().underline(), "underline font not canceled");
+
+    // Change labels color. Run this check last after label size was increased to avoid color-aliasing effects.
+    if (!isOsMac()) {
+        setLabelsColor(os, 255, 0, 0);
+        // Expected: color changed
+        checkLabelColor(os, "#ff0000");
+    }
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_settings_test_0007) {
@@ -2405,11 +2416,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004) {
     QString initialColor = GTWidget::getColor(os, GTWidget::findWidget(os, "labelsColorButton"), QPoint(10, 10)).name();
     QComboBox *fontComboBox = GTWidget::findExactWidget<QComboBox *>(os, "fontComboBox");
     QLineEdit *l = fontComboBox->findChild<QLineEdit *>();
-#ifdef Q_OS_LINUX
-    QString fontName = "Serif";
-#else
-    QString fontName = "Tahoma";
-#endif
+    QString fontName = isOsLinux() ? "Serif" : "Tahoma";
     GTLineEdit::setText(os, l, fontName);
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 

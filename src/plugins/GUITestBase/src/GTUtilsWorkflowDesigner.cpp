@@ -184,10 +184,10 @@ static bool compare(const QString &s1, const QString &s2, bool isExactMatch) {
 #define GT_METHOD_NAME "findTreeItem"
 QTreeWidgetItem *GTUtilsWorkflowDesigner::findTreeItem(HI::GUITestOpStatus &os, const QString &itemName, tab t, bool exactMatch, bool failIfNULL) {
     auto wdWindow = getActiveWorkflowDesignerWindow(os);
-    QTreeWidgetItem *foundItem = nullptr;
     auto treeWidget = GTWidget::findTreeWidget(os, t == algorithms ? "WorkflowPaletteElements" : "samples", wdWindow);
 
     QList<QTreeWidgetItem *> outerList = treeWidget->findItems("", Qt::MatchContains);
+    QTreeWidgetItem *foundItem = nullptr;
     for (int i = 0; i < outerList.count(); i++) {
         QList<QTreeWidgetItem *> innerList;
 

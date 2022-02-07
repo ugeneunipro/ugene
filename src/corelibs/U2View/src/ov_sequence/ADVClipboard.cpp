@@ -183,7 +183,7 @@ void ADVClipboard::copyAnnotationSelection(const bool amino) {
             resultText.append(U2Msa::GAP_CHAR);  // insert gap instead of the sequence, if the sequence is not available.
             continue;
         }
-        DNATranslation *complTT = annotation->getStrand().isCompementary() ? seqCtx->getComplementTT() : nullptr;
+        DNATranslation *complTT = annotation->getStrand().isComplementary() ? seqCtx->getComplementTT() : nullptr;
         DNATranslation *aminoTT = amino ? seqCtx->getAminoTT() : nullptr;
         U2OpStatus2Log os;
         // BUG528: add alphabet symbol role: insertion mark and use it instead of the U2Msa::GAP_CHAR

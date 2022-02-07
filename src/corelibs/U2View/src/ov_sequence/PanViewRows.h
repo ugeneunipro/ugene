@@ -49,7 +49,7 @@ public:
     void removeAnnotation(Annotation *f);
 
     bool contains(const QString &key) const;
-    int getNumRows() const;
+    int getRowCount() const;
     PVRowData *getRow(int row) const;
 
     /**

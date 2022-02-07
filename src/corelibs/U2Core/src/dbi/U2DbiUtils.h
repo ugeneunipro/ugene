@@ -163,9 +163,7 @@ public:
     static bool parseDbiUrl(const QString &dbiUrl, QString &host, int &port, QString &dbName);
     static bool parseFullDbiUrl(const QString &dbiUrl, QString &userName, QString &host, int &port, QString &dbName);
 
-    static QString full2shortDbiUrl(const QString &fullDbiUrl);
     static QString full2shortDbiUrl(const QString &fullDbiUrl, QString &userName);
-    static bool isFullDbiUrl(const QString &dbiUrl);
 
     static QString makeFolderCanonical(const QString &folder);
 

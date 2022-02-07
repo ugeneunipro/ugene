@@ -50,7 +50,7 @@ SimpleAddToAlignmentTask::SimpleAddToAlignmentTask(const AlignSequencesToAlignme
 void SimpleAddToAlignmentTask::prepare() {
     algoLog.info(tr("Align sequences to alignment with UGENE started"));
 
-    MSAUtils::removeColumnsWithGaps(inputMsa, inputMsa->getNumRows());
+    MSAUtils::removeColumnsWithGaps(inputMsa, inputMsa->getRowCount());
 
     QListIterator<QString> namesIterator(settings.addedSequencesNames);
     foreach (const U2EntityRef &sequence, settings.addedSequencesRefs) {
@@ -74,7 +74,7 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
     U2UseCommonUserModStep modStep(settings.msaRef, stateInfo);
     CHECK_OP(stateInfo, ReportResult_Finished);
     U2MsaDbi *dbi = modStep.getDbi()->getMsaDbi();
-    int posInMsa = inputMsa->getNumRows();
+    int posInMsa = inputMsa->getRowCount();
     bool hasDbiUpdates = false;
 
     U2AlphabetId currentAlphabetId = dbi->getMsaAlphabet(settings.msaRef.entityId, stateInfo);
@@ -89,7 +89,7 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
 
     const QList<qint64> rowsIds = inputMsa->getRowsIds();
     const QList<QVector<U2MsaGap>> msaGapModel = inputMsa->getGapModel();
-    for (int i = 0; i < inputMsa->getNumRows(); i++) {
+    for (int i = 0; i < inputMsa->getRowCount(); i++) {
         U2MsaRow row = dbi->getRow(settings.msaRef.entityId, rowsIds[i], stateInfo);
         CHECK_OP(stateInfo, ReportResult_Finished);
         QVector<U2MsaGap> modelToChop(msaGapModel[i]);
@@ -165,7 +165,7 @@ void BestPositionFindTask::run() {
         sequence = sequence.toUpper();
     }
     const int aliLen = inputMsa->getLength();
-    const int nSeq = inputMsa->getNumRows();
+    const int nSeq = inputMsa->getRowCount();
 
     int similarity = 0;
 

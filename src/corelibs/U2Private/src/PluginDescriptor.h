@@ -90,7 +90,7 @@ public:
     QList<DependsInfo> dependsList;
 
     bool isValid() const {
-        return !id.isEmpty() && !pluginVersion.text.isEmpty() && !ugeneVersion.text.isEmpty() && !libraryUrl.isEmpty();
+        return !id.isEmpty() && pluginVersion.isValid() && ugeneVersion.isValid() && !libraryUrl.isEmpty();
     }
 
     bool operator==(const PluginDesc &pd) const;

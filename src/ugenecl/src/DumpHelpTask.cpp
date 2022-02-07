@@ -50,7 +50,7 @@ void printStringToConsole(const char *format, const QString &str) {
 
 namespace U2 {
 
-const QString DumpHelpTask::VERSION_INFO = QString("\nConsole version of UGENE %1\n").arg(Version::appVersion().text);
+const QString DumpHelpTask::VERSION_INFO = QString("\nConsole version of UGENE %1\n").arg(Version::appVersion().toString());
 
 static void dumpProgramNameAndUsage() {
     printStringToConsole("%s", DumpHelpTask::VERSION_INFO);

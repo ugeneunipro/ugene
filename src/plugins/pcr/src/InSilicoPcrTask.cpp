@@ -153,7 +153,7 @@ void InSilicoPcrTask::run() {
 
 InSilicoPcrTask::PrimerBind InSilicoPcrTask::getPrimerBind(const FindAlgorithmResult &forward, const FindAlgorithmResult &reverse, U2Strand::Direction direction) const {
     PrimerBind result;
-    bool switched = forward.strand.isCompementary();
+    bool switched = forward.strand.isComplementary();
     if ((U2Strand::Direct == direction && switched) ||
         (U2Strand::Complementary == direction && !switched)) {
         result.primer = settings.reversePrimer;

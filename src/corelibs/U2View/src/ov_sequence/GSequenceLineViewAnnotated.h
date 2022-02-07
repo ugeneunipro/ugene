@@ -47,7 +47,7 @@ public:
      * Returns list of annotations that hold the on-screen point.
      * The method is delegated to the renderArea. Override the renderArea's variant of the method when needed.
      */
-    QList<Annotation *> findAnnotationsByCoord(const QPoint &coord) const;
+    QList<Annotation *> findAnnotationsByCoord(const QPoint &renderAreaPoint) const;
 
     static QString prepareAnnotationText(const SharedAnnotationData &a, const AnnotationSettings *as);
 
@@ -62,7 +62,8 @@ protected:
 
     virtual bool event(QEvent *e);
 
-    virtual QString createToolTip(QHelpEvent *e);
+    /** Creates a tooltip for the given render area coordinate. */
+    virtual QString createToolTip(const QPoint &renderAreaPoint);
 
     virtual void registerAnnotations(const QList<Annotation *> &l);
 

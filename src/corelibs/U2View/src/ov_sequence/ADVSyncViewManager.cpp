@@ -384,7 +384,7 @@ int ADVSyncViewManager::findSelectedAnnotationPos(ADVSingleSequenceWidget *w) co
     foreach (const Annotation *annotation, as->getAnnotations()) {
         AnnotationTableObject *obj = annotation->getGObject();
         if (objs.contains(obj)) {
-            return annotation->getStrand().isCompementary() ? annotation->getRegions().last().endPos() : annotation->getRegions().first().startPos;
+            return annotation->getStrand().isComplementary() ? annotation->getRegions().last().endPos() : annotation->getRegions().first().startPos;
         }
     }
     return -1;

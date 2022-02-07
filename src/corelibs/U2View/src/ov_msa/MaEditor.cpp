@@ -162,7 +162,7 @@ int MaEditor::getAlignmentLen() const {
 }
 
 int MaEditor::getNumSequences() const {
-    return maObject->getNumRows();
+    return maObject->getRowCount();
 }
 
 bool MaEditor::isAlignmentEmpty() const {
@@ -463,7 +463,7 @@ void MaEditor::updateFontMetrics() {
     const int minimumSafeFontPointSize = 8;  // This value was historically used in UGENE as minimum with no known issues.
     QFont fontToEstimate = font;
     int estimatedMinimumFontPointSize = minimumSafeFontPointSize;  // Start with a safe value and estimate smaller values.
-    while (fontToEstimate.pointSize() > 0) {
+    while (fontToEstimate.pointSize() > 1) {
         int charWidth = getUnifiedSequenceFontCharRect(fontToEstimate).width();
         if (charWidth < minimumFontCharWidthInsideCell) {
             // The estimated char size is too small. Stop on the previous value.
@@ -553,7 +553,7 @@ void MaEditor::sl_gotoSelectedRead() {
     int viewRowIndex = selectionRect.y();
 
     int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
-    CHECK(maRowIndex >= 0 && maRowIndex < maObject->getNumRows(), );
+    CHECK(maRowIndex >= 0 && maRowIndex < maObject->getRowCount(), );
 
     MultipleAlignmentRow maRow = maObject->getRow(maRowIndex);
     int posToCenter = maRow->isComplemented() ? maRow->getCoreEnd() - 1 : maRow->getCoreStart();

@@ -489,10 +489,6 @@ void TaskSchedulerImpl::update() {
 
     updateOldTasksPriority();
 
-    if (priorityQueue.isEmpty() && tasksWithNewSubtasks.isEmpty() && newTasks.isEmpty()) {
-        emit si_noTasksInScheduler();
-    }
-
     if (stateChangesObserved) {
         stateChangesObserved = false;
         timer.setInterval(0);

@@ -44,7 +44,7 @@ void MysqlUpgraderFrom_1_16_To_1_24::upgrade(U2OpStatus &os) const {
     upgradeVariantDbi(os);
     CHECK_OP(os, );
 
-    dbi->setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, versionTo.text, os);
+    dbi->setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, versionTo.toString(), os);
 }
 
 void MysqlUpgraderFrom_1_16_To_1_24::upgradeVariantDbi(U2OpStatus &os) const {
@@ -63,38 +63,34 @@ void MysqlUpgraderFrom_1_16_To_1_24::upgradeVariantDbi(U2OpStatus &os) const {
     updateScheme(os);
 }
 
-namespace {
-
-QString convertInfo(const QString &additionalInfo, const QStringList &header) {
+static QString convertInfo(const QString &additionalInfo, const QStringList &header) {
     StrStrMap convertedInfoMap;
     CHECK(!additionalInfo.isEmpty(), QString());
-    QStringList splittedInfo = additionalInfo.split("\t", QString::SkipEmptyParts);
-    CHECK(!splittedInfo.isEmpty(), QString());
+    QStringList tokens = additionalInfo.split("\t", QString::SkipEmptyParts);
+    CHECK(!tokens.isEmpty(), QString());
 
-    convertedInfoMap.insert(U2Variant::VCF4_QUAL, splittedInfo.takeFirst());
+    convertedInfoMap.insert(U2Variant::VCF4_QUAL, tokens.takeFirst());
 
-    if (!splittedInfo.isEmpty()) {
-        convertedInfoMap.insert(U2Variant::VCF4_FILTER, splittedInfo.takeFirst());
+    if (!tokens.isEmpty()) {
+        convertedInfoMap.insert(U2Variant::VCF4_FILTER, tokens.takeFirst());
     }
 
-    if (!splittedInfo.isEmpty()) {
-        convertedInfoMap.insert(U2Variant::VCF4_INFO, splittedInfo.takeFirst());
+    if (!tokens.isEmpty()) {
+        convertedInfoMap.insert(U2Variant::VCF4_INFO, tokens.takeFirst());
     }
 
     static const int maxVcf4MandatoryColumnNumber = 7;  // VCF4 format supposes 8 mandatory columns
     for (int i = maxVcf4MandatoryColumnNumber + 1; i < header.size(); i++) {
-        convertedInfoMap.insert(header[i], splittedInfo.isEmpty() ? "." : splittedInfo.takeFirst());
+        convertedInfoMap.insert(header[i], tokens.isEmpty() ? "." : tokens.takeFirst());
     }
 
-    if (!splittedInfo.isEmpty()) {
-        // There is no possibility to split the data correctly, because it was splitted by spaces not by tabulations
-        convertedInfoMap.insert(QString::number(qMax(maxVcf4MandatoryColumnNumber, header.size()) + 1), splittedInfo.join("\t"));
+    if (!tokens.isEmpty()) {
+        // There is no possibility to split the data correctly, because it was split by spaces not by tabulations
+        convertedInfoMap.insert(QString::number(qMax(maxVcf4MandatoryColumnNumber, header.size()) + 1), tokens.join("\t"));
     }
 
     return StrPackUtils::packMap(convertedInfoMap);
 }
-
-}  // namespace
 
 void MysqlUpgraderFrom_1_16_To_1_24::repackInfo(U2OpStatus &os, const QMap<U2DataId, QStringList> &trackId2header) const {
     coreLog.trace("Additional info repacking");

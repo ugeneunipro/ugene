@@ -602,8 +602,7 @@ void GTUtilsMsaEditor::moveRowsToExcludeList(HI::GUITestOpStatus &os, const QStr
     GTUtilsMsaEditor::clearSelection(os);
     GTUtilsMsaEditor::selectRowsByName(os, rowNames);
     auto msaEditorWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
-    auto excludeList = GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow);
-    auto button = GTWidget::findToolButton(os, "exclude_list_move_from_msa_button", excludeList);
+    auto button = GTWidget::findToolButton(os, "exclude_list_move_from_msa_button", msaEditorWindow);
     CHECK_SET_ERR(button->isEnabled(), "Button is not enabled: " + button->objectName());
     GTWidget::click(os, button);
 }
@@ -611,11 +610,10 @@ void GTUtilsMsaEditor::moveRowsToExcludeList(HI::GUITestOpStatus &os, const QStr
 
 #define GT_METHOD_NAME "moveRowFromExcludeList"
 void GTUtilsMsaEditor::moveRowFromExcludeList(HI::GUITestOpStatus &os, const QString &rowName) {
-    auto msaEditorWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
-    auto excludeList = GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow);
-    auto listWidget = GTWidget::findListWidget(os, "exclude_list_name_list_widget", excludeList);
+    auto listWidget = getExcludeListWidget(os);
     GTListWidget::click(os, listWidget, rowName);
 
+    auto msaEditorWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
     auto button = GTWidget::findToolButton(os, "exclude_list_move_to_msa_button", msaEditorWindow);
     CHECK_SET_ERR(button->isEnabled(), "Button is not enabled: " + button->objectName());
     GTWidget::click(os, button);
@@ -624,11 +622,31 @@ void GTUtilsMsaEditor::moveRowFromExcludeList(HI::GUITestOpStatus &os, const QSt
 
 #define GT_METHOD_NAME "checkExcludeList"
 void GTUtilsMsaEditor::checkExcludeList(GUITestOpStatus &os, const QStringList &nameList) {
-    auto msaEditorWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
-    auto excludeList = GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow);
-    auto listWidget = GTWidget::findListWidget(os, "exclude_list_name_list_widget", excludeList);
+    auto listWidget = getExcludeListWidget(os);
     QStringList actualNameList = GTListWidget::getItems(os, listWidget);
     CHECK_SET_ERR(actualNameList == nameList, "Name list does not match, expected: " + nameList.join(";") + ", got: " + actualNameList.join(";"));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "selectRowsByNameInExcludeList"
+void GTUtilsMsaEditor::selectRowsByNameInExcludeList(HI::GUITestOpStatus &os, const QStringList &rowNames) {
+    auto listWidget = getExcludeListWidget(os);
+    GTListWidget::selectItemsByText(os, listWidget, rowNames);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkExcludeListSelection"
+void GTUtilsMsaEditor::checkExcludeListSelection(HI::GUITestOpStatus &os, const QStringList &rowNames) {
+    auto listWidget = getExcludeListWidget(os);
+    GTListWidget::checkSelection(os, listWidget, rowNames);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getExcludeListWidget"
+QListWidget *GTUtilsMsaEditor::getExcludeListWidget(HI::GUITestOpStatus &os) {
+    auto msaEditorWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
+    auto excludeList = GTWidget::findWidget(os, "msa_exclude_list", msaEditorWindow);
+    return GTWidget::findListWidget(os, "exclude_list_name_list_widget", excludeList);
 }
 #undef GT_METHOD_NAME
 

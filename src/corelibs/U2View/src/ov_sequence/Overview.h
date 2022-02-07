@@ -65,7 +65,8 @@ protected:
     void mouseReleaseEvent(QMouseEvent *me);
     void wheelEvent(QWheelEvent *we);
 
-    QString createToolTip(QHelpEvent *he);
+    /** Creates a tool tip string for the given 'X' offset in the render area. */
+    QString createToolTip(int renderAreaXOffset);
     PanView *getPan() const;
     DetView *getDet() const;
 

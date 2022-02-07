@@ -77,7 +77,7 @@ public:
     MultipleChromatogramAlignmentData &operator=(const MultipleChromatogramAlignmentData &mcaData);
 
     /** Returns the number of rows in the alignment */
-    int getNumRows() const;
+    int getRowCount() const;
 
     /**
      * Recomputes the length of the alignment and makes it as minimal

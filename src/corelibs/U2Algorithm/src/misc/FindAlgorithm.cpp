@@ -426,7 +426,7 @@ inline bool match_pattern_ambiguous(const char *seq, const char *p, int start, i
 
 // reverses found result if it's located on the reverse complement strand
 inline void prepareResultPosition(int regionStart, int regionLength, int &foundStart, int foundLength, U2Strand resultStrand) {
-    foundStart = resultStrand.isCompementary() ? regionStart + regionLength - foundStart - foundLength : regionStart + foundStart;
+    foundStart = resultStrand.isComplementary() ? regionStart + regionLength - foundStart - foundLength : regionStart + foundStart;
 }
 
 static void sendResultToListener(int resultStartPos, int resultLength, U2Strand resultStrand, FindAlgorithmResultsListener *rl) {
@@ -476,7 +476,7 @@ static void regExpSearch(const QString &refSequence,
                                       resultStartPos,
                                       resultLen,
                                       searchStrand);
-                resultStartPos -= (searchStrand.isCompementary() && refSeqIsAminoTranslation ? tailCut : 0);
+                resultStartPos -= (searchStrand.isComplementary() && refSeqIsAminoTranslation ? tailCut : 0);
 
                 sendResultToListener(resultStartPos, resultLen, searchStrand, rl);
             }
@@ -495,7 +495,7 @@ static void regExpSearch(const QString &refSequence,
                                           resultStartPos,
                                           resultLen,
                                           searchStrand);
-                    resultStartPos -= (searchStrand.isCompementary() && refSeqIsAminoTranslation ? tailCut : 0);
+                    resultStartPos -= (searchStrand.isComplementary() && refSeqIsAminoTranslation ? tailCut : 0);
 
                     sendResultToListener(resultStartPos, resultLen, searchStrand, rl);
                 }

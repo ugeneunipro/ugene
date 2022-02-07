@@ -67,8 +67,8 @@ Task::ReportResult GTest_CompareTwoMsa::report() {
     MultipleSequenceAlignmentObject *msa2 = qobject_cast<MultipleSequenceAlignmentObject *>(objs2.first());
     CHECK_EXT(nullptr != msa2, setError(QString("document '%1' contains an incorrect object: expected '%2', got '%3'").arg(secondDocContextName).arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).arg(objs2.first()->getGObjectType())), ReportResult_Finished);
 
-    const qint64 rowsNumber1 = msa1->getNumRows();
-    const qint64 rowsNumber2 = msa2->getNumRows();
+    const qint64 rowsNumber1 = msa1->getRowCount();
+    const qint64 rowsNumber2 = msa2->getRowCount();
     CHECK_EXT(rowsNumber1 == rowsNumber2,
               setError(QString("The rows numbers differ: the object '%1' from the document '%2' contains %3 rows, the object '%4' from the document '%5' contains %6 rows")
                            .arg(msa1->getGObjectName())

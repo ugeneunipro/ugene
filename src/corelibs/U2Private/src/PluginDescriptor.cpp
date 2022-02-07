@@ -111,19 +111,19 @@ PluginDesc PluginDescriptorHelper::readPluginDescriptor(const QString &descUrl, 
     }
 
     result.pluginVersion = Version::parseVersion(pluginElement.attribute("version"));
-    if (result.pluginVersion.text.isEmpty()) {
+    if (!result.pluginVersion.isValid()) {
         error = tr("Required attribute not found %1").arg("version");
         return failResult;
     }
 
     result.ugeneVersion = Version::parseVersion(pluginElement.attribute("ugene-version"));
-    if (result.ugeneVersion.text.isEmpty()) {
+    if (!result.ugeneVersion.isValid()) {
         error = tr("Required attribute not found %1").arg("ugene-version");
         return failResult;
     }
 
     result.qtVersion = Version::parseVersion(pluginElement.attribute("qt-version"));
-    if (result.qtVersion.text.isEmpty()) {
+    if (!result.qtVersion.isValid()) {
         error = tr("Required attribute not found %1").arg("qt-version");
         return failResult;
     }
@@ -308,7 +308,7 @@ QList<PluginDesc> PluginDescriptorHelper::orderPlugins(const QList<PluginDesc> &
     QList<PluginDesc> queue = unordered;
 
     int iterations = 0;
-    int maxIterations = queue.size();
+    int maxIterations;
 
     do {
         maxIterations = queue.size();

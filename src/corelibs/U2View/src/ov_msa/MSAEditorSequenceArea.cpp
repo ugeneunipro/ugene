@@ -314,7 +314,7 @@ void MSAEditorSequenceArea::sl_updateActions() {
 }
 
 void MSAEditorSequenceArea::sl_delCol() {
-    QObjectScopedPointer<DeleteGapsDialog> dlg = new DeleteGapsDialog(this, editor->getMaObject()->getNumRows());
+    QObjectScopedPointer<DeleteGapsDialog> dlg = new DeleteGapsDialog(this, editor->getMaObject()->getRowCount());
     dlg->exec();
     CHECK(!dlg.isNull(), );
 
@@ -336,7 +336,7 @@ void MSAEditorSequenceArea::sl_delCol() {
                 gapCount = value;
                 break;
             case DeleteByRelativeVal: {
-                int absoluteValue = qRound((msaObj->getNumRows() * value) / 100.0);
+                int absoluteValue = qRound((msaObj->getRowCount() * value) / 100.0);
                 if (absoluteValue < 1) {
                     absoluteValue = 1;
                 }
@@ -344,7 +344,7 @@ void MSAEditorSequenceArea::sl_delCol() {
                 break;
             }
             case DeleteAll:
-                gapCount = msaObj->getNumRows();
+                gapCount = msaObj->getRowCount();
                 break;
             default:
                 FAIL("Unknown delete mode", );
@@ -891,7 +891,7 @@ QString ExportHighlightingTask::generateExportHighlightingReport() const {
         rowStr.append(QString("%1").arg(posInResult));
         rowStr.append(QString("\t") + QString(msa->charAt(refSeq, pos)) + QString("\t"));
         bool informative = false;
-        for (int seq = 0; seq < msa->getNumRows(); seq++) {  // FIXME possible problems when sequences have moved in view
+        for (int seq = 0; seq < msa->getRowCount(); seq++) {  // FIXME possible problems when sequences have moved in view
             if (seq == refSeq)
                 continue;
             char c = msa->charAt(seq, pos);

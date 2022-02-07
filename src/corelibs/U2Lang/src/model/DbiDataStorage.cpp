@@ -36,7 +36,6 @@
 #include <U2Core/U2AssemblyDbi.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2FeatureDbi.h>
-#include <U2Core/U2FeatureUtils.h>
 #include <U2Core/U2MsaDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2RawData.h>
@@ -90,7 +89,7 @@ U2DbiRef DbiDataStorage::getDbiRef() {
 U2Object *DbiDataStorage::getObject(const SharedDbiDataHandler &handler, const U2DataType &type) {
     assert(nullptr != dbiHandle);
     U2OpStatusImpl os;
-    const U2DataId &objectId = handler->entRef.entityId;
+    const U2DataId &objectId = handler->entityRef.entityId;
     DbiConnection *connection = this->getConnection(handler->getDbiRef(), os);
     CHECK_OP(os, nullptr);
 
@@ -125,7 +124,7 @@ U2Object *DbiDataStorage::getObject(const SharedDbiDataHandler &handler, const U
 
         return new U2AnnotationTable(annTable);
     } else if (U2Type::Text == type) {
-        U2RawData rawData = RawDataUdrSchema::getObject(handler->entRef, os);
+        U2RawData rawData = RawDataUdrSchema::getObject(handler->entityRef, os);
         SAFE_POINT_OP(os, nullptr);
 
         return new U2RawData(rawData);
