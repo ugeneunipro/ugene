@@ -1995,10 +1995,12 @@ void WorkflowView::sl_saveScene() {
         sl_updateTitle();
     }
     propertyEditor->commit();
-    HRSchemaSerializer::updateWorkflowSchemaPathSettings(meta);
+    Metadata refreshedMeta = getMeta();
+    HRSchemaSerializer::updateWorkflowSchemaPathSettings(refreshedMeta);
     U2OpStatus2Log os;
-    HRSchemaSerializer::saveSchema(schema.get(), &meta, meta.url, os);
-    CHECK_OP_EXT(os, scene->setModified(false), );
+    HRSchemaSerializer::saveSchema(schema.get(), &refreshedMeta, refreshedMeta.url, os);
+    CHECK_OP(os, );
+    scene->setModified(false);
 }
 
 void WorkflowView::sl_saveSceneAs() {
@@ -2011,10 +2013,12 @@ void WorkflowView::sl_saveSceneAs() {
     }
     propertyEditor->commit();
     meta = md->meta;
-    HRSchemaSerializer::updateWorkflowSchemaPathSettings(meta);
+    Metadata refreshedMeta = getMeta();
+    HRSchemaSerializer::updateWorkflowSchemaPathSettings(refreshedMeta);
     U2OpStatus2Log os;
-    HRSchemaSerializer::saveSchema(schema.get(), &meta, meta.url, os);
-    CHECK_OP_EXT(os, scene->setModified(false), );
+    HRSchemaSerializer::saveSchema(schema.get(), &refreshedMeta, refreshedMeta.url, os);
+    CHECK_OP(os, );
+    scene->setModified(false);
 }
 
 void WorkflowView::startWizard(Wizard *wizard) {
