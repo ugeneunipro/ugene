@@ -3216,8 +3216,7 @@ GUI_TEST_CLASS_DEFINITION(test_0056) {
     };
 
     GTUtilsDialog::waitForDialog(os, new ExportSequenceAsAlignmentFiller(os, new custom()));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__export_import_menu_action"
-                                                                        << "export sequences as alignment"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"action_project__export_import_menu_action", "export sequences as alignment"}));
     GTUtilsProjectTreeView::click(os, "murine.gb", Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -3243,8 +3242,7 @@ GUI_TEST_CLASS_DEFINITION(test_0057) {
         }
     };
     GTUtilsDialog::waitForDialog(os, new GTSequenceReadingModeDialogUtils(os, new custom()));
-    GTFileDialog::openFileList(os, dataDir + "samples/Genbank", QStringList() << "murine.gb"
-                                                                              << "sars.gb");
+    GTFileDialog::openFileList(os, dataDir + "samples/Genbank", {"murine.gb", "sars.gb"});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(0, 0), QPoint(10, 1), "AAATGAAAGAC\nATATTAGGTTT");
@@ -3270,8 +3268,7 @@ GUI_TEST_CLASS_DEFINITION(test_0058) {
         }
     };
     GTUtilsDialog::waitForDialog(os, new PwmBuildDialogFiller(os, new custom()));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "TFBS_MENU"
-                                                                        << "TFBS_WEIGHT"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"TFBS_MENU", "TFBS_WEIGHT"}));
     GTMenu::showMainMenu(os, MWMENU_TOOLS);
     //    Use main menu {Tools->Search for TFBS->Build weigth mantix}
     //    In "Weight matrix" dialog set input amino alignment
@@ -3824,12 +3821,11 @@ GUI_TEST_CLASS_DEFINITION(test_0073) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Unload document
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__unload_selected_action"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"action_project__unload_selected_action"}));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
     //    Use context menu on object: {Open view -> Open new view: Alignment editor}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View"
-                                                                        << "action_open_view"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Open View", "action_open_view"}));
     GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
     //    Expected: view is opened, document is loaded
     GTUtilsMdi::findWindow(os, "COI [COI.aln]");
@@ -3907,7 +3903,7 @@ GUI_TEST_CLASS_DEFINITION(test_0076) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QWidget *overview = GTWidget::findWidget(os, "msa_overview_area_graph");
     //    Show simple overview
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show simple overview"}));
     GTMenu::showContextMenu(os, overview);
 
     QWidget *simple = GTWidget::findWidget(os, "msa_overview_area_simple");
@@ -3950,7 +3946,7 @@ GUI_TEST_CLASS_DEFINITION(test_0077) {
         GTWidget::click(os, button);
     } else {
         QWidget *extButton = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "msa_editor_tree_view_container_widget"));
-        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Refresh tree"));
+        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Refresh tree"}));
         GTWidget::click(os, extButton);
     }
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3990,8 +3986,7 @@ GUI_TEST_CLASS_DEFINITION(test_0079) {
 
     GTClipboard::setText(os, ">human_T1\r\nACGTACG\r\n");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_COPY"
-                                                                        << "paste"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_COPY", "paste"}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     const QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
@@ -4010,8 +4005,7 @@ GUI_TEST_CLASS_DEFINITION(test_0080) {
 
     GTClipboard::setText(os, ">human_T1\r\nACGTACS\r\n");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_COPY"
-                                                                        << "paste"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_COPY", "paste"}));
 
     // A warning notification appears:
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Extended DNA\"");
@@ -4035,8 +4029,7 @@ GUI_TEST_CLASS_DEFINITION(test_0081) {
 
     GTClipboard::setText(os, ">human_T1\r\nACGTACS\r\n>human_T2\r\nACGTAC\r\n");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_COPY"
-                                                                        << "paste"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_COPY", "paste"}));
 
     // A warning notification appears:
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Extended DNA\"");
@@ -4061,8 +4054,7 @@ GUI_TEST_CLASS_DEFINITION(test_0082) {
 
     GTClipboard::setText(os, ">human_T1\r\nACGTAC\r\n>human_T2\r\nACGTACS\r\n>human_T3\r\nACGTAC\r\n");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_COPY"
-                                                                        << "paste"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_COPY", "paste"}));
 
     // A warning notification appears:
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Extended DNA\"");
@@ -4087,8 +4079,7 @@ GUI_TEST_CLASS_DEFINITION(test_0083) {
 
     GTClipboard::setText(os, ">human_T1\r\nACGTAC\r\n>human_T2\r\nACGTACS\r\n>human_T3\r\nQQ\r\n");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_COPY"
-                                                                        << "paste"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_COPY", "paste"}));
 
     // A warning notification appears:
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Raw\"");

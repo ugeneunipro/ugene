@@ -150,7 +150,7 @@ void PrimersGrouperWorkerFactory::init() {
     QString filter = FileFilters::createFileFilter(PrimersGrouperWorker::tr("Report file"), {"html"}, false);
     DelegateTags tags;
     tags.set("filter", filter);
-    tags.set("extensions", QStringList() << "html");
+    tags.set("extensions", {"html"});
 
     delegates[OUT_FILE] = new URLDelegate(tags, "");
 

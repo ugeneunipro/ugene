@@ -79,7 +79,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 4. Use "Capture tree" button on toolbar to make screenshots
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Screen Capture"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Screen Capture"}));
     GTUtilsDialog::waitForDialog(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/image.svg", "JPG", 50));
     GTWidget::click(os, GTWidget::findWidget(os, "cameraMenu"));
 
@@ -105,8 +105,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 4. Use "Capture tree" button on toolbar to make screenshots
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Export Tree Image"
-                                                                        << "Screen Capture"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Export Tree Image", "Screen Capture"}));
     GTUtilsDialog::waitForDialog(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/image.svg", "JPG", 50));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "treeView"));
 
@@ -132,9 +131,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
 
     // 4. Use "Capture tree" button on toolbar to make screenshots
     GTUtilsDialog::waitForDialog(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/image.svg", "JPG", 50));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Export Tree Image"
-                                                << "Screen Capture...");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Export Tree Image", "Screen Capture..."});
 
     GTFile::getSize(os, testDir + "_common_data/scenarios/sandbox/image.jpg");
     // Expected state: images on screenshots same as on your screen
@@ -449,8 +446,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
         }
     }
     // 2. Click on "Align name labels" button on toolbar
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Align Labels");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Align Labels"});
     // GTWidget::click(os, GTAction::button(os,"Align Labels"));
 
     int i = 0;
@@ -470,8 +466,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     // Expected state: sequence labels aligned at right side of the screen
 
     // 3. Click on "Align name labels" button on toolbar
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Align Labels");
+    GTMenu::clickMainMenuItem(os, {"Actions", "Align Labels"});
     QList<int> finalPos;
     foreach (QGraphicsItem *item, list) {
         QGraphicsSimpleTextItem *node = qgraphicsitem_cast<QGraphicsSimpleTextItem *>(item);
@@ -493,7 +488,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/tree_view/", "COI.nwk");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Click on "Show sequence names" button on toolbar
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show Names"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show Names"}));
     GTWidget::click(os, GTWidget::findWidget(os, "Show Labels"));
 
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
@@ -508,7 +503,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     // Expected state: sequence name labels disappers
 
     // 3. Click on "Show distance labels" button on toolbar
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show Distances"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show Distances"}));
     GTWidget::click(os, GTWidget::findWidget(os, "Show Labels"));
 
     foreach (QGraphicsItem *item, list) {
@@ -522,7 +517,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     // Expected state: distance labels disappers
 
     // 4. Click on "Show sequence names" button on toolbar
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show Names"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show Names"}));
     GTWidget::click(os, GTWidget::findWidget(os, "Show Labels"));
     int i = 0;
 
@@ -540,7 +535,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     // Expected state: sequence name labels appers
 
     // 5. Click on "Show distance labels" button on toolbar
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show Distances"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show Distances"}));
     GTWidget::click(os, GTWidget::findWidget(os, "Show Labels"));
     i = 0;
 
@@ -564,10 +559,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {  // difference: main menu is used
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/tree_view/", "COI.nwk");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Click on "Show sequence names" button on toolbar
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Show Labels"
-                                                << "Show Names",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Show Labels", "Show Names"}, GTGlobals::UseMouse);
 
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
     QList<QGraphicsItem *> list = treeView->scene()->items();
@@ -581,10 +573,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {  // difference: main menu is used
     // Expected state: sequence name labels disappers
 
     // 3. Click on "Show distance labels" button on toolbar
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Show Labels"
-                                                << "Show Distances",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Show Labels", "Show Distances"}, GTGlobals::UseMouse);
 
     foreach (QGraphicsItem *item, list) {
         QGraphicsSimpleTextItem *node = qgraphicsitem_cast<QGraphicsSimpleTextItem *>(item);
@@ -597,10 +586,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {  // difference: main menu is used
     // Expected state: distance labels disappers
 
     // 4. Click on "Show sequence names" button on toolbar
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Show Labels"
-                                                << "Show Names",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Show Labels", "Show Names"}, GTGlobals::UseMouse);
     int i = 0;
 
     foreach (QGraphicsItem *item, list) {
@@ -613,10 +599,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {  // difference: main menu is used
     // Expected state: sequence name labels appers
 
     // 5. Click on "Show distance labels" button on toolbar
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Show Labels"
-                                                << "Show Distances",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Show Labels", "Show Distances"}, GTGlobals::UseMouse);
     i = 0;
 
     foreach (QGraphicsItem *item, list) {
@@ -684,7 +667,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     // 3. Change thickness and color to differ than standard. Click OK
     // Expected state: selected branch changed
     GTUtilsDialog::waitForDialog(os, new BranchSettingsDialogFiller(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Branch Settings"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Branch Settings"}));
     GTMouseDriver::moveTo(globalCoord);
     GTMouseDriver::click();
     GTMouseDriver::click(Qt::RightButton);
@@ -710,7 +693,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     QPoint globalCoord = GTUtilsPhyTree::getGlobalCenterCoord(os, nodeList.last());
 
     //    2. Do context menu {Collapse} for any node
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Collapse"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Collapse"}));
     GTMouseDriver::moveTo(globalCoord);
     GTMouseDriver::click();
     GTMouseDriver::click(Qt::RightButton);
@@ -731,7 +714,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     //    Expected state: this node's branches has dissapered
 
     //    3. Do context menu {Expand} for same
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Collapse"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Collapse"}));
     GTMouseDriver::moveTo(globalCoord);
     GTMouseDriver::click(Qt::RightButton);
 
@@ -875,7 +858,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     GTMouseDriver::click();
     // TODO: Wait until is hovered.
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Swap Siblings"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Swap Siblings"}));
     GTMouseDriver::click(Qt::RightButton);
 
     qreal finalW = 0;
@@ -1071,7 +1054,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     CHECK_SET_ERR(!GTUtilsPhyTree::getSelectedNodes(os).isEmpty(), "A clicked node wasn't selected");
 
     //    3. Do the context menu command "Reroot tree".
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Reroot tree"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Reroot tree"}));
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1103,7 +1086,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
     CHECK_SET_ERR(!GTUtilsPhyTree::getSelectedNodes(os).isEmpty(), "A clicked node wasn't selected");
 
     //    3. Do the context menu command "Swap siblings".
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Swap Siblings"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Swap Siblings"}));
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1138,7 +1121,7 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
     CHECK_SET_ERR(!GTUtilsPhyTree::getSelectedNodes(os).isEmpty(), "A clicked node wasn't selected");
 
     //    3. Do the context menu command "Swap siblings".
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Swap Siblings"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Swap Siblings"}));
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1169,7 +1152,7 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
     CHECK_SET_ERR(!GTUtilsPhyTree::getSelectedNodes(os).isEmpty(), "A clicked node wasn't selected");
 
     //    3. Do the context menu command "Reroot tree".
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Reroot tree"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Reroot tree"}));
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);

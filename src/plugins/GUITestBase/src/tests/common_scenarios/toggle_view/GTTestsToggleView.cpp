@@ -340,7 +340,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_4) {
 
     // 2. Click on toolbar button Toggle view for sequence se2. Click menu item Hide all. CHANGES: using 'Toggle views' instead 'Toggle view'
     QWidget *toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleAllSequenceViews"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleAllSequenceViews"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -354,7 +354,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_4) {
     CHECK_SET_ERR(toolBarSe2->isVisible(), "toolbar is hidden");
 
     // 3. Click on toolbar button Toggle view for sequence se2. Click menu item Show all. CHANGES: using 'Toggle views' instead 'Toggle view'
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleAllSequenceViews"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleAllSequenceViews"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -400,7 +400,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
 
     // 2. Click on toolbar button Toggle view for sequence se2. Click menu item Hide details. CHANGES: using 'Toggle views' instead 'Toggle view'
     QWidget *toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleDetailsView"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleDetailsView"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -435,7 +435,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
 
     // 3. Click on toolbar button Toggle view for sequence se2. Click menu item Show details. CHANGES: using 'Toggle views' instead 'Toggle view', clicking twice to avoid misunderstanding
     QWidget *toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleDetailsView"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleDetailsView"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -446,7 +446,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
 
     // clicking 2nd time
     // toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleDetailsView"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleDetailsView"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
@@ -487,7 +487,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_4) {
 
     // 2. Click on toolbar button Toggle view for sequence se2. Click menu item Hide details. CHANGES: hiding all views for all sequences, instead hiding only details
     QWidget *toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleAllSequenceViews"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleAllSequenceViews"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -536,7 +536,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
 
     // 2. Click on toolbar button Toggle view for sequence se2. Click menu item Hide overview. CHANGES: using 'Toggle views' instead 'Toggle view'
     QWidget *toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleOverview"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleOverview"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -570,11 +570,11 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
 
     // 3. Click on toolbar button Toggle view for sequence se2. Click menu item Show overview. CHANGES: using 'Toggle views' instead 'Toggle view'
     QWidget *toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleOverview"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleOverview"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleOverview"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleOverview"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -639,7 +639,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     QWidget *toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
 
     // 2. Click on toolbar button Toggle views. Click menu item Hide all overviews.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleOverview"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleOverview"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -648,7 +648,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
                   "panoramic views for both sequences has not been closed");
 
     // 3. Click on toolbar button Toggle views. Click menu item Show all overviews.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleOverview"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleOverview"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -673,7 +673,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     QWidget *toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
 
     // 2. Click on toolbar button Toggle views. Click menu item Hide all details.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleDetailsView"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleDetailsView"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -682,7 +682,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     CHECK_SET_ERR(toolBarSe1->isVisible() && toolBarSe2->isVisible(), "panoramic view for both sequences has not been shown");
 
     // 3. Click on toolbar button Toggle views. Click menu item Show all details.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleDetailsView"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleDetailsView"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -708,7 +708,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     QWidget *toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
 
     // 2. Click on toolbar button Toggle views. Click menu item Hide all sequences.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleAllSequenceViews"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleAllSequenceViews"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -719,7 +719,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     CHECK_SET_ERR(!toolBarSe1->isHidden() && !toolBarSe2->isHidden(), "toolbars view for both sequences has not been shown");
 
     // 3. Click on toolbar button Toggle views. Click menu item Show all sequences.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleAllSequenceViews"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleAllSequenceViews"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -750,7 +750,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     } else {
         // the button is hidden, the action is in toolbar extension menu
         QWidget *extMenuButton = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "pan_view_se2"));
-        GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Zoom to range..."));
+        GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Zoom to range..."}));
         GTWidget::click(os, extMenuButton);
     }
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -796,7 +796,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(overViewSe2->isHidden(), "panoramic view for se2 sequence has been not closed");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleOverview"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleOverview"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(overViewSe1->isHidden() && overViewSe2->isHidden(), "panoramic views for both sequences has been not closed");
@@ -805,7 +805,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(!overViewSe2->isHidden(), "panoramic view for se2 sequence has been not shown");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleOverview"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleOverview"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(overViewSe1->isHidden() && overViewSe2->isHidden(), "panoramic view for both sequences has been not closed");
@@ -917,7 +917,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     // 3. Close zoom views by global Toggle View Button. CHANGES: for both instead of seq1 + global Toggle View Button instead of the seq1 and buttons
 
     QWidget *toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleZoomView"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleZoomView"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -935,7 +935,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
 
     // 2. Close detailed view
     QWidget *toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleDetailsView"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleDetailsView"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -977,7 +977,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
 
     // 2. Close detailed view
     QWidget *toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleDetailsView"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleDetailsView"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -986,14 +986,14 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
 
     CHECK_SET_ERR(detailsViewSe1->isHidden() && detailsViewSe2->isHidden(), "details views for both sequences has not been closed");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleDetailsView"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleDetailsView"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(!detailsViewSe1->isHidden() && !detailsViewSe1->isHidden(),
                   "details views for both sequences has not been show");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleDetailsView"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleDetailsView"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1011,7 +1011,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
 
     // 2. Close detailed view
     QWidget *toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleDetailsView"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleDetailsView"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1054,7 +1054,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
 
     // 2. Close detailed view
     QWidget *toggleViewButton = GTWidget::findWidget(os, "toggleViewButton");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleDetailsView"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleDetailsView"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1063,13 +1063,13 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
     CHECK_SET_ERR(detailsViewSe1->isHidden() && detailsViewSe2->isHidden(),
                   "details views for both sequences has not been closed");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleDetailsView"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleDetailsView"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(!detailsViewSe1->isHidden() && !detailsViewSe1->isHidden(), "details views for both sequences has not been show");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggleDetailsView"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"toggleDetailsView"}));
     GTWidget::click(os, toggleViewButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1087,7 +1087,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     //  2. Open graph view {Graphs->CG% content}
     QWidget *sequenceWidget1 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
     QWidget *circularViewSe1 = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget1);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "GC Content (%)"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"GC Content (%)"}));
     GTWidget::click(os, circularViewSe1);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1106,13 +1106,13 @@ GUI_TEST_CLASS_DEFINITION(test_0014_1) {
     //  2. Open graph view {Graphs->CG% content}. Changes: for both sequences
     QWidget *sequenceWidget1 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
     QWidget *circularViewSe1 = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget1);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "GC Content (%)"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"GC Content (%)"}));
     GTWidget::click(os, circularViewSe1);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QWidget *sequenceWidget2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
     QWidget *circularViewSe2 = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget2);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "GC Content (%)"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"GC Content (%)"}));
     GTWidget::click(os, circularViewSe2);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1135,7 +1135,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2) {
     //  2. Open graph view {Graphs->CG% content}. Changes: for 1 sequences
     QWidget *sequenceWidget1 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
     QWidget *circularViewSe1 = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget1);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "GC Content (%)"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"GC Content (%)"}));
     GTWidget::click(os, circularViewSe1);
 
     //  3. Close detailed view. Changes: for 1 sequences
@@ -1146,7 +1146,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2) {
     //  2. Open graph view {Graphs->CG% content}. Changes: for 2 sequences
     QWidget *sequenceWidget2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
     QWidget *circularViewSe2 = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget2);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "GC Content (%)"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"GC Content (%)"}));
     GTWidget::click(os, circularViewSe2);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1165,11 +1165,11 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     //  2. Open graph view {Graphs->CG% content}
     QWidget *sequenceWidget1 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
     QWidget *circularViewSe1 = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget1);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "GC Content (%)"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"GC Content (%)"}));
     GTWidget::click(os, circularViewSe1);
     GTUtilsTask::waitTaskStart(os, "Calculate graph points", 10000);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "GC Content (%)"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"GC Content (%)"}));
     GTWidget::click(os, circularViewSe1);
     CHECK_SET_ERR(GTUtilsTaskTreeView::countTasks(os, "Calculate graph points") == 0, "Calculation task was not cancelled");
 }

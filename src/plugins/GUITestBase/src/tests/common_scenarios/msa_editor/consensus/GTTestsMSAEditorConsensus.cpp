@@ -50,7 +50,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //    3. Select ClustalW consensus type. Click OK.
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
@@ -77,7 +77,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     // 3. Select Default consensus type. Set 100% threshold
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
@@ -107,7 +107,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     // 3. Select Default consensus type. Set 100% threshold
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
@@ -132,7 +132,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     // 3. Select Default consensus type. Set 100% threshold
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
@@ -157,7 +157,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     // 3. Select Strict consensus type. Set 100% threshold.
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
@@ -187,7 +187,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
     // 3. Select Strict consensus type. Set 100% threshold.
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
@@ -212,7 +212,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
     // 3. Select Strict consensus type. Set 100% threshold.
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     // GTUtilsDialog::waitForDialog(os, new ConsensusSelectionDialogFiller(os,3,60));
     GTMenu::showContextMenu(os, seq);
 
@@ -238,7 +238,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     // 3. Select Levitsky consensus type. Set 90% threshold.
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
@@ -267,7 +267,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
     // 3. Select Levitsky consensus type. Set 90% threshold.
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
@@ -292,7 +292,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
     // 3. Select Levitsky consensus type. Set 90% threshold.
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));

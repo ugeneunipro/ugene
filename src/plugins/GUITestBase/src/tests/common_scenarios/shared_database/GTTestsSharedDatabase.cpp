@@ -135,8 +135,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0001) {
         params.connectionName = conName;
         GTUtilsDialog::waitForDialog(os, new EditConnectionDialogFiller(os, params, EditConnectionDialogFiller::FROM_SETTINGS));
     }
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 
@@ -151,8 +150,8 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0001) {
     };
 
     GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
+
 }
 
 GUI_TEST_CLASS_DEFINITION(cm_test_0002) {
@@ -179,8 +178,8 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0002) {
         actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::CONNECT, conName);
         GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, actions));
     }
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
+
 
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
@@ -191,8 +190,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0002) {
     };
 
     GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
     {
         QList<SharedConnectionsDialogFiller::Action> actions;
@@ -201,8 +199,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0002) {
         actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::CLOSE, conName);
         GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, actions));
     }
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
     bool exists = GTUtilsProjectTreeView::checkItem(os, conName, QModelIndex());
     CHECK_SET_ERR(exists, "A database connection is not found in the project view");
@@ -304,8 +301,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0004) {
         actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::CONNECT, conName);
         GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, actions));
     }
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
@@ -316,8 +312,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0004) {
     };
 
     GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -420,8 +415,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0006) {
     };
 
     GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     const bool exists = GTUtilsProjectTreeView::checkItem(os, conName, QModelIndex());
@@ -437,8 +431,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0006) {
     };
 
     GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, new Scenario2));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
@@ -462,8 +455,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0007) {
         actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::CLOSE);
         GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, actions));
     }
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 }
 
 GUI_TEST_CLASS_DEFINITION(cm_test_0008) {
@@ -493,8 +485,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0008) {
         actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::CONNECT, conName1);
         GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, actions));
     }
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
@@ -505,8 +496,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0008) {
     };
 
     GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
     bool exists = GTUtilsProjectTreeView::checkItem(os, conName1, QModelIndex());
     CHECK_SET_ERR(exists, "A database connection not found in the project view");
@@ -519,8 +509,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0008) {
         actions << cAction;
         GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, actions));
     }
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
     class Scenario2 : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
@@ -531,8 +520,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0008) {
     };
 
     GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, new Scenario2));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
     exists = GTUtilsProjectTreeView::checkItem(os, conName2, QModelIndex());
     CHECK_SET_ERR(exists, "A database connection not found in the project view");
@@ -573,8 +561,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0009) {
         params.password = "wrongPassword";
         GTUtilsDialog::waitForDialog(os, new EditConnectionDialogFiller(os, params, EditConnectionDialogFiller::MANUAL));
     }
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 }
 
 GUI_TEST_CLASS_DEFINITION(cm_test_0013) {
@@ -621,8 +608,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0013) {
     }
 
     GTUtilsDialog::waitForDialog(os, new AuthenticationDialogFiller(os, GTDatabaseConfig::login(), GTDatabaseConfig::password()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
@@ -633,8 +619,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0013) {
     };
 
     GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
     const bool exists = GTUtilsProjectTreeView::checkItem(os, conName, QModelIndex());
     CHECK_SET_ERR(exists, "A database connection not found in the project view");
@@ -688,8 +673,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0014) {
 
         GTUtilsDialog::waitForDialog(os, new EditConnectionDialogFiller(os, new ReadOnlyCheckScenario));
     }
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Connect to UGENE shared database...");
+    GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 }
 
 GUI_TEST_CLASS_DEFINITION(proj_test_0001) {
@@ -1905,7 +1889,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0017) {
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     QVariantMap options;
-    options.insert(ImportToDatabaseOptions::PREFERRED_FORMATS, QStringList() << "ace-importer");
+    options.insert(ImportToDatabaseOptions::PREFERRED_FORMATS, {"ace-importer"});
     GTUtilsSharedDatabaseDocument::importFiles(os, databaseDoc, dstFolderPath, QStringList() << testDir + "_common_data/ace/ace_test_2.ace", options);
 
     QStringList expectedItems = QStringList() << objectFolderPath
@@ -2368,7 +2352,7 @@ GUI_TEST_CLASS_DEFINITION(del_test_0003) {
 
     QModelIndex rbItem = GTUtilsProjectTreeView::findIndex(os, "Recycle bin");
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, rbItem));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "empty_rb"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"empty_rb"}));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsDialog::checkNoActiveWaiters(os);

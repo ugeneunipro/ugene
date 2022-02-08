@@ -142,7 +142,7 @@ void FindPrimerPairsWorkerFactory::init() {
     QString filter = FileFilters::createFileFilter(FindPrimerPairsWorker::tr("Report file"), {"html"});
     DelegateTags tags;
     tags.set("filter", filter);
-    tags.set("extensions", QStringList() << "html");
+    tags.set("extensions", {"html"});
 
     delegates[OUT_FILE] = new URLDelegate(tags, "");
 
