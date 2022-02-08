@@ -1584,8 +1584,7 @@ GUI_TEST_CLASS_DEFINITION(test_1133) {
     GTUtilsDialog::waitForDialog(os, new SmithWatermanDialogFiller(os, patttern));
     GTWidget::click(os, GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Find pattern [Smith-Waterman]"));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature  (0, 1)");
-    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
+    GTUtilsAnnotationsTreeView::findItem(os, "misc_feature  (0, 1)");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1152) {
@@ -1717,7 +1716,7 @@ GUI_TEST_CLASS_DEFINITION(test_1156) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QTreeWidgetItem *fragmentGroupItem = GTUtilsAnnotationsTreeView::findItem(os, "fragments  (0, 24)");
-    CHECK_SET_ERR(24 == fragmentGroupItem->childCount(), "Unexpected sequence fragments count");
+    CHECK_SET_ERR(fragmentGroupItem->childCount() == 24, "Unexpected sequence fragments count");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1157) {
@@ -2819,7 +2818,7 @@ GUI_TEST_CLASS_DEFINITION(test_1266) {
 
     class custom : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             QWidget *w = GTWidget::findWidget(os, "Disable BAQ computation label", dialog);

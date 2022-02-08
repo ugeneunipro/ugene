@@ -272,7 +272,6 @@ GUI_TEST_CLASS_DEFINITION(test_0057_5) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QTreeWidgetItem *featuresItem = GTUtilsAnnotationsTreeView::findItem(os, "NC_001363 features [murine.gb]");
-    CHECK_SET_ERR(featuresItem != nullptr, "\'NC_001363 features [murine.gb]\' item not found");
 
     FindQualifierFiller::FindQualifierFillerSettings settings("protein",
                                                               "NP_5",
@@ -309,7 +308,6 @@ GUI_TEST_CLASS_DEFINITION(test_0057_6) {
     //    Expected state: Showed message box with information about the end of tree is reached.
 
     QTreeWidgetItem *featuresItem = GTUtilsAnnotationsTreeView::findItem(os, "NC_001363 features [murine.gb]");
-    CHECK_SET_ERR(featuresItem != nullptr, "\'NC_001363 features [murine.gb]\' item not found");
 
     FindQualifierFiller::FindQualifierFillerSettings settings("organism",
                                                               "",

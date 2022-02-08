@@ -1123,8 +1123,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0003) {
 
     // Check that it has annotations in the view.
     annotationTableWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
-    QTreeWidgetItem *annotationTable = GTUtilsAnnotationsTreeView::findItem(os, QString("NC_001363 features [%1]").arg(databaseDoc->getName()));
-    CHECK_SET_ERR(annotationTable != nullptr, "Annotation table is NULL");
+    GTUtilsAnnotationsTreeView::findItem(os, QString("NC_001363 features [%1]").arg(databaseDoc->getName()));
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -1586,12 +1585,9 @@ GUI_TEST_CLASS_DEFINITION(import_test_0011) {
     GTUtilsSharedDatabaseDocument::checkItemExists(os, databaseDoc, databaseAnnotationTableObjectPath);
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseSequenceObjectPath);
-    QWidget *seqView = GTWidget::findWidget(os, sequenceVisibleWidgetName);
-    CHECK_SET_ERR(nullptr != seqView, "View wasn't opened");
+    GTWidget::findWidget(os, sequenceVisibleWidgetName);
 
-    QTreeWidgetItem *annotationTable = GTUtilsAnnotationsTreeView::findItem(os, someFeatureName);
-    CHECK_SET_ERR(annotationTable != nullptr, "Annotation table is NULL");
-
+    GTUtilsAnnotationsTreeView::findItem(os, someFeatureName);
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
@@ -1697,7 +1693,6 @@ GUI_TEST_CLASS_DEFINITION(import_test_0013) {
     GTUtilsAnnotationsTreeView::getTreeWidget(os);
 
     QTreeWidgetItem *contigGroup = GTUtilsAnnotationsTreeView::findItem(os, contigFeatureName);
-    CHECK_SET_ERR(contigGroup != nullptr, "Contig group is NULL");
 
     QTreeWidgetItem *secondContig = contigGroup->child(1);
     CHECK_SET_ERR(contigGroup != nullptr, "Second contig annotation is NULL");
@@ -2106,19 +2101,14 @@ GUI_TEST_CLASS_DEFINITION(view_test_0001) {
     const QString annotationVisibleName = "NC_001363 features";
     const QString someFeatureName = "CDS";
     const QString databaseSequenceObjectPath = folderPath + U2ObjectDbi::PATH_SEP + sequenceVisibleName;
-    const QString databaseAnnotationObjectPath = folderPath + U2ObjectDbi::PATH_SEP + annotationVisibleName;
     const int position = 2970;
 
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseSequenceObjectPath);
-    QWidget *seqView = GTWidget::findWidget(os, sequenceVisibleWidgetName);
-    CHECK_SET_ERR(seqView != nullptr, "View wasn't opened");
+    GTWidget::findWidget(os, sequenceVisibleWidgetName);
 
-    GTUtilsAnnotationsTreeView::getTreeWidget(os);
-
-    QTreeWidgetItem *annotationTable = GTUtilsAnnotationsTreeView::findItem(os, someFeatureName);
-    CHECK_SET_ERR(annotationTable != nullptr, "Annotation table is NULL");
+    GTUtilsAnnotationsTreeView::findItem(os, someFeatureName);
 
     GTUtilsSequenceView::goToPosition(os, position);
 

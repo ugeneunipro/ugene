@@ -1270,8 +1270,7 @@ GUI_TEST_CLASS_DEFINITION(test_3221) {
     GTUtilsOptionPanelSequenceView::clickGetAnnotation(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "long_annotation_name  (0, 10)");
-    CHECK_SET_ERR(nullptr != annotationGroup, "Annotations have not been found");
+    GTUtilsAnnotationsTreeView::findItem(os, "long_annotation_name  (0, 10)");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3223) {
@@ -2221,8 +2220,7 @@ GUI_TEST_CLASS_DEFINITION(test_3348) {
     GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find repeats..."}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    auto treeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
-    QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "repeat_unit  (0, 39)", treeWidget);
+    QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "repeat_unit  (0, 39)");
     QTreeWidgetItem *generalItem = annotationGroup->child(36);
     CHECK_SET_ERR(generalItem != nullptr, "Invalid annotation tree item");
 
@@ -4061,8 +4059,7 @@ GUI_TEST_CLASS_DEFINITION(test_3676) {
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
     GTWidget::click(os, GTWidget::findWidget(os, "primer3_action_widget"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    QTreeWidgetItem *testPrimer = GTUtilsAnnotationsTreeView::findItem(os, "testPrimer");
-    CHECK_SET_ERR(testPrimer != nullptr, "Can not find item with name \"testPrimer\"");
+    GTUtilsAnnotationsTreeView::findItem(os, "testPrimer");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3687_1) {
@@ -5486,8 +5483,7 @@ GUI_TEST_CLASS_DEFINITION(test_3975) {
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
     GTUtilsProjectTreeView::dragAndDrop(os, idxGff, seqArea);
 
-    QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "chromosome  (0, 1)");
-    CHECK_SET_ERR(nullptr != annotationGroup, "Annotations have not been found");
+    GTUtilsAnnotationsTreeView::findItem(os, "chromosome  (0, 1)");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3983) {

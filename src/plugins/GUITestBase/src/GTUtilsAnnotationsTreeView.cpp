@@ -180,31 +180,6 @@ QTreeWidgetItem *GTUtilsAnnotationsTreeView::findFirstAnnotation(HI::GUITestOpSt
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findItem"
-QTreeWidgetItem *GTUtilsAnnotationsTreeView::findItem(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options, bool expandParent) {
-    GT_CHECK_RESULT(!itemName.isEmpty(), "Item name is empty", nullptr);
-
-    QTreeWidget *treeWidget = getTreeWidget(os);
-    for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
-        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        QList<QTreeWidgetItem *> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());
-        for (QTreeWidgetItem *item : qAsConst(treeItems)) {
-            QString treeItemName = item->text(0);
-            if (treeItemName == itemName) {
-                if (expandParent && item->parent() != nullptr) {
-                    GTTreeWidget::expand(os, item->parent());
-                }
-                return item;
-            }
-        }
-        if (!options.failIfNotFound) {
-            return nullptr;
-        }
-    }
-    GT_FAIL(QString("Item '%1' not found in tree widget").arg(itemName), nullptr);
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "findItem"
 QTreeWidgetItem *GTUtilsAnnotationsTreeView::findItemWithIndex(HI::GUITestOpStatus &os, const QString &itemName, int index, bool expandParent) {
     GT_CHECK_RESULT(itemName.isEmpty() == false, "Item name is empty", nullptr);
 
@@ -236,7 +211,7 @@ QTreeWidgetItem *GTUtilsAnnotationsTreeView::findItem(HI::GUITestOpStatus &os,
                                                       bool expandParent) {
     GT_CHECK_RESULT(!itemName.isEmpty(), "Item name is empty", nullptr);
     if (parentItem == nullptr) {
-        return findItem(os, itemName, options, expandParent);
+        parentItem = getTreeWidget(os)->invisibleRootItem();
     }
     for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
@@ -244,8 +219,8 @@ QTreeWidgetItem *GTUtilsAnnotationsTreeView::findItem(HI::GUITestOpStatus &os,
         for (QTreeWidgetItem *item : qAsConst(treeItems)) {
             QString treeItemName = item->text(0);
             if (treeItemName == itemName) {
-                if (expandParent) {
-                    GTTreeWidget::expand(os, parentItem);
+                if (expandParent && item->parent() != nullptr) {
+                    GTTreeWidget::expand(os, item->parent());
                 }
                 return item;
             }

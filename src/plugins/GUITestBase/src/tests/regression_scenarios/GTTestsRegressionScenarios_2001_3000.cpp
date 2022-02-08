@@ -3479,7 +3479,7 @@ GUI_TEST_CLASS_DEFINITION(test_2612) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     // Expected state: there is no annotation in sequence view.
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "misc_feature", {false}) == nullptr, "Annotations document not deleted");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "misc_feature", nullptr, {false}) == nullptr, "Annotations document not deleted");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2619) {
@@ -4246,8 +4246,7 @@ GUI_TEST_CLASS_DEFINITION(test_2770) {
     GTUtilsOptionPanelSequenceView::clickGetAnnotation(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTreeWidgetItem *annotationGroup = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature  (0, 2)");
-    CHECK_SET_ERR(nullptr != annotationGroup, "Annotations have not been found");
+    GTUtilsAnnotationsTreeView::findItem(os, "misc_feature  (0, 2)");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2773) {
