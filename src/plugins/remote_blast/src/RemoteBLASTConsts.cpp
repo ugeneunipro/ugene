@@ -33,9 +33,40 @@ const QStringList ParametersLists::blastn_scores = {"1 -2", "1 -3", "1 -4", "2 -
 
 const QStringList ParametersLists::blastp_matrix = {"PAM30", "PAM70", "BLOSUM80", "BLOSUM62", "BLOSUM45"};
 
-const QStringList ParametersLists::blastn_dataBase = {"Human genomic plus transcript - est_human", "Mouse genomic plus transcript - est_mouse", "Nucleotide collection - nr", "Reference nRNA sequences - refseq_rna", "Reference genomic seqence - refseq_genomic", "NCBI genomes - chromosome", "Express sequence tagsest - est", "Non-human, non-mouse ESTs - est_other", "Genomic survey sequences - gss", "High throughput genomic sequences - HTGS", "Patent sequences - pat", "Protein Data Bank - pdb", "Human ALU repeat elements - alu", "Sequence tagged sites - dbsts", "Whole-genome shotgun reads - wgs", "Environmental samples - env_nt"};
-const QStringList ParametersLists::blastp_dataBase = {"Non-redundant protein sequences - nr", "Reference proteins - refseq_protein", "Swissprot protein sequences - swissprot", "Patented protein sequences - pat", "Protein Data Bank proteins - pdb", "Environmental samples - env_nr"};
-const QStringList ParametersLists::cdd_dataBase = {"CDD", "oasis_pfam", "oasis_smart", "oasis_cog", "oasis_kog", "oasis_prk", "oasis_tigr"};
+const QStringList ParametersLists::blastn_dataBase = {
+    "Human genomic plus transcript - est_human",
+    "Mouse genomic plus transcript - est_mouse",
+    "Nucleotide collection - nr",
+    "Reference nRNA sequences - refseq_rna",
+    "Reference genomic seqence - refseq_genomic",
+    "NCBI genomes - chromosome",
+    "Express sequence tagsest - est",
+    "Non-human, non-mouse ESTs - est_other",
+    "Genomic survey sequences - gss",
+    "High throughput genomic sequences - HTGS",
+    "Patent sequences - pat",
+    "Protein Data Bank - pdb",
+    "Human ALU repeat elements - alu",
+    "Sequence tagged sites - dbsts",
+    "Whole-genome shotgun reads - wgs",
+    "Environmental samples - env_nt"};
+
+const QStringList ParametersLists::blastp_dataBase = {
+    "Non-redundant protein sequences - nr",
+    "Reference proteins - refseq_protein",
+    "Swissprot protein sequences - swissprot",
+    "Patented protein sequences - pat",
+    "Protein Data Bank proteins - pdb",
+    "Environmental samples - env_nr"};
+
+const QStringList ParametersLists::cdd_dataBase = {
+    "CDD",
+    "oasis_pfam",
+    "oasis_smart",
+    "oasis_cog",
+    "oasis_kog",
+    "oasis_prk",
+    "oasis_tigr"};
 
 const QString ReqParams::program = "PROGRAM";
 const QString ReqParams::expect = "EXPECT";
