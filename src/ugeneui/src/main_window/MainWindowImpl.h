@@ -101,6 +101,7 @@ signals:
     void si_paste();
 public slots:
     void sl_tempDirPathCheckFailed(QString path);
+    void sl_show();
 
 private slots:
     void sl_exitAction();
@@ -109,7 +110,6 @@ private slots:
     void sl_createDesktopShortcutAction();
     void sl_visitWeb();
     void sl_viewOnlineDocumentation();
-    void sl_show();
     void sl_showWhatsNew();
     void sl_crashUgene();
 #ifdef _INSTALL_TO_PATH_ACTION

@@ -306,12 +306,14 @@ QString Shtirlitz::tr(const char *str) {
 }
 
 void Shtirlitz::showWhatsNewDialog() {
-    MainWindow *mainWindow = AppContext::getMainWindow();
-    CHECK(mainWindow != nullptr, );
-    QObjectScopedPointer<StatisticalReportController> dialog = new StatisticalReportController(getWhatsNewHtml(), mainWindow->getQMainWindow());
-    dialog->exec();
-    CHECK(!dialog.isNull(), );
-    AppContext::getAppSettings()->getUserAppsSettings()->setEnableCollectingStatistics(dialog->isInfoSharingAccepted());
+    // Show a non-blocking whats new dialog.
+    auto startupWhatsNewDialog = new StatisticalReportController(getWhatsNewHtml(), nullptr);
+    startupWhatsNewDialog->setModal(false);
+    QSharedPointer<StatisticalReportController> dialog(startupWhatsNewDialog);
+    QObject::connect(dialog.data(), &QDialog::accepted, [dialog] {
+        AppContext::getAppSettings()->getUserAppsSettings()->setEnableCollectingStatistics(dialog->isInfoSharingAccepted());
+    });
+    dialog->open();
 }
 
 //////////////////////////////////////////////////////////////////////////
