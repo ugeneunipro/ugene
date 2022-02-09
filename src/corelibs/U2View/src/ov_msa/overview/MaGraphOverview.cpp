@@ -47,13 +47,8 @@
 
 namespace U2 {
 
-MaGraphOverview::MaGraphOverview(MaEditor *editor, QWidget *ui)
-    : MaOverview(editor, ui),
-      redrawGraph(true),
-      isBlocked(false),
-      lastDrawnVersion(-1),
-      method(Strict),
-      graphCalculationTask(nullptr) {
+MaGraphOverview::MaGraphOverview(MaEditor *_editor, QWidget *_ui)
+    : MaOverview(_editor, _ui) {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     setFixedHeight(FIXED_HEIGHT);
 
@@ -68,15 +63,19 @@ MaGraphOverview::MaGraphOverview(MaEditor *editor, QWidget *ui)
         }
         sl_redraw();
     });
+
+    MaEditorMultilineWgt *mui = qobject_cast<MaEditorMultilineWgt *>(_ui);
+    CHECK(mui != nullptr, );
+
     connect(editor->getMaObject(), &MultipleAlignmentObject::si_alignmentChanged, this, [this]() {
         state.maObjectVersion = editor->getMaObject()->getObjectVersion();
         recomputeGraphIfNeeded();
     });
-    connect(ui, &MaEditorWgt::si_startMaChanging, this, [this]() {
+    connect(mui->getUI(), &MaEditorWgt::si_startMaChanging, this, [this]() {
         isMaChangeInProgress = true;
         graphCalculationTaskRunner.cancel();
     });
-    connect(ui, &MaEditorWgt::si_stopMaChanging, this, [this]() {
+    connect(mui->getUI(), &MaEditorWgt::si_stopMaChanging, this, [this]() {
         isMaChangeInProgress = false;
         recomputeGraphIfNeeded();
     });
@@ -200,18 +199,8 @@ void MaGraphOverview::recomputeGraphIfNeeded() {
         case MaGraphCalculationMethod::Clustal:
             task = new MaClustalOverviewCalculationTask(maObject, width(), height());
             break;
-        case Highlighting:
-            MsaHighlightingScheme *hScheme = editor->getMaEditorWgt()->getSequenceArea()->getCurrentHighlightingScheme();
-            QString hSchemeId = hScheme->getFactory()->getId();
-
-            MsaColorScheme *cScheme = editor->getMaEditorWgt()->getSequenceArea()->getCurrentColorScheme();
-            QString cSchemeId = cScheme->getFactory()->getId();
-
-            graphCalculationTask = new MaHighlightingOverviewCalculationTask(editor,
-                                                                             cSchemeId,
-                                                                             hSchemeId,
-                                                                             width(),
-                                                                             FIXED_HEIGHT);
+        case MaGraphCalculationMethod::Highlighting:
+            task = new MaHighlightingOverviewCalculationTask(editor, state.colorSchemeId, state.highlightingSchemeId, width(), height());
             break;
     }
     SAFE_POINT(task != nullptr, "Unsupported overview method:" + QString::number((int)state.method), );
@@ -230,9 +219,11 @@ void MaGraphOverview::sl_highlightingChanged() {
 
 void MaGraphOverview::updateHighlightingSchemes() {
     if (state.method == MaGraphCalculationMethod::Highlighting) {
-        MaEditorSequenceArea* sequenceArea = ui->getSequenceArea();
-        MsaHighlightingScheme* highlightingScheme = sequenceArea->getCurrentHighlightingScheme();
-        MsaColorScheme* colorScheme = sequenceArea->getCurrentColorScheme();
+        MaEditorMultilineWgt *mui = qobject_cast<MaEditorMultilineWgt *>(ui);
+        CHECK(mui != nullptr, );
+        MaEditorSequenceArea *sequenceArea = mui->getUI(0)->getSequenceArea();
+        MsaHighlightingScheme *highlightingScheme = sequenceArea->getCurrentHighlightingScheme();
+        MsaColorScheme *colorScheme = sequenceArea->getCurrentColorScheme();
         state.highlightingSchemeId = highlightingScheme->getFactory()->getId();
         state.colorSchemeId = colorScheme->getFactory()->getId();
         SAFE_POINT(!state.highlightingSchemeId.isEmpty() && !state.colorSchemeId.isEmpty(), "There must be valid highlighting and color schemes", );
