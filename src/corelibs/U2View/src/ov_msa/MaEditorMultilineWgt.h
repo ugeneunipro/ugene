@@ -74,6 +74,10 @@ public:
         return scrollController;
     }
 
+    QScrollArea *getChildrenScrollArea() const {
+        return scrollArea;
+    }
+
     /* If 'true' and collapse group has only 1 row it will have expand/collapse control. */
     bool isCollapsingOfSingleRowGroupsEnabled() const { return enableCollapsingOfSingleRowGroups; }
 
@@ -98,10 +102,13 @@ public:
         return 0;
     }
 
-    int getSequenceAreaWidth(uint index = 0) const;
+    int getSequenceAreaWidth(uint index = 0) const;       // pixels
     int getFirstVisibleBase(uint index = 0) const;
     int getLastVisibleBase(uint index = 0) const;
-    int getSequenceAreaBaseWidth(uint index = 0) const;
+    int getSequenceAreaBaseLen(uint index = 0) const;     // bases
+    int getSequenceAreaBaseWidth(uint index = 0) const;   // pixels
+    int getSequenceAreaAllBaseLen() const;                // bases
+    int getSequenceAreaAllBaseWidth() const;              // pixels
 
     virtual MaEditorWgt *createChild(MaEditor *editor,
                                      MaEditorOverviewArea *overviewArea,
