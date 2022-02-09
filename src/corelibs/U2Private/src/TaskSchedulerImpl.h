@@ -54,26 +54,38 @@ public:
 class TaskThread : public QThread {
     Q_OBJECT
 public:
-    TaskThread(TaskInfo *_ti);
-    void run();
+    TaskThread(TaskInfo *ti);
+
+    void run() override;
+
     void resume();
+
     QList<Task *> getProcessedSubtasks() const;
+
     void appendProcessedSubtask(Task *);
 
-    TaskInfo *ti;
-    QObject *finishEventListener;
+    TaskInfo *ti = nullptr;
+
+    QObject *finishEventListener = nullptr;
+
     QMutex subtasksLocker;
+
     QList<Task *> unconsideredNewSubtasks;
-    volatile bool newSubtasksObtained;
+
+    volatile bool newSubtasksObtained = false;
 
     QWaitCondition pauser;
-    volatile bool isPaused;
+
+    volatile bool isPaused = false;
+
     QMutex pauseLocker;
+
 signals:
+    /** Signal emitted by TaskFlag_RunMessageLoopOnly tasks only when new sub-tasks are added during the 'run' method execution. */
     void si_processMySubtasks();
 
 protected:
-    bool event(QEvent *event);
+    bool event(QEvent *event) override;
 
 private:
     void getNewSubtasks();
@@ -85,38 +97,30 @@ private:
 
 class TaskInfo {
 public:
-    TaskInfo(Task *t, TaskInfo *p)
-        : task(t), parentTaskInfo(p), wasPrepared(false), subtasksWereCanceled(false), selfRunFinished(false),
-          hasLockedPrepareResources(false), hasLockedRunResources(false),
-          prevProgress(0), numPreparedSubtasks(0), numRunningSubtasks(0), numFinishedSubtasks(0), thread(nullptr) {
-    }
+    TaskInfo(Task *task, TaskInfo *parentTaskInfo);
 
     virtual ~TaskInfo();
 
-    // true if task state >= RUN && thread is finished or not used at all
-
-    Task *task;
-    TaskInfo *parentTaskInfo;
+    Task *task = nullptr;
+    TaskInfo *parentTaskInfo = nullptr;
     QList<Task *> newSubtasks;
 
-    bool wasPrepared;  // 'true' if prepare() was called for the task
-    bool subtasksWereCanceled;  // 'true' if canceled task has called cancel() on its subtasks
-    bool selfRunFinished;  // indicates that the 'run' method of this task was finished
-    bool hasLockedPrepareResources;  // true if there were resource locks for 'prepare' stage
-    bool hasLockedRunResources;  // true if there were resource locks for 'run' stage
+    bool wasPrepared = false;  // 'true' if prepare() was called for the task
+    bool subtasksWereCanceled = false;  // 'true' if canceled task has called cancel() on its subtasks
+    bool selfRunFinished = false;  // indicates that the 'run' method of this task was finished
+    bool hasLockedPrepareResources = false;  // true if there were resource locks for 'prepare' stage
+    bool hasLockedRunResources = false;  // true if there were resource locks for 'run' stage
 
-    int prevProgress;  // used for TaskProgress_Manual
+    int prevProgress = 0;  // used for TaskProgress_Manual
     QString prevDesc;
 
-    int numPreparedSubtasks;
-    int numRunningSubtasks;
-    int numFinishedSubtasks;
+    int numPreparedSubtasks = 0;
+    int numRunningSubtasks = 0;
+    int numFinishedSubtasks = 0;
 
-    TaskThread *thread;
+    TaskThread *thread = nullptr;
 
-    inline int numActiveSubtasks() const {
-        return numPreparedSubtasks + numRunningSubtasks;
-    }
+    int numActiveSubtasks() const;
 };
 
 class U2PRIVATE_EXPORT TaskSchedulerImpl : public TaskScheduler {
@@ -125,37 +129,35 @@ public:
     using TaskScheduler::onSubTaskFinished;
 
     TaskSchedulerImpl(AppResourcePool *rp);
+
     ~TaskSchedulerImpl();
 
-    virtual void registerTopLevelTask(Task *t);
+    void registerTopLevelTask(Task *t) override;
 
-    virtual void unregisterTopLevelTask(Task *t);
+    void unregisterTopLevelTask(Task *t) override;
 
-    const QList<Task *> &getTopLevelTasks() const {
-        return topLevelTasks;
-    }
+    const QList<Task *> &getTopLevelTasks() const override;
 
-    Task *getTopLevelTaskById(qint64 id) const;
+    Task *getTopLevelTaskById(qint64 id) const override;
 
-    QDateTime estimatedFinishTime(Task *) const;
+    QDateTime estimatedFinishTime(Task *) const override;
 
-    virtual void cancelTask(Task *t);
+    void cancelAllTasks() override;
 
-    virtual void cancelAllTasks();
+    QString getStateName(Task *t) const override;
 
-    virtual QString getStateName(Task *t) const;
+    void pauseThreadWithTask(const Task *task) override;
 
-    void addThreadId(qint64 taskId, Qt::HANDLE id) { /*threadIds.insert(taskId, id);*/
-        threadIds[taskId] = id;
-    }
-    void removeThreadId(qint64 taskId) {
-        threadIds.remove(taskId);
-    }
-    qint64 getNameByThreadId(Qt::HANDLE id) const {
-        return threadIds.key(id);
-    }
-    void pauseThreadWithTask(const Task *task);
-    void resumeThreadWithTask(const Task *task);
+    void resumeThreadWithTask(const Task *task) override;
+
+    void cancelTask(Task *t);
+
+    void addThreadId(qint64 taskId, Qt::HANDLE id) override;
+
+    void removeThreadId(qint64 taskId) override;
+
+    qint64 getNameByThreadId(Qt::HANDLE id) const override;
+
     void onSubTaskFinished(TaskThread *thread, Task *subtask);
 
 private slots:
@@ -196,10 +198,10 @@ private:
     QStringList stateNames;
     QMap<quint64, Qt::HANDLE> threadIds;
 
-    AppResourcePool *resourcePool;
-    AppResource *threadsResource;
-    bool stateChangesObserved;
-    SleepPreventer *sleepPreventer;
+    AppResourcePool *resourcePool = nullptr;
+    AppResource *threadsResource = nullptr;
+    bool stateChangesObserved = false;
+    SleepPreventer *sleepPreventer = nullptr;
 };
 
 }  // namespace U2
