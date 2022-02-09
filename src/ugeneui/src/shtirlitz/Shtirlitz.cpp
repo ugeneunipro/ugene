@@ -306,7 +306,7 @@ QString Shtirlitz::tr(const char *str) {
 }
 
 void Shtirlitz::showWhatsNewDialog() {
-    // Show a non-blocking whats new dialog.
+    // Show a non-blocking what's new dialog.
     auto startupWhatsNewDialog = new StatisticalReportController(getWhatsNewHtml(), nullptr);
     startupWhatsNewDialog->setModal(false);
     QSharedPointer<StatisticalReportController> dialog(startupWhatsNewDialog);
