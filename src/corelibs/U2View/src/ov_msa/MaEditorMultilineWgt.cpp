@@ -151,7 +151,7 @@ void MaEditorMultilineWgt::initWidgets() {
     mainLayout->addWidget(overviewArea);
 
     // the following must be after initing children area
-    scrollController->init(shBar, cvBar);
+    scrollController->init(shBar, cvBar, scrollArea);
 
     setLayout(mainLayout);
 
@@ -214,11 +214,42 @@ int MaEditorMultilineWgt::getLastVisibleBase(uint index) const {
     return getUI(index)->getSequenceArea()->getLastVisibleBase(false);
 }
 
-int MaEditorMultilineWgt::getSequenceAreaBaseWidth(uint index) const {
+int MaEditorMultilineWgt::getSequenceAreaBaseLen(uint index) const
+{
     if (index >= getChildrenCount()) {
         return 0;
     }
     return getLastVisibleBase(index) - getFirstVisibleBase(index) + 1;
+}
+
+int MaEditorMultilineWgt::getSequenceAreaBaseWidth(uint index) const
+{
+    if (index >= getChildrenCount()) {
+        return 0;
+    }
+    return getUI(index)->getSequenceArea()->width();
+}
+
+int MaEditorMultilineWgt::getSequenceAreaAllBaseLen() const
+{
+    int length = 0;
+
+    for (uint i = 0; i < getChildrenCount(); i++) {
+        length += getSequenceAreaBaseLen();
+    }
+
+    return length;
+}
+
+int MaEditorMultilineWgt::getSequenceAreaAllBaseWidth() const
+{
+    int width = 0;
+
+    for (uint i = 0; i < getChildrenCount(); i++) {
+        width += getSequenceAreaBaseWidth();
+    }
+
+    return width;
 }
 
 void MaEditorMultilineWgt::sl_toggleSequenceRowOrder(bool isOrderBySequence)

@@ -6,6 +6,7 @@
 #include <QScrollArea>
 
 #include "MsaEditorMultilineWgt.h"
+#include "MultilineScrollController.h"
 
 namespace U2 {
 
@@ -16,6 +17,7 @@ class U2VIEW_EXPORT MsaMultilineScrollArea : public QScrollArea {
 
 public:
     MsaMultilineScrollArea(MaEditor *maEditor, MaEditorMultilineWgt *ui);
+    void vertScroll(const MultilineScrollController::Directions &directions, bool byStep);
 
 protected:
     void wheelEvent(QWheelEvent *we) override;
