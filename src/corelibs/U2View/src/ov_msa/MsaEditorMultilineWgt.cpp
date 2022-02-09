@@ -80,7 +80,6 @@ void MsaEditorMultilineWgt::deleteChild(int index)
     uiLog.details(tr("Deleted widget, uiChildCount %1").arg(uiChildCount));
 
     delete toDelete;
-    Q_UNUSED(toDelete);
 }
 
 void MsaEditorMultilineWgt::addChild(MaEditorWgt *child, int index) {
@@ -139,22 +138,30 @@ void MsaEditorMultilineWgt::createChildren()
 bool MsaEditorMultilineWgt::updateChildrenCount()
 {
     bool updated = false;
-    int childrenCount = getChildrenCount();
 
-    if (getMultilineMode() && childrenCount < 8) {
+    if (getMultilineMode()) {
         MaEditorWgt *child = nullptr;
         int rowCount = editor->getNumSequences();
         int rowHeight = editor->getSequenceRowHeight();
         int headHeight = getUI(0)->getHeaderWidget()->height();
-        while (childrenCount <= 8
-               && (rowCount * rowHeight + headHeight) * (int) (childrenCount - 1) < height()) {
-            child = createChild(editor, overviewArea, statusBar);
-            SAFE_POINT(child != nullptr, "Can't create sequence widget", updated);
-            addChild(child);
-            childrenCount++;
-            updated = true;
+        int childrenAreaHeight = getChildrenScrollArea()->height();
+        uint wantCount = childrenAreaHeight / (rowCount * rowHeight + headHeight) + 2;
+
+        if (getChildrenCount() < wantCount) {
+            while (getChildrenCount() <= 8 && getChildrenCount() < wantCount) {
+                child = createChild(editor, overviewArea, statusBar);
+                SAFE_POINT(child != nullptr, "Can't create sequence widget", updated);
+                addChild(child);
+                updated = true;
+            }
+        } else if (getChildrenCount() > wantCount) {
+            while (getChildrenCount() > 3 && getChildrenCount() > wantCount) {
+                deleteChild(getChildrenCount() - 1);
+                updated = true;
+            }
         }
     }
+
     return updated;
 }
 
