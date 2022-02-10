@@ -73,8 +73,8 @@ MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *o
     : MaEditor(MsaEditorFactory::ID, viewName, obj),
       treeManager(this) {
     selectionController = new MaEditorSelectionController(this);
+    connect(maObject, SIGNAL(si_rowsRemoved(const QList<qint64> &)), SLOT(sl_rowsRemoved(const QList<qint64> &)));
 
-    gotoAction = nullptr;
     searchInSequencesAction = nullptr;
     searchInSequenceNamesAction = nullptr;
 
@@ -126,12 +126,8 @@ MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *o
     saveScreenshotAction->setObjectName("export_msa_as_image_action");
     connect(saveScreenshotAction, &QAction::triggered, this, &MSAEditor::sl_exportImage);
 
-    initZoom();
-    initFont();
-
     buildTreeAction = new QAction(QIcon(":/core/images/phylip.png"), tr("Build Tree"), this);
     buildTreeAction->setObjectName("Build Tree");
-    connect(maObject, SIGNAL(si_rowsRemoved(const QList<qint64> &)), SLOT(sl_rowsRemoved(const QList<qint64> &)));
     connect(buildTreeAction, SIGNAL(triggered()), SLOT(sl_buildTree()));
 
     alignSelectedSequencesToAlignmentAction = new QAction(QIcon(":/core/images/realign_some_sequences.png"), tr("Realign sequence(s) to other sequences"), this);
@@ -161,6 +157,15 @@ MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *o
     convertRawToAminoAction->setObjectName("convertRawToAminoAction");
     convertRawToAminoAction->setToolTip(tr("Convert alignment from RAW to Amino alphabet: use X for unknown symbols"));
     connect(convertRawToAminoAction, SIGNAL(triggered()), SLOT(sl_convertRawToAminoAlphabet()));
+
+    gotoAction = new QAction(QIcon(":core/images/goto.png"), tr("Go to position…"), this);
+    gotoAction->setObjectName("action_go_to_position");
+    gotoAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
+    gotoAction->setShortcutContext(Qt::WindowShortcut);
+    gotoAction->setToolTip(QString("%1 (%2)").arg(gotoAction->text()).arg(gotoAction->shortcut().toString()));
+
+    initZoom();
+    initFont();
 }
 
 void MSAEditor::updateActions() {
@@ -457,13 +462,6 @@ QWidget *MSAEditor::createWidget() {
 
     connect(ui, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(sl_onContextMenuRequested(const QPoint &)));
 
-    gotoAction = new QAction(QIcon(":core/images/goto.png"), tr("Go to position…"), this);
-    gotoAction->setObjectName("action_go_to_position");
-    gotoAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_G));
-    gotoAction->setShortcutContext(Qt::WindowShortcut);
-    gotoAction->setToolTip(QString("%1 (%2)").arg(gotoAction->text()).arg(gotoAction->shortcut().toString()));
-    connect(gotoAction, SIGNAL(triggered()), ui->getSequenceArea(), SLOT(sl_goto()));
-
     searchInSequencesAction = new QAction(QIcon(":core/images/find_dialog.png"), tr("Search in sequences…"), this);
     searchInSequencesAction->setObjectName("search_in_sequences");
     searchInSequencesAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_F));
@@ -525,10 +523,6 @@ QWidget *MSAEditor::createWidget() {
     initDragAndDropSupport();
     updateActions();
     return ui;
-}
-
-void MSAEditor::initActions() {
-    MaEditor::initActions();
 }
 
 void MSAEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {

@@ -182,7 +182,6 @@ protected slots:
 
 protected:
     QWidget *createWidget() override;
-    void initActions() override;
     bool eventFilter(QObject *o, QEvent *e) override;
     bool onObjectRemoved(GObject *obj) override;
     void onObjectRenamed(GObject *obj, const QString &oldName) override;

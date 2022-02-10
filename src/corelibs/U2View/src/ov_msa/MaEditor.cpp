@@ -133,6 +133,16 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, Mult
     gotoSelectedReadAction->setEnabled(false);
     connect(gotoSelectedReadAction, &QAction::triggered, this, &MaEditor::sl_gotoSelectedRead);
 
+    showOverviewAction = new QAction(QIcon(":/core/images/msa_show_overview.png"), tr("Overview"), this);
+    showOverviewAction->setObjectName("Show overview");
+    showOverviewAction->setCheckable(true);
+    showOverviewAction->setChecked(true);
+
+    clearSelectionAction = new QAction(tr("Clear selection"), this);
+    clearSelectionAction->setShortcut(Qt::Key_Escape);
+    clearSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
+    connect(clearSelectionAction, &QAction::triggered, this, &MaEditor::sl_onClearActionTriggered);
+
     connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     connect(maObject,
             SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)),
@@ -364,21 +374,11 @@ void MaEditor::sl_resetColumnWidthCache() {
 }
 
 void MaEditor::initActions() {
-    showOverviewAction = new QAction(QIcon(":/core/images/msa_show_overview.png"), tr("Overview"), this);
-    showOverviewAction->setObjectName("Show overview");
-    showOverviewAction->setCheckable(true);
-    showOverviewAction->setChecked(true);
     connect(showOverviewAction, &QAction::triggered, ui->getOverviewArea(), &QWidget::setVisible);
     ui->addAction(showOverviewAction);
-
-    MaEditorSelectionController *selectionController = getSelectionController();
-    clearSelectionAction = new QAction(tr("Clear selection"), this);
-    clearSelectionAction->setShortcut(Qt::Key_Escape);
-    clearSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
-    connect(clearSelectionAction, SIGNAL(triggered()), SLOT(sl_onClearActionTriggered()));
     ui->addAction(clearSelectionAction);
 
-    connect(selectionController,
+    connect(getSelectionController(),
             SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
             SLOT(sl_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)));
 
