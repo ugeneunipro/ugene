@@ -931,7 +931,7 @@ GUI_TEST_CLASS_DEFINITION(test_1061) {
             GTWidget::click(os, GTWidget::findWidget(os, "containsButton", dialog));
             GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "containsEdit"), "1");
 
-            GTUtilsDialog::clickButtonBox(os, QApplication::activeModalWidget(), QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
         }
     };
 
@@ -952,7 +952,7 @@ GUI_TEST_CLASS_DEFINITION(test_1061) {
             GTUtilsDialog::waitForDialog(os, new CreateMarkerDialogFiller(os));
             GTWidget::click(os, GTWidget::findWidget(os, "addButton", dialog));
 
-            GTUtilsDialog::clickButtonBox(os, QApplication::activeModalWidget(), QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
         }
     };
 
@@ -1241,7 +1241,7 @@ GUI_TEST_CLASS_DEFINITION(test_1080) {
             GTKeyboardDriver::keyClick(Qt::Key_Tab);
             GTKeyboardDriver::keySequence("0.001");
 
-            GTUtilsDialog::clickButtonBox(os, QApplication::activeModalWidget(), QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
         }
     };
 
@@ -4506,7 +4506,7 @@ GUI_TEST_CLASS_DEFINITION(test_1461_1) {
     //    Expected state: "Scoring matrix" field not contain "rna" value.
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QComboBox *comboMatrix = GTWidget::findExactWidget<QComboBox *>(os, "comboMatrix", QApplication::activeModalWidget());
+            QComboBox *comboMatrix = GTWidget::findExactWidget<QComboBox *>(os, "comboMatrix", GTWidget::getActiveModalWidget(os));
             for (int i = 0; i < comboMatrix->count(); i++) {
                 CHECK_SET_ERR(!comboMatrix->itemText(i).contains("rna", Qt::CaseInsensitive),
                               QString("'rna' item unexpectidly found at index: %1, text is %2").arg(i).arg(comboMatrix->itemText(i)));
@@ -4531,7 +4531,7 @@ GUI_TEST_CLASS_DEFINITION(test_1461_2) {
     //    Expected state: "Scoring matrix" field contain only "rna" value.
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QComboBox *comboMatrix = GTWidget::findExactWidget<QComboBox *>(os, "comboMatrix", QApplication::activeModalWidget());
+            QComboBox *comboMatrix = GTWidget::findExactWidget<QComboBox *>(os, "comboMatrix", GTWidget::getActiveModalWidget(os));
             CHECK_SET_ERR(nullptr != comboMatrix, "Matrix combobox is NULL");
             GTComboBox::selectItemByText(os, comboMatrix, "rna");
             CHECK_SET_ERR(1 == comboMatrix->count(), "There are several unexpected matrices");
@@ -4598,14 +4598,14 @@ GUI_TEST_CLASS_DEFINITION(test_1491) {
     public:
         void run(HI::GUITestOpStatus &os) {
             // 4. Select "Join sequences..." mode
-            GTRadioButton::click(os, dynamic_cast<QRadioButton *>(GTWidget::findWidget(os, "join2alignmentMode", QApplication::activeModalWidget())));
+            GTRadioButton::click(os, dynamic_cast<QRadioButton *>(GTWidget::findWidget(os, "join2alignmentMode", GTWidget::getActiveModalWidget(os))));
 
             // 5. Select a sequence
-            QListWidget *list = dynamic_cast<QListWidget *>(GTWidget::findWidget(os, "listDocuments", QApplication::activeModalWidget()));
+            QListWidget *list = dynamic_cast<QListWidget *>(GTWidget::findWidget(os, "listDocuments", GTWidget::getActiveModalWidget(os)));
             GTListWidget::click(os, list, "3. murine.gb");
 
             // 6. Press "Up" or "Down" arrow.
-            GTWidget::click(os, GTWidget::findWidget(os, "upperButton", QApplication::activeModalWidget()));
+            GTWidget::click(os, GTWidget::findWidget(os, "upperButton", GTWidget::getActiveModalWidget(os)));
 
             // Expected state:
             //     1) the sequence goes up or down correspondingly
@@ -4617,7 +4617,7 @@ GUI_TEST_CLASS_DEFINITION(test_1491) {
             CHECK_SET_ERR(selection.contains(murine), "Wrong selection");
             CHECK_SET_ERR(1 == selection.size(), "Wrong selection size");
 
-            GTUtilsDialog::clickButtonBox(os, QApplication::activeModalWidget(), QDialogButtonBox::Cancel);
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Cancel);
         }
     };
     GTUtilsDialog::waitForDialog(os, new GTSequenceReadingModeDialogUtils(os, new Scenario()));

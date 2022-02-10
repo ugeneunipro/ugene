@@ -528,7 +528,7 @@ GUI_TEST_CLASS_DEFINITION(test_0574) {
             GTTreeWidget::click(os, GTTreeWidget::findItem(os, tree, "AA (Fwd)"));
             GTWidget::click(os, GTWidget::findWidget(os, "editFragmentButton"));
 
-            GTUtilsDialog::clickButtonBox(os, QApplication::activeModalWidget(), QDialogButtonBox::Cancel);
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Cancel);
         }
     };
     GTUtilsDialog::waitForDialog(os, new ConstructMoleculeDialogFiller(os, new Scenario()));
@@ -714,7 +714,7 @@ GUI_TEST_CLASS_DEFINITION(test_0627) {
             : Filler(os, "Primer3Dialog") {
         }
         void run() override {
-            QWidget *dialog = QApplication::activeModalWidget();
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             QList<QObject *> children = findAllChildren(dialog);
             QList<QString> objsWithoutTooltips;

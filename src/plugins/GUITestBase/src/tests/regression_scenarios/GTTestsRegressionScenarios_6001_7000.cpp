@@ -1223,7 +1223,7 @@ GUI_TEST_CLASS_DEFINITION(test_6235_4) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             CHECK_SET_ERR(nullptr != dialog, "activeModalWidget is NULL");
 
             GTWidget::click(os, GTWidget::findWidget(os, "addAllButton", dialog));

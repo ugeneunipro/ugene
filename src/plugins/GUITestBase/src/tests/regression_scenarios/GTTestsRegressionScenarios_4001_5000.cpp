@@ -502,7 +502,7 @@ GUI_TEST_CLASS_DEFINITION(test_4047) {
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
 #ifdef Q_OS_DARWIN
             // dirty hack for mac
-            if (QApplication::activeModalWidget() != nullptr) {
+            if (GTWidget::getActiveModalWidget(os) != nullptr) {
                 GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
             }
 #endif

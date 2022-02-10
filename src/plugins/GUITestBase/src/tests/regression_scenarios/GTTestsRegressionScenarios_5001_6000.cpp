@@ -1407,7 +1407,7 @@ GUI_TEST_CLASS_DEFINITION(test_5377) {
             CHECK_SET_ERR(linEdit != nullptr, "filePathEdit not found");
             GTLineEdit::setText(os, linEdit, QFileInfo(sandBoxDir + "test_5377").absoluteFilePath());
 
-            GTUtilsDialog::clickButtonBox(os, QApplication::activeModalWidget(), QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
         }
     };
 

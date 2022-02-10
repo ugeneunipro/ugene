@@ -207,7 +207,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             GTCheckBox::setChecked(os, "addToProjectCheckbox", false);
 
             // 5. Push "..." in "Result aligment"
-            GTLineEdit::setText(os, "outputLineEdit", "...", QApplication::activeModalWidget());
+            GTLineEdit::setText(os, "outputLineEdit", "...", GTWidget::getActiveModalWidget(os));
 
             // 6. In "Select output file" dialog set file name "Sanger" in test directory without  extension.ugenedb
             GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -506,7 +506,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
             GTCheckBox::setChecked(os, "addToProjectCheckbox", false);
 
             // 5. Push "..." in "Result aligment"
-            GTLineEdit::setText(os, "outputLineEdit", "...", QApplication::activeModalWidget());
+            GTLineEdit::setText(os, "outputLineEdit", "...", GTWidget::getActiveModalWidget(os));
 
             // 6. In "Select output file" dialog set file name "Sanger" in test directory without  extension.ugenedb
             GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -584,7 +584,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
             GTCheckBox::setChecked(os, "addToProjectCheckbox", false);
 
             // 5. Push "..." in "Result aligment"
-            GTLineEdit::setText(os, "outputLineEdit", "...", QApplication::activeModalWidget());
+            GTLineEdit::setText(os, "outputLineEdit", "...", GTWidget::getActiveModalWidget(os));
 
             // 6. In "Select output file" dialog set file name "Sanger" in test directory without  extension.ugenedb
             GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -715,7 +715,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
             GTCheckBox::setChecked(os, "addToProjectCheckbox", false);
 
             // 5. Push "..." in "Result aligment"
-            GTLineEdit::setText(os, "outputLineEdit", "...", QApplication::activeModalWidget());
+            GTLineEdit::setText(os, "outputLineEdit", "...", GTWidget::getActiveModalWidget(os));
 
             // 6. In "Select output file" dialog set file name "Sanger" in test directory without  extension.ugenedb
             GTUtilsTaskTreeView::waitTaskFinished(os);
