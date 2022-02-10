@@ -3234,23 +3234,20 @@ GUI_TEST_CLASS_DEFINITION(test_3556) {
 
     GTFileDialog::openFile(os, testDir + "_common_data/muscul4/", "prefab_1_ref.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "1a0dA");
     GTKeyboardDriver::keyClick(Qt::Key_End, Qt::ControlModifier);
-    // GTUtilsMSAEditorSequenceArea::scrollToBottom(os);
-    GTUtilsMSAEditorSequenceArea::selectSequence(os, "1a0cA");
-
-    const QPoint pos = GTMouseDriver::getMousePosition();
-    GTMouseDriver::moveTo(QPoint(pos.x(), pos.y() - 10));
+    GTUtilsMsaEditor::clickSequenceName(os, "1a0cA");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"set_seq_as_reference"}));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_GENERAL"));
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
 
-    QLineEdit *refEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "sequenceLineEdit"));
-    CHECK_SET_ERR(refEdit->text() == "1a0cA", "Wrong reference sequence");
+    QString referenceName = GTLineEdit::getText(os, "sequenceLineEdit");
+    CHECK_SET_ERR(referenceName == "1a0cA", "Wrong reference sequence: " + referenceName);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3557) {

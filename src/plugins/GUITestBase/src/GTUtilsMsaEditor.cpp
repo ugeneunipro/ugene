@@ -173,12 +173,9 @@ MSAEditorSequenceArea *GTUtilsMsaEditor::getSequenceArea(GUITestOpStatus &os) {
 
 #define GT_METHOD_NAME "getSequenceNameRectByName"
 QRect GTUtilsMsaEditor::getSequenceNameRect(GUITestOpStatus &os, const QString &sequenceName) {
-    MaEditorNameList *nameList = getNameListArea(os);
-    GT_CHECK_RESULT(nameList != nullptr, "MSAEditorNameList not found", QRect());
-
     QStringList rowNames = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
     int viewRowIndex = rowNames.indexOf(sequenceName);
-    GT_CHECK_RESULT(viewRowIndex >= 0, QString("Sequence '%1' not found").arg(sequenceName), QRect());
+    GT_CHECK_RESULT(viewRowIndex >= 0, QString("Sequence '%1' not found").arg(sequenceName), {});
     return getSequenceNameRect(os, viewRowIndex);
 }
 #undef GT_METHOD_NAME
