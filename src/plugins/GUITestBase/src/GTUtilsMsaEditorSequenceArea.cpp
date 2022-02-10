@@ -102,12 +102,12 @@ QRect GTUtilsMSAEditorSequenceArea::getPositionRect(GUITestOpStatus &os, const Q
 #define GT_METHOD_NAME "convertCoordinates"
 QPoint GTUtilsMSAEditorSequenceArea::convertCoordinates(GUITestOpStatus &os, const QPoint p) {
     QWidget *activeWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
-    MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea *>(GTWidget::findWidget(os, "msa_editor_sequence_area", activeWindow));
-    GT_CHECK_RESULT(msaEditArea != nullptr, "MsaEditorSequenceArea not found", QPoint());
+    auto msaEditArea = GTWidget::findExactWidget<MSAEditorSequenceArea *>(os, "msa_editor_sequence_area", activeWindow);
 
-    const int posX = static_cast<int>(msaEditArea->getEditor()->getUI()->getBaseWidthController()->getBaseGlobalRange(p.x()).center());
-    const int posY = static_cast<int>(msaEditArea->getEditor()->getUI()->getRowHeightController()->getGlobalYRegionByViewRowIndex(p.y()).center());
-    return msaEditArea->mapToGlobal(QPoint(posX, posY));
+    MsaEditorWgt *ui = msaEditArea->getEditor()->getUI();
+    int posX = ui->getBaseWidthController()->getBaseScreenCenter(p.x());
+    int posY = (int)ui->getRowHeightController()->getScreenYRegionByViewRowIndex(p.y()).center();
+    return msaEditArea->mapToGlobal({posX, posY});
 }
 #undef GT_METHOD_NAME
 

@@ -78,6 +78,7 @@
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/plugins/annotator/FindAnnotationCollocationsDialogFiller.h"
@@ -2095,7 +2096,6 @@ GUI_TEST_CLASS_DEFINITION(test_7517) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7531) {
-
     // Open "samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2168,21 +2168,39 @@ GUI_TEST_CLASS_DEFINITION(test_7535) {
     CHECK_SET_ERR(tooltip.contains("<b>Translation</b> = R"), "Expected amino sequence info in tooltip for a joined complementary annotation: " + tooltip);
 }
 
-
 GUI_TEST_CLASS_DEFINITION(test_7539) {
     // Check that UGENE shows a tooltip when a small 1-char annotation region is hovered in sequence view.
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/zero_length_feature.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-   GTUtilsSequenceView::moveMouseToAnnotationInDetView(os, "joined", 30);
-   QString tooltip = GTUtilsToolTip::getToolTip();
-   CHECK_SET_ERR(tooltip.contains("<b>Sequence</b> = TCT"), "Expected dna sequence info in tooltip for a joined annotation: " + tooltip);
-   CHECK_SET_ERR(tooltip.contains("<b>Translation</b> = S"), "Expected amino sequence info in tooltip for a joined annotation: " + tooltip);
+    GTUtilsSequenceView::moveMouseToAnnotationInDetView(os, "joined", 30);
+    QString tooltip = GTUtilsToolTip::getToolTip();
+    CHECK_SET_ERR(tooltip.contains("<b>Sequence</b> = TCT"), "Expected dna sequence info in tooltip for a joined annotation: " + tooltip);
+    CHECK_SET_ERR(tooltip.contains("<b>Translation</b> = S"), "Expected amino sequence info in tooltip for a joined annotation: " + tooltip);
 
-   GTUtilsSequenceView::moveMouseToAnnotationInDetView(os, "joined_c", 30);
-   tooltip = GTUtilsToolTip::getToolTip();
-   CHECK_SET_ERR(tooltip.contains("<b>Sequence</b> = AGA"), "Expected dna sequence info in tooltip for a joined complementary annotation: " + tooltip);
-   CHECK_SET_ERR(tooltip.contains("<b>Translation</b> = R"), "Expected amino sequence info in tooltip for a joined complementary annotation: " + tooltip);
+    GTUtilsSequenceView::moveMouseToAnnotationInDetView(os, "joined_c", 30);
+    tooltip = GTUtilsToolTip::getToolTip();
+    CHECK_SET_ERR(tooltip.contains("<b>Sequence</b> = AGA"), "Expected dna sequence info in tooltip for a joined complementary annotation: " + tooltip);
+    CHECK_SET_ERR(tooltip.contains("<b>Translation</b> = R"), "Expected amino sequence info in tooltip for a joined complementary annotation: " + tooltip);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7548) {
+    // Check that UGENE shows correct MSA symbols for huge MSA files when scrolled to large positions.
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/big.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, {1, 0});  // Move focus and check visually that the selected char is 'C'.
+    QString colorOfC = GTUtilsMSAEditorSequenceArea::getColor(os, {1, 0});
+
+    QList<QPoint> positions = {{9999 - 1, 0}, {100000 - 1, 0}, {2000000 - 1, 1}};
+    for (const QPoint &position : qAsConst(positions)) {
+        GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, position.x() + 1));  // GoTo accepts visual positions.
+        GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
+        GTUtilsMSAEditorSequenceArea::clickToPosition(os, position);  // Selected character has some opacity adjustment.
+
+        QString color = GTUtilsMSAEditorSequenceArea::getColor(os, position);
+        CHECK_SET_ERR(color == colorOfC, "Invalid color: " + color + ", position: " + QString::number(position.x()) + ", expected: " + colorOfC);
+    }
 }
 
 }  // namespace GUITest_regression_scenarios

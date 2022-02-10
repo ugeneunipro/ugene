@@ -610,7 +610,7 @@ char MultipleSequenceAlignmentRowData::getCharFromCache(int gappedPosition) cons
     }
     invalidateGappedCache();
     int newGappedCacheSize = GAPPED_CACHE_SIZE;
-    int newGappedCacheOffset = qMax(0, gappedPosition - (gappedPosition / (newGappedCacheSize / 10)));  // Cache one both sides. Prefer forward iteration.
+    int newGappedCacheOffset = qMax(0, gappedPosition - (newGappedCacheSize / 10));  // Cache one both sides. Prefer forward iteration.
 
     // Optimize cache size for sequences < GAPPED_CACHE_SIZE.
     int rowLength = getRowLength();
@@ -623,7 +623,11 @@ char MultipleSequenceAlignmentRowData::getCharFromCache(int gappedPosition) cons
     }
     gappedSequenceCache = MsaRowUtils::getGappedSubsequence({newGappedCacheOffset, newGappedCacheSize}, sequence.constSequence(), gaps);
     CHECK(!gappedSequenceCache.isEmpty(), MsaRowUtils::charAt(sequence.seq, gaps, gappedPosition));
+    SAFE_POINT(gappedSequenceCache.size() == newGappedCacheSize, "Invalid gapped cache size!", '?');
+
     gappedCacheOffset = newGappedCacheOffset;
+    int indexInCache = gappedPosition - gappedCacheOffset;
+    SAFE_POINT(indexInCache >= 0 && indexInCache < gappedSequenceCache.length(), "Invalid gapped cache index", '?');
     return gappedSequenceCache[gappedPosition - gappedCacheOffset];
 }
 
