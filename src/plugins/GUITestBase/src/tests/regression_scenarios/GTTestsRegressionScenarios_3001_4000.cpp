@@ -4195,21 +4195,22 @@ GUI_TEST_CLASS_DEFINITION(test_3702) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3710) {
-    //    1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2. Open the Highlighting option panel tab.
+
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
-    //    3. Select "Phaneroptera_falcata" as the reference sequence.
     GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
-    //    4. Click the Export button.
+
+    GTUtils::checkExportServiceIsEnabled(os);
+
     GTUtilsNotifications::waitForNotification(os, false, "Report for task: 'Export highlighting'");
     GTUtilsDialog::waitForDialog(os, new ExportHighlightedDialogFiller(os, sandBoxDir + "export_test_3710"));
 
-    QComboBox *highlightingScheme = GTWidget::findExactWidget<QComboBox *>(os, "highlightingScheme");
+    auto highlightingScheme = GTWidget::findComboBox(os, "highlightingScheme");
     GTComboBox::selectItemByText(os, highlightingScheme, "Agreements");
     GTWidget::click(os, GTWidget::findWidget(os, "exportHighlightning"));
-    //    5. Export.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     CHECK_SET_ERR(GTFile::getSize(os, sandBoxDir + "export_test_3710") != 0, "Exported file is empty!");
 }
 
