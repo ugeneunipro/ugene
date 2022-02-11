@@ -66,8 +66,6 @@ public:
 
     TaskInfo *ti = nullptr;
 
-    QObject *finishEventListener = nullptr;
-
     QMutex subtasksLocker;
 
     QList<Task *> unconsideredNewSubtasks;
@@ -138,10 +136,6 @@ public:
 
     const QList<Task *> &getTopLevelTasks() const override;
 
-    Task *getTopLevelTaskById(qint64 id) const override;
-
-    QDateTime estimatedFinishTime(Task *) const override;
-
     void cancelAllTasks() override;
 
     QString getStateName(Task *t) const override;
@@ -156,9 +150,9 @@ public:
 
     void removeThreadId(qint64 taskId) override;
 
-    qint64 getNameByThreadId(Qt::HANDLE id) const override;
-
     void onSubTaskFinished(TaskThread *thread, Task *subtask);
+
+    bool isCallerInsideTaskSchedulerCallback() const override;
 
 private slots:
     void update();
@@ -202,6 +196,9 @@ private:
     AppResource *threadsResource = nullptr;
     bool stateChangesObserved = false;
     SleepPreventer *sleepPreventer = nullptr;
+
+    /** Set to 'true' for the time of any 'emit' method call. */
+    bool isInsideSchedulingUpdate = false;
 };
 
 }  // namespace U2

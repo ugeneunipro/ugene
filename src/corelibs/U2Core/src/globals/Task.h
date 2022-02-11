@@ -569,10 +569,6 @@ public:
 
     virtual const QList<Task *> &getTopLevelTasks() const = 0;
 
-    virtual Task *getTopLevelTaskById(qint64 id) const = 0;
-
-    virtual QDateTime estimatedFinishTime(Task *) const = 0;
-
     virtual void cancelAllTasks() = 0;
 
     virtual QString getStateName(Task *t) const = 0;
@@ -581,11 +577,15 @@ public:
 
     virtual void removeThreadId(qint64 taskId) = 0;
 
-    virtual qint64 getNameByThreadId(Qt::HANDLE id) const = 0;
-
     virtual void pauseThreadWithTask(const Task *task) = 0;
 
     virtual void resumeThreadWithTask(const Task *task) = 0;
+
+    /**
+     * Returns true if the caller method is inside task processing callback (signal).
+     * This method is used to check if it is safe to run a message loop (or a modal dialog) with no side-effects for tasks.
+     */
+    virtual bool isCallerInsideTaskSchedulerCallback() const = 0;
 
 signals:
     void si_topLevelTaskRegistered(Task *);

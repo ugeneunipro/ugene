@@ -107,11 +107,9 @@ void TaskSchedulerImpl::cancelAllTasks() {
     }
 }
 
-namespace {
-void onBadAlloc(Task *task) {
+static void onBadAlloc(Task *task) {
     task->setError(TaskSchedulerImpl::tr("There is not enough memory to finish the task."));
 }
-}  // namespace
 
 void TaskSchedulerImpl::propagateStateToParent(Task *task) {
     Task *parentTask = task->getParentTask();
@@ -469,12 +467,10 @@ void TaskSchedulerImpl::releaseResources(TaskInfo *ti, bool prepareStage) {
 }
 
 void TaskSchedulerImpl::update() {
-    static bool recursion = false;
-
-    if (recursion) {
+    if (isInsideSchedulingUpdate) {
         return;
     }
-    recursion = true;
+    isInsideSchedulingUpdate = true;
     stateChangesObserved = false;
 
     bool finishedFound = processFinishedTasks();
@@ -496,7 +492,7 @@ void TaskSchedulerImpl::update() {
         timer.setInterval(UPDATE_TIMEOUT);
     }
 
-    recursion = false;
+    isInsideSchedulingUpdate = false;
 }
 
 void TaskSchedulerImpl::prepareNewTasks() {
@@ -654,20 +650,6 @@ bool TaskSchedulerImpl::readyToFinish(TaskInfo *ti) {
 QString TaskSchedulerImpl::getStateName(Task *t) const {
     Task::State s = t->getState();
     return stateNames[s];
-}
-
-QDateTime TaskSchedulerImpl::estimatedFinishTime(Task *task) const {
-    SAFE_POINT(task->getState() == Task::State_Running, "Method is valid for running tasks only", QDateTime());
-
-    const TaskTimeInfo &tti = task->getTimeInfo();
-    int secsPassed = GTimer::secsBetween(tti.startTime, GTimer::currentTimeMicros());
-    float percentInSecs = task->getProgress() / (float)secsPassed;
-    int secsTotal = int(percentInSecs * 100);
-    int secsLeft = secsTotal - secsPassed;
-
-    QDateTime res = QDateTime::currentDateTime();
-    res = res.addSecs(secsLeft);
-    return res;
 }
 
 static QString state2String(Task::State state) {
@@ -964,18 +946,6 @@ void TaskSchedulerImpl::sl_processSubtasks() {
     }
 }
 
-Task *TaskSchedulerImpl::getTopLevelTaskById(qint64 id) const {
-    Task *ret = nullptr;
-    foreach (Task *task, topLevelTasks) {
-        U2_ASSERT(nullptr != task);
-        if (id == task->getTaskId()) {
-            ret = task;
-            break;
-        }
-    }
-    return ret;
-}
-
 void TaskSchedulerImpl::pauseThreadWithTask(const Task *task) {
     foreach (TaskInfo *ti, priorityQueue) {
         if (task == ti->task) {
@@ -1006,6 +976,10 @@ void TaskSchedulerImpl::onSubTaskFinished(TaskThread *thread, Task *subtask) {
     }
 }
 
+bool TaskSchedulerImpl::isCallerInsideTaskSchedulerCallback() const {
+    return isInsideSchedulingUpdate;
+}
+
 const QList<Task *> &TaskSchedulerImpl::getTopLevelTasks() const {
     return topLevelTasks;
 }
@@ -1018,12 +992,8 @@ void TaskSchedulerImpl::removeThreadId(qint64 taskId) {
     threadIds.remove(taskId);
 }
 
-qint64 TaskSchedulerImpl::getNameByThreadId(Qt::HANDLE id) const {
-    return threadIds.key(id);
-}
 TaskThread::TaskThread(TaskInfo *_ti)
     : ti(_ti),
-      finishEventListener(nullptr),
       subtasksLocker(),
       unconsideredNewSubtasks(),
       newSubtasksObtained(false),

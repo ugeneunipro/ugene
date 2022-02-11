@@ -298,7 +298,7 @@ QString GTUtilsMdi::activeWindowTitle(HI::GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "activateWindow"
+#define GT_METHOD_NAME "activateAppWindow"
 void GTUtilsMdi::activateWindow(HI::GUITestOpStatus &os, const QString &windowTitlePart) {
     MainWindow *mainWindow = AppContext::getMainWindow();
 

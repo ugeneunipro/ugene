@@ -261,13 +261,7 @@ void ConvertToSQLiteDialog::sl_refUrlButtonClicked() {
         currentUrl = sourceUrl;
     }
     QString dir = currentUrl.dirPath() + "/" + currentUrl.baseFileName();
-    QString value;
-#ifdef Q_OS_DARWIN
-    if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
-        value = U2FileDialog::getOpenFileName(this, QObject::tr("Reference File"), dir, "", 0, QFileDialog::DontUseNativeDialog);
-    } else
-#endif
-        value = U2FileDialog::getOpenFileName(this, QObject::tr("Reference File"), dir);
+    QString value = U2FileDialog::getOpenFileName(this, QObject::tr("Reference File"), dir);
     if (!value.isEmpty()) {
         ui.refUrlEdit->setText(value);
         hideReferenceMessage();
