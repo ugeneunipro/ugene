@@ -29,18 +29,18 @@ namespace U2 {
 class PrepareInputFastaFilesTask : public Task {
     Q_OBJECT
 public:
-    PrepareInputFastaFilesTask(const QStringList &inputFiles, const QString &tempDir);
+    PrepareInputFastaFilesTask(const QStringList& inputFiles, const QString& tempDir);
 
     QStringList getFastaFiles() const;
     QStringList getTempFiles() const;
 
 private:
     void prepare() override;
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
-    QString getBestFormatId(const QString &filePath);
-    bool isFilePathAcceptable(const QString &filePath) const;
-    QString getFixedFileName(const QString &filePath) const;
+    QString getBestFormatId(const QString& filePath);
+    bool isFilePathAcceptable(const QString& filePath) const;
+    QString getFixedFileName(const QString& filePath) const;
 
     const QStringList inputFiles;
     const QString tempDir;

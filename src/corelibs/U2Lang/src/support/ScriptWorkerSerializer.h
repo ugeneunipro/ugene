@@ -31,7 +31,7 @@ namespace U2 {
 class U2LANG_EXPORT ScriptWorkerSerializer {
 public:
     // If a error occurs this returns NULL and writes a error message to @error.
-    static Workflow::ActorPrototype *string2actor(const QString data, const QString actorName, QString &error, const QString actorFilePath);
+    static Workflow::ActorPrototype* string2actor(const QString data, const QString actorName, QString& error, const QString actorFilePath);
 };
 
 }  // namespace U2

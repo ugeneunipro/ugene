@@ -46,7 +46,7 @@ static const QColor labelBackgroundColor(255, 255, 255, 180);
 
 const double ZoomableAssemblyOverview::ZOOM_MULT = 2.;
 
-ZoomableAssemblyOverview::ZoomableAssemblyOverview(AssemblyBrowserUi *ui_, bool zoomable_)
+ZoomableAssemblyOverview::ZoomableAssemblyOverview(AssemblyBrowserUi* ui_, bool zoomable_)
     : QWidget(ui_), ui(ui_), browser(ui->getWindow()),
       model(ui_->getModel()), zoomable(zoomable_), zoomFactor(1.), redrawSelection(true), redrawBackground(true), previousCoverageLength(0), selectionScribbling(false), visibleRangeScribbling(false),
       scaleType(AssemblyBrowserSettings::getOverviewScaleType()) {
@@ -68,7 +68,7 @@ void ZoomableAssemblyOverview::setupActions() {
     zoomOutAction = new QAction(tr("Zoom out"), this);
     zoomIn100xActon = new QAction(tr("Zoom in 100x"), this);
     restoreGlobalOverviewAction = new QAction(tr("Restore global overview"), this);
-    QAction *exportCoverageAction = new QAction(tr("Export coverage..."), this);
+    QAction* exportCoverageAction = new QAction(tr("Export coverage..."), this);
     exportCoverageAction->setObjectName("Export coverage");
 
     connect(zoomInAction, SIGNAL(triggered()), SLOT(sl_zoomInContextMenu()));
@@ -146,7 +146,7 @@ void ZoomableAssemblyOverview::drawAll() {
     }
 }
 
-void ZoomableAssemblyOverview::drawZoomToRegion(QPainter &p) {
+void ZoomableAssemblyOverview::drawZoomToRegion(QPainter& p) {
     if (!zoomToRegionSelector.scribbling) {
         assert(false);
         return;
@@ -164,7 +164,7 @@ void ZoomableAssemblyOverview::drawZoomToRegion(QPainter &p) {
     p.fillRect(QRect(topLeft, bottomRight), QColor(128, 0, 0, 100));
 }
 
-void ZoomableAssemblyOverview::drawBackground(QPainter &p) {
+void ZoomableAssemblyOverview::drawBackground(QPainter& p) {
     CoverageInfo ci = coverageTaskRunner.getResult();
     if (ci.region == model->getGlobalRegion()) {
         browser->setGlobalCoverageInfo(ci);
@@ -221,7 +221,7 @@ void ZoomableAssemblyOverview::drawBackground(QPainter &p) {
     p.drawRect(rect().adjusted(0, 0, -1, -1));
 }
 
-static inline bool isRectVerySmall(const QRect &r) {
+static inline bool isRectVerySmall(const QRect& r) {
     return r.width() <= 2 && r.height() <= 15;
 }
 
@@ -229,7 +229,7 @@ static const int CROSS_HALF_SIZE = 3;
 static const QPoint CROSS_LEFT_CORNER(CROSS_HALF_SIZE, 0);
 static const QPoint CROSS_RIGHT_CORNER(0, CROSS_HALF_SIZE);
 
-void ZoomableAssemblyOverview::drawSelection(QPainter &p) {
+void ZoomableAssemblyOverview::drawSelection(QPainter& p) {
     cachedSelection = calcCurrentSelection();
     // if selection is TOO small - enlarge it a bit
     if (0 == cachedSelection.width()) {
@@ -263,13 +263,13 @@ void ZoomableAssemblyOverview::drawSelection(QPainter &p) {
     }
 }
 
-static void insertSpaceSeparators(QString &str) {
+static void insertSpaceSeparators(QString& str) {
     for (int i = str.length() - 3; i > 0; i -= 3) {
         str.insert(i, " ");
     }
 }
 
-void ZoomableAssemblyOverview::drawCoordLabels(QPainter &p) {
+void ZoomableAssemblyOverview::drawCoordLabels(QPainter& p) {
     const static int xoffset = 4;
     const static int yoffset = 3;
 
@@ -353,7 +353,7 @@ QRect ZoomableAssemblyOverview::calcCurrentSelection() const {
 // prevents selection from crossing widget borders.
 // Tries to move selection center to pos.
 void ZoomableAssemblyOverview::moveSelectionToPos(QPoint pos, bool moveModel) {
-    const QRect &thisRect = rect();
+    const QRect& thisRect = rect();
     QRect newSelection(cachedSelection);
     newSelection.moveCenter(pos);
 
@@ -422,7 +422,7 @@ qint64 ZoomableAssemblyOverview::minimalOverviewedLen() const {
     return qMin(modelLen, (qint64)width());
 }
 
-bool ZoomableAssemblyOverview::canZoomToRange(const U2Region &range) const {
+bool ZoomableAssemblyOverview::canZoomToRange(const U2Region& range) const {
     return minimalOverviewedLen() != range.length;
 }
 
@@ -451,16 +451,16 @@ void ZoomableAssemblyOverview::checkedSetVisibleRange(qint64 newStartPos, qint64
     }
 }
 
-void ZoomableAssemblyOverview::checkedSetVisibleRange(const U2Region &newRegion, bool force) {
+void ZoomableAssemblyOverview::checkedSetVisibleRange(const U2Region& newRegion, bool force) {
     checkedSetVisibleRange(newRegion.startPos, newRegion.length, force);
 }
 
-void ZoomableAssemblyOverview::paintEvent(QPaintEvent *e) {
+void ZoomableAssemblyOverview::paintEvent(QPaintEvent* e) {
     drawAll();
     QWidget::paintEvent(e);
 }
 
-void ZoomableAssemblyOverview::resizeEvent(QResizeEvent *e) {
+void ZoomableAssemblyOverview::resizeEvent(QResizeEvent* e) {
     cachedSelection = calcCurrentSelection();
     moveSelectionToPos(cachedSelection.center(), false);
     // force re-check visible range to avoid violating 1-pixel limit
@@ -470,7 +470,7 @@ void ZoomableAssemblyOverview::resizeEvent(QResizeEvent *e) {
     QWidget::resizeEvent(e);
 }
 
-void ZoomableAssemblyOverview::mousePressEvent(QMouseEvent *me) {
+void ZoomableAssemblyOverview::mousePressEvent(QMouseEvent* me) {
     // background scribbling
     if (me->button() == Qt::MidButton) {
         visibleRangeScribbling = true;
@@ -506,7 +506,7 @@ void ZoomableAssemblyOverview::mousePressEvent(QMouseEvent *me) {
     QWidget::mousePressEvent(me);
 }
 
-void ZoomableAssemblyOverview::mouseMoveEvent(QMouseEvent *me) {
+void ZoomableAssemblyOverview::mouseMoveEvent(QMouseEvent* me) {
     // selection scribbling
     if ((me->buttons() & Qt::LeftButton) && selectionScribbling) {
         if (!ui->getReadsArea()->isScrolling()) {
@@ -529,7 +529,7 @@ void ZoomableAssemblyOverview::mouseMoveEvent(QMouseEvent *me) {
     QWidget::mouseMoveEvent(me);
 }
 
-void ZoomableAssemblyOverview::mouseReleaseEvent(QMouseEvent *me) {
+void ZoomableAssemblyOverview::mouseReleaseEvent(QMouseEvent* me) {
     if (me->button() == Qt::LeftButton) {
         if (selectionScribbling) {
             selectionScribbling = false;
@@ -556,7 +556,7 @@ void ZoomableAssemblyOverview::mouseReleaseEvent(QMouseEvent *me) {
     QWidget::mouseReleaseEvent(me);
 }
 
-void ZoomableAssemblyOverview::wheelEvent(QWheelEvent *e) {
+void ZoomableAssemblyOverview::wheelEvent(QWheelEvent* e) {
     bool positive = e->delta() > 0;
     int numDegrees = abs(e->delta()) / 8;
     int numSteps = numDegrees / 15;
@@ -580,7 +580,7 @@ void ZoomableAssemblyOverview::wheelEvent(QWheelEvent *e) {
     QWidget::wheelEvent(e);
 }
 
-void ZoomableAssemblyOverview::contextMenuEvent(QContextMenuEvent *e) {
+void ZoomableAssemblyOverview::contextMenuEvent(QContextMenuEvent* e) {
     updateActions();
     contextMenu->move(e->globalPos());
     contextMenu->show();
@@ -600,7 +600,7 @@ void ZoomableAssemblyOverview::sl_redraw() {
     update();
 }
 
-void ZoomableAssemblyOverview::sl_zoomIn(const QPoint &pos) {
+void ZoomableAssemblyOverview::sl_zoomIn(const QPoint& pos) {
     if (!zoomable)
         return;
 
@@ -661,7 +661,7 @@ void ZoomableAssemblyOverview::sl_restoreGlobalOverview() {
     sl_redraw();
 }
 
-void ZoomableAssemblyOverview::sl_zoomOut(const QPoint &pos) {
+void ZoomableAssemblyOverview::sl_zoomOut(const QPoint& pos) {
     if (!zoomable)
         return;
 

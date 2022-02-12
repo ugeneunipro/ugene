@@ -33,7 +33,7 @@ class DocumentProviderTask;
 class ExtractAssemblyRegionTask;
 
 struct ExtractAssemblyRegionTaskSettings {
-    ExtractAssemblyRegionTaskSettings(QString fileUrl, int assemblyLength, AssemblyObject *o)
+    ExtractAssemblyRegionTaskSettings(QString fileUrl, int assemblyLength, AssemblyObject* o)
         : fileUrl(fileUrl), regionToExtract(U2_REGION_MAX),
           fileFormat(BaseDocumentFormats::UGENEDB), assemblyLength(assemblyLength), obj(o), addToProject(false) {
     }
@@ -41,28 +41,28 @@ struct ExtractAssemblyRegionTaskSettings {
     U2Region regionToExtract;
     DocumentFormatId fileFormat;
     int assemblyLength;
-    AssemblyObject *obj;
+    AssemblyObject* obj;
     bool addToProject;
 };
 
 class ExtractAssemblyRegionAndOpenViewTask : public Task {
     Q_OBJECT
 public:
-    ExtractAssemblyRegionAndOpenViewTask(const ExtractAssemblyRegionTaskSettings &settings);
+    ExtractAssemblyRegionAndOpenViewTask(const ExtractAssemblyRegionTaskSettings& settings);
 
     void prepare();
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
     ExtractAssemblyRegionTaskSettings settings;
-    ExtractAssemblyRegionTask *extractTask;
+    ExtractAssemblyRegionTask* extractTask;
 };
 
 class ExtractAssemblyRegionTask : public Task {
     Q_OBJECT
 public:
-    ExtractAssemblyRegionTask(const ExtractAssemblyRegionTaskSettings &settings);
+    ExtractAssemblyRegionTask(const ExtractAssemblyRegionTaskSettings& settings);
 
     void run();
 

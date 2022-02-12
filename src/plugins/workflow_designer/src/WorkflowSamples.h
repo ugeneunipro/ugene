@@ -49,7 +49,7 @@ public:
 
 class SampleCategory {
 public:
-    SampleCategory(const QString &dir, const QString &name)
+    SampleCategory(const QString& dir, const QString& name)
         : d(dir, name, "") {
     }
     Descriptor d;
@@ -59,12 +59,12 @@ public:
 class LoadSamplesTask : public Task {
     Q_OBJECT
 public:
-    LoadSamplesTask(const QStringList &);
+    LoadSamplesTask(const QStringList&);
     void run();
     ReportResult report();
 
 private:
-    void scanDir(const QString &, int depth = 0);
+    void scanDir(const QString&, int depth = 0);
     QStringList dirs;
     QList<SampleCategory> result;
     static const int maxDepth;
@@ -72,7 +72,7 @@ private:
 
 class SampleRegistry {
 public:
-    static Task *init(const QStringList &);
+    static Task* init(const QStringList&);
     static QList<SampleCategory> getCategories() {
         return data;
     }
@@ -85,29 +85,29 @@ private:
 class SamplePane : public GlassPane {
     Q_OBJECT
 public:
-    SamplePane(WorkflowScene *scene);
-    virtual void paint(QPainter *);
-    virtual bool eventFilter(QObject *, QEvent *e) {
+    SamplePane(WorkflowScene* scene);
+    virtual void paint(QPainter*);
+    virtual bool eventFilter(QObject*, QEvent* e) {
         this->event(e);
         return item != nullptr;
     }
 
 public slots:
-    void setItem(QTreeWidgetItem *it) {
+    void setItem(QTreeWidgetItem* it) {
         item = it;
     };
 signals:
-    void itemActivated(QTreeWidgetItem *item);
+    void itemActivated(QTreeWidgetItem* item);
     void cancel();
 
 protected:
-    virtual void mouseDoubleClickEvent(QMouseEvent *event);
-    virtual void keyPressEvent(QKeyEvent *event);
+    virtual void mouseDoubleClickEvent(QMouseEvent* event);
+    virtual void keyPressEvent(QKeyEvent* event);
 
 private:
-    QTextDocument *m_document;
-    QTreeWidgetItem *item;
-    WorkflowScene *scene;
+    QTextDocument* m_document;
+    QTreeWidgetItem* item;
+    WorkflowScene* scene;
 };
 
 class SamplesWidget : public QTreeWidget {
@@ -115,54 +115,54 @@ class SamplesWidget : public QTreeWidget {
 public:
     static const QString MIME_TYPE;
 
-    SamplesWidget(WorkflowScene *scene, QWidget *parent = 0);
-    void activateSample(const QString &category, const QString &id);
-    void loadSample(const QString &category, const QString &id);
+    SamplesWidget(WorkflowScene* scene, QWidget* parent = 0);
+    void activateSample(const QString& category, const QString& id);
+    void loadSample(const QString& category, const QString& id);
 
 public slots:
     void cancelItem();
-    void sl_nameFilterChanged(const QString &nameFilter);
+    void sl_nameFilterChanged(const QString& nameFilter);
 
 protected:
-    void resizeEvent(QResizeEvent *e) {
+    void resizeEvent(QResizeEvent* e) {
         QTreeWidget::resizeEvent(e);
         doItemsLayout();
     }
 
 private slots:
-    void handleTreeItem(QTreeWidgetItem *item);
-    void activateItem(QTreeWidgetItem *item);
+    void handleTreeItem(QTreeWidgetItem* item);
+    void activateItem(QTreeWidgetItem* item);
     void sl_refreshSampesItems();
 
 signals:
-    void setupGlass(GlassPane *);
-    void sampleSelected(const QString &);
+    void setupGlass(GlassPane*);
+    void sampleSelected(const QString&);
 
 private:
-    QTreeWidgetItem *getSampleItem(const QString &category, const QString &id);
-    void addCategory(const SampleCategory &cat);
-    void revisible(const QString &nameFilter);
+    QTreeWidgetItem* getSampleItem(const QString& category, const QString& id);
+    void addCategory(const SampleCategory& cat);
+    void revisible(const QString& nameFilter);
 
-    SamplePane *glass;
+    SamplePane* glass;
 };
 
 class NameFilterLayout : public QHBoxLayout {
     Q_OBJECT
 public:
-    NameFilterLayout(QWidget *parent);
+    NameFilterLayout(QWidget* parent);
 
-    QLineEdit *getNameEdit() const;
+    QLineEdit* getNameEdit() const;
 
-    static bool filterMatched(const QString &nameFilter, const QString &name);
+    static bool filterMatched(const QString& nameFilter, const QString& name);
 
 private:
-    QLineEdit *nameEdit;
-    QAction *delTextAction;
+    QLineEdit* nameEdit;
+    QAction* delTextAction;
 };
 
 class SamplesWrapper : public QWidget {
 public:
-    SamplesWrapper(SamplesWidget *samples, QWidget *parent);
+    SamplesWrapper(SamplesWidget* samples, QWidget* parent);
 };
 
 }  // namespace U2

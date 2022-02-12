@@ -42,10 +42,10 @@ class ExternalToolManagerImpl : public ExternalToolManager {
 public:
     ExternalToolManagerImpl();
 
-    void validate(const QStringList &toolIds, const StrStrMap &toolPaths, ExternalToolValidationListener *listener = nullptr) override;
+    void validate(const QStringList& toolIds, const StrStrMap& toolPaths, ExternalToolValidationListener* listener = nullptr) override;
 
     /** Checks that tool is valid. */
-    bool isValid(const QString &toolId) const override;
+    bool isValid(const QString& toolId) const override;
 
     /** Returns true if startup validation is in progress. */
     bool isInStartupValidationMode() const override {
@@ -53,42 +53,42 @@ public:
     }
 
     /** Returns current validation state of the external tool. */
-    ExternalToolState getToolState(const QString &toolId) const override;
+    ExternalToolState getToolState(const QString& toolId) const override;
 
 private slots:
     /** Initializes custom external tools loading and results to sl_onRegistryHasToolsListingLoaded call. */
     void sl_initialize();
 
     /** Starts validation of all tasks in the registry. */
-    void sl_onRegistryHasToolsListingLoaded(Task *);
+    void sl_onRegistryHasToolsListingLoaded(Task*);
 
     /** Callback of the single tool validation task. */
-    void sl_onToolValidationTaskFinished(Task *task);
+    void sl_onToolValidationTaskFinished(Task* task);
 
     /** Called on external tool status change in the registry. */
     void sl_onToolStatusChanged(bool isValid);
 
     /** Called every time a new tool is added to the registry. */
-    void sl_onToolAddedToRegistry(const QString &toolId);
+    void sl_onToolAddedToRegistry(const QString& toolId);
 
     /** Called every time an existing tool is about to be removed from the registry. */
-    void sl_onToolRemovedFromRegistry(const QString &toolId);
+    void sl_onToolRemovedFromRegistry(const QString& toolId);
 
 private:
     /** Checks if all startup tasks are finished and starts the startup validation if it was not started before. */
     void checkStartupValidationState();
 
     /** Registers tool & dependencies in the state map. */
-    void registerTool(ExternalTool *tool);
+    void registerTool(ExternalTool* tool);
 
-    QString addToolToPendingListsAndReturnToolPath(ExternalTool *tool);
+    QString addToolToPendingListsAndReturnToolPath(ExternalTool* tool);
 
     /** Returns true if all tool dependencies can are valid. */
-    bool checkAllDependenciesAreValid(ExternalTool *tool);
+    bool checkAllDependenciesAreValid(ExternalTool* tool);
 
-    void runPendingValidationTasks(const StrStrMap &predefinedToolPathById = StrStrMap(), ExternalToolValidationListener *listener = nullptr);
+    void runPendingValidationTasks(const StrStrMap& predefinedToolPathById = StrStrMap(), ExternalToolValidationListener* listener = nullptr);
 
-    ExternalToolRegistry *etRegistry;
+    ExternalToolRegistry* etRegistry;
 
     /** Tools waiting for validation. */
     QSet<QString> pendingValidationToolSet;
@@ -103,6 +103,6 @@ private:
     bool isStartupValidation;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_EXTERNAL_TOOL_VALIDATION_MANAGER_H_
+#endif  // _U2_EXTERNAL_TOOL_VALIDATION_MANAGER_H_

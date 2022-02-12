@@ -39,37 +39,37 @@ class DnaAssemblyAlgorithmEnv;
 class U2ALGORITHM_EXPORT DnaAssemblyAlgRegistry : public QObject {
     Q_OBJECT
 public:
-    DnaAssemblyAlgRegistry(QObject *pOwn = 0);
+    DnaAssemblyAlgRegistry(QObject* pOwn = 0);
     ~DnaAssemblyAlgRegistry();
 
-    bool registerAlgorithm(DnaAssemblyAlgorithmEnv *env);
-    DnaAssemblyAlgorithmEnv *unregisterAlgorithm(const QString &id);
-    DnaAssemblyAlgorithmEnv *getAlgorithm(const QString &id) const;
+    bool registerAlgorithm(DnaAssemblyAlgorithmEnv* env);
+    DnaAssemblyAlgorithmEnv* unregisterAlgorithm(const QString& id);
+    DnaAssemblyAlgorithmEnv* getAlgorithm(const QString& id) const;
 
     QStringList getRegisteredAlgorithmIds() const;
     QStringList getRegisteredAlgorithmsWithIndexFileSupport() const;
 
 private:
     mutable QMutex mutex;
-    QMap<QString, DnaAssemblyAlgorithmEnv *> algorithms;
+    QMap<QString, DnaAssemblyAlgorithmEnv*> algorithms;
 
     Q_DISABLE_COPY(DnaAssemblyAlgRegistry);
 };
 
 class U2ALGORITHM_EXPORT DnaAssemblyAlgorithmEnv {
 public:
-    DnaAssemblyAlgorithmEnv(const QString &id,
-                            DnaAssemblyToRefTaskFactory *tf,
-                            DnaAssemblyGUIExtensionsFactory *guiExt,
+    DnaAssemblyAlgorithmEnv(const QString& id,
+                            DnaAssemblyToRefTaskFactory* tf,
+                            DnaAssemblyGUIExtensionsFactory* guiExt,
                             bool supportsIndexFiles,
                             bool supportsDbi,
                             bool supportsPairedEndLibrary,
-                            const QStringList &refrerenceFormats,
-                            const QStringList &readsFormats);
+                            const QStringList& refrerenceFormats,
+                            const QStringList& readsFormats);
 
     virtual ~DnaAssemblyAlgorithmEnv();
 
-    const QString &getId() const {
+    const QString& getId() const {
         return id;
     }
     bool isIndexFilesSupported() const {
@@ -88,10 +88,10 @@ public:
         return readsFormats;
     }
 
-    DnaAssemblyToRefTaskFactory *getTaskFactory() const {
+    DnaAssemblyToRefTaskFactory* getTaskFactory() const {
         return taskFactory;
     }
-    DnaAssemblyGUIExtensionsFactory *getGUIExtFactory() const {
+    DnaAssemblyGUIExtensionsFactory* getGUIExtFactory() const {
         return guiExtFactory;
     }
 
@@ -100,8 +100,8 @@ private:
 
 protected:
     QString id;
-    DnaAssemblyToRefTaskFactory *taskFactory;
-    DnaAssemblyGUIExtensionsFactory *guiExtFactory;
+    DnaAssemblyToRefTaskFactory* taskFactory;
+    DnaAssemblyGUIExtensionsFactory* guiExtFactory;
     bool supportsIndexFiles;
     bool supportsDbi;
     bool supportsPEReads;

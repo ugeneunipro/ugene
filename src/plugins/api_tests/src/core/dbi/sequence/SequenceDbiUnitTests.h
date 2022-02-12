@@ -46,19 +46,19 @@ class SequenceTestData {
 public:
     static void init();
     static void shutdown();
-    static U2SequenceDbi *getSequenceDbi();
-    static QList<U2DataId> *getSequences() {
+    static U2SequenceDbi* getSequenceDbi();
+    static QList<U2DataId>* getSequences() {
         return sequences;
     };
-    static bool compareSequences(const U2Sequence &s1, const U2Sequence &s2);
-    static void checkUpdateSequence(UnitTest *t, const UpdateSequenceArgs &args);
-    static void replaceRegion(UnitTest *t, const QByteArray &originalSequence, const QByteArray &dataToInsert, const U2Region &region, QByteArray &resultSequence);
+    static bool compareSequences(const U2Sequence& s1, const U2Sequence& s2);
+    static void checkUpdateSequence(UnitTest* t, const UpdateSequenceArgs& args);
+    static void replaceRegion(UnitTest* t, const QByteArray& originalSequence, const QByteArray& dataToInsert, const U2Region& region, QByteArray& resultSequence);
 
 public:
-    static U2SequenceDbi *sequenceDbi;
-    static QList<U2DataId> *sequences;
+    static U2SequenceDbi* sequenceDbi;
+    static QList<U2DataId>* sequences;
 
-    static const QString &SEQ_DB_URL;
+    static const QString& SEQ_DB_URL;
 
 protected:
     static TestDbiProvider dbiProvider;

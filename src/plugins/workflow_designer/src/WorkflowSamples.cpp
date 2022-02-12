@@ -53,7 +53,7 @@
 #include "WorkflowViewController.h"
 #include "util/SaveSchemaImageUtils.h"
 
-Q_DECLARE_METATYPE(QTextDocument *)
+Q_DECLARE_METATYPE(QTextDocument*)
 
 namespace U2 {
 
@@ -68,31 +68,31 @@ QList<SampleCategory> SampleRegistry::data;
 
 class SampleDelegate : public QStyledItemDelegate {
 public:
-    SampleDelegate(QObject *parent = 0)
+    SampleDelegate(QObject* parent = 0)
         : QStyledItemDelegate(parent) {
     }
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
+    QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const {
         QVariant value = index.data(Qt::SizeHintRole);
         if (value.isValid())
             return qvariant_cast<QSize>(value);
 
         QStyleOptionViewItem opt = option;
         initStyleOption(&opt, index);
-        const QWidget *widget = qobject_cast<QWidget *>(parent());  // QStyledItemDelegatePrivate::widget(option);
-        QStyle *style = widget ? widget->style() : QApplication::style();
+        const QWidget* widget = qobject_cast<QWidget*>(parent());  // QStyledItemDelegatePrivate::widget(option);
+        QStyle* style = widget ? widget->style() : QApplication::style();
         opt.rect.setSize(widget->size());
         return style->sizeFromContents(QStyle::CT_ItemViewItem, &opt, QSize(), widget);
     }
 };
 
-SamplesWidget::SamplesWidget(WorkflowScene *scene, QWidget *parent)
+SamplesWidget::SamplesWidget(WorkflowScene* scene, QWidget* parent)
     : QTreeWidget(parent) {
     setColumnCount(1);
     setHeaderHidden(true);
     setItemDelegate(new SampleDelegate(this));
     setWordWrap(true);
 
-    foreach (const SampleCategory &cat, SampleRegistry::getCategories()) {
+    foreach (const SampleCategory& cat, SampleRegistry::getCategories()) {
         addCategory(cat);
     }
 
@@ -100,19 +100,19 @@ SamplesWidget::SamplesWidget(WorkflowScene *scene, QWidget *parent)
 
     glass = new SamplePane(scene);
 
-    connect(this, SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)), SLOT(handleTreeItem(QTreeWidgetItem *)));
-    connect(this, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), SLOT(activateItem(QTreeWidgetItem *)));
-    connect(glass, SIGNAL(itemActivated(QTreeWidgetItem *)), SLOT(activateItem(QTreeWidgetItem *)));
+    connect(this, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), SLOT(handleTreeItem(QTreeWidgetItem*)));
+    connect(this, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), SLOT(activateItem(QTreeWidgetItem*)));
+    connect(glass, SIGNAL(itemActivated(QTreeWidgetItem*)), SLOT(activateItem(QTreeWidgetItem*)));
     connect(glass, SIGNAL(cancel()), SLOT(cancelItem()));
     connect(WorkflowSettings::watcher, SIGNAL(changed()), this, SLOT(sl_refreshSampesItems()));
 }
 
-QTreeWidgetItem *SamplesWidget::getSampleItem(const QString &category, const QString &id) {
-    QList<QTreeWidgetItem *> items = findItems(category, Qt::MatchExactly);
+QTreeWidgetItem* SamplesWidget::getSampleItem(const QString& category, const QString& id) {
+    QList<QTreeWidgetItem*> items = findItems(category, Qt::MatchExactly);
     CHECK(1 == items.size(), nullptr);
 
     for (int i = 0; i < items.first()->childCount(); i++) {
-        QTreeWidgetItem *sampleItem = items.first()->child(i);
+        QTreeWidgetItem* sampleItem = items.first()->child(i);
         const QString sampleId = sampleItem->data(0, ID_ROLE).toString();
         if (sampleId == id) {
             return sampleItem;
@@ -122,8 +122,8 @@ QTreeWidgetItem *SamplesWidget::getSampleItem(const QString &category, const QSt
     return nullptr;
 }
 
-void SamplesWidget::activateSample(const QString &category, const QString &id) {
-    QTreeWidgetItem *sampleItem = getSampleItem(category, id);
+void SamplesWidget::activateSample(const QString& category, const QString& id) {
+    QTreeWidgetItem* sampleItem = getSampleItem(category, id);
     CHECK(nullptr != sampleItem, );
 
     scrollToItem(sampleItem);
@@ -131,21 +131,21 @@ void SamplesWidget::activateSample(const QString &category, const QString &id) {
     return;
 }
 
-void SamplesWidget::loadSample(const QString &category, const QString &id) {
-    QTreeWidgetItem *sampleItem = getSampleItem(category, id);
+void SamplesWidget::loadSample(const QString& category, const QString& id) {
+    QTreeWidgetItem* sampleItem = getSampleItem(category, id);
     CHECK(nullptr != sampleItem, );
 
     activateItem(sampleItem);
     return;
 }
 
-void SamplesWidget::activateItem(QTreeWidgetItem *item) {
+void SamplesWidget::activateItem(QTreeWidgetItem* item) {
     if (item && item->data(0, DATA_ROLE).isValid()) {
         emit sampleSelected(item->data(0, DATA_ROLE).toString());
     }
 }
 
-void SamplesWidget::handleTreeItem(QTreeWidgetItem *item) {
+void SamplesWidget::handleTreeItem(QTreeWidgetItem* item) {
     if (item && !item->data(0, DATA_ROLE).isValid()) {
         item = nullptr;
     }
@@ -164,18 +164,18 @@ void SamplesWidget::cancelItem() {
     }
 }
 
-void SamplesWidget::sl_nameFilterChanged(const QString &nameFilter) {
+void SamplesWidget::sl_nameFilterChanged(const QString& nameFilter) {
     revisible(nameFilter);
 }
 
-void SamplesWidget::revisible(const QString &nameFilter) {
+void SamplesWidget::revisible(const QString& nameFilter) {
     setMouseTracking(false);
     for (int catIdx = 0; catIdx < topLevelItemCount(); catIdx++) {
-        QTreeWidgetItem *category = topLevelItem(catIdx);
+        QTreeWidgetItem* category = topLevelItem(catIdx);
         bool hasVisibleSamples = false;
         QString catName = category->text(0);
         for (int childIdx = 0; childIdx < category->childCount(); childIdx++) {
-            QTreeWidgetItem *sample = category->child(childIdx);
+            QTreeWidgetItem* sample = category->child(childIdx);
             QString name = sample->text(0);
             if (!NameFilterLayout::filterMatched(nameFilter, name) &&
                 !NameFilterLayout::filterMatched(nameFilter, catName)) {
@@ -191,20 +191,20 @@ void SamplesWidget::revisible(const QString &nameFilter) {
     setMouseTracking(true);
 }
 
-void SamplesWidget::addCategory(const SampleCategory &cat) {
-    QTreeWidgetItem *ci = new QTreeWidgetItem(this, QStringList(cat.d.getDisplayName()));
+void SamplesWidget::addCategory(const SampleCategory& cat) {
+    QTreeWidgetItem* ci = new QTreeWidgetItem(this, QStringList(cat.d.getDisplayName()));
     ci->setFlags(Qt::ItemIsEnabled);
     QFont cf;
     cf.setBold(true);
     ci->setData(0, Qt::FontRole, cf);
     ci->setData(0, Qt::BackgroundRole, QColor(255, 255, 160, 127));
 
-    foreach (const Sample &item, cat.items) {
-        QTreeWidgetItem *ib = new QTreeWidgetItem(ci, QStringList(item.d.getDisplayName()));
+    foreach (const Sample& item, cat.items) {
+        QTreeWidgetItem* ib = new QTreeWidgetItem(ci, QStringList(item.d.getDisplayName()));
         ib->setData(0, DATA_ROLE, item.content);
         ib->setData(0, ID_ROLE, item.id);
-        QTextDocument *doc = new QTextDocument(this);
-        ib->setData(0, DOC_ROLE, qVariantFromValue<QTextDocument *>(doc));
+        QTextDocument* doc = new QTextDocument(this);
+        ib->setData(0, DOC_ROLE, qVariantFromValue<QTextDocument*>(doc));
         Descriptor d = item.d;
         QIcon ico = item.ico;
         if (ico.isNull()) {
@@ -219,18 +219,18 @@ void SamplesWidget::addCategory(const SampleCategory &cat) {
 
 void SamplesWidget::sl_refreshSampesItems() {
     clear();
-    foreach (const SampleCategory &cat, SampleRegistry::getCategories()) {
+    foreach (const SampleCategory& cat, SampleRegistry::getCategories()) {
         addCategory(cat);
     }
     expandAll();
 }
 
-void SamplePane::mouseDoubleClickEvent(QMouseEvent *e) {
+void SamplePane::mouseDoubleClickEvent(QMouseEvent* e) {
     if (!item) {
         return;
     }
 
-    QTextDocument *doc = item->data(0, DOC_ROLE).value<QTextDocument *>();
+    QTextDocument* doc = item->data(0, DOC_ROLE).value<QTextDocument*>();
     int pageWidth = qMax(width() - 100, 100);
     int pageHeight = qMax(height() - 100, 100);
     if (pageWidth != doc->pageSize().width()) {
@@ -253,7 +253,7 @@ void SamplePane::mouseDoubleClickEvent(QMouseEvent *e) {
     }
 }
 
-void SamplePane::keyPressEvent(QKeyEvent *event) {
+void SamplePane::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Escape) {
         emit cancel();
     } else if (event->key() == Qt::Key_Enter) {
@@ -261,13 +261,13 @@ void SamplePane::keyPressEvent(QKeyEvent *event) {
     }
 }
 
-SamplePane::SamplePane(WorkflowScene *_scene)
+SamplePane::SamplePane(WorkflowScene* _scene)
     : item(nullptr), scene(_scene) {
     m_document = new QTextDocument(this);
 }
 
-void SamplePane::paint(QPainter *painter) {
-    const WorkflowView *ctrl = scene->getController();
+void SamplePane::paint(QPainter* painter) {
+    const WorkflowView* ctrl = scene->getController();
     SAFE_POINT(nullptr != ctrl, "NULL workflow controller", );
     if (!item && ctrl->isShowSamplesHint()) {
         DesignerGUIUtils::paintSamplesArrow(painter);
@@ -275,24 +275,24 @@ void SamplePane::paint(QPainter *painter) {
     }
 
     if (item) {
-        QTextDocument *doc = item->data(0, DOC_ROLE).value<QTextDocument *>();
+        QTextDocument* doc = item->data(0, DOC_ROLE).value<QTextDocument*>();
         DesignerGUIUtils::paintSamplesDocument(painter, doc, width(), height(), palette());
     }
 }
 
 const int LoadSamplesTask::maxDepth = 1;
 
-LoadSamplesTask::LoadSamplesTask(const QStringList &lst)
+LoadSamplesTask::LoadSamplesTask(const QStringList& lst)
     : Task(tr("Load workflow samples"), TaskFlag_None), dirs(lst) {
 }
 
 void LoadSamplesTask::run() {
-    foreach (const QString &s, dirs) {
+    foreach (const QString& s, dirs) {
         scanDir(s);
     }
 }
 
-void LoadSamplesTask::scanDir(const QString &s, int depth) {
+void LoadSamplesTask::scanDir(const QString& s, int depth) {
     QDir dir(s);
     if (!dir.exists()) {
         ioLog.error(tr("Sample dir does not exist: %1").arg(s));
@@ -300,11 +300,11 @@ void LoadSamplesTask::scanDir(const QString &s, int depth) {
     }
     SampleCategory category(s, dir.dirName());
     QStringList names;
-    foreach (const QString &ext, WorkflowUtils::WD_FILE_EXTENSIONS) {
+    foreach (const QString& ext, WorkflowUtils::WD_FILE_EXTENSIONS) {
         names << "*." + ext;
     }
 
-    foreach (const QFileInfo &fi, dir.entryInfoList(names, QDir::Files | QDir::NoSymLinks)) {
+    foreach (const QFileInfo& fi, dir.entryInfoList(names, QDir::Files | QDir::NoSymLinks)) {
         QFile f(fi.absoluteFilePath());
         if (!f.open(QIODevice::ReadOnly)) {
             ioLog.error(tr("Failed to load sample: %1").arg(L10N::errorOpeningFileRead(fi.absoluteFilePath())));
@@ -335,7 +335,7 @@ void LoadSamplesTask::scanDir(const QString &s, int depth) {
         result << category;
     }
     if (depth < maxDepth) {
-        foreach (const QFileInfo &fi, dir.entryInfoList(QStringList(), QDir::AllDirs | QDir::NoSymLinks | QDir::NoDotAndDotDot)) {
+        foreach (const QFileInfo& fi, dir.entryInfoList(QStringList(), QDir::AllDirs | QDir::NoSymLinks | QDir::NoDotAndDotDot)) {
             scanDir(fi.absoluteFilePath(), depth + 1);
         }
     }
@@ -346,14 +346,14 @@ Task::ReportResult LoadSamplesTask::report() {
     return ReportResult_Finished;
 }
 
-Task *SampleRegistry::init(const QStringList &lst) {
+Task* SampleRegistry::init(const QStringList& lst) {
     return new LoadSamplesTask(lst);
 }
 
 /************************************************************************/
 /* NameFilterLayout */
 /************************************************************************/
-NameFilterLayout::NameFilterLayout(QWidget *parent)
+NameFilterLayout::NameFilterLayout(QWidget* parent)
     : QHBoxLayout(parent) {
     setContentsMargins(0, 0, 0, 0);
     setSpacing(6);
@@ -361,7 +361,7 @@ NameFilterLayout::NameFilterLayout(QWidget *parent)
     nameEdit->setObjectName("nameFilterLineEdit");
     nameEdit->setPlaceholderText(tr("Type to filter by name..."));
 
-    QLabel *label = new QLabel(tr("Name filter:"));
+    QLabel* label = new QLabel(tr("Name filter:"));
     label->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     nameEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     addWidget(label);
@@ -374,14 +374,14 @@ NameFilterLayout::NameFilterLayout(QWidget *parent)
     connect(delTextAction, SIGNAL(triggered()), nameEdit, SLOT(clear()));
 }
 
-QLineEdit *NameFilterLayout::getNameEdit() const {
+QLineEdit* NameFilterLayout::getNameEdit() const {
     return nameEdit;
 }
 
-bool NameFilterLayout::filterMatched(const QString &nameFilter, const QString &name) {
+bool NameFilterLayout::filterMatched(const QString& nameFilter, const QString& name) {
     static QRegExp spaces("\\s");
     QStringList filterWords = nameFilter.split(spaces);
-    foreach (const QString &word, filterWords) {
+    foreach (const QString& word, filterWords) {
         if (!name.contains(word, Qt::CaseInsensitive)) {
             return false;
         }
@@ -392,16 +392,16 @@ bool NameFilterLayout::filterMatched(const QString &nameFilter, const QString &n
 /************************************************************************/
 /* SamplesWrapper */
 /************************************************************************/
-SamplesWrapper::SamplesWrapper(SamplesWidget *samples, QWidget *parent)
+SamplesWrapper::SamplesWrapper(SamplesWidget* samples, QWidget* parent)
     : QWidget(parent) {
-    QVBoxLayout *vl = new QVBoxLayout(this);
+    QVBoxLayout* vl = new QVBoxLayout(this);
     vl->setContentsMargins(0, 3, 0, 0);
     vl->setSpacing(3);
-    NameFilterLayout *hl = new NameFilterLayout(nullptr);
+    NameFilterLayout* hl = new NameFilterLayout(nullptr);
     vl->addLayout(hl);
     vl->addWidget(samples);
 
-    connect(hl->getNameEdit(), SIGNAL(textChanged(const QString &)), samples, SLOT(sl_nameFilterChanged(const QString &)));
+    connect(hl->getNameEdit(), SIGNAL(textChanged(const QString&)), samples, SLOT(sl_nameFilterChanged(const QString&)));
     setFocusProxy(hl->getNameEdit());
 }
 

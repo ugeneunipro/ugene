@@ -46,13 +46,13 @@ using namespace HI;
 
 #define GT_CLASS_NAME "GTSequenceReadingModeDialogUtils"
 
-GTSequenceReadingModeDialogUtils::GTSequenceReadingModeDialogUtils(HI::GUITestOpStatus &os, CustomScenario *scenario)
+GTSequenceReadingModeDialogUtils::GTSequenceReadingModeDialogUtils(HI::GUITestOpStatus& os, CustomScenario* scenario)
     : Filler(os, "MultipleDocumentsReadingModeSelectorController", scenario), dialog(nullptr) {
 }
 
 #define GT_METHOD_NAME "run"
 void GTSequenceReadingModeDialogUtils::commonScenario() {
-    QWidget *openDialog = GTWidget::getActiveModalWidget(os);
+    QWidget* openDialog = GTWidget::getActiveModalWidget(os);
 
     dialog = openDialog;
 
@@ -103,7 +103,7 @@ void GTSequenceReadingModeDialogUtils::setNumSymbolsParts() {
 
 #define GT_METHOD_NAME "setNumSymbolsFiles"
 void GTSequenceReadingModeDialogUtils::setNumSymbolsFiles() {
-    QSpinBox *spinBox = dialog->findChild<QSpinBox *>(FILE_GAP);
+    QSpinBox* spinBox = dialog->findChild<QSpinBox*>(FILE_GAP);
     GT_CHECK(spinBox != nullptr, "spinBox not found");
 
     changeSpinBoxValue(spinBox, GTSequenceReadingModeDialog::numSymbolFiles);
@@ -116,7 +116,7 @@ void GTSequenceReadingModeDialogUtils::setNewDocumentName() {
         return;
     }
 
-    QLineEdit *lineEdit = dialog->findChild<QLineEdit *>(NEW_DOC_NAME);
+    QLineEdit* lineEdit = dialog->findChild<QLineEdit*>(NEW_DOC_NAME);
     GT_CHECK(lineEdit != nullptr, "lineEdit not found");
 
     GTLineEdit::clear(os, lineEdit);
@@ -149,16 +149,16 @@ void GTSequenceReadingModeDialogUtils::selectSaveDocument() {
 
 #define GT_METHOD_NAME "clickButton"
 void GTSequenceReadingModeDialogUtils::clickButton() {
-    QDialogButtonBox *buttonBox = dialog->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
+    QDialogButtonBox* buttonBox = dialog->findChild<QDialogButtonBox*>(QString::fromUtf8("buttonBox"));
     GT_CHECK(buttonBox != nullptr, "button box not found");
 
-    QList<QAbstractButton *> buttonList = buttonBox->buttons();
+    QList<QAbstractButton*> buttonList = buttonBox->buttons();
     GT_CHECK(buttonList.size() != 0, "button not found");
 
-    QPushButton *btn = nullptr;
-    foreach (QAbstractButton *b, buttonList) {
+    QPushButton* btn = nullptr;
+    foreach (QAbstractButton* b, buttonList) {
         if (buttonBox->standardButton(b) == GTSequenceReadingModeDialog::button) {
-            btn = qobject_cast<QPushButton *>(b);
+            btn = qobject_cast<QPushButton*>(b);
             break;
         }
     }
@@ -168,7 +168,7 @@ void GTSequenceReadingModeDialogUtils::clickButton() {
 }
 #undef GT_METHOD_NAME
 
-void GTSequenceReadingModeDialogUtils::changeSpinBoxValue(QSpinBox *sb, int val) {
+void GTSequenceReadingModeDialogUtils::changeSpinBoxValue(QSpinBox* sb, int val) {
     QPoint arrowPos;
     QRect spinBoxRect;
 

@@ -28,12 +28,12 @@
 
 namespace U2 {
 
-MysqlCrossDatabaseReferenceDbi::MysqlCrossDatabaseReferenceDbi(MysqlDbi *dbi)
+MysqlCrossDatabaseReferenceDbi::MysqlCrossDatabaseReferenceDbi(MysqlDbi* dbi)
     : U2CrossDatabaseReferenceDbi(dbi),
       MysqlChildDbiCommon(dbi) {
 }
 
-void MysqlCrossDatabaseReferenceDbi::initSqlSchema(U2OpStatus &os) {
+void MysqlCrossDatabaseReferenceDbi::initSqlSchema(U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     // cross database reference object
@@ -49,7 +49,7 @@ void MysqlCrossDatabaseReferenceDbi::initSqlSchema(U2OpStatus &os) {
         .execute();
 }
 
-void MysqlCrossDatabaseReferenceDbi::createCrossReference(U2CrossDatabaseReference &reference, const QString &folder, U2OpStatus &os) {
+void MysqlCrossDatabaseReferenceDbi::createCrossReference(U2CrossDatabaseReference& reference, const QString& folder, U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     dbi->getMysqlObjectDbi()->createObject(reference, folder, U2DbiObjectRank_TopLevel, os);
@@ -65,7 +65,7 @@ void MysqlCrossDatabaseReferenceDbi::createCrossReference(U2CrossDatabaseReferen
     q.execute();
 }
 
-void MysqlCrossDatabaseReferenceDbi::removeCrossReferenceData(const U2DataId &referenceId, U2OpStatus &os) {
+void MysqlCrossDatabaseReferenceDbi::removeCrossReferenceData(const U2DataId& referenceId, U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     static const QString queryString = "DELETE FROM CrossDatabaseReference WHERE object = :object";
@@ -74,7 +74,7 @@ void MysqlCrossDatabaseReferenceDbi::removeCrossReferenceData(const U2DataId &re
     q.execute();
 }
 
-U2CrossDatabaseReference MysqlCrossDatabaseReferenceDbi::getCrossReference(const U2DataId &objectId, U2OpStatus &os) {
+U2CrossDatabaseReference MysqlCrossDatabaseReferenceDbi::getCrossReference(const U2DataId& objectId, U2OpStatus& os) {
     U2CrossDatabaseReference res(objectId, dbi->getDbiId(), 0);
 
     static const QString queryString = "SELECT r.factory, r.dbi, r.rid, r.version, o.name, o.version FROM CrossDatabaseReference AS r, Object AS o WHERE o.id = :id AND r.object = o.id";
@@ -93,7 +93,7 @@ U2CrossDatabaseReference MysqlCrossDatabaseReferenceDbi::getCrossReference(const
     return res;
 }
 
-void MysqlCrossDatabaseReferenceDbi::updateCrossReference(const U2CrossDatabaseReference &reference, U2OpStatus &os) {
+void MysqlCrossDatabaseReferenceDbi::updateCrossReference(const U2CrossDatabaseReference& reference, U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     static const QString queryString = "UPDATE CrossDatabaseReference SET factory = :factory, dbi = :dbi, rid = :rid, version = :version WHERE object = :object";

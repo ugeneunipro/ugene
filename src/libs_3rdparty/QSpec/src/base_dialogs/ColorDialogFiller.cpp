@@ -40,16 +40,16 @@ void ColorDialogFiller::commonScenario() {
 #ifdef Q_OS_LINUX
     setWithQt = true;
 #endif
-    QWidget *dialog = QApplication::activeModalWidget();
+    QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog != NULL, "dialog is NULL");
 
     if (setWithQt) {
         class Scenario : public CustomScenario {
         public:
-            Scenario(QColorDialog *_d, QColor _c)
+            Scenario(QColorDialog* _d, QColor _c)
                 : d(_d), c(_c) {
             }
-            void run(GUITestOpStatus &os) {
+            void run(GUITestOpStatus& os) {
                 Q_UNUSED(os);
                 d->setCurrentColor(c);
                 GTGlobals::sleep();
@@ -57,18 +57,18 @@ void ColorDialogFiller::commonScenario() {
             }
 
         private:
-            QColorDialog *d;
+            QColorDialog* d;
             QColor c;
         };
 
-        QColorDialog *d = qobject_cast<QColorDialog *>(dialog);
+        QColorDialog* d = qobject_cast<QColorDialog*>(dialog);
         GTThread::runInMainThread(os, new Scenario(d, QColor(r, g, b)));
         GTThread::waitForMainThread();
         GTGlobals::sleep(500);
         return;
     }
 
-    QList<QSpinBox *> spinList = dialog->findChildren<QSpinBox *>();
+    QList<QSpinBox*> spinList = dialog->findChildren<QSpinBox*>();
     GTSpinBox::setValue(os, spinList.at(3), r, GTGlobals::UseKeyBoard);
     GTSpinBox::setValue(os, spinList.at(4), g, GTGlobals::UseKeyBoard);
     GTSpinBox::setValue(os, spinList.at(5), b, GTGlobals::UseKeyBoard);

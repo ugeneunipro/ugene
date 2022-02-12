@@ -48,17 +48,17 @@ const QString PhmmerSearchDialog::DOM_E_PLUS_PREFIX = "1E+";
 const QString PhmmerSearchDialog::DOM_E_MINUS_PREFIX = "1E";
 const QString PhmmerSearchDialog::ANNOTATIONS_DEFAULT_NAME = "signal";
 
-PhmmerSearchDialog::PhmmerSearchDialog(U2SequenceObject *seqObj, QWidget *parent)
+PhmmerSearchDialog::PhmmerSearchDialog(U2SequenceObject* seqObj, QWidget* parent)
     : QDialog(parent), seqCtx(nullptr) {
     init(seqObj);
 }
 
-PhmmerSearchDialog::PhmmerSearchDialog(ADVSequenceObjectContext *seqCtx, QWidget *parent)
+PhmmerSearchDialog::PhmmerSearchDialog(ADVSequenceObjectContext* seqCtx, QWidget* parent)
     : QDialog(parent), seqCtx(seqCtx) {
     init(seqCtx->getSequenceObject());
 }
 
-void PhmmerSearchDialog::init(U2SequenceObject *seqObj) {
+void PhmmerSearchDialog::init(U2SequenceObject* seqObj) {
     assert(nullptr != seqObj);
     setupUi(this);
 
@@ -81,9 +81,9 @@ void PhmmerSearchDialog::init(U2SequenceObject *seqObj) {
     annModel.sequenceLen = seqObj->getSequenceLength();
     annotationsWidgetController = new CreateAnnotationWidgetController(annModel, this);
 
-    QWidget *firstTab = mainTabWidget->widget(0);
+    QWidget* firstTab = mainTabWidget->widget(0);
     assert(nullptr != firstTab);
-    QVBoxLayout *curLayout = qobject_cast<QVBoxLayout *>(firstTab->layout());
+    QVBoxLayout* curLayout = qobject_cast<QVBoxLayout*>(firstTab->layout());
     assert(nullptr != curLayout);
     curLayout->insertWidget(ANNOTATIONS_WIDGET_LOCATION, annotationsWidgetController->getWidget());
 
@@ -153,7 +153,7 @@ void PhmmerSearchDialog::getModelValues() {
     model.phmmerSettings.eft = eftDoubleSpinBox->value();
     model.phmmerSettings.seed = seedSpinBox->value();
 
-    const CreateAnnotationModel &annModel = annotationsWidgetController->getModel();
+    const CreateAnnotationModel& annModel = annotationsWidgetController->getModel();
     model.phmmerSettings.pattern = annotationsWidgetController->getAnnotationPattern();
     model.phmmerSettings.annotationTable = annModel.getAnnotationObject();
     model.phmmerSettings.querySequenceUrl = queryLineEdit->text();
@@ -228,7 +228,7 @@ void PhmmerSearchDialog::sl_maxCheckBoxChanged(int state) {
 }
 
 void PhmmerSearchDialog::sl_domESpinBoxChanged(int newVal) {
-    const QString &prefix = (0 <= newVal ? DOM_E_PLUS_PREFIX : DOM_E_MINUS_PREFIX);
+    const QString& prefix = (0 <= newVal ? DOM_E_PLUS_PREFIX : DOM_E_MINUS_PREFIX);
     domESpinBox->setPrefix(prefix);
 }
 

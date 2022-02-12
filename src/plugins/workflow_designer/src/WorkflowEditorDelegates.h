@@ -26,7 +26,7 @@
 
 #include <U2Lang/ConfigurationEditor.h>
 
-Q_DECLARE_METATYPE(U2::PropertyDelegate *)
+Q_DECLARE_METATYPE(U2::PropertyDelegate*)
 
 namespace U2 {
 
@@ -39,33 +39,33 @@ enum WorkflowEditorRoles {
 
 class ProxyDelegate : public QItemDelegate {
 public:
-    ProxyDelegate(QWidget *parent = 0)
+    ProxyDelegate(QWidget* parent = 0)
         : QItemDelegate(parent) {
     }
 
-    virtual void setPropertyValue(const QString &name, QVariant val) const {
+    virtual void setPropertyValue(const QString& name, QVariant val) const {
         Q_UNUSED(name);
         Q_UNUSED(val);
     }
-    virtual bool handlePropertyValueList(const QString &name, QVariant list) const {
+    virtual bool handlePropertyValueList(const QString& name, QVariant list) const {
         Q_UNUSED(name);
         Q_UNUSED(list);
         return false;
     }
 
-    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
 
-    void setEditorData(QWidget *editor, const QModelIndex &index) const;
+    void setEditorData(QWidget* editor, const QModelIndex& index) const;
 
-    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
+    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
 
 };  // ProxyDelegate
 
 class SuperDelegate : public ProxyDelegate {
 public:
-    SuperDelegate(WorkflowEditor *parent);
+    SuperDelegate(WorkflowEditor* parent);
 
-    virtual bool handlePropertyValueList(const QString &name, QVariant list) const;
+    virtual bool handlePropertyValueList(const QString& name, QVariant list) const;
 };  // SuperDelegate
 
 }  // namespace U2

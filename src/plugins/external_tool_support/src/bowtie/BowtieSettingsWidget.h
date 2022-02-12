@@ -32,27 +32,27 @@ namespace U2 {
 class BowtieSettingsWidget : public DnaAssemblyAlgorithmMainWidget, Ui_BowtieSettings {
     Q_OBJECT
 public:
-    BowtieSettingsWidget(QWidget *parent);
+    BowtieSettingsWidget(QWidget* parent);
     QMap<QString, QVariant> getDnaAssemblyCustomSettings() const;
-    bool isValidIndex(const QString &oneFileUrl) const;
+    bool isValidIndex(const QString& oneFileUrl) const;
 };
 
 class BowtieBuildSettingsWidget : public DnaAssemblyAlgorithmBuildIndexWidget, Ui_BowtieBuildSettings {
     Q_OBJECT
 public:
-    BowtieBuildSettingsWidget(QWidget *parent);
+    BowtieBuildSettingsWidget(QWidget* parent);
     virtual QMap<QString, QVariant> getBuildIndexCustomSettings();
     virtual QString getIndexFileExtension();
-    virtual GUrl buildIndexUrl(const GUrl &url);
+    virtual GUrl buildIndexUrl(const GUrl& url);
 };
 
 class BowtieGUIExtensionsFactory : public DnaAssemblyGUIExtensionsFactory {
-    DnaAssemblyAlgorithmMainWidget *createMainWidget(QWidget *parent);
-    DnaAssemblyAlgorithmBuildIndexWidget *createBuildIndexWidget(QWidget *parent);
+    DnaAssemblyAlgorithmMainWidget* createMainWidget(QWidget* parent);
+    DnaAssemblyAlgorithmBuildIndexWidget* createBuildIndexWidget(QWidget* parent);
     bool hasMainWidget();
     bool hasBuildIndexWidget();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_BOWTIE_SETTINGS_WIDGET_H_
+#endif  // _U2_BOWTIE_SETTINGS_WIDGET_H_

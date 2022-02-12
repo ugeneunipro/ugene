@@ -34,14 +34,14 @@ class U2VariantTrack;
 class RenameChromosomeInVariationTask : public Task {
     Q_OBJECT
 public:
-    RenameChromosomeInVariationTask(const QList<GObject *> &objects, const QStringList &prefixesToReplace, const QString &prefixReplaceWith);
+    RenameChromosomeInVariationTask(const QList<GObject*>& objects, const QStringList& prefixesToReplace, const QString& prefixReplaceWith);
 
 private:
     void run();
 
-    bool replaceSequenceName(U2VariantTrack &variantTrack) const;
+    bool replaceSequenceName(U2VariantTrack& variantTrack) const;
 
-    const QList<GObject *> objects;
+    const QList<GObject*> objects;
     const QStringList prefixesToReplace;
     const QString prefixReplaceWith;
 };
@@ -49,28 +49,28 @@ private:
 class RenameChromosomeInVariationFileTask : public Task {
     Q_OBJECT
 public:
-    RenameChromosomeInVariationFileTask(const QString &srcFileUrl, const QString &dstFileUrl, const QStringList &prefixesToReplace, const QString &prefixReplaceWith);
+    RenameChromosomeInVariationFileTask(const QString& srcFileUrl, const QString& dstFileUrl, const QStringList& prefixesToReplace, const QString& prefixReplaceWith);
 
     QString getDstFileUrl() const;
 
 private:
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
-    Task *initRenameTask();
-    Task *initSaveTask();
+    Task* initRenameTask();
+    Task* initSaveTask();
 
-    QList<GObject *> getVariantTrackObjects();
-    DocumentFormat *getFormat();
+    QList<GObject*> getVariantTrackObjects();
+    DocumentFormat* getFormat();
 
     const QString srcFileUrl;
     const QString dstFileUrl;
     const QStringList prefixesToReplace;
     const QString prefixReplaceWith;
 
-    LoadDocumentTask *loadTask;
-    RenameChromosomeInVariationTask *renameTask;
-    SaveDocumentTask *saveTask;
+    LoadDocumentTask* loadTask;
+    RenameChromosomeInVariationTask* renameTask;
+    SaveDocumentTask* saveTask;
 };
 
 }  // namespace U2

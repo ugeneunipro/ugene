@@ -29,13 +29,13 @@
 
 namespace U2 {
 
-WidgetWithLocalToolbar::WidgetWithLocalToolbar(QWidget *p)
+WidgetWithLocalToolbar::WidgetWithLocalToolbar(QWidget* p)
     : QWidget(p) {
     toolBar = new LocalToolbar(this);
     toolBar->setObjectName("WidgetWithLocalToolbar_toolbar");
     contentWidget = new QWidget(this);
 
-    QHBoxLayout *layout = new QHBoxLayout();
+    QHBoxLayout* layout = new QHBoxLayout();
     layout->setMargin(0);
     layout->setSpacing(0);
 
@@ -47,22 +47,22 @@ WidgetWithLocalToolbar::WidgetWithLocalToolbar(QWidget *p)
     QWidget::setLayout(layout);
 }
 
-void WidgetWithLocalToolbar::setContentLayout(QLayout *l) {
+void WidgetWithLocalToolbar::setContentLayout(QLayout* l) {
     delete contentWidget->layout();
 
     contentWidget->setLayout(l);
     update();
 }
 
-QToolButton *WidgetWithLocalToolbar::addActionToLocalToolbar(QAction *action) {
+QToolButton* WidgetWithLocalToolbar::addActionToLocalToolbar(QAction* action) {
     SAFE_POINT(action != nullptr, "Trying to add NULL action to toolbar", nullptr);
     toolBar->addAction(action);
     update();
 
-    return qobject_cast<QToolButton *>(toolBar->widgetForAction(action));
+    return qobject_cast<QToolButton*>(toolBar->widgetForAction(action));
 }
 
-void WidgetWithLocalToolbar::setLocalToolBarObjectName(const QString &name) {
+void WidgetWithLocalToolbar::setLocalToolBarObjectName(const QString& name) {
     toolBar->setObjectName(name);
 }
 

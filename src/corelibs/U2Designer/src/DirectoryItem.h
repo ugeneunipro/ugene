@@ -32,14 +32,14 @@ class DirectoryOptions;
 class DirectoryItem : public UrlItem {
     Q_OBJECT
 public:
-    DirectoryItem(const QString &url, QListWidget *parent = nullptr);
+    DirectoryItem(const QString& url, QListWidget* parent = nullptr);
     virtual ~DirectoryItem();
 
-    virtual void accept(UrlItemVisitor *visitor);
-    virtual QWidget *getOptionsWidget();
+    virtual void accept(UrlItemVisitor* visitor);
+    virtual QWidget* getOptionsWidget();
 
-    void setIncludeFilter(const QString &value);
-    void setExcludeFilter(const QString &value);
+    void setIncludeFilter(const QString& value);
+    void setExcludeFilter(const QString& value);
     void setRecursive(bool value);
 
     QString getIncludeFilter() const;
@@ -47,16 +47,16 @@ public:
     bool isRecursive() const;
 
 private:
-    DirectoryOptions *options;
+    DirectoryOptions* options;
 };
 
 class DirectoryOptions : public QWidget, public Ui_DirectoryOptions {
     Q_OBJECT
 public:
-    DirectoryOptions(QWidget *parent = nullptr);
+    DirectoryOptions(QWidget* parent = nullptr);
 
-    void setIncludeFilter(const QString &value);
-    void setExcludeFilter(const QString &value);
+    void setIncludeFilter(const QString& value);
+    void setExcludeFilter(const QString& value);
     void setRecursive(bool value);
 
     QString getIncludeFilter() const;

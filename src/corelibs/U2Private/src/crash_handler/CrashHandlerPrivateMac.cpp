@@ -84,9 +84,9 @@ void CrashHandlerPrivateMac::storeStackTrace() {
     sprintf(pid_buf, "%d", getpid());
     char name_buf[512];
     name_buf[readlink(path.toLatin1().constData(), name_buf, 511)] = 0;
-    FILE *fp = fopen(stacktraceFilePath.toLocal8Bit().constData(), "w+");
+    FILE* fp = fopen(stacktraceFilePath.toLocal8Bit().constData(), "w+");
     stacktraceFileSucessfullyCreated = (nullptr != fp);
-    void *stackTrace[1024];
+    void* stackTrace[1024];
     int frames = backtrace(stackTrace, 1024);
     backtrace_symbols_fd(stackTrace, frames, fileno(fp));
     const int closed = fclose(fp);
@@ -123,13 +123,13 @@ QString CrashHandlerPrivateMac::getAdditionalInfo() const {
     return info;
 }
 
-bool CrashHandlerPrivateMac::breakpadCallback(const char *dump_dir, const char *minidump_id, void *context, bool succeeded) {
+bool CrashHandlerPrivateMac::breakpadCallback(const char* dump_dir, const char* minidump_id, void* context, bool succeeded) {
     QString dumpUrl;
     if (succeeded) {
         dumpUrl = QString::fromLocal8Bit(dump_dir) + "/" + QString::fromLocal8Bit(minidump_id) + ".dmp";
     }
 
-    CrashHandlerPrivateMac *privateHandler = static_cast<CrashHandlerPrivateMac *>(context);
+    CrashHandlerPrivateMac* privateHandler = static_cast<CrashHandlerPrivateMac*>(context);
     privateHandler->dumpWasSuccessfullySaved = succeeded;
 
     handleException("C++ exception|Unhandled exception", dumpUrl);

@@ -27,29 +27,29 @@ namespace U2 {
 
 const QString PairwiseAlignerFactory::NEEDLEMAN_WUNSCH("Needleman-Wunsch");
 
-PairwiseAligner::PairwiseAligner(const QByteArray &_seq1, const QByteArray &_seq2)
+PairwiseAligner::PairwiseAligner(const QByteArray& _seq1, const QByteArray& _seq2)
     : seq1(_seq1), seq2(_seq2) {
 }
 
 PairwiseAligner::~PairwiseAligner() {
 }
 
-void PairwiseAligner::setSeq1(const QByteArray &value) {
+void PairwiseAligner::setSeq1(const QByteArray& value) {
     seq1 = value;
 }
 
-void PairwiseAligner::setSeq2(const QByteArray &value) {
+void PairwiseAligner::setSeq2(const QByteArray& value) {
     seq2 = value;
 }
 
-void PairwiseAligner::setSeqs(const QByteArray &value1, const QByteArray &value2) {
+void PairwiseAligner::setSeqs(const QByteArray& value1, const QByteArray& value2) {
     seq1 = value1;
     seq2 = value2;
 }
 
-PairwiseAligner *PairwiseAlignerFactory::createAligner(const QString &alignerId,
-                                                       const QByteArray &seq1,
-                                                       const QByteArray &seq2) {
+PairwiseAligner* PairwiseAlignerFactory::createAligner(const QString& alignerId,
+                                                       const QByteArray& seq1,
+                                                       const QByteArray& seq2) {
     if (NEEDLEMAN_WUNSCH == alignerId) {
         return new NWAligner(seq1, seq2);
     }

@@ -48,16 +48,16 @@ public:
 
     Assembly();
 
-    const Sequence &getReference();
-    void setReference(const Sequence &reference);
+    const Sequence& getReference();
+    void setReference(const Sequence& reference);
 
     QList<U2AssemblyRead> getReads() const;
     int getReadsCount() const;
-    void addRead(const Sequence &read);
-    void setReads(const QList<Sequence> &reads);
+    void addRead(const Sequence& read);
+    void setReads(const QList<Sequence>& reads);
 
-    const QByteArray &getName() const;
-    void setName(const QByteArray &name);
+    const QByteArray& getName() const;
+    void setName(const QByteArray& name);
 
     bool isValid() const;
 
@@ -71,7 +71,7 @@ private:
 
 class AceReader {
 public:
-    AceReader(IOAdapter &io, U2OpStatus &os);
+    AceReader(IOAdapter& io, U2OpStatus& os);
 
     Assembly getAssembly();
     bool isFinish();
@@ -80,26 +80,26 @@ public:
     }
 
 private:
-    void skipBreaks(IOAdapter *io, char *buff, qint64 *len);
-    int getContigCount(const QByteArray &cur_line);
-    int getSubString(QByteArray &line, int pos);
-    int getReadsCount(const QByteArray &cur_line);
-    void parseConsensus(IOAdapter *io, char *buff, QSet<QByteArray> &names, QByteArray &headerLine, Assembly::Sequence &consensus);
-    QByteArray getName(const QByteArray &line);
-    bool checkSeq(const QByteArray &seq);
-    void parseAfTag(IOAdapter *io, char *buff, int count, QMap<QByteArray, int> &posMap, QMap<QByteArray, bool> &complMap, QSet<QByteArray> &names);
-    int readsPos(const QByteArray &cur_line);
-    int prepareLine(QByteArray &line, int pos);
-    int readsComplement(const QByteArray &cur_line);
-    int paddedStartCons(const QByteArray &cur_line);
-    int getSmallestOffset(const QMap<QByteArray, int> &posMap);
-    void parseRdAndQaTag(U2::IOAdapter *io, char *buff, QSet<QByteArray> &names, Assembly::Sequence &read);
-    int getClearRangeStart(const QByteArray &cur_line);
-    int getClearRangeEnd(const QByteArray &cur_line);
-    void formatSequence(QByteArray &data);
+    void skipBreaks(IOAdapter* io, char* buff, qint64* len);
+    int getContigCount(const QByteArray& cur_line);
+    int getSubString(QByteArray& line, int pos);
+    int getReadsCount(const QByteArray& cur_line);
+    void parseConsensus(IOAdapter* io, char* buff, QSet<QByteArray>& names, QByteArray& headerLine, Assembly::Sequence& consensus);
+    QByteArray getName(const QByteArray& line);
+    bool checkSeq(const QByteArray& seq);
+    void parseAfTag(IOAdapter* io, char* buff, int count, QMap<QByteArray, int>& posMap, QMap<QByteArray, bool>& complMap, QSet<QByteArray>& names);
+    int readsPos(const QByteArray& cur_line);
+    int prepareLine(QByteArray& line, int pos);
+    int readsComplement(const QByteArray& cur_line);
+    int paddedStartCons(const QByteArray& cur_line);
+    int getSmallestOffset(const QMap<QByteArray, int>& posMap);
+    void parseRdAndQaTag(U2::IOAdapter* io, char* buff, QSet<QByteArray>& names, Assembly::Sequence& read);
+    int getClearRangeStart(const QByteArray& cur_line);
+    int getClearRangeEnd(const QByteArray& cur_line);
+    void formatSequence(QByteArray& data);
 
-    IOAdapter *io;
-    U2OpStatus *os;
+    IOAdapter* io;
+    U2OpStatus* os;
     int contigsCount;
     int currentContig;
 
@@ -124,15 +124,15 @@ private:
 
 class AceIterator {
 public:
-    AceIterator(AceReader &reader, U2OpStatus &os);
+    AceIterator(AceReader& reader, U2OpStatus& os);
 
     bool hasNext();
     Assembly next();
     Assembly peek();
 
 private:
-    AceReader *reader;
-    U2OpStatus *os;
+    AceReader* reader;
+    U2OpStatus* os;
 };
 
 }  // namespace U2

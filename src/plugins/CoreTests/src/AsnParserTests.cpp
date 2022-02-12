@@ -37,7 +37,7 @@ namespace U2 {
 #define TYPE_ATTR "type"
 #define CHILDREN_COUNT_ATTR "children-count"
 
-void GTest_LoadAsnTree::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_LoadAsnTree::init(XMLTestFormat*, const QDomElement& el) {
     rootElem = nullptr;
     contextAdded = false;
 
@@ -56,7 +56,7 @@ void GTest_LoadAsnTree::init(XMLTestFormat *, const QDomElement &el) {
     url = env->getVar("COMMON_DATA_DIR") + "/" + url;
 
     IOAdapterId ioid = el.attribute("io");
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioid);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioid);
 
     if (iof == nullptr) {
         stateInfo.setError(QString("io_adapter_not_found_%1").arg(ioid));
@@ -95,7 +95,7 @@ Task::ReportResult GTest_LoadAsnTree::report() {
 
 //--------------------------------------------------------------------------------
 
-void GTest_FindFirstNodeByName::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_FindFirstNodeByName::init(XMLTestFormat*, const QDomElement& el) {
     contextAdded = false;
 
     nodeContextName = el.attribute(INDEX_ATTR);
@@ -126,13 +126,13 @@ void GTest_FindFirstNodeByName::cleanup() {
 }
 
 Task::ReportResult GTest_FindFirstNodeByName::report() {
-    AsnNode *rootElem = getContext<AsnNode>(this, rootContextName);
+    AsnNode* rootElem = getContext<AsnNode>(this, rootContextName);
     if (rootElem == nullptr) {
         stateInfo.setError(QString("node is not in the context, wrong value %1").arg(rootContextName));
         return ReportResult_Finished;
     }
 
-    AsnNode *node = ASNFormat::findFirstNodeByName(rootElem, nodeName);
+    AsnNode* node = ASNFormat::findFirstNodeByName(rootElem, nodeName);
     if (node == nullptr) {
         stateInfo.setError(QString("node not found %1").arg(nodeName));
         return ReportResult_Finished;
@@ -146,7 +146,7 @@ Task::ReportResult GTest_FindFirstNodeByName::report() {
 
 //--------------------------------------------------------------------------------
 
-void GTest_CheckNodeType::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_CheckNodeType::init(XMLTestFormat*, const QDomElement& el) {
     nodeContextName = el.attribute(NODE_ATTR);
     if (nodeContextName.isEmpty()) {
         failMissingValue(NODE_ATTR);
@@ -161,7 +161,7 @@ void GTest_CheckNodeType::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 Task::ReportResult GTest_CheckNodeType::report() {
-    AsnNode *node = getContext<AsnNode>(this, nodeContextName);
+    AsnNode* node = getContext<AsnNode>(this, nodeContextName);
     if (node == nullptr) {
         stateInfo.setError(QString("node is in the context, wrong value %1").arg(nodeContextName));
         return ReportResult_Finished;
@@ -178,7 +178,7 @@ Task::ReportResult GTest_CheckNodeType::report() {
 
 //--------------------------------------------------------------------------------
 
-void GTest_CheckNodeValue::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_CheckNodeValue::init(XMLTestFormat*, const QDomElement& el) {
     nodeContextName = el.attribute(NODE_ATTR);
     if (nodeContextName.isEmpty()) {
         failMissingValue(NODE_ATTR);
@@ -193,7 +193,7 @@ void GTest_CheckNodeValue::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 Task::ReportResult GTest_CheckNodeValue::report() {
-    AsnNode *node = getContext<AsnNode>(this, nodeContextName);
+    AsnNode* node = getContext<AsnNode>(this, nodeContextName);
     if (node == nullptr) {
         stateInfo.setError(QString("node is not in the context, wrong value %1").arg(nodeContextName));
         return ReportResult_Finished;
@@ -210,7 +210,7 @@ Task::ReportResult GTest_CheckNodeValue::report() {
 
 //--------------------------------------------------------------------------------
 
-void GTest_CheckNodeChildrenCount::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_CheckNodeChildrenCount::init(XMLTestFormat*, const QDomElement& el) {
     nodeContextName = el.attribute(NODE_ATTR);
     if (nodeContextName.isEmpty()) {
         failMissingValue(NODE_ATTR);
@@ -231,7 +231,7 @@ void GTest_CheckNodeChildrenCount::init(XMLTestFormat *, const QDomElement &el) 
 }
 
 Task::ReportResult GTest_CheckNodeChildrenCount::report() {
-    AsnNode *node = getContext<AsnNode>(this, nodeContextName);
+    AsnNode* node = getContext<AsnNode>(this, nodeContextName);
     if (node == nullptr) {
         stateInfo.setError(QString("node is not in the context, wrong value %1").arg(nodeContextName));
         return ReportResult_Finished;
@@ -248,8 +248,8 @@ Task::ReportResult GTest_CheckNodeChildrenCount::report() {
 
 //--------------------------------------------------------------------------------
 
-QList<XMLTestFactory *> AsnParserTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> AsnParserTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_LoadAsnTree::createFactory());
     res.append(GTest_FindFirstNodeByName::createFactory());
     res.append(GTest_CheckNodeType::createFactory());

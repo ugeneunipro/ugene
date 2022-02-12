@@ -48,7 +48,7 @@ namespace U2 {
 /************************************************************************/
 /* MaEditorWgt */
 /************************************************************************/
-MaEditorWgt::MaEditorWgt(MaEditor *_editor)
+MaEditorWgt::MaEditorWgt(MaEditor* _editor)
     : editor(_editor),
       sequenceArea(nullptr),
       nameList(nullptr),
@@ -76,7 +76,7 @@ MaEditorWgt::MaEditorWgt(MaEditor *_editor)
     setFocusPolicy(Qt::ClickFocus);
 }
 
-QWidget *MaEditorWgt::createHeaderLabelWidget(const QString &text, Qt::Alignment alignment, QWidget *heightTarget, bool proxyMouseEventsToNameList) {
+QWidget* MaEditorWgt::createHeaderLabelWidget(const QString& text, Qt::Alignment alignment, QWidget* heightTarget, bool proxyMouseEventsToNameList) {
     QString labelHtml = QString("<p style=\"margin-right: 5px\">%1</p>").arg(text);
     return new MaLabelWidget(this,
                              heightTarget == nullptr ? seqAreaHeader : heightTarget,
@@ -85,7 +85,7 @@ QWidget *MaEditorWgt::createHeaderLabelWidget(const QString &text, Qt::Alignment
                              proxyMouseEventsToNameList);
 }
 
-MaEditorStatusBar *MaEditorWgt::getStatusBar() const {
+MaEditorStatusBar* MaEditorWgt::getStatusBar() const {
     return statusBar;
 }
 
@@ -95,12 +95,12 @@ void MaEditorWgt::initWidgets() {
 
     setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).icon);
 
-    GScrollBar *shBar = new GScrollBar(Qt::Horizontal);
+    GScrollBar* shBar = new GScrollBar(Qt::Horizontal);
     shBar->setObjectName("horizontal_sequence_scroll");
     shBar->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-    QScrollBar *nameListHorizontalScrollBar = new QScrollBar(Qt::Horizontal);
+    QScrollBar* nameListHorizontalScrollBar = new QScrollBar(Qt::Horizontal);
     nameListHorizontalScrollBar->setObjectName("horizontal_names_scroll");
-    GScrollBar *cvBar = new GScrollBar(Qt::Vertical);
+    GScrollBar* cvBar = new GScrollBar(Qt::Vertical);
     cvBar->setObjectName("vertical_sequence_scroll");
 
     initSeqArea(shBar, cvBar);
@@ -125,8 +125,8 @@ void MaEditorWgt::initWidgets() {
     seqAreaHeaderLayout->setSpacing(0);
     seqAreaHeaderLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
-    QWidget *label1 = createHeaderLabelWidget();
-    QWidget *label2 = createHeaderLabelWidget();
+    QWidget* label1 = createHeaderLabelWidget();
+    QWidget* label2 = createHeaderLabelWidget();
 
     seqAreaHeaderLayout->addWidget(consensusArea);
     seqAreaHeader->setLayout(seqAreaHeaderLayout);
@@ -149,10 +149,10 @@ void MaEditorWgt::initWidgets() {
     seqAreaLayout->setRowStretch(1, 1);
     seqAreaLayout->setColumnStretch(1, 1);
 
-    QWidget *seqAreaContainer = new QWidget();
+    QWidget* seqAreaContainer = new QWidget();
     seqAreaContainer->setLayout(seqAreaLayout);
 
-    QWidget *consensusLabel = createHeaderLabelWidget(tr("Consensus:"), Qt::Alignment(Qt::AlignRight | Qt::AlignVCenter), consensusArea, false);
+    QWidget* consensusLabel = createHeaderLabelWidget(tr("Consensus:"), Qt::Alignment(Qt::AlignRight | Qt::AlignVCenter), consensusArea, false);
     consensusLabel->setMinimumHeight(consensusArea->height());
     consensusLabel->setObjectName("consensusLabel");
 
@@ -177,7 +177,7 @@ void MaEditorWgt::initWidgets() {
     nameAndSequenceAreasSplitter->addWidget(seqAreaContainer);
     nameAndSequenceAreasSplitter->setSizes({50, 100});  // Initial proportions of the name & sequence are (splitter has no real size at this moment).
 
-    QVBoxLayout *maContainerLayout = new QVBoxLayout();
+    QVBoxLayout* maContainerLayout = new QVBoxLayout();
     maContainerLayout->setContentsMargins(0, 0, 0, 0);
     maContainerLayout->setSpacing(0);
 
@@ -185,10 +185,10 @@ void MaEditorWgt::initWidgets() {
     maContainerLayout->setStretch(0, 1);
     maContainerLayout->addWidget(statusBar);
 
-    QWidget *maContainer = new QWidget(this);
+    QWidget* maContainer = new QWidget(this);
     maContainer->setLayout(maContainerLayout);
 
-    QVBoxLayout *mainLayout = new QVBoxLayout();
+    QVBoxLayout* mainLayout = new QVBoxLayout();
     mainLayout->setSpacing(0);
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
@@ -258,43 +258,43 @@ void MaEditorWgt::initActions() {
     addAction(cutSelectionAction);
 }
 
-MaEditor *MaEditorWgt::getEditor() const {
+MaEditor* MaEditorWgt::getEditor() const {
     return editor;
 }
 
-MaEditorSequenceArea *MaEditorWgt::getSequenceArea() const {
+MaEditorSequenceArea* MaEditorWgt::getSequenceArea() const {
     return sequenceArea;
 }
 
-MaEditorNameList *MaEditorWgt::getEditorNameList() const {
+MaEditorNameList* MaEditorWgt::getEditorNameList() const {
     return nameList;
 }
 
-MaEditorConsensusArea *MaEditorWgt::getConsensusArea() const {
+MaEditorConsensusArea* MaEditorWgt::getConsensusArea() const {
     return consensusArea;
 }
 
-MaEditorOverviewArea *MaEditorWgt::getOverviewArea() const {
+MaEditorOverviewArea* MaEditorWgt::getOverviewArea() const {
     return overviewArea;
 }
 
-MSAEditorOffsetsViewController *MaEditorWgt::getOffsetsViewController() const {
+MSAEditorOffsetsViewController* MaEditorWgt::getOffsetsViewController() const {
     return offsetsViewController;
 }
 
-ScrollController *MaEditorWgt::getScrollController() const {
+ScrollController* MaEditorWgt::getScrollController() const {
     return scrollController;
 }
 
-BaseWidthController *MaEditorWgt::getBaseWidthController() const {
+BaseWidthController* MaEditorWgt::getBaseWidthController() const {
     return baseWidthController;
 }
 
-RowHeightController *MaEditorWgt::getRowHeightController() const {
+RowHeightController* MaEditorWgt::getRowHeightController() const {
     return rowHeightController;
 }
 
-DrawHelper *MaEditorWgt::getDrawHelper() const {
+DrawHelper* MaEditorWgt::getDrawHelper() const {
     return drawHelper;
 }
 
@@ -302,11 +302,11 @@ bool MaEditorWgt::isCollapsingOfSingleRowGroupsEnabled() const {
     return enableCollapsingOfSingleRowGroups;
 }
 
-QWidget *MaEditorWgt::getHeaderWidget() const {
+QWidget* MaEditorWgt::getHeaderWidget() const {
     return seqAreaHeader;
 }
 
-QSplitter *MaEditorWgt::getMainSplitter() const {
+QSplitter* MaEditorWgt::getMainSplitter() const {
     return mainSplitter;
 }
 

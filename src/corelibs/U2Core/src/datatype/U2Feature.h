@@ -33,7 +33,7 @@ public:
     U2AnnotationTable()
         : U2Object() {
     }
-    U2AnnotationTable(const U2DataId &id, const QString &dbId, qint64 version)
+    U2AnnotationTable(const U2DataId& id, const QString& dbId, qint64 version)
         : U2Object(id, dbId, version) {
     }
 
@@ -51,7 +51,7 @@ public:
     U2FeatureLocation() {
     }
 
-    U2FeatureLocation(const U2Strand &strand_, const U2Region &region_)
+    U2FeatureLocation(const U2Strand& strand_, const U2Region& region_)
         : strand(strand_), region(region_) {
     }
 
@@ -61,14 +61,14 @@ public:
     /** Sequence region */
     U2Region region;
 
-    bool operator==(const U2FeatureLocation &l) const;
+    bool operator==(const U2FeatureLocation& l) const;
 
-    bool operator!=(const U2FeatureLocation &l) const {
+    bool operator!=(const U2FeatureLocation& l) const {
         return !(*this == l);
     }
 };
 
-inline bool U2FeatureLocation::operator==(const U2FeatureLocation &l) const {
+inline bool U2FeatureLocation::operator==(const U2FeatureLocation& l) const {
     bool res = region == l.region && strand == l.strand;
     return res;
 }
@@ -98,10 +98,10 @@ public:
           featureType(U2FeatureTypes::Invalid) {
     }
 
-    bool operator==(const U2Feature &f) const {
+    bool operator==(const U2Feature& f) const {
         return f.id == id;
     }
-    bool operator!=(const U2Feature &f) const {
+    bool operator!=(const U2Feature& f) const {
         return !(*this == f);
     }
     /**
@@ -143,7 +143,7 @@ public:
     /**
      * Constructs new feature key instance with key and value set
      */
-    U2FeatureKey(const QString &_name, const QString &_value)
+    U2FeatureKey(const QString& _name, const QString& _value)
         : name(_name), value(_value) {
     }
     /**
@@ -155,13 +155,13 @@ public:
     /**
      * Any two keys are equal if their names & values are equal
      */
-    bool operator==(const U2FeatureKey &k) const {
+    bool operator==(const U2FeatureKey& k) const {
         return k.name == name && k.value == value;
     }
     /**
      * Any two keys are not equal if either their names or values are  not equal
      */
-    bool operator!=(const U2FeatureKey &k) const {
+    bool operator!=(const U2FeatureKey& k) const {
         return !(*this == k);
     }
 

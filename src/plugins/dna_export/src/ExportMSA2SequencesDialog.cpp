@@ -33,7 +33,7 @@
 
 namespace U2 {
 
-ExportMSA2SequencesDialog::ExportMSA2SequencesDialog(const QString &defaultDir, const QString &defaultFileName, QWidget *p)
+ExportMSA2SequencesDialog::ExportMSA2SequencesDialog(const QString& defaultDir, const QString& defaultFileName, QWidget* p)
     : QDialog(p),
       defaultDir(defaultDir),
       defaultFileName(defaultFileName),

@@ -33,8 +33,8 @@ namespace HI {
  */
 class HI_EXPORT GTSplitter {
 public:
-    static QRect getHandleRect(GUITestOpStatus &os, QSplitter *splitter, int handleNumber = 0);
-    static void moveHandle(GUITestOpStatus &os, QSplitter *splitter, int pixels, int handleNumber = 0);
+    static QRect getHandleRect(GUITestOpStatus& os, QSplitter* splitter, int handleNumber = 0);
+    static void moveHandle(GUITestOpStatus& os, QSplitter* splitter, int pixels, int handleNumber = 0);
 };
 
 }  // namespace HI

@@ -33,7 +33,7 @@ class U2Region;
 class U2VIEW_EXPORT BaseWidthController : public QObject {
     Q_OBJECT
 public:
-    BaseWidthController(MaEditorWgt *ui);
+    BaseWidthController(MaEditorWgt* ui);
 
     int getFirstVisibleBaseGlobalOffset(bool countClipped) const;
     int getFirstVisibleBaseScreenOffset(bool countClipped) const;
@@ -44,18 +44,18 @@ public:
 
     int getBaseWidth() const;
     int getBasesWidth(int count) const;
-    int getBasesWidth(const U2Region &region) const;
+    int getBasesWidth(const U2Region& region) const;
 
     U2Region getBaseGlobalRange(int position) const;
     U2Region getBasesGlobalRange(int startPosition, int count) const;
-    U2Region getBasesGlobalRange(const U2Region &region) const;
+    U2Region getBasesGlobalRange(const U2Region& region) const;
 
     U2Region getBaseScreenRange(int position) const;
-    U2Region getBasesScreenRange(const U2Region &region) const;
+    U2Region getBasesScreenRange(const U2Region& region) const;
 
     U2Region getBaseScreenRange(int position, int screenXOrigin) const;
     U2Region getBasesScreenRange(int startPosition, int count, int screenXOrigin) const;
-    U2Region getBasesScreenRange(const U2Region &region, int screenXOrigin) const;
+    U2Region getBasesScreenRange(const U2Region& region, int screenXOrigin) const;
 
     int getTotalAlignmentWidth() const;
 
@@ -64,8 +64,8 @@ public:
     int screenXPositionToBase(int x) const;  // returns -1 if the column is out of alignment boundaries
 
 private:
-    MaEditor *maEditor;
-    MaEditorWgt *ui;
+    MaEditor* maEditor;
+    MaEditorWgt* ui;
 };
 
 }  // namespace U2

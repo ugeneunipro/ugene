@@ -33,11 +33,11 @@ class CloneObjectTask;
 class CloneAssemblyWithReferenceToDbiTask : public Task {
     Q_OBJECT
 public:
-    CloneAssemblyWithReferenceToDbiTask(const U2Assembly &assembly,
-                                        const U2Sequence &reference,
-                                        const U2DbiRef &srcDbiRef,
-                                        const U2DbiRef &dstDbiRef,
-                                        const QVariantMap &hints);
+    CloneAssemblyWithReferenceToDbiTask(const U2Assembly& assembly,
+                                        const U2Sequence& reference,
+                                        const U2DbiRef& srcDbiRef,
+                                        const U2DbiRef& dstDbiRef,
+                                        const QVariantMap& hints);
 
     void prepare();
     void run();
@@ -50,8 +50,8 @@ private:
     const U2DbiRef dstDbiRef;
     const QString dstFolder;
 
-    CloneObjectTask *cloneAssemblyTask;
-    CloneObjectTask *cloneReferenceTask;
+    CloneObjectTask* cloneAssemblyTask;
+    CloneObjectTask* cloneReferenceTask;
 };
 
 }  // namespace U2

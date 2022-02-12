@@ -36,30 +36,30 @@ class McaReferenceCharController;
 class U2VIEW_EXPORT McaEditorWgt : public MaEditorWgt {
     Q_OBJECT
 public:
-    McaEditorWgt(McaEditor *editor);
+    McaEditorWgt(McaEditor* editor);
 
-    McaEditor *getEditor() const;
-    McaEditorConsensusArea *getConsensusArea() const;
-    McaEditorNameList *getEditorNameList() const;
-    McaEditorSequenceArea *getSequenceArea() const;
-    McaReferenceCharController *getRefCharController() const;
+    McaEditor* getEditor() const;
+    McaEditorConsensusArea* getConsensusArea() const;
+    McaEditorNameList* getEditorNameList() const;
+    McaEditorSequenceArea* getSequenceArea() const;
+    McaReferenceCharController* getRefCharController() const;
 
     /** Returns reference area component. */
-    McaEditorReferenceArea *getReferenceArea() const;
+    McaEditorReferenceArea* getReferenceArea() const;
 
-    QAction *getToggleColumnsAction() const;
+    QAction* getToggleColumnsAction() const;
 
 protected:
     void initActions() override;
-    void initSeqArea(GScrollBar *shBar, GScrollBar *cvBar) override;
+    void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) override;
     void initOverviewArea() override;
-    void initNameList(QScrollBar *nhBar) override;
+    void initNameList(QScrollBar* nhBar) override;
     void initConsensusArea() override;
     void initStatusBar() override;
 
 private:
-    McaEditorReferenceArea *refArea;
-    McaReferenceCharController *refCharController;
+    McaEditorReferenceArea* refArea;
+    McaReferenceCharController* refCharController;
 };
 
 }  // namespace U2

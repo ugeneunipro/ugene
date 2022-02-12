@@ -35,7 +35,7 @@ namespace LocalWorkflow {
 class PWMatrixBuildPrompter : public PrompterBase<PWMatrixBuildPrompter> {
     Q_OBJECT
 public:
-    PWMatrixBuildPrompter(Actor *p = 0)
+    PWMatrixBuildPrompter(Actor* p = 0)
         : PrompterBase<PWMatrixBuildPrompter>(p) {
     }
 
@@ -46,7 +46,7 @@ protected:
 class PFMatrixBuildPrompter : public PrompterBase<PFMatrixBuildPrompter> {
     Q_OBJECT
 public:
-    PFMatrixBuildPrompter(Actor *p = 0)
+    PFMatrixBuildPrompter(Actor* p = 0)
         : PrompterBase<PFMatrixBuildPrompter>(p) {
     }
 
@@ -57,7 +57,7 @@ protected:
 class PWMatrixSearchPrompter : public PrompterBase<PWMatrixSearchPrompter> {
     Q_OBJECT
 public:
-    PWMatrixSearchPrompter(Actor *p = 0)
+    PWMatrixSearchPrompter(Actor* p = 0)
         : PrompterBase<PWMatrixSearchPrompter>(p) {
     }
 
@@ -71,11 +71,11 @@ public:
     static const QString ACTOR_ID;
     static void registerProto();
 
-    PWMatrixBuildWorker(Actor *a)
+    PWMatrixBuildWorker(Actor* a)
         : BaseWorker(a), input(nullptr), output(nullptr) {
     }
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup() {
     }
 private slots:
@@ -93,11 +93,11 @@ public:
     static const QString ACTOR_ID;
     static void registerProto();
 
-    PFMatrixBuildWorker(Actor *a)
+    PFMatrixBuildWorker(Actor* a)
         : BaseWorker(a), input(nullptr), output(nullptr) {
     }
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup() {
     }
 private slots:
@@ -112,7 +112,7 @@ protected:
 class PFMatrixConvertPrompter : public PrompterBase<PFMatrixConvertPrompter> {
     Q_OBJECT
 public:
-    PFMatrixConvertPrompter(Actor *p = 0)
+    PFMatrixConvertPrompter(Actor* p = 0)
         : PrompterBase<PFMatrixConvertPrompter>(p) {
     }
 
@@ -126,11 +126,11 @@ public:
     static const QString ACTOR_ID;
     static void registerProto();
 
-    PFMatrixConvertWorker(Actor *a)
+    PFMatrixConvertWorker(Actor* a)
         : BaseWorker(a), input(nullptr), output(nullptr) {
     }
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup() {
     }
 private slots:
@@ -148,17 +148,17 @@ public:
     static const QString ACTOR_ID;
     static void registerProto();
 
-    PWMatrixSearchWorker(Actor *a)
+    PWMatrixSearchWorker(Actor* a)
         : BaseWorker(a, false),
           modelPort(nullptr), dataPort(nullptr), output(nullptr), strand(0) {
     }
     virtual void init();
     virtual bool isReady() const;
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private slots:
-    void sl_taskFinished(Task *);
+    void sl_taskFinished(Task*);
 
 protected:
     IntegralBus *modelPort, *dataPort, *output;
@@ -175,10 +175,10 @@ public:
     static DataTypePtr const WEIGHT_MATRIX_MODEL_TYPE();
     static const Descriptor WMATRIX_SLOT;
     static void init();
-    PWMatrixWorkerFactory(const Descriptor &d)
+    PWMatrixWorkerFactory(const Descriptor& d)
         : DomainFactory(d) {
     }
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 };
 
 class PFMatrixWorkerFactory : public DomainFactory {
@@ -188,10 +188,10 @@ public:
     static DataTypePtr const FREQUENCY_MATRIX_MODEL_TYPE();
     static const Descriptor FMATRIX_SLOT;
     static void init();
-    PFMatrixWorkerFactory(const Descriptor &d)
+    PFMatrixWorkerFactory(const Descriptor& d)
         : DomainFactory(d) {
     }
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 };
 
 }  // namespace LocalWorkflow

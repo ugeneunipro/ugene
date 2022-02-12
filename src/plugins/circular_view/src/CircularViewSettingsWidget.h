@@ -34,15 +34,15 @@ class CircularViewSplitter;
 class CircularViewSettingsWidget : public QWidget, private Ui_CircularViewSettingsWidget {
     Q_OBJECT
 public:
-    CircularViewSettingsWidget(CircularViewSettings *settings, CircularViewSplitter *splitter);
+    CircularViewSettingsWidget(CircularViewSettings* settings, CircularViewSplitter* splitter);
 
 signals:
     void si_settingsChanged();
-    void si_openCvButtonClicked(CircularViewSettings *);
+    void si_openCvButtonClicked(CircularViewSettings*);
 
 private slots:
     void sl_modifySettings();
-    void sl_cvSplitterWasCreatedOrRemoved(CircularViewSplitter *, CircularViewSettings *);
+    void sl_cvSplitterWasCreatedOrRemoved(CircularViewSplitter*, CircularViewSettings*);
     void sl_openCvButton();
 
 private:
@@ -50,9 +50,9 @@ private:
     void connectSlots();
 
 private:
-    CircularViewSplitter *circularViewSplitter;
-    CircularViewSettings *settings;
-    QWidget *settingsWidget;
+    CircularViewSplitter* circularViewSplitter;
+    CircularViewSettings* settings;
+    QWidget* settingsWidget;
     U2SavableWidget savableWidget;
 };
 

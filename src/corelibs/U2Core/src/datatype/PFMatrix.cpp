@@ -32,11 +32,11 @@ JasparInfo::JasparInfo()
     : properties(QMap<QString, QString>()) {
 }
 
-JasparInfo::JasparInfo(const QMap<QString, QString> &props)
+JasparInfo::JasparInfo(const QMap<QString, QString>& props)
     : properties(props) {
 }
 
-JasparInfo::JasparInfo(const QString &line) {
+JasparInfo::JasparInfo(const QString& line) {
     QStringList parsedData = line.split(";");
     QString idData = parsedData.first();
     QStringList base = idData.split(QRegExp("\\s"));
@@ -59,7 +59,7 @@ JasparInfo::JasparInfo(const QString &line) {
     }
 }
 
-QString JasparInfo::getProperty(const QString &name) const {
+QString JasparInfo::getProperty(const QString& name) const {
     return properties.value(name);
 }
 
@@ -67,7 +67,7 @@ QMap<QString, QString> JasparInfo::getProperties() const {
     return properties;
 }
 
-PFMatrix::PFMatrix(const MultipleSequenceAlignment &align, const PFMatrixType& _type)
+PFMatrix::PFMatrix(const MultipleSequenceAlignment& align, const PFMatrixType& _type)
     : type(_type) {
     assert(align->hasEqualLength());
     const int sequenceLength = align->getMsaRows().first()->getUngappedLength();
@@ -97,7 +97,7 @@ PFMatrix::PFMatrix(const MultipleSequenceAlignment &align, const PFMatrixType& _
     }
 }
 
-PFMatrix::PFMatrix(const QList<DNASequence *> &seq, const PFMatrixType& _type)
+PFMatrix::PFMatrix(const QList<DNASequence*>& seq, const PFMatrixType& _type)
     : type(_type) {
     assert(seq.length() > 0);
 
@@ -112,7 +112,7 @@ PFMatrix::PFMatrix(const QList<DNASequence *> &seq, const PFMatrixType& _type)
     memset(data.data(), 0, size * length * sizeof(int));
     if (type == PFM_MONONUCLEOTIDE) {
         for (int i = 0, n = seq.size(); i < n; i++) {
-            const QByteArray &row = seq[i]->seq;
+            const QByteArray& row = seq[i]->seq;
             for (int j = 0; j < length; j++) {
                 char curr = row[j];
                 data[DiProperty::index(curr) * length + j]++;
@@ -120,7 +120,7 @@ PFMatrix::PFMatrix(const QList<DNASequence *> &seq, const PFMatrixType& _type)
         }
     } else {
         for (int i = 0, n = seq.size(); i < n; i++) {
-            const QByteArray &row = seq[i]->seq;
+            const QByteArray& row = seq[i]->seq;
             for (int j = 0; j < length; j++) {
                 char curr = row[j];
                 char next = row[j + 1];
@@ -130,7 +130,7 @@ PFMatrix::PFMatrix(const QList<DNASequence *> &seq, const PFMatrixType& _type)
     }
 }
 
-PFMatrix::PFMatrix(const QVarLengthArray<int> &_data, const PFMatrixType _type)
+PFMatrix::PFMatrix(const QVarLengthArray<int>& _data, const PFMatrixType _type)
     : type(_type) {
     assert(_data.size() % 4 == 0);
     if (_type == PFM_DINUCLEOTIDE) {
@@ -140,7 +140,7 @@ PFMatrix::PFMatrix(const QVarLengthArray<int> &_data, const PFMatrixType _type)
     length = (_type == PFM_MONONUCLEOTIDE) ? (_data.size() / 4) : (_data.size() / 16);
 }
 
-PFMatrix PFMatrix::convertDi2Mono(const PFMatrix &source) {
+PFMatrix PFMatrix::convertDi2Mono(const PFMatrix& source) {
     assert(source.getType() == PFM_DINUCLEOTIDE);
     int size = 4;
     int len = source.getLength();
@@ -183,11 +183,11 @@ int PFMatrix::getValue(int row, int column) const {
     return data[pos];
 }
 
-void PFMatrix::setInfo(const U2::JasparInfo &in) {
+void PFMatrix::setInfo(const U2::JasparInfo& in) {
     info = in;
 }
 
-QString PFMatrix::getProperty(const QString &propertyName) const {
+QString PFMatrix::getProperty(const QString& propertyName) const {
     return info.getProperty(propertyName);
 }
 

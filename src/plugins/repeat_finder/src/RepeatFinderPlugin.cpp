@@ -56,8 +56,8 @@
 
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
-    RepeatFinderPlugin *plug = new RepeatFinderPlugin();
+extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
+    RepeatFinderPlugin* plug = new RepeatFinderPlugin();
     return plug;
 }
 
@@ -69,50 +69,50 @@ RepeatFinderPlugin::RepeatFinderPlugin()
     }
     LocalWorkflow::RepeatWorkerFactory::init();
 
-    QDActorPrototypeRegistry *pr = AppContext::getQDActorProtoRegistry();
+    QDActorPrototypeRegistry* pr = AppContext::getQDActorProtoRegistry();
     pr->registerProto(new QDRepeatActorPrototype());
     pr->registerProto(new QDTandemActorPrototype());
 
     // tests
-    GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
+    GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
+    XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
     assert(xmlTestFormat != nullptr);
 
-    GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
+    GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = RepeatFinderTests::createTestFactories();
 
-    foreach (XMLTestFactory *f, l->qlist) {
+    foreach (XMLTestFactory* f, l->qlist) {
         bool res = xmlTestFormat->registerTestFactory(f);
         assert(res);
         Q_UNUSED(res);
     }
 
-    RepeatFinderTaskFactoryRegistry *rfTfr = AppContext::getRepeatFinderTaskFactoryRegistry();
+    RepeatFinderTaskFactoryRegistry* rfTfr = AppContext::getRepeatFinderTaskFactoryRegistry();
     Q_ASSERT(rfTfr);
     rfTfr->registerFactory(new RFTaskFactory(), "");
 }
 
-RepeatViewContext::RepeatViewContext(QObject *p)
+RepeatViewContext::RepeatViewContext(QObject* p)
     : GObjectViewWindowContext(p, AnnotatedDNAViewFactory::ID) {
 }
 
-void RepeatViewContext::initViewContext(GObjectView *v) {
-    AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(v);
-    ADVGlobalAction *a = new ADVGlobalAction(av, QIcon(":repeat_finder/images/repeats.png"), tr("Find repeats..."), 40);
+void RepeatViewContext::initViewContext(GObjectView* v) {
+    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(v);
+    ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":repeat_finder/images/repeats.png"), tr("Find repeats..."), 40);
     a->addAlphabetFilter(DNAAlphabet_NUCL);
     a->setObjectName("find_repeats_action");
     connect(a, SIGNAL(triggered()), SLOT(sl_showDialog()));
-    ADVGlobalAction *a2 = new ADVGlobalAction(av, QIcon(":repeat_finder/images/repeats_tandem.png"), tr("Find tandem repeats..."), 41);
+    ADVGlobalAction* a2 = new ADVGlobalAction(av, QIcon(":repeat_finder/images/repeats_tandem.png"), tr("Find tandem repeats..."), 41);
     a2->addAlphabetFilter(DNAAlphabet_NUCL);
     a2->setObjectName("find_tandems_action");
     connect(a2, SIGNAL(triggered()), SLOT(sl_showTandemDialog()));
 }
 
 void RepeatViewContext::sl_showDialog() {
-    QAction *a = (QAction *)sender();
-    GObjectViewAction *viewAction = qobject_cast<GObjectViewAction *>(a);
-    AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(viewAction->getObjectView());
-    ADVSequenceObjectContext *sctx = av->getActiveSequenceContext();
+    QAction* a = (QAction*)sender();
+    GObjectViewAction* viewAction = qobject_cast<GObjectViewAction*>(a);
+    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
+    ADVSequenceObjectContext* sctx = av->getActiveSequenceContext();
     assert(sctx != nullptr && sctx->getAlphabet()->isNucleic());
 
     QObjectScopedPointer<FindRepeatsDialog> d = new FindRepeatsDialog(sctx);
@@ -120,10 +120,10 @@ void RepeatViewContext::sl_showDialog() {
 }
 
 void RepeatViewContext::sl_showTandemDialog() {
-    QAction *a = (QAction *)sender();
-    GObjectViewAction *viewAction = qobject_cast<GObjectViewAction *>(a);
-    AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(viewAction->getObjectView());
-    ADVSequenceObjectContext *sctx = av->getActiveSequenceContext();
+    QAction* a = (QAction*)sender();
+    GObjectViewAction* viewAction = qobject_cast<GObjectViewAction*>(a);
+    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
+    ADVSequenceObjectContext* sctx = av->getActiveSequenceContext();
     assert(sctx != nullptr && sctx->getAlphabet()->isNucleic());
 
     QObjectScopedPointer<FindTandemsDialog> d = new FindTandemsDialog(sctx);

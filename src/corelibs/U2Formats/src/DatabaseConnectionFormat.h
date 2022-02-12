@@ -28,17 +28,17 @@ namespace U2 {
 
 class U2FORMATS_EXPORT DatabaseConnectionFormat : public DocumentFormat {
 public:
-    DatabaseConnectionFormat(QObject *p);
+    DatabaseConnectionFormat(QObject* p);
 
-    const QString &getFormatName() const;
+    const QString& getFormatName() const;
 
-    FormatCheckResult checkRawData(QByteArray const &, GUrl const & = GUrl()) const;
+    FormatCheckResult checkRawData(QByteArray const&, GUrl const& = GUrl()) const;
 
 private:
     // Ignore incoming U2DbiRef, use U2DbiRef from IOAdapter
-    Document *loadDocument(IOAdapter *io, const U2DbiRef &unused, const QVariantMap &hints, U2OpStatus &os);
+    Document* loadDocument(IOAdapter* io, const U2DbiRef& unused, const QVariantMap& hints, U2OpStatus& os);
 
-    QList<GObject *> getObjects(U2Dbi *dbi, U2OpStatus &os);
+    QList<GObject*> getObjects(U2Dbi* dbi, U2OpStatus& os);
 
     QString formatName;
 };

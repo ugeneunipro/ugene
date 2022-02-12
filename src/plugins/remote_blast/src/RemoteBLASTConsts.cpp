@@ -90,21 +90,21 @@ const QString ReqParams::cdd_hits = "maxhits";
 const QString ReqParams::cdd_sequence = "seqinput";
 const QString ReqParams::cdd_db = "db";
 
-void addParametr(QString &requestParameters, const QString &paramName, const QString &param) {
+void addParametr(QString& requestParameters, const QString& paramName, const QString& param) {
     requestParameters.append("&");
     requestParameters.append(paramName);
     requestParameters.append("=");
     requestParameters.append(param);
 }
 
-void addParametr(QString &requestParameters, const QString &paramName, const double param) {
+void addParametr(QString& requestParameters, const QString& paramName, const double param) {
     requestParameters.append("&");
     requestParameters.append(paramName);
     requestParameters.append("=");
     requestParameters.append(QString::number(param));
 }
 
-void addParametr(QString &requestParameters, const QString &paramName, const int param) {
+void addParametr(QString& requestParameters, const QString& paramName, const int param) {
     requestParameters.append("&");
     requestParameters.append(paramName);
     requestParameters.append("=");

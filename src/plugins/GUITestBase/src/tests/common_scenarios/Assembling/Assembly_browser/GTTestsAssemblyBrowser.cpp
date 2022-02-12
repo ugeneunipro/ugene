@@ -71,7 +71,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/assembly/", "example-alignment.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget *window = GTUtilsAssemblyBrowser::getActiveAssemblyBrowserWindow(os);
+    QWidget* window = GTUtilsAssemblyBrowser::getActiveAssemblyBrowserWindow(os);
     GTWidget::click(os, window);
     // 2. Zoom in until overview selection transforms to cross-hair
     for (int i = 0; i < 24; i++) {
@@ -85,12 +85,12 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     }
     // Expected state: coordinates is not negative
     // CHECK_SET_ERR(AssemblyRuler::browser->calcAsmPosX(qint pos), "Coordinates is negative");
-    QWidget *assRuler = GTWidget::findWidget(os, "AssemblyRuler", window);
+    QWidget* assRuler = GTWidget::findWidget(os, "AssemblyRuler", window);
 
-    QObject *l = assRuler->findChild<QObject *>("start position");
+    QObject* l = assRuler->findChild<QObject*>("start position");
     CHECK_SET_ERR(l != nullptr, "first QObject for taking cursor name not found");
 
-    QObject *startPositionObject = l->findChild<QObject *>();
+    QObject* startPositionObject = l->findChild<QObject*>();
     CHECK_SET_ERR(startPositionObject != nullptr, "second QObject for taking cursor name not found");
 
     QString coordinate = startPositionObject->objectName();
@@ -406,7 +406,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     CHECK_SET_ERR(thresholdValue == "1", QString("Unexpected default value of the 'Threshold' parameter: expected '%1', got '%2'").arg("1").arg(thresholdValue));
 
     GTUtilsWorkflowDesigner::clickParameter(os, "Threshold");
-    auto sbThreshold = qobject_cast<QSpinBox *>(GTUtilsWorkflowDesigner::getParametersTable(os)->findChild<QSpinBox *>());
+    auto sbThreshold = qobject_cast<QSpinBox*>(GTUtilsWorkflowDesigner::getParametersTable(os)->findChild<QSpinBox*>());
     GTSpinBox::checkLimits(os, sbThreshold, 0, 65535);
 
     //    5. Set format "Histogram".
@@ -524,7 +524,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
 }
 
 namespace {
-void prepareBigFasta(const QString &url, HI::GUITestOpStatus &os) {
+void prepareBigFasta(const QString& url, HI::GUITestOpStatus& os) {
     QFile file(url);
     bool opened = file.open(QIODevice::WriteOnly);
     if (!opened) {
@@ -750,11 +750,11 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
     //    2. Select region to extract and import extracted file to project
     GTUtilsDialog::waitForDialog(os, new ExtractAssemblyRegionDialogFiller(os, sandBoxDir + "/test_26_1.bam", U2Region(228, 1488), "BAM"));
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "/test_26_1.ugenedb"));
-    QAbstractButton *button = GTAction::button(os, "ExtractAssemblyRegion");
+    QAbstractButton* button = GTAction::button(os, "ExtractAssemblyRegion");
     GTWidget::click(os, button);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //      3. Check expected coverage values
-    QLabel *coveredRegionsLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
+    QLabel* coveredRegionsLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
     CHECK_SET_ERR(coveredRegionsLabel != nullptr, "cannot convert widget to CoveredRegionsLabel");
 
     QString textFromLabel = coveredRegionsLabel->text();
@@ -775,11 +775,11 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     //    2. Select region to extract and import extracted file to project
     GTUtilsDialog::waitForDialog(os, new ExtractAssemblyRegionDialogFiller(os, sandBoxDir + "/test_26_2.sam", U2Region(4500, 300), "SAM"));
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "/test_26_2.ugenedb"));
-    QAbstractButton *button = GTAction::button(os, "ExtractAssemblyRegion");
+    QAbstractButton* button = GTAction::button(os, "ExtractAssemblyRegion");
     GTWidget::click(os, button);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //      3. Check expected coverage values
-    QLabel *coveredRegionsLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
+    QLabel* coveredRegionsLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
     CHECK_SET_ERR(coveredRegionsLabel != nullptr, "cannot convert widget to CoveredRegionsLabel");
 
     QString textFromLabel = coveredRegionsLabel->text();
@@ -801,7 +801,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //      3. Check expected coverage values
-    QLabel *coveredRegionsLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
+    QLabel* coveredRegionsLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
     CHECK_SET_ERR(coveredRegionsLabel != nullptr, "cannot convert widget to CoveredRegionsLabel");
 
     QString textFromLabel = coveredRegionsLabel->text();
@@ -926,7 +926,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_SETTINGS"));
     GTUtilsAssemblyBrowser::zoomToReads(os);
     //    3. Change reads highlighting to "strand direction" and "complement"
-    QComboBox *box = GTWidget::findExactWidget<QComboBox *>(os, "READS_HIGHLIGHTNING_COMBO");
+    QComboBox* box = GTWidget::findExactWidget<QComboBox*>(os, "READS_HIGHLIGHTNING_COMBO");
     GTComboBox::selectItemByText(os, box, "Strand direction");
     GTComboBox::selectItemByText(os, box, "Paired reads");
 }
@@ -940,7 +940,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_SETTINGS"));
     GTUtilsAssemblyBrowser::zoomToReads(os);
     //    3. Change consensus algorithm
-    QComboBox *box = GTWidget::findExactWidget<QComboBox *>(os, "consensusAlgorithmCombo");
+    QComboBox* box = GTWidget::findExactWidget<QComboBox*>(os, "consensusAlgorithmCombo");
     GTComboBox::selectItemByText(os, box, "SAMtools");
 }
 
@@ -954,10 +954,10 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
     GTUtilsAssemblyBrowser::addRefFromProject(os, "chrM", GTUtilsProjectTreeView::findIndex(os, "chrM.fa"));
 
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+        void run(HI::GUITestOpStatus& os) {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-            QLineEdit *filepathLineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "filepathLineEdit", dialog);
+            QLineEdit* filepathLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "filepathLineEdit", dialog);
             GTLineEdit::setText(os, filepathLineEdit, sandBoxDir + "chrM.snp");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -982,8 +982,8 @@ GUI_TEST_CLASS_DEFINITION(test_0036) {
         GTUtilsAssemblyBrowser::zoomIn(os, GTUtilsAssemblyBrowser::Hotkey);
     }
 
-    QScrollBar *vScrollBar = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Vertical);
-    QScrollBar *hScrollBar = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Horizontal);
+    QScrollBar* vScrollBar = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Vertical);
+    QScrollBar* hScrollBar = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Horizontal);
 
     int vScrollBarValue = vScrollBar->value();
     for (int i = 0; i < 3; i++) {

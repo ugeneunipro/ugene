@@ -48,7 +48,7 @@ Color4f::Color4f(float r, float g, float b, float a) {
     color[3] = a;
 }
 
-Color4f::Color4f(const QColor &qc) {
+Color4f::Color4f(const QColor& qc) {
     color[0] = qc.redF();
     color[1] = qc.greenF();
     color[2] = qc.blueF();
@@ -60,12 +60,12 @@ float Color4f::operator[](unsigned int i) const {
     return color[i];
 }
 
-float &Color4f::operator[](unsigned int i) {
+float& Color4f::operator[](unsigned int i) {
     assert(i < 4);
     return color[i];
 }
 
-bool Color4f::operator==(const Color4f &a) const {
+bool Color4f::operator==(const Color4f& a) const {
     // Do not affect alpha channel
     if (color[0] == a.color[0] && color[1] == a.color[1] && color[2] == a.color[2]) {
         return true;
@@ -74,11 +74,11 @@ bool Color4f::operator==(const Color4f &a) const {
     }
 }
 
-const float *Color4f::getConstData() const {
+const float* Color4f::getConstData() const {
     return color;
 }
 
-void glDrawCylinder(GLUquadric *pObj, const Vector3D &p1, const Vector3D &p2, double thickness, float renderDetailLevel) {
+void glDrawCylinder(GLUquadric* pObj, const Vector3D& p1, const Vector3D& p2, double thickness, float renderDetailLevel) {
     int numSlices = (8 * renderDetailLevel);
     int numStacks = 1;
     static Vector3D zAxis(0.0, 0.0, 1.0);
@@ -96,7 +96,7 @@ void glDrawCylinder(GLUquadric *pObj, const Vector3D &p1, const Vector3D &p2, do
 }
 
 /* class Helix3D : public Object3D */
-Helix3D::Helix3D(const Color4f &cl, const Vector3D &c, const Vector3D &n, float r)
+Helix3D::Helix3D(const Color4f& cl, const Vector3D& c, const Vector3D& n, float r)
     : Object3D(cl), cterm(c), nterm(n), radius(r) {
     pObj = gluNewQuadric();
     gluQuadricNormals(pObj, GLU_SMOOTH);
@@ -139,7 +139,7 @@ Helix3D::~Helix3D() {
 }
 
 /* class Strand3D : public Object3D */
-Strand3D::Strand3D(const Color4f &cl, const Vector3D &c, const Vector3D &n, const Vector3D &up)
+Strand3D::Strand3D(const Color4f& cl, const Vector3D& c, const Vector3D& n, const Vector3D& up)
     : Object3D(cl), cterm(c), nterm(n), upVector(up) {
     Vector3D vec(nterm - cterm);
     length = vec.length();
@@ -166,7 +166,7 @@ void Strand3D::draw(float renderDetailLevel) {
 Strand3D::~Strand3D() {
 }
 
-void glDrawHalfWorm(const Vector3D &p0, const Vector3D &p1, const Vector3D &p2, const Vector3D &p3, double radius, bool cap1, bool cap2, double tension, float renderDetailLevel) {
+void glDrawHalfWorm(const Vector3D& p0, const Vector3D& p1, const Vector3D& p2, const Vector3D& p3, double radius, bool cap1, bool cap2, double tension, float renderDetailLevel) {
     int i, j, k, m, offset = 0;
     Vector3D R1, R2, Qt, p, dQt, H, V;
     double len, MG[4][3], T[4], t, prevlen = 0.0, cosj, sinj;
@@ -200,7 +200,7 @@ void glDrawHalfWorm(const Vector3D &p0, const Vector3D &p1, const Vector3D &p2, 
     }
     */
 
-    GLfloat *fblock = nullptr;
+    GLfloat* fblock = nullptr;
 
     /* First, calculate the coordinate points of the center of the worm,
      * using the Kochanek-Bartels variant of the Hermite curve.
@@ -379,12 +379,12 @@ void glDrawHalfWorm(const Vector3D &p0, const Vector3D &p1, const Vector3D &p2, 
     delete[] fblock;
 }
 
-void glDrawHalfBond(GLUquadric *pObj, const Vector3D &p1, const Vector3D &p2, double thickness, float renderDetailLevel) {
+void glDrawHalfBond(GLUquadric* pObj, const Vector3D& p1, const Vector3D& p2, double thickness, float renderDetailLevel) {
     Vector3D middle = (p1 + p2) / 2;
     glDrawCylinder(pObj, p2, middle, thickness, renderDetailLevel);
 }
 
-void glDrawAtom(GLUquadric *pObj, const Vector3D &pos, double r, float renderDetailLevel) {
+void glDrawAtom(GLUquadric* pObj, const Vector3D& pos, double r, float renderDetailLevel) {
     int numSlices = 10 * renderDetailLevel;
     glPushMatrix();
     glTranslatef(pos.x, pos.y, pos.z);
@@ -396,7 +396,7 @@ void glDrawAtom(GLUquadric *pObj, const Vector3D &pos, double r, float renderDet
 / This function and helix drawing approach are taken from VMD (www.ks.uiuc.edu/Research/vmd/)
 / Find x = a*i + b where i = 0..n-1
 */
-static void least_squares(int n, const float *x, float *a, float *b) {
+static void least_squares(int n, const float* x, float* a, float* b) {
     float sum = 0;
     int i;
     for (i = 0; i < n; i++) {  // find the sum of x
@@ -414,7 +414,7 @@ static void least_squares(int n, const float *x, float *a, float *b) {
     *b = (sum / float(n) - d * (*a));
 }
 
-QPair<Vector3D, Vector3D> calcBestAxisThroughPoints(const QVector<Vector3D> &points) {
+QPair<Vector3D, Vector3D> calcBestAxisThroughPoints(const QVector<Vector3D>& points) {
     float a[3], b[3];
     int n = points.count();
     QVector<float> buf;
@@ -435,7 +435,7 @@ QPair<Vector3D, Vector3D> calcBestAxisThroughPoints(const QVector<Vector3D> &poi
     return QPair<Vector3D, Vector3D>(pointA, pointB);
 }
 
-Vector3D calcMiddlePoint(const QVector<Vector3D> &points) {
+Vector3D calcMiddlePoint(const QVector<Vector3D>& points) {
     Vector3D point(0, 0, 0);
     foreach (Vector3D v, points) {
         point += v;
@@ -443,7 +443,7 @@ Vector3D calcMiddlePoint(const QVector<Vector3D> &points) {
     return (point / points.count());
 }
 
-Vector3D projectPointOnAxis(const Vector3D &point, const Vector3D &axisUnitVector, const Vector3D &axisPoint) {
+Vector3D projectPointOnAxis(const Vector3D& point, const Vector3D& axisUnitVector, const Vector3D& axisPoint) {
     Vector3D projection(point - axisPoint);
     float projectedLength = vector_dot(projection, axisUnitVector);
     projection = projectedLength * axisUnitVector + axisPoint;

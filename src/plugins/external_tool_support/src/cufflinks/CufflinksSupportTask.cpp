@@ -52,7 +52,7 @@ namespace U2 {
 
 const QString CufflinksSupportTask::outSubDirBaseName("cufflinks_out");
 
-CufflinksSupportTask::CufflinksSupportTask(const CufflinksSettings &_settings)
+CufflinksSupportTask::CufflinksSupportTask(const CufflinksSettings& _settings)
     : ExternalToolSupportTask(tr("Running Cufflinks task"), TaskFlags_NR_FOSE_COSC),
       settings(_settings),
       tmpDoc(nullptr),
@@ -79,7 +79,7 @@ QString CufflinksSupportTask::initTmpDir() {
     QDir tmpDir(cufflinksTmpDirName + "/" + tmpDirName);
 
     if (tmpDir.exists()) {
-        foreach (const QString &file, tmpDir.entryList()) {
+        foreach (const QString& file, tmpDir.entryList()) {
             tmpDir.remove(file);
         }
 
@@ -113,7 +113,7 @@ void CufflinksSupportTask::prepare() {
     }
 
     settings.url = workingDirectory + "/tmp.sam";
-    DocumentFormat *docFormat = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::SAM);
+    DocumentFormat* docFormat = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::SAM);
     tmpDoc = docFormat->createNewLoadedDocument(IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), GUrl(settings.url), stateInfo);
     CHECK_OP(stateInfo, );
 
@@ -129,7 +129,7 @@ void CufflinksSupportTask::prepare() {
     addSubTask(convertAssToSamTask);
 }
 
-ExternalToolRunTask *CufflinksSupportTask::runCufflinks() {
+ExternalToolRunTask* CufflinksSupportTask::runCufflinks() {
     // Init the arguments list
     QStringList arguments;
 
@@ -167,7 +167,7 @@ ExternalToolRunTask *CufflinksSupportTask::runCufflinks() {
     arguments << settings.url;
 
     // Create the Cufflinks task
-    ExternalToolRunTask *runTask = new ExternalToolRunTask(CufflinksSupport::ET_CUFFLINKS_ID,
+    ExternalToolRunTask* runTask = new ExternalToolRunTask(CufflinksSupport::ET_CUFFLINKS_ID,
                                                            arguments,
                                                            new ExternalToolLogParser(),
                                                            workingDirectory);
@@ -175,8 +175,8 @@ ExternalToolRunTask *CufflinksSupportTask::runCufflinks() {
     return runTask;
 }
 
-QList<Task *> CufflinksSupportTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> result;
+QList<Task*> CufflinksSupportTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> result;
 
     if (subTask->hasError()) {
         stateInfo.setError(subTask->getError());
@@ -205,9 +205,9 @@ QList<Task *> CufflinksSupportTask::onSubTaskFinished(Task *subTask) {
         QScopedPointer<Document> doc(loadIsoformAnnotationsTask->takeDocument());
         SAFE_POINT_EXT(nullptr != doc, setError(L10N::nullPointerError("document with annotations")), result);
         doc->setDocumentOwnsDbiResources(false);
-        foreach (GObject *object, doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE)) {
+        foreach (GObject* object, doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE)) {
             doc->removeObject(object, DocumentObjectRemovalMode_Release);
-            isoformLevelAnnotationTables << qobject_cast<AnnotationTableObject *>(object);
+            isoformLevelAnnotationTables << qobject_cast<AnnotationTableObject*>(object);
         }
     }
 
@@ -225,10 +225,10 @@ DocumentFormatId CufflinksSupportTask::getFormatId(CufflinksOutputFormat format)
     }
 }
 
-void CufflinksSupportTask::initLoadIsoformAnnotationsTask(const QString &fileName, CufflinksOutputFormat format) {
+void CufflinksSupportTask::initLoadIsoformAnnotationsTask(const QString& fileName, CufflinksOutputFormat format) {
     const QString filePath = settings.outDir + "/" + fileName;
 
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     SAFE_POINT_EXT(nullptr != iof, setError(tr("An internal error occurred during getting annotations from a %1 output file!").arg(CufflinksSupport::ET_CUFFLINKS)), );
 
     QVariantMap hints;
@@ -246,12 +246,12 @@ Task::ReportResult CufflinksSupportTask::report() {
     return ReportResult_Finished;
 }
 
-QList<AnnotationTableObject *> CufflinksSupportTask::getIsoformAnnotationTables() const {
+QList<AnnotationTableObject*> CufflinksSupportTask::getIsoformAnnotationTables() const {
     return isoformLevelAnnotationTables;
 }
 
-const QStringList &CufflinksSupportTask::getOutputFiles() const {
+const QStringList& CufflinksSupportTask::getOutputFiles() const {
     return outputFiles;
 }
 
-}    // namespace U2
+}  // namespace U2

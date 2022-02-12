@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-DbFolderItem::DbFolderItem(const QString &url, QListWidget *parent)
+DbFolderItem::DbFolderItem(const QString& url, QListWidget* parent)
     : UrlItem(url, parent), options(new DbFolderOptions()) {
     connect(options, SIGNAL(si_dataChanged()), SIGNAL(si_dataChanged()));
 
@@ -53,11 +53,11 @@ DbFolderItem::~DbFolderItem() {
     delete options;
 }
 
-QWidget *DbFolderItem::getOptionsWidget() {
+QWidget* DbFolderItem::getOptionsWidget() {
     return options;
 }
 
-void DbFolderItem::accept(UrlItemVisitor *visitor) {
+void DbFolderItem::accept(UrlItemVisitor* visitor) {
     visitor->visit(this);
 }
 
@@ -72,7 +72,7 @@ bool DbFolderItem::isRecursive() const {
 /************************************************************************/
 /* DbFolderOptions */
 /************************************************************************/
-DbFolderOptions::DbFolderOptions(QWidget *parent)
+DbFolderOptions::DbFolderOptions(QWidget* parent)
     : QWidget(parent), ui(new Ui_DbFolderOptions) {
     ui->setupUi(this);
     connect(ui->recursiveBox, SIGNAL(clicked(bool)), SIGNAL(si_dataChanged()));

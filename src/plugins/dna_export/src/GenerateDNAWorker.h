@@ -31,7 +31,7 @@ namespace LocalWorkflow {
 class GenerateDNAPrompter : public PrompterBase<GenerateDNAPrompter> {
     Q_OBJECT
 public:
-    GenerateDNAPrompter(Actor *p = 0)
+    GenerateDNAPrompter(Actor* p = 0)
         : PrompterBase<GenerateDNAPrompter>(p) {
     }
 
@@ -42,20 +42,20 @@ protected:
 class GenerateDNAWorker : public BaseWorker {
     Q_OBJECT
 public:
-    GenerateDNAWorker(Actor *a)
+    GenerateDNAWorker(Actor* a)
         : BaseWorker(a), ch(nullptr) {
     }
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup() {
     }
 
 private slots:
-    void sl_taskFinished(Task *);
+    void sl_taskFinished(Task*);
 
 private:
-    CommunicationChannel *ch;
+    CommunicationChannel* ch;
 };
 
 class GenerateDNAWorkerFactory : public DomainFactory {
@@ -65,7 +65,7 @@ public:
     GenerateDNAWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new GenerateDNAWorker(a);
     }
 };

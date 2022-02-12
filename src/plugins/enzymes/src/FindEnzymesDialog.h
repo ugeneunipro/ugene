@@ -22,15 +22,15 @@
 #ifndef _U2_ENZYMES_DIALOG_H_
 #define _U2_ENZYMES_DIALOG_H_
 
-#include <ui_EnzymesSelectorWidget.h>
-#include <ui_FindEnzymesDialog.h>
-
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
 
 #include <U2Algorithm/EnzymeModel.h>
 
 #include <U2Gui/MainWindow.h>
+
+#include <ui_EnzymesSelectorWidget.h>
+#include <ui_FindEnzymesDialog.h>
 
 namespace U2 {
 
@@ -67,16 +67,16 @@ private slots:
     void sl_saveSelectionToFile();
     void sl_loadSelectionFromFile();
     void sl_openDBPage();
-    void sl_itemChanged(QTreeWidgetItem *item, int col);
-    void sl_filterTextChanged(const QString &filterText);
+    void sl_itemChanged(QTreeWidgetItem* item, int col);
+    void sl_filterTextChanged(const QString& filterText);
 
 private:
-    void loadFile(const QString &url);
-    void saveFile(const QString &url);
-    void setEnzymesList(const QList<SEnzymeData> &enzymes);
+    void loadFile(const QString& url);
+    void saveFile(const QString& url);
+    void setEnzymesList(const QList<SEnzymeData>& enzymes);
     void updateStatus();
 
-    EnzymeGroupTreeItem *findGroupItem(const QString &s, bool create);
+    EnzymeGroupTreeItem* findGroupItem(const QString& s, bool create);
 
     static QList<SEnzymeData> loadedEnzymes;
     // saves selection between calls to getSelectedEnzymes()
@@ -90,7 +90,7 @@ private:
 class FindEnzymesDialog : public QDialog, public Ui_FindEnzymesDialog {
     Q_OBJECT
 public:
-    FindEnzymesDialog(ADVSequenceObjectContext *advSequenceContext);
+    FindEnzymesDialog(ADVSequenceObjectContext* advSequenceContext);
     virtual void accept();
 private slots:
     void sl_onSelectionModified(int total, int nChecked);
@@ -100,27 +100,27 @@ private:
     void saveSettings();
 
     /** FindEnzymes dialog is always opened for some sequence in ADVSequenceView. */
-    ADVSequenceObjectContext *advSequenceContext;
+    ADVSequenceObjectContext* advSequenceContext;
 
-    EnzymesSelectorWidget *enzSel;
-    RegionSelectorWithExcludedRegion *regionSelector;
+    EnzymesSelectorWidget* enzSel;
+    RegionSelectorWithExcludedRegion* regionSelector;
 };
 
 class EnzymeTreeItem;
 class EnzymeGroupTreeItem : public QTreeWidgetItem {
 public:
-    EnzymeGroupTreeItem(const QString &s);
+    EnzymeGroupTreeItem(const QString& s);
     void updateVisual();
     QString s;
-    QSet<EnzymeTreeItem *> checkedEnzymes;
-    bool operator<(const QTreeWidgetItem &other) const;
+    QSet<EnzymeTreeItem*> checkedEnzymes;
+    bool operator<(const QTreeWidgetItem& other) const;
 };
 
 class EnzymeTreeItem : public QTreeWidgetItem {
 public:
-    EnzymeTreeItem(const SEnzymeData &ed);
+    EnzymeTreeItem(const SEnzymeData& ed);
     SEnzymeData enzyme;
-    bool operator<(const QTreeWidgetItem &other) const;
+    bool operator<(const QTreeWidgetItem& other) const;
 };
 
 #define ANY_VALUE -1

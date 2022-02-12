@@ -33,7 +33,7 @@ const GLfloat GLFrame::DEFAULT_ZOOM = 45.0f;
 ///////////////////////////////////////////////////////////////////////////////////////////
 /// GLFrame
 
-GLFrame::GLFrame(QOpenGLWidget *widget)
+GLFrame::GLFrame(QOpenGLWidget* widget)
     : glWidget(widget), rotMatrix(),
       cameraClipNear(0), cameraClipFar(0),
       zoomFactor(DEFAULT_ZOOM), cameraPosition(0, 0, 0) {
@@ -64,7 +64,7 @@ void GLFrame::performShift(float deltaX, float deltaY) {
     cameraPosition += shiftVector;
 }
 
-QOpenGLWidget *GLFrame::getGLWidget() {
+QOpenGLWidget* GLFrame::getGLWidget() {
     return glWidget;
 }
 
@@ -80,7 +80,7 @@ GLfloat GLFrame::getZoomFactor() const {
     return zoomFactor;
 }
 
-float *GLFrame::getRotationMatrix() {
+float* GLFrame::getRotationMatrix() {
     return rotMatrix.data();
 }
 
@@ -92,7 +92,7 @@ void GLFrame::setCameraPosition(float x, float y, float z) {
     cameraPosition.set(x, y, z);
 }
 
-void GLFrame::setCameraPosition(const Vector3D &v) {
+void GLFrame::setCameraPosition(const Vector3D& v) {
     cameraPosition = v;
 }
 
@@ -101,7 +101,7 @@ void GLFrame::setCameraClip(float clipNear, float clipFar) {
     cameraClipFar = clipFar;
 }
 
-void GLFrame::rotateCamera(const Vector3D &rotAxis, float rotAngle) {
+void GLFrame::rotateCamera(const Vector3D& rotAxis, float rotAngle) {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glRotatef(rotAngle, rotAxis.x, rotAxis.y, rotAxis.z);
@@ -114,7 +114,7 @@ void GLFrame::rotateCamera(const Vector3D &rotAxis, float rotAngle) {
 #define CAMERA_STATE_POSITION_Y_ID "CAMERA_STATE_POSITION_Y"
 #define ROTATION_MATRIX_ID "ROTATION_MATRIX"
 
-void GLFrame::setState(const QVariantMap &state) {
+void GLFrame::setState(const QVariantMap& state) {
     cameraPosition.x = state.value(CAMERA_STATE_POSITION_X_ID, 0).value<float>();
     cameraPosition.y = state.value(CAMERA_STATE_POSITION_Y_ID, 0).value<float>();
 
@@ -125,7 +125,7 @@ void GLFrame::setState(const QVariantMap &state) {
     }
 }
 
-void GLFrame::writeStateToMap(QVariantMap &state) {
+void GLFrame::writeStateToMap(QVariantMap& state) {
     state[CAMERA_STATE_POSITION_X_ID] = QVariant::fromValue(cameraPosition.x);
     state[CAMERA_STATE_POSITION_Y_ID] = QVariant::fromValue(cameraPosition.y);
 
@@ -153,11 +153,11 @@ bool GLFrameManager::getSyncLock() const {
     return syncLock;
 }
 
-void GLFrameManager::addGLFrame(GLFrame *glFrame) {
+void GLFrameManager::addGLFrame(GLFrame* glFrame) {
     widgetFrameMap.insert(glFrame->getGLWidget(), glFrame);
 }
 
-GLFrame *GLFrameManager::getGLWidgetFrame(QOpenGLWidget *widget) {
+GLFrame* GLFrameManager::getGLWidgetFrame(QOpenGLWidget* widget) {
     if (widgetFrameMap.contains(widget)) {
         return widgetFrameMap.value(widget);
     } else {
@@ -165,17 +165,17 @@ GLFrame *GLFrameManager::getGLWidgetFrame(QOpenGLWidget *widget) {
     }
 }
 
-QList<GLFrame *> GLFrameManager::getGLFrames() {
+QList<GLFrame*> GLFrameManager::getGLFrames() {
     return widgetFrameMap.values();
 }
 
-void GLFrameManager::setSyncLock(bool lockOn, QOpenGLWidget *syncWidget) {
+void GLFrameManager::setSyncLock(bool lockOn, QOpenGLWidget* syncWidget) {
     syncLock = lockOn;
     if (lockOn) {
-        GLFrame *syncFrame = getGLWidgetFrame(syncWidget);
+        GLFrame* syncFrame = getGLWidgetFrame(syncWidget);
         QVariantMap state;
         syncFrame->writeStateToMap(state);
-        foreach (GLFrame *frame, widgetFrameMap.values()) {
+        foreach (GLFrame* frame, widgetFrameMap.values()) {
             if (frame != syncFrame) {
                 frame->makeCurrent();
                 frame->setState(state);
@@ -186,16 +186,16 @@ void GLFrameManager::setSyncLock(bool lockOn, QOpenGLWidget *syncWidget) {
     }
 }
 
-void GLFrameManager::removeGLWidgetFrame(QOpenGLWidget *widget) {
+void GLFrameManager::removeGLWidgetFrame(QOpenGLWidget* widget) {
     Q_ASSERT(widgetFrameMap.contains(widget));
     widgetFrameMap.remove(widget);
 }
 
-QList<GLFrame *> GLFrameManager::getActiveGLFrameList(GLFrame *currentFrame, bool syncModeOn) {
+QList<GLFrame*> GLFrameManager::getActiveGLFrameList(GLFrame* currentFrame, bool syncModeOn) {
     if (syncModeOn) {
         return widgetFrameMap.values();
     } else {
-        QList<GLFrame *> lst;
+        QList<GLFrame*> lst;
         lst.append(currentFrame);
         return lst;
     }

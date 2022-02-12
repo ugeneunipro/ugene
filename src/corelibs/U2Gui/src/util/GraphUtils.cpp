@@ -39,7 +39,7 @@ GraphUtils::ArrowConfig::ArrowConfig()
       direction(LeftToRight) {
 }
 
-static void drawNum(QPainter &p, int x1, int x2, const QString &num, int lBorder, int rBorder, int y1, int y2) {
+static void drawNum(QPainter& p, int x1, int x2, const QString& num, int lBorder, int rBorder, int y1, int y2) {
     if (x1 < lBorder || x2 > rBorder) {
         return;
     }
@@ -48,7 +48,7 @@ static void drawNum(QPainter &p, int x1, int x2, const QString &num, int lBorder
 }
 
 #define MIN_RULER_LEN 10
-void GraphUtils::drawRuler(QPainter &p, const QPoint &pos, qint64 len, qint64 start, qint64 end, const QFont &font, const RulerConfig &c) {
+void GraphUtils::drawRuler(QPainter& p, const QPoint& pos, qint64 len, qint64 start, qint64 end, const QFont& font, const RulerConfig& c) {
     if (start == end || len < MIN_RULER_LEN) {
         return;
     }
@@ -299,7 +299,7 @@ static QVector<QColor> prepareColors() {
     return colors;
 }
 
-QColor GraphUtils::proposeLightColorByKey(const QString &key) {
+QColor GraphUtils::proposeLightColorByKey(const QString& key) {
     // TODO: make thread safe!
     static QVector<QColor> colors = prepareColors();
 
@@ -311,7 +311,7 @@ QColor GraphUtils::proposeLightColorByKey(const QString &key) {
     return colors.at((hash * hash) % colors.size());
 }
 
-int GraphUtils::calculateChunk(qint64 start, qint64 end, qint64 len, const QPainter &p) {
+int GraphUtils::calculateChunk(qint64 start, qint64 end, qint64 len, const QPainter& p) {
     QFontMetrics fm = p.fontMetrics();
     int cw = fm.size(Qt::TextSingleLine, "0").width();
     // the width of the bigger number
@@ -372,7 +372,7 @@ qint64 GraphUtils::pickRoundedNumberBelow(qint64 maxVal) {
     return res;
 }
 
-void GraphUtils::drawArrow(QPainter &painter, const QRectF &rect, const ArrowConfig &config) {
+void GraphUtils::drawArrow(QPainter& painter, const QRectF& rect, const ArrowConfig& config) {
     SAFE_POINT(LeftToRight == config.direction || RightToLeft == config.direction, "Vertical arrows drawing is not implemented", );
     painter.save();
 

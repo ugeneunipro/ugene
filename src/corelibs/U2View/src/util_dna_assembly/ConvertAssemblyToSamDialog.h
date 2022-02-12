@@ -36,7 +36,7 @@ class U2VIEW_EXPORT ConvertAssemblyToSamDialog : public QDialog {
     Q_OBJECT
 
 public:
-    ConvertAssemblyToSamDialog(QWidget *parent = nullptr, QString dbPath = "");
+    ConvertAssemblyToSamDialog(QWidget* parent = nullptr, QString dbPath = "");
 
     const GUrl getDbFileUrl();
     const GUrl getSamFileUrl();
@@ -47,11 +47,11 @@ private slots:
     void reject();
 
 private:
-    void buildSamUrl(const GUrl &dbUrl);
+    void buildSamUrl(const GUrl& dbUrl);
     void initSaveController();
 
-    Ui_AssemblyToSamDialog *ui;
-    SaveDocumentController *saveController;
+    Ui_AssemblyToSamDialog* ui;
+    SaveDocumentController* saveController;
 
     static GUrl dbFileUrl;
 };

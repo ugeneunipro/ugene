@@ -24,7 +24,7 @@
 namespace U2 {
 namespace BAM {
 
-IOException::IOException(const QString &message)
+IOException::IOException(const QString& message)
     : Exception(message) {
 }
 

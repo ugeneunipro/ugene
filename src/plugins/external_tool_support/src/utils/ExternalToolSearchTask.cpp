@@ -36,16 +36,16 @@ namespace U2 {
 
 #define DEFAULT_TOOLS_DIR_NAME "tools"
 
-ExternalToolSearchTask::ExternalToolSearchTask(const QString &toolId)
+ExternalToolSearchTask::ExternalToolSearchTask(const QString& toolId)
     : Task(tr("'%1' external tool search task").arg(AppContext::getExternalToolRegistry()->getToolNameById(toolId)), TaskFlag_None),
       toolId(toolId) {
 }
 
 void ExternalToolSearchTask::run() {
-    ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
+    ExternalToolRegistry* etRegistry = AppContext::getExternalToolRegistry();
     SAFE_POINT(etRegistry, "External tool registry is NULL", );
 
-    ExternalTool *tool = etRegistry->getById(toolId);
+    ExternalTool* tool = etRegistry->getById(toolId);
     CHECK_EXT(tool, setError(tr("External tool '%1' is not registered").arg(toolId)), );
 
     // Search for pre-installed external tools first.
@@ -103,7 +103,7 @@ void ExternalToolSearchTask::run() {
         QString exeName = getExecutableFileName(tool);
         CHECK(!exeName.isEmpty(), );
 
-        foreach (const QString &curPath, paths) {
+        foreach (const QString& curPath, paths) {
             QString exePath = curPath + QDir::separator() + exeName;
             QFileInfo info(exePath);
             if (info.exists()) {
@@ -121,7 +121,7 @@ void ExternalToolSearchTask::run() {
     }
 }
 
-QString ExternalToolSearchTask::getExecutableFileName(ExternalTool *tool) {
+QString ExternalToolSearchTask::getExecutableFileName(ExternalTool* tool) {
     SAFE_POINT_EXT(tool, setError(tr("Tool pointer is NULL")), "");
 
     if (!tool->getExecutableFileName().isEmpty()) {
@@ -131,9 +131,9 @@ QString ExternalToolSearchTask::getExecutableFileName(ExternalTool *tool) {
     if (tool->isModule()) {
         QStringList dependencies = tool->getDependencies();
         SAFE_POINT_EXT(!dependencies.isEmpty(), setError(tr("External tool module hasn't any dependencies: it hasn't master tool")), "");
-        ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
+        ExternalToolRegistry* etRegistry = AppContext::getExternalToolRegistry();
         SAFE_POINT_EXT(etRegistry, setError(tr("External tool registry is NULL")), "");
-        ExternalTool *masterTool = etRegistry->getById(dependencies.first());
+        ExternalTool* masterTool = etRegistry->getById(dependencies.first());
         SAFE_POINT_EXT(masterTool, setError(tr("An external tool '%1' isn't found in the registry").arg(dependencies.first())), "");
         return masterTool->getExecutableFileName();
     }
@@ -142,19 +142,19 @@ QString ExternalToolSearchTask::getExecutableFileName(ExternalTool *tool) {
     return "";
 }
 
-ExternalToolsSearchTask::ExternalToolsSearchTask(const QList<Task *> &_tasks)
+ExternalToolsSearchTask::ExternalToolsSearchTask(const QList<Task*>& _tasks)
     : SequentialMultiTask(tr("Searching external tools"), _tasks, TaskFlags(TaskFlag_NoRun | TaskFlag_CancelOnSubtaskCancel)) {
 }
 
-QList<Task *> ExternalToolsSearchTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> subTasks;
-    ExternalToolSearchTask *searchTask = qobject_cast<ExternalToolSearchTask *>(subTask);
+QList<Task*> ExternalToolsSearchTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> subTasks;
+    ExternalToolSearchTask* searchTask = qobject_cast<ExternalToolSearchTask*>(subTask);
     bool muted = false;
 
     if (searchTask) {
-        ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
+        ExternalToolRegistry* etRegistry = AppContext::getExternalToolRegistry();
         SAFE_POINT(etRegistry, "External tool registry is NULL", subTasks);
-        ExternalTool *tool = etRegistry->getById(searchTask->getToolId());
+        ExternalTool* tool = etRegistry->getById(searchTask->getToolId());
         SAFE_POINT(tool, QString("An external tool '%1' isn't found in the registry").arg(searchTask->getToolId()), subTasks);
         muted = tool->isMuted();
     }
@@ -171,4 +171,4 @@ QList<Task *> ExternalToolsSearchTask::onSubTaskFinished(Task *subTask) {
     return subTasks;
 }
 
-}    // namespace U2
+}  // namespace U2

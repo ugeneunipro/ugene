@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-ConvertMca2MsaTask::ConvertMca2MsaTask(MultipleChromatogramAlignmentObject *mcaObject, bool includeReference)
+ConvertMca2MsaTask::ConvertMca2MsaTask(MultipleChromatogramAlignmentObject* mcaObject, bool includeReference)
     : Task(tr("Convert MCA to MSA task"), TaskFlag_None),
       mcaObject(mcaObject),
       includeReference(includeReference) {
@@ -46,12 +46,12 @@ void ConvertMca2MsaTask::run() {
     msa = MultipleSequenceAlignment(mcaObject->getGObjectName(), mcaObject->getAlphabet());
 
     if (includeReference) {
-        U2SequenceObject *referenceObject = mcaObject->getReferenceObj();
+        U2SequenceObject* referenceObject = mcaObject->getReferenceObj();
         msa->addRow(referenceObject->getSequenceName(), referenceObject->getWholeSequenceData(stateInfo));
         CHECK_OP(stateInfo, );
     }
 
-    foreach (const MultipleChromatogramAlignmentRow &mcaRow, mcaObject->getMca()->getMcaRows()) {
+    foreach (const MultipleChromatogramAlignmentRow& mcaRow, mcaObject->getMca()->getMcaRows()) {
         msa->addRow(mcaRow->getName(), mcaRow->getSequence(), mcaRow->getGaps(), stateInfo);
         CHECK_OP(stateInfo, );
     }

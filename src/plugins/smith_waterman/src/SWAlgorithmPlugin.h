@@ -45,26 +45,26 @@ public slots:
     void regDependedIMPLFromOtherPlugins();
 
 private:
-    QList<XMLTestFactory *> fs;
-    SWAlgorithmADVContext *ctxADV;
-    SWAlgorithmMSAContext *ctxMSA;
+    QList<XMLTestFactory*> fs;
+    SWAlgorithmADVContext* ctxADV;
+    SWAlgorithmMSAContext* ctxMSA;
 };
 
 class SWAlgorithmTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 class SWAlgorithmADVContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    SWAlgorithmADVContext(QObject *p);
+    SWAlgorithmADVContext(QObject* p);
 
 protected slots:
     void sl_search();
 
 protected:
-    void initViewContext(GObjectView *view) override;
+    void initViewContext(GObjectView* view) override;
 
 private:
     SWDialogConfig dialogConfig;
@@ -73,7 +73,7 @@ private:
 class SWPairwiseAlignmentAlgorithm : public AlignmentAlgorithm {
 public:
     SWPairwiseAlignmentAlgorithm();
-    bool checkAlphabet(const DNAAlphabet *alphabet) const;
+    bool checkAlphabet(const DNAAlphabet* alphabet) const;
 };
 
 }  // namespace U2

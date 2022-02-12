@@ -49,7 +49,7 @@ namespace BAM {
 
 static const QString DIR_HELPER_DOMAIN("ConvertToSQLiteDialog");
 
-ConvertToSQLiteDialog::ConvertToSQLiteDialog(const GUrl &_sourceUrl, BAMInfo &_bamInfo, bool sam)
+ConvertToSQLiteDialog::ConvertToSQLiteDialog(const GUrl& _sourceUrl, BAMInfo& _bamInfo, bool sam)
     : QDialog(QApplication::activeWindow()),
       saveController(nullptr),
       sourceUrl(_sourceUrl),
@@ -92,12 +92,12 @@ ConvertToSQLiteDialog::ConvertToSQLiteDialog(const GUrl &_sourceUrl, BAMInfo &_b
         ui.tableWidget->horizontalHeader()->setStretchLastSection(true);
         {
             int i = 0;
-            foreach (const Header::Reference &ref, bamInfo.getHeader().getReferences()) {
-                QTableWidgetItem *checkbox = new QTableWidgetItem();
+            foreach (const Header::Reference& ref, bamInfo.getHeader().getReferences()) {
+                QTableWidgetItem* checkbox = new QTableWidgetItem();
                 checkbox->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
                 checkbox->setText(ref.getName());
                 ui.tableWidget->setItem(i, 0, checkbox);
-                QTableWidgetItem *item = new QTableWidgetItem(FormatUtils::formatNumberWithSeparators(ref.getLength()));
+                QTableWidgetItem* item = new QTableWidgetItem(FormatUtils::formatNumberWithSeparators(ref.getLength()));
                 item->setFlags(Qt::ItemIsEnabled);
                 ui.tableWidget->setItem(i, 1, item);
                 ui.tableWidget->setCellWidget(i, 2, new QLabel("<a href=\"" + ref.getUri() + "\">" + ref.getUri() + "</a>"));
@@ -107,11 +107,11 @@ ConvertToSQLiteDialog::ConvertToSQLiteDialog(const GUrl &_sourceUrl, BAMInfo &_b
         }
         ui.tableWidget->verticalHeader()->setDefaultSectionSize(QFontMetrics(QFont()).height() + 5);
     }
-    QPushButton *okButton = ui.buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* okButton = ui.buttonBox->button(QDialogButtonBox::Ok);
     ui.importUnmappedBox->setCheckState(bamInfo.isUnmappedSelected() ? Qt::Checked : Qt::Unchecked);
     ui.sourceUrlView->setText(QDir::cleanPath(sourceUrl.getURLString()));
     okButton->setFocus();
-    connect(ui.tableWidget, SIGNAL(itemChanged(QTableWidgetItem *)), SLOT(sl_assemblyCheckChanged(QTableWidgetItem *)));
+    connect(ui.tableWidget, SIGNAL(itemChanged(QTableWidgetItem*)), SLOT(sl_assemblyCheckChanged(QTableWidgetItem*)));
 
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
     adjustSize();
@@ -149,19 +149,19 @@ void ConvertToSQLiteDialog::sl_unselectAll() {
 }
 void ConvertToSQLiteDialog::sl_inverseSelection() {
     for (int i = 0; i < bamInfo.getSelected().count(); i++) {
-        QTableWidgetItem *item = ui.tableWidget->item(i, 0);
+        QTableWidgetItem* item = ui.tableWidget->item(i, 0);
         item->setCheckState(item->checkState() == Qt::Checked ? Qt::Unchecked : Qt::Checked);
     }
 }
 
 void ConvertToSQLiteDialog::sl_bamInfoButtonClicked() {
-    const Header &header = bamInfo.getHeader();
+    const Header& header = bamInfo.getHeader();
     QObjectScopedPointer<QDialog> dialog = new QDialog(this);
     dialog->setWindowTitle(BAMDbiPlugin::tr("%1 file info").arg(sourceUrl.getURLString()));
     dialog->setLayout(new QVBoxLayout());
 
     {
-        QTableWidget *table = new QTableWidget();
+        QTableWidget* table = new QTableWidget();
         table->setColumnCount(2);
         table->setHorizontalHeaderLabels(QStringList() << BAMDbiPlugin::tr("Property name") << BAMDbiPlugin::tr("Value"));
         table->horizontalHeader()->setStretchLastSection(true);
@@ -191,8 +191,8 @@ void ConvertToSQLiteDialog::sl_bamInfoButtonClicked() {
         table->setRowCount(list.count());
         {
             for (int i = 0; i < list.count(); i++) {
-                const QPair<QString, QString> &pair = list.at(i);
-                QTableWidgetItem *item = new QTableWidgetItem(pair.first);
+                const QPair<QString, QString>& pair = list.at(i);
+                QTableWidgetItem* item = new QTableWidgetItem(pair.first);
                 item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
                 table->setItem(i, 0, item);
                 item = new QTableWidgetItem(pair.second);
@@ -204,7 +204,7 @@ void ConvertToSQLiteDialog::sl_bamInfoButtonClicked() {
     }
 
     {
-        QTableWidget *table = new QTableWidget();
+        QTableWidget* table = new QTableWidget();
         table->setColumnCount(9);
         table->setHorizontalHeaderLabels(QStringList() << BAMDbiPlugin::tr("Sequencing center") << BAMDbiPlugin::tr("Description") << BAMDbiPlugin::tr("Date")
                                                        << BAMDbiPlugin::tr("Library") << BAMDbiPlugin::tr("Programs") << BAMDbiPlugin::tr("Predicted median insert size") << BAMDbiPlugin::tr("Platform/technology")
@@ -212,13 +212,13 @@ void ConvertToSQLiteDialog::sl_bamInfoButtonClicked() {
         table->horizontalHeader()->setStretchLastSection(true);
 
         int i = 0;
-        foreach (const Header::ReadGroup &rg, header.getReadGroups()) {
+        foreach (const Header::ReadGroup& rg, header.getReadGroups()) {
             QStringList rgList;
             rgList << QString(rg.getSequencingCenter()) << QString(rg.getDescription()) << QString(rg.getDate().toString()) << QString(rg.getLibrary())
                    << QString(rg.getPlatform()) << QString(rg.getPredictedInsertSize()) << QString(rg.getPlatform()) << QString(rg.getPlatformUnit()) << QString(rg.getSample());
             int j = 0;
-            foreach (const QString &s, rgList) {
-                QTableWidgetItem *item = new QTableWidgetItem(s);
+            foreach (const QString& s, rgList) {
+                QTableWidgetItem* item = new QTableWidgetItem(s);
                 item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
                 table->setItem(i, j, item);
                 j++;
@@ -230,18 +230,18 @@ void ConvertToSQLiteDialog::sl_bamInfoButtonClicked() {
     }
 
     {
-        QTableWidget *table = new QTableWidget();
+        QTableWidget* table = new QTableWidget();
         table->setColumnCount(4);
         table->setHorizontalHeaderLabels(QStringList() << BAMDbiPlugin::tr("Name") << BAMDbiPlugin::tr("Version") << BAMDbiPlugin::tr("Command") << BAMDbiPlugin::tr("Previous ID"));
         table->horizontalHeader()->setStretchLastSection(true);
 
         int i = 0;
-        foreach (const Header::Program &pg, header.getPrograms()) {
+        foreach (const Header::Program& pg, header.getPrograms()) {
             QStringList pgList;
             pgList << QString(pg.getName()) << QString(pg.getVersion()) << QString(pg.getCommandLine()) << QString(pg.getPreviousId());
             int j = 0;
-            foreach (const QString &s, pgList) {
-                QTableWidgetItem *item = new QTableWidgetItem(s);
+            foreach (const QString& s, pgList) {
+                QTableWidgetItem* item = new QTableWidgetItem(s);
                 item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
                 table->setItem(i, j, item);
                 j++;
@@ -268,11 +268,11 @@ void ConvertToSQLiteDialog::sl_refUrlButtonClicked() {
     }
 }
 
-void ConvertToSQLiteDialog::sl_assemblyCheckChanged(QTableWidgetItem *item) {
+void ConvertToSQLiteDialog::sl_assemblyCheckChanged(QTableWidgetItem* item) {
     bamInfo.getSelected()[item->row()] = (item->checkState() == Qt::Checked);
 }
 
-const GUrl &ConvertToSQLiteDialog::getDestinationUrl() const {
+const GUrl& ConvertToSQLiteDialog::getDestinationUrl() const {
     return destinationUrl;
 }
 
@@ -297,7 +297,7 @@ bool ConvertToSQLiteDialog::checkReferencesState() {
         return true;
     } else {
         bool selected = false;
-        foreach (const bool &i, bamInfo.getSelected()) {
+        foreach (const bool& i, bamInfo.getSelected()) {
             if (i) {
                 selected = true;
                 break;
@@ -327,7 +327,7 @@ void ConvertToSQLiteDialog::initSaveController() {
 }
 
 namespace {
-bool checkWritePermissions(const QString &fileUrl) {
+bool checkWritePermissions(const QString& fileUrl) {
     QDir dir = QFileInfo(fileUrl).dir();
     if (!dir.exists()) {
         bool created = dir.mkpath(dir.absolutePath());
@@ -354,9 +354,9 @@ void ConvertToSQLiteDialog::accept() {
             return;
         }
 
-        Project *prj = AppContext::getProject();
+        Project* prj = AppContext::getProject();
         if (prj != nullptr) {
-            Document *destDoc = prj->findDocumentByURL(destinationUrl);
+            Document* destDoc = prj->findDocumentByURL(destinationUrl);
             if (destDoc != nullptr && destDoc->isLoaded() && !GObjectViewUtils::findViewsWithAnyOfObjects(destDoc->getObjects()).isEmpty()) {
                 QMessageBox::critical(this, windowTitle(), BAMDbiPlugin::tr("There is opened view with destination file.\n"
                                                                             "Close it or choose different file"));

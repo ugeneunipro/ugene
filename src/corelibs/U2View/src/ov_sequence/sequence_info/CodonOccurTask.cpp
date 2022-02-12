@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-CodonOccurTask::CodonOccurTask(DNATranslation *complementTranslation, const U2EntityRef &seqRef)
+CodonOccurTask::CodonOccurTask(DNATranslation* complementTranslation, const U2EntityRef& seqRef)
     : BackgroundTask<QMap<QByteArray, qint64>>(tr("Count codons"), TaskFlag_NoRun) {
     SequenceDbiWalkerConfig config;
     config.seqRef = seqRef;
@@ -40,7 +40,7 @@ CodonOccurTask::CodonOccurTask(DNATranslation *complementTranslation, const U2En
     addSubTask(new SequenceDbiWalkerTask(config, this, tr("Count all codons in sequence")));
 }
 
-CodonOccurTask::CodonOccurTask(DNATranslation *complementTranslation, const U2EntityRef &seqRef, const QVector<U2Region> &regions)
+CodonOccurTask::CodonOccurTask(DNATranslation* complementTranslation, const U2EntityRef& seqRef, const QVector<U2Region>& regions)
     : BackgroundTask<QMap<QByteArray, qint64>>(tr("Count codons"), TaskFlag_NoRun) {
     SequenceDbiWalkerConfig config;
     config.seqRef = seqRef;
@@ -50,13 +50,13 @@ CodonOccurTask::CodonOccurTask(DNATranslation *complementTranslation, const U2En
     config.translateOnlyFirstFrame = true;
     // Run only 1 subtask at a time: the code in onRegion() is not thread-safe: updates global QHash state.
     config.nThreads = 1;
-    for (const U2Region &region : qAsConst(regions)) {
+    for (const U2Region& region : qAsConst(regions)) {
         config.range = region;
         addSubTask(new SequenceDbiWalkerTask(config, this, tr("Count codons in sequence region")));
     }
 }
 
-CodonOccurTask::CodonOccurTask(DNATranslation *complementTranslation, const U2EntityRef &seqRef, const QList<Annotation *> &annotations)
+CodonOccurTask::CodonOccurTask(DNATranslation* complementTranslation, const U2EntityRef& seqRef, const QList<Annotation*>& annotations)
     : BackgroundTask<QMap<QByteArray, qint64>>(tr("Count codons"), TaskFlag_NoRun) {
     SequenceDbiWalkerConfig config;
     config.seqRef = seqRef;
@@ -65,19 +65,19 @@ CodonOccurTask::CodonOccurTask(DNATranslation *complementTranslation, const U2En
     config.translateOnlyFirstFrame = true;
     // Run only 1 subtask at a time: the code in onRegion() is not thread-safe: updates global QHash state.
     config.nThreads = 1;
-    for (const Annotation *annotation : qAsConst(annotations)) {
+    for (const Annotation* annotation : qAsConst(annotations)) {
         U2Location location = annotation->getLocation();
         config.strandToWalk = location->strand.isDirect() ? StrandOption_DirectOnly : StrandOption_ComplementOnly;
-        for (const U2Region &region : qAsConst(location->regions)) {
+        for (const U2Region& region : qAsConst(location->regions)) {
             config.range = region;
             addSubTask(new SequenceDbiWalkerTask(config, this, tr("Count codons in annotated region")));
         }
     }
 }
 
-void CodonOccurTask::onRegion(SequenceDbiWalkerSubtask *task, TaskStateInfo &) {
-    const QByteArray &sequence = task->getRegionSequence();
-    const char *sequenceData = sequence.constData();
+void CodonOccurTask::onRegion(SequenceDbiWalkerSubtask* task, TaskStateInfo&) {
+    const QByteArray& sequence = task->getRegionSequence();
+    const char* sequenceData = sequence.constData();
     bool isFirstFrameOnly = task->getSequenceDbiWalkerTask()->getConfig().translateOnlyFirstFrame;
     int step = isFirstFrameOnly ? 3 : 1;
     for (int i = 0, n = sequence.length() - 2; i < n; i += step) {

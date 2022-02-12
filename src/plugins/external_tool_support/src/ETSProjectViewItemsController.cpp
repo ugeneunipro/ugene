@@ -45,32 +45,32 @@
 
 namespace U2 {
 
-ETSProjectViewItemsController::ETSProjectViewItemsController(QObject *p)
+ETSProjectViewItemsController::ETSProjectViewItemsController(QObject* p)
     : QObject(p) {
     makeBlastDbOnSelectionAction = new ExternalToolSupportAction(tr("BLAST make DB..."), this, {BlastSupport::ET_MAKEBLASTDB_ID});
     connect(makeBlastDbOnSelectionAction, &QAction::triggered, this, &ETSProjectViewItemsController::sl_runMakeBlastDbOnSelection);
 
-    ProjectView *pv = AppContext::getProjectView();
+    ProjectView* pv = AppContext::getProjectView();
     SAFE_POINT(pv != nullptr, "No project view found", );
-    connect(pv, SIGNAL(si_onDocTreePopupMenuRequested(QMenu &)), SLOT(sl_addToProjectViewMenu(QMenu &)));
+    connect(pv, SIGNAL(si_onDocTreePopupMenuRequested(QMenu&)), SLOT(sl_addToProjectViewMenu(QMenu&)));
 }
 
-void ETSProjectViewItemsController::sl_addToProjectViewMenu(QMenu &m) {
-    ProjectView *pv = AppContext::getProjectView();
+void ETSProjectViewItemsController::sl_addToProjectViewMenu(QMenu& m) {
+    ProjectView* pv = AppContext::getProjectView();
     SAFE_POINT(pv != nullptr, "No project view found", );
 
     MultiGSelection ms;  // ms.addSelection(pv->getGObjectSelection());
     ms.addSelection(pv->getDocumentSelection());
-    QList<Document *> set = SelectionUtils::getSelectedDocs(ms);
+    QList<Document*> set = SelectionUtils::getSelectedDocs(ms);
     bool hasFastaDocs = false;
-    foreach (Document *doc, set) {
+    foreach (Document* doc, set) {
         if (doc->getDocumentFormatId() == BaseDocumentFormats::FASTA) {
             hasFastaDocs = true;
             break;
         }
     }
     if (hasFastaDocs) {
-        QMenu *subMenu = m.addMenu(tr("BLAST"));
+        QMenu* subMenu = m.addMenu(tr("BLAST"));
         subMenu->menuAction()->setObjectName(ACTION_BLAST_SUBMENU);
         subMenu->setIcon(QIcon(":external_tool_support/images/ncbi.png"));
         subMenu->addAction(makeBlastDbOnSelectionAction);
@@ -78,24 +78,24 @@ void ETSProjectViewItemsController::sl_addToProjectViewMenu(QMenu &m) {
 }
 
 void ETSProjectViewItemsController::sl_runMakeBlastDbOnSelection() {
-    ProjectView *projectView = AppContext::getProjectView();
+    ProjectView* projectView = AppContext::getProjectView();
     SAFE_POINT(projectView != nullptr, "ProjectView is null!", );
 
     MultiGSelection ms;
     ms.addSelection(projectView->getGObjectSelection());
     ms.addSelection(projectView->getDocumentSelection());
     MakeBlastDbSettings settings;
-    foreach (Document *doc, projectView->getDocumentSelection()->getSelectedDocuments()) {
+    foreach (Document* doc, projectView->getDocumentSelection()->getSelectedDocuments()) {
         if (doc->getDocumentFormatId() == BaseDocumentFormats::FASTA) {
             settings.inputFilesPath.append(doc->getURLString());
 
-            const QList<GObject *> &objects = doc->getObjects();
+            const QList<GObject*>& objects = doc->getObjects();
             SAFE_POINT(!objects.isEmpty(), "FASTA document: sequence objects count error", );
-            auto seqObj = dynamic_cast<U2SequenceObject *>(objects.first());
+            auto seqObj = dynamic_cast<U2SequenceObject*>(objects.first());
             if (seqObj != nullptr) {
                 SAFE_POINT(seqObj->getAlphabet() != nullptr,
                            QString("Alphabet for '%1' is not set").arg(seqObj->getGObjectName()), );
-                const DNAAlphabet *alphabet = seqObj->getAlphabet();
+                const DNAAlphabet* alphabet = seqObj->getAlphabet();
                 settings.isInputAmino = alphabet->isAmino();
             }
         }

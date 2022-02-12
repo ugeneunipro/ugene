@@ -40,7 +40,7 @@ PRIMER_SEQUENCE_QUALITY
 static const QString extensionsToCheck[14] = {".nhr", ".nnd", ".nni", ".nsd", ".nsi", ".nsq", ".nin", ".phr", ".pnd", ".pni", ".psd", ".psi", ".psq", ".pin"};
 
 namespace {
-bool readPrimer(QDomElement element, QString prefix, Primer *outPrimer, bool internalOligo) {
+bool readPrimer(QDomElement element, QString prefix, Primer* outPrimer, bool internalOligo) {
     {
         QString buf = element.attribute(prefix);
         if (!buf.isEmpty()) {
@@ -125,7 +125,7 @@ PrimerPair readPrimerPair(QDomElement element, QString suffix) {
 }
 }  // namespace
 
-void GTest_Primer3::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
     settings.setIncludedRegion(U2Region(0, -1));
 
     QString buf;
@@ -441,7 +441,7 @@ Task::ReportResult GTest_Primer3::report() {
 GTest_Primer3::~GTest_Primer3() {
 }
 
-bool GTest_Primer3::checkPrimerPair(const PrimerPair &primerPair, const PrimerPair &expectedPrimerPair, QString suffix) {
+bool GTest_Primer3::checkPrimerPair(const PrimerPair& primerPair, const PrimerPair& expectedPrimerPair, QString suffix) {
     if (!checkPrimer(primerPair.getLeftPrimer(), expectedPrimerPair.getLeftPrimer(), "PRIMER_LEFT" + suffix, false)) {
         return false;
     }
@@ -463,7 +463,7 @@ bool GTest_Primer3::checkPrimerPair(const PrimerPair &primerPair, const PrimerPa
     return true;
 }
 
-bool GTest_Primer3::checkPrimer(const Primer *primer, const Primer *expectedPrimer, QString prefix, bool internalOligo) {
+bool GTest_Primer3::checkPrimer(const Primer* primer, const Primer* expectedPrimer, QString prefix, bool internalOligo) {
     if (nullptr == primer) {
         if (nullptr == expectedPrimer) {
             return true;

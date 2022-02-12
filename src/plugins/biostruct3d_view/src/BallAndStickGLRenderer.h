@@ -30,7 +30,7 @@ namespace U2 {
 
 class BallAndStickGLRenderer : public BioStruct3DGLRenderer {
 protected:
-    BallAndStickGLRenderer(const BioStruct3D &struc, const BioStruct3DColorScheme *s, const QList<int> &shownModels, const BioStruct3DRendererSettings *settings);
+    BallAndStickGLRenderer(const BioStruct3D& struc, const BioStruct3DColorScheme* s, const QList<int>& shownModels, const BioStruct3DRendererSettings* settings);
 
 public:
     virtual ~BallAndStickGLRenderer();

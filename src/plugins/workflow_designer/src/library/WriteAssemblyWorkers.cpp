@@ -52,11 +52,11 @@ const QString INDEX_ATTRIBUTE_ID = "build-index";
 /************************************************************************/
 /* BaseWriteAssemblyWorker */
 /************************************************************************/
-BaseWriteAssemblyWorker::BaseWriteAssemblyWorker(Actor *a)
+BaseWriteAssemblyWorker::BaseWriteAssemblyWorker(Actor* a)
     : BaseDocWriter(a) {
 }
 
-void BaseWriteAssemblyWorker::data2doc(Document *doc, const QVariantMap &data) {
+void BaseWriteAssemblyWorker::data2doc(Document* doc, const QVariantMap& data) {
     CHECK(hasDataToWrite(data), );
     SharedDbiDataHandler assemblyId = data[BaseSlots::ASSEMBLY_SLOT().getId()].value<SharedDbiDataHandler>();
     QScopedPointer<AssemblyObject> assemblyObj(StorageUtils::getAssemblyObject(context->getDataStorage(), assemblyId));
@@ -69,7 +69,7 @@ void BaseWriteAssemblyWorker::data2doc(Document *doc, const QVariantMap &data) {
     }
     algoLog.trace(QString("Adding assembly [%1] to %3 doc %2").arg(objName).arg(doc->getURLString()).arg(doc->getDocumentFormat()->getFormatName()));
 
-    DocumentFormat *docFormat = doc->getDocumentFormat();
+    DocumentFormat* docFormat = doc->getDocumentFormat();
     DocumentFormatId formatId = docFormat->getFormatId();
     if (docFormat->isObjectOpSupported(doc, DocumentFormat::DocObjectOp_Add, GObjectTypes::ASSEMBLY)) {
         doc->addObject(assemblyObj.take());
@@ -78,26 +78,26 @@ void BaseWriteAssemblyWorker::data2doc(Document *doc, const QVariantMap &data) {
     }
 }
 
-bool BaseWriteAssemblyWorker::hasDataToWrite(const QVariantMap &data) const {
+bool BaseWriteAssemblyWorker::hasDataToWrite(const QVariantMap& data) const {
     return data.contains(BaseSlots::ASSEMBLY_SLOT().getId());
 }
 
-QSet<GObject *> BaseWriteAssemblyWorker::getObjectsToWrite(const QVariantMap &data) const {
+QSet<GObject*> BaseWriteAssemblyWorker::getObjectsToWrite(const QVariantMap& data) const {
     SharedDbiDataHandler objId = data[BaseSlots::ASSEMBLY_SLOT().getId()].value<SharedDbiDataHandler>();
-    return QSet<GObject *>() << StorageUtils::getAssemblyObject(context->getDataStorage(), objId);
+    return QSet<GObject*>() << StorageUtils::getAssemblyObject(context->getDataStorage(), objId);
 }
 
 /************************************************************************/
 /* WriteBAMWorker */
 /************************************************************************/
-WriteBAMWorker::WriteBAMWorker(Actor *a)
+WriteBAMWorker::WriteBAMWorker(Actor* a)
     : BaseWriteAssemblyWorker(a), buildIndex(false) {
 }
 
-void WriteBAMWorker::takeParameters(U2OpStatus &os) {
+void WriteBAMWorker::takeParameters(U2OpStatus& os) {
     BaseWriteAssemblyWorker::takeParameters(os);
 
-    Attribute *indexAttr = actor->getParameter(INDEX_ATTRIBUTE_ID);
+    Attribute* indexAttr = actor->getParameter(INDEX_ATTRIBUTE_ID);
     CHECK(nullptr != indexAttr, );
     buildIndex = indexAttr->getAttributePureValue().toBool();
 }
@@ -106,14 +106,14 @@ bool WriteBAMWorker::isStreamingSupport() const {
     return false;
 }
 
-Task *WriteBAMWorker::getWriteDocTask(Document *doc, const SaveDocFlags &flags) {
+Task* WriteBAMWorker::getWriteDocTask(Document* doc, const SaveDocFlags& flags) {
     return new WriteBAMTask(doc, buildIndex, flags);
 }
 
 /************************************************************************/
 /* WriteBAMTask */
 /************************************************************************/
-WriteBAMTask::WriteBAMTask(Document *_doc, bool _buildIndex, const SaveDocFlags &_flags)
+WriteBAMTask::WriteBAMTask(Document* _doc, bool _buildIndex, const SaveDocFlags& _flags)
     : Task("Write BAM/SAM file", TaskFlag_None), doc(_doc), buildIndex(_buildIndex), flags(_flags) {
 }
 
@@ -157,7 +157,7 @@ void WriteAssemblyWorkerFactory::init() {
                          WriteBAMWorker::tr("The element gets message(s) with assembled reads data and saves the data"
                                             " to the specified file(s) in one of the appropriate formats (SAM, BAM, or UGENEDB)."));
 
-    QList<PortDescriptor *> portDescs;
+    QList<PortDescriptor*> portDescs;
     {
         QMap<Descriptor, DataTypePtr> inTypeMap;
         Descriptor writeUrlD(BaseSlots::URL_SLOT().getId(),
@@ -170,8 +170,8 @@ void WriteAssemblyWorkerFactory::init() {
         portDescs << new PortDescriptor(inDesc, writeAssemblyType, true);
     }
 
-    QList<Attribute *> attrs;
-    Attribute *docFormatAttr = nullptr;
+    QList<Attribute*> attrs;
+    Attribute* docFormatAttr = nullptr;
     {
         docFormatAttr = new Attribute(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), false, format);
         docFormatAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
@@ -181,19 +181,19 @@ void WriteAssemblyWorkerFactory::init() {
                               BaseWriteAssemblyWorker::tr("Build index (BAM only)"),
                               BaseWriteAssemblyWorker::tr("Build BAM index for the target BAM file. The file .bai will be created in the same folder."));
 
-        Attribute *indexAttr = new Attribute(indexDescr, BaseTypes::BOOL_TYPE(), false, true);
+        Attribute* indexAttr = new Attribute(indexDescr, BaseTypes::BOOL_TYPE(), false, true);
         indexAttr->addRelation(new VisibilityRelation(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId(), BaseDocumentFormats::BAM));
         indexAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
         attrs << indexAttr;
     }
 
-    WriteDocActorProto *proto = new WriteDocActorProto(format, protoDesc, portDescs, inDesc.getId(), attrs, true, false);
+    WriteDocActorProto* proto = new WriteDocActorProto(format, protoDesc, portDescs, inDesc.getId(), attrs, true, false);
     docFormatAttr->addRelation(new FileExtensionRelation(proto->getUrlAttr()->getId()));
 
     // set up delegates
     {
         QVariantMap formatsMap;
-        foreach (const DocumentFormatId &fid, supportedFormats) {
+        foreach (const DocumentFormatId& fid, supportedFormats) {
             formatsMap[AppContext::getDocumentFormatRegistry()->getFormatById(fid)->getFormatName()] = fid;
         }
         proto->getEditor()->addDelegate(new ComboBoxDelegate(formatsMap), BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
@@ -205,8 +205,8 @@ void WriteAssemblyWorkerFactory::init() {
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new WriteAssemblyWorkerFactory());
 }
 
-Worker *WriteAssemblyWorkerFactory::createWorker(Actor *a) {
-    Attribute *formatAttr = a->getParameter(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
+Worker* WriteAssemblyWorkerFactory::createWorker(Actor* a) {
+    Attribute* formatAttr = a->getParameter(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
     QString formatId = formatAttr->getAttributePureValue().toString();
     if (BaseDocumentFormats::SAM == formatId || BaseDocumentFormats::BAM == formatId) {
         return new WriteBAMWorker(a);

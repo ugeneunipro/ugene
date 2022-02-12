@@ -60,7 +60,7 @@ namespace U2 {
 
 FindRepeatsTaskSettings FindRepeatsDialog::defaultSettings() {
     FindRepeatsTaskSettings res;
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     res.minLen = (s->getValue(SETTINGS_ROOT + MIN_LEN_SETTINGS, 5).toInt());
     res.setIdentity(s->getValue(SETTINGS_ROOT + IDENTITY_SETTINGS, 100).toInt());
     bool minDistCheck = (s->getValue(SETTINGS_ROOT + MIN_DIST_CHECK_SETTINGS, true).toBool());
@@ -73,7 +73,7 @@ FindRepeatsTaskSettings FindRepeatsDialog::defaultSettings() {
     return res;
 }
 
-FindRepeatsDialog::FindRepeatsDialog(ADVSequenceObjectContext *_sc)
+FindRepeatsDialog::FindRepeatsDialog(ADVSequenceObjectContext* _sc)
     : QDialog(_sc->getAnnotatedDNAView()->getWidget()) {
     sc = _sc;
     setupUi(this);
@@ -93,8 +93,8 @@ FindRepeatsDialog::FindRepeatsDialog(ADVSequenceObjectContext *_sc)
     m.sequenceLen = sc->getSequenceObject()->getSequenceLength();
     ac = new CreateAnnotationWidgetController(m, this);
 
-    QWidget *caw = ac->getWidget();
-    QVBoxLayout *l = new QVBoxLayout();
+    QWidget* caw = ac->getWidget();
+    QVBoxLayout* l = new QVBoxLayout();
     l->setMargin(0);
     l->addWidget(caw);
     annotationsWidget->setLayout(l);
@@ -109,7 +109,7 @@ FindRepeatsDialog::FindRepeatsDialog(ADVSequenceObjectContext *_sc)
 
     qint64 seqLen = sc->getSequenceLength();
 
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     minLenBox->setValue(s->getValue(SETTINGS_ROOT + MIN_LEN_SETTINGS, qBound(5, int(seqLen / 100), 100)).toInt());
     minLenBox->setMaximum(seqLen);
     identityBox->setValue(s->getValue(SETTINGS_ROOT + IDENTITY_SETTINGS, 100).toInt());
@@ -128,7 +128,7 @@ FindRepeatsDialog::FindRepeatsDialog(ADVSequenceObjectContext *_sc)
 
     rs = new RegionSelector(this, seqLen, false, sc->getSequenceSelection());
     rangeSelectorLayout->addWidget(rs);
-    connect(rs, SIGNAL(si_regionChanged(const U2Region &)), SLOT(sl_onRegionChanged(const U2Region &)));
+    connect(rs, SIGNAL(si_regionChanged(const U2Region&)), SLOT(sl_onRegionChanged(const U2Region&)));
 
     QStringList annotationNames = getAvailableAnnotationNames();
     bool haveAnnotations = !annotationNames.isEmpty();
@@ -151,11 +151,11 @@ FindRepeatsDialog::FindRepeatsDialog(ADVSequenceObjectContext *_sc)
     setWindowIcon(QIcon(":/ugene/images/ugene_16.png"));
 }
 
-void FindRepeatsDialog::prepareAMenu(QToolButton *tb, QLineEdit *le, const QStringList &names) {
+void FindRepeatsDialog::prepareAMenu(QToolButton* tb, QLineEdit* le, const QStringList& names) {
     assert(!names.isEmpty());
-    QMenu *m = new QMenu(this);
-    foreach (const QString &n, names) {
-        QAction *a = new SetAnnotationNameAction(n, this, le);
+    QMenu* m = new QMenu(this);
+    foreach (const QString& n, names) {
+        QAction* a = new SetAnnotationNameAction(n, this, le);
         connect(a, SIGNAL(triggered()), SLOT(sl_setPredefinedAnnotationName()));
         m->addAction(a);
     }
@@ -166,10 +166,10 @@ void FindRepeatsDialog::prepareAMenu(QToolButton *tb, QLineEdit *le, const QStri
 
 QStringList FindRepeatsDialog::getAvailableAnnotationNames() const {
     QStringList res;
-    const QSet<AnnotationTableObject *> &objs = sc->getAnnotationObjects();
+    const QSet<AnnotationTableObject*>& objs = sc->getAnnotationObjects();
     QSet<QString> names;
-    foreach (AnnotationTableObject *o, objs) {
-        foreach (Annotation *a, o->getAnnotations()) {
+    foreach (AnnotationTableObject* o, objs) {
+        foreach (Annotation* a, o->getAnnotations()) {
             names.insert(a->getName());
         }
     }
@@ -179,7 +179,7 @@ QStringList FindRepeatsDialog::getAvailableAnnotationNames() const {
 }
 
 void FindRepeatsDialog::sl_setPredefinedAnnotationName() {
-    SetAnnotationNameAction *a = qobject_cast<SetAnnotationNameAction *>(sender());
+    SetAnnotationNameAction* a = qobject_cast<SetAnnotationNameAction*>(sender());
     QString text = a->text();
     a->le->setText(text);
 }
@@ -198,20 +198,20 @@ void FindRepeatsDialog::sl_maxDistChanged(int i) {
     updateStatus();
 }
 
-void FindRepeatsDialog::sl_onRegionChanged(const U2Region &) {
+void FindRepeatsDialog::sl_onRegionChanged(const U2Region&) {
     updateStatus();
 }
 
-bool FindRepeatsDialog::getRegions(QCheckBox *cb, QLineEdit *le, QVector<U2Region> &res) {
+bool FindRepeatsDialog::getRegions(QCheckBox* cb, QLineEdit* le, QVector<U2Region>& res) {
     bool enabled = cb->isChecked();
     QString names = le->text();
     if (!enabled || names.isEmpty()) {
         return true;
     }
     QSet<QString> aNames = names.split(',', QString::SkipEmptyParts).toSet();
-    const QSet<AnnotationTableObject *> aObjs = sc->getAnnotationObjects();
-    foreach (AnnotationTableObject *obj, aObjs) {
-        foreach (Annotation *a, obj->getAnnotations()) {
+    const QSet<AnnotationTableObject*> aObjs = sc->getAnnotationObjects();
+    foreach (AnnotationTableObject* obj, aObjs) {
+        foreach (Annotation* a, obj->getAnnotations()) {
             if (aNames.contains(a->getName())) {
                 res << a->getRegions();
             }
@@ -264,7 +264,7 @@ void FindRepeatsDialog::accept() {
     RepeatsFilterAlgorithm locFilter = RepeatsFilterAlgorithm(filterAlgorithms->itemData(filterAlgorithms->currentIndex()).toInt());
 
     FindRepeatsTaskSettings settings;
-    const CreateAnnotationModel &cam = ac->getModel();
+    const CreateAnnotationModel& cam = ac->getModel();
     settings.minLen = minLen;
     settings.mismatches = (100 - identPerc) * minLen / 100;
     settings.inverted = inverted;
@@ -303,7 +303,7 @@ void FindRepeatsDialog::accept() {
     }
     sc->getAnnotatedDNAView()->tryAddObject(cam.getAnnotationObject());
 
-    FindRepeatsToAnnotationsTask *t = new FindRepeatsToAnnotationsTask(settings, seqPart, cam.data->name, cam.groupName, cam.description, cam.annotationObjectRef);
+    FindRepeatsToAnnotationsTask* t = new FindRepeatsToAnnotationsTask(settings, seqPart, cam.data->name, cam.groupName, cam.description, cam.annotationObjectRef);
     TaskWatchdog::trackResourceExistence(sc->getSequenceObject(), t, tr("A problem occurred during finding repeats. The sequence is no more available."));
 
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
@@ -313,7 +313,7 @@ void FindRepeatsDialog::accept() {
 }
 
 void FindRepeatsDialog::saveState() {
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
 
     int minLen = minLenBox->value();
     int identPerc = identityBox->value();

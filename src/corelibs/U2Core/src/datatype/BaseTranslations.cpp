@@ -41,7 +41,7 @@ const QString BaseDNATranslationIds::NUCL_RNA_EXTENDED_COMPLEMENT("NUCL_RNA_EXTE
 #define DATA_FILE_KEY QString("back_translation/lastFile")
 #define DEFAULT_ORGANISM_FILE QString("tables.xml")
 
-static void fill3To1(QList<Mapping3To1<char>> &map, QMap<DNATranslationRole, QList<Triplet>> &codons, const DNAAlphabet *srcAl, const DNAAlphabet *dstAl, const char *amino, const char *role, const char *n1, const char *n2, const char *n3) {
+static void fill3To1(QList<Mapping3To1<char>>& map, QMap<DNATranslationRole, QList<Triplet>>& codons, const DNAAlphabet* srcAl, const DNAAlphabet* dstAl, const char* amino, const char* role, const char* n1, const char* n2, const char* n3) {
     assert(srcAl->isNucleic());
     Q_UNUSED(srcAl);
     assert(dstAl->isAmino());
@@ -71,14 +71,14 @@ static void fill3To1(QList<Mapping3To1<char>> &map, QMap<DNATranslationRole, QLi
     }
 }
 
-static void fill1To3(BackTranslationRules &translationRules,
-                     const DNAAlphabet *srcAl,
-                     const DNAAlphabet *dstAl,
-                     const char *amino,
-                     const int *prob,
-                     const char *n1,
-                     const char *n2,
-                     const char *n3) {
+static void fill1To3(BackTranslationRules& translationRules,
+                     const DNAAlphabet* srcAl,
+                     const DNAAlphabet* dstAl,
+                     const char* amino,
+                     const int* prob,
+                     const char* n1,
+                     const char* n2,
+                     const char* n3) {
     assert(srcAl->isAmino());
     Q_UNUSED(srcAl);
     assert(dstAl->isNucleic());
@@ -92,7 +92,7 @@ static void fill1To3(BackTranslationRules &translationRules,
 
     QByteArray alphabetChars = srcAl->getAlphabetChars();
     QVector<TripletP> triplets;
-    for (char c: qAsConst(alphabetChars)) {
+    for (char c : qAsConst(alphabetChars)) {
         triplets.clear();
         int sump = 0;
         for (int i = 0; i < len; i++) {
@@ -128,7 +128,7 @@ static void fill1To3(BackTranslationRules &translationRules,
     }
 }
 
-static bool parseCutFile(const QString &url, char *amino, int *prob, char *n1, char *n2, char *n3) {
+static bool parseCutFile(const QString& url, char* amino, int* prob, char* n1, char* n2, char* n3) {
     QFile organismFile(url);
     if (organismFile.open(QFile::ReadOnly)) {
         QTextStream data(&organismFile);
@@ -166,77 +166,77 @@ static bool parseCutFile(const QString &url, char *amino, int *prob, char *n1, c
     return false;
 }
 
-static void regCodon(DNATranslationRegistry *treg, char symbol, const char *shortName, QString fullName, const char *link, DNACodonGroup gr) {
-    DNACodon *c = new DNACodon(symbol, QString(shortName), fullName, gr);
+static void regCodon(DNATranslationRegistry* treg, char symbol, const char* shortName, QString fullName, const char* link, DNACodonGroup gr) {
+    DNACodon* c = new DNACodon(symbol, QString(shortName), fullName, gr);
     c->setLink(link);
     treg->registerDNACodon(c);
 };
 
-void DNAAlphabetRegistryImpl::reg4tables(const char *amino, const char *role, const char *n1, const char *n2, const char *n3, const QString &id, const QString &name) {
+void DNAAlphabetRegistryImpl::reg4tables(const char* amino, const char* role, const char* n1, const char* n2, const char* n3, const QString& id, const QString& name) {
     {
-        const DNAAlphabet *srcAlphabet = findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-        const DNAAlphabet *dstAlphabet = findById(BaseDNAAlphabetIds::AMINO_DEFAULT());
+        const DNAAlphabet* srcAlphabet = findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
+        const DNAAlphabet* dstAlphabet = findById(BaseDNAAlphabetIds::AMINO_DEFAULT());
 
         QList<Mapping3To1<char>> map;
         QMap<DNATranslationRole, QList<Triplet>> codons;
         fill3To1(map, codons, srcAlphabet, dstAlphabet, amino, role, n1, n2, n3);
 
-        DNATranslation *t = new DNATranslation3to1Impl(id, name, srcAlphabet, dstAlphabet, map, 'X', codons);
+        DNATranslation* t = new DNATranslation3to1Impl(id, name, srcAlphabet, dstAlphabet, map, 'X', codons);
         treg->registerDNATranslation(t);
     }
 
     // extended NUCL DNA to AMINO -> all extended symbols lead to "unknown"
     {
-        const DNAAlphabet *srcAlphabet = findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
-        const DNAAlphabet *dstAlphabet = findById(BaseDNAAlphabetIds::AMINO_DEFAULT());
+        const DNAAlphabet* srcAlphabet = findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
+        const DNAAlphabet* dstAlphabet = findById(BaseDNAAlphabetIds::AMINO_DEFAULT());
 
         QList<Mapping3To1<char>> map;
         QMap<DNATranslationRole, QList<Triplet>> codons;
         fill3To1(map, codons, srcAlphabet, dstAlphabet, amino, role, n1, n2, n3);
 
-        DNATranslation *t = new DNATranslation3to1Impl(id, name, srcAlphabet, dstAlphabet, map, 'X', codons);
+        DNATranslation* t = new DNATranslation3to1Impl(id, name, srcAlphabet, dstAlphabet, map, 'X', codons);
         treg->registerDNATranslation(t);
     }
     QByteArray an1(n1);
-    const char *rn1 = an1.replace('T', 'U');
+    const char* rn1 = an1.replace('T', 'U');
     QByteArray an2(n2);
-    const char *rn2 = an2.replace('T', 'U');
+    const char* rn2 = an2.replace('T', 'U');
     QByteArray an3(n3);
-    const char *rn3 = an3.replace('T', 'U');
+    const char* rn3 = an3.replace('T', 'U');
     {
-        const DNAAlphabet *srcAlphabet = findById(BaseDNAAlphabetIds::NUCL_RNA_DEFAULT());
-        const DNAAlphabet *dstAlphabet = findById(BaseDNAAlphabetIds::AMINO_DEFAULT());
+        const DNAAlphabet* srcAlphabet = findById(BaseDNAAlphabetIds::NUCL_RNA_DEFAULT());
+        const DNAAlphabet* dstAlphabet = findById(BaseDNAAlphabetIds::AMINO_DEFAULT());
 
         QList<Mapping3To1<char>> map;
         QMap<DNATranslationRole, QList<Triplet>> codons;
         fill3To1(map, codons, srcAlphabet, dstAlphabet, amino, role, rn1, rn2, rn3);
 
-        DNATranslation *t = new DNATranslation3to1Impl(id, name, srcAlphabet, dstAlphabet, map, 'X', codons);
+        DNATranslation* t = new DNATranslation3to1Impl(id, name, srcAlphabet, dstAlphabet, map, 'X', codons);
         treg->registerDNATranslation(t);
     }
 
     {
-        const DNAAlphabet *srcAlphabet = findById(BaseDNAAlphabetIds::NUCL_RNA_EXTENDED());
-        const DNAAlphabet *dstAlphabet = findById(BaseDNAAlphabetIds::AMINO_DEFAULT());
+        const DNAAlphabet* srcAlphabet = findById(BaseDNAAlphabetIds::NUCL_RNA_EXTENDED());
+        const DNAAlphabet* dstAlphabet = findById(BaseDNAAlphabetIds::AMINO_DEFAULT());
 
         QList<Mapping3To1<char>> map;
         QMap<DNATranslationRole, QList<Triplet>> codons;
         fill3To1(map, codons, srcAlphabet, dstAlphabet, amino, role, rn1, rn2, rn3);
 
-        DNATranslation *t = new DNATranslation3to1Impl(id, name, srcAlphabet, dstAlphabet, map, 'X', codons);
+        DNATranslation* t = new DNATranslation3to1Impl(id, name, srcAlphabet, dstAlphabet, map, 'X', codons);
         treg->registerDNATranslation(t);
     }
 }
 
-void DNAAlphabetRegistryImpl::regPtables(const char *amino, const int *prob, const char *n1, const char *n2, const char *n3, const QString &id, const QString &name) {
+void DNAAlphabetRegistryImpl::regPtables(const char* amino, const int* prob, const char* n1, const char* n2, const char* n3, const QString& id, const QString& name) {
     {
-        const DNAAlphabet *srcAlphabet = findById(BaseDNAAlphabetIds::AMINO_DEFAULT());
-        const DNAAlphabet *dstAlphabet = findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
+        const DNAAlphabet* srcAlphabet = findById(BaseDNAAlphabetIds::AMINO_DEFAULT());
+        const DNAAlphabet* dstAlphabet = findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
 
         BackTranslationRules map;
         fill1To3(map, srcAlphabet, dstAlphabet, amino, prob, n1, n2, n3);
 
-        DNATranslation *t = new DNATranslation1to3Impl(id, name, srcAlphabet, dstAlphabet, map);
+        DNATranslation* t = new DNATranslation1to3Impl(id, name, srcAlphabet, dstAlphabet, map);
         treg->registerDNATranslation(t);
     }
 }
@@ -251,8 +251,8 @@ void DNAAlphabetRegistryImpl::regPtables(const char *amino, const int *prob, con
 void DNAAlphabetRegistryImpl::initBaseTranslations() {
     // default NUCL DNA complement
     {
-        const DNAAlphabet *srcAlphabet = findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-        const DNAAlphabet *dstAlphabet = srcAlphabet;
+        const DNAAlphabet* srcAlphabet = findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
+        const DNAAlphabet* dstAlphabet = srcAlphabet;
 
         QByteArray map = TextUtils::createMap(srcAlphabet->getMap(), 'N');
 
@@ -261,7 +261,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         MAP('G', 'C');
         MAP('T', 'A');
 
-        DNATranslation *t = new DNATranslation1to1Impl(BaseDNATranslationIds::NUCL_DNA_DEFAULT_COMPLEMENT,
+        DNATranslation* t = new DNATranslation1to1Impl(BaseDNATranslationIds::NUCL_DNA_DEFAULT_COMPLEMENT,
                                                        tr("Complement for standard DNA"),
                                                        srcAlphabet,
                                                        dstAlphabet,
@@ -271,8 +271,8 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
 
     // default NUCL RNA complement
     {
-        const DNAAlphabet *srcAlphabet = findById(BaseDNAAlphabetIds::NUCL_RNA_DEFAULT());
-        const DNAAlphabet *dstAlphabet = srcAlphabet;
+        const DNAAlphabet* srcAlphabet = findById(BaseDNAAlphabetIds::NUCL_RNA_DEFAULT());
+        const DNAAlphabet* dstAlphabet = srcAlphabet;
 
         QByteArray map = TextUtils::createMap(srcAlphabet->getMap(), 'N');
 
@@ -281,7 +281,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         MAP('G', 'C');
         MAP('U', 'A');
 
-        DNATranslation *t = new DNATranslation1to1Impl(BaseDNATranslationIds::NUCL_RNA_DEFAULT_COMPLEMENT,
+        DNATranslation* t = new DNATranslation1to1Impl(BaseDNATranslationIds::NUCL_RNA_DEFAULT_COMPLEMENT,
                                                        tr("Complement for standard RNA"),
                                                        srcAlphabet,
                                                        dstAlphabet,
@@ -292,8 +292,8 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
     // extended NUCL DNA complement
     {
         // source: http://www.geneinfinity.org/sp_nucsymbols.html
-        const DNAAlphabet *srcAlphabet = findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
-        const DNAAlphabet *dstAlphabet = srcAlphabet;
+        const DNAAlphabet* srcAlphabet = findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
+        const DNAAlphabet* dstAlphabet = srcAlphabet;
 
         QByteArray map = TextUtils::createMap(srcAlphabet->getMap(), 'N');
         MAP('A', 'T');
@@ -311,7 +311,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         MAP('D', 'H');
         MAP('B', 'V');
 
-        DNATranslation *t = new DNATranslation1to1Impl(BaseDNATranslationIds::NUCL_DNA_EXTENDED_COMPLEMENT,
+        DNATranslation* t = new DNATranslation1to1Impl(BaseDNATranslationIds::NUCL_DNA_EXTENDED_COMPLEMENT,
                                                        tr("Complement for extended DNA"),
                                                        srcAlphabet,
                                                        dstAlphabet,
@@ -322,8 +322,8 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
     // extended NUCL RNA complement
     {
         // source: http://www.geneinfinity.org/sp_nucsymbols.html
-        const DNAAlphabet *srcAlphabet = findById(BaseDNAAlphabetIds::NUCL_RNA_EXTENDED());
-        const DNAAlphabet *dstAlphabet = srcAlphabet;
+        const DNAAlphabet* srcAlphabet = findById(BaseDNAAlphabetIds::NUCL_RNA_EXTENDED());
+        const DNAAlphabet* dstAlphabet = srcAlphabet;
 
         QByteArray map = TextUtils::createMap(srcAlphabet->getMap(), 'N');
         MAP('A', 'U');
@@ -341,7 +341,7 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         MAP('D', 'H');
         MAP('B', 'V');
 
-        DNATranslation *t = new DNATranslation1to1Impl(BaseDNATranslationIds::NUCL_RNA_EXTENDED_COMPLEMENT,
+        DNATranslation* t = new DNATranslation1to1Impl(BaseDNATranslationIds::NUCL_RNA_EXTENDED_COMPLEMENT,
                                                        tr("Complement for extended RNA"),
                                                        srcAlphabet,
                                                        dstAlphabet,

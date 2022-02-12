@@ -31,7 +31,7 @@ BunchMimeData::BunchMimeData()
     : QMimeData() {
 }
 
-bool BunchMimeData::hasFormat(const QString &mimeType) const {
+bool BunchMimeData::hasFormat(const QString& mimeType) const {
     return mimeType == MIME_TYPE;
 }
 

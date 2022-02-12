@@ -44,14 +44,14 @@ QString AssemblyConsensusAlgorithmFactoryDefault::getDescription() const {
     return tr("Returns simply the most frequent base and 'N' are no reads intersecting this position");
 }
 
-AssemblyConsensusAlgorithm *AssemblyConsensusAlgorithmFactoryDefault::createAlgorithm() {
+AssemblyConsensusAlgorithm* AssemblyConsensusAlgorithmFactoryDefault::createAlgorithm() {
     return new AssemblyConsensusAlgorithmDefault(this);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-QByteArray AssemblyConsensusAlgorithmDefault::getConsensusRegion(const U2Region &region, U2DbiIterator<U2AssemblyRead> *reads, QByteArray /*referenceFragment*/, U2OpStatus &os) {
+QByteArray AssemblyConsensusAlgorithmDefault::getConsensusRegion(const U2Region& region, U2DbiIterator<U2AssemblyRead>* reads, QByteArray /*referenceFragment*/, U2OpStatus& os) {
     AssemblyBasesFrequenciesStat s;
     s.frequencyInfos.resize(region.length);
 
@@ -67,7 +67,7 @@ QByteArray AssemblyConsensusAlgorithmDefault::getConsensusRegion(const U2Region 
         U2AssemblyReadIterator readIterator(r->readSequence, r->cigar, offsetInRead);
 
         for (int i = 0; i < length; ++i) {
-            U2AssemblyBasesFrequenciesInfo &fi = s.frequencyInfos[offsetInArray + i];
+            U2AssemblyBasesFrequenciesInfo& fi = s.frequencyInfos[offsetInArray + i];
             if (readIterator.hasNext()) {
                 char c = readIterator.nextLetter();
                 fi.addToCharFrequency(c);

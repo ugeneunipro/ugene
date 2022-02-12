@@ -49,7 +49,7 @@ QString AssemblyConsensusAlgorithmFactorySamtools::getDescription() const {
     return tr("Uses SAMtools to calculate consensus with regard to quality of reads");
 }
 
-AssemblyConsensusAlgorithm *AssemblyConsensusAlgorithmFactorySamtools::createAlgorithm() {
+AssemblyConsensusAlgorithm* AssemblyConsensusAlgorithmFactorySamtools::createAlgorithm() {
     return new AssemblyConsensusAlgorithmSamtools(this);
 }
 
@@ -57,7 +57,7 @@ AssemblyConsensusAlgorithm *AssemblyConsensusAlgorithmFactorySamtools::createAlg
 // Algorithm
 
 struct AlgorithmInternal {
-    AlgorithmInternal(const U2Region &region_, QByteArray referenceFragment_, U2OpStatus &os_)
+    AlgorithmInternal(const U2Region& region_, QByteArray referenceFragment_, U2OpStatus& os_)
         : region(region_), os(os_), referenceFragment(referenceFragment_), result(region_.length, AssemblyConsensusAlgorithm::EMPTY_CHAR) {
         lplbuf = bam_lplbuf_init(processBaseCallback, this);
         bam_lplbuf_reset(lplbuf);
@@ -65,7 +65,7 @@ struct AlgorithmInternal {
         bca = bcf_call_init(0.83, 13);
     }
 
-    void processReads(U2DbiIterator<U2AssemblyRead> *reads) {
+    void processReads(U2DbiIterator<U2AssemblyRead>* reads) {
         ReadsContainer samtoolsReads;
         os.setDescription(AssemblyConsensusAlgorithmFactorySamtools::tr("Fetching reads from database and converting to SAMtools format"));
         SamtoolsAdapter::reads2samtools(reads, os, samtoolsReads);
@@ -83,7 +83,7 @@ struct AlgorithmInternal {
         bam_lplbuf_push(0, lplbuf);
     }
 
-    void processBase(uint32_t /*tid*/, uint32_t pos, int n, const bam_pileup1_t *pl) {
+    void processBase(uint32_t /*tid*/, uint32_t pos, int n, const bam_pileup1_t* pl) {
         if (pos < region.startPos || pos >= region.endPos() || os.isCoR()) {
             return;
         }
@@ -124,8 +124,8 @@ struct AlgorithmInternal {
         result[posInArray] = consensusChar;
     }
 
-    static int processBaseCallback(uint32_t tid, uint32_t pos, int n, const bam_pileup1_t *pl, void *data) {
-        AlgorithmInternal *algorithm = (AlgorithmInternal *)data;
+    static int processBaseCallback(uint32_t tid, uint32_t pos, int n, const bam_pileup1_t* pl, void* data) {
+        AlgorithmInternal* algorithm = (AlgorithmInternal*)data;
         algorithm->processBase(tid, pos, n, pl);
         return 0;
     }
@@ -140,15 +140,15 @@ struct AlgorithmInternal {
     }
 
 private:
-    const U2Region &region;
-    U2OpStatus &os;
+    const U2Region& region;
+    U2OpStatus& os;
     QByteArray referenceFragment;
-    bam_lplbuf_t *lplbuf;
-    bcf_callaux_t *bca;
+    bam_lplbuf_t* lplbuf;
+    bcf_callaux_t* bca;
     QByteArray result;
 };
 
-QByteArray AssemblyConsensusAlgorithmSamtools::getConsensusRegion(const U2Region &region, U2DbiIterator<U2AssemblyRead> *reads, QByteArray referenceFragment, U2OpStatus &os) {
+QByteArray AssemblyConsensusAlgorithmSamtools::getConsensusRegion(const U2Region& region, U2DbiIterator<U2AssemblyRead>* reads, QByteArray referenceFragment, U2OpStatus& os) {
     AlgorithmInternal algorithm(region, referenceFragment, os);
 
     algorithm.processReads(reads);

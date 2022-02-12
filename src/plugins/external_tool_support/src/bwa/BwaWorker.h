@@ -33,14 +33,14 @@ namespace LocalWorkflow {
 class BwaWorker : public BaseShortReadsAlignerWorker {
     Q_OBJECT
 public:
-    BwaWorker(Actor *p);
+    BwaWorker(Actor* p);
 
 protected:
     QVariantMap getCustomParameters() const;
     QString getDefaultFileName() const;
     QString getBaseSubdir() const;
-    void setGenomeIndex(DnaAssemblyToRefTaskSettings &settings);
-};    // BwaWorker
+    void setGenomeIndex(DnaAssemblyToRefTaskSettings& settings);
+};  // BwaWorker
 
 class BwaWorkerFactory : public BaseShortReadsAlignerWorkerFactory {
 public:
@@ -50,10 +50,10 @@ public:
         : BaseShortReadsAlignerWorkerFactory(ACTOR_ID) {
     }
     static void init();
-    virtual Worker *createWorker(Actor *a);
-};    // BwaWorkerFactory
+    virtual Worker* createWorker(Actor* a);
+};  // BwaWorkerFactory
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_BWA_SUPPORT_WORKER_
+#endif  // _U2_BWA_SUPPORT_WORKER_

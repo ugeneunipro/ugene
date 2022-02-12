@@ -64,8 +64,8 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTMenu::clickMainMenuItem(os, {"Tools", "Cloning", "Digest into fragments..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTreeWidgetItem *fr1 = GTUtilsAnnotationsTreeView::findItem(os, "Fragment 1");
-    QTreeWidgetItem *fr2 = GTUtilsAnnotationsTreeView::findItem(os, "Fragment 2");
+    QTreeWidgetItem* fr1 = GTUtilsAnnotationsTreeView::findItem(os, "Fragment 1");
+    QTreeWidgetItem* fr2 = GTUtilsAnnotationsTreeView::findItem(os, "Fragment 2");
 
     GTTreeWidget::expand(os, fr1);
     GTUtilsAnnotationsTreeView::findItem(os, "left_end_seq", fr1);

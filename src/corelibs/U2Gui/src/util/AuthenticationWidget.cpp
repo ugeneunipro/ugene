@@ -23,16 +23,16 @@
 
 namespace U2 {
 
-AuthenticationWidget::AuthenticationWidget(QWidget *parent)
+AuthenticationWidget::AuthenticationWidget(QWidget* parent)
     : QWidget(parent) {
     setupUi(this);
 }
 
-void AuthenticationWidget::setLogin(const QString &login) {
+void AuthenticationWidget::setLogin(const QString& login) {
     leLogin->setText(login);
 }
 
-void AuthenticationWidget::setPassword(const QString &password) {
+void AuthenticationWidget::setPassword(const QString& password) {
     lePassword->setText(password);
 }
 

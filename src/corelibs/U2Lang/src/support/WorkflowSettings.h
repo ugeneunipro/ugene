@@ -55,16 +55,16 @@ public:
     static void setDebuggerEnabled(bool v);
 
     static QString defaultStyle();
-    static void setDefaultStyle(const QString &);
+    static void setDefaultStyle(const QString&);
 
     static QFont defaultFont();
-    static void setDefaultFont(const QFont &);
+    static void setDefaultFont(const QFont&);
 
     static const QString getUserDirectory();
-    static void setUserDirectory(const QString &dir);
+    static void setUserDirectory(const QString& dir);
 
     static QColor getBGColor();
-    static void setBGColor(const QColor &color);
+    static void setBGColor(const QColor& color);
 
     static int getRunMode();
     static void setRunMode(int md);
@@ -74,21 +74,21 @@ public:
 
     static QString getCmdlineUgenePath();
 
-    static void setExternalToolDirectory(const QString &newDir);
+    static void setExternalToolDirectory(const QString& newDir);
     static const QString getExternalToolDirectory();
 
-    static void setIncludedElementsDirectory(const QString &newDir);
+    static void setIncludedElementsDirectory(const QString& newDir);
     static const QString getIncludedElementsDirectory();
 
     static bool isOutputDirectorySet();
-    static void setWorkflowOutputDirectory(const QString &newDir);
+    static void setWorkflowOutputDirectory(const QString& newDir);
     static const QString getWorkflowOutputDirectory();
 
     /** Specifies whether hint for load schema button on the dashboard should be shown or not */
     static bool isShowLoadButtonHint();
     static void setShowLoadButtonHint(bool value);
 
-    static Watcher *const watcher;
+    static Watcher* const watcher;
 };
 
 }  // namespace U2

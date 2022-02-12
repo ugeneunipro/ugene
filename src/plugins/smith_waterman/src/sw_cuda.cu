@@ -1,23 +1,23 @@
 /**
-* UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
-* http://ugene.net
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-* MA 02110-1301, USA.
-*/
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * http://ugene.net
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
 
 typedef int ScoreType;
 
@@ -36,20 +36,15 @@ __constant__ char g_leftSymbolDirectMatrix;
 __constant__ char g_diagSymbolDirectMatrix;
 __constant__ char g_stopSymbolDirectMatrix;
 
-//global function
-__global__ void calculateMatrix(const char * seqLib, ScoreType* queryProfile,
-                                ScoreType* g_HdataUp, ScoreType* g_HdataRec, ScoreType* g_HdataMax,
-                                ScoreType* g_FdataUp,
-                                ScoreType* g_directionsUp, ScoreType* g_directionsRec, ScoreType* g_directionsMax,
-                                int queryStartPos, int * g_directionsMatrix, int * g_backtraceBegins)
-{
-    //registers
+// global function
+__global__ void calculateMatrix(const char* seqLib, ScoreType* queryProfile, ScoreType* g_HdataUp, ScoreType* g_HdataRec, ScoreType* g_HdataMax, ScoreType* g_FdataUp, ScoreType* g_directionsUp, ScoreType* g_directionsRec, ScoreType* g_directionsMax, int queryStartPos, int* g_directionsMatrix, int* g_backtraceBegins) {
+    // registers
     int patternPos = threadIdx.x;
-    int globalPatternPos =  queryStartPos + patternPos;
+    int globalPatternPos = queryStartPos + patternPos;
 
     int seqStartPos = blockIdx.x * (g_partSeqSize - g_overlapLength);
     int globalStartPos = blockIdx.x * (g_partSeqSize + 1);
-    
+
     int seqPos = 0;
     int globalPos = 0;
     int diagNum = 0;
@@ -68,7 +63,7 @@ __global__ void calculateMatrix(const char * seqLib, ScoreType* queryProfile,
     ScoreType directionUpLeft = 0;
     ScoreType direction = 0;
 
-    //dynamic allocation shared memory
+    // dynamic allocation shared memory
     extern __shared__ ScoreType shared_H[];
     ScoreType* shared_E = (ScoreType*)&shared_H[g_queryPartLength + 1];
     ScoreType* shared_direction = (ScoreType*)&shared_E[g_queryPartLength + 1];
@@ -88,7 +83,7 @@ __global__ void calculateMatrix(const char * seqLib, ScoreType* queryProfile,
     }
 
     for (int iteration = 0; iteration < diagNum; iteration++) {
-        //check boundaries
+        // check boundaries
         bool isActual = seqPos < g_seqLibLength && seqPos >= seqStartPos && seqPos < seqStartPos + g_partSeqSize && globalPatternPos < g_queryLength;
         if (isActual) {
             substScore = queryProfile[seqLib[seqPos] * g_queryLength + globalPatternPos];
@@ -98,7 +93,6 @@ __global__ void calculateMatrix(const char * seqLib, ScoreType* queryProfile,
             directionLeft = shared_direction[patternPos];
 
             if (patternPos == 0) {
-
                 H_left = g_HdataUp[globalPos];
                 E_left = g_FdataUp[globalPos];
                 directionLeft = g_directionsUp[globalPos];
@@ -106,11 +100,10 @@ __global__ void calculateMatrix(const char * seqLib, ScoreType* queryProfile,
                 if (globalPos > 0) {
                     H_upleft = g_HdataUp[globalPos - 1];
                     directionUpLeft = g_directionsUp[globalPos - 1];
-
-                } 
+                }
                 if (queryStartPos == 0 || iteration == 0) {
                     directionUpLeft = seqPos;
-                }   
+                }
             }
         }
         __syncthreads();
@@ -124,7 +117,7 @@ __global__ void calculateMatrix(const char * seqLib, ScoreType* queryProfile,
             H = max(H, F);
             H = max(H, H_upleft + substScore);
 
-            //Collect best results
+            // Collect best results
             if (g_HdataMax[globalPos] <= H_upleft + substScore) {
                 g_HdataMax[globalPos] = H_upleft + substScore;
                 g_directionsMax[globalPos] = directionUpLeft;
@@ -135,25 +128,22 @@ __global__ void calculateMatrix(const char * seqLib, ScoreType* queryProfile,
                 }
             }
 
-            //chose direction
+            // chose direction
             char directionForMatrix = g_stopSymbolDirectMatrix;
 
             if (H == 0) {
                 direction = seqPos + 1;
-            }
-            else if (H == H_upleft + substScore) {
+            } else if (H == H_upleft + substScore) {
                 direction = directionUpLeft;
                 directionForMatrix = g_diagSymbolDirectMatrix;
-            }
-            else if (H == F) {
+            } else if (H == F) {
                 direction = directionUp;
                 directionForMatrix = g_leftSymbolDirectMatrix;
-            }
-            else {
+            } else {
                 direction = directionLeft;
                 directionForMatrix = g_upSymbolDirectMatrix;
-            }                    
-                
+            }
+
             shared_E[patternPos + 1] = E;
             shared_H[patternPos + 1] = H;
             shared_direction[patternPos + 1] = direction;
@@ -165,37 +155,38 @@ __global__ void calculateMatrix(const char * seqLib, ScoreType* queryProfile,
             directionUp = direction;
             directionUpLeft = directionLeft;
 
-            if(0 != g_directionsMatrix) {
+            if (0 != g_directionsMatrix) {
                 g_directionsMatrix[g_seqLibLength * globalPatternPos + seqPos] = (int)directionForMatrix;
             }
 
-
-            //if this last iteration then start prepare next
+            // if this last iteration then start prepare next
             if (patternPos == (g_queryPartLength - 1)) {
                 g_HdataRec[globalPos] = H;
                 g_FdataUp[globalPos] = E;
-                g_directionsRec[globalPos]  = direction;
+                g_directionsRec[globalPos] = direction;
             }
         }
         __syncthreads();
 
-        seqPos++;       // = seqStartPos + iteration - patternPos;
-        globalPos++;    // = globalStartPos + iteration - patternPos;
+        seqPos++;  // = seqStartPos + iteration - patternPos;
+        globalPos++;  // = globalStartPos + iteration - patternPos;
     }
 }
 
-void calculateMatrix_wrap(int blockSize, int threadNum, const char * seqLib, ScoreType* queryProfile,                           
-                          ScoreType* g_HdataUp, ScoreType* g_HdataRec, ScoreType* g_HdataMax,
-                          ScoreType* g_FdataUp,
-                          ScoreType* g_directionsUp, ScoreType* g_directionsRec, ScoreType* g_directionsMax,
-                          int iteration, int * g_directionsMatrix, int * g_backtraceBegins)
-{
+void calculateMatrix_wrap(int blockSize, int threadNum, const char* seqLib, ScoreType* queryProfile, ScoreType* g_HdataUp, ScoreType* g_HdataRec, ScoreType* g_HdataMax, ScoreType* g_FdataUp, ScoreType* g_directionsUp, ScoreType* g_directionsRec, ScoreType* g_directionsMax, int iteration, int* g_directionsMatrix, int* g_backtraceBegins) {
     size_t sh_mem_size = sizeof(ScoreType) * (threadNum + 1) * 3;
     calculateMatrix<<<blockSize, threadNum, sh_mem_size>>>(seqLib,
-        queryProfile, g_HdataUp, 
-        g_HdataRec, g_HdataMax, g_FdataUp,
-        g_directionsUp, g_directionsRec, g_directionsMax, iteration,
-        g_directionsMatrix, g_backtraceBegins);
+                                                           queryProfile,
+                                                           g_HdataUp,
+                                                           g_HdataRec,
+                                                           g_HdataMax,
+                                                           g_FdataUp,
+                                                           g_directionsUp,
+                                                           g_directionsRec,
+                                                           g_directionsMax,
+                                                           iteration,
+                                                           g_directionsMatrix,
+                                                           g_backtraceBegins);
 }
 
 void setConstants(int partSeqSize,
@@ -211,17 +202,17 @@ void setConstants(int partSeqSize,
                   char leftSymbolDirectMatrix,
                   char diagSymbolDirectMatrix,
                   char stopSymbolDirectMatrix) {
-    cudaMemcpyToSymbol(g_partSeqSize,               &partSeqSize,               sizeof(partSeqSize));
-    cudaMemcpyToSymbol(g_partsNumber,               &partsNumber,               sizeof(partsNumber));
-    cudaMemcpyToSymbol(g_overlapLength,             &overlapLength,             sizeof(overlapLength));
-    cudaMemcpyToSymbol(g_seqLibLength,              &seqLibLength,              sizeof(seqLibLength));
-    cudaMemcpyToSymbol(g_queryLength,               &queryLength,               sizeof(queryLength));
-    cudaMemcpyToSymbol(g_gapOpen,                   &gapOpen,                   sizeof(gapOpen));
-    cudaMemcpyToSymbol(g_gapExtension,              &gapExtension,              sizeof(gapExtension));
-    cudaMemcpyToSymbol(g_maxScore,                  &maxScore,                  sizeof(maxScore));
-    cudaMemcpyToSymbol(g_queryPartLength,           &queryPartLength,           sizeof(queryPartLength));
-    cudaMemcpyToSymbol(g_upSymbolDirectMatrix,      &upSymbolDirectMatrix,      sizeof(upSymbolDirectMatrix));
-    cudaMemcpyToSymbol(g_leftSymbolDirectMatrix,    &leftSymbolDirectMatrix,    sizeof(leftSymbolDirectMatrix));
-    cudaMemcpyToSymbol(g_diagSymbolDirectMatrix,    &diagSymbolDirectMatrix,    sizeof(diagSymbolDirectMatrix));
-    cudaMemcpyToSymbol(g_stopSymbolDirectMatrix,    &stopSymbolDirectMatrix,    sizeof(stopSymbolDirectMatrix));
+    cudaMemcpyToSymbol(g_partSeqSize, &partSeqSize, sizeof(partSeqSize));
+    cudaMemcpyToSymbol(g_partsNumber, &partsNumber, sizeof(partsNumber));
+    cudaMemcpyToSymbol(g_overlapLength, &overlapLength, sizeof(overlapLength));
+    cudaMemcpyToSymbol(g_seqLibLength, &seqLibLength, sizeof(seqLibLength));
+    cudaMemcpyToSymbol(g_queryLength, &queryLength, sizeof(queryLength));
+    cudaMemcpyToSymbol(g_gapOpen, &gapOpen, sizeof(gapOpen));
+    cudaMemcpyToSymbol(g_gapExtension, &gapExtension, sizeof(gapExtension));
+    cudaMemcpyToSymbol(g_maxScore, &maxScore, sizeof(maxScore));
+    cudaMemcpyToSymbol(g_queryPartLength, &queryPartLength, sizeof(queryPartLength));
+    cudaMemcpyToSymbol(g_upSymbolDirectMatrix, &upSymbolDirectMatrix, sizeof(upSymbolDirectMatrix));
+    cudaMemcpyToSymbol(g_leftSymbolDirectMatrix, &leftSymbolDirectMatrix, sizeof(leftSymbolDirectMatrix));
+    cudaMemcpyToSymbol(g_diagSymbolDirectMatrix, &diagSymbolDirectMatrix, sizeof(diagSymbolDirectMatrix));
+    cudaMemcpyToSymbol(g_stopSymbolDirectMatrix, &stopSymbolDirectMatrix, sizeof(stopSymbolDirectMatrix));
 }

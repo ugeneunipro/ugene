@@ -48,13 +48,13 @@ struct TreeOpWidgetViewSettings {
 
 class TreeOptionsSavableWidget : public U2SavableWidget {
 public:
-    TreeOptionsSavableWidget(QWidget *wrappedWidget, MWMDIWindow *contextWindow = nullptr);
+    TreeOptionsSavableWidget(QWidget* wrappedWidget, MWMDIWindow* contextWindow = nullptr);
     ~TreeOptionsSavableWidget();
 
-    void disableSavingForWidgets(const QStringList &s);
+    void disableSavingForWidgets(const QStringList& s);
 
 protected:
-    bool childCanBeSaved(QWidget *child) const override;
+    bool childCanBeSaved(QWidget* child) const override;
 
 private:
     QStringList widgetsNotToSave;
@@ -63,14 +63,14 @@ private:
 class U2VIEW_EXPORT TreeOptionsWidget : public QWidget, private Ui_TreeOptionWidget {
     Q_OBJECT
 public:
-    TreeOptionsWidget(TreeViewer *tree, const TreeOpWidgetViewSettings &viewSettings);
-    TreeOptionsWidget(MSAEditor *msaEditor, const TreeOpWidgetViewSettings &viewSettings);
+    TreeOptionsWidget(TreeViewer* tree, const TreeOpWidgetViewSettings& viewSettings);
+    TreeOptionsWidget(MSAEditor* msaEditor, const TreeOpWidgetViewSettings& viewSettings);
     ~TreeOptionsWidget();
 
-    const TreeOpWidgetViewSettings &getViewSettings();
+    const TreeOpWidgetViewSettings& getViewSettings();
 
 signals:
-    void saveViewSettings(const TreeOpWidgetViewSettings &);
+    void saveViewSettings(const TreeOpWidgetViewSettings&);
 
 private slots:
     void sl_labelsColorButton();
@@ -81,10 +81,10 @@ private slots:
     void sl_fontItalicChanged();
     void sl_fontUnderlineChanged();
 
-    void sl_onLblLinkActivated(const QString &link);
+    void sl_onLblLinkActivated(const QString& link);
     void sl_valueChanged();
 
-    void sl_onOptionChanged(TreeViewOption option, const QVariant &value);
+    void sl_onOptionChanged(TreeViewOption option, const QVariant& value);
     /* Slot for handling scene selection changes */
     void sl_selectionChanged();
 
@@ -98,23 +98,23 @@ private:
     void updateAllWidgets();
     void connectSlots();
 
-    void updateButtonColor(QPushButton *button, const QColor &newColor);
+    void updateButtonColor(QPushButton* button, const QColor& newColor);
     void updateShowFontOpLabel(QString newText);
     void updateShowPenOpLabel(QString newText);
 
     void updateRelations(TreeViewOption option, QVariant newValue);
 
-    TreeViewerUI *getTreeViewer() const;
+    TreeViewerUI* getTreeViewer() const;
 
-    MSAEditor *editor;
-    TreeViewerUI *treeViewer;
+    MSAEditor* editor;
+    TreeViewerUI* treeViewer;
 
     TreeOpWidgetViewSettings viewSettings;
 
     bool showFontSettings;
     bool showPenSettings;
 
-    QWidget *contentWidget;
+    QWidget* contentWidget;
 
     TreeOptionsSavableWidget savableTab;
 
@@ -126,16 +126,16 @@ private:
 class U2VIEW_EXPORT AddTreeWidget : public QWidget {
     Q_OBJECT
 public:
-    AddTreeWidget(MSAEditor *msaEditor);
+    AddTreeWidget(MSAEditor* msaEditor);
 
 private slots:
     void sl_onOpenTreeTriggered();
 
 private:
-    MSAEditor *editor;
-    QPushButton *openTreeButton;
-    QPushButton *buildTreeButton;
-    QLabel *addTreeHint;
+    MSAEditor* editor;
+    QPushButton* openTreeButton;
+    QPushButton* buildTreeButton;
+    QLabel* addTreeHint;
 };
 
 }  // namespace U2

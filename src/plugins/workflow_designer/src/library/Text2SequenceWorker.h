@@ -31,7 +31,7 @@ namespace LocalWorkflow {
 class Text2SequencePrompter : public PrompterBase<Text2SequencePrompter> {
     Q_OBJECT
 public:
-    Text2SequencePrompter(Actor *p = nullptr)
+    Text2SequencePrompter(Actor* p = nullptr)
         : PrompterBase<Text2SequencePrompter>(p) {
     }
 
@@ -46,20 +46,20 @@ public:
     static QMap<QString, QString> cuteAlIdNames;
 
 public:
-    Text2SequenceWorker(Actor *p)
+    Text2SequenceWorker(Actor* p)
         : BaseWorker(p), txtPort(nullptr), outSeqPort(nullptr), tickedNum(0) {
     }
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private:
     static QMap<QString, QString> initCuteAlNames();
 
 private:
-    IntegralBus *txtPort;
-    IntegralBus *outSeqPort;
+    IntegralBus* txtPort;
+    IntegralBus* outSeqPort;
     int tickedNum;
 
 };  // Text2SequenceWorker
@@ -72,7 +72,7 @@ public:
         : DomainFactory(ACTOR_ID) {
     }
     static void init();
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 
 };  // Text2SequenceWorkerFactory
 

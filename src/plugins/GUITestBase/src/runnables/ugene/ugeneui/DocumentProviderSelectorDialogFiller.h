@@ -31,7 +31,7 @@ class DocumentProviderSelectorDialogFiller : public Filler {
 public:
     enum OpenWith { AlignmentEditor,
                     AssemblyBrowser };
-    DocumentProviderSelectorDialogFiller(HI::GUITestOpStatus &os, OpenWith _openWith)
+    DocumentProviderSelectorDialogFiller(HI::GUITestOpStatus& os, OpenWith _openWith)
         : Filler(os, "DocumentProviderSelectorDialog"),
           openWith(_openWith) {
     }

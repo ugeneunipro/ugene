@@ -34,15 +34,15 @@ namespace U2 {
 class ETSProjectViewItemsController : public QObject {
     Q_OBJECT
 public:
-    ETSProjectViewItemsController(QObject *p);
+    ETSProjectViewItemsController(QObject* p);
 
 private slots:
-    void sl_addToProjectViewMenu(QMenu &);
+    void sl_addToProjectViewMenu(QMenu&);
 
     void sl_runMakeBlastDbOnSelection();
 
 private:
-    ExternalToolSupportAction *makeBlastDbOnSelectionAction;
+    ExternalToolSupportAction* makeBlastDbOnSelectionAction;
 };
 }  // namespace U2
 #endif  // _U2_ETS_PROJECT_VIEW_ITEMS_CONTROLLER_H

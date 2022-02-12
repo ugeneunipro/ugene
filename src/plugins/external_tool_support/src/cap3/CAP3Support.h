@@ -33,8 +33,8 @@ namespace U2 {
 class CAP3Support : public ExternalTool {
     Q_OBJECT
 public:
-    CAP3Support(const QString &id, const QString &name, const QString &path = "");
-    GObjectViewWindowContext *getViewContext() {
+    CAP3Support(const QString& id, const QString& name, const QString& path = "");
+    GObjectViewWindowContext* getViewContext() {
         return viewCtx;
     }
 
@@ -45,8 +45,8 @@ public slots:
     void sl_runWithExtFileSpecify();
 
 private:
-    GObjectViewWindowContext *viewCtx;
+    GObjectViewWindowContext* viewCtx;
 };
 
-}    // namespace U2
-#endif    // _U2_CAP3_SUPPORT_H_
+}  // namespace U2
+#endif  // _U2_CAP3_SUPPORT_H_

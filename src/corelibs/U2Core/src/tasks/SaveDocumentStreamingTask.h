@@ -34,7 +34,7 @@ class U2CORE_EXPORT SaveDocumentStreamingTask : public Task {
     Q_OBJECT
 public:
     // io - opened io adapter
-    SaveDocumentStreamingTask(Document *doc, IOAdapter *io);
+    SaveDocumentStreamingTask(Document* doc, IOAdapter* io);
     ~SaveDocumentStreamingTask();
 
     virtual void prepare();
@@ -43,12 +43,12 @@ public:
 
     ReportResult report();
 
-    Document *getDocument() const;
+    Document* getDocument() const;
 
 private:
-    StateLock *lock;
-    Document *doc;
-    IOAdapter *io;
+    StateLock* lock;
+    Document* doc;
+    IOAdapter* io;
 
 };  // SaveDocumentStreamingTask
 

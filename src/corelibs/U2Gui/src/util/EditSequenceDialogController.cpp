@@ -43,9 +43,9 @@ namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
 // SeqPasterEventFilter
-bool SeqPasterEventFilter::eventFilter(QObject *obj, QEvent *event) {
+bool SeqPasterEventFilter::eventFilter(QObject* obj, QEvent* event) {
     if (QEvent::KeyPress == event->type()) {
-        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
         if (Qt::Key_Return == keyEvent->key()) {
             emit si_enterPressed();
             return true;
@@ -54,13 +54,13 @@ bool SeqPasterEventFilter::eventFilter(QObject *obj, QEvent *event) {
     return QObject::eventFilter(obj, event);
 }
 
-SeqPasterEventFilter::SeqPasterEventFilter(QObject *parent)
+SeqPasterEventFilter::SeqPasterEventFilter(QObject* parent)
     : QObject(parent) {
 }
 
 //////////////////////////////////////////////////////////////////////////
 // EditSequenceDialogController
-EditSequenceDialogController::EditSequenceDialogController(const EditSequencDialogConfig &cfg, QWidget *p)
+EditSequenceDialogController::EditSequenceDialogController(const EditSequencDialogConfig& cfg, QWidget* p)
     : QDialog(p),
       filter(""),
       pos(1),
@@ -114,7 +114,7 @@ EditSequenceDialogController::EditSequenceDialogController(const EditSequencDial
     connect(ui->endPosToolButton, SIGNAL(clicked()), this, SLOT(sl_endPositionliClicked()));
 
     // event filter
-    SeqPasterEventFilter *evFilter = new SeqPasterEventFilter(this);
+    SeqPasterEventFilter* evFilter = new SeqPasterEventFilter(this);
     w->setEventFilter(evFilter);
     connect(evFilter, SIGNAL(si_enterPressed()), this, SLOT(sl_enterPressed()));
 }

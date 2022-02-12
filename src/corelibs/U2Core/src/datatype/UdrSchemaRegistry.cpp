@@ -36,7 +36,7 @@ UdrSchemaRegistry::~UdrSchemaRegistry() {
     qDeleteAll(schemas.values());
 }
 
-void UdrSchemaRegistry::registerSchema(const UdrSchema *schema, U2OpStatus &os) {
+void UdrSchemaRegistry::registerSchema(const UdrSchema* schema, U2OpStatus& os) {
     QMutexLocker lock(&mutex);
     CHECK_EXT(nullptr != schema, os.setError("NULL schema"), );
     CHECK_EXT(isCorrectName(schema->getId()), os.setError("Incorrect schema id"), );
@@ -50,12 +50,12 @@ QList<UdrSchemaId> UdrSchemaRegistry::getRegisteredSchemas() const {
     return schemas.keys();
 }
 
-const UdrSchema *UdrSchemaRegistry::getSchemaById(const UdrSchemaId &id) const {
+const UdrSchema* UdrSchemaRegistry::getSchemaById(const UdrSchemaId& id) const {
     QMutexLocker lock(&mutex);
     return schemas.value(id, nullptr);
 }
 
-bool UdrSchemaRegistry::isCorrectName(const QByteArray &name) {
+bool UdrSchemaRegistry::isCorrectName(const QByteArray& name) {
     QRegExp regExp("([A-z]|_)([A-z]|_|\\d)*");
     return regExp.exactMatch(name);
 }

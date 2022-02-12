@@ -34,21 +34,21 @@ class Document;
 class U2ALGORITHM_EXPORT DnaAssemblyMultiTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    DnaAssemblyMultiTask(const DnaAssemblyToRefTaskSettings &settings, bool viewResult = false, bool justBuildIndex = false);
+    DnaAssemblyMultiTask(const DnaAssemblyToRefTaskSettings& settings, bool viewResult = false, bool justBuildIndex = false);
     virtual void prepare();
     virtual ReportResult report();
     virtual QString generateReport() const;
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
     bool getOpenViewFlag() {
         return openView;
     }
-    const DnaAssemblyToRefTaskSettings &getSettings() const {
+    const DnaAssemblyToRefTaskSettings& getSettings() const {
         return settings;
     }
 
 private:
     DnaAssemblyToRefTaskSettings settings;
-    DnaAssemblyToReferenceTask *assemblyToRefTask;
+    DnaAssemblyToReferenceTask* assemblyToRefTask;
     // Document* doc;
     QList<ShortReadSet> shortReadSets;
     bool openView;

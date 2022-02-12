@@ -42,28 +42,28 @@ public:
     ~GTest_QDSchedulerTest();
 
     virtual void prepare();
-    virtual QList<Task *> onSubTaskFinished(Task *subTask);
+    virtual QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
     QString seqName;
     QString schemaUri;
     QString expectedResName;
-    U2SequenceObject *seqObj;
-    AnnotationTableObject *expectedResult;
-    AnnotationTableObject *result;
-    QDScheme *schema;
-    QDScheduler *sched;
+    U2SequenceObject* seqObj;
+    AnnotationTableObject* expectedResult;
+    AnnotationTableObject* result;
+    QDScheme* schema;
+    QDScheduler* sched;
 };
 
 class QDTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 class CompareAnnotationGroupsTask : public Task {
     Q_OBJECT
 public:
-    CompareAnnotationGroupsTask(const QList<AnnotationGroup *> &_grp1, const QList<AnnotationGroup *> &_grp2)
+    CompareAnnotationGroupsTask(const QList<AnnotationGroup*>& _grp1, const QList<AnnotationGroup*>& _grp2)
         : Task(tr("Compare annotation tables task"), TaskFlag_None), grps1(_grp1), grps2(_grp2), equal(false) {
     }
 
@@ -74,7 +74,7 @@ public:
     }
 
 private:
-    QList<AnnotationGroup *> grps1, grps2;
+    QList<AnnotationGroup*> grps1, grps2;
     bool equal;
 };
 

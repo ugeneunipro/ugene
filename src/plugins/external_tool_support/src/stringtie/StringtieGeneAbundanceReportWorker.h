@@ -30,23 +30,23 @@ namespace LocalWorkflow {
 class StringtieGeneAbundanceReportWorker : public BaseWorker {
     Q_OBJECT
 public:
-    StringtieGeneAbundanceReportWorker(Actor *actor);
+    StringtieGeneAbundanceReportWorker(Actor* actor);
 
     void init();
-    Task *tick();
+    Task* tick();
     void cleanup();
 
 private slots:
-    void sl_taskSucceeded(Task *task);
+    void sl_taskSucceeded(Task* task);
 
 private:
-    IntegralBus *input;
+    IntegralBus* input;
     QStringList stringtieReports;
 
     static const QString OUTPUT_DIR;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_STRINGTIE_GENE_ABUNDANCE_REPORT_WORKER_H_
+#endif  // _U2_STRINGTIE_GENE_ABUNDANCE_REPORT_WORKER_H_

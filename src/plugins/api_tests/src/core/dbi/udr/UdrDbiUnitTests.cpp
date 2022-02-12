@@ -45,7 +45,7 @@ public:
     SchemaObject3()
         : U2Object() {
     }
-    SchemaObject3(U2DataId id, const U2DbiId &dbId)
+    SchemaObject3(U2DataId id, const U2DbiId& dbId)
         : U2Object(id, dbId, 0) {
     }
     U2DataType getType() const {
@@ -53,7 +53,7 @@ public:
     }
 };
 
-QList<UdrValue> getData(qint64 iv, double dv, const QString &sv) {
+QList<UdrValue> getData(qint64 iv, double dv, const QString& sv) {
     QList<UdrValue> data;
     data << iv;
     data << dv;
@@ -62,22 +62,22 @@ QList<UdrValue> getData(qint64 iv, double dv, const QString &sv) {
     return data;
 }
 
-UdrRecordId writeDataSchema2(QList<QByteArray> data, U2OpStatus &os) {
-    UdrDbi *dbi = UdrTestData::getUdrDbi();
+UdrRecordId writeDataSchema2(QList<QByteArray> data, U2OpStatus& os) {
+    UdrDbi* dbi = UdrTestData::getUdrDbi();
     QList<UdrValue> rec;
     rec << QString("url") << QString("");
     UdrRecordId id = dbi->addRecord(TEST_SCHEMA_ID_2, rec, os);
     CHECK_OP(os, id);
 
     int length = 0;
-    foreach (const QByteArray &bytes, data) {
+    foreach (const QByteArray& bytes, data) {
         length += bytes.length();
     }
 
-    OutputStream *oStream = dbi->createOutputStream(id, 1, length, os);
+    OutputStream* oStream = dbi->createOutputStream(id, 1, length, os);
     CHECK_OP(os, id);
 
-    foreach (const QByteArray &bytes, data) {
+    foreach (const QByteArray& bytes, data) {
         oStream->write(bytes.constData(), bytes.size(), os);
     }
     delete oStream;
@@ -85,15 +85,15 @@ UdrRecordId writeDataSchema2(QList<QByteArray> data, U2OpStatus &os) {
     return id;
 }
 
-U2DataId createObjectSchema3(const QStringList &data, U2OpStatus &os) {
-    UdrDbi *dbi = UdrTestData::getUdrDbi();
+U2DataId createObjectSchema3(const QStringList& data, U2OpStatus& os) {
+    UdrDbi* dbi = UdrTestData::getUdrDbi();
 
     SchemaObject3 obj;
     obj.dbiId = dbi->getRootDbi()->getDbiId();
     dbi->createObject(TEST_SCHEMA_ID_3, obj, "", os);
     CHECK_OP(os, "");
 
-    foreach (const QString &datum, data) {
+    foreach (const QString& datum, data) {
         QList<UdrValue> rec;
         rec << obj.id << datum;
         dbi->addRecord(TEST_SCHEMA_ID_3, rec, os);
@@ -102,8 +102,8 @@ U2DataId createObjectSchema3(const QStringList &data, U2OpStatus &os) {
     return obj.id;
 }
 
-void checkWrittenDataSchema2(const UdrRecordId &id, const QByteArray &srcData, U2OpStatus &os) {
-    UdrDbi *dbi = UdrTestData::getUdrDbi();
+void checkWrittenDataSchema2(const UdrRecordId& id, const QByteArray& srcData, U2OpStatus& os) {
+    UdrDbi* dbi = UdrTestData::getUdrDbi();
     QScopedPointer<InputStream> iStream(dbi->createInputStream(id, 1, os));
     CHECK_OP(os, );
     CHECK_EXT(srcData.size() == iStream->available(), os.setError("wrong stream size"), );
@@ -116,8 +116,8 @@ void checkWrittenDataSchema2(const UdrRecordId &id, const QByteArray &srcData, U
 }  // namespace
 
 TestDbiProvider UdrTestData::dbiProvider = TestDbiProvider();
-const QString &UdrTestData::UDR_DB_URL("udr-dbi.ugenedb");
-UdrDbi *UdrTestData::udrDbi = nullptr;
+const QString& UdrTestData::UDR_DB_URL("udr-dbi.ugenedb");
+UdrDbi* UdrTestData::udrDbi = nullptr;
 U2DataId UdrTestData::id1("");
 U2DataId UdrTestData::id2("");
 U2DataId UdrTestData::id_2("");
@@ -146,7 +146,7 @@ void UdrTestData::shutdown() {
 }
 
 void UdrTestData::initTestUdr() {
-    UdrSchemaRegistry *reg = AppContext::getUdrSchemaRegistry();
+    UdrSchemaRegistry* reg = AppContext::getUdrSchemaRegistry();
     SAFE_POINT(nullptr != reg, "NULL reg", );
 
     if (nullptr != reg->getSchemaById(TEST_SCHEMA_ID)) {
@@ -155,7 +155,7 @@ void UdrTestData::initTestUdr() {
 
     U2OpStatusImpl os;
     {  // init test schema
-        UdrSchema *schema = new UdrSchema(TEST_SCHEMA_ID);
+        UdrSchema* schema = new UdrSchema(TEST_SCHEMA_ID);
         schema->addField(UdrSchema::FieldDesc("int", UdrSchema::INTEGER, UdrSchema::INDEXED), os);
         schema->addField(UdrSchema::FieldDesc("double", UdrSchema::DOUBLE), os);
         schema->addField(UdrSchema::FieldDesc("string", UdrSchema::STRING), os);
@@ -169,7 +169,7 @@ void UdrTestData::initTestUdr() {
         SAFE_POINT_OP(os, );
     }
     {  // init test schema 2
-        UdrSchema *schema = new UdrSchema(TEST_SCHEMA_ID_2);
+        UdrSchema* schema = new UdrSchema(TEST_SCHEMA_ID_2);
         schema->addField(UdrSchema::FieldDesc("url", UdrSchema::STRING), os);
         schema->addField(UdrSchema::FieldDesc("data", UdrSchema::BLOB, UdrSchema::NOT_INDEXED), os);
         SAFE_POINT_OP(os, );
@@ -178,7 +178,7 @@ void UdrTestData::initTestUdr() {
         SAFE_POINT_OP(os, );
     }
     {  // init test schema 3
-        UdrSchema *schema = new UdrSchema(TEST_SCHEMA_ID_3, true);
+        UdrSchema* schema = new UdrSchema(TEST_SCHEMA_ID_3, true);
         schema->addField(UdrSchema::FieldDesc("data", UdrSchema::STRING), os);
         SAFE_POINT_OP(os, );
 
@@ -188,7 +188,7 @@ void UdrTestData::initTestUdr() {
 }
 
 void UdrTestData::initTestData() {
-    UdrDbi *dbi = UdrTestData::getUdrDbi();
+    UdrDbi* dbi = UdrTestData::getUdrDbi();
     SAFE_POINT(nullptr != dbi, "NULL dbi", );
 
     U2OpStatusImpl os;
@@ -220,7 +220,7 @@ void UdrTestData::initTestData() {
     }
 }
 
-UdrDbi *UdrTestData::getUdrDbi() {
+UdrDbi* UdrTestData::getUdrDbi() {
     if (udrDbi == nullptr) {
         UdrTestData::init();
     }
@@ -228,7 +228,7 @@ UdrDbi *UdrTestData::getUdrDbi() {
 }
 
 IMPLEMENT_TEST(UdrDbiUnitTests, getRecord) {
-    UdrDbi *dbi = UdrTestData::getUdrDbi();
+    UdrDbi* dbi = UdrTestData::getUdrDbi();
     U2OpStatusImpl os;
     UdrRecord record1 = dbi->getRecord(UdrRecordId(TEST_SCHEMA_ID, UdrTestData::id1), os);
     CHECK_NO_ERROR(os);
@@ -247,7 +247,7 @@ IMPLEMENT_TEST(UdrDbiUnitTests, getRecord) {
 
 IMPLEMENT_TEST(UdrDbiUnitTests, addRecord_1) {
     U2OpStatusImpl os;
-    UdrDbi *dbi = UdrTestData::getUdrDbi();
+    UdrDbi* dbi = UdrTestData::getUdrDbi();
 
     QList<UdrValue> data = getData(51, 102.0, "fifty one");
 
@@ -265,7 +265,7 @@ IMPLEMENT_TEST(UdrDbiUnitTests, addRecord_1) {
 
 IMPLEMENT_TEST(UdrDbiUnitTests, addRecord_2) {
     U2OpStatusImpl os;
-    UdrDbi *dbi = UdrTestData::getUdrDbi();
+    UdrDbi* dbi = UdrTestData::getUdrDbi();
 
     QList<UdrValue> data1 = getData(5, 2.0, "who? I'm");
     QList<UdrValue> data2 = getData(42, 51.0, "UGENE is the best");
@@ -292,7 +292,7 @@ IMPLEMENT_TEST(UdrDbiUnitTests, addRecord_2) {
 
 IMPLEMENT_TEST(UdrDbiUnitTests, addRecord_with_adapter) {
     U2OpStatusImpl os;
-    UdrDbi *dbi = UdrTestData::getUdrDbi();
+    UdrDbi* dbi = UdrTestData::getUdrDbi();
 
     QList<UdrValue> data;
     data << QString("url") << QString("");
@@ -307,7 +307,7 @@ IMPLEMENT_TEST(UdrDbiUnitTests, addRecord_with_adapter) {
 
 IMPLEMENT_TEST(UdrDbiUnitTests, removeRecord) {
     U2OpStatusImpl os;
-    UdrDbi *dbi = UdrTestData::getUdrDbi();
+    UdrDbi* dbi = UdrTestData::getUdrDbi();
 
     UdrRecordId id = dbi->addRecord(TEST_SCHEMA_ID, getData(1, 2, "three"), os);
     CHECK_NO_ERROR(os);
@@ -351,7 +351,7 @@ IMPLEMENT_TEST(UdrDbiUnitTests, OutputStream_write_2) {
 
 IMPLEMENT_TEST(UdrDbiUnitTests, InputStream_read) {
     U2OpStatusImpl os;
-    UdrDbi *dbi = UdrTestData::getUdrDbi();
+    UdrDbi* dbi = UdrTestData::getUdrDbi();
 
     QScopedPointer<InputStream> iStream(dbi->createInputStream(UdrRecordId(TEST_SCHEMA_ID_2, UdrTestData::id_2), 1, os));
     CHECK_NO_ERROR(os);
@@ -371,7 +371,7 @@ IMPLEMENT_TEST(UdrDbiUnitTests, InputStream_read) {
 
 IMPLEMENT_TEST(UdrDbiUnitTests, InputStream_skip_OutOfRange_1) {
     U2OpStatusImpl os;
-    UdrDbi *dbi = UdrTestData::getUdrDbi();
+    UdrDbi* dbi = UdrTestData::getUdrDbi();
 
     QScopedPointer<InputStream> iStream(dbi->createInputStream(UdrRecordId(TEST_SCHEMA_ID_2, UdrTestData::id_2), 1, os));
     CHECK_NO_ERROR(os);
@@ -388,7 +388,7 @@ IMPLEMENT_TEST(UdrDbiUnitTests, InputStream_skip_OutOfRange_1) {
 
 IMPLEMENT_TEST(UdrDbiUnitTests, InputStream_skip_OutOfRange_2_negative) {
     U2OpStatusImpl os;
-    UdrDbi *dbi = UdrTestData::getUdrDbi();
+    UdrDbi* dbi = UdrTestData::getUdrDbi();
 
     QScopedPointer<InputStream> iStream(dbi->createInputStream(UdrRecordId(TEST_SCHEMA_ID_2, UdrTestData::id_2), 1, os));
     CHECK_NO_ERROR(os);
@@ -411,7 +411,7 @@ IMPLEMENT_TEST(UdrDbiUnitTests, InputStream_skip_OutOfRange_2_negative) {
 
 IMPLEMENT_TEST(UdrDbiUnitTests, InputStream_skip_Range_1) {
     U2OpStatusImpl os;
-    UdrDbi *dbi = UdrTestData::getUdrDbi();
+    UdrDbi* dbi = UdrTestData::getUdrDbi();
 
     QScopedPointer<InputStream> iStream(dbi->createInputStream(UdrRecordId(TEST_SCHEMA_ID_2, UdrTestData::id_2), 1, os));
     CHECK_NO_ERROR(os);
@@ -430,7 +430,7 @@ IMPLEMENT_TEST(UdrDbiUnitTests, InputStream_skip_Range_1) {
 
 IMPLEMENT_TEST(UdrDbiUnitTests, InputStream_skip_Range_2_negative) {
     U2OpStatusImpl os;
-    UdrDbi *dbi = UdrTestData::getUdrDbi();
+    UdrDbi* dbi = UdrTestData::getUdrDbi();
 
     QScopedPointer<InputStream> iStream(dbi->createInputStream(UdrRecordId(TEST_SCHEMA_ID_2, UdrTestData::id_2), 1, os));
     CHECK_NO_ERROR(os);
@@ -465,12 +465,12 @@ IMPLEMENT_TEST(UdrDbiUnitTests, createObject_removeObject) {
     U2DataId objId = createObjectSchema3(data, os);
     CHECK_NO_ERROR(os);
 
-    UdrDbi *dbi = UdrTestData::getUdrDbi();
+    UdrDbi* dbi = UdrTestData::getUdrDbi();
     QList<UdrRecord> records1 = dbi->getObjectRecords(TEST_SCHEMA_ID_3, objId, os);
     CHECK_NO_ERROR(os);
     CHECK_TRUE(2 == records1.size(), "size 1");
 
-    U2ObjectDbi *oDbi = dbi->getRootDbi()->getObjectDbi();
+    U2ObjectDbi* oDbi = dbi->getRootDbi()->getObjectDbi();
     oDbi->removeObject(objId, os);
     CHECK_NO_ERROR(os);
 
@@ -481,7 +481,7 @@ IMPLEMENT_TEST(UdrDbiUnitTests, createObject_removeObject) {
 
 IMPLEMENT_TEST(UdrDbiUnitTests, getObjectRecords_1) {
     U2OpStatusImpl os;
-    UdrDbi *dbi = UdrTestData::getUdrDbi();
+    UdrDbi* dbi = UdrTestData::getUdrDbi();
 
     QList<UdrRecord> records = dbi->getObjectRecords(TEST_SCHEMA_ID_3, UdrTestData::obj1Schema3, os);
     CHECK_NO_ERROR(os);
@@ -493,7 +493,7 @@ IMPLEMENT_TEST(UdrDbiUnitTests, getObjectRecords_1) {
 
 IMPLEMENT_TEST(UdrDbiUnitTests, getObjectRecords_2) {
     U2OpStatusImpl os;
-    UdrDbi *dbi = UdrTestData::getUdrDbi();
+    UdrDbi* dbi = UdrTestData::getUdrDbi();
 
     QList<UdrRecord> records = dbi->getObjectRecords(TEST_SCHEMA_ID_3, UdrTestData::obj2Schema3, os);
     CHECK_NO_ERROR(os);

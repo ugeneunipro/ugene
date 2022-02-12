@@ -39,7 +39,7 @@ const QString INFO_MESSAGE_FONT = "bold";
 const QString STYLE_SHEET_ATTRIBUTE_EQUALS_SIGN = ": ";
 const QString STYLE_SHEET_ATTRIBUTES_SEPARATOR = ";";
 
-static void setStylesheetAttributeValue(const QString &attributeName, const QString &attributeValue, QString &stylesheet) {
+static void setStylesheetAttributeValue(const QString& attributeName, const QString& attributeValue, QString& stylesheet) {
     int attributeDescriptionStart = stylesheet.indexOf(attributeName);
     if (-1 != attributeDescriptionStart) {
         attributeDescriptionStart += attributeName.length() + STYLE_SHEET_ATTRIBUTE_EQUALS_SIGN.length();
@@ -53,15 +53,15 @@ static void setStylesheetAttributeValue(const QString &attributeName, const QStr
     }
 }
 
-BwaIndexAlgorithmWarningReporter::BwaIndexAlgorithmWarningReporter(QObject *parent)
+BwaIndexAlgorithmWarningReporter::BwaIndexAlgorithmWarningReporter(QObject* parent)
     : QObject(parent), reportLabel(nullptr), referenceSequencePath() {
 }
 
-void BwaIndexAlgorithmWarningReporter::setRefSequencePath(const U2::GUrl &path) {
+void BwaIndexAlgorithmWarningReporter::setRefSequencePath(const U2::GUrl& path) {
     referenceSequencePath = path;
 }
 
-void BwaIndexAlgorithmWarningReporter::setReportingLabel(QLabel *_reportLabel) {
+void BwaIndexAlgorithmWarningReporter::setReportingLabel(QLabel* _reportLabel) {
     reportLabel = _reportLabel;
     setReportLabelStyle();
 }
@@ -105,7 +105,7 @@ namespace U2 {
 
 // BwaSettingsWidget
 
-BwaSettingsWidget::BwaSettingsWidget(QWidget *parent)
+BwaSettingsWidget::BwaSettingsWidget(QWidget* parent)
     : DnaAssemblyAlgorithmMainWidget(parent),
       warningReporter(new BwaIndexAlgorithmWarningReporter(this)) {
     setupUi(this);
@@ -150,14 +150,14 @@ QMap<QString, QVariant> BwaSettingsWidget::getDnaAssemblyCustomSettings() const 
     return settings;
 }
 
-void BwaSettingsWidget::validateReferenceSequence(const GUrl &url) const {
+void BwaSettingsWidget::validateReferenceSequence(const GUrl& url) const {
     warningReporter->setRefSequencePath(url);
     warningReporter->sl_IndexAlgorithmChanged(indexAlgorithmComboBox->currentIndex());
 }
 
 // BwaBuildSettingsWidget
 
-BwaBuildSettingsWidget::BwaBuildSettingsWidget(QWidget *parent)
+BwaBuildSettingsWidget::BwaBuildSettingsWidget(QWidget* parent)
     : DnaAssemblyAlgorithmBuildIndexWidget(parent),
       warningReporter(new BwaIndexAlgorithmWarningReporter(this)) {
     setupUi(this);
@@ -175,22 +175,22 @@ QString BwaBuildSettingsWidget::getIndexFileExtension() {
     return QString();
 }
 
-GUrl BwaBuildSettingsWidget::buildIndexUrl(const GUrl &url) {
+GUrl BwaBuildSettingsWidget::buildIndexUrl(const GUrl& url) {
     return url;
 }
 
-void BwaBuildSettingsWidget::validateReferenceSequence(const GUrl &url) const {
+void BwaBuildSettingsWidget::validateReferenceSequence(const GUrl& url) const {
     warningReporter->setRefSequencePath(url);
     warningReporter->sl_IndexAlgorithmChanged(indexAlgorithmComboBox->currentIndex());
 }
 
 // BwaGUIExtensionsFactory
 
-DnaAssemblyAlgorithmMainWidget *BwaGUIExtensionsFactory::createMainWidget(QWidget *parent) {
+DnaAssemblyAlgorithmMainWidget* BwaGUIExtensionsFactory::createMainWidget(QWidget* parent) {
     return new BwaSettingsWidget(parent);
 }
 
-DnaAssemblyAlgorithmBuildIndexWidget *BwaGUIExtensionsFactory::createBuildIndexWidget(QWidget *parent) {
+DnaAssemblyAlgorithmBuildIndexWidget* BwaGUIExtensionsFactory::createBuildIndexWidget(QWidget* parent) {
     return new BwaBuildSettingsWidget(parent);
 }
 
@@ -204,7 +204,7 @@ bool BwaGUIExtensionsFactory::hasBuildIndexWidget() {
 
 // BwaSettingsWidget
 
-BwaSwSettingsWidget::BwaSwSettingsWidget(QWidget *parent)
+BwaSwSettingsWidget::BwaSwSettingsWidget(QWidget* parent)
     : DnaAssemblyAlgorithmMainWidget(parent),
       warningReporter(new BwaIndexAlgorithmWarningReporter(this)) {
     setupUi(this);
@@ -246,18 +246,18 @@ QMap<QString, QVariant> BwaSwSettingsWidget::getDnaAssemblyCustomSettings() cons
     return settings;
 }
 
-void BwaSwSettingsWidget::validateReferenceSequence(const GUrl &url) const {
+void BwaSwSettingsWidget::validateReferenceSequence(const GUrl& url) const {
     warningReporter->setRefSequencePath(url);
     warningReporter->sl_IndexAlgorithmChanged(indexAlgorithmComboBox->currentIndex());
 }
 
 // BwaGUIExtensionsFactory
 
-DnaAssemblyAlgorithmMainWidget *BwaSwGUIExtensionsFactory::createMainWidget(QWidget *parent) {
+DnaAssemblyAlgorithmMainWidget* BwaSwGUIExtensionsFactory::createMainWidget(QWidget* parent) {
     return new BwaSwSettingsWidget(parent);
 }
 
-DnaAssemblyAlgorithmBuildIndexWidget *BwaSwGUIExtensionsFactory::createBuildIndexWidget(QWidget *parent) {
+DnaAssemblyAlgorithmBuildIndexWidget* BwaSwGUIExtensionsFactory::createBuildIndexWidget(QWidget* parent) {
     return new BwaBuildSettingsWidget(parent);
 }
 
@@ -271,7 +271,7 @@ bool BwaSwGUIExtensionsFactory::hasBuildIndexWidget() {
 
 // BwaMemSettingsWidget
 
-BwaMemSettingsWidget::BwaMemSettingsWidget(QWidget *parent)
+BwaMemSettingsWidget::BwaMemSettingsWidget(QWidget* parent)
     : DnaAssemblyAlgorithmMainWidget(parent),
       warningReporter(new BwaIndexAlgorithmWarningReporter(this)) {
     setupUi(this);
@@ -320,18 +320,18 @@ QMap<QString, QVariant> BwaMemSettingsWidget::getDnaAssemblyCustomSettings() con
     return settings;
 }
 
-void BwaMemSettingsWidget::validateReferenceSequence(const GUrl &url) const {
+void BwaMemSettingsWidget::validateReferenceSequence(const GUrl& url) const {
     warningReporter->setRefSequencePath(url);
     warningReporter->sl_IndexAlgorithmChanged(indexAlgorithmComboBox->currentIndex());
 }
 
 // BwaMemGUIExtensionsFactory
 
-DnaAssemblyAlgorithmMainWidget *BwaMemGUIExtensionsFactory::createMainWidget(QWidget *parent) {
+DnaAssemblyAlgorithmMainWidget* BwaMemGUIExtensionsFactory::createMainWidget(QWidget* parent) {
     return new BwaMemSettingsWidget(parent);
 }
 
-DnaAssemblyAlgorithmBuildIndexWidget *BwaMemGUIExtensionsFactory::createBuildIndexWidget(QWidget *parent) {
+DnaAssemblyAlgorithmBuildIndexWidget* BwaMemGUIExtensionsFactory::createBuildIndexWidget(QWidget* parent) {
     return new BwaBuildSettingsWidget(parent);
 }
 
@@ -343,4 +343,4 @@ bool BwaMemGUIExtensionsFactory::hasBuildIndexWidget() {
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

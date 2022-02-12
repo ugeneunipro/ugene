@@ -30,25 +30,25 @@ class U2CORE_EXPORT Folder : public QObject {
     Q_OBJECT
 public:
     Folder();
-    Folder(Document *doc, const QString &folderPath);
-    Folder(const Folder &other);
-    Folder &operator=(const Folder &other);
+    Folder(Document* doc, const QString& folderPath);
+    Folder(const Folder& other);
+    Folder& operator=(const Folder& other);
 
-    Document *getDocument() const;
-    const QString &getFolderPath() const;
+    Document* getDocument() const;
+    const QString& getFolderPath() const;
     QString getParentPath() const;
     QString getFolderName() const;
 
-    void setFolderPath(const QString &newPath);
+    void setFolderPath(const QString& newPath);
 
-    bool operator==(const Folder &other) const;
+    bool operator==(const Folder& other) const;
 
-    static bool isCorrectFolderName(const QString &name);
-    static QString createPath(const QString &parentFolder, const QString &folderName);
-    static QString getFolderParentPath(const QString &path);
-    static QString getFolderName(const QString &path);
-    static bool isSubFolder(const QString &path, const QString &expectedSubpath);
-    static bool folderNameLessThan(const QString &first, const QString &second);
+    static bool isCorrectFolderName(const QString& name);
+    static QString createPath(const QString& parentFolder, const QString& folderName);
+    static QString getFolderParentPath(const QString& path);
+    static QString getFolderName(const QString& path);
+    static bool isSubFolder(const QString& path, const QString& expectedSubpath);
+    static bool folderNameLessThan(const QString& first, const QString& second);
 
 private:
     QPointer<Document> doc;
@@ -58,12 +58,12 @@ private:
 class U2CORE_EXPORT FolderMimeData : public QMimeData {
     Q_OBJECT
 public:
-    FolderMimeData(const Folder &folder);
+    FolderMimeData(const Folder& folder);
 
     Folder folder;
 
     // QMimeData
-    bool hasFormat(const QString &mimeType) const;
+    bool hasFormat(const QString& mimeType) const;
     QStringList formats() const;
 
     static const QString MIME_TYPE;

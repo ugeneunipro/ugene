@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-PrimerLibraryTableController::PrimerLibraryTableController(QObject *parent, PrimerLibraryTable *table)
+PrimerLibraryTableController::PrimerLibraryTableController(QObject* parent, PrimerLibraryTable* table)
     : QObject(parent),
       table(table) {
     SAFE_POINT(nullptr != table, "Primer library table is NULL", );
@@ -38,26 +38,26 @@ PrimerLibraryTableController::PrimerLibraryTableController(QObject *parent, Prim
     library = PrimerLibrary::getInstance(os);
     SAFE_POINT_OP(os, );
 
-    connect(library, SIGNAL(si_primerAdded(const U2DataId &)), SLOT(sl_primerAdded(const U2DataId &)));
-    connect(library, SIGNAL(si_primerChanged(const U2DataId &)), SLOT(sl_primerChanged(const U2DataId &)));
-    connect(library, SIGNAL(si_primerRemoved(const U2DataId &)), SLOT(sl_primerRemoved(const U2DataId &)));
+    connect(library, SIGNAL(si_primerAdded(const U2DataId&)), SLOT(sl_primerAdded(const U2DataId&)));
+    connect(library, SIGNAL(si_primerChanged(const U2DataId&)), SLOT(sl_primerChanged(const U2DataId&)));
+    connect(library, SIGNAL(si_primerRemoved(const U2DataId&)), SLOT(sl_primerRemoved(const U2DataId&)));
 }
 
-void PrimerLibraryTableController::sl_primerAdded(const U2DataId &primerId) {
+void PrimerLibraryTableController::sl_primerAdded(const U2DataId& primerId) {
     U2OpStatus2Log os;
     Primer primer = library->getPrimer(primerId, os);
     CHECK_OP(os, );
     table->addPrimer(primer);
 }
 
-void PrimerLibraryTableController::sl_primerChanged(const U2DataId &primerId) {
+void PrimerLibraryTableController::sl_primerChanged(const U2DataId& primerId) {
     U2OpStatus2Log os;
     Primer primer = library->getPrimer(primerId, os);
     CHECK_OP(os, );
     table->updatePrimer(primer);
 }
 
-void PrimerLibraryTableController::sl_primerRemoved(const U2DataId &primerId) {
+void PrimerLibraryTableController::sl_primerRemoved(const U2DataId& primerId) {
     U2OpStatus2Log os;
     table->removePrimer(primerId, os);
 }

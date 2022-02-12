@@ -35,12 +35,12 @@ class ScriptEditorWidget;
 class U2GUI_EXPORT ScriptEditorDialog : public QDialog {
     Q_OBJECT
 public:
-    ScriptEditorDialog(QWidget *p, const QString &roHeaderText, const QString &text = QString());
+    ScriptEditorDialog(QWidget* p, const QString& roHeaderText, const QString& text = QString());
     ~ScriptEditorDialog();
 
-    void setScriptText(const QString &text);
+    void setScriptText(const QString& text);
 
-    void setScriptPath(const QString &path);
+    void setScriptPath(const QString& path);
 
     QString getScriptText() const;
 
@@ -51,16 +51,16 @@ private slots:
     void sl_openScript();
     void sl_saveScript();
     void sl_saveAsScript();
-    void sl_nameChanged(const QString &);
+    void sl_nameChanged(const QString&);
     void sl_scriptChanged();
     void sl_cursorPositionChanged();
 
 private:
     void updateState();
-    void save(const QString &url);
+    void save(const QString& url);
 
-    ScriptEditorWidget *scriptEdit;
-    Ui_ScriptEditorDialog *ui;
+    ScriptEditorWidget* scriptEdit;
+    Ui_ScriptEditorDialog* ui;
 };
 
 }  // namespace U2

@@ -40,12 +40,12 @@ class QueryEditor : public QWidget, public Ui_QueryEditorWidget {
     friend class ProcessNameValidator;
 
 public:
-    QueryEditor(QWidget *parent = 0);
-    void showProto(QDActorPrototype *proto);
-    void edit(QDConstraint *constraint);
-    void edit(QDActor *a);
+    QueryEditor(QWidget* parent = 0);
+    void showProto(QDActorPrototype* proto);
+    void edit(QDConstraint* constraint);
+    void edit(QDActor* a);
     void reset();
-    void setCurrentAttribute(const QString &id);
+    void setCurrentAttribute(const QString& id);
 private slots:
     void sl_showPropDoc();
     void sl_setLabel();
@@ -55,10 +55,10 @@ signals:
     void modified();
 
 private:
-    void setDescriptor(const Descriptor *d, const QString &hint = QString());
+    void setDescriptor(const Descriptor* d, const QString& hint = QString());
 
-    QueryProcCfgModel *cfgModel;
-    QDActor *current;
+    QueryProcCfgModel* cfgModel;
+    QDActor* current;
 };
 
 }  // namespace U2

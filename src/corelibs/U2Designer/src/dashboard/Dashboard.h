@@ -45,21 +45,21 @@ class U2DESIGNER_EXPORT Dashboard : public QWidget {
     Q_OBJECT
     Q_DISABLE_COPY(Dashboard)
 public:
-    Dashboard(const WorkflowMonitor *monitor, const QString &name, QWidget *parent);
-    Dashboard(const QString &dirPath, QWidget *parent);
+    Dashboard(const WorkflowMonitor* monitor, const QString& name, QWidget* parent);
+    Dashboard(const QString& dirPath, QWidget* parent);
 
     void onShow();
 
-    const QPointer<const WorkflowMonitor> &getMonitor() const;
+    const QPointer<const WorkflowMonitor>& getMonitor() const;
 
     bool isOpened() const;
     void setClosed();
 
-    const QString &directory() const;
-    const QString &getDashboardId() const;
+    const QString& directory() const;
+    const QString& getDashboardId() const;
 
-    const QString &getName() const;
-    void setName(const QString &value);
+    const QString& getName() const;
+    void setName(const QString& value);
 
     bool isWorkflowInProgress();
 
@@ -77,10 +77,10 @@ public:
     static const QString STATE_CANCELED;
 
 signals:
-    void si_loadSchema(const QString &url);
+    void si_loadSchema(const QString& url);
     void si_hideLoadBtnHint();
     void si_workflowStateChanged(bool isRunning);
-    void si_serializeContent(const QString &content);
+    void si_serializeContent(const QString& content);
 
 public slots:
     void sl_loadSchema();
@@ -88,7 +88,7 @@ public slots:
 private slots:
     void sl_runStateChanged(bool paused);
     void sl_onLogChanged(Monitor::LogEntry logEntry);
-    void sl_setDirectory(const QString &dir);
+    void sl_setDirectory(const QString& dir);
     void sl_workflowStateChanged(Monitor::TaskState state);
 
     /** Toggles tab button by id. */
@@ -98,10 +98,10 @@ private:
     void saveReportFile();
 
     /** Initializes layout with all widgets initialized with the given initial states. */
-    void initLayout(const QMap<QString, QDomElement> &initialWidgetStates = QMap<QString, QDomElement>());
+    void initLayout(const QMap<QString, QDomElement>& initialWidgetStates = QMap<QString, QDomElement>());
     void saveSettings();
     void loadSettings();
-    static QMap<QString, QDomElement> readInitialWidgetStates(const QString &htmlUrl);
+    static QMap<QString, QDomElement> readInitialWidgetStates(const QString& htmlUrl);
 
     void registerDashboard() const;
     void updateDashboard() const;
@@ -114,25 +114,25 @@ private:
     const QPointer<const WorkflowMonitor> monitor;
     bool workflowInProgress;
 
-    QVBoxLayout *mainLayout;
+    QVBoxLayout* mainLayout;
 
-    QToolButton *overviewTabButton;
-    QToolButton *inputTabButton;
-    QToolButton *externalToolsTabButton;
+    QToolButton* overviewTabButton;
+    QToolButton* inputTabButton;
+    QToolButton* externalToolsTabButton;
 
-    QStackedWidget *stackedWidget;
+    QStackedWidget* stackedWidget;
 
-    DashboardTabPage *overviewTabPage;
-    NotificationsDashboardWidget *notificationsWidget;
-    StatisticsDashboardWidget *statisticsWidget;
-    StatusDashboardWidget *statusWidget;
-    OutputFilesDashboardWidget *outputFilesWidget;
+    DashboardTabPage* overviewTabPage;
+    NotificationsDashboardWidget* notificationsWidget;
+    StatisticsDashboardWidget* statisticsWidget;
+    StatusDashboardWidget* statusWidget;
+    OutputFilesDashboardWidget* outputFilesWidget;
 
-    DashboardTabPage *inputTabPage;
-    ParametersDashboardWidget *parametersWidget;
+    DashboardTabPage* inputTabPage;
+    ParametersDashboardWidget* parametersWidget;
 
-    DashboardTabPage *externalToolsTabPage;
-    ExternalToolsDashboardWidget *externalToolsWidget;
+    DashboardTabPage* externalToolsTabPage;
+    ExternalToolsDashboardWidget* externalToolsWidget;
     QDomElement externalToolsWidgetState;
 };
 

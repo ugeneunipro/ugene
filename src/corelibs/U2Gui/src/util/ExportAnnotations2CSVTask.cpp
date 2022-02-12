@@ -37,16 +37,16 @@ namespace U2 {
 
 const QString ExportAnnotations2CSVTask::SEQUENCE_NAME = "sequence_name";
 
-ExportAnnotations2CSVTask::ExportAnnotations2CSVTask(const QList<Annotation *> &annotations, const QByteArray &sequence, const QString &_seqName, const DNATranslation *complementTranslation, bool exportSequence, bool _exportSeqName, const QString &url, bool apnd, const QString &sep)
+ExportAnnotations2CSVTask::ExportAnnotations2CSVTask(const QList<Annotation*>& annotations, const QByteArray& sequence, const QString& _seqName, const DNATranslation* complementTranslation, bool exportSequence, bool _exportSeqName, const QString& url, bool apnd, const QString& sep)
     : Task(tr("Export annotations to CSV format"), TaskFlag_None), annotations(annotations), sequence(sequence), seqName(_seqName),
       complementTranslation(complementTranslation), exportSequence(exportSequence), exportSequenceName(_exportSeqName), url(url),
       append(apnd), separator(sep) {
     GCOUNTER(cvar, "ExportAnnotattions2CSVTask");
 }
 
-static void writeCSVLine(const QStringList &container, IOAdapter *ioAdapter, const QString &separator, U2OpStatus &os) {
+static void writeCSVLine(const QStringList& container, IOAdapter* ioAdapter, const QString& separator, U2OpStatus& os) {
     bool first = true;
-    foreach (const QString &value, container) {
+    foreach (const QString& value, container) {
         if (!first) {
             if (0 == ioAdapter->writeBlock(separator.toLatin1())) {
                 os.setError(L10N::errorWritingFile(ioAdapter->getURL()));
@@ -73,10 +73,10 @@ void ExportAnnotations2CSVTask::run() {
     QScopedPointer<IOAdapter> ioAdapter;
 
     IOAdapterId ioAdapterId = IOAdapterUtils::url2io(url);
-    IOAdapterRegistry *ioRegistry = AppContext::getIOAdapterRegistry();
+    IOAdapterRegistry* ioRegistry = AppContext::getIOAdapterRegistry();
     CHECK_EXT(nullptr != ioRegistry,
               stateInfo.setError(tr("Invalid I/O environment!").arg(url)), );
-    IOAdapterFactory *ioAdapterFactory = ioRegistry->getIOAdapterFactoryById(ioAdapterId);
+    IOAdapterFactory* ioAdapterFactory = ioRegistry->getIOAdapterFactoryById(ioAdapterId);
     CHECK_EXT(nullptr != ioAdapterFactory,
               stateInfo.setError(tr("No IO adapter found for URL: %1").arg(url)), );
     ioAdapter.reset(ioAdapterFactory->createIOAdapter());
@@ -97,9 +97,9 @@ void ExportAnnotations2CSVTask::run() {
     }
 
     bool hasSequenceNameQualifier = false;
-    foreach (Annotation *annotation, annotations) {
-        foreach (const U2Qualifier &qualifier, annotation->getQualifiers()) {
-            const QString &qName = qualifier.name;
+    foreach (Annotation* annotation, annotations) {
+        foreach (const U2Qualifier& qualifier, annotation->getQualifiers()) {
+            const QString& qName = qualifier.name;
             if (qName == SEQUENCE_NAME) {
                 hasSequenceNameQualifier = true;
                 continue;
@@ -114,8 +114,8 @@ void ExportAnnotations2CSVTask::run() {
     CHECK_OP(stateInfo, );
 
     bool noComplementarySequence = false;
-    foreach (Annotation *annotation, annotations) {
-        foreach (const U2Region &region, annotation->getRegions()) {
+    foreach (Annotation* annotation, annotations) {
+        foreach (const U2Region& region, annotation->getRegions()) {
             QStringList values;
             values << annotation->getGroup()->getGroupPath();
             values << annotation->getName();
@@ -130,7 +130,7 @@ void ExportAnnotations2CSVTask::run() {
                 if (!seqName.isEmpty()) {
                     values << seqName.toLatin1();
                 } else if (hasSequenceNameQualifier) {
-                    foreach (const U2Qualifier &qf, annotation->getQualifiers()) {
+                    foreach (const U2Qualifier& qf, annotation->getQualifiers()) {
                         if (qf.name == SEQUENCE_NAME) {
                             values << qf.value;
                         }
@@ -156,7 +156,7 @@ void ExportAnnotations2CSVTask::run() {
                 values << QString();
             }
 
-            foreach (const U2Qualifier &qualifier, annotation->getQualifiers()) {
+            foreach (const U2Qualifier& qualifier, annotation->getQualifiers()) {
                 if (qualifier.name == SEQUENCE_NAME) {
                     continue;
                 }

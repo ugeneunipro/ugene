@@ -32,7 +32,7 @@ class SpideySupport : public ExternalTool {
     Q_OBJECT
 public:
     SpideySupport();
-    GObjectViewWindowContext *getViewContext() {
+    GObjectViewWindowContext* getViewContext() {
         return viewCtx;
     }
 
@@ -43,22 +43,22 @@ private slots:
     void sl_validationStatusChanged(bool newStatus);
 
 private:
-    GObjectViewWindowContext *viewCtx;
+    GObjectViewWindowContext* viewCtx;
 };
 
 class SpideySupportContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    SpideySupportContext(QObject *p);
+    SpideySupportContext(QObject* p);
 
 protected slots:
     void sl_align_with_Spidey();
 
 protected:
-    void initViewContext(GObjectView *view) override;
+    void initViewContext(GObjectView* view) override;
 
-    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
+    void buildStaticOrContextMenu(GObjectView* view, QMenu* menu) override;
 };
 
-}    // namespace U2
-#endif    // _U2_SPIDEY_SUPPORT_H_
+}  // namespace U2
+#endif  // _U2_SPIDEY_SUPPORT_H_

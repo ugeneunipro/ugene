@@ -39,7 +39,7 @@
 
 namespace U2 {
 
-AnnotationTableObject::AnnotationTableObject(const QString &objectName, const U2DbiRef &dbiRef, const QVariantMap &hintsMap)
+AnnotationTableObject::AnnotationTableObject(const QString& objectName, const U2DbiRef& dbiRef, const QVariantMap& hintsMap)
     : GObject(GObjectTypes::ANNOTATION_TABLE, objectName, hintsMap) {
     U2OpStatusImpl os;
     const QString folder = hintsMap.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
@@ -51,7 +51,7 @@ AnnotationTableObject::AnnotationTableObject(const QString &objectName, const U2
     dataLoaded = true;
 }
 
-AnnotationTableObject::AnnotationTableObject(const QString &objectName, const U2EntityRef &tableRef, const QVariantMap &hintsMap)
+AnnotationTableObject::AnnotationTableObject(const QString& objectName, const U2EntityRef& tableRef, const QVariantMap& hintsMap)
     : GObject(GObjectTypes::ANNOTATION_TABLE, objectName, hintsMap), rootGroup(nullptr) {
     entityRef = tableRef;
 }
@@ -60,7 +60,7 @@ AnnotationTableObject::~AnnotationTableObject() {
     delete rootGroup;
 }
 
-QList<Annotation *> AnnotationTableObject::getAnnotations() const {
+QList<Annotation*> AnnotationTableObject::getAnnotations() const {
     ensureDataLoaded();
     return rootGroup->getAnnotations(true);
 }
@@ -70,53 +70,53 @@ bool AnnotationTableObject::hasAnnotations() const {
     return rootGroup->hasAnnotations();
 }
 
-AnnotationGroup *AnnotationTableObject::getRootGroup() {
+AnnotationGroup* AnnotationTableObject::getRootGroup() {
     ensureDataLoaded();
     return rootGroup;
 }
 
-typedef QPair<AnnotationGroup *, QList<SharedAnnotationData>> AnnotationGroupData;
+typedef QPair<AnnotationGroup*, QList<SharedAnnotationData>> AnnotationGroupData;
 
-QList<Annotation *> AnnotationTableObject::addAnnotations(const QList<SharedAnnotationData> &annotations, const QString &groupName) {
-    QList<Annotation *> result;
+QList<Annotation*> AnnotationTableObject::addAnnotations(const QList<SharedAnnotationData>& annotations, const QString& groupName) {
+    QList<Annotation*> result;
     CHECK(!annotations.isEmpty(), result);
 
     ensureDataLoaded();
 
     if (groupName.isEmpty()) {
         QMap<QString, AnnotationGroupData> group2Annotations;
-        for (const SharedAnnotationData &a : qAsConst(annotations)) {
+        for (const SharedAnnotationData& a : qAsConst(annotations)) {
             if (!group2Annotations.contains(a->name)) {
-                AnnotationGroup *group = rootGroup->getSubgroup(a->name, true);
+                AnnotationGroup* group = rootGroup->getSubgroup(a->name, true);
                 group2Annotations[a->name].first = group;
             }
             group2Annotations[a->name].second.append(a);
         }
-        for (const AnnotationGroupData &groupData : qAsConst(group2Annotations)) {
+        for (const AnnotationGroupData& groupData : qAsConst(group2Annotations)) {
             result.append(groupData.first->addAnnotations(groupData.second));
         }
     } else {
-        AnnotationGroup *group = rootGroup->getSubgroup(groupName, true);
+        AnnotationGroup* group = rootGroup->getSubgroup(groupName, true);
         result.append(group->addAnnotations(annotations));
     }
     return result;
 }
 
-void AnnotationTableObject::removeAnnotations(const QList<Annotation *> &annotations) {
+void AnnotationTableObject::removeAnnotations(const QList<Annotation*>& annotations) {
     CHECK(!annotations.isEmpty(), );
 
-    QMap<AnnotationGroup *, QList<Annotation *>> group2Annotations;
-    foreach (Annotation *ann, annotations) {
+    QMap<AnnotationGroup*, QList<Annotation*>> group2Annotations;
+    foreach (Annotation* ann, annotations) {
         SAFE_POINT(ann->getGObject() == this, "Unexpected annotation detected", );
         group2Annotations[ann->getGroup()].append(ann);
     }
 
-    foreach (AnnotationGroup *group, group2Annotations.keys()) {
+    foreach (AnnotationGroup* group, group2Annotations.keys()) {
         group->removeAnnotations(group2Annotations[group]);
     }
 }
 
-GObject *AnnotationTableObject::clone(const U2DbiRef &ref, U2OpStatus &os, const QVariantMap &hints) const {
+GObject* AnnotationTableObject::clone(const U2DbiRef& ref, U2OpStatus& os, const QVariantMap& hints) const {
     ensureDataLoaded();
 
     GHintsDefaultImpl gHints(getGHintsMap());
@@ -125,19 +125,19 @@ GObject *AnnotationTableObject::clone(const U2DbiRef &ref, U2OpStatus &os, const
     DbiOperationsBlock opBlock(ref, os);
     CHECK_OP(os, nullptr);
 
-    AnnotationTableObject *cln = new AnnotationTableObject(getGObjectName(), ref, gHints.getMap());
+    AnnotationTableObject* cln = new AnnotationTableObject(getGObjectName(), ref, gHints.getMap());
     cln->setIndexInfo(getIndexInfo());
 
     QStringList subgroupPaths;
     rootGroup->getSubgroupPaths(subgroupPaths);
-    AnnotationGroup *clonedRootGroup = cln->getRootGroup();
-    for (const QString &groupPath : qAsConst(subgroupPaths)) {
-        AnnotationGroup *originalGroup = rootGroup->getSubgroup(groupPath, false);
+    AnnotationGroup* clonedRootGroup = cln->getRootGroup();
+    for (const QString& groupPath : qAsConst(subgroupPaths)) {
+        AnnotationGroup* originalGroup = rootGroup->getSubgroup(groupPath, false);
         SAFE_POINT(originalGroup != nullptr, L10N::nullPointerError("annotation group"), nullptr);
 
-        AnnotationGroup *clonedGroup = clonedRootGroup->getSubgroup(groupPath, true);
+        AnnotationGroup* clonedGroup = clonedRootGroup->getSubgroup(groupPath, true);
         QList<SharedAnnotationData> groupData;
-        foreach (const Annotation *a, originalGroup->getAnnotations()) {
+        foreach (const Annotation* a, originalGroup->getAnnotations()) {
             groupData.append(a->getData());
         }
         clonedGroup->addAnnotations(groupData);
@@ -146,12 +146,12 @@ GObject *AnnotationTableObject::clone(const U2DbiRef &ref, U2OpStatus &os, const
     return cln;
 }
 
-QList<Annotation *> AnnotationTableObject::getAnnotationsByName(const QString &name) const {
-    QList<Annotation *> result;
+QList<Annotation*> AnnotationTableObject::getAnnotationsByName(const QString& name) const {
+    QList<Annotation*> result;
 
     ensureDataLoaded();
 
-    foreach (Annotation *a, getAnnotations()) {
+    foreach (Annotation* a, getAnnotations()) {
         if (a->getName() == name) {
             result.append(a);
         }
@@ -162,17 +162,17 @@ QList<Annotation *> AnnotationTableObject::getAnnotationsByName(const QString &n
 
 namespace {
 
-bool annotationIntersectsRange(const Annotation *a, const U2Region &range, bool contains) {
+bool annotationIntersectsRange(const Annotation* a, const U2Region& range, bool contains) {
     SAFE_POINT(nullptr != a, L10N::nullPointerError("annotation"), false);
     if (!contains) {
-        foreach (const U2Region &r, a->getRegions()) {
+        foreach (const U2Region& r, a->getRegions()) {
             if (r.intersects(range)) {
                 return true;
             }
         }
         return false;
     } else {
-        foreach (const U2Region &r, a->getRegions()) {
+        foreach (const U2Region& r, a->getRegions()) {
             if (!range.contains(r)) {
                 return false;
             }
@@ -183,12 +183,12 @@ bool annotationIntersectsRange(const Annotation *a, const U2Region &range, bool 
 
 }  // namespace
 
-QList<Annotation *> AnnotationTableObject::getAnnotationsByRegion(const U2Region &region, bool contains) const {
-    QList<Annotation *> result;
+QList<Annotation*> AnnotationTableObject::getAnnotationsByRegion(const U2Region& region, bool contains) const {
+    QList<Annotation*> result;
 
     ensureDataLoaded();
 
-    foreach (Annotation *a, getAnnotations()) {
+    foreach (Annotation* a, getAnnotations()) {
         if (annotationIntersectsRange(a, region, contains)) {
             result.append(a);
         }
@@ -197,12 +197,12 @@ QList<Annotation *> AnnotationTableObject::getAnnotationsByRegion(const U2Region
     return result;
 }
 
-QList<Annotation *> AnnotationTableObject::getAnnotationsByType(const U2FeatureType featureType) const {
-    QList<Annotation *> result;
+QList<Annotation*> AnnotationTableObject::getAnnotationsByType(const U2FeatureType featureType) const {
+    QList<Annotation*> result;
 
     ensureDataLoaded();
 
-    foreach (Annotation *a, getAnnotations()) {
+    foreach (Annotation* a, getAnnotations()) {
         if (a->getType() == featureType) {
             result.append(a);
         }
@@ -211,18 +211,18 @@ QList<Annotation *> AnnotationTableObject::getAnnotationsByType(const U2FeatureT
     return result;
 }
 
-bool AnnotationTableObject::checkConstraints(const GObjectConstraints *c) const {
-    auto ac = qobject_cast<const AnnotationTableObjectConstraints *>(c);
+bool AnnotationTableObject::checkConstraints(const GObjectConstraints* c) const {
+    auto ac = qobject_cast<const AnnotationTableObjectConstraints*>(c);
     SAFE_POINT(ac != nullptr, "Invalid feature constraints", false);
 
     ensureDataLoaded();
 
     int fitSize = ac->sequenceSizeToFit;
     SAFE_POINT(fitSize > 0, "Invalid sequence length provided!", false);
-    QList<Annotation *> annotations = getAnnotations();
-    for (const Annotation *a : qAsConst(annotations)) {
-        const QVector<U2Region> &regions = a->getRegions();
-        for (const U2Region &region : qAsConst(regions)) {
+    QList<Annotation*> annotations = getAnnotations();
+    for (const Annotation* a : qAsConst(annotations)) {
+        const QVector<U2Region>& regions = a->getRegions();
+        for (const U2Region& region : qAsConst(regions)) {
             SAFE_POINT(region.startPos >= 0, "Invalid annotation region", false);
             if (region.endPos() > fitSize) {
                 return false;
@@ -232,7 +232,7 @@ bool AnnotationTableObject::checkConstraints(const GObjectConstraints *c) const 
     return true;
 }
 
-void AnnotationTableObject::setGObjectName(const QString &newName) {
+void AnnotationTableObject::setGObjectName(const QString& newName) {
     CHECK(name != newName, );
 
     ensureDataLoaded();
@@ -245,39 +245,39 @@ U2DataId AnnotationTableObject::getRootFeatureId() const {
     return rootGroup->id;
 }
 
-void AnnotationTableObject::emit_onAnnotationsAdded(const QList<Annotation *> &l) {
+void AnnotationTableObject::emit_onAnnotationsAdded(const QList<Annotation*>& l) {
     emit si_onAnnotationsAdded(l);
 }
 
-void AnnotationTableObject::emit_onAnnotationsModified(const AnnotationModification &annotationModification) {
+void AnnotationTableObject::emit_onAnnotationsModified(const AnnotationModification& annotationModification) {
     emit_onAnnotationsModified(QList<AnnotationModification>() << annotationModification);
 }
 
-void AnnotationTableObject::emit_onAnnotationsModified(const QList<AnnotationModification> &annotationModifications) {
+void AnnotationTableObject::emit_onAnnotationsModified(const QList<AnnotationModification>& annotationModifications) {
     emit si_onAnnotationsModified(annotationModifications);
 }
 
-void AnnotationTableObject::emit_onAnnotationsRemoved(const QList<Annotation *> &a) {
+void AnnotationTableObject::emit_onAnnotationsRemoved(const QList<Annotation*>& a) {
     emit si_onAnnotationsRemoved(a);
 }
 
-void AnnotationTableObject::emit_onGroupCreated(AnnotationGroup *g) {
+void AnnotationTableObject::emit_onGroupCreated(AnnotationGroup* g) {
     emit si_onGroupCreated(g);
 }
 
-void AnnotationTableObject::emit_onGroupRemoved(AnnotationGroup *p, AnnotationGroup *g) {
+void AnnotationTableObject::emit_onGroupRemoved(AnnotationGroup* p, AnnotationGroup* g) {
     emit si_onGroupRemoved(p, g);
 }
 
-void AnnotationTableObject::emit_onGroupRenamed(AnnotationGroup *g) {
+void AnnotationTableObject::emit_onGroupRenamed(AnnotationGroup* g) {
     emit si_onGroupRenamed(g);
 }
 
-void AnnotationTableObject::emit_onAnnotationsInGroupRemoved(const QList<Annotation *> &l, AnnotationGroup *gr) {
+void AnnotationTableObject::emit_onAnnotationsInGroupRemoved(const QList<Annotation*>& l, AnnotationGroup* gr) {
     emit si_onAnnotationsInGroupRemoved(l, gr);
 }
 
-void AnnotationTableObject::loadDataCore(U2OpStatus &os) {
+void AnnotationTableObject::loadDataCore(U2OpStatus& os) {
     SAFE_POINT(nullptr == rootGroup, "Annotation table is initialized unexpectedly", );
 
     U2AnnotationTable table = U2FeatureUtils::getAnnotationTable(entityRef, os);

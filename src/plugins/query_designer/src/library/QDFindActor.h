@@ -31,16 +31,16 @@ namespace U2 {
 class QDFindActor : public QDActor {
     Q_OBJECT
 public:
-    QDFindActor(QDActorPrototype const *proto);
+    QDFindActor(QDActorPrototype const* proto);
     int getMinResultLen() const;
     int getMaxResultLen() const;
     QString getText() const;
-    Task *getAlgorithmTask(const QVector<U2Region> &location);
+    Task* getAlgorithmTask(const QVector<U2Region>& location);
     QColor defaultColor() const {
         return QColor(0xff, 0xf8, 0);
     }
 private slots:
-    void sl_onFindTaskFinished(Task *t);
+    void sl_onFindTaskFinished(Task* t);
 
 private:
     FindAlgorithmTaskSettings settings;
@@ -49,7 +49,7 @@ private:
 class QDFindActorPrototype : public QDActorPrototype {
 public:
     QDFindActorPrototype();
-    virtual QDActor *createInstance() const {
+    virtual QDActor* createInstance() const {
         return new QDFindActor(this);
     }
     virtual QIcon getIcon() const {

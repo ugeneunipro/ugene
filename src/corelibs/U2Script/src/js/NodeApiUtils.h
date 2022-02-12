@@ -35,7 +35,7 @@ namespace Js {
 class NodeApiUtils {
 public:
     static bool isArgumentCountCorrect(int actualCount, int requiredCount);
-    static ScriptContext *getScriptContext();
+    static ScriptContext* getScriptContext();
 };
 
 }  // namespace Js

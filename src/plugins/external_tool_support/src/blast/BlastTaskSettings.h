@@ -142,11 +142,11 @@ public:
     QString compStats;  //-comp_based_stats <String> (-C in blastall)
 
     bool isNucleotideSeq;
-    const DNAAlphabet *alphabet;
+    const DNAAlphabet* alphabet;
     // settings for annotations
     bool needCreateAnnotations;
     StrandSource strandSource;
-    AnnotationTableObject *aobj;
+    AnnotationTableObject* aobj;
     QString groupName;
     QString annDescription;
 
@@ -159,7 +159,7 @@ public:
     TriState directStrand;
 
     // service settings
-    U2SequenceObject *querySequenceObject;  // can be NULL
+    U2SequenceObject* querySequenceObject;  // can be NULL
 };
 }  // namespace U2
 #endif  // _U2_BLAST_TASK_SETTINGS_H

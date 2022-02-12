@@ -34,11 +34,11 @@
 
 namespace U2 {
 
-MysqlUpgraderFrom_1_14_To_1_15::MysqlUpgraderFrom_1_14_To_1_15(MysqlDbi *dbi)
+MysqlUpgraderFrom_1_14_To_1_15::MysqlUpgraderFrom_1_14_To_1_15(MysqlDbi* dbi)
     : MysqlUpgrader(Version::parseVersion("1.14.0"), Version::parseVersion("1.15.0"), dbi) {
 }
 
-void MysqlUpgraderFrom_1_14_To_1_15::upgrade(U2OpStatus &os) const {
+void MysqlUpgraderFrom_1_14_To_1_15::upgrade(U2OpStatus& os) const {
     MysqlTransaction t(dbi->getDbRef(), os);
 
     upgradeObjectDbi(os, dbi->getDbRef());
@@ -47,7 +47,7 @@ void MysqlUpgraderFrom_1_14_To_1_15::upgrade(U2OpStatus &os) const {
     dbi->setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, versionTo.toString(), os);
 }
 
-void MysqlUpgraderFrom_1_14_To_1_15::upgradeObjectDbi(U2OpStatus &os, MysqlDbRef *dbRef) const {
+void MysqlUpgraderFrom_1_14_To_1_15::upgradeObjectDbi(U2OpStatus& os, MysqlDbRef* dbRef) const {
     const bool previousPathFieldExist = (1 == U2SqlQuery(QString("SELECT count(*) FROM information_schema.COLUMNS WHERE "
                                                                  "TABLE_SCHEMA = '%1' AND TABLE_NAME = 'Folder' "
                                                                  "AND COLUMN_NAME = 'previousPath'")
@@ -68,7 +68,7 @@ void MysqlUpgraderFrom_1_14_To_1_15::upgradeObjectDbi(U2OpStatus &os, MysqlDbRef
     const QString recycleBinPrefix = U2ObjectDbi::ROOT_FOLDER + U2ObjectDbi::RECYCLE_BIN_FOLDER + U2ObjectDbi::PATH_SEP;
     StrStrMap oldAndNewPathes;
 
-    foreach (const QString &folder, folders) {
+    foreach (const QString& folder, folders) {
         if (folder.startsWith(recycleBinPrefix)) {
             const QString parentFolder = getParentFolderFromList(oldAndNewPathes.keys(), folder);
             QString newPath;
@@ -83,7 +83,7 @@ void MysqlUpgraderFrom_1_14_To_1_15::upgradeObjectDbi(U2OpStatus &os, MysqlDbRef
         }
     }
 
-    foreach (const QString &folder, oldAndNewPathes.keys()) {
+    foreach (const QString& folder, oldAndNewPathes.keys()) {
         const QByteArray oldHash = QCryptographicHash::hash(folder.toLatin1(), QCryptographicHash::Md5).toHex();
         const QByteArray newHash = QCryptographicHash::hash(oldAndNewPathes[folder].toLatin1(), QCryptographicHash::Md5).toHex();
         const QString originPath = U2ObjectDbi::ROOT_FOLDER + folder.mid(recycleBinPrefix.size());
@@ -98,9 +98,9 @@ void MysqlUpgraderFrom_1_14_To_1_15::upgradeObjectDbi(U2OpStatus &os, MysqlDbRef
     }
 }
 
-QString MysqlUpgraderFrom_1_14_To_1_15::getParentFolderFromList(const QStringList &folders, const QString &folder) {
+QString MysqlUpgraderFrom_1_14_To_1_15::getParentFolderFromList(const QStringList& folders, const QString& folder) {
     QString parentFolder;
-    foreach (const QString &possibleParentFolder, folders) {
+    foreach (const QString& possibleParentFolder, folders) {
         if (folder.startsWith(possibleParentFolder) && possibleParentFolder.size() > parentFolder.size()) {
             parentFolder = possibleParentFolder;
         }
@@ -109,7 +109,7 @@ QString MysqlUpgraderFrom_1_14_To_1_15::getParentFolderFromList(const QStringLis
     return parentFolder;
 }
 
-void MysqlUpgraderFrom_1_14_To_1_15::rollNewFolderPath(QString &originalPath, const QStringList &allFolders) {
+void MysqlUpgraderFrom_1_14_To_1_15::rollNewFolderPath(QString& originalPath, const QStringList& allFolders) {
     QString resultPath = originalPath;
     int sameFolderNameCount = 0;
     while (allFolders.contains(resultPath)) {

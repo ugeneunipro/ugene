@@ -58,7 +58,7 @@ static const QString ANN_NAME("annotation_name");
 /************************************************************************/
 /* Worker */
 /************************************************************************/
-GeneByGeneReportWorker::GeneByGeneReportWorker(Actor *p)
+GeneByGeneReportWorker::GeneByGeneReportWorker(Actor* p)
     : BaseWorker(p), inChannel(nullptr) {
 }
 
@@ -66,7 +66,7 @@ void GeneByGeneReportWorker::init() {
     inChannel = ports.value(IN_PORT_DESCR);
 }
 
-Task *GeneByGeneReportWorker::tick() {
+Task* GeneByGeneReportWorker::tick() {
     U2OpStatus2Log os;
 
     while (inChannel->hasMessage()) {
@@ -106,7 +106,7 @@ Task *GeneByGeneReportWorker::tick() {
     settings.identity = getValue<float>(IDENTITY);
     settings.annName = getValue<QString>(ANN_NAME);
 
-    Task *t = new GeneByGeneReportTask(settings, geneData);
+    Task* t = new GeneByGeneReportTask(settings, geneData);
     connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
     return t;
 }
@@ -116,7 +116,7 @@ void GeneByGeneReportWorker::cleanup() {
 }
 
 void GeneByGeneReportWorker::sl_taskFinished() {
-    GeneByGeneReportTask *t = dynamic_cast<GeneByGeneReportTask *>(sender());
+    GeneByGeneReportTask* t = dynamic_cast<GeneByGeneReportTask*>(sender());
     if (!t->isFinished() || t->hasError() || t->isCanceled()) {
         return;
     }
@@ -137,7 +137,7 @@ QStringList GeneByGeneReportWorker::getOutputFiles() {
 /************************************************************************/
 
 void GeneByGeneReportWorkerFactory::init() {
-    QList<PortDescriptor *> portDescs;
+    QList<PortDescriptor*> portDescs;
 
     // in port
     QMap<Descriptor, DataTypePtr> inTypeMap;
@@ -157,7 +157,7 @@ void GeneByGeneReportWorkerFactory::init() {
     DataTypePtr inTypeSet(new MapDataType(IN_TYPE_ID, inTypeMap));
     portDescs << new PortDescriptor(inPortDesc, inTypeSet, true);
 
-    QList<Attribute *> attrs;
+    QList<Attribute*> attrs;
     {
         Descriptor outFile(OUTPUT_FILE,
                            GeneByGeneReportWorker::tr("Output file"),
@@ -179,7 +179,7 @@ void GeneByGeneReportWorkerFactory::init() {
         attrs << new Attribute(identitiDescr, BaseTypes::NUM_TYPE(), false, QVariant(90.0f));
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         delegates[OUTPUT_FILE] = new URLDelegate("", "", false, false);
         {
@@ -204,21 +204,21 @@ void GeneByGeneReportWorkerFactory::init() {
                          GeneByGeneReportWorker::tr("Gene-by-gene Approach Report"),
                          GeneByGeneReportWorker::tr("Output a table of genes found in a reference sequence."));
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
+    ActorPrototype* proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
     proto->setPrompter(new GeneByGeneReportPrompter());
     proto->setEditor(new DelegateEditor(delegates));
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new GeneByGeneReportWorkerFactory());
 }
 
-Worker *GeneByGeneReportWorkerFactory::createWorker(Actor *a) {
+Worker* GeneByGeneReportWorkerFactory::createWorker(Actor* a) {
     return new GeneByGeneReportWorker(a);
 }
 
 QString GeneByGeneReportPrompter::composeRichDoc() {
     QString res = "";
 
-    Actor *seqProducer = qobject_cast<IntegralBusPort *>(target->getPort(IN_PORT_DESCR))->getProducer(SEQ_SLOT_ID);
+    Actor* seqProducer = qobject_cast<IntegralBusPort*>(target->getPort(IN_PORT_DESCR))->getProducer(SEQ_SLOT_ID);
 
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString annUrl = seqProducer ? seqProducer->getLabel() : unsetStr;

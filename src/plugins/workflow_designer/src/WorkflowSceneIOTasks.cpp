@@ -40,7 +40,7 @@ using namespace Workflow;
 /**********************************
  * LoadWorkflowSceneTask
  **********************************/
-LoadWorkflowSceneTask::LoadWorkflowSceneTask(const QSharedPointer<Schema> &_schema, Metadata *_meta, WorkflowScene *_scene, const QString &_url, bool _noUrl, bool _disableWizardAutorun)
+LoadWorkflowSceneTask::LoadWorkflowSceneTask(const QSharedPointer<Schema>& _schema, Metadata* _meta, WorkflowScene* _scene, const QString& _url, bool _noUrl, bool _disableWizardAutorun)
     : Task(tr("Load workflow scene"), TaskFlag_None),
       schema(_schema),
       meta(_meta),

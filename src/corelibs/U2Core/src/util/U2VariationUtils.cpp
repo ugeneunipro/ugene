@@ -31,11 +31,11 @@
 
 namespace U2 {
 
-void U2VariationUtils::addVariationsToTrack(const U2EntityRef &ref, const QList<U2Variant> &variants, U2OpStatus &os) {
+void U2VariationUtils::addVariationsToTrack(const U2EntityRef& ref, const QList<U2Variant>& variants, U2OpStatus& os) {
     DbiConnection con(ref.dbiRef, os);
     CHECK_OP(os, );
 
-    U2VariantDbi *vdbi = con.dbi->getVariantDbi();
+    U2VariantDbi* vdbi = con.dbi->getVariantDbi();
     SAFE_POINT(vdbi != nullptr, "Varian DBI is NULL", );
 
     U2VariantTrack track = vdbi->getVariantTrack(ref.entityId, os);
@@ -45,11 +45,11 @@ void U2VariationUtils::addVariationsToTrack(const U2EntityRef &ref, const QList<
     vdbi->addVariantsToTrack(track, &bufIter, os);
 }
 
-U2VariantTrack U2VariationUtils::createVariantTrack(const U2DbiRef &dbiRef, const QString &seqName, U2OpStatus &os) {
+U2VariantTrack U2VariationUtils::createVariantTrack(const U2DbiRef& dbiRef, const QString& seqName, U2OpStatus& os) {
     DbiConnection con(dbiRef, os);
     CHECK_OP(os, U2VariantTrack());
 
-    U2VariantDbi *vdbi = con.dbi->getVariantDbi();
+    U2VariantDbi* vdbi = con.dbi->getVariantDbi();
     SAFE_POINT(vdbi != nullptr, "Varian DBI is NULL", U2VariantTrack());
 
     U2VariantTrack track;
@@ -59,7 +59,7 @@ U2VariantTrack U2VariationUtils::createVariantTrack(const U2DbiRef &dbiRef, cons
     return track;
 }
 
-AnnotationData U2VariationUtils::variantToAnnotation(const U2Variant &var) {
+AnnotationData U2VariationUtils::variantToAnnotation(const U2Variant& var) {
     AnnotationData d;
 
     U2Region varRegion;
@@ -75,7 +75,7 @@ AnnotationData U2VariationUtils::variantToAnnotation(const U2Variant &var) {
     return d;
 }
 
-U2Feature U2VariationUtils::variantToFeature(const U2Variant &var) {
+U2Feature U2VariationUtils::variantToFeature(const U2Variant& var) {
     U2Feature res;
 
     res.id = var.id;
@@ -85,7 +85,7 @@ U2Feature U2VariationUtils::variantToFeature(const U2Variant &var) {
     return res;
 }
 
-QList<U2Variant> U2VariationUtils::getSNPFromSequences(const QByteArray &refSeq, const QByteArray &varSeq, CallVariationsMode mode, bool ignoreGaps, const QString &namePrefix, int nameStartIdx) {
+QList<U2Variant> U2VariationUtils::getSNPFromSequences(const QByteArray& refSeq, const QByteArray& varSeq, CallVariationsMode mode, bool ignoreGaps, const QString& namePrefix, int nameStartIdx) {
     QList<U2Variant> res;
     qint64 len = qMin(refSeq.size(), varSeq.size());
 

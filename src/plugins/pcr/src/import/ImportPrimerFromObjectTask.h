@@ -28,7 +28,6 @@
 
 #include <U2Gui/PrimerLineEdit.h>
 
-
 namespace U2 {
 
 class GObject;
@@ -37,14 +36,14 @@ class U2SequenceObject;
 class ImportPrimerFromObjectTask : public Task {
     Q_OBJECT
 public:
-    ImportPrimerFromObjectTask(GObject *object);
+    ImportPrimerFromObjectTask(GObject* object);
 
     void run();
     QString generateReport() const;
 
 private:
     PrimerValidator validator;
-    U2SequenceObject *sequenceObject;
+    U2SequenceObject* sequenceObject;
     Primer primer;
 };
 

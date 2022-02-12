@@ -49,7 +49,7 @@ class AssemblyReadsArea : public QWidget {
     struct HotkeyDescription {
         QString key;
         QString desc;
-        HotkeyDescription(const QString &k, const QString &d)
+        HotkeyDescription(const QString& k, const QString& d)
             : key(k), desc(d) {
         }
     };
@@ -57,7 +57,7 @@ class AssemblyReadsArea : public QWidget {
     static QList<HotkeyDescription> initHotkeyDescriptions();
 
 public:
-    AssemblyReadsArea(AssemblyBrowserUi *ui, QScrollBar *hBar, QScrollBar *vBar);
+    AssemblyReadsArea(AssemblyBrowserUi* ui, QScrollBar* hBar, QScrollBar* vBar);
 
     bool isReadHintEnabled();
     void setReadHintEnabled(bool enabled);
@@ -65,28 +65,28 @@ public:
     bool isScrolling();
     void setScrolling(bool value);
 
-    QList<QAction *> getCellRendererActions() {
+    QList<QAction*> getCellRendererActions() {
         return cellRendererActions;
     }
-    QAction *getOptimizeRenderAction() {
+    QAction* getOptimizeRenderAction() {
         return optimizeRenderAction;
     }
 
     static const QString ZOOM_LINK;
 
 protected:
-    void paintEvent(QPaintEvent *e);
-    void resizeEvent(QResizeEvent *e);
-    void wheelEvent(QWheelEvent *e);
-    void mousePressEvent(QMouseEvent *e);
-    void mouseReleaseEvent(QMouseEvent *e);
-    void mouseMoveEvent(QMouseEvent *e);
-    void leaveEvent(QEvent *e);
-    void hideEvent(QHideEvent *e);
-    bool event(QEvent *e);
-    void keyPressEvent(QKeyEvent *e);
-    void mouseDoubleClickEvent(QMouseEvent *e);
-    bool eventFilter(QObject *obj, QEvent *ev);
+    void paintEvent(QPaintEvent* e);
+    void resizeEvent(QResizeEvent* e);
+    void wheelEvent(QWheelEvent* e);
+    void mousePressEvent(QMouseEvent* e);
+    void mouseReleaseEvent(QMouseEvent* e);
+    void mouseMoveEvent(QMouseEvent* e);
+    void leaveEvent(QEvent* e);
+    void hideEvent(QHideEvent* e);
+    bool event(QEvent* e);
+    void keyPressEvent(QKeyEvent* e);
+    void mouseDoubleClickEvent(QMouseEvent* e);
+    bool eventFilter(QObject* obj, QEvent* ev);
 
 private:
     void initRedraw();
@@ -97,10 +97,10 @@ private:
     void accumulateDelta(int delta);
 
     void drawAll();
-    void drawReads(QPainter &p);
+    void drawReads(QPainter& p);
 
-    void drawCurrentReadHighlight(QPainter &p);
-    void drawReadsShadowing(QPainter &p);
+    void drawCurrentReadHighlight(QPainter& p);
+    void drawReadsShadowing(QPainter& p);
 
     /** Find reads crossing vertical line in assembly.
         @param asmX position in assembly */
@@ -108,10 +108,10 @@ private:
 
     /** Find read laying under screen position.
         @param pos screen position */
-    bool findReadOnPos(const QPoint &pos, U2AssemblyRead &read);
+    bool findReadOnPos(const QPoint& pos, U2AssemblyRead& read);
 
     /** Calculate rectangle corresponding to the read on screen */
-    QRect calcReadRect(const U2AssemblyRead &read);
+    QRect calcReadRect(const U2AssemblyRead& read);
 
     /** Update hint data and position */
     void updateHint();
@@ -124,15 +124,15 @@ private:
     int calcFontPointSize() const;
 
     void updateMenuActions();
-    void exportReads(const QList<U2AssemblyRead> &reads);
+    void exportReads(const QList<U2AssemblyRead>& reads);
 
     void createMenu();
-    QMenu *createShadowingMenu();
+    QMenu* createShadowingMenu();
     void shadowingMenuSetBind(bool enabled);
 
 signals:
     void si_heightChanged();
-    void si_mouseMovedToPos(const QPoint &);
+    void si_mouseMovedToPos(const QPoint&);
 
 public slots:
     void sl_hideHint();
@@ -149,7 +149,7 @@ private slots:
 
     void sl_onExportRead();
     void sl_onExportReadsOnScreen();
-    void sl_onShadowingModeChanged(QAction *a);
+    void sl_onShadowingModeChanged(QAction* a);
     void sl_onBindShadowing();
     void sl_onShadowingJump();
     void sl_changeCellRenderer();
@@ -162,8 +162,8 @@ private slots:
     }
 
 private:
-    AssemblyBrowserUi *ui;
-    AssemblyBrowser *browser;
+    AssemblyBrowserUi* ui;
+    AssemblyBrowser* browser;
     QSharedPointer<AssemblyModel> model;
 
     bool redraw;
@@ -173,8 +173,8 @@ private:
 
     CoveredRegionsLabel coveredRegionsLabel;
     QLabel bdBusyLabel;
-    QScrollBar *hBar;
-    QScrollBar *vBar;
+    QScrollBar* hBar;
+    QScrollBar* vBar;
 
     // Some variables for a workaround UGENE-3183
     static const int DEFAULT_MOUSE_DELTA;
@@ -206,7 +206,7 @@ private:
     QPoint curPos;
 
     struct HintData {
-        HintData(QWidget *p)
+        HintData(QWidget* p)
             : updateHint(false), hint(p) {
         }
         bool updateHint;
@@ -266,19 +266,19 @@ private:
     bool scrolling;
     bool optimizeRenderOnScroll;
 
-    QMenu *readMenu;
-    QAction *copyDataAction;
-    QAction *exportReadAction;
+    QMenu* readMenu;
+    QAction* copyDataAction;
+    QAction* exportReadAction;
 
     // shadowing actions
-    QAction *disableShadowing;
-    QAction *shadowingModeFree;
-    QAction *shadowingModeCentered;
-    QAction *shadowingBindHere;
-    QAction *shadowingJump;
+    QAction* disableShadowing;
+    QAction* shadowingModeFree;
+    QAction* shadowingModeCentered;
+    QAction* shadowingBindHere;
+    QAction* shadowingJump;
 
-    QList<QAction *> cellRendererActions;
-    QAction *optimizeRenderAction;
+    QList<QAction*> cellRendererActions;
+    QAction* optimizeRenderAction;
     int lockTimeout;
 };
 

@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-float SmithWatermanUtil::calcScoreItSelf(const SMatrix &m, const char *pattern, int patternLen) {
+float SmithWatermanUtil::calcScoreItSelf(const SMatrix& m, const char* pattern, int patternLen) {
     float score = 0.0F;
     for (int i = 0; i < patternLen; i++) {
         score += m.getScore(pattern[i], pattern[i]);
@@ -67,13 +67,13 @@ int SmithWatermanUtil::calcOverlapSize(bool transl, int windowLen, float scoreIt
 }
 
 // greater score goes first
-static bool revScoreComparator(const SmithWatermanResult &s0, const SmithWatermanResult &s1) {
+static bool revScoreComparator(const SmithWatermanResult& s0, const SmithWatermanResult& s1) {
     bool res = false;
     if (s0.score < s1.score) {
         res = false;
     } else if (s0.score == s1.score) {
-        const U2Region &r0 = s0.refSubseq;
-        const U2Region &r1 = s1.refSubseq;
+        const U2Region& r0 = s0.refSubseq;
+        const U2Region& r1 = s1.refSubseq;
         res = r0 < r1;
     } else {
         res = true;
@@ -81,8 +81,8 @@ static bool revScoreComparator(const SmithWatermanResult &s0, const SmithWaterma
     return res;
 }
 
-bool SmithWatermanUtil::removeIdenticalResults(QList<SmithWatermanResult> *lst) {
-    QList<SmithWatermanResult> &results = *lst;
+bool SmithWatermanUtil::removeIdenticalResults(QList<SmithWatermanResult>* lst) {
+    QList<SmithWatermanResult>& results = *lst;
 
     std::sort(results.begin(), results.end(), revScoreComparator);
     int i = 0;
@@ -90,8 +90,8 @@ bool SmithWatermanUtil::removeIdenticalResults(QList<SmithWatermanResult> *lst) 
     while (i < size) {
         int j = i + 1;
         while (j < size) {
-            const SmithWatermanResult &currItem = results[i];
-            const SmithWatermanResult &someItem = results[j];
+            const SmithWatermanResult& currItem = results[i];
+            const SmithWatermanResult& someItem = results[j];
             if (currItem.refSubseq == someItem.refSubseq &&
                 currItem.strand == someItem.strand) {
                 results.removeAt(j);

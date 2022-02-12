@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-GffreadSupportTask::GffreadSupportTask(const GffreadSettings &_settings)
+GffreadSupportTask::GffreadSupportTask(const GffreadSettings& _settings)
     : ExternalToolSupportTask(tr("Running Gffread task"), TaskFlags_NR_FOSE_COSC), settings(_settings) {
 }
 
@@ -40,7 +40,7 @@ void GffreadSupportTask::prepare() {
     checkFormat(settings.transcriptsUrl, BaseDocumentFormats::GTF);
     CHECK_OP(stateInfo, );
 
-    ExternalToolRunTask *runTask = new ExternalToolRunTask(CufflinksSupport::ET_GFFREAD_ID, settings.getArguments(), new ExternalToolLogParser());
+    ExternalToolRunTask* runTask = new ExternalToolRunTask(CufflinksSupport::ET_GFFREAD_ID, settings.getArguments(), new ExternalToolLogParser());
     setListenerForTask(runTask);
     addSubTask(runTask);
 }
@@ -49,7 +49,7 @@ QString GffreadSupportTask::result() const {
     return settings.outputUrl;
 }
 
-void GffreadSupportTask::checkFormat(const QString &url, const DocumentFormatId &target) {
+void GffreadSupportTask::checkFormat(const QString& url, const DocumentFormatId& target) {
     FormatDetectionConfig cfg;
     cfg.bestMatchesOnly = false;
     QList<FormatDetectionResult> result = DocumentUtils::detectFormat(url, cfg);
@@ -57,7 +57,7 @@ void GffreadSupportTask::checkFormat(const QString &url, const DocumentFormatId 
         setError(tr("Unknown file format: %1").arg(url));
         return;
     }
-    foreach (const FormatDetectionResult &r, result) {
+    foreach (const FormatDetectionResult& r, result) {
         SAFE_POINT(nullptr != r.format, "NULL doc format", );
         if (r.format->getFormatId() == target) {
             return;
@@ -76,4 +76,4 @@ QStringList GffreadSettings::getArguments() const {
     return args;
 }
 
-}    // namespace U2
+}  // namespace U2

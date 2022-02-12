@@ -34,24 +34,24 @@ class WDWizardPage;
 
 class WizardPageController {
 public:
-    WizardPageController(WizardController *wc, WizardPage *page);
+    WizardPageController(WizardController* wc, WizardPage* page);
     virtual ~WizardPageController();
 
-    void setQtPage(WDWizardPage *value);
-    WDWizardPage *getQtPage() const;
-    WizardPage *getPage() const;
+    void setQtPage(WDWizardPage* value);
+    WDWizardPage* getQtPage() const;
+    WizardPage* getPage() const;
     void applyLayout();
     int nextId() const;
 
 private:
-    WDWizardPage *wPage;
-    WizardController *wc;
-    WizardPage *page;
-    QList<WidgetController *> controllers;
+    WDWizardPage* wPage;
+    WizardController* wc;
+    WizardPage* page;
+    QList<WidgetController*> controllers;
 
 private:
-    void removeLayout(QLayout *layoutToRemove);
-    void setError(WDWizardPage *wPage);
+    void removeLayout(QLayout* layoutToRemove);
+    void setError(WDWizardPage* wPage);
 };
 
 }  // namespace U2

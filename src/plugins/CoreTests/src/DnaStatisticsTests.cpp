@@ -50,7 +50,7 @@ const QString GTest_DnaStatisticsTest::EXPECTED_DS_OD260_MASS = "expected-ds-od2
 
 const QString GTest_DnaStatisticsTest::EXPECTED_ISOELECTRIC_POINT = "expected-isoelectric-point";
 
-void GTest_DnaStatisticsTest::init(XMLTestFormat *, const QDomElement &element) {
+void GTest_DnaStatisticsTest::init(XMLTestFormat*, const QDomElement& element) {
     task = nullptr;
 
     checkNecessaryAttributeExistence(element, DOC_NAME_ATTR);
@@ -132,10 +132,10 @@ void GTest_DnaStatisticsTest::init(XMLTestFormat *, const QDomElement &element) 
 }
 
 void GTest_DnaStatisticsTest::prepare() {
-    Document *loadedDocument = getContext<Document>(this, docName);
+    Document* loadedDocument = getContext<Document>(this, docName);
     CHECK_EXT(nullptr != loadedDocument, setError(QString("Document not found in context: %1").arg(docName)), );
 
-    U2SequenceObject *sequenceObject = qobject_cast<U2SequenceObject *>(loadedDocument->findGObjectByName(seqName));
+    U2SequenceObject* sequenceObject = qobject_cast<U2SequenceObject*>(loadedDocument->findGObjectByName(seqName));
     CHECK_EXT(nullptr != sequenceObject, setError(QString("Sequence object '%1' not found in document '%2'").arg(seqName).arg(docName)), );
 
     task = new DNAStatisticsTask(sequenceObject->getAlphabet(), sequenceObject->getEntityRef(), regions);
@@ -233,7 +233,7 @@ Task::ReportResult GTest_DnaStatisticsTest::report() {
     return ReportResult_Finished;
 }
 
-QList<XMLTestFactory *> DnaStatisticsTests::createTestFactories() {
+QList<XMLTestFactory*> DnaStatisticsTests::createTestFactories() {
     return {GTest_DnaStatisticsTest::createFactory()};
 }
 

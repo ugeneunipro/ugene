@@ -54,7 +54,7 @@ const StyleId ItemStyles::EXTENDED = "ext";
 const QColor ITEM_WITH_ENABLED_BREAKPOINT_BORDER_COLOR = QColor(178, 34, 34);
 const QColor ITEM_WITH_DISABLED_BREAKPOINT_BORDER_COLOR = QColor(184, 134, 11);
 
-ItemViewStyle::ItemViewStyle(WorkflowProcessItem *p, const QString &id)
+ItemViewStyle::ItemViewStyle(WorkflowProcessItem* p, const QString& id)
     : QGraphicsObject(p),
       defFont(WorkflowSettings::defaultFont()), id(id) {
     setVisible(false);
@@ -69,7 +69,7 @@ void ItemViewStyle::selectBGColor() {
     QColor res = QColorDialog::getColor(bgColor, owner->scene()->views().first());
     if (res.isValid()) {
         bgColor = res;
-        WorkflowScene *sc = qobject_cast<WorkflowScene *>(owner->scene());
+        WorkflowScene* sc = qobject_cast<WorkflowScene*>(owner->scene());
         if (sc != nullptr) {
             sc->setModified(true);
         }
@@ -81,21 +81,21 @@ void ItemViewStyle::selectFont() {
     QFont res = QFontDialog::getFont(&ok, defFont, owner->scene()->views().first(), tr("Characters Font"), QFontDialog::DontUseNativeDialog);
     if (ok) {
         defFont = res;
-        WorkflowScene *sc = qobject_cast<WorkflowScene *>(owner->scene());
+        WorkflowScene* sc = qobject_cast<WorkflowScene*>(owner->scene());
         if (sc != nullptr) {
             sc->setModified(true);
         }
     }
 }
 
-void ItemViewStyle::saveState(QDomElement &el) const {
+void ItemViewStyle::saveState(QDomElement& el) const {
     if (bgColor != defaultColor())
         el.setAttribute(id + BGC, QVariantUtils::var2String(bgColor));
     if (defFont != QFont())
         el.setAttribute(id + FONT, defFont.toString());
 }
 
-void ItemViewStyle::loadState(QDomElement &el) {
+void ItemViewStyle::loadState(QDomElement& el) {
     if (el.hasAttribute(id + BGC)) {
         QColor bgc = QVariantUtils::String2Var(el.attribute(id + BGC)).value<QColor>();
         if (bgc.isValid()) {
@@ -107,7 +107,7 @@ void ItemViewStyle::loadState(QDomElement &el) {
     }
 }
 
-SimpleProcStyle::SimpleProcStyle(WorkflowProcessItem *pit)
+SimpleProcStyle::SimpleProcStyle(WorkflowProcessItem* pit)
     : ItemViewStyle(pit, ItemStyles::SIMPLE) {
     owner = (pit);
     owner->connect(owner->getProcess(), SIGNAL(si_labelChanged()), SLOT(sl_update()));
@@ -132,9 +132,9 @@ QPainterPath SimpleProcStyle::shape() const {
     return contour;
 }
 
-void SimpleProcStyle::paint(QPainter *painter,
-                            const QStyleOptionGraphicsItem *option,
-                            QWidget *widget) {
+void SimpleProcStyle::paint(QPainter* painter,
+                            const QStyleOptionGraphicsItem* option,
+                            QWidget* widget) {
     Q_UNUSED(option);
     Q_UNUSED(widget);
     // painter->fillRect(boundingRect(), QBrush(Qt::magenta, Qt::Dense6Pattern));
@@ -176,11 +176,11 @@ void SimpleProcStyle::paint(QPainter *painter,
 
 #define MARGIN 5
 
-ExtendedProcStyle::ExtendedProcStyle(WorkflowProcessItem *pit)
+ExtendedProcStyle::ExtendedProcStyle(WorkflowProcessItem* pit)
     : ItemViewStyle(pit, ItemStyles::EXTENDED),
       autoResize(true), resizing(NoResize) {
     owner = (pit);
-    Actor *process = pit->getProcess();
+    Actor* process = pit->getProcess();
 
     doc = process->getDescription();
     if (doc) {
@@ -254,11 +254,11 @@ QPainterPath ExtendedProcStyle::shape() const {
     return contour;
 }
 
-void ExtendedProcStyle::paint(QPainter *painter,
-                              const QStyleOptionGraphicsItem *option,
-                              QWidget *) {
+void ExtendedProcStyle::paint(QPainter* painter,
+                              const QStyleOptionGraphicsItem* option,
+                              QWidget*) {
     if (owner->isSelected()) {
-        ((QStyleOptionGraphicsItem *)option)->state |= QStyle::State_Selected;
+        ((QStyleOptionGraphicsItem*)option)->state |= QStyle::State_Selected;
     }
     bgColor.setAlpha(64);
     QRectF tb = boundingRect();
@@ -301,7 +301,7 @@ void ExtendedProcStyle::paint(QPainter *painter,
 }
 
 #define RESIZE_AREA 4
-bool ExtendedProcStyle::sceneEventFilter(QGraphicsItem *watched, QEvent *event) {
+bool ExtendedProcStyle::sceneEventFilter(QGraphicsItem* watched, QEvent* event) {
     assert(watched == owner);
     Q_UNUSED(watched);
 
@@ -310,13 +310,13 @@ bool ExtendedProcStyle::sceneEventFilter(QGraphicsItem *watched, QEvent *event) 
     switch (event->type()) {
         case QEvent::GraphicsSceneHoverEnter:
         case QEvent::GraphicsSceneHoverMove: {
-            QGraphicsSceneHoverEvent *he = dynamic_cast<QGraphicsSceneHoverEvent *>(event);
+            QGraphicsSceneHoverEvent* he = dynamic_cast<QGraphicsSceneHoverEvent*>(event);
             ret = updateCursor(he->pos());
         } break;
         case QEvent::GraphicsSceneMouseRelease:
         case QEvent::GraphicsSceneHoverLeave:
             if (event->type() == QEvent::GraphicsSceneMouseRelease) {
-                desc->mouseReleaseEvent(dynamic_cast<QGraphicsSceneMouseEvent *>(event));
+                desc->mouseReleaseEvent(dynamic_cast<QGraphicsSceneMouseEvent*>(event));
             }
             if (resizing) {
                 owner->unsetCursor();
@@ -325,7 +325,7 @@ bool ExtendedProcStyle::sceneEventFilter(QGraphicsItem *watched, QEvent *event) 
             break;
         case QEvent::GraphicsSceneMouseMove:
             if (resizing && event->spontaneous()) {
-                QGraphicsSceneMouseEvent *me = (dynamic_cast<QGraphicsSceneMouseEvent *>(event));
+                QGraphicsSceneMouseEvent* me = (dynamic_cast<QGraphicsSceneMouseEvent*>(event));
                 WorkflowSettings::setSnap2Grid(false);
                 QPointF newPos;
                 if ((me->buttons() & Qt::LeftButton)) {
@@ -369,7 +369,7 @@ bool ExtendedProcStyle::sceneEventFilter(QGraphicsItem *watched, QEvent *event) 
 
                         qreal minHeight = R + MARGIN * 2;
 
-                        WorkflowScene *sc = qobject_cast<WorkflowScene *>(owner->scene());
+                        WorkflowScene* sc = qobject_cast<WorkflowScene*>(owner->scene());
                         if (b2.height() < minHeight || newPos.y() < sc->sceneRect().top()) {
                             return true;
                         }
@@ -390,7 +390,7 @@ bool ExtendedProcStyle::sceneEventFilter(QGraphicsItem *watched, QEvent *event) 
 
                     setFixedBounds(b2);
 
-                    WorkflowScene *sc = qobject_cast<WorkflowScene *>(owner->scene());
+                    WorkflowScene* sc = qobject_cast<WorkflowScene*>(owner->scene());
                     if (sc != nullptr) {
                         sc->setModified(true);
                     }
@@ -422,7 +422,7 @@ bool ExtendedProcStyle::sceneEventFilter(QGraphicsItem *watched, QEvent *event) 
     return ret;
 }
 
-bool ExtendedProcStyle::updateCursor(const QPointF &p) {
+bool ExtendedProcStyle::updateCursor(const QPointF& p) {
     resizing = NoResize;
     qreal dx = qAbs(bounds.right() - p.x());
     qreal dy = qAbs(bounds.bottom() - p.y());
@@ -463,13 +463,13 @@ bool ExtendedProcStyle::updateCursor(const QPointF &p) {
     return resizing != NoResize;
 }
 
-void ExtendedProcStyle::setFixedBounds(const QRectF &b) {
+void ExtendedProcStyle::setFixedBounds(const QRectF& b) {
     doc->setPageSize(b.size() - QSizeF(MARGIN * 2, MARGIN * 2));
     if (bounds != b) {
         bounds = b;
         owner->prepareUpdate();
 
-        foreach (WorkflowPortItem *pit, owner->getPortItems()) {
+        foreach (WorkflowPortItem* pit, owner->getPortItems()) {
             pit->adaptOwnerShape();
         }
     }
@@ -485,8 +485,8 @@ void ExtendedProcStyle::setAutoResizeEnabled(bool b) {
     }
 }
 
-QList<QAction *> ExtendedProcStyle::getContextMenuActions() const {
-    QList<QAction *> ret;
+QList<QAction*> ExtendedProcStyle::getContextMenuActions() const {
+    QList<QAction*> ret;
     ret << resizeModeAction << bgColorAction << fontAction;
     return ret;
 }
@@ -494,7 +494,7 @@ QList<QAction *> ExtendedProcStyle::getContextMenuActions() const {
 //#define ARM QString("arm")
 #define BOUNDS QString("bounds")
 
-void ExtendedProcStyle::saveState(QDomElement &el) const {
+void ExtendedProcStyle::saveState(QDomElement& el) const {
     // el.setAttribute(ARM, autoResize);
     if (!autoResize) {
         el.setAttribute(BOUNDS, QVariantUtils::var2String(bounds));
@@ -502,7 +502,7 @@ void ExtendedProcStyle::saveState(QDomElement &el) const {
     ItemViewStyle::saveState(el);
 }
 
-void ExtendedProcStyle::loadState(QDomElement &el) {
+void ExtendedProcStyle::loadState(QDomElement& el) {
     if (el.hasAttribute(BOUNDS)) {
         QRectF b = QVariantUtils::String2Var(el.attribute(BOUNDS)).toRectF();
         if (!b.isNull()) {
@@ -512,7 +512,7 @@ void ExtendedProcStyle::loadState(QDomElement &el) {
     ItemViewStyle::loadState(el);
 }
 
-void ExtendedProcStyle::linkHovered(const QString &url) {
+void ExtendedProcStyle::linkHovered(const QString& url) {
     if (url.isEmpty()) {
         owner->unsetCursor();
     } else {
@@ -520,7 +520,7 @@ void ExtendedProcStyle::linkHovered(const QString &url) {
     }
 }
 
-HintItem::HintItem(const QString &text, QGraphicsItem *parent)
+HintItem::HintItem(const QString& text, QGraphicsItem* parent)
     : QGraphicsTextItem(text, parent), dragging(false) {
     setFlag(QGraphicsItem::ItemIsSelectable);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
@@ -534,7 +534,7 @@ HintItem::HintItem(const QString &text, QGraphicsItem *parent)
     setFont(f);
 }
 
-QVariant HintItem::itemChange(GraphicsItemChange change, const QVariant &value) {
+QVariant HintItem::itemChange(GraphicsItemChange change, const QVariant& value) {
     if (change == ItemSelectedChange && value.toBool()) {
         parentItem()->setSelected(true);
         return false;
@@ -561,7 +561,7 @@ QVariant HintItem::itemChange(GraphicsItemChange change, const QVariant &value) 
     if (change == ItemPositionHasChanged) {
         parentItem()->update();
         if (scene()) {
-            foreach (QGraphicsView *v, scene()->views()) {
+            foreach (QGraphicsView* v, scene()->views()) {
                 v->ensureVisible(this, 0, 0);
             }
         }
@@ -569,7 +569,7 @@ QVariant HintItem::itemChange(GraphicsItemChange change, const QVariant &value) 
     return QGraphicsItem::itemChange(change, value);
 }
 
-void HintItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
+void HintItem::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
     if (event->buttons() & Qt::LeftButton) {
         if (!dragging) {
             initPos = pos();
@@ -583,17 +583,17 @@ void HintItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     }
 }
 
-void HintItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
+void HintItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
     dragging = false;
     QGraphicsTextItem::mouseReleaseEvent(event);
 }
 
-DescriptionItem::DescriptionItem(ExtendedProcStyle *p)
+DescriptionItem::DescriptionItem(ExtendedProcStyle* p)
     : QGraphicsTextItem(p) {
     setPos(-R + MARGIN, -R + MARGIN);
     setTextInteractionFlags(Qt::LinksAccessibleByMouse | Qt::LinksAccessibleByKeyboard);
-    p->connect(this, SIGNAL(linkActivated(const QString &)), SIGNAL(linkActivated(const QString &)));
-    p->connect(this, SIGNAL(linkHovered(const QString &)), SLOT(linkHovered(const QString &)));
+    p->connect(this, SIGNAL(linkActivated(const QString&)), SIGNAL(linkActivated(const QString&)));
+    p->connect(this, SIGNAL(linkHovered(const QString&)), SLOT(linkHovered(const QString&)));
 }
 
 QRectF DescriptionItem::boundingRect() const {
@@ -603,25 +603,25 @@ QRectF DescriptionItem::boundingRect() const {
     return bounds;
 }
 
-void DescriptionItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+void DescriptionItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
     QStyleOptionGraphicsItem deselectedOption = *option;
     deselectedOption.state &= ~(QStyle::State_Selected | QStyle::State_HasFocus);
     QGraphicsTextItem::paint(painter, &deselectedOption, widget);
 }
 
-void DescriptionItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
+void DescriptionItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
     event->setPos(mapFromParent(event->pos()));
     QGraphicsTextItem::mouseReleaseEvent(event);
 }
 
-bool DescriptionItem::sceneEvent(QEvent *event) {
+bool DescriptionItem::sceneEvent(QEvent* event) {
     switch (event->type()) {
         case QEvent::GraphicsSceneHoverMove:
         case QEvent::GraphicsSceneHoverEnter: {
-            ExtendedProcStyle *owner = qgraphicsitem_cast<ExtendedProcStyle *>(parentItem());
+            ExtendedProcStyle* owner = qgraphicsitem_cast<ExtendedProcStyle*>(parentItem());
             if (owner->resizing) {
-                QGraphicsSceneHoverEvent *he = static_cast<QGraphicsSceneHoverEvent *>(event);
-                const QPointF &p = mapToParent(he->pos());
+                QGraphicsSceneHoverEvent* he = static_cast<QGraphicsSceneHoverEvent*>(event);
+                const QPointF& p = mapToParent(he->pos());
                 owner->updateCursor(p);
             }
         } break;
@@ -631,19 +631,19 @@ bool DescriptionItem::sceneEvent(QEvent *event) {
     return QGraphicsTextItem::sceneEvent(event);
 }
 
-void DescriptionItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
-    QAbstractTextDocumentLayout *layout = document()->documentLayout();
-    const QString &href = layout->anchorAt(event->pos());
+void DescriptionItem::contextMenuEvent(QGraphicsSceneContextMenuEvent* event) {
+    QAbstractTextDocumentLayout* layout = document()->documentLayout();
+    const QString& href = layout->anchorAt(event->pos());
 
     if (href.isEmpty()) {
         event->ignore();
         return;
     }
 
-    ItemViewStyle *style = qgraphicsitem_cast<ItemViewStyle *>(parentItem());
-    WorkflowProcessItem const *procItem = style->getOwner();
-    Actor *actor = procItem->getProcess();
-    WorkflowScene *ws = procItem->getWorkflowScene();
+    ItemViewStyle* style = qgraphicsitem_cast<ItemViewStyle*>(parentItem());
+    WorkflowProcessItem const* procItem = style->getOwner();
+    Actor* actor = procItem->getProcess();
+    WorkflowScene* ws = procItem->getWorkflowScene();
     ws->setupLinkCtxMenu(href, actor, event->screenPos());
 }
 

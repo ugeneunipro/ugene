@@ -60,7 +60,7 @@ namespace U2 {
 /*******************************
  * GTest_LoadDocument
  *******************************/
-static QString getTempDir(const GTestEnvironment *env) {
+static QString getTempDir(const GTestEnvironment* env) {
     QString result = env->getVar("TEMP_DATA_DIR");
     if (result.isEmpty()) {
         result = QCoreApplication::applicationDirPath();
@@ -68,7 +68,7 @@ static QString getTempDir(const GTestEnvironment *env) {
     return result;
 }
 
-void GTest_LoadDocument::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_LoadDocument::init(XMLTestFormat*, const QDomElement& el) {
     loadTask = nullptr;
     contextAdded = false;
     docContextName = el.attribute("index");
@@ -108,7 +108,7 @@ void GTest_LoadDocument::init(XMLTestFormat *, const QDomElement &el) {
         url = commonDataDir + "/" + el.attribute("url");
     }
     IOAdapterId io = el.attribute("io");
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(io);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(io);
     DocumentFormatId format = el.attribute("format");
     if (iof == nullptr) {
         stateInfo.setError(QString("io_adapter_not_found_%1").arg(io));
@@ -117,7 +117,7 @@ void GTest_LoadDocument::init(XMLTestFormat *, const QDomElement &el) {
     } else {
         if (format == BaseDocumentFormats::SAM) {
             // SAM format is temporarily removed from base formats list -> create it manually
-            SAMFormat *samFormat = new SAMFormat();
+            SAMFormat* samFormat = new SAMFormat();
             loadTask = new LoadDocumentTask(samFormat, url, iof, hints);
             samFormat->setParent(loadTask);
         } else {
@@ -177,7 +177,7 @@ Task::ReportResult GTest_LoadDocument::report() {
 /*******************************
  * GTest_SaveDocument
  *******************************/
-void GTest_SaveDocument::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_SaveDocument::init(XMLTestFormat*, const QDomElement& el) {
     docContextName = el.attribute(DOC_ATTR);
     if (docContextName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -209,7 +209,7 @@ void GTest_SaveDocument::init(XMLTestFormat *, const QDomElement &el) {
 
 void GTest_SaveDocument::prepare() {
     //////////////////////
-    Document *doc = getContext<Document>(this, docContextName);
+    Document* doc = getContext<Document>(this, docContextName);
     if (doc == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(docContextName));
         return;
@@ -217,7 +217,7 @@ void GTest_SaveDocument::prepare() {
 
     SaveDocFlags saveTaskFlags;
     if (!formatId.isEmpty() && formatId != doc->getDocumentFormatId()) {
-        DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
+        DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
         CHECK_EXT(nullptr != format, stateInfo.setError(QString("Document format not found: %1").arg(formatId)), );
         doc = doc->getSimpleCopy(format, iof, url);
         saveTaskFlags |= SaveDoc_DestroyButDontUnload;
@@ -231,11 +231,11 @@ void GTest_SaveDocument::prepare() {
 /*******************************
  * GTest_LoadBrokenDocument
  *******************************/
-void GTest_LoadBrokenDocument::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_LoadBrokenDocument::init(XMLTestFormat*, const QDomElement& el) {
     QString urlAttr = el.attribute("url");
     QString dir = el.attribute("dir");
     IOAdapterId io = el.attribute("io");
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(io);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(io);
     DocumentFormatId format = el.attribute("format");
 
     tempFile = (dir == "temp");
@@ -263,7 +263,7 @@ void GTest_LoadBrokenDocument::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 Task::ReportResult GTest_LoadBrokenDocument::report() {
-    Document *doc = loadTask->getDocument();
+    Document* doc = loadTask->getDocument();
     if (doc == nullptr && loadTask->hasError()) {
         CHECK(!message.isEmpty(), ReportResult_Finished);
         if (loadTask->getError().contains(message)) {
@@ -287,7 +287,7 @@ void GTest_LoadBrokenDocument::cleanup() {
 /*******************************
  * GTest_ImportDocument
  *******************************/
-void GTest_ImportDocument::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_ImportDocument::init(XMLTestFormat*, const QDomElement& el) {
     importTask = nullptr;
     contextAdded = false;
     DocumentFormatId outFormatId = el.attribute("outFormat");
@@ -330,7 +330,7 @@ void GTest_ImportDocument::init(XMLTestFormat *, const QDomElement &el) {
     QList<FormatDetectionResult> detectionRes = DocumentUtils::detectFormat(url, conf);
     CHECK_EXT(!detectionRes.isEmpty(), setError("Format is not recognized"), );
 
-    FormatDetectionResult *bestRes = nullptr;
+    FormatDetectionResult* bestRes = nullptr;
     for (int i = 0; i < detectionRes.size(); ++i) {
         if (nullptr != detectionRes[i].importer && detectionRes[i].importer->getFormatIds().contains(formatId)) {
             bestRes = &detectionRes[i];
@@ -406,7 +406,7 @@ Task::ReportResult GTest_ImportDocument::report() {
 /*******************************
  * GTest_ImportBrokenDocument
  *******************************/
-void GTest_ImportBrokenDocument::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_ImportBrokenDocument::init(XMLTestFormat*, const QDomElement& el) {
     QString urlAttr = el.attribute("url");
     QString outUrlAttr = getTempDir(env) + "/" + el.attribute("outUrl");
     QString dir = el.attribute("dir");
@@ -429,7 +429,7 @@ void GTest_ImportBrokenDocument::init(XMLTestFormat *, const QDomElement &el) {
     QList<FormatDetectionResult> detectionRes = DocumentUtils::detectFormat(url, conf);
     CHECK_EXT(!detectionRes.isEmpty(), setError("Format is not recognized"), );
 
-    FormatDetectionResult *bestRes = nullptr;
+    FormatDetectionResult* bestRes = nullptr;
     for (int i = 0; i < detectionRes.size(); ++i) {
         if (nullptr != detectionRes[i].importer && detectionRes[i].importer->getFormatIds().contains(formatId)) {
             bestRes = &detectionRes[i];
@@ -450,7 +450,7 @@ void GTest_ImportBrokenDocument::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 Task::ReportResult GTest_ImportBrokenDocument::report() {
-    Document *doc = importTask->getDocument();
+    Document* doc = importTask->getDocument();
     if (doc == nullptr && importTask->hasError()) {
         CHECK(!message.isEmpty(), ReportResult_Finished);
         if (importTask->getError().contains(message)) {
@@ -478,7 +478,7 @@ void GTest_ImportBrokenDocument::cleanup() {
  *GTest_DocumentFormat
  *******************************/
 
-void GTest_DocumentFormat::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_DocumentFormat::init(XMLTestFormat*, const QDomElement& el) {
     docUrl = el.attribute("url");
     if (docUrl.isEmpty()) {
         failMissingValue("url");
@@ -510,7 +510,7 @@ Task::ReportResult GTest_DocumentFormat::report() {
 /*******************************
  * GTest_DocumentNumObjects
  *******************************/
-void GTest_DocumentNumObjects::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_DocumentNumObjects::init(XMLTestFormat*, const QDomElement& el) {
     docContextName = el.attribute(DOC_ATTR);
     if (docContextName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -530,7 +530,7 @@ void GTest_DocumentNumObjects::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 Task::ReportResult GTest_DocumentNumObjects::report() {
-    Document *doc = getContext<Document>(this, docContextName);
+    Document* doc = getContext<Document>(this, docContextName);
     if (doc == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(docContextName));
         return ReportResult_Finished;
@@ -545,7 +545,7 @@ Task::ReportResult GTest_DocumentNumObjects::report() {
 /*******************************
  * GTest_DocumentObjectNames
  *******************************/
-void GTest_DocumentObjectNames::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_DocumentObjectNames::init(XMLTestFormat*, const QDomElement& el) {
     docContextName = el.attribute(DOC_ATTR);
     if (docContextName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -561,12 +561,12 @@ void GTest_DocumentObjectNames::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 Task::ReportResult GTest_DocumentObjectNames::report() {
-    Document *doc = getContext<Document>(this, docContextName);
+    Document* doc = getContext<Document>(this, docContextName);
     if (doc == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(docContextName));
         return ReportResult_Finished;
     }
-    const QList<GObject *> &objs = doc->getObjects();
+    const QList<GObject*>& objs = doc->getObjects();
     int namesSize = names.size();
     int objsSize = objs.size();
     if (namesSize != objsSize) {
@@ -574,7 +574,7 @@ Task::ReportResult GTest_DocumentObjectNames::report() {
         return ReportResult_Finished;
     }
     QStringList objNames;
-    foreach (GObject *ob, objs) {
+    foreach (GObject* ob, objs) {
         objNames.append(ob->getGObjectName());
     }
     std::sort(objNames.begin(), objNames.end());
@@ -593,7 +593,7 @@ Task::ReportResult GTest_DocumentObjectNames::report() {
 /*******************************
  * GTest_DocumentObjectTypes
  *******************************/
-void GTest_DocumentObjectTypes::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_DocumentObjectTypes::init(XMLTestFormat*, const QDomElement& el) {
     docContextName = el.attribute(DOC_ATTR);
     if (docContextName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -609,12 +609,12 @@ void GTest_DocumentObjectTypes::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 Task::ReportResult GTest_DocumentObjectTypes::report() {
-    const Document *doc = getContext<Document>(this, docContextName);
+    const Document* doc = getContext<Document>(this, docContextName);
     if (doc == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(docContextName));
         return ReportResult_Finished;
     }
-    const QList<GObject *> &objs = doc->getObjects();
+    const QList<GObject*>& objs = doc->getObjects();
     int typesSize = types.size();
     int objsSize = objs.size();
     if (typesSize != objsSize) {
@@ -622,7 +622,7 @@ Task::ReportResult GTest_DocumentObjectTypes::report() {
         return ReportResult_Finished;
     }
     QStringList objTypes;
-    foreach (GObject *ob, objs) {
+    foreach (GObject* ob, objs) {
         objTypes.append(ob->getGObjectType());
     }
     std::sort(objTypes.begin(), objTypes.end());
@@ -641,7 +641,7 @@ Task::ReportResult GTest_DocumentObjectTypes::report() {
 /*******************************
  * GTest_FindGObjectByName
  *******************************/
-void GTest_FindGObjectByName::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_FindGObjectByName::init(XMLTestFormat*, const QDomElement& el) {
     docContextName = el.attribute(DOC_ATTR);
     if (docContextName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -666,14 +666,14 @@ void GTest_FindGObjectByName::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 Task::ReportResult GTest_FindGObjectByName::report() {
-    const Document *doc = getContext<Document>(this, docContextName);
+    const Document* doc = getContext<Document>(this, docContextName);
     if (doc == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(docContextName));
         return ReportResult_Finished;
     }
-    const QList<GObject *> &objs = doc->getObjects();
+    const QList<GObject*>& objs = doc->getObjects();
 
-    foreach (GObject *obj, objs) {
+    foreach (GObject* obj, objs) {
         QString objectType = obj->getGObjectType();
         QString objectName = obj->getGObjectName();
         if ((objectType == type) && (objectName == objName)) {
@@ -712,7 +712,7 @@ static const QString COMPARE_FIRST_N_LINES = "first_n_lines";
 static const QString COMPARE_MIXED_LINES = "mixed-lines";
 static const QString COMPARE_FORCE_BUFFER_SIZE = "buffer-size";
 
-void GTest_CompareFiles::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_CompareFiles::init(XMLTestFormat*, const QDomElement& el) {
     // Get the attributes values
     QString tmpAttr = el.attribute(TMP_ATTR_ID);
 
@@ -863,10 +863,10 @@ Task::ReportResult GTest_CompareFiles::report() {
     return ReportResult_Finished;
 }
 
-IOAdapter *GTest_CompareFiles::createIoAdapter(const QString &filePath) {
-    IOAdapterFactory *factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(filePath));
+IOAdapter* GTest_CompareFiles::createIoAdapter(const QString& filePath) {
+    IOAdapterFactory* factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(filePath));
     CHECK_EXT(nullptr != factory, setError("IOAdapterFactory is NULL"), nullptr);
-    IOAdapter *ioAdapter = factory->createIOAdapter();
+    IOAdapter* ioAdapter = factory->createIOAdapter();
 
     if (!ioAdapter->open(filePath, IOAdapterMode_Read)) {
         delete ioAdapter;
@@ -877,12 +877,12 @@ IOAdapter *GTest_CompareFiles::createIoAdapter(const QString &filePath) {
     return ioAdapter;
 }
 
-QByteArray GTest_CompareFiles::getLine(IOAdapter *io) {
+QByteArray GTest_CompareFiles::getLine(IOAdapter* io) {
     QByteArray line;
 
     const qint64 bufferSize = forceBufferSize > 0 ? forceBufferSize : READ_BUFF_SIZE;
     QByteArray readBuff(bufferSize + 1, 0);
-    char *buff = readBuff.data();
+    char* buff = readBuff.data();
     bool commentString = false;
 
     do {
@@ -893,7 +893,7 @@ QByteArray GTest_CompareFiles::getLine(IOAdapter *io) {
 
         line = (QByteArray(buff, len)).trimmed();
         commentString = false;
-        foreach (const QString &comment, commentsStartWith) {
+        foreach (const QString& comment, commentsStartWith) {
             if (line.startsWith(comment.toLatin1())) {
                 commentString = true;
                 break;
@@ -938,7 +938,7 @@ void GTest_CompareFiles::compareMixed() {
  *******************************/
 const QByteArray GTest_Compare_VCF_Files::COMMENT_MARKER = "#";
 
-void GTest_Compare_VCF_Files::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_Compare_VCF_Files::init(XMLTestFormat*, const QDomElement& el) {
     QStringList tmpDocNums = el.attribute(TMP_ATTR_ID).split(TMP_ATTR_SPLITTER, QString::SkipEmptyParts);
 
     doc1Path = el.attribute(DOC1_ATTR_ID);
@@ -994,10 +994,10 @@ Task::ReportResult GTest_Compare_VCF_Files::report() {
     return ReportResult_Finished;
 }
 
-IOAdapter *GTest_Compare_VCF_Files::createIoAdapter(const QString &filePath) {
-    IOAdapterFactory *factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(filePath));
+IOAdapter* GTest_Compare_VCF_Files::createIoAdapter(const QString& filePath) {
+    IOAdapterFactory* factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(filePath));
     CHECK_EXT(nullptr != factory, setError("IOAdapterFactory is NULL"), nullptr);
-    IOAdapter *ioAdapter = factory->createIOAdapter();
+    IOAdapter* ioAdapter = factory->createIOAdapter();
 
     if (!ioAdapter->open(filePath, IOAdapterMode_Read)) {
         delete ioAdapter;
@@ -1008,11 +1008,11 @@ IOAdapter *GTest_Compare_VCF_Files::createIoAdapter(const QString &filePath) {
     return ioAdapter;
 }
 
-QString GTest_Compare_VCF_Files::getLine(IOAdapter *io) {
+QString GTest_Compare_VCF_Files::getLine(IOAdapter* io) {
     QByteArray line;
 
     QByteArray readBuff(READ_BUFF_SIZE + 1, 0);
-    char *buff = readBuff.data();
+    char* buff = readBuff.data();
 
     do {
         bool lineOk = true;
@@ -1031,7 +1031,7 @@ QString GTest_Compare_VCF_Files::getLine(IOAdapter *io) {
  *******************************/
 const int NUMDER_OF_LINES = 10;
 
-void GTest_Compare_PDF_Files::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_Compare_PDF_Files::init(XMLTestFormat*, const QDomElement& el) {
     QStringList tmpDocNums = el.attribute(TMP_ATTR_ID).split(TMP_ATTR_SPLITTER, QString::SkipEmptyParts);
 
     doc1Path = el.attribute(DOC1_ATTR_ID);
@@ -1104,8 +1104,8 @@ Task::ReportResult GTest_Compare_PDF_Files::report() {
 /*******************************
  * DocumentModelTests
  *******************************/
-QList<XMLTestFactory *> DocumentModelTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> DocumentModelTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_LoadDocument::createFactory());
     res.append(GTest_LoadBrokenDocument::createFactory());
     res.append(GTest_ImportDocument::createFactory());

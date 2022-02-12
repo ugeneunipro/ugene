@@ -54,8 +54,8 @@ const QString TERM_GAP_PENALTY("terminal-gap-penalty");
 const QString BONUS_SCORE("bonus-score");
 
 void KalignWorkerFactory::init() {
-    QList<PortDescriptor *> p;
-    QList<Attribute *> a;
+    QList<PortDescriptor*> p;
+    QList<Attribute*> a;
     Descriptor ind(BasePorts::IN_MSA_PORT_ID(), KalignWorker::tr("Input MSA"), KalignWorker::tr("Input MSA to process."));
     Descriptor oud(BasePorts::OUT_MSA_PORT_ID(), KalignWorker::tr("Kalign result MSA"), KalignWorker::tr("The result of the Kalign alignment."));
 
@@ -79,9 +79,9 @@ void KalignWorkerFactory::init() {
     Descriptor desc(ACTOR_ID, KalignWorker::tr("Align with Kalign"), KalignWorker::tr("Aligns multiple sequence alignments (MSAs) supplied with Kalign."
                                                                                       "<p>Kalign is a fast and accurate multiple sequence alignment tool. The original version of the tool can be found on <a href=\"http://msa->sbc.su.se\">http://msa->sbc.su.se</a>."));
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap m;
         m["minimum"] = double(.00);
@@ -116,7 +116,7 @@ void KalignWorkerFactory::init() {
     proto->setIconPath(":kalign/images/kalign_16.png");
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new KalignWorkerFactory());
 }
 
@@ -124,8 +124,8 @@ void KalignWorkerFactory::init() {
  * KalignPrompter
  ****************************/
 QString KalignPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
-    Actor *producer = input->getProducer(BasePorts::IN_MSA_PORT_ID());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
+    Actor* producer = input->getProducer(BasePorts::IN_MSA_PORT_ID());
     QString producerName = producer ? tr(" from %1").arg(producer->getLabel()) : "";
 
     QString doc = tr("Aligns each MSA supplied <u>%1</u> with \"<u>Kalign</u>\".")
@@ -137,7 +137,7 @@ QString KalignPrompter::composeRichDoc() {
 /****************************
  * KalignWorker
  ****************************/
-KalignWorker::KalignWorker(Actor *a)
+KalignWorker::KalignWorker(Actor* a)
     : BaseWorker(a), input(NULL), output(NULL) {
 }
 
@@ -146,7 +146,7 @@ void KalignWorker::init() {
     output = ports.value(BasePorts::OUT_MSA_PORT_ID());
 }
 
-Task *KalignWorker::tick() {
+Task* KalignWorker::tick() {
     if (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
@@ -168,7 +168,7 @@ Task *KalignWorker::tick() {
             algoLog.error(tr("An empty MSA '%1' has been supplied to Kalign.").arg(msa->getName()));
             return NULL;
         }
-        Task *t = new NoFailTaskWrapper(new KalignTask(msa, cfg));
+        Task* t = new NoFailTaskWrapper(new KalignTask(msa, cfg));
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
     } else if (input->isEnded()) {
@@ -179,9 +179,9 @@ Task *KalignWorker::tick() {
 }
 
 void KalignWorker::sl_taskFinished() {
-    NoFailTaskWrapper *wrapper = qobject_cast<NoFailTaskWrapper *>(sender());
+    NoFailTaskWrapper* wrapper = qobject_cast<NoFailTaskWrapper*>(sender());
     CHECK(wrapper->isFinished(), );
-    KalignTask *t = qobject_cast<KalignTask *>(wrapper->originalTask());
+    KalignTask* t = qobject_cast<KalignTask*>(wrapper->originalTask());
     if (t->hasError()) {
         coreLog.error(t->getError());
         return;
@@ -199,7 +199,7 @@ void KalignWorker::sl_taskFinished() {
 void KalignWorker::cleanup() {
 }
 
-void KalignWorker::send(const MultipleSequenceAlignment &msa) {
+void KalignWorker::send(const MultipleSequenceAlignment& msa) {
     SAFE_POINT(NULL != output, "NULL output!", );
     SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(msa);
     QVariantMap m;

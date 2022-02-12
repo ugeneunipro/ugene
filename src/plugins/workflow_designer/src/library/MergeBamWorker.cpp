@@ -65,8 +65,8 @@ static const QString OUT_NAME_ID("out-name");
 /* MergeBamPrompter */
 /************************************************************************/
 QString MergeBamPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(INPUT_PORT));
-    const Actor *producer = input->getProducer(BaseSlots::URL_SLOT().getId());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT));
+    const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr("<u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
 
@@ -84,7 +84,7 @@ static const QString DEFAULT_NAME("Default");
 void MergeBamWorkerFactory::init() {
     Descriptor desc(ACTOR_ID, MergeBamWorker::tr("Merge BAM files"), MergeBamWorker::tr("Merge BAM files using SAMTools merge."));
 
-    QList<PortDescriptor *> p;
+    QList<PortDescriptor*> p;
     {
         Descriptor inD(INPUT_PORT, MergeBamWorker::tr("BAM File"), MergeBamWorker::tr("Set of BAM files to merge"));
         Descriptor outD(OUTPUT_PORT, MergeBamWorker::tr("Merged BAM File"), MergeBamWorker::tr("Merged BAM file"));
@@ -98,7 +98,7 @@ void MergeBamWorkerFactory::init() {
         p << new PortDescriptor(outD, DataTypePtr(new MapDataType(SHORT_NAME + ".output-url", outM)), false, true);
     }
 
-    QList<Attribute *> a;
+    QList<Attribute*> a;
     {
         Descriptor outDir(OUT_MODE_ID, MergeBamWorker::tr("Output folder"), MergeBamWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
                                                                                                "<b>Workflow</b> - internal workflow folder. "
@@ -109,13 +109,13 @@ void MergeBamWorkerFactory::init() {
         Descriptor outName(OUT_NAME_ID, MergeBamWorker::tr("Output BAM name"), MergeBamWorker::tr("A name of an output BAM file. If default of empty value is provided the output name is the name of the first BAM file with .merged.bam extension."));
 
         a << new Attribute(outDir, BaseTypes::NUM_TYPE(), false, QVariant(FileAndDirectoryUtils::WORKFLOW_INTERNAL));
-        Attribute *customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
+        Attribute* customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
         customDirAttr->addRelation(new VisibilityRelation(OUT_MODE_ID, FileAndDirectoryUtils::CUSTOM));
         a << customDirAttr;
         a << new Attribute(outName, BaseTypes::STRING_TYPE(), false, QVariant(DEFAULT_NAME));
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap directoryMap;
         QString fileDir = MergeBamWorker::tr("Input file");
@@ -129,19 +129,19 @@ void MergeBamWorkerFactory::init() {
         delegates[CUSTOM_DIR_ID] = new URLDelegate("", "", false, true);
     }
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new MergeBamPrompter());
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new MergeBamWorkerFactory());
 }
 
 /************************************************************************/
 /* MergeBamWorker */
 /************************************************************************/
-MergeBamWorker::MergeBamWorker(Actor *a)
+MergeBamWorker::MergeBamWorker(Actor* a)
     : BaseWorker(a), inputUrlPort(nullptr), outputUrlPort(nullptr), outputDir("") {
 }
 
@@ -150,7 +150,7 @@ void MergeBamWorker::init() {
     outputUrlPort = ports.value(OUTPUT_PORT);
 }
 
-Task *MergeBamWorker::tick() {
+Task* MergeBamWorker::tick() {
     while (inputUrlPort->hasMessage()) {
         const QString url = takeUrl();
         CHECK(!url.isEmpty(), nullptr);
@@ -177,8 +177,8 @@ Task *MergeBamWorker::tick() {
         const QString targetName = getOutputName(urls.first());
         CHECK(!targetName.isEmpty(), nullptr);
 
-        Task *t = new MergeBamTask(urls, outputDir, targetName);
-        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
+        Task* t = new MergeBamTask(urls, outputDir, targetName);
+        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
         urls.clear();
         return t;
     }
@@ -196,8 +196,8 @@ void MergeBamWorker::cleanup() {
 }
 
 namespace {
-QString getTargetUrl(Task *task) {
-    MergeBamTask *mergeTask = dynamic_cast<MergeBamTask *>(task);
+QString getTargetUrl(Task* task) {
+    MergeBamTask* mergeTask = dynamic_cast<MergeBamTask*>(task);
 
     if (nullptr != mergeTask) {
         return mergeTask->getResult();
@@ -206,7 +206,7 @@ QString getTargetUrl(Task *task) {
 }
 }  // namespace
 
-void MergeBamWorker::sl_taskFinished(Task *task) {
+void MergeBamWorker::sl_taskFinished(Task* task) {
     CHECK(!task->hasError(), );
     CHECK(!task->isCanceled(), );
 
@@ -217,7 +217,7 @@ void MergeBamWorker::sl_taskFinished(Task *task) {
     monitor()->addOutputFile(url, getActorId());
 }
 
-QString MergeBamWorker::getOutputName(const QString &fileUrl) {
+QString MergeBamWorker::getOutputName(const QString& fileUrl) {
     QString name = getValue<QString>(OUT_NAME_ID);
 
     if (name == DEFAULT_NAME || name.isEmpty()) {
@@ -238,7 +238,7 @@ QString MergeBamWorker::takeUrl() {
     return data[BaseSlots::URL_SLOT().getId()].toString();
 }
 
-void MergeBamWorker::sendResult(const QString &url) {
+void MergeBamWorker::sendResult(const QString& url) {
     const Message message(BaseTypes::STRING_TYPE(), url);
     outputUrlPort->put(message);
 }

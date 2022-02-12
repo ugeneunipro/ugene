@@ -44,7 +44,7 @@ public:
      * but if GUI or XML tests mode is enabled the function will make UGENE to stop (call std::abort)
      * after printing the message.
      */
-    static void fail(const QString &message);
+    static void fail(const QString& message);
 };
 }  // namespace U2
 

@@ -37,7 +37,7 @@
 
 namespace U2 {
 
-GenomeAssemblyMultiTask::GenomeAssemblyMultiTask(const GenomeAssemblyTaskSettings &s)
+GenomeAssemblyMultiTask::GenomeAssemblyMultiTask(const GenomeAssemblyTaskSettings& s)
     : Task("GenomeAssemblyMultiTask", TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled), settings(s),
       assemblyTask(nullptr) {
 }
@@ -45,7 +45,7 @@ GenomeAssemblyMultiTask::GenomeAssemblyMultiTask(const GenomeAssemblyTaskSetting
 void GenomeAssemblyMultiTask::prepare() {
     // perform assembly
     QString algName = settings.algName;
-    GenomeAssemblyAlgorithmEnv *env = AppContext::getGenomeAssemblyAlgRegistry()->getAlgorithm(algName);
+    GenomeAssemblyAlgorithmEnv* env = AppContext::getGenomeAssemblyAlgRegistry()->getAlgorithm(algName);
     assert(env);
     if (env == nullptr) {
         setError(QString("Algorithm %1 is not found").arg(algName));
@@ -59,8 +59,8 @@ Task::ReportResult GenomeAssemblyMultiTask::report() {
     return ReportResult_Finished;
 }
 
-QList<Task *> GenomeAssemblyMultiTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> subTasks;
+QList<Task*> GenomeAssemblyMultiTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> subTasks;
     if (subTask->hasError() || isCanceled()) {
         return subTasks;
     }
@@ -72,7 +72,7 @@ QList<Task *> GenomeAssemblyMultiTask::onSubTaskFinished(Task *subTask) {
 
     if (subTask == assemblyTask && settings.openView) {
         if (assemblyTask->hasResult()) {
-            Task *openTask = AppContext::getProjectLoader()->openWithProjectTask(assemblyTask->getResultUrl());
+            Task* openTask = AppContext::getProjectLoader()->openWithProjectTask(assemblyTask->getResultUrl());
             if (openTask != nullptr) {
                 subTasks << openTask;
             }
@@ -88,7 +88,7 @@ QList<Task *> GenomeAssemblyMultiTask::onSubTaskFinished(Task *subTask) {
     return subTasks;
 }
 
-U2::GenomeAssemblyTask *GenomeAssemblyMultiTask::getAssemblyTask() const {
+U2::GenomeAssemblyTask* GenomeAssemblyMultiTask::getAssemblyTask() const {
     return assemblyTask;
 }
 

@@ -31,7 +31,7 @@ using namespace HI;
 
 class ExtractAssemblyRegionDialogFiller : public Filler {
 public:
-    ExtractAssemblyRegionDialogFiller(HI::GUITestOpStatus &os, const QString &filepath, const U2Region &region, const QString &format);
+    ExtractAssemblyRegionDialogFiller(HI::GUITestOpStatus& os, const QString& filepath, const U2Region& region, const QString& format);
     void commonScenario();
 
 private:

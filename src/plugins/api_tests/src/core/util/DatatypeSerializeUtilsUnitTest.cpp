@@ -32,7 +32,7 @@
 
 namespace U2 {
 
-void CompareUtils::checkEqual(const DNAChromatogram &chr1, const DNAChromatogram &chr2, U2OpStatus &os) {
+void CompareUtils::checkEqual(const DNAChromatogram& chr1, const DNAChromatogram& chr2, U2OpStatus& os) {
     CHECK_EXT(chr1.traceLength == chr2.traceLength, os.setError("traceLength"), );
     CHECK_EXT(chr1.seqLength == chr2.seqLength, os.setError("seqLength"), );
     CHECK_EXT(chr1.baseCalls == chr2.baseCalls, os.setError("baseCalls"), );

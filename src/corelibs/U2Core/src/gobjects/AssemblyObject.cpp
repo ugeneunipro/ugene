@@ -36,25 +36,25 @@
 
 namespace U2 {
 
-AssemblyObject::AssemblyObject(const QString &objectName, const U2EntityRef &ref, const QVariantMap &hints)
+AssemblyObject::AssemblyObject(const QString& objectName, const U2EntityRef& ref, const QVariantMap& hints)
     : GObject(GObjectTypes::ASSEMBLY, objectName, hints) {
     this->entityRef = ref;
 }
 
-GObject *AssemblyObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints) const {
+GObject* AssemblyObject::clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints) const {
     GHintsDefaultImpl gHints(getGHintsMap());
     gHints.setAll(hints);
 
     U2EntityRef dstEntityRef = AssemblyObject::dbi2dbiClone(this, dstDbiRef, os, gHints.getMap());
     CHECK_OP(os, nullptr);
-    AssemblyObject *dstObj = new AssemblyObject(this->getGObjectName(), dstEntityRef, gHints.getMap());
+    AssemblyObject* dstObj = new AssemblyObject(this->getGObjectName(), dstEntityRef, gHints.getMap());
 
     return dstObj;
 }
 
 class CloneInfo : public U2AssemblyReadsImportInfo {
 public:
-    CloneInfo(qint64 readsCount, U2OpStatus &os)
+    CloneInfo(qint64 readsCount, U2OpStatus& os)
         : U2AssemblyReadsImportInfo(nullptr), os(os), readsCount(readsCount), addedCount(0), currentChunkSize(0) {
         chunkSize = readsCount / 100;
     }
@@ -69,19 +69,19 @@ public:
     }
 
 private:
-    U2OpStatus &os;
+    U2OpStatus& os;
     qint64 readsCount;
     qint64 addedCount;
     qint64 currentChunkSize;
     qint64 chunkSize;
 };
 
-void copyReadsUnrelatedAttributes(const U2DataId &srcObjId, const U2DataId &dstObjId, U2AttributeDbi *srcAttributeDbi, U2AttributeDbi *dstAttributeDbi, U2OpStatus &os) {
+void copyReadsUnrelatedAttributes(const U2DataId& srcObjId, const U2DataId& dstObjId, U2AttributeDbi* srcAttributeDbi, U2AttributeDbi* dstAttributeDbi, U2OpStatus& os) {
     CHECK_EXT(nullptr != srcAttributeDbi, os.setError("NULL source attribute dbi"), );
     CHECK_EXT(nullptr != dstAttributeDbi, os.setError("NULL destination attribute dbi"), );
 
-    U2Dbi *dstDbi = dstAttributeDbi->getRootDbi();
-    U2Dbi *srcDbi = srcAttributeDbi->getRootDbi();
+    U2Dbi* dstDbi = dstAttributeDbi->getRootDbi();
+    U2Dbi* srcDbi = srcAttributeDbi->getRootDbi();
     CHECK_EXT(nullptr != srcDbi, os.setError("NULL source root dbi"), );
     CHECK_EXT(nullptr != dstDbi, os.setError("NULL destination root dbi"), );
 
@@ -95,7 +95,7 @@ void copyReadsUnrelatedAttributes(const U2DataId &srcObjId, const U2DataId &dstO
     QList<U2DataId> attrIds = srcAttributeDbi->getObjectAttributes(srcObjId, "", os);
     CHECK_OP(os, );
 
-    foreach (const U2DataId &attrId, attrIds) {
+    foreach (const U2DataId& attrId, attrIds) {
         U2DataType attrType = srcDbi->getEntityTypeById(attrId);
         if (U2Type::AttributeInteger == attrType) {
             U2IntegerAttribute attr = srcAttributeDbi->getIntegerAttribute(attrId, os);
@@ -134,7 +134,7 @@ void copyReadsUnrelatedAttributes(const U2DataId &srcObjId, const U2DataId &dstO
     }
 }
 
-U2EntityRef AssemblyObject::dbi2dbiExtractRegion(const AssemblyObject *const srcObj, const U2DbiRef &dstDbiRef, U2OpStatus &os, const U2Region &desiredRegion, const QVariantMap &hints) {
+U2EntityRef AssemblyObject::dbi2dbiExtractRegion(const AssemblyObject* const srcObj, const U2DbiRef& dstDbiRef, U2OpStatus& os, const U2Region& desiredRegion, const QVariantMap& hints) {
     U2DbiRef srcDbiRef = srcObj->getEntityRef().dbiRef;
     U2DataId srcObjId = srcObj->getEntityRef().entityId;
     const QString dstFolder = hints.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
@@ -144,13 +144,13 @@ U2EntityRef AssemblyObject::dbi2dbiExtractRegion(const AssemblyObject *const src
     DbiConnection srcCon(srcDbiRef, os);
     CHECK_OP(os, U2EntityRef());
 
-    U2ObjectDbi *dstObjectDbi = dstCon.dbi->getObjectDbi();
-    U2ObjectDbi *srcObjectDbi = srcCon.dbi->getObjectDbi();
+    U2ObjectDbi* dstObjectDbi = dstCon.dbi->getObjectDbi();
+    U2ObjectDbi* srcObjectDbi = srcCon.dbi->getObjectDbi();
     SAFE_POINT_EXT(nullptr != dstObjectDbi, os.setError("NULL destination object dbi"), U2EntityRef());
     SAFE_POINT_EXT(nullptr != srcObjectDbi, os.setError("NULL source object dbi"), U2EntityRef());
 
-    U2AssemblyDbi *dstAssemblyDbi = dstCon.dbi->getAssemblyDbi();
-    U2AssemblyDbi *srcAssemblyDbi = srcCon.dbi->getAssemblyDbi();
+    U2AssemblyDbi* dstAssemblyDbi = dstCon.dbi->getAssemblyDbi();
+    U2AssemblyDbi* srcAssemblyDbi = srcCon.dbi->getAssemblyDbi();
     SAFE_POINT_EXT(nullptr != dstAssemblyDbi, os.setError("NULL destination assembly dbi"), U2EntityRef());
     SAFE_POINT_EXT(nullptr != srcAssemblyDbi, os.setError("NULL source assembly dbi"), U2EntityRef());
 
@@ -158,7 +158,7 @@ U2EntityRef AssemblyObject::dbi2dbiExtractRegion(const AssemblyObject *const src
     CHECK_OP(os, U2EntityRef());
     qint64 readsCount = srcAssemblyDbi->countReads(srcObjId, desiredRegion, os);
     CHECK_OP(os, U2EntityRef());
-    U2DbiIterator<U2AssemblyRead> *iter = srcAssemblyDbi->getReads(srcObjId, desiredRegion, os, true);
+    U2DbiIterator<U2AssemblyRead>* iter = srcAssemblyDbi->getReads(srcObjId, desiredRegion, os, true);
     QScopedPointer<U2DbiIterator<U2AssemblyRead>> iterPtr(iter);
     CHECK_OP(os, U2EntityRef());
     Q_UNUSED(iterPtr);
@@ -173,8 +173,8 @@ U2EntityRef AssemblyObject::dbi2dbiExtractRegion(const AssemblyObject *const src
     CHECK_OP(os, U2EntityRef());
 
     // copy attributes
-    U2AttributeDbi *srcAttributeDbi = srcCon.dbi->getAttributeDbi();
-    U2AttributeDbi *dstAttributeDbi = dstCon.dbi->getAttributeDbi();
+    U2AttributeDbi* srcAttributeDbi = srcCon.dbi->getAttributeDbi();
+    U2AttributeDbi* dstAttributeDbi = dstCon.dbi->getAttributeDbi();
     if (desiredRegion == U2_REGION_MAX) {
         U2AttributeUtils::copyObjectAttributes(srcObjId, assembly.id, srcAttributeDbi, dstAttributeDbi, os);
     } else {
@@ -187,7 +187,7 @@ U2EntityRef AssemblyObject::dbi2dbiExtractRegion(const AssemblyObject *const src
     return dstEntityRef;
 }
 
-U2EntityRef AssemblyObject::dbi2dbiClone(const AssemblyObject *const srcObj, const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints) {
+U2EntityRef AssemblyObject::dbi2dbiClone(const AssemblyObject* const srcObj, const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints) {
     return dbi2dbiExtractRegion(srcObj, dstDbiRef, os, U2_REGION_MAX, hints);
 }
 

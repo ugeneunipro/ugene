@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-MsaRowHeightController::MsaRowHeightController(MsaEditorWgt *msaEditortWgt)
+MsaRowHeightController::MsaRowHeightController(MsaEditorWgt* msaEditortWgt)
     : RowHeightController(msaEditortWgt) {
 }
 

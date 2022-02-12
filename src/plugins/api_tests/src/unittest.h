@@ -71,7 +71,7 @@ public:
     }
     virtual void TearDown() {
     }
-    virtual void SetError(const QString &err) {
+    virtual void SetError(const QString& err) {
         error = err;
     }
     virtual QString GetError() {
@@ -83,7 +83,7 @@ protected:
 };
 
 template<class T>
-QString toString(const T &t) {
+QString toString(const T& t) {
     return QString("%1").arg(t);
 }
 

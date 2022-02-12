@@ -57,7 +57,7 @@ public:
 
     static bool keyClick(char key, Qt::KeyboardModifiers = Qt::NoModifier, bool waitForMainThread = true);
     static bool keyClick(Qt::Key, Qt::KeyboardModifiers = Qt::NoModifier, bool waitForMainThread = true);
-    static bool keySequence(const QString &str, Qt::KeyboardModifiers = Qt::NoModifier);
+    static bool keySequence(const QString& str, Qt::KeyboardModifiers = Qt::NoModifier);
 
     static bool keyPress(char key, Qt::KeyboardModifiers = Qt::NoModifier);
     static bool keyRelease(char key, Qt::KeyboardModifiers = Qt::NoModifier);
@@ -67,7 +67,7 @@ public:
     class HI_EXPORT keys : private QMap<Qt::Key, int> {
     public:
         keys();
-        int operator[](const Qt::Key &key) const;
+        int operator[](const Qt::Key& key) const;
     };
 
     static keys key;

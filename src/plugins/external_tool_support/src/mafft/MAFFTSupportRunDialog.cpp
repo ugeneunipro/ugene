@@ -35,7 +35,7 @@ namespace U2 {
 
 ////////////////////////////////////////
 // MAFFTSupportRunDialog
-MAFFTSupportRunDialog::MAFFTSupportRunDialog(MAFFTSupportTaskSettings &_settings, QWidget *_parent)
+MAFFTSupportRunDialog::MAFFTSupportRunDialog(MAFFTSupportTaskSettings& _settings, QWidget* _parent)
     : QDialog(_parent), settings(_settings) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930844");
@@ -61,7 +61,7 @@ void MAFFTSupportRunDialog::accept() {
 
 ////////////////////////////////////////
 // MAFFTWithExtFileSpecifySupportRunDialog
-MAFFTWithExtFileSpecifySupportRunDialog::MAFFTWithExtFileSpecifySupportRunDialog(MAFFTSupportTaskSettings &_settings, QWidget *_parent)
+MAFFTWithExtFileSpecifySupportRunDialog::MAFFTWithExtFileSpecifySupportRunDialog(MAFFTSupportTaskSettings& _settings, QWidget* _parent)
     : QDialog(_parent),
       settings(_settings),
       saveController(nullptr) {

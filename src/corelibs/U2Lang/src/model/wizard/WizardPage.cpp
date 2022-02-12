@@ -28,7 +28,7 @@ namespace U2 {
 /**********************************
  * WizardPage
  *********************************/
-WizardPage::WizardPage(const QString &_id, const QString &_title)
+WizardPage::WizardPage(const QString& _id, const QString& _title)
     : id(_id), title(_title) {
 }
 
@@ -36,7 +36,7 @@ WizardPage::~WizardPage() {
     delete content;
 }
 
-void WizardPage::validate(const QList<Workflow::Actor *> &actors, U2OpStatus &os) const {
+void WizardPage::validate(const QList<Workflow::Actor*>& actors, U2OpStatus& os) const {
     if (nullptr == content) {
         os.setError(QObject::tr("NULL page content"));
         return;
@@ -45,12 +45,12 @@ void WizardPage::validate(const QList<Workflow::Actor *> &actors, U2OpStatus &os
     CHECK_OP(os, );
 }
 
-void WizardPage::setNext(const QString &nextId) {
+void WizardPage::setNext(const QString& nextId) {
     this->nextId = nextId;
     nextIds.clear();
 }
 
-void WizardPage::setNext(const QString &nextId, const Predicate &predicate, U2OpStatus &os) {
+void WizardPage::setNext(const QString& nextId, const Predicate& predicate, U2OpStatus& os) {
     if (nextIds.contains(predicate)) {
         os.setError(QObject::tr("Double condition: %1").arg(predicate.toString()));
         return;
@@ -59,11 +59,11 @@ void WizardPage::setNext(const QString &nextId, const Predicate &predicate, U2Op
     nextIds[predicate] = nextId;
 }
 
-QString WizardPage::getNextId(const QMap<QString, Variable> &vars) const {
+QString WizardPage::getNextId(const QMap<QString, Variable>& vars) const {
     if (nextIds.isEmpty()) {
         return nextId;
     }
-    foreach (const Predicate &p, nextIds.keys()) {
+    foreach (const Predicate& p, nextIds.keys()) {
         if (p.isTrue(vars)) {
             return nextIds[p];
         }
@@ -75,46 +75,46 @@ bool WizardPage::isFinal() const {
     return (nextId.isEmpty() && nextIds.isEmpty());
 }
 
-const QString &WizardPage::getId() const {
+const QString& WizardPage::getId() const {
     return id;
 }
 
-const QString &WizardPage::getTitle() const {
+const QString& WizardPage::getTitle() const {
     return title;
 }
 
-void WizardPage::setContent(TemplatedPageContent *value) {
+void WizardPage::setContent(TemplatedPageContent* value) {
     content = value;
 }
 
-TemplatedPageContent *WizardPage::getContent() {
+TemplatedPageContent* WizardPage::getContent() {
     return content;
 }
 
 /** for serializing */
-const QMap<Predicate, QString> &WizardPage::nextIdMap() const {
+const QMap<Predicate, QString>& WizardPage::nextIdMap() const {
     return nextIds;
 }
 
-const QString &WizardPage::plainNextId() const {
+const QString& WizardPage::plainNextId() const {
     return nextId;
 }
 
 /**********************************
  * TemplatedPage
  *********************************/
-TemplatedPageContent::TemplatedPageContent(const QString &_templateId)
+TemplatedPageContent::TemplatedPageContent(const QString& _templateId)
     : templateId(_templateId) {
 }
 
 TemplatedPageContent::~TemplatedPageContent() {
 }
 
-const QString &TemplatedPageContent::getTemplateId() const {
+const QString& TemplatedPageContent::getTemplateId() const {
     return templateId;
 }
 
-TemplatedPageContent *PageContentFactory::createContent(const QString &id, U2OpStatus &os) {
+TemplatedPageContent* PageContentFactory::createContent(const QString& id, U2OpStatus& os) {
     if (DefaultPageContent::ID == id) {
         return new DefaultPageContent();
     }
@@ -141,11 +141,11 @@ DefaultPageContent::~DefaultPageContent() {
     delete paramsArea;
 }
 
-void DefaultPageContent::accept(TemplatedPageVisitor *visitor) {
+void DefaultPageContent::accept(TemplatedPageVisitor* visitor) {
     visitor->visit(this);
 }
 
-void DefaultPageContent::validate(const QList<Workflow::Actor *> &actors, U2OpStatus &os) const {
+void DefaultPageContent::validate(const QList<Workflow::Actor*>& actors, U2OpStatus& os) const {
     if (nullptr == logoArea) {
         os.setError(QObject::tr("NULL logo area"));
         return;
@@ -161,19 +161,19 @@ void DefaultPageContent::validate(const QList<Workflow::Actor *> &actors, U2OpSt
     CHECK_OP(os, );
 }
 
-void DefaultPageContent::addParamWidget(WizardWidget *widget) {
+void DefaultPageContent::addParamWidget(WizardWidget* widget) {
     paramsArea->addWidget(widget);
 }
 
-void DefaultPageContent::setLogoPath(const QString &path) {
+void DefaultPageContent::setLogoPath(const QString& path) {
     logoArea->setLogoPath(path);
 }
 
-LogoWidget *DefaultPageContent::getLogoArea() {
+LogoWidget* DefaultPageContent::getLogoArea() {
     return logoArea;
 }
 
-WidgetsArea *DefaultPageContent::getParamsArea() {
+WidgetsArea* DefaultPageContent::getParamsArea() {
     return paramsArea;
 }
 

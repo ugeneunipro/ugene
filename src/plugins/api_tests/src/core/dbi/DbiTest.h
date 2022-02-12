@@ -37,23 +37,23 @@ public:
     TestDbiProvider();
     ~TestDbiProvider();
 
-    bool init(const QString &dbiFileName, bool useConnectionPool);
+    bool init(const QString& dbiFileName, bool useConnectionPool);
     void close();
-    U2Dbi *getDbi();
+    U2Dbi* getDbi();
 
 private:
     bool initialized;
     bool useConnectionPool;
     QString dbUrl;
-    U2Dbi *dbi;
+    U2Dbi* dbi;
 };
 
 template<>
-inline QString toString<U2DataId>(const U2DataId &a) {
+inline QString toString<U2DataId>(const U2DataId& a) {
     return "0x" + QString(a.toHex());
 }
 template<>
-inline QString toString<U2Region>(const U2Region &r) {
+inline QString toString<U2Region>(const U2Region& r) {
     return r.toString();
 }
 

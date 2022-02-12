@@ -51,11 +51,11 @@ struct CommonSequenceViewMetrics {
 /************************************************************************/
 class U2VIEW_EXPORT SequenceViewRenderer : public QObject {
 public:
-    SequenceViewRenderer(SequenceObjectContext *ctx);
+    SequenceViewRenderer(SequenceObjectContext* ctx);
 
-    virtual qint64 coordToPos(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const = 0;
+    virtual qint64 coordToPos(const QPoint& p, const QSize& canvasSize, const U2Region& visibleRange) const = 0;
 
-    virtual int posToXCoord(qint64 pos, const QSize &canvasSize, const U2Region &visibleRange) const;
+    virtual int posToXCoord(qint64 pos, const QSize& canvasSize, const U2Region& visibleRange) const;
 
     virtual int getRowLineHeight() const;
 
@@ -63,13 +63,13 @@ public:
 
     virtual int getMinimumHeight() const = 0;
 
-    virtual void drawAll(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) = 0;
-    virtual void drawSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) = 0;
+    virtual void drawAll(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange) = 0;
+    virtual void drawSelection(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange) = 0;
 
-    virtual QSize getBaseCanvasSize(const U2Region &visibleRange) const = 0;
+    virtual QSize getBaseCanvasSize(const U2Region& visibleRange) const = 0;
 
 protected:
-    SequenceObjectContext *ctx;
+    SequenceObjectContext* ctx;
     CommonSequenceViewMetrics commonMetrics;
 };
 

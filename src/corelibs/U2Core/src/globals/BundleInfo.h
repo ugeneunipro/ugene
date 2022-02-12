@@ -31,7 +31,7 @@ class CMDLineRegistry;
 class U2CORE_EXPORT BundleInfo {
 public:
     /** Returns a valid extra translation file URL or an empty string if there is no such path. */
-    static QString getExtraTranslationSearchPath(CMDLineRegistry *);
+    static QString getExtraTranslationSearchPath(CMDLineRegistry*);
 
     /** Returns extra data folder path or an empty string if there is no such path. */
     static QString getDataSearchPath();

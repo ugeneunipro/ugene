@@ -68,18 +68,18 @@ class ClustalOSupportTask : public ExternalToolSupportTask {
     Q_DISABLE_COPY(ClustalOSupportTask)
 public:
     /** Initializes ClustalO task that calls ClustalO to align 'msa' and saves the result to 'objRef'. */
-    ClustalOSupportTask(const MultipleSequenceAlignment &inputMsa,
-                        const GObjectReference &objRef,
-                        const ClustalOSupportTaskSettings &settings);
+    ClustalOSupportTask(const MultipleSequenceAlignment& inputMsa,
+                        const GObjectReference& objRef,
+                        const ClustalOSupportTaskSettings& settings);
 
     /**
      * Initializes ClustalO task that calls ClustalO to align 'msa' with another alignment from 'secondAlignmentFileUrl'
      * and saves the result to 'objRef'.
      */
-    ClustalOSupportTask(const MultipleSequenceAlignment &inputMsa,
-                        const GObjectReference &objRef,
-                        const QString &secondAlignmentFileUrl,
-                        const ClustalOSupportTaskSettings &settings);
+    ClustalOSupportTask(const MultipleSequenceAlignment& inputMsa,
+                        const GObjectReference& objRef,
+                        const QString& secondAlignmentFileUrl,
+                        const ClustalOSupportTaskSettings& settings);
 
     ~ClustalOSupportTask();
 
@@ -87,10 +87,10 @@ public:
 
     Task::ReportResult report() override;
 
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     /** Returns result multiple alignment. The result is non-empty only for successfully finished task. */
-    const MultipleSequenceAlignment &getResultAlignment() const;
+    const MultipleSequenceAlignment& getResultAlignment() const;
 
 private:
     /** Removes all object locks set by the task.*/
@@ -101,9 +101,9 @@ private:
     GObjectReference objRef;
     QPointer<Document> tmpDoc;
 
-    SaveAlignmentTask *saveTemporaryDocumentTask = nullptr;
-    ExternalToolRunTask *clustalOTask = nullptr;
-    LoadDocumentTask *loadTemporaryDocumentTask = nullptr;
+    SaveAlignmentTask* saveTemporaryDocumentTask = nullptr;
+    ExternalToolRunTask* clustalOTask = nullptr;
+    LoadDocumentTask* loadTemporaryDocumentTask = nullptr;
     ClustalOSupportTaskSettings settings;
     QPointer<StateLock> lock;
 
@@ -115,30 +115,30 @@ class ClustalOWithExtFileSpecifySupportTask : public Task {
     Q_OBJECT
     Q_DISABLE_COPY(ClustalOWithExtFileSpecifySupportTask)
 public:
-    ClustalOWithExtFileSpecifySupportTask(const ClustalOSupportTaskSettings &settings);
+    ClustalOWithExtFileSpecifySupportTask(const ClustalOSupportTaskSettings& settings);
     ~ClustalOWithExtFileSpecifySupportTask();
 
     void prepare() override;
 
     Task::ReportResult report() override;
 
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
-    MultipleSequenceAlignmentObject *mAObject = nullptr;
-    Document *currentDocument = nullptr;
+    MultipleSequenceAlignmentObject* mAObject = nullptr;
+    Document* currentDocument = nullptr;
     bool cleanDoc = true;
 
-    SaveDocumentTask *saveDocumentTask = nullptr;
-    LoadDocumentTask *loadDocumentTask = nullptr;
-    ClustalOSupportTask *clustalOSupportTask = nullptr;
+    SaveDocumentTask* saveDocumentTask = nullptr;
+    LoadDocumentTask* loadDocumentTask = nullptr;
+    ClustalOSupportTask* clustalOSupportTask = nullptr;
     ClustalOSupportTaskSettings settings;
 };
 
 class ClustalOLogParser : public ExternalToolLogParser {
 public:
     ClustalOLogParser();
-    void parseOutput(const QString &partOfLog);
+    void parseOutput(const QString& partOfLog);
     int getProgress();
 
 private:
@@ -146,5 +146,5 @@ private:
     QString lastLine;
 };
 
-}    // namespace U2
-#endif    // _U2_CLUSTALO_SUPPORT_TASK_H
+}  // namespace U2
+#endif  // _U2_CLUSTALO_SUPPORT_TASK_H

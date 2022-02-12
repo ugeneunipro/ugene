@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-GroupOptionsWidget::GroupOptionsWidget(const QString &_groupId, const QString &_title, const QString &documentationPage, QWidget *_widget, QWidget *mainWidget)
+GroupOptionsWidget::GroupOptionsWidget(const QString& _groupId, const QString& _title, const QString& documentationPage, QWidget* _widget, QWidget* mainWidget)
     : groupId(_groupId),
       widget(_widget),
       mainWidget(mainWidget),
@@ -63,13 +63,13 @@ GroupOptionsWidget::GroupOptionsWidget(const QString &_groupId, const QString &_
     mainLayout->addWidget(titleWidget);
     mainLayout->addWidget(widget);
 
-    QPushButton *helpButton = new QPushButton(tr("Help"), this);
+    QPushButton* helpButton = new QPushButton(tr("Help"), this);
     helpButton->setMaximumWidth(60);
     new HelpButton(this, helpButton, documentationPage);
-    QSpacerItem *spacer = new QSpacerItem(MIN_WIDGET_WIDTH, 0, QSizePolicy::Maximum, QSizePolicy::Expanding);
+    QSpacerItem* spacer = new QSpacerItem(MIN_WIDGET_WIDTH, 0, QSizePolicy::Maximum, QSizePolicy::Expanding);
     mainLayout->addSpacerItem(spacer);
 
-    QHBoxLayout *helpLayout = new QHBoxLayout();
+    QHBoxLayout* helpLayout = new QHBoxLayout();
     helpLayout->addWidget(helpButton, 0, Qt::AlignRight);
     helpLayout->setContentsMargins(0, 0, 10, 0);
 

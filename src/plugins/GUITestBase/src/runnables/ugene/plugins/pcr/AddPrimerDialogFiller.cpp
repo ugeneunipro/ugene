@@ -32,22 +32,22 @@ AddPrimerDialogFiller::Parameters::Parameters()
     : primer(""), name(""), scenario(nullptr) {
 }
 
-AddPrimerDialogFiller::AddPrimerDialogFiller(HI::GUITestOpStatus &os, const Parameters &parameters)
+AddPrimerDialogFiller::AddPrimerDialogFiller(HI::GUITestOpStatus& os, const Parameters& parameters)
     : Filler(os, "EditPrimerDialog", parameters.scenario), parameters(parameters) {
 }
 
 #define GT_CLASS_NAME "GTUtilsDialog::AddPrimerDialogFiller"
 #define GT_METHOD_NAME "run"
 void AddPrimerDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
+    QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog, "activeModalWidget is NULL");
 
-    QLineEdit *primerEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "primerEdit", dialog));
+    QLineEdit* primerEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "primerEdit", dialog));
     GT_CHECK(primerEdit, "primerEdit is NULL");
     GTLineEdit::setText(os, primerEdit, parameters.primer);
 
     if (!parameters.name.isEmpty()) {
-        QLineEdit *nameEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "nameEdit", dialog));
+        QLineEdit* nameEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "nameEdit", dialog));
         GT_CHECK(nameEdit, "nameEdit is NULL");
         GTLineEdit::setText(os, nameEdit, parameters.name);
     }

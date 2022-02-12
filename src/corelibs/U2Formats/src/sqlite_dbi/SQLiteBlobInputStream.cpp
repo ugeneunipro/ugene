@@ -42,7 +42,7 @@ SQLiteBlobStream::~SQLiteBlobStream() {
     releaseHandle();
 }
 
-void SQLiteBlobStream::init(int accessType, DbRef *db, const QByteArray &tableId, const QByteArray &columnId, const U2DataId &rowId, U2OpStatus &os) {
+void SQLiteBlobStream::init(int accessType, DbRef* db, const QByteArray& tableId, const QByteArray& columnId, const U2DataId& rowId, U2OpStatus& os) {
     SAFE_POINT_EXT(nullptr != db, os.setError("NULL db ref"), );
     SAFE_POINT_EXT(nullptr != db->handle, os.setError("NULL db handle"), );
 
@@ -71,7 +71,7 @@ void SQLiteBlobStream::releaseHandle() {
 /************************************************************************/
 /* SQLiteBlobInputStream */
 /************************************************************************/
-SQLiteBlobInputStream::SQLiteBlobInputStream(DbRef *db, const QByteArray &tableId, const QByteArray &columnId, const U2DataId &rowId, U2OpStatus &os)
+SQLiteBlobInputStream::SQLiteBlobInputStream(DbRef* db, const QByteArray& tableId, const QByteArray& columnId, const U2DataId& rowId, U2OpStatus& os)
     : InputStream(), SQLiteBlobStream() {
     init(SQLiteBlobStream::READ_ONLY, db, tableId, columnId, rowId, os);
 }
@@ -84,14 +84,14 @@ void SQLiteBlobInputStream::close() {
     releaseHandle();
 }
 
-int SQLiteBlobInputStream::read(char *buffer, int length, U2OpStatus &os) {
+int SQLiteBlobInputStream::read(char* buffer, int length, U2OpStatus& os) {
     SAFE_POINT_EXT(nullptr != handle, os.setError("blob handle is not opened"), 0);
     int targetLength = (offset + length < size) ? length : (size - offset);
     if (0 == targetLength) {
         return -1;
     }
 
-    int status = sqlite3_blob_read(handle, (void *)buffer, targetLength, offset);
+    int status = sqlite3_blob_read(handle, (void*)buffer, targetLength, offset);
     if (SQLITE_OK != status) {
         os.setError(QObject::tr("Can not read data. The database is closed or the data were changed."));
         return 0;
@@ -100,7 +100,7 @@ int SQLiteBlobInputStream::read(char *buffer, int length, U2OpStatus &os) {
     return targetLength;
 }
 
-qint64 SQLiteBlobInputStream::skip(qint64 n, U2OpStatus &os) {
+qint64 SQLiteBlobInputStream::skip(qint64 n, U2OpStatus& os) {
     SAFE_POINT_EXT(nullptr != handle, os.setError("blob handle is not opened"), 0);
     if (offset + n >= size) {
         int oldOffset = offset;

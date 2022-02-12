@@ -30,8 +30,8 @@ namespace HI {
 
 class HI_EXPORT GTMouseUtils {
 public:
-    static void moveCursorToWidget(GUITestOpStatus &os, QWidget *widget);
-    static void moveCursorOutOfWidget(GUITestOpStatus &os, QWidget *widget);
+    static void moveCursorToWidget(GUITestOpStatus& os, QWidget* widget);
+    static void moveCursorOutOfWidget(GUITestOpStatus& os, QWidget* widget);
 };
 
 }  // namespace HI

@@ -37,11 +37,11 @@
 
 namespace U2 {
 
-BinaryFindOpenCL::BinaryFindOpenCL(const NumberType *_haystack,
+BinaryFindOpenCL::BinaryFindOpenCL(const NumberType* _haystack,
                                    const int _haystackSize,
-                                   const NumberType *_needles,
+                                   const NumberType* _needles,
                                    const int _needlesSize,
-                                   const int *_windowSizes)
+                                   const int* _windowSizes)
     : isError(false),
       haystack(_haystack),
       haystackSize(_haystackSize),
@@ -69,7 +69,7 @@ BinaryFindOpenCL::BinaryFindOpenCL(const NumberType *_haystack,
 BinaryFindOpenCL::~BinaryFindOpenCL() {
     algoLog.trace(QObject::tr("clear OpenCL resources"));
     cl_int err = CL_SUCCESS;
-    const OpenCLHelper *openCLHelper = AppContext::getOpenCLGpuRegistry()->getOpenCLHelper();
+    const OpenCLHelper* openCLHelper = AppContext::getOpenCLGpuRegistry()->getOpenCLHelper();
     SAFE_POINT(nullptr != openCLHelper, "OpenCL support plugin does not loaded", );
 
     if (binaryFindKernel) {
@@ -108,7 +108,7 @@ BinaryFindOpenCL::~BinaryFindOpenCL() {
 
 int BinaryFindOpenCL::initOpenCL() {
     // the number of needles a particular kernel execution should search for
-    const OpenCLHelper *openCLHelper = AppContext::getOpenCLGpuRegistry()->getOpenCLHelper();
+    const OpenCLHelper* openCLHelper = AppContext::getOpenCLGpuRegistry()->getOpenCLHelper();
     SAFE_POINT(nullptr != openCLHelper, "OpenCL support plugin does not loaded", -1);
     if (!openCLHelper->isLoaded()) {
         coreLog.error(openCLHelper->getErrorString());
@@ -136,8 +136,8 @@ int BinaryFindOpenCL::initOpenCL() {
     return err;
 }
 
-int BinaryFindOpenCL::checkCreateBuffer(const QString &bufferName, cl_mem &buf, cl_mem_flags flags, size_t thisBufferSize, void *ptr, size_t &usageGPUMem) {
-    const OpenCLHelper *openCLHelper = AppContext::getOpenCLGpuRegistry()->getOpenCLHelper();
+int BinaryFindOpenCL::checkCreateBuffer(const QString& bufferName, cl_mem& buf, cl_mem_flags flags, size_t thisBufferSize, void* ptr, size_t& usageGPUMem) {
+    const OpenCLHelper* openCLHelper = AppContext::getOpenCLGpuRegistry()->getOpenCLHelper();
     SAFE_POINT(nullptr != openCLHelper, "OpenCL support plugin is not loaded", -1);
     if (!openCLHelper->isLoaded()) {
         coreLog.error(openCLHelper->getErrorString());
@@ -157,7 +157,7 @@ int BinaryFindOpenCL::checkCreateBuffer(const QString &bufferName, cl_mem &buf, 
 }
 
 int BinaryFindOpenCL::createBuffers() {
-    const OpenCLHelper *openCLHelper = AppContext::getOpenCLGpuRegistry()->getOpenCLHelper();
+    const OpenCLHelper* openCLHelper = AppContext::getOpenCLGpuRegistry()->getOpenCLHelper();
     SAFE_POINT(nullptr != openCLHelper, "OpenCL support plugin is not loaded", -1);
     if (!openCLHelper->isLoaded()) {
         coreLog.error(openCLHelper->getErrorString());
@@ -166,9 +166,9 @@ int BinaryFindOpenCL::createBuffers() {
     cl_int err = CL_SUCCESS;
 
     size_t usageGPUMem = 0;
-    err |= checkCreateBuffer("buf_windowSizesArray", buf_windowSizesArray, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, sizeof(cl_int) * needlesSize, (void *)windowSizes, usageGPUMem);
-    err |= checkCreateBuffer("buf_needlesArray", buf_needlesArray, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, sizeof(NumberType) * needlesSize, (void *)needles, usageGPUMem);
-    err |= checkCreateBuffer("buf_sortedHaystackArray", buf_sortedHaystackArray, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(NumberType) * haystackSize, (void *)haystack, usageGPUMem);
+    err |= checkCreateBuffer("buf_windowSizesArray", buf_windowSizesArray, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, sizeof(cl_int) * needlesSize, (void*)windowSizes, usageGPUMem);
+    err |= checkCreateBuffer("buf_needlesArray", buf_needlesArray, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, sizeof(NumberType) * needlesSize, (void*)needles, usageGPUMem);
+    err |= checkCreateBuffer("buf_sortedHaystackArray", buf_sortedHaystackArray, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(NumberType) * haystackSize, (void*)haystack, usageGPUMem);
     SAFE_POINT(err == 0, "Creating OpenCL buffer error", err);
 
     algoLog.trace(QObject::tr("GPU memory usage: %1 Mb").arg(usageGPUMem / (1 << 20)));
@@ -176,7 +176,7 @@ int BinaryFindOpenCL::createBuffers() {
 }
 
 int BinaryFindOpenCL::runBinaryFindKernel() {
-    const OpenCLHelper *openCLHelper = AppContext::getOpenCLGpuRegistry()->getOpenCLHelper();
+    const OpenCLHelper* openCLHelper = AppContext::getOpenCLGpuRegistry()->getOpenCLHelper();
     SAFE_POINT(nullptr != openCLHelper, "OpenCL support plugin is not loaded", -1);
     if (!openCLHelper->isLoaded()) {
         coreLog.error(openCLHelper->getErrorString());
@@ -196,11 +196,11 @@ int BinaryFindOpenCL::runBinaryFindKernel() {
     algoLog.trace(QString("global work size = %1").arg(globalWorkSize));
 
     cl_uint kernelArgNum = 0;
-    err = openCLHelper->clSetKernelArg_p(binaryFindKernel, kernelArgNum++, sizeof(cl_mem), (void *)&buf_sortedHaystackArray);
-    err |= openCLHelper->clSetKernelArg_p(binaryFindKernel, kernelArgNum++, sizeof(cl_int), (void *)&haystackSize);
-    err |= openCLHelper->clSetKernelArg_p(binaryFindKernel, kernelArgNum++, sizeof(cl_mem), (void *)&buf_needlesArray);
-    err |= openCLHelper->clSetKernelArg_p(binaryFindKernel, kernelArgNum++, sizeof(cl_int), (void *)&needlesSize);
-    err |= openCLHelper->clSetKernelArg_p(binaryFindKernel, kernelArgNum++, sizeof(cl_mem), (void *)&buf_windowSizesArray);
+    err = openCLHelper->clSetKernelArg_p(binaryFindKernel, kernelArgNum++, sizeof(cl_mem), (void*)&buf_sortedHaystackArray);
+    err |= openCLHelper->clSetKernelArg_p(binaryFindKernel, kernelArgNum++, sizeof(cl_int), (void*)&haystackSize);
+    err |= openCLHelper->clSetKernelArg_p(binaryFindKernel, kernelArgNum++, sizeof(cl_mem), (void*)&buf_needlesArray);
+    err |= openCLHelper->clSetKernelArg_p(binaryFindKernel, kernelArgNum++, sizeof(cl_int), (void*)&needlesSize);
+    err |= openCLHelper->clSetKernelArg_p(binaryFindKernel, kernelArgNum++, sizeof(cl_mem), (void*)&buf_windowSizesArray);
     if (hasOPENCLError(err, "clSetKernelArg"))
         return err;
 
@@ -229,11 +229,11 @@ int BinaryFindOpenCL::runBinaryFindKernel() {
     return err;
 }
 
-NumberType *BinaryFindOpenCL::launch() {
+NumberType* BinaryFindOpenCL::launch() {
     cl_int err = CL_SUCCESS;
 
     // the number of needles a particular kernel execution should search for
-    const OpenCLHelper *openCLHelper = AppContext::getOpenCLGpuRegistry()->getOpenCLHelper();
+    const OpenCLHelper* openCLHelper = AppContext::getOpenCLGpuRegistry()->getOpenCLHelper();
     SAFE_POINT(nullptr != openCLHelper, "OpenCL support plugin does not loaded", nullptr);
     if (!openCLHelper->isLoaded()) {
         coreLog.error(openCLHelper->getErrorString());
@@ -251,7 +251,7 @@ NumberType *BinaryFindOpenCL::launch() {
     if (hasOPENCLError(err, "runBinaryFindKernel failed"))
         return 0;
 
-    NumberType *outputArray = new NumberType[needlesSize];
+    NumberType* outputArray = new NumberType[needlesSize];
     err = openCLHelper->clEnqueueReadBuffer_p(clCommandQueue, buf_needlesArray, CL_TRUE, 0, sizeof(NumberType) * needlesSize, outputArray, 0, nullptr, &clEvent2);
     if (hasOPENCLError(err, "clEnqueueReadBuffer")) {
         delete[] outputArray;
@@ -291,8 +291,8 @@ bool BinaryFindOpenCL::hasOPENCLError(int err, QString errorMessage) {
     }
 }
 
-void BinaryFindOpenCL::logProfilingInfo(const cl_event &event, const QString &msgPrefix) {
-    const OpenCLHelper *openCLHelper = AppContext::getOpenCLGpuRegistry()->getOpenCLHelper();
+void BinaryFindOpenCL::logProfilingInfo(const cl_event& event, const QString& msgPrefix) {
+    const OpenCLHelper* openCLHelper = AppContext::getOpenCLGpuRegistry()->getOpenCLHelper();
     SAFE_POINT(nullptr != openCLHelper, "OpenCL support plugin does not loaded", );
     if (!openCLHelper->isLoaded()) {
         coreLog.error(openCLHelper->getErrorString());

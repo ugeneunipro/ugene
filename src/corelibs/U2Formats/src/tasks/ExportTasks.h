@@ -38,7 +38,7 @@ class MultipleSequenceAlignmentObject;
 class U2FORMATS_EXPORT ExportAlignmentTask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    ExportAlignmentTask(const MultipleSequenceAlignment &ma, const QString &url, const DocumentFormatId &documentFormatId);
+    ExportAlignmentTask(const MultipleSequenceAlignment& ma, const QString& url, const DocumentFormatId& documentFormatId);
 
     void run() override;
 
@@ -59,7 +59,7 @@ private:
 class U2FORMATS_EXPORT ExportMSA2SequencesTask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    ExportMSA2SequencesTask(const MultipleSequenceAlignment &ma, const QString &url, bool trimLeadingAndTrailingGaps, const DocumentFormatId &documentFormatId);
+    ExportMSA2SequencesTask(const MultipleSequenceAlignment& ma, const QString& url, bool trimLeadingAndTrailingGaps, const DocumentFormatId& documentFormatId);
 
     void run() override;
 
@@ -74,12 +74,12 @@ private:
 class U2FORMATS_EXPORT ExportMSA2MSATask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    ExportMSA2MSATask(const MultipleSequenceAlignment &msa,
-                      const QList<qint64> &rowIds,
-                      const U2Region &columnRegion,
-                      const QString &url,
-                      const DNATranslation *aminoTranslation,
-                      const DocumentFormatId &documentFormatId,
+    ExportMSA2MSATask(const MultipleSequenceAlignment& msa,
+                      const QList<qint64>& rowIds,
+                      const U2Region& columnRegion,
+                      const QString& url,
+                      const DNATranslation* aminoTranslation,
+                      const DocumentFormatId& documentFormatId,
                       bool trimLeadingAndTrailingGaps,
                       bool convertUnknownToGap,
                       bool reverseComplement,
@@ -98,7 +98,7 @@ private:
     QString documentFormatId;
 
     /** Amino translation for a sequences in alignment. If not NULL -> sequence is translated. */
-    const DNATranslation *aminoTranslation = nullptr;
+    const DNATranslation* aminoTranslation = nullptr;
 
     /** Trim gaps before translation of not. */
     const bool trimLeadingAndTrailingGaps;
@@ -134,14 +134,14 @@ public:
 class U2FORMATS_EXPORT ExportDNAChromatogramTask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    ExportDNAChromatogramTask(DNAChromatogramObject *chromaObj, const ExportChromatogramTaskSettings &url);
+    ExportDNAChromatogramTask(DNAChromatogramObject* chromaObj, const ExportChromatogramTaskSettings& url);
     void prepare() override;
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
-    DNAChromatogramObject *chromaObject;
+    DNAChromatogramObject* chromaObject;
     ExportChromatogramTaskSettings settings;
-    LoadDocumentTask *loadTask;
+    LoadDocumentTask* loadTask;
 };
 
 }  // namespace U2

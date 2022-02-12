@@ -37,12 +37,12 @@
 namespace U2 {
 
 TestDbiProvider SQLiteObjectDbiTestData::dbiProvider = TestDbiProvider();
-const QString &SQLiteObjectDbiTestData::SQLITE_OBJ_DB_URL("sqlite-obj-dbi.ugenedb");
-U2AttributeDbi *SQLiteObjectDbiTestData::attributeDbi = nullptr;
-U2MsaDbi *SQLiteObjectDbiTestData::msaDbi = nullptr;
-U2SequenceDbi *SQLiteObjectDbiTestData::sequenceDbi = nullptr;
-SQLiteDbi *SQLiteObjectDbiTestData::sqliteDbi = nullptr;
-SQLiteObjectDbi *SQLiteObjectDbiTestData::sqliteObjectDbi = nullptr;
+const QString& SQLiteObjectDbiTestData::SQLITE_OBJ_DB_URL("sqlite-obj-dbi.ugenedb");
+U2AttributeDbi* SQLiteObjectDbiTestData::attributeDbi = nullptr;
+U2MsaDbi* SQLiteObjectDbiTestData::msaDbi = nullptr;
+U2SequenceDbi* SQLiteObjectDbiTestData::sequenceDbi = nullptr;
+SQLiteDbi* SQLiteObjectDbiTestData::sqliteDbi = nullptr;
+SQLiteObjectDbi* SQLiteObjectDbiTestData::sqliteObjectDbi = nullptr;
 
 void SQLiteObjectDbiTestData::init() {
     SAFE_POINT(nullptr == sqliteDbi, "sqliteDbi has already been initialized!", );
@@ -51,7 +51,7 @@ void SQLiteObjectDbiTestData::init() {
     bool ok = dbiProvider.init(SQLITE_OBJ_DB_URL, false);
     SAFE_POINT(ok, "Dbi provider failed to initialize in MsaTestData::init()!", );
 
-    U2Dbi *dbi = dbiProvider.getDbi();
+    U2Dbi* dbi = dbiProvider.getDbi();
     QString url = dbi->getDbiRef().dbiId;
     dbiProvider.close();
 
@@ -88,42 +88,42 @@ void SQLiteObjectDbiTestData::shutdown() {
     }
 }
 
-SQLiteDbi *SQLiteObjectDbiTestData::getSQLiteDbi() {
+SQLiteDbi* SQLiteObjectDbiTestData::getSQLiteDbi() {
     if (nullptr == sqliteDbi) {
         init();
     }
     return sqliteDbi;
 }
 
-SQLiteObjectDbi *SQLiteObjectDbiTestData::getSQLiteObjectDbi() {
+SQLiteObjectDbi* SQLiteObjectDbiTestData::getSQLiteObjectDbi() {
     if (nullptr == sqliteObjectDbi) {
         init();
     }
     return sqliteObjectDbi;
 }
 
-U2AttributeDbi *SQLiteObjectDbiTestData::getAttributeDbi() {
+U2AttributeDbi* SQLiteObjectDbiTestData::getAttributeDbi() {
     if (nullptr == attributeDbi) {
         init();
     }
     return attributeDbi;
 }
 
-U2MsaDbi *SQLiteObjectDbiTestData::getMsaDbi() {
+U2MsaDbi* SQLiteObjectDbiTestData::getMsaDbi() {
     if (nullptr == msaDbi) {
         init();
     }
     return msaDbi;
 }
 
-U2SequenceDbi *SQLiteObjectDbiTestData::getSequenceDbi() {
+U2SequenceDbi* SQLiteObjectDbiTestData::getSequenceDbi() {
     if (nullptr == sequenceDbi) {
         init();
     }
     return sequenceDbi;
 }
 
-U2DataId SQLiteObjectDbiTestData::createTestMsa(bool enableModTracking, U2OpStatus &os) {
+U2DataId SQLiteObjectDbiTestData::createTestMsa(bool enableModTracking, U2OpStatus& os) {
     // Create an alignment
     U2AlphabetId alphabet = BaseDNAAlphabetIds::NUCL_DNA_DEFAULT();
     U2DataId msaId = sqliteDbi->getMsaDbi()->createMsaObject("", "Test alignment", alphabet, os);
@@ -137,7 +137,7 @@ U2DataId SQLiteObjectDbiTestData::createTestMsa(bool enableModTracking, U2OpStat
     return msaId;
 }
 
-void SQLiteObjectDbiTestData::addTestRow(const U2DataId &msaId, U2OpStatus &os) {
+void SQLiteObjectDbiTestData::addTestRow(const U2DataId& msaId, U2OpStatus& os) {
     U2Sequence seq;
     seq.alphabet = BaseDNAAlphabetIds::NUCL_DNA_DEFAULT();
     seq.circular = false;
@@ -158,7 +158,7 @@ void SQLiteObjectDbiTestData::addTestRow(const U2DataId &msaId, U2OpStatus &os) 
 
 IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, removeMsaObject) {
     U2OpStatusImpl os;
-    U2MsaDbi *msaDbi = SQLiteObjectDbiTestData::getMsaDbi();
+    U2MsaDbi* msaDbi = SQLiteObjectDbiTestData::getMsaDbi();
 
     // FIRST ALIGNMENT
     // Create an alignment
@@ -167,12 +167,12 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, removeMsaObject) {
 
     // Add alignment info
     U2StringAttribute attr(msaId, "MSA1 info key", "MSA1 info value");
-    U2AttributeDbi *attrDbi = SQLiteObjectDbiTestData::getAttributeDbi();
+    U2AttributeDbi* attrDbi = SQLiteObjectDbiTestData::getAttributeDbi();
     attrDbi->createStringAttribute(attr, os);
     CHECK_NO_ERROR(os);
 
     // Create sequences
-    U2SequenceDbi *sequenceDbi = SQLiteObjectDbiTestData::getSequenceDbi();
+    U2SequenceDbi* sequenceDbi = SQLiteObjectDbiTestData::getSequenceDbi();
     U2Sequence seq1;
     U2Sequence seq2;
     sequenceDbi->createSequenceObject(seq1, "", os);
@@ -247,11 +247,11 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, removeMsaObject) {
     CHECK_NO_ERROR(os);
 
     // REMOVE THE FIRST ALIGNMENT OBJECT
-    SQLiteObjectDbi *sqliteObjectDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
+    SQLiteObjectDbi* sqliteObjectDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
     sqliteObjectDbi->removeObject(msaId, os);
 
     // VERIFY THAT THERE IS ONLY THE SECOND ALIGNMENT'S RECORDS LEFT IN TABLES
-    SQLiteDbi *sqliteDbi = SQLiteObjectDbiTestData::getSQLiteDbi();
+    SQLiteDbi* sqliteDbi = SQLiteObjectDbiTestData::getSQLiteDbi();
 
     // "Attribute"
     SQLiteReadQuery qAttr("SELECT COUNT(*) FROM Attribute WHERE name = ?1", sqliteDbi->getDbRef(), os);
@@ -341,8 +341,8 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, removeMsaObject) {
 
 IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, setTrackModType) {
     U2OpStatusImpl os;
-    U2MsaDbi *msaDbi = SQLiteObjectDbiTestData::getMsaDbi();
-    SQLiteObjectDbi *objectDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
+    U2MsaDbi* msaDbi = SQLiteObjectDbiTestData::getMsaDbi();
+    SQLiteObjectDbi* objectDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
 
     // Create alignment 1
     U2DataId msaId1 = msaDbi->createMsaObject("", "Test name 1", BaseDNAAlphabetIds::NUCL_DNA_DEFAULT(), os);
@@ -385,7 +385,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, setTrackModType) {
 
 IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, canUndoRedo_noTrack) {
     U2OpStatusImpl os;
-    U2ObjectDbi *objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
+    U2ObjectDbi* objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
 
     // Create test msa
     U2DataId msaId = SQLiteObjectDbiTestData::createTestMsa(false, os);
@@ -406,7 +406,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, canUndoRedo_noTrack) {
 
 IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, canUndoRedo_noAction) {
     U2OpStatusImpl os;
-    U2ObjectDbi *objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
+    U2ObjectDbi* objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
 
     // Create test msa
     U2DataId msaId = SQLiteObjectDbiTestData::createTestMsa(true, os);
@@ -423,7 +423,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, canUndoRedo_noAction) {
 
 IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, canUndoRedo_lastState) {
     U2OpStatusImpl os;
-    U2ObjectDbi *objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
+    U2ObjectDbi* objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
 
     // Create test msa
     U2DataId msaId = SQLiteObjectDbiTestData::createTestMsa(true, os);
@@ -444,7 +444,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, canUndoRedo_lastState) {
 
 IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, canUndoRedo_firstState) {
     U2OpStatusImpl os;
-    U2ObjectDbi *objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
+    U2ObjectDbi* objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
 
     // Create test msa
     U2DataId msaId = SQLiteObjectDbiTestData::createTestMsa(true, os);
@@ -467,7 +467,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, canUndoRedo_firstState) {
 
 IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, canUndoRedo_midState) {
     U2OpStatusImpl os;
-    U2ObjectDbi *objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
+    U2ObjectDbi* objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
 
     // Create test msa
     U2DataId msaId = SQLiteObjectDbiTestData::createTestMsa(true, os);
@@ -493,7 +493,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, canUndoRedo_midState) {
 
 IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, canUndoRedo_oneUserStep) {
     U2OpStatusImpl os;
-    U2ObjectDbi *objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
+    U2ObjectDbi* objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
 
     // Create test msa
     U2DataId msaId = SQLiteObjectDbiTestData::createTestMsa(true, os);
@@ -534,8 +534,8 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, canUndoRedo_oneUserStep) {
 
 IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_user3Multi) {
     U2OpStatusImpl os;
-    U2ObjectDbi *objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
-    SQLiteDbi *sqliteDbi = SQLiteObjectDbiTestData::getSQLiteDbi();
+    U2ObjectDbi* objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
+    SQLiteDbi* sqliteDbi = SQLiteObjectDbiTestData::getSQLiteDbi();
 
     // Create test msa
     U2DataId msaId = SQLiteObjectDbiTestData::createTestMsa(true, os);
@@ -622,8 +622,8 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_user3Multi) {
 
 IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_actionAfterUndo) {
     U2OpStatusImpl os;
-    U2ObjectDbi *objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
-    SQLiteDbi *sqliteDbi = SQLiteObjectDbiTestData::getSQLiteDbi();
+    U2ObjectDbi* objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
+    SQLiteDbi* sqliteDbi = SQLiteObjectDbiTestData::getSQLiteDbi();
 
     // Create test msa
     U2DataId msaId = SQLiteObjectDbiTestData::createTestMsa(true, os);
@@ -709,8 +709,8 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_actionAfterUndo) {
 
 IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_actionUndoActionUndo1) {
     U2OpStatusImpl os;
-    U2ObjectDbi *objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
-    SQLiteDbi *sqliteDbi = SQLiteObjectDbiTestData::getSQLiteDbi();
+    U2ObjectDbi* objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
+    SQLiteDbi* sqliteDbi = SQLiteObjectDbiTestData::getSQLiteDbi();
 
     // Create test msa
     U2DataId msaId = SQLiteObjectDbiTestData::createTestMsa(true, os);
@@ -783,8 +783,8 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_actionUndoActionUndo1) {
 
 IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_actionUndoActionUndo2) {
     U2OpStatusImpl os;
-    U2ObjectDbi *objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
-    SQLiteDbi *sqliteDbi = SQLiteObjectDbiTestData::getSQLiteDbi();
+    U2ObjectDbi* objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
+    SQLiteDbi* sqliteDbi = SQLiteObjectDbiTestData::getSQLiteDbi();
 
     // Create test msa
     U2DataId msaId = SQLiteObjectDbiTestData::createTestMsa(true, os);
@@ -843,8 +843,8 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_actionUndoActionUndo2) {
 
 IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_actionUndoActionUndo3) {
     U2OpStatusImpl os;
-    U2ObjectDbi *objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
-    SQLiteDbi *sqliteDbi = SQLiteObjectDbiTestData::getSQLiteDbi();
+    U2ObjectDbi* objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
+    SQLiteDbi* sqliteDbi = SQLiteObjectDbiTestData::getSQLiteDbi();
 
     // Create test msa
     U2DataId msaId = SQLiteObjectDbiTestData::createTestMsa(true, os);
@@ -910,8 +910,8 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_actionUndoActionUndo3) {
 
 IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_actionUndoActionUndo4) {
     U2OpStatusImpl os;
-    U2ObjectDbi *objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
-    SQLiteDbi *sqliteDbi = SQLiteObjectDbiTestData::getSQLiteDbi();
+    U2ObjectDbi* objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
+    SQLiteDbi* sqliteDbi = SQLiteObjectDbiTestData::getSQLiteDbi();
 
     // Create test msa
     U2DataId msaId = SQLiteObjectDbiTestData::createTestMsa(true, os);
@@ -977,8 +977,8 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_actionUndoActionUndo4) {
 
 IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_user3Single6) {
     U2OpStatusImpl os;
-    U2ObjectDbi *objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
-    SQLiteDbi *sqliteDbi = SQLiteObjectDbiTestData::getSQLiteDbi();
+    U2ObjectDbi* objDbi = SQLiteObjectDbiTestData::getSQLiteObjectDbi();
+    SQLiteDbi* sqliteDbi = SQLiteObjectDbiTestData::getSQLiteDbi();
 
     // Create test msa
     U2DataId msaId = SQLiteObjectDbiTestData::createTestMsa(true, os);

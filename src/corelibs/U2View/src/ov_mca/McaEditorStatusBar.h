@@ -32,8 +32,8 @@ class McaReferenceCharController;
 class McaEditorStatusBar : public MaEditorStatusBar {
     Q_OBJECT
 public:
-    McaEditorStatusBar(McaEditor *editor,
-                       McaReferenceCharController *refCharController);
+    McaEditorStatusBar(McaEditor* editor,
+                       McaReferenceCharController* refCharController);
 
     void setMutationStatus(bool isAlternativeMutationsEnabled);
 
@@ -46,10 +46,10 @@ private:
     void updatePositionLabel() override;
     void updateMutationsLabel();
 
-    McaReferenceCharController *refCharController;
-    QLabel *mutationsStatus = nullptr;
+    McaReferenceCharController* refCharController;
+    QLabel* mutationsStatus = nullptr;
 
-    static const QMap<bool, const char *> MUTATION_MODE_ON_OFF_STATE_MAP;
+    static const QMap<bool, const char*> MUTATION_MODE_ON_OFF_STATE_MAP;
 };
 
 }  // namespace U2

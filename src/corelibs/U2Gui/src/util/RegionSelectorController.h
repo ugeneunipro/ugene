@@ -40,21 +40,21 @@ struct RegionSelectorGui {
           presetsComboBox(nullptr) {
     }
 
-    RegionSelectorGui(QLineEdit *start, QLineEdit *end, QComboBox *presets = nullptr)
+    RegionSelectorGui(QLineEdit* start, QLineEdit* end, QComboBox* presets = nullptr)
         : startLineEdit(start),
           endLineEdit(end),
           presetsComboBox(presets) {
     }
 
-    QLineEdit *startLineEdit;
-    QLineEdit *endLineEdit;
-    QComboBox *presetsComboBox;
+    QLineEdit* startLineEdit;
+    QLineEdit* endLineEdit;
+    QComboBox* presetsComboBox;
 };
 
 struct U2GUI_EXPORT RegionPreset {
     RegionPreset() {
     }
-    RegionPreset(const QString &text, const U2Region &region)
+    RegionPreset(const QString& text, const U2Region& region)
         : text(text),
           region(region) {
     }
@@ -62,7 +62,7 @@ struct U2GUI_EXPORT RegionPreset {
     QString text;
     U2Region region;
 
-    bool operator==(const RegionPreset &other) const {
+    bool operator==(const RegionPreset& other) const {
         return (text == other.text);
     }
 
@@ -79,12 +79,12 @@ struct U2GUI_EXPORT RegionPreset {
 struct RegionSelectorSettings {
     RegionSelectorSettings(qint64 maxLen,
                            bool circular = false,
-                           DNASequenceSelection *selection = nullptr,
+                           DNASequenceSelection* selection = nullptr,
                            QList<RegionPreset> presetRegions = QList<RegionPreset>(),
                            QString defaultPreset = RegionPreset::SELECTED_REGION());
 
     qint64 maxLen;
-    DNASequenceSelection *selection;
+    DNASequenceSelection* selection;
     bool circular;
 
     QList<RegionPreset> presetRegions;
@@ -99,14 +99,14 @@ class RegionSelectorController : public QObject {
 public:
     RegionSelectorController(RegionSelectorGui gui,
                              RegionSelectorSettings settings,
-                             QObject *parent);
+                             QObject* parent);
 
-    U2Region getRegion(bool *ok = nullptr) const;
-    void setRegion(const U2Region &region);
+    U2Region getRegion(bool* ok = nullptr) const;
+    void setRegion(const U2Region& region);
 
     QString getPresetName() const;
-    void setPreset(const QString &preset);
-    void removePreset(const QString &preset);
+    void setPreset(const QString& preset);
+    void removePreset(const QString& preset);
 
     void reset();
 
@@ -114,14 +114,14 @@ public:
     QString getErrorMessage() const;
 
 signals:
-    void si_regionChanged(const U2Region &newRegion);
+    void si_regionChanged(const U2Region& newRegion);
 
 private slots:
     //! rename
     void sl_regionChanged();
     void sl_onPresetChanged(int index);
     void sl_onRegionChanged();
-    void sl_onSelectionChanged(GSelection *selection);
+    void sl_onSelectionChanged(GSelection* selection);
     void sl_onValueEdited();
 
 private:

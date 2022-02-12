@@ -49,7 +49,7 @@ namespace LocalWorkflow {
 /************************************************************************/
 class InputSlotValidator : public PortValidator {
 public:
-    virtual bool validate(const IntegralBusPort *port, NotificationsList &notificationList) const {
+    virtual bool validate(const IntegralBusPort* port, NotificationsList& notificationList) const {
         bool data = isBinded(port, BaseSlots::ASSEMBLY_SLOT().getId());
         bool url = isBinded(port, BaseSlots::URL_SLOT().getId());
 
@@ -89,8 +89,8 @@ const QString CufflinksWorkerFactory::OUT_MAP_DESCR_ID("out.annotations");
 const QString CufflinksWorkerFactory::ISO_LEVEL_SLOT_DESCR_ID("isolevel.slot");
 
 void CufflinksWorkerFactory::init() {
-    QList<PortDescriptor *> portDescriptors;
-    QList<Attribute *> attributes;
+    QList<PortDescriptor*> portDescriptors;
+    QList<Attribute*> attributes;
 
     // Define ports and slots
     Descriptor inputPortDescriptor(BasePorts::IN_ASSEMBLY_PORT_ID(),
@@ -116,7 +116,7 @@ void CufflinksWorkerFactory::init() {
                                           CufflinksWorker::tr("A set of annotated regions"));
 
     outputMap[isoformLevelExprDescriptor] = BaseTypes::ANNOTATION_TABLE_TYPE();
-    DataTypeRegistry *registry = WorkflowEnv::getDataTypeRegistry();
+    DataTypeRegistry* registry = WorkflowEnv::getDataTypeRegistry();
     assert(registry);
 
     DataTypePtr mapDataType(new MapDataType(OUT_MAP_DESCR_ID, outputMap));
@@ -222,12 +222,12 @@ void CufflinksWorkerFactory::init() {
     attributes << new Attribute(tmpDir, BaseTypes::STRING_TYPE(), true, QVariant(L10N::defaultStr()));
 
     // Create the actor prototype
-    ActorPrototype *proto = new IntegralBusActorPrototype(cufflinksDescriptor,
+    ActorPrototype* proto = new IntegralBusActorPrototype(cufflinksDescriptor,
                                                           portDescriptors,
                                                           attributes);
 
     // Values range of some parameters
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
 
     {
         QVariantMap vm;
@@ -273,14 +273,14 @@ void CufflinksWorkerFactory::init() {
         BaseActorCategories::CATEGORY_RNA_SEQ(),
         proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new CufflinksWorkerFactory());
 }
 
 /*****************************
  * CufflinksPrompter
  *****************************/
-CufflinksPrompter::CufflinksPrompter(Actor *parent)
+CufflinksPrompter::CufflinksPrompter(Actor* parent)
     : PrompterBase<CufflinksPrompter>(parent) {
 }
 
@@ -293,7 +293,7 @@ QString CufflinksPrompter::composeRichDoc() {
 /*****************************
  * CufflinksWorker
  *****************************/
-CufflinksWorker::CufflinksWorker(Actor *actor)
+CufflinksWorker::CufflinksWorker(Actor* actor)
     : BaseWorker(actor),
       input(nullptr),
       output(nullptr),
@@ -301,8 +301,8 @@ CufflinksWorker::CufflinksWorker(Actor *actor)
 }
 
 void CufflinksWorker::initSlotsState() {
-    Port *port = actor->getPort(BasePorts::IN_ASSEMBLY_PORT_ID());
-    IntegralBusPort *bus = dynamic_cast<IntegralBusPort *>(port);
+    Port* port = actor->getPort(BasePorts::IN_ASSEMBLY_PORT_ID());
+    IntegralBusPort* bus = dynamic_cast<IntegralBusPort*>(port);
     settings.fromFile = bus->getProducers(BaseSlots::ASSEMBLY_SLOT().getId()).isEmpty();
 }
 
@@ -342,7 +342,7 @@ void CufflinksWorker::init() {
     settings.storage = context->getDataStorage();
 }
 
-Task *CufflinksWorker::tick() {
+Task* CufflinksWorker::tick() {
     if (!settingsAreCorrect) {
         return nullptr;
     }
@@ -359,7 +359,7 @@ Task *CufflinksWorker::tick() {
         }
 
         // Create the task
-        CufflinksSupportTask *cufflinksSupportTask = new CufflinksSupportTask(settings);
+        CufflinksSupportTask* cufflinksSupportTask = new CufflinksSupportTask(settings);
         cufflinksSupportTask->addListeners(createLogListeners());
         connect(cufflinksSupportTask, SIGNAL(si_stateChanged()), SLOT(sl_cufflinksTaskFinished()));
 
@@ -373,7 +373,7 @@ Task *CufflinksWorker::tick() {
 }
 
 void CufflinksWorker::sl_cufflinksTaskFinished() {
-    CufflinksSupportTask *cufflinksSupportTask = qobject_cast<CufflinksSupportTask *>(sender());
+    CufflinksSupportTask* cufflinksSupportTask = qobject_cast<CufflinksSupportTask*>(sender());
     CHECK(cufflinksSupportTask->isFinished(), );
 
     if (nullptr != output) {
@@ -381,12 +381,12 @@ void CufflinksWorker::sl_cufflinksTaskFinished() {
         SAFE_POINT(0 != outputMapDataType, "Internal error: can't get DataTypePtr for output map!", );
 
         QVariantMap messageData;
-        QList<AnnotationTableObject *> isoformTables = cufflinksSupportTask->getIsoformAnnotationTables();
+        QList<AnnotationTableObject*> isoformTables = cufflinksSupportTask->getIsoformAnnotationTables();
         messageData[CufflinksWorkerFactory::ISO_LEVEL_SLOT_DESCR_ID] = QVariant::fromValue(context->getDataStorage()->putAnnotationTables(isoformTables));
         output->put(Message(outputMapDataType, messageData));
         qDeleteAll(isoformTables);
 
-        foreach (const QString &url, cufflinksSupportTask->getOutputFiles()) {
+        foreach (const QString& url, cufflinksSupportTask->getOutputFiles()) {
             context->getMonitor()->addOutputFile(url, getActor()->getId());
         }
     }

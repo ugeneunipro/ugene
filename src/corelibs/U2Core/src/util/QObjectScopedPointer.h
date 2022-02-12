@@ -29,7 +29,7 @@ namespace U2 {
 template<class T>
 class QObjectScopedPointer {
 public:
-    QObjectScopedPointer(T *dialog = nullptr)
+    QObjectScopedPointer(T* dialog = nullptr)
         : pointer(dialog) {
     }
     ~QObjectScopedPointer() {
@@ -40,16 +40,16 @@ public:
         return pointer.isNull();
     }
 
-    T *operator->() const {
+    T* operator->() const {
         return pointer.operator->();
     }
-    T &operator*() const {
+    T& operator*() const {
         return *pointer.operator*();
     }
-    T *data() const {
+    T* data() const {
         return pointer.data();
     }
-    QObjectScopedPointer<T> &operator=(T *p) {
+    QObjectScopedPointer<T>& operator=(T* p) {
         pointer = p;
         return *this;
     }
@@ -59,12 +59,12 @@ private:
 };
 
 template<class T>
-inline bool operator==(const T *o, const QObjectScopedPointer<T> &p) {
+inline bool operator==(const T* o, const QObjectScopedPointer<T>& p) {
     return o == p.operator->();
 }
 
 template<class T>
-inline bool operator==(const QObjectScopedPointer<T> &p, const T *o) {
+inline bool operator==(const QObjectScopedPointer<T>& p, const T* o) {
     return p.operator->() == o;
 }
 

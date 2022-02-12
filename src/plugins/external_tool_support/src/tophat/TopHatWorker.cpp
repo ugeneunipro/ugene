@@ -102,8 +102,8 @@ static const QString BOWTIE2("Bowtie2");
 static const QString FILE_TAG("file");
 
 void TopHatWorkerFactory::init() {
-    QList<PortDescriptor *> portDescriptors;
-    QList<Attribute *> attributes;
+    QList<PortDescriptor*> portDescriptors;
+    QList<Attribute*> attributes;
 
     // Define ports and slots
     Descriptor inPortDesc(
@@ -357,17 +357,17 @@ void TopHatWorkerFactory::init() {
                       TopHatWorker::tr("The folder for temporary files."));
 
     attributes << new Attribute(referenceInputType, BaseTypes::STRING_TYPE(), true, QVariant(TopHatSettings::INDEX));
-    Attribute *attrRefGenom = new Attribute(refGenome, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
+    Attribute* attrRefGenom = new Attribute(refGenome, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
     attrRefGenom->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, TopHatSettings::SEQUENCE));
     attributes << attrRefGenom;
     {
-        Attribute *dirAttr = new Attribute(bowtieIndexDir, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
+        Attribute* dirAttr = new Attribute(bowtieIndexDir, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
         dirAttr->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, TopHatSettings::INDEX));
         dirAttr->addRelation(new BowtieFilesRelation(BOWTIE_INDEX_BASENAME));
         dirAttr->addRelation(new BowtieVersionRelation(BOWTIE_VERSION));
         attributes << dirAttr;
     }
-    Attribute *attrIndexBasename = new Attribute(bowtieIndexBasename, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
+    Attribute* attrIndexBasename = new Attribute(bowtieIndexBasename, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
     attrIndexBasename->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, TopHatSettings::INDEX));
     attributes << attrIndexBasename;
 
@@ -399,12 +399,12 @@ void TopHatWorkerFactory::init() {
     attributes << new Attribute(samplesMap, BaseTypes::STRING_TYPE(), false, "");
 
     // Create the actor prototype
-    ActorPrototype *proto = new IntegralBusActorPrototype(topHatDescriptor,
+    ActorPrototype* proto = new IntegralBusActorPrototype(topHatDescriptor,
                                                           portDescriptors,
                                                           attributes);
 
     // Values range of some parameters
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
 
     {
         QVariantMap rip;
@@ -516,14 +516,14 @@ void TopHatWorkerFactory::init() {
         BaseActorCategories::CATEGORY_NGS_MAP_ASSEMBLE_READS(),
         proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new TopHatWorkerFactory());
 }
 
 /*****************************
  * TopHatPrompter
  *****************************/
-TopHatPrompter::TopHatPrompter(Actor *parent)
+TopHatPrompter::TopHatPrompter(Actor* parent)
     : PrompterBase<TopHatPrompter>(parent) {
 }
 
@@ -547,24 +547,24 @@ QString TopHatPrompter::composeRichDoc() {
 /*****************************
  * TopHatWorker
  *****************************/
-TopHatWorker::TopHatWorker(Actor *actor)
+TopHatWorker::TopHatWorker(Actor* actor)
     : BaseWorker(actor, false /*autoTransit*/),
       input(nullptr),
       output(nullptr) {
 }
 
-QList<Actor *> TopHatWorker::getProducers(const QString &slotId) const {
-    Port *port = actor->getPort(BasePorts::IN_SEQ_PORT_ID());
-    SAFE_POINT(nullptr != port, "Internal error during initializing TopHatWorker: port is NULL!", QList<Actor *>());
+QList<Actor*> TopHatWorker::getProducers(const QString& slotId) const {
+    Port* port = actor->getPort(BasePorts::IN_SEQ_PORT_ID());
+    SAFE_POINT(nullptr != port, "Internal error during initializing TopHatWorker: port is NULL!", QList<Actor*>());
 
-    IntegralBusPort *bus = dynamic_cast<IntegralBusPort *>(port);
-    SAFE_POINT(nullptr != bus, "Internal error during initializing TopHatWorker: bus is NULL!", QList<Actor *>());
+    IntegralBusPort* bus = dynamic_cast<IntegralBusPort*>(port);
+    SAFE_POINT(nullptr != bus, "Internal error during initializing TopHatWorker: bus is NULL!", QList<Actor*>());
 
     return bus->getProducers(slotId);
 }
 
-QString TopHatWorker::getSampleName(const QString &datasetName) const {
-    foreach (const TophatSample &sample, samples) {
+QString TopHatWorker::getSampleName(const QString& datasetName) const {
+    foreach (const TophatSample& sample, samples) {
         if (sample.datasets.contains(datasetName)) {
             return sample.name;
         }
@@ -573,12 +573,12 @@ QString TopHatWorker::getSampleName(const QString &datasetName) const {
 }
 
 void TopHatWorker::initInputData() {
-    QList<Actor *> inDataProducers = getProducers(IN_DATA_SLOT_ID);
+    QList<Actor*> inDataProducers = getProducers(IN_DATA_SLOT_ID);
     settings.data.fromFiles = (inDataProducers.isEmpty());
 }
 
 void TopHatWorker::initPairedReads() {
-    QList<Actor *> pairedProducers;
+    QList<Actor*> pairedProducers;
     if (settings.data.fromFiles) {
         pairedProducers = getProducers(PAIRED_IN_URL_SLOT_ID);
     } else {
@@ -684,21 +684,21 @@ void TopHatWorker::init() {
     initSamples();
 }
 
-Task *TopHatWorker::runTophat() {
+Task* TopHatWorker::runTophat() {
     if (settings.data.fromFiles && settings.data.size() == 1) {
         settings.resultPrefix = GUrlUtils::getPairedFastqFilesBaseName(settings.data.urls.first(), settings.data.paired);
     } else {
         settings.resultPrefix = settings.datasetName;
     }
 
-    TopHatSupportTask *topHatSupportTask = new TopHatSupportTask(settings);
+    TopHatSupportTask* topHatSupportTask = new TopHatSupportTask(settings);
     topHatSupportTask->addListeners(createLogListeners());
     connect(topHatSupportTask, SIGNAL(si_stateChanged()), SLOT(sl_topHatTaskFinished()));
     settings.cleanupReads();
     return topHatSupportTask;
 }
 
-Task *TopHatWorker::tick() {
+Task* TopHatWorker::tick() {
     if (!settingsAreCorrect) {
         return nullptr;
     }
@@ -708,7 +708,7 @@ Task *TopHatWorker::tick() {
     if (readsFetcher.hasFullDataset()) {
         settings.datasetName = readsFetcher.getDatasetName();
         const QList<Message> dataset = readsFetcher.takeFullDataset();
-        foreach (const Message &message, dataset) {
+        foreach (const Message& message, dataset) {
             const QVariantMap messageData = message.getData().toMap();
             if (settings.data.fromFiles) {
                 settings.data.urls << messageData[IN_URL_SLOT_ID].toString();
@@ -734,7 +734,7 @@ Task *TopHatWorker::tick() {
 }
 
 void TopHatWorker::sl_topHatTaskFinished() {
-    TopHatSupportTask *task = qobject_cast<TopHatSupportTask *>(sender());
+    TopHatSupportTask* task = qobject_cast<TopHatSupportTask*>(sender());
     if (!task->isFinished()) {
         return;
     }
@@ -745,7 +745,7 @@ void TopHatWorker::sl_topHatTaskFinished() {
         m[SAMPLE_SLOT_ID] = getSampleName(task->getDatasetName());
         m[OUT_BAM_URL_SLOT_ID] = task->getOutBamUrl();
         output->put(Message(output->getBusType(), m));
-        foreach (const QString &url, task->getOutputFiles()) {
+        foreach (const QString& url, task->getOutputFiles()) {
             if (QFile::exists(url)) {
                 context->getMonitor()->addOutputFile(url, getActor()->getId());
             }
@@ -759,7 +759,7 @@ void TopHatWorker::cleanup() {
 /************************************************************************/
 /* Validators */
 /************************************************************************/
-bool InputSlotsValidator::validate(const IntegralBusPort *port, NotificationsList &notificationList) const {
+bool InputSlotsValidator::validate(const IntegralBusPort* port, NotificationsList& notificationList) const {
     StrStrMap bm = port->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
     bool data = isBinded(bm, IN_DATA_SLOT_ID);
     bool pairedData = isBinded(bm, PAIRED_IN_DATA_SLOT_ID);
@@ -783,9 +783,9 @@ bool InputSlotsValidator::validate(const IntegralBusPort *port, NotificationsLis
     return true;
 }
 
-bool BowtieToolsValidator::validateSamples(const Actor *actor, NotificationsList &notificationList) const {
+bool BowtieToolsValidator::validateSamples(const Actor* actor, NotificationsList& notificationList) const {
     bool valid = true;
-    Attribute *samplesAttr = actor->getParameter(TopHatWorkerFactory::SAMPLES_MAP);
+    Attribute* samplesAttr = actor->getParameter(TopHatWorkerFactory::SAMPLES_MAP);
 
     U2OpStatusImpl os;
     QList<TophatSample> samples = WorkflowUtils::unpackSamples(samplesAttr->getAttributePureValue().toString(), os);
@@ -801,7 +801,7 @@ bool BowtieToolsValidator::validateSamples(const Actor *actor, NotificationsList
     }
 
     QStringList names;
-    foreach (const TophatSample &sample, samples) {
+    foreach (const TophatSample& sample, samples) {
         if (names.contains(sample.name)) {
             notificationList << WorkflowNotification(QObject::tr("Duplicate sample name: ") + sample.name, actor->getLabel());
             valid = false;
@@ -815,18 +815,18 @@ bool BowtieToolsValidator::validateSamples(const Actor *actor, NotificationsList
     return valid;
 }
 
-bool BowtieToolsValidator::validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> & /*options*/) const {
+bool BowtieToolsValidator::validate(const Actor* actor, NotificationsList& notificationList, const QMap<QString, QString>& /*options*/) const {
     return validateSamples(actor, notificationList);
 }
 
 /************************************************************************/
 /* BowtieFilesRelation */
 /************************************************************************/
-BowtieFilesRelation::BowtieFilesRelation(const QString &indexNameAttrId)
+BowtieFilesRelation::BowtieFilesRelation(const QString& indexNameAttrId)
     : AttributeRelation(indexNameAttrId) {
 }
 
-QVariant BowtieFilesRelation::getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue, DelegateTags *infTags, DelegateTags *) const {
+QVariant BowtieFilesRelation::getAffectResult(const QVariant& influencingValue, const QVariant& dependentValue, DelegateTags* infTags, DelegateTags*) const {
     CHECK(nullptr != infTags, dependentValue);
     QString bwtDir = influencingValue.toString();
     QString bwtFile = infTags->get(FILE_TAG).toString();
@@ -843,11 +843,11 @@ RelationType BowtieFilesRelation::getType() const {
     return CUSTOM_VALUE_CHANGER;
 }
 
-BowtieFilesRelation *BowtieFilesRelation::clone() const {
+BowtieFilesRelation* BowtieFilesRelation::clone() const {
     return new BowtieFilesRelation(*this);
 }
 
-static QString getBowtieIndexName(const QString &, const QString &fileName, const QRegExp &dirRx, const QRegExp &revRx) {
+static QString getBowtieIndexName(const QString&, const QString& fileName, const QRegExp& dirRx, const QRegExp& revRx) {
     QString indexName;
     if (revRx.exactMatch(fileName)) {
         indexName = revRx.cap(1);
@@ -859,14 +859,14 @@ static QString getBowtieIndexName(const QString &, const QString &fileName, cons
     return indexName;
 }
 
-QString BowtieFilesRelation::getBowtie1IndexName(const QString &dir, const QString &fileName) {
+QString BowtieFilesRelation::getBowtie1IndexName(const QString& dir, const QString& fileName) {
     QRegExp dirRx("^(.+)\\.[1-4]\\.ebwt$");
     QRegExp revRx("^(.+)\\.rev\\.[1-2]\\.ebwt$");
 
     return getBowtieIndexName(dir, fileName, dirRx, revRx);
 }
 
-QString BowtieFilesRelation::getBowtie2IndexName(const QString &dir, const QString &fileName) {
+QString BowtieFilesRelation::getBowtie2IndexName(const QString& dir, const QString& fileName) {
     QRegExp dirRx("^(.+)\\.[1-4]\\.bt2$");
     QRegExp revRx("^(.+)\\.rev\\.[1-2]\\.bt2$");
 
@@ -876,11 +876,11 @@ QString BowtieFilesRelation::getBowtie2IndexName(const QString &dir, const QStri
 /************************************************************************/
 /* BowtieVersionRelation */
 /************************************************************************/
-BowtieVersionRelation::BowtieVersionRelation(const QString &bwtVersionAttrId)
+BowtieVersionRelation::BowtieVersionRelation(const QString& bwtVersionAttrId)
     : AttributeRelation(bwtVersionAttrId) {
 }
 
-QVariant BowtieVersionRelation::getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue, DelegateTags *infTags, DelegateTags *) const {
+QVariant BowtieVersionRelation::getAffectResult(const QVariant& influencingValue, const QVariant& dependentValue, DelegateTags* infTags, DelegateTags*) const {
     CHECK(nullptr != infTags, dependentValue);
     QString bwtDir = influencingValue.toString();
     QString bwtFile = infTags->get(FILE_TAG).toString();
@@ -900,7 +900,7 @@ RelationType BowtieVersionRelation::getType() const {
     return CUSTOM_VALUE_CHANGER;
 }
 
-BowtieVersionRelation *BowtieVersionRelation::clone() const {
+BowtieVersionRelation* BowtieVersionRelation::clone() const {
     return new BowtieVersionRelation(*this);
 }
 }  // namespace LocalWorkflow

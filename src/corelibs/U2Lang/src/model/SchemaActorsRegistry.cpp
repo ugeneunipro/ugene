@@ -31,7 +31,7 @@
 namespace U2 {
 namespace Workflow {
 
-bool SchemaActorsRegistry::registerSchema(const QString &protoId, Schema *schema) {
+bool SchemaActorsRegistry::registerSchema(const QString& protoId, Schema* schema) {
     QMutexLocker lock(&mutex);
     if (schemas.keys().contains(protoId)) {
         return false;
@@ -41,20 +41,20 @@ bool SchemaActorsRegistry::registerSchema(const QString &protoId, Schema *schema
     return true;
 }
 
-Schema *SchemaActorsRegistry::unregisterSchema(const QString &protoId) {
+Schema* SchemaActorsRegistry::unregisterSchema(const QString& protoId) {
     QMutexLocker lock(&mutex);
-    Schema *res = schemas.value(protoId, nullptr);
+    Schema* res = schemas.value(protoId, nullptr);
     schemas.remove(protoId);
     return res;
 }
 
-Schema *SchemaActorsRegistry::getSchema(const QString &protoId) {
+Schema* SchemaActorsRegistry::getSchema(const QString& protoId) {
     QMutexLocker lock(&mutex);
-    Schema *schema = schemas.value(protoId, nullptr);
+    Schema* schema = schemas.value(protoId, nullptr);
     if (nullptr == schema) {
         return nullptr;
     }
-    Schema *copy = new Schema();
+    Schema* copy = new Schema();
     U2OpStatusImpl os;
     HRSchemaSerializer::deepCopy(*schema, copy, os);
     SAFE_POINT_EXT(!os.isCoR(), copy->reset(), nullptr);

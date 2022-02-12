@@ -38,14 +38,14 @@
 
 namespace U2 {
 
-RawDNASequenceFormat::RawDNASequenceFormat(QObject *p)
+RawDNASequenceFormat::RawDNASequenceFormat(QObject* p)
     : TextDocumentFormat(p, BaseDocumentFormats::RAW_DNA_SEQUENCE, DocumentFormatFlags_W1, {"seq", "txt"}) {
     formatName = tr("Raw sequence");
     supportedObjectTypes += GObjectTypes::SEQUENCE;
     formatDescription = tr("Raw sequence file - a whole content of the file is treated either as a single/multiple nucleotide or peptide sequence(s). UGENE will remove all non-alphabetic chars from the result sequence. By default the characters in the file are considered a single sequence.");
 }
 
-static void finishSequenceImport(QList<GObject *> &objects, const QString &url, U2OpStatus &os, const U2DbiRef &dbiRef, const QVariantMap &fs, TmpDbiObjects &dbiObjects, U2SequenceImporter &seqImporter) {
+static void finishSequenceImport(QList<GObject*>& objects, const QString& url, U2OpStatus& os, const U2DbiRef& dbiRef, const QVariantMap& fs, TmpDbiObjects& dbiObjects, U2SequenceImporter& seqImporter) {
     U2Sequence u2seq = seqImporter.finalizeSequence(os);
     dbiObjects.objects << u2seq.id;
     CHECK_OP(os, );
@@ -56,7 +56,7 @@ static void finishSequenceImport(QList<GObject *> &objects, const QString &url, 
     objects << new U2SequenceObject(u2seq.visualName, U2EntityRef(dbiRef, u2seq.id));
 }
 
-static void load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QList<GObject *> &objects, const QVariantMap &hints, U2OpStatus &os) {
+static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& os) {
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, );
 
@@ -115,14 +115,14 @@ static void load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QList<GObject 
     }
 }
 
-Document *RawDNASequenceFormat::loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) {
-    QList<GObject *> objects;
+Document* RawDNASequenceFormat::loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) {
+    QList<GObject*> objects;
     load(reader, dbiRef, objects, hints, os);
     CHECK_OP(os, nullptr);
     return new Document(this, reader.getFactory(), reader.getURL(), dbiRef, objects, hints);
 }
 
-FormatCheckResult RawDNASequenceFormat::checkRawTextData(const QString &dataPrefix, const GUrl &) const {
+FormatCheckResult RawDNASequenceFormat::checkRawTextData(const QString& dataPrefix, const GUrl&) const {
     if (QRegExp("[a-zA-Z\r\n\\*-]*").exactMatch(dataPrefix)) {
         return FormatDetection_VeryHighSimilarity;
     }
@@ -130,22 +130,22 @@ FormatCheckResult RawDNASequenceFormat::checkRawTextData(const QString &dataPref
     return FormatDetection_VeryLowSimilarity;
 }
 
-void RawDNASequenceFormat::storeTextDocument(IOAdapterWriter &writer, Document *document, U2OpStatus &os) {
-    QList<GObject *> objects = document->findGObjectByType(GObjectTypes::SEQUENCE);
+void RawDNASequenceFormat::storeTextDocument(IOAdapterWriter& writer, Document* document, U2OpStatus& os) {
+    QList<GObject*> objects = document->findGObjectByType(GObjectTypes::SEQUENCE);
     CHECK(objects.size() == 1, );
-    auto *sequenceObject = qobject_cast<U2SequenceObject *>(objects.first());
+    auto* sequenceObject = qobject_cast<U2SequenceObject*>(objects.first());
     SAFE_POINT(sequenceObject != nullptr, L10N::nullPointerError("Sequence object"), );
     QByteArray seqData = sequenceObject->getWholeSequenceData(os);
     CHECK_OP(os, );
     writer.write(os, QString::fromLatin1(seqData));  // Note: we limit DNA sequence alphabet to Latin1.
 }
 
-void RawDNASequenceFormat::storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) {
+void RawDNASequenceFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObjectType, QList<GObject*>>& objectsMap, U2OpStatus& os) {
     SAFE_POINT(objectsMap.contains(GObjectTypes::SEQUENCE), "Raw sequence entry storing: no sequences", );
-    const QList<GObject *> &sequenceObjectList = objectsMap[GObjectTypes::SEQUENCE];
+    const QList<GObject*>& sequenceObjectList = objectsMap[GObjectTypes::SEQUENCE];
     SAFE_POINT(sequenceObjectList.size() == 1, "Raw sequence entry storing: sequence objects count error", );
 
-    auto sequenceObject = dynamic_cast<U2SequenceObject *>(sequenceObjectList.first());
+    auto sequenceObject = dynamic_cast<U2SequenceObject*>(sequenceObjectList.first());
     SAFE_POINT(sequenceObject != nullptr, "Raw sequence entry storing: NULL sequence object", );
 
     QByteArray seqData = sequenceObject->getWholeSequenceData(os);

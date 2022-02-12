@@ -39,15 +39,15 @@ void Vector3D::set(double xs, double ys, double zs) {
     z = zs;
 }
 
-bool Vector3D::operator==(const Vector3D &other) const {
+bool Vector3D::operator==(const Vector3D& other) const {
     return (x == other.x && y == other.y && z == other.z);
 }
 
-bool Vector3D::operator!=(const Vector3D &other) const {
+bool Vector3D::operator!=(const Vector3D& other) const {
     return !(*this == other);
 }
 
-double &Vector3D::operator[](unsigned int i) {
+double& Vector3D::operator[](unsigned int i) {
     static double err = 0.0;
     if (i == 0)
         return x;
@@ -72,61 +72,61 @@ double Vector3D::operator[](unsigned int i) const {
     return 0.0;
 }
 
-Vector3D operator-(const Vector3D &a) {
+Vector3D operator-(const Vector3D& a) {
     return Vector3D(-a.x, -a.y, -a.z);
 }
 
-Vector3D operator+(const Vector3D &a, const Vector3D &b) {
+Vector3D operator+(const Vector3D& a, const Vector3D& b) {
     return Vector3D(a.x + b.x, a.y + b.y, a.z + b.z);
 }
 
-Vector3D &Vector3D::operator+=(const Vector3D &v) {
+Vector3D& Vector3D::operator+=(const Vector3D& v) {
     x += v.x;
     y += v.y;
     z += v.z;
     return *this;
 }
 
-Vector3D operator-(const Vector3D &a, const Vector3D &b) {
+Vector3D operator-(const Vector3D& a, const Vector3D& b) {
     return Vector3D(a.x - b.x, a.y - b.y, a.z - b.z);
 }
 
-Vector3D &Vector3D::operator-=(const Vector3D &v) {
+Vector3D& Vector3D::operator-=(const Vector3D& v) {
     x -= v.x;
     y -= v.y;
     z -= v.z;
     return *this;
 }
 
-Vector3D operator*(const Vector3D &v, double f) {
+Vector3D operator*(const Vector3D& v, double f) {
     return Vector3D(v.x * f, v.y * f, v.z * f);
 }
 
-Vector3D operator*(double f, const Vector3D &v) {
+Vector3D operator*(double f, const Vector3D& v) {
     return Vector3D(v.x * f, v.y * f, v.z * f);
 }
 
-Vector3D &Vector3D::operator*=(double f) {
+Vector3D& Vector3D::operator*=(double f) {
     x *= f;
     y *= f;
     z *= f;
     return *this;
 }
 
-Vector3D operator/(const Vector3D &v, double f) {
+Vector3D operator/(const Vector3D& v, double f) {
     return Vector3D(v.x / f, v.y / f, v.z / f);
 }
 
-Vector3D &Vector3D::operator/=(double f) {
+Vector3D& Vector3D::operator/=(double f) {
     x /= f;
     y /= f;
     z /= f;
     return *this;
 }
 
-Vector3D &Vector3D::dot(const Matrix44 &m) {
+Vector3D& Vector3D::dot(const Matrix44& m) {
     const Vector3D tmp = *this;
-    const float *mdata = m.data();
+    const float* mdata = m.data();
 
     x = tmp.x * mdata[0] + tmp.y * mdata[1] + tmp.z * mdata[2] + mdata[3];
     y = tmp.x * mdata[4] + tmp.y * mdata[5] + tmp.z * mdata[6] + mdata[7];
@@ -147,11 +147,11 @@ void Vector3D::normalize(void) {
     *this /= length();
 }
 
-double vector_dot(const Vector3D &a, const Vector3D &b) {
+double vector_dot(const Vector3D& a, const Vector3D& b) {
     return (a.x * b.x + a.y * b.y + a.z * b.z);
 }
 
-Vector3D vector_cross(const Vector3D &a, const Vector3D &b) {
+Vector3D vector_cross(const Vector3D& a, const Vector3D& b) {
     return Vector3D(
         a.y * b.z - a.z * b.y,
         a.z * b.x - a.x * b.z,

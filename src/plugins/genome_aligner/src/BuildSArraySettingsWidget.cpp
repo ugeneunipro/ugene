@@ -34,7 +34,7 @@ static const int DEFAULT_PART_SIZE = 10;
 
 namespace U2 {
 
-BuildSArraySettingsWidget::BuildSArraySettingsWidget(QWidget *parent)
+BuildSArraySettingsWidget::BuildSArraySettingsWidget(QWidget* parent)
     : DnaAssemblyAlgorithmBuildIndexWidget(parent) {
     setupUi(this);
     layout()->setContentsMargins(0, 0, 0, 0);
@@ -66,7 +66,7 @@ void BuildSArraySettingsWidget::sl_onPartSliderChanged(int value) {
     totalSizeLabel->setText(QByteArray::number(value * 13) + " Mb");
 }
 
-GUrl BuildSArraySettingsWidget::buildIndexUrl(const GUrl &url) {
+GUrl BuildSArraySettingsWidget::buildIndexUrl(const GUrl& url) {
     QString refUrl = url.getURLString();
     QFile file(refUrl);
     if (file.exists()) {

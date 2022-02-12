@@ -59,7 +59,7 @@ public:
         : ev(0.01f), alp(nullptr) {
     }
     float ev;
-    const DNAAlphabet *alp;
+    const DNAAlphabet* alp;
     QByteArray query;
     QString localDbFolder;
     QString dbName;
@@ -72,7 +72,7 @@ public:
     virtual ~CDSearchResultListener() {
     }
     virtual QList<SharedAnnotationData> getCDSResults() const = 0;
-    virtual Task *getTask() const = 0;
+    virtual Task* getTask() const = 0;
 };
 
 class U2ALGORITHM_EXPORT CDSearchFactory {
@@ -80,7 +80,7 @@ public:
     virtual ~CDSearchFactory() {
     }
 
-    virtual CDSearchResultListener *createCDSearch(const CDSearchSettings &settings) const = 0;
+    virtual CDSearchResultListener* createCDSearch(const CDSearchSettings& settings) const = 0;
 };
 
 }  // namespace U2

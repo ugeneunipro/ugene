@@ -34,19 +34,19 @@ class U2SequenceObject;
 class FindExonRegionsTask : public Task {
     Q_OBJECT
 public:
-    FindExonRegionsTask(U2SequenceObject *dnaObj,
-                        const QString &exonAnnotaitonName);
+    FindExonRegionsTask(U2SequenceObject* dnaObj,
+                        const QString& exonAnnotaitonName);
     QList<U2Region> getRegions() {
         return exonRegions;
     }
 
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
     ReportResult report();
 
 private:
     QList<U2Region> exonRegions;
-    U2SequenceObject *dnaObj;
+    U2SequenceObject* dnaObj;
     QString exonAnnName;
 };
 

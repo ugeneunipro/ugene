@@ -28,7 +28,7 @@ namespace U2 {
 
 class U2LANG_EXPORT IdMapping {
 public:
-    IdMapping(const QString &srcId, const QString &dstId);
+    IdMapping(const QString& srcId, const QString& dstId);
     virtual ~IdMapping();
 
     QString getSrcId() const;

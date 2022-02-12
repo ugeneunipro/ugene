@@ -34,13 +34,13 @@ public:
     static void init();
     static void shutdown();
 
-    static U2FeatureDbi *getFeatureDbi();
+    static U2FeatureDbi* getFeatureDbi();
 
 protected:
     static TestDbiProvider dbiProvider;
 
 private:
-    static U2FeatureDbi *featureDbi;
+    static U2FeatureDbi* featureDbi;
 };
 
 DECLARE_TEST(FeatureTableObjectUnitTest, createEmptyFeaturesTableObject);

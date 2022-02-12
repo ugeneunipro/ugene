@@ -36,11 +36,11 @@ public:
      * Returns true if the factory was successfully registered.
      * Returns false if the factory with this id already exists
      */
-    bool registerReadDocumentTaskFactory(ReadDocumentTaskFactory *factory);
-    ReadDocumentTaskFactory *getReadDocumentTaskFactory(const QString &id);
+    bool registerReadDocumentTaskFactory(ReadDocumentTaskFactory* factory);
+    ReadDocumentTaskFactory* getReadDocumentTaskFactory(const QString& id);
 
 private:
-    QMap<QString, ReadDocumentTaskFactory *> readTasks;
+    QMap<QString, ReadDocumentTaskFactory*> readTasks;
 };
 
 }  // namespace Workflow

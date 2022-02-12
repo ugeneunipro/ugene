@@ -32,14 +32,14 @@
 
 namespace U2 {
 
-NewGrouperSlotDialog::NewGrouperSlotDialog(QWidget *parent, QList<Descriptor> &inSlots, QStringList &names)
+NewGrouperSlotDialog::NewGrouperSlotDialog(QWidget* parent, QList<Descriptor>& inSlots, QStringList& names)
     : QDialog(parent), inSlots(inSlots), names(names) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930076");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    foreach (const Descriptor &d, inSlots) {
+    foreach (const Descriptor& d, inSlots) {
         slotBox->addItem(d.getDisplayName(), d.getId());
     }
 }
@@ -78,11 +78,11 @@ QString NewGrouperSlotDialog::getOutSlotName() const {
 /************************************************************************/
 /* Action dialogs */
 /************************************************************************/
-ActionDialog::ActionDialog(QWidget *parent)
+ActionDialog::ActionDialog(QWidget* parent)
     : QDialog(parent) {
 }
 
-ActionDialog *ActionDialog::getActionDialog(QWidget *parent, GrouperSlotAction *action, DataTypePtr type, QAbstractTableModel *grouperModel) {
+ActionDialog* ActionDialog::getActionDialog(QWidget* parent, GrouperSlotAction* action, DataTypePtr type, QAbstractTableModel* grouperModel) {
     if (BaseTypes::DNA_SEQUENCE_TYPE() == type) {
         return new SequeceActionDialog(parent, action);
     } else if (BaseTypes::MULTIPLE_ALIGNMENT_TYPE() == type) {
@@ -91,7 +91,7 @@ ActionDialog *ActionDialog::getActionDialog(QWidget *parent, GrouperSlotAction *
         return new StringActionDialog(parent, action);
     } else if (BaseTypes::ANNOTATION_TABLE_LIST_TYPE() == type ||
                BaseTypes::ANNOTATION_TABLE_TYPE() == type) {
-        GrouperSlotsCfgModel *m = dynamic_cast<GrouperSlotsCfgModel *>(grouperModel);
+        GrouperSlotsCfgModel* m = dynamic_cast<GrouperSlotsCfgModel*>(grouperModel);
         assert(nullptr != m);
         QStringList mergeSeqSlots = m->getMergeSeqSlotsNames();
         return new AnnsActionDialog(parent, action, mergeSeqSlots);
@@ -99,7 +99,7 @@ ActionDialog *ActionDialog::getActionDialog(QWidget *parent, GrouperSlotAction *
     return nullptr;
 }
 
-AnnsActionDialog::AnnsActionDialog(QWidget *parent, GrouperSlotAction *action, QStringList mergeSeqSlots)
+AnnsActionDialog::AnnsActionDialog(QWidget* parent, GrouperSlotAction* action, QStringList mergeSeqSlots)
     : ActionDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930076");
@@ -107,7 +107,7 @@ AnnsActionDialog::AnnsActionDialog(QWidget *parent, GrouperSlotAction *action, Q
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     slotBox->addItem(tr("Don't shift"));
-    foreach (const QString &slot, mergeSeqSlots) {
+    foreach (const QString& slot, mergeSeqSlots) {
         slotBox->addItem(slot);
     }
 
@@ -145,7 +145,7 @@ GrouperSlotAction AnnsActionDialog::getAction() const {
     return action;
 }
 
-SequeceActionDialog::SequeceActionDialog(QWidget *parent, GrouperSlotAction *action)
+SequeceActionDialog::SequeceActionDialog(QWidget* parent, GrouperSlotAction* action)
     : ActionDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930076");
@@ -209,7 +209,7 @@ GrouperSlotAction SequeceActionDialog::getAction() const {
     }
 }
 
-MsaActionDialog::MsaActionDialog(QWidget *parent, GrouperSlotAction *action)
+MsaActionDialog::MsaActionDialog(QWidget* parent, GrouperSlotAction* action)
     : ActionDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930076");
@@ -242,7 +242,7 @@ GrouperSlotAction MsaActionDialog::getAction() const {
     return action;
 }
 
-StringActionDialog::StringActionDialog(QWidget *parent, GrouperSlotAction *action)
+StringActionDialog::StringActionDialog(QWidget* parent, GrouperSlotAction* action)
     : ActionDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930076");

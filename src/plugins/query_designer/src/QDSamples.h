@@ -38,24 +38,24 @@ class QueryScene;
 class QDSample {
 public:
     Descriptor d;
-    QDDocument *content;
+    QDDocument* content;
 };
 
 class QDLoadSamplesTask : public Task {
     Q_OBJECT
 public:
-    QDLoadSamplesTask(const QStringList &_dirs);
-    virtual QList<Task *> onSubTaskFinished(Task *subTask);
+    QDLoadSamplesTask(const QStringList& _dirs);
+    virtual QList<Task*> onSubTaskFinished(Task* subTask);
     ReportResult report();
 
 private:
-    QMap<Task *, QString> idMap;
+    QMap<Task*, QString> idMap;
     QList<QDSample> result;
 };
 
 class QDSamplesRegistry {
 public:
-    static const QList<QDSample> &getSamples() {
+    static const QList<QDSample>& getSamples() {
         return data;
     }
 
@@ -67,43 +67,43 @@ private:
 class QDSamplePane : public GlassPane {
     Q_OBJECT
 public:
-    QDSamplePane(QueryScene *_scene);
-    virtual void paint(QPainter *painter);
-    virtual bool eventFilter(QObject *, QEvent *e) {
+    QDSamplePane(QueryScene* _scene);
+    virtual void paint(QPainter* painter);
+    virtual bool eventFilter(QObject*, QEvent* e) {
         this->event(e);
         return current != nullptr;
     }
-    void setItem(QListWidgetItem *item) {
+    void setItem(QListWidgetItem* item) {
         current = item;
     }
 signals:
-    void itemActivated(QListWidgetItem *item);
+    void itemActivated(QListWidgetItem* item);
 
 protected:
-    void mouseDoubleClickEvent(QMouseEvent *e);
+    void mouseDoubleClickEvent(QMouseEvent* e);
 
 private:
-    QueryScene *scene;
-    QListWidgetItem *current;
+    QueryScene* scene;
+    QListWidgetItem* current;
 };
 
 class QDSamplesWidget : public QListWidget {
     Q_OBJECT
 public:
-    QDSamplesWidget(QueryScene *scene, QWidget *parent = nullptr);
+    QDSamplesWidget(QueryScene* scene, QWidget* parent = nullptr);
 signals:
-    void itemActivated(QDDocument *);
-    void setupGlass(GlassPane *glass);
+    void itemActivated(QDDocument*);
+    void setupGlass(GlassPane* glass);
 
 private:
-    void addSample(const QDSample &sample);
+    void addSample(const QDSample& sample);
 private slots:
-    void sl_onItemChanged(QListWidgetItem *item);
-    void sl_onItemSelected(QListWidgetItem *item);
+    void sl_onItemChanged(QListWidgetItem* item);
+    void sl_onItemSelected(QListWidgetItem* item);
     void sl_cancel();
 
 private:
-    QDSamplePane *glass;
+    QDSamplePane* glass;
 };
 
 }  // namespace U2

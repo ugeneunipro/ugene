@@ -79,9 +79,9 @@ void CrashHandlerPrivateUnixNotMac::storeStackTrace() {
     sprintf(pid_buf, "%d", getpid());
     char name_buf[512];
     name_buf[readlink(path.toLatin1().data(), name_buf, 511)] = 0;
-    FILE *fp = fopen(STACKTRACE_FILE_PATH.toLocal8Bit().constData(), "w+");
+    FILE* fp = fopen(STACKTRACE_FILE_PATH.toLocal8Bit().constData(), "w+");
     stacktraceFileSucessfullyCreated = (nullptr != fp);
-    void *stackTrace[1024];
+    void* stackTrace[1024];
     int frames = backtrace(stackTrace, 1024);
     backtrace_symbols_fd(stackTrace, frames, fileno(fp));
     const int closed = fclose(fp);
@@ -114,15 +114,15 @@ QString CrashHandlerPrivateUnixNotMac::getAdditionalInfo() const {
     return info;
 }
 
-bool CrashHandlerPrivateUnixNotMac::breakpadCallback(const google_breakpad::MinidumpDescriptor &descriptor,
-                                                     void *context,
+bool CrashHandlerPrivateUnixNotMac::breakpadCallback(const google_breakpad::MinidumpDescriptor& descriptor,
+                                                     void* context,
                                                      bool succeeded) {
     QString dumpPath;
     if (succeeded) {
         dumpPath = QString::fromLocal8Bit(descriptor.path());
     }
 
-    CrashHandlerPrivateUnixNotMac *privateHandler = static_cast<CrashHandlerPrivateUnixNotMac *>(context);
+    CrashHandlerPrivateUnixNotMac* privateHandler = static_cast<CrashHandlerPrivateUnixNotMac*>(context);
     privateHandler->dumpWasSuccessfullySaved = succeeded;
 
     handleException(privateHandler->lastExceptionText, dumpPath);
@@ -130,16 +130,16 @@ bool CrashHandlerPrivateUnixNotMac::breakpadCallback(const google_breakpad::Mini
     return true;
 }
 
-bool CrashHandlerPrivateUnixNotMac::crashContextCallback(const void *crash_context,
+bool CrashHandlerPrivateUnixNotMac::crashContextCallback(const void* crash_context,
                                                          size_t /*crash_context_size*/,
-                                                         void *context) {
-    CrashHandlerPrivateUnixNotMac *privateHandler = static_cast<CrashHandlerPrivateUnixNotMac *>(context);
-    const google_breakpad::ExceptionHandler::CrashContext *crashContext = static_cast<const google_breakpad::ExceptionHandler::CrashContext *>(crash_context);
+                                                         void* context) {
+    CrashHandlerPrivateUnixNotMac* privateHandler = static_cast<CrashHandlerPrivateUnixNotMac*>(context);
+    const google_breakpad::ExceptionHandler::CrashContext* crashContext = static_cast<const google_breakpad::ExceptionHandler::CrashContext*>(crash_context);
     privateHandler->lastExceptionText = getExceptionText(crashContext);
     return false;
 }
 
-QString CrashHandlerPrivateUnixNotMac::getExceptionText(const google_breakpad::ExceptionHandler::CrashContext *crashContext) {
+QString CrashHandlerPrivateUnixNotMac::getExceptionText(const google_breakpad::ExceptionHandler::CrashContext* crashContext) {
     QString exceptionText = "Unhandled exception";
     CHECK(nullptr != crashContext, "C++ exception|" + exceptionText);
 

@@ -36,42 +36,42 @@ QString FileFilters::createAllFilesFilter() {
     return QObject::tr("All files") + " ( * )";
 }
 
-QString FileFilters::createSingleFileFilter(const QString &name, const QStringList &extensions, bool addGzipVariant) {
+QString FileFilters::createSingleFileFilter(const QString& name, const QStringList& extensions, bool addGzipVariant) {
     QString filters;
-    for (const QString &extension : qAsConst(extensions)) {
+    for (const QString& extension : qAsConst(extensions)) {
         filters += " *." + extension;
     }
     if (addGzipVariant) {
-        for (const QString &extension : qAsConst(extensions)) {
+        for (const QString& extension : qAsConst(extensions)) {
             filters += " *." + extension + ".gz";
         }
     }
     return name + " (" + filters + ")";
 }
 
-QString FileFilters::createSingleFileFilter(const DocumentFormat *documentFormat) {
+QString FileFilters::createSingleFileFilter(const DocumentFormat* documentFormat) {
     SAFE_POINT(documentFormat != nullptr, "Document format is null", "");
-    const QString &name = documentFormat->getFormatName();
+    const QString& name = documentFormat->getFormatName();
     QStringList extensions = documentFormat->getSupportedDocumentFileExtensions();
     SAFE_POINT(!extensions.isEmpty(), "Document format has empty extensions list", "");
     bool isGzipSupported = !documentFormat->getFlags().testFlag(DocumentFormatFlag_NoPack);
     return createSingleFileFilter(name, extensions, isGzipSupported);
 }
 
-QString FileFilters::createSingleFileFilterByDocumentFormatId(const QString &documentFormatId) {
-    DocumentFormat *documentFormat = AppContext::getDocumentFormatRegistry()->getFormatById(documentFormatId);
+QString FileFilters::createSingleFileFilterByDocumentFormatId(const QString& documentFormatId) {
+    DocumentFormat* documentFormat = AppContext::getDocumentFormatRegistry()->getFormatById(documentFormatId);
     SAFE_POINT(documentFormat != nullptr, "Document format not found: " + documentFormatId, "");
     return createSingleFileFilter(documentFormat);
 }
 
-QString FileFilters::createFileFilter(const QString &name, const QStringList &extensions, bool useGzipVariant) {
+QString FileFilters::createFileFilter(const QString& name, const QStringList& extensions, bool useGzipVariant) {
     return createSingleFileFilter(name, extensions, useGzipVariant) + FILTER_SEPARATOR + createAllFilesFilter();
 }
 
-QString FileFilters::createFileFilter(const QMap<QString, QStringList> &formatExtensionsByName, bool addGzipVariant) {
+QString FileFilters::createFileFilter(const QMap<QString, QStringList>& formatExtensionsByName, bool addGzipVariant) {
     QStringList filters;
     QList<QString> names = formatExtensionsByName.keys();
-    for (const QString &name : qAsConst(names)) {
+    for (const QString& name : qAsConst(names)) {
         filters << createSingleFileFilter(name, formatExtensionsByName[name], addGzipVariant);
     }
 
@@ -79,34 +79,34 @@ QString FileFilters::createFileFilter(const QMap<QString, QStringList> &formatEx
     return filters.join(FILTER_SEPARATOR);
 }
 
-QString FileFilters::createFileFilter(const QString &name, const QStringList &extensions) {
+QString FileFilters::createFileFilter(const QString& name, const QStringList& extensions) {
     return createSingleFileFilter(name, extensions, false) + FILTER_SEPARATOR + createAllFilesFilter();
 }
 
-QString FileFilters::createFileFilterByDocumentFormatId(const DocumentFormatId &documentFormatId) {
-    DocumentFormat *documentFormat = AppContext::getDocumentFormatRegistry()->getFormatById(documentFormatId);
+QString FileFilters::createFileFilterByDocumentFormatId(const DocumentFormatId& documentFormatId) {
+    DocumentFormat* documentFormat = AppContext::getDocumentFormatRegistry()->getFormatById(documentFormatId);
     SAFE_POINT(documentFormat != nullptr, "Document format not found: " + documentFormatId, createAllFilesFilter());
     return createSingleFileFilter(documentFormat) + FILTER_SEPARATOR + createAllFilesFilter();
 }
 
-QString FileFilters::createAllSupportedFormatsFileFilter(const QMap<QString, QStringList> &extraFormats) {
-    DocumentFormatRegistry *formatRegistry = AppContext::getDocumentFormatRegistry();
+QString FileFilters::createAllSupportedFormatsFileFilter(const QMap<QString, QStringList>& extraFormats) {
+    DocumentFormatRegistry* formatRegistry = AppContext::getDocumentFormatRegistry();
     QList<DocumentFormatId> formatIds = formatRegistry->getRegisteredFormats();
     QStringList filters;
-    for (const DocumentFormatId &id : qAsConst(formatIds)) {
+    for (const DocumentFormatId& id : qAsConst(formatIds)) {
         if (id == BaseDocumentFormats::DATABASE_CONNECTION) {
             continue;
         }
-        DocumentFormat *documentFormat = formatRegistry->getFormatById(id);
+        DocumentFormat* documentFormat = formatRegistry->getFormatById(id);
         filters << createSingleFileFilter(documentFormat);
     }
-    QList<DocumentImporter *> importers = formatRegistry->getImportSupport()->getImporters();
-    for (DocumentImporter *importer : qAsConst(importers)) {
+    QList<DocumentImporter*> importers = formatRegistry->getImportSupport()->getImporters();
+    for (DocumentImporter* importer : qAsConst(importers)) {
         QStringList extensions = importer->getSupportedFileExtensions();
         filters << createSingleFileFilter(importer->getImporterName(), extensions, false);
     }
     QStringList extraFormatFilterNames = extraFormats.keys();
-    for (const QString &name : qAsConst(extraFormatFilterNames)) {
+    for (const QString& name : qAsConst(extraFormatFilterNames)) {
         filters << createSingleFileFilter(name, extraFormats.value(name), false);
     }
     filters.sort();
@@ -114,15 +114,15 @@ QString FileFilters::createAllSupportedFormatsFileFilter(const QMap<QString, QSt
     return filters.join(FILTER_SEPARATOR);
 }
 
-QString FileFilters::createFileFilter(const DocumentFormatConstraints &constraints) {
-    DocumentFormatRegistry *formatRegistry = AppContext::getDocumentFormatRegistry();
+QString FileFilters::createFileFilter(const DocumentFormatConstraints& constraints) {
+    DocumentFormatRegistry* formatRegistry = AppContext::getDocumentFormatRegistry();
     QStringList filters;
     QList<DocumentFormatId> formatIds = AppContext::getDocumentFormatRegistry()->getRegisteredFormats();
-    for (const DocumentFormatId &formatId : qAsConst(formatIds)) {
+    for (const DocumentFormatId& formatId : qAsConst(formatIds)) {
         if (formatId == BaseDocumentFormats::DATABASE_CONNECTION) {
             continue;
         }
-        DocumentFormat *documentFormat = formatRegistry->getFormatById(formatId);
+        DocumentFormat* documentFormat = formatRegistry->getFormatById(formatId);
         if (documentFormat->checkConstraints(constraints)) {
             filters << createSingleFileFilter(documentFormat);
         }
@@ -132,7 +132,7 @@ QString FileFilters::createFileFilter(const DocumentFormatConstraints &constrain
     return filters.join(FILTER_SEPARATOR);
 }
 
-QString FileFilters::createFileFilterByObjectTypes(const QList<GObjectType> &objectTypes, bool useWriteOnlyFormats) {
+QString FileFilters::createFileFilterByObjectTypes(const QList<GObjectType>& objectTypes, bool useWriteOnlyFormats) {
     DocumentFormatConstraints constraints;
     if (useWriteOnlyFormats) {
         constraints.flagsToSupport.setFlag(DocumentFormatFlag_SupportWriting, true);

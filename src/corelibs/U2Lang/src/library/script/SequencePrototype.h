@@ -36,7 +36,7 @@ namespace U2 {
 class SequencePrototype : public DbiClassPrototype {
     Q_OBJECT
 public:
-    SequencePrototype(QObject *parent = nullptr);
+    SequencePrototype(QObject* parent = nullptr);
 
 public slots:
     /** No arguments. Returns sequence length */
@@ -65,9 +65,9 @@ public slots:
     void splice();
 
 private:
-    U2SequenceObject *getSequenceObject() const;
+    U2SequenceObject* getSequenceObject() const;
     /** Returns NULL and throws script exception if this object is invalid */
-    U2SequenceObject *getValidSequenceObject() const;
+    U2SequenceObject* getValidSequenceObject() const;
     /** startPosArg < lengthPosArg */
     U2Region getRegion(int startPosArg, int lengthPosArg);
 };
@@ -80,23 +80,23 @@ class U2LANG_EXPORT SequenceScriptClass : public DbiScriptClass {
 public:
     using DbiScriptClass::newInstance;
 
-    SequenceScriptClass(QScriptEngine *engine);
+    SequenceScriptClass(QScriptEngine* engine);
 
     QString name() const;
-    QScriptValue newInstance(const QString &data, const QString &name);
-    QScriptValue newInstance(const ScriptDbiData &id, bool deepCopy);
+    QScriptValue newInstance(const QString& data, const QString& name);
+    QScriptValue newInstance(const ScriptDbiData& id, bool deepCopy);
 
-    static QScriptValue constructor(QScriptContext *ctx, QScriptEngine *engine);
+    static QScriptValue constructor(QScriptContext* ctx, QScriptEngine* engine);
     static const QString CLASS_NAME;
 
-    static Workflow::SharedDbiDataHandler copySequence(const ScriptDbiData &id, QScriptEngine *engine);
+    static Workflow::SharedDbiDataHandler copySequence(const ScriptDbiData& id, QScriptEngine* engine);
 
 private:
-    WorkflowScriptEngine *workflowEngine() const;
+    WorkflowScriptEngine* workflowEngine() const;
 };
 
 }  // namespace U2
 
-Q_DECLARE_METATYPE(U2::SequenceScriptClass *)
+Q_DECLARE_METATYPE(U2::SequenceScriptClass*)
 
 #endif  // _U2_SEQUENCEPROTOTYPE_H_

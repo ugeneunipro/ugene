@@ -45,7 +45,7 @@ enum VariantTrackType {
 class U2CORE_EXPORT U2VariantTrack : public U2Object {
 public:
     U2VariantTrack();
-    U2VariantTrack(const U2DataId &id, const QString &dbId, VariantTrackType trackType, qint64 version);
+    U2VariantTrack(const U2DataId& id, const QString& dbId, VariantTrackType trackType, qint64 version);
 
     /** Sequence id */
     U2DataId sequence;

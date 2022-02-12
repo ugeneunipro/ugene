@@ -31,12 +31,12 @@ class UrlItemVisitor;
 class UrlItem : public QObject, public QListWidgetItem {
     Q_OBJECT
 public:
-    UrlItem(const QString &url, QListWidget *parent = nullptr);
+    UrlItem(const QString& url, QListWidget* parent = nullptr);
     virtual ~UrlItem() {
     }
 
-    virtual void accept(UrlItemVisitor *visitor) = 0;
-    virtual QWidget *getOptionsWidget();
+    virtual void accept(UrlItemVisitor* visitor) = 0;
+    virtual QWidget* getOptionsWidget();
 
 signals:
     void si_dataChanged();
@@ -51,10 +51,10 @@ class FileItem;
 
 class UrlItemVisitor {
 public:
-    virtual void visit(DirectoryItem *item) = 0;
-    virtual void visit(FileItem *item) = 0;
-    virtual void visit(DbObjectItem *item) = 0;
-    virtual void visit(DbFolderItem *item) = 0;
+    virtual void visit(DirectoryItem* item) = 0;
+    virtual void visit(FileItem* item) = 0;
+    virtual void visit(DbObjectItem* item) = 0;
+    virtual void visit(DbFolderItem* item) = 0;
 };
 
 }  // namespace U2

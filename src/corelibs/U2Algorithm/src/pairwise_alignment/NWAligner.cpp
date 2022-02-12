@@ -31,10 +31,10 @@
 
 namespace U2 {
 
-NWAligner::NWAligner(const QByteArray &seq1, const QByteArray &seq2)
+NWAligner::NWAligner(const QByteArray& seq1, const QByteArray& seq2)
     : PairwiseAligner(seq1, seq2), fMatrix(nullptr) {
     GTIMER(cvar, tvar, "NWAligner::NWAligner");
-    const DNAAlphabet *alphabet = U2AlphabetUtils::findBestAlphabet(seq1 + seq2);
+    const DNAAlphabet* alphabet = U2AlphabetUtils::findBestAlphabet(seq1 + seq2);
     if (alphabet->getId() == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()) {
         alphabet = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
     }
@@ -51,26 +51,26 @@ NWAligner::~NWAligner() {
     delete fMatrix;
 }
 
-void NWAligner::reassignSMatrixByAlphabet(const QByteArray &newSeq) {
+void NWAligner::reassignSMatrixByAlphabet(const QByteArray& newSeq) {
     GTIMER(cvar, tvar, "NWAligner::reassignSMatrixByAlphabet");
-    const DNAAlphabet *alphabet = U2AlphabetUtils::findBestAlphabet(newSeq);
-    const DNAAlphabet *newAlphabet = U2AlphabetUtils::deriveCommonAlphabet(alphabet, sMatrix.getAlphabet());
+    const DNAAlphabet* alphabet = U2AlphabetUtils::findBestAlphabet(newSeq);
+    const DNAAlphabet* newAlphabet = U2AlphabetUtils::deriveCommonAlphabet(alphabet, sMatrix.getAlphabet());
     if (newAlphabet != sMatrix.getAlphabet()) {
         sMatrix = AppContext::getSubstMatrixRegistry()->selectMatricesByAlphabet(newAlphabet).first();
     }
 }
 
-void NWAligner::setSeq1(const QByteArray &value) {
+void NWAligner::setSeq1(const QByteArray& value) {
     PairwiseAligner::setSeq1(value);
     reassignSMatrixByAlphabet(value);
 }
 
-void NWAligner::setSeq2(const QByteArray &value) {
+void NWAligner::setSeq2(const QByteArray& value) {
     PairwiseAligner::setSeq2(value);
     reassignSMatrixByAlphabet(value);
 }
 
-void NWAligner::setSeqs(const QByteArray &value1, const QByteArray &value2) {
+void NWAligner::setSeqs(const QByteArray& value1, const QByteArray& value2) {
     PairwiseAligner::setSeqs(value1, value2);
     reassignSMatrixByAlphabet(value1 + value2);
 }
@@ -134,7 +134,7 @@ MultipleSequenceAlignment NWAligner::align() {
 /************************************************************************/
 /* FMatrix */
 /************************************************************************/
-FMatrix::FMatrix(const SMatrix &_sMatrix, float _gapPenalty)
+FMatrix::FMatrix(const SMatrix& _sMatrix, float _gapPenalty)
     : sMatrix(_sMatrix), gapPenalty(_gapPenalty), f(nullptr), h(0), w(0) {
     GTIMER(cvar, tvar, "FMatrix::FMatrix");
 }
@@ -144,7 +144,7 @@ FMatrix::~FMatrix() {
     cleanup();
 }
 
-void FMatrix::calculate(const QByteArray &seq1, const QByteArray &seq2) {
+void FMatrix::calculate(const QByteArray& seq1, const QByteArray& seq2) {
     GTIMER(cvar, tvar, "FMatrix::calculate");
     init(seq1, seq2);
 
@@ -175,7 +175,7 @@ void FMatrix::cleanup() {
     f = nullptr;
 }
 
-void FMatrix::init(const QByteArray &seq1, const QByteArray &seq2) {
+void FMatrix::init(const QByteArray& seq1, const QByteArray& seq2) {
     cleanup();
     h = seq1.size() + 1;
     w = seq2.size() + 1;

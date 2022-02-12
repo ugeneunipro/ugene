@@ -26,26 +26,26 @@ namespace U2 {
 
 class RingBuffer {
 public:
-    RingBuffer(char *buf, int size)
+    RingBuffer(char* buf, int size)
         : data(buf), size(size), len(0), start(0) {
     }
-    inline int read(char *dest, int n, int index = 0) const;
-    inline void append(const char *src, int n);
+    inline int read(char* dest, int n, int index = 0) const;
+    inline void append(const char* src, int n);
     int length() const {
         return len;
     }
-    char *rawData() const {
+    char* rawData() const {
         return data;
     }
 
 private:
-    char *data;  // buffer area
+    char* data;  // buffer area
     int size;  // buffer size
     int len;  // length of buffered data
     int start;  // start offset
 };
 
-int RingBuffer::read(char *dest, int n, int index) const {
+int RingBuffer::read(char* dest, int n, int index) const {
     assert(index < len);
     if (n > len - index) {
         n = len - index;
@@ -65,7 +65,7 @@ int RingBuffer::read(char *dest, int n, int index) const {
     return n;
 }
 
-void RingBuffer::append(const char *src, int n) {
+void RingBuffer::append(const char* src, int n) {
     if (n >= size) {
         start = 0;
         len = size;

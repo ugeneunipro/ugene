@@ -49,13 +49,13 @@ public:
 class BlastDBCmdTask : public Task {
     Q_OBJECT
 public:
-    BlastDBCmdTask(const BlastDBCmdSupportTaskSettings &settings);
+    BlastDBCmdTask(const BlastDBCmdSupportTaskSettings& settings);
 
     void prepare() override;
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
-    ExternalToolRunTask *blastDBCmdTask;
+    ExternalToolRunTask* blastDBCmdTask;
     BlastDBCmdSupportTaskSettings settings;
     QString toolId;
 };

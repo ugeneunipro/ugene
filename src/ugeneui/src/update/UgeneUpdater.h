@@ -34,7 +34,7 @@ class UgeneUpdater : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY(UgeneUpdater)
 public:
-    static UgeneUpdater *getInstance();
+    static UgeneUpdater* getInstance();
     static void release();
     static void onClose();
 
@@ -42,8 +42,8 @@ public:
     void setUpdateOnClose(bool value);
     bool isUpdateOnClose() const;
 
-    static bool isUpdateSkipped(const Version &version);
-    static void skipUpdate(const Version &version);
+    static bool isUpdateSkipped(const Version& version);
+    static void skipUpdate(const Version& version);
     static bool isEnabled();
     static void setEnabled(bool value);
 

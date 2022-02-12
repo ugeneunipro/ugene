@@ -370,7 +370,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: a P03334 is loaded and opened.
-    QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
+    QWidget* activeWindow = GTUtilsMdi::activeWindow(os);
     QString expectedTitle = "GAG_MSVMO [P03334.txt]";
     CHECK_SET_ERR(expectedTitle == activeWindow->windowTitle(), QString("An unexpected window is active: expect '%1', got '%2'").arg(expectedTitle).arg(activeWindow->windowTitle()));
 
@@ -510,7 +510,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsDocument::loadDocument(os, "1anot_1seq.gen");
 
     GTUtilsAnnotationsTreeView::expandItem(os, "CDS");
-    QTreeWidgetItem *qualifierTreeItem = GTUtilsAnnotationsTreeView::findItem(os, "long");
+    QTreeWidgetItem* qualifierTreeItem = GTUtilsAnnotationsTreeView::findItem(os, "long");
     CHECK_SET_ERR(qualifierTreeItem->text(AnnotationsTreeView::COLUMN_VALUE) == longQualifierValueNoSpaces, "Different qualifier value!");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_REMOVE, "Selected annotations and qualifiers"}));
@@ -541,7 +541,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTUtilsDocument::loadDocument(os, "1anot_1seq.gen");
 
     GTUtilsAnnotationsTreeView::expandItem(os, "CDS");
-    QTreeWidgetItem *qualifierTreeItem = GTUtilsAnnotationsTreeView::findItem(os, "noSpaces");
+    QTreeWidgetItem* qualifierTreeItem = GTUtilsAnnotationsTreeView::findItem(os, "noSpaces");
     CHECK_SET_ERR(qualifierTreeItem->text(AnnotationsTreeView::COLUMN_VALUE) == longQualifierValueNoSpaces, "Different qualifier value!");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_REMOVE, "Selected annotations and qualifiers"}));

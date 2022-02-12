@@ -41,7 +41,7 @@ class U2CORE_EXPORT LogMessage {
 public:
     LogMessage() {
     }
-    LogMessage(const QStringList &cat, LogLevel l, const QString &m);
+    LogMessage(const QStringList& cat, LogLevel l, const QString& m);
 
     QStringList categories;
     LogLevel level;
@@ -51,41 +51,41 @@ public:
 
 class U2CORE_EXPORT Logger {
 public:
-    Logger(const QString &category1);
-    Logger(const QString &category1, const QString &category2);
-    Logger(const QString &category1, const QString &category2, const QString &category3);
-    Logger(const QString &category1, const QString &category2, const QString &category3, const QString &category4);
-    Logger(const QStringList &categoryNames);
+    Logger(const QString& category1);
+    Logger(const QString& category1, const QString& category2);
+    Logger(const QString& category1, const QString& category2, const QString& category3);
+    Logger(const QString& category1, const QString& category2, const QString& category3, const QString& category4);
+    Logger(const QStringList& categoryNames);
 
     virtual ~Logger();
 
-    static void log(LogLevel level, const QString &message, const QString &category);
+    static void log(LogLevel level, const QString& message, const QString& category);
 
-    static void log(LogLevel level, const QString &message, const QStringList &categoryies);
+    static void log(LogLevel level, const QString& message, const QStringList& categoryies);
 
-    virtual void message(LogLevel level, const QString &msg);
+    virtual void message(LogLevel level, const QString& msg);
 
-    void message(LogLevel level, const QString &msg, const QString &extraCategory);
+    void message(LogLevel level, const QString& msg, const QString& extraCategory);
 
-    void message(LogLevel level, const QString &msg, const QStringList &extraCategories);
+    void message(LogLevel level, const QString& msg, const QStringList& extraCategories);
 
-    void trace(const QString &msg) {
+    void trace(const QString& msg) {
         message(LogLevel_TRACE, msg);
     }
 
-    void details(const QString &msg) {
+    void details(const QString& msg) {
         message(LogLevel_DETAILS, msg);
     }
 
-    void info(const QString &msg) {
+    void info(const QString& msg) {
         message(LogLevel_INFO, msg);
     }
 
-    void error(const QString &msg) {
+    void error(const QString& msg) {
         message(LogLevel_ERROR, msg);
     }
 
-    const QStringList &getCategories() const {
+    const QStringList& getCategories() const {
         return categoryNames;
     }
 
@@ -96,7 +96,7 @@ protected:
 
 class U2CORE_EXPORT LogListener {
 public:
-    virtual void onMessage(const LogMessage &m) = 0;
+    virtual void onMessage(const LogMessage& m) = 0;
 };
 
 class U2CORE_EXPORT LogServer : public QObject {
@@ -106,21 +106,21 @@ class U2CORE_EXPORT LogServer : public QObject {
 
 public:
     LogServer();
-    static LogServer *getInstance();
-    const QList<Logger *> &getLoggers() const {
+    static LogServer* getInstance();
+    const QList<Logger*>& getLoggers() const {
         return loggers;
     }
     QStringList getCategories() const;
 
-    void addListener(LogListener *listner);
-    void removeListener(LogListener *listener);
+    void addListener(LogListener* listner);
+    void removeListener(LogListener* listener);
 
 private:
-    void message(const LogMessage &m);
-    void message(const LogMessage &m, LogListener *listener);
+    void message(const LogMessage& m);
+    void message(const LogMessage& m, LogListener* listener);
 
-    QList<Logger *> loggers;
-    QList<LogListener *> listeners;
+    QList<Logger*> loggers;
+    QList<LogListener*> listeners;
     QMutex listenerMutex;
 };
 

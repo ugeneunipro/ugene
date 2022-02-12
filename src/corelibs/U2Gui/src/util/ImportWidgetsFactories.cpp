@@ -34,26 +34,26 @@
 namespace U2 {
 
 void ImportWidgetsFactories::registerFactories() {
-    DocumentFormatRegistry *dfRegistry = AppContext::getDocumentFormatRegistry();
+    DocumentFormatRegistry* dfRegistry = AppContext::getDocumentFormatRegistry();
     SAFE_POINT(dfRegistry, "Document format registry is NULL", );
-    DocumentImportersRegistry *diRegistry = dfRegistry->getImportSupport();
+    DocumentImportersRegistry* diRegistry = dfRegistry->getImportSupport();
     SAFE_POINT(diRegistry, "Document import registry is NULL", );
 
-    DocumentImporter *aceImporter = diRegistry->getDocumentImporter(AceImporter::ID);
+    DocumentImporter* aceImporter = diRegistry->getDocumentImporter(AceImporter::ID);
     SAFE_POINT(aceImporter, "ACE importer is NULL", );
     aceImporter->setWidgetFactory(new AceImportWidgetFactory());
 
-    DocumentImporter *aprImporter = diRegistry->getDocumentImporter(AprImporter::ID);
+    DocumentImporter* aprImporter = diRegistry->getDocumentImporter(AprImporter::ID);
     SAFE_POINT(aprImporter, "APR importer is NULL", );
     aprImporter->setWidgetFactory(new AprImportWidgetFactory());
 }
 
-ImportWidget *AceImportWidgetFactory::getWidget(const GUrl &url, const QVariantMap &settings) const {
+ImportWidget* AceImportWidgetFactory::getWidget(const GUrl& url, const QVariantMap& settings) const {
     Q_UNUSED(settings);
     return new AceImportWidget(url);
 }
 
-ImportWidget *AprImportWidgetFactory::getWidget(const GUrl &url, const QVariantMap &settings) const {
+ImportWidget* AprImportWidgetFactory::getWidget(const GUrl& url, const QVariantMap& settings) const {
     return new AprImportWidget(url, settings);
 }
 

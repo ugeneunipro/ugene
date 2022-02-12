@@ -42,24 +42,24 @@
 
 namespace U2 {
 
-bool UserActionsWriter::eventFilter(QObject *, QEvent *event) {
+bool UserActionsWriter::eventFilter(QObject*, QEvent* event) {
     QEvent::Type eventType = event->type();
 
-    QThread *currentThread = QThread::currentThread();
+    QThread* currentThread = QThread::currentThread();
     SAFE_POINT(currentThread == QCoreApplication::instance()->thread(), "Got UX event not in the main thread: " + QString::number(eventType), false);
 
     if (eventType == QEvent::MouseButtonPress ||
         eventType == QEvent::MouseButtonRelease ||
         eventType == QEvent::MouseButtonDblClick) {
-        logMouseEvent(dynamic_cast<QMouseEvent *>(event));
+        logMouseEvent(dynamic_cast<QMouseEvent*>(event));
     } else if (eventType == QEvent::KeyPress ||
                eventType == QEvent::KeyRelease) {
-        logKeyEvent(dynamic_cast<QKeyEvent *>(event));
+        logKeyEvent(dynamic_cast<QKeyEvent*>(event));
     }
     return false;
 }
 
-void UserActionsWriter::logMouseEvent(QMouseEvent *mouseEvent) {
+void UserActionsWriter::logMouseEvent(QMouseEvent* mouseEvent) {
     SAFE_POINT(mouseEvent != nullptr, "logMouseEvent: Mouse event is nul", );
 
     QString message;
@@ -67,7 +67,7 @@ void UserActionsWriter::logMouseEvent(QMouseEvent *mouseEvent) {
     message.prepend(loggableEventNames.value(mouseEvent->type()) + " ");
     message.append(getMouseButtonInfo(mouseEvent));
 
-    QMainWindow *mainWindow = AppContext::getMainWindow()->getQMainWindow();
+    QMainWindow* mainWindow = AppContext::getMainWindow()->getQMainWindow();
     CHECK_EXT(mainWindow != nullptr, userActLog.error("Main window is null"), );
 
     // Window size info.
@@ -82,14 +82,14 @@ void UserActionsWriter::logMouseEvent(QMouseEvent *mouseEvent) {
     message.append(QString("%1 %2 ").arg(mouseWindowLocalPos.x()).arg(mouseWindowLocalPos.y()));
 
     // Widget info.
-    QWidget *underMouseWidget = QApplication::widgetAt(mouseEvent->globalPos());
+    QWidget* underMouseWidget = QApplication::widgetAt(mouseEvent->globalPos());
     if (underMouseWidget != nullptr) {
         QString className = underMouseWidget->metaObject()->className();
 
         // tree widget and list widget
         // sometimes QWidget is on top. it does not give any information, but it's parent does
         if (className == "QWidget") {
-            if (auto parent = qobject_cast<QWidget *>(underMouseWidget->parent())) {
+            if (auto parent = qobject_cast<QWidget*>(underMouseWidget->parent())) {
                 message.append(getTreeWidgetInfo(mouseEvent, parent));
                 underMouseWidget = parent;
             }
@@ -106,7 +106,7 @@ void UserActionsWriter::logMouseEvent(QMouseEvent *mouseEvent) {
     logMouseEventMessage(message);
 }
 
-QString UserActionsWriter::getMouseButtonInfo(QMouseEvent *mouseEvent) {
+QString UserActionsWriter::getMouseButtonInfo(QMouseEvent* mouseEvent) {
     switch (mouseEvent->button()) {
         case Qt::RightButton: {
             return "Right_button ";
@@ -120,17 +120,17 @@ QString UserActionsWriter::getMouseButtonInfo(QMouseEvent *mouseEvent) {
     }
 }
 
-QString UserActionsWriter::getTreeWidgetInfo(QMouseEvent *mouseEvent, QWidget *parent) {
+QString UserActionsWriter::getTreeWidgetInfo(QMouseEvent* mouseEvent, QWidget* parent) {
     QString message;
     message.append("CLASS_NAME: ").append(parent->metaObject()->className());
 
-    if (auto tree = qobject_cast<QTreeWidget *>(parent)) {
-        QTreeWidgetItem *item = tree->itemAt(mouseEvent->pos());
+    if (auto tree = qobject_cast<QTreeWidget*>(parent)) {
+        QTreeWidgetItem* item = tree->itemAt(mouseEvent->pos());
         if (item) {
             message.append(" TREE_ITEM: " + item->text(0));
         }
-    } else if (auto list = qobject_cast<QListWidget *>(parent)) {
-        QListWidgetItem *item = list->itemAt(list->mapFromGlobal(mouseEvent->globalPos()));
+    } else if (auto list = qobject_cast<QListWidget*>(parent)) {
+        QListWidgetItem* item = list->itemAt(list->mapFromGlobal(mouseEvent->globalPos()));
         if (item != nullptr) {
             message.append(" LIST_ITEM: " + item->text());
         }
@@ -138,7 +138,7 @@ QString UserActionsWriter::getTreeWidgetInfo(QMouseEvent *mouseEvent, QWidget *p
     return message;
 }
 
-QString UserActionsWriter::getAdditionalWidgetInfo(QMouseEvent *mouseEvent, QWidget *widget) {
+QString UserActionsWriter::getAdditionalWidgetInfo(QMouseEvent* mouseEvent, QWidget* widget) {
     QString text = getWidgetText(mouseEvent, widget);
     QString objectName = widget->objectName();
     QString tooltip = widget->toolTip();
@@ -151,36 +151,36 @@ QString UserActionsWriter::getAdditionalWidgetInfo(QMouseEvent *mouseEvent, QWid
     } else if (!objectName.isEmpty()) {
         message.append("OBJECT_NAME: " + objectName);
     }
-    if (auto spinBox = qobject_cast<QAbstractSpinBox *>(widget)) {
+    if (auto spinBox = qobject_cast<QAbstractSpinBox*>(widget)) {
         message.append(" " + spinBox->text());
     }
     return message;
 }
 
-QString UserActionsWriter::getWidgetText(QMouseEvent *mouseEvent, QWidget *widget) {
+QString UserActionsWriter::getWidgetText(QMouseEvent* mouseEvent, QWidget* widget) {
     QString text("");
 
-    if (auto label = qobject_cast<QLabel *>(widget)) {
+    if (auto label = qobject_cast<QLabel*>(widget)) {
         text.append(label->text());
-    } else if (auto button = qobject_cast<QAbstractButton *>(widget)) {
+    } else if (auto button = qobject_cast<QAbstractButton*>(widget)) {
         text.append(button->text());
-    } else if (auto menu = qobject_cast<QMenu *>(widget)) {
-        QAction *menuAct = menu->actionAt(menu->mapFromGlobal(mouseEvent->globalPos()));
+    } else if (auto menu = qobject_cast<QMenu*>(widget)) {
+        QAction* menuAct = menu->actionAt(menu->mapFromGlobal(mouseEvent->globalPos()));
         if (menuAct) {
             text.append(menuAct->text());
         }
-    } else if (auto menuBar = qobject_cast<QMenuBar *>(widget)) {
-        QAction *menuBarAct = menuBar->actionAt(menuBar->mapFromGlobal(mouseEvent->globalPos()));
+    } else if (auto menuBar = qobject_cast<QMenuBar*>(widget)) {
+        QAction* menuBarAct = menuBar->actionAt(menuBar->mapFromGlobal(mouseEvent->globalPos()));
         if (menuBarAct) {
             text.append(menuBarAct->text());
         }
-    } else if (auto lineEdit = qobject_cast<QLineEdit *>(widget)) {
+    } else if (auto lineEdit = qobject_cast<QLineEdit*>(widget)) {
         text.append(lineEdit->text());
     }
     return text;
 }
 
-void UserActionsWriter::logKeyEvent(QKeyEvent *keyEvent) {
+void UserActionsWriter::logKeyEvent(QKeyEvent* keyEvent) {
     SAFE_POINT(keyEvent != nullptr, "logKeyEvent: Key event is nul", );
 
     QString text = keyEvent->text();
@@ -201,7 +201,7 @@ void UserActionsWriter::logKeyEvent(QKeyEvent *keyEvent) {
     logKeyEventMessage(keyEvent, message);
 }
 
-void UserActionsWriter::logMouseEventMessage(const QString &message) {
+void UserActionsWriter::logMouseEventMessage(const QString& message) {
     CHECK(message != prevMessage, );
 
     if (!typedTextBuffer.isEmpty()) {
@@ -226,7 +226,7 @@ void UserActionsWriter::logMouseEventMessage(const QString &message) {
     userActLog.trace(message);
 }
 
-void UserActionsWriter::logKeyEventMessage(QKeyEvent *keyEvent, const QString &message) {
+void UserActionsWriter::logKeyEventMessage(QKeyEvent* keyEvent, const QString& message) {
     CHECK(message != prevMessage && loggableEventNames.value(keyEvent->type()) != nullptr, );
 
     /*Do not duplicate event information when logging key release event*/
@@ -272,18 +272,18 @@ void UserActionsWriter::logKeyEventMessage(QKeyEvent *keyEvent, const QString &m
 }
 
 QString UserActionsWriter::getActiveModalWidgetInfo() {
-    auto dialog = qobject_cast<QDialog *>(QApplication::activeModalWidget());
+    auto dialog = qobject_cast<QDialog*>(QApplication::activeModalWidget());
     CHECK(dialog != nullptr, "");
 
     QString message;
     message.append(QString("DIALOG: \"%1\" ").arg(dialog->windowTitle()));
-    if (auto messageBox = qobject_cast<QMessageBox *>(dialog)) {
+    if (auto messageBox = qobject_cast<QMessageBox*>(dialog)) {
         message.append("MESSAGEBOX_TEXT: ").append(messageBox->text()).append(" ");
     }
     return message;
 }
 
-QString UserActionsWriter::getKeyModifiersInfo(QKeyEvent *keyEvent) {
+QString UserActionsWriter::getKeyModifiersInfo(QKeyEvent* keyEvent) {
     int key = keyEvent->key();
     Qt::KeyboardModifiers modifiers = keyEvent->modifiers();
 

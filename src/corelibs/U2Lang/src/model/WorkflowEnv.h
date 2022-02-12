@@ -50,64 +50,64 @@ class WorkflowTasksRegistry;
  */
 class U2LANG_EXPORT WorkflowEnv {
 public:
-    static bool init(WorkflowEnv *instance);
+    static bool init(WorkflowEnv* instance);
     static void shutdown() {
         delete instance;
         instance = nullptr;
     }
 
-    static DataTypeRegistry *getDataTypeRegistry() {
+    static DataTypeRegistry* getDataTypeRegistry() {
         return getInstance()->data;
     }
-    static ActorPrototypeRegistry *getProtoRegistry() {
+    static ActorPrototypeRegistry* getProtoRegistry() {
         return getInstance()->proto;
     }
-    static DomainFactoryRegistry *getDomainRegistry() {
+    static DomainFactoryRegistry* getDomainRegistry() {
         return getInstance()->domain;
     }
-    static DataTypeValueFactoryRegistry *getDataTypeValueFactoryRegistry() {
+    static DataTypeValueFactoryRegistry* getDataTypeValueFactoryRegistry() {
         return getInstance()->dvfReg;
     }
-    static ExternalToolCfgRegistry *getExternalCfgRegistry() {
+    static ExternalToolCfgRegistry* getExternalCfgRegistry() {
         return getInstance()->ecfgReg;
     }
-    static SchemaActorsRegistry *getSchemaActorsRegistry() {
+    static SchemaActorsRegistry* getSchemaActorsRegistry() {
         return getInstance()->schemaActorsReg;
     }
-    static WorkflowTasksRegistry *getWorkflowTasksRegistry() {
+    static WorkflowTasksRegistry* getWorkflowTasksRegistry() {
         return getInstance()->workflowTasksRegistry;
     }
-    static ActorValidatorRegistry *getActorValidatorRegistry() {
+    static ActorValidatorRegistry* getActorValidatorRegistry() {
         return getInstance()->actorValidatorRegistry;
     }
 
 protected:
-    static WorkflowEnv *instance;
-    static WorkflowEnv *getInstance();
+    static WorkflowEnv* instance;
+    static WorkflowEnv* getInstance();
 
 public:
     virtual ~WorkflowEnv() {
     }
 
 protected:
-    virtual DataTypeRegistry *initDataRegistry() = 0;
-    virtual ActorPrototypeRegistry *initProtoRegistry() = 0;
-    virtual DomainFactoryRegistry *initDomainRegistry() = 0;
-    virtual DataTypeValueFactoryRegistry *initDataTypeValueFactoryRegistry() = 0;
-    virtual ExternalToolCfgRegistry *initExternalToolCfgRegistry() = 0;
-    virtual SchemaActorsRegistry *initSchemaActorsRegistry() = 0;
-    virtual WorkflowTasksRegistry *initWorkflowTasksRegistry() = 0;
-    virtual ActorValidatorRegistry *initActorValidatorRegistry() = 0;
+    virtual DataTypeRegistry* initDataRegistry() = 0;
+    virtual ActorPrototypeRegistry* initProtoRegistry() = 0;
+    virtual DomainFactoryRegistry* initDomainRegistry() = 0;
+    virtual DataTypeValueFactoryRegistry* initDataTypeValueFactoryRegistry() = 0;
+    virtual ExternalToolCfgRegistry* initExternalToolCfgRegistry() = 0;
+    virtual SchemaActorsRegistry* initSchemaActorsRegistry() = 0;
+    virtual WorkflowTasksRegistry* initWorkflowTasksRegistry() = 0;
+    virtual ActorValidatorRegistry* initActorValidatorRegistry() = 0;
 
 protected:
-    DataTypeRegistry *data;
-    ActorPrototypeRegistry *proto;
-    DomainFactoryRegistry *domain;
-    DataTypeValueFactoryRegistry *dvfReg;
-    ExternalToolCfgRegistry *ecfgReg;
-    SchemaActorsRegistry *schemaActorsReg;
-    WorkflowTasksRegistry *workflowTasksRegistry;
-    ActorValidatorRegistry *actorValidatorRegistry;
+    DataTypeRegistry* data;
+    ActorPrototypeRegistry* proto;
+    DomainFactoryRegistry* domain;
+    DataTypeValueFactoryRegistry* dvfReg;
+    ExternalToolCfgRegistry* ecfgReg;
+    SchemaActorsRegistry* schemaActorsReg;
+    WorkflowTasksRegistry* workflowTasksRegistry;
+    ActorValidatorRegistry* actorValidatorRegistry;
 
 };  // WorkflowEnv
 

@@ -32,12 +32,12 @@ namespace U2 {
 class U2CORE_EXPORT AssemblyObject : public GObject {
     Q_OBJECT
 public:
-    AssemblyObject(const QString &objectName, const U2EntityRef &ref, const QVariantMap &hints = QVariantMap());
+    AssemblyObject(const QString& objectName, const U2EntityRef& ref, const QVariantMap& hints = QVariantMap());
 
-    GObject *clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const;
+    GObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const;
 
-    static U2EntityRef dbi2dbiClone(const AssemblyObject *const srcObj, const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap());
-    static U2EntityRef dbi2dbiExtractRegion(const AssemblyObject *const srcObj, const U2DbiRef &dstDbiRef, U2OpStatus &os, const U2Region &desiredRegion = U2_REGION_MAX, const QVariantMap &hints = QVariantMap());
+    static U2EntityRef dbi2dbiClone(const AssemblyObject* const srcObj, const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap());
+    static U2EntityRef dbi2dbiExtractRegion(const AssemblyObject* const srcObj, const U2DbiRef& dstDbiRef, U2OpStatus& os, const U2Region& desiredRegion = U2_REGION_MAX, const QVariantMap& hints = QVariantMap());
 };
 
 }  // namespace U2

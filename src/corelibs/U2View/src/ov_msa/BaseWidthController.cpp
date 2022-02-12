@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-BaseWidthController::BaseWidthController(MaEditorWgt *maEditorWgt)
+BaseWidthController::BaseWidthController(MaEditorWgt* maEditorWgt)
     : QObject(maEditorWgt),
       maEditor(maEditorWgt->getEditor()),
       ui(maEditorWgt) {
@@ -62,7 +62,7 @@ int BaseWidthController::getBasesWidth(int count) const {
     return count * getBaseWidth();
 }
 
-int BaseWidthController::getBasesWidth(const U2Region &region) const {
+int BaseWidthController::getBasesWidth(const U2Region& region) const {
     return getBasesWidth(static_cast<int>(region.length));
 }
 
@@ -74,7 +74,7 @@ U2Region BaseWidthController::getBasesGlobalRange(int startPosition, int count) 
     return U2Region(getBaseGlobalOffset(startPosition), getBasesWidth(count));
 }
 
-U2Region BaseWidthController::getBasesGlobalRange(const U2Region &region) const {
+U2Region BaseWidthController::getBasesGlobalRange(const U2Region& region) const {
     return getBasesGlobalRange(static_cast<int>(region.startPos), static_cast<int>(region.length));
 }
 
@@ -82,7 +82,7 @@ U2Region BaseWidthController::getBaseScreenRange(int position) const {
     return getBasesScreenRange(position, 1, ui->getScrollController()->getScreenPosition().x());
 }
 
-U2Region BaseWidthController::getBasesScreenRange(const U2Region &region) const {
+U2Region BaseWidthController::getBasesScreenRange(const U2Region& region) const {
     return getBasesScreenRange(static_cast<int>(region.startPos), static_cast<int>(region.length), ui->getScrollController()->getScreenPosition().x());
 }
 
@@ -95,7 +95,7 @@ U2Region BaseWidthController::getBasesScreenRange(int startPosition, int count, 
     return U2Region(globalRange.startPos - screenXOrigin, globalRange.length);
 }
 
-U2Region BaseWidthController::getBasesScreenRange(const U2Region &region, int screenXOrigin) const {
+U2Region BaseWidthController::getBasesScreenRange(const U2Region& region, int screenXOrigin) const {
     return getBasesScreenRange(static_cast<int>(region.startPos), static_cast<int>(region.length), screenXOrigin);
 }
 

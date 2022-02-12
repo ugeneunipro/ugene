@@ -23,20 +23,20 @@
 
 namespace U2 {
 
-InSilicoPcrWorkflowTask::InSilicoPcrWorkflowTask(const InSilicoPcrTaskSettings &pcrSettings, const ExtractProductSettings &_productSettings)
+InSilicoPcrWorkflowTask::InSilicoPcrWorkflowTask(const InSilicoPcrTaskSettings& pcrSettings, const ExtractProductSettings& _productSettings)
     : Task(tr("In silico PCR workflow task"), TaskFlags_NR_FOSE_COSC), productSettings(_productSettings) {
     pcrTask = new InSilicoPcrTask(pcrSettings);
     addSubTask(pcrTask);
     pcrTask->setSubtaskProgressWeight((float)0.7);
 }
 
-QList<Task *> InSilicoPcrWorkflowTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> result;
+QList<Task*> InSilicoPcrWorkflowTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> result;
     CHECK(subTask != nullptr, result);
     CHECK(!subTask->getStateInfo().isCoR(), result);
 
     if (subTask == pcrTask) {
-        foreach (const InSilicoPcrProduct &product, pcrTask->getResults()) {
+        foreach (const InSilicoPcrProduct& product, pcrTask->getResults()) {
             auto productTask = new ExtractProductTask(product, productSettings);
             productTask->setSubtaskProgressWeight(0.3 / pcrTask->getResults().size());
             result << productTask;
@@ -48,7 +48,7 @@ QList<Task *> InSilicoPcrWorkflowTask::onSubTaskFinished(Task *subTask) {
 
 QList<InSilicoPcrWorkflowTask::Result> InSilicoPcrWorkflowTask::takeResult() {
     QList<Result> result;
-    foreach (ExtractProductTask *productTask, productTasks) {
+    foreach (ExtractProductTask* productTask, productTasks) {
         Result pcrResult;
         pcrResult.doc = productTask->takeResult();
         pcrResult.product = productTask->getProduct();
@@ -57,7 +57,7 @@ QList<InSilicoPcrWorkflowTask::Result> InSilicoPcrWorkflowTask::takeResult() {
     return result;
 }
 
-const InSilicoPcrTaskSettings &InSilicoPcrWorkflowTask::getPcrSettings() const {
+const InSilicoPcrTaskSettings& InSilicoPcrWorkflowTask::getPcrSettings() const {
     return pcrTask->getSettings();
 }
 

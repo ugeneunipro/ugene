@@ -36,14 +36,14 @@ public:
     static void init();
     static void shutdown();
 
-    static U2MsaDbi *getMsaDbi();
-    static U2SequenceDbi *getSequenceDbi();
+    static U2MsaDbi* getMsaDbi();
+    static U2SequenceDbi* getSequenceDbi();
 
 private:
     static TestDbiProvider dbiProvider;
-    static const QString &MSA_DB_URL;
-    static U2MsaDbi *msaDbi;
-    static U2SequenceDbi *sequenceDbi;
+    static const QString& MSA_DB_URL;
+    static U2MsaDbi* msaDbi;
+    static U2SequenceDbi* sequenceDbi;
 };
 
 /** Create and get a MSA */

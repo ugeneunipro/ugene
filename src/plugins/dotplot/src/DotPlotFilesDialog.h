@@ -30,7 +30,7 @@ class ADVSequenceObjectContext;
 class DotPlotFilesDialog : public QDialog, public Ui_DotPlotFilesDialog {
     Q_OBJECT
 public:
-    DotPlotFilesDialog(QWidget *parent);
+    DotPlotFilesDialog(QWidget* parent);
 
     virtual void accept();
 

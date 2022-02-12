@@ -32,8 +32,8 @@ namespace WorkflowSerialize {
 
 class OldUWL {
 public:
-    static void parseMarkerDefinition(Tokenizer &tokenizer, QMap<QString, Workflow::Actor *> &actorMap);
-    static void parseOldAttributes(Workflow::Actor *proc, ParsedPairs &pairs);
+    static void parseMarkerDefinition(Tokenizer& tokenizer, QMap<QString, Workflow::Actor*>& actorMap);
+    static void parseOldAttributes(Workflow::Actor* proc, ParsedPairs& pairs);
 };
 
 class OldConstants {

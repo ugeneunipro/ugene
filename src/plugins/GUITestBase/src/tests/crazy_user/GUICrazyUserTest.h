@@ -50,11 +50,11 @@ public slots:
     void checkActiveWidget();
 
 private:
-    GTCrazyUserMonitor(const GTCrazyUserMonitor &);
-    GTCrazyUserMonitor &operator=(const GTCrazyUserMonitor &);
+    GTCrazyUserMonitor(const GTCrazyUserMonitor&);
+    GTCrazyUserMonitor& operator=(const GTCrazyUserMonitor&);
 
-    QTimer *timer;
-    QList<GTAbstractGUIAction *> formGUIActions(QWidget *widget) const;
+    QTimer* timer;
+    QList<GTAbstractGUIAction*> formGUIActions(QWidget* widget) const;
 };
 
 class simple_crazy_user : public HI::GUITest {
@@ -64,7 +64,7 @@ public:
     }
 
 protected:
-    virtual void run(HI::GUITestOpStatus &os);
+    virtual void run(HI::GUITestOpStatus& os);
 };
 
 }  // namespace GUITest_crazy_user

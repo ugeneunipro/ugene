@@ -32,14 +32,14 @@
 
 namespace U2 {
 
-static QList<Annotation *> emptyAnnotations;
+static QList<Annotation*> emptyAnnotations;
 
-AnnotationSelection::AnnotationSelection(QObject *p)
+AnnotationSelection::AnnotationSelection(QObject* p)
     : GSelection(GSelectionTypes::ANNOTATIONS, p) {
-    connect(this, SIGNAL(si_selectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &)), SLOT(sl_selectionChanged()));
+    connect(this, SIGNAL(si_selectionChanged(AnnotationSelection*, const QList<Annotation*>&, const QList<Annotation*>&)), SLOT(sl_selectionChanged()));
 }
 
-const QList<Annotation *> &AnnotationSelection::getAnnotations() const {
+const QList<Annotation*>& AnnotationSelection::getAnnotations() const {
     return selection;
 }
 
@@ -51,14 +51,14 @@ void AnnotationSelection::clear() {
     if (selection.isEmpty()) {
         return;
     }
-    QList<Annotation *> tmpRemoved = selection;
+    QList<Annotation*> tmpRemoved = selection;
     selection.clear();
     emit si_selectionChanged(this, emptyAnnotations, tmpRemoved);
 }
 
-void AnnotationSelection::removeObjectAnnotations(const AnnotationTableObject *obj) {
-    QList<Annotation *> removed;
-    foreach (Annotation *a, obj->getAnnotations()) {
+void AnnotationSelection::removeObjectAnnotations(const AnnotationTableObject* obj) {
+    QList<Annotation*> removed;
+    foreach (Annotation* a, obj->getAnnotations()) {
         for (int i = 0; i < selection.size(); i++) {
             if (selection[i] == a) {
                 removed.append(a);
@@ -72,21 +72,21 @@ void AnnotationSelection::removeObjectAnnotations(const AnnotationTableObject *o
     }
 }
 
-void AnnotationSelection::add(Annotation *a) {
+void AnnotationSelection::add(Annotation* a) {
     if (selection.contains(a)) {
         return;  // nothing changed
     }
     selection.append(a);
-    emit si_selectionChanged(this, QList<Annotation *>() << a, emptyAnnotations);
+    emit si_selectionChanged(this, QList<Annotation*>() << a, emptyAnnotations);
 }
 
-void AnnotationSelection::setAnnotations(QList<Annotation *> annotationList) {
-    QList<Annotation *> oldSelection = selection;
+void AnnotationSelection::setAnnotations(QList<Annotation*> annotationList) {
+    QList<Annotation*> oldSelection = selection;
     selection = annotationList;
     emit si_selectionChanged(this, annotationList, oldSelection);
 }
 
-void AnnotationSelection::remove(Annotation *a) {
+void AnnotationSelection::remove(Annotation* a) {
     bool removed = false;
     for (int i = 0; i < selection.size(); i++) {
         if (selection[i] == a) {
@@ -96,15 +96,15 @@ void AnnotationSelection::remove(Annotation *a) {
         }
     }
     if (removed) {
-        emit si_selectionChanged(this, emptyAnnotations, QList<Annotation *>() << a);
+        emit si_selectionChanged(this, emptyAnnotations, QList<Annotation*>() << a);
     }
 }
 
-QByteArray AnnotationSelection::getSequenceUnderAnnotation(const U2EntityRef &sequenceObjectRef,
-                                                           const Annotation *annotation,
-                                                           const DNATranslation *complTT,
-                                                           const DNATranslation *aminoTT,
-                                                           U2OpStatus &os) {
+QByteArray AnnotationSelection::getSequenceUnderAnnotation(const U2EntityRef& sequenceObjectRef,
+                                                           const Annotation* annotation,
+                                                           const DNATranslation* complTT,
+                                                           const DNATranslation* aminoTT,
+                                                           U2OpStatus& os) {
     bool isJoin = annotation->isJoin() || annotation->isBond();
     QList<QByteArray> parts = U2SequenceUtils::extractRegions(sequenceObjectRef, annotation->getRegions(), complTT, aminoTT, isJoin, os);
     CHECK_OP(os, {});
@@ -113,7 +113,7 @@ QByteArray AnnotationSelection::getSequenceUnderAnnotation(const U2EntityRef &se
     CHECK(parts.size() != 1, parts[0]);
 
     quint64 resultBufferLength = parts.size() - 1;
-    for (const QByteArray &part : qAsConst(parts)) {
+    for (const QByteArray& part : qAsConst(parts)) {
         resultBufferLength += part.length();
     }
     CHECK_EXT(resultBufferLength < INT_MAX, os.setError(tr("Sequence is too long.")), {});
@@ -129,20 +129,20 @@ QByteArray AnnotationSelection::getSequenceUnderAnnotation(const U2EntityRef &se
     return result;
 }
 
-bool AnnotationSelection::contains(Annotation *a) const {
+bool AnnotationSelection::contains(Annotation* a) const {
     return selection.contains(a);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // Annotation group selection
-static QList<AnnotationGroup *> emptyGroups;
+static QList<AnnotationGroup*> emptyGroups;
 
-AnnotationGroupSelection::AnnotationGroupSelection(QObject *p)
+AnnotationGroupSelection::AnnotationGroupSelection(QObject* p)
     : GSelection(GSelectionTypes::ANNOTATION_GROUPS, p) {
-    connect(this, SIGNAL(si_selectionChanged(AnnotationGroupSelection *, const QList<AnnotationGroup *> &, const QList<AnnotationGroup *> &)), SLOT(sl_selectionChanged()));
+    connect(this, SIGNAL(si_selectionChanged(AnnotationGroupSelection*, const QList<AnnotationGroup*>&, const QList<AnnotationGroup*>&)), SLOT(sl_selectionChanged()));
 }
 
-const QList<AnnotationGroup *> &AnnotationGroupSelection::getSelection() const {
+const QList<AnnotationGroup*>& AnnotationGroupSelection::getSelection() const {
     return selection;
 }
 
@@ -150,7 +150,7 @@ bool AnnotationGroupSelection::isEmpty() const {
     return selection.isEmpty();
 }
 
-bool AnnotationGroupSelection::contains(AnnotationGroup *g) const {
+bool AnnotationGroupSelection::contains(AnnotationGroup* g) const {
     return selection.contains(g);
 }
 
@@ -158,25 +158,25 @@ void AnnotationGroupSelection::clear() {
     if (selection.isEmpty()) {
         return;
     }
-    QList<AnnotationGroup *> tmpRemoved = selection;
+    QList<AnnotationGroup*> tmpRemoved = selection;
     selection.clear();
     emit si_selectionChanged(this, emptyGroups, tmpRemoved);
 }
 
-void AnnotationGroupSelection::addToSelection(AnnotationGroup *g) {
+void AnnotationGroupSelection::addToSelection(AnnotationGroup* g) {
     if (selection.contains(g)) {
         return;
     }
     selection.append(g);
-    QList<AnnotationGroup *> tmpAdded;
+    QList<AnnotationGroup*> tmpAdded;
     tmpAdded.append(g);
     emit si_selectionChanged(this, tmpAdded, emptyGroups);
 }
 
-void AnnotationGroupSelection::removeFromSelection(AnnotationGroup *g) {
+void AnnotationGroupSelection::removeFromSelection(AnnotationGroup* g) {
     const bool found = selection.removeOne(g);
     if (found) {
-        QList<AnnotationGroup *> tmpRemoved;
+        QList<AnnotationGroup*> tmpRemoved;
         tmpRemoved.append(g);
         emit si_selectionChanged(this, emptyGroups, tmpRemoved);
     }

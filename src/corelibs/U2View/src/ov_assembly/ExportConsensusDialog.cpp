@@ -36,7 +36,7 @@
 
 namespace U2 {
 
-ExportConsensusDialog::ExportConsensusDialog(QWidget *p, const ExportConsensusTaskSettings &settings_, const U2Region &visibleRegion)
+ExportConsensusDialog::ExportConsensusDialog(QWidget* p, const ExportConsensusTaskSettings& settings_, const U2Region& visibleRegion)
     : QDialog(p),
       settings(settings_),
       saveController(nullptr) {
@@ -66,8 +66,8 @@ ExportConsensusDialog::ExportConsensusDialog(QWidget *p, const ExportConsensusTa
     algorithmComboBox->addItems(algos);
     algorithmComboBox->setCurrentIndex(algos.indexOf(settings.consensusAlgorithm->getId()));
 
-    QPushButton *okPushButton = buttonBox->button(QDialogButtonBox::Ok);
-    QPushButton *cancelPushButton = buttonBox->button(QDialogButtonBox::Cancel);
+    QPushButton* okPushButton = buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* cancelPushButton = buttonBox->button(QDialogButtonBox::Cancel);
 
     connect(okPushButton, SIGNAL(clicked()), SLOT(accept()));
     connect(cancelPushButton, SIGNAL(clicked()), SLOT(reject()));
@@ -86,7 +86,7 @@ void ExportConsensusDialog::accept() {
 
     QString algoId = algorithmComboBox->currentText();
     if (algoId != settings.consensusAlgorithm->getId()) {
-        AssemblyConsensusAlgorithmFactory *f = AppContext::getAssemblyConsensusAlgorithmRegistry()->getAlgorithmFactory(algoId);
+        AssemblyConsensusAlgorithmFactory* f = AppContext::getAssemblyConsensusAlgorithmRegistry()->getAlgorithmFactory(algoId);
         SAFE_POINT(f != nullptr, QString("ExportConsensusDialog: consensus algorithm factory %1 not found").arg(algoId), );
         settings.consensusAlgorithm = QSharedPointer<AssemblyConsensusAlgorithm>(f->createAlgorithm());
     }

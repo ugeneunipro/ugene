@@ -58,8 +58,8 @@ const QString EXT_TOOL_PATH("path");
 const QString TMP_DIR_PATH("temp-dir");
 
 void TCoffeeWorkerFactory::init() {
-    QList<PortDescriptor *> p;
-    QList<Attribute *> a;
+    QList<PortDescriptor*> p;
+    QList<Attribute*> a;
     Descriptor ind(BasePorts::IN_MSA_PORT_ID(), TCoffeeWorker::tr("Input MSA"), TCoffeeWorker::tr("Multiple sequence alignment to be processed."));
     Descriptor oud(BasePorts::OUT_MSA_PORT_ID(), TCoffeeWorker::tr("Multiple sequence alignment"), TCoffeeWorker::tr("Result of alignment."));
 
@@ -84,9 +84,9 @@ void TCoffeeWorkerFactory::init() {
     a << new Attribute(tdp, BaseTypes::STRING_TYPE(), true, QVariant("default"));
 
     Descriptor desc(ACTOR_ID, TCoffeeWorker::tr("Align with T-Coffee"), TCoffeeWorker::tr("T-Coffee is a multiple sequence alignment package. "));
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap m;
         m["minimum"] = int(-10000);
@@ -116,19 +116,19 @@ void TCoffeeWorkerFactory::init() {
     proto->addExternalTool(TCoffeeSupport::ET_TCOFFEE_ID, EXT_TOOL_PATH);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new TCoffeeWorkerFactory());
 }
 
 /****************************
-* TCoffeePrompter
-****************************/
-TCoffeePrompter::TCoffeePrompter(Actor *p)
+ * TCoffeePrompter
+ ****************************/
+TCoffeePrompter::TCoffeePrompter(Actor* p)
     : PrompterBase<TCoffeePrompter>(p) {
 }
 QString TCoffeePrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
-    Actor *producer = input->getProducer(BasePorts::IN_MSA_PORT_ID());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
+    Actor* producer = input->getProducer(BasePorts::IN_MSA_PORT_ID());
     QString producerName = producer ? tr(" from %1").arg(producer->getLabel()) : "";
 
     QString doc = tr("For each MSA<u>%1</u>, build the alignment using <u>\"T-Coffee\"</u> and send it to output.")
@@ -137,9 +137,9 @@ QString TCoffeePrompter::composeRichDoc() {
     return doc;
 }
 /****************************
-* TCoffeeWorker
-****************************/
-TCoffeeWorker::TCoffeeWorker(Actor *a)
+ * TCoffeeWorker
+ ****************************/
+TCoffeeWorker::TCoffeeWorker(Actor* a)
     : BaseWorker(a), input(nullptr), output(nullptr) {
 }
 
@@ -148,7 +148,7 @@ void TCoffeeWorker::init() {
     output = ports.value(BasePorts::OUT_MSA_PORT_ID());
 }
 
-Task *TCoffeeWorker::tick() {
+Task* TCoffeeWorker::tick() {
     if (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
@@ -178,9 +178,9 @@ Task *TCoffeeWorker::tick() {
             algoLog.error(tr("An empty MSA '%1' has been supplied to T-Coffee.").arg(msa->getName()));
             return nullptr;
         }
-        TCoffeeSupportTask *supportTask = new TCoffeeSupportTask(msa, GObjectReference(), cfg);
+        TCoffeeSupportTask* supportTask = new TCoffeeSupportTask(msa, GObjectReference(), cfg);
         supportTask->addListeners(createLogListeners());
-        Task *t = new NoFailTaskWrapper(supportTask);
+        Task* t = new NoFailTaskWrapper(supportTask);
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
     } else if (input->isEnded()) {
@@ -191,9 +191,9 @@ Task *TCoffeeWorker::tick() {
 }
 
 void TCoffeeWorker::sl_taskFinished() {
-    NoFailTaskWrapper *wrapper = qobject_cast<NoFailTaskWrapper *>(sender());
+    NoFailTaskWrapper* wrapper = qobject_cast<NoFailTaskWrapper*>(sender());
     CHECK(wrapper->isFinished(), );
-    TCoffeeSupportTask *t = qobject_cast<TCoffeeSupportTask *>(wrapper->originalTask());
+    TCoffeeSupportTask* t = qobject_cast<TCoffeeSupportTask*>(wrapper->originalTask());
     if (t->isCanceled()) {
         return;
     }
@@ -213,5 +213,5 @@ void TCoffeeWorker::sl_taskFinished() {
 void TCoffeeWorker::cleanup() {
 }
 
-}    //namespace LocalWorkflow
-}    //namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

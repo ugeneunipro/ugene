@@ -50,8 +50,8 @@ Q_DECLARE_FLAGS(SaveDocFlags, SaveDocFlag)
 class U2CORE_EXPORT SaveDocumentTask : public Task {
     Q_OBJECT
 public:
-    SaveDocumentTask(Document *doc, IOAdapterFactory *iof = nullptr, const GUrl &url = GUrl(), SaveDocFlags flags = 0);
-    SaveDocumentTask(Document *doc, SaveDocFlags flags, const QSet<QString> &excludeFileNames = QSet<QString>());
+    SaveDocumentTask(Document* doc, IOAdapterFactory* iof = nullptr, const GUrl& url = GUrl(), SaveDocFlags flags = 0);
+    SaveDocumentTask(Document* doc, SaveDocFlags flags, const QSet<QString>& excludeFileNames = QSet<QString>());
 
     void prepare() override;
 
@@ -59,20 +59,20 @@ public:
 
     ReportResult report() override;
 
-    const GUrl &getURL() const {
+    const GUrl& getURL() const {
         return url;
     }
 
-    IOAdapterFactory *getIOAdapterFactory() const {
+    IOAdapterFactory* getIOAdapterFactory() const {
         return iof;
     }
 
-    const QPointer<Document> &getDocument() const {
+    const QPointer<Document>& getDocument() const {
         return doc;
     }
 
     // used in file-name rolling mode
-    void setExcludeFileNames(const QSet<QString> &_excludeFileNames) {
+    void setExcludeFileNames(const QSet<QString>& _excludeFileNames) {
         excludeFileNames = _excludeFileNames;
     }
 
@@ -82,12 +82,12 @@ public:
     QVariantMap getOpenDocumentWithProjectHints() const;
 
     /** Sets new 'openDocumentWithProjectHints'. See 'openDocumentWithProjectHints' for details. */
-    void setOpenDocumentWithProjectHints(const QVariantMap &hints);
+    void setOpenDocumentWithProjectHints(const QVariantMap& hints);
 
 private:
-    StateLock *lock;
+    StateLock* lock;
     QPointer<Document> doc;
-    IOAdapterFactory *iof;
+    IOAdapterFactory* iof;
     GUrl url;
     SaveDocFlags flags;
     QSet<QString> excludeFileNames;
@@ -104,33 +104,33 @@ enum SavedNewDocFlag {
 class U2CORE_EXPORT SaveMultipleDocuments : public Task {
     Q_OBJECT
 public:
-    SaveMultipleDocuments(const QList<Document *> &docs, bool askBeforeSave, SavedNewDocFlag openFlag = SavedNewDoc_DoNotOpen);
+    SaveMultipleDocuments(const QList<Document*>& docs, bool askBeforeSave, SavedNewDocFlag openFlag = SavedNewDoc_DoNotOpen);
 
-    static QList<Document *> findModifiedDocuments(const QList<Document *> &docs);
+    static QList<Document*> findModifiedDocuments(const QList<Document*>& docs);
 
 private:
-    GUrl chooseAnotherUrl(Document *doc);
+    GUrl chooseAnotherUrl(Document* doc);
 };
 
 class U2CORE_EXPORT SaveCopyAndAddToProjectTask : public Task {
     Q_OBJECT
 public:
-    SaveCopyAndAddToProjectTask(Document *doc, IOAdapterFactory *iof, const GUrl &url);
+    SaveCopyAndAddToProjectTask(Document* doc, IOAdapterFactory* iof, const GUrl& url);
     ReportResult report();
 
 private:
-    SaveDocumentTask *saveTask;
+    SaveDocumentTask* saveTask;
     QList<UnloadedObjectInfo> info;
     GUrl url;
     GUrl origURL;
-    DocumentFormat *df;
+    DocumentFormat* df;
     QVariantMap hints;
 };
 
 class U2CORE_EXPORT RelocateDocumentTask : public Task {
     Q_OBJECT
 public:
-    RelocateDocumentTask(const GUrl &fromURL, const GUrl &toURL);
+    RelocateDocumentTask(const GUrl& fromURL, const GUrl& toURL);
     ReportResult report();
 
 public:

@@ -31,13 +31,13 @@ namespace BAM {
 
 class SamReader : public Reader {
 public:
-    SamReader(IOAdapter &ioAdapter);
-    const Header &getHeader() const;
-    Alignment readAlignment(bool &eof);
+    SamReader(IOAdapter& ioAdapter);
+    const Header& getHeader() const;
+    Alignment readAlignment(bool& eof);
     bool isEof() const;
 
 private:
-    QByteArray readString(bool &eof);
+    QByteArray readString(bool& eof);
     void readHeader();
     Alignment parseAlignmentString(QByteArray line);
 

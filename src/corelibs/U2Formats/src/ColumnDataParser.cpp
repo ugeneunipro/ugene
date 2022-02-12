@@ -25,23 +25,23 @@
 
 namespace U2 {
 
-ColumnDataParser::Column::Column(const QString &_name,
+ColumnDataParser::Column::Column(const QString& _name,
                                  ColumnDataParser::ColumnType _type,
                                  const QString _defaultValue,
                                  bool _required)
     : name(_name), type(_type), defaultValue(_defaultValue), required(_required) {
 }
 
-ColumnDataParser::Column::Column(const QString &_name)
+ColumnDataParser::Column::Column(const QString& _name)
     : name(_name), type(STRING) {
     required = false;
 }
 
-bool ColumnDataParser::Column::operator==(const ColumnDataParser::Column &other) const {
+bool ColumnDataParser::Column::operator==(const ColumnDataParser::Column& other) const {
     return name == other.name;
 }
 
-ColumnDataParser::Iterator::Iterator(const QList<Column> &_columns, const QStringList &_values)
+ColumnDataParser::Iterator::Iterator(const QList<Column>& _columns, const QStringList& _values)
     : columns(_columns), values(_values) {
     currentNum = 0;
     end = columns.size();
@@ -73,7 +73,7 @@ QString ColumnDataParser::Iterator::takeString() {
     return take();
 }
 
-int ColumnDataParser::Iterator::takeInt(U2OpStatus &os) {
+int ColumnDataParser::Iterator::takeInt(U2OpStatus& os) {
     bool ok = true;
     QString str = take();
     int result = str.toInt(&ok);
@@ -83,7 +83,7 @@ int ColumnDataParser::Iterator::takeInt(U2OpStatus &os) {
     return result;
 }
 
-double ColumnDataParser::Iterator::takeDouble(U2OpStatus &os) {
+double ColumnDataParser::Iterator::takeDouble(U2OpStatus& os) {
     bool ok = true;
     QString str = take();
     double result = str.toDouble(&ok);
@@ -110,15 +110,15 @@ QString ColumnDataParser::Iterator::look() const {
     return values[currentNum];
 }
 
-ColumnDataParser::ColumnDataParser(const QList<Column> &_formatColumns, const QString &_separator)
+ColumnDataParser::ColumnDataParser(const QList<Column>& _formatColumns, const QString& _separator)
     : inited(false), formatColumns(_formatColumns), separator(_separator) {
 }
 
-void ColumnDataParser::init(const QString &headerLine, U2OpStatus &os) {
+void ColumnDataParser::init(const QString& headerLine, U2OpStatus& os) {
     QStringList names = headerLine.split(separator, QString::SkipEmptyParts);
-    for (const QString &name : qAsConst(names)) {
+    for (const QString& name : qAsConst(names)) {
         if (formatColumns.contains(Column(name))) {
-            for (const Column &c : qAsConst(formatColumns)) {
+            for (const Column& c : qAsConst(formatColumns)) {
                 if (name == c.name) {
                     currentColumns << c;
                     break;
@@ -129,7 +129,7 @@ void ColumnDataParser::init(const QString &headerLine, U2OpStatus &os) {
         }
     }
     // check required colums
-    foreach (const Column &c, formatColumns) {
+    foreach (const Column& c, formatColumns) {
         if (c.required && !currentColumns.contains(c)) {
             os.setError(QString("Required column is missed: %1").arg(c.name));
             return;
@@ -138,7 +138,7 @@ void ColumnDataParser::init(const QString &headerLine, U2OpStatus &os) {
     inited = true;
 }
 
-ColumnDataParser::Iterator ColumnDataParser::parseLine(const QString &line, U2OpStatus &os) const {
+ColumnDataParser::Iterator ColumnDataParser::parseLine(const QString& line, U2OpStatus& os) const {
     SAFE_POINT(inited, "ColumnDataParser is not inited", Iterator(QList<Column>(), QStringList()));
     QStringList values = line.split(separator, QString::SkipEmptyParts);
     if (currentColumns.size() != values.size()) {
@@ -148,7 +148,7 @@ ColumnDataParser::Iterator ColumnDataParser::parseLine(const QString &line, U2Op
     return Iterator(currentColumns, values);
 }
 
-const QList<ColumnDataParser::Column> &ColumnDataParser::getCurrentColumns() const {
+const QList<ColumnDataParser::Column>& ColumnDataParser::getCurrentColumns() const {
     return currentColumns;
 }
 

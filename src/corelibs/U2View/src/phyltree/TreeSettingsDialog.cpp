@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-TreeSettingsDialog::TreeSettingsDialog(QWidget *parent, const OptionsMap &settings, bool isRectLayout)
+TreeSettingsDialog::TreeSettingsDialog(QWidget* parent, const OptionsMap& settings, bool isRectLayout)
     : BaseSettingsDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929724");

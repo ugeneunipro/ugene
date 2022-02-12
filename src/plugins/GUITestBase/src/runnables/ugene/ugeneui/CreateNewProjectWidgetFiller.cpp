@@ -34,13 +34,13 @@ using namespace HI;
 #define GT_METHOD_NAME "commonScenario"
 void SaveProjectAsDialogFiller::commonScenario() {
     GTGlobals::sleep();
-    QWidget *dialog = QApplication::activeModalWidget();
+    QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog, "activeModalWidget is NULL");
 
-    QLineEdit *projectNameEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectNameEdit", dialog));
+    QLineEdit* projectNameEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "projectNameEdit", dialog));
     GTLineEdit::setText(os, projectNameEdit, projectName);
 
-    QLineEdit *projectFileEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectFilePathEdit", dialog));
+    QLineEdit* projectFileEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "projectFilePathEdit", dialog));
     GTLineEdit::setText(os, projectFileEdit, projectFile);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

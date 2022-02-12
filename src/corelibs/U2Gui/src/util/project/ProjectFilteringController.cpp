@@ -31,14 +31,14 @@ namespace U2 {
 
 const int ProjectFilteringController::FILTER_START_INTERVAL = 2000;
 
-ProjectFilteringController::ProjectFilteringController(QObject *p)
+ProjectFilteringController::ProjectFilteringController(QObject* p)
     : QObject(p) {
     filterStarter.setSingleShot(true);
     connect(&filterStarter, SIGNAL(timeout()), SLOT(sl_startFiltering()));
 }
 
-void ProjectFilteringController::startFiltering(const ProjectTreeControllerModeSettings &settings,
-                                                const QList<QPointer<Document>> &docs) {
+void ProjectFilteringController::startFiltering(const ProjectTreeControllerModeSettings& settings,
+                                                const QList<QPointer<Document>>& docs) {
     stopFiltering();
     emit si_filteringStarted();
 
@@ -49,7 +49,7 @@ void ProjectFilteringController::startFiltering(const ProjectTreeControllerModeS
 }
 
 void ProjectFilteringController::stopFiltering() {
-    foreach (AbstractProjectFilterTask *task, activeFilteringTasks) {
+    foreach (AbstractProjectFilterTask* task, activeFilteringTasks) {
         task->cancel();
     }
     emit si_filteringFinished();
@@ -62,16 +62,16 @@ void ProjectFilteringController::sl_startFiltering() {
         return;
     }
 
-    ProjectFilterTaskRegistry *registry = AppContext::getProjectFilterTaskRegistry();
-    foreach (AbstractProjectFilterTask *task, registry->createFilterTasks(lastSettings, lastDocs)) {
+    ProjectFilterTaskRegistry* registry = AppContext::getProjectFilterTaskRegistry();
+    foreach (AbstractProjectFilterTask* task, registry->createFilterTasks(lastSettings, lastDocs)) {
         addNewActiveTask(task);
     }
     emit si_filteringStarted();
     GCOUNTER(cvar, "Project filtering launch");
 }
 
-void ProjectFilteringController::sl_objectsFiltered(const QString &groupName, const SafeObjList &objs) {
-    AbstractProjectFilterTask *filterTask = qobject_cast<AbstractProjectFilterTask *>(sender());
+void ProjectFilteringController::sl_objectsFiltered(const QString& groupName, const SafeObjList& objs) {
+    AbstractProjectFilterTask* filterTask = qobject_cast<AbstractProjectFilterTask*>(sender());
     SAFE_POINT(nullptr != filterTask, L10N::nullPointerError("project filter task"), );
     SAFE_POINT(!groupName.isEmpty(), "Invalid project filter group name", );
 
@@ -81,7 +81,7 @@ void ProjectFilteringController::sl_objectsFiltered(const QString &groupName, co
 }
 
 void ProjectFilteringController::sl_filteringFinished() {
-    AbstractProjectFilterTask *task = qobject_cast<AbstractProjectFilterTask *>(sender());
+    AbstractProjectFilterTask* task = qobject_cast<AbstractProjectFilterTask*>(sender());
     SAFE_POINT(nullptr != task, L10N::nullPointerError("project filter task"), );
 
     if (task->isFinished()) {
@@ -93,7 +93,7 @@ void ProjectFilteringController::sl_filteringFinished() {
     }
 }
 
-void ProjectFilteringController::addNewActiveTask(AbstractProjectFilterTask *task) {
+void ProjectFilteringController::addNewActiveTask(AbstractProjectFilterTask* task) {
     SAFE_POINT(nullptr != task, L10N::nullPointerError("Project filtering task"), );
 
     connectNewTask(task);
@@ -101,8 +101,8 @@ void ProjectFilteringController::addNewActiveTask(AbstractProjectFilterTask *tas
     activeFilteringTasks.insert(task);
 }
 
-void ProjectFilteringController::connectNewTask(AbstractProjectFilterTask *task) {
-    connect(task, SIGNAL(si_objectsFiltered(const QString &, const SafeObjList &)), SLOT(sl_objectsFiltered(const QString &, const SafeObjList &)));
+void ProjectFilteringController::connectNewTask(AbstractProjectFilterTask* task) {
+    connect(task, SIGNAL(si_objectsFiltered(const QString&, const SafeObjList&)), SLOT(sl_objectsFiltered(const QString&, const SafeObjList&)));
     connect(task, SIGNAL(si_stateChanged()), SLOT(sl_filteringFinished()));
 }
 

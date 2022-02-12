@@ -33,18 +33,18 @@ class U2CORE_EXPORT PasswordStorage {
 public:
     PasswordStorage();
 
-    void addEntry(const QString &fullUrl, const QString &password, bool remember);
-    void removeEntry(const QString &fullUrl);
-    QString getEntry(const QString &fullUrl) const;
-    bool contains(const QString &fullUrl) const;
-    bool isRemembered(const QString &fullUrl) const;
-    void setRemembered(const QString &fullUrl, bool remember);
+    void addEntry(const QString& fullUrl, const QString& password, bool remember);
+    void removeEntry(const QString& fullUrl);
+    QString getEntry(const QString& fullUrl) const;
+    bool contains(const QString& fullUrl) const;
+    bool isRemembered(const QString& fullUrl) const;
+    void setRemembered(const QString& fullUrl, bool remember);
 
 private:
-    static void remember(const QString &fullUrl, const QString &password);
-    static void forget(const QString &fullUrl);
-    static QByteArray serialize(const QString &password);
-    static QString deserialize(const QByteArray &data);
+    static void remember(const QString& fullUrl, const QString& password);
+    static void forget(const QString& fullUrl);
+    static QByteArray serialize(const QString& password);
+    static QString deserialize(const QByteArray& data);
 
     StrStrMap registry;
 

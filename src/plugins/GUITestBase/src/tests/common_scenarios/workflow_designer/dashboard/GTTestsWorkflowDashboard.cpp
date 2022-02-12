@@ -55,11 +55,11 @@ namespace U2 {
 namespace GUITest_common_scenarios_workflow_dashboard {
 using namespace HI;
 
-static QString getExternalToolPath(GUITestOpStatus &os, const QString &toolName) {
-    ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
+static QString getExternalToolPath(GUITestOpStatus& os, const QString& toolName) {
+    ExternalToolRegistry* etRegistry = AppContext::getExternalToolRegistry();
     CHECK_SET_ERR_RESULT(etRegistry != nullptr, "ExternalToolRegistry is nullptr", QString());
 
-    ExternalTool *tool = etRegistry->getByName(toolName);
+    ExternalTool* tool = etRegistry->getByName(toolName);
     CHECK_SET_ERR_RESULT(tool != nullptr, QString("'%1' tool not found in the registry is nullptr").arg(toolName), QString());
 
     QString toolPath = tool->getPath();
@@ -69,7 +69,7 @@ static QString getExternalToolPath(GUITestOpStatus &os, const QString &toolName)
     return toolPath;
 }
 
-static QString getExternalToolDirPath(GUITestOpStatus &os, const QString &toolName, const QString &dirNamePart) {
+static QString getExternalToolDirPath(GUITestOpStatus& os, const QString& toolName, const QString& dirNamePart) {
     QString toolPath = getExternalToolPath(os, toolName);
     QDir toolDir = QFileInfo(toolPath).dir();
     while (!toolDir.dirName().contains(dirNamePart)) {
@@ -80,7 +80,7 @@ static QString getExternalToolDirPath(GUITestOpStatus &os, const QString &toolNa
     return toolDir.path();
 }
 
-static QString putToolToFolderWithSpaces(GUITestOpStatus &os, const QString &toolName, const QString &toolDirPath, const QString &sandboxDir) {
+static QString putToolToFolderWithSpaces(GUITestOpStatus& os, const QString& toolName, const QString& toolDirPath, const QString& sandboxDir) {
     QString toolPath = getExternalToolPath(os, toolName);
     CHECK(!toolPath.contains(" "), toolPath);
 
@@ -95,7 +95,7 @@ static QString putToolToFolderWithSpaces(GUITestOpStatus &os, const QString &too
     return newToolPath;
 }
 
-static QString putToolToFolderWithoutSpaces(GUITestOpStatus &os, const QString &toolName, const QString &toolDirPath, const QString &sandboxDir) {
+static QString putToolToFolderWithoutSpaces(GUITestOpStatus& os, const QString& toolName, const QString& toolDirPath, const QString& sandboxDir) {
     const QString toolPath = getExternalToolPath(os, toolName);
     CHECK(toolPath.contains(" "), toolPath);
 
@@ -122,7 +122,7 @@ static QString putToolToFolderWithoutSpaces(GUITestOpStatus &os, const QString &
     return newToolPath;
 }
 
-static QMap<QString, QList<QPair<QString, QStringList>>> getNodesTexts(GUITestOpStatus &os) {
+static QMap<QString, QList<QPair<QString, QStringList>>> getNodesTexts(GUITestOpStatus& os) {
     const int firstLevelNodesCount = GTUtilsDashboard::getChildrenNodesCount(os, GTUtilsDashboard::TREE_ROOT_ID);
     QMap<QString, QList<QPair<QString, QStringList>>> nodesTexts;
     for (int i = 0; i < firstLevelNodesCount; i++) {
@@ -147,7 +147,7 @@ static QMap<QString, QList<QPair<QString, QStringList>>> getNodesTexts(GUITestOp
     return nodesTexts;
 }
 
-static void checkTreeStructure(GUITestOpStatus &os, const QMap<QString, QList<QPair<QString, QStringList>>> &expectedNodesTexts) {
+static void checkTreeStructure(GUITestOpStatus& os, const QMap<QString, QList<QPair<QString, QStringList>>>& expectedNodesTexts) {
     const QMap<QString, QList<QPair<QString, QStringList>>> nodesTexts = getNodesTexts(os);
 
     // Do explicitely comparison to be able to log the incorrect values
@@ -156,13 +156,13 @@ static void checkTreeStructure(GUITestOpStatus &os, const QMap<QString, QList<QP
                       .arg(expectedNodesTexts.size())
                       .arg(nodesTexts.size()));
 
-    foreach (const QString &expectedFirstLevelNodeText, expectedNodesTexts.keys()) {
+    foreach (const QString& expectedFirstLevelNodeText, expectedNodesTexts.keys()) {
         CHECK_SET_ERR(nodesTexts.contains(expectedFirstLevelNodeText),
                       QString("An expected first level node with text '%1' is not found in the tree")
                           .arg(expectedFirstLevelNodeText));
 
-        const QList<QPair<QString, QStringList>> &expectedSecondLevelNodes = expectedNodesTexts[expectedFirstLevelNodeText];
-        const QList<QPair<QString, QStringList>> &secondLevelNodes = nodesTexts[expectedFirstLevelNodeText];
+        const QList<QPair<QString, QStringList>>& expectedSecondLevelNodes = expectedNodesTexts[expectedFirstLevelNodeText];
+        const QList<QPair<QString, QStringList>>& secondLevelNodes = nodesTexts[expectedFirstLevelNodeText];
 
         CHECK_SET_ERR(expectedSecondLevelNodes.size() == secondLevelNodes.size(),
                       QString("Unexpected second level nodes count for the first level node with text '%1': expected %2, got %3")
@@ -171,8 +171,8 @@ static void checkTreeStructure(GUITestOpStatus &os, const QMap<QString, QList<QP
                           .arg(secondLevelNodes.size()));
 
         for (int i = 0, n = expectedSecondLevelNodes.size(); i < n; i++) {
-            const QPair<QString, QStringList> &expectedSecondLevelNode = expectedSecondLevelNodes[i];
-            const QPair<QString, QStringList> &secondLevelNode = secondLevelNodes[i];
+            const QPair<QString, QStringList>& expectedSecondLevelNode = expectedSecondLevelNodes[i];
+            const QPair<QString, QStringList>& secondLevelNode = secondLevelNodes[i];
 
             const QString expectedSecondLevelNodeText = expectedSecondLevelNode.first;
             const QString secondLevelNodeText = secondLevelNode.first;
@@ -183,8 +183,8 @@ static void checkTreeStructure(GUITestOpStatus &os, const QMap<QString, QList<QP
                               .arg(expectedSecondLevelNodeText)
                               .arg(secondLevelNodeText));
 
-            const QStringList &expectedThirdLevelNodes = expectedSecondLevelNode.second;
-            const QStringList &thirdLevelNodes = secondLevelNode.second;
+            const QStringList& expectedThirdLevelNodes = expectedSecondLevelNode.second;
+            const QStringList& thirdLevelNodes = secondLevelNode.second;
 
             CHECK_SET_ERR(expectedThirdLevelNodes.size() == thirdLevelNodes.size(),
                           QString("Unexpected third level nodes count for the second level node with text '%1', which is %2 (zero-based) child of the first level node with text '%3': expected %4, got %5")
@@ -211,12 +211,12 @@ static void checkTreeStructure(GUITestOpStatus &os, const QMap<QString, QList<QP
 
 class SetWorkflowOutputDirScenario : public CustomScenario {
 public:
-    SetWorkflowOutputDirScenario(const QString &_path)
+    SetWorkflowOutputDirScenario(const QString& _path)
         : CustomScenario(), path(_path) {
     }
 
-    void run(HI::GUITestOpStatus &os) {
-        QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    void run(HI::GUITestOpStatus& os) {
+        QWidget* dialog = GTWidget::getActiveModalWidget(os);
         AppSettingsDialogFiller::setWorkflowOutputDirPath(os, path);
         GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
     }
@@ -225,12 +225,12 @@ private:
     const QString path;
 };
 
-static void setWorkflowOutputDir(GUITestOpStatus &os, const QString &path) {
+static void setWorkflowOutputDir(GUITestOpStatus& os, const QString& path) {
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new SetWorkflowOutputDirScenario(path)));
     GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
 }
 
-static QString getQuotedString(const QString &string) {
+static QString getQuotedString(const QString& string) {
     if (string.contains(QRegularExpression("\\s"))) {
         return "\"" + string + "\"";
     }
@@ -1969,11 +1969,11 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0001) {
     //    Expected result:
     //        - "Dashboards manager" button on the toolbar is active.
     //        - There is no "Go to Dashboard" button on the toolbar.
-    QWidget *dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    QWidget *viewSwitchButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard");
+    QWidget* viewSwitchButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard");
     CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
     CHECK_SET_ERR(!viewSwitchButton->isVisible(), "'Go to Dashboards' button is unexpectedly invisible");
 
@@ -2000,11 +2000,11 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0002) {
     //    Expected result:
     //        - "Dashboards manager" button on the toolbar is active.
     //        - There is "Go to Dashboard" button on the toolbar. The button text is exactly as written.
-    QWidget *dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    QAbstractButton *viewSwitchButton = qobject_cast<QAbstractButton *>(GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard"));
+    QAbstractButton* viewSwitchButton = qobject_cast<QAbstractButton*>(GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard"));
     CHECK_SET_ERR(viewSwitchButton != nullptr, "'Go to Dashboards' is nullptr");
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
@@ -2021,8 +2021,8 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0002) {
     //    5. Cancel the dialog.
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Extract consensus as sequence 1"), true),
                                                                        qMakePair(QString("Extract consensus as sequence 2"), true)});
             const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
@@ -2075,7 +2075,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0002) {
                       .arg(expectedButtonText)
                       .arg(actualButtonText));
 
-    QTabWidget *dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget(os);
     CHECK_SET_ERR(dashboardsView != nullptr, "Dashboards view is nullptr");
 
     int expectedTabsCount = 2;
@@ -2133,11 +2133,11 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0003) {
     //    Expected result:
     //        - "Dashboards manager" button on the toolbar is active.
     //        - There is "Go to Dashboard" button on the toolbar. The button text is exactly as written.
-    QWidget *dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    QAbstractButton *viewSwitchButton = qobject_cast<QAbstractButton *>(GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard"));
+    QAbstractButton* viewSwitchButton = qobject_cast<QAbstractButton*>(GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard"));
     CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
@@ -2154,8 +2154,8 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0003) {
     //    5. Cancel the dialog.
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Extract consensus as sequence 1"), false),
                                                                        qMakePair(QString("Extract consensus as sequence 2"), true)});
             const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
@@ -2208,7 +2208,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0003) {
                       .arg(expectedButtonText)
                       .arg(actualButtonText));
 
-    QTabWidget *dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget(os);
     CHECK_SET_ERR(dashboardsView != nullptr, "Dashboards view is nullptr");
 
     int expectedTabsCount = 1;
@@ -2266,11 +2266,11 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0004) {
     //    Expected result:
     //        - "Dashboards manager" button on the toolbar is active.
     //        - There is no "Go to Dashboard" button on the toolbar.
-    QWidget *dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    QWidget *viewSwitchButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard");
+    QWidget* viewSwitchButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard");
     CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
     CHECK_SET_ERR(!viewSwitchButton->isVisible(), "'Go to Dashboards' button is unexpectedly invisible");
 
@@ -2279,8 +2279,8 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0004) {
     //    5. Cancel the dialog.
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Extract consensus as sequence 1"), false),
                                                                        qMakePair(QString("Extract consensus as sequence 2"), false)});
             const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
@@ -2334,7 +2334,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     //    5. Click to the "Go to Dashboards" button on the toolbar.
-    QAbstractButton *viewSwitchButton = qobject_cast<QAbstractButton *>(
+    QAbstractButton* viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
@@ -2356,11 +2356,11 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
     //        - The Workflow Designer switches to the scene view mode.
     //        - There is no scene/dashboards switch button on the toolbar.
     //        - The "Dashboards manager" button on the toolbar is active.
-    QWidget *dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    QWidget *viewSwitchButton2 = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard");
+    QWidget* viewSwitchButton2 = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard");
     CHECK_SET_ERR(nullptr == viewSwitchButton2 ||
                       !viewSwitchButton2->isVisible(),
                   "'Go to Dashboards' is visible");
@@ -2415,7 +2415,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     //    5. Click to the "Go to Dashboards" button on the toolbar.
-    QAbstractButton *viewSwitchButton = qobject_cast<QAbstractButton *>(
+    QAbstractButton* viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
@@ -2450,7 +2450,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
                       .arg(actualButtonText));
 
     coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
-    QTabWidget *dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget(os);
     CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
     coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
 
@@ -2478,7 +2478,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
     const QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
-    QWidget *dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
@@ -2487,8 +2487,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
     //    9. Close the messagebox.
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Extract consensus as sequence 1"), true),
                                                                        qMakePair(QString("Extract consensus as sequence 2"), true)});
             const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
@@ -2536,7 +2536,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    QWidget *viewSwitchButton2 = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard");
+    QWidget* viewSwitchButton2 = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard");
     CHECK_SET_ERR(nullptr != viewSwitchButton2 &&
                       viewSwitchButton2->isVisible(),
                   "'Go to Dashboards' is invisible");
@@ -2555,7 +2555,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
     //    - There are two tabs with dashboards. Their names are "Extract consensus as sequence 1" and "Extract consensus as sequence 2".
     //    - The "Extract consensus as sequence 2" dashboard is active.
     //    - The dashboard is correctly displayed.
-    viewSwitchButton = qobject_cast<QAbstractButton *>(
+    viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
@@ -2612,7 +2612,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    5. Click to the "Go to Dashboards" button on the toolbar.
-    QAbstractButton *viewSwitchButton = qobject_cast<QAbstractButton *>(
+    QAbstractButton* viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
@@ -2646,7 +2646,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
                       .arg(expectedButtonText)
                       .arg(actualButtonText));
 
-    QTabWidget *dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget(os);
     CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
 
     const int expectedTabsCount = 1;
@@ -2673,7 +2673,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
     const QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
-    QWidget *dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
@@ -2682,8 +2682,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
     //    9. Close the messagebox.
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Extract consensus as sequence 1"), false),
                                                                        qMakePair(QString("Extract consensus as sequence 2"), true)});
             const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
@@ -2745,7 +2745,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
     //    - There is one tab with a dashboard. Its name is "Extract consensus as sequence 2".
     //    - The "Extract consensus as sequence 2" dashboard is active.
     //    - The dashboard is correctly displayed.
-    viewSwitchButton = qobject_cast<QAbstractButton *>(
+    viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
@@ -2802,7 +2802,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    5. Click to the "Go to Dashboards" button on the toolbar.
-    QAbstractButton *viewSwitchButton = qobject_cast<QAbstractButton *>(
+    QAbstractButton* viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
@@ -2826,10 +2826,10 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
     //    - The "Dashboards manager" button on the toolbar is active.
     CHECK_SET_ERR(!viewSwitchButton->isVisible(), "View switch button is unexpectedly visible");
 
-    QTabWidget *dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget(os);
     CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
 
-    QWidget *dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
@@ -2838,8 +2838,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
     //    9. Close the messagebox.
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Extract consensus as sequence 1"), false),
                                                                        qMakePair(QString("Extract consensus as sequence 2"), false)});
             const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
@@ -2884,13 +2884,13 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
     //      - The Workflow Designer is in the scene view mode.
     //      - There is no scene/dashboards switch button on the toolbar.
     //      - The "Dashboards manager" button on the toolbar is active.
-    viewSwitchButton = qobject_cast<QAbstractButton *>(
+    viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
     CHECK_SET_ERR(nullptr == viewSwitchButton || !viewSwitchButton->isVisible(), "View switch button is unexpectedly visible");
 
-    QTabWidget *dashboardsView2 = GTUtilsDashboard::getTabWidget(os);
+    QTabWidget* dashboardsView2 = GTUtilsDashboard::getTabWidget(os);
     CHECK_SET_ERR(nullptr != dashboardsView2, "Dashboards view is nullptr");
 
     dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
@@ -2956,7 +2956,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    14. Click to the "Go to Dashboards" button on the toolbar.
-    QAbstractButton *viewSwitchButton = qobject_cast<QAbstractButton *>(
+    QAbstractButton* viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
@@ -2988,7 +2988,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005_1) {
     coreLog.info("It seems that workflow was started");
 }
 
-static int setUpMuscleSchemeInNewWdWindow(GUITestOpStatus &os, const QString &file) {
+static int setUpMuscleSchemeInNewWdWindow(GUITestOpStatus& os, const QString& file) {
     //    Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3029,7 +3029,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //   Click to the "Go to Dashboards" button on the toolbar.
-    QAbstractButton *viewSwitchButton = qobject_cast<QAbstractButton *>(
+    QAbstractButton* viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
@@ -3074,7 +3074,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     //          - The "Dashboards manager" button on the toolbar is active.
     GTUtilsTaskTreeView::waitTaskFinished(os, 90000);
 
-    viewSwitchButton = qobject_cast<QAbstractButton *>(GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show workflow"));
+    viewSwitchButton = qobject_cast<QAbstractButton*>(GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show workflow"));
     CHECK_SET_ERR(viewSwitchButton != nullptr, "'To Workflow Designer' is nullptr");
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
@@ -3087,7 +3087,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
                       .arg(actualButtonText));
 
     coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
-    QTabWidget *dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget(os);
     CHECK_SET_ERR(dashboardsView != nullptr, "Dashboards view is nullptr");
     coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
 
@@ -3115,7 +3115,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
-    QWidget *dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
@@ -3124,8 +3124,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     //    Cancel the dialog
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Align sequences with MUSCLE 1"), true),
                                                                        qMakePair(QString("Align sequences with MUSCLE 2"), true)});
             const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
@@ -3172,7 +3172,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     GTUtilsMdi::clickTab(os, tabIndex1);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    viewSwitchButton = qobject_cast<QAbstractButton *>(
+    viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os,
                                                                    MWTOOLBAR_ACTIVEMDI),
@@ -3243,7 +3243,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    viewSwitchButton = qobject_cast<QAbstractButton *>(
+    viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
@@ -3266,7 +3266,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     //       Their names are "Align sequence with MUSCLE 1" and "Align sequence with MUSCLE 2" (warning: two last tabs can be swapped,
     //       it depends on the task finish order, it is a correct situation).
     //     - The first dashboard is active.
-    viewSwitchButton = qobject_cast<QAbstractButton *>(
+    viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
@@ -3354,7 +3354,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    14. Click to the "Go to Dashboards" button on the toolbar.
-    QAbstractButton *viewSwitchButton = qobject_cast<QAbstractButton *>(
+    QAbstractButton* viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
@@ -3403,7 +3403,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     //          - The "Dashboards manager" button on the toolbar is active.
     GTUtilsTaskTreeView::waitTaskFinished(os, 600000);
 
-    viewSwitchButton = qobject_cast<QAbstractButton *>(
+    viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os,
                                                                    MWTOOLBAR_ACTIVEMDI),
@@ -3420,7 +3420,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
                       .arg(actualButtonText));
 
     coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
-    QTabWidget *dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget(os);
     CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
     coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
 
@@ -3448,7 +3448,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
-    QWidget *dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
@@ -3457,14 +3457,14 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     //    22. Cancel the dialog
     class Scenario : public CustomScenario {
     public:
-        static bool sorting(const QPair<QString, bool> &e1, const QPair<QString, bool> &e2) {
+        static bool sorting(const QPair<QString, bool>& e1, const QPair<QString, bool>& e2) {
             if (e1.first < e2.first)
                 return true;
             return false;
         }
 
-        void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
             QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Align sequences with MUSCLE 1"), true),
                                                                  qMakePair(QString("Align sequences with MUSCLE 2"), true),
                                                                  qMakePair(QString("Extract consensus as sequence 1"), true),
@@ -3516,7 +3516,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     GTUtilsMdi::clickTab(os, tabIndex1);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    viewSwitchButton = qobject_cast<QAbstractButton *>(
+    viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os,
                                                                    MWTOOLBAR_ACTIVEMDI),
@@ -3586,7 +3586,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     GTUtilsMdi::clickTab(os, tabIndex3);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    viewSwitchButton = qobject_cast<QAbstractButton *>(
+    viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show workflow"));
     CHECK_SET_ERR(nullptr != viewSwitchButton, "'To Workflow Designer' is nullptr");
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
@@ -3693,7 +3693,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    14. Click to the "Go to Dashboards" button on the toolbar.
-    QAbstractButton *viewSwitchButton = qobject_cast<QAbstractButton *>(
+    QAbstractButton* viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
@@ -3741,7 +3741,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     //          - The "Dashboards manager" button on the toolbar is active.
     GTUtilsTaskTreeView::waitTaskFinished(os, 600000);
 
-    viewSwitchButton = qobject_cast<QAbstractButton *>(
+    viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os,
                                                                    MWTOOLBAR_ACTIVEMDI),
@@ -3758,7 +3758,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
                       .arg(actualButtonText));
 
     coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
-    QTabWidget *dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget(os);
     CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
     coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
 
@@ -3786,7 +3786,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
-    QWidget *dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
@@ -3795,14 +3795,14 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     //    22. Cancel the dialog
     class Scenario : public CustomScenario {
     public:
-        static bool sorting(const QPair<QString, bool> &e1, const QPair<QString, bool> &e2) {
+        static bool sorting(const QPair<QString, bool>& e1, const QPair<QString, bool>& e2) {
             if (e1.first < e2.first)
                 return true;
             return false;
         }
 
-        void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
             QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Align sequences with MUSCLE 1"), true),
                                                                  qMakePair(QString("Align sequences with MUSCLE 2"), true),
                                                                  qMakePair(QString("Extract consensus as sequence 1"), false),
@@ -3854,7 +3854,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     GTUtilsMdi::clickTab(os, tabIndex1);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    viewSwitchButton = qobject_cast<QAbstractButton *>(
+    viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os,
                                                                    MWTOOLBAR_ACTIVEMDI),
@@ -3924,7 +3924,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     GTUtilsMdi::clickTab(os, tabIndex3);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    viewSwitchButton = qobject_cast<QAbstractButton *>(
+    viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show workflow"));
     CHECK_SET_ERR(nullptr != viewSwitchButton, "'To Workflow Designer' is nullptr");
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
@@ -4031,7 +4031,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    14. Click to the "Go to Dashboards" button on the toolbar.
-    QAbstractButton *viewSwitchButton = qobject_cast<QAbstractButton *>(
+    QAbstractButton* viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
@@ -4078,7 +4078,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     //          - The "Dashboards manager" button on the toolbar is active.
     GTUtilsTaskTreeView::waitTaskFinished(os, 600000);
 
-    viewSwitchButton = qobject_cast<QAbstractButton *>(
+    viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os,
                                                                    MWTOOLBAR_ACTIVEMDI),
@@ -4095,7 +4095,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
                       .arg(actualButtonText));
 
     coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
-    QTabWidget *dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget(os);
     CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
     coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
 
@@ -4123,7 +4123,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
-    QWidget *dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
@@ -4132,14 +4132,14 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     //    22. Cancel the dialog
     class Scenario : public CustomScenario {
     public:
-        static bool sorting(const QPair<QString, bool> &e1, const QPair<QString, bool> &e2) {
+        static bool sorting(const QPair<QString, bool>& e1, const QPair<QString, bool>& e2) {
             if (e1.first < e2.first)
                 return true;
             return false;
         }
 
-        void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
             QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Align sequences with MUSCLE 1"), true),
                                                                  qMakePair(QString("Align sequences with MUSCLE 2"), true),
                                                                  qMakePair(QString("Extract consensus as sequence 1"), false),
@@ -4191,7 +4191,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     GTUtilsMdi::clickTab(os, tabIndex1);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    viewSwitchButton = qobject_cast<QAbstractButton *>(
+    viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os,
                                                                    MWTOOLBAR_ACTIVEMDI),
@@ -4262,7 +4262,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    viewSwitchButton = qobject_cast<QAbstractButton *>(
+    viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
@@ -4282,7 +4282,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     //    Expected result:
     //     - There are two dashboard tabs. Their names are "Align sequence with MUSCLE 1", "Align sequence with MUSCLE 2" (warning: two last tabs can be swapped, it depends on the task finish order, it is a correct situation).
     //     - The first dashboard is active.
-    viewSwitchButton = qobject_cast<QAbstractButton *>(
+    viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));

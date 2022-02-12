@@ -33,13 +33,13 @@ class McaEditor;
 class McaGeneralTab : public QWidget, public Ui_McaGeneralTab {
     Q_OBJECT
 public:
-    McaGeneralTab(McaEditor *mca);
+    McaGeneralTab(McaEditor* mca);
 
 public slots:
     void sl_alignmentChanged();
 
 private:
-    McaEditor *mca;
+    McaEditor* mca;
 };
 
 }  // namespace U2

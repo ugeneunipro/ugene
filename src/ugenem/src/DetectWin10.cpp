@@ -37,14 +37,14 @@ QString DetectWindowsVersion::getVersionString() {
     return QString::number(osver.dwMajorVersion) + "." + QString::number(osver.dwMinorVersion);
 }
 
-void DetectWindowsVersion::detectWinVersion(OSVERSIONINFO *osver) {
+void DetectWindowsVersion::detectWinVersion(OSVERSIONINFO* osver) {
     if (!determineWinOsVersionPost8(osver)) {
         determineWinOsVersionFallbackPost8(osver);
     }
 }
 
 // Determine Windows versions >= 8 by querying the version of kernel32.dll.
-bool DetectWindowsVersion::determineWinOsVersionPost8(OSVERSIONINFO *result) {
+bool DetectWindowsVersion::determineWinOsVersionPost8(OSVERSIONINFO* result) {
     typedef WORD(WINAPI * PtrGetFileVersionInfoSizeW)(LPCWSTR, LPDWORD);
     typedef BOOL(WINAPI * PtrVerQueryValueW)(LPCVOID, LPCWSTR, LPVOID, PUINT);
     typedef BOOL(WINAPI * PtrGetFileVersionInfoW)(LPCWSTR, DWORD, DWORD, LPVOID);
@@ -67,8 +67,8 @@ bool DetectWindowsVersion::determineWinOsVersionPost8(OSVERSIONINFO *result) {
     if (!getFileVersionInfoW(kernel32Dll, handle, size, versionInfo.data()))
         return false;
     UINT uLen;
-    VS_FIXEDFILEINFO *fileInfo = Q_NULLPTR;
-    if (!verQueryValueW(versionInfo.data(), L"\\", (LPVOID *)&fileInfo, &uLen))
+    VS_FIXEDFILEINFO* fileInfo = Q_NULLPTR;
+    if (!verQueryValueW(versionInfo.data(), L"\\", (LPVOID*)&fileInfo, &uLen))
         return false;
     const DWORD fileVersionMS = fileInfo->dwFileVersionMS;
     const DWORD fileVersionLS = fileInfo->dwFileVersionLS;
@@ -81,7 +81,7 @@ bool DetectWindowsVersion::determineWinOsVersionPost8(OSVERSIONINFO *result) {
 // Fallback for determining Windows versions >= 8 by looping using the
 // version check macros. Note that it will return build number=0 to avoid
 // inefficient looping.
-void DetectWindowsVersion::determineWinOsVersionFallbackPost8(OSVERSIONINFO *result) {
+void DetectWindowsVersion::determineWinOsVersionFallbackPost8(OSVERSIONINFO* result) {
     result->dwBuildNumber = 0;
     DWORDLONG conditionMask = 0;
     VER_SET_CONDITION(conditionMask, VER_MAJORVERSION, VER_GREATER_EQUAL);

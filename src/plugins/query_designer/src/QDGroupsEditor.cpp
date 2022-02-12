@@ -33,7 +33,7 @@
 
 namespace U2 {
 
-QDGroupsEditor::QDGroupsEditor(QueryViewController *p)
+QDGroupsEditor::QDGroupsEditor(QueryViewController* p)
     : view(p) {
     header()->hide();
 
@@ -65,8 +65,8 @@ void QDGroupsEditor::initActions() {
 
 void QDGroupsEditor::rebuild() {
     clear();
-    QDScheme *scheme = view->getScheme();
-    foreach (const QString &group, scheme->getActorGroups()) {
+    QDScheme* scheme = view->getScheme();
+    foreach (const QString& group, scheme->getActorGroups()) {
         QStringList grpItemTexts;
         int grpSize = scheme->getActors(group).size();
         int reqNum = grpSize ? scheme->getRequiredNumber(group) : 0;
@@ -74,18 +74,18 @@ void QDGroupsEditor::rebuild() {
                                .arg(reqNum)
                                .arg(grpSize);
         grpItemTexts << group << countLbl;
-        QTreeWidgetItem *groupItem = new QTreeWidgetItem(this, grpItemTexts);
+        QTreeWidgetItem* groupItem = new QTreeWidgetItem(this, grpItemTexts);
         addTopLevelItem(groupItem);
-        foreach (QDActor const *actor, scheme->getActors(group)) {
-            const QString &actorLabel = actor->getParameters()->getLabel();
+        foreach (QDActor const* actor, scheme->getActors(group)) {
+            const QString& actorLabel = actor->getParameters()->getLabel();
             /*QTreeWidgetItem* actorItem = */ new QTreeWidgetItem(groupItem, QStringList(actorLabel));
         }
     }
 }
 
-void QDGroupsEditor::mousePressEvent(QMouseEvent *event) {
+void QDGroupsEditor::mousePressEvent(QMouseEvent* event) {
     if (event->buttons() & Qt::RightButton) {
-        QTreeWidgetItem *item = currentItem();  // = itemAt(event->pos());
+        QTreeWidgetItem* item = currentItem();  // = itemAt(event->pos());
         QMenu m;
         if (!item) {
             m.addAction(addGroupAction);
@@ -104,7 +104,7 @@ void QDGroupsEditor::mousePressEvent(QMouseEvent *event) {
 }
 
 void QDGroupsEditor::sl_addGroup() {
-    QDScheme *scheme = view->getScheme();
+    QDScheme* scheme = view->getScheme();
     bool ok;
     QString text = QInputDialog::getText(this, tr("Create element group"), tr("Group name"), QLineEdit::Normal, QString(), &ok);
     if (!ok) {
@@ -127,8 +127,8 @@ void QDGroupsEditor::sl_removeGroup() {
 }
 
 void QDGroupsEditor::sl_addActor() {
-    QDScheme *scheme = view->getScheme();
-    QTreeWidgetItem *item = currentItem();
+    QDScheme* scheme = view->getScheme();
+    QTreeWidgetItem* item = currentItem();
     assert(item);
     if (item->parent()) {
         item = item->parent();
@@ -136,7 +136,7 @@ void QDGroupsEditor::sl_addActor() {
     QString group = item->text(0);
 
     QStringList list;
-    foreach (QDActor *a, scheme->getActors()) {
+    foreach (QDActor* a, scheme->getActors()) {
         list << a->getParameters()->getLabel();
     }
 
@@ -150,7 +150,7 @@ void QDGroupsEditor::sl_addActor() {
         return;
     }
 
-    QDActor *sel = scheme->getActorByLabel(label);
+    QDActor* sel = scheme->getActorByLabel(label);
     assert(sel);
 
     if (!scheme->getActorGroup(sel).isEmpty()) {
@@ -162,15 +162,15 @@ void QDGroupsEditor::sl_addActor() {
 }
 
 void QDGroupsEditor::sl_removeActor() {
-    QDScheme *scheme = view->getScheme();
+    QDScheme* scheme = view->getScheme();
     assert(currentItem());
     assert(currentItem()->parent());
-    QDActor *sel = scheme->getActorByLabel(currentItem()->text(0));
+    QDActor* sel = scheme->getActorByLabel(currentItem()->text(0));
     scheme->removeActorFromGroup(sel);
 }
 
 void QDGroupsEditor::sl_setReqNum() {
-    QDScheme *scheme = view->getScheme();
+    QDScheme* scheme = view->getScheme();
     assert(currentItem());
     assert(!currentItem()->parent());
     QString group = currentItem()->text(0);

@@ -63,8 +63,8 @@ public:
     DNAQuality()
         : type(DNAQualityType_Sanger) {
     }
-    DNAQuality(const QByteArray &qualScore);
-    DNAQuality(const QByteArray &qualScore, DNAQualityType type);
+    DNAQuality(const QByteArray& qualScore);
+    DNAQuality(const QByteArray& qualScore, DNAQualityType type);
 
     bool isEmpty() const {
         return qualCodes.isEmpty();
@@ -73,15 +73,15 @@ public:
     static char encode(int val, DNAQualityType type);
 
     static QString getDNAQualityNameByType(DNAQualityType t);
-    static DNAQualityType getDNAQualityTypeByName(const QString &name);
+    static DNAQualityType getDNAQualityTypeByName(const QString& name);
     static QStringList getDNAQualityTypeNames();
-    static DNAQualityType detectTypeByCodes(const QByteArray &qualCodes);
+    static DNAQualityType detectTypeByCodes(const QByteArray& qualCodes);
     static DNAQualityType detectTypeByMinMaxQualityValues(int minQualityValue, int maxQualityValue);
 
     qint64 memoryHint() const;
 
     QByteArray qualCodes;
-    void setQualCodes(const QByteArray &qualCodes);
+    void setQualCodes(const QByteArray& qualCodes);
 
     DNAQualityType type;
 

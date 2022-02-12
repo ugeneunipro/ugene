@@ -36,7 +36,7 @@ public:
 
 protected:
     void runAllTests();
-    void runTest(const QString &testName);
+    void runTest(const QString& testName);
 
     QMap<QString, QStringList> tests;
 

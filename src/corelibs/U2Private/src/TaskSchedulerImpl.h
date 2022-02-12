@@ -54,21 +54,21 @@ public:
 class TaskThread : public QThread {
     Q_OBJECT
 public:
-    TaskThread(TaskInfo *ti);
+    TaskThread(TaskInfo* ti);
 
     void run() override;
 
     void resume();
 
-    QList<Task *> getProcessedSubtasks() const;
+    QList<Task*> getProcessedSubtasks() const;
 
-    void appendProcessedSubtask(Task *);
+    void appendProcessedSubtask(Task*);
 
-    TaskInfo *ti = nullptr;
+    TaskInfo* ti = nullptr;
 
     QMutex subtasksLocker;
 
-    QList<Task *> unconsideredNewSubtasks;
+    QList<Task*> unconsideredNewSubtasks;
 
     volatile bool newSubtasksObtained = false;
 
@@ -83,25 +83,25 @@ signals:
     void si_processMySubtasks();
 
 protected:
-    bool event(QEvent *event) override;
+    bool event(QEvent* event) override;
 
 private:
     void getNewSubtasks();
     void terminateMessageLoop();
     void pause();
 
-    QList<Task *> processedSubtasks;
+    QList<Task*> processedSubtasks;
 };
 
 class TaskInfo {
 public:
-    TaskInfo(Task *task, TaskInfo *parentTaskInfo);
+    TaskInfo(Task* task, TaskInfo* parentTaskInfo);
 
     virtual ~TaskInfo();
 
-    Task *task = nullptr;
-    TaskInfo *parentTaskInfo = nullptr;
-    QList<Task *> newSubtasks;
+    Task* task = nullptr;
+    TaskInfo* parentTaskInfo = nullptr;
+    QList<Task*> newSubtasks;
 
     bool wasPrepared = false;  // 'true' if prepare() was called for the task
     bool subtasksWereCanceled = false;  // 'true' if canceled task has called cancel() on its subtasks
@@ -116,7 +116,7 @@ public:
     int numRunningSubtasks = 0;
     int numFinishedSubtasks = 0;
 
-    TaskThread *thread = nullptr;
+    TaskThread* thread = nullptr;
 
     int numActiveSubtasks() const;
 };
@@ -126,31 +126,31 @@ class U2PRIVATE_EXPORT TaskSchedulerImpl : public TaskScheduler {
 public:
     using TaskScheduler::onSubTaskFinished;
 
-    TaskSchedulerImpl(AppResourcePool *rp);
+    TaskSchedulerImpl(AppResourcePool* rp);
 
     ~TaskSchedulerImpl();
 
-    void registerTopLevelTask(Task *t) override;
+    void registerTopLevelTask(Task* t) override;
 
-    void unregisterTopLevelTask(Task *t) override;
+    void unregisterTopLevelTask(Task* t) override;
 
-    const QList<Task *> &getTopLevelTasks() const override;
+    const QList<Task*>& getTopLevelTasks() const override;
 
     void cancelAllTasks() override;
 
-    QString getStateName(Task *t) const override;
+    QString getStateName(Task* t) const override;
 
-    void pauseThreadWithTask(const Task *task) override;
+    void pauseThreadWithTask(const Task* task) override;
 
-    void resumeThreadWithTask(const Task *task) override;
+    void resumeThreadWithTask(const Task* task) override;
 
-    void cancelTask(Task *t);
+    void cancelTask(Task* t);
 
     void addThreadId(qint64 taskId, Qt::HANDLE id) override;
 
     void removeThreadId(qint64 taskId) override;
 
-    void onSubTaskFinished(TaskThread *thread, Task *subtask);
+    void onSubTaskFinished(TaskThread* thread, Task* subtask);
 
     bool isCallerInsideTaskSchedulerCallback() const override;
 
@@ -166,36 +166,36 @@ private:
     void prepareNewTasks();
     void runReady();
 
-    bool readyToFinish(TaskInfo *ti);
-    bool addToPriorityQueue(Task *t, TaskInfo *parentInfo);  // return true if added. Failure can be caused if a task requires resources
-    void runThread(TaskInfo *pi);
-    void stopTask(Task *t);
-    void updateTaskProgressAndDesc(TaskInfo *ti);
-    void promoteTask(TaskInfo *ti, Task::State newState);
-    void deleteTask(Task *t);
-    void finishSubtasks(TaskInfo *pti);
+    bool readyToFinish(TaskInfo* ti);
+    bool addToPriorityQueue(Task* t, TaskInfo* parentInfo);  // return true if added. Failure can be caused if a task requires resources
+    void runThread(TaskInfo* pi);
+    void stopTask(Task* t);
+    void updateTaskProgressAndDesc(TaskInfo* ti);
+    void promoteTask(TaskInfo* ti, Task::State newState);
+    void deleteTask(Task* t);
+    void finishSubtasks(TaskInfo* pti);
 
-    QString tryLockResources(Task *task, bool prepareStage, bool &hasLockedResourcesAfterCall);  // returns error message
-    void releaseResources(TaskInfo *ti, bool prepareStage);
+    QString tryLockResources(Task* task, bool prepareStage, bool& hasLockedResourcesAfterCall);  // returns error message
+    void releaseResources(TaskInfo* ti, bool prepareStage);
 
-    void propagateStateToParent(Task *t);
+    void propagateStateToParent(Task* t);
     void updateOldTasksPriority();
-    void checkSerialPromotion(TaskInfo *pti, Task *subtask);
+    void checkSerialPromotion(TaskInfo* pti, Task* subtask);
     void createSleepPreventer();
 
 private:
     QTimer timer;
-    QList<Task *> topLevelTasks;
-    QList<TaskInfo *> priorityQueue;
-    QList<TaskInfo *> tasksWithNewSubtasks;
-    QList<Task *> newTasks;
+    QList<Task*> topLevelTasks;
+    QList<TaskInfo*> priorityQueue;
+    QList<TaskInfo*> tasksWithNewSubtasks;
+    QList<Task*> newTasks;
     QStringList stateNames;
     QMap<quint64, Qt::HANDLE> threadIds;
 
-    AppResourcePool *resourcePool = nullptr;
-    AppResource *threadsResource = nullptr;
+    AppResourcePool* resourcePool = nullptr;
+    AppResource* threadsResource = nullptr;
     bool stateChangesObserved = false;
-    SleepPreventer *sleepPreventer = nullptr;
+    SleepPreventer* sleepPreventer = nullptr;
 
     /** Set to 'true' for the time of any 'emit' method call. */
     bool isInsideSchedulingUpdate = false;

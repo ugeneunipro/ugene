@@ -22,11 +22,11 @@
 #ifndef _U2_SAVE_GRAPH_CUTOFFS_DIALOG_H_
 #define _U2_SAVE_GRAPH_CUTOFFS_DIALOG_H_
 
-#include <ui_SaveGraphCutoffsDialog.h>
-
 #include <U2Gui/CreateAnnotationWidgetController.h>
 
 #include <U2View/ADVGraphModel.h>
+
+#include <ui_SaveGraphCutoffsDialog.h>
 
 namespace U2 {
 
@@ -34,20 +34,20 @@ class SequenceObjectContext;
 class SaveGraphCutoffsDialogController : public QDialog, Ui_SaveGraphCutoffsDialog {
     Q_OBJECT
 public:
-    SaveGraphCutoffsDialogController(QSharedPointer<GSequenceGraphData> &graph,
-                                     const GSequenceGraphMinMaxCutOffState &cutOffState,
-                                     QWidget *parent,
-                                     SequenceObjectContext *ctx);
+    SaveGraphCutoffsDialogController(QSharedPointer<GSequenceGraphData>& graph,
+                                     const GSequenceGraphMinMaxCutOffState& cutOffState,
+                                     QWidget* parent,
+                                     SequenceObjectContext* ctx);
 
     void accept() override;
 
 private:
     bool isAcceptableValue(float val) const;
     bool validate();
-    void tryAddObject(AnnotationTableObject *annotationTableObject);
+    void tryAddObject(AnnotationTableObject* annotationTableObject);
 
-    CreateAnnotationWidgetController *createAnnotationController;
-    SequenceObjectContext *ctx;
+    CreateAnnotationWidgetController* createAnnotationController;
+    SequenceObjectContext* ctx;
     QSharedPointer<GSequenceGraphData> graph;
 };
 

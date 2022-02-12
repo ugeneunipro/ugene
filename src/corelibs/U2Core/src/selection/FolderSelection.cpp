@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-FolderSelection::FolderSelection(QObject *p)
+FolderSelection::FolderSelection(QObject* p)
     : GSelection(GSelectionTypes::FOLDERS, p) {
 }
 
@@ -38,11 +38,11 @@ void FolderSelection::clear() {
     sl_selectionChanged();
 }
 
-const QList<Folder> &FolderSelection::getSelection() const {
+const QList<Folder>& FolderSelection::getSelection() const {
     return selection;
 }
 
-void FolderSelection::setSelection(const QList<Folder> &folders) {
+void FolderSelection::setSelection(const QList<Folder>& folders) {
     selection = folders;
     sl_selectionChanged();
 }

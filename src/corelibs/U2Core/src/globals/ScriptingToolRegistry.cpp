@@ -29,12 +29,12 @@ namespace U2 {
 
 ////////////////////////////////////////
 // ScriptingTool
-ScriptingTool::ScriptingTool(const QString &_id, const QString &_name, const QString &_path, const QStringList &_runParams)
+ScriptingTool::ScriptingTool(const QString& _id, const QString& _name, const QString& _path, const QStringList& _runParams)
     : id(_id), name(_name), path(_path), runParams(_runParams) {
 }
 
-void ScriptingTool::onPathChanged(ExternalTool *tool, const QStringList &runParams) {
-    ScriptingToolRegistry *reg = AppContext::getScriptingToolRegistry();
+void ScriptingTool::onPathChanged(ExternalTool* tool, const QStringList& runParams) {
+    ScriptingToolRegistry* reg = AppContext::getScriptingToolRegistry();
     CHECK(nullptr != reg, );
 
     if (tool->isValid()) {
@@ -55,11 +55,11 @@ ScriptingToolRegistry::~ScriptingToolRegistry() {
     qDeleteAll(registry.values());
 }
 
-ScriptingTool *ScriptingToolRegistry::getById(const QString &id) {
+ScriptingTool* ScriptingToolRegistry::getById(const QString& id) {
     return registry.value(id, nullptr);
 }
 
-bool ScriptingToolRegistry::registerEntry(ScriptingTool *t) {
+bool ScriptingToolRegistry::registerEntry(ScriptingTool* t) {
     if (registry.contains(t->getId())) {
         return false;
     } else {
@@ -68,11 +68,11 @@ bool ScriptingToolRegistry::registerEntry(ScriptingTool *t) {
     }
 }
 
-void ScriptingToolRegistry::unregisterEntry(const QString &id) {
+void ScriptingToolRegistry::unregisterEntry(const QString& id) {
     delete registry.take(id);
 }
 
-QList<ScriptingTool *> ScriptingToolRegistry::getAllEntries() const {
+QList<ScriptingTool*> ScriptingToolRegistry::getAllEntries() const {
     return registry.values();
 }
 

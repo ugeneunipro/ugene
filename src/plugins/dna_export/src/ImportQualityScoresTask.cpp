@@ -34,7 +34,7 @@
 
 namespace U2 {
 
-ReadQualityScoresTask::ReadQualityScoresTask(const QString &file, DNAQualityType t, const DNAQualityFormat &f)
+ReadQualityScoresTask::ReadQualityScoresTask(const QString& file, DNAQualityType t, const DNAQualityFormat& f)
     : Task("ReadPhredQuality", TaskFlag_None), fileName(file), type(t), format(f) {
 }
 
@@ -45,7 +45,7 @@ void ReadQualityScoresTask::run() {
         return;
     }
 
-    IOAdapterFactory *f = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+    IOAdapterFactory* f = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     QScopedPointer<IOAdapter> io(f->createIOAdapter());
 
     if (!io->open(fileName, IOAdapterMode_Read)) {
@@ -55,7 +55,7 @@ void ReadQualityScoresTask::run() {
 
     int headerCounter = -1;
     QByteArray readBuf(READ_BUF_SIZE + 1, 0);
-    char *buf = readBuf.data();
+    char* buf = readBuf.data();
     int lineCount = 0;
 
     while (!stateInfo.cancelFlag) {
@@ -80,7 +80,7 @@ void ReadQualityScoresTask::run() {
         QByteArray valsBuf = readBuf.mid(0, len).trimmed();
         if (format == DNAQuality::QUAL_FORMAT) {
             QList<QByteArray> valList = valsBuf.split(' ');
-            foreach (const QByteArray &valStr, valList) {
+            foreach (const QByteArray& valStr, valList) {
                 bool ok = false;
                 if (!valStr.isEmpty()) {
                     values.append(valStr.toInt(&ok));
@@ -117,7 +117,7 @@ void ReadQualityScoresTask::recordQuality(int headerCounter) {
 #define RAW_BUF_SIZE 256
 
 bool ReadQualityScoresTask::checkRawData() {
-    IOAdapterFactory *f = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+    IOAdapterFactory* f = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     QScopedPointer<IOAdapter> io(f->createIOAdapter());
 
     QByteArray buf;
@@ -143,7 +143,7 @@ bool ReadQualityScoresTask::checkRawData() {
 
 //////////////////////////////////////////////////////////////////////////
 
-ImportPhredQualityScoresTask::ImportPhredQualityScoresTask(const QList<U2SequenceObject *> &sequences, ImportQualityScoresConfig &cfg)
+ImportPhredQualityScoresTask::ImportPhredQualityScoresTask(const QList<U2SequenceObject*>& sequences, ImportQualityScoresConfig& cfg)
     : Task("ImportPhredQualityScores", TaskFlags_NR_FOSCOE), readQualitiesTask(nullptr), config(cfg), seqList(sequences) {
 }
 
@@ -152,8 +152,8 @@ void ImportPhredQualityScoresTask::prepare() {
     addSubTask(readQualitiesTask);
 }
 
-QList<Task *> ImportPhredQualityScoresTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> subTasks;
+QList<Task*> ImportPhredQualityScoresTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> subTasks;
     CHECK_OP(subTask->getStateInfo(), subTasks);
 
     if (subTask != readQualitiesTask) {
@@ -164,7 +164,7 @@ QList<Task *> ImportPhredQualityScoresTask::onSubTaskFinished(Task *subTask) {
         assert(0);
         // TODO: consider creating this option
     } else {
-        foreach (U2SequenceObject *obj, seqList) {
+        foreach (U2SequenceObject* obj, seqList) {
             if (obj->isStateLocked()) {
                 setError(QString("Unable to modify sequence %1: object is locked.").arg(obj->getGObjectName()));
                 continue;

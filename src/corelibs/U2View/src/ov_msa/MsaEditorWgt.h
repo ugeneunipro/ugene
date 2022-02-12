@@ -42,28 +42,28 @@ class U2VIEW_EXPORT MsaEditorWgt : public MaEditorWgt {
     friend class MsaEditorSimilarityColumn;
 
 public:
-    MsaEditorWgt(MSAEditor *editor);
+    MsaEditorWgt(MSAEditor* editor);
 
-    MSAEditor *getEditor() const;
+    MSAEditor* getEditor() const;
 
-    MSAEditorSequenceArea *getSequenceArea() const;
+    MSAEditorSequenceArea* getSequenceArea() const;
 
-    void createDistanceColumn(MSADistanceMatrix *matrix);
+    void createDistanceColumn(MSADistanceMatrix* matrix);
 
-    void addTreeView(GObjectViewWindow *treeView);
+    void addTreeView(GObjectViewWindow* treeView);
 
-    void setSimilaritySettings(const SimilarityStatisticsSettings *settings);
+    void setSimilaritySettings(const SimilarityStatisticsSettings* settings);
 
     void refreshSimilarityColumn();
 
     void showSimilarity();
     void hideSimilarity();
 
-    const MsaEditorAlignmentDependentWidget *getSimilarityWidget();
+    const MsaEditorAlignmentDependentWidget* getSimilarityWidget();
 
-    MSAEditorTreeViewer *getCurrentTree() const;
+    MSAEditorTreeViewer* getCurrentTree() const;
 
-    MSAEditorMultiTreeViewer *getMultiTreeViewer();
+    MSAEditorMultiTreeViewer* getMultiTreeViewer();
 
 private slots:
     void sl_onTabsCountChanged(int tabsCount);
@@ -72,17 +72,17 @@ signals:
     void si_hideTreeOP();
 
 protected:
-    void initSeqArea(GScrollBar *shBar, GScrollBar *cvBar);
+    void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar);
     void initOverviewArea();
-    void initNameList(QScrollBar *nhBar);
+    void initNameList(QScrollBar* nhBar);
     void initConsensusArea();
     void initStatusBar();
 
 private:
-    MsaEditorSimilarityColumn *dataList;
-    MSAEditorMultiTreeViewer *multiTreeViewer;
-    MsaEditorAlignmentDependentWidget *similarityStatistics;
-    MSAEditorTreeViewer *treeViewer;
+    MsaEditorSimilarityColumn* dataList;
+    MSAEditorMultiTreeViewer* multiTreeViewer;
+    MsaEditorAlignmentDependentWidget* similarityStatistics;
+    MSAEditorTreeViewer* treeViewer;
 };
 
 }  // namespace U2

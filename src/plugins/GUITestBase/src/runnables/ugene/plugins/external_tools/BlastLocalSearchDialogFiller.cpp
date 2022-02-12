@@ -34,11 +34,11 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::BlastLocalSearchDialogFiller"
 
-BlastLocalSearchDialogFiller::BlastLocalSearchDialogFiller(const Parameters &parameters, HI::GUITestOpStatus &os)
+BlastLocalSearchDialogFiller::BlastLocalSearchDialogFiller(const Parameters& parameters, HI::GUITestOpStatus& os)
     : Filler(os, "BlastLocalSearchDialog"), parameters(parameters) {
 }
 
-BlastLocalSearchDialogFiller::BlastLocalSearchDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario)
+BlastLocalSearchDialogFiller::BlastLocalSearchDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
     : Filler(os, "BlastLocalSearchDialog", scenario) {
 }
 

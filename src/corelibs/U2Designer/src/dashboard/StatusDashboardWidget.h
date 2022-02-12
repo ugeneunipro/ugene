@@ -37,9 +37,9 @@ namespace U2 {
 class U2DESIGNER_EXPORT StatusDashboardWidget : public QWidget {
     Q_OBJECT
 public:
-    StatusDashboardWidget(const QDomElement &dom, const WorkflowMonitor *monitor = nullptr);
+    StatusDashboardWidget(const QDomElement& dom, const WorkflowMonitor* monitor = nullptr);
 
-    static bool isValidDom(const QDomElement &dom);
+    static bool isValidDom(const QDomElement& dom);
 
     void startTimer();
 
@@ -53,14 +53,14 @@ private slots:
     void sl_timerEvent();
 
 private:
-    static QString state2StatusMessage(const Monitor::TaskState &state);
-    static QString state2LabelStyle(const Monitor::TaskState &state);
+    static QString state2StatusMessage(const Monitor::TaskState& state);
+    static QString state2LabelStyle(const Monitor::TaskState& state);
     void updateTimeLabel();
 
-    const WorkflowMonitor *monitor;
-    QProgressBar *progressBar;
-    QLabel *statusMessageLabel;
-    QLabel *timeLabel;
+    const WorkflowMonitor* monitor;
+    QProgressBar* progressBar;
+    QLabel* statusMessageLabel;
+    QLabel* timeLabel;
     QString timeText;
     QString statusMessage;
     Monitor::TaskState state;

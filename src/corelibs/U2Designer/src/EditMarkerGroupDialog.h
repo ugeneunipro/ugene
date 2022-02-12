@@ -42,21 +42,21 @@ class MarkerListCfgModel;
 class EditMarkerGroupDialog : public QDialog, public Ui_EditMarkerGroupDialog {
     Q_OBJECT
 public:
-    EditMarkerGroupDialog(bool isNew, Marker *marker, Workflow::MarkerGroupListCfgModel *allModel, QWidget *parent);
+    EditMarkerGroupDialog(bool isNew, Marker* marker, Workflow::MarkerGroupListCfgModel* allModel, QWidget* parent);
     ~EditMarkerGroupDialog();
     void accept();
 
-    bool checkEditMarkerResult(const QString &oldName, const QString &newName, const QString &newValue, QString &message);
-    bool checkAddMarkerResult(const QString &newName, const QString &newValue, QString &message);
+    bool checkEditMarkerResult(const QString& oldName, const QString& newName, const QString& newValue, QString& message);
+    bool checkAddMarkerResult(const QString& newName, const QString& newValue, QString& message);
 
-    Marker *getMarker();
+    Marker* getMarker();
 
 private:
     bool isNew;
-    Marker *marker;
+    Marker* marker;
     QString oldName;
-    MarkerListCfgModel *markerModel;
-    Workflow::MarkerGroupListCfgModel *allModel;
+    MarkerListCfgModel* markerModel;
+    Workflow::MarkerGroupListCfgModel* allModel;
     int currentTypeIndex;
 
     QStringList typeIds;
@@ -68,8 +68,8 @@ private slots:
     void sl_onEditButtonClicked();
     void sl_onRemoveButtonClicked();
     void sl_onTypeChanged(int newTypeIndex);
-    void sl_onItemSelected(const QModelIndex &idx);
-    void sl_onItemEntered(const QModelIndex &idx);
+    void sl_onItemSelected(const QModelIndex& idx);
+    void sl_onItemEntered(const QModelIndex& idx);
 };
 
 /************************************************************************/
@@ -78,20 +78,20 @@ private slots:
 class MarkerListCfgModel : public QAbstractTableModel {
     Q_OBJECT
 public:
-    MarkerListCfgModel(QObject *parent, Marker *marker);
+    MarkerListCfgModel(QObject* parent, Marker* marker);
 
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
-    int columnCount(const QModelIndex &) const;
-    int rowCount(const QModelIndex &) const;
-    Qt::ItemFlags flags(const QModelIndex &index) const;
-    bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
+    int columnCount(const QModelIndex&) const;
+    int rowCount(const QModelIndex&) const;
+    Qt::ItemFlags flags(const QModelIndex& index) const;
+    bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex());
 
-    void addMarker(const QString &valueString, const QString &name);
+    void addMarker(const QString& valueString, const QString& name);
 
 private:
-    Marker *marker;
+    Marker* marker;
 };
 
 /************************************************************************/
@@ -102,7 +102,7 @@ class EditTypedMarkerWidget;
 class EditMarkerDialog : public QDialog, public Ui_EditMarkerDialog {
     Q_OBJECT
 public:
-    EditMarkerDialog(bool isNew, const QString &type, const QString &name, const QVariantList &values, QWidget *parent);
+    EditMarkerDialog(bool isNew, const QString& type, const QString& name, const QVariantList& values, QWidget* parent);
     QString getName() {
         return name;
     }
@@ -117,7 +117,7 @@ private:
     QString name;
     QVariantList values;
 
-    EditTypedMarkerWidget *editWidget;
+    EditTypedMarkerWidget* editWidget;
 };
 
 /************************************************************************/
@@ -126,7 +126,7 @@ private:
 class EditTypedMarkerWidget : public QWidget {
     Q_OBJECT
 public:
-    EditTypedMarkerWidget(const QVariantList &values, QWidget *parent)
+    EditTypedMarkerWidget(const QVariantList& values, QWidget* parent)
         : QWidget(parent), values(values) {
     }
     virtual QVariantList getValues() = 0;
@@ -138,7 +138,7 @@ protected:
 class EditIntegerMarkerWidget : public EditTypedMarkerWidget, public Ui_EditIntegerMarkerWidget {
     Q_OBJECT
 public:
-    EditIntegerMarkerWidget(bool isNew, const QVariantList &values, QWidget *parent);
+    EditIntegerMarkerWidget(bool isNew, const QVariantList& values, QWidget* parent);
 
     virtual QVariantList getValues();
 };
@@ -146,7 +146,7 @@ public:
 class EditFloatMarkerWidget : public EditTypedMarkerWidget, public Ui_EditFloatMarkerWidget {
     Q_OBJECT
 public:
-    EditFloatMarkerWidget(bool isNew, const QVariantList &values, QWidget *parent);
+    EditFloatMarkerWidget(bool isNew, const QVariantList& values, QWidget* parent);
 
     virtual QVariantList getValues();
 };
@@ -154,7 +154,7 @@ public:
 class EditStringMarkerWidget : public EditTypedMarkerWidget, public Ui_EditStringMarkerWidget {
     Q_OBJECT
 public:
-    EditStringMarkerWidget(bool isNew, const QVariantList &values, QWidget *parent);
+    EditStringMarkerWidget(bool isNew, const QVariantList& values, QWidget* parent);
 
     virtual QVariantList getValues();
 };

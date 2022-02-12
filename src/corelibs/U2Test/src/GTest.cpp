@@ -39,27 +39,27 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 // GTest
 
-GTest::GTest(const QString &taskName, GTest *cp, const GTestEnvironment *_env, TaskFlags flags, const QList<GTest *> &subtasks)
+GTest::GTest(const QString& taskName, GTest* cp, const GTestEnvironment* _env, TaskFlags flags, const QList<GTest*>& subtasks)
     : Task(taskName, flags), contextProvider(cp), env(_env) {
     assert(env != nullptr);
 
-    foreach (Task *t, subtasks) {
+    foreach (Task* t, subtasks) {
         addSubTask(t);
     }
 }
 
-QObject *GTest::getContext(const QString &name) const {
+QObject* GTest::getContext(const QString& name) const {
     assert(contextProvider != nullptr);
     return contextProvider->subtestsContext.value(name);
 }
 
-void GTest::addContext(const QString &name, QObject *v) {
+void GTest::addContext(const QString& name, QObject* v) {
     assert(contextProvider != nullptr);
     assert(!contextProvider->subtestsContext.contains(name));
     contextProvider->subtestsContext[name] = v;
 }
 
-void GTest::removeContext(const QString &name) {
+void GTest::removeContext(const QString& name) {
     assert(contextProvider != nullptr);
     assert(contextProvider->subtestsContext.contains(name));
     contextProvider->subtestsContext.remove(name);
@@ -71,15 +71,15 @@ void GTest::removeTempDir() {
     tempDir.removeRecursively();
 }
 
-void GTest::failMissingValue(const QString &name) {
+void GTest::failMissingValue(const QString& name) {
     stateInfo.setError(QString("Mandatory attribute not set: %1").arg(name));
 }
 
-void GTest::wrongValue(const QString &name) {
+void GTest::wrongValue(const QString& name) {
     stateInfo.setError(QString("Wrong value for attribute: %1").arg(name));
 }
 
-void GTest::emptyValue(const QString &name) {
+void GTest::emptyValue(const QString& name) {
     stateInfo.setError(QString("Empty value for attribute: %1").arg(name));
 }
 
@@ -88,13 +88,13 @@ void GTest::emptyValue(const QString &name) {
 
 GTestSuite::~GTestSuite() {
     qDeleteAll(tests);
-    QMap<GTestRef *, QString>::iterator iter;
+    QMap<GTestRef*, QString>::iterator iter;
     for (iter = excluded.begin(); iter != excluded.end(); ++iter) {
         delete iter.key();
     }
 }
 
-static QStringList findAllFiles(const QString &dirPath, const QString &ext, bool recursive, int rec) {
+static QStringList findAllFiles(const QString& dirPath, const QString& ext, bool recursive, int rec) {
     QStringList res;
     if (rec > 100) {  // symlink or other err
         // todo: report err?
@@ -104,7 +104,7 @@ static QStringList findAllFiles(const QString &dirPath, const QString &ext, bool
 
     // add files first
     QStringList files = ext.isEmpty() ? dir.entryList(QDir::Files) : dir.entryList(ext.split(":"), QDir::Files);
-    foreach (const QString &file, files) {
+    foreach (const QString& file, files) {
         QFileInfo fi(dir.absolutePath() + "/" + file);
         res.append(fi.absoluteFilePath());
     }
@@ -121,14 +121,14 @@ static QStringList findAllFiles(const QString &dirPath, const QString &ext, bool
     return res;
 }
 
-static QString addExcludeTests(const QString &fullTestDirPath, const QString &str, QList<QRegExp> &xList) {
+static QString addExcludeTests(const QString& fullTestDirPath, const QString& str, QList<QRegExp>& xList) {
     QString err;
 
     if (str.isEmpty()) {
         return err;
     }
 
-    foreach (const QString &s, str.split(",")) {
+    foreach (const QString& s, str.split(",")) {
         QRegExp r(fullTestDirPath + "/" + s.trimmed(), Qt::CaseSensitive, QRegExp::Wildcard);
         if (!r.isValid()) {
             err = QString("Invalid exclude: %1").arg(s);
@@ -139,7 +139,7 @@ static QString addExcludeTests(const QString &fullTestDirPath, const QString &st
     return err;
 }
 
-GTestSuite *GTestSuite::readTestSuite(const QString &url, QString &err) {
+GTestSuite* GTestSuite::readTestSuite(const QString& url, QString& err) {
     QFile f(url);
     if (!f.open(QIODevice::ReadOnly)) {
         err = "Can't open file: " + url;
@@ -193,8 +193,8 @@ GTestSuite *GTestSuite::readTestSuite(const QString &url, QString &err) {
     // Tests
     QFileInfo suiteUrl(url);
     QString suiteDir = suiteUrl.absoluteDir().absolutePath();
-    QList<GTestRef *> suiteTests;
-    QMap<GTestRef *, QString> excluded;
+    QList<GTestRef*> suiteTests;
+    QMap<GTestRef*, QString> excluded;
 
     QString dirPath = "";
     QString testFormatName;
@@ -225,14 +225,14 @@ GTestSuite *GTestSuite::readTestSuite(const QString &url, QString &err) {
             break;
         }
 
-        if (sizeof(void *) == 8) {  // means that it is 64 bit system
+        if (sizeof(void*) == 8) {  // means that it is 64 bit system
             err = addExcludeTests(fullTestDirPath, testDirEl.attribute("exclude_64"), excludeRexExList);
             if (!err.isEmpty()) {
                 break;
             }
         }
 
-        if (sizeof(void *) == 4) {  // means that it is 32 bit system
+        if (sizeof(void*) == 4) {  // means that it is 32 bit system
             err = addExcludeTests(fullTestDirPath, testDirEl.attribute("exclude_32"), excludeRexExList);
             if (!err.isEmpty()) {
                 break;
@@ -243,7 +243,7 @@ GTestSuite *GTestSuite::readTestSuite(const QString &url, QString &err) {
         bool recursive = testDirEl.attribute("recursive") != "false";
         QString testExt = testDirEl.attribute("test-ext");
         QStringList testUrls = findAllFiles(fullTestDirPath, testExt, recursive, 0);
-        for (const QString &testUrl : qAsConst(testUrls)) {
+        for (const QString& testUrl : qAsConst(testUrls)) {
             int shortNameLen = testUrl.length() - fullTestDirPath.length() - 1;  // minus '/' char
             assert(shortNameLen > 0);
             QString tShortName = testUrl.right(shortNameLen);
@@ -265,7 +265,7 @@ GTestSuite *GTestSuite::readTestSuite(const QString &url, QString &err) {
 
         QString fullTestPath = suiteDir + "/" + dirPath + "/" + testName;
 
-        GTestRef *tref = new GTestRef(fullTestPath, testName, testFormatName);
+        GTestRef* tref = new GTestRef(fullTestPath, testName, testFormatName);
         QString reason = excludedEl.attribute("reason");
 
         if (!excluded.contains(tref)) {
@@ -274,10 +274,10 @@ GTestSuite *GTestSuite::readTestSuite(const QString &url, QString &err) {
     }
 
     // take excluded from all tests
-    foreach (GTestRef *test, suiteTests) {
-        QMap<GTestRef *, QString>::iterator iter;
+    foreach (GTestRef* test, suiteTests) {
+        QMap<GTestRef*, QString>::iterator iter;
         for (iter = excluded.begin(); iter != excluded.end(); ++iter) {
-            GTestRef *ref = dynamic_cast<GTestRef *>(iter.key());
+            GTestRef* ref = dynamic_cast<GTestRef*>(iter.key());
             if (*test == *ref) {
                 suiteTests.removeOne(test);
             }
@@ -286,14 +286,14 @@ GTestSuite *GTestSuite::readTestSuite(const QString &url, QString &err) {
 
     if (!err.isEmpty()) {
         qDeleteAll(suiteTests);
-        QMap<GTestRef *, QString>::iterator iter;
+        QMap<GTestRef*, QString>::iterator iter;
         for (iter = excluded.begin(); iter != excluded.end(); ++iter) {
             delete iter.key();
         }
         return nullptr;
     }
 
-    GTestSuite *suite = new GTestSuite();
+    GTestSuite* suite = new GTestSuite();
     suite->url = suiteUrl.absoluteFilePath();
     suite->name = suiteName;
     suite->env = suiteEnv;
@@ -303,19 +303,19 @@ GTestSuite *GTestSuite::readTestSuite(const QString &url, QString &err) {
     suite->testTimeout = testTimeout.toInt();
     suite->testTimeout = (suite->testTimeout == 0) ? -1 : suite->testTimeout;  // -1 means timeout check disabled
 
-    for (GTestRef *r : qAsConst(suiteTests)) {
+    for (GTestRef* r : qAsConst(suiteTests)) {
         r->setSuite(suite);
     }
-    const QList<GTestRef *> excludeKeyList = excluded.keys();
-    for (GTestRef *r : qAsConst(excludeKeyList)) {
+    const QList<GTestRef*> excludeKeyList = excluded.keys();
+    for (GTestRef* r : qAsConst(excludeKeyList)) {
         r->setSuite(suite);
     }
 
     return suite;
 }
 
-QList<GTestSuite *> GTestSuite::readTestSuiteList(const QString &url, QStringList &errs) {
-    QList<GTestSuite *> result;
+QList<GTestSuite*> GTestSuite::readTestSuiteList(const QString& url, QStringList& errs) {
+    QList<GTestSuite*> result;
     QFile suitListFile(url);
     QString dir = QFileInfo(url).dir().absolutePath();
     if (!suitListFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -335,7 +335,7 @@ QList<GTestSuite *> GTestSuite::readTestSuiteList(const QString &url, QStringLis
         }
         QString absolutePath = QFileInfo(dir + "/" + suiteName).absoluteFilePath();
         QString error;
-        GTestSuite *testSuite = GTestSuite::readTestSuite(absolutePath, error);
+        GTestSuite* testSuite = GTestSuite::readTestSuite(absolutePath, error);
         if (testSuite == nullptr) {
             assert(!error.isEmpty());
             errs << error;
@@ -360,7 +360,7 @@ void GTestState::clearState() {
     emit si_stateChanged(this);
 }
 
-void GTestState::setFailed(const QString &err) {
+void GTestState::setFailed(const QString& err) {
     if (state == TriState_No) {
         assert(!errMessage.isEmpty());
         return;
@@ -395,7 +395,7 @@ GTestLogHelper::~GTestLogHelper() {
     }
 }
 
-void GTestLogHelper::initMessages(const QStringList &expectedList, const QStringList &unexpectedList) {
+void GTestLogHelper::initMessages(const QStringList& expectedList, const QStringList& unexpectedList) {
     statusWasVerified = false;
     foreach (QString message, expectedList) {
         expectedMessages[message] = false;  // i.e. not detected yet
@@ -413,14 +413,14 @@ GTestLogHelperStatus GTestLogHelper::verifyStatus() {
     LogServer::getInstance()->removeListener(this);
     GTestLogHelperStatus status = GTest_LogHelper_Valid;
 
-    foreach (const QString &str, expectedMessages.keys()) {
+    foreach (const QString& str, expectedMessages.keys()) {
         if (false == expectedMessages[str]) {
             status = GTest_LogHelper_Invalid;
             coreLog.error(QString("GTestLogHelper: no expected message \"%1\" in the log!").arg(str));
         }
     }
 
-    foreach (const QString &str, unexpectedMessages.keys()) {
+    foreach (const QString& str, unexpectedMessages.keys()) {
         if (true == unexpectedMessages[str]) {
             status = GTest_LogHelper_Invalid;
             coreLog.error(QString("GTestLogHelper: message \"%1\" is present in the log unexpectedly!").arg(str));
@@ -433,7 +433,7 @@ GTestLogHelperStatus GTestLogHelper::verifyStatus() {
     return status;
 }
 
-void GTestLogHelper::onMessage(const LogMessage &logMessage) {
+void GTestLogHelper::onMessage(const LogMessage& logMessage) {
     qint64 currentTime = GTimer::currentTimeMicros();
 
     SAFE_POINT(logMessage.time >= logHelperStartTime,
@@ -454,13 +454,13 @@ void GTestLogHelper::onMessage(const LogMessage &logMessage) {
                  .arg(logHelperEndTime), );
     }
 
-    foreach (const QString &str, expectedMessages.keys()) {
+    foreach (const QString& str, expectedMessages.keys()) {
         if (logMessage.text.contains(str)) {
             expectedMessages[str] = true;
         }
     }
 
-    foreach (const QString &str, unexpectedMessages.keys()) {
+    foreach (const QString& str, unexpectedMessages.keys()) {
         if (logMessage.text.contains(str)) {
             unexpectedMessages[str] = true;
         }

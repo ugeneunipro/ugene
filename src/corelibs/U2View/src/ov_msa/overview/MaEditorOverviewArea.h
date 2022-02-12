@@ -37,13 +37,13 @@ class MaOverviewContextMenu;
 class U2VIEW_EXPORT MaEditorOverviewArea : public QWidget {
     Q_OBJECT
 public:
-    MaEditorOverviewArea(MaEditorWgt *ui, const QString &objectName);
+    MaEditorOverviewArea(MaEditorWgt* ui, const QString& objectName);
 
 protected:
-    void addOverview(QWidget *overviewWgt);
+    void addOverview(QWidget* overviewWgt);
 
 private:
-    QVBoxLayout *layout;
+    QVBoxLayout* layout;
 };
 
 }  // namespace U2

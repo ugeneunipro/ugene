@@ -30,14 +30,14 @@ WorkflowTasksRegistry::WorkflowTasksRegistry() {
 }
 
 WorkflowTasksRegistry::~WorkflowTasksRegistry() {
-    foreach (const QString &id, readTasks.keys()) {
-        ReadDocumentTaskFactory *factory = readTasks.value(id);
+    foreach (const QString& id, readTasks.keys()) {
+        ReadDocumentTaskFactory* factory = readTasks.value(id);
         delete factory;
     }
     readTasks.clear();
 }
 
-bool WorkflowTasksRegistry::registerReadDocumentTaskFactory(ReadDocumentTaskFactory *factory) {
+bool WorkflowTasksRegistry::registerReadDocumentTaskFactory(ReadDocumentTaskFactory* factory) {
     SAFE_POINT(nullptr != factory, "NULL ReadDocumentTaskFactory", false);
     SAFE_POINT(!readTasks.contains(factory->getId()),
                QString("Double ReadDocumentTaskFactory registering: %1").arg(factory->getId()),
@@ -47,7 +47,7 @@ bool WorkflowTasksRegistry::registerReadDocumentTaskFactory(ReadDocumentTaskFact
     return true;
 }
 
-ReadDocumentTaskFactory *WorkflowTasksRegistry::getReadDocumentTaskFactory(const QString &id) {
+ReadDocumentTaskFactory* WorkflowTasksRegistry::getReadDocumentTaskFactory(const QString& id) {
     return readTasks.value(id, nullptr);
 }
 

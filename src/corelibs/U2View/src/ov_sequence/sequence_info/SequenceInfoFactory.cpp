@@ -39,17 +39,17 @@ SequenceInfoFactory::SequenceInfoFactory() {
     objectViewOfWidget = ObjViewType_SequenceView;
 }
 
-QWidget *SequenceInfoFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
+QWidget* SequenceInfoFactory::createWidget(GObjectView* objView, const QVariantMap& /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);
 
-    AnnotatedDNAView *annotatedDnaView = qobject_cast<AnnotatedDNAView *>(objView);
+    AnnotatedDNAView* annotatedDnaView = qobject_cast<AnnotatedDNAView*>(objView);
     SAFE_POINT(annotatedDnaView != nullptr,
                QString("Internal error: unable to cast object view to AnnotatedDNAView for group '%1'.").arg(GROUP_ID),
                nullptr);
 
-    SequenceInfo *seqInfoWidget = new SequenceInfo(annotatedDnaView);
+    SequenceInfo* seqInfoWidget = new SequenceInfo(annotatedDnaView);
     seqInfoWidget->setObjectName("SequenceInfo");
     return seqInfoWidget;
 }

@@ -36,7 +36,7 @@ namespace LocalWorkflow {
 class SequenceSplitPromter : public PrompterBase<SequenceSplitPromter> {
     Q_OBJECT
 public:
-    SequenceSplitPromter(Actor *p = 0)
+    SequenceSplitPromter(Actor* p = 0)
         : PrompterBase<SequenceSplitPromter>(p) {};
 
 protected:
@@ -46,20 +46,20 @@ protected:
 class SequenceSplitWorker : public BaseWorker {
     Q_OBJECT
 public:
-    SequenceSplitWorker(Actor *p)
+    SequenceSplitWorker(Actor* p)
         : BaseWorker(p), seqPort(nullptr), outPort(nullptr), useAcceptedOrFiltered(false) {
     }
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 protected:
-    IntegralBus *seqPort;
-    IntegralBus *outPort;
+    IntegralBus* seqPort;
+    IntegralBus* outPort;
 
 private:
-    QList<Task *> ssTasks;
+    QList<Task*> ssTasks;
     QList<SharedAnnotationData> inputAnns;
 
     QStringList acceptedNames;
@@ -67,7 +67,7 @@ private:
     bool useAcceptedOrFiltered;
     ExtractAnnotatedRegionTaskSettings cfg;
 private slots:
-    void sl_onTaskFinished(Task *t);
+    void sl_onTaskFinished(Task* t);
 };
 
 class SequenceSplitWorkerFactory : public DomainFactory {
@@ -76,7 +76,7 @@ public:
     SequenceSplitWorkerFactory()
         : DomainFactory(ACTOR) {};
     static void init();
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 };
 
 }  // namespace LocalWorkflow

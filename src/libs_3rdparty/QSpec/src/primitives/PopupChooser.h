@@ -33,8 +33,8 @@ class HI_EXPORT PopupChooser : public Filler {
     friend class PopupCheckerByText;
 
 public:
-    PopupChooser(GUITestOpStatus &os,
-                 const QStringList &namePath,
+    PopupChooser(GUITestOpStatus& os,
+                 const QStringList& namePath,
                  GTGlobals::UseMethod useMethod = GTGlobals::UseMouse);
 
     void commonScenario() override;
@@ -44,14 +44,14 @@ protected:
     GTGlobals::UseMethod useMethod;
 
 private:
-    static void clickEsc(GUITestOpStatus &os);
-    static QMenu *getMenuPopup(GUITestOpStatus &os);
+    static void clickEsc(GUITestOpStatus& os);
+    static QMenu* getMenuPopup(GUITestOpStatus& os);
 };
 
 class HI_EXPORT PopupChooserByText : public Filler {
 public:
-    PopupChooserByText(GUITestOpStatus &os,
-                       const QStringList &namePath,
+    PopupChooserByText(GUITestOpStatus& os,
+                       const QStringList& namePath,
                        GTGlobals::UseMethod useMethod = GTGlobals::UseMouse,
                        Qt::MatchFlag _matchFlag = Qt::MatchExactly);
 
@@ -77,9 +77,9 @@ public:
     };
     Q_DECLARE_FLAGS(CheckOptions, CheckOption)
 
-    PopupChecker(GUITestOpStatus &os, CustomScenario *scenario);
-    PopupChecker(GUITestOpStatus &os,
-                 const QStringList &namePath,
+    PopupChecker(GUITestOpStatus& os, CustomScenario* scenario);
+    PopupChecker(GUITestOpStatus& os,
+                 const QStringList& namePath,
                  CheckOptions options = CheckOptions(IsEnabled),
                  GTGlobals::UseMethod _useMethod = GTGlobals::UseMouse);
 
@@ -94,21 +94,21 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(PopupChecker::CheckOptions)
 
 class HI_EXPORT PopupCheckerByText : public Filler {
 public:
-    PopupCheckerByText(GUITestOpStatus &os, CustomScenario *scenario);
-    PopupCheckerByText(GUITestOpStatus &os,
-                       const QStringList &namePath,
+    PopupCheckerByText(GUITestOpStatus& os, CustomScenario* scenario);
+    PopupCheckerByText(GUITestOpStatus& os,
+                       const QStringList& namePath,
                        PopupChecker::CheckOptions options = PopupChecker::CheckOptions(PopupChecker::IsEnabled),
                        GTGlobals::UseMethod useMethod = GTGlobals::UseMouse,
                        Qt::MatchFlag matchFlag = Qt::MatchExactly);
-    PopupCheckerByText(GUITestOpStatus &os,
-                       const QStringList &menuPath,
-                       const QStringList &itemsNames,
+    PopupCheckerByText(GUITestOpStatus& os,
+                       const QStringList& menuPath,
+                       const QStringList& itemsNames,
                        PopupChecker::CheckOptions options = PopupChecker::CheckOptions(PopupChecker::IsEnabled),
                        GTGlobals::UseMethod useMethod = GTGlobals::UseMouse,
                        Qt::MatchFlag matchFlag = Qt::MatchExactly);
-    PopupCheckerByText(GUITestOpStatus &os,
-                       const QStringList &menuPath,
-                       const QMap<QString, QKeySequence> &namesAndShortcuts,
+    PopupCheckerByText(GUITestOpStatus& os,
+                       const QStringList& menuPath,
+                       const QMap<QString, QKeySequence>& namesAndShortcuts,
                        PopupChecker::CheckOptions options = PopupChecker::CheckOptions(PopupChecker::IsEnabled),
                        GTGlobals::UseMethod useMethod = GTGlobals::UseMouse,
                        Qt::MatchFlag matchFlag = Qt::MatchExactly);

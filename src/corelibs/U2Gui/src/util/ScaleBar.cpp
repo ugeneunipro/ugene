@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-ScaleBar::ScaleBar(Qt::Orientation ori, QWidget *parent)
+ScaleBar::ScaleBar(Qt::Orientation ori, QWidget* parent)
     : QWidget(parent) {
     scaleBar = new QSlider(ori);
     scaleBar->setTracking(true);
@@ -61,7 +61,7 @@ ScaleBar::ScaleBar(Qt::Orientation ori, QWidget *parent)
     connect(plusButton, SIGNAL(clicked()), plusAction, SLOT(trigger()));
 
     // layout
-    QBoxLayout *zoomLayout = new QBoxLayout(ori == Qt::Vertical ? QBoxLayout::TopToBottom : QBoxLayout::RightToLeft);
+    QBoxLayout* zoomLayout = new QBoxLayout(ori == Qt::Vertical ? QBoxLayout::TopToBottom : QBoxLayout::RightToLeft);
     zoomLayout->addWidget(plusButton);
     zoomLayout->addWidget(scaleBar);
     zoomLayout->addWidget(minusButton);
@@ -90,19 +90,19 @@ void ScaleBar::setTickInterval(int interval) {
     scaleBar->setTickInterval(interval);
 }
 
-QAction *ScaleBar::getPlusAction() const {
+QAction* ScaleBar::getPlusAction() const {
     return plusAction;
 }
 
-QAction *ScaleBar::getMinusAction() const {
+QAction* ScaleBar::getMinusAction() const {
     return minusAction;
 }
 
-QAbstractButton *ScaleBar::getPlusButton() const {
+QAbstractButton* ScaleBar::getPlusButton() const {
     return plusButton;
 }
 
-QAbstractButton *ScaleBar::getMinusButton() const {
+QAbstractButton* ScaleBar::getMinusButton() const {
     return minusButton;
 }
 

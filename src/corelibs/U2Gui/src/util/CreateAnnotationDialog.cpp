@@ -39,7 +39,7 @@
 
 namespace U2 {
 
-CreateAnnotationDialog::CreateAnnotationDialog(QWidget *p, CreateAnnotationModel &m)
+CreateAnnotationDialog::CreateAnnotationDialog(QWidget* p, CreateAnnotationModel& m)
     : QDialog(p),
       model(m),
       ui(new Ui_CreateAnnotationDialog) {
@@ -58,7 +58,7 @@ CreateAnnotationDialog::~CreateAnnotationDialog() {
     delete ui;
 }
 
-void CreateAnnotationDialog::updateAppearance(const QString &newTitle, const QString &newHelpPage, const QString &newOkButtonName) {
+void CreateAnnotationDialog::updateAppearance(const QString& newTitle, const QString& newHelpPage, const QString& newOkButtonName) {
     setWindowTitle(newTitle);
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(newOkButtonName);
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));

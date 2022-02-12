@@ -76,20 +76,20 @@ public:
     QString inputFilePath;
     QString outputFilePath;
     QString matrix;
-    bool outOrderInput;    // false - aligned, true - input
+    bool outOrderInput;  // false - aligned, true - input
 };
 
 class ClustalWSupportTask : public ExternalToolSupportTask {
     Q_OBJECT
     Q_DISABLE_COPY(ClustalWSupportTask)
 public:
-    ClustalWSupportTask(const MultipleSequenceAlignment &_inputMsa, const GObjectReference &_objRef, const ClustalWSupportTaskSettings &_settings);
+    ClustalWSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const ClustalWSupportTaskSettings& _settings);
     ~ClustalWSupportTask();
 
     void prepare();
     Task::ReportResult report();
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
     MultipleSequenceAlignment resultMA;
 
@@ -99,9 +99,9 @@ private:
     QPointer<Document> tmpDoc;
     QString url;
 
-    SaveAlignmentTask *saveTemporaryDocumentTask;
-    ExternalToolRunTask *clustalWTask;
-    LoadDocumentTask *loadTemporyDocumentTask;
+    SaveAlignmentTask* saveTemporaryDocumentTask;
+    ExternalToolRunTask* clustalWTask;
+    LoadDocumentTask* loadTemporyDocumentTask;
     ClustalWSupportTaskSettings settings;
     QPointer<StateLock> lock;
 };
@@ -112,21 +112,21 @@ class ClustalWWithExtFileSpecifySupportTask : public Task {
     Q_OBJECT
     Q_DISABLE_COPY(ClustalWWithExtFileSpecifySupportTask)
 public:
-    ClustalWWithExtFileSpecifySupportTask(const ClustalWSupportTaskSettings &settings);
+    ClustalWWithExtFileSpecifySupportTask(const ClustalWSupportTaskSettings& settings);
     ~ClustalWWithExtFileSpecifySupportTask();
     void prepare();
     Task::ReportResult report();
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
-    MultipleSequenceAlignmentObject *mAObject;
-    Document *currentDocument;
+    MultipleSequenceAlignmentObject* mAObject;
+    Document* currentDocument;
     bool cleanDoc;
 
-    SaveDocumentTask *saveDocumentTask;
-    LoadDocumentTask *loadDocumentTask;
-    ClustalWSupportTask *clustalWSupportTask;
+    SaveDocumentTask* saveDocumentTask;
+    LoadDocumentTask* loadDocumentTask;
+    ClustalWSupportTask* clustalWSupportTask;
     ClustalWSupportTaskSettings settings;
 };
 
@@ -139,5 +139,5 @@ private:
     int countSequencesInMSA;
 };
 
-}    // namespace U2
-#endif    // _U2_CLUSTALW_SUPPORT_TASK_H
+}  // namespace U2
+#endif  // _U2_CLUSTALW_SUPPORT_TASK_H

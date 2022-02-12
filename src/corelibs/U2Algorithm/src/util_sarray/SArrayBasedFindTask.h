@@ -44,7 +44,7 @@ struct U2ALGORITHM_EXPORT SArrayBasedSearchSettings {
     bool useBitMask;
     char unknownChar;
     quint32 bitMaskCharBitsNum;
-    const quint32 *bitMask;
+    const quint32* bitMask;
     int ptMismatches;
     int nMismatches;
     bool absMismatches;
@@ -53,21 +53,21 @@ struct U2ALGORITHM_EXPORT SArrayBasedSearchSettings {
 class U2ALGORITHM_EXPORT SArrayBasedFindTask : public Task {
     Q_OBJECT
 public:
-    SArrayBasedFindTask(SArrayIndex *i, const SArrayBasedSearchSettings &s, bool onlyFirstMatch = false);
+    SArrayBasedFindTask(SArrayIndex* i, const SArrayBasedSearchSettings& s, bool onlyFirstMatch = false);
     virtual void run();
     virtual void cleanup();
-    const QList<int> &getResults() const {
+    const QList<int>& getResults() const {
         return results;
     }
-    const QByteArray &getQuery() const {
+    const QByteArray& getQuery() const {
         return config->query;
     }
 
 private:
     void runSearch();
     void runSearchWithMismatches();
-    SArrayIndex *index;
-    SArrayBasedSearchSettings *config;
+    SArrayIndex* index;
+    SArrayBasedSearchSettings* config;
     QList<int> results;
     QMutex lock;
     bool onlyFirstMatch;

@@ -38,7 +38,7 @@ class GroupOptionsWidget;
  */
 class OptionsScrollArea : public QScrollArea {
 public:
-    OptionsScrollArea(QWidget *parent = nullptr);
+    OptionsScrollArea(QWidget* parent = nullptr);
 
     /** Ensures that the scroll area would have an appropriate width */
     virtual QSize sizeHint() const;
@@ -61,17 +61,17 @@ public:
     OptionsPanelWidget();
 
     /** Creates a new header image widget and owns it by putting it into the layout. */
-    GroupHeaderImageWidget *createHeaderImageWidget(const QString &groupId, const QPixmap &image);
+    GroupHeaderImageWidget* createHeaderImageWidget(const QString& groupId, const QPixmap& image);
 
     /**
      * Creates a new options widget and owns it by putting into the layout.
      * Additional (common) widgets, if any, are put below the widget.
      */
-    GroupOptionsWidget *createOptionsWidget(const QString &groupId,
-                                            const QString &title,
-                                            const QString &documentationLink,
-                                            QWidget *widget,
-                                            QList<QWidget *> commonWidgets);
+    GroupOptionsWidget* createOptionsWidget(const QString& groupId,
+                                            const QString& title,
+                                            const QString& documentationLink,
+                                            QWidget* widget,
+                                            QList<QWidget*> commonWidgets);
 
     /** Shows/hides the options scroll area widget (the left part of the OP) */
     void openOptionsPanel();
@@ -83,35 +83,35 @@ public:
     }
 
     /** Returns NULL if not found */
-    GroupHeaderImageWidget *findHeaderWidgetByGroupId(const QString &groupId);
+    GroupHeaderImageWidget* findHeaderWidgetByGroupId(const QString& groupId);
 
     /** Delete options widget (on the left side) */
-    void deleteOptionsWidget(const QString &groupId);
+    void deleteOptionsWidget(const QString& groupId);
 
     /** Verifies that a widget with the specified ID is present and makes it active. Returns the widget. */
-    GroupOptionsWidget *focusOptionsWidget(const QString &groupId);
+    GroupOptionsWidget* focusOptionsWidget(const QString& groupId);
 
     /** Returns NULL if not found */
-    GroupOptionsWidget *findOptionsWidgetByGroupId(const QString &groupId);
+    GroupOptionsWidget* findOptionsWidgetByGroupId(const QString& groupId);
 
-    QWidget *getOptionsWidget() const;
+    QWidget* getOptionsWidget() const;
 
 private:
     void initOptionsLayout();
-    QWidget *initGroupsLayout();
-    void initMainLayout(QWidget *groupsWidget);
+    QWidget* initGroupsLayout();
+    void initMainLayout(QWidget* groupsWidget);
 
 private:
     /** Layouts */
-    QVBoxLayout *optionsLayout;
-    QVBoxLayout *groupsLayout;
+    QVBoxLayout* optionsLayout;
+    QVBoxLayout* groupsLayout;
 
-    OptionsScrollArea *optionsScrollArea;
+    OptionsScrollArea* optionsScrollArea;
 
     OPMainWidgetState opMainWidgetState;
 
-    QList<GroupHeaderImageWidget *> headerWidgets;
-    QList<GroupOptionsWidget *> optionsWidgets;
+    QList<GroupHeaderImageWidget*> headerWidgets;
+    QList<GroupOptionsWidget*> optionsWidgets;
 };
 
 }  // namespace U2

@@ -37,17 +37,17 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::RemoteBLASTDialogFiller"
 
-RemoteBLASTDialogFiller::RemoteBLASTDialogFiller(HI::GUITestOpStatus &os)
+RemoteBLASTDialogFiller::RemoteBLASTDialogFiller(HI::GUITestOpStatus& os)
     : Filler(os, "RemoteBLASTDialog") {
 }
 
-RemoteBLASTDialogFiller::RemoteBLASTDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario)
+RemoteBLASTDialogFiller::RemoteBLASTDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
     : Filler(os, "RemoteBLASTDialog", scenario) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void RemoteBLASTDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
+    QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog, "activeModalWidget is NULL");
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

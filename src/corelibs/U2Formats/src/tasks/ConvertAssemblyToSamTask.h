@@ -34,10 +34,10 @@ class U2FORMATS_EXPORT ConvertAssemblyToSamTask : public Task {
     Q_OBJECT
 public:
     ConvertAssemblyToSamTask(GUrl dbFileUrl, GUrl samFileUrl);
-    ConvertAssemblyToSamTask(const DbiConnection *handle, GUrl samFileUrl);
+    ConvertAssemblyToSamTask(const DbiConnection* handle, GUrl samFileUrl);
 
     /** Converts only one assembly object to a SAM file */
-    ConvertAssemblyToSamTask(const U2EntityRef &entityRef, GUrl samFileUrl);
+    ConvertAssemblyToSamTask(const U2EntityRef& entityRef, GUrl samFileUrl);
 
     void run();
     QString generateReport() const;
@@ -48,7 +48,7 @@ private:
 
     U2EntityRef assemblyEntityRef;
 
-    const DbiConnection *handle;
+    const DbiConnection* handle;
 };
 
 }  // namespace U2

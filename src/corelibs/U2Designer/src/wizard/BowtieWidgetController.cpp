@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-BowtieWidgetController::BowtieWidgetController(WizardController *wc, BowtieWidget *bw, int labelSize)
+BowtieWidgetController::BowtieWidgetController(WizardController* wc, BowtieWidget* bw, int labelSize)
     : WidgetController(wc), bw(bw) {
     dirW = new AttributeWidget();
     dirW->setInfo(bw->idxDir);
@@ -51,12 +51,12 @@ BowtieWidgetController::~BowtieWidgetController() {
     delete nameW;
 }
 
-QWidget *BowtieWidgetController::createGUI(U2OpStatus &os) {
+QWidget* BowtieWidgetController::createGUI(U2OpStatus& os) {
     QScopedPointer<QWidget> result(new QWidget());
 
-    QVBoxLayout *vl = new QVBoxLayout();
+    QVBoxLayout* vl = new QVBoxLayout();
     vl->setContentsMargins(0, 0, 0, 0);
-    QHBoxLayout *hl = new QHBoxLayout(result.data());
+    QHBoxLayout* hl = new QHBoxLayout(result.data());
     hl->setContentsMargins(0, 0, 0, 0);
     hl->addLayout(vl);
 
@@ -65,7 +65,7 @@ QWidget *BowtieWidgetController::createGUI(U2OpStatus &os) {
     vl->addWidget(nameCtrl->createGUI(os));
     CHECK_OP(os, nullptr);
 
-    QPushButton *browseButton = new QPushButton(tr("Select\nbowtie index file"), result.data());
+    QPushButton* browseButton = new QPushButton(tr("Select\nbowtie index file"), result.data());
     browseButton->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
     connect(browseButton, SIGNAL(clicked()), SLOT(sl_browse()));
     hl->addWidget(browseButton);
@@ -87,7 +87,7 @@ void BowtieWidgetController::sl_browse() {
     wc->setAttributeValue(bw->idxDir, dirUrl);
 }
 
-QString BowtieWidgetController::finalyze(const QString &url) {
+QString BowtieWidgetController::finalyze(const QString& url) {
     return NoFileURLWidget::finalyze(url, wc->getTags(bw->idxDir));
 }
 

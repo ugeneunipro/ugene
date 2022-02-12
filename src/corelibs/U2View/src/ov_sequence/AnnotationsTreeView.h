@@ -58,8 +58,8 @@ typedef QFlags<ATVAnnUpdateFlag> ATVAnnUpdateFlags;
 class AnnotationsTreeWidget : public QTreeWidget {
     Q_OBJECT
 public:
-    AnnotationsTreeWidget(QWidget *parent);
-    QTreeWidgetItem *itemFromIndex(const QModelIndex &index) const;
+    AnnotationsTreeWidget(QWidget* parent);
+    QTreeWidgetItem* itemFromIndex(const QModelIndex& index) const;
 };
 
 class U2VIEW_EXPORT AnnotationsTreeView : public QWidget {
@@ -67,31 +67,31 @@ class U2VIEW_EXPORT AnnotationsTreeView : public QWidget {
     friend class AnnotatedDNAView;
 
 public:
-    AnnotationsTreeView(AnnotatedDNAView *ctx);
+    AnnotationsTreeView(AnnotatedDNAView* ctx);
 
     void saveWidgetState();
     void restoreWidgetState();
 
-    void adjustStaticMenu(QMenu *m) const {
+    void adjustStaticMenu(QMenu* m) const {
         adjustMenu(m);
     }
 
-    QTreeWidget *getTreeWidget() const {
+    QTreeWidget* getTreeWidget() const {
         return tree;
     }
 
     QStringList getQualifierColumnNames() const {
         return qColumns;
     }
-    void addQualifierColumn(const QString &q);
-    void removeQualifierColumn(const QString &q);
+    void addQualifierColumn(const QString& q);
+    void removeQualifierColumn(const QString& q);
 
-    void saveState(QVariantMap &map) const;
-    void updateState(const QVariantMap &map);
+    void saveState(QVariantMap& map) const;
+    void updateState(const QVariantMap& map);
 
     void setSortingEnabled(bool v);
 
-    AVItem *currentItem();
+    AVItem* currentItem();
 
     static const int COLUMN_NAME;
     static const int COLUMN_TYPE;
@@ -99,30 +99,30 @@ public:
 
 private slots:
     void sl_paste();
-    void sl_pasteFinished(Task *pasteTask);
+    void sl_pasteFinished(Task* pasteTask);
 
-    void sl_onAnnotationObjectAdded(AnnotationTableObject *obj);
-    void sl_onAnnotationObjectRemoved(AnnotationTableObject *obj);
-    void sl_onAnnotationObjectRenamed(const QString &oldName);
+    void sl_onAnnotationObjectAdded(AnnotationTableObject* obj);
+    void sl_onAnnotationObjectRemoved(AnnotationTableObject* obj);
+    void sl_onAnnotationObjectRenamed(const QString& oldName);
 
-    void sl_onAnnotationsAdded(const QList<Annotation *> &);
-    void sl_onAnnotationsRemoved(const QList<Annotation *> &);
-    void sl_onAnnotationsModified(const QList<AnnotationModification> &annotationModifications);
+    void sl_onAnnotationsAdded(const QList<Annotation*>&);
+    void sl_onAnnotationsRemoved(const QList<Annotation*>&);
+    void sl_onAnnotationsModified(const QList<AnnotationModification>& annotationModifications);
     void sl_annotationObjectModifiedStateChanged();
 
-    void sl_onGroupCreated(AnnotationGroup *);
-    void sl_onGroupRemoved(AnnotationGroup *parent, AnnotationGroup *removed);
-    void sl_onGroupRenamed(AnnotationGroup *);
+    void sl_onGroupCreated(AnnotationGroup*);
+    void sl_onGroupRemoved(AnnotationGroup* parent, AnnotationGroup* removed);
+    void sl_onGroupRenamed(AnnotationGroup*);
 
-    void sl_onAnnotationSettingsChanged(const QStringList &changedSettings);
+    void sl_onAnnotationSettingsChanged(const QStringList& changedSettings);
 
-    void sl_onAnnotationSelectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &);
-    void sl_onAnnotationGroupSelectionChanged(AnnotationGroupSelection *, const QList<AnnotationGroup *> &, const QList<AnnotationGroup *> &);
+    void sl_onAnnotationSelectionChanged(AnnotationSelection*, const QList<Annotation*>&, const QList<Annotation*>&);
+    void sl_onAnnotationGroupSelectionChanged(AnnotationGroupSelection*, const QList<AnnotationGroup*>&, const QList<AnnotationGroup*>&);
     void sl_onItemSelectionChanged();
     void sl_onAddAnnotationObjectToView();
     void sl_removeObjectFromView();
     void sl_removeAnnsAndQs();
-    void sl_onBuildMenu(GObjectView *thiz, QMenu *menu, const QString &type);
+    void sl_onBuildMenu(GObjectView* thiz, QMenu* menu, const QString& type);
     void sl_onCopyQualifierValue();
     void sl_onCopyQualifierURL();
     void sl_onToggleQualifierColumn();
@@ -136,102 +136,102 @@ private slots:
     void sl_edit();
     void sl_addQualifier();
 
-    void sl_itemEntered(QTreeWidgetItem *i, int column);
-    void sl_itemClicked(QTreeWidgetItem *item, int column);
-    void sl_itemPressed(QTreeWidgetItem *item);
-    void sl_itemDoubleClicked(QTreeWidgetItem *item, int column);
-    void sl_itemExpanded(QTreeWidgetItem *);
+    void sl_itemEntered(QTreeWidgetItem* i, int column);
+    void sl_itemClicked(QTreeWidgetItem* item, int column);
+    void sl_itemPressed(QTreeWidgetItem* item);
+    void sl_itemDoubleClicked(QTreeWidgetItem* item, int column);
+    void sl_itemExpanded(QTreeWidgetItem*);
 
     void sl_sortTree();
-    void sl_annotationClicked(Annotation *annotation);
+    void sl_annotationClicked(Annotation* annotation);
 
     /*
      * Called when annotation activated by some external action.
      * Makes the annotation current and adds it into selection.
      */
-    void sl_annotationActivated(Annotation *annotation, int regionIndex);
+    void sl_annotationActivated(Annotation* annotation, int regionIndex);
 
     /*
      * Called when annotation is double clicked anywhere in the view.
      * 'regionIndex' indicates which region was clicked.
      * A special '-1' value is supported when region is undefined or all regions should be processed.
      */
-    void sl_annotationDoubleClicked(Annotation *annotation, int regionIndex);
+    void sl_annotationDoubleClicked(Annotation* annotation, int regionIndex);
 
     void sl_clearSelectedAnnotations();
-    void sl_sequenceAdded(ADVSequenceObjectContext *advContext);
-    void sl_sequenceRemoved(ADVSequenceObjectContext *advContext);
+    void sl_sequenceAdded(ADVSequenceObjectContext* advContext);
+    void sl_sequenceRemoved(ADVSequenceObjectContext* advContext);
 
 protected:
-    bool eventFilter(QObject *o, QEvent *e);
+    bool eventFilter(QObject* o, QEvent* e);
 
 signals:
     void si_setCopyQualifierActionStatus(bool isEnabled, QString text);
 
 private:
-    void editItem(AVItem *i);
-    void editGroupItem(AVGroupItem *gi);
-    void editQualifierItem(AVQualifierItem *qi);
-    void editAnnotationItem(AVAnnotationItem *ai);
-    void expandItemRecursevly(QTreeWidgetItem *item);
-    QMap<AVAnnotationItem *, QList<U2Region>> sortAnnotationSelection(QList<AnnotationTableObject *> annotationObjects);
+    void editItem(AVItem* i);
+    void editGroupItem(AVGroupItem* gi);
+    void editQualifierItem(AVQualifierItem* qi);
+    void editAnnotationItem(AVAnnotationItem* ai);
+    void expandItemRecursevly(QTreeWidgetItem* item);
+    QMap<AVAnnotationItem*, QList<U2Region>> sortAnnotationSelection(QList<AnnotationTableObject*> annotationObjects);
 
-    QString renameDialogHelper(AVItem *i, const QString &defText, const QString &title);
-    bool editQualifierDialogHelper(AVQualifierItem *i, bool ro, U2Qualifier &res);
-    void moveDialogToItem(QTreeWidgetItem *item, QDialog *d);
+    QString renameDialogHelper(AVItem* i, const QString& defText, const QString& title);
+    bool editQualifierDialogHelper(AVQualifierItem* i, bool ro, U2Qualifier& res);
+    void moveDialogToItem(QTreeWidgetItem* item, QDialog* d);
 
-    void adjustMenu(QMenu *m_) const;
-    AVGroupItem *buildGroupTree(AVGroupItem *parentGroup, AnnotationGroup *g, bool areAnnotationsNew = true);
-    AVAnnotationItem *buildAnnotationTree(AVGroupItem *parentGroup, Annotation *a, bool areAnnotationsNew = true);
-    void populateAnnotationQualifiers(AVAnnotationItem *ai);
+    void adjustMenu(QMenu* m_) const;
+    AVGroupItem* buildGroupTree(AVGroupItem* parentGroup, AnnotationGroup* g, bool areAnnotationsNew = true);
+    AVAnnotationItem* buildAnnotationTree(AVGroupItem* parentGroup, Annotation* a, bool areAnnotationsNew = true);
+    void populateAnnotationQualifiers(AVAnnotationItem* ai);
     void updateAllAnnotations(ATVAnnUpdateFlags flags);
-    QMenu *getAutoAnnotationsHighligtingMenu(AnnotationTableObject *aObj);
+    QMenu* getAutoAnnotationsHighligtingMenu(AnnotationTableObject* aObj);
 
-    AVGroupItem *findGroupItem(AnnotationGroup *g) const;
-    AVAnnotationItem *findAnnotationItem(AnnotationGroup *g, Annotation *a) const;
-    AVAnnotationItem *findAnnotationItem(const AVGroupItem *gi, Annotation *a) const;
+    AVGroupItem* findGroupItem(AnnotationGroup* g) const;
+    AVAnnotationItem* findAnnotationItem(AnnotationGroup* g, Annotation* a) const;
+    AVAnnotationItem* findAnnotationItem(const AVGroupItem* gi, Annotation* a) const;
     // searches for annotation items that has not-null document added to the view
-    QList<AVAnnotationItem *> findAnnotationItems(Annotation *a) const;
+    QList<AVAnnotationItem*> findAnnotationItems(Annotation* a) const;
     // searches all annotation items recursively in a group
-    QList<AVAnnotationItem *> findAnnotationItems(const AVGroupItem *gi) const;
-    void removeGroupAnnotationsFromCache(const AVGroupItem *groupItem);
+    QList<AVAnnotationItem*> findAnnotationItems(const AVGroupItem* gi) const;
+    void removeGroupAnnotationsFromCache(const AVGroupItem* groupItem);
 
-    void connectSequenceObjectContext(ADVSequenceObjectContext *advContext);
-    void disconnectSequenceObjectContext(ADVSequenceObjectContext *advContext);
+    void connectSequenceObjectContext(ADVSequenceObjectContext* advContext);
+    void disconnectSequenceObjectContext(ADVSequenceObjectContext* advContext);
 
     void connectAnnotationSelection();
     void connectAnnotationGroupSelection();
 
     void updateState();
-    void updateColumnContextActions(AVItem *item, int col);
+    void updateColumnContextActions(AVItem* item, int col);
 
     void resetDragAndDropData();
-    bool initiateDragAndDrop(QMouseEvent *me);
+    bool initiateDragAndDrop(QMouseEvent* me);
     void finishDragAndDrop(Qt::DropAction dndAction);
 
-    void annotationClicked(AVAnnotationItem *item, QMap<AVAnnotationItem *, QList<U2Region>> selectedAnnotations, const QList<U2Region> &selectedRegions = QList<U2Region>());
-    void annotationDoubleClicked(AVAnnotationItem *item, const QList<U2Region> &selectedRegions);
+    void annotationClicked(AVAnnotationItem* item, QMap<AVAnnotationItem*, QList<U2Region>> selectedAnnotations, const QList<U2Region>& selectedRegions = QList<U2Region>());
+    void annotationDoubleClicked(AVAnnotationItem* item, const QList<U2Region>& selectedRegions);
     void clearSelectedNotAnnotations();
-    void emitAnnotationActivated(Annotation *annotation);
+    void emitAnnotationActivated(Annotation* annotation);
 
-    AnnotationsTreeWidget *tree;
+    AnnotationsTreeWidget* tree;
 
-    AnnotatedDNAView *ctx;
-    QAction *addAnnotationObjectAction;
-    QAction *removeObjectsFromViewAction;
-    QAction *removeAnnsAndQsAction;
-    QAction *copyQualifierURLAction;
-    QAction *toggleQualifierColumnAction;
-    QAction *removeColumnByHeaderClickAction;
-    QAction *copyColumnTextAction;
-    QAction *copyColumnURLAction;
-    QAction *exportAutoAnnotationsGroup;
+    AnnotatedDNAView* ctx;
+    QAction* addAnnotationObjectAction;
+    QAction* removeObjectsFromViewAction;
+    QAction* removeAnnsAndQsAction;
+    QAction* copyQualifierURLAction;
+    QAction* toggleQualifierColumnAction;
+    QAction* removeColumnByHeaderClickAction;
+    QAction* copyColumnTextAction;
+    QAction* copyColumnURLAction;
+    QAction* exportAutoAnnotationsGroup;
 
-    QAction *editAction;  // action to edit active group/qualifier/annotation only
-    QAction *addQualifierAction;  // action to create qualifier. Editable annotation or editable qualifier must be selected
+    QAction* editAction;  // action to edit active group/qualifier/annotation only
+    QAction* addQualifierAction;  // action to create qualifier. Editable annotation or editable qualifier must be selected
 
-    QAction *searchQualifierAction;
-    QAction *invertAnnotationSelectionAction;
+    QAction* searchQualifierAction;
+    QAction* invertAnnotationSelectionAction;
 
     Qt::MouseButton lastMB;
     QStringList headerLabels;
@@ -241,11 +241,11 @@ private:
     QIcon removeColumnIcon;
     QTimer sortTimer;
     QPoint dragStartPos;
-    QMap<AVAnnotationItem *, QList<U2Region>> selectedAnnotation;
+    QMap<AVAnnotationItem*, QList<U2Region>> selectedAnnotation;
     // drag&drop related data
     bool isDragging;
     bool dndCopyOnly;
-    QList<AVItem *> dndSelItems;
+    QList<AVItem*> dndSelItems;
 
     /**
      * Used for cross-view drag and drop: each time an annotation is added to the reciever AnnotationsTreeView,
@@ -256,9 +256,9 @@ private:
     int dndHit;
 
     /** Dragged annotations, "static" for cross-view support */
-    static QList<Annotation *> dndAdded;
+    static QList<Annotation*> dndAdded;
 
-    static AVGroupItem *dropDestination;
+    static AVGroupItem* dropDestination;
     static const QString annotationMimeType;
 
     friend class RemoveItemsTask;
@@ -278,69 +278,69 @@ enum AVItemType {
 
 class AVItem : public QTreeWidgetItem {
 public:
-    AVItem(QTreeWidgetItem *parent, AVItemType type);
-    bool processLinks(const QString &qname, const QString &qval, int col);
+    AVItem(QTreeWidgetItem* parent, AVItemType type);
+    bool processLinks(const QString& qname, const QString& qval, int col);
     bool isColumnLinked(int col) const;
     QString buildLinkURL(int col) const;
     QString getFileUrl(int col) const;
     virtual bool isReadonly() const;
 
-    virtual AnnotationsTreeView *getAnnotationTreeView() const;
-    virtual AnnotationTableObject *getAnnotationTableObject() const;
-    virtual AnnotationGroup *getAnnotationGroup();
+    virtual AnnotationsTreeView* getAnnotationTreeView() const;
+    virtual AnnotationTableObject* getAnnotationTableObject() const;
+    virtual AnnotationGroup* getAnnotationGroup();
 
     const AVItemType type;
 };
 
 class AVGroupItem : public AVItem {
 public:
-    AVGroupItem(AnnotationsTreeView *atv, AVGroupItem *parent, AnnotationGroup *g);
+    AVGroupItem(AnnotationsTreeView* atv, AVGroupItem* parent, AnnotationGroup* g);
 
     // @removedAnnotationCount and @removedSubgroupCount represent count of annotation and subgroups
     // that are about to be deleted
     void updateVisual(int removedAnnotationCount = 0);
-    void updateAnnotations(const QString &nameFilter, ATVAnnUpdateFlags flags);
-    void findAnnotationItems(QList<AVAnnotationItem *> &result, Annotation *a) const;
+    void updateAnnotations(const QString& nameFilter, ATVAnnUpdateFlags flags);
+    void findAnnotationItems(QList<AVAnnotationItem*>& result, Annotation* a) const;
 
-    static const QIcon &getGroupIcon();
-    static const QIcon &getDocumentIcon();
-    virtual AnnotationsTreeView *getAnnotationTreeView() const {
+    static const QIcon& getGroupIcon();
+    static const QIcon& getDocumentIcon();
+    virtual AnnotationsTreeView* getAnnotationTreeView() const {
         return atv;
     }
     virtual bool isReadonly() const;
-    virtual AnnotationTableObject *getAnnotationTableObject() const;
-    virtual AnnotationGroup *getAnnotationGroup();
+    virtual AnnotationTableObject* getAnnotationTableObject() const;
+    virtual AnnotationGroup* getAnnotationGroup();
 
-    AnnotationGroup *group;
-    AnnotationsTreeView *atv;
+    AnnotationGroup* group;
+    AnnotationsTreeView* atv;
 };
 
 class U2VIEW_EXPORT AVAnnotationItem : public AVItem {
 public:
-    AVAnnotationItem(AVGroupItem *parent, Annotation *a);
+    AVAnnotationItem(AVGroupItem* parent, Annotation* a);
 
-    Annotation *annotation;
+    Annotation* annotation;
     mutable QString locationString;
 
     virtual QVariant data(int column, int role) const;
     void updateVisual(ATVAnnUpdateFlags flags);
-    virtual bool operator<(const QTreeWidgetItem &other) const;
+    virtual bool operator<(const QTreeWidgetItem& other) const;
     bool isColumnNumeric(int col) const;
     double getNumericVal(int col) const;
 
-    void removeQualifier(const U2Qualifier &q);
-    void addQualifier(const U2Qualifier &q);
-    AVQualifierItem *findQualifierItem(const QString &name, const QString &val) const;
+    void removeQualifier(const U2Qualifier& q);
+    void addQualifier(const U2Qualifier& q);
+    AVQualifierItem* findQualifierItem(const QString& name, const QString& val) const;
 
-    static QMap<QString, QIcon> &getIconsCache();
+    static QMap<QString, QIcon>& getIconsCache();
     bool hasNumericQColumns;
 };
 
 class AVQualifierItem : public AVItem {
 public:
-    AVQualifierItem(AVAnnotationItem *parent, const U2Qualifier &q);
+    AVQualifierItem(AVAnnotationItem* parent, const U2Qualifier& q);
 
-    static QString simplifyText(const QString &origValue);
+    static QString simplifyText(const QString& origValue);
 
     // TODO: keep values in U2Qualifier struct
     const QString qName;

@@ -35,10 +35,10 @@ public:
 
     // fails if lineEdit is NULL, GTLineEdit::clear fails
     // or a set text differs from a given string
-    static void setPlainText(GUITestOpStatus &os, QPlainTextEdit *plainTextEdit, const QString &text);
+    static void setPlainText(GUITestOpStatus& os, QPlainTextEdit* plainTextEdit, const QString& text);
 
     // fails if lineEdit is NULL, or lineEdit's text wasn't cleared
-    static void clear(GUITestOpStatus &os, QPlainTextEdit *plainTextEdit);
+    static void clear(GUITestOpStatus& os, QPlainTextEdit* plainTextEdit);
 
     // fails if GTLineEdit::clear fails
     // static void pasteClipboard(GUITestOpStatus& os, QPlainTextEdit* plainTextEdit, PasteMethod pasteMethod = Shortcut);

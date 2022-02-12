@@ -29,7 +29,7 @@
 namespace U2 {
 namespace Workflow {
 
-DbiDataHandler::DbiDataHandler(const U2EntityRef &entityRef, U2ObjectDbi *dbi, bool useGC)
+DbiDataHandler::DbiDataHandler(const U2EntityRef& entityRef, U2ObjectDbi* dbi, bool useGC)
     : entityRef(entityRef), dbi(dbi), useGC(useGC) {
 }
 
@@ -42,15 +42,15 @@ DbiDataHandler::~DbiDataHandler() {
     }
 }
 
-DbiDataHandler::DbiDataHandler(const DbiDataHandler & /*other*/)
+DbiDataHandler::DbiDataHandler(const DbiDataHandler& /*other*/)
     : QSharedData() {
 }
 
-DbiDataHandler &DbiDataHandler::operator=(const DbiDataHandler &) {
+DbiDataHandler& DbiDataHandler::operator=(const DbiDataHandler&) {
     return *this;
 }
 
-bool DbiDataHandler::equals(const DbiDataHandler *other) const {
+bool DbiDataHandler::equals(const DbiDataHandler* other) const {
     if (nullptr == other) {
         return false;
     }
@@ -66,7 +66,7 @@ U2DbiRef DbiDataHandler::getDbiRef() const {
     return entityRef.dbiRef;
 }
 
-const U2EntityRef &DbiDataHandler::getEntityRef() const {
+const U2EntityRef& DbiDataHandler::getEntityRef() const {
     return entityRef;
 }
 

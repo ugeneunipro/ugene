@@ -29,7 +29,7 @@ using namespace HI;
 
 class ExportBlastResultDialogFiller : public Filler {
 public:
-    ExportBlastResultDialogFiller(HI::GUITestOpStatus &os, const QString &filePath, bool _addRefBoxChecked = false);
+    ExportBlastResultDialogFiller(HI::GUITestOpStatus& os, const QString& filePath, bool _addRefBoxChecked = false);
 
     void commonScenario();
 

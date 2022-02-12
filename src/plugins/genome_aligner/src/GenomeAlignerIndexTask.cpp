@@ -38,7 +38,7 @@
 
 namespace U2 {
 
-GenomeAlignerIndexTask::GenomeAlignerIndexTask(const GenomeAlignerIndexSettings &settings)
+GenomeAlignerIndexTask::GenomeAlignerIndexTask(const GenomeAlignerIndexSettings& settings)
     : Task("Building genome aligner's index", TaskFlag_None), objLens(nullptr), objCount(0), unknownChar('N') {
     GUrl i = settings.indexFileName;
     baseFileName = i.dirPath() + "/" + i.baseFileName();
@@ -121,7 +121,7 @@ void GenomeAlignerIndexTask::run() {
     index->indexPart.seqStarts = new SAType[parts];
     index->indexPart.seqLengths = new SAType[parts];
     index->indexPart.saLengths = new SAType[parts];
-    index->indexPart.partFiles = new QFile *[parts];
+    index->indexPart.partFiles = new QFile*[parts];
 
     SAType start = 0;
     SAType length = 0;
@@ -160,7 +160,7 @@ void GenomeAlignerIndexTask::run() {
         index->indexPart.bitMask = new BMType[maxLength];
         index->indexPart.sArray = new SAType[maxLength];
         index->indexPart.seq = new char[maxLength];
-    } catch (std::bad_alloc &e) {
+    } catch (std::bad_alloc& e) {
         Q_UNUSED(e);
         setError("Can't allocate this amount of memory. Try to close some of your programs or to decrease \"maxMemorySize\"-option");
         return;
@@ -193,7 +193,7 @@ void GenomeAlignerIndexTask::reformatSequence() {
     bool firstSeq = true;
     while (seqReader.hasNext()) {
         objCount++;
-        const DNASequence *seq = seqReader.getNextSequenceObject();
+        const DNASequence* seq = seqReader.getNextSequenceObject();
         if (nullptr == seq) {
             setError("Reference object type must be a sequence, but not a multiple alignment");
             return;

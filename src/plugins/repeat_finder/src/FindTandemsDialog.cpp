@@ -54,12 +54,12 @@ namespace U2 {
 
 FindTandemsTaskSettings FindTandemsDialog::defaultSettings() {
     FindTandemsTaskSettings res;
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     res.minPeriod = (s->getValue(SETTINGS_ROOT + MIN_LEN_SETTINGS, 1).toInt());
     return res;
 }
 
-FindTandemsDialog::FindTandemsDialog(ADVSequenceObjectContext *_sc)
+FindTandemsDialog::FindTandemsDialog(ADVSequenceObjectContext* _sc)
     : QDialog(_sc->getAnnotatedDNAView()->getWidget()) {
     sc = _sc;
     setupUi(this);
@@ -78,8 +78,8 @@ FindTandemsDialog::FindTandemsDialog(ADVSequenceObjectContext *_sc)
     m.sequenceLen = sc->getSequenceObject()->getSequenceLength();
     ac = new CreateAnnotationWidgetController(m, this);
 
-    QWidget *caw = ac->getWidget();
-    QVBoxLayout *l = new QVBoxLayout();
+    QWidget* caw = ac->getWidget();
+    QVBoxLayout* l = new QVBoxLayout();
     l->setMargin(0);
     l->addWidget(caw);
     annotationsWidget->setLayout(l);
@@ -105,10 +105,10 @@ FindTandemsDialog::FindTandemsDialog(ADVSequenceObjectContext *_sc)
 
 QStringList FindTandemsDialog::getAvailableAnnotationNames() const {
     QStringList res;
-    const QSet<AnnotationTableObject *> objs = sc->getAnnotationObjects();
+    const QSet<AnnotationTableObject*> objs = sc->getAnnotationObjects();
     QSet<QString> names;
-    foreach (const AnnotationTableObject *o, objs) {
-        foreach (Annotation *a, o->getAnnotations()) {
+    foreach (const AnnotationTableObject* o, objs) {
+        foreach (Annotation* a, o->getAnnotations()) {
             names.insert(a->getName());
         }
     }
@@ -153,16 +153,16 @@ void FindTandemsDialog::presetSelected(int preset) {
     maxPeriodBox->setValue(maxPeriod);
 }
 
-bool FindTandemsDialog::getRegions(QCheckBox *cb, QLineEdit *le, QVector<U2Region> &res) {
+bool FindTandemsDialog::getRegions(QCheckBox* cb, QLineEdit* le, QVector<U2Region>& res) {
     bool enabled = cb->isChecked();
     QString names = le->text();
     if (!enabled || names.isEmpty()) {
         return true;
     }
     QSet<QString> aNames = names.split(',', QString::SkipEmptyParts).toSet();
-    const QSet<AnnotationTableObject *> aObjs = sc->getAnnotationObjects();
-    foreach (AnnotationTableObject *obj, aObjs) {
-        foreach (Annotation *a, obj->getAnnotations()) {
+    const QSet<AnnotationTableObject*> aObjs = sc->getAnnotationObjects();
+    foreach (AnnotationTableObject* obj, aObjs) {
+        foreach (Annotation* a, obj->getAnnotations()) {
             if (aNames.contains(a->getName())) {
                 res << a->getRegions();
             }
@@ -176,7 +176,7 @@ bool FindTandemsDialog::getRegions(QCheckBox *cb, QLineEdit *le, QVector<U2Regio
     return true;
 }
 
-U2Region FindTandemsDialog::getActiveRange(bool *ok) const {
+U2Region FindTandemsDialog::getActiveRange(bool* ok) const {
     U2Region region = rs->getRegion(ok);  // todo add check on wrong region
     return region;
 }
@@ -214,7 +214,7 @@ void FindTandemsDialog::accept() {
     }
 
     FindTandemsTaskSettings settings;
-    const CreateAnnotationModel &cam = ac->getModel();
+    const CreateAnnotationModel& cam = ac->getModel();
     sc->getAnnotatedDNAView()->tryAddObject(ac->getModel().getAnnotationObject());
     settings.minPeriod = minPeriod;
     settings.maxPeriod = maxPeriod;
@@ -226,7 +226,7 @@ void FindTandemsDialog::accept() {
     settings.seqRegion = U2Region(0, seq.length());
     settings.reportSeqShift = range.startPos;
 
-    FindTandemsToAnnotationsTask *t = new FindTandemsToAnnotationsTask(settings, seq, cam.data->name, cam.groupName, cam.description, cam.annotationObjectRef);
+    FindTandemsToAnnotationsTask* t = new FindTandemsToAnnotationsTask(settings, seq, cam.data->name, cam.groupName, cam.description, cam.annotationObjectRef);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 
     QDialog::accept();

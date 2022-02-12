@@ -38,24 +38,24 @@ class GenomeAlignerReader;
 class ReadShortReadsSubTask : public Task {
     Q_OBJECT
 public:
-    ReadShortReadsSubTask(GenomeAlignerReader *seqReader,
-                          const DnaAssemblyToRefTaskSettings &settings,
-                          AlignContext &alignContext,
+    ReadShortReadsSubTask(GenomeAlignerReader* seqReader,
+                          const DnaAssemblyToRefTaskSettings& settings,
+                          AlignContext& alignContext,
                           qint64 freeMemorySize);
     void run() override;
 
     int bunchSize = 0;
 
 private:
-    GenomeAlignerReader *seqReader;
-    const DnaAssemblyToRefTaskSettings &settings;
-    AlignContext &alignContext;
+    GenomeAlignerReader* seqReader;
+    const DnaAssemblyToRefTaskSettings& settings;
+    AlignContext& alignContext;
     qint64 freeMemorySize;
     qint64 prevMemoryHint;
 
-    DataBunch *dataBunch;
+    DataBunch* dataBunch;
 
-    inline bool add(int &CMAX, int &W, int &q, int &readNum, SearchQuery *query, GenomeAlignerTask *parent);
+    inline bool add(int& CMAX, int& W, int& q, int& readNum, SearchQuery* query, GenomeAlignerTask* parent);
     void dropToAlignContext();
     void readingFinishedWakeAll();
 };

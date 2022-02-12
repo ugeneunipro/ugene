@@ -40,16 +40,16 @@ public:
      * Creates an alignment in the db.
      * The alignment is completely removed in case of an error.
      */
-    static MultipleSequenceAlignmentObject *createAlignment(const U2DbiRef &dbiRef, MultipleSequenceAlignment &al, U2OpStatus &os);
-    static MultipleSequenceAlignmentObject *createAlignment(const U2DbiRef &dbiRef, const QString &folder, MultipleSequenceAlignment &al, U2OpStatus &os, const QList<U2Sequence> &alignedSequences = QList<U2Sequence>());
+    static MultipleSequenceAlignmentObject* createAlignment(const U2DbiRef& dbiRef, MultipleSequenceAlignment& al, U2OpStatus& os);
+    static MultipleSequenceAlignmentObject* createAlignment(const U2DbiRef& dbiRef, const QString& folder, MultipleSequenceAlignment& al, U2OpStatus& os, const QList<U2Sequence>& alignedSequences = QList<U2Sequence>());
 
 private:
-    static U2DataId createEmptyMsaObject(const DbiConnection &con, const QString &folder, const QString &name, const DNAAlphabet *alphabet, U2OpStatus &os);
-    static void importMsaInfo(const DbiConnection &con, const U2DataId &msaId, const QVariantMap &alInfo, U2OpStatus &os);
-    static QList<U2Sequence> importSequences(const DbiConnection &con, const QString &folder, const MultipleSequenceAlignment &al, U2OpStatus &os);
-    static void splitToCharsAndGaps(const DbiConnection &con, QList<U2Sequence> &sequences, QList<QVector<U2MsaGap>> &gapModel, U2OpStatus &os);
-    static void setChildRankForSequences(const DbiConnection &con, const QList<U2Sequence> &sequences, U2OpStatus &os);
-    static QList<U2MsaRow> importRows(const DbiConnection &con, MultipleSequenceAlignment &al, const U2DataId &msaId, const QList<U2Sequence> &rows, const QList<QVector<U2MsaGap>> &msaGapModel, U2OpStatus &os);
+    static U2DataId createEmptyMsaObject(const DbiConnection& con, const QString& folder, const QString& name, const DNAAlphabet* alphabet, U2OpStatus& os);
+    static void importMsaInfo(const DbiConnection& con, const U2DataId& msaId, const QVariantMap& alInfo, U2OpStatus& os);
+    static QList<U2Sequence> importSequences(const DbiConnection& con, const QString& folder, const MultipleSequenceAlignment& al, U2OpStatus& os);
+    static void splitToCharsAndGaps(const DbiConnection& con, QList<U2Sequence>& sequences, QList<QVector<U2MsaGap>>& gapModel, U2OpStatus& os);
+    static void setChildRankForSequences(const DbiConnection& con, const QList<U2Sequence>& sequences, U2OpStatus& os);
+    static QList<U2MsaRow> importRows(const DbiConnection& con, MultipleSequenceAlignment& al, const U2DataId& msaId, const QList<U2Sequence>& rows, const QList<QVector<U2MsaGap>>& msaGapModel, U2OpStatus& os);
 };
 
 }  // namespace U2

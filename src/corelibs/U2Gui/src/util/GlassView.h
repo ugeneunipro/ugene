@@ -33,11 +33,11 @@ namespace U2 {
 class U2GUI_EXPORT GlassPane : public QWidget {
     Q_OBJECT
 public:
-    GlassPane(QWidget *parent = 0)
+    GlassPane(QWidget* parent = 0)
         : QWidget(parent) {
     }
-    virtual void paint(QPainter *) = 0;
-    virtual bool eventFilter(QObject *, QEvent *e) {
+    virtual void paint(QPainter*) = 0;
+    virtual bool eventFilter(QObject*, QEvent* e) {
         return this->event(e);
     }
 };
@@ -45,19 +45,19 @@ public:
 class U2GUI_EXPORT GlassView : public QGraphicsView {
     Q_OBJECT
 public:
-    GlassView(QGraphicsScene *scene)
+    GlassView(QGraphicsScene* scene)
         : QGraphicsView(scene), glass(nullptr) {
     }
 
 public slots:
-    void setGlass(GlassPane *);
+    void setGlass(GlassPane*);
 
 protected:
-    bool viewportEvent(QEvent *event);
-    void paintEvent(QPaintEvent *);
+    bool viewportEvent(QEvent* event);
+    void paintEvent(QPaintEvent*);
     void scrollContentsBy(int dx, int dy);
 
-    GlassPane *glass;
+    GlassPane* glass;
 };
 
 }  // namespace U2

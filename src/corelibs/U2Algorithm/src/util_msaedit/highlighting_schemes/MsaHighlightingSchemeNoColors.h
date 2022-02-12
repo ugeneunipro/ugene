@@ -29,16 +29,16 @@ namespace U2 {
 class MsaHighlightingSchemeNoColors : public MsaHighlightingScheme {
     Q_OBJECT
 public:
-    MsaHighlightingSchemeNoColors(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleAlignmentObject *maObj);
+    MsaHighlightingSchemeNoColors(QObject* parent, const MsaHighlightingSchemeFactory* factory, MultipleAlignmentObject* maObj);
 
-    void process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const;
+    void process(const char refChar, char& seqChar, QColor& color, bool& highlight, int refCharColumn, int refCharRow) const;
 };
 
 class U2ALGORITHM_EXPORT MsaHighlightingSchemeNoColorsFactory : public MsaHighlightingSchemeFactory {
 public:
-    MsaHighlightingSchemeNoColorsFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets);
+    MsaHighlightingSchemeNoColorsFactory(QObject* parent, const QString& id, const QString& name, const AlphabetFlags& supportedAlphabets);
 
-    MsaHighlightingScheme *create(QObject *parent, MultipleAlignmentObject *maObj) const;
+    MsaHighlightingScheme* create(QObject* parent, MultipleAlignmentObject* maObj) const;
 };
 
 }  // namespace U2

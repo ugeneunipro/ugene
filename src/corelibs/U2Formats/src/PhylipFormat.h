@@ -38,19 +38,19 @@ namespace U2 {
 class U2FORMATS_EXPORT PhylipFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
-    PhylipFormat(QObject *p, const DocumentFormatId &id);
+    PhylipFormat(QObject* p, const DocumentFormatId& id);
 
-    void storeTextDocument(IOAdapterWriter &writer, Document *doc, U2OpStatus &os) override;
+    void storeTextDocument(IOAdapterWriter& writer, Document* doc, U2OpStatus& os) override;
 
 protected:
-    MultipleSequenceAlignmentObject *load(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os);
+    MultipleSequenceAlignmentObject* load(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
     /** Parses header line and saves sequenceCount and columnCount values. Returns true if the header was parsed succesfully. */
-    bool parseHeader(const QString &data, int &sequenceCount, int &columnCount) const;
+    bool parseHeader(const QString& data, int& sequenceCount, int& columnCount) const;
 
-    Document *loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) override;
+    Document* loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) override;
 
-    virtual MultipleSequenceAlignment parse(IOAdapterReader &reader, U2OpStatus &os) const = 0;
+    virtual MultipleSequenceAlignment parse(IOAdapterReader& reader, U2OpStatus& os) const = 0;
 };
 
 /** Sequential variant of Phylip format. Example:
@@ -65,14 +65,14 @@ protected:
 class U2FORMATS_EXPORT PhylipSequentialFormat : public PhylipFormat {
     Q_OBJECT
 public:
-    PhylipSequentialFormat(QObject *p);
+    PhylipSequentialFormat(QObject* p);
 
-    void storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) override;
+    void storeTextEntry(IOAdapterWriter& writer, const QMap<GObjectType, QList<GObject*>>& objectsMap, U2OpStatus& os) override;
 
 protected:
-    FormatCheckResult checkRawTextData(const QString &dataPrefix, const GUrl &originalDataUrl) const override;
+    FormatCheckResult checkRawTextData(const QString& dataPrefix, const GUrl& originalDataUrl) const override;
 
-    MultipleSequenceAlignment parse(IOAdapterReader &reader, U2OpStatus &os) const override;
+    MultipleSequenceAlignment parse(IOAdapterReader& reader, U2OpStatus& os) const override;
 };
 
 /** Interleaved variant of Phylip format. Example:
@@ -87,14 +87,14 @@ protected:
 class U2FORMATS_EXPORT PhylipInterleavedFormat : public PhylipFormat {
     Q_OBJECT
 public:
-    PhylipInterleavedFormat(QObject *p);
+    PhylipInterleavedFormat(QObject* p);
 
-    void storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) override;
+    void storeTextEntry(IOAdapterWriter& writer, const QMap<GObjectType, QList<GObject*>>& objectsMap, U2OpStatus& os) override;
 
 protected:
-    FormatCheckResult checkRawTextData(const QString &dataPrefix, const GUrl &originalDataUrl) const override;
+    FormatCheckResult checkRawTextData(const QString& dataPrefix, const GUrl& originalDataUrl) const override;
 
-    MultipleSequenceAlignment parse(IOAdapterReader &reader, U2OpStatus &os) const override;
+    MultipleSequenceAlignment parse(IOAdapterReader& reader, U2OpStatus& os) const override;
 };
 
 }  // namespace U2

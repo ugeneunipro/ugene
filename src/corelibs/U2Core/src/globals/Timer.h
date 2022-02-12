@@ -57,7 +57,7 @@ public:
 
 class U2CORE_EXPORT TimeCounter {
 public:
-    inline TimeCounter(GCounter *c, bool _start = true);
+    inline TimeCounter(GCounter* c, bool _start = true);
     inline ~TimeCounter();
 
     inline void start();
@@ -70,12 +70,12 @@ public:
     static double getCounterScale() {
         return frequency;
     }
-    static const QString &getCounterSuffix() {
+    static const QString& getCounterSuffix() {
         return timeSuffix;
     }
 
 private:
-    GCounter *totalCounter;
+    GCounter* totalCounter;
     qint64 startTime;
     bool started;
 
@@ -105,7 +105,7 @@ qint64 GTimer::currentTimeMicros() {
     return res;
 }
 
-TimeCounter::TimeCounter(GCounter *c, bool _start)
+TimeCounter::TimeCounter(GCounter* c, bool _start)
     : totalCounter(c), startTime(0) {
     assert(totalCounter != nullptr);
     started = false;

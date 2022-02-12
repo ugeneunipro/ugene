@@ -41,18 +41,18 @@ McaReadsTabFactory::McaReadsTabFactory() {
     objectViewOfWidget = ObjViewType_ChromAlignmentEditor;
 }
 
-QWidget *McaReadsTabFactory::createWidget(GObjectView *objView, const QVariantMap &) {
+QWidget* McaReadsTabFactory::createWidget(GObjectView* objView, const QVariantMap&) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);
 
-    MaEditor *ma = qobject_cast<MaEditor *>(objView);
+    MaEditor* ma = qobject_cast<MaEditor*>(objView);
     SAFE_POINT(ma != nullptr,
                QString("Internal error: unable to cast object view to MaEditor for group '%1'.").arg(GROUP_ID),
                nullptr);
 
-    QWidget *widget = new QWidget(objView->getWidget());
-    QVBoxLayout *layout = new QVBoxLayout();
+    QWidget* widget = new QWidget(objView->getWidget());
+    QVBoxLayout* layout = new QVBoxLayout();
     layout->setContentsMargins(0, 0, 0, 0);
     widget->setLayout(layout);
 

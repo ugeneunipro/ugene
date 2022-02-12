@@ -58,7 +58,7 @@ public:
 
 private:
     void prepareGUI();
-    EventFilter *filter;
+    EventFilter* filter;
     bool isCodeGenerated;
     bool isFillerGenerated;
 private slots:
@@ -72,20 +72,20 @@ class EventFilter : public QObject {
     friend class GUITestingWindow;
 
 public:
-    EventFilter(GUITestingWindow *_w);
-    const QString &getClassName() const {
+    EventFilter(GUITestingWindow* _w);
+    const QString& getClassName() const {
         return className;
     }
-    const QString &getObjName() const {
+    const QString& getObjName() const {
         return objName;
     }
-    const QString &getActionText() const {
+    const QString& getActionText() const {
         return text;
     }
-    const QString &getActionName() const {
+    const QString& getActionName() const {
         return actionName;
     }
-    QObject *getBufferObject() {
+    QObject* getBufferObject() {
         return bufferObj;
     }
     void setBufferObject(QPointer<QObject> o) {
@@ -93,73 +93,73 @@ public:
     }
 
 protected:
-    virtual bool eventFilter(QObject *obj, QEvent *event);
+    virtual bool eventFilter(QObject* obj, QEvent* event);
 
 private:
     void generateMouseMessage();
 
-    void getInfo(QWidget *w);
+    void getInfo(QWidget* w);
 
-    QString generateCode(QWidget *w);
-    QString setValuesWhenFocusGone(QWidget *w);
-    QString menuBarCode(QMenuBar *menuBar) const;
-    QString menuCode(QMenu *menu);
-    QString checkBoxCode(QCheckBox *check) const;
-    QString radioButtonCode(QRadioButton *radio) const;
-    QString toolButtonCode(QToolButton *toolButton) const;
-    QString contextMenuCode(QWidget *w) const;
+    QString generateCode(QWidget* w);
+    QString setValuesWhenFocusGone(QWidget* w);
+    QString menuBarCode(QMenuBar* menuBar) const;
+    QString menuCode(QMenu* menu);
+    QString checkBoxCode(QCheckBox* check) const;
+    QString radioButtonCode(QRadioButton* radio) const;
+    QString toolButtonCode(QToolButton* toolButton) const;
+    QString contextMenuCode(QWidget* w) const;
 
     QString generateFillerHeader();
 
     QString generateParametersConstructorCode();
-    QString defaultVarValuesCode(QWidget *widget) const;
-    QString defaultVarValuesCode(QCheckBox *checkBox) const;
-    QString defaultVarValuesCode(QGroupBox *groupBox) const;
-    QString defaultVarValuesCode(QComboBox *comboBox) const;
-    QString defaultVarValuesCode(QLineEdit *lineEdit) const;
-    QString defaultVarValuesCode(QSpinBox *spinBox) const;
-    QString defaultVarValuesCode(QDoubleSpinBox *spinBox) const;
-    QString defaultVarValuesCode(QToolButton *toolButton) const;
-    QString defaultVarValuesCode(QPushButton *pushButton) const;
-    QString defaultVarValuesCode(QRadioButton *radio) const;
+    QString defaultVarValuesCode(QWidget* widget) const;
+    QString defaultVarValuesCode(QCheckBox* checkBox) const;
+    QString defaultVarValuesCode(QGroupBox* groupBox) const;
+    QString defaultVarValuesCode(QComboBox* comboBox) const;
+    QString defaultVarValuesCode(QLineEdit* lineEdit) const;
+    QString defaultVarValuesCode(QSpinBox* spinBox) const;
+    QString defaultVarValuesCode(QDoubleSpinBox* spinBox) const;
+    QString defaultVarValuesCode(QToolButton* toolButton) const;
+    QString defaultVarValuesCode(QPushButton* pushButton) const;
+    QString defaultVarValuesCode(QRadioButton* radio) const;
 
     QString generateParametersVariablesCode() const;
-    QString widgetVariableCode(QWidget *widget) const;
-    QString widgetVariableCode(QCheckBox *checkBox) const;
-    QString widgetVariableCode(QGroupBox *groupBox) const;
-    QString widgetVariableCode(QComboBox *comboBox) const;
-    QString widgetVariableCode(QLineEdit *lineEdit) const;
-    QString widgetVariableCode(QSpinBox *spinBox) const;
-    QString widgetVariableCode(QDoubleSpinBox *spinBox) const;
-    QString widgetVariableCode(QToolButton *toolButton) const;
-    QString widgetVariableCode(QPushButton *pushButton) const;
-    QString widgetVariableCode(QRadioButton *radio) const;
+    QString widgetVariableCode(QWidget* widget) const;
+    QString widgetVariableCode(QCheckBox* checkBox) const;
+    QString widgetVariableCode(QGroupBox* groupBox) const;
+    QString widgetVariableCode(QComboBox* comboBox) const;
+    QString widgetVariableCode(QLineEdit* lineEdit) const;
+    QString widgetVariableCode(QSpinBox* spinBox) const;
+    QString widgetVariableCode(QDoubleSpinBox* spinBox) const;
+    QString widgetVariableCode(QToolButton* toolButton) const;
+    QString widgetVariableCode(QPushButton* pushButton) const;
+    QString widgetVariableCode(QRadioButton* radio) const;
 
     QString generateFillerSource() const;
 
     QString generateWidgetsProcessing() const;
-    QString widgetsProcessingCode(QWidget *widget) const;
-    QString widgetsProcessingCode(QCheckBox *checkBox) const;
-    QString widgetsProcessingCode(QGroupBox *groupBox) const;
-    QString widgetsProcessingCode(QComboBox *comboBox) const;
-    QString widgetsProcessingCode(QLineEdit *lineEdit) const;
-    QString widgetsProcessingCode(QSpinBox *spinBox) const;
-    QString widgetsProcessingCode(QDoubleSpinBox *spinBox) const;
-    QString widgetsProcessingCode(QToolButton *toolButton) const;
-    QString widgetsProcessingCode(QPushButton *pushButton) const;
-    QString widgetsProcessingCode(QRadioButton *radio) const;
+    QString widgetsProcessingCode(QWidget* widget) const;
+    QString widgetsProcessingCode(QCheckBox* checkBox) const;
+    QString widgetsProcessingCode(QGroupBox* groupBox) const;
+    QString widgetsProcessingCode(QComboBox* comboBox) const;
+    QString widgetsProcessingCode(QLineEdit* lineEdit) const;
+    QString widgetsProcessingCode(QSpinBox* spinBox) const;
+    QString widgetsProcessingCode(QDoubleSpinBox* spinBox) const;
+    QString widgetsProcessingCode(QToolButton* toolButton) const;
+    QString widgetsProcessingCode(QPushButton* pushButton) const;
+    QString widgetsProcessingCode(QRadioButton* radio) const;
 
     QString className;
     QString objName;
     QString actionName;
     QString text;
 
-    QMouseEvent *m;
+    QMouseEvent* m;
     QPoint prevPos;
     QPointer<QWidget> focusWidget;
     bool isSubmenuClicked;
     Qt::MouseButton prevButton;
-    GUITestingWindow *gtw;
+    GUITestingWindow* gtw;
     QPointer<QObject> bufferObj;
     QStringList classes;
 };

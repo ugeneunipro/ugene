@@ -51,8 +51,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(GUITestOpStatus &os) {
-            QWidget *const dialog = GTWidget::getActiveModalWidget(os);
+        void run(GUITestOpStatus& os) {
+            QWidget* const dialog = GTWidget::getActiveModalWidget(os);
 
             // 3. Select the "PhyML Maximum Likelihood" algorithm.
             GTComboBox::selectItemByText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
@@ -96,8 +96,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(GUITestOpStatus &os) {
-            QWidget *const dialog = GTWidget::getActiveModalWidget(os);
+        void run(GUITestOpStatus& os) {
+            QWidget* const dialog = GTWidget::getActiveModalWidget(os);
 
             // 3. Select the "PhyML Maximum Likelihood" algorithm.
             GTComboBox::selectItemByText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
@@ -189,8 +189,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(GUITestOpStatus &os) {
-            QWidget *const dialog = GTWidget::getActiveModalWidget(os);
+        void run(GUITestOpStatus& os) {
+            QWidget* const dialog = GTWidget::getActiveModalWidget(os);
 
             // 3. Select the "PhyML Maximum Likelihood" algorithm.
             GTComboBox::selectItemByText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
@@ -232,8 +232,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(GUITestOpStatus &os) {
-            QWidget *const dialog = GTWidget::getActiveModalWidget(os);
+        void run(GUITestOpStatus& os) {
+            QWidget* const dialog = GTWidget::getActiveModalWidget(os);
 
             // 3. Select the "PhyML Maximum Likelihood" algorithm.
             GTComboBox::selectItemByText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
@@ -275,8 +275,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(GUITestOpStatus &os) {
-            QWidget *const dialog = GTWidget::getActiveModalWidget(os);
+        void run(GUITestOpStatus& os) {
+            QWidget* const dialog = GTWidget::getActiveModalWidget(os);
 
             // 3. Select the "PhyML Maximum Likelihood" algorithm.
             GTComboBox::selectItemByText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");
@@ -319,8 +319,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(GUITestOpStatus &os) {
-            QWidget *const dialog = GTWidget::getActiveModalWidget(os);
+        void run(GUITestOpStatus& os) {
+            QWidget* const dialog = GTWidget::getActiveModalWidget(os);
 
             // 3. Select the "PhyML Maximum Likelihood" algorithm.
             GTComboBox::selectItemByText(os, "algorithmBox", dialog, "PhyML Maximum Likelihood");

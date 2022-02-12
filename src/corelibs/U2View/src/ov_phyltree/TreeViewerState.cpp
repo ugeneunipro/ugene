@@ -44,7 +44,7 @@ GObjectReference TreeViewerState::getPhyObject() const {
     return stateData.contains(PHY_OBJ) ? stateData[PHY_OBJ].value<GObjectReference>() : GObjectReference();
 }
 
-void TreeViewerState::setPhyObject(const GObjectReference &ref) {
+void TreeViewerState::setPhyObject(const GObjectReference& ref) {
     stateData[PHY_OBJ] = QVariant::fromValue<GObjectReference>(ref);
 }
 
@@ -83,16 +83,16 @@ QTransform TreeViewerState::getTransform() const {
     return t;
 }
 
-void TreeViewerState::setTransform(const QTransform &m) {
+void TreeViewerState::setTransform(const QTransform& m) {
     stateData[TRANSFORM] = m;
 }
 
-QVariantMap TreeViewerState::saveState(TreeViewer *v) {
+QVariantMap TreeViewerState::saveState(TreeViewer* v) {
     TreeViewerState ss;
 
     ss.stateData[VIEW_ID] = TreeViewerFactory::ID;
 
-    PhyTreeObject *phyObj = v->getPhyObject();
+    PhyTreeObject* phyObj = v->getPhyObject();
     if (phyObj) {
         ss.setPhyObject(GObjectReference(phyObj));
     }

@@ -30,13 +30,13 @@
 
 namespace U2 {
 
-RowHeightController::RowHeightController(MaEditorWgt *maEditorWgt)
+RowHeightController::RowHeightController(MaEditorWgt* maEditorWgt)
     : QObject(maEditorWgt),
       ui(maEditorWgt) {
 }
 
 int RowHeightController::getGlobalYPositionByMaRowIndex(int maRowIndex) const {
-    const MaCollapseModel *collapseModel = ui->getEditor()->getCollapseModel();
+    const MaCollapseModel* collapseModel = ui->getEditor()->getCollapseModel();
     int viewRowIndex = collapseModel->getViewRowIndexByMaRowIndex(maRowIndex);
     int offset = 0;
     for (int viewRow = 0; viewRow < viewRowIndex; viewRow++) {
@@ -46,7 +46,7 @@ int RowHeightController::getGlobalYPositionByMaRowIndex(int maRowIndex) const {
     return offset;
 }
 
-int RowHeightController::getGlobalYPositionByMaRowIndex(int maRowIndex, const QList<int> &maRowIndexes) const {
+int RowHeightController::getGlobalYPositionByMaRowIndex(int maRowIndex, const QList<int>& maRowIndexes) const {
     int offset = 0;
     foreach (int currentIndex, maRowIndexes) {
         if (currentIndex == maRowIndex) {
@@ -71,7 +71,7 @@ int RowHeightController::getRowHeightByViewRowIndex(int viewRowIndex) const {
     return getRowHeightByMaIndex(maRowIndex);
 }
 
-int RowHeightController::getSumOfRowHeightsByMaIndexes(const QList<int> &maRowIndexes) const {
+int RowHeightController::getSumOfRowHeightsByMaIndexes(const QList<int>& maRowIndexes) const {
     int sumHeight = 0;
     foreach (int maRowIndex, maRowIndexes) {
         sumHeight += getRowHeightByMaIndex(maRowIndex);
@@ -120,7 +120,7 @@ U2Region RowHeightController::getGlobalYRegionByMaRowIndex(int maRowIndex) const
     return U2Region(globalYPosition, rowHeight);
 }
 
-U2Region RowHeightController::getGlobalYRegionByMaRowIndex(int maRowIndex, const QList<int> &maRowIndexes) const {
+U2Region RowHeightController::getGlobalYRegionByMaRowIndex(int maRowIndex, const QList<int>& maRowIndexes) const {
     int globalYPosition = getGlobalYPositionByMaRowIndex(maRowIndex, maRowIndexes);
     int rowHeight = getRowHeightByMaIndex(maRowIndex);
     return U2Region(globalYPosition, rowHeight);
@@ -134,7 +134,7 @@ U2Region RowHeightController::getGlobalYRegionByMaRowIndex(int maRowIndex, const
 #define OUT_OF_RANGE_OFFSET 5
 
 U2Region RowHeightController::getGlobalYRegionByViewRowIndex(int viewRowIndex) const {
-    MaCollapseModel *collapseModel = ui->getEditor()->getCollapseModel();
+    MaCollapseModel* collapseModel = ui->getEditor()->getCollapseModel();
     if (collapseModel->getViewRowCount() == 0) {  // empty alignment.
         return U2Region(-OUT_OF_RANGE_OFFSET, 0);
     }
@@ -152,13 +152,13 @@ U2Region RowHeightController::getGlobalYRegionByViewRowIndex(int viewRowIndex) c
     return getGlobalYRegionByMaRowIndex(maRow);
 }
 
-U2Region RowHeightController::getGlobalYRegionByViewRowsRegion(const U2Region &viewRowsRegion) const {
+U2Region RowHeightController::getGlobalYRegionByViewRowsRegion(const U2Region& viewRowsRegion) const {
     U2Region startPosRegion = getGlobalYRegionByViewRowIndex(viewRowsRegion.startPos);
     U2Region endPosRegion = getGlobalYRegionByViewRowIndex(viewRowsRegion.endPos() - 1);
     return U2Region::containingRegion(startPosRegion, endPosRegion);
 }
 
-U2Region RowHeightController::getScreenYRegionByViewRowsRegion(const U2Region &viewRowsRegion) const {
+U2Region RowHeightController::getScreenYRegionByViewRowsRegion(const U2Region& viewRowsRegion) const {
     U2Region startPosRegion = getScreenYRegionByViewRowIndex(viewRowsRegion.startPos);
     U2Region endPosRegion = getScreenYRegionByViewRowIndex(viewRowsRegion.endPos() - 1);
     return U2Region::containingRegion(startPosRegion, endPosRegion);
@@ -173,7 +173,7 @@ U2Region RowHeightController::getScreenYRegionByMaRowIndex(int maRowIndex, int s
     return U2Region(rowRange.startPos - screenYOrigin, rowRange.length);
 }
 
-U2Region RowHeightController::mapGlobalToScreen(const U2Region &globalRegion) const {
+U2Region RowHeightController::mapGlobalToScreen(const U2Region& globalRegion) const {
     int screenYOrigin = ui->getScrollController()->getScreenPosition().y();
     return U2Region(globalRegion.startPos - screenYOrigin, globalRegion.length);
 }

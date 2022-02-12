@@ -37,8 +37,8 @@ class SaveDocumentController;
 
 class MultipleDocumentsReadingModeSelectorController {
 public:
-    static bool adjustReadingMode(QVariantMap &, QList<GUrl> &urls, const QMap<QString, qint64> &headerSequenceLengths);
-    static bool mergeDocumentOption(const FormatDetectionResult &formatResult, QMap<QString, qint64> *headerSequenceLengths);
+    static bool adjustReadingMode(QVariantMap&, QList<GUrl>& urls, const QMap<QString, qint64>& headerSequenceLengths);
+    static bool mergeDocumentOption(const FormatDetectionResult& formatResult, QMap<QString, qint64>* headerSequenceLengths);
 
 private:
     MultipleDocumentsReadingModeSelectorController();
@@ -47,9 +47,9 @@ private:
 class MultipleDocumentsReadingModeDialog : public QDialog, public Ui_MultipleDocumentsReadingModeSelectorController {
     Q_OBJECT
 public:
-    MultipleDocumentsReadingModeDialog(const QList<GUrl> &urls, QWidget *parent = 0);
+    MultipleDocumentsReadingModeDialog(const QList<GUrl>& urls, QWidget* parent = 0);
 
-    bool setupGUI(QList<GUrl> &urls, QVariantMap &hintsDocuments, const QMap<QString, qint64> &headerSequenceLengths);
+    bool setupGUI(QList<GUrl>& urls, QVariantMap& hintsDocuments, const QMap<QString, qint64>& headerSequenceLengths);
 
 private slots:
     void sl_onMoveUp();
@@ -63,9 +63,9 @@ private:
     QString deleteNumPrefix(QString);
     void deleteAllNumPrefix();
     void changeNumPrefix();
-    QString findUrlByFileName(const QString &fileName);
+    QString findUrlByFileName(const QString& fileName);
 
-    SaveDocumentController *saveController;
+    SaveDocumentController* saveController;
     QList<GUrl> urls;
 };
 

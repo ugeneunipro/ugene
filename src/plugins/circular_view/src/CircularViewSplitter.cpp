@@ -44,7 +44,7 @@
 
 namespace U2 {
 
-CircularViewSplitter::CircularViewSplitter(AnnotatedDNAView *view)
+CircularViewSplitter::CircularViewSplitter(AnnotatedDNAView* view)
     : ADVSplitWidget(view) {
     zoomInAction = new QAction(tr("Zoom In"), this);
     zoomInAction->setIcon(QIcon(":/core/images/zoom_in.png"));
@@ -74,14 +74,14 @@ CircularViewSplitter::CircularViewSplitter(AnnotatedDNAView *view)
 
     splitter = new QSplitter(Qt::Horizontal);
 
-    WidgetWithLocalToolbar *widgetWithToolBar = new WidgetWithLocalToolbar(this);
+    WidgetWithLocalToolbar* widgetWithToolBar = new WidgetWithLocalToolbar(this);
     widgetWithToolBar->setLocalToolBarObjectName("circular_view_local_toolbar");
     widgetWithToolBar->addActionToLocalToolbar(zoomInAction);
     widgetWithToolBar->addActionToLocalToolbar(zoomOutAction);
     widgetWithToolBar->addActionToLocalToolbar(fitInViewAction);
     widgetWithToolBar->addActionToLocalToolbar(exportAction);
     widgetWithToolBar->addActionToLocalToolbar(toggleRestrictionMapAction);
-    QVBoxLayout *layout = new QVBoxLayout();
+    QVBoxLayout* layout = new QVBoxLayout();
     layout->setSpacing(0);
     layout->setMargin(0);
     layout->addWidget(splitter);
@@ -91,7 +91,7 @@ CircularViewSplitter::CircularViewSplitter(AnnotatedDNAView *view)
     setBaseSize(600, 600);
     setAcceptDrops(false);
 
-    QVBoxLayout *outerLayout = new QVBoxLayout(this);
+    QVBoxLayout* outerLayout = new QVBoxLayout(this);
     outerLayout->setSpacing(0);
     outerLayout->setContentsMargins(0, 0, 0, 0);
 
@@ -106,17 +106,17 @@ CircularViewSplitter::CircularViewSplitter(AnnotatedDNAView *view)
     outerLayout->insertWidget(-1, horScroll);
 }
 
-void CircularViewSplitter::updateState(const QVariantMap &m) {
+void CircularViewSplitter::updateState(const QVariantMap& m) {
     Q_UNUSED(m);
     // TODO:
 }
 
-void CircularViewSplitter::saveState(QVariantMap &m) {
+void CircularViewSplitter::saveState(QVariantMap& m) {
     Q_UNUSED(m);
     // TODO:
 }
 
-void CircularViewSplitter::addView(CircularView *view, RestrctionMapWidget *rmapWidget) {
+void CircularViewSplitter::addView(CircularView* view, RestrctionMapWidget* rmapWidget) {
     fitInViewAction->setDisabled(true);
     connect(zoomInAction, SIGNAL(triggered()), view, SLOT(sl_zoomIn()));
     connect(zoomOutAction, SIGNAL(triggered()), view, SLOT(sl_zoomOut()));
@@ -129,7 +129,7 @@ void CircularViewSplitter::addView(CircularView *view, RestrctionMapWidget *rmap
     circularViewList.append(view);
     restrictionMapWidgets.append(rmapWidget);
 
-    QScrollArea *scrollArea = new QScrollArea(this);
+    QScrollArea* scrollArea = new QScrollArea(this);
     scrollArea->setWidget(view);
     scrollArea->setFrameStyle(QFrame::NoFrame);
     scrollArea->setWidgetResizable(true);
@@ -155,11 +155,11 @@ void CircularViewSplitter::sl_moveSlider(int delta) {
     horScroll->setSliderPosition(newPos);
 }
 
-void CircularViewSplitter::removeView(CircularView *view, RestrctionMapWidget *rmapWidget) {
+void CircularViewSplitter::removeView(CircularView* view, RestrctionMapWidget* rmapWidget) {
     SAFE_POINT(view != nullptr, tr("Circular View is NULL"), );
-    QWidget *viewport = view->parentWidget();
+    QWidget* viewport = view->parentWidget();
     SAFE_POINT(viewport != nullptr, tr("Circular View viewport is NULL"), );
-    QScrollArea *scrollArea = qobject_cast<QScrollArea *>(viewport->parentWidget());
+    QScrollArea* scrollArea = qobject_cast<QScrollArea*>(viewport->parentWidget());
     SAFE_POINT(scrollArea != nullptr, tr("Scroll area is NULL"), );
     view->setParent(nullptr);
     delete scrollArea;
@@ -172,7 +172,7 @@ bool CircularViewSplitter::isEmpty() {
     return circularViewList.isEmpty();
 }
 
-bool noValidExtension(const QString &url) {
+bool noValidExtension(const QString& url) {
     QFileInfo fi(url);
     if (fi.suffix().isEmpty()) {
         return true;
@@ -198,14 +198,14 @@ bool noValidExtension(const QString &url) {
 }
 
 void CircularViewSplitter::updateViews() {
-    foreach (CircularView *cv, circularViewList) {
+    foreach (CircularView* cv, circularViewList) {
         cv->redraw();
     }
 }
 
 void CircularViewSplitter::sl_export() {
-    CircularView *cvInFocus = nullptr;
-    foreach (CircularView *cv, circularViewList) {
+    CircularView* cvInFocus = nullptr;
+    foreach (CircularView* cv, circularViewList) {
         if (cv->hasFocus()) {
             cvInFocus = cv;
             break;
@@ -216,29 +216,29 @@ void CircularViewSplitter::sl_export() {
     }
 
     SAFE_POINT(cvInFocus->getSequenceContext() != nullptr, tr("Sequence context is NULL"), );
-    U2SequenceObject *seqObj = cvInFocus->getSequenceContext()->getSequenceObject();
+    U2SequenceObject* seqObj = cvInFocus->getSequenceContext()->getSequenceObject();
     SAFE_POINT(seqObj != nullptr, tr("Sequence obejct is NULL"), );
 
     CircularViewImageExportController factory(circularViewList, cvInFocus);
 
     QString fileName = GUrlUtils::fixFileName(seqObj->getSequenceName());
-    QWidget *p = (QWidget *)AppContext::getMainWindow()->getQMainWindow();
+    QWidget* p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
     QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(&factory, ExportImageDialog::CircularView, fileName, ExportImageDialog::SupportScaling, p);
     dialog->exec();
     CHECK(!dialog.isNull(), );
 }
 
 void CircularViewSplitter::sl_horSliderMoved(int newVal) {
-    foreach (CircularView *cv, circularViewList) {
+    foreach (CircularView* cv, circularViewList) {
         cv->setAngle(newVal);
     }
 }
 
 void CircularViewSplitter::adaptSize() {
-    QWidget *widget = parentWidget();
+    QWidget* widget = parentWidget();
 
     Q_ASSERT(widget != nullptr);
-    QSplitter *parentSplitter = qobject_cast<QSplitter *>(widget);
+    QSplitter* parentSplitter = qobject_cast<QSplitter*>(widget);
 
     int index = parentSplitter->indexOf(this);
     QList<int> sizes = parentSplitter->sizes();
@@ -293,7 +293,7 @@ void CircularViewSplitter::sl_updateFitInViewAction(bool disabled) {
 }
 
 void CircularViewSplitter::sl_toggleRestrictionMap(bool toggle) {
-    foreach (QWidget *w, restrictionMapWidgets) {
+    foreach (QWidget* w, restrictionMapWidgets) {
         w->setVisible(toggle);
     }
 }

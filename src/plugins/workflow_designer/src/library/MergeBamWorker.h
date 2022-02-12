@@ -36,7 +36,7 @@ typedef PrompterBase<MergeBamPrompter> MergeBamBase;
 class MergeBamPrompter : public MergeBamBase {
     Q_OBJECT
 public:
-    MergeBamPrompter(Actor *p = 0)
+    MergeBamPrompter(Actor* p = 0)
         : MergeBamBase(p) {
     }
 
@@ -47,23 +47,23 @@ protected:
 class MergeBamWorker : public BaseWorker {
     Q_OBJECT
 public:
-    MergeBamWorker(Actor *a);
+    MergeBamWorker(Actor* a);
     void init();
-    Task *tick();
+    Task* tick();
     void cleanup();
 
 private:
-    IntegralBus *inputUrlPort;
-    IntegralBus *outputUrlPort;
+    IntegralBus* inputUrlPort;
+    IntegralBus* outputUrlPort;
     QString outputDir;
     QStringList urls;
 public slots:
-    void sl_taskFinished(Task *task);
+    void sl_taskFinished(Task* task);
 
 private:
     QString takeUrl();
-    QString getOutputName(const QString &fileUrl);
-    void sendResult(const QString &url);
+    QString getOutputName(const QString& fileUrl);
+    void sendResult(const QString& url);
 };  // MergeBamWorker
 
 class MergeBamWorkerFactory : public DomainFactory {
@@ -74,7 +74,7 @@ public:
     MergeBamWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    Worker *createWorker(Actor *a) {
+    Worker* createWorker(Actor* a) {
         return new MergeBamWorker(a);
     }
 };  // MergeBamWorkerFactory

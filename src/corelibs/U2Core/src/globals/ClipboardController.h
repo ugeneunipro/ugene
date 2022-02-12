@@ -48,25 +48,25 @@ public:
     PasteTask(TaskFlags flags = TaskFlag_None);
 
     virtual QList<GUrl> getUrls() const = 0;
-    virtual QList<Document *> getDocuments() const = 0;
+    virtual QList<Document*> getDocuments() const = 0;
 
 protected:
-    virtual void processDocument(Document *doc);
+    virtual void processDocument(Document* doc);
 };
 
 class U2CORE_EXPORT PasteFactory : public QObject {
     Q_OBJECT
 public:
-    PasteFactory(QObject *parent = 0);
+    PasteFactory(QObject* parent = 0);
 
     /** Creates task using current clipboard state. May return NULL if clipboard state is invalid/unsupported. */
-    virtual PasteTask *createPasteTask(bool isAddToProject) = 0;
+    virtual PasteTask* createPasteTask(bool isAddToProject) = 0;
 };
 
 class U2CORE_EXPORT PasteUtils : public QObject {
     Q_OBJECT
 public:
-    static QList<DNASequence> getSequences(const QList<Document *> &docs, U2OpStatus &os);
+    static QList<DNASequence> getSequences(const QList<Document*>& docs, U2OpStatus& os);
 };
 
 }  // namespace U2

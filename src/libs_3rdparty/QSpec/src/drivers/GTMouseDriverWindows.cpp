@@ -33,7 +33,7 @@ namespace HI {
 QPoint GTMouseDriver::mousePos = QPoint(-1, -1);
 
 #    define GT_METHOD_NAME "moveToP"
-bool GTMouseDriver::moveTo(const QPoint &p) {
+bool GTMouseDriver::moveTo(const QPoint& p) {
     int x = p.x();
     int y = p.y();
     // get screen resolution

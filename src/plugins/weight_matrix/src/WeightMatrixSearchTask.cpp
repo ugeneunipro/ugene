@@ -25,14 +25,14 @@
 
 namespace U2 {
 // Weight matrix multiple search
-WeightMatrixSearchTask::WeightMatrixSearchTask(const QList<QPair<PWMatrix, WeightMatrixSearchCfg>> &m, const QByteArray &seq, int ro)
+WeightMatrixSearchTask::WeightMatrixSearchTask(const QList<QPair<PWMatrix, WeightMatrixSearchCfg>>& m, const QByteArray& seq, int ro)
     : Task(tr("Weight matrix multiple search"), TaskFlags_NR_FOSCOE), models(m), resultsOffset(ro) {
     for (int i = 0, n = m.size(); i < n; i++) {
         addSubTask(new WeightMatrixSingleSearchTask(m[i].first, seq, m[i].second, ro));
     }
 }
 
-void WeightMatrixSearchTask::addResult(const WeightMatrixSearchResult &r) {
+void WeightMatrixSearchTask::addResult(const WeightMatrixSearchResult& r) {
     lock.lock();
     results.append(r);
     lock.unlock();
@@ -41,8 +41,8 @@ void WeightMatrixSearchTask::addResult(const WeightMatrixSearchResult &r) {
 QList<WeightMatrixSearchResult> WeightMatrixSearchTask::takeResults() {
     lock.lock();
     QList<WeightMatrixSearchResult> res;
-    foreach (const QPointer<Task> &task, getSubtasks()) {
-        WeightMatrixSingleSearchTask *curr = static_cast<WeightMatrixSingleSearchTask *>(task.data());
+    foreach (const QPointer<Task>& task, getSubtasks()) {
+        WeightMatrixSingleSearchTask* curr = static_cast<WeightMatrixSingleSearchTask*>(task.data());
         res.append(curr->takeResults());
     }
     lock.unlock();
@@ -50,7 +50,7 @@ QList<WeightMatrixSearchResult> WeightMatrixSearchTask::takeResults() {
 }
 
 // Weight matrix single search
-WeightMatrixSingleSearchTask::WeightMatrixSingleSearchTask(const PWMatrix &m, const QByteArray &_seq, const WeightMatrixSearchCfg &cfg, int ro)
+WeightMatrixSingleSearchTask::WeightMatrixSingleSearchTask(const PWMatrix& m, const QByteArray& _seq, const WeightMatrixSearchCfg& cfg, int ro)
     : Task(tr("Weight matrix search"), TaskFlags_NR_FOSCOE), model(m), cfg(cfg), resultsOffset(ro), seq(_seq) {
     GCOUNTER(cvar, "WeightMatrixSingleSearchTask");
     SequenceWalkerConfig c;
@@ -64,23 +64,23 @@ WeightMatrixSingleSearchTask::WeightMatrixSingleSearchTask(const PWMatrix &m, co
     c.chunkSize = seq.length();
     c.overlapSize = 0;
 
-    SequenceWalkerTask *t = new SequenceWalkerTask(c, this, tr("Weight matrix search parallel"));
+    SequenceWalkerTask* t = new SequenceWalkerTask(c, this, tr("Weight matrix search parallel"));
     addSubTask(t);
 }
 
-void WeightMatrixSingleSearchTask::onRegion(SequenceWalkerSubtask *t, TaskStateInfo &ti) {
+void WeightMatrixSingleSearchTask::onRegion(SequenceWalkerSubtask* t, TaskStateInfo& ti) {
     // TODO: process border case as if there are 'N' chars before 0 and after seqlen
     if (cfg.complOnly && !t->isDNAComplemented()) {
         return;
     }
     U2Region globalRegion = t->getGlobalRegion();
     int seqLen = globalRegion.length;
-    const char *seq = t->getGlobalConfig().seq + globalRegion.startPos;
+    const char* seq = t->getGlobalConfig().seq + globalRegion.startPos;
     int modelSize = model.getLength();
     ti.progress = 0;
     int lenPerPercent = seqLen / 100;
     int pLeft = lenPerPercent;
-    DNATranslation *complTT = t->isDNAComplemented() ? t->getGlobalConfig().complTrans : nullptr;
+    DNATranslation* complTT = t->isDNAComplemented() ? t->getGlobalConfig().complTrans : nullptr;
     for (int i = 0, n = seqLen - modelSize; i <= n && !ti.cancelFlag; i++, --pLeft) {
         float psum = WeightMatrixAlgorithm::getScore(seq + i, modelSize, model, complTT);
         if (psum < -1e-6 || psum > 1 + 1e-6) {
@@ -109,7 +109,7 @@ void WeightMatrixSingleSearchTask::onRegion(SequenceWalkerSubtask *t, TaskStateI
     }
 }
 
-void WeightMatrixSingleSearchTask::addResult(const WeightMatrixSearchResult &r) {
+void WeightMatrixSingleSearchTask::addResult(const WeightMatrixSearchResult& r) {
     lock.lock();
     results.append(r);
     lock.unlock();

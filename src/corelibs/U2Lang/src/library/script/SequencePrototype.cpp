@@ -37,19 +37,19 @@ const QString SequenceScriptClass::CLASS_NAME("Sequence");
 /************************************************************************/
 /* SequencePrototype */
 /************************************************************************/
-SequencePrototype::SequencePrototype(QObject *parent)
+SequencePrototype::SequencePrototype(QObject* parent)
     : DbiClassPrototype(parent) {
 }
 
-U2SequenceObject *SequencePrototype::getSequenceObject() const {
+U2SequenceObject* SequencePrototype::getSequenceObject() const {
     CHECK(nullptr != thisData(), nullptr);
-    Workflow::DbiDataStorage *storage = dataStorage();
+    Workflow::DbiDataStorage* storage = dataStorage();
     CHECK(nullptr != storage, nullptr);
     return Workflow::StorageUtils::getSequenceObject(storage, thisData()->getId());
 }
 
-U2SequenceObject *SequencePrototype::getValidSequenceObject() const {
-    U2SequenceObject *result = getSequenceObject();
+U2SequenceObject* SequencePrototype::getValidSequenceObject() const {
+    U2SequenceObject* result = getSequenceObject();
     SCRIPT_CHECK(nullptr != result, context(), "Invalid sequence object", nullptr);
     return result;
 }
@@ -106,14 +106,14 @@ void SequencePrototype::splice() {
 /************************************************************************/
 /* SequenceScriptClass */
 /************************************************************************/
-SequenceScriptClass::SequenceScriptClass(QScriptEngine *engine)
+SequenceScriptClass::SequenceScriptClass(QScriptEngine* engine)
     : DbiScriptClass(engine) {
     qScriptRegisterMetaType<ScriptDbiData>(engine, toScriptValue<SequenceScriptClass>, fromScriptValue);
     proto = engine->newQObject(new SequencePrototype(this));
 }
 
-QScriptValue SequenceScriptClass::constructor(QScriptContext *ctx, QScriptEngine * /*engine*/) {
-    SequenceScriptClass *sClass = qscriptvalue_cast<SequenceScriptClass *>(ctx->callee().data());
+QScriptValue SequenceScriptClass::constructor(QScriptContext* ctx, QScriptEngine* /*engine*/) {
+    SequenceScriptClass* sClass = qscriptvalue_cast<SequenceScriptClass*>(ctx->callee().data());
     if (!sClass) {
         return QScriptValue();
     }
@@ -136,9 +136,9 @@ QScriptValue SequenceScriptClass::constructor(QScriptContext *ctx, QScriptEngine
     return QScriptValue();
 }
 
-Workflow::SharedDbiDataHandler SequenceScriptClass::copySequence(const ScriptDbiData &id, QScriptEngine *engine) {
+Workflow::SharedDbiDataHandler SequenceScriptClass::copySequence(const ScriptDbiData& id, QScriptEngine* engine) {
     Workflow::SharedDbiDataHandler result;
-    Workflow::DbiDataStorage *storage = ScriptEngineUtils::dataStorage(engine);
+    Workflow::DbiDataStorage* storage = ScriptEngineUtils::dataStorage(engine);
     SCRIPT_CHECK(nullptr != storage, engine->currentContext(), "Data storage error", result);
 
     QScopedPointer<U2SequenceObject> seqObj(Workflow::StorageUtils::getSequenceObject(storage, id.getId()));
@@ -154,13 +154,13 @@ Workflow::SharedDbiDataHandler SequenceScriptClass::copySequence(const ScriptDbi
     return result;
 }
 
-QScriptValue SequenceScriptClass::newInstance(const QString &data, const QString &name) {
-    Workflow::DbiDataStorage *storage = workflowEngine()->getWorkflowContext()->getDataStorage();
+QScriptValue SequenceScriptClass::newInstance(const QString& data, const QString& name) {
+    Workflow::DbiDataStorage* storage = workflowEngine()->getWorkflowContext()->getDataStorage();
     Workflow::SharedDbiDataHandler id = storage->putSequence(DNASequence(name, data.toLatin1()));
     return newInstance(id);
 }
 
-QScriptValue SequenceScriptClass::newInstance(const ScriptDbiData &id, bool deepCopy) {
+QScriptValue SequenceScriptClass::newInstance(const ScriptDbiData& id, bool deepCopy) {
     if (deepCopy) {
         return newInstance(copySequence(id, engine()));
     } else {
@@ -172,7 +172,7 @@ QString SequenceScriptClass::name() const {
     return CLASS_NAME;
 }
 
-WorkflowScriptEngine *SequenceScriptClass::workflowEngine() const {
+WorkflowScriptEngine* SequenceScriptClass::workflowEngine() const {
     return ScriptEngineUtils::workflowEngine(engine());
 }
 

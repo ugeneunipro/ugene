@@ -42,22 +42,22 @@ enum EnzymeFileFormat {
 class EnzymesIO : public QObject {
     Q_OBJECT
 public:
-    static QList<SEnzymeData> readEnzymes(const QString &url, TaskStateInfo &ti);
-    static void writeEnzymes(const QString &url, const QString &source, const QSet<QString> &enzymes, TaskStateInfo &ti);
+    static QList<SEnzymeData> readEnzymes(const QString& url, TaskStateInfo& ti);
+    static void writeEnzymes(const QString& url, const QString& source, const QSet<QString>& enzymes, TaskStateInfo& ti);
     static QString getFileDialogFilter();
     static QList<SEnzymeData> getDefaultEnzymesList();
-    static SEnzymeData findEnzymeById(const QString &id, const QList<SEnzymeData> &enzymes);
+    static SEnzymeData findEnzymeById(const QString& id, const QList<SEnzymeData>& enzymes);
 
 private:
-    static EnzymeFileFormat detectFileFormat(const QString &url);
-    static QList<SEnzymeData> readBairochFile(const QString &url, IOAdapterFactory *iof, TaskStateInfo &ti);
-    static void writeBairochFile(const QString &url, IOAdapterFactory *iof, const QString &source, IOAdapterFactory *srciof, const QSet<QString> &enzymes, TaskStateInfo &ti);
+    static EnzymeFileFormat detectFileFormat(const QString& url);
+    static QList<SEnzymeData> readBairochFile(const QString& url, IOAdapterFactory* iof, TaskStateInfo& ti);
+    static void writeBairochFile(const QString& url, IOAdapterFactory* iof, const QString& source, IOAdapterFactory* srciof, const QSet<QString>& enzymes, TaskStateInfo& ti);
 };
 
 class LoadEnzymeFileTask : public Task {
     Q_OBJECT
 public:
-    LoadEnzymeFileTask(const QString &url);
+    LoadEnzymeFileTask(const QString& url);
     void run();
     void cleanup() {
         enzymes.clear();
@@ -70,7 +70,7 @@ public:
 class SaveEnzymeFileTask : public Task {
     Q_OBJECT
 public:
-    SaveEnzymeFileTask(const QString &url, const QString &source, const QSet<QString> &enzymes);
+    SaveEnzymeFileTask(const QString& url, const QString& source, const QSet<QString>& enzymes);
     void run();
 
     QString url;

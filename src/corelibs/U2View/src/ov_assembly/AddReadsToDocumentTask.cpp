@@ -33,7 +33,7 @@
 
 namespace U2 {
 
-AddReadsToDocumentTask::AddReadsToDocumentTask(const QList<U2AssemblyRead> &reads, const QPointer<Document> &doc)
+AddReadsToDocumentTask::AddReadsToDocumentTask(const QList<U2AssemblyRead>& reads, const QPointer<Document>& doc)
     : Task(tr("Add short reads to document"), TaskFlag_None), reads(reads), doc(doc) {
     SAFE_POINT_EXT(!doc.isNull(), setError(L10N::nullPointerError("document")), );
     dbiRef = doc->getDbiRef();
@@ -45,7 +45,7 @@ AddReadsToDocumentTask::AddReadsToDocumentTask(const QList<U2AssemblyRead> &read
 void AddReadsToDocumentTask::run() {
     TmpDbiObjects objectsGuard(dbiRef, stateInfo);
 
-    foreach (const U2AssemblyRead &r, reads) {
+    foreach (const U2AssemblyRead& r, reads) {
         DNASequence dna(r->name, r->readSequence);
         dna.quality = DNAQuality(r->quality, DNAQualityType_Sanger);
         U2EntityRef ref = U2SequenceUtils::import(stateInfo, dbiRef, dna);
@@ -61,7 +61,7 @@ void AddReadsToDocumentTask::run() {
 }
 
 Task::ReportResult AddReadsToDocumentTask::report() {
-    foreach (const U2DataId &seqId, seqNameById.keys()) {
+    foreach (const U2DataId& seqId, seqNameById.keys()) {
         doc->addObject(new U2SequenceObject(seqNameById[seqId], U2EntityRef(dbiRef, seqId)));
     }
     return ReportResult_Finished;

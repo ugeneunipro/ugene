@@ -42,7 +42,7 @@ const QString CufflinksSupport::CUFFLINKS_TMP_DIR = "cufflinks";
 const QString CufflinksSupport::CUFFDIFF_TMP_DIR = "cuffdiff";
 const QString CufflinksSupport::CUFFMERGE_TMP_DIR = "cuffmerge";
 
-CufflinksSupport::CufflinksSupport(const QString &id, const QString &name, const QString &path)
+CufflinksSupport::CufflinksSupport(const QString& id, const QString& name, const QString& path)
     : ExternalTool(id, "cufflinks", name, path) {
     if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
@@ -128,4 +128,4 @@ CufflinksSupport::CufflinksSupport(const QString &id, const QString &name, const
     muted = true;
 }
 
-}    // namespace U2
+}  // namespace U2

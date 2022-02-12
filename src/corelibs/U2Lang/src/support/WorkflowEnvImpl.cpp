@@ -35,7 +35,7 @@
 namespace U2 {
 namespace Workflow {
 
-DataTypeRegistry *WorkflowEnvImpl::initDataRegistry() {
+DataTypeRegistry* WorkflowEnvImpl::initDataRegistry() {
     qRegisterMetaTypeStreamOperators<StrStrMap>("StrStrMap");
     qRegisterMetaTypeStreamOperators<CfgMap>("CfgMap");
     qRegisterMetaTypeStreamOperators<IterationCfg>("IterationCfg");
@@ -45,23 +45,23 @@ DataTypeRegistry *WorkflowEnvImpl::initDataRegistry() {
     qRegisterMetaType<Monitor::LogEntry>("Monitor::LogEntry");
     qRegisterMetaType<ActorId>("ActorId");
 
-    DataTypeRegistry *r = new DataTypeRegistry();
+    DataTypeRegistry* r = new DataTypeRegistry();
 
     return r;
 }
 
-DomainFactoryRegistry *WorkflowEnvImpl::initDomainRegistry() {
-    DomainFactoryRegistry *r = new DomainFactoryRegistry();
+DomainFactoryRegistry* WorkflowEnvImpl::initDomainRegistry() {
+    DomainFactoryRegistry* r = new DomainFactoryRegistry();
     return r;
 }
 
-ActorPrototypeRegistry *WorkflowEnvImpl::initProtoRegistry() {
-    ActorPrototypeRegistry *r = new ActorPrototypeRegistry();
+ActorPrototypeRegistry* WorkflowEnvImpl::initProtoRegistry() {
+    ActorPrototypeRegistry* r = new ActorPrototypeRegistry();
     return r;
 }
 
-DataTypeValueFactoryRegistry *WorkflowEnvImpl::initDataTypeValueFactoryRegistry() {
-    DataTypeValueFactoryRegistry *ret = new DataTypeValueFactoryRegistry();
+DataTypeValueFactoryRegistry* WorkflowEnvImpl::initDataTypeValueFactoryRegistry() {
+    DataTypeValueFactoryRegistry* ret = new DataTypeValueFactoryRegistry();
     ret->registerEntry(new StringTypeValueFactory());
     ret->registerEntry(new StringListTypeValueFactory());
     ret->registerEntry(new MapTypeValueFactory());
@@ -79,23 +79,23 @@ WorkflowEnvImpl::~WorkflowEnvImpl() {
     delete actorValidatorRegistry;
 }
 
-ExternalToolCfgRegistry *WorkflowEnvImpl::initExternalToolCfgRegistry() {
-    ExternalToolCfgRegistry *ecfgReg = new ExternalToolCfgRegistry();
+ExternalToolCfgRegistry* WorkflowEnvImpl::initExternalToolCfgRegistry() {
+    ExternalToolCfgRegistry* ecfgReg = new ExternalToolCfgRegistry();
     return ecfgReg;
 }
 
-SchemaActorsRegistry *WorkflowEnvImpl::initSchemaActorsRegistry() {
-    SchemaActorsRegistry *actorsRegistry = new SchemaActorsRegistry();
+SchemaActorsRegistry* WorkflowEnvImpl::initSchemaActorsRegistry() {
+    SchemaActorsRegistry* actorsRegistry = new SchemaActorsRegistry();
     return actorsRegistry;
 }
 
-WorkflowTasksRegistry *WorkflowEnvImpl::initWorkflowTasksRegistry() {
-    WorkflowTasksRegistry *workflowTasksRegistry = new WorkflowTasksRegistry();
+WorkflowTasksRegistry* WorkflowEnvImpl::initWorkflowTasksRegistry() {
+    WorkflowTasksRegistry* workflowTasksRegistry = new WorkflowTasksRegistry();
     return workflowTasksRegistry;
 }
 
-ActorValidatorRegistry *WorkflowEnvImpl::initActorValidatorRegistry() {
-    ActorValidatorRegistry *actorValidatorRegistry = new ActorValidatorRegistry();
+ActorValidatorRegistry* WorkflowEnvImpl::initActorValidatorRegistry() {
+    ActorValidatorRegistry* actorValidatorRegistry = new ActorValidatorRegistry();
     return actorValidatorRegistry;
 }
 

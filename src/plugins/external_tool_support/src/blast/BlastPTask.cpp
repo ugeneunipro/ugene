@@ -33,7 +33,7 @@
 
 namespace U2 {
 
-ExternalToolRunTask *BlastPTask::createBlastTask() {
+ExternalToolRunTask* BlastPTask::createBlastTask() {
     QStringList arguments;
     // arguments <<"-p"<< settings.programName;
     //     if(!settings.filter.isEmpty()){

@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-ConnectSharedDatabaseTask::ConnectSharedDatabaseTask(const U2DbiRef &dbiRef, const QString &_documentName, bool initializeDb)
+ConnectSharedDatabaseTask::ConnectSharedDatabaseTask(const U2DbiRef& dbiRef, const QString& _documentName, bool initializeDb)
     : DocumentProviderTask(tr("Connecting to database: ") + getUrlFromRef(dbiRef).getURLString(), TaskFlag_None),
       dbiRef(dbiRef), documentName(_documentName), initializeDb(initializeDb) {
     GCOUNTER(cvar, "ConnectSharedDatabaseTask");
@@ -46,10 +46,10 @@ void ConnectSharedDatabaseTask::run() {
         CHECK_OP(stateInfo, );
     }
 
-    IOAdapterFactory *ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::DATABASE_CONNECTION);
+    IOAdapterFactory* ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::DATABASE_CONNECTION);
     SAFE_POINT_EXT(nullptr != ioAdapterFactory, setError("Database connection IO adapter factory is NULL"), );
 
-    DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::DATABASE_CONNECTION);
+    DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::DATABASE_CONNECTION);
     SAFE_POINT_EXT(nullptr != format, setError("Database connection format is NULL"), );
 
     resultDocument = format->loadDocument(ioAdapterFactory, getUrlFromRef(dbiRef), QVariantMap(), stateInfo);
@@ -57,7 +57,7 @@ void ConnectSharedDatabaseTask::run() {
     resultDocument->setName(documentName);
 }
 
-GUrl ConnectSharedDatabaseTask::getUrlFromRef(const U2DbiRef &dbiRef) {
+GUrl ConnectSharedDatabaseTask::getUrlFromRef(const U2DbiRef& dbiRef) {
     return GUrl(dbiRef.dbiId, GUrl_Network);
 }
 

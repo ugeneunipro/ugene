@@ -34,7 +34,7 @@ namespace U2 {
 class U2VIEW_EXPORT SubstMatrixDialog : public QDialog, public Ui_SubstMatrixDialogBase {
     Q_OBJECT
 public:
-    SubstMatrixDialog(const SMatrix &m, QWidget *parent);
+    SubstMatrixDialog(const SMatrix& m, QWidget* parent);
 
 private slots:
     void sl_closeWindow();
@@ -53,7 +53,7 @@ private:
 
     SMatrix m;
 
-    QPushButton *bttnClose;
+    QPushButton* bttnClose;
 };
 
 }  // namespace U2

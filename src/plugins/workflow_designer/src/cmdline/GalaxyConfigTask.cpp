@@ -77,7 +77,7 @@ const QString GalaxyConfigTask::GALAXY_CONFIG_OPTION = "galaxy-config";
 const QString GalaxyConfigTask::UGENE_PATH_OPTION = "ugene-path";
 const QString GalaxyConfigTask::GALAXY_PATH_OPTION = "galaxy-path";
 
-GalaxyConfigTask::GalaxyConfigTask(const QString &_schemePath, const QString &_ugenePath, const QString &_galaxyPath, const QString &_destinationPath)
+GalaxyConfigTask::GalaxyConfigTask(const QString& _schemePath, const QString& _ugenePath, const QString& _galaxyPath, const QString& _destinationPath)
     : Task(tr("Create Galaxy config from existing workflow"), TaskFlag_None), schemePath(_schemePath), ugenePath(_ugenePath),
       galaxyPath(_galaxyPath), destinationPath(_destinationPath) {
 }
@@ -85,7 +85,7 @@ GalaxyConfigTask::GalaxyConfigTask(const QString &_schemePath, const QString &_u
 GalaxyConfigTask::~GalaxyConfigTask() {
 }
 
-void tryToAppendSlash(QString &path) {
+void tryToAppendSlash(QString& path) {
     if (!path.endsWith("/") && !path.endsWith("\\") && path.length() > 0) {
         path.append("/");
     }
@@ -148,7 +148,7 @@ void GalaxyConfigTask::run() {
     }
 }
 
-void GalaxyConfigTask::tryToFindInPath(const QString &objectName, QString &objectPath) {
+void GalaxyConfigTask::tryToFindInPath(const QString& objectName, QString& objectPath) {
     QString envVariable = qgetenv("GALAXY_DIR");
     if (envVariable.isEmpty()) {
         coreLog.info(QString("Environment variable GALAXY_DIR is not found"));
@@ -174,7 +174,7 @@ void GalaxyConfigTask::tryToFindInPath(const QString &objectName, QString &objec
     tryToAppendSlash(objectPath);
 }
 
-void GalaxyConfigTask::tryToFindByLocate(const QString &objectName, QString &objectPath) {
+void GalaxyConfigTask::tryToFindByLocate(const QString& objectName, QString& objectPath) {
     if (!objectPath.isEmpty()) {
         return;
     }
@@ -204,7 +204,7 @@ void GalaxyConfigTask::tryToFindByLocate(const QString &objectName, QString &obj
     tryToAppendSlash(objectPath);
 }
 
-bool GalaxyConfigTask::fileExists(const QString &objectPath, const QString &suffix) {
+bool GalaxyConfigTask::fileExists(const QString& objectPath, const QString& suffix) {
     if (!objectPath.isEmpty()) {
         const QString fullPath = objectPath + suffix;
         if (QFile::exists(fullPath)) {
@@ -215,7 +215,7 @@ bool GalaxyConfigTask::fileExists(const QString &objectPath, const QString &suff
     return false;
 }
 
-bool GalaxyConfigTask::findPathToObject(const QString &objectName, QString &objectPath) {
+bool GalaxyConfigTask::findPathToObject(const QString& objectName, QString& objectPath) {
     const QString suffix = "tool_conf.xml";
     tryToFindInPath(objectName, objectPath);
 
@@ -258,7 +258,7 @@ bool GalaxyConfigTask::getSchemeContent() {
     return true;
 }
 
-void GalaxyConfigTask::setError(const QString &keyword) {
+void GalaxyConfigTask::setError(const QString& keyword) {
     stateInfo.setError(QString("Workflow file is corrupted. It does not contain %1 keyword").arg(keyword));
 }
 
@@ -299,7 +299,7 @@ bool GalaxyConfigTask::getWorkflowName() {
     return true;
 }
 
-bool GalaxyConfigTask::getParameterValue(const QString &keyword, const int searchFrom, QString &parameterValue, int &nextSearchFrom) {
+bool GalaxyConfigTask::getParameterValue(const QString& keyword, const int searchFrom, QString& parameterValue, int& nextSearchFrom) {
     const int keywordPosition = schemeContent.indexOf(keyword, searchFrom);
     const int blockEndPosition = schemeContent.indexOf(Constants::BLOCK_END, searchFrom);
     if (keyword == Constants::DESCRIPTION && (keywordPosition == -1 || blockEndPosition < keywordPosition)) {
@@ -380,14 +380,14 @@ void GalaxyConfigTask::writeToolUnit() {
     galaxyConfigOutput.writeAttribute(NAME, toolName);
 }
 
-ActorPrototype *GalaxyConfigTask::getElementFromActorPrototypeRegistry(const QString &elementName) {
-    U2::Workflow::ActorPrototypeRegistry *prototypeRegistry =
+ActorPrototype* GalaxyConfigTask::getElementFromActorPrototypeRegistry(const QString& elementName) {
+    U2::Workflow::ActorPrototypeRegistry* prototypeRegistry =
         U2::Workflow::WorkflowEnv::getProtoRegistry();
     assert(nullptr != prototypeRegistry);
     return prototypeRegistry->getProto(elementName);
 }
 
-void GalaxyConfigTask::fillPositionsList(const QString &elementAttribute, const int elementPosition) {
+void GalaxyConfigTask::fillPositionsList(const QString& elementAttribute, const int elementPosition) {
     if (BaseAttributes::URL_IN_ATTRIBUTE().getId() == elementAttribute) {
         inputElementsPositions.push_back(elementPosition);
     } else if (BaseAttributes::URL_OUT_ATTRIBUTE().getId() == elementAttribute) {
@@ -405,16 +405,16 @@ bool GalaxyConfigTask::divideElementsByType() {
         const QString elementName = elementProperties.key();
         const QString attributeName = elementProperties.value().at(0);
 
-        ActorPrototype *currElement = getElementFromActorPrototypeRegistry(elementName);
+        ActorPrototype* currElement = getElementFromActorPrototypeRegistry(elementName);
         assert(nullptr != currElement);
 
-        const QList<Attribute *> elementAttributes = currElement->getAttributes();
+        const QList<Attribute*> elementAttributes = currElement->getAttributes();
         if (elementAttributes.isEmpty()) {
             stateInfo.setError(QString("Config generation error: can not get attributes from \"%1\" element").arg(currElement->getId()));
             return false;
         }
 
-        foreach (Attribute *elementAttribute, elementAttributes) {
+        foreach (Attribute* elementAttribute, elementAttributes) {
             if (elementAttribute->getId() == attributeName) {
                 fillPositionsList(attributeName, std::distance(elemAliases.begin(), elemAliasesIterator));
             }
@@ -424,7 +424,7 @@ bool GalaxyConfigTask::divideElementsByType() {
     return true;
 }
 
-void GalaxyConfigTask::writeRunUgeneCommand(const QString &ugeneExecutable) {
+void GalaxyConfigTask::writeRunUgeneCommand(const QString& ugeneExecutable) {
     if (ugenePath.isEmpty()) {
         ugenePath = appDirPath;
     }
@@ -471,15 +471,15 @@ bool GalaxyConfigTask::writeCommandUnit() {
     return true;
 }
 
-void GalaxyConfigTask::getConstraint(const QString &typeName, QString &resultType) {
+void GalaxyConfigTask::getConstraint(const QString& typeName, QString& resultType) {
     resultType = portGObjectTypeMap[typeName];
     if (resultType.isEmpty()) {
         resultType = portGObjectTypeMap["unknown"];
     }
 }
 
-bool GalaxyConfigTask::getResultType(const ActorPrototype &currElement, QString &resultType) {
-    PortDescriptor *port = currElement.getPortDesciptors().first();
+bool GalaxyConfigTask::getResultType(const ActorPrototype& currElement, QString& resultType) {
+    PortDescriptor* port = currElement.getPortDesciptors().first();
     assert(nullptr != port);
 
     const QString formatType = port->getId();
@@ -491,8 +491,8 @@ bool GalaxyConfigTask::getResultType(const ActorPrototype &currElement, QString 
     return true;
 }
 
-void GalaxyConfigTask::writeFormatAttribute(const QString &resultType) {
-    DocumentFormatRegistry *docFormatRegistry = AppContext::getDocumentFormatRegistry();
+void GalaxyConfigTask::writeFormatAttribute(const QString& resultType) {
+    DocumentFormatRegistry* docFormatRegistry = AppContext::getDocumentFormatRegistry();
     assert(nullptr != docFormatRegistry);
 
     DocumentFormatConstraints constraint;
@@ -512,7 +512,7 @@ void GalaxyConfigTask::writeFormatAttribute(const QString &resultType) {
     galaxyConfigOutput.writeAttribute(FORMAT, resultFormatString);
 }
 
-void GalaxyConfigTask::writeLabelAttribute(const QStringList &elementParameters, const ActorPrototype &element) {
+void GalaxyConfigTask::writeLabelAttribute(const QStringList& elementParameters, const ActorPrototype& element) {
     const QString attributeName = elementParameters.at(0);
     QString aliasDescription = elementParameters.at(2);
     QString copyStr = aliasDescription;
@@ -545,7 +545,7 @@ bool GalaxyConfigTask::writeInputElements() {
         galaxyConfigOutput.writeAttribute(Constants::NAME_ATTR, aliasName);
         galaxyConfigOutput.writeAttribute(Constants::TYPE_ATTR, DATA);
 
-        ActorPrototype *currElement = getElementFromActorPrototypeRegistry(elementName);
+        ActorPrototype* currElement = getElementFromActorPrototypeRegistry(elementName);
         assert(nullptr != currElement);
 
         QString resultType = QString();
@@ -559,43 +559,43 @@ bool GalaxyConfigTask::writeInputElements() {
     return true;
 }
 
-bool GalaxyConfigTask::isDelegateComboBox(PropertyDelegate *pd) {
-    ComboBoxDelegate *cbd = dynamic_cast<ComboBoxDelegate *>(pd);
+bool GalaxyConfigTask::isDelegateComboBox(PropertyDelegate* pd) {
+    ComboBoxDelegate* cbd = dynamic_cast<ComboBoxDelegate*>(pd);
     if (cbd != nullptr) {
         return true;
     }
     return false;
 }
 
-bool GalaxyConfigTask::isDelegateComboBoxWithChecks(PropertyDelegate *pd) {
-    ComboBoxWithChecksDelegate *cbwcd = dynamic_cast<ComboBoxWithChecksDelegate *>(pd);
+bool GalaxyConfigTask::isDelegateComboBoxWithChecks(PropertyDelegate* pd) {
+    ComboBoxWithChecksDelegate* cbwcd = dynamic_cast<ComboBoxWithChecksDelegate*>(pd);
     if (cbwcd != nullptr) {
         return true;
     }
     return false;
 }
 
-bool GalaxyConfigTask::isDelegateSpinBox(PropertyDelegate *pd) {
-    SpinBoxDelegate *sbd = dynamic_cast<SpinBoxDelegate *>(pd);
+bool GalaxyConfigTask::isDelegateSpinBox(PropertyDelegate* pd) {
+    SpinBoxDelegate* sbd = dynamic_cast<SpinBoxDelegate*>(pd);
     if (sbd != nullptr) {
         return true;
     }
-    DoubleSpinBoxDelegate *dsbd = dynamic_cast<DoubleSpinBoxDelegate *>(pd);
+    DoubleSpinBoxDelegate* dsbd = dynamic_cast<DoubleSpinBoxDelegate*>(pd);
     if (dsbd != nullptr) {
         return true;
     }
     return false;
 }
 
-bool GalaxyConfigTask::isDelegateStringList(PropertyDelegate *pd) {
-    StringListDelegate *sld = dynamic_cast<StringListDelegate *>(pd);
+bool GalaxyConfigTask::isDelegateStringList(PropertyDelegate* pd) {
+    StringListDelegate* sld = dynamic_cast<StringListDelegate*>(pd);
     if (sld != nullptr) {
         return true;
     }
     return false;
 }
 
-bool GalaxyConfigTask::tryToWriteSimpleType(const PropertyDelegate *pd, QString &attributeType) {
+bool GalaxyConfigTask::tryToWriteSimpleType(const PropertyDelegate* pd, QString& attributeType) {
     if (pd != nullptr) {
         return false;
     }
@@ -612,7 +612,7 @@ bool GalaxyConfigTask::tryToWriteSimpleType(const PropertyDelegate *pd, QString 
     return true;
 }
 
-void GalaxyConfigTask::writeSelectAttribute(const PropertyDelegate &pd) {
+void GalaxyConfigTask::writeSelectAttribute(const PropertyDelegate& pd) {
     QVariantMap items;
     pd.getItems(items);
     QVariantMap ::iterator itemsIterator;
@@ -629,7 +629,7 @@ void GalaxyConfigTask::writeSelectAttribute(const PropertyDelegate &pd) {
     }
 }
 
-void GalaxyConfigTask::writeDrillDownAttribute(const PropertyDelegate &pd) {
+void GalaxyConfigTask::writeDrillDownAttribute(const PropertyDelegate& pd) {
     QVariantMap items;
     pd.getItems(items);
     galaxyConfigOutput.writeStartElement(OPTIONS);
@@ -645,7 +645,7 @@ void GalaxyConfigTask::writeDrillDownAttribute(const PropertyDelegate &pd) {
     galaxyConfigOutput.writeEndElement();
 }
 
-void GalaxyConfigTask::writeMinAndMaxAttributes(const PropertyDelegate &pd) {
+void GalaxyConfigTask::writeMinAndMaxAttributes(const PropertyDelegate& pd) {
     QVariantMap items;
     pd.getItems(items);
     QString minValue = items.value("minimum").toString();
@@ -654,7 +654,7 @@ void GalaxyConfigTask::writeMinAndMaxAttributes(const PropertyDelegate &pd) {
     galaxyConfigOutput.writeAttribute(MAX, maxValue);
 }
 
-bool GalaxyConfigTask::tryToWriteComplexType(PropertyDelegate *pd, const QString & /*attributeName*/) {
+bool GalaxyConfigTask::tryToWriteComplexType(PropertyDelegate* pd, const QString& /*attributeName*/) {
     QString attributeType = QString();
     assert(pd != nullptr);
     if (isDelegateComboBox(pd)) {
@@ -690,13 +690,13 @@ bool GalaxyConfigTask::tryToWriteComplexType(PropertyDelegate *pd, const QString
 
 // FIXME
 // look at tryToWriteSimpleType and tryToWriteComplexType functions
-bool GalaxyConfigTask::writeTypeForOptionElement(const QStringList &elementParameters, const ActorPrototype &element) {
+bool GalaxyConfigTask::writeTypeForOptionElement(const QStringList& elementParameters, const ActorPrototype& element) {
     const QString attributeName = elementParameters.at(0);
-    Attribute *elementAttribute = element.getAttribute(attributeName);
+    Attribute* elementAttribute = element.getAttribute(attributeName);
     assert(elementAttribute != nullptr);
 
-    ConfigurationEditor *editor = element.getEditor();
-    PropertyDelegate *pd = nullptr;
+    ConfigurationEditor* editor = element.getEditor();
+    PropertyDelegate* pd = nullptr;
     if (editor != nullptr) {
         pd = editor->getDelegate(attributeName);
     }
@@ -726,7 +726,7 @@ bool GalaxyConfigTask::writeOptionElements() {
                       aliasName = (currAliasIterator).value().at(1);
         galaxyConfigOutput.writeAttribute(Constants::NAME_ATTR, aliasName);
 
-        ActorPrototype *currElement = getElementFromActorPrototypeRegistry(elementName);
+        ActorPrototype* currElement = getElementFromActorPrototypeRegistry(elementName);
         assert(nullptr != currElement);
 
         writeLabelAttribute((currAliasIterator).value(), *currElement);
@@ -746,8 +746,8 @@ bool GalaxyConfigTask::writeInputsUnit() {
     return true;
 }
 
-void GalaxyConfigTask::writeFormatAttributeForOutputElement(const QString &resultType) {
-    DocumentFormatRegistry *docFormatRegistry = AppContext::getDocumentFormatRegistry();
+void GalaxyConfigTask::writeFormatAttributeForOutputElement(const QString& resultType) {
+    DocumentFormatRegistry* docFormatRegistry = AppContext::getDocumentFormatRegistry();
     assert(nullptr != docFormatRegistry);
 
     DocumentFormatConstraints constraint;
@@ -757,9 +757,9 @@ void GalaxyConfigTask::writeFormatAttributeForOutputElement(const QString &resul
     galaxyConfigOutput.writeAttribute(FORMAT, selectedFormats.first());
 }
 
-bool GalaxyConfigTask::checkDocumentFormatAttribute(const ActorPrototype &element) {
-    const QList<Attribute *> elementAttibutes = element.getAttributes();
-    foreach (Attribute *elementAttribute, elementAttibutes) {
+bool GalaxyConfigTask::checkDocumentFormatAttribute(const ActorPrototype& element) {
+    const QList<Attribute*> elementAttibutes = element.getAttributes();
+    foreach (Attribute* elementAttribute, elementAttibutes) {
         if (elementAttribute->getId() == BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId()) {
             return true;
         }
@@ -767,11 +767,11 @@ bool GalaxyConfigTask::checkDocumentFormatAttribute(const ActorPrototype &elemen
     return false;
 }
 
-void GalaxyConfigTask::writeChangeFormatAttribute(const QString &aliasName, const ActorPrototype &element) {
+void GalaxyConfigTask::writeChangeFormatAttribute(const QString& aliasName, const ActorPrototype& element) {
     galaxyConfigOutput.writeStartElement(CHANGE_FORMAT);
 
     CHECK(nullptr != element.getEditor(), );
-    PropertyDelegate *pd = element.getEditor()->getDelegate(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
+    PropertyDelegate* pd = element.getEditor()->getDelegate(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
     assert(nullptr != pd);
 
     QVariantMap items;
@@ -789,7 +789,7 @@ void GalaxyConfigTask::writeChangeFormatAttribute(const QString &aliasName, cons
     galaxyConfigOutput.writeEndElement();
 }
 
-void GalaxyConfigTask::tryToWriteChangeFormatAttribute(const ActorPrototype &element, QList<int> &usedOptionElements) {
+void GalaxyConfigTask::tryToWriteChangeFormatAttribute(const ActorPrototype& element, QList<int>& usedOptionElements) {
     if (!checkDocumentFormatAttribute(element)) {
         return;
     }
@@ -826,7 +826,7 @@ bool GalaxyConfigTask::writeOutputsUnit() {
         const QString elementName = (currAliasIterator).key(),
                       aliasName = (currAliasIterator).value().at(1);
 
-        ActorPrototype *currElement = getElementFromActorPrototypeRegistry(elementName);
+        ActorPrototype* currElement = getElementFromActorPrototypeRegistry(elementName);
         assert(nullptr != currElement);
 
         QString resultType = QString();
@@ -908,7 +908,7 @@ bool GalaxyConfigTask::tryToCopySchemeConfigFile() {
     return true;
 }
 
-bool GalaxyConfigTask::rewriteFile(const QString &sourceFileName, const QString &targetFileName) {
+bool GalaxyConfigTask::rewriteFile(const QString& sourceFileName, const QString& targetFileName) {
     if (QFile::exists(targetFileName)) {
         if (!QFile::remove(targetFileName)) {
             stateInfo.setError(QString("Can not remove %1").arg(targetFileName));
@@ -922,7 +922,7 @@ bool GalaxyConfigTask::rewriteFile(const QString &sourceFileName, const QString 
     return true;
 }
 
-bool GalaxyConfigTask::doCopyCommands(const QString &pathToCopy) {
+bool GalaxyConfigTask::doCopyCommands(const QString& pathToCopy) {
     CHECK(rewriteFile(schemeConfigPath, pathToCopy + schemeConfigName), false);
     CHECK(rewriteFile(schemePath, pathToCopy + schemeName), false);
     return true;
@@ -974,7 +974,7 @@ bool GalaxyConfigTask::makeCopyOfGalaxyToolConfig() {
     return true;
 }
 
-void GalaxyConfigTask::writeNewSection(const QString &config) {
+void GalaxyConfigTask::writeNewSection(const QString& config) {
     const int toolboxPosition = config.indexOf("<toolbox>");
     const int beginLength = toolboxPosition + QString("<toolbox>").length();
     const QString begin = config.mid(0, beginLength);

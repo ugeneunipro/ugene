@@ -36,22 +36,22 @@
 
 namespace U2 {
 
-void McaDbiUtils::updateMca(U2OpStatus &os, const U2EntityRef &mcaRef, const MultipleChromatogramAlignment &mca) {
+void McaDbiUtils::updateMca(U2OpStatus& os, const U2EntityRef& mcaRef, const MultipleChromatogramAlignment& mca) {
     // Move to the MCAImporter
     // TODO: check, if a transaction or an operation block should be started
     DbiConnection connection(mcaRef.dbiRef, os);
     CHECK_OP(os, );
 
-    U2AttributeDbi *attributeDbi = connection.dbi->getAttributeDbi();
+    U2AttributeDbi* attributeDbi = connection.dbi->getAttributeDbi();
     SAFE_POINT_EXT(nullptr != attributeDbi, os.setError("NULL Attribute Dbi"), );
 
-    U2MsaDbi *msaDbi = connection.dbi->getMsaDbi();
+    U2MsaDbi* msaDbi = connection.dbi->getMsaDbi();
     SAFE_POINT_EXT(nullptr != msaDbi, os.setError("NULL Msa Dbi"), );
 
-    U2SequenceDbi *sequenceDbi = connection.dbi->getSequenceDbi();
+    U2SequenceDbi* sequenceDbi = connection.dbi->getSequenceDbi();
     SAFE_POINT_EXT(nullptr != sequenceDbi, os.setError("NULL Sequence Dbi"), );
 
-    const DNAAlphabet *alphabet = mca->getAlphabet();
+    const DNAAlphabet* alphabet = mca->getAlphabet();
     SAFE_POINT_EXT(nullptr != alphabet, os.setError("The alignment alphabet is NULL"), );
 
     //// UPDATE MCA
@@ -81,7 +81,7 @@ void McaDbiUtils::updateMca(U2OpStatus &os, const U2EntityRef &mcaRef, const Mul
     // TODO: get the mca folder and create child objects there
     const QString dbFolder = U2ObjectDbi::ROOT_FOLDER;
 
-    foreach (const U2McaRow &currentRow, currentRows) {
+    foreach (const U2McaRow& currentRow, currentRows) {
         currentRowIds << currentRow.rowId;
 
         // Update data for rows with the same row and child objects IDs
@@ -156,7 +156,7 @@ void McaDbiUtils::updateMca(U2OpStatus &os, const U2EntityRef &mcaRef, const Mul
     //// UPDATE ALIGNMENT ATTRIBUTES
     QVariantMap info = mca->getInfo();
 
-    foreach (const QString &key, info.keys()) {
+    foreach (const QString& key, info.keys()) {
         QString value = info.value(key).toString();
         U2StringAttribute attribute(mcaRef.entityId, key, value);
 
@@ -165,39 +165,39 @@ void McaDbiUtils::updateMca(U2OpStatus &os, const U2EntityRef &mcaRef, const Mul
     }
 }
 
-void McaDbiUtils::addRow(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 posInMca, U2McaRow &row) {
+void McaDbiUtils::addRow(U2OpStatus& os, const U2EntityRef& mcaRef, qint64 posInMca, U2McaRow& row) {
     SAFE_POINT_EXT(row.hasValidChildObjectIds(), os.setError("Invalid child objects references"), );
 
     DbiConnection connection(mcaRef.dbiRef, os);
     CHECK_OP(os, );
 
-    U2MsaDbi *msaDbi = connection.dbi->getMsaDbi();
+    U2MsaDbi* msaDbi = connection.dbi->getMsaDbi();
     SAFE_POINT_EXT(nullptr != msaDbi, os.setError("NULL Msa dbi"), );
 
     msaDbi->addRow(mcaRef.entityId, posInMca, row, os);
     CHECK_OP(os, );
 }
 
-void McaDbiUtils::addRows(U2OpStatus &os, const U2EntityRef &mcaRef, QList<U2McaRow> &rows) {
+void McaDbiUtils::addRows(U2OpStatus& os, const U2EntityRef& mcaRef, QList<U2McaRow>& rows) {
     for (int i = 0; i < rows.size(); i++) {
         addRow(os, mcaRef, -1, rows[i]);
         CHECK_OP(os, );
     }
 }
 
-QList<U2McaRow> McaDbiUtils::getMcaRows(U2OpStatus &os, const U2EntityRef &mcaRef) {
+QList<U2McaRow> McaDbiUtils::getMcaRows(U2OpStatus& os, const U2EntityRef& mcaRef) {
     QList<U2McaRow> mcaRows;
 
     DbiConnection connection(mcaRef.dbiRef, os);
     CHECK_OP(os, mcaRows);
 
-    U2MsaDbi *msaDbi = connection.dbi->getMsaDbi();
+    U2MsaDbi* msaDbi = connection.dbi->getMsaDbi();
     SAFE_POINT_EXT(nullptr != msaDbi, os.setError("MSA dbi is NULL"), mcaRows);
 
     const QList<U2MsaRow> msaRows = msaDbi->getRows(mcaRef.entityId, os);
     CHECK_OP(os, mcaRows);
 
-    foreach (const U2MsaRow &msaRow, msaRows) {
+    foreach (const U2MsaRow& msaRow, msaRows) {
         U2McaRow mcaRow(msaRow);
         mcaRow.chromatogramId = ChromatogramUtils::getChromatogramIdByRelatedSequenceId(os, U2EntityRef(mcaRef.dbiRef, msaRow.sequenceId)).entityId;
         CHECK_OP(os, mcaRows);
@@ -207,11 +207,11 @@ QList<U2McaRow> McaDbiUtils::getMcaRows(U2OpStatus &os, const U2EntityRef &mcaRe
     return mcaRows;
 }
 
-U2McaRow McaDbiUtils::getMcaRow(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId) {
+U2McaRow McaDbiUtils::getMcaRow(U2OpStatus& os, const U2EntityRef& mcaRef, qint64 rowId) {
     DbiConnection connection(mcaRef.dbiRef, os);
     CHECK_OP(os, U2McaRow());
 
-    U2MsaDbi *msaDbi = connection.dbi->getMsaDbi();
+    U2MsaDbi* msaDbi = connection.dbi->getMsaDbi();
     SAFE_POINT_EXT(nullptr != msaDbi, os.setError("MSA dbi is NULL"), U2McaRow());
 
     const U2MsaRow msaRow = msaDbi->getRow(mcaRef.entityId, rowId, os);
@@ -224,12 +224,12 @@ U2McaRow McaDbiUtils::getMcaRow(U2OpStatus &os, const U2EntityRef &mcaRef, qint6
     return mcaRow;
 }
 
-void McaDbiUtils::removeRow(const U2EntityRef &mcaRef, qint64 rowId, U2OpStatus &os) {
+void McaDbiUtils::removeRow(const U2EntityRef& mcaRef, qint64 rowId, U2OpStatus& os) {
     // Prepare the connection
     DbiConnection con(mcaRef.dbiRef, os);
     CHECK_OP(os, );
 
-    U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
+    U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
     SAFE_POINT(nullptr != msaDbi, "NULL Msa Dbi!", );
 
     // Remove the row
@@ -237,7 +237,7 @@ void McaDbiUtils::removeRow(const U2EntityRef &mcaRef, qint64 rowId, U2OpStatus 
     // SANGER_TODO: remove chromatogram as well
 }
 
-void McaDbiUtils::removeCharacters(const U2EntityRef &mcaRef, const QList<qint64> &rowIds, qint64 pos, qint64 count, U2OpStatus &os) {
+void McaDbiUtils::removeCharacters(const U2EntityRef& mcaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os) {
     // Check parameters
     CHECK_EXT(pos >= 0, os.setError(QString("Negative MSA pos: %1").arg(pos)), );
     SAFE_POINT(count > 0, QString("Wrong MCA base count: %1").arg(count), );
@@ -245,8 +245,8 @@ void McaDbiUtils::removeCharacters(const U2EntityRef &mcaRef, const QList<qint64
     // Prepare the connection
     QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(mcaRef.dbiRef, os));
     SAFE_POINT_OP(os, );
-    U2MsaDbi *msaDbi = con->dbi->getMsaDbi();
-    U2SequenceDbi *sequenceDbi = con->dbi->getSequenceDbi();
+    U2MsaDbi* msaDbi = con->dbi->getMsaDbi();
+    U2SequenceDbi* sequenceDbi = con->dbi->getSequenceDbi();
 
     MaDbiUtils::validateRowIds(msaDbi, mcaRef.entityId, rowIds, os);
     CHECK_OP(os, );
@@ -278,14 +278,14 @@ void McaDbiUtils::removeCharacters(const U2EntityRef &mcaRef, const QList<qint64
     }
 }
 
-void McaDbiUtils::replaceCharactersInRow(const U2EntityRef &mcaRef, qint64 rowId, const U2Region &range, char newChar, U2OpStatus &os) {
+void McaDbiUtils::replaceCharactersInRow(const U2EntityRef& mcaRef, qint64 rowId, const U2Region& range, char newChar, U2OpStatus& os) {
     SAFE_POINT_EXT(newChar != U2Msa::GAP_CHAR, os.setError("Can't use GAP for replacement!"), );
 
     // Prepare the connection
     QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(mcaRef.dbiRef, os));
     CHECK_OP(os, );
-    U2MsaDbi *msaDbi = con->dbi->getMsaDbi();
-    U2SequenceDbi *sequenceDbi = con->dbi->getSequenceDbi();
+    U2MsaDbi* msaDbi = con->dbi->getMsaDbi();
+    U2SequenceDbi* sequenceDbi = con->dbi->getSequenceDbi();
 
     MaDbiUtils::validateRowIds(msaDbi, mcaRef.entityId, QList<qint64>() << rowId, os);
     CHECK_OP(os, );
@@ -323,12 +323,12 @@ void McaDbiUtils::replaceCharactersInRow(const U2EntityRef &mcaRef, qint64 rowId
     msaDbi->updateRowContent(mcaRef.entityId, rowId, sequence, row.gaps, os);
 }
 
-void U2::McaDbiUtils::replaceCharactersInRow(const U2EntityRef &mcaRef, qint64 rowId, QHash<qint64, char> newCharList, U2OpStatus &os) {
+void U2::McaDbiUtils::replaceCharactersInRow(const U2EntityRef& mcaRef, qint64 rowId, QHash<qint64, char> newCharList, U2OpStatus& os) {
     QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(mcaRef.dbiRef, os));
     CHECK_OP(os, );
 
-    U2MsaDbi *msaDbi = con->dbi->getMsaDbi();
-    U2SequenceDbi *sequenceDbi = con->dbi->getSequenceDbi();
+    U2MsaDbi* msaDbi = con->dbi->getMsaDbi();
+    U2SequenceDbi* sequenceDbi = con->dbi->getSequenceDbi();
     MaDbiUtils::validateRowIds(msaDbi, mcaRef.entityId, QList<qint64>() << rowId, os);
     CHECK_OP(os, );
 
@@ -373,7 +373,7 @@ void U2::McaDbiUtils::replaceCharactersInRow(const U2EntityRef &mcaRef, qint64 r
     msaDbi->updateRowContent(mcaRef.entityId, rowId, seq, row.gaps, os);
 }
 
-void McaDbiUtils::removeRegion(const U2EntityRef &entityRef, const qint64 rowId, qint64 pos, qint64 count, U2OpStatus &os) {
+void McaDbiUtils::removeRegion(const U2EntityRef& entityRef, const qint64 rowId, qint64 pos, qint64 count, U2OpStatus& os) {
     // Check parameters
     CHECK_EXT(pos >= 0, os.setError(QString("Negative MCA pos: %1").arg(pos)), );
     CHECK_EXT(count > 0, os.setError(QString("Wrong MCA base count: %1").arg(count)), );
@@ -381,8 +381,8 @@ void McaDbiUtils::removeRegion(const U2EntityRef &entityRef, const qint64 rowId,
     // Prepare the connection
     QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(entityRef.dbiRef, os));
     SAFE_POINT_OP(os, );
-    U2MsaDbi *msaDbi = con->dbi->getMsaDbi();
-    U2SequenceDbi *sequenceDbi = con->dbi->getSequenceDbi();
+    U2MsaDbi* msaDbi = con->dbi->getMsaDbi();
+    U2SequenceDbi* sequenceDbi = con->dbi->getSequenceDbi();
 
     // Remove region for the row from
     U2McaRow row = McaDbiUtils::getMcaRow(os, entityRef, rowId);

@@ -39,7 +39,7 @@ namespace U2 {
 
 const QString CuffdiffSupportTask::outSubDirBaseName("cuffdiff_out");
 
-CuffdiffSupportTask::CuffdiffSupportTask(const CuffdiffSettings &_settings)
+CuffdiffSupportTask::CuffdiffSupportTask(const CuffdiffSettings& _settings)
     : ExternalToolSupportTask(tr("Running Cuffdiff task"), TaskFlags_NR_FOSE_COSC),
       settings(_settings),
       diffTask(nullptr) {
@@ -47,35 +47,35 @@ CuffdiffSupportTask::CuffdiffSupportTask(const CuffdiffSettings &_settings)
 }
 
 namespace {
-QStringList prepareAssemblyUrlsArgs(bool groupBySamples, const QMap<QString, QStringList> &assemblyUrls) {
+QStringList prepareAssemblyUrlsArgs(bool groupBySamples, const QMap<QString, QStringList>& assemblyUrls) {
     QStringList result;
 
     if (groupBySamples) {
         result << "-L";
         result << QStringList(assemblyUrls.keys()).join(",");
-        foreach (const QStringList &urls, assemblyUrls.values()) {
+        foreach (const QStringList& urls, assemblyUrls.values()) {
             result << urls.join(",");
         }
     } else {
-        foreach (const QStringList &urls, assemblyUrls.values()) {
+        foreach (const QStringList& urls, assemblyUrls.values()) {
             result << urls;
         }
     }
     return result;
 }
 
-int getSamplesCount(bool groupBySamples, const QMap<QString, QStringList> &assemblyUrls) {
+int getSamplesCount(bool groupBySamples, const QMap<QString, QStringList>& assemblyUrls) {
     if (groupBySamples) {
         return assemblyUrls.size();
     } else {
         QStringList allUrls;
-        foreach (const QStringList &urls, assemblyUrls.values()) {
+        foreach (const QStringList& urls, assemblyUrls.values()) {
             allUrls << urls;
         }
         return allUrls.size();
     }
 }
-}    // namespace
+}  // namespace
 
 void CuffdiffSupportTask::prepare() {
     int samplesCount = getSamplesCount(settings.groupBySamples, settings.assemblyUrls);
@@ -91,7 +91,7 @@ void CuffdiffSupportTask::prepare() {
         stateInfo);
     CHECK_OP(stateInfo, );
 
-    Task *t = createTranscriptTask();
+    Task* t = createTranscriptTask();
     CHECK_OP(stateInfo, );
     addSubTask(t);
 }
@@ -104,8 +104,8 @@ void CuffdiffSupportTask::setupWorkingDir() {
     }
 }
 
-QList<Task *> CuffdiffSupportTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> tasks;
+QList<Task*> CuffdiffSupportTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> tasks;
     if (saveTasks.contains(subTask)) {
         saveTasks.removeOne(subTask);
     }
@@ -124,16 +124,16 @@ Task::ReportResult CuffdiffSupportTask::report() {
     return ReportResult_Finished;
 }
 
-Task *CuffdiffSupportTask::createTranscriptTask() {
+Task* CuffdiffSupportTask::createTranscriptTask() {
     createTranscriptDoc();
     CHECK_OP(stateInfo, nullptr);
 
-    SaveDocumentTask *t = new SaveDocumentTask(transcriptDoc.data(), transcriptDoc->getIOAdapterFactory(), transcriptUrl);
+    SaveDocumentTask* t = new SaveDocumentTask(transcriptDoc.data(), transcriptDoc->getIOAdapterFactory(), transcriptUrl);
     saveTasks << t;
     return t;
 }
 
-Task *CuffdiffSupportTask::createCuffdiffTask() {
+Task* CuffdiffSupportTask::createCuffdiffTask() {
     // prepare arguments
     QStringList arguments;
 
@@ -189,7 +189,7 @@ Task *CuffdiffSupportTask::createCuffdiffTask() {
     return diffTask;
 }
 
-void CuffdiffSupportTask::addFile(const QString &fileName, bool openBySystem) {
+void CuffdiffSupportTask::addFile(const QString& fileName, bool openBySystem) {
     QString path = GUrl(settings.outDir + "/" + fileName).getURLString();
     ExternalToolSupportUtils::appendExistingFile(path, outputFiles);
     if (openBySystem && outputFiles.contains(path)) {
@@ -236,10 +236,10 @@ void CuffdiffSupportTask::addOutFiles() {
 }
 
 void CuffdiffSupportTask::createTranscriptDoc() {
-    DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::GTF);
+    DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::GTF);
     SAFE_POINT_EXT(nullptr != format, setError(L10N::nullPointerError("GTF format")), );
 
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     SAFE_POINT_EXT(nullptr != iof, setError(L10N::nullPointerError("I/O adapter factory")), );
 
     transcriptUrl = workingDir + "/transcripts.gtf";
@@ -247,8 +247,8 @@ void CuffdiffSupportTask::createTranscriptDoc() {
     CHECK_OP(stateInfo, );
     transcriptDoc->setDocumentOwnsDbiResources(false);
 
-    QList<AnnotationTableObject *> annTables = Workflow::StorageUtils::getAnnotationTableObjects(settings.storage, settings.transcript);
-    foreach (AnnotationTableObject *annTable, annTables) {
+    QList<AnnotationTableObject*> annTables = Workflow::StorageUtils::getAnnotationTableObjects(settings.storage, settings.transcript);
+    foreach (AnnotationTableObject* annTable, annTables) {
         transcriptDoc->addObject(annTable);
     }
 }
@@ -265,7 +265,7 @@ CuffdiffSupportTask::LogParser::LogParser()
     : ExternalToolLogParser() {
 }
 
-void CuffdiffSupportTask::LogParser::parseErrOutput(const QString &partOfLog) {
+void CuffdiffSupportTask::LogParser::parseErrOutput(const QString& partOfLog) {
     ExternalToolLogParser::parseErrOutput(partOfLog);
     QString error = this->getLastError();
     if (!error.isEmpty()) {
@@ -299,4 +299,4 @@ void CuffdiffSettings::cleanup() {
     transcript.clear();
 }
 
-}    // namespace U2
+}  // namespace U2

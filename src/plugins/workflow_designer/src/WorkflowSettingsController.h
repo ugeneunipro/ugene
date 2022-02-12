@@ -22,9 +22,9 @@
 #ifndef _U2_W_SETTINGS_GUI_CONTROLLER_H_
 #define _U2_W_SETTINGS_GUI_CONTROLLER_H_
 
-#include <ui_WorkflowSettingsWidget.h>
-
 #include <U2Gui/AppSettingsGUI.h>
+
+#include <ui_WorkflowSettingsWidget.h>
 
 namespace U2 {
 
@@ -33,15 +33,15 @@ namespace U2 {
 class WorkflowSettingsPageController : public AppSettingsGUIPageController {
     Q_OBJECT
 public:
-    WorkflowSettingsPageController(QObject *p = nullptr);
+    WorkflowSettingsPageController(QObject* p = nullptr);
 
-    virtual AppSettingsGUIPageState *getSavedState();
+    virtual AppSettingsGUIPageState* getSavedState();
 
-    virtual void saveState(AppSettingsGUIPageState *s);
+    virtual void saveState(AppSettingsGUIPageState* s);
 
-    virtual AppSettingsGUIPageWidget *createWidget(AppSettingsGUIPageState *data);
+    virtual AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* data);
 
-    const QString &getHelpPageId() const {
+    const QString& getHelpPageId() const {
         return helpPageId;
     };
 
@@ -69,13 +69,13 @@ public:
 class WorkflowSettingsPageWidget : public AppSettingsGUIPageWidget, public Ui_WorkflowSettingsWidget {
     Q_OBJECT
 public:
-    WorkflowSettingsPageWidget(WorkflowSettingsPageController *ctrl);
+    WorkflowSettingsPageWidget(WorkflowSettingsPageController* ctrl);
 
-    virtual void setState(AppSettingsGUIPageState *state);
+    virtual void setState(AppSettingsGUIPageState* state);
 
-    virtual AppSettingsGUIPageState *getState(QString &err) const;
+    virtual AppSettingsGUIPageState* getState(QString& err) const;
 
-    virtual bool eventFilter(QObject *watched, QEvent *event);
+    virtual bool eventFilter(QObject* watched, QEvent* event);
 
 private slots:
     void sl_getDirectory();

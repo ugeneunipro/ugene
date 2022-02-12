@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-bool IOAdapterRegistryImpl::registerIOAdapter(IOAdapterFactory *io) {
+bool IOAdapterRegistryImpl::registerIOAdapter(IOAdapterFactory* io) {
     if (getIOAdapterFactoryById(io->getAdapterId()) != nullptr) {
         return false;
     }
@@ -37,13 +37,13 @@ bool IOAdapterRegistryImpl::registerIOAdapter(IOAdapterFactory *io) {
     return true;
 }
 
-bool IOAdapterRegistryImpl::unregisterIOAdapter(IOAdapterFactory *io) {
+bool IOAdapterRegistryImpl::unregisterIOAdapter(IOAdapterFactory* io) {
     int n = adapters.removeAll(io);
     return n > 0;
 }
 
-IOAdapterFactory *IOAdapterRegistryImpl::getIOAdapterFactoryById(IOAdapterId id) const {
-    foreach (IOAdapterFactory *io, adapters) {
+IOAdapterFactory* IOAdapterRegistryImpl::getIOAdapterFactoryById(IOAdapterId id) const {
+    foreach (IOAdapterFactory* io, adapters) {
         if (io->getAdapterId() == id) {
             return io;
         }

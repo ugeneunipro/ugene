@@ -48,16 +48,16 @@
 
 #include "StatisticalReportController.h"
 
-const static char *SETTINGS_NOT_FIRST_LAUNCH = "shtirlitz/not_first_launch";
-const static char *SETTINGS_PREVIOUS_REPORT_DATE = "shtirlitz/previous_report_date";
-const static char *SETTINGS_COUNTERS = "shtirlitz/counters";
-const static char *SETTINGS_UGENE_UID = "shtirlitz/uid";
+const static char* SETTINGS_NOT_FIRST_LAUNCH = "shtirlitz/not_first_launch";
+const static char* SETTINGS_PREVIOUS_REPORT_DATE = "shtirlitz/previous_report_date";
+const static char* SETTINGS_COUNTERS = "shtirlitz/counters";
+const static char* SETTINGS_UGENE_UID = "shtirlitz/uid";
 
 const static int DAYS_BETWEEN_REPORTS = 7;
 
 // This file stores the actual location of reports-receiver script.
-const static char *DESTINATION_URL_KEEPER_SRV = "http://ugene.net";
-const static char *DESTINATION_URL_KEEPER_PAGE = "/reports_dest.html";
+const static char* DESTINATION_URL_KEEPER_SRV = "http://ugene.net";
+const static char* DESTINATION_URL_KEEPER_PAGE = "/reports_dest.html";
 
 namespace U2 {
 
@@ -97,9 +97,9 @@ static QString getWhatsNewHtml() {
 
 // Report about system is sent on the first launch of UGENE.
 // Statistical reports are sent once per DAYS_BETWEEN_REPORTS.
-QList<Task *> Shtirlitz::wakeup() {
-    QList<Task *> result;
-    Settings *s = AppContext::getSettings();
+QList<Task*> Shtirlitz::wakeup() {
+    QList<Task*> result;
+    Settings* s = AppContext::getSettings();
     bool allVersionsFirstLaunch = true;
     bool minorVersionFirstLaunch = true;
     bool bSentSystemReport = false;
@@ -123,7 +123,7 @@ QList<Task *> Shtirlitz::wakeup() {
     // Check if this version of UGENE is launched for the first time
     // and user did not enabled stats before -> ask to enable
     // Do not ask to enable it twice for different versions!
-    UserAppsSettings *userAppSettings = AppContext::getAppSettings()->getUserAppsSettings();
+    UserAppsSettings* userAppSettings = AppContext::getAppSettings()->getUserAppsSettings();
     if (minorVersionFirstLaunch) {
         showWhatsNewDialog();
         if (!userAppSettings->isStatisticsCollectionEnabled()) {
@@ -154,7 +154,7 @@ QList<Task *> Shtirlitz::wakeup() {
     return result;
 }
 
-Task *Shtirlitz::sendCustomReport(const QString &customReport) {
+Task* Shtirlitz::sendCustomReport(const QString& customReport) {
     return new ShtirlitzTask(customReport);
 }
 
@@ -163,9 +163,9 @@ void Shtirlitz::saveGatheredInfo() {
         return;
     }
     // 1. Save counters
-    Settings *s = AppContext::getSettings();
-    QList<GCounter *> appCounters = GCounter::getAllCounters();
-    for (const GCounter *counter : qAsConst(appCounters)) {
+    Settings* s = AppContext::getSettings();
+    QList<GCounter*> appCounters = GCounter::getAllCounters();
+    for (const GCounter* counter : qAsConst(appCounters)) {
         if (counter->isReportable) {
             QString ctrKey = counter->name + SEPARATOR + counter->suffix;
             double ctrVal = counter->getScaledValue();
@@ -187,12 +187,12 @@ bool Shtirlitz::enabled() {
     return AppContext::getAppSettings()->getUserAppsSettings()->isStatisticsCollectionEnabled();
 }
 
-Task *Shtirlitz::sendCountersReport() {
+Task* Shtirlitz::sendCountersReport() {
     QString countersReport = formCountersReport();
     return sendCustomReport(countersReport);
 }
 
-Task *Shtirlitz::sendSystemReport() {
+Task* Shtirlitz::sendSystemReport() {
     QString systemReport = formSystemReport();
     return sendCustomReport(systemReport);
 }
@@ -200,7 +200,7 @@ Task *Shtirlitz::sendSystemReport() {
 // Tries to load saved counters from settings.
 // Adds loaded counters to report, sets saved values to zero
 QString Shtirlitz::formCountersReport() {
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     QString countersReport;
     countersReport += "COUNTERS REPORT:\n";
     countersReport += "ID: " + getUniqueUgeneId().toString() + "\n";
@@ -253,14 +253,14 @@ QString Shtirlitz::formSystemReport() {
     return systemReport;
 }
 
-void Shtirlitz::getSysInfo(QString &name,
-                           QString &version,
-                           QString &kernelType,
-                           QString &kernelVersion,
-                           QString &productVersion,
-                           QString &productType,
-                           QString &prettyProductName,
-                           QString &cpuArchitecture) {
+void Shtirlitz::getSysInfo(QString& name,
+                           QString& version,
+                           QString& kernelType,
+                           QString& kernelVersion,
+                           QString& productVersion,
+                           QString& productType,
+                           QString& prettyProductName,
+                           QString& cpuArchitecture) {
 #if defined(Q_OS_WIN)
     name = "Windows";
     version = QString::number(QSysInfo::WindowsVersion);
@@ -288,8 +288,8 @@ void Shtirlitz::getSysInfo(QString &name,
     cpuArchitecture = QSysInfo::currentCpuArchitecture();
 }
 
-void Shtirlitz::getFirstLaunchInfo(bool &allVersions, bool &minorVersions) {
-    Settings *settings = AppContext::getSettings();
+void Shtirlitz::getFirstLaunchInfo(bool& allVersions, bool& minorVersions) {
+    Settings* settings = AppContext::getSettings();
 
     QString allVersionsKey = SETTINGS_NOT_FIRST_LAUNCH;
     QString minorVersionsKey = settings->toMinorVersionKey(SETTINGS_NOT_FIRST_LAUNCH);
@@ -301,7 +301,7 @@ void Shtirlitz::getFirstLaunchInfo(bool &allVersions, bool &minorVersions) {
     minorVersions = (!launchedThisMajorQvar.isValid()) || launchedThisMajorQvar.isNull();
 }
 
-QString Shtirlitz::tr(const char *str) {
+QString Shtirlitz::tr(const char* str) {
     return ShtirlitzTask::tr(str);
 }
 
@@ -319,7 +319,7 @@ void Shtirlitz::showWhatsNewDialog() {
 //////////////////////////////////////////////////////////////////////////
 // Shtirlitz Task
 
-ShtirlitzTask::ShtirlitzTask(const QString &_report)
+ShtirlitzTask::ShtirlitzTask(const QString& _report)
     : Task("Shtirlitz task", TaskFlag_None), report(_report) {
 }
 
@@ -328,7 +328,7 @@ void ShtirlitzTask::run() {
 
     // Creating SyncHttp object and enabling proxy if needed.
     SyncHttp http(stateInfo);
-    NetworkConfiguration *nc = AppContext::getAppSettings()->getNetworkConfiguration();
+    NetworkConfiguration* nc = AppContext::getAppSettings()->getNetworkConfiguration();
     bool isProxy = nc->isProxyUsed(QNetworkProxy::HttpProxy);
     bool isException = nc->getExceptionsList().contains(QUrl(DESTINATION_URL_KEEPER_SRV).host());
 
@@ -372,7 +372,7 @@ ShtirlitzStartupTask::ShtirlitzStartupTask()
 }
 
 void ShtirlitzStartupTask::prepare() {
-    foreach (Task *t, Shtirlitz::wakeup()) {
+    foreach (Task* t, Shtirlitz::wakeup()) {
         addSubTask(t);
     }
 }

@@ -39,7 +39,7 @@ public:
 
 class StructualAlignerTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };  // class StructualAlignerTests
 
 }  // namespace U2

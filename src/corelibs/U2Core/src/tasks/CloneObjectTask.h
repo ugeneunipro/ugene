@@ -35,22 +35,22 @@ class GObject;
 class U2CORE_EXPORT CloneObjectTask : public Task {
     Q_OBJECT
 public:
-    CloneObjectTask(GObject *srcObj, Document *dstDoc, const QString &dstFolder);
-    CloneObjectTask(GObject *srcObj, const U2DbiRef &dstDbiRef, const QString &dstFolder);
+    CloneObjectTask(GObject* srcObj, Document* dstDoc, const QString& dstFolder);
+    CloneObjectTask(GObject* srcObj, const U2DbiRef& dstDbiRef, const QString& dstFolder);
     ~CloneObjectTask();
     void run();
 
-    GObject *takeResult();
-    const QString &getFolder() const;
-    GObject *getSourceObject() const;
-    Document *getDocument() const;
+    GObject* takeResult();
+    const QString& getFolder() const;
+    GObject* getSourceObject() const;
+    Document* getDocument() const;
 
 private:
     QPointer<GObject> srcObj;
     QPointer<Document> dstDoc;
     U2DbiRef dstDbiRef;
     QString dstFolder;
-    GObject *dstObj;
+    GObject* dstObj;
 };
 
 }  // namespace U2

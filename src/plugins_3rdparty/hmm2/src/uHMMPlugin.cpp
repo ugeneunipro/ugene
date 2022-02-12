@@ -63,28 +63,28 @@
 #include "u_search/HMMSearchQDActor.h"
 #include "u_tests/uhmmerTests.h"
 
-Q_DECLARE_METATYPE(QMenu *);
+Q_DECLARE_METATYPE(QMenu*);
 
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
+extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
     return new uHMMPlugin();
 }
 
 uHMMPlugin::uHMMPlugin()
     : Plugin(tr("HMM2"), tr("Based on HMMER 2.3.2 package. Biological sequence analysis using profile hidden Markov models")), ctxMSA(NULL), ctxADV(NULL) {
     if (AppContext::getMainWindow()) {
-        QAction *buildAction = new QAction(tr("Build HMM2 profile..."), this);
+        QAction* buildAction = new QAction(tr("Build HMM2 profile..."), this);
         buildAction->setObjectName(ToolsMenu::HMMER_BUILD2);
         connect(buildAction, SIGNAL(triggered()), SLOT(sl_build()));
         ToolsMenu::addAction(ToolsMenu::HMMER_MENU, buildAction);
 
-        QAction *calibrateAction = new QAction(tr("Calibrate profile with HMMER2..."), this);
+        QAction* calibrateAction = new QAction(tr("Calibrate profile with HMMER2..."), this);
         calibrateAction->setObjectName(ToolsMenu::HMMER_CALIBRATE2);
         connect(calibrateAction, SIGNAL(triggered()), SLOT(sl_calibrate()));
         ToolsMenu::addAction(ToolsMenu::HMMER_MENU, calibrateAction);
 
-        QAction *searchAction = new QAction(tr("Search with HMMER2..."), this);
+        QAction* searchAction = new QAction(tr("Search with HMMER2..."), this);
         searchAction->setObjectName(ToolsMenu::HMMER_SEARCH2);
         connect(searchAction, SIGNAL(triggered()), SLOT(sl_search()));
         ToolsMenu::addAction(ToolsMenu::HMMER_MENU, searchAction);
@@ -97,18 +97,18 @@ uHMMPlugin::uHMMPlugin()
     }
     LocalWorkflow::HMMLib::init();
 
-    QDActorPrototypeRegistry *qdpr = AppContext::getQDActorProtoRegistry();
+    QDActorPrototypeRegistry* qdpr = AppContext::getQDActorProtoRegistry();
     qdpr->registerProto(new HMM2QDActorPrototype());
 
     // uHMMER Tests
-    GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
+    GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
+    XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
     assert(xmlTestFormat != NULL);
 
-    GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
+    GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = UHMMERTests::createTestFactories();
 
-    foreach (XMLTestFactory *f, l->qlist) {
+    foreach (XMLTestFactory* f, l->qlist) {
         bool res = xmlTestFormat->registerTestFactory(f);
         assert(res);
         Q_UNUSED(res);
@@ -120,7 +120,7 @@ uHMMPlugin::~uHMMPlugin() {
 }
 
 void uHMMPlugin::sl_calibrate() {
-    QWidget *p = (QWidget *)AppContext::getMainWindow()->getQMainWindow();
+    QWidget* p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
     QObjectScopedPointer<HMMCalibrateDialogController> d = new HMMCalibrateDialogController(p);
     d->exec();
 }
@@ -130,14 +130,14 @@ void uHMMPlugin::sl_build() {
 
     // try to find alignment check that MSA Editor is active
     QString profileName;
-    MWMDIWindow *w = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
+    MWMDIWindow* w = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
     if (w != NULL) {
-        GObjectViewWindow *ow = qobject_cast<GObjectViewWindow *>(w);
+        GObjectViewWindow* ow = qobject_cast<GObjectViewWindow*>(w);
         if (ow != NULL) {
-            GObjectView *ov = ow->getObjectView();
-            MSAEditor *av = qobject_cast<MSAEditor *>(ov);
+            GObjectView* ov = ow->getObjectView();
+            MSAEditor* av = qobject_cast<MSAEditor*>(ov);
             if (av != NULL) {
-                MultipleSequenceAlignmentObject *maObj = av->getMaObject();
+                MultipleSequenceAlignmentObject* maObj = av->getMaObject();
                 if (maObj != NULL) {
                     ma = maObj->getMsaCopy();
                     profileName = maObj->getGObjectName() == MA_OBJECT_NAME ? maObj->getDocument()->getName() : maObj->getGObjectName();
@@ -145,7 +145,7 @@ void uHMMPlugin::sl_build() {
             }
         }
     }
-    QWidget *p = (QWidget *)AppContext::getMainWindow()->getQMainWindow();
+    QWidget* p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
     QObjectScopedPointer<HMMBuildDialogController> d = new HMMBuildDialogController(profileName, ma, p);
     d->exec();
 }
@@ -155,15 +155,15 @@ void uHMMPlugin::sl_search() {
     // 1. check that annotated DNA view is active
     // 2. if not -> check that DNASequence object is selected in project view
 
-    U2SequenceObject *obj = NULL;
-    ADVSequenceObjectContext *seqCtx = NULL;
+    U2SequenceObject* obj = NULL;
+    ADVSequenceObjectContext* seqCtx = NULL;
 
-    MWMDIWindow *w = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
+    MWMDIWindow* w = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
     if (w != NULL) {
-        GObjectViewWindow *ow = qobject_cast<GObjectViewWindow *>(w);
+        GObjectViewWindow* ow = qobject_cast<GObjectViewWindow*>(w);
         if (ow != NULL) {
-            GObjectView *ov = ow->getObjectView();
-            AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(ov);
+            GObjectView* ov = ow->getObjectView();
+            AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(ov);
             if (av != NULL) {
                 seqCtx = av->getActiveSequenceContext();
                 obj = seqCtx->getSequenceObject();
@@ -172,14 +172,14 @@ void uHMMPlugin::sl_search() {
     }
 
     if (obj == NULL) {
-        ProjectView *pv = AppContext::getProjectView();
+        ProjectView* pv = AppContext::getProjectView();
         if (pv != NULL) {
-            const GObjectSelection *sel = pv->getGObjectSelection();
-            GObject *o = sel->getSelectedObjects().size() == 1 ? sel->getSelectedObjects().first() : NULL;
-            obj = qobject_cast<U2SequenceObject *>(o);
+            const GObjectSelection* sel = pv->getGObjectSelection();
+            GObject* o = sel->getSelectedObjects().size() == 1 ? sel->getSelectedObjects().first() : NULL;
+            obj = qobject_cast<U2SequenceObject*>(o);
         }
     }
-    QWidget *p = (QWidget *)AppContext::getMainWindow()->getQMainWindow();
+    QWidget* p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
     if (obj == NULL) {
         QMessageBox::critical(p, tr("Error"), tr("Error! Select sequence in Project view or open sequence view."));
         return;
@@ -196,41 +196,41 @@ void uHMMPlugin::sl_search() {
 //////////////////////////////////////////////////////////////////////////
 // contexts
 
-HMMMSAEditorContext::HMMMSAEditorContext(QObject *p)
+HMMMSAEditorContext::HMMMSAEditorContext(QObject* p)
     : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
 
-void HMMMSAEditorContext::initViewContext(GObjectView *view) {
-    MSAEditor *msaed = qobject_cast<MSAEditor *>(view);
+void HMMMSAEditorContext::initViewContext(GObjectView* view) {
+    MSAEditor* msaed = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaed != NULL, "Invalid GObjectView", );
     CHECK(msaed->getMaObject() != NULL, );
 
-    GObjectViewAction *a = new GObjectViewAction(this, view, tr("Build HMMER2 profile"));
+    GObjectViewAction* a = new GObjectViewAction(this, view, tr("Build HMMER2 profile"));
     a->setObjectName("Build HMMER2 profile");
     a->setIcon(QIcon(":/hmm2/images/hmmer_16.png"));
     connect(a, SIGNAL(triggered()), SLOT(sl_build()));
     addViewAction(a);
 }
 
-void HMMMSAEditorContext::buildStaticOrContextMenu(GObjectView *v, QMenu *m) {
-    MSAEditor *msaed = qobject_cast<MSAEditor *>(v);
+void HMMMSAEditorContext::buildStaticOrContextMenu(GObjectView* v, QMenu* m) {
+    MSAEditor* msaed = qobject_cast<MSAEditor*>(v);
     SAFE_POINT(NULL != msaed && NULL != m, "Invalid GObjectVeiw or QMenu", );
     CHECK(msaed->getMaObject() != NULL, );
 
-    QList<GObjectViewAction *> list = getViewActions(v);
+    QList<GObjectViewAction*> list = getViewActions(v);
     assert(list.size() == 1);
-    GObjectViewAction *a = list.first();
-    QMenu *aMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ADVANCED);
+    GObjectViewAction* a = list.first();
+    QMenu* aMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ADVANCED);
     SAFE_POINT(aMenu != NULL, "aMenu", );
     aMenu->addAction(a);
 }
 
 void HMMMSAEditorContext::sl_build() {
-    GObjectViewAction *action = qobject_cast<GObjectViewAction *>(sender());
+    GObjectViewAction* action = qobject_cast<GObjectViewAction*>(sender());
     assert(action != NULL);
-    MSAEditor *ed = qobject_cast<MSAEditor *>(action->getObjectView());
+    MSAEditor* ed = qobject_cast<MSAEditor*>(action->getObjectView());
     assert(ed != NULL);
-    MultipleSequenceAlignmentObject *obj = ed->getMaObject();
+    MultipleSequenceAlignmentObject* obj = ed->getMaObject();
     if (obj) {
         QString profileName = obj->getGObjectName() == MA_OBJECT_NAME ? obj->getDocument()->getName() : obj->getGObjectName();
         QObjectScopedPointer<HMMBuildDialogController> d = new HMMBuildDialogController(profileName, obj->getMultipleAlignment());
@@ -239,28 +239,28 @@ void HMMMSAEditorContext::sl_build() {
     }
 }
 
-HMMADVContext::HMMADVContext(QObject *p)
+HMMADVContext::HMMADVContext(QObject* p)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID) {
 }
 
-void HMMADVContext::initViewContext(GObjectView *view) {
-    AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(view);
-    ADVGlobalAction *a = new ADVGlobalAction(av, QIcon(":/hmm2/images/hmmer_16.png"), tr("Find HMM signals with HMMER2..."), 70);
+void HMMADVContext::initViewContext(GObjectView* view) {
+    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(view);
+    ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":/hmm2/images/hmmer_16.png"), tr("Find HMM signals with HMMER2..."), 70);
     connect(a, SIGNAL(triggered()), SLOT(sl_search()));
 }
 
 void HMMADVContext::sl_search() {
-    GObjectViewAction *action = qobject_cast<GObjectViewAction *>(sender());
+    GObjectViewAction* action = qobject_cast<GObjectViewAction*>(sender());
     assert(action != NULL);
-    AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(action->getObjectView());
+    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
     assert(av != NULL);
-    QWidget *p;
+    QWidget* p;
     if (av->getWidget()) {
         p = av->getWidget();
     } else {
-        p = (QWidget *)AppContext::getMainWindow()->getQMainWindow();
+        p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
     }
-    ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
+    ADVSequenceObjectContext* seqCtx = av->getActiveSequenceContext();
     if (seqCtx == NULL) {
         QMessageBox::critical(p, tr("Error"), tr("No sequences found"));
         return;

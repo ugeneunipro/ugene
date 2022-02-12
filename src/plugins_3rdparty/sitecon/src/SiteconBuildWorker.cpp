@@ -54,8 +54,8 @@ static const QString OUT_SITECON_PORT_ID("out-sitecon");
 const QString SiteconBuildWorker::ACTOR_ID("sitecon-build");
 
 void SiteconBuildWorker::registerProto() {
-    QList<PortDescriptor *> p;
-    QList<Attribute *> a;
+    QList<PortDescriptor*> p;
+    QList<Attribute*> a;
     QMap<Descriptor, DataTypePtr> m;
     Descriptor id(BasePorts::IN_MSA_PORT_ID(), SiteconBuildWorker::tr("Input alignment"), SiteconBuildWorker::tr("Input multiple sequence alignment for building statistical model."));
     Descriptor ud(BaseSlots::URL_SLOT().getId(), SiteconBuildWorker::tr("Origin"), SiteconBuildWorker::tr("Location of input alignment, used as optional hint for model description."));
@@ -82,8 +82,8 @@ void SiteconBuildWorker::registerProto() {
     }
 
     Descriptor desc(ACTOR_ID, tr("Build SITECON model"), tr("Builds statistical profile for SITECON. The SITECON is a program for probabilistic recognition of transcription factor binding sites."));
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
-    QMap<QString, PropertyDelegate *> delegates;
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
+    QMap<QString, PropertyDelegate*> delegates;
 
     {
         QVariantMap m2;
@@ -128,7 +128,7 @@ void SiteconBuildWorker::init() {
     output = ports.value(OUT_SITECON_PORT_ID);
 }
 
-Task *SiteconBuildWorker::tick() {
+Task* SiteconBuildWorker::tick() {
     if (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
@@ -159,7 +159,7 @@ Task *SiteconBuildWorker::tick() {
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", nullptr);
         const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
 
-        Task *t = new SiteconBuildTask(cfg, msa, url);
+        Task* t = new SiteconBuildTask(cfg, msa, url);
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
     } else if (input->isEnded()) {
@@ -170,7 +170,7 @@ Task *SiteconBuildWorker::tick() {
 }
 
 void SiteconBuildWorker::sl_taskFinished() {
-    SiteconBuildTask *t = qobject_cast<SiteconBuildTask *>(sender());
+    SiteconBuildTask* t = qobject_cast<SiteconBuildTask*>(sender());
     if (t->isCanceled()) {
         return;
     }

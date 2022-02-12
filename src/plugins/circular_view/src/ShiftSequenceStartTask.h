@@ -34,12 +34,12 @@ class ShiftSequenceStartTask : public Task {
     Q_OBJECT
 public:
     /** Shifts circular sequence start position to 'shift' symbols forward. */
-    ShiftSequenceStartTask(U2SequenceObject *sequenceObject, qint64 newSequenceStartPosition);
+    ShiftSequenceStartTask(U2SequenceObject* sequenceObject, qint64 newSequenceStartPosition);
 
     virtual Task::ReportResult report();
 
 private:
-    U2SequenceObject *sequenceObject;
+    U2SequenceObject* sequenceObject;
     qint64 newSequenceStartPosition;
 };
 

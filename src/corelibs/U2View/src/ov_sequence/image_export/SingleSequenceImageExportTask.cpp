@@ -39,7 +39,7 @@ namespace U2 {
 
 SequenceImageExportTask::SequenceImageExportTask(QSharedPointer<ExportImagePainter> painter,
                                                  QSharedPointer<CustomExportSettings> customSettings,
-                                                 const ImageExportTaskSettings &settings)
+                                                 const ImageExportTaskSettings& settings)
     : ImageExportTask(settings),
       painter(painter),
       customSettings(customSettings) {

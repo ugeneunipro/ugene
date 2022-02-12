@@ -37,7 +37,7 @@ typedef int CudaGpuId;
 
 class U2ALGORITHM_EXPORT CudaGpuModel {
 public:
-    CudaGpuModel(const QString &_name, const CudaGpuId &_id, quint64 _globalMemorySize, bool _enabled = true)
+    CudaGpuModel(const QString& _name, const CudaGpuId& _id, quint64 _globalMemorySize, bool _enabled = true)
         : name(_name), id(_id), globalMemorySizeBytes(_globalMemorySize), enabled(_enabled), acquired(false) {};
 
     QString getName() const {
@@ -81,13 +81,13 @@ class U2ALGORITHM_EXPORT CudaGpuRegistry {
 public:
     ~CudaGpuRegistry();
 
-    void registerCudaGpu(CudaGpuModel *gpu);
-    CudaGpuModel *getGpuById(CudaGpuId id) const;
-    QList<CudaGpuModel *> getRegisteredGpus() const;
+    void registerCudaGpu(CudaGpuModel* gpu);
+    CudaGpuModel* getGpuById(CudaGpuId id) const;
+    QList<CudaGpuModel*> getRegisteredGpus() const;
 
-    CudaGpuModel *getAnyEnabledGpu() const;
+    CudaGpuModel* getAnyEnabledGpu() const;
 
-    CudaGpuModel *acquireAnyReadyGpu();
+    CudaGpuModel* acquireAnyReadyGpu();
 
     bool empty() const {
         return gpus.empty();
@@ -95,7 +95,7 @@ public:
 
 private:
     void saveGpusSettings() const;
-    QHash<CudaGpuId, CudaGpuModel *> gpus;
+    QHash<CudaGpuId, CudaGpuModel*> gpus;
 };
 
 }  // namespace U2

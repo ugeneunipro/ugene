@@ -33,13 +33,13 @@ namespace U2 {
 class U2CORE_EXPORT PrimerStatistics : public QObject {
     Q_OBJECT
 public:
-    static QString checkPcrPrimersPair(const QByteArray &forward, const QByteArray &reverse, bool &isCriticalError);
-    static double getMeltingTemperature(const QByteArray &sequence);
-    static double getMeltingTemperature(const QByteArray &initialPrimer, const QByteArray &alternativePrimer);
-    static double getAnnealingTemperature(const QByteArray &product, const QByteArray &forwardPrimer, const QByteArray &reversePrimer);
+    static QString checkPcrPrimersPair(const QByteArray& forward, const QByteArray& reverse, bool& isCriticalError);
+    static double getMeltingTemperature(const QByteArray& sequence);
+    static double getMeltingTemperature(const QByteArray& initialPrimer, const QByteArray& alternativePrimer);
+    static double getAnnealingTemperature(const QByteArray& product, const QByteArray& forwardPrimer, const QByteArray& reversePrimer);
 
-    static bool validate(const QByteArray &primer);
-    static bool validatePrimerLength(const QByteArray &primer);
+    static bool validate(const QByteArray& primer);
+    static bool validatePrimerLength(const QByteArray& primer);
     static bool validate(QString primer);
 
     static QString getDoubleStringValue(double value);
@@ -57,23 +57,23 @@ public:
     enum Direction { Forward,
                      Reverse,
                      DoesntMatter };
-    PrimerStatisticsCalculator(const QByteArray &sequence, Direction direction = DoesntMatter, const qreal energyThreshold = -6);
+    PrimerStatisticsCalculator(const QByteArray& sequence, Direction direction = DoesntMatter, const qreal energyThreshold = -6);
 
     double getGC() const;
     double getTm() const;
     int getGCClamp() const;
     int getRuns() const;
-    const DimerFinderResult &getDimersInfo() const;
+    const DimerFinderResult& getDimersInfo() const;
 
     QString getFirstError() const;
     /* Returns the error occurred during initialization (construction) */
     QString getInitializationError() const;
 
-    bool isValidGC(QString &error) const;
-    bool isValidTm(QString &error) const;
-    bool isValidGCClamp(QString &error) const;
-    bool isValidRuns(QString &error) const;
-    bool isSelfDimer(QString &error) const;
+    bool isValidGC(QString& error) const;
+    bool isValidTm(QString& error) const;
+    bool isValidGCClamp(QString& error) const;
+    bool isValidRuns(QString& error) const;
+    bool isSelfDimer(QString& error) const;
 
     static const double GC_BOTTOM;
     static const double GC_TOP;
@@ -84,7 +84,7 @@ public:
     static const double DIMERS_ENERGY_THRESHOLD;
 
 private:
-    QString getMessage(const QString &error) const;
+    QString getMessage(const QString& error) const;
 
 private:
     DimerFinderResult dimersInfo;
@@ -102,7 +102,7 @@ private:
 
 class U2CORE_EXPORT PrimersPairStatistics {
 public:
-    PrimersPairStatistics(const QByteArray &forward, const QByteArray &reverse);
+    PrimersPairStatistics(const QByteArray& forward, const QByteArray& reverse);
 
     QString getFirstError() const;
 
@@ -113,21 +113,21 @@ public:
     static const QString TmString;
     static QString toString(double value);
 
-    const PrimerStatisticsCalculator &getForwardCalculator() {
+    const PrimerStatisticsCalculator& getForwardCalculator() {
         return forward;
     }
-    const PrimerStatisticsCalculator &getReverseCalculator() {
+    const PrimerStatisticsCalculator& getReverseCalculator() {
         return reverse;
     }
 
-    const DimerFinderResult &getDimersInfo() const;
+    const DimerFinderResult& getDimersInfo() const;
 
     bool isHeteroDimers() {
         return dimersInfo.canBeFormed;
     }
 
 private:
-    void addDimersToReport(QString &report) const;
+    void addDimersToReport(QString& report) const;
 
 private:
     DimerFinderResult dimersInfo;

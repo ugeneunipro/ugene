@@ -75,8 +75,8 @@ static const QString FILTER_BY_NONE("none");
 const QString HmmerSearchWorkerFactory::ACTOR("hmm3-search");
 
 void HmmerSearchWorkerFactory::init() {
-    QList<PortDescriptor *> p;
-    QList<Attribute *> a;
+    QList<PortDescriptor*> p;
+    QList<Attribute*> a;
     {
         Descriptor filterByDesc(FILTER_BY_ATTR,
                                 HmmerSearchWorker::tr("Filter by"),
@@ -100,10 +100,10 @@ void HmmerSearchWorkerFactory::init() {
         Descriptor ded(DOM_E_ATTR, HmmerSearchWorker::tr("Filter by high E-value"), HmmerSearchWorker::tr("Report domains with e-value less than."));
         Descriptor dtd(DOM_T_ATTR, HmmerSearchWorker::tr("Filter by low score"), HmmerSearchWorker::tr("Report domains with score greater than."));
 
-        Attribute *evalue = new Attribute(ded, BaseTypes::NUM_TYPE(), false, QVariant((double)10.0));
-        Attribute *score = new Attribute(dtd, BaseTypes::NUM_TYPE(), false, QVariant((double)0.0));
+        Attribute* evalue = new Attribute(ded, BaseTypes::NUM_TYPE(), false, QVariant((double)10.0));
+        Attribute* score = new Attribute(dtd, BaseTypes::NUM_TYPE(), false, QVariant((double)0.0));
 
-        Attribute *filterBy = new Attribute(filterByDesc, BaseTypes::STRING_TYPE(), true, FILTER_BY_NONE);
+        Attribute* filterBy = new Attribute(filterByDesc, BaseTypes::STRING_TYPE(), true, FILTER_BY_NONE);
         a << new Attribute(nd, BaseTypes::STRING_TYPE(), true, QVariant("hmm_signal"));
         a << filterBy;
         a << new Attribute(nsd, BaseTypes::NUM_TYPE(), false, QVariant(42));
@@ -116,8 +116,8 @@ void HmmerSearchWorkerFactory::init() {
 
     Descriptor desc(HmmerSearchWorkerFactory::ACTOR, HmmerSearchWorker::tr("HMM3 Search"), HmmerSearchWorker::tr("Searches each input sequence for significantly similar sequence matches to all specified HMM profiles."
                                                                                                                  " In case several profiles were supplied, searches with all profiles one by one and outputs united set of annotations for each sequence."));
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
-    QMap<QString, PropertyDelegate *> delegates;
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
+    QMap<QString, PropertyDelegate*> delegates;
 
     {
         QVariantMap filterByValues;
@@ -156,7 +156,7 @@ void HmmerSearchWorkerFactory::init() {
     proto->addExternalTool(HmmerSupport::SEARCH_TOOL_ID);
     WorkflowEnv::getProtoRegistry()->registerProto(Descriptor("hmmer3", HmmerSearchWorker::tr("HMMER3 Tools"), ""), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new HmmerSearchWorkerFactory());
 }
 
@@ -164,20 +164,20 @@ HmmerSearchWorkerFactory::HmmerSearchWorkerFactory()
     : DomainFactory(ACTOR) {
 }
 
-Worker *HmmerSearchWorkerFactory::createWorker(Actor *a) {
+Worker* HmmerSearchWorkerFactory::createWorker(Actor* a) {
     return new HmmerSearchWorker(a);
 }
 
 /*******************************
  * HMM3SearchPrompter
  *******************************/
-HmmerSearchPrompter::HmmerSearchPrompter(Actor *p)
+HmmerSearchPrompter::HmmerSearchPrompter(Actor* p)
     : PrompterBase<HmmerSearchPrompter>(p) {
 }
 
 QString HmmerSearchPrompter::composeRichDoc() {
-    Actor *hmmProducer = qobject_cast<IntegralBusPort *>(target->getPort(HMM_URL_PORT))->getProducer(HMM_URL_PORT);
-    Actor *seqProducer = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_SEQ_PORT_ID()))->getProducer(BasePorts::IN_SEQ_PORT_ID());
+    Actor* hmmProducer = qobject_cast<IntegralBusPort*>(target->getPort(HMM_URL_PORT))->getProducer(HMM_URL_PORT);
+    Actor* seqProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()))->getProducer(BasePorts::IN_SEQ_PORT_ID());
 
     QString seqName = (seqProducer ? tr("For each sequence from <u>%1</u>,").arg(seqProducer->getLabel()) : "");
     QString hmmName = (hmmProducer ? tr("using all profiles provided by <u>%1</u>,").arg(hmmProducer->getLabel()) : "");
@@ -196,7 +196,7 @@ QString HmmerSearchPrompter::composeRichDoc() {
 /*******************************
  * HMM3SearchWorker
  *******************************/
-HmmerSearchWorker::HmmerSearchWorker(Actor *a)
+HmmerSearchWorker::HmmerSearchWorker(Actor* a)
     : BaseWorker(a, false),
       hmmPort(nullptr),
       seqPort(nullptr),
@@ -243,11 +243,11 @@ bool HmmerSearchWorker::isReady() const {
     return hmmHasMes || (hmmEnded && (seqHasMes || seqEnded));
 }
 
-Task *HmmerSearchWorker::tick() {
+Task* HmmerSearchWorker::tick() {
     while (hmmPort->hasMessage()) {
         hmms << hmmPort->get().getData().toMap().value(BaseSlots::URL_SLOT().getId()).toString();
     }
-    if (!hmmPort->isEnded()) {    //  || hmms.isEmpty() || !seqPort->hasMessage()
+    if (!hmmPort->isEnded()) {  //  || hmms.isEmpty() || !seqPort->hasMessage()
         return nullptr;
     }
 
@@ -264,22 +264,22 @@ Task *HmmerSearchWorker::tick() {
         }
 
         if (seqObj->getAlphabet()->getType() != DNAAlphabet_RAW) {
-            QList<Task *> subtasks;
+            QList<Task*> subtasks;
             HmmerSearchSettings settings = cfg;
-            foreach (const QString &hmmProfileUrl, hmms) {
+            foreach (const QString& hmmProfileUrl, hmms) {
                 settings.workingDir = monitor()->outputDir() + "hmmer_search";
                 settings.hmmProfileUrl = hmmProfileUrl;
                 settings.sequence = seqObj.data();
                 settings.pattern.annotationName = resultName;
                 settings.annotationTable = new AnnotationTableObject("Annotation table", context->getDataStorage()->getDbiRef());
-                HmmerSearchTask *searchTask = new HmmerSearchTask(settings);
+                HmmerSearchTask* searchTask = new HmmerSearchTask(settings);
                 settings.annotationTable->setParent(searchTask);
                 searchTask->addListeners(createLogListeners());
                 subtasks << searchTask;
             }
 
-            Task *multiTask = new MultiTask(tr("Find HMMER signals in %1").arg(seqObj->getGObjectName()), subtasks);
-            connect(new TaskSignalMapper(multiTask), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
+            Task* multiTask = new MultiTask(tr("Find HMMER signals in %1").arg(seqObj->getGObjectName()), subtasks);
+            connect(new TaskSignalMapper(multiTask), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
             seqObj.take()->setParent(multiTask);
             return multiTask;
         }
@@ -293,7 +293,7 @@ Task *HmmerSearchWorker::tick() {
     return nullptr;
 }
 
-void HmmerSearchWorker::sl_taskFinished(Task *task) {
+void HmmerSearchWorker::sl_taskFinished(Task* task) {
     SAFE_POINT(nullptr != task, "Invalid task is encountered", );
     if (task->isCanceled()) {
         return;
@@ -301,8 +301,8 @@ void HmmerSearchWorker::sl_taskFinished(Task *task) {
     if (nullptr != output) {
         QList<SharedAnnotationData> list;
 
-        foreach (const QPointer<Task> &sub, task->getSubtasks()) {
-            HmmerSearchTask *searchTask = qobject_cast<HmmerSearchTask *>(sub.data());
+        foreach (const QPointer<Task>& sub, task->getSubtasks()) {
+            HmmerSearchTask* searchTask = qobject_cast<HmmerSearchTask*>(sub.data());
             if (searchTask == nullptr) {
                 continue;
             }
@@ -320,5 +320,5 @@ void HmmerSearchWorker::sl_taskFinished(Task *task) {
 void HmmerSearchWorker::cleanup() {
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

@@ -45,7 +45,7 @@ public:
         QString outputDirPath;
     };
 
-    MakeBlastDbDialogFiller(HI::GUITestOpStatus &os, const Parameters &parameters);
+    MakeBlastDbDialogFiller(HI::GUITestOpStatus& os, const Parameters& parameters);
     void commonScenario() override;
 
 private:

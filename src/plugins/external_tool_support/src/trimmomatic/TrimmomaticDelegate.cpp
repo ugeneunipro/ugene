@@ -48,51 +48,51 @@ static const QRegularExpression notQuotedSpaces("[^\\s\\\"']*\"[^\\\"]*\\\"[^\\s
                                                 "|"
                                                 "[^\\s\\\"']+");
 
-TrimmomaticDelegate::TrimmomaticDelegate(QObject *parent)
+TrimmomaticDelegate::TrimmomaticDelegate(QObject* parent)
     : PropertyDelegate(parent) {
 }
 
-QVariant TrimmomaticDelegate::getDisplayValue(const QVariant &value) const {
+QVariant TrimmomaticDelegate::getDisplayValue(const QVariant& value) const {
     QString str = value.value<QStringList>().join(" ");
     return str.isEmpty() ? PLACEHOLDER : str;
 }
 
-PropertyDelegate *TrimmomaticDelegate::clone() {
+PropertyDelegate* TrimmomaticDelegate::clone() {
     return new TrimmomaticDelegate(parent());
 }
 
-QWidget *TrimmomaticDelegate::createEditor(QWidget *parent,
-                                           const QStyleOptionViewItem &,
-                                           const QModelIndex &) const {
-    TrimmomaticPropertyWidget *editor = new TrimmomaticPropertyWidget(parent);
+QWidget* TrimmomaticDelegate::createEditor(QWidget* parent,
+                                           const QStyleOptionViewItem&,
+                                           const QModelIndex&) const {
+    TrimmomaticPropertyWidget* editor = new TrimmomaticPropertyWidget(parent);
     connect(editor, SIGNAL(si_valueChanged(QVariant)), SLOT(sl_commit()));
     return editor;
 }
 
-PropertyWidget *TrimmomaticDelegate::createWizardWidget(U2OpStatus &,
-                                                        QWidget *parent) const {
+PropertyWidget* TrimmomaticDelegate::createWizardWidget(U2OpStatus&,
+                                                        QWidget* parent) const {
     return new TrimmomaticPropertyWidget(parent);
 }
 
-void TrimmomaticDelegate::setEditorData(QWidget *editor,
-                                        const QModelIndex &index) const {
+void TrimmomaticDelegate::setEditorData(QWidget* editor,
+                                        const QModelIndex& index) const {
     const QVariant value = index.model()->data(index, ConfigurationEditor::ItemValueRole);
-    TrimmomaticPropertyWidget *propertyWidget =
-        qobject_cast<TrimmomaticPropertyWidget *>(editor);
+    TrimmomaticPropertyWidget* propertyWidget =
+        qobject_cast<TrimmomaticPropertyWidget*>(editor);
     propertyWidget->setValue(value);
 }
 
-void TrimmomaticDelegate::setModelData(QWidget *editor,
-                                       QAbstractItemModel *model,
-                                       const QModelIndex &index) const {
-    TrimmomaticPropertyWidget *propertyWidget =
-        qobject_cast<TrimmomaticPropertyWidget *>(editor);
+void TrimmomaticDelegate::setModelData(QWidget* editor,
+                                       QAbstractItemModel* model,
+                                       const QModelIndex& index) const {
+    TrimmomaticPropertyWidget* propertyWidget =
+        qobject_cast<TrimmomaticPropertyWidget*>(editor);
     model->setData(index, propertyWidget->value(), ConfigurationEditor::ItemValueRole);
 }
 
 void TrimmomaticDelegate::sl_commit() {
-    TrimmomaticPropertyWidget *editor =
-        qobject_cast<TrimmomaticPropertyWidget *>(sender());
+    TrimmomaticPropertyWidget* editor =
+        qobject_cast<TrimmomaticPropertyWidget*>(sender());
     CHECK(editor != nullptr, );
     emit commitData(editor);
 }
@@ -101,8 +101,8 @@ void TrimmomaticDelegate::sl_commit() {
 /*TrimmomaticPropertyWidget*/
 /********************************************************************/
 
-TrimmomaticPropertyWidget::TrimmomaticPropertyWidget(QWidget *parent,
-                                                     DelegateTags *tags)
+TrimmomaticPropertyWidget::TrimmomaticPropertyWidget(QWidget* parent,
+                                                     DelegateTags* tags)
     : PropertyWidget(parent, tags) {
     lineEdit = new QLineEdit(this);
     lineEdit->setPlaceholderText(PLACEHOLDER);
@@ -135,7 +135,7 @@ QVariant TrimmomaticPropertyWidget::value() {
     return steps;
 }
 
-void TrimmomaticPropertyWidget::setValue(const QVariant &value) {
+void TrimmomaticPropertyWidget::setValue(const QVariant& value) {
     lineEdit->setText(value.value<QStringList>().join(" "));
 }
 
@@ -173,8 +173,8 @@ const QString TrimmomaticPropertyDialog::DEFAULT_DESCRIPTION = QObject::tr("<htm
                                                                            "</body></html>");
 const QString TrimmomaticPropertyDialog::DEFAULT_SETTINGS_TEXT = QObject::tr("Add a step.");
 
-TrimmomaticPropertyDialog::TrimmomaticPropertyDialog(const QString &value,
-                                                     QWidget *parent)
+TrimmomaticPropertyDialog::TrimmomaticPropertyDialog(const QString& value,
+                                                     QWidget* parent)
     : QDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930159");
@@ -185,8 +185,8 @@ TrimmomaticPropertyDialog::TrimmomaticPropertyDialog(const QString &value,
     menu->setObjectName("stepsMenu");
     new MultiClickMenu(menu);
 
-    foreach (TrimmomaticStepFactory *factory, TrimmomaticStepsRegistry::getInstance()->getAllEntries()) {
-        QAction *step = new QAction(factory->getId(), menu->menuAction());
+    foreach (TrimmomaticStepFactory* factory, TrimmomaticStepsRegistry::getInstance()->getAllEntries()) {
+        QAction* step = new QAction(factory->getId(), menu->menuAction());
         step->setObjectName(factory->getId());
         menu->addAction(step);
     }
@@ -201,7 +201,7 @@ TrimmomaticPropertyDialog::TrimmomaticPropertyDialog(const QString &value,
     emptySelection();
 
     connect(listSteps, SIGNAL(currentRowChanged(int)), SLOT(sl_currentRowChanged()));
-    connect(menu, SIGNAL(triggered(QAction *)), SLOT(sl_addStep(QAction *)));
+    connect(menu, SIGNAL(triggered(QAction*)), SLOT(sl_addStep(QAction*)));
     connect(buttonUp, SIGNAL(pressed()), SLOT(sl_moveStepUp()));
     connect(buttonDown, SIGNAL(pressed()), SLOT(sl_moveStepDown()));
     connect(buttonRemove, SIGNAL(pressed()), SLOT(sl_removeStep()));
@@ -212,7 +212,7 @@ TrimmomaticPropertyDialog::TrimmomaticPropertyDialog(const QString &value,
 
 QString TrimmomaticPropertyDialog::getValue() const {
     QString result;
-    foreach (TrimmomaticStep *step, steps) {
+    foreach (TrimmomaticStep* step, steps) {
         result += step->getCommand();
         result += " ";
     }
@@ -224,7 +224,7 @@ void TrimmomaticPropertyDialog::sl_valuesChanged() {
     bool isValid = !steps.isEmpty();
     for (int i = 0; i < steps.size(); i++) {
         const bool isStepValid = steps[i]->validate();
-        QListWidgetItem *item = listSteps->item(i);
+        QListWidgetItem* item = listSteps->item(i);
         SAFE_POINT(nullptr != item, QString("Item with number %1 is NULL").arg(i), );
         item->setBackgroundColor(isStepValid ? GUIUtils::OK_COLOR : GUIUtils::WARNING_COLOR);
         isValid = isValid && isStepValid;
@@ -238,7 +238,7 @@ void TrimmomaticPropertyDialog::sl_currentRowChanged() {
     SAFE_POINT(currentStepNumber >= 0 && currentStepNumber < listSteps->count(), "Unexpected selected item", );
     SAFE_POINT(currentStepNumber < steps.size(), "Unexpected selected row", );
 
-    TrimmomaticStep *selectedStep = steps[currentStepNumber];
+    TrimmomaticStep* selectedStep = steps[currentStepNumber];
 
     textDescription->setText(selectedStep->getDescription());
 
@@ -257,7 +257,7 @@ void TrimmomaticPropertyDialog::emptySelection() {
     currentWidget->show();
 }
 
-void TrimmomaticPropertyDialog::sl_addStep(QAction *a) {
+void TrimmomaticPropertyDialog::sl_addStep(QAction* a) {
     addStep(TrimmomaticStepsRegistry::getInstance()->getById(a->text())->createStep());
     listSteps->setCurrentRow(steps.size() - 1);
 }
@@ -331,7 +331,7 @@ void TrimmomaticPropertyDialog::enableButtons(bool setEnabled) {
     buttonRemove->setEnabled(setEnabled);
 }
 
-void TrimmomaticPropertyDialog::addStep(TrimmomaticStep *step) {
+void TrimmomaticPropertyDialog::addStep(TrimmomaticStep* step) {
     steps << step;
 
     connect(step, SIGNAL(si_valueChanged()), SLOT(sl_valuesChanged()));
@@ -344,15 +344,15 @@ void TrimmomaticPropertyDialog::addStep(TrimmomaticStep *step) {
     }
 }
 
-void TrimmomaticPropertyDialog::parseCommand(const QString &command) {
+void TrimmomaticPropertyDialog::parseCommand(const QString& command) {
     QRegularExpressionMatchIterator stepCommands = notQuotedSpaces.globalMatch(command);
     while (stepCommands.hasNext()) {
         const QString stepCommand = stepCommands.next().captured();
         const QString stepId = stepCommand.left(stepCommand.indexOf(":"));
-        TrimmomaticStepFactory *stepFactory = TrimmomaticStepsRegistry::getInstance()->getById(stepId);
+        TrimmomaticStepFactory* stepFactory = TrimmomaticStepsRegistry::getInstance()->getById(stepId);
         CHECK_CONTINUE(nullptr != stepFactory);
 
-        TrimmomaticStep *step = stepFactory->createStep();
+        TrimmomaticStep* step = stepFactory->createStep();
         step->setCommand(stepCommand);
         addStep(step);
     }

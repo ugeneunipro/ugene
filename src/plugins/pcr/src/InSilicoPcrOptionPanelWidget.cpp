@@ -53,7 +53,7 @@ const QString REVERSE_SUBGROUP_ID = "reverse";
 const QString SETTINGS_SUBGROUP_ID = "settings";
 }  // namespace
 
-InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView *annotatedDnaView)
+InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView* annotatedDnaView)
     : QWidget(),
       annotatedDnaView(annotatedDnaView),
       pcrTask(nullptr),
@@ -76,12 +76,12 @@ InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView *ann
     connect(reversePrimerBox, SIGNAL(si_primerChanged()), SLOT(sl_onPrimerChanged()));
     connect(findProductButton, SIGNAL(clicked()), SLOT(sl_findProduct()));
     connect(extractProductButton, SIGNAL(clicked()), SLOT(sl_extractProduct()));
-    connect(annotatedDnaView, SIGNAL(si_sequenceModified(ADVSequenceObjectContext *)), SLOT(sl_onSequenceChanged(ADVSequenceObjectContext *)));
-    connect(annotatedDnaView, SIGNAL(si_sequenceRemoved(ADVSequenceObjectContext *)), SLOT(sl_onSequenceChanged(ADVSequenceObjectContext *)));
-    connect(annotatedDnaView, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget *, ADVSequenceWidget *)), SLOT(sl_activeSequenceChanged()));
-    connect(productsTable->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), SLOT(sl_onProductsSelectionChanged()));
-    connect(productsTable, SIGNAL(doubleClicked(const QModelIndex &)), SLOT(sl_onProductDoubleClicked()));
-    connect(detailsLinkLabel, SIGNAL(linkActivated(const QString &)), SLOT(sl_showDetails(const QString &)));
+    connect(annotatedDnaView, SIGNAL(si_sequenceModified(ADVSequenceObjectContext*)), SLOT(sl_onSequenceChanged(ADVSequenceObjectContext*)));
+    connect(annotatedDnaView, SIGNAL(si_sequenceRemoved(ADVSequenceObjectContext*)), SLOT(sl_onSequenceChanged(ADVSequenceObjectContext*)));
+    connect(annotatedDnaView, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget*, ADVSequenceWidget*)), SLOT(sl_activeSequenceChanged()));
+    connect(productsTable->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)), SLOT(sl_onProductsSelectionChanged()));
+    connect(productsTable, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(sl_onProductDoubleClicked()));
+    connect(detailsLinkLabel, SIGNAL(linkActivated(const QString&)), SLOT(sl_showDetails(const QString&)));
 
     static const QString linkText = QString("<a href=\"%1\" style=\"color: %2\">%3</a>").arg(DETAILS_LINK).arg(Theme::linkColorLabelStr()).arg(tr("Show primers details"));
     detailsLinkLabel->setText(linkText);
@@ -102,7 +102,7 @@ InSilicoPcrOptionPanelWidget::~InSilicoPcrOptionPanelWidget() {
     }
 }
 
-AnnotatedDNAView *InSilicoPcrOptionPanelWidget::getDnaView() const {
+AnnotatedDNAView* InSilicoPcrOptionPanelWidget::getDnaView() const {
     return annotatedDnaView;
 }
 
@@ -148,9 +148,9 @@ void InSilicoPcrOptionPanelWidget::sl_findProduct() {
     SAFE_POINT(maxProduct > 0, "Non-positive product size", );
     int perfectMatch = perfectSpinBox->value();
     SAFE_POINT(perfectMatch >= 0, "Negative perfect match", );
-    ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getActiveSequenceContext();
+    ADVSequenceObjectContext* sequenceContext = annotatedDnaView->getActiveSequenceContext();
     SAFE_POINT(nullptr != sequenceContext, L10N::nullPointerError("Sequence Context"), );
-    U2SequenceObject *sequenceObject = sequenceContext->getSequenceObject();
+    U2SequenceObject* sequenceObject = sequenceContext->getSequenceObject();
     SAFE_POINT(nullptr != sequenceObject, L10N::nullPointerError("Sequence Object"), );
 
     InSilicoPcrTaskSettings settings;
@@ -189,8 +189,8 @@ void InSilicoPcrOptionPanelWidget::sl_onFindTaskFinished() {
     setEnabled(true);
 }
 
-void InSilicoPcrOptionPanelWidget::showResults(InSilicoPcrTask *task) {
-    ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getSequenceContext(task->getSettings().sequenceObject);
+void InSilicoPcrOptionPanelWidget::showResults(InSilicoPcrTask* task) {
+    ADVSequenceObjectContext* sequenceContext = annotatedDnaView->getSequenceContext(task->getSettings().sequenceObject);
     CHECK(nullptr != sequenceContext, );
 
     productsTable->showProducts(task->getResults(), sequenceContext);
@@ -198,19 +198,19 @@ void InSilicoPcrOptionPanelWidget::showResults(InSilicoPcrTask *task) {
 }
 
 void InSilicoPcrOptionPanelWidget::sl_extractProduct() {
-    ADVSequenceObjectContext *sequenceContext = productsTable->productsContext();
+    ADVSequenceObjectContext* sequenceContext = productsTable->productsContext();
     SAFE_POINT(nullptr != sequenceContext, L10N::nullPointerError("Sequence Context"), );
-    U2SequenceObject *sequenceObject = sequenceContext->getSequenceObject();
+    U2SequenceObject* sequenceObject = sequenceContext->getSequenceObject();
     SAFE_POINT(nullptr != sequenceObject, L10N::nullPointerError("Sequence Object"), );
     ExtractProductSettings settings;
     settings.sequenceRef = sequenceContext->getSequenceRef();
     settings.annotationsExtraction = ExtractProductSettings::AnnotationsExtraction(annsComboBox->itemData(annsComboBox->currentIndex()).toInt());
-    foreach (AnnotationTableObject *annsObject, sequenceContext->getAnnotationObjects()) {
+    foreach (AnnotationTableObject* annsObject, sequenceContext->getAnnotationObjects()) {
         settings.annotationRefs << annsObject->getEntityRef();
     }
 
-    QList<Task *> tasks;
-    foreach (const InSilicoPcrProduct &product, productsTable->getSelectedProducts()) {
+    QList<Task*> tasks;
+    foreach (const InSilicoPcrProduct& product, productsTable->getSelectedProducts()) {
         tasks << new ExtractProductWrapperTask(product, sequenceObject->getSequenceName(), sequenceObject->getSequenceLength(), settings);
     }
     CHECK(!tasks.isEmpty(), );
@@ -221,7 +221,7 @@ void InSilicoPcrOptionPanelWidget::sl_extractProduct() {
     }
 }
 
-void InSilicoPcrOptionPanelWidget::sl_onSequenceChanged(ADVSequenceObjectContext *sequenceContext) {
+void InSilicoPcrOptionPanelWidget::sl_onSequenceChanged(ADVSequenceObjectContext* sequenceContext) {
     bool tableChanged = productsTable->onSequenceChanged(sequenceContext);
     if (tableChanged) {
         setResultTableShown(false);
@@ -233,15 +233,15 @@ void InSilicoPcrOptionPanelWidget::sl_onSequenceChanged(ADVSequenceObjectContext
     }
 }
 
-bool InSilicoPcrOptionPanelWidget::isDnaSequence(ADVSequenceObjectContext *sequenceContext) {
+bool InSilicoPcrOptionPanelWidget::isDnaSequence(ADVSequenceObjectContext* sequenceContext) {
     CHECK(nullptr != sequenceContext, false);
-    const DNAAlphabet *alphabet = sequenceContext->getAlphabet();
+    const DNAAlphabet* alphabet = sequenceContext->getAlphabet();
     SAFE_POINT(alphabet != nullptr, L10N::nullPointerError("Alphabet"), false);
     return alphabet->isDNA();
 }
 
 void InSilicoPcrOptionPanelWidget::sl_activeSequenceChanged() {
-    ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getActiveSequenceContext();
+    ADVSequenceObjectContext* sequenceContext = annotatedDnaView->getActiveSequenceContext();
     bool isDna = isDnaSequence(sequenceContext);
     runPcrWidget->setEnabled(isDna);
     algoWarningLabel->setVisible(!isDna);
@@ -259,7 +259,7 @@ void InSilicoPcrOptionPanelWidget::sl_onProductDoubleClicked() {
     }
 }
 
-void InSilicoPcrOptionPanelWidget::sl_showDetails(const QString &link) {
+void InSilicoPcrOptionPanelWidget::sl_showDetails(const QString& link) {
     SAFE_POINT(DETAILS_LINK == link, "Incorrect link", );
     PrimersPairStatistics calc(forwardPrimerBox->getPrimer(), reversePrimerBox->getPrimer());
     QObjectScopedPointer<PrimersDetailsDialog> dlg = new PrimersDetailsDialog(this, calc.generateReport());

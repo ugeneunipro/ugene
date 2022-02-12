@@ -51,11 +51,11 @@ namespace U2 {
 
 const QString ExternalToolsDashboardWidget::TREE_ID("treeRoot");
 
-static QString fixOldStyleOpenFileJs(const QString &html) {
+static QString fixOldStyleOpenFileJs(const QString& html) {
     return QString(html).replace("onclick=\"openLog('", "href=\"file://").replace("/logs')", "/logs").replace("_log.txt')", "_log.txt");
 }
 
-ExternalToolsDashboardWidget::ExternalToolsDashboardWidget(const QDomElement &dom, const WorkflowMonitor *monitor)
+ExternalToolsDashboardWidget::ExternalToolsDashboardWidget(const QDomElement& dom, const WorkflowMonitor* monitor)
     : monitor(monitor) {
     setMinimumWidth(1100);  // TODO: make it expanding.
 
@@ -128,11 +128,11 @@ ExternalToolsDashboardWidget::ExternalToolsDashboardWidget(const QDomElement &do
     }
 }
 
-bool ExternalToolsDashboardWidget::isValidDom(const QDomElement &dom) {
+bool ExternalToolsDashboardWidget::isValidDom(const QDomElement& dom) {
     return !DomUtils::findElementById(dom, TREE_ID).isNull();
 }
 
-void ExternalToolsDashboardWidget::addLimitationWarningIfNeeded(ExternalToolsTreeNode *parentNode, const QDomElement &listHeadElement) {
+void ExternalToolsDashboardWidget::addLimitationWarningIfNeeded(ExternalToolsTreeNode* parentNode, const QDomElement& listHeadElement) {
     QDomElement span = listHeadElement.lastChildElement("li").firstChildElement("span");
     if (!DomUtils::hasClass(span, "limitation-message")) {
         return;
@@ -141,7 +141,7 @@ void ExternalToolsDashboardWidget::addLimitationWarningIfNeeded(ExternalToolsTre
     addLimitationWarning(parentNode, text);
 }
 
-void ExternalToolsDashboardWidget::addLimitationWarning(ExternalToolsTreeNode *parentNode, const QString &limitationMessage) {
+void ExternalToolsDashboardWidget::addLimitationWarning(ExternalToolsTreeNode* parentNode, const QString& limitationMessage) {
     QString message = limitationMessage;
     if (message.isEmpty()) {
         SAFE_POINT(monitor != nullptr, "WorkflowMonitor is null!", );
@@ -181,8 +181,8 @@ QString ExternalToolsDashboardWidget::toHtml() const {
     return html;
 }
 
-static ExternalToolsTreeNode *findNode(const QList<ExternalToolsTreeNode *> &nodeList, const QString &objectName) {
-    for (const auto &node : qAsConst(nodeList)) {
+static ExternalToolsTreeNode* findNode(const QList<ExternalToolsTreeNode*>& nodeList, const QString& objectName) {
+    for (const auto& node : qAsConst(nodeList)) {
         if (node->objectName() == objectName) {
             return node;
         }
@@ -193,7 +193,7 @@ static ExternalToolsTreeNode *findNode(const QList<ExternalToolsTreeNode *> &nod
 #define MAX_SAME_LEVEL_NODES 100
 #define MAX_OUTPUT_CONTENT_SIZE 100000
 
-void ExternalToolsDashboardWidget::addLogEntry(const Monitor::LogEntry &entry) {
+void ExternalToolsDashboardWidget::addLogEntry(const Monitor::LogEntry& entry) {
     SAFE_POINT(monitor != nullptr, "WorkflowMonitor instance is null!", );
     QString newLine = QString(entry.lastLine)
                           .replace("<", "&lt;")
@@ -202,7 +202,7 @@ void ExternalToolsDashboardWidget::addLogEntry(const Monitor::LogEntry &entry) {
                           .replace("\r", "");
 
     QString actorNodeId = "actor_" + entry.actorId;
-    ExternalToolsTreeNode *actorNode = findNode(topLevelNodes, actorNodeId);
+    ExternalToolsTreeNode* actorNode = findNode(topLevelNodes, actorNodeId);
     if (actorNode == nullptr) {
         if (topLevelNodes.size() >= MAX_SAME_LEVEL_NODES) {
             addLimitationWarning();
@@ -213,7 +213,7 @@ void ExternalToolsDashboardWidget::addLogEntry(const Monitor::LogEntry &entry) {
     }
 
     QString toolNodeId = actorNodeId + "_run_" + QString::number(entry.actorRunNumber);
-    ExternalToolsTreeNode *toolNode = findNode(actorNode->children, toolNodeId);
+    ExternalToolsTreeNode* toolNode = findNode(actorNode->children, toolNodeId);
     if (toolNode == nullptr) {
         if (actorNode->children.size() > MAX_SAME_LEVEL_NODES) {
             addLimitationWarning(actorNode);
@@ -225,7 +225,7 @@ void ExternalToolsDashboardWidget::addLogEntry(const Monitor::LogEntry &entry) {
 
     bool isImportant = entry.contentType == 0;
     QString runNodeId = toolNodeId + "_tool_" + entry.toolName + "_run_" + QString::number(entry.toolRunNumber);
-    ExternalToolsTreeNode *runNode = findNode(toolNode->children, runNodeId);
+    ExternalToolsTreeNode* runNode = findNode(toolNode->children, runNodeId);
     if (runNode == nullptr) {
         if (toolNode->children.size() > MAX_SAME_LEVEL_NODES) {
             addLimitationWarning(toolNode);
@@ -240,14 +240,14 @@ void ExternalToolsDashboardWidget::addLogEntry(const Monitor::LogEntry &entry) {
 
     QString outputNodeId = toolNodeId + (entry.contentType == 0 ? "_stderr" : (entry.contentType == 1 ? "_stdout" : "_command"));
     int outputNodeKind = entry.contentType == 2 ? NODE_KIND_COMMAND : NODE_KIND_OUTPUT;
-    ExternalToolsTreeNode *outputNode = findNode(runNode->children, outputNodeId);
+    ExternalToolsTreeNode* outputNode = findNode(runNode->children, outputNodeId);
     QString outputNodeText = entry.contentType == 0 ? "Output log (stderr)" : (entry.contentType == 1 ? "Output log (stdout)" : "Command");
     if (outputNode == nullptr) {
         outputNode = addNodeToLayout(new ExternalToolsTreeNode(outputNodeKind, outputNodeId, outputNodeText, runNode, isImportant));
     }
 
     QString outputContentNodeId = outputNodeId + "_content";
-    ExternalToolsTreeNode *outputContentNode = findNode(outputNode->children, outputContentNodeId);
+    ExternalToolsTreeNode* outputContentNode = findNode(outputNode->children, outputContentNodeId);
     if (outputContentNode == nullptr) {
         outputContentNode = addNodeToLayout(new ExternalToolsTreeNode(NODE_KIND_LOG_CONTENT, outputContentNodeId, "", outputNode));
     }
@@ -264,7 +264,7 @@ void ExternalToolsDashboardWidget::addLogEntry(const Monitor::LogEntry &entry) {
     }
 }
 
-ExternalToolsTreeNode *ExternalToolsDashboardWidget::addNodeToLayout(ExternalToolsTreeNode *node) {
+ExternalToolsTreeNode* ExternalToolsDashboardWidget::addNodeToLayout(ExternalToolsTreeNode* node) {
     if (node->parent == nullptr) {
         layout->addWidget(node);
     } else {
@@ -294,7 +294,7 @@ static int getLevelByNodeKind(int kind) {
     SAFE_POINT(false, "Unknown kind: " + QString::number(kind), 0);
 }
 
-ExternalToolsTreeNode::ExternalToolsTreeNode(int kind, const QString &objectName, const QString &content, ExternalToolsTreeNode *parent, bool isImportant)
+ExternalToolsTreeNode::ExternalToolsTreeNode(int kind, const QString& objectName, const QString& content, ExternalToolsTreeNode* parent, bool isImportant)
     : kind(kind), parent(parent), content(content), isImportant(isImportant), isLogFull(false), badgeLabel(nullptr) {
     Q_ASSERT(!objectName.isEmpty());
     setObjectName(objectName);
@@ -327,7 +327,7 @@ bool ExternalToolsTreeNode::isExpanded() const {
     return children.size() > 0 && children.first()->isVisible();
 }
 
-ExternalToolsTreeNode *ExternalToolsTreeNode::getLastChildInHierarchyOrSelf() {
+ExternalToolsTreeNode* ExternalToolsTreeNode::getLastChildInHierarchyOrSelf() {
     return children.isEmpty() ? this : children.last()->getLastChildInHierarchyOrSelf();
 }
 
@@ -362,13 +362,13 @@ void ExternalToolsTreeNode::sl_copyRunCommand() {
     }
 }
 
-static bool isLastChild(const ExternalToolsTreeNode *node) {
+static bool isLastChild(const ExternalToolsTreeNode* node) {
     return node != nullptr && node->parent != nullptr && node->parent->children.last() == node;
 }
 
 #define BRANCH_X_PADDING 15
 
-void ExternalToolsTreeNode::paintEvent(QPaintEvent *event) {
+void ExternalToolsTreeNode::paintEvent(QPaintEvent* event) {
     QWidget::paintEvent(event);
     if (width() == 0 || height() == 0) {
         return;
@@ -377,7 +377,7 @@ void ExternalToolsTreeNode::paintEvent(QPaintEvent *event) {
     QPainter painter(this);
     painter.setPen(QPen(QBrush(QColor("#999999")), 1));
 
-    for (const ExternalToolsTreeNode *node = this; node != nullptr; node = node->parent) {
+    for (const ExternalToolsTreeNode* node = this; node != nullptr; node = node->parent) {
         int level = getLevelByNodeKind(node->kind);
         int x = (level - 1) * TREE_NODE_X_OFFSET + BRANCH_X_PADDING;
         if (node == this) {
@@ -450,7 +450,7 @@ static QString getBadgeLabelStyle(int kind, bool isImportant) {
     return style;
 };
 
-BadgeLabel::BadgeLabel(int kind, const QString &text, bool isImportant)
+BadgeLabel::BadgeLabel(int kind, const QString& text, bool isImportant)
     : kind(kind), titleLabel(nullptr), copyButton(nullptr), logView(nullptr) {
     auto layout = new QHBoxLayout();
     layout->setMargin(0);

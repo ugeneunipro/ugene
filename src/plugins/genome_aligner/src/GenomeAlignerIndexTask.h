@@ -48,7 +48,7 @@ public:
 class GenomeAlignerIndexTask : public Task {
     Q_OBJECT
 public:
-    GenomeAlignerIndexTask(const GenomeAlignerIndexSettings &settings);
+    GenomeAlignerIndexTask(const GenomeAlignerIndexSettings& settings);
     ~GenomeAlignerIndexTask();
     void run();
     qint64 getFreeMemSize() {
@@ -58,17 +58,17 @@ public:
         return gpuFreeSize;
     }
 
-    GenomeAlignerIndex *index;
+    GenomeAlignerIndex* index;
 
 private:
     SAType seqLength;  // reference sequence's length
     int w;  // window size
     QString baseFileName;  // base of the index's file name
     BitsTable bt;
-    const quint32 *bitTable;
+    const quint32* bitTable;
     int bitCharLen;
     BMType bitFilter;
-    SAType *objLens;
+    SAType* objLens;
     int objCount;
     char unknownChar;
 

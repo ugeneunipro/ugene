@@ -35,7 +35,7 @@ public:
     U2RawData()
         : U2Object() {
     }
-    U2RawData(const U2DbiRef &dbiRef)
+    U2RawData(const U2DbiRef& dbiRef)
         : U2Object(U2DataId(), dbiRef.dbiId, 0) {
     }
 

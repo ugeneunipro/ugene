@@ -38,7 +38,7 @@
 
 namespace U2 {
 
-ExportConsensusTask::ExportConsensusTask(const ExportConsensusTaskSettings &settings_)
+ExportConsensusTask::ExportConsensusTask(const ExportConsensusTaskSettings& settings_)
     : DocumentProviderTask("", TaskFlags_NR_FOSE_COSC),
       settings(settings_),
       consensusTask(nullptr) {
@@ -53,10 +53,10 @@ void ExportConsensusTask::prepare() {
     if (settings.saveToFile) {
         SAFE_POINT_EXT(!settings.fileName.isEmpty(), setError(tr("File name cannot be empty")), );
 
-        DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(settings.formatId);
+        DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(settings.formatId);
         SAFE_POINT_EXT(df != nullptr, setError(tr("Internal: couldn't find document format with id '%1'").arg(settings.formatId)), );
 
-        IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(settings.fileName));
+        IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(settings.fileName));
         resultDocument = df->createNewLoadedDocument(iof, settings.fileName, stateInfo);
         CHECK_OP(stateInfo, );
 
@@ -95,7 +95,7 @@ void ExportConsensusTask::prepare() {
     if (settings.saveToFile) {
         addSubTask(new SaveDocumentTask(resultDocument));
 
-        Project *p = AppContext::getProject();
+        Project* p = AppContext::getProject();
         if (p != nullptr && p->findDocumentByURL(resultDocument->getURL()) != nullptr) {
             // if already has such document in project, do not add
             settings.addToProject = false;
@@ -107,8 +107,8 @@ void ExportConsensusTask::prepare() {
     }
 }
 
-QList<Task *> ExportConsensusTask::onSubTaskFinished(Task *finished) {
-    QList<Task *> newSubTasks;
+QList<Task*> ExportConsensusTask::onSubTaskFinished(Task* finished) {
+    QList<Task*> newSubTasks;
     if (finished->hasError() || finished->isCanceled()) {
         return newSubTasks;
     }
@@ -117,7 +117,7 @@ QList<Task *> ExportConsensusTask::onSubTaskFinished(Task *finished) {
         resultSequence = seqImporter.finalizeSequence(stateInfo);
         CHECK_OP(stateInfo, newSubTasks);
         if (settings.saveToFile) {
-            U2SequenceObject *seqObj = new U2SequenceObject(resultSequence.visualName, U2EntityRef(resultDocument->getDbiRef(), resultSequence.id));
+            U2SequenceObject* seqObj = new U2SequenceObject(resultSequence.visualName, U2EntityRef(resultDocument->getDbiRef(), resultSequence.id));
             resultDocument->addObject(seqObj);
         }
     }
@@ -130,7 +130,7 @@ AssemblyConsensusTaskSettings ExportConsensusTask::getNextSettings() {
     return iterSettings;
 }
 
-void ExportConsensusTask::reportResult(const ConsensusInfo &result) {
+void ExportConsensusTask::reportResult(const ConsensusInfo& result) {
     QByteArray consensus = result.consensus;
 
     if (!settings.keepGaps) {

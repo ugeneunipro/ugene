@@ -37,7 +37,7 @@ namespace U2 {
 
 const QString ExportAnnotationsDialog::CSV_FORMAT_ID("csv");
 
-ExportAnnotationsDialog::ExportAnnotationsDialog(const QString &filename, QWidget *parent)
+ExportAnnotationsDialog::ExportAnnotationsDialog(const QString& filename, QWidget* parent)
     : QDialog(parent), ui(new Ui_ExportAnnotationsDialog()) {
     ui->setupUi(this);
     lastAddToProjectState = ui->addToProjectCheck->isChecked();
@@ -54,7 +54,7 @@ ExportAnnotationsDialog::~ExportAnnotationsDialog() {
     delete ui;
 }
 
-void ExportAnnotationsDialog::initSaveController(const QString &filename) {
+void ExportAnnotationsDialog::initSaveController(const QString& filename) {
     SaveDocumentControllerConfig config;
     config.defaultDomain = "ExportAnnotationsDialogHelperDomain";
     config.defaultFileName = filename;
@@ -75,7 +75,7 @@ void ExportAnnotationsDialog::initSaveController(const QString &filename) {
     saveController = new SaveDocumentController(config, formatConstraints, this);
     saveController->addFormat(CSV_FORMAT_ID, QString(CSV_FORMAT_ID).toUpper(), QStringList() << CSV_FORMAT_ID);
 
-    connect(saveController, SIGNAL(si_formatChanged(const QString &)), SLOT(sl_formatChanged(const QString &)));
+    connect(saveController, SIGNAL(si_formatChanged(const QString&)), SLOT(sl_formatChanged(const QString&)));
     connect(ui->addToProjectCheck, SIGNAL(clicked(bool)), SLOT(sl_addToProjectStateChanged(bool)));
 }
 
@@ -95,7 +95,7 @@ bool ExportAnnotationsDialog::addToProject() const {
     return ui->addToProjectCheck->isChecked();
 }
 
-void ExportAnnotationsDialog::sl_formatChanged(const QString &newFormatId) {
+void ExportAnnotationsDialog::sl_formatChanged(const QString& newFormatId) {
     const bool isCsvFormat = (CSV_FORMAT_ID == newFormatId);
     ui->exportSequenceCheck->setEnabled(isCsvFormat);
     ui->exportSequenceNameCheck->setEnabled(isCsvFormat);

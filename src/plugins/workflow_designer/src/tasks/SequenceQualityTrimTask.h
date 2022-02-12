@@ -34,7 +34,7 @@ class SequenceQualityTrimTaskSettings {
 public:
     SequenceQualityTrimTaskSettings();
 
-    U2SequenceObject *sequenceObject;
+    U2SequenceObject* sequenceObject;
 
     int qualityTreshold;
     int minSequenceLength;
@@ -44,10 +44,10 @@ public:
 class SequenceQualityTrimTask : public Task {
     Q_OBJECT
 public:
-    SequenceQualityTrimTask(const SequenceQualityTrimTaskSettings &settings);
+    SequenceQualityTrimTask(const SequenceQualityTrimTaskSettings& settings);
     ~SequenceQualityTrimTask();
 
-    U2SequenceObject *takeTrimmedSequence();
+    U2SequenceObject* takeTrimmedSequence();
 
 private:
     void run();
@@ -58,11 +58,11 @@ private:
     void cloneChromatogram();
     void restoreRelation();
     U2Region trimSequence();
-    void trimChromatogram(const U2Region &regionToCrop);
+    void trimChromatogram(const U2Region& regionToCrop);
 
     const SequenceQualityTrimTaskSettings settings;
-    U2SequenceObject *trimmedSequenceObject;
-    DNAChromatogramObject *trimmedChromatogramObject;
+    U2SequenceObject* trimmedSequenceObject;
+    DNAChromatogramObject* trimmedChromatogramObject;
     bool isFilteredOut;
 };
 

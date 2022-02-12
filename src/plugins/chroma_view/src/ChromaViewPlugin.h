@@ -39,28 +39,28 @@ public:
     ~ChromaViewPlugin();
 
 private:
-    GObjectViewWindowContext *viewCtx;
+    GObjectViewWindowContext* viewCtx;
 };
 
 class ChromaViewContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    ChromaViewContext(QObject *p);
+    ChromaViewContext(QObject* p);
 
-    bool canHandle(GObjectView *v, GObject *o) override;
+    bool canHandle(GObjectView* v, GObject* o) override;
 protected slots:
     void sl_showChromatogram();
-    void sl_sequenceWidgetAdded(ADVSequenceWidget *);
+    void sl_sequenceWidgetAdded(ADVSequenceWidget*);
 
 protected:
-    void initViewContext(GObjectView *view) override;
+    void initViewContext(GObjectView* view) override;
 };
 
 class ChromaViewAction : public ADVSequenceWidgetAction {
     Q_OBJECT
 public:
     ChromaViewAction();
-    ChromatogramView *view;
+    ChromatogramView* view;
 };
 
 }  // namespace U2

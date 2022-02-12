@@ -29,7 +29,7 @@ namespace U2 {
 
 const qint64 MaIterator::INVALID_POSITION = -1;
 
-MaIterator::MaIterator(const MultipleAlignment &ma, NavigationDirection direction, const QList<int> &_rowsIndexes)
+MaIterator::MaIterator(const MultipleAlignment& ma, NavigationDirection direction, const QList<int>& _rowsIndexes)
     : ma(ma),
       rowsIndexes(_rowsIndexes),
       direction(direction),
@@ -55,7 +55,7 @@ char MaIterator::next() {
     return *(operator++());
 }
 
-MaIterator &MaIterator::operator++() {
+MaIterator& MaIterator::operator++() {
     SAFE_POINT(hasNext(), "Out of boundaries", *this);
     position = getNextPosition();
     SAFE_POINT(isInRange(position), "Out of boundaries", *this);
@@ -72,7 +72,7 @@ char MaIterator::operator*() {
     return ma->charAt(maPoint.y(), maPoint.x());
 }
 
-bool MaIterator::operator==(const MaIterator &other) const {
+bool MaIterator::operator==(const MaIterator& other) const {
     return ma == other.ma && position == other.position;
 }
 
@@ -84,7 +84,7 @@ void MaIterator::setIterateInCoreRegionsOnly(bool coreRegionsOnly) {
     this->coreRegionsOnly = coreRegionsOnly;
 }
 
-void MaIterator::setMaPoint(const QPoint &maPoint) {
+void MaIterator::setMaPoint(const QPoint& maPoint) {
     const qint64 newPosition = maPoint.y() * ma->getLength() + maPoint.x();
     SAFE_POINT(isInRange(newPosition), "The new position is out of boundaries", );
     position = newPosition;

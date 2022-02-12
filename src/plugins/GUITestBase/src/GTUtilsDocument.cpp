@@ -47,16 +47,16 @@ const QString GTUtilsDocument::DocumentUnloaded = "Unloaded";
 #define GT_CLASS_NAME "GTUtilsDocument"
 
 #define GT_METHOD_NAME "getDocument"
-Document *GTUtilsDocument::getDocument(HI::GUITestOpStatus &os, const QString &documentName, const GTGlobals::FindOptions &options) {
-    Project *project = nullptr;
+Document* GTUtilsDocument::getDocument(HI::GUITestOpStatus& os, const QString& documentName, const GTGlobals::FindOptions& options) {
+    Project* project = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         project = AppContext::getProject();
         if (project == nullptr) {  // Wait up to 'GT_OP_WAIT_MILLIS' before failing.
             continue;
         }
-        QList<Document *> documents = project->getDocuments();
-        for (Document *document : qAsConst(documents)) {
+        QList<Document*> documents = project->getDocuments();
+        for (Document* document : qAsConst(documents)) {
             if (GTUtils::matchText(os, documentName, document->getName(), options.matchPolicy)) {
                 // Wait, so we 100% sure that document is not only in the project model but on the project view model too.
                 GTThread::waitForMainThread();
@@ -75,13 +75,13 @@ Document *GTUtilsDocument::getDocument(HI::GUITestOpStatus &os, const QString &d
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkDocument"
-void GTUtilsDocument::checkDocument(HI::GUITestOpStatus &os, const QString &documentName, const GObjectViewFactoryId &id) {
+void GTUtilsDocument::checkDocument(HI::GUITestOpStatus& os, const QString& documentName, const GObjectViewFactoryId& id) {
     // TODO: rework the whole method to use ProjectTreeView to check if document is available.
-    Document *document = getDocument(os, documentName);
+    Document* document = getDocument(os, documentName);
     if (id.isEmpty()) {
         return;
     }
-    GObjectView *view = nullptr;
+    GObjectView* view = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && view == nullptr; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         view = getDocumentGObjectView(os, document);
@@ -97,7 +97,7 @@ void GTUtilsDocument::checkDocument(HI::GUITestOpStatus &os, const QString &docu
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "removeDocument"
-void GTUtilsDocument::removeDocument(HI::GUITestOpStatus &os, const QString &documentName, GTGlobals::UseMethod method) {
+void GTUtilsDocument::removeDocument(HI::GUITestOpStatus& os, const QString& documentName, GTGlobals::UseMethod method) {
     switch (method) {
         case GTGlobals::UseMouse: {
             GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__REMOVE_SELECTED}, method));
@@ -117,11 +117,11 @@ void GTUtilsDocument::removeDocument(HI::GUITestOpStatus &os, const QString &doc
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getDocumentGObjectView"
-GObjectView *GTUtilsDocument::getDocumentGObjectView(HI::GUITestOpStatus &os, Document *d) {
+GObjectView* GTUtilsDocument::getDocumentGObjectView(HI::GUITestOpStatus& os, Document* d) {
     GT_CHECK_RESULT(d != nullptr, "Document* is NULL", nullptr);
 
-    QList<GObjectView *> gObjectViews = getAllGObjectViews();
-    foreach (GObjectView *view, gObjectViews) {
+    QList<GObjectView*> gObjectViews = getAllGObjectViews();
+    foreach (GObjectView* view, gObjectViews) {
         if (view->containsDocumentObjects(d)) {
             return view;
         }
@@ -132,7 +132,7 @@ GObjectView *GTUtilsDocument::getDocumentGObjectView(HI::GUITestOpStatus &os, Do
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isDocumentLoaded"
-bool GTUtilsDocument::isDocumentLoaded(HI::GUITestOpStatus &os, const QString &documentName) {
+bool GTUtilsDocument::isDocumentLoaded(HI::GUITestOpStatus& os, const QString& documentName) {
     QModelIndex index = GTUtilsProjectTreeView::findIndex(os, GTUtilsProjectTreeView::getTreeView(os), documentName);
     QString s = index.data().toString();
     return !s.contains("unloaded");
@@ -140,8 +140,8 @@ bool GTUtilsDocument::isDocumentLoaded(HI::GUITestOpStatus &os, const QString &d
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "saveDocument"
-void GTUtilsDocument::saveDocument(HI::GUITestOpStatus &os, const QString &documentName) {
-    Runnable *popupChooser = new PopupChooser(os, QStringList() << ACTION_PROJECT__SAVE_DOCUMENT, GTGlobals::UseMouse);
+void GTUtilsDocument::saveDocument(HI::GUITestOpStatus& os, const QString& documentName) {
+    Runnable* popupChooser = new PopupChooser(os, QStringList() << ACTION_PROJECT__SAVE_DOCUMENT, GTGlobals::UseMouse);
 
     GTUtilsDialog::waitForDialog(os, popupChooser);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, documentName) + QPoint(1, 0));  // dirty hack
@@ -152,13 +152,13 @@ void GTUtilsDocument::saveDocument(HI::GUITestOpStatus &os, const QString &docum
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "unloadDocument"
-void GTUtilsDocument::unloadDocument(HI::GUITestOpStatus &os, const QString &documentName, bool waitForMessageBox) {
+void GTUtilsDocument::unloadDocument(HI::GUITestOpStatus& os, const QString& documentName, bool waitForMessageBox) {
     GT_CHECK_RESULT(isDocumentLoaded(os, documentName), "Document is not loaded", );
 
-    Runnable *popupChooser = new PopupChooser(os, QStringList() << ACTION_PROJECT__UNLOAD_SELECTED, GTGlobals::UseMouse);
+    Runnable* popupChooser = new PopupChooser(os, QStringList() << ACTION_PROJECT__UNLOAD_SELECTED, GTGlobals::UseMouse);
 
     if (waitForMessageBox) {
-        MessageBoxDialogFiller *filler = new MessageBoxDialogFiller(os, "Yes");
+        MessageBoxDialogFiller* filler = new MessageBoxDialogFiller(os, "Yes");
         GTUtilsDialog::waitForDialog(os, filler);
     }
 
@@ -171,7 +171,7 @@ void GTUtilsDocument::unloadDocument(HI::GUITestOpStatus &os, const QString &doc
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "loadDocument"
-void GTUtilsDocument::loadDocument(HI::GUITestOpStatus &os, const QString &documentName) {
+void GTUtilsDocument::loadDocument(HI::GUITestOpStatus& os, const QString& documentName) {
     GT_CHECK_RESULT(!isDocumentLoaded(os, documentName), "Document is loaded", );
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, documentName) + QPoint(1, 0));  // dirty hack
@@ -182,21 +182,21 @@ void GTUtilsDocument::loadDocument(HI::GUITestOpStatus &os, const QString &docum
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "lockDocument"
-void GTUtilsDocument::lockDocument(HI::GUITestOpStatus &os, const QString &documentName) {
+void GTUtilsDocument::lockDocument(HI::GUITestOpStatus& os, const QString& documentName) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Lock document for editing"));
     GTUtilsProjectTreeView::click(os, documentName, Qt::RightButton);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "unlockDocument"
-void GTUtilsDocument::unlockDocument(HI::GUITestOpStatus &os, const QString &documentName) {
+void GTUtilsDocument::unlockDocument(HI::GUITestOpStatus& os, const QString& documentName) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Unlock document for editing"));
     GTUtilsProjectTreeView::click(os, documentName, Qt::RightButton);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkIfDocumentIsLocked"
-void GTUtilsDocument::checkIfDocumentIsLocked(GUITestOpStatus &os, const QString &documentName, bool isLocked) {
+void GTUtilsDocument::checkIfDocumentIsLocked(GUITestOpStatus& os, const QString& documentName, bool isLocked) {
     const QIcon actualIcon = GTUtilsProjectTreeView::getIcon(os, GTUtilsProjectTreeView::findIndex(os, QStringList() << documentName));
     const QIcon unlockedDocumentIcon(":/core/images/document.png");
     const QIcon lockedDocumentIcon(":/core/images/ro_document.png");
@@ -208,15 +208,15 @@ void GTUtilsDocument::checkIfDocumentIsLocked(GUITestOpStatus &os, const QString
 }
 #undef GT_METHOD_NAME
 
-QList<GObjectView *> GTUtilsDocument::getAllGObjectViews() {
-    QList<GObjectView *> gObjectViews;
+QList<GObjectView*> GTUtilsDocument::getAllGObjectViews() {
+    QList<GObjectView*> gObjectViews;
 
-    MWMDIManager *mwMDIManager = AppContext::getMainWindow()->getMDIManager();
-    QList<MWMDIWindow *> windows = mwMDIManager->getWindows();
+    MWMDIManager* mwMDIManager = AppContext::getMainWindow()->getMDIManager();
+    QList<MWMDIWindow*> windows = mwMDIManager->getWindows();
 
-    foreach (MWMDIWindow *w, windows) {
-        if (GObjectViewWindow *gObjectViewWindow = qobject_cast<GObjectViewWindow *>(w)) {
-            if (GObjectView *gObjectView = gObjectViewWindow->getObjectView()) {
+    foreach (MWMDIWindow* w, windows) {
+        if (GObjectViewWindow* gObjectViewWindow = qobject_cast<GObjectViewWindow*>(w)) {
+            if (GObjectView* gObjectView = gObjectViewWindow->getObjectView()) {
                 gObjectViews.append(gObjectView);
             }
         }

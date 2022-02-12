@@ -34,17 +34,17 @@ const int LOWER_BOUNDARY_FOR_HIT_COUNTER_PARAMETER = 1;
 const int UPPER_BOUNDARY_FOR_HIT_COUNTER_PARAMETER = std::numeric_limits<int>::max();
 const int HIT_COUNT_AFTER_RESET = 0;
 
-const char *WRONG_INPUT_MESSAGE_BOX_TITLE = "Incorrect input";
-const char *WRONG_INPUT_MESSAGE_BOX_CONTENT = "The specified hit count target is not valid";
+const char* WRONG_INPUT_MESSAGE_BOX_TITLE = "Incorrect input";
+const char* WRONG_INPUT_MESSAGE_BOX_CONTENT = "The specified hit count target is not valid";
 
 namespace U2 {
 
-BreakpointHitCountDialog::BreakpointHitCountDialog(const QStringList &hitCountConditions,
-                                                   const QString &conditionOnLaunch,
+BreakpointHitCountDialog::BreakpointHitCountDialog(const QStringList& hitCountConditions,
+                                                   const QString& conditionOnLaunch,
                                                    quint32 hitCountParameterOnLaunch,
                                                    quint32 hitCountOnLaunch,
-                                                   const QStringList &hitCountersListWithoutParameter,
-                                                   QWidget *parent,
+                                                   const QStringList& hitCountersListWithoutParameter,
+                                                   QWidget* parent,
                                                    Qt::WindowFlags f)
     : QDialog(parent, f),
       initialCondition(conditionOnLaunch),
@@ -66,9 +66,9 @@ BreakpointHitCountDialog::BreakpointHitCountDialog(const QStringList &hitCountCo
     ui->currentHitCountValueLabel->setText(QString::number(hitCountOnLaunch));
     ui->hitParameterEdit->setText(QString::number(hitCountParameterOnLaunch));
 
-    QPushButton *resetButton = ui->buttonBox->button(QDialogButtonBox::Reset);
-    QPushButton *okButton = ui->buttonBox->button(QDialogButtonBox::Ok);
-    QPushButton *cancelButton = ui->buttonBox->button(QDialogButtonBox::Cancel);
+    QPushButton* resetButton = ui->buttonBox->button(QDialogButtonBox::Reset);
+    QPushButton* okButton = ui->buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* cancelButton = ui->buttonBox->button(QDialogButtonBox::Cancel);
 
     resetButton->setText(tr("Reset"));
     okButton->setText(tr("OK"));
@@ -76,7 +76,7 @@ BreakpointHitCountDialog::BreakpointHitCountDialog(const QStringList &hitCountCo
 
     connect(resetButton, SIGNAL(clicked()), this, SLOT(sl_resetHitCount()));
     connect(okButton, SIGNAL(clicked()), this, SLOT(sl_dialogAccepted()));
-    connect(ui->hitConditionCombo, SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_hitConditionChanged(const QString &)));
+    connect(ui->hitConditionCombo, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_hitConditionChanged(const QString&)));
 }
 
 BreakpointHitCountDialog::~BreakpointHitCountDialog() {
@@ -108,7 +108,7 @@ void BreakpointHitCountDialog::sl_resetHitCount() {
     ui->currentHitCountValueLabel->setText(QString::number(HIT_COUNT_AFTER_RESET));
 }
 
-void BreakpointHitCountDialog::sl_hitConditionChanged(const QString &text) {
+void BreakpointHitCountDialog::sl_hitConditionChanged(const QString& text) {
     chosenCondition = text;
     if (hitCountersConditionsWithoutParameter.contains(ui->hitConditionCombo->currentText())) {
         ui->hitParameterEdit->hide();

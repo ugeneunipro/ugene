@@ -30,12 +30,12 @@ namespace U2 {
 class ConnectionHelper {
     Q_DISABLE_COPY(ConnectionHelper)
 public:
-    ConnectionHelper(const U2DbiRef &dbiRef, U2OpStatus &os);
+    ConnectionHelper(const U2DbiRef& dbiRef, U2OpStatus& os);
     ~ConnectionHelper();
 
-    DbiConnection *con;
-    U2Dbi *dbi;
-    U2ObjectDbi *oDbi;
+    DbiConnection* con;
+    U2Dbi* dbi;
+    U2ObjectDbi* oDbi;
 };
 
 }  // namespace U2

@@ -57,7 +57,7 @@ bool DataConfig::isText() const {
     return (BaseTypes::STRING_TYPE()->getId() == type) && (BaseDocumentFormats::PLAIN_TEXT == format);
 }
 
-bool DataConfig::operator==(const DataConfig &other) const {
+bool DataConfig::operator==(const DataConfig& other) const {
     return attributeId == other.attributeId && attrName == other.attrName && type == other.type && format == other.format && description == other.description;
 }
 
@@ -97,7 +97,7 @@ bool AttributeConfig::isFolder() const {
     return type == INPUT_FOLDER_URL_TYPE || type == OUTPUT_FOLDER_URL_TYPE;
 }
 
-bool AttributeConfig::operator==(const AttributeConfig &other) const {
+bool AttributeConfig::operator==(const AttributeConfig& other) const {
     return attributeId == other.attributeId && attrName == other.attrName && type == other.type && defaultValue == other.defaultValue && description == other.description && flags == other.flags;
 }
 
@@ -110,7 +110,7 @@ ExternalProcessConfig::ExternalProcessConfig()
         return false; \
     }
 
-bool ExternalProcessConfig::operator==(const ExternalProcessConfig &other) const {
+bool ExternalProcessConfig::operator==(const ExternalProcessConfig& other) const {
     CHECK_EQ(inputs.size(), other.inputs.size());
     CHECK_EQ(outputs.size(), other.outputs.size());
     CHECK_EQ(attrs.size(), other.attrs.size());
@@ -123,28 +123,28 @@ bool ExternalProcessConfig::operator==(const ExternalProcessConfig &other) const
     CHECK_EQ(customToolPath, other.customToolPath);
     CHECK_EQ(integratedToolId, other.integratedToolId);
 
-    foreach (const DataConfig &in, inputs) {
+    foreach (const DataConfig& in, inputs) {
         CHECK_EQ(other.inputs.contains(in), true);
     }
-    foreach (const DataConfig &out, outputs) {
+    foreach (const DataConfig& out, outputs) {
         CHECK_EQ(other.outputs.contains(out), true);
     }
-    foreach (const AttributeConfig &at, attrs) {
+    foreach (const AttributeConfig& at, attrs) {
         CHECK_EQ(other.attrs.contains(at), true);
     }
 
     return true;
 }
 
-bool ExternalProcessConfig::operator!=(const ExternalProcessConfig &other) const {
+bool ExternalProcessConfig::operator!=(const ExternalProcessConfig& other) const {
     return !operator==(other);
 }
 
-ExternalToolCfgRegistry::ExternalToolCfgRegistry(QObject *_parent)
+ExternalToolCfgRegistry::ExternalToolCfgRegistry(QObject* _parent)
     : QObject(_parent) {
 }
 
-bool ExternalToolCfgRegistry::registerExternalTool(ExternalProcessConfig *cfg) {
+bool ExternalToolCfgRegistry::registerExternalTool(ExternalProcessConfig* cfg) {
     if (configs.contains(cfg->id)) {
         return false;
     } else {
@@ -153,16 +153,16 @@ bool ExternalToolCfgRegistry::registerExternalTool(ExternalProcessConfig *cfg) {
     }
 }
 
-void ExternalToolCfgRegistry::unregisterConfig(const QString &id) {
+void ExternalToolCfgRegistry::unregisterConfig(const QString& id) {
     // TODO: UTI-294
     configs.remove(id);
 }
 
-ExternalProcessConfig *ExternalToolCfgRegistry::getConfigById(const QString &id) const {
+ExternalProcessConfig* ExternalToolCfgRegistry::getConfigById(const QString& id) const {
     return configs.value(id, nullptr);
 }
 
-QList<ExternalProcessConfig *> ExternalToolCfgRegistry::getConfigs() const {
+QList<ExternalProcessConfig*> ExternalToolCfgRegistry::getConfigs() const {
     return configs.values();
 }
 

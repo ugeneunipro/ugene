@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-CalculateCoveragePerBaseOnRegionTask::CalculateCoveragePerBaseOnRegionTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, const U2Region &region)
+CalculateCoveragePerBaseOnRegionTask::CalculateCoveragePerBaseOnRegionTask(const U2DbiRef& dbiRef, const U2DataId& assemblyId, const U2Region& region)
     : Task(tr("Calculate coverage per base for assembly on region (%1, %2)").arg(region.startPos).arg(region.endPos()), TaskFlag_None),
       dbiRef(dbiRef),
       assemblyId(assemblyId),
@@ -48,7 +48,7 @@ CalculateCoveragePerBaseOnRegionTask::~CalculateCoveragePerBaseOnRegionTask() {
 void CalculateCoveragePerBaseOnRegionTask::run() {
     DbiConnection con(dbiRef, stateInfo);
     CHECK_OP(stateInfo, );
-    U2AssemblyDbi *assemblyDbi = con.dbi->getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = con.dbi->getAssemblyDbi();
     SAFE_POINT_EXT(nullptr != assemblyDbi, setError(tr("Assembly DBI is NULL")), );
 
     results->resize(region.length);
@@ -61,17 +61,17 @@ void CalculateCoveragePerBaseOnRegionTask::run() {
     }
 }
 
-const U2Region &CalculateCoveragePerBaseOnRegionTask::getRegion() const {
+const U2Region& CalculateCoveragePerBaseOnRegionTask::getRegion() const {
     return region;
 }
 
-QVector<CoveragePerBaseInfo> *CalculateCoveragePerBaseOnRegionTask::takeResult() {
-    QVector<CoveragePerBaseInfo> *result = results;
+QVector<CoveragePerBaseInfo>* CalculateCoveragePerBaseOnRegionTask::takeResult() {
+    QVector<CoveragePerBaseInfo>* result = results;
     results = nullptr;
     return result;
 }
 
-void CalculateCoveragePerBaseOnRegionTask::processRead(const U2AssemblyRead &read) {
+void CalculateCoveragePerBaseOnRegionTask::processRead(const U2AssemblyRead& read) {
     const qint64 startPos = qMax(read->leftmostPos, region.startPos);
     const qint64 endPos = qMin(read->leftmostPos + read->effectiveLen, region.endPos());
     const U2Region regionToProcess = U2Region(startPos, endPos - startPos);
@@ -79,7 +79,7 @@ void CalculateCoveragePerBaseOnRegionTask::processRead(const U2AssemblyRead &rea
     // we have used effective length of the read, so insertions/deletions are already taken into account
     // cigarVector can be longer than needed
     QVector<U2CigarOp> cigarVector;
-    foreach (const U2CigarToken &cigar, read->cigar) {
+    foreach (const U2CigarToken& cigar, read->cigar) {
         cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
     }
 
@@ -89,7 +89,7 @@ void CalculateCoveragePerBaseOnRegionTask::processRead(const U2AssemblyRead &rea
 
     for (int positionOffset = 0, cigarOffset = 0, deletionsCount = 0, insertionsCount = 0; regionToProcess.startPos + positionOffset < regionToProcess.endPos(); positionOffset++) {
         char currentBase = 'N';
-        CoveragePerBaseInfo &info = (*results)[regionToProcess.startPos + positionOffset - region.startPos];
+        CoveragePerBaseInfo& info = (*results)[regionToProcess.startPos + positionOffset - region.startPos];
         const U2CigarOp cigarOp = nextCigarOp(cigarVector, cigarOffset, insertionsCount);
         CHECK_OP(stateInfo, );
 
@@ -115,7 +115,7 @@ void CalculateCoveragePerBaseOnRegionTask::processRead(const U2AssemblyRead &rea
     }
 }
 
-U2CigarOp CalculateCoveragePerBaseOnRegionTask::nextCigarOp(const QVector<U2CigarOp> &cigarVector, int &index, int &insertionsCount) {
+U2CigarOp CalculateCoveragePerBaseOnRegionTask::nextCigarOp(const QVector<U2CigarOp>& cigarVector, int& index, int& insertionsCount) {
     U2CigarOp cigarOp = U2CigarOp_Invalid;
 
     do {
@@ -131,7 +131,7 @@ U2CigarOp CalculateCoveragePerBaseOnRegionTask::nextCigarOp(const QVector<U2Ciga
     return cigarOp;
 }
 
-CalculateCoveragePerBaseTask::CalculateCoveragePerBaseTask(const U2DbiRef &_dbiRef, const U2DataId &_assemblyId)
+CalculateCoveragePerBaseTask::CalculateCoveragePerBaseTask(const U2DbiRef& _dbiRef, const U2DataId& _assemblyId)
     : Task(tr("Calculate coverage per base for assembly"), TaskFlags_NR_FOSE_COSC),
       dbiRef(_dbiRef),
       assemblyId(_assemblyId),
@@ -149,8 +149,8 @@ void CalculateCoveragePerBaseTask::prepare() {
     addSubTask(getLengthTask);
 }
 
-QList<Task *> CalculateCoveragePerBaseTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> CalculateCoveragePerBaseTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     CHECK_OP(stateInfo, res);
 
     if (subTask == getLengthTask) {
@@ -161,7 +161,7 @@ QList<Task *> CalculateCoveragePerBaseTask::onSubTaskFinished(Task *subTask) {
             res.append(new CalculateCoveragePerBaseOnRegionTask(dbiRef, assemblyId, region));
         }
     } else {
-        CalculateCoveragePerBaseOnRegionTask *calculateTask = qobject_cast<CalculateCoveragePerBaseOnRegionTask *>(subTask);
+        CalculateCoveragePerBaseOnRegionTask* calculateTask = qobject_cast<CalculateCoveragePerBaseOnRegionTask*>(subTask);
         SAFE_POINT_EXT(nullptr != calculateTask, setError(tr("An unexpected subtask")), res);
 
         results.insert(calculateTask->getRegion().startPos, calculateTask->takeResult());
@@ -179,8 +179,8 @@ bool CalculateCoveragePerBaseTask::areThereUnprocessedResults() const {
     return !results.isEmpty();
 }
 
-QVector<CoveragePerBaseInfo> *CalculateCoveragePerBaseTask::takeResult(qint64 startPos) {
-    QVector<CoveragePerBaseInfo> *result = results.value(startPos, nullptr);
+QVector<CoveragePerBaseInfo>* CalculateCoveragePerBaseTask::takeResult(qint64 startPos) {
+    QVector<CoveragePerBaseInfo>* result = results.value(startPos, nullptr);
     results.remove(startPos);
     return result;
 }
@@ -188,7 +188,7 @@ QVector<CoveragePerBaseInfo> *CalculateCoveragePerBaseTask::takeResult(qint64 st
 void GetAssemblyLengthTask::run() {
     DbiConnection con(dbiRef, stateInfo);
     CHECK_OP(stateInfo, );
-    U2AttributeDbi *attributeDbi = con.dbi->getAttributeDbi();
+    U2AttributeDbi* attributeDbi = con.dbi->getAttributeDbi();
     SAFE_POINT_EXT(nullptr != attributeDbi, setError(tr("Attribute DBI is NULL")), );
 
     const U2IntegerAttribute lengthAttribute = U2AttributeUtils::findIntegerAttribute(attributeDbi, assemblyId, U2BaseAttributeName::reference_length, stateInfo);

@@ -23,7 +23,7 @@
 
 namespace U2 {
 
-IdMapping::IdMapping(const QString &_srcId, const QString &_dstId)
+IdMapping::IdMapping(const QString& _srcId, const QString& _dstId)
     : srcId(_srcId), dstId(_dstId) {
 }
 

@@ -61,18 +61,18 @@ public:
         bool addResultToProject = true;
     };
 
-    AlignToReferenceBlastCmdlineTask(const Settings &settings);
+    AlignToReferenceBlastCmdlineTask(const Settings& settings);
 
 private:
     void prepare() override;
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
     void run() override;
     ReportResult report() override;
     QString generateReport() const override;
 
     Settings settings;
-    CmdlineInOutTaskRunner *cmdlineTask = nullptr;
-    LoadDocumentTask *loadRef = nullptr;
+    CmdlineInOutTaskRunner* cmdlineTask = nullptr;
+    LoadDocumentTask* loadRef = nullptr;
 
     QTemporaryFile reportFile;
     QString reportString;
@@ -91,7 +91,7 @@ private:
 class AlignToReferenceBlastDialog : public QDialog, public Ui_AlignToReferenceBlastDialog {
     Q_OBJECT
 public:
-    AlignToReferenceBlastDialog(QWidget *parent);
+    AlignToReferenceBlastDialog(QWidget* parent);
     AlignToReferenceBlastCmdlineTask::Settings getSettings() const;
 
 public slots:
@@ -101,13 +101,13 @@ private slots:
     void sl_setReference();
     void sl_addRead();
     void sl_removeRead();
-    void sl_referenceChanged(const QString &);
+    void sl_referenceChanged(const QString&);
 
 private:
     void initSaveController();
     void connectSlots();
 
-    SaveDocumentController *saveController;
+    SaveDocumentController* saveController;
 
     AlignToReferenceBlastCmdlineTask::Settings settings;
     U2SavableWidget savableWidget;

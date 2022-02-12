@@ -36,7 +36,7 @@
 
 namespace U2 {
 
-DnaAssemblyMultiTask::DnaAssemblyMultiTask(const DnaAssemblyToRefTaskSettings &s, bool view, bool _justBuildIndex)
+DnaAssemblyMultiTask::DnaAssemblyMultiTask(const DnaAssemblyToRefTaskSettings& s, bool view, bool _justBuildIndex)
     : ExternalToolSupportTask("DnaAssemblyMultiTask", TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled), settings(s),
       assemblyToRefTask(nullptr), shortReadSets(s.shortReadSets), openView(view), justBuildIndex(_justBuildIndex) {
 }
@@ -44,7 +44,7 @@ DnaAssemblyMultiTask::DnaAssemblyMultiTask(const DnaAssemblyToRefTaskSettings &s
 void DnaAssemblyMultiTask::prepare() {
     // perform assembly
     QString algName = settings.algName;
-    DnaAssemblyAlgorithmEnv *env = AppContext::getDnaAssemblyAlgRegistry()->getAlgorithm(algName);
+    DnaAssemblyAlgorithmEnv* env = AppContext::getDnaAssemblyAlgRegistry()->getAlgorithm(algName);
     assert(env);
     if (env == nullptr) {
         setError(QString("Algorithm %1 is not found").arg(algName));
@@ -59,8 +59,8 @@ Task::ReportResult DnaAssemblyMultiTask::report() {
     return ReportResult_Finished;
 }
 
-QList<Task *> DnaAssemblyMultiTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> subTasks;
+QList<Task*> DnaAssemblyMultiTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> subTasks;
     if (subTask->hasError() || isCanceled()) {
         return subTasks;
     }
@@ -72,7 +72,7 @@ QList<Task *> DnaAssemblyMultiTask::onSubTaskFinished(Task *subTask) {
 
     if (subTask == assemblyToRefTask && settings.openView) {
         if (assemblyToRefTask->hasResult()) {
-            Task *openTask = AppContext::getProjectLoader()->openWithProjectTask(settings.resultFileName);
+            Task* openTask = AppContext::getProjectLoader()->openWithProjectTask(settings.resultFileName);
             if (openTask != nullptr) {
                 subTasks << openTask;
             }

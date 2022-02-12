@@ -56,43 +56,43 @@ public:
     inline ~SWMulAlignResultNamesTagsRegistry();
 
     // returned list isn't stored in the SWMulAlignResultNamesTagsRegistry instance, so the first one is considered
-    inline QList<QPushButton *> *getTagsButtons() const;  // to be deallocated outside
+    inline QList<QPushButton*>* getTagsButtons() const;  // to be deallocated outside
 
     // returned list isn't stored in the SWMulAlignResultNamesTagsRegistry instance, so the first one is considered
-    inline QStringList *getDefaultTagsForMobjectsNames() const;  // to be deallocated outside
+    inline QStringList* getDefaultTagsForMobjectsNames() const;  // to be deallocated outside
 
     // returned list isn't stored in the SWMulAlignResultNamesTagsRegistry instance, so the first one is considered
-    inline QStringList *getDefaultTagsForRefSubseqNames() const;  // to be deallocated outside
+    inline QStringList* getDefaultTagsForRefSubseqNames() const;  // to be deallocated outside
 
     // returned list isn't stored in the SWMulAlignResultNamesTagsRegistry instance, so the first one is considered
-    inline QStringList *getDefaultTagsForPtrnSubseqNames() const;  // to be deallocated outside
+    inline QStringList* getDefaultTagsForPtrnSubseqNames() const;  // to be deallocated outside
 
     // returned list isn't stored in the SWMulAlignResultNamesTagsRegistry instance, so the first one is considered
     // to be deallocated outside; also if bit is set in returned QBitArray object then corresponding button
     // from result of getDefaultTagsForPtrnSubseqNames() method is considered to be used only with subsequence name fields
-    inline QBitArray *getBitmapOfTagsApplicability() const;
+    inline QBitArray* getBitmapOfTagsApplicability() const;
 
-    QString parseStringWithTags(const QString &str, const SmithWatermanReportCallbackMAImpl::TagExpansionPossibleData &expansionSet) const;
+    QString parseStringWithTags(const QString& str, const SmithWatermanReportCallbackMAImpl::TagExpansionPossibleData& expansionSet) const;
 
     // this method is supposed to be invoked before each string with counter tags parsing
     // if there's need to begin counting from 1
     inline void resetCounters();
 
 private:
-    bool registerTag(SWMulAlignResultNamesTag *tag);
-    QString tagExpansion(const QString &shorthand, const QVariant &argument = QVariant()) const;
-    QList<SWMulAlignResultNamesTag *> *getTagsWithCorrectOrder() const;
+    bool registerTag(SWMulAlignResultNamesTag* tag);
+    QString tagExpansion(const QString& shorthand, const QVariant& argument = QVariant()) const;
+    QList<SWMulAlignResultNamesTag*>* getTagsWithCorrectOrder() const;
 
     QMutex mutex;
-    QHash<const QString, SWMulAlignResultNamesTag *> tags;
+    QHash<const QString, SWMulAlignResultNamesTag*> tags;
 };
 
-inline QList<QPushButton *> *SWMulAlignResultNamesTagsRegistry::getTagsButtons() const {
-    QList<QPushButton *> *tagsButtons = new QList<QPushButton *>;
-    QList<SWMulAlignResultNamesTag *> *arrangedTags = getTagsWithCorrectOrder();
+inline QList<QPushButton*>* SWMulAlignResultNamesTagsRegistry::getTagsButtons() const {
+    QList<QPushButton*>* tagsButtons = new QList<QPushButton*>;
+    QList<SWMulAlignResultNamesTag*>* arrangedTags = getTagsWithCorrectOrder();
 
-    foreach (SWMulAlignResultNamesTag *tag, *arrangedTags) {
-        QPushButton *button = new QPushButton(OPEN_SQUARE_BRACKET + tag->getShorthand() +
+    foreach (SWMulAlignResultNamesTag* tag, *arrangedTags) {
+        QPushButton* button = new QPushButton(OPEN_SQUARE_BRACKET + tag->getShorthand() +
                                               CLOSE_SQUARE_BRACKET + SHORTHAND_AND_LABEL_SEPARATOR + tag->getLabel());
         button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         tagsButtons->append(button);
@@ -103,16 +103,16 @@ inline QList<QPushButton *> *SWMulAlignResultNamesTagsRegistry::getTagsButtons()
 }
 
 inline SWMulAlignResultNamesTagsRegistry::~SWMulAlignResultNamesTagsRegistry() {
-    foreach (SWMulAlignResultNamesTag *tag, tags.values()) {
+    foreach (SWMulAlignResultNamesTag* tag, tags.values()) {
         delete tag;
     }
 }
 
-inline QBitArray *SWMulAlignResultNamesTagsRegistry::getBitmapOfTagsApplicability() const {
-    QBitArray *bitmap = new QBitArray(tags.count());
+inline QBitArray* SWMulAlignResultNamesTagsRegistry::getBitmapOfTagsApplicability() const {
+    QBitArray* bitmap = new QBitArray(tags.count());
     quint8 counter = 0;
 
-    foreach (SWMulAlignResultNamesTag *tag, tags.values()) {
+    foreach (SWMulAlignResultNamesTag* tag, tags.values()) {
         if (tag->isAcceptableForSubseqNamesOnly()) {
             bitmap->setBit(counter);
         }
@@ -123,8 +123,8 @@ inline QBitArray *SWMulAlignResultNamesTagsRegistry::getBitmapOfTagsApplicabilit
 }
 
 inline void SWMulAlignResultNamesTagsRegistry::resetCounters() {
-    foreach (SWMulAlignResultNamesTag *tag, tags.values()) {
-        SWMulAlignExternalPropTag *externalPropertyTag = dynamic_cast<SWMulAlignExternalPropTag *>(tag);
+    foreach (SWMulAlignResultNamesTag* tag, tags.values()) {
+        SWMulAlignExternalPropTag* externalPropertyTag = dynamic_cast<SWMulAlignExternalPropTag*>(tag);
         if (nullptr != externalPropertyTag) {
             if (SWMulAlignExternalPropTag::COUNTER == externalPropertyTag->getType()) {
                 externalPropertyTag->resetCounter();
@@ -133,8 +133,8 @@ inline void SWMulAlignResultNamesTagsRegistry::resetCounters() {
     }
 }
 
-inline QStringList *SWMulAlignResultNamesTagsRegistry::getDefaultTagsForMobjectsNames() const {
-    QStringList *result = new QStringList();
+inline QStringList* SWMulAlignResultNamesTagsRegistry::getDefaultTagsForMobjectsNames() const {
+    QStringList* result = new QStringList();
     result->append(PTRN_NAME_PREFIX_TAG_SHORTHAND);
     result->append(SEQ_NAME_PREFIX_TAG_SHORTHAND);
     result->append(COUNTER_TAG_SHORTHAND);
@@ -142,8 +142,8 @@ inline QStringList *SWMulAlignResultNamesTagsRegistry::getDefaultTagsForMobjects
     return result;
 }
 
-inline QStringList *SWMulAlignResultNamesTagsRegistry::getDefaultTagsForRefSubseqNames() const {
-    QStringList *result = new QStringList();
+inline QStringList* SWMulAlignResultNamesTagsRegistry::getDefaultTagsForRefSubseqNames() const {
+    QStringList* result = new QStringList();
     result->append(SEQ_NAME_PREFIX_TAG_SHORTHAND);
     result->append(SUBSEQ_START_POS_TAG_SHORTHAND);
     result->append(SUBSEQ_END_POS_TAG_SHORTHAND);
@@ -151,8 +151,8 @@ inline QStringList *SWMulAlignResultNamesTagsRegistry::getDefaultTagsForRefSubse
     return result;
 }
 
-inline QStringList *SWMulAlignResultNamesTagsRegistry::getDefaultTagsForPtrnSubseqNames() const {
-    QStringList *result = new QStringList();
+inline QStringList* SWMulAlignResultNamesTagsRegistry::getDefaultTagsForPtrnSubseqNames() const {
+    QStringList* result = new QStringList();
     result->append(PTRN_NAME_PREFIX_TAG_SHORTHAND);
     result->append(SUBSEQ_START_POS_TAG_SHORTHAND);
     result->append(SUBSEQ_END_POS_TAG_SHORTHAND);

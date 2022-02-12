@@ -33,11 +33,11 @@ class MaxInfoStep : public TrimmomaticStep {
 public:
     MaxInfoStep();
 
-    TrimmomaticStepSettingsWidget *createWidget() const;
+    TrimmomaticStepSettingsWidget* createWidget() const;
 
 private:
-    QString serializeState(const QVariantMap &widgetState) const;
-    QVariantMap parseState(const QString &command) const;
+    QString serializeState(const QVariantMap& widgetState) const;
+    QVariantMap parseState(const QString& command) const;
 };
 
 class MaxInfoSettingsWidget : public TrimmomaticStepSettingsWidget, private Ui_MaxInfoSettingsWidget {
@@ -49,7 +49,7 @@ public:
     bool validate() const;
 
     QVariantMap getState() const;
-    void setState(const QVariantMap &state);
+    void setState(const QVariantMap& state);
 
     static const QString TARGET_LENGTH;
     static const QString STRICTNESS;
@@ -61,10 +61,10 @@ public:
 
     MaxInfoStepFactory();
 
-    MaxInfoStep *createStep() const;
+    MaxInfoStep* createStep() const;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_MAX_INFO_STEP_H_
+#endif  // _U2_MAX_INFO_STEP_H_

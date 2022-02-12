@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-MsaEditorStatusBar::MsaEditorStatusBar(MSAEditor *msaEditor)
+MsaEditorStatusBar::MsaEditorStatusBar(MSAEditor* msaEditor)
     : MaEditorStatusBar(msaEditor) {
     setObjectName("msa_editor_status_bar");
     setStatusBarStyle();

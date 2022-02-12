@@ -96,11 +96,11 @@ public:
         Direction direction;
     };
 
-    static void drawRuler(QPainter &p, const QPoint &pos, qint64 len, qint64 start, qint64 end, const QFont &f, const RulerConfig &config);
-    static int calculateChunk(qint64 start, qint64 end, qint64 len, const QPainter &p);
+    static void drawRuler(QPainter& p, const QPoint& pos, qint64 len, qint64 start, qint64 end, const QFont& f, const RulerConfig& config);
+    static int calculateChunk(qint64 start, qint64 end, qint64 len, const QPainter& p);
     static int findChunk(qint64 len, qint64 span, int N);
 
-    static QColor proposeLightColorByKey(const QString &key);
+    static QColor proposeLightColorByKey(const QString& key);
 
     /*
        The method is designed to be used by different algorithms that needs to
@@ -112,7 +112,7 @@ public:
     */
     static qint64 pickRoundedNumberBelow(qint64 maxVal);
 
-    static void drawArrow(QPainter &painter, const QRectF &rect, const ArrowConfig &config);
+    static void drawArrow(QPainter& painter, const QRectF& rect, const ArrowConfig& config);
 };
 
 }  // namespace U2

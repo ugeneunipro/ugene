@@ -39,7 +39,7 @@
 
 namespace U2 {
 
-PairwiseAlignmentSmithWatermanMainWidget::PairwiseAlignmentSmithWatermanMainWidget(QWidget *parent, QVariantMap *s)
+PairwiseAlignmentSmithWatermanMainWidget::PairwiseAlignmentSmithWatermanMainWidget(QWidget* parent, QVariantMap* s)
     : AlignmentAlgorithmMainWidget(parent, s) {
     setupUi(this);
     initParameters();
@@ -84,9 +84,9 @@ void PairwiseAlignmentSmithWatermanMainWidget::initParameters() {
 }
 
 void PairwiseAlignmentSmithWatermanMainWidget::addScoredMatrixes() {
-    const DNAAlphabet *al = U2AlphabetUtils::getById(externSettings->value(PairwiseAlignmentTaskSettings::ALPHABET, "").toString());
+    const DNAAlphabet* al = U2AlphabetUtils::getById(externSettings->value(PairwiseAlignmentTaskSettings::ALPHABET, "").toString());
     SAFE_POINT(nullptr != al, "Alphabet not found.", );
-    SubstMatrixRegistry *matrixReg = AppContext::getSubstMatrixRegistry();
+    SubstMatrixRegistry* matrixReg = AppContext::getSubstMatrixRegistry();
     SAFE_POINT(matrixReg, "SubstMatrixRegistry is NULL.", );
     QStringList matrixList = matrixReg->selectMatrixNamesByAlphabet(al);
     scoringMatrix->addItems(matrixList);
@@ -118,12 +118,12 @@ PairwiseAlignmentSmithWatermanGUIExtensionFactory::PairwiseAlignmentSmithWaterma
     : AlignmentAlgorithmGUIExtensionFactory(), algType(_algType) {
 }
 
-AlignmentAlgorithmMainWidget *PairwiseAlignmentSmithWatermanGUIExtensionFactory::createMainWidget(QWidget *parent, QVariantMap *s) {
+AlignmentAlgorithmMainWidget* PairwiseAlignmentSmithWatermanGUIExtensionFactory::createMainWidget(QWidget* parent, QVariantMap* s) {
     if (mainWidgets.contains(parent)) {
         return mainWidgets.value(parent, nullptr);
     }
-    PairwiseAlignmentSmithWatermanMainWidget *newMainWidget = new PairwiseAlignmentSmithWatermanMainWidget(parent, s);
-    connect(newMainWidget, SIGNAL(destroyed(QObject *)), SLOT(sl_widgetDestroyed(QObject *)));
+    PairwiseAlignmentSmithWatermanMainWidget* newMainWidget = new PairwiseAlignmentSmithWatermanMainWidget(parent, s);
+    connect(newMainWidget, SIGNAL(destroyed(QObject*)), SLOT(sl_widgetDestroyed(QObject*)));
     mainWidgets.insert(parent, newMainWidget);
     return newMainWidget;
 }

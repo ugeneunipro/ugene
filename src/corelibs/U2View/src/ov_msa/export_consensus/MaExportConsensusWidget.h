@@ -35,22 +35,22 @@ class ExportMaConsensusTask;
 class MaExportConsensusWidget : public QWidget, private Ui_ExportConsensusWidget {
     Q_OBJECT
 public:
-    MaExportConsensusWidget(MaEditor *ma_, QWidget *parent = nullptr);
+    MaExportConsensusWidget(MaEditor* ma_, QWidget* parent = nullptr);
 
     void showHint(bool showHint);
 
 private slots:
     void sl_exportClicked();
-    void sl_consensusChanged(const QString &algoId);
+    void sl_consensusChanged(const QString& algoId);
     void sl_exportTaskStateChanged();
 
 private:
     void initSaveController();
     QString getDefaultFilePath() const;
 
-    MaEditor *ma;
+    MaEditor* ma;
     U2SavableWidget savableWidget;
-    SaveDocumentController *saveController;
+    SaveDocumentController* saveController;
     QSet<QString> exportTaskUrls;
 };
 

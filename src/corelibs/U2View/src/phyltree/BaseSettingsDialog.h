@@ -29,9 +29,9 @@ namespace U2 {
 class BaseSettingsDialog : public QDialog {
     Q_OBJECT
 public:
-    BaseSettingsDialog(QWidget *parent);
+    BaseSettingsDialog(QWidget* parent);
 
-    const OptionsMap &getSettings() const;
+    const OptionsMap& getSettings() const;
 
 protected:
     OptionsMap updatedSettings;

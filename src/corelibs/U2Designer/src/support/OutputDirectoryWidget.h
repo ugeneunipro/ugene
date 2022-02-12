@@ -36,7 +36,7 @@ namespace U2 {
 class U2DESIGNER_EXPORT OutputDirectoryWidget : public QWidget {
     Q_OBJECT
 public:
-    OutputDirectoryWidget(QWidget *parent, bool commitOnHide);
+    OutputDirectoryWidget(QWidget* parent, bool commitOnHide);
 
     QString getChoosenDir() {
         return pathEdit->text();
@@ -49,13 +49,13 @@ private slots:
     void sl_browse();
 
 protected:
-    void hideEvent(QHideEvent *event);
+    void hideEvent(QHideEvent* event);
 
 private:
     bool commitOnHide;
-    QLabel *label;
-    QLineEdit *pathEdit;
-    QToolButton *browseButton;
+    QLabel* label;
+    QLineEdit* pathEdit;
+    QToolButton* browseButton;
 };
 
 }  // namespace U2

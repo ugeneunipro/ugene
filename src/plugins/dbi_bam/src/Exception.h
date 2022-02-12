@@ -29,9 +29,9 @@ namespace BAM {
 
 class Exception {
 public:
-    Exception(const QString &message);
+    Exception(const QString& message);
     virtual ~Exception();
-    const QString &getMessage() const;
+    const QString& getMessage() const;
 
 private:
     QString message;

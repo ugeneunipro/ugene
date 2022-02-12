@@ -36,7 +36,7 @@ namespace LocalWorkflow {
 class BlastPrompter : public PrompterBase<BlastPrompter> {
     Q_OBJECT
 public:
-    BlastPrompter(Actor *p = 0);
+    BlastPrompter(Actor* p = 0);
 
 protected:
     QString composeRichDoc();
@@ -45,10 +45,10 @@ protected:
 class BlastWorker : public BaseWorker {
     Q_OBJECT
 public:
-    BlastWorker(Actor *a);
+    BlastWorker(Actor* a);
 
     void init() override;
-    Task *tick() override;
+    Task* tick() override;
     void cleanup() override;
 
 private slots:
@@ -71,17 +71,17 @@ public:
     BlastWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    Worker *createWorker(Actor *a) override {
+    Worker* createWorker(Actor* a) override {
         return new BlastWorker(a);
     }
 };
 
 class ToolsValidator : public ActorValidator {
 public:
-    bool validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const override;
+    bool validate(const Actor* actor, NotificationsList& notificationList, const QMap<QString, QString>& options) const override;
 
 private:
-    ExternalTool *getTool(const QString &program) const;
+    ExternalTool* getTool(const QString& program) const;
 };
 
 }  // namespace LocalWorkflow

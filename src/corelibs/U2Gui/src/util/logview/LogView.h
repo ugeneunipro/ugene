@@ -40,12 +40,12 @@ class LogFilter;
 
 class SearchHighlighter : public QSyntaxHighlighter {
 public:
-    SearchHighlighter(QTextDocument *doc)
+    SearchHighlighter(QTextDocument* doc)
         : QSyntaxHighlighter(doc) {
     }
 
     QRegExp reg_exp;
-    void highlightBlock(const QString &text);
+    void highlightBlock(const QString& text);
 };
 
 enum LogViewSearchBoxMode {
@@ -61,60 +61,60 @@ public:
         only from categories listed in categoriesFilter
         LogSettings are ignored in this case
      */
-    LogViewWidget(LogCache *c);
-    LogViewWidget(const LogFilter &filter);
+    LogViewWidget(LogCache* c);
+    LogViewWidget(const LogFilter& filter);
     ~LogViewWidget();
 
-    bool isShown(const LogMessage &msg);
-    bool isShown(const QString &txt);
+    bool isShown(const LogMessage& msg);
+    bool isShown(const QString& txt);
     /** returns first category in the msg.categories that match 'show-filter' criteria*/
-    QString getEffectiveCategory(const LogMessage &msg) const;
+    QString getEffectiveCategory(const LogMessage& msg) const;
 
-    virtual void setSettings(const LogSettings &s);
+    virtual void setSettings(const LogSettings& s);
 
     void setSearchBoxMode(LogViewSearchBoxMode mode);
 
-    virtual void onMessage(const LogMessage &msg);
+    virtual void onMessage(const LogMessage& msg);
 
 protected:
-    void addMessage(const LogMessage &msg);
-    void addText(const QString &text);
-    void showEvent(QShowEvent *e);
-    void hideEvent(QHideEvent *e);
+    void addMessage(const LogMessage& msg);
+    void addText(const QString& text);
+    void showEvent(QShowEvent* e);
+    void hideEvent(QHideEvent* e);
     void resetView();
 
 private slots:
     void sl_showNewMessages();
-    void sl_onTextEdited(const QString &text);
-    void popupMenu(const QPoint &pos);
+    void sl_onTextEdited(const QString& text);
+    void popupMenu(const QPoint& pos);
     void sl_openSettingsDialog();
     void sl_dumpCounters();
     void sl_clear();
     void sl_addSeparator();
     void sl_showHideEdit();
-    void searchPopupMenu(const QPoint &pos);
+    void searchPopupMenu(const QPoint& pos);
     void setSearchCaseSensitive();
     void useRegExp();
 
 private:
-    QString prepareText(const LogMessage &msg) const;
+    QString prepareText(const LogMessage& msg) const;
     void init();
-    bool eventFilter(QObject *object, QEvent *event);
+    bool eventFilter(QObject* object, QEvent* event);
 
     QTimer updateViewTimer;
-    QPlainTextEdit *edit;
-    QLineEdit *searchEdit;
-    QShortcut *shortcut;
-    SearchHighlighter *highlighter;
+    QPlainTextEdit* edit;
+    QLineEdit* searchEdit;
+    QShortcut* shortcut;
+    SearchHighlighter* highlighter;
     bool caseSensitive, useRegexp;
 
     int messageCounter;
-    LogCache *cache;
-    QAction *showViewAction;
-    QAction *showSettingsAction;
-    QAction *dumpCountersAction;
-    QAction *clearAction;
-    QAction *addSeparatorAction;
+    LogCache* cache;
+    QAction* showViewAction;
+    QAction* showSettingsAction;
+    QAction* dumpCountersAction;
+    QAction* clearAction;
+    QAction* addSeparatorAction;
     bool connected;
 };
 

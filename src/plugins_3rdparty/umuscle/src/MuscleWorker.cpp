@@ -56,8 +56,8 @@ static const QString RANGE_ATTR("range");
 static const QString RANGE_ATTR_DEFAULT_VALUE("Whole alignment");
 
 void MuscleWorkerFactory::init() {
-    QList<PortDescriptor *> p;
-    QList<Attribute *> a;
+    QList<PortDescriptor*> p;
+    QList<Attribute*> a;
     Descriptor ind(BasePorts::IN_MSA_PORT_ID(), MuscleWorker::tr("Input MSA"), MuscleWorker::tr("Multiple sequence alignment to be processed."));
     Descriptor oud(BasePorts::OUT_MSA_PORT_ID(), MuscleWorker::tr("Multiple sequence alignment"), MuscleWorker::tr("Result of alignment."));
 
@@ -83,9 +83,9 @@ void MuscleWorkerFactory::init() {
 
     Descriptor desc(ACTOR_ID, MuscleWorker::tr("Align with MUSCLE"), MuscleWorker::tr("MUSCLE is public domain multiple alignment software for protein and nucleotide sequences."
                                                                                       "<p><dfn>MUSCLE stands for MUltiple Sequence Comparison by Log-Expectation.</dfn></p>"));
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap vm;
         vm[DefaultModePreset().name] = 0;
@@ -104,7 +104,7 @@ void MuscleWorkerFactory::init() {
     proto->setIconPath(":umuscle/images/muscle_16.png");
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new MuscleWorkerFactory());
 }
 
@@ -112,8 +112,8 @@ void MuscleWorkerFactory::init() {
  * MusclePrompter
  ****************************/
 QString MusclePrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
-    Actor *producer = input->getProducer(BasePorts::IN_MSA_PORT_ID());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
+    Actor* producer = input->getProducer(BasePorts::IN_MSA_PORT_ID());
     QString producerName = producer ? tr(" from %1").arg(producer->getLabel()) : "";
     QString preset;
     switch (getParameter(MODE_ATTR).toInt()) {
@@ -138,7 +138,7 @@ QString MusclePrompter::composeRichDoc() {
 /****************************
  * MuscleWorker
  ****************************/
-MuscleWorker::MuscleWorker(Actor *a)
+MuscleWorker::MuscleWorker(Actor* a)
     : BaseWorker(a), input(nullptr), output(nullptr) {
 }
 
@@ -147,7 +147,7 @@ void MuscleWorker::init() {
     output = ports.value(BasePorts::OUT_MSA_PORT_ID());
 }
 
-Task *MuscleWorker::tick() {
+Task* MuscleWorker::tick() {
     if (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
@@ -211,7 +211,7 @@ Task *MuscleWorker::tick() {
             cfg.regionToAlign = U2Region(start, end - start + 1);
         }
 
-        Task *t = new NoFailTaskWrapper(new MuscleTask(msa, cfg));
+        Task* t = new NoFailTaskWrapper(new MuscleTask(msa, cfg));
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
     } else if (input->isEnded()) {
@@ -222,9 +222,9 @@ Task *MuscleWorker::tick() {
 }
 
 void MuscleWorker::sl_taskFinished() {
-    NoFailTaskWrapper *wrapper = qobject_cast<NoFailTaskWrapper *>(sender());
+    NoFailTaskWrapper* wrapper = qobject_cast<NoFailTaskWrapper*>(sender());
     CHECK(wrapper->isFinished(), );
-    MuscleTask *t = qobject_cast<MuscleTask *>(wrapper->originalTask());
+    MuscleTask* t = qobject_cast<MuscleTask*>(wrapper->originalTask());
     if (t->hasError()) {
         reportError(t->getError());
         return;

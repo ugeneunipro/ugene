@@ -34,7 +34,7 @@ class MaEditor;
 class SelectSubalignmentDialog : public QDialog, Ui_SelectSubalignmentDialog {
     Q_OBJECT
 public:
-    SelectSubalignmentDialog(MaEditor *editor, const U2Region &region = U2Region(), const QList<int> &selectedIndexes = QList<int>(), QWidget *p = nullptr);
+    SelectSubalignmentDialog(MaEditor* editor, const U2Region& region = U2Region(), const QList<int>& selectedIndexes = QList<int>(), QWidget* p = nullptr);
 
     void accept();
 
@@ -42,10 +42,10 @@ public:
         return window;
     }
 
-    const QStringList &getSelectedSeqNames() const {
+    const QStringList& getSelectedSeqNames() const {
         return selectedNames;
     }
-    const QList<int> &getSelectedSeqIndexes() const {
+    const QList<int>& getSelectedSeqIndexes() const {
         return selectedIndexes;
     }
 
@@ -57,7 +57,7 @@ public slots:
 private:
     void init();
 
-    MaEditor *editor;
+    MaEditor* editor;
 
     U2Region window;
     QStringList selectedNames;

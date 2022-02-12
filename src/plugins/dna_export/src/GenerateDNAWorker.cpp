@@ -76,7 +76,7 @@ const QString ContentIds::REFERENCE("reference");
 const QString ContentIds::MANUAL("manual");
 
 void GenerateDNAWorkerFactory::init() {
-    QList<PortDescriptor *> p;
+    QList<PortDescriptor*> p;
     {
         Descriptor d(BasePorts::OUT_SEQ_PORT_ID(), GenerateDNAWorker::tr("Sequences"), GenerateDNAWorker::tr("Generated sequences"));
 
@@ -85,7 +85,7 @@ void GenerateDNAWorkerFactory::init() {
         p << new PortDescriptor(d, DataTypePtr(new MapDataType("random.sequence", outM)), false, true);
     }
 
-    QList<Attribute *> a;
+    QList<Attribute*> a;
     {
         Descriptor ld(LENGHT_ATTR, GenerateDNAWorker::tr("Length"), GenerateDNAWorker::tr("Length of the resulted sequence(s)."));
         Descriptor nd(SEQ_NUM_ATTR, GenerateDNAWorker::tr("Count"), GenerateDNAWorker::tr("Number of sequences to generate."));
@@ -109,10 +109,10 @@ void GenerateDNAWorkerFactory::init() {
         a << new Attribute(wnd, BaseTypes::NUM_TYPE(), true, 1000);
         a << new Attribute(rd, BaseTypes::STRING_TYPE(), false);
 
-        Attribute *aAttr = new Attribute(apd, BaseTypes::NUM_TYPE(), false, 25);
-        Attribute *cAttr = new Attribute(cpd, BaseTypes::NUM_TYPE(), false, 25);
-        Attribute *gAttr = new Attribute(gpd, BaseTypes::NUM_TYPE(), false, 25);
-        Attribute *tAttr = new Attribute(tpd, BaseTypes::NUM_TYPE(), false, 25);
+        Attribute* aAttr = new Attribute(apd, BaseTypes::NUM_TYPE(), false, 25);
+        Attribute* cAttr = new Attribute(cpd, BaseTypes::NUM_TYPE(), false, 25);
+        Attribute* gAttr = new Attribute(gpd, BaseTypes::NUM_TYPE(), false, 25);
+        Attribute* tAttr = new Attribute(tpd, BaseTypes::NUM_TYPE(), false, 25);
         aAttr->addRelation(new VisibilityRelation(ALGORITHM, "GC Content"));
         cAttr->addRelation(new VisibilityRelation(ALGORITHM, "GC Content"));
         gAttr->addRelation(new VisibilityRelation(ALGORITHM, "GC Content"));
@@ -122,12 +122,12 @@ void GenerateDNAWorkerFactory::init() {
         a << gAttr;
         a << tAttr;
 
-        Attribute *attr = new Attribute(gcSkew, BaseTypes::NUM_TYPE(), false, 0.25);
+        Attribute* attr = new Attribute(gcSkew, BaseTypes::NUM_TYPE(), false, 0.25);
         attr->addRelation(new VisibilityRelation(ALGORITHM, "GC Skew"));
         a << attr;
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap lenMap;
         lenMap["minimum"] = 1;
@@ -177,12 +177,12 @@ void GenerateDNAWorkerFactory::init() {
     Descriptor desc(ACTOR_ID, GenerateDNAWorker::tr("Generate DNA"), GenerateDNAWorker::tr("Generates random DNA sequences with given nucleotide content"
                                                                                            " that can be specified manually or evaluated from the reference file."));
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setPrompter(new GenerateDNAPrompter());
     proto->setEditor(new DelegateEditor(delegates));
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_STATISTIC(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new GenerateDNAWorkerFactory());
 }
 
@@ -202,7 +202,7 @@ void GenerateDNAWorker::init() {
     ch = ports.value(BasePorts::OUT_SEQ_PORT_ID());
 }
 
-Task *GenerateDNAWorker::tick() {
+Task* GenerateDNAWorker::tick() {
     setDone();
     DNASequenceGeneratorConfig cfg;
     cfg.sequenceName = "Sequence ";
@@ -288,13 +288,13 @@ Task *GenerateDNAWorker::tick() {
     // true is used when executed from the dialog window
     cfg.saveDoc = false;
 
-    Task *t = new DNASequenceGeneratorTask(cfg);
-    connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
+    Task* t = new DNASequenceGeneratorTask(cfg);
+    connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
     return t;
 }
 
-void GenerateDNAWorker::sl_taskFinished(Task *t) {
-    DNASequenceGeneratorTask *task = qobject_cast<DNASequenceGeneratorTask *>(t);
+void GenerateDNAWorker::sl_taskFinished(Task* t) {
+    DNASequenceGeneratorTask* task = qobject_cast<DNASequenceGeneratorTask*>(t);
     SAFE_POINT(nullptr != t, "Invalid task is encountered", );
     if (t->isCanceled()) {
         return;

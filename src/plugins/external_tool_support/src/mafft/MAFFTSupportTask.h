@@ -67,13 +67,13 @@ class MAFFTSupportTask : public ExternalToolSupportTask {
     Q_OBJECT
     Q_DISABLE_COPY(MAFFTSupportTask)
 public:
-    MAFFTSupportTask(const MultipleSequenceAlignment &_inputMsa, const GObjectReference &_objRef, const MAFFTSupportTaskSettings &settings);
+    MAFFTSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const MAFFTSupportTaskSettings& settings);
     ~MAFFTSupportTask();
 
     void prepare();
     Task::ReportResult report();
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
     MultipleSequenceAlignment resultMA;
 
@@ -85,11 +85,11 @@ private:
     GObjectReference objRef;
     QPointer<Document> tmpDoc;
     QString url;
-    MAFFTLogParser *logParser;
+    MAFFTLogParser* logParser;
 
-    SaveMSA2SequencesTask *saveTemporaryDocumentTask;
-    ExternalToolRunTask *mAFFTTask;
-    LoadDocumentTask *loadTmpDocumentTask;
+    SaveMSA2SequencesTask* saveTemporaryDocumentTask;
+    ExternalToolRunTask* mAFFTTask;
+    LoadDocumentTask* loadTmpDocumentTask;
     MAFFTSupportTaskSettings settings;
     QPointer<StateLock> lock;
 };
@@ -100,21 +100,21 @@ class MAFFTWithExtFileSpecifySupportTask : public Task {
     Q_OBJECT
     Q_DISABLE_COPY(MAFFTWithExtFileSpecifySupportTask)
 public:
-    MAFFTWithExtFileSpecifySupportTask(const MAFFTSupportTaskSettings &settings);
+    MAFFTWithExtFileSpecifySupportTask(const MAFFTSupportTaskSettings& settings);
     ~MAFFTWithExtFileSpecifySupportTask();
     void prepare();
     Task::ReportResult report();
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
-    MultipleSequenceAlignmentObject *mAObject;
-    Document *currentDocument;
+    MultipleSequenceAlignmentObject* mAObject;
+    Document* currentDocument;
     bool cleanDoc;
 
-    SaveDocumentTask *saveDocumentTask;
-    LoadDocumentTask *loadDocumentTask;
-    MAFFTSupportTask *mAFFTSupportTask;
+    SaveDocumentTask* saveDocumentTask;
+    LoadDocumentTask* loadDocumentTask;
+    MAFFTSupportTask* mAFFTSupportTask;
     MAFFTSupportTaskSettings settings;
 };
 
@@ -122,13 +122,13 @@ class MAFFTLogParser : public ExternalToolLogParser {
     Q_OBJECT
     Q_DISABLE_COPY(MAFFTLogParser)
 public:
-    MAFFTLogParser(int countSequencesInMSA, int countRefinementIter, const QString &outputFileName);
+    MAFFTLogParser(int countSequencesInMSA, int countRefinementIter, const QString& outputFileName);
     ~MAFFTLogParser() {
         cleanup();
     }
     int getProgress();
-    void parseOutput(const QString &partOfLog);
-    void parseErrOutput(const QString &partOfLog);
+    void parseOutput(const QString& partOfLog);
+    void parseErrOutput(const QString& partOfLog);
 
     bool isOutFileCreated() {
         return isOutputFileCreated;
@@ -146,7 +146,7 @@ private:
     bool isOutputFileCreated;
     QString lastErrLine;
 
-    bool isMemSaveModeEnabled;    // there is no progress in the memsave mode
+    bool isMemSaveModeEnabled;  // there is no progress in the memsave mode
     bool firstDistanceMatrix;
     bool secondDistanceMatrix;
     bool firstUPGMATree;
@@ -158,5 +158,5 @@ private:
     static const QString MEM_SAVE_MODE_MESSAGE;
 };
 
-}    // namespace U2
-#endif    // _U2_MAFFT_SUPPORT_TASK_H
+}  // namespace U2
+#endif  // _U2_MAFFT_SUPPORT_TASK_H

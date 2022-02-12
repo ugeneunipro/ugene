@@ -70,22 +70,22 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 // ExportSequenceViewItemsController
 
-ExportSequenceViewItemsController::ExportSequenceViewItemsController(QObject *p)
+ExportSequenceViewItemsController::ExportSequenceViewItemsController(QObject* p)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID),
       av(nullptr) {
 }
 
-void ExportSequenceViewItemsController::initViewContext(GObjectView *v) {
-    av = qobject_cast<AnnotatedDNAView *>(v);
-    ADVExportContext *vc = new ADVExportContext(av);
+void ExportSequenceViewItemsController::initViewContext(GObjectView* v) {
+    av = qobject_cast<AnnotatedDNAView*>(v);
+    ADVExportContext* vc = new ADVExportContext(av);
     addViewResource(av, vc);
 }
 
-void ExportSequenceViewItemsController::buildStaticOrContextMenu(GObjectView *v, QMenu *m) {
-    QList<QObject *> resources = viewResources.value(v);
+void ExportSequenceViewItemsController::buildStaticOrContextMenu(GObjectView* v, QMenu* m) {
+    QList<QObject*> resources = viewResources.value(v);
     assert(resources.size() == 1);
-    QObject *r = resources.first();
-    ADVExportContext *vc = qobject_cast<ADVExportContext *>(r);
+    QObject* r = resources.first();
+    ADVExportContext* vc = qobject_cast<ADVExportContext*>(r);
     assert(vc != nullptr);
     vc->buildMenu(m);
 }
@@ -93,7 +93,7 @@ void ExportSequenceViewItemsController::buildStaticOrContextMenu(GObjectView *v,
 void ExportSequenceViewItemsController::init() {
     GObjectViewWindowContext::init();
     if (!viewResources.value(av).isEmpty()) {
-        QMenu *actions = AppContext::getMainWindow()->getTopLevelMenu(MWMENU_ACTIONS);
+        QMenu* actions = AppContext::getMainWindow()->getTopLevelMenu(MWMENU_ACTIONS);
         SAFE_POINT(nullptr != actions, "Actions menu not found.", );
         actions->clear();
         AppContext::getMainWindow()->getMDIManager()->getActiveWindow()->setupViewMenu(actions);
@@ -106,7 +106,7 @@ void ExportSequenceViewItemsController::init() {
 // TODO: define global BLAST text constants in CoreLibs
 #define BLAST_ANNOTATION_NAME "blast result"
 
-ADVExportContext::ADVExportContext(AnnotatedDNAView *v)
+ADVExportContext::ADVExportContext(AnnotatedDNAView* v)
     : view(v) {
     sequence2SequenceAction = new QAction(tr("Export selected sequence region..."), this);
     sequence2SequenceAction->setObjectName("action_export_selected_sequence_region");
@@ -148,35 +148,35 @@ ADVExportContext::ADVExportContext(AnnotatedDNAView *v)
     connect(blastResultToAlignmentAction, SIGNAL(triggered()), SLOT(sl_exportBlastResultToAlignment()));
 
     connect(view->getAnnotationsSelection(),
-            SIGNAL(si_selectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &)),
+            SIGNAL(si_selectionChanged(AnnotationSelection*, const QList<Annotation*>&, const QList<Annotation*>&)),
             SLOT(updateActions()));
 
     connect(view->getAnnotationsGroupSelection(),
-            SIGNAL(si_selectionChanged(AnnotationGroupSelection *, const QList<AnnotationGroup *> &, const QList<AnnotationGroup *> &)),
+            SIGNAL(si_selectionChanged(AnnotationGroupSelection*, const QList<AnnotationGroup*>&, const QList<AnnotationGroup*>&)),
             SLOT(updateActions()));
 
-    connect(view, SIGNAL(si_sequenceAdded(ADVSequenceObjectContext *)), SLOT(sl_onSequenceContextAdded(ADVSequenceObjectContext *)));
-    connect(view, SIGNAL(si_sequenceRemoved(ADVSequenceObjectContext *)), SLOT(sl_onSequenceContextRemoved(ADVSequenceObjectContext *)));
-    foreach (ADVSequenceObjectContext *sCtx, view->getSequenceContexts()) {
+    connect(view, SIGNAL(si_sequenceAdded(ADVSequenceObjectContext*)), SLOT(sl_onSequenceContextAdded(ADVSequenceObjectContext*)));
+    connect(view, SIGNAL(si_sequenceRemoved(ADVSequenceObjectContext*)), SLOT(sl_onSequenceContextRemoved(ADVSequenceObjectContext*)));
+    foreach (ADVSequenceObjectContext* sCtx, view->getSequenceContexts()) {
         sl_onSequenceContextAdded(sCtx);
     }
 }
 
-void ADVExportContext::sl_onSequenceContextAdded(ADVSequenceObjectContext *c) {
+void ADVExportContext::sl_onSequenceContextAdded(ADVSequenceObjectContext* c) {
     connect(c->getSequenceSelection(),
-            SIGNAL(si_selectionChanged(LRegionsSelection *, const QVector<U2Region> &, const QVector<U2Region> &)),
+            SIGNAL(si_selectionChanged(LRegionsSelection*, const QVector<U2Region>&, const QVector<U2Region>&)),
             SLOT(updateActions()));
 
     updateActions();
 }
 
-void ADVExportContext::sl_onSequenceContextRemoved(ADVSequenceObjectContext *c) {
+void ADVExportContext::sl_onSequenceContextRemoved(ADVSequenceObjectContext* c) {
     c->getSequenceSelection()->disconnect(this);
     updateActions();
 }
 
-static bool allNucleic(const QList<ADVSequenceObjectContext *> &seqs) {
-    foreach (const ADVSequenceObjectContext *s, seqs) {
+static bool allNucleic(const QList<ADVSequenceObjectContext*>& seqs) {
+    foreach (const ADVSequenceObjectContext* s, seqs) {
         if (!s->getAlphabet()->isNucleic()) {
             return false;
         }
@@ -188,7 +188,7 @@ void ADVExportContext::updateActions() {
     bool hasSelectedAnnotations = !view->getAnnotationsSelection()->isEmpty();
     bool hasSelectedGroups = !view->getAnnotationsGroupSelection()->isEmpty();
     int nSequenceSelections = 0;
-    foreach (ADVSequenceObjectContext *c, view->getSequenceContexts()) {
+    foreach (ADVSequenceObjectContext* c, view->getSequenceContexts()) {
         nSequenceSelections += c->getSequenceSelection()->getSelectedRegions().count();
     }
 
@@ -207,15 +207,15 @@ void ADVExportContext::updateActions() {
     sequenceToAlignmentWithTranslationAction->setEnabled(hasMultiSequenceSelection && _allNucleic);
 }
 
-void ADVExportContext::buildMenu(QMenu *m) {
-    QMenu *alignMenu = GUIUtils::findSubMenu(m, ADV_MENU_ALIGN);
+void ADVExportContext::buildMenu(QMenu* m) {
+    QMenu* alignMenu = GUIUtils::findSubMenu(m, ADV_MENU_ALIGN);
     SAFE_POINT(alignMenu != nullptr, "alignMenu", );
     alignMenu->addAction(sequenceToAlignmentAction);
     alignMenu->addAction(sequenceToAlignmentWithTranslationAction);
     alignMenu->addAction(annotationsToAlignmentAction);
     alignMenu->addAction(annotationsToAlignmentWithTranslatedAction);
 
-    QMenu *exportMenu = GUIUtils::findSubMenu(m, ADV_MENU_EXPORT);
+    QMenu* exportMenu = GUIUtils::findSubMenu(m, ADV_MENU_EXPORT);
     SAFE_POINT(exportMenu != nullptr, "exportMenu", );
     exportMenu->addAction(sequence2SequenceAction);
     exportMenu->addAction(annotations2SequenceAction);
@@ -230,7 +230,7 @@ void ADVExportContext::buildMenu(QMenu *m) {
     if (!view->getAnnotationsSelection()->getAnnotations().isEmpty()) {
         name = view->getAnnotationsSelection()->getAnnotations().first()->getName();
     }
-    foreach (const Annotation *annotation, view->getAnnotationsSelection()->getAnnotations()) {
+    foreach (const Annotation* annotation, view->getAnnotationsSelection()->getAnnotations()) {
         if (name != annotation->getName()) {
             name = "";
         }
@@ -248,7 +248,7 @@ void ADVExportContext::buildMenu(QMenu *m) {
 
     if (isShowId || isShowAccession || isShowDBXref) {
         name = name.isEmpty() ? "" : tr("from '") + name + "'";
-        QMenu *fetchMenu = new QMenu(tr("Fetch sequences from remote database"));
+        QMenu* fetchMenu = new QMenu(tr("Fetch sequences from remote database"));
         m->insertMenu(exportMenu->menuAction(), fetchMenu);
         if (isShowId) {
             sequenceById->setText(tr("Fetch sequences by 'id' %1").arg(name));
@@ -269,12 +269,12 @@ void ADVExportContext::buildMenu(QMenu *m) {
 }
 
 void ADVExportContext::sl_saveSelectedAnnotationsSequence() {
-    AnnotationSelection *as = view->getAnnotationsSelection();
-    AnnotationGroupSelection *ags = view->getAnnotationsGroupSelection();
+    AnnotationSelection* as = view->getAnnotationsSelection();
+    AnnotationGroupSelection* ags = view->getAnnotationsGroupSelection();
 
-    QList<Annotation *> annotations = as->getAnnotations();
-    const QList<AnnotationGroup *> groups = ags->getSelection();
-    foreach (AnnotationGroup *g, groups) {
+    QList<Annotation*> annotations = as->getAnnotations();
+    const QList<AnnotationGroup*> groups = ags->getSelection();
+    foreach (AnnotationGroup* g, groups) {
         g->findAllAnnotationsInGroupSubTree(annotations);
     }
 
@@ -287,19 +287,19 @@ void ADVExportContext::sl_saveSelectedAnnotationsSequence() {
     bool allowTranslation = true;
     bool allowBackTranslation = true;
 
-    QMap<const ADVSequenceObjectContext *, QList<SharedAnnotationData>> annotationsPerSeq;
-    foreach (Annotation *a, annotations) {
-        ADVSequenceObjectContext *seqCtx = view->getSequenceContext(a->getGObject());
+    QMap<const ADVSequenceObjectContext*, QList<SharedAnnotationData>> annotationsPerSeq;
+    foreach (Annotation* a, annotations) {
+        ADVSequenceObjectContext* seqCtx = view->getSequenceContext(a->getGObject());
         if (seqCtx == nullptr) {
             continue;
         }
 
-        QList<SharedAnnotationData> &annsPerSeq = annotationsPerSeq[seqCtx];
+        QList<SharedAnnotationData>& annsPerSeq = annotationsPerSeq[seqCtx];
         annsPerSeq.append(a->getData());
         if (annsPerSeq.size() > 1) {
             continue;
         }
-        U2SequenceObject *seqObj = seqCtx->getSequenceObject();
+        U2SequenceObject* seqObj = seqCtx->getSequenceObject();
         if (GObjectUtils::findComplementTT(seqObj->getAlphabet()) == nullptr) {
             allowComplement = false;
         }
@@ -341,25 +341,25 @@ void ADVExportContext::sl_saveSelectedAnnotationsSequence() {
 
     ExportAnnotationSequenceTaskSettings s;
     ExportUtils::loadDNAExportSettingsFromDlg(s.exportSequenceSettings, d.data());
-    foreach (const ADVSequenceObjectContext *seqCtx, annotationsPerSeq.keys()) {
+    foreach (const ADVSequenceObjectContext* seqCtx, annotationsPerSeq.keys()) {
         ExportSequenceAItem ei;
         ei.sequence = seqCtx->getSequenceObject();
         ei.complTT = seqCtx->getComplementTT();
         ei.aminoTT = d->translate ? seqCtx->getAminoTT() : nullptr;
         if (d->useSpecificTable && ei.sequence->getAlphabet()->isNucleic()) {
-            DNATranslationRegistry *tr = AppContext::getDNATranslationRegistry();
+            DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
             ei.aminoTT = tr->lookupTranslation(ei.sequence->getAlphabet(), DNATranslationType_NUCL_2_AMINO, d->translationTable);
         }
         ei.annotations = annotationsPerSeq.value(seqCtx);
         s.items.append(ei);
     }
-    Task *t = ExportUtils::wrapExportTask(new ExportAnnotationSequenceTask(s), d->addToProject);
+    Task* t = ExportUtils::wrapExportTask(new ExportAnnotationSequenceTask(s), d->addToProject);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 
 void ADVExportContext::sl_saveSelectedSequences() {
-    ADVSequenceObjectContext *seqCtx = view->getActiveSequenceContext();
-    DNASequenceSelection *sel = nullptr;
+    ADVSequenceObjectContext* seqCtx = view->getActiveSequenceContext();
+    DNASequenceSelection* sel = nullptr;
     if (seqCtx != nullptr) {
         // TODO: support multi-export..
         sel = seqCtx->getSequenceSelection();
@@ -369,7 +369,7 @@ void ADVExportContext::sl_saveSelectedSequences() {
         return;
     }
 
-    const QVector<U2Region> &regions = sel->getSelectedRegions();
+    const QVector<U2Region>& regions = sel->getSelectedRegions();
     bool merge = regions.size() > 1;
     bool complement = seqCtx->getComplementTT() != nullptr;
     bool amino = seqCtx->getAminoTT() != nullptr;
@@ -400,21 +400,21 @@ void ADVExportContext::sl_saveSelectedSequences() {
     ExportSequenceTaskSettings s;
     ExportUtils::loadDNAExportSettingsFromDlg(s, d.data());
 
-    const DNATranslation *aminoTrans = nullptr;
+    const DNATranslation* aminoTrans = nullptr;
     if (d->translate) {
         aminoTrans = d->useSpecificTable ? GObjectUtils::findAminoTT(seqCtx->getSequenceObject(), false, d->translationTable) : seqCtx->getAminoTT();
     }
-    const DNATranslation *backTrans = d->backTranslate ? GObjectUtils::findBackTranslationTT(seqCtx->getSequenceObject(), d->translationTable) : nullptr;
-    const DNATranslation *complTrans = seqCtx->getComplementTT();
-    Task *t = ExportUtils::wrapExportTask(new ExportSelectedSeqRegionsTask(seqCtx->getSequenceObject(), seqCtx->getAnnotationObjects(true), regions, s, aminoTrans, backTrans, complTrans), d->addToProject);
+    const DNATranslation* backTrans = d->backTranslate ? GObjectUtils::findBackTranslationTT(seqCtx->getSequenceObject(), d->translationTable) : nullptr;
+    const DNATranslation* complTrans = seqCtx->getComplementTT();
+    Task* t = ExportUtils::wrapExportTask(new ExportSelectedSeqRegionsTask(seqCtx->getSequenceObject(), seqCtx->getAnnotationObjects(true), regions, s, aminoTrans, backTrans, complTrans), d->addToProject);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 
 void ADVExportContext::sl_saveSelectedAnnotations() {
     // find annotations: selected annotations, selected groups
-    AnnotationSelection *as = view->getAnnotationsSelection();
-    QList<Annotation *> annotationSet = as->getAnnotations();
-    foreach (AnnotationGroup *group, view->getAnnotationsGroupSelection()->getSelection()) {
+    AnnotationSelection* as = view->getAnnotationsSelection();
+    QList<Annotation*> annotationSet = as->getAnnotations();
+    foreach (AnnotationGroup* group, view->getAnnotationsGroupSelection()->getSelection()) {
         group->findAllAnnotationsInGroupSubTree(annotationSet);
     }
 
@@ -423,9 +423,9 @@ void ADVExportContext::sl_saveSelectedAnnotations() {
         return;
     }
 
-    Annotation *first = *annotationSet.begin();
-    Document *doc = first->getGObject()->getDocument();
-    ADVSequenceObjectContext *sequenceContext = view->getActiveSequenceContext();
+    Annotation* first = *annotationSet.begin();
+    Document* doc = first->getGObject()->getDocument();
+    ADVSequenceObjectContext* sequenceContext = view->getActiveSequenceContext();
 
     GUrl url;
     if (doc != nullptr) {
@@ -449,7 +449,7 @@ void ADVExportContext::sl_saveSelectedAnnotations() {
     std::stable_sort(annotationSet.begin(), annotationSet.end(), Annotation::annotationLessThan);
 
     // run task
-    Task *t = nullptr;
+    Task* t = nullptr;
     if (d->fileFormat() == ExportAnnotationsDialog::CSV_FORMAT_ID) {
         U2OpStatusImpl os;
         QByteArray seqData = sequenceContext->getSequenceObject()->getWholeSequenceData(os);
@@ -466,22 +466,22 @@ void ADVExportContext::sl_saveSelectedAnnotations() {
 
 #define MAX_ALI_MODEL (10 * 1000 * 1000)
 
-void ADVExportContext::prepareMAFromBlastAnnotations(MultipleSequenceAlignment &ma, const QString &qualiferId, bool includeRef, U2OpStatus &os) {
+void ADVExportContext::prepareMAFromBlastAnnotations(MultipleSequenceAlignment& ma, const QString& qualiferId, bool includeRef, U2OpStatus& os) {
     SAFE_POINT_EXT(ma->isEmpty(), os.setError(tr("Illegal parameter: input alignment is not empty!")), );
-    const QList<Annotation *> &selection = view->getAnnotationsSelection()->getAnnotations();
+    const QList<Annotation*>& selection = view->getAnnotationsSelection()->getAnnotations();
     CHECK_EXT(selection.size() >= 2, os.setError(tr("At least 2 annotations are required")), );
 
-    AnnotationTableObject *ao = selection.first()->getGObject();
-    ADVSequenceObjectContext *commonSeq = view->getSequenceContext(ao);
+    AnnotationTableObject* ao = selection.first()->getGObject();
+    ADVSequenceObjectContext* commonSeq = view->getSequenceContext(ao);
     qint64 maxLen = commonSeq->getSequenceLength();
     ma->setAlphabet(commonSeq->getAlphabet());
     QSet<QString> names;
     int rowIdx = 0;
 
-    for (const Annotation *annotation : qAsConst(selection)) {
+    for (const Annotation* annotation : qAsConst(selection)) {
         SAFE_POINT(annotation->getName() == BLAST_ANNOTATION_NAME, tr("%1 is not a BLAST annotation").arg(annotation->getName()), );
 
-        ADVSequenceObjectContext *seqCtx = view->getSequenceContext(annotation->getGObject());
+        ADVSequenceObjectContext* seqCtx = view->getSequenceContext(annotation->getGObject());
         CHECK_EXT(seqCtx != nullptr, os.setError(tr("No sequence object found")), );
         CHECK_EXT(seqCtx == commonSeq, os.setError(tr("Can not export BLAST annotations from different sequences")), );
 
@@ -518,21 +518,21 @@ void ADVExportContext::prepareMAFromBlastAnnotations(MultipleSequenceAlignment &
     }
 }
 
-void ADVExportContext::prepareMAFromAnnotations(MultipleSequenceAlignment &ma, bool translate, U2OpStatus &os) {
+void ADVExportContext::prepareMAFromAnnotations(MultipleSequenceAlignment& ma, bool translate, U2OpStatus& os) {
     SAFE_POINT_EXT(ma->isEmpty(), os.setError(tr("Illegal parameter: input alignment is not empty!")), );
-    const QList<Annotation *> &selection = view->getAnnotationsSelection()->getAnnotations();
+    const QList<Annotation*>& selection = view->getAnnotationsSelection()->getAnnotations();
     CHECK_EXT(selection.size() >= 2, os.setError(tr("At least 2 annotations are required")), );
 
     // check that all sequences are present and have the same alphabets
-    const DNAAlphabet *al = nullptr;
-    foreach (const Annotation *annotation, selection) {
-        AnnotationTableObject *ao = annotation->getGObject();
-        ADVSequenceObjectContext *seqCtx = view->getSequenceContext(ao);
+    const DNAAlphabet* al = nullptr;
+    foreach (const Annotation* annotation, selection) {
+        AnnotationTableObject* ao = annotation->getGObject();
+        ADVSequenceObjectContext* seqCtx = view->getSequenceContext(ao);
         CHECK_EXT(seqCtx != nullptr, os.setError(tr("No sequence object found")), );
         if (al == nullptr) {
             al = seqCtx->getAlphabet();
         } else {
-            const DNAAlphabet *al2 = seqCtx->getAlphabet();
+            const DNAAlphabet* al2 = seqCtx->getAlphabet();
             // BUG524: support alphabet reduction
             CHECK_EXT(al->getType() == al2->getType(), os.setError(tr("Different sequence alphabets")), );
             al = al->getMap().count(true) >= al2->getMap().count(true) ? al : al2;
@@ -541,17 +541,17 @@ void ADVExportContext::prepareMAFromAnnotations(MultipleSequenceAlignment &ma, b
     qint64 maxLen = 0;
     ma->setAlphabet(al);
     QSet<QString> names;
-    foreach (const Annotation *annotation, selection) {
+    foreach (const Annotation* annotation, selection) {
         QString rowName = annotation->getName();
-        AnnotationTableObject *ao = annotation->getGObject();
-        ADVSequenceObjectContext *seqCtx = view->getSequenceContext(ao);
+        AnnotationTableObject* ao = annotation->getGObject();
+        ADVSequenceObjectContext* seqCtx = view->getSequenceContext(ao);
         U2EntityRef seqRef = seqCtx->getSequenceObject()->getSequenceRef();
 
         maxLen = qMax(maxLen, annotation->getRegionsLen());
         CHECK_EXT(maxLen * ma->getRowCount() <= MAX_ALI_MODEL, os.setError(tr("Alignment is too large")), );
-        const DNATranslation *complTT = annotation->getStrand().isComplementary() ? seqCtx->getComplementTT() : nullptr;
-        const DNATranslation *aminoTT = translate ? seqCtx->getAminoTT() : nullptr;
-        QByteArray rowSequence =  AnnotationSelection::getSequenceUnderAnnotation(seqRef, annotation, complTT, aminoTT, os);
+        const DNATranslation* complTT = annotation->getStrand().isComplementary() ? seqCtx->getComplementTT() : nullptr;
+        const DNATranslation* aminoTT = translate ? seqCtx->getAminoTT() : nullptr;
+        QByteArray rowSequence = AnnotationSelection::getSequenceUnderAnnotation(seqRef, annotation, complTT, aminoTT, os);
         CHECK_OP(os, );
 
         ma->addRow(rowName, rowSequence);
@@ -560,20 +560,20 @@ void ADVExportContext::prepareMAFromAnnotations(MultipleSequenceAlignment &ma, b
     }
 }
 
-void ADVExportContext::prepareMAFromSequences(MultipleSequenceAlignment &ma, bool translate, U2OpStatus &os) {
+void ADVExportContext::prepareMAFromSequences(MultipleSequenceAlignment& ma, bool translate, U2OpStatus& os) {
     SAFE_POINT_EXT(ma->isEmpty(), os.setError(tr("Illegal parameter: Input alignment is not empty!")), );
 
-    const DNAAlphabet *al = translate ? AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::AMINO_DEFAULT()) : nullptr;
+    const DNAAlphabet* al = translate ? AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::AMINO_DEFAULT()) : nullptr;
 
     // derive alphabet
     int nItems = 0;
     bool forceTranslation = false;
-    foreach (ADVSequenceObjectContext *c, view->getSequenceContexts()) {
+    foreach (ADVSequenceObjectContext* c, view->getSequenceContexts()) {
         if (c->getSequenceSelection()->isEmpty()) {
             continue;
         }
         nItems += c->getSequenceSelection()->getSelectedRegions().count();
-        const DNAAlphabet *seqAl = c->getAlphabet();
+        const DNAAlphabet* seqAl = c->getAlphabet();
         if (al == nullptr) {
             al = seqAl;
         } else if (al != seqAl) {
@@ -595,13 +595,13 @@ void ADVExportContext::prepareMAFromSequences(MultipleSequenceAlignment &ma, boo
     // cache sequences
     QSet<QString> names;
     qint64 maxLen = 0;
-    foreach (ADVSequenceObjectContext *seqCtx, view->getSequenceContexts()) {
+    foreach (ADVSequenceObjectContext* seqCtx, view->getSequenceContexts()) {
         if (seqCtx->getSequenceSelection()->isEmpty()) {
             continue;
         }
-        const DNAAlphabet *seqAl = seqCtx->getAlphabet();
-        DNATranslation *aminoTT = ((translate || forceTranslation) && seqAl->isNucleic()) ? seqCtx->getAminoTT() : nullptr;
-        foreach (const U2Region &r, seqCtx->getSequenceSelection()->getSelectedRegions()) {
+        const DNAAlphabet* seqAl = seqCtx->getAlphabet();
+        DNATranslation* aminoTT = ((translate || forceTranslation) && seqAl->isNucleic()) ? seqCtx->getAminoTT() : nullptr;
+        foreach (const U2Region& r, seqCtx->getSequenceSelection()->getSelectedRegions()) {
             maxLen = qMax(maxLen, r.length);
             CHECK_EXT(maxLen * ma->getRowCount() <= MAX_ALI_MODEL, os.setError(tr("Alignment is too large")), );
             QByteArray seq = seqCtx->getSequenceData(r, os);
@@ -617,7 +617,7 @@ void ADVExportContext::prepareMAFromSequences(MultipleSequenceAlignment &ma, boo
     }
 }
 
-void ADVExportContext::selectionToAlignment(const QString &title, bool annotations, bool translate) {
+void ADVExportContext::selectionToAlignment(const QString& title, bool annotations, bool translate) {
     MultipleSequenceAlignment ma(MA_OBJECT_NAME);
     U2OpStatusImpl os;
     if (annotations) {
@@ -644,7 +644,7 @@ void ADVExportContext::selectionToAlignment(const QString &title, bool annotatio
     if (rc != QDialog::Accepted) {
         return;
     }
-    Task *t = ExportUtils::wrapExportTask(new ExportAlignmentTask(ma, d->url, d->format), d->addToProjectFlag);
+    Task* t = ExportUtils::wrapExportTask(new ExportAlignmentTask(ma, d->url, d->format), d->addToProjectFlag);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 
@@ -665,10 +665,10 @@ void ADVExportContext::sl_saveSelectedSequenceToAlignmentWithTranslation() {
 }
 
 void ADVExportContext::sl_getSequenceByDBXref() {
-    const QList<Annotation *> &selection = view->getAnnotationsSelection()->getAnnotations();
+    const QList<Annotation*>& selection = view->getAnnotationsSelection()->getAnnotations();
 
     QStringList genbankID;
-    foreach (const Annotation *ann, selection) {
+    foreach (const Annotation* ann, selection) {
         const QString tmp = ann->findFirstQualifierValue("db_xref");
         if (!tmp.isEmpty()) {
             genbankID << tmp.split(":").last();
@@ -679,10 +679,10 @@ void ADVExportContext::sl_getSequenceByDBXref() {
 }
 
 void ADVExportContext::sl_getSequenceByAccession() {
-    const QList<Annotation *> &selection = view->getAnnotationsSelection()->getAnnotations();
+    const QList<Annotation*>& selection = view->getAnnotationsSelection()->getAnnotations();
 
     QStringList genbankID;
-    foreach (const Annotation *ann, selection) {
+    foreach (const Annotation* ann, selection) {
         const QString tmp = ann->findFirstQualifierValue("accession");
         if (!tmp.isEmpty()) {
             genbankID << tmp;
@@ -693,10 +693,10 @@ void ADVExportContext::sl_getSequenceByAccession() {
 }
 
 void ADVExportContext::sl_getSequenceById() {
-    const QList<Annotation *> &selection = view->getAnnotationsSelection()->getAnnotations();
+    const QList<Annotation*>& selection = view->getAnnotationsSelection()->getAnnotations();
 
     QStringList genbankID;
-    foreach (const Annotation *ann, selection) {
+    foreach (const Annotation* ann, selection) {
         const QString tmp = ann->findFirstQualifierValue("id");
         if (!tmp.isEmpty()) {
             int off = tmp.indexOf("|");
@@ -708,8 +708,8 @@ void ADVExportContext::sl_getSequenceById() {
     fetchSequencesFromRemoteDB(listId);
 }
 
-void ADVExportContext::fetchSequencesFromRemoteDB(const QString &listId) {
-    const DNAAlphabet *seqAl = view->getSequenceObjectsWithContexts().first()->getAlphabet();
+void ADVExportContext::fetchSequencesFromRemoteDB(const QString& listId) {
+    const DNAAlphabet* seqAl = view->getSequenceObjectsWithContexts().first()->getAlphabet();
 
     QString db;
     if (seqAl->getId() == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()) {
@@ -726,7 +726,7 @@ void ADVExportContext::fetchSequencesFromRemoteDB(const QString &listId) {
 
     if (dlg->result() == QDialog::Accepted) {
         QString dir = dlg->getDirectory();
-        Task *t;
+        Task* t;
         if (dlg->isAddToProject()) {
             t = new LoadRemoteDocumentAndAddToProjectTask(listId, db, dir);
         } else {
@@ -758,7 +758,7 @@ void ADVExportContext::sl_exportBlastResultToAlignment() {
         return;
     }
 
-    Task *t = ExportUtils::wrapExportTask(new ExportAlignmentTask(ma, d->url, d->format), d->addToProjectFlag);
+    Task* t = ExportUtils::wrapExportTask(new ExportAlignmentTask(ma, d->url, d->format), d->addToProjectFlag);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 

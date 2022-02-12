@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <ui_EditQualifierDialog.h>
+#include "EditQualifierDialog.h"
 
 #include <QKeyEvent>
 #include <QMessageBox>
@@ -29,11 +29,11 @@
 
 #include <U2Gui/HelpButton.h>
 
-#include "EditQualifierDialog.h"
+#include <ui_EditQualifierDialog.h>
 
 namespace U2 {
 
-EditQualifierDialog::EditQualifierDialog(QWidget *p, const U2Qualifier &q, bool ro, bool existingQualifier)
+EditQualifierDialog::EditQualifierDialog(QWidget* p, const U2Qualifier& q, bool ro, bool existingQualifier)
     : QDialog(p) {
     ui = new Ui_EditQualifierDialog;
     ui->setupUi(this);
@@ -58,11 +58,11 @@ EditQualifierDialog::EditQualifierDialog(QWidget *p, const U2Qualifier &q, bool 
     ui->valueEdit->installEventFilter(this);
 }
 
-bool EditQualifierDialog::eventFilter(QObject *obj, QEvent *e) {
+bool EditQualifierDialog::eventFilter(QObject* obj, QEvent* e) {
     Q_UNUSED(obj);
     QEvent::Type t = e->type();
     if (t == QEvent::KeyPress) {
-        QKeyEvent *ke = (QKeyEvent *)e;
+        QKeyEvent* ke = (QKeyEvent*)e;
         int key = ke->key();
         if (key == Qt::Key_Tab) {
             ui->nameEdit->setFocus();
@@ -76,7 +76,7 @@ bool EditQualifierDialog::eventFilter(QObject *obj, QEvent *e) {
     return false;
 }
 
-static QString simplify(const QString &s) {
+static QString simplify(const QString& s) {
     QString res = s;
     res = res.replace("\t", "    ");
     res = res.replace("\r", "");

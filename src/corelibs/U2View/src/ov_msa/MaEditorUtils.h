@@ -37,21 +37,21 @@ class MSAEditorSequenceArea;
 class MaUtilsWidget : public QWidget {
     Q_OBJECT
 public:
-    MaUtilsWidget(MaEditorWgt *_ui, QWidget *heightWidget);
+    MaUtilsWidget(MaEditorWgt* _ui, QWidget* heightWidget);
     virtual ~MaUtilsWidget() {
     }
-    const QFont &getMsaEditorFont();
+    const QFont& getMsaEditorFont();
     void setHeightMargin(int _heightMargin);
 
 protected slots:
     void sl_fontChanged();
 
 protected:
-    virtual void mousePressEvent(QMouseEvent *e);
-    virtual void paintEvent(QPaintEvent *e);
+    virtual void mousePressEvent(QMouseEvent* e);
+    virtual void paintEvent(QPaintEvent* e);
 
-    MaEditorWgt *ui;
-    QWidget *heightWidget;
+    MaEditorWgt* ui;
+    QWidget* heightWidget;
     int heightMargin;
 };
 
@@ -62,18 +62,18 @@ class MaLabelWidget : public MaUtilsWidget {
     Q_OBJECT
 public:
     // SANGER_TODO: rename the class and reconsider the usage of it and its parent
-    MaLabelWidget(MaEditorWgt *ui, QWidget *heightWidget, const QString &text, Qt::Alignment alignment, bool proxyMouseEventsToNameList = true);
+    MaLabelWidget(MaEditorWgt* ui, QWidget* heightWidget, const QString& text, Qt::Alignment alignment, bool proxyMouseEventsToNameList = true);
 
 protected:
-    void paintEvent(QPaintEvent *e);
-    void mousePressEvent(QMouseEvent *e);
-    void mouseReleaseEvent(QMouseEvent *e);
-    void mouseMoveEvent(QMouseEvent *e);
+    void paintEvent(QPaintEvent* e);
+    void mousePressEvent(QMouseEvent* e);
+    void mouseReleaseEvent(QMouseEvent* e);
+    void mouseMoveEvent(QMouseEvent* e);
 
 private:
-    void sendEventToNameList(QMouseEvent *e) const;
+    void sendEventToNameList(QMouseEvent* e) const;
 
-    QLabel *label;
+    QLabel* label;
     bool proxyMouseEventsToNameList;
 };
 

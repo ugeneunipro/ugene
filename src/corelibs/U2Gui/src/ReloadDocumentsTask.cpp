@@ -32,12 +32,12 @@
 
 namespace U2 {
 
-ReloadDocumentsTask::ReloadDocumentsTask(const QList<Document *> &_docs2Reload)
+ReloadDocumentsTask::ReloadDocumentsTask(const QList<Document*>& _docs2Reload)
     : Task(tr("Reload documents task"), TaskFlag_NoRun | TaskFlag_MinimizeSubtaskErrorText),
       docs2Reload(_docs2Reload) {
     GCOUNTER(cvar, "ReloadDocumentsTask");
 
-    foreach (Document *doc, docs2Reload) {
+    foreach (Document* doc, docs2Reload) {
         QString unloadErr = UnloadDocumentTask::checkSafeUnload(doc);
         if (!unloadErr.isEmpty()) {
             QMessageBox::warning(QApplication::activeWindow(),
@@ -51,7 +51,7 @@ ReloadDocumentsTask::ReloadDocumentsTask(const QList<Document *> &_docs2Reload)
 }
 
 void ReloadDocumentsTask::prepare() {
-    foreach (Document *doc, docs2Reload) {
+    foreach (Document* doc, docs2Reload) {
         addSubTask(new ReloadDocumentTask(doc));
     }
 }
@@ -79,12 +79,12 @@ QString ReloadDocumentsTask::generateReport() const {
     return report;
 }
 
-QList<Task *> ReloadDocumentsTask::onSubTaskFinished(Task *subTask) {
+QList<Task*> ReloadDocumentsTask::onSubTaskFinished(Task* subTask) {
     if (subTask->hasError()) {
         subTaskStateInfoErrors << subTask->getError();
     }
 
-    return QList<Task *>();
+    return QList<Task*>();
 }
 
 }  // namespace U2

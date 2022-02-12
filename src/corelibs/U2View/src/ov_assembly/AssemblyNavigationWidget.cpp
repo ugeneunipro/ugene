@@ -37,9 +37,9 @@
 
 namespace U2 {
 
-AssemblyNavigationWidget::AssemblyNavigationWidget(AssemblyBrowser *_browser, QWidget *p)
+AssemblyNavigationWidget::AssemblyNavigationWidget(AssemblyBrowser* _browser, QWidget* p)
     : QWidget(p), browser(_browser), savableTab(this, GObjectViewUtils::findViewByName(_browser->getName())) {
-    QVBoxLayout *mainLayout = new QVBoxLayout;
+    QVBoxLayout* mainLayout = new QVBoxLayout;
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setAlignment(Qt::AlignTop);
     mainLayout->setSpacing(5);
@@ -59,8 +59,8 @@ AssemblyNavigationWidget::AssemblyNavigationWidget(AssemblyBrowser *_browser, QW
         sl_updateZoomingState();
     }
 
-    CoveredRegionsLabel *coveredLabel = new CoveredRegionsLabel(browser, this);
-    QWidget *coveredGroup = new ShowHideSubgroupWidget("COVERED", tr("Most Covered Regions"), coveredLabel, true);
+    CoveredRegionsLabel* coveredLabel = new CoveredRegionsLabel(browser, this);
+    QWidget* coveredGroup = new ShowHideSubgroupWidget("COVERED", tr("Most Covered Regions"), coveredLabel, true);
     mainLayout->addWidget(coveredGroup);
 
     U2WidgetStateStorage::restoreWidgetState(savableTab);
@@ -74,7 +74,7 @@ void AssemblyNavigationWidget::sl_updateZoomingState() {
 
 // ----- CoveredRegionsLabel -----
 
-CoveredRegionsLabel::CoveredRegionsLabel(AssemblyBrowser *ab, QWidget *p)
+CoveredRegionsLabel::CoveredRegionsLabel(AssemblyBrowser* ab, QWidget* p)
     : QLabel(p), browser(ab) {
     connect(this, SIGNAL(linkActivated(QString)), browser, SLOT(sl_coveredRegionClicked(QString)));
     connect(browser, SIGNAL(si_coverageReady()), SLOT(sl_updateContent()));
@@ -106,7 +106,7 @@ void CoveredRegionsLabel::sl_updateContent() {
          */
         coveredRegionsText += tr("<tr><th/><th align='left'><div style='margin-right: 5px;'>Position</div></th><th align = 'center'>Coverage</th></tr>");
         for (int i = 0; i < coveredRegions.size(); ++i) {
-            const CoveredRegion &cr = coveredRegions.at(i);
+            const CoveredRegion& cr = coveredRegions.at(i);
             QString crRegion = FormatUtils::splitThousands(cr.region.center());
             QString crCoverage = FormatUtils::splitThousands(cr.coverage);
             coveredRegionsText += "<tr>";
@@ -135,12 +135,12 @@ AssemblyNavigationWidgetFactory::AssemblyNavigationWidgetFactory() {
     objectViewOfWidget = ObjViewType_AssemblyBrowser;
 }
 
-QWidget *AssemblyNavigationWidgetFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
+QWidget* AssemblyNavigationWidgetFactory::createWidget(GObjectView* objView, const QVariantMap& /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);
 
-    AssemblyBrowser *assemblyBrowser = qobject_cast<AssemblyBrowser *>(objView);
+    AssemblyBrowser* assemblyBrowser = qobject_cast<AssemblyBrowser*>(objView);
     SAFE_POINT(assemblyBrowser != nullptr,
                QString("Internal error: unable to cast object view to Assembly Browser for group '%1'.").arg(GROUP_ID),
                nullptr);

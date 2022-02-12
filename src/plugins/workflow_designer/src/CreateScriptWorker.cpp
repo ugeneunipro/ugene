@@ -135,25 +135,25 @@ public:
     ~CfgListItem() {
         delete delegate;
     }
-    PropertyDelegate *getDelegate() const {
+    PropertyDelegate* getDelegate() const {
         return delegate;
     }
     QString getDataType() const {
         return dataTypeId;
     }
-    void setDataType(const QString &id) {
+    void setDataType(const QString& id) {
         dataTypeId = id;
     }
 
     QString getName() const {
         return name;
     }
-    void setName(const QString &_name) {
+    void setName(const QString& _name) {
         name = _name;
     }
 
 private:
-    PropertyDelegate *delegate;
+    PropertyDelegate* delegate;
     QString dataTypeId;
     QString name;
     // DataTypePtr dataType;
@@ -163,52 +163,52 @@ class CfgListModel : public QAbstractListModel {
 public:
     // Hint for row height. We use non-default row to make combo-boxes fit.
     int itemHeight;
-    CfgListModel(int rowHeightHint, QObject *obj = nullptr)
+    CfgListModel(int rowHeightHint, QObject* obj = nullptr)
         : QAbstractListModel(obj), itemHeight(rowHeightHint) {
         items.append(new CfgListItem(DelegateForPort));
     }
 
     ~CfgListModel() {
-        foreach (CfgListItem *item, items) {
+        foreach (CfgListItem* item, items) {
             delete item;
         }
     }
 
     QStringList getItems() const {
         QStringList result;
-        foreach (CfgListItem *item, items) {
+        foreach (CfgListItem* item, items) {
             result.append(item->getDataType());
         }
         return result;
     }
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const {
+    int rowCount(const QModelIndex& parent = QModelIndex()) const {
         Q_UNUSED(parent);
         return items.count();
     }
 
-    Qt::ItemFlags flags(const QModelIndex &) const {
+    Qt::ItemFlags flags(const QModelIndex&) const {
         return Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     }
 
-    CfgListItem *getItem(const QModelIndex &index) const {
+    CfgListItem* getItem(const QModelIndex& index) const {
         // CfgListItem *item  = static_cast<CfgListItem*>(index.internalPointer());
         return items.at(index.row());
     }
 
-    QModelIndex parent(const QModelIndex &) const {
+    QModelIndex parent(const QModelIndex&) const {
         return QModelIndex();
     }
 
-    QVariant data(const QModelIndex &index, int role /* = Qt::DisplayRole */) const {
-        CfgListItem *item = getItem(index);
-        PropertyDelegate *dg = item->getDelegate();
+    QVariant data(const QModelIndex& index, int role /* = Qt::DisplayRole */) const {
+        CfgListItem* item = getItem(index);
+        PropertyDelegate* dg = item->getDelegate();
         switch (role) {
             case Qt::DisplayRole:
             case Qt::ToolTipRole:
                 return dg->getDisplayValue(item->getDataType());
             case DelegateRole:
-                return qVariantFromValue<PropertyDelegate *>(dg);
+                return qVariantFromValue<PropertyDelegate*>(dg);
             case Qt::EditRole:
             case ConfigurationEditor::ItemValueRole:
                 return item->getDataType();
@@ -219,11 +219,11 @@ public:
         }
     }
 
-    bool setData(const QModelIndex &index, const QVariant &value, int role /* = Qt::EditRole */) {
+    bool setData(const QModelIndex& index, const QVariant& value, int role /* = Qt::EditRole */) {
         switch (role) {
             case Qt::EditRole:
             case ConfigurationEditor::ItemValueRole:
-                CfgListItem *item = getItem(index);
+                CfgListItem* item = getItem(index);
                 if (item->getDataType() != value.toString()) {
                     if (!value.toString().isEmpty()) {
                         item->setDataType(value.toString());
@@ -234,7 +234,7 @@ public:
         return true;
     }
 
-    bool insertRows(int row, int count = 0, const QModelIndex &parent = QModelIndex()) {
+    bool insertRows(int row, int count = 0, const QModelIndex& parent = QModelIndex()) {
         Q_UNUSED(row);
         beginInsertRows(parent, items.size(), items.size() + count);
         for (int i = 0; i < count; i++) {
@@ -244,7 +244,7 @@ public:
         return true;
     }
 
-    bool removeRows(int row, int count, const QModelIndex &parent /* = QModelIndex */) {
+    bool removeRows(int row, int count, const QModelIndex& parent /* = QModelIndex */) {
         Q_UNUSED(count);
         if (rowCount() == 0 || row < 0 || row > rowCount()) {
             return false;
@@ -257,41 +257,41 @@ public:
     }
 
 private:
-    QList<CfgListItem *> items;
+    QList<CfgListItem*> items;
 };
 
 class CfgTableModel : public QAbstractTableModel {
 public:
-    CfgTableModel(QObject *obj = nullptr)
+    CfgTableModel(QObject* obj = nullptr)
         : QAbstractTableModel(obj) {
         // attrs.append(new CfgListItem());
     }
 
-    int rowCount(const QModelIndex & /* = QModelIndex */) const {
+    int rowCount(const QModelIndex& /* = QModelIndex */) const {
         return attrs.size();
     }
 
-    int columnCount(const QModelIndex & /* = QModelIndex */) const {
+    int columnCount(const QModelIndex& /* = QModelIndex */) const {
         return 2;
     }
 
-    Qt::ItemFlags flags(const QModelIndex &) const {
+    Qt::ItemFlags flags(const QModelIndex&) const {
         return Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     }
 
-    CfgListItem *getItem(const QModelIndex &index) const {
+    CfgListItem* getItem(const QModelIndex& index) const {
         // CfgListItem *item  = static_cast<CfgListItem*>(index.internalPointer());
         return attrs.at(index.row());
     }
 
-    QList<CfgListItem *> getItems() const {
+    QList<CfgListItem*> getItems() const {
         return attrs;
     }
 
-    QVariant data(const QModelIndex &index, int role /* = Qt::DisplayRole */) const {
-        CfgListItem *item = getItem(index);
+    QVariant data(const QModelIndex& index, int role /* = Qt::DisplayRole */) const {
+        CfgListItem* item = getItem(index);
         int col = index.column();
-        PropertyDelegate *dg = item->getDelegate();
+        PropertyDelegate* dg = item->getDelegate();
 
         switch (role) {
             case Qt::DisplayRole:
@@ -301,7 +301,7 @@ public:
                     return dg->getDisplayValue(item->getDataType());
             case DelegateRole:
                 if (col == 1)
-                    return qVariantFromValue<PropertyDelegate *>(dg);
+                    return qVariantFromValue<PropertyDelegate*>(dg);
                 else
                     return QVariant();
             case Qt::EditRole:
@@ -329,9 +329,9 @@ public:
         return QVariant();
     }
 
-    bool setData(const QModelIndex &index, const QVariant &value, int role) {
+    bool setData(const QModelIndex& index, const QVariant& value, int role) {
         int col = index.column();
-        CfgListItem *item = getItem(index);
+        CfgListItem* item = getItem(index);
         switch (role) {
             case Qt::EditRole:
             case ConfigurationEditor::ItemValueRole:
@@ -351,7 +351,7 @@ public:
         return true;
     }
 
-    bool insertRows(int row, int count = 0, const QModelIndex &parent = QModelIndex()) {
+    bool insertRows(int row, int count = 0, const QModelIndex& parent = QModelIndex()) {
         Q_UNUSED(row);
         Q_UNUSED(count);
         beginInsertRows(parent, attrs.size(), attrs.size());
@@ -360,7 +360,7 @@ public:
         return true;
     }
 
-    bool removeRows(int row, int count = 0, const QModelIndex &parent = QModelIndex()) {
+    bool removeRows(int row, int count = 0, const QModelIndex& parent = QModelIndex()) {
         Q_UNUSED(count);
         if (row >= 0 && row < attrs.size()) {
             beginRemoveRows(parent, row, row);
@@ -373,10 +373,10 @@ public:
     }
 
 private:
-    QList<CfgListItem *> attrs;
+    QList<CfgListItem*> attrs;
 };
 
-CreateScriptElementDialog::CreateScriptElementDialog(QWidget *p, ActorPrototype *proto)
+CreateScriptElementDialog::CreateScriptElementDialog(QWidget* p, ActorPrototype* proto)
     : QDialog(p), editing(false) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929977");
@@ -403,8 +403,8 @@ CreateScriptElementDialog::CreateScriptElementDialog(QWidget *p, ActorPrototype 
     connect(deleteOutputButton, SIGNAL(clicked()), SLOT(sl_deleteOutputClicked()));
     connect(deleteAttributeButton, SIGNAL(clicked()), SLOT(sl_deleteAttributeClicked()));
 
-    QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
-    QPushButton *cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
+    QPushButton* okButton = buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
     connect(fileButton, SIGNAL(clicked()), SLOT(sl_getDirectory()));
     connect(okButton, SIGNAL(clicked()), SLOT(sl_okClicked()));
     connect(cancelButton, SIGNAL(clicked()), SLOT(sl_cancelClicked()));
@@ -420,7 +420,7 @@ CreateScriptElementDialog::CreateScriptElementDialog(QWidget *p, ActorPrototype 
     }
 }
 
-static DataTypePtr getDatatypeOfSlotDesc(const Descriptor &dt) {
+static DataTypePtr getDatatypeOfSlotDesc(const Descriptor& dt) {
     QString dtId = dt.getId();
     if (dtId == BaseSlots::DNA_SEQUENCE_SLOT().getId()) {
         return BaseTypes::DNA_SEQUENCE_TYPE();
@@ -438,14 +438,14 @@ static DataTypePtr getDatatypeOfSlotDesc(const Descriptor &dt) {
     return DataTypePtr();
 }
 
-void CreateScriptElementDialog::fillFields(ActorPrototype *proto) {
+void CreateScriptElementDialog::fillFields(ActorPrototype* proto) {
     int inputInd = 0;
     int outputInd = 0;
-    QList<PortDescriptor *> portDescriptors = proto->getPortDesciptors();
-    for (const PortDescriptor *desc : qAsConst(portDescriptors)) {
+    QList<PortDescriptor*> portDescriptors = proto->getPortDesciptors();
+    for (const PortDescriptor* desc : qAsConst(portDescriptors)) {
         if (desc->isInput()) {
             inputList->model()->insertRows(0, desc->getType()->getAllDescriptors().size() - 1, QModelIndex());
-            foreach (const Descriptor &d, desc->getType()->getAllDescriptors()) {
+            foreach (const Descriptor& d, desc->getType()->getAllDescriptors()) {
                 QModelIndex mi = inputList->model()->index(inputInd, 0);
                 inputList->model()->setData(mi, getDatatypeOfSlotDesc(d)->getId());
                 inputInd++;
@@ -453,7 +453,7 @@ void CreateScriptElementDialog::fillFields(ActorPrototype *proto) {
 
         } else {
             outputList->model()->insertRows(0, desc->getType()->getAllDescriptors().size() - 1, QModelIndex());
-            foreach (const Descriptor &d, desc->getType()->getAllDescriptors()) {
+            foreach (const Descriptor& d, desc->getType()->getAllDescriptors()) {
                 QModelIndex mi = outputList->model()->index(outputInd, 0);
                 outputList->model()->setData(mi, getDatatypeOfSlotDesc(d)->getId());
                 outputInd++;
@@ -462,7 +462,7 @@ void CreateScriptElementDialog::fillFields(ActorPrototype *proto) {
     }
 
     int ind = 0;
-    foreach (const Attribute *attr, proto->getAttributes()) {
+    foreach (const Attribute* attr, proto->getAttributes()) {
         attributeTable->model()->insertRow(1, QModelIndex());
         QModelIndex mi1 = attributeTable->model()->index(ind, 0);
         QModelIndex mi2 = attributeTable->model()->index(ind, 1);
@@ -520,12 +520,12 @@ void CreateScriptElementDialog::sl_cancelClicked() {
 }
 
 void CreateScriptElementDialog::sl_okClicked() {
-    CfgListModel *inputPorts = static_cast<CfgListModel *>(inputList->model());
+    CfgListModel* inputPorts = static_cast<CfgListModel*>(inputList->model());
     QList<QString> typeIds = inputPorts->getItems();
-    DataTypeRegistry *dtr = WorkflowEnv::getDataTypeRegistry();
+    DataTypeRegistry* dtr = WorkflowEnv::getDataTypeRegistry();
     assert(dtr);
     input.clear();
-    foreach (const QString &id, typeIds) {
+    foreach (const QString& id, typeIds) {
         DataTypePtr ptr = dtr->getById(id);
         if (input.contains(ptr)) {
             QMessageBox::critical(this, tr("error"), tr("Two identical types for input port"));
@@ -535,11 +535,11 @@ void CreateScriptElementDialog::sl_okClicked() {
         input << ptr;
     }
 
-    CfgListModel *outputPorts = static_cast<CfgListModel *>(outputList->model());
+    CfgListModel* outputPorts = static_cast<CfgListModel*>(outputList->model());
     typeIds = outputPorts->getItems();
     assert(dtr);
     output.clear();
-    foreach (const QString &id, typeIds) {
+    foreach (const QString& id, typeIds) {
         DataTypePtr ptr = dtr->getById(id);
         if (output.contains(ptr)) {
             QMessageBox::critical(this, tr("error"), tr("Two identical types for output port"));
@@ -549,17 +549,17 @@ void CreateScriptElementDialog::sl_okClicked() {
         output << ptr;
     }
 
-    CfgTableModel *attrTableModel = static_cast<CfgTableModel *>(attributeTable->model());
-    QList<CfgListItem *> attributes = attrTableModel->getItems();
+    CfgTableModel* attrTableModel = static_cast<CfgTableModel*>(attributeTable->model());
+    QList<CfgListItem*> attributes = attrTableModel->getItems();
     attrs.clear();
-    for (CfgListItem *item : qAsConst(attributes)) {
+    for (CfgListItem* item : qAsConst(attributes)) {
         QString itemName = item->getName();
         if (itemName.isEmpty()) {
             QMessageBox::critical(this, tr("error"), tr("Name for some attributes is empty"));
             coreLog.error(tr("Name for some attributes is empty"));
             return;
         }
-        for (const Attribute *attr : qAsConst(attrs)) {
+        for (const Attribute* attr : qAsConst(attrs)) {
             if (attr->getId() == itemName) {
                 QMessageBox::critical(this, tr("error"), tr("Two attributes with name %1").arg(itemName));
                 coreLog.error(tr("Two attributes with name %1").arg(itemName));
@@ -583,7 +583,7 @@ void CreateScriptElementDialog::sl_okClicked() {
         return;
     }
 
-    ActorPrototypeRegistry *pr = WorkflowEnv::getProtoRegistry();
+    ActorPrototypeRegistry* pr = WorkflowEnv::getProtoRegistry();
     if (pr) {
         if (pr->getProto(LocalWorkflow::ScriptWorkerFactory::ACTOR_ID + name) && !editing) {
             QMessageBox::critical(this, tr("error"), tr("Actor with this name already registered"));
@@ -625,7 +625,7 @@ void CreateScriptElementDialog::changeDirectoryForActors() {
         }
         dir.setNameFilters(QStringList() << "*.usa");
         QFileInfoList fileList = dir.entryInfoList();
-        foreach (const QFileInfo &fileInfo, fileList) {
+        foreach (const QFileInfo& fileInfo, fileList) {
             QString newFileUrl = newUrl + fileInfo.fileName();
             QFile::copy(fileInfo.filePath(), newFileUrl);
         }
@@ -640,8 +640,8 @@ bool CreateScriptElementDialog::saveParams() {
         dir.mkpath(url);
     }
 
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-    IOAdapter *io = iof->createIOAdapter();
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+    IOAdapter* io = iof->createIOAdapter();
     actorFilePath = url + name + ".usa";
     if (io->open(actorFilePath, IOAdapterMode_Write)) {
         io->writeBlock(doc.toByteArray());
@@ -658,31 +658,31 @@ QDomDocument CreateScriptElementDialog::saveXml() {
     QDomElement actor = xml.createElement(ACTOR_ELEMENT);
     xml.appendChild(actor);
 
-    CfgListModel *inputPorts = static_cast<CfgListModel *>(inputList->model());
+    CfgListModel* inputPorts = static_cast<CfgListModel*>(inputList->model());
     QList<QString> typeIds = inputPorts->getItems();
     QDomElement inputPort = xml.createElement(INPUT_PORT_ELEMENT);
     actor.appendChild(inputPort);
-    foreach (const QString &str, typeIds) {
+    foreach (const QString& str, typeIds) {
         QDomElement slot = xml.createElement(IN_SLOT_ELEMENT);
         slot.setAttribute(SLOT_ID, str);
         inputPort.appendChild(slot);
     }
 
-    CfgListModel *outputPorts = static_cast<CfgListModel *>(outputList->model());
+    CfgListModel* outputPorts = static_cast<CfgListModel*>(outputList->model());
     typeIds = outputPorts->getItems();
     QDomElement outputPort = xml.createElement(OUTPUT_PORT_ELEMENT);
     actor.appendChild(outputPort);
-    foreach (const QString &str, typeIds) {
+    foreach (const QString& str, typeIds) {
         QDomElement slot = xml.createElement(OUT_SLOT_ELEMENT);
         slot.setAttribute(SLOT_ID, str);
         outputPort.appendChild(slot);
     }
 
-    CfgTableModel *attrTableModel = static_cast<CfgTableModel *>(attributeTable->model());
-    QList<CfgListItem *> attributes = attrTableModel->getItems();
+    CfgTableModel* attrTableModel = static_cast<CfgTableModel*>(attributeTable->model());
+    QList<CfgListItem*> attributes = attrTableModel->getItems();
     QDomElement attribute = xml.createElement(ATTRIBUTE_ELEMENT);
     actor.appendChild(attribute);
-    foreach (CfgListItem *item, attributes) {
+    foreach (CfgListItem* item, attributes) {
         QString itemName = item->getName();
         QString itemId = item->getDataType();
         QDomElement attr = xml.createElement(ATTR_ELEMENT);
@@ -708,7 +708,7 @@ QList<DataTypePtr> CreateScriptElementDialog::getInput() const {
 QList<DataTypePtr> CreateScriptElementDialog::getOutput() const {
     return output;
 }
-QList<Attribute *> CreateScriptElementDialog::getAttributes() const {
+QList<Attribute*> CreateScriptElementDialog::getAttributes() const {
     return attrs;
 }
 const QString CreateScriptElementDialog::getName() const {

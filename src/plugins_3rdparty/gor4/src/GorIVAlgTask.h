@@ -31,7 +31,7 @@ namespace U2 {
 class GorIVAlgTask : public SecStructPredictTask {
     Q_OBJECT
 public:
-    GorIVAlgTask(const QByteArray &sequence);
+    GorIVAlgTask(const QByteArray& sequence);
     virtual void run();
     SEC_STRUCT_PREDICT_TASK_FACTORY(GorIVAlgTask)
 private:

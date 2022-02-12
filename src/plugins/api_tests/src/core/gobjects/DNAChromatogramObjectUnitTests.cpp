@@ -52,21 +52,21 @@ U2EntityRef DNAChromatogramObjectTestData::getObjRef() {
     return objRef;
 }
 
-U2ObjectDbi *DNAChromatogramObjectTestData::getObjDbi() {
+U2ObjectDbi* DNAChromatogramObjectTestData::getObjDbi() {
     if (!inited) {
         init();
     }
     return dbiProvider.getDbi()->getObjectDbi();
 }
 
-UdrDbi *DNAChromatogramObjectTestData::getUdrDbi() {
+UdrDbi* DNAChromatogramObjectTestData::getUdrDbi() {
     if (!inited) {
         init();
     }
     return dbiProvider.getDbi()->getUdrDbi();
 }
 
-const DNAChromatogram &DNAChromatogramObjectTestData::getChromatogram() {
+const DNAChromatogram& DNAChromatogramObjectTestData::getChromatogram() {
     if (!inited) {
         init();
     }
@@ -153,8 +153,8 @@ IMPLEMENT_TEST(DNAChromatogramObjectUnitTests, clone) {
     DNAChromatogramObject object("object", DNAChromatogramObjectTestData::getObjRef());
 
     U2OpStatusImpl os;
-    GObject *clonedGObj = object.clone(DNAChromatogramObjectTestData::getDbiRef(), os);
-    QScopedPointer<DNAChromatogramObject> cloned(dynamic_cast<DNAChromatogramObject *>(clonedGObj));
+    GObject* clonedGObj = object.clone(DNAChromatogramObjectTestData::getDbiRef(), os);
+    QScopedPointer<DNAChromatogramObject> cloned(dynamic_cast<DNAChromatogramObject*>(clonedGObj));
     CHECK_NO_ERROR(os);
 
     CompareUtils::checkEqual(object.getChromatogram(), cloned->getChromatogram(), os);
@@ -165,7 +165,7 @@ IMPLEMENT_TEST(DNAChromatogramObjectUnitTests, clone_NullDbi) {
     DNAChromatogramObject object("object", DNAChromatogramObjectTestData::getObjRef());
 
     U2OpStatusImpl os;
-    GObject *clonedGObj = object.clone(U2DbiRef(), os);
+    GObject* clonedGObj = object.clone(U2DbiRef(), os);
     Q_UNUSED(clonedGObj);
     CHECK_TRUE(os.hasError(), "no error");
 }
@@ -176,7 +176,7 @@ IMPLEMENT_TEST(DNAChromatogramObjectUnitTests, clone_NullObj) {
     DNAChromatogramObject object("object", objRef);
 
     U2OpStatusImpl os;
-    GObject *clonedGObj = object.clone(DNAChromatogramObjectTestData::getDbiRef(), os);
+    GObject* clonedGObj = object.clone(DNAChromatogramObjectTestData::getDbiRef(), os);
     Q_UNUSED(clonedGObj);
     CHECK_TRUE(os.hasError(), "no error");
 }

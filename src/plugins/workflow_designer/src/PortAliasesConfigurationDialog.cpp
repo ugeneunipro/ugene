@@ -32,20 +32,20 @@
 namespace U2 {
 namespace Workflow {
 
-PortAliasesConfigurationDialog::PortAliasesConfigurationDialog(const Schema &schema, QWidget *p)
+PortAliasesConfigurationDialog::PortAliasesConfigurationDialog(const Schema& schema, QWidget* p)
     : QDialog(p), currentRow(-1) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930020");
 
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
-    QPushButton *cancelPushButton = buttonBox->button(QDialogButtonBox::Cancel);
-    QPushButton *okPushButton = buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* cancelPushButton = buttonBox->button(QDialogButtonBox::Cancel);
+    QPushButton* okPushButton = buttonBox->button(QDialogButtonBox::Ok);
 
     connect(cancelPushButton, SIGNAL(clicked()), SLOT(reject()));
     connect(okPushButton, SIGNAL(clicked()), SLOT(accept()));
-    connect(portAliasEdit, SIGNAL(textChanged(const QString &)), SLOT(sl_portAliasChanged(const QString &)));
-    connect(portDescriptionEdit, SIGNAL(textChanged(const QString &)), SLOT(sl_portDescriptionChanged(const QString &)));
+    connect(portAliasEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_portAliasChanged(const QString&)));
+    connect(portDescriptionEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_portDescriptionChanged(const QString&)));
 
     okPushButton->setDefault(true);
     portAliasesTableWidget->verticalHeader()->hide();
@@ -53,9 +53,9 @@ PortAliasesConfigurationDialog::PortAliasesConfigurationDialog(const Schema &sch
     portAliasesTableWidget->horizontalHeader()->setSectionsClickable(false);
     portAliasesTableWidget->horizontalHeader()->setStretchLastSection(true);
 
-    foreach (Actor *actor, schema.getProcesses()) {
+    foreach (Actor* actor, schema.getProcesses()) {
         assert(nullptr != actor);
-        foreach (Port *port, actor->getPorts()) {
+        foreach (Port* port, actor->getPorts()) {
             assert(nullptr != port);
             // show only output and free input ports
             if (port->isInput()) {
@@ -65,7 +65,7 @@ PortAliasesConfigurationDialog::PortAliasesConfigurationDialog(const Schema &sch
             }
             int pos = portListWidget->count();
             QString itemName = actor->getLabel() + "." + port->getDisplayName();
-            QListWidgetItem *item = new QListWidgetItem(itemName);
+            QListWidgetItem* item = new QListWidgetItem(itemName);
             portListWidget->insertItem(pos, item);
             portListMap.insert(pos, port);
         }
@@ -93,7 +93,7 @@ void PortAliasesConfigurationDialog::sl_portSelected(int row) {
     clearAliasTable();
 
     assert(row >= 0 && row < portListWidget->count());
-    Port *currentPort = portListMap.value(row);
+    Port* currentPort = portListMap.value(row);
     assert(nullptr != currentPort);
 
     int rowInd = 0;
@@ -102,12 +102,12 @@ void PortAliasesConfigurationDialog::sl_portSelected(int row) {
     while (it != aliasMap.constEnd()) {
         portAliasesTableWidget->insertRow(rowInd);
 
-        QTableWidgetItem *portNameItem = new QTableWidgetItem(it.key().getDisplayName());
+        QTableWidgetItem* portNameItem = new QTableWidgetItem(it.key().getDisplayName());
         portAliasesTableWidget->setItem(rowInd, 0, portNameItem);
         portNameItem->setData(Qt::UserRole, QVariant::fromValue(it.key()));
         portNameItem->setFlags(portNameItem->flags() ^ Qt::ItemIsSelectable ^ Qt::ItemIsEditable);
 
-        QTableWidgetItem *aliasItem = new QTableWidgetItem(it.value());
+        QTableWidgetItem* aliasItem = new QTableWidgetItem(it.value());
         portAliasesTableWidget->setItem(rowInd, 1, aliasItem);
 
         rowInd++;
@@ -130,7 +130,7 @@ void PortAliasesConfigurationDialog::sl_onDataChange(int row, int col) {
         return;
     }
 
-    Port *port = portListMap.value(portListWidget->currentRow());
+    Port* port = portListMap.value(portListWidget->currentRow());
     assert(nullptr != port);
 
     Descriptor desc = portAliasesTableWidget->item(row, 0)->data(Qt::UserRole).value<Descriptor>();
@@ -139,22 +139,22 @@ void PortAliasesConfigurationDialog::sl_onDataChange(int row, int col) {
     model.aliases[port][desc] = portAliasesTableWidget->item(row, 1)->text();
 }
 
-void PortAliasesConfigurationDialog::sl_portAliasChanged(const QString &newStr) {
-    Port *currentPort = portListMap.value(currentRow);
+void PortAliasesConfigurationDialog::sl_portAliasChanged(const QString& newStr) {
+    Port* currentPort = portListMap.value(currentRow);
     PortInfo info = model.ports.value(currentPort);
     model.ports.insert(currentPort, PortInfo(newStr, info.second));
 }
 
-void PortAliasesConfigurationDialog::sl_portDescriptionChanged(const QString &newStr) {
-    Port *currentPort = portListMap.value(currentRow);
+void PortAliasesConfigurationDialog::sl_portDescriptionChanged(const QString& newStr) {
+    Port* currentPort = portListMap.value(currentRow);
     PortInfo info = model.ports.value(currentPort);
     model.ports.insert(currentPort, PortInfo(info.first, newStr));
 }
 
-void PortAliasesConfigurationDialog::initializeModel(const Schema &schema) {
-    foreach (Actor *actor, schema.getProcesses()) {
+void PortAliasesConfigurationDialog::initializeModel(const Schema& schema) {
+    foreach (Actor* actor, schema.getProcesses()) {
         assert(nullptr != actor);
-        foreach (Port *port, actor->getPorts()) {
+        foreach (Port* port, actor->getPorts()) {
             assert(nullptr != port);
             if (port->isInput()) {
                 if (!port->getLinks().isEmpty()) {
@@ -164,17 +164,17 @@ void PortAliasesConfigurationDialog::initializeModel(const Schema &schema) {
             model.ports.insert(port, PortInfo("", ""));
             QList<Descriptor> slotList;
             {
-                DataTypePtr to = WorkflowUtils::getToDatatypeForBusport(qobject_cast<IntegralBusPort *>(port));
+                DataTypePtr to = WorkflowUtils::getToDatatypeForBusport(qobject_cast<IntegralBusPort*>(port));
                 if (port->isInput()) {
                     slotList = to->getDatatypesMap().keys();
                 } else {
-                    DataTypePtr from = WorkflowUtils::getFromDatatypeForBusport(qobject_cast<IntegralBusPort *>(port), to);
+                    DataTypePtr from = WorkflowUtils::getFromDatatypeForBusport(qobject_cast<IntegralBusPort*>(port), to);
                     slotList = from->getDatatypesMap().keys();
                 }
             }
 
             QList<SlotAlias> slotAliases;
-            foreach (const PortAlias &portAlias, schema.getPortAliases()) {
+            foreach (const PortAlias& portAlias, schema.getPortAliases()) {
                 if (portAlias.getSourcePort() == port) {
                     slotAliases = portAlias.getSlotAliases();
                     model.ports.insert(port, PortInfo(portAlias.getAlias(), portAlias.getDescription()));
@@ -199,7 +199,7 @@ void PortAliasesConfigurationDialog::initializeModel(const Schema &schema) {
                 }
 
                 QString alias;
-                foreach (const SlotAlias &slotAlias, slotAliases) {
+                foreach (const SlotAlias& slotAlias, slotAliases) {
                     if (slotAlias.getSourceSlotId() == slotId) {
                         if (slotAlias.getSourcePort()->owner()->getId() == actorId) {
                             alias = slotAlias.getAlias();
@@ -215,11 +215,11 @@ void PortAliasesConfigurationDialog::initializeModel(const Schema &schema) {
 }
 
 void PortAliasesConfigurationDialog::accept() {
-    foreach (Port *port, model.aliases.keys()) {
+    foreach (Port* port, model.aliases.keys()) {
         QStringList slotAliases = model.aliases.value(port).values();
 
         bool slotsNotAliased = true;
-        foreach (const QString &alias, slotAliases) {
+        foreach (const QString& alias, slotAliases) {
             slotsNotAliased = slotsNotAliased && alias.isEmpty();
         }
 
@@ -236,7 +236,7 @@ void PortAliasesConfigurationDialog::accept() {
             return;
         }
 
-        foreach (Port *otherPort, model.ports.keys()) {
+        foreach (Port* otherPort, model.ports.keys()) {
             if (otherPort == port) {
                 continue;
             }
@@ -258,7 +258,7 @@ void PortAliasesConfigurationDialog::accept() {
 
 PortAliasesCfgDlgModel PortAliasesConfigurationDialog::getModel() const {
     PortAliasesCfgDlgModel ret;
-    foreach (Port *port, model.ports.keys()) {
+    foreach (Port* port, model.ports.keys()) {
         QString newPortName = model.ports.value(port).first;
         if (newPortName.isEmpty()) {
             continue;
@@ -266,7 +266,7 @@ PortAliasesCfgDlgModel PortAliasesConfigurationDialog::getModel() const {
         ret.ports.insert(port, model.ports.value(port));
 
         QMap<Descriptor, QString> aliases = model.aliases.value(port);
-        foreach (const Descriptor &slotDescr, aliases.keys()) {
+        foreach (const Descriptor& slotDescr, aliases.keys()) {
             if (aliases.value(slotDescr).isEmpty()) {
                 aliases.remove(slotDescr);
             }
@@ -276,5 +276,5 @@ PortAliasesCfgDlgModel PortAliasesConfigurationDialog::getModel() const {
     return ret;
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

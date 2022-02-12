@@ -40,47 +40,47 @@ class PVRowData;
 class PanViewRenderer : public SequenceViewAnnotatedRenderer {
     Q_OBJECT
 public:
-    PanViewRenderer(PanView *panView, SequenceObjectContext *ctx);
+    PanViewRenderer(PanView* panView, SequenceObjectContext* ctx);
     virtual ~PanViewRenderer() {
     }
 
-    qint64 coordToPos(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const override;
+    qint64 coordToPos(const QPoint& p, const QSize& canvasSize, const U2Region& visibleRange) const override;
 
     double getCurrentScale() const override;
 
-    U2Region getAnnotationYRange(Annotation *a, int r, const AnnotationSettings *as, int availableHeight) const override;
+    U2Region getAnnotationYRange(Annotation* a, int r, const AnnotationSettings* as, int availableHeight) const override;
 
-    U2Region getCutSiteYRange(const U2Strand &mStrand, int availableHeight) const override;
+    U2Region getCutSiteYRange(const U2Strand& mStrand, int availableHeight) const override;
 
     int getContentIndentY(int canvasHeight) const;
 
     int getMinimumHeight() const override;
 
-    QSize getBaseCanvasSize(const U2Region &visibleRange) const override;
+    QSize getBaseCanvasSize(const U2Region& visibleRange) const override;
 
-    void drawAll(QPainter &p, const U2Region &visibleRange);
+    void drawAll(QPainter& p, const U2Region& visibleRange);
 
-    void drawAll(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) override;
+    void drawAll(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange) override;
 
-    void drawSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) override;
+    void drawSelection(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange) override;
 
-    void drawAnnotations(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange, const AnnotationDisplaySettings &displaySettings) override;
+    void drawAnnotations(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange, const AnnotationDisplaySettings& displaySettings) override;
 
 protected:
     int getLineY(int line) const;
     bool isSequenceCharsVisible() const;
 
-    PanView *panView;
-    PanViewLinesSettings *s;
+    PanView* panView;
+    PanViewLinesSettings* s;
 
 private:
-    virtual void drawSequence(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange);
-    void drawSequenceSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange);
+    virtual void drawSequence(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange);
+    void drawSequenceSelection(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange);
 
-    virtual void drawRuler(GraphUtils::RulerConfig c, QPainter &p, const U2Region &visibleRange, int firstCharCenter, int firstLastWidth);
-    void drawCustomRulers(GraphUtils::RulerConfig c, QPainter &p, const U2Region &visibleRange, int firstCharCenter, int lastCharCenter, int width, int predefinedY = -1, bool ignoreVisibleRange = false);
+    virtual void drawRuler(GraphUtils::RulerConfig c, QPainter& p, const U2Region& visibleRange, int firstCharCenter, int firstLastWidth);
+    void drawCustomRulers(GraphUtils::RulerConfig c, QPainter& p, const U2Region& visibleRange, int firstCharCenter, int lastCharCenter, int width, int predefinedY = -1, bool ignoreVisibleRange = false);
 
-    const QString getText(const PVRowData *rData) const;
+    const QString getText(const PVRowData* rData) const;
 
     static const int RULER_NOTCH_SIZE;
     //    static const int MAX_VISIBLE_ROWS;
@@ -93,7 +93,7 @@ public:
     PanViewRenderAreaFactory();
     virtual ~PanViewRenderAreaFactory();
 
-    virtual PanViewRenderArea *createRenderArea(PanView *panView) const;
+    virtual PanViewRenderArea* createRenderArea(PanView* panView) const;
 };
 
 }  // namespace U2

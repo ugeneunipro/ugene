@@ -50,19 +50,19 @@ LogSettings::LogSettings()
     memset(activeLevelGlobalFlag, 0, sizeof(bool) * LogLevel_NumLevels);
 }
 
-const LoggerSettings &LogSettings::getLoggerSettings(const QString &cName) {
+const LoggerSettings& LogSettings::getLoggerSettings(const QString& cName) {
     QHash<QString, LoggerSettings>::const_iterator it = categories.find(cName);
     if (it == categories.end()) {
         reinitCategories();
         it = categories.find(cName);
         assert(it != categories.end());
     }
-    const LoggerSettings &cs = it.value();
+    const LoggerSettings& cs = it.value();
     return cs;
 }
 
 void LogSettings::reinitAll() {
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
 
     for (int i = 0; i < LogLevel_NumLevels; i++) {
         if (i == LogLevel_TRACE) {
@@ -89,14 +89,14 @@ void LogSettings::reinitAll() {
 
 void LogSettings::reinitCategories() {
     LogCategories::init();
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     for (int i = 0; i < LogLevel_NumLevels; i++) {
         activeLevelGlobalFlag[i] = s->getValue(SETTINGS_ROOT + "activeFlagLevel" + QString::number(i), i >= LogLevel_INFO).toBool();
     }
 
-    LogServer *ls = LogServer::getInstance();
-    const QStringList &categoryList = ls->getCategories();
-    foreach (const QString &name, categoryList) {
+    LogServer* ls = LogServer::getInstance();
+    const QStringList& categoryList = ls->getCategories();
+    foreach (const QString& name, categoryList) {
         if (!categories.contains(name)) {
             LoggerSettings cs;
             cs.categoryName = name;
@@ -108,21 +108,21 @@ void LogSettings::reinitCategories() {
     }
 }
 
-void LogSettings::removeCategory(const QString &name) {
+void LogSettings::removeCategory(const QString& name) {
     int n = categories.remove(name);
     assert(n == 1);
     Q_UNUSED(n);
 }
 
-void LogSettings::addCategory(const LoggerSettings &newcs) {
+void LogSettings::addCategory(const LoggerSettings& newcs) {
     assert(!categories.contains(newcs.categoryName));
     categories[newcs.categoryName] = newcs;
 }
 
 void LogSettings::save() {
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
 
-    foreach (const LoggerSettings &cs, categories.values()) {
+    foreach (const LoggerSettings& cs, categories.values()) {
         for (int i = 0; i < LogLevel_NumLevels; i++) {
             s->setValue(SETTINGS_ROOT + "categories/" + cs.categoryName + "/activeFlagLevel" + QString::number(i), cs.activeLevelFlag[i]);
         }
@@ -141,13 +141,13 @@ void LogSettings::save() {
     s->setValue(SETTINGS_ROOT + "outFilePath", outputFile);
 }
 
-bool LogSettings::operator==(const LogSettings &other) const {
+bool LogSettings::operator==(const LogSettings& other) const {
     bool res = levelColors == other.levelColors && activeLevelGlobalFlag == other.activeLevelGlobalFlag && showDate == other.showDate && showLevel == other.showLevel && showCategory == other.showCategory && categories == other.categories;
 
     return res;
 }
 
-void LogSettingsHolder::setSettings(const LogSettings &s) {
+void LogSettingsHolder::setSettings(const LogSettings& s) {
     if (settings == s) {
         return;
     }

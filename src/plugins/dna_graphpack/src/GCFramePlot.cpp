@@ -34,16 +34,16 @@ namespace U2 {
 #define OFFSET_ONE "Frame 2"
 #define OFFSET_TWO "Frame 3"
 
-GCFramePlotFactory::GCFramePlotFactory(QObject *p)
+GCFramePlotFactory::GCFramePlotFactory(QObject* p)
     : GSequenceGraphFactory("GC Frame Plot", p) {
 }
 
-bool GCFramePlotFactory::isEnabled(const U2SequenceObject *o) const {
-    const DNAAlphabet *al = o->getAlphabet();
+bool GCFramePlotFactory::isEnabled(const U2SequenceObject* o) const {
+    const DNAAlphabet* al = o->getAlphabet();
     return al->isNucleic();
 }
 
-QList<QSharedPointer<GSequenceGraphData>> GCFramePlotFactory::createGraphs(GSequenceGraphView *view) {
+QList<QSharedPointer<GSequenceGraphData>> GCFramePlotFactory::createGraphs(GSequenceGraphView* view) {
     // TODO: All points should be calculated during one loop over the window.
 
     assert(isEnabled(view->getSequenceObject()));
@@ -54,8 +54,8 @@ QList<QSharedPointer<GSequenceGraphData>> GCFramePlotFactory::createGraphs(GSequ
     };
 }
 
-GSequenceGraphDrawer *GCFramePlotFactory::getDrawer(GSequenceGraphView *v) {
-    GSequenceGraphDrawer *d = GSequenceGraphFactory::getDrawer(v);
+GSequenceGraphDrawer* GCFramePlotFactory::getDrawer(GSequenceGraphView* v) {
+    GSequenceGraphDrawer* d = GSequenceGraphFactory::getDrawer(v);
 
     QMap<QString, QColor> colors;
     colors.insert(OFFSET_NULL, Qt::red);
@@ -73,13 +73,13 @@ GCFramePlotAlgorithm::GCFramePlotAlgorithm(int _offset)
     : offset(_offset) {
 }
 
-void GCFramePlotAlgorithm::windowStrategyWithoutMemorize(QVector<float> &res,
-                                                         const QByteArray &seq,
+void GCFramePlotAlgorithm::windowStrategyWithoutMemorize(QVector<float>& res,
+                                                         const QByteArray& seq,
                                                          int startPos,
                                                          qint64 window,
                                                          qint64 step,
                                                          qint64 nSteps,
-                                                         U2OpStatus &os) {
+                                                         U2OpStatus& os) {
     for (int i = 0; i < nSteps; i++) {
         int start = startPos + i * step;
         int end = start + window;
@@ -100,7 +100,7 @@ void GCFramePlotAlgorithm::windowStrategyWithoutMemorize(QVector<float> &res,
     }
 }
 
-void GCFramePlotAlgorithm::calculate(QVector<float> &result, U2SequenceObject *sequenceObject, qint64 window, qint64 step, U2OpStatus &os) {
+void GCFramePlotAlgorithm::calculate(QVector<float>& result, U2SequenceObject* sequenceObject, qint64 window, qint64 step, U2OpStatus& os) {
     U2Region vr(0, sequenceObject->getSequenceLength());
     int nSteps = GSequenceGraphUtils::getNumSteps(vr, window, step);
     result.reserve(nSteps);

@@ -28,33 +28,33 @@ namespace U2 {
 
 class U2FORMATS_EXPORT MysqlCrossDatabaseReferenceDbi : public U2CrossDatabaseReferenceDbi, public MysqlChildDbiCommon {
 public:
-    MysqlCrossDatabaseReferenceDbi(MysqlDbi *dbi);
+    MysqlCrossDatabaseReferenceDbi(MysqlDbi* dbi);
 
     /**
         Adds new remote object to database.
         Sets local object id assigned to the new value
         Requires: U2DbiFeature_WriteCrossDatabaseReferences
     */
-    virtual void createCrossReference(U2CrossDatabaseReference &reference, const QString &fodler, U2OpStatus &os);
+    virtual void createCrossReference(U2CrossDatabaseReference& reference, const QString& fodler, U2OpStatus& os);
 
     /**
         Removes a DB representation of CrossDatabaseReference
     */
-    virtual void removeCrossReferenceData(const U2DataId &referenceId, U2OpStatus &os);
+    virtual void removeCrossReferenceData(const U2DataId& referenceId, U2OpStatus& os);
 
     /**
         Loads remote object information from DB
         Requires: U2DbiFeature_ReadCrossDatabaseReferences
     */
-    virtual U2CrossDatabaseReference getCrossReference(const U2DataId &objectId, U2OpStatus &os);
+    virtual U2CrossDatabaseReference getCrossReference(const U2DataId& objectId, U2OpStatus& os);
 
     /**
         Updates all fields of cross database reference object
         Requires: U2DbiFeature_WriteCrossDatabaseReferences
     */
-    virtual void updateCrossReference(const U2CrossDatabaseReference &reference, U2OpStatus &os);
+    virtual void updateCrossReference(const U2CrossDatabaseReference& reference, U2OpStatus& os);
 
-    virtual void initSqlSchema(U2OpStatus &os);
+    virtual void initSqlSchema(U2OpStatus& os);
 };
 
 }  // namespace U2

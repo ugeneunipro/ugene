@@ -37,19 +37,19 @@ class U2SequenceObject;
 class SequenceContentFilterTask : public AbstractProjectFilterTask, public FindAlgorithmResultsListener {
     Q_OBJECT
 public:
-    SequenceContentFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document>> &docs);
+    SequenceContentFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs);
 
-    void onResult(const FindAlgorithmResult &r);
+    void onResult(const FindAlgorithmResult& r);
 
 protected:
-    bool filterAcceptsObject(GObject *obj);
+    bool filterAcceptsObject(GObject* obj);
 
 private:
-    bool sequenceContainsPattern(U2SequenceObject *seqObject, const QString &pattern, const FindAlgorithmSettings &findSettings);
-    void searchThroughRegion(U2SequenceObject *seqObject, const U2Region &searchRegion, const QString &pattern, const FindAlgorithmSettings &findSettings);
+    bool sequenceContainsPattern(U2SequenceObject* seqObject, const QString& pattern, const FindAlgorithmSettings& findSettings);
+    void searchThroughRegion(U2SequenceObject* seqObject, const U2Region& searchRegion, const QString& pattern, const FindAlgorithmSettings& findSettings);
 
-    static bool patternFitsSequenceAlphabet(U2SequenceObject *seqObject, const QString &pattern);
-    static bool initFindAlgorithmSettings(U2SequenceObject *seqObject, FindAlgorithmSettings &findSettings);
+    static bool patternFitsSequenceAlphabet(U2SequenceObject* seqObject, const QString& pattern);
+    static bool initFindAlgorithmSettings(U2SequenceObject* seqObject, FindAlgorithmSettings& findSettings);
 
     int searchStopFlag;
 
@@ -62,8 +62,8 @@ private:
 
 class U2ALGORITHM_EXPORT SequenceContentFilterTaskFactory : public ProjectFilterTaskFactory {
 protected:
-    AbstractProjectFilterTask *createNewTask(const ProjectTreeControllerModeSettings &settings,
-                                             const QList<QPointer<Document>> &docs) const;
+    AbstractProjectFilterTask* createNewTask(const ProjectTreeControllerModeSettings& settings,
+                                             const QList<QPointer<Document>>& docs) const;
 };
 
 }  // namespace U2

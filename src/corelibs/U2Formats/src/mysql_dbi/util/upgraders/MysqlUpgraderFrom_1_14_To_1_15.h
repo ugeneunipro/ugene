@@ -30,14 +30,14 @@ class MysqlDbRef;
 
 class MysqlUpgraderFrom_1_14_To_1_15 : public MysqlUpgrader {
 public:
-    MysqlUpgraderFrom_1_14_To_1_15(MysqlDbi *dbi);
+    MysqlUpgraderFrom_1_14_To_1_15(MysqlDbi* dbi);
 
-    void upgrade(U2OpStatus &os) const;
+    void upgrade(U2OpStatus& os) const;
 
 private:
-    void upgradeObjectDbi(U2OpStatus &os, MysqlDbRef *dbRef) const;
-    static QString getParentFolderFromList(const QStringList &folders, const QString &folder);
-    static void rollNewFolderPath(QString &originalPath, const QStringList &allFolders);
+    void upgradeObjectDbi(U2OpStatus& os, MysqlDbRef* dbRef) const;
+    static QString getParentFolderFromList(const QStringList& folders, const QString& folder);
+    static void rollNewFolderPath(QString& originalPath, const QStringList& allFolders);
 };
 
 }  // namespace U2

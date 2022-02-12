@@ -36,14 +36,14 @@ public:
         NoProject
     };
 
-    TaskStarter(Task *t, StartCondition condition = NoCondition)
+    TaskStarter(Task* t, StartCondition condition = NoCondition)
         : QObject(t), t(t), condition(condition) {
     }
 public slots:
     void registerTask();
 
 private:
-    Task *t;
+    Task* t;
     StartCondition condition;
 };
 

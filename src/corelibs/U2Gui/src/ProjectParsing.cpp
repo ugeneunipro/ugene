@@ -38,7 +38,7 @@
 
 namespace U2 {
 
-static QString map2String(const QVariantMap &map) {
+static QString map2String(const QVariantMap& map) {
     QByteArray a;
     QVariant v(map);
     QDataStream s(&a, QIODevice::WriteOnly);
@@ -47,7 +47,7 @@ static QString map2String(const QVariantMap &map) {
     return res;
 }
 
-static QVariantMap string2Map(const QString &string, bool emptyMapIfError) {
+static QVariantMap string2Map(const QString& string, bool emptyMapIfError) {
     Q_UNUSED(emptyMapIfError);
 
     QDataStream s(QByteArray::fromBase64(string.toLatin1()));
@@ -60,7 +60,7 @@ static QVariantMap string2Map(const QString &string, bool emptyMapIfError) {
     return QVariantMap();
 }
 
-static QList<GObjectRelation> toAbsoluteRelations(const QList<GObjectRelation> &relList, const QDir &projDir) {
+static QList<GObjectRelation> toAbsoluteRelations(const QList<GObjectRelation>& relList, const QDir& projDir) {
     QList<GObjectRelation> absoluteRelations;
     foreach (GObjectRelation rel, relList) {
         if (GUrl::getURLType(rel.ref.docUrl) == GUrl_File) {  // make URL absolute
@@ -75,7 +75,7 @@ static QList<GObjectRelation> toAbsoluteRelations(const QList<GObjectRelation> &
     return absoluteRelations;
 }
 
-static QList<GObjectRelation> hintToRelations(QVariant qv, const QDir &projDir) {
+static QList<GObjectRelation> hintToRelations(QVariant qv, const QDir& projDir) {
     if (!qv.isNull()) {
         return toAbsoluteRelations(qv.value<QList<GObjectRelation>>(), projDir);
     } else {
@@ -83,17 +83,17 @@ static QList<GObjectRelation> hintToRelations(QVariant qv, const QDir &projDir) 
     }
 }
 
-static QVariant relationsToHint(const QList<GObjectRelation> &relList) {
+static QVariant relationsToHint(const QList<GObjectRelation>& relList) {
     return QVariant::fromValue<QList<GObjectRelation>>(relList);
 }
 
-static QList<GObjectRelation> removeDuplicates(const QList<GObjectRelation> &relList) {
+static QList<GObjectRelation> removeDuplicates(const QList<GObjectRelation>& relList) {
     return relList.toSet().toList();
 }
 
-static QVariant toRelativeRelations(const QList<GObjectRelation> &absRelations, const QDir &projDir, const QMap<QString, QString> &urlRemap = QMap<QString, QString>()) {
+static QVariant toRelativeRelations(const QList<GObjectRelation>& absRelations, const QDir& projDir, const QMap<QString, QString>& urlRemap = QMap<QString, QString>()) {
     QList<GObjectRelation> relativeRelations;
-    foreach (const GObjectRelation &absRel, absRelations) {
+    foreach (const GObjectRelation& absRel, absRelations) {
         GObjectRelation relRel = absRel;
         relRel.ref.docUrl = urlRemap.value(absRel.getDocURL(), absRel.getDocURL());
         if (GUrl::getURLType(relRel.getDocURL()) == GUrl_File) {  // make URL absolute
@@ -117,7 +117,7 @@ static QVariant toRelativeRelations(const QList<GObjectRelation> &absRelations, 
     return QVariant::fromValue<QList<GObjectRelation>>(relativeRelations);
 }
 
-void ProjectFileUtils::saveProjectFile(U2OpStatus &ts, Project *project, const QString &projectUrl, const QMap<QString, QString> &docUrlRemap) {
+void ProjectFileUtils::saveProjectFile(U2OpStatus& ts, Project* project, const QString& projectUrl, const QMap<QString, QString>& docUrlRemap) {
     QDomDocument xmlDoc("GB2PROJECT");
 
     QDomElement projectElement = xmlDoc.createElement("gb2project");
@@ -130,7 +130,7 @@ void ProjectFileUtils::saveProjectFile(U2OpStatus &ts, Project *project, const Q
     QDir projectDir = projectFile.absoluteDir();
 
     // save documents
-    foreach (Document *gbDoc, project->getDocuments()) {
+    foreach (Document* gbDoc, project->getDocuments()) {
         if (ProjectUtils::isDatabaseDoc(gbDoc)) {
             continue;
         }
@@ -154,11 +154,11 @@ void ProjectFileUtils::saveProjectFile(U2OpStatus &ts, Project *project, const Q
         }
 
         // store lock info for documents
-        DocumentFormat *f = gbDoc->getDocumentFormat();
+        DocumentFormat* f = gbDoc->getDocumentFormat();
         QString formatId = f->getFormatId();
         docElement.setAttribute("format", formatId);
         docElement.setAttribute("readonly", gbDoc->hasUserModLock() ? 1 : 0);
-        StateLock *l = gbDoc->getDocumentModLock(DocumentModLock_FORMAT_AS_INSTANCE);
+        StateLock* l = gbDoc->getDocumentModLock(DocumentModLock_FORMAT_AS_INSTANCE);
         if (l != nullptr) {
             docElement.setAttribute("format-lock", 1);
         }
@@ -171,7 +171,7 @@ void ProjectFileUtils::saveProjectFile(U2OpStatus &ts, Project *project, const Q
         }
 
         // now save unloaded objects info for all document objects
-        foreach (GObject *obj, gbDoc->getObjects()) {
+        foreach (GObject* obj, gbDoc->getObjects()) {
             QDomElement objElement = xmlDoc.createElement("object");
             UnloadedObjectInfo info(obj);
             objElement.setAttribute("name", info.name);
@@ -191,7 +191,7 @@ void ProjectFileUtils::saveProjectFile(U2OpStatus &ts, Project *project, const Q
     }
 
     // save views states
-    foreach (GObjectViewState *view, project->getGObjectViewStates()) {
+    foreach (GObjectViewState* view, project->getGObjectViewStates()) {
         // save document info
         QDomElement viewElement = xmlDoc.createElement("view");
         viewElement.setAttribute("factory", view->getViewFactoryId());
@@ -228,7 +228,7 @@ void ProjectFileUtils::saveProjectFile(U2OpStatus &ts, Project *project, const Q
     }
 }
 
-void ProjectFileUtils::loadXMLProjectModel(const QString &url, U2OpStatus &si, QDomDocument &doc, QString &version) {
+void ProjectFileUtils::loadXMLProjectModel(const QString& url, U2OpStatus& si, QDomDocument& doc, QString& version) {
     assert(doc.isNull());
 
     QFile f(url);
@@ -276,8 +276,8 @@ void ProjectParserRegistry::init() {
     parsers.qlist.append(new ProjectParser10());
 }
 
-ProjectParser *ProjectParserRegistry::getProjectParserByVersion(const QString &id) {
-    foreach (ProjectParser *p, parsers.qlist) {
+ProjectParser* ProjectParserRegistry::getProjectParserByVersion(const QString& id) {
+    foreach (ProjectParser* p, parsers.qlist) {
         if (p->getVersion() == id) {
             return p;
         }
@@ -285,7 +285,7 @@ ProjectParser *ProjectParserRegistry::getProjectParserByVersion(const QString &i
     return nullptr;
 }
 
-ProjectParserRegistry *ProjectParserRegistry::instance() {
+ProjectParserRegistry* ProjectParserRegistry::instance() {
     static ProjectParserRegistry ppr;
     return &ppr;
 }
@@ -294,7 +294,7 @@ ProjectParserRegistry *ProjectParserRegistry::instance() {
 // Parser for v1.0 format
 
 namespace {
-GUrl getUrl(const QString &docUrl, const DocumentFormatId &format) {
+GUrl getUrl(const QString& docUrl, const DocumentFormatId& format) {
     if (BaseDocumentFormats::DATABASE_CONNECTION == format) {
         return GUrl(docUrl, GUrl_Network);
     } else {
@@ -303,15 +303,15 @@ GUrl getUrl(const QString &docUrl, const DocumentFormatId &format) {
 }
 }  // namespace
 
-Project *ProjectParser10::createProjectFromXMLModel(const QString &pURL, const QDomDocument &xmlDoc, U2OpStatus &os) {
+Project* ProjectParser10::createProjectFromXMLModel(const QString& pURL, const QDomDocument& xmlDoc, U2OpStatus& os) {
     GCOUNTER(cvar, "ProjectParser10: createProjectFromXMLModel");
 
     QDomElement projectElement = xmlDoc.documentElement();
     QString name = projectElement.attribute("name");
     quint64 oid = qMax(quint64(0), projectElement.attribute("oid").toULongLong());
 
-    QList<Document *> documents;
-    QList<GObjectViewState *> states;
+    QList<Document*> documents;
+    QList<GObjectViewState*> states;
 
     // read all documents
     QSet<QString> docUrls;
@@ -367,8 +367,8 @@ Project *ProjectParser10::createProjectFromXMLModel(const QString &pURL, const Q
 
         bool readonly = docElement.attribute("readonly").toInt() != 0;
         bool instanceLock = docElement.attribute("format-lock").toInt() != 0;
-        IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioAdapterId);
-        DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(format);
+        IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioAdapterId);
+        DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(format);
         if (df == nullptr) {  // this can happen when close ugene on startup
             continue;
         }
@@ -406,7 +406,7 @@ Project *ProjectParser10::createProjectFromXMLModel(const QString &pURL, const Q
             }
         }
         QString lockReason = instanceLock ? tr("The last loaded state was locked by format") : QString();
-        Document *d = df->createNewUnloadedDocument(iof, getUrl(docUrl, format), os, fs, unloadedObjects, lockReason);
+        Document* d = df->createNewUnloadedDocument(iof, getUrl(docUrl, format), os, fs, unloadedObjects, lockReason);
         CHECK_OP_EXT(os, qDeleteAll(documents), nullptr);
         d->setUserModLock(readonly);
         documents.append(d);
@@ -429,10 +429,10 @@ Project *ProjectParser10::createProjectFromXMLModel(const QString &pURL, const Q
         QString viewName = viewElement.attribute("viewName");
         QString stateName = viewElement.attribute("stateName");
         QVariantMap map = string2Map(viewElement.text(), false);
-        GObjectViewState *state = new GObjectViewState(id, viewName, stateName, map);
+        GObjectViewState* state = new GObjectViewState(id, viewName, stateName, map);
         states.append(state);
     }
-    Project *project = AppContext::getProjectLoader()->createProject(name, pURL, documents, states);
+    Project* project = AppContext::getProjectLoader()->createProject(name, pURL, documents, states);
     project->setObjectIdCounter(oid);
     return project;
 }

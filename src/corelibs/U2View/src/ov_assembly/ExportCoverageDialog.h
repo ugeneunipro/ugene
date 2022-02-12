@@ -34,7 +34,7 @@ class SaveDocumentController;
 class ExportCoverageDialog : public QDialog, public Ui_ExportCoverageDialog {
     Q_OBJECT
 public:
-    ExportCoverageDialog(const QString &assemblyName, QWidget *parent = nullptr);
+    ExportCoverageDialog(const QString& assemblyName, QWidget* parent = nullptr);
 
     ExportCoverageSettings::Format getFormat() const;
     ExportCoverageSettings getSettings() const;
@@ -43,14 +43,14 @@ public slots:
     void accept();
 
 private slots:
-    void sl_formatChanged(const QString &format);
+    void sl_formatChanged(const QString& format);
 
 private:
     void initLayout();
     void init(QString assemblyName);
     bool checkPermissions() const;
 
-    SaveDocumentController *saveController;
+    SaveDocumentController* saveController;
 
     static const QString DIR_HELPER_NAME;
 };

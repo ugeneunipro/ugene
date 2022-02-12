@@ -47,14 +47,14 @@ public:
     GenomeAlignerIndex();
     ~GenomeAlignerIndex();
 
-    BMType getBitValue(const char *seq, int length) const;
+    BMType getBitValue(const char* seq, int length) const;
     bool loadPart(int part);
-    void alignShortRead(SearchQuery *qu, BMType bitValue, int startPos, BinarySearchResult firstResult, AlignContext *settings, BMType bitFilter, int w);
+    void alignShortRead(SearchQuery* qu, BMType bitValue, int startPos, BinarySearchResult firstResult, AlignContext* settings, BMType bitFilter, int w);
     BinarySearchResult bitMaskBinarySearch(BMType bitValue, BMType bitFilter);
 #ifdef OPENCL_SUPPORT
-    BinarySearchResult *bitMaskBinarySearchOpenCL(const BMType *bitValues, int size, const int *windowSizes);
+    BinarySearchResult* bitMaskBinarySearchOpenCL(const BMType* bitValues, int size, const int* windowSizes);
 #endif
-    const QString &getFirstSequenceObjectName() const {
+    const QString& getFirstSequenceObjectName() const {
         return firstSequenceObjectName;
     }
     int getNumberOfSequencesInIndex() const {
@@ -69,11 +69,11 @@ public:
     SAType getSeqLength() const {
         return seqLength;
     }
-    IndexPart &getLoadedPart() {
+    IndexPart& getLoadedPart() {
         return indexPart;
     }
 
-    void setBaseFileName(const QString &baseName) {
+    void setBaseFileName(const QString& baseName) {
         baseFileName = baseName;
     }
 
@@ -82,14 +82,14 @@ private:
     int seqPartSize;  // in Mb
     int w;  // window size
     QString baseFileName;  // base of the file name
-    quint32 *memIdx;
-    quint64 *memBM;
+    quint32* memIdx;
+    quint64* memBM;
     BitsTable bt;
-    const quint32 *bitTable;
+    const quint32* bitTable;
     int bitCharLen;
     BMType bitFilter;
     int partsInMemCache;
-    quint32 *objLens;
+    quint32* objLens;
     int objCount;
     QString firstSequenceObjectName;
     QString sequenceObjectName;
@@ -98,27 +98,27 @@ private:
     bool build;
     char unknownChar;
 
-    void serialize(const QString &refFileName);
-    bool deserialize(QByteArray &error);
+    void serialize(const QString& refFileName);
+    bool deserialize(QByteArray& error);
     bool openIndexFiles();
-    inline bool isValidPos(SAType offset, int startPos, int length, SAType &fisrtSymbol, SearchQuery *qu, SAType &loadedSeqStart);
-    inline bool compare(const char *sourceSeq, const char *querySeq, int startPos, int w, int &c, int CMAX, int length);
-    inline void fullBitMaskOptimization(int CMAX, BMType bitValue, BMType bitMaskValue, int restBits, int w, int &bits, int &c);
-    inline bool find(SAType &offset, SAType &firstSymbol, int &startPos, SearchQuery *qu, bool &bestMode, int &CMAX, bool valid);
+    inline bool isValidPos(SAType offset, int startPos, int length, SAType& fisrtSymbol, SearchQuery* qu, SAType& loadedSeqStart);
+    inline bool compare(const char* sourceSeq, const char* querySeq, int startPos, int w, int& c, int CMAX, int length);
+    inline void fullBitMaskOptimization(int CMAX, BMType bitValue, BMType bitMaskValue, int restBits, int w, int& bits, int& c);
+    inline bool find(SAType& offset, SAType& firstSymbol, int& startPos, SearchQuery* qu, bool& bestMode, int& CMAX, bool valid);
 
     static const QString HEADER;
     static const QString PARAMETERS;
 
     /*build*/
-    SAType *sArray;
-    BMType *bitMask;
-    void buildPart(SAType start, SAType length, SAType &arrLen);
-    void initSArray(SAType start, SAType length, SAType &arrLen);
-    void sort(BMType *x, int off, int len);
-    inline qint64 compare(const BMType *x1, const BMType *x2) const;
-    inline void swap(BMType *x1, BMType *x2) const;
-    inline quint32 med3(BMType *x, quint32 a, quint32 b, quint32 c);
-    inline void vecswap(BMType *x1, BMType *x2, quint32 n);
+    SAType* sArray;
+    BMType* bitMask;
+    void buildPart(SAType start, SAType length, SAType& arrLen);
+    void initSArray(SAType start, SAType length, SAType& arrLen);
+    void sort(BMType* x, int off, int len);
+    inline qint64 compare(const BMType* x1, const BMType* x2) const;
+    inline void swap(BMType* x1, BMType* x2) const;
+    inline quint32 med3(BMType* x, quint32 a, quint32 b, quint32 c);
+    inline void vecswap(BMType* x1, BMType* x2, quint32 n);
 
 public:
     static const QString HEADER_EXTENSION;

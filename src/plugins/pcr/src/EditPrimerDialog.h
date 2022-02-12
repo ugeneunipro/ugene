@@ -33,13 +33,13 @@ namespace U2 {
 class EditPrimerDialog : public QDialog, private Ui_EditPrimerDialog {
     Q_OBJECT
 public:
-    EditPrimerDialog(QWidget *parent);
-    EditPrimerDialog(QWidget *parent, const Primer &editPrimer);
+    EditPrimerDialog(QWidget* parent);
+    EditPrimerDialog(QWidget* parent, const Primer& editPrimer);
 
     Primer getPrimer() const;
 
 private slots:
-    void sl_onPrimerChanged(const QString &primerSequence);
+    void sl_onPrimerChanged(const QString& primerSequence);
     void sl_validate();
 
 private:

@@ -37,17 +37,17 @@ class URLWidget;
 class URLLineEdit : public QLineEdit {
     Q_OBJECT
 public:
-    URLLineEdit(const QString &type,
+    URLLineEdit(const QString& type,
                 bool multi,
                 bool isPath,
                 bool saveFile,
-                URLWidget *parent);
+                URLWidget* parent);
     bool isMulti();
-    CompletionFiller *getCompletionFillerInstance();
+    CompletionFiller* getCompletionFillerInstance();
 
 protected:
-    void focusOutEvent(QFocusEvent *event);
-    void keyPressEvent(QKeyEvent *event);
+    void focusOutEvent(QFocusEvent* event);
+    void keyPressEvent(QKeyEvent* event);
 
 public slots:
     void sl_onBrowse();
@@ -60,16 +60,16 @@ signals:
     void si_finished();
 
 public:
-    SchemaConfig *schemaConfig;
+    SchemaConfig* schemaConfig;
     QString type;
     bool multi;
     bool isPath;
     bool saveFile;
-    URLWidget *parent;
+    URLWidget* parent;
 
 private:
     void browse(bool addFiles = false);
-    void checkExtension(QString &name);
+    void checkExtension(QString& name);
 };
 
 }  // namespace U2

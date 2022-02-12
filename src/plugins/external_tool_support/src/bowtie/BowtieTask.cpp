@@ -34,7 +34,7 @@ namespace U2 {
 
 // BowtieBuildTask
 
-BowtieBuildTask::BowtieBuildTask(const QString &referencePath, const QString &indexPath)
+BowtieBuildTask::BowtieBuildTask(const QString& referencePath, const QString& indexPath)
     : ExternalToolSupportTask("Bowtie build", TaskFlags_NR_FOSCOE),
       referencePath(referencePath),
       indexPath(indexPath) {
@@ -72,9 +72,9 @@ BowtieBuildTask::LogParser::LogParser()
       progress(0) {
 }
 
-void BowtieBuildTask::LogParser::parseOutput(const QString &partOfLog) {
+void BowtieBuildTask::LogParser::parseOutput(const QString& partOfLog) {
     ExternalToolLogParser::parseOutput(partOfLog);
-    foreach (const QString &buf, lastPartOfLog) {
+    foreach (const QString& buf, lastPartOfLog) {
         QRegExp blockRegExp("Getting block (\\d+) of (\\d+)");
         QRegExp percentRegexp("(\\d+)%");
         if (buf.contains("Binary sorting into buckets")) {
@@ -113,7 +113,7 @@ void BowtieBuildTask::LogParser::parseOutput(const QString &partOfLog) {
     }
 }
 
-void BowtieBuildTask::LogParser::parseErrOutput(const QString &partOfLog) {
+void BowtieBuildTask::LogParser::parseErrOutput(const QString& partOfLog) {
     ExternalToolLogParser::parseErrOutput(partOfLog);
 }
 
@@ -123,7 +123,7 @@ int BowtieBuildTask::LogParser::getProgress() {
 
 // BowtieAlignTask
 
-BowtieAlignTask::BowtieAlignTask(const DnaAssemblyToRefTaskSettings &settings)
+BowtieAlignTask::BowtieAlignTask(const DnaAssemblyToRefTaskSettings& settings)
     : ExternalToolSupportTask("Bowtie align", TaskFlags_NR_FOSCOE),
       logParser(nullptr),
       settings(settings) {
@@ -254,7 +254,7 @@ void BowtieAlignTask::prepare() {
             QStringList upstreamReads, downstreamReads;
 
             for (int i = 0; i < setCount; ++i) {
-                const ShortReadSet &set = settings.shortReadSets.at(i);
+                const ShortReadSet& set = settings.shortReadSets.at(i);
                 if (set.order == ShortReadSet::UpstreamMate) {
                     upstreamReads.append(set.url.getURLString());
                 } else {
@@ -285,15 +285,15 @@ BowtieAlignTask::LogParser::LogParser()
     : hasResults(false) {
 }
 
-void BowtieAlignTask::LogParser::parseOutput(const QString &partOfLog) {
+void BowtieAlignTask::LogParser::parseOutput(const QString& partOfLog) {
     ExternalToolLogParser::parseErrOutput(partOfLog);
 }
 
-void BowtieAlignTask::LogParser::parseErrOutput(const QString &partOfLog) {
+void BowtieAlignTask::LogParser::parseErrOutput(const QString& partOfLog) {
     ExternalToolLogParser::parseErrOutput(partOfLog);
     QRegExp blockRegExp("# reads with at least one alignment: (\\d+) \\(\\d+\\.\\d+%\\)");
     QRegExp blockRegExpOld("# reads with at least one reported alignment: (\\d+) \\(\\d+\\.\\d+%\\)");
-    for (const QString &buf : qAsConst(lastPartOfLog)) {
+    for (const QString& buf : qAsConst(lastPartOfLog)) {
         if (buf.contains(blockRegExp)) {
             if (blockRegExp.cap(1).toInt() > 0) {
                 hasResults = true;
@@ -307,7 +307,7 @@ void BowtieAlignTask::LogParser::parseErrOutput(const QString &partOfLog) {
         }
     }
 
-    for (const QString &buf : qAsConst(lastPartOfLog)) {
+    for (const QString& buf : qAsConst(lastPartOfLog)) {
         if (buf.contains("Out of memory")) {
             setLastError(tr("There is not enough memory on the computer!"));
             break;
@@ -351,7 +351,7 @@ const QStringList BowtieTask::largeIndexSuffixes = QStringList() << ".1.ebwtl"
                                                                  << ".rev.1.ebwtl"
                                                                  << ".rev.2.ebwtl";
 
-BowtieTask::BowtieTask(const DnaAssemblyToRefTaskSettings &settings, bool justBuildIndex)
+BowtieTask::BowtieTask(const DnaAssemblyToRefTaskSettings& settings, bool justBuildIndex)
     : DnaAssemblyToReferenceTask(settings, TaskFlags_NR_FOSCOE, justBuildIndex),
       buildIndexTask(nullptr),
       alignTask(nullptr),
@@ -360,7 +360,7 @@ BowtieTask::BowtieTask(const DnaAssemblyToRefTaskSettings &settings, bool justBu
 
 void BowtieTask::prepare() {
     if (GzipDecompressTask::checkZipped(settings.refSeqUrl)) {
-        temp.open();    //opening creates new temporary file
+        temp.open();  // opening creates new temporary file
         temp.close();
         unzipTask = new GzipDecompressTask(settings.refSeqUrl, GUrl(QFileInfo(temp).absoluteFilePath()));
         settings.refSeqUrl = GUrl(QFileInfo(temp).absoluteFilePath());
@@ -383,11 +383,11 @@ void BowtieTask::prepare() {
             }
         }
         buildIndexTask = new BowtieBuildTask(settings.refSeqUrl.getURLString(), indexFileName);
-        buildIndexTask->addListeners(QList<ExternalToolListener *>() << getListener(0));
+        buildIndexTask->addListeners(QList<ExternalToolListener*>() << getListener(0));
     }
     if (!isBuildOnlyTask) {
         alignTask = new BowtieAlignTask(settings);
-        alignTask->addListeners(QList<ExternalToolListener *>() << getListener(1));
+        alignTask->addListeners(QList<ExternalToolListener*>() << getListener(1));
     }
 
     if (unzipTask != nullptr) {
@@ -408,8 +408,8 @@ Task::ReportResult BowtieTask::report() {
     return ReportResult_Finished;
 }
 
-QList<Task *> BowtieTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> result;
+QList<Task*> BowtieTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> result;
 
     if (subTask == unzipTask) {
         if (!settings.prebuiltIndex) {
@@ -427,8 +427,8 @@ QList<Task *> BowtieTask::onSubTaskFinished(Task *subTask) {
 
 // BowtieTaskFactory
 
-DnaAssemblyToReferenceTask *BowtieTaskFactory::createTaskInstance(const DnaAssemblyToRefTaskSettings &settings, bool justBuildIndex) {
+DnaAssemblyToReferenceTask* BowtieTaskFactory::createTaskInstance(const DnaAssemblyToRefTaskSettings& settings, bool justBuildIndex) {
     return new BowtieTask(settings, justBuildIndex);
 }
 
-}    // namespace U2
+}  // namespace U2

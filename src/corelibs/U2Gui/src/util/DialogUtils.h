@@ -38,13 +38,13 @@ class TaskStateInfo;
 class U2GUI_EXPORT WizardUtils : public QObject {
     Q_OBJECT
 public:
-    static void setWizardMinimumSize(QWizard *wizard, const QSize &minimumSize = QSize());
+    static void setWizardMinimumSize(QWizard* wizard, const QSize& minimumSize = QSize());
 };
 
 class U2GUI_EXPORT FileLineEdit : public QLineEdit {
     Q_OBJECT
 public:
-    FileLineEdit(const QString &filter, const QString &type, bool multi, QWidget *parent)
+    FileLineEdit(const QString& filter, const QString& type, bool multi, QWidget* parent)
         : QLineEdit(parent), FileFilter(filter), type(type), multi(multi) {
     }
 private slots:

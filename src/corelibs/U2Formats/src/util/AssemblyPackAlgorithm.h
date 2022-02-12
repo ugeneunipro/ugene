@@ -42,8 +42,8 @@ public:
 
 class PackAlgorithmAdapter {
 public:
-    virtual U2DbiIterator<PackAlgorithmData> *selectAllReads(U2OpStatus &os) = 0;
-    virtual void assignProw(const U2DataId &readId, qint64 prow, U2OpStatus &os) = 0;
+    virtual U2DbiIterator<PackAlgorithmData>* selectAllReads(U2OpStatus& os) = 0;
+    virtual void assignProw(const U2DataId& readId, qint64 prow, U2OpStatus& os) = 0;
     virtual ~PackAlgorithmAdapter() {
     }
 };
@@ -65,8 +65,8 @@ public:
 
 class AssemblyPackAlgorithm {
 public:
-    static void pack(PackAlgorithmAdapter &adapter, U2AssemblyPackStat &stat, U2OpStatus &os);
-    static int packRead(const U2Region &reg, PackAlgorithmContext &ctx, U2OpStatus &os);
+    static void pack(PackAlgorithmAdapter& adapter, U2AssemblyPackStat& stat, U2OpStatus& os);
+    static int packRead(const U2Region& reg, PackAlgorithmContext& ctx, U2OpStatus& os);
 };
 
 }  // namespace U2

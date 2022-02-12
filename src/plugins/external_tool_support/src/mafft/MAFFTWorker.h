@@ -34,7 +34,7 @@ namespace LocalWorkflow {
 class MAFFTPrompter : public PrompterBase<MAFFTPrompter> {
     Q_OBJECT
 public:
-    MAFFTPrompter(Actor *p = 0);
+    MAFFTPrompter(Actor* p = 0);
 
 protected:
     QString composeRichDoc();
@@ -43,10 +43,10 @@ protected:
 class MAFFTWorker : public BaseWorker {
     Q_OBJECT
 public:
-    MAFFTWorker(Actor *a);
+    MAFFTWorker(Actor* a);
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private slots:
@@ -58,7 +58,7 @@ private:
     MAFFTSupportTaskSettings cfg;
 
 private:
-    void send(const MultipleSequenceAlignment &msa);
+    void send(const MultipleSequenceAlignment& msa);
 };
 
 class MAFFTWorkerFactory : public DomainFactory {
@@ -68,12 +68,12 @@ public:
     MAFFTWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new MAFFTWorker(a);
     }
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
 #endif

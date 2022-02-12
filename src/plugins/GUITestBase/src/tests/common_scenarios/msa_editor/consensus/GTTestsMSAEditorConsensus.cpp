@@ -48,22 +48,22 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //    Expected state: consensus representation dialog appeared
 
     //    3. Select ClustalW consensus type. Click OK.
-    QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
-    QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
+    QComboBox* consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
     GTComboBox::selectItemByText(os, consensusCombo, "ClustalW");
 
     GTUtilsMSAEditorSequenceArea::checkConsensus(os, "              ");
     //    Expected state: consensus must be empty
-    QWidget *thresholdSlider = GTWidget::findWidget(os, "thresholdSlider");
+    QWidget* thresholdSlider = GTWidget::findWidget(os, "thresholdSlider");
     CHECK_SET_ERR(thresholdSlider != nullptr, "thresholdSlider is NULL");
     CHECK_SET_ERR(!thresholdSlider->isEnabled(), "thresholdSlider is unexpectedly enabled");
 
-    QWidget *thresholdSpinBox = GTWidget::findWidget(os, "thresholdSpinBox");
+    QWidget* thresholdSpinBox = GTWidget::findWidget(os, "thresholdSpinBox");
     CHECK_SET_ERR(thresholdSpinBox != nullptr, "thresholdSpinBox is NULL");
     CHECK_SET_ERR(!thresholdSpinBox->isEnabled(), "thresholdSpinBox is unexpectedly enabled");
 }
@@ -75,16 +75,16 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     // 2. Use context menu {Consensus mode} in MSA editor area.
     // Expected state: consensus representation dialog appeared
     // 3. Select Default consensus type. Set 100% threshold
-    QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
-    QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
+    QComboBox* consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
     GTComboBox::selectItemByText(os, consensusCombo, "Default");
 
-    QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
+    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");
     GTSpinBox::setValue(os, thresholdSpinBox, 100);
 
@@ -105,16 +105,16 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     // 2. Use context menu {Consensus mode} in MSA editor area.
     // Expected state: consensus representation dialog appeared
     // 3. Select Default consensus type. Set 100% threshold
-    QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
-    QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
+    QComboBox* consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
     GTComboBox::selectItemByText(os, consensusCombo, "Default");
 
-    QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
+    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");
     GTSpinBox::setValue(os, thresholdSpinBox, 30, GTGlobals::UseKeyBoard);
 
@@ -130,16 +130,16 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     // 2. Use context menu {Consensus mode} in MSA editor area.
     // Expected state: consensus representation dialog appeared
     // 3. Select Default consensus type. Set 100% threshold
-    QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
-    QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
+    QComboBox* consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
     GTComboBox::selectItemByText(os, consensusCombo, "Default");
 
-    QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
+    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");
     GTSpinBox::setValue(os, thresholdSpinBox, 60, GTGlobals::UseKeyBoard);
 
@@ -155,16 +155,16 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     // 2. Use context menu {Consensus mode} in MSA editor area.
     // Expected state: consensus representation dialog appeared
     // 3. Select Strict consensus type. Set 100% threshold.
-    QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
-    QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
+    QComboBox* consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
     GTComboBox::selectItemByText(os, consensusCombo, "Strict");
 
-    QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
+    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");
     GTSpinBox::setValue(os, thresholdSpinBox, 100, GTGlobals::UseKeyBoard);
 
@@ -185,16 +185,16 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
     // 2. Use context menu {Consensus mode} in MSA editor area.
     // Expected state: consensus representation dialog appeared
     // 3. Select Strict consensus type. Set 100% threshold.
-    QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
-    QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
+    QComboBox* consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
     GTComboBox::selectItemByText(os, consensusCombo, "Strict");
 
-    QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
+    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");
     GTSpinBox::setValue(os, thresholdSpinBox, 30, GTGlobals::UseKeyBoard);
 
@@ -210,17 +210,17 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
     // 2. Use context menu {Consensus mode} in MSA editor area.
     // Expected state: consensus representation dialog appeared
     // 3. Select Strict consensus type. Set 100% threshold.
-    QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     // GTUtilsDialog::waitForDialog(os, new ConsensusSelectionDialogFiller(os,3,60));
     GTMenu::showContextMenu(os, seq);
 
-    QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
+    QComboBox* consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
     GTComboBox::selectItemByText(os, consensusCombo, "Strict");
 
-    QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
+    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");
     GTSpinBox::setValue(os, thresholdSpinBox, 60, GTGlobals::UseKeyBoard);
 
@@ -236,16 +236,16 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     // 2. Use context menu {Consensus mode} in MSA editor area.
     // Expected state: consensus representation dialog appeared
     // 3. Select Levitsky consensus type. Set 90% threshold.
-    QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
-    QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
+    QComboBox* consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
     GTComboBox::selectItemByText(os, consensusCombo, "Levitsky");
 
-    QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
+    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");
     GTSpinBox::setValue(os, thresholdSpinBox, 90, GTGlobals::UseKeyBoard);
 
@@ -265,16 +265,16 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
     // 2. Use context menu {Consensus mode} in MSA editor area.
     // Expected state: consensus representation dialog appeared
     // 3. Select Levitsky consensus type. Set 90% threshold.
-    QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
-    QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
+    QComboBox* consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
     GTComboBox::selectItemByText(os, consensusCombo, "Levitsky");
 
-    QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
+    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");
     GTSpinBox::setValue(os, thresholdSpinBox, 70, GTGlobals::UseKeyBoard);
 
@@ -290,16 +290,16 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
     // 2. Use context menu {Consensus mode} in MSA editor area.
     // Expected state: consensus representation dialog appeared
     // 3. Select Levitsky consensus type. Set 90% threshold.
-    QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
-    QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
+    QComboBox* consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
     GTComboBox::selectItemByText(os, consensusCombo, "Levitsky");
 
-    QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
+    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");
     GTSpinBox::setValue(os, thresholdSpinBox, 100, GTGlobals::UseKeyBoard);
 
@@ -307,15 +307,15 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
     // Expected state: consensus must be W-------------
 }
 
-void checkLimits(HI::GUITestOpStatus &os, int minVal, int maxVal) {
-    QSlider *thresholdSlider = qobject_cast<QSlider *>(GTWidget::findWidget(os, "thresholdSlider"));
+void checkLimits(HI::GUITestOpStatus& os, int minVal, int maxVal) {
+    QSlider* thresholdSlider = qobject_cast<QSlider*>(GTWidget::findWidget(os, "thresholdSlider"));
     CHECK_SET_ERR(thresholdSlider != nullptr, "thresholdSlider not found");
     int actualSliderMin = thresholdSlider->minimum();
     int actualSliderMax = thresholdSlider->maximum();
     CHECK_SET_ERR(actualSliderMin == minVal, QString("wrong minimal value for slider. Expected: %1, actual: %2").arg(minVal).arg(actualSliderMin));
     CHECK_SET_ERR(actualSliderMax == maxVal, QString("wrong maximum value for slider. Expected: %1, actual: %2").arg(maxVal).arg(actualSliderMin));
 
-    QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
+    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != nullptr, "thresholdSpin not found");
     int actualSpinMin = thresholdSpinBox->minimum();
     int actualSpinMax = thresholdSpinBox->maximum();
@@ -330,7 +330,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Open general option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
-    QComboBox *consensusType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
+    QComboBox* consensusType = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusType != nullptr, "consensus combobox not found");
     // 3. Select "Default" consensus mode. Limits are 1-100
     GTComboBox::selectItemByText(os, consensusType, "Default");
@@ -343,13 +343,13 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     checkLimits(os, 1, 100);
 }
 
-void checkValues(HI::GUITestOpStatus &os, int expected) {
-    QSlider *thresholdSlider = qobject_cast<QSlider *>(GTWidget::findWidget(os, "thresholdSlider"));
+void checkValues(HI::GUITestOpStatus& os, int expected) {
+    QSlider* thresholdSlider = qobject_cast<QSlider*>(GTWidget::findWidget(os, "thresholdSlider"));
     CHECK_SET_ERR(thresholdSlider != nullptr, "thresholdSlider not found");
     int actualSliderValue = thresholdSlider->value();
     CHECK_SET_ERR(actualSliderValue == expected, QString("wrong value for slider. Executed: %1, actual: %2").arg(expected).arg(actualSliderValue));
 
-    QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
+    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != nullptr, "thresholdSpin not found");
     int actualSpinValue = thresholdSpinBox->value();
     CHECK_SET_ERR(actualSpinValue == expected, QString("wrong value for Spin. Executed: %1, actual: %2").arg(expected).arg(actualSpinValue));
@@ -363,11 +363,11 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     // 2. Open general option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
 
-    QComboBox *consensusType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
+    QComboBox* consensusType = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusType != nullptr, "consensus combobox not found");
-    QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
+    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != nullptr, "thresholdSpin not found");
-    QWidget *thresholdResetButton = GTWidget::findWidget(os, "thresholdResetButton");
+    QWidget* thresholdResetButton = GTWidget::findWidget(os, "thresholdResetButton");
     CHECK_SET_ERR(thresholdResetButton != nullptr, "thresholdResetButton not found");
     // 3. Select "Default" consensus mode
     GTComboBox::selectItemByText(os, consensusType, "Default");

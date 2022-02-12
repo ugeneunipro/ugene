@@ -37,22 +37,22 @@
 namespace U2 {
 
 namespace {
-QFormLayout *buildFormLayout(QWidget *w) {
-    QFormLayout *layout = new QFormLayout;
+QFormLayout* buildFormLayout(QWidget* w) {
+    QFormLayout* layout = new QFormLayout;
     layout->setSpacing(0);
     layout->setContentsMargins(0, 0, 0, 0);
     w->setLayout(layout);
     return layout;
 }
 
-QLabel *buildLabel(QString text, QWidget *p = nullptr) {
+QLabel* buildLabel(QString text, QWidget* p = nullptr) {
     text = QString("<b>%1:&nbsp;&nbsp;</b>").arg(text);
-    QLabel *label = new QLabel(text, p);
+    QLabel* label = new QLabel(text, p);
     return label;
 }
 
-QLineEdit *buildLineEdit(QString text, QWidget *p = nullptr, const QString &objectName = QString()) {
-    QLineEdit *lineEdit = new QLineEdit(text, p);
+QLineEdit* buildLineEdit(QString text, QWidget* p = nullptr, const QString& objectName = QString()) {
+    QLineEdit* lineEdit = new QLineEdit(text, p);
     lineEdit->setStyleSheet("border: none; background-color: transparent;");
     lineEdit->setReadOnly(true);
     lineEdit->home(false);
@@ -63,9 +63,9 @@ QLineEdit *buildLineEdit(QString text, QWidget *p = nullptr, const QString &obje
 }
 }  // namespace
 
-AssemblyInfoWidget::AssemblyInfoWidget(AssemblyBrowser *browser, QWidget *p)
+AssemblyInfoWidget::AssemblyInfoWidget(AssemblyBrowser* browser, QWidget* p)
     : QWidget(p), savableTab(this, GObjectViewUtils::findViewByName(browser->getName())) {
-    QVBoxLayout *mainLayout = new QVBoxLayout;
+    QVBoxLayout* mainLayout = new QVBoxLayout;
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setAlignment(Qt::AlignTop);
     mainLayout->setSpacing(0);
@@ -74,9 +74,9 @@ AssemblyInfoWidget::AssemblyInfoWidget(AssemblyBrowser *browser, QWidget *p)
     U2OpStatus2Log st;
     QSharedPointer<AssemblyModel> model = browser->getModel();
 
-    QWidget *asmWidget = new QWidget(this);
+    QWidget* asmWidget = new QWidget(this);
     {
-        QFormLayout *layout = buildFormLayout(asmWidget);
+        QFormLayout* layout = buildFormLayout(asmWidget);
 
         QString name = model->getAssembly().visualName;
         QString length = FormatUtils::insertSeparators(model->getModelLength(st));
@@ -86,7 +86,7 @@ AssemblyInfoWidget::AssemblyInfoWidget(AssemblyBrowser *browser, QWidget *p)
         layout->addRow(buildLabel(tr("Length"), asmWidget), buildLineEdit(length, asmWidget, "leLength"));
         layout->addRow(buildLabel(tr("Reads"), asmWidget), buildLineEdit(reads, asmWidget, "leReads"));
     }
-    QWidget *infoGroup = new ShowHideSubgroupWidget("INFO", tr("Assembly Information"), asmWidget, true);
+    QWidget* infoGroup = new ShowHideSubgroupWidget("INFO", tr("Assembly Information"), asmWidget, true);
     mainLayout->addWidget(infoGroup);
 
     if (!browser->getModel()->isDbLocked()) {
@@ -95,8 +95,8 @@ AssemblyInfoWidget::AssemblyInfoWidget(AssemblyBrowser *browser, QWidget *p)
         QString uri = model->getReferenceUri(st);
 
         if (!(md5 + species + uri).isEmpty()) {
-            QWidget *refWidget = new QWidget(this);
-            QFormLayout *layout = buildFormLayout(refWidget);
+            QWidget* refWidget = new QWidget(this);
+            QFormLayout* layout = buildFormLayout(refWidget);
             if (!md5.isEmpty()) {
                 layout->addRow(buildLabel(tr("MD5"), refWidget), buildLineEdit(QString(md5), refWidget));
             }
@@ -107,7 +107,7 @@ AssemblyInfoWidget::AssemblyInfoWidget(AssemblyBrowser *browser, QWidget *p)
                 layout->addRow(buildLabel(tr("URI"), refWidget), buildLineEdit(uri, refWidget));
             }
 
-            QWidget *refGroup = new ShowHideSubgroupWidget("REFERENCE", tr("Reference Information"), refWidget, false);
+            QWidget* refGroup = new ShowHideSubgroupWidget("REFERENCE", tr("Reference Information"), refWidget, false);
             mainLayout->addWidget(refGroup);
         }
     }
@@ -126,12 +126,12 @@ AssemblyInfoWidgetFactory::AssemblyInfoWidgetFactory() {
     objectViewOfWidget = ObjViewType_AssemblyBrowser;
 }
 
-QWidget *AssemblyInfoWidgetFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
+QWidget* AssemblyInfoWidgetFactory::createWidget(GObjectView* objView, const QVariantMap& /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);
 
-    AssemblyBrowser *assemblyBrowser = qobject_cast<AssemblyBrowser *>(objView);
+    AssemblyBrowser* assemblyBrowser = qobject_cast<AssemblyBrowser*>(objView);
     SAFE_POINT(assemblyBrowser != nullptr,
                QString("Internal error: unable to cast object view to Assembly Browser for group '%1'.").arg(GROUP_ID),
                nullptr);

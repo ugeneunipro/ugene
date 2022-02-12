@@ -48,7 +48,7 @@
 
 namespace U2 {
 
-SiteconBuildDialogController::SiteconBuildDialogController(SiteconPlugin *pl, QWidget *w)
+SiteconBuildDialogController::SiteconBuildDialogController(SiteconPlugin* pl, QWidget* w)
     : QDialog(w),
       plug(pl),
       saveController(nullptr) {
@@ -128,13 +128,13 @@ void SiteconBuildDialogController::sl_okButtonClicked() {
 }
 
 void SiteconBuildDialogController::sl_onStateChanged() {
-    Task *t = qobject_cast<Task *>(sender());
+    Task* t = qobject_cast<Task*>(sender());
     assert(task != nullptr);
     if (task != t || t->getState() != Task::State_Finished) {
         return;
     }
     task->disconnect(this);
-    const TaskStateInfo &si = task->getStateInfo();
+    const TaskStateInfo& si = task->getStateInfo();
     if (si.hasError()) {
         statusLabel->setText(tr("Build finished with error: %1").arg(si.getError()));
     } else if (task->isCanceled()) {
@@ -177,7 +177,7 @@ void SiteconBuildDialogController::reject() {
 //////////////////////////////////////////////////////////////////////////
 // task
 
-SiteconBuildTask::SiteconBuildTask(const SiteconBuildSettings &s, const MultipleSequenceAlignment &ma, const QString &origin)
+SiteconBuildTask::SiteconBuildTask(const SiteconBuildSettings& s, const MultipleSequenceAlignment& ma, const QString& origin)
     : Task(tr("Build SITECON model"), TaskFlag_None), settings(s), ma(ma->getCopy()) {
     GCOUNTER(cvar, "SiteconBuildTask");
     tpm = Task::Progress_Manual;
@@ -241,7 +241,7 @@ void SiteconBuildTask::run() {
     }
 }
 
-SiteconBuildToFileTask::SiteconBuildToFileTask(const QString &inFile, const QString &_outFile, const SiteconBuildSettings &s)
+SiteconBuildToFileTask::SiteconBuildToFileTask(const QString& inFile, const QString& _outFile, const SiteconBuildSettings& s)
     : Task(tr("Build SITECON model to file"), TaskFlag_NoRun), loadTask(nullptr), buildTask(nullptr), outFile(_outFile), settings(s) {
     tpm = Task::Progress_SubTasksBased;
 
@@ -256,7 +256,7 @@ SiteconBuildToFileTask::SiteconBuildToFileTask(const QString &inFile, const QStr
         return;
     }
     DocumentFormatId format = formats.first();
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(inFile));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(inFile));
     loadTask = new LoadDocumentTask(format, inFile, iof);
     loadTask->setSubtaskProgressWeight(0.03F);
     stateInfo.progress = 0;
@@ -264,8 +264,8 @@ SiteconBuildToFileTask::SiteconBuildToFileTask(const QString &inFile, const QStr
     addSubTask(loadTask);
 }
 
-QList<Task *> SiteconBuildToFileTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> SiteconBuildToFileTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     if (isCanceled()) {
         return res;
     }
@@ -275,20 +275,20 @@ QList<Task *> SiteconBuildToFileTask::onSubTaskFinished(Task *subTask) {
     }
     if (subTask == loadTask) {
         setUseDescriptionFromSubtask(true);
-        Document *d = loadTask->getDocument();
+        Document* d = loadTask->getDocument();
         assert(d != nullptr);
-        QList<GObject *> mobjs = d->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+        QList<GObject*> mobjs = d->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (mobjs.isEmpty()) {
             stateInfo.setError(tr("No alignment found"));
         } else {
-            MultipleSequenceAlignmentObject *mobj = qobject_cast<MultipleSequenceAlignmentObject *>(mobjs.first());
+            MultipleSequenceAlignmentObject* mobj = qobject_cast<MultipleSequenceAlignmentObject*>(mobjs.first());
             const MultipleSequenceAlignment msa = mobj->getMultipleAlignment();
             QString baseName = mobj->getDocument()->getURL().baseFileName();
             buildTask = new SiteconBuildTask(settings, msa, baseName);
             res.append(buildTask);
         }
     } else if (subTask == buildTask) {
-        Task *t = new SiteconWriteTask(outFile, buildTask->getResult());
+        Task* t = new SiteconWriteTask(outFile, buildTask->getResult());
         t->setSubtaskProgressWeight(0);
         res.append(t);
     }

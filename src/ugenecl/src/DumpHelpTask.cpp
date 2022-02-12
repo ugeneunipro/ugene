@@ -38,9 +38,9 @@
 #include <U2Lang/WorkflowIOTasks.h>
 #include <U2Lang/WorkflowUtils.h>
 
-void printStringToConsole(const char *format, const QString &str) {
+void printStringToConsole(const char* format, const QString& str) {
     QByteArray ba = str.toLocal8Bit();
-    char *buf = ba.data();
+    char* buf = ba.data();
 #ifdef Q_OS_WIN32
     // a bit of magic to workaround Windows console encoding issues
     CharToOemA(buf, buf);
@@ -58,11 +58,11 @@ static void dumpProgramNameAndUsage() {
                                "[--option[=value]] [-option [value]]\n\n");
 }
 
-static void dumpSectionName(const QString &name) {
+static void dumpSectionName(const QString& name) {
     printStringToConsole("   --%-20s", name);
 }
 
-static void dumpSectionContent(const QString &content) {
+static void dumpSectionContent(const QString& content) {
     printStringToConsole("\t%s", content);
 }
 
@@ -70,11 +70,11 @@ static void dumpSectionIndent() {
     printStringToConsole("%28s", " ");
 }
 
-static void dumpTaskName(const QString &taskName) {
+static void dumpTaskName(const QString& taskName) {
     printStringToConsole("     %-20s\n", taskName);
 }
 
-static void dumpOptionHelpSyntax(const QString &option, const QString &argsDescription) {
+static void dumpOptionHelpSyntax(const QString& option, const QString& argsDescription) {
     QString optionHelp;
     if (argsDescription.isEmpty()) {
         optionHelp = "ugene --" + option;
@@ -84,7 +84,7 @@ static void dumpOptionHelpSyntax(const QString &option, const QString &argsDescr
     printStringToConsole("%s\n", optionHelp);
 }
 
-static void dumpOptionHelpDescription(const QString &description) {
+static void dumpOptionHelpDescription(const QString& description) {
     printStringToConsole("%s\n", description);
 }
 
@@ -93,10 +93,10 @@ void DumpHelpTask::dumpHelp() {
 
     printStringToConsole("%s", "\nOptions: \n");
     QString prevSectionName;
-    QList<CMDLineHelpProvider *> helpProviders = AppContext::getCMDLineRegistry()->listCMDLineHelpProviders();
-    foreach (CMDLineHelpProvider *hProvider, helpProviders) {
+    QList<CMDLineHelpProvider*> helpProviders = AppContext::getCMDLineRegistry()->listCMDLineHelpProviders();
+    foreach (CMDLineHelpProvider* hProvider, helpProviders) {
         assert(hProvider != nullptr);
-        const QString &sectionName = hProvider->getHelpSectionNames();
+        const QString& sectionName = hProvider->getHelpSectionNames();
         if (sectionName != prevSectionName) {
             dumpSectionName(sectionName);
             prevSectionName = sectionName;
@@ -110,13 +110,13 @@ void DumpHelpTask::dumpHelp() {
 
     printStringToConsole("%s", "\nAvailable tasks:\n");
     QStringList dataDirs = QDir::searchPaths(PATH_PREFIX_DATA);
-    foreach (const QString &url, dataDirs) {
+    foreach (const QString& url, dataDirs) {
         QString dirUrl = url + "/cmdline/";
         QDir dir(dirUrl);
         if (dir.exists()) {
             QStringList entries = dir.entryList(QDir::Files | QDir::Readable);
-            foreach (const QString &file, entries) {
-                foreach (const QString &ext, WorkflowUtils::WD_FILE_EXTENSIONS) {
+            foreach (const QString& file, entries) {
+                foreach (const QString& ext, WorkflowUtils::WD_FILE_EXTENSIONS) {
                     if (file.endsWith(ext)) {
                         dumpTaskName(file.mid(0, file.size() - ext.size() - 1));  // 1 comes from "."
                         break;
@@ -129,7 +129,7 @@ void DumpHelpTask::dumpHelp() {
 }
 
 void DumpHelpTask::prepare() {
-    CMDLineRegistry *cmdlineRegistry = AppContext::getCMDLineRegistry();
+    CMDLineRegistry* cmdlineRegistry = AppContext::getCMDLineRegistry();
     assert(cmdlineRegistry != nullptr);
     if (cmdlineRegistry->hasParameter(CMDLineCoreOptions::USAGE)) {
         dumpProgramNameAndUsage();
@@ -142,11 +142,11 @@ void DumpHelpTask::prepare() {
         dumpHelp();
         return;
     }
-    QList<CMDLineHelpProvider *> helpProviders = AppContext::getCMDLineRegistry()->listCMDLineHelpProviders();
+    QList<CMDLineHelpProvider*> helpProviders = AppContext::getCMDLineRegistry()->listCMDLineHelpProviders();
     int ind = 0;
     int sz = helpProviders.size();
     for (ind = 0; ind < sz; ++ind) {
-        CMDLineHelpProvider *cur = helpProviders.at(ind);
+        CMDLineHelpProvider* cur = helpProviders.at(ind);
         if (cur->getHelpSectionFullName() == paramName || cur->getHelpSectionShortName() == paramName) {
             break;
         }
@@ -161,7 +161,7 @@ void DumpHelpTask::prepare() {
 
         // will be deleted in sl_loadSchemaStateChanged
         const QSharedPointer<Schema> schema = QSharedPointer<Schema>::create();
-        Metadata *meta = new Metadata();
+        Metadata* meta = new Metadata();
 
         schema->setDeepCopyFlag(true);
         addSubTask(new LoadWorkflowTask(schema, meta, pathToSchema));
@@ -187,7 +187,7 @@ void DumpHelpTask::prepare() {
 
         // If the section has several short descriptions, append the next short descriptions
         for (int i = ind + 1; i < sz; ++i) {
-            CMDLineHelpProvider *provider = helpProviders.at(i);
+            CMDLineHelpProvider* provider = helpProviders.at(i);
             if (provider->getHelpSectionFullName() != paramName && provider->getHelpSectionShortName() != paramName) {
                 break;
             }
@@ -198,21 +198,21 @@ void DumpHelpTask::prepare() {
     dumpOptionHelpDescription(description);
 }
 
-static void dumpSchemaMetadata(Metadata *meta) {
+static void dumpSchemaMetadata(Metadata* meta) {
     assert(meta != nullptr);
     printStringToConsole("\n%s\n", meta->comment);
 }
 
-static void dumpSchemaCmdlineParameters(Schema *schema) {
+static void dumpSchemaCmdlineParameters(Schema* schema) {
     assert(schema != nullptr);
     printStringToConsole("%s", "Parameters:\n");
-    foreach (Actor *actor, schema->getProcesses()) {
+    foreach (Actor* actor, schema->getProcesses()) {
         assert(actor != nullptr);
         QMap<QString, QString>::const_iterator it = actor->getParamAliases().constBegin();
         while (it != actor->getParamAliases().constEnd()) {
             QString alias = it.value();
             dumpSectionName(alias);
-            Attribute *attr = actor->getParameter(it.key());
+            Attribute* attr = actor->getParameter(it.key());
             assert(attr != nullptr);
             if (actor->getAliasHelp().contains(alias)) {
                 dumpSectionContent(QString("%1 [%2]").arg(actor->getAliasHelp().value(alias)).arg(attr->getAttributeType()->getDisplayName()));
@@ -226,19 +226,19 @@ static void dumpSchemaCmdlineParameters(Schema *schema) {
     printStringToConsole("%s", "\n");
 }
 
-QList<Task *> DumpHelpTask::onSubTaskFinished(Task *subTask) {
-    LoadWorkflowTask *loadTask = qobject_cast<LoadWorkflowTask *>(subTask);
+QList<Task*> DumpHelpTask::onSubTaskFinished(Task* subTask) {
+    LoadWorkflowTask* loadTask = qobject_cast<LoadWorkflowTask*>(subTask);
     assert(loadTask != nullptr);
 
     const QSharedPointer<Schema> schema = loadTask->getSchema();
-    Metadata *meta = loadTask->getMetadata();
+    Metadata* meta = loadTask->getMetadata();
 
     dumpSchemaMetadata(meta);
     dumpSchemaCmdlineParameters(schema.get());
 
     delete meta;
 
-    return QList<Task *>();
+    return QList<Task*>();
 }
 
 void DumpHelpTask::dumpParameters() {

@@ -50,7 +50,7 @@ namespace GUITest_common_scenarios_shared_db_wd {
 using namespace HI;
 namespace {
 
-void createTestConnection(HI::GUITestOpStatus &os) {
+void createTestConnection(HI::GUITestOpStatus& os) {
     GTLogTracer lt;
     QString conName = "ugene_gui_test";
     {
@@ -81,12 +81,12 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0001) {
     acceptableTypes << GObjectTypes::SEQUENCE;
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "ugene_gui_test", "et0001_sequence", acceptableTypes));
 
-    QWidget *addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
+    QWidget* addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
     GTWidget::click(os, addFromDbButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
+    QListWidget* datasetList = qobject_cast<QListWidget*>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(nullptr != datasetList, "Unable to find dataset list widget");
 
     CHECK_SET_ERR(1 == datasetList->count(), QString("Invalid dataset item count: expect %1, got %2").arg("1").arg(datasetList->count()));
@@ -103,12 +103,12 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0002) {
     acceptableTypes << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "ugene_gui_test", "et0003_alignment", acceptableTypes));
 
-    QWidget *addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
+    QWidget* addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
     GTWidget::click(os, addFromDbButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
+    QListWidget* datasetList = qobject_cast<QListWidget*>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(nullptr != datasetList, "Unable to find dataset list widget");
 
     CHECK_SET_ERR(1 == datasetList->count(), QString("Invalid dataset item count: expect %1, got %2").arg("1").arg(datasetList->count()));
@@ -125,12 +125,12 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0003) {
     acceptableTypes << GObjectTypes::ANNOTATION_TABLE;
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "ugene_gui_test", "et0002_features", acceptableTypes));
 
-    QWidget *addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
+    QWidget* addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
     GTWidget::click(os, addFromDbButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
+    QListWidget* datasetList = qobject_cast<QListWidget*>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(nullptr != datasetList, "Unable to find dataset list widget");
 
     CHECK_SET_ERR(1 == datasetList->count(), QString("Invalid dataset item count: expect %1, got %2").arg("1").arg(datasetList->count()));
@@ -147,12 +147,12 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0004) {
     acceptableTypes << GObjectTypes::ASSEMBLY;
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "ugene_gui_test", "et0004_assembly", acceptableTypes));
 
-    QWidget *addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
+    QWidget* addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
     GTWidget::click(os, addFromDbButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
+    QListWidget* datasetList = qobject_cast<QListWidget*>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(nullptr != datasetList, "Unable to find dataset list widget");
 
     CHECK_SET_ERR(1 == datasetList->count(), QString("Invalid dataset item count: expect %1, got %2").arg("1").arg(datasetList->count()));
@@ -169,12 +169,12 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0005) {
     acceptableTypes << GObjectTypes::TEXT;
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "ugene_gui_test", "et0006_text", acceptableTypes));
 
-    QWidget *addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
+    QWidget* addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
     GTWidget::click(os, addFromDbButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
+    QListWidget* datasetList = qobject_cast<QListWidget*>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(nullptr != datasetList, "Unable to find dataset list widget");
 
     CHECK_SET_ERR(1 == datasetList->count(), QString("Invalid dataset item count: expect %1, got %2").arg("1").arg(datasetList->count()));
@@ -191,12 +191,12 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0006) {
     acceptableTypes << GObjectTypes::VARIANT_TRACK;
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "ugene_gui_test", "et0005_variations", acceptableTypes));
 
-    QWidget *addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
+    QWidget* addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
     GTWidget::click(os, addFromDbButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
+    QListWidget* datasetList = qobject_cast<QListWidget*>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(nullptr != datasetList, "Unable to find dataset list widget");
 
     CHECK_SET_ERR(1 == datasetList->count(), QString("Invalid dataset item count: expect %1, got %2").arg("1").arg(datasetList->count()));
@@ -207,7 +207,7 @@ GUI_TEST_CLASS_DEFINITION(read_gui_neg_test_0007) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read File URL(s)");
 
-    QWidget *addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
+    QWidget* addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
     CHECK_SET_ERR(!addFromDbButton->isVisible(), "Unexpected button found");
 }
 
@@ -221,7 +221,7 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0008) {
     acceptableTypes << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "ugene_gui_test", "pt0005_COI", acceptableTypes));
 
-    QWidget *addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
+    QWidget* addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
     GTWidget::click(os, addFromDbButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -229,7 +229,7 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0008) {
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "ugene_gui_test", "export_tests"));
     GTWidget::click(os, addFromDbButton);
 
-    QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
+    QListWidget* datasetList = qobject_cast<QListWidget*>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(nullptr != datasetList, "Unable to find dataset list widget");
 
     CHECK_SET_ERR(2 == datasetList->count(), QString("Invalid dataset item count: expect %1, got %2").arg("2").arg(datasetList->count()));
@@ -245,7 +245,7 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0009) {
 
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "ugene_gui_test", "view_test_0003"));
 
-    QWidget *addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
+    QWidget* addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
     GTWidget::click(os, addFromDbButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -259,7 +259,7 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0009) {
 
     GTUtilsWorkflowDesigner::setDatasetInputFolder(os, QDir(testDir + "_common_data/bam").absolutePath());
 
-    QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
+    QListWidget* datasetList = qobject_cast<QListWidget*>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(nullptr != datasetList, "Unable to find dataset list widget");
 
     CHECK_SET_ERR(4 == datasetList->count(), QString("Invalid dataset item count: expect %1, got %2").arg("4").arg(datasetList->count()));
@@ -282,7 +282,7 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0010) {
                                   << "et0007_seq";
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, doc2Objects, acceptableTypes, ProjectTreeItemSelectorDialogFiller::Separate));
 
-    QWidget *addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
+    QWidget* addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
 
     GTWidget::click(os, addFromDbButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -294,7 +294,7 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0010) {
 
     GTWidget::click(os, addFromDbButton);
 
-    QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
+    QListWidget* datasetList = qobject_cast<QListWidget*>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(nullptr != datasetList, "Unable to find dataset list widget");
 
     CHECK_SET_ERR(5 == datasetList->count(), QString("Invalid dataset item count: expect %1, got %2").arg("5").arg(datasetList->count()));
@@ -318,7 +318,7 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0011) {
                                   << "et0001_sequence";
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, doc2Objects, acceptableTypes, ProjectTreeItemSelectorDialogFiller::Continuous));
 
-    QWidget *addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
+    QWidget* addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
 
     GTWidget::click(os, addFromDbButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -331,7 +331,7 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0011) {
 
     GTWidget::click(os, addFromDbButton);
 
-    QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
+    QListWidget* datasetList = qobject_cast<QListWidget*>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(nullptr != datasetList, "Unable to find dataset list widget");
 
     CHECK_SET_ERR(7 == datasetList->count(), QString("Invalid dataset item count: expect %1, got %2").arg("7").arg(datasetList->count()));
@@ -359,7 +359,7 @@ GUI_TEST_CLASS_DEFINITION(read_gui_neg_test_0012) {
     acceptableTypes << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "ugene_gui_test", "et0003_alignment", acceptableTypes, ProjectTreeItemSelectorDialogFiller::Single, 1));
 
-    QWidget *addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
+    QWidget* addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
 
     GTWidget::click(os, addFromDbButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -514,7 +514,7 @@ GUI_TEST_CLASS_DEFINITION(save_uwl_gui_test_0002) {
     doc2Objects["ugene_gui_test"] /*<< "et0002_features"*/ << "view_test_0001";
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, doc2Objects, QSet<GObjectType>(), ProjectTreeItemSelectorDialogFiller::Separate));
 
-    QWidget *addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
+    QWidget* addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
     GTWidget::click(os, addFromDbButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -586,7 +586,7 @@ GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0003) {
 
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "ugene_gui_test", "et0002_features"));
 
-    QWidget *addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
+    QWidget* addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
     GTWidget::click(os, addFromDbButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -696,7 +696,7 @@ GUI_TEST_CLASS_DEFINITION(test_3726) {
     acceptableTypes << GObjectTypes::SEQUENCE;
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "ugene_gui_test", "et0001_sequence", acceptableTypes));
 
-    QWidget *addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
+    QWidget* addFromDbButton = GTWidget::findWidget(os, "addFromDbButton");
     GTWidget::click(os, addFromDbButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);

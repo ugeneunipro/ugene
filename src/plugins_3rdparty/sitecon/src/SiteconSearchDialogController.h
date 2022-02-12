@@ -22,8 +22,6 @@
 #ifndef _U2_SITECON_SEARCH_DIALOG_H_
 #define _U2_SITECON_SEARCH_DIALOG_H_
 
-#include <ui_SiteconSearchDialog.h>
-
 #include <QCloseEvent>
 #include <QList>
 #include <QTimer>
@@ -33,6 +31,8 @@
 #include <U2Core/global.h>
 
 #include <U2Gui/RegionSelector.h>
+
+#include <ui_SiteconSearchDialog.h>
 
 namespace U2 {
 
@@ -47,14 +47,14 @@ class SiteconModel;
 class SiteconSearchDialogController : public QDialog, public Ui_SiteconSearchDialog {
     Q_OBJECT
 public:
-    SiteconSearchDialogController(ADVSequenceObjectContext *ctx, QWidget *p = nullptr);
+    SiteconSearchDialogController(ADVSequenceObjectContext* ctx, QWidget* p = nullptr);
     ~SiteconSearchDialogController();
 
 public slots:
     virtual void reject();
 
 protected:
-    bool eventFilter(QObject *obj, QEvent *ev);
+    bool eventFilter(QObject* obj, QEvent* ev);
 
 private slots:
 
@@ -69,13 +69,13 @@ private slots:
     void sl_onTaskFinished();
     void sl_onTimer();
 
-    void sl_onResultActivated(QTreeWidgetItem *i, int col);
+    void sl_onResultActivated(QTreeWidgetItem* i, int col);
 
 private:
     void connectGUI();
     void updateState();
     void updateStatus();
-    void updateModel(const SiteconModel &m);
+    void updateModel(const SiteconModel& m);
 
     bool checkPrevSettings();
     void savePrevSettings();
@@ -85,16 +85,16 @@ private:
     void importResults();
 
 private:
-    ADVSequenceObjectContext *ctx;
+    ADVSequenceObjectContext* ctx;
     U2Region initialSelection;
 
-    SiteconModel *model;
+    SiteconModel* model;
 
-    SiteconSearchTask *task;
-    QTimer *timer;
-    RegionSelector *rs;
-    QPushButton *pbSearch;
-    QPushButton *pbClose;
+    SiteconSearchTask* task;
+    QTimer* timer;
+    RegionSelector* rs;
+    QPushButton* pbSearch;
+    QPushButton* pbClose;
 };
 
 }  // namespace U2

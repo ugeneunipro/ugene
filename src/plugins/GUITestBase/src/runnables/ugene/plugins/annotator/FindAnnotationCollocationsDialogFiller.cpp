@@ -32,7 +32,7 @@ namespace U2 {
 
 #define GT_METHOD_NAME "commonScenario"
 void FindAnnotationCollocationsDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
+    QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog, "activeModalWidget is NULL");
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -40,13 +40,13 @@ void FindAnnotationCollocationsDialogFiller::commonScenario() {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getPlusButton"
-QToolButton *FindAnnotationCollocationsDialogFiller::getPlusButton() const {
-    QToolButton *result = nullptr;
-    QWidget *dialog = QApplication::activeModalWidget();
+QToolButton* FindAnnotationCollocationsDialogFiller::getPlusButton() const {
+    QToolButton* result = nullptr;
+    QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK_RESULT(dialog, "activeModalWidget is NULL", nullptr);
 
-    QList<QToolButton *> toolList = dialog->findChildren<QToolButton *>();
-    foreach (QToolButton *but, toolList) {
+    QList<QToolButton*> toolList = dialog->findChildren<QToolButton*>();
+    foreach (QToolButton* but, toolList) {
         if (but->text() == "+") {
             result = but;
         }
@@ -58,13 +58,13 @@ QToolButton *FindAnnotationCollocationsDialogFiller::getPlusButton() const {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getMinusButtons"
-QList<QToolButton *> FindAnnotationCollocationsDialogFiller::getMinusButtons() const {
-    QList<QToolButton *> result;
-    QWidget *dialog = QApplication::activeModalWidget();
+QList<QToolButton*> FindAnnotationCollocationsDialogFiller::getMinusButtons() const {
+    QList<QToolButton*> result;
+    QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK_RESULT(dialog, "activeModalWidget is NULL", result);
 
-    QList<QToolButton *> toolList = dialog->findChildren<QToolButton *>();
-    foreach (QToolButton *but, toolList) {
+    QList<QToolButton*> toolList = dialog->findChildren<QToolButton*>();
+    foreach (QToolButton* but, toolList) {
         if (but->text() == "-") {
             result << but;
         }

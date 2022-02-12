@@ -53,7 +53,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // 2. Set some name for an output file
-    QTableView *table = qobject_cast<QTableView *>(GTWidget::findWidget(os, "table"));
+    QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, "table"));
     CHECK_SET_ERR(table, "tableView not found");
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write alignment"));
     GTMouseDriver::click();
@@ -71,7 +71,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     // 4. Move this file somewhere from its folder
     class RenameHelper {
     public:
-        RenameHelper(const QString &url, HI::GUITestOpStatus &os)
+        RenameHelper(const QString& url, HI::GUITestOpStatus& os)
             : file(url), renamed(false) {
             oldName = file.fileName();
             renamed = file.rename("wd_pv_0001.aln");
@@ -110,7 +110,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     //    2. Set some name for an output file
-    QTableView *table = qobject_cast<QTableView *>(GTWidget::findWidget(os, "table"));
+    QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, "table"));
     CHECK_SET_ERR(table, "tableView not found");
     QPoint writeAlignmentCenter = GTUtilsWorkflowDesigner::getItemCenter(os, "Write alignment");
     GTMouseDriver::moveTo(writeAlignmentCenter);
@@ -120,7 +120,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTMouseDriver::click();
     QString dirPath = QFileInfo(testDir + "_common_data/scenarios/sandbox/").absoluteFilePath();
     GTKeyboardDriver::keySequence(dirPath + "/wd_pv_0002.sto");
-    QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
+    QWidget* activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_SET_ERR(activeWindow, "Active window wasn't found");
     GTWidget::click(os, activeWindow);
 
@@ -142,9 +142,9 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     outputDir.rmpath(outputDir.absolutePath());
 
     //    6. In WD press the "Validate" button
-    MessageBoxDialogFiller *filler = new MessageBoxDialogFiller(os, QMessageBox::Ok, "Please fix issues listed in the error list (located under workflow).");
+    MessageBoxDialogFiller* filler = new MessageBoxDialogFiller(os, QMessageBox::Ok, "Please fix issues listed in the error list (located under workflow).");
     GTUtilsDialog::waitForDialog(os, filler);
-    QAbstractButton *validateButton = GTAction::button(os, "Validate workflow");
+    QAbstractButton* validateButton = GTAction::button(os, "Validate workflow");
     CHECK_SET_ERR(validateButton, "Validate button wasn't found");
     GTWidget::click(os, validateButton);
 
@@ -160,9 +160,9 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Find Pattern");
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Sequence", true);
 
-    WorkflowProcessItem *seqReader = GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence");
-    WorkflowProcessItem *patternFinder = GTUtilsWorkflowDesigner::getWorker(os, "Find Pattern");
-    WorkflowProcessItem *seqWriter = GTUtilsWorkflowDesigner::getWorker(os, "Write Sequence");
+    WorkflowProcessItem* seqReader = GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence");
+    WorkflowProcessItem* patternFinder = GTUtilsWorkflowDesigner::getWorker(os, "Find Pattern");
+    WorkflowProcessItem* seqWriter = GTUtilsWorkflowDesigner::getWorker(os, "Write Sequence");
 
     GTUtilsWorkflowDesigner::connect(os, seqReader, patternFinder);
     GTUtilsWorkflowDesigner::connect(os, patternFinder, seqWriter);
@@ -171,7 +171,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write Sequence"));
     GTMouseDriver::click();
-    QTableView *table = qobject_cast<QTableView *>(GTWidget::findWidget(os, "table"));
+    QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, "table"));
     CHECK_SET_ERR(table, "tableView not found");
     GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 1, 3));
     GTMouseDriver::click();
@@ -213,7 +213,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // 2. Set some name for an output file
-    QTableView *table = qobject_cast<QTableView *>(GTWidget::findWidget(os, "table"));
+    QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, "table"));
     CHECK_SET_ERR(table, "tableView not found");
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write alignment"));
     GTMouseDriver::click();
@@ -262,9 +262,9 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsWorkflowDesigner::addAlgorithm(os, "CD Search");
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Sequence", true);
 
-    WorkflowProcessItem *seqReader = GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence");
-    WorkflowProcessItem *patternFinder = GTUtilsWorkflowDesigner::getWorker(os, "CD Search");
-    WorkflowProcessItem *seqWriter = GTUtilsWorkflowDesigner::getWorker(os, "Write Sequence");
+    WorkflowProcessItem* seqReader = GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence");
+    WorkflowProcessItem* patternFinder = GTUtilsWorkflowDesigner::getWorker(os, "CD Search");
+    WorkflowProcessItem* seqWriter = GTUtilsWorkflowDesigner::getWorker(os, "Write Sequence");
 
     GTUtilsWorkflowDesigner::connect(os, seqReader, patternFinder);
     GTUtilsWorkflowDesigner::connect(os, patternFinder, seqWriter);
@@ -273,7 +273,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write Sequence"));
     GTMouseDriver::click();
-    QTableView *table = qobject_cast<QTableView *>(GTWidget::findWidget(os, "table"));
+    QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, "table"));
     CHECK_SET_ERR(table, "tableView not found");
     GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 1, 3));
     GTMouseDriver::click();

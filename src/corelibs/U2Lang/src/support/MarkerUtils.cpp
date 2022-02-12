@@ -34,7 +34,7 @@ const QString MarkerUtils::ENDS_OPERATION("ends");
 const QString MarkerUtils::CONTAINS_OPERATION("contains");
 const QString MarkerUtils::REGEXP_OPERATION("regexp");
 
-void MarkerUtils::valueToString(MarkerDataType dataType, const QVariantList &value, QString &string) {
+void MarkerUtils::valueToString(MarkerDataType dataType, const QVariantList& value, QString& string) {
     assert(value.size() >= 1);
     if (REST_OPERATION == value.at(0).toString()) {
         string.clear();
@@ -53,7 +53,7 @@ void MarkerUtils::valueToString(MarkerDataType dataType, const QVariantList &val
     }
 }
 
-bool MarkerUtils::stringToValue(MarkerDataType dataType, const QString &string, QVariantList &value) {
+bool MarkerUtils::stringToValue(MarkerDataType dataType, const QString& string, QVariantList& value) {
     if (REST_OPERATION == string) {
         value.append(string);
         return true;
@@ -70,7 +70,7 @@ bool MarkerUtils::stringToValue(MarkerDataType dataType, const QString &string, 
     return false;
 }
 
-bool MarkerUtils::stringToIntValue(const QString &string, QVariantList &value) {
+bool MarkerUtils::stringToIntValue(const QString& string, QVariantList& value) {
     bool ok = false;
     if (string.startsWith(LESS_OPERATION)) {
         QString number = string.right(string.length() - LESS_OPERATION.length());
@@ -100,7 +100,7 @@ bool MarkerUtils::stringToIntValue(const QString &string, QVariantList &value) {
     }
 }
 
-bool MarkerUtils::stringToFloatValue(const QString &string, QVariantList &value) {
+bool MarkerUtils::stringToFloatValue(const QString& string, QVariantList& value) {
     bool ok = false;
     if (string.startsWith(LESS_OPERATION)) {
         QString number = string.right(string.length() - LESS_OPERATION.length());
@@ -130,7 +130,7 @@ bool MarkerUtils::stringToFloatValue(const QString &string, QVariantList &value)
     }
 }
 
-bool MarkerUtils::stringToTextValue(const QString &string, QVariantList &value) {
+bool MarkerUtils::stringToTextValue(const QString& string, QVariantList& value) {
     QString expr;
     QString operation;
     if (string.startsWith(STARTS_OPERATION)) {
@@ -155,7 +155,7 @@ bool MarkerUtils::stringToTextValue(const QString &string, QVariantList &value) 
     return true;
 }
 
-void MarkerUtils::integerValueToString(const QVariantList &value, QString &string) {
+void MarkerUtils::integerValueToString(const QVariantList& value, QString& string) {
     QString operation = value.at(0).toString();
 
     if (INTERVAL_OPERATION == operation) {
@@ -184,7 +184,7 @@ void MarkerUtils::integerValueToString(const QVariantList &value, QString &strin
     }
 }
 
-void MarkerUtils::floatValueToString(const QVariantList &value, QString &string) {
+void MarkerUtils::floatValueToString(const QVariantList& value, QString& string) {
     QString operation = value.at(0).toString();
 
     if (INTERVAL_OPERATION == operation) {
@@ -213,7 +213,7 @@ void MarkerUtils::floatValueToString(const QVariantList &value, QString &string)
     }
 }
 
-void MarkerUtils::textValueToString(const QVariantList &value, QString &string) {
+void MarkerUtils::textValueToString(const QVariantList& value, QString& string) {
     string += value.at(0).toString() + " ";
     string += value.at(1).toString();
 }

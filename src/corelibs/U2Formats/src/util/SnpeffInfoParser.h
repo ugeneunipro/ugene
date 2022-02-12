@@ -43,12 +43,12 @@ public:
      * For each annotation a U2Qualifier list will be produced.
      * So, @return will contain data for several annotations that are produced from one variation.
      */
-    QList<QList<U2Qualifier>> parse(U2OpStatus &os, const QString &snpeffInfo) const;
+    QList<QList<U2Qualifier>> parse(U2OpStatus& os, const QString& snpeffInfo) const;
 
 private:
     void initPartParsers();
 
-    QMap<QString, InfoPartParser *> partParsers;
+    QMap<QString, InfoPartParser*> partParsers;
 
     static const QString PAIRS_SEPARATOR;
     static const QString KEY_VALUE_SEPARATOR;
@@ -57,15 +57,15 @@ private:
 class InfoPartParser : public QObject {
     Q_OBJECT
 public:
-    InfoPartParser(const QString &keyWord, bool canStoreMessages = false);
+    InfoPartParser(const QString& keyWord, bool canStoreMessages = false);
 
-    const QString &getKeyWord() const;
-    QList<QList<U2Qualifier>> parse(U2OpStatus &os, const QString &infoPart) const;
+    const QString& getKeyWord() const;
+    QList<QList<U2Qualifier>> parse(U2OpStatus& os, const QString& infoPart) const;
 
 protected:
     virtual QStringList getQualifierNames() const = 0;
-    virtual QStringList getValues(const QString &entry) const = 0;
-    virtual QList<U2Qualifier> processValue(const QString &qualifierName, const QString &value) const;
+    virtual QStringList getValues(const QString& entry) const = 0;
+    virtual QList<U2Qualifier> processValue(const QString& qualifierName, const QString& value) const;
 
     static const QString ERROR;
     static const QString WARNING;
@@ -74,7 +74,7 @@ protected:
     static const QString MESSAGE_DESCRIPTION;
 
 private:
-    QList<U2Qualifier> parseEntry(U2OpStatus &os, const QString &entry) const;
+    QList<U2Qualifier> parseEntry(U2OpStatus& os, const QString& entry) const;
 
     const QString keyWord;
     const bool canStoreMessages;
@@ -91,8 +91,8 @@ public:
 
 private:
     QStringList getQualifierNames() const;
-    QStringList getValues(const QString &entry) const;
-    QList<U2Qualifier> processValue(const QString &qualifierName, const QString &value) const;
+    QStringList getValues(const QString& entry) const;
+    QList<U2Qualifier> processValue(const QString& qualifierName, const QString& value) const;
 
     static const QString VALUES_SEPARATOR;
     static const QString EFFECTS_SEPARATOR;
@@ -110,8 +110,8 @@ public:
 
 private:
     QStringList getQualifierNames() const;
-    QStringList getValues(const QString &entry) const;
-    QList<U2Qualifier> processValue(const QString &qualifierName, const QString &value) const;
+    QStringList getValues(const QString& entry) const;
+    QList<U2Qualifier> processValue(const QString& qualifierName, const QString& value) const;
 
     static const QString EFFECT_DATA_SEPARATOR;
     static const QString EFFECT;
@@ -128,7 +128,7 @@ public:
 
 private:
     QStringList getQualifierNames() const;
-    QStringList getValues(const QString &entry) const;
+    QStringList getValues(const QString& entry) const;
 
     static const QString VALUES_SEPARATOR;
 };
@@ -141,7 +141,7 @@ public:
 
 private:
     QStringList getQualifierNames() const;
-    QStringList getValues(const QString &entry) const;
+    QStringList getValues(const QString& entry) const;
 
     static const QString VALUES_SEPARATOR;
 };

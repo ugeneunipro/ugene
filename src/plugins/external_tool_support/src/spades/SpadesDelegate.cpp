@@ -43,50 +43,50 @@ namespace LocalWorkflow {
 
 const QString SpadesDelegate::PLACEHOLDER = QApplication::translate("SpadesDelegate", "Configure input type");
 
-SpadesDelegate::SpadesDelegate(QObject *parent)
+SpadesDelegate::SpadesDelegate(QObject* parent)
     : PropertyDelegate(parent) {
 }
 
-QVariant SpadesDelegate::getDisplayValue(const QVariant &) const {
+QVariant SpadesDelegate::getDisplayValue(const QVariant&) const {
     return PLACEHOLDER;
 }
 
-PropertyDelegate *SpadesDelegate::clone() {
+PropertyDelegate* SpadesDelegate::clone() {
     return new SpadesDelegate(parent());
 }
 
-QWidget *SpadesDelegate::createEditor(QWidget *parent,
-                                      const QStyleOptionViewItem & /*option*/,
-                                      const QModelIndex & /*index*/) const {
-    SpadesPropertyWidget *editor = new SpadesPropertyWidget(parent);
+QWidget* SpadesDelegate::createEditor(QWidget* parent,
+                                      const QStyleOptionViewItem& /*option*/,
+                                      const QModelIndex& /*index*/) const {
+    SpadesPropertyWidget* editor = new SpadesPropertyWidget(parent);
     connect(editor, SIGNAL(si_valueChanged(QVariant)), SLOT(sl_commit()));
     return editor;
 }
 
-PropertyWidget *SpadesDelegate::createWizardWidget(U2OpStatus &,
-                                                   QWidget *parent) const {
+PropertyWidget* SpadesDelegate::createWizardWidget(U2OpStatus&,
+                                                   QWidget* parent) const {
     return new SpadesPropertyWidget(parent);
 }
 
-void SpadesDelegate::setEditorData(QWidget *editor,
-                                   const QModelIndex &index) const {
+void SpadesDelegate::setEditorData(QWidget* editor,
+                                   const QModelIndex& index) const {
     const QVariant value = index.model()->data(index, ConfigurationEditor::ItemValueRole);
-    SpadesPropertyWidget *propertyWidget =
-        qobject_cast<SpadesPropertyWidget *>(editor);
+    SpadesPropertyWidget* propertyWidget =
+        qobject_cast<SpadesPropertyWidget*>(editor);
     propertyWidget->setValue(value);
 }
 
-void SpadesDelegate::setModelData(QWidget *editor,
-                                  QAbstractItemModel *model,
-                                  const QModelIndex &index) const {
-    SpadesPropertyWidget *propertyWidget =
-        qobject_cast<SpadesPropertyWidget *>(editor);
+void SpadesDelegate::setModelData(QWidget* editor,
+                                  QAbstractItemModel* model,
+                                  const QModelIndex& index) const {
+    SpadesPropertyWidget* propertyWidget =
+        qobject_cast<SpadesPropertyWidget*>(editor);
     model->setData(index, propertyWidget->value(), ConfigurationEditor::ItemValueRole);
 }
 
 void SpadesDelegate::sl_commit() {
-    SpadesPropertyWidget *editor =
-        qobject_cast<SpadesPropertyWidget *>(sender());
+    SpadesPropertyWidget* editor =
+        qobject_cast<SpadesPropertyWidget*>(sender());
     CHECK(editor != nullptr, );
     emit commitData(editor);
 }
@@ -95,7 +95,7 @@ void SpadesDelegate::sl_commit() {
 /*SpadesPropertyWidget*/
 /********************************************************************/
 
-SpadesPropertyWidget::SpadesPropertyWidget(QWidget *parent, DelegateTags *tags)
+SpadesPropertyWidget::SpadesPropertyWidget(QWidget* parent, DelegateTags* tags)
     : PropertyWidget(parent, tags) {
     lineEdit = new QLineEdit(this);
     lineEdit->setPlaceholderText(SpadesDelegate::PLACEHOLDER);
@@ -119,7 +119,7 @@ QVariant SpadesPropertyWidget::value() {
     return QVariant::fromValue<QVariantMap>(dialogValue);
 }
 
-void SpadesPropertyWidget::setValue(const QVariant &value) {
+void SpadesPropertyWidget::setValue(const QVariant& value) {
     dialogValue = value.toMap();
 }
 
@@ -138,8 +138,8 @@ void SpadesPropertyWidget::sl_showDialog() {
 /*SpadesPropertyDialog*/
 /********************************************************************/
 
-SpadesPropertyDialog::SpadesPropertyDialog(const QMap<QString, QVariant> &value,
-                                           QWidget *parent)
+SpadesPropertyDialog::SpadesPropertyDialog(const QMap<QString, QVariant>& value,
+                                           QWidget* parent)
     : QDialog(parent) {
     setupUi(this);
 
@@ -158,7 +158,7 @@ void SpadesPropertyDialog::accept() {
 QVariantMap SpadesPropertyDialog::getValue() const {
     QMap<QString, QVariant> result;
 
-    //required
+    // required
     if (needRequiredSequencingPlatform()) {
         result.insert(SpadesWorkerFactory::SEQUENCING_PLATFORM_ID,
                       sequencingPlatformComboBox->currentData());
@@ -187,7 +187,7 @@ QVariantMap SpadesPropertyDialog::getValue() const {
         result.insert(SpadesWorkerFactory::IN_PORT_ID_LIST[1], "");
     }
 
-    //additional
+    // additional
     if (needAdditionalSequencingPlatform()) {
         if (!result.contains(SpadesWorkerFactory::SEQUENCING_PLATFORM_ID))
             result.insert(SpadesWorkerFactory::SEQUENCING_PLATFORM_ID,
@@ -222,8 +222,8 @@ QVariantMap SpadesPropertyDialog::getValue() const {
     return result;
 }
 
-void SpadesPropertyDialog::setValue(const QMap<QString, QVariant> &value) {
-    //required
+void SpadesPropertyDialog::setValue(const QMap<QString, QVariant>& value) {
+    // required
     if (value.contains(SpadesWorkerFactory::SEQUENCING_PLATFORM_ID)) {
         const QVariant platformVariant = value.value(SpadesWorkerFactory::SEQUENCING_PLATFORM_ID);
         SAFE_POINT(platformVariant.canConvert<QString>(), QApplication::translate("SpadesPropertyDialog", "Incorrect parameters, can't parse"), );
@@ -245,7 +245,7 @@ void SpadesPropertyDialog::setValue(const QMap<QString, QVariant> &value) {
     }
     pacBioCcsCheckBox->setChecked(value.contains(SpadesWorkerFactory::IN_PORT_ID_LIST[1]));
 
-    //additional
+    // additional
     if (value.contains(SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST[1])) {
         matePairsCheckBox->setChecked(true);
         const QVariant dataValue = value.value(SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST[1]);
@@ -262,14 +262,14 @@ void SpadesPropertyDialog::setItemsData() {
     sequencingPlatformComboBox->setItemData(0, PLATFORM_ILLUMINA);
     sequencingPlatformComboBox->setItemData(1, PLATFORM_ION_TORRENT);
 
-    QList<QComboBox *> directionComboBoxes = QList<QComboBox *>() << pairEndReadsDirectionComboBox << hightQualityReadsDirectionComboBox << matePairsReadsDirectionComboBox;
-    foreach (QComboBox *dirCombo, directionComboBoxes) {
+    QList<QComboBox*> directionComboBoxes = QList<QComboBox*>() << pairEndReadsDirectionComboBox << hightQualityReadsDirectionComboBox << matePairsReadsDirectionComboBox;
+    foreach (QComboBox* dirCombo, directionComboBoxes) {
         dirCombo->setItemData(0, QString("fr"));
         dirCombo->setItemData(1, QString("rf"));
         dirCombo->setItemData(2, QString("ff"));
     }
-    QList<QComboBox *> typeComboBoxes = QList<QComboBox *>() << pairEndReadsTypeComboBox << hightQualityReadsTypeComboBox << matePairsTypeComboBox;
-    foreach (QComboBox *typeCombo, typeComboBoxes) {
+    QList<QComboBox*> typeComboBoxes = QList<QComboBox*>() << pairEndReadsTypeComboBox << hightQualityReadsTypeComboBox << matePairsTypeComboBox;
+    foreach (QComboBox* typeCombo, typeComboBoxes) {
         typeCombo->setItemData(0, QString("single reads"));
         typeCombo->setItemData(1, QString("interlaced reads"));
     }
@@ -292,16 +292,16 @@ bool SpadesPropertyDialog::needAdditionalSequencingPlatform() const {
     return matePairsCheckBox->isChecked();
 }
 
-QStringList SpadesPropertyDialog::getDataFromComboBoxes(QComboBox *directionComboBox, QComboBox *typeComboBox) {
+QStringList SpadesPropertyDialog::getDataFromComboBoxes(QComboBox* directionComboBox, QComboBox* typeComboBox) {
     QStringList res;
-    foreach (QComboBox *comboBox, QList<QComboBox *>() << directionComboBox << typeComboBox) {
+    foreach (QComboBox* comboBox, QList<QComboBox*>() << directionComboBox << typeComboBox) {
         res << comboBox->currentData().toString();
     }
 
     return res;
 }
 
-void SpadesPropertyDialog::setDataForComboBoxes(QComboBox *directionComboBox, QComboBox *typeComboBox, const QVariant &value) {
+void SpadesPropertyDialog::setDataForComboBoxes(QComboBox* directionComboBox, QComboBox* typeComboBox, const QVariant& value) {
     SAFE_POINT(value.canConvert<QString>(), QApplication::translate("SpadesPropertyDialog", "Incorrect parameters, can't parse"), );
 
     const QString stringValue = value.toString();
@@ -312,5 +312,5 @@ void SpadesPropertyDialog::setDataForComboBoxes(QComboBox *directionComboBox, QC
     typeComboBox->setCurrentIndex(typeComboBox->findData(valueList.last()));
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

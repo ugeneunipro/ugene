@@ -36,17 +36,17 @@ static QString nameByType() {
     return KarlinGraphFactory::tr("Karlin Signature Difference");
 }
 
-KarlinGraphFactory::KarlinGraphFactory(QObject *p)
+KarlinGraphFactory::KarlinGraphFactory(QObject* p)
     : GSequenceGraphFactory(nameByType(), p) {
 }
 
 //+
-bool KarlinGraphFactory::isEnabled(const U2SequenceObject *o) const {
-    const DNAAlphabet *al = o->getAlphabet();
+bool KarlinGraphFactory::isEnabled(const U2SequenceObject* o) const {
+    const DNAAlphabet* al = o->getAlphabet();
     return al->isNucleic();
 }
 
-QList<QSharedPointer<GSequenceGraphData>> KarlinGraphFactory::createGraphs(GSequenceGraphView *view) {
+QList<QSharedPointer<GSequenceGraphData>> KarlinGraphFactory::createGraphs(GSequenceGraphView* view) {
     assert(isEnabled(view->getSequenceObject()));
     return {QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(view, getGraphName(), new KarlinGraphAlgorithm()))};
 }
@@ -81,25 +81,25 @@ KarlinGraphAlgorithm::~KarlinGraphAlgorithm() {
     delete[] global_relative_abundance_values;
 }
 
-void KarlinGraphAlgorithm::calculate(QVector<float> &result, U2SequenceObject *sequenceObject, qint64 window, qint64 step, U2OpStatus &os) {
+void KarlinGraphAlgorithm::calculate(QVector<float>& result, U2SequenceObject* sequenceObject, qint64 window, qint64 step, U2OpStatus& os) {
     U2Region vr(0, sequenceObject->getSequenceLength());
     int nSteps = GSequenceGraphUtils::getNumSteps(vr, window, step);
     result.reserve(nSteps);
 
-    const DNAAlphabet *al = sequenceObject->getAlphabet();
+    const DNAAlphabet* al = sequenceObject->getAlphabet();
     assert(al->isNucleic());
 
-    DNATranslationRegistry *tr = AppContext::getDNATranslationRegistry();
-    DNATranslation *complT = tr->lookupComplementTranslation(al);
+    DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
+    DNATranslation* complT = tr->lookupComplementTranslation(al);
     assert(complT != nullptr);
 
-    DNATranslation *complTrans = complT;
+    DNATranslation* complTrans = complT;
     mapTrans = complTrans->getOne2OneMapper();
 
     QByteArray seq = sequenceObject->getWholeSequenceData(os);
     CHECK_OP(os, );
     int seqLen = seq.size();
-    const char *seqc = seq.constData();
+    const char* seqc = seq.constData();
     if (global_relative_abundance_values == nullptr) {
         global_relative_abundance_values = new float[16];
         calculateRelativeAbundance(seqc, seqLen, global_relative_abundance_values, os);
@@ -115,7 +115,7 @@ void KarlinGraphAlgorithm::calculate(QVector<float> &result, U2SequenceObject *s
     }
 }
 
-float KarlinGraphAlgorithm::getValue(int start, int end, const QByteArray &s, U2OpStatus &os) {
+float KarlinGraphAlgorithm::getValue(int start, int end, const QByteArray& s, U2OpStatus& os) {
     float relative_abundance_values[16];
     calculateRelativeAbundance(s.constData() + start, end - start, relative_abundance_values, os);
     float signature_difference = 0;
@@ -132,7 +132,7 @@ float KarlinGraphAlgorithm::getValue(int start, int end, const QByteArray &s, U2
     return res;
 }
 
-void KarlinGraphAlgorithm::calculateRelativeAbundance(const char *seq, int length, float *results, U2OpStatus &os) {
+void KarlinGraphAlgorithm::calculateRelativeAbundance(const char* seq, int length, float* results, U2OpStatus& os) {
     QByteArray tmp;
     tmp.resize(length);
 

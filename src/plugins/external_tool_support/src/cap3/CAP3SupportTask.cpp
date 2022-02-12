@@ -46,7 +46,7 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 ////CAP3SupportTask
 
-CAP3SupportTask::CAP3SupportTask(const CAP3SupportTaskSettings &_settings)
+CAP3SupportTask::CAP3SupportTask(const CAP3SupportTaskSettings& _settings)
     : ExternalToolSupportTask("CAP3SupportTask", TaskFlags_NR_FOSE_COSC),
       prepareDataForCAP3Task(nullptr),
       cap3Task(nullptr),
@@ -66,8 +66,8 @@ void CAP3SupportTask::prepare() {
 
 #define CAP3_EXT ".cap.ace"
 
-QList<Task *> CAP3SupportTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> CAP3SupportTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
 
     propagateSubtaskError();
 
@@ -98,7 +98,7 @@ QList<Task *> CAP3SupportTask::onSubTaskFinished(Task *subTask) {
             return res;
         }
 
-        IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+        IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
         copyResultTask = new CopyDataTask(iof, tmpOutputUrl, iof, settings.outputFilePath);
         res.append(copyResultTask);
 
@@ -124,7 +124,7 @@ Task::ReportResult CAP3SupportTask::report() {
 
 //////////////////////////////////////////
 ////RunCap3AndOpenResultTask
-RunCap3AndOpenResultTask::RunCap3AndOpenResultTask(const CAP3SupportTaskSettings &settings)
+RunCap3AndOpenResultTask::RunCap3AndOpenResultTask(const CAP3SupportTaskSettings& settings)
     : Task(tr("CAP3 run and open result task"), TaskFlags_NR_FOSE_COSC),
       cap3Task(new CAP3SupportTask(settings)),
       openView(settings.openView) {
@@ -137,8 +137,8 @@ void RunCap3AndOpenResultTask::prepare() {
     addSubTask(cap3Task);
 }
 
-QList<Task *> RunCap3AndOpenResultTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> subTasks;
+QList<Task*> RunCap3AndOpenResultTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> subTasks;
 
     if (subTask->isCanceled() || subTask->hasError()) {
         return subTasks;
@@ -147,11 +147,11 @@ QList<Task *> RunCap3AndOpenResultTask::onSubTaskFinished(Task *subTask) {
     if (subTask == cap3Task) {
         GUrl url(cap3Task->getOutputFile());
 
-        ProjectLoader *loader = AppContext::getProjectLoader();
+        ProjectLoader* loader = AppContext::getProjectLoader();
         SAFE_POINT_EXT(loader, setError(tr("Project loader is NULL")), subTasks);
         QVariantMap hints;
         hints[ProjectLoaderHint_LoadWithoutView] = !openView;
-        Task *loadTask = loader->openWithProjectTask(url, hints);
+        Task* loadTask = loader->openWithProjectTask(url, hints);
         if (nullptr != loadTask) {
             subTasks << loadTask;
         }
@@ -173,18 +173,18 @@ int CAP3LogParser::getProgress() {
 //////////////////////////////////////////
 ////PrepareInput
 
-PrepareInputForCAP3Task::PrepareInputForCAP3Task(const QStringList &inputFiles, const QString &outputDirPath)
+PrepareInputForCAP3Task::PrepareInputForCAP3Task(const QStringList& inputFiles, const QString& outputDirPath)
     : Task("PrepareInputForCAP3Task", TaskFlags_FOSCOE), inputUrls(inputFiles), outputDir(outputDirPath), onlyCopyFiles(false) {
 }
 
 void PrepareInputForCAP3Task::prepare() {
     if (inputUrls.size() == 1) {
-        const QString &inputFileUrl = inputUrls.first();
+        const QString& inputFileUrl = inputUrls.first();
 
         QList<FormatDetectionResult> results = DocumentUtils::detectFormat(inputFileUrl);
 
         if (!results.isEmpty()) {
-            DocumentFormat *format = results.first().format;
+            DocumentFormat* format = results.first().format;
             if (format->getFormatId() == BaseDocumentFormats::FASTA) {
                 onlyCopyFiles = true;
             }
@@ -205,17 +205,17 @@ void PrepareInputForCAP3Task::prepare() {
         if (QFile::exists(constraintsFileUrl)) {
             filesToCopy.append(qualFileUrl);
         }
-        foreach (const QString &fileName, filesToCopy) {
-            IOAdapterFactory *iof =
+        foreach (const QString& fileName, filesToCopy) {
+            IOAdapterFactory* iof =
                 AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-            CopyDataTask *copyTask = new CopyDataTask(iof, fileName, iof, outputDir + "/" + GUrl(fileName).fileName());
+            CopyDataTask* copyTask = new CopyDataTask(iof, fileName, iof, outputDir + "/" + GUrl(fileName).fileName());
             addSubTask(copyTask);
         }
         preparedPath = outputDir + "/" + GUrl(inputFileUrl).fileName();
     } else {
         // Long path: load each file, save sequences and qualities to output dir
         QList<GUrl> inputGUrls;
-        foreach (const QString &url, inputUrls) {
+        foreach (const QString& url, inputUrls) {
             inputGUrls.append(url);
         }
 
@@ -243,7 +243,7 @@ void PrepareInputForCAP3Task::run() {
         if (isCanceled()) {
             return;
         }
-        DNASequence *seq = seqReader.getNextSequenceObject();
+        DNASequence* seq = seqReader.getNextSequenceObject();
         if (seq == nullptr) {
             setError(seqReader.getErrorMessage());
             return;
@@ -304,4 +304,4 @@ QStringList CAP3SupportTaskSettings::getArgumentsList() {
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

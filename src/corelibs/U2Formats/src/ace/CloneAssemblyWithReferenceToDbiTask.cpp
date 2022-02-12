@@ -35,11 +35,11 @@
 
 namespace U2 {
 
-CloneAssemblyWithReferenceToDbiTask::CloneAssemblyWithReferenceToDbiTask(const U2Assembly &assembly,
-                                                                         const U2Sequence &reference,
-                                                                         const U2DbiRef &srcDbiRef,
-                                                                         const U2DbiRef &dstDbiRef,
-                                                                         const QVariantMap &hints)
+CloneAssemblyWithReferenceToDbiTask::CloneAssemblyWithReferenceToDbiTask(const U2Assembly& assembly,
+                                                                         const U2Sequence& reference,
+                                                                         const U2DbiRef& srcDbiRef,
+                                                                         const U2DbiRef& dstDbiRef,
+                                                                         const QVariantMap& hints)
     : Task(tr("Clone assembly object to the destination database"), TaskFlags_FOSE_COSC),
       assembly(assembly),
       reference(reference),
@@ -55,11 +55,11 @@ CloneAssemblyWithReferenceToDbiTask::CloneAssemblyWithReferenceToDbiTask(const U
 }
 
 void CloneAssemblyWithReferenceToDbiTask::prepare() {
-    AssemblyObject *assemblyObject = new AssemblyObject(assembly.visualName, U2EntityRef(srcDbiRef, assembly.id));
+    AssemblyObject* assemblyObject = new AssemblyObject(assembly.visualName, U2EntityRef(srcDbiRef, assembly.id));
     cloneAssemblyTask = new CloneObjectTask(assemblyObject, dstDbiRef, dstFolder);
     addSubTask(cloneAssemblyTask);
 
-    U2SequenceObject *sequenceObject = new U2SequenceObject(reference.visualName, U2EntityRef(srcDbiRef, reference.id));
+    U2SequenceObject* sequenceObject = new U2SequenceObject(reference.visualName, U2EntityRef(srcDbiRef, reference.id));
     cloneReferenceTask = new CloneObjectTask(sequenceObject, dstDbiRef, dstFolder);
     addSubTask(cloneReferenceTask);
 }
@@ -70,13 +70,13 @@ void CloneAssemblyWithReferenceToDbiTask::run() {
 
     QScopedPointer<GObject> clonedObject(cloneAssemblyTask->takeResult());
     SAFE_POINT_EXT(nullptr != clonedObject, setError(tr("Can't get the cloned object")), );
-    QScopedPointer<AssemblyObject> clonedAssemblyObject(qobject_cast<AssemblyObject *>(clonedObject.data()));
+    QScopedPointer<AssemblyObject> clonedAssemblyObject(qobject_cast<AssemblyObject*>(clonedObject.data()));
     SAFE_POINT_EXT(nullptr != clonedAssemblyObject, setError(tr("Unexpected result object: expect AssemblyObject, got %1 object").arg(clonedObject->getGObjectType())), );
     clonedObject.take();
 
     clonedObject.reset(cloneReferenceTask->takeResult());
     SAFE_POINT_EXT(nullptr != clonedObject, setError(tr("Can't get the cloned object")), );
-    QScopedPointer<U2SequenceObject> clonedSequenceObject(qobject_cast<U2SequenceObject *>(clonedObject.data()));
+    QScopedPointer<U2SequenceObject> clonedSequenceObject(qobject_cast<U2SequenceObject*>(clonedObject.data()));
     SAFE_POINT_EXT(nullptr != clonedSequenceObject, setError(tr("Unexpected result object: expect U2SequenceObject, got %1 object").arg(clonedObject->getGObjectType())), );
     clonedObject.take();
 

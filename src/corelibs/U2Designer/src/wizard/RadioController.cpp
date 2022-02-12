@@ -29,26 +29,26 @@ namespace U2 {
 
 static const char VAR_ID[] = "var_id";
 
-RadioController::RadioController(WizardController *wc, RadioWidget *_rw)
+RadioController::RadioController(WizardController* wc, RadioWidget* _rw)
     : WidgetController(wc), rw(_rw) {
 }
 
 RadioController::~RadioController() {
 }
 
-QWidget *RadioController::createGUI(U2OpStatus & /*os*/) {
-    QWidget *result = new QWidget();
-    QVBoxLayout *l = new QVBoxLayout(result);
+QWidget* RadioController::createGUI(U2OpStatus& /*os*/) {
+    QWidget* result = new QWidget();
+    QVBoxLayout* l = new QVBoxLayout(result);
     l->setMargin(0);
 #if defined(Q_OS_LINUX)
     l->setSpacing(0);
 #endif
 
-    QButtonGroup *group = new QButtonGroup(result);
-    connect(group, SIGNAL(buttonClicked(QAbstractButton *)), SLOT(sl_buttonClicked(QAbstractButton *)));
+    QButtonGroup* group = new QButtonGroup(result);
+    connect(group, SIGNAL(buttonClicked(QAbstractButton*)), SLOT(sl_buttonClicked(QAbstractButton*)));
     QString id = wc->getVariableValue(rw->var()).toString();
-    foreach (const RadioWidget::Value &value, rw->values()) {
-        QRadioButton *b = new QRadioButton(value.label);
+    foreach (const RadioWidget::Value& value, rw->values()) {
+        QRadioButton* b = new QRadioButton(value.label);
         b->setObjectName(value.label);
         group->addButton(b);
         l->addWidget(b);
@@ -56,11 +56,11 @@ QWidget *RadioController::createGUI(U2OpStatus & /*os*/) {
         b->setChecked(value.id == id);
         b->setProperty(VAR_ID, value.id);
         if (!value.tooltip.isEmpty()) {
-            QHBoxLayout *labelLayout = new QHBoxLayout;
+            QHBoxLayout* labelLayout = new QHBoxLayout;
             labelLayout->setContentsMargins(20, 0, 0, 10);
             l->addLayout(labelLayout);
 
-            QLabel *label = new QLabel(value.tooltip);
+            QLabel* label = new QLabel(value.tooltip);
             label->setWordWrap(true);
             label->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
             label->setMinimumSize(0, 0);
@@ -74,7 +74,7 @@ QWidget *RadioController::createGUI(U2OpStatus & /*os*/) {
     return result;
 }
 
-void RadioController::sl_buttonClicked(QAbstractButton *button) {
+void RadioController::sl_buttonClicked(QAbstractButton* button) {
     QString id = button->property(VAR_ID).toString();
     wc->setVariableValue(rw->var(), id);
 }

@@ -36,6 +36,6 @@ public:
     static const QString ET_PERL_ID;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PERLSUPPORT_H_
+#endif  // _U2_PERLSUPPORT_H_

@@ -79,64 +79,64 @@ class ScriptingToolRegistry;
 
 class UgeneContextWrapper {
 public:
-    UgeneContextWrapper(const QString &workingDirectoryPath);
+    UgeneContextWrapper(const QString& workingDirectoryPath);
     ~UgeneContextWrapper();
 
-    int processTask(Task *task);
+    int processTask(Task* task);
 
     static bool isAppContextInitialized();
 
 private:
     QCoreApplication app;
 
-    AppContextImpl *appContext;
-    CMDLineRegistry *cmdLineRegistry;
-    SettingsImpl *globalSettings;
-    SettingsImpl *settings;
-    AppSettings *appSettings;
-    UserAppsSettings *userAppSettings;
-    ResourceTracker *resTrack;
-    TaskSchedulerImpl *ts;
-    AnnotationSettingsRegistry *asr;
-    TestFramework *tf;
-    RepeatFinderTaskFactoryRegistry *rfr;
-    QDActorPrototypeRegistry *qpr;
-    PhyTreeGeneratorRegistry *phyreg;
-    ExternalToolRegistry *etr;
-    U2DbiRegistry *dbiRegistry;
-    DocumentFormatRegistryImpl *dfr;
-    PluginSupportImpl *psp;
-    ServiceRegistryImpl *sreg;
-    IOAdapterRegistryImpl *io;
-    DNATranslationRegistry *dtr;
-    DNAAlphabetRegistry *dal;
-    DBXRefRegistry *dbxrr;
-    MSAConsensusAlgorithmRegistry *msaConsReg;
-    MSADistanceAlgorithmRegistry *msaDistReg;
-    AssemblyConsensusAlgorithmRegistry *assemblyConsReg;
-    PWMConversionAlgorithmRegistry *pwmConvReg;
-    SubstMatrixRegistry *smr;
-    SmithWatermanTaskFactoryRegistry *swar;
-    MolecularSurfaceFactoryRegistry *msfr;
-    SWResultFilterRegistry *swrfr;
-    SecStructPredictAlgRegistry *sspar;
-    CudaGpuRegistry *cgr;
-    AlignmentAlgorithmsRegistry *alignmentAlgorithmRegistry;
+    AppContextImpl* appContext;
+    CMDLineRegistry* cmdLineRegistry;
+    SettingsImpl* globalSettings;
+    SettingsImpl* settings;
+    AppSettings* appSettings;
+    UserAppsSettings* userAppSettings;
+    ResourceTracker* resTrack;
+    TaskSchedulerImpl* ts;
+    AnnotationSettingsRegistry* asr;
+    TestFramework* tf;
+    RepeatFinderTaskFactoryRegistry* rfr;
+    QDActorPrototypeRegistry* qpr;
+    PhyTreeGeneratorRegistry* phyreg;
+    ExternalToolRegistry* etr;
+    U2DbiRegistry* dbiRegistry;
+    DocumentFormatRegistryImpl* dfr;
+    PluginSupportImpl* psp;
+    ServiceRegistryImpl* sreg;
+    IOAdapterRegistryImpl* io;
+    DNATranslationRegistry* dtr;
+    DNAAlphabetRegistry* dal;
+    DBXRefRegistry* dbxrr;
+    MSAConsensusAlgorithmRegistry* msaConsReg;
+    MSADistanceAlgorithmRegistry* msaDistReg;
+    AssemblyConsensusAlgorithmRegistry* assemblyConsReg;
+    PWMConversionAlgorithmRegistry* pwmConvReg;
+    SubstMatrixRegistry* smr;
+    SmithWatermanTaskFactoryRegistry* swar;
+    MolecularSurfaceFactoryRegistry* msfr;
+    SWResultFilterRegistry* swrfr;
+    SecStructPredictAlgRegistry* sspar;
+    CudaGpuRegistry* cgr;
+    AlignmentAlgorithmsRegistry* alignmentAlgorithmRegistry;
 #ifdef OPENCL_SUPPORT
-    OpenCLGpuRegistry *oclgr;
+    OpenCLGpuRegistry* oclgr;
 #endif
-    RecentlyDownloadedCache *rdc;
-    VirtualFileSystemRegistry *vfsReg;
-    DnaAssemblyAlgRegistry *assemblyReg;
-    GenomeAssemblyAlgRegistry *genomeAssemblyReg;
-    DataBaseRegistry *dbr;
-    CDSearchFactoryRegistry *cdsfr;
-    StructuralAlignmentAlgorithmRegistry *saar;
-    SplicedAlignmentTaskRegistry *splicedAlignmentTaskRegistry;
-    WorkflowScriptRegistry *workflowScriptRegistry;
-    AppFileStorage *appFileStorage;
-    U2DataPathRegistry *dpr;
-    ScriptingToolRegistry *str;
+    RecentlyDownloadedCache* rdc;
+    VirtualFileSystemRegistry* vfsReg;
+    DnaAssemblyAlgRegistry* assemblyReg;
+    GenomeAssemblyAlgRegistry* genomeAssemblyReg;
+    DataBaseRegistry* dbr;
+    CDSearchFactoryRegistry* cdsfr;
+    StructuralAlignmentAlgorithmRegistry* saar;
+    SplicedAlignmentTaskRegistry* splicedAlignmentTaskRegistry;
+    WorkflowScriptRegistry* workflowScriptRegistry;
+    AppFileStorage* appFileStorage;
+    U2DataPathRegistry* dpr;
+    ScriptingToolRegistry* str;
 };
 
 }  // namespace U2

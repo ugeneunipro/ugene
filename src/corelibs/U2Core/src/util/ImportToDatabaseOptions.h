@@ -49,8 +49,8 @@ public:
     QStringList preferredFormats;
     bool processFoldersRecursively;
 
-    bool operator==(const ImportToDatabaseOptions &other) const;
-    bool operator!=(const ImportToDatabaseOptions &other) const;
+    bool operator==(const ImportToDatabaseOptions& other) const;
+    bool operator!=(const ImportToDatabaseOptions& other) const;
 
     static const QString DESTINATION_FOLDER;
     static const QString KEEP_FOLDERS_STRUCTURE;

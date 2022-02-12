@@ -92,7 +92,7 @@ private:
 protected:
     int n;
     int m;
-    int *data;
+    int* data;
     int column0;
 };
 

@@ -28,7 +28,7 @@
 namespace U2 {
 namespace LocalWorkflow {
 
-BaseDatasetWorker::BaseDatasetWorker(Actor *a, const QString &inPortId, const QString &outPortId)
+BaseDatasetWorker::BaseDatasetWorker(Actor* a, const QString& inPortId, const QString& outPortId)
     : BaseOneOneWorker(a, /* autoTransitBus= */ false, inPortId, outPortId), datasetInited(false) {
 }
 
@@ -41,7 +41,7 @@ void BaseDatasetWorker::cleanup() {
     datasetMessages.clear();
 }
 
-Task *BaseDatasetWorker::processNextInputMessage() {
+Task* BaseDatasetWorker::processNextInputMessage() {
     if (datasetChanged(input->lookMessage())) {
         return onDatasetChanged();
     }
@@ -49,14 +49,14 @@ Task *BaseDatasetWorker::processNextInputMessage() {
     return nullptr;
 }
 
-Task *BaseDatasetWorker::onInputEnded() {
+Task* BaseDatasetWorker::onInputEnded() {
     if (!datasetMessages.isEmpty()) {
         return onDatasetChanged();
     }
     return nullptr;
 }
 
-QList<Message> BaseDatasetWorker::fetchResult(Task *task, U2OpStatus &os) {
+QList<Message> BaseDatasetWorker::fetchResult(Task* task, U2OpStatus& os) {
     QVariantMap data = getResult(task, os);
     const MessageMetadata metadata = generateMetadata(datasetName);
     context->getMetadataStorage().put(metadata);
@@ -66,17 +66,17 @@ QList<Message> BaseDatasetWorker::fetchResult(Task *task, U2OpStatus &os) {
     return result;
 }
 
-MessageMetadata BaseDatasetWorker::generateMetadata(const QString &datasetName) const {
+MessageMetadata BaseDatasetWorker::generateMetadata(const QString& datasetName) const {
     return MessageMetadata(datasetName);
 }
 
-QString BaseDatasetWorker::getDatasetName(const Message &message) const {
+QString BaseDatasetWorker::getDatasetName(const Message& message) const {
     const int metadataId = message.getMetadataId();
     const MessageMetadata metadata = context->getMetadataStorage().get(metadataId);
     return metadata.getDatasetName();
 }
 
-bool BaseDatasetWorker::datasetChanged(const Message &message) const {
+bool BaseDatasetWorker::datasetChanged(const Message& message) const {
     CHECK(datasetInited, false);
     return (getDatasetName(message) != datasetName);
 }
@@ -93,9 +93,9 @@ void BaseDatasetWorker::takeMessage() {
     SAFE_POINT(!datasetChanged(message), L10N::internalError("Unexpected method call"), );
 }
 
-Task *BaseDatasetWorker::onDatasetChanged() {
+Task* BaseDatasetWorker::onDatasetChanged() {
     datasetInited = false;
-    Task *task = createTask(datasetMessages);
+    Task* task = createTask(datasetMessages);
     datasetMessages.clear();
     return task;
 }

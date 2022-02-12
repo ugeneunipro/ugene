@@ -34,7 +34,7 @@ namespace U2 {
 /// MaSeqNameFilterTask
 //////////////////////////////////////////////////////////////////////////
 
-static bool isFilteredByMASequenceName(const MultipleAlignmentObject *maObj, const ProjectTreeControllerModeSettings &settings) {
+static bool isFilteredByMASequenceName(const MultipleAlignmentObject* maObj, const ProjectTreeControllerModeSettings& settings) {
     CHECK(nullptr != maObj, false);
     for (int i = 0, n = maObj->getRowCount(); i < n; ++i) {
         if (settings.nameFilterAcceptsString(maObj->getRow(i)->getName())) {
@@ -44,30 +44,30 @@ static bool isFilteredByMASequenceName(const MultipleAlignmentObject *maObj, con
     return false;
 }
 
-MsaSeqNameFilterTask::MsaSeqNameFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document>> &docs)
+MsaSeqNameFilterTask::MsaSeqNameFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs)
     : AbstractProjectFilterTask(settings, ProjectFilterNames::MSA_SEQ_NAME_FILTER_NAME, docs) {
 }
 
-bool MsaSeqNameFilterTask::filterAcceptsObject(GObject *obj) {
-    return isFilteredByMASequenceName(qobject_cast<MultipleSequenceAlignmentObject *>(obj), settings);
+bool MsaSeqNameFilterTask::filterAcceptsObject(GObject* obj) {
+    return isFilteredByMASequenceName(qobject_cast<MultipleSequenceAlignmentObject*>(obj), settings);
 }
 
-McaReadNameFilterTask::McaReadNameFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document>> &docs)
+McaReadNameFilterTask::McaReadNameFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs)
     : AbstractProjectFilterTask(settings, ProjectFilterNames::MCA_READ_NAME_FILTER_NAME, docs) {
 }
 
-bool McaReadNameFilterTask::filterAcceptsObject(GObject *obj) {
-    return isFilteredByMASequenceName(qobject_cast<MultipleChromatogramAlignmentObject *>(obj), settings);
+bool McaReadNameFilterTask::filterAcceptsObject(GObject* obj) {
+    return isFilteredByMASequenceName(qobject_cast<MultipleChromatogramAlignmentObject*>(obj), settings);
 }
 
-McaReferenceNameFilterTask::McaReferenceNameFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document>> &docs)
+McaReferenceNameFilterTask::McaReferenceNameFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs)
     : AbstractProjectFilterTask(settings, ProjectFilterNames::MCA_REFERENCE_NAME_FILTER_NAME, docs) {
 }
 
-bool McaReferenceNameFilterTask::filterAcceptsObject(GObject *obj) {
-    MultipleChromatogramAlignmentObject *mcaObj = qobject_cast<MultipleChromatogramAlignmentObject *>(obj);
+bool McaReferenceNameFilterTask::filterAcceptsObject(GObject* obj) {
+    MultipleChromatogramAlignmentObject* mcaObj = qobject_cast<MultipleChromatogramAlignmentObject*>(obj);
     CHECK(nullptr != mcaObj, false);
-    U2SequenceObject *refObj = mcaObj->getReferenceObj();
+    U2SequenceObject* refObj = mcaObj->getReferenceObj();
     if (refObj != nullptr && settings.nameFilterAcceptsString(refObj->getSequenceName())) {
         return true;
     }
@@ -78,18 +78,18 @@ bool McaReferenceNameFilterTask::filterAcceptsObject(GObject *obj) {
 /// MaSeqNameFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
 
-AbstractProjectFilterTask *MsaSeqNameFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings &settings,
-                                                                      const QList<QPointer<Document>> &docs) const {
+AbstractProjectFilterTask* MsaSeqNameFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
+                                                                      const QList<QPointer<Document>>& docs) const {
     return new MsaSeqNameFilterTask(settings, docs);
 }
 
-AbstractProjectFilterTask *McaReadNameFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings &settings,
-                                                                       const QList<QPointer<Document>> &docs) const {
+AbstractProjectFilterTask* McaReadNameFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
+                                                                       const QList<QPointer<Document>>& docs) const {
     return new McaReadNameFilterTask(settings, docs);
 }
 
-AbstractProjectFilterTask *McaReferenceNameFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings &settings,
-                                                                            const QList<QPointer<Document>> &docs) const {
+AbstractProjectFilterTask* McaReferenceNameFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
+                                                                            const QList<QPointer<Document>>& docs) const {
     return new McaReferenceNameFilterTask(settings, docs);
 }
 

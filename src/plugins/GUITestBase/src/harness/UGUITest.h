@@ -81,22 +81,22 @@ public:
     static const QString IgnoredOnWindows;
 
     /** Returns true if the test has Ignored or IgnoredOn<CurrentOS>. */
-    static bool hasIgnoredLabel(const GUITest *test);
+    static bool hasIgnoredLabel(const GUITest* test);
 
     /** Returns true if the test has current platform label: Linux, MacOS or Windows. */
-    static bool hasPlatformLabel(const GUITest *test);
+    static bool hasPlatformLabel(const GUITest* test);
 };
 
 /** GUI test with quick access to UGENE specific runtime variables: testDir, dataDir ... */
 class UGUITest : public GUITest {
     Q_OBJECT
 public:
-    UGUITest(const QString &name, const QString &suite, int timeout, const QSet<QString> &labelSet)
+    UGUITest(const QString& name, const QString& suite, int timeout, const QSet<QString>& labelSet)
         : GUITest(name, suite, timeout, labelSet) {
     }
 
     /** Returns full test name as known by Teamcity. */
-    static QString getTeamcityTestName(const QString &suite, const QString &name) {
+    static QString getTeamcityTestName(const QString& suite, const QString& name) {
         return suite + "_" + name;
     }
 
@@ -112,16 +112,16 @@ public:
 #define GUI_TEST_CLASS_DECLARATION(className) \
     class className : public UGUITest { \
     public: \
-        className(int timeout = DEFAULT_GUI_TEST_TIMEOUT, const QStringList &labelList = QStringList()) \
+        className(int timeout = DEFAULT_GUI_TEST_TIMEOUT, const QStringList& labelList = QStringList()) \
             : UGUITest(TESTNAME(className), SUITENAME(className), timeout, labelList.toSet()) { \
         } \
 \
     protected: \
-        void run(HI::GUITestOpStatus &os) override; \
+        void run(HI::GUITestOpStatus& os) override; \
     };
 
 #define GUI_TEST_CLASS_DEFINITION(className) \
-    void className::run(HI::GUITestOpStatus &os)
+    void className::run(HI::GUITestOpStatus& os)
 
 }  // namespace U2
 

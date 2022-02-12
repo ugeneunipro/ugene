@@ -31,14 +31,14 @@ namespace U2 {
 class U2LANG_EXPORT Variable {
 public:
     Variable();
-    Variable(const QString &name);
+    Variable(const QString& name);
     virtual ~Variable();
 
-    const QString &getName() const;
-    const QString &getValue() const;
-    void setValue(const QString &value);
+    const QString& getName() const;
+    const QString& getValue() const;
+    void setValue(const QString& value);
     bool isAssigned() const;
-    bool operator==(const Variable &other) const;
+    bool operator==(const Variable& other) const;
 
 private:
     QString name;
@@ -49,14 +49,14 @@ private:
 class U2LANG_EXPORT Predicate {
 public:
     Predicate();
-    Predicate(const Variable &v, const QString &value);
+    Predicate(const Variable& v, const QString& value);
 
     Variable variable() const;
-    bool isTrue(const QMap<QString, Variable> &vars) const;
-    bool operator<(const Predicate &other) const;
+    bool isTrue(const QMap<QString, Variable>& vars) const;
+    bool operator<(const Predicate& other) const;
     QString toString() const;
 
-    static Predicate fromString(const QString &string, U2OpStatus &os);
+    static Predicate fromString(const QString& string, U2OpStatus& os);
 
 private:
     Variable var;

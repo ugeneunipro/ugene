@@ -28,11 +28,11 @@
 
 namespace U2 {
 
-MysqlObjectRelationsDbi::MysqlObjectRelationsDbi(MysqlDbi *dbi)
+MysqlObjectRelationsDbi::MysqlObjectRelationsDbi(MysqlDbi* dbi)
     : U2ObjectRelationsDbi(dbi), MysqlChildDbiCommon(dbi) {
 }
 
-void MysqlObjectRelationsDbi::initSqlSchema(U2OpStatus &os) {
+void MysqlObjectRelationsDbi::initSqlSchema(U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     U2SqlQuery("CREATE TABLE ObjectRelation (object BIGINT NOT NULL, "
@@ -49,7 +49,7 @@ void MysqlObjectRelationsDbi::initSqlSchema(U2OpStatus &os) {
     U2SqlQuery("CREATE INDEX ObjectRelationRole ON ObjectRelation(role)", db, os).execute();
 }
 
-void MysqlObjectRelationsDbi::createObjectRelation(U2ObjectRelation &relation, U2OpStatus &os) {
+void MysqlObjectRelationsDbi::createObjectRelation(U2ObjectRelation& relation, U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     static const QString queryString("INSERT INTO ObjectRelation (object, reference, role) VALUES(:object, :reference, :role)");
@@ -61,8 +61,8 @@ void MysqlObjectRelationsDbi::createObjectRelation(U2ObjectRelation &relation, U
     q.insert();
 }
 
-QList<U2ObjectRelation> MysqlObjectRelationsDbi::getObjectRelations(const U2DataId &object,
-                                                                    U2OpStatus &os) {
+QList<U2ObjectRelation> MysqlObjectRelationsDbi::getObjectRelations(const U2DataId& object,
+                                                                    U2OpStatus& os) {
     QList<U2ObjectRelation> result;
 
     static const QString queryString = "SELECT o.type, o.name, o_r.object, o_r.reference, o_r.role FROM ObjectRelation AS o_r "
@@ -86,9 +86,9 @@ QList<U2ObjectRelation> MysqlObjectRelationsDbi::getObjectRelations(const U2Data
     return result;
 }
 
-QList<U2DataId> MysqlObjectRelationsDbi::getReferenceRelatedObjects(const U2DataId &reference,
+QList<U2DataId> MysqlObjectRelationsDbi::getReferenceRelatedObjects(const U2DataId& reference,
                                                                     GObjectRelationRole relationRole,
-                                                                    U2OpStatus &os) {
+                                                                    U2OpStatus& os) {
     QList<U2DataId> result;
 
     static const QString queryString = "SELECT o.id, o.type FROM Object AS o INNER JOIN ObjectRelation AS o_r "
@@ -106,7 +106,7 @@ QList<U2DataId> MysqlObjectRelationsDbi::getReferenceRelatedObjects(const U2Data
     return result;
 }
 
-void MysqlObjectRelationsDbi::removeObjectRelation(U2ObjectRelation &relation, U2OpStatus &os) {
+void MysqlObjectRelationsDbi::removeObjectRelation(U2ObjectRelation& relation, U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     static const QString queryString("DELETE FROM ObjectRelation "
@@ -118,7 +118,7 @@ void MysqlObjectRelationsDbi::removeObjectRelation(U2ObjectRelation &relation, U
     q.execute();
 }
 
-void MysqlObjectRelationsDbi::removeAllObjectRelations(const U2DataId &object, U2OpStatus &os) {
+void MysqlObjectRelationsDbi::removeAllObjectRelations(const U2DataId& object, U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     static const QString queryString("DELETE FROM ObjectRelation WHERE object = :object OR reference = :reference");
@@ -129,7 +129,7 @@ void MysqlObjectRelationsDbi::removeAllObjectRelations(const U2DataId &object, U
     q.execute();
 }
 
-void MysqlObjectRelationsDbi::removeReferencesForObject(const U2DataId &object, U2OpStatus &os) {
+void MysqlObjectRelationsDbi::removeReferencesForObject(const U2DataId& object, U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     static const QString queryString("DELETE FROM ObjectRelation WHERE object = :object");

@@ -58,7 +58,7 @@
 namespace U2 {
 using namespace HI;
 
-void test_1(HI::GUITestOpStatus &os, int i, QString expectedSec, int j = 0) {
+void test_1(HI::GUITestOpStatus& os, int i, QString expectedSec, int j = 0) {
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(j, i));
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 
@@ -103,11 +103,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
     // Expected state: Conocephalus_percaudata TAGCT-TATTAA--, sequence length 14, right offset 14
 }
 
-void test_3(HI::GUITestOpStatus &os, int i = 0, QString expectedSec = "") {
+void test_3(HI::GUITestOpStatus& os, int i = 0, QString expectedSec = "") {
     // 2. Select 6th symbol for Phaneroptera_falcata sequence. Use context menu {Edit->Insert gap}.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(13, i));
 
-    QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "fill_selection_with_gaps"}));
     GTMenu::showContextMenu(os, seq);
 
@@ -145,11 +145,11 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
     // Expected state: DIFFERENCE: Mecopoda_elongata__Ishigaki__J AAGTCTTT---TA-A, sequence length 15, right offset 14
 }
 
-void test_4(HI::GUITestOpStatus &os, int startPos, int endPos, const QString &expectedSeq, int i = 0, int context = 0) {
+void test_4(HI::GUITestOpStatus& os, int startPos, int endPos, const QString& expectedSeq, int i = 0, int context = 0) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(startPos, i), QPoint(endPos, i));
 
     if (0 != context) {
-        QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+        QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
         GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "Remove selection"}));
         GTMenu::showContextMenu(os, seq);
     } else {
@@ -244,7 +244,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Use msa editor context menu {Edit->Remove all gaps}.
-    QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "Remove all gaps"}));
     GTMenu::showContextMenu(os, seq);
 
@@ -283,7 +283,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gap_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Use msa editor context menu {Edit->Remove all gaps}.
-    QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "Remove all gaps"}));
     GTMenu::showContextMenu(os, seq);
 
@@ -323,7 +323,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     // 2. Place cursor on 4th column of alignment. Use msa editor context menu (at the column with gaps) {Edit->Remove column of gaps}.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(3, 3));
 
-    QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "remove_columns_of_gaps"}));
     GTUtilsDialog::waitForDialog(os, new DeleteGapsDialogFiller(os, 1));
     GTMenu::showContextMenu(os, seq);
@@ -375,7 +375,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {
     //     GTUtilsDialog::waitForDialog(os,new DeleteGapsDialogFiller(os,1));
     //     GTWidget::click(os,seq);
     //    GTKeyboardDriver::keyClick(Qt::Key_Delete,Qt::Key_Shift);
-    QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "remove_columns_of_gaps"}));
     GTUtilsDialog::waitForDialog(os, new DeleteGapsDialogFiller(os, 1));
     GTMenu::showContextMenu(os, seq);
@@ -413,8 +413,8 @@ Hetrodes_pupus_EF540832            AAGCTTTTAA---
 */
 }
 
-void test_9(HI::GUITestOpStatus &os, int i = 0) {
-    QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+void test_9(HI::GUITestOpStatus& os, int i = 0) {
+    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
     QString gaps;
 
     if (0 != i) {
@@ -545,7 +545,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     // Expected state: Zychia_baranovi TTAA
 
     // 3. Click Undo button on toolbar panel.
-    QAbstractButton *undo = GTAction::button(os, "msa_action_undo");
+    QAbstractButton* undo = GTAction::button(os, "msa_action_undo");
     GTWidget::click(os, undo);
     // Expected state: Zychia_baranovi TTAGATTATTAA
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 8), QPoint(11, 8));
@@ -555,7 +555,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     CHECK_SET_ERR(clipboardText == "TTAGATTATTAA", "\nExpected: TTAGATTATTAA\nFound:\n" + clipboardText);
 
     // 4. Click Redo button on toolbar panel.msa_action_redo
-    QAbstractButton *redo = GTAction::button(os, "msa_action_redo");
+    QAbstractButton* redo = GTAction::button(os, "msa_action_redo");
     GTWidget::click(os, redo);
     // Expected state: Zychia_baranovi TTAA
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 8), QPoint(11, 8));
@@ -609,7 +609,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Use msa editor context menu {Edit->Remove all gaps}.
-    QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_EDIT", "Remove all gaps"}));
     GTMenu::showContextMenu(os, seq);
 
@@ -630,7 +630,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
 
     CHECK_SET_ERR(clipboardTest == expectedSeq, "\n Expected: \n" + expectedSeq + "\nFound:\n" + clipboardTest);
     // 3. Click Undo button on toolbar panel.
-    QAbstractButton *undo = GTAction::button(os, "msa_action_undo");
+    QAbstractButton* undo = GTAction::button(os, "msa_action_undo");
     GTWidget::click(os, undo);
     GTWidget::click(os, seq);
 
@@ -651,7 +651,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
 
     CHECK_SET_ERR(clipboardTest == modyfiedSeq, "\n Expected: \n" + expectedSeq + "\nFound:\n" + clipboardTest);
     // 4. Click Redo button on toolbar panel.
-    QAbstractButton *redo = GTAction::button(os, "msa_action_redo");
+    QAbstractButton* redo = GTAction::button(os, "msa_action_redo");
     GTWidget::click(os, redo);
     GTWidget::click(os, seq);
 
@@ -709,18 +709,18 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     CHECK_SET_ERR(clipboardTest == "TATTAA-", "\n Expected: \nTATTAA-\nFound:\n" + clipboardTest);
 }
 
-static void test_13(HI::GUITestOpStatus &os, int comboVal, int spinVal, const QString &expectedCons) {
+static void test_13(HI::GUITestOpStatus& os, int comboVal, int spinVal, const QString& expectedCons) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
-    QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
+    QWidget* seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Consensus mode"}, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
 
-    QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
+    QComboBox* consensusCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != nullptr, "consensusCombo is NULL");
     GTComboBox::selectItemByIndex(os, consensusCombo, comboVal);
 
-    QSpinBox *thresholdSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "thresholdSpinBox"));
+    QSpinBox* thresholdSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "thresholdSpinBox"));
     CHECK_SET_ERR(thresholdSpinBox != nullptr, "consensusCombo is NULL");
     GTSpinBox::setValue(os, thresholdSpinBox, spinVal, GTGlobals::UseKeyBoard);
 
@@ -800,14 +800,14 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     // 2. Right click on aligniment view. Open context menu {Export->save subalignment}
 
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus& os) {
             // Expected state: Create subaligniment dialog has appeared, all sequences are checked
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            QTableWidget *table = GTWidget::findExactWidget<QTableWidget *>(os, "sequencesTableWidget", dialog);
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+            QTableWidget* table = GTWidget::findExactWidget<QTableWidget*>(os, "sequencesTableWidget", dialog);
             CHECK_SET_ERR(nullptr != table, "tableWidget is NULL");
 
             for (int i = 0; i < table->rowCount(); i++) {
-                QCheckBox *box = qobject_cast<QCheckBox *>(table->cellWidget(i, 0));
+                QCheckBox* box = qobject_cast<QCheckBox*>(table->cellWidget(i, 0));
                 CHECK_SET_ERR(box->isChecked(), QString("box '%1' is not checked").arg(box->text()));
             }
 
@@ -816,7 +816,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
 
             // Expected result: all sequences unchecked
             for (int i = 0; i < table->rowCount(); i++) {
-                QCheckBox *box = qobject_cast<QCheckBox *>(table->cellWidget(i, 0));
+                QCheckBox* box = qobject_cast<QCheckBox*>(table->cellWidget(i, 0));
                 CHECK_SET_ERR(!box->isChecked(), QString("box '%1' is checked").arg(box->text()));
             }
 
@@ -828,7 +828,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
             const QStringList list = {"Zychia_baranovi", "Montana_montana"};
             for (int i = 0; i < table->rowCount(); i++) {
                 GTKeyboardDriver::keyClick(Qt::Key_Down);
-                QCheckBox *box = qobject_cast<QCheckBox *>(table->cellWidget(i, 0));
+                QCheckBox* box = qobject_cast<QCheckBox*>(table->cellWidget(i, 0));
                 if (list.contains(box->text())) {
                     GTKeyboardDriver::keyClick(Qt::Key_Space);
                 }
@@ -839,7 +839,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
 
             // Expected result: all sequences except Montana_montana, Zychia_baranovi are checked
             for (int i = 1; i < table->rowCount(); i++) {
-                QCheckBox *box = qobject_cast<QCheckBox *>(table->cellWidget(i, 0));
+                QCheckBox* box = qobject_cast<QCheckBox*>(table->cellWidget(i, 0));
                 if (list.contains(box->text())) {
                     CHECK_SET_ERR(!box->isChecked(), QString("box '%1' is checked. It must be unchecked").arg(box->text()));
                 } else {
@@ -852,7 +852,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
 
             // Expected result: all sequences are checked
             for (int i = 0; i < table->rowCount(); i++) {
-                QCheckBox *box = qobject_cast<QCheckBox *>(table->cellWidget(i, 0));
+                QCheckBox* box = qobject_cast<QCheckBox*>(table->cellWidget(i, 0));
                 CHECK_SET_ERR(box->isChecked(), QString("box '%1' is not checked").arg(box->text()));
             }
 

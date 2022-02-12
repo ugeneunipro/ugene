@@ -34,12 +34,12 @@ namespace U2 {
 /// FeatureKeyFilterTask
 //////////////////////////////////////////////////////////////////////////
 
-FeatureKeyFilterTask::FeatureKeyFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document>> &docs)
+FeatureKeyFilterTask::FeatureKeyFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs)
     : AbstractProjectFilterTask(settings, ProjectFilterNames::FEATURE_KEY_FILTER_NAME, docs) {
 }
 
 void FeatureKeyFilterTask::run() {
-    foreach (const QPointer<Document> &doc, docs) {
+    foreach (const QPointer<Document>& doc, docs) {
         if (!doc.isNull()) {
             filterDocument(doc.data());
         }
@@ -49,7 +49,7 @@ void FeatureKeyFilterTask::run() {
     }
 }
 
-void FeatureKeyFilterTask::filterDocument(Document *doc) {
+void FeatureKeyFilterTask::filterDocument(Document* doc) {
     SAFE_POINT_EXT(nullptr != doc, stateInfo.setError(L10N::nullPointerError("document")), );
     CHECK(doc->isLoaded(), );
 
@@ -59,25 +59,25 @@ void FeatureKeyFilterTask::filterDocument(Document *doc) {
         DbiConnection connection(dbiRef, stateInfo);
         CHECK_OP(stateInfo, );
         SAFE_POINT_EXT(nullptr != connection.dbi, stateInfo.setError(L10N::nullPointerError("Database connection")), );
-        U2FeatureDbi *featureDbi = connection.dbi->getFeatureDbi();
+        U2FeatureDbi* featureDbi = connection.dbi->getFeatureDbi();
         SAFE_POINT_EXT(nullptr != featureDbi, stateInfo.setError(L10N::nullPointerError("Feature DBI")), );
 
         dbiRef2AnnotationTables[dbiRef] = featureDbi->getAnnotationTablesByFeatureKey(settings.tokensToShow, stateInfo);
         SAFE_POINT_OP(stateInfo, );
     }
 
-    const QMap<U2DataId, QStringList> &annNames = dbiRef2AnnotationTables[dbiRef];
+    const QMap<U2DataId, QStringList>& annNames = dbiRef2AnnotationTables[dbiRef];
     const int foundObjectsNumber = annNames.size();
     const int totalDocObjectsNumber = doc->getObjects().size();
-    foreach (const U2DataId &annTableId, annNames.keys()) {
-        GObject *annTable = doc->getObjectById(annTableId);
+    foreach (const U2DataId& annTableId, annNames.keys()) {
+        GObject* annTable = doc->getObjectById(annTableId);
         if (nullptr == annTable) {
             coreLog.error("Annotation table object not found in the document");
             continue;
         }
         SafeObjList filteredResult;
         filteredResult.append(annTable);
-        foreach (const QString &filterName, annNames[annTableId]) {
+        foreach (const QString& filterName, annNames[annTableId]) {
             emit si_objectsFiltered(filterName, filteredResult);
         }
         stateInfo.setProgress(stateInfo.getProgress() + (totalDocObjectsNumber / foundObjectsNumber / totalObjectCount) * 100);
@@ -91,8 +91,8 @@ void FeatureKeyFilterTask::filterDocument(Document *doc) {
 /// FeatureKeyFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
 
-AbstractProjectFilterTask *FeatureKeyFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings &settings,
-                                                                      const QList<QPointer<Document>> &docs) const {
+AbstractProjectFilterTask* FeatureKeyFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
+                                                                      const QList<QPointer<Document>>& docs) const {
     return new FeatureKeyFilterTask(settings, docs);
 }
 

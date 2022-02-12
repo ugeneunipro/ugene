@@ -111,8 +111,8 @@ class GTest_PDBFormatStressTest : public XmlTest {
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_PDBFormatStressTest, "try-load-all-pdb-documents");
 
     ReportResult report();
-    QList<Task *> onSubTaskFinished(Task *subTask);
-    QHash<Task *, QString> fileNames;
+    QList<Task*> onSubTaskFinished(Task* subTask);
+    QHash<Task*, QString> fileNames;
 };
 
 class GTest_ASNFormatStressTest : public XmlTest {
@@ -120,13 +120,13 @@ class GTest_ASNFormatStressTest : public XmlTest {
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_ASNFormatStressTest, "try-load-all-mmdb-documents");
 
     ReportResult report();
-    QList<Task *> onSubTaskFinished(Task *subTask);
-    QHash<Task *, QString> fileNames;
+    QList<Task*> onSubTaskFinished(Task* subTask);
+    QHash<Task*, QString> fileNames;
 };
 
 class BioStruct3DObjectTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

@@ -34,21 +34,21 @@ class LocalToolbar;
 class U2GUI_EXPORT WidgetWithLocalToolbar : public QWidget {
     Q_OBJECT
 public:
-    WidgetWithLocalToolbar(QWidget *p = 0);
+    WidgetWithLocalToolbar(QWidget* p = 0);
 
-    void setContentLayout(QLayout *l);
+    void setContentLayout(QLayout* l);
 
-    QToolButton *addActionToLocalToolbar(QAction *action);
+    QToolButton* addActionToLocalToolbar(QAction* action);
 
-    void setLocalToolBarObjectName(const QString &name);
+    void setLocalToolBarObjectName(const QString& name);
 
 protected:
     void setLocalToolbarVisible(bool visible);
 
-    QWidget *contentWidget = nullptr;
+    QWidget* contentWidget = nullptr;
 
 private:
-    LocalToolbar *toolBar = nullptr;
+    LocalToolbar* toolBar = nullptr;
 };
 
 }  // namespace U2

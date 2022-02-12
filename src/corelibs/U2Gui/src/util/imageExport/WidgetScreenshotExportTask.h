@@ -31,20 +31,20 @@ namespace U2 {
 class WidgetScreenshotExportTask : public ImageExportTask {
     Q_OBJECT
 public:
-    WidgetScreenshotExportTask(QWidget *widget, const ImageExportTaskSettings &settings)
+    WidgetScreenshotExportTask(QWidget* widget, const ImageExportTaskSettings& settings)
         : ImageExportTask(settings),
           widget(widget) {
     }
     virtual void run() = 0;
 
 protected:
-    QWidget *widget;
+    QWidget* widget;
 };
 
 class WidgetScreenshotExportToSvgTask : public WidgetScreenshotExportTask {
     Q_OBJECT
 public:
-    WidgetScreenshotExportToSvgTask(QWidget *widget, const ImageExportTaskSettings &settings)
+    WidgetScreenshotExportToSvgTask(QWidget* widget, const ImageExportTaskSettings& settings)
         : WidgetScreenshotExportTask(widget, settings) {
     }
     void run();
@@ -52,7 +52,7 @@ public:
 
 class WidgetScreenshotExportToPdfTask : public WidgetScreenshotExportTask {
 public:
-    WidgetScreenshotExportToPdfTask(QWidget *widget, const ImageExportTaskSettings &settings)
+    WidgetScreenshotExportToPdfTask(QWidget* widget, const ImageExportTaskSettings& settings)
         : WidgetScreenshotExportTask(widget, settings) {
     }
     void run();
@@ -60,7 +60,7 @@ public:
 
 class WidgetScreenshotExportToBitmapTask : public WidgetScreenshotExportTask {
 public:
-    WidgetScreenshotExportToBitmapTask(QWidget *widget, const ImageExportTaskSettings &settings)
+    WidgetScreenshotExportToBitmapTask(QWidget* widget, const ImageExportTaskSettings& settings)
         : WidgetScreenshotExportTask(widget, settings) {
     }
     void run();
@@ -69,7 +69,7 @@ public:
 class WidgetScreenshotImageExportController : public ImageExportController {
     Q_OBJECT
 public:
-    WidgetScreenshotImageExportController(QWidget *widget);
+    WidgetScreenshotImageExportController(QWidget* widget);
 
     int getImageWidth() const;
     int getImageHeight() const;
@@ -78,12 +78,12 @@ protected:
     void initSettingsWidget() {
     }
 
-    Task *getExportToSvgTask(const ImageExportTaskSettings &settings) const;
-    Task *getExportToPdfTask(const ImageExportTaskSettings &settings) const;
-    Task *getExportToBitmapTask(const ImageExportTaskSettings &settings) const;
+    Task* getExportToSvgTask(const ImageExportTaskSettings& settings) const;
+    Task* getExportToPdfTask(const ImageExportTaskSettings& settings) const;
+    Task* getExportToBitmapTask(const ImageExportTaskSettings& settings) const;
 
 private:
-    QWidget *widget;
+    QWidget* widget;
 };
 
 }  // namespace U2

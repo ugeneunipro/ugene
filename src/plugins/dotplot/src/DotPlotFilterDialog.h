@@ -44,7 +44,7 @@ enum FilterIntersectionParameter {
 class DotPlotFilterDialog : public QDialog, public Ui_DotPlotFilterDialog {
     Q_OBJECT
 public:
-    DotPlotFilterDialog(QWidget *parent, ADVSequenceObjectContext *sequenceX, ADVSequenceObjectContext *sequenceY);
+    DotPlotFilterDialog(QWidget* parent, ADVSequenceObjectContext* sequenceX, ADVSequenceObjectContext* sequenceY);
 
     virtual void accept();
 
@@ -63,11 +63,11 @@ private:
     ADVSequenceObjectContext *xSeq, *ySeq;
     FilterType fType;
     QMultiMap<FilterIntersectionParameter, QString> featureNames;
-    QButtonGroup *filterGroup;
-    QTreeWidgetItem *seqXItem;
-    QTreeWidgetItem *seqYItem;
+    QButtonGroup* filterGroup;
+    QTreeWidgetItem* seqXItem;
+    QTreeWidgetItem* seqYItem;
 
-    QSet<QString> getUniqueAnnotationNames(ADVSequenceObjectContext *seq);
+    QSet<QString> getUniqueAnnotationNames(ADVSequenceObjectContext* seq);
 };
 
 }  // namespace U2

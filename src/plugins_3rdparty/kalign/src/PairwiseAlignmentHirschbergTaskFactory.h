@@ -31,7 +31,7 @@ public:
     PairwiseAlignmentHirschbergTaskFactory();
     virtual ~PairwiseAlignmentHirschbergTaskFactory();
 
-    virtual AbstractAlignmentTask *getTaskInstance(AbstractAlignmentTaskSettings *_settings) const;
+    virtual AbstractAlignmentTask* getTaskInstance(AbstractAlignmentTaskSettings* _settings) const;
 };
 
 }  // namespace U2

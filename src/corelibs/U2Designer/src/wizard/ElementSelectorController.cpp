@@ -28,8 +28,8 @@
 
 namespace U2 {
 
-ElementSelectorController::ElementSelectorController(WizardController *wc,
-                                                     ElementSelectorWidget *_widget,
+ElementSelectorController::ElementSelectorController(WizardController* wc,
+                                                     ElementSelectorWidget* _widget,
                                                      int _labelSize)
     : WidgetController(wc), widget(_widget), labelSize(_labelSize) {
 }
@@ -37,16 +37,16 @@ ElementSelectorController::ElementSelectorController(WizardController *wc,
 ElementSelectorController::~ElementSelectorController() {
 }
 
-QWidget *ElementSelectorController::createGUI(U2OpStatus & /*os*/) {
+QWidget* ElementSelectorController::createGUI(U2OpStatus& /*os*/) {
     QList<ComboItem> values;
-    foreach (const SelectorValue &value, widget->getValues()) {
+    foreach (const SelectorValue& value, widget->getValues()) {
         values.append(qMakePair(value.getName(), value.getValue()));
     }
-    ComboBoxWidget *cb = new ComboBoxWidget(values);
-    connect(cb, SIGNAL(si_valueChanged(const QVariant &)), SLOT(sl_valueChanged(const QVariant &)));
+    ComboBoxWidget* cb = new ComboBoxWidget(values);
+    connect(cb, SIGNAL(si_valueChanged(const QVariant&)), SLOT(sl_valueChanged(const QVariant&)));
     cb->setValue(wc->getSelectorValue(widget));
 
-    LabeledPropertyWidget *result = new LabeledPropertyWidget(widget->getLabel(), cb, nullptr);
+    LabeledPropertyWidget* result = new LabeledPropertyWidget(widget->getLabel(), cb, nullptr);
     if (labelSize >= 0) {
         result->setLabelWidth(labelSize);
     }
@@ -54,7 +54,7 @@ QWidget *ElementSelectorController::createGUI(U2OpStatus & /*os*/) {
     return result;
 }
 
-void ElementSelectorController::sl_valueChanged(const QVariant &newValue) {
+void ElementSelectorController::sl_valueChanged(const QVariant& newValue) {
     wc->setSelectorValue(widget, newValue);
 }
 

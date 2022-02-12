@@ -40,12 +40,12 @@ class RemovePluginTask;
 
 class PluginRef {
 public:
-    PluginRef(Plugin *_plugin, QLibrary *_library, const PluginDesc &desc);
+    PluginRef(Plugin* _plugin, QLibrary* _library, const PluginDesc& desc);
 
     ~PluginRef();
 
-    Plugin *plugin;
-    QLibrary *library;
+    Plugin* plugin;
+    QLibrary* library;
     PluginDesc pluginDesc;
     bool removeFlag;
 };
@@ -59,17 +59,17 @@ public:
     PluginSupportImpl();
     ~PluginSupportImpl();
 
-    virtual const QList<Plugin *> &getPlugins() {
+    virtual const QList<Plugin*>& getPlugins() {
         return plugins;
     }
 
-    virtual void setLicenseAccepted(Plugin *p);
+    virtual void setLicenseAccepted(Plugin* p);
 
-    static bool isDefaultPluginsDir(const QString &url);
+    static bool isDefaultPluginsDir(const QString& url);
     static QDir getDefaultPluginsDir();
 
-    PluginRef *findRef(Plugin *p) const;
-    PluginRef *findRefById(const QString &pluginId) const;
+    PluginRef* findRef(Plugin* p) const;
+    PluginRef* findRefById(const QString& pluginId) const;
 
     virtual bool isAllPluginsLoaded() const;
 
@@ -79,21 +79,21 @@ private slots:
     void sl_registerServices();
 
 protected:
-    void registerPlugin(PluginRef *ref);
-    QString getPluginFileURL(Plugin *p) const;
+    void registerPlugin(PluginRef* ref);
+    QString getPluginFileURL(Plugin* p) const;
 
-    void updateSavedState(PluginRef *ref);
+    void updateSavedState(PluginRef* ref);
 
 private:
-    QList<PluginRef *> plugRefs;
-    QList<Plugin *> plugins;
+    QList<PluginRef*> plugRefs;
+    QList<Plugin*> plugins;
 };
 
 class VerifyPluginTask;
 class AddPluginTask : public Task {
     Q_OBJECT
 public:
-    AddPluginTask(PluginSupportImpl *ps, const PluginDesc &desc, bool forceVerificatoin = false);
+    AddPluginTask(PluginSupportImpl* ps, const PluginDesc& desc, bool forceVerificatoin = false);
     void prepare();
     ReportResult report();
 
@@ -102,44 +102,44 @@ private:
     void instantiatePlugin();
 
     QScopedPointer<QLibrary> lib;
-    PluginSupportImpl *ps;
+    PluginSupportImpl* ps;
     PluginDesc desc;
     bool forceVerification;
     bool verificationMode;
-    VerifyPluginTask *verifyTask;
+    VerifyPluginTask* verifyTask;
 };
 
 class VerifyPluginTask : public Task {
     Q_OBJECT
 public:
-    VerifyPluginTask(PluginSupportImpl *ps, const PluginDesc &desc);
+    VerifyPluginTask(PluginSupportImpl* ps, const PluginDesc& desc);
     void run();
     bool isCorrectPlugin() const {
         return pluginIsCorrect;
     }
-    const PluginDesc &getPluginDescriptor() const {
+    const PluginDesc& getPluginDescriptor() const {
         return desc;
     }
 
 private:
-    PluginSupportImpl *ps;
+    PluginSupportImpl* ps;
     PluginDesc desc;
     int timeOut;
-    QProcess *proc;
+    QProcess* proc;
     bool pluginIsCorrect;
 };
 
 class LoadAllPluginsTask : public Task {
     Q_OBJECT
 public:
-    LoadAllPluginsTask(PluginSupportImpl *ps, const QStringList &pluginFiles);
+    LoadAllPluginsTask(PluginSupportImpl* ps, const QStringList& pluginFiles);
     void prepare();
     ReportResult report();
 
 private:
-    void addToOrderingQueue(const QString &url);
+    void addToOrderingQueue(const QString& url);
 
-    PluginSupportImpl *ps;
+    PluginSupportImpl* ps;
     QStringList pluginFiles;
     QList<PluginDesc> orderedPlugins;  // plugins ordered by desc
 };

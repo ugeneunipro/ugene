@@ -15,7 +15,7 @@
 
 namespace U2 {
 
-PairwiseAlignmentHirschbergMainWidget::PairwiseAlignmentHirschbergMainWidget(QWidget *parent, QVariantMap *s)
+PairwiseAlignmentHirschbergMainWidget::PairwiseAlignmentHirschbergMainWidget(QWidget* parent, QVariantMap* s)
     : AlignmentAlgorithmMainWidget(parent, s) {
     setupUi(this);
     initParameters();
@@ -43,10 +43,10 @@ void PairwiseAlignmentHirschbergMainWidget::initParameters() {
     bonusScore->setMinimum(H_MIN_BONUS_SCORE);
     bonusScore->setMaximum(H_MAX_BONUS_SCORE);
 
-    DNAAlphabetRegistry *alphabetReg = AppContext::getDNAAlphabetRegistry();
+    DNAAlphabetRegistry* alphabetReg = AppContext::getDNAAlphabetRegistry();
     SAFE_POINT(NULL != alphabetReg, "DNAAlphabetRegistry is NULL.", );
     QString alphabetId = externSettings->value(PairwiseAlignmentTaskSettings::ALPHABET, "").toString();
-    const DNAAlphabet *alphabet = alphabetReg->findById(alphabetId);
+    const DNAAlphabet* alphabet = alphabetReg->findById(alphabetId);
     SAFE_POINT(NULL != alphabet, QString("Alphabet %1 not found").arg(alphabetId), );
 
     if (alphabet->isNucleic()) {
@@ -117,12 +117,12 @@ PairwiseAlignmentHirschbergGUIExtensionFactory::PairwiseAlignmentHirschbergGUIEx
 PairwiseAlignmentHirschbergGUIExtensionFactory::~PairwiseAlignmentHirschbergGUIExtensionFactory() {
 }
 
-AlignmentAlgorithmMainWidget *PairwiseAlignmentHirschbergGUIExtensionFactory::createMainWidget(QWidget *parent, QVariantMap *s) {
+AlignmentAlgorithmMainWidget* PairwiseAlignmentHirschbergGUIExtensionFactory::createMainWidget(QWidget* parent, QVariantMap* s) {
     if (mainWidgets.contains(parent)) {
         return mainWidgets.value(parent, NULL);
     }
-    PairwiseAlignmentHirschbergMainWidget *newMainWidget = new PairwiseAlignmentHirschbergMainWidget(parent, s);
-    connect(newMainWidget, SIGNAL(destroyed(QObject *)), SLOT(sl_widgetDestroyed(QObject *)));
+    PairwiseAlignmentHirschbergMainWidget* newMainWidget = new PairwiseAlignmentHirschbergMainWidget(parent, s);
+    connect(newMainWidget, SIGNAL(destroyed(QObject*)), SLOT(sl_widgetDestroyed(QObject*)));
     mainWidgets.insert(parent, newMainWidget);
     return newMainWidget;
 }

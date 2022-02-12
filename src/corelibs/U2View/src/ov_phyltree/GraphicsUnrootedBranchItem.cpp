@@ -37,7 +37,7 @@
 
 namespace U2 {
 
-GraphicsUnrootedBranchItem::GraphicsUnrootedBranchItem(QGraphicsItem *parent, qreal angle, GraphicsRectangularBranchItem *from, double nodeValue)
+GraphicsUnrootedBranchItem::GraphicsUnrootedBranchItem(QGraphicsItem* parent, qreal angle, GraphicsRectangularBranchItem* from, double nodeValue)
     : GraphicsBranchItem(true, nodeValue) {
     setParentItem(parent);
     qreal w = from->getWidth();
@@ -89,7 +89,7 @@ QRectF GraphicsUnrootedBranchItem::boundingRect() const {
     return QRectF(-width, -penWidth * 0.5, width, penWidth);
 }
 
-void GraphicsUnrootedBranchItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) {
+void GraphicsUnrootedBranchItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {
     painter->setPen(pen());
     painter->drawLine(0, 0, -width, 0);
 }

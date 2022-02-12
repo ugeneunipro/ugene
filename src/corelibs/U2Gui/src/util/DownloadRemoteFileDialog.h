@@ -45,13 +45,13 @@ class U2GUI_EXPORT DownloadRemoteFileDialog : public QDialog {
 
 public slots:
     void sl_onDbChanged();
-    void sl_formatChanged(const QString &format);
+    void sl_formatChanged(const QString& format);
     void sl_saveFilenameButtonClicked();
-    void sl_linkActivated(const QString &link);
+    void sl_linkActivated(const QString& link);
 
 public:
-    DownloadRemoteFileDialog(QWidget *p = nullptr);
-    DownloadRemoteFileDialog(const QString &ids, const QString &dbId, QWidget *p = nullptr);
+    DownloadRemoteFileDialog(QWidget* p = nullptr);
+    DownloadRemoteFileDialog(const QString& ids, const QString& dbId, QWidget* p = nullptr);
     ~DownloadRemoteFileDialog();
     QString getDBId() const;
     QString getResourceId() const;
@@ -60,10 +60,10 @@ public:
 
 private:
     void setSaveFilename();
-    bool isNcbiDb(const QString &dbId) const;
-    void setupHintText(const QString &sampleText = QString());
+    bool isNcbiDb(const QString& dbId) const;
+    void setupHintText(const QString& sampleText = QString());
 
-    Ui_DownloadRemoteFileDialog *ui;
+    Ui_DownloadRemoteFileDialog* ui;
 };
 
 }  // namespace U2

@@ -33,21 +33,21 @@ class WorkflowRunFromCMDLineBase : public Task {
 public:
     WorkflowRunFromCMDLineBase();
     virtual ~WorkflowRunFromCMDLineBase() = default;
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
     void run();
 
 protected:
-    virtual Task *getWorkflowRunTask() const = 0;
+    virtual Task* getWorkflowRunTask() const = 0;
 
 private:
-    LoadWorkflowTask *prepareLoadSchemaTask(const QString &schemaName);
-    void processLoadSchemaTask(const QString &schemaName, int optionIdx);
+    LoadWorkflowTask* prepareLoadSchemaTask(const QString& schemaName);
+    void processLoadSchemaTask(const QString& schemaName, int optionIdx);
 
 protected:
     QSharedPointer<Schema> schema;
     int optionsStartAt;
-    LoadWorkflowTask *loadTask;
-    Task *workflowRunTask;
+    LoadWorkflowTask* loadTask;
+    Task* workflowRunTask;
     QString schemaName;
     QMap<ActorId, ActorId> remapping;
 
@@ -56,7 +56,7 @@ protected:
 class WorkflowRunFromCMDLineTask : public WorkflowRunFromCMDLineBase {
     Q_OBJECT
 public:
-    virtual Task *getWorkflowRunTask() const;
+    virtual Task* getWorkflowRunTask() const;
 };  // WorkflowRunFromCMDLineTask
 
 }  // namespace U2

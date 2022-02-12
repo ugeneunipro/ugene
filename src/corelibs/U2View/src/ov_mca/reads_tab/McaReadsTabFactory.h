@@ -32,7 +32,7 @@ class U2VIEW_EXPORT McaReadsTabFactory : public OPWidgetFactory {
 public:
     McaReadsTabFactory();
 
-    QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
+    QWidget* createWidget(GObjectView* objView, const QVariantMap& options) override;
 
     OPGroupParameters getOPGroupParameters() override;
 

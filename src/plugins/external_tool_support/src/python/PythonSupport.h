@@ -40,7 +40,7 @@ public:
 class PythonModuleSupport : public ExternalToolModule {
     Q_OBJECT
 public:
-    PythonModuleSupport(const QString &id, const QString &name);
+    PythonModuleSupport(const QString& id, const QString& name);
 };
 
 class PythonModuleBioSupport : public PythonModuleSupport {
@@ -51,5 +51,5 @@ public:
     static const QString ET_PYTHON_BIO_ID;
 };
 
-}    // namespace U2
-#endif    // _U2_PYTHON_SUPPORT_H_
+}  // namespace U2
+#endif  // _U2_PYTHON_SUPPORT_H_

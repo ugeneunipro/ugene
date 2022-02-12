@@ -39,7 +39,7 @@ namespace HI {
 #define GT_CLASS_NAME "GTWidget"
 
 #define GT_METHOD_NAME "click"
-void GTWidget::click(GUITestOpStatus &os, QWidget *widget, Qt::MouseButton mouseButton, QPoint p) {
+void GTWidget::click(GUITestOpStatus& os, QWidget* widget, Qt::MouseButton mouseButton, QPoint p) {
     GT_CHECK(widget != nullptr, "widget is NULL");
 
 #ifdef Q_OS_DARWIN
@@ -53,7 +53,7 @@ void GTWidget::click(GUITestOpStatus &os, QWidget *widget, Qt::MouseButton mouse
 #ifdef Q_OS_DARWIN
         // This is for more stable click/activate on MacOS (found by experiment)
         // TODO: still need to do more experiments on MacOS
-        if (qobject_cast<QLineEdit *>(widget) != nullptr) {
+        if (qobject_cast<QLineEdit*>(widget) != nullptr) {
             p -= QPoint(rect.width() / 3, 0);
         }
 #endif
@@ -69,7 +69,7 @@ void GTWidget::click(GUITestOpStatus &os, QWidget *widget, Qt::MouseButton mouse
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setFocus"
-void GTWidget::setFocus(GUITestOpStatus &os, QWidget *w) {
+void GTWidget::setFocus(GUITestOpStatus& os, QWidget* w) {
     GT_CHECK(w != nullptr, "widget is NULL");
 
 #ifdef Q_OS_DARWIN
@@ -81,12 +81,12 @@ void GTWidget::setFocus(GUITestOpStatus &os, QWidget *w) {
     GTGlobals::sleep(200);
 
 #ifdef Q_OS_DARWIN  // TODO: workaround for MacOS gui tests
-    if (!qobject_cast<QComboBox *>(w) &&
-        !qobject_cast<QDoubleSpinBox *>(w)) {
+    if (!qobject_cast<QComboBox*>(w) &&
+        !qobject_cast<QDoubleSpinBox*>(w)) {
         GT_CHECK(w->hasFocus(), QString("Can't set focus on widget '%1'").arg(w->objectName()));
     }
 #else
-    if (!qobject_cast<QComboBox *>(w)) {
+    if (!qobject_cast<QComboBox*>(w)) {
         GT_CHECK(w->hasFocus(), QString("Can't set focus on widget '%1'").arg(w->objectName()));
     }
 #endif
@@ -94,11 +94,11 @@ void GTWidget::setFocus(GUITestOpStatus &os, QWidget *w) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findWidget"
-QWidget *GTWidget::findWidget(GUITestOpStatus &os, const QString &objectName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
-    QWidget *widget = nullptr;
+QWidget* GTWidget::findWidget(GUITestOpStatus& os, const QString& objectName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    QWidget* widget = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && widget == nullptr; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        QList<QWidget *> matchedWidgets = findChildren<QWidget>(os, parentWidget, [&objectName](QWidget *w) { return w->objectName() == objectName; });
+        QList<QWidget*> matchedWidgets = findChildren<QWidget>(os, parentWidget, [&objectName](QWidget* w) { return w->objectName() == objectName; });
         GT_CHECK_RESULT(matchedWidgets.size() < 2, QString("There are %1 widgets with name '%2'").arg(matchedWidgets.size()).arg(objectName), nullptr);
         widget = matchedWidgets.isEmpty() ? nullptr : matchedWidgets[0];
         if (!options.failIfNotFound) {
@@ -112,97 +112,97 @@ QWidget *GTWidget::findWidget(GUITestOpStatus &os, const QString &objectName, QW
 }
 #undef GT_METHOD_NAME
 
-QRadioButton *GTWidget::findRadioButton(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
-    return findExactWidget<QRadioButton *>(os, widgetName, parentWidget, options);
+QRadioButton* GTWidget::findRadioButton(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QRadioButton*>(os, widgetName, parentWidget, options);
 }
 
-QGroupBox *GTWidget::findGroupBox(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
-    return findExactWidget<QGroupBox *>(os, widgetName, parentWidget, options);
+QGroupBox* GTWidget::findGroupBox(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QGroupBox*>(os, widgetName, parentWidget, options);
 }
 
-QLineEdit *GTWidget::findLineEdit(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
-    return findExactWidget<QLineEdit *>(os, widgetName, parentWidget, options);
+QLineEdit* GTWidget::findLineEdit(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QLineEdit*>(os, widgetName, parentWidget, options);
 }
 
-QTreeView *GTWidget::findTreeView(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
-    return findExactWidget<QTreeView *>(os, widgetName, parentWidget, options);
+QTreeView* GTWidget::findTreeView(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QTreeView*>(os, widgetName, parentWidget, options);
 }
 
-QTextEdit *GTWidget::findTextEdit(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
-    return findExactWidget<QTextEdit *>(os, widgetName, parentWidget, options);
+QTextEdit* GTWidget::findTextEdit(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QTextEdit*>(os, widgetName, parentWidget, options);
 }
 
-QTableWidget *GTWidget::findTableWidget(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
-    return findExactWidget<QTableWidget *>(os, widgetName, parentWidget, options);
+QTableWidget* GTWidget::findTableWidget(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QTableWidget*>(os, widgetName, parentWidget, options);
 }
 
-QTabWidget *GTWidget::findTabWidget(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
-    return findExactWidget<QTabWidget *>(os, widgetName, parentWidget, options);
+QTabWidget* GTWidget::findTabWidget(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QTabWidget*>(os, widgetName, parentWidget, options);
 }
 
-QPlainTextEdit *GTWidget::findPlainTextEdit(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
-    return findExactWidget<QPlainTextEdit *>(os, widgetName, parentWidget, options);
+QPlainTextEdit* GTWidget::findPlainTextEdit(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QPlainTextEdit*>(os, widgetName, parentWidget, options);
 }
 
-QCheckBox *GTWidget::findCheckBox(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
-    return findExactWidget<QCheckBox *>(os, widgetName, parentWidget, options);
+QCheckBox* GTWidget::findCheckBox(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QCheckBox*>(os, widgetName, parentWidget, options);
 }
 
-QComboBox *GTWidget::findComboBox(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
-    return findExactWidget<QComboBox *>(os, widgetName, parentWidget, options);
+QComboBox* GTWidget::findComboBox(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QComboBox*>(os, widgetName, parentWidget, options);
 }
 
-QSpinBox *GTWidget::findSpinBox(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
-    return findExactWidget<QSpinBox *>(os, widgetName, parentWidget, options);
+QSpinBox* GTWidget::findSpinBox(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QSpinBox*>(os, widgetName, parentWidget, options);
 }
 
-QToolButton *GTWidget::findToolButton(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
-    return findExactWidget<QToolButton *>(os, widgetName, parentWidget, options);
+QToolButton* GTWidget::findToolButton(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QToolButton*>(os, widgetName, parentWidget, options);
 }
 
-QToolBar *GTWidget::findToolBar(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
-    return findExactWidget<QToolBar *>(os, widgetName, parentWidget, options);
+QToolBar* GTWidget::findToolBar(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QToolBar*>(os, widgetName, parentWidget, options);
 }
 
-QTreeWidget *GTWidget::findTreeWidget(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
-    return findExactWidget<QTreeWidget *>(os, widgetName, parentWidget, options);
+QTreeWidget* GTWidget::findTreeWidget(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QTreeWidget*>(os, widgetName, parentWidget, options);
 }
 
-QListWidget *GTWidget::findListWidget(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
-    return findExactWidget<QListWidget *>(os, widgetName, parentWidget, options);
+QListWidget* GTWidget::findListWidget(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QListWidget*>(os, widgetName, parentWidget, options);
 }
 
-QGraphicsView *GTWidget::findGraphicsView(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
-    return findExactWidget<QGraphicsView *>(os, widgetName, parentWidget, options);
+QGraphicsView* GTWidget::findGraphicsView(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QGraphicsView*>(os, widgetName, parentWidget, options);
 }
 
-QMenu *GTWidget::findMenuWidget(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
-    return findExactWidget<QMenu *>(os, widgetName, parentWidget, options);
+QMenu* GTWidget::findMenuWidget(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QMenu*>(os, widgetName, parentWidget, options);
 }
 
-QPushButton *GTWidget::findPushButton(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
-    return findExactWidget<QPushButton *>(os, widgetName, parentWidget, options);
+QPushButton* GTWidget::findPushButton(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QPushButton*>(os, widgetName, parentWidget, options);
 }
 
-QSlider *GTWidget::findSlider(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
-    return findExactWidget<QSlider *>(os, widgetName, parentWidget, options);
+QSlider* GTWidget::findSlider(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QSlider*>(os, widgetName, parentWidget, options);
 }
 
-QSplitter *GTWidget::findSplitter(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
-    return findExactWidget<QSplitter *>(os, widgetName, parentWidget, options);
+QSplitter* GTWidget::findSplitter(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QSplitter*>(os, widgetName, parentWidget, options);
 }
 
-QLabel *GTWidget::findLabel(GUITestOpStatus &os, const QString &widgetName, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
-    return findExactWidget<QLabel *>(os, widgetName, parentWidget, options);
+QLabel* GTWidget::findLabel(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QLabel*>(os, widgetName, parentWidget, options);
 }
 
-QPoint GTWidget::getWidgetCenter(QWidget *widget) {
+QPoint GTWidget::getWidgetCenter(QWidget* widget) {
     return widget->mapToGlobal(widget->rect().center());
 }
 
 #define GT_METHOD_NAME "findButtonByText"
-QAbstractButton *GTWidget::findButtonByText(GUITestOpStatus &os, const QString &text, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
-    QList<QAbstractButton *> resultButtonList;
+QAbstractButton* GTWidget::findButtonByText(GUITestOpStatus& os, const QString& text, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    QList<QAbstractButton*> resultButtonList;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && resultButtonList.isEmpty(); time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         resultButtonList = findChildren<QAbstractButton>(os,
@@ -221,11 +221,11 @@ QAbstractButton *GTWidget::findButtonByText(GUITestOpStatus &os, const QString &
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findLabelByText"
-QList<QLabel *> GTWidget::findLabelByText(GUITestOpStatus &os,
-                                          const QString &text,
-                                          QWidget *parentWidget,
-                                          const GTGlobals::FindOptions &options) {
-    QList<QLabel *> resultLabelList;
+QList<QLabel*> GTWidget::findLabelByText(GUITestOpStatus& os,
+                                         const QString& text,
+                                         QWidget* parentWidget,
+                                         const GTGlobals::FindOptions& options) {
+    QList<QLabel*> resultLabelList;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && resultLabelList.isEmpty(); time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         resultLabelList = findChildren<QLabel>(os,
@@ -241,16 +241,16 @@ QList<QLabel *> GTWidget::findLabelByText(GUITestOpStatus &os,
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "close"
-void GTWidget::close(GUITestOpStatus &os, QWidget *widget) {
+void GTWidget::close(GUITestOpStatus& os, QWidget* widget) {
     GT_CHECK(widget != nullptr, "Widget is NULL");
 
     class Scenario : public CustomScenario {
     public:
-        Scenario(QWidget *widget)
+        Scenario(QWidget* widget)
             : widget(widget) {
         }
 
-        void run(GUITestOpStatus &os) {
+        void run(GUITestOpStatus& os) {
             Q_UNUSED(os);
             CHECK_SET_ERR(widget != nullptr, "Widget is NULL");
             widget->close();
@@ -258,7 +258,7 @@ void GTWidget::close(GUITestOpStatus &os, QWidget *widget) {
         }
 
     private:
-        QWidget *widget;
+        QWidget* widget;
     };
 
     GTThread::runInMainThread(os, new Scenario(widget));
@@ -266,16 +266,16 @@ void GTWidget::close(GUITestOpStatus &os, QWidget *widget) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "showMaximized"
-void GTWidget::showMaximized(GUITestOpStatus &os, QWidget *widget) {
+void GTWidget::showMaximized(GUITestOpStatus& os, QWidget* widget) {
     GT_CHECK(widget != nullptr, "Widget is NULL");
 
     class Scenario : public CustomScenario {
     public:
-        Scenario(QWidget *widget)
+        Scenario(QWidget* widget)
             : widget(widget) {
         }
 
-        void run(GUITestOpStatus &os) {
+        void run(GUITestOpStatus& os) {
             Q_UNUSED(os);
             CHECK_SET_ERR(widget != nullptr, "Widget is NULL");
             widget->showMaximized();
@@ -283,7 +283,7 @@ void GTWidget::showMaximized(GUITestOpStatus &os, QWidget *widget) {
         }
 
     private:
-        QWidget *widget;
+        QWidget* widget;
     };
 
     GTThread::runInMainThread(os, new Scenario(widget));
@@ -291,16 +291,16 @@ void GTWidget::showMaximized(GUITestOpStatus &os, QWidget *widget) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "showNormal"
-void GTWidget::showNormal(GUITestOpStatus &os, QWidget *widget) {
+void GTWidget::showNormal(GUITestOpStatus& os, QWidget* widget) {
     GT_CHECK(widget != nullptr, "Widget is NULL");
 
     class Scenario : public CustomScenario {
     public:
-        Scenario(QWidget *widget)
+        Scenario(QWidget* widget)
             : widget(widget) {
         }
 
-        void run(GUITestOpStatus &os) {
+        void run(GUITestOpStatus& os) {
             Q_UNUSED(os);
             CHECK_SET_ERR(widget != nullptr, "Widget is NULL");
             widget->showNormal();
@@ -308,7 +308,7 @@ void GTWidget::showNormal(GUITestOpStatus &os, QWidget *widget) {
         }
 
     private:
-        QWidget *widget;
+        QWidget* widget;
     };
 
     GTThread::runInMainThread(os, new Scenario(widget));
@@ -316,30 +316,30 @@ void GTWidget::showNormal(GUITestOpStatus &os, QWidget *widget) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getColor"
-QColor GTWidget::getColor(GUITestOpStatus &os, QWidget *widget, const QPoint &point) {
+QColor GTWidget::getColor(GUITestOpStatus& os, QWidget* widget, const QPoint& point) {
     GT_CHECK_RESULT(widget != nullptr, "Widget is NULL", QColor());
     return QColor(getImage(os, widget).pixel(point));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getImage"
-QImage GTWidget::getImage(GUITestOpStatus &os, QWidget *widget, bool useGrabWindow) {
+QImage GTWidget::getImage(GUITestOpStatus& os, QWidget* widget, bool useGrabWindow) {
     GT_CHECK_RESULT(widget != nullptr, "Widget is NULL", QImage());
 
     class GrabImageScenario : public CustomScenario {
     public:
-        GrabImageScenario(QWidget *widget, QImage &image, bool useGrabWindow)
+        GrabImageScenario(QWidget* widget, QImage& image, bool useGrabWindow)
             : widget(widget), image(image), useGrabWindow(useGrabWindow) {
         }
 
-        void run(GUITestOpStatus &os) {
+        void run(GUITestOpStatus& os) {
             CHECK_SET_ERR(widget != nullptr, "Widget to grab is NULL");
             QPixmap pixmap = useGrabWindow ? QPixmap::grabWindow(widget->winId()) : widget->grab(widget->rect());
             image = pixmap.toImage();
         }
 
-        QWidget *widget;
-        QImage &image;
+        QWidget* widget;
+        QImage& image;
         bool useGrabWindow;
     };
 
@@ -350,7 +350,7 @@ QImage GTWidget::getImage(GUITestOpStatus &os, QWidget *widget, bool useGrabWind
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "createSubImage"
-QImage GTWidget::createSubImage(GUITestOpStatus &os, const QImage &image, const QRect &rect) {
+QImage GTWidget::createSubImage(GUITestOpStatus& os, const QImage& image, const QRect& rect) {
     GT_CHECK_RESULT(image.rect().contains(rect), "Invalid sub-image rect!", QImage());
     int offset = rect.x() * image.depth() / 8 + rect.y() * image.bytesPerLine();
     return QImage(image.bits() + offset, rect.width(), rect.height(), image.bytesPerLine(), image.format());
@@ -358,7 +358,7 @@ QImage GTWidget::createSubImage(GUITestOpStatus &os, const QImage &image, const 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "hasSingleFillColor"
-bool GTWidget::hasSingleFillColor(const QImage &image, const QColor &color) {
+bool GTWidget::hasSingleFillColor(const QImage& image, const QColor& color) {
     for (int x = 0; x < image.width(); x++) {
         for (int y = 0; y < image.height(); y++) {
             QColor pixelColor = image.pixel(x, y);
@@ -372,7 +372,7 @@ bool GTWidget::hasSingleFillColor(const QImage &image, const QColor &color) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "countColors"
-QSet<QRgb> GTWidget::countColors(const QImage &image, int maxColors) {
+QSet<QRgb> GTWidget::countColors(const QImage& image, int maxColors) {
     QSet<QRgb> colorSet;
     for (int i = 0; i < image.width() && colorSet.size() < maxColors; i++) {
         for (int j = 0; j < image.height(); j++) {
@@ -384,14 +384,14 @@ QSet<QRgb> GTWidget::countColors(const QImage &image, int maxColors) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "hasPixelWithColor"
-bool GTWidget::hasPixelWithColor(GUITestOpStatus &os, QWidget *widget, const QColor &expectedColor) {
+bool GTWidget::hasPixelWithColor(GUITestOpStatus& os, QWidget* widget, const QColor& expectedColor) {
     QImage image = getImage(os, widget);
     return hasPixelWithColor(image, expectedColor);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "hasPixelWithColorInImage"
-bool GTWidget::hasPixelWithColor(const QImage &image, const QColor &expectedColor) {
+bool GTWidget::hasPixelWithColor(const QImage& image, const QColor& expectedColor) {
     for (int x = 0; x < image.width(); x++) {
         for (int y = 0; y < image.height(); y++) {
             QColor pixelColor = image.pixel(x, y);
@@ -405,7 +405,7 @@ bool GTWidget::hasPixelWithColor(const QImage &image, const QColor &expectedColo
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickLabelLink"
-void GTWidget::clickLabelLink(GUITestOpStatus &os, QWidget *label, int step, int indent) {
+void GTWidget::clickLabelLink(GUITestOpStatus& os, QWidget* label, int step, int indent) {
     QRect r = label->rect();
 
     int left = r.left();
@@ -427,7 +427,7 @@ void GTWidget::clickLabelLink(GUITestOpStatus &os, QWidget *label, int step, int
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickWindowTitle"
-void GTWidget::clickWindowTitle(GUITestOpStatus &os, QWidget *window) {
+void GTWidget::clickWindowTitle(GUITestOpStatus& os, QWidget* window) {
     GT_CHECK(window != nullptr, "Window is NULL");
 
     QStyleOptionTitleBar opt;
@@ -439,7 +439,7 @@ void GTWidget::clickWindowTitle(GUITestOpStatus &os, QWidget *window) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "moveWidgetTo"
-void GTWidget::moveWidgetTo(GUITestOpStatus &os, QWidget *window, const QPoint &point) {
+void GTWidget::moveWidgetTo(GUITestOpStatus& os, QWidget* window, const QPoint& point) {
     // QPoint(window->width()/2,3) - is hack
     GTMouseDriver::moveTo(getWidgetGlobalTopLeftPoint(os, window) + QPoint(window->width() / 2, 3));
     const QPoint p0 = getWidgetGlobalTopLeftPoint(os, window) + QPoint(window->width() / 2, 3);
@@ -450,7 +450,7 @@ void GTWidget::moveWidgetTo(GUITestOpStatus &os, QWidget *window, const QPoint &
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "resizeWidget"
-void GTWidget::resizeWidget(GUITestOpStatus &os, QWidget *widget, const QSize &size) {
+void GTWidget::resizeWidget(GUITestOpStatus& os, QWidget* widget, const QSize& size) {
     GT_CHECK(widget != nullptr, "Widget is NULL");
 
     QRect displayRect = QApplication::desktop()->screenGeometry();
@@ -477,15 +477,15 @@ void GTWidget::resizeWidget(GUITestOpStatus &os, QWidget *widget, const QSize &s
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getWidgetGlobalTopLeftPoint"
-QPoint GTWidget::getWidgetGlobalTopLeftPoint(GUITestOpStatus &os, QWidget *widget) {
+QPoint GTWidget::getWidgetGlobalTopLeftPoint(GUITestOpStatus& os, QWidget* widget) {
     GT_CHECK_RESULT(widget != nullptr, "Widget is NULL", QPoint());
     return (widget->isWindow() ? widget->pos() : widget->parentWidget()->mapToGlobal(QPoint(0, 0)));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getActiveModalWidget"
-QWidget *GTWidget::getActiveModalWidget(GUITestOpStatus &os) {
-    QWidget *modalWidget = nullptr;
+QWidget* GTWidget::getActiveModalWidget(GUITestOpStatus& os) {
+    QWidget* modalWidget = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && modalWidget == nullptr; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         modalWidget = QApplication::activeModalWidget();
@@ -496,8 +496,8 @@ QWidget *GTWidget::getActiveModalWidget(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getActivePopupWidget"
-QWidget *GTWidget::getActivePopupWidget(GUITestOpStatus &os) {
-    QWidget *popupWidget = nullptr;
+QWidget* GTWidget::getActivePopupWidget(GUITestOpStatus& os) {
+    QWidget* popupWidget = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && popupWidget == nullptr; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         popupWidget = QApplication::activePopupWidget();
@@ -508,11 +508,11 @@ QWidget *GTWidget::getActivePopupWidget(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getActivePopupMenu"
-QMenu *GTWidget::getActivePopupMenu(GUITestOpStatus &os) {
-    QMenu *popupWidget = nullptr;
+QMenu* GTWidget::getActivePopupMenu(GUITestOpStatus& os) {
+    QMenu* popupWidget = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && popupWidget == nullptr; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        popupWidget = qobject_cast<QMenu *>(QApplication::activePopupWidget());
+        popupWidget = qobject_cast<QMenu*>(QApplication::activePopupWidget());
     }
     GT_CHECK_RESULT(popupWidget != nullptr, "Active popup menu is NULL", nullptr);
     return popupWidget;
@@ -520,7 +520,7 @@ QMenu *GTWidget::getActivePopupMenu(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkEnabled"
-void GTWidget::checkEnabled(GUITestOpStatus &os, QWidget *widget, bool expectedEnabledState) {
+void GTWidget::checkEnabled(GUITestOpStatus& os, QWidget* widget, bool expectedEnabledState) {
     GT_CHECK(widget != nullptr, "Widget is NULL");
     GT_CHECK(widget->isVisible(), "Widget is not visible");
     bool actualEnabledState = widget->isEnabled();
@@ -536,26 +536,26 @@ void GTWidget::checkEnabled(GUITestOpStatus &os, QWidget *widget, bool expectedE
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkEnabled"
-void GTWidget::checkEnabled(GUITestOpStatus &os, const QString &widgetName, bool expectedEnabledState, QWidget *parent) {
+void GTWidget::checkEnabled(GUITestOpStatus& os, const QString& widgetName, bool expectedEnabledState, QWidget* parent) {
     checkEnabled(os, GTWidget::findWidget(os, widgetName, parent), expectedEnabledState);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "scrollToIndex"
-void GTWidget::scrollToIndex(GUITestOpStatus &os, QAbstractItemView *itemView, const QModelIndex &index) {
+void GTWidget::scrollToIndex(GUITestOpStatus& os, QAbstractItemView* itemView, const QModelIndex& index) {
     GT_CHECK(itemView != nullptr, "ItemView is nullptr");
     GT_CHECK(index.isValid(), "Model index is invalid");
 
     // Find cell. TODO: scroll to parameter by mouse/keyboard?
     class MainThreadActionScroll : public CustomScenario {
     public:
-        MainThreadActionScroll(QAbstractItemView *_itemView, const QModelIndex &_index)
+        MainThreadActionScroll(QAbstractItemView* _itemView, const QModelIndex& _index)
             : itemView(_itemView), index(_index) {
         }
-        void run(HI::GUITestOpStatus &) override {
+        void run(HI::GUITestOpStatus&) override {
             itemView->scrollTo(index);
         }
-        QAbstractItemView *itemView = nullptr;
+        QAbstractItemView* itemView = nullptr;
         QModelIndex index;
     };
     GTThread::runInMainThread(os, new MainThreadActionScroll(itemView, index));

@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-CSVColumnConfigurationDialog::CSVColumnConfigurationDialog(QWidget *w, const ColumnConfig &_config)
+CSVColumnConfigurationDialog::CSVColumnConfigurationDialog(QWidget* w, const ColumnConfig& _config)
     : QDialog(w), config(_config) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929493");

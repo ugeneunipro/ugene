@@ -26,8 +26,8 @@
 
 namespace U2 {
 
-QString DocumentNameByIdFormatter::format(const QString &documentFormatId) const {
-    DocumentFormat *documentFormat = AppContext::getDocumentFormatRegistry()->getFormatById(documentFormatId);
+QString DocumentNameByIdFormatter::format(const QString& documentFormatId) const {
+    DocumentFormat* documentFormat = AppContext::getDocumentFormatRegistry()->getFormatById(documentFormatId);
     return documentFormat == nullptr ? documentFormatId : documentFormat->getFormatName();
 }
 

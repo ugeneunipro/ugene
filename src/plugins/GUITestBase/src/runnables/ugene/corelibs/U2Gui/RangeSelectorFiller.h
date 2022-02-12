@@ -29,7 +29,7 @@ using namespace HI;
 
 class ZoomToRangeDialogFiller : public Filler {
 public:
-    ZoomToRangeDialogFiller(HI::GUITestOpStatus &_os, int min = -1, int max = -1)
+    ZoomToRangeDialogFiller(HI::GUITestOpStatus& _os, int min = -1, int max = -1)
         : Filler(_os, "range_selection_dialog"), minVal(min), maxVal(max) {
     }
     void commonScenario();

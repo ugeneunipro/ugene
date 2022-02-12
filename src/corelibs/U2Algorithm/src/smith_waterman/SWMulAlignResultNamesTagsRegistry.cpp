@@ -29,23 +29,23 @@
 
 const quint32 SEQ_NAME_PREFIX_LENGTH = 10;
 const QString SEQ_NAME_PREFIX_TAG_SHORTHAND = "SN";
-const char *SEQ_NAME_PREFIX_TAG_LABEL = "Reference sequence name prefix";
+const char* SEQ_NAME_PREFIX_TAG_LABEL = "Reference sequence name prefix";
 const QString PTRN_NAME_PREFIX_TAG_SHORTHAND = "PN";
-const char *PTRN_NAME_PREFIX_TAG_LABEL = "Pattern sequence name prefix";
+const char* PTRN_NAME_PREFIX_TAG_LABEL = "Pattern sequence name prefix";
 
 const QString SUBSEQ_START_POS_TAG_SHORTHAND = "S";
-const char *SUBSEQ_START_POS_TAG_LABEL = "Subsequence start position";
+const char* SUBSEQ_START_POS_TAG_LABEL = "Subsequence start position";
 const QString SUBSEQ_END_POS_TAG_SHORTHAND = "E";
-const char *SUBSEQ_END_POS_TAG_LABEL = "Subsequence end position";
+const char* SUBSEQ_END_POS_TAG_LABEL = "Subsequence end position";
 const QString SUBSEQ_LENGTH_TAG_SHORTHAND = "L";
-const char *SUBSEQ_LENGTH_TAG_LABEL = "Subsequence length";
+const char* SUBSEQ_LENGTH_TAG_LABEL = "Subsequence length";
 
 const QString DATE_TAG_SHORTHAND = "MDY";
-const char *DATE_TAG_LABEL = "Date";
+const char* DATE_TAG_LABEL = "Date";
 const QString TIME_TAG_SHORTHAND = "hms";
-const char *TIME_TAG_LABEL = "Time";
+const char* TIME_TAG_LABEL = "Time";
 const QString COUNTER_TAG_SHORTHAND = "C";
-const char *COUNTER_TAG_LABEL = "Counter";
+const char* COUNTER_TAG_LABEL = "Counter";
 
 const qint32 NOT_FOUND_SUBSTR_INDEX = -1;
 
@@ -64,15 +64,15 @@ SWMulAlignResultNamesTagsRegistry::SWMulAlignResultNamesTagsRegistry() {
     registerTag(new SWMulAlignExternalPropTag(COUNTER_TAG_SHORTHAND, COUNTER_TAG_LABEL, SWMulAlignExternalPropTag::COUNTER));
 }
 
-QString SWMulAlignResultNamesTagsRegistry::tagExpansion(const QString &shorthand, const QVariant &argument) const {
+QString SWMulAlignResultNamesTagsRegistry::tagExpansion(const QString& shorthand, const QVariant& argument) const {
     assert(tags.contains(shorthand));
 
     return tags[shorthand]->expandTag(argument);
 }
 
-QString SWMulAlignResultNamesTagsRegistry::parseStringWithTags(const QString &str, const SmithWatermanReportCallbackMAImpl::TagExpansionPossibleData &expansionSet) const {
+QString SWMulAlignResultNamesTagsRegistry::parseStringWithTags(const QString& str, const SmithWatermanReportCallbackMAImpl::TagExpansionPossibleData& expansionSet) const {
     QString resultStr = str;
-    foreach (SWMulAlignResultNamesTag *tag, tags) {
+    foreach (SWMulAlignResultNamesTag* tag, tags) {
         qint32 tagIndex = 0;
         const QString tagShorthand = tag->getShorthand();
         const QString tagMnemonis = OPEN_SQUARE_BRACKET + tagShorthand + CLOSE_SQUARE_BRACKET;
@@ -101,7 +101,7 @@ QString SWMulAlignResultNamesTagsRegistry::parseStringWithTags(const QString &st
     return resultStr;
 }
 
-bool SWMulAlignResultNamesTagsRegistry::registerTag(SWMulAlignResultNamesTag *tag) {
+bool SWMulAlignResultNamesTagsRegistry::registerTag(SWMulAlignResultNamesTag* tag) {
     QMutexLocker locker(&mutex);
     QString key = tag->getShorthand();
     if (tags.contains(key)) {
@@ -111,11 +111,11 @@ bool SWMulAlignResultNamesTagsRegistry::registerTag(SWMulAlignResultNamesTag *ta
     return true;
 }
 
-QList<SWMulAlignResultNamesTag *> *SWMulAlignResultNamesTagsRegistry::getTagsWithCorrectOrder() const {
-    QList<SWMulAlignResultNamesTag *> *result = new QList<SWMulAlignResultNamesTag *>;
+QList<SWMulAlignResultNamesTag*>* SWMulAlignResultNamesTagsRegistry::getTagsWithCorrectOrder() const {
+    QList<SWMulAlignResultNamesTag*>* result = new QList<SWMulAlignResultNamesTag*>;
     qint16 tagIndex = 0;
     QString tagShorthand;
-    foreach (SWMulAlignResultNamesTag *tag, tags.values()) {
+    foreach (SWMulAlignResultNamesTag* tag, tags.values()) {
         tagShorthand = tag->getShorthand();
 
         if (SEQ_NAME_PREFIX_TAG_SHORTHAND == tagShorthand)

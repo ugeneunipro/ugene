@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-StatisticalReportController::StatisticalReportController(const QString &htmlContent, QWidget *parent)
+StatisticalReportController::StatisticalReportController(const QString& htmlContent, QWidget* parent)
     : QDialog(parent) {
     setupUi(this);
     lblStat->setText(tr("<b>Optional:</b> Help make UGENE better by automatically sending anonymous usage statistics."));
@@ -58,12 +58,12 @@ void StatisticalReportController::accept() {
     QDialog::close();
 }
 
-void StatisticalReportController::resizeEvent(QResizeEvent *event) {
+void StatisticalReportController::resizeEvent(QResizeEvent* event) {
     htmlView->sl_updateSize();
     QDialog::resizeEvent(event);
 }
 
-ContentSizeHtmlViewer::ContentSizeHtmlViewer(QWidget *parent, const QString &html)
+ContentSizeHtmlViewer::ContentSizeHtmlViewer(QWidget* parent, const QString& html)
     : QTextBrowser(parent) {
     setOpenExternalLinks(true);
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::MinimumExpanding);

@@ -158,15 +158,15 @@ typedef GLfloat GL2PSrgba[4];
 extern "C" {
 #endif
 
-GL2PSDLL_API GLint gl2psBeginPage(const char *title, const char *producer, GLint viewport[4], GLint format, GLint sort, GLint options, GLint colormode, GLint colorsize, GL2PSrgba *colormap, GLint nr, GLint ng, GLint nb, GLint buffersize, FILE *stream, const char *filename);
+GL2PSDLL_API GLint gl2psBeginPage(const char* title, const char* producer, GLint viewport[4], GLint format, GLint sort, GLint options, GLint colormode, GLint colorsize, GL2PSrgba* colormap, GLint nr, GLint ng, GLint nb, GLint buffersize, FILE* stream, const char* filename);
 GL2PSDLL_API GLint gl2psEndPage(void);
 GL2PSDLL_API GLint gl2psSetOptions(GLint options);
 GL2PSDLL_API GLint gl2psBeginViewport(GLint viewport[4]);
 GL2PSDLL_API GLint gl2psEndViewport(void);
-GL2PSDLL_API GLint gl2psText(const char *str, const char *fontname, GLshort fontsize);
-GL2PSDLL_API GLint gl2psTextOpt(const char *str, const char *fontname, GLshort fontsize, GLint align, GLfloat angle);
-GL2PSDLL_API GLint gl2psSpecial(GLint format, const char *str);
-GL2PSDLL_API GLint gl2psDrawPixels(GLsizei width, GLsizei height, GLint xorig, GLint yorig, GLenum format, GLenum type, const void *pixels);
+GL2PSDLL_API GLint gl2psText(const char* str, const char* fontname, GLshort fontsize);
+GL2PSDLL_API GLint gl2psTextOpt(const char* str, const char* fontname, GLshort fontsize, GLint align, GLfloat angle);
+GL2PSDLL_API GLint gl2psSpecial(GLint format, const char* str);
+GL2PSDLL_API GLint gl2psDrawPixels(GLsizei width, GLsizei height, GLint xorig, GLint yorig, GLenum format, GLenum type, const void* pixels);
 GL2PSDLL_API GLint gl2psEnable(GLint mode);
 GL2PSDLL_API GLint gl2psDisable(GLint mode);
 GL2PSDLL_API GLint gl2psPointSize(GLfloat value);
@@ -174,9 +174,9 @@ GL2PSDLL_API GLint gl2psLineWidth(GLfloat value);
 GL2PSDLL_API GLint gl2psBlendFunc(GLenum sfactor, GLenum dfactor);
 
 /* undocumented */
-GL2PSDLL_API GLint gl2psDrawImageMap(GLsizei width, GLsizei height, const GLfloat position[3], const unsigned char *imagemap);
-GL2PSDLL_API const char *gl2psGetFileExtension(GLint format);
-GL2PSDLL_API const char *gl2psGetFormatDescription(GLint format);
+GL2PSDLL_API GLint gl2psDrawImageMap(GLsizei width, GLsizei height, const GLfloat position[3], const unsigned char* imagemap);
+GL2PSDLL_API const char* gl2psGetFileExtension(GLint format);
+GL2PSDLL_API const char* gl2psGetFormatDescription(GLint format);
 
 #if defined(__cplusplus)
 }

@@ -39,7 +39,7 @@ TrimmomaticTaskSettings::TrimmomaticTaskSettings()
       numberOfThreads(1) {
 }
 
-TrimmomaticTask::TrimmomaticTask(const TrimmomaticTaskSettings &settings)
+TrimmomaticTask::TrimmomaticTask(const TrimmomaticTaskSettings& settings)
     : ExternalToolSupportTask(tr("Improve reads with Trimmomatic"), TaskFlags_NR_FOSE_COSC),
       settings(settings),
       trimmomaticToolRunTask(nullptr) {
@@ -103,32 +103,32 @@ QStringList TrimmomaticTask::getArguments() {
     return arguments;
 }
 
-const QString &TrimmomaticTask::getInputUrl1() const {
+const QString& TrimmomaticTask::getInputUrl1() const {
     return settings.inputUrl1;
 }
 
-const QString &TrimmomaticTask::getSeOutputUrl() const {
+const QString& TrimmomaticTask::getSeOutputUrl() const {
     return settings.seOutputUrl;
 }
 
-const QString &TrimmomaticTask::getPairedOutputUrl1() const {
+const QString& TrimmomaticTask::getPairedOutputUrl1() const {
     return settings.pairedOutputUrl1;
 }
 
-const QString &TrimmomaticTask::getPairedOutputUrl2() const {
+const QString& TrimmomaticTask::getPairedOutputUrl2() const {
     return settings.pairedOutputUrl2;
 }
 
-const QString &TrimmomaticTask::getUnpairedOutputUrl1() const {
+const QString& TrimmomaticTask::getUnpairedOutputUrl1() const {
     return settings.unpairedOutputUrl1;
 }
 
-const QString &TrimmomaticTask::getUnpairedOutputUrl2() const {
+const QString& TrimmomaticTask::getUnpairedOutputUrl2() const {
     return settings.unpairedOutputUrl2;
 }
 
-const QString &TrimmomaticTask::getLogUrl() const {
+const QString& TrimmomaticTask::getLogUrl() const {
     return settings.logUrl;
 }
 
-}    // namespace U2
+}  // namespace U2

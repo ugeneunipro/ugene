@@ -36,10 +36,10 @@
 
 namespace U2 {
 
-void ExternalToolUtils::checkExtToolsPath(const QStringList &ids) {
+void ExternalToolUtils::checkExtToolsPath(const QStringList& ids) {
     QStringList missingTools;
-    foreach (const QString &id, ids) {
-        ExternalTool *tool = AppContext::getExternalToolRegistry()->getById(id);
+    foreach (const QString& id, ids) {
+        ExternalTool* tool = AppContext::getExternalToolRegistry()->getById(id);
         SAFE_POINT(nullptr != tool, QString("External tool with ID '%1' not found in the registry").arg(id), );
         if (tool->getPath().isEmpty()) {
             missingTools << tool->getName();
@@ -69,4 +69,4 @@ void ExternalToolUtils::checkExtToolsPath(const QStringList &ids) {
         }
     }
 }
-}    // namespace U2
+}  // namespace U2

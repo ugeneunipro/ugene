@@ -33,7 +33,7 @@ SequenceWalkerConfig::SequenceWalkerConfig()
     strandToWalk = (complTrans != nullptr) ? StrandOption_Both : StrandOption_DirectOnly;
 }
 
-SequenceWalkerTask::SequenceWalkerTask(const SequenceWalkerConfig &c, SequenceWalkerCallback *cb, const QString &name, TaskFlags tf)
+SequenceWalkerTask::SequenceWalkerTask(const SequenceWalkerConfig& c, SequenceWalkerCallback* cb, const QString& name, TaskFlags tf)
     : Task(name, tf),
       config(c),
       callback(cb),
@@ -43,14 +43,14 @@ SequenceWalkerTask::SequenceWalkerTask(const SequenceWalkerConfig &c, SequenceWa
     assert(config.strandToWalk == StrandOption_DirectOnly || config.complTrans != nullptr);
 
     maxParallelSubtasks = config.nThreads;
-    QList<SequenceWalkerSubtask *> subs = prepareSubtasks();
-    foreach (SequenceWalkerSubtask *sub, subs) {
+    QList<SequenceWalkerSubtask*> subs = prepareSubtasks();
+    foreach (SequenceWalkerSubtask* sub, subs) {
         addSubTask(sub);
     }
 }
 
-QList<SequenceWalkerSubtask *> SequenceWalkerTask::prepareSubtasks() {
-    QList<SequenceWalkerSubtask *> res;
+QList<SequenceWalkerSubtask*> SequenceWalkerTask::prepareSubtasks() {
+    QList<SequenceWalkerSubtask*> res;
 
     if (config.range.isEmpty()) {
         config.range.startPos = 0;
@@ -75,12 +75,12 @@ QList<SequenceWalkerSubtask *> SequenceWalkerTask::prepareSubtasks() {
         QVector<U2Region> chunks = splitRange(config.range, config.chunkSize, config.overlapSize, config.lastChunkExtraLen, false);
 
         if (config.strandToWalk == StrandOption_Both || config.strandToWalk == StrandOption_DirectOnly) {
-            QList<SequenceWalkerSubtask *> directTasks = createSubs(chunks, false, false);
+            QList<SequenceWalkerSubtask*> directTasks = createSubs(chunks, false, false);
             res += directTasks;
         }
         if (config.strandToWalk == StrandOption_Both || config.strandToWalk == StrandOption_ComplementOnly) {
             assert(config.complTrans != nullptr);
-            QList<SequenceWalkerSubtask *> complTasks = createSubs(chunks, true, false);
+            QList<SequenceWalkerSubtask*> complTasks = createSubs(chunks, true, false);
             res += complTasks;
         }
     } else {
@@ -94,7 +94,7 @@ QList<SequenceWalkerSubtask *> SequenceWalkerTask::prepareSubtasks() {
             for (int i = 0; i < 3; i++) {
                 U2Region strandRange(config.range.startPos + i, config.range.length - i);
                 QVector<U2Region> chunks = splitRange(strandRange, config.chunkSize, config.overlapSize, config.lastChunkExtraLen, false);
-                QList<SequenceWalkerSubtask *> directTasks = createSubs(chunks, false, true);
+                QList<SequenceWalkerSubtask*> directTasks = createSubs(chunks, false, true);
                 res += directTasks;
             }
         }
@@ -103,7 +103,7 @@ QList<SequenceWalkerSubtask *> SequenceWalkerTask::prepareSubtasks() {
             for (int i = 0; i < 3; i++) {
                 U2Region strandRange(config.range.startPos, config.range.length - i);
                 QVector<U2Region> chunks = splitRange(strandRange, config.chunkSize, config.overlapSize, config.lastChunkExtraLen, true);
-                QList<SequenceWalkerSubtask *> complTasks = createSubs(chunks, true, true);
+                QList<SequenceWalkerSubtask*> complTasks = createSubs(chunks, true, true);
                 res += complTasks;
             }
         }
@@ -111,19 +111,19 @@ QList<SequenceWalkerSubtask *> SequenceWalkerTask::prepareSubtasks() {
     return res;
 }
 
-QList<SequenceWalkerSubtask *> SequenceWalkerTask::createSubs(const QVector<U2Region> &chunks, bool doCompl, bool doAmino) {
-    QList<SequenceWalkerSubtask *> res;
+QList<SequenceWalkerSubtask*> SequenceWalkerTask::createSubs(const QVector<U2Region>& chunks, bool doCompl, bool doAmino) {
+    QList<SequenceWalkerSubtask*> res;
     for (int i = 0, n = chunks.size(); i < n; i++) {
-        const U2Region &chunk = chunks[i];
+        const U2Region& chunk = chunks[i];
         bool lo = config.overlapSize > 0 && i > 0;
         bool ro = config.overlapSize > 0 && i + 1 < n;
-        SequenceWalkerSubtask *t = new SequenceWalkerSubtask(this, chunk, lo, ro, config.seq + chunk.startPos, chunk.length, doCompl, doAmino);
+        SequenceWalkerSubtask* t = new SequenceWalkerSubtask(this, chunk, lo, ro, config.seq + chunk.startPos, chunk.length, doCompl, doAmino);
         res.append(t);
     }
     return res;
 }
 
-QVector<U2Region> SequenceWalkerTask::splitRange(const U2Region &range, int chunkSize, int overlapSize, int lastChunkExtraLen, bool reverseMode) {
+QVector<U2Region> SequenceWalkerTask::splitRange(const U2Region& range, int chunkSize, int overlapSize, int lastChunkExtraLen, bool reverseMode) {
     assert(chunkSize > overlapSize);
     int stepSize = chunkSize - overlapSize;
 
@@ -139,7 +139,7 @@ QVector<U2Region> SequenceWalkerTask::splitRange(const U2Region &range, int chun
 
     if (reverseMode) {
         QVector<U2Region> revertedRegions;
-        foreach (const U2Region &r, res) {
+        foreach (const U2Region& r, res) {
             U2Region rr(range.startPos + (range.endPos() - r.endPos()), r.length);
             revertedRegions.prepend(rr);
         }
@@ -150,7 +150,7 @@ QVector<U2Region> SequenceWalkerTask::splitRange(const U2Region &range, int chun
 
 //////////////////////////////////////////////////////////////////////////
 // subtask
-SequenceWalkerSubtask::SequenceWalkerSubtask(SequenceWalkerTask *_t, const U2Region &glob, bool lo, bool ro, const char *_seq, int _len, bool _doCompl, bool _doAmino)
+SequenceWalkerSubtask::SequenceWalkerSubtask(SequenceWalkerTask* _t, const U2Region& glob, bool lo, bool ro, const char* _seq, int _len, bool _doCompl, bool _doAmino)
     : Task(tr("Sequence walker subtask"), TaskFlag_None),
       t(_t), globalRegion(glob), localSeq(_seq), originalLocalSeq(_seq),
       localLen(_len), originalLocalLen(_len), doCompl(_doCompl), doAmino(_doAmino),
@@ -159,12 +159,12 @@ SequenceWalkerSubtask::SequenceWalkerSubtask(SequenceWalkerTask *_t, const U2Reg
 
     // get resources
     QList<TaskResourceUsage> resources = t->getCallback()->getResources(this);
-    foreach (const TaskResourceUsage &resource, resources) {
+    foreach (const TaskResourceUsage& resource, resources) {
         addTaskResource(resource);
     }
 }
 
-const char *SequenceWalkerSubtask::getRegionSequence() {
+const char* SequenceWalkerSubtask::getRegionSequence() {
     if (needLocalRegionProcessing()) {
         prepareLocalRegion();
     }
@@ -185,7 +185,7 @@ void SequenceWalkerSubtask::prepareLocalRegion() {
     if (doCompl) {
         // do complement;
         assert(t->getConfig().complTrans != nullptr);
-        const QByteArray &complementMap = t->getConfig().complTrans->getOne2OneMapper();
+        const QByteArray& complementMap = t->getConfig().complTrans->getOne2OneMapper();
         TextUtils::translate(complementMap, res.data(), res.length());
         TextUtils::reverse(res.data(), res.length());
     }
@@ -205,7 +205,7 @@ void SequenceWalkerSubtask::run() {
     t->getCallback()->onRegion(this, stateInfo);
 }
 
-bool SequenceWalkerSubtask::intersectsWithOverlaps(const U2Region &reg) const {
+bool SequenceWalkerSubtask::intersectsWithOverlaps(const U2Region& reg) const {
     int overlap = getGlobalConfig().overlapSize;
     if (overlap == 0) {
         return false;

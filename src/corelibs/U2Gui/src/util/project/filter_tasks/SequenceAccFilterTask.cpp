@@ -32,12 +32,12 @@ namespace U2 {
 /// SequenceAccFilterTask
 //////////////////////////////////////////////////////////////////////////
 
-SequenceAccFilterTask::SequenceAccFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document>> &docs)
+SequenceAccFilterTask::SequenceAccFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs)
     : AbstractProjectFilterTask(settings, ProjectFilterNames::SEQUENCE_ACC_FILTER_NAME, docs) {
 }
 
-bool SequenceAccFilterTask::filterAcceptsObject(GObject *obj) {
-    U2SequenceObject *seqObject = qobject_cast<U2SequenceObject *>(obj);
+bool SequenceAccFilterTask::filterAcceptsObject(GObject* obj) {
+    U2SequenceObject* seqObject = qobject_cast<U2SequenceObject*>(obj);
     CHECK(nullptr != seqObject, false);
     return settings.nameFilterAcceptsString(seqObject->getSequenceInfo()[DNAInfo::ACCESSION].toString());
 }
@@ -46,8 +46,8 @@ bool SequenceAccFilterTask::filterAcceptsObject(GObject *obj) {
 /// SequenceAccFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
 
-AbstractProjectFilterTask *SequenceAccFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings &settings,
-                                                                       const QList<QPointer<Document>> &docs) const {
+AbstractProjectFilterTask* SequenceAccFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
+                                                                       const QList<QPointer<Document>>& docs) const {
     return new SequenceAccFilterTask(settings, docs);
 }
 

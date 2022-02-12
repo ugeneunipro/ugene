@@ -36,9 +36,9 @@ CharOccurResult::CharOccurResult(char _charInSequence, qint64 _numberOfOccurrenc
       percentageOfOccur(_percentageOfOccur) {
 }
 
-CharOccurTask::CharOccurTask(const DNAAlphabet *_alphabet,
+CharOccurTask::CharOccurTask(const DNAAlphabet* _alphabet,
                              U2EntityRef _seqRef,
-                             const QVector<U2Region> &regions)
+                             const QVector<U2Region>& regions)
     : BackgroundTask<QList<CharOccurResult>>(
           "Calculating characters occurrence",
           TaskFlag_None),
@@ -55,7 +55,7 @@ void CharOccurTask::run() {
     DbiConnection dbiConnection(seqRef.dbiRef, os);
     CHECK_OP(os, );
 
-    U2SequenceDbi *sequenceDbi = dbiConnection.dbi->getSequenceDbi();
+    U2SequenceDbi* sequenceDbi = dbiConnection.dbi->getSequenceDbi();
 
     // Verify the alphabet
     SAFE_POINT(0 != alphabet, "The alphabet is NULL!", )
@@ -66,9 +66,9 @@ void CharOccurTask::run() {
     QVector<quint64> charactersOccurrence(256, 0);
     qint64 totalLength = U2Region::sumLength(regions);
     qint64 processedLength = 0;
-    foreach (const U2Region &region, regions) {
+    foreach (const U2Region& region, regions) {
         QList<U2Region> blocks = U2Region::split(region, REGION_TO_ANALAYZE);
-        foreach (const U2Region &block, blocks) {
+        foreach (const U2Region& block, blocks) {
             // Get the selected region and verify that the data has been correctly read
             QByteArray sequence = sequenceDbi->getSequenceData(seqRef.entityId, block, os);
             if (os.hasError() || sequence.isEmpty()) {
@@ -77,7 +77,7 @@ void CharOccurTask::run() {
             }
 
             // Calculating the values
-            const char *sequenceData = sequence.constData();
+            const char* sequenceData = sequence.constData();
             for (int i = 0, n = sequence.size(); i < n; i++) {
                 char c = sequenceData[i];
                 charactersOccurrence[c]++;

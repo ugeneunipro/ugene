@@ -46,13 +46,13 @@ public slots:
     void sl_runWithExtFileSpecify();
 
 private:
-    MuscleMSAEditorContext *ctx;
+    MuscleMSAEditorContext* ctx;
 };
 
 class MuscleMSAEditorContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    MuscleMSAEditorContext(QObject *p);
+    MuscleMSAEditorContext(QObject* p);
 
 protected slots:
     void sl_align();
@@ -63,15 +63,15 @@ protected slots:
     void sl_alignSelectedSequences();
 
 protected:
-    void initViewContext(GObjectView *view) override;
+    void initViewContext(GObjectView* view) override;
 };
 
 class MuscleAction : public GObjectViewAction {
     Q_OBJECT
 public:
-    MuscleAction(QObject *p, GObjectView *v, const QString &text, int order, bool isAlignSelectionAction = false);
+    MuscleAction(QObject* p, GObjectView* v, const QString& text, int order, bool isAlignSelectionAction = false);
 
-    MSAEditor *getMSAEditor() const;
+    MSAEditor* getMSAEditor() const;
 };
 
 }  // namespace U2

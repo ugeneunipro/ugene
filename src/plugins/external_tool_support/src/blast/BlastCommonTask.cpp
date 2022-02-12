@@ -56,11 +56,11 @@ namespace U2 {
 /** Name prefix used for query sequences when query sequences are stored to the BLAST input FASTA file. */
 static const QString QUERY_SEQUENCE_NAME_PREFIX = "query-";
 
-BlastCommonTask::BlastCommonTask(const BlastTaskSettings &_settings)
+BlastCommonTask::BlastCommonTask(const BlastTaskSettings& _settings)
     : ExternalToolSupportTask(tr("Run NCBI Blast task"), TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported),
       settings(_settings) {
     GCOUNTER(cvar, "BlastCommonTask");
-    for (const QByteArray &querySequence : qAsConst(settings.querySequences)) {
+    for (const QByteArray& querySequence : qAsConst(settings.querySequences)) {
         querySequences << (settings.isSequenceCircular ? U2PseudoCircularization::createSequenceWithCircularOverlaps(querySequence) : querySequence);
     }
     addTaskResource(TaskResourceUsage(RESOURCE_THREAD, settings.numberOfProcessors));
@@ -83,7 +83,7 @@ void BlastCommonTask::prepare() {
 
     QDir tmpDir(tmpDirPath);
     if (tmpDir.exists()) {
-        foreach (const QString &file, tmpDir.entryList()) {
+        foreach (const QString& file, tmpDir.entryList()) {
             tmpDir.remove(file);
         }
         if (!tmpDir.rmdir(tmpDir.absolutePath())) {
@@ -109,13 +109,13 @@ void BlastCommonTask::prepare() {
         stateInfo.setError(tr("Temporary folder path have space(s). Try select any other folder without spaces."));
         return;
     }
-    DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::FASTA);
+    DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::FASTA);
     tmpDoc = df->createNewLoadedDocument(IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), GUrl(url), stateInfo);
     CHECK_OP(stateInfo, );
 
     for (int i = 0; i < querySequences.length(); i++) {
         QString querySequenceName = QUERY_SEQUENCE_NAME_PREFIX + QString::number(i);
-        const QByteArray &querySequence = querySequences[i];
+        const QByteArray& querySequence = querySequences[i];
         U2EntityRef seqRef = U2SequenceUtils::import(stateInfo, tmpDoc->getDbiRef(), DNASequence(querySequenceName, querySequence, settings.alphabet));
         CHECK_OP(stateInfo, );
         sequenceObject = new U2SequenceObject("input sequence", seqRef);
@@ -137,8 +137,8 @@ QString BlastCommonTask::getAcceptableTempDir() const {
     return !GUrlUtils::containSpaces(tmpDirPath) ? tmpDirPath + "/" + tmpDirName : "";
 }
 
-QList<Task *> BlastCommonTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> BlastCommonTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     if (subTask->hasError()) {
         stateInfo.setError(subTask->getError());
         return res;
@@ -171,9 +171,9 @@ QList<Task *> BlastCommonTask::onSubTaskFinished(Task *subTask) {
             }
             if (!resultsPerQuerySequence.isEmpty() && settings.needCreateAnnotations) {
                 if (!settings.outputResFile.isEmpty()) {
-                    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-                    DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK);
-                    Document *d = df->createNewLoadedDocument(iof, settings.outputResFile, stateInfo);
+                    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+                    DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK);
+                    Document* d = df->createNewLoadedDocument(iof, settings.outputResFile, stateInfo);
                     CHECK_OP(stateInfo, res);
                     d->addObject(settings.aobj);
                     AppContext::getProject()->addDocument(d);
@@ -245,7 +245,7 @@ void BlastCommonTask::parseTabularResult() {
     file.close();
 }
 
-void BlastCommonTask::parseTabularLine(const QByteArray &line) {
+void BlastCommonTask::parseTabularLine(const QByteArray& line) {
     SharedAnnotationData ad(new AnnotationData);
     // Fields: Query id (0), Subject id(1), % identity(2), alignment length(3), mismatches(4), gap openings(5), q. start(6), q. end(7), s. start(8), s. end(9), e-value(10), bit score(11)
     QList<QByteArray> elements = line.split('\t');
@@ -383,7 +383,7 @@ void BlastCommonTask::parseXMLResult() {
     }
 }
 
-int BlastCommonTask::parseQuerySequenceIndex(const QString &querySequenceName) const {
+int BlastCommonTask::parseQuerySequenceIndex(const QString& querySequenceName) const {
     SAFE_POINT_EXT(querySequenceName.startsWith(QUERY_SEQUENCE_NAME_PREFIX), uiLog.trace("Unexpected query sequence name: " + querySequenceName), -1);
     bool isOk;
     int querySequenceIndex = querySequenceName.mid(QUERY_SEQUENCE_NAME_PREFIX.length()).toInt(&isOk);
@@ -393,7 +393,7 @@ int BlastCommonTask::parseQuerySequenceIndex(const QString &querySequenceName) c
     return querySequenceIndex;
 }
 
-void BlastCommonTask::parseXMLHit(const QDomNode &xml, int querySequenceIndex) {
+void BlastCommonTask::parseXMLHit(const QDomNode& xml, int querySequenceIndex) {
     QDomElement tmp = xml.lastChildElement("Hit_id");
     QString id = tmp.text();
     tmp = xml.lastChildElement("Hit_def");
@@ -416,7 +416,7 @@ void BlastCommonTask::parseXMLHit(const QDomNode &xml, int querySequenceIndex) {
     }
 }
 
-void BlastCommonTask::parseXMLHsp(const QDomNode &xml, int querySequenceIndex, const QString &id, const QString &def, const QString &accession) {
+void BlastCommonTask::parseXMLHsp(const QDomNode& xml, int querySequenceIndex, const QString& id, const QString& def, const QString& accession) {
     SharedAnnotationData ad(new AnnotationData);
 
     QDomElement elem = xml.lastChildElement("Hsp_bit-score");
@@ -589,21 +589,21 @@ void BlastCommonTask::parseXMLHsp(const QDomNode &xml, int querySequenceIndex, c
 
 ///////////////////////////////////////
 // BlastMultiTask
-BlastMultiTask::BlastMultiTask(QList<BlastTaskSettings> &_settingsList, QString &_url)
+BlastMultiTask::BlastMultiTask(QList<BlastTaskSettings>& _settingsList, QString& _url)
     : Task("Run NCBI BlastAll multitask", TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported),
       settingsList(_settingsList), doc(nullptr), url(_url) {
 }
 void BlastMultiTask::prepare() {
     // create document
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-    DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+    DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK);
     // url=settingsList[0].outputResFile;
     doc = df->createNewLoadedDocument(iof, url, stateInfo);
     CHECK_OP(stateInfo, );
 
     foreach (BlastTaskSettings settings, settingsList) {
         settings.needCreateAnnotations = false;
-        Task *t = nullptr;
+        Task* t = nullptr;
         if (settings.programName == "blastn") {
             t = new BlastNTask(settings);
         } else if (settings.programName == "blastp") {
@@ -620,8 +620,8 @@ void BlastMultiTask::prepare() {
         addSubTask(t);
     }
 }
-QList<Task *> BlastMultiTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> BlastMultiTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     if (subTask->hasError()) {
         stateInfo.setError(subTask->getError());
         return res;
@@ -629,7 +629,7 @@ QList<Task *> BlastMultiTask::onSubTaskFinished(Task *subTask) {
     if (hasError() || isCanceled()) {
         return res;
     }
-    if (auto blastTask = qobject_cast<BlastCommonTask *>(subTask)) {
+    if (auto blastTask = qobject_cast<BlastCommonTask*>(subTask)) {
         BlastTaskSettings settings = blastTask->getSettings();
         SAFE_POINT_EXT(settings.aobj != nullptr, setError("Result annotation object is null!"), {});
         QList<SharedAnnotationData> resultAnnotations = blastTask->getResultAnnotations();

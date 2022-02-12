@@ -33,15 +33,15 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsMcaEditorStatusWidget"
 
 #define GT_METHOD_NAME "getStatusWidget"
-QWidget *GTUtilsMcaEditorStatusWidget::getStatusWidget(GUITestOpStatus &os) {
-    QWidget *editor = GTUtilsMcaEditor::getEditorUi(os);
-    return GTWidget::findExactWidget<QWidget *>(os, "mca_editor_status_bar", editor);
+QWidget* GTUtilsMcaEditorStatusWidget::getStatusWidget(GUITestOpStatus& os) {
+    QWidget* editor = GTUtilsMcaEditor::getEditorUi(os);
+    return GTWidget::findExactWidget<QWidget*>(os, "mca_editor_status_bar", editor);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getRowNumberString"
-QString GTUtilsMcaEditorStatusWidget::getRowNumberString(GUITestOpStatus &os) {
-    QLabel *lineLabel = GTWidget::findExactWidget<QLabel *>(os, "Line", getStatusWidget(os));
+QString GTUtilsMcaEditorStatusWidget::getRowNumberString(GUITestOpStatus& os) {
+    QLabel* lineLabel = GTWidget::findExactWidget<QLabel*>(os, "Line", getStatusWidget(os));
     GT_CHECK_RESULT(lineLabel != nullptr, "Line label is NULL", "-1");
 
     const QString labelText = lineLabel->text();
@@ -50,7 +50,7 @@ QString GTUtilsMcaEditorStatusWidget::getRowNumberString(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getRowNumber"
-int GTUtilsMcaEditorStatusWidget::getRowNumber(GUITestOpStatus &os) {
+int GTUtilsMcaEditorStatusWidget::getRowNumber(GUITestOpStatus& os) {
     const QString rowNumberString = getRowNumberString(os);
 
     bool ok = false;
@@ -62,8 +62,8 @@ int GTUtilsMcaEditorStatusWidget::getRowNumber(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getRowsCountString"
-QString GTUtilsMcaEditorStatusWidget::getRowsCountString(GUITestOpStatus &os) {
-    QLabel *lineLabel = GTWidget::findExactWidget<QLabel *>(os, "Line", getStatusWidget(os));
+QString GTUtilsMcaEditorStatusWidget::getRowsCountString(GUITestOpStatus& os) {
+    QLabel* lineLabel = GTWidget::findExactWidget<QLabel*>(os, "Line", getStatusWidget(os));
     GT_CHECK_RESULT(lineLabel != nullptr, "Line label is NULL", "-1");
 
     const QString labelText = lineLabel->text();
@@ -72,7 +72,7 @@ QString GTUtilsMcaEditorStatusWidget::getRowsCountString(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getRowsCount"
-int GTUtilsMcaEditorStatusWidget::getRowsCount(GUITestOpStatus &os) {
+int GTUtilsMcaEditorStatusWidget::getRowsCount(GUITestOpStatus& os) {
     const QString rowsCountString = getRowsCountString(os);
 
     bool ok = false;
@@ -84,8 +84,8 @@ int GTUtilsMcaEditorStatusWidget::getRowsCount(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReferenceUngappedPositionString"
-QString GTUtilsMcaEditorStatusWidget::getReferenceUngappedPositionString(GUITestOpStatus &os) {
-    QLabel *columnLabel = GTWidget::findExactWidget<QLabel *>(os, "Column", getStatusWidget(os));
+QString GTUtilsMcaEditorStatusWidget::getReferenceUngappedPositionString(GUITestOpStatus& os) {
+    QLabel* columnLabel = GTWidget::findExactWidget<QLabel*>(os, "Column", getStatusWidget(os));
     GT_CHECK_RESULT(columnLabel != nullptr, "Column label is NULL", "-1");
 
     const QString labelText = columnLabel->text();
@@ -94,7 +94,7 @@ QString GTUtilsMcaEditorStatusWidget::getReferenceUngappedPositionString(GUITest
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReferenceUngappedPosition"
-int GTUtilsMcaEditorStatusWidget::getReferenceUngappedPosition(GUITestOpStatus &os) {
+int GTUtilsMcaEditorStatusWidget::getReferenceUngappedPosition(GUITestOpStatus& os) {
     const QString referencePositionString = getReferenceUngappedPositionString(os);
 
     bool ok = false;
@@ -106,8 +106,8 @@ int GTUtilsMcaEditorStatusWidget::getReferenceUngappedPosition(GUITestOpStatus &
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReferenceUngappedLengthString"
-QString GTUtilsMcaEditorStatusWidget::getReferenceUngappedLengthString(GUITestOpStatus &os) {
-    QLabel *columnLabel = GTWidget::findExactWidget<QLabel *>(os, "Column", getStatusWidget(os));
+QString GTUtilsMcaEditorStatusWidget::getReferenceUngappedLengthString(GUITestOpStatus& os) {
+    QLabel* columnLabel = GTWidget::findExactWidget<QLabel*>(os, "Column", getStatusWidget(os));
     GT_CHECK_RESULT(columnLabel != nullptr, "Column label is NULL", "-1");
 
     const QString labelText = columnLabel->text();
@@ -116,7 +116,7 @@ QString GTUtilsMcaEditorStatusWidget::getReferenceUngappedLengthString(GUITestOp
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReferenceUngappedLength"
-int GTUtilsMcaEditorStatusWidget::getReferenceUngappedLength(GUITestOpStatus &os) {
+int GTUtilsMcaEditorStatusWidget::getReferenceUngappedLength(GUITestOpStatus& os) {
     const QString referenceLengthString = getReferenceUngappedLengthString(os);
 
     bool ok = false;
@@ -128,14 +128,14 @@ int GTUtilsMcaEditorStatusWidget::getReferenceUngappedLength(GUITestOpStatus &os
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isGapInReference"
-bool GTUtilsMcaEditorStatusWidget::isGapInReference(GUITestOpStatus &os) {
+bool GTUtilsMcaEditorStatusWidget::isGapInReference(GUITestOpStatus& os) {
     return "gap" == getReferenceUngappedPositionString(os);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReadUngappedPositionString"
-QString GTUtilsMcaEditorStatusWidget::getReadUngappedPositionString(GUITestOpStatus &os) {
-    QLabel *positionLabel = GTWidget::findExactWidget<QLabel *>(os, "Position", getStatusWidget(os));
+QString GTUtilsMcaEditorStatusWidget::getReadUngappedPositionString(GUITestOpStatus& os) {
+    QLabel* positionLabel = GTWidget::findExactWidget<QLabel*>(os, "Position", getStatusWidget(os));
     GT_CHECK_RESULT(positionLabel != nullptr, "Position label is NULL", "-1");
 
     const QString labelText = positionLabel->text();
@@ -144,7 +144,7 @@ QString GTUtilsMcaEditorStatusWidget::getReadUngappedPositionString(GUITestOpSta
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReadUngappedPosition"
-int GTUtilsMcaEditorStatusWidget::getReadUngappedPosition(GUITestOpStatus &os) {
+int GTUtilsMcaEditorStatusWidget::getReadUngappedPosition(GUITestOpStatus& os) {
     const QString readPositionString = getReadUngappedPositionString(os);
 
     bool ok = false;
@@ -156,8 +156,8 @@ int GTUtilsMcaEditorStatusWidget::getReadUngappedPosition(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReadUngappedLengthString"
-QString GTUtilsMcaEditorStatusWidget::getReadUngappedLengthString(GUITestOpStatus &os) {
-    QLabel *positionLabel = GTWidget::findExactWidget<QLabel *>(os, "Position", getStatusWidget(os));
+QString GTUtilsMcaEditorStatusWidget::getReadUngappedLengthString(GUITestOpStatus& os) {
+    QLabel* positionLabel = GTWidget::findExactWidget<QLabel*>(os, "Position", getStatusWidget(os));
     GT_CHECK_RESULT(positionLabel != nullptr, "Position label is NULL", "-1");
 
     const QString labelText = positionLabel->text();
@@ -166,7 +166,7 @@ QString GTUtilsMcaEditorStatusWidget::getReadUngappedLengthString(GUITestOpStatu
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReadUngappedLength"
-int GTUtilsMcaEditorStatusWidget::getReadUngappedLength(GUITestOpStatus &os) {
+int GTUtilsMcaEditorStatusWidget::getReadUngappedLength(GUITestOpStatus& os) {
     const QString readPositionString = getReadUngappedLengthString(os);
 
     bool ok = false;
@@ -178,7 +178,7 @@ int GTUtilsMcaEditorStatusWidget::getReadUngappedLength(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isGapInRead"
-bool GTUtilsMcaEditorStatusWidget::isGapInRead(GUITestOpStatus &os) {
+bool GTUtilsMcaEditorStatusWidget::isGapInRead(GUITestOpStatus& os) {
     return "gap" == getReadUngappedPositionString(os);
 }
 #undef GT_METHOD_NAME

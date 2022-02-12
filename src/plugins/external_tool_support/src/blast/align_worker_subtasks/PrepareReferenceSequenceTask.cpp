@@ -42,7 +42,7 @@
 
 namespace U2 {
 
-PrepareReferenceSequenceTask::PrepareReferenceSequenceTask(const QString &referenceUrl, const U2DbiRef &dstDbiRef)
+PrepareReferenceSequenceTask::PrepareReferenceSequenceTask(const QString& referenceUrl, const U2DbiRef& dstDbiRef)
     : DocumentProviderTask(tr("Prepare reference sequence"), TaskFlags_NR_FOSE_COSC),
       referenceUrl(referenceUrl),
       dstDbiRef(dstDbiRef) {
@@ -50,7 +50,7 @@ PrepareReferenceSequenceTask::PrepareReferenceSequenceTask(const QString &refere
     SAFE_POINT_EXT(dstDbiRef.isValid(), setError("Destination DBI reference is not valid"), );
 }
 
-const U2EntityRef &PrepareReferenceSequenceTask::getReferenceEntityRef() const {
+const U2EntityRef& PrepareReferenceSequenceTask::getReferenceEntityRef() const {
     return referenceEntityRef;
 }
 
@@ -60,8 +60,8 @@ void PrepareReferenceSequenceTask::prepare() {
     addSubTask(copyTask);
 }
 
-QList<Task *> PrepareReferenceSequenceTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> newSubTasks;
+QList<Task*> PrepareReferenceSequenceTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> newSubTasks;
     CHECK_OP(stateInfo, newSubTasks);
 
     if (copyTask == subTask) {
@@ -72,39 +72,39 @@ QList<Task *> PrepareReferenceSequenceTask::onSubTaskFinished(Task *subTask) {
         CHECK_OP(stateInfo, newSubTasks);
         newSubTasks << loadTask;
     } else if (loadTask == subTask) {
-        Document *document = loadTask->getDocument(false);
+        Document* document = loadTask->getDocument(false);
         SAFE_POINT(document != nullptr, "Document is NULL", newSubTasks);
 
         document->setDocumentOwnsDbiResources(false);
 
-        QList<GObject *> objects = document->findGObjectByType(GObjectTypes::SEQUENCE);
+        QList<GObject*> objects = document->findGObjectByType(GObjectTypes::SEQUENCE);
         CHECK_EXT(!objects.isEmpty(), setError(tr("No reference sequence in the file: ") + referenceUrl), newSubTasks);
         CHECK_EXT(objects.size() == 1, setError(tr("More than one sequence in the reference file: ") + referenceUrl), newSubTasks);
 
-        U2SequenceObject *referenceObject = qobject_cast<U2SequenceObject *>(objects.first());
+        U2SequenceObject* referenceObject = qobject_cast<U2SequenceObject*>(objects.first());
         SAFE_POINT_EXT(referenceObject != nullptr, setError(tr("Unable to cast gobject to sequence object")), newSubTasks);
         CHECK_EXT(referenceObject->getAlphabet()->isDNA(), setError(tr("The input reference sequence '%1' contains characters that don't belong to DNA alphabet.").arg(referenceObject->getSequenceName())), newSubTasks);
 
         referenceEntityRef = referenceObject->getEntityRef();
 
         newSubTasks << new RemoveGapsFromSequenceTask(referenceObject);
-    } else if (qobject_cast<RemoveGapsFromSequenceTask *>(subTask) != nullptr) {
-        Document *doc = loadTask->getDocument(false);
+    } else if (qobject_cast<RemoveGapsFromSequenceTask*>(subTask) != nullptr) {
+        Document* doc = loadTask->getDocument(false);
         SAFE_POINT(doc != nullptr, "Document is NULL", newSubTasks);
 
-        DocumentFormat *fastaFormat = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::FASTA);
-        IOAdapterFactory *ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(doc->getURL()));
+        DocumentFormat* fastaFormat = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::FASTA);
+        IOAdapterFactory* ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(doc->getURL()));
 
         preparedReferenceUrl = GUrlUtils::rollFileName(doc->getURL().getURLString(), "_");  // we roll the URL here because there was a strange problem when UGENE couldn't overwrite the file (UTI-242)
-        Document *fastaDoc = doc->getSimpleCopy(fastaFormat, ioAdapterFactory, preparedReferenceUrl);
-        SaveDocumentTask *saveTask = new SaveDocumentTask(fastaDoc, SaveDoc_DestroyButDontUnload);
+        Document* fastaDoc = doc->getSimpleCopy(fastaFormat, ioAdapterFactory, preparedReferenceUrl);
+        SaveDocumentTask* saveTask = new SaveDocumentTask(fastaDoc, SaveDoc_DestroyButDontUnload);
         newSubTasks << saveTask;
     }
 
     return newSubTasks;
 }
 
-const QString &PrepareReferenceSequenceTask::getPreparedReferenceUrl() const {
+const QString& PrepareReferenceSequenceTask::getPreparedReferenceUrl() const {
     return preparedReferenceUrl;
 }
 

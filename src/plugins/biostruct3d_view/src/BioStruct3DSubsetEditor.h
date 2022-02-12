@@ -40,7 +40,7 @@ public:
      * @param selected Pre selected biostruct
      * @param selectedModel Pre selected model
      */
-    BioStruct3DSubsetEditor(const QList<BioStruct3DObject *> &biostructs, const BioStruct3DObject *selected = 0, int selectedModel = -1, QWidget *parent = 0);
+    BioStruct3DSubsetEditor(const QList<BioStruct3DObject*>& biostructs, const BioStruct3DObject* selected = 0, int selectedModel = -1, QWidget* parent = 0);
 
     /** Fill model ComboBox respectively with current biostruct */
     void fillModelCombo();
@@ -67,7 +67,7 @@ private:
     U2Region getRegion() const;
 
     /** Set text in region Edit from U2Region */
-    void setRegion(const U2Region &region);
+    void setRegion(const U2Region& region);
 
 private slots:
     void sl_onBiostructChanged(int);

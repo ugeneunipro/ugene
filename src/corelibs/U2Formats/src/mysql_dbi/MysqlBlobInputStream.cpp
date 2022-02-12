@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-MysqlBlobInputStream::MysqlBlobInputStream(MysqlDbRef *db, const QByteArray &tableId, const QByteArray &columnId, const U2DataId &rowId, U2OpStatus &os)
+MysqlBlobInputStream::MysqlBlobInputStream(MysqlDbRef* db, const QByteArray& tableId, const QByteArray& columnId, const U2DataId& rowId, U2OpStatus& os)
     : size(0), offset(0) {
     CHECK_EXT(nullptr != db, os.setError("Invalid database handler detected!"), );
 
@@ -49,7 +49,7 @@ qint64 MysqlBlobInputStream::available() {
 void MysqlBlobInputStream::close() {
 }
 
-int MysqlBlobInputStream::read(char *buffer, int length, U2OpStatus &os) {
+int MysqlBlobInputStream::read(char* buffer, int length, U2OpStatus& os) {
     SAFE_POINT_EXT(nullptr != buffer, os.setError("Invalid data buffer detected!"), -1);
 
     int targetLength = (offset + length < size) ? length : (size - offset);
@@ -64,7 +64,7 @@ int MysqlBlobInputStream::read(char *buffer, int length, U2OpStatus &os) {
     return targetLength;
 }
 
-qint64 MysqlBlobInputStream::skip(qint64 n, U2OpStatus & /*os*/) {
+qint64 MysqlBlobInputStream::skip(qint64 n, U2OpStatus& /*os*/) {
     if (offset + n >= size) {
         int oldOffset = offset;
         offset = size;

@@ -23,17 +23,17 @@
 
 namespace U2 {
 
-DataBaseRegistry::DataBaseRegistry(QObject *o)
+DataBaseRegistry::DataBaseRegistry(QObject* o)
     : QObject(o) {
 }
 
 DataBaseRegistry::~DataBaseRegistry() {
-    foreach (const DataBaseFactory *dbf, factories) {
+    foreach (const DataBaseFactory* dbf, factories) {
         delete dbf;
     }
 }
 
-bool DataBaseRegistry::registerDataBase(DataBaseFactory *f, const QString &id) {
+bool DataBaseRegistry::registerDataBase(DataBaseFactory* f, const QString& id) {
     if (!isRegistered(id)) {
         factories[id] = f;
         return true;
@@ -42,7 +42,7 @@ bool DataBaseRegistry::registerDataBase(DataBaseFactory *f, const QString &id) {
     }
 }
 
-bool DataBaseRegistry::isRegistered(const QString &id) {
+bool DataBaseRegistry::isRegistered(const QString& id) {
     if (factories.contains(id)) {
         return true;
     } else {
@@ -50,7 +50,7 @@ bool DataBaseRegistry::isRegistered(const QString &id) {
     }
 }
 
-DataBaseFactory *DataBaseRegistry::getFactoryById(const QString &id) {
+DataBaseFactory* DataBaseRegistry::getFactoryById(const QString& id) {
     if (isRegistered(id)) {
         return factories[id];
     } else {

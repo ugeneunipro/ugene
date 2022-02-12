@@ -56,14 +56,14 @@ using namespace Workflow;
 
 void WorkflowDebugMessageParserImpl::initParsedInfo() {
     if (Q_LIKELY(!messageTypes.isEmpty())) {
-        foreach (const QString &typeName, messageTypes) {
+        foreach (const QString& typeName, messageTypes) {
             parsedInfo[typeName] = QQueue<QString>();
         }
     }
 }
 
-QString WorkflowDebugMessageParserImpl::convertToString(const QString &contentIdentifier,
-                                                        const QVariant &content) const {
+QString WorkflowDebugMessageParserImpl::convertToString(const QString& contentIdentifier,
+                                                        const QVariant& content) const {
     QScopedPointer<BaseMessageTranslator> messageTranslator(createMessageTranslator(
         getMessageTypeFromIdentifier(contentIdentifier), content));
     SAFE_POINT(!messageTranslator.isNull(), "Invalid message translator detected!", QString());
@@ -72,13 +72,13 @@ QString WorkflowDebugMessageParserImpl::convertToString(const QString &contentId
 }
 
 QString WorkflowDebugMessageParserImpl::getMessageTypeFromIdentifier(
-    const QString &messageIdentifier) const {
+    const QString& messageIdentifier) const {
     return messageIdentifier.right(messageIdentifier.size() - messageIdentifier.lastIndexOf(PRODUCING_ACTOR_AND_DATA_TYPE_SEPARATOR) - 1);
 }
 
 WorkflowInvestigationData WorkflowDebugMessageParserImpl::getAllMessageValues() {
     if (!sourceMessages.isEmpty()) {
-        foreach (const QString &key, sourceMessages.head().keys()) {
+        foreach (const QString& key, sourceMessages.head().keys()) {
             const QString messageType = getMessageTypeFromIdentifier(key);
             if (Q_UNLIKELY(!possibleMessageTypes.contains(messageType))) {
                 coreLog.info(QObject::tr("Messages in requested queue include info of the '%1' "
@@ -92,8 +92,8 @@ WorkflowInvestigationData WorkflowDebugMessageParserImpl::getAllMessageValues() 
             }
         }
         initParsedInfo();
-        foreach (const QVariantMap &messageContent, sourceMessages) {
-            foreach (const QString &key, messageContent.keys()) {
+        foreach (const QVariantMap& messageContent, sourceMessages) {
+            foreach (const QString& key, messageContent.keys()) {
                 SAFE_POINT(messageTypes.contains(key), "Unexpected message type encountered!", parsedInfo);
                 parsedInfo[key].enqueue(convertToString(key, messageContent[key]));
             }
@@ -102,17 +102,17 @@ WorkflowInvestigationData WorkflowDebugMessageParserImpl::getAllMessageValues() 
     return parsedInfo;
 }
 
-void WorkflowDebugMessageParserImpl::convertMessagesToDocuments(const QString &convertedType, const QString &schemeName, quint32 messageNumber) {
+void WorkflowDebugMessageParserImpl::convertMessagesToDocuments(const QString& convertedType, const QString& schemeName, quint32 messageNumber) {
     SAFE_POINT(!convertedType.isEmpty(), "Invalid message type detected!", );
-    const AppSettings *appSettings = AppContext::getAppSettings();
+    const AppSettings* appSettings = AppContext::getAppSettings();
     SAFE_POINT(nullptr != appSettings, "Invalid application settings' storage!", );
-    const UserAppsSettings *userSettings = appSettings->getUserAppsSettings();
+    const UserAppsSettings* userSettings = appSettings->getUserAppsSettings();
     SAFE_POINT(nullptr != userSettings, "Invalid user application settings' storage!", );
     QString tmpFolderUrl = (userSettings->getCurrentProcessTemporaryDirPath());
     tmpFolderUrl.replace("//", "/");
 
     quint32 messageCounter = ++messageNumber;
-    foreach (const QVariantMap &mapData, sourceMessages) {
+    foreach (const QVariantMap& mapData, sourceMessages) {
         SAFE_POINT(mapData.keys().contains(convertedType), "Invalid message type detected!", );
         const QString messageType = getMessageTypeFromIdentifier(convertedType);
         const QString baseFileUrl = tmpFolderUrl + "/" + schemeName + FILE_NAME_WORDS_SEPARATOR + messageType + FILE_NAME_WORDS_SEPARATOR + "m" + QString::number(messageCounter);
@@ -120,12 +120,12 @@ void WorkflowDebugMessageParserImpl::convertMessagesToDocuments(const QString &c
             const QVariant annotationsData = mapData[convertedType];
             const QList<SharedAnnotationData> annList = StorageUtils::getAnnotationTable(context->getDataStorage(), annotationsData);
 
-            AnnotationTableObject *annsObj = new AnnotationTableObject("Annotations", context->getDataStorage()->getDbiRef());
+            AnnotationTableObject* annsObj = new AnnotationTableObject("Annotations", context->getDataStorage()->getDbiRef());
             annsObj->addAnnotations(annList);
 
             ExportObjectUtils::exportAnnotations(annsObj, baseFileUrl);
         } else {
-            GObject *objectToWrite = fetchObjectFromMessage(messageType, mapData[convertedType]);
+            GObject* objectToWrite = fetchObjectFromMessage(messageType, mapData[convertedType]);
             if (Q_LIKELY(nullptr != objectToWrite)) {
                 ExportObjectUtils::exportObject2Document(objectToWrite, baseFileUrl, false);
                 ++messageCounter;
@@ -134,8 +134,8 @@ void WorkflowDebugMessageParserImpl::convertMessagesToDocuments(const QString &c
     }
 }
 
-BaseMessageTranslator *WorkflowDebugMessageParserImpl::createMessageTranslator(const QString &messageType, const QVariant &messageData) const {
-    BaseMessageTranslator *result = nullptr;
+BaseMessageTranslator* WorkflowDebugMessageParserImpl::createMessageTranslator(const QString& messageType, const QVariant& messageData) const {
+    BaseMessageTranslator* result = nullptr;
     if (BaseSlots::DNA_SEQUENCE_SLOT().getId() == messageType) {
         result = new SequenceMessageTranslator(messageData, context);
     } else if (BaseSlots::ANNOTATION_TABLE_SLOT().getId() == messageType) {
@@ -154,8 +154,8 @@ BaseMessageTranslator *WorkflowDebugMessageParserImpl::createMessageTranslator(c
     return result;
 }
 
-GObject *WorkflowDebugMessageParserImpl::fetchObjectFromMessage(const QString &messageType, const QVariant &messageData) const {
-    GObject *result = nullptr;
+GObject* WorkflowDebugMessageParserImpl::fetchObjectFromMessage(const QString& messageType, const QVariant& messageData) const {
+    GObject* result = nullptr;
     if (BaseSlots::TEXT_SLOT().getId() == messageType) {
         SAFE_POINT(messageData.canConvert<QString>(), "Supplied message doesn't contain text data", nullptr);
         const QString documentText = messageData.value<QString>();

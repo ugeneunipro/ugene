@@ -29,7 +29,7 @@ namespace U2 {
 
 class U2FORMATS_EXPORT MergeBamTask : public Task {
 public:
-    MergeBamTask(const QStringList &urls, const QString &dir, const QString &outName, bool sortInputBams = false);
+    MergeBamTask(const QStringList& urls, const QString& dir, const QString& outName, bool sortInputBams = false);
 
     QString getResult() const;
     void run();

@@ -39,17 +39,17 @@ FindPatternWidgetFactory::FindPatternWidgetFactory() {
     objectViewOfWidget = ObjViewType_SequenceView;
 }
 
-QWidget *FindPatternWidgetFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
+QWidget* FindPatternWidgetFactory::createWidget(GObjectView* objView, const QVariantMap& /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);
 
-    AnnotatedDNAView *annotatedDnaView = qobject_cast<AnnotatedDNAView *>(objView);
+    AnnotatedDNAView* annotatedDnaView = qobject_cast<AnnotatedDNAView*>(objView);
     SAFE_POINT(annotatedDnaView != nullptr,
                QString("Internal error: unable to cast object view to AnnotatedDNAView for group '%1'.").arg(GROUP_ID),
                nullptr);
 
-    FindPatternWidget *widget = new FindPatternWidget(annotatedDnaView);
+    FindPatternWidget* widget = new FindPatternWidget(annotatedDnaView);
     widget->setObjectName("FindPatternWidget");
     return widget;
 }
@@ -58,7 +58,7 @@ OPGroupParameters FindPatternWidgetFactory::getOPGroupParameters() {
     return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Search in Sequence"), GROUP_DOC_PAGE);
 }
 
-const QString &FindPatternWidgetFactory::getGroupId() {
+const QString& FindPatternWidgetFactory::getGroupId() {
     return GROUP_ID;
 }
 

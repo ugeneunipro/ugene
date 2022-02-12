@@ -46,7 +46,7 @@ const QString ORFSettingsKeys::INCLUDE_STOP_CODON("orf_finder/incldue_stop_codon
 const QString ORFSettingsKeys::MAX_RESULT("orf_finder/max_result");
 const QString ORFSettingsKeys::IS_RESULT_LIMITED("orf_finder/is_result_limited");
 
-void ORFSettingsKeys::save(const ORFAlgorithmSettings &cfg, Settings *s) {
+void ORFSettingsKeys::save(const ORFAlgorithmSettings& cfg, Settings* s) {
     s->setValue(ORFSettingsKeys::AMINO_TRANSL, cfg.proteinTT->getTranslationId());
     s->setValue(ORFSettingsKeys::MUST_FIT, cfg.mustFit);
     s->setValue(ORFSettingsKeys::MUST_INIT, cfg.mustInit);
@@ -60,7 +60,7 @@ void ORFSettingsKeys::save(const ORFAlgorithmSettings &cfg, Settings *s) {
     s->setValue(ORFSettingsKeys::IS_RESULT_LIMITED, cfg.isResultsLimited);
 }
 
-void ORFSettingsKeys::read(ORFAlgorithmSettings &cfg, const Settings *s) {
+void ORFSettingsKeys::read(ORFAlgorithmSettings& cfg, const Settings* s) {
     cfg.mustFit = s->getValue(ORFSettingsKeys::MUST_FIT, false).toBool();
     cfg.mustInit = s->getValue(ORFSettingsKeys::MUST_INIT, true).toBool();
     cfg.allowAltStart = s->getValue(ORFSettingsKeys::ALLOW_ALT_START, false).toBool();
@@ -84,7 +84,7 @@ void ORFSettingsKeys::read(ORFAlgorithmSettings &cfg, const Settings *s) {
 //////////////////////////////////////////////////////////////////////////
 // find ORFS and save 2 annotations task
 
-FindORFsToAnnotationsTask::FindORFsToAnnotationsTask(AnnotationTableObject *aobj, const U2EntityRef &_entityRef, const ORFAlgorithmSettings &settings, const QString &gName, const QString &annDescription)
+FindORFsToAnnotationsTask::FindORFsToAnnotationsTask(AnnotationTableObject* aobj, const U2EntityRef& _entityRef, const ORFAlgorithmSettings& settings, const QString& gName, const QString& annDescription)
     : Task(tr("Find ORFs and save to annotations"), TaskFlags_NR_FOSCOE),
       aObj(aobj),
       cfg(settings),
@@ -100,19 +100,19 @@ FindORFsToAnnotationsTask::FindORFsToAnnotationsTask(AnnotationTableObject *aobj
     addSubTask(fTask);
 }
 
-QList<Task *> FindORFsToAnnotationsTask::onSubTaskFinished(Task *subTask) {
-    CHECK(subTask == fTask, QList<Task *>());
+QList<Task*> FindORFsToAnnotationsTask::onSubTaskFinished(Task* subTask) {
+    CHECK(subTask == fTask, QList<Task*>());
 
     const QList<ORFFindResult> results = fTask->popResults();
     QList<SharedAnnotationData> annotationList;
-    foreach (const ORFFindResult &res, results) {
-        CHECK_OP(stateInfo, QList<Task *>());
+    foreach (const ORFFindResult& res, results) {
+        CHECK_OP(stateInfo, QList<Task*>());
         annotationList << res.toAnnotation(ORFAlgorithmSettings::ANNOTATION_GROUP_NAME);
     }
 
     U1AnnotationUtils::addDescriptionQualifier(annotationList, annDescription);
 
-    return QList<Task *>() << new CreateAnnotationsTask(aObj, annotationList, groupName);
+    return QList<Task*>() << new CreateAnnotationsTask(aObj, annotationList, groupName);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -122,9 +122,9 @@ ORFAutoAnnotationsUpdater::ORFAutoAnnotationsUpdater()
     : AutoAnnotationsUpdater(tr("ORFs"), ORFAlgorithmSettings::ANNOTATION_GROUP_NAME, false, true) {
 }
 
-Task *ORFAutoAnnotationsUpdater::createAutoAnnotationsUpdateTask(const AutoAnnotationObject *aa) {
-    AnnotationTableObject *aObj = aa->getAnnotationObject();
-    U2SequenceObject *dnaObj = aa->getSequenceObject();
+Task* ORFAutoAnnotationsUpdater::createAutoAnnotationsUpdateTask(const AutoAnnotationObject* aa) {
+    AnnotationTableObject* aObj = aa->getAnnotationObject();
+    U2SequenceObject* dnaObj = aa->getSequenceObject();
 
     ORFAlgorithmSettings cfg;
     ORFSettingsKeys::read(cfg, AppContext::getSettings());
@@ -139,12 +139,12 @@ Task *ORFAutoAnnotationsUpdater::createAutoAnnotationsUpdateTask(const AutoAnnot
         cfg.searchRegion = wholeSequenceRegion;
     }
 
-    Task *task = new FindORFsToAnnotationsTask(aObj, dnaObj->getSequenceRef(), cfg);
+    Task* task = new FindORFsToAnnotationsTask(aObj, dnaObj->getSequenceRef(), cfg);
 
     return task;
 }
 
-bool ORFAutoAnnotationsUpdater::checkConstraints(const AutoAnnotationConstraints &constraints) {
+bool ORFAutoAnnotationsUpdater::checkConstraints(const AutoAnnotationConstraints& constraints) {
     if (constraints.alphabet == nullptr) {
         return false;
     }

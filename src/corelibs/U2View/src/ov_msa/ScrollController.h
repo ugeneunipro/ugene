@@ -43,22 +43,22 @@ public:
     };
     Q_DECLARE_FLAGS(Directions, Direction)
 
-    ScrollController(MaEditor *maEditor, MaEditorWgt *ui);
+    ScrollController(MaEditor* maEditor, MaEditorWgt* ui);
 
-    void init(GScrollBar *hScrollBar, GScrollBar *vScrollBar);
+    void init(GScrollBar* hScrollBar, GScrollBar* vScrollBar);
 
     QPoint getScreenPosition() const;  // in pixels
-    QPoint getGlobalMousePosition(const QPoint &mousePos) const;
+    QPoint getGlobalMousePosition(const QPoint& mousePos) const;
 
     void updateVerticalScrollBar();
 
     void scrollToViewRow(int viewRowIndex, int widgetHeight);
     void scrollToBase(int baseNumber, int widgetWidth);
-    void scrollToPoint(const QPoint &maPoint, const QSize &screenSize);
+    void scrollToPoint(const QPoint& maPoint, const QSize& screenSize);
 
     void centerBase(int baseIndex, int widgetWidth);
     void centerViewRow(int viewRowIndex, int widgetHeight);
-    void centerPoint(const QPoint &maPoint, const QSize &widgetSize);
+    void centerPoint(const QPoint& maPoint, const QSize& widgetSize);
 
     /** Returns true if the base is centered. See 'centerBase' for details. */
     bool isBaseCentered(int baseIndex, int widgetWidth) const;
@@ -70,7 +70,7 @@ public:
     void setFirstVisibleViewRow(int viewRowIndex);
     void setFirstVisibleMaRow(int maRowIndex);
 
-    void scrollSmoothly(const Directions &directions);
+    void scrollSmoothly(const Directions& directions);
     void stopSmoothScrolling();
 
     void scrollStep(Direction direction);
@@ -91,10 +91,10 @@ public:
      * Returns QPoint(-1, -1) if geom. position can't be mapped to any base and reportOverflow is false.
      * If reportOverflow is true and one of the coordinates has overflow, returns rowCount/columnsCount for it.
      */
-    QPoint getViewPosByScreenPoint(const QPoint &point, bool reportOverflow = true) const;
+    QPoint getViewPosByScreenPoint(const QPoint& point, bool reportOverflow = true) const;
 
-    GScrollBar *getHorizontalScrollBar() const;
-    GScrollBar *getVerticalScrollBar() const;
+    GScrollBar* getHorizontalScrollBar() const;
+    GScrollBar* getVerticalScrollBar() const;
 
 signals:
     void si_visibleAreaChanged();
@@ -125,10 +125,10 @@ private:
     void updateHorizontalScrollBarPrivate();
     void updateVerticalScrollBarPrivate();
 
-    MaEditor *maEditor;
-    MaEditorWgt *ui;
-    GScrollBar *hScrollBar;
-    GScrollBar *vScrollBar;
+    MaEditor* maEditor;
+    MaEditorWgt* ui;
+    GScrollBar* hScrollBar;
+    GScrollBar* vScrollBar;
 
     int savedFirstVisibleMaRow;
     int savedFirstVisibleMaRowOffset;

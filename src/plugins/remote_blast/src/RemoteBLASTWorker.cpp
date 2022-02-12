@@ -49,8 +49,8 @@ const QString ANNOTATION_NAME("result-name");
 const QString ORIGINAL_OUT("blast-output");
 
 void RemoteBLASTWorkerFactory::init() {
-    QList<PortDescriptor *> p;
-    QList<Attribute *> a;
+    QList<PortDescriptor*> p;
+    QList<Attribute*> a;
     Descriptor ind(BasePorts::IN_SEQ_PORT_ID(), RemoteBLASTWorker::tr("Input sequence"), RemoteBLASTWorker::tr("The sequence to search the annotations for"));
     Descriptor outd(BasePorts::OUT_ANNOTATIONS_PORT_ID(), RemoteBLASTWorker::tr("Annotations"), RemoteBLASTWorker::tr("Found annotations"));
 
@@ -74,7 +74,7 @@ void RemoteBLASTWorkerFactory::init() {
     Descriptor gapCosts(GAP_ATTR, RemoteBLASTWorker::tr("Gap costs"), RemoteBLASTWorker::tr("Cost to create and extend a gap in an alignment."));
     Descriptor matchScores(MATCHSCORE_ATTR, RemoteBLASTWorker::tr("Match scores"), RemoteBLASTWorker::tr("Reward and penalty for matching and mismatching bases."));
 
-    Attribute *toolNameAttr = new Attribute(toolDescriptor, BaseTypes::STRING_TYPE(), true, "ncbi-blastn");
+    Attribute* toolNameAttr = new Attribute(toolDescriptor, BaseTypes::STRING_TYPE(), true, "ncbi-blastn");
     QVariantMap matchscoreRelations;
     addParametersSetToMap(matchscoreRelations, "ncbi-blastn", ParametersLists::blastn_scores);
     addParametersSetToMap(matchscoreRelations, "ncbi-blastp", QStringList("Unavailable"));
@@ -100,25 +100,25 @@ void RemoteBLASTWorkerFactory::init() {
                 << "ncbi-blastp";
 
     a << new Attribute(hitsDescriptor, BaseTypes::NUM_TYPE(), false, 10);
-    Attribute *mbAttr = new Attribute(mbDescriptor, BaseTypes::BOOL_TYPE(), false, false);
+    Attribute* mbAttr = new Attribute(mbDescriptor, BaseTypes::BOOL_TYPE(), false, false);
     mbAttr->addRelation(new VisibilityRelation(ALG_ATTR, "ncbi-blastn"));
     a << mbAttr;
 
-    Attribute *shortSeqAttr = new Attribute(shortSeqDescriptor, BaseTypes::BOOL_TYPE(), true, false);
+    Attribute* shortSeqAttr = new Attribute(shortSeqDescriptor, BaseTypes::BOOL_TYPE(), true, false);
     shortSeqAttr->addRelation(new VisibilityRelation(ALG_ATTR, notCddTools));
     a << shortSeqAttr;
 
-    Attribute *entrezQueryAttr = new Attribute(entrezQueryDescriptor, BaseTypes::STRING_TYPE(), false);
+    Attribute* entrezQueryAttr = new Attribute(entrezQueryDescriptor, BaseTypes::STRING_TYPE(), false);
     entrezQueryAttr->addRelation(new VisibilityRelation(ALG_ATTR, notCddTools));
     a << entrezQueryAttr;
     a << new Attribute(annotateAsDescriptor, BaseTypes::STRING_TYPE(), false);
     a << new Attribute(outputDescriptor, BaseTypes::STRING_TYPE(), false);
 
-    Attribute *gapAttr = new Attribute(gapCosts, BaseTypes::STRING_TYPE(), false, "2 2");
+    Attribute* gapAttr = new Attribute(gapCosts, BaseTypes::STRING_TYPE(), false, "2 2");
     gapAttr->addRelation(new VisibilityRelation(ALG_ATTR, notCddTools));
     a << gapAttr;
 
-    Attribute *msAttr = new Attribute(matchScores, BaseTypes::STRING_TYPE(), false, "1 -3");
+    Attribute* msAttr = new Attribute(matchScores, BaseTypes::STRING_TYPE(), false, "1 -3");
     QVariantMap scoresGapDependency = ExternalToolSupportUtils::getScoresGapDependencyMap();
     addParametersSetToMap(scoresGapDependency, "Unavailable", ParametersLists::blastp_gapCost);
 
@@ -127,8 +127,8 @@ void RemoteBLASTWorkerFactory::init() {
     a << msAttr;
 
     Descriptor desc(ACTOR_ID, RemoteBLASTWorker::tr("Remote BLAST"), RemoteBLASTWorker::tr("Finds annotations for DNA sequence in remote database."));
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
-    QMap<QString, PropertyDelegate *> delegates;
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
+    QMap<QString, PropertyDelegate*> delegates;
 
     {
         QVariantMap m;
@@ -147,7 +147,7 @@ void RemoteBLASTWorkerFactory::init() {
 
     {
         QVariantMap m;
-        foreach (const QString &curStr, ParametersLists::blastn_dataBase) {
+        foreach (const QString& curStr, ParametersLists::blastn_dataBase) {
             m[curStr] = curStr;
         }
         delegates[DATABASE_ATTR] = new ComboBoxDelegate(m);
@@ -184,13 +184,13 @@ void RemoteBLASTWorkerFactory::init() {
     proto->setIconPath(":remote_blast/images/remote_db_request.png");
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new RemoteBLASTWorkerFactory());
 }
 
 QString RemoteBLASTPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
-    Actor *producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
+    Actor* producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
 
@@ -205,7 +205,7 @@ void RemoteBLASTWorker::init() {
     output = ports.value(BasePorts::OUT_ANNOTATIONS_PORT_ID());
 }
 
-Task *RemoteBLASTWorker::tick() {
+Task* RemoteBLASTWorker::tick() {
     if (getValue<QString>(ANNOTATION_NAME).isEmpty()) {
         algoLog.details(tr("Annotations name is empty, default name used"));
     }
@@ -275,7 +275,7 @@ Task *RemoteBLASTWorker::tick() {
         CHECK_OP(os, new FailTask(os.getError()));
 
         seq.info.clear();
-        const DNAAlphabet *alp = U2AlphabetUtils::findBestAlphabet(seq.seq);
+        const DNAAlphabet* alp = U2AlphabetUtils::findBestAlphabet(seq.seq);
         /*if(seq.length()>MAX_BLAST_SEQ_LEN) {
             log.error(tr("The sequence is too long"));
             return NULL;
@@ -303,7 +303,7 @@ Task *RemoteBLASTWorker::tick() {
             addParametr(cfg.params, ReqParams::mismatchScore, matchScores.split(" ").last());
         }
 
-        Task *t = new RemoteBLASTTask(cfg);
+        Task* t = new RemoteBLASTTask(cfg);
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
     } else if (input->isEnded()) {
@@ -314,7 +314,7 @@ Task *RemoteBLASTWorker::tick() {
 }
 
 void RemoteBLASTWorker::sl_taskFinished() {
-    RemoteBLASTTask *t = qobject_cast<RemoteBLASTTask *>(sender());
+    RemoteBLASTTask* t = qobject_cast<RemoteBLASTTask*>(sender());
     if (t->getState() != Task::State_Finished || t->hasError() || t->isCanceled()) {
         return;
     }
@@ -323,8 +323,8 @@ void RemoteBLASTWorker::sl_taskFinished() {
         if (getValue<QString>(ALG_ATTR) != "ncbi-cdd") {
             QString url = getValue<QString>(ORIGINAL_OUT);
             if (!url.isEmpty()) {
-                IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-                IOAdapter *io = iof->createIOAdapter();
+                IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+                IOAdapter* io = iof->createIOAdapter();
                 if (io->open(url, IOAdapterMode_Write)) {
                     QByteArray output = t->getOutputFile();
                     io->writeBlock(output);

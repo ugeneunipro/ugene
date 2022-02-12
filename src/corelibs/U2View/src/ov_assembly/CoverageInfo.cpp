@@ -44,7 +44,7 @@ void CoverageInfo::updateStats() {
     averageCoverage = (double)sum / coverageInfo.size();
 }
 
-CalcCoverageInfoTask::CalcCoverageInfoTask(const CalcCoverageInfoTaskSettings &settings_)
+CalcCoverageInfoTask::CalcCoverageInfoTask(const CalcCoverageInfoTaskSettings& settings_)
     : BackgroundTask<CoverageInfo>("Calculate assembly coverage", TaskFlag_None), settings(settings_) {
     tpm = Progress_Manual;
 }

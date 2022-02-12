@@ -56,11 +56,11 @@ QString DNASequenceGenerator::prepareReferenceFileFilter() {
     return FileFilters::createFileFilterByObjectTypes({GObjectTypes::SEQUENCE, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT});
 }
 
-void DNASequenceGenerator::generateSequence(const QMap<char, qreal> &charFreqs,
+void DNASequenceGenerator::generateSequence(const QMap<char, qreal>& charFreqs,
                                             int length,
-                                            QByteArray &result,
-                                            QRandomGenerator &randomGenerator,
-                                            U2OpStatus &os) {
+                                            QByteArray& result,
+                                            QRandomGenerator& randomGenerator,
+                                            U2OpStatus& os) {
     GTIMER(cvar, tvar, "DNASequenceGenerator::generateSequence");
     SAFE_POINT(!charFreqs.isEmpty(), "charFreqs is empty", );
     SAFE_POINT(length >= 0, "Invalid sequence length: " + QString::number(length), );
@@ -88,7 +88,7 @@ void DNASequenceGenerator::generateSequence(const QMap<char, qreal> &charFreqs,
     }
 }
 
-static void evaluate(const QByteArray &seq, QMap<char, qreal> &result) {
+static void evaluate(const QByteArray& seq, QMap<char, qreal>& result) {
     QMap<char, int> occurrencesMap;
     for (char ch : qAsConst(seq)) {
         if (!occurrencesMap.contains(ch)) {
@@ -108,13 +108,13 @@ static void evaluate(const QByteArray &seq, QMap<char, qreal> &result) {
     }
 }
 
-void DNASequenceGenerator::evaluateBaseContent(const DNASequence &sequence, QMap<char, qreal> &result) {
+void DNASequenceGenerator::evaluateBaseContent(const DNASequence& sequence, QMap<char, qreal>& result) {
     evaluate(sequence.seq, result);
 }
 
-void DNASequenceGenerator::evaluateBaseContent(const MultipleSequenceAlignment &ma, QMap<char, qreal> &result) {
+void DNASequenceGenerator::evaluateBaseContent(const MultipleSequenceAlignment& ma, QMap<char, qreal>& result) {
     QList<QMap<char, qreal>> rowsContents;
-    foreach (const MultipleSequenceAlignmentRow &row, ma->getMsaRows()) {
+    foreach (const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {
         QMap<char, qreal> rowContent;
         evaluate(row->getData(), rowContent);
         rowsContents.append(rowContent);
@@ -122,7 +122,7 @@ void DNASequenceGenerator::evaluateBaseContent(const MultipleSequenceAlignment &
 
     QListIterator<QMap<char, qreal>> listIter(rowsContents);
     while (listIter.hasNext()) {
-        const QMap<char, qreal> &cm = listIter.next();
+        const QMap<char, qreal>& cm = listIter.next();
         QMapIterator<char, qreal> mapIter(cm);
         while (mapIter.hasNext()) {
             mapIter.next();
@@ -148,7 +148,7 @@ void DNASequenceGenerator::evaluateBaseContent(const MultipleSequenceAlignment &
 //////////////////////////////////////////////////////////////////////////
 
 /** Returns estimated progress weight per phase in DNASequenceGeneratorTask. */
-static float getTaskProgressWeightPerPhase(const DNASequenceGeneratorConfig &config) {
+static float getTaskProgressWeightPerPhase(const DNASequenceGeneratorConfig& config) {
     int nPhases = 2;  // Generate + Save.
     if (config.useReference()) {
         nPhases += 2;  // Load + Evaluate.
@@ -159,9 +159,9 @@ static float getTaskProgressWeightPerPhase(const DNASequenceGeneratorConfig &con
     return (float)(1.0 / nPhases);
 }
 
-EvaluateBaseContentTask *DNASequenceGeneratorTask::createEvaluationTask(Document *doc, QString &err) {
+EvaluateBaseContentTask* DNASequenceGeneratorTask::createEvaluationTask(Document* doc, QString& err) {
     SAFE_POINT(doc->isLoaded(), "Document must be loaded", nullptr);
-    QList<GObject *> gobjects = doc->findGObjectByType(GObjectTypes::SEQUENCE);
+    QList<GObject*> gobjects = doc->findGObjectByType(GObjectTypes::SEQUENCE);
     gobjects << doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (!gobjects.isEmpty()) {
         return new EvaluateBaseContentTask(gobjects.first());
@@ -170,7 +170,7 @@ EvaluateBaseContentTask *DNASequenceGeneratorTask::createEvaluationTask(Document
     return nullptr;
 }
 
-DNASequenceGeneratorTask::DNASequenceGeneratorTask(const DNASequenceGeneratorConfig &cfg)
+DNASequenceGeneratorTask::DNASequenceGeneratorTask(const DNASequenceGeneratorConfig& cfg)
     : Task(tr("Generate sequence task"), TaskFlag_NoRun),
       cfg(cfg),
       loadRefTask(nullptr),
@@ -180,10 +180,10 @@ DNASequenceGeneratorTask::DNASequenceGeneratorTask(const DNASequenceGeneratorCon
     GCOUNTER(cvar, "DNASequenceGeneratorTask");
     if (cfg.useReference()) {
         // do not load reference file if it is already in project and has loaded state
-        const QString &docUrl = cfg.getReferenceUrl();
-        Project *project = AppContext::getProject();
+        const QString& docUrl = cfg.getReferenceUrl();
+        Project* project = AppContext::getProject();
         if (project) {
-            Document *doc = project->findDocumentByURL(docUrl);
+            Document* doc = project->findDocumentByURL(docUrl);
             if (doc && doc->isLoaded()) {
                 QString err;
                 evalTask = createEvaluationTask(doc, err);
@@ -208,8 +208,8 @@ DNASequenceGeneratorTask::DNASequenceGeneratorTask(const DNASequenceGeneratorCon
     }
 }
 
-QList<Task *> DNASequenceGeneratorTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> tasks;
+QList<Task*> DNASequenceGeneratorTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> tasks;
     if (hasError() || isCanceled() || subTask->isCanceled()) {
         return tasks;
     }
@@ -224,19 +224,19 @@ QList<Task *> DNASequenceGeneratorTask::onSubTaskFinished(Task *subTask) {
     } else if (saveTask == subTask) {
         tasks << onSaveTaskFinished();
     }
-    for (Task *task : tasks) {
+    for (Task* task : tasks) {
         task->setSubtaskProgressWeight(getTaskProgressWeightPerPhase(cfg));
     }
     return tasks;
 }
 
-QList<Task *> DNASequenceGeneratorTask::onLoadRefTaskFinished() {
-    QList<Task *> resultTasks;
+QList<Task*> DNASequenceGeneratorTask::onLoadRefTaskFinished() {
+    QList<Task*> resultTasks;
     SAFE_POINT(loadRefTask->isFinished() && !loadRefTask->getStateInfo().isCoR(),
                "Invalid task encountered",
                resultTasks);
     QString err;
-    Document *doc = loadRefTask->getDocument();
+    Document* doc = loadRefTask->getDocument();
     evalTask = createEvaluationTask(doc, err);
     if (evalTask) {
         resultTasks << evalTask;
@@ -246,8 +246,8 @@ QList<Task *> DNASequenceGeneratorTask::onLoadRefTaskFinished() {
     return resultTasks;
 }
 
-QList<Task *> DNASequenceGeneratorTask::onEvalTaskFinished() {
-    QList<Task *> resultTasks;
+QList<Task*> DNASequenceGeneratorTask::onEvalTaskFinished() {
+    QList<Task*> resultTasks;
     SAFE_POINT(evalTask->isFinished() && !evalTask->getStateInfo().isCoR(),
                "Invalid task encountered",
                resultTasks);
@@ -258,19 +258,19 @@ QList<Task *> DNASequenceGeneratorTask::onEvalTaskFinished() {
     return resultTasks;
 }
 
-QList<Task *> DNASequenceGeneratorTask::onGenerateTaskFinished() {
-    QList<Task *> resultTasks;
+QList<Task*> DNASequenceGeneratorTask::onGenerateTaskFinished() {
+    QList<Task*> resultTasks;
     SAFE_POINT(generateTask->isFinished() && !generateTask->getStateInfo().isCoR(),
                "Invalid task encountered",
                resultTasks);
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(
         IOAdapterUtils::url2io(cfg.getOutUrlString()));
 
     if (cfg.saveDoc) {
-        DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(cfg.getDocumentFormatId());
-        Document *doc = format->createNewLoadedDocument(iof, cfg.getOutUrlString(), stateInfo);
+        DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(cfg.getDocumentFormatId());
+        Document* doc = format->createNewLoadedDocument(iof, cfg.getOutUrlString(), stateInfo);
         CHECK_OP(stateInfo, resultTasks);
-        const QSet<QString> &supportedFormats = format->getSupportedObjectTypes();
+        const QSet<QString>& supportedFormats = format->getSupportedObjectTypes();
         bool isSequenceFormat = supportedFormats.contains(GObjectTypes::SEQUENCE);
         if (isSequenceFormat) {
             addSequencesToSeqDoc(doc);
@@ -283,7 +283,7 @@ QList<Task *> DNASequenceGeneratorTask::onGenerateTaskFinished() {
         saveTask = new SaveDocumentTask(doc);
         resultTasks << saveTask;
     } else {  // TODO: avoid high memory consumption here
-        const DNAAlphabet *alp = cfg.getAlphabet();
+        const DNAAlphabet* alp = cfg.getAlphabet();
         SAFE_POINT(alp != nullptr, "Generated sequence has invalid alphabet", resultTasks);
         U2DbiRef dbiRef = generateTask->getDbiRef();
         QString baseSeqName = cfg.getSequenceName();
@@ -293,7 +293,7 @@ QList<Task *> DNASequenceGeneratorTask::onGenerateTaskFinished() {
             QString seqName = totalSeqCount > 1 ? baseSeqName + " " + QString::number(sequenceIndex + 1) : baseSeqName;
             DbiConnection con(dbiRef, stateInfo);
             CHECK_OP(stateInfo, resultTasks);
-            U2SequenceDbi *sequenceDbi = con.dbi->getSequenceDbi();
+            U2SequenceDbi* sequenceDbi = con.dbi->getSequenceDbi();
             QByteArray seqContent = sequenceDbi->getSequenceData(seqs[sequenceIndex].id, U2_REGION_MAX, stateInfo);
             results << DNASequence(seqName, seqContent, alp);
         }
@@ -301,13 +301,13 @@ QList<Task *> DNASequenceGeneratorTask::onGenerateTaskFinished() {
     return resultTasks;
 }
 
-void DNASequenceGeneratorTask::addSequencesToMsaDoc(Document *source) {
-    const QSet<QString> &supportedFormats = source->getDocumentFormat()->getSupportedObjectTypes();
+void DNASequenceGeneratorTask::addSequencesToMsaDoc(Document* source) {
+    const QSet<QString>& supportedFormats = source->getDocumentFormat()->getSupportedObjectTypes();
     SAFE_POINT(supportedFormats.contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT),
                "Invalid document format", );
     SAFE_POINT(generateTask != nullptr, "Invalid generate task", );
     U2DbiRef dbiRef = generateTask->getDbiRef();
-    const DNAAlphabet *alp = cfg.alphabet;
+    const DNAAlphabet* alp = cfg.alphabet;
     SAFE_POINT(alp != nullptr, "Generated sequence has invalid alphabet", );
     QString baseSeqName = cfg.getSequenceName();
     QList<U2Sequence> seqs = generateTask->getResults();
@@ -321,13 +321,13 @@ void DNASequenceGeneratorTask::addSequencesToMsaDoc(Document *source) {
         QByteArray seqContent = con.dbi->getSequenceDbi()->getSequenceData(seqs[sequenceIndex].id, U2_REGION_MAX, stateInfo);
         msa->addRow(seqName, seqContent, sequenceIndex);
     }
-    MultipleSequenceAlignmentObject *alnObject = MultipleSequenceAlignmentImporter::createAlignment(source->getDbiRef(), msa, stateInfo);
+    MultipleSequenceAlignmentObject* alnObject = MultipleSequenceAlignmentImporter::createAlignment(source->getDbiRef(), msa, stateInfo);
     CHECK_OP(stateInfo, );
     source->addObject(alnObject);
 }
 
-void DNASequenceGeneratorTask::addSequencesToSeqDoc(Document *source) {
-    const QSet<QString> &supportedFormats = source->getDocumentFormat()->getSupportedObjectTypes();
+void DNASequenceGeneratorTask::addSequencesToSeqDoc(Document* source) {
+    const QSet<QString>& supportedFormats = source->getDocumentFormat()->getSupportedObjectTypes();
     SAFE_POINT(supportedFormats.contains(GObjectTypes::SEQUENCE), "Invalid document format", );
     SAFE_POINT(generateTask != nullptr, "Invalid generate task", );
     U2DbiRef dbiRef = generateTask->getDbiRef();
@@ -341,17 +341,17 @@ void DNASequenceGeneratorTask::addSequencesToSeqDoc(Document *source) {
     }
 }
 
-QList<Task *> DNASequenceGeneratorTask::onSaveTaskFinished() {
-    Document *doc = saveTask->getDocument();
-    QList<Task *> resultTasks;
+QList<Task*> DNASequenceGeneratorTask::onSaveTaskFinished() {
+    Document* doc = saveTask->getDocument();
+    QList<Task*> resultTasks;
 
     if (!cfg.addToProj) {
         doc->unload();
         delete doc;
     } else {
-        Project *prj = AppContext::getProject();
+        Project* prj = AppContext::getProject();
         if (prj) {
-            Document *d = prj->findDocumentByURL(doc->getURL());
+            Document* d = prj->findDocumentByURL(doc->getURL());
             if (d == nullptr) {
                 prj->addDocument(doc);
                 resultTasks << new OpenViewTask(doc);
@@ -362,7 +362,7 @@ QList<Task *> DNASequenceGeneratorTask::onSaveTaskFinished() {
                 delete doc;
             }
         } else {
-            Task *openWithProjectTask = AppContext::getProjectLoader()->openWithProjectTask(QList<GUrl>() << doc->getURL());
+            Task* openWithProjectTask = AppContext::getProjectLoader()->openWithProjectTask(QList<GUrl>() << doc->getURL());
             if (openWithProjectTask != nullptr) {
                 resultTasks << openWithProjectTask;
             }
@@ -375,17 +375,17 @@ QList<Task *> DNASequenceGeneratorTask::onSaveTaskFinished() {
 }
 
 // EvaluateBaseContentTask
-EvaluateBaseContentTask::EvaluateBaseContentTask(GObject *obj)
+EvaluateBaseContentTask::EvaluateBaseContentTask(GObject* obj)
     : Task(tr("Evaluate base content task"), TaskFlag_None), _obj(obj), alp(nullptr) {
 }
 
 void EvaluateBaseContentTask::run() {
     if (_obj->getGObjectType() == GObjectTypes::SEQUENCE) {
-        auto dnaObj = qobject_cast<U2SequenceObject *>(_obj);
+        auto dnaObj = qobject_cast<U2SequenceObject*>(_obj);
         alp = dnaObj->getAlphabet();
         DNASequenceGenerator::evaluateBaseContent(dnaObj->getWholeSequence(stateInfo), result);
     } else if (_obj->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
-        auto maObj = qobject_cast<MultipleSequenceAlignmentObject *>(_obj);
+        auto maObj = qobject_cast<MultipleSequenceAlignmentObject*>(_obj);
         alp = maObj->getAlphabet();
         DNASequenceGenerator::evaluateBaseContent(maObj->getMultipleAlignment(), result);
     } else {
@@ -394,7 +394,7 @@ void EvaluateBaseContentTask::run() {
 }
 
 // GenerateTask
-GenerateDNASequenceTask::GenerateDNASequenceTask(const QMap<char, qreal> &baseContent_,
+GenerateDNASequenceTask::GenerateDNASequenceTask(const QMap<char, qreal>& baseContent_,
                                                  int length_,
                                                  int window_,
                                                  int count_,

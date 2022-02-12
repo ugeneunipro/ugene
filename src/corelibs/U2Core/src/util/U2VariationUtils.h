@@ -43,13 +43,13 @@ enum CallVariationsMode {
 class U2CORE_EXPORT U2VariationUtils {
 public:
     // track manipulations
-    static void addVariationsToTrack(const U2EntityRef &ref, const QList<U2Variant> &variants, U2OpStatus &os);
-    static U2VariantTrack createVariantTrack(const U2DbiRef &dbiRef, const QString &seqName, U2OpStatus &os);
+    static void addVariationsToTrack(const U2EntityRef& ref, const QList<U2Variant>& variants, U2OpStatus& os);
+    static U2VariantTrack createVariantTrack(const U2DbiRef& dbiRef, const QString& seqName, U2OpStatus& os);
     // convertors
-    static AnnotationData variantToAnnotation(const U2Variant &var);
-    static U2Feature variantToFeature(const U2Variant &var);
+    static AnnotationData variantToAnnotation(const U2Variant& var);
+    static U2Feature variantToFeature(const U2Variant& var);
     // variations revealing
-    static QList<U2Variant> getSNPFromSequences(const QByteArray &refSeq, const QByteArray &varSeq, CallVariationsMode mode = Mode_Variations, bool ignoreGaps = false, const QString &namePrefix = QString(), int nameStartIdx = 0);
+    static QList<U2Variant> getSNPFromSequences(const QByteArray& refSeq, const QByteArray& varSeq, CallVariationsMode mode = Mode_Variations, bool ignoreGaps = false, const QString& namePrefix = QString(), int nameStartIdx = 0);
 };
 
 }  // namespace U2

@@ -38,7 +38,7 @@
 
 namespace U2 {
 
-ScriptEditorDialog::ScriptEditorDialog(QWidget *w, const QString &roHeaderText, const QString &scriptText)
+ScriptEditorDialog::ScriptEditorDialog(QWidget* w, const QString& roHeaderText, const QString& scriptText)
     : QDialog(w), ui(new Ui_ScriptEditorDialog()) {
     ui->setupUi(this);
     new HelpButton(this, ui->buttonBox, "65929977");
@@ -57,7 +57,7 @@ ScriptEditorDialog::ScriptEditorDialog(QWidget *w, const QString &roHeaderText, 
     connect(ui->openButton, SIGNAL(clicked()), SLOT(sl_openScript()));
     connect(ui->saveButton, SIGNAL(clicked()), SLOT(sl_saveScript()));
     connect(ui->saveAsButton, SIGNAL(clicked()), SLOT(sl_saveAsScript()));
-    connect(ui->scriptPathEdit, SIGNAL(textChanged(const QString &)), SLOT(sl_nameChanged(const QString &)));
+    connect(ui->scriptPathEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_nameChanged(const QString&)));
     connect(scriptEdit, SIGNAL(si_textChanged()), SLOT(sl_scriptChanged()));
     connect(scriptEdit, SIGNAL(si_cursorPositionChanged()), SLOT(sl_cursorPositionChanged()));
 
@@ -68,7 +68,7 @@ ScriptEditorDialog::~ScriptEditorDialog() {
     delete ui;
 }
 
-void ScriptEditorDialog::sl_nameChanged(const QString &) {
+void ScriptEditorDialog::sl_nameChanged(const QString&) {
     updateState();
 }
 
@@ -82,12 +82,12 @@ void ScriptEditorDialog::updateState() {
     ui->saveButton->setEnabled(hasPath && hasScript);
 }
 
-void ScriptEditorDialog::setScriptText(const QString &text) {
+void ScriptEditorDialog::setScriptText(const QString& text) {
     ui->scriptPathEdit->clear();
     scriptEdit->setScriptText(text);
 }
 
-void ScriptEditorDialog::setScriptPath(const QString &path) {
+void ScriptEditorDialog::setScriptPath(const QString& path) {
     QFile file(path);
     bool ok = file.open(QFile::ReadOnly);
     if (file.size() > 100 * 1000) {
@@ -137,7 +137,7 @@ void ScriptEditorDialog::sl_saveAsScript() {
     save(ld.url);
 }
 
-void ScriptEditorDialog::save(const QString &url) {
+void ScriptEditorDialog::save(const QString& url) {
     QString script = scriptEdit->scriptText();
     QFile file(url);
     bool ok = file.open(QFile::WriteOnly | QFile::Truncate);

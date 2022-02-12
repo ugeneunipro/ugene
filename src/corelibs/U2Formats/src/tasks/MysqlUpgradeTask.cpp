@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-MysqlUpgradeTask::MysqlUpgradeTask(const U2DbiRef &dbiRef)
+MysqlUpgradeTask::MysqlUpgradeTask(const U2DbiRef& dbiRef)
     : Task(tr("Upgrade mysql database"), TaskFlag_None),
       dbiRef(dbiRef) {
     SAFE_POINT_EXT(MYSQL_DBI_ID == dbiRef.dbiFactoryId, setError(QString("Unexpected dbi factory id: expect '%1', got '%2'").arg(MYSQL_DBI_ID).arg(dbiRef.dbiFactoryId)), );
@@ -40,7 +40,7 @@ void MysqlUpgradeTask::run() {
     MysqlDbiUtils::upgrade(dbiRef, stateInfo);
 }
 
-const U2DbiRef &MysqlUpgradeTask::getDbiRef() const {
+const U2DbiRef& MysqlUpgradeTask::getDbiRef() const {
     return dbiRef;
 }
 

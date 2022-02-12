@@ -35,17 +35,17 @@
 namespace U2 {
 
 /** Returns a common alphabet for MSA object & all sequences in the list and the alignment. Defaults to RAW if no common alphabet can be derived. */
-static const DNAAlphabet *deriveCommonAlphabet(const QList<DNASequence> &sequenceList,
-                                               const DNAAlphabet *msaAlphabet,
+static const DNAAlphabet* deriveCommonAlphabet(const QList<DNASequence>& sequenceList,
+                                               const DNAAlphabet* msaAlphabet,
                                                bool recheckNewSequenceAlphabetOnMismatch) {
     SAFE_POINT(msaAlphabet != nullptr, "msaAlphabet can't be null!", {});
-    const DNAAlphabet *alphabet = msaAlphabet;
-    for (const DNASequence &sequence : qAsConst(sequenceList)) {
+    const DNAAlphabet* alphabet = msaAlphabet;
+    for (const DNASequence& sequence : qAsConst(sequenceList)) {
         SAFE_POINT(sequence.alphabet != nullptr, "sequence alphabet can't be null!", {});
-        const DNAAlphabet *commonAlphabet = U2AlphabetUtils::deriveCommonAlphabet(sequence.alphabet, alphabet);
+        const DNAAlphabet* commonAlphabet = U2AlphabetUtils::deriveCommonAlphabet(sequence.alphabet, alphabet);
         SAFE_POINT(commonAlphabet != nullptr, "deriveCommonAlphabet returns null for non-null input!", {});
         if (!alphabet->isRaw() && alphabet != commonAlphabet && recheckNewSequenceAlphabetOnMismatch) {
-            QList<const DNAAlphabet *> allValidAlphabets = U2AlphabetUtils::findAllAlphabets(sequence.constSequence());
+            QList<const DNAAlphabet*> allValidAlphabets = U2AlphabetUtils::findAllAlphabets(sequence.constSequence());
             if (allValidAlphabets.contains(alphabet)) {
                 commonAlphabet = alphabet;
             }
@@ -56,16 +56,16 @@ static const DNAAlphabet *deriveCommonAlphabet(const QList<DNASequence> &sequenc
 }
 
 /** Adds MSA rows to the given MSA object. Adds rows to the same DBI with the MSA object. */
-static void createMsaRowsFromResultSequenceList(U2OpStatus &os,
-                                                const MultipleSequenceAlignmentObject *msaObject,
-                                                const QList<DNASequence> &inputSequenceList,
-                                                QList<U2MsaRow> &resultRows) {
+static void createMsaRowsFromResultSequenceList(U2OpStatus& os,
+                                                const MultipleSequenceAlignmentObject* msaObject,
+                                                const QList<DNASequence>& inputSequenceList,
+                                                QList<U2MsaRow>& resultRows) {
     QSet<QString> usedRowNames;
-    for (const MultipleAlignmentRow &row : qAsConst(msaObject->getRows())) {
+    for (const MultipleAlignmentRow& row : qAsConst(msaObject->getRows())) {
         usedRowNames.insert(row->getName());
     }
     U2DbiRef dbiRef = msaObject->getEntityRef().dbiRef;
-    for (const DNASequence &sequenceObject : qAsConst(inputSequenceList)) {
+    for (const DNASequence& sequenceObject : qAsConst(inputSequenceList)) {
         CHECK_OP(os, );
         QString rowName = MSAUtils::rollMsaRowName(sequenceObject.getName(), usedRowNames);
         U2MsaRow row = MSAUtils::copyRowFromSequence(sequenceObject, dbiRef, os);
@@ -83,11 +83,11 @@ static void createMsaRowsFromResultSequenceList(U2OpStatus &os,
 }
 
 /** Inserts rows into the alignment. The rows must be stored in the same DBI with MSA object. */
-static void addRowsToAlignment(U2OpStatus &os,
-                               MaModificationInfo &mi,
-                               MultipleSequenceAlignmentObject *msaObject,
-                               U2MsaDbi *msaDbi,
-                               QList<U2MsaRow> &rows,
+static void addRowsToAlignment(U2OpStatus& os,
+                               MaModificationInfo& mi,
+                               MultipleSequenceAlignmentObject* msaObject,
+                               U2MsaDbi* msaDbi,
+                               QList<U2MsaRow>& rows,
                                int insertMaRowIndex) {
     CHECK(!rows.isEmpty(), );
     U2DataId msaEntityId = msaObject->getEntityRef().entityId;
@@ -98,9 +98,9 @@ static void addRowsToAlignment(U2OpStatus &os,
 }
 
 MaModificationInfo AddSequenceObjectsToAlignmentUtils::addObjectsToAlignment(
-    U2OpStatus &os,
-    MultipleSequenceAlignmentObject *msaObject,
-    const QList<DNASequence> &sequenceList,
+    U2OpStatus& os,
+    MultipleSequenceAlignmentObject* msaObject,
+    const QList<DNASequence>& sequenceList,
     int insertRowIndex,
     bool recheckNewSequenceAlphabetOnMismatch) {
     MaModificationInfo modInfo;
@@ -114,7 +114,7 @@ MaModificationInfo AddSequenceObjectsToAlignmentUtils::addObjectsToAlignment(
 
     {  // Start of MA-object state lock.
         StateLocker stateLocker(msaObject, new StateLock("add_sequences_to_alignment"));
-        const DNAAlphabet *derivedAlphabet = deriveCommonAlphabet(sequenceList, msaObject->getAlphabet(), recheckNewSequenceAlphabetOnMismatch);
+        const DNAAlphabet* derivedAlphabet = deriveCommonAlphabet(sequenceList, msaObject->getAlphabet(), recheckNewSequenceAlphabetOnMismatch);
         CHECK_EXT(derivedAlphabet != nullptr, os.setError(tr("Failed to derive common alphabet")), modInfo);
 
         U2UseCommonUserModStep modStep(msaObject->getEntityRef(), os);
@@ -122,13 +122,13 @@ MaModificationInfo AddSequenceObjectsToAlignmentUtils::addObjectsToAlignment(
         createMsaRowsFromResultSequenceList(os, msaObject, sequenceList, rows);
         CHECK_OP(os, modInfo);
 
-        const DNAAlphabet *alphabetBefore = msaObject->getAlphabet();
-        U2MsaDbi *msaDbi = modStep.getDbi()->getMsaDbi();
+        const DNAAlphabet* alphabetBefore = msaObject->getAlphabet();
+        U2MsaDbi* msaDbi = modStep.getDbi()->getMsaDbi();
         addRowsToAlignment(os, modInfo, msaObject, msaDbi, rows, insertRowIndex);
         CHECK_OP(os, modInfo);
 
         if (msaObject->getAlphabet() != derivedAlphabet) {
-            const U2EntityRef &entityRef = msaObject->getEntityRef();
+            const U2EntityRef& entityRef = msaObject->getEntityRef();
             msaDbi->updateMsaAlphabet(entityRef.entityId, derivedAlphabet->getId(), os);
             CHECK_OP(os, modInfo);
             modInfo.alphabetChanged = alphabetBefore != msaObject->getAlphabet();
@@ -140,8 +140,8 @@ MaModificationInfo AddSequenceObjectsToAlignmentUtils::addObjectsToAlignment(
     return modInfo;
 }
 
-AddSequenceObjectsToAlignmentTask::AddSequenceObjectsToAlignmentTask(MultipleSequenceAlignmentObject *obj,
-                                                                     const QList<DNASequence> &sequenceList,
+AddSequenceObjectsToAlignmentTask::AddSequenceObjectsToAlignmentTask(MultipleSequenceAlignmentObject* obj,
+                                                                     const QList<DNASequence>& sequenceList,
                                                                      int insertMaRowIndex,
                                                                      bool recheckNewSequenceAlphabetOnMismatch)
     : Task(tr("Add sequences to alignment task"), TaskFlags(TaskFlags_FOSE_COSC) | TaskFlag_RunInMainThread),
@@ -159,50 +159,50 @@ void AddSequenceObjectsToAlignmentTask::run() {
     mi = AddSequenceObjectsToAlignmentUtils::addObjectsToAlignment(stateInfo, maObj, sequenceList, insertMaRowIndex, recheckNewSequenceAlphabetOnMismatch);
 }
 
-const MaModificationInfo &AddSequenceObjectsToAlignmentTask::getMaModificationInfo() const {
+const MaModificationInfo& AddSequenceObjectsToAlignmentTask::getMaModificationInfo() const {
     return mi;
 }
 
-AddSequencesFromFilesToAlignmentTask::AddSequencesFromFilesToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QStringList &urls, int insertRowIndex)
+AddSequencesFromFilesToAlignmentTask::AddSequencesFromFilesToAlignmentTask(MultipleSequenceAlignmentObject* obj, const QStringList& urls, int insertRowIndex)
     : AddSequenceObjectsToAlignmentTask(obj, QList<DNASequence>(), insertRowIndex, false), urlList(urls), loadTask(nullptr) {
     connect(maObj, SIGNAL(si_invalidateAlignmentObject()), SLOT(sl_onCancel()));
 }
 
 void AddSequencesFromFilesToAlignmentTask::prepare() {
     AddSequenceObjectsToAlignmentTask::prepare();
-    for (const QString &fileWithSequencesUrl : qAsConst(urlList)) {
+    for (const QString& fileWithSequencesUrl : qAsConst(urlList)) {
         QList<FormatDetectionResult> detectedFormats = DocumentUtils::detectFormat(fileWithSequencesUrl);
         if (detectedFormats.isEmpty()) {
             setError(tr("Unsupported document format: %1").arg(fileWithSequencesUrl));
             continue;
         }
-        IOAdapterFactory *factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-        DocumentFormat *format = detectedFormats.first().format;
+        IOAdapterFactory* factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+        DocumentFormat* format = detectedFormats.first().format;
         loadTask = new LoadDocumentTask(format->getFormatId(), fileWithSequencesUrl, factory);
         addSubTask(loadTask);
     }
 }
 
-QList<Task *> AddSequencesFromFilesToAlignmentTask::onSubTaskFinished(Task *subTask) {
+QList<Task*> AddSequencesFromFilesToAlignmentTask::onSubTaskFinished(Task* subTask) {
     propagateSubtaskError();
     CHECK_OP(stateInfo, {});
 
-    auto loadDocumentSubTask = qobject_cast<LoadDocumentTask *>(subTask);
+    auto loadDocumentSubTask = qobject_cast<LoadDocumentTask*>(subTask);
     SAFE_POINT(loadDocumentSubTask != nullptr, "Not a LoadDocumentTask", {});
 
-    Document *doc = loadDocumentSubTask->getDocument();
-    QList<GObject *> sequenceObjects = doc->findGObjectByType(GObjectTypes::SEQUENCE);
-    for (const GObject *object : qAsConst(sequenceObjects)) {
-        auto sequenceObject = qobject_cast<const U2SequenceObject *>(object);
+    Document* doc = loadDocumentSubTask->getDocument();
+    QList<GObject*> sequenceObjects = doc->findGObjectByType(GObjectTypes::SEQUENCE);
+    for (const GObject* object : qAsConst(sequenceObjects)) {
+        auto sequenceObject = qobject_cast<const U2SequenceObject*>(object);
         SAFE_POINT(sequenceObject != nullptr, "Not a sequence object:" + object->getGObjectName(), {});
         DNASequence sequence = sequenceObject->getWholeSequence(stateInfo);
         CHECK(!stateInfo.isCoR(), {});
         sequenceList.append(sequence);
     }
 
-    QList<GObject *> msaObjects = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
-    for (const GObject *object : qAsConst(msaObjects)) {
-        auto msaObject = qobject_cast<const MultipleSequenceAlignmentObject *>(object);
+    QList<GObject*> msaObjects = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    for (const GObject* object : qAsConst(msaObjects)) {
+        auto msaObject = qobject_cast<const MultipleSequenceAlignmentObject*>(object);
         SAFE_POINT(msaObject != nullptr, "Not an alignment object:" + object->getGObjectName(), {});
         for (int i = 0; i < msaObject->getRowCount(); i++) {
             // Keep all gaps, so alignment sequences are added in the 'aligned' form.
@@ -217,8 +217,8 @@ QList<Task *> AddSequencesFromFilesToAlignmentTask::onSubTaskFinished(Task *subT
 
 ////////////////////////////////////////////////////////////////////////////////
 // AddSequencesFromDocumentsToAlignmentTask
-AddSequencesFromDocumentsToAlignmentTask::AddSequencesFromDocumentsToAlignmentTask(MultipleSequenceAlignmentObject *obj,
-                                                                                   const QList<Document *> &docs,
+AddSequencesFromDocumentsToAlignmentTask::AddSequencesFromDocumentsToAlignmentTask(MultipleSequenceAlignmentObject* obj,
+                                                                                   const QList<Document*>& docs,
                                                                                    int insertMaRowIndex,
                                                                                    bool recheckNewSequenceAlphabets)
     : AddSequenceObjectsToAlignmentTask(obj, {}, insertMaRowIndex, recheckNewSequenceAlphabets), docs(docs) {

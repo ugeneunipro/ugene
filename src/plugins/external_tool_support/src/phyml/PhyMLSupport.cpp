@@ -50,18 +50,18 @@ PhyMLSupport::PhyMLSupport()
     toolKitName = "PhyML";
 
     // register the method
-    PhyTreeGeneratorRegistry *registry = AppContext::getPhyTreeGeneratorRegistry();
+    PhyTreeGeneratorRegistry* registry = AppContext::getPhyTreeGeneratorRegistry();
     registry->registerPhyTreeGenerator(new PhyMLAdapter(), PhyMLSupport::ET_PHYML_ALGORITHM_NAME_AND_KEY);
 }
 
 ////////////////////////////////////////
 // PhyMLAdapter
 
-Task *PhyMLAdapter::createCalculatePhyTreeTask(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &s) {
+Task* PhyMLAdapter::createCalculatePhyTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s) {
     return new PhyMLSupportTask(ma, s);
 }
 
-CreatePhyTreeWidget *PhyMLAdapter::createPhyTreeSettingsWidget(const MultipleSequenceAlignment &ma, QWidget *parent) {
+CreatePhyTreeWidget* PhyMLAdapter::createPhyTreeSettingsWidget(const MultipleSequenceAlignment& ma, QWidget* parent) {
     return new PhyMlWidget(ma, parent);
 }
 
@@ -103,7 +103,7 @@ const QStringList PhyMLModelTypes::dnaModelsWithFixedTtRatio(QStringList()
 const QStringList PhyMLModelTypes::dnaModelsWithEstimatedTtRatio(QStringList()
                                                                  << "TN93");
 
-SubstModelTrRatioType PhyMLModelTypes::getTtRatioType(const QString &modelName) {
+SubstModelTrRatioType PhyMLModelTypes::getTtRatioType(const QString& modelName) {
     if (dnaSubstitutionModels.contains(modelName)) {
         if (dnaModelsWithFixedTtRatio.contains(modelName)) {
             return ONLY_FIXED_TT_RATIO;

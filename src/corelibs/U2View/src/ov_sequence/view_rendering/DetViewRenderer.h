@@ -34,29 +34,29 @@ class DetView;
 /************************************************************************/
 class U2VIEW_EXPORT DetViewRenderer : public SequenceViewAnnotatedRenderer {
 public:
-    DetViewRenderer(DetView *detView, SequenceObjectContext *ctx);
+    DetViewRenderer(DetView* detView, SequenceObjectContext* ctx);
 
     double getCurrentScale() const override;
     qint64 getSymbolsPerLine(const qint64 width) const;
     virtual int getDirectLine() const = 0;
 
-    virtual void drawCursor(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) = 0;
+    virtual void drawCursor(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange) = 0;
 
     virtual int getRowsInLineCount() const = 0;
 
-    virtual bool isOnTranslationsLine(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const = 0;
-    virtual bool isOnAnnotationLine(const QPoint &p, Annotation *a, int region, const AnnotationSettings *as, const QSize &canvasSize, const U2Region &visibleRange) const = 0;
+    virtual bool isOnTranslationsLine(const QPoint& p, const QSize& canvasSize, const U2Region& visibleRange) const = 0;
+    virtual bool isOnAnnotationLine(const QPoint& p, Annotation* a, int region, const AnnotationSettings* as, const QSize& canvasSize, const U2Region& visibleRange) const = 0;
 
     virtual qint64 getOneLineHeight() const = 0;
-    virtual qint64 getLinesCount(const QSize &canvasSize) const = 0;
+    virtual qint64 getLinesCount(const QSize& canvasSize) const = 0;
 
     virtual void update() = 0;
 
     /** Returns all y regions used to draw the given location of the annotation. */
-    virtual QList<U2Region> getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, const QSize &canvasSize, const U2Region &visibleRange) const = 0;
+    virtual QList<U2Region> getAnnotationYRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings, const QSize& canvasSize, const U2Region& visibleRange) const = 0;
 
 protected:
-    DetView *const detView;
+    DetView* const detView;
 };
 
 /************************************************************************/
@@ -64,7 +64,7 @@ protected:
 /************************************************************************/
 class DetViewRendererFactory {
 public:
-    static DetViewRenderer *createRenderer(DetView *detView, SequenceObjectContext *ctx, bool multiLine = false);
+    static DetViewRenderer* createRenderer(DetView* detView, SequenceObjectContext* ctx, bool multiLine = false);
 };
 
 }  // namespace U2

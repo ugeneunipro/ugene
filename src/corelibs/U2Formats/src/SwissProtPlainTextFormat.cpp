@@ -59,7 +59,7 @@ const QMap<QString, int> SwissProtPlainTextFormat::MONTH_STRING_2_INT = {{"JAN",
 const QString SwissProtPlainTextFormat::ANNOTATION_HEADER_REGEXP = "FT   ([A-Za-z0-9\\_]+) *([0-9]+)(..([0-9]+))?";
 const QString SwissProtPlainTextFormat::ANNOTATION_QUALIFIERS_REGEXP = "FT +\\/([a-z]+)=\\\"([a-zA-Z0-9\\:\\|\\-\\_\\s\\,\\;]*)\\\"";
 
-SwissProtPlainTextFormat::SwissProtPlainTextFormat(QObject *p)
+SwissProtPlainTextFormat::SwissProtPlainTextFormat(QObject* p)
     : EMBLGenbankAbstractDocument(BaseDocumentFormats::PLAIN_SWISS_PROT, tr("Swiss-Prot"), 80, DocumentFormatFlag_SupportStreaming, p) {
     formatDescription = tr("SwissProt is a format of the UniProtKB/Swiss-prot database used for "
                            "storing annotated protein sequence");
@@ -77,10 +77,10 @@ SwissProtPlainTextFormat::SwissProtPlainTextFormat(QObject *p)
     tagMap["CC"] = DNAInfo::COMMENT;  // The CC lines are free text comments on the entry, and are used to convey any useful information.
 }
 
-FormatCheckResult SwissProtPlainTextFormat::checkRawTextData(const QByteArray &rawData, const GUrl &) const {
+FormatCheckResult SwissProtPlainTextFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
     // TODO: improve format checking
 
-    const char *data = rawData.constData();
+    const char* data = rawData.constData();
     int size = rawData.size();
 
     bool textOnly = !TextUtils::contains(TextUtils::BINARY, data, size);
@@ -100,7 +100,7 @@ FormatCheckResult SwissProtPlainTextFormat::checkRawTextData(const QByteArray &r
 //////////////////////////////////////////////////////////////////////////
 // loading
 
-bool SwissProtPlainTextFormat::readIdLine(ParserState *s) {
+bool SwissProtPlainTextFormat::readIdLine(ParserState* s) {
     if (!s->hasKey("ID", 2)) {
         s->si.setError(SwissProtPlainTextFormat::tr("ID is not the first line"));
         return false;
@@ -127,10 +127,10 @@ bool SwissProtPlainTextFormat::readIdLine(ParserState *s) {
     return true;
 }
 
-bool SwissProtPlainTextFormat::readEntry(ParserState *st, U2SequenceImporter &seqImporter, int &sequenceLen, int &fullSequenceLen, bool merge, int gapSize, U2OpStatus &os) {
+bool SwissProtPlainTextFormat::readEntry(ParserState* st, U2SequenceImporter& seqImporter, int& sequenceLen, int& fullSequenceLen, bool merge, int gapSize, U2OpStatus& os) {
     Q_UNUSED(merge);
     Q_UNUSED(gapSize);
-    U2OpStatus &si = st->si;
+    U2OpStatus& si = st->si;
     QString lastTagName;
     bool hasLine = false;
     while (hasLine || st->readNextLine(false)) {
@@ -231,17 +231,17 @@ bool SwissProtPlainTextFormat::readEntry(ParserState *st, U2SequenceImporter &se
 
     return false;
 }
-bool SwissProtPlainTextFormat::readSequence(ParserState *st, U2SequenceImporter &seqImporter, int &sequenceLen, int &fullSequenceLen, U2OpStatus &os) {
+bool SwissProtPlainTextFormat::readSequence(ParserState* st, U2SequenceImporter& seqImporter, int& sequenceLen, int& fullSequenceLen, U2OpStatus& os) {
     QByteArray res;
 
-    IOAdapter *io = st->io;
-    U2OpStatus &si = st->si;
+    IOAdapter* io = st->io;
+    U2OpStatus& si = st->si;
     si.setDescription(tr("Reading sequence %1").arg(st->entry->name));
     int headerSeqLen = st->entry->seqLen;
     res.reserve(res.size() + headerSeqLen);
 
     QByteArray readBuffer(READ_BUFF_SIZE, '\0');
-    char *buff = readBuffer.data();
+    char* buff = readBuffer.data();
 
     // reading sequence
     QBuffer writer(&res);
@@ -300,7 +300,7 @@ bool SwissProtPlainTextFormat::readSequence(ParserState *st, U2SequenceImporter 
     return true;
 }
 
-void SwissProtPlainTextFormat::readAnnotations(ParserState *st, int offset) {
+void SwissProtPlainTextFormat::readAnnotations(ParserState* st, int offset) {
     st->si.setDescription(tr("Reading annotations %1").arg(st->entry->name));
     st->entry->hasAnnotationObjectFlag = true;
     do {
@@ -333,9 +333,9 @@ void SwissProtPlainTextFormat::readAnnotations(ParserState *st, int offset) {
     } while (st->readNextLine());
 }
 
-bool SwissProtPlainTextFormat::isNewAnnotationFormat(const QVariant &dateList, U2OpStatus &si) {
+bool SwissProtPlainTextFormat::isNewAnnotationFormat(const QVariant& dateList, U2OpStatus& si) {
     bool result = false;
-    foreach (const QVariant &dateLine, dateList.toList()) {
+    foreach (const QVariant& dateLine, dateList.toList()) {
         CHECK_CONTINUE(!dateLine.toString().contains("sequence version"));
 
         QRegularExpression re("[0-9]{2}-[A-Z]{3}-[0-9]{4}");
@@ -372,8 +372,8 @@ bool SwissProtPlainTextFormat::isNewAnnotationFormat(const QVariant &dateList, U
 // column annotation key starts with
 #define K_COL 5
 
-SharedAnnotationData SwissProtPlainTextFormat::readAnnotationOldFormat(IOAdapter *io, char *cbuff, int len, int READ_BUFF_SIZE, U2OpStatus &si, int offset) {
-    AnnotationData *a = new AnnotationData();
+SharedAnnotationData SwissProtPlainTextFormat::readAnnotationOldFormat(IOAdapter* io, char* cbuff, int len, int READ_BUFF_SIZE, U2OpStatus& si, int offset) {
+    AnnotationData* a = new AnnotationData();
     SharedAnnotationData f(a);
     QString key = QString::fromLatin1(cbuff + 5, 10).trimmed();
     if (key.isEmpty()) {
@@ -405,8 +405,8 @@ SharedAnnotationData SwissProtPlainTextFormat::readAnnotationOldFormat(IOAdapter
     QString valQStr = QString::fromLatin1(cbuff).split(QRegExp("\\n")).first().mid(34);
     bool isDescription = true;
 
-    const QByteArray &aminoQ = GBFeatureUtils::QUALIFIER_AMINO_STRAND;
-    const QByteArray &nameQ = GBFeatureUtils::QUALIFIER_NAME;
+    const QByteArray& aminoQ = GBFeatureUtils::QUALIFIER_AMINO_STRAND;
+    const QByteArray& nameQ = GBFeatureUtils::QUALIFIER_NAME;
     // here we have valid key and location;
     // reading qualifiers
     bool lineOk = true;
@@ -438,12 +438,12 @@ SharedAnnotationData SwissProtPlainTextFormat::readAnnotationOldFormat(IOAdapter
             if (valStart < flen) {
                 valStart++;  // skip '=' char
             }
-            const QBitArray &WHITE_SPACES = TextUtils::WHITES;
+            const QBitArray& WHITE_SPACES = TextUtils::WHITES;
             for (; valStart < flen && WHITE_SPACES[(uchar)cbuff[flen - 1]]; flen--) {
             };  // trim value
-            const char *qname = cbuff + QN_COL;
+            const char* qname = cbuff + QN_COL;
             int qnameLen = valStart - (QN_COL + 1);
-            const char *qval = cbuff + valStart;
+            const char* qval = cbuff + valStart;
             int qvalLen = flen - valStart;
             if (qnameLen == aminoQ.length() && TextUtils::equals(qname, aminoQ.constData(), qnameLen)) {
                 // a->aminoFrame = qvalLen == aminoQYes.length() && TextUtils::equals(qval, aminoQYes.constData(), qvalLen) ? TriState_Yes
@@ -460,8 +460,8 @@ SharedAnnotationData SwissProtPlainTextFormat::readAnnotationOldFormat(IOAdapter
     return f;
 }
 
-SharedAnnotationData SwissProtPlainTextFormat::readAnnotationNewFormat(char *cbuff, U2OpStatus &si, int offset) {
-    AnnotationData *a = new AnnotationData();
+SharedAnnotationData SwissProtPlainTextFormat::readAnnotationNewFormat(char* cbuff, U2OpStatus& si, int offset) {
+    AnnotationData* a = new AnnotationData();
     SharedAnnotationData f(a);
 
     QRegularExpression re(QString("^%1\\r?\\n?(%2\\r?\\n?)+").arg(ANNOTATION_HEADER_REGEXP).arg(ANNOTATION_QUALIFIERS_REGEXP));
@@ -491,7 +491,7 @@ SharedAnnotationData SwissProtPlainTextFormat::readAnnotationNewFormat(char *cbu
     }
 
     processAnnotationRegion(a, start, end, offset);
-    foreach (const QString &string, annotationStrings) {
+    foreach (const QString& string, annotationStrings) {
         CHECK_CONTINUE(!string.isEmpty());
 
         QString stringQualifier = string.simplified();
@@ -519,13 +519,13 @@ SharedAnnotationData SwissProtPlainTextFormat::readAnnotationNewFormat(char *cbu
     return f;
 }
 
-void SwissProtPlainTextFormat::check4SecondaryStructure(AnnotationData *a) {
+void SwissProtPlainTextFormat::check4SecondaryStructure(AnnotationData* a) {
     CHECK(a->name == "STRAND" || a->name == "HELIX" || a->name == "TURN", );
 
     a->qualifiers.append(U2Qualifier(GBFeatureUtils::QUALIFIER_GROUP, "Secondary structure"));
 }
 
-void SwissProtPlainTextFormat::processAnnotationRegion(AnnotationData *a, const int start, const int end, const int offset) {
+void SwissProtPlainTextFormat::processAnnotationRegion(AnnotationData* a, const int start, const int end, const int offset) {
     a->location->reset();
     if (a->name == "DISULFID" && start != end) {
         a->location->op = U2LocationOperator_Order;

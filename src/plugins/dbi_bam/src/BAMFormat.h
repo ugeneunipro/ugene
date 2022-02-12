@@ -35,7 +35,7 @@ class BAMFormat : public DbiDocumentFormat {
 public:
     BAMFormat();
 
-    void storeDocument(Document *d, IOAdapter *io, U2OpStatus &os);
+    void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 };
 
 namespace BAM {
@@ -43,9 +43,9 @@ namespace BAM {
 class BAMFormatUtils : public QObject {
     Q_OBJECT
 public:
-    BAMFormatUtils(QObject *parent = nullptr);
+    BAMFormatUtils(QObject* parent = nullptr);
 
-    FormatCheckResult checkRawData(const QByteArray &rawData, const GUrl &url = GUrl()) const;
+    FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& url = GUrl()) const;
 
     QStringList getSupportedDocumentFileExtensions() const {
         return fileExtensions;

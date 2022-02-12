@@ -33,11 +33,11 @@
 
 namespace U2 {
 
-static QFileDialog::Options getEffectiveOptions(const QFileDialog::Options &options) {
+static QFileDialog::Options getEffectiveOptions(const QFileDialog::Options& options) {
     CHECK(!options.testFlag(QFileDialog::DontUseNativeDialog), options);
 
     bool useNonNativeDialog = qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0;
-    TaskScheduler *taskScheduler = AppContext::getTaskScheduler();
+    TaskScheduler* taskScheduler = AppContext::getTaskScheduler();
     if (!useNonNativeDialog && taskScheduler != nullptr && taskScheduler->isCallerInsideTaskSchedulerCallback()) {
         uiLog.trace("Using a non-native file dialog: the method is inside task processing callback");
         useNonNativeDialog = true;
@@ -47,55 +47,55 @@ static QFileDialog::Options getEffectiveOptions(const QFileDialog::Options &opti
 
 static void activateAppWindow() {
     if (isOsMac()) {
-        QWidget *target = QApplication::activeModalWidget();
+        QWidget* target = QApplication::activeModalWidget();
         if (target == nullptr) {
-            MainWindow *mainWindow = AppContext::getMainWindow();
+            MainWindow* mainWindow = AppContext::getMainWindow();
             CHECK(mainWindow != nullptr, );
-            QMainWindow *qMainWindow = mainWindow->getQMainWindow();
-            target = qobject_cast<QWidget *>(qMainWindow);
+            QMainWindow* qMainWindow = mainWindow->getQMainWindow();
+            target = qobject_cast<QWidget*>(qMainWindow);
         }
         CHECK(target != nullptr, );
         target->activateWindow();
     }
 }
 
-QString U2FileDialog::getOpenFileName(QWidget *parent,
-                                      const QString &caption,
-                                      const QString &dir,
-                                      const QString &filter,
-                                      QString *selectedFilter,
-                                      const QFileDialog::Options &options) {
+QString U2FileDialog::getOpenFileName(QWidget* parent,
+                                      const QString& caption,
+                                      const QString& dir,
+                                      const QString& filter,
+                                      QString* selectedFilter,
+                                      const QFileDialog::Options& options) {
     activateAppWindow();
     QFileDialog::Options effectiveOptions = getEffectiveOptions(options);
     return QFileDialog::getOpenFileName(parent, caption, dir, filter, selectedFilter, effectiveOptions);
 }
 
-QStringList U2FileDialog::getOpenFileNames(QWidget *parent,
-                                           const QString &caption,
-                                           const QString &dir,
-                                           const QString &filter,
-                                           QString *selectedFilter,
-                                           const QFileDialog::Options &options) {
+QStringList U2FileDialog::getOpenFileNames(QWidget* parent,
+                                           const QString& caption,
+                                           const QString& dir,
+                                           const QString& filter,
+                                           QString* selectedFilter,
+                                           const QFileDialog::Options& options) {
     activateAppWindow();
     QFileDialog::Options effectiveOptions = getEffectiveOptions(options);
     return QFileDialog::getOpenFileNames(parent, caption, dir, filter, selectedFilter, effectiveOptions);
 }
 
-QString U2FileDialog::getExistingDirectory(QWidget *parent,
-                                           const QString &caption,
-                                           const QString &dir,
-                                           const QFileDialog::Options &options) {
+QString U2FileDialog::getExistingDirectory(QWidget* parent,
+                                           const QString& caption,
+                                           const QString& dir,
+                                           const QFileDialog::Options& options) {
     activateAppWindow();
     QFileDialog::Options effectiveOptions = getEffectiveOptions(options);
     return QFileDialog::getExistingDirectory(parent, caption, dir, effectiveOptions);
 }
 
-QString U2FileDialog::getSaveFileName(QWidget *parent,
-                                      const QString &caption,
-                                      const QString &dir,
-                                      const QString &filter,
-                                      QString *selectedFilter,
-                                      const QFileDialog::Options &options) {
+QString U2FileDialog::getSaveFileName(QWidget* parent,
+                                      const QString& caption,
+                                      const QString& dir,
+                                      const QString& filter,
+                                      QString* selectedFilter,
+                                      const QFileDialog::Options& options) {
     activateAppWindow();
     QFileDialog::Options effectiveOptions = getEffectiveOptions(options);
     return QFileDialog::getSaveFileName(parent, caption, dir, filter, selectedFilter, effectiveOptions);

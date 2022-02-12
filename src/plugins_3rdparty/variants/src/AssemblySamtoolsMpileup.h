@@ -99,14 +99,14 @@ public:
 class SamtoolsMpileupTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    SamtoolsMpileupTask(const CallVariantsTaskSettings &settings);
+    SamtoolsMpileupTask(const CallVariantsTaskSettings& settings);
 
     void prepare();
     void run();
 
 private:
-    void start(const ProcessRun &pRun, const QString &toolName);
-    void checkExitCode(QProcess *process, const QString &toolName);
+    void start(const ProcessRun& pRun, const QString& toolName);
+    void checkExitCode(QProcess* process, const QString& toolName);
 
 private:
     CallVariantsTaskSettings settings;
@@ -120,12 +120,12 @@ private:
 class CallVariantsTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    CallVariantsTask(const CallVariantsTaskSettings &_settings, DbiDataStorage *_store);
+    CallVariantsTask(const CallVariantsTaskSettings& _settings, DbiDataStorage* _store);
 
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
-    const QList<QVariantMap> &getResults() {
+    const QList<QVariantMap>& getResults() {
         return results;
     }
     QString getResultUrl() {
@@ -135,19 +135,19 @@ public:
         results.clear();
     }
 
-    static QString tmpFilePath(const QString &baseName, const QString &ext, U2OpStatus &os);
+    static QString tmpFilePath(const QString& baseName, const QString& ext, U2OpStatus& os);
 
 private:
     enum FileType { Reference,
                     Assembly };
     static QString toString(FileType type);
-    bool ensureFileExists(const QString &url, FileType type);
+    bool ensureFileExists(const QString& url, FileType type);
 
 private:
     CallVariantsTaskSettings settings;
-    LoadDocumentTask *loadTask;
-    SamtoolsMpileupTask *mpileupTask;
-    DbiDataStorage *storage;
+    LoadDocumentTask* loadTask;
+    SamtoolsMpileupTask* mpileupTask;
+    DbiDataStorage* storage;
     QList<QVariantMap> results;
 };
 

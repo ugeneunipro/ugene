@@ -37,11 +37,11 @@
 
 namespace U2 {
 
-void FindGcRegionsTask::find(const char *seq,
+void FindGcRegionsTask::find(const char* seq,
                              qint64 seqLen,
                              U2Region gcRangeInPercents,
                              qint64 len,
-                             QVector<U2Region> &result) {
+                             QVector<U2Region>& result) {
     assert(len <= seqLen);
 
     U2Region lastFound;
@@ -106,7 +106,7 @@ QList<SharedAnnotationData> FindGcRegionsTask::getResultAsAnnotations() const {
     return res;
 }
 
-QList<SharedAnnotationData> FindGcRegionsTask::createAnnotations(const QVector<U2Region> &regions, qint64 offset, U2Strand::Direction strand) {
+QList<SharedAnnotationData> FindGcRegionsTask::createAnnotations(const QVector<U2Region>& regions, qint64 offset, U2Strand::Direction strand) {
     QList<SharedAnnotationData> res;
     foreach (U2Region r, regions) {
         SharedAnnotationData d(new AnnotationData());
@@ -125,7 +125,7 @@ static const QString REGION_END_ATTR("region-end");
 static const QString MIN_LEN_ATTR("min-len");
 static const QString MAX_LEN_ATTR("max-len");
 
-QDFindGcRegionsActor::QDFindGcRegionsActor(QDActorPrototype const *proto)
+QDFindGcRegionsActor::QDFindGcRegionsActor(QDActorPrototype const* proto)
     : QDActor(proto) {
     units[UNIT_ID] = new QDSchemeUnit(this);
 }
@@ -142,13 +142,13 @@ QString QDFindGcRegionsActor::getText() const {
     return tr("Searches regions in a sequence with GC content in the specified range.");
 }
 
-Task *QDFindGcRegionsActor::getAlgorithmTask(const QVector<U2Region> &location) {
-    const DNASequence &sequence = scheme->getSequence();
+Task* QDFindGcRegionsActor::getAlgorithmTask(const QVector<U2Region>& location) {
+    const DNASequence& sequence = scheme->getSequence();
     FindGcRegionsSettings settings;
 
     settings.strand = getStrandToRun();
     if (settings.strand != QDStrand_DirectOnly) {
-        DNATranslation *complTT = nullptr;
+        DNATranslation* complTT = nullptr;
         if (scheme->getSequence().alphabet->isNucleic()) {
             complTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(scheme->getSequence().alphabet);
         }
@@ -186,21 +186,21 @@ Task *QDFindGcRegionsActor::getAlgorithmTask(const QVector<U2Region> &location) 
 
     settings.minLen = minLen;
 
-    Task *t = new Task(tr("Search GC regions QD task"), TaskFlag_NoRun);
+    Task* t = new Task(tr("Search GC regions QD task"), TaskFlag_NoRun);
 
     foreach (U2Region r, location) {
         FindGcRegionsSettings stngs(settings);
         stngs.offset = r.startPos;
-        FindGcRegionsTask *sub = new FindGcRegionsTask(stngs, sequence);
+        FindGcRegionsTask* sub = new FindGcRegionsTask(stngs, sequence);
         t->addSubTask(sub);
-        connect(new TaskSignalMapper(sub), SIGNAL(si_taskFinished(Task *)), SLOT(sl_onTaskFinished(Task *)));
+        connect(new TaskSignalMapper(sub), SIGNAL(si_taskFinished(Task*)), SLOT(sl_onTaskFinished(Task*)));
     }
 
     return t;
 }
 
-void QDFindGcRegionsActor::sl_onTaskFinished(Task *t) {
-    FindGcRegionsTask *fprt = qobject_cast<FindGcRegionsTask *>(t);
+void QDFindGcRegionsActor::sl_onTaskFinished(Task* t) {
+    FindGcRegionsTask* fprt = qobject_cast<FindGcRegionsTask*>(t);
     QList<SharedAnnotationData> annotations = fprt->getResultAsAnnotations();
     foreach (SharedAnnotationData d, annotations) {
         if (d->location->regions.first().length > getMaxResultLen()) {
@@ -210,7 +210,7 @@ void QDFindGcRegionsActor::sl_onTaskFinished(Task *t) {
         ru->region = d->location->regions.first();
         ru->strand = d->location->strand;
         ru->owner = units.value(UNIT_ID);
-        QDResultGroup *g = new QDResultGroup(QDStrand_DirectOnly);
+        QDResultGroup* g = new QDResultGroup(QDStrand_DirectOnly);
         g->add(ru);
         results.append(g);
     }
@@ -243,7 +243,7 @@ QDFindGcActorPrototype::QDFindGcActorPrototype() {
     attributes << new Attribute(mind, BaseTypes::NUM_TYPE(), false, QVariant(50));
     attributes << new Attribute(maxd, BaseTypes::NUM_TYPE(), false, QVariant(1000));
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
 
     {
         QVariantMap bm;

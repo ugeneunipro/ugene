@@ -39,18 +39,18 @@ public:
     Tandem(quint32 _offset, quint32 _repeatLen, quint32 _size)
         : offset(_offset), repeatLen(_repeatLen), size(_size), rightSide(_offset + _size - _repeatLen) {
     }
-    Tandem(const Tandem &t)
+    Tandem(const Tandem& t)
         : offset(t.offset), repeatLen(t.repeatLen), size(t.size), rightSide(t.rightSide) {
     }
-    Tandem &operator=(const Tandem &t) {
+    Tandem& operator=(const Tandem& t) {
         offset = t.offset;
         repeatLen = t.repeatLen;
         size = t.size;
         rightSide = t.rightSide;
         return *this;
     }
-    bool operator<(const Tandem &t) const;
-    bool extend(const Tandem &t);
+    bool operator<(const Tandem& t) const;
+    bool extend(const Tandem& t);
 
     // offset of tandem from beginning of the sequence
     quint64 offset;
@@ -64,10 +64,10 @@ public:
 class RFAlgorithmBase : public Task {
     Q_OBJECT
 public:
-    RFAlgorithmBase(RFResultsListener *l,
-                    const char *seqX,
+    RFAlgorithmBase(RFResultsListener* l,
+                    const char* seqX,
                     int sizeX,
-                    const char *seqY,
+                    const char* seqY,
                     int sizeY,
                     DNAAlphabetType seqType,
                     int w,
@@ -78,35 +78,35 @@ public:
         reportReflected = v;
     }
 
-    void setRFResultsListener(RFResultsListener *);
+    void setRFResultsListener(RFResultsListener*);
 
     void prepare();
 
-    static RFAlgorithmBase *createTask(RFResultsListener *l,
-                                       const char *seqx,
+    static RFAlgorithmBase* createTask(RFResultsListener* l,
+                                       const char* seqx,
                                        int sizeX,
-                                       const char *seqY,
+                                       const char* seqY,
                                        int sizeY,
-                                       const DNAAlphabet *al,
+                                       const DNAAlphabet* al,
                                        int w,
                                        int mismatches = 0,
                                        RFAlgorithm alg = RFAlgorithm_Auto,
                                        int nThreads = MAX_PARALLEL_SUBTASKS_AUTO);
-    static char getUnknownChar(const DNAAlphabetType &type);
+    static char getUnknownChar(const DNAAlphabetType& type);
 
 protected:
     // adds single result to global results
-    void addToResults(const RFResult &r);
+    void addToResults(const RFResult& r);
 
     // adds multiple results to global results
-    void addToResults(const QVector<RFResult> &newResults);
+    void addToResults(const QVector<RFResult>& newResults);
 
     // always return true. bool -> to use in assertions
-    bool checkResults(const QVector<RFResult> &v);
-    bool checkResult(const RFResult &v);
+    bool checkResults(const QVector<RFResult>& v);
+    bool checkResult(const RFResult& v);
 
-    const char *seqX;
-    const char *seqY;
+    const char* seqX;
+    const char* seqY;
     const int SIZE_X;
     const int SIZE_Y;
     const DNAAlphabetType SEQ_TYPE;
@@ -117,7 +117,7 @@ protected:
     bool reflective;
     char unknownChar;
 
-    RFResultsListener *resultsListener;
+    RFResultsListener* resultsListener;
     bool reportReflected;
 };
 

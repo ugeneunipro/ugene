@@ -54,7 +54,7 @@ namespace U2 {
 #define STRAND_ATTR "strand"
 #define TRESH_ATTR "treshhold"
 
-void GTest_CalculateACGTContent::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_CalculateACGTContent::init(XMLTestFormat*, const QDomElement& el) {
     docName = el.attribute(DOC_ATTR);
     if (docName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -85,22 +85,22 @@ void GTest_CalculateACGTContent::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 void GTest_CalculateACGTContent::prepare() {
-    Document *doc = getContext<Document>(this, docName);
+    Document* doc = getContext<Document>(this, docName);
     if (doc == nullptr) {
         stateInfo.setError(QString("context not found %1").arg(docName));
         return;
     }
-    QList<GObject *> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
         stateInfo.setError(QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    GObject *obj = list.first();
+    GObject* obj = list.first();
     if (obj == nullptr) {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
+    MultipleSequenceAlignmentObject* mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if (mao == nullptr) {
         stateInfo.setError(QString("error can't cast to MultipleSequenceAlignmentObject from GObject"));
         return;
@@ -122,7 +122,7 @@ Task::ReportResult GTest_CalculateACGTContent::report() {
     return ReportResult_Finished;
 }
 
-void GTest_CalculateDispersionAndAverage::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_CalculateDispersionAndAverage::init(XMLTestFormat*, const QDomElement& el) {
     QStringList propsList = el.attribute(PROPERTIES_INDEXES).split(QRegExp("\\,")),
                 diPosStrList = el.attribute(DINUCLEOTIDE_POSITIONS).split(QRegExp("\\,")),
                 expectedStrList = el.attribute(EXPECTED_RESULTS_ATTR).split(QRegExp("\\,"));
@@ -178,22 +178,22 @@ void GTest_CalculateDispersionAndAverage::init(XMLTestFormat *, const QDomElemen
 }
 
 void GTest_CalculateDispersionAndAverage::prepare() {
-    Document *doc = getContext<Document>(this, docName);
+    Document* doc = getContext<Document>(this, docName);
     if (doc == nullptr) {
         stateInfo.setError(QString("context not found %1").arg(docName));
         return;
     }
-    QList<GObject *> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
         stateInfo.setError(QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    GObject *obj = list.first();
+    GObject* obj = list.first();
     if (obj == nullptr) {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
+    MultipleSequenceAlignmentObject* mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if (mao == nullptr) {
         stateInfo.setError(QString("error can't cast to MultipleSequenceAlignmentObject from GObject"));
         return;
@@ -232,7 +232,7 @@ Task::ReportResult GTest_CalculateDispersionAndAverage::report() {
     return ReportResult_Finished;
 }
 
-void GTest_CalculateFirstTypeError::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_CalculateFirstTypeError::init(XMLTestFormat*, const QDomElement& el) {
     docName = el.attribute(DOC_ATTR);
     if (docName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -263,22 +263,22 @@ void GTest_CalculateFirstTypeError::init(XMLTestFormat *, const QDomElement &el)
 }
 
 void GTest_CalculateFirstTypeError::prepare() {
-    Document *doc = getContext<Document>(this, docName);
+    Document* doc = getContext<Document>(this, docName);
     if (doc == nullptr) {
         stateInfo.setError(QString("context not found %1").arg(docName));
         return;
     }
-    QList<GObject *> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
         stateInfo.setError(QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    GObject *obj = list.first();
+    GObject* obj = list.first();
     if (obj == nullptr) {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
+    MultipleSequenceAlignmentObject* mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if (mao == nullptr) {
         stateInfo.setError(QString("error can't cast to MultipleSequenceAlignmentObject from GObject"));
         return;
@@ -311,7 +311,7 @@ Task::ReportResult GTest_CalculateFirstTypeError::report() {
     return ReportResult_Finished;
 }
 
-void GTest_CalculateSecondTypeError::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_CalculateSecondTypeError::init(XMLTestFormat*, const QDomElement& el) {
     docName = el.attribute(DOC_ATTR);
     if (docName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -342,22 +342,22 @@ void GTest_CalculateSecondTypeError::init(XMLTestFormat *, const QDomElement &el
 }
 
 void GTest_CalculateSecondTypeError::prepare() {
-    Document *doc = getContext<Document>(this, docName);
+    Document* doc = getContext<Document>(this, docName);
     if (doc == nullptr) {
         stateInfo.setError(QString("context not found %1").arg(docName));
         return;
     }
-    QList<GObject *> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
         stateInfo.setError(QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    GObject *obj = list.first();
+    GObject* obj = list.first();
     if (obj == nullptr) {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
+    MultipleSequenceAlignmentObject* mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if (mao == nullptr) {
         stateInfo.setError(QString("error can't cast to MultipleSequenceAlignmentObject from GObject"));
         return;
@@ -398,7 +398,7 @@ Task::ReportResult GTest_CalculateSecondTypeError::report() {
     return ReportResult_Finished;
 }
 
-void GTest_SiteconSearchTask::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_SiteconSearchTask::init(XMLTestFormat*, const QDomElement& el) {
     seqName = el.attribute(SEQNAME_ATTR);
     if (seqName.isEmpty()) {
         failMissingValue(SEQNAME_ATTR);
@@ -406,7 +406,7 @@ void GTest_SiteconSearchTask::init(XMLTestFormat *, const QDomElement &el) {
     }
 
     QString modelPath = el.attribute(MODEL_ATTR);
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     QString url = env->getVar("COMMON_DATA_DIR") + "/" + modelPath;
     model = SiteconIO::readModel(iof, url, stateInfo);
 
@@ -485,7 +485,7 @@ void GTest_SiteconSearchTask::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 void GTest_SiteconSearchTask::prepare() {
-    U2SequenceObject *mySequence = getContext<U2SequenceObject>(this, seqName);
+    U2SequenceObject* mySequence = getContext<U2SequenceObject>(this, seqName);
     CHECK_EXT(mySequence != nullptr, setError(QString("error can't cast to sequence from GObject")), );
 
     SiteconSearchCfg cfg;
@@ -543,7 +543,7 @@ Task::ReportResult GTest_SiteconSearchTask::report() {
     return ReportResult_Finished;
 }
 
-void GTest_CompareSiteconModels::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_CompareSiteconModels::init(XMLTestFormat*, const QDomElement& el) {
     doc1ContextName = el.attribute(DOC1_ATTR);
     if (doc1ContextName.isEmpty()) {
         failMissingValue(DOC1_ATTR);
@@ -560,12 +560,12 @@ void GTest_CompareSiteconModels::init(XMLTestFormat *, const QDomElement &el) {
 Task::ReportResult GTest_CompareSiteconModels::report() {
     // SiteconModel model1 = getContext<SiteconModel>(doc1ContextName);
     // SiteconModel model2 = getContext<SiteconModel>(doc2ContextName);
-    Document *doc1 = getContext<Document>(this, doc1ContextName);
+    Document* doc1 = getContext<Document>(this, doc1ContextName);
     if (doc1 == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(doc1ContextName));
         return ReportResult_Finished;
     }
-    Document *doc2 = getContext<Document>(this, doc2ContextName);
+    Document* doc2 = getContext<Document>(this, doc2ContextName);
     if (doc2 == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(doc2ContextName));
         return ReportResult_Finished;

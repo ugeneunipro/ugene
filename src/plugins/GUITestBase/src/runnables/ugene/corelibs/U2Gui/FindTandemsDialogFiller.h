@@ -33,8 +33,8 @@ public:
     enum Button { Start,
                   Cancel };
 
-    FindTandemsDialogFiller(HI::GUITestOpStatus &_os, const QString &_resultFilesPath);
-    FindTandemsDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario);
+    FindTandemsDialogFiller(HI::GUITestOpStatus& _os, const QString& _resultFilesPath);
+    FindTandemsDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario);
 
     virtual void commonScenario();
     Button button;

@@ -31,7 +31,7 @@ namespace U2 {
 
 #define NOTIFICATIONS_WIDGET_ID QString("problemsWidget123")
 
-static QList<NotificationsDashboardInfo> dom2NotificationInfo(const QDomElement &dom) {
+static QList<NotificationsDashboardInfo> dom2NotificationInfo(const QDomElement& dom) {
     QList<NotificationsDashboardInfo> result;
     QDomElement tbody = DomUtils::findElementById(dom, NOTIFICATIONS_WIDGET_ID);
     for (QDomElement tr = tbody.firstChildElement("tr"); !tr.isNull(); tr = tr.nextSiblingElement("tr")) {
@@ -54,7 +54,7 @@ static QList<NotificationsDashboardInfo> dom2NotificationInfo(const QDomElement 
     return result;
 }
 
-NotificationsDashboardWidget::NotificationsDashboardWidget(const QDomElement &dom, const WorkflowMonitor *monitor)
+NotificationsDashboardWidget::NotificationsDashboardWidget(const QDomElement& dom, const WorkflowMonitor* monitor)
     : monitor(monitor), dashboardWidget(nullptr) {
     setFixedWidth(550);
     setObjectName("NotificationsDashboardWidget");
@@ -78,7 +78,7 @@ NotificationsDashboardWidget::NotificationsDashboardWidget(const QDomElement &do
     }
 }
 
-void NotificationsDashboardWidget::setDashboardWidget(QWidget *dashboardWidgetParent) {
+void NotificationsDashboardWidget::setDashboardWidget(QWidget* dashboardWidgetParent) {
     dashboardWidget = dashboardWidgetParent;
     updateVisibility();
 }
@@ -88,9 +88,9 @@ void NotificationsDashboardWidget::updateVisibility() {
     dashboardWidget->setHidden(notificationList.isEmpty());
 }
 
-void NotificationsDashboardWidget::sl_newNotification(const WorkflowNotification &wdNotification, int count) {
+void NotificationsDashboardWidget::sl_newNotification(const WorkflowNotification& wdNotification, int count) {
     for (int i = 0; i < notificationList.size(); i++) {
-        NotificationsDashboardInfo &oldNotification = notificationList[i];
+        NotificationsDashboardInfo& oldNotification = notificationList[i];
         if (oldNotification.actorId == wdNotification.actorId &&
             oldNotification.type == wdNotification.type &&
             oldNotification.message == wdNotification.message) {
@@ -118,7 +118,7 @@ void NotificationsDashboardWidget::updateNotificationRow(int workerIndex) {
     addTableCell(tableGridLayout, rowId, messageWithCount, rowIndex, 2, isLastRow, true);
 }
 
-bool NotificationsDashboardWidget::isValidDom(const QDomElement &dom) {
+bool NotificationsDashboardWidget::isValidDom(const QDomElement& dom) {
     return !DomUtils::findElementById(dom, NOTIFICATIONS_WIDGET_ID).isNull();
 }
 
@@ -140,7 +140,7 @@ QString NotificationsDashboardWidget::toHtml() const {
     return html;
 }
 
-NotificationsDashboardInfo::NotificationsDashboardInfo(const QString &actorId, const QString &actorName, const QString &type, const QString &message, int count)
+NotificationsDashboardInfo::NotificationsDashboardInfo(const QString& actorId, const QString& actorName, const QString& type, const QString& message, int count)
     : actorId(actorId), actorName(actorName), type(type), message(message), count(count) {
 }
 

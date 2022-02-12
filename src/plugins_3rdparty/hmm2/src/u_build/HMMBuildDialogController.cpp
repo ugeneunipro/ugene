@@ -46,7 +46,7 @@
 #include "hmmer2/funcs.h"
 
 namespace U2 {
-HMMBuildDialogController::HMMBuildDialogController(const QString &_pn, const MultipleSequenceAlignment &_ma, QWidget *p)
+HMMBuildDialogController::HMMBuildDialogController(const QString& _pn, const MultipleSequenceAlignment& _ma, QWidget* p)
     : QDialog(p),
       ma(_ma->getCopy()),
       profileName(_pn),
@@ -145,13 +145,13 @@ void HMMBuildDialogController::reject() {
 }
 
 void HMMBuildDialogController::sl_onStateChanged() {
-    Task *t = qobject_cast<Task *>(sender());
+    Task* t = qobject_cast<Task*>(sender());
     assert(task != nullptr);
     if (task != t || t->getState() != Task::State_Finished) {
         return;
     }
     task->disconnect(this);
-    const TaskStateInfo &si = task->getStateInfo();
+    const TaskStateInfo& si = task->getStateInfo();
     if (si.hasError()) {
         statusLabel->setText(tr("HMM build finished with errors: %1").arg(si.getError()));
     } else if (task->isCanceled()) {
@@ -189,7 +189,7 @@ void HMMBuildDialogController::initSaveController() {
 //////////////////////////////////////////////////////////////////////////
 //  HMMBuildTask
 
-HMMBuildToFileTask::HMMBuildToFileTask(const QString &inFile, const QString &_outFile, const UHMMBuildSettings &s)
+HMMBuildToFileTask::HMMBuildToFileTask(const QString& inFile, const QString& _outFile, const UHMMBuildSettings& s)
     : Task("", TaskFlag_ReportingIsSupported),
       settings(s),
       outFile(_outFile),
@@ -218,7 +218,7 @@ HMMBuildToFileTask::HMMBuildToFileTask(const QString &inFile, const QString &_ou
     addSubTask(loadTask);
 }
 
-HMMBuildToFileTask::HMMBuildToFileTask(const MultipleSequenceAlignment &_ma, const QString &_outFile, const UHMMBuildSettings &s)
+HMMBuildToFileTask::HMMBuildToFileTask(const MultipleSequenceAlignment& _ma, const QString& _outFile, const UHMMBuildSettings& s)
     : Task("", TaskFlags_FOSCOE | TaskFlag_ReportingIsSupported),
       settings(s), outFile(_outFile), ma(_ma->getCopy()), loadTask(nullptr), buildTask(nullptr) {
     setTaskName(tr("Build HMM profile to '%1'").arg(QFileInfo(outFile).fileName()));
@@ -233,8 +233,8 @@ HMMBuildToFileTask::HMMBuildToFileTask(const MultipleSequenceAlignment &_ma, con
     addSubTask(buildTask);
 }
 
-QList<Task *> HMMBuildToFileTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> HMMBuildToFileTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
 
     if (hasError() || isCanceled()) {
         return res;
@@ -242,17 +242,17 @@ QList<Task *> HMMBuildToFileTask::onSubTaskFinished(Task *subTask) {
 
     if (subTask == loadTask) {
         assert(ma->isEmpty());
-        Document *doc = loadTask->getDocument();
+        Document* doc = loadTask->getDocument();
         // assert(doc);
         if (!doc) {
             stateInfo.setError(tr("Incorrect input file"));
             return res;
         }
-        QList<GObject *> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+        QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (list.isEmpty()) {
             stateInfo.setError(tr("Alignment object not found!"));
         } else {
-            MultipleSequenceAlignmentObject *msa = qobject_cast<MultipleSequenceAlignmentObject *>(list.first());
+            MultipleSequenceAlignmentObject* msa = qobject_cast<MultipleSequenceAlignmentObject*>(list.first());
             const MultipleSequenceAlignment ma = msa->getMultipleAlignment();
             if (settings.name.isEmpty()) {
                 settings.name = msa->getGObjectName() == MA_OBJECT_NAME ? doc->getName() : msa->getGObjectName();
@@ -280,9 +280,9 @@ void HMMBuildToFileTask::_run() {
         stateInfo.setError(buildTask->getStateInfo().getError());
         return;
     }
-    plan7_s *hmm = buildTask->getHMM();
+    plan7_s* hmm = buildTask->getHMM();
     assert(hmm != nullptr);
-    IOAdapterFactory *iof;
+    IOAdapterFactory* iof;
     iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(outFile));
 
     // todo: write command line too!
@@ -322,7 +322,7 @@ QString HMMBuildToFileTask::generateReport() const {
     return res;
 }
 
-HMMBuildTask::HMMBuildTask(const UHMMBuildSettings &s, const MultipleSequenceAlignment &_ma)
+HMMBuildTask::HMMBuildTask(const UHMMBuildSettings& s, const MultipleSequenceAlignment& _ma)
     : Task("", TaskFlag_None), ma(_ma->getCopy()), settings(s), hmm(nullptr) {
     GCOUNTER(cvar, "HMMBuildTask");
     setTaskName(tr("Build HMM profile '%1'").arg(s.name));
@@ -357,7 +357,7 @@ void HMMBuildTask::_run() {
 
     // everything ok here: fill msa
 
-    msa_struct *msa = MSAAlloc(ma->getRowCount(), ma->getLength());
+    msa_struct* msa = MSAAlloc(ma->getRowCount(), ma->getLength());
     if (msa == nullptr) {
         stateInfo.setError(tr("Error creating MSA structure"));
         return;
@@ -376,7 +376,7 @@ void HMMBuildTask::_run() {
     int atype = ma->getAlphabet()->isNucleic() ? hmmNUCLEIC : hmmAMINO;
     try {
         hmm = UHMMBuild::build(msa, atype, settings, stateInfo);
-    } catch (const HMMException &e) {
+    } catch (const HMMException& e) {
         stateInfo.setError(e.error);
     }
 

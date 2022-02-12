@@ -28,11 +28,11 @@ namespace U2 {
 
 class FilteredProjectItemDelegate : public QStyledItemDelegate {
 public:
-    explicit FilteredProjectItemDelegate(QObject *parent);
+    explicit FilteredProjectItemDelegate(QObject* parent);
 
 protected:
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const;
+    QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const;
 };
 
 }  // namespace U2

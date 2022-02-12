@@ -65,14 +65,14 @@ class U2ALGORITHM_EXPORT GenomeAssemblyGUIExtensionsFactory {
 public:
     virtual ~GenomeAssemblyGUIExtensionsFactory() {
     }
-    virtual GenomeAssemblyAlgorithmMainWidget *createMainWidget(QWidget *parent) = 0;
+    virtual GenomeAssemblyAlgorithmMainWidget* createMainWidget(QWidget* parent) = 0;
     virtual bool hasMainWidget() = 0;
 };
 
 class U2ALGORITHM_EXPORT GenomeAssemblyUtils {
 public:
     static QStringList getOrientationTypes();
-    static bool isLibraryPaired(const QString &libName);
+    static bool isLibraryPaired(const QString& libName);
 };
 
 /////////////////////////////////////////////////////////////
@@ -80,11 +80,11 @@ public:
 
 class U2ALGORITHM_EXPORT AssemblyReads {
 public:
-    AssemblyReads(const QList<GUrl> &left = QList<GUrl>(),
-                  const QList<GUrl> &right = QList<GUrl>(),
-                  const QString &orientation = ORIENTATION_FR,
-                  const QString &libName = LIB_SINGLE_UNPAIRED,
-                  const QString &readType = TYPE_SINGLE)
+    AssemblyReads(const QList<GUrl>& left = QList<GUrl>(),
+                  const QList<GUrl>& right = QList<GUrl>(),
+                  const QString& orientation = ORIENTATION_FR,
+                  const QString& libName = LIB_SINGLE_UNPAIRED,
+                  const QString& readType = TYPE_SINGLE)
         : left(left), right(right), orientation(orientation), libName(libName), readType(readType) {
     }
 
@@ -101,17 +101,17 @@ public:
         : openView(false) {
     }
 
-    void setCustomSettings(const QMap<QString, QVariant> &settings);
-    QVariant getCustomValue(const QString &optionName, const QVariant &defaultVal) const;
-    bool hasCustomValue(const QString &name) const;
-    void setCustomValue(const QString &optionName, const QVariant &val);
+    void setCustomSettings(const QMap<QString, QVariant>& settings);
+    QVariant getCustomValue(const QString& optionName, const QVariant& defaultVal) const;
+    bool hasCustomValue(const QString& name) const;
+    void setCustomValue(const QString& optionName, const QVariant& val);
 
 public:
     QList<AssemblyReads> reads;
     GUrl outDir;
     QString algName;
     bool openView;
-    QList<ExternalToolListener *> listeners;
+    QList<ExternalToolListener*> listeners;
 
 private:
     QMap<QString, QVariant> customSettings;
@@ -120,14 +120,14 @@ private:
 class U2ALGORITHM_EXPORT GenomeAssemblyTask : public Task {
     Q_OBJECT
 public:
-    GenomeAssemblyTask(const GenomeAssemblyTaskSettings &settings, TaskFlags flags = TaskFlags_FOSCOE);
+    GenomeAssemblyTask(const GenomeAssemblyTaskSettings& settings, TaskFlags flags = TaskFlags_FOSCOE);
     virtual ~GenomeAssemblyTask() {
     }
     bool hasResult() const {
         return !resultUrl.isEmpty();
     }
     QString getResultUrl() const;
-    const GenomeAssemblyTaskSettings &getSettings() const {
+    const GenomeAssemblyTaskSettings& getSettings() const {
         return settings;
     }
 
@@ -138,7 +138,7 @@ protected:
 
 class U2ALGORITHM_EXPORT GenomeAssemblyTaskFactory {
 public:
-    virtual GenomeAssemblyTask *createTaskInstance(const GenomeAssemblyTaskSettings &settings) = 0;
+    virtual GenomeAssemblyTask* createTaskInstance(const GenomeAssemblyTaskSettings& settings) = 0;
     virtual ~GenomeAssemblyTaskFactory() {
     }
 };
@@ -150,7 +150,7 @@ public: \
     public: \
         Factory() { \
         } \
-        GenomeAssemblyTask *createTaskInstance(const GenomeAssemblyTaskSettings &s) { \
+        GenomeAssemblyTask* createTaskInstance(const GenomeAssemblyTaskSettings& s) { \
             return new c(s); \
         } \
     };
@@ -159,24 +159,24 @@ public: \
 // Registry
 class U2ALGORITHM_EXPORT GenomeAssemblyAlgorithmEnv {
 public:
-    GenomeAssemblyAlgorithmEnv(const QString &id,
-                               GenomeAssemblyTaskFactory *tf,
-                               GenomeAssemblyGUIExtensionsFactory *guiExt,
-                               const QStringList &readsFormats);
+    GenomeAssemblyAlgorithmEnv(const QString& id,
+                               GenomeAssemblyTaskFactory* tf,
+                               GenomeAssemblyGUIExtensionsFactory* guiExt,
+                               const QStringList& readsFormats);
 
     virtual ~GenomeAssemblyAlgorithmEnv();
 
-    const QString &getId() const {
+    const QString& getId() const {
         return id;
     }
     QStringList getReadsFormats() const {
         return readsFormats;
     }
 
-    GenomeAssemblyTaskFactory *getTaskFactory() const {
+    GenomeAssemblyTaskFactory* getTaskFactory() const {
         return taskFactory;
     }
-    GenomeAssemblyGUIExtensionsFactory *getGUIExtFactory() const {
+    GenomeAssemblyGUIExtensionsFactory* getGUIExtFactory() const {
         return guiExtFactory;
     }
 
@@ -185,25 +185,25 @@ private:
 
 protected:
     QString id;
-    GenomeAssemblyTaskFactory *taskFactory;
-    GenomeAssemblyGUIExtensionsFactory *guiExtFactory;
+    GenomeAssemblyTaskFactory* taskFactory;
+    GenomeAssemblyGUIExtensionsFactory* guiExtFactory;
     QStringList readsFormats;
 };
 class U2ALGORITHM_EXPORT GenomeAssemblyAlgRegistry : public QObject {
     Q_OBJECT
 public:
-    GenomeAssemblyAlgRegistry(QObject *pOwn = 0);
+    GenomeAssemblyAlgRegistry(QObject* pOwn = 0);
     ~GenomeAssemblyAlgRegistry();
 
-    bool registerAlgorithm(GenomeAssemblyAlgorithmEnv *env);
-    GenomeAssemblyAlgorithmEnv *unregisterAlgorithm(const QString &id);
-    GenomeAssemblyAlgorithmEnv *getAlgorithm(const QString &id) const;
+    bool registerAlgorithm(GenomeAssemblyAlgorithmEnv* env);
+    GenomeAssemblyAlgorithmEnv* unregisterAlgorithm(const QString& id);
+    GenomeAssemblyAlgorithmEnv* getAlgorithm(const QString& id) const;
 
     QStringList getRegisteredAlgorithmIds() const;
 
 private:
     mutable QMutex mutex;
-    QMap<QString, GenomeAssemblyAlgorithmEnv *> algorithms;
+    QMap<QString, GenomeAssemblyAlgorithmEnv*> algorithms;
 
     Q_DISABLE_COPY(GenomeAssemblyAlgRegistry)
 };

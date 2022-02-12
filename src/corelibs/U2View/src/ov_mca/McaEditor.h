@@ -50,22 +50,22 @@ class U2VIEW_EXPORT McaEditor : public MaEditor {
     friend class McaEditorSequenceArea;
 
 public:
-    McaEditor(const QString &viewName,
-              MultipleChromatogramAlignmentObject *obj);
+    McaEditor(const QString& viewName,
+              MultipleChromatogramAlignmentObject* obj);
 
     QString getSettingsRoot() const override {
         return MCAE_SETTINGS_ROOT;
     }
 
-    MultipleChromatogramAlignmentObject *getMaObject() const override;
-    McaEditorWgt *getUI() const override;
+    MultipleChromatogramAlignmentObject* getMaObject() const override;
+    McaEditorWgt* getUI() const override;
 
     /** Returns current MCA editor selection controller instance. */
-    MaEditorSelectionController *getSelectionController() const override;
+    MaEditorSelectionController* getSelectionController() const override;
 
-    void buildStaticToolbar(QToolBar *tb) override;
+    void buildStaticToolbar(QToolBar* tb) override;
 
-    void buildMenu(QMenu *menu, const QString &type) override;
+    void buildMenu(QMenu* menu, const QString& type) override;
 
     int getRowContentIndent(int rowId) const override;
 
@@ -75,14 +75,14 @@ public:
 
     char getReferenceCharAt(int pos) const override;
 
-    SequenceObjectContext *getReferenceContext() const;
+    SequenceObjectContext* getReferenceContext() const;
 
-    QAction *getGotoSelectedReadAction() const {
+    QAction* getGotoSelectedReadAction() const {
         return gotoSelectedReadAction;
     }
 
 protected slots:
-    void sl_onContextMenuRequested(const QPoint &pos) override;
+    void sl_onContextMenuRequested(const QPoint& pos) override;
     void sl_showHideChromatograms(bool show);
 
 private slots:
@@ -93,24 +93,24 @@ private slots:
     void sl_saveChromatogramState();
 
 protected:
-    QWidget *createWidget() override;
+    QWidget* createWidget() override;
     void initActions() override;
 
-    QAction *showChromatogramsAction;
-    QAction *showGeneralTabAction;
-    QAction *showConsensusTabAction;
+    QAction* showChromatogramsAction;
+    QAction* showGeneralTabAction;
+    QAction* showConsensusTabAction;
 
     QMap<qint64, bool> chromVisibility;
 
-    SequenceObjectContext *referenceCtx;
+    SequenceObjectContext* referenceCtx;
 
     /** Selection state controller. */
-    McaEditorSelectionController *selectionController;
+    McaEditorSelectionController* selectionController;
 
-    void addEditMenu(QMenu *menu) override;
-    void addAlignmentMenu(QMenu *menu);
-    void addAppearanceMenu(QMenu *menu);
-    void addNavigationMenu(QMenu *menu);
+    void addEditMenu(QMenu* menu) override;
+    void addAlignmentMenu(QMenu* menu);
+    void addAppearanceMenu(QMenu* menu);
+    void addNavigationMenu(QMenu* menu);
 };
 
 }  // namespace U2

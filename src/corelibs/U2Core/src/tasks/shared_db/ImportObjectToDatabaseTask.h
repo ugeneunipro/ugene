@@ -34,22 +34,22 @@ class GObject;
 class U2CORE_EXPORT ImportObjectToDatabaseTask : public Task {
     Q_OBJECT
 public:
-    ImportObjectToDatabaseTask(GObject *object, const U2DbiRef &dstDbiRef, const QString &dstFolder);
+    ImportObjectToDatabaseTask(GObject* object, const U2DbiRef& dstDbiRef, const QString& dstFolder);
 
     void run();
 
-    GObject *takeResult();
+    GObject* takeResult();
 
-    GObject *getSourceObject() const;
-    GObject *getDestinationObject() const;
-    const QString &getFolder() const;
-    const U2DbiRef &getDbiRef() const;
+    GObject* getSourceObject() const;
+    GObject* getDestinationObject() const;
+    const QString& getFolder() const;
+    const U2DbiRef& getDbiRef() const;
 
 private:
     QPointer<GObject> object;
     U2DbiRef dstDbiRef;
     QString dstFolder;
-    GObject *dstObject;
+    GObject* dstObject;
 };
 
 }  // namespace U2

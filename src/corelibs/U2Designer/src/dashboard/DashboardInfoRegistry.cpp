@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-bool DashboardInfoRegistry::registerEntry(const DashboardInfo &dashboardInfo) {
+bool DashboardInfoRegistry::registerEntry(const DashboardInfo& dashboardInfo) {
     if (registerEntrySilently(dashboardInfo)) {
         emit si_dashboardsListChanged(QStringList(dashboardInfo.getId()), QStringList());
         return true;
@@ -40,7 +40,7 @@ bool DashboardInfoRegistry::registerEntry(const DashboardInfo &dashboardInfo) {
     }
 }
 
-bool DashboardInfoRegistry::unregisterEntry(const QString &id) {
+bool DashboardInfoRegistry::unregisterEntry(const QString& id) {
     if (unregisterEntrySilently(id)) {
         emit si_dashboardsListChanged(QStringList(), QStringList(id));
         return true;
@@ -49,7 +49,7 @@ bool DashboardInfoRegistry::unregisterEntry(const QString &id) {
     }
 }
 
-DashboardInfo DashboardInfoRegistry::getById(const QString &dashboardId) const {
+DashboardInfo DashboardInfoRegistry::getById(const QString& dashboardId) const {
     return registry.value(dashboardId, DashboardInfo());
 }
 
@@ -70,34 +70,34 @@ void DashboardInfoRegistry::scanDashboardsDir() {
         scanTask->cancel();
     }
     scanTask = new ScanDashboardsDirTask();
-    connect(new TaskSignalMapper(scanTask.data()), SIGNAL(si_taskSucceeded(Task *)), SLOT(sl_scanTaskFinished()));
+    connect(new TaskSignalMapper(scanTask.data()), SIGNAL(si_taskSucceeded(Task*)), SLOT(sl_scanTaskFinished()));
     AppContext::getTaskScheduler()->registerTopLevelTask(scanTask);
     emit si_scanningStarted();
 }
 
-void DashboardInfoRegistry::removeDashboards(const QStringList &ids) {
+void DashboardInfoRegistry::removeDashboards(const QStringList& ids) {
     QList<DashboardInfo> dashboardInfos;
-    foreach (const QString &id, ids) {
+    foreach (const QString& id, ids) {
         if (registry.contains(id)) {
             dashboardInfos << registry[id];
             unregisterEntrySilently(id);
         }
     }
-    RemoveDashboardsTask *removeTask = new RemoveDashboardsTask(dashboardInfos);
+    RemoveDashboardsTask* removeTask = new RemoveDashboardsTask(dashboardInfos);
     AppContext::getTaskScheduler()->registerTopLevelTask(removeTask);
 
     emit si_dashboardsListChanged(QStringList(), ids);
 }
 
-void DashboardInfoRegistry::updateDashboardInfo(const DashboardInfo &newDashboardInfo) {
+void DashboardInfoRegistry::updateDashboardInfo(const DashboardInfo& newDashboardInfo) {
     if (updateInfo(newDashboardInfo)) {
         emit si_dashboardsChanged(QStringList(newDashboardInfo.getId()));
     }
 }
 
-void DashboardInfoRegistry::updateDashboardInfos(const QList<DashboardInfo> &newDashboardInfos) {
+void DashboardInfoRegistry::updateDashboardInfos(const QList<DashboardInfo>& newDashboardInfos) {
     QStringList updated;
-    foreach (const DashboardInfo &newDashboardInfo, newDashboardInfos) {
+    foreach (const DashboardInfo& newDashboardInfo, newDashboardInfos) {
         if (updateInfo(newDashboardInfo)) {
             updated << newDashboardInfo.getId();
         }
@@ -105,11 +105,11 @@ void DashboardInfoRegistry::updateDashboardInfos(const QList<DashboardInfo> &new
     emit si_dashboardsChanged(updated);
 }
 
-void DashboardInfoRegistry::reserveName(const QString &dashboardId, const QString &name) {
+void DashboardInfoRegistry::reserveName(const QString& dashboardId, const QString& name) {
     reservedNames.insert(dashboardId, name);
 }
 
-void DashboardInfoRegistry::releaseReservedName(const QString &dashboardId) {
+void DashboardInfoRegistry::releaseReservedName(const QString& dashboardId) {
     reservedNames.remove(dashboardId);
 }
 
@@ -123,7 +123,7 @@ void DashboardInfoRegistry::sl_scanTaskFinished() {
     const QList<DashboardInfo> foundInfos = scanTask->getResult();
     QList<DashboardInfo> registryValues = registry.values();
 
-    foreach (const DashboardInfo &registryValue, registryValues) {
+    foreach (const DashboardInfo& registryValue, registryValues) {
         if (!foundInfos.contains(registryValue)) {
             removed << registryValue.getId();
             unregisterEntrySilently(registryValue.getId());
@@ -131,7 +131,7 @@ void DashboardInfoRegistry::sl_scanTaskFinished() {
     }
 
     registryValues = registry.values();
-    foreach (const DashboardInfo &foundInfo, foundInfos) {
+    foreach (const DashboardInfo& foundInfo, foundInfos) {
         if (!registryValues.contains(foundInfo)) {
             if (registerEntrySilently(foundInfo)) {
                 added << foundInfo.getId();
@@ -145,19 +145,19 @@ void DashboardInfoRegistry::sl_scanTaskFinished() {
     emit si_scanningFinished();
 }
 
-bool DashboardInfoRegistry::registerEntrySilently(const DashboardInfo &dashboardInfo) {
+bool DashboardInfoRegistry::registerEntrySilently(const DashboardInfo& dashboardInfo) {
     CHECK(!registry.contains(dashboardInfo.getId()), false);
     registry.insert(dashboardInfo.getId(), dashboardInfo);
     return true;
 }
 
-bool DashboardInfoRegistry::unregisterEntrySilently(const QString &id) {
+bool DashboardInfoRegistry::unregisterEntrySilently(const QString& id) {
     CHECK(registry.contains(id), false);
     registry.remove(id);
     return true;
 }
 
-bool DashboardInfoRegistry::updateInfo(const DashboardInfo &newDashboardInfo) {
+bool DashboardInfoRegistry::updateInfo(const DashboardInfo& newDashboardInfo) {
     // DashboardInfo can be absent in the registry in case of workflow output directory changing.
     // If the workflow is running during the changing, the dashboard won't be removed, but dashboardInfo will be unregistered.
     CHECK(registry.contains(newDashboardInfo.getId()), false);

@@ -29,7 +29,7 @@ namespace U2 {
 /** Set of data required by IQTreeTask. */
 struct IQTreeTaskContext {
     /** Creates a new context for IQTreeTask. */
-    IQTreeTaskContext(const MultipleSequenceAlignment &msa, const CreatePhyTreeSettings &settings);
+    IQTreeTaskContext(const MultipleSequenceAlignment& msa, const CreatePhyTreeSettings& settings);
 
     /** Alignment to process. Provided during object instantiation. */
     MultipleSequenceAlignment msa;
@@ -50,7 +50,7 @@ struct IQTreeTaskContext {
 class IQTreeTask : public PhyTreeGeneratorTask {
     Q_OBJECT
 public:
-    IQTreeTask(const MultipleSequenceAlignment &msa, const CreatePhyTreeSettings &settings);
+    IQTreeTask(const MultipleSequenceAlignment& msa, const CreatePhyTreeSettings& settings);
 
     Task::ReportResult report() override;
 
@@ -66,11 +66,11 @@ public:
 class PrepareIQTreeWorkDirTask : public Task {
     Q_OBJECT
 public:
-    PrepareIQTreeWorkDirTask(IQTreeTaskContext *context);
+    PrepareIQTreeWorkDirTask(IQTreeTaskContext* context);
 
     void run() override;
 
-    IQTreeTaskContext *const context;
+    IQTreeTaskContext* const context;
 };
 
 /**
@@ -80,13 +80,13 @@ public:
 class RunIQTreeExternalToolTask : public Task {
     Q_OBJECT
 public:
-    RunIQTreeExternalToolTask(IQTreeTaskContext *context);
+    RunIQTreeExternalToolTask(IQTreeTaskContext* context);
 
     void prepare() override;
 
     Task::ReportResult report() override;
 
-    IQTreeTaskContext *const context;
+    IQTreeTaskContext* const context;
 };
 
 }  // namespace U2

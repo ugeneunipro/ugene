@@ -48,28 +48,28 @@ class AutoAnnotationsSupport;
 class U2CORE_EXPORT AutoAnnotationObject : public QObject {
     Q_OBJECT
 public:
-    AutoAnnotationObject(U2SequenceObject *obj, DNATranslation *aminoTT, QObject *parent);
+    AutoAnnotationObject(U2SequenceObject* obj, DNATranslation* aminoTT, QObject* parent);
     ~AutoAnnotationObject();
 
-    AnnotationTableObject *getAnnotationObject() const {
+    AnnotationTableObject* getAnnotationObject() const {
         return annotationTableObject;
     }
 
-    U2SequenceObject *getSequenceObject() const {
+    U2SequenceObject* getSequenceObject() const {
         return sequenceObject;
     }
 
-    void setGroupEnabled(const QString &groupName, bool enabled);
+    void setGroupEnabled(const QString& groupName, bool enabled);
 
     void updateAll();
 
-    void updateTranslationDependent(DNATranslation *newAminoTT);
+    void updateTranslationDependent(DNATranslation* newAminoTT);
 
-    void updateGroup(const QString &groupName);
+    void updateGroup(const QString& groupName);
 
     void emitStateChange(bool started);
 
-    DNATranslation *getAminoTT() const;
+    DNATranslation* getAminoTT() const;
 
     static const QString AUTO_ANNOTATION_HINT;
 
@@ -81,19 +81,19 @@ private slots:
     void sl_updateTaskFinished();
 
 private:
-    void handleUpdate(const QList<AutoAnnotationsUpdater *> &updaters);
-    void addNewUpdateTask(AutoAnnotationsUpdater *updater, Task *updateTask);
-    void addRunningUpdateTask(AutoAnnotationsUpdater *updater, Task *updateTask);
-    bool cancelRunningUpdateTasks(AutoAnnotationsUpdater *updater);
+    void handleUpdate(const QList<AutoAnnotationsUpdater*>& updaters);
+    void addNewUpdateTask(AutoAnnotationsUpdater* updater, Task* updateTask);
+    void addRunningUpdateTask(AutoAnnotationsUpdater* updater, Task* updateTask);
+    bool cancelRunningUpdateTasks(AutoAnnotationsUpdater* updater);
 
-    U2SequenceObject *sequenceObject;
-    DNATranslation *aminoTT;
-    AnnotationTableObject *annotationTableObject;
-    AutoAnnotationsSupport *aaSupport;
+    U2SequenceObject* sequenceObject;
+    DNATranslation* aminoTT;
+    AnnotationTableObject* annotationTableObject;
+    AutoAnnotationsSupport* aaSupport;
     QSet<QString> enabledGroups;
 
-    QMap<AutoAnnotationsUpdater *, QList<Task *>> runningUpdateTasks;
-    QMap<AutoAnnotationsUpdater *, QList<Task *>> newUpdateTasks;
+    QMap<AutoAnnotationsUpdater*, QList<Task*>> runningUpdateTasks;
+    QMap<AutoAnnotationsUpdater*, QList<Task*>> newUpdateTasks;
 };
 
 #define AUTO_ANNOTATION_SETTINGS "auto-annotations/"
@@ -108,21 +108,21 @@ private:
 struct U2CORE_EXPORT AutoAnnotationConstraints {
     AutoAnnotationConstraints();
 
-    const DNAAlphabet *alphabet;
-    GHints *hints;
+    const DNAAlphabet* alphabet;
+    GHints* hints;
 };
 
 class U2CORE_EXPORT AutoAnnotationsUpdater : public QObject {
     Q_OBJECT
 public:
-    AutoAnnotationsUpdater(const QString &name, const QString &groupName, bool isCantBeEnabledByDefault = false, bool translationDependant = false);
+    AutoAnnotationsUpdater(const QString& name, const QString& groupName, bool isCantBeEnabledByDefault = false, bool translationDependant = false);
     virtual ~AutoAnnotationsUpdater();
 
-    const QString &getGroupName() const {
+    const QString& getGroupName() const {
         return groupName;
     }
 
-    const QString &getName() const {
+    const QString& getName() const {
         return name;
     }
 
@@ -138,7 +138,7 @@ public:
         return dependsOnAminoTranslation;
     }
 
-    virtual bool checkConstraints(const AutoAnnotationConstraints &constraints) = 0;
+    virtual bool checkConstraints(const AutoAnnotationConstraints& constraints) = 0;
 
     /**
      * Creates task to compute auto annotation for the sequence associated with the given annotation object.
@@ -147,7 +147,7 @@ public:
      *     - there is a chance of overflow in number of resulted annotations for the given context
      *     - the configuration of the task is not correct.
      */
-    virtual Task *createAutoAnnotationsUpdateTask(const AutoAnnotationObject *autoAnnotationObject) = 0;
+    virtual Task* createAutoAnnotationsUpdateTask(const AutoAnnotationObject* autoAnnotationObject) = 0;
 
 private:
     QString groupName;
@@ -169,25 +169,25 @@ class U2CORE_EXPORT AutoAnnotationsSupport : public QObject {
 public:
     ~AutoAnnotationsSupport();
 
-    void registerAutoAnnotationsUpdater(AutoAnnotationsUpdater *updater);
+    void registerAutoAnnotationsUpdater(AutoAnnotationsUpdater* updater);
 
-    QList<AutoAnnotationsUpdater *> getAutoAnnotationUpdaters() const {
+    QList<AutoAnnotationsUpdater*> getAutoAnnotationUpdaters() const {
         return updaterList;
     }
 
-    AutoAnnotationsUpdater *findUpdaterByGroupName(const QString &groupName);
-    AutoAnnotationsUpdater *findUpdaterByName(const QString &name);
-    static bool isAutoAnnotationObject(const AnnotationTableObject *obj);
-    static bool isAutoAnnotationObject(const GObject *obj);
+    AutoAnnotationsUpdater* findUpdaterByGroupName(const QString& groupName);
+    AutoAnnotationsUpdater* findUpdaterByName(const QString& name);
+    static bool isAutoAnnotationObject(const AnnotationTableObject* obj);
+    static bool isAutoAnnotationObject(const GObject* obj);
 
 private:
-    QList<AutoAnnotationsUpdater *> updaterList;
+    QList<AutoAnnotationsUpdater*> updaterList;
 };
 
 class U2CORE_EXPORT AutoAnnotationsUpdateTask : public Task {
     Q_OBJECT
 public:
-    AutoAnnotationsUpdateTask(AutoAnnotationObject *autoAnnotationObject, QList<Task *> subtasks);
+    AutoAnnotationsUpdateTask(AutoAnnotationObject* autoAnnotationObject, QList<Task*> subtasks);
     virtual ~AutoAnnotationsUpdateTask();
 
     void prepare() override;
@@ -198,11 +198,11 @@ public:
         isAutoAnnotationObjectInvalid = true;
     }
 
-    AutoAnnotationObject *getAutoAnnotationObject() const {
+    AutoAnnotationObject* getAutoAnnotationObject() const {
         return autoAnnotationObject;
     }
 
-    U2SequenceObject *getSequenceObject() const {
+    U2SequenceObject* getSequenceObject() const {
         return sequenceObject;
     }
 
@@ -213,9 +213,9 @@ private slots:
 
 protected:
     QPointer<AutoAnnotationObject> autoAnnotationObject;
-    U2SequenceObject *sequenceObject;
-    StateLock *lock;
-    QList<Task *> subTasks;
+    U2SequenceObject* sequenceObject;
+    StateLock* lock;
+    QList<Task*> subTasks;
     bool isAutoAnnotationObjectInvalid;
 };
 

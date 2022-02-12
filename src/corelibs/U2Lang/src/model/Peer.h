@@ -42,20 +42,20 @@ public:
 
     // casting to whatever you want
     template<typename T>
-    inline T *castPeer() const {
-        return (T *)(peer);
+    inline T* castPeer() const {
+        return (T*)(peer);
     }
 
-    void *getPeer() const {
+    void* getPeer() const {
         return peer;
     }
-    void setPeer(void *p) {
+    void setPeer(void* p) {
         peer = p;
     }
 
 protected:
     // any pointer
-    void *peer;
+    void* peer;
 
 };  // Peer
 

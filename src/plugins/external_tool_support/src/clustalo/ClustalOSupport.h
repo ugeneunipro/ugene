@@ -35,7 +35,7 @@ class ClustalOSupport : public ExternalTool {
 public:
     ClustalOSupport();
 
-    GObjectViewWindowContext *getViewContext() const {
+    GObjectViewWindowContext* getViewContext() const {
         return viewCtx;
     }
 
@@ -45,13 +45,13 @@ public slots:
     void sl_runWithExtFileSpecify();
 
 private:
-    GObjectViewWindowContext *viewCtx;
+    GObjectViewWindowContext* viewCtx;
 };
 
 class ClustalOSupportContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    ClustalOSupportContext(QObject *p);
+    ClustalOSupportContext(QObject* p);
 
 protected slots:
     /** Re-aligns the current alignment opened in the view. */
@@ -61,15 +61,15 @@ protected slots:
     void sl_addAlignmentToAlignment();
 
 protected:
-    void initViewContext(GObjectView *view) override;
+    void initViewContext(GObjectView* view) override;
 
 private:
     /**
      * Checks that ClustalO tool setup is valid. Shows external tools setup dialog to user.
      * Sets error flag if ClustalO setup is not valid.
      */
-    static void checkClustalOSetup(U2OpStatus &os);
+    static void checkClustalOSetup(U2OpStatus& os);
 };
 
-}    // namespace U2
-#endif    // _U2_CLUSTALO_SUPPORT_H_
+}  // namespace U2
+#endif  // _U2_CLUSTALO_SUPPORT_H_

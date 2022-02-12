@@ -51,7 +51,7 @@
 
 #include "ORFMarkerTask.h"
 
-Q_DECLARE_METATYPE(QAction *)
+Q_DECLARE_METATYPE(QAction*)
 
 namespace U2 {
 
@@ -59,13 +59,13 @@ namespace U2 {
 
 class ORFListItem : public QTreeWidgetItem {
 public:
-    ORFListItem(const ORFFindResult &r);
+    ORFListItem(const ORFFindResult& r);
     ORFFindResult res;
 
-    virtual bool operator<(const QTreeWidgetItem &other) const;
+    virtual bool operator<(const QTreeWidgetItem& other) const;
 };
 
-ORFDialog::ORFDialog(ADVSequenceObjectContext *_ctx)
+ORFDialog::ORFDialog(ADVSequenceObjectContext* _ctx)
     : QDialog(_ctx->getAnnotatedDNAView()->getWidget()), aaUpdateTask(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930706");
@@ -93,11 +93,11 @@ ORFDialog::ORFDialog(ADVSequenceObjectContext *_ctx)
     connectGUI();
     updateState();
 
-    connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task *)), SLOT(sl_onTaskFinished(Task *)));
+    connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task*)), SLOT(sl_onTaskFinished(Task*)));
     connect(timer, SIGNAL(timeout()), SLOT(sl_onTimer()));
-    QMenu *m = ctx->createGeneticCodeMenu();
-    foreach (QAction *a, m->actions()) {
-        transCombo->addItem(a->text(), qVariantFromValue<QAction *>(a));
+    QMenu* m = ctx->createGeneticCodeMenu();
+    foreach (QAction* a, m->actions()) {
+        transCombo->addItem(a->text(), qVariantFromValue<QAction*>(a));
         if (a->isChecked())
             transCombo->setCurrentIndex(transCombo->count() - 1);
     }
@@ -108,7 +108,7 @@ ORFDialog::ORFDialog(ADVSequenceObjectContext *_ctx)
     findStartedAAUpdateTask();
 }
 
-static QString triplet2str(const Triplet &t) {
+static QString triplet2str(const Triplet& t) {
     QString s;
     s.append(t.c[0]);
     s.append(t.c[1]);
@@ -118,12 +118,12 @@ static QString triplet2str(const Triplet &t) {
 void ORFDialog::sl_translationChanged() {
     if (sender() == transCombo) {
         QVariant v = transCombo->itemData(transCombo->currentIndex());
-        QAction *a = v.value<QAction *>();
+        QAction* a = v.value<QAction*>();
         a->trigger();
     }
     codonsView->clear();
 
-    DNATranslation3to1Impl *tt = (DNATranslation3to1Impl *)ctx->getAminoTT();
+    DNATranslation3to1Impl* tt = (DNATranslation3to1Impl*)ctx->getAminoTT();
     QMap<DNATranslationRole, QList<Triplet>> map = tt->getCodons();
 
     QString startCodons;
@@ -131,7 +131,7 @@ void ORFDialog::sl_translationChanged() {
     QString stopCodons;
 
     QString sepStr = " ";
-    const QList<Triplet> &start = map[DNATranslationRole_Start];
+    const QList<Triplet>& start = map[DNATranslationRole_Start];
     for (int i = 0, n = start.size(); i < n; i++) {
         startCodons.append(triplet2str(start[i]));
         if (i < n - 1) {
@@ -139,7 +139,7 @@ void ORFDialog::sl_translationChanged() {
         }
     }
 
-    const QList<Triplet> &start2 = map[DNATranslationRole_Start_Alternative];
+    const QList<Triplet>& start2 = map[DNATranslationRole_Start_Alternative];
     for (int i = 0, n = start2.size(); i < n; i++) {
         altStarts.append(triplet2str(start2[i]));
         if (i < n - 1) {
@@ -147,7 +147,7 @@ void ORFDialog::sl_translationChanged() {
         }
     }
 
-    const QList<Triplet> &stop = map[DNATranslationRole_Stop];
+    const QList<Triplet>& stop = map[DNATranslationRole_Stop];
     for (int i = 0, n = stop.size(); i < n; i++) {
         stopCodons.append(triplet2str(stop[i]));
         if (i < n - 1) {
@@ -166,7 +166,7 @@ void ORFDialog::connectGUI() {
     connect(pbFindAll, SIGNAL(clicked()), SLOT(sl_onFindAll()));
 
     // results list
-    connect(resultsTree, SIGNAL(itemActivated(QTreeWidgetItem *, int)), SLOT(sl_onResultActivated(QTreeWidgetItem *, int)));
+    connect(resultsTree, SIGNAL(itemActivated(QTreeWidgetItem*, int)), SLOT(sl_onResultActivated(QTreeWidgetItem*, int)));
 
     resultsTree->installEventFilter(this);
 }
@@ -200,11 +200,11 @@ void ORFDialog::updateStatus() {
     statusLabel->setText(message);
 }
 
-bool ORFDialog::eventFilter(QObject *obj, QEvent *ev) {
+bool ORFDialog::eventFilter(QObject* obj, QEvent* ev) {
     if (obj == resultsTree && ev->type() == QEvent::KeyPress) {
-        QKeyEvent *ke = (QKeyEvent *)ev;
+        QKeyEvent* ke = (QKeyEvent*)ev;
         if (ke->key() == Qt::Key_Space) {
-            ORFListItem *item = static_cast<ORFListItem *>(resultsTree->currentItem());
+            ORFListItem* item = static_cast<ORFListItem*>(resultsTree->currentItem());
             if (item != nullptr) {
                 sl_onResultActivated(item, 0);
             }
@@ -240,7 +240,7 @@ void ORFDialog::reject() {
     QDialog::reject();
 }
 
-U2Region ORFDialog::getCompleteSearchRegion(bool *ok) const {
+U2Region ORFDialog::getCompleteSearchRegion(bool* ok) const {
     if (rs->isWholeSequenceSelected()) {
         return U2_REGION_MAX;
     } else {
@@ -271,7 +271,7 @@ void ORFDialog::runTask() {
     timer->start(400);
 }
 
-void ORFDialog::sl_onTaskFinished(Task *t) {
+void ORFDialog::sl_onTaskFinished(Task* t) {
     if (t == task && t->getState() == Task::State_Finished) {
         importResults();
         task = nullptr;
@@ -295,8 +295,8 @@ void ORFDialog::importResults() {
     QList<ORFFindResult> newResults = task->popResults();
     if (!newResults.empty()) {
         resultsTree->setSortingEnabled(false);
-        foreach (const ORFFindResult &r, newResults) {
-            ORFListItem *item = nullptr;  // findItem(r, lbResult);
+        foreach (const ORFFindResult& r, newResults) {
+            ORFListItem* item = nullptr;  // findItem(r, lbResult);
             if (item == nullptr) {
                 item = new ORFListItem(r);
                 resultsTree->addTopLevelItem(item);
@@ -308,10 +308,10 @@ void ORFDialog::importResults() {
     updateStatus();
 }
 
-void ORFDialog::sl_onResultActivated(QTreeWidgetItem *i, int col) {
+void ORFDialog::sl_onResultActivated(QTreeWidgetItem* i, int col) {
     Q_UNUSED(col);
     assert(i != nullptr);
-    ORFListItem *item = static_cast<ORFListItem *>(i);
+    ORFListItem* item = static_cast<ORFListItem*>(i);
 
     ctx->getSequenceSelection()->setRegion(item->res.region);
 
@@ -355,10 +355,10 @@ void ORFDialog::accept() {
             s.searchRegion = wholeSequenceRegion;
         }
 
-        const CreateAnnotationModel &m = ac->getModel();
-        AnnotationTableObject *aObj = m.getAnnotationObject();
+        const CreateAnnotationModel& m = ac->getModel();
+        AnnotationTableObject* aObj = m.getAnnotationObject();
         ctx->getAnnotatedDNAView()->tryAddObject(aObj);
-        FindORFsToAnnotationsTask *orfTask = new FindORFsToAnnotationsTask(aObj, ctx->getSequenceObject()->getEntityRef(), s, m.groupName, m.description);
+        FindORFsToAnnotationsTask* orfTask = new FindORFsToAnnotationsTask(aObj, ctx->getSequenceObject()->getEntityRef(), s, m.groupName, m.description);
         AppContext::getTaskScheduler()->registerTopLevelTask(orfTask);
     }
 
@@ -386,7 +386,7 @@ void ORFDialog::initSettings() {
     }
 }
 
-void ORFDialog::getSettings(ORFAlgorithmSettings &s) {
+void ORFDialog::getSettings(ORFAlgorithmSettings& s) {
     isRegionOk = true;
     s.strand = getAlgStrand();
     s.complementTT = ctx->getComplementTT();
@@ -414,7 +414,7 @@ U2::ORFAlgorithmStrand ORFDialog::getAlgStrand() const {
 void ORFDialog::createAnnotationWidget() {
     CreateAnnotationModel acm;
 
-    U2SequenceObject *seqObj = ctx->getSequenceObject();
+    U2SequenceObject* seqObj = ctx->getSequenceObject();
     acm.sequenceObjectRef = GObjectReference(seqObj);
     acm.hideAnnotationType = true;
     acm.hideAnnotationName = true;
@@ -423,18 +423,18 @@ void ORFDialog::createAnnotationWidget() {
     acm.data->name = ORFAlgorithmSettings::ANNOTATION_GROUP_NAME;
     acm.sequenceLen = seqObj->getSequenceLength();
     ac = new CreateAnnotationWidgetController(acm, this);
-    QWidget *caw = ac->getWidget();
-    QVBoxLayout *l = new QVBoxLayout();
+    QWidget* caw = ac->getWidget();
+    QVBoxLayout* l = new QVBoxLayout();
     l->setMargin(0);
     l->addWidget(caw);
     annotationsWidget->setLayout(l);
 }
 
 void ORFDialog::findStartedAAUpdateTask() {
-    foreach (Task *t, AppContext::getTaskScheduler()->getTopLevelTasks()) {
+    foreach (Task* t, AppContext::getTaskScheduler()->getTopLevelTasks()) {
         QString taskName = t->getTaskName();
         if (taskName == AutoAnnotationsUpdateTask::NAME) {
-            AutoAnnotationsUpdateTask *aaTask = qobject_cast<AutoAnnotationsUpdateTask *>(t);
+            AutoAnnotationsUpdateTask* aaTask = qobject_cast<AutoAnnotationsUpdateTask*>(t);
             SAFE_POINT(aaTask != nullptr, "Bad conversion from Task to AutoAnnotationsUpdateTask", );
             if (ctx->getSequenceObject()->getEntityRef() == aaTask->getSequenceObject()->getEntityRef()) {
                 aaUpdateTask = aaTask;
@@ -450,7 +450,7 @@ void ORFDialog::findStartedAAUpdateTask() {
 //////////////////////////////////////////////////////////////////////////
 /// list
 
-ORFListItem::ORFListItem(const ORFFindResult &r)
+ORFListItem::ORFListItem(const ORFFindResult& r)
     : res(r) {
     QString range = QString(" [%1..%2] ").arg(res.region.startPos + 1).arg(res.region.endPos());
     if (r.isJoined) {
@@ -461,13 +461,13 @@ ORFListItem::ORFListItem(const ORFFindResult &r)
     setText(2, " " + QString::number(res.region.length) + " ");
 }
 
-bool ORFListItem::operator<(const QTreeWidgetItem &other) const {
+bool ORFListItem::operator<(const QTreeWidgetItem& other) const {
     int sortCol = treeWidget()->sortColumn();
     if (sortCol == 1) {  // compl/direct
         return text(sortCol) < other.text(sortCol);
     }
 
-    const ORFListItem &o = (const ORFListItem &)other;
+    const ORFListItem& o = (const ORFListItem&)other;
     if (sortCol == 0) {  // pos
         if (o.res.region.startPos == res.region.startPos) {
             if (o.res.region.endPos() == res.region.endPos()) {

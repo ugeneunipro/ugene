@@ -35,7 +35,7 @@ const QString BedtoolsSupport::ET_BEDTOOLS_ID = "USUPP_BEDTOOLS";
 const QString BedtoolsSupport::GENOMES_DIR_NAME = "genome_lengths";
 const QString BedtoolsSupport::GENOMES_DATA_NAME = "Genome files";
 
-BedtoolsSupport::BedtoolsSupport(const QString &path)
+BedtoolsSupport::BedtoolsSupport(const QString& path)
     : ExternalTool(ET_BEDTOOLS_ID, "bedtools", "bedtools", path) {
     if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
@@ -56,18 +56,18 @@ BedtoolsSupport::BedtoolsSupport(const QString &path)
 
     connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_validationStatusChanged(bool)));
 
-    U2DataPathRegistry *dpr = AppContext::getDataPathRegistry();
+    U2DataPathRegistry* dpr = AppContext::getDataPathRegistry();
     if (dpr != nullptr) {
-        U2DataPath *dp = new U2DataPath(GENOMES_DATA_NAME, QString(PATH_PREFIX_DATA) + ":" + GENOMES_DIR_NAME, "", U2DataPath::CutFileExtension);
+        U2DataPath* dp = new U2DataPath(GENOMES_DATA_NAME, QString(PATH_PREFIX_DATA) + ":" + GENOMES_DIR_NAME, "", U2DataPath::CutFileExtension);
         dpr->registerEntry(dp);
     }
 }
 
 void BedtoolsSupport::sl_validationStatusChanged(bool /*newStatus*/) {
-    ConvertFactoryRegistry *registry = AppContext::getConvertFactoryRegistry();
+    ConvertFactoryRegistry* registry = AppContext::getConvertFactoryRegistry();
     if (isValid()) {
         registry->registerConvertFactory(new BAMBEDConvertFactory());
     }
 }
 
-}    // namespace U2
+}  // namespace U2

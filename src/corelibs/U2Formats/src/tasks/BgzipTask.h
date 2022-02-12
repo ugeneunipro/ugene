@@ -30,12 +30,12 @@ namespace U2 {
 class U2FORMATS_EXPORT BgzipTask : public Task {
     Q_OBJECT
 public:
-    BgzipTask(const GUrl &fileUrl, const GUrl &bgzfUrl = GUrl());
+    BgzipTask(const GUrl& fileUrl, const GUrl& bgzfUrl = GUrl());
     void run();
     QString generateReport() const;
     ReportResult report();
 
-    static bool checkBgzf(const GUrl &fileUrl);
+    static bool checkBgzf(const GUrl& fileUrl);
 
 private:
     GUrl fileUrl;
@@ -45,12 +45,12 @@ private:
 class U2FORMATS_EXPORT GzipDecompressTask : public Task {
     Q_OBJECT
 public:
-    GzipDecompressTask(const GUrl &zippedUrl, const GUrl &unzippedUrl = GUrl());
+    GzipDecompressTask(const GUrl& zippedUrl, const GUrl& unzippedUrl = GUrl());
     void run();
     QString generateReport() const;
     ReportResult report();
 
-    static bool checkZipped(const GUrl &fileUrl);
+    static bool checkZipped(const GUrl& fileUrl);
 
 private:
     GUrl zippedUrl;

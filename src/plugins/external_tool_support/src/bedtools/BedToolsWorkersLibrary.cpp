@@ -53,7 +53,7 @@ namespace U2 {
 namespace LocalWorkflow {
 
 ///////////////////////////////////////////////////////////////
-//Slopbed
+// Slopbed
 const QString SlopbedWorkerFactory::ACTOR_ID("slopbed");
 static const QString GENOME_ID("genome-id");
 static const QString B_ID("b-id");
@@ -68,8 +68,8 @@ static const QString FILTER_ID("filter-id");
 /* SlopbedPrompter */
 /************************************************************************/
 QString SlopbedPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BaseNGSWorker::INPUT_PORT));
-    const Actor *producer = input->getProducer(BaseSlots::URL_SLOT().getId());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BaseNGSWorker::INPUT_PORT));
+    const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
 
@@ -81,18 +81,18 @@ QString SlopbedPrompter::composeRichDoc() {
 /* SlopbedWorkerFactory */
 /************************************************************************/
 void SlopbedWorkerFactory::init() {
-    //init data path
-    U2DataPath *dataPath = nullptr;
-    U2DataPathRegistry *dpr = AppContext::getDataPathRegistry();
+    // init data path
+    U2DataPath* dataPath = nullptr;
+    U2DataPathRegistry* dpr = AppContext::getDataPathRegistry();
     if (dpr) {
-        U2DataPath *dp = dpr->getDataPathByName(BedtoolsSupport::GENOMES_DATA_NAME);
+        U2DataPath* dp = dpr->getDataPathByName(BedtoolsSupport::GENOMES_DATA_NAME);
         if (dp && dp->isValid()) {
             dataPath = dp;
         }
     }
     Descriptor desc(ACTOR_ID, SlopbedWorker::tr("slopBed"), SlopbedWorker::tr("Increases the size of each feature in files using bedtools slop."));
 
-    QList<PortDescriptor *> p;
+    QList<PortDescriptor*> p;
     {
         Descriptor inD(BaseNGSWorker::INPUT_PORT, SlopbedWorker::tr("Input File"), SlopbedWorker::tr("Set of files to bedtools slop"));
         Descriptor outD(BaseNGSWorker::OUTPUT_PORT, SlopbedWorker::tr("Output File"), SlopbedWorker::tr("Output file"));
@@ -106,7 +106,7 @@ void SlopbedWorkerFactory::init() {
         p << new PortDescriptor(outD, DataTypePtr(new MapDataType("sb.output-url", outM)), false, true);
     }
 
-    QList<Attribute *> a;
+    QList<Attribute*> a;
     {
         Descriptor outDir(BaseNGSWorker::OUT_MODE_ID, SlopbedWorker::tr("Output folder"), SlopbedWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
                                                                                                             "<b>Workflow</b> - internal workflow folder. "
@@ -133,14 +133,14 @@ void SlopbedWorkerFactory::init() {
         Descriptor filterAttr(FILTER_ID, SlopbedWorker::tr("Filter start>end fields"), SlopbedWorker::tr("Remove lines with start position greater than end position"));
 
         a << new Attribute(outDir, BaseTypes::NUM_TYPE(), false, QVariant(FileAndDirectoryUtils::WORKFLOW_INTERNAL));
-        Attribute *customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
+        Attribute* customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
         customDirAttr->addRelation(new VisibilityRelation(BaseNGSWorker::OUT_MODE_ID, FileAndDirectoryUtils::CUSTOM));
         a << customDirAttr;
         a << new Attribute(outName, BaseTypes::STRING_TYPE(), false, QVariant(BaseNGSWorker::DEFAULT_NAME));
 
-        Attribute *genomeAttr = nullptr;
+        Attribute* genomeAttr = nullptr;
         if (dataPath) {
-            const QList<QString> &dataNames = dataPath->getDataNames();
+            const QList<QString>& dataNames = dataPath->getDataNames();
             if (!dataNames.isEmpty()) {
                 genomeAttr = new Attribute(genomeAttrDesc, BaseTypes::STRING_TYPE(), true, dataPath->getPathByName(dataNames.first()));
             } else {
@@ -160,7 +160,7 @@ void SlopbedWorkerFactory::init() {
         a << new Attribute(filterAttr, BaseTypes::BOOL_TYPE(), false, QVariant(false));
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap directoryMap;
         QString fileDir = SlopbedWorker::tr("Input file");
@@ -187,20 +187,20 @@ void SlopbedWorkerFactory::init() {
         delegates[R_ID] = new SpinBoxDelegate(lenMap);
     }
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new SlopbedPrompter());
     proto->addExternalTool(BedtoolsSupport::ET_BEDTOOLS_ID);
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new SlopbedWorkerFactory());
 }
 
 /************************************************************************/
 /* SlopbedWorker */
 /************************************************************************/
-SlopbedWorker::SlopbedWorker(Actor *a)
+SlopbedWorker::SlopbedWorker(Actor* a)
     : BaseNGSWorker(a) {
 }
 
@@ -242,19 +242,19 @@ QString SlopbedWorker::getDefaultFileName() const {
     return ".sb.bed";
 }
 
-Task *SlopbedWorker::getTask(const BaseNGSSetting &settings) const {
+Task* SlopbedWorker::getTask(const BaseNGSSetting& settings) const {
     return new SlopbedTask(settings);
 }
 
 //////////////////////////////////////////////////////
-//SlopbedTask
-SlopbedTask::SlopbedTask(const BaseNGSSetting &settings)
+// SlopbedTask
+SlopbedTask::SlopbedTask(const BaseNGSSetting& settings)
     : BaseNGSTask(settings), filterLines(false) {
     GCOUNTER(cvar, "NGS:SlopBedTask");
 }
 
 void SlopbedTask::prepareStep() {
-    Task *etTask = getExternalToolTask(BedtoolsSupport::ET_BEDTOOLS_ID);
+    Task* etTask = getExternalToolTask(BedtoolsSupport::ET_BEDTOOLS_ID);
     CHECK(etTask != nullptr, );
 
     addSubTask(etTask);
@@ -290,7 +290,7 @@ void SlopbedTask::finishStep() {
     }
 }
 
-QStringList SlopbedTask::getParameters(U2OpStatus &os) {
+QStringList SlopbedTask::getParameters(U2OpStatus& os) {
     QStringList res;
     res << "slop";
     res << "-i";
@@ -344,7 +344,7 @@ QStringList SlopbedTask::getParameters(U2OpStatus &os) {
 }
 
 ///////////////////////////////////////////////////////////////
-//Genomecov
+// Genomecov
 const QString GenomecovWorkerFactory::ACTOR_ID("genomecov");
 
 static const QString MODE_ID("mode-id");
@@ -430,13 +430,13 @@ QString getParameterByMode(GenomecovMode mode) {
     return res;
 }
 
-}    // namespace
+}  // namespace
 /************************************************************************/
 /* GenomecovPrompter */
 /************************************************************************/
 QString GenomecovPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BaseNGSWorker::INPUT_PORT));
-    const Actor *producer = input->getProducer(BaseSlots::URL_SLOT().getId());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BaseNGSWorker::INPUT_PORT));
+    const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
     QString descr = getDescriptionByMode(GenomecovMode(getParameter(MODE_ID).toInt()));
@@ -449,18 +449,18 @@ QString GenomecovPrompter::composeRichDoc() {
 /* GenomecovWorkerFactory */
 /************************************************************************/
 void GenomecovWorkerFactory::init() {
-    //init data path
-    U2DataPath *dataPath = nullptr;
-    U2DataPathRegistry *dpr = AppContext::getDataPathRegistry();
+    // init data path
+    U2DataPath* dataPath = nullptr;
+    U2DataPathRegistry* dpr = AppContext::getDataPathRegistry();
     if (dpr) {
-        U2DataPath *dp = dpr->getDataPathByName(BedtoolsSupport::GENOMES_DATA_NAME);
+        U2DataPath* dp = dpr->getDataPathByName(BedtoolsSupport::GENOMES_DATA_NAME);
         if (dp && dp->isValid()) {
             dataPath = dp;
         }
     }
     Descriptor desc(ACTOR_ID, GenomecovWorker::tr("Genome Coverage"), GenomecovWorker::tr("Calculates genome coverage using bedtools genomecov."));
 
-    QList<PortDescriptor *> p;
+    QList<PortDescriptor*> p;
     {
         Descriptor inD(BaseNGSWorker::INPUT_PORT, GenomecovWorker::tr("Input File"), GenomecovWorker::tr("Set of files to NGS slop"));
         Descriptor outD(BaseNGSWorker::OUTPUT_PORT, GenomecovWorker::tr("Output File"), GenomecovWorker::tr("Output file"));
@@ -474,7 +474,7 @@ void GenomecovWorkerFactory::init() {
         p << new PortDescriptor(outD, DataTypePtr(new MapDataType("sb.output-url", outM)), false, true);
     }
 
-    QList<Attribute *> a;
+    QList<Attribute*> a;
     {
         Descriptor outDir(BaseNGSWorker::OUT_MODE_ID, GenomecovWorker::tr("Output folder"), GenomecovWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
                                                                                                                 "<b>Workflow</b> - internal workflow folder. "
@@ -524,14 +524,14 @@ void GenomecovWorkerFactory::init() {
         Descriptor trackoptsAttrDesc(TRACKOPTS_ID, GenomecovWorker::tr("Trackopts"), GenomecovWorker::tr("Writes additional track line definition parameters in the first line. (-trackopts)"));
 
         a << new Attribute(outDir, BaseTypes::NUM_TYPE(), false, QVariant(FileAndDirectoryUtils::WORKFLOW_INTERNAL));
-        Attribute *customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
+        Attribute* customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
         customDirAttr->addRelation(new VisibilityRelation(BaseNGSWorker::OUT_MODE_ID, FileAndDirectoryUtils::CUSTOM));
         a << customDirAttr;
         a << new Attribute(outName, BaseTypes::STRING_TYPE(), false, QVariant(BaseNGSWorker::DEFAULT_NAME));
 
-        Attribute *genomeAttr = nullptr;
+        Attribute* genomeAttr = nullptr;
         if (dataPath) {
-            const QList<QString> &dataNames = dataPath->getDataNames();
+            const QList<QString>& dataNames = dataPath->getDataNames();
             if (!dataNames.isEmpty()) {
                 genomeAttr = new Attribute(genomeAttrDesc, BaseTypes::STRING_TYPE(), true, dataPath->getPathByName(dataNames.first()));
             } else {
@@ -553,7 +553,7 @@ void GenomecovWorkerFactory::init() {
         a << new Attribute(trackoptsAttrDesc, BaseTypes::STRING_TYPE(), false, QVariant(""));
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap directoryMap;
         QString fileDir = GenomecovWorker::tr("Input file");
@@ -591,20 +591,20 @@ void GenomecovWorkerFactory::init() {
         delegates[SCALE_ID] = new DoubleSpinBoxDelegate(lenFMap);
     }
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new GenomecovPrompter());
     proto->addExternalTool(BedtoolsSupport::ET_BEDTOOLS_ID);
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new GenomecovWorkerFactory());
 }
 
 /************************************************************************/
 /* GenomecovWorker */
 /************************************************************************/
-GenomecovWorker::GenomecovWorker(Actor *a)
+GenomecovWorker::GenomecovWorker(Actor* a)
     : BaseNGSWorker(a) {
 }
 
@@ -654,25 +654,25 @@ QString GenomecovWorker::getDefaultFileName() const {
     return ".gc";
 }
 
-Task *GenomecovWorker::getTask(const BaseNGSSetting &settings) const {
+Task* GenomecovWorker::getTask(const BaseNGSSetting& settings) const {
     return new GenomecovTask(settings);
 }
 
 //////////////////////////////////////////////////////
-//GenomecovTask
-GenomecovTask::GenomecovTask(const BaseNGSSetting &settings)
+// GenomecovTask
+GenomecovTask::GenomecovTask(const BaseNGSSetting& settings)
     : BaseNGSTask(settings) {
     GCOUNTER(cvar, "NGS:GenomeCovTask");
 }
 
 void GenomecovTask::prepareStep() {
-    Task *etTask = getExternalToolTask(BedtoolsSupport::ET_BEDTOOLS_ID);
+    Task* etTask = getExternalToolTask(BedtoolsSupport::ET_BEDTOOLS_ID);
     CHECK(etTask != nullptr, );
 
     addSubTask(etTask);
 }
 
-QStringList GenomecovTask::getParameters(U2OpStatus &os) {
+QStringList GenomecovTask::getParameters(U2OpStatus& os) {
     QStringList res;
     res << "genomecov";
 
@@ -764,7 +764,7 @@ const static QString MIN_OVERLAP("minimum-overlap");
 const static QString REPORT("report");
 const static QString UNIQUE("unique");
 
-BedtoolsIntersectWorker::BedtoolsIntersectWorker(Actor *a)
+BedtoolsIntersectWorker::BedtoolsIntersectWorker(Actor* a)
     : BaseWorker(a, false),
       inputA(nullptr),
       inputB(nullptr),
@@ -777,7 +777,7 @@ void BedtoolsIntersectWorker::init() {
     output = ports.value(OUT_PORT_ID);
 }
 
-Task *BedtoolsIntersectWorker::tick() {
+Task* BedtoolsIntersectWorker::tick() {
     storeMessages(inputA, storeA);
     storeMessages(inputB, storeB);
 
@@ -802,21 +802,21 @@ bool BedtoolsIntersectWorker::isReady() const {
     return hasA || hasB || (endedA && endedB);
 }
 
-void BedtoolsIntersectWorker::sl_taskFinished(Task *task) {
+void BedtoolsIntersectWorker::sl_taskFinished(Task* task) {
     if (task->isCanceled() || task->hasError()) {
         return;
     }
-    BedtoolsIntersectAnnotationsByEntityTask *intersectTask = qobject_cast<BedtoolsIntersectAnnotationsByEntityTask *>(task);
+    BedtoolsIntersectAnnotationsByEntityTask* intersectTask = qobject_cast<BedtoolsIntersectAnnotationsByEntityTask*>(task);
     if (intersectTask == nullptr) {
         return;
     }
     setDone();
 
-    QList<GObject *> objList = intersectTask->getResult();
+    QList<GObject*> objList = intersectTask->getResult();
     CHECK_EXT(!objList.isEmpty(), output->setEnded(), );
 
-    foreach (GObject *gObj, objList) {
-        AnnotationTableObject *obj = qobject_cast<AnnotationTableObject *>(gObj);
+    foreach (GObject* gObj, objList) {
+        AnnotationTableObject* obj = qobject_cast<AnnotationTableObject*>(gObj);
         CHECK_EXT(obj != nullptr, output->setEnded(), );
         const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(obj);
         output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(),
@@ -826,7 +826,7 @@ void BedtoolsIntersectWorker::sl_taskFinished(Task *task) {
     output->setEnded();
 }
 
-Task *BedtoolsIntersectWorker::createTask() {
+Task* BedtoolsIntersectWorker::createTask() {
     BedtoolsIntersectByEntityRefSettings settings;
 
     settings.minOverlap = actor->getParameter(MIN_OVERLAP)->getAttributeValue<double>(context) / 100;
@@ -836,17 +836,17 @@ Task *BedtoolsIntersectWorker::createTask() {
     settings.entitiesA = getAnnotationsEntityRefFromMessages(storeA, IN_PORT_A_ID);
     settings.entitiesB = getAnnotationsEntityRefFromMessages(storeB, IN_PORT_B_ID);
 
-    BedtoolsIntersectAnnotationsByEntityTask *t = new BedtoolsIntersectAnnotationsByEntityTask(settings);
+    BedtoolsIntersectAnnotationsByEntityTask* t = new BedtoolsIntersectAnnotationsByEntityTask(settings);
     t->addListeners(createLogListeners());
-    connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
+    connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
     return t;
 }
 
-QList<U2EntityRef> BedtoolsIntersectWorker::getAnnotationsEntityRefFromMessages(const QList<Message> &mList, const QString &portId) {
+QList<U2EntityRef> BedtoolsIntersectWorker::getAnnotationsEntityRefFromMessages(const QList<Message>& mList, const QString& portId) {
     QList<U2EntityRef> res;
 
     U2OpStatusImpl os;
-    foreach (const Message &m, mList) {
+    foreach (const Message& m, mList) {
         CHECK(!m.isEmpty(), res);
         U2EntityRef ref = getAnnotationsEntityRef(m, portId, os);
         res << ref;
@@ -854,25 +854,25 @@ QList<U2EntityRef> BedtoolsIntersectWorker::getAnnotationsEntityRefFromMessages(
     return res;
 }
 
-U2EntityRef BedtoolsIntersectWorker::getAnnotationsEntityRef(const Message &m, const QString &portId, U2OpStatus &os) {
+U2EntityRef BedtoolsIntersectWorker::getAnnotationsEntityRef(const Message& m, const QString& portId, U2OpStatus& os) {
     const QVariantMap data = m.getData().toMap();
     CHECK_EXT(data.contains(portId), os.setError(tr("Data not found by %1 id").arg(portId)), U2EntityRef());
 
     const SharedDbiDataHandler dbiHandler = data[portId].value<SharedDbiDataHandler>();
-    const AnnotationTableObject *obj = StorageUtils::getAnnotationTableObject(context->getDataStorage(), dbiHandler);
+    const AnnotationTableObject* obj = StorageUtils::getAnnotationTableObject(context->getDataStorage(), dbiHandler);
     CHECK_EXT(obj != nullptr, os.setError(tr("Can not get annotation table object")), U2EntityRef());
 
     return obj->getEntityRef();
 }
 
-void BedtoolsIntersectWorker::storeMessages(IntegralBus *bus, QList<Message> &store) {
+void BedtoolsIntersectWorker::storeMessages(IntegralBus* bus, QList<Message>& store) {
     while (bus->hasMessage()) {
         store << getMessageAndSetupScriptValues(bus);
     }
 }
 
 void BedtoolsIntersectWorkerFactory::init() {
-    QList<PortDescriptor *> portDescs;
+    QList<PortDescriptor*> portDescs;
     {
         Descriptor inDescA(IN_PORT_A_ID, BedtoolsIntersectWorker::tr("Annotations A"), BedtoolsIntersectWorker::tr("Annotations A"));
         QMap<Descriptor, DataTypePtr> inM_A;
@@ -890,7 +890,7 @@ void BedtoolsIntersectWorkerFactory::init() {
         portDescs << new PortDescriptor(outDesc, DataTypePtr(new MapDataType("out.anns", outM)), /*intput*/ false);
     }
 
-    QList<Attribute *> attribs;
+    QList<Attribute*> attribs;
     {
         Descriptor minOverlapDesc(MIN_OVERLAP,
                                   BedtoolsIntersectWorker::tr("Minimum overlap"),
@@ -921,17 +921,17 @@ void BedtoolsIntersectWorkerFactory::init() {
 
         attribs << new Attribute(reportDesc, BaseTypes::NUM_TYPE(), /*required*/ false, QVariant(BedtoolsIntersectSettings::Report_OverlapedA));
 
-        Attribute *uniqueAttr = new Attribute(uniqueDesc, BaseTypes::BOOL_TYPE(), /*required*/ false, QVariant(true));
+        Attribute* uniqueAttr = new Attribute(uniqueDesc, BaseTypes::BOOL_TYPE(), /*required*/ false, QVariant(true));
         uniqueAttr->addRelation(new VisibilityRelation(REPORT, QVariantList() << BedtoolsIntersectSettings::Report_OverlapedA));
         attribs << uniqueAttr;
 
-        Attribute *minOverlapAttr = new Attribute(minOverlapDesc, BaseTypes::NUM_TYPE(), /*required*/ false, QVariant(BedtoolsIntersectSettings::DEFAULT_MIN_OVERLAP * 100));
+        Attribute* minOverlapAttr = new Attribute(minOverlapDesc, BaseTypes::NUM_TYPE(), /*required*/ false, QVariant(BedtoolsIntersectSettings::DEFAULT_MIN_OVERLAP * 100));
         minOverlapAttr->addRelation(new VisibilityRelation(REPORT, QVariantList() << BedtoolsIntersectSettings::Report_Intervals << BedtoolsIntersectSettings::Report_OverlapedA));
         minOverlapAttr->addRelation(new VisibilityRelation(UNIQUE, QVariantList() << false));
         attribs << minOverlapAttr;
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap spinMap;
         spinMap["minimum"] = QVariant(BedtoolsIntersectSettings::DEFAULT_MIN_OVERLAP * 100);
@@ -952,13 +952,13 @@ void BedtoolsIntersectWorkerFactory::init() {
     Descriptor desc(BedtoolsIntersectWorkerFactory::ACTOR_ID,
                     BedtoolsIntersectWorker::tr("Intersect Annotations"),
                     BedtoolsIntersectWorker::tr("Intersects two sets of annotations denoted as A and B."));
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, portDescs, attribs);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, portDescs, attribs);
     proto->setPrompter(new BedtoolsIntersectPrompter());
     proto->setEditor(new DelegateEditor(delegates));
     proto->addExternalTool(BedtoolsSupport::ET_BEDTOOLS_ID);
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new BedtoolsIntersectWorkerFactory());
 }
 
@@ -991,5 +991,5 @@ QString BedtoolsIntersectPrompter::composeRichDoc() {
     return res;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

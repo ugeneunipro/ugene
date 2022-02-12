@@ -31,17 +31,17 @@ class WizardPageController;
 class WDWizardPage : public QWizardPage {
     Q_OBJECT
 public:
-    WDWizardPage(WizardPageController *controller, QWidget *parent = nullptr);
+    WDWizardPage(WizardPageController* controller, QWidget* parent = nullptr);
     virtual ~WDWizardPage();
 
     virtual void initializePage();
     virtual int nextId() const;
 
 protected:
-    virtual void showEvent(QShowEvent *event);
+    virtual void showEvent(QShowEvent* event);
 
 private:
-    WizardPageController *controller;
+    WizardPageController* controller;
 
 private:
     void setupDialogSize();

@@ -50,15 +50,15 @@ struct TrimmomaticTaskSettings {
 class TrimmomaticTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    TrimmomaticTask(const TrimmomaticTaskSettings &settings);
+    TrimmomaticTask(const TrimmomaticTaskSettings& settings);
 
-    const QString &getInputUrl1() const;
-    const QString &getSeOutputUrl() const;
-    const QString &getPairedOutputUrl1() const;
-    const QString &getPairedOutputUrl2() const;
-    const QString &getUnpairedOutputUrl1() const;
-    const QString &getUnpairedOutputUrl2() const;
-    const QString &getLogUrl() const;
+    const QString& getInputUrl1() const;
+    const QString& getSeOutputUrl() const;
+    const QString& getPairedOutputUrl1() const;
+    const QString& getPairedOutputUrl2() const;
+    const QString& getUnpairedOutputUrl1() const;
+    const QString& getUnpairedOutputUrl2() const;
+    const QString& getLogUrl() const;
 
 private:
     void prepare();
@@ -67,9 +67,9 @@ private:
 
     const TrimmomaticTaskSettings settings;
 
-    ExternalToolRunTask *trimmomaticToolRunTask;
+    ExternalToolRunTask* trimmomaticToolRunTask;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_TRIMMOMATIC_TASK_H_
+#endif  // _U2_TRIMMOMATIC_TASK_H_

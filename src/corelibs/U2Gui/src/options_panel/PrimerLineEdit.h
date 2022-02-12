@@ -36,20 +36,20 @@ namespace U2 {
 class U2GUI_EXPORT PrimerLineEdit : public QLineEdit {
     Q_OBJECT
 public:
-    PrimerLineEdit(QWidget *parent);
+    PrimerLineEdit(QWidget* parent);
 
     /**
      * Set text if it's valid. If not set empty string.
      */
-    void setInvalidatedText(const QString &text);
+    void setInvalidatedText(const QString& text);
 
 protected:
-    void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent* event);
 
 private:
     QRect getPlaceHolderRect() const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif  // _U2_PRIMER_LINE_EDIT_H_

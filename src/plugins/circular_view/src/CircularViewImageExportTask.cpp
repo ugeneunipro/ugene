@@ -96,15 +96,15 @@ void CircularViewImageExportToPDFTask::run() {
 void CircularViewImageExportToBitmapTask::run() {
     SAFE_POINT_EXT(settings.isBitmapFormat(), setError(WRONG_FORMAT_MESSAGE.arg(settings.format).arg("CircularViewImageExportToBitmapTask")), );
 
-    QPixmap *im = new QPixmap(settings.imageSize);
+    QPixmap* im = new QPixmap(settings.imageSize);
     im->fill(Qt::white);
-    QPainter *painter = new QPainter(im);
+    QPainter* painter = new QPainter(im);
     cvWidget->paint(*painter, settings.imageSize.width(), settings.imageSize.height(), cvExportSettings.includeSelection, cvExportSettings.includeMarker);
 
     CHECK_EXT(im->save(settings.fileName, qPrintable(settings.format), settings.imageQuality), setError(EXPORT_FAIL_MESSAGE.arg(settings.fileName)), );
 }
 
-CircularViewImageExportController::CircularViewImageExportController(CircularView *cv)
+CircularViewImageExportController::CircularViewImageExportController(CircularView* cv)
     : ImageExportController(ExportImageFormatPolicy_SupportAll),
       cvWidget(cv) {
     SAFE_POINT(cv != nullptr, "Circular View is NULL!", );
@@ -112,8 +112,8 @@ CircularViewImageExportController::CircularViewImageExportController(CircularVie
     initSettingsWidget();
 }
 
-CircularViewImageExportController::CircularViewImageExportController(const QList<CircularView *> &list,
-                                                                     CircularView *defaultCV)
+CircularViewImageExportController::CircularViewImageExportController(const QList<CircularView*>& list,
+                                                                     CircularView* defaultCV)
     : ImageExportController(ExportImageFormatPolicy_SupportAll),
       cvWidget(defaultCV),
       cvList(list) {
@@ -135,14 +135,14 @@ int CircularViewImageExportController::getImageHeight() const {
 }
 
 void CircularViewImageExportController::initSettingsWidget() {
-    QVBoxLayout *layout = new QVBoxLayout();
+    QVBoxLayout* layout = new QVBoxLayout();
     layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     layout->setContentsMargins(0, 0, 0, 0);
 
     if (cvList.size() > 1) {
-        QLabel *label = new QLabel(tr("Sequence"));
+        QLabel* label = new QLabel(tr("Sequence"));
         sequenceComboBox = new QComboBox();
-        foreach (CircularView *cv, cvList) {
+        foreach (CircularView* cv, cvList) {
             SAFE_POINT(cv->getSequenceContext() != nullptr, tr("Sequence context is NULL!"), );
             SAFE_POINT(cv->getSequenceContext()->getSequenceGObject() != nullptr, tr("Sequence Gobject is NULL"), );
             QString seqName = cv->getSequenceContext()->getSequenceGObject()->getGObjectName();
@@ -153,7 +153,7 @@ void CircularViewImageExportController::initSettingsWidget() {
         }
         sequenceComboBox->setObjectName("Exported_sequence_combo");
 
-        QHBoxLayout *seqLayout = new QHBoxLayout();
+        QHBoxLayout* seqLayout = new QHBoxLayout();
         seqLayout->addWidget(label);
         seqLayout->addWidget(sequenceComboBox);
 
@@ -173,19 +173,19 @@ void CircularViewImageExportController::initSettingsWidget() {
     settingsWidget->setLayout(layout);
 }
 
-Task *CircularViewImageExportController::getExportToSvgTask(const ImageExportTaskSettings &settings) const {
+Task* CircularViewImageExportController::getExportToSvgTask(const ImageExportTaskSettings& settings) const {
     CircularViewImageExportSettings cvSettings(includeMarkerCheckbox->isChecked(),
                                                includeSelectionCheckbox->isChecked());
     updateCvWidget();
     return new CircularViewImageExportToSVGTask(cvWidget, cvSettings, settings);
 }
-Task *CircularViewImageExportController::getExportToPdfTask(const ImageExportTaskSettings &settings) const {
+Task* CircularViewImageExportController::getExportToPdfTask(const ImageExportTaskSettings& settings) const {
     CircularViewImageExportSettings cvSettings(includeMarkerCheckbox->isChecked(),
                                                includeSelectionCheckbox->isChecked());
     updateCvWidget();
     return new CircularViewImageExportToPDFTask(cvWidget, cvSettings, settings);
 }
-Task *CircularViewImageExportController::getExportToBitmapTask(const ImageExportTaskSettings &settings) const {
+Task* CircularViewImageExportController::getExportToBitmapTask(const ImageExportTaskSettings& settings) const {
     CircularViewImageExportSettings cvSettings(includeMarkerCheckbox->isChecked(),
                                                includeSelectionCheckbox->isChecked());
     updateCvWidget();

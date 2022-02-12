@@ -41,11 +41,11 @@ namespace U2 {
 
 class FilenameCompletionFiller : public CompletionFiller {
 public:
-    FilenameCompletionFiller(URLWidget *_widget)
+    FilenameCompletionFiller(URLWidget* _widget)
         : CompletionFiller(), widget(_widget) {
     }
 
-    virtual QStringList getSuggestions(const QString &str) {
+    virtual QStringList getSuggestions(const QString& str) {
         QString fileName = str;
         if (fileName.endsWith(".")) {
             fileName = fileName.left(fileName.size() - 1);
@@ -67,21 +67,21 @@ public:
         return choices;
     }
 
-    bool fillChoisesWithFormatExtensions(const QString &fileName, QStringList &choices) {
+    bool fillChoisesWithFormatExtensions(const QString& fileName, QStringList& choices) {
         const QFileInfo f(fileName);
         const QString curExt = f.suffix();
         const QString baseName = f.completeBaseName();
         const QString completeFileName = f.fileName();
 
         const QString fileFormat = DelegateTags::getString(widget->tags(), "format");
-        DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(fileFormat);
+        DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(fileFormat);
         CHECK(nullptr != format, false);
 
         QStringList formats = format->getSupportedDocumentFileExtensions();
         CHECK(formats.size() > 0, false);
         formats.append("gz");
 
-        foreach (const QString &ext, formats) {
+        foreach (const QString& ext, formats) {
             if (!curExt.isEmpty()) {
                 if (ext.startsWith(curExt, Qt::CaseInsensitive)) {
                     choices << baseName + "." + ext;
@@ -93,7 +93,7 @@ public:
         }
 
         if (choices.size() == 1) {
-            foreach (const QString &ext, formats) {
+            foreach (const QString& ext, formats) {
                 choices << completeFileName + "." + ext;
                 if (ext != "gz") {
                     choices << completeFileName + "." + ext + ".gz";
@@ -103,16 +103,16 @@ public:
         return true;
     }
 
-    static void fillChoisesWithPresetExtensions(const QString &fileName, const QStringList &presetExtensions, QStringList &choices) {
+    static void fillChoisesWithPresetExtensions(const QString& fileName, const QStringList& presetExtensions, QStringList& choices) {
         const QFileInfo f(fileName);
         const QString baseName = f.completeBaseName();
 
-        foreach (const QString &extenstion, presetExtensions) {
+        foreach (const QString& extenstion, presetExtensions) {
             choices << baseName + "." + extenstion;
         }
     }
 
-    virtual QString finalyze(const QString &editorText, const QString &suggestion) {
+    virtual QString finalyze(const QString& editorText, const QString& suggestion) {
         QString path = editorText;
         path.replace("\\", "/");
 
@@ -123,14 +123,14 @@ public:
     }
 
 private:
-    URLWidget *widget;
+    URLWidget* widget;
 };
 
-URLLineEdit::URLLineEdit(const QString &type,
+URLLineEdit::URLLineEdit(const QString& type,
                          bool multi,
                          bool isPath,
                          bool saveFile,
-                         URLWidget *_parent)
+                         URLWidget* _parent)
     : QLineEdit(_parent),
       schemaConfig(nullptr),
       type(type),
@@ -144,7 +144,7 @@ URLLineEdit::URLLineEdit(const QString &type,
     setPlaceholderText(DelegateTags::getString(parent->tags(), DelegateTags::PLACEHOLDER_TEXT));
 }
 
-CompletionFiller *URLLineEdit::getCompletionFillerInstance() {
+CompletionFiller* URLLineEdit::getCompletionFillerInstance() {
     if (saveFile && nullptr != parent) {
         return new FilenameCompletionFiller(parent);
     }
@@ -221,24 +221,24 @@ void URLLineEdit::browse(bool addFiles) {
     emit si_finished();
 }
 
-void URLLineEdit::focusOutEvent(QFocusEvent *event) {
+void URLLineEdit::focusOutEvent(QFocusEvent* event) {
     sl_completionFinished();
     QLineEdit::focusOutEvent(event);
 }
 
-void URLLineEdit::keyPressEvent(QKeyEvent *event) {
+void URLLineEdit::keyPressEvent(QKeyEvent* event) {
     if (Qt::Key_Enter == event->key()) {
         sl_completionFinished();
     }
     QLineEdit::keyPressEvent(event);
 }
 
-void URLLineEdit::checkExtension(QString &name) {
+void URLLineEdit::checkExtension(QString& name) {
     QString fileFormat;
     if (nullptr != parent) {
         fileFormat = DelegateTags::getString(parent->tags(), DelegateTags::FORMAT);
     }
-    DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(fileFormat);
+    DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(fileFormat);
     if (nullptr != format && !name.isEmpty()) {
         QString newName(name);
         GUrl url(newName);

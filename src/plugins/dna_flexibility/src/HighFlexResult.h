@@ -31,7 +31,7 @@ public:
     HighFlexResult()
         : averageThreshold(0.0), windowsNumber(0), totalThreshold(0) {
     }
-    HighFlexResult(const U2Region &_region, double _averageThreshold, int _windowsNumber, double _totalThreshold)
+    HighFlexResult(const U2Region& _region, double _averageThreshold, int _windowsNumber, double _totalThreshold)
         : region(_region),
           averageThreshold(_averageThreshold),
           windowsNumber(_windowsNumber),

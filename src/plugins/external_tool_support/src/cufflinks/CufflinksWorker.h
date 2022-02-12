@@ -35,7 +35,7 @@ class CufflinksPrompter : public PrompterBase<CufflinksPrompter> {
     Q_OBJECT
 
 public:
-    CufflinksPrompter(Actor *parent = 0);
+    CufflinksPrompter(Actor* parent = 0);
 
 protected:
     QString composeRichDoc();
@@ -45,18 +45,18 @@ class CufflinksWorker : public BaseWorker {
     Q_OBJECT
 
 public:
-    CufflinksWorker(Actor *actor);
+    CufflinksWorker(Actor* actor);
 
     void init();
-    Task *tick();
+    Task* tick();
     void cleanup();
 
 private slots:
     void sl_cufflinksTaskFinished();
 
 protected:
-    IntegralBus *input;
-    IntegralBus *output;
+    IntegralBus* input;
+    IntegralBus* output;
     CufflinksSettings settings;
 
     bool settingsAreCorrect;
@@ -72,7 +72,7 @@ public:
     CufflinksWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *actor) {
+    virtual Worker* createWorker(Actor* actor) {
         return new CufflinksWorker(actor);
     }
 
@@ -92,7 +92,7 @@ public:
     static const QString ISO_LEVEL_SLOT_DESCR_ID;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
 #endif

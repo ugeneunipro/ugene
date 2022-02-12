@@ -48,7 +48,7 @@ namespace U2 {
 QString GenomeAssemblyDialog::methodName;
 QString GenomeAssemblyDialog::library;
 
-GenomeAssemblyDialog::GenomeAssemblyDialog(QWidget *p)
+GenomeAssemblyDialog::GenomeAssemblyDialog(QWidget* p)
     : QDialog(p),
       assemblyRegistry(AppContext::getGenomeAssemblyAlgRegistry()),
       customGUI(nullptr) {
@@ -77,9 +77,9 @@ GenomeAssemblyDialog::GenomeAssemblyDialog(QWidget *p)
 
     //    libraryComboBox->addItems(GenomeAssemblyUtils::getLibraryTypes());
 
-    QHeaderView *header1 = propertiesReadsTable->header();
-    QHeaderView *header2 = leftReadsTable->header();
-    QHeaderView *header3 = rightReadsTable->header();
+    QHeaderView* header1 = propertiesReadsTable->header();
+    QHeaderView* header2 = leftReadsTable->header();
+    QHeaderView* header3 = rightReadsTable->header();
 
     header1->setStretchLastSection(false);
     header2->setStretchLastSection(false);
@@ -99,7 +99,7 @@ GenomeAssemblyDialog::GenomeAssemblyDialog(QWidget *p)
     connect(removeLeftButton, SIGNAL(clicked()), SLOT(sl_onRemoveShortReadsButtonClicked()));
     connect(removeRightButton, SIGNAL(clicked()), SLOT(sl_onRemoveShortReadsButtonClicked()));
     connect(setResultDirNameButton, SIGNAL(clicked()), SLOT(sl_onOutDirButtonClicked()));
-    connect(methodNamesBox, SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_onAlgorithmChanged(const QString &)));
+    connect(methodNamesBox, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_onAlgorithmChanged(const QString&)));
     connect(libraryComboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_onLibraryTypeChanged()));
 
     QString defaultOutputDir = GUrlUtils::getDefaultDataPath() + "/" + methodNamesBox->currentText() + "_output";
@@ -131,7 +131,7 @@ void GenomeAssemblyDialog::updateProperties() {
     } else if (numProperties < numberOfReads) {
         // add items
         for (int i = numProperties; i < numberOfReads; i++) {
-            ReadPropertiesItem *item = new ReadPropertiesItem(propertiesReadsTable);
+            ReadPropertiesItem* item = new ReadPropertiesItem(propertiesReadsTable);
             item->setLibraryType(libraryComboBox->currentText());
             ReadPropertiesItem::addItemToTable(item, propertiesReadsTable);
         }
@@ -139,14 +139,14 @@ void GenomeAssemblyDialog::updateProperties() {
     // update numbers
     numProperties = propertiesReadsTable->topLevelItemCount();
     for (int i = 0; i < numProperties; ++i) {
-        QTreeWidgetItem *item = propertiesReadsTable->topLevelItem(i);
+        QTreeWidgetItem* item = propertiesReadsTable->topLevelItem(i);
         item->setData(0, 0, i + 1);
     }
 }
 
-void GenomeAssemblyDialog::addReads(QStringList fileNames, QTreeWidget *readsWidget) {
-    foreach (const QString &f, fileNames) {
-        QTreeWidgetItem *item = new QTreeWidgetItem();
+void GenomeAssemblyDialog::addReads(QStringList fileNames, QTreeWidget* readsWidget) {
+    foreach (const QString& f, fileNames) {
+        QTreeWidgetItem* item = new QTreeWidgetItem();
         item->setToolTip(0, f);
         item->setText(0, GUrl(f).fileName());
         item->setData(0, Qt::UserRole, f);
@@ -158,8 +158,8 @@ void GenomeAssemblyDialog::addReads(QStringList fileNames, QTreeWidget *readsWid
 }
 
 void GenomeAssemblyDialog::sl_onAddShortReadsButtonClicked() {
-    QTreeWidget *readsWidget = nullptr;
-    QObject *obj = sender();
+    QTreeWidget* readsWidget = nullptr;
+    QObject* obj = sender();
     if (obj == addLeftButton) {
         readsWidget = leftReadsTable;
     } else if (obj == addRightButton) {
@@ -237,11 +237,11 @@ void GenomeAssemblyDialog::accept() {
                 reads.append(rightReadsTable->topLevelItem(i)->data(0, Qt::UserRole).toString());
             }
 
-            GenomeAssemblyAlgorithmEnv *env = AppContext::getGenomeAssemblyAlgRegistry()->getAlgorithm(methodNamesBox->currentText());
+            GenomeAssemblyAlgorithmEnv* env = AppContext::getGenomeAssemblyAlgRegistry()->getAlgorithm(methodNamesBox->currentText());
             SAFE_POINT(nullptr != env, "Unknown algorithm: " + methodNamesBox->currentText(), );
             QStringList formats = env->getReadsFormats();
 
-            foreach (const QString &r, reads) {
+            foreach (const QString& r, reads) {
                 const QString detectedFormat = FileAndDirectoryUtils::detectFormat(r);
                 if (detectedFormat.isEmpty()) {
                     QMessageBox::information(this, tr("Genome Assembly"), tr("Unknown file format of %1.").arg(r));
@@ -282,8 +282,8 @@ QList<AssemblyReads> GenomeAssemblyDialog::getReads() {
 
     for (int i = 0; i < numProperties; i++) {
         AssemblyReads read;
-        QTreeWidgetItem *item = propertiesReadsTable->topLevelItem(i);
-        ReadPropertiesItem *pitem = dynamic_cast<ReadPropertiesItem *>(item);
+        QTreeWidgetItem* item = propertiesReadsTable->topLevelItem(i);
+        ReadPropertiesItem* pitem = dynamic_cast<ReadPropertiesItem*>(item);
         if (pitem) {
             //            read.libNumber = pitem->getNumber();
             //            read.libType = pitem->getType();
@@ -303,8 +303,8 @@ QList<AssemblyReads> GenomeAssemblyDialog::getReads() {
 }
 
 void GenomeAssemblyDialog::sl_onRemoveShortReadsButtonClicked() {
-    QTreeWidget *readsWidget = nullptr;
-    QObject *obj = sender();
+    QTreeWidget* readsWidget = nullptr;
+    QObject* obj = sender();
     if (obj == removeLeftButton) {
         readsWidget = leftReadsTable;
     } else if (obj == removeRightButton) {
@@ -330,7 +330,7 @@ void GenomeAssemblyDialog::sl_onOutDirButtonClicked() {
     resultDirNameEdit->setText(lod.url);
 }
 
-void GenomeAssemblyDialog::sl_onAlgorithmChanged(const QString &text) {
+void GenomeAssemblyDialog::sl_onAlgorithmChanged(const QString& text) {
     methodName = text;
     updateState();
 }
@@ -358,14 +358,14 @@ void GenomeAssemblyDialog::addGuiExtension() {
     }
 
     // insert new extension widget
-    GenomeAssemblyAlgorithmEnv *env = assemblyRegistry->getAlgorithm(methodNamesBox->currentText());
+    GenomeAssemblyAlgorithmEnv* env = assemblyRegistry->getAlgorithm(methodNamesBox->currentText());
 
     if (nullptr == env) {
         adjustSize();
         return;
     }
 
-    GenomeAssemblyGUIExtensionsFactory *gui = env->getGUIExtFactory();
+    GenomeAssemblyGUIExtensionsFactory* gui = env->getGUIExtFactory();
     if (gui != nullptr && gui->hasMainWidget()) {
         customGUI = gui->createMainWidget(this);
         int extensionMinWidth = customGUI->sizeHint().width();
@@ -402,8 +402,8 @@ void GenomeAssemblyDialog::sl_onLibraryTypeChanged() {
 
     int size = propertiesReadsTable->topLevelItemCount();
     for (int i = 0; i < size; i++) {
-        QTreeWidgetItem *item = propertiesReadsTable->topLevelItem(i);
-        ReadPropertiesItem *pitem = dynamic_cast<ReadPropertiesItem *>(item);
+        QTreeWidgetItem* item = propertiesReadsTable->topLevelItem(i);
+        ReadPropertiesItem* pitem = dynamic_cast<ReadPropertiesItem*>(item);
         if (pitem) {
             pitem->setLibraryType(libraryType);
         }
@@ -412,7 +412,7 @@ void GenomeAssemblyDialog::sl_onLibraryTypeChanged() {
     updateProperties();
 }
 
-ReadPropertiesItem::ReadPropertiesItem(QTreeWidget *widget)
+ReadPropertiesItem::ReadPropertiesItem(QTreeWidget* widget)
     : QTreeWidgetItem(widget) {
     typeBox = new QComboBox(widget);
     //    typeBox->addItems(GenomeAssemblyUtils::getPairTypes());
@@ -433,7 +433,7 @@ QString ReadPropertiesItem::getOrientation() const {
     return orientationBox->currentText();
 }
 
-void ReadPropertiesItem::setLibraryType(const QString &libraryType) {
+void ReadPropertiesItem::setLibraryType(const QString& libraryType) {
     if (GenomeAssemblyUtils::isLibraryPaired(libraryType)) {
         orientationBox->setEnabled(true);
         typeBox->setEnabled(true);
@@ -443,7 +443,7 @@ void ReadPropertiesItem::setLibraryType(const QString &libraryType) {
     }
 }
 
-void ReadPropertiesItem::addItemToTable(ReadPropertiesItem *item, QTreeWidget *treeWidget) {
+void ReadPropertiesItem::addItemToTable(ReadPropertiesItem* item, QTreeWidget* treeWidget) {
     treeWidget->addTopLevelItem(item);
     treeWidget->setItemWidget(item, 1, item->typeBox);
     treeWidget->setItemWidget(item, 2, item->orientationBox);

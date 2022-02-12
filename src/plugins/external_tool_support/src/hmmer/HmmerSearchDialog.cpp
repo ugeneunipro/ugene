@@ -51,17 +51,17 @@ const QString HmmerSearchDialog::DOM_E_MINUS_PREFIX = "1E";
 const QString HmmerSearchDialog::HMM_FILES_DIR_ID = "uhmmer3_search_dlg_impl_hmm_dir";
 const QString HmmerSearchDialog::ANNOTATIONS_DEFAULT_NAME = "hmm_signal";
 
-HmmerSearchDialog::HmmerSearchDialog(U2SequenceObject *seqObj, QWidget *parent)
+HmmerSearchDialog::HmmerSearchDialog(U2SequenceObject* seqObj, QWidget* parent)
     : QDialog(parent), seqCtx(nullptr) {
     init(seqObj);
 }
 
-HmmerSearchDialog::HmmerSearchDialog(ADVSequenceObjectContext *seqCtx, QWidget *parent)
+HmmerSearchDialog::HmmerSearchDialog(ADVSequenceObjectContext* seqCtx, QWidget* parent)
     : QDialog(parent), seqCtx(seqCtx) {
     init(seqCtx->getSequenceObject());
 }
 
-void HmmerSearchDialog::init(U2SequenceObject *seqObj) {
+void HmmerSearchDialog::init(U2SequenceObject* seqObj) {
     setupUi(this);
     SAFE_POINT(nullptr != seqObj, L10N::nullPointerError("sequence object"), );
 
@@ -88,15 +88,15 @@ void HmmerSearchDialog::init(U2SequenceObject *seqObj) {
     annModel.sequenceLen = seqObj->getSequenceLength();
     annotationsWidgetController = new CreateAnnotationWidgetController(annModel, this);
 
-    QWidget *firstTab = tabWidget->widget(0);
+    QWidget* firstTab = tabWidget->widget(0);
     assert(nullptr != firstTab);
-    QVBoxLayout *curLayout = qobject_cast<QVBoxLayout *>(firstTab->layout());
+    QVBoxLayout* curLayout = qobject_cast<QVBoxLayout*>(firstTab->layout());
     assert(nullptr != curLayout);
-    QWidget *aw = annotationsWidgetController->getWidget();
+    QWidget* aw = annotationsWidgetController->getWidget();
     curLayout->insertWidget(1, aw);
 
-    QPushButton *searchButton = buttonBox->button(QDialogButtonBox::Ok);
-    QPushButton *cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
+    QPushButton* searchButton = buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
 
     connect(cancelButton, SIGNAL(clicked()), SLOT(reject()));
     connect(searchButton, SIGNAL(clicked()), SLOT(sl_okButtonClicked()));
@@ -159,7 +159,7 @@ void HmmerSearchDialog::getModelValues() {
 
     model.searchSettings.seed = seedSpinBox->value();
 
-    const CreateAnnotationModel &annModel = annotationsWidgetController->getModel();
+    const CreateAnnotationModel& annModel = annotationsWidgetController->getModel();
     model.searchSettings.pattern = annotationsWidgetController->getAnnotationPattern();
     model.searchSettings.hmmProfileUrl = queryHmmFileEdit->text();
     model.searchSettings.sequence = model.sequence;
@@ -202,7 +202,7 @@ void HmmerSearchDialog::sl_okButtonClicked() {
         seqCtx->getAnnotatedDNAView()->tryAddObject(annotationsWidgetController->getModel().getAnnotationObject());
     }
 
-    HmmerSearchTask *searchTask = new HmmerSearchTask(model.searchSettings);
+    HmmerSearchTask* searchTask = new HmmerSearchTask(model.searchSettings);
     AppContext::getTaskScheduler()->registerTopLevelTask(searchTask);
 
     QDialog::accept();
@@ -240,7 +240,7 @@ void HmmerSearchDialog::sl_maxCheckBoxChanged(int state) {
 }
 
 void HmmerSearchDialog::sl_domESpinBoxChanged(int newVal) {
-    const QString &prefix = (0 <= newVal ? DOM_E_PLUS_PREFIX : DOM_E_MINUS_PREFIX);
+    const QString& prefix = (0 <= newVal ? DOM_E_PLUS_PREFIX : DOM_E_MINUS_PREFIX);
     domESpinBox->setPrefix(prefix);
 }
 

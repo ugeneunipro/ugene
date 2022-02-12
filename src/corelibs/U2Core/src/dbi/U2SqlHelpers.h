@@ -44,16 +44,16 @@ class SQLiteTransaction;
 
 class U2CORE_EXPORT DbRef {
 public:
-    DbRef(sqlite3 *db = nullptr)
+    DbRef(sqlite3* db = nullptr)
         : handle(db), lock(QMutex::Recursive), useTransaction(true) {
     }
 
-    sqlite3 *handle;
+    sqlite3* handle;
     QMutex lock;
     QReadWriteLock rwLock;
     bool useTransaction;
     bool useCache;
-    QVector<SQLiteTransaction *> transactionStack;
+    QVector<SQLiteTransaction*> transactionStack;
     QHash<QString, QSharedPointer<SQLiteQuery>> preparedQueries;  // shared pointer because a query can be deleted elsewhere
 };
 
@@ -63,23 +63,23 @@ public:
         Removes from the table all records with 'field' == id
         Checks 'expectedRowCount' the same way as 'update' method
     */
-    static qint64 remove(const QString &table, const QString &field, const U2DataId &id, qint64 expectedRows, DbRef *db, U2OpStatus &os);
+    static qint64 remove(const QString& table, const QString& field, const U2DataId& id, qint64 expectedRows, DbRef* db, U2OpStatus& os);
 
     /** Checks if the table exists in database */
-    static bool isTableExists(const QString &tableName, DbRef *db, U2OpStatus &os);
+    static bool isTableExists(const QString& tableName, DbRef* db, U2OpStatus& os);
 
     /** returns 1 if the database is read-only, 0 if it is read/write, or -1 if dbName is not the name of a database on connection */
-    static int isDatabaseReadOnly(const DbRef *db, QString dbName);  // dbName is usualy "main"
+    static int isDatabaseReadOnly(const DbRef* db, QString dbName);  // dbName is usualy "main"
 
     /** Writes Memory counters */
-    static bool getMemoryHint(int &currentMemory, int &maxMemory, int resetMax);
+    static bool getMemoryHint(int& currentMemory, int& maxMemory, int resetMax);
 };
 
 /** Common localization messages for U2Dbi*/
 class U2CORE_EXPORT U2DbiL10n : public QObject {
     Q_OBJECT
 public:
-    static QString queryError(const QString &err);
+    static QString queryError(const QString& err);
     static QString tooManyResults();
 };
 
@@ -95,8 +95,8 @@ public:
         It's desirable to release this object as soon as possible because it locks
         the database for concurrent modifications from other threads
     */
-    SQLiteQuery(const QString &sql, DbRef *d, U2OpStatus &os);
-    SQLiteQuery(const QString &sql, qint64 offset, qint64 count, DbRef *d, U2OpStatus &os);
+    SQLiteQuery(const QString& sql, DbRef* d, U2OpStatus& os);
+    SQLiteQuery(const QString& sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& os);
 
     /** Releases all resources associated with the statement */
     virtual ~SQLiteQuery();
@@ -126,7 +126,7 @@ public:
     void bindNull(int idx);
 
     /** Binds U2DataId  */
-    void bindDataId(int idx, const U2DataId &val);
+    void bindDataId(int idx, const U2DataId& val);
 
     /** Binds U2DataType */
     void bindType(int idx, U2DataType type);
@@ -144,16 +144,16 @@ public:
     void bindBool(int idx, bool val);
 
     /** Binds text string */
-    void bindString(int idx, const QString &val);
+    void bindString(int idx, const QString& val);
 
     /** Binds BLOB */
-    void bindBlob(int idx, const QByteArray &blob, bool transient = true);
+    void bindBlob(int idx, const QByteArray& blob, bool transient = true);
     void bindZeroBlob(int idx, int reservedSize);
 
     //////////////////////////////////////////////////////////////////////////
     // result retrieval methods
 
-    U2DataId getDataId(int column, U2DataType type, const QByteArray &dbExtra = QByteArray()) const;
+    U2DataId getDataId(int column, U2DataType type, const QByteArray& dbExtra = QByteArray()) const;
 
     U2DataId getDataIdExt(int column) const;
 
@@ -182,7 +182,7 @@ public:
     qint64 insert();
 
     /** Executes update and returns last row id converted to U2DataId using type info*/
-    U2DataId insert(U2DataType type, const QByteArray &dbExtra = QByteArray());
+    U2DataId insert(U2DataType type, const QByteArray& dbExtra = QByteArray());
 
     /** Executes query */
     void execute();
@@ -203,7 +203,7 @@ public:
     qint64 selectInt64(qint64 defaultValue);
 
     /** Select list of ids and adds 'type' parameter to construct U2DataId */
-    QList<U2DataId> selectDataIds(U2DataType type, const QByteArray &dbExtra = QByteArray());
+    QList<U2DataId> selectDataIds(U2DataType type, const QByteArray& dbExtra = QByteArray());
 
     /** Select id(col=0), type(col=1) pairs  and constructs U2DataId */
     QList<U2DataId> selectDataIdsExt();
@@ -213,32 +213,32 @@ public:
 
     //////////////////////////////////////////////////////////////////////////
     // Query info methods
-    const QString &getQueryText() const {
+    const QString& getQueryText() const {
         return sql;
     }
 
-    void setError(const QString &err);
+    void setError(const QString& err);
 
     bool hasError() const {
         return (os != nullptr) ? os->hasError() : true;
     }
 
-    void setOpStatus(U2OpStatus &_os) {
+    void setOpStatus(U2OpStatus& _os) {
         os = &_os;
     }
 
-    U2OpStatus &getOpStatus() {
+    U2OpStatus& getOpStatus() {
         return *os;
     }
 
-    DbRef *getDb() const {
+    DbRef* getDb() const {
         return db;
     }
 
 protected:
     bool stepImpl();
 
-    DbRef *db;
+    DbRef* db;
 
 private:
     /** Returns last insert row*/
@@ -246,8 +246,8 @@ private:
 
     void prepare();
 
-    U2OpStatus *os;
-    sqlite3_stmt *st;
+    U2OpStatus* os;
+    sqlite3_stmt* st;
     QString sql;
 };
 
@@ -259,8 +259,8 @@ public:
         It's desirable to release this object as soon as possible because it locks
         the database for concurrent modifications from other threads
     */
-    SQLiteReadQuery(const QString &sql, DbRef *d, U2OpStatus &os);
-    SQLiteReadQuery(const QString &sql, qint64 offset, qint64 count, DbRef *d, U2OpStatus &os);
+    SQLiteReadQuery(const QString& sql, DbRef* d, U2OpStatus& os);
+    SQLiteReadQuery(const QString& sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& os);
 
     bool step();
 };
@@ -273,8 +273,8 @@ public:
         It's desirable to release this object as soon as possible because it locks
         the database for concurrent modifications from other threads
     */
-    SQLiteWriteQuery(const QString &sql, DbRef *d, U2OpStatus &os);
-    SQLiteWriteQuery(const QString &sql, qint64 offset, qint64 count, DbRef *d, U2OpStatus &os);
+    SQLiteWriteQuery(const QString& sql, DbRef* d, U2OpStatus& os);
+    SQLiteWriteQuery(const QString& sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& os);
 
     bool step();
 };
@@ -282,19 +282,19 @@ public:
 /** Helper class to mark transaction regions */
 class U2CORE_EXPORT SQLiteTransaction {
 public:
-    SQLiteTransaction(DbRef *db, U2OpStatus &os);
+    SQLiteTransaction(DbRef* db, U2OpStatus& os);
     virtual ~SQLiteTransaction();
 
-    QSharedPointer<SQLiteQuery> getPreparedQuery(const QString &sql, DbRef *d, U2OpStatus &os);
-    QSharedPointer<SQLiteQuery> getPreparedQuery(const QString &sql, qint64 offset, qint64 count, DbRef *d, U2OpStatus &os);
+    QSharedPointer<SQLiteQuery> getPreparedQuery(const QString& sql, DbRef* d, U2OpStatus& os);
+    QSharedPointer<SQLiteQuery> getPreparedQuery(const QString& sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& os);
 
     bool isCacheQueries() {
         return cacheQueries;
     }
 
 private:
-    DbRef *db;
-    U2OpStatus &os;
+    DbRef* db;
+    U2OpStatus& os;
     bool cacheQueries;
     bool started;
 
@@ -302,7 +302,7 @@ private:
 
 #ifdef _DEBUG
 public:
-    QThread *thread;
+    QThread* thread;
 #endif
 };
 
@@ -312,7 +312,7 @@ class SQLiteResultSetLoader {
 public:
     virtual ~SQLiteResultSetLoader() {
     }
-    virtual T load(SQLiteQuery *q) = 0;
+    virtual T load(SQLiteQuery* q) = 0;
 };
 
 /** Filter for SqlRSIterator. Checks if value must be filtered out from the result */
@@ -321,14 +321,14 @@ class SQLiteResultSetFilter {
 public:
     virtual ~SQLiteResultSetFilter() {
     }
-    virtual bool filter(const T &) = 0;
+    virtual bool filter(const T&) = 0;
 };
 
 /** SQL query result set iterator */
 template<class T>
 class SQLiteResultSetIterator : public U2DbiIterator<T> {
 public:
-    SQLiteResultSetIterator(QSharedPointer<SQLiteQuery> q, SQLiteResultSetLoader<T> *l, SQLiteResultSetFilter<T> *f, const T &d, U2OpStatus &o)
+    SQLiteResultSetIterator(QSharedPointer<SQLiteQuery> q, SQLiteResultSetLoader<T>* l, SQLiteResultSetFilter<T>* f, const T& d, U2OpStatus& o)
         : query(q), loader(l), filter(f), defaultValue(d), os(o), endOfStream(false) {
         fetchNext();
     }
@@ -373,10 +373,10 @@ private:
     }
 
     QSharedPointer<SQLiteQuery> query;
-    SQLiteResultSetLoader<T> *loader;
-    SQLiteResultSetFilter<T> *filter;
+    SQLiteResultSetLoader<T>* loader;
+    SQLiteResultSetFilter<T>* filter;
     T defaultValue;
-    U2OpStatus &os;
+    U2OpStatus& os;
     bool endOfStream;
     T nextResult;
     T currentResult;
@@ -385,10 +385,10 @@ private:
 
 class SQLiteDataIdResultSetLoader : public SQLiteResultSetLoader<U2DataId> {
 public:
-    SQLiteDataIdResultSetLoader(U2DataType _type, const QByteArray &_dbExra = QByteArray())
+    SQLiteDataIdResultSetLoader(U2DataType _type, const QByteArray& _dbExra = QByteArray())
         : type(_type), dbExtra(_dbExra) {
     }
-    U2DataId load(SQLiteQuery *q) {
+    U2DataId load(SQLiteQuery* q) {
         return q->getDataId(0, type, dbExtra);
     }
 
@@ -399,10 +399,10 @@ protected:
 
 class SQLiteDataIdResultSetLoaderEx : public SQLiteResultSetLoader<U2DataId> {
 public:
-    SQLiteDataIdResultSetLoaderEx(const QByteArray &_dbExra = QByteArray())
+    SQLiteDataIdResultSetLoaderEx(const QByteArray& _dbExra = QByteArray())
         : dbExtra(_dbExra) {
     }
-    U2DataId load(SQLiteQuery *q) {
+    U2DataId load(SQLiteQuery* q) {
         return q->getDataId(0, q->getDataType(1), dbExtra);
     }
 

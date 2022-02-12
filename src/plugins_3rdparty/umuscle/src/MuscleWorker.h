@@ -34,7 +34,7 @@ namespace LocalWorkflow {
 class MusclePrompter : public PrompterBase<MusclePrompter> {
     Q_OBJECT
 public:
-    MusclePrompter(Actor *p = 0)
+    MusclePrompter(Actor* p = 0)
         : PrompterBase<MusclePrompter>(p) {
     }
 
@@ -45,10 +45,10 @@ protected:
 class MuscleWorker : public BaseWorker {
     Q_OBJECT
 public:
-    MuscleWorker(Actor *a);
+    MuscleWorker(Actor* a);
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private slots:
@@ -67,7 +67,7 @@ public:
     MuscleWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new MuscleWorker(a);
     }
 };

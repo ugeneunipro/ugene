@@ -52,13 +52,13 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0001) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Uncheck "Wrap sequence" and "Show complement translation" button
-    QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
+    QAction* wrapMode = GTAction::findActionByText(os, "Wrap sequence");
     CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
     if (wrapMode->isChecked()) {
         GTWidget::click(os, GTAction::button(os, wrapMode));
     }
 
-    QAction *compStrand = GTAction::findActionByText(os, "Show complementary strand");
+    QAction* compStrand = GTAction::findActionByText(os, "Show complementary strand");
     CHECK_SET_ERR(compStrand != nullptr, "Cannot find Wrap sequence action");
     if (compStrand->isChecked()) {
         GTWidget::click(os, GTAction::button(os, compStrand));
@@ -104,13 +104,13 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0002) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Uncheck "Wrap sequence" and "Show complement translation" button
-    QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
+    QAction* wrapMode = GTAction::findActionByText(os, "Wrap sequence");
     CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
     if (wrapMode->isChecked()) {
         GTWidget::click(os, GTAction::button(os, wrapMode));
     }
 
-    QAction *compStrand = GTAction::findActionByText(os, "Show complementary strand");
+    QAction* compStrand = GTAction::findActionByText(os, "Show complementary strand");
     CHECK_SET_ERR(compStrand != nullptr, "Cannot find Wrap sequence action");
     if (compStrand->isChecked()) {
         GTWidget::click(os, GTAction::button(os, compStrand));
@@ -141,13 +141,13 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0003) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Uncheck "Wrap sequence" and "Show complement translation" button.
-    QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
+    QAction* wrapMode = GTAction::findActionByText(os, "Wrap sequence");
     CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
     if (wrapMode->isChecked()) {
         GTWidget::click(os, GTAction::button(os, wrapMode));
     }
 
-    QAction *compStrand = GTAction::findActionByText(os, "Show complementary strand");
+    QAction* compStrand = GTAction::findActionByText(os, "Show complementary strand");
     CHECK_SET_ERR(compStrand != nullptr, "Cannot find Wrap sequence action");
     if (compStrand->isChecked()) {
         GTWidget::click(os, GTAction::button(os, compStrand));
@@ -217,13 +217,13 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0004) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Uncheck "Wrap sequence" and "Show complement translation" button.
-    QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
+    QAction* wrapMode = GTAction::findActionByText(os, "Wrap sequence");
     CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
     if (wrapMode->isChecked()) {
         GTWidget::click(os, GTAction::button(os, wrapMode));
     }
 
-    QAction *compStrand = GTAction::findActionByText(os, "Show complementary strand");
+    QAction* compStrand = GTAction::findActionByText(os, "Show complementary strand");
     CHECK_SET_ERR(compStrand != nullptr, "Cannot find Wrap sequence action");
     if (compStrand->isChecked()) {
         GTWidget::click(os, GTAction::button(os, compStrand));
@@ -537,7 +537,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0007) {
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
     // 3. Select a CDS annotation item and do double-click on it
-    QTreeWidgetItem *annotationItem = GTUtilsAnnotationsTreeView::findItem(os, "CDS");
+    QTreeWidgetItem* annotationItem = GTUtilsAnnotationsTreeView::findItem(os, "CDS");
 
     // 4. Select Add->Qualifier from context menu.
     // 5. In "Add new qualifier" dialog add name "Test" and Value : "1500..2000"  and save
@@ -580,7 +580,7 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0008) {
     GTWidget::click(os, GTUtilsSequenceView::getDetViewByNumber(os), Qt::RightButton);
 
     // 3. Select a CDS annotation item and do double-click on it
-    QTreeWidgetItem *annotationItem = GTUtilsAnnotationsTreeView::findItem(os, "CDS");
+    QTreeWidgetItem* annotationItem = GTUtilsAnnotationsTreeView::findItem(os, "CDS");
 
     // 4. Select Add->Qualifier from context menu
     // 5. In "Add new qualifier" dialog add name "Test" and Value : "1500..2000"  and save

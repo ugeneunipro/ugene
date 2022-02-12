@@ -25,9 +25,9 @@
 
 namespace U2 {
 
-const char *AssemblyDbiTestUtil::ERR_INVALID_ASSEMBLY_ID("Error message for invalid assembly id passed is not set.");
+const char* AssemblyDbiTestUtil::ERR_INVALID_ASSEMBLY_ID("Error message for invalid assembly id passed is not set.");
 
-bool AssemblyDbiTestUtil::compareCigar(const QList<U2CigarToken> &c1, const QList<U2CigarToken> &c2) {
+bool AssemblyDbiTestUtil::compareCigar(const QList<U2CigarToken>& c1, const QList<U2CigarToken>& c2) {
     if (c1.size() != c2.size()) {
         return false;
     }
@@ -41,7 +41,7 @@ bool AssemblyDbiTestUtil::compareCigar(const QList<U2CigarToken> &c1, const QLis
     return true;
 }
 
-bool AssemblyDbiTestUtil::compareReads(const U2AssemblyRead &r1, const U2AssemblyRead &r2) {
+bool AssemblyDbiTestUtil::compareReads(const U2AssemblyRead& r1, const U2AssemblyRead& r2) {
     if (r1->name != r2->name) {
         return false;
     }
@@ -77,9 +77,9 @@ bool AssemblyDbiTestUtil::compareReads(const U2AssemblyRead &r1, const U2Assembl
     return true;
 }
 
-bool AssemblyDbiTestUtil::findRead(const U2AssemblyRead &subj, QList<U2AssemblyRead> &reads) {
+bool AssemblyDbiTestUtil::findRead(const U2AssemblyRead& subj, QList<U2AssemblyRead>& reads) {
     for (qint64 i = 0, n = reads.size(); i < n; i++) {
-        const U2AssemblyRead &curRead = reads.at(i);
+        const U2AssemblyRead& curRead = reads.at(i);
         if (compareReads(subj, curRead)) {
             reads.removeAt(i);
             return true;
@@ -88,9 +88,9 @@ bool AssemblyDbiTestUtil::findRead(const U2AssemblyRead &subj, QList<U2AssemblyR
     return false;
 }
 
-bool AssemblyDbiTestUtil::compareReadLists(U2DbiIterator<U2AssemblyRead> *iter, QList<U2AssemblyRead> &expectedReads) {
+bool AssemblyDbiTestUtil::compareReadLists(U2DbiIterator<U2AssemblyRead>* iter, QList<U2AssemblyRead>& expectedReads) {
     while (iter->hasNext()) {
-        const U2AssemblyRead &read = iter->next();
+        const U2AssemblyRead& read = iter->next();
         if (!findRead(read, expectedReads)) {
             return false;
         }
@@ -101,8 +101,8 @@ bool AssemblyDbiTestUtil::compareReadLists(U2DbiIterator<U2AssemblyRead> *iter, 
     return true;
 }
 
-void AssemblyDbiTestUtil::var2readList(const QVariantList &varList, QList<U2AssemblyRead> &reads) {
-    foreach (const QVariant &var, varList) {
+void AssemblyDbiTestUtil::var2readList(const QVariantList& varList, QList<U2AssemblyRead>& reads) {
+    foreach (const QVariant& var, varList) {
         U2AssemblyRead read = var.value<U2AssemblyRead>();
         reads.append(read);
     }

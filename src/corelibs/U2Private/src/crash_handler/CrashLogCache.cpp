@@ -26,7 +26,7 @@
 
 namespace U2 {
 
-void CrashLogCache::onMessage(const LogMessage &msg) {
+void CrashLogCache::onMessage(const LogMessage& msg) {
     static int count = 0;
     if (!(count++ % logMemoryInfoEvery)) {
         cmdLog.trace(formMemInfo());
@@ -36,12 +36,12 @@ void CrashLogCache::onMessage(const LogMessage &msg) {
 }
 
 QString CrashLogCache::formMemInfo() {
-    AppResourcePool *pool = AppResourcePool::instance();
+    AppResourcePool* pool = AppResourcePool::instance();
     CHECK(pool, QString());
 
     size_t memoryBytes = pool->getCurrentAppMemory();
     QString memInfo = QString("AppMemory: %1Mb").arg(memoryBytes / (1000 * 1000));
-    AppResource *mem = pool->getResource(RESOURCE_MEMORY);
+    AppResource* mem = pool->getResource(RESOURCE_MEMORY);
     if (mem) {
         memInfo += QString("; Locked memory AppResource: %1/%2").arg(mem->maxUse() - mem->available()).arg(mem->maxUse());
     }

@@ -37,8 +37,8 @@
 
 namespace U2 {
 
-static inline QVBoxLayout *initLayout(QWidget *w) {
-    QVBoxLayout *layout = new QVBoxLayout;
+static inline QVBoxLayout* initLayout(QWidget* w) {
+    QVBoxLayout* layout = new QVBoxLayout;
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(5);
 
@@ -46,21 +46,21 @@ static inline QVBoxLayout *initLayout(QWidget *w) {
     return layout;
 }
 
-SeqStatisticsWidget::SeqStatisticsWidget(MSAEditor *m)
+SeqStatisticsWidget::SeqStatisticsWidget(MSAEditor* m)
     : msa(m), savableTab(this, GObjectViewUtils::findViewByName(m->getName())) {
     setObjectName("SequenceStatisticsOptionsPanelTab");
     SAFE_POINT(nullptr != m, QString("Invalid parameter were passed into constructor SeqStatisticsWidget"), );
 
     copySettings();
 
-    QVBoxLayout *mainLayout = initLayout(this);
+    QVBoxLayout* mainLayout = initLayout(this);
     mainLayout->setSpacing(0);
 
     distancesStatisticsGroup = new QWidget(this);
     ui.setupUi(distancesStatisticsGroup);
     new LabelClickTransmitter(ui.showDistancesColumnCheckLabel, ui.showDistancesColumnCheck);
 
-    QWidget *similarityGroup = new ShowHideSubgroupWidget("REFERENCE", tr("Distances column"), distancesStatisticsGroup, true);
+    QWidget* similarityGroup = new ShowHideSubgroupWidget("REFERENCE", tr("Distances column"), distancesStatisticsGroup, true);
     updateWidgetsSettings();
     mainLayout->addWidget(similarityGroup);
 
@@ -68,10 +68,10 @@ SeqStatisticsWidget::SeqStatisticsWidget(MSAEditor *m)
 }
 
 void SeqStatisticsWidget::copySettings() {
-    const MsaEditorAlignmentDependentWidget *similarityWidget = msa->getUI()->getSimilarityWidget();
+    const MsaEditorAlignmentDependentWidget* similarityWidget = msa->getUI()->getSimilarityWidget();
     statisticsIsShown = false;
     if (nullptr != similarityWidget) {
-        const SimilarityStatisticsSettings *s = static_cast<const SimilarityStatisticsSettings *>(similarityWidget->getSettings());
+        const SimilarityStatisticsSettings* s = static_cast<const SimilarityStatisticsSettings*>(similarityWidget->getSettings());
         if (nullptr != s) {
             settings = new SimilarityStatisticsSettings(*s);
         } else {
@@ -90,8 +90,8 @@ void SeqStatisticsWidget::copySettings() {
 }
 
 void SeqStatisticsWidget::updateWidgetsSettings() {
-    QList<MSADistanceAlgorithmFactory *> algos = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactories();
-    foreach (MSADistanceAlgorithmFactory *a, algos) {
+    QList<MSADistanceAlgorithmFactory*> algos = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactories();
+    foreach (MSADistanceAlgorithmFactory* a, algos) {
         ui.algoComboBox->addItem(a->getName(), a->getId());
     }
     ui.algoComboBox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);

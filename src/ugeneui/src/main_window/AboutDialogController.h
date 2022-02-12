@@ -22,8 +22,6 @@
 #ifndef _U2_ABOUT_DIALOG_CONTROLLER_
 #define _U2_ABOUT_DIALOG_CONTROLLER_
 
-#include <ui_AboutDialog.h>
-
 #include <QBasicTimer>
 #include <QDialog>
 #include <QKeyEvent>
@@ -31,6 +29,8 @@
 #include <QMouseEvent>
 #include <QPaintEvent>
 #include <QPointer>
+
+#include <ui_AboutDialog.h>
 
 namespace U2 {
 
@@ -41,7 +41,7 @@ class NextPieceLabel;
 class AboutDialogController : public QDialog, public Ui_AboutDialog {
     Q_OBJECT
 public:
-    AboutDialogController(QAction *visitWeb, QWidget *p);
+    AboutDialogController(QAction* visitWeb, QWidget* p);
 
 private slots:
     void sl_scoreChanged(int);
@@ -53,8 +53,8 @@ signals:
     void si_levelChanged(QString);
 
 protected:
-    void keyPressEvent(QKeyEvent *event);
-    void mousePressEvent(QMouseEvent *event);
+    void keyPressEvent(QKeyEvent* event);
+    void mousePressEvent(QMouseEvent* event);
 
 private:
     void switchPages();
@@ -62,7 +62,7 @@ private:
     void installTWidget();
     void updateTitle();
 
-    TBoard *tWidget;
+    TBoard* tWidget;
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -74,16 +74,16 @@ public:
     AWidget();
 
 protected:
-    void timerEvent(QTimerEvent *e);
-    void paintEvent(QPaintEvent *e);
-    void mouseMoveEvent(QMouseEvent *e);
+    void timerEvent(QTimerEvent* e);
+    void paintEvent(QPaintEvent* e);
+    void mouseMoveEvent(QMouseEvent* e);
 
 private:
     void calcWater(int npage, int density);
 
     void addBlob(int x, int y, int radius, int height);
 
-    void drawWater(QRgb *srcImage, QRgb *dstImage);
+    void drawWater(QRgb* srcImage, QRgb* dstImage);
 
     static QRgb shiftColor(QRgb color, int shift) {
         return qRgb(qBound(0, qRed(color) - shift, 255),
@@ -152,7 +152,7 @@ class TBoard : public QWidget {
     Q_OBJECT
 
 public:
-    TBoard(QWidget *parent = 0);
+    TBoard(QWidget* parent = 0);
     ~TBoard();
     int heightForWidth(int w) const;
     int getScore() const {
@@ -164,7 +164,7 @@ public:
     int getLevel() const {
         return level;
     }
-    void setNextPieceLabel(QLabel *label) {
+    void setNextPieceLabel(QLabel* label) {
         nextPieceLabel = label;
     }
     int squareWidth() const {
@@ -184,15 +184,15 @@ signals:
     void linesRemovedChanged(int numLines);
 
 protected:
-    void paintEvent(QPaintEvent *event);
-    void keyPressEvent(QKeyEvent *event);
-    void timerEvent(QTimerEvent *event);
+    void paintEvent(QPaintEvent* event);
+    void keyPressEvent(QKeyEvent* event);
+    void timerEvent(QTimerEvent* event);
 
 private:
     enum { BoardWidth = 10,
            BoardHeight = 22 };
 
-    TPiece::Shape &shapeAt(int x, int y) {
+    TPiece::Shape& shapeAt(int x, int y) {
         return board[(y * BoardWidth) + x];
     }
     int timeoutTime() const {
@@ -211,8 +211,8 @@ private:
     void removeFullLines();
     void newPiece();
     void showNextPiece();
-    bool tryMove(const TPiece &newPiece, int newX, int newY);
-    void drawSquare(QPainter &painter, int x, int y, TPiece::Shape shape);
+    bool tryMove(const TPiece& newPiece, int newX, int newY);
+    void drawSquare(QPainter& painter, int x, int y, TPiece::Shape shape);
 
     QBasicTimer timer;
     QPointer<QLabel> nextPieceLabel;
@@ -233,7 +233,7 @@ private:
 
 class NextPieceLabel : public QLabel {
 public:
-    NextPieceLabel(QWidget *parent = 0);
+    NextPieceLabel(QWidget* parent = 0);
 };
 
 }  // namespace U2

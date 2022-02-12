@@ -32,25 +32,25 @@ class SaveAlignmentTask;
 class ConvertAlignment2Stockholm : public Task {
     Q_OBJECT
 public:
-    ConvertAlignment2Stockholm(const QString &msaUrl, const QString &workingDir);
+    ConvertAlignment2Stockholm(const QString& msaUrl, const QString& workingDir);
 
-    const QString &getResultUrl() const;
+    const QString& getResultUrl() const;
 
 private:
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
     void prepareResultUrl();
     void prepareSaveTask();
 
-    LoadDocumentTask *loadTask;
-    SaveAlignmentTask *saveTask;
+    LoadDocumentTask* loadTask;
+    SaveAlignmentTask* saveTask;
 
     const QString msaUrl;
     QString workingDir;
     QString resultUrl;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CONVERT_ALIGNMENT_2_STOCKHOLM_TASK_H_
+#endif  // _U2_CONVERT_ALIGNMENT_2_STOCKHOLM_TASK_H_

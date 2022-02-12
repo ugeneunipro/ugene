@@ -25,11 +25,11 @@
 
 namespace U2 {
 
-PWMConversionAlgorithmFactoryLOD::PWMConversionAlgorithmFactoryLOD(QObject *p)
+PWMConversionAlgorithmFactoryLOD::PWMConversionAlgorithmFactoryLOD(QObject* p)
     : PWMConversionAlgorithmFactory(BuiltInPWMConversionAlgorithms::LOD_ALGO, p) {
 }
 
-PWMConversionAlgorithm *PWMConversionAlgorithmFactoryLOD::createAlgorithm(QObject *p) {
+PWMConversionAlgorithm* PWMConversionAlgorithmFactoryLOD::createAlgorithm(QObject* p) {
     return new PWMConversionAlgorithmLOD(this, p);
 }
 
@@ -41,7 +41,7 @@ QString PWMConversionAlgorithmFactoryLOD::getDescription() const {
     return tr("log-odds weight function");
 }
 
-PWMatrix PWMConversionAlgorithmLOD::convert(const PFMatrix &matrix) {
+PWMatrix PWMConversionAlgorithmLOD::convert(const PFMatrix& matrix) {
     int size = (matrix.getType() == PFM_MONONUCLEOTIDE) ? 4 : 16;
     int length = matrix.getLength();
     float bj = 1.0 / size;
@@ -79,7 +79,7 @@ PWMatrix PWMConversionAlgorithmLOD::convert(const PFMatrix &matrix) {
     return w;
 }
 
-PWMConversionAlgorithmLOD::PWMConversionAlgorithmLOD(PWMConversionAlgorithmFactory *factory, QObject *p)
+PWMConversionAlgorithmLOD::PWMConversionAlgorithmLOD(PWMConversionAlgorithmFactory* factory, QObject* p)
     : PWMConversionAlgorithm(factory, p) {
 }
 

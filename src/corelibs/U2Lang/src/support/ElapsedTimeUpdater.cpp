@@ -30,13 +30,13 @@
 namespace U2 {
 namespace LocalWorkflow {
 
-ElapsedTimeUpdater::ElapsedTimeUpdater(const ActorId &runningActorId, WorkflowMonitor *monitor, Task *executedTask)
+ElapsedTimeUpdater::ElapsedTimeUpdater(const ActorId& runningActorId, WorkflowMonitor* monitor, Task* executedTask)
     : runningActorId(runningActorId), monitor(monitor), executedTask(executedTask), elapsedTime(0) {
     connect(this, SIGNAL(timeout()), SLOT(sl_updateTime()));
-    connect(new TaskSignalMapper(executedTask), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
+    connect(new TaskSignalMapper(executedTask), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
 }
 
-void ElapsedTimeUpdater::sl_taskFinished(Task *) {
+void ElapsedTimeUpdater::sl_taskFinished(Task*) {
     stop();
     qint64 newElapsedTime = GTimer::currentTimeMicros() - executedTask->getTimeInfo().startTime;
     monitor->addTick(newElapsedTime - elapsedTime, runningActorId);

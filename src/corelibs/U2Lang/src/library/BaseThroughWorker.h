@@ -34,17 +34,17 @@ namespace LocalWorkflow {
  */
 class U2LANG_EXPORT BaseThroughWorker : public BaseOneOneWorker {
 public:
-    BaseThroughWorker(Actor *a, const QString &inPortId, const QString &outPortId);
+    BaseThroughWorker(Actor* a, const QString& inPortId, const QString& outPortId);
 
     void cleanup();
 
 protected:
     // BaseOneOneWorker
-    Task *processNextInputMessage();
-    Task *onInputEnded();
-    Message composeMessage(const QVariantMap &data);
+    Task* processNextInputMessage();
+    Task* onInputEnded();
+    Message composeMessage(const QVariantMap& data);
 
-    virtual Task *createTask(const Message &message, U2OpStatus &os) = 0;
+    virtual Task* createTask(const Message& message, U2OpStatus& os) = 0;
 };
 
 }  // namespace LocalWorkflow

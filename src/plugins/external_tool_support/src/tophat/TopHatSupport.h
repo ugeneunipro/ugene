@@ -36,6 +36,6 @@ public:
     static const QString TOPHAT_TMP_DIR;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

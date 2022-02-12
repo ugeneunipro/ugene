@@ -28,8 +28,8 @@ namespace U2 {
 
 class U2GUI_EXPORT CredentialsAskerGui : public CredentialsAsker {
 public:
-    bool askWithFixedLogin(const QString &resourceUrl) const;
-    bool askWithModifiableLogin(QString &resourceUrl) const;
+    bool askWithFixedLogin(const QString& resourceUrl) const;
+    bool askWithModifiableLogin(QString& resourceUrl) const;
 };
 
 }  // namespace U2

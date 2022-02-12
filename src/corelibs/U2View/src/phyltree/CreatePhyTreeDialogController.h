@@ -40,7 +40,7 @@ class SaveDocumentController;
 class U2VIEW_EXPORT CreatePhyTreeDialogController : public QDialog {
     Q_OBJECT
 public:
-    CreatePhyTreeDialogController(QWidget *parent, const MultipleSequenceAlignmentObject *msaObject, CreatePhyTreeSettings &settings);
+    CreatePhyTreeDialogController(QWidget* parent, const MultipleSequenceAlignmentObject* msaObject, CreatePhyTreeSettings& settings);
     ~CreatePhyTreeDialogController();
 
 private slots:
@@ -53,13 +53,13 @@ private:
     bool checkAndPrepareOutputFilePath();
     bool checkSettings();
     bool checkMemory();
-    void initSaveController(const MultipleSequenceAlignmentObject *msaObject);
+    void initSaveController(const MultipleSequenceAlignmentObject* msaObject);
 
     MultipleSequenceAlignment msa;
-    CreatePhyTreeSettings &settings;
-    CreatePhyTreeWidget *settingsWidget;
-    Ui_CreatePhyTree *ui;
-    SaveDocumentController *saveController;
+    CreatePhyTreeSettings& settings;
+    CreatePhyTreeWidget* settingsWidget;
+    Ui_CreatePhyTree* ui;
+    SaveDocumentController* saveController;
 };
 
 }  // namespace U2

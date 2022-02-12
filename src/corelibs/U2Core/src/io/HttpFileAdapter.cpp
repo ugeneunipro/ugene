@@ -40,30 +40,30 @@ namespace U2 {
 
 #define MAX_GET_LENGTH 3000
 
-HttpFileAdapterFactory::HttpFileAdapterFactory(QObject *o)
+HttpFileAdapterFactory::HttpFileAdapterFactory(QObject* o)
     : IOAdapterFactory(o) {
     name = tr("HTTP file");
 }
 
-IOAdapter *HttpFileAdapterFactory::createIOAdapter() {
+IOAdapter* HttpFileAdapterFactory::createIOAdapter() {
     return new HttpFileAdapter(this);
 }
 
-GzippedHttpFileAdapterFactory::GzippedHttpFileAdapterFactory(QObject *obj /* = 0 */)
+GzippedHttpFileAdapterFactory::GzippedHttpFileAdapterFactory(QObject* obj /* = 0 */)
     : HttpFileAdapterFactory(obj) {
     name = tr("HTTP GZIP adaptor");
 }
 
-IOAdapter *GzippedHttpFileAdapterFactory::createIOAdapter() {
+IOAdapter* GzippedHttpFileAdapterFactory::createIOAdapter() {
     return new ZlibAdapter(new HttpFileAdapter(this));
 }
 
-QNetworkProxy HttpFileAdapterFactory::getProxyByUrl(const QUrl &url) const {
-    NetworkConfiguration *nc = AppContext::getAppSettings()->getNetworkConfiguration();
+QNetworkProxy HttpFileAdapterFactory::getProxyByUrl(const QUrl& url) const {
+    NetworkConfiguration* nc = AppContext::getAppSettings()->getNetworkConfiguration();
     return nc->getProxyByUrl(url);
 }
 
-HttpFileAdapter::HttpFileAdapter(HttpFileAdapterFactory *factory, QObject *o)
+HttpFileAdapter::HttpFileAdapter(HttpFileAdapterFactory* factory, QObject* o)
     : IOAdapter(factory, o), is_cached(false), begin_ptr(-1), end_ptr(0),
       reply(nullptr), badstate(false), is_downloaded(false), downloaded(0), total(0) {
     chunk_list.push_back(QByteArray(CHUNKSIZE, char(0)));
@@ -75,7 +75,7 @@ HttpFileAdapter::~HttpFileAdapter() {
     delete netManager;
     netManager = nullptr;
 }
-bool HttpFileAdapter::open(const GUrl &url_, IOAdapterMode m) {
+bool HttpFileAdapter::open(const GUrl& url_, IOAdapterMode m) {
     SAFE_POINT(m == IOAdapterMode_Read, QString("Illegal IO mode: %1").arg(m), false);
 
     QUrl url(url_.getURLString().trimmed());
@@ -89,19 +89,19 @@ bool HttpFileAdapter::open(const GUrl &url_, IOAdapterMode m) {
     gurl = url_;
     init();
 
-    HttpFileAdapterFactory *f = qobject_cast<HttpFileAdapterFactory *>(getFactory());
+    HttpFileAdapterFactory* f = qobject_cast<HttpFileAdapterFactory*>(getFactory());
     QNetworkProxy proxy = f->getProxyByUrl(url);
     return open(url, proxy);
 }
 
-bool HttpFileAdapter::open(const QUrl &url, const QNetworkProxy &p) {
+bool HttpFileAdapter::open(const QUrl& url, const QNetworkProxy& p) {
     SAFE_POINT(!isOpen(), "Adapter is already opened!", false);
 
     if (reply) {
         close();
     }
     netManager->setProxy(p);
-    connect(netManager, SIGNAL(proxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *)), this, SLOT(onProxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *)));
+    connect(netManager, SIGNAL(proxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*)), this, SLOT(onProxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*)));
     if (url.toString().length() > MAX_GET_LENGTH) {
         QStringList splittedStrings = url.toString().split(RemoteRequestConfig::HTTP_BODY_SEPARATOR);
         if (splittedStrings.count() > 1) {
@@ -141,7 +141,7 @@ void HttpFileAdapter::close() {
     init();
 }
 
-qint64 HttpFileAdapter::readBlock(char *data, qint64 size) {
+qint64 HttpFileAdapter::readBlock(char* data, qint64 size) {
     SAFE_POINT(isOpen(), "Adapter is not opened!", 0);
     if (badstate) {
         return -1;
@@ -170,7 +170,7 @@ qint64 HttpFileAdapter::readBlock(char *data, qint64 size) {
     return size;
 }
 
-qint64 HttpFileAdapter::writeBlock(const char *, qint64) {
+qint64 HttpFileAdapter::writeBlock(const char*, qint64) {
     SAFE_POINT(0, "Operation is not supported!", 0);
     return 0;
 }
@@ -251,7 +251,7 @@ qint64 HttpFileAdapter::stored() const {
     return (singleChunk() ? firstChunkContains() : firstChunkContains() + end_ptr + (chunk_list.size() - 2) * CHUNKSIZE);
 }
 
-void HttpFileAdapter::readFromChunk(char *data, int size) {
+void HttpFileAdapter::readFromChunk(char* data, int size) {
     assert(size <= firstChunkContains());
     assert(!isEmpty());
 
@@ -343,10 +343,10 @@ QString HttpFileAdapter::errorString() const {
     return result;
 }
 
-void HttpFileAdapter::onProxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *auth) {
+void HttpFileAdapter::onProxyAuthenticationRequired(const QNetworkProxy& proxy, QAuthenticator* auth) {
     auth->setUser(proxy.user());
     auth->setPassword(proxy.password());
-    disconnect(this, SLOT(onProxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *)));
+    disconnect(this, SLOT(onProxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*)));
 }
 
 }  // namespace U2

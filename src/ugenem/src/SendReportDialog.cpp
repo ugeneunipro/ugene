@@ -68,7 +68,7 @@ ReportSender::ReportSender(bool addGuiTestInfo)
     : report(""), addGuiTestInfo(addGuiTestInfo), failedTest("UNKNOWN TEST") {
 }
 
-void ReportSender::parse(const QString &htmlReport, const QString &dumpUrl) {
+void ReportSender::parse(const QString& htmlReport, const QString& dumpUrl) {
     report = "Exception with code ";
 
     QStringList list = htmlReport.split("|");
@@ -135,7 +135,7 @@ void ReportSender::parse(const QString &htmlReport, const QString &dumpUrl) {
             report += "Failed test: ";
             report += failedTest + "\n\n";
         }
-        foreach (const QString &str, list) {
+        foreach (const QString& str, list) {
             report += str + "\n";
         }
     }
@@ -157,17 +157,17 @@ void ReportSender::parse(const QString &htmlReport, const QString &dumpUrl) {
     }
 }
 
-bool ReportSender::send(const QString &additionalInfo, const QString &dumpUrl) {
+bool ReportSender::send(const QString& additionalInfo, const QString& dumpUrl) {
     report += additionalInfo;
 
-    QNetworkAccessManager *netManager = new QNetworkAccessManager(this);
+    QNetworkAccessManager* netManager = new QNetworkAccessManager(this);
     QNetworkProxy proxy = QNetworkProxy::applicationProxy();
     netManager->setProxy(proxy);
 
-    connect(netManager, SIGNAL(finished(QNetworkReply *)), this, SLOT(sl_replyFinished(QNetworkReply *)));
+    connect(netManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(sl_replyFinished(QNetworkReply*)));
     // check destination availability
 
-    QNetworkReply *reply = netManager->get(QNetworkRequest(QString(HOST_URL) + QString(DESTINATION_URL_KEEPER_PAGE)));
+    QNetworkReply* reply = netManager->get(QNetworkRequest(QString(HOST_URL) + QString(DESTINATION_URL_KEEPER_PAGE)));
     loop.exec();
     QString reportsPath = QString(reply->readAll());
     if (reportsPath.isEmpty()) {
@@ -181,7 +181,7 @@ bool ReportSender::send(const QString &additionalInfo, const QString &dumpUrl) {
     QString data = QUrl::toPercentEncoding(report);
     QNetworkRequest request(reportsPath);
 
-    QHttpMultiPart *multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
+    QHttpMultiPart* multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
 
     QHttpPart logPart;
     logPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"log\""));
@@ -191,7 +191,7 @@ bool ReportSender::send(const QString &additionalInfo, const QString &dumpUrl) {
     if (QFile::exists(dumpUrl)) {
         QHttpPart dumpPart;
 
-        QFile *file = new QFile(dumpUrl);
+        QFile* file = new QFile(dumpUrl);
         file->setParent(multiPart);
         file->open(QIODevice::ReadOnly);
         dumpPart.setBodyDevice(file);
@@ -213,11 +213,11 @@ bool ReportSender::send(const QString &additionalInfo, const QString &dumpUrl) {
 
     return true;
 }
-void ReportSender::sl_replyFinished(QNetworkReply *) {
+void ReportSender::sl_replyFinished(QNetworkReply*) {
     loop.exit();
 }
 
-SendReportDialog::SendReportDialog(const QString &report, const QString &dumpUrl, QDialog *d)
+SendReportDialog::SendReportDialog(const QString& report, const QString& dumpUrl, QDialog* d)
     : QDialog(d),
       dumpUrl(dumpUrl) {
     setupUi(this);
@@ -428,7 +428,7 @@ int ReportSender::getTotalPhysicalMemory() {
 #ifndef Q_OS_DARWIN
 void cpuID(unsigned i, unsigned regs[4]) {
 #    ifdef _WIN32
-    __cpuid((int *)regs, (int)i);
+    __cpuid((int*)regs, (int)i);
 
 #    else
     asm volatile("cpuid"
@@ -447,9 +447,9 @@ QString ReportSender::getCPUInfo() {
     // Get vendor
     char vendor[12];
     cpuID(0, regs);
-    ((unsigned *)vendor)[0] = regs[1];  // EBX
-    ((unsigned *)vendor)[1] = regs[3];  // EDX
-    ((unsigned *)vendor)[2] = regs[2];  // ECX
+    ((unsigned*)vendor)[0] = regs[1];  // EBX
+    ((unsigned*)vendor)[1] = regs[3];  // EDX
+    ((unsigned*)vendor)[2] = regs[2];  // ECX
     QString cpuVendor = QString(vendor);
     result += "\n  Vendor :" + cpuVendor;
 
@@ -487,7 +487,7 @@ QString ReportSender::getCPUInfo() {
     return result;
 }
 
-void ReportSender::setFailedTest(const QString &failedTestStr) {
+void ReportSender::setFailedTest(const QString& failedTestStr) {
     failedTest = failedTestStr;
 }
 

@@ -62,7 +62,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsDocument::checkDocument(os, "search.txt");
 
     // 3. Run Smith-Waterman Search by SW dialog
-    Runnable *swDialog = new SmithWatermanDialogFiller(os, SmithWatermanDialogFiller::CLASSIC, SmithWatermanSettings::MULTIPLE_ALIGNMENT, testDir + "_common_data/scenarios/sandbox/", patternSequence);
+    Runnable* swDialog = new SmithWatermanDialogFiller(os, SmithWatermanDialogFiller::CLASSIC, SmithWatermanSettings::MULTIPLE_ALIGNMENT, testDir + "_common_data/scenarios/sandbox/", patternSequence);
     GTUtilsDialog::waitForDialog(os, swDialog);
 
     GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find pattern [Smith-Waterman]..."}, GTGlobals::UseMouse);
@@ -119,7 +119,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsDocument::checkDocument(os, "search.txt");
 
     // 3. Run Smith-Waterman Search by SW dialog
-    Runnable *swDialog = new SmithWatermanDialogFiller(os, SmithWatermanDialogFiller::CLASSIC, SmithWatermanSettings::ANNOTATIONS, testDir + "_common_data/scenarios/sandbox/", patternSequence);
+    Runnable* swDialog = new SmithWatermanDialogFiller(os, SmithWatermanDialogFiller::CLASSIC, SmithWatermanSettings::ANNOTATIONS, testDir + "_common_data/scenarios/sandbox/", patternSequence);
     GTUtilsDialog::waitForDialog(os, swDialog);
 
     GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find pattern [Smith-Waterman]..."}, GTGlobals::UseMouse);
@@ -132,11 +132,11 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTMouseDriver::doubleClick();
 
     // 5. Check names and count of annotations
-    QTreeWidget *treeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
-    QList<QTreeWidgetItem *> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());
+    QTreeWidget* treeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
+    QList<QTreeWidgetItem*> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());
     int annotationsCounter = 0;
-    foreach (QTreeWidgetItem *item, treeItems) {
-        QString treeItemName = GTUtilsAnnotationsTreeView::getAVItemName(os, (AVItem *)item);
+    foreach (QTreeWidgetItem* item, treeItems) {
+        QString treeItemName = GTUtilsAnnotationsTreeView::getAVItemName(os, (AVItem*)item);
         if ("test" == treeItemName) {
             annotationsCounter++;
         }

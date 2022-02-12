@@ -36,7 +36,7 @@ namespace U2 {
 #define REVERSE_ATTR "reverse"
 #define RESULT_ATTR "result"
 
-void GTest_SW_CheckRegion::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_SW_CheckRegion::init(XMLTestFormat*, const QDomElement& el) {
     QString stepStr = el.attribute(CHUNK_ATTR);
     if (stepStr.isEmpty()) {
         failMissingValue(CHUNK_ATTR);
@@ -127,8 +127,8 @@ Task::ReportResult GTest_SW_CheckRegion::report() {
         return ReportResult_Finished;
     }
     for (int i = 0; i < n; i++) {
-        const U2Region &region = result[i];
-        const U2Region &chunk = chunks[i];
+        const U2Region& region = result[i];
+        const U2Region& chunk = chunks[i];
         if (chunk != region) {
             stateInfo.setError(QString("location not matched, idx=%1, \"%2..%3\", expected \"%4..%5\"")
                                    .arg(i)
@@ -143,8 +143,8 @@ Task::ReportResult GTest_SW_CheckRegion::report() {
     return ReportResult_Finished;
 }
 
-QList<XMLTestFactory *> SequenceWalkerTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> SequenceWalkerTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_SW_CheckRegion::createFactory());
     return res;
 }

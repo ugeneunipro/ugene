@@ -44,7 +44,7 @@ QString CrashHandlerPrivate::getAdditionalInfo() const {
     return "";
 }
 
-void CrashHandlerPrivate::handleException(const QString &exceptionType, const QString &dumpUrl) {
+void CrashHandlerPrivate::handleException(const QString& exceptionType, const QString& dumpUrl) {
     CrashHandler::handleException(exceptionType, dumpUrl);
 }
 

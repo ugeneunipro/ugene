@@ -60,7 +60,7 @@ static const QString BASE_Bowtie2_OUTFILE("out.sam");
 /************************************************************************/
 /* Worker */
 /************************************************************************/
-Bowtie2Worker::Bowtie2Worker(Actor *p)
+Bowtie2Worker::Bowtie2Worker(Actor* p)
     : BaseShortReadsAlignerWorker(p, Bowtie2Task::taskName) {
 }
 
@@ -93,7 +93,7 @@ QString Bowtie2Worker::getBaseSubdir() const {
     return BASE_Bowtie2_SUBDIR;
 }
 
-void Bowtie2Worker::setGenomeIndex(DnaAssemblyToRefTaskSettings &settings) {
+void Bowtie2Worker::setGenomeIndex(DnaAssemblyToRefTaskSettings& settings) {
     settings.refSeqUrl = getValue<QString>(REFERENCE_GENOME);
 
     QStringList suffixes = QStringList() << Bowtie2Task::indexSuffixes << Bowtie2Task::largeIndexSuffixes;
@@ -105,8 +105,8 @@ void Bowtie2Worker::setGenomeIndex(DnaAssemblyToRefTaskSettings &settings) {
 /* Factory */
 /************************************************************************/
 void Bowtie2WorkerFactory::init() {
-    QList<Attribute *> attrs;
-    QMap<QString, PropertyDelegate *> delegates;
+    QList<Attribute*> attrs;
+    QMap<QString, PropertyDelegate*> delegates;
     addCommonAttributes(attrs, delegates, Bowtie2Worker::tr("Bowtie index folder"), Bowtie2Worker::tr("Bowtie index basename"));
     {
         Descriptor mode(MODE,
@@ -229,7 +229,7 @@ void Bowtie2WorkerFactory::init() {
                                            " The result is saved to the specified SAM file, URL to the file is passed"
                                            " to the output port."));
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, getPortDescriptors(), attrs);
+    ActorPrototype* proto = new IntegralBusActorPrototype(protoDesc, getPortDescriptors(), attrs);
     proto->setPrompter(new ShortReadsAlignerPrompter());
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPortValidator(IN_PORT_DESCR, new ShortReadsAlignerSlotsValidator());
@@ -240,9 +240,9 @@ void Bowtie2WorkerFactory::init() {
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new Bowtie2WorkerFactory());
 }
 
-Worker *Bowtie2WorkerFactory::createWorker(Actor *a) {
+Worker* Bowtie2WorkerFactory::createWorker(Actor* a) {
     return new Bowtie2Worker(a);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

@@ -25,11 +25,11 @@
 
 namespace U2 {
 
-MsaHighlightingSchemeTransversions::MsaHighlightingSchemeTransversions(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleAlignmentObject *maObj)
+MsaHighlightingSchemeTransversions::MsaHighlightingSchemeTransversions(QObject* parent, const MsaHighlightingSchemeFactory* factory, MultipleAlignmentObject* maObj)
     : MsaHighlightingScheme(parent, factory, maObj) {
 }
 
-void MsaHighlightingSchemeTransversions::process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const {
+void MsaHighlightingSchemeTransversions::process(const char refChar, char& seqChar, QColor& color, bool& highlight, int refCharColumn, int refCharRow) const {
     switch (refChar) {
         case 'N':
             highlight = true;
@@ -58,11 +58,11 @@ void MsaHighlightingSchemeTransversions::process(const char refChar, char &seqCh
     MsaHighlightingScheme::process(refChar, seqChar, color, highlight, refCharColumn, refCharRow);
 }
 
-MsaHighlightingSchemeTransversionsFactory::MsaHighlightingSchemeTransversionsFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets)
+MsaHighlightingSchemeTransversionsFactory::MsaHighlightingSchemeTransversionsFactory(QObject* parent, const QString& id, const QString& name, const AlphabetFlags& supportedAlphabets)
     : MsaHighlightingSchemeFactory(parent, id, name, supportedAlphabets) {
 }
 
-MsaHighlightingScheme *MsaHighlightingSchemeTransversionsFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
+MsaHighlightingScheme* MsaHighlightingSchemeTransversionsFactory::create(QObject* parent, MultipleAlignmentObject* maObj) const {
     return new MsaHighlightingSchemeTransversions(parent, this, maObj);
 }
 

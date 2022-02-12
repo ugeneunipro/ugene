@@ -29,12 +29,12 @@
 
 namespace U2 {
 
-AssemblyImporter::AssemblyImporter(U2OpStatus &os)
+AssemblyImporter::AssemblyImporter(U2OpStatus& os)
     : os(os),
       objectExists(false) {
 }
 
-AssemblyImporter::AssemblyImporter(const U2DbiRef &dbiRef, U2Assembly &assembly, U2OpStatus &os)
+AssemblyImporter::AssemblyImporter(const U2DbiRef& dbiRef, U2Assembly& assembly, U2OpStatus& os)
     : dbiRef(dbiRef),
       assembly(assembly),
       os(os),
@@ -45,12 +45,12 @@ AssemblyImporter::~AssemblyImporter() {
     finalizeAssembly();
 }
 
-void AssemblyImporter::createAssembly(const U2DbiRef &dbiRef, const QString &folder, U2Assembly &assembly) {
+void AssemblyImporter::createAssembly(const U2DbiRef& dbiRef, const QString& folder, U2Assembly& assembly) {
     U2AssemblyReadsImportInfo importInfo;
     createAssembly(dbiRef, folder, nullptr, importInfo, assembly);
 }
 
-void AssemblyImporter::createAssembly(const U2DbiRef &dbiRef, const QString &folder, U2DbiIterator<U2AssemblyRead> *readsIterator, U2AssemblyReadsImportInfo &importInfo, U2Assembly &assembly) {
+void AssemblyImporter::createAssembly(const U2DbiRef& dbiRef, const QString& folder, U2DbiIterator<U2AssemblyRead>* readsIterator, U2AssemblyReadsImportInfo& importInfo, U2Assembly& assembly) {
     this->dbiRef = dbiRef;
     this->assembly = assembly;
 
@@ -61,7 +61,7 @@ void AssemblyImporter::createAssembly(const U2DbiRef &dbiRef, const QString &fol
     SAFE_POINT_OP(os, );
     CHECK(!os.isCanceled(), );
     SAFE_POINT(connection.isOpen(), "Connection is closed", );
-    U2AssemblyDbi *assemblyDbi = connection.dbi->getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = connection.dbi->getAssemblyDbi();
     SAFE_POINT(nullptr != assemblyDbi, L10N::nullPointerError("assembly dbi"), );
 
     assemblyDbi->createAssemblyObject(assembly, canonicalFolder, readsIterator, importInfo, os);
@@ -70,7 +70,7 @@ void AssemblyImporter::createAssembly(const U2DbiRef &dbiRef, const QString &fol
     objectExists = true;
 }
 
-void AssemblyImporter::addReads(U2DbiIterator<U2AssemblyRead> *readsIterator) {
+void AssemblyImporter::addReads(U2DbiIterator<U2AssemblyRead>* readsIterator) {
     CHECK(objectExists, );
     SAFE_POINT(dbiRef.isValid(), "Database reference is invalid", );
     SAFE_POINT(assembly.hasValidId(), "Assembly ID is invalid", );
@@ -79,13 +79,13 @@ void AssemblyImporter::addReads(U2DbiIterator<U2AssemblyRead> *readsIterator) {
     SAFE_POINT_OP(os, );
     CHECK(!os.isCanceled(), );
     SAFE_POINT(connection.isOpen(), "Connection is closed", );
-    U2AssemblyDbi *assemblyDbi = connection.dbi->getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = connection.dbi->getAssemblyDbi();
     SAFE_POINT(nullptr != assemblyDbi, L10N::nullPointerError("assembly dbi"), );
 
     assemblyDbi->addReads(assembly.id, readsIterator, os);
 }
 
-void AssemblyImporter::packReads(U2AssemblyReadsImportInfo &importInfo) {
+void AssemblyImporter::packReads(U2AssemblyReadsImportInfo& importInfo) {
     CHECK(!importInfo.packed, );
     CHECK(objectExists, );
 
@@ -96,7 +96,7 @@ void AssemblyImporter::packReads(U2AssemblyReadsImportInfo &importInfo) {
     SAFE_POINT_OP(os, );
     CHECK(!os.isCanceled(), );
     SAFE_POINT(connection.isOpen(), "Connection is closed", );
-    U2AssemblyDbi *assemblyDbi = connection.dbi->getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = connection.dbi->getAssemblyDbi();
     SAFE_POINT(nullptr != assemblyDbi, L10N::nullPointerError("assembly dbi"), );
 
     U2AssemblyPackStat stat;
@@ -108,7 +108,7 @@ bool AssemblyImporter::isObjectExist() const {
     return objectExists;
 }
 
-const U2Assembly &AssemblyImporter::getAssembly() const {
+const U2Assembly& AssemblyImporter::getAssembly() const {
     return assembly;
 }
 
@@ -125,7 +125,7 @@ void AssemblyImporter::finalizeAssembly() {
         Q_ASSERT(false);
     }
 
-    U2AssemblyDbi *assemblyDbi = connection.dbi->getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = connection.dbi->getAssemblyDbi();
     SAFE_POINT(nullptr != assemblyDbi, L10N::nullPointerError("assembly dbi"), );
     assemblyDbi->finalizeAssemblyObject(assembly, os);
 }

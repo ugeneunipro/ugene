@@ -1,23 +1,23 @@
 /**
-* UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
-* http://ugene.net
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-* MA 02110-1301, USA.
-*/
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * http://ugene.net
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
 
 #include "HmmerSearchTaskTest.h"
 
@@ -37,8 +37,8 @@
 namespace U2 {
 
 /*******************************
-* GTest_GeneralUHMM3Search
-********************************/
+ * GTest_GeneralUHMM3Search
+ ********************************/
 
 const QString GTest_UHMM3Search::SEQ_DOC_CTX_NAME_TAG = "seqDoc";
 const QString GTest_UHMM3Search::HMM_FILENAME_TAG = "hmm";
@@ -67,7 +67,7 @@ const QString GTest_UHMM3Search::NONULL2_OPTION_TAG = "nonull2";
 const QString GTest_UHMM3Search::SEED_OPTION_TAG = "seed";
 const QString GTest_UHMM3Search::REMOTE_MACHINE_VAR = "MACHINE";
 
-static void setDoubleOption(double &num, const QDomElement &el, const QString &optionName, TaskStateInfo &si) {
+static void setDoubleOption(double& num, const QDomElement& el, const QString& optionName, TaskStateInfo& si) {
     if (si.hasError()) {
         return;
     }
@@ -85,7 +85,7 @@ static void setDoubleOption(double &num, const QDomElement &el, const QString &o
     num = ret;
 }
 
-static void setUseBitCutoffsOption(HmmerSearchSettings::BitCutoffs &ret, const QDomElement &el, const QString &opName, TaskStateInfo &si) {
+static void setUseBitCutoffsOption(HmmerSearchSettings::BitCutoffs& ret, const QDomElement& el, const QString& opName, TaskStateInfo& si) {
     if (si.hasError()) {
         return;
     }
@@ -102,20 +102,20 @@ static void setUseBitCutoffsOption(HmmerSearchSettings::BitCutoffs &ret, const Q
     }
 }
 
-static void setBooleanOption(bool &ret, const QDomElement &el, const QString &opName, TaskStateInfo &si) {
+static void setBooleanOption(bool& ret, const QDomElement& el, const QString& opName, TaskStateInfo& si) {
     if (si.hasError()) {
         return;
     }
     QString str = el.attribute(opName).toLower();
 
     if (!str.isEmpty() && "n" != str && "no" != str) {
-        ret = true;    //TRUE;
+        ret = true;  // TRUE;
     } else {
-        ret = false;    //FALSE;
+        ret = false;  // FALSE;
     }
 }
 
-static void setIntegerOption(int &num, const QDomElement &el, const QString &optionName, TaskStateInfo &si) {
+static void setIntegerOption(int& num, const QDomElement& el, const QString& optionName, TaskStateInfo& si) {
     if (si.hasError()) {
         return;
     }
@@ -133,7 +133,7 @@ static void setIntegerOption(int &num, const QDomElement &el, const QString &opt
     num = ret;
 }
 
-void GTest_UHMM3Search::setSearchTaskSettings(HmmerSearchSettings &settings, const QDomElement &el, TaskStateInfo &si) {
+void GTest_UHMM3Search::setSearchTaskSettings(HmmerSearchSettings& settings, const QDomElement& el, TaskStateInfo& si) {
     setDoubleOption(settings.e, el, GTest_UHMM3Search::SEQ_E_OPTION_TAG, si);
     setDoubleOption(settings.t, el, GTest_UHMM3Search::SEQ_T_OPTION_TAG, si);
     setDoubleOption(settings.z, el, GTest_UHMM3Search::Z_OPTION_TAG, si);
@@ -153,7 +153,7 @@ void GTest_UHMM3Search::setSearchTaskSettings(HmmerSearchSettings &settings, con
     setUseBitCutoffsOption(settings.useBitCutoffs, el, GTest_UHMM3Search::USE_BIT_CUTOFFS_OPTION_TAG, si);
 }
 
-void GTest_UHMM3Search::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_UHMM3Search::init(XMLTestFormat*, const QDomElement& el) {
     hmmFilename = el.attribute(HMM_FILENAME_TAG);
 
     searchTask = nullptr;
@@ -188,7 +188,7 @@ void GTest_UHMM3Search::setAndCheckArgs() {
 
     outputDir = env->getVar("TEMP_DATA_DIR") + "/" + outputDir;
 
-    Document *seqDoc = getContext<Document>(this, seqDocCtxName);
+    Document* seqDoc = getContext<Document>(this, seqDocCtxName);
     if (nullptr == seqDoc) {
         stateInfo.setError(QString("context %1 not found").arg(seqDocCtxName));
         return;
@@ -205,21 +205,21 @@ void GTest_UHMM3Search::prepare() {
     settings.workingDir = outputDir;
 
     searchTask = new HmmerSearchTask(settings);
-    //TODO: make collector as 'fancy' pointer
-    searchTask->addListeners(QList<ExternalToolListener *>() << new OutputCollector());
+    // TODO: make collector as 'fancy' pointer
+    searchTask->addListeners(QList<ExternalToolListener*>() << new OutputCollector());
     addSubTask(searchTask);
 }
 
-QList<Task *> GTest_UHMM3Search::onSubTaskFinished(Task *sub) {
+QList<Task*> GTest_UHMM3Search::onSubTaskFinished(Task* sub) {
     assert(nullptr != sub);
-    QList<Task *> res;
+    QList<Task*> res;
     if (searchTask != sub) {
         return res;
     }
-    OutputCollector *collector = dynamic_cast<OutputCollector *>(searchTask->getListener(0));
+    OutputCollector* collector = dynamic_cast<OutputCollector*>(searchTask->getListener(0));
     if (collector != nullptr) {
         QString hmmSearchLog = collector->getLog();
-        //TODO: check non empty log and file existence after writing
+        // TODO: check non empty log and file existence after writing
         QFile file(settings.workingDir + "/output.txt");
         file.open(QIODevice::WriteOnly);
         file.write(hmmSearchLog.toLatin1());
@@ -239,7 +239,7 @@ const QString GTest_UHMM3SearchCompare::TRUE_OUT_FILE_TAG = "trueOut";
 const int BUF_SZ = 2048;
 const char TERM_SYM = '\0';
 
-static bool getSignificance(const QByteArray &str) {
+static bool getSignificance(const QByteArray& str) {
     if (str == "!") {
         return true;
     } else if (str == "?") {
@@ -248,7 +248,7 @@ static bool getSignificance(const QByteArray &str) {
     throw QString(GTest_UHMM3SearchCompare::tr("Can't parse significance:%1").arg(QString(str)));
 }
 
-static double getDouble(const QByteArray &numStr) {
+static double getDouble(const QByteArray& numStr) {
     bool ok = false;
     double ret = numStr.toDouble(&ok);
     if (ok) {
@@ -257,18 +257,18 @@ static double getDouble(const QByteArray &numStr) {
     throw QString(GTest_UHMM3SearchCompare::tr("Internal error (cannot parse float number from string '%1')").arg(QString(numStr)));
 }
 
-static float getFloat(const QByteArray &numStr) {
+static float getFloat(const QByteArray& numStr) {
     return (float)getDouble(numStr);
 }
 
-static QByteArray getNextToken(QStringList &tokens) {
+static QByteArray getNextToken(QStringList& tokens) {
     if (tokens.isEmpty()) {
         throw QString("unexpected_end_of_line:token_is_missing");
     }
     return tokens.takeFirst().toLatin1();
 }
 
-static UHMM3SearchSeqDomainResult getDomainRes(QStringList &tokens) {
+static UHMM3SearchSeqDomainResult getDomainRes(QStringList& tokens) {
     UHMM3SearchSeqDomainResult res;
 
     getNextToken(tokens);
@@ -297,7 +297,7 @@ static UHMM3SearchSeqDomainResult getDomainRes(QStringList &tokens) {
     return res;
 }
 
-static void readLine(IOAdapter *io, QByteArray &to, QStringList *tokens = nullptr) {
+static void readLine(IOAdapter* io, QByteArray& to, QStringList* tokens = nullptr) {
     assert(nullptr != io);
     to.clear();
     QByteArray buf(BUF_SZ, TERM_SYM);
@@ -324,7 +324,7 @@ static void readLine(IOAdapter *io, QByteArray &to, QStringList *tokens = nullpt
     }
 }
 
-const double COMPARE_PERCENT_BORDER = 0.1;    // 10 percent
+const double COMPARE_PERCENT_BORDER = 0.1;  // 10 percent
 
 template<class T>
 static bool compareNumbers(T f1, T f2) {
@@ -342,7 +342,7 @@ static bool compareNumbers(T f1, T f2) {
     return ret;
 }
 
-void GTest_UHMM3SearchCompare::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_UHMM3SearchCompare::init(XMLTestFormat*, const QDomElement& el) {
     trueOutFilename = el.attribute(TRUE_OUT_FILE_TAG);
     actualOutFilename = el.attribute(ACTUAL_OUT_FILE_TAG);
 }
@@ -363,10 +363,10 @@ void GTest_UHMM3SearchCompare::setAndCheckArgs() {
     actualOutFilename = env->getVar("TEMP_DATA_DIR") + "/" + actualOutFilename;
 }
 
-UHMM3SearchResult GTest_UHMM3SearchCompare::getSearchResultFromOutput(const QString &filename) {
+UHMM3SearchResult GTest_UHMM3SearchCompare::getSearchResultFromOutput(const QString& filename) {
     assert(!filename.isEmpty());
 
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(filename));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(filename));
     QScopedPointer<IOAdapter> io(iof->createIOAdapter());
     if (io.isNull()) {
         throw QString("cannot_create_io_adapter_for_'%1'_file").arg(filename);
@@ -394,7 +394,7 @@ UHMM3SearchResult GTest_UHMM3SearchCompare::getSearchResultFromOutput(const QStr
             if (!wasHeader) {
                 throw QString("hmmer_output_header_is_missing");
             }
-            UHMM3SearchCompleteSeqResult &fullSeqRes = res.fullSeqResult;
+            UHMM3SearchCompleteSeqResult& fullSeqRes = res.fullSeqResult;
             readLine(io.data(), buf);
             readLine(io.data(), buf);
             readLine(io.data(), buf);
@@ -427,7 +427,7 @@ UHMM3SearchResult GTest_UHMM3SearchCompare::getSearchResultFromOutput(const QStr
             readLine(io.data(), buf);
             readLine(io.data(), buf);
             readLine(io.data(), buf);
-            QList<UHMM3SearchSeqDomainResult> &domainResList = res.domainResList;
+            QList<UHMM3SearchSeqDomainResult>& domainResList = res.domainResList;
             assert(domainResList.isEmpty());
 
             int nDomains = res.fullSeqResult.reportedDomainsNum;
@@ -442,9 +442,9 @@ UHMM3SearchResult GTest_UHMM3SearchCompare::getSearchResultFromOutput(const QStr
     return res;
 }
 
-void GTest_UHMM3SearchCompare::generalCompareResults(const UHMM3SearchResult &myRes, const UHMM3SearchResult &trueRes, TaskStateInfo &ti) {
-    const UHMM3SearchCompleteSeqResult &myFull = myRes.fullSeqResult;
-    const UHMM3SearchCompleteSeqResult &trueFull = trueRes.fullSeqResult;
+void GTest_UHMM3SearchCompare::generalCompareResults(const UHMM3SearchResult& myRes, const UHMM3SearchResult& trueRes, TaskStateInfo& ti) {
+    const UHMM3SearchCompleteSeqResult& myFull = myRes.fullSeqResult;
+    const UHMM3SearchCompleteSeqResult& trueFull = trueRes.fullSeqResult;
 
     if (myFull.isReported != trueFull.isReported) {
         ti.setError(QString("reported_flag_not_matched: %1 and %2").arg(myFull.isReported).arg(trueFull.isReported));
@@ -474,8 +474,8 @@ void GTest_UHMM3SearchCompare::generalCompareResults(const UHMM3SearchResult &my
         }
     }
 
-    const QList<UHMM3SearchSeqDomainResult> &myDoms = myRes.domainResList;
-    const QList<UHMM3SearchSeqDomainResult> &trueDoms = trueRes.domainResList;
+    const QList<UHMM3SearchSeqDomainResult>& myDoms = myRes.domainResList;
+    const QList<UHMM3SearchSeqDomainResult>& trueDoms = trueRes.domainResList;
     if (myDoms.size() != trueDoms.size()) {
         ti.setError(QString("domain_res_number_not_matched: %1 and %2").arg(myDoms.size()).arg(trueDoms.size()));
         return;
@@ -534,7 +534,7 @@ Task::ReportResult GTest_UHMM3SearchCompare::report() {
     try {
         trueRes = getSearchResultFromOutput(trueOutFilename);
         actualRes = getSearchResultFromOutput(actualOutFilename);
-    } catch (const QString &ex) {
+    } catch (const QString& ex) {
         stateInfo.setError(ex);
     } catch (...) {
         stateInfo.setError("undefined_error_occurred");
@@ -549,4 +549,4 @@ Task::ReportResult GTest_UHMM3SearchCompare::report() {
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

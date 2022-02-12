@@ -26,9 +26,9 @@
 
 namespace U2 {
 
-WebWindow::WebWindow(const QString &title, const QString &htmlContent)
+WebWindow::WebWindow(const QString& title, const QString& htmlContent)
     : MWMDIWindow(title) {
-    QVBoxLayout *layout = new QVBoxLayout();
+    QVBoxLayout* layout = new QVBoxLayout();
     layout->setMargin(0);
     setLayout(layout);
 

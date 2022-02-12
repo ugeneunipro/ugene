@@ -37,18 +37,18 @@ public:
     };
     typedef QPair<ActionType, QVariant> Action;
 
-    ConstructMoleculeDialogFiller(HI::GUITestOpStatus &os, const QList<Action> &actions);
-    ConstructMoleculeDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario);
+    ConstructMoleculeDialogFiller(HI::GUITestOpStatus& os, const QList<Action>& actions);
+    ConstructMoleculeDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario);
 
     void commonScenario();
 
 private:
     void addAllFragments();
-    void invertAddedFragment(const QVariant &actionData);
+    void invertAddedFragment(const QVariant& actionData);
     void clickCancel();
     void clickOk();
 
-    QWidget *dialog;
+    QWidget* dialog;
     const QList<Action> actions;
 };
 

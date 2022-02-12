@@ -35,7 +35,7 @@ namespace LocalWorkflow {
 class InSilicoPcrPrompter : public PrompterBase<InSilicoPcrPrompter> {
     Q_OBJECT
 public:
-    InSilicoPcrPrompter(Actor *a);
+    InSilicoPcrPrompter(Actor* a);
 
 protected:
     QString composeRichDoc();
@@ -44,7 +44,7 @@ protected:
 class InSilicoPcrWorkerFactory : public DomainFactory {
 public:
     InSilicoPcrWorkerFactory();
-    Worker *createWorker(Actor *a);
+    Worker* createWorker(Actor* a);
 
     static const QString ACTOR_ID;
     static void init();
@@ -59,16 +59,16 @@ public:
         QMap<int, int> productsNumber;  // pair number -> products count
     };
 
-    InSilicoPcrReportTask(const QList<TableRow> &table, const QList<QPair<Primer, Primer>> &primers, const QString &reportUrl, const QString &primersUrl);
+    InSilicoPcrReportTask(const QList<TableRow>& table, const QList<QPair<Primer, Primer>>& primers, const QString& reportUrl, const QString& primersUrl);
     void run();
 
 private:
-    QByteArray chapterName(const QString &name) const;
+    QByteArray chapterName(const QString& name) const;
     QString createReport();
     QByteArray productsTable() const;
     QString primerDetails();
-    QByteArray chapterContent(const QByteArray &content) const;
-    QByteArray chapter(const QByteArray &name, const QByteArray &content) const;
+    QByteArray chapterContent(const QByteArray& content) const;
+    QByteArray chapter(const QByteArray& name, const QByteArray& content) const;
     QString readHtml() const;
 
 private:
@@ -81,23 +81,23 @@ private:
 class InSilicoPcrWorker : public BaseThroughWorker {
     Q_OBJECT
 public:
-    InSilicoPcrWorker(Actor *a);
+    InSilicoPcrWorker(Actor* a);
 
 protected:
     // BaseThroughWorker
-    Task *createPrepareTask(U2OpStatus &os) const;
-    void onPrepared(Task *task, U2OpStatus &os);
-    Task *onInputEnded();
-    QList<Message> fetchResult(Task *task, U2OpStatus &os);
-    Task *createTask(const Message &message, U2OpStatus &os);
+    Task* createPrepareTask(U2OpStatus& os) const;
+    void onPrepared(Task* task, U2OpStatus& os);
+    Task* onInputEnded();
+    QList<Message> fetchResult(Task* task, U2OpStatus& os);
+    Task* createTask(const Message& message, U2OpStatus& os);
 
 private:
-    void fetchPrimers(const QList<GObject *> &objects, U2OpStatus &os);
-    Primer createPrimer(GObject *object, bool &skipped, U2OpStatus &os);
-    int createMetadata(const InSilicoPcrTaskSettings &settings, const U2Region &productRegion, int pairNumber);
+    void fetchPrimers(const QList<GObject*>& objects, U2OpStatus& os);
+    Primer createPrimer(GObject* object, bool& skipped, U2OpStatus& os);
+    int createMetadata(const InSilicoPcrTaskSettings& settings, const U2Region& productRegion, int pairNumber);
     QByteArray createReport() const;
-    QVariant fetchSequence(Document *doc);
-    QVariant fetchAnnotations(Document *doc);
+    QVariant fetchSequence(Document* doc);
+    QVariant fetchAnnotations(Document* doc);
 
 private:
     QList<QPair<Primer, Primer>> primers;

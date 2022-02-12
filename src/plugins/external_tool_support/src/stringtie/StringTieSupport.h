@@ -35,5 +35,5 @@ public:
     static const QString ET_STRINGTIE_ID;
 };
 
-}    // namespace U2
-#endif    // _U2_STRINGTIE_SUPPORT_H_
+}  // namespace U2
+#endif  // _U2_STRINGTIE_SUPPORT_H_

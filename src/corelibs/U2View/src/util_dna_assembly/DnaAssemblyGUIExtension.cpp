@@ -36,47 +36,47 @@ namespace U2 {
 /************************************************************************/
 /* DnaAssemblyAlgorithmBaseWidget */
 /************************************************************************/
-DnaAssemblyAlgorithmBaseWidget::DnaAssemblyAlgorithmBaseWidget(QWidget *parent)
+DnaAssemblyAlgorithmBaseWidget::DnaAssemblyAlgorithmBaseWidget(QWidget* parent)
     : QWidget(parent) {
 }
 
-void DnaAssemblyAlgorithmBaseWidget::validateReferenceSequence(const GUrl &) const {
+void DnaAssemblyAlgorithmBaseWidget::validateReferenceSequence(const GUrl&) const {
 }
 
 /************************************************************************/
 /* DnaAssemblyAlgorithmMainWidget */
 /************************************************************************/
-DnaAssemblyAlgorithmMainWidget::DnaAssemblyAlgorithmMainWidget(QWidget *parent)
+DnaAssemblyAlgorithmMainWidget::DnaAssemblyAlgorithmMainWidget(QWidget* parent)
     : DnaAssemblyAlgorithmBaseWidget(parent) {
 }
 
-bool DnaAssemblyAlgorithmMainWidget::isParametersOk(QString & /*error*/) const {
+bool DnaAssemblyAlgorithmMainWidget::isParametersOk(QString& /*error*/) const {
     return requiredToolsAreOk();
 }
 
-bool DnaAssemblyAlgorithmMainWidget::buildIndexUrl(const GUrl & /*url*/, bool /*prebuiltIndex*/, QString & /*error*/) const {
+bool DnaAssemblyAlgorithmMainWidget::buildIndexUrl(const GUrl& /*url*/, bool /*prebuiltIndex*/, QString& /*error*/) const {
     return true;
 }
 
-bool DnaAssemblyAlgorithmMainWidget::isIndexOk(const GUrl & /*url*/, QString & /*error*/) const {
+bool DnaAssemblyAlgorithmMainWidget::isIndexOk(const GUrl& /*url*/, QString& /*error*/) const {
     return true;
 }
 
-bool DnaAssemblyAlgorithmMainWidget::isIndex(const QString &url) const {
+bool DnaAssemblyAlgorithmMainWidget::isIndex(const QString& url) const {
     return DnaAssemblyToReferenceTask::isIndexUrl(url, indexSuffixes);
 }
 
-bool DnaAssemblyAlgorithmMainWidget::isValidIndex(const QString &oneIndexFileUrl) const {
+bool DnaAssemblyAlgorithmMainWidget::isValidIndex(const QString& oneIndexFileUrl) const {
     QString baseUrl = DnaAssemblyToReferenceTask::getBaseUrl(oneIndexFileUrl, indexSuffixes);
     return DnaAssemblyToReferenceTask::isPrebuiltIndex(baseUrl, indexSuffixes);
 }
 
 bool DnaAssemblyAlgorithmMainWidget::requiredToolsAreOk() const {
     QStringList missedExtTools;
-    ExternalToolRegistry *extToolRegistry = AppContext::getExternalToolRegistry();
+    ExternalToolRegistry* extToolRegistry = AppContext::getExternalToolRegistry();
     SAFE_POINT(nullptr != extToolRegistry, L10N::nullPointerError("External tool subsystem"), false);
-    foreach (const QString &toolId, requiredExtToolIds) {
-        ExternalTool *tool = extToolRegistry->getById(toolId);
+    foreach (const QString& toolId, requiredExtToolIds) {
+        ExternalTool* tool = extToolRegistry->getById(toolId);
         if (nullptr == tool || tool->getPath().isEmpty()) {
             missedExtTools.append(extToolRegistry->getToolNameById(toolId));
         }
@@ -91,7 +91,7 @@ bool DnaAssemblyAlgorithmMainWidget::requiredToolsAreOk() const {
 
         QString msgText(tr("Path for "));
         for (int i = 0, n = missedExtTools.size(); i < n; ++i) {
-            QString &toolName = missedExtTools[i];
+            QString& toolName = missedExtTools[i];
             msgText.append(i > 0 ? (i == n - 1 ? tr(" and ") : ", ") : "");
             msgText.append(QString("<i>%1</i>").arg(toolName));
         }
@@ -113,7 +113,7 @@ bool DnaAssemblyAlgorithmMainWidget::requiredToolsAreOk() const {
 /************************************************************************/
 /* DnaAssemblyAlgorithmBuildIndexWidget */
 /************************************************************************/
-DnaAssemblyAlgorithmBuildIndexWidget::DnaAssemblyAlgorithmBuildIndexWidget(QWidget *parent)
+DnaAssemblyAlgorithmBuildIndexWidget::DnaAssemblyAlgorithmBuildIndexWidget(QWidget* parent)
     : DnaAssemblyAlgorithmBaseWidget(parent) {
 }
 
@@ -126,7 +126,7 @@ DnaAssemblyGUIExtensionsFactory::~DnaAssemblyGUIExtensionsFactory() {
 /************************************************************************/
 /* GenomeAssemblyAlgorithmMainWidget */
 /************************************************************************/
-GenomeAssemblyAlgorithmMainWidget::GenomeAssemblyAlgorithmMainWidget(QWidget *parent)
+GenomeAssemblyAlgorithmMainWidget::GenomeAssemblyAlgorithmMainWidget(QWidget* parent)
     : QWidget(parent) {
 }
 

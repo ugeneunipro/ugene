@@ -30,7 +30,7 @@ namespace U2 {
 #define EXPECTED_AVE_ATTR "exp_ave"
 #define EXPECTED_SDEV_ATTR "exp_sdev"
 
-void GTest_DiPropertySiteconCheckAttribs::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_DiPropertySiteconCheckAttribs::init(XMLTestFormat*, const QDomElement& el) {
     key = el.attribute(DI_KEY_ATTR);
     if (key.isEmpty()) {
         failMissingValue(DI_KEY_ATTR);
@@ -68,8 +68,8 @@ void GTest_DiPropertySiteconCheckAttribs::init(XMLTestFormat *, const QDomElemen
 }
 
 Task::ReportResult GTest_DiPropertySiteconCheckAttribs::report() {
-    QList<DiPropertySitecon *> propList = result.getProperties();
-    QList<DiPropertySitecon *>::const_iterator it;
+    QList<DiPropertySitecon*> propList = result.getProperties();
+    QList<DiPropertySitecon*>::const_iterator it;
     for (it = propList.begin(); it != propList.end(); it++) {
         if ((*it)->keys.take(key) == val) {
             int ave = qRound((*it)->average * 10000), sdev = qRound((*it)->sdeviation * 10000);

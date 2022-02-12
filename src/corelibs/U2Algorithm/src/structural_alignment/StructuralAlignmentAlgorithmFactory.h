@@ -33,7 +33,7 @@ public:
     virtual ~StructuralAlignmentAlgorithmFactory() {
     }
 
-    virtual StructuralAlignmentAlgorithm *create() = 0;
+    virtual StructuralAlignmentAlgorithm* create() = 0;
 };
 
 }  // namespace U2

@@ -29,15 +29,15 @@ namespace U2 {
 class U2CORE_EXPORT StringAdapterFactory : public IOAdapterFactory {
     Q_OBJECT
 public:
-    StringAdapterFactory(QObject *p = nullptr);
+    StringAdapterFactory(QObject* p = nullptr);
 
-    virtual IOAdapter *createIOAdapter();
+    virtual IOAdapter* createIOAdapter();
 
     virtual IOAdapterId getAdapterId() const {
         return BaseIOAdapters::STRING;
     }
 
-    virtual const QString &getAdapterName() const {
+    virtual const QString& getAdapterName() const {
         return name;
     }
 
@@ -46,7 +46,7 @@ public:
         return true;
     }  // data can be read and be written
 
-    virtual TriState isResourceAvailable(const GUrl &url) const {
+    virtual TriState isResourceAvailable(const GUrl& url) const {
         Q_UNUSED(url);
         return TriState_Yes;
     }
@@ -58,9 +58,9 @@ protected:
 class U2CORE_EXPORT StringAdapterFactoryWithStringData : public StringAdapterFactory {
     Q_OBJECT
 public:
-    StringAdapterFactoryWithStringData(const QString &data, QObject *parent = nullptr);
+    StringAdapterFactoryWithStringData(const QString& data, QObject* parent = nullptr);
 
-    virtual IOAdapter *createIOAdapter();
+    virtual IOAdapter* createIOAdapter();
 
 private:
     const QString data;
@@ -69,16 +69,16 @@ private:
 class U2CORE_EXPORT StringAdapter : public IOAdapter {
     Q_OBJECT
 public:
-    StringAdapter(StringAdapterFactory *f, QObject *o = nullptr);
+    StringAdapter(StringAdapterFactory* f, QObject* o = nullptr);
     ~StringAdapter() {
         if (isOpen())
             close();
     }
 
     /** Creates opened adapter */
-    StringAdapter(const QByteArray &data, StringAdapterFactory *f);
+    StringAdapter(const QByteArray& data, StringAdapterFactory* f);
 
-    virtual bool open(const GUrl &url, IOAdapterMode m);
+    virtual bool open(const GUrl& url, IOAdapterMode m);
 
     virtual bool isOpen() const {
         return opened;
@@ -86,9 +86,9 @@ public:
 
     virtual void close();
 
-    virtual qint64 readBlock(char *data, qint64 maxSize);
+    virtual qint64 readBlock(char* data, qint64 maxSize);
 
-    virtual qint64 writeBlock(const char *data, qint64 size);
+    virtual qint64 writeBlock(const char* data, qint64 size);
 
     virtual bool skip(qint64 nBytes);
 
@@ -100,7 +100,7 @@ public:
 
     virtual GUrl getURL() const;
 
-    const QByteArray &getBuffer() {
+    const QByteArray& getBuffer() {
         return buffer;
     }
 

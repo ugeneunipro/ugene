@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-ExportPhredQualityScoresTask::ExportPhredQualityScoresTask(const U2SequenceObject *obj, const ExportQualityScoresConfig &cfg)
+ExportPhredQualityScoresTask::ExportPhredQualityScoresTask(const U2SequenceObject* obj, const ExportQualityScoresConfig& cfg)
     : Task("ExportPhredQuality", TaskFlag_None), seqObj(obj), config(cfg) {
 }
 

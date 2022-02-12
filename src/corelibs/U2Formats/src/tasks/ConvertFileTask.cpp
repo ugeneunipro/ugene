@@ -39,7 +39,7 @@
 namespace U2 {
 
 namespace {
-bool isBamConversion(const QString &srcFormat, const QString &dstFormat) {
+bool isBamConversion(const QString& srcFormat, const QString& dstFormat) {
     bool isSrcSam = (srcFormat == BaseDocumentFormats::SAM);
     bool isSrcBam = (srcFormat == BaseDocumentFormats::BAM);
     bool isDstSam = (dstFormat == BaseDocumentFormats::SAM);
@@ -52,7 +52,7 @@ bool isBamConversion(const QString &srcFormat, const QString &dstFormat) {
 
 //////////////////////////////////////////////////////////////////////////
 // ConvertFileTask
-ConvertFileTask::ConvertFileTask(const GUrl &sourceURL, const QString &detectedFormat, const QString &targetFormat, const QString &workingDir)
+ConvertFileTask::ConvertFileTask(const GUrl& sourceURL, const QString& detectedFormat, const QString& targetFormat, const QString& workingDir)
     : Task(DocumentFormatUtils::tr("Conversion file from %1 to %2").arg(detectedFormat).arg(targetFormat), TaskFlags_FOSE_COSC),
       sourceURL(sourceURL), detectedFormat(detectedFormat), targetFormat(targetFormat), workingDir(workingDir) {
     if (!workingDir.endsWith("/") && !workingDir.endsWith("\\")) {
@@ -73,13 +73,13 @@ void ConvertFileTask::run() {
 
 //////////////////////////////////////////////////////////////////////////
 // DefaultConvertFileTask
-DefaultConvertFileTask::DefaultConvertFileTask(const GUrl &sourceUrl, const QString &detectedFormat, const QString &targetFormat, const QString &dir)
+DefaultConvertFileTask::DefaultConvertFileTask(const GUrl& sourceUrl, const QString& detectedFormat, const QString& targetFormat, const QString& dir)
     : ConvertFileTask(sourceUrl, detectedFormat, targetFormat, dir),
       loadTask(nullptr),
       saveTask(nullptr) {
 }
 
-DefaultConvertFileTask::DefaultConvertFileTask(const GUrl &sourceUrl, const QString &detectedFormat, const QString &targetUrl, const QString &targetFormat, const QString &dir)
+DefaultConvertFileTask::DefaultConvertFileTask(const GUrl& sourceUrl, const QString& detectedFormat, const QString& targetUrl, const QString& targetFormat, const QString& dir)
     : ConvertFileTask(sourceUrl, detectedFormat, targetFormat, dir),
       loadTask(nullptr),
       saveTask(nullptr) {
@@ -95,8 +95,8 @@ void DefaultConvertFileTask::prepare() {
     addSubTask(loadTask);
 }
 
-QList<Task *> DefaultConvertFileTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> result;
+QList<Task*> DefaultConvertFileTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> result;
     CHECK(!subTask->hasError() && !subTask->isCanceled(), result);
     CHECK(!hasError() && !isCanceled(), result);
 
@@ -106,18 +106,18 @@ QList<Task *> DefaultConvertFileTask::onSubTaskFinished(Task *subTask) {
     SAFE_POINT_EXT(loadTask == subTask, setError("Unknown subtask"), result);
 
     bool mainThread = false;
-    Document *srcDoc = loadTask->getDocument(mainThread);
+    Document* srcDoc = loadTask->getDocument(mainThread);
     SAFE_POINT_EXT(nullptr != srcDoc, setError("NULL document"), result);
 
-    DocumentFormatRegistry *dfr = AppContext::getDocumentFormatRegistry();
-    DocumentFormat *df = dfr->getFormatById(targetFormat);
+    DocumentFormatRegistry* dfr = AppContext::getDocumentFormatRegistry();
+    DocumentFormat* df = dfr->getFormatById(targetFormat);
     SAFE_POINT_EXT(nullptr != df, setError("NULL document format"), result);
 
     QSet<GObjectType> selectedFormatObjectsTypes = df->getSupportedObjectTypes();
     QSet<GObjectType> inputFormatObjectTypes;
-    QListIterator<GObject *> objectsIterator(srcDoc->getObjects());
+    QListIterator<GObject*> objectsIterator(srcDoc->getObjects());
     while (objectsIterator.hasNext()) {
-        GObject *obj = objectsIterator.next();
+        GObject* obj = objectsIterator.next();
         inputFormatObjectTypes << obj->getGObjectType();
     }
     inputFormatObjectTypes.intersect(selectedFormatObjectsTypes);
@@ -141,8 +141,8 @@ QList<Task *> DefaultConvertFileTask::onSubTaskFinished(Task *subTask) {
         targetUrl = GUrlUtils::rollFileName(targetUrl, QSet<QString>());
     }
 
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(srcDoc->getURL()));
-    Document *dstDoc = srcDoc->getSimpleCopy(df, iof, srcDoc->getURL());
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(srcDoc->getURL()));
+    Document* dstDoc = srcDoc->getSimpleCopy(df, iof, srcDoc->getURL());
 
     saveTask = new SaveDocumentTask(dstDoc, iof, targetUrl);
     result << saveTask;
@@ -151,7 +151,7 @@ QList<Task *> DefaultConvertFileTask::onSubTaskFinished(Task *subTask) {
 
 //////////////////////////////////////////////////////////////////////////
 // BamSamConversionTask
-BamSamConversionTask::BamSamConversionTask(const GUrl &sourceURL, const QString &detectedFormat, const QString &targetFormat, const QString &dir)
+BamSamConversionTask::BamSamConversionTask(const GUrl& sourceURL, const QString& detectedFormat, const QString& targetFormat, const QString& dir)
     : ConvertFileTask(sourceURL, detectedFormat, targetFormat, dir), samToBam(true) {
 }
 void BamSamConversionTask::prepare() {
@@ -180,13 +180,13 @@ void BamSamConversionTask::run() {
 //////////////////////////////////////////////////////////////////////////
 // Factories and registries
 
-bool BAMConvertFactory::isCustomFormatTask(const QString &detectedFormat, const QString &targetFormat) {
+bool BAMConvertFactory::isCustomFormatTask(const QString& detectedFormat, const QString& targetFormat) {
     return isBamConversion(detectedFormat, targetFormat);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // ConvertFactoryRegistry
-ConvertFactoryRegistry::ConvertFactoryRegistry(QObject *o)
+ConvertFactoryRegistry::ConvertFactoryRegistry(QObject* o)
     : QObject(o) {
     // init factories
     // default factory always goes last
@@ -195,14 +195,14 @@ ConvertFactoryRegistry::ConvertFactoryRegistry(QObject *o)
 }
 
 ConvertFactoryRegistry::~ConvertFactoryRegistry() {
-    foreach (const ConvertFileFactory *f, factories) {
+    foreach (const ConvertFileFactory* f, factories) {
         delete f;
         f = nullptr;
     }
     factories.clear();
 }
 
-bool ConvertFactoryRegistry::registerConvertFactory(ConvertFileFactory *f) {
+bool ConvertFactoryRegistry::registerConvertFactory(ConvertFileFactory* f) {
     if (!factories.contains(f)) {
         factories.prepend(f);
         return true;
@@ -211,8 +211,8 @@ bool ConvertFactoryRegistry::registerConvertFactory(ConvertFileFactory *f) {
     }
 }
 
-ConvertFileFactory *ConvertFactoryRegistry::getFactoryByFormats(const QString &detectedFormat, const QString &targetFormat) {
-    foreach (ConvertFileFactory *f, factories) {
+ConvertFileFactory* ConvertFactoryRegistry::getFactoryByFormats(const QString& detectedFormat, const QString& targetFormat) {
+    foreach (ConvertFileFactory* f, factories) {
         if (f->isCustomFormatTask(detectedFormat, targetFormat)) {
             return f;
         }
@@ -220,15 +220,15 @@ ConvertFileFactory *ConvertFactoryRegistry::getFactoryByFormats(const QString &d
     return nullptr;
 }
 
-void ConvertFactoryRegistry::unregisterConvertFactory(ConvertFileFactory *f) {
+void ConvertFactoryRegistry::unregisterConvertFactory(ConvertFileFactory* f) {
     if (factories.contains(f)) {
         int id = factories.indexOf(f);
-        ConvertFileFactory *fdel = factories.takeAt(id);
+        ConvertFileFactory* fdel = factories.takeAt(id);
         delete fdel;
     }
 }
 
-bool ConvertFileFactory::isCustomFormatTask(const QString & /*detectedFormat*/, const QString & /*targetFormat*/) {
+bool ConvertFileFactory::isCustomFormatTask(const QString& /*detectedFormat*/, const QString& /*targetFormat*/) {
     return true;
 }
 

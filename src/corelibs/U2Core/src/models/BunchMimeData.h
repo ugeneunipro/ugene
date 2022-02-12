@@ -35,7 +35,7 @@ public:
     BunchMimeData();
 
     // QMimeData
-    bool hasFormat(const QString &mimeType) const;
+    bool hasFormat(const QString& mimeType) const;
     QStringList formats() const;
 
     QList<QPointer<Document>> docs;

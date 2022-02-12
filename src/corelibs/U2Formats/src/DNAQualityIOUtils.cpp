@@ -31,13 +31,13 @@
 
 namespace U2 {
 
-void DNAQualityIOUtils::writeDNAQuality(const U2SequenceObject *seqObj, const QString &dstFilePath, bool appendData, bool decode, U2OpStatus &stateInfo) {
-    const DNAQuality &seqQuality = seqObj->getQuality();
-    const QString &seqName = seqObj->getSequenceName();
+void DNAQualityIOUtils::writeDNAQuality(const U2SequenceObject* seqObj, const QString& dstFilePath, bool appendData, bool decode, U2OpStatus& stateInfo) {
+    const DNAQuality& seqQuality = seqObj->getQuality();
+    const QString& seqName = seqObj->getSequenceName();
     writeDNAQuality(seqName, seqQuality, dstFilePath, appendData, decode, stateInfo);
 }
 
-static QByteArray getDecodedQuality(const DNAQuality &quality) {
+static QByteArray getDecodedQuality(const DNAQuality& quality) {
     QByteArray res;
     for (int i = 0, sz = quality.qualCodes.size(); i < sz; ++i) {
         QByteArray buf;
@@ -48,7 +48,7 @@ static QByteArray getDecodedQuality(const DNAQuality &quality) {
     return res;
 }
 
-void DNAQualityIOUtils::writeDNAQuality(const QString &seqName, const DNAQuality &seqQuality, const QString &dstFilePath, bool appendData, bool decode, U2OpStatus &stateInfo) {
+void DNAQualityIOUtils::writeDNAQuality(const QString& seqName, const DNAQuality& seqQuality, const QString& dstFilePath, bool appendData, bool decode, U2OpStatus& stateInfo) {
     if (seqQuality.isEmpty()) {
         stateInfo.setError("Quality score is not set!");
         return;
@@ -57,7 +57,7 @@ void DNAQualityIOUtils::writeDNAQuality(const QString &seqName, const DNAQuality
     QScopedPointer<IOAdapter> ioAdapter;
 
     IOAdapterId ioAdapterId = IOAdapterUtils::url2io(dstFilePath);
-    IOAdapterFactory *ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioAdapterId);
+    IOAdapterFactory* ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioAdapterId);
     CHECK_EXT(ioAdapterFactory != nullptr, stateInfo.setError(tr("No IO adapter found for URL: %1").arg(dstFilePath)), );
     ioAdapter.reset(ioAdapterFactory->createIOAdapter());
 

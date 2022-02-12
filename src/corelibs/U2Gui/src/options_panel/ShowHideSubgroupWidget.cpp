@@ -31,20 +31,20 @@
 
 namespace U2 {
 
-ShowHideSubgroupWidget::ShowHideSubgroupWidget(QWidget *parent)
+ShowHideSubgroupWidget::ShowHideSubgroupWidget(QWidget* parent)
     : QWidget(parent), arrowHeaderWidget(nullptr), innerWidget(nullptr) {
 }
 
-ShowHideSubgroupWidget::ShowHideSubgroupWidget(const QString &_id, const QString &caption, QWidget *_innerWidget, bool isOpened)
+ShowHideSubgroupWidget::ShowHideSubgroupWidget(const QString& _id, const QString& caption, QWidget* _innerWidget, bool isOpened)
     : subgroupId(_id), innerWidget(_innerWidget) {
     init(subgroupId, caption, innerWidget, isOpened);
 }
 
-void ShowHideSubgroupWidget::init(const QString &subgroupId, const QString &caption, QWidget *innerWidget, bool isOpened) {
+void ShowHideSubgroupWidget::init(const QString& subgroupId, const QString& caption, QWidget* innerWidget, bool isOpened) {
     this->subgroupId = subgroupId;
     this->innerWidget = innerWidget;
 
-    QVBoxLayout *mainLayout = new QVBoxLayout();
+    QVBoxLayout* mainLayout = new QVBoxLayout();
     mainLayout->setContentsMargins(0, 0, 0, 10);
     mainLayout->setSpacing(0);
     mainLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
@@ -95,9 +95,9 @@ void ShowHideSubgroupWidget::setPermanentlyOpen(bool isOpened) {
     }
 }
 
-ArrowHeaderWidget::ArrowHeaderWidget(const QString &caption, bool _isOpened)
+ArrowHeaderWidget::ArrowHeaderWidget(const QString& caption, bool _isOpened)
     : isOpened(_isOpened) {
-    QHBoxLayout *arrowHeaderLayout = new QHBoxLayout();
+    QHBoxLayout* arrowHeaderLayout = new QHBoxLayout();
     arrowHeaderLayout->setContentsMargins(0, 0, 0, 0);
     arrowHeaderLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
@@ -111,7 +111,7 @@ ArrowHeaderWidget::ArrowHeaderWidget(const QString &caption, bool _isOpened)
 
     arrow->setMaximumSize(10, 10);
 
-    QLabel *captionLabel = new QLabel(caption);
+    QLabel* captionLabel = new QLabel(caption);
     captionLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     progressMovieLabel = new QLabel();
@@ -138,7 +138,7 @@ ArrowHeaderWidget::~ArrowHeaderWidget() {
 }
 
 void ArrowHeaderWidget::showProgressWithTimeout() {
-    QTimer *timeoutToStartProgress = new QTimer(this);
+    QTimer* timeoutToStartProgress = new QTimer(this);
     connect(timeoutToStartProgress, SIGNAL(timeout()), SLOT(sl_showProgress()));
     timeoutToStartProgress->start(TIMEOUT);
     canStartProgress = true;
@@ -170,7 +170,7 @@ void ArrowHeaderWidget::setOpened(bool _isOpened) {
     }
 }
 
-void ArrowHeaderWidget::mousePressEvent(QMouseEvent * /* event */) {
+void ArrowHeaderWidget::mousePressEvent(QMouseEvent* /* event */) {
     setOpened(!isOpened);
 }
 

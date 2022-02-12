@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-CommonImportOptionsDialog::CommonImportOptionsDialog(const QString &baseFolder, const ImportToDatabaseOptions &options, QWidget *parent)
+CommonImportOptionsDialog::CommonImportOptionsDialog(const QString& baseFolder, const ImportToDatabaseOptions& options, QWidget* parent)
     : QDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930945");
@@ -42,7 +42,7 @@ ImportToDatabaseOptions CommonImportOptionsDialog::getOptions() const {
     return optionsWidget->getOptions();
 }
 
-void CommonImportOptionsDialog::init(const QString &baseFolder, const ImportToDatabaseOptions &options) {
+void CommonImportOptionsDialog::init(const QString& baseFolder, const ImportToDatabaseOptions& options) {
     optionsWidget->init(baseFolder, options);
 }
 

@@ -36,7 +36,7 @@ typedef PrompterBase<SortBamPrompter> SortBamBase;
 class SortBamPrompter : public SortBamBase {
     Q_OBJECT
 public:
-    SortBamPrompter(Actor *p = 0)
+    SortBamPrompter(Actor* p = 0)
         : SortBamBase(p) {
     }
 
@@ -47,22 +47,22 @@ protected:
 class SortBamWorker : public BaseWorker {
     Q_OBJECT
 public:
-    SortBamWorker(Actor *a);
+    SortBamWorker(Actor* a);
     void init();
-    Task *tick();
+    Task* tick();
     void cleanup();
 
 private:
-    IntegralBus *inputUrlPort;
-    IntegralBus *outputUrlPort;
+    IntegralBus* inputUrlPort;
+    IntegralBus* outputUrlPort;
     QStringList outUrls;
 public slots:
-    void sl_taskFinished(Task *task);
+    void sl_taskFinished(Task* task);
 
 private:
     QString takeUrl();
-    QString getTargetName(const QString &fileUrl, const QString &outDir);
-    void sendResult(const QString &url);
+    QString getTargetName(const QString& fileUrl, const QString& outDir);
+    void sendResult(const QString& url);
 };  // SortBamWorker
 
 class SortBamWorkerFactory : public DomainFactory {
@@ -73,7 +73,7 @@ public:
     SortBamWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    Worker *createWorker(Actor *a) {
+    Worker* createWorker(Actor* a) {
         return new SortBamWorker(a);
     }
 };  // SortBamWorkerFactory
@@ -93,7 +93,7 @@ public:
 class SamtoolsSortTask : public Task {
     Q_OBJECT
 public:
-    SamtoolsSortTask(const BamSortSetting &settings);
+    SamtoolsSortTask(const BamSortSetting& settings);
 
     void prepare();
     void run();

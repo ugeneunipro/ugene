@@ -47,7 +47,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     class RunIQTreeScenario : public CustomScenario {
     public:
-        void run(GUITestOpStatus &os) override {
+        void run(GUITestOpStatus& os) override {
             auto dialog = GTWidget::getActiveModalWidget(os);
             GTComboBox::selectItemByText(os, "algorithmBox", dialog, "IQ-TREE");
 
@@ -58,7 +58,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
         }
     };
 
-    for (const QString &alignmentFile : qAsConst(alignmentFileList)) {
+    for (const QString& alignmentFile : qAsConst(alignmentFileList)) {
         GTUtilsMdi::closeAllWindows(os);
         GTFileDialog::openFile(os, alignmentFile);
         GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -87,7 +87,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     class RunIQTreeScenario : public CustomScenario {
     public:
-        void run(GUITestOpStatus &os) override {
+        void run(GUITestOpStatus& os) override {
             auto dialog = GTWidget::getActiveModalWidget(os);
             GTComboBox::selectItemByText(os, "algorithmBox", dialog, "IQ-TREE");
 

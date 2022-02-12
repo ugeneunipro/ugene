@@ -28,23 +28,23 @@ class GCounterList {
 public:
     ~GCounterList() {
         for (int i = 0; i < list.size(); i++) {
-            GCounter *counter = list[i];
+            GCounter* counter = list[i];
             if (counter->isOnHeap) {
                 list[i] = nullptr;
                 delete counter;
             }
         }
     }
-    QList<GCounter *> list;
+    QList<GCounter*> list;
 };
 
-static QList<GCounter *> &getGlobalCounterList() {
+static QList<GCounter*>& getGlobalCounterList() {
     // Thread safe initialization of the global counters list.
     static GCounterList counterList;
     return counterList.list;
 }
 
-GCounter::GCounter(const QString &name, const QString &suffix, qint64 value, double scale, bool isReportable, bool isOnHeap)
+GCounter::GCounter(const QString& name, const QString& suffix, qint64 value, double scale, bool isReportable, bool isOnHeap)
     : name(name), suffix(suffix), value(value), scale(scale), isReportable(isReportable), isOnHeap(isOnHeap) {
     getGlobalCounterList() << this;
 }
@@ -53,8 +53,8 @@ GCounter::~GCounter() {
     getGlobalCounterList().removeOne(this);
 };
 
-GCounter *GCounter::findCounter(const QString &name, const QString &suffix) {
-    for (GCounter *counter : qAsConst(getGlobalCounterList())) {
+GCounter* GCounter::findCounter(const QString& name, const QString& suffix) {
+    for (GCounter* counter : qAsConst(getGlobalCounterList())) {
         if (name == counter->name && suffix == counter->suffix) {
             return counter;
         }
@@ -62,12 +62,12 @@ GCounter *GCounter::findCounter(const QString &name, const QString &suffix) {
     return nullptr;
 }
 
-QList<GCounter *> GCounter::getAllCounters() {
+QList<GCounter*> GCounter::getAllCounters() {
     return getGlobalCounterList();
 }
 
-void GCounter::increment(const QString &name, const QString &suffix) {
-    GCounter *counter = GCounter::findCounter(name, suffix);
+void GCounter::increment(const QString& name, const QString& suffix) {
+    GCounter* counter = GCounter::findCounter(name, suffix);
     if (counter == nullptr) {
         counter = new GCounter(name, suffix, 0, 1, true, true);
     }

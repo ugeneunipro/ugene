@@ -37,24 +37,24 @@ class DNASequence;
 class U2FORMATS_EXPORT FastqFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
-    FastqFormat(QObject *p);
+    FastqFormat(QObject* p);
 
-    virtual void storeDocument(Document *d, IOAdapter *io, U2OpStatus &os);
+    virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 
     virtual bool isStreamingSupport() {
         return true;
     }
 
-    virtual void storeEntry(IOAdapter *io, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os);
+    virtual void storeEntry(IOAdapter* io, const QMap<GObjectType, QList<GObject*>>& objectsMap, U2OpStatus& os);
 
-    static void writeEntry(const QString &seqName, const DNASequence &seq, IOAdapter *io, const QString &errorMessage, U2OpStatus &os, bool cutLines = true);
+    static void writeEntry(const QString& seqName, const DNASequence& seq, IOAdapter* io, const QString& errorMessage, U2OpStatus& os, bool cutLines = true);
 
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray &rawData, const GUrl & = GUrl()) const;
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
-    virtual DNASequence *loadTextSequence(IOAdapter *io, U2OpStatus &os);
+    virtual DNASequence* loadTextSequence(IOAdapter* io, U2OpStatus& os);
 
-    virtual Document *loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os);
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 };
 
 }  // namespace U2

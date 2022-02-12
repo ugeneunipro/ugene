@@ -29,9 +29,9 @@ using namespace HI;
 
 class BuildDotPlotFiller : public Filler {
 public:
-    BuildDotPlotFiller(HI::GUITestOpStatus &_os,
-                       const QString &_firstFileName,
-                       const QString &_secondFileName = "",
+    BuildDotPlotFiller(HI::GUITestOpStatus& _os,
+                       const QString& _firstFileName,
+                       const QString& _secondFileName = "",
                        bool _mergeFirstBoxChecked = false,
                        bool _oneSequenceBoxChecked = false,
                        bool _mergeSecondBoxChecked = false,

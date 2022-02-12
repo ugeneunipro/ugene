@@ -33,15 +33,15 @@ namespace U2 {
 class FolderNameDialog : public QDialog, public Ui_FolderNameDialog {
     Q_OBJECT
 public:
-    FolderNameDialog(const QString &name, QWidget *parent);
+    FolderNameDialog(const QString& name, QWidget* parent);
 
     QString getResult() const;
 
 private slots:
-    void sl_textChanged(const QString &text);
+    void sl_textChanged(const QString& text);
 
 private:
-    QPushButton *okButton;
+    QPushButton* okButton;
 };
 
 }  // namespace U2

@@ -35,9 +35,9 @@
 
 namespace U2 {
 
-static constexpr const char *IQTREE_EXTRA_PARAMETERS_SETTINGS_KEY = "/extra-parameters";
+static constexpr const char* IQTREE_EXTRA_PARAMETERS_SETTINGS_KEY = "/extra-parameters";
 
-IQTreeWidget::IQTreeWidget(const MultipleSequenceAlignment &, QWidget *parent)
+IQTreeWidget::IQTreeWidget(const MultipleSequenceAlignment&, QWidget* parent)
     : CreatePhyTreeWidget(parent) {
     auto layout = new QVBoxLayout();
     setLayout(layout);
@@ -75,10 +75,10 @@ IQTreeWidget::IQTreeWidget(const MultipleSequenceAlignment &, QWidget *parent)
     tabWidget->addTab(displayOptionsWidget, tr("Display Options"));
 }
 
-void IQTreeWidget::fillSettings(CreatePhyTreeSettings &settings) {
+void IQTreeWidget::fillSettings(CreatePhyTreeSettings& settings) {
     settings.extToolArguments.clear();
     QStringList extraArguments = extraParametersTextEdit->toPlainText().split("\n");
-    for (const QString &arg : qAsConst(extraArguments)) {
+    for (const QString& arg : qAsConst(extraArguments)) {
         QString trimmedArg = arg.trimmed();
         if (!trimmedArg.isEmpty()) {  // Do not add empty lines into the argument list.
             settings.extToolArguments << trimmedArg;
@@ -99,7 +99,7 @@ void IQTreeWidget::restoreDefault() {
     displayOptionsWidget->restoreDefault();
 }
 
-bool IQTreeWidget::checkSettings(QString &message, const CreatePhyTreeSettings &settings) {
+bool IQTreeWidget::checkSettings(QString& message, const CreatePhyTreeSettings& settings) {
     return displayOptionsWidget->checkSettings(message, settings);
 }
 

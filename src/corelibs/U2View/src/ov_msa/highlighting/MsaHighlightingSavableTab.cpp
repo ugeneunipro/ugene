@@ -29,9 +29,9 @@
 
 namespace U2 {
 
-MsaHighlightingSavableTab::MsaHighlightingSavableTab(QWidget *wrappedWidget, MWMDIWindow *contextWindow)
+MsaHighlightingSavableTab::MsaHighlightingSavableTab(QWidget* wrappedWidget, MWMDIWindow* contextWindow)
     : MsaOpSavableTab(wrappedWidget, contextWindow) {
-    SAFE_POINT(nullptr != qobject_cast<MSAHighlightingTab *>(wrappedWidget), "Invalid widget provided", );
+    SAFE_POINT(nullptr != qobject_cast<MSAHighlightingTab*>(wrappedWidget), "Invalid widget provided", );
 }
 
 MsaHighlightingSavableTab::~MsaHighlightingSavableTab() {
@@ -39,7 +39,7 @@ MsaHighlightingSavableTab::~MsaHighlightingSavableTab() {
     widgetStateSaved = true;
 }
 
-bool MsaHighlightingSavableTab::childCanBeSaved(QWidget *child) const {
+bool MsaHighlightingSavableTab::childCanBeSaved(QWidget* child) const {
     if (widgetsNotToSave.contains(child->objectName())) {
         return false;
     } else {
@@ -47,7 +47,7 @@ bool MsaHighlightingSavableTab::childCanBeSaved(QWidget *child) const {
     }
 }
 
-void MsaHighlightingSavableTab::disableSavingForWidgets(const QStringList &s) {
+void MsaHighlightingSavableTab::disableSavingForWidgets(const QStringList& s) {
     widgetsNotToSave.append(s);
 }
 

@@ -33,27 +33,27 @@ class Document;
 class U2CORE_EXPORT DocumentSelection : public GSelection {
     Q_OBJECT
 public:
-    DocumentSelection(QObject *p = nullptr);
+    DocumentSelection(QObject* p = nullptr);
 
     bool isEmpty() const override;
 
     void clear() override;
 
-    const QList<Document *> &getSelectedDocuments() const;
+    const QList<Document*>& getSelectedDocuments() const;
 
-    void setSelection(const QList<Document *> &docs);
+    void setSelection(const QList<Document*>& docs);
 
-    void addToSelection(const QList<Document *> &documentsToAdd);
+    void addToSelection(const QList<Document*>& documentsToAdd);
 
-    void removeFromSelection(const QList<Document *> &documentsToRemove);
+    void removeFromSelection(const QList<Document*>& documentsToRemove);
 
-    bool contains(Document *doc) const;
+    bool contains(Document* doc) const;
 
 signals:
-    void si_selectionChanged(DocumentSelection *thiz, const QList<Document *> &docsAdded, const QList<Document *> &docsRemoved);
+    void si_selectionChanged(DocumentSelection* thiz, const QList<Document*>& docsAdded, const QList<Document*>& docsRemoved);
 
 private:
-    QList<Document *> selectedDocs;
+    QList<Document*> selectedDocs;
 };
 
 /*

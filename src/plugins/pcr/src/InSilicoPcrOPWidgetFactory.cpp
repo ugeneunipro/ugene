@@ -37,13 +37,13 @@ InSilicoPcrOPWidgetFactory::InSilicoPcrOPWidgetFactory()
     objectViewOfWidget = ObjViewType_SequenceView;
 }
 
-QWidget *InSilicoPcrOPWidgetFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+QWidget* InSilicoPcrOPWidgetFactory::createWidget(GObjectView* objView, const QVariantMap& options) {
     Q_UNUSED(options);
 
-    AnnotatedDNAView *annotatedDnaView = qobject_cast<AnnotatedDNAView *>(objView);
+    AnnotatedDNAView* annotatedDnaView = qobject_cast<AnnotatedDNAView*>(objView);
     SAFE_POINT(annotatedDnaView != nullptr, L10N::nullPointerError("AnnotatedDNAView"), nullptr);
 
-    InSilicoPcrOptionPanelWidget *opWidget = new InSilicoPcrOptionPanelWidget(annotatedDnaView);
+    InSilicoPcrOptionPanelWidget* opWidget = new InSilicoPcrOptionPanelWidget(annotatedDnaView);
     opWidget->setObjectName("InSilicoPcrOptionPanelWidget");
     return opWidget;
 }
@@ -52,7 +52,7 @@ OPGroupParameters InSilicoPcrOPWidgetFactory::getOPGroupParameters() {
     return OPGroupParameters("OP_IN_SILICO_PCR", QPixmap(":/primer3/images/primer3.png"), tr("In Silico PCR"), GROUP_DOC_PAGE);
 }
 
-bool InSilicoPcrOPWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface *filter) {
+bool InSilicoPcrOPWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface* filter) {
     SAFE_POINT(filter != nullptr, L10N::nullPointerError("Options Panel Filter"), false);
 
     return filter->typePass(getObjectViewType()) && filter->atLeastOneAlphabetPass(DNAAlphabet_NUCL);

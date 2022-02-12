@@ -55,7 +55,7 @@ void FilterAnnotationsByQualifierWorker::init() {
     output = ports.value(BasePorts::OUT_ANNOTATIONS_PORT_ID());
 }
 
-Task *FilterAnnotationsByQualifierWorker::tick() {
+Task* FilterAnnotationsByQualifierWorker::tick() {
     if (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
@@ -71,8 +71,8 @@ Task *FilterAnnotationsByQualifierWorker::tick() {
         QString qualName = actor->getParameter(QUALIFER_NAME_ATTR)->getAttributeValue<QString>(context);
         QString qualValue = actor->getParameter(QUALIFER_VALUE_ATTR)->getAttributeValue<QString>(context);
 
-        Task *t = new FilterAnnotationsByQualifierTask(inputAnns, qualName, qualValue, accept);
-        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
+        Task* t = new FilterAnnotationsByQualifierTask(inputAnns, qualName, qualValue, accept);
+        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
         return t;
     } else if (input->isEnded()) {
         setDone();
@@ -81,7 +81,7 @@ Task *FilterAnnotationsByQualifierWorker::tick() {
     return nullptr;
 }
 
-void FilterAnnotationsByQualifierWorker::sl_taskFinished(Task *t) {
+void FilterAnnotationsByQualifierWorker::sl_taskFinished(Task* t) {
     if (t->isCanceled() || t->hasError()) {
         return;
     }
@@ -94,8 +94,8 @@ void FilterAnnotationsByQualifierWorker::cleanup() {
 }
 
 void FilterAnnotationsByQualifierWorkerFactory::init() {
-    QList<PortDescriptor *> portDescs;
-    QList<Attribute *> attribs;
+    QList<PortDescriptor*> portDescs;
+    QList<Attribute*> attribs;
 
     // accept sequence and annotated regions as input
     QMap<Descriptor, DataTypePtr> inputMap;
@@ -128,12 +128,12 @@ void FilterAnnotationsByQualifierWorkerFactory::init() {
     Descriptor desc(FilterAnnotationsByQualifierWorkerFactory::ACTOR_ID,
                     FilterAnnotationsByQualifierWorker::tr("Filter Annotations by Qualifier"),
                     FilterAnnotationsByQualifierWorker::tr("Filters annotations by Qualifier."));
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, portDescs, attribs);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, portDescs, attribs);
 
     proto->setPrompter(new FilterAnnotationsByQualifierPrompter());
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new FilterAnnotationsByQualifierWorkerFactory());
 }
 
@@ -143,12 +143,12 @@ void FilterAnnotationsByQualifierTask::run() {
     QMutableListIterator<SharedAnnotationData> i(anns);
 
     while (i.hasNext()) {
-        SharedAnnotationData &ad = i.next();
+        SharedAnnotationData& ad = i.next();
         QVector<U2Qualifier> quals;
         ad->findQualifiers(qualName, quals);
 
         bool matchFound = false;
-        foreach (const U2Qualifier &qual, quals) {
+        foreach (const U2Qualifier& qual, quals) {
             if (qual.value == qualFilterVal) {
                 matchFound = true;
                 break;

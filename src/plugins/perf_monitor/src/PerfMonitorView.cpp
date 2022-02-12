@@ -49,13 +49,13 @@ PerfMonitorView::PerfMonitorView()
     tree->setColumnCount(4);
     tree->setSortingEnabled(true);
 
-    QTreeWidgetItem *treeHeader = tree->headerItem();
+    QTreeWidgetItem* treeHeader = tree->headerItem();
     treeHeader->setText(0, tr("Name"));
     treeHeader->setText(1, tr("Value"));
     treeHeader->setText(2, tr("Scale"));
     treeHeader->setText(3, tr("Reportable"));
 
-    QVBoxLayout *viewLayout = new QVBoxLayout();
+    QVBoxLayout* viewLayout = new QVBoxLayout();
     viewLayout->setMargin(0);
     viewLayout->addWidget(tree);
     setLayout(viewLayout);
@@ -76,7 +76,7 @@ PerfMonitorView::PerfMonitorView()
     startTimer(1000);
 }
 
-void PerfMonitorView::timerEvent(QTimerEvent *) {
+void PerfMonitorView::timerEvent(QTimerEvent*) {
 #ifdef Q_OS_LINUX
     struct sysinfo usage;
     sysinfo(&usage);
@@ -93,9 +93,9 @@ void PerfMonitorView::timerEvent(QTimerEvent *) {
 void PerfMonitorView::updateCounters() {
     GTIMER(c1, t1, "PerfMonitor::updateCounters");
     bool hasNewCounters = false;
-    const QList<GCounter *> counterList = GCounter::getAllCounters();
-    for (const GCounter *counters : qAsConst(counterList)) {
-        PerfTreeItem *ci = findCounterItem(counters);
+    const QList<GCounter*> counterList = GCounter::getAllCounters();
+    for (const GCounter* counters : qAsConst(counterList)) {
+        PerfTreeItem* ci = findCounterItem(counters);
         if (ci == nullptr) {
             ci = new PerfTreeItem(counters);
             tree->addTopLevelItem(ci);
@@ -111,9 +111,9 @@ void PerfMonitorView::updateCounters() {
     }
 }
 
-PerfTreeItem *PerfMonitorView::findCounterItem(const GCounter *c) const {
+PerfTreeItem* PerfMonitorView::findCounterItem(const GCounter* c) const {
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
-        auto counterTreeItem = static_cast<PerfTreeItem *>(tree->topLevelItem(i));
+        auto counterTreeItem = static_cast<PerfTreeItem*>(tree->topLevelItem(i));
         if (counterTreeItem->counter == c) {
             return counterTreeItem;
         }
@@ -121,7 +121,7 @@ PerfTreeItem *PerfMonitorView::findCounterItem(const GCounter *c) const {
     return nullptr;
 }
 
-PerfTreeItem::PerfTreeItem(const GCounter *counter)
+PerfTreeItem::PerfTreeItem(const GCounter* counter)
     : counter(counter) {
     update();
 }

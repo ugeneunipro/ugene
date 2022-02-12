@@ -64,7 +64,7 @@ public:
         : type(_type) {
     }
 
-    ModificationType operator+(const ModificationType &another) {
+    ModificationType operator+(const ModificationType& another) {
         switch (type + another.type) {
             case NoType + NoType:
                 return ModificationType(NoType);
@@ -94,7 +94,7 @@ public:
         return type;
     }
 
-    bool operator==(const ModificationType &another) {
+    bool operator==(const ModificationType& another) {
         return type == another.type;
     }
 
@@ -102,7 +102,7 @@ public:
         return type == _type;
     }
 
-    bool operator!=(const ModificationType &another) {
+    bool operator!=(const ModificationType& another) {
         return type != another.type;
     }
 
@@ -110,7 +110,7 @@ public:
         return type != _type;
     }
 
-    ModificationType &operator=(int _type) {
+    ModificationType& operator=(int _type) {
         type = _type;
         return *this;
     }
@@ -126,9 +126,9 @@ class U2VIEW_EXPORT MSAEditorSequenceArea : public MaEditorSequenceArea {
     friend class SequenceWithChromatogramAreaRenderer;
 
 public:
-    MSAEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScrollBar *vb);
+    MSAEditorSequenceArea(MaEditorWgt* ui, GScrollBar* hb, GScrollBar* vb);
 
-    MSAEditor *getEditor() const;
+    MSAEditor* getEditor() const;
 
     bool hasAminoAlphabet();
 
@@ -146,22 +146,22 @@ public:
      * TODO: rework to use sequence IDs. Multiple same-name sequences can be present in the list.
      * TODO: move this method to MSAEditor class.
      */
-    void enableFreeRowOrderMode(QObject *marker, const QList<QStringList> &);
+    void enableFreeRowOrderMode(QObject* marker, const QList<QStringList>&);
 
     /**
      * Removes 'marker' object from a 'Free' mode locks (See 'freeModeMasterMarkersSet').
      * When all 'markers' for the Free mode are removed the view is automatically switched to the Original mode.
      */
-    void disableFreeRowOrderMode(QObject *marker);
+    void disableFreeRowOrderMode(QObject* marker);
 
 protected:
-    void focusOutEvent(QFocusEvent *fe) override;
+    void focusOutEvent(QFocusEvent* fe) override;
 
-    void focusInEvent(QFocusEvent *fe) override;
+    void focusInEvent(QFocusEvent* fe) override;
 
 private slots:
-    void sl_buildMenu(GObjectView *v, QMenu *m, const QString &menuType);
-    void sl_buildStaticToolbar(GObjectView *v, QToolBar *t);
+    void sl_buildMenu(GObjectView* v, QMenu* m, const QString& menuType);
+    void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
     void sl_lockedStateChanged();
     void sl_addSeqFromFile();
     void sl_addSeqFromProject();
@@ -172,9 +172,9 @@ private slots:
     void sl_cutSelection();
 
     /** Takes data from the pasteTask and runs AddSequencesFromDocumentsToAlignmentTask. */
-    void sl_pasteTaskFinished(Task *pasteTask);
+    void sl_pasteTaskFinished(Task* pasteTask);
 
-    void sl_addSequencesToAlignmentFinished(Task *task);
+    void sl_addSequencesToAlignmentFinished(Task* task);
     void sl_delCol();
     void sl_goto();
     void sl_removeAllGaps();
@@ -199,7 +199,7 @@ private slots:
 
     void sl_fontChanged(QFont font);
 
-    void sl_alphabetChanged(const MaModificationInfo &mi, const DNAAlphabet *prevAlphabet);
+    void sl_alphabetChanged(const MaModificationInfo& mi, const DNAAlphabet* prevAlphabet);
 
     void sl_updateActions();
 
@@ -210,44 +210,44 @@ private:
     /** Updates enabled/checked states of row-ordering actions based on the current row-order-mode in MSA. */
     void updateRowOrderActionsState();
 
-    void buildMenu(QMenu *m);
+    void buildMenu(QMenu* m);
 
-    void reverseComplementModification(ModificationType &type);
+    void reverseComplementModification(ModificationType& type);
 
-    void updateCollapseModel(const MaModificationInfo &modInfo) override;
+    void updateCollapseModel(const MaModificationInfo& modInfo) override;
 
-    QAction *delColAction;
-    QAction *removeAllGapsAction;
+    QAction* delColAction;
+    QAction* removeAllGapsAction;
 
-    QAction *createSubaligniment;
-    QAction *saveSequence;
-    QAction *addSeqFromFileAction;
-    QAction *addSeqFromProjectAction;
+    QAction* createSubaligniment;
+    QAction* saveSequence;
+    QAction* addSeqFromFileAction;
+    QAction* addSeqFromProjectAction;
 
     /**
      * Switches between Sequence and Original row ordering modes.
      * When checked the Sequence mode is ON.
      * TODO: this is a global action for MA editor. Move it to the M(S)AEditor.h
      */
-    QAction *toggleSequenceRowOrderAction;
+    QAction* toggleSequenceRowOrderAction;
 
     /**
      * The action is enabled only in Sequence row ordering mode and triggers recompute of sequence order/groups by content.
      * TODO: this is a global action for MA editor. Move it to M(S)AEditor.h
      * TODO: this action has no use today, because in Sequence mode MA editor automatically adjusts order/groups on every MA update.
      */
-    QAction *refreshSequenceRowOrder;
+    QAction* refreshSequenceRowOrder;
 
-    QAction *reverseComplementAction;
-    QAction *reverseAction;
-    QAction *complementAction;
+    QAction* reverseComplementAction;
+    QAction* reverseAction;
+    QAction* complementAction;
 };
 
 // SANGER_TODO: move to EditorTasks?
 class U2VIEW_EXPORT ExportHighlightingTask : public Task {
     Q_OBJECT
 public:
-    ExportHighlightingTask(ExportHighligtingDialogController *dialog, MaEditor *editor);
+    ExportHighlightingTask(ExportHighligtingDialogController* dialog, MaEditor* editor);
 
     void run() override;
     QString generateReport() const override;
@@ -264,7 +264,7 @@ private:
     bool dots;
     bool transpose;
     GUrl url;
-    MSAEditor *msaEditor;
+    MSAEditor* msaEditor;
 };
 
 }  // namespace U2

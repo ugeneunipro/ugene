@@ -47,7 +47,7 @@ public:
     FindEnzymesAlgResult() {
         pos = -1;
     }
-    FindEnzymesAlgResult(const SEnzymeData &_enzyme, int _pos, const U2Strand &_strand)
+    FindEnzymesAlgResult(const SEnzymeData& _enzyme, int _pos, const U2Strand& _strand)
         : enzyme(_enzyme), pos(_pos), strand(_strand) {
     }
     SEnzymeData enzyme;
@@ -86,9 +86,9 @@ struct FindEnzymesTaskConfig {
 class FindEnzymesToAnnotationsTask : public Task {
     Q_OBJECT
 public:
-    FindEnzymesToAnnotationsTask(AnnotationTableObject *aobj, const U2EntityRef &seqRef, const QList<SEnzymeData> &enzymes, const FindEnzymesTaskConfig &cfg);
+    FindEnzymesToAnnotationsTask(AnnotationTableObject* aobj, const U2EntityRef& seqRef, const QList<SEnzymeData>& enzymes, const FindEnzymesTaskConfig& cfg);
     void prepare() override;
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
     ReportResult report() override;
 
 private:
@@ -96,19 +96,19 @@ private:
     QList<SEnzymeData> enzymes;
     QPointer<AnnotationTableObject> annotationObject;
     FindEnzymesTaskConfig cfg;
-    FindEnzymesTask *findTask;
+    FindEnzymesTask* findTask;
 };
 
 class FindEnzymesTask : public Task, public FindEnzymesAlgListener {
     Q_OBJECT
 public:
-    FindEnzymesTask(const U2EntityRef &seqRef, const U2Region &region, const QList<SEnzymeData> &enzymes, int maxResults = 0x7FFFFFFF, bool _circular = false, QVector<U2Region> excludedRegions = QVector<U2Region>());
+    FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& region, const QList<SEnzymeData>& enzymes, int maxResults = 0x7FFFFFFF, bool _circular = false, QVector<U2Region> excludedRegions = QVector<U2Region>());
 
-    void onResult(int pos, const SEnzymeData &enzyme, const U2Strand &stand) override;
+    void onResult(int pos, const SEnzymeData& enzyme, const U2Strand& stand) override;
 
     ReportResult report() override;
 
-    QList<SharedAnnotationData> getResultsAsAnnotations(const QString &enzymeId) const;
+    QList<SharedAnnotationData> getResultsAsAnnotations(const QString& enzymeId) const;
 
     void cleanup() override;
 
@@ -129,13 +129,13 @@ private:
 class FindSingleEnzymeTask : public Task, public FindEnzymesAlgListener, public SequenceDbiWalkerCallback {
     Q_OBJECT
 public:
-    FindSingleEnzymeTask(const U2EntityRef &sequenceObjectRef, const U2Region &region, const SEnzymeData &enzyme, FindEnzymesAlgListener *l = nullptr, bool isCircular = false, int maxResults = 0x7FFFFFFF);
+    FindSingleEnzymeTask(const U2EntityRef& sequenceObjectRef, const U2Region& region, const SEnzymeData& enzyme, FindEnzymesAlgListener* l = nullptr, bool isCircular = false, int maxResults = 0x7FFFFFFF);
 
     QList<FindEnzymesAlgResult> getResults() const {
         return resultList;
     }
-    void onResult(int pos, const SEnzymeData &enzyme, const U2Strand &strand) override;
-    void onRegion(SequenceDbiWalkerSubtask *t, TaskStateInfo &ti) override;
+    void onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand) override;
+    void onRegion(SequenceDbiWalkerSubtask* t, TaskStateInfo& ti) override;
     void cleanup() override;
 
     /**
@@ -149,7 +149,7 @@ private:
     U2Region region;
     SEnzymeData enzyme;
     int maxResults;
-    FindEnzymesAlgListener *resultListener;
+    FindEnzymesAlgListener* resultListener;
     QList<FindEnzymesAlgResult> resultList;
     QMutex resultsLock;
     bool isCircular;
@@ -160,29 +160,29 @@ class FindEnzymesAutoAnnotationUpdater : public AutoAnnotationsUpdater {
 public:
     FindEnzymesAutoAnnotationUpdater();
 
-    Task *createAutoAnnotationsUpdateTask(const AutoAnnotationObject *annotationObject) override;
+    Task* createAutoAnnotationsUpdateTask(const AutoAnnotationObject* annotationObject) override;
 
-    bool checkConstraints(const AutoAnnotationConstraints &constraints) override;
+    bool checkConstraints(const AutoAnnotationConstraints& constraints) override;
 
     /** Returns last saved search region for the given sequence object or empty region if no region was saved. */
-    static U2Region getLastSearchRegionForObject(const U2SequenceObject *sequenceObject);
+    static U2Region getLastSearchRegionForObject(const U2SequenceObject* sequenceObject);
 
     /**
      * Saves the region as last used 'search' region for the object.
      * This region will be used by default during the next auto-annotation task run.
      * If no region is set, the whole sequence will be processed.
      */
-    static void setLastSearchRegionForObject(U2SequenceObject *sequenceObject, const U2Region &region);
+    static void setLastSearchRegionForObject(U2SequenceObject* sequenceObject, const U2Region& region);
 
     /** Returns last saved 'excluded' region for the given sequence object or empty region if no region was saved. */
-    static U2Region getLastExcludeRegionForObject(const U2SequenceObject *sequenceObject);
+    static U2Region getLastExcludeRegionForObject(const U2SequenceObject* sequenceObject);
 
     /**
      * Saves the region as last used 'exclude' region for the object.
      * This region will be used by default during the next auto-annotation task run.
      * If no region is set, the whole sequence will be processed.
      */
-    static void setLastExcludeRegionForObject(U2SequenceObject *sequenceObject, const U2Region &region);
+    static void setLastExcludeRegionForObject(U2SequenceObject* sequenceObject, const U2Region& region);
 
     /** Returns true if the task can safely be started for the given sequence length and number of enzymes. */
     static bool isTooManyAnnotationsInTheResult(qint64 sequenceLength, int countOfEnzymeVariants);

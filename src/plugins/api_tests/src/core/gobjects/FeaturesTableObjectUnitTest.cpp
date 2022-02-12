@@ -40,7 +40,7 @@
 namespace U2 {
 
 template<>
-QString toString<U2FeatureLocation>(const U2FeatureLocation &loc) {
+QString toString<U2FeatureLocation>(const U2FeatureLocation& loc) {
     QString strand = loc.strand == U2Strand::Direct ? "direct" : loc.strand == U2Strand::Complementary ? "complement"
                                                                                                        : "nostrand";
     return QString("%1-%2").arg(loc.region.toString()).arg(strand);
@@ -50,7 +50,7 @@ namespace {
 const QString FEATURE_DB_URL("feature-dbi.ugenedb");
 }
 
-U2FeatureDbi *FeaturesTableObjectTestData::featureDbi = nullptr;
+U2FeatureDbi* FeaturesTableObjectTestData::featureDbi = nullptr;
 TestDbiProvider FeaturesTableObjectTestData::dbiProvider;
 
 void FeaturesTableObjectTestData::init() {
@@ -61,7 +61,7 @@ void FeaturesTableObjectTestData::init() {
     SAFE_POINT(nullptr != featureDbi, "feature database not loaded", );
 }
 
-U2FeatureDbi *FeaturesTableObjectTestData::getFeatureDbi() {
+U2FeatureDbi* FeaturesTableObjectTestData::getFeatureDbi() {
     if (nullptr == featureDbi) {
         init();
     }
@@ -82,20 +82,20 @@ void FeaturesTableObjectTestData::shutdown() {
 }
 
 IMPLEMENT_TEST(FeatureTableObjectUnitTest, createEmptyFeaturesTableObject) {
-    U2FeatureDbi *featureDbi = FeaturesTableObjectTestData::getFeatureDbi();
+    U2FeatureDbi* featureDbi = FeaturesTableObjectTestData::getFeatureDbi();
 
     AnnotationTableObject ft("empty", getDbiRef());
-    const U2DataId &objRootFeatureId = ft.getRootFeatureId();
+    const U2DataId& objRootFeatureId = ft.getRootFeatureId();
     CHECK_TRUE(!objRootFeatureId.isEmpty(), "invalid root feature id");
 
     U2OpStatusImpl os;
-    const U2Feature &actual = featureDbi->getFeature(objRootFeatureId, os);
+    const U2Feature& actual = featureDbi->getFeature(objRootFeatureId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(objRootFeatureId, actual.id, "root feature id");
 }
 
 IMPLEMENT_TEST(FeatureTableObjectUnitTest, addAnnotationSingleRegion) {
-    U2FeatureDbi *featureDbi = FeaturesTableObjectTestData::getFeatureDbi();
+    U2FeatureDbi* featureDbi = FeaturesTableObjectTestData::getFeatureDbi();
 
     const QString aname = "aname_single";
     const QString grname = "agroupename_single";
@@ -112,7 +112,7 @@ IMPLEMENT_TEST(FeatureTableObjectUnitTest, addAnnotationSingleRegion) {
     AnnotationTableObject ft("aname_table_single", dbiRef);
     ft.addAnnotations(QList<SharedAnnotationData>() << anData, grname);
 
-    const U2DataId &objRootFeatureId = ft.getRootFeatureId();
+    const U2DataId& objRootFeatureId = ft.getRootFeatureId();
     CHECK_TRUE(!objRootFeatureId.isEmpty(), "invalid root feature id");
 
     U2OpStatusImpl os;
@@ -134,7 +134,7 @@ IMPLEMENT_TEST(FeatureTableObjectUnitTest, addAnnotationSingleRegion) {
     // check groups and qualifiers
     const QList<U2FeatureKey> fkeys = featureDbi->getFeatureKeys(subAnnotation.id, os);
     bool hasQual = false;
-    foreach (const U2FeatureKey &fkey, fkeys) {
+    foreach (const U2FeatureKey& fkey, fkeys) {
         if (fkey.name == qualname && !hasQual) {
             hasQual = fkey.value == qualval;
         }
@@ -143,7 +143,7 @@ IMPLEMENT_TEST(FeatureTableObjectUnitTest, addAnnotationSingleRegion) {
 }
 
 IMPLEMENT_TEST(FeatureTableObjectUnitTest, addAnnotationMultipleRegion) {
-    U2FeatureDbi *featureDbi = FeaturesTableObjectTestData::getFeatureDbi();
+    U2FeatureDbi* featureDbi = FeaturesTableObjectTestData::getFeatureDbi();
 
     const QString fname = "aname_table_multy";
     const QString aname = "aname_multy";
@@ -163,7 +163,7 @@ IMPLEMENT_TEST(FeatureTableObjectUnitTest, addAnnotationMultipleRegion) {
     AnnotationTableObject ft(fname, dbiRef);
     ft.addAnnotations(QList<SharedAnnotationData>() << anData, grname);
 
-    const U2DataId &objRootFeatureId = ft.getRootFeatureId();
+    const U2DataId& objRootFeatureId = ft.getRootFeatureId();
     CHECK_TRUE(!objRootFeatureId.isEmpty(), "invalid root feature id");
 
     U2OpStatusImpl os;
@@ -185,7 +185,7 @@ IMPLEMENT_TEST(FeatureTableObjectUnitTest, addAnnotationMultipleRegion) {
     // check groups and qualifiers
     const QList<U2FeatureKey> fkeys = featureDbi->getFeatureKeys(subAnnotation.id, os);
     bool hasQual = false;
-    foreach (const U2FeatureKey &fkey, fkeys) {
+    foreach (const U2FeatureKey& fkey, fkeys) {
         if (fkey.name == qualname && !hasQual) {
             hasQual = fkey.value == qualval;
         }
@@ -198,7 +198,7 @@ IMPLEMENT_TEST(FeatureTableObjectUnitTest, addAnnotationMultipleRegion) {
     CHECK_EQUAL(3, processedData->location->regions.size(), "subfeatures of multi-region feature");
 
     QBitArray regs(3, false);
-    foreach (const U2Region &reg, processedData->location->regions) {
+    foreach (const U2Region& reg, processedData->location->regions) {
         if (reg == areg1) {
             regs.setBit(0, true);
         } else if (reg == areg2) {
@@ -233,11 +233,11 @@ IMPLEMENT_TEST(FeatureTableObjectUnitTest, getAnnotations) {
     AnnotationTableObject ft("ftable_name", dbiRef);
     ft.addAnnotations(QList<SharedAnnotationData>() << anData1 << anData2 << anData3, grname);
 
-    const QList<Annotation *> annotations = ft.getAnnotations();
+    const QList<Annotation*> annotations = ft.getAnnotations();
     CHECK_EQUAL(3, annotations.size(), "annotation count");
 
     QBitArray annotationMatches(3, false);
-    foreach (Annotation *annotation, annotations) {
+    foreach (Annotation* annotation, annotations) {
         if (annotation->getName() == aname1) {
             annotationMatches.setBit(0, true);
         } else if (annotation->getName() == aname2) {
@@ -262,10 +262,10 @@ IMPLEMENT_TEST(FeatureTableObjectUnitTest, getRootGroup) {
     AnnotationTableObject ft("ftable_name", dbiRef);
     ft.addAnnotations(QList<SharedAnnotationData>() << anData, grname);
 
-    AnnotationGroup *rootGroup = ft.getRootGroup();
+    AnnotationGroup* rootGroup = ft.getRootGroup();
     CHECK_TRUE(rootGroup->hasValidId(), "root group ID");
 
-    const QList<AnnotationGroup *> subgroups = rootGroup->getSubgroups();
+    const QList<AnnotationGroup*> subgroups = rootGroup->getSubgroups();
     CHECK_EQUAL(1, subgroups.size(), "count of annotation groups");
     CHECK_EQUAL(grname, subgroups.first()->getName(), "group's name");
 }
@@ -295,25 +295,25 @@ IMPLEMENT_TEST(FeatureTableObjectUnitTest, addAnnotationsToRootGroup) {
     AnnotationTableObject ft("ftable_name", dbiRef);
     ft.addAnnotations(annotations);
 
-    AnnotationGroup *rootGroup = ft.getRootGroup();
+    AnnotationGroup* rootGroup = ft.getRootGroup();
     CHECK_TRUE(rootGroup->hasValidId(), "root group ID");
 
-    const QList<AnnotationGroup *> subgroups = rootGroup->getSubgroups();
+    const QList<AnnotationGroup*> subgroups = rootGroup->getSubgroups();
     CHECK_EQUAL(2, subgroups.size(), "root annotation group has subgroups");
 
     QBitArray groupMatches(2, false);
-    foreach (AnnotationGroup *group, subgroups) {
+    foreach (AnnotationGroup* group, subgroups) {
         if (group->getName() == aname1) {
             groupMatches.setBit(0, true);
 
-            const QList<Annotation *> anns = group->getAnnotations();
+            const QList<Annotation*> anns = group->getAnnotations();
             CHECK_EQUAL(1, anns.size(), "count of annotations");
 
             CHECK_EQUAL(2, anns.first()->getLocation()->regions.size(), "count of annotation regions");
         } else if (group->getName() == aname2) {
             groupMatches.setBit(1, true);
 
-            const QList<Annotation *> anns = group->getAnnotations();
+            const QList<Annotation*> anns = group->getAnnotations();
             CHECK_EQUAL(2, anns.size(), "count of annotations");
         }
     }
@@ -347,19 +347,19 @@ IMPLEMENT_TEST(FeatureTableObjectUnitTest, addAnnotationsToSubgroup) {
     AnnotationTableObject ft("ftable_name", dbiRef);
     ft.addAnnotations(annotations, grname);
 
-    AnnotationGroup *rootGroup = ft.getRootGroup();
+    AnnotationGroup* rootGroup = ft.getRootGroup();
     CHECK_TRUE(rootGroup->hasValidId(), "root group ID");
 
-    const QList<AnnotationGroup *> subgroup1 = rootGroup->getSubgroups();
+    const QList<AnnotationGroup*> subgroup1 = rootGroup->getSubgroups();
     CHECK_EQUAL(1, subgroup1.size(), "root group's subgroups");
 
-    const QList<Annotation *> anns1 = subgroup1.first()->getAnnotations();
+    const QList<Annotation*> anns1 = subgroup1.first()->getAnnotations();
     CHECK_EQUAL(0, anns1.size(), "annotation count");
 
-    const QList<AnnotationGroup *> subgroup2 = subgroup1.first()->getSubgroups();
+    const QList<AnnotationGroup*> subgroup2 = subgroup1.first()->getSubgroups();
     CHECK_EQUAL(1, subgroup2.size(), "subgroup count");
 
-    const QList<Annotation *> anns2 = subgroup2.first()->getAnnotations();
+    const QList<Annotation*> anns2 = subgroup2.first()->getAnnotations();
     CHECK_EQUAL(3, anns2.size(), "annotation count");
 }
 
@@ -390,17 +390,17 @@ IMPLEMENT_TEST(FeatureTableObjectUnitTest, removeAnnotation) {
     U2OpStatusImpl os;
     ft.addAnnotations(annotations, grname);
 
-    AnnotationGroup *rootGroup = ft.getRootGroup();
+    AnnotationGroup* rootGroup = ft.getRootGroup();
     CHECK_TRUE(rootGroup->hasValidId(), "root group ID");
 
-    const QList<AnnotationGroup *> subgroup = rootGroup->getSubgroups();
+    const QList<AnnotationGroup*> subgroup = rootGroup->getSubgroups();
     CHECK_EQUAL(1, subgroup.size(), "root group's subgroups");
 
-    const QList<Annotation *> annsBefore = subgroup.first()->getAnnotations();
+    const QList<Annotation*> annsBefore = subgroup.first()->getAnnotations();
     CHECK_EQUAL(3, annsBefore.size(), "annotation count");
 
-    QList<Annotation *> annsToRemove;
-    foreach (Annotation *ann, annsBefore) {
+    QList<Annotation*> annsToRemove;
+    foreach (Annotation* ann, annsBefore) {
         if (aname1 == ann->getName()) {
             annsToRemove.append(ann);
         }
@@ -438,13 +438,13 @@ IMPLEMENT_TEST(FeatureTableObjectUnitTest, removeAnnotations) {
     AnnotationTableObject ft("ftable_name", dbiRef);
     ft.addAnnotations(annotations, grname);
 
-    AnnotationGroup *rootGroup = ft.getRootGroup();
+    AnnotationGroup* rootGroup = ft.getRootGroup();
     CHECK_TRUE(rootGroup->hasValidId(), "root group ID");
 
-    const QList<AnnotationGroup *> subgroup = rootGroup->getSubgroups();
+    const QList<AnnotationGroup*> subgroup = rootGroup->getSubgroups();
     CHECK_EQUAL(1, subgroup.size(), "root group's subgroups");
 
-    const QList<Annotation *> annsBefore = subgroup.first()->getAnnotations();
+    const QList<Annotation*> annsBefore = subgroup.first()->getAnnotations();
     CHECK_EQUAL(3, annsBefore.size(), "annotation count");
 
     ft.removeAnnotations(annsBefore);
@@ -481,28 +481,28 @@ IMPLEMENT_TEST(FeatureTableObjectUnitTest, clone) {
     AnnotationTableObject ft("ftable_name", dbiRef);
     ft.addAnnotations(annotations);
 
-    AnnotationGroup *sourceRootGroup = ft.getRootGroup();
+    AnnotationGroup* sourceRootGroup = ft.getRootGroup();
 
     U2OpStatusImpl os;
-    QScopedPointer<AnnotationTableObject> clonedTable(dynamic_cast<AnnotationTableObject *>(ft.clone(dbiRef, os)));
+    QScopedPointer<AnnotationTableObject> clonedTable(dynamic_cast<AnnotationTableObject*>(ft.clone(dbiRef, os)));
     CHECK_NO_ERROR(os);
 
-    AnnotationGroup *clonedRootGroup = clonedTable->getRootGroup();
+    AnnotationGroup* clonedRootGroup = clonedTable->getRootGroup();
     CHECK_TRUE(clonedRootGroup->hasValidId(), "cloned root group ID");
     CHECK_NOT_EQUAL(clonedRootGroup->id, sourceRootGroup->id, "root group");
 
-    const QList<AnnotationGroup *> clonedSubgroups = clonedRootGroup->getSubgroups();
-    QList<AnnotationGroup *> sourceSubgroups = sourceRootGroup->getSubgroups();
+    const QList<AnnotationGroup*> clonedSubgroups = clonedRootGroup->getSubgroups();
+    QList<AnnotationGroup*> sourceSubgroups = sourceRootGroup->getSubgroups();
     CHECK_EQUAL(sourceSubgroups.size(), clonedSubgroups.size(), "root group's subgroups");
 
-    foreach (AnnotationGroup *clonedSubgroup, clonedSubgroups) {
-        const QList<Annotation *> clonedAnns = clonedSubgroup->getAnnotations();
+    foreach (AnnotationGroup* clonedSubgroup, clonedSubgroups) {
+        const QList<Annotation*> clonedAnns = clonedSubgroup->getAnnotations();
 
         bool groupMatched = false;
-        foreach (AnnotationGroup *sourceSubgroup, sourceSubgroups) {
+        foreach (AnnotationGroup* sourceSubgroup, sourceSubgroups) {
             if (sourceSubgroup->getName() == clonedSubgroup->getName()) {
                 groupMatched = true;
-                const QList<Annotation *> sourceAnns = sourceSubgroup->getAnnotations();
+                const QList<Annotation*> sourceAnns = sourceSubgroup->getAnnotations();
                 CHECK_EQUAL(sourceAnns.size(), clonedAnns.size(), "annotation count");
                 break;
             }
@@ -537,12 +537,12 @@ IMPLEMENT_TEST(FeatureTableObjectUnitTest, getAnnotationsByName) {
     AnnotationTableObject ft("ftable_name", dbiRef);
     ft.addAnnotations(annotations);
 
-    const QList<Annotation *> anns1 = ft.getAnnotationsByName(aname2);
+    const QList<Annotation*> anns1 = ft.getAnnotationsByName(aname2);
     CHECK_EQUAL(2, anns1.size(), "annotation count");
 
     ft.addAnnotations(annotations, grname);
 
-    const QList<Annotation *> anns2 = ft.getAnnotationsByName(aname2);
+    const QList<Annotation*> anns2 = ft.getAnnotationsByName(aname2);
     CHECK_EQUAL(4, anns2.size(), "annotation count");
 }
 
@@ -571,15 +571,15 @@ IMPLEMENT_TEST(FeatureTableObjectUnitTest, getAnnotationsByRegion) {
     AnnotationTableObject ft("ftable_name", dbiRef);
     ft.addAnnotations(annotations);
 
-    const QList<Annotation *> anns1 = ft.getAnnotationsByRegion(U2Region(500, 500), false);
+    const QList<Annotation*> anns1 = ft.getAnnotationsByRegion(U2Region(500, 500), false);
     CHECK_EQUAL(0, anns1.size(), "annotation count");
 
-    const QList<Annotation *> anns2 = ft.getAnnotationsByRegion(U2Region(500, 500), true);
+    const QList<Annotation*> anns2 = ft.getAnnotationsByRegion(U2Region(500, 500), true);
     CHECK_EQUAL(0, anns2.size(), "annotation count");
 
-    const QList<Annotation *> anns3 = ft.getAnnotationsByRegion(U2Region(0, 500), false);
+    const QList<Annotation*> anns3 = ft.getAnnotationsByRegion(U2Region(0, 500), false);
     CHECK_EQUAL(2, anns3.size(), "annotation count");
-    foreach (Annotation *ann, anns3) {
+    foreach (Annotation* ann, anns3) {
         CHECK_TRUE(ann->getRegions().contains(areg1), "count of annotation regions");
     }
 }

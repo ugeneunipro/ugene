@@ -36,7 +36,7 @@ namespace Workflow {
  */
 class U2LANG_EXPORT Message {
 public:
-    Message(DataTypePtr t, const QVariant &d, int metadataId = -1);
+    Message(DataTypePtr t, const QVariant& d, int metadataId = -1);
 
     DataTypePtr getType() const;
     QVariant getData() const;
@@ -71,13 +71,13 @@ public:
     // after calling message is in channel until get() invocation.
     // isMessageRestored should be true for messages which are queued in channel repeatedly
     // since they weren't processed
-    virtual void put(const Message &m, bool isMessageRestored = false) = 0;
+    virtual void put(const Message& m, bool isMessageRestored = false) = 0;
     // how many messages in channel
     virtual int hasMessage() const = 0;
     // how many messages taken from channel
     virtual int takenMessages() const = 0;
     //
-    virtual int hasRoom(const DataType *t = nullptr) const = 0;
+    virtual int hasRoom(const DataType* t = nullptr) const = 0;
     // user can set 'ended' flag to channel
     // it means that no other data will be supplied to it
     virtual bool isEnded() const = 0;
@@ -103,8 +103,8 @@ public:
     virtual ~CommunicationSubject() {
     }
 
-    virtual bool addCommunication(const QString &portId, CommunicationChannel *ch) = 0;
-    virtual CommunicationChannel *getCommunication(const QString &portId) = 0;
+    virtual bool addCommunication(const QString& portId, CommunicationChannel* ch) = 0;
+    virtual CommunicationChannel* getCommunication(const QString& portId) = 0;
 
 };  // CommunicationSubject
 

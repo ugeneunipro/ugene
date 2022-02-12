@@ -33,11 +33,11 @@ class SlidingWindowStep : public TrimmomaticStep {
 public:
     SlidingWindowStep();
 
-    TrimmomaticStepSettingsWidget *createWidget() const;
+    TrimmomaticStepSettingsWidget* createWidget() const;
 
 private:
-    QString serializeState(const QVariantMap &widgetState) const;
-    QVariantMap parseState(const QString &command) const;
+    QString serializeState(const QVariantMap& widgetState) const;
+    QVariantMap parseState(const QString& command) const;
 };
 
 class SlidingWindowSettingsWidget : public TrimmomaticStepSettingsWidget, private Ui_SlidingWindowSettingsWidget {
@@ -49,7 +49,7 @@ public:
     bool validate() const;
 
     QVariantMap getState() const;
-    void setState(const QVariantMap &state);
+    void setState(const QVariantMap& state);
 
     static const QString WINDOW_SIZE;
     static const QString REQUIRED_QUALITY;
@@ -61,10 +61,10 @@ public:
 
     SlidingWindowStepFactory();
 
-    SlidingWindowStep *createStep() const;
+    SlidingWindowStep* createStep() const;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_SLIDING_WINDOW_STEP_H_
+#endif  // _U2_SLIDING_WINDOW_STEP_H_

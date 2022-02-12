@@ -22,23 +22,23 @@
 #ifndef _U2_STARTUPDIALOG_H_
 #define _U2_STARTUPDIALOG_H_
 
-#include <ui_StartupDialog.h>
-
 #include <QDialog>
 
 #include <U2Designer/OutputDirectoryWidget.h>
+
+#include <ui_StartupDialog.h>
 
 namespace U2 {
 
 class StartupDialog : public QDialog, public Ui_StartupDialog {
     Q_OBJECT
 public:
-    StartupDialog(QWidget *parent);
+    StartupDialog(QWidget* parent);
 private slots:
     void sl_accepted();
 
 private:
-    OutputDirectoryWidget *outDirWidget;
+    OutputDirectoryWidget* outDirWidget;
 };
 
 }  // namespace U2

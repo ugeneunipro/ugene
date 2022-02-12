@@ -33,34 +33,34 @@ class DatasetsController;
 class DatasetsTabWidget : public QTabWidget {
     Q_OBJECT
 public:
-    DatasetsTabWidget(QWidget *parent);
+    DatasetsTabWidget(QWidget* parent);
 
 signals:
-    void si_contextMenu(const QPoint &p, int idx);
+    void si_contextMenu(const QPoint& p, int idx);
 
 private slots:
-    void sl_contextMenu(const QPoint &p);
+    void sl_contextMenu(const QPoint& p);
 };
 
 class DatasetsListWidget : public QWidget {
     Q_OBJECT
 public:
-    DatasetsListWidget(DatasetsController *ctrl);
+    DatasetsListWidget(DatasetsController* ctrl);
 
-    void appendPage(const QString &name, QWidget *page);
+    void appendPage(const QString& name, QWidget* page);
 
 private slots:
     void sl_deleteDataset(int idx);
     void sl_renameDataset();
     void sl_newDataset();
-    void sl_contextMenu(const QPoint &p, int idx);
+    void sl_contextMenu(const QPoint& p, int idx);
 
 private:
-    DatasetsController *ctrl;
-    QTabWidget *tabs;
+    DatasetsController* ctrl;
+    QTabWidget* tabs;
 
 private:
-    QString askDatasetName(const QString &tip, const QString &title, bool &ok);
+    QString askDatasetName(const QString& tip, const QString& title, bool& ok);
     QString getTip() const;
 };
 

@@ -35,44 +35,44 @@ class U2SqlQuery;
 
 class MysqlSingleTableAssemblyAdapter : public MysqlAssemblyAdapter {
 public:
-    MysqlSingleTableAssemblyAdapter(MysqlDbi *dbi, const U2DataId &assemblyId, char tablePrefix, const QString &tableSuffix, const AssemblyCompressor *compressor, MysqlDbRef *ref, U2OpStatus &os);
+    MysqlSingleTableAssemblyAdapter(MysqlDbi* dbi, const U2DataId& assemblyId, char tablePrefix, const QString& tableSuffix, const AssemblyCompressor* compressor, MysqlDbRef* ref, U2OpStatus& os);
 
-    virtual void createReadsTables(U2OpStatus &os);
-    virtual void createReadsIndexes(U2OpStatus &os);
+    virtual void createReadsTables(U2OpStatus& os);
+    virtual void createReadsIndexes(U2OpStatus& os);
 
-    virtual qint64 countReads(const U2Region &r, U2OpStatus &os);
-    virtual qint64 countReadsPrecise(const U2Region &r, U2OpStatus &os);
+    virtual qint64 countReads(const U2Region& r, U2OpStatus& os);
+    virtual qint64 countReadsPrecise(const U2Region& r, U2OpStatus& os);
 
-    virtual qint64 getMaxPackedRow(const U2Region &r, U2OpStatus &os);
-    virtual qint64 getMaxEndPos(U2OpStatus &os);
+    virtual qint64 getMaxPackedRow(const U2Region& r, U2OpStatus& os);
+    virtual qint64 getMaxEndPos(U2OpStatus& os);
 
-    virtual U2DbiIterator<U2AssemblyRead> *getReads(const U2Region &r, U2OpStatus &os, bool sortedHint = false);
-    virtual U2DbiIterator<U2AssemblyRead> *getReadsByRow(const U2Region &r, qint64 minRow, qint64 maxRow, U2OpStatus &os);
-    virtual U2DbiIterator<U2AssemblyRead> *getReadsByName(const QByteArray &name, U2OpStatus &os);
+    virtual U2DbiIterator<U2AssemblyRead>* getReads(const U2Region& r, U2OpStatus& os, bool sortedHint = false);
+    virtual U2DbiIterator<U2AssemblyRead>* getReadsByRow(const U2Region& r, qint64 minRow, qint64 maxRow, U2OpStatus& os);
+    virtual U2DbiIterator<U2AssemblyRead>* getReadsByName(const QByteArray& name, U2OpStatus& os);
 
-    virtual void addReads(U2DbiIterator<U2AssemblyRead> *it, U2AssemblyReadsImportInfo &ii, U2OpStatus &os);
-    virtual void removeReads(const QList<U2DataId> &readIds, U2OpStatus &os);
-    virtual void dropReadsTables(U2OpStatus &os);
+    virtual void addReads(U2DbiIterator<U2AssemblyRead>* it, U2AssemblyReadsImportInfo& ii, U2OpStatus& os);
+    virtual void removeReads(const QList<U2DataId>& readIds, U2OpStatus& os);
+    virtual void dropReadsTables(U2OpStatus& os);
 
-    virtual void pack(U2AssemblyPackStat &stat, U2OpStatus &os);
+    virtual void pack(U2AssemblyPackStat& stat, U2OpStatus& os);
 
-    virtual void calculateCoverage(const U2Region &region, U2AssemblyCoverageStat &coverage, U2OpStatus &os);
+    virtual void calculateCoverage(const U2Region& region, U2AssemblyCoverageStat& coverage, U2OpStatus& os);
 
-    const QString &getReadsTableName() const;
+    const QString& getReadsTableName() const;
 
     void enableRangeTableMode(int minLength, int maxLength);
 
-    static QString getReadsTableName(const U2DataId &assemblyId, char prefix, const QString &suffix);
+    static QString getReadsTableName(const U2DataId& assemblyId, char prefix, const QString& suffix);
 
-    void dropReadsIndexes(U2OpStatus &os);
+    void dropReadsIndexes(U2OpStatus& os);
 
     qint64 getMinReadLength() const;
     qint64 getMaxReadLength() const;
 
 protected:
-    void bindRegion(U2SqlQuery &q, const U2Region &r, bool forCount = false);
+    void bindRegion(U2SqlQuery& q, const U2Region& r, bool forCount = false);
 
-    MysqlDbi *dbi;
+    MysqlDbi* dbi;
     QString readsTable;
     QString rangeConditionCheck;
     QString rangeConditionCheckForCount;
@@ -90,18 +90,18 @@ protected:
 
 class MysqlSingleTablePackAlgorithmAdapter : public PackAlgorithmAdapter {
 public:
-    MysqlSingleTablePackAlgorithmAdapter(MysqlDbRef *db, const QString &readsTable);
+    MysqlSingleTablePackAlgorithmAdapter(MysqlDbRef* db, const QString& readsTable);
     ~MysqlSingleTablePackAlgorithmAdapter();
 
-    virtual U2DbiIterator<PackAlgorithmData> *selectAllReads(U2OpStatus &os);
-    virtual void assignProw(const U2DataId &readId, qint64 prow, U2OpStatus &os);
+    virtual U2DbiIterator<PackAlgorithmData>* selectAllReads(U2OpStatus& os);
+    virtual void assignProw(const U2DataId& readId, qint64 prow, U2OpStatus& os);
 
     void releaseDbResources();
 
 private:
-    MysqlDbRef *db;
+    MysqlDbRef* db;
     QString readsTable;
-    U2SqlQuery *updateQuery;
+    U2SqlQuery* updateQuery;
 };
 
 }  // namespace U2

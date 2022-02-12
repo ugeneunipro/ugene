@@ -22,28 +22,28 @@
 #ifndef _U2_NETWORK_SETTINGS_WIDGET_IMPL_H_
 #define _U2_NETWORK_SETTINGS_WIDGET_IMPL_H_
 
-#include <ui_NetworkSettingsWidget.h>
-
 #include <QUrl>
 
 #include <U2Core/NetworkConfiguration.h>
 
 #include <U2Gui/AppSettingsGUI.h>
 
+#include <ui_NetworkSettingsWidget.h>
+
 namespace U2 {
 
 class NetworkSettingsPageController : public AppSettingsGUIPageController {
     Q_OBJECT
 public:
-    NetworkSettingsPageController(QObject *p = nullptr);
+    NetworkSettingsPageController(QObject* p = nullptr);
 
-    virtual AppSettingsGUIPageState *getSavedState();
+    virtual AppSettingsGUIPageState* getSavedState();
 
-    virtual void saveState(AppSettingsGUIPageState *s);
+    virtual void saveState(AppSettingsGUIPageState* s);
 
-    virtual AppSettingsGUIPageWidget *createWidget(AppSettingsGUIPageState *data);
+    virtual AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* data);
 
-    const QString &getHelpPageId() const {
+    const QString& getHelpPageId() const {
         return helpPageId;
     };
 
@@ -65,9 +65,9 @@ class NetworkSettingsPageWidget : public AppSettingsGUIPageWidget, public Ui_Net
 public:
     NetworkSettingsPageWidget();
 
-    virtual void setState(AppSettingsGUIPageState *state);
+    virtual void setState(AppSettingsGUIPageState* state);
 
-    virtual AppSettingsGUIPageState *getState(QString &err) const;
+    virtual AppSettingsGUIPageState* getState(QString& err) const;
 
 private slots:
     void sl_HttpChecked(int state);

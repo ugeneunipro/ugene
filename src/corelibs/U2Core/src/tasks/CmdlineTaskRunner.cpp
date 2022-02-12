@@ -55,7 +55,7 @@ const QString OUTPUT_PROGRESS_ARG = "ugene-output-progress-state";
 const QString OUTPUT_PROGRESS_TAG = "task-progress=";
 const QString ERROR_KEYWORD = "#%*ugene-finished-with-error#%*";
 
-inline int getLogNameCandidate(const QString &line, QString &nameCandidate) {
+inline int getLogNameCandidate(const QString& line, QString& nameCandidate) {
     if ("" == line) {
         return -1;
     }
@@ -93,8 +93,8 @@ QString getLogLevelName(LogLevel l) {
     return "";
 }
 
-bool containsPrefix(const QStringList &args, const QString &prefix) {
-    foreach (const QString &arg, args) {
+bool containsPrefix(const QStringList& args, const QString& prefix) {
+    foreach (const QString& arg, args) {
         if (arg.startsWith(prefix)) {
             return true;
         }
@@ -109,12 +109,12 @@ QList<long> CmdlineTaskRunner::getChildrenProcesses(qint64 processId, bool fullT
     QList<long> children;
 
 #if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN)
-    char *buff = nullptr;
+    char* buff = nullptr;
     size_t len = 255;
     char command[256] = {0};
 
     sprintf(command, "ps -ef|awk '$3==%u {print $2}'", (unsigned)processId);
-    FILE *fp = (FILE *)popen(command, "r");
+    FILE* fp = (FILE*)popen(command, "r");
     while (getline(&buff, &len, fp) >= 0) {
         int child_process_id = QString(buff).toInt();
         if (child_process_id != 0) {
@@ -188,7 +188,7 @@ int CmdlineTaskRunner::killChildrenProcesses(qint64 processId, bool fullTree) {
     return result;
 }
 
-int CmdlineTaskRunner::killProcessTree(QProcess *process) {
+int CmdlineTaskRunner::killProcessTree(QProcess* process) {
     qint64 processId = process->processId();
     return killProcessTree(processId);
 }
@@ -221,7 +221,7 @@ int CmdlineTaskRunner::killProcess(qint64 processId) {
     return result;
 }
 
-CmdlineTaskRunner::CmdlineTaskRunner(const CmdlineTaskConfig &config)
+CmdlineTaskRunner::CmdlineTaskRunner(const CmdlineTaskConfig& config)
     : Task(tr("Run UGENE command line: %1").arg(config.command), TaskFlag_NoRun), config(config), process(nullptr) {
     tpm = Progress_Manual;
 }
@@ -287,18 +287,18 @@ Task::ReportResult CmdlineTaskRunner::report() {
     return ReportResult_Finished;
 }
 
-bool CmdlineTaskRunner::isCommandLogLine(const QString & /*logLine*/) const {
+bool CmdlineTaskRunner::isCommandLogLine(const QString& /*logLine*/) const {
     return false;
 }
 
-bool CmdlineTaskRunner::parseCommandLogWord(const QString & /*logWord*/) {
+bool CmdlineTaskRunner::parseCommandLogWord(const QString& /*logWord*/) {
     return false;
 }
 
-void CmdlineTaskRunner::writeLog(QStringList &lines) {
+void CmdlineTaskRunner::writeLog(QStringList& lines) {
     QStringList::Iterator it = lines.begin();
     for (; it != lines.end(); it++) {
-        QString &line = *it;
+        QString& line = *it;
         line = line.trimmed();
         QString nameCandidate;
         int closePos = getLogNameCandidate(line, nameCandidate);
@@ -330,7 +330,7 @@ QString CmdlineTaskRunner::readStdout() {
 #else
     charSet = "UTF-8";
 #endif
-    QTextCodec *codec = QTextCodec::codecForName(charSet);
+    QTextCodec* codec = QTextCodec::codecForName(charSet);
     return codec->toUnicode(process->readAllStandardOutput());
 }
 
@@ -371,9 +371,9 @@ void CmdlineTaskRunner::sl_onReadStandardOutput() {
         return;
     }
 
-    for (const QString &line : qAsConst(lines)) {
+    for (const QString& line : qAsConst(lines)) {
         QStringList words = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
-        for (const QString &word : qAsConst(words)) {
+        for (const QString& word : qAsConst(words)) {
             if (word.startsWith(OUTPUT_PROGRESS_TAG)) {
                 QString numStr = word.mid(OUTPUT_PROGRESS_TAG.size());
                 bool ok = false;
@@ -405,15 +405,15 @@ void CmdlineTaskRunner::sl_onFinish(int exitCode, QProcess::ExitStatus exitStatu
 namespace {
 const int UPDATE_PROGRESS_INTERVAL = 500;
 
-void logError(const QString &error) {
+void logError(const QString& error) {
     coreLog.info(QString("%1%2%1").arg(ERROR_KEYWORD).arg(error));
 }
 }  // namespace
 
-CmdlineTask::CmdlineTask(const QString &name, TaskFlags flags)
+CmdlineTask::CmdlineTask(const QString& name, TaskFlags flags)
     : Task(name, flags) {
     if (AppContext::getCMDLineRegistry()->hasParameter(OUTPUT_PROGRESS_ARG)) {
-        QTimer *timer = new QTimer(this);
+        QTimer* timer = new QTimer(this);
         connect(timer, SIGNAL(timeout()), SLOT(sl_outputProgressAndState()));
         timer->start(UPDATE_PROGRESS_INTERVAL);
     }

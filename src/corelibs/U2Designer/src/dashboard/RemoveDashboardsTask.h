@@ -31,7 +31,7 @@ namespace U2 {
 class U2DESIGNER_EXPORT RemoveDashboardsTask : public Task {
     Q_OBJECT
 public:
-    RemoveDashboardsTask(const QList<DashboardInfo> &dashboardInfos);
+    RemoveDashboardsTask(const QList<DashboardInfo>& dashboardInfos);
 
 private:
     void run() override;

@@ -35,19 +35,19 @@ namespace U2 {
 
 const qint64 SequenceContentFilterTask::SEQUENCE_CHUNK_SIZE = 4194304;  // 4 MB
 
-SequenceContentFilterTask::SequenceContentFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document>> &docs)
+SequenceContentFilterTask::SequenceContentFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs)
     : AbstractProjectFilterTask(settings, tr("Sequence content"), docs), searchStopFlag(0) {
     filteredObjCountPerIteration = 1;
 }
 
-bool SequenceContentFilterTask::filterAcceptsObject(GObject *obj) {
-    U2SequenceObject *seqObject = qobject_cast<U2SequenceObject *>(obj);
+bool SequenceContentFilterTask::filterAcceptsObject(GObject* obj) {
+    U2SequenceObject* seqObject = qobject_cast<U2SequenceObject*>(obj);
     CHECK(nullptr != seqObject, false);
 
     FindAlgorithmSettings findSettings;
     SAFE_POINT(initFindAlgorithmSettings(seqObject, findSettings), "Unable to prepare search algorithm", false);
 
-    foreach (const QString &pattern, settings.tokensToShow) {
+    foreach (const QString& pattern, settings.tokensToShow) {
         if (patternFitsSequenceAlphabet(seqObject, pattern) && sequenceContainsPattern(seqObject, pattern, findSettings)) {
             return true;
         }
@@ -55,18 +55,18 @@ bool SequenceContentFilterTask::filterAcceptsObject(GObject *obj) {
     return false;
 }
 
-bool SequenceContentFilterTask::patternFitsSequenceAlphabet(U2SequenceObject *seqObject, const QString &pattern) {
+bool SequenceContentFilterTask::patternFitsSequenceAlphabet(U2SequenceObject* seqObject, const QString& pattern) {
     SAFE_POINT(nullptr != seqObject, L10N::nullPointerError("Sequence object"), false);
     SAFE_POINT(!pattern.isEmpty(), "Empty pattern to search", false);
 
-    const DNAAlphabet *alphabet = seqObject->getAlphabet();
+    const DNAAlphabet* alphabet = seqObject->getAlphabet();
     SAFE_POINT(nullptr != alphabet, L10N::nullPointerError("Sequence alphabet"), false);
 
     const QByteArray searchStr = pattern.toUpper().toLatin1();
     return alphabet->containsAll(searchStr.constData(), searchStr.length());
 }
 
-bool SequenceContentFilterTask::sequenceContainsPattern(U2SequenceObject *seqObject, const QString &pattern, const FindAlgorithmSettings &findSettings) {
+bool SequenceContentFilterTask::sequenceContainsPattern(U2SequenceObject* seqObject, const QString& pattern, const FindAlgorithmSettings& findSettings) {
     SAFE_POINT(nullptr != seqObject, L10N::nullPointerError("Sequence object"), false);
     SAFE_POINT(!pattern.isEmpty(), "Empty pattern to search", false);
 
@@ -99,7 +99,7 @@ bool SequenceContentFilterTask::sequenceContainsPattern(U2SequenceObject *seqObj
     return 0 != searchStopFlag;
 }
 
-void SequenceContentFilterTask::searchThroughRegion(U2SequenceObject *seqObject, const U2Region &searchRegion, const QString &pattern, const FindAlgorithmSettings &findSettings) {
+void SequenceContentFilterTask::searchThroughRegion(U2SequenceObject* seqObject, const U2Region& searchRegion, const QString& pattern, const FindAlgorithmSettings& findSettings) {
     SAFE_POINT(nullptr != seqObject, L10N::nullPointerError("Sequence object"), );
     int searchProgressStub = 0;  // it's unused in fact
 
@@ -114,7 +114,7 @@ void SequenceContentFilterTask::searchThroughRegion(U2SequenceObject *seqObject,
         regionContent = seqObject->getSequenceData(searchRegion, stateInfo);
     }
     CHECK_OP(stateInfo, );
-    const char *rawRegionContent = regionContent.constData();
+    const char* rawRegionContent = regionContent.constData();
 
     FindAlgorithmSettings specialFindSettings(findSettings);
     specialFindSettings.searchRegion = U2Region(0, searchRegion.length);
@@ -123,14 +123,14 @@ void SequenceContentFilterTask::searchThroughRegion(U2SequenceObject *seqObject,
     FindAlgorithm::find(this, specialFindSettings, rawRegionContent, searchRegion.length, false, searchStopFlag, searchProgressStub);
 }
 
-bool SequenceContentFilterTask::initFindAlgorithmSettings(U2SequenceObject *seqObject, FindAlgorithmSettings &findSettings) {
+bool SequenceContentFilterTask::initFindAlgorithmSettings(U2SequenceObject* seqObject, FindAlgorithmSettings& findSettings) {
     SAFE_POINT(nullptr != seqObject, L10N::nullPointerError("Sequence object"), false);
 
-    const DNAAlphabet *alphabet = seqObject->getAlphabet();
+    const DNAAlphabet* alphabet = seqObject->getAlphabet();
     SAFE_POINT(nullptr != alphabet, L10N::nullPointerError("Sequence alphabet"), false);
 
     if (alphabet->isNucleic()) {
-        DNATranslation *complTranslation = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(alphabet);
+        DNATranslation* complTranslation = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(alphabet);
         SAFE_POINT(nullptr != complTranslation, L10N::nullPointerError("Sequence translation"), false);
 
         findSettings.complementTT = complTranslation;
@@ -144,7 +144,7 @@ bool SequenceContentFilterTask::initFindAlgorithmSettings(U2SequenceObject *seqO
     return true;
 }
 
-void SequenceContentFilterTask::onResult(const FindAlgorithmResult & /*r*/) {
+void SequenceContentFilterTask::onResult(const FindAlgorithmResult& /*r*/) {
     searchStopFlag = 1;
 }
 
@@ -152,8 +152,8 @@ void SequenceContentFilterTask::onResult(const FindAlgorithmResult & /*r*/) {
 /// SequenceConentFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
 
-AbstractProjectFilterTask *SequenceContentFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings &settings,
-                                                                           const QList<QPointer<Document>> &docs) const {
+AbstractProjectFilterTask* SequenceContentFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
+                                                                           const QList<QPointer<Document>>& docs) const {
     return new SequenceContentFilterTask(settings, docs);
 }
 

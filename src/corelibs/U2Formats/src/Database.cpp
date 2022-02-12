@@ -33,7 +33,7 @@ namespace U2 {
 
 #define S3_DATABASE_KEY "s3-database"
 
-Database *Database::loadDatabase(const QString &url, U2OpStatus &os) {
+Database* Database::loadDatabase(const QString& url, U2OpStatus& os) {
     U2DbiRef dbiRef(SQLiteDbiFactory::ID, url);
     DbiConnection dbHandle(dbiRef, os);
     SAFE_POINT_OP(os, nullptr);
@@ -50,7 +50,7 @@ Database *Database::loadDatabase(const QString &url, U2OpStatus &os) {
     return new Database(dbHandle);
 }
 
-DbiConnection Database::createEmptyDbi(const QString &url, U2OpStatus &os) {
+DbiConnection Database::createEmptyDbi(const QString& url, U2OpStatus& os) {
     QFileInfo fi(url);
     if (fi.exists()) {
         os.setError(tr("File already exists: %1").arg(url));

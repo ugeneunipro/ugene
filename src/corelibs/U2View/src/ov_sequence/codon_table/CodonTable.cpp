@@ -46,7 +46,7 @@ const QColor CodonTableView::ACIDIC_COLOR = QColor("#00ABED").lighter();
 const QColor CodonTableView::STOP_CODON_COLOR = QColor(Qt::gray);
 
 // CodonTableView
-CodonTableView::CodonTableView(AnnotatedDNAView *view)
+CodonTableView::CodonTableView(AnnotatedDNAView* view)
     : ADVSplitWidget(view) {
     table = new QTableWidget(18, 10);
     table->setSelectionMode(QAbstractItemView::NoSelection);
@@ -89,7 +89,7 @@ CodonTableView::CodonTableView(AnnotatedDNAView *view)
         }
     }
 
-    QVBoxLayout *l = new QVBoxLayout(this);
+    QVBoxLayout* l = new QVBoxLayout(this);
     l->addWidget(table);
     l->setMargin(0);
     l->setSpacing(0);
@@ -100,8 +100,8 @@ CodonTableView::CodonTableView(AnnotatedDNAView *view)
     setLayout(l);
     setVisible(false);
 
-    QList<ADVSequenceObjectContext *> list = view->getSequenceContexts();
-    foreach (ADVSequenceObjectContext *ctx, list) {
+    QList<ADVSequenceObjectContext*> list = view->getSequenceContexts();
+    foreach (ADVSequenceObjectContext* ctx, list) {
         // find first with translation table
         if (ctx->getAminoTT() != nullptr) {
             setAminoTranslation(ctx->getAminoTT()->getTranslationId());
@@ -118,33 +118,33 @@ void CodonTableView::sl_setVisible() {
 }
 
 void CodonTableView::sl_setAminoTranslation() {
-    QAction *a = qobject_cast<QAction *>(sender());
+    QAction* a = qobject_cast<QAction*>(sender());
     if (a != nullptr) {
         QString tid = a->data().toString();
         setAminoTranslation(tid);
     }
 }
 
-void CodonTableView::sl_onActiveSequenceChanged(ADVSequenceWidget * /*from*/, ADVSequenceWidget *to) {
+void CodonTableView::sl_onActiveSequenceChanged(ADVSequenceWidget* /*from*/, ADVSequenceWidget* to) {
     CHECK(to != nullptr, );
 
-    const QList<ADVSequenceObjectContext *> ctx = to->getSequenceContexts();
+    const QList<ADVSequenceObjectContext*> ctx = to->getSequenceContexts();
     CHECK(ctx.first() != nullptr, );
     CHECK(ctx.first()->getAminoTT() != nullptr, );
 
     setAminoTranslation(ctx.first()->getAminoTT()->getTranslationId());
 }
 
-void CodonTableView::setAminoTranslation(const QString &trId) {
-    DNATranslationRegistry *trReg = AppContext::getDNATranslationRegistry();
+void CodonTableView::setAminoTranslation(const QString& trId) {
+    DNATranslationRegistry* trReg = AppContext::getDNATranslationRegistry();
     SAFE_POINT(trReg != nullptr, "DNATranslationRegistry is NULL!", );
 
-    DNAAlphabetRegistry *alphReg = AppContext::getDNAAlphabetRegistry();
+    DNAAlphabetRegistry* alphReg = AppContext::getDNAAlphabetRegistry();
     SAFE_POINT(alphReg != nullptr, "DNAAlphabetRegistry is NULL!", );
-    const DNAAlphabet *alph = alphReg->findById(BaseDNAAlphabetIds::NUCL_RNA_DEFAULT());
+    const DNAAlphabet* alph = alphReg->findById(BaseDNAAlphabetIds::NUCL_RNA_DEFAULT());
     SAFE_POINT(alph != nullptr, "Standard RNA alphabet not found!", );
 
-    DNATranslation *tr = trReg->lookupTranslation(alph, trId);
+    DNATranslation* tr = trReg->lookupTranslation(alph, trId);
     SAFE_POINT(tr != nullptr, "No translation found!", );
 
     QList<char> nucleobases;
@@ -191,7 +191,7 @@ void CodonTableView::spanEqualCells() {
     }
 }
 
-void CodonTableView::addItemToTable(int row, int column, const QString &text, const QColor &backgroundColor, int rowSpan, int columnSpan) {
+void CodonTableView::addItemToTable(int row, int column, const QString& text, const QColor& backgroundColor, int rowSpan, int columnSpan) {
     auto item = new QTableWidgetItem(text);
     QFont font = item->font();
     font.setPointSize(10);
@@ -205,11 +205,11 @@ void CodonTableView::addItemToTable(int row, int column, const QString &text, co
     table->setItem(row, column, item);
 }
 
-void CodonTableView::addItemToTable(int row, int column, const QString &text, int rowSpan, int columnSpan) {
+void CodonTableView::addItemToTable(int row, int column, const QString& text, int rowSpan, int columnSpan) {
     addItemToTable(row, column, text, QColor(0, 0, 0, 0), rowSpan, columnSpan);
 }
 
-void CodonTableView::addItemToTable(int row, int column, const QString &text, const QColor &backgroundColor, const QString &link, int rowSpan, int columnSpan) {
+void CodonTableView::addItemToTable(int row, int column, const QString& text, const QColor& backgroundColor, const QString& link, int rowSpan, int columnSpan) {
     table->removeCellWidget(row, column);
 
     QColor appTextColor = QApplication::palette().text().color();
@@ -246,7 +246,7 @@ void CodonTableView::addItemToTable(int row, int column, const QString &text, co
     table->setCellWidget(row, column, label);
 }
 
-void CodonTableView::addItemToTable(int row, int column, DNACodon *codon) {
+void CodonTableView::addItemToTable(int row, int column, DNACodon* codon) {
     CHECK(codon != nullptr, )
     addItemToTable(row, column, codon->getFullName() + " (" + codon->getTreeLetterCode() + (codon->getFullName() != "Stop codon" ? QString(", ") + QChar(codon->getSymbol()) : "") + ")", getColor(codon->getCodonGroup()), codon->getLink());
 }

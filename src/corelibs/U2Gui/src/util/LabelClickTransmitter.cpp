@@ -29,18 +29,18 @@
 
 namespace U2 {
 
-LabelClickTransmitter::LabelClickTransmitter(QLabel *label, QAbstractButton *button)
+LabelClickTransmitter::LabelClickTransmitter(QLabel* label, QAbstractButton* button)
     : QObject(label), label(label), button(button) {
     label->installEventFilter(this);
 }
 
-bool LabelClickTransmitter::eventFilter(QObject *object, QEvent *event) {
+bool LabelClickTransmitter::eventFilter(QObject* object, QEvent* event) {
     CHECK(nullptr != label, false);
     CHECK(nullptr != button, false);
     CHECK(label == object, false);
 
     CHECK(QEvent::MouseButtonRelease == event->type(), false);
-    QMouseEvent *mouseEvent = dynamic_cast<QMouseEvent *>(event);
+    QMouseEvent* mouseEvent = dynamic_cast<QMouseEvent*>(event);
     CHECK(nullptr != event, false);
     CHECK(Qt::LeftButton == mouseEvent->button(), false);
 

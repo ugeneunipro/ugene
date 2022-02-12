@@ -30,13 +30,13 @@ namespace U2 {
 
 class MsaHighlightingSavableTab : public MsaOpSavableTab {
 public:
-    MsaHighlightingSavableTab(QWidget *wrappedWidget, MWMDIWindow *contextWindow);
+    MsaHighlightingSavableTab(QWidget* wrappedWidget, MWMDIWindow* contextWindow);
     ~MsaHighlightingSavableTab();
 
-    void disableSavingForWidgets(const QStringList &s);
+    void disableSavingForWidgets(const QStringList& s);
 
 protected:
-    bool childCanBeSaved(QWidget *child) const;
+    bool childCanBeSaved(QWidget* child) const;
 
 private:
     QStringList widgetsNotToSave;

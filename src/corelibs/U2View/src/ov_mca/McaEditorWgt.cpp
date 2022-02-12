@@ -47,7 +47,7 @@ namespace U2 {
 
 #define TOP_INDENT 10
 
-McaEditorWgt::McaEditorWgt(McaEditor *editor)
+McaEditorWgt::McaEditorWgt(McaEditor* editor)
     : MaEditorWgt(editor) {
     rowHeightController = new McaRowHeightController(this);
     refCharController = new McaReferenceCharController(this, editor);
@@ -65,7 +65,7 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     consensusArea->setDrawSettings(consSettings);
 
     QString name = getEditor()->getReferenceContext()->getSequenceObject()->getSequenceName();
-    QWidget *refName = createHeaderLabelWidget(tr("Reference %1:").arg(name),
+    QWidget* refName = createHeaderLabelWidget(tr("Reference %1:").arg(name),
                                                Qt::Alignment(Qt::AlignRight | Qt::AlignVCenter),
                                                refArea);
     refName->setObjectName("reference label container widget");
@@ -75,34 +75,34 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
 
     enableCollapsingOfSingleRowGroups = true;
 
-    McaEditorConsensusArea *mcaConsArea = qobject_cast<McaEditorConsensusArea *>(consensusArea);
+    McaEditorConsensusArea* mcaConsArea = qobject_cast<McaEditorConsensusArea*>(consensusArea);
     SAFE_POINT(mcaConsArea != nullptr, "Failed to cast consensus area to MCA consensus area", );
     seqAreaHeaderLayout->setContentsMargins(0, TOP_INDENT, 0, 0);
     seqAreaHeader->setStyleSheet("background-color: white;");
     connect(mcaConsArea->getMismatchController(), SIGNAL(si_selectMismatch(int)), refArea, SLOT(sl_selectMismatch(int)));
 }
 
-McaEditor *McaEditorWgt::getEditor() const {
-    return qobject_cast<McaEditor *>(editor);
+McaEditor* McaEditorWgt::getEditor() const {
+    return qobject_cast<McaEditor*>(editor);
 }
 
-McaEditorConsensusArea *McaEditorWgt::getConsensusArea() const {
-    return qobject_cast<McaEditorConsensusArea *>(consensusArea);
+McaEditorConsensusArea* McaEditorWgt::getConsensusArea() const {
+    return qobject_cast<McaEditorConsensusArea*>(consensusArea);
 }
 
-McaEditorNameList *McaEditorWgt::getEditorNameList() const {
-    return qobject_cast<McaEditorNameList *>(nameList);
+McaEditorNameList* McaEditorWgt::getEditorNameList() const {
+    return qobject_cast<McaEditorNameList*>(nameList);
 }
 
-McaEditorSequenceArea *McaEditorWgt::getSequenceArea() const {
-    return qobject_cast<McaEditorSequenceArea *>(sequenceArea);
+McaEditorSequenceArea* McaEditorWgt::getSequenceArea() const {
+    return qobject_cast<McaEditorSequenceArea*>(sequenceArea);
 }
 
-McaReferenceCharController *McaEditorWgt::getRefCharController() const {
+McaReferenceCharController* McaEditorWgt::getRefCharController() const {
     return refCharController;
 }
 
-QAction *McaEditorWgt::getToggleColumnsAction() const {
+QAction* McaEditorWgt::getToggleColumnsAction() const {
     SAFE_POINT(offsetsViewController != nullptr, "Offset controller is NULL", nullptr);
     return offsetsViewController->toggleColumnsViewAction;
 }
@@ -113,7 +113,7 @@ void McaEditorWgt::initActions() {
     delSelectionAction->setText(tr("Remove selection"));
 }
 
-void McaEditorWgt::initSeqArea(GScrollBar *shBar, GScrollBar *cvBar) {
+void McaEditorWgt::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {
     sequenceArea = new McaEditorSequenceArea(this, shBar, cvBar);
 }
 
@@ -121,7 +121,7 @@ void McaEditorWgt::initOverviewArea() {
     overviewArea = new McaEditorOverviewArea(this);
 }
 
-void McaEditorWgt::initNameList(QScrollBar *nhBar) {
+void McaEditorWgt::initNameList(QScrollBar* nhBar) {
     nameList = new McaEditorNameList(this, nhBar);
 }
 
@@ -133,7 +133,7 @@ void McaEditorWgt::initStatusBar() {
     statusBar = new McaEditorStatusBar(getEditor(), refCharController);
 }
 
-McaEditorReferenceArea *McaEditorWgt::getReferenceArea() const {
+McaEditorReferenceArea* McaEditorWgt::getReferenceArea() const {
     return refArea;
 }
 

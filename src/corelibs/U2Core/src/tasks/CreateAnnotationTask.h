@@ -33,25 +33,25 @@ class U2CORE_EXPORT CreateAnnotationsTask : public Task {
 public:
     // Adds annotations to the object. Waits object to be unlocked if needed
     // Works only in a context of active project
-    CreateAnnotationsTask(AnnotationTableObject *o, const QList<SharedAnnotationData> &data, const QString &group = QString());
-    CreateAnnotationsTask(const GObjectReference &ref, const QList<SharedAnnotationData> &data, const QString &group = QString());
-    CreateAnnotationsTask(AnnotationTableObject *annotationTableObject, const QMap<QString, QList<SharedAnnotationData>> &annotationsByGroupMap);
+    CreateAnnotationsTask(AnnotationTableObject* o, const QList<SharedAnnotationData>& data, const QString& group = QString());
+    CreateAnnotationsTask(const GObjectReference& ref, const QList<SharedAnnotationData>& data, const QString& group = QString());
+    CreateAnnotationsTask(AnnotationTableObject* annotationTableObject, const QMap<QString, QList<SharedAnnotationData>>& annotationsByGroupMap);
 
     void run() override;
     ReportResult report() override;
 
-    AnnotationTableObject *getAnnotationTableObject() const;
+    AnnotationTableObject* getAnnotationTableObject() const;
     int getAnnotationCount() const;
-    QList<Annotation *> getResultAnnotations() const;
+    QList<Annotation*> getResultAnnotations() const;
 
 private:
     void initAnnObjectRef();
 
     GObjectReference aRef;
     QPointer<AnnotationTableObject> annotationTableObjectPointer;
-    QMap<AnnotationGroup *, QList<Annotation *>> annotationsByGroupMap;
+    QMap<AnnotationGroup*, QList<Annotation*>> annotationsByGroupMap;
     QMap<QString, QList<SharedAnnotationData>> annotationDatasByGroupNameMap;
-    QList<Annotation *> resultAnnotations;
+    QList<Annotation*> resultAnnotations;
 };
 
 }  // namespace U2

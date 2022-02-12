@@ -76,7 +76,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0001) {
     // Close all modal widgets
     // Clear the clipboard
 
-    QWidget *popupWidget = QApplication::activePopupWidget();
+    QWidget* popupWidget = QApplication::activePopupWidget();
     while (popupWidget != nullptr) {
 #ifdef Q_OS_DARWIN
         GTUtilsMac fakeClock;
@@ -87,7 +87,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0001) {
         popupWidget = QApplication::activePopupWidget();
     }
 
-    QWidget *modalWidget = QApplication::activeModalWidget();
+    QWidget* modalWidget = QApplication::activeModalWidget();
     while (modalWidget != nullptr) {
 #ifdef Q_OS_DARWIN
         GTUtilsMac fakeClock;
@@ -174,7 +174,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0004) {
         GTFile::setReadWrite(os, sandBoxDir, true);
         QDir sandBox(sandBoxDir);
         const QStringList entryList = sandBox.entryList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Hidden);
-        for (const QString &path : qAsConst(entryList)) {
+        for (const QString& path : qAsConst(entryList)) {
             GTFile::removeDir(sandBox.absolutePath() + "/" + path);
         }
     }

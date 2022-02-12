@@ -37,10 +37,10 @@ class MaEditorWgt;
 class MaAmbiguousCharactersController : public QObject {
     Q_OBJECT
 public:
-    MaAmbiguousCharactersController(MaEditorWgt *maEditorWgt);
+    MaAmbiguousCharactersController(MaEditorWgt* maEditorWgt);
 
-    QAction *getPreviousAction() const;
-    QAction *getNextAction() const;
+    QAction* getPreviousAction() const;
+    QAction* getNextAction() const;
 
 private slots:
     void sl_next();
@@ -51,13 +51,13 @@ private:
     QPoint getStartPosition() const;
     void scrollToNextAmbiguous(NavigationDirection direction) const;
     QPoint findNextAmbiguous(NavigationDirection direction) const;
-    void prepareIterator(NavigationDirection direction, const QPoint &startPosition) const;
+    void prepareIterator(NavigationDirection direction, const QPoint& startPosition) const;
 
-    MaEditor *maEditor;
-    MaEditorWgt *maEditorWgt;
+    MaEditor* maEditor;
+    MaEditorWgt* maEditorWgt;
 
-    QAction *nextAction;
-    QAction *previousAction;
+    QAction* nextAction;
+    QAction* previousAction;
 
     mutable QScopedPointer<MaIterator> cachedIterator;
 

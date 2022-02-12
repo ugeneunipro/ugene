@@ -46,7 +46,7 @@
 
 namespace U2 {
 
-DetViewSequenceEditor::DetViewSequenceEditor(DetView *view)
+DetViewSequenceEditor::DetViewSequenceEditor(DetView* view)
     : cursorColor(Qt::black),
       animationTimer(this),
       view(view) {
@@ -77,15 +77,15 @@ bool DetViewSequenceEditor::isEditMode() const {
     return editAction->isChecked();
 }
 
-bool DetViewSequenceEditor::eventFilter(QObject *, QEvent *event) {
+bool DetViewSequenceEditor::eventFilter(QObject*, QEvent* event) {
     CHECK(!view->getSequenceObject()->isStateLocked(), false)
 
-    SequenceObjectContext *ctx = view->getSequenceContext();
-    const QList<ADVSequenceWidget *> list = ctx->getSequenceWidgets();
+    SequenceObjectContext* ctx = view->getSequenceContext();
+    const QList<ADVSequenceWidget*> list = ctx->getSequenceWidgets();
     CHECK(!list.isEmpty(), false);
-    ADVSequenceWidget *wgt = list.first();
-    AnnotatedDNAView *dnaView = wgt->getAnnotatedDNAView();
-    QAction *a = dnaView->removeAnnsAndQsAction;
+    ADVSequenceWidget* wgt = list.first();
+    AnnotatedDNAView* dnaView = wgt->getAnnotatedDNAView();
+    QAction* a = dnaView->removeAnnsAndQsAction;
 
     switch (event->type()) {
         case QEvent::FocusOut:
@@ -101,7 +101,7 @@ bool DetViewSequenceEditor::eventFilter(QObject *, QEvent *event) {
         case QEvent::MouseButtonPress:
         case QEvent::MouseButtonRelease:
         case QEvent::MouseMove: {
-            QMouseEvent *mouseEvent = dynamic_cast<QMouseEvent *>(event);
+            QMouseEvent* mouseEvent = dynamic_cast<QMouseEvent*>(event);
             SAFE_POINT(mouseEvent != nullptr, "Failed to cast QEvent to QMouseEvent", true);
 
             if (mouseEvent->buttons() & Qt::LeftButton) {
@@ -114,7 +114,7 @@ bool DetViewSequenceEditor::eventFilter(QObject *, QEvent *event) {
             // TODO_SVEDIT: separate methods
         case QEvent::KeyPress: {
             // set cursor position
-            QKeyEvent *keyEvent = dynamic_cast<QKeyEvent *>(event);
+            QKeyEvent* keyEvent = dynamic_cast<QKeyEvent*>(event);
             SAFE_POINT(keyEvent != nullptr, "Failed to cast QEvent to QKeyEvent", true);
 
             int key = keyEvent->key();
@@ -177,7 +177,7 @@ void DetViewSequenceEditor::navigate(qint64 newPos, bool shiftPressed) {
     CHECK(newPos != cursor, );
     newPos = qBound((qint64)0, newPos, view->getSequenceLength());
 
-    DNASequenceSelection *selection = view->getSequenceContext()->getSequenceSelection();
+    DNASequenceSelection* selection = view->getSequenceContext()->getSequenceSelection();
     if (shiftPressed) {
         qint64 extension = qAbs(cursor - newPos);
         if (selection->isEmpty()) {
@@ -219,14 +219,14 @@ void DetViewSequenceEditor::navigate(qint64 newPos, bool shiftPressed) {
 }
 
 void DetViewSequenceEditor::insertChar(int character) {
-    U2SequenceObject *seqObj = view->getSequenceObject();
+    U2SequenceObject* seqObj = view->getSequenceObject();
     SAFE_POINT(seqObj != nullptr, "SeqObject is NULL", );
     CHECK(seqObj->getAlphabet()->contains(character), );  // TODO_SVEDIT: support alphabet changing, separate issue
     cancelSelectionResizing();
 
     const DNASequence seq(QByteArray(1, character));
     U2Region r;
-    SequenceObjectContext *ctx = view->getSequenceContext();
+    SequenceObjectContext* ctx = view->getSequenceContext();
     SAFE_POINT(ctx != nullptr, "SequenceObjectContext", );
     if (ctx->getSequenceSelection()->isEmpty()) {
         r = U2Region(cursor, 0);
@@ -242,12 +242,12 @@ void DetViewSequenceEditor::insertChar(int character) {
 
 void DetViewSequenceEditor::deleteChar(int key) {
     CHECK(key == Qt::Key_Backspace || key == Qt::Key_Delete, );
-    U2SequenceObject *seqObj = view->getSequenceObject();
+    U2SequenceObject* seqObj = view->getSequenceObject();
     SAFE_POINT(seqObj != nullptr, "SeqObject is NULL", );
     cancelSelectionResizing();
 
     U2Region regionToRemove;
-    SequenceObjectContext *ctx = view->getSequenceContext();
+    SequenceObjectContext* ctx = view->getSequenceContext();
     if (!ctx->getSequenceSelection()->isEmpty()) {
         setCursor(ctx->getSequenceSelection()->getSelectedRegions().first().startPos);
         QVector<U2Region> regions = ctx->getSequenceSelection()->getSelectedRegions();
@@ -285,7 +285,7 @@ void DetViewSequenceEditor::deleteChar(int key) {
         if (res == QMessageBox::No) {
             return;
         }
-        Document *doc = seqObj->getDocument();
+        Document* doc = seqObj->getDocument();
         SAFE_POINT(doc != nullptr, "Document is NULL", );
         doc->removeObject(seqObj);
         return;
@@ -294,8 +294,8 @@ void DetViewSequenceEditor::deleteChar(int key) {
     modifySequence(seqObj, regionToRemove, DNASequence());
 }
 
-void DetViewSequenceEditor::modifySequence(U2SequenceObject *seqObj, const U2Region &region, const DNASequence &sequence) {
-    Settings *s = AppContext::getSettings();
+void DetViewSequenceEditor::modifySequence(U2SequenceObject* seqObj, const U2Region& region, const DNASequence& sequence) {
+    Settings* s = AppContext::getSettings();
     U1AnnotationUtils::AnnotationStrategyForResize strategy =
         (U1AnnotationUtils::AnnotationStrategyForResize)s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_ANNOTATION_STRATEGY,
                                                                     U1AnnotationUtils::AnnotationStrategyForResize_Resize)
@@ -305,7 +305,7 @@ void DetViewSequenceEditor::modifySequence(U2SequenceObject *seqObj, const U2Reg
     seqObj->replaceRegion(region, sequence, os);
     FixAnnotationsUtils::fixAnnotations(&os, seqObj, region, sequence, s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_RECALC_QUALIFIERS, false).toBool(), strategy);
     SAFE_POINT_OP(os, );
-    ADVSequenceObjectContext *context = qobject_cast<ADVSequenceObjectContext *>(view->getSequenceContext());
+    ADVSequenceObjectContext* context = qobject_cast<ADVSequenceObjectContext*>(view->getSequenceContext());
     SAFE_POINT(context != nullptr, L10N::nullPointerError("ADVSequenceObjectContext"), );
     context->getAnnotatedDNAView()->updateAutoAnnotations();
 }
@@ -315,18 +315,18 @@ void DetViewSequenceEditor::cancelSelectionResizing() {
 }
 
 void DetViewSequenceEditor::sl_editMode(bool active) {
-    SequenceObjectContext *ctx = view->getSequenceContext();
-    const QList<ADVSequenceWidget *> list = ctx->getSequenceWidgets();
+    SequenceObjectContext* ctx = view->getSequenceContext();
+    const QList<ADVSequenceWidget*> list = ctx->getSequenceWidgets();
     SAFE_POINT(!list.isEmpty(), "seq wgts list is empty", );
-    ADVSequenceWidget *wgt = list.first();
-    AnnotatedDNAView *dnaView = wgt->getAnnotatedDNAView();
+    ADVSequenceWidget* wgt = list.first();
+    AnnotatedDNAView* dnaView = wgt->getAnnotatedDNAView();
     if (active) {
         // deactivate Delete shortcut
         dnaView->removeAnnsAndQsAction->setShortcut(QKeySequence());
         reset();
         view->installEventFilter(this);
         // Make detailed view visible
-        ADVSingleSequenceWidget *sequenceWidget = qobject_cast<ADVSingleSequenceWidget *>(wgt);
+        ADVSingleSequenceWidget* sequenceWidget = qobject_cast<ADVSingleSequenceWidget*>(wgt);
         if (sequenceWidget) {
             sequenceWidget->setDetViewCollapsed(false);
         }
@@ -357,31 +357,31 @@ void DetViewSequenceEditor::sl_objectLockStateChanged() {
     editAction->setDisabled(!isEditMode() && view->getSequenceObject()->isStateLocked());
 }
 
-void DetViewSequenceEditor::sl_paste(Task *task) {
-    PasteTask *pasteTask = qobject_cast<PasteTask *>(task);
+void DetViewSequenceEditor::sl_paste(Task* task) {
+    PasteTask* pasteTask = qobject_cast<PasteTask*>(task);
     CHECK(pasteTask != nullptr && !pasteTask->isCanceled(), );
 
-    const QList<Document *> &docs = pasteTask->getDocuments();
+    const QList<Document*>& docs = pasteTask->getDocuments();
     CHECK(docs.length() != 0, );
 
     U2OpStatusImpl os;
-    const QList<DNASequence> &sequences = PasteUtils::getSequences(docs, os);
+    const QList<DNASequence>& sequences = PasteUtils::getSequences(docs, os);
     if (sequences.isEmpty()) {
         coreLog.error(tr("No sequences detected in the pasted content."));
         return;
     }
     DNASequence seq;
-    foreach (const DNASequence &dnaObj, sequences) {
+    foreach (const DNASequence& dnaObj, sequences) {
         if (seq.alphabet == nullptr) {
             seq.alphabet = dnaObj.alphabet;
         }
-        const DNAAlphabet *newAlphabet = U2AlphabetUtils::deriveCommonAlphabet(dnaObj.alphabet, seq.alphabet);
+        const DNAAlphabet* newAlphabet = U2AlphabetUtils::deriveCommonAlphabet(dnaObj.alphabet, seq.alphabet);
         if (newAlphabet != nullptr) {
             seq.alphabet = newAlphabet;
             seq.seq.append(dnaObj.seq);
         }
     }
-    U2SequenceObject *seqObj = view->getSequenceObject();
+    U2SequenceObject* seqObj = view->getSequenceObject();
     SAFE_POINT(seqObj != nullptr, "SeqObject is NULL", );
     if (seqObj->getAlphabet()->getId() != seq.alphabet->getId()) {
         coreLog.error(tr("The sequence & clipboard content have different alphabet"));

@@ -59,7 +59,7 @@ CheckUpdatesTask::CheckUpdatesTask(bool startUp)
 
 void CheckUpdatesTask::run() {
     stateInfo.setDescription(tr("Connecting to updates server"));
-    NetworkConfiguration *nc = AppContext::getAppSettings()->getNetworkConfiguration();
+    NetworkConfiguration* nc = AppContext::getAppSettings()->getNetworkConfiguration();
     SAFE_POINT(nc != nullptr, "Network configuration is null", );
 
     bool isProxy = nc->isProxyUsed(QNetworkProxy::HttpProxy);
@@ -127,8 +127,8 @@ Task::ReportResult CheckUpdatesTask::report() {
 /************************************************************************/
 /* UpdateMessage */
 /************************************************************************/
-UpdateMessage::UpdateMessage(const QString &newVersion) {
-    QWidget *parent = AppContext::getMainWindow()->getQMainWindow();
+UpdateMessage::UpdateMessage(const QString& newVersion) {
+    QWidget* parent = AppContext::getMainWindow()->getQMainWindow();
     const QString message = tr("UGENE %1 is available for downloading.\nWould you like to download and install it?").arg(newVersion);
     const QString title = tr("New Updates");
 
@@ -155,8 +155,8 @@ CheckUpdatesTask::Answer UpdateMessage::getAnswer() const {
 /************************************************************************/
 /* VersionMessage */
 /************************************************************************/
-VersionMessage::VersionMessage(const Version &newVersion) {
-    QWidget *parent = AppContext::getMainWindow()->getQMainWindow();
+VersionMessage::VersionMessage(const Version& newVersion) {
+    QWidget* parent = AppContext::getMainWindow()->getQMainWindow();
     const QString message = getMessageText(Version::appVersion(), newVersion);
     const QString title = tr("Version Information");
 
@@ -178,7 +178,7 @@ CheckUpdatesTask::Answer VersionMessage::getAnswer() const {
     return CheckUpdatesTask::DoNothing;
 }
 
-QString VersionMessage::getMessageText(const Version &thisVersion, const Version &newVersion) const {
+QString VersionMessage::getMessageText(const Version& thisVersion, const Version& newVersion) const {
     QString message = QString("<table>"
                               " <tr><td>%1</td><td><b>&nbsp;%2</b></td></tr>"
                               " <tr><td>%3</td><td><b>&nbsp;%4</b></td></tr>"

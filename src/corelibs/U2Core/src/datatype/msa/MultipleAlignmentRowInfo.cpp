@@ -26,19 +26,19 @@ namespace U2 {
 const QString MultipleAlignmentRowInfo::REVERSED = "reversed";
 const QString MultipleAlignmentRowInfo::COMPLEMENTED = "complemented";
 
-void MultipleAlignmentRowInfo::setReversed(QVariantMap &info, bool reversed) {
+void MultipleAlignmentRowInfo::setReversed(QVariantMap& info, bool reversed) {
     info[REVERSED] = reversed;
 }
 
-bool MultipleAlignmentRowInfo::getReversed(const QVariantMap &info) {
+bool MultipleAlignmentRowInfo::getReversed(const QVariantMap& info) {
     return info.value(REVERSED, false).toBool();
 }
 
-void MultipleAlignmentRowInfo::setComplemented(QVariantMap &info, bool complemented) {
+void MultipleAlignmentRowInfo::setComplemented(QVariantMap& info, bool complemented) {
     info[COMPLEMENTED] = complemented;
 }
 
-bool MultipleAlignmentRowInfo::getComplemented(const QVariantMap &info) {
+bool MultipleAlignmentRowInfo::getComplemented(const QVariantMap& info) {
     return info.value(COMPLEMENTED, false).toBool();
 }
 

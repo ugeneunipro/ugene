@@ -30,11 +30,11 @@ namespace U2 {
 
 class RepeatFinderTaskFactory {
 public:
-    virtual Task *getTaskInstance(const RepeatFinderSettings &config) const = 0;
+    virtual Task* getTaskInstance(const RepeatFinderSettings& config) const = 0;
     virtual ~RepeatFinderTaskFactory() {
     }
 
-    virtual void setRFResultsListener(Task *, RFResultsListener *) = 0;
+    virtual void setRFResultsListener(Task*, RFResultsListener*) = 0;
 };
 
 }  // namespace U2

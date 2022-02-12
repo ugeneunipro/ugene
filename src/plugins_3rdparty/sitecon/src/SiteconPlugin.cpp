@@ -52,8 +52,8 @@ namespace U2 {
 
 DinucleotitePropertyRegistry SiteconPlugin::dp;
 
-extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
-    SiteconPlugin *plug = new SiteconPlugin();
+extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
+    SiteconPlugin* plug = new SiteconPlugin();
     return plug;
 }
 
@@ -63,15 +63,15 @@ SiteconPlugin::SiteconPlugin()
         ctxADV = new SiteconADVContext(this);
         ctxADV->init();
 
-        QAction *buildAction = new QAction(tr("Build SITECON model..."), this);
+        QAction* buildAction = new QAction(tr("Build SITECON model..."), this);
         buildAction->setObjectName(ToolsMenu::TFBS_SITECON);
         connect(buildAction, SIGNAL(triggered()), SLOT(sl_build()));
         ToolsMenu::addAction(ToolsMenu::TFBS_MENU, buildAction);
     }
 
     LocalWorkflow::SiteconWorkerFactory::init();
-    GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
+    GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
+    XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
     assert(xmlTestFormat != nullptr);
 
     QString defaultDir = QDir::searchPaths(PATH_PREFIX_DATA).first() + "/sitecon_models";
@@ -80,14 +80,14 @@ SiteconPlugin::SiteconPlugin()
         LastUsedDirHelper::setLastUsedDir(defaultDir, SiteconIO::SITECON_ID);
     }
 
-    QDActorPrototypeRegistry *qpfr = AppContext::getQDActorProtoRegistry();
+    QDActorPrototypeRegistry* qpfr = AppContext::getQDActorProtoRegistry();
     assert(qpfr);
     qpfr->registerProto(new QDSiteconActorPrototype());
 
-    GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
+    GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = SiteconAlgorithmTests::createTestFactories();
 
-    foreach (XMLTestFactory *f, l->qlist) {
+    foreach (XMLTestFactory* f, l->qlist) {
         bool res = xmlTestFormat->registerTestFactory(f);
         Q_UNUSED(res);
         assert(res);
@@ -98,7 +98,7 @@ SiteconPlugin::~SiteconPlugin() {
 }
 
 void SiteconPlugin::sl_build() {
-    QWidget *p = (QWidget *)(AppContext::getMainWindow()->getQMainWindow());
+    QWidget* p = (QWidget*)(AppContext::getMainWindow()->getQMainWindow());
     QObjectScopedPointer<SiteconBuildDialogController> d = new SiteconBuildDialogController(this, p);
     d->exec();
 }
@@ -107,30 +107,30 @@ void SiteconPlugin::sl_search() {
     assert(false);
 }
 
-SiteconADVContext::SiteconADVContext(QObject *p)
+SiteconADVContext::SiteconADVContext(QObject* p)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID) {
 }
 
-void SiteconADVContext::initViewContext(GObjectView *view) {
-    AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(view);
-    ADVGlobalAction *a = new ADVGlobalAction(av, QIcon(":sitecon/images/sitecon.png"), tr("Find TFBS with SITECON..."), 80);
+void SiteconADVContext::initViewContext(GObjectView* view) {
+    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(view);
+    ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":sitecon/images/sitecon.png"), tr("Find TFBS with SITECON..."), 80);
     a->setObjectName("SITECON");
     a->addAlphabetFilter(DNAAlphabet_NUCL);
     connect(a, SIGNAL(triggered()), SLOT(sl_search()));
 }
 
 void SiteconADVContext::sl_search() {
-    GObjectViewAction *action = qobject_cast<GObjectViewAction *>(sender());
-    AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(action->getObjectView());
+    GObjectViewAction* action = qobject_cast<GObjectViewAction*>(sender());
+    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
 
-    ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
+    ADVSequenceObjectContext* seqCtx = av->getActiveSequenceContext();
     assert(seqCtx->getAlphabet()->isNucleic());
     QObjectScopedPointer<SiteconSearchDialogController> d = new SiteconSearchDialogController(seqCtx, av->getWidget());
     d->exec();
 }
 
-QList<XMLTestFactory *> SiteconAlgorithmTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> SiteconAlgorithmTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_CalculateACGTContent::createFactory());
     res.append(GTest_CalculateDispersionAndAverage::createFactory());
     res.append(GTest_DiPropertySiteconCheckAttribs::createFactory());

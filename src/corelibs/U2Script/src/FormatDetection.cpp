@@ -26,7 +26,7 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentUtils.h>
 
-static U2Format fromFormatId(const U2::DocumentFormatId &id) {
+static U2Format fromFormatId(const U2::DocumentFormatId& id) {
     if (U2::BaseDocumentFormats::ABIF == id) {
         return U2_ABI;
     } else if (U2::BaseDocumentFormats::ACE == id) {
@@ -60,7 +60,7 @@ static U2Format fromFormatId(const U2::DocumentFormatId &id) {
 
 extern "C" {
 
-U2SCRIPT_EXPORT U2ErrorType detectFileFormat(const wchar_t *_pathToFile, U2Format *format) {
+U2SCRIPT_EXPORT U2ErrorType detectFileFormat(const wchar_t* _pathToFile, U2Format* format) {
     const QString pathToFile = QString::fromWCharArray(_pathToFile);
     QFileInfo info(pathToFile);
     if (nullptr == pathToFile || !info.isFile() || !info.exists()) {
