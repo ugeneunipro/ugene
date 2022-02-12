@@ -340,21 +340,21 @@ bool SwissProtPlainTextFormat::isNewAnnotationFormat(const QVariant &dateList, U
 
         QRegularExpression re("[0-9]{2}-[A-Z]{3}-[0-9]{4}");
         QRegularExpressionMatch match = re.match(dateLine.toString());
-        CHECK_OPERATIONS(match.hasMatch(), si.addWarning(tr("The DT string doesn't contain date.")), continue);
+        CHECK_EXT_CONTINUE(match.hasMatch(), si.addWarning(tr("The DT string doesn't contain date.")));
 
         QRegularExpression dateRe("^(\\d\\d)-(\\w\\w\\w)-(\\d\\d\\d\\d)$");
         QRegularExpressionMatch dateMatch = dateRe.match(match.captured());
-        CHECK_OPERATIONS(dateMatch.hasMatch(), si.addWarning(tr("The format of the date is unexpected.")), continue);
+        CHECK_EXT_CONTINUE(dateMatch.hasMatch(), si.addWarning(tr("The format of the date is unexpected.")));
 
         bool ok = false;
         int day = dateMatch.captured(1).toInt(&ok);
-        CHECK_OPERATIONS(ok, si.addWarning(tr("Day is incorrect.")), continue);
+        CHECK_EXT_CONTINUE(ok, si.addWarning(tr("Day is incorrect.")));
 
         int mounth = MONTH_STRING_2_INT.value(dateMatch.captured(2), -1);
-        CHECK_OPERATIONS(mounth != -1, si.addWarning(tr("Mounth is incorrect.")), continue);
+        CHECK_EXT_CONTINUE(mounth != -1, si.addWarning(tr("Mounth is incorrect.")));
 
         int year = dateMatch.captured(3).toInt(&ok);
-        CHECK_OPERATIONS(ok, si.addWarning(tr("Year is incorrect.")), continue);
+        CHECK_EXT_CONTINUE(ok, si.addWarning(tr("Year is incorrect.")));
 
         QDate date(year, mounth, day);
         if (date >= UPDATE_DATE) {

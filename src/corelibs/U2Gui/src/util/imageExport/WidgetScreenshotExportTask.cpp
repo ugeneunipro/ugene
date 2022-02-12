@@ -87,7 +87,9 @@ void WidgetScreenshotExportToPdfTask::run() {
     painter.setRenderHint(QPainter::Antialiasing);
     painter.begin(&printer);
     widget->render(&painter);
-    CHECK_OPERATION(painter.end(), setError(EXPORT_FAIL_MESSAGE.arg(settings.fileName)));
+    if (!painter.end()) {
+        setError(EXPORT_FAIL_MESSAGE.arg(settings.fileName));
+    };
 }
 
 void WidgetScreenshotExportToBitmapTask::run() {
@@ -98,8 +100,9 @@ void WidgetScreenshotExportToBitmapTask::run() {
 
     image = image.scaled(settings.imageSize, Qt::KeepAspectRatio);
 
-    CHECK_OPERATION(image.save(settings.fileName, qPrintable(settings.format), settings.imageQuality),
-                    setError(EXPORT_FAIL_MESSAGE.arg(settings.fileName)));
+    if (!image.save(settings.fileName, QtPrivate::asString(settings.format).toLocal8Bit().constData(), settings.imageQuality)) {
+        setError(EXPORT_FAIL_MESSAGE.arg(settings.fileName));
+    }
 }
 
 WidgetScreenshotImageExportController::WidgetScreenshotImageExportController(QWidget *widget)

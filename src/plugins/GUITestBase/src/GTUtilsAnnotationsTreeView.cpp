@@ -118,7 +118,7 @@ QList<U2Region> GTUtilsAnnotationsTreeView::getAnnotatedRegions(HI::GUITestOpSta
     QList<QTreeWidgetItem *> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());
     for (QTreeWidgetItem *item : qAsConst(treeItems)) {
         auto annotationItem = dynamic_cast<AVAnnotationItem *>(item);
-        CHECK_OPERATION(annotationItem != nullptr, continue);
+        CHECK_CONTINUE(annotationItem != nullptr);
         res.append(annotationItem->annotation->getRegions().toList());
     }
     return res;
@@ -132,7 +132,7 @@ QList<U2Region> GTUtilsAnnotationsTreeView::getSelectedAnnotatedRegions(HI::GUIT
     QList<QTreeWidgetItem *> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());
     for (QTreeWidgetItem *item : qAsConst(treeItems)) {
         auto annotationItem = dynamic_cast<AVAnnotationItem *>(item);
-        CHECK_OPERATION(annotationItem != nullptr, continue);
+        CHECK_CONTINUE(annotationItem != nullptr);
         CHECK_CONTINUE(annotationItem->isSelected());
         res.append(annotationItem->annotation->getRegions().toList());
     }

@@ -104,14 +104,14 @@ QList<GObject *> DbiDocumentFormat::prepareObjects(DbiConnection &handle, const 
 
         U2Object object;
         handle.dbi->getObjectDbi()->getObject(object, dataId, status);
-        CHECK_OPERATION(!status.isCoR(), continue);
+        CHECK_CONTINUE(!status.isCoR());
 
         if (object.visualName.isEmpty()) {
             object.visualName = "Unnamed object";
         }
 
         GObject *gobject = GObjectUtils::createObject(ref.dbiRef, dataId, object.visualName);
-        CHECK_OPERATION(gobject != nullptr, continue);
+        CHECK_CONTINUE(gobject != nullptr);
 
         match[dataId] = gobject;
         objects << gobject;

@@ -330,7 +330,7 @@ static QList<Document *> loadMulti(const QVariantMap &fs, U2OpStatus &os) {
         conf.bestMatchesOnly = false;
         GUrl gurl(url);
         QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(gurl, conf);
-        CHECK_OPERATION(!formats.isEmpty(), continue);
+        CHECK_CONTINUE(!formats.isEmpty());
 
         int len = 100 / urls.size();
         U2OpStatusChildImpl localOs(&os, U2OpStatusMapping(curentDocIdx * len, (curentDocIdx == urls.size() - 1) ? (100 - curentDocIdx * len) : len));

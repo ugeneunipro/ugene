@@ -35,9 +35,11 @@ namespace U2 {
 /* TRANSLATOR U2::ServiceRegistryImpl */
 
 ServiceRegistryImpl::~ServiceRegistryImpl() {
-    foreach (Service *s, services) {
-        CHECK_OPERATIONS(s->isDisabled(), assert(false), continue);
-        delete s;
+    for (Service *service : qAsConst(services)) {
+        U2_ASSERT(service->isDisabled());
+        if (service->isDisabled()) {
+            delete service;
+        }
     }
     SAFE_POINT(activeServiceTasks.isEmpty(), QString("There are active service tasks before deleting service registry"), );
 }

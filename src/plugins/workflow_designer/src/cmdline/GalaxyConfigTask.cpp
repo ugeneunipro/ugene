@@ -288,9 +288,9 @@ bool GalaxyConfigTask::getWorkflowName() {
     int nameStartPosition = schemeContent.lastIndexOf(Constants::BODY_START);
     nameStartPosition += Constants::BODY_START.length() + 1;
     const int nameEndPosition = schemeContent.indexOf(Constants::BLOCK_START, nameStartPosition);
-    CHECK_OPERATIONS(nameEndPosition != SUBSTRING_NOT_FOUND,
-                     stateInfo.setError("Workflow file is corrupted. It does not contain start of body block"),
-                     return false;);
+    CHECK_EXT(nameEndPosition != SUBSTRING_NOT_FOUND,
+              stateInfo.setError("Workflow file is corrupted. It does not contain start of body block"),
+              false);
     const int nameLength = nameEndPosition - nameStartPosition;
 
     galaxyToolName = schemeContent.mid(nameStartPosition, nameLength);
@@ -309,12 +309,12 @@ bool GalaxyConfigTask::getParameterValue(const QString &keyword, const int searc
 
     const int parameterStartPosition = schemeContent.indexOf(Constants::COLON, keywordPosition) + 1,
               parameterEndPosition = schemeContent.indexOf(Constants::SEMICOLON, parameterStartPosition);
-    CHECK_OPERATIONS(parameterStartPosition != SUBSTRING_NOT_FOUND,
-                     stateInfo.setError("Workflow file is corrupted. Begin of alias value is not found"),
-                     return false;);
-    CHECK_OPERATIONS(parameterEndPosition != SUBSTRING_NOT_FOUND,
-                     stateInfo.setError("Worklow file is corrupted. End of alias value is not found"),
-                     return false;);
+    CHECK_EXT(parameterStartPosition != SUBSTRING_NOT_FOUND,
+              stateInfo.setError("Workflow file is corrupted. Begin of alias value is not found"),
+              false);
+    CHECK_EXT(parameterEndPosition != SUBSTRING_NOT_FOUND,
+              stateInfo.setError("Worklow file is corrupted. End of alias value is not found"),
+              false);
     const int parameterLength = parameterEndPosition - parameterStartPosition;
     parameterValue = schemeContent.mid(parameterStartPosition, parameterLength);
 
@@ -324,21 +324,21 @@ bool GalaxyConfigTask::getParameterValue(const QString &keyword, const int searc
 
 bool GalaxyConfigTask::defineAliases() {
     int aliasesStartPosition = schemeContent.indexOf(Constants::PARAM_ALIASES_START);
-    CHECK_OPERATIONS(aliasesStartPosition != SUBSTRING_NOT_FOUND,
-                     setError(Constants::PARAM_ALIASES_START),
-                     return false;);
+    CHECK_EXT(aliasesStartPosition != SUBSTRING_NOT_FOUND,
+              setError(Constants::PARAM_ALIASES_START),
+              false);
     aliasesStartPosition += Constants::PARAM_ALIASES_START.length();
     const int visualKeywordPosition = schemeContent.indexOf(Constants::VISUAL_START, aliasesStartPosition);
-    CHECK_OPERATIONS(visualKeywordPosition != SUBSTRING_NOT_FOUND,
-                     setError(Constants::VISUAL_START),
-                     return false;);
+    CHECK_EXT(visualKeywordPosition != SUBSTRING_NOT_FOUND,
+              setError(Constants::VISUAL_START),
+              false);
 
     int elementNameStartPosition = schemeContent.indexOf(QRegExp("[a-z]"), aliasesStartPosition);
     while (elementNameStartPosition < visualKeywordPosition) {
         const int elementNameEndPosition = schemeContent.indexOf(Constants::DOT, elementNameStartPosition);
-        CHECK_OPERATIONS(elementNameEndPosition != SUBSTRING_NOT_FOUND,
-                         stateInfo.setError("Workflow file contains wrong alias"),
-                         return false;);
+        CHECK_EXT(elementNameEndPosition != SUBSTRING_NOT_FOUND,
+                  stateInfo.setError("Workflow file contains wrong alias"),
+                  false);
         const int elementNameLength = elementNameEndPosition - elementNameStartPosition;
         QString elementName = schemeContent.mid(elementNameStartPosition, elementNameLength);
         elementName.replace(QRegExp("[0-9]$"), "");

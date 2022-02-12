@@ -247,7 +247,7 @@ void CircularViewContext::toggleViews(AnnotatedDNAView *av) {
     foreach (ADVSequenceWidget *sw, sWidgets) {
         SAFE_POINT(sw != nullptr, "ADVSequenceWidget is NULL", );
         CircularViewAction *a = qobject_cast<CircularViewAction *>(sw->getADVSequenceWidgetAction(CIRCULAR_ACTION_NAME));
-        CHECK_OPERATION(a != nullptr, continue);
+        CHECK_CONTINUE(a != nullptr);
         // if there is at least one opened CV, close them all
         if (a->isChecked()) {
             openAll = false;
@@ -259,7 +259,7 @@ void CircularViewContext::toggleViews(AnnotatedDNAView *av) {
         foreach (ADVSequenceWidget *sw, sWidgets) {
             SAFE_POINT(sw != nullptr, "ADVSequenceWidget is NULL", );
             CircularViewAction *a = qobject_cast<CircularViewAction *>(sw->getADVSequenceWidgetAction(CIRCULAR_ACTION_NAME));
-            CHECK_OPERATION(a != nullptr, continue);
+            CHECK_CONTINUE(a != nullptr);
             a->trigger();
         }
     }

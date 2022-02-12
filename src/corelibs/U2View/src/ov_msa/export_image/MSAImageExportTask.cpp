@@ -112,9 +112,11 @@ void MSAImageExportToBitmapTask::run() {
     bool exportAll = msaSettings.exportAll;
 
     bool ok = (exportAll && mObj->getLength() > 0 && mObj->getRowCount() > 0) || (!msaSettings.region.isEmpty() && !msaSettings.seqIdx.isEmpty());
-    CHECK_OPERATION(ok, mObj->unlockState(lock));
-    CHECK_EXT(ok, setError(tr("Nothing to export")), );
-
+    if (!ok) {
+        mObj->unlockState(lock);
+        setError(tr("Nothing to export"));
+        return;
+    }
     if (exportAll) {
         msaSettings.region = U2Region(0, mObj->getLength());
         QList<int> seqIdx;
@@ -151,8 +153,11 @@ void MSAImageExportToBitmapTask::run() {
     }
 
     ok = paintContent(sequencesPainter);
-    CHECK_OPERATION(ok, mObj->unlockState(lock));
-    CHECK_EXT(ok, setError(tr("Alignment is too big. ") + EXPORT_FAIL_MESSAGE.arg(settings.fileName)), );
+    if (!ok) {
+        mObj->unlockState(lock);
+        setError(tr("Alignment is too big. ") + EXPORT_FAIL_MESSAGE.arg(settings.fileName));
+        return;
+    }
 
     paintSequencesNames(namesPainter);
     paintConsensus(consensusPainter);

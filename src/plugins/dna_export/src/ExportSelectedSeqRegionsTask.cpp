@@ -161,10 +161,14 @@ void CreateExportItemsFromSeqRegionsTask::run() {
 
         stateInfo.setProgress(100 * ++regionCount / regions.size());
 
-        const qint64 endPos = r.endPos();
+        qint64 endPos = r.endPos();
         CHECK_CONTINUE(!(r.startPos == 0 && endPos == seqLength));
-        CHECK_OPERATIONS(r.startPos != 0, startItem = ei, continue);
-        CHECK_OPERATIONS(endPos != seqLength, endItem = ei, continue);
+
+        if (r.startPos == 0) {
+            startItem = ei;
+        } else if (endPos == seqLength) {
+            endItem = ei;
+        }
     }
 
     if (!startItem.isEmpty() && !endItem.isEmpty() && seqObject->isCircular()) {
