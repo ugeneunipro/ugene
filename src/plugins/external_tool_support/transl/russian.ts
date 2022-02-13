@@ -200,7 +200,7 @@
     </message>
     <message>
         <location filename="../src/blast/BlastLocalSearchDialog.ui" line="269"/>
-        <source>Number of CPUs being used</source>
+        <source>Number of threads</source>
         <translation>Использовать процессоров</translation>
     </message>
     <message>
@@ -1620,7 +1620,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="227"/>
-        <source>Number of CPUs being used</source>
+        <source>Number of threads</source>
         <translation>Использовать процессоров</translation>
     </message>
     <message>
