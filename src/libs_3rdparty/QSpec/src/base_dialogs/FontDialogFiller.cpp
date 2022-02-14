@@ -31,7 +31,7 @@ namespace HI {
 #define GT_CLASS_NAME "GTUtilsDialog::FontDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void FontDialogFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    GTWidget::getActiveModalWidget(os);
     GTGlobals::sleep();
 
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
