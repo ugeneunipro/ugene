@@ -20,6 +20,7 @@
  */
 
 #include "OrfDialogFiller.h"
+#include <primitives/GTWidget.h>
 
 #include <QApplication>
 

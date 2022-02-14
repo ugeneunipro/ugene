@@ -20,6 +20,7 @@
  */
 
 #include "CreateFragmentDialogFiller.h"
+#include <primitives/GTWidget.h>
 
 #include <QApplication>
 

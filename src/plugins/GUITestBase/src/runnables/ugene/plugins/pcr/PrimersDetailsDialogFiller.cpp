@@ -20,6 +20,7 @@
  */
 
 #include "PrimersDetailsDialogFiller.h"
+#include <primitives/GTWidget.h>
 
 #include <QApplication>
 

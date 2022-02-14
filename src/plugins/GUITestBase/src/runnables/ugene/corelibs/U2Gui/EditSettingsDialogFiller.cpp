@@ -21,6 +21,7 @@
 
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTRadioButton.h>
+#include <primitives/GTWidget.h>
 
 #include <QApplication>
 

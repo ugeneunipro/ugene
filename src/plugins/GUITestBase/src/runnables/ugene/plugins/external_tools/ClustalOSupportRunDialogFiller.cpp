@@ -20,6 +20,7 @@
  */
 
 #include "ClustalOSupportRunDialogFiller.h"
+#include <primitives/GTWidget.h>
 
 #include <QApplication>
 
