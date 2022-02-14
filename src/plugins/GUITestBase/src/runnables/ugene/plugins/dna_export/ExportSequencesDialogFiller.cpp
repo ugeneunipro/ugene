@@ -59,8 +59,7 @@ ExportSelectedRegionFiller::ExportSelectedRegionFiller(HI::GUITestOpStatus &os, 
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportSelectedRegionFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     QLineEdit *lineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "fileNameEdit", dialog));
     GT_CHECK(lineEdit != nullptr, "File name line edit not found");
@@ -125,8 +124,7 @@ ExportSequenceOfSelectedAnnotationsFiller::ExportSequenceOfSelectedAnnotationsFi
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportSequenceOfSelectedAnnotationsFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     QLineEdit *fileNameEdit = dialog->findChild<QLineEdit *>("fileNameEdit");
     GT_CHECK(fileNameEdit != nullptr, "fileNameEdit not found");

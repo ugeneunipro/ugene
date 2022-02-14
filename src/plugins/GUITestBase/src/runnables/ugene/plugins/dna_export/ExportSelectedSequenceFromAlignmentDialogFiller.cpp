@@ -59,8 +59,7 @@ ExportSelectedSequenceFromAlignment::ExportSelectedSequenceFromAlignment(HI::GUI
 
 #define GT_METHOD_NAME "run"
 void ExportSelectedSequenceFromAlignment::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     QLineEdit *lineEdit = dialog->findChild<QLineEdit *>();
     GT_CHECK(lineEdit != nullptr, "line edit not found");

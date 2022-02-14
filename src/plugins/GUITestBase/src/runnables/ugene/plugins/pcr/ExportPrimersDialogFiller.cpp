@@ -48,8 +48,7 @@ void ExportPrimersDialogFiller::commonScenario() {
 
 #define GT_METHOD_NAME "getDialog"
 QWidget *ExportPrimersDialogFiller::getDialog(HI::GUITestOpStatus &os) {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK_RESULT(nullptr != dialog, "Active modal dialog is NULL", nullptr);
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
     return dialog;
 }
 #undef GT_METHOD_NAME

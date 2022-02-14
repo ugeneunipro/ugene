@@ -35,8 +35,7 @@ using namespace HI;
 #define GT_METHOD_NAME "commonScenario"
 
 void AliasesDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
     GTGlobals::sleep(500);
 
     QTableView *table = qobject_cast<QTableView *>(GTWidget::findWidget(os, "paramAliasesTableWidget", dialog));

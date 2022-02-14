@@ -86,8 +86,7 @@ void ExportAnnotationsFiller::init(const QString &exportToFileParam) {
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportAnnotationsFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     QLineEdit *lineEdit = dialog->findChild<QLineEdit *>("fileNameEdit");
     GT_CHECK(lineEdit != nullptr, "line edit not found");

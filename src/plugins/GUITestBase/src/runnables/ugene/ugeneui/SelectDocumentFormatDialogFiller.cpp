@@ -36,8 +36,7 @@ SelectDocumentFormatDialogFiller::SelectDocumentFormatDialogFiller(HI::GUITestOp
 #define GT_CLASS_NAME "GTUtilsDialog::SelectDocumentFormatDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void SelectDocumentFormatDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }

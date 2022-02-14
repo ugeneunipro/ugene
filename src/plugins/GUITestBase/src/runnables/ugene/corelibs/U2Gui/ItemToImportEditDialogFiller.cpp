@@ -39,8 +39,7 @@ ItemToImportEditDialogFiller::ItemToImportEditDialogFiller(HI::GUITestOpStatus &
 
 #define GT_METHOD_NAME "commonScenario"
 void ItemToImportEditDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(nullptr != dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     ImportOptionsWidget *optionsWidget = qobject_cast<ImportOptionsWidget *>(GTWidget::findWidget(os, "optionsWidget", dialog));
     GT_CHECK(nullptr != optionsWidget, "optionsWidget is NULL");

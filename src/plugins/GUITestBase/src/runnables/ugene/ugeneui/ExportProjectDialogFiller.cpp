@@ -35,8 +35,7 @@ using namespace HI;
 #define GT_CLASS_NAME "GTUtilsDialog::ExportProjectDialogChecker"
 #define GT_METHOD_NAME "commonScenario"
 void ExportProjectDialogChecker::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     QLineEdit *projectFileLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectFilePathEdit", dialog));
     GT_CHECK(projectFileLineEdit != nullptr, "projectFilePathEdit is not found");
@@ -53,8 +52,7 @@ void ExportProjectDialogChecker::commonScenario() {
 #define GT_CLASS_NAME "GTUtilsDialog::ExportProjectDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void ExportProjectDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     QLineEdit *projectFileLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectFilePathEdit", dialog));
     GT_CHECK(projectFileLineEdit != nullptr, "LineEdit is NULL");

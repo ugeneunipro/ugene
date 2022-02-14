@@ -31,8 +31,7 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::StartupDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void WorkflowMetaDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     QLineEdit *urlEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "urlEdit", dialog));
     GT_CHECK(urlEdit, "urlEdit not found");

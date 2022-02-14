@@ -39,8 +39,7 @@ ClustalWDialogFiller::ClustalWDialogFiller(HI::GUITestOpStatus &_os, int _gapOpe
 
 #define GT_METHOD_NAME "commonScenario"
 void ClustalWDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     if (gapOpenVal) {
         QCheckBox *gapOpenCheckBox = dialog->findChild<QCheckBox *>("gapOpenCheckBox");

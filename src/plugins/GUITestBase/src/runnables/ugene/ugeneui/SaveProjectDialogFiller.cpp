@@ -27,8 +27,7 @@
 
 namespace U2 {
 void SaveProjectDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    CHECK_SET_ERR(dialog, "save project dialog not found");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     GTUtilsDialog::clickButtonBox(os, dialog, b);
 }

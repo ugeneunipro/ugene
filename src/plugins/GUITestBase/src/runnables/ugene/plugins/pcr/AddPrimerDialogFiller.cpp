@@ -39,8 +39,7 @@ AddPrimerDialogFiller::AddPrimerDialogFiller(HI::GUITestOpStatus &os, const Para
 #define GT_CLASS_NAME "GTUtilsDialog::AddPrimerDialogFiller"
 #define GT_METHOD_NAME "run"
 void AddPrimerDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     QLineEdit *primerEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "primerEdit", dialog));
     GT_CHECK(primerEdit, "primerEdit is NULL");

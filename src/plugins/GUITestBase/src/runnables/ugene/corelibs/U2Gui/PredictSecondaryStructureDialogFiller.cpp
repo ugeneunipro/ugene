@@ -54,8 +54,7 @@ PredictSecondaryStructureDialogFiller::PredictSecondaryStructureDialogFiller(HI:
 
 #define GT_METHOD_NAME "commonScenario"
 void PredictSecondaryStructureDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     QLineEdit *startLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "start_edit_line", dialog));
     GT_CHECK(startLineEdit != nullptr, "Start lineEdit is NULL");
@@ -79,8 +78,7 @@ void PredictSecondaryStructureDialogFiller::commonScenario() {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }

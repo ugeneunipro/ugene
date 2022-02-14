@@ -36,8 +36,7 @@ CreateFragmentDialogFiller::CreateFragmentDialogFiller(HI::GUITestOpStatus &os, 
 #define GT_CLASS_NAME "GTUtilsDialog::CreateFragmentDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void CreateFragmentDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }

@@ -41,8 +41,7 @@ public:
     void run(HI::GUITestOpStatus &os) {
         AppSettingsDialogFiller::clearToolPath(os, toolName);
 
-        QWidget *dialog = QApplication::activeModalWidget();
-        CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+        QWidget *dialog = GTWidget::getActiveModalWidget(os);
         GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
     }
 
@@ -60,8 +59,7 @@ public:
         bool isValid = AppSettingsDialogFiller::isExternalToolValid(os, toolName);
         CHECK_SET_ERR(isValid, QString("External Tool %1 is not valid, byu should be").arg(toolName));
 
-        QWidget *dialog = QApplication::activeModalWidget();
-        CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+        QWidget *dialog = GTWidget::getActiveModalWidget(os);
         GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
     }
 
@@ -78,8 +76,7 @@ public:
     void run(HI::GUITestOpStatus &os) {
         AppSettingsDialogFiller::setExternalToolPath(os, toolName, url);
 
-        QWidget *dialog = QApplication::activeModalWidget();
-        CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+        QWidget *dialog = GTWidget::getActiveModalWidget(os);
         GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
     }
 

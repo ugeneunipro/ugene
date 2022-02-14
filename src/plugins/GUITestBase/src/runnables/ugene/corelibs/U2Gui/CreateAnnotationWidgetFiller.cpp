@@ -61,8 +61,7 @@ CreateAnnotationWidgetFiller::CreateAnnotationWidgetFiller(HI::GUITestOpStatus &
 #define GT_METHOD_NAME "commonScenario"
 
 void CreateAnnotationWidgetFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     if (newTableRB) {
         GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton *>(os, "rbCreateNewTable", dialog));

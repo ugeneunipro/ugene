@@ -60,8 +60,7 @@ ExportDocumentDialogFiller::ExportDocumentDialogFiller(HI::GUITestOpStatus &_os,
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportDocumentDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     if (!path.isEmpty()) {
         QLineEdit *lineEdit = dialog->findChild<QLineEdit *>("fileNameEdit");

@@ -87,8 +87,7 @@ BuildTreeDialogFiller::BuildTreeDialogFiller(HI::GUITestOpStatus &os, CustomScen
 
 #define GT_METHOD_NAME "commonScenario"
 void BuildTreeDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
     if (saveTree != "default") {
@@ -137,8 +136,7 @@ BuildTreeDialogFillerPhyML::BuildTreeDialogFillerPhyML(HI::GUITestOpStatus &os, 
 
 #define GT_METHOD_NAME "commonScenario"
 void BuildTreeDialogFillerPhyML::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
 

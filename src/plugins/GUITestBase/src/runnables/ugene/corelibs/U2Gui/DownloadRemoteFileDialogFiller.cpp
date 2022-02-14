@@ -235,8 +235,7 @@ void DownloadRemoteFileDialogFiller::clickCancel() {
 #define GT_CLASS_NAME "GTUtilsDialog::RemoteDBDialogFillerDeprecated"
 #define GT_METHOD_NAME "commonScenario"
 void RemoteDBDialogFillerDeprecated::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     if (!resID.isEmpty()) {
         QLineEdit *idLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "idLineEdit", dialog));

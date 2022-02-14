@@ -32,8 +32,7 @@ namespace U2 {
 #define GT_METHOD_NAME "run"
 
 void HmmerSearchDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     QLineEdit *queryHmmFileEdit = GTWidget::findExactWidget<QLineEdit *>(os, "queryHmmFileEdit", dialog);
     GTLineEdit::setText(os, queryHmmFileEdit, profile);

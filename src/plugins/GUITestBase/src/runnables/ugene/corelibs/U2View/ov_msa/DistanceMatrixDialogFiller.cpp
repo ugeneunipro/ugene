@@ -69,8 +69,7 @@ DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(HI::GUITestOpStatus &os, 
 
 #define GT_METHOD_NAME "run"
 void DistanceMatrixDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     QComboBox *algoCombo = dialog->findChild<QComboBox *>("algoCombo");
     if (hamming) {

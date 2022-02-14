@@ -35,8 +35,7 @@ namespace U2 {
 #define GT_CLASS_NAME "SpadesGenomeAssemblyDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void SpadesGenomeAssemblyDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, output, GTGlobals::UseMouse, GTFileDialogUtils::Choose));
     GTWidget::click(os, GTWidget::findWidget(os, "setResultDirNameButton", dialog));

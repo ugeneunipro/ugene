@@ -39,8 +39,7 @@ CommonImportOptionsDialogFiller::CommonImportOptionsDialogFiller(HI::GUITestOpSt
 
 #define GT_METHOD_NAME "commonScenario"
 void CommonImportOptionsDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(nullptr != dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
     GTWidget::clickWindowTitle(os, dialog);
 
     ImportOptionsWidget *optionsWidget = qobject_cast<ImportOptionsWidget *>(GTWidget::findWidget(os, "optionsWidget", dialog));

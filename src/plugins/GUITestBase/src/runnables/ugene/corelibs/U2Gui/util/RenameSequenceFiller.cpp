@@ -36,8 +36,7 @@ namespace U2 {
 #define GT_METHOD_NAME "run"
 
 void RenameSequenceFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
     GT_CHECK(dialog->windowTitle() == "Rename Read" || dialog->windowTitle() == "Rename Sequence", "dialog not found");
 
     QLineEdit *nameEdit = dialog->findChild<QLineEdit *>();

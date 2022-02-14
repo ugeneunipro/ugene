@@ -32,8 +32,7 @@ namespace U2 {
 
 #define GT_METHOD_NAME "commonScenario"
 void FindAnnotationCollocationsDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
 }
@@ -42,8 +41,7 @@ void FindAnnotationCollocationsDialogFiller::commonScenario() {
 #define GT_METHOD_NAME "getPlusButton"
 QToolButton *FindAnnotationCollocationsDialogFiller::getPlusButton() const {
     QToolButton *result = nullptr;
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK_RESULT(dialog, "activeModalWidget is NULL", nullptr);
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     QList<QToolButton *> toolList = dialog->findChildren<QToolButton *>();
     foreach (QToolButton *but, toolList) {
@@ -60,8 +58,7 @@ QToolButton *FindAnnotationCollocationsDialogFiller::getPlusButton() const {
 #define GT_METHOD_NAME "getMinusButtons"
 QList<QToolButton *> FindAnnotationCollocationsDialogFiller::getMinusButtons() const {
     QList<QToolButton *> result;
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK_RESULT(dialog, "activeModalWidget is NULL", result);
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     QList<QToolButton *> toolList = dialog->findChildren<QToolButton *>();
     foreach (QToolButton *but, toolList) {

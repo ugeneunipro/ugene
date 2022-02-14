@@ -44,8 +44,7 @@ ConstructMoleculeDialogFiller::ConstructMoleculeDialogFiller(HI::GUITestOpStatus
 
 #define GT_METHOD_NAME "commonScenario"
 void ConstructMoleculeDialogFiller::commonScenario() {
-    dialog = QApplication::activeModalWidget();
-    GT_CHECK(nullptr != dialog, "activeModalWidget is NULL");
+    dialog = GTWidget::getActiveModalWidget(os);
 
     foreach (const Action &action, actions) {
         CHECK_OP(os, );

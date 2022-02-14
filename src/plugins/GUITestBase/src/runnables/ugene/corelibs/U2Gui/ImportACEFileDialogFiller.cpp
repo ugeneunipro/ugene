@@ -51,8 +51,7 @@ ImportACEFileFiller::ImportACEFileFiller(HI::GUITestOpStatus &os, CustomScenario
 
 void ImportACEFileFiller::commonScenario() {
     GTGlobals::sleep(500);
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     if (isReadOnly) {
         QRadioButton *rb = GTWidget::findExactWidget<QRadioButton *>(os, "0_radio", dialog);

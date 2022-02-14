@@ -685,8 +685,7 @@ void GTUtilsWorkflowDesigner::toggleDebugMode(HI::GUITestOpStatus &os, bool enab
         }
 
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            GT_CHECK(dialog, "activeModalWidget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             GTTreeWidget::click(os, GTTreeWidget::findItem(os, GTWidget::findExactWidget<QTreeWidget *>(os, "tree"), "  Workflow Designer"));
             GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox *>(os, "debuggerBox"), enable);

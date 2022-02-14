@@ -94,7 +94,7 @@ ImportAnnotationsToCsvFiller::ImportAnnotationsToCsvFiller(GUITestOpStatus &_os,
 
 #define GT_METHOD_NAME "run"
 void RoleFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
     QCheckBox *addOffsetCheckBox = dialog->findChild<QCheckBox *>("startOffsetCheck");
     QSpinBox *addOffsetSpinBox = dialog->findChild<QSpinBox *>("startOffsetValue");
     QCheckBox *endPosCheckBox = dialog->findChild<QCheckBox *>("endInclusiveCheck");
@@ -172,8 +172,7 @@ public:
 
 #define GT_METHOD_NAME "run"
 void ImportAnnotationsToCsvFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     QLineEdit *readFileLineEdit = dialog->findChild<QLineEdit *>(QString::fromUtf8("readFileName"));
     GT_CHECK(readFileLineEdit != nullptr, "line edit not found");

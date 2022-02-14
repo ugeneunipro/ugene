@@ -36,8 +36,7 @@ CreateObjectRelationDialogFiller::CreateObjectRelationDialogFiller(HI::GUITestOp
 }
 
 void CreateObjectRelationDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(nullptr != dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
     if (nullptr != QApplication::activeModalWidget()) {

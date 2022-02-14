@@ -40,8 +40,7 @@ SequenceReadingModeSelectorDialogFiller::SequenceReadingModeSelectorDialogFiller
 #define GT_METHOD_NAME "commonScenario"
 void SequenceReadingModeSelectorDialogFiller::commonScenario() {
     GTGlobals::sleep(1000);
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
     QDialogButtonBox *buttonBox = dialog->findChild<QDialogButtonBox *>(QString::fromUtf8("buttonBox"));
     GT_CHECK(buttonBox != nullptr, "buttonBox not found");
     if (cancel) {

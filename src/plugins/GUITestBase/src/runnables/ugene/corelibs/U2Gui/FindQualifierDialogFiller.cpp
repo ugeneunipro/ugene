@@ -44,8 +44,7 @@ FindQualifierFiller::FindQualifierFiller(HI::GUITestOpStatus &os, CustomScenario
 
 #define GT_METHOD_NAME "commonScenario"
 void FindQualifierFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     QLineEdit *nameEdit = dialog->findChild<QLineEdit *>("nameEdit");
     GT_CHECK(nameEdit != nullptr, "nameEdit not found");

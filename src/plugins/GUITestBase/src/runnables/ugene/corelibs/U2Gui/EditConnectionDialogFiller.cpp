@@ -56,8 +56,7 @@ EditConnectionDialogFiller::EditConnectionDialogFiller(HI::GUITestOpStatus &os, 
 #define GT_METHOD_NAME "run"
 
 void EditConnectionDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
     QLineEdit *leName = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "leName", dialog));
     GT_CHECK(leName, "leName is NULL");
     QLineEdit *leHost = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "leHost", dialog));

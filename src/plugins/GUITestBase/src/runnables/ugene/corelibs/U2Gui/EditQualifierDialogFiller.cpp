@@ -43,8 +43,7 @@ using namespace HI;
 #define GT_CLASS_NAME "GTUtilsDialog::EditQualifierFiller"
 #define GT_METHOD_NAME "commonScenario"
 void EditQualifierFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     QLineEdit *nameEdit = dialog->findChild<QLineEdit *>("nameEdit");
     GT_CHECK(nameEdit != nullptr, "line edit not found");

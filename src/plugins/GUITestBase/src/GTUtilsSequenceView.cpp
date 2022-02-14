@@ -71,8 +71,7 @@ public:
         : Filler(_os, "EditSequenceDialog"), str(_str) {
     }
     void commonScenario() {
-        QWidget *widget = QApplication::activeModalWidget();
-        GT_CHECK(widget != nullptr, "active widget not found");
+        QWidget *widget = GTWidget::getActiveModalWidget(os);
 
         QPlainTextEdit *textEdit = widget->findChild<QPlainTextEdit *>();
         GT_CHECK(textEdit != nullptr, "PlainTextEdit not found");
