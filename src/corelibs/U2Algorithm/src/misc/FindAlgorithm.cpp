@@ -83,11 +83,7 @@ public:
     }
 
     StrandContext(const char* data, int arr_size, const char* p)  // using rolling array only in subst mode
-        : rollArr(data, arr_size), pattern(p) {
-    }
-
-    StrandContext()
-        : pattern(nullptr) {
+        : dynTable(0, 0, false), rollArr(data, arr_size), pattern(p) {
     }
 
     static quint64 estimateRamUsageForOneContext(int width, int height) {
@@ -96,7 +92,7 @@ public:
 
     DynTable dynTable;
     RollingArray<char> rollArr;
-    const char* pattern;
+    const char* pattern = nullptr;
     FindAlgorithmResult res;
 };
 
