@@ -58,7 +58,7 @@ const QString GenomeAlignerTask::OPTION_QUAL_THRESHOLD("quality_threshold");
 const QString GenomeAlignerTask::OPTION_READS_MEMORY_SIZE("reads_mem_size");
 const QString GenomeAlignerTask::OPTION_SEQ_PART_SIZE("seq_part_size");
 
-GenomeAlignerTask::GenomeAlignerTask(const DnaAssemblyToRefTaskSettings &_settings, bool _justBuildIndex)
+GenomeAlignerTask::GenomeAlignerTask(const DnaAssemblyToRefTaskSettings& _settings, bool _justBuildIndex)
     : DnaAssemblyToReferenceTask(_settings, TaskFlags_NR_FOSE_COSC, _justBuildIndex),
       loadDbiTask(nullptr),
       createIndexTask(nullptr),
@@ -163,8 +163,8 @@ void GenomeAlignerTask::prepare() {
     }
 }
 
-QList<Task *> GenomeAlignerTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> subTasks;
+QList<Task*> GenomeAlignerTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> subTasks;
 
     if (subTask == unzipTask) {
         subTasks.append(createIndexTask);
@@ -222,7 +222,7 @@ QList<Task *> GenomeAlignerTask::onSubTaskFinished(Task *subTask) {
                                                        index->getSeqLength(),
                                                        referenceSequenceName,
                                                        referenceSequenceUrl);
-            } catch (const QString &exeptionMessage) {
+            } catch (const QString& exeptionMessage) {
                 setError(exeptionMessage);
                 if (nullptr != pWriteTask) {
                     pWriteTask->setFinished();
@@ -292,7 +292,7 @@ QList<Task *> GenomeAlignerTask::onSubTaskFinished(Task *subTask) {
             findTask->setSubtaskProgressWeight(0.0f);
             subTasks.append(findTask);
 
-            Task *loadIndexTask = new LoadIndexTask(index, &alignContext);
+            Task* loadIndexTask = new LoadIndexTask(index, &alignContext);
             loadIndexTask->setSubtaskProgressWeight(0.0f);
             subTasks.append(loadIndexTask);
         }

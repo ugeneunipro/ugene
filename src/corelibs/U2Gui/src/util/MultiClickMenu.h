@@ -34,13 +34,13 @@ namespace U2 {
  */
 class U2GUI_EXPORT MultiClickMenu : public QObject {
 public:
-    MultiClickMenu(QMenu *menu);
+    MultiClickMenu(QMenu* menu);
 
 private:
-    bool eventFilter(QObject *watched, QEvent *event);
-    bool isSelectEvent(QEvent *event);
+    bool eventFilter(QObject* watched, QEvent* event);
+    bool isSelectEvent(QEvent* event);
 
-    QMenu *menu;
+    QMenu* menu;
 };
 
 }  // namespace U2

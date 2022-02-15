@@ -36,7 +36,7 @@ namespace U2 {
 class NewGrouperSlotDialog : public QDialog, public Ui_NewGrouperSlotDialog {
     Q_OBJECT
 public:
-    NewGrouperSlotDialog(QWidget *parent, QList<Descriptor> &inSlots, QStringList &names);
+    NewGrouperSlotDialog(QWidget* parent, QList<Descriptor>& inSlots, QStringList& names);
     void accept();
 
     QString getInSlotId() const;
@@ -50,10 +50,10 @@ private:
 class ActionDialog : public QDialog {
     Q_OBJECT
 public:
-    ActionDialog(QWidget *parent);
+    ActionDialog(QWidget* parent);
     virtual GrouperSlotAction getAction() const = 0;
 
-    static ActionDialog *getActionDialog(QWidget *parent, GrouperSlotAction *action, DataTypePtr type, QAbstractTableModel *grouperModel);
+    static ActionDialog* getActionDialog(QWidget* parent, GrouperSlotAction* action, DataTypePtr type, QAbstractTableModel* grouperModel);
 };
 
 /************************************************************************/
@@ -62,28 +62,28 @@ public:
 class AnnsActionDialog : public ActionDialog, public Ui_AnnsActionDialog {
     Q_OBJECT
 public:
-    AnnsActionDialog(QWidget *parent, GrouperSlotAction *action, QStringList mergeSeqSlots);
+    AnnsActionDialog(QWidget* parent, GrouperSlotAction* action, QStringList mergeSeqSlots);
     virtual GrouperSlotAction getAction() const;
 };
 
 class SequeceActionDialog : public ActionDialog, public Ui_SequeceActionDialog {
     Q_OBJECT
 public:
-    SequeceActionDialog(QWidget *parent, GrouperSlotAction *action);
+    SequeceActionDialog(QWidget* parent, GrouperSlotAction* action);
     virtual GrouperSlotAction getAction() const;
 };
 
 class MsaActionDialog : public ActionDialog, public Ui_MsaActionDialog {
     Q_OBJECT
 public:
-    MsaActionDialog(QWidget *parent, GrouperSlotAction *action);
+    MsaActionDialog(QWidget* parent, GrouperSlotAction* action);
     virtual GrouperSlotAction getAction() const;
 };
 
 class StringActionDialog : public ActionDialog, public Ui_StringActionDialog {
     Q_OBJECT
 public:
-    StringActionDialog(QWidget *parent, GrouperSlotAction *action);
+    StringActionDialog(QWidget* parent, GrouperSlotAction* action);
     virtual GrouperSlotAction getAction() const;
 };
 

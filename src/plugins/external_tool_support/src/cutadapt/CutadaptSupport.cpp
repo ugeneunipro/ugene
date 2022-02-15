@@ -50,9 +50,9 @@ CutadaptSupport::CutadaptSupport()
     validationArguments << "--help";
     toolKitName = "cutadapt";
 
-    U2DataPathRegistry *dpr = AppContext::getDataPathRegistry();
+    U2DataPathRegistry* dpr = AppContext::getDataPathRegistry();
     if (dpr != nullptr) {
-        U2DataPath *dp = new U2DataPath(ADAPTERS_DATA_NAME, QString(PATH_PREFIX_DATA) + ":" + ADAPTERS_DIR_NAME, "", U2DataPath::CutFileExtension);
+        U2DataPath* dp = new U2DataPath(ADAPTERS_DATA_NAME, QString(PATH_PREFIX_DATA) + ":" + ADAPTERS_DIR_NAME, "", U2DataPath::CutFileExtension);
         dpr->registerEntry(dp);
     }
 
@@ -60,4 +60,4 @@ CutadaptSupport::CutadaptSupport()
     dependencies << PythonSupport::ET_PYTHON_ID;
 }
 
-}    //namespace U2
+}  // namespace U2

@@ -41,8 +41,8 @@ public:
 
     bool isVisible(const MaEditorConsElement element) const;
 
-    const QFont &getRulerFont() const;
-    void setRulerFont(const QFont &font);
+    const QFont& getRulerFont() const;
+    void setRulerFont(const QFont& font);
 
     QFont font;
     QList<MaEditorConsElement> order;

@@ -36,7 +36,7 @@ const QString ExternalToolValidation::DEFAULT_DESCR_KEY = "DEFAULT_DESCR";
 
 ////////////////////////////////////////
 // ExternalTool
-ExternalTool::ExternalTool(const QString &id, const QString &dirName, const QString &name, const QString &path)
+ExternalTool::ExternalTool(const QString& id, const QString& dirName, const QString& name, const QString& path)
     : id(id),
       dirName(dirName),
       name(name),
@@ -55,35 +55,35 @@ ExternalTool::ExternalTool(const QString &id, const QString &dirName, const QStr
     }
 }
 
-const QString &ExternalTool::getId() const {
+const QString& ExternalTool::getId() const {
     return id;
 }
 
-const QString &ExternalTool::getName() const {
+const QString& ExternalTool::getName() const {
     return name;
 }
 
-const QString &ExternalTool::getPath() const {
+const QString& ExternalTool::getPath() const {
     return path;
 }
 
-const QIcon &ExternalTool::getIcon() const {
+const QIcon& ExternalTool::getIcon() const {
     return icon;
 }
 
-const QIcon &ExternalTool::getGrayIcon() const {
+const QIcon& ExternalTool::getGrayIcon() const {
     return grayIcon;
 }
 
-const QIcon &ExternalTool::getWarnIcon() const {
+const QIcon& ExternalTool::getWarnIcon() const {
     return warnIcon;
 }
 
-const QString &ExternalTool::getDescription() const {
+const QString& ExternalTool::getDescription() const {
     return description;
 }
 
-const QString &ExternalTool::getToolRunnerProgramId() const {
+const QString& ExternalTool::getToolRunnerProgramId() const {
     return toolRunnerProgram;
 }
 
@@ -91,31 +91,31 @@ QStringList ExternalTool::getToolRunnerAdditionalOptions() const {
     return QStringList();
 }
 
-const QString &ExternalTool::getExecutableFileName() const {
+const QString& ExternalTool::getExecutableFileName() const {
     return executableFileName;
 }
 
-const QString &ExternalTool::getVersion() const {
+const QString& ExternalTool::getVersion() const {
     return version;
 }
 
-const QString &ExternalTool::getPredefinedVersion() const {
+const QString& ExternalTool::getPredefinedVersion() const {
     return predefinedVersion;
 }
 
-const QRegExp &ExternalTool::getVersionRegExp() const {
+const QRegExp& ExternalTool::getVersionRegExp() const {
     return versionRegExp;
 }
 
-const QString &ExternalTool::getToolKitName() const {
+const QString& ExternalTool::getToolKitName() const {
     return toolKitName;
 }
 
-const StrStrMap &ExternalTool::getErrorDescriptions() const {
+const StrStrMap& ExternalTool::getErrorDescriptions() const {
     return errorDescriptions;
 }
 
-const StrStrMap &ExternalTool::getAdditionalInfo() const {
+const StrStrMap& ExternalTool::getAdditionalInfo() const {
     return additionalInfo;
 }
 
@@ -127,11 +127,11 @@ QStringList ExternalTool::getRunParameters() const {
     return QStringList();
 }
 
-void ExternalTool::extractAdditionalParameters(const QString & /*output*/) {
+void ExternalTool::extractAdditionalParameters(const QString& /*output*/) {
     // do nothing
 }
 
-void ExternalTool::performAdditionalChecks(const QString & /*toolPath*/) {
+void ExternalTool::performAdditionalChecks(const QString& /*toolPath*/) {
     // do nothing
 }
 
@@ -140,19 +140,19 @@ ExternalToolValidation ExternalTool::getToolValidation() {
     return result;
 }
 
-const QList<ExternalToolValidation> &ExternalTool::getToolAdditionalValidations() const {
+const QList<ExternalToolValidation>& ExternalTool::getToolAdditionalValidations() const {
     return additionalValidators;
 }
 
-const QStringList &ExternalTool::getDependencies() const {
+const QStringList& ExternalTool::getDependencies() const {
     return dependencies;
 }
 
-const QString &ExternalTool::getAdditionalErrorMessage() const {
+const QString& ExternalTool::getAdditionalErrorMessage() const {
     return additionalErrorMesage;
 }
 
-void ExternalTool::setAdditionalErrorMessage(const QString &message) {
+void ExternalTool::setAdditionalErrorMessage(const QString& message) {
     additionalErrorMesage = message;
 }
 
@@ -160,7 +160,7 @@ bool ExternalTool::hasAdditionalErrorMessage() const {
     return !additionalErrorMesage.isEmpty();
 }
 
-void ExternalTool::setPath(const QString &_path) {
+void ExternalTool::setPath(const QString& _path) {
     if (path != _path) {
         path = _path;
         emit si_pathChanged();
@@ -176,11 +176,11 @@ void ExternalTool::setChecked(bool isChecked) {
     isCheckedTool = isChecked;
 }
 
-void ExternalTool::setVersion(const QString &_version) {
+void ExternalTool::setVersion(const QString& _version) {
     version = _version;
 }
 
-void ExternalTool::setAdditionalInfo(const StrStrMap &newAdditionalInfo) {
+void ExternalTool::setAdditionalInfo(const StrStrMap& newAdditionalInfo) {
     additionalInfo = newAdditionalInfo;
 }
 
@@ -210,11 +210,11 @@ bool ExternalTool::isRunner() const {
 
 ////////////////////////////////////////
 // ExternalToolValidationListener
-ExternalToolValidationListener::ExternalToolValidationListener(const QString &toolId) {
+ExternalToolValidationListener::ExternalToolValidationListener(const QString& toolId) {
     toolIds << toolId;
 }
 
-ExternalToolValidationListener::ExternalToolValidationListener(const QStringList &toolIds)
+ExternalToolValidationListener::ExternalToolValidationListener(const QStringList& toolIds)
     : toolIds(toolIds) {
 }
 
@@ -228,9 +228,9 @@ ExternalToolRegistry::~ExternalToolRegistry() {
     qDeleteAll(toolByLowerCaseIdMap.values());
 }
 
-ExternalTool *ExternalToolRegistry::getByName(const QString &name) const {
-    const QList<ExternalTool *> toolList = toolByLowerCaseIdMap.values();
-    for (ExternalTool *tool : qAsConst(toolList)) {
+ExternalTool* ExternalToolRegistry::getByName(const QString& name) const {
+    const QList<ExternalTool*> toolList = toolByLowerCaseIdMap.values();
+    for (ExternalTool* tool : qAsConst(toolList)) {
         if (tool->getName() == name) {
             return tool;
         }
@@ -238,18 +238,18 @@ ExternalTool *ExternalToolRegistry::getByName(const QString &name) const {
     return nullptr;
 }
 
-ExternalTool *ExternalToolRegistry::getById(const QString &id) const {
+ExternalTool* ExternalToolRegistry::getById(const QString& id) const {
     return toolByLowerCaseIdMap.value(id.toLower(), nullptr);
 }
 
-QString ExternalToolRegistry::getToolNameById(const QString &id) const {
-    ExternalTool *tool = getById(id);
+QString ExternalToolRegistry::getToolNameById(const QString& id) const {
+    ExternalTool* tool = getById(id);
     CHECK(tool != nullptr, QString());
     return tool->getName();
 }
 
-bool ExternalToolRegistry::registerEntry(ExternalTool *tool) {
-    const QString &id = tool->getId();
+bool ExternalToolRegistry::registerEntry(ExternalTool* tool) {
+    const QString& id = tool->getId();
     QString lowerCaseId = id.toLower();
     if (toolByLowerCaseIdMap.contains(lowerCaseId)) {
         return false;
@@ -259,52 +259,52 @@ bool ExternalToolRegistry::registerEntry(ExternalTool *tool) {
     return true;
 }
 
-void ExternalToolRegistry::unregisterEntry(const QString &id) {
+void ExternalToolRegistry::unregisterEntry(const QString& id) {
     QString lowerCaseId = id.toLower();
     CHECK(toolByLowerCaseIdMap.contains(lowerCaseId), );
     emit si_toolIsAboutToBeRemoved(id);
 
-    ExternalTool *et = toolByLowerCaseIdMap.take(lowerCaseId);
+    ExternalTool* et = toolByLowerCaseIdMap.take(lowerCaseId);
     delete et;
 }
 
-QList<ExternalTool *> ExternalToolRegistry::getAllEntries() const {
+QList<ExternalTool*> ExternalToolRegistry::getAllEntries() const {
     return toolByLowerCaseIdMap.values();
 }
 
-QList<QList<ExternalTool *>> ExternalToolRegistry::getAllEntriesSortedByToolKits() const {
-    QMap<QString, QList<ExternalTool *>> toolListByToolKitNameMap;
-    const QList<ExternalTool *> toolList = toolByLowerCaseIdMap.values();
-    for (ExternalTool *tool : qAsConst(toolList)) {
+QList<QList<ExternalTool*>> ExternalToolRegistry::getAllEntriesSortedByToolKits() const {
+    QMap<QString, QList<ExternalTool*>> toolListByToolKitNameMap;
+    const QList<ExternalTool*> toolList = toolByLowerCaseIdMap.values();
+    for (ExternalTool* tool : qAsConst(toolList)) {
         const QString& toolKitName = tool->getToolKitName();
         if (!toolListByToolKitNameMap.contains(toolKitName)) {
-            toolListByToolKitNameMap.insert(toolKitName, QList<ExternalTool *>() << tool);
+            toolListByToolKitNameMap.insert(toolKitName, QList<ExternalTool*>() << tool);
         } else {
-            QList<ExternalTool *> &toolKitTools = toolListByToolKitNameMap[toolKitName];
+            QList<ExternalTool*>& toolKitTools = toolListByToolKitNameMap[toolKitName];
             toolKitTools << tool;
         }
     }
     // Sort tools inside every toolkit tools list by tool name.
-    QList<QList<ExternalTool *>> sortedResultList;
-    const QList<QList<ExternalTool *>> toolkitLists = toolListByToolKitNameMap.values();
-    for (QList<ExternalTool *> toolsList : qAsConst(toolkitLists)) {
-        std::sort(toolsList.begin(), toolsList.end(), [](ExternalTool *t1, ExternalTool *t2) {
+    QList<QList<ExternalTool*>> sortedResultList;
+    const QList<QList<ExternalTool*>> toolkitLists = toolListByToolKitNameMap.values();
+    for (QList<ExternalTool*> toolsList : qAsConst(toolkitLists)) {
+        std::sort(toolsList.begin(), toolsList.end(), [](ExternalTool* t1, ExternalTool* t2) {
             return t1->getName().compare(t2->getName(), Qt::CaseInsensitive) < 0;
         });
         sortedResultList << toolsList;
     }
     // Sort toolkits in the result list by toolkit name.
-    std::sort(sortedResultList.begin(), sortedResultList.end(), [](QList<ExternalTool *> &t1, QList<ExternalTool *> &t2) {
+    std::sort(sortedResultList.begin(), sortedResultList.end(), [](QList<ExternalTool*>& t1, QList<ExternalTool*>& t2) {
         return t1[0]->getToolKitName().compare(t2[0]->getToolKitName(), Qt::CaseInsensitive) < 0;
     });
     return sortedResultList;
 }
 
-void ExternalToolRegistry::setManager(ExternalToolManager *_manager) {
+void ExternalToolRegistry::setManager(ExternalToolManager* _manager) {
     manager = _manager;
 }
 
-ExternalToolManager *ExternalToolRegistry::getManager() const {
+ExternalToolManager* ExternalToolRegistry::getManager() const {
     return manager;
 }
 

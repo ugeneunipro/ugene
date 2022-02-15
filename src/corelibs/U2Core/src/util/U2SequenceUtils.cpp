@@ -44,20 +44,20 @@ namespace U2 {
 const QString U2SequenceDbiHints::UPDATE_SEQUENCE_LENGTH = "update-length";
 const QString U2SequenceDbiHints::EMPTY_SEQUENCE = "empty-sequence";
 
-DNAAlphabetType U2SequenceUtils::alphabetType(const U2EntityRef &ref, U2OpStatus &os) {
+DNAAlphabetType U2SequenceUtils::alphabetType(const U2EntityRef& ref, U2OpStatus& os) {
     DNAAlphabetType res = DNAAlphabet_RAW;
     DbiConnection con(ref.dbiRef, os);
 
     U2Sequence seq = con.dbi->getSequenceDbi()->getSequenceObject(ref.entityId, os);
     CHECK_OP(os, res);
 
-    const DNAAlphabet *al = AppContext::getDNAAlphabetRegistry()->findById(seq.alphabet.id);
+    const DNAAlphabet* al = AppContext::getDNAAlphabetRegistry()->findById(seq.alphabet.id);
     CHECK_EXT(al != nullptr, os.setError(tr("Alphabet is not found!")), res);
 
     return al->getType();
 }
 
-qint64 U2SequenceUtils::length(const U2EntityRef &ref, U2OpStatus &os) {
+qint64 U2SequenceUtils::length(const U2EntityRef& ref, U2OpStatus& os) {
     DbiConnection con(ref.dbiRef, os);
 
     U2Sequence seq = con.dbi->getSequenceDbi()->getSequenceObject(ref.entityId, os);
@@ -66,7 +66,7 @@ qint64 U2SequenceUtils::length(const U2EntityRef &ref, U2OpStatus &os) {
     return seq.length;
 }
 
-U2Sequence U2SequenceUtils::copySequence(const DNASequence &srcSeq, const U2DbiRef &dstDbi, const QString &dstFolder, U2OpStatus &os) {
+U2Sequence U2SequenceUtils::copySequence(const DNASequence& srcSeq, const U2DbiRef& dstDbi, const QString& dstFolder, U2OpStatus& os) {
     U2Sequence res;
     // TODO: ClustalW format does not assign sequence alphabets!
     res.alphabet = srcSeq.alphabet == nullptr ? nullptr : srcSeq.alphabet->getId();
@@ -93,12 +93,12 @@ U2Sequence U2SequenceUtils::copySequence(const DNASequence &srcSeq, const U2DbiR
     return res;
 }
 
-U2Sequence U2SequenceUtils::copySequence(const U2EntityRef &srcSeq, const U2DbiRef &dstDbi, const QString &dstFolder, U2OpStatus &os) {
+U2Sequence U2SequenceUtils::copySequence(const U2EntityRef& srcSeq, const U2DbiRef& dstDbi, const QString& dstFolder, U2OpStatus& os) {
     U2Sequence res;
     DbiConnection srcCon(srcSeq.dbiRef, os);
     CHECK_OP(os, res);
 
-    U2SequenceDbi *srcSeqDbi = srcCon.dbi->getSequenceDbi();
+    U2SequenceDbi* srcSeqDbi = srcCon.dbi->getSequenceDbi();
     SAFE_POINT_EXT(nullptr != srcSeqDbi, os.setError(tr("Invalid sequence DBI")), res);
     U2Sequence seq = srcSeqDbi->getSequenceObject(srcSeq.entityId, os);
     CHECK_OP(os, res);
@@ -114,7 +114,7 @@ U2Sequence U2SequenceUtils::copySequence(const U2EntityRef &srcSeq, const U2DbiR
 
     DbiConnection dstCon(dstDbi, os);
     CHECK_OP(os, res);
-    U2SequenceDbi *dstSeqDbi = dstCon.dbi->getSequenceDbi();
+    U2SequenceDbi* dstSeqDbi = dstCon.dbi->getSequenceDbi();
     SAFE_POINT_EXT(nullptr != dstSeqDbi, os.setError(tr("Invalid sequence DBI")), res);
     dstSeqDbi->createSequenceObject(res, dstFolder, os);
     CHECK_OP(os, res);
@@ -142,11 +142,11 @@ U2Sequence U2SequenceUtils::copySequence(const U2EntityRef &srcSeq, const U2DbiR
     return res;
 }
 
-void U2SequenceUtils::updateSequenceName(const U2EntityRef &entityRef, const QString &newName, U2OpStatus &os) {
+void U2SequenceUtils::updateSequenceName(const U2EntityRef& entityRef, const QString& newName, U2OpStatus& os) {
     DbiConnection con(entityRef.dbiRef, os);
     CHECK_OP(os, );
 
-    U2SequenceDbi *sequenceDbi = con.dbi->getSequenceDbi();
+    U2SequenceDbi* sequenceDbi = con.dbi->getSequenceDbi();
     U2Sequence sequenceObject = sequenceDbi->getSequenceObject(entityRef.entityId, os);
     CHECK_OP(os, );
     if (sequenceObject.visualName != newName) {
@@ -155,12 +155,12 @@ void U2SequenceUtils::updateSequenceName(const U2EntityRef &entityRef, const QSt
     }
 }
 
-static QList<QByteArray> _extractRegions(const U2EntityRef &seqRef, const QVector<U2Region> &regions, const DNATranslation *complTT, U2OpStatus &os) {
+static QList<QByteArray> _extractRegions(const U2EntityRef& seqRef, const QVector<U2Region>& regions, const DNATranslation* complTT, U2OpStatus& os) {
     QList<QByteArray> res;
 
     DbiConnection con(seqRef.dbiRef, os);
     CHECK_OP(os, res);
-    U2SequenceDbi *seqDbi = con.dbi->getSequenceDbi();
+    U2SequenceDbi* seqDbi = con.dbi->getSequenceDbi();
     U2Sequence seq = seqDbi->getSequenceObject(seqRef.entityId, os);
     CHECK_OP(os, res);
 
@@ -168,7 +168,7 @@ static QList<QByteArray> _extractRegions(const U2EntityRef &seqRef, const QVecto
     U2Region::bound(0, seq.length, safeLocation);
 
     for (int i = 0, n = safeLocation.size(); i < n; i++) {
-        const U2Region &oReg = safeLocation.at(i);
+        const U2Region& oReg = safeLocation.at(i);
         if (complTT == nullptr) {
             QByteArray part = seqDbi->getSequenceData(seq.id, U2Region(oReg.startPos, oReg.length), os);
             CHECK_OP(os, QList<QByteArray>());
@@ -184,20 +184,20 @@ static QList<QByteArray> _extractRegions(const U2EntityRef &seqRef, const QVecto
     return res;
 }
 
-QList<QByteArray> U2SequenceUtils::extractRegions(const U2EntityRef &seqRef, const QVector<U2Region> &origLocation, const DNATranslation *complTT, const DNATranslation *aminoTT, bool join, U2OpStatus &os) {
+QList<QByteArray> U2SequenceUtils::extractRegions(const U2EntityRef& seqRef, const QVector<U2Region>& origLocation, const DNATranslation* complTT, const DNATranslation* aminoTT, bool join, U2OpStatus& os) {
     QList<QByteArray> res = _extractRegions(seqRef, origLocation, complTT, os);
     CHECK_OP(os, res)
 
     DbiConnection con(seqRef.dbiRef, os);
     CHECK_OP(os, res);
 
-    U2SequenceDbi *seqDbi = con.dbi->getSequenceDbi();
+    U2SequenceDbi* seqDbi = con.dbi->getSequenceDbi();
     U2Sequence seq = seqDbi->getSequenceObject(seqRef.entityId, os);
     CHECK_OP(os, res);
 
     if (seq.circular && res.size() > 1) {
-        const U2Region &firstL = origLocation.first();
-        const U2Region &lastL = origLocation.last();
+        const U2Region& firstL = origLocation.first();
+        const U2Region& lastL = origLocation.last();
         if (firstL.startPos == 0 && lastL.endPos() == seq.length) {
             QByteArray lastS = res.last();
             QByteArray firstS = res.first();
@@ -218,11 +218,11 @@ QList<QByteArray> U2SequenceUtils::extractRegions(const U2EntityRef &seqRef, con
     return res;
 }
 
-U2EntityRef U2SequenceUtils::import(U2OpStatus &os, const U2DbiRef &dbiRef, const DNASequence &seq, const U2AlphabetId &alphabetId) {
+U2EntityRef U2SequenceUtils::import(U2OpStatus& os, const U2DbiRef& dbiRef, const DNASequence& seq, const U2AlphabetId& alphabetId) {
     return import(os, dbiRef, U2ObjectDbi::ROOT_FOLDER, seq, alphabetId);
 }
 
-U2EntityRef U2SequenceUtils::import(U2OpStatus &os, const U2DbiRef &dbiRef, const QString &folder, const DNASequence &seq, const U2AlphabetId &alphabetId) {
+U2EntityRef U2SequenceUtils::import(U2OpStatus& os, const U2DbiRef& dbiRef, const QString& folder, const DNASequence& seq, const U2AlphabetId& alphabetId) {
     U2EntityRef res;
     U2SequenceImporter i;
 
@@ -246,7 +246,7 @@ U2EntityRef U2SequenceUtils::import(U2OpStatus &os, const U2DbiRef &dbiRef, cons
     return res;
 }
 
-void U2SequenceUtils::setQuality(const U2EntityRef &entityRef, const DNAQuality &q) {
+void U2SequenceUtils::setQuality(const U2EntityRef& entityRef, const DNAQuality& q) {
     U2OpStatus2Log os;
     DbiConnection con(entityRef.dbiRef, os);
     CHECK_OP(os, );
@@ -271,7 +271,7 @@ void U2SequenceUtils::setQuality(const U2EntityRef &entityRef, const DNAQuality 
     CHECK_OP(os, );
 }
 
-void U2SequenceUtils::setSequenceInfo(U2OpStatus &os, const U2EntityRef &entityRef, const QVariantMap &info) {
+void U2SequenceUtils::setSequenceInfo(U2OpStatus& os, const U2EntityRef& entityRef, const QVariantMap& info) {
     DbiConnection con(entityRef.dbiRef, os);
     CHECK_OP(os, );
     QList<U2DataId> chainIdList = con.dbi->getAttributeDbi()->getObjectAttributes(entityRef.entityId, DNAInfo::CHAIN_ID, os);
@@ -303,7 +303,7 @@ void U2SequenceUtils::setSequenceInfo(U2OpStatus &os, const U2EntityRef &entityR
     CHECK_OP(os, );
 }
 
-QVariantMap U2SequenceUtils::getSequenceInfo(U2OpStatus &os, const U2EntityRef &entityRef, const QString &name) {
+QVariantMap U2SequenceUtils::getSequenceInfo(U2OpStatus& os, const U2EntityRef& entityRef, const QString& name) {
     QVariantMap resultingInfo;
     DbiConnection con(entityRef.dbiRef, os);
     QList<U2DataId> chainIdList = con.dbi->getAttributeDbi()->getObjectAttributes(entityRef.entityId, DNAInfo::CHAIN_ID, os);
@@ -349,7 +349,7 @@ QVariantMap U2SequenceUtils::getSequenceInfo(U2OpStatus &os, const U2EntityRef &
     return resultingInfo;
 }
 
-U2Sequence U2SequenceUtils::getSequenceDbInfo(U2SequenceObject *seqObj) {
+U2Sequence U2SequenceUtils::getSequenceDbInfo(U2SequenceObject* seqObj) {
     U2Sequence seq;
 
     seq.id = seqObj->getEntityRef().entityId;
@@ -373,7 +373,7 @@ U2Sequence U2SequenceUtils::getSequenceDbInfo(U2SequenceObject *seqObj) {
  * then the method verifies the value and returns it (if it is correct).
  * Otherwise, returns NO_CASE_ANNS.
  */
-static CaseAnnotationsMode getCaseAnnotationsModeHint(const QVariantMap &fs) {
+static CaseAnnotationsMode getCaseAnnotationsModeHint(const QVariantMap& fs) {
     if (fs.keys().contains(GObjectHint_CaseAnns)) {
         QVariant caseAnnsVariant = fs.value(GObjectHint_CaseAnns);
         SAFE_POINT(caseAnnsVariant.canConvert<int>(), "Can't convert a case annotations hint!", NO_CASE_ANNS);
@@ -395,7 +395,7 @@ static CaseAnnotationsMode getCaseAnnotationsModeHint(const QVariantMap &fs) {
 const QString U2SequenceImporter::EMPTY_SEQUENCE_ERROR = QApplication::translate("U2SequenceImporter",
                                                                                  "Sequence was not imported. Probably, this is because the sequence is empty.");
 
-U2SequenceImporter::U2SequenceImporter(const QVariantMap &fs, bool lazyMode, bool singleThread)
+U2SequenceImporter::U2SequenceImporter(const QVariantMap& fs, bool lazyMode, bool singleThread)
     : lazyMode(lazyMode), singleThread(singleThread), sequenceCreated(false) {
     insertBlockSize = DEFAULT_SEQUENCE_INSERT_BLOCK_SIZE;
     currentLength = 0;
@@ -405,7 +405,7 @@ U2SequenceImporter::U2SequenceImporter(const QVariantMap &fs, bool lazyMode, boo
     committedLength = 0;
 }
 
-U2SequenceImporter::U2SequenceImporter(qint64 _insertBlockSize, const QVariantMap &fs, bool lazyMode, bool singleThread)
+U2SequenceImporter::U2SequenceImporter(qint64 _insertBlockSize, const QVariantMap& fs, bool lazyMode, bool singleThread)
     : insertBlockSize(_insertBlockSize), lazyMode(lazyMode), singleThread(singleThread) {
     insertBlockSize = qMin((qint64)10, insertBlockSize);
     currentLength = 0;
@@ -423,22 +423,22 @@ U2SequenceImporter::~U2SequenceImporter() {
     }
 }
 
-void U2SequenceImporter::enableAminoTranslation(const DNATranslation *newAminoTT) {
+void U2SequenceImporter::enableAminoTranslation(const DNATranslation* newAminoTT) {
     SAFE_POINT(!sequenceCreated, "enableAminoTranslation can be set only during initialization", );
     this->aminoTT = newAminoTT;
 }
 
-void U2SequenceImporter::enableReverseComplement(const DNATranslation *newComplTT) {
+void U2SequenceImporter::enableReverseComplement(const DNATranslation* newComplTT) {
     SAFE_POINT(!sequenceCreated, "enableReverseComplement can be set only during initialization", );
     this->complTT = newComplTT;
 }
 
-void U2SequenceImporter::startSequence(U2OpStatus &os,
-                                       const U2DbiRef &dbiRef,
-                                       const QString &dstFolder,
-                                       const QString &visualName,
+void U2SequenceImporter::startSequence(U2OpStatus& os,
+                                       const U2DbiRef& dbiRef,
+                                       const QString& dstFolder,
+                                       const QString& visualName,
                                        bool circular,
-                                       const U2AlphabetId &alphabetId) {
+                                       const U2AlphabetId& alphabetId) {
     SAFE_POINT(!con.isOpen(), "Connection is already opened!", );
     con.open(dbiRef, true, os);
     CHECK_OP(os, );
@@ -461,14 +461,14 @@ void U2SequenceImporter::startSequence(U2OpStatus &os,
     }
 }
 
-void U2SequenceImporter::addBlock(const char *data, qint64 len, U2OpStatus &os) {
+void U2SequenceImporter::addBlock(const char* data, qint64 len, U2OpStatus& os) {
     CHECK(len > 0, );
     // derive common alphabet
-    const DNAAlphabet *blockAl = U2AlphabetUtils::findBestAlphabet(data, len);
+    const DNAAlphabet* blockAl = U2AlphabetUtils::findBestAlphabet(data, len);
     CHECK_EXT(blockAl != nullptr, os.setError("Failed to match sequence alphabet!"), );
 
-    const DNAAlphabet *oldAl = U2AlphabetUtils::getById(sequence.alphabet);
-    const DNAAlphabet *resAl = blockAl;
+    const DNAAlphabet* oldAl = U2AlphabetUtils::getById(sequence.alphabet);
+    const DNAAlphabet* resAl = blockAl;
     if (oldAl != nullptr) {
         if (oldAl->getType() == DNAAlphabet_AMINO && resAl->getType() == DNAAlphabet_NUCL) {
             resAl = oldAl;
@@ -496,7 +496,7 @@ void U2SequenceImporter::addBlock(const char *data, qint64 len, U2OpStatus &os) 
     currentLength += len;
 }
 
-void U2SequenceImporter::addSequenceBlock(const U2EntityRef &sequenceRef, const U2Region &r, U2OpStatus &os) {
+void U2SequenceImporter::addSequenceBlock(const U2EntityRef& sequenceRef, const U2Region& r, U2OpStatus& os) {
     _addBuffer2Db(os);
     CHECK_OP(os, );
     DbiConnection con(sequenceRef.dbiRef, os);
@@ -508,9 +508,9 @@ void U2SequenceImporter::addSequenceBlock(const U2EntityRef &sequenceRef, const 
     addBlock(arr.constData(), arr.size(), os);
 }
 
-void U2SequenceImporter::addDefaultSymbolsBlock(int n, U2OpStatus &os) {
+void U2SequenceImporter::addDefaultSymbolsBlock(int n, U2OpStatus& os) {
     SAFE_POINT(n >= 0, QString("Invalid number of symbols: %1").arg(n), );
-    const DNAAlphabet *al = AppContext::getDNAAlphabetRegistry()->findById(sequence.alphabet.id);
+    const DNAAlphabet* al = AppContext::getDNAAlphabetRegistry()->findById(sequence.alphabet.id);
     if (nullptr == al) {
         os.setError(QObject::tr("Unable to detect sequence alphabet. Probably, this is because some of merged sequences are empty."));
         return;
@@ -521,15 +521,15 @@ void U2SequenceImporter::addDefaultSymbolsBlock(int n, U2OpStatus &os) {
     currentLength += n;
 }
 
-void U2SequenceImporter::_addBlock2Buffer(const char *data, qint64 dataLength, U2OpStatus &os) {
+void U2SequenceImporter::_addBlock2Buffer(const char* data, qint64 dataLength, U2OpStatus& os) {
     CHECK(dataLength > 0, );
-    const char *newBlock = data;
+    const char* newBlock = data;
     int newBlockLength = (int)dataLength;
 
     QScopedPointer<QByteArray> complBlockPointer;  // container of the reverse-complementary block sequence.
     if (complTT != nullptr) {
         complBlockPointer.reset(new QByteArray(newBlockLength, Qt::Uninitialized));
-        char *revComplBlock = complBlockPointer->data();
+        char* revComplBlock = complBlockPointer->data();
         TextUtils::reverse(newBlock, revComplBlock, newBlockLength);
         complTT->translate(revComplBlock, newBlockLength);
         newBlock = revComplBlock;
@@ -541,9 +541,9 @@ void U2SequenceImporter::_addBlock2Buffer(const char *data, qint64 dataLength, U
             aminoTranslationBuffer.append(newBlock, newBlockLength);
             return;
         }
-        const char *const dnaBlock = newBlock;
+        const char* const dnaBlock = newBlock;
         aminoBlockPointer.reset(new QByteArray(newBlockLength / 3 + 1, Qt::Uninitialized));
-        char *aminoBlock = aminoBlockPointer->data();
+        char* aminoBlock = aminoBlockPointer->data();
         int remainingDnaBlockLength = newBlockLength;
         int dnaBlockOffset = 0;
         bool hasCharFromAminoBuffer = false;
@@ -580,7 +580,7 @@ void U2SequenceImporter::_addBlock2Buffer(const char *data, qint64 dataLength, U
     _addBlock2Db(newBlock, newBlockLength, os);
 }
 
-void U2SequenceImporter::_addBlock2Db(const char *data, qint64 len, U2OpStatus &os) {
+void U2SequenceImporter::_addBlock2Db(const char* data, qint64 len, U2OpStatus& os) {
     SAFE_POINT(len >= 0, "Illegal block length!", );
     if (len == 0) {
         return;
@@ -622,13 +622,13 @@ void U2SequenceImporter::_addBlock2Db(const char *data, qint64 len, U2OpStatus &
     committedLength += len;
 }
 
-void U2SequenceImporter::_addBuffer2Db(U2OpStatus &os) {
+void U2SequenceImporter::_addBuffer2Db(U2OpStatus& os) {
     CHECK(!sequenceBuffer.isEmpty(), );
     _addBlock2Db(sequenceBuffer.data(), sequenceBuffer.length(), os);
     sequenceBuffer.clear();
 }
 
-U2Sequence U2SequenceImporter::finalizeSequence(U2OpStatus &os) {
+U2Sequence U2SequenceImporter::finalizeSequence(U2OpStatus& os) {
     _addBuffer2Db(os);
     LOG_OP(os);
     // If sequence is empty, addBlock is never called and alphabet is not set. So set it here to some default value
@@ -642,7 +642,7 @@ U2Sequence U2SequenceImporter::finalizeSequence(U2OpStatus &os) {
         annList << U1AnnotationUtils::finalizeUnfinishedRegion(isUnfinishedRegion, unfinishedRegion, LOWER_CASE == caseAnnsMode);
 
         if (1 == annList.size()) {
-            const QVector<U2Region> &regs = annList.first()->getRegions();
+            const QVector<U2Region>& regs = annList.first()->getRegions();
             if (1 == regs.size()) {
                 U2Region reg = regs.first();
                 if (0 == reg.startPos && sequence.length == reg.length) {
@@ -656,7 +656,7 @@ U2Sequence U2SequenceImporter::finalizeSequence(U2OpStatus &os) {
     return sequence;
 }
 
-U2Sequence U2SequenceImporter::finalizeSequenceAndValidate(U2OpStatus &os) {
+U2Sequence U2SequenceImporter::finalizeSequenceAndValidate(U2OpStatus& os) {
     U2Sequence result = finalizeSequence(os);
     CHECK_OP(os, result);
     if (!result.hasValidId()) {
@@ -673,7 +673,7 @@ bool U2SequenceImporter::isCaseAnnotationsModeOn() const {
     return caseAnnsMode != NO_CASE_ANNS;
 }
 
-QList<SharedAnnotationData> &U2SequenceImporter::getCaseAnnotations() {
+QList<SharedAnnotationData>& U2SequenceImporter::getCaseAnnotations() {
     return annList;
 }
 
@@ -681,7 +681,7 @@ qint64 U2SequenceImporter::getCurrentLength() const {
     return currentLength;
 }
 
-void U2MemorySequenceImporter::addBlock(const char *data, qint64 len, U2OpStatus &os) {
+void U2MemorySequenceImporter::addBlock(const char* data, qint64 len, U2OpStatus& os) {
     SAFE_POINT(aminoTT == nullptr, "Import with amino translation is not supported by U2MemorySequenceImporter", );
     SAFE_POINT(complTT == nullptr, "Import with reverse-complementary translation is not supported by U2MemorySequenceImporter", );
     if (qstrlen(data) < len) {
@@ -690,11 +690,11 @@ void U2MemorySequenceImporter::addBlock(const char *data, qint64 len, U2OpStatus
     }
 
     // derive common alphabet
-    const DNAAlphabet *blockAl = U2AlphabetUtils::findBestAlphabet(data, len);
+    const DNAAlphabet* blockAl = U2AlphabetUtils::findBestAlphabet(data, len);
     CHECK_EXT(blockAl != nullptr, os.setError("Failed to match sequence alphabet!"), );
 
-    const DNAAlphabet *oldAl = U2AlphabetUtils::getById(sequence.alphabet);
-    const DNAAlphabet *resAl = blockAl;
+    const DNAAlphabet* oldAl = U2AlphabetUtils::getById(sequence.alphabet);
+    const DNAAlphabet* resAl = blockAl;
     if (oldAl != nullptr) {
         if (oldAl->getType() == DNAAlphabet_AMINO && resAl->getType() == DNAAlphabet_NUCL) {
             resAl = oldAl;
@@ -713,7 +713,7 @@ void U2MemorySequenceImporter::addBlock(const char *data, qint64 len, U2OpStatus
     sequenceData.append(data, len);
 }
 
-void U2MemorySequenceImporter::addDefaultSymbolsBlock(int n, U2OpStatus &os) {
+void U2MemorySequenceImporter::addDefaultSymbolsBlock(int n, U2OpStatus& os) {
     SAFE_POINT_EXT(n >= 0, os.setError(QObject::tr("Invalid number of symbols: %1").arg(n)), );
     char defaultChar = U2AlphabetUtils::getDefaultSymbol(sequence.alphabet);
     QByteArray a(n, defaultChar);
@@ -725,14 +725,14 @@ qint64 U2MemorySequenceImporter::getCurrentLength() const {
     return sequenceData.length();
 }
 
-QByteArray U2PseudoCircularization::createSequenceWithCircularOverlaps(const QByteArray &sequence, int maxLinearRegionLength) {
+QByteArray U2PseudoCircularization::createSequenceWithCircularOverlaps(const QByteArray& sequence, int maxLinearRegionLength) {
     int linearRegionLength = maxLinearRegionLength < 0 ? sequence.length() : maxLinearRegionLength;
     QByteArray result = sequence;
     result.append(result.left(linearRegionLength));
     return result;
 }
 
-QVector<U2Region> U2PseudoCircularization::getOriginalSequenceCoordinates(const U2Region &circularRegion, qint64 originalSequenceLength) {
+QVector<U2Region> U2PseudoCircularization::getOriginalSequenceCoordinates(const U2Region& circularRegion, qint64 originalSequenceLength) {
     SAFE_POINT(circularRegion.endPos() <= originalSequenceLength * 2, "Invalid circular region", {});
     if (circularRegion.endPos() <= originalSequenceLength) {
         return {circularRegion};
@@ -747,9 +747,9 @@ QVector<U2Region> U2PseudoCircularization::getOriginalSequenceCoordinates(const 
     }
 }
 
-void U2PseudoCircularization::convertToOriginalSequenceCoordinates(U2Location &location, qint64 originalSequenceLength) {
+void U2PseudoCircularization::convertToOriginalSequenceCoordinates(U2Location& location, qint64 originalSequenceLength) {
     QVector<U2Region> regions;
-    for (const U2Region &region : qAsConst(location->regions)) {
+    for (const U2Region& region : qAsConst(location->regions)) {
         QVector<U2Region> originalRegions = getOriginalSequenceCoordinates(region, originalSequenceLength);
         if (originalRegions.length() > 1) {
             location->op = U2LocationOperator_Join;

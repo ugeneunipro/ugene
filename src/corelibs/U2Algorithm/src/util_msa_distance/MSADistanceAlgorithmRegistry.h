@@ -34,24 +34,24 @@ class U2ALGORITHM_EXPORT MSADistanceAlgorithmRegistry : public QObject {
     Q_OBJECT
 
 public:
-    MSADistanceAlgorithmRegistry(QObject *p = nullptr);
+    MSADistanceAlgorithmRegistry(QObject* p = nullptr);
 
     ~MSADistanceAlgorithmRegistry();
 
-    MSADistanceAlgorithmFactory *getAlgorithmFactory(const QString &algoId);
+    MSADistanceAlgorithmFactory* getAlgorithmFactory(const QString& algoId);
 
-    void addAlgorithm(MSADistanceAlgorithmFactory *algo);
+    void addAlgorithm(MSADistanceAlgorithmFactory* algo);
 
     QStringList getAlgorithmIds() const;
 
-    QList<MSADistanceAlgorithmFactory *> getAlgorithmFactories() const {
+    QList<MSADistanceAlgorithmFactory*> getAlgorithmFactories() const {
         return algorithms.values();
     }
 
-    QList<MSADistanceAlgorithmFactory *> getAlgorithmFactories(DistanceAlgorithmFlags flags) const;
+    QList<MSADistanceAlgorithmFactory*> getAlgorithmFactories(DistanceAlgorithmFlags flags) const;
 
 private:
-    QMap<QString, MSADistanceAlgorithmFactory *> algorithms;
+    QMap<QString, MSADistanceAlgorithmFactory*> algorithms;
 };
 
 }  // namespace U2

@@ -28,11 +28,11 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 // Factory
 
-MSADistanceAlgorithmFactory::MSADistanceAlgorithmFactory(const QString &algoId, DistanceAlgorithmFlags _flags, QObject *p)
+MSADistanceAlgorithmFactory::MSADistanceAlgorithmFactory(const QString& algoId, DistanceAlgorithmFlags _flags, QObject* p)
     : QObject(p), algorithmId(algoId), flags(_flags) {
 }
 
-DistanceAlgorithmFlags MSADistanceAlgorithmFactory::getAphabetFlags(const DNAAlphabet *al) {
+DistanceAlgorithmFlags MSADistanceAlgorithmFactory::getAphabetFlags(const DNAAlphabet* al) {
     if (al->getType() == DNAAlphabet_AMINO) {
         return DistanceAlgorithmFlag_Amino;
     } else if (al->getType() == DNAAlphabet_NUCL) {
@@ -55,7 +55,7 @@ void MSADistanceAlgorithmFactory::resetFlag(DistanceAlgorithmFlag flag) {
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-MSADistanceAlgorithm::MSADistanceAlgorithm(MSADistanceAlgorithmFactory *_factory, const MultipleSequenceAlignment &_ma)
+MSADistanceAlgorithm::MSADistanceAlgorithm(MSADistanceAlgorithmFactory* _factory, const MultipleSequenceAlignment& _ma)
     : Task(tr("MSA distance algorithm \"%1\" task").arg(_factory->getName()), TaskFlag_None), factory(_factory), ma(_ma->getCopy()), excludeGaps(true), isSimilarity(true) {
     int rowsNumber = ma->getRowCount();
     qint64 requiredMemory = sizeof(int) * rowsNumber * rowsNumber / 2 + sizeof(QVarLengthArray<int>) * rowsNumber;
@@ -71,7 +71,7 @@ int MSADistanceAlgorithm::getSimilarity(int row1, int row2, bool _usePercents) {
     return res;
 }
 
-const MSADistanceMatrix &MSADistanceAlgorithm::getMatrix() const {
+const MSADistanceMatrix& MSADistanceAlgorithm::getMatrix() const {
     QMutexLocker locker(&lock);
     return distanceMatrix;
 }
@@ -108,7 +108,7 @@ MSADistanceMatrix::MSADistanceMatrix()
     : usePercents(true), excludeGaps(false), alignmentLength(0) {
 }
 
-MSADistanceMatrix::MSADistanceMatrix(const MultipleSequenceAlignment &ma, bool _excludeGaps, bool _usePercents)
+MSADistanceMatrix::MSADistanceMatrix(const MultipleSequenceAlignment& ma, bool _excludeGaps, bool _usePercents)
     : usePercents(_usePercents), excludeGaps(_excludeGaps), alignmentLength(ma->getLength()) {
     int nSeq = ma->getRowCount();
     table.reserve(nSeq);

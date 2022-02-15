@@ -36,7 +36,7 @@ namespace U2 {
 // additional tool validations. Even with other executables
 class U2CORE_EXPORT ExternalToolValidation {
 public:
-    ExternalToolValidation(const QString &_toolRunnerProgram, const QString &_executableFile, const QStringList &_arguments, const QString &_expectedMsg, const StrStrMap &_possibleErrorsDescr = StrStrMap())
+    ExternalToolValidation(const QString& _toolRunnerProgram, const QString& _executableFile, const QStringList& _arguments, const QString& _expectedMsg, const StrStrMap& _possibleErrorsDescr = StrStrMap())
         : toolRunnerProgram(_toolRunnerProgram), executableFile(_executableFile), arguments(_arguments), expectedMsg(_expectedMsg), possibleErrorsDescr(_possibleErrorsDescr) {
     }
 
@@ -53,47 +53,47 @@ public:
 class U2CORE_EXPORT ExternalTool : public QObject {
     Q_OBJECT
 public:
-    ExternalTool(const QString &id, const QString &dirName, const QString &name, const QString &path = "");
+    ExternalTool(const QString& id, const QString& dirName, const QString& name, const QString& path = "");
 
-    const QString &getId() const;
+    const QString& getId() const;
 
-    const QString &getDirName() const {
+    const QString& getDirName() const {
         return dirName;
     }
 
-    const QString &getName() const;
-    const QString &getPath() const;
-    const QIcon &getIcon() const;
-    const QIcon &getGrayIcon() const;
-    const QIcon &getWarnIcon() const;
-    const QString &getDescription() const;
-    const QString &getToolRunnerProgramId() const;
+    const QString& getName() const;
+    const QString& getPath() const;
+    const QIcon& getIcon() const;
+    const QIcon& getGrayIcon() const;
+    const QIcon& getWarnIcon() const;
+    const QString& getDescription() const;
+    const QString& getToolRunnerProgramId() const;
     virtual QStringList getToolRunnerAdditionalOptions() const;
-    const QString &getExecutableFileName() const;
-    const QString &getVersion() const;
-    const QString &getPredefinedVersion() const;
-    const QRegExp &getVersionRegExp() const;
-    const QString &getToolKitName() const;
-    const StrStrMap &getErrorDescriptions() const;
-    const StrStrMap &getAdditionalInfo() const;
+    const QString& getExecutableFileName() const;
+    const QString& getVersion() const;
+    const QString& getPredefinedVersion() const;
+    const QRegExp& getVersionRegExp() const;
+    const QString& getToolKitName() const;
+    const StrStrMap& getErrorDescriptions() const;
+    const StrStrMap& getAdditionalInfo() const;
     virtual QStringList getAdditionalPaths() const;
     virtual QStringList getRunParameters() const;
 
-    virtual void extractAdditionalParameters(const QString &output);
-    virtual void performAdditionalChecks(const QString &toolPath);
+    virtual void extractAdditionalParameters(const QString& output);
+    virtual void performAdditionalChecks(const QString& toolPath);
 
     ExternalToolValidation getToolValidation();
-    const QList<ExternalToolValidation> &getToolAdditionalValidations() const;
-    const QStringList &getDependencies() const;
-    const QString &getAdditionalErrorMessage() const;
-    void setAdditionalErrorMessage(const QString &message);
+    const QList<ExternalToolValidation>& getToolAdditionalValidations() const;
+    const QStringList& getDependencies() const;
+    const QString& getAdditionalErrorMessage() const;
+    void setAdditionalErrorMessage(const QString& message);
     bool hasAdditionalErrorMessage() const;
 
-    void setPath(const QString &_path);
+    void setPath(const QString& _path);
     void setValid(bool isValid);
     void setChecked(bool isChecked);
-    void setVersion(const QString &_version);
-    void setAdditionalInfo(const StrStrMap &additionalInfo);
+    void setVersion(const QString& _version);
+    void setAdditionalInfo(const StrStrMap& additionalInfo);
 
     bool isValid() const;
     bool isChecked() const;
@@ -146,7 +146,7 @@ protected:
 class U2CORE_EXPORT ExternalToolModule : public ExternalTool {
     Q_OBJECT
 public:
-    ExternalToolModule(const QString &id, const QString &dirName, const QString &name)
+    ExternalToolModule(const QString& id, const QString& dirName, const QString& name)
         : ExternalTool(id, dirName, name) {
         isModuleTool = true;
     }
@@ -155,10 +155,10 @@ public:
 class U2CORE_EXPORT ExternalToolValidationListener : public QObject {
     Q_OBJECT
 public:
-    ExternalToolValidationListener(const QString &toolId = QString());
-    ExternalToolValidationListener(const QStringList &toolIds);
+    ExternalToolValidationListener(const QString& toolId = QString());
+    ExternalToolValidationListener(const QStringList& toolIds);
 
-    const QStringList &getToolIds() const {
+    const QStringList& getToolIds() const {
         return toolIds;
     }
 
@@ -166,11 +166,11 @@ public:
         emit si_validationComplete();
     }
 
-    void setToolState(const QString &toolId, bool isValid) {
+    void setToolState(const QString& toolId, bool isValid) {
         toolStates.insert(toolId, isValid);
     }
 
-    bool getToolState(const QString &toolId) const {
+    bool getToolState(const QString& toolId) const {
         return toolStates.value(toolId, false);
     }
 
@@ -207,14 +207,14 @@ public:
     virtual ~ExternalToolManager() {
     }
 
-    virtual void validate(const QStringList &toolNames, const StrStrMap &toolPaths, ExternalToolValidationListener *listener = nullptr) = 0;
+    virtual void validate(const QStringList& toolNames, const StrStrMap& toolPaths, ExternalToolValidationListener* listener = nullptr) = 0;
 
-    virtual bool isValid(const QString &toolName) const = 0;
+    virtual bool isValid(const QString& toolName) const = 0;
 
     /** Returns true if all startup checks are finished. */
     virtual bool isInStartupValidationMode() const = 0;
 
-    virtual ExternalToolState getToolState(const QString &toolName) const = 0;
+    virtual ExternalToolState getToolState(const QString& toolName) const = 0;
 
 signals:
     /** Emitted when startup validation of external tools is finished. */
@@ -229,34 +229,34 @@ public:
     ExternalToolRegistry();
     ~ExternalToolRegistry();
 
-    ExternalTool *getByName(const QString &name) const;
-    ExternalTool *getById(const QString &id) const;
-    QString getToolNameById(const QString &id) const;
+    ExternalTool* getByName(const QString& name) const;
+    ExternalTool* getById(const QString& id) const;
+    QString getToolNameById(const QString& id) const;
 
-    bool registerEntry(ExternalTool *tool);
-    void unregisterEntry(const QString &id);
+    bool registerEntry(ExternalTool* tool);
+    void unregisterEntry(const QString& id);
 
-    void setToolkitDescription(const QString &toolkit, const QString &desc) {
+    void setToolkitDescription(const QString& toolkit, const QString& desc) {
         toolkits[toolkit] = desc;
     }
-    QString getToolkitDescription(const QString &toolkit) const {
+    QString getToolkitDescription(const QString& toolkit) const {
         return toolkits[toolkit];
     }
 
-    QList<ExternalTool *> getAllEntries() const;
-    QList<QList<ExternalTool *>> getAllEntriesSortedByToolKits() const;
+    QList<ExternalTool*> getAllEntries() const;
+    QList<QList<ExternalTool*>> getAllEntriesSortedByToolKits() const;
 
-    void setManager(ExternalToolManager *manager);
-    ExternalToolManager *getManager() const;
+    void setManager(ExternalToolManager* manager);
+    ExternalToolManager* getManager() const;
 
 signals:
-    void si_toolAdded(const QString &id);
-    void si_toolIsAboutToBeRemoved(const QString &id);
+    void si_toolAdded(const QString& id);
+    void si_toolIsAboutToBeRemoved(const QString& id);
 
 protected:
-    QMap<QString, ExternalTool *> toolByLowerCaseIdMap;
+    QMap<QString, ExternalTool*> toolByLowerCaseIdMap;
     QMap<QString, QString> toolkits;
-    ExternalToolManager *manager;
+    ExternalToolManager* manager;
 
 };  // ExternalToolRegistry
 

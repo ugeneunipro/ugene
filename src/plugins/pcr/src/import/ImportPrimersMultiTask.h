@@ -30,7 +30,7 @@ namespace U2 {
 class ImportPrimersMultiTask : public MultiTask {
     Q_OBJECT
 public:
-    ImportPrimersMultiTask(const QList<Task *> &importSubtasks);
+    ImportPrimersMultiTask(const QList<Task*>& importSubtasks);
 
     QString generateReport() const;
 };

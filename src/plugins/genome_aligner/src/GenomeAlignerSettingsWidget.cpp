@@ -42,7 +42,7 @@ static const int MIN_READ_SIZE = 10;
 static const int MIN_PART_SIZE = 1;
 static const int DEFAULT_PART_SIZE = 10;
 
-GenomeAlignerSettingsWidget::GenomeAlignerSettingsWidget(QWidget *parent)
+GenomeAlignerSettingsWidget::GenomeAlignerSettingsWidget(QWidget* parent)
     : DnaAssemblyAlgorithmMainWidget(parent) {
     setupUi(this);
     tabWidget->setCurrentIndex(0);
@@ -104,7 +104,7 @@ QMap<QString, QVariant> GenomeAlignerSettingsWidget::getDnaAssemblyCustomSetting
     return settings;
 }
 
-bool GenomeAlignerSettingsWidget::buildIndexUrl(const GUrl &url, bool prebuiltIndex, QString &error) const {
+bool GenomeAlignerSettingsWidget::buildIndexUrl(const GUrl& url, bool prebuiltIndex, QString& error) const {
     if (prebuiltIndex) {
         GenomeAlignerIndex index;
         index.baseFileName = url.dirPath() + "/" + url.baseFileName();
@@ -135,7 +135,7 @@ bool GenomeAlignerSettingsWidget::buildIndexUrl(const GUrl &url, bool prebuiltIn
     return true;
 }
 
-bool GenomeAlignerSettingsWidget::isParametersOk(QString &error) const {
+bool GenomeAlignerSettingsWidget::isParametersOk(QString& error) const {
     bool gpuOk = (gpuBox->isChecked() == false) || ((gpuBox->isChecked() == true) && (partSlider->value() <= 10));  // 128MB is the minimum size for a buffer, according to CL_DEVICE_MAX_MEM_ALLOC_SIZE OpenCL documentation
     if ((systemSize < readSlider->value() + 13 * partSlider->value()) || !gpuOk) {
         error = "There is no enough memory for the aligning on your computer. Try to reduce a memory size for short reads or for the reference fragment.";
@@ -145,7 +145,7 @@ bool GenomeAlignerSettingsWidget::isParametersOk(QString &error) const {
     return true;
 }
 
-bool GenomeAlignerSettingsWidget::isIndexOk(const GUrl &refName, QString &error) const {
+bool GenomeAlignerSettingsWidget::isIndexOk(const GUrl& refName, QString& error) const {
     GenomeAlignerIndex index;
     if (indexTab->isEnabled()) {  // prebuiltIndex is not checked
         index.baseFileName = indexDirEdit->text() + "/" + refName.baseFileName();

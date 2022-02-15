@@ -40,7 +40,7 @@
 
 namespace U2 {
 
-void GTest_FindEnzymes::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_FindEnzymes::init(XMLTestFormat*, const QDomElement& el) {
     loadTask = nullptr;
     contextIsAdded = false;
 
@@ -60,9 +60,9 @@ void GTest_FindEnzymes::init(XMLTestFormat *, const QDomElement &el) {
     aObj = new AnnotationTableObject(aObjName, dbiRef);
 
     SAFE_POINT(AppContext::getIOAdapterRegistry() != nullptr, "IOAdapter registry is NULL", );
-    IOAdapterFactory *ioFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-    QTemporaryFile *t = new QTemporaryFile(this);
-    Document *doc = new Document(new GenbankPlainTextFormat(this), ioFactory, GUrl(QFileInfo(*t).absoluteFilePath()), dbiRef, QList<GObject *>() << aObj);
+    IOAdapterFactory* ioFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+    QTemporaryFile* t = new QTemporaryFile(this);
+    Document* doc = new Document(new GenbankPlainTextFormat(this), ioFactory, GUrl(QFileInfo(*t).absoluteFilePath()), dbiRef, QList<GObject*>() << aObj);
     aObj->setParent(doc);
 
     QString buf = el.attribute("minHits");
@@ -109,7 +109,7 @@ void GTest_FindEnzymes::init(XMLTestFormat *, const QDomElement &el) {
         return;
     }
     QStringList perEnzymeResults = resultsStr.split(";", QString::SkipEmptyParts);
-    foreach (const QString &enzymeResult, perEnzymeResults) {
+    foreach (const QString& enzymeResult, perEnzymeResults) {
         int nameIdx = enzymeResult.indexOf(':');
         if (nameIdx <= 0 || nameIdx + 1 == enzymeResult.size()) {
             stateInfo.setError(QString("Error parsing results token %1").arg(enzymeResult));
@@ -156,8 +156,8 @@ void GTest_FindEnzymes::prepare() {
     addSubTask(loadTask);
 }
 
-QList<Task *> GTest_FindEnzymes::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> GTest_FindEnzymes::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     if (hasError() || isCanceled()) {
         return res;
     }
@@ -166,7 +166,7 @@ QList<Task *> GTest_FindEnzymes::onSubTaskFinished(Task *subTask) {
     }
 
     QList<SEnzymeData> enzymesToSearch;
-    foreach (const QString &enzymeId, enzymeNames) {
+    foreach (const QString& enzymeId, enzymeNames) {
         SEnzymeData enzyme = EnzymesIO::findEnzymeById(enzymeId, loadTask->enzymes);
         if (enzyme.constData() == nullptr) {
             stateInfo.setError(QString("Enzyme not found: %1").arg(enzymeId));
@@ -181,7 +181,7 @@ QList<Task *> GTest_FindEnzymes::onSubTaskFinished(Task *subTask) {
     cfg.maxHitCount = maxHits;
     cfg.excludedRegions = excludedRegions;
 
-    FindEnzymesToAnnotationsTask *t = new FindEnzymesToAnnotationsTask(aObj, seqObj->getSequenceRef(), enzymesToSearch, cfg);
+    FindEnzymesToAnnotationsTask* t = new FindEnzymesToAnnotationsTask(aObj, seqObj->getSequenceRef(), enzymesToSearch, cfg);
     res.append(t);
     return res;
 }
@@ -191,14 +191,14 @@ Task::ReportResult GTest_FindEnzymes::report() {
         return Task::ReportResult_Finished;
     }
     // for each enzyme from resultsPerEnzyme check that all annotations are present
-    foreach (const QString &enzymeId, resultsPerEnzyme.keys()) {
+    foreach (const QString& enzymeId, resultsPerEnzyme.keys()) {
         QList<U2Region> regions = resultsPerEnzyme.values(enzymeId);
-        AnnotationGroup *ag = aObj->getRootGroup()->getSubgroup(enzymeId, false);
+        AnnotationGroup* ag = aObj->getRootGroup()->getSubgroup(enzymeId, false);
         if (nullptr == ag) {
             stateInfo.setError(QString("Group not found %1").arg(enzymeId));
             break;
         }
-        QList<Annotation *> anns = ag->getAnnotations();
+        QList<Annotation*> anns = ag->getAnnotations();
         if (anns.size() != regions.size()) {
             stateInfo.setError(QString("Number of results not matched for :%1, results: %2, expected %3")
                                    .arg(enzymeId)
@@ -206,7 +206,7 @@ Task::ReportResult GTest_FindEnzymes::report() {
                                    .arg(regions.size()));
             break;
         }
-        for (Annotation *a: qAsConst(anns)) {
+        for (Annotation* a : qAsConst(anns)) {
             U2Region r = a->getRegions().first();
             if (!regions.contains(r)) {
                 stateInfo.setError(QString("Illegal region! Enzyme :%1, region %2..%3").arg(enzymeId).arg(r.startPos + 1).arg(r.endPos()));
@@ -234,7 +234,7 @@ void GTest_FindEnzymes::cleanup() {
 
 //////////////////////////////////////////////////////////////////////////
 
-void GTest_DigestIntoFragments::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_DigestIntoFragments::init(XMLTestFormat*, const QDomElement& el) {
     loadTask = nullptr;
 
     seqObjCtx = el.attribute("sequence");
@@ -294,8 +294,8 @@ void GTest_DigestIntoFragments::prepare() {
     addSubTask(loadTask);
 }
 
-QList<Task *> GTest_DigestIntoFragments::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> GTest_DigestIntoFragments::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     if (hasError() || isCanceled()) {
         return res;
     }
@@ -304,7 +304,7 @@ QList<Task *> GTest_DigestIntoFragments::onSubTaskFinished(Task *subTask) {
     }
 
     QList<SEnzymeData> enzymesToSearch;
-    foreach (const QString &enzymeId, enzymeNames) {
+    foreach (const QString& enzymeId, enzymeNames) {
         SEnzymeData enzyme = EnzymesIO::findEnzymeById(enzymeId, loadTask->enzymes);
         if (enzyme.constData() == nullptr) {
             stateInfo.setError(QString("Enzyme not found: %1").arg(enzymeId));
@@ -318,14 +318,14 @@ QList<Task *> GTest_DigestIntoFragments::onSubTaskFinished(Task *subTask) {
     cfg.enzymeData = enzymesToSearch;
     cfg.forceCircular = isCircular;
 
-    DigestSequenceTask *t = new DigestSequenceTask(seqObj, aObj, aObj, cfg);
+    DigestSequenceTask* t = new DigestSequenceTask(seqObj, aObj, aObj, cfg);
     res.append(t);
     return res;
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void GTest_LigateFragments::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_LigateFragments::init(XMLTestFormat*, const QDomElement& el) {
     ligateTask = nullptr;
     contextAdded = false;
 
@@ -368,8 +368,8 @@ void GTest_LigateFragments::prepare() {
         return;
     }
 
-    foreach (const QString &seqObjCtx, seqObjNames) {
-        GObject *seqObj = getContext<U2SequenceObject>(this, seqObjCtx);
+    foreach (const QString& seqObjCtx, seqObjNames) {
+        GObject* seqObj = getContext<U2SequenceObject>(this, seqObjCtx);
         if (seqObj == nullptr) {
             stateInfo.setError(QString("Sequence object context not found %1").arg(seqObjCtx));
             return;
@@ -377,8 +377,8 @@ void GTest_LigateFragments::prepare() {
         sObjs.append(seqObj);
     }
 
-    foreach (const QString &aObjCtx, annObjNames) {
-        GObject *aObj = getContext<AnnotationTableObject>(this, aObjCtx);
+    foreach (const QString& aObjCtx, annObjNames) {
+        GObject* aObj = getContext<AnnotationTableObject>(this, aObjCtx);
         if (aObj == nullptr) {
             stateInfo.setError(QString("Annotation context not found %1").arg(aObjCtx));
             return;
@@ -409,7 +409,7 @@ void GTest_LigateFragments::prepare() {
 void GTest_LigateFragments::prepareFragmentsList() {
     QList<DNAFragment> fragments = DNAFragment::findAvailableFragments(aObjs, sObjs);
 
-    for (const QString &searchedName : qAsConst(fragmentNames)) {
+    for (const QString& searchedName : qAsConst(fragmentNames)) {
         QStringList nameData = searchedName.split(":");
         QString fName = nameData.at(1);
         QString fDoc = nameData.at(0);
@@ -455,8 +455,8 @@ void GTest_LigateFragments::cleanup() {
 }
 
 //////////////////////////////////////////////////////////////////////////
-QList<XMLTestFactory *> EnzymeTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> EnzymeTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_FindEnzymes::createFactory());
     res.append(GTest_DigestIntoFragments::createFactory());
     res.append(GTest_LigateFragments::createFactory());

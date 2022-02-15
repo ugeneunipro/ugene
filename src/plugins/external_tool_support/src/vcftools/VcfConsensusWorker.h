@@ -32,7 +32,7 @@ namespace LocalWorkflow {
 class VcfConsensusPrompter : public PrompterBase<VcfConsensusPrompter> {
     Q_OBJECT
 public:
-    VcfConsensusPrompter(Actor *p = 0)
+    VcfConsensusPrompter(Actor* p = 0)
         : PrompterBase<VcfConsensusPrompter>(p) {
     }
 
@@ -43,18 +43,18 @@ protected:
 class VcfConsensusWorker : public BaseWorker {
     Q_OBJECT
 public:
-    VcfConsensusWorker(Actor *a);
+    VcfConsensusWorker(Actor* a);
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 private slots:
     void sl_taskFinished();
 
 private:
-    IntegralBus *inputFA;
-    IntegralBus *inputVcfBgzip;
-    IntegralBus *outputFA;
+    IntegralBus* inputFA;
+    IntegralBus* inputVcfBgzip;
+    IntegralBus* outputFA;
 };
 
 class VcfConsensusWorkerFactory : public DomainFactory {
@@ -64,12 +64,12 @@ public:
     VcfConsensusWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new VcfConsensusWorker(a);
     }
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_VCF_CONSENSUS_WORKER_H
+#endif  // _U2_VCF_CONSENSUS_WORKER_H

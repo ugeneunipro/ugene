@@ -29,7 +29,7 @@ using namespace HI;
 
 class CreateElementWithScriptDialogFiller : public Filler {
 public:
-    CreateElementWithScriptDialogFiller(HI::GUITestOpStatus &os, QString _name)
+    CreateElementWithScriptDialogFiller(HI::GUITestOpStatus& os, QString _name)
         : Filler(os, "CreateScriptBlockDialog"),
           name(_name) {
     }
@@ -41,7 +41,7 @@ private:
 
 class ScriptEditorDialogFiller : public Filler {
 public:
-    ScriptEditorDialogFiller(HI::GUITestOpStatus &os, QString _url = "", QString _text = "", bool _checkSyntax = false, QString _checkSyntaxResult = "")
+    ScriptEditorDialogFiller(HI::GUITestOpStatus& os, QString _url = "", QString _text = "", bool _checkSyntax = false, QString _checkSyntaxResult = "")
         : Filler(os, "ScriptEditorDialog"),
           url(_url),
           text(_text),
@@ -59,7 +59,7 @@ private:
 
 class ScriptEditorDialogSyntaxChecker : public Filler {
 public:
-    ScriptEditorDialogSyntaxChecker(HI::GUITestOpStatus &os, QString _text = "", QString _message = "")
+    ScriptEditorDialogSyntaxChecker(HI::GUITestOpStatus& os, QString _text = "", QString _message = "")
         : Filler(os, "ScriptEditorDialog"),
           text(_text),
           message(_message) {

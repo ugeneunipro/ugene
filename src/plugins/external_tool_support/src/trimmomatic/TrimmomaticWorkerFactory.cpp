@@ -76,12 +76,12 @@ TrimmomaticWorkerFactory::TrimmomaticWorkerFactory()
     : DomainFactory(ACTOR_ID) {
 }
 
-Worker *TrimmomaticWorkerFactory::createWorker(Actor *actor) {
+Worker* TrimmomaticWorkerFactory::createWorker(Actor* actor) {
     return new TrimmomaticWorker(actor);
 }
 
 void TrimmomaticWorkerFactory::init() {
-    QList<PortDescriptor *> ports;
+    QList<PortDescriptor*> ports;
     {
         // Input
         const Descriptor inSlot1Desc(INPUT_SLOT,
@@ -132,7 +132,7 @@ void TrimmomaticWorkerFactory::init() {
         ports << new PortDescriptor(outPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-out", outType)), false /*input*/, true /*multi*/);
     }
 
-    QList<Attribute *> attributes;
+    QList<Attribute*> attributes;
     {
         const Descriptor inputDataDesc(INPUT_DATA_ATTR_ID,
                                        TrimmomaticPrompter::tr("Input data"),
@@ -187,16 +187,16 @@ void TrimmomaticWorkerFactory::init() {
                                      TrimmomaticPrompter::tr("Number of threads"),
                                      TrimmomaticPrompter::tr("Use multiple threads (-threads)."));
 
-        Attribute *inputDataAttribute = new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), false, TrimmomaticTaskSettings::SINGLE_END);
-        Attribute *trimmingStepsAttribute = new Attribute(trimmingStepsDesc, BaseTypes::STRING_LIST_TYPE(), true);
-        Attribute *seOutputUrlAttribute = new Attribute(seOutputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
-        Attribute *pairedOutputUrl1Attribute = new Attribute(pairedOutputUrl1Desc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
-        Attribute *pairedOutputUrl2Attribute = new Attribute(pairedOutputUrl2Desc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
-        Attribute *unpairedOutputUrl1Attribute = new Attribute(unpairedOutputUrl1Desc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
-        Attribute *unpairedOutputUrl2Attribute = new Attribute(unpairedOutputUrl2Desc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
-        Attribute *generateLogAttribute = new Attribute(generateLogDesc, BaseTypes::BOOL_TYPE(), Attribute::None, false);
-        Attribute *logUrlAttribute = new Attribute(logUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
-        Attribute *threadsAttribute = new Attribute(threadsDesc, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
+        Attribute* inputDataAttribute = new Attribute(inputDataDesc, BaseTypes::STRING_TYPE(), false, TrimmomaticTaskSettings::SINGLE_END);
+        Attribute* trimmingStepsAttribute = new Attribute(trimmingStepsDesc, BaseTypes::STRING_LIST_TYPE(), true);
+        Attribute* seOutputUrlAttribute = new Attribute(seOutputUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
+        Attribute* pairedOutputUrl1Attribute = new Attribute(pairedOutputUrl1Desc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
+        Attribute* pairedOutputUrl2Attribute = new Attribute(pairedOutputUrl2Desc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
+        Attribute* unpairedOutputUrl1Attribute = new Attribute(unpairedOutputUrl1Desc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
+        Attribute* unpairedOutputUrl2Attribute = new Attribute(unpairedOutputUrl2Desc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
+        Attribute* generateLogAttribute = new Attribute(generateLogDesc, BaseTypes::BOOL_TYPE(), Attribute::None, false);
+        Attribute* logUrlAttribute = new Attribute(logUrlDesc, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::CanBeEmpty);
+        Attribute* threadsAttribute = new Attribute(threadsDesc, BaseTypes::NUM_TYPE(), Attribute::None, AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
 
         seOutputUrlAttribute->addRelation(new VisibilityRelation(INPUT_DATA_ATTR_ID, TrimmomaticTaskSettings::SINGLE_END));
         pairedOutputUrl1Attribute->addRelation(new VisibilityRelation(INPUT_DATA_ATTR_ID, TrimmomaticTaskSettings::PAIRED_END));
@@ -220,7 +220,7 @@ void TrimmomaticWorkerFactory::init() {
         attributes << threadsAttribute;
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap inputDataMap;
         inputDataMap[SINGLE_END_TEXT] = TrimmomaticTaskSettings::SINGLE_END;
@@ -261,7 +261,7 @@ void TrimmomaticWorkerFactory::init() {
                           TrimmomaticPrompter::tr("Trimmomatic is a fast, multi-threaded command line tool that can be used"
                                                   " to trim and crop Illumina (FASTQ) data as well as to remove adapters."));
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new TrimmomaticPrompter(nullptr));
     proto->addExternalTool(JavaSupport::ET_JAVA_ID);
@@ -269,14 +269,14 @@ void TrimmomaticWorkerFactory::init() {
     proto->setPortValidator(INPUT_PORT_ID, new PairedReadsPortValidator(INPUT_SLOT, PAIRED_INPUT_SLOT));
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new TrimmomaticWorkerFactory());
 }
 
 void TrimmomaticWorkerFactory::cleanup() {
     delete WorkflowEnv::getProtoRegistry()->unregisterProto(ACTOR_ID);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     delete localDomain->unregisterEntry(ACTOR_ID);
 }
 

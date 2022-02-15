@@ -35,18 +35,18 @@ class DNAChromatogram;
 class U2FORMATS_EXPORT ABIFormat : public DocumentFormat {
     Q_OBJECT
 public:
-    ABIFormat(QObject *p);
+    ABIFormat(QObject* p);
 
-    virtual FormatCheckResult checkRawData(const QByteArray &rawData, const GUrl & = GUrl()) const;
+    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
 protected:
-    virtual Document *loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os);
+    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
-    virtual DNASequence *loadSequence(IOAdapter *io, U2OpStatus &ti);
+    virtual DNASequence* loadSequence(IOAdapter* io, U2OpStatus& ti);
 
 private:
-    Document *parseABI(const U2DbiRef &dbiRef, SeekableBuf *, IOAdapter *io, const QVariantMap &fs, U2OpStatus &os);
-    bool loadABIObjects(SeekableBuf *fp, DNASequence &seq, DNAChromatogram &cd);
+    Document* parseABI(const U2DbiRef& dbiRef, SeekableBuf*, IOAdapter* io, const QVariantMap& fs, U2OpStatus& os);
+    bool loadABIObjects(SeekableBuf* fp, DNASequence& seq, DNAChromatogram& cd);
 };
 
 }  // namespace U2

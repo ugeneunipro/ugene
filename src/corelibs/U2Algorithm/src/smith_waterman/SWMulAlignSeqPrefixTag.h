@@ -29,7 +29,7 @@ namespace U2 {
 class SWMulAlignSeqPrefixTag : public SWMulAlignResultNamesTag {
 public:
     inline SWMulAlignSeqPrefixTag(const QString _shorthand, const QString _label, const quint32 _prefixLength);
-    virtual QString expandTag(const QVariant &argument) const;
+    virtual QString expandTag(const QVariant& argument) const;
 
 private:
     quint32 prefixLength;

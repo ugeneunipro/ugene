@@ -37,12 +37,12 @@
 
 namespace U2 {
 
-void FindPolyRegionsTask::find(const char *seq,
+void FindPolyRegionsTask::find(const char* seq,
                                qint64 seqLen,
                                char ch,
                                int percent,
                                qint64 len,
-                               QVector<U2Region> &result) {
+                               QVector<U2Region>& result) {
     assert(len <= seqLen);
     qreal reqChNumReal = len * percent / 100.0;
     qint64 reqChNum = reqChNumReal;
@@ -111,7 +111,7 @@ QList<SharedAnnotationData> FindPolyRegionsTask::getResultAsAnnotations() const 
     return res;
 }
 
-QList<SharedAnnotationData> FindPolyRegionsTask::createAnnotations(const QVector<U2Region> &regions, qint64 offset, U2Strand::Direction strand) {
+QList<SharedAnnotationData> FindPolyRegionsTask::createAnnotations(const QVector<U2Region>& regions, qint64 offset, U2Strand::Direction strand) {
     QList<SharedAnnotationData> res;
     foreach (U2Region r, regions) {
         SharedAnnotationData d(new AnnotationData());
@@ -130,7 +130,7 @@ static const QString PERCENT_ATTR("percent");
 static const QString MIN_LEN_ATTR("min-len");
 static const QString MAX_LEN_ATTR("max-len");
 
-QDFindPolyActor::QDFindPolyActor(QDActorPrototype const *proto)
+QDFindPolyActor::QDFindPolyActor(QDActorPrototype const* proto)
     : QDActor(proto) {
     units[UNIT_ID] = new QDSchemeUnit(this);
 }
@@ -147,13 +147,13 @@ QString QDFindPolyActor::getText() const {
     return tr("Searches regions in a sequence that contain a specified percentage of a certain base.");
 }
 
-Task *QDFindPolyActor::getAlgorithmTask(const QVector<U2Region> &location) {
-    const DNASequence &sequence = scheme->getSequence();
+Task* QDFindPolyActor::getAlgorithmTask(const QVector<U2Region>& location) {
+    const DNASequence& sequence = scheme->getSequence();
     FindPolyRegionsSettings settings;
 
     settings.strand = getStrandToRun();
     if (settings.strand != QDStrand_DirectOnly) {
-        DNATranslation *complTT = nullptr;
+        DNATranslation* complTT = nullptr;
         if (scheme->getSequence().alphabet->isNucleic()) {
             complTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(scheme->getSequence().alphabet);
         }
@@ -190,21 +190,21 @@ Task *QDFindPolyActor::getAlgorithmTask(const QVector<U2Region> &location) {
 
     settings.minLen = minLen;
 
-    Task *t = new Task(tr("Search poly regions QD task"), TaskFlag_NoRun);
+    Task* t = new Task(tr("Search poly regions QD task"), TaskFlag_NoRun);
 
     foreach (U2Region r, location) {
         FindPolyRegionsSettings stngs(settings);
         stngs.offset = r.startPos;
-        FindPolyRegionsTask *sub = new FindPolyRegionsTask(stngs, sequence);
+        FindPolyRegionsTask* sub = new FindPolyRegionsTask(stngs, sequence);
         t->addSubTask(sub);
-        connect(new TaskSignalMapper(sub), SIGNAL(si_taskFinished(Task *)), SLOT(sl_onTaskFinished(Task *)));
+        connect(new TaskSignalMapper(sub), SIGNAL(si_taskFinished(Task*)), SLOT(sl_onTaskFinished(Task*)));
     }
 
     return t;
 }
 
-void QDFindPolyActor::sl_onTaskFinished(Task *t) {
-    FindPolyRegionsTask *fprt = qobject_cast<FindPolyRegionsTask *>(t);
+void QDFindPolyActor::sl_onTaskFinished(Task* t) {
+    FindPolyRegionsTask* fprt = qobject_cast<FindPolyRegionsTask*>(t);
     QList<SharedAnnotationData> annotations = fprt->getResultAsAnnotations();
     foreach (SharedAnnotationData d, annotations) {
         if (d->location->regions.first().length > getMaxResultLen()) {
@@ -214,7 +214,7 @@ void QDFindPolyActor::sl_onTaskFinished(Task *t) {
         ru->region = d->location->regions.first();
         ru->strand = d->location->strand;
         ru->owner = units.value(UNIT_ID);
-        QDResultGroup *g = new QDResultGroup(QDStrand_DirectOnly);
+        QDResultGroup* g = new QDResultGroup(QDStrand_DirectOnly);
         g->add(ru);
         results.append(g);
     }
@@ -248,7 +248,7 @@ QDFindPolyActorPrototype::QDFindPolyActorPrototype() {
     attributes << new Attribute(mind, BaseTypes::NUM_TYPE(), false, QVariant(50));
     attributes << new Attribute(maxd, BaseTypes::NUM_TYPE(), false, QVariant(1000));
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
 
     {
         QVariantMap bm;

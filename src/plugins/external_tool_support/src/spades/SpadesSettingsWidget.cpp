@@ -35,7 +35,7 @@
 namespace U2 {
 // SpadesSettingsWidget
 
-SpadesSettingsWidget::SpadesSettingsWidget(QWidget *parent)
+SpadesSettingsWidget::SpadesSettingsWidget(QWidget* parent)
     : GenomeAssemblyAlgorithmMainWidget(parent), U2SavableWidget(this) {
     setupUi(this);
     layout()->setContentsMargins(0, 0, 0, 0);
@@ -61,12 +61,12 @@ QMap<QString, QVariant> SpadesSettingsWidget::getGenomeAssemblyCustomSettings() 
     return settings;
 }
 
-bool SpadesSettingsWidget::isParametersOk(QString &) {
+bool SpadesSettingsWidget::isParametersOk(QString&) {
     return true;
 }
 
 // SpadesGUIExtensionsFactory
-GenomeAssemblyAlgorithmMainWidget *SpadesGUIExtensionsFactory::createMainWidget(QWidget *parent) {
+GenomeAssemblyAlgorithmMainWidget* SpadesGUIExtensionsFactory::createMainWidget(QWidget* parent) {
     return new SpadesSettingsWidget(parent);
 }
 
@@ -74,4 +74,4 @@ bool SpadesGUIExtensionsFactory::hasMainWidget() {
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -41,10 +41,10 @@ namespace U2 {
 
 /* TRANSLATOR U2::IOAdapter */
 
-static const char *prob2ascii(float p, float null) {
-    HMMERTaskLocalData *tld = getHMMERTaskLocalData();
+static const char* prob2ascii(float p, float null) {
+    HMMERTaskLocalData* tld = getHMMERTaskLocalData();
     // static char buffer[8];
-    char *buffer = tld->buffer;
+    char* buffer = tld->buffer;
     if (p == 0.0) {
         return "*";
     }
@@ -52,28 +52,28 @@ static const char *prob2ascii(float p, float null) {
     return buffer;
 }
 
-static float ascii2prob(char *s, float null) {
+static float ascii2prob(char* s, float null) {
     return (*s == '*') ? 0. : Score2Prob(atoi(s), null);
 }
 
-static void multiline(QString &res, const QString &prefix, const char *s) {
+static void multiline(QString& res, const QString& prefix, const char* s) {
     if (s == NULL) {
         return;
     }
     QStringList lines = QString(s).split('\n');
-    foreach (const QString &line, lines) {
+    foreach (const QString& line, lines) {
         res += prefix + line + '\n';
     }
 }
 
-void HMMIO::writeHMM2(IOAdapterFactory *iof, const QString &url, TaskStateInfo &si, plan7_s *hmm) {
+void HMMIO::writeHMM2(IOAdapterFactory* iof, const QString& url, TaskStateInfo& si, plan7_s* hmm) {
     if (hmm->atype == hmmNOTSETYET) {
         si.setError(tr("Alphabet is not set"));
         return;
     }
     // get HMMERTaskLocalData
-    HMMERTaskLocalData *tld = getHMMERTaskLocalData();
-    alphabet_s &al = tld->al;
+    HMMERTaskLocalData* tld = getHMMERTaskLocalData();
+    alphabet_s& al = tld->al;
 
     SetAlphabet(hmm->atype);
 
@@ -193,27 +193,27 @@ void HMMIO::writeHMM2(IOAdapterFactory *iof, const QString &url, TaskStateInfo &
     io->close();
 }
 
-void HMMIO::readHMM2(IOAdapterFactory *iof, const QString &url, TaskStateInfo &si, plan7_s **ret_hmm) {
+void HMMIO::readHMM2(IOAdapterFactory* iof, const QString& url, TaskStateInfo& si, plan7_s** ret_hmm) {
 #define BUFF_SIZE 512
 
     char buffer[BUFF_SIZE + 1];
-    char *s;
+    char* s;
     int M;
     float p;
     int k, x;
 
     // get HMMERTaskLocalData
-    HMMERTaskLocalData *tld = getHMMERTaskLocalData();
-    alphabet_s &al = tld->al;
+    HMMERTaskLocalData* tld = getHMMERTaskLocalData();
+    alphabet_s& al = tld->al;
 
-    struct plan7_s *hmm = NULL;
+    struct plan7_s* hmm = NULL;
     QScopedPointer<IOAdapter> io(iof->createIOAdapter());
     if (!io->open(url, IOAdapterMode_Read)) {
         si.setError(L10N::errorOpeningFileRead(url));
         return;
     }
-    const QByteArray &upper = TextUtils::UPPER_CASE_MAP;
-    const QBitArray &lineBreaks = TextUtils::LINE_BREAKS;
+    const QByteArray& upper = TextUtils::UPPER_CASE_MAP;
+    const QBitArray& lineBreaks = TextUtils::LINE_BREAKS;
     do {  // use loop to be able to use 'break' out of it
         bool lineOk = true;
         int len = io->readUntil(buffer, BUFF_SIZE, lineBreaks, IOAdapter::Term_Include, &lineOk);
@@ -235,7 +235,7 @@ void HMMIO::readHMM2(IOAdapterFactory *iof, const QString &url, TaskStateInfo &s
 
         hmm = AllocPlan7Shell();
         M = -1;
-        char *next = NULL;
+        char* next = NULL;
         while ((len = io->readUntil(buffer, BUFF_SIZE, lineBreaks, IOAdapter::Term_Include, &lineOk)) != 0) {
             if (!lineOk) {
                 si.setError(tr("Illegal line"));
@@ -283,8 +283,8 @@ void HMMIO::readHMM2(IOAdapterFactory *iof, const QString &url, TaskStateInfo &s
                     hmm->comlog = Strdup(buffer + 6);
                 } else {
                     int oldSize = strlen(hmm->comlog) + 1;
-                    int newSize = sizeof(char *) * (oldSize + strlen(buffer + 6));
-                    hmm->comlog = (char *)ReallocOrDie(hmm->comlog, newSize);
+                    int newSize = sizeof(char*) * (oldSize + strlen(buffer + 6));
+                    hmm->comlog = (char*)ReallocOrDie(hmm->comlog, newSize);
                     sre_strlcat(hmm->comlog, "\n", newSize);
                     sre_strlcat(hmm->comlog, buffer + 6, newSize);
                 }
@@ -563,11 +563,11 @@ void HMMIO::readHMM2(IOAdapterFactory *iof, const QString &url, TaskStateInfo &s
 const QString HMMIO::HMM_ID("hmmer");
 const QString HMMIO::HMM_EXT("hmm");
 
-plan7_s *HMMIO::cloneHMM(plan7_s *src) {
+plan7_s* HMMIO::cloneHMM(plan7_s* src) {
     assert(src);
     int M = src->M;
     assert(M > 0);
-    plan7_s *dst = AllocPlan7(M);
+    plan7_s* dst = AllocPlan7(M);
 
     // copying model annotations
     assert(src->name);  // name is mandatory
@@ -665,7 +665,7 @@ DNAAlphabetType HMMIO::convertHMMAlphabet(int atype) {
     return DNAAlphabet_RAW;
 }
 
-HMMReadTask::HMMReadTask(const QString &_url)
+HMMReadTask::HMMReadTask(const QString& _url)
     : Task("", TaskFlag_None), hmm(NULL), url(_url) {
     QString tn = tr("Read HMM profile '%1'.").arg(QFileInfo(url).fileName());
     setTaskName(tn);
@@ -679,12 +679,12 @@ HMMReadTask::~HMMReadTask() {
 
 void HMMReadTask::run() {
     TaskLocalData::createHMMContext(getTaskId(), true);
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     HMMIO::readHMM2(iof, url, stateInfo, &hmm);
     TaskLocalData::freeHMMContext(getTaskId());
 }
 
-HMMWriteTask::HMMWriteTask(const QString &url, plan7_s *s, uint f)
+HMMWriteTask::HMMWriteTask(const QString& url, plan7_s* s, uint f)
     : Task("", TaskFlag_None), url(url), hmm(s), fileMode(f) {
     QString tn = tr("Write HMM profile '%1'").arg(QFileInfo(url).fileName());
     setTaskName(tn);
@@ -692,7 +692,7 @@ HMMWriteTask::HMMWriteTask(const QString &url, plan7_s *s, uint f)
 
 void HMMWriteTask::run() {
     TaskLocalData::createHMMContext(getTaskId(), true);
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     if (fileMode & SaveDoc_Roll && !GUrlUtils::renameFileWithNameRoll(url, stateInfo)) {
         return;
     }

@@ -42,36 +42,36 @@ enum UnloadDocumentTask_SaveMode {
 class U2GUI_EXPORT UnloadDocumentTask : public Task {
     Q_OBJECT
 public:
-    UnloadDocumentTask(Document *doc, bool save);
+    UnloadDocumentTask(Document* doc, bool save);
     ReportResult report();
 
-    static QList<Task *> runUnloadTaskHelper(const QList<Document *> &docs, UnloadDocumentTask_SaveMode sm);
-    static QString checkSafeUnload(Document *d);
+    static QList<Task*> runUnloadTaskHelper(const QList<Document*>& docs, UnloadDocumentTask_SaveMode sm);
+    static QString checkSafeUnload(Document* d);
 
 private:
     QPointer<Document> doc;
-    SaveDocumentTask *saveTask;
-    StateLock *lock;
+    SaveDocumentTask* saveTask;
+    StateLock* lock;
     static const QString ACTIVE_VIEW_ERROR;
 };
 
 class U2GUI_EXPORT ReloadDocumentTask : public Task {
     Q_OBJECT
 public:
-    ReloadDocumentTask(Document *d);
+    ReloadDocumentTask(Document* d);
     virtual void prepare();
-    virtual QList<Task *> onSubTaskFinished(Task *subTask);
+    virtual QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
     void saveObjectRelationsFromDoc();
     void restoreObjectRelationsForDoc();
-    static void restoreObjectRelationsForObject(GObject *obj,
-                                                const QList<GObjectRelation> &relations);
+    static void restoreObjectRelationsForObject(GObject* obj,
+                                                const QList<GObjectRelation>& relations);
 
-    Document *doc;
+    Document* doc;
     GUrl url;
-    Task *removeDocTask;
-    Task *openDocTask;
+    Task* removeDocTask;
+    Task* openDocTask;
     QMultiMap<QString, GObjectRelation> savedObjectRelations;
 };
 

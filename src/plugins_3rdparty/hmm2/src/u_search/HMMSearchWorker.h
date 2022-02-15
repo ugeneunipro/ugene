@@ -13,7 +13,7 @@ namespace LocalWorkflow {
 class HMMSearchPrompter : public PrompterBase<HMMSearchPrompter> {
     Q_OBJECT
 public:
-    HMMSearchPrompter(Actor *p = 0)
+    HMMSearchPrompter(Actor* p = 0)
         : PrompterBase<HMMSearchPrompter>(p) {
     }
 
@@ -24,20 +24,20 @@ protected:
 class HMMSearchWorker : public BaseWorker {
     Q_OBJECT
 public:
-    HMMSearchWorker(Actor *a);
+    HMMSearchWorker(Actor* a);
     virtual void init();
     virtual bool isReady() const;
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private slots:
-    void sl_taskFinished(Task *);
+    void sl_taskFinished(Task*);
 
 protected:
     IntegralBus *hmmPort, *seqPort, *output;
     QString resultName;
     UHMMSearchSettings cfg;
-    QList<plan7_s *> hmms;
+    QList<plan7_s*> hmms;
 };
 
 class HMMSearchWorkerFactory : public DomainFactory {
@@ -47,7 +47,7 @@ public:
     HMMSearchWorkerFactory()
         : DomainFactory(ACTOR) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new HMMSearchWorker(a);
     }
 };

@@ -32,29 +32,29 @@ namespace HI {
 #define GT_CLASS_NAME "GTWebkitView"
 
 #define GT_METHOD_NAME "findElementsBySelector"
-QList<HIWebElement> GTWebkitView::findElementsBySelector(GUITestOpStatus &os, QWebView *view, const QString &selector, const GTGlobals::FindOptions &options) {
+QList<HIWebElement> GTWebkitView::findElementsBySelector(GUITestOpStatus& os, QWebView* view, const QString& selector, const GTGlobals::FindOptions& options) {
     class Scenario : public CustomScenario {
     public:
-        Scenario(QWebView *view, const QString &selector, const GTGlobals::FindOptions &options, QList<HIWebElement> &webElements)
+        Scenario(QWebView* view, const QString& selector, const GTGlobals::FindOptions& options, QList<HIWebElement>& webElements)
             : view(view),
               selector(selector),
               options(options),
               webElements(webElements) {
         }
 
-        void run(GUITestOpStatus &os) {
+        void run(GUITestOpStatus& os) {
             Q_UNUSED(os);
-            QWebFrame *frame = view->page()->mainFrame();
-            foreach (const QWebElement &el, frame->findAllElements(selector)) {
+            QWebFrame* frame = view->page()->mainFrame();
+            foreach (const QWebElement& el, frame->findAllElements(selector)) {
                 webElements << toHiWebElement(el);
             }
         }
 
     private:
-        QWebView *view;
+        QWebView* view;
         const QString selector;
         const GTGlobals::FindOptions options;
-        QList<HIWebElement> &webElements;
+        QList<HIWebElement>& webElements;
     };
 
     QList<HIWebElement> webElements;
@@ -65,7 +65,7 @@ QList<HIWebElement> GTWebkitView::findElementsBySelector(GUITestOpStatus &os, QW
     if (options.searchInHidden) {
         filteredElements = webElements;
     } else {
-        foreach (const HIWebElement &element, webElements) {
+        foreach (const HIWebElement& element, webElements) {
             if (element.isVisible()) {
                 filteredElements << element;
             }
@@ -77,9 +77,9 @@ QList<HIWebElement> GTWebkitView::findElementsBySelector(GUITestOpStatus &os, QW
 }
 #undef GT_METHOD_NAME
 
-HIWebElement GTWebkitView::toHiWebElement(const QWebElement &element) {
+HIWebElement GTWebkitView::toHiWebElement(const QWebElement& element) {
     QMap<QString, QString> attributesMap;
-    foreach (const QString &name, element.attributeNames()) {
+    foreach (const QString& name, element.attributeNames()) {
         attributesMap.insert(name, element.attribute(name));
     }
     return HIWebElement(element.geometry(),

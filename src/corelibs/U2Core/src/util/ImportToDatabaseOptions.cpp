@@ -48,7 +48,7 @@ ImportToDatabaseOptions::ImportToDatabaseOptions()
       processFoldersRecursively(true) {
 }
 
-bool ImportToDatabaseOptions::operator==(const ImportToDatabaseOptions &other) const {
+bool ImportToDatabaseOptions::operator==(const ImportToDatabaseOptions& other) const {
     return createSubfolderForEachDocument == other.createSubfolderForEachDocument &&
            createSubfolderForEachFile == other.createSubfolderForEachFile &&
            createSubfolderForTopLevelFolder == other.createSubfolderForTopLevelFolder &&
@@ -61,7 +61,7 @@ bool ImportToDatabaseOptions::operator==(const ImportToDatabaseOptions &other) c
            processFoldersRecursively == other.processFoldersRecursively;
 }
 
-bool ImportToDatabaseOptions::operator!=(const ImportToDatabaseOptions &other) const {
+bool ImportToDatabaseOptions::operator!=(const ImportToDatabaseOptions& other) const {
     return !operator==(other);
 }
 

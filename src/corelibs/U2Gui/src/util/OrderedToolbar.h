@@ -31,14 +31,14 @@ namespace U2 {
 
 class U2GUI_EXPORT OrderedToolbar : public QToolBar {
 public:
-    OrderedToolbar(QWidget *parent, Qt::Orientation orientation = Qt::Horizontal);
+    OrderedToolbar(QWidget* parent, Qt::Orientation orientation = Qt::Horizontal);
 
-    void setButtonTabOrderList(QList<QString> *buttonNamesInNeededOrder);
+    void setButtonTabOrderList(QList<QString>* buttonNamesInNeededOrder);
 
     virtual void setVisible(bool visible);
 
 protected:
-    void paintEvent(QPaintEvent *) {
+    void paintEvent(QPaintEvent*) {
         // do not draw any special toolbar control -> make is merged with parent widget
     }
 
@@ -46,7 +46,7 @@ private:
     void setButtonsTabOrder() const;
 
     bool tabOrdered;
-    QList<QString> *buttonTabOrderList;
+    QList<QString>* buttonTabOrderList;
 };
 
 }  // namespace U2

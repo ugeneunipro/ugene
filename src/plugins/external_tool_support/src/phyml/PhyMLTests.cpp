@@ -39,13 +39,13 @@
 
 #include "PhyMLSupport.h"
 namespace U2 {
-QList<XMLTestFactory *> PhyMLToolTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> PhyMLToolTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_PhyML::createFactory());
     return res;
 }
 
-void GTest_PhyML::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_PhyML::init(XMLTestFormat*, const QDomElement& el) {
     treeObjFromDoc = nullptr;
     task = nullptr;
     input = nullptr;
@@ -110,19 +110,19 @@ void GTest_PhyML::prepare() {
         return;
     }
 
-    QList<GObject *> list = maDoc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    QList<GObject*> list = maDoc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
         stateInfo.setError(QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
 
-    GObject *obj = list.first();
+    GObject* obj = list.first();
     if (obj == nullptr) {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
     assert(obj != nullptr);
-    MultipleSequenceAlignmentObject *ma = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
+    MultipleSequenceAlignmentObject* ma = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if (ma == nullptr) {
         stateInfo.setError(QString("error can't cast to multiple alignment from GObject"));
         return;
@@ -136,19 +136,19 @@ void GTest_PhyML::prepare() {
         return;
     }
 
-    QList<GObject *> list2 = treeDoc->findGObjectByType(GObjectTypes::PHYLOGENETIC_TREE);
+    QList<GObject*> list2 = treeDoc->findGObjectByType(GObjectTypes::PHYLOGENETIC_TREE);
     if (list2.size() == 0) {
         stateInfo.setError(QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
 
-    GObject *obj2 = list2.first();
+    GObject* obj2 = list2.first();
     if (obj2 == nullptr) {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::PHYLOGENETIC_TREE));
         return;
     }
 
-    treeObjFromDoc = qobject_cast<PhyTreeObject *>(obj2);
+    treeObjFromDoc = qobject_cast<PhyTreeObject*>(obj2);
 
     if (treeObjFromDoc == nullptr) {
         stateInfo.setError(QString("error can't cast to phylogenetic tree from GObject"));
@@ -171,7 +171,7 @@ Task::ReportResult GTest_PhyML::report() {
     }
     if (!task->hasError()) {
         const PhyTree computedTree = task->getResult();
-        const PhyTree &treeFromDoc = treeObjFromDoc->getTree();
+        const PhyTree& treeFromDoc = treeObjFromDoc->getTree();
         bool same = PhyTreeObject::treesAreAlike(computedTree, treeFromDoc);
         if (!same) {
             if (negative.isEmpty()) {
@@ -193,4 +193,4 @@ Task::ReportResult GTest_PhyML::report() {
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -27,7 +27,7 @@
 namespace U2 {
 using namespace HI;
 
-GTLogTracer::GTLogTracer(const QString &expectedMessage)
+GTLogTracer::GTLogTracer(const QString& expectedMessage)
     : isExpectedMessageFound(false), expectedMessage(expectedMessage) {
     LogServer::getInstance()->addListener(this);
 }
@@ -36,7 +36,7 @@ GTLogTracer::~GTLogTracer() {
     LogServer::getInstance()->removeListener(this);
 }
 
-void GTLogTracer::onMessage(const LogMessage &msg) {
+void GTLogTracer::onMessage(const LogMessage& msg) {
     if (msg.level == LogLevel_ERROR) {
         errorsList << msg.text;
     }
@@ -46,13 +46,13 @@ void GTLogTracer::onMessage(const LogMessage &msg) {
     }
 }
 
-QList<LogMessage *> GTLogTracer::getMessages() {
+QList<LogMessage*> GTLogTracer::getMessages() {
     return LogCache::getAppGlobalInstance()->messages;
 }
 
-bool GTLogTracer::checkMessage(const QString &s) {
-    QList<LogMessage *> messages = getMessages();
-    for (LogMessage *message : qAsConst(messages)) {
+bool GTLogTracer::checkMessage(const QString& s) {
+    QList<LogMessage*> messages = getMessages();
+    for (LogMessage* message : qAsConst(messages)) {
         if (message->text.contains(s, Qt::CaseInsensitive)) {
             return true;
         }
@@ -62,7 +62,7 @@ bool GTLogTracer::checkMessage(const QString &s) {
 
 #define GT_CLASS_NAME "GTUtilsLog"
 #define GT_METHOD_NAME "check"
-void GTUtilsLog::check(HI::GUITestOpStatus &os, const GTLogTracer &logTracer) {
+void GTUtilsLog::check(HI::GUITestOpStatus& os, const GTLogTracer& logTracer) {
     Q_UNUSED(os);
     GTGlobals::sleep(500);
     GT_CHECK(!logTracer.hasErrors(), "There are errors in log: " + logTracer.errorsList.join("\n"));
@@ -70,7 +70,7 @@ void GTUtilsLog::check(HI::GUITestOpStatus &os, const GTLogTracer &logTracer) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkContainsError"
-void GTUtilsLog::checkContainsError(HI::GUITestOpStatus &os, const GTLogTracer &logTracer, const QString &messagePart) {
+void GTUtilsLog::checkContainsError(HI::GUITestOpStatus& os, const GTLogTracer& logTracer, const QString& messagePart) {
     Q_UNUSED(os);
     GTGlobals::sleep(500);
     bool isErrorFound = false;
@@ -85,7 +85,7 @@ void GTUtilsLog::checkContainsError(HI::GUITestOpStatus &os, const GTLogTracer &
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkContainsMessage"
-void GTUtilsLog::checkContainsMessage(HI::GUITestOpStatus &os, const GTLogTracer &logTracer, bool expected) {
+void GTUtilsLog::checkContainsMessage(HI::GUITestOpStatus& os, const GTLogTracer& logTracer, bool expected) {
     GT_CHECK(!logTracer.expectedMessage.isEmpty(), "'Expected message' is required by logTracer");
     GTGlobals::sleep(500);
     if (expected) {
@@ -97,9 +97,9 @@ void GTUtilsLog::checkContainsMessage(HI::GUITestOpStatus &os, const GTLogTracer
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getErrors"
-QStringList GTUtilsLog::getErrors(HI::GUITestOpStatus & /*os*/, const GTLogTracer &logTracer) {
+QStringList GTUtilsLog::getErrors(HI::GUITestOpStatus& /*os*/, const GTLogTracer& logTracer) {
     QStringList result;
-    foreach (LogMessage *message, logTracer.getMessages()) {
+    foreach (LogMessage* message, logTracer.getMessages()) {
         if (message->level == LogLevel_ERROR) {
             result << message->text;
         }
@@ -109,7 +109,7 @@ QStringList GTUtilsLog::getErrors(HI::GUITestOpStatus & /*os*/, const GTLogTrace
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkMessageWithWait"
-void GTUtilsLog::checkMessageWithWait(HI::GUITestOpStatus &os, const GTLogTracer &logTracer, const QString &message, int timeoutMillis) {
+void GTUtilsLog::checkMessageWithWait(HI::GUITestOpStatus& os, const GTLogTracer& logTracer, const QString& message, int timeoutMillis) {
     for (int time = 0; time < timeoutMillis; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         if (logTracer.checkMessage(message)) {
@@ -121,9 +121,9 @@ void GTUtilsLog::checkMessageWithWait(HI::GUITestOpStatus &os, const GTLogTracer
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkMessageWithTextCount"
-void GTUtilsLog::checkMessageWithTextCount(HI::GUITestOpStatus &os, const QString &messagePart, int expectedMessageCount, const QString &context) {
+void GTUtilsLog::checkMessageWithTextCount(HI::GUITestOpStatus& os, const QString& messagePart, int expectedMessageCount, const QString& context) {
     int messageCount = 0;
-    QList<LogMessage *> messages = GTLogTracer::getMessages();
+    QList<LogMessage*> messages = GTLogTracer::getMessages();
     for (auto message : qAsConst(messages)) {
         if (message->text.contains("checkMessageWithTextCount: Unexpected message count for text: '")) {
             continue;  // A harness message from one of the previous GT_CHECK calls. Contains the check message part.

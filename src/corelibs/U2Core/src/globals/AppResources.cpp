@@ -49,7 +49,7 @@
 namespace U2 {
 
 #if defined(Q_OS_LINUX)
-void process_mem_usage(size_t &vm_usage) {
+void process_mem_usage(size_t& vm_usage) {
     using std::ifstream;
     using std::ios_base;
     using std::string;
@@ -80,7 +80,7 @@ void process_mem_usage(size_t &vm_usage) {
 #define SETTINGS_ROOT QString("app_resource/")
 
 AppResourcePool::AppResourcePool() {
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     idealThreadCount = s->getValue(SETTINGS_ROOT + "idealThreadCount", QThread::idealThreadCount()).toInt();
 
     int maxThreadCount = s->getValue(SETTINGS_ROOT + "maxThreadCount", 1000).toInt();
@@ -209,7 +209,7 @@ size_t AppResourcePool::getCurrentAppMemory() {
     return -1;
 }
 
-void AppResourcePool::registerResource(AppResource *r) {
+void AppResourcePool::registerResource(AppResource* r) {
     SAFE_POINT(nullptr != r, "", );
     SAFE_POINT(!resources.contains(r->getResourceId()), QString("Duplicate resource: %1").arg(r->getResourceId()), );
 
@@ -221,15 +221,15 @@ void AppResourcePool::unregisterResource(int id) {
     delete resources.take(id);
 }
 
-AppResource *AppResourcePool::getResource(int id) const {
+AppResource* AppResourcePool::getResource(int id) const {
     return resources.value(id, nullptr);
 }
 
-AppResourcePool *AppResourcePool::instance() {
+AppResourcePool* AppResourcePool::instance() {
     return AppContext::getAppSettings() ? AppContext::getAppSettings()->getAppResourcePool() : nullptr;
 }
 
-MemoryLocker &MemoryLocker::operator=(MemoryLocker &other) {
+MemoryLocker& MemoryLocker::operator=(MemoryLocker& other) {
     MemoryLocker tmp(other);
     qSwap(os, tmp.os);
     qSwap(preLockMB, tmp.preLockMB);

@@ -38,39 +38,39 @@ class OVTStateItem;
 class U2GUI_EXPORT ObjectViewTreeController : public QObject {
     Q_OBJECT
 public:
-    ObjectViewTreeController(QTreeWidget *w);
+    ObjectViewTreeController(QTreeWidget* w);
 
-    QAction *getAddStateAction() const {
+    QAction* getAddStateAction() const {
         return addStateAction;
     }
-    QAction *getRenameStateAction() const {
+    QAction* getRenameStateAction() const {
         return renameStateAction;
     }
-    QAction *getRemoveStateAction() const {
+    QAction* getRemoveStateAction() const {
         return removeStateAction;
     }
 
-    const QIcon &getActiveBookmarkIcon() const {
+    const QIcon& getActiveBookmarkIcon() const {
         return bookmarkActiveIcon;
     }
-    const QIcon &getInactiveBookmarkIcon() const {
+    const QIcon& getInactiveBookmarkIcon() const {
         return bookmarkInactiveIcon;
     }
-    OVTViewItem *findViewItem(const QString &name);
+    OVTViewItem* findViewItem(const QString& name);
 
 private slots:
-    void sl_onMdiWindowAdded(MWMDIWindow *);
-    void sl_onMdiWindowClosing(MWMDIWindow *);
-    void sl_onMdiWindowActivated(MWMDIWindow *);
-    void sl_onViewStateAdded(GObjectViewState *);
-    void sl_onStateModified(GObjectViewState *);
-    void sl_onViewStateRemoved(GObjectViewState *);
-    void sl_onViewPersistentStateChanged(GObjectViewWindow *);
-    void sl_onContextMenuRequested(const QPoint &);
-    void sl_onTreeCurrentChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
-    void sl_onItemActivated(QTreeWidgetItem *, int);
-    void sl_onItemChanged(QTreeWidgetItem *, int);
-    void sl_onViewNameChanged(const QString &);
+    void sl_onMdiWindowAdded(MWMDIWindow*);
+    void sl_onMdiWindowClosing(MWMDIWindow*);
+    void sl_onMdiWindowActivated(MWMDIWindow*);
+    void sl_onViewStateAdded(GObjectViewState*);
+    void sl_onStateModified(GObjectViewState*);
+    void sl_onViewStateRemoved(GObjectViewState*);
+    void sl_onViewPersistentStateChanged(GObjectViewWindow*);
+    void sl_onContextMenuRequested(const QPoint&);
+    void sl_onTreeCurrentChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous);
+    void sl_onItemActivated(QTreeWidgetItem*, int);
+    void sl_onItemChanged(QTreeWidgetItem*, int);
+    void sl_onViewNameChanged(const QString&);
 
     void sl_activateView();
     void sl_addState();
@@ -81,29 +81,29 @@ private:
     void updateActions();
     void buildTree();
     void connectModel();
-    void makeViewPersistent(GObjectViewWindow *w);
-    void makeViewTransient(GObjectViewWindow *w);
+    void makeViewPersistent(GObjectViewWindow* w);
+    void makeViewTransient(GObjectViewWindow* w);
 
-    OVTStateItem *findStateItem(GObjectViewState *s);
+    OVTStateItem* findStateItem(GObjectViewState* s);
 
-    OVTItem *currentItem() const;
-    OVTViewItem *currentViewItem(bool deriveFromState = false) const;
-    OVTStateItem *currentStateItem() const;
-    OVTViewItem *activeViewItem() const;
+    OVTItem* currentItem() const;
+    OVTViewItem* currentViewItem(bool deriveFromState = false) const;
+    OVTStateItem* currentStateItem() const;
+    OVTViewItem* activeViewItem() const;
 
-    GObjectViewState *findStateToOpen() const;
+    GObjectViewState* findStateToOpen() const;
 
-    void addViewWindow(GObjectViewWindow *);
-    OVTStateItem *addState(GObjectViewState *);
-    void removeState(GObjectViewState *s);
+    void addViewWindow(GObjectViewWindow*);
+    OVTStateItem* addState(GObjectViewState*);
+    void removeState(GObjectViewState* s);
 
 private:
-    QTreeWidget *tree;
+    QTreeWidget* tree;
 
-    QAction *activateViewAction;
-    QAction *addStateAction;
-    QAction *removeStateAction;
-    QAction *renameStateAction;
+    QAction* activateViewAction;
+    QAction* addStateAction;
+    QAction* removeStateAction;
+    QAction* renameStateAction;
 
     QIcon bookmarkStateIcon;
     QIcon bookmarkActiveIcon;
@@ -112,7 +112,7 @@ private:
 
 class OVTItem : public QTreeWidgetItem {
 public:
-    OVTItem(ObjectViewTreeController *c)
+    OVTItem(ObjectViewTreeController* c)
         : controller(c) {
     }
     bool isRootItem() {
@@ -125,13 +125,13 @@ public:
         return false;
     }
     virtual void updateVisual() = 0;
-    ObjectViewTreeController *controller;
+    ObjectViewTreeController* controller;
 };
 
 class OVTViewItem : public OVTItem {
 public:
-    OVTViewItem(GObjectViewWindow *view, ObjectViewTreeController *c);
-    OVTViewItem(const QString &viewName, ObjectViewTreeController *c);
+    OVTViewItem(GObjectViewWindow* view, ObjectViewTreeController* c);
+    OVTViewItem(const QString& viewName, ObjectViewTreeController* c);
     virtual bool isViewItem() const {
         return true;
     }
@@ -142,7 +142,7 @@ public:
     }
 
     QString viewName;  // BUG:416: remove this field?
-    GObjectViewWindow *viewWindow;
+    GObjectViewWindow* viewWindow;
 
 private:
     bool isActive;
@@ -150,12 +150,12 @@ private:
 
 class OVTStateItem : public OVTItem {
 public:
-    OVTStateItem(GObjectViewState *state, OVTViewItem *parent, ObjectViewTreeController *c);
+    OVTStateItem(GObjectViewState* state, OVTViewItem* parent, ObjectViewTreeController* c);
     virtual bool isStateItem() const {
         return true;
     }
     virtual void updateVisual();
-    GObjectViewState *state;
+    GObjectViewState* state;
 };
 
 }  // namespace U2

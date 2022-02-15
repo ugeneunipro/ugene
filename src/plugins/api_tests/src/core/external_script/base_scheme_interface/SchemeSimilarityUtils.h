@@ -36,23 +36,23 @@ namespace U2 {
 class SchemeSimilarityUtils {
 public:
     static void checkSchemesSimilarity(SchemeHandle assembledScheme,
-                                       const QString &pathToProperScheme,
-                                       U2OpStatus &stateInfo);
+                                       const QString& pathToProperScheme,
+                                       U2OpStatus& stateInfo);
 
 private:
-    static int getSchemeDescriptionStartPos(const QString &schemeContent);
-    static int getSchemeDescriptionEndPos(const QString &schemeContent);
+    static int getSchemeDescriptionStartPos(const QString& schemeContent);
+    static int getSchemeDescriptionEndPos(const QString& schemeContent);
     static QString getSchemeContentByHandle(SchemeHandle scheme,
-                                            U2OpStatus &stateInfo);
-    static QString getSchemeContentByFilePath(const QString &pathToScheme,
-                                              U2OpStatus &stateInfo);
-    static QString readFileContent(QFile &file, U2OpStatus &stateInfo);
-    static void skipSchemeSpecificNames(QString &schemeContent);
-    static QStringList getNonSpaceStatementsFromScheme(const QString &schemeContent);
-    static void skipElementNames(QString &schemeContent);
-    static void skipElementIds(QString &schemeContent);
-    static void skipActorBindingsBlockBoundaries(QString &schemeContent);
-    static void skipValidatorBlocks(QString &schemeContent);
+                                            U2OpStatus& stateInfo);
+    static QString getSchemeContentByFilePath(const QString& pathToScheme,
+                                              U2OpStatus& stateInfo);
+    static QString readFileContent(QFile& file, U2OpStatus& stateInfo);
+    static void skipSchemeSpecificNames(QString& schemeContent);
+    static QStringList getNonSpaceStatementsFromScheme(const QString& schemeContent);
+    static void skipElementNames(QString& schemeContent);
+    static void skipElementIds(QString& schemeContent);
+    static void skipActorBindingsBlockBoundaries(QString& schemeContent);
+    static void skipValidatorBlocks(QString& schemeContent);
 };
 
 }  // namespace U2

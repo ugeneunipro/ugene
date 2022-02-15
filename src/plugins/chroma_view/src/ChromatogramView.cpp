@@ -56,7 +56,7 @@ namespace U2 {
 
 static const char GAP_CHAR = '-';
 
-ChromatogramView::ChromatogramView(QWidget *p, ADVSequenceObjectContext *v, GSequenceLineView *cv, const DNAChromatogram &chroma)
+ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSequenceLineView* cv, const DNAChromatogram& chroma)
     : GSequenceLineView(p, v), editDNASeq(nullptr) {
     const QString objectName = "chromatogram_view_" + v->getSequenceGObject()->getGObjectName();
     setObjectName(objectName);
@@ -88,7 +88,7 @@ ChromatogramView::ChromatogramView(QWidget *p, ADVSequenceObjectContext *v, GSeq
     scaleBar->setTickInterval(100);
     connect(scaleBar, SIGNAL(valueChanged(int)), SLOT(setRenderAreaHeight(int)));
 
-    ra = static_cast<ChromatogramViewRenderArea *>(renderArea);
+    ra = static_cast<ChromatogramViewRenderArea*>(renderArea);
     scaleBar->setValue(int(ra->height() - ra->getHeightAreaBC() + ra->addUpIfQVL));
 
     setCoherentRangeView(cv);
@@ -101,7 +101,7 @@ ChromatogramView::ChromatogramView(QWidget *p, ADVSequenceObjectContext *v, GSeq
     mP->addAction(QString("T"));
     mP->addAction(QString("N"));
     mP->addAction(QString(GAP_CHAR));
-    connect(mP, SIGNAL(triggered(QAction *)), SLOT(sl_onPopupMenuCkicked(QAction *)));
+    connect(mP, SIGNAL(triggered(QAction*)), SLOT(sl_onPopupMenuCkicked(QAction*)));
 
     addNewSeqAction = new QAction(tr("Edit new sequence"), this);
     connect(addNewSeqAction, SIGNAL(triggered()), SLOT(sl_addNewSequenceObject()));
@@ -115,17 +115,17 @@ ChromatogramView::ChromatogramView(QWidget *p, ADVSequenceObjectContext *v, GSeq
     removeChanges = new QAction(tr("Undo changes"), this);
     connect(removeChanges, SIGNAL(triggered()), SLOT(sl_removeChanges()));
 
-    connect(dnaView, SIGNAL(si_objectRemoved(GObjectView *, GObject *)), SLOT(sl_onObjectRemoved(GObjectView *, GObject *)));
+    connect(dnaView, SIGNAL(si_objectRemoved(GObjectView*, GObject*)), SLOT(sl_onObjectRemoved(GObjectView*, GObject*)));
     pack();
 
     addActionToLocalToolbar(showQVAction);
-    QToolButton *traceButton = addActionToLocalToolbar(traceActionMenu->menuAction());
+    QToolButton* traceButton = addActionToLocalToolbar(traceActionMenu->menuAction());
     traceButton->setIcon(QIcon(":chroma_view/images/traces.png"));
     traceButton->setPopupMode(QToolButton::InstantPopup);
 }
 
 void ChromatogramView::pack() {
-    QHBoxLayout *layout = new QHBoxLayout();
+    QHBoxLayout* layout = new QHBoxLayout();
     layout->setMargin(0);
     layout->addWidget(renderArea);
     layout->addWidget(scaleBar);
@@ -138,18 +138,18 @@ void ChromatogramView::pack() {
 
 void ChromatogramView::setRenderAreaHeight(int k) {
     // k = chromaMax
-    ChromatogramViewRenderArea *cvra = static_cast<ChromatogramViewRenderArea *>(renderArea);
+    ChromatogramViewRenderArea* cvra = static_cast<ChromatogramViewRenderArea*>(renderArea);
     cvra->setAreaHeight(k);
     completeUpdate();
 }
 
-void ChromatogramView::buildPopupMenu(QMenu &m) {
+void ChromatogramView::buildPopupMenu(QMenu& m) {
     QPoint cpos = renderArea->mapFromGlobal(QCursor::pos());
     if (!renderArea->rect().contains(cpos)) {
         return;
     }
     // todo: move to submenus?
-    QAction *before = GUIUtils::findActionAfter(m.actions(), ADV_MENU_ZOOM);
+    QAction* before = GUIUtils::findActionAfter(m.actions(), ADV_MENU_ZOOM);
 
     m.insertAction(before, showQVAction);
     m.insertMenu(before, traceActionMenu);
@@ -166,7 +166,7 @@ void ChromatogramView::buildPopupMenu(QMenu &m) {
 
 static const int MAX_DNA_LEN = 1000 * 1000 * 1000;
 
-void ChromatogramView::mousePressEvent(QMouseEvent *me) {
+void ChromatogramView::mousePressEvent(QMouseEvent* me) {
     setFocus();
     if (me->button() == Qt::RightButton || editDNASeq == nullptr) {
         GSequenceLineView::mousePressEvent(me);
@@ -178,7 +178,7 @@ void ChromatogramView::mousePressEvent(QMouseEvent *me) {
     }
     QPoint renderAreaPos = toRenderAreaPoint(me->pos());
 
-    const U2Region &visibleRange = getVisibleRange();
+    const U2Region& visibleRange = getVisibleRange();
     QRectF rect;
     for (int i = int(visibleRange.startPos); i < visibleRange.endPos(); ++i) {
         rect = ra->posToRect(i);
@@ -206,7 +206,7 @@ int ChromatogramView::getEditSeqIndex(int bcIndex) {
     return bcIndex - before;
 }
 
-void ChromatogramView::sl_onPopupMenuCkicked(QAction *a) {
+void ChromatogramView::sl_onPopupMenuCkicked(QAction* a) {
     if (editDNASeq->isStateLocked()) {
         QMessageBox::critical(this, L10N::errorTitle(), tr("The sequence is locked"));
         return;
@@ -263,18 +263,18 @@ void ChromatogramView::sl_addNewSequenceObject() {
     if (!m.successful) {
         return;
     }
-    Project *p = AppContext::getProject();
+    Project* p = AppContext::getProject();
 
-    DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(m.format);
+    DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(m.format);
     SAFE_POINT(nullptr != format, QString("Format is not registered: '%1'").arg(m.format), );
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(m.io);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(m.io);
     U2OpStatus2Log os;
-    Document *doc = format->createNewLoadedDocument(iof, m.url, os);
+    Document* doc = format->createNewLoadedDocument(iof, m.url, os);
     CHECK_OP(os, );
     p->addDocument(doc);
 
-    U2SequenceObject *so = ctx->getSequenceObject();
-    editDNASeq = qobject_cast<U2SequenceObject *>(so->clone(doc->getDbiRef(), os));
+    U2SequenceObject* so = ctx->getSequenceObject();
+    editDNASeq = qobject_cast<U2SequenceObject*>(so->clone(doc->getDbiRef(), os));
     CHECK_OP(os, );
     currentBaseCalls = editDNASeq->getWholeSequenceData(os);
     CHECK_OP(os, );
@@ -297,34 +297,34 @@ void ChromatogramView::sl_onAddExistingSequenceObject() {
     ac.alphabetType = ctx->getSequenceObject()->getAlphabet()->getType();
     s.groupMode = ProjectTreeGroupMode_ByDocument;
     s.ignoreRemoteObjects = true;
-    foreach (GObject *o, dnaView->getObjects()) {
+    foreach (GObject* o, dnaView->getObjects()) {
         s.excludeObjectList.append(o);
     }
 
-    QList<GObject *> objs = ProjectTreeItemSelectorDialog::selectObjects(s, this);
+    QList<GObject*> objs = ProjectTreeItemSelectorDialog::selectObjects(s, this);
     if (objs.size() != 0) {
-        GObject *go = objs.first();
+        GObject* go = objs.first();
         if (go->getGObjectType() == GObjectTypes::SEQUENCE) {
-            editDNASeq = qobject_cast<U2SequenceObject *>(go);
+            editDNASeq = qobject_cast<U2SequenceObject*>(go);
             QString err = dnaView->addObject(editDNASeq);
             assert(err.isEmpty());
             indexOfChangedChars.clear();
         } else if (go->getGObjectType() == GObjectTypes::UNLOADED) {
-            LoadUnloadedDocumentTask *t = new LoadUnloadedDocumentTask(go->getDocument(),
+            LoadUnloadedDocumentTask* t = new LoadUnloadedDocumentTask(go->getDocument(),
                                                                        LoadDocumentTaskConfig(false, GObjectReference(go)));
-            connect(new TaskSignalMapper(t), SIGNAL(si_taskSucceeded(Task *)), SLOT(sl_onSequenceObjectLoaded(Task *)));
+            connect(new TaskSignalMapper(t), SIGNAL(si_taskSucceeded(Task*)), SLOT(sl_onSequenceObjectLoaded(Task*)));
             AppContext::getTaskScheduler()->registerTopLevelTask(t);
         }
     }
 }
 
-void ChromatogramView::sl_onSequenceObjectLoaded(Task *t) {
-    LoadUnloadedDocumentTask *lut = qobject_cast<LoadUnloadedDocumentTask *>(t);
-    GObject *go = GObjectUtils::selectObjectByReference(lut->getConfig().checkObjRef,
+void ChromatogramView::sl_onSequenceObjectLoaded(Task* t) {
+    LoadUnloadedDocumentTask* lut = qobject_cast<LoadUnloadedDocumentTask*>(t);
+    GObject* go = GObjectUtils::selectObjectByReference(lut->getConfig().checkObjRef,
                                                         lut->getDocument()->getObjects(),
                                                         UOF_LoadedOnly);
     if (go != nullptr) {
-        editDNASeq = qobject_cast<U2SequenceObject *>(go);
+        editDNASeq = qobject_cast<U2SequenceObject*>(go);
         QString err = dnaView->addObject(editDNASeq);
         assert(err.isEmpty());
         indexOfChangedChars.clear();
@@ -335,7 +335,7 @@ void ChromatogramView::sl_onSequenceObjectLoaded(Task *t) {
     }
 }
 
-bool ChromatogramView::isWidgetOnlyObject(GObject *o) const {
+bool ChromatogramView::isWidgetOnlyObject(GObject* o) const {
     return o == editDNASeq;
 }
 
@@ -352,7 +352,7 @@ void ChromatogramView::sl_removeChanges() {
         return;
     }
 
-    U2SequenceObject *seqObject = ctx->getSequenceObject();
+    U2SequenceObject* seqObject = ctx->getSequenceObject();
     U2OpStatusImpl os;
     QByteArray sequence = seqObject->getWholeSequenceData(os);
     CHECK_OP(os, );
@@ -363,7 +363,7 @@ void ChromatogramView::sl_removeChanges() {
     indexOfChangedChars.clear();
 }
 
-void ChromatogramView::sl_onObjectRemoved(GObjectView *view, GObject *obj) {
+void ChromatogramView::sl_onObjectRemoved(GObjectView* view, GObject* obj) {
     Q_UNUSED(view);
 
     CHECK(obj == editDNASeq, );
@@ -372,8 +372,8 @@ void ChromatogramView::sl_onObjectRemoved(GObjectView *view, GObject *obj) {
     update();
 }
 
-QAction *ChromatogramView::createToggleTraceAction(const QString &actionName) {
-    QAction *showTraceAction = new QAction(actionName, this);
+QAction* ChromatogramView::createToggleTraceAction(const QString& actionName) {
+    QAction* showTraceAction = new QAction(actionName, this);
     showTraceAction->setCheckable(true);
     showTraceAction->setChecked(true);
     showTraceAction->setEnabled(true);
@@ -383,7 +383,7 @@ QAction *ChromatogramView::createToggleTraceAction(const QString &actionName) {
 }
 
 void ChromatogramView::sl_showHideTrace() {
-    QAction *traceAction = qobject_cast<QAction *>(sender());
+    QAction* traceAction = qobject_cast<QAction*>(sender());
 
     if (!traceAction) {
         return;
@@ -409,8 +409,8 @@ void ChromatogramView::sl_showAllTraces() {
     settings.drawTraceC = true;
     settings.drawTraceG = true;
     settings.drawTraceT = true;
-    QList<QAction *> actions = traceActionMenu->actions();
-    foreach (QAction *action, actions) {
+    QList<QAction*> actions = traceActionMenu->actions();
+    foreach (QAction* action, actions) {
         action->setChecked(true);
     }
     completeUpdate();
@@ -418,7 +418,7 @@ void ChromatogramView::sl_showAllTraces() {
 
 //////////////////////////////////////
 ////render area
-ChromatogramViewRenderArea::ChromatogramViewRenderArea(ChromatogramView *p, const DNAChromatogram &_chroma)
+ChromatogramViewRenderArea::ChromatogramViewRenderArea(ChromatogramView* p, const DNAChromatogram& _chroma)
     : GSequenceLineViewRenderArea(p),
       linePen(Qt::gray, 1, Qt::DotLine),
       kLinearTransformTrace(0.0),
@@ -460,18 +460,18 @@ ChromatogramViewRenderArea::ChromatogramViewRenderArea(ChromatogramView *p, cons
 ChromatogramViewRenderArea::~ChromatogramViewRenderArea() {
 }
 
-void ChromatogramViewRenderArea::drawAll(QPaintDevice *pd) {
+void ChromatogramViewRenderArea::drawAll(QPaintDevice* pd) {
     static const QColor colorForIds[4] = {Qt::darkGreen, Qt::blue, Qt::black, Qt::red};
     static const QString baseForIds[4] = {"A", "C", "G", "T"};
     static const qreal dividerTraceOrBaseCallsLines = 2;
     static const qreal dividerBoolShowBaseCallsChars = 1.5;
 
-    ChromatogramView *chromaView = qobject_cast<ChromatogramView *>(view);
+    ChromatogramView* chromaView = qobject_cast<ChromatogramView*>(view);
 
-    const U2Region &visible = view->getVisibleRange();
+    const U2Region& visible = view->getVisibleRange();
     assert(!visible.isEmpty());
 
-    SequenceObjectContext *seqCtx = view->getSequenceContext();
+    SequenceObjectContext* seqCtx = view->getSequenceContext();
     U2OpStatusImpl os;
     QByteArray seq = seqCtx->getSequenceObject()->getWholeSequenceData(os);
     SAFE_POINT_OP(os, );
@@ -527,7 +527,7 @@ void ChromatogramViewRenderArea::drawAll(QPaintDevice *pd) {
         drawOriginalBaseCalls(0, 0, width(), charHeight, p, visible, chromaView->currentBaseCalls, false);
     }
 
-    const QVector<U2Region> &sel = seqCtx->getSequenceSelection()->getSelectedRegions();
+    const QVector<U2Region>& sel = seqCtx->getSequenceSelection()->getSelectedRegions();
     if (!sel.isEmpty()) {
         // draw current selection
         // selection base on trace transform coef
@@ -562,9 +562,9 @@ void ChromatogramViewRenderArea::setAreaHeight(int newH) {
     areaHeight = newH;
 }
 
-qint64 ChromatogramViewRenderArea::coordToPos(const QPoint &coord) const {
+qint64 ChromatogramViewRenderArea::coordToPos(const QPoint& coord) const {
     int x = coord.x();
-    const U2Region &visibleRange = view->getVisibleRange();
+    const U2Region& visibleRange = view->getVisibleRange();
     qreal lastBaseCall = kLinearTransformTrace * chroma.baseCalls[chroma.seqLength - 1] + bLinearTransformTrace;
     if (visibleRange.startPos + visibleRange.length == chroma.seqLength && x > lastBaseCall) {
         return chroma.seqLength;
@@ -580,7 +580,7 @@ qint64 ChromatogramViewRenderArea::coordToPos(const QPoint &coord) const {
 }
 
 int ChromatogramViewRenderArea::posToCoord(qint64 p, bool useVirtualSpace) const {
-    const U2Region &visibleRange = view->getVisibleRange();
+    const U2Region& visibleRange = view->getVisibleRange();
     if (!useVirtualSpace && !visibleRange.contains(p) && p != visibleRange.endPos()) {
         return -1;
     }
@@ -596,7 +596,7 @@ QRectF ChromatogramViewRenderArea::posToRect(int i) const {
 
 // draw functions
 
-void ChromatogramViewRenderArea::drawChromatogramTrace(qreal x, qreal y, qreal w, qreal h, QPainter &p, const U2Region &visible, const ChromatogramViewSettings &settings) {
+void ChromatogramViewRenderArea::drawChromatogramTrace(qreal x, qreal y, qreal w, qreal h, QPainter& p, const U2Region& visible, const ChromatogramViewSettings& settings) {
     if (chromaMax == 0) {
         // nothing to draw
         return;
@@ -661,7 +661,7 @@ void ChromatogramViewRenderArea::drawChromatogramTrace(qreal x, qreal y, qreal w
     p.resetTransform();
 }
 
-void ChromatogramViewRenderArea::drawOriginalBaseCalls(qreal x, qreal y, qreal w, qreal h, QPainter &p, const U2Region &visible, const QByteArray &ba, bool is) {
+void ChromatogramViewRenderArea::drawOriginalBaseCalls(qreal x, qreal y, qreal w, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba, bool is) {
     QRectF rect;
 
     p.setPen(Qt::black);
@@ -681,7 +681,7 @@ void ChromatogramViewRenderArea::drawOriginalBaseCalls(qreal x, qreal y, qreal w
         kLinearTransformBaseCallsOfEdited = kLinearTransformBaseCalls;
         bLinearTransformBaseCallsOfEdited = bLinearTransformBaseCalls;
     }
-    ChromatogramView *cview = qobject_cast<ChromatogramView *>(view);
+    ChromatogramView* cview = qobject_cast<ChromatogramView*>(view);
     for (int i = int(visible.startPos); i < visible.endPos(); i++) {
         QColor color = getBaseColor(ba[i]);
         p.setPen(color);
@@ -710,7 +710,7 @@ void ChromatogramViewRenderArea::drawOriginalBaseCalls(qreal x, qreal y, qreal w
     p.resetTransform();
 }
 
-void ChromatogramViewRenderArea::drawQualityValues(qreal x, qreal y, qreal w, qreal h, QPainter &p, const U2Region &visible, const QByteArray &ba) {
+void ChromatogramViewRenderArea::drawQualityValues(qreal x, qreal y, qreal w, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) {
     QRectF rectangle;
 
     p.resetTransform();
@@ -766,7 +766,7 @@ void ChromatogramViewRenderArea::drawQualityValues(qreal x, qreal y, qreal w, qr
     p.resetTransform();
 }
 
-void ChromatogramViewRenderArea::drawChromatogramBaseCallsLines(qreal x, qreal y, qreal w, qreal h, QPainter &p, const U2Region &visible, const QByteArray &ba, const ChromatogramViewSettings &settings) {
+void ChromatogramViewRenderArea::drawChromatogramBaseCallsLines(qreal x, qreal y, qreal w, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba, const ChromatogramViewSettings& settings) {
     static const QColor colorForIds[4] = {
         Qt::darkGreen, Qt::blue, Qt::black, Qt::red};
     p.setRenderHint(QPainter::Antialiasing, false);

@@ -35,24 +35,24 @@ class TabixSupportTask : public ExternalToolSupportTask {
     Q_OBJECT
     Q_DISABLE_COPY(TabixSupportTask)
 public:
-    TabixSupportTask(const GUrl &fileUrl, const GUrl &outputUrl = GUrl());
+    TabixSupportTask(const GUrl& fileUrl, const GUrl& outputUrl = GUrl());
 
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
-    const GUrl &getOutputBgzf() const;
+    const GUrl& getOutputBgzf() const;
     const GUrl getOutputTbi() const;
 
 private:
     GUrl fileUrl;
     GUrl bgzfUrl;
-    BgzipTask *bgzipTask;
-    CopyFileTask *copyTask;
-    ExternalToolRunTask *tabixTask;
+    BgzipTask* bgzipTask;
+    CopyFileTask* copyTask;
+    ExternalToolRunTask* tabixTask;
 
     void initTabixTask();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_TABIX_TASK_H_
+#endif  // _U2_TABIX_TASK_H_

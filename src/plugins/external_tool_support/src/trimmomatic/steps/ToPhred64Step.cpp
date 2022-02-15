@@ -39,15 +39,15 @@ ToPhred64Step::ToPhred64Step()
                      "</body></html>");
 }
 
-TrimmomaticStepSettingsWidget *ToPhred64Step::createWidget() const {
+TrimmomaticStepSettingsWidget* ToPhred64Step::createWidget() const {
     return new NoSettingsWidget();
 }
 
-QString ToPhred64Step::serializeState(const QVariantMap &widgetState) const {
+QString ToPhred64Step::serializeState(const QVariantMap& widgetState) const {
     return NoSettingsWidget::serializeState(widgetState);
 }
 
-QVariantMap ToPhred64Step::parseState(const QString &command) const {
+QVariantMap ToPhred64Step::parseState(const QString& command) const {
     return NoSettingsWidget::parseState(command);
 }
 
@@ -55,9 +55,9 @@ ToPhred64StepFactory::ToPhred64StepFactory()
     : TrimmomaticStepFactory(ID) {
 }
 
-ToPhred64Step *ToPhred64StepFactory::createStep() const {
+ToPhred64Step* ToPhred64StepFactory::createStep() const {
     return new ToPhred64Step();
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

@@ -32,17 +32,17 @@ namespace U2 {
 class U2CORE_EXPORT DbiDocumentFormat : public DocumentFormat {
     Q_OBJECT
 public:
-    DbiDocumentFormat(const U2DbiFactoryId &id, const DocumentFormatId &formatId, const QString &formatName, const QStringList &exits, DocumentFormatFlags flags, QObject *p = nullptr);
+    DbiDocumentFormat(const U2DbiFactoryId& id, const DocumentFormatId& formatId, const QString& formatName, const QStringList& exits, DocumentFormatFlags flags, QObject* p = nullptr);
 
-    virtual void storeDocument(Document *d, IOAdapter *io, U2OpStatus &os);
+    virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 
-    virtual FormatCheckResult checkRawData(const QByteArray &rawData, const GUrl &url = GUrl()) const;
+    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& url = GUrl()) const;
 
 protected:
-    virtual Document *loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os);
+    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
-    QList<GObject *> prepareObjects(DbiConnection &handle, const QList<U2DataId> &objectIds);
-    QList<GObject *> cloneObjects(const QList<GObject *> &srcObjects, const U2DbiRef &dstDbiRef, const QVariantMap &hints, U2OpStatus &os);
+    QList<GObject*> prepareObjects(DbiConnection& handle, const QList<U2DataId>& objectIds);
+    QList<GObject*> cloneObjects(const QList<GObject*>& srcObjects, const U2DbiRef& dstDbiRef, const QVariantMap& hints, U2OpStatus& os);
 
 private:
     U2DbiFactoryId id;

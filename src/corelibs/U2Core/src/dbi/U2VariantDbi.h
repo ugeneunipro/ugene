@@ -33,67 +33,67 @@ namespace U2 {
 */
 class U2VariantDbi : public U2ChildDbi {
 protected:
-    U2VariantDbi(U2Dbi *rootDbi)
+    U2VariantDbi(U2Dbi* rootDbi)
         : U2ChildDbi(rootDbi) {
     }
 
 public:
     /** Returns available VariantTracks */
-    virtual U2DbiIterator<U2VariantTrack> *getVariantTracks(VariantTrackType trackType, U2OpStatus &os) = 0;
+    virtual U2DbiIterator<U2VariantTrack>* getVariantTracks(VariantTrackType trackType, U2OpStatus& os) = 0;
 
     /** Returns available VariantTracks for given sequence id*/
-    virtual U2DbiIterator<U2VariantTrack> *getVariantTracks(const U2DataId &seqId, U2OpStatus &os) = 0;
+    virtual U2DbiIterator<U2VariantTrack>* getVariantTracks(const U2DataId& seqId, U2OpStatus& os) = 0;
 
     /** Returns available VariantTracks for given sequence id and type
     if type == TrackType_All returns all tracks of given sequence */
-    virtual U2DbiIterator<U2VariantTrack> *getVariantTracks(const U2DataId &seqId, VariantTrackType trackType, U2OpStatus &os) = 0;
+    virtual U2DbiIterator<U2VariantTrack>* getVariantTracks(const U2DataId& seqId, VariantTrackType trackType, U2OpStatus& os) = 0;
 
     /** Returns VariantTrack instance by the given track id */
-    virtual U2VariantTrack getVariantTrack(const U2DataId &id, U2OpStatus &os) = 0;
+    virtual U2VariantTrack getVariantTrack(const U2DataId& id, U2OpStatus& os) = 0;
 
     /** Returns VariantTrack instance by the given variant id */
-    virtual U2VariantTrack getVariantTrackofVariant(const U2DataId &variantId, U2OpStatus &os) = 0;
+    virtual U2VariantTrack getVariantTrackofVariant(const U2DataId& variantId, U2OpStatus& os) = 0;
 
     /**
         Adds all Variants provided by iterator to the track
         Requires U2DbiFeature_WriteVariants feature support
     */
-    virtual void addVariantsToTrack(const U2VariantTrack &track, U2DbiIterator<U2Variant> *it, U2OpStatus &os) = 0;
+    virtual void addVariantsToTrack(const U2VariantTrack& track, U2DbiIterator<U2Variant>* it, U2OpStatus& os) = 0;
     /**
         Creates new VariantTrack instance
         Requires U2DbiFeature_WriteVariants feature support
     */
-    virtual void createVariantTrack(U2VariantTrack &track, VariantTrackType trackType, const QString &folder, U2OpStatus &os) = 0;
+    virtual void createVariantTrack(U2VariantTrack& track, VariantTrackType trackType, const QString& folder, U2OpStatus& os) = 0;
 
     /**
         Creates new index for variations.
     */
-    virtual void createVariationsIndex(U2OpStatus &os) = 0;
+    virtual void createVariationsIndex(U2OpStatus& os) = 0;
 
     /**
         Updates VariantTrack instance
         Requires U2DbiFeature_WriteVariants feature support
     */
-    virtual void updateVariantTrack(U2VariantTrack &track, U2OpStatus &os) = 0;
+    virtual void updateVariantTrack(U2VariantTrack& track, U2OpStatus& os) = 0;
 
     /** Returns all Variants from the given sequence region
     U2_REGION_MAX to get all variants*/
-    virtual U2DbiIterator<U2Variant> *getVariants(const U2DataId &track, const U2Region &region, U2OpStatus &os) = 0;
+    virtual U2DbiIterator<U2Variant>* getVariants(const U2DataId& track, const U2Region& region, U2OpStatus& os) = 0;
 
     /** Returns a selection of variants of the track starting from the offset */
-    virtual U2DbiIterator<U2Variant> *getVariantsRange(const U2DataId &track, int offset, int limit, U2OpStatus &os) = 0;
+    virtual U2DbiIterator<U2Variant>* getVariantsRange(const U2DataId& track, int offset, int limit, U2OpStatus& os) = 0;
 
     /** Return number of variants in track */
-    virtual int getVariantCount(const U2DataId &track, U2OpStatus &os) = 0;
+    virtual int getVariantCount(const U2DataId& track, U2OpStatus& os) = 0;
 
     /** Delete the variant track from the database */
-    virtual void removeTrack(const U2DataId &track, U2OpStatus &os) = 0;
+    virtual void removeTrack(const U2DataId& track, U2OpStatus& os) = 0;
 
     /**Update variant public ID*/
-    virtual void updateVariantPublicId(const U2DataId &track, const U2DataId &variant, const QString &newId, U2OpStatus &os) = 0;
+    virtual void updateVariantPublicId(const U2DataId& track, const U2DataId& variant, const QString& newId, U2OpStatus& os) = 0;
 
     /**Update variant track ID*/
-    virtual void updateTrackIDofVariant(const U2DataId &variant, const U2DataId &newTrackId, U2OpStatus &os) = 0;
+    virtual void updateTrackIDofVariant(const U2DataId& variant, const U2DataId& newTrackId, U2OpStatus& os) = 0;
 };
 
 }  // namespace U2

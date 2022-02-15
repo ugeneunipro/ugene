@@ -28,16 +28,16 @@
 
 namespace U2 {
 
-SyncHttp::SyncHttp(U2OpStatus &os, QObject *parent)
+SyncHttp::SyncHttp(U2OpStatus& os, QObject* parent)
     : QNetworkAccessManager(parent), loop(nullptr), errString(""),
       os(os) {
-    connect(this, SIGNAL(finished(QNetworkReply *)), SLOT(finished(QNetworkReply *)));
+    connect(this, SIGNAL(finished(QNetworkReply*)), SLOT(finished(QNetworkReply*)));
 }
 
-QString SyncHttp::syncGet(const QUrl &url, int timeOutMillis) {
-    connect(this, SIGNAL(proxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *)), this, SLOT(onProxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *)));
+QString SyncHttp::syncGet(const QUrl& url, int timeOutMillis) {
+    connect(this, SIGNAL(proxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*)), this, SLOT(onProxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*)));
     QNetworkRequest request(url);
-    QNetworkReply *reply = get(request);
+    QNetworkReply* reply = get(request);
     SAFE_POINT(reply != nullptr, "SyncHttp::syncGet no reply is created", "");
     ReplyTimeout::set(reply, timeOutMillis);
     runStateCheckTimer();
@@ -51,15 +51,15 @@ QString SyncHttp::syncGet(const QUrl &url, int timeOutMillis) {
     return QString(reply->readAll());
 }
 
-void SyncHttp::finished(QNetworkReply *) {
+void SyncHttp::finished(QNetworkReply*) {
     SAFE_POINT(loop != nullptr, "SyncHttp::finished no event loop", );
     loop->exit();
 }
 
-void SyncHttp::onProxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *auth) {
+void SyncHttp::onProxyAuthenticationRequired(const QNetworkProxy& proxy, QAuthenticator* auth) {
     auth->setUser(proxy.user());
     auth->setPassword(proxy.password());
-    disconnect(this, SLOT(onProxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *)));
+    disconnect(this, SLOT(onProxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*)));
 }
 
 SyncHttp::~SyncHttp() {
@@ -67,7 +67,7 @@ SyncHttp::~SyncHttp() {
     loop = nullptr;
 }
 void SyncHttp::runStateCheckTimer() {
-    QTimer *timer = new QTimer(this);
+    QTimer* timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(sl_taskCancellingCheck()));
     timer->start(500);
 }
@@ -78,21 +78,21 @@ void SyncHttp::sl_taskCancellingCheck() {
     }
 }
 
-ReplyTimeout::ReplyTimeout(QNetworkReply *reply, const int timeoutMillis)
+ReplyTimeout::ReplyTimeout(QNetworkReply* reply, const int timeoutMillis)
     : QObject(reply) {
     if (reply != nullptr && reply->isRunning()) {
         timer.start(timeoutMillis, this);
     }
 }
-void ReplyTimeout::set(QNetworkReply *reply, const int timeoutMillis) {
+void ReplyTimeout::set(QNetworkReply* reply, const int timeoutMillis) {
     new ReplyTimeout(reply, timeoutMillis);
 }
 
-void ReplyTimeout::timerEvent(QTimerEvent *timerEvent) {
+void ReplyTimeout::timerEvent(QTimerEvent* timerEvent) {
     if (!timer.isActive() || timerEvent->timerId() != timer.timerId()) {
         return;
     }
-    auto reply = static_cast<QNetworkReply *>(parent());
+    auto reply = static_cast<QNetworkReply*>(parent());
     if (reply->isRunning()) {
         reply->close();
     }

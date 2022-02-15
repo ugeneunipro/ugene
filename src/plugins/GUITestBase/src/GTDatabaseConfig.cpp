@@ -46,14 +46,14 @@ const QString LOGIN = "login";
 const QString READ_ONLY_LOGIN = "read_only_login";
 const QString PASSWORD = "password";
 
-QVariant getSetting(const QString &key) {
+QVariant getSetting(const QString& key) {
     QString customDatabaseIniPath = qgetenv("UGENE_TESTS_DATABASE_INI_PATH");
     QString databaseIniPath = customDatabaseIniPath.isEmpty() ? UGUITest::testDir + "_common_data/database.ini" : customDatabaseIniPath;
     QSettings settings(databaseIniPath, QSettings::IniFormat);
     return settings.value(SETTINGS_ROOT + key);
 }
 
-QString getStringSetting(const QString &key) {
+QString getStringSetting(const QString& key) {
     return getSetting(key).toString();
 }
 
@@ -105,7 +105,7 @@ QString GTDatabaseConfig::password() {
     return getStringSetting(PASSWORD);
 }
 
-void GTDatabaseConfig::initTestConnectionInfo(const QString &name, const QString &db, bool withCredentials, bool readOnly) {
+void GTDatabaseConfig::initTestConnectionInfo(const QString& name, const QString& db, bool withCredentials, bool readOnly) {
     QString url = U2DbiUtils::createFullDbiUrl((readOnly ? readOnlyLogin() : login()), host(), port(), db);
     AppContext::getSettings()->setValue(SETTINGS_RECENT + name, url);
     if (withCredentials) {

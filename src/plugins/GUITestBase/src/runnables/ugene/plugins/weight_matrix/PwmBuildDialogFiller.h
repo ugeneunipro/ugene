@@ -37,18 +37,18 @@ public:
     };
     typedef QPair<ActionType, QVariant> Action;
 
-    PwmBuildDialogFiller(HI::GUITestOpStatus &os, const QList<Action> &actions);
-    PwmBuildDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c);
+    PwmBuildDialogFiller(HI::GUITestOpStatus& os, const QList<Action>& actions);
+    PwmBuildDialogFiller(HI::GUITestOpStatus& os, CustomScenario* c);
 
     void commonScenario();
 
 private:
-    void enterInput(const QVariant &actionData);
-    void selectInput(const QVariant &actionData);
+    void enterInput(const QVariant& actionData);
+    void selectInput(const QVariant& actionData);
     void expectInvalidFile();
     void clickCancel();
 
-    QWidget *dialog;
+    QWidget* dialog;
     const QList<Action> actions;
 };
 

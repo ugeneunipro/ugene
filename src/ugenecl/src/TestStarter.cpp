@@ -33,7 +33,7 @@
 
 namespace U2 {
 
-TestStarter::TestStarter(const QStringList &urls)
+TestStarter::TestStarter(const QStringList& urls)
     : Task(tr("Test loader"), TaskFlags_NR_FOSCOE), urls(urls) {
     env = new GTestEnvironment();
     readBuiltInVars();
@@ -48,20 +48,20 @@ void TestStarter::prepare() {
     if (urls.isEmpty()) {
         readSavedSuites();
     } else {
-        foreach (const QString &url, urls) {
+        foreach (const QString& url, urls) {
             if (url.endsWith(".list")) {
                 QStringList errs;
-                QList<GTestSuite *> tsl = GTestSuite::readTestSuiteList(url, errs);
+                QList<GTestSuite*> tsl = GTestSuite::readTestSuiteList(url, errs);
                 if (!errs.isEmpty()) {
                     ioLog.error("Error reading test suites: \n" + errs.join("\n"));
                 } else {
-                    foreach (GTestSuite *ts, tsl) {
+                    foreach (GTestSuite* ts, tsl) {
                         addTestSuite(ts);
                     }
                 }
             } else {
                 QString err;
-                GTestSuite *ts = GTestSuite::readTestSuite(url, err);
+                GTestSuite* ts = GTestSuite::readTestSuite(url, err);
                 if (!err.isEmpty()) {
                     ioLog.error("Error reading test suites: \n" + err);
                 } else {
@@ -84,17 +84,17 @@ void TestStarter::cleanup() {
     // Task::cleanup();
 }
 
-void TestStarter::addTestSuite(GTestSuite *ts) {
+void TestStarter::addTestSuite(GTestSuite* ts) {
     // TO DO: check bug when test suites duplicated
     assert(!findTestSuiteByURL(ts->getURL()));
     assert(!suites.contains(ts));
     suites.append(ts);
 
-    GTestEnvironment *tsEnv = ts->getEnv();
-    const QStringList &tsEnvKeys = tsEnv->getVars().keys();
+    GTestEnvironment* tsEnv = ts->getEnv();
+    const QStringList& tsEnvKeys = tsEnv->getVars().keys();
     QStringList tsEnvResultedKeys;
     // skipping non-empty variables
-    foreach (const QString &key, tsEnvKeys) {
+    foreach (const QString& key, tsEnvKeys) {
         if (tsEnv->getVar(key).isEmpty()) {
             tsEnvResultedKeys.push_back(key);
         }
@@ -105,7 +105,7 @@ void TestStarter::addTestSuite(GTestSuite *ts) {
     emit si_testSuiteAdded(ts);
 }
 
-void TestStarter::updateDefaultEnvValues(GTestSuite *) {
+void TestStarter::updateDefaultEnvValues(GTestSuite*) {
     QMap<QString, QString> vars = env->getVars();
     if (vars.contains("COMMON_DATA_DIR") && vars.value("COMMON_DATA_DIR").isEmpty()) {
         QString commonDataDir = qgetenv("COMMON_DATA_DIR");
@@ -118,7 +118,7 @@ void TestStarter::updateDefaultEnvValues(GTestSuite *) {
     }
 }
 
-void TestStarter::removeTestSuite(GTestSuite *ts) {
+void TestStarter::removeTestSuite(GTestSuite* ts) {
     assert(suites.contains(ts));
     suites.removeOne(ts);
 
@@ -128,8 +128,8 @@ void TestStarter::removeTestSuite(GTestSuite *ts) {
     emit si_testSuiteRemoved(ts);
 }
 
-GTestSuite *TestStarter::findTestSuiteByURL(const QString &url) {
-    foreach (GTestSuite *t, suites) {
+GTestSuite* TestStarter::findTestSuiteByURL(const QString& url) {
+    foreach (GTestSuite* t, suites) {
         if (t->getURL() == url) {
             return t;
         }
@@ -154,9 +154,9 @@ void TestStarter::readBuiltInVars() {
 void TestStarter::readSavedSuites() {
     // TODO: do it in in service startup task!!!
     QStringList suiteUrls = AppContext::getSettings()->getValue(SETTINGS_ROOT + "suites", QStringList()).toStringList();
-    for (const QString &url : qAsConst(suiteUrls)) {
+    for (const QString& url : qAsConst(suiteUrls)) {
         QString err;
-        GTestSuite *ts = GTestSuite::readTestSuite(url, err);
+        GTestSuite* ts = GTestSuite::readTestSuite(url, err);
         if (ts == nullptr) {
             ioLog.error(tr("error_reading_ts_%1_error_%2").arg(url).arg(err));
         } else {
@@ -167,14 +167,14 @@ void TestStarter::readSavedSuites() {
 
 void TestStarter::saveSuites() {
     QStringList list;
-    foreach (GTestSuite *s, suites) {
+    foreach (GTestSuite* s, suites) {
         list.append(s->getURL());
     }
     AppContext::getSettings()->setValue(SETTINGS_ROOT + "suites", list);
 }
 
 void TestStarter::deallocateSuites() {
-    foreach (GTestSuite *s, suites) {
+    foreach (GTestSuite* s, suites) {
         emit si_testSuiteRemoved(s);
         delete s;
     }
@@ -182,7 +182,7 @@ void TestStarter::deallocateSuites() {
 }
 
 void TestStarter::readEnvForKeys(QStringList keys) {
-    foreach (const QString &k, keys) {
+    foreach (const QString& k, keys) {
         QString val = env->getVar(k);
         if (val.isEmpty()) {
             val = AppContext::getSettings()->getValue(SETTINGS_ROOT + "env/" + k, QString()).toString();
@@ -192,7 +192,7 @@ void TestStarter::readEnvForKeys(QStringList keys) {
 }
 
 void TestStarter::saveEnv() {
-    foreach (const QString &k, env->getVars().keys()) {
+    foreach (const QString& k, env->getVars().keys()) {
         QString val = env->getVar(k);
         if (!val.isEmpty()) {
             AppContext::getSettings()->setValue(SETTINGS_ROOT + "env/" + k, val);
@@ -208,14 +208,14 @@ void TestStarter::sl_refresh() {
     readSavedSuites();
 }
 
-TestRunnerTask *TestStarter::createRunTask() {
+TestRunnerTask* TestStarter::createRunTask() {
     if (env->containsEmptyVars()) {
         coreLog.error(tr("Not all environment variables set"));
         return nullptr;
     }
-    QList<GTestState *> testsToRun;
-    foreach (GTestSuite *ts, suites) {
-        foreach (GTestRef *tref, ts->getTests()) {
+    QList<GTestState*> testsToRun;
+    foreach (GTestSuite* ts, suites) {
+        foreach (GTestRef* tref, ts->getTests()) {
             testsToRun << new GTestState(tref);
         }
     }
@@ -231,7 +231,7 @@ TestRunnerTask *TestStarter::createRunTask() {
     if (!ok || numberTestsToRun <= 0) {
         numberTestsToRun = 5;
     }
-    TestRunnerTask *ttask = new TestRunnerTask(testsToRun, getEnv(), numberTestsToRun);
+    TestRunnerTask* ttask = new TestRunnerTask(testsToRun, getEnv(), numberTestsToRun);
     return ttask;
 }
 
@@ -240,7 +240,7 @@ Task::ReportResult TestStarter::report() {
     uiLog.info(tr("Testing report:"));
     uiLog.info(tr("---------------"));
     if (ttask->isFinished() && !ttask->hasError()) {
-        foreach (GTestState *t, ttask->getStateByTestMap()) {
+        foreach (GTestState* t, ttask->getStateByTestMap()) {
             uiLog.info(tr("State: %1 - Test %2:%3 %4").arg(t->isPassed() ? "pass" : "FAIL").arg(t->getTestRef()->getSuite()->getName()).arg(t->getTestRef()->getShortName()).arg(t->isPassed() ? "" : "- Details: " + t->getErrorMessage()));
             if (t->isPassed()) {
                 numPassed++;

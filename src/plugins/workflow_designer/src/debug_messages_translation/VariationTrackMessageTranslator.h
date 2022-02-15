@@ -30,8 +30,8 @@ namespace U2 {
 
 class VariationTrackMessageTranslator : public BaseMessageTranslator {
 public:
-    VariationTrackMessageTranslator(const QVariant &atomicMessage,
-                                    Workflow::WorkflowContext *initContext);
+    VariationTrackMessageTranslator(const QVariant& atomicMessage,
+                                    Workflow::WorkflowContext* initContext);
 
     QString getTranslation() const;
 

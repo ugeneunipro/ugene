@@ -36,33 +36,33 @@ namespace LocalWorkflow {
 class ElapsedTimeUpdater;
 class LastReadyScheduler : public Scheduler {
 public:
-    LastReadyScheduler(Schema *sh);
+    LastReadyScheduler(Schema* sh);
     virtual ~LastReadyScheduler();
 
     // reimplemented from Worker
     virtual void init();
     virtual bool isReady() const;
-    virtual Task *tick();
+    virtual Task* tick();
     virtual bool isDone() const;
     virtual void cleanup();
 
-    virtual WorkerState getWorkerState(const ActorId &actor);
-    virtual Task *replayLastWorkerTick();
+    virtual WorkerState getWorkerState(const ActorId& actor);
+    virtual Task* replayLastWorkerTick();
     virtual bool cancelCurrentTaskIfAllowed();
-    virtual void makeOneTick(const ActorId &actor);
+    virtual void makeOneTick(const ActorId& actor);
 
 protected:
-    virtual WorkerState getWorkerState(const Actor *a);
+    virtual WorkerState getWorkerState(const Actor* a);
     ActorId actorId() const;
     bool hasValidFinishedTask() const;
     qint64 lastTaskTimeSec() const;
     void measuredTick();
 
-    QMap<int, QList<Actor *>> topologicSortedGraph;
-    BaseWorker *lastWorker;
+    QMap<int, QList<Actor*>> topologicSortedGraph;
+    BaseWorker* lastWorker;
     bool canLastTaskBeCanceled;
     ActorId requestedActorForNextTick;
-    ElapsedTimeUpdater *timeUpdater;
+    ElapsedTimeUpdater* timeUpdater;
 };
 
 }  // namespace LocalWorkflow

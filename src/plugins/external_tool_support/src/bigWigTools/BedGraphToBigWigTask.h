@@ -45,7 +45,7 @@ public:
 class BedGraphToBigWigTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    BedGraphToBigWigTask(const BedGraphToBigWigSetting &settings);
+    BedGraphToBigWigTask(const BedGraphToBigWigSetting& settings);
 
     void prepare();
     void run();
@@ -55,7 +55,7 @@ public:
     }
 
 protected:
-    QStringList getParameters(U2OpStatus &os);
+    QStringList getParameters(U2OpStatus& os);
 
 protected:
     BedGraphToBigWigSetting settings;
@@ -66,13 +66,13 @@ class BedGraphToBigWigParser : public ExternalToolLogParser {
 public:
     BedGraphToBigWigParser();
 
-    void parseOutput(const QString &partOfLog);
-    void parseErrOutput(const QString &partOfLog);
+    void parseOutput(const QString& partOfLog);
+    void parseErrOutput(const QString& partOfLog);
 
 private:
     QString lastErrLine;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_BEDGRAPH_TO_BIGWIG_TASK_H_
+#endif  // _U2_BEDGRAPH_TO_BIGWIG_TASK_H_

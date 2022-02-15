@@ -25,7 +25,7 @@
 
 extern "C" {
 
-U2SCRIPT_EXPORT const wchar_t *getErrorString(U2ErrorType type) {
+U2SCRIPT_EXPORT const wchar_t* getErrorString(U2ErrorType type) {
     switch (type) {
         case U2_OK:
             return L"success";
@@ -64,7 +64,7 @@ U2SCRIPT_EXPORT const wchar_t *getErrorString(U2ErrorType type) {
     }
 }
 
-U2SCRIPT_EXPORT U2ErrorType getLastFailedStringValue(int maxExpectedLength, wchar_t *destination, int *requiredSize) {
+U2SCRIPT_EXPORT U2ErrorType getLastFailedStringValue(int maxExpectedLength, wchar_t* destination, int* requiredSize) {
     return U2::TextConversionUtils::repeatLastConversion(maxExpectedLength, destination, requiredSize);
 }
 };

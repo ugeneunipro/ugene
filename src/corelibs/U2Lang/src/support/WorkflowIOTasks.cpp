@@ -38,7 +38,7 @@ using namespace Workflow;
 /************************************
  * LoadWorkflowTask
  ************************************/
-LoadWorkflowTask::LoadWorkflowTask(const QSharedPointer<Schema> &s, Workflow::Metadata *m, const QString &u)
+LoadWorkflowTask::LoadWorkflowTask(const QSharedPointer<Schema>& s, Workflow::Metadata* m, const QString& u)
     : Task(tr("Loading workflow"), TaskFlag_None),
       url(u), schema(s), meta(m) {
     assert(schema != nullptr);
@@ -93,7 +93,7 @@ Task::ReportResult LoadWorkflowTask::report() {
     return ReportResult_Finished;
 }
 
-LoadWorkflowTask::FileFormat LoadWorkflowTask::detectFormat(const QString &rawData) {
+LoadWorkflowTask::FileFormat LoadWorkflowTask::detectFormat(const QString& rawData) {
     if (HRSchemaSerializer::isHeaderLine(rawData.trimmed())) {
         return HR;
     } else if (rawData.trimmed().startsWith("<!DOCTYPE GB2WORKFLOW>")) {
@@ -106,7 +106,7 @@ LoadWorkflowTask::FileFormat LoadWorkflowTask::detectFormat(const QString &rawDa
 /************************************
  * SaveWorkflowTask
  ************************************/
-SaveWorkflowTask::SaveWorkflowTask(Schema *schema, const Metadata &meta, bool copyMode)
+SaveWorkflowTask::SaveWorkflowTask(Schema* schema, const Metadata& meta, bool copyMode)
     : Task(tr("Save workflow task"), TaskFlag_None), url(meta.url) {
     assert(schema != nullptr);
     rawData = HRSchemaSerializer::schema2String(*schema, &meta, copyMode);

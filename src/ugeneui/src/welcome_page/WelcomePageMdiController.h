@@ -42,13 +42,13 @@ private slots:
     /** Triggers recent files list update. */
     void sl_onRecentChanged();
 
-    void sl_onMdiClose(MWMDIWindow *mdi);
+    void sl_onMdiClose(MWMDIWindow* mdi);
 
 private:
-    static MWMDIManager *getMdiManager();
+    static MWMDIManager* getMdiManager();
 
 private:
-    WelcomePageMdi *welcomePage;
+    WelcomePageMdi* welcomePage;
 };
 
 }  // namespace U2

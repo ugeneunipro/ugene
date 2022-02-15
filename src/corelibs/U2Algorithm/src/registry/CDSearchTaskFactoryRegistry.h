@@ -40,7 +40,7 @@ public:
     enum SearchType { LocalSearch,
                       RemoteSearch };
 
-    void registerFactory(CDSearchFactory *factory, SearchType type) {
+    void registerFactory(CDSearchFactory* factory, SearchType type) {
         if (type == LocalSearch) {
             assert(localSearchFactory == nullptr);
             localSearchFactory = factory;
@@ -52,7 +52,7 @@ public:
         }
     }
 
-    CDSearchFactory *getFactory(SearchType type) const {
+    CDSearchFactory* getFactory(SearchType type) const {
         if (type == LocalSearch) {
             return localSearchFactory;
         } else if (type == RemoteSearch) {
@@ -64,8 +64,8 @@ public:
     }
 
 private:
-    CDSearchFactory *localSearchFactory;
-    CDSearchFactory *remoteSearchFactory;
+    CDSearchFactory* localSearchFactory;
+    CDSearchFactory* remoteSearchFactory;
 };
 
 }  // namespace U2

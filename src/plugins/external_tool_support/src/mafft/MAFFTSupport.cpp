@@ -63,7 +63,7 @@ MAFFTSupport::MAFFTSupport()
     versionRegExp = QRegExp("MAFFT v(\\d+\\.\\d+\\w)");
     toolKitName = "MAFFT";
 
-    AlignmentAlgorithmsRegistry *registry = AppContext::getAlignmentAlgorithmsRegistry();
+    AlignmentAlgorithmsRegistry* registry = AppContext::getAlignmentAlgorithmsRegistry();
     registry->registerAlgorithm(new MafftAlignSequencesToAlignmentAlgorithm(AlignNewSequencesToAlignment));
     registry->registerAlgorithm(new MafftAlignSequencesToAlignmentAlgorithm(AlignSelectionToAlignment));
 }
@@ -108,18 +108,18 @@ void MAFFTSupport::sl_runWithExtFileSpecify() {
     }
     assert(!settings.inputFilePath.isEmpty());
 
-    MAFFTWithExtFileSpecifySupportTask *mAFFTSupportTask = new MAFFTWithExtFileSpecifySupportTask(settings);
+    MAFFTWithExtFileSpecifySupportTask* mAFFTSupportTask = new MAFFTWithExtFileSpecifySupportTask(settings);
     AppContext::getTaskScheduler()->registerTopLevelTask(mAFFTSupportTask);
 }
 
 ////////////////////////////////////////
 // ExternalToolSupportMSAContext
-MAFFTSupportContext::MAFFTSupportContext(QObject *p)
+MAFFTSupportContext::MAFFTSupportContext(QObject* p)
     : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
 
-void MAFFTSupportContext::initViewContext(GObjectView *view) {
-    auto msaEditor = qobject_cast<MSAEditor *>(view);
+void MAFFTSupportContext::initViewContext(GObjectView* view) {
+    auto msaEditor = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
     msaEditor->registerActionProvider(this);
 
@@ -160,11 +160,11 @@ void MAFFTSupportContext::sl_align_with_MAFFT() {
     CHECK_OP(os, );
 
     // Call run MAFFT align dialog
-    AlignMsaAction *action = qobject_cast<AlignMsaAction *>(sender());
+    AlignMsaAction* action = qobject_cast<AlignMsaAction*>(sender());
     SAFE_POINT(action != nullptr, "Sender is not 'AlignMsaAction'", );
 
-    MSAEditor *msaEditor = action->getMsaEditor();
-    MultipleSequenceAlignmentObject *alignmentObject = msaEditor->getMaObject();
+    MSAEditor* msaEditor = action->getMsaEditor();
+    MultipleSequenceAlignmentObject* alignmentObject = msaEditor->getMaObject();
     SAFE_POINT(alignmentObject != nullptr, "Alignment object is NULL during aligning with MAFFT!", );
     SAFE_POINT(!alignmentObject->isStateLocked(), "Alignment object is locked during aligning with MAFFT!", );
 
@@ -177,7 +177,7 @@ void MAFFTSupportContext::sl_align_with_MAFFT() {
         return;
     }
 
-    MAFFTSupportTask *mAFFTSupportTask = new MAFFTSupportTask(alignmentObject->getMultipleAlignment(), GObjectReference(alignmentObject), settings);
+    MAFFTSupportTask* mAFFTSupportTask = new MAFFTSupportTask(alignmentObject->getMultipleAlignment(), GObjectReference(alignmentObject), settings);
     connect(alignmentObject, SIGNAL(destroyed()), mAFFTSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(mAFFTSupportTask);
 

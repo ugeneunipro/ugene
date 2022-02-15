@@ -41,19 +41,19 @@ public:
     U2Qualifier();
 
     /** Constructs new qualifier instance with name and value set */
-    U2Qualifier(const QString &name, const QString &value);
+    U2Qualifier(const QString& name, const QString& value);
 
     /** U2Qualifier is valid if  its name is not empty */
     bool isValid() const;
 
     /** Any two qualifiers are equal if their names & values are equal */
-    bool operator==(const U2Qualifier &q) const;
+    bool operator==(const U2Qualifier& q) const;
 
     /** Any two qualifiers are not equal if either their names or values are  not equal */
-    bool operator!=(const U2Qualifier &q) const;
+    bool operator!=(const U2Qualifier& q) const;
 
-    static bool isValidQualifierName(const QString &name);
-    static bool isValidQualifierValue(const QString &value);
+    static bool isValidQualifierName(const QString& name);
+    static bool isValidQualifierValue(const QString& value);
 };
 
 }  // namespace U2

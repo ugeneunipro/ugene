@@ -49,12 +49,12 @@ public:
      * Returns the total number of bytes read into the buffer,
      * or -1 if there is no more data because the end of the stream has been reached.
      */
-    virtual int read(char *buffer, int length, U2OpStatus &os) = 0;
+    virtual int read(char* buffer, int length, U2OpStatus& os) = 0;
     /**
      * Skips over and discards n bytes of data from this input stream.
      * Returns the actual number of bytes skipped.
      */
-    virtual qint64 skip(qint64 n, U2OpStatus &os) = 0;
+    virtual qint64 skip(qint64 n, U2OpStatus& os) = 0;
 };
 
 }  // namespace U2

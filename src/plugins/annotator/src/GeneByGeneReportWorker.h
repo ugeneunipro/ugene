@@ -36,17 +36,17 @@ namespace LocalWorkflow {
 class GeneByGeneReportWorker : public BaseWorker {
     Q_OBJECT
 public:
-    GeneByGeneReportWorker(Actor *p);
+    GeneByGeneReportWorker(Actor* p);
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
     // for files in the report
     virtual QStringList getOutputFiles();
 
 private:
-    IntegralBus *inChannel;
+    IntegralBus* inChannel;
     QStringList outFiles;
     QMap<QString, QPair<DNASequence, QList<SharedAnnotationData>>> geneData;
 
@@ -62,13 +62,13 @@ public:
         : DomainFactory(ACTOR_ID) {
     }
     static void init();
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 };  // GeneByGeneReportWorkerFactory
 
 class GeneByGeneReportPrompter : public PrompterBase<GeneByGeneReportPrompter> {
     Q_OBJECT
 public:
-    GeneByGeneReportPrompter(Actor *p = nullptr)
+    GeneByGeneReportPrompter(Actor* p = nullptr)
         : PrompterBase<GeneByGeneReportPrompter>(p) {
     }
 

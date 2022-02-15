@@ -39,7 +39,7 @@ const int AssemblyVariantRow::TOP_OFFSET = 13;
 /************************************************************************/
 /* AssemblyVariantRow */
 /************************************************************************/
-AssemblyVariantRow::AssemblyVariantRow(QWidget *parent, VariantTrackObject *_trackObj, AssemblyBrowser *_browser)
+AssemblyVariantRow::AssemblyVariantRow(QWidget* parent, VariantTrackObject* _trackObj, AssemblyBrowser* _browser)
     : QWidget(parent), trackObj(_trackObj), browser(_browser), redraw(true), contextMenu(new QMenu(this)), hint(this) {
     this->setFixedHeight(FIXED_HEIGHT + TOP_OFFSET);
     this->setMouseTracking(true);
@@ -47,8 +47,8 @@ AssemblyVariantRow::AssemblyVariantRow(QWidget *parent, VariantTrackObject *_tra
     this->setToolTip(tr("Variation track: %1").arg(trackObj->getGObjectName()));
     this->setObjectName("AssemblyVariantRow_" + trackObj->getGObjectName());
 
-    AssemblyCellRendererFactoryRegistry *factories = browser->getCellRendererRegistry();
-    AssemblyCellRendererFactory *f = factories->getFactoryById(AssemblyCellRendererFactory::ALL_NUCLEOTIDES);
+    AssemblyCellRendererFactoryRegistry* factories = browser->getCellRendererRegistry();
+    AssemblyCellRendererFactory* f = factories->getFactoryById(AssemblyCellRendererFactory::ALL_NUCLEOTIDES);
     SAFE_POINT(f != nullptr, QString("AssemblyCellRendererFactory with id '%1' not found!").arg(AssemblyCellRendererFactory::ALL_NUCLEOTIDES), );
     nuclRenderer.reset(f->create());
 
@@ -59,12 +59,12 @@ AssemblyVariantRow::AssemblyVariantRow(QWidget *parent, VariantTrackObject *_tra
     currentData.updateHint = false;
 
     // setup menu
-    QAction *removeTrackAction = contextMenu->addAction(tr("Remove track from the view"));
+    QAction* removeTrackAction = contextMenu->addAction(tr("Remove track from the view"));
     connect(removeTrackAction, SIGNAL(triggered()), SIGNAL(si_removeRow()));
-    connect(trackObj, SIGNAL(si_nameChanged(const QString &)), SLOT(sl_redraw()));
+    connect(trackObj, SIGNAL(si_nameChanged(const QString&)), SLOT(sl_redraw()));
 }
 
-VariantTrackObject *AssemblyVariantRow::getTrackObject() const {
+VariantTrackObject* AssemblyVariantRow::getTrackObject() const {
     return trackObj;
 }
 
@@ -76,17 +76,17 @@ void AssemblyVariantRow::sl_offsetsChanged() {
     sl_redraw();
 }
 
-void AssemblyVariantRow::paintEvent(QPaintEvent *e) {
+void AssemblyVariantRow::paintEvent(QPaintEvent* e) {
     draw();
     QWidget::paintEvent(e);
 }
 
-void AssemblyVariantRow::resizeEvent(QResizeEvent *e) {
+void AssemblyVariantRow::resizeEvent(QResizeEvent* e) {
     sl_redraw();
     QWidget::resizeEvent(e);
 }
 
-void AssemblyVariantRow::mouseMoveEvent(QMouseEvent *e) {
+void AssemblyVariantRow::mouseMoveEvent(QMouseEvent* e) {
     emit si_mouseMovedToPos(e->pos());
     currentData.pos = e->pos();
     currentData.updateHint = true;
@@ -94,20 +94,20 @@ void AssemblyVariantRow::mouseMoveEvent(QMouseEvent *e) {
     QWidget::mouseMoveEvent(e);
 }
 
-void AssemblyVariantRow::mousePressEvent(QMouseEvent *e) {
+void AssemblyVariantRow::mousePressEvent(QMouseEvent* e) {
     if (e->button() == Qt::RightButton) {
         contextMenu->exec(QCursor::pos());
     }
 }
 
-void AssemblyVariantRow::leaveEvent(QEvent *) {
+void AssemblyVariantRow::leaveEvent(QEvent*) {
     QPoint curInHintCoords = hint.mapFromGlobal(QCursor::pos());
     if (!hint.rect().contains(curInHintCoords)) {
         sl_hideHint();
     }
 }
 
-bool AssemblyVariantRow::isSNP(const U2Variant &v) {
+bool AssemblyVariantRow::isSNP(const U2Variant& v) {
     if (v.refData.length() != 1) {
         return false;
     }
@@ -172,10 +172,10 @@ void AssemblyVariantRow::draw() {
     }
 }
 
-bool AssemblyVariantRow::findVariantOnPos(QList<U2Variant> &variants) {
+bool AssemblyVariantRow::findVariantOnPos(QList<U2Variant>& variants) {
     bool found = false;
     int startPos = currentData.region.startPos;
-    foreach (const U2Variant &v, currentData.variants) {
+    foreach (const U2Variant& v, currentData.variants) {
         int xStart = (v.startPos - startPos) * currentData.snpWidth;
         int xEnd = 0;
         if (isSNP(v)) {  // SNP
@@ -270,27 +270,27 @@ void AssemblyVariantRow::sl_redraw() {
 /************************************************************************/
 /* AssemblyVariantRowManager */
 /************************************************************************/
-AssemblyVariantRowManager::AssemblyVariantRowManager(AssemblyBrowserUi *_ui)
+AssemblyVariantRowManager::AssemblyVariantRowManager(AssemblyBrowserUi* _ui)
     : ui(_ui), browser(_ui->getWindow()), model(_ui->getModel()) {
-    connect(model.data(), SIGNAL(si_trackAdded(VariantTrackObject *)), SLOT(sl_trackAdded(VariantTrackObject *)));
-    connect(model.data(), SIGNAL(si_trackRemoved(VariantTrackObject *)), SLOT(sl_trackRemoved(VariantTrackObject *)));
+    connect(model.data(), SIGNAL(si_trackAdded(VariantTrackObject*)), SLOT(sl_trackAdded(VariantTrackObject*)));
+    connect(model.data(), SIGNAL(si_trackRemoved(VariantTrackObject*)), SLOT(sl_trackRemoved(VariantTrackObject*)));
 }
 
-void AssemblyVariantRowManager::sl_trackRemoved(VariantTrackObject *objToRemove) {
-    AssemblyAnnotationsArea *annsArea = ui->getAnnotationsArea();
+void AssemblyVariantRowManager::sl_trackRemoved(VariantTrackObject* objToRemove) {
+    AssemblyAnnotationsArea* annsArea = ui->getAnnotationsArea();
 
-    QLayout *layout = annsArea->layout();
-    QVBoxLayout *vertLayout = qobject_cast<QVBoxLayout *>(layout);
+    QLayout* layout = annsArea->layout();
+    QVBoxLayout* vertLayout = qobject_cast<QVBoxLayout*>(layout);
     SAFE_POINT(nullptr != vertLayout, "Internal error: layout problems", );
 
     for (int i = 0; i < vertLayout->count(); i++) {
-        QLayoutItem *it = vertLayout->itemAt(i);
-        QWidget *w = it->widget();
-        AssemblyVariantRow *row = dynamic_cast<AssemblyVariantRow *>(w);
+        QLayoutItem* it = vertLayout->itemAt(i);
+        QWidget* w = it->widget();
+        AssemblyVariantRow* row = dynamic_cast<AssemblyVariantRow*>(w);
         if (nullptr == row) {
             continue;
         }
-        VariantTrackObject *trackObj = row->getTrackObject();
+        VariantTrackObject* trackObj = row->getTrackObject();
         if (objToRemove == trackObj) {
             vertLayout->removeWidget(row);
             row->hide();
@@ -299,25 +299,25 @@ void AssemblyVariantRowManager::sl_trackRemoved(VariantTrackObject *objToRemove)
     }
 }
 
-void AssemblyVariantRowManager::sl_trackAdded(VariantTrackObject *newTrackObj) {
-    AssemblyAnnotationsArea *annsArea = ui->getAnnotationsArea();
+void AssemblyVariantRowManager::sl_trackAdded(VariantTrackObject* newTrackObj) {
+    AssemblyAnnotationsArea* annsArea = ui->getAnnotationsArea();
 
-    QLayout *layout = annsArea->layout();
-    QVBoxLayout *vertLayout = qobject_cast<QVBoxLayout *>(layout);
+    QLayout* layout = annsArea->layout();
+    QVBoxLayout* vertLayout = qobject_cast<QVBoxLayout*>(layout);
     SAFE_POINT(nullptr != vertLayout, "Internal error: layout problems", );
 
-    AssemblyVariantRow *row = new AssemblyVariantRow(annsArea, newTrackObj, browser);
+    AssemblyVariantRow* row = new AssemblyVariantRow(annsArea, newTrackObj, browser);
     vertLayout->addWidget(row);
 
     connect(browser, SIGNAL(si_zoomOperationPerformed()), row, SLOT(sl_zoomPerformed()));
     connect(browser, SIGNAL(si_offsetsChanged()), row, SLOT(sl_offsetsChanged()));
-    connect(row, SIGNAL(si_mouseMovedToPos(const QPoint &)), annsArea, SIGNAL(si_mouseMovedToPos(const QPoint &)));
+    connect(row, SIGNAL(si_mouseMovedToPos(const QPoint&)), annsArea, SIGNAL(si_mouseMovedToPos(const QPoint&)));
     connect(row, SIGNAL(si_removeRow()), SLOT(sl_removeRow()));
 }
 
 void AssemblyVariantRowManager::sl_removeRow() {
-    QObject *s = sender();
-    AssemblyVariantRow *row = dynamic_cast<AssemblyVariantRow *>(s);
+    QObject* s = sender();
+    AssemblyVariantRow* row = dynamic_cast<AssemblyVariantRow*>(s);
     SAFE_POINT(nullptr != row, "Internal error: NULL row widget", );
 
     model->sl_trackObjRemoved(row->getTrackObject());

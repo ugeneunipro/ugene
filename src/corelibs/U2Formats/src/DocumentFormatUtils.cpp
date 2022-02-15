@@ -41,7 +41,7 @@
 
 namespace U2 {
 
-static int getIntSettings(const QVariantMap &fs, const char *sName, int defVal) {
+static int getIntSettings(const QVariantMap& fs, const char* sName, int defVal) {
     QVariant v = fs.value(sName);
     if (v.type() != QVariant::Int) {
         return defVal;
@@ -49,14 +49,14 @@ static int getIntSettings(const QVariantMap &fs, const char *sName, int defVal) 
     return v.toInt();
 }
 
-AnnotationTableObject *DocumentFormatUtils::addAnnotationsForMergedU2Sequence(const GObjectReference &mergedSequenceRef,
-                                                                              const U2DbiRef &dbiRef,
-                                                                              const QStringList &contigNames,
-                                                                              const QVector<U2Region> &mergedMapping,
-                                                                              const QVariantMap &hints) {
+AnnotationTableObject* DocumentFormatUtils::addAnnotationsForMergedU2Sequence(const GObjectReference& mergedSequenceRef,
+                                                                              const U2DbiRef& dbiRef,
+                                                                              const QStringList& contigNames,
+                                                                              const QVector<U2Region>& mergedMapping,
+                                                                              const QVariantMap& hints) {
     QVariantMap objectHints;
     objectHints.insert(DocumentFormat::DBI_FOLDER_HINT, hints.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER));
-    AnnotationTableObject *ao = new AnnotationTableObject("Contigs", dbiRef, objectHints);
+    AnnotationTableObject* ao = new AnnotationTableObject("Contigs", dbiRef, objectHints);
 
     // save relation if mergedSequenceRef is valid
     if (mergedSequenceRef.isValid()) {
@@ -78,16 +78,16 @@ AnnotationTableObject *DocumentFormatUtils::addAnnotationsForMergedU2Sequence(co
     return ao;
 }
 
-QList<DocumentFormatId> DocumentFormatUtils::toIds(const QList<DocumentFormat *> &formats) {
+QList<DocumentFormatId> DocumentFormatUtils::toIds(const QList<DocumentFormat*>& formats) {
     QList<DocumentFormatId> result;
-    foreach (DocumentFormat *f, formats) {
+    foreach (DocumentFormat* f, formats) {
         result.append(f->getFormatId());
     }
     return result;
 }
 
-QList<AnnotationSettings *> DocumentFormatUtils::predefinedSettings() {
-    QList<AnnotationSettings *> predefined;
+QList<AnnotationSettings*> DocumentFormatUtils::predefinedSettings() {
+    QList<AnnotationSettings*> predefined;
     foreach (GBFeatureKeyInfo fi, GBFeatureUtils::allKeys()) {
         auto settings = new AnnotationSettings();
         settings->name = fi.text;
@@ -100,7 +100,7 @@ QList<AnnotationSettings *> DocumentFormatUtils::predefinedSettings() {
         }
         predefined.append(settings);
     }
-    AnnotationSettings *secStructAnnotationSettings = new AnnotationSettings(BioStruct3D::SecStructAnnotationTag, true, QColor(102, 255, 0), true);
+    AnnotationSettings* secStructAnnotationSettings = new AnnotationSettings(BioStruct3D::SecStructAnnotationTag, true, QColor(102, 255, 0), true);
     secStructAnnotationSettings->nameQuals.append(BioStruct3D::SecStructTypeQualifierName);
     secStructAnnotationSettings->showNameQuals = true;
     predefined.append(secStructAnnotationSettings);
@@ -112,21 +112,21 @@ QList<AnnotationSettings *> DocumentFormatUtils::predefinedSettings() {
     return predefined;
 }
 
-QList<DNASequence> DocumentFormatUtils::toSequences(const GObject *obj) {
+QList<DNASequence> DocumentFormatUtils::toSequences(const GObject* obj) {
     QList<DNASequence> res;
     SAFE_POINT(obj != nullptr, "Gobject is NULL", res);
-    const U2SequenceObject *seqObj = qobject_cast<const U2SequenceObject *>(obj);
+    const U2SequenceObject* seqObj = qobject_cast<const U2SequenceObject*>(obj);
     U2OpStatus2Log os;
     if (seqObj != nullptr) {
         res << seqObj->getWholeSequence(os);
         CHECK_OP_EXT(os, res.removeLast(), res);
         return res;
     }
-    const MultipleSequenceAlignmentObject *maObj = qobject_cast<const MultipleSequenceAlignmentObject *>(obj);
+    const MultipleSequenceAlignmentObject* maObj = qobject_cast<const MultipleSequenceAlignmentObject*>(obj);
     CHECK(maObj != nullptr, res);  // MultipleSequenceAlignmentObject is NULL
-    const DNAAlphabet *al = maObj->getAlphabet();
+    const DNAAlphabet* al = maObj->getAlphabet();
     qint64 alLen = maObj->getMsa()->getLength();
-    foreach (const MultipleSequenceAlignmentRow &row, maObj->getMsa()->getMsaRows()) {
+    foreach (const MultipleSequenceAlignmentRow& row, maObj->getMsa()->getMsaRows()) {
         DNASequence seq;
         seq.seq = row->toByteArray(os, alLen);
         seq.setName(row->getName());
@@ -140,7 +140,7 @@ QList<DNASequence> DocumentFormatUtils::toSequences(const GObject *obj) {
 // we keep this property for compatibility with previous version of UGENE only
 #define MERGE_MULTI_DOC_GAP_SIZE_SETTINGS_DEPRECATED "merge_gap"
 
-int DocumentFormatUtils::getMergeGap(const QVariantMap &hints) {
+int DocumentFormatUtils::getMergeGap(const QVariantMap& hints) {
     int res = getIntSettings(hints, DocumentReadingMode_SequenceMergeGapSize, -1);
     if (res == -1) {
         res = getIntSettings(hints, MERGE_MULTI_DOC_GAP_SIZE_SETTINGS_DEPRECATED, -1);
@@ -148,31 +148,31 @@ int DocumentFormatUtils::getMergeGap(const QVariantMap &hints) {
     return res;
 }
 
-int DocumentFormatUtils::getMergedSize(const QVariantMap &hints, int defaultVal) {
+int DocumentFormatUtils::getMergedSize(const QVariantMap& hints, int defaultVal) {
     int res = getIntSettings(hints, DocumentReadingMode_SequenceMergingFinalSizeHint, defaultVal);
     return res;
 }
 
-void DocumentFormatUtils::updateFormatHints(QList<GObject *> &objects, QVariantMap &fs) {
+void DocumentFormatUtils::updateFormatHints(QList<GObject*>& objects, QVariantMap& fs) {
     // 1. remove all cached sequence sizes
     // 2. add new sizes
-    QList<GObject *> sequences;
-    foreach (GObject *obj, objects) {
+    QList<GObject*> sequences;
+    foreach (GObject* obj, objects) {
         if (obj->getGObjectType() == GObjectTypes::SEQUENCE) {
             sequences.append(obj);
         }
     }
     if (sequences.size() == 1) {
-        U2SequenceObject *so = qobject_cast<U2SequenceObject *>(sequences.first());
+        U2SequenceObject* so = qobject_cast<U2SequenceObject*>(sequences.first());
         int len = so->getSequenceLength();
         fs[DocumentReadingMode_SequenceMergingFinalSizeHint] = len;
     }
 }
 
-QString DocumentFormatUtils::getFormatNameById(const DocumentFormatId &formatId) {
-    DocumentFormatRegistry *registry = AppContext::getDocumentFormatRegistry();
+QString DocumentFormatUtils::getFormatNameById(const DocumentFormatId& formatId) {
+    DocumentFormatRegistry* registry = AppContext::getDocumentFormatRegistry();
     SAFE_POINT(nullptr != registry, L10N::nullPointerError("document format registry"), "");
-    DocumentFormat *format = registry->getFormatById(formatId);
+    DocumentFormat* format = registry->getFormatById(formatId);
     SAFE_POINT(nullptr != format, QString("Document format '%1' is not registered").arg(formatId), "");
     return format->getFormatName();
 }

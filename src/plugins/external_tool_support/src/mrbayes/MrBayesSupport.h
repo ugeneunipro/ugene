@@ -43,8 +43,8 @@ public:
 
 class MrBayesAdapter : public PhyTreeGenerator {
 public:
-    Task *createCalculatePhyTreeTask(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &s);
-    CreatePhyTreeWidget *createPhyTreeSettingsWidget(const MultipleSequenceAlignment &ma, QWidget *parent = nullptr);
+    Task* createCalculatePhyTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s);
+    CreatePhyTreeWidget* createPhyTreeSettingsWidget(const MultipleSequenceAlignment& ma, QWidget* parent = nullptr);
 };
 
 class MrBayesModelTypes {
@@ -77,5 +77,5 @@ public:
     static QStringList getVariationTypes();
 };
 
-}    // namespace U2
-#endif    // _U2_MRBAYES_SUPPORT_H_
+}  // namespace U2
+#endif  // _U2_MRBAYES_SUPPORT_H_

@@ -33,51 +33,51 @@ public:
 
     QString inputBam;
 
-    QString referenceAnnotations;    // 1
-    QString readOrientation;    // 2 --fr or --rf values, enum?
-    QString label;    // 3
-    double minIsoformFraction;    // 4
-    int minTransciptLen;    // 5
+    QString referenceAnnotations;  // 1
+    QString readOrientation;  // 2 --fr or --rf values, enum?
+    QString label;  // 3
+    double minIsoformFraction;  // 4
+    int minTransciptLen;  // 5
 
-    int minAnchorLen;    // 6
-    double minJunctionCoverage;    // 7
-    bool trimTranscript;    // 8
-    double minCoverage;    // 9
-    int minLocusSeparation;    // 10
+    int minAnchorLen;  // 6
+    double minJunctionCoverage;  // 7
+    bool trimTranscript;  // 8
+    double minCoverage;  // 9
+    int minLocusSeparation;  // 10
 
-    double multiHitFraction;    // 11
-    QString skipSequences;    // 12 - a list of sequence names comma separated
-    bool refOnlyAbudance;    // 13
-    bool multiMappingCorrection;    // 14
-    bool verboseLog;    // 15
+    double multiHitFraction;  // 11
+    QString skipSequences;  // 12 - a list of sequence names comma separated
+    bool refOnlyAbudance;  // 13
+    bool multiMappingCorrection;  // 14
+    bool verboseLog;  // 15
 
-    int threadNum;    // 16
+    int threadNum;  // 16
 
-    QString primaryOutputFile;    // 17
-    bool geneAbundanceOutput;    // 18
-    QString geneAbundanceOutputFile;    // 19
-    bool coveredRefOutput;    // 20
-    QString coveredRefOutputFile;    // 21
-    bool ballgownOutput;    // 22
-    QString ballgowmOutputFolder;    // 23
+    QString primaryOutputFile;  // 17
+    bool geneAbundanceOutput;  // 18
+    QString geneAbundanceOutputFile;  // 19
+    bool coveredRefOutput;  // 20
+    QString coveredRefOutputFile;  // 21
+    bool ballgownOutput;  // 22
+    QString ballgowmOutputFolder;  // 23
 };
 
 class StringTieTask : public ExternalToolSupportTask {
     Q_OBJECT
     Q_DISABLE_COPY(StringTieTask)
 public:
-    StringTieTask(const StringTieTaskSettings &settings);
+    StringTieTask(const StringTieTaskSettings& settings);
 
     void prepare();
-    const StringTieTaskSettings &getSettings() const;
+    const StringTieTaskSettings& getSettings() const;
 
 private:
     QStringList getArguments() const;
 
 private:
-    ExternalToolRunTask *stringTieTask;
+    ExternalToolRunTask* stringTieTask;
     StringTieTaskSettings settings;
 };
 
-}    // namespace U2
-#endif    // _U2_STRINGTIE_TASK_H_
+}  // namespace U2
+#endif  // _U2_STRINGTIE_TASK_H_

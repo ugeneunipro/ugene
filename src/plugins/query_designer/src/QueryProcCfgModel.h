@@ -35,17 +35,17 @@ namespace U2 {
 class QueryProcCfgModel : public QAbstractTableModel {
     Q_OBJECT
 private:
-    QList<Attribute *> attrs;
-    ConfigurationEditor *editor;
-    Configuration *cfg;
+    QList<Attribute*> attrs;
+    ConfigurationEditor* editor;
+    Configuration* cfg;
 
 public:
-    QueryProcCfgModel(QObject *parent)
+    QueryProcCfgModel(QObject* parent)
         : QAbstractTableModel(parent), editor(nullptr), cfg(nullptr) {
     }
 
-    QModelIndex modelIndexById(const QString &id) {
-        foreach (Attribute *a, attrs) {
+    QModelIndex modelIndexById(const QString& id) {
+        foreach (Attribute* a, attrs) {
             if (a->getId() == id) {
                 int row = attrs.indexOf(a);
                 QModelIndex modelIndex = index(row, 1);
@@ -55,7 +55,7 @@ public:
         return QModelIndex();
     }
 
-    void setConfiguration(Configuration *cfg) {
+    void setConfiguration(Configuration* cfg) {
         beginResetModel();
         this->cfg = cfg;
         if (cfg) {
@@ -68,22 +68,22 @@ public:
         endResetModel();
     }
 
-    void setConfiguration(ConfigurationEditor *ed, const QList<Attribute *> &al) {
+    void setConfiguration(ConfigurationEditor* ed, const QList<Attribute*>& al) {
         beginResetModel();
         editor = ed;
         attrs = al;
         endResetModel();
     }
 
-    int columnCount(const QModelIndex &) const {
+    int columnCount(const QModelIndex&) const {
         return 2;
     }
 
-    int rowCount(const QModelIndex &) const {
+    int rowCount(const QModelIndex&) const {
         return attrs.size();
     }
 
-    Qt::ItemFlags flags(const QModelIndex &index) const {
+    Qt::ItemFlags flags(const QModelIndex& index) const {
         if (index.column() == 0) {
             return Qt::ItemIsEnabled;
         }
@@ -102,8 +102,8 @@ public:
         return QVariant();
     }
 
-    QVariant data(const QModelIndex &index, int role /* = Qt::DisplayRole */) const {
-        const Attribute *item = attrs.at(index.row());
+    QVariant data(const QModelIndex& index, int role /* = Qt::DisplayRole */) const {
+        const Attribute* item = attrs.at(index.row());
         if (role == DescriptorRole) {
             return qVariantFromValue<Descriptor>(*item);
         }
@@ -125,7 +125,7 @@ public:
             }
         }
         QVariant val = item->getAttributePureValue();
-        PropertyDelegate *pd = editor ? editor->getDelegate(item->getId()) : nullptr;
+        PropertyDelegate* pd = editor ? editor->getDelegate(item->getId()) : nullptr;
         switch (role) {
             case Qt::DisplayRole:
             case Qt::ToolTipRole: {
@@ -137,7 +137,7 @@ public:
                 }
             }
             case DelegateRole:
-                return qVariantFromValue<PropertyDelegate *>(pd);
+                return qVariantFromValue<PropertyDelegate*>(pd);
             case Qt::EditRole:
             case ConfigurationEditor::ItemValueRole:
                 return val;
@@ -145,15 +145,15 @@ public:
         return QVariant();
     }
 
-    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) {
+    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) {
         if (index.column() != 1) {
             return false;
         }
-        Attribute *item = attrs[index.row()];
+        Attribute* item = attrs[index.row()];
         switch (role) {
             case Qt::EditRole:
             case ConfigurationEditor::ItemValueRole:
-                const QString &key = item->getId();
+                const QString& key = item->getId();
                 if (item->getAttributePureValue() != value) {
                     cfg->setParameter(key, value);
                     emit dataChanged(index, index);

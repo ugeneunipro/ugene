@@ -23,7 +23,7 @@
 
 namespace U2 {
 
-Header::Header(QWidget *w)
+Header::Header(QWidget* w)
     : QFrame(w) {
     setAutoFillBackground(true);
     QPalette pal;
@@ -50,11 +50,11 @@ Header::Header(QWidget *w)
     pin->installEventFilter(this);
     close->installEventFilter(this);
 
-    QLabel *label = new QLabel(this);
+    QLabel* label = new QLabel(this);
     label->setText(tr("Notifications"));
     w->setWindowTitle(tr("Notifications"));
 
-    QHBoxLayout *hbox = new QHBoxLayout(this);
+    QHBoxLayout* hbox = new QHBoxLayout(this);
 
     hbox->addWidget(label);
     hbox->addWidget(pin);
@@ -71,9 +71,9 @@ bool Header::isFixed() const {
     return fix;
 }
 
-bool Header::eventFilter(QObject *o, QEvent *e) {
+bool Header::eventFilter(QObject* o, QEvent* e) {
     if (e->type() == QEvent::MouseButtonPress) {
-        QMouseEvent *event = static_cast<QMouseEvent *>(e);
+        QMouseEvent* event = static_cast<QMouseEvent*>(e);
         if (event->button() == Qt::LeftButton) {
             if (o == close) {
                 parentWidget()->close();
@@ -92,17 +92,17 @@ bool Header::eventFilter(QObject *o, QEvent *e) {
     return false;
 }
 
-void Header::mousePressEvent(QMouseEvent *me) {
+void Header::mousePressEvent(QMouseEvent* me) {
     startPos = me->globalPos();
     clickPos = mapToParent(me->pos());
     offset = startPos - mapToGlobal(QPoint(0, 0));
 }
-void Header::mouseMoveEvent(QMouseEvent *me) {
+void Header::mouseMoveEvent(QMouseEvent* me) {
     parentWidget()->move(me->globalPos() - offset);
     startPos = me->globalPos();
 }
 
-NotificationWidget::NotificationWidget(QWidget *w)
+NotificationWidget::NotificationWidget(QWidget* w)
     : QFrame(w) {
     setFrameShape(Panel);
     setWindowFlags(Qt::ToolTip);
@@ -120,13 +120,13 @@ NotificationWidget::NotificationWidget(QWidget *w)
     scrollArea->setWidgetResizable(true);
     scrollArea->installEventFilter(this);
 
-    QVBoxLayout *vbox = new QVBoxLayout();
+    QVBoxLayout* vbox = new QVBoxLayout();
     vbox->addWidget(header);
     vbox->setMargin(0);
     vbox->setSpacing(0);
     setLayout(vbox);
 
-    QVBoxLayout *lbox = new QVBoxLayout();
+    QVBoxLayout* lbox = new QVBoxLayout();
     lbox->addWidget(scrollArea);
     lbox->setMargin(0);
     lbox->setSpacing(0);
@@ -140,7 +140,7 @@ void NotificationWidget::setFixed(bool val) {
     isFixed = val;
 }
 
-bool NotificationWidget::event(QEvent *event) {
+bool NotificationWidget::event(QEvent* event) {
     if (event->type() == QEvent::WindowDeactivate) {
         if (!header->isFixed() && !isFixed) {
             close();
@@ -150,7 +150,7 @@ bool NotificationWidget::event(QEvent *event) {
     return QFrame::event(event);
 }
 
-void NotificationWidget::addNotification(QWidget *w) {
+void NotificationWidget::addNotification(QWidget* w) {
     int newWidth = width();
     int newHeight = height() + TT_HEIGHT;
     if (height() + TT_HEIGHT >= TS_HEIGHT) {
@@ -163,7 +163,7 @@ void NotificationWidget::addNotification(QWidget *w) {
     layout->insertWidget(0, w);
 }
 
-bool NotificationWidget::removeNotification(QWidget *w) {
+bool NotificationWidget::removeNotification(QWidget* w) {
     if (layout->indexOf(w) == -1) {  // Can't delete notification that isn't in stack
         return false;
     }

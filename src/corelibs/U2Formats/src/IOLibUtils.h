@@ -30,19 +30,19 @@ namespace U2 {
 
 class SeekableBuf {
 public:
-    const char *head;
+    const char* head;
     int pos;
     int size;
-    const uchar *ubuf() const {
-        return (const uchar *)(head + pos);
+    const uchar* ubuf() const {
+        return (const uchar*)(head + pos);
     }
-    const char *buf() const {
+    const char* buf() const {
         return (head + pos);
     }
     uchar next() {
         return *(head + pos++);
     }
-    int read(char *buf, int len) {
+    int read(char* buf, int len) {
         if (pos + len <= size) {
             memcpy(buf, head + pos, len);
             pos += len;
@@ -52,7 +52,7 @@ public:
     }
 };
 
-inline int SeekBuf(SeekableBuf *fp, int offset, int origin) {
+inline int SeekBuf(SeekableBuf* fp, int offset, int origin) {
     if (0 == origin && offset >= 0 && offset < fp->size) {
         fp->pos = offset;
         return 0;
@@ -60,7 +60,7 @@ inline int SeekBuf(SeekableBuf *fp, int offset, int origin) {
     return 1;
 }
 
-inline uint be_int4(const uchar *buf) {
+inline uint be_int4(const uchar* buf) {
     uchar c1 = *(buf++);
     uchar c2 = *(buf++);
     uchar c3 = *(buf++);
@@ -68,13 +68,13 @@ inline uint be_int4(const uchar *buf) {
     return (c1 << 24) + (c2 << 16) + (c3 << 8) + c4;
 }
 
-inline ushort be_int2(const uchar *buf) {
+inline ushort be_int2(const uchar* buf) {
     uchar c1 = *(buf++);
     uchar c2 = *(buf++);
     return (c1 << 8) + c2;
 }
 
-inline int be_read_int_1(SeekableBuf *fp, uchar *i1) {
+inline int be_read_int_1(SeekableBuf* fp, uchar* i1) {
     if ((fp->pos + 1) > fp->size) {
         return 0;
     }
@@ -82,7 +82,7 @@ inline int be_read_int_1(SeekableBuf *fp, uchar *i1) {
     return 1;
 }
 
-inline int be_read_int_2(SeekableBuf *fp, ushort *i2) {
+inline int be_read_int_2(SeekableBuf* fp, ushort* i2) {
     if ((fp->pos + 2) > fp->size) {
         return 0;
     }
@@ -91,7 +91,7 @@ inline int be_read_int_2(SeekableBuf *fp, ushort *i2) {
     return 1;
 }
 
-inline int be_read_int_4(SeekableBuf *fp, uint *i4) {
+inline int be_read_int_4(SeekableBuf* fp, uint* i4) {
     if ((fp->pos + 4) > fp->size) {
         return 0;
     }
@@ -103,7 +103,7 @@ inline int be_read_int_4(SeekableBuf *fp, uint *i4) {
 /*
  * Write a big-endian int1
  */
-inline int be_write_int_1(FILE *fp, uchar *i1) {
+inline int be_write_int_1(FILE* fp, uchar* i1) {
     if (fwrite(i1, sizeof(uchar), 1, fp) != 1)
         return (0);
     return (1);
@@ -112,8 +112,8 @@ inline int be_write_int_1(FILE *fp, uchar *i1) {
 /*
  * Write a big-endian int2
  */
-inline int be_write_int_2(FILE *fp, ushort *i2) {
-    ushort i = be_int2(reinterpret_cast<const uchar *>(i2));
+inline int be_write_int_2(FILE* fp, ushort* i2) {
+    ushort i = be_int2(reinterpret_cast<const uchar*>(i2));
 
     if (fwrite(&i, 2, 1, fp) != 1)
         return (0);
@@ -123,8 +123,8 @@ inline int be_write_int_2(FILE *fp, ushort *i2) {
 /*
  * Write a big-endian int4
  */
-inline int be_write_int_4(FILE *fp, uint *i4) {
-    uint i = be_int4(reinterpret_cast<const uchar *>(i4));
+inline int be_write_int_4(FILE* fp, uint* i4) {
+    uint i = be_int4(reinterpret_cast<const uchar*>(i4));
 
     if (fwrite(&i, 4, 1, fp) != 1)
         return (0);

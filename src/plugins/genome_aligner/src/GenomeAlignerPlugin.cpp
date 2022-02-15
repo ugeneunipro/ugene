@@ -41,8 +41,8 @@
 
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
-    GenomeAlignerPlugin *plug = new GenomeAlignerPlugin();
+extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
+    GenomeAlignerPlugin* plug = new GenomeAlignerPlugin();
     return plug;
 }
 
@@ -50,7 +50,7 @@ const QString GenomeAlignerPlugin::GENOME_ALIGNER_INDEX_TYPE_ID("gai");
 const QString GenomeAlignerPlugin::RUN_GENOME_ALIGNER("genome-aligner");
 
 DataTypePtr GenomeAlignerPlugin::GENOME_ALIGNER_INDEX_TYPE() {
-    DataTypeRegistry *dtr = WorkflowEnv::getDataTypeRegistry();
+    DataTypeRegistry* dtr = WorkflowEnv::getDataTypeRegistry();
     assert(dtr);
     static bool startup = true;
     if (startup) {
@@ -63,10 +63,10 @@ DataTypePtr GenomeAlignerPlugin::GENOME_ALIGNER_INDEX_TYPE() {
 class GenomeAlignerGuiExtFactory : public DnaAssemblyGUIExtensionsFactory {
 public:
     GenomeAlignerGuiExtFactory() {};
-    DnaAssemblyAlgorithmMainWidget *createMainWidget(QWidget *parent) {
+    DnaAssemblyAlgorithmMainWidget* createMainWidget(QWidget* parent) {
         return new GenomeAlignerSettingsWidget(parent);
     }
-    DnaAssemblyAlgorithmBuildIndexWidget *createBuildIndexWidget(QWidget *parent) {
+    DnaAssemblyAlgorithmBuildIndexWidget* createBuildIndexWidget(QWidget* parent) {
         return new BuildSArraySettingsWidget(parent);
     }
     bool hasMainWidget() {
@@ -80,10 +80,10 @@ public:
 GenomeAlignerPlugin::GenomeAlignerPlugin()
     : Plugin(tr("UGENE Genome Aligner"), tr("Assembly DNA to reference sequence")) {
     // Register GenomeAligner algorithm
-    DnaAssemblyAlgRegistry *registry = AppContext::getDnaAssemblyAlgRegistry();
+    DnaAssemblyAlgRegistry* registry = AppContext::getDnaAssemblyAlgRegistry();
 
     bool guiMode = AppContext::getMainWindow();
-    DnaAssemblyGUIExtensionsFactory *guiFactory = guiMode ? new GenomeAlignerGuiExtFactory() : nullptr;
+    DnaAssemblyGUIExtensionsFactory* guiFactory = guiMode ? new GenomeAlignerGuiExtFactory() : nullptr;
     QStringList referenceFormats(BaseDocumentFormats::FASTA);
     referenceFormats << BaseDocumentFormats::PLAIN_GENBANK;
     referenceFormats << BaseDocumentFormats::FASTQ;
@@ -91,7 +91,7 @@ GenomeAlignerPlugin::GenomeAlignerPlugin()
     readsFormats << BaseDocumentFormats::FASTA;
     readsFormats << BaseDocumentFormats::FASTQ;
     readsFormats << BaseDocumentFormats::PLAIN_GENBANK;
-    DnaAssemblyAlgorithmEnv *algo = new DnaAssemblyAlgorithmEnv("UGENE Genome Aligner", new GenomeAlignerTask::Factory, guiFactory, true, true, false, referenceFormats, readsFormats);
+    DnaAssemblyAlgorithmEnv* algo = new DnaAssemblyAlgorithmEnv("UGENE Genome Aligner", new GenomeAlignerTask::Factory, guiFactory, true, true, false, referenceFormats, readsFormats);
     bool res = registry->registerAlgorithm(algo);
     Q_UNUSED(res);
     assert(res);
@@ -106,20 +106,20 @@ GenomeAlignerPlugin::~GenomeAlignerPlugin() {
 }
 
 void GenomeAlignerPlugin::processCMDLineOptions() {
-    CMDLineRegistry *cmdlineReg = AppContext::getCMDLineRegistry();
+    CMDLineRegistry* cmdlineReg = AppContext::getCMDLineRegistry();
     assert(cmdlineReg != nullptr);
 
     if (cmdlineReg->hasParameter(RUN_GENOME_ALIGNER)) {
-        Task *t = new GenomeAlignerCMDLineTask();
+        Task* t = new GenomeAlignerCMDLineTask();
         connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), new TaskStarter(t), SLOT(registerTask()));
     }
 }
 
 void GenomeAlignerPlugin::registerCMDLineHelp() {
-    CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
+    CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
     assert(nullptr != cmdLineRegistry);
 
-    CMDLineHelpProvider *taskSection = new CMDLineHelpProvider(
+    CMDLineHelpProvider* taskSection = new CMDLineHelpProvider(
         RUN_GENOME_ALIGNER,
         tr("UGENE Short Reads Aligner"),
         tr("UGENE Genome Aligner is an efficient and fast tool for short read alignment."

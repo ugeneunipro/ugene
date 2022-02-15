@@ -34,7 +34,7 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ImportBAMFileFiller"
 #define GT_METHOD_NAME "run"
-ImportBAMFileFiller::ImportBAMFileFiller(HI::GUITestOpStatus &os, const QString destinationUrl, const QString referenceFolderPath, const QString referenceFileName, bool importUnmappedReads, int timeoutMs)
+ImportBAMFileFiller::ImportBAMFileFiller(HI::GUITestOpStatus& os, const QString destinationUrl, const QString referenceFolderPath, const QString referenceFileName, bool importUnmappedReads, int timeoutMs)
     : Filler(os, "Import BAM File"),
       referenceFolderPath(referenceFolderPath),
       referenceFileName(referenceFileName),
@@ -43,7 +43,7 @@ ImportBAMFileFiller::ImportBAMFileFiller(HI::GUITestOpStatus &os, const QString 
     settings.timeout = timeoutMs;
 }
 
-ImportBAMFileFiller::ImportBAMFileFiller(HI::GUITestOpStatus &os, CustomScenario *_c)
+ImportBAMFileFiller::ImportBAMFileFiller(HI::GUITestOpStatus& os, CustomScenario* _c)
     : Filler(os, "Import BAM File", _c),
       referenceFolderPath(""),
       referenceFileName(""),
@@ -53,20 +53,20 @@ ImportBAMFileFiller::ImportBAMFileFiller(HI::GUITestOpStatus &os, CustomScenario
 }
 
 void ImportBAMFileFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
     if (!referenceFolderPath.isEmpty()) {
-        GTFileDialogUtils *ob = new GTFileDialogUtils(os, referenceFolderPath, referenceFileName);
+        GTFileDialogUtils* ob = new GTFileDialogUtils(os, referenceFolderPath, referenceFileName);
         GTUtilsDialog::waitForDialog(os, ob);
         GTWidget::click(os, GTWidget::findWidget(os, "refUrlButton", dialog));
     }
 
     if (!destinationUrl.isEmpty()) {
-        QLineEdit *destinationUrlEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "destinationUrlEdit", dialog));
+        QLineEdit* destinationUrlEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "destinationUrlEdit", dialog));
         GT_CHECK(destinationUrlEdit, "destinationUrlEdit not found");
         GTLineEdit::setText(os, destinationUrlEdit, destinationUrl);
     }
 
-    QCheckBox *importUnmapped = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "importUnmappedBox", dialog));
+    QCheckBox* importUnmapped = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "importUnmappedBox", dialog));
     GT_CHECK(importUnmapped, "ImportUnmappedReads checkbox is NULL");
     if (importUnmapped->isChecked() != importUnmappedReads) {
         GTCheckBox::setChecked(os, importUnmapped, importUnmapped);

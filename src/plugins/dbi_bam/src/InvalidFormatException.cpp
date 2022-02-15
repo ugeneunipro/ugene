@@ -24,7 +24,7 @@
 namespace U2 {
 namespace BAM {
 
-InvalidFormatException::InvalidFormatException(const QString &message)
+InvalidFormatException::InvalidFormatException(const QString& message)
     : Exception(message) {
 }
 

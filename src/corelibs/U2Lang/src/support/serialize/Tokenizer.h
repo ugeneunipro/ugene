@@ -32,14 +32,14 @@ namespace WorkflowSerialize {
 
 class Tokenizer {
 public:
-    void tokenizeSchema(const QString &data);
-    void tokenize(const QString &data, int unparseableBlockDepth = INT_MAX);
-    void tokenizeLine(const QString &line, QTextStream &s);
-    void tokenizeBlock(const QString &line, QTextStream &s);
-    void addToken(const QString &t);
-    void appendToken(const QString &t, bool skipEmpty = true);
+    void tokenizeSchema(const QString& data);
+    void tokenize(const QString& data, int unparseableBlockDepth = INT_MAX);
+    void tokenizeLine(const QString& line, QTextStream& s);
+    void tokenizeBlock(const QString& line, QTextStream& s);
+    void addToken(const QString& t);
+    void appendToken(const QString& t, bool skipEmpty = true);
     void removeCommentTokens();
-    void assertToken(const QString &etalon);
+    void assertToken(const QString& etalon);
 
     QString take();
     QString look() const;
@@ -57,8 +57,8 @@ public:
 
 class ParsedPairs {
 public:
-    ParsedPairs(Tokenizer &tokenizer, bool bigBlocks = false);
-    ParsedPairs(const QString &data, int unparseableBlockDepth = INT_MAX);
+    ParsedPairs(Tokenizer& tokenizer, bool bigBlocks = false);
+    ParsedPairs(const QString& data, int unparseableBlockDepth = INT_MAX);
     ParsedPairs() {
     }
     QMap<QString, QString> equalPairs;
@@ -67,11 +67,11 @@ public:
     QList<StrStrPair> equalPairsList;
     QList<StrStrPair> blockPairsList;
 
-    static QPair<QString, QString> parseOneEqual(Tokenizer &tokenizer);
-    static QString skipBlock(Tokenizer &tokenizer);
+    static QPair<QString, QString> parseOneEqual(Tokenizer& tokenizer);
+    static QString skipBlock(Tokenizer& tokenizer);
 
 private:
-    void init(Tokenizer &tokenizer, bool bigBlocks);
+    void init(Tokenizer& tokenizer, bool bigBlocks);
 };  // ParsedPairs
 
 }  // namespace WorkflowSerialize

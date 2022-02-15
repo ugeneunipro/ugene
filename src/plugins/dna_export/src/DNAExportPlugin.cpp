@@ -42,8 +42,8 @@
 
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
-    DNAExportPlugin *plug = new DNAExportPlugin();
+extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
+    DNAExportPlugin* plug = new DNAExportPlugin();
     return plug;
 }
 
@@ -51,21 +51,21 @@ DNAExportPlugin::DNAExportPlugin()
     : Plugin(tr("DNA export"), tr("Export and import support for DNA & protein sequences")) {
     if (AppContext::getMainWindow()) {
         services.push_back(new DNAExportService());
-        QAction *a = new QAction(QIcon(":/core/images/add_sequence.png"), tr("Random sequence generator..."), this);
+        QAction* a = new QAction(QIcon(":/core/images/add_sequence.png"), tr("Random sequence generator..."), this);
         a->setObjectName(ToolsMenu::GENERATE_SEQUENCE);
         connect(a, SIGNAL(triggered()), SLOT(sl_generateSequence()));
         ToolsMenu::addAction(ToolsMenu::TOOLS, a);
     }
 
     // tests
-    GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
+    GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
+    XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
     assert(xmlTestFormat != nullptr);
 
-    GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
+    GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = DNAExportPluginTests::createTestFactories();
 
-    foreach (XMLTestFactory *f, l->qlist) {
+    foreach (XMLTestFactory* f, l->qlist) {
         bool res = xmlTestFormat->registerTestFactory(f);
         assert(res);
         Q_UNUSED(res);

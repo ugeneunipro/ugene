@@ -31,7 +31,7 @@ CigarValidator::CigarValidator(QList<Alignment::CigarOperation> cigar_)
     : cigar(cigar_) {
 }
 
-void CigarValidator::validate(int *totalLength) {
+void CigarValidator::validate(int* totalLength) {
     const static Alignment::CigarOperation::Operation CIGAR_H = Alignment::CigarOperation::HardClip;
     const static Alignment::CigarOperation::Operation CIGAR_S = Alignment::CigarOperation::SoftClip;
 

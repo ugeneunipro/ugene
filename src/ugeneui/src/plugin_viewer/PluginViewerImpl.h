@@ -44,12 +44,12 @@ public:
     }
 
 protected:
-    virtual Task *createServiceEnablingTask();
+    virtual Task* createServiceEnablingTask();
 
-    virtual Task *createServiceDisablingTask();
+    virtual Task* createServiceDisablingTask();
 
 private:
-    PluginViewerController *viewer;
+    PluginViewerController* viewer;
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -58,22 +58,22 @@ class EnablePluginViewerTask : public Task {
     Q_OBJECT
 
 public:
-    EnablePluginViewerTask(PluginViewerImpl *pv);
+    EnablePluginViewerTask(PluginViewerImpl* pv);
     virtual ReportResult report();
 
 private:
-    PluginViewerImpl *pv;
+    PluginViewerImpl* pv;
 };
 
 class DisablePluginViewerTask : public Task {
     Q_OBJECT
 
 public:
-    DisablePluginViewerTask(PluginViewerImpl *pv);
+    DisablePluginViewerTask(PluginViewerImpl* pv);
     virtual ReportResult report();
 
 private:
-    PluginViewerImpl *pv;
+    PluginViewerImpl* pv;
 };
 
 }  // namespace U2

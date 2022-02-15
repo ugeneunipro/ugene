@@ -23,7 +23,7 @@
 
 namespace U2 {
 
-DNASequence::DNASequence(const QString &name, const QByteArray &s, const DNAAlphabet *a)
+DNASequence::DNASequence(const QString& name, const QByteArray& s, const DNAAlphabet* a)
     : seq(s),
       alphabet(a),
       circular(false) {
@@ -32,13 +32,13 @@ DNASequence::DNASequence(const QString &name, const QByteArray &s, const DNAAlph
     }
 }
 
-DNASequence::DNASequence(const QByteArray &s, const DNAAlphabet *a)
+DNASequence::DNASequence(const QByteArray& s, const DNAAlphabet* a)
     : seq(s),
       alphabet(a),
       circular(false) {
 }
 
-void DNASequence::setName(const QString &name) {
+void DNASequence::setName(const QString& name) {
     info.insert(DNAInfo::ID, name);
 }
 

@@ -58,43 +58,43 @@ CfgExternalToolItem::~CfgExternalToolItem() {
     delete delegateForFormats;
 }
 
-const QString &CfgExternalToolItem::getDataType() const {
+const QString& CfgExternalToolItem::getDataType() const {
     return itemData.type;
 }
 
-void CfgExternalToolItem::setDataType(const QString &id) {
+void CfgExternalToolItem::setDataType(const QString& id) {
     itemData.type = id;
 }
 
-const QString &CfgExternalToolItem::getId() const {
+const QString& CfgExternalToolItem::getId() const {
     return itemData.attributeId;
 }
 
-void CfgExternalToolItem::setId(const QString &_id) {
+void CfgExternalToolItem::setId(const QString& _id) {
     itemData.attributeId = _id;
 }
 
-const QString &CfgExternalToolItem::getName() const {
+const QString& CfgExternalToolItem::getName() const {
     return itemData.attrName;
 }
 
-void CfgExternalToolItem::setName(const QString &_name) {
+void CfgExternalToolItem::setName(const QString& _name) {
     itemData.attrName = _name;
 }
 
-const QString &CfgExternalToolItem::getFormat() const {
+const QString& CfgExternalToolItem::getFormat() const {
     return itemData.format;
 }
 
-void CfgExternalToolItem::setFormat(const QString &f) {
+void CfgExternalToolItem::setFormat(const QString& f) {
     itemData.format = f;
 }
 
-const QString &CfgExternalToolItem::getDescription() const {
+const QString& CfgExternalToolItem::getDescription() const {
     return itemData.description;
 }
 
-void CfgExternalToolItem::setDescription(const QString &_descr) {
+void CfgExternalToolItem::setDescription(const QString& _descr) {
     itemData.description = _descr;
 }
 
@@ -102,34 +102,34 @@ void CfgExternalToolItem::setDescription(const QString &_descr) {
 /// CfgExternalToolModel
 //////////////////////////////////////////////////////////////////////////
 
-CfgExternalToolModel::CfgExternalToolModel(CfgExternalToolModel::ModelType _modelType, QObject *_obj)
+CfgExternalToolModel::CfgExternalToolModel(CfgExternalToolModel::ModelType _modelType, QObject* _obj)
     : QAbstractTableModel(_obj),
       isInput(Input == _modelType) {
     init();
 }
 
-int CfgExternalToolModel::rowCount(const QModelIndex & /*index*/) const {
+int CfgExternalToolModel::rowCount(const QModelIndex& /*index*/) const {
     return items.size();
 }
 
-int CfgExternalToolModel::columnCount(const QModelIndex & /*index*/) const {
+int CfgExternalToolModel::columnCount(const QModelIndex& /*index*/) const {
     return COLUMNS_COUNT;
 }
 
-Qt::ItemFlags CfgExternalToolModel::flags(const QModelIndex & /*index*/) const {
+Qt::ItemFlags CfgExternalToolModel::flags(const QModelIndex& /*index*/) const {
     return Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
-CfgExternalToolItem *CfgExternalToolModel::getItem(const QModelIndex &index) const {
+CfgExternalToolItem* CfgExternalToolModel::getItem(const QModelIndex& index) const {
     return items.at(index.row());
 }
 
-QList<CfgExternalToolItem *> CfgExternalToolModel::getItems() const {
+QList<CfgExternalToolItem*> CfgExternalToolModel::getItems() const {
     return items;
 }
 
-QVariant CfgExternalToolModel::data(const QModelIndex &index, int role) const {
-    CfgExternalToolItem *item = getItem(index);
+QVariant CfgExternalToolModel::data(const QModelIndex& index, int role) const {
+    CfgExternalToolItem* item = getItem(index);
     int col = index.column();
 
     switch (role) {
@@ -154,13 +154,13 @@ QVariant CfgExternalToolModel::data(const QModelIndex &index, int role) const {
         case DelegateRole:
             switch (col) {
                 case COLUMN_NAME:
-                    return qVariantFromValue<PropertyDelegate *>(item->delegateForNames);
+                    return qVariantFromValue<PropertyDelegate*>(item->delegateForNames);
                 case COLUMN_ID:
-                    return qVariantFromValue<PropertyDelegate *>(item->delegateForIds);
+                    return qVariantFromValue<PropertyDelegate*>(item->delegateForIds);
                 case COLUMN_DATA_TYPE:
-                    return qVariantFromValue<PropertyDelegate *>(item->delegateForTypes);
+                    return qVariantFromValue<PropertyDelegate*>(item->delegateForTypes);
                 case COLUMN_FORMAT:
-                    return qVariantFromValue<PropertyDelegate *>(item->delegateForFormats);
+                    return qVariantFromValue<PropertyDelegate*>(item->delegateForFormats);
                 default:
                     return QVariant();
             }
@@ -187,8 +187,8 @@ QVariant CfgExternalToolModel::data(const QModelIndex &index, int role) const {
     }
 }
 
-void CfgExternalToolModel::createFormatDelegate(const QString &newType, CfgExternalToolItem *item) {
-    PropertyDelegate *delegate;
+void CfgExternalToolModel::createFormatDelegate(const QString& newType, CfgExternalToolItem* item) {
+    PropertyDelegate* delegate;
     QString format;
     if (newType == BaseTypes::DNA_SEQUENCE_TYPE()->getId()) {
         delegate = new ComboBoxDelegate(seqFormatsW);
@@ -212,9 +212,9 @@ void CfgExternalToolModel::createFormatDelegate(const QString &newType, CfgExter
     item->delegateForFormats = delegate;
 }
 
-bool CfgExternalToolModel::setData(const QModelIndex &index, const QVariant &value, int role) {
+bool CfgExternalToolModel::setData(const QModelIndex& index, const QVariant& value, int role) {
     int col = index.column();
-    CfgExternalToolItem *item = getItem(index);
+    CfgExternalToolItem* item = getItem(index);
     switch (role) {
         case Qt::EditRole:  // fall through
         case ConfigurationEditor::ItemValueRole:
@@ -291,9 +291,9 @@ QVariant CfgExternalToolModel::headerData(int section, Qt::Orientation orientati
     return QVariant();
 }
 
-bool CfgExternalToolModel::insertRows(int /*row*/, int /*count*/, const QModelIndex &parent) {
+bool CfgExternalToolModel::insertRows(int /*row*/, int /*count*/, const QModelIndex& parent) {
     beginInsertRows(parent, items.size(), items.size());
-    CfgExternalToolItem *newItem = new CfgExternalToolItem();
+    CfgExternalToolItem* newItem = new CfgExternalToolItem();
     newItem->delegateForNames = new LineEditWithValidatorDelegate(WorkflowEntityValidator::ACCEPTABLE_NAME);
     newItem->delegateForIds = new LineEditWithValidatorDelegate(WorkflowEntityValidator::ACCEPTABLE_ID);
     newItem->delegateForTypes = new ComboBoxDelegate(types);
@@ -303,7 +303,7 @@ bool CfgExternalToolModel::insertRows(int /*row*/, int /*count*/, const QModelIn
     return true;
 }
 
-bool CfgExternalToolModel::removeRows(int row, int count, const QModelIndex &parent) {
+bool CfgExternalToolModel::removeRows(int row, int count, const QModelIndex& parent) {
     CHECK(0 <= row && row < items.size(), false);
     CHECK(0 <= row + count - 1 && row + count - 1 < items.size(), false);
     CHECK(0 < count, false);
@@ -356,8 +356,8 @@ void CfgExternalToolModel::initFormats() {
     annSeqRead.supportedObjectTypes += GObjectTypes::SEQUENCE;
 
     QString argumentValue(tr("URL to %1 file with data"));
-    foreach (const DocumentFormatId &id, ids) {
-        DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(id);
+    foreach (const DocumentFormatId& id, ids) {
+        DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(id);
 
         QString formatNameKey = argumentValue.arg(df->getFormatName());
         QString formatId = df->getFormatId();
@@ -394,7 +394,7 @@ void CfgExternalToolModel::initFormats() {
         }
     }
 
-    DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_TEXT);
+    DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_TEXT);
     if (isInput) {
         textFormat[tr("String data value")] = DataConfig::STRING_VALUE;
     } else {
@@ -435,43 +435,43 @@ AttributeItem::~AttributeItem() {
     delete delegateForDefaultValues;
 }
 
-const QString &AttributeItem::getId() const {
+const QString& AttributeItem::getId() const {
     return id;
 }
 
-void AttributeItem::setId(const QString &_id) {
+void AttributeItem::setId(const QString& _id) {
     id = _id;
 }
 
-const QString &AttributeItem::getName() const {
+const QString& AttributeItem::getName() const {
     return name;
 }
 
-void AttributeItem::setName(const QString &_name) {
+void AttributeItem::setName(const QString& _name) {
     name = _name;
 }
 
-const QString &AttributeItem::getDataType() const {
+const QString& AttributeItem::getDataType() const {
     return type;
 }
 
-void AttributeItem::setDataType(const QString &_type) {
+void AttributeItem::setDataType(const QString& _type) {
     type = _type;
 }
 
-const QVariant &AttributeItem::getDefaultValue() const {
+const QVariant& AttributeItem::getDefaultValue() const {
     return defaultValue;
 }
 
-void AttributeItem::setDefaultValue(const QVariant &_defaultValue) {
+void AttributeItem::setDefaultValue(const QVariant& _defaultValue) {
     defaultValue = _defaultValue;
 }
 
-const QString &AttributeItem::getDescription() const {
+const QString& AttributeItem::getDescription() const {
     return description;
 }
 
-void AttributeItem::setDescription(const QString &_description) {
+void AttributeItem::setDescription(const QString& _description) {
     description = _description;
 }
 
@@ -479,7 +479,7 @@ void AttributeItem::setDescription(const QString &_description) {
 /// CfgExternalToolModelAttributes
 //////////////////////////////////////////////////////////////////////////
 
-CfgExternalToolModelAttributes::CfgExternalToolModelAttributes(SchemaConfig *_schemaConfig, QObject *_parent)
+CfgExternalToolModelAttributes::CfgExternalToolModelAttributes(SchemaConfig* _schemaConfig, QObject* _parent)
     : QAbstractTableModel(_parent),
       schemaConfig(_schemaConfig) {
     types.append(QPair<QString, QVariant>(tr("Boolean"), AttributeConfig::BOOLEAN_TYPE));
@@ -494,13 +494,13 @@ CfgExternalToolModelAttributes::CfgExternalToolModelAttributes(SchemaConfig *_sc
 }
 
 CfgExternalToolModelAttributes::~CfgExternalToolModelAttributes() {
-    foreach (AttributeItem *item, items) {
+    foreach (AttributeItem* item, items) {
         delete item;
     }
 }
 
-void CfgExternalToolModelAttributes::changeDefaultValueDelegate(const QString &newType, AttributeItem *item) {
-    PropertyDelegate *propDelegate = nullptr;
+void CfgExternalToolModelAttributes::changeDefaultValueDelegate(const QString& newType, AttributeItem* item) {
+    PropertyDelegate* propDelegate = nullptr;
     QVariant defaultValue;
     if (newType == AttributeConfig::BOOLEAN_TYPE) {
         propDelegate = new ComboBoxWithBoolsDelegate();
@@ -539,28 +539,28 @@ void CfgExternalToolModelAttributes::changeDefaultValueDelegate(const QString &n
     item->delegateForDefaultValues = propDelegate;
 }
 
-int CfgExternalToolModelAttributes::rowCount(const QModelIndex & /*index*/) const {
+int CfgExternalToolModelAttributes::rowCount(const QModelIndex& /*index*/) const {
     return items.size();
 }
 
-int CfgExternalToolModelAttributes::columnCount(const QModelIndex & /*index*/) const {
+int CfgExternalToolModelAttributes::columnCount(const QModelIndex& /*index*/) const {
     return COLUMNS_COUNT;
 }
 
-Qt::ItemFlags CfgExternalToolModelAttributes::flags(const QModelIndex & /*index*/) const {
+Qt::ItemFlags CfgExternalToolModelAttributes::flags(const QModelIndex& /*index*/) const {
     return Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
-AttributeItem *CfgExternalToolModelAttributes::getItem(const QModelIndex &index) const {
+AttributeItem* CfgExternalToolModelAttributes::getItem(const QModelIndex& index) const {
     return items.at(index.row());
 }
 
-QList<AttributeItem *> CfgExternalToolModelAttributes::getItems() const {
+QList<AttributeItem*> CfgExternalToolModelAttributes::getItems() const {
     return items;
 }
 
-QVariant CfgExternalToolModelAttributes::data(const QModelIndex &index, int role) const {
-    AttributeItem *item = getItem(index);
+QVariant CfgExternalToolModelAttributes::data(const QModelIndex& index, int role) const {
+    AttributeItem* item = getItem(index);
     int col = index.column();
 
     switch (role) {
@@ -585,13 +585,13 @@ QVariant CfgExternalToolModelAttributes::data(const QModelIndex &index, int role
         case DelegateRole:
             switch (col) {
                 case COLUMN_NAME:
-                    return qVariantFromValue<PropertyDelegate *>(item->delegateForNames);
+                    return qVariantFromValue<PropertyDelegate*>(item->delegateForNames);
                 case COLUMN_ID:
-                    return qVariantFromValue<PropertyDelegate *>(item->delegateForIds);
+                    return qVariantFromValue<PropertyDelegate*>(item->delegateForIds);
                 case COLUMN_DATA_TYPE:
-                    return qVariantFromValue<PropertyDelegate *>(typesDelegate);
+                    return qVariantFromValue<PropertyDelegate*>(typesDelegate);
                 case COLUMN_DEFAULT_VALUE:
-                    return qVariantFromValue<PropertyDelegate *>(item->delegateForDefaultValues);
+                    return qVariantFromValue<PropertyDelegate*>(item->delegateForDefaultValues);
                 default:
                     return QVariant();
             }
@@ -618,9 +618,9 @@ QVariant CfgExternalToolModelAttributes::data(const QModelIndex &index, int role
     }
 }
 
-bool CfgExternalToolModelAttributes::setData(const QModelIndex &index, const QVariant &value, int role) {
+bool CfgExternalToolModelAttributes::setData(const QModelIndex& index, const QVariant& value, int role) {
     int col = index.column();
-    AttributeItem *item = getItem(index);
+    AttributeItem* item = getItem(index);
     switch (role) {
         case Qt::EditRole:  // fallthrough
         case ConfigurationEditor::ItemValueRole:
@@ -695,9 +695,9 @@ QVariant CfgExternalToolModelAttributes::headerData(int section, Qt::Orientation
     return QVariant();
 }
 
-bool CfgExternalToolModelAttributes::insertRows(int /*row*/, int /*count*/, const QModelIndex &parent) {
+bool CfgExternalToolModelAttributes::insertRows(int /*row*/, int /*count*/, const QModelIndex& parent) {
     beginInsertRows(parent, items.size(), items.size());
-    AttributeItem *newItem = new AttributeItem();
+    AttributeItem* newItem = new AttributeItem();
     newItem->delegateForNames = new LineEditWithValidatorDelegate(WorkflowEntityValidator::ACCEPTABLE_NAME);
     newItem->delegateForIds = new LineEditWithValidatorDelegate(WorkflowEntityValidator::ACCEPTABLE_ID);
     newItem->setDataType(AttributeConfig::STRING_TYPE);
@@ -707,7 +707,7 @@ bool CfgExternalToolModelAttributes::insertRows(int /*row*/, int /*count*/, cons
     return true;
 }
 
-bool CfgExternalToolModelAttributes::removeRows(int row, int count, const QModelIndex &parent) {
+bool CfgExternalToolModelAttributes::removeRows(int row, int count, const QModelIndex& parent) {
     CHECK(0 <= row && row < items.size(), false);
     CHECK(0 <= row + count - 1 && row + count - 1 < items.size(), false);
     CHECK(0 < count, false);

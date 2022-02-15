@@ -37,17 +37,17 @@ class U2SequenceObject;
 
 class U2CORE_EXPORT Annotation : public U2Entity {
 public:
-    Annotation(const U2DataId &featureId, const SharedAnnotationData &data, AnnotationGroup *parentGroup, AnnotationTableObject *parentObject);
+    Annotation(const U2DataId& featureId, const SharedAnnotationData& data, AnnotationGroup* parentGroup, AnnotationTableObject* parentObject);
 
-    AnnotationTableObject *getGObject() const;
+    AnnotationTableObject* getGObject() const;
 
-    const SharedAnnotationData &getData() const;
+    const SharedAnnotationData& getData() const;
 
     QString getName() const;
 
     U2FeatureType getType() const;
 
-    void setName(const QString &name);
+    void setName(const QString& name);
 
     void setType(U2FeatureType type);
 
@@ -59,7 +59,7 @@ public:
 
     U2Strand getStrand() const;
 
-    void setStrand(const U2Strand &strand);
+    void setStrand(const U2Strand& strand);
 
     U2LocationOperator getLocationOperator() const;
 
@@ -67,61 +67,61 @@ public:
 
     U2Location getLocation() const;
 
-    void setLocation(const U2Location &location);
+    void setLocation(const U2Location& location);
 
-    const QVector<U2Region> &getRegions() const;
+    const QVector<U2Region>& getRegions() const;
 
     qint64 getRegionsLen() const;
 
     /**
      * Replaces existing annotation region(s) with supplied @regions
      */
-    void updateRegions(const QVector<U2Region> &regions);
+    void updateRegions(const QVector<U2Region>& regions);
 
-    void addLocationRegion(const U2Region &reg);
+    void addLocationRegion(const U2Region& reg);
 
     QVector<U2Qualifier> getQualifiers() const;
 
-    void addQualifier(const U2Qualifier &q);
+    void addQualifier(const U2Qualifier& q);
 
-    void removeQualifier(const U2Qualifier &q);
+    void removeQualifier(const U2Qualifier& q);
 
-    AnnotationGroup *getGroup() const;
+    AnnotationGroup* getGroup() const;
 
-    void setGroup(AnnotationGroup *newGroup);
+    void setGroup(AnnotationGroup* newGroup);
     /**
      * Appends to @res all existing qualifiers with the given @name
      */
-    void findQualifiers(const QString &name, QList<U2Qualifier> &res) const;
+    void findQualifiers(const QString& name, QList<U2Qualifier>& res) const;
     /**
      * Returns the value of an arbitrary qualifier with the given @name.
      * Null string is returned if no qualifier was found.
      */
-    QString findFirstQualifierValue(const QString &name) const;
+    QString findFirstQualifierValue(const QString& name) const;
 
-    static QString getQualifiersTip(const SharedAnnotationData &data, int maxRows, U2SequenceObject *seqObj = nullptr, DNATranslation *complTT = nullptr, DNATranslation *aminoTT = nullptr);
+    static QString getQualifiersTip(const SharedAnnotationData& data, int maxRows, U2SequenceObject* seqObj = nullptr, DNATranslation* complTT = nullptr, DNATranslation* aminoTT = nullptr);
 
     bool isCaseAnnotation() const;
 
     void setCaseAnnotation(bool caseAnnotation);
 
-    static bool annotationLessThan(Annotation *first, Annotation *second);
+    static bool annotationLessThan(Annotation* first, Annotation* second);
 
-    static bool annotationLessThanByRegion(Annotation *first, Annotation *second);
+    static bool annotationLessThanByRegion(Annotation* first, Annotation* second);
 
-    static bool isValidAnnotationName(const QString &n);
+    static bool isValidAnnotationName(const QString& n);
 
-    static bool isValidQualifierName(const QString &name);
+    static bool isValidQualifierName(const QString& name);
 
-    static bool isValidQualifierValue(const QString &value);
+    static bool isValidQualifierValue(const QString& value);
 
-    static QString produceValidAnnotationName(const QString &name);
+    static QString produceValidAnnotationName(const QString& name);
 
 private:
-    AnnotationTableObject *parentObject;
+    AnnotationTableObject* parentObject;
 
     SharedAnnotationData data;
-    AnnotationGroup *group;
+    AnnotationGroup* group;
 };
 
 }  // namespace U2

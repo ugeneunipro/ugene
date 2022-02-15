@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-RFSArrayWAlgorithm::RFSArrayWAlgorithm(RFResultsListener *rl, const char *seqX, int sizeX, const char *seqY, int sizeY, const DNAAlphabet *al, int w)
+RFSArrayWAlgorithm::RFSArrayWAlgorithm(RFResultsListener* rl, const char* seqX, int sizeX, const char* seqY, int sizeY, const DNAAlphabet* al, int w)
     : RFAlgorithmBase(rl, seqX, sizeX, seqY, sizeY, al->getType(), w, w, TaskFlags_FOSCOE) {
     indexTask = nullptr;
     nThreads = 1;
@@ -103,21 +103,21 @@ void RFSArrayWAlgorithm::prepare() {
     for (int i = 0; i < nThreads; i++) {
         int sStart = start ? start - WINDOW_SIZE + 1 : 0;
         int sEnd = i < nThreads - 1 ? start + len : sSize;
-        RFSArrayWSubtask *t = new RFSArrayWSubtask(this, sStart, sEnd, i);
+        RFSArrayWSubtask* t = new RFSArrayWSubtask(this, sStart, sEnd, i);
         t->setSubtaskProgressWeight((100 - arrayPercent) / (100.0F * nThreads));
         addSubTask(t);
         start += len;
     }
 }
 
-QList<Task *> RFSArrayWAlgorithm::onSubTaskFinished(Task *subTask) {
+QList<Task*> RFSArrayWAlgorithm::onSubTaskFinished(Task* subTask) {
     if (subTask == indexTask) {
         setMaxParallelSubtasks(nThreads);
     }
-    return QList<Task *>();
+    return QList<Task*>();
 }
 
-void RFSArrayWAlgorithm::run(RFSArrayWSubtask *t) {
+void RFSArrayWAlgorithm::run(RFSArrayWSubtask* t) {
     calculate(t);
 }
 
@@ -129,7 +129,7 @@ void RFSArrayWAlgorithm::run() {
     }
 }
 
-void RFSArrayWAlgorithm::calculate(RFSArrayWSubtask *t) {
+void RFSArrayWAlgorithm::calculate(RFSArrayWSubtask* t) {
     quint64 t0 = GTimer::currentTimeMicros();
 
     int W = WINDOW_SIZE;
@@ -137,46 +137,46 @@ void RFSArrayWAlgorithm::calculate(RFSArrayWSubtask *t) {
     int GAP = W - W_GAP;
     int aSize = ARRAY_SIZE;
     int sSize = t->sEnd - t->sStart;
-    const char *dataA = arraySeq;
-    const char *dataS = searchSeq + t->sStart;
-    const char *dataAEnd = dataA + aSize;
-    const char *dataSEnd = dataS + sSize;
-    const char *dataSCheckEnd = dataSEnd - W_GAP + 1;
+    const char* dataA = arraySeq;
+    const char* dataS = searchSeq + t->sStart;
+    const char* dataAEnd = dataA + aSize;
+    const char* dataSEnd = dataS + sSize;
+    const char* dataSCheckEnd = dataSEnd - W_GAP + 1;
     int reportLen = sSize / (100 - arrayPercent);
-    const char *reportPos = dataS + reportLen;
+    const char* reportPos = dataS + reportLen;
 
     EdgePool edgePool(3000);
-    QVector<CheckEdge *> chains(GAP + 1);
+    QVector<CheckEdge*> chains(GAP + 1);
     for (int i = 0; i < chains.size(); i++) {
         chains[i] = new CheckEdge();
     }
     bool _useBitMask = bitMask != nullptr;
-    SArrayIndex *index = indexTask->index;
+    SArrayIndex* index = indexTask->index;
     assert(index != nullptr);
 
     quint32 bitValue = 0xFFFFFFFF;
     quint32 charBitsNum = bitMaskCharBitsNum;
     int wCharsInMask = index->getCharsInMask();
-    const quint32 *bm = bitMask;
+    const quint32* bm = bitMask;
     quint32 bitFilter = index->getBitFilter();
     int nNew = 0;
     int nMatches = 0;
     int chainIdx = 0;
-    int &progress = t->stateInfo.progress;
-    for (const char *posS = dataS; posS < dataSCheckEnd && !stateInfo.cancelFlag; posS++, chainIdx = chainIdx == GAP ? 0 : chainIdx + 1) {
+    int& progress = t->stateInfo.progress;
+    for (const char* posS = dataS; posS < dataSCheckEnd && !stateInfo.cancelFlag; posS++, chainIdx = chainIdx == GAP ? 0 : chainIdx + 1) {
         if (posS >= reportPos) {
             progress++;
             reportPos += reportLen;
         }
 
         // validate edges from prev steps
-        CheckEdge *chain = chains[chainIdx];
+        CheckEdge* chain = chains[chainIdx];
         for (CheckEdge *edge = chain->next, *next = nullptr; edge->lastS < posS && edge != chain; edge = next) {
             next = edge->next;
             edge->fromChain();
             // now extend result forward
-            const char *lastS = edge->lastS;
-            const char *lastA = dataA + (lastS - dataS) + edge->diag;
+            const char* lastS = edge->lastS;
+            const char* lastA = dataA + (lastS - dataS) + edge->diag;
             for (; lastS < dataSEnd && lastA < dataAEnd && PCHAR_MATCHES(lastS, lastA); lastS++, lastA++) {
             }
 
@@ -240,7 +240,7 @@ void RFSArrayWAlgorithm::calculate(RFSArrayWSubtask *t) {
             // check if this hit can be merged with older one
             int diag = a - s;
             bool merged = false;
-            CheckEdge *edge = chain->next;
+            CheckEdge* edge = chain->next;
             for (; edge != chain; edge = edge->next) {
                 if (edge->diag != diag) {
                     continue;
@@ -256,8 +256,8 @@ void RFSArrayWAlgorithm::calculate(RFSArrayWSubtask *t) {
             }
             if (!merged) {
                 // extend backward
-                const char *edgeS = posS - 1;
-                const char *edgeA = dataA + a - 1;
+                const char* edgeS = posS - 1;
+                const char* edgeA = dataA + a - 1;
                 for (; edgeS >= dataS && edgeA >= dataA && PCHAR_MATCHES(edgeS, edgeA); edgeS--, edgeA--) {
                 };
                 edgeS++;
@@ -267,11 +267,11 @@ void RFSArrayWAlgorithm::calculate(RFSArrayWSubtask *t) {
         }
     }
     for (chainIdx = 0; chainIdx < chains.size(); chainIdx++) {
-        CheckEdge *chain = chains[chainIdx];
+        CheckEdge* chain = chains[chainIdx];
         for (CheckEdge *edge = chain->next, *next = nullptr; edge != chain; edge = next) {  // expand forward
             next = edge->next;
-            const char *lastS = edge->lastS;
-            const char *lastA = dataA + (lastS - dataS) + edge->diag;
+            const char* lastS = edge->lastS;
+            const char* lastA = dataA + (lastS - dataS) + edge->diag;
             for (; lastS < dataSEnd && lastA < dataAEnd && PCHAR_MATCHES(lastS, lastA); lastS++, lastA++) {
             }
             edge->lastS = lastS;
@@ -292,7 +292,7 @@ void RFSArrayWAlgorithm::calculate(RFSArrayWSubtask *t) {
     algoLog.trace(QString("Done. Thread %1, Search time: %2 sec").arg(t->tid).arg(double(t1 - t0) / (1000 * 1000)));
 }
 
-static bool resultsIntrersectR1R2(const RFResult &r1, const RFResult &r2) {
+static bool resultsIntrersectR1R2(const RFResult& r1, const RFResult& r2) {
     if (r1.x <= r2.x) {
         if (r1.x + r1.l >= r2.x) {
             return true;
@@ -303,7 +303,7 @@ static bool resultsIntrersectR1R2(const RFResult &r1, const RFResult &r2) {
     return false;
 }
 
-static bool resultsIntrersectR2R1(const RFResult &r1, const RFResult &r2) {
+static bool resultsIntrersectR2R1(const RFResult& r1, const RFResult& r2) {
     if (r2.x <= r1.x) {
         if (r2.x + r2.l >= r1.x) {
             return true;
@@ -314,7 +314,7 @@ static bool resultsIntrersectR2R1(const RFResult &r1, const RFResult &r2) {
     return false;
 }
 
-static bool resultsIntrersect(const RFResult &r1, const RFResult &r2) {
+static bool resultsIntrersect(const RFResult& r1, const RFResult& r2) {
     bool r1r2 = resultsIntrersectR1R2(r1, r2);
     bool r2r1 = resultsIntrersectR2R1(r1, r2);
     return (r1r2 || r2r1);
@@ -322,9 +322,9 @@ static bool resultsIntrersect(const RFResult &r1, const RFResult &r2) {
 
 void RFSArrayWAlgorithm::processBoundaryResults() {
     // called after all subtasks finished -> merge boundary results
-    RFResult *rs = bresults.data();
+    RFResult* rs = bresults.data();
     for (int j = 0, n = bresults.size(); j < n; j++) {
-        RFResult &rj = rs[j];
+        RFResult& rj = rs[j];
         if (rj.l == -1) {  // was merged
             continue;
         }
@@ -333,7 +333,7 @@ void RFSArrayWAlgorithm::processBoundaryResults() {
             if (i == j) {
                 continue;
             }
-            RFResult &ri = rs[i];
+            RFResult& ri = rs[i];
             if (ri.l == -1) {  // was merged
                 continue;
             }
@@ -366,7 +366,7 @@ void RFSArrayWAlgorithm::processBoundaryResults() {
 
     QVector<RFResult> mergedResults;
     for (int j = 0, n = bresults.size(); j < n; j++) {
-        const RFResult &rj = rs[j];
+        const RFResult& rj = rs[j];
         if (rj.l != -1) {
             mergedResults.append(rj);
         }
@@ -376,7 +376,7 @@ void RFSArrayWAlgorithm::processBoundaryResults() {
 }
 
 // ast: add one hit in sequence
-void RFSArrayWAlgorithm::addResult(int a, int s, int l, int c, RFSArrayWSubtask *t) {
+void RFSArrayWAlgorithm::addResult(int a, int s, int l, int c, RFSArrayWSubtask* t) {
     bool boundary = nThreads > 1 && (s == 0 || s + l == t->sEnd - t->sStart);
     s += t->sStart;
     RFResult r((arrayIsX ? a : s), (arrayIsX ? s : a), l, c);
@@ -400,7 +400,7 @@ int RFSArrayWAlgorithm::getWGap(int W) {
 
 //////////////////////////////////////////////////////////////////////////
 // Worker
-RFSArrayWSubtask::RFSArrayWSubtask(RFSArrayWAlgorithm *_owner, int _sStart, int _sEnd, int _tid)
+RFSArrayWSubtask::RFSArrayWSubtask(RFSArrayWAlgorithm* _owner, int _sStart, int _sEnd, int _tid)
     : Task(tr("Find repeats subtask (suffix)"), TaskFlag_None), owner(_owner), sStart(_sStart), sEnd(_sEnd), tid(_tid) {
     tpm = Task::Progress_Manual;
 }

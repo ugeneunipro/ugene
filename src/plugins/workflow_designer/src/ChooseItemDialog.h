@@ -22,21 +22,21 @@
 #ifndef _U2_CHOOSE_DIALOG_CONTROLLER_H_
 #define _U2_CHOOSE_DIALOG_CONTROLLER_H_
 
-#include <ui_ChooseItemDialog.h>
-
 #include <U2Core/global.h>
 
 #include <U2Lang/ActorModel.h>
+
+#include <ui_ChooseItemDialog.h>
 
 namespace U2 {
 
 class ChooseItemDialog : public QDialog, public Ui_ChooseItemDialog {
     Q_OBJECT
 public:
-    ChooseItemDialog(QWidget *p = nullptr);
+    ChooseItemDialog(QWidget* p = nullptr);
     // virtual int select(const QList<QString>& items);
-    virtual QString select(const QMap<QString, QIcon> &items);
-    Workflow::ActorPrototype *select(const QList<Workflow::ActorPrototype *> &items);
+    virtual QString select(const QMap<QString, QIcon>& items);
+    Workflow::ActorPrototype* select(const QList<Workflow::ActorPrototype*>& items);
 };
 
 }  // namespace U2

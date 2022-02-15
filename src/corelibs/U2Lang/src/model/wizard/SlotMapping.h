@@ -32,9 +32,9 @@ namespace U2 {
 
 class SlotMapping : public IdMapping {
 public:
-    SlotMapping(const QString &srcSlotId, const QString &dstSlotId);
+    SlotMapping(const QString& srcSlotId, const QString& dstSlotId);
 
-    void validate(DataTypePtr srcSlotType, DataTypePtr dstSlotType, U2OpStatus &os) const;
+    void validate(DataTypePtr srcSlotType, DataTypePtr dstSlotType, U2OpStatus& os) const;
 };
 
 }  // namespace U2

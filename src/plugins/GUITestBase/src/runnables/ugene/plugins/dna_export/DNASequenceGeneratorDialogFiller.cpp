@@ -33,20 +33,20 @@
 
 namespace U2 {
 
-DNASequenceGeneratorDialogFillerModel::DNASequenceGeneratorDialogFillerModel(const QString &_url)
+DNASequenceGeneratorDialogFillerModel::DNASequenceGeneratorDialogFillerModel(const QString& _url)
     : url(_url) {
 }
 
 #define GT_CLASS_NAME "GTUtilsDialog::DNASequenceGeneratorDialogFiller"
 
-DNASequenceGeneratorDialogFiller::DNASequenceGeneratorDialogFiller(GUITestOpStatus &os,
-                                                                   const DNASequenceGeneratorDialogFillerModel &_model)
+DNASequenceGeneratorDialogFiller::DNASequenceGeneratorDialogFiller(GUITestOpStatus& os,
+                                                                   const DNASequenceGeneratorDialogFillerModel& _model)
     : Filler(os, "DNASequenceGeneratorDialog"), model(_model) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void DNASequenceGeneratorDialogFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     GTSpinBox::setValue(os, "lengthSpin", model.length, dialog);
     GTSpinBox::setValue(os, "windowSpinBox", model.window, dialog);
@@ -70,7 +70,7 @@ void DNASequenceGeneratorDialogFiller::commonScenario() {
     GTLineEdit::setText(os, "outputEdit", model.url, dialog);
 
     if (!model.formatId.isEmpty()) {
-        DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(model.formatId);
+        DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(model.formatId);
         CHECK_SET_ERR(format != nullptr, "Format not found: " + model.formatId);
         GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "formatCombo"), format->getFormatName());
     }

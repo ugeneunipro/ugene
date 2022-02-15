@@ -26,9 +26,9 @@
 
 namespace U2 {
 
-PrimerValidator::PrimerValidator(QObject *parent, bool allowExtended)
+PrimerValidator::PrimerValidator(QObject* parent, bool allowExtended)
     : QRegExpValidator(parent) {
-    const DNAAlphabet *alphabet = AppContext::getDNAAlphabetRegistry()->findById(
+    const DNAAlphabet* alphabet = AppContext::getDNAAlphabetRegistry()->findById(
         allowExtended ? BaseDNAAlphabetIds::NUCL_DNA_EXTENDED() : BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
     QByteArray alphabetChars = alphabet->getAlphabetChars(true);
     // Gaps are not allowed
@@ -36,11 +36,11 @@ PrimerValidator::PrimerValidator(QObject *parent, bool allowExtended)
     setRegExp(QRegExp(QString("[%1]+").arg(alphabetChars.constData())));
 }
 
-QValidator::State PrimerValidator::validate(QString &input, int &pos) const {
+QValidator::State PrimerValidator::validate(QString& input, int& pos) const {
     input = input.simplified();
     input = input.toUpper();
     input.remove(" ");
     return QRegExpValidator::validate(input, pos);
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -25,11 +25,11 @@
 
 namespace U2 {
 
-GraphLabelTextBox::GraphLabelTextBox(QWidget *parent)
+GraphLabelTextBox::GraphLabelTextBox(QWidget* parent)
     : QLabel(parent) {
 }
 
-void GraphLabelTextBox::paintEvent(QPaintEvent *e) {
+void GraphLabelTextBox::paintEvent(QPaintEvent* e) {
     QPainter paint;
     paint.begin(this);
     paint.setBrush(QBrush(QColor(255, 255, 255, 200)));
@@ -39,12 +39,12 @@ void GraphLabelTextBox::paintEvent(QPaintEvent *e) {
     QLabel::paintEvent(e);
 }
 
-GraphLabelDot::GraphLabelDot(QWidget *parent, const QColor &_borderColor, const QColor &_fillColor)
+GraphLabelDot::GraphLabelDot(QWidget* parent, const QColor& _borderColor, const QColor& _fillColor)
     : QWidget(parent), borderColor(_borderColor), fillColor(_fillColor), markedFillColor(_borderColor) {
     this->setGeometry(QRect(0, 0, 0, 0));
 }
 
-void GraphLabelDot::paintEvent(QPaintEvent *) {
+void GraphLabelDot::paintEvent(QPaintEvent*) {
     QPainter paint;
     paint.begin(this);
     paint.setPen(QPen(borderColor));
@@ -67,7 +67,7 @@ void GraphLabelDot::unmark() {
     isMarked = false;
 }
 
-GraphLabel::GraphLabel(float pos, QWidget *parent, int _radius)
+GraphLabel::GraphLabel(float pos, QWidget* parent, int _radius)
     : textBox(new GraphLabelTextBox(parent)), dotImage(new GraphLabelDot(parent)), position(pos), value(0.0), coord(0, 0), radius(_radius) {
     textBox->setLineWidth(3);
     textBox->setAlignment(Qt::AlignCenter);
@@ -83,16 +83,16 @@ GraphLabel::~GraphLabel() {
     }
 }
 
-void GraphLabel::setCoord(const QPoint &newCoord) {
+void GraphLabel::setCoord(const QPoint& newCoord) {
     coord = newCoord;
     dotImage->setGeometry(QRect(coord.x() - radius - 1, coord.y() - radius - 1, radius * 2 + 2, radius * 2 + 2));
 }
 
-void GraphLabel::setTextRect(const QRect &textBoxRect) {
+void GraphLabel::setTextRect(const QRect& textBoxRect) {
     textBox->setGeometry(textBoxRect);
 }
 
-GraphLabelTextBox *GraphLabel::getTextBox() const {
+GraphLabelTextBox* GraphLabel::getTextBox() const {
     return textBox;
 }
 
@@ -117,7 +117,7 @@ void GraphLabel::unmark() {
     dotImage->unmark();
 }
 
-void GraphLabel::setColor(const QColor &color, const QColor &markingColor) {
+void GraphLabel::setColor(const QColor& color, const QColor& markingColor) {
     textBox->setStyleSheet(tr("QLabel {color : %1; }").arg(color.name()));
     dotImage->setFillColor(color);
     QColor invertedColor(255 - color.red(), 255 - color.green(), 255 - color.blue());
@@ -125,19 +125,19 @@ void GraphLabel::setColor(const QColor &color, const QColor &markingColor) {
     dotImage->setMarkedFillColor(markingColor);
 }
 
-const QColor &GraphLabel::getFillColor() const {
+const QColor& GraphLabel::getFillColor() const {
     return dotImage->getFillColor();
 }
 
-const QRect &GraphLabel::getTextBoxRect() const {
+const QRect& GraphLabel::getTextBoxRect() const {
     return textBox->geometry();
 }
 
-void GraphLabel::setText(const QString &labelText) {
+void GraphLabel::setText(const QString& labelText) {
     textBox->setText(labelText);
 }
 
-GraphLabelSet::GraphLabelSet(QWidget *parent)
+GraphLabelSet::GraphLabelSet(QWidget* parent)
     : movingLabel(new GraphLabel(-1, parent)) {
     movingLabel->setTextRect(QRect(0, 0, 0, 0));
     movingLabel->setColor(Qt::black, Qt::red);
@@ -151,29 +151,29 @@ GraphLabelSet::~GraphLabelSet() {
 }
 
 void GraphLabelSet::deleteAllLabels() {
-    QList<GraphLabel *> copyOfLabels = labels;
-    for (GraphLabel *label : qAsConst(copyOfLabels)) {
+    QList<GraphLabel*> copyOfLabels = labels;
+    for (GraphLabel* label : qAsConst(copyOfLabels)) {
         removeLabel(label);
     }
 }
 
-void GraphLabelSet::getLabelPositions(QList<QVariant> &labelPositions) {
-    for (GraphLabel *label : qAsConst(labels)) {
+void GraphLabelSet::getLabelPositions(QList<QVariant>& labelPositions) {
+    for (GraphLabel* label : qAsConst(labels)) {
         labelPositions.append(label->getPosition());
     }
 }
 
-void GraphLabelSet::addLabel(GraphLabel *pLabel) {
+void GraphLabelSet::addLabel(GraphLabel* pLabel) {
     labels.append(pLabel);
 }
 
-void GraphLabelSet::removeLabel(GraphLabel *pLabel) {
+void GraphLabelSet::removeLabel(GraphLabel* pLabel) {
     labels.removeAll(pLabel);
     delete pLabel;
 }
 
-GraphLabel *GraphLabelSet::findLabelByPosition(float sequencePos, float distance) const {
-    for (GraphLabel *label : qAsConst(labels)) {
+GraphLabel* GraphLabelSet::findLabelByPosition(float sequencePos, float distance) const {
+    for (GraphLabel* label : qAsConst(labels)) {
         float labelPos = label->getPosition();
         if ((labelPos >= sequencePos - distance && labelPos <= sequencePos + distance) || qFuzzyCompare(labelPos, sequencePos)) {
             return label;
@@ -182,7 +182,7 @@ GraphLabel *GraphLabelSet::findLabelByPosition(float sequencePos, float distance
     return nullptr;
 }
 
-GraphLabel *GraphLabelSet::getMovingLabel() const {
+GraphLabel* GraphLabelSet::getMovingLabel() const {
     return movingLabel;
 }
 

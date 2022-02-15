@@ -36,7 +36,7 @@ public:
 
 private:
     template<class Factory>
-    bool registerFactory(XMLTestFormat *xmlTestFormat);
+    bool registerFactory(XMLTestFormat* xmlTestFormat);
     void registerFactories();
 };
 

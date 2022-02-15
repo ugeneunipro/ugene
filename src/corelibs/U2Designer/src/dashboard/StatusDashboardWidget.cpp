@@ -36,7 +36,7 @@
 
 namespace U2 {
 
-static int parseProgress(const QDomElement &dom) {
+static int parseProgress(const QDomElement& dom) {
     QDomElement progressBar = DomUtils::findElementById(dom, "progressBar").firstChildElement("div");
     if (progressBar.isNull()) {
         return 0;
@@ -50,7 +50,7 @@ static int parseProgress(const QDomElement &dom) {
     return progressString.toInt();
 }
 
-static Monitor::TaskState parseStateFromClass(const QString &cssClass) {
+static Monitor::TaskState parseStateFromClass(const QString& cssClass) {
     if (cssClass.contains("alert-error")) {
         return Monitor::TaskState::FAILED;
     } else if (cssClass.contains("alert-success")) {
@@ -65,7 +65,7 @@ static Monitor::TaskState parseStateFromClass(const QString &cssClass) {
 #define STATUS_LABEL_ERROR_STYLE "color: #b94a48; background-color: #f2dede; border: 1px solid #eed3d7;"
 #define STATUS_LABEL_SUCCESS_STYLE "color: #468847; background-color: #dff0d8; border: 1px solid #d6e9c6;"
 
-StatusDashboardWidget::StatusDashboardWidget(const QDomElement &dom, const WorkflowMonitor *monitor)
+StatusDashboardWidget::StatusDashboardWidget(const QDomElement& dom, const WorkflowMonitor* monitor)
     : monitor(monitor), timer(nullptr), timerStartMillis(0) {
     setFixedWidth(550);
     setObjectName("StatusDashboardWidget");
@@ -151,7 +151,7 @@ void StatusDashboardWidget::sl_progressChanged(int progress) {
     progressBar->setValue(progress);
 }
 
-QString StatusDashboardWidget::state2StatusMessage(const Monitor::TaskState &state) {
+QString StatusDashboardWidget::state2StatusMessage(const Monitor::TaskState& state) {
     switch (state) {
         case Monitor::RUNNING:
             return tr("The workflow task is in progress…");
@@ -168,7 +168,7 @@ QString StatusDashboardWidget::state2StatusMessage(const Monitor::TaskState &sta
     }
 }
 
-QString StatusDashboardWidget::state2LabelStyle(const Monitor::TaskState &state) {
+QString StatusDashboardWidget::state2LabelStyle(const Monitor::TaskState& state) {
     switch (state) {
         case Monitor::RUNNING:
             return STATUS_LABEL_COMMON_STYLE + STATUS_LABEL_INFO_STYLE;
@@ -188,13 +188,13 @@ void StatusDashboardWidget::sl_taskStateChanged(Monitor::TaskState newState) {
     statusMessageLabel->setStyleSheet(state2LabelStyle(state));
 }
 
-bool StatusDashboardWidget::isValidDom(const QDomElement &dom) {
+bool StatusDashboardWidget::isValidDom(const QDomElement& dom) {
     return !DomUtils::findElementById(dom, "progressBar").isNull() &&
            !DomUtils::findElementById(dom, "status-message").isNull() &&
            !DomUtils::findElementById(dom, "timer").isNull();
 }
 
-static QString getClassByState(const Monitor::TaskState &state) {
+static QString getClassByState(const Monitor::TaskState& state) {
     switch (state) {
         case Monitor::FAILED:
             return "alert-error";

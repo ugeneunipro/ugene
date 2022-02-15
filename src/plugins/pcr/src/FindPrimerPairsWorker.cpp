@@ -50,7 +50,7 @@ namespace LocalWorkflow {
 QString FindPrimerPairsPromter::composeRichDoc() {
     QString res;
 
-    Actor *readsProducer = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_SEQ_PORT_ID()))->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
+    Actor* readsProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()))->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
 
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString readsUrl = readsProducer ? readsProducer->getLabel() : unsetStr;
@@ -68,7 +68,7 @@ void FindPrimerPairsWorker::init() {
 void FindPrimerPairsWorker::cleanup() {
 }
 
-Task *FindPrimerPairsWorker::tick() {
+Task* FindPrimerPairsWorker::tick() {
     if (inPort->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(inPort);
         QVariantMap qm = inputMessage.getData().toMap();
@@ -84,16 +84,16 @@ Task *FindPrimerPairsWorker::tick() {
     }
     if (!inPort->hasMessage() && inPort->isEnded()) {
         QString reportFileUrl = getValue<QString>(FindPrimerPairsWorkerFactory::OUT_FILE);
-        Task *t = new FindPrimersTask(reportFileUrl, data);
-        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_onTaskFinished(Task *)));
+        Task* t = new FindPrimersTask(reportFileUrl, data);
+        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_onTaskFinished(Task*)));
         return t;
     }
     return nullptr;
 }
 
-void FindPrimerPairsWorker::sl_onTaskFinished(Task *t) {
+void FindPrimerPairsWorker::sl_onTaskFinished(Task* t) {
     QString reportFileUrl = getValue<QString>(FindPrimerPairsWorkerFactory::OUT_FILE);
-    FindPrimersTask *findTask = qobject_cast<FindPrimersTask *>(t);
+    FindPrimersTask* findTask = qobject_cast<FindPrimersTask*>(t);
 
     if (!findTask->hasError() && !findTask->isCanceled()) {
         if (!findTask->getReport().isEmpty()) {
@@ -113,8 +113,8 @@ const QString FindPrimerPairsWorkerFactory::ACTOR_ID("find-primers");
 const QString FindPrimerPairsWorkerFactory::OUT_FILE("output-file");
 
 void FindPrimerPairsWorkerFactory::init() {
-    QList<PortDescriptor *> p;
-    QList<Attribute *> a;
+    QList<PortDescriptor*> p;
+    QList<Attribute*> a;
     {
         Descriptor id(BasePorts::IN_SEQ_PORT_ID(),
                       FindPrimerPairsWorker::tr("Input sequences"),
@@ -133,12 +133,12 @@ void FindPrimerPairsWorkerFactory::init() {
                               FindPrimerPairsWorker::tr("Output report file"),
                               FindPrimerPairsWorker::tr("Path to the report output file."));
 
-    QList<Attribute *> attrs;
+    QList<Attribute*> attrs;
     attrs << new Attribute(reportFileDesc, BaseTypes::STRING_TYPE(), true);
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, attrs);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, attrs);
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     QString filter = FileFilters::createFileFilter(FindPrimerPairsWorker::tr("Report file"), {"html"});
     DelegateTags tags;
     tags.set("filter", filter);
@@ -150,7 +150,7 @@ void FindPrimerPairsWorkerFactory::init() {
     proto->setPrompter(new FindPrimerPairsPromter());
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new FindPrimerPairsWorkerFactory());
 }
 
@@ -159,7 +159,7 @@ void FindPrimerPairsWorkerFactory::init() {
 /************************************************************************/
 /* FindPrimersTask */
 /************************************************************************/
-FindPrimersTask::FindPrimersTask(const QString &outputFileUrl, const QList<DNASequence> &sequences)
+FindPrimersTask::FindPrimersTask(const QString& outputFileUrl, const QList<DNASequence>& sequences)
     : Task(tr("FindPrimersTask"), TaskFlag_None), sequences(sequences), outputUrl(outputFileUrl) {
 }
 
@@ -217,7 +217,7 @@ void FindPrimersTask::createReport() {
     report += createColumn(LocalWorkflow::FindPrimerPairsWorker::tr("Reverse Tm"));
     report += "</tr>";
 
-    foreach (const QString &curRow, rows) {
+    foreach (const QString& curRow, rows) {
         report += curRow;
     }
 
@@ -228,7 +228,7 @@ void FindPrimersTask::createReport() {
 
 void FindPrimersTask::writeReportToFile() {
     IOAdapterId ioAdapterId = IOAdapterUtils::url2io(outputUrl);
-    IOAdapterFactory *ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioAdapterId);
+    IOAdapterFactory* ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioAdapterId);
     CHECK_EXT(ioAdapterFactory != nullptr, setError(tr("No IO adapter found for URL: %1").arg(outputUrl)), );
 
     QScopedPointer<IOAdapter> ioAdapter(ioAdapterFactory->createIOAdapter());
@@ -245,7 +245,7 @@ void FindPrimersTask::writeReportToFile() {
     ioAdapter->close();
 }
 
-QString FindPrimersTask::createRow(const QString &forwardName, const QString &reverseName, double forwardTm, double reverseTm) {
+QString FindPrimersTask::createRow(const QString& forwardName, const QString& reverseName, double forwardTm, double reverseTm) {
     QString newRow;
     newRow += "<tr>";
     newRow += createCell(forwardName);
@@ -256,11 +256,11 @@ QString FindPrimersTask::createRow(const QString &forwardName, const QString &re
     return newRow;
 }
 
-QString FindPrimersTask::createCell(const QString &value) {
+QString FindPrimersTask::createCell(const QString& value) {
     return QString("<td align=\"center\">%1</td>").arg(value);
 }
 
-QString FindPrimersTask::createColumn(const QString &name) {
+QString FindPrimersTask::createColumn(const QString& name) {
     return QString("<th width=\"30%\"/><p align=\"center\"><strong>%2</strong></p></th>").arg(name);
 }
 

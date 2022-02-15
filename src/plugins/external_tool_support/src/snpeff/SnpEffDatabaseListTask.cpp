@@ -64,7 +64,7 @@ void SnpEffDatabaseListTask::prepare() {
     }
 
     QStringList args("databases");
-    ExternalToolRunTask *etTask = new ExternalToolRunTask(SnpEffSupport::ET_SNPEFF_ID, args, new SnpEffParser(), "", QStringList(), true);
+    ExternalToolRunTask* etTask = new ExternalToolRunTask(SnpEffSupport::ET_SNPEFF_ID, args, new SnpEffParser(), "", QStringList(), true);
     setListenerForTask(etTask);
     etTask->setStandartOutputFile(dbListFilePath);
     addSubTask(etTask);
@@ -77,4 +77,4 @@ void SnpEffDatabaseListTask::run() {
     AppContext::getSettings()->setValue(SNPEFF_DATABASE_LIST_SETTINGS + snpEffVersion, dbListFilePath, true);
 }
 
-}    // namespace U2
+}  // namespace U2

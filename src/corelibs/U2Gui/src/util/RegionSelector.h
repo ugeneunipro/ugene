@@ -38,15 +38,15 @@ namespace U2 {
 class RegionLineEdit : public QLineEdit {
     Q_OBJECT
 public:
-    RegionLineEdit(QWidget *p, QString actionName, qint64 defVal)
+    RegionLineEdit(QWidget* p, QString actionName, qint64 defVal)
         : QLineEdit(p),
           actionName(actionName),
           defaultValue(defVal) {
     }
 
 protected:
-    void focusOutEvent(QFocusEvent *event);
-    void contextMenuEvent(QContextMenuEvent *);
+    void focusOutEvent(QFocusEvent* event);
+    void contextMenuEvent(QContextMenuEvent*);
 
 private slots:
     void sl_onSetMinMaxValue();
@@ -59,31 +59,31 @@ private:
 class U2GUI_EXPORT RegionSelector : public QWidget {
     Q_OBJECT
 public:
-    RegionSelector(QWidget *p, qint64 len = 0, bool isVertical = false, DNASequenceSelection *selection = nullptr, bool isCircularSelectionAvailable = false, QList<RegionPreset> presetRegions = QList<RegionPreset>());
+    RegionSelector(QWidget* p, qint64 len = 0, bool isVertical = false, DNASequenceSelection* selection = nullptr, bool isCircularSelectionAvailable = false, QList<RegionPreset> presetRegions = QList<RegionPreset>());
 
-    U2Region getRegion(bool *ok = nullptr) const;
+    U2Region getRegion(bool* ok = nullptr) const;
     bool isWholeSequenceSelected() const;
 
-    void setCustomRegion(const U2Region &value);
+    void setCustomRegion(const U2Region& value);
     void setWholeRegionSelected();
-    void setCurrentPreset(const QString &presetName);
+    void setCurrentPreset(const QString& presetName);
     void reset();
-    void removePreset(const QString &itemName);
+    void removePreset(const QString& itemName);
 
     void showErrorMessage();
 
 signals:
-    void si_regionChanged(const U2Region &newRegion);
+    void si_regionChanged(const U2Region& newRegion);
 
 private:
     void initLayout();
 
-    RegionSelectorController *controller;
+    RegionSelectorController* controller;
 
     qint64 maxLen;
-    RegionLineEdit *startEdit;
-    RegionLineEdit *endEdit;
-    QComboBox *comboBox;
+    RegionLineEdit* startEdit;
+    RegionLineEdit* endEdit;
+    QComboBox* comboBox;
     bool isVertical;
 };
 

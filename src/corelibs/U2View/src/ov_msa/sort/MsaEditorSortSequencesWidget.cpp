@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-MsaEditorSortSequencesWidget::MsaEditorSortSequencesWidget(QWidget *parent, MSAEditor *msaEditor)
+MsaEditorSortSequencesWidget::MsaEditorSortSequencesWidget(QWidget* parent, MSAEditor* msaEditor)
     : QWidget(parent), msaEditor(msaEditor) {
     auto layout = new QVBoxLayout();
     setLayout(layout);
@@ -65,7 +65,7 @@ MsaEditorSortSequencesWidget::MsaEditorSortSequencesWidget(QWidget *parent, MSAE
     lastRowLayout->addWidget(sortButton);
     connect(sortButton, SIGNAL(clicked()), SLOT(sl_sortClicked()));
 
-    MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
+    MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
     sortButton->setEnabled(!msaObject->isStateLocked());
     connect(msaObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_msaObjectStateChanged()));
 }
@@ -77,7 +77,7 @@ void MsaEditorSortSequencesWidget::sl_sortClicked() {
 }
 
 void MsaEditorSortSequencesWidget::sl_msaObjectStateChanged() {
-    MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
+    MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
     sortButton->setEnabled(!msaObject->isStateLocked());
 }
 

@@ -48,7 +48,7 @@ public:
     QFont font;
     QFont rulerFont;
     bool drawSelection;
-    MsaColorScheme *colorScheme;
+    MsaColorScheme* colorScheme;
     MaEditor::ResizeMode resizeMode;
     bool highlightMismatches;
 
@@ -87,36 +87,36 @@ public:
 class MaConsensusAreaRenderer : public QObject {
     Q_OBJECT
 public:
-    MaConsensusAreaRenderer(MaEditorConsensusArea *area);
+    MaConsensusAreaRenderer(MaEditorConsensusArea* area);
 
-    void drawContent(QPainter &painter);
-    void drawContent(QPainter &painter,
-                     const ConsensusRenderData &consensusRenderData,
-                     const MaEditorConsensusAreaSettings &consensusSettings,
-                     const ConsensusRenderSettings &renderSettings);
+    void drawContent(QPainter& painter);
+    void drawContent(QPainter& painter,
+                     const ConsensusRenderData& consensusRenderData,
+                     const MaEditorConsensusAreaSettings& consensusSettings,
+                     const ConsensusRenderSettings& renderSettings);
 
-    ConsensusRenderData getConsensusRenderData(const QList<int> &seqIdx, const U2Region &region) const;
-    ConsensusRenderSettings getRenderSettigns(const U2Region &region, const MaEditorConsensusAreaSettings &consensusSettings) const;
+    ConsensusRenderData getConsensusRenderData(const QList<int>& seqIdx, const U2Region& region) const;
+    ConsensusRenderSettings getRenderSettigns(const U2Region& region, const MaEditorConsensusAreaSettings& consensusSettings) const;
 
     int getHeight() const;
-    int getHeight(const MaEditorConsElements &visibleElements) const;
-    U2Region getYRange(const MaEditorConsElements &visibleElements, MaEditorConsElement element) const;
+    int getHeight(const MaEditorConsElements& visibleElements) const;
+    U2Region getYRange(const MaEditorConsElements& visibleElements, MaEditorConsElement element) const;
     U2Region getYRange(MaEditorConsElement element) const;
 
 protected:
-    static void drawConsensus(QPainter &painter, const ConsensusRenderData &consensusRenderData, const ConsensusRenderSettings &settings);
-    static void drawConsensusChar(QPainter &painter, const ConsensusCharRenderData &charData, const ConsensusRenderSettings &settings);
-    virtual void drawRuler(QPainter &painter, const ConsensusRenderSettings &settings);
-    static void drawHistogram(QPainter &painter, const ConsensusRenderData &consensusRenderData, const ConsensusRenderSettings &settings);
+    static void drawConsensus(QPainter& painter, const ConsensusRenderData& consensusRenderData, const ConsensusRenderSettings& settings);
+    static void drawConsensusChar(QPainter& painter, const ConsensusCharRenderData& charData, const ConsensusRenderSettings& settings);
+    virtual void drawRuler(QPainter& painter, const ConsensusRenderSettings& settings);
+    static void drawHistogram(QPainter& painter, const ConsensusRenderData& consensusRenderData, const ConsensusRenderSettings& settings);
 
     ConsensusRenderData getScreenDataToRender() const;
-    ConsensusRenderSettings getScreenRenderSettings(const MaEditorConsensusAreaSettings &consensusSettings) const;
+    ConsensusRenderSettings getScreenRenderSettings(const MaEditorConsensusAreaSettings& consensusSettings) const;
 
     int getYRangeLength(MaEditorConsElement element) const;
 
-    MaEditor *editor;
-    MaEditorWgt *ui;
-    MaEditorConsensusArea *area;
+    MaEditor* editor;
+    MaEditorWgt* ui;
+    MaEditorConsensusArea* area;
 
     static const QColor DEFAULT_MISMATCH_COLOR;
 };

@@ -35,11 +35,11 @@ class StateLockableTreeItem;
 
 class U2GUI_EXPORT ProjectTreeItemSelectorDialog {
 public:
-    static QList<Document *> selectDocuments(const ProjectTreeControllerModeSettings &s, QWidget *p);
-    static QList<GObject *> selectObjects(const ProjectTreeControllerModeSettings &s, QWidget *p);
-    static void selectObjectsAndDocuments(const ProjectTreeControllerModeSettings &s, QWidget *p, QList<Document *> &docList, QList<GObject *> &objList);
-    static void selectObjectsAndFolders(const ProjectTreeControllerModeSettings &s, QWidget *p, QList<Folder> &folderList, QList<GObject *> &objList);
-    static Folder selectFolder(QWidget *parent);
+    static QList<Document*> selectDocuments(const ProjectTreeControllerModeSettings& s, QWidget* p);
+    static QList<GObject*> selectObjects(const ProjectTreeControllerModeSettings& s, QWidget* p);
+    static void selectObjectsAndDocuments(const ProjectTreeControllerModeSettings& s, QWidget* p, QList<Document*>& docList, QList<GObject*>& objList);
+    static void selectObjectsAndFolders(const ProjectTreeControllerModeSettings& s, QWidget* p, QList<Folder>& folderList, QList<GObject*>& objList);
+    static Folder selectFolder(QWidget* parent);
 };
 
 }  // namespace U2

@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-MaUndoRedoFramework::MaUndoRedoFramework(QObject *parent, MultipleAlignmentObject *_maObject)
+MaUndoRedoFramework::MaUndoRedoFramework(QObject* parent, MultipleAlignmentObject* _maObject)
     : QObject(parent),
       maObject(_maObject) {
     SAFE_POINT(maObject != nullptr, "NULL MSA Object!", );
@@ -48,7 +48,7 @@ MaUndoRedoFramework::MaUndoRedoFramework(QObject *parent, MultipleAlignmentObjec
 
     checkUndoRedoEnabled();
 
-    connect(maObject, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), SLOT(sl_updateUndoRedoState()));
+    connect(maObject, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_updateUndoRedoState()));
     connect(maObject, SIGNAL(si_completeStateChanged(bool)), SLOT(sl_completeStateChanged(bool)));
     connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_updateUndoRedoState()));
     connect(undoAction, SIGNAL(triggered()), this, SLOT(sl_undo()));
@@ -76,7 +76,7 @@ void MaUndoRedoFramework::checkUndoRedoEnabled() {
     DbiConnection con(maObject->getEntityRef().dbiRef, os);
     SAFE_POINT_OP(os, );
 
-    U2ObjectDbi *objDbi = con.dbi->getObjectDbi();
+    U2ObjectDbi* objDbi = con.dbi->getObjectDbi();
     SAFE_POINT(objDbi != nullptr, "NULL Object Dbi!", );
 
     bool enableUndo = objDbi->canUndo(maObject->getEntityRef().entityId, os);
@@ -103,7 +103,7 @@ void MaUndoRedoFramework::sl_undo() {
     DbiConnection con(msaRef.dbiRef, os);
     SAFE_POINT_OP(os, );
 
-    U2ObjectDbi *objDbi = con.dbi->getObjectDbi();
+    U2ObjectDbi* objDbi = con.dbi->getObjectDbi();
     SAFE_POINT(objDbi != nullptr, "NULL Object Dbi!", );
 
     objDbi->undo(msaRef.entityId, os);
@@ -126,7 +126,7 @@ void MaUndoRedoFramework::sl_redo() {
     DbiConnection con(msaRef.dbiRef, os);
     SAFE_POINT_OP(os, );
 
-    U2ObjectDbi *objDbi = con.dbi->getObjectDbi();
+    U2ObjectDbi* objDbi = con.dbi->getObjectDbi();
     SAFE_POINT(objDbi != nullptr, "NULL Object Dbi!", );
 
     objDbi->redo(msaRef.entityId, os);
@@ -137,11 +137,11 @@ void MaUndoRedoFramework::sl_redo() {
     maObject->updateCachedMultipleAlignment(modInfo);
 }
 
-QAction *MaUndoRedoFramework::getUndoAction() const {
+QAction* MaUndoRedoFramework::getUndoAction() const {
     return undoAction;
 }
 
-QAction *MaUndoRedoFramework::getRedoAction() const {
+QAction* MaUndoRedoFramework::getRedoAction() const {
     return redoAction;
 }
 

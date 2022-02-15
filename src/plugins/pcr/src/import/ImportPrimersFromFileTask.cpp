@@ -33,7 +33,7 @@
 
 namespace U2 {
 
-ImportPrimersFromFileTask::ImportPrimersFromFileTask(const QString &filePath)
+ImportPrimersFromFileTask::ImportPrimersFromFileTask(const QString& filePath)
     : Task(tr("Import primers from local file: %1").arg(filePath),
            TaskFlags(TaskFlag_NoRun | TaskFlag_CancelOnSubtaskCancel | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported)),
       filePath(filePath),
@@ -47,16 +47,16 @@ void ImportPrimersFromFileTask::prepare() {
     addSubTask(loadTask);
 }
 
-QList<Task *> ImportPrimersFromFileTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> result;
+QList<Task*> ImportPrimersFromFileTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> result;
     CHECK(loadTask == subTask, result);
     CHECK_OP(stateInfo, result);
 
-    Document *document = loadTask->getDocument();
+    Document* document = loadTask->getDocument();
     SAFE_POINT_EXT(nullptr != document, setError(tr("Document wasn't loaded")), result);
-    QList<GObject *> objects = document->findGObjectByType(GObjectTypes::SEQUENCE);
+    QList<GObject*> objects = document->findGObjectByType(GObjectTypes::SEQUENCE);
     CHECK_EXT(!objects.isEmpty(), setError(tr("There are no sequence objects in the file '%1' to convert them to primers").arg(filePath)), result);
-    foreach (GObject *object, objects) {
+    foreach (GObject* object, objects) {
         result << new ImportPrimerFromObjectTask(object);
     }
     return result;
@@ -74,7 +74,7 @@ QString ImportPrimersFromFileTask::generateReport() const {
 
     int tasksWithError = 0;
     int primersImported = 0;
-    foreach (const QPointer<Task> &subTask, getSubtasks()) {
+    foreach (const QPointer<Task>& subTask, getSubtasks()) {
         if (Q_UNLIKELY(loadTask == subTask.data())) {
             continue;
         }

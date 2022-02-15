@@ -37,7 +37,7 @@ public:
     // Current QT version
     static Version qtVersion();
 
-    static Version parseVersion(const QString &versionText);
+    static Version parseVersion(const QString& versionText);
 
     /**
      * Checks that build and runtime versions are compatible.
@@ -52,12 +52,12 @@ public:
     /** Returns true if the version is not '0.0.0' (created with a default constructor). */
     bool isValid() const;
 
-    bool operator>(const Version &v) const;
-    bool operator>=(const Version &v) const;
-    bool operator<(const Version &v) const;
-    bool operator<=(const Version &v) const;
-    bool operator==(const Version &v) const;
-    bool operator!=(const Version &v) const {
+    bool operator>(const Version& v) const;
+    bool operator>=(const Version& v) const;
+    bool operator<(const Version& v) const;
+    bool operator<=(const Version& v) const;
+    bool operator==(const Version& v) const;
+    bool operator!=(const Version& v) const {
         return !(v == *this);
     }
 

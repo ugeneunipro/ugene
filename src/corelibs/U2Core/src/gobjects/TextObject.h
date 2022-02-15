@@ -31,7 +31,7 @@ namespace U2 {
 class U2CORE_EXPORT U2Text : public U2RawData {
 public:
     U2Text();
-    U2Text(const U2DbiRef &dbiRef);
+    U2Text(const U2DbiRef& dbiRef);
 
     U2DataType getType() const;
 };
@@ -39,18 +39,18 @@ public:
 class U2CORE_EXPORT TextObject : public GObject {
     Q_OBJECT
 public:
-    static TextObject *createInstance(const QString &text, const QString &objectName, const U2DbiRef &dbiRef, U2OpStatus &os, const QVariantMap &hintsMap = QVariantMap());
+    static TextObject* createInstance(const QString& text, const QString& objectName, const U2DbiRef& dbiRef, U2OpStatus& os, const QVariantMap& hintsMap = QVariantMap());
 
-    TextObject(const QString &objectName, const U2EntityRef &textRef, const QVariantMap &hintsMap = QVariantMap());
+    TextObject(const QString& objectName, const U2EntityRef& textRef, const QVariantMap& hintsMap = QVariantMap());
 
     QString getText() const;
 
-    void setText(const QString &newText);
+    void setText(const QString& newText);
 
-    GObject *clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const;
+    GObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const;
 
 private:
-    void commitTextToDB(const QString &newText);
+    void commitTextToDB(const QString& newText);
 };
 
 }  // namespace U2

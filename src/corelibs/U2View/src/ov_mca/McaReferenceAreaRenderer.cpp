@@ -26,13 +26,13 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include "ov_msa/BaseWidthController.h"
 #include "ov_msa/MSAEditorConsensusArea.h"
 #include "ov_msa/MSAEditorConsensusCache.h"
 #include "ov_msa/MSAEditorSequenceArea.h"
 #include "ov_msa/MaEditor.h"
 #include "ov_msa/MaEditorSequenceArea.h"
 #include "ov_msa/MaEditorWgt.h"
-#include "ov_msa/BaseWidthController.h"
 #include "ov_msa/ScrollController.h"
 #include "ov_sequence/PanView.h"
 #include "ov_sequence/SequenceObjectContext.h"
@@ -41,7 +41,7 @@ namespace U2 {
 
 #define SELECTION_LINE_WIDTH 1
 
-McaReferenceAreaRenderer::McaReferenceAreaRenderer(PanView *panView, SequenceObjectContext *ctx, MaEditor *maEditor)
+McaReferenceAreaRenderer::McaReferenceAreaRenderer(PanView* panView, SequenceObjectContext* ctx, MaEditor* maEditor)
     : PanViewRenderer(panView, ctx),
       maEditor(maEditor) {
     SAFE_POINT(nullptr != maEditor, "MA Editor is NULL", );
@@ -52,20 +52,20 @@ int McaReferenceAreaRenderer::getMinimumHeight() const {
     return commonMetrics.lineHeight;
 }
 
-int McaReferenceAreaRenderer::posToXCoord(const qint64 position, const QSize & /*canvasSize*/, const U2Region & /*visibleRange*/) const {
-    BaseWidthController *widthController = maEditor->getUI()->getBaseWidthController();
+int McaReferenceAreaRenderer::posToXCoord(const qint64 position, const QSize& /*canvasSize*/, const U2Region& /*visibleRange*/) const {
+    BaseWidthController* widthController = maEditor->getUI()->getBaseWidthController();
     int baseCenterX = widthController->getBaseScreenRange(position).center();
     int columnWidth = widthController->getBaseWidth();
     return baseCenterX - columnWidth / 2;
 }
 
-void McaReferenceAreaRenderer::setFont(const QFont &font) {
+void McaReferenceAreaRenderer::setFont(const QFont& font) {
     commonMetrics.sequenceFont = font;
     QFontMetrics fm(commonMetrics.sequenceFont);
     commonMetrics.lineHeight = fm.height() + 2 * commonMetrics.yCharOffset + 2 * SELECTION_LINE_WIDTH;
 }
 
-void McaReferenceAreaRenderer::drawSequence(QPainter &p, const QSize & /*canvasSize*/, const U2Region &region) {
+void McaReferenceAreaRenderer::drawSequence(QPainter& p, const QSize& /*canvasSize*/, const U2Region& region) {
     U2OpStatusImpl os;
     const QByteArray sequenceRegion = ctx->getSequenceData(region, os);
     SAFE_POINT_OP(os, );
@@ -74,9 +74,9 @@ void McaReferenceAreaRenderer::drawSequence(QPainter &p, const QSize & /*canvasS
     p.setFont(commonMetrics.sequenceFont);
 
     SAFE_POINT(maEditor->getUI() != nullptr, "MaEditorWgt is NULL", );
-    MaEditorSequenceArea *seqArea = maEditor->getUI()->getSequenceArea();
+    MaEditorSequenceArea* seqArea = maEditor->getUI()->getSequenceArea();
     SAFE_POINT(seqArea != nullptr, "MaEditorSequenceArea is NULL", );
-    MsaColorScheme *scheme = seqArea->getCurrentColorScheme();
+    MsaColorScheme* scheme = seqArea->getCurrentColorScheme();
     SAFE_POINT(scheme != nullptr, "MsaColorScheme is NULL", );
 
     for (int position = region.startPos; position < region.endPos(); position++) {

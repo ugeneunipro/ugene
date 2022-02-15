@@ -45,15 +45,15 @@ LeadingStep::LeadingStep()
                      "</body></html>");
 }
 
-TrimmomaticStepSettingsWidget *LeadingStep::createWidget() const {
+TrimmomaticStepSettingsWidget* LeadingStep::createWidget() const {
     return new QualitySettingsWidget(tr("The minimum quality required to keep a base."));
 }
 
-QString LeadingStep::serializeState(const QVariantMap &widgetState) const {
+QString LeadingStep::serializeState(const QVariantMap& widgetState) const {
     return QualitySettingsWidget::serializeState(widgetState);
 }
 
-QVariantMap LeadingStep::parseState(const QString &command) const {
+QVariantMap LeadingStep::parseState(const QString& command) const {
     return QualitySettingsWidget::parseState(command, id);
 }
 
@@ -61,9 +61,9 @@ LeadingStepFactory::LeadingStepFactory()
     : TrimmomaticStepFactory(ID) {
 }
 
-LeadingStep *LeadingStepFactory::createStep() const {
+LeadingStep* LeadingStepFactory::createStep() const {
     return new LeadingStep();
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

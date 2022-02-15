@@ -43,7 +43,7 @@ namespace U2 {
 
 #define SETTINGS_SHOW_OFFSETS "show_offsets"
 
-MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(MaEditorWgt *maEditorUi, MaEditor *ed, MaEditorSequenceArea *sa)
+MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(MaEditorWgt* maEditorUi, MaEditor* ed, MaEditorSequenceArea* sa)
     : QObject(maEditorUi) {
     seqArea = sa;
     editor = ed;
@@ -54,15 +54,15 @@ MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(MaEditorWgt *maEd
     rightWidget->setObjectName("msa_editor_offsets_view_widget_right");
 
     connect(maEditorUi->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_updateOffsets()));
-    connect(editor, SIGNAL(si_fontChanged(const QFont &)), SLOT(sl_updateOffsets()));
+    connect(editor, SIGNAL(si_fontChanged(const QFont&)), SLOT(sl_updateOffsets()));
 
-    MultipleAlignmentObject *mobj = editor->getMaObject();
+    MultipleAlignmentObject* mobj = editor->getMaObject();
     SAFE_POINT(nullptr != mobj, L10N::nullPointerError("multiple alignment object"), );
-    connect(mobj, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), SLOT(sl_updateOffsets()));
+    connect(mobj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_updateOffsets()));
 
     seqArea->installEventFilter(this);
 
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     bool showOffsets = s->getValue(editor->getSettingsRoot() + SETTINGS_SHOW_OFFSETS, true).toBool();
 
     toggleColumnsViewAction = new QAction(tr("Show offsets"), this);
@@ -79,7 +79,7 @@ void MSAEditorOffsetsViewController::sl_updateOffsets() {
     updateOffsets();
 }
 
-bool MSAEditorOffsetsViewController::eventFilter(QObject *o, QEvent *e) {
+bool MSAEditorOffsetsViewController::eventFilter(QObject* o, QEvent* e) {
     if (o == seqArea) {
         if (e->type() == QEvent::Resize || e->type() == QEvent::Show) {
             updateOffsets();
@@ -90,7 +90,7 @@ bool MSAEditorOffsetsViewController::eventFilter(QObject *o, QEvent *e) {
 
 void MSAEditorOffsetsViewController::sl_showOffsets(bool show) {
     updateOffsets();
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     SAFE_POINT(s != nullptr, "AppContext settings is NULL", );
     s->setValue(editor->getSettingsRoot() + SETTINGS_SHOW_OFFSETS, show);
 }
@@ -106,7 +106,7 @@ void MSAEditorOffsetsViewController::updateOffsets() {
     rightWidget->updateView();
 }
 
-MSAEditorOffsetsViewWidget::MSAEditorOffsetsViewWidget(MaEditorWgt *maEditorUi, MaEditor *ed, MaEditorSequenceArea *sa, bool sp)
+MSAEditorOffsetsViewWidget::MSAEditorOffsetsViewWidget(MaEditorWgt* maEditorUi, MaEditor* ed, MaEditorSequenceArea* sa, bool sp)
     : seqArea(sa),
       editor(ed),
       showStartPos(sp),
@@ -132,7 +132,7 @@ void MSAEditorOffsetsViewWidget::updateView() {
     update();
 }
 
-void MSAEditorOffsetsViewWidget::paintEvent(QPaintEvent *) {
+void MSAEditorOffsetsViewWidget::paintEvent(QPaintEvent*) {
     SAFE_POINT(isVisible(), "Attempting to paint an invisible widget", );
     const QSize s = size() * devicePixelRatio();
     if (s != cachedView.size()) {
@@ -156,13 +156,13 @@ QFont MSAEditorOffsetsViewWidget::getOffsetsFont() {
 }
 
 int MSAEditorOffsetsViewWidget::getBaseCounts(int seqNum, int aliPos, bool inclAliPos) const {
-    const MultipleAlignmentRow &row = editor->getMaObject()->getRow(seqNum);
+    const MultipleAlignmentRow& row = editor->getMaObject()->getRow(seqNum);
     const int endPos = inclAliPos ? aliPos + 1 : aliPos;
 
     return (endPos < row->getCoreStart()) ? 0 : row->getBaseCount(endPos);
 }
 
-void MSAEditorOffsetsViewWidget::drawAll(QPainter &painter) {
+void MSAEditorOffsetsViewWidget::drawAll(QPainter& painter) {
     QLinearGradient gradient(0, 0, width(), 0);
     QColor lg(0xDA, 0xDA, 0xDA);
     QColor dg(0x4A, 0x4A, 0x4A);
@@ -178,7 +178,7 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter &painter) {
     QFontMetrics fm(font, this);
     painter.setFont(font);
 
-    MaEditorWgt *ui = editor->getUI();
+    MaEditorWgt* ui = editor->getUI();
     int alignmentLength = editor->getMaObject()->getLength();
     int lbw = fm.width('[');
     int rbw = fm.width(']');
@@ -221,7 +221,7 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter &painter) {
     }
 }
 
-void MSAEditorOffsetsViewWidget::drawRefSequence(QPainter &p, const QRect &r) {
+void MSAEditorOffsetsViewWidget::drawRefSequence(QPainter& p, const QRect& r) {
     p.fillRect(r, QColor("#9999CC"));
 }
 

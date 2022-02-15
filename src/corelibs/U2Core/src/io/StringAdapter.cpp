@@ -25,26 +25,26 @@
 
 namespace U2 {
 
-StringAdapterFactory::StringAdapterFactory(QObject *o)
+StringAdapterFactory::StringAdapterFactory(QObject* o)
     : IOAdapterFactory(o) {
     name = tr("String buffer");
 }
 
-IOAdapter *StringAdapterFactory::createIOAdapter() {
+IOAdapter* StringAdapterFactory::createIOAdapter() {
     return new StringAdapter(this);
 }
 
-StringAdapter::StringAdapter(StringAdapterFactory *f, QObject *o)
+StringAdapter::StringAdapter(StringAdapterFactory* f, QObject* o)
     : IOAdapter(f, o), opened(false), pos(0) {
 }
 
-StringAdapter::StringAdapter(const QByteArray &data, StringAdapterFactory *f)
+StringAdapter::StringAdapter(const QByteArray& data, StringAdapterFactory* f)
     : IOAdapter(f), buffer(data) {
     opened = true;
     pos = 0;
 }
 
-bool StringAdapter::open(const GUrl &_url, IOAdapterMode m) {
+bool StringAdapter::open(const GUrl& _url, IOAdapterMode m) {
     url = _url;
     switch (m) {
         case IOAdapterMode_Write:
@@ -68,7 +68,7 @@ void StringAdapter::close() {
     opened = false;
 }
 
-qint64 StringAdapter::readBlock(char *data, qint64 maxSize) {
+qint64 StringAdapter::readBlock(char* data, qint64 maxSize) {
     qint64 size = qMin<qint64>((buffer.length() - pos), maxSize);
     memcpy(data, buffer.constData() + pos, size);
     if (formatMode == TextMode) {
@@ -79,7 +79,7 @@ qint64 StringAdapter::readBlock(char *data, qint64 maxSize) {
     return size;
 }
 
-qint64 StringAdapter::writeBlock(const char *data, qint64 size) {
+qint64 StringAdapter::writeBlock(const char* data, qint64 size) {
     QByteArray ar(data, size);
     buffer.insert(pos, ar);
     pos += size;
@@ -121,11 +121,11 @@ GUrl StringAdapter::getURL() const {
     return url;
 }
 
-StringAdapterFactoryWithStringData::StringAdapterFactoryWithStringData(const QString &data, QObject *parent)
+StringAdapterFactoryWithStringData::StringAdapterFactoryWithStringData(const QString& data, QObject* parent)
     : StringAdapterFactory(parent), data(data) {
 }
 
-IOAdapter *StringAdapterFactoryWithStringData::createIOAdapter() {
+IOAdapter* StringAdapterFactoryWithStringData::createIOAdapter() {
     return new StringAdapter(data.toLatin1(), this);
 }
 

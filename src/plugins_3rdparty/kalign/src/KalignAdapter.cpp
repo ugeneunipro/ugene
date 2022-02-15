@@ -43,11 +43,11 @@ extern "C" {
 namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
-void KalignAdapter::align(const MultipleSequenceAlignment &ma, MultipleSequenceAlignment &res, TaskStateInfo &ti) {
+void KalignAdapter::align(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti) {
     CHECK(!ti.hasError() && !ti.isCanceled(), )
     try {
         alignUnsafe(ma, res, ti);
-    } catch (const KalignException &e) {
+    } catch (const KalignException& e) {
         if (!ti.cancelFlag) {
             ti.setError(tr("Internal Kalign error: %1").arg(e.str));
         }
@@ -56,7 +56,7 @@ void KalignAdapter::align(const MultipleSequenceAlignment &ma, MultipleSequenceA
 
 namespace {
 
-void cleanupMemory(float ** /*submatrix*/, unsigned int /*numseq*/, float ** /*dm*/, struct alignment * /*aln*/, struct parameters * /*param*/) {
+void cleanupMemory(float** /*submatrix*/, unsigned int /*numseq*/, float** /*dm*/, struct alignment* /*aln*/, struct parameters* /*param*/) {
     // TODO: investigating crash on Windows. The best solution would be moving KAlign into external tools?
     //    if (NULL != submatrix) {
     //        for (int i = 32; i--;){
@@ -80,22 +80,22 @@ void cleanupMemory(float ** /*submatrix*/, unsigned int /*numseq*/, float ** /*d
 
 }  // namespace
 
-void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSequenceAlignment &res, TaskStateInfo &ti) {
+void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti) {
     ti.progress = 0;
-    int *tree = 0;
+    int* tree = 0;
     quint32 a, b, c;
 
-    struct alignment *aln = 0;
-    struct parameters *param = 0;
-    struct aln_tree_node *tree2 = 0;
+    struct alignment* aln = 0;
+    struct parameters* param = 0;
+    struct aln_tree_node* tree2 = 0;
 
-    param = static_cast<parameters *>(malloc(sizeof(struct parameters)));
+    param = static_cast<parameters*>(malloc(sizeof(struct parameters)));
 
     param = interface(param, 0, 0);
 
-    kalign_context *ctx = get_kalign_context();
-    unsigned int &numseq = ctx->numseq;
-    unsigned int &numprofiles = ctx->numprofiles;
+    kalign_context* ctx = get_kalign_context();
+    unsigned int& numseq = ctx->numseq;
+    unsigned int& numprofiles = ctx->numprofiles;
 
     if (ma->getRowCount() < 2) {
         if (!numseq) {
@@ -135,11 +135,11 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
 
     for (quint32 i = 0; i < numseq; i++) {
         try {
-            aln->s[i] = (int *)malloc(sizeof(int) * (aln->sl[i] + 1));
+            aln->s[i] = (int*)malloc(sizeof(int) * (aln->sl[i] + 1));
             checkAllocatedMemory(aln->s[i]);
-            aln->seq[i] = (char *)malloc(sizeof(char) * (aln->sl[i] + 1));
+            aln->seq[i] = (char*)malloc(sizeof(char) * (aln->sl[i] + 1));
             checkAllocatedMemory(aln->seq[i]);
-            aln->sn[i] = (char *)malloc(sizeof(char) * (aln->lsn[i] + 1));
+            aln->sn[i] = (char*)malloc(sizeof(char) * (aln->lsn[i] + 1));
             checkAllocatedMemory(aln->sn[i]);
         } catch (...) {
             cleanupMemory(NULL, numseq, NULL, aln, param);
@@ -207,7 +207,7 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
     // int j;
 
     // fast distance calculation;
-    float **submatrix = 0;
+    float** submatrix = 0;
     submatrix = read_matrix(submatrix, param);  // sets gap penalties as well.....
 
     // if(byg_start(param->alignment_type,"profPROFprofilePROFILE") != -1){
@@ -215,7 +215,7 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
     // }
 
     if (param->ntree > 1) {
-        float **dm = 0;
+        float** dm = 0;
         // if(byg_start(param->distance,"pairclustalPAIRCLUSTAL") != -1){
         //	if(byg_start(param->tree,"njNJ") != -1){
         //		dm = protein_pairwise_alignment_distance(aln,dm,param,submatrix,1);
@@ -237,7 +237,7 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
             // }else{
             try {
                 dm = protein_wu_distance(aln, dm, param, 0);
-            } catch (const KalignException &) {
+            } catch (const KalignException&) {
                 cleanupMemory(submatrix, numseq, dm, aln, param);
                 throw;
             }
@@ -265,7 +265,7 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
         //}
     }
 
-    tree = (int *)malloc(sizeof(int) * (numseq * 3 + 1));
+    tree = (int*)malloc(sizeof(int) * (numseq * 3 + 1));
     for (quint32 i = 1; i < (numseq * 3) + 1; i++) {
         tree[i] = 0;
     }
@@ -302,7 +302,7 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
 
     // struct ntree_data* ntree_data = 0;
 
-    int **map = 0;
+    int** map = 0;
     // if(param->ntree > 2){
     //	ntree_data = (struct ntree_data*)malloc(sizeof(struct ntree_data));
     //	ntree_data->realtree = tree2;
@@ -377,7 +377,7 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment &ma, MultipleSeq
 
     // clear up sequence array to be reused as gap array....
     for (quint32 i = 0; i < numseq; i++) {
-        int *p = aln->s[i];
+        int* p = aln->s[i];
         for (a = 0; a < aln->sl[i]; a++) {
             p[a] = 0;
         }

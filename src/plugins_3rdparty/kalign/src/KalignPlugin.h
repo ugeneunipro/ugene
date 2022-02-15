@@ -48,28 +48,28 @@ public slots:
     void sl_runWithExtFileSpecify();
 
 private:
-    KalignMSAEditorContext *ctx;
+    KalignMSAEditorContext* ctx;
 };
 
 class KalignMSAEditorContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    KalignMSAEditorContext(QObject *p);
+    KalignMSAEditorContext(QObject* p);
 
 protected slots:
     void sl_align();
 
 protected:
-    void initViewContext(GObjectView *view) override;
+    void initViewContext(GObjectView* view) override;
 };
 
 class KalignAction : public GObjectViewAction {
     Q_OBJECT
 public:
-    KalignAction(QObject *p, GObjectView *v, const QString &text, int order)
+    KalignAction(QObject* p, GObjectView* v, const QString& text, int order)
         : GObjectViewAction(p, v, text, order) {
     }
-    MSAEditor *getMSAEditor() const;
+    MSAEditor* getMSAEditor() const;
 
 private slots:
     void sl_updateState();
@@ -78,7 +78,7 @@ private slots:
 class KalignPairwiseAligmnentAlgorithm : public AlignmentAlgorithm {
 public:
     KalignPairwiseAligmnentAlgorithm();
-    bool checkAlphabet(const DNAAlphabet *alphabet) const;
+    bool checkAlphabet(const DNAAlphabet* alphabet) const;
 };
 
 }  // namespace U2

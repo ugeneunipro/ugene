@@ -49,13 +49,13 @@ public:
             PairedEnd
         };
 
-        Parameters(const QString &refDir = "",
-                   const QString &refFileName = "",
-                   const QString &readsDir = "",
-                   const QString &readsFileName = "",
+        Parameters(const QString& refDir = "",
+                   const QString& refFileName = "",
+                   const QString& readsDir = "",
+                   const QString& readsFileName = "",
                    AlignmentMethod alignmentMethod = UgeneGenomeAligner);
-        Parameters(const QString &reference,
-                   const QStringList &readsFiles,
+        Parameters(const QString& reference,
+                   const QStringList& readsFiles,
                    AlignmentMethod alignmentMethod = UgeneGenomeAligner);
         virtual ~Parameters() {
         }
@@ -92,10 +92,10 @@ public:
             Local
         };
 
-        Bowtie2Parameters(const QString &refDir = "",
-                          const QString &refFileName = "",
-                          const QString &readsDir = "",
-                          const QString &readsFileName = "")
+        Bowtie2Parameters(const QString& refDir = "",
+                          const QString& refFileName = "",
+                          const QString& readsDir = "",
+                          const QString& readsFileName = "")
             : Parameters(refDir, refFileName, readsDir, readsFileName, Bowtie2),
               mode(EntToEnd),
               numberOfMismatches(0),
@@ -149,13 +149,13 @@ public:
 
     class UgeneGenomeAlignerParams : public Parameters {
     public:
-        UgeneGenomeAlignerParams(const QString &refDir,
-                                 const QString &refFileName,
-                                 const QString &readsDir,
-                                 const QString &readsFileName,
+        UgeneGenomeAlignerParams(const QString& refDir,
+                                 const QString& refFileName,
+                                 const QString& readsDir,
+                                 const QString& readsFileName,
                                  bool allowMismatches);
-        UgeneGenomeAlignerParams(const QString &referenceFile,
-                                 const QStringList &readsFiles);
+        UgeneGenomeAlignerParams(const QString& referenceFile,
+                                 const QStringList& readsFiles);
 
         bool mismatchesAllowed;
         bool useBestMode;
@@ -163,10 +163,10 @@ public:
 
     class BwaSwParameters : public Parameters {
     public:
-        BwaSwParameters(const QString &refDir = "",
-                        const QString &refFileName = "",
-                        const QString &readsDir = "",
-                        const QString &readsFileName = "");
+        BwaSwParameters(const QString& refDir = "",
+                        const QString& refFileName = "",
+                        const QString& readsDir = "",
+                        const QString& readsFileName = "");
 
         int matchScore;
         int mismatchPenalty;
@@ -191,10 +191,10 @@ public:
             Is
         };
 
-        BwaParameters(const QString &referenceFile,
-                      const QStringList &readsFiles);
-        BwaParameters(const QString &referenceFile,
-                      const QString &readsFile);
+        BwaParameters(const QString& referenceFile,
+                      const QStringList& readsFiles);
+        BwaParameters(const QString& referenceFile,
+                      const QString& readsFile);
 
         QString getIndexAlgorithmString() const;
 
@@ -205,26 +205,26 @@ public:
         static const QMap<IndexAlgorithm, QString> indexAlgorithmMap;
     };
 
-    AlignShortReadsFiller(HI::GUITestOpStatus &os, Parameters *parameters)
+    AlignShortReadsFiller(HI::GUITestOpStatus& os, Parameters* parameters)
         : Filler(os, "AssemblyToRefDialog"),
           parameters(parameters) {
         CHECK_SET_ERR(parameters, "Invalid filler parameters: NULL pointer");
     }
-    AlignShortReadsFiller(HI::GUITestOpStatus &os, CustomScenario *c)
+    AlignShortReadsFiller(HI::GUITestOpStatus& os, CustomScenario* c)
         : Filler(os, "AssemblyToRefDialog", c), parameters(nullptr) {
     }
 
     virtual void commonScenario();
 
 private:
-    void setCommonParameters(QWidget *dialog);
-    void setAdditionalParameters(QWidget *dialog);
-    void setBowtie2AdditionalParameters(Bowtie2Parameters *bowtie2Parameters, QWidget *dialog);
-    void setUgaAdditionalParameters(UgeneGenomeAlignerParams *ugaParameters, QWidget *dialog);
-    void setBwaAdditionalParameters(BwaParameters *bwaParameters, QWidget *dialog);
-    void setBwaSwAdditionalParameters(BwaSwParameters *bwaSwParameters, QWidget *dialog);
+    void setCommonParameters(QWidget* dialog);
+    void setAdditionalParameters(QWidget* dialog);
+    void setBowtie2AdditionalParameters(Bowtie2Parameters* bowtie2Parameters, QWidget* dialog);
+    void setUgaAdditionalParameters(UgeneGenomeAlignerParams* ugaParameters, QWidget* dialog);
+    void setBwaAdditionalParameters(BwaParameters* bwaParameters, QWidget* dialog);
+    void setBwaSwAdditionalParameters(BwaSwParameters* bwaSwParameters, QWidget* dialog);
 
-    Parameters *parameters;
+    Parameters* parameters;
 };
 
 }  // namespace U2

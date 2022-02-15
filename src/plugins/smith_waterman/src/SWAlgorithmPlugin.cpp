@@ -60,7 +60,7 @@
 
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
+extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
     return new SWAlgorithmPlugin();
 }
 
@@ -74,25 +74,25 @@ SWAlgorithmPlugin::SWAlgorithmPlugin()
 
     LocalWorkflow::SWWorkerFactory::init();
 
-    QDActorPrototypeRegistry *qdpr = AppContext::getQDActorProtoRegistry();
+    QDActorPrototypeRegistry* qdpr = AppContext::getQDActorProtoRegistry();
     qdpr->registerProto(new SWQDActorFactory());
 
     // Smith-Waterman algorithm tests
-    GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
+    GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
+    XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
     assert(xmlTestFormat != nullptr);
 
-    U2::GAutoDeleteList<U2::XMLTestFactory> *l = new U2::GAutoDeleteList<U2::XMLTestFactory>(this);
+    U2::GAutoDeleteList<U2::XMLTestFactory>* l = new U2::GAutoDeleteList<U2::XMLTestFactory>(this);
     l->qlist = SWAlgorithmTests::createTestFactories();
 
-    foreach (XMLTestFactory *f, l->qlist) {
+    foreach (XMLTestFactory* f, l->qlist) {
         bool res = xmlTestFormat->registerTestFactory(f);
         Q_UNUSED(res);
         assert(res);
     }
 
-    AlignmentAlgorithmsRegistry *par = AppContext::getAlignmentAlgorithmsRegistry();
-    SmithWatermanTaskFactoryRegistry *swar = AppContext::getSmithWatermanTaskFactoryRegistry();
+    AlignmentAlgorithmsRegistry* par = AppContext::getAlignmentAlgorithmsRegistry();
+    SmithWatermanTaskFactoryRegistry* swar = AppContext::getSmithWatermanTaskFactoryRegistry();
 
     coreLog.trace("Registering classic SW implementation");
     swar->registerFactory(new SWTaskFactory(SW_classic), QString("Classic 2"));  // ADV search register
@@ -106,8 +106,8 @@ SWAlgorithmPlugin::SWAlgorithmPlugin()
     this->connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), SLOT(regDependedIMPLFromOtherPlugins()));
 }
 
-QList<XMLTestFactory *> SWAlgorithmTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> SWAlgorithmTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_SmithWatermnan::createFactory());
     res.append(GTest_SmithWatermnanPerf::createFactory());
     return res;
@@ -115,8 +115,8 @@ QList<XMLTestFactory *> SWAlgorithmTests::createTestFactories() {
 
 // SLOT
 void SWAlgorithmPlugin::regDependedIMPLFromOtherPlugins() {
-    SmithWatermanTaskFactoryRegistry *swar = AppContext::getSmithWatermanTaskFactoryRegistry();
-    AlignmentAlgorithmsRegistry *par = AppContext::getAlignmentAlgorithmsRegistry();
+    SmithWatermanTaskFactoryRegistry* swar = AppContext::getSmithWatermanTaskFactoryRegistry();
+    AlignmentAlgorithmsRegistry* par = AppContext::getAlignmentAlgorithmsRegistry();
     Q_UNUSED(swar);
     Q_UNUSED(par);
 
@@ -137,14 +137,14 @@ void SWAlgorithmPlugin::regDependedIMPLFromOtherPlugins() {
 #endif
 }
 
-SWAlgorithmADVContext::SWAlgorithmADVContext(QObject *p)
+SWAlgorithmADVContext::SWAlgorithmADVContext(QObject* p)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID), dialogConfig() {
 }
 
-void SWAlgorithmADVContext::initViewContext(GObjectView *view) {
-    AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(view);
+void SWAlgorithmADVContext::initViewContext(GObjectView* view) {
+    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(view);
     assert(av != nullptr);
-    ADVGlobalAction *a = new ADVGlobalAction(av, QIcon(":core/images/sw.png"), tr("Find pattern [Smith-Waterman]..."), 15);
+    ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":core/images/sw.png"), tr("Find pattern [Smith-Waterman]..."), 15);
     a->setObjectName("find_pattern_smith_waterman_action");
 
     a->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_F));
@@ -155,13 +155,13 @@ void SWAlgorithmADVContext::initViewContext(GObjectView *view) {
 }
 
 void SWAlgorithmADVContext::sl_search() {
-    GObjectViewAction *action = qobject_cast<GObjectViewAction *>(sender());
+    GObjectViewAction* action = qobject_cast<GObjectViewAction*>(sender());
     assert(0 != action);
 
-    AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(action->getObjectView());
+    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
     assert(av != nullptr);
 
-    ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
+    ADVSequenceObjectContext* seqCtx = av->getActiveSequenceContext();
     SmithWatermanDialogController::run(av->getWidget(), seqCtx, &dialogConfig);
 }
 
@@ -174,9 +174,9 @@ SWPairwiseAlignmentAlgorithm::SWPairwiseAlignmentAlgorithm()
                          "SW_classic") {
 }
 
-bool SWPairwiseAlignmentAlgorithm::checkAlphabet(const DNAAlphabet *alphabet) const {
+bool SWPairwiseAlignmentAlgorithm::checkAlphabet(const DNAAlphabet* alphabet) const {
     SAFE_POINT(nullptr != alphabet, "Alphabet is NULL.", false);
-    SubstMatrixRegistry *matrixReg = AppContext::getSubstMatrixRegistry();
+    SubstMatrixRegistry* matrixReg = AppContext::getSubstMatrixRegistry();
     SAFE_POINT(matrixReg, "SubstMatrixRegistry is NULL.", false);
     QStringList matrixList = matrixReg->selectMatrixNamesByAlphabet(alphabet);
     return !matrixList.isEmpty();

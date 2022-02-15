@@ -36,36 +36,36 @@ MultipleChromatogramAlignment::MultipleChromatogramAlignment()
     : MultipleAlignment(new MultipleChromatogramAlignmentData()) {
 }
 
-MultipleChromatogramAlignment::MultipleChromatogramAlignment(const MultipleAlignment &ma)
+MultipleChromatogramAlignment::MultipleChromatogramAlignment(const MultipleAlignment& ma)
     : MultipleAlignment(ma) {
     SAFE_POINT(nullptr != maData.dynamicCast<MultipleChromatogramAlignmentData>(), "Can't cast MultipleAlignment to MultipleChromatogramAlignment", );
 }
 
-MultipleChromatogramAlignment::MultipleChromatogramAlignment(MultipleChromatogramAlignmentData *mcaData)
+MultipleChromatogramAlignment::MultipleChromatogramAlignment(MultipleChromatogramAlignmentData* mcaData)
     : MultipleAlignment(mcaData) {
 }
 
-MultipleChromatogramAlignment::MultipleChromatogramAlignment(const QString &name, const DNAAlphabet *alphabet, const QList<MultipleChromatogramAlignmentRow> &rows)
+MultipleChromatogramAlignment::MultipleChromatogramAlignment(const QString& name, const DNAAlphabet* alphabet, const QList<MultipleChromatogramAlignmentRow>& rows)
     : MultipleAlignment(new MultipleChromatogramAlignmentData(name, alphabet, rows)) {
 }
 
-MultipleChromatogramAlignmentData *MultipleChromatogramAlignment::data() const {
+MultipleChromatogramAlignmentData* MultipleChromatogramAlignment::data() const {
     return getMcaData().data();
 }
 
-MultipleChromatogramAlignmentData &MultipleChromatogramAlignment::operator*() {
+MultipleChromatogramAlignmentData& MultipleChromatogramAlignment::operator*() {
     return *getMcaData();
 }
 
-const MultipleChromatogramAlignmentData &MultipleChromatogramAlignment::operator*() const {
+const MultipleChromatogramAlignmentData& MultipleChromatogramAlignment::operator*() const {
     return *getMcaData();
 }
 
-MultipleChromatogramAlignmentData *MultipleChromatogramAlignment::operator->() {
+MultipleChromatogramAlignmentData* MultipleChromatogramAlignment::operator->() {
     return getMcaData().data();
 }
 
-const MultipleChromatogramAlignmentData *MultipleChromatogramAlignment::operator->() const {
+const MultipleChromatogramAlignmentData* MultipleChromatogramAlignment::operator->() const {
     return getMcaData().data();
 }
 
@@ -79,9 +79,9 @@ QSharedPointer<MultipleChromatogramAlignmentData> MultipleChromatogramAlignment:
 
 namespace {
 
-QList<MultipleAlignmentRow> convertToMaRows(const QList<MultipleChromatogramAlignmentRow> &mcaRows) {
+QList<MultipleAlignmentRow> convertToMaRows(const QList<MultipleChromatogramAlignmentRow>& mcaRows) {
     QList<MultipleAlignmentRow> maRows;
-    foreach (const MultipleChromatogramAlignmentRow &mcaRow, mcaRows) {
+    foreach (const MultipleChromatogramAlignmentRow& mcaRow, mcaRows) {
         maRows << mcaRow;
     }
     return maRows;
@@ -89,11 +89,11 @@ QList<MultipleAlignmentRow> convertToMaRows(const QList<MultipleChromatogramAlig
 
 }  // namespace
 
-MultipleChromatogramAlignmentData::MultipleChromatogramAlignmentData(const QString &name, const DNAAlphabet *alphabet, const QList<MultipleChromatogramAlignmentRow> &rows)
+MultipleChromatogramAlignmentData::MultipleChromatogramAlignmentData(const QString& name, const DNAAlphabet* alphabet, const QList<MultipleChromatogramAlignmentRow>& rows)
     : MultipleAlignmentData(MultipleAlignmentDataType::MCA, name, alphabet, convertToMaRows(rows)) {
 }
 
-MultipleChromatogramAlignmentData::MultipleChromatogramAlignmentData(const MultipleChromatogramAlignmentData &mcaData)
+MultipleChromatogramAlignmentData::MultipleChromatogramAlignmentData(const MultipleChromatogramAlignmentData& mcaData)
     : MultipleAlignmentData(MultipleAlignmentDataType::MCA) {
     copy(mcaData);
 }
@@ -108,9 +108,9 @@ bool MultipleChromatogramAlignmentData::trim(bool removeLeadingGaps) {
         // Verify if there are leading columns of gaps
         // by checking the first gap in each row
         int leadingGapColumnsNum = 0;
-        for (const auto &row : qAsConst(rows)) {
+        for (const auto& row : qAsConst(rows)) {
             if (!row->getGaps().isEmpty()) {
-                const U2MsaGap &firstGap = row->getGaps().first();
+                const U2MsaGap& firstGap = row->getGaps().first();
                 if (firstGap.startPos > 0) {
                     leadingGapColumnsNum = 0;
                     break;
@@ -140,7 +140,7 @@ bool MultipleChromatogramAlignmentData::trim(bool removeLeadingGaps) {
 
     // Verify right side of the alignment (trailing gaps and rows' lengths)
     qint64 newLength = 0;
-    foreach (const MultipleChromatogramAlignmentRow &row, rows) {
+    foreach (const MultipleChromatogramAlignmentRow& row, rows) {
         if (newLength == 0) {
             newLength = row->getRowLengthWithoutTrailing();
         } else {
@@ -176,7 +176,7 @@ bool MultipleChromatogramAlignmentData::simplify() {
 }
 
 bool MultipleChromatogramAlignmentData::hasEmptyGapModel() const {
-    foreach (const MultipleChromatogramAlignmentRow &row, rows) {
+    foreach (const MultipleChromatogramAlignmentRow& row, rows) {
         if (!row->getGaps().isEmpty()) {
             return false;
         }
@@ -211,7 +211,7 @@ MultipleChromatogramAlignment MultipleChromatogramAlignmentData::mid(int start, 
     Q_UNUSED(check);
 
     U2OpStatus2Log os;
-    foreach (const MultipleChromatogramAlignmentRow &row, rows) {
+    foreach (const MultipleChromatogramAlignmentRow& row, rows) {
         MultipleChromatogramAlignmentRow mRow = row->mid(start, len, os);
         mRow->setParentAlignment(res);
         res->rows << mRow;
@@ -220,7 +220,7 @@ MultipleChromatogramAlignment MultipleChromatogramAlignmentData::mid(int start, 
     return res;
 }
 
-MultipleChromatogramAlignmentData &MultipleChromatogramAlignmentData::operator+=(const MultipleChromatogramAlignmentData &mcaData) {
+MultipleChromatogramAlignmentData& MultipleChromatogramAlignmentData::operator+=(const MultipleChromatogramAlignmentData& mcaData) {
     // TODO: it is used in MUSCLE alignment and it should be something like this. But this emthod is incorrect for the MCA
     MaStateCheck check(this);
     Q_UNUSED(check);
@@ -239,15 +239,15 @@ MultipleChromatogramAlignmentData &MultipleChromatogramAlignmentData::operator+=
     return *this;
 }
 
-bool MultipleChromatogramAlignmentData::operator==(const MultipleChromatogramAlignmentData &other) const {
+bool MultipleChromatogramAlignmentData::operator==(const MultipleChromatogramAlignmentData& other) const {
     return isEqual(other);
 }
 
-bool MultipleChromatogramAlignmentData::operator!=(const MultipleChromatogramAlignmentData &other) const {
+bool MultipleChromatogramAlignmentData::operator!=(const MultipleChromatogramAlignmentData& other) const {
     return !isEqual(other);
 }
 
-bool MultipleChromatogramAlignmentData::crop(const U2Region &region, const QSet<QString> &rowNames, U2OpStatus &os) {
+bool MultipleChromatogramAlignmentData::crop(const U2Region& region, const QSet<QString>& rowNames, U2OpStatus& os) {
     if (!(region.startPos >= 0 && region.length > 0 && region.length < length && region.startPos < length)) {
         os.setError(QString("Incorrect region was passed to MultipleChromatogramAlignmentData::crop, "
                             "startPos '%1', length '%2'")
@@ -280,15 +280,15 @@ bool MultipleChromatogramAlignmentData::crop(const U2Region &region, const QSet<
     return true;
 }
 
-bool MultipleChromatogramAlignmentData::crop(const U2Region &region, U2OpStatus &os) {
+bool MultipleChromatogramAlignmentData::crop(const U2Region& region, U2OpStatus& os) {
     return crop(region, getRowNames().toSet(), os);
 }
 
-bool MultipleChromatogramAlignmentData::crop(int start, int count, U2OpStatus &os) {
+bool MultipleChromatogramAlignmentData::crop(int start, int count, U2OpStatus& os) {
     return crop(U2Region(start, count), os);
 }
 
-MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData::createRow(const QString &name, const DNAChromatogram &chromatogram, const QByteArray &bytes) {
+MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData::createRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes) {
     QByteArray newSequenceBytes;
     QVector<U2MsaGap> newGapsModel;
 
@@ -299,7 +299,7 @@ MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData::createRow(co
     return MultipleChromatogramAlignmentRow(row, chromatogram, newSequence, newGapsModel, this);
 }
 
-MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData::createRow(const U2MsaRow &rowInDb, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QVector<U2MsaGap> &gaps, U2OpStatus &os) {
+MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData::createRow(const U2MsaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os) {
     QString errorDescr = "Failed to create a multiple alignment row";
     if (sequence.constSequence().indexOf(U2Msa::GAP_CHAR) != -1) {
         coreLog.trace("Attempted to create an alignment row from a sequence with gaps");
@@ -308,7 +308,7 @@ MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData::createRow(co
     }
 
     int length = sequence.length();
-    foreach (const U2MsaGap &gap, gaps) {
+    foreach (const U2MsaGap& gap, gaps) {
         if (gap.startPos > length || !gap.isValid()) {
             coreLog.trace("Incorrect gap model was passed to MultipleChromatogramAlignmentData::createRow");
             os.setError(errorDescr);
@@ -320,37 +320,37 @@ MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData::createRow(co
     return MultipleChromatogramAlignmentRow(rowInDb, chromatogram, sequence, gaps, this);
 }
 
-MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData::createRow(const MultipleChromatogramAlignmentRow &row) {
+MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData::createRow(const MultipleChromatogramAlignmentRow& row) {
     return MultipleChromatogramAlignmentRow(row, this);
 }
 
-void MultipleChromatogramAlignmentData::setRows(const QList<MultipleChromatogramAlignmentRow> &mcaRows) {
+void MultipleChromatogramAlignmentData::setRows(const QList<MultipleChromatogramAlignmentRow>& mcaRows) {
     rows = convertToMaRows(mcaRows);
 }
 
-void MultipleChromatogramAlignmentData::addRow(const QString &name, const DNAChromatogram &chromatogram, const QByteArray &bytes) {
+void MultipleChromatogramAlignmentData::addRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes) {
     MultipleChromatogramAlignmentRow newRow = createRow(name, chromatogram, bytes);
     addRowPrivate(newRow, bytes.size(), -1);
 }
 
-void MultipleChromatogramAlignmentData::addRow(const QString &name, const DNAChromatogram &chromatogram, const QByteArray &bytes, int rowIndex) {
+void MultipleChromatogramAlignmentData::addRow(const QString& name, const DNAChromatogram& chromatogram, const QByteArray& bytes, int rowIndex) {
     MultipleChromatogramAlignmentRow newRow = createRow(name, chromatogram, bytes);
     addRowPrivate(newRow, bytes.size(), rowIndex);
 }
 
-void MultipleChromatogramAlignmentData::addRow(const U2MsaRow &rowInDb, const DNAChromatogram &chromatogram, const DNASequence &sequence, U2OpStatus &os) {
+void MultipleChromatogramAlignmentData::addRow(const U2MsaRow& rowInDb, const DNAChromatogram& chromatogram, const DNASequence& sequence, U2OpStatus& os) {
     MultipleChromatogramAlignmentRow newRow = createRow(rowInDb, chromatogram, sequence, rowInDb.gaps, os);
     CHECK_OP(os, );
     addRowPrivate(newRow, rowInDb.length, -1);
 }
 
-void MultipleChromatogramAlignmentData::addRow(const QString &name, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QVector<U2MsaGap> &gaps, U2OpStatus &os) {
+void MultipleChromatogramAlignmentData::addRow(const QString& name, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gaps, U2OpStatus& os) {
     U2MsaRow row;
     MultipleChromatogramAlignmentRow newRow = createRow(row, chromatogram, sequence, gaps, os);
     CHECK_OP(os, );
 
     int len = sequence.length();
-    foreach (const U2MsaGap &gap, gaps) {
+    foreach (const U2MsaGap& gap, gaps) {
         len += gap.length;
     }
 
@@ -358,11 +358,11 @@ void MultipleChromatogramAlignmentData::addRow(const QString &name, const DNAChr
     addRowPrivate(newRow, len, -1);
 }
 
-void MultipleChromatogramAlignmentData::addRow(const U2MsaRow &rowInDb, const McaRowMemoryData &mcaRowMemoryData, U2OpStatus &os) {
+void MultipleChromatogramAlignmentData::addRow(const U2MsaRow& rowInDb, const McaRowMemoryData& mcaRowMemoryData, U2OpStatus& os) {
     addRow(rowInDb, mcaRowMemoryData.chromatogram, mcaRowMemoryData.sequence, os);
 }
 
-void MultipleChromatogramAlignmentData::insertGaps(int row, int pos, int count, U2OpStatus &os) {
+void MultipleChromatogramAlignmentData::insertGaps(int row, int pos, int count, U2OpStatus& os) {
     if (pos > length) {
         length = pos + count;
         return;
@@ -396,7 +396,7 @@ void MultipleChromatogramAlignmentData::insertGaps(int row, int pos, int count, 
     length = qMax(length, rowLength);
 }
 
-void MultipleChromatogramAlignmentData::appendChars(int row, const char *str, int len) {
+void MultipleChromatogramAlignmentData::appendChars(int row, const char* str, int len) {
     SAFE_POINT(0 <= row && row < getRowCount(),
                QString("Incorrect row index '%1' in MultipleChromatogramAlignmentData::appendChars").arg(row), );
 
@@ -411,7 +411,7 @@ void MultipleChromatogramAlignmentData::appendChars(int row, const char *str, in
     length = qMax(length, rowLength + len);
 }
 
-void MultipleChromatogramAlignmentData::appendChars(int row, qint64 afterPos, const char *str, int len) {
+void MultipleChromatogramAlignmentData::appendChars(int row, qint64 afterPos, const char* str, int len) {
     SAFE_POINT(0 <= row && row < getRowCount(),
                QString("Incorrect row index '%1' in MultipleChromatogramAlignmentData::appendChars").arg(row), );
 
@@ -464,7 +464,7 @@ int MultipleChromatogramAlignmentData::getRowCount() const {
     return rows.size();
 }
 
-void MultipleChromatogramAlignmentData::renameRow(int row, const QString &name) {
+void MultipleChromatogramAlignmentData::renameRow(int row, const QString& name) {
     SAFE_POINT(row >= 0 && row < getRowCount(),
                QString("Incorrect row index '%1' was passed to MultipleChromatogramAlignmentData::renameRow: "
                        "the number of rows is '%2'")
@@ -487,7 +487,7 @@ void MultipleChromatogramAlignmentData::replaceChars(int row, char origChar, cha
     getMcaRow(row)->replaceChars(origChar, resultChar, os);
 }
 
-void MultipleChromatogramAlignmentData::setRowContent(int rowNumber, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QVector<U2MsaGap> &gapModel) {
+void MultipleChromatogramAlignmentData::setRowContent(int rowNumber, const DNAChromatogram& chromatogram, const DNASequence& sequence, const QVector<U2MsaGap>& gapModel) {
     SAFE_POINT(rowNumber >= 0 && rowNumber < getRowCount(),
                QString("Incorrect row index '%1' was passed to MultipleChromatogramAlignmentData::setRowContent: "
                        "the number of rows is '%2'")
@@ -503,7 +503,7 @@ void MultipleChromatogramAlignmentData::setRowContent(int rowNumber, const DNACh
     length = qMax(length, (qint64)MsaRowUtils::getRowLength(sequence.seq, gapModel));
 }
 
-void MultipleChromatogramAlignmentData::setRowContent(int rowNumber, const McaRowMemoryData &mcaRowMemoryData) {
+void MultipleChromatogramAlignmentData::setRowContent(int rowNumber, const McaRowMemoryData& mcaRowMemoryData) {
     setRowContent(rowNumber, mcaRowMemoryData.chromatogram, mcaRowMemoryData.sequence, mcaRowMemoryData.gapModel);
 }
 
@@ -513,7 +513,7 @@ void MultipleChromatogramAlignmentData::toUpperCase() {
     }
 }
 
-bool MultipleChromatogramAlignmentData::sortRowsBySimilarity(QVector<U2Region> &united) {
+bool MultipleChromatogramAlignmentData::sortRowsBySimilarity(QVector<U2Region>& united) {
     QList<MultipleChromatogramAlignmentRow> oldRows = getMcaRows();
     QList<MultipleChromatogramAlignmentRow> sortedRows;
     while (!oldRows.isEmpty()) {
@@ -523,7 +523,7 @@ bool MultipleChromatogramAlignmentData::sortRowsBySimilarity(QVector<U2Region> &
         int len = 1;
         QMutableListIterator<MultipleChromatogramAlignmentRow> iter(oldRows);
         while (iter.hasNext()) {
-            const MultipleChromatogramAlignmentRow &next = iter.next();
+            const MultipleChromatogramAlignmentRow& next = iter.next();
             if (next->isEqualCore(*row)) {
                 sortedRows << next;
                 iter.remove();
@@ -543,13 +543,13 @@ bool MultipleChromatogramAlignmentData::sortRowsBySimilarity(QVector<U2Region> &
 
 const QList<MultipleChromatogramAlignmentRow> MultipleChromatogramAlignmentData::getMcaRows() const {
     QList<MultipleChromatogramAlignmentRow> mcaRows;
-    foreach (const MultipleAlignmentRow &maRow, rows) {
+    foreach (const MultipleAlignmentRow& maRow, rows) {
         mcaRows << maRow.dynamicCast<MultipleChromatogramAlignmentRow>();
     }
     return mcaRows;
 }
 
-MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData::getMcaRowByRowId(qint64 rowId, U2OpStatus &os) const {
+MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData::getMcaRowByRowId(qint64 rowId, U2OpStatus& os) const {
     return getRowByRowId(rowId, os).dynamicCast<MultipleChromatogramAlignmentRow>(os);
 }
 
@@ -565,18 +565,18 @@ bool MultipleChromatogramAlignmentData::isTrailingOrLeadingGap(int rowNumber, in
     return getMcaRow(rowNumber)->isTrailingOrLeadingGap(pos);
 }
 
-void MultipleChromatogramAlignmentData::setRowGapModel(int rowNumber, const QVector<U2MsaGap> &gapModel) {
+void MultipleChromatogramAlignmentData::setRowGapModel(int rowNumber, const QVector<U2MsaGap>& gapModel) {
     SAFE_POINT(rowNumber >= 0 && rowNumber < getRowCount(), "Invalid row index", );
     length = qMax(length, (qint64)MsaRowUtils::getGapsLength(gapModel) + getMcaRow(rowNumber)->sequence.length());
     getMcaRow(rowNumber)->setGapModel(gapModel);
 }
 
-void MultipleChromatogramAlignmentData::setSequenceId(int rowIndex, const U2DataId &sequenceId) {
+void MultipleChromatogramAlignmentData::setSequenceId(int rowIndex, const U2DataId& sequenceId) {
     SAFE_POINT(rowIndex >= 0 && rowIndex < getRowCount(), "Invalid row index", );
     getMcaRow(rowIndex)->setSequenceId(sequenceId);
 }
 
-const MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData::getMcaRow(const QString &name) const {
+const MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData::getMcaRow(const QString& name) const {
     return getRow(name).dynamicCast<const MultipleChromatogramAlignmentRow>();
 }
 
@@ -588,15 +588,15 @@ MultipleChromatogramAlignment MultipleChromatogramAlignmentData::getExplicitCopy
     return MultipleChromatogramAlignment(new MultipleChromatogramAlignmentData(*this));
 }
 
-void MultipleChromatogramAlignmentData::copy(const MultipleAlignmentData &other) {
+void MultipleChromatogramAlignmentData::copy(const MultipleAlignmentData& other) {
     try {
-        copy(dynamic_cast<const MultipleChromatogramAlignmentData &>(other));
-    } catch (std::bad_cast &) {
+        copy(dynamic_cast<const MultipleChromatogramAlignmentData&>(other));
+    } catch (std::bad_cast&) {
         FAIL("Can't cast MultipleAlignmentData to MultipleChromatogramAlignmentData", );
     }
 }
 
-void MultipleChromatogramAlignmentData::copy(const MultipleChromatogramAlignmentData &other) {
+void MultipleChromatogramAlignmentData::copy(const MultipleChromatogramAlignmentData& other) {
     clear();
 
     alphabet = other.alphabet;

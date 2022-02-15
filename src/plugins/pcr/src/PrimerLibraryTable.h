@@ -33,26 +33,26 @@ namespace U2 {
 class PrimerLibraryModel : public QAbstractItemModel {
     Q_OBJECT
 public:
-    PrimerLibraryModel(QObject *parent);
+    PrimerLibraryModel(QObject* parent);
 
     /* QAbstractItemModel */
-    int columnCount(const QModelIndex &parent) const;
-    QVariant data(const QModelIndex &index, int role) const;
+    int columnCount(const QModelIndex& parent) const;
+    QVariant data(const QModelIndex& index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
-    QModelIndex index(int row, int column, const QModelIndex &parent) const;
-    QModelIndex parent(const QModelIndex &index) const;
-    int rowCount(const QModelIndex &parent) const;
+    QModelIndex index(int row, int column, const QModelIndex& parent) const;
+    QModelIndex parent(const QModelIndex& index) const;
+    int rowCount(const QModelIndex& parent) const;
 
-    Primer getPrimer(const QModelIndex &index, U2OpStatus &os) const;
-    void addPrimer(const Primer &primer);
-    void updatePrimer(const Primer &primer);
-    void removePrimer(const QModelIndex &index, U2OpStatus &os);
-    void removePrimer(const U2DataId &primerId, U2OpStatus &os);
+    Primer getPrimer(const QModelIndex& index, U2OpStatus& os) const;
+    void addPrimer(const Primer& primer);
+    void updatePrimer(const Primer& primer);
+    void removePrimer(const QModelIndex& index, U2OpStatus& os);
+    void removePrimer(const U2DataId& primerId, U2OpStatus& os);
 
 private:
-    QVariant displayData(const QModelIndex &index) const;
-    int getRow(const U2DataId &primerId) const;
-    void onPrimerChanged(const Primer &primer);
+    QVariant displayData(const QModelIndex& index) const;
+    int getRow(const U2DataId& primerId) const;
+    void onPrimerChanged(const Primer& primer);
 
 private:
     QList<Primer> primers;
@@ -61,14 +61,14 @@ private:
 class PrimerLibraryTable : public QTableView {
     Q_OBJECT
 public:
-    PrimerLibraryTable(QWidget *parent);
+    PrimerLibraryTable(QWidget* parent);
 
     QList<Primer> getSelection() const;
-    void addPrimer(const Primer &primer);
-    void updatePrimer(const Primer &primer);
-    void removePrimer(const U2DataId &primerId, U2OpStatus &os);
+    void addPrimer(const Primer& primer);
+    void updatePrimer(const Primer& primer);
+    void removePrimer(const U2DataId& primerId, U2OpStatus& os);
 
-    bool eventFilter(QObject *watched, QEvent *event);
+    bool eventFilter(QObject* watched, QEvent* event);
 
     enum Mode { Browser,
                 Selector };
@@ -76,7 +76,7 @@ public:
 
 private:
     Mode mode;
-    PrimerLibraryModel *model;
+    PrimerLibraryModel* model;
 };
 
 }  // namespace U2

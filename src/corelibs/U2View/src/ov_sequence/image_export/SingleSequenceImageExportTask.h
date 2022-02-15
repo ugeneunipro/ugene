@@ -38,7 +38,7 @@ class SequenceImageExportTask : public ImageExportTask {
 public:
     SequenceImageExportTask(QSharedPointer<ExportImagePainter> painter,
                             QSharedPointer<CustomExportSettings> customSettings,
-                            const ImageExportTaskSettings &settings);
+                            const ImageExportTaskSettings& settings);
 
 protected:
     QSharedPointer<ExportImagePainter> painter;
@@ -52,7 +52,7 @@ class SequenceImageExportToPdfTask : public SequenceImageExportTask {
 public:
     SequenceImageExportToPdfTask(QSharedPointer<ExportImagePainter> painter,
                                  QSharedPointer<CustomExportSettings> customSettings,
-                                 const ImageExportTaskSettings &settings)
+                                 const ImageExportTaskSettings& settings)
         : SequenceImageExportTask(painter,
                                   customSettings,
                                   settings) {
@@ -67,7 +67,7 @@ class SequenceImageExportToSvgTask : public SequenceImageExportTask {
 public:
     SequenceImageExportToSvgTask(QSharedPointer<ExportImagePainter> painter,
                                  QSharedPointer<CustomExportSettings> customSettings,
-                                 const ImageExportTaskSettings &settings)
+                                 const ImageExportTaskSettings& settings)
         : SequenceImageExportTask(painter,
                                   customSettings,
                                   settings) {
@@ -82,7 +82,7 @@ class SequenceImageExportToBitmapTask : public SequenceImageExportTask {
 public:
     SequenceImageExportToBitmapTask(QSharedPointer<ExportImagePainter> painter,
                                     QSharedPointer<CustomExportSettings> customSettings,
-                                    const ImageExportTaskSettings &settings)
+                                    const ImageExportTaskSettings& settings)
         : SequenceImageExportTask(painter,
                                   customSettings,
                                   settings) {

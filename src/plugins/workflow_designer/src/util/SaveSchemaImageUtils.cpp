@@ -43,7 +43,7 @@ static Logger log("Save workflow image task");
 /********************************
  * ProduceSchemaImageLinkTask
  ********************************/
-ProduceSchemaImageLinkTask::ProduceSchemaImageLinkTask(const QString &schemaName)
+ProduceSchemaImageLinkTask::ProduceSchemaImageLinkTask(const QString& schemaName)
     : Task(tr("Save workflow image"), TaskFlags_NR_FOSCOE), schema(nullptr) {
     schemaPath = WorkflowUtils::findPathToSchemaFile(schemaName);
     if (schemaPath.isEmpty()) {
@@ -62,11 +62,11 @@ void ProduceSchemaImageLinkTask::prepare() {
     addSubTask(new LoadWorkflowTask(schema, &meta, schemaPath));
 }
 
-QList<Task *> ProduceSchemaImageLinkTask::onSubTaskFinished(Task *subTask) {
-    LoadWorkflowTask *loadTask = qobject_cast<LoadWorkflowTask *>(subTask);
+QList<Task*> ProduceSchemaImageLinkTask::onSubTaskFinished(Task* subTask) {
+    LoadWorkflowTask* loadTask = qobject_cast<LoadWorkflowTask*>(subTask);
     assert(loadTask != nullptr);
 
-    QList<Task *> res;
+    QList<Task*> res;
     if (loadTask->hasError() || loadTask->isCanceled()) {
         return res;
     }
@@ -96,7 +96,7 @@ const QString GoogleChartImage::GRAPH_VIZ_CHART_TYPE = "gv:dot";
 const QSize GoogleChartImage::CHART_SIZE_DEFAULT(500, 500);
 const QString GoogleChartImage::GOOGLE_CHART_BASE_URL = "http://chart.apis.google.com/chart?";
 
-GoogleChartImage::GoogleChartImage(Schema *sc, const Metadata &m)
+GoogleChartImage::GoogleChartImage(Schema* sc, const Metadata& m)
     : chartSize(CHART_SIZE_DEFAULT), schema(sc), meta(m) {
     assert(schema != nullptr);
 }
@@ -105,7 +105,7 @@ QString GoogleChartImage::getImageUrl() const {
     return GOOGLE_CHART_BASE_URL + getUrlArguments();
 }
 
-static QString makeArgumentPair(const QString &argName, const QString &value) {
+static QString makeArgumentPair(const QString& argName, const QString& value) {
     return argName + "=" + value + "&";
 }
 
@@ -124,7 +124,7 @@ static QString makeArgumentPair(const QString &argName, const QString &value) {
 //     return graph + "}";
 // }
 
-static QString getSchemaGraphInExtendedDotNotation(Schema *schema, const Metadata &meta) {
+static QString getSchemaGraphInExtendedDotNotation(Schema* schema, const Metadata& meta) {
     assert(schema != nullptr);
     QString graph = "digraph{";
     graph += QString("label=\"Workflow %1\";").arg(meta.name);
@@ -135,13 +135,13 @@ static QString getSchemaGraphInExtendedDotNotation(Schema *schema, const Metadat
     graph += QString("node [shape=box,style=\"filled, rounded\",fillcolor=lightblue];");
 
     // Nodes definition
-    foreach (Actor *actor, schema->getProcesses()) {
+    foreach (Actor* actor, schema->getProcesses()) {
         graph += QString("%1 [label=\"%2\"];").arg(QString("node_%1").arg(actor->getId())).arg(actor->getLabel());
     }
     // relationships definition
-    foreach (Link *link, schema->getFlows()) {
-        Actor *source = link->source()->owner();
-        Actor *destination = link->destination()->owner();
+    foreach (Link* link, schema->getFlows()) {
+        Actor* source = link->source()->owner();
+        Actor* destination = link->destination()->owner();
         graph += QString("node_%1->node_%2;").arg(source->getId()).arg(destination->getId());
     }
 
@@ -164,7 +164,7 @@ QString GoogleChartImage::getUrlArguments() const {
 /********************************
  * SaveSchemaImageUtils
  ********************************/
-QPixmap SaveSchemaImageUtils::generateSchemaSnapshot(const QString &data) {
+QPixmap SaveSchemaImageUtils::generateSchemaSnapshot(const QString& data) {
     Schema schema;
     Metadata meta;
     QString msg = HRSchemaSerializer::string2Schema(data, &schema, &meta);
@@ -186,7 +186,7 @@ QPixmap SaveSchemaImageUtils::generateSchemaSnapshot(const QString &data) {
     return pixmap;
 }
 
-QString SaveSchemaImageUtils::saveSchemaImageToFile(const QString &schemaPath, const QString &imagePath) {
+QString SaveSchemaImageUtils::saveSchemaImageToFile(const QString& schemaPath, const QString& imagePath) {
     log.info(QString("Saving %1 snapshot to %2").arg(schemaPath).arg(imagePath));
 
     QFile file(schemaPath);

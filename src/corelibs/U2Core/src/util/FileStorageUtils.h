@@ -33,34 +33,34 @@ public:
      * Checks hash for both destination and source files.
      * If hashes are ok then returns the destination file.
      */
-    static QString getFileToFileInfo(const QString &srcUrl, const QString &role, FileStorage::WorkflowProcess &process);
+    static QString getFileToFileInfo(const QString& srcUrl, const QString& role, FileStorage::WorkflowProcess& process);
 
     /**
      * Adds info about file to file relation to the storage.
      * Creates hash for both destination and source files.
      */
-    static void addFileToFileInfo(const FileStorage::FileInfo &fileToFileInfo, FileStorage::WorkflowProcess &process);
+    static void addFileToFileInfo(const FileStorage::FileInfo& fileToFileInfo, FileStorage::WorkflowProcess& process);
 
     /**
      * Returns the url to the sorted BAM file for the source @bamUrl.
      * If this BAM file is not in the file storage then returns empty string.
      */
-    static QString getSortedBamUrl(const QString &bamUrl, FileStorage::WorkflowProcess &process);
+    static QString getSortedBamUrl(const QString& bamUrl, FileStorage::WorkflowProcess& process);
 
     /**
      * Adds to the file storage information about sorted BAM: url and hash
      */
-    static void addSortedBamUrl(const QString &bamUrl, const QString &sortedBamUrl, FileStorage::WorkflowProcess &process);
+    static void addSortedBamUrl(const QString& bamUrl, const QString& sortedBamUrl, FileStorage::WorkflowProcess& process);
 
     /**
      * Returns the url to the converted BAM file for the source @samUrl.
      * If this BAM file is not in the file storage then returns empty string.
      */
-    static QString getSamToBamConvertInfo(const QString &samUrl, FileStorage::WorkflowProcess &process);
+    static QString getSamToBamConvertInfo(const QString& samUrl, FileStorage::WorkflowProcess& process);
     /**
      * Adds to the file storage information about converted SAM file: url and hash
      */
-    static void addSamToBamConvertInfo(const QString &samUrl, const QString &bamUrl, FileStorage::WorkflowProcess &process);
+    static void addSamToBamConvertInfo(const QString& samUrl, const QString& bamUrl, FileStorage::WorkflowProcess& process);
 };
 
 }  // namespace U2

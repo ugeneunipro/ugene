@@ -31,18 +31,18 @@ class MSAEditor;
 class AlignMsaAction : public ExternalToolSupportAction {
     Q_OBJECT
 public:
-    AlignMsaAction(QObject *parent, const QString &toolId, MSAEditor *msaEditor, const QString &text, int order);
+    AlignMsaAction(QObject* parent, const QString& toolId, MSAEditor* msaEditor, const QString& text, int order);
 
-    MSAEditor *getMsaEditor() const;
+    MSAEditor* getMsaEditor() const;
 
 private slots:
     /** Updates action state based on the current MSA Editor state. */
     void sl_updateState();
 
 private:
-    MSAEditor *const msaEditor;
+    MSAEditor* const msaEditor;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_ALIGN_MSA_ACTION_H_
+#endif  // _U2_ALIGN_MSA_ACTION_H_

@@ -68,8 +68,8 @@ static const QString DOM_T_ATTR("score");
 const QString HMMSearchWorkerFactory::ACTOR("hmm2-search");
 
 void HMMSearchWorkerFactory::init() {
-    QList<PortDescriptor *> p;
-    QList<Attribute *> a;
+    QList<PortDescriptor*> p;
+    QList<Attribute*> a;
     {
         Descriptor hd(HMM_PORT, HMMSearchWorker::tr("HMM profile"), HMMSearchWorker::tr("HMM profile(s) to search with."));
         Descriptor sd(BasePorts::IN_SEQ_PORT_ID(), HMMSearchWorker::tr("Input sequence"), HMMSearchWorker::tr("An input sequence (nucleotide or protein) to search in."));
@@ -100,8 +100,8 @@ void HMMSearchWorkerFactory::init() {
 
     Descriptor desc(HMMSearchWorkerFactory::ACTOR, HMMSearchWorker::tr("HMM2 Search"), HMMSearchWorker::tr("Searches each input sequence for significantly similar sequence matches to all specified HMM profiles."
                                                                                                            " In case several profiles were supplied, searches with all profiles one by one and outputs united set of annotations for each sequence."));
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
-    QMap<QString, PropertyDelegate *> delegates;
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
+    QMap<QString, PropertyDelegate*> delegates;
 
     {
         QVariantMap eMap;
@@ -129,11 +129,11 @@ void HMMSearchWorkerFactory::init() {
     proto->setPrompter(new HMMSearchPrompter());
     WorkflowEnv::getProtoRegistry()->registerProto(HMMLib::HMM_CATEGORY(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new HMMSearchWorkerFactory());
 }
 
-static bool isDefaultCfg(PrompterBaseImpl *actor) {
+static bool isDefaultCfg(PrompterBaseImpl* actor) {
     return 1 == actor->getParameter(NSEQ_ATTR).toInt() && -1 == actor->getParameter(DOM_E_ATTR).toInt() && double(-1e+09) == actor->getParameter(DOM_T_ATTR).toDouble();
 }
 
@@ -141,8 +141,8 @@ static bool isDefaultCfg(PrompterBaseImpl *actor) {
  * HMMSearchPrompter
  *******************************/
 QString HMMSearchPrompter::composeRichDoc() {
-    Actor *hmmProducer = qobject_cast<IntegralBusPort *>(target->getPort(HMM_PORT))->getProducer(HMM_PORT);
-    Actor *seqProducer = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_SEQ_PORT_ID()))->getProducer(BasePorts::IN_SEQ_PORT_ID());
+    Actor* hmmProducer = qobject_cast<IntegralBusPort*>(target->getPort(HMM_PORT))->getProducer(HMM_PORT);
+    Actor* seqProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()))->getProducer(BasePorts::IN_SEQ_PORT_ID());
 
     QString seqName = seqProducer ? tr("For each sequence from <u>%1</u>,").arg(seqProducer->getLabel()) : "";
     QString hmmName = hmmProducer ? tr("using all profiles provided by <u>%1</u>,").arg(hmmProducer->getLabel()) : "";
@@ -163,7 +163,7 @@ QString HMMSearchPrompter::composeRichDoc() {
 /*******************************
  * HMMSearchWorker
  *******************************/
-HMMSearchWorker::HMMSearchWorker(Actor *a)
+HMMSearchWorker::HMMSearchWorker(Actor* a)
     : BaseWorker(a, false), hmmPort(NULL), seqPort(NULL), output(NULL) {
 }
 
@@ -201,9 +201,9 @@ bool HMMSearchWorker::isReady() const {
     return hmmHasMes || (hmmEnded && (seqHasMes || seqEnded));
 }
 
-Task *HMMSearchWorker::tick() {
+Task* HMMSearchWorker::tick() {
     while (hmmPort->hasMessage()) {
-        hmms << hmmPort->get().getData().toMap().value(HMM2_SLOT_ID).value<plan7_s *>();
+        hmms << hmmPort->get().getData().toMap().value(HMM2_SLOT_ID).value<plan7_s*>();
     }
     if (!hmmPort->isEnded()) {  //  || hmms.isEmpty() || !seqPort->hasMessage()
         return NULL;
@@ -225,12 +225,12 @@ Task *HMMSearchWorker::tick() {
         CHECK_OP(os, new FailTask(os.getError()));
 
         if (dnaSequence.alphabet->getType() != DNAAlphabet_RAW) {
-            QList<Task *> subtasks;
-            foreach (plan7_s *hmm, hmms) {
+            QList<Task*> subtasks;
+            foreach (plan7_s* hmm, hmms) {
                 subtasks << new HMMSearchTask(hmm, dnaSequence, cfg);
             }
-            Task *searchTask = new MultiTask(tr("Find HMM signals in %1").arg(dnaSequence.getName()), subtasks);
-            connect(new TaskSignalMapper(searchTask), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
+            Task* searchTask = new MultiTask(tr("Find HMM signals in %1").arg(dnaSequence.getName()), subtasks);
+            connect(new TaskSignalMapper(searchTask), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
             return searchTask;
         }
         QString err = tr("Bad sequence supplied to input: %1").arg(dnaSequence.getName());
@@ -243,15 +243,15 @@ Task *HMMSearchWorker::tick() {
     return NULL;
 }
 
-void HMMSearchWorker::sl_taskFinished(Task *t) {
+void HMMSearchWorker::sl_taskFinished(Task* t) {
     SAFE_POINT(NULL != t, "Invalid task is encountered", );
     if (t->isCanceled()) {
         return;
     }
     if (NULL != output) {
         QList<SharedAnnotationData> list;
-        foreach (const QPointer<Task> &sub, t->getSubtasks()) {
-            HMMSearchTask *hst = qobject_cast<HMMSearchTask *>(sub.data());
+        foreach (const QPointer<Task>& sub, t->getSubtasks()) {
+            HMMSearchTask* hst = qobject_cast<HMMSearchTask*>(sub.data());
             list += hst->getResultsAsAnnotations(U2FeatureTypes::MiscSignal, resultName);
         }
 

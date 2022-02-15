@@ -37,16 +37,16 @@ namespace U2 {
 class QDDocFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
-    QDDocFormat(QObject *p);
+    QDDocFormat(QObject* p);
 
-    virtual Document *createNewLoadedDocument(IOAdapterFactory *io, const GUrl &url, U2OpStatus &os, const QVariantMap &fs = QVariantMap());
+    virtual Document* createNewLoadedDocument(IOAdapterFactory* io, const GUrl& url, U2OpStatus& os, const QVariantMap& fs = QVariantMap());
 
-    virtual void storeDocument(Document *document, IOAdapter *io, U2OpStatus &os);
+    virtual void storeDocument(Document* document, IOAdapter* io, U2OpStatus& os);
 
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray &rawData, const GUrl & = GUrl()) const;
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
-    virtual Document *loadTextDocument(IOAdapter *io, const U2DbiRef &targetDb, const QVariantMap &hints, U2OpStatus &os);
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& targetDb, const QVariantMap& hints, U2OpStatus& os);
 };
 
 class QueryScene;
@@ -55,16 +55,16 @@ class QDGObject : public GObject {
     Q_OBJECT
 public:
     static const GObjectType TYPE;
-    QDGObject(const QString &objectName, const QString &data, const QVariantMap &map = QVariantMap())
+    QDGObject(const QString& objectName, const QString& data, const QVariantMap& map = QVariantMap())
         : GObject(TYPE, objectName), serializedScene(data), scene(nullptr) {
         Q_UNUSED(map);
     }
 
-    virtual GObject *clone(const U2DbiRef &dbiRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const;
-    QueryScene *getScene() const {
+    virtual GObject* clone(const U2DbiRef& dbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const;
+    QueryScene* getScene() const {
         return scene;
     }
-    void setSceneRawData(const QString &d) {
+    void setSceneRawData(const QString& d) {
         serializedScene = d;
     }
     QString getSceneRawData() const {
@@ -73,29 +73,29 @@ public:
 
 private:
     QString serializedScene;
-    QueryScene *scene;
+    QueryScene* scene;
 };
 
 class QDViewFactory : public GObjectViewFactory {
     Q_OBJECT
 public:
     static const GObjectViewFactoryId ID;
-    QDViewFactory(QObject *p = nullptr)
+    QDViewFactory(QObject* p = nullptr)
         : GObjectViewFactory(ID, U2::QueryDesignerPlugin::tr("Query Designer"), p) {
     }
 
-    virtual bool canCreateView(const MultiGSelection &multiSelection);
-    virtual Task *createViewTask(const MultiGSelection &multiSelection, bool single = false);
+    virtual bool canCreateView(const MultiGSelection& multiSelection);
+    virtual Task* createViewTask(const MultiGSelection& multiSelection, bool single = false);
 };
 
 class OpenQDViewTask : public ObjectViewTask {
     Q_OBJECT
 public:
-    OpenQDViewTask(Document *doc);
+    OpenQDViewTask(Document* doc);
     virtual void open();
 
 private:
-    Document *document;
+    Document* document;
 };
 
 }  // namespace U2

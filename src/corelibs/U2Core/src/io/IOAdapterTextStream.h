@@ -48,7 +48,7 @@ public:
      * The 'ioAdapter' must be in 'open' state.
      * The QIODevice is writable only if the  'ioAdapter' is writable.
      */
-    IOAdapterDevice(IOAdapter *ioAdapter, QObject *parent = nullptr);
+    IOAdapterDevice(IOAdapter* ioAdapter, QObject* parent = nullptr);
 
     bool atEnd() const override;
 
@@ -57,12 +57,12 @@ public:
     bool seek(qint64 seekPos) override;
 
 protected:
-    qint64 readData(char *data, qint64 length) override;
+    qint64 readData(char* data, qint64 length) override;
 
-    qint64 writeData(const char *data, qint64 length) override;
+    qint64 writeData(const char* data, qint64 length) override;
 
 private:
-    IOAdapter *ioAdapter;
+    IOAdapter* ioAdapter;
     qint64 currentPos;
 };
 
@@ -71,16 +71,16 @@ class U2CORE_EXPORT IOAdapterReaderAndWriterBase {
     Q_DISABLE_COPY(IOAdapterReaderAndWriterBase)
 public:
     /** Initializes underlying qt stream & io-device. If 'codec' is null uses default locale codec. */
-    IOAdapterReaderAndWriterBase(IOAdapter *ioAdapter, QTextCodec *codec = nullptr);
+    IOAdapterReaderAndWriterBase(IOAdapter* ioAdapter, QTextCodec* codec = nullptr);
 
     /** Returns url from the ioAdapter. */
     GUrl getURL() const;
 
     /** Returns factory from the ioAdapter. */
-    IOAdapterFactory *getFactory() const;
+    IOAdapterFactory* getFactory() const;
 
 protected:
-    IOAdapter *ioAdapter;
+    IOAdapter* ioAdapter;
     QScopedPointer<QIODevice> ioDevice;
     QTextStream stream;
 };
@@ -97,7 +97,7 @@ public:
      * Initializes text stream with the ioAdapter wrapped into QIODevice.
      * Performs no actual reading from the ioAdapter.
      */
-    IOAdapterReader(IOAdapter *ioAdapter);
+    IOAdapterReader(IOAdapter* ioAdapter);
 
     /** Pushes back all unused buffers to ioAdapter by calling 'skip' method. */
     ~IOAdapterReader();
@@ -107,12 +107,12 @@ public:
      * Clears the 'result' buffer first before reading.
      * Returns number of characters read, same as result.length().
      */
-    int read(U2OpStatus &os,
-             QString &result,
+    int read(U2OpStatus& os,
+             QString& result,
              int maxLength,
-             const QBitArray &terminators = QBitArray(),
+             const QBitArray& terminators = QBitArray(),
              IOAdapter::TerminatorHandling terminatorMode = IOAdapter::Term_Include,
-             bool *terminatorFound = nullptr);
+             bool* terminatorFound = nullptr);
 
     /**
      * Reads a single line (until '\n' character) from the text stream into the 'result' buffer.
@@ -123,14 +123,14 @@ public:
      *
      * This operation can be 'undone'.
      */
-    bool readLine(U2OpStatus &os, QString &result, int maxLength);
+    bool readLine(U2OpStatus& os, QString& result, int maxLength);
 
     /**
      * Returns a single line read from the stream.
      * The method behaves exactly like readLine(os, result, ...) with a buffer,
      *  but always creates and returns a new buffer QString and returns it as the result.
      */
-    QString readLine(U2OpStatus &os, int maxLength);
+    QString readLine(U2OpStatus& os, int maxLength);
 
     /** Returns true if the end of the stream is reached. */
     bool atEnd() const;
@@ -142,17 +142,17 @@ public:
     int getProgress() const;
 
     /** Undo last read() operation. */
-    void undo(U2OpStatus &os);
+    void undo(U2OpStatus& os);
 
 private:
     /** Reads a single character from the stream. Returns '\0' if end of stream is reached. */
-    QChar readChar(U2OpStatus &os);
+    QChar readChar(U2OpStatus& os);
 
     /**
      * Puts back the last character from the 'textForUndo' into the unreadCharsBuffer.
      * Reduces size of 'textForUndo' block by 1. This method is safe to call only from the 'read()' method: read comments inside.
      */
-    void unreadChar(U2OpStatus &os);
+    void unreadChar(U2OpStatus& os);
 
     /** The last text read during the last 'read' call. Contains all text (with separators) and is used for undo(). */
     QString textForUndo;
@@ -175,13 +175,13 @@ class U2CORE_EXPORT IOAdapterWriter : public IOAdapterReaderAndWriterBase {
     Q_DISABLE_COPY(IOAdapterWriter)
 public:
     /** Creates new instance of a text stream with the given codec. */
-    IOAdapterWriter(IOAdapter *ioAdapter, QTextCodec *codec = nullptr);
+    IOAdapterWriter(IOAdapter* ioAdapter, QTextCodec* codec = nullptr);
 
     /**
      * Writes text data to the stream.
      * Sets error flag is the was an error during the operation or 'text' was not fully written.
      */
-    void write(U2OpStatus &os, const QString &text);
+    void write(U2OpStatus& os, const QString& text);
 };
 
 }  // namespace U2

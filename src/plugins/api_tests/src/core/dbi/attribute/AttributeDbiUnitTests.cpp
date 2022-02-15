@@ -39,10 +39,10 @@ static const QString OBJECT_ATTRIBUTES_NAME = "object_attributes_name";
 
 static const QString OBJECT_ATTRIBUTES_CHILD_ID = "object_attributes_child_id";
 
-const QString &AttributeTestData::ATT_DB_URL("attribute-dbi.ugenedb");
+const QString& AttributeTestData::ATT_DB_URL("attribute-dbi.ugenedb");
 
-U2AttributeDbi *AttributeTestData::attributeDbi = nullptr;
-QList<U2DataId> *AttributeTestData::objects = nullptr;
+U2AttributeDbi* AttributeTestData::attributeDbi = nullptr;
+QList<U2DataId>* AttributeTestData::objects = nullptr;
 TestDbiProvider AttributeTestData::dbiProvider = TestDbiProvider();
 
 static bool registerTests() {
@@ -65,8 +65,8 @@ bool AttributeTestData::registerTest = registerTests();
 void AttributeTestData::init() {
     bool ok = dbiProvider.init(ATT_DB_URL, false);
     SAFE_POINT(ok, "dbi provider failed to initialize", );
-    U2Dbi *dbi = dbiProvider.getDbi();
-    U2ObjectDbi *objDbi = dbi->getObjectDbi();
+    U2Dbi* dbi = dbiProvider.getDbi();
+    U2ObjectDbi* objDbi = dbi->getObjectDbi();
     U2OpStatusImpl opStatus;
 
     objects = new QList<U2DataId>(objDbi->getObjects("/", 0, U2DbiOptions::U2_DBI_NO_LIMIT, opStatus));
@@ -76,7 +76,7 @@ void AttributeTestData::init() {
     SAFE_POINT(nullptr != attributeDbi, "attribute database not loaded", );
 }
 
-U2AttributeDbi *AttributeTestData::getAttributeDbi() {
+U2AttributeDbi* AttributeTestData::getAttributeDbi() {
     if (attributeDbi == nullptr) {
         AttributeTestData::init();
     }
@@ -92,7 +92,7 @@ void AttributeTestData::shutdown() {
     }
 }
 
-static bool compareAttributesBase(const U2Attribute &attr1, const U2Attribute &attr2) {
+static bool compareAttributesBase(const U2Attribute& attr1, const U2Attribute& attr2) {
     if (attr1.objectId != attr2.objectId) {
         return false;
     }
@@ -109,7 +109,7 @@ static bool compareAttributesBase(const U2Attribute &attr1, const U2Attribute &a
 }
 
 template<class A>
-static bool compareAttributes(const A &attr1, const A &attr2) {
+static bool compareAttributes(const A& attr1, const A& attr2) {
     if (attr1.value != attr2.value) {
         return false;
     }
@@ -117,10 +117,10 @@ static bool compareAttributes(const A &attr1, const A &attr2) {
 }
 
 template<class T, typename Compare>
-bool removeOne(QList<T> &list, const T &el, Compare compare) {
+bool removeOne(QList<T>& list, const T& el, Compare compare) {
     QMutableListIterator<T> iter(list);
     while (iter.hasNext()) {
-        const T &current = iter.next();
+        const T& current = iter.next();
         if (compare(current, el)) {
             iter.remove();
             return true;
@@ -130,11 +130,11 @@ bool removeOne(QList<T> &list, const T &el, Compare compare) {
 }
 
 template<class T>
-void filterAttributesByName(QList<T> &attrs, const QString &name) {
+void filterAttributesByName(QList<T>& attrs, const QString& name) {
     if (!name.isEmpty()) {
         QMutableListIterator<T> iter(attrs);
         while (iter.hasNext()) {
-            const T &current = iter.next();
+            const T& current = iter.next();
             if (current.name != name) {
                 iter.remove();
             }
@@ -143,22 +143,22 @@ void filterAttributesByName(QList<T> &attrs, const QString &name) {
 }
 
 template<class T>
-void filterAttributesByChildId(QList<T> &attrs, const U2DataId &childId) {
+void filterAttributesByChildId(QList<T>& attrs, const U2DataId& childId) {
     QMutableListIterator<T> iter(attrs);
     while (iter.hasNext()) {
-        const T &current = iter.next();
+        const T& current = iter.next();
         if (current.childId != childId) {
             iter.remove();
         }
     }
 }
 
-void AttributeTestData::testAttributesMatch(QList<U2IntegerAttribute> &expectedInt,
-                                            QList<U2RealAttribute> &expectedReal,
-                                            QList<U2StringAttribute> &expectedString,
-                                            QList<U2ByteArrayAttribute> &expectedArray,
-                                            const QList<U2DataId> &attributes) {
-    foreach (const U2DataId &attrId, attributes) {
+void AttributeTestData::testAttributesMatch(QList<U2IntegerAttribute>& expectedInt,
+                                            QList<U2RealAttribute>& expectedReal,
+                                            QList<U2StringAttribute>& expectedString,
+                                            QList<U2ByteArrayAttribute>& expectedArray,
+                                            const QList<U2DataId>& attributes) {
+    foreach (const U2DataId& attrId, attributes) {
         U2DataType type = U2DbiUtils::toType(attrId);
         SAFE_POINT(U2Type::isAttributeType(type), "inncorrect attribute type", );
 
@@ -189,17 +189,17 @@ void AttributeTestData::testAttributesMatch(QList<U2IntegerAttribute> &expectedI
     SAFE_POINT(expectedArray.size() == 0, "expected byte array list size should be 0", );
 }
 
-void AttributeTestData::getObjectAttrsTest(const APITestData &testData, bool filterByName, bool filterByChild) {
-    const ObjectAttributesTestData &attrsData = testData.getValue<ObjectAttributesTestData>(OBJECT_ATTRIBUTES);
+void AttributeTestData::getObjectAttrsTest(const APITestData& testData, bool filterByName, bool filterByChild) {
+    const ObjectAttributesTestData& attrsData = testData.getValue<ObjectAttributesTestData>(OBJECT_ATTRIBUTES);
 
-    const U2DataId &objectId = attrsData.objId;
+    const U2DataId& objectId = attrsData.objId;
 
     QList<U2IntegerAttribute> attrsInt = attrsData.intAttrs;
     QList<U2RealAttribute> attrsReal = attrsData.realAttrs;
     QList<U2StringAttribute> attrsString = attrsData.stringAttrs;
     QList<U2ByteArrayAttribute> attrsByteArray = attrsData.byteArrAttrs;
 
-    const U2DataId &childId = testData.getValue<U2DataId>(OBJECT_ATTRIBUTES_CHILD_ID);
+    const U2DataId& childId = testData.getValue<U2DataId>(OBJECT_ATTRIBUTES_CHILD_ID);
     QString name;
 
     if (filterByName) {
@@ -227,7 +227,7 @@ void AttributeTestData::getObjectAttrsTest(const APITestData &testData, bool fil
 }
 
 void AttributeDbiUnitTests_getAvailableAttributeNames::Test() {
-    U2AttributeDbi *attributeDbi = AttributeTestData::getAttributeDbi();
+    U2AttributeDbi* attributeDbi = AttributeTestData::getAttributeDbi();
 
     QStringList names;
     names << "int1"
@@ -242,14 +242,14 @@ void AttributeDbiUnitTests_getAvailableAttributeNames::Test() {
     CHECK_NO_ERROR(os);
 
     CHECK_TRUE(actual.size() == names.size(), "incorrect expected available attribute names size");
-    foreach (const QString &name, names) {
+    foreach (const QString& name, names) {
         CHECK_TRUE(actual.removeOne(name), "available attribute name not removed");
     }
     CHECK_TRUE(actual.size() == 0, "available attribute names size should be 0");
 }
 
 void AttributeDbiUnitTests_getObjectAttributes::Test() {
-    const U2DataId &childId = U2DbiUtils::toU2DataId(2, U2Type::Assembly);
+    const U2DataId& childId = U2DbiUtils::toU2DataId(2, U2Type::Assembly);
     APITestData testData;
 
     // getObjectAttributes
@@ -321,7 +321,7 @@ void AttributeDbiUnitTests_getObjectAttributesByName::Test() {
 
 void AttributeDbiUnitTests_getObjectPairAttributes::Test() {
     APITestData testData;
-    const U2DataId &childId = U2DbiUtils::toU2DataId(2, U2Type::Assembly);
+    const U2DataId& childId = U2DbiUtils::toU2DataId(2, U2Type::Assembly);
     testData.addValue<U2DataId>(OBJECT_ATTRIBUTES_CHILD_ID, childId);
     AttributeTestData::getObjectAttrsTest(testData, false, true);
 }
@@ -329,44 +329,44 @@ void AttributeDbiUnitTests_getObjectPairAttributes::Test() {
 void AttributeDbiUnitTests_getObjectPairAttributesByName::Test() {
     APITestData testData;
     testData.addValue<QString>(OBJECT_ATTRIBUTES_NAME, "int2");
-    const U2DataId &childId = U2DbiUtils::toU2DataId(2, U2Type::Assembly);
+    const U2DataId& childId = U2DbiUtils::toU2DataId(2, U2Type::Assembly);
     testData.addValue<U2DataId>(OBJECT_ATTRIBUTES_CHILD_ID, childId);
     AttributeTestData::getObjectAttrsTest(testData, true, true);
 }
 
 void AttributeDbiUnitTests_removeAttributes::Test() {
-    U2AttributeDbi *attributeDbi = AttributeTestData::getAttributeDbi();
+    U2AttributeDbi* attributeDbi = AttributeTestData::getAttributeDbi();
 
-    const U2DataId &objectId = AttributeTestData::getObjects()->first();
+    const U2DataId& objectId = AttributeTestData::getObjects()->first();
     U2OpStatusImpl os;
-    const QList<U2DataId> &attrs1 = attributeDbi->getObjectAttributes(objectId, "", os);
+    const QList<U2DataId>& attrs1 = attributeDbi->getObjectAttributes(objectId, "", os);
     CHECK_NO_ERROR(os);
 
     attributeDbi->removeAttributes(attrs1, os);
     CHECK_NO_ERROR(os);
 
-    const QList<U2DataId> &attrs2 = attributeDbi->getObjectAttributes(objectId, "", os);
+    const QList<U2DataId>& attrs2 = attributeDbi->getObjectAttributes(objectId, "", os);
     CHECK_NO_ERROR(os);
     CHECK_TRUE(attrs2.isEmpty(), "attribute list should be empty");
 }
 
 void AttributeDbiUnitTests_removeObjectAttributes::Test() {
-    U2AttributeDbi *attributeDbi = AttributeTestData::getAttributeDbi();
+    U2AttributeDbi* attributeDbi = AttributeTestData::getAttributeDbi();
 
-    const U2DataId &objectId = AttributeTestData::getObjects()->first();
+    const U2DataId& objectId = AttributeTestData::getObjects()->first();
     {
         U2OpStatusImpl os;
         attributeDbi->removeObjectAttributes(objectId, os);
         CHECK_NO_ERROR(os);
     }
     U2OpStatusImpl os;
-    const QList<U2DataId> &attrs = attributeDbi->getObjectAttributes(objectId, "", os);
+    const QList<U2DataId>& attrs = attributeDbi->getObjectAttributes(objectId, "", os);
     CHECK_NO_ERROR(os);
     CHECK_TRUE(attrs.isEmpty(), "object attribute list should be empty");
 }
 
 void AttributeDbiUnitTests_IntegerAttribute::Test() {
-    U2AttributeDbi *attributeDbi = AttributeTestData::getAttributeDbi();
+    U2AttributeDbi* attributeDbi = AttributeTestData::getAttributeDbi();
 
     U2IntegerAttribute attr;
     attr.objectId = AttributeTestData::getObjects()->first();
@@ -385,7 +385,7 @@ void AttributeDbiUnitTests_IntegerAttribute::Test() {
 }
 
 void AttributeDbiUnitTests_RealAttribute::Test() {
-    U2AttributeDbi *attributeDbi = AttributeTestData::getAttributeDbi();
+    U2AttributeDbi* attributeDbi = AttributeTestData::getAttributeDbi();
 
     U2RealAttribute attr;
     attr.objectId = AttributeTestData::getObjects()->first();
@@ -404,7 +404,7 @@ void AttributeDbiUnitTests_RealAttribute::Test() {
 }
 
 void AttributeDbiUnitTests_StringAttribute::Test() {
-    U2AttributeDbi *attributeDbi = AttributeTestData::getAttributeDbi();
+    U2AttributeDbi* attributeDbi = AttributeTestData::getAttributeDbi();
 
     U2StringAttribute attr;
     attr.objectId = AttributeTestData::getObjects()->first();
@@ -423,7 +423,7 @@ void AttributeDbiUnitTests_StringAttribute::Test() {
 }
 
 void AttributeDbiUnitTests_ByteArrayAttribute::Test() {
-    U2AttributeDbi *attributeDbi = AttributeTestData::getAttributeDbi();
+    U2AttributeDbi* attributeDbi = AttributeTestData::getAttributeDbi();
 
     U2ByteArrayAttribute attr;
     attr.objectId = AttributeTestData::getObjects()->first();

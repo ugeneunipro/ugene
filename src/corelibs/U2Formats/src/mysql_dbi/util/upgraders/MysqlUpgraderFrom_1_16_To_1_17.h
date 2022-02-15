@@ -30,12 +30,12 @@ class MysqlDbRef;
 
 class MysqlUpgraderFrom_1_16_To_1_17 : public MysqlUpgrader {
 public:
-    MysqlUpgraderFrom_1_16_To_1_17(MysqlDbi *dbi);
+    MysqlUpgraderFrom_1_16_To_1_17(MysqlDbi* dbi);
 
-    void upgrade(U2OpStatus &os) const;
+    void upgrade(U2OpStatus& os) const;
 
 private:
-    void upgradeFeatureDbi(U2OpStatus &os, MysqlDbRef *dbRef) const;
+    void upgradeFeatureDbi(U2OpStatus& os, MysqlDbRef* dbRef) const;
 };
 
 }  // namespace U2

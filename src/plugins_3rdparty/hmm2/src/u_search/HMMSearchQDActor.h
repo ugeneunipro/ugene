@@ -32,11 +32,11 @@ class HMMSearchTask;
 class HMM2QDActor : public QDActor {
     Q_OBJECT
 public:
-    HMM2QDActor(QDActorPrototype const *proto);
+    HMM2QDActor(QDActorPrototype const* proto);
     int getMinResultLen() const;
     int getMaxResultLen() const;
     QString getText() const;
-    Task *getAlgorithmTask(const QVector<U2Region> &location);
+    Task* getAlgorithmTask(const QVector<U2Region>& location);
     QColor defaultColor() const {
         return QColor(0x66, 0xa3, 0xd2);
     }
@@ -45,11 +45,11 @@ public:
     }
     virtual void updateEditor();
 private slots:
-    void sl_onTaskFinished(Task *);
+    void sl_onTaskFinished(Task*);
     void sl_evChanged(int);
 
 private:
-    QMap<HMMSearchTask *, qint64> offsets;
+    QMap<HMMSearchTask*, qint64> offsets;
 };
 
 class HMM2QDActorPrototype : public QDActorPrototype {
@@ -58,7 +58,7 @@ public:
     QIcon getIcon() const {
         return QIcon(":hmm2/images/hmmer_16.png");
     }
-    QDActor *createInstance() const {
+    QDActor* createInstance() const {
         return new HMM2QDActor(this);
     }
 };

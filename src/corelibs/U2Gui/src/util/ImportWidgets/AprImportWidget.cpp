@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-AprImportWidget::AprImportWidget(const GUrl &url, const QVariantMap &settings)
+AprImportWidget::AprImportWidget(const GUrl& url, const QVariantMap& settings)
     : ImportWidget() {
     setupUi(this);
 
@@ -54,7 +54,7 @@ QVariantMap AprImportWidget::getSettings() const {
     return settings;
 }
 
-void AprImportWidget::initSaveController(const QString &url, const DocumentFormatId defaultFormatId) {
+void AprImportWidget::initSaveController(const QString& url, const DocumentFormatId defaultFormatId) {
     SaveDocumentControllerConfig config;
 
     config.defaultFormatId = defaultFormatId;
@@ -75,7 +75,7 @@ void AprImportWidget::initSaveController(const QString &url, const DocumentForma
     saveController = new SaveDocumentController(config, formats, this);
 }
 
-DocumentFormatId AprImportWidget::getFormatId(const QVariantMap &settings) {
+DocumentFormatId AprImportWidget::getFormatId(const QVariantMap& settings) {
     DocumentFormatId res = settings.value(ImportHint_FormatId).toString();
     if (res.isEmpty()) {
         res = BaseDocumentFormats::FASTA;

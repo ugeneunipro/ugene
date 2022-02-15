@@ -27,16 +27,16 @@
 
 #include <U2Lang/WorkflowContext.h>
 
-const char *ANNOTATIONS_COUNT_LABEL = "Count of annotations: ";
-const char *ANNOTATION_NAME_LABEL = " Name: ";
-const char *REGION_LIST_LABEL = " Regions: ";
+const char* ANNOTATIONS_COUNT_LABEL = "Count of annotations: ";
+const char* ANNOTATION_NAME_LABEL = " Name: ";
+const char* REGION_LIST_LABEL = " Regions: ";
 const QString NEW_LINE_SYMBOL = "\n";
 
 namespace U2 {
 
 using namespace Workflow;
 
-AnnotationsMessageTranslator::AnnotationsMessageTranslator(const QVariant &atomicMessage, WorkflowContext *initContext)
+AnnotationsMessageTranslator::AnnotationsMessageTranslator(const QVariant& atomicMessage, WorkflowContext* initContext)
     : BaseMessageTranslator(atomicMessage, initContext) {
     annTable = StorageUtils::getAnnotationTable(context->getDataStorage(), source);
 }
@@ -44,12 +44,12 @@ AnnotationsMessageTranslator::AnnotationsMessageTranslator(const QVariant &atomi
 QString AnnotationsMessageTranslator::getTranslation() const {
     QString result = QObject::tr(ANNOTATIONS_COUNT_LABEL) + QString::number(annTable.size()) + INFO_TAGS_SEPARATOR + NEW_LINE_SYMBOL;
     quint32 annotationsCounter = 1;
-    foreach (const SharedAnnotationData &data, annTable) {
+    foreach (const SharedAnnotationData& data, annTable) {
         result += " " + QString::number(annotationsCounter) + ". " + QObject::tr(ANNOTATION_NAME_LABEL) + "'" + data->name + "'" + INFO_FEATURES_SEPARATOR;
         QVector<U2Region> annotatedRegions = data->getRegions();
         if (!annotatedRegions.isEmpty()) {
             result += QObject::tr(REGION_LIST_LABEL);
-            foreach (const U2Region &region, annotatedRegions) {
+            foreach (const U2Region& region, annotatedRegions) {
                 result += region.toString() + INFO_FEATURES_SEPARATOR;
             }
             result = result.left(result.size() - INFO_FEATURES_SEPARATOR.size());

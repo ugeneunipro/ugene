@@ -104,26 +104,26 @@ public:
  */
 class U2CORE_EXPORT U2UseCommonUserModStep {
 public:
-    U2UseCommonUserModStep(U2Dbi *_dbi, const U2DataId &_masterObjId, U2OpStatus &os);
-    U2UseCommonUserModStep(const U2EntityRef &masterObjEntity, U2OpStatus &os);
+    U2UseCommonUserModStep(U2Dbi* _dbi, const U2DataId& _masterObjId, U2OpStatus& os);
+    U2UseCommonUserModStep(const U2EntityRef& masterObjEntity, U2OpStatus& os);
     ~U2UseCommonUserModStep();
 
-    U2Dbi *getDbi() const;
+    U2Dbi* getDbi() const;
 
 private:
-    U2Dbi *dbi;
+    U2Dbi* dbi;
     bool valid;
     QScopedPointer<DbiConnection> con;
     const U2DataId masterObjId;
 
 private:
-    void init(U2OpStatus &os);
+    void init(U2OpStatus& os);
 };
 
 /** Helper class to track info about an object */
 class U2CORE_EXPORT ModificationAction {
 public:
-    ModificationAction(U2AbstractDbi *dbi, const U2DataId &masterObjId);
+    ModificationAction(U2AbstractDbi* dbi, const U2DataId& masterObjId);
     virtual ~ModificationAction();
 
     /**
@@ -132,19 +132,19 @@ public:
         If there are tracking steps with greater or equal version (e.g. left from "undo"), removes these records.
         Returns the type of modifications  tracking for the object.
      */
-    virtual U2TrackModType prepare(U2OpStatus &os) = 0;
+    virtual U2TrackModType prepare(U2OpStatus& os) = 0;
 
     /**
         Adds the object ID to the object IDs set.
         If tracking is enabled, adds a new single step to the list.
      */
-    virtual void addModification(const U2DataId &objId, qint64 modType, const QByteArray &modDetails, U2OpStatus &os) = 0;
+    virtual void addModification(const U2DataId& objId, qint64 modType, const QByteArray& modDetails, U2OpStatus& os) = 0;
 
     /**
         If tracking is enabled, creates modification steps in the database.
         Increments version of all objects in the set.
      */
-    virtual void complete(U2OpStatus &os) = 0;
+    virtual void complete(U2OpStatus& os) = 0;
 
     /** Returns modification tracking type of the master object. */
     U2TrackModType getTrackModType() const {
@@ -152,7 +152,7 @@ public:
     }
 
 protected:
-    U2AbstractDbi *dbi;
+    U2AbstractDbi* dbi;
 
     U2DataId masterObjId;
     U2TrackModType trackMod;

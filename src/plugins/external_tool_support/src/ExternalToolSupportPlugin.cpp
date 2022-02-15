@@ -124,7 +124,7 @@
 
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
+extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
     return new ExternalToolSupportPlugin();
 }
 
@@ -135,7 +135,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
 
     // External tool registry keeps order of items added
     // it is important because there might be dependencies
-    ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
+    ExternalToolRegistry* etRegistry = AppContext::getExternalToolRegistry();
     SAFE_POINT(etRegistry != nullptr, "ExternalToolRegistry is null", );
 
     // python with modules
@@ -149,19 +149,19 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     etRegistry->registerEntry(new JavaSupport());
 
     // ClustalW
-    ClustalWSupport *clustalWTool = new ClustalWSupport();
+    ClustalWSupport* clustalWTool = new ClustalWSupport();
     etRegistry->registerEntry(clustalWTool);
 
     // ClustalO
-    ClustalOSupport *clustalOTool = new ClustalOSupport();
+    ClustalOSupport* clustalOTool = new ClustalOSupport();
     etRegistry->registerEntry(clustalOTool);
 
     // MAFFT
-    MAFFTSupport *mAFFTTool = new MAFFTSupport();
+    MAFFTSupport* mAFFTTool = new MAFFTSupport();
     etRegistry->registerEntry(mAFFTTool);
 
     // T-Coffee
-    TCoffeeSupport *tCoffeeTool = new TCoffeeSupport();
+    TCoffeeSupport* tCoffeeTool = new TCoffeeSupport();
     etRegistry->registerEntry(tCoffeeTool);
 
     // MrBayes
@@ -177,7 +177,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         clustalWTool->getViewContext()->setParent(this);
         clustalWTool->getViewContext()->init();
 
-        ExternalToolSupportAction *clustalWAction = new ExternalToolSupportAction(tr("Align with ClustalW..."), this, QStringList(ClustalWSupport::ET_CLUSTAL_ID));
+        ExternalToolSupportAction* clustalWAction = new ExternalToolSupportAction(tr("Align with ClustalW..."), this, QStringList(ClustalWSupport::ET_CLUSTAL_ID));
         clustalWAction->setObjectName(ToolsMenu::MALIGN_CLUSTALW);
         connect(clustalWAction, SIGNAL(triggered()), clustalWTool, SLOT(sl_runWithExtFileSpecify()));
         ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, clustalWAction);
@@ -185,7 +185,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         clustalOTool->getViewContext()->setParent(this);
         clustalOTool->getViewContext()->init();
 
-        ExternalToolSupportAction *clustalOAction = new ExternalToolSupportAction(tr("Align with ClustalO..."), this, QStringList(ClustalOSupport::ET_CLUSTALO_ID));
+        ExternalToolSupportAction* clustalOAction = new ExternalToolSupportAction(tr("Align with ClustalO..."), this, QStringList(ClustalOSupport::ET_CLUSTALO_ID));
         clustalOAction->setObjectName(ToolsMenu::MALIGN_CLUSTALO);
         connect(clustalOAction, SIGNAL(triggered()), clustalOTool, SLOT(sl_runWithExtFileSpecify()));
         ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, clustalOAction);
@@ -193,7 +193,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         mAFFTTool->getViewContext()->setParent(this);
         mAFFTTool->getViewContext()->init();
 
-        ExternalToolSupportAction *mAFFTAction = new ExternalToolSupportAction(tr("Align with MAFFT..."), this, QStringList(MAFFTSupport::ET_MAFFT_ID));
+        ExternalToolSupportAction* mAFFTAction = new ExternalToolSupportAction(tr("Align with MAFFT..."), this, QStringList(MAFFTSupport::ET_MAFFT_ID));
         mAFFTAction->setObjectName(ToolsMenu::MALIGN_MAFFT);
         connect(mAFFTAction, SIGNAL(triggered()), mAFFTTool, SLOT(sl_runWithExtFileSpecify()));
         ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, mAFFTAction);
@@ -201,7 +201,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         tCoffeeTool->getViewContext()->setParent(this);
         tCoffeeTool->getViewContext()->init();
 
-        ExternalToolSupportAction *tCoffeeAction = new ExternalToolSupportAction(tr("Align with T-Coffee..."), this, QStringList(TCoffeeSupport::ET_TCOFFEE_ID));
+        ExternalToolSupportAction* tCoffeeAction = new ExternalToolSupportAction(tr("Align with T-Coffee..."), this, QStringList(TCoffeeSupport::ET_TCOFFEE_ID));
         tCoffeeAction->setObjectName(ToolsMenu::MALIGN_TCOFFEE);
         connect(tCoffeeAction, SIGNAL(triggered()), tCoffeeTool, SLOT(sl_runWithExtFileSpecify()));
         ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, tCoffeeAction);
@@ -226,7 +226,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     etRegistry->registerEntry(makeBlastDbTool);
 
     // CAP3
-    CAP3Support *cap3Tool = new CAP3Support(CAP3Support::ET_CAP3_ID, CAP3Support::ET_CAP3);
+    CAP3Support* cap3Tool = new CAP3Support(CAP3Support::ET_CAP3_ID, CAP3Support::ET_CAP3);
     etRegistry->registerEntry(cap3Tool);
 
     // Bowtie 1
@@ -257,7 +257,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     etRegistry->registerEntry(new VcfConsensusSupport());
 
     // Spidey
-    SpideySupport *spideySupport = new SpideySupport();
+    SpideySupport* spideySupport = new SpideySupport();
     etRegistry->registerEntry(spideySupport);
 
     // bedtools
@@ -363,11 +363,11 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         ToolsMenu::addAction(ToolsMenu::SANGER_MENU, cap3Action);
         ToolsMenu::addAction(ToolsMenu::SANGER_MENU, alignToRefBlastAction);
 
-        GObjectViewWindowContext *spideyCtx = spideySupport->getViewContext();
+        GObjectViewWindowContext* spideyCtx = spideySupport->getViewContext();
         spideyCtx->setParent(this);
         spideyCtx->init();
 
-        HmmerContext *hmmerContext = new HmmerContext(this);
+        HmmerContext* hmmerContext = new HmmerContext(this);
         hmmerContext->init();
     }
 
@@ -378,7 +378,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     readsFormats << BaseDocumentFormats::FASTA;
     readsFormats << BaseDocumentFormats::FASTQ;
 
-    DnaAssemblyAlgRegistry *dnaAssemblyRegistry = AppContext::getDnaAssemblyAlgRegistry();
+    DnaAssemblyAlgRegistry* dnaAssemblyRegistry = AppContext::getDnaAssemblyAlgRegistry();
     dnaAssemblyRegistry->registerAlgorithm(new DnaAssemblyAlgorithmEnv(BowtieTask::taskName, new BowtieTaskFactory(), new BowtieGUIExtensionsFactory(), true /*Index*/, false /*Dbi*/, true /*Paired-reads*/, referenceFormats, readsFormats));
     dnaAssemblyRegistry->registerAlgorithm(new DnaAssemblyAlgorithmEnv(BwaTask::ALGORITHM_BWA_ALN, new BwaTaskFactory(), new BwaGUIExtensionsFactory(), true /*Index*/, false /*Dbi*/, true /*Paired*/, referenceFormats, readsFormats));
     dnaAssemblyRegistry->registerAlgorithm(new DnaAssemblyAlgorithmEnv(BwaTask::ALGORITHM_BWA_SW, new BwaTaskFactory(), new BwaSwGUIExtensionsFactory(), true /*Index*/, false /*Dbi*/, false /*Paired*/, referenceFormats, readsFormats));
@@ -387,8 +387,8 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     readsFormats << BaseDocumentFormats::RAW_DNA_SEQUENCE;
     dnaAssemblyRegistry->registerAlgorithm(new DnaAssemblyAlgorithmEnv(Bowtie2Task::taskName, new Bowtie2TaskFactory(), new Bowtie2GUIExtensionsFactory(), true /*Index*/, false /*Dbi*/, true /*Paired-reads*/, referenceFormats, readsFormats));
 
-    GTestFormatRegistry *testFormatRegistry = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(testFormatRegistry->findFormat("XML"));
+    GTestFormatRegistry* testFormatRegistry = AppContext::getTestFramework()->getTestFormatRegistry();
+    XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(testFormatRegistry->findFormat("XML"));
     xmlTestFormat->registerTestFactories(BowtieTests::createTestFactories());
     xmlTestFormat->registerTestFactories(Bowtie2Tests::createTestFactories());
     xmlTestFormat->registerTestFactories(BwaTests::createTestFactories());

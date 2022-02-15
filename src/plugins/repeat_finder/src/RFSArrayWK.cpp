@@ -23,7 +23,7 @@
 
 namespace U2 {
 
-RFSArrayWKAlgorithm::RFSArrayWKAlgorithm(RFResultsListener *rl, const char *seqX, int sizeX, const char *seqY, int sizeY, DNAAlphabetType seqType, int w, int k)
+RFSArrayWKAlgorithm::RFSArrayWKAlgorithm(RFResultsListener* rl, const char* seqX, int sizeX, const char* seqY, int sizeY, DNAAlphabetType seqType, int w, int k)
     : RFAlgorithmBase(rl, seqX, sizeX, seqY, sizeY, seqType, w, k, TaskFlags_NR_FOSCOE) {
     q = WINDOW_SIZE / (C + 1);
     indexTask = nullptr;
@@ -67,7 +67,7 @@ void RFSArrayWKAlgorithm::prepare() {
     setMaxParallelSubtasks(1);
 
     for (int i = 0; i < nThreads; i++) {
-        RFSArrayWKSubtask *t = new RFSArrayWKSubtask(this, i);
+        RFSArrayWKSubtask* t = new RFSArrayWKSubtask(this, i);
         t->setSubtaskProgressWeight((100 - arrayPercent) / (100.0F * nThreads));
         addSubTask(t);
     }
@@ -77,34 +77,34 @@ void RFSArrayWKAlgorithm::cleanup() {
     diagOffsets.resize(0);
 }
 
-QList<Task *> RFSArrayWKAlgorithm::onSubTaskFinished(Task *subTask) {
+QList<Task*> RFSArrayWKAlgorithm::onSubTaskFinished(Task* subTask) {
     if (subTask == indexTask) {
         setMaxParallelSubtasks(nThreads);
     }
-    return QList<Task *>();
+    return QList<Task*>();
 }
 
 #define IS_THREAD_DIAG(diagNum) \
     ((nThreads == 1) || (diagNum % nThreads == t->tid))
 
-void RFSArrayWKAlgorithm::calculate(RFSArrayWKSubtask *t) {
-    SArrayIndex *_index = indexTask->index;
+void RFSArrayWKAlgorithm::calculate(RFSArrayWKSubtask* t) {
+    SArrayIndex* _index = indexTask->index;
 
     int W = WINDOW_SIZE;
     int CMAX = C;
 
-    const char *dataA = arraySeq;
-    const char *dataAEnd = dataA + ARRAY_SIZE;
+    const char* dataA = arraySeq;
+    const char* dataAEnd = dataA + ARRAY_SIZE;
     int aSize = ARRAY_SIZE;
 
-    const char *dataS = searchSeq;
-    const char *dataSEnd = searchSeq + SEARCH_SIZE;
+    const char* dataS = searchSeq;
+    const char* dataSEnd = searchSeq + SEARCH_SIZE;
     int sSize = SEARCH_SIZE;
 
     int percentLen = (dataSEnd - dataS) / 100;
     int reportS = percentLen;
 
-    int *diags = diagOffsets.data();
+    int* diags = diagOffsets.data();
 
     for (int s = 0, maxS = sSize - W + 1, s0diag = 0; s < maxS && !t->isCanceled(); s++, s0diag = (s0diag == aSize - 1) ? 0 : s0diag + 1) {
         if (IS_THREAD_DIAG(s0diag)) {
@@ -139,18 +139,18 @@ void RFSArrayWKAlgorithm::calculate(RFSArrayWKSubtask *t) {
             assert(s == 0 || a == 0 || !PCHAR_MATCHES(dataS + s - 1, dataA + a - 1));  // this result must be processed on prev s step!
 
             // construct initial window, startS/startA - start positions for potential hit
-            const char *startS = dataS + s;
-            const char *startA = dataA + a;
-            const char *posS = startS + q;
-            const char *posA = startA + q;
+            const char* startS = dataS + s;
+            const char* startA = dataA + a;
+            const char* posS = startS + q;
+            const char* posA = startA + q;
             assert(PCHAR_MATCHES(startS, startA));
-            const char *endS = startS + W;
+            const char* endS = startS + W;
             // find first mismatch -> need it to update diags
             for (; PCHAR_MATCHES(posS, posA) && posS < endS; posS++, posA++) {
             }
             int c = 0;
             if (posS != endS) {  // there was mismatch on W range -> save its pos and find all other mismatches on W range
-                const char *firstMismatchPosS = posS;
+                const char* firstMismatchPosS = posS;
                 for (c = 1; (c += PCHAR_MATCHES(posS, posA) ? 0 : 1) <= CMAX && posS < endS; posS++, posA++) {
                 }
                 assert(posS - startS <= W);
@@ -181,8 +181,8 @@ void RFSArrayWKAlgorithm::calculate(RFSArrayWKSubtask *t) {
             }
 
             // now shift to the first mismatch pos and save value in diags
-            const char *firstMismatchPosS = dataS + lastCheckedS - 1;
-            const char *firstMismatchPosA = dataA + a + (lastCheckedS - 1 - s);
+            const char* firstMismatchPosS = dataS + lastCheckedS - 1;
+            const char* firstMismatchPosA = dataA + a + (lastCheckedS - 1 - s);
             while (++firstMismatchPosS < dataSEnd && ++firstMismatchPosA < dataAEnd && PCHAR_MATCHES(firstMismatchPosS, firstMismatchPosA)) {
             }
             assert(firstMismatchPosS <= posS);
@@ -207,7 +207,7 @@ void RFSArrayWKAlgorithm::addResult(int a, int s, int l, int c) {
     addToResults(res);
 }
 
-RFSArrayWKSubtask::RFSArrayWKSubtask(RFSArrayWKAlgorithm *_owner, int _tid)
+RFSArrayWKSubtask::RFSArrayWKSubtask(RFSArrayWKAlgorithm* _owner, int _tid)
     : Task(tr("Find repeats subtask (suffixWK)"), TaskFlag_None), owner(_owner), tid(_tid) {
     tpm = Task::Progress_Manual;
 }

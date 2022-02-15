@@ -35,7 +35,7 @@ namespace LocalWorkflow {
 class FindPrompter : public PrompterBase<FindPrompter> {
     Q_OBJECT
 public:
-    FindPrompter(Actor *p = 0)
+    FindPrompter(Actor* p = 0)
         : PrompterBase<FindPrompter>(p) {
     }
 
@@ -46,20 +46,20 @@ protected:
 class FindWorker : public BaseWorker {
     Q_OBJECT
 public:
-    FindWorker(Actor *a);
+    FindWorker(Actor* a);
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private slots:
-    void sl_taskFinished(Task *);
+    void sl_taskFinished(Task*);
 
 protected:
     IntegralBus *input, *output;
     QString resultName;
-    QMap<Task *, QByteArray> patterns;
-    QMap<Task *, QPair<QString, QByteArray>> filePatterns;
+    QMap<Task*, QByteArray> patterns;
+    QMap<Task*, QPair<QString, QByteArray>> filePatterns;
     QList<QPair<QString, QString>> namesPatterns;
     bool patternFileLoaded;
     bool useNames;
@@ -72,7 +72,7 @@ public:
     FindWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new FindWorker(a);
     }
 };
@@ -80,7 +80,7 @@ public:
 class FindAllRegionsTask : public Task {  // FIXME this is temporary solution until FindAlgorithmTask moved to SequenceWalker
     Q_OBJECT
 public:
-    FindAllRegionsTask(const FindAlgorithmTaskSettings &s, const QList<AnnotationData> &);
+    FindAllRegionsTask(const FindAlgorithmTaskSettings& s, const QList<AnnotationData>&);
     virtual void prepare();
     QList<FindAlgorithmResult> getResult();
 

@@ -56,8 +56,8 @@ const QString GenomeAlignerIndexReaderWorkerFactory::ACTOR_ID("gen-al-read-index
 /* Genome aligner index build                                           */
 /************************************************************************/
 void GenomeAlignerBuildWorkerFactory::init() {
-    QList<PortDescriptor *> p;
-    QList<Attribute *> a;
+    QList<PortDescriptor*> p;
+    QList<Attribute*> a;
     Descriptor oud(INDEX_OUT_PORT_ID, QString("Genome aligner index"), QString("Result genome aligner index of reference sequence."));
 
     QMap<Descriptor, DataTypePtr> outM;
@@ -73,9 +73,9 @@ void GenomeAlignerBuildWorkerFactory::init() {
     a << new Attribute(index, BaseTypes::STRING_TYPE(), true /*required*/, QString());
     a << new Attribute(refSize, BaseTypes::NUM_TYPE(), true /*required*/, 10);
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
 
     QString allFormatsFilter = FileFilters::createAllSupportedFormatsFileFilter();
     delegates[REFSEQ_URL_ATTR] = new URLDelegate(allFormatsFilter, QString(), true);
@@ -86,7 +86,7 @@ void GenomeAlignerBuildWorkerFactory::init() {
     proto->setIconPath(":core/images/align.png");
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ASSEMBLY(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new GenomeAlignerBuildWorkerFactory());
 }
 
@@ -102,7 +102,7 @@ bool GenomeAlignerBuildWorker::isReady() const {
     return !isDone();
 }
 
-Task *GenomeAlignerBuildWorker::tick() {
+Task* GenomeAlignerBuildWorker::tick() {
     if (refSeqUrl.isEmpty()) {
         algoLog.trace(GenomeAlignerBuildWorker::tr("Reference sequence URL is empty"));
         return nullptr;
@@ -114,13 +114,13 @@ Task *GenomeAlignerBuildWorker::tick() {
 
     settings.refSeqUrl = refSeqUrl;
     settings.indexFileName = indexUrl.getURLString();
-    Task *t = new GenomeAlignerTask(settings, true);
+    Task* t = new GenomeAlignerTask(settings, true);
     connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
     return t;
 }
 
 void GenomeAlignerBuildWorker::sl_taskFinished() {
-    GenomeAlignerTask *t = qobject_cast<GenomeAlignerTask *>(sender());
+    GenomeAlignerTask* t = qobject_cast<GenomeAlignerTask*>(sender());
     if (t->getState() != Task::State_Finished) {
         return;
     }
@@ -153,8 +153,8 @@ QString GenomeAlignerBuildPrompter::composeRichDoc() {
 /* Genome aligner index read                                            */
 /************************************************************************/
 void GenomeAlignerIndexReaderWorkerFactory::init() {
-    QList<PortDescriptor *> p;
-    QList<Attribute *> a;
+    QList<PortDescriptor*> p;
+    QList<Attribute*> a;
     Descriptor oud(INDEX_OUT_PORT_ID, GenomeAlignerIndexReaderWorker::tr("Genome aligner index"), GenomeAlignerIndexReaderWorker::tr("Result of genome aligner index builder."));
 
     QMap<Descriptor, DataTypePtr> outM;
@@ -166,9 +166,9 @@ void GenomeAlignerIndexReaderWorkerFactory::init() {
 
     a << new Attribute(index, BaseTypes::STRING_TYPE(), true /*required*/, QString());
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
 
     QString allFormatsFilter = FileFilters::createAllSupportedFormatsFileFilter();
     delegates[INDEX_URL_ATTR] = new URLDelegate(allFormatsFilter, QString(), false, false, false);
@@ -178,7 +178,7 @@ void GenomeAlignerIndexReaderWorkerFactory::init() {
     proto->setIconPath(":core/images/align.png");
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ASSEMBLY(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new GenomeAlignerIndexReaderWorkerFactory());
 }
 
@@ -191,12 +191,12 @@ bool GenomeAlignerIndexReaderWorker::isReady() const {
     return !isDone();
 }
 
-Task *GenomeAlignerIndexReaderWorker::tick() {
+Task* GenomeAlignerIndexReaderWorker::tick() {
     if (indexUrl.isEmpty()) {
         algoLog.trace(GenomeAlignerIndexReaderWorker::tr("Index URL is empty"));
         return nullptr;
     }
-    Task *t = new Task("Genome aligner index reader", TaskFlags_NR_FOSCOE);
+    Task* t = new Task("Genome aligner index reader", TaskFlags_NR_FOSCOE);
     connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
     return t;
 }

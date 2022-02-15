@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-MSAConsensusAlgorithmFactoryLevitsky::MSAConsensusAlgorithmFactoryLevitsky(QObject *p)
+MSAConsensusAlgorithmFactoryLevitsky::MSAConsensusAlgorithmFactoryLevitsky(QObject* p)
     : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::LEVITSKY_ALGO,
                                    ConsensusAlgorithmFlag_Nucleic | ConsensusAlgorithmFlag_SupportThreshold,
                                    p) {
@@ -42,7 +42,7 @@ QString MSAConsensusAlgorithmFactoryLevitsky::getName() const {
     return tr("Levitsky");
 }
 
-MSAConsensusAlgorithm *MSAConsensusAlgorithmFactoryLevitsky::createAlgorithm(const MultipleAlignment &ma, bool ignoreTrailingLeadingGaps, QObject *p) {
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryLevitsky::createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* p) {
     return new MSAConsensusAlgorithmLevitsky(this, ma, ignoreTrailingLeadingGaps, p);
 }
 
@@ -69,7 +69,7 @@ N       A,T,G,C 4       Any
 
 */
 
-static void registerHit(int *data, char c) {
+static void registerHit(int* data, char c) {
     int idx = uchar(c);
     data[idx]++;
     switch (c) {
@@ -113,14 +113,14 @@ static void registerHit(int *data, char c) {
     }
 }
 
-MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky *f, const MultipleAlignment &ma, bool ignoreTrailingLeadingGaps, QObject *p)
+MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* p)
     : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p) {
     globalFreqs.resize(256);
     memset(globalFreqs.data(), 0, globalFreqs.size() * 4);
 
-    int *freqsData = globalFreqs.data();
+    int* freqsData = globalFreqs.data();
     int len = ma->getLength();
-    foreach (const MultipleAlignmentRow &row, ma->getRows()) {
+    foreach (const MultipleAlignmentRow& row, ma->getRows()) {
         for (int i = 0; i < len; i++) {
             char c = row->charAt(i);
             registerHit(freqsData, c);
@@ -128,14 +128,14 @@ MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorit
     }
 }
 
-char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment &ma, int column, QVector<int> seqIdx) const {
+char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx) const {
     CHECK(filterIdx(seqIdx, ma, column), INVALID_CONS_CHAR);
 
     // count local freqs first
     QVarLengthArray<int> localFreqs(256);
     memset(localFreqs.data(), 0, localFreqs.size() * 4);
 
-    int *freqsData = localFreqs.data();
+    int* freqsData = localFreqs.data();
     int nSeq = (seqIdx.isEmpty() ? ma->getRowCount() : seqIdx.size());
     for (int seq = 0; seq < nSeq; seq++) {
         char c = ma->charAt(seqIdx.isEmpty() ? seq : seqIdx[seq], column);
@@ -161,7 +161,7 @@ char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment &ma
     return selectedChar;
 }
 
-MSAConsensusAlgorithmLevitsky *MSAConsensusAlgorithmLevitsky::clone() const {
+MSAConsensusAlgorithmLevitsky* MSAConsensusAlgorithmLevitsky::clone() const {
     return new MSAConsensusAlgorithmLevitsky(*this);
 }
 

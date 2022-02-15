@@ -34,15 +34,15 @@ namespace U2 {
 const QString XmlTest::TRUE_VALUE = "true";
 const QString XmlTest::FALSE_VALUE = "false";
 
-XmlTest::XmlTest(const QString &taskName, GTest *cp, const GTestEnvironment *env, TaskFlags flags, const QList<GTest *> &subtasks)
+XmlTest::XmlTest(const QString& taskName, GTest* cp, const GTestEnvironment* env, TaskFlags flags, const QList<GTest*>& subtasks)
     : GTest(taskName, cp, env, flags, subtasks) {
 }
 
-void XmlTest::checkNecessaryAttributeExistence(const QDomElement &element, const QString &attribute) {
+void XmlTest::checkNecessaryAttributeExistence(const QDomElement& element, const QString& attribute) {
     CHECK_EXT(element.hasAttribute(attribute), failMissingValue(attribute), );
 }
 
-void XmlTest::checkAttribute(const QDomElement &element, const QString &attribute, const QStringList &acceptableValues, bool isNecessary) {
+void XmlTest::checkAttribute(const QDomElement& element, const QString& attribute, const QStringList& acceptableValues, bool isNecessary) {
     if (isNecessary) {
         checkNecessaryAttributeExistence(element, attribute);
         CHECK_OP(stateInfo, );
@@ -54,11 +54,11 @@ void XmlTest::checkAttribute(const QDomElement &element, const QString &attribut
                            .arg(acceptableValues.join(", "))), );
 }
 
-void XmlTest::checkBooleanAttribute(const QDomElement &element, const QString &attribute, bool isNecessary) {
+void XmlTest::checkBooleanAttribute(const QDomElement& element, const QString& attribute, bool isNecessary) {
     checkAttribute(element, attribute, QStringList({TRUE_VALUE, FALSE_VALUE}), isNecessary);
 }
 
-int XmlTest::getInt(const QDomElement &element, const QString &attribute) {
+int XmlTest::getInt(const QDomElement& element, const QString& attribute) {
     checkNecessaryAttributeExistence(element, attribute);
     CHECK_OP(stateInfo, 0);
 
@@ -68,7 +68,7 @@ int XmlTest::getInt(const QDomElement &element, const QString &attribute) {
     return result;
 }
 
-qint64 XmlTest::getInt64(const QDomElement &element, const QString &attribute) {
+qint64 XmlTest::getInt64(const QDomElement& element, const QString& attribute) {
     checkNecessaryAttributeExistence(element, attribute);
     CHECK_OP(stateInfo, 0);
 
@@ -78,7 +78,7 @@ qint64 XmlTest::getInt64(const QDomElement &element, const QString &attribute) {
     return result;
 }
 
-double XmlTest::getDouble(const QDomElement &element, const QString &attribute) {
+double XmlTest::getDouble(const QDomElement& element, const QString& attribute) {
     checkNecessaryAttributeExistence(element, attribute);
     CHECK_OP(stateInfo, 0);
 
@@ -98,8 +98,8 @@ const QString XMLTestUtils::EXPECTED_OUTPUT_DIR_PREFIX = "!expected!";
 
 const QString XMLTestUtils::CONFIG_FILE_PATH = "!config_file_path!";
 
-QList<XMLTestFactory *> XMLTestUtils::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> XMLTestUtils::createTestFactories() {
+    QList<XMLTestFactory*> res;
 
     res.append(XMLMultiTest::createFactory());
     res.append(GTest_DeleteTmpFile::createFactory());
@@ -109,7 +109,7 @@ QList<XMLTestFactory *> XMLTestUtils::createTestFactories() {
     return res;
 }
 
-void XMLTestUtils::replacePrefix(const GTestEnvironment *env, QString &path) {
+void XMLTestUtils::replacePrefix(const GTestEnvironment* env, QString& path) {
     QString result;
 
     // Determine which environment variable is required
@@ -140,7 +140,7 @@ void XMLTestUtils::replacePrefix(const GTestEnvironment *env, QString &path) {
     int prefixSize = prefix.size();
     QStringList relativePaths = path.mid(prefixSize).split(";");
 
-    for (const QString &releativePath : qAsConst(relativePaths)) {
+    for (const QString& releativePath : qAsConst(relativePaths)) {
         QString fullPath = prefixPath + releativePath;
         result += fullPath + ";";
     }
@@ -148,8 +148,8 @@ void XMLTestUtils::replacePrefix(const GTestEnvironment *env, QString &path) {
     path = result.mid(0, result.size() - 1);  // without the last ';'
 }
 
-bool XMLTestUtils::parentTasksHaveError(Task *t) {
-    Task *parentTask = t->getParentTask();
+bool XMLTestUtils::parentTasksHaveError(Task* t) {
+    Task* parentTask = t->getParentTask();
     CHECK(nullptr != parentTask, false);
 
     bool result = false;
@@ -164,7 +164,7 @@ bool XMLTestUtils::parentTasksHaveError(Task *t) {
 const QString XMLMultiTest::FAIL_ON_SUBTEST_FAIL = "fail-on-subtest-fail";
 const QString XMLMultiTest::LOCK_FOR_LOG_LISTENING = "lockForLogListening";
 
-void XMLMultiTest::init(XMLTestFormat *tf, const QDomElement &el) {
+void XMLMultiTest::init(XMLTestFormat* tf, const QDomElement& el) {
     // This attribute is used to avoid mixing log messages between different tests
     // Each test that listens to log should set this attribute to "true"
     // See also: GTestLogHelper
@@ -184,7 +184,7 @@ void XMLMultiTest::init(XMLTestFormat *tf, const QDomElement &el) {
     }
 
     QDomNodeList subtaskNodes = el.childNodes();
-    QList<Task *> subs;
+    QList<Task*> subs;
     for (int i = 0; i < subtaskNodes.size(); i++) {
         QDomNode n = subtaskNodes.item(i);
         if (!n.isElement()) {
@@ -193,7 +193,7 @@ void XMLMultiTest::init(XMLTestFormat *tf, const QDomElement &el) {
         QDomElement subEl = n.toElement();
         QString name = subEl.tagName();
         QString err;
-        GTest *subTest = tf->createTest(name, this, env, subEl, err);
+        GTest* subTest = tf->createTest(name, this, env, subEl, err);
         if (!err.isEmpty()) {
             stateInfo.setError(err);
             break;
@@ -209,7 +209,7 @@ void XMLMultiTest::init(XMLTestFormat *tf, const QDomElement &el) {
             addTaskResource(TaskResourceUsage(RESOURCE_LISTEN_LOG_IN_TESTS, TaskResourceUsage::Read, true));
         }
 
-        foreach (Task *t, subs) {
+        foreach (Task* t, subs) {
             addSubTask(t);
         }
     }
@@ -217,7 +217,7 @@ void XMLMultiTest::init(XMLTestFormat *tf, const QDomElement &el) {
 
 Task::ReportResult XMLMultiTest::report() {
     if (!hasError()) {
-        Task *t = getSubtaskWithErrors();
+        Task* t = getSubtaskWithErrors();
         if (t != nullptr) {
             stateInfo.setError(t->getError());
         }
@@ -225,7 +225,7 @@ Task::ReportResult XMLMultiTest::report() {
     return ReportResult_Finished;
 }
 
-void GTest_Fail::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_Fail::init(XMLTestFormat*, const QDomElement& el) {
     msg = el.attribute("msg");
 }
 
@@ -234,7 +234,7 @@ Task::ReportResult GTest_Fail::report() {
     return ReportResult_Finished;
 }
 
-void GTest_DeleteTmpFile::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_DeleteTmpFile::init(XMLTestFormat*, const QDomElement& el) {
     url = el.attribute("file");
     if (url.isEmpty()) {
         failMissingValue("url");
@@ -252,7 +252,7 @@ Task::ReportResult GTest_DeleteTmpFile::report() {
     return ReportResult_Finished;
 }
 
-void GTest_CreateTmpFolder::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_CreateTmpFolder::init(XMLTestFormat*, const QDomElement& el) {
     url = el.attribute("folder");
     if (url.isEmpty()) {
         failMissingValue("folder");

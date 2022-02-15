@@ -31,19 +31,19 @@ using namespace HI;
 class NotificationChecker : public QObject {
     Q_OBJECT
 public:
-    NotificationChecker(HI::GUITestOpStatus &_os);
+    NotificationChecker(HI::GUITestOpStatus& _os);
 
 public slots:
     void sl_checkNotification();
 
 private:
-    QTimer *t;
-    HI::GUITestOpStatus &os;
+    QTimer* t;
+    HI::GUITestOpStatus& os;
 };
 
 class NotificationDialogFiller : public Filler {
 public:
-    NotificationDialogFiller(HI::GUITestOpStatus &os, const QString &message = "");
+    NotificationDialogFiller(HI::GUITestOpStatus& os, const QString& message = "");
 
     void commonScenario();
 
@@ -53,23 +53,23 @@ private:
 
 class GTUtilsNotifications {
 public:
-    static void waitForNotification(HI::GUITestOpStatus &os, bool dialogExpected = true, const QString &message = "");
+    static void waitForNotification(HI::GUITestOpStatus& os, bool dialogExpected = true, const QString& message = "");
 
     /** Waits for notification, clicks it and checks that the notification report contains the required text tokens. */
-    static void checkNotificationReportText(HI::GUITestOpStatus &os, const QString &textToken);
-    static void checkNotificationReportText(HI::GUITestOpStatus &os, const QStringList &textTokenList);
+    static void checkNotificationReportText(HI::GUITestOpStatus& os, const QString& textToken);
+    static void checkNotificationReportText(HI::GUITestOpStatus& os, const QStringList& textTokenList);
 
     /** Waits for notification, clicks it and checks that the modal dialog has the required text. */
-    static void checkNotificationDialogText(HI::GUITestOpStatus &os, const QString &textToken);
+    static void checkNotificationDialogText(HI::GUITestOpStatus& os, const QString& textToken);
 
     /** Clicks on the active (first) notification widget. */
-    static void clickOnNotificationWidget(HI::GUITestOpStatus &os);
+    static void clickOnNotificationWidget(HI::GUITestOpStatus& os);
 
     /** Waits until all notification popups are closed. */
-    static void waitAllNotificationsClosed(HI::GUITestOpStatus &os);
+    static void waitAllNotificationsClosed(HI::GUITestOpStatus& os);
 
     /** Checks that there are no notification balloons on the screen. */
-    static void checkNoVisibleNotifications(HI::GUITestOpStatus &os);
+    static void checkNoVisibleNotifications(HI::GUITestOpStatus& os);
 };
 
 }  // namespace U2

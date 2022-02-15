@@ -23,21 +23,21 @@
 
 namespace U2 {
 
-static QList<GObject *> emptyObjs;
-GObjectSelection::GObjectSelection(QObject *p)
+static QList<GObject*> emptyObjs;
+GObjectSelection::GObjectSelection(QObject* p)
     : GSelection(GSelectionTypes::GOBJECTS, p) {
-    connect(this, SIGNAL(si_selectionChanged(GObjectSelection *, QList<GObject *>, QList<GObject *>)), SLOT(sl_selectionChanged()));
+    connect(this, SIGNAL(si_selectionChanged(GObjectSelection*, QList<GObject*>, QList<GObject*>)), SLOT(sl_selectionChanged()));
 }
 
 void GObjectSelection::clear() {
-    QList<GObject *> tmpRemoved = selectedObjects;
+    QList<GObject*> tmpRemoved = selectedObjects;
     selectedObjects.clear();
     if (!tmpRemoved.isEmpty()) {
         emit si_selectionChanged(this, emptyObjs, tmpRemoved);
     }
 }
 
-void GObjectSelection::setSelection(const QList<GObject *> &objs) {
+void GObjectSelection::setSelection(const QList<GObject*>& objs) {
     if (objs.isEmpty()) {
         clear();
         return;
@@ -46,38 +46,38 @@ void GObjectSelection::setSelection(const QList<GObject *> &objs) {
         addToSelection(objs);
         return;
     }
-    QList<GObject *> tmpAdded;
-    QList<GObject *> tmpRemoved;
+    QList<GObject*> tmpAdded;
+    QList<GObject*> tmpRemoved;
 
-    foreach (GObject *o, objs) {
+    foreach (GObject* o, objs) {
         if (!selectedObjects.contains(o)) {
             tmpAdded.append(o);
         }
     }
-    foreach (GObject *o, selectedObjects) {
+    foreach (GObject* o, selectedObjects) {
         if (!objs.contains(o)) {
             tmpRemoved.append(o);
         }
     }
-    foreach (GObject *o, tmpRemoved) {
+    foreach (GObject* o, tmpRemoved) {
         selectedObjects.removeAll(o);
     }
-    foreach (GObject *o, tmpAdded) {
+    foreach (GObject* o, tmpAdded) {
         selectedObjects.append(o);
     }
     emit si_selectionChanged(this, tmpAdded, tmpRemoved);
 }
 
-void GObjectSelection::addToSelection(GObject *obj) {
-    QList<GObject *> objs;
+void GObjectSelection::addToSelection(GObject* obj) {
+    QList<GObject*> objs;
     objs.append(obj);
     addToSelection(objs);
 }
 
-void GObjectSelection::addToSelection(const QList<GObject *> &obj) {
-    QList<GObject *> tmpAdded;
+void GObjectSelection::addToSelection(const QList<GObject*>& obj) {
+    QList<GObject*> tmpAdded;
     int sBefore = selectedObjects.size();
-    foreach (GObject *o, obj) {
+    foreach (GObject* o, obj) {
         if (!selectedObjects.contains(o)) {
             tmpAdded.append(o);
             selectedObjects.append(o);
@@ -88,16 +88,16 @@ void GObjectSelection::addToSelection(const QList<GObject *> &obj) {
     }
 }
 
-void GObjectSelection::removeFromSelection(GObject *obj) {
-    QList<GObject *> l;
+void GObjectSelection::removeFromSelection(GObject* obj) {
+    QList<GObject*> l;
     l.append(obj);
     removeFromSelection(l);
 }
 
-void GObjectSelection::removeFromSelection(const QList<GObject *> &obj) {
-    QList<GObject *> tmpRemoved;
+void GObjectSelection::removeFromSelection(const QList<GObject*>& obj) {
+    QList<GObject*> tmpRemoved;
     int sBefore = selectedObjects.size();
-    foreach (GObject *o, obj) {
+    foreach (GObject* o, obj) {
         if (selectedObjects.removeAll(o) != 0) {
             tmpRemoved.push_back(o);
         }

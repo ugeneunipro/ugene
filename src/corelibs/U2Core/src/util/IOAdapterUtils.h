@@ -31,22 +31,22 @@ class U2OpStatus;
 
 class U2CORE_EXPORT IOAdapterUtils {
 public:
-    static IOAdapterId url2io(const GUrl &url);
+    static IOAdapterId url2io(const GUrl& url);
 
-    static QByteArray readFileHeader(const GUrl &url, int size = 524228);
+    static QByteArray readFileHeader(const GUrl& url, int size = 524228);
 
     // io - opened IO adapter. before and after the call pos in file the same
-    static QByteArray readFileHeader(IOAdapter *io, int size = 524228);
+    static QByteArray readFileHeader(IOAdapter* io, int size = 524228);
 
-    static IOAdapter *open(const GUrl &url, U2OpStatus &os, IOAdapterMode mode = IOAdapterMode_Read, IOAdapterFactory *iof = nullptr);
+    static IOAdapter* open(const GUrl& url, U2OpStatus& os, IOAdapterMode mode = IOAdapterMode_Read, IOAdapterFactory* iof = nullptr);
 
-    static IOAdapterFactory *get(const IOAdapterId &);
+    static IOAdapterFactory* get(const IOAdapterId&);
 
     /** Reads whole file into string. Returns null string in case if error. */
-    static QString readTextFile(const QString &path, const char *codecName = "UTF-8");
+    static QString readTextFile(const QString& path, const char* codecName = "UTF-8");
 
     /** Writes (overwrites) a string to file. Returns false of failed. */
-    static bool writeTextFile(const QString &path, const QString &content, const char *codecName = "UTF-8");
+    static bool writeTextFile(const QString& path, const QString& content, const char* codecName = "UTF-8");
 };
 
 }  // namespace U2

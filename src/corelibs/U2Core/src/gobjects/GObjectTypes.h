@@ -32,7 +32,7 @@ class U2CORE_EXPORT GObjectTypeInfo {
 public:
     GObjectTypeInfo() {
     }
-    GObjectTypeInfo(const GObjectType &_type, const QString &_name, const QString &_pluralName, const QString &treeSign, const QString iconURL, const QString &lockedIconUrl);
+    GObjectTypeInfo(const GObjectType& _type, const QString& _name, const QString& _pluralName, const QString& treeSign, const QString iconURL, const QString& lockedIconUrl);
 
     GObjectType type;
     QString name;
@@ -60,11 +60,11 @@ public:
     static const GObjectType UINDEX;
     static const GObjectType ASSEMBLY;
 
-    static GObjectType registerTypeInfo(const GObjectTypeInfo &ti);
+    static GObjectType registerTypeInfo(const GObjectTypeInfo& ti);
 
     // Returns reference to the type by type.
     // WARN: Caching return value by reference is not safe -> it can be relocated if new type is registered
-    static const GObjectTypeInfo &getTypeInfo(const GObjectType &type);
+    static const GObjectTypeInfo& getTypeInfo(const GObjectType& type);
 
     static void initTypeTranslations();  // must be called only once after all translations are loaded
     static void initTypeIcons();

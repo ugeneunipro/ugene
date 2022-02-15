@@ -36,7 +36,7 @@ typedef PrompterBase<CDSearchPrompter> CDSearchPrompterBase;
 class CDSearchPrompter : public CDSearchPrompterBase {
     Q_OBJECT
 public:
-    CDSearchPrompter(Actor *p = 0)
+    CDSearchPrompter(Actor* p = 0)
         : CDSearchPrompterBase(p) {
     }
 
@@ -47,19 +47,19 @@ protected:
 class CDSearchWorker : public BaseWorker {
     Q_OBJECT
 public:
-    CDSearchWorker(Actor *a)
+    CDSearchWorker(Actor* a)
         : BaseWorker(a), input(nullptr), output(nullptr), cds(nullptr) {
     }
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup() {};
 private slots:
-    void sl_taskFinished(Task *);
+    void sl_taskFinished(Task*);
 
 protected:
     IntegralBus *input, *output;
     CDSearchSettings settings;
-    CDSearchResultListener *cds;
+    CDSearchResultListener* cds;
 };
 
 class CDSearchWorkerFactory : public DomainFactory {
@@ -70,7 +70,7 @@ public:
     CDSearchWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new CDSearchWorker(a);
     }
 };

@@ -139,7 +139,7 @@ static QString getScreenshotDir() {
 }
 
 /** Returns true if the test has Ignored or IgnoredOn<CurrentOS>. */
-bool UGUITestLabels::hasIgnoredLabel(const GUITest *test) {
+bool UGUITestLabels::hasIgnoredLabel(const GUITest* test) {
     QString ignoreOnPlatformLabel = isOsLinux()     ? UGUITestLabels::IgnoredOnLinux
                                     : isOsMac()     ? UGUITestLabels::IgnoredOnMacOS
                                     : isOsWindows() ? UGUITestLabels::IgnoredOnWindows
@@ -149,7 +149,7 @@ bool UGUITestLabels::hasIgnoredLabel(const GUITest *test) {
 }
 
 /** Returns true if the test has current platform label: Linux, MacOS or Windows. */
-bool UGUITestLabels::hasPlatformLabel(const GUITest *test) {
+bool UGUITestLabels::hasPlatformLabel(const GUITest* test) {
     QString platformLabel = isOsLinux()     ? UGUITestLabels::Linux
                             : isOsMac()     ? UGUITestLabels::MacOS
                             : isOsWindows() ? UGUITestLabels::Windows

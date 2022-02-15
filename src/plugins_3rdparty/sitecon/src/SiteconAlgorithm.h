@@ -35,14 +35,14 @@ class DiPropertySitecon;
 /** Average and deviation for one property. */
 class DiStat {
 public:
-    DiStat(DiPropertySitecon *p, qreal d, qreal a)
+    DiStat(DiPropertySitecon* p, qreal d, qreal a)
         : prop(p), sdeviation(d), average(a), weighted(false) {
     }
     DiStat()
         : prop(nullptr), sdeviation(-1), average(-1), weighted(false) {
     }
 
-    DiPropertySitecon *prop;
+    DiPropertySitecon* prop;
     qreal sdeviation;
     qreal average;
     bool weighted;
@@ -69,7 +69,7 @@ public:
     int numSequencesInAlignment;
     SiteconWeightAlg weightAlg;
     int acgtContent[4];
-    QList<DiPropertySitecon *> props;
+    QList<DiPropertySitecon*> props;
 };
 
 class SiteconModel {
@@ -86,28 +86,28 @@ public:
     QVector<qreal> err2;
     qreal deviationThresh;
     bool checkState(bool doAssert = true) const;
-    bool operator!=(const SiteconModel &model) const;
+    bool operator!=(const SiteconModel& model) const;
 };
 
 class DNATranslation;
 class SiteconAlgorithm : public QObject {
     Q_OBJECT
 public:
-    static QVector<PositionStats> calculateDispersionAndAverage(const MultipleSequenceAlignment &ma, const SiteconBuildSettings &s, TaskStateInfo &ts);
+    static QVector<PositionStats> calculateDispersionAndAverage(const MultipleSequenceAlignment& ma, const SiteconBuildSettings& s, TaskStateInfo& ts);
 
-    static qreal calculatePSum(const char *seq, int len, const QVector<PositionStats> &normalizedMatrix, const SiteconBuildSettings &settings, qreal devThreshold, DNATranslation *complMap = nullptr);
+    static qreal calculatePSum(const char* seq, int len, const QVector<PositionStats>& normalizedMatrix, const SiteconBuildSettings& settings, qreal devThreshold, DNATranslation* complMap = nullptr);
 
-    static QVector<qreal> calculateFirstTypeError(const MultipleSequenceAlignment &ma, const SiteconBuildSettings &s, TaskStateInfo &ts);
+    static QVector<qreal> calculateFirstTypeError(const MultipleSequenceAlignment& ma, const SiteconBuildSettings& s, TaskStateInfo& ts);
 
-    static QVector<qreal> calculateSecondTypeError(const QVector<PositionStats> &matrix, const SiteconBuildSettings &s, TaskStateInfo &ts);
+    static QVector<qreal> calculateSecondTypeError(const QVector<PositionStats>& matrix, const SiteconBuildSettings& s, TaskStateInfo& ts);
 
-    static QVector<PositionStats> normalize(const QVector<PositionStats> &matrix, const SiteconBuildSettings &s);
+    static QVector<PositionStats> normalize(const QVector<PositionStats>& matrix, const SiteconBuildSettings& s);
 
-    static int calculateWeights(const MultipleSequenceAlignment &ma, QVector<PositionStats> &matrix, const SiteconBuildSettings &settings, bool matrixIsNormalized, TaskStateInfo &s);
+    static int calculateWeights(const MultipleSequenceAlignment& ma, QVector<PositionStats>& matrix, const SiteconBuildSettings& settings, bool matrixIsNormalized, TaskStateInfo& s);
 
-    static void calculateACGTContent(const MultipleSequenceAlignment &ma, SiteconBuildSettings &bs);
+    static void calculateACGTContent(const MultipleSequenceAlignment& ma, SiteconBuildSettings& bs);
 
-    static QByteArray generateRandomSequence(const int *actgContent, int seqLen, TaskStateInfo &ts);
+    static QByteArray generateRandomSequence(const int* actgContent, int seqLen, TaskStateInfo& ts);
 };
 
 }  // namespace U2

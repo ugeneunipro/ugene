@@ -42,24 +42,24 @@ protected slots:
     void sl_build();
 
 private:
-    WeightMatrixADVContext *ctxADV;
+    WeightMatrixADVContext* ctxADV;
 };
 
 class WeightMatrixADVContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    WeightMatrixADVContext(QObject *p);
+    WeightMatrixADVContext(QObject* p);
 
 protected slots:
     void sl_search();
 
 protected:
-    void initViewContext(GObjectView *view) override;
+    void initViewContext(GObjectView* view) override;
 };
 
 class WeightMatrixAlgorithmTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

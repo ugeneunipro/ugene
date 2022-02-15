@@ -30,13 +30,13 @@ namespace U2 {
 
 class U2ALGORITHM_EXPORT ColorSchemeUtils {
 public:
-    static bool getSchemaColors(ColorSchemeData &customScheme);
+    static bool getSchemaColors(ColorSchemeData& customScheme);
     static QList<ColorSchemeData> getSchemas();
     static QString getColorsDir();
-    static void getDefaultUgeneColors(DNAAlphabetType type, QMap<char, QColor> &alphColors);
+    static void getDefaultUgeneColors(DNAAlphabetType type, QMap<char, QColor>& alphColors);
     static QMap<char, QColor> getDefaultSchemaColors(DNAAlphabetType type, bool defaultAlpType);
-    static void setColorsDir(const QString &colorsDir);
-    static void fillEmptyColorScheme(QVector<QColor> &colorsPerChar);
+    static void setColorsDir(const QString& colorsDir);
+    static void fillEmptyColorScheme(QVector<QColor>& colorsPerChar);
 
     static const QString COLOR_SCHEME_AMINO_KEYWORD;
     static const QString COLOR_SCHEME_NUCL_KEYWORD;

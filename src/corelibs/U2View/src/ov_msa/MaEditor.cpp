@@ -58,7 +58,7 @@ SNPSettings::SNPSettings()
 
 const float MaEditor::zoomMult = 1.25;
 
-MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, MultipleAlignmentObject *obj)
+MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString& viewName, MultipleAlignmentObject* obj)
     : GObjectView(factoryId, viewName),
       ui(nullptr),
       resizeMode(ResizeMode_FontAndContent),
@@ -71,7 +71,7 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, Mult
       collapseModel(new MaCollapseModel(this, obj->getRowIds())) {
     GCOUNTER(cvar, factoryId);
 
-    maObject = qobject_cast<MultipleAlignmentObject *>(obj);
+    maObject = qobject_cast<MultipleAlignmentObject*>(obj);
     objects.append(maObject);
 
     onObjectAdded(maObject);
@@ -145,17 +145,17 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, Mult
 
     connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     connect(maObject,
-            SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)),
-            SLOT(sl_onAlignmentChanged(const MultipleAlignment &, const MaModificationInfo &)));
+            SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
+            SLOT(sl_onAlignmentChanged(const MultipleAlignment&, const MaModificationInfo&)));
     connect(this, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_resetColumnWidthCache()));
     connect(this, SIGNAL(si_fontChanged(QFont)), SLOT(sl_resetColumnWidthCache()));
 }
 
-void MaEditor::sl_onAlignmentChanged(const MultipleAlignment &, const MaModificationInfo &) {
+void MaEditor::sl_onAlignmentChanged(const MultipleAlignment&, const MaModificationInfo&) {
     updateActions();
 }
 
-void MaEditor::sl_selectionChanged(const MaEditorSelection &, const MaEditorSelection &) {
+void MaEditor::sl_selectionChanged(const MaEditorSelection&, const MaEditorSelection&) {
     updateActions();
 }
 
@@ -163,7 +163,7 @@ QVariantMap MaEditor::saveState() {
     return MaEditorState::saveState(this);
 }
 
-Task *MaEditor::updateViewTask(const QString &stateName, const QVariantMap &stateData) {
+Task* MaEditor::updateViewTask(const QString& stateName, const QVariantMap& stateData) {
     return new UpdateMaEditorTask(this, stateName, stateData);
 }
 
@@ -179,7 +179,7 @@ bool MaEditor::isAlignmentEmpty() const {
     return getAlignmentLen() == 0 || getNumSequences() == 0;
 }
 
-const MaEditorSelection &MaEditor::getSelection() const {
+const MaEditorSelection& MaEditor::getSelection() const {
     return getSelectionController()->getSelection();
 }
 
@@ -202,7 +202,7 @@ int MaEditor::getColumnWidth() const {
     return cachedColumnWidth;
 }
 
-QVariantMap MaEditor::getHighlightingSettings(const QString &highlightingFactoryId) const {
+QVariantMap MaEditor::getHighlightingSettings(const QString& highlightingFactoryId) const {
     const QVariant v = snp.highlightSchemeSettings.value(highlightingFactoryId);
     if (v.isNull()) {
         return QVariantMap();
@@ -211,7 +211,7 @@ QVariantMap MaEditor::getHighlightingSettings(const QString &highlightingFactory
     return v.toMap();
 }
 
-void MaEditor::saveHighlightingSettings(const QString &highlightingFactoryId, const QVariantMap &settingsMap /* = QVariant()*/) {
+void MaEditor::saveHighlightingSettings(const QString& highlightingFactoryId, const QVariantMap& settingsMap /* = QVariant()*/) {
     snp.highlightSchemeSettings.insert(highlightingFactoryId, QVariant(settingsMap));
 }
 
@@ -283,7 +283,7 @@ void MaEditor::sl_zoomOut() {
 void MaEditor::sl_zoomToSelection() {
     ResizeMode oldMode = resizeMode;
     int seqAreaWidth = ui->getSequenceArea()->width();
-    const MaEditorSelection &selection = getSelection();
+    const MaEditorSelection& selection = getSelection();
     CHECK(!selection.isEmpty(), )
     QRect selectionRect = selection.getRectList()[0];  // We need width (equal on all rects) + top-left of the first rect.
     float pixelsPerBase = (seqAreaWidth / float(selectionRect.width())) * zoomMult;
@@ -328,7 +328,7 @@ void MaEditor::sl_saveAlignment() {
 }
 
 void MaEditor::sl_saveAlignmentAs() {
-    Document *srcDoc = maObject->getDocument();
+    Document* srcDoc = maObject->getDocument();
     if (srcDoc == nullptr) {
         return;
     }
@@ -360,7 +360,7 @@ void MaEditor::sl_lockedStateChanged() {
 }
 
 void MaEditor::sl_exportHighlighted() {
-    QObjectScopedPointer<ExportHighligtingDialogController> d = new ExportHighligtingDialogController(ui, (QWidget *)AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<ExportHighligtingDialogController> d = new ExportHighligtingDialogController(ui, (QWidget*)AppContext::getMainWindow()->getQMainWindow());
     d->exec();
     CHECK(!d.isNull(), );
 
@@ -379,8 +379,8 @@ void MaEditor::initActions() {
     ui->addAction(clearSelectionAction);
 
     connect(getSelectionController(),
-            SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
-            SLOT(sl_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)));
+            SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),
+            SLOT(sl_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)));
 
     connect(undoAction, &QAction::triggered, [this]() { GCounter::increment("Undo", factoryId); });
     connect(redoAction, &QAction::triggered, [this]() { GCounter::increment("Redo", factoryId); });
@@ -389,14 +389,14 @@ void MaEditor::initActions() {
 }
 
 void MaEditor::initZoom() {
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     SAFE_POINT(s != nullptr, "AppContext is NULL", );
     zoomFactor = s->getValue(getSettingsRoot() + MOBJECT_SETTINGS_ZOOM_FACTOR, MOBJECT_DEFAULT_ZOOM_FACTOR).toFloat();
     updateResizeMode();
 }
 
 void MaEditor::initFont() {
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     SAFE_POINT(s != nullptr, "AppContext is NULL", );
     font.setFamily(s->getValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_FAMILY, MOBJECT_DEFAULT_FONT_FAMILY).toString());
     font.setPointSize(s->getValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_SIZE, MOBJECT_DEFAULT_FONT_SIZE).toInt());
@@ -410,13 +410,13 @@ void MaEditor::updateResizeMode() {
     resizeMode = font.pointSize() >= minimumFontPointSize && zoomFactor < 1.0f ? ResizeMode_OnlyContent : ResizeMode_FontAndContent;
 }
 
-void MaEditor::addCopyPasteMenu(QMenu *m) {
-    QMenu *cm = m->addMenu(tr("Copy/Paste"));
+void MaEditor::addCopyPasteMenu(QMenu* m) {
+    QMenu* cm = m->addMenu(tr("Copy/Paste"));
     cm->menuAction()->setObjectName(MSAE_MENU_COPY);
 }
 
-void MaEditor::addExportMenu(QMenu *m) {
-    QMenu *em = m->addMenu(tr("Export"));
+void MaEditor::addExportMenu(QMenu* m) {
+    QMenu* em = m->addMenu(tr("Export"));
     em->menuAction()->setObjectName(MSAE_MENU_EXPORT);
     em->addAction(exportHighlightedAction);
     if (!ui->getSequenceArea()->getCurrentHighlightingScheme()->getFactory()->isRefFree() &&
@@ -427,12 +427,12 @@ void MaEditor::addExportMenu(QMenu *m) {
     }
 }
 
-void MaEditor::addLoadMenu(QMenu *m) {
-    QMenu *lsm = m->addMenu(tr("Add"));
+void MaEditor::addLoadMenu(QMenu* m) {
+    QMenu* lsm = m->addMenu(tr("Add"));
     lsm->menuAction()->setObjectName(MSAE_MENU_LOAD);
 }
 
-void MaEditor::setFont(const QFont &f) {
+void MaEditor::setFont(const QFont& f) {
     int pSize = f.pointSize();
     font = f;
     updateFontMetrics();
@@ -440,7 +440,7 @@ void MaEditor::setFont(const QFont &f) {
     updateResizeMode();
     emit si_fontChanged(font);
 
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_FAMILY, f.family());
     s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_SIZE, f.pointSize());
     s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_ITALIC, f.italic());
@@ -485,7 +485,7 @@ void MaEditor::setFirstVisiblePosSeq(int firstPos, int firstSeq) {
 void MaEditor::setZoomFactor(double newZoomFactor) {
     zoomFactor = newZoomFactor;
     updateResizeMode();
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_ZOOM_FACTOR, zoomFactor);
     sl_resetColumnWidthCache();
 }
@@ -502,11 +502,11 @@ void MaEditor::updateActions() {
     emit si_updateActions();
 }
 
-const QPoint &MaEditor::getCursorPosition() const {
+const QPoint& MaEditor::getCursorPosition() const {
     return cursorPosition;
 }
 
-void MaEditor::setCursorPosition(const QPoint &newCursorPosition) {
+void MaEditor::setCursorPosition(const QPoint& newCursorPosition) {
     CHECK(cursorPosition != newCursorPosition, );
     int x = newCursorPosition.x(), y = newCursorPosition.y();
     CHECK(x >= 0 && y >= 0 && x < getAlignmentLen() && y < getNumSequences(), );
@@ -522,7 +522,7 @@ void MaEditor::selectRows(int firstViewRowIndex, int numberOfRows) {
     ui->getSequenceArea()->setSelectionRect(QRect(0, firstViewRowIndex, getAlignmentLen(), numberOfRows));
 }
 
-QRect MaEditor::getUnifiedSequenceFontCharRect(const QFont &sequenceFont) const {
+QRect MaEditor::getUnifiedSequenceFontCharRect(const QFont& sequenceFont) const {
     QFontMetrics fontMetrics(sequenceFont, ui);
     return fontMetrics.boundingRect('W');
 }
@@ -536,7 +536,7 @@ void MaEditor::setRowOrderMode(MaEditorRowOrderMode mode) {
 }
 
 void MaEditor::sl_onClearActionTriggered() {
-    MaEditorSequenceArea *sequenceArea = ui->getSequenceArea();
+    MaEditorSequenceArea* sequenceArea = ui->getSequenceArea();
     if (sequenceArea->getMode() != MaEditorSequenceArea::ViewMode) {
         sequenceArea->exitFromEditCharacterMode();
         return;
@@ -557,18 +557,18 @@ void MaEditor::sl_gotoSelectedRead() {
 
     MultipleAlignmentRow maRow = maObject->getRow(maRowIndex);
     int posToCenter = maRow->isComplemented() ? maRow->getCoreEnd() - 1 : maRow->getCoreStart();
-    MaEditorSequenceArea *sequenceArea = ui->getSequenceArea();
+    MaEditorSequenceArea* sequenceArea = ui->getSequenceArea();
     if (sequenceArea->isPositionCentered(posToCenter)) {
         posToCenter = maRow->isComplemented() ? maRow->getCoreStart() : maRow->getCoreEnd() - 1;
     }
     sequenceArea->centerPos(posToCenter);
 }
 
-MaCollapseModel *MaEditor::getCollapseModel() const {
+MaCollapseModel* MaEditor::getCollapseModel() const {
     return collapseModel;
 }
 
-MaUndoRedoFramework *MaEditor::getUndoRedoFramework() const {
+MaUndoRedoFramework* MaEditor::getUndoRedoFramework() const {
     return undoRedoFramework;
 }
 

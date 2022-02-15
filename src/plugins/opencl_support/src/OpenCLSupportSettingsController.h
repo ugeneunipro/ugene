@@ -35,15 +35,15 @@ namespace U2 {
 class OpenCLSupportSettingsPageController : public AppSettingsGUIPageController {
     Q_OBJECT
 public:
-    OpenCLSupportSettingsPageController(const QString &_displayMsg, QObject *p = 0);
+    OpenCLSupportSettingsPageController(const QString& _displayMsg, QObject* p = 0);
 
-    virtual AppSettingsGUIPageState *getSavedState();
+    virtual AppSettingsGUIPageState* getSavedState();
 
-    virtual void saveState(AppSettingsGUIPageState *s);
+    virtual void saveState(AppSettingsGUIPageState* s);
 
-    virtual AppSettingsGUIPageWidget *createWidget(AppSettingsGUIPageState *state);
+    virtual AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* state);
 
-    const QString &getHelpPageId() const {
+    const QString& getHelpPageId() const {
         return helpPageId;
     };
 
@@ -55,9 +55,9 @@ private:
 class OpenCLSupportSettingsPageState : public AppSettingsGUIPageState {
     Q_OBJECT
 public:
-    OpenCLSupportSettingsPageState(const QString &name);
+    OpenCLSupportSettingsPageState(const QString& name);
 
-    const QString &getEnabledGpuName() const;
+    const QString& getEnabledGpuName() const;
 
 private:
     QString enabledGpuName;
@@ -66,14 +66,14 @@ private:
 class OpenCLSupportSettingsPageWidget : public AppSettingsGUIPageWidget {
     Q_OBJECT
 public:
-    OpenCLSupportSettingsPageWidget(const QString &_msg, OpenCLSupportSettingsPageController *ctrl);
+    OpenCLSupportSettingsPageWidget(const QString& _msg, OpenCLSupportSettingsPageController* ctrl);
 
-    virtual void setState(AppSettingsGUIPageState *state);
-    virtual AppSettingsGUIPageState *getState(QString &err) const;
+    virtual void setState(AppSettingsGUIPageState* state);
+    virtual AppSettingsGUIPageState* getState(QString& err) const;
 
 private:
     QString onlyMsg;
-    QMap<QString, QRadioButton *> gpuRadioButtons;
+    QMap<QString, QRadioButton*> gpuRadioButtons;
 };
 
 }  // namespace U2

@@ -31,12 +31,12 @@ using namespace HI;
 
 class FindAnnotationCollocationsDialogFiller : public Filler {
 public:
-    FindAnnotationCollocationsDialogFiller(HI::GUITestOpStatus &os)
+    FindAnnotationCollocationsDialogFiller(HI::GUITestOpStatus& os)
         : Filler(os, "FindAnnotationCollocationsDialog") {
     }
     void commonScenario();
-    QToolButton *getPlusButton() const;
-    QList<QToolButton *> getMinusButtons() const;
+    QToolButton* getPlusButton() const;
+    QList<QToolButton*> getMinusButtons() const;
 };
 
 }  // namespace U2

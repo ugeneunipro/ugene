@@ -46,21 +46,21 @@ public:
     OpenCLSupportError getError() const;
 
 private:
-    OpenCLSupportError obtainGpusInfo(QString &err);
+    OpenCLSupportError obtainGpusInfo(QString& err);
     void loadGpusSettings();
     void registerAvailableGpus();
     void unregisterAvailableGpus();
-    bool hasOPENCLError(cl_int err, QString &errMessage);
+    bool hasOPENCLError(cl_int err, QString& errMessage);
 
     //    static QString getCudaErrorString( CUresult code );
     static QString getSettingsErrorString(OpenCLSupportError err);
 
-    QList<OpenCLGpuModel *> gpus;
+    QList<OpenCLGpuModel*> gpus;
     OpenCLHelper openCLHelper;
 
     OpenCLSupportError err;
 
-    const static char *RESOURCE_OPENCL_GPU_NAME;
+    const static char* RESOURCE_OPENCL_GPU_NAME;
 };
 
 }  // namespace U2

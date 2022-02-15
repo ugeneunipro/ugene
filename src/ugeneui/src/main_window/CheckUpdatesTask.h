@@ -52,27 +52,27 @@ private:
 class UpdateMessage : public QObject {
     Q_OBJECT
 public:
-    UpdateMessage(const QString &newVersion);
+    UpdateMessage(const QString& newVersion);
     CheckUpdatesTask::Answer getAnswer() const;
 
 private:
     QObjectScopedPointer<QMessageBox> dialog;
-    QPushButton *updateButton;
-    QPushButton *postponeButton;
+    QPushButton* updateButton;
+    QPushButton* postponeButton;
 };
 
 class VersionMessage : public QObject {
     Q_OBJECT
 public:
-    VersionMessage(const Version &newVersion);
+    VersionMessage(const Version& newVersion);
     CheckUpdatesTask::Answer getAnswer() const;
 
 private:
-    QString getMessageText(const Version &thisVersion, const Version &newVersion) const;
+    QString getMessageText(const Version& thisVersion, const Version& newVersion) const;
 
 private:
     QObjectScopedPointer<QMessageBox> dialog;
-    QPushButton *updateButton;
+    QPushButton* updateButton;
 };
 
 }  // namespace U2

@@ -41,11 +41,11 @@
 
 namespace U2 {
 
-const QMap<bool, const char *> McaEditorStatusBar::MUTATION_MODE_ON_OFF_STATE_MAP = {{true, QT_TR_NOOP("Mutations mode: alternative")},
-                                                                                     {false, QT_TR_NOOP("Mutations mode: normal")}};
+const QMap<bool, const char*> McaEditorStatusBar::MUTATION_MODE_ON_OFF_STATE_MAP = {{true, QT_TR_NOOP("Mutations mode: alternative")},
+                                                                                    {false, QT_TR_NOOP("Mutations mode: normal")}};
 
-McaEditorStatusBar::McaEditorStatusBar(McaEditor *editor,
-                                       McaReferenceCharController *refCharController)
+McaEditorStatusBar::McaEditorStatusBar(McaEditor* editor,
+                                       McaReferenceCharController* refCharController)
     : MaEditorStatusBar(editor),
       refCharController(refCharController) {
     setObjectName("mca_editor_status_bar");
@@ -60,7 +60,7 @@ McaEditorStatusBar::McaEditorStatusBar(McaEditor *editor,
     selectionLabel->hide();
 
     connect(editor->getSelectionController(),
-            SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
+            SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),
             SLOT(sl_update()));
 
     connect(refCharController, SIGNAL(si_cacheUpdated()), SLOT(sl_update()));
@@ -86,9 +86,9 @@ void McaEditorStatusBar::updateLabels() {
     updatePositionLabel();
     updateMutationsLabel();
 
-    auto mcaEditor = qobject_cast<McaEditor *>(editor);
+    auto mcaEditor = qobject_cast<McaEditor*>(editor);
     SAFE_POINT(mcaEditor->getReferenceContext() != nullptr, "Reference context is NULL", );
-    DNASequenceSelection *selection = mcaEditor->getReferenceContext()->getSequenceSelection();
+    DNASequenceSelection* selection = mcaEditor->getReferenceContext()->getSequenceSelection();
     SAFE_POINT(selection != nullptr, "Reference selection is NULL", );
 
     QString ungappedRefLen = QString::number(refCharController->getUngappedLength());
@@ -102,7 +102,7 @@ void McaEditorStatusBar::updateLabels() {
 }
 
 void McaEditorStatusBar::updateLineLabel() {
-    const MaEditorSelection &selection = editor->getSelection();
+    const MaEditorSelection& selection = editor->getSelection();
     lineLabel->update(selection.isEmpty() || selection.isMultiRegionSelection()
                           ? MaEditorStatusBar::NONE_MARK
                           : QString::number(selection.getRectList().first().top() + 1),
@@ -111,7 +111,7 @@ void McaEditorStatusBar::updateLineLabel() {
 
 void McaEditorStatusBar::updatePositionLabel() {
     QPair<QString, QString> positions = QPair<QString, QString>(NONE_MARK, NONE_MARK);
-    const MaEditorSelection &selection = editor->getSelection();
+    const MaEditorSelection& selection = editor->getSelection();
     if (selection.getWidth() == 1) {
         positions = getGappedPositionInfo();
     } else if (!selection.isEmpty()) {
@@ -126,7 +126,7 @@ void McaEditorStatusBar::updatePositionLabel() {
 
 void McaEditorStatusBar::updateMutationsLabel() {
     U2OpStatus2Log os;
-    MultipleAlignmentObject *maObject = editor->getMaObject();
+    MultipleAlignmentObject* maObject = editor->getMaObject();
     QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(maObject->getEntityRef().dbiRef, os));
     CHECK_OP(os, );
 

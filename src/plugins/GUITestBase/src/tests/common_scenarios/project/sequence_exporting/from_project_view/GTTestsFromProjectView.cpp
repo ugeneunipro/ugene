@@ -144,7 +144,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     // 4. Select file to save: _common_data/scenarios/sandbox/exp2.aln and set 'file format to use' to CLUSTALW,
     // Next to uncheck the 'add document to the project' checkbox and click Save button.
-    Runnable *filler = new ExportSequenceAsAlignmentFiller(os,
+    Runnable* filler = new ExportSequenceAsAlignmentFiller(os,
                                                            testDir + "_common_data/scenarios/sandbox/",
                                                            "exp2.aln",
                                                            ExportSequenceAsAlignmentFiller::Clustalw,
@@ -172,7 +172,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT}, GTGlobals::UseMouse));
 
-    Runnable *filler = new ExportSequenceAsAlignmentFiller(os,
+    Runnable* filler = new ExportSequenceAsAlignmentFiller(os,
                                                            testDir + "_common_data/scenarios/sandbox/",
                                                            "exp2.aln",
                                                            ExportSequenceAsAlignmentFiller::Clustalw,
@@ -226,7 +226,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTUtilsProjectTreeView::click(os, "Zychia_baranovi", Qt::RightButton);
     GTThread::waitForMainThread();
 
-    QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
+    QWidget* activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_SET_ERR(activeWindow->windowTitle().contains("Zychia_baranovi"), "fasta file with sequences has been not opened");
 
     int sequenceLength = GTUtilsSequenceView::getLengthOfSequence(os);
@@ -257,7 +257,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Open View", "Open New View"}, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "Zychia_baranovi", Qt::RightButton);
 
-    QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
+    QWidget* activeWindow = GTUtilsMdi::activeWindow(os);
     if (!activeWindow->windowTitle().contains("Zychia_baranovi") && !os.hasError()) {
         os.setError("fasta file with sequences has been not opened");
     }
@@ -284,7 +284,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Open View", "Open New View"}, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "Zychia_baranovi", Qt::RightButton);
 
-    QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
+    QWidget* activeWindow = GTUtilsMdi::activeWindow(os);
     if (!activeWindow->windowTitle().contains("Zychia_baranovi") && !os.hasError()) {
         os.setError("fasta file with sequences has been not opened");
     }
@@ -379,7 +379,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTGlobals::sleep();
 
     // Expected result: NC_001363 sequence has been opened in sequence view
-    GObjectViewWindow *activeWindow = qobject_cast<GObjectViewWindow *>(GTUtilsMdi::activeWindow(os));
+    GObjectViewWindow* activeWindow = qobject_cast<GObjectViewWindow*>(GTUtilsMdi::activeWindow(os));
     if (!activeWindow->getViewName().contains("NC_001363")) {
         os.setError("NC_001363 sequence has been not opened in sequence view");
         return;
@@ -391,7 +391,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     // Next to uncheck the 'add document to the project' checkbox and click Save button.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT}));
 
-    Runnable *filler = new ExportSequenceAsAlignmentFiller(os, dataDir + "_common_data/scenarios/sandbox/", "exp2.sto", ExportSequenceAsAlignmentFiller::Stockholm);
+    Runnable* filler = new ExportSequenceAsAlignmentFiller(os, dataDir + "_common_data/scenarios/sandbox/", "exp2.sto", ExportSequenceAsAlignmentFiller::Stockholm);
     GTUtilsDialog::waitForDialog(os, filler);
 
     QModelIndex parent = GTUtilsProjectTreeView::findIndex(os, "1.gb");
@@ -443,7 +443,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected result: NC_001363 sequence has been opened in sequence view
-    auto activeWindow = qobject_cast<GObjectViewWindow *>(GTUtilsMdi::activeWindow(os));
+    auto activeWindow = qobject_cast<GObjectViewWindow*>(GTUtilsMdi::activeWindow(os));
     if (!activeWindow->getViewName().contains("NC_001363")) {
         os.setError("NC_001363 sequence has been not opened in sequence view");
         return;
@@ -455,7 +455,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
     // Next to uncheck the 'add document to the project' check box and click Save button.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT}));
 
-    Runnable *filler = new ExportSequenceAsAlignmentFiller(os, dataDir + "_common_data/scenarios/sandbox/", "exp2.fa", ExportSequenceAsAlignmentFiller::Fasta);
+    Runnable* filler = new ExportSequenceAsAlignmentFiller(os, dataDir + "_common_data/scenarios/sandbox/", "exp2.fa", ExportSequenceAsAlignmentFiller::Fasta);
     GTUtilsDialog::waitForDialog(os, filler);
 
     QModelIndex parent = GTUtilsProjectTreeView::findIndex(os, "1.gb");
@@ -507,7 +507,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected result: NC_001363 sequence has been opened in sequence view
-    auto activeWindow = qobject_cast<GObjectViewWindow *>(GTUtilsMdi::activeWindow(os));
+    auto activeWindow = qobject_cast<GObjectViewWindow*>(GTUtilsMdi::activeWindow(os));
     if (!activeWindow->getViewName().contains("NC_001363")) {
         os.setError("NC_001363 sequence has been not opened in sequence view");
         return;
@@ -519,7 +519,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2) {
     // Next to uncheck the 'add document to the project' check box and click Save button.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT}));
 
-    Runnable *filler = new ExportSequenceAsAlignmentFiller(os, dataDir + "_common_data/scenarios/sandbox/", "exp2.meg", ExportSequenceAsAlignmentFiller::Mega);
+    Runnable* filler = new ExportSequenceAsAlignmentFiller(os, dataDir + "_common_data/scenarios/sandbox/", "exp2.meg", ExportSequenceAsAlignmentFiller::Mega);
     GTUtilsDialog::waitForDialog(os, filler);
 
     QModelIndex parent = GTUtilsProjectTreeView::findIndex(os, "1.gb");
@@ -553,7 +553,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {
     GTUtils::checkExportServiceIsEnabled(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_CHROMATOGRAM}));
-    Runnable *filler = new ExportChromatogramFiller(os, sandBoxDir, "pagefile.sys", ExportChromatogramFiller::SCF, true, true, true);
+    Runnable* filler = new ExportChromatogramFiller(os, sandBoxDir, "pagefile.sys", ExportChromatogramFiller::SCF, true, true, true);
     GTUtilsDialog::waitForDialog(os, filler);
     GTUtilsProjectTreeView::click(os, "A01.abi", Qt::RightButton);
 }
@@ -563,7 +563,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
     GTUtils::checkExportServiceIsEnabled(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_CHROMATOGRAM}));
-    Runnable *filler = new ExportChromatogramFiller(os, sandBoxDir, "pagefile.sys", ExportChromatogramFiller::SCF, false, true, false);
+    Runnable* filler = new ExportChromatogramFiller(os, sandBoxDir, "pagefile.sys", ExportChromatogramFiller::SCF, false, true, false);
     GTUtilsDialog::waitForDialog(os, filler);
     GTUtilsProjectTreeView::click(os, "A01.abi", Qt::RightButton);
 }

@@ -46,15 +46,15 @@ class U2VIEW_EXPORT MaEditorNameList : public QWidget {
     Q_OBJECT
     Q_DISABLE_COPY(MaEditorNameList)
 public:
-    MaEditorNameList(MaEditorWgt *ui, QScrollBar *nhBar);
+    MaEditorNameList(MaEditorWgt* ui, QScrollBar* nhBar);
     virtual ~MaEditorNameList();
 
-    QSize getCanvasSize(const QList<int> &seqIdx) const;
+    QSize getCanvasSize(const QList<int>& seqIdx) const;
 
-    void drawNames(QPainter &painter, const QList<int> &maRows, bool drawSelection = false);
+    void drawNames(QPainter& painter, const QList<int>& maRows, bool drawSelection = false);
 
-    QAction *getEditSequenceNameAction() const;
-    QAction *getRemoveSequenceAction() const;
+    QAction* getEditSequenceNameAction() const;
+    QAction* getRemoveSequenceAction() const;
 
     /** Returns text to be rendered in the given row cell. */
     virtual QString getTextForRow(int maRowIndex);
@@ -70,28 +70,28 @@ private slots:
     /** Copies whole selected row content into clipboard without any formatting. */
     void sl_copyWholeRow();
     void sl_lockedStateChanged();
-    void sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &);
+    void sl_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&);
     void sl_vScrollBarActionPerformed();
     void sl_completeUpdate();
 
 protected slots:
-    virtual void sl_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &prev);
+    virtual void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
     virtual void sl_updateActions();
 
 protected:
     virtual void updateScrollBar();
 
 protected:
-    void resizeEvent(QResizeEvent *e) override;
-    void paintEvent(QPaintEvent *e) override;
-    void keyPressEvent(QKeyEvent *e) override;
-    void mousePressEvent(QMouseEvent *e) override;
-    void mouseMoveEvent(QMouseEvent *e) override;
-    void mouseReleaseEvent(QMouseEvent *e) override;
-    void focusOutEvent(QFocusEvent *fe) override;
-    void focusInEvent(QFocusEvent *fe) override;
-    void wheelEvent(QWheelEvent *we) override;
-    void mouseDoubleClickEvent(QMouseEvent *e) override;
+    void resizeEvent(QResizeEvent* e) override;
+    void paintEvent(QPaintEvent* e) override;
+    void keyPressEvent(QKeyEvent* e) override;
+    void mousePressEvent(QMouseEvent* e) override;
+    void mouseMoveEvent(QMouseEvent* e) override;
+    void mouseReleaseEvent(QMouseEvent* e) override;
+    void focusOutEvent(QFocusEvent* fe) override;
+    void focusInEvent(QFocusEvent* fe) override;
+    void wheelEvent(QWheelEvent* we) override;
+    void mouseDoubleClickEvent(QMouseEvent* e) override;
 
     /**
      * Moves selection up to 'offset' rows up or down if possible: never changes selection height.
@@ -105,10 +105,10 @@ protected:
     bool completeRedraw = true;
 
 protected:
-    void drawContent(QPainter &p);
+    void drawContent(QPainter& p);
 
 public:
-    qint64 sequenceIdAtPos(const QPoint &p);
+    qint64 sequenceIdAtPos(const QPoint& p);
 
     QFont getFont(bool selected) const;
 
@@ -122,7 +122,7 @@ protected:
      * Sets selection MA editor selection to the given state.
      * The method is called for all selection change events triggered in the name-list component.
      * May be overridden to adjust behavior. */
-    virtual void setSelection(const MaEditorSelection &selection);
+    virtual void setSelection(const MaEditorSelection& selection);
 
     void moveSelectedRegion(int shift);
 
@@ -136,23 +136,23 @@ protected:
      * Returns collapsible group related to the expand-collapse button located by the given screen coordinate.
      * Returns NULL if the given coordinate is not for expand-collapse block.
      */
-    const MaCollapsibleGroup *getCollapsibleGroupByExpandCollapsePoint(const QPoint &point) const;
+    const MaCollapsibleGroup* getCollapsibleGroupByExpandCollapsePoint(const QPoint& point) const;
 
     virtual void drawAll();
 
-    virtual void drawSelection(QPainter &p);
+    virtual void drawSelection(QPainter& p);
 
-    virtual void drawSequenceItem(QPainter &painter, const QString &text, const U2Region &yRange, bool isSelected, bool isReference);
+    virtual void drawSequenceItem(QPainter& painter, const QString& text, const U2Region& yRange, bool isSelected, bool isReference);
 
-    virtual void drawCollapsibleSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect, bool isSelected, bool isCollapsed, bool isReference);
+    virtual void drawCollapsibleSequenceItem(QPainter& painter, int rowIndex, const QString& name, const QRect& rect, bool isSelected, bool isCollapsed, bool isReference);
 
-    virtual void drawChildSequenceItem(QPainter &painter, const QString &name, const QRect &rect, bool isSelected, bool isReference);
+    virtual void drawChildSequenceItem(QPainter& painter, const QString& name, const QRect& rect, bool isSelected, bool isReference);
 
-    virtual void drawBackground(QPainter &p, const QString &name, const QRect &rect, bool isReference);
+    virtual void drawBackground(QPainter& p, const QString& name, const QRect& rect, bool isReference);
 
-    virtual void drawText(QPainter &p, const QString &name, const QRect &rect, bool selected);
+    virtual void drawText(QPainter& p, const QString& name, const QRect& rect, bool selected);
 
-    virtual void drawCollapsePrimitive(QPainter &p, bool collapsed, const QRect &rect);
+    virtual void drawCollapsePrimitive(QPainter& p, bool collapsed, const QRect& rect);
 
     /*
      * Triggers expand collapse on the currently selected set of collapse group headers.
@@ -161,8 +161,8 @@ protected:
      */
     bool triggerExpandCollapseOnSelectedRow(bool collapse);
 
-    QRect calculateTextRect(const U2Region &yRange, bool selected) const;
-    QRect calculateExpandCollapseButtonRect(const QRect &itemRect) const;
+    QRect calculateTextRect(const U2Region& yRange, bool selected) const;
+    QRect calculateExpandCollapseButtonRect(const QRect& itemRect) const;
 
     virtual int getAvailableWidth() const;
 
@@ -172,28 +172,28 @@ protected:
      * Only the 'stableRowIndex' region is guaranteed to stay on the current position.
      * The order of sequences in the selection does not change.
      * */
-    void groupSelectedSequencesIntoASingleRegion(int stableRowIndex, U2OpStatus &os);
+    void groupSelectedSequencesIntoASingleRegion(int stableRowIndex, U2OpStatus& os);
 
-    QObject *labels = nullptr;  // used in GUI tests
-    MaEditorWgt *ui = nullptr;
-    QScrollBar *nhBar = nullptr;
+    QObject* labels = nullptr;  // used in GUI tests
+    MaEditorWgt* ui = nullptr;
+    QScrollBar* nhBar = nullptr;
     QPoint mousePressPoint;
     bool isDragging = false;
-    QRubberBand *rubberBand = nullptr;
+    QRubberBand* rubberBand = nullptr;
 
 public:
-    QAction *editSequenceNameAction = nullptr;
+    QAction* editSequenceNameAction = nullptr;
 
     /** Copies whole selected rows. Ignores actual selected column range. */
-    QAction *copyWholeRowAction = nullptr;
+    QAction* copyWholeRowAction = nullptr;
 
     // TODO: remove this action. It triggers the same code with ui->delSelectionAction and exists only to show a different text in the context menu.
-    QAction *removeSequenceAction = nullptr;
+    QAction* removeSequenceAction = nullptr;
 
 protected:
-    QPixmap *cachedView = nullptr;
+    QPixmap* cachedView = nullptr;
 
-    MsaEditorUserModStepController *changeTracker = nullptr;
+    MsaEditorUserModStepController* changeTracker = nullptr;
     int maVersionBeforeMousePress = -1;
 
     static const int CROSS_SIZE = 9;
@@ -203,7 +203,7 @@ protected:
     static const int MARGIN_TEXT_BOTTOM = 2;
 
 protected:
-    MaEditor *editor = nullptr;
+    MaEditor* editor = nullptr;
 };
 
 }  // namespace U2

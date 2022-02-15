@@ -48,15 +48,15 @@ TrailingStep::TrailingStep()
                      "</body></html>");
 }
 
-TrimmomaticStepSettingsWidget *TrailingStep::createWidget() const {
+TrimmomaticStepSettingsWidget* TrailingStep::createWidget() const {
     return new QualitySettingsWidget(tr("The minimum quality required to keep a base."));
 }
 
-QString TrailingStep::serializeState(const QVariantMap &widgetState) const {
+QString TrailingStep::serializeState(const QVariantMap& widgetState) const {
     return QualitySettingsWidget::serializeState(widgetState);
 }
 
-QVariantMap TrailingStep::parseState(const QString &command) const {
+QVariantMap TrailingStep::parseState(const QString& command) const {
     return QualitySettingsWidget::parseState(command, id);
 }
 
@@ -64,9 +64,9 @@ TrailingStepFactory::TrailingStepFactory()
     : TrimmomaticStepFactory(ID) {
 }
 
-TrailingStep *TrailingStepFactory::createStep() const {
+TrailingStep* TrailingStepFactory::createStep() const {
     return new TrailingStep();
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

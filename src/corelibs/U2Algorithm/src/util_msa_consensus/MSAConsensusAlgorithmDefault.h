@@ -31,9 +31,9 @@ namespace U2 {
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactoryDefault : public MSAConsensusAlgorithmFactory {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmFactoryDefault(QObject *p = nullptr);
+    MSAConsensusAlgorithmFactoryDefault(QObject* p = nullptr);
 
-    virtual MSAConsensusAlgorithm *createAlgorithm(const MultipleAlignment &ma, bool ignoreTrailingLeadingGaps, QObject *parent);
+    virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* parent);
 
     virtual QString getDescription() const;
 
@@ -63,18 +63,18 @@ public:
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmDefault : public MSAConsensusAlgorithm {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmDefault(MSAConsensusAlgorithmFactoryDefault *f, bool ignoreTrailingLeadingGaps, QObject *p = nullptr)
+    MSAConsensusAlgorithmDefault(MSAConsensusAlgorithmFactoryDefault* f, bool ignoreTrailingLeadingGaps, QObject* p = nullptr)
         : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p) {
     }
 
-    virtual char getConsensusChar(const MultipleAlignment &ma, int column, QVector<int> seqIdx = QVector<int>()) const {
+    virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx = QVector<int>()) const {
         int countStub = 0;
         return getConsensusCharAndScore(ma, column, countStub, seqIdx);
     }
 
-    virtual MSAConsensusAlgorithmDefault *clone() const;
+    virtual MSAConsensusAlgorithmDefault* clone() const;
 
-    virtual char getConsensusCharAndScore(const MultipleAlignment &ma, int column, int &score, QVector<int> seqIdx = QVector<int>()) const;
+    virtual char getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score, QVector<int> seqIdx = QVector<int>()) const;
 };
 
 }  // namespace U2

@@ -40,7 +40,7 @@ class HoverQLabel;
 
 class U2DESIGNER_EXPORT WorkerParameterInfo {
 public:
-    WorkerParameterInfo(const QString &name, const QString &value, bool isUrl, bool isDir, bool isDataset);
+    WorkerParameterInfo(const QString& name, const QString& value, bool isUrl, bool isDir, bool isDataset);
     QString name;
     QString value;
     bool isUrl;
@@ -50,7 +50,7 @@ public:
 
 class U2DESIGNER_EXPORT WorkerParametersInfo {
 public:
-    WorkerParametersInfo(const QString &workerName, const QList<WorkerParameterInfo> &parameters);
+    WorkerParametersInfo(const QString& workerName, const QList<WorkerParameterInfo>& parameters);
     QString workerName;
     QList<WorkerParameterInfo> parameters;
 };
@@ -58,13 +58,13 @@ public:
 class U2DESIGNER_EXPORT ParametersDashboardWidget : public QWidget, DashboardWidgetUtils {
     Q_OBJECT
 public:
-    ParametersDashboardWidget(const QString &dashboardDir, const QDomElement &dom, const WorkflowMonitor *monitor = nullptr);
+    ParametersDashboardWidget(const QString& dashboardDir, const QDomElement& dom, const WorkflowMonitor* monitor = nullptr);
 
-    const QList<WorkerParametersInfo> &getWorkers() const {
+    const QList<WorkerParametersInfo>& getWorkers() const {
         return workers;
     }
 
-    static bool isValidDom(const QDomElement &dom);
+    static bool isValidDom(const QDomElement& dom);
 
     QString toHtml() const;
 
@@ -77,10 +77,10 @@ private:
     QString dashboardDir;
     const QPointer<const WorkflowMonitor> monitor;
 
-    QHBoxLayout *layout;
-    QGridLayout *parametersGridLayout;
+    QHBoxLayout* layout;
+    QGridLayout* parametersGridLayout;
     QList<WorkerParametersInfo> workers;
-    QList<HoverQLabel *> workerNameLabels;
+    QList<HoverQLabel*> workerNameLabels;
 };
 }  // namespace U2
 

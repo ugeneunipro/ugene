@@ -65,8 +65,8 @@ static const QString OFFSET_ATTR("offset");
 const QString QDWorkerFactory::ACTOR_ID("query");
 
 void QDWorkerFactory::init() {
-    QList<PortDescriptor *> p;
-    QList<Attribute *> a;
+    QList<PortDescriptor*> p;
+    QList<Attribute*> a;
 
     {
         Descriptor id(BasePorts::IN_SEQ_PORT_ID(),
@@ -99,8 +99,8 @@ void QDWorkerFactory::init() {
                                                                               "(Repeat finder, ORF finder, etc.) imposing constraints"
                                                                               " on the positional relationship of the results."));
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
-    QMap<QString, PropertyDelegate *> delegates;
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
+    QMap<QString, PropertyDelegate*> delegates;
     {
         delegates[SCHEMA_ATTR] = new URLDelegate(
             FileFilters::createFileFilter(QDWorker::tr("Query schemes"), {QUERY_SCHEME_EXTENSION}, false),
@@ -120,7 +120,7 @@ void QDWorkerFactory::init() {
     proto->setIconPath(":query_designer/images/query_designer.png");
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new QDWorkerFactory());
 }
 
@@ -128,8 +128,8 @@ void QDWorkerFactory::init() {
  * QDPrompter
  ******************************/
 QString QDPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
-    Actor *producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
+    Actor* producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr("from %1").arg(producer ? producer->getLabel() : unsetStr);
     QString schemaFile = getRequiredParam(SCHEMA_ATTR);
@@ -144,7 +144,7 @@ QString QDPrompter::composeRichDoc() {
 /******************************
  * QDWorker
  ******************************/
-QDWorker::QDWorker(Actor *a)
+QDWorker::QDWorker(Actor* a)
     : BaseWorker(a), input(nullptr), output(nullptr), scheme(nullptr) {
 }
 
@@ -153,7 +153,7 @@ void QDWorker::init() {
     output = ports.value(BasePorts::OUT_ANNOTATIONS_PORT_ID());
 }
 
-Task *QDWorker::tick() {
+Task* QDWorker::tick() {
     QString schemaUri = actor->getParameter(SCHEMA_ATTR)->getAttributePureValue().toString();
     QDDocument doc;
 
@@ -162,7 +162,7 @@ Task *QDWorker::tick() {
         QString defaultDir = QDir::searchPaths(PATH_PREFIX_DATA).first() + QUERY_SAMPLES_PATH;
         QDir dir(defaultDir);
         QStringList names(QString("*.%1").arg(QUERY_SCHEME_EXTENSION));
-        foreach (const QFileInfo &fi, dir.entryInfoList(names, QDir::Files | QDir::NoSymLinks)) {
+        foreach (const QFileInfo& fi, dir.entryInfoList(names, QDir::Files | QDir::NoSymLinks)) {
             if (fi.fileName() == schemaUri || fi.baseName() == schemaUri) {
                 schemaUri = fi.absoluteFilePath();
                 break;
@@ -185,7 +185,7 @@ Task *QDWorker::tick() {
 
     scheme = new QDScheme;
 
-    QList<QDDocument *> docs;
+    QList<QDDocument*> docs;
     docs << &doc;
     bool ok = QDSceneSerializer::doc2scheme(docs, scheme);
     if (!ok) {
@@ -224,8 +224,8 @@ Task *QDWorker::tick() {
             settings.outputType = QDRunSettings::Group;
         }
 
-        QDScheduler *scheduler = new QDScheduler(settings);
-        connect(new TaskSignalMapper(scheduler), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
+        QDScheduler* scheduler = new QDScheduler(settings);
+        connect(new TaskSignalMapper(scheduler), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
         return scheduler;
     } else if (input->isEnded()) {
         setDone();
@@ -237,23 +237,23 @@ Task *QDWorker::tick() {
 void QDWorker::cleanup() {
 }
 
-void annObjToAnnDataList(AnnotationTableObject *annObj, QList<SharedAnnotationData> &result) {
-    foreach (Annotation *a, annObj->getAnnotations()) {
+void annObjToAnnDataList(AnnotationTableObject* annObj, QList<SharedAnnotationData>& result) {
+    foreach (Annotation* a, annObj->getAnnotations()) {
         a->addQualifier(U2Qualifier(GBFeatureUtils::QUALIFIER_GROUP, a->getGroup()->getName()));
         result.append(a->getData());
     }
 }
 
-void QDWorker::sl_taskFinished(Task *t) {
+void QDWorker::sl_taskFinished(Task* t) {
     delete scheme;
     SAFE_POINT(nullptr != t, "Invalid task is encountered", );
     if (t->isCanceled()) {
         return;
     }
     if (output) {
-        QDScheduler *sched = qobject_cast<QDScheduler *>(t);
+        QDScheduler* sched = qobject_cast<QDScheduler*>(t);
         QList<SharedAnnotationData> res;
-        AnnotationTableObject *ao = sched->getSettings().annotationsObj;
+        AnnotationTableObject* ao = sched->getSettings().annotationsObj;
         annObjToAnnDataList(ao, res);
         QVariant v = qVariantFromValue<QList<SharedAnnotationData>>(res);
         output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), v));

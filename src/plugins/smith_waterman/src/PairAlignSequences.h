@@ -29,7 +29,7 @@ namespace U2 {
 class PairAlignSequences {
 public:
     PairAlignSequences();
-    void setValues(int _score, const U2Region &_refSubseqInterval, const U2Region &_ptrnSubseqInterval, QByteArray _pairAlignment);
+    void setValues(int _score, const U2Region& _refSubseqInterval, const U2Region& _ptrnSubseqInterval, QByteArray _pairAlignment);
 
     U2Region refSubseqInterval;
     U2Region ptrnSubseqInterval;

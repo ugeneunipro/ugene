@@ -85,18 +85,18 @@ QString CrashHandlerPrivateWin::getAdditionalInfo() const {
     return info;
 }
 
-bool CrashHandlerPrivateWin::breakpadCallback(const wchar_t *dump_path,
-                                              const wchar_t *minidump_id,
-                                              void *context,
-                                              EXCEPTION_POINTERS *exinfo,
-                                              MDRawAssertionInfo * /*assertion*/,
+bool CrashHandlerPrivateWin::breakpadCallback(const wchar_t* dump_path,
+                                              const wchar_t* minidump_id,
+                                              void* context,
+                                              EXCEPTION_POINTERS* exinfo,
+                                              MDRawAssertionInfo* /*assertion*/,
                                               bool succeeded) {
     QString dumpPath;
     if (succeeded) {
         dumpPath = QString::fromStdWString(dump_path) + "/" + QString::fromStdWString(minidump_id) + ".dmp";
     }
 
-    CrashHandlerPrivateWin *privateHandler = static_cast<CrashHandlerPrivateWin *>(context);
+    CrashHandlerPrivateWin* privateHandler = static_cast<CrashHandlerPrivateWin*>(context);
 #    ifdef Q_OS_WIN64
     privateHandler->walkStack(exinfo);
 #    endif
@@ -106,7 +106,7 @@ bool CrashHandlerPrivateWin::breakpadCallback(const wchar_t *dump_path,
     return true;
 }
 
-void CrashHandlerPrivateWin::walkStack(EXCEPTION_POINTERS *exinfo) {
+void CrashHandlerPrivateWin::walkStack(EXCEPTION_POINTERS* exinfo) {
     if (exinfo->ExceptionRecord->ExceptionCode == EXCEPTION_STACK_OVERFLOW) {
 #    if defined(Q_OS_WIN32)
         rollbackStack();  // TODO:need hack for x86_64
@@ -115,7 +115,7 @@ void CrashHandlerPrivateWin::walkStack(EXCEPTION_POINTERS *exinfo) {
     st.ShowCallstack(OpenThread(READ_CONTROL, false, breakpadHandler->get_requesting_thread_id()), exinfo->ContextRecord);
 }
 
-QString CrashHandlerPrivateWin::getExceptionText(EXCEPTION_POINTERS *exinfo) {
+QString CrashHandlerPrivateWin::getExceptionText(EXCEPTION_POINTERS* exinfo) {
     QString exceptionText = "Unhandled exception";
     CHECK(nullptr != exinfo, "C++ exception|" + exceptionText);
 

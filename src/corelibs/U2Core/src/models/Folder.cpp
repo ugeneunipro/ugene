@@ -30,25 +30,25 @@ Folder::Folder()
     : QObject() {
 }
 
-Folder::Folder(Document *doc, const QString &folderPath)
+Folder::Folder(Document* doc, const QString& folderPath)
     : QObject(), doc(doc), folderPath(folderPath) {
 }
 
-Folder::Folder(const Folder &other)
+Folder::Folder(const Folder& other)
     : QObject(), doc(other.doc), folderPath(other.folderPath) {
 }
 
-Folder &Folder::operator=(const Folder &other) {
+Folder& Folder::operator=(const Folder& other) {
     doc = other.doc;
     folderPath = other.folderPath;
     return *this;
 }
 
-Document *Folder::getDocument() const {
+Document* Folder::getDocument() const {
     return doc.data();
 }
 
-const QString &Folder::getFolderPath() const {
+const QString& Folder::getFolderPath() const {
     return folderPath;
 }
 
@@ -60,23 +60,23 @@ QString Folder::getFolderName() const {
     return getFolderName(folderPath);
 }
 
-void Folder::setFolderPath(const QString &newPath) {
+void Folder::setFolderPath(const QString& newPath) {
     SAFE_POINT(newPath.startsWith(U2ObjectDbi::ROOT_FOLDER), "Invalid folder path detected", );
     folderPath = newPath;
 }
 
-bool Folder::operator==(const Folder &other) const {
+bool Folder::operator==(const Folder& other) const {
     return other.getDocument() == doc && other.getFolderPath() == folderPath;
 }
 
-bool Folder::isCorrectFolderName(const QString &name) {
+bool Folder::isCorrectFolderName(const QString& name) {
     if (name.isEmpty()) {
         return false;
     }
     return !name.contains(U2ObjectDbi::PATH_SEP);
 }
 
-QString Folder::createPath(const QString &parentFolder, const QString &folderName) {
+QString Folder::createPath(const QString& parentFolder, const QString& folderName) {
     QString path = parentFolder;
     if (U2ObjectDbi::ROOT_FOLDER != path) {
         path += U2ObjectDbi::PATH_SEP;
@@ -84,7 +84,7 @@ QString Folder::createPath(const QString &parentFolder, const QString &folderNam
     return path + folderName;
 }
 
-QString Folder::getFolderParentPath(const QString &path) {
+QString Folder::getFolderParentPath(const QString& path) {
     QString name = getFolderName(path);
     CHECK(!name.isEmpty(), "");
 
@@ -95,7 +95,7 @@ QString Folder::getFolderParentPath(const QString &path) {
     return result;
 }
 
-QString Folder::getFolderName(const QString &path) {
+QString Folder::getFolderName(const QString& path) {
     SAFE_POINT(!path.isEmpty(), "Can't extract the folder name from the empty path", "");
     QStringList pathList = path.split(U2ObjectDbi::PATH_SEP, QString::SkipEmptyParts);
     if (pathList.isEmpty()) {
@@ -104,11 +104,11 @@ QString Folder::getFolderName(const QString &path) {
     return pathList.last();
 }
 
-bool Folder::isSubFolder(const QString &path, const QString &expectedSubpath) {
+bool Folder::isSubFolder(const QString& path, const QString& expectedSubpath) {
     return expectedSubpath.startsWith(path + U2ObjectDbi::PATH_SEP);
 }
 
-bool Folder::folderNameLessThan(const QString &first, const QString &second) {
+bool Folder::folderNameLessThan(const QString& first, const QString& second) {
     const bool firstIsRecycleBin = U2ObjectDbi::RECYCLE_BIN_FOLDER == first;
     const bool secondIsRecycleBin = U2ObjectDbi::RECYCLE_BIN_FOLDER == second;
 
@@ -126,11 +126,11 @@ bool Folder::folderNameLessThan(const QString &first, const QString &second) {
 /************************************************************************/
 const QString FolderMimeData::MIME_TYPE("application/x-ugene-folder-mime");
 
-FolderMimeData::FolderMimeData(const Folder &folder)
+FolderMimeData::FolderMimeData(const Folder& folder)
     : QMimeData(), folder(folder) {
 }
 
-bool FolderMimeData::hasFormat(const QString &mimeType) const {
+bool FolderMimeData::hasFormat(const QString& mimeType) const {
     return mimeType == MIME_TYPE;
 }
 

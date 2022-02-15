@@ -37,7 +37,7 @@ public:
 
 private:
     class Private;
-    Private *d;
+    Private* d;
 
     int refCount;
     bool isActive;

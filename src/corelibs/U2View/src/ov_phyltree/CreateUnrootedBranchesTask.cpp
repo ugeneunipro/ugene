@@ -31,14 +31,14 @@
 
 namespace U2 {
 
-CreateUnrootedBranchesTask::CreateUnrootedBranchesTask(GraphicsRectangularBranchItem *r)
+CreateUnrootedBranchesTask::CreateUnrootedBranchesTask(GraphicsRectangularBranchItem* r)
     : root1(r) {
 }
 
-GraphicsUnrootedBranchItem *CreateUnrootedBranchesTask::getBranch(GraphicsRectangularBranchItem *from, GraphicsUnrootedBranchItem *parent) {
-    GraphicsUnrootedBranchItem *res = new GraphicsUnrootedBranchItem(parent, coef * from->getHeight(), from, from->getNodeLabel());
-    foreach (QGraphicsItem *item, from->childItems()) {
-        GraphicsRectangularBranchItem *ri = dynamic_cast<GraphicsRectangularBranchItem *>(item);
+GraphicsUnrootedBranchItem* CreateUnrootedBranchesTask::getBranch(GraphicsRectangularBranchItem* from, GraphicsUnrootedBranchItem* parent) {
+    GraphicsUnrootedBranchItem* res = new GraphicsUnrootedBranchItem(parent, coef * from->getHeight(), from, from->getNodeLabel());
+    foreach (QGraphicsItem* item, from->childItems()) {
+        GraphicsRectangularBranchItem* ri = dynamic_cast<GraphicsRectangularBranchItem*>(item);
         if (ri != nullptr) {
             getBranch(ri, res);
         }

@@ -33,13 +33,13 @@ class U2VIEW_EXPORT FindPatternMsaWidgetFactory : public OPWidgetFactory {
 public:
     FindPatternMsaWidgetFactory();
 
-    QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
+    QWidget* createWidget(GObjectView* objView, const QVariantMap& options) override;
 
     OPGroupParameters getOPGroupParameters() override;
 
-    void applyOptionsToWidget(QWidget *widget, const QVariantMap &options) override;
+    void applyOptionsToWidget(QWidget* widget, const QVariantMap& options) override;
 
-    static const QString &getGroupId();
+    static const QString& getGroupId();
 
     static const QVariantMap getOptionsToActivateSearchInSequences();
 

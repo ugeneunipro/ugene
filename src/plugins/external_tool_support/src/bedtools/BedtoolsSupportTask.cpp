@@ -34,8 +34,8 @@
 namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
-//BAMBEDConvertFactory
-bool BAMBEDConvertFactory::isCustomFormatTask(const QString &detectedFormat, const QString &targetFormat) {
+// BAMBEDConvertFactory
+bool BAMBEDConvertFactory::isCustomFormatTask(const QString& detectedFormat, const QString& targetFormat) {
     if (detectedFormat == BaseDocumentFormats::BAM && targetFormat == BaseDocumentFormats::BED) {
         return true;
     }
@@ -43,8 +43,8 @@ bool BAMBEDConvertFactory::isCustomFormatTask(const QString &detectedFormat, con
 }
 
 //////////////////////////////////////////////////////////////////////////
-//BamBedConversionTask
-BamBedConversionTask::BamBedConversionTask(const GUrl &sourceURL, const QString &detectedFormat, const QString &targetFormat, const QString &dir)
+// BamBedConversionTask
+BamBedConversionTask::BamBedConversionTask(const GUrl& sourceURL, const QString& detectedFormat, const QString& targetFormat, const QString& dir)
     : ConvertFileTask(sourceURL, detectedFormat, targetFormat, dir) {
 }
 
@@ -58,7 +58,7 @@ void BamBedConversionTask::prepare() {
     args << "-i";
     args << sourceURL.getURLString();
 
-    ExternalToolRunTask *etTask = new ExternalToolRunTask(BedtoolsSupport::ET_BEDTOOLS_ID, args, new ExternalToolLogParser(), workingDir);
+    ExternalToolRunTask* etTask = new ExternalToolRunTask(BedtoolsSupport::ET_BEDTOOLS_ID, args, new ExternalToolLogParser(), workingDir);
     etTask->setStandartOutputFile(targetUrl);
     addSubTask(etTask);
 }
@@ -66,4 +66,4 @@ void BamBedConversionTask::prepare() {
 void BamBedConversionTask::run() {
 }
 
-}    //namespace U2
+}  // namespace U2

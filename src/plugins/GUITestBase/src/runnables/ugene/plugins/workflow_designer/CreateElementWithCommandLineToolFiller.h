@@ -125,35 +125,35 @@ public:
     };
 
 public:
-    CreateElementWithCommandLineToolFiller(HI::GUITestOpStatus &os,
-                                           const ElementWithCommandLineSettings &settings);
-    CreateElementWithCommandLineToolFiller(HI::GUITestOpStatus &os, CustomScenario *scenario);
+    CreateElementWithCommandLineToolFiller(HI::GUITestOpStatus& os,
+                                           const ElementWithCommandLineSettings& settings);
+    CreateElementWithCommandLineToolFiller(HI::GUITestOpStatus& os, CustomScenario* scenario);
     void commonScenario();
 
 private:
-    QString dataTypeToString(const InOutType &type) const;
-    QString dataTypeToString(const ParameterType &type) const;
-    QString formatToArgumentValue(const QString &format) const;
+    QString dataTypeToString(const InOutType& type) const;
+    QString dataTypeToString(const ParameterType& type) const;
+    QString formatToArgumentValue(const QString& format) const;
 
-    void processStringType(QTableView *table, int row, const ColumnName columnName, const QString &value);
-    void processDataType(QTableView *table, int row, const InOutDataType &type);
-    void processDataType(QTableView *table, int row, const ParameterDataType &type);
+    void processStringType(QTableView* table, int row, const ColumnName columnName, const QString& value);
+    void processDataType(QTableView* table, int row, const InOutDataType& type);
+    void processDataType(QTableView* table, int row, const ParameterDataType& type);
 
-    bool processFirstPage(QWidget *dialog, QString &errorMessage);
-    bool processSecondPage(QWidget *dialog, QString &errorMessage);
-    bool processThirdPage(QWidget *dialog, QString &errorMessage);
-    bool processFourthPage(QWidget *dialog, QString &errorMessage);
-    bool processFifthPage(QWidget *dialog, QString &errorMessage);
-    bool processSixthPage(QWidget *dialog, QString &errorMessage);
-    bool processSeventhPage(QWidget *dialog, QString &errorMessage);
+    bool processFirstPage(QWidget* dialog, QString& errorMessage);
+    bool processSecondPage(QWidget* dialog, QString& errorMessage);
+    bool processThirdPage(QWidget* dialog, QString& errorMessage);
+    bool processFourthPage(QWidget* dialog, QString& errorMessage);
+    bool processFifthPage(QWidget* dialog, QString& errorMessage);
+    bool processSixthPage(QWidget* dialog, QString& errorMessage);
+    bool processSeventhPage(QWidget* dialog, QString& errorMessage);
 
     template<typename DataType>
-    void setType(QTableView *table, int row, const DataType &type) {
+    void setType(QTableView* table, int row, const DataType& type) {
         GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, static_cast<int>(ColumnName::Type), row));
         GTMouseDriver::doubleClick();
         GTThread::waitForMainThread();
 
-        QComboBox *box = qobject_cast<QComboBox *>(QApplication::focusWidget());
+        QComboBox* box = qobject_cast<QComboBox*>(QApplication::focusWidget());
         QString dataType = dataTypeToString(type);
         GTComboBox::selectItemByText(os, box, dataType);
 #ifdef Q_OS_WIN
@@ -162,13 +162,13 @@ private:
     }
 
     template<typename DataType>
-    void fillTheTable(QTableView *table,
-                      QWidget *addRowButton,
-                      QList<Data<DataType>> &rowItems) {
-        QAbstractItemModel *model = table->model();
+    void fillTheTable(QTableView* table,
+                      QWidget* addRowButton,
+                      QList<Data<DataType>>& rowItems) {
+        QAbstractItemModel* model = table->model();
         int row = model->rowCount();
 
-        foreach (const Data<DataType> &rowData, rowItems) {
+        foreach (const Data<DataType>& rowData, rowItems) {
             GTWidget::click(os, addRowButton);
             table->scrollTo(model->index(row, static_cast<int>(ColumnName::DisplayName)));
 

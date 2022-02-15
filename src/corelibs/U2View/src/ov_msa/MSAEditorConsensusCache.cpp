@@ -31,11 +31,11 @@
 
 namespace U2 {
 
-MSAEditorConsensusCache::MSAEditorConsensusCache(QObject *p, MultipleAlignmentObject *o, MSAConsensusAlgorithmFactory *factory)
+MSAEditorConsensusCache::MSAEditorConsensusCache(QObject* p, MultipleAlignmentObject* o, MSAConsensusAlgorithmFactory* factory)
     : QObject(p), curCacheSize(0), aliObj(o), algorithm(nullptr) {
     setConsensusAlgorithm(factory);
 
-    connect(aliObj, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), SLOT(sl_alignmentChanged()));
+    connect(aliObj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_alignmentChanged()));
     connect(aliObj, SIGNAL(si_invalidateAlignmentObject()), SLOT(sl_invalidateAlignmentObject()));
 
     curCacheSize = aliObj->getLength();
@@ -48,15 +48,15 @@ MSAEditorConsensusCache::~MSAEditorConsensusCache() {
     algorithm = nullptr;
 }
 
-void MSAEditorConsensusCache::setConsensusAlgorithm(MSAConsensusAlgorithmFactory *factory) {
+void MSAEditorConsensusCache::setConsensusAlgorithm(MSAConsensusAlgorithmFactory* factory) {
     delete algorithm;
     algorithm = nullptr;
-    algorithm = factory->createAlgorithm(aliObj->getMultipleAlignment(), qobject_cast<MultipleChromatogramAlignmentObject *>(aliObj) != nullptr);
+    algorithm = factory->createAlgorithm(aliObj->getMultipleAlignment(), qobject_cast<MultipleChromatogramAlignmentObject*>(aliObj) != nullptr);
     connect(algorithm, SIGNAL(si_thresholdChanged(int)), SLOT(sl_thresholdChanged(int)));
     updateMap.fill(false);
 }
 
-QByteArray MSAEditorConsensusCache::getConsensusLine(const U2Region &region, bool withGaps) {
+QByteArray MSAEditorConsensusCache::getConsensusLine(const U2Region& region, bool withGaps) {
     QByteArray res;
     for (int i = static_cast<int>(region.startPos), n = static_cast<int>(region.endPos()); i < n; i++) {
         char c = getConsensusChar(i);
@@ -86,7 +86,7 @@ void MSAEditorConsensusCache::updateCacheItem(int pos) {
         SAFE_POINT(pos >= 0 && pos < curCacheSize, errorMessage, );
         SAFE_POINT(curCacheSize == ma->getLength(), errorMessage, );
 
-        CacheItem &ci = cache[pos];
+        CacheItem& ci = cache[pos];
         int count = 0;
         int nSeq = ma->getRowCount();
         SAFE_POINT(0 != nSeq, errorMessage, );
@@ -102,17 +102,17 @@ void MSAEditorConsensusCache::updateCacheItem(int pos) {
 
 char MSAEditorConsensusCache::getConsensusChar(int pos) {
     updateCacheItem(pos);
-    const CacheItem &ci = cache[pos];
+    const CacheItem& ci = cache[pos];
     return ci.topChar;
 }
 
 int MSAEditorConsensusCache::getConsensusCharPercent(int pos) {
     updateCacheItem(pos);
-    const CacheItem &ci = cache[pos];
+    const CacheItem& ci = cache[pos];
     return ci.topPercent;
 }
 
-QList<int> MSAEditorConsensusCache::getConsensusPercents(const U2Region &region) {
+QList<int> MSAEditorConsensusCache::getConsensusPercents(const U2Region& region) {
     QList<int> percents;
     for (qint64 column = region.startPos; column < region.endPos(); column++) {
         percents << getConsensusCharPercent(static_cast<int>(column));

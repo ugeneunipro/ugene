@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-void GlassView::setGlass(GlassPane *glp) {
+void GlassView::setGlass(GlassPane* glp) {
     glass = glp;
     if (glass) {
         glass->resize(viewport()->size());
@@ -36,7 +36,7 @@ void GlassView::setGlass(GlassPane *glp) {
     viewport()->update();
 }
 
-void GlassView::paintEvent(QPaintEvent *e) {
+void GlassView::paintEvent(QPaintEvent* e) {
     QGraphicsView::paintEvent(e);
     if (glass) {
         QPainter painter;
@@ -53,11 +53,11 @@ void GlassView::scrollContentsBy(int dx, int dy) {
     }
 }
 
-bool GlassView::viewportEvent(QEvent *e) {
+bool GlassView::viewportEvent(QEvent* e) {
     if (glass) {
         switch (e->type()) {
             case QEvent::Resize:
-                glass->resize(static_cast<QResizeEvent *>(e)->size());
+                glass->resize(static_cast<QResizeEvent*>(e)->size());
                 break;
             case QEvent::MouseButtonDblClick:
             case QEvent::MouseButtonPress:

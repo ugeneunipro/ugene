@@ -35,12 +35,12 @@ namespace U2 {
 const int ProjectUtils::MAX_OBJS_TO_SHOW_LOAD_PROGRESS = 100;
 const QString ProjectUtils::RECYCLE_BIN_FOLDER_PATH = U2ObjectDbi::ROOT_FOLDER + U2ObjectDbi::RECYCLE_BIN_FOLDER;
 
-QList<Document *> ProjectUtils::getConnectedSharedDatabases() {
-    QList<Document *> result;
-    Project *proj = AppContext::getProject();
+QList<Document*> ProjectUtils::getConnectedSharedDatabases() {
+    QList<Document*> result;
+    Project* proj = AppContext::getProject();
     CHECK(nullptr != proj, result);
 
-    foreach (Document *doc, proj->getDocuments()) {
+    foreach (Document* doc, proj->getDocuments()) {
         if (doc->isDatabaseConnection()) {
             result << doc;
         }
@@ -53,48 +53,48 @@ bool ProjectUtils::areSharedDatabasesAvailable() {
     return !getConnectedSharedDatabases().isEmpty();
 }
 
-bool ProjectUtils::isConnectedDatabaseDoc(const Document *doc) {
+bool ProjectUtils::isConnectedDatabaseDoc(const Document* doc) {
     CHECK(nullptr != doc, false);
     return (BaseDocumentFormats::DATABASE_CONNECTION == doc->getDocumentFormatId()) && (doc->isLoaded());
 }
 
-bool ProjectUtils::isDatabaseDoc(const Document *doc) {
+bool ProjectUtils::isDatabaseDoc(const Document* doc) {
     CHECK(nullptr != doc, false);
     return BaseDocumentFormats::DATABASE_CONNECTION == doc->getDocumentFormatId();
 }
 
-bool ProjectUtils::isFolderInRecycleBin(const QString &folderPath) {
+bool ProjectUtils::isFolderInRecycleBin(const QString& folderPath) {
     return folderPath.startsWith(RECYCLE_BIN_FOLDER_PATH + U2ObjectDbi::PATH_SEP);
 }
 
-bool ProjectUtils::isFolderInRecycleBinSubtree(const QString &folderPath) {
+bool ProjectUtils::isFolderInRecycleBinSubtree(const QString& folderPath) {
     return (folderPath == RECYCLE_BIN_FOLDER_PATH || isFolderInRecycleBin(folderPath));
 }
 
-bool ProjectUtils::isSystemFolder(const QString &folderPath) {
+bool ProjectUtils::isSystemFolder(const QString& folderPath) {
     return folderPath == U2ObjectDbi::ROOT_FOLDER || folderPath == RECYCLE_BIN_FOLDER_PATH;
 }
 
-Document *ProjectUtils::findDocument(const QString &url) {
-    Project *project = AppContext::getProject();
+Document* ProjectUtils::findDocument(const QString& url) {
+    Project* project = AppContext::getProject();
     CHECK(nullptr != project, nullptr);
     return project->findDocumentByURL(url);
 }
 
-bool ProjectUtils::hasLoadedDocument(const QString &url) {
-    const Document *doc = findDocument(url);
+bool ProjectUtils::hasLoadedDocument(const QString& url) {
+    const Document* doc = findDocument(url);
     CHECK(nullptr != doc, false);
     return doc->isLoaded();
 }
 
-bool ProjectUtils::hasUnloadedDocument(const QString &url) {
-    const Document *doc = findDocument(url);
+bool ProjectUtils::hasUnloadedDocument(const QString& url) {
+    const Document* doc = findDocument(url);
     CHECK(nullptr != doc, false);
     return !doc->isLoaded();
 }
 
-LoadUnloadedDocumentTask *ProjectUtils::findLoadTask(const QString &url) {
-    Document *doc = findDocument(url);
+LoadUnloadedDocumentTask* ProjectUtils::findLoadTask(const QString& url) {
+    Document* doc = findDocument(url);
     CHECK(nullptr != doc, nullptr);
     return LoadUnloadedDocumentTask::findActiveLoadingTask(doc);
 }

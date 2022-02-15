@@ -79,7 +79,7 @@ static const QString INDEX_BASENAME("index-basename");
 /* Genome aligner worker                                                */
 /************************************************************************/
 
-GenomeAlignerWorker::GenomeAlignerWorker(Actor *a)
+GenomeAlignerWorker::GenomeAlignerWorker(Actor* a)
     : BaseWorker(a, false), inChannel(nullptr), output(nullptr) {
 }
 
@@ -88,7 +88,7 @@ void GenomeAlignerWorker::init() {
     output = ports.value(OUT_PORT_DESCR);
 }
 
-Task *GenomeAlignerWorker::tick() {
+Task* GenomeAlignerWorker::tick() {
     if (inChannel->hasMessage()) {
         U2OpStatus2Log os;
         if (inChannel->isEnded()) {
@@ -116,7 +116,7 @@ Task *GenomeAlignerWorker::tick() {
             settings.pairedReads = false;
         }
 
-        Task *t = new GenomeAlignerTask(settings);
+        Task* t = new GenomeAlignerTask(settings);
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
     } else if (inChannel->isEnded()) {
@@ -130,7 +130,7 @@ void GenomeAlignerWorker::cleanup() {
 }
 
 void GenomeAlignerWorker::sl_taskFinished() {
-    GenomeAlignerTask *t = dynamic_cast<GenomeAlignerTask *>(sender());
+    GenomeAlignerTask* t = dynamic_cast<GenomeAlignerTask*>(sender());
     if (!t->isFinished() || t->hasError() || t->isCanceled()) {
         return;
     }
@@ -149,7 +149,7 @@ void GenomeAlignerWorker::sl_taskFinished() {
     }
 }
 
-DnaAssemblyToRefTaskSettings GenomeAlignerWorker::getSettings(U2OpStatus &os) {
+DnaAssemblyToRefTaskSettings GenomeAlignerWorker::getSettings(U2OpStatus& os) {
     DnaAssemblyToRefTaskSettings settings;
 
     QString referenceInputType = getValue<QString>(REFERENCE_INPUT_TYPE);
@@ -208,7 +208,7 @@ DnaAssemblyToRefTaskSettings GenomeAlignerWorker::getSettings(U2OpStatus &os) {
 QString GenomeAlignerPrompter::composeRichDoc() {
     QString res = "";
 
-    Actor *readsProducer = qobject_cast<IntegralBusPort *>(target->getPort(IN_PORT_DESCR))->getProducer(READS_URL_SLOT_ID);
+    Actor* readsProducer = qobject_cast<IntegralBusPort*>(target->getPort(IN_PORT_DESCR))->getProducer(READS_URL_SLOT_ID);
 
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString readsUrl = readsProducer ? readsProducer->getLabel() : unsetStr;
@@ -234,7 +234,7 @@ bool GenomeAlignerWorkerFactory::openclEnabled(false);
 
 class GenomeAlignerInputSlotsValidator : public PortValidator {
 public:
-    bool validate(const IntegralBusPort *port, NotificationsList &notificationList) const {
+    bool validate(const IntegralBusPort* port, NotificationsList& notificationList) const {
         QVariant busMap = port->getParameter(Workflow::IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributePureValue();
         bool data = isBinded(busMap.value<StrStrMap>(), READS_URL_SLOT_ID);
         if (!data) {
@@ -246,16 +246,16 @@ public:
         QString slot1Val = busMap.value<StrStrMap>().value(READS_URL_SLOT_ID);
         QString slot2Val = busMap.value<StrStrMap>().value(READS_PAIRED_URL_SLOT_ID);
         U2OpStatusImpl os;
-        const QList<IntegralBusSlot> &slots1 = IntegralBusSlot::listFromString(slot1Val, os);
-        const QList<IntegralBusSlot> &slots2 = IntegralBusSlot::listFromString(slot2Val, os);
+        const QList<IntegralBusSlot>& slots1 = IntegralBusSlot::listFromString(slot1Val, os);
+        const QList<IntegralBusSlot>& slots2 = IntegralBusSlot::listFromString(slot2Val, os);
 
         bool hasCommonElements = false;
 
-        foreach (const IntegralBusSlot &ibsl1, slots1) {
+        foreach (const IntegralBusSlot& ibsl1, slots1) {
             if (hasCommonElements) {
                 break;
             }
-            foreach (const IntegralBusSlot &ibsl2, slots2) {
+            foreach (const IntegralBusSlot& ibsl2, slots2) {
                 if (ibsl1 == ibsl2) {
                     hasCommonElements = true;
                     break;
@@ -273,7 +273,7 @@ public:
 };
 
 void GenomeAlignerWorkerFactory::init() {
-    QList<PortDescriptor *> p;
+    QList<PortDescriptor*> p;
     // in port
     QMap<Descriptor, DataTypePtr> inTypeMap;
     Descriptor readsDesc(READS_URL_SLOT_ID,
@@ -307,7 +307,7 @@ void GenomeAlignerWorkerFactory::init() {
     DataTypePtr outTypeSet(new MapDataType(OUT_TYPE_ID, outTypeMap));
     p << new PortDescriptor(outPortDesc, outTypeSet, false, true);
 
-    QList<Attribute *> attrs;
+    QList<Attribute*> attrs;
     {
         Descriptor outDir(OUTPUT_DIR,
                           GenomeAlignerWorker::tr("Output folder"),
@@ -367,23 +367,23 @@ void GenomeAlignerWorkerFactory::init() {
         }
 
         attrs << new Attribute(referenceInputType, BaseTypes::STRING_TYPE(), true, QVariant(DnaAssemblyToRefTaskSettings::SEQUENCE));
-        Attribute *attrRefGenom = new Attribute(refGenome, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
+        Attribute* attrRefGenom = new Attribute(refGenome, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
         attrRefGenom->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, DnaAssemblyToRefTaskSettings::SEQUENCE));
         attrs << attrRefGenom;
-        Attribute *attrIndexDir = new Attribute(indexDir, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
+        Attribute* attrIndexDir = new Attribute(indexDir, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
         attrIndexDir->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, DnaAssemblyToRefTaskSettings::INDEX));
         attrs << attrIndexDir;
-        Attribute *attrIndexBasename = new Attribute(indexBasename, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
+        Attribute* attrIndexBasename = new Attribute(indexBasename, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
         attrIndexBasename->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, DnaAssemblyToRefTaskSettings::INDEX));
         attrs << attrIndexBasename;
 
         attrs << new Attribute(outDir, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
         attrs << new Attribute(outName, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(BASE_GENOME_ALIGNER_OUTFILE));
         attrs << new Attribute(absMismatches, BaseTypes::BOOL_TYPE(), true /*required*/, true);
-        Attribute *mismatchesAttr = new Attribute(mismatches, BaseTypes::NUM_TYPE(), false, 0);
+        Attribute* mismatchesAttr = new Attribute(mismatches, BaseTypes::NUM_TYPE(), false, 0);
         mismatchesAttr->addRelation(new VisibilityRelation(ABS_OR_PERC_MISMATCHES_ATTR, QVariant(true)));
         attrs << mismatchesAttr;
-        Attribute *ptMismatchesAttr = new Attribute(ptMismatches, BaseTypes::NUM_TYPE(), false, 0);
+        Attribute* ptMismatchesAttr = new Attribute(ptMismatches, BaseTypes::NUM_TYPE(), false, 0);
         ptMismatchesAttr->addRelation(new VisibilityRelation(ABS_OR_PERC_MISMATCHES_ATTR, QVariant(false)));
         attrs << ptMismatchesAttr;
         attrs << new Attribute(reverse, BaseTypes::BOOL_TYPE(), false /*required*/, false);
@@ -397,9 +397,9 @@ void GenomeAlignerWorkerFactory::init() {
                                                                                                                       " port of the element, set up the reference sequence in the parameters."
                                                                                                                       " The result is saved to the specified SAM file, URL to the file is passed"
                                                                                                                       " to the output port."));
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, attrs);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, attrs);
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
 
     {
         QVariantMap rip;
@@ -434,7 +434,7 @@ void GenomeAlignerWorkerFactory::init() {
     proto->setPortValidator(IN_PORT_DESCR, new GenomeAlignerInputSlotsValidator());
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_MAP_ASSEMBLE_READS(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new GenomeAlignerWorkerFactory());
 }
 }  // namespace LocalWorkflow

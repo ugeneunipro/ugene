@@ -42,12 +42,12 @@ public:
     }
 
     DNASequence dnaSequence;
-    AnnotationTableObject *annotationsObj;
+    AnnotationTableObject* annotationsObj;
     GObjectReference annotationsObjRef;
     QString groupName;
     QString annDescription;
     U2Region region;
-    QDScheme *scheme;
+    QDScheme* scheme;
     QString viewName;
     int offset;
 
@@ -58,36 +58,36 @@ public:
 
 class QDStep {
 public:
-    QDStep(QDScheme *_scheme);
+    QDStep(QDScheme* _scheme);
     void next();
     bool hasNext() const;
     bool hasPrev() const;
-    QDActor *getActor() const {
+    QDActor* getActor() const {
         return actor;
     }
-    const QList<QDActor *> &getLinkedActors() const {
+    const QList<QDActor*>& getLinkedActors() const {
         return linkedActors;
     }
-    QList<QDConstraint *> getConstraints(QDSchemeUnit *subj, QDSchemeUnit *linked) const;
+    QList<QDConstraint*> getConstraints(QDSchemeUnit* subj, QDSchemeUnit* linked) const;
 
 private:
     void initTotalMap();
 
 private:
-    QDScheme *scheme;
-    QDActor *actor;
-    QList<QDActor *> linkedActors;
-    QMap<QPair<QDSchemeUnit *, QDSchemeUnit *>, QList<QDConstraint *>> constraintsMap;
+    QDScheme* scheme;
+    QDActor* actor;
+    QList<QDActor*> linkedActors;
+    QMap<QPair<QDSchemeUnit*, QDSchemeUnit*>, QList<QDConstraint*>> constraintsMap;
 };
 
 class QDScheduler;
 
 class QDResultLinker {
 public:
-    QDResultLinker(QDScheduler *_sched);
-    QVector<U2Region> findLocation(QDStep *step);
-    void updateCandidates(QDStep *step, int &progress);
-    QDScheduler *getScheduler() const {
+    QDResultLinker(QDScheduler* _sched);
+    QVector<U2Region> findLocation(QDStep* step);
+    void updateCandidates(QDStep* step, int& progress);
+    QDScheduler* getScheduler() const {
         return sched;
     }
     int getCandidatesNumber() const {
@@ -96,37 +96,37 @@ public:
     bool isCancelled() const {
         return cancelled;
     }
-    const QString &getCancelMessage() const {
+    const QString& getCancelMessage() const {
         return cancelMeassage;
     }
     void prepareAnnotations();
-    void createAnnotations(const QString &groupPrefix);
-    void createMergedAnnotations(const QString &groupPrefix);
+    void createAnnotations(const QString& groupPrefix);
+    void createMergedAnnotations(const QString& groupPrefix);
     void pushToTable();
 
 private:
     void formGroupResults();
-    void processNewResults(int &progress);
-    void initCandidates(int &progress);
-    void updateCandidates(int &progress);
+    void processNewResults(int& progress);
+    void initCandidates(int& progress);
+    void updateCandidates(int& progress);
     void cleanupCandidates();
-    bool canAdd(QDResultGroup *actorResult, QDResultGroup *candidate, bool complement) const;
-    QDStrandOption findResultStrand(QDResultGroup *actorRes);
+    bool canAdd(QDResultGroup* actorResult, QDResultGroup* candidate, bool complement) const;
+    QDStrandOption findResultStrand(QDResultGroup* actorRes);
     // inverts repeat pair if any for complement search
-    QList<QDResultUnit> prepareComplResults(QDResultGroup *src) const;
-    static QString prepareAnnotationName(const QDResultUnit &res);
+    QList<QDResultUnit> prepareComplResults(QDResultGroup* src) const;
+    static QString prepareAnnotationName(const QDResultUnit& res);
 
 private:
-    QDScheme *scheme;
-    QDScheduler *sched;
+    QDScheme* scheme;
+    QDScheduler* sched;
     bool cancelled;
     QString cancelMeassage;
-    QDStep *currentStep;
+    QDStep* currentStep;
     bool needInit;
-    QList<QDResultGroup *> candidates;
+    QList<QDResultGroup*> candidates;
     QMap<QDResultUnit, SharedAnnotationData> result2annotation;
-    QList<QDResultGroup *> currentResults;
-    QMap<QDActor *, QList<QDResultGroup *>> currentGroupResults;
+    QList<QDResultGroup*> currentResults;
+    QMap<QDActor*, QList<QDResultGroup*>> currentGroupResults;
     QMap<QString, QList<SharedAnnotationData>> annotations;
     int maxMemorySizeInMB;
 };
@@ -134,7 +134,7 @@ private:
 class QDFindLocationTask : public Task {
     Q_OBJECT
 public:
-    QDFindLocationTask(QDStep *_step, QDResultLinker *_linker)
+    QDFindLocationTask(QDStep* _step, QDResultLinker* _linker)
         : Task(tr("Find resultLocation"), TaskFlag_None), step(_step), linker(_linker) {
     }
 
@@ -150,8 +150,8 @@ public:
     static const int REGION_DELTA;
 
 private:
-    QDStep *step;
-    QDResultLinker *linker;
+    QDStep* step;
+    QDResultLinker* linker;
     QVector<U2Region> resultLocation;
     QVector<U2Region> searchLocation;
 };
@@ -159,7 +159,7 @@ private:
 class QDLinkResultsTask : public Task {
     Q_OBJECT
 public:
-    QDLinkResultsTask(QDStep *_step, QDResultLinker *_linker)
+    QDLinkResultsTask(QDStep* _step, QDResultLinker* _linker)
         : Task(tr("Link results"), TaskFlag_None), step(_step), linker(_linker) {
         tpm = Progress_Manual;
     }
@@ -169,30 +169,30 @@ public:
     }
 
 private:
-    QDStep *step;
-    QDResultLinker *linker;
+    QDStep* step;
+    QDResultLinker* linker;
 };
 
 class QDTask : public Task {
     Q_OBJECT
 public:
-    QDTask(QDStep *_step, QDResultLinker *_linker);
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QDTask(QDStep* _step, QDResultLinker* _linker);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 private slots:
     void sl_updateProgress();
 
 private:
-    QDStep *step;
-    QDResultLinker *linker;
-    QDFindLocationTask *findLocationTask;
-    Task *runTask;
+    QDStep* step;
+    QDResultLinker* linker;
+    QDFindLocationTask* findLocationTask;
+    Task* runTask;
     QVector<U2Region> curActorLocation;
 };
 
 class U2DESIGNER_EXPORT QDCreateAnnotationsTask : public Task {
     Q_OBJECT
 public:
-    QDCreateAnnotationsTask(QDResultLinker *linker)
+    QDCreateAnnotationsTask(QDResultLinker* linker)
         : Task(tr("Prepare annotations task"), TaskFlag_None), linker(linker) {
     }
 
@@ -201,19 +201,19 @@ public:
     }
 
 private:
-    QDResultLinker *linker;
+    QDResultLinker* linker;
 };
 
 class U2DESIGNER_EXPORT QDScheduler : public Task {
     Q_OBJECT
 public:
-    QDScheduler(const QDRunSettings &settings);
+    QDScheduler(const QDRunSettings& settings);
     ~QDScheduler();
-    QList<Task *> onSubTaskFinished(Task *subTask);
-    const QDRunSettings &getSettings() const {
+    QList<Task*> onSubTaskFinished(Task* subTask);
+    const QDRunSettings& getSettings() const {
         return settings;
     }
-    QDResultLinker *getLinker() const {
+    QDResultLinker* getLinker() const {
         return linker;
     }
     Task::ReportResult report();
@@ -222,10 +222,10 @@ private slots:
 
 private:
     QDRunSettings settings;
-    QDResultLinker *linker;
-    LoadUnloadedDocumentTask *loadTask;
-    QDCreateAnnotationsTask *createAnnsTask;
-    QDStep *currentStep;
+    QDResultLinker* linker;
+    LoadUnloadedDocumentTask* loadTask;
+    QDCreateAnnotationsTask* createAnnsTask;
+    QDStep* currentStep;
     int progressDelta;
 };
 

@@ -97,16 +97,16 @@ class U2FORMATS_EXPORT BedFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 
 public:
-    BedFormat(QObject *parent);
+    BedFormat(QObject* parent);
 
-    virtual void storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os);
+    virtual void storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os);
 
     /** Gets annotation data from a BED file, but doesn't create an annotation table */
-    static QList<SharedAnnotationData> getAnnotData(IOAdapter *io, U2OpStatus &os);
+    static QList<SharedAnnotationData> getAnnotData(IOAdapter* io, U2OpStatus& os);
 
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray &rawData, const GUrl & = GUrl()) const;
-    virtual Document *loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os);
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
     /**
      * A common method for parsing and validating an input file.
@@ -114,29 +114,29 @@ protected:
      */
 
 private:
-    void load(IOAdapter *io, QList<GObject *> &objects, const U2DbiRef &dbiRef, U2OpStatus &os, const QVariantMap &fs = QVariantMap());
+    void load(IOAdapter* io, QList<GObject*>& objects, const U2DbiRef& dbiRef, U2OpStatus& os, const QVariantMap& fs = QVariantMap());
 };
 
 class BedFormatParser {
 public:
-    BedFormatParser(IOAdapter *io, const QString &defaultAnnotName, U2OpStatus &os);
+    BedFormatParser(IOAdapter* io, const QString& defaultAnnotName, U2OpStatus& os);
 
     QHash<QString, QList<SharedAnnotationData>> parseDocument();
 
-    static BedLineData parseAndValidateLine(const QString &line, int numOfFields, BEDLineValidateFlags &status);
+    static BedLineData parseAndValidateLine(const QString& line, int numOfFields, BEDLineValidateFlags& status);
 
 private:
-    void parseHeader(QString &trackName, QString &trackDescr);
-    void createAnnotation(const BedLineData &bedLineData, QList<SharedAnnotationData> &result, QString &trackName, QString &trackDescr);
-    void addToResults(QHash<QString, QList<SharedAnnotationData>> &resHash, QList<SharedAnnotationData> &result, const QString &seqName);
-    bool checkAnnotationParsingErrors(const BEDLineValidateFlags &validateFlags, const BedLineData &lineData);
+    void parseHeader(QString& trackName, QString& trackDescr);
+    void createAnnotation(const BedLineData& bedLineData, QList<SharedAnnotationData>& result, QString& trackName, QString& trackDescr);
+    void addToResults(QHash<QString, QList<SharedAnnotationData>>& resHash, QList<SharedAnnotationData>& result, const QString& seqName);
+    bool checkAnnotationParsingErrors(const BEDLineValidateFlags& validateFlags, const BedLineData& lineData);
     int readLine();
     void moveToNextLine();
 
 private:
-    IOAdapter *io;
-    U2OpStatus &os;
-    const QString &defaultAnnotName;
+    IOAdapter* io;
+    U2OpStatus& os;
+    const QString& defaultAnnotName;
     static const int BufferSize;
     static const int MinimumColumnsNumber;
 

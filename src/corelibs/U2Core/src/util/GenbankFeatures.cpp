@@ -51,7 +51,7 @@ const QString GBFeatureUtils::QUALIFIER_TRANSLATION = "translation";
 #define FK(key, type, text) \
     FKE(key, type, text, "label")
 
-const QVector<GBFeatureKeyInfo> &GBFeatureUtils::allKeys() {
+const QVector<GBFeatureKeyInfo>& GBFeatureUtils::allKeys() {
     QMutexLocker locker(&allKeys_mutex);
     static QVector<GBFeatureKeyInfo> features(GBFeatureKey_NUM_KEYS);
     static bool inited = false;
@@ -146,18 +146,18 @@ const QVector<GBFeatureKeyInfo> &GBFeatureUtils::allKeys() {
     return features;
 }
 
-bool GBFeatureUtils::isFeatureHasNoValue(const QString &featureName) {
+bool GBFeatureUtils::isFeatureHasNoValue(const QString& featureName) {
     if (featureName == "pseudo") {
         return true;
     }
     return false;
 }
 
-GBFeatureKey GBFeatureUtils::getKey(const QString &text) {
+GBFeatureKey GBFeatureUtils::getKey(const QString& text) {
     QMutexLocker locker(&getKey_mutex);
     static QHash<QString, GBFeatureKey> keysByText;
     if (keysByText.isEmpty()) {
-        foreach (const GBFeatureKeyInfo &ki, allKeys()) {
+        foreach (const GBFeatureKeyInfo& ki, allKeys()) {
             keysByText[ki.text] = ki.id;
         }
     }
@@ -168,7 +168,7 @@ GBFeatureKey GBFeatureUtils::getKey(U2FeatureType featureType) {
     QMutexLocker locker(&getKey_mutex);
     static QHash<U2FeatureType, GBFeatureKey> keysByType;
     if (keysByType.isEmpty()) {
-        foreach (const GBFeatureKeyInfo &ki, allKeys()) {
+        foreach (const GBFeatureKeyInfo& ki, allKeys()) {
             keysByType[ki.type] = ki.id;
         }
     }

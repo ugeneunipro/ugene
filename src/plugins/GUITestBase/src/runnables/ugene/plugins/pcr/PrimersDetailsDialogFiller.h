@@ -31,8 +31,8 @@ using namespace HI;
 
 class PrimersDetailsDialogFiller : public Filler {
 public:
-    PrimersDetailsDialogFiller(HI::GUITestOpStatus &os);
-    PrimersDetailsDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario);
+    PrimersDetailsDialogFiller(HI::GUITestOpStatus& os);
+    PrimersDetailsDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario);
 
     void commonScenario();
 };

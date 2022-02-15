@@ -26,7 +26,7 @@ namespace U2 {
 QScopedPointer<QVector<Vector3D>> GeodesicSphere::elementarySphere(nullptr);
 int GeodesicSphere::currentDetailLevel = 1;
 
-GeodesicSphere::GeodesicSphere(const Vector3D &center, float radius, int detaillevel) {
+GeodesicSphere::GeodesicSphere(const Vector3D& center, float radius, int detaillevel) {
     if (elementarySphere.isNull() || currentDetailLevel != detaillevel) {
         elementarySphere.reset(createGeodesicSphere(detaillevel));
         currentDetailLevel = detaillevel;
@@ -38,7 +38,7 @@ GeodesicSphere::GeodesicSphere(const Vector3D &center, float radius, int detaill
 
     int size = vertices.count();
     for (int i = 0; i < size; ++i) {
-        Vector3D &vertex = vertices[i];
+        Vector3D& vertex = vertices[i];
         vertex.normalize();
         normals.append(vertex);
         vertex *= radius;
@@ -59,7 +59,7 @@ GeodesicSphere::GeodesicSphere(const Vector3D &center, float radius, int detaill
     }
 }
 
-void GeodesicSphere::interpolate(const Vector3D &v1, const Vector3D &v2, const Vector3D &v3, QVector<Vector3D> *v, int detailLevel) {
+void GeodesicSphere::interpolate(const Vector3D& v1, const Vector3D& v2, const Vector3D& v3, QVector<Vector3D>* v, int detailLevel) {
     if (0 == detailLevel) {
         v->append(v1);
         v->append(v2);
@@ -76,7 +76,7 @@ void GeodesicSphere::interpolate(const Vector3D &v1, const Vector3D &v2, const V
     interpolate(nv3, nv2, v3, v, detailLevel - 1);
 }
 
-QVector<Vector3D> *GeodesicSphere::createGeodesicSphere(int detailLevel) {
+QVector<Vector3D>* GeodesicSphere::createGeodesicSphere(int detailLevel) {
     QVector<Vector3D> base;
     base.resize(24);
 
@@ -114,7 +114,7 @@ QVector<Vector3D> *GeodesicSphere::createGeodesicSphere(int detailLevel) {
     base[22] = Vector3D(-1.0f, 0.0f, 0.0f);
     base[23] = Vector3D(0.0f, -1.0f, 0.0f);
 
-    QVector<Vector3D> *v = new QVector<Vector3D>();
+    QVector<Vector3D>* v = new QVector<Vector3D>();
     for (int i = 0; i < 24; i += 3) {
         interpolate(base.at(i), base.at(i + 1), base.at(i + 2), v, detailLevel);
     }

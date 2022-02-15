@@ -29,12 +29,12 @@
 
 namespace U2 {
 
-SubstMatrixRegistry::SubstMatrixRegistry(QObject *pOwn)
+SubstMatrixRegistry::SubstMatrixRegistry(QObject* pOwn)
     : QObject(pOwn), mutex(QMutex::Recursive) {
     readMatrices();
 }
 
-SMatrix SubstMatrixRegistry::getMatrix(const QString &name) {
+SMatrix SubstMatrixRegistry::getMatrix(const QString& name) {
     QMutexLocker lock(&mutex);
     return matrixByName.value(name);
 }
@@ -47,16 +47,16 @@ QList<SMatrix> SubstMatrixRegistry::getMatrices() const {
 QStringList SubstMatrixRegistry::getMatrixNames() const {
     QMutexLocker lock(&mutex);
     QStringList result;
-    foreach (const SMatrix &m, matrixByName.values()) {
+    foreach (const SMatrix& m, matrixByName.values()) {
         result.append(m.getName());
     }
     return result;
 }
 
-QList<SMatrix> SubstMatrixRegistry::selectMatricesByAlphabet(const DNAAlphabet *al) const {
+QList<SMatrix> SubstMatrixRegistry::selectMatricesByAlphabet(const DNAAlphabet* al) const {
     QMutexLocker lock(&mutex);
     QList<SMatrix> result;
-    foreach (const SMatrix &m, getMatrices()) {
+    foreach (const SMatrix& m, getMatrices()) {
         if (m.getAlphabet() == al) {
             result.append(m);
         }
@@ -64,15 +64,15 @@ QList<SMatrix> SubstMatrixRegistry::selectMatricesByAlphabet(const DNAAlphabet *
     return result;
 }
 
-QStringList SubstMatrixRegistry::selectMatrixNamesByAlphabet(const DNAAlphabet *al) const {
+QStringList SubstMatrixRegistry::selectMatrixNamesByAlphabet(const DNAAlphabet* al) const {
     QMutexLocker lock(&mutex);
     QStringList result;
-    foreach (const SMatrix &m, matrixByName.values()) {
-        const DNAAlphabet *mAlpha = m.getAlphabet();
+    foreach (const SMatrix& m, matrixByName.values()) {
+        const DNAAlphabet* mAlpha = m.getAlphabet();
         if (al->getType() == mAlpha->getType() && al->getNumAlphabetChars() <= mAlpha->getNumAlphabetChars()) {
             QByteArray aChars = al->getAlphabetChars(), mChars = mAlpha->getAlphabetChars();
             bool addToResult = true;
-            for (char c: qAsConst(aChars)) {
+            for (char c : qAsConst(aChars)) {
                 if (!mChars.contains(c)) {
                     addToResult = false;
                     break;
@@ -87,7 +87,7 @@ QStringList SubstMatrixRegistry::selectMatrixNamesByAlphabet(const DNAAlphabet *
     return result;
 }
 
-void SubstMatrixRegistry::registerMatrix(const SMatrix &m) {
+void SubstMatrixRegistry::registerMatrix(const SMatrix& m) {
     assert(!m.isEmpty());
     QMutexLocker lock(&mutex);
     matrixByName[m.getName()] = m;
@@ -97,7 +97,7 @@ void SubstMatrixRegistry::readMatrices() {
     QString builtInMatrixDir = QDir::searchPaths(PATH_PREFIX_DATA).first() + "/weight_matrix";
     QStringList ls = QDir(builtInMatrixDir).entryList(QStringList("*.txt"));
     for (int i = 0; i < ls.size(); i++) {
-        const QString &fileName = ls.at(i);
+        const QString& fileName = ls.at(i);
         QFileInfo fi(builtInMatrixDir + "/" + fileName);
         coreLog.trace(tr("Reading substitution matrix from %1").arg(fi.canonicalFilePath()));
         QString error;
@@ -112,7 +112,7 @@ void SubstMatrixRegistry::readMatrices() {
     }
 }
 
-SMatrix SubstMatrixRegistry::readMatrixFromFile(const QString &fileName, QString &error) {
+SMatrix SubstMatrixRegistry::readMatrixFromFile(const QString& fileName, QString& error) {
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly)) {
         error = tr("Error opening file for read: %1").arg(fileName);
@@ -128,13 +128,13 @@ SMatrix SubstMatrixRegistry::readMatrixFromFile(const QString &fileName, QString
     return parseMatrix(QFileInfo(fileName).completeBaseName(), data, error);
 }
 
-SMatrix SubstMatrixRegistry::parseMatrix(const QString &name, const QByteArray &text, QString &error) {
+SMatrix SubstMatrixRegistry::parseMatrix(const QString& name, const QByteArray& text, QString& error) {
     QList<QByteArray> lines = text.split('\n');
 
     QByteArray alphaRow;
     QList<SScore> charScores;
     QString description;
-    const DNAAlphabet *alphabet = nullptr;
+    const DNAAlphabet* alphabet = nullptr;
     QByteArray mappedAlphas;  // cache of mapped characters. Used to check that no character is mapped twice
     // put comments into description
     for (int i = 0; i < lines.length(); i++) {
@@ -153,7 +153,7 @@ SMatrix SubstMatrixRegistry::parseMatrix(const QString &name, const QByteArray &
         if (alphaRow.isEmpty()) {
             // this is the first row with symbols
             QStringList tokens = line.simplified().split(' ');
-            foreach (const QString &token, tokens) {
+            foreach (const QString& token, tokens) {
                 if (token.length() != 1) {
                     error = tr("Invalid character token '%1' , line %2").arg(token).arg(i + 1);
                     return SMatrix();
@@ -197,7 +197,7 @@ SMatrix SubstMatrixRegistry::parseMatrix(const QString &name, const QByteArray &
                 return SMatrix();
             }
             for (int j = 1; j < tokens.length(); j++) {
-                const QString &weightToken = tokens.at(j);
+                const QString& weightToken = tokens.at(j);
                 bool ok = true;
                 float weight = weightToken.toFloat(&ok);
                 if (!ok) {

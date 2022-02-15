@@ -38,7 +38,7 @@ namespace U2 {
 /************************************************************************/
 /* MaUtilsWidget */
 /************************************************************************/
-MaUtilsWidget::MaUtilsWidget(MaEditorWgt *ui, QWidget *heightWidget)
+MaUtilsWidget::MaUtilsWidget(MaEditorWgt* ui, QWidget* heightWidget)
     : ui(ui),
       heightWidget(heightWidget),
       heightMargin(0) {
@@ -51,7 +51,7 @@ void MaUtilsWidget::sl_fontChanged() {
     setMinimumHeight(heightWidget->height() + heightMargin);
 }
 
-const QFont &MaUtilsWidget::getMsaEditorFont() {
+const QFont& MaUtilsWidget::getMsaEditorFont() {
     return ui->getEditor()->getFont();
 }
 
@@ -60,10 +60,10 @@ void MaUtilsWidget::setHeightMargin(int _heightMargin) {
     setMinimumHeight(heightWidget->height() + heightMargin);
 }
 
-void MaUtilsWidget::mousePressEvent(QMouseEvent *) {
+void MaUtilsWidget::mousePressEvent(QMouseEvent*) {
     ui->getEditor()->getSelectionController()->clearSelection();
 }
-void MaUtilsWidget::paintEvent(QPaintEvent *) {
+void MaUtilsWidget::paintEvent(QPaintEvent*) {
     QPainter p(this);
     p.fillRect(rect(), Qt::white);
     setMinimumHeight(heightWidget->height() + heightMargin);
@@ -72,7 +72,7 @@ void MaUtilsWidget::paintEvent(QPaintEvent *) {
 /************************************************************************/
 /* MaLabelWidget */
 /************************************************************************/
-MaLabelWidget::MaLabelWidget(MaEditorWgt *ui, QWidget *heightWidget, const QString &text, Qt::Alignment alignment, bool proxyMouseEventsToNameList)
+MaLabelWidget::MaLabelWidget(MaEditorWgt* ui, QWidget* heightWidget, const QString& text, Qt::Alignment alignment, bool proxyMouseEventsToNameList)
     : MaUtilsWidget(ui, heightWidget), proxyMouseEventsToNameList(proxyMouseEventsToNameList) {
     label = new QLabel(text, this);
     label->setAlignment(alignment);
@@ -82,40 +82,40 @@ MaLabelWidget::MaLabelWidget(MaEditorWgt *ui, QWidget *heightWidget, const QStri
     // Disable text interaction: all mouse events from QLabel will be delivered to this widget.
     label->setTextInteractionFlags(Qt::NoTextInteraction);
 
-    QVBoxLayout *layout = new QVBoxLayout(this);
+    QVBoxLayout* layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(label);
     setLayout(layout);
 }
 
-void MaLabelWidget::paintEvent(QPaintEvent *e) {
+void MaLabelWidget::paintEvent(QPaintEvent* e) {
     MaUtilsWidget::paintEvent(e);
     label->setFont(getMsaEditorFont());
 }
 
-void MaLabelWidget::mousePressEvent(QMouseEvent *e) {
+void MaLabelWidget::mousePressEvent(QMouseEvent* e) {
     if (proxyMouseEventsToNameList) {
         QMouseEvent proxyEvent(e->type(), QPoint(e->x(), 0), e->globalPos(), e->button(), e->buttons(), e->modifiers());
         sendEventToNameList(&proxyEvent);
     }
 }
 
-void MaLabelWidget::mouseReleaseEvent(QMouseEvent *e) {
+void MaLabelWidget::mouseReleaseEvent(QMouseEvent* e) {
     if (proxyMouseEventsToNameList) {
         QMouseEvent proxyEvent(e->type(), QPoint(e->x(), qMax(e->y() - height(), 0)), e->globalPos(), e->button(), e->buttons(), e->modifiers());
         sendEventToNameList(&proxyEvent);
     }
 }
 
-void MaLabelWidget::mouseMoveEvent(QMouseEvent *e) {
+void MaLabelWidget::mouseMoveEvent(QMouseEvent* e) {
     if (proxyMouseEventsToNameList) {
         QMouseEvent proxyEvent(e->type(), QPoint(e->x(), e->y() - height()), e->globalPos(), e->button(), e->buttons(), e->modifiers());
         sendEventToNameList(&proxyEvent);
     }
 }
 
-void MaLabelWidget::sendEventToNameList(QMouseEvent *e) const {
-    QApplication::instance()->notify((QObject *)ui->getEditorNameList(), e);
+void MaLabelWidget::sendEventToNameList(QMouseEvent* e) const {
+    QApplication::instance()->notify((QObject*)ui->getEditorNameList(), e);
 }
 
 }  // namespace U2

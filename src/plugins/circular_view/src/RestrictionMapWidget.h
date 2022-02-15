@@ -32,23 +32,23 @@ class ADVSequenceObjectContext;
 
 class EnzymeItem : public QTreeWidgetItem {
 public:
-    EnzymeItem(const QString &locationStr, Annotation *a);
-    Annotation *getEnzymeAnnotation() const {
+    EnzymeItem(const QString& locationStr, Annotation* a);
+    Annotation* getEnzymeAnnotation() const {
         return annotation;
     }
 
 private:
-    Annotation *annotation;
+    Annotation* annotation;
 };
 
 class EnzymeFolderItem : public QTreeWidgetItem {
     QString enzymeName;
 
 public:
-    EnzymeFolderItem(const QString &name);
-    void addEnzymeItem(Annotation *enzAnn);
-    void removeEnzymeItem(Annotation *enzAnn);
-    const QString &getName() const {
+    EnzymeFolderItem(const QString& name);
+    void addEnzymeItem(Annotation* enzAnn);
+    void removeEnzymeItem(Annotation* enzAnn);
+    const QString& getName() const {
         return enzymeName;
     }
 };
@@ -56,19 +56,19 @@ public:
 class RestrctionMapWidget : public QWidget {
     Q_OBJECT
 public:
-    RestrctionMapWidget(ADVSequenceObjectContext *ctx, QWidget *p);
+    RestrctionMapWidget(ADVSequenceObjectContext* ctx, QWidget* p);
 
 private slots:
-    void sl_onAnnotationsAdded(const QList<Annotation *> &anns);
-    void sl_onAnnotationsRemoved(const QList<Annotation *> &anns);
-    void sl_onAnnotationsInGroupRemoved(const QList<Annotation *> &anns, AnnotationGroup *group);
-    void sl_onAnnotationsGroupCreated(AnnotationGroup *g);
+    void sl_onAnnotationsAdded(const QList<Annotation*>& anns);
+    void sl_onAnnotationsRemoved(const QList<Annotation*>& anns);
+    void sl_onAnnotationsInGroupRemoved(const QList<Annotation*>& anns, AnnotationGroup* group);
+    void sl_onAnnotationsGroupCreated(AnnotationGroup* g);
     void sl_itemSelectionChanged();
 
 private:
-    ADVSequenceObjectContext *ctx;
-    QTreeWidget *treeWidget;
-    EnzymeFolderItem *findEnzymeFolderByName(const QString &enzymeName);
+    ADVSequenceObjectContext* ctx;
+    QTreeWidget* treeWidget;
+    EnzymeFolderItem* findEnzymeFolderByName(const QString& enzymeName);
     void registerAnnotationObjects();
     void updateTreeWidget();
     void initTreeWidget();

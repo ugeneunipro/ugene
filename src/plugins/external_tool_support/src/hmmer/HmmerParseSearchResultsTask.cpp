@@ -31,14 +31,14 @@ namespace U2 {
 
 const qint64 HmmerParseSearchResultsTask::BUFF_SIZE = 4096;
 
-HmmerParseSearchResultsTask::HmmerParseSearchResultsTask(const QString &resultUrl, const AnnotationCreationPattern &pattern)
+HmmerParseSearchResultsTask::HmmerParseSearchResultsTask(const QString& resultUrl, const AnnotationCreationPattern& pattern)
     : Task("Parse HMMER search result", TaskFlag_None),
       resultUrl(resultUrl),
       pattern(pattern) {
     SAFE_POINT_EXT(!resultUrl.isEmpty(), setError("Result file URL is empty"), );
 }
 
-const QList<SharedAnnotationData> &HmmerParseSearchResultsTask::getAnnotations() const {
+const QList<SharedAnnotationData>& HmmerParseSearchResultsTask::getAnnotations() const {
     return annotations;
 }
 
@@ -68,11 +68,11 @@ void HmmerParseSearchResultsTask::run() {
     }
 }
 
-bool HmmerParseSearchResultsTask::isComment(const QString &line) {
+bool HmmerParseSearchResultsTask::isComment(const QString& line) {
     return line.startsWith("#");
 }
 
-void HmmerParseSearchResultsTask::processHit(const QStringList &tokens, qint64 lineNumber) {
+void HmmerParseSearchResultsTask::processHit(const QStringList& tokens, qint64 lineNumber) {
     CHECK_EXT(tokens.size() >= 23, stateInfo.addWarning(tr("Can't parse line %1").arg(lineNumber)), );
     SharedAnnotationData annotation(new AnnotationData);
     annotation->qualifiers << U2Qualifier("Accuracy_per_residue", tokens[ACC]);
@@ -94,4 +94,4 @@ void HmmerParseSearchResultsTask::processHit(const QStringList &tokens, qint64 l
     annotations << annotation;
 }
 
-}    // namespace U2
+}  // namespace U2

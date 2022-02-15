@@ -28,7 +28,7 @@ namespace U2 {
 
 class BamBedConversionTask : public ConvertFileTask {
 public:
-    BamBedConversionTask(const GUrl &sourceURL, const QString &detectedFormat, const QString &targetFormat, const QString &dir);
+    BamBedConversionTask(const GUrl& sourceURL, const QString& detectedFormat, const QString& targetFormat, const QString& dir);
 
 protected:
     void prepare();
@@ -37,12 +37,12 @@ protected:
 
 class BAMBEDConvertFactory : public ConvertFileFactory {
 public:
-    virtual bool isCustomFormatTask(const QString &detectedFormat, const QString &targetFormat);
-    virtual ConvertFileTask *getTask(const GUrl &sourceURL, const QString &detectedFormat, const QString &targetFormat, const QString &dir) {
+    virtual bool isCustomFormatTask(const QString& detectedFormat, const QString& targetFormat);
+    virtual ConvertFileTask* getTask(const GUrl& sourceURL, const QString& detectedFormat, const QString& targetFormat, const QString& dir) {
         return new BamBedConversionTask(sourceURL, detectedFormat, targetFormat, dir);
     }
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_BEDTOOLS_SUPPORT_TASK_H_
+#endif  // _U2_BEDTOOLS_SUPPORT_TASK_H_

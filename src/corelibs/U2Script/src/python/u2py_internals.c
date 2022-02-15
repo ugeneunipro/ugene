@@ -39,42 +39,42 @@ const int FUNCTION_FAIL = -1;
  */
 
 static int checkErrorCode(U2ErrorType error) {
-    PyObject *exceptionObject = NULL;
-    PyUnicodeObject *exceptionString = NULL;
-    const wchar_t *errorString = NULL;
+    PyObject* exceptionObject = NULL;
+    PyUnicodeObject* exceptionString = NULL;
+    const wchar_t* errorString = NULL;
     Py_ssize_t errorStringLength = 0;
     if (U2_OK == error) {
         return FUNCTION_SUCCESS;
     }
     switch (error) {
-    case U2_FAILED_TO_CREATE_FILE:
-    case U2_FAILED_TO_CREATE_DIR:
-    case U2_FAILED_TO_READ_FILE:
-    case U2_FAILED_TO_REMOVE_TMP_FILE:
-        exceptionObject = PyExc_IOError;
-        break;
-    case U2_INVALID_CALL:
-        exceptionObject = PyExc_EnvironmentError;
-        break;
-    case U2_INVALID_NAME:
-    case U2_INVALID_PATH:
-    case U2_INVALID_STRING:
-    case U2_NUM_ARG_OUT_OF_RANGE:
-        exceptionObject = PyExc_ValueError;
-        break;
-    case U2_TOO_SMALL_BUFFER:
-        exceptionObject = PyExc_BufferError;
-        break;
-    case U2_NOT_ENOUGH_MEMORY:
-        exceptionObject = PyExc_MemoryError;
-        break;
-    default:
-        exceptionObject = PyExc_Exception;
+        case U2_FAILED_TO_CREATE_FILE:
+        case U2_FAILED_TO_CREATE_DIR:
+        case U2_FAILED_TO_READ_FILE:
+        case U2_FAILED_TO_REMOVE_TMP_FILE:
+            exceptionObject = PyExc_IOError;
+            break;
+        case U2_INVALID_CALL:
+            exceptionObject = PyExc_EnvironmentError;
+            break;
+        case U2_INVALID_NAME:
+        case U2_INVALID_PATH:
+        case U2_INVALID_STRING:
+        case U2_NUM_ARG_OUT_OF_RANGE:
+            exceptionObject = PyExc_ValueError;
+            break;
+        case U2_TOO_SMALL_BUFFER:
+            exceptionObject = PyExc_BufferError;
+            break;
+        case U2_NOT_ENOUGH_MEMORY:
+            exceptionObject = PyExc_MemoryError;
+            break;
+        default:
+            exceptionObject = PyExc_Exception;
     }
     errorString = getErrorString(error);
     errorStringLength = (Py_ssize_t)wcslen(errorString);
-    exceptionString = (PyUnicodeObject *)PyUnicode_FromWideChar(errorString, errorStringLength);
-    PyErr_SetObject(exceptionObject, (PyObject *)exceptionString);
+    exceptionString = (PyUnicodeObject*)PyUnicode_FromWideChar(errorString, errorStringLength);
+    PyErr_SetObject(exceptionObject, (PyObject*)exceptionString);
     return FUNCTION_FAIL;
 }
 
@@ -86,7 +86,7 @@ static int checkErrorCode(U2ErrorType error) {
  *
  */
 
-static void releaseStringList(int size, wchar_t **list) {
+static void releaseStringList(int size, wchar_t** list) {
     int index = 0;
     for (; index < size; ++index) {
         free(list[index]);
@@ -100,18 +100,18 @@ static void releaseStringList(int size, wchar_t **list) {
  *
  */
 
-static PyObject *getLastFailedString() {
+static PyObject* getLastFailedString() {
     const int initBufferSize = BASE_NAME_LENGTH * 2;
     int longNameSize = initBufferSize;
-    wchar_t *longName = NULL;
+    wchar_t* longName = NULL;
     Py_ssize_t longNameLength = 0;
     U2ErrorType operationResult = U2_TOO_SMALL_BUFFER;
-    PyObject *wrappedName = NULL;
+    PyObject* wrappedName = NULL;
     while (U2_TOO_SMALL_BUFFER == operationResult) {
         if (initBufferSize != longNameSize) {
             free(longName);
         }
-        longName = (wchar_t *)malloc(longNameSize * sizeof(wchar_t));
+        longName = (wchar_t*)malloc(longNameSize * sizeof(wchar_t));
         if (NULL == longName) {
             checkErrorCode(U2_NOT_ENOUGH_MEMORY);
             return NULL;
@@ -129,19 +129,19 @@ static PyObject *getLastFailedString() {
  *
  */
 
-static PyListObject *convertToPyList(int itemsCount, const wchar_t **items) {
-    PyListObject *outputFilesList = (PyListObject *)PyList_New(itemsCount);
-    PyUnicodeObject *currentString = NULL;
+static PyListObject* convertToPyList(int itemsCount, const wchar_t** items) {
+    PyListObject* outputFilesList = (PyListObject*)PyList_New(itemsCount);
+    PyUnicodeObject* currentString = NULL;
     Py_ssize_t index = 0;
 
     for (; index < itemsCount; ++index) {
         const Py_ssize_t itemLength = (Py_ssize_t)wcslen(items[index]);
-        currentString = (PyUnicodeObject *)PyUnicode_FromWideChar(items[index], itemLength);
+        currentString = (PyUnicodeObject*)PyUnicode_FromWideChar(items[index], itemLength);
         if (NULL == currentString) {
             checkErrorCode(U2_NOT_ENOUGH_MEMORY);
             return NULL;
         }
-        PyList_SetItem((PyObject *)outputFilesList, index, (PyObject *)currentString);
+        PyList_SetItem((PyObject*)outputFilesList, index, (PyObject*)currentString);
     }
     return outputFilesList;
 }
@@ -151,34 +151,34 @@ static PyListObject *convertToPyList(int itemsCount, const wchar_t **items) {
  *
  */
 
-static const char *getBioPythonFormatName(U2Format format) {
+static const char* getBioPythonFormatName(U2Format format) {
     switch (format) {
-    case U2_ABI:
-        return "abi";
-    case U2_ACE:
-        return "ace";
-    case U2_CLUSTAL:
-        return "clustal";
-    case U2_EMBL:
-        return "embl";
-    case U2_FASTA:
-        return "fasta";
-    case U2_FASTQ:
-        return "fastq";
-    case U2_GENBANK:
-        return "genbank";
-    case U2_MEGA:
-        return "mega";
-    case U2_MSF:
-        return "msf";
-    case U2_NEXUS:
-        return "nexus";
-    case U2_STOCKHOLM:
-        return "stockholm";
-    case U2_SWISS:
-        return "swiss";
-    default:
-        return "";
+        case U2_ABI:
+            return "abi";
+        case U2_ACE:
+            return "ace";
+        case U2_CLUSTAL:
+            return "clustal";
+        case U2_EMBL:
+            return "embl";
+        case U2_FASTA:
+            return "fasta";
+        case U2_FASTQ:
+            return "fastq";
+        case U2_GENBANK:
+            return "genbank";
+        case U2_MEGA:
+            return "mega";
+        case U2_MSF:
+            return "msf";
+        case U2_NEXUS:
+            return "nexus";
+        case U2_STOCKHOLM:
+            return "stockholm";
+        case U2_SWISS:
+            return "swiss";
+        default:
+            return "";
     }
 }
 
@@ -197,13 +197,13 @@ typedef struct {
  *
  */
 
-static PyObject *Scheme_alloc(PyTypeObject *type, PyObject *args, PyObject *kwds) {
-    Scheme *self = (Scheme *)type->tp_alloc(type, 0);
+static PyObject* Scheme_alloc(PyTypeObject* type, PyObject* args, PyObject* kwds) {
+    Scheme* self = (Scheme*)type->tp_alloc(type, 0);
     kwds;
     if (NULL != self) {
         self->handle = NULL;
     }
-    return (PyObject *)self;
+    return (PyObject*)self;
 }
 
 /*
@@ -211,7 +211,7 @@ static PyObject *Scheme_alloc(PyTypeObject *type, PyObject *args, PyObject *kwds
  *
  */
 
-static int Scheme_init(PyObject *self, PyObject *args, PyObject *kwds) {
+static int Scheme_init(PyObject* self, PyObject* args, PyObject* kwds) {
     U2ErrorType result = U2_OK;
     const Py_UNICODE *pathToScheme = NULL, *inputFileForSas = NULL, *outputFileForSas = NULL;
     kwds;
@@ -219,9 +219,9 @@ static int Scheme_init(PyObject *self, PyObject *args, PyObject *kwds) {
     if (0 == PyArg_ParseTuple(args, "|uuu", &pathToScheme, &inputFileForSas, &outputFileForSas)) {
         return -1;
     }
-    result = createSas((const wchar_t *)pathToScheme, (const wchar_t *)inputFileForSas, (const wchar_t *)outputFileForSas, &((Scheme *)self)->handle);
+    result = createSas((const wchar_t*)pathToScheme, (const wchar_t*)inputFileForSas, (const wchar_t*)outputFileForSas, &((Scheme*)self)->handle);
     if (U2_UNKNOWN_ELEMENT == result || U2_INVALID_STRING == result) {
-        result = createScheme(pathToScheme, &((Scheme *)self)->handle);
+        result = createScheme(pathToScheme, &((Scheme*)self)->handle);
     }
     if (FUNCTION_SUCCESS != checkErrorCode(result)) {
         return -1;
@@ -234,9 +234,9 @@ static int Scheme_init(PyObject *self, PyObject *args, PyObject *kwds) {
  *
  */
 
-static void Scheme_dealloc(Scheme *self) {
+static void Scheme_dealloc(Scheme* self) {
     releaseScheme(self->handle);
-    self->ob_type->tp_free((PyObject *)self);
+    self->ob_type->tp_free((PyObject*)self);
 }
 
 /*
@@ -251,15 +251,15 @@ static PyMemberDef Scheme_members[] = {{NULL, 0, 0, 0, NULL}};
  *
  */
 
-static PyObject *Scheme_addElement(PyObject *self, PyObject *args) {
+static PyObject* Scheme_addElement(PyObject* self, PyObject* args) {
     U2ErrorType result = U2_OK;
-    const Py_UNICODE *elementTypeName = NULL;
+    const Py_UNICODE* elementTypeName = NULL;
     Py_UNICODE elementName[BASE_NAME_LENGTH];
 
     if (0 == PyArg_ParseTuple(args, "u", &elementTypeName)) {
         return NULL;
     }
-    result = addElementToScheme(((Scheme *)self)->handle, (const wchar_t *)elementTypeName, BASE_NAME_LENGTH, (wchar_t *)elementName);
+    result = addElementToScheme(((Scheme*)self)->handle, (const wchar_t*)elementTypeName, BASE_NAME_LENGTH, (wchar_t*)elementName);
 
     if (U2_TOO_SMALL_BUFFER == result) {
         return getLastFailedString();
@@ -269,7 +269,7 @@ static PyObject *Scheme_addElement(PyObject *self, PyObject *args) {
     return Py_BuildValue("u", elementName);
 }
 
-static PyObject *Scheme_addReader(PyObject *self, PyObject *args) {
+static PyObject* Scheme_addReader(PyObject* self, PyObject* args) {
     U2ErrorType result = U2_OK;
     const Py_UNICODE *readerTypeName = NULL, *inputFilePath = NULL;
     Py_UNICODE readerName[BASE_NAME_LENGTH];
@@ -277,7 +277,7 @@ static PyObject *Scheme_addReader(PyObject *self, PyObject *args) {
     if (0 == PyArg_ParseTuple(args, "uu", &readerTypeName, &inputFilePath)) {
         return NULL;
     }
-    result = addReaderToScheme(((Scheme *)self)->handle, (const wchar_t *)readerTypeName, (const wchar_t *)inputFilePath, BASE_NAME_LENGTH, (wchar_t *)readerName);
+    result = addReaderToScheme(((Scheme*)self)->handle, (const wchar_t*)readerTypeName, (const wchar_t*)inputFilePath, BASE_NAME_LENGTH, (wchar_t*)readerName);
 
     if (U2_TOO_SMALL_BUFFER == result) {
         return getLastFailedString();
@@ -287,7 +287,7 @@ static PyObject *Scheme_addReader(PyObject *self, PyObject *args) {
     return Py_BuildValue("u", readerName);
 }
 
-static PyObject *Scheme_addWriter(PyObject *self, PyObject *args) {
+static PyObject* Scheme_addWriter(PyObject* self, PyObject* args) {
     U2ErrorType result = U2_OK;
     const Py_UNICODE *writerTypeName = NULL, *outputFilePath = NULL;
     Py_UNICODE writerName[BASE_NAME_LENGTH];
@@ -295,7 +295,7 @@ static PyObject *Scheme_addWriter(PyObject *self, PyObject *args) {
     if (0 == PyArg_ParseTuple(args, "uu", &writerTypeName, &outputFilePath)) {
         return NULL;
     }
-    result = addWriterToScheme(((Scheme *)self)->handle, (const wchar_t *)writerTypeName, (const wchar_t *)outputFilePath, BASE_NAME_LENGTH, (wchar_t *)writerName);
+    result = addWriterToScheme(((Scheme*)self)->handle, (const wchar_t*)writerTypeName, (const wchar_t*)outputFilePath, BASE_NAME_LENGTH, (wchar_t*)writerName);
 
     if (U2_TOO_SMALL_BUFFER == result) {
         return getLastFailedString();
@@ -305,7 +305,7 @@ static PyObject *Scheme_addWriter(PyObject *self, PyObject *args) {
     return Py_BuildValue("u", writerName);
 }
 
-static PyObject *Scheme_addActorsBinding(PyObject *self, PyObject *args) {
+static PyObject* Scheme_addActorsBinding(PyObject* self, PyObject* args) {
     U2ErrorType result = U2_OK;
     const Py_UNICODE *srcElementName = NULL, *srcSlotName = NULL, *dstElementName = NULL,
                      *dstPortAndSlotNames = NULL;
@@ -313,11 +313,11 @@ static PyObject *Scheme_addActorsBinding(PyObject *self, PyObject *args) {
     if (0 == PyArg_ParseTuple(args, "uuuu", &srcElementName, &srcSlotName, &dstElementName, &dstPortAndSlotNames)) {
         return NULL;
     }
-    result = addSchemeActorsBinding(((Scheme *)self)->handle,
-                                    (const wchar_t *)srcElementName,
-                                    (const wchar_t *)srcSlotName,
-                                    (const wchar_t *)dstElementName,
-                                    (const wchar_t *)dstPortAndSlotNames);
+    result = addSchemeActorsBinding(((Scheme*)self)->handle,
+                                    (const wchar_t*)srcElementName,
+                                    (const wchar_t*)srcSlotName,
+                                    (const wchar_t*)dstElementName,
+                                    (const wchar_t*)dstPortAndSlotNames);
 
     if (FUNCTION_SUCCESS != checkErrorCode(result)) {
         return NULL;
@@ -325,7 +325,7 @@ static PyObject *Scheme_addActorsBinding(PyObject *self, PyObject *args) {
     Py_RETURN_NONE;
 }
 
-static PyObject *Scheme_addFlow(PyObject *self, PyObject *args) {
+static PyObject* Scheme_addFlow(PyObject* self, PyObject* args) {
     U2ErrorType result = U2_OK;
     const Py_UNICODE *srcElementName = NULL, *srcPortName = NULL, *dstElementName = NULL,
                      *dstPortName = NULL;
@@ -333,7 +333,7 @@ static PyObject *Scheme_addFlow(PyObject *self, PyObject *args) {
     if (0 == PyArg_ParseTuple(args, "uuuu", &srcElementName, &srcPortName, &dstElementName, &dstPortName)) {
         return NULL;
     }
-    result = addFlowToScheme(((Scheme *)self)->handle, (const wchar_t *)srcElementName, (const wchar_t *)srcPortName, (const wchar_t *)dstElementName, (const wchar_t *)dstPortName);
+    result = addFlowToScheme(((Scheme*)self)->handle, (const wchar_t*)srcElementName, (const wchar_t*)srcPortName, (const wchar_t*)dstElementName, (const wchar_t*)dstPortName);
 
     if (FUNCTION_SUCCESS != checkErrorCode(result)) {
         return NULL;
@@ -341,7 +341,7 @@ static PyObject *Scheme_addFlow(PyObject *self, PyObject *args) {
     Py_RETURN_NONE;
 }
 
-static PyObject *Scheme_setElementAttribute(PyObject *self, PyObject *args) {
+static PyObject* Scheme_setElementAttribute(PyObject* self, PyObject* args) {
     U2ErrorType result = U2_OK;
     const Py_UNICODE *elementName = NULL, *attributeName = NULL, *attributeValue = NULL;
 
@@ -349,17 +349,17 @@ static PyObject *Scheme_setElementAttribute(PyObject *self, PyObject *args) {
         return NULL;
     }
 
-    result = setSchemeElementAttribute(((Scheme *)self)->handle,
-                                       (const wchar_t *)elementName,
-                                       (const wchar_t *)attributeName,
-                                       (const wchar_t *)attributeValue);
+    result = setSchemeElementAttribute(((Scheme*)self)->handle,
+                                       (const wchar_t*)elementName,
+                                       (const wchar_t*)attributeName,
+                                       (const wchar_t*)attributeValue);
     if (FUNCTION_SUCCESS != checkErrorCode(result)) {
         return NULL;
     }
     Py_RETURN_NONE;
 }
 
-static PyObject *Scheme_getElementAttribute(PyObject *self, PyObject *args) {
+static PyObject* Scheme_getElementAttribute(PyObject* self, PyObject* args) {
     U2ErrorType result = U2_OK;
     const Py_UNICODE *elementName = NULL, *attributeName = NULL;
     Py_UNICODE attributeValue[BASE_NAME_LENGTH];
@@ -367,11 +367,11 @@ static PyObject *Scheme_getElementAttribute(PyObject *self, PyObject *args) {
     if (0 == PyArg_ParseTuple(args, "uu", &elementName, &attributeName)) {
         return NULL;
     }
-    result = getSchemeElementAttribute(((Scheme *)self)->handle,
-                                       (const wchar_t *)elementName,
-                                       (const wchar_t *)attributeName,
+    result = getSchemeElementAttribute(((Scheme*)self)->handle,
+                                       (const wchar_t*)elementName,
+                                       (const wchar_t*)attributeName,
                                        BASE_NAME_LENGTH,
-                                       (wchar_t *)attributeValue);
+                                       (wchar_t*)attributeValue);
     if (U2_TOO_SMALL_BUFFER == result) {
         return getLastFailedString();
     } else if (FUNCTION_SUCCESS != checkErrorCode(result)) {
@@ -380,9 +380,9 @@ static PyObject *Scheme_getElementAttribute(PyObject *self, PyObject *args) {
     return Py_BuildValue("s", attributeValue);
 }
 
-static PyObject *Scheme_launch(Scheme *self) {
-    PyListObject *outputFileList = NULL;
-    wchar_t **outputFilePaths = NULL;
+static PyObject* Scheme_launch(Scheme* self) {
+    PyListObject* outputFileList = NULL;
+    wchar_t** outputFilePaths = NULL;
     int fileCount = 0;
 
     U2ErrorType result = launchScheme(self->handle, &fileCount, &outputFilePaths);
@@ -391,12 +391,12 @@ static PyObject *Scheme_launch(Scheme *self) {
     }
     outputFileList = convertToPyList(fileCount, outputFilePaths);
     releaseStringList(fileCount, outputFilePaths);
-    return (PyObject *)outputFileList;
+    return (PyObject*)outputFileList;
 }
 
-static PyObject *Scheme_launchSas(PyObject *self, PyObject *args) {
-    PyListObject *outputFileList = NULL;
-    wchar_t **outputFilePaths = NULL;
+static PyObject* Scheme_launchSas(PyObject* self, PyObject* args) {
+    PyListObject* outputFileList = NULL;
+    wchar_t** outputFilePaths = NULL;
     int fileCount = 0;
     U2ErrorType result = U2_OK;
     const Py_UNICODE *algorithmName = NULL, *inputPath = NULL, *outputPath = NULL;
@@ -404,23 +404,23 @@ static PyObject *Scheme_launchSas(PyObject *self, PyObject *args) {
     if (0 == PyArg_ParseTuple(args, "uuu", &algorithmName, &inputPath, &outputPath)) {
         return NULL;
     }
-    result = launchSas((const wchar_t *)algorithmName, (const wchar_t *)inputPath, (const wchar_t *)outputPath, &fileCount, &outputFilePaths);
+    result = launchSas((const wchar_t*)algorithmName, (const wchar_t*)inputPath, (const wchar_t*)outputPath, &fileCount, &outputFilePaths);
     if (FUNCTION_SUCCESS != checkErrorCode(result)) {
         return NULL;
     }
     outputFileList = convertToPyList(fileCount, outputFilePaths);
     releaseStringList(fileCount, outputFilePaths);
-    return (PyObject *)outputFileList;
+    return (PyObject*)outputFileList;
 }
 
-static PyObject *Scheme_saveToFile(PyObject *self, PyObject *args) {
+static PyObject* Scheme_saveToFile(PyObject* self, PyObject* args) {
     U2ErrorType result = U2_OK;
-    const Py_UNICODE *path = NULL;
+    const Py_UNICODE* path = NULL;
 
     if (0 == PyArg_ParseTuple(args, "u", &path)) {
         return NULL;
     }
-    result = saveSchemeToFile(((Scheme *)self)->handle, (const wchar_t *)path);
+    result = saveSchemeToFile(((Scheme*)self)->handle, (const wchar_t*)path);
     if (FUNCTION_SUCCESS != checkErrorCode(result)) {
         return NULL;
     }
@@ -494,37 +494,37 @@ static PyTypeObject SchemeType = {
     Scheme_alloc /*  tp_new */
 };
 
-static PyObject *u2py_internals_initContext(PyObject *self, PyObject *args) {
-    const Py_UNICODE *workingDirectory = NULL;
+static PyObject* u2py_internals_initContext(PyObject* self, PyObject* args) {
+    const Py_UNICODE* workingDirectory = NULL;
     U2ErrorType result = U2_OK;
 
     if (0 == PyArg_ParseTuple(args, "u", &workingDirectory)) {
         return NULL;
     }
-    result = initContext((const wchar_t *)workingDirectory);
+    result = initContext((const wchar_t*)workingDirectory);
     if (FUNCTION_SUCCESS != checkErrorCode(result)) {
         return NULL;
     }
     Py_RETURN_NONE;
 }
 
-static PyObject *u2py_internals_detectFormat(PyObject *self, PyObject *args) {
-    const Py_UNICODE *filePath = NULL;
+static PyObject* u2py_internals_detectFormat(PyObject* self, PyObject* args) {
+    const Py_UNICODE* filePath = NULL;
     U2ErrorType result = U2_OK;
     U2Format format = U2_UNSUPPORTED;
-    PyObject *formatName = NULL;
+    PyObject* formatName = NULL;
 
     if (0 == PyArg_ParseTuple(args, "u", &filePath)) {
         return NULL;
     }
-    result = detectFileFormat((const wchar_t *)filePath, &format);
+    result = detectFileFormat((const wchar_t*)filePath, &format);
     if (FUNCTION_SUCCESS != checkErrorCode(result)) {
         return NULL;
     }
     return Py_BuildValue("s", getBioPythonFormatName(format));
 }
 
-static PyObject *u2py_internals_releaseContext(PyObject *self, PyObject *args) {
+static PyObject* u2py_internals_releaseContext(PyObject* self, PyObject* args) {
     U2ErrorType result = releaseContext();
     if (FUNCTION_SUCCESS != checkErrorCode(result)) {
         return NULL;
@@ -544,12 +544,12 @@ static PyMethodDef u2py_internals_methods[] = {
  */
 
 PyMODINIT_FUNC initu2py_internals() {
-    PyObject *mainModule = NULL;
+    PyObject* mainModule = NULL;
 
     mainModule = Py_InitModule("u2py_internals", u2py_internals_methods);
     if (NULL == mainModule || 0 > PyType_Ready(&SchemeType)) {
         return;
     }
     Py_INCREF(&SchemeType);
-    PyModule_AddObject(mainModule, "Scheme", (PyObject *)&SchemeType);
+    PyModule_AddObject(mainModule, "Scheme", (PyObject*)&SchemeType);
 }

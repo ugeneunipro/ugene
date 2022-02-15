@@ -23,26 +23,26 @@
 
 namespace U2 {
 
-PortRelationDescriptor::PortRelationDescriptor(const QString &portId, const QVariantList &valuesWithEnabledPort)
+PortRelationDescriptor::PortRelationDescriptor(const QString& portId, const QVariantList& valuesWithEnabledPort)
     : portId(portId), valuesWithEnabledPort(valuesWithEnabledPort) {
 }
 
 PortRelationDescriptor::~PortRelationDescriptor() {
 }
 
-bool PortRelationDescriptor::isPortEnabled(const QVariant &attrValue) const {
+bool PortRelationDescriptor::isPortEnabled(const QVariant& attrValue) const {
     return valuesWithEnabledPort.contains(attrValue);
 }
 
-PortRelationDescriptor *PortRelationDescriptor::clone() const {
+PortRelationDescriptor* PortRelationDescriptor::clone() const {
     return new PortRelationDescriptor(*this);
 }
 
-const QVariantList &PortRelationDescriptor::getValuesWithEnabledPort() const {
+const QVariantList& PortRelationDescriptor::getValuesWithEnabledPort() const {
     return valuesWithEnabledPort;
 }
 
-const QString &PortRelationDescriptor::getPortId() const {
+const QString& PortRelationDescriptor::getPortId() const {
     return portId;
 }
 

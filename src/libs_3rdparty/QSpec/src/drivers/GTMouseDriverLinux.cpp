@@ -43,11 +43,11 @@ static int getMouseMoveDelayMillis(int pos) {
     return pos % DELAY_ON_EVERY_N_PX == 0 ? 1 : 0;
 }
 
-bool GTMouseDriver::moveTo(const QPoint &p) {
+bool GTMouseDriver::moveTo(const QPoint& p) {
     QByteArray display_name = qgetenv("DISPLAY");
     DRIVER_CHECK(!display_name.isEmpty(), "Environment variable \"DISPLAY\" not found");
 
-    Display *display = XOpenDisplay(display_name.constData());
+    Display* display = XOpenDisplay(display_name.constData());
     DRIVER_CHECK(display != nullptr, "display is NULL");
 
     int horres = XDisplayWidth(display, 0);
@@ -99,7 +99,7 @@ bool GTMouseDriver::press(Qt::MouseButton button) {
     QByteArray display_name = qgetenv("DISPLAY");
     DRIVER_CHECK(!display_name.isEmpty(), "Environment variable \"DISPLAY\" not found");
 
-    Display *display = XOpenDisplay(display_name.constData());
+    Display* display = XOpenDisplay(display_name.constData());
     DRIVER_CHECK(display != nullptr, "display is NULL");
 
     // 1 = Left, 2 = Middle, 3 = Right
@@ -121,7 +121,7 @@ bool GTMouseDriver::release(Qt::MouseButton button) {
     QByteArray display_name = qgetenv("DISPLAY");
     DRIVER_CHECK(!display_name.isEmpty(), "Environment variable \"DISPLAY\" not found");
 
-    Display *display = XOpenDisplay(display_name.constData());
+    Display* display = XOpenDisplay(display_name.constData());
     DRIVER_CHECK(display != nullptr, "display is NULL");
 
     unsigned int btn = button == Qt::LeftButton ? 1 : button == Qt::RightButton ? 3
@@ -141,7 +141,7 @@ bool GTMouseDriver::scroll(int value) {
     QByteArray display_name = qgetenv("DISPLAY");
     DRIVER_CHECK(!display_name.isEmpty(), "Environment variable \"DISPLAY\" not found");
 
-    Display *display = XOpenDisplay(display_name.constData());
+    Display* display = XOpenDisplay(display_name.constData());
     DRIVER_CHECK(display != nullptr, "display is NULL");
 
     unsigned button = value > 0 ? Button4 : Button5;  // Button4 - scroll up, Button5 - scroll down

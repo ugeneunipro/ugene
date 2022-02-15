@@ -30,18 +30,18 @@
 
 namespace U2 {
 
-Task *PluginViewerImpl::createServiceEnablingTask() {
+Task* PluginViewerImpl::createServiceEnablingTask() {
     return new EnablePluginViewerTask(this);
 }
 
-Task *PluginViewerImpl::createServiceDisablingTask() {
+Task* PluginViewerImpl::createServiceDisablingTask() {
     return new DisablePluginViewerTask(this);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // tasks
 
-EnablePluginViewerTask::EnablePluginViewerTask(PluginViewerImpl *_pv)
+EnablePluginViewerTask::EnablePluginViewerTask(PluginViewerImpl* _pv)
     : Task(tr("Enable PluginViewer"), TaskFlag_NoRun), pv(_pv) {
 }
 
@@ -51,7 +51,7 @@ Task::ReportResult EnablePluginViewerTask::report() {
     return ReportResult_Finished;
 }
 
-DisablePluginViewerTask::DisablePluginViewerTask(PluginViewerImpl *_pv)
+DisablePluginViewerTask::DisablePluginViewerTask(PluginViewerImpl* _pv)
     : Task(tr("Disable PluginViewer"), TaskFlag_NoRun), pv(_pv) {
 }
 

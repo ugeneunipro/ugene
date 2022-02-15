@@ -44,7 +44,7 @@ public:
      * but if GUI or XML tests mode is enabled the function will make UGENE to stop (call std::abort)
      * after printing the message.
      */
-    static void fail(const QString &message);
+    static void fail(const QString& message);
 };
 }  // namespace U2
 
@@ -114,37 +114,42 @@ public:
         U2::U2SafePoints::fail(QString("Assert: %1 at %2:%3").arg(message).arg(__FILE__).arg(__LINE__)); \
     }
 
-/** Checks 'condition' and returns if result is 'false'. */
-#define CHECK(condition, result) \
+/**
+ * Checks condition and runs the extra op if the condition is falsy.
+ * Do not use directly: designed to be used as a low level implementation for other utilities.
+ */
+#define RUN_IF_FALTHY_1(condition, extraOp) \
     if (!(condition)) { \
-        return result; \
+        extraOp; \
     }
 
-/** TODO: deprecated and will be removed. Use CHECK_EXT. */
-#define CHECK_OPERATIONS(condition, extraOp1, extraOp2) \
+/**
+ * Checks condition and runs 2 extra ops if the condition is falsy.
+ * Do not use directly: designed to be used as a low level implementation for other utilities.
+ */
+#define RUN_IF_FALTHY_2(condition, extraOp1, extraOp2) \
     if (!(condition)) { \
         extraOp1; \
         extraOp2; \
     }
 
-/** TODO: deprecated and will be removed. Use CHECK_EXT. */
-#define CHECK_OPERATION(condition, extraOp) CHECK_OPERATIONS(condition, extraOp, )
+/** Checks 'condition' and returns if result is 'false'. */
+#define CHECK(condition, result) RUN_IF_FALTHY_1(condition, return result)
 
 /** Checks 'condition' and calls 'break' if 'condition' is 'false'. */
-#define CHECK_BREAK(condition) CHECK_OPERATION(condition, break)
+#define CHECK_BREAK(condition) RUN_IF_FALTHY_1(condition, break)
 
 /** Checks 'condition' and calls 'continue' if 'condition' is 'false'. */
-#define CHECK_CONTINUE(condition) CHECK_OPERATION(condition, continue)
-
-/** Checks 'condition' and executes 'extraOp' and calls 'break' if 'condition' is 'false'. */
-#define CHECK_EXT_BREAK(condition, extraOp) CHECK_OPERATIONS(condition, extraOp, break)
+#define CHECK_CONTINUE(condition) RUN_IF_FALTHY_1(condition, continue)
 
 /** Checks 'condition' and executes 'extraOp' and returns 'result' if 'condition' is 'false'. */
-#define CHECK_EXT(condition, extraOp, result) \
-    if (!(condition)) { \
-        extraOp; \
-        return result; \
-    }
+#define CHECK_EXT(condition, extraOp, result) RUN_IF_FALTHY_2(condition, extraOp, return result)
+
+/** Checks 'condition' and executes 'extraOp' and calls 'break' if 'condition' is 'false'. */
+#define CHECK_EXT_BREAK(condition, extraOp) RUN_IF_FALTHY_2(condition, extraOp, break)
+
+/** Checks 'condition' and calls 'extraOp' and 'continue' if 'condition' is 'false'. */
+#define CHECK_EXT_CONTINUE(condition, extraOp) RUN_IF_FALTHY_2(condition, extraOp, continue)
 
 /** Checks if 'os' has error or is cancelled and returns 'result' if it does. */
 #define CHECK_OP(os, result) CHECK(!os.isCoR(), result)

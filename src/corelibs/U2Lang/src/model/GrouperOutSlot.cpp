@@ -36,7 +36,7 @@ const QString ActionTypes::MERGE_MSA = QString("merge-msa");
 const QString ActionTypes::MERGE_STRING = QString("merge-string");
 const QString ActionTypes::MERGE_ANNS = QString("merge-annotations");
 
-bool ActionTypes::isValidType(const QString &type) {
+bool ActionTypes::isValidType(const QString& type) {
     bool result = false;
 
     result |= (MERGE_SEQUENCE == type);
@@ -48,7 +48,7 @@ bool ActionTypes::isValidType(const QString &type) {
     return result;
 }
 
-DataTypePtr ActionTypes::getDataTypeByAction(const QString &actionType) {
+DataTypePtr ActionTypes::getDataTypeByAction(const QString& actionType) {
     if (MERGE_SEQUENCE == actionType) {
         return BaseTypes::DNA_SEQUENCE_TYPE();
     } else if (SEQUENCE_TO_MSA == actionType) {
@@ -75,7 +75,7 @@ const QString ActionParameters::MSA_NAME = QString("msa-name");
 const QString ActionParameters::SEQ_NAME = QString("seq-name");
 const QString ActionParameters::SEQ_SLOT = QString("seq-slot");
 
-ActionParameters::ParameterType ActionParameters::getType(const QString &parameter) {
+ActionParameters::ParameterType ActionParameters::getType(const QString& parameter) {
     if (GAP == parameter) {
         return INTEGER;
     } else if (UNIQUE == parameter) {
@@ -94,7 +94,7 @@ ActionParameters::ParameterType ActionParameters::getType(const QString &paramet
     return STRING;
 }
 
-bool ActionParameters::isValidParameter(const QString &actionType, const QString &parameter) {
+bool ActionParameters::isValidParameter(const QString& actionType, const QString& parameter) {
     bool result = false;
     if (ActionTypes::MERGE_SEQUENCE == actionType) {
         result |= (GAP == parameter);
@@ -118,11 +118,11 @@ bool ActionParameters::isValidParameter(const QString &actionType, const QString
 /************************************************************************/
 /* GrouperSlotAction */
 /************************************************************************/
-GrouperSlotAction::GrouperSlotAction(const QString &type)
+GrouperSlotAction::GrouperSlotAction(const QString& type)
     : type(type) {
 }
 
-GrouperSlotAction::GrouperSlotAction(const GrouperSlotAction &other)
+GrouperSlotAction::GrouperSlotAction(const GrouperSlotAction& other)
     : type(other.type), parameters(other.parameters) {
 }
 
@@ -130,19 +130,19 @@ QString GrouperSlotAction::getType() const {
     return type;
 }
 
-const QVariantMap &GrouperSlotAction::getParameters() const {
+const QVariantMap& GrouperSlotAction::getParameters() const {
     return parameters;
 }
 
-bool GrouperSlotAction::hasParameter(const QString &parameterId) const {
+bool GrouperSlotAction::hasParameter(const QString& parameterId) const {
     return parameters.contains(parameterId);
 }
 
-QVariant GrouperSlotAction::getParameterValue(const QString &parameterId) const {
+QVariant GrouperSlotAction::getParameterValue(const QString& parameterId) const {
     return parameters.value(parameterId, QVariant());
 }
 
-void GrouperSlotAction::setParameterValue(const QString &parameterId, const QVariant &value) {
+void GrouperSlotAction::setParameterValue(const QString& parameterId, const QVariant& value) {
     parameters[parameterId] = value;
 }
 
@@ -164,11 +164,11 @@ Descriptor GroupOperations::BY_ID() {
 /************************************************************************/
 /* GrouperOutSlot */
 /************************************************************************/
-GrouperOutSlot::GrouperOutSlot(const QString &outSlotId, const QString &inSlotStr)
+GrouperOutSlot::GrouperOutSlot(const QString& outSlotId, const QString& inSlotStr)
     : outSlotId(outSlotId), inSlotStr(inSlotStr), action(nullptr) {
 }
 
-GrouperOutSlot::GrouperOutSlot(const GrouperOutSlot &another) {
+GrouperOutSlot::GrouperOutSlot(const GrouperOutSlot& another) {
     outSlotId = another.outSlotId;
     inSlotStr = another.inSlotStr;
     if (nullptr == another.action) {
@@ -182,19 +182,19 @@ GrouperOutSlot::~GrouperOutSlot() {
     delete action;
 }
 
-bool GrouperOutSlot::operator==(const GrouperOutSlot &other) const {
+bool GrouperOutSlot::operator==(const GrouperOutSlot& other) const {
     return this->outSlotId == other.outSlotId;
 }
 
-GrouperSlotAction *GrouperOutSlot::getAction() {
+GrouperSlotAction* GrouperOutSlot::getAction() {
     return action;
 }
 
-GrouperSlotAction *GrouperOutSlot::getAction() const {
+GrouperSlotAction* GrouperOutSlot::getAction() const {
     return action;
 }
 
-void GrouperOutSlot::setAction(const GrouperSlotAction &action) {
+void GrouperOutSlot::setAction(const GrouperSlotAction& action) {
     delete this->action;
     this->action = new GrouperSlotAction(action);
 }
@@ -203,7 +203,7 @@ QString GrouperOutSlot::getOutSlotId() const {
     return outSlotId;
 }
 
-void GrouperOutSlot::setOutSlotId(const QString &outSlotId) {
+void GrouperOutSlot::setOutSlotId(const QString& outSlotId) {
     this->outSlotId = outSlotId;
 }
 
@@ -211,11 +211,11 @@ QString GrouperOutSlot::getInSlotStr() const {
     return inSlotStr;
 }
 
-void GrouperOutSlot::setInSlotStr(const QString &slotStr) {
+void GrouperOutSlot::setInSlotStr(const QString& slotStr) {
     this->inSlotStr = slotStr;
 }
 
-void GrouperOutSlot::setBusMapInSlotStr(const QString &busMapSlotStr) {
+void GrouperOutSlot::setBusMapInSlotStr(const QString& busMapSlotStr) {
     QString result = busMapSlotStr;
     result.replace(":", ".");
 
@@ -229,14 +229,14 @@ QString GrouperOutSlot::getBusMapInSlotId() const {
     return result;
 }
 
-QString GrouperOutSlot::readable2busMap(const QString &readableSlotStr) {
+QString GrouperOutSlot::readable2busMap(const QString& readableSlotStr) {
     QString result = readableSlotStr;
     result.replace(".", ":");
 
     return result;
 }
 
-QString GrouperOutSlot::busMap2readable(const QString &busMapSlotStr) {
+QString GrouperOutSlot::busMap2readable(const QString& busMapSlotStr) {
     QString result = busMapSlotStr;
     result.replace(":", ".");
 

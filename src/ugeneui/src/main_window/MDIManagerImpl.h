@@ -34,55 +34,55 @@ namespace U2 {
 class MDIItem : QWidget {
     Q_OBJECT
 public:
-    MDIItem(MWMDIWindow *_w, QMdiSubWindow *_qw)
+    MDIItem(MWMDIWindow* _w, QMdiSubWindow* _qw)
         : w(_w), qw(_qw) {
         this->setObjectName(_w->objectName() + "_MDIItem");
         qw->setObjectName(_w->objectName() + "_SubWindow");
     }
 
-    MWMDIWindow *w;
-    QMdiSubWindow *qw;
+    MWMDIWindow* w;
+    QMdiSubWindow* qw;
 };
 
-typedef QList<MDIItem *> MDIItems;
+typedef QList<MDIItem*> MDIItems;
 
 class MWMDIManagerImpl : public MWMDIManager {
     Q_OBJECT
 public:
-    MWMDIManagerImpl(MainWindow *_mw, FixedMdiArea *_mdiArea)
+    MWMDIManagerImpl(MainWindow* _mw, FixedMdiArea* _mdiArea)
         : MWMDIManager(_mw), mw(_mw), mdiArea(_mdiArea) {
         prepareGUI();
     }
 
     ~MWMDIManagerImpl();
 
-    virtual void addMDIWindow(MWMDIWindow *w);
+    virtual void addMDIWindow(MWMDIWindow* w);
 
-    virtual bool closeMDIWindow(MWMDIWindow *w);
+    virtual bool closeMDIWindow(MWMDIWindow* w);
 
-    virtual QList<MWMDIWindow *> getWindows() const;
+    virtual QList<MWMDIWindow*> getWindows() const;
 
-    virtual MWMDIWindow *getWindowById(int id) const;
+    virtual MWMDIWindow* getWindowById(int id) const;
 
-    virtual void activateWindow(MWMDIWindow *w);
+    virtual void activateWindow(MWMDIWindow* w);
 
-    virtual MWMDIWindow *getActiveWindow() const;
+    virtual MWMDIWindow* getActiveWindow() const;
 
 protected:
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject* obj, QEvent* event);
 
 private slots:
-    void sl_setActiveSubWindow(QWidget *);
+    void sl_setActiveSubWindow(QWidget*);
     void sl_updateWindowMenu();
-    void sl_onSubWindowActivated(QMdiSubWindow *);
+    void sl_onSubWindowActivated(QMdiSubWindow*);
     void sl_updateWindowLayout();
     void sl_setWindowLayoutToMultiDoc();
     void sl_setWindowLayoutToTabbed();
 
 private:
-    MDIItem *getMDIItem(int id) const;
-    MDIItem *getMDIItem(MWMDIWindow *w) const;
-    MDIItem *getMDIItem(QMdiSubWindow *qw) const;
+    MDIItem* getMDIItem(int id) const;
+    MDIItem* getMDIItem(MWMDIWindow* w) const;
+    MDIItem* getMDIItem(QMdiSubWindow* qw) const;
 
     void clearMDIContent(bool addCloseAction);
     void prepareGUI();
@@ -90,28 +90,28 @@ private:
     void updateActions();
     void updateState();
 
-    MDIItem *getCurrentMDIItem() const;
+    MDIItem* getCurrentMDIItem() const;
 
-    void onWindowsSwitched(QMdiSubWindow *deactivated, MWMDIWindow *activated);
+    void onWindowsSwitched(QMdiSubWindow* deactivated, MWMDIWindow* activated);
 
-    MainWindow *mw;
-    FixedMdiArea *mdiArea;
+    MainWindow* mw;
+    FixedMdiArea* mdiArea;
     MDIItems items;
 
-    QAction *closeAct;
-    QAction *closeAllAct;
-    QAction *tileAct;
-    QAction *cascadeAct;
-    QAction *nextAct;
-    QAction *previousAct;
-    QAction *separatorAct;
-    QMenu *windowLayout;
-    QAction *multipleDocsAct;
-    QAction *tabbedDocsAct;
+    QAction* closeAct;
+    QAction* closeAllAct;
+    QAction* tileAct;
+    QAction* cascadeAct;
+    QAction* nextAct;
+    QAction* previousAct;
+    QAction* separatorAct;
+    QMenu* windowLayout;
+    QAction* multipleDocsAct;
+    QAction* tabbedDocsAct;
 
-    QSignalMapper *windowMapper;
+    QSignalMapper* windowMapper;
     bool defaultIsMaximized;
-    MDIItem *mdiContentOwner;
+    MDIItem* mdiContentOwner;
 };
 
 }  // namespace U2

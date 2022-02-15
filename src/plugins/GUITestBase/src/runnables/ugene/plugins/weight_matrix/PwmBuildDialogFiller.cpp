@@ -34,13 +34,13 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::DotPlotFiller"
 
-PwmBuildDialogFiller::PwmBuildDialogFiller(HI::GUITestOpStatus &os, const QList<Action> &actions)
+PwmBuildDialogFiller::PwmBuildDialogFiller(HI::GUITestOpStatus& os, const QList<Action>& actions)
     : Filler(os, "PWMBuildDialog"),
       dialog(nullptr),
       actions(actions) {
 }
 
-PwmBuildDialogFiller::PwmBuildDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c)
+PwmBuildDialogFiller::PwmBuildDialogFiller(HI::GUITestOpStatus& os, CustomScenario* c)
     : Filler(os, "PWMBuildDialog", c),
       dialog(nullptr) {
 }
@@ -49,7 +49,7 @@ PwmBuildDialogFiller::PwmBuildDialogFiller(HI::GUITestOpStatus &os, CustomScenar
 void PwmBuildDialogFiller::commonScenario() {
     dialog = GTWidget::getActiveModalWidget(os);
 
-    foreach (const Action &action, actions) {
+    foreach (const Action& action, actions) {
         switch (action.first) {
             case EnterInput:
                 enterInput(action.second);
@@ -72,15 +72,15 @@ void PwmBuildDialogFiller::commonScenario() {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "enterInput"
-void PwmBuildDialogFiller::enterInput(const QVariant &actionData) {
+void PwmBuildDialogFiller::enterInput(const QVariant& actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QString>(), "Can't get the file path from the action data");
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "inputEdit", dialog), actionData.toString());
+    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "inputEdit", dialog), actionData.toString());
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "selectInput"
-void PwmBuildDialogFiller::selectInput(const QVariant &actionData) {
+void PwmBuildDialogFiller::selectInput(const QVariant& actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QString>(), "Can't get the file path from the action data");
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, actionData.toString()));

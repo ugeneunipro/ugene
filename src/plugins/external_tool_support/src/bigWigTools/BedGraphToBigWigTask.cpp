@@ -34,16 +34,16 @@
 namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
-//BedGraphToBigWigParser
+// BedGraphToBigWigParser
 BedGraphToBigWigParser::BedGraphToBigWigParser()
     : ExternalToolLogParser() {
 }
 
-void BedGraphToBigWigParser::parseOutput(const QString &partOfLog) {
+void BedGraphToBigWigParser::parseOutput(const QString& partOfLog) {
     ExternalToolLogParser::parseOutput(partOfLog);
 }
 
-void BedGraphToBigWigParser::parseErrOutput(const QString &partOfLog) {
+void BedGraphToBigWigParser::parseErrOutput(const QString& partOfLog) {
     lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
     lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
     lastErrLine = lastPartOfLog.takeLast();
@@ -55,8 +55,8 @@ void BedGraphToBigWigParser::parseErrOutput(const QString &partOfLog) {
 }
 
 //////////////////////////////////////////////////////////////////////////
-//BedGraphToBigWigTask
-BedGraphToBigWigTask::BedGraphToBigWigTask(const BedGraphToBigWigSetting &settings)
+// BedGraphToBigWigTask
+BedGraphToBigWigTask::BedGraphToBigWigTask(const BedGraphToBigWigSetting& settings)
     : ExternalToolSupportTask(QString("bedGrapthToBigWig for %1").arg(settings.inputUrl), TaskFlags_FOSE_COSC), settings(settings) {
 }
 
@@ -80,7 +80,7 @@ void BedGraphToBigWigTask::prepare() {
     const QStringList args = getParameters(stateInfo);
     CHECK_OP(stateInfo, );
 
-    ExternalToolRunTask *etTask = new ExternalToolRunTask(BigWigSupport::ET_BIGWIG_ID, args, new BedGraphToBigWigParser(), settings.outDir);
+    ExternalToolRunTask* etTask = new ExternalToolRunTask(BigWigSupport::ET_BIGWIG_ID, args, new BedGraphToBigWigParser(), settings.outDir);
     setListenerForTask(etTask);
     addSubTask(etTask);
 }
@@ -91,7 +91,7 @@ void BedGraphToBigWigTask::run() {
     resultUrl = settings.outDir + settings.outName;
 }
 
-QStringList BedGraphToBigWigTask::getParameters(U2OpStatus & /*os*/) {
+QStringList BedGraphToBigWigTask::getParameters(U2OpStatus& /*os*/) {
     QStringList res;
 
     res << settings.inputUrl;
@@ -106,4 +106,4 @@ QStringList BedGraphToBigWigTask::getParameters(U2OpStatus & /*os*/) {
     return res;
 }
 
-}    //namespace U2
+}  // namespace U2

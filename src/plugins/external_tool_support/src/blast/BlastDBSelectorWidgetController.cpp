@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-BlastDBSelectorWidgetController::BlastDBSelectorWidgetController(QWidget *parent)
+BlastDBSelectorWidgetController::BlastDBSelectorWidgetController(QWidget* parent)
     : QWidget(parent), isNuclDB(false), inputDataValid(false) {
     setupUi(this);
     connect(selectDatabasePushButton, SIGNAL(clicked()), SLOT(sl_onBrowseDatabasePath()));
@@ -81,7 +81,7 @@ void BlastDBSelectorWidgetController::sl_onBrowseDatabasePath() {
         // Build list of known file suffixes produced by 'makeblastdb' command.
         QStringList subSuffixes = QString("al|db|hr|in|sq|hd|nd|og|ot|pi|si|hi|ni|pd|sd|sq|tf|to").split("|");
         QStringList blastDbFileSuffixes;
-        for (const QString &subSuffix : qAsConst(subSuffixes)) {
+        for (const QString& subSuffix : qAsConst(subSuffixes)) {
             blastDbFileSuffixes << (".n" + subSuffix) << (".p" + subSuffix);  // nucleic and protein variants.
         }
         blastDbFileSuffixes << "formatDB.log";
@@ -90,7 +90,7 @@ void BlastDBSelectorWidgetController::sl_onBrowseDatabasePath() {
 
         // Guess the database name: a part of the file name with no suffix.
         QString databaseName = fileInfo.fileName();
-        for (const QString &suffix : qAsConst(blastDbFileSuffixes)) {
+        for (const QString& suffix : qAsConst(blastDbFileSuffixes)) {
             if (databaseName.endsWith(suffix, Qt::CaseInsensitive)) {
                 databaseName = databaseName.left(databaseName.length() - suffix.length());
                 break;

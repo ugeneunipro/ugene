@@ -50,7 +50,7 @@ namespace U2 {
 //// AprImporterTask
 ///////////////////////////////////
 
-AprImporterTask::AprImporterTask(const GUrl &url, const QVariantMap &_settings)
+AprImporterTask::AprImporterTask(const GUrl& url, const QVariantMap& _settings)
     : DocumentProviderTask(tr("APR file import: %1").arg(url.fileName()), TaskFlags_NR_FOSE_COSC),
       settings(_settings),
       srcUrl(url) {
@@ -67,7 +67,7 @@ void AprImporterTask::prepare() {
     QVariant variantFormat = settings.value(ImportHint_FormatId);
     DocumentFormatId formatId = variantFormat.toString();
 
-    IOAdapterRegistry *ioar = AppContext::getIOAdapterRegistry();
+    IOAdapterRegistry* ioar = AppContext::getIOAdapterRegistry();
     SAFE_POINT_EXT(nullptr != ioar, stateInfo.setError(tr("Invalid I/O environment!")), );
 
     QFileInfo fileInfo(dstUrl);
@@ -76,29 +76,29 @@ void AprImporterTask::prepare() {
     QString name = fileInfo.completeBaseName();
     dstUrl = QFileInfo(qDir, name).filePath();
 
-    DefaultConvertFileTask *convertTask = new DefaultConvertFileTask(srcUrl, currentFormat, dstUrl, formatId, dir);
+    DefaultConvertFileTask* convertTask = new DefaultConvertFileTask(srcUrl, currentFormat, dstUrl, formatId, dir);
 
     addSubTask(convertTask);
 }
 
-QList<Task *> AprImporterTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> AprImporterTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     CHECK_OP(stateInfo, res);
 
-    DefaultConvertFileTask *convTask = qobject_cast<DefaultConvertFileTask *>(subTask);
+    DefaultConvertFileTask* convTask = qobject_cast<DefaultConvertFileTask*>(subTask);
     if (convTask != nullptr) {
         QString dstUrl = convTask->getResult();
         SAFE_POINT_EXT(!dstUrl.isEmpty(), stateInfo.setError(tr("Empty destination url")), res);
 
         QVariantMap hints;
         hints[DocumentReadingMode_SequenceAsAlignmentHint] = true;
-        LoadDocumentTask *loadTask = LoadDocumentTask::getDefaultLoadDocTask(stateInfo, dstUrl, hints);
+        LoadDocumentTask* loadTask = LoadDocumentTask::getDefaultLoadDocTask(stateInfo, dstUrl, hints);
         CHECK(loadTask != nullptr, res);
 
         res << loadTask;
     }
 
-    LoadDocumentTask *loadTask = qobject_cast<LoadDocumentTask *>(subTask);
+    LoadDocumentTask* loadTask = qobject_cast<LoadDocumentTask*>(subTask);
     if (loadTask != nullptr) {
         resultDocument = loadTask->takeDocument();
     }
@@ -121,13 +121,13 @@ AprImporter::AprImporter()
     supportedObjectTypes << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 }
 
-FormatCheckResult AprImporter::checkRawData(const QByteArray &rawData, const GUrl &url) {
+FormatCheckResult AprImporter::checkRawData(const QByteArray& rawData, const GUrl& url) {
     AprFormat aprFormat(nullptr);
     return aprFormat.checkRawData(rawData, url);
 }
 
-DocumentProviderTask *AprImporter::createImportTask(const FormatDetectionResult &res, bool, const QVariantMap &hints) {
-    AprImporterTask *task = new AprImporterTask(res.url, hints);
+DocumentProviderTask* AprImporter::createImportTask(const FormatDetectionResult& res, bool, const QVariantMap& hints) {
+    AprImporterTask* task = new AprImporterTask(res.url, hints);
     return task;
 }
 

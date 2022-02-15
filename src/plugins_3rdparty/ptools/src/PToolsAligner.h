@@ -29,13 +29,13 @@ namespace U2 {
 
 class PToolsAligner : public StructuralAlignmentAlgorithm {
 public:
-    virtual QString validate(const StructuralAlignmentTaskSettings &settings);
-    virtual StructuralAlignment align(const StructuralAlignmentTaskSettings &settings, TaskStateInfo &state);
+    virtual QString validate(const StructuralAlignmentTaskSettings& settings);
+    virtual StructuralAlignment align(const StructuralAlignmentTaskSettings& settings, TaskStateInfo& state);
 };  // class PToolsAligner
 
 class PToolsAlignerFactory : public StructuralAlignmentAlgorithmFactory {
 public:
-    virtual StructuralAlignmentAlgorithm *create() {
+    virtual StructuralAlignmentAlgorithm* create() {
         return new PToolsAligner();
     }
 };  // class PToolsAlignerFactory

@@ -40,14 +40,14 @@ EstimationResult::EstimationResult() {
     cpuCount = -1;
 }
 
-SchemaEstimationTask::SchemaEstimationTask(const QSharedPointer<const Schema> &_schema, const Metadata *_meta)
+SchemaEstimationTask::SchemaEstimationTask(const QSharedPointer<const Schema>& _schema, const Metadata* _meta)
     : Task(tr("Workflow estimation task"), TaskFlag_None), schema(_schema), meta(_meta) {
 }
 
 void SchemaEstimationTask::run() {
     QScriptEngine engine;
     {
-        ExtimationsUtilsClass *utilsClass = new ExtimationsUtilsClass(engine, schema);
+        ExtimationsUtilsClass* utilsClass = new ExtimationsUtilsClass(engine, schema);
         QScriptValue utils = engine.newQObject(utilsClass, QScriptEngine::ScriptOwnership);
         engine.globalObject().setProperty("utils", utils);
     }
@@ -75,11 +75,11 @@ EstimationResult SchemaEstimationTask::result() const {
 /************************************************************************/
 /* Utils */
 /************************************************************************/
-ExtimationsUtilsClass::ExtimationsUtilsClass(QScriptEngine &_engine, const QSharedPointer<const Schema> &_schema)
+ExtimationsUtilsClass::ExtimationsUtilsClass(QScriptEngine& _engine, const QSharedPointer<const Schema>& _schema)
     : engine(_engine), schema(_schema) {
 }
 
-QStringList ExtimationsUtilsClass::parseTokens(const QString &attrStr, U2OpStatus &os) {
+QStringList ExtimationsUtilsClass::parseTokens(const QString& attrStr, U2OpStatus& os) {
     QStringList tokens = attrStr.split(".");
     if (2 != tokens.size()) {
         os.setError("Bad attribute string: " + attrStr);
@@ -87,17 +87,17 @@ QStringList ExtimationsUtilsClass::parseTokens(const QString &attrStr, U2OpStatu
     return tokens;
 }
 
-Attribute *ExtimationsUtilsClass::getAttribute(const QString &attrStr, U2OpStatus &os) {
+Attribute* ExtimationsUtilsClass::getAttribute(const QString& attrStr, U2OpStatus& os) {
     QStringList tokens = parseTokens(attrStr, os);
     CHECK_OP(os, nullptr);
 
-    Actor *actor = schema->actorById(tokens[0]);
+    Actor* actor = schema->actorById(tokens[0]);
     if (nullptr == actor) {
         os.setError("Unknown actor id: " + tokens[0]);
         return nullptr;
     }
 
-    Attribute *attr = actor->getParameter(tokens[1]);
+    Attribute* attr = actor->getParameter(tokens[1]);
     if (nullptr == attr) {
         os.setError("Wrong attribute string: " + attrStr);
         return nullptr;
@@ -105,7 +105,7 @@ Attribute *ExtimationsUtilsClass::getAttribute(const QString &attrStr, U2OpStatu
     return attr;
 }
 
-QScriptValue ExtimationsUtilsClass::prepareDatasets(const QList<Dataset> &sets) {
+QScriptValue ExtimationsUtilsClass::prepareDatasets(const QList<Dataset>& sets) {
     QScriptValue setsArray = engine.newArray(sets.size());
 
     for (int setIdx = 0; setIdx < sets.size(); setIdx++) {
@@ -121,7 +121,7 @@ QScriptValue ExtimationsUtilsClass::prepareDatasets(const QList<Dataset> &sets) 
     return setsArray;
 }
 
-void ExtimationsUtilsClass::checkFile(const QString &url, U2OpStatus &os) {
+void ExtimationsUtilsClass::checkFile(const QString& url, U2OpStatus& os) {
     QFileInfo info(url);
     if (!info.exists()) {
         os.setError(QObject::tr("The file does not exist: ") + url);
@@ -145,9 +145,9 @@ void ExtimationsUtilsClass::checkFile(const QString &url, U2OpStatus &os) {
         return result; \
     }
 
-QScriptValue ExtimationsUtilsClass::attributeValue(const QString &attrStr) {
+QScriptValue ExtimationsUtilsClass::attributeValue(const QString& attrStr) {
     U2OpStatusImpl os;
-    Attribute *attr = getAttribute(attrStr, os);
+    Attribute* attr = getAttribute(attrStr, os);
     CHECK_JS_OP(os, QScriptValue::NullValue);
 
     QVariant value = attr->getAttributePureValue();
@@ -158,7 +158,7 @@ QScriptValue ExtimationsUtilsClass::attributeValue(const QString &attrStr) {
     return WorkflowUtils::datasetsToScript(value.value<QList<Dataset>>(), engine);
 }
 
-qint64 ExtimationsUtilsClass::fileSize(const QString &url) {
+qint64 ExtimationsUtilsClass::fileSize(const QString& url) {
     U2OpStatusImpl os;
     checkFile(url, os);
     CHECK_JS_OP(os, -1);
@@ -166,7 +166,7 @@ qint64 ExtimationsUtilsClass::fileSize(const QString &url) {
     return QFileInfo(url).size();
 }
 
-QString ExtimationsUtilsClass::fileFormat(const QString &url) {
+QString ExtimationsUtilsClass::fileFormat(const QString& url) {
     U2OpStatusImpl os;
     checkFile(url, os);
     CHECK_JS_OP(os, "");
@@ -190,7 +190,7 @@ QString ExtimationsUtilsClass::fileFormat(const QString &url) {
 #define BT1_ID 1
 #define BT2_ID 0
 
-qint64 ExtimationsUtilsClass::bowtieIndexSize(const QString &dir, const QString &name, int versionId) {
+qint64 ExtimationsUtilsClass::bowtieIndexSize(const QString& dir, const QString& name, int versionId) {
     QString ext = (BT1_ID == versionId) ? ".ebwt" : ".bt2";
     qint64 result = 0;
     result += fileSize(dir + "/" + name + ".1" + ext);
@@ -218,18 +218,18 @@ void ExtimationsUtilsClass::test(QScriptValue v) {
     }
 }
 
-bool ExtimationsUtilsClass::testAttr(const QString &attrStr) {
+bool ExtimationsUtilsClass::testAttr(const QString& attrStr) {
     U2OpStatusImpl os;
     QStringList tokens = parseTokens(attrStr, os);
     CHECK_OP(os, false);
 
-    Actor *actor = schema->actorById(tokens[0]);
+    Actor* actor = schema->actorById(tokens[0]);
     if (nullptr == actor) {
         os.setError("Unknown actor id: " + tokens[0]);
         return false;
     }
 
-    Attribute *attr = actor->getParameter(tokens[1]);
+    Attribute* attr = actor->getParameter(tokens[1]);
     if (nullptr == attr) {
         os.setError("Wrong attribute string: " + attrStr);
         return false;

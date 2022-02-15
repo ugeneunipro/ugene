@@ -41,11 +41,11 @@ class CreateAnnotationWidgetController;
 class SendSelectionDialog : public QDialog, Ui_RemoteBLASTDialog {
     Q_OBJECT
 public:
-    SendSelectionDialog(ADVSequenceObjectContext *seqCtx, bool _isAminoSeq, QWidget *p = nullptr);
+    SendSelectionDialog(ADVSequenceObjectContext* seqCtx, bool _isAminoSeq, QWidget* p = nullptr);
     QString getGroupName() const;
-    const QString &getAnnotationDescription() const;
-    AnnotationTableObject *getAnnotationObject() const;
-    const CreateAnnotationModel *getModel() const;
+    const QString& getAnnotationDescription() const;
+    AnnotationTableObject* getAnnotationObject() const;
+    const CreateAnnotationModel* getModel() const;
     QString getUrl() const;
 private slots:
     void sl_scriptSelected(int index);
@@ -72,9 +72,9 @@ public:
 
 private:
     bool isAminoSeq;
-    CreateAnnotationWidgetController *ca_c;
+    CreateAnnotationWidgetController* ca_c;
     bool extImported;
-    ADVSequenceObjectContext *seqCtx;
+    ADVSequenceObjectContext* seqCtx;
 };
 
 }  // namespace U2

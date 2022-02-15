@@ -28,16 +28,16 @@ namespace U2 {
 
 class U2LANG_EXPORT ScriptableScheduler : public LocalWorkflow::LastReadyScheduler {
 public:
-    ScriptableScheduler(Workflow::Schema *scheme);
+    ScriptableScheduler(Workflow::Schema* scheme);
     virtual ~ScriptableScheduler();
 
     // the method is intended for the inheritors which will be
     // capable of processing a few tasks during a single tick
-    virtual void addActorToNextTick(const ActorId &actor);
-    QMap<int, QList<Workflow::Actor *>> getTopologicalSortedGraph() const;
-    void setScheme(Workflow::Schema *newScheme);
-    Workflow::Actor *getActorById(const ActorId &id) const;
-    WorkflowDebugStatus *getDebugStatus() const;
+    virtual void addActorToNextTick(const ActorId& actor);
+    QMap<int, QList<Workflow::Actor*>> getTopologicalSortedGraph() const;
+    void setScheme(Workflow::Schema* newScheme);
+    Workflow::Actor* getActorById(const ActorId& id) const;
+    WorkflowDebugStatus* getDebugStatus() const;
 
 protected:
     QList<ActorId> nextTicks;

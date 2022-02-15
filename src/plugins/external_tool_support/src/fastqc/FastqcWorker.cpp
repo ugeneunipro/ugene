@@ -66,8 +66,8 @@ const QString FastQCFactory::ACTOR_ID("fastqc");
 // FastQCPrompter
 
 QString FastQCPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(FastQCWorker::INPUT_PORT));
-    const Actor *producer = input->getProducer(BaseSlots::URL_SLOT().getId());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(FastQCWorker::INPUT_PORT));
+    const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
 
@@ -80,7 +80,7 @@ QString FastQCPrompter::composeRichDoc() {
 void FastQCFactory::init() {
     Descriptor desc(ACTOR_ID, FastQCWorker::tr("FastQC Quality Control"), FastQCWorker::tr("Builds quality control reports."));
 
-    QList<PortDescriptor *> p;
+    QList<PortDescriptor*> p;
     {
         Descriptor inD(FastQCWorker::INPUT_PORT, FastQCWorker::tr("Short reads"), FastQCWorker::tr("Short read data"));
 
@@ -89,7 +89,7 @@ void FastQCFactory::init() {
         p << new PortDescriptor(inD, DataTypePtr(new MapDataType("fastqc.input-url", inM)), true);
     }
 
-    QList<Attribute *> a;
+    QList<Attribute*> a;
     {
         Descriptor outDir(FastQCWorker::OUT_MODE_ID, FastQCWorker::tr("Output folder"), FastQCWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
                                                                                                          "<b>Workflow</b> - internal workflow folder. "
@@ -111,7 +111,7 @@ void FastQCFactory::init() {
                                                                                                                 "be ignored."));
 
         a << new Attribute(outDir, BaseTypes::NUM_TYPE(), (Attribute::Flags)Attribute::Hidden, QVariant(FileAndDirectoryUtils::WORKFLOW_INTERNAL));
-        Attribute *customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
+        Attribute* customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
         customDirAttr->addRelation(new VisibilityRelation(FastQCWorker::OUT_MODE_ID, FileAndDirectoryUtils::CUSTOM));
         a << customDirAttr;
 
@@ -120,7 +120,7 @@ void FastQCFactory::init() {
         a << new Attribute(outFile, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap directoryMap;
         QString fileDir = FastQCWorker::tr("Input file");
@@ -142,7 +142,7 @@ void FastQCFactory::init() {
         delegates[FastQCWorker::OUT_FILE] = new URLDelegate(outputUrlTags, "fastqc/output");
     }
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new FastQCPrompter());
     proto->addExternalTool(JavaSupport::ET_JAVA_ID);
@@ -150,13 +150,13 @@ void FastQCFactory::init() {
     proto->addExternalTool(PerlSupport::ET_PERL_ID);
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new FastQCFactory());
 }
 
 //////////////////////////////////////////////////////////////////////////
 // FastQCWorker
-FastQCWorker::FastQCWorker(Actor *a)
+FastQCWorker::FastQCWorker(Actor* a)
     : BaseWorker(a), inputUrlPort(nullptr) {
 }
 
@@ -164,7 +164,7 @@ void FastQCWorker::init() {
     inputUrlPort = ports.value(INPUT_PORT);
 }
 
-Task *FastQCWorker::tick() {
+Task* FastQCWorker::tick() {
     if (inputUrlPort->hasMessage()) {
         QString url = getUrlAndSetupScriptValues();
         CHECK(!url.isEmpty(), nullptr);
@@ -189,7 +189,7 @@ Task *FastQCWorker::tick() {
 
         auto fastQCTask = new FastQCTask(settings);
         fastQCTask->addListeners(createLogListeners());
-        connect(new TaskSignalMapper(fastQCTask), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
+        connect(new TaskSignalMapper(fastQCTask), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
         return fastQCTask;
     }
 
@@ -202,10 +202,10 @@ Task *FastQCWorker::tick() {
 void FastQCWorker::cleanup() {
 }
 
-void FastQCWorker::sl_taskFinished(Task *task) {
+void FastQCWorker::sl_taskFinished(Task* task) {
     CHECK(!task->hasError() && !task->isCanceled(), );
 
-    FastQCTask *fastQCTask = dynamic_cast<FastQCTask *>(task);
+    FastQCTask* fastQCTask = dynamic_cast<FastQCTask*>(task);
     QString url = fastQCTask != nullptr ? fastQCTask->getResult() : "";
     CHECK(!url.isEmpty(), );
 

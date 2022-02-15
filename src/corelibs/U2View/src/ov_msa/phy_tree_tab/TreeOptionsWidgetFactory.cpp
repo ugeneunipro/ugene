@@ -44,19 +44,19 @@ MSATreeOptionsWidgetFactory::~MSATreeOptionsWidgetFactory() {
     delete viewSettings;
 }
 
-QWidget *MSATreeOptionsWidgetFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
+QWidget* MSATreeOptionsWidgetFactory::createWidget(GObjectView* objView, const QVariantMap& /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);
 
-    MSAEditor *msa = qobject_cast<MSAEditor *>(objView);
+    MSAEditor* msa = qobject_cast<MSAEditor*>(objView);
     SAFE_POINT(msa != nullptr,
                QString("Internal error: unable to cast object view to MSAEditor for group '%1'.").arg(GROUP_ID),
                nullptr);
 
     SAFE_POINT(viewSettings != nullptr, "Invalid tree view settings", nullptr);
-    TreeOptionsWidget *treeOpWidget = new TreeOptionsWidget(msa, *viewSettings);
-    connect(treeOpWidget, SIGNAL(saveViewSettings(const TreeOpWidgetViewSettings &)), SLOT(sl_onWidgetViewSaved(const TreeOpWidgetViewSettings &)));
+    TreeOptionsWidget* treeOpWidget = new TreeOptionsWidget(msa, *viewSettings);
+    connect(treeOpWidget, SIGNAL(saveViewSettings(const TreeOpWidgetViewSettings&)), SLOT(sl_onWidgetViewSaved(const TreeOpWidgetViewSettings&)));
     return treeOpWidget;
 }
 
@@ -64,7 +64,7 @@ OPGroupParameters MSATreeOptionsWidgetFactory::getOPGroupParameters() {
     return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Tree Settings"), GROUP_DOC_PAGE);
 }
 
-void MSATreeOptionsWidgetFactory::sl_onWidgetViewSaved(const TreeOpWidgetViewSettings &settings) {
+void MSATreeOptionsWidgetFactory::sl_onWidgetViewSaved(const TreeOpWidgetViewSettings& settings) {
     delete viewSettings;
     viewSettings = new TreeOpWidgetViewSettings(settings);
 }
@@ -82,19 +82,19 @@ TreeOptionsWidgetFactory::~TreeOptionsWidgetFactory() {
     delete viewSettings;
 }
 
-QWidget *TreeOptionsWidgetFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
+QWidget* TreeOptionsWidgetFactory::createWidget(GObjectView* objView, const QVariantMap& /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);
 
-    TreeViewer *treeView = qobject_cast<TreeViewer *>(objView);
+    TreeViewer* treeView = qobject_cast<TreeViewer*>(objView);
     SAFE_POINT(treeView != nullptr,
                QString("Internal error: unable to cast object view to TreeViewer for group '%1'.").arg(GROUP_ID),
                nullptr);
 
     SAFE_POINT(viewSettings != nullptr, "Invalid tree view settings", nullptr);
-    TreeOptionsWidget *treeOpWidget = new TreeOptionsWidget(treeView, *viewSettings);
-    connect(treeOpWidget, SIGNAL(saveViewSettings(const TreeOpWidgetViewSettings &)), SLOT(sl_onWidgetViewSaved(const TreeOpWidgetViewSettings &)));
+    TreeOptionsWidget* treeOpWidget = new TreeOptionsWidget(treeView, *viewSettings);
+    connect(treeOpWidget, SIGNAL(saveViewSettings(const TreeOpWidgetViewSettings&)), SLOT(sl_onWidgetViewSaved(const TreeOpWidgetViewSettings&)));
 
     return treeOpWidget;
 }
@@ -103,7 +103,7 @@ OPGroupParameters TreeOptionsWidgetFactory::getOPGroupParameters() {
     return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Tree Settings"), GROUP_DOC_PAGE);
 }
 
-void TreeOptionsWidgetFactory::sl_onWidgetViewSaved(const TreeOpWidgetViewSettings &settings) {
+void TreeOptionsWidgetFactory::sl_onWidgetViewSaved(const TreeOpWidgetViewSettings& settings) {
     delete viewSettings;
     viewSettings = new TreeOpWidgetViewSettings(settings);
 }
@@ -116,12 +116,12 @@ AddTreeWidgetFactory::AddTreeWidgetFactory() {
     objectViewOfWidget = ObjViewType_AlignmentEditor;
 }
 
-QWidget *AddTreeWidgetFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
+QWidget* AddTreeWidgetFactory::createWidget(GObjectView* objView, const QVariantMap& /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);
 
-    MSAEditor *msaEditor = qobject_cast<MSAEditor *>(objView);
+    MSAEditor* msaEditor = qobject_cast<MSAEditor*>(objView);
     SAFE_POINT(msaEditor != nullptr,
                QString("Internal error: unable to cast object view to MSAEditor for group '%1'.").arg(GROUP_ID),
                nullptr);

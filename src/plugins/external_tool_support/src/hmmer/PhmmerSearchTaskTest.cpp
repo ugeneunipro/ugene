@@ -1,23 +1,23 @@
 /**
-* UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
-* http://ugene.net
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-* MA 02110-1301, USA.
-*/
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * http://ugene.net
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
 
 #include "PhmmerSearchTaskTest.h"
 
@@ -32,8 +32,8 @@
 namespace U2 {
 
 /****************************************
-* GTest_UHMM3Phmmer
-****************************************/
+ * GTest_UHMM3Phmmer
+ ****************************************/
 
 const QString GTest_UHMM3Phmmer::QUERY_FILENAME_TAG = "query";
 const QString GTest_UHMM3Phmmer::DB_FILENAME_TAG = "db";
@@ -45,7 +45,7 @@ const QString GTest_UHMM3Phmmer::OUTPUT_DIR_TAG = "outputDir";
 
 const double BAD_DOUBLE_OPTION = -1.0;
 
-static void setDoubleOption(double &to, const QString &str, TaskStateInfo &ti) {
+static void setDoubleOption(double& to, const QString& str, TaskStateInfo& ti) {
     if (str.isEmpty()) {
         return;
     }
@@ -57,7 +57,7 @@ static void setDoubleOption(double &to, const QString &str, TaskStateInfo &ti) {
     }
 }
 
-void GTest_UHMM3Phmmer::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_UHMM3Phmmer::init(XMLTestFormat*, const QDomElement& el) {
     phmmerTask = nullptr;
     queryFilename = el.attribute(QUERY_FILENAME_TAG);
     dbFilename = el.attribute(DB_FILENAME_TAG);
@@ -97,7 +97,7 @@ void GTest_UHMM3Phmmer::setAndCheckArgs() {
     outputDir = env->getVar("TEMP_DATA_DIR") + "/" + outputDir;
 }
 
-static void setDoubleOption(double &num, const QDomElement &el, const QString &optionName, TaskStateInfo &si) {
+static void setDoubleOption(double& num, const QDomElement& el, const QString& optionName, TaskStateInfo& si) {
     if (si.hasError()) {
         return;
     }
@@ -114,7 +114,7 @@ static void setDoubleOption(double &num, const QDomElement &el, const QString &o
     num = ret;
 }
 
-static void setBooleanOption(bool &ret, const QDomElement &el, const QString &opName, TaskStateInfo &si) {
+static void setBooleanOption(bool& ret, const QDomElement& el, const QString& opName, TaskStateInfo& si) {
     if (si.hasError()) {
         return;
     }
@@ -126,7 +126,7 @@ static void setBooleanOption(bool &ret, const QDomElement &el, const QString &op
     }
 }
 
-static void setIntegerOption(int &num, const QDomElement &el, const QString &optionName, TaskStateInfo &si) {
+static void setIntegerOption(int& num, const QDomElement& el, const QString& optionName, TaskStateInfo& si) {
     if (si.hasError()) {
         return;
     }
@@ -144,7 +144,7 @@ static void setIntegerOption(int &num, const QDomElement &el, const QString &opt
     num = ret;
 }
 
-void GTest_UHMM3Phmmer::setSearchTaskSettings(PhmmerSearchSettings &settings, const QDomElement &el, TaskStateInfo &si) {
+void GTest_UHMM3Phmmer::setSearchTaskSettings(PhmmerSearchSettings& settings, const QDomElement& el, TaskStateInfo& si) {
     setDoubleOption(settings.e, el, GTest_UHMM3Search::SEQ_E_OPTION_TAG, si);
     setDoubleOption(settings.t, el, GTest_UHMM3Search::SEQ_T_OPTION_TAG, si);
     setDoubleOption(settings.z, el, GTest_UHMM3Search::Z_OPTION_TAG, si);
@@ -178,17 +178,17 @@ void GTest_UHMM3Phmmer::prepare() {
     searchSettings.targetSequenceUrl = dbFilename;
     searchSettings.querySequenceUrl = queryFilename;
     phmmerTask = new PhmmerSearchTask(searchSettings);
-    phmmerTask->addListeners(QList<ExternalToolListener *>() << new OutputCollector());
+    phmmerTask->addListeners(QList<ExternalToolListener*>() << new OutputCollector());
     addSubTask(phmmerTask);
 }
 
-QList<Task *> GTest_UHMM3Phmmer::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> GTest_UHMM3Phmmer::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     if (subTask == phmmerTask) {
-        OutputCollector *collector = dynamic_cast<OutputCollector *>(phmmerTask->getListener(0));
+        OutputCollector* collector = dynamic_cast<OutputCollector*>(phmmerTask->getListener(0));
         if (collector != nullptr) {
             QString hmmSearchLog = collector->getLog();
-            //TODO: check non empty log and file existence after writing
+            // TODO: check non empty log and file existence after writing
             QFile file(searchSettings.workingDir + "/output.txt");
             file.open(QIODevice::WriteOnly);
             file.write(hmmSearchLog.toLatin1());
@@ -204,12 +204,12 @@ Task::ReportResult GTest_UHMM3Phmmer::report() {
 }
 
 /****************************************
-* GTest_UHMM3PhmmerCompare
-****************************************/
+ * GTest_UHMM3PhmmerCompare
+ ****************************************/
 const QString GTest_UHMM3PhmmerCompare::ACTUAL_OUT_FILE_TAG = "actualOut";
 const QString GTest_UHMM3PhmmerCompare::TRUE_OUT_FILE_TAG = "trueOut";
 
-void GTest_UHMM3PhmmerCompare::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_UHMM3PhmmerCompare::init(XMLTestFormat*, const QDomElement& el) {
     trueOutFilename = el.attribute(TRUE_OUT_FILE_TAG);
     actualOutFilename = el.attribute(ACTUAL_OUT_FILE_TAG);
 }
@@ -240,7 +240,7 @@ Task::ReportResult GTest_UHMM3PhmmerCompare::report() {
     try {
         trueRes = GTest_UHMM3SearchCompare::getSearchResultFromOutput(trueOutFilename);
         actualRes = GTest_UHMM3SearchCompare::getSearchResultFromOutput(actualOutFilename);
-    } catch (const QString &ex) {
+    } catch (const QString& ex) {
         stateInfo.setError(ex);
     } catch (...) {
         stateInfo.setError("undefined_error_occurred");
@@ -255,4 +255,4 @@ Task::ReportResult GTest_UHMM3PhmmerCompare::report() {
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

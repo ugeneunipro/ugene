@@ -38,11 +38,11 @@ ScriptDbiData::ScriptDbiData() {
 ScriptDbiData::~ScriptDbiData() {
 }
 
-ScriptDbiData::ScriptDbiData(const Workflow::SharedDbiDataHandler &_seqId)
+ScriptDbiData::ScriptDbiData(const Workflow::SharedDbiDataHandler& _seqId)
     : id(_seqId) {
 }
 
-const Workflow::SharedDbiDataHandler &ScriptDbiData::getId() const {
+const Workflow::SharedDbiDataHandler& ScriptDbiData::getId() const {
     return id;
 }
 
@@ -53,7 +53,7 @@ void ScriptDbiData::release() {
 /************************************************************************/
 /* DbiClassPrototype */
 /************************************************************************/
-DbiClassPrototype::DbiClassPrototype(QObject *parent)
+DbiClassPrototype::DbiClassPrototype(QObject* parent)
     : QObject(parent) {
 }
 
@@ -73,20 +73,20 @@ void DbiClassPrototype::release() {
     thisData()->release();
 }
 
-ScriptDbiData *DbiClassPrototype::thisData() const {
-    ScriptDbiData *result = qscriptvalue_cast<ScriptDbiData *>(thisObject().data());
+ScriptDbiData* DbiClassPrototype::thisData() const {
+    ScriptDbiData* result = qscriptvalue_cast<ScriptDbiData*>(thisObject().data());
     SCRIPT_CHECK(nullptr != result, context(), "No this object", nullptr);
     return result;
 }
 
-WorkflowScriptEngine *DbiClassPrototype::workflowEngine() const {
+WorkflowScriptEngine* DbiClassPrototype::workflowEngine() const {
     return ScriptEngineUtils::workflowEngine(engine());
 }
 
-Workflow::DbiDataStorage *DbiClassPrototype::dataStorage() const {
-    WorkflowScriptEngine *we = workflowEngine();
+Workflow::DbiDataStorage* DbiClassPrototype::dataStorage() const {
+    WorkflowScriptEngine* we = workflowEngine();
     CHECK(nullptr != we, nullptr);
-    Workflow::WorkflowContext *wc = we->getWorkflowContext();
+    Workflow::WorkflowContext* wc = we->getWorkflowContext();
     CHECK(nullptr != wc, nullptr);
     return wc->getDataStorage();
 }
@@ -94,7 +94,7 @@ Workflow::DbiDataStorage *DbiClassPrototype::dataStorage() const {
 /************************************************************************/
 /* DbiScriptClass */
 /************************************************************************/
-DbiScriptClass::DbiScriptClass(QScriptEngine *engine)
+DbiScriptClass::DbiScriptClass(QScriptEngine* engine)
     : QObject(engine), QScriptClass(engine) {
 }
 
@@ -102,13 +102,13 @@ QScriptValue DbiScriptClass::prototype() const {
     return proto;
 }
 
-QScriptValue DbiScriptClass::newInstance(const Workflow::SharedDbiDataHandler &id) {
+QScriptValue DbiScriptClass::newInstance(const Workflow::SharedDbiDataHandler& id) {
     ScriptDbiData dbiData(id);
     QScriptValue data = engine()->newVariant(qVariantFromValue(dbiData));
     return engine()->newObject(this, data);
 }
 
-void DbiScriptClass::fromScriptValue(const QScriptValue &obj, ScriptDbiData &id) {
+void DbiScriptClass::fromScriptValue(const QScriptValue& obj, ScriptDbiData& id) {
     id = qvariant_cast<ScriptDbiData>(obj.data().toVariant());
 }
 

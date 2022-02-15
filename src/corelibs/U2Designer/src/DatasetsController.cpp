@@ -51,108 +51,108 @@ public:
         : urlItem(nullptr) {
     }
 
-    virtual void visit(FileUrlContainer *url) {
+    virtual void visit(FileUrlContainer* url) {
         urlItem = new FileItem(url->getUrl());
     }
 
-    virtual void visit(DirUrlContainer *url) {
-        DirectoryItem *dItem = new DirectoryItem(url->getUrl());
+    virtual void visit(DirUrlContainer* url) {
+        DirectoryItem* dItem = new DirectoryItem(url->getUrl());
         dItem->setIncludeFilter(url->getIncludeFilter());
         dItem->setExcludeFilter(url->getExcludeFilter());
         dItem->setRecursive(url->isRecursive());
         urlItem = dItem;
     }
 
-    virtual void visit(DbObjUrlContainer *url) {
+    virtual void visit(DbObjUrlContainer* url) {
         urlItem = new DbObjectItem(url->getUrl());
     }
 
-    virtual void visit(DbFolderUrlContainer *url) {
-        DbFolderItem *dItem = new DbFolderItem(url->getUrl());
+    virtual void visit(DbFolderUrlContainer* url) {
+        DbFolderItem* dItem = new DbFolderItem(url->getUrl());
         dItem->setRecursive(url->isRecursive());
         urlItem = dItem;
     }
 
-    UrlItem *getWidget() {
+    UrlItem* getWidget() {
         return urlItem;
     }
 
 private:
-    UrlItem *urlItem;
+    UrlItem* urlItem;
 };
 
 class URLContainerUpdateHelper : public UrlItemVisitor {
 public:
-    URLContainerUpdateHelper(FileUrlContainer * /*url*/)
+    URLContainerUpdateHelper(FileUrlContainer* /*url*/)
         : dirUrl(nullptr), dbFolderUrl(nullptr) {
     }
-    URLContainerUpdateHelper(DirUrlContainer *url)
+    URLContainerUpdateHelper(DirUrlContainer* url)
         : dirUrl(url), dbFolderUrl(nullptr) {
     }
-    URLContainerUpdateHelper(DbObjUrlContainer * /*url*/)
+    URLContainerUpdateHelper(DbObjUrlContainer* /*url*/)
         : dirUrl(nullptr), dbFolderUrl(nullptr) {
     }
-    URLContainerUpdateHelper(DbFolderUrlContainer *url)
+    URLContainerUpdateHelper(DbFolderUrlContainer* url)
         : dirUrl(nullptr), dbFolderUrl(url) {
     }
 
-    virtual void visit(DirectoryItem *item) {
+    virtual void visit(DirectoryItem* item) {
         SAFE_POINT(nullptr != dirUrl, "NULL folder url", );
         dirUrl->setIncludeFilter(item->getIncludeFilter());
         dirUrl->setExcludeFilter(item->getExcludeFilter());
         dirUrl->setRecursive(item->isRecursive());
     }
 
-    virtual void visit(FileItem * /*item*/) {
+    virtual void visit(FileItem* /*item*/) {
     }
 
-    virtual void visit(DbObjectItem * /*item*/) {
+    virtual void visit(DbObjectItem* /*item*/) {
     }
 
-    virtual void visit(DbFolderItem *item) {
+    virtual void visit(DbFolderItem* item) {
         SAFE_POINT(nullptr != dbFolderUrl, "NULL folder url", );
         dbFolderUrl->setRecursive(item->isRecursive());
     }
 
 private:
-    DirUrlContainer *dirUrl;
-    DbFolderUrlContainer *dbFolderUrl;
+    DirUrlContainer* dirUrl;
+    DbFolderUrlContainer* dbFolderUrl;
 };
 
 class URLContainerUpdater : public URLContainerVisitor {
 public:
-    URLContainerUpdater(UrlItem *_item)
+    URLContainerUpdater(UrlItem* _item)
         : item(_item) {
     }
 
-    virtual void visit(FileUrlContainer *url) {
+    virtual void visit(FileUrlContainer* url) {
         URLContainerUpdateHelper helper(url);
         item->accept(&helper);
     }
 
-    virtual void visit(DirUrlContainer *url) {
+    virtual void visit(DirUrlContainer* url) {
         URLContainerUpdateHelper helper(url);
         item->accept(&helper);
     }
 
-    virtual void visit(DbObjUrlContainer *url) {
+    virtual void visit(DbObjUrlContainer* url) {
         URLContainerUpdateHelper helper(url);
         item->accept(&helper);
     }
 
-    virtual void visit(DbFolderUrlContainer *url) {
+    virtual void visit(DbFolderUrlContainer* url) {
         URLContainerUpdateHelper helper(url);
         item->accept(&helper);
     }
 
 private:
-    UrlItem *item;
+    UrlItem* item;
 };
 
 /************************************************************************/
 /* Controller */
 /************************************************************************/
-DatasetsController::DatasetsController(const QSet<GObjectType> &compatibleObjTypes, QObject *parent)
+DatasetsController::DatasetsController(const QSet<GObjectType>& compatibleObjTypes, QObject* parent)
     : QObject(parent),
       compatibleObjTypes(compatibleObjTypes) {
 }
@@ -164,7 +164,7 @@ void DatasetsController::update() {
     emit si_attributeChanged();
 }
 
-void DatasetsController::checkName(const QString &newName, U2OpStatus &os, const QString &exception) {
+void DatasetsController::checkName(const QString& newName, U2OpStatus& os, const QString& exception) {
     if (newName.isEmpty()) {
         os.setError(tr("Dataset name is empty"));
         return;
@@ -173,7 +173,7 @@ void DatasetsController::checkName(const QString &newName, U2OpStatus &os, const
         os.setError(tr("Dataset name can not contain ':' and ';' symbols"));
         return;
     }
-    foreach (const QString &name, names()) {
+    foreach (const QString& name, names()) {
         if (name != exception && name == newName) {
             os.setError(tr("This dataset name already exists"));
             return;
@@ -181,21 +181,21 @@ void DatasetsController::checkName(const QString &newName, U2OpStatus &os, const
     }
 }
 
-const QSet<GObjectType> &DatasetsController::getCompatibleObjTypes() const {
+const QSet<GObjectType>& DatasetsController::getCompatibleObjTypes() const {
     return compatibleObjTypes;
 }
 
 /************************************************************************/
 /* AttributeDatasetsController */
 /************************************************************************/
-AttributeDatasetsController::AttributeDatasetsController(QList<Dataset> &_sets, const QSet<GObjectType> &compatibleObjTypes)
+AttributeDatasetsController::AttributeDatasetsController(QList<Dataset>& _sets, const QSet<GObjectType>& compatibleObjTypes)
     : DatasetsController(compatibleObjTypes), datasetsWidget(nullptr) {
     initSets(_sets);
     initialize();
 }
 
-void AttributeDatasetsController::initSets(const QList<Dataset> &s) {
-    foreach (const Dataset &d, s) {
+void AttributeDatasetsController::initSets(const QList<Dataset>& s) {
+    foreach (const Dataset& d, s) {
         sets << new Dataset(d);
     }
 }
@@ -204,7 +204,7 @@ void AttributeDatasetsController::initialize() {
     SAFE_POINT(sets.size() > 0, "0 datasets count", );
     datasetsWidget = new DatasetsListWidget(this);
 
-    foreach (Dataset *dSet, sets) {
+    foreach (Dataset* dSet, sets) {
         datasetsWidget->appendPage(dSet->getName(), createDatasetWidget(dSet));
     }
 }
@@ -216,27 +216,27 @@ AttributeDatasetsController::~AttributeDatasetsController() {
     sets.clear();
 }
 
-QWidget *AttributeDatasetsController::getWigdet() {
+QWidget* AttributeDatasetsController::getWigdet() {
     return datasetsWidget;
 }
 
 QList<Dataset> AttributeDatasetsController::getDatasets() {
     QList<Dataset> result;
-    foreach (Dataset *d, sets) {
+    foreach (Dataset* d, sets) {
         result << Dataset(*d);
     }
     return result;
 }
 
-URLListWidget *AttributeDatasetsController::createDatasetWidget(Dataset *dSet) {
-    URLListController *ctrl = new URLListController(this, dSet);
+URLListWidget* AttributeDatasetsController::createDatasetWidget(Dataset* dSet) {
+    URLListController* ctrl = new URLListController(this, dSet);
     return ctrl->getWidget();
 }
 
 void AttributeDatasetsController::deleteDataset(int dsNum) {
     SAFE_POINT(dsNum < sets.size(), "Datasets: out of range", );
 
-    Dataset *dSet = sets.at(dsNum);
+    Dataset* dSet = sets.at(dsNum);
     SAFE_POINT(nullptr != dSet, "NULL dataset", );
 
     sets.removeOne(dSet);
@@ -252,7 +252,7 @@ void AttributeDatasetsController::deleteDataset(int dsNum) {
     update();
 }
 
-void AttributeDatasetsController::addDataset(const QString &name, U2OpStatus &os) {
+void AttributeDatasetsController::addDataset(const QString& name, U2OpStatus& os) {
     checkName(name, os);
     CHECK_OP(os, );
     sets << new Dataset(name);
@@ -261,10 +261,10 @@ void AttributeDatasetsController::addDataset(const QString &name, U2OpStatus &os
     update();
 }
 
-void AttributeDatasetsController::renameDataset(int dsNum, const QString &newName, U2OpStatus &os) {
+void AttributeDatasetsController::renameDataset(int dsNum, const QString& newName, U2OpStatus& os) {
     SAFE_POINT(dsNum < sets.size(), "Datasets: out of range", );
 
-    Dataset *dSet = sets.at(dsNum);
+    Dataset* dSet = sets.at(dsNum);
     SAFE_POINT(nullptr != dSet, "NULL dataset", );
 
     checkName(newName, os, dSet->getName());
@@ -276,25 +276,25 @@ void AttributeDatasetsController::renameDataset(int dsNum, const QString &newNam
 
 QStringList AttributeDatasetsController::names() const {
     QStringList result;
-    foreach (Dataset *dSet, sets) {
+    foreach (Dataset* dSet, sets) {
         result << dSet->getName();
     }
     return result;
 }
 
-void AttributeDatasetsController::onUrlAdded(URLListController * /*ctrl*/, URLContainer * /*url*/) {
+void AttributeDatasetsController::onUrlAdded(URLListController* /*ctrl*/, URLContainer* /*url*/) {
 }
 
 /************************************************************************/
 /* PairedController */
 /************************************************************************/
-PairedReadsController::PairedReadsController(const QList<Dataset> &sets1, const QList<Dataset> &sets2, const QString &_label1, const QString &_label2)
+PairedReadsController::PairedReadsController(const QList<Dataset>& sets1, const QList<Dataset>& sets2, const QString& _label1, const QString& _label2)
     : DatasetsController(), label1(_label1), label2(_label2), datasetsWidget(nullptr) {
     initSets(sets1, sets2);
     initialize();
 }
 
-void PairedReadsController::initSets(const QList<Dataset> &s1, const QList<Dataset> &s2) {
+void PairedReadsController::initSets(const QList<Dataset>& s1, const QList<Dataset>& s2) {
     QList<Dataset>::ConstIterator it1 = s1.constBegin();
     QList<Dataset>::ConstIterator it2 = s2.constBegin();
     for (; it1 != s1.end() && it2 != s2.end(); it1++, it2++) {
@@ -310,17 +310,17 @@ void PairedReadsController::initialize() {
     SAFE_POINT(sets.size() > 0, "0 datasets count", );
     datasetsWidget = new DatasetsListWidget(this);
 
-    foreach (const SetsPair &p, sets) {
+    foreach (const SetsPair& p, sets) {
         datasetsWidget->appendPage(p.first->getName(), createDatasetWidget(p));
     }
 }
 
-static QWidget *getLayout(QWidget *widget, const QString &labelText) {
+static QWidget* getLayout(QWidget* widget, const QString& labelText) {
     if (labelText.isEmpty()) {
         return widget;
     }
 
-    QLabel *label = new QLabel(labelText);
+    QLabel* label = new QLabel(labelText);
     label->setStyleSheet(
         "background: palette(midlight);"
         "border-style: solid;"
@@ -329,21 +329,21 @@ static QWidget *getLayout(QWidget *widget, const QString &labelText) {
         "text-align: center;"
         "padding: 2px;");
 
-    QWidget *result = new QWidget();
-    QVBoxLayout *l = new QVBoxLayout(result);
+    QWidget* result = new QWidget();
+    QVBoxLayout* l = new QVBoxLayout(result);
     l->setContentsMargins(0, 3, 0, 0);
     l->addWidget(label);
     l->addWidget(widget);
     return result;
 }
 
-QWidget *PairedReadsController::createDatasetWidget(const SetsPair &pair) {
+QWidget* PairedReadsController::createDatasetWidget(const SetsPair& pair) {
     CtrlsPair cp;
     cp.first = new URLListController(this, pair.first);
     cp.second = new URLListController(this, pair.second);
     ctrls << cp;
 
-    QSplitter *splitter = new QSplitter();
+    QSplitter* splitter = new QSplitter();
     splitter->setChildrenCollapsible(false);
     splitter->addWidget(getLayout(cp.first->getWidget(), label1));
     splitter->addWidget(getLayout(cp.second->getWidget(), label2));
@@ -353,21 +353,21 @@ QWidget *PairedReadsController::createDatasetWidget(const SetsPair &pair) {
 PairedReadsController::~PairedReadsController() {
     datasetsWidget->setParent(nullptr);
     delete datasetsWidget;
-    foreach (const SetsPair &p, sets) {
+    foreach (const SetsPair& p, sets) {
         delete p.first;
         delete p.second;
     }
     sets.clear();
 }
 
-QWidget *PairedReadsController::getWigdet() {
+QWidget* PairedReadsController::getWigdet() {
     return datasetsWidget;
 }
 
 QList<Dataset> PairedReadsController::getDatasets(int num) {
     QList<Dataset> result;
-    foreach (const SetsPair &p, sets) {
-        Dataset *d = nullptr;
+    foreach (const SetsPair& p, sets) {
+        Dataset* d = nullptr;
         if (0 == num) {
             d = p.first;
         } else {
@@ -378,10 +378,10 @@ QList<Dataset> PairedReadsController::getDatasets(int num) {
     return result;
 }
 
-void PairedReadsController::renameDataset(int dsNum, const QString &newName, U2OpStatus &os) {
+void PairedReadsController::renameDataset(int dsNum, const QString& newName, U2OpStatus& os) {
     SAFE_POINT(dsNum < sets.size(), "Datasets: out of range", );
 
-    SetsPair &pair = sets[dsNum];
+    SetsPair& pair = sets[dsNum];
 
     checkName(newName, os, pair.first->getName());
     CHECK_OP(os, );
@@ -412,7 +412,7 @@ void PairedReadsController::deleteDataset(int dsNum) {
     update();
 }
 
-void PairedReadsController::addDataset(const QString &name, U2OpStatus &os) {
+void PairedReadsController::addDataset(const QString& name, U2OpStatus& os) {
     checkName(name, os);
     CHECK_OP(os, );
     sets << SetsPair(new Dataset(name), new Dataset(name));
@@ -423,13 +423,13 @@ void PairedReadsController::addDataset(const QString &name, U2OpStatus &os) {
 
 QStringList PairedReadsController::names() const {
     QStringList result;
-    foreach (const SetsPair &p, sets) {
+    foreach (const SetsPair& p, sets) {
         result << p.first->getName();
     }
     return result;
 }
 
-static QString replaceNum(const QString &name) {
+static QString replaceNum(const QString& name) {
     int onePos = name.lastIndexOf("1");
     int twoPos = name.lastIndexOf("2");
 
@@ -444,7 +444,7 @@ static QString replaceNum(const QString &name) {
     return name.left(pos) + dstNum + name.mid(pos + 1);
 }
 
-static QString getMateUrl(const QString &url) {
+static QString getMateUrl(const QString& url) {
     QFileInfo info(url);
     QString dir = info.dir().absolutePath();
     QString name = info.baseName();
@@ -455,7 +455,7 @@ static QString getMateUrl(const QString &url) {
     return "";
 }
 
-static bool askAboutAdding(const QString &mateUrl) {
+static bool askAboutAdding(const QString& mateUrl) {
     QString title = QObject::tr("Paired reads");
     QString file = QFileInfo(mateUrl).fileName();
     QString src = QFileInfo(mateUrl).isFile() ? QObject::tr("file") : QObject::tr("folder");
@@ -465,12 +465,12 @@ static bool askAboutAdding(const QString &mateUrl) {
     return (QMessageBox::Yes == answer);
 }
 
-void PairedReadsController::onUrlAdded(URLListController *ctrl, URLContainer *url) {
+void PairedReadsController::onUrlAdded(URLListController* ctrl, URLContainer* url) {
     QString mateUrl = getMateUrl(url->getUrl());
     CHECK(!mateUrl.isEmpty(), );
     CHECK(QFile::exists(mateUrl), );
 
-    URLListController *targetCtrl = pairedCtrl(ctrl);
+    URLListController* targetCtrl = pairedCtrl(ctrl);
     CHECK(nullptr != targetCtrl, );
     CHECK(!targetCtrl->dataset()->contains(mateUrl), );
 
@@ -481,9 +481,9 @@ void PairedReadsController::onUrlAdded(URLListController *ctrl, URLContainer *ur
     }
 }
 
-int PairedReadsController::pairNumByCtrl(URLListController *ctrl) const {
+int PairedReadsController::pairNumByCtrl(URLListController* ctrl) const {
     int result = 0;
-    foreach (const CtrlsPair &cp, ctrls) {
+    foreach (const CtrlsPair& cp, ctrls) {
         if (cp.first == ctrl || cp.second == ctrl) {
             return result;
         }
@@ -492,7 +492,7 @@ int PairedReadsController::pairNumByCtrl(URLListController *ctrl) const {
     return -1;
 }
 
-URLListController *PairedReadsController::pairedCtrl(URLListController *ctrl) const {
+URLListController* PairedReadsController::pairedCtrl(URLListController* ctrl) const {
     int dsNum = pairNumByCtrl(ctrl);
     SAFE_POINT(-1 != dsNum, "Unregistered url list controller", nullptr);
 
@@ -507,16 +507,16 @@ URLListController *PairedReadsController::pairedCtrl(URLListController *ctrl) co
 /************************************************************************/
 /* UrlAndDatasetController */
 /************************************************************************/
-UrlAndDatasetController::UrlAndDatasetController(const QList<Dataset> &_urls, const QList<Dataset> &_sets, const QString &_urlLabel, const QString &_datasetLabel)
+UrlAndDatasetController::UrlAndDatasetController(const QList<Dataset>& _urls, const QList<Dataset>& _sets, const QString& _urlLabel, const QString& _datasetLabel)
     : DatasetsController(), urlLabel(_urlLabel), datasetLabel(_datasetLabel), datasetsWidget(nullptr) {
     initSets(_urls, _sets);
     initialize();
     update();
 }
 
-void UrlAndDatasetController::initSets(const QList<Dataset> &_urls, const QList<Dataset> &s) {
+void UrlAndDatasetController::initSets(const QList<Dataset>& _urls, const QList<Dataset>& s) {
     foreach (Dataset urlSet, _urls) {
-        foreach (URLContainer *urlCon, urlSet.getUrls()) {
+        foreach (URLContainer* urlCon, urlSet.getUrls()) {
             urls << urlCon->getUrl();
         }
     }
@@ -549,23 +549,23 @@ void UrlAndDatasetController::initialize() {
     SAFE_POINT(sets.size() > 0, "0 datasets count", );
     datasetsWidget = new DatasetsListWidget(this);
 
-    foreach (Dataset *set, sets) {
+    foreach (Dataset* set, sets) {
         datasetsWidget->appendPage(set->getName(), createDatasetPageWidget(set));
     }
 }
 
-QWidget *UrlAndDatasetController::createDatasetPageWidget(Dataset *set) {
+QWidget* UrlAndDatasetController::createDatasetPageWidget(Dataset* set) {
     CtrlsPair cp;
 
-    URLDelegate *urlDelegate = new URLDelegate("", "", false, false, false);
-    connect(urlDelegate, SIGNAL(commitData(QWidget *)), SLOT(sl_urlChanged(QWidget *)));
+    URLDelegate* urlDelegate = new URLDelegate("", "", false, false, false);
+    connect(urlDelegate, SIGNAL(commitData(QWidget*)), SLOT(sl_urlChanged(QWidget*)));
 
     cp.first = urlDelegate;
     cp.second = new URLListController(this, set);
     ctrls << cp;
 
-    QWidget *widget = new QWidget;
-    QVBoxLayout *layout = new QVBoxLayout;
+    QWidget* widget = new QWidget;
+    QVBoxLayout* layout = new QVBoxLayout;
     layout->setMargin(0);
     layout->setContentsMargins(0, 4, 0, 4);
     layout->setSpacing(6);
@@ -576,16 +576,16 @@ QWidget *UrlAndDatasetController::createDatasetPageWidget(Dataset *set) {
     return widget;
 }
 
-QWidget *UrlAndDatasetController::createUrlWidget(URLDelegate *ctrl, const QString &value) {
-    URLWidget *urlWidget = qobject_cast<URLWidget *>(ctrl->createEditor(nullptr, QStyleOptionViewItem(), QModelIndex()));
+QWidget* UrlAndDatasetController::createUrlWidget(URLDelegate* ctrl, const QString& value) {
+    URLWidget* urlWidget = qobject_cast<URLWidget*>(ctrl->createEditor(nullptr, QStyleOptionViewItem(), QModelIndex()));
     urlWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     urlWidget->setValue(value);
 
-    QWidget *labeledWidget = new QWidget();
-    QHBoxLayout *labeledLayout = new QHBoxLayout;
+    QWidget* labeledWidget = new QWidget();
+    QHBoxLayout* labeledLayout = new QHBoxLayout;
     labeledLayout->setContentsMargins(6, 8, 0, 7);
 
-    QLabel *urlLabelWidget = new QLabel(urlLabel);
+    QLabel* urlLabelWidget = new QLabel(urlLabel);
     urlLabelWidget->setObjectName(urlLabel + " label");
     labeledLayout->addWidget(urlLabelWidget);
     labeledLayout->addWidget(urlWidget);
@@ -595,9 +595,9 @@ QWidget *UrlAndDatasetController::createUrlWidget(URLDelegate *ctrl, const QStri
     return labeledWidget;
 }
 
-QWidget *UrlAndDatasetController::createDatasetWidget(URLListController *ctrl) {
-    QGroupBox *result = new QGroupBox(datasetLabel);
-    QVBoxLayout *layout = new QVBoxLayout;
+QWidget* UrlAndDatasetController::createDatasetWidget(URLListController* ctrl) {
+    QGroupBox* result = new QGroupBox(datasetLabel);
+    QVBoxLayout* layout = new QVBoxLayout;
     layout->setContentsMargins(0, 0, 0, 0);
 
     layout->addWidget(ctrl->getWidget());
@@ -613,13 +613,13 @@ UrlAndDatasetController::~UrlAndDatasetController() {
     qDeleteAll(sets);
 }
 
-QWidget *UrlAndDatasetController::getWigdet() {
+QWidget* UrlAndDatasetController::getWigdet() {
     return datasetsWidget;
 }
 
 QList<Dataset> UrlAndDatasetController::getDatasets() const {
     QList<Dataset> result;
-    foreach (Dataset *set, sets) {
+    foreach (Dataset* set, sets) {
         result << *set;
     }
 
@@ -637,11 +637,11 @@ QList<Dataset> UrlAndDatasetController::getUrls() const {
     return result;
 }
 
-void UrlAndDatasetController::sl_urlChanged(QWidget *widget) {
-    URLDelegate *urlDelegate = qobject_cast<URLDelegate *>(sender());
+void UrlAndDatasetController::sl_urlChanged(QWidget* widget) {
+    URLDelegate* urlDelegate = qobject_cast<URLDelegate*>(sender());
     SAFE_POINT(urlDelegate, "URL delegate is NULL", );
 
-    URLWidget *editor = qobject_cast<URLWidget *>(widget);
+    URLWidget* editor = qobject_cast<URLWidget*>(widget);
     SAFE_POINT(editor, "Unexpected widget", );
 
     for (int i = 0; i < ctrls.count(); ++i) {
@@ -653,7 +653,7 @@ void UrlAndDatasetController::sl_urlChanged(QWidget *widget) {
     }
 }
 
-void UrlAndDatasetController::renameDataset(int dsNum, const QString &newName, U2OpStatus &os) {
+void UrlAndDatasetController::renameDataset(int dsNum, const QString& newName, U2OpStatus& os) {
     SAFE_POINT(dsNum < sets.size(), "Datasets: out of range", );
 
     checkName(newName, os, sets[dsNum]->getName());
@@ -683,7 +683,7 @@ void UrlAndDatasetController::deleteDataset(int dsNum) {
     update();
 }
 
-void UrlAndDatasetController::addDataset(const QString &name, U2OpStatus &os) {
+void UrlAndDatasetController::addDataset(const QString& name, U2OpStatus& os) {
     checkName(name, os);
     CHECK_OP(os, );
     sets << new Dataset(name);
@@ -695,43 +695,43 @@ void UrlAndDatasetController::addDataset(const QString &name, U2OpStatus &os) {
 
 QStringList UrlAndDatasetController::names() const {
     QStringList result;
-    foreach (Dataset *set, sets) {
+    foreach (Dataset* set, sets) {
         result << set->getName();
     }
     return result;
 }
 
-QString UrlAndDatasetController::getUrlByDataset(Dataset *set) const {
+QString UrlAndDatasetController::getUrlByDataset(Dataset* set) const {
     return urls.at(sets.indexOf(set));
 }
 
 /************************************************************************/
 /* URLListController */
 /************************************************************************/
-URLListController::URLListController(DatasetsController *parent, Dataset *_set)
+URLListController::URLListController(DatasetsController* parent, Dataset* _set)
     : QObject(parent), widget(nullptr), controller(parent), set(_set) {
 }
 
-URLListWidget *URLListController::getWidget() {
+URLListWidget* URLListController::getWidget() {
     if (nullptr == widget) {
         createWidget();
     }
     return widget;
 }
 
-Dataset *URLListController::dataset() {
+Dataset* URLListController::dataset() {
     return set;
 }
 
 void URLListController::createWidget() {
     widget = new URLListWidget(this);
 
-    foreach (URLContainer *url, set->getUrls()) {
+    foreach (URLContainer* url, set->getUrls()) {
         addItemWidget(url);
     }
 }
 
-void URLListController::addItemWidget(URLContainer *url) {
+void URLListController::addItemWidget(URLContainer* url) {
     SAFE_POINT(widget != nullptr, "NULL url list widget", );
     ItemWidgetCreator wc;
     url->accept(&wc);
@@ -740,8 +740,8 @@ void URLListController::addItemWidget(URLContainer *url) {
     widget->addUrlItem(wc.getWidget());
 }
 
-void URLListController::updateUrl(UrlItem *item) {
-    URLContainer *url = urlMap[item];
+void URLListController::updateUrl(UrlItem* item) {
+    URLContainer* url = urlMap[item];
     SAFE_POINT(nullptr != url, "NULL url container", );
 
     URLContainerUpdater updater(item);
@@ -750,7 +750,7 @@ void URLListController::updateUrl(UrlItem *item) {
 }
 
 void URLListController::replaceUrl(int pos, int newPos) {
-    URLContainer *url = getUrl(pos);
+    URLContainer* url = getUrl(pos);
     CHECK(nullptr != url, );
 
     SAFE_POINT(newPos >= 0 && newPos < set->getUrls().size(),
@@ -761,8 +761,8 @@ void URLListController::replaceUrl(int pos, int newPos) {
     controller->update();
 }
 
-void URLListController::addUrl(const QString &url, U2OpStatus &os) {
-    URLContainer *urlCont = URLContainerFactory::createUrlContainer(url);
+void URLListController::addUrl(const QString& url, U2OpStatus& os) {
+    URLContainer* urlCont = URLContainerFactory::createUrlContainer(url);
     if (urlCont == nullptr) {
         os.setError(tr("This file or folder does not exist: %1").arg(url));
         return;
@@ -776,7 +776,7 @@ void URLListController::addUrl(const QString &url, U2OpStatus &os) {
 }
 
 void URLListController::deleteUrl(int pos) {
-    URLContainer *url = getUrl(pos);
+    URLContainer* url = getUrl(pos);
     CHECK(nullptr != url, );
 
     set->removeUrl(url);
@@ -784,14 +784,14 @@ void URLListController::deleteUrl(int pos) {
     controller->update();
 }
 
-URLContainer *URLListController::getUrl(int pos) {
+URLContainer* URLListController::getUrl(int pos) {
     SAFE_POINT(pos < set->getUrls().size(), "Urls: out of range", nullptr);
-    URLContainer *url = set->getUrls().at(pos);
+    URLContainer* url = set->getUrls().at(pos);
     SAFE_POINT(nullptr != url, "NULL url container", nullptr);
     return url;
 }
 
-const QSet<GObjectType> &URLListController::getCompatibleObjTypes() const {
+const QSet<GObjectType>& URLListController::getCompatibleObjTypes() const {
     return controller->getCompatibleObjTypes();
 }
 

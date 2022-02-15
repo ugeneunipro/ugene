@@ -34,17 +34,17 @@
 
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT U2::Plugin *U2_PLUGIN_INIT_FUNC() {
+extern "C" Q_DECL_EXPORT U2::Plugin* U2_PLUGIN_INIT_FUNC() {
     return new ApiTestsPlugin();
 }
 
 ApiTestsPlugin::ApiTestsPlugin()
     : Plugin("UGENE 2.0 API tests", "Tests for UGENE 2.0 public API") {
-    GTestFormatRegistry *testFormatRegistry = AppContext::getTestFramework()->getTestFormatRegistry();
-    auto xmlTestFormat = qobject_cast<XMLTestFormat *>(testFormatRegistry->findFormat("XML"));
+    GTestFormatRegistry* testFormatRegistry = AppContext::getTestFramework()->getTestFormatRegistry();
+    auto xmlTestFormat = qobject_cast<XMLTestFormat*>(testFormatRegistry->findFormat("XML"));
     SAFE_POINT(xmlTestFormat != nullptr, "XML test format is not found", );
 
-    XMLTestFactory *pXmlTestFactory = UnitTestSuite::createFactory();
+    XMLTestFactory* pXmlTestFactory = UnitTestSuite::createFactory();
     bool res = xmlTestFormat->registerTestFactory(pXmlTestFactory);
     SAFE_POINT(res, "API tests factory is not registered", );
     Q_UNUSED(res);

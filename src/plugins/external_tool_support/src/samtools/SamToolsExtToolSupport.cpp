@@ -57,4 +57,4 @@ SamToolsExtToolSupport::SamToolsExtToolSupport()
     muted = true;
 }
 
-}    // namespace U2
+}  // namespace U2

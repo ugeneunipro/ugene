@@ -34,7 +34,7 @@
 
 namespace U2 {
 
-SelectSubalignmentDialog::SelectSubalignmentDialog(MaEditor *editor, const U2Region &region, const QList<int> &_selectedIndexes, QWidget *p)
+SelectSubalignmentDialog::SelectSubalignmentDialog(MaEditor* editor, const U2Region& region, const QList<int>& _selectedIndexes, QWidget* p)
     : QDialog(p),
       editor(editor),
       window(region),
@@ -46,7 +46,7 @@ SelectSubalignmentDialog::SelectSubalignmentDialog(MaEditor *editor, const U2Reg
         int endSeq;
         int startPos;
         int endPos;
-        const MaEditorSelection &selection = editor->getSelection();
+        const MaEditorSelection& selection = editor->getSelection();
         if (selection.isEmpty()) {
             startPos = 0;
             endPos = editor->getAlignmentLen();
@@ -83,7 +83,7 @@ void SelectSubalignmentDialog::accept() {
     selectedNames.clear();
     selectedIndexes.clear();
     for (int i = 0; i < sequencesTableWidget->rowCount(); i++) {
-        QCheckBox *cb = qobject_cast<QCheckBox *>(sequencesTableWidget->cellWidget(i, 0));
+        QCheckBox* cb = qobject_cast<QCheckBox*>(sequencesTableWidget->cellWidget(i, 0));
         if (cb->isChecked()) {
             selectedNames.append(cb->text());
             selectedIndexes.append(i);
@@ -98,21 +98,21 @@ void SelectSubalignmentDialog::accept() {
 
 void SelectSubalignmentDialog::sl_allButtonClicked() {
     for (int i = 0; i < sequencesTableWidget->rowCount(); i++) {
-        QCheckBox *cb = qobject_cast<QCheckBox *>(sequencesTableWidget->cellWidget(i, 0));
+        QCheckBox* cb = qobject_cast<QCheckBox*>(sequencesTableWidget->cellWidget(i, 0));
         cb->setChecked(true);
     }
 }
 
 void SelectSubalignmentDialog::sl_invertButtonClicked() {
     for (int i = 0; i < sequencesTableWidget->rowCount(); i++) {
-        QCheckBox *cb = qobject_cast<QCheckBox *>(sequencesTableWidget->cellWidget(i, 0));
+        QCheckBox* cb = qobject_cast<QCheckBox*>(sequencesTableWidget->cellWidget(i, 0));
         cb->setChecked(!cb->isChecked());
     }
 }
 
 void SelectSubalignmentDialog::sl_noneButtonClicked() {
     for (int i = 0; i < sequencesTableWidget->rowCount(); i++) {
-        QCheckBox *cb = qobject_cast<QCheckBox *>(sequencesTableWidget->cellWidget(i, 0));
+        QCheckBox* cb = qobject_cast<QCheckBox*>(sequencesTableWidget->cellWidget(i, 0));
         cb->setChecked(false);
     }
 }
@@ -128,7 +128,7 @@ void SelectSubalignmentDialog::init() {
     connect(noneButton, SIGNAL(clicked()), SLOT(sl_noneButtonClicked()));
     connect(invertButton, SIGNAL(clicked()), SLOT(sl_invertButtonClicked()));
 
-    MultipleAlignmentObject *mobj = editor->getMaObject();
+    MultipleAlignmentObject* mobj = editor->getMaObject();
     SAFE_POINT(mobj != nullptr, tr("MSA Object is NULL"), );
 
     int rowNumber = mobj->getRowCount();
@@ -149,7 +149,7 @@ void SelectSubalignmentDialog::init() {
     endLineEdit->setValue(window.endPos());
 
     for (int i = 0; i < rowNumber; i++) {
-        QCheckBox *cb = new QCheckBox(mobj->getMultipleAlignment()->getRow(i)->getName(), this);
+        QCheckBox* cb = new QCheckBox(mobj->getMultipleAlignment()->getRow(i)->getName(), this);
         cb->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         if (selectedIndexes.contains(i)) {
             cb->setChecked(true);

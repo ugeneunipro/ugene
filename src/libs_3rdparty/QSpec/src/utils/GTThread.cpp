@@ -63,7 +63,7 @@ void GTThread::waitForMainThread() {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "runInMainThread"
-void GTThread::runInMainThread(GUITestOpStatus &os, CustomScenario *scenario) {
+void GTThread::runInMainThread(GUITestOpStatus& os, CustomScenario* scenario) {
     qDebug("Running in the main thread");
     MainThreadRunnable::runInMainThread(os, scenario);
     qDebug("Run in the main thread is finished");
@@ -71,8 +71,8 @@ void GTThread::runInMainThread(GUITestOpStatus &os, CustomScenario *scenario) {
 #undef GT_METHOD_NAME
 
 bool GTThread::isMainThread() {
-    QThread *currentThread = QThread::currentThread();
-    QThread *mainThread = QCoreApplication::instance()->thread();
+    QThread* currentThread = QThread::currentThread();
+    QThread* mainThread = QCoreApplication::instance()->thread();
     return currentThread == mainThread;
 }
 

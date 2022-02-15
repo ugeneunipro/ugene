@@ -83,7 +83,7 @@ bool UserAppsSettings::useDefaultWebBrowser() const {
     return AppContext::getSettings()->getValue(SETTINGS_ROOT + USE_DEFAULT_WEB_BROWSER, true).toBool();
 }
 
-void UserAppsSettings::setWebBrowserURL(const QString &url) {
+void UserAppsSettings::setWebBrowserURL(const QString& url) {
     return AppContext::getSettings()->setValue(SETTINGS_ROOT + WEB_BROWSER, url);
 }
 void UserAppsSettings::setUseDefaultWebBrowser(bool state) {
@@ -93,7 +93,7 @@ void UserAppsSettings::setUseDefaultWebBrowser(bool state) {
 QString UserAppsSettings::getTranslationFile() const {
     return AppContext::getSettings()->getValue(SETTINGS_ROOT + TRANSLATION, QString("")).toString();
 }
-void UserAppsSettings::setTranslationFile(const QString &fn) {
+void UserAppsSettings::setTranslationFile(const QString& fn) {
     return AppContext::getSettings()->setValue(SETTINGS_ROOT + TRANSLATION, fn);
 }
 
@@ -126,7 +126,7 @@ QString UserAppsSettings::getVisualStyle() const {
 
 #ifdef Q_OS_WIN
 #    define DEFAULT_STYLE_NAME ".NET"
-    const char *version = qVersion();
+    const char* version = qVersion();
     if (QString("4.4.0") != version) {
         if (QStyleFactory::keys().contains(DEFAULT_STYLE_NAME)) {
             defaultStyle = DEFAULT_STYLE_NAME;
@@ -137,7 +137,7 @@ QString UserAppsSettings::getVisualStyle() const {
     return AppContext::getSettings()->getValue(SETTINGS_ROOT + VISUAL_STYLE, defaultStyle).toString();
 }
 
-void UserAppsSettings::setVisualStyle(const QString &newStyle) {
+void UserAppsSettings::setVisualStyle(const QString& newStyle) {
     return AppContext::getSettings()->setValue(SETTINGS_ROOT + VISUAL_STYLE, newStyle.toLower());
 }
 
@@ -145,7 +145,7 @@ QString UserAppsSettings::getDownloadDirPath() const {
     return AppContext::getSettings()->getValue(SETTINGS_ROOT + DOWNLOAD_DIR, QDir::homePath() + "/.UGENE_downloaded").toString();
 }
 
-void UserAppsSettings::setDownloadDirPath(const QString &newPath) const {
+void UserAppsSettings::setDownloadDirPath(const QString& newPath) const {
     AppContext::getSettings()->setValue(SETTINGS_ROOT + DOWNLOAD_DIR, newPath);
 }
 
@@ -154,10 +154,10 @@ QString UserAppsSettings::getCustomToolsConfigsDirPath() const {
     return AppContext::getSettings()->getValue(SETTINGS_ROOT + CUSTOM_EXTERNAL_TOOL_CONFIGS_DIR, defaultDir).toString();
 }
 
-void UserAppsSettings::setCustomToolsConfigsDirPath(const QString &newPath) const {
+void UserAppsSettings::setCustomToolsConfigsDirPath(const QString& newPath) const {
     const QString oldPath = getCustomToolsConfigsDirPath();
 
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     s->setValue(SETTINGS_ROOT + CUSTOM_EXTERNAL_TOOL_CONFIGS_DIR, newPath);
 
     if (oldPath != newPath) {
@@ -168,7 +168,7 @@ void UserAppsSettings::setCustomToolsConfigsDirPath(const QString &newPath) cons
 
         dir.setNameFilters(QStringList() << "*.xml");
         QFileInfoList fileList = dir.entryInfoList();
-        foreach (const QFileInfo &fileInfo, fileList) {
+        foreach (const QFileInfo& fileInfo, fileList) {
             const QString newFileUrl = newPath + "/" + fileInfo.fileName();
             QFile::copy(fileInfo.filePath(), newFileUrl);
         }
@@ -180,7 +180,7 @@ QStringList UserAppsSettings::getRecentlyDownloadedFileNames() const {
     return AppContext::getSettings()->getValue(SETTINGS_ROOT + RECENTLY_DOWNLOADED, empty).toStringList();
 }
 
-void UserAppsSettings::setRecentlyDownloadedFileNames(const QStringList &fileNames) const {
+void UserAppsSettings::setRecentlyDownloadedFileNames(const QStringList& fileNames) const {
     AppContext::getSettings()->setValue(SETTINGS_ROOT + RECENTLY_DOWNLOADED, fileNames);
 }
 
@@ -188,7 +188,7 @@ QString UserAppsSettings::getUserTemporaryDirPath() const {
     return AppContext::getSettings()->getValue(SETTINGS_ROOT + TEMPORARY_DIR, QStandardPaths::writableLocation(QStandardPaths::TempLocation)).toString();
 }
 
-void UserAppsSettings::setUserTemporaryDirPath(const QString &newPath) {
+void UserAppsSettings::setUserTemporaryDirPath(const QString& newPath) {
     AppContext::getSettings()->setValue(SETTINGS_ROOT + TEMPORARY_DIR, newPath);
     emit si_temporaryPathChanged();
 }
@@ -207,7 +207,7 @@ QString UserAppsSettings::getDefaultDataDirPath() const {
     return dataDirPath;
 }
 
-void UserAppsSettings::setDefaultDataDirPath(const QString &newPath) {
+void UserAppsSettings::setDefaultDataDirPath(const QString& newPath) {
     AppContext::getSettings()->setValue(SETTINGS_ROOT + DATA_DIR, newPath);
 }
 
@@ -228,7 +228,7 @@ void UserAppsSettings::setTabbedWindowLayout(bool b) {
     emit si_windowLayoutChanged();
 }
 
-QString UserAppsSettings::getCurrentProcessTemporaryDirPath(const QString &domain) const {
+QString UserAppsSettings::getCurrentProcessTemporaryDirPath(const QString& domain) const {
     qint64 pid = QCoreApplication::applicationPid();
     QString tmpDirPath = getUserTemporaryDirPath() + "/" + QString("ugene_tmp/p%1").arg(pid);
     if (!domain.isEmpty()) {
@@ -239,7 +239,7 @@ QString UserAppsSettings::getCurrentProcessTemporaryDirPath(const QString &domai
 
 static const int MAX_ATTEMPTS = 500;
 
-QString UserAppsSettings::createCurrentProcessTemporarySubDir(U2OpStatus &os, const QString &domain) const {
+QString UserAppsSettings::createCurrentProcessTemporarySubDir(U2OpStatus& os, const QString& domain) const {
     QDir baseDir(getCurrentProcessTemporaryDirPath(domain));
     if (!baseDir.exists()) {
         bool created = baseDir.mkpath(baseDir.absolutePath());
@@ -278,7 +278,7 @@ QString UserAppsSettings::getFileStorageDir() const {
     return AppContext::getSettings()->getValue(SETTINGS_ROOT + FILE_STORAGE_DIR, defaultSaveFilesDir).toString();
 }
 
-void UserAppsSettings::setFileStorageDir(const QString &newPath) {
+void UserAppsSettings::setFileStorageDir(const QString& newPath) {
     AppContext::getSettings()->setValue(SETTINGS_ROOT + FILE_STORAGE_DIR, newPath);
 }
 
@@ -290,11 +290,11 @@ void UserAppsSettings::setUpdatesEnabled(bool value) {
     AppContext::getSettings()->setValue(SETTINGS_ROOT + UPDATES_ENABLED, value);
 }
 
-bool UserAppsSettings::isUpdateSkipped(const QString &versionString) const {
+bool UserAppsSettings::isUpdateSkipped(const QString& versionString) const {
     return AppContext::getSettings()->getValue(SETTINGS_ROOT + SKIP_UPDATE_PREFIX + versionString, false).toBool();
 }
 
-void UserAppsSettings::skipUpdate(const QString &versionString) {
+void UserAppsSettings::skipUpdate(const QString& versionString) {
     AppContext::getSettings()->setValue(SETTINGS_ROOT + SKIP_UPDATE_PREFIX + versionString, true);
 }
 

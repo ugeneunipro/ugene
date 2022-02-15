@@ -32,7 +32,7 @@ public:
     CigarValidator(QList<Alignment::CigarOperation> cigar_);
 
     // fulfills the totalLength so caller can check if it conforms to read length
-    void validate(int *totalLength);
+    void validate(int* totalLength);
 
 private:
     bool static isClippingOperation(Alignment::CigarOperation::Operation op);

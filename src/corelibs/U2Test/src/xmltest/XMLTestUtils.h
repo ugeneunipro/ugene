@@ -29,7 +29,7 @@
 namespace U2 {
 
 #define SIMPLE_XML_TEST_CONSTRUCT(ClassName, TFlags) \
-    ClassName(XMLTestFormat *_tf, const QString &_name, GTest *_cp, const GTestEnvironment *_env, const QList<GTest *> &_contexts, const QDomElement &_el) \
+    ClassName(XMLTestFormat* _tf, const QString& _name, GTest* _cp, const GTestEnvironment* _env, const QList<GTest*>& _contexts, const QDomElement& _el) \
         : XmlTest(_name, _cp, _env, TFlags, _contexts) { \
         init(_tf, _el); \
     }
@@ -37,7 +37,7 @@ namespace U2 {
 #define SIMPLE_XML_TEST_BODY(ClassName, TFlags) \
 public: \
     SIMPLE_XML_TEST_CONSTRUCT(ClassName, TFlags) \
-    void init(XMLTestFormat *tf, const QDomElement &el);
+    void init(XMLTestFormat* tf, const QDomElement& el);
 
 #define SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(TestClass, TagName, TFlags) \
     SIMPLE_XML_TEST_BODY(TestClass, TFlags) \
@@ -46,12 +46,12 @@ public: \
         TestClass##Factory() : XMLTestFactory(TagName) { \
         } \
 \
-        virtual GTest *createTest(XMLTestFormat *tf, const QString &testName, GTest *cp, const GTestEnvironment *env, const QList<GTest *> &subtasks, const QDomElement &el) { \
+        virtual GTest* createTest(XMLTestFormat* tf, const QString& testName, GTest* cp, const GTestEnvironment* env, const QList<GTest*>& subtasks, const QDomElement& el) { \
             return new TestClass(tf, testName, cp, env, subtasks, el); \
         } \
     }; \
 \
-    static XMLTestFactory *createFactory() { \
+    static XMLTestFactory* createFactory() { \
         return new TestClass##Factory(); \
     }
 
@@ -60,18 +60,18 @@ public: \
 
 class U2TEST_EXPORT XmlTest : public GTest {
 public:
-    XmlTest(const QString &taskName,
-            GTest *cp,
-            const GTestEnvironment *env,
+    XmlTest(const QString& taskName,
+            GTest* cp,
+            const GTestEnvironment* env,
             TaskFlags flags,
-            const QList<GTest *> &subtasks = QList<GTest *>());
+            const QList<GTest*>& subtasks = QList<GTest*>());
 
-    void checkNecessaryAttributeExistence(const QDomElement &element, const QString &attribute);
-    void checkAttribute(const QDomElement &element, const QString &attribute, const QStringList &acceptableValues, bool isNecessary);
-    void checkBooleanAttribute(const QDomElement &element, const QString &attribute, bool isNecessary);
-    int getInt(const QDomElement &element, const QString &attribute);
-    qint64 getInt64(const QDomElement &element, const QString &attribute);
-    double getDouble(const QDomElement &element, const QString &attribute);
+    void checkNecessaryAttributeExistence(const QDomElement& element, const QString& attribute);
+    void checkAttribute(const QDomElement& element, const QString& attribute, const QStringList& acceptableValues, bool isNecessary);
+    void checkBooleanAttribute(const QDomElement& element, const QString& attribute, bool isNecessary);
+    int getInt(const QDomElement& element, const QString& attribute);
+    qint64 getInt64(const QDomElement& element, const QString& attribute);
+    double getDouble(const QDomElement& element, const QString& attribute);
 
     static const QString TRUE_VALUE;
     static const QString FALSE_VALUE;
@@ -79,9 +79,9 @@ public:
 
 class U2TEST_EXPORT XMLTestUtils {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
-    static void replacePrefix(const GTestEnvironment *env, QString &path);
-    static bool parentTasksHaveError(Task *t);
+    static QList<XMLTestFactory*> createTestFactories();
+    static void replacePrefix(const GTestEnvironment* env, QString& path);
+    static bool parentTasksHaveError(Task* t);
 
     static const QString TMP_DATA_DIR_PREFIX;
     static const QString COMMON_DATA_DIR_PREFIX;

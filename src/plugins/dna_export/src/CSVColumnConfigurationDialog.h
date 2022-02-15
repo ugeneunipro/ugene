@@ -22,16 +22,16 @@
 #ifndef _U2_CSV_COLUMN_CONFIGURATION_DIALOG_H_
 #define _U2_CSV_COLUMN_CONFIGURATION_DIALOG_H_
 
-#include <ui_CSVColumnConfigurationDialog.h>
-
 #include "CSVColumnConfiguration.h"
+
+#include <ui_CSVColumnConfigurationDialog.h>
 
 namespace U2 {
 
 class CSVColumnConfigurationDialog : public QDialog, Ui_CSVColumnConfigurationDialog {
     Q_OBJECT
 public:
-    CSVColumnConfigurationDialog(QWidget *w, const ColumnConfig &config);
+    CSVColumnConfigurationDialog(QWidget* w, const ColumnConfig& config);
 
     ColumnConfig config;
 

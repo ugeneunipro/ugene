@@ -32,30 +32,30 @@ ScriptContext::ScriptContext()
 ScriptContext::~ScriptContext() {
 }
 
-void ScriptContext::setWorkflowScheduler(ScriptableScheduler *newScheduler) {
+void ScriptContext::setWorkflowScheduler(ScriptableScheduler* newScheduler) {
     Q_ASSERT(nullptr == newScheduler || nullptr == scheduler);
     scheduler = newScheduler;
 }
 
-LocalWorkflow::LastReadyScheduler *ScriptContext::getWorkflowScheduler(Workflow::Schema *scheme)
+LocalWorkflow::LastReadyScheduler* ScriptContext::getWorkflowScheduler(Workflow::Schema* scheme)
     const {
     scheduler->setScheme(scheme);
     return scheduler;
 }
 
-void ScriptContext::addActorTick(const ActorId &id) {
+void ScriptContext::addActorTick(const ActorId& id) {
     scheduler->addActorToNextTick(id);
 }
 
-QMap<int, QList<Actor *>> ScriptContext::getTopologicalSortedGraph() const {
+QMap<int, QList<Actor*>> ScriptContext::getTopologicalSortedGraph() const {
     return scheduler->getTopologicalSortedGraph();
 }
 
-Actor *ScriptContext::getActorById(const ActorId &id) const {
+Actor* ScriptContext::getActorById(const ActorId& id) const {
     return scheduler->getActorById(id);
 }
 
-WorkflowDebugStatus *ScriptContext::getDebugStatus() const {
+WorkflowDebugStatus* ScriptContext::getDebugStatus() const {
     return scheduler->getDebugStatus();
 }
 

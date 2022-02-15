@@ -37,16 +37,16 @@ class CustomWorkerUtils {
 public:
     static const QString TOOL_PATH_VAR_NAME;
 
-    static QString getVarName(const ExternalTool *tool);
+    static QString getVarName(const ExternalTool* tool);
 
-    static bool commandContainsSpecialTool(const QString &cmd, const ExternalTool *tool);
-    static bool commandContainsSpecialTool(const QString &cmd, const QString toolId);
-    static bool commandContainsVarName(const QString &cmd, const QString &varName);
-    static QStringList getToolIdsFromCommand(const QString &cmd);
+    static bool commandContainsSpecialTool(const QString& cmd, const ExternalTool* tool);
+    static bool commandContainsSpecialTool(const QString& cmd, const QString toolId);
+    static bool commandContainsVarName(const QString& cmd, const QString& varName);
+    static QStringList getToolIdsFromCommand(const QString& cmd);
 
-    static bool commandReplaceSpecialByUgenePath(QString &cmd, const ExternalTool *tool);
-    static bool commandReplaceSpecialByUgenePath(QString &cmd, const QString varName, const QString path);
-    static void commandReplaceAllSpecialByUgenePath(QString &cmd, ExternalProcessConfig *cfg);
+    static bool commandReplaceSpecialByUgenePath(QString& cmd, const ExternalTool* tool);
+    static bool commandReplaceSpecialByUgenePath(QString& cmd, const QString varName, const QString path);
+    static void commandReplaceAllSpecialByUgenePath(QString& cmd, ExternalProcessConfig* cfg);
 };
 
 }  // namespace Workflow

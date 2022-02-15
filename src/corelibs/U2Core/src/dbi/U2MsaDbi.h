@@ -33,52 +33,52 @@ namespace U2 {
 */
 class U2MsaDbi : public U2ChildDbi {
 protected:
-    U2MsaDbi(U2Dbi *rootDbi)
+    U2MsaDbi(U2Dbi* rootDbi)
         : U2ChildDbi(rootDbi) {
     }
 
 public:
     /** Reads Msa objects by id */
-    virtual U2Msa getMsaObject(const U2DataId &id, U2OpStatus &os) = 0;
+    virtual U2Msa getMsaObject(const U2DataId& id, U2OpStatus& os) = 0;
 
     /** Returns the number of rows in the MSA */
-    virtual int getNumOfRows(const U2DataId &msaId, U2OpStatus &os) = 0;
+    virtual int getNumOfRows(const U2DataId& msaId, U2OpStatus& os) = 0;
 
     /** Returns all MSA rows */
-    virtual QList<U2MsaRow> getRows(const U2DataId &msaId, U2OpStatus &os) = 0;
+    virtual QList<U2MsaRow> getRows(const U2DataId& msaId, U2OpStatus& os) = 0;
 
     /** Return a row with the specified ID */
-    virtual U2MsaRow getRow(const U2DataId &msaId, qint64 rowId, U2OpStatus &os) = 0;
+    virtual U2MsaRow getRow(const U2DataId& msaId, qint64 rowId, U2OpStatus& os) = 0;
 
     /** Returns the list of rows IDs in the database for the specified MSA (in increasing order) */
-    virtual QList<qint64> getOrderedRowIds(const U2DataId &msaId, U2OpStatus &os) = 0;
+    virtual QList<qint64> getOrderedRowIds(const U2DataId& msaId, U2OpStatus& os) = 0;
 
     /** Return the MSA alphabet */
-    virtual U2AlphabetId getMsaAlphabet(const U2DataId &msaId, U2OpStatus &os) = 0;
+    virtual U2AlphabetId getMsaAlphabet(const U2DataId& msaId, U2OpStatus& os) = 0;
 
     /** Return the MSA length */
-    virtual qint64 getMsaLength(const U2DataId &msaId, U2OpStatus &os) = 0;
+    virtual qint64 getMsaLength(const U2DataId& msaId, U2OpStatus& os) = 0;
 
     /**
      * Creates a new empty MSA object
      * Requires: U2DbiFeature_WriteMsa feature support
      */
-    virtual U2DataId createMcaObject(const QString &folder, const QString &name, const U2AlphabetId &alphabet, U2OpStatus &os) = 0;
-    virtual U2DataId createMcaObject(const QString &folder, const QString &name, const U2AlphabetId &alphabet, int length, U2OpStatus &os) = 0;
-    virtual U2DataId createMsaObject(const QString &folder, const QString &name, const U2AlphabetId &alphabet, U2OpStatus &os) = 0;
-    virtual U2DataId createMsaObject(const QString &folder, const QString &name, const U2AlphabetId &alphabet, int length, U2OpStatus &os) = 0;
+    virtual U2DataId createMcaObject(const QString& folder, const QString& name, const U2AlphabetId& alphabet, U2OpStatus& os) = 0;
+    virtual U2DataId createMcaObject(const QString& folder, const QString& name, const U2AlphabetId& alphabet, int length, U2OpStatus& os) = 0;
+    virtual U2DataId createMsaObject(const QString& folder, const QString& name, const U2AlphabetId& alphabet, U2OpStatus& os) = 0;
+    virtual U2DataId createMsaObject(const QString& folder, const QString& name, const U2AlphabetId& alphabet, int length, U2OpStatus& os) = 0;
 
     /**
      * Updates the multiple alignment name
      * Requires: U2DbiFeature_WriteMsa feature support
      */
-    virtual void updateMsaName(const U2DataId &msaId, const QString &name, U2OpStatus &os) = 0;
+    virtual void updateMsaName(const U2DataId& msaId, const QString& name, U2OpStatus& os) = 0;
 
     /**
      * Updates the multiple alignment alphabet
      * Requires: U2DbiFeature_WriteMsa feature support
      */
-    virtual void updateMsaAlphabet(const U2DataId &msaId, const U2AlphabetId &alphabet, U2OpStatus &os) = 0;
+    virtual void updateMsaAlphabet(const U2DataId& msaId, const U2AlphabetId& alphabet, U2OpStatus& os) = 0;
 
     /**
      * Adds rows to the MSA
@@ -99,7 +99,7 @@ public:
      * Increments the alignment version.
      * Tracks modifications, if required.
      */
-    virtual void addRows(const U2DataId &msaId, QList<U2MsaRow> &rows, int insertRowIndex, U2OpStatus &os) = 0;
+    virtual void addRows(const U2DataId& msaId, QList<U2MsaRow>& rows, int insertRowIndex, U2OpStatus& os) = 0;
 
     /**
      * Adds a row to the MSA
@@ -107,14 +107,14 @@ public:
      * otherwise it is inserted to the specified position and all positions are updated.
      * Requires: U2DbiFeature_WriteMsa feature support
      */
-    virtual void addRow(const U2DataId &msaId, int rowIndex, U2MsaRow &row, U2OpStatus &os) = 0;
+    virtual void addRow(const U2DataId& msaId, int rowIndex, U2MsaRow& row, U2OpStatus& os) = 0;
 
     /**
      * Removes rows from MSA
      * Automatically removes affected sequences that are not anymore located in some folder nor Msa object
      * Requires: U2DbiFeature_WriteMsa feature support
      */
-    virtual void removeRows(const U2DataId &msaId, const QList<qint64> &rowIds, U2OpStatus &os) = 0;
+    virtual void removeRows(const U2DataId& msaId, const QList<qint64>& rowIds, U2OpStatus& os) = 0;
 
     /**
      * Removes the row gaps, the row.
@@ -122,32 +122,32 @@ public:
      * and attempts to remove the sequence after it.
      * Requires: U2DbiFeature_WriteMsa feature support
      */
-    virtual void removeRow(const U2DataId &msaId, qint64 rowId, U2OpStatus &os) = 0;
+    virtual void removeRow(const U2DataId& msaId, qint64 rowId, U2OpStatus& os) = 0;
 
     /** Updates name of the sequence of the row. */
-    virtual void updateRowName(const U2DataId &msaId, qint64 rowId, const QString &newName, U2OpStatus &os) = 0;
+    virtual void updateRowName(const U2DataId& msaId, qint64 rowId, const QString& newName, U2OpStatus& os) = 0;
 
     /**
      * Updates a row with the specified ID and its sequence.
      * Requires: U2DbiFeature_WriteMsa feature support
      */
-    virtual void updateRowContent(const U2DataId &msaId, qint64 rowId, const QByteArray &seqBytes, const QVector<U2MsaGap> &gaps, U2OpStatus &os) = 0;
+    virtual void updateRowContent(const U2DataId& msaId, qint64 rowId, const QByteArray& seqBytes, const QVector<U2MsaGap>& gaps, U2OpStatus& os) = 0;
 
     /**
      * Removes all previous values and sets a new gap model for a row in a MSA
      * Requires: U2DbiFeature_WriteMsa feature support
      */
-    virtual void updateGapModel(const U2DataId &msaId, qint64 msaRowId, const QVector<U2MsaGap> &gapModel, U2OpStatus &os) = 0;
+    virtual void updateGapModel(const U2DataId& msaId, qint64 msaRowId, const QVector<U2MsaGap>& gapModel, U2OpStatus& os) = 0;
 
     /**
      * Updates positions of the rows in the database according to the order in the list
      * Be careful, all IDs must exactly match IDs of the MSA!
      * Requires: U2DbiFeature_WriteMsa feature support
      */
-    virtual void setNewRowsOrder(const U2DataId &msaId, const QList<qint64> &rowIds, U2OpStatus &os) = 0;
+    virtual void setNewRowsOrder(const U2DataId& msaId, const QList<qint64>& rowIds, U2OpStatus& os) = 0;
 
     /** Updates a part of the Msa object info - the length */
-    virtual void updateMsaLength(const U2DataId &msaId, qint64 length, U2OpStatus &os) = 0;
+    virtual void updateMsaLength(const U2DataId& msaId, qint64 length, U2OpStatus& os) = 0;
 };
 
 }  // namespace U2

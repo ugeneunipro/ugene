@@ -119,7 +119,7 @@ QBitArray TextUtils::createBitMap(char c1) {
     return res;
 }
 
-QBitArray TextUtils::createBitMap(const QByteArray &chars, bool val) {
+QBitArray TextUtils::createBitMap(const QByteArray& chars, bool val) {
     QBitArray res = getEmptyBitMap();
     for (int i = 0, n = chars.size(); i < n; i++) {
         char c = chars[i];
@@ -128,7 +128,7 @@ QBitArray TextUtils::createBitMap(const QByteArray &chars, bool val) {
     return res;
 }
 
-QByteArray TextUtils::createMap(const QBitArray &bits, char defaultChar) {
+QByteArray TextUtils::createMap(const QBitArray& bits, char defaultChar) {
     assert(bits.size() == 256);
     QByteArray res(256, 0);
     for (int i = 0; i < 256; i++) {
@@ -167,7 +167,7 @@ static QByteArray getSpaceLine() {
     return res;
 }
 
-QString TextUtils::variate(const QString &prefix, const QString &sep, const QSet<QString> &filter, bool mustHaveSuffix, int startSeed) {
+QString TextUtils::variate(const QString& prefix, const QString& sep, const QSet<QString>& filter, bool mustHaveSuffix, int startSeed) {
     int seed = startSeed;
     QString res = prefix;
     if (!mustHaveSuffix && !filter.contains(res) && !res.isEmpty()) {
@@ -179,7 +179,7 @@ QString TextUtils::variate(const QString &prefix, const QString &sep, const QSet
     return res;
 }
 
-QByteArray TextUtils::cutByteOrderMarks(const QByteArray &data, QString &errorMessage) {
+QByteArray TextUtils::cutByteOrderMarks(const QByteArray& data, QString& errorMessage) {
     QTextStream textStream(data);
     textStream.setGenerateByteOrderMark(false);
     QByteArray resultData = textStream.readAll().toLocal8Bit();
@@ -190,7 +190,7 @@ QByteArray TextUtils::cutByteOrderMarks(const QByteArray &data, QString &errorMe
     return resultData;
 }
 
-qint64 TextUtils::cutByteOrderMarks(char *data, QString &errorMessage, qint64 buffLen) {
+qint64 TextUtils::cutByteOrderMarks(char* data, QString& errorMessage, qint64 buffLen) {
     CHECK(buffLen != 0, 0);
 
     QByteArray byteArrayData = buffLen != -1 ? QByteArray(data, buffLen) : QByteArray(data);
@@ -203,7 +203,7 @@ qint64 TextUtils::cutByteOrderMarks(char *data, QString &errorMessage, qint64 bu
     return result;
 }
 
-QStringList TextUtils::split(const QString &text, int chunkSize) {
+QStringList TextUtils::split(const QString& text, int chunkSize) {
     if (text.length() < chunkSize) {
         return {text};
     }
@@ -214,7 +214,7 @@ QStringList TextUtils::split(const QString &text, int chunkSize) {
     return result;
 }
 
-QList<QByteArray> TextUtils::split(const QByteArray &text, int chunkSize) {
+QList<QByteArray> TextUtils::split(const QByteArray& text, int chunkSize) {
     if (text.length() < chunkSize) {
         return {text};
     }
@@ -225,7 +225,7 @@ QList<QByteArray> TextUtils::split(const QByteArray &text, int chunkSize) {
     return result;
 }
 
-void TextUtils::replace(QString &text, const QBitArray &latin1CharCodeMap, QChar replacementChar) {
+void TextUtils::replace(QString& text, const QBitArray& latin1CharCodeMap, QChar replacementChar) {
     for (int i = 0; i < text.length(); i++) {
         uchar latin1Char = text.at(i).toLatin1();
         if (latin1CharCodeMap.at(latin1Char)) {
@@ -234,23 +234,23 @@ void TextUtils::replace(QString &text, const QBitArray &latin1CharCodeMap, QChar
     }
 }
 
-QString TextUtils::readFirstLine(const QString &text) {
+QString TextUtils::readFirstLine(const QString& text) {
     QString textCopy = text;
     QTextStream stream(&textCopy);
     return stream.readLine();
 }
 
-bool TextUtils::isLineBreak(const QString &text, int charIndex) {
+bool TextUtils::isLineBreak(const QString& text, int charIndex) {
     uchar bitIndex = uchar((text.at(charIndex).toLatin1()));
     return LINE_BREAKS.testBit(bitIndex);
 }
 
-bool TextUtils::isWhiteSpace(const QString &text, int charIndex) {
+bool TextUtils::isWhiteSpace(const QString& text, int charIndex) {
     uchar bitIndex = uchar((text.at(charIndex).toLatin1()));
     return WHITES.testBit(bitIndex);
 }
 
-bool TextUtils::isWhiteSpace(const QString &text) {
+bool TextUtils::isWhiteSpace(const QString& text) {
     for (int i = 0; i < text.length(); i++) {
         if (!isWhiteSpace(text, i)) {
             return false;
@@ -259,7 +259,7 @@ bool TextUtils::isWhiteSpace(const QString &text) {
     return true;
 }
 
-int TextUtils::findIndexOfFirstWhiteSpace(const QString &text) {
+int TextUtils::findIndexOfFirstWhiteSpace(const QString& text) {
     for (int i = 0; i < text.length(); i++) {
         if (isWhiteSpace(text, i)) {
             return i;
@@ -268,7 +268,7 @@ int TextUtils::findIndexOfFirstWhiteSpace(const QString &text) {
     return -1;
 }
 
-QString TextUtils::skip(const QBitArray &map, const QString &text) {
+QString TextUtils::skip(const QBitArray& map, const QString& text) {
     for (int i = 0, n = text.length(); i < n; i++) {
         uchar c = uchar(text[i].toLatin1());
         if (!map.testBit(c)) {

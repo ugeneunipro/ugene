@@ -34,23 +34,23 @@ class SaveDocumentTask;
 class U2CORE_EXPORT CopyDocumentTask : public Task {
     Q_OBJECT
 public:
-    CopyDocumentTask(Document *srcDoc, const DocumentFormatId &formatId, const QString &dstUrl, bool addToProject);
+    CopyDocumentTask(Document* srcDoc, const DocumentFormatId& formatId, const QString& dstUrl, bool addToProject);
     ~CopyDocumentTask();
 
     virtual void prepare();
-    virtual QList<Task *> onSubTaskFinished(Task *subTask);
+    virtual QList<Task*> onSubTaskFinished(Task* subTask);
 
-    Document *takeResult();
+    Document* takeResult();
 
 private:
-    Document *srcDoc;
-    Document *dstDoc;
+    Document* srcDoc;
+    Document* dstDoc;
     DocumentFormatId formatId;
     QString dstUrl;
     bool addToProject;
 
-    CloneObjectsTask *cloneTask;
-    SaveDocumentTask *saveTask;
+    CloneObjectsTask* cloneTask;
+    SaveDocumentTask* saveTask;
 
 private slots:
     void sl_onCopySaved();
@@ -58,16 +58,16 @@ private slots:
 
 class CloneObjectsTask : public Task {
 public:
-    CloneObjectsTask(Document *srcDoc, Document *dstDoc);
+    CloneObjectsTask(Document* srcDoc, Document* dstDoc);
 
     virtual void run();
 
-    QList<GObject *> takeResult();
+    QList<GObject*> takeResult();
 
 private:
-    Document *srcDoc;
-    Document *dstDoc;
-    QList<GObject *> cloned;
+    Document* srcDoc;
+    Document* dstDoc;
+    QList<GObject*> cloned;
 };
 
 }  // namespace U2

@@ -29,12 +29,12 @@ namespace U2 {
 /// ObjectNameFilterTask
 //////////////////////////////////////////////////////////////////////////
 
-ObjectNameFilterTask::ObjectNameFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document>> &docs)
+ObjectNameFilterTask::ObjectNameFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs)
     : AbstractProjectFilterTask(settings, ProjectFilterNames::OBJ_NAME_FILTER_NAME, docs) {
     filteredObjCountPerIteration = 50;
 }
 
-bool ObjectNameFilterTask::filterAcceptsObject(GObject *obj) {
+bool ObjectNameFilterTask::filterAcceptsObject(GObject* obj) {
     return settings.isObjectShown(obj);
 }
 
@@ -42,8 +42,8 @@ bool ObjectNameFilterTask::filterAcceptsObject(GObject *obj) {
 /// ObjectNameFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
 
-AbstractProjectFilterTask *ObjectNameFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings &settings,
-                                                                      const QList<QPointer<Document>> &docs) const {
+AbstractProjectFilterTask* ObjectNameFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
+                                                                      const QList<QPointer<Document>>& docs) const {
     return new ObjectNameFilterTask(settings, docs);
 }
 

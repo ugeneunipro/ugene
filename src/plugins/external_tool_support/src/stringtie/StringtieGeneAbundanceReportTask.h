@@ -30,11 +30,11 @@ namespace LocalWorkflow {
 class StringtieGeneAbundanceReportTask : public Task {
     Q_OBJECT
 public:
-    StringtieGeneAbundanceReportTask(const QStringList &stringtieReports,
-                                     const QString &reportUrl,
-                                     const QString &workingDir);
+    StringtieGeneAbundanceReportTask(const QStringList& stringtieReports,
+                                     const QString& reportUrl,
+                                     const QString& workingDir);
 
-    const QString &getReportUrl() const;
+    const QString& getReportUrl() const;
     static const int BUFF_SIZE;
     static const QString inputDelimiter;
     static const QString outputDelimiter;
@@ -49,10 +49,10 @@ private:
 
     QString sortAndShrinkToTemp(QString tsvFile, QString runDir);
     bool mergeFpkmToReportUrl(QMap<QString, QString> mapFiles, QString reportUrl);
-    static QList<QStringList> parseLinesIntoTokens(const QString &text);
+    static QList<QStringList> parseLinesIntoTokens(const QString& text);
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_STRINGTIE_GENE_ABUNDANCE_REPORT_TASK_H_
+#endif  // _U2_STRINGTIE_GENE_ABUNDANCE_REPORT_TASK_H_

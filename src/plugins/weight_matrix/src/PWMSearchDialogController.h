@@ -22,8 +22,6 @@
 #ifndef _U2_WEIGHT_MATRIX_SEARCH_DIALOG_H_
 #define _U2_WEIGHT_MATRIX_SEARCH_DIALOG_H_
 
-#include <ui_PWMSearchDialog.h>
-
 #include <QCloseEvent>
 #include <QList>
 #include <QTimer>
@@ -38,6 +36,8 @@
 
 #include "WeightMatrixSearchTask.h"
 
+#include <ui_PWMSearchDialog.h>
+
 namespace U2 {
 
 class ADVSequenceObjectContext;
@@ -50,13 +50,13 @@ class WeightMatrixQueueItem;
 class PWMSearchDialogController : public QDialog, public Ui_PWMSearchDialog {
     Q_OBJECT
 public:
-    PWMSearchDialogController(ADVSequenceObjectContext *ctx, QWidget *p = nullptr);
+    PWMSearchDialogController(ADVSequenceObjectContext* ctx, QWidget* p = nullptr);
 
 public slots:
     virtual void reject();
 
 protected:
-    bool eventFilter(QObject *obj, QEvent *ev);
+    bool eventFilter(QObject* obj, QEvent* ev);
 
 private slots:
 
@@ -82,13 +82,13 @@ private slots:
     void sl_onTaskFinished();
     void sl_onTimer();
 
-    void sl_onResultActivated(QTreeWidgetItem *i, int col);
+    void sl_onResultActivated(QTreeWidgetItem* i, int col);
 
 private:
     void connectGUI();
     void updateState();
     void updateStatus();
-    void updateModel(const PWMatrix &m);
+    void updateModel(const PWMatrix& m);
     void loadFile(QString filename);
     void addToQueue();
 
@@ -99,7 +99,7 @@ private:
     void importResults();
 
 private:
-    ADVSequenceObjectContext *ctx;
+    ADVSequenceObjectContext* ctx;
     U2Region initialSelection;
 
     PFMatrix intermediate;
@@ -107,13 +107,13 @@ private:
 
     QList<QPair<PWMatrix, WeightMatrixSearchCfg>> queue;
 
-    WeightMatrixSearchTask *task;
-    QTimer *timer;
-    RegionSelector *rs;
+    WeightMatrixSearchTask* task;
+    QTimer* timer;
+    RegionSelector* rs;
 
-    QPushButton *pbSearch;
-    QPushButton *pbClose;
-    QPushButton *queueButton;
+    QPushButton* pbSearch;
+    QPushButton* pbClose;
+    QPushButton* queueButton;
 };
 
 }  // namespace U2

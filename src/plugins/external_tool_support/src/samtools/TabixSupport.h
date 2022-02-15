@@ -35,6 +35,6 @@ public:
     static const QString ET_TABIX_ID;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_TABIX_SUPPORT_H_
+#endif  // _U2_TABIX_SUPPORT_H_

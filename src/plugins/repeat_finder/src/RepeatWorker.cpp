@@ -70,8 +70,8 @@ FindRepeatsTaskSettings RepeatWorkerFactory::defaultSettings() {
 }
 
 void RepeatWorkerFactory::init() {
-    QList<PortDescriptor *> p;
-    QList<Attribute *> a;
+    QList<PortDescriptor*> p;
+    QList<Attribute*> a;
 
     {
         Descriptor id(BasePorts::IN_SEQ_PORT_ID(), RepeatWorker::tr("Input sequences"), RepeatWorker::tr("A nucleotide sequence to search repeats in."));
@@ -98,7 +98,7 @@ void RepeatWorkerFactory::init() {
         Descriptor umind(USE_MIN_DISTANCE_ATTR, RepeatWorker::tr("Apply 'Min distance' attribute"), RepeatWorker::tr("Apply 'Min distance' attribute."));
 
         FindRepeatsTaskSettings cfg = RepeatWorkerFactory::defaultSettings();
-        Attribute *aa;
+        Attribute* aa;
         a << new Attribute(nd, BaseTypes::STRING_TYPE(), true, "repeat_unit");
         aa = new Attribute(ld, BaseTypes::NUM_TYPE(), false, cfg.minLen);
         a << aa;
@@ -125,8 +125,8 @@ void RepeatWorkerFactory::init() {
     }
 
     Descriptor desc(ACTOR_ID, RepeatWorker::tr("Find Repeats"), RepeatWorker::tr("Finds repeats in each supplied sequence, stores found regions as annotations."));
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
-    QMap<QString, PropertyDelegate *> delegates;
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
+    QMap<QString, PropertyDelegate*> delegates;
     delegates[USE_MIN_DISTANCE_ATTR] = new ComboBoxWithBoolsDelegate();
     delegates[USE_MAX_DISTANCE_ATTR] = new ComboBoxWithBoolsDelegate();
 
@@ -176,7 +176,7 @@ void RepeatWorkerFactory::init() {
     proto->setIconPath(":repeat_finder/images/repeats.png");
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new RepeatWorkerFactory());
 }
 
@@ -184,8 +184,8 @@ void RepeatWorkerFactory::init() {
  * RepeatPrompter
  ******************************/
 QString RepeatPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
-    Actor *producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
+    Actor* producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
 
@@ -208,7 +208,7 @@ QString RepeatPrompter::composeRichDoc() {
 /******************************
  * RepeatWorker
  ******************************/
-RepeatWorker::RepeatWorker(Actor *a)
+RepeatWorker::RepeatWorker(Actor* a)
     : BaseWorker(a), input(nullptr), output(nullptr) {
 }
 
@@ -217,7 +217,7 @@ void RepeatWorker::init() {
     output = ports.value(BasePorts::OUT_ANNOTATIONS_PORT_ID());
 }
 
-Task *RepeatWorker::tick() {
+Task* RepeatWorker::tick() {
     if (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
@@ -270,7 +270,7 @@ Task *RepeatWorker::tick() {
             QString err = tr("Sequence alphabet is not nucleic!");
             return new FailTask(err);
         }
-        Task *t = new FindRepeatsToAnnotationsTask(cfg, seq, resultName, QString(), "", GObjectReference());
+        Task* t = new FindRepeatsToAnnotationsTask(cfg, seq, resultName, QString(), "", GObjectReference());
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
     } else if (input->isEnded()) {
@@ -281,7 +281,7 @@ Task *RepeatWorker::tick() {
 }
 
 void RepeatWorker::sl_taskFinished() {
-    FindRepeatsToAnnotationsTask *t = qobject_cast<FindRepeatsToAnnotationsTask *>(sender());
+    FindRepeatsToAnnotationsTask* t = qobject_cast<FindRepeatsToAnnotationsTask*>(sender());
     if (t->getState() != Task::State_Finished || t->hasError() || t->isCanceled()) {
         return;
     }

@@ -22,11 +22,11 @@
 #ifndef _U2_EXPORT_READS_DIALOG_H__
 #define _U2_EXPORT_READS_DIALOG_H__
 
-#include <ui_ExportReadsDialog.h>
-
 #include <QDialog>
 
 #include <U2Core/global.h>
+
+#include <ui_ExportReadsDialog.h>
 
 namespace U2 {
 
@@ -41,14 +41,14 @@ struct ExportReadsDialogModel {
 class ExportReadsDialog : public QDialog, Ui_ExportReadsDialog {
     Q_OBJECT
 public:
-    ExportReadsDialog(QWidget *p, const QList<DocumentFormatId> &formats);
+    ExportReadsDialog(QWidget* p, const QList<DocumentFormatId>& formats);
 
     void accept();
 
     ExportReadsDialogModel getModel() const;
 
 private:
-    SaveDocumentController *saveController;
+    SaveDocumentController* saveController;
 
 };  // ExportReadsDialog
 

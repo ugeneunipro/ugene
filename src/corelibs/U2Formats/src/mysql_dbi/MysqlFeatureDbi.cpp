@@ -31,11 +31,11 @@
 
 namespace U2 {
 
-MysqlFeatureDbi::MysqlFeatureDbi(MysqlDbi *dbi)
+MysqlFeatureDbi::MysqlFeatureDbi(MysqlDbi* dbi)
     : U2FeatureDbi(dbi), MysqlChildDbiCommon(dbi) {
 }
 
-void MysqlFeatureDbi::initSqlSchema(U2OpStatus &os) {
+void MysqlFeatureDbi::initSqlSchema(U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     // nameHash is used for better indexing
@@ -72,7 +72,7 @@ void MysqlFeatureDbi::initSqlSchema(U2OpStatus &os) {
 
 namespace {
 
-inline QString getFeatureFields(const QString &featureAlias = "f") {
+inline QString getFeatureFields(const QString& featureAlias = "f") {
     return QString("%1.id, %1.class, %1.type, %1.parent, %1.root, %1.name, %1.sequence, "
                    "%1.strand, %1.start, %1.len ")
         .arg(featureAlias);
@@ -82,11 +82,11 @@ inline QString getFeatureFields(const QString &featureAlias = "f") {
 
 class MysqlFeatureRSLoader : public MysqlRSLoader<U2Feature> {
 public:
-    U2Feature load(U2SqlQuery *q) {
+    U2Feature load(U2SqlQuery* q) {
         return loadStatic(q);
     }
 
-    static U2Feature loadStatic(U2SqlQuery *q) {
+    static U2Feature loadStatic(U2SqlQuery* q) {
         U2Feature res;
         // class, type, parent, root, name, sequence, strand, start, len
         res.id = q->getDataId(0, U2Type::Feature);
@@ -105,11 +105,11 @@ public:
 
 class MysqlFeatureFilter : public MysqlRSFilter<U2Feature> {
 public:
-    MysqlFeatureFilter(const QString &name, const U2DataId &_seqId) {
+    MysqlFeatureFilter(const QString& name, const U2DataId& _seqId) {
         nameToFilter = name;
         seqId = _seqId;
     }
-    bool filter(const U2Feature &f) {
+    bool filter(const U2Feature& f) {
         if ((nameToFilter.isEmpty() || f.name == nameToFilter) && (seqId.isEmpty() || seqId == f.sequenceId)) {
             return true;
         }
@@ -121,9 +121,9 @@ private:
     U2DataId seqId;
 };
 
-void MysqlFeatureDbi::createAnnotationTableObject(U2AnnotationTable &table,
-                                                  const QString &folder,
-                                                  U2OpStatus &os) {
+void MysqlFeatureDbi::createAnnotationTableObject(U2AnnotationTable& table,
+                                                  const QString& folder,
+                                                  U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     dbi->getMysqlObjectDbi()->createObject(table, folder, U2DbiObjectRank_TopLevel, os);
@@ -136,8 +136,8 @@ void MysqlFeatureDbi::createAnnotationTableObject(U2AnnotationTable &table,
     q.insert();
 }
 
-U2AnnotationTable MysqlFeatureDbi::getAnnotationTableObject(const U2DataId &tableId,
-                                                            U2OpStatus &os) {
+U2AnnotationTable MysqlFeatureDbi::getAnnotationTableObject(const U2DataId& tableId,
+                                                            U2OpStatus& os) {
     U2AnnotationTable result;
     DBI_TYPE_CHECK(tableId, U2Type::AnnotationTable, os, result);
 
@@ -157,7 +157,7 @@ U2AnnotationTable MysqlFeatureDbi::getAnnotationTableObject(const U2DataId &tabl
     return result;
 }
 
-void MysqlFeatureDbi::removeAnnotationTableData(const U2DataId &tableId, U2OpStatus &os) {
+void MysqlFeatureDbi::removeAnnotationTableData(const U2DataId& tableId, U2OpStatus& os) {
     DBI_TYPE_CHECK(tableId, U2Type::AnnotationTable, os, );
 
     MysqlTransaction t(db, os);
@@ -170,7 +170,7 @@ void MysqlFeatureDbi::removeAnnotationTableData(const U2DataId &tableId, U2OpSta
     removeFeaturesQuery.execute();
 }
 
-U2Feature MysqlFeatureDbi::getFeature(const U2DataId &featureId, U2OpStatus &os) {
+U2Feature MysqlFeatureDbi::getFeature(const U2DataId& featureId, U2OpStatus& os) {
     U2Feature res;
     DBI_TYPE_CHECK(featureId, U2Type::Feature, os, res);
 
@@ -188,7 +188,7 @@ U2Feature MysqlFeatureDbi::getFeature(const U2DataId &featureId, U2OpStatus &os)
 
 namespace {
 
-void add(QString &buf, const QString &str, const QString &op, const QString &placeholder, int &n) {
+void add(QString& buf, const QString& str, const QString& op, const QString& placeholder, int& n) {
     if (!buf.isEmpty()) {
         buf += " AND ";
     }
@@ -267,7 +267,7 @@ QString toSqlOrderOpFromCompareOp(ComparisonOp op) {
     return res;
 }
 
-QString getWhereQueryPartFromType(const QString &featurePlaceholder, const FeatureFlags &types) {
+QString getWhereQueryPartFromType(const QString& featurePlaceholder, const FeatureFlags& types) {
     QString result;
     if (types.testFlag(U2Feature::Annotation)) {
         result += featurePlaceholder + ".class = " + QString::number(U2Feature::Annotation);
@@ -287,7 +287,7 @@ QString getWhereQueryPartFromType(const QString &featurePlaceholder, const Featu
 
 }  // unnamed namespace
 
-QSharedPointer<U2SqlQuery> MysqlFeatureDbi::createFeatureQuery(const QString &selectPart, const FeatureQuery &fq, bool useOrder, U2OpStatus &os) {
+QSharedPointer<U2SqlQuery> MysqlFeatureDbi::createFeatureQuery(const QString& selectPart, const FeatureQuery& fq, bool useOrder, U2OpStatus& os) {
     QString wherePart;
     int n = 0;
 
@@ -442,21 +442,21 @@ QSharedPointer<U2SqlQuery> MysqlFeatureDbi::createFeatureQuery(const QString &se
     return q;
 }
 
-qint64 MysqlFeatureDbi::countFeatures(const FeatureQuery &fq, U2OpStatus &os) {
+qint64 MysqlFeatureDbi::countFeatures(const FeatureQuery& fq, U2OpStatus& os) {
     QSharedPointer<U2SqlQuery> q(createFeatureQuery("SELECT COUNT(*)", fq, false, os));
     CHECK_OP(os, -1);
 
     return q->selectInt64();
 }
 
-U2DbiIterator<U2Feature> *MysqlFeatureDbi::getFeatures(const FeatureQuery &fq, U2OpStatus &os) {
+U2DbiIterator<U2Feature>* MysqlFeatureDbi::getFeatures(const FeatureQuery& fq, U2OpStatus& os) {
     QSharedPointer<U2SqlQuery> q = createFeatureQuery("SELECT " + getFeatureFields(), fq, true, os);
     CHECK_OP(os, nullptr);
 
     return new MysqlRSIterator<U2Feature>(q, new MysqlFeatureRSLoader(), nullptr, U2Feature(), os);
 }
 
-QList<U2FeatureKey> MysqlFeatureDbi::getFeatureKeys(const U2DataId &featureId, U2OpStatus &os) {
+QList<U2FeatureKey> MysqlFeatureDbi::getFeatureKeys(const U2DataId& featureId, U2OpStatus& os) {
     static const QString queryString("SELECT name, value FROM FeatureKey WHERE feature = :id");
     U2SqlQuery q(queryString, db, os);
     q.bindDataId(":id", featureId);
@@ -474,7 +474,7 @@ QList<U2FeatureKey> MysqlFeatureDbi::getFeatureKeys(const U2DataId &featureId, U
 
 namespace {
 
-void addKeyCommon(U2SqlQuery &qk, const U2DataId &featureId, const U2FeatureKey &key) {
+void addKeyCommon(U2SqlQuery& qk, const U2DataId& featureId, const U2FeatureKey& key) {
     qk.bindDataId(":feature", featureId);
     qk.bindString(":name", key.name);
     qk.bindString(":value", key.value);
@@ -492,7 +492,7 @@ QString getFeatureKeyInsertQuery(int keyCount) {
     return queryStringk;
 }
 
-void addFeatureKeys(const QList<U2FeatureKey> &keys, const U2DataId &featureId, MysqlDbRef *db, U2OpStatus &os) {
+void addFeatureKeys(const QList<U2FeatureKey>& keys, const U2DataId& featureId, MysqlDbRef* db, U2OpStatus& os) {
     CHECK(!keys.isEmpty(), );
 
     MysqlTransaction t(db, os);
@@ -502,7 +502,7 @@ void addFeatureKeys(const QList<U2FeatureKey> &keys, const U2DataId &featureId, 
     U2SqlQuery query(insertQueryStr, db, os);
 
     for (int i = 1, n = 3 * keys.size(); i <= n && !os.isCoR(); i += 3) {
-        const U2FeatureKey &key = keys[(i - 1) / 3];
+        const U2FeatureKey& key = keys[(i - 1) / 3];
         query.bindDataId(QString(":%1").arg(i), featureId);
         query.bindString(QString(":%1").arg(i + 1), key.name);
         query.bindString(QString(":%1").arg(i + 2), key.value);
@@ -512,7 +512,7 @@ void addFeatureKeys(const QList<U2FeatureKey> &keys, const U2DataId &featureId, 
 
 }  // unnamed namespace
 
-void MysqlFeatureDbi::createFeature(U2Feature &feature, const QList<U2FeatureKey> &keys, U2OpStatus &os) {
+void MysqlFeatureDbi::createFeature(U2Feature& feature, const QList<U2FeatureKey>& keys, U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     static const QString queryStringf("INSERT INTO Feature(class, type, parent, root, name, sequence, strand, start, len, end, nameHash) "
@@ -535,7 +535,7 @@ void MysqlFeatureDbi::createFeature(U2Feature &feature, const QList<U2FeatureKey
     addFeatureKeys(keys, feature.id, db, os);
 }
 
-void MysqlFeatureDbi::addKey(const U2DataId &featureId, const U2FeatureKey &key, U2OpStatus &os) {
+void MysqlFeatureDbi::addKey(const U2DataId& featureId, const U2FeatureKey& key, U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     static const QString queryString = "INSERT INTO FeatureKey(feature, name, value) VALUES(:feature, :name, :value)";
@@ -543,7 +543,7 @@ void MysqlFeatureDbi::addKey(const U2DataId &featureId, const U2FeatureKey &key,
     addKeyCommon(qk, featureId, key);
 }
 
-void MysqlFeatureDbi::removeAllKeys(const U2DataId &featureId, const QString &keyName, U2OpStatus &os) {
+void MysqlFeatureDbi::removeAllKeys(const U2DataId& featureId, const QString& keyName, U2OpStatus& os) {
     DBI_TYPE_CHECK(featureId, U2Type::Feature, os, );
 
     MysqlTransaction t(db, os);
@@ -555,7 +555,7 @@ void MysqlFeatureDbi::removeAllKeys(const U2DataId &featureId, const QString &ke
     q.execute();
 }
 
-void MysqlFeatureDbi::removeKey(const U2DataId &featureId, const U2FeatureKey &key, U2OpStatus &os) {
+void MysqlFeatureDbi::removeKey(const U2DataId& featureId, const U2FeatureKey& key, U2OpStatus& os) {
     DBI_TYPE_CHECK(featureId, U2Type::Feature, os, );
 
     MysqlTransaction t(db, os);
@@ -568,7 +568,7 @@ void MysqlFeatureDbi::removeKey(const U2DataId &featureId, const U2FeatureKey &k
     q.execute();
 }
 
-void MysqlFeatureDbi::updateName(const U2DataId &featureId, const QString &newName, U2OpStatus &os) {
+void MysqlFeatureDbi::updateName(const U2DataId& featureId, const QString& newName, U2OpStatus& os) {
     DBI_TYPE_CHECK(featureId, U2Type::Feature, os, );
 
     MysqlTransaction t(db, os);
@@ -582,7 +582,7 @@ void MysqlFeatureDbi::updateName(const U2DataId &featureId, const QString &newNa
     qf.execute();
 }
 
-void MysqlFeatureDbi::updateParentId(const U2DataId &featureId, const U2DataId &parentId, U2OpStatus &os) {
+void MysqlFeatureDbi::updateParentId(const U2DataId& featureId, const U2DataId& parentId, U2OpStatus& os) {
     DBI_TYPE_CHECK(featureId, U2Type::Feature, os, );
     DBI_TYPE_CHECK(parentId, U2Type::Feature, os, );
 
@@ -595,7 +595,7 @@ void MysqlFeatureDbi::updateParentId(const U2DataId &featureId, const U2DataId &
     qf.execute();
 }
 
-void MysqlFeatureDbi::updateSequenceId(const U2DataId &featureId, const U2DataId &seqId, U2OpStatus &os) {
+void MysqlFeatureDbi::updateSequenceId(const U2DataId& featureId, const U2DataId& seqId, U2OpStatus& os) {
     DBI_TYPE_CHECK(featureId, U2Type::Feature, os, );
     DBI_TYPE_CHECK(seqId, U2Type::Sequence, os, );
 
@@ -608,7 +608,7 @@ void MysqlFeatureDbi::updateSequenceId(const U2DataId &featureId, const U2DataId
     qf.execute();
 }
 
-void MysqlFeatureDbi::updateKeyValue(const U2DataId &featureId, const U2FeatureKey &key, U2OpStatus &os) {
+void MysqlFeatureDbi::updateKeyValue(const U2DataId& featureId, const U2FeatureKey& key, U2OpStatus& os) {
     DBI_TYPE_CHECK(featureId, U2Type::Feature, os, );
 
     MysqlTransaction t(db, os);
@@ -621,7 +621,7 @@ void MysqlFeatureDbi::updateKeyValue(const U2DataId &featureId, const U2FeatureK
     q.execute();
 }
 
-bool MysqlFeatureDbi::getKeyValue(const U2DataId &featureId, U2FeatureKey &key, U2OpStatus &os) {
+bool MysqlFeatureDbi::getKeyValue(const U2DataId& featureId, U2FeatureKey& key, U2OpStatus& os) {
     DBI_TYPE_CHECK(featureId, U2Type::Feature, os, false);
 
     static const QString queryString("SELECT value FROM FeatureKey WHERE feature = :feature AND name = :name");
@@ -639,7 +639,7 @@ bool MysqlFeatureDbi::getKeyValue(const U2DataId &featureId, U2FeatureKey &key, 
     }
 }
 
-void MysqlFeatureDbi::updateLocation(const U2DataId &featureId, const U2FeatureLocation &location, U2OpStatus &os) {
+void MysqlFeatureDbi::updateLocation(const U2DataId& featureId, const U2FeatureLocation& location, U2OpStatus& os) {
     DBI_TYPE_CHECK(featureId, U2Type::Feature, os, );
     MysqlTransaction t(db, os);
 
@@ -653,7 +653,7 @@ void MysqlFeatureDbi::updateLocation(const U2DataId &featureId, const U2FeatureL
     qf.execute();
 }
 
-void MysqlFeatureDbi::updateType(const U2DataId &featureId, U2FeatureType newType, U2OpStatus &os) {
+void MysqlFeatureDbi::updateType(const U2DataId& featureId, U2FeatureType newType, U2OpStatus& os) {
     DBI_TYPE_CHECK(featureId, U2Type::Feature, os, );
 
     MysqlTransaction t(db, os);
@@ -665,7 +665,7 @@ void MysqlFeatureDbi::updateType(const U2DataId &featureId, U2FeatureType newTyp
     qf.execute();
 }
 
-void MysqlFeatureDbi::removeFeature(const U2DataId &featureId, U2OpStatus &os) {
+void MysqlFeatureDbi::removeFeature(const U2DataId& featureId, U2OpStatus& os) {
     DBI_TYPE_CHECK(featureId, U2Type::Feature, os, );
     MysqlTransaction t(db, os);
 
@@ -685,7 +685,7 @@ void MysqlFeatureDbi::removeFeature(const U2DataId &featureId, U2OpStatus &os) {
     qf.execute();
 }
 
-void MysqlFeatureDbi::removeFeaturesByParent(const U2DataId &parentId, U2OpStatus &os, SubfeatureSelectionMode mode) {
+void MysqlFeatureDbi::removeFeaturesByParent(const U2DataId& parentId, U2OpStatus& os, SubfeatureSelectionMode mode) {
     DBI_TYPE_CHECK(parentId, U2Type::Feature, os, );
 
     const bool includeParent = SelectParentFeature == mode;
@@ -702,7 +702,7 @@ void MysqlFeatureDbi::removeFeaturesByParent(const U2DataId &parentId, U2OpStatu
 
 namespace {
 
-void executeDeleteFeaturesByParentsQuery(const QList<U2DataId> &parentIds, MysqlDbRef *db, U2OpStatus &os) {
+void executeDeleteFeaturesByParentsQuery(const QList<U2DataId>& parentIds, MysqlDbRef* db, U2OpStatus& os) {
     SAFE_POINT(nullptr != db, "Invalid database handler", );
 
     QString idsList = "(";
@@ -721,7 +721,7 @@ void executeDeleteFeaturesByParentsQuery(const QList<U2DataId> &parentIds, Mysql
 
 }  // namespace
 
-void MysqlFeatureDbi::removeFeaturesByParents(const QList<U2DataId> &parentIds, U2OpStatus &os) {
+void MysqlFeatureDbi::removeFeaturesByParents(const QList<U2DataId>& parentIds, U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     int parentsNumber = parentIds.count();
@@ -738,7 +738,7 @@ void MysqlFeatureDbi::removeFeaturesByParents(const QList<U2DataId> &parentIds, 
     }
 }
 
-void MysqlFeatureDbi::removeFeaturesByRoot(const U2DataId &rootId, U2OpStatus &os, SubfeatureSelectionMode mode) {
+void MysqlFeatureDbi::removeFeaturesByRoot(const U2DataId& rootId, U2OpStatus& os, SubfeatureSelectionMode mode) {
     DBI_TYPE_CHECK(rootId, U2Type::Feature, os, );
 
     const bool includeParent = SelectParentFeature == mode;
@@ -753,11 +753,11 @@ void MysqlFeatureDbi::removeFeaturesByRoot(const U2DataId &rootId, U2OpStatus &o
     qf.execute();
 }
 
-U2DbiIterator<U2Feature> *MysqlFeatureDbi::getFeaturesByRegion(const U2Region &reg,
-                                                               const U2DataId &rootId,
-                                                               const QString &featureName,
-                                                               const U2DataId &seqId,
-                                                               U2OpStatus &os,
+U2DbiIterator<U2Feature>* MysqlFeatureDbi::getFeaturesByRegion(const U2Region& reg,
+                                                               const U2DataId& rootId,
+                                                               const QString& featureName,
+                                                               const U2DataId& seqId,
+                                                               U2OpStatus& os,
                                                                bool contains) {
     const bool selectByRoot = !rootId.isEmpty();
     const QString queryByRegion = "SELECT " + getFeatureFields() + " FROM Feature AS f WHERE " + (selectByRoot ? QString("f.root = :root AND ") : QString()) + (contains ? QString("f.start >= %1 AND f.end <= %2").arg(reg.startPos).arg(reg.endPos() - 1) : QString("f.start <= %1 AND f.end >= %2").arg(reg.endPos() - 1).arg(reg.startPos));
@@ -771,9 +771,9 @@ U2DbiIterator<U2Feature> *MysqlFeatureDbi::getFeaturesByRegion(const U2Region &r
     return new MysqlRSIterator<U2Feature>(q, new MysqlFeatureRSLoader(), new MysqlFeatureFilter(featureName, seqId), U2Feature(), os);
 }
 
-U2DbiIterator<U2Feature> *MysqlFeatureDbi::getFeaturesBySequence(const QString &featureName,
-                                                                 const U2DataId &seqId,
-                                                                 U2OpStatus &os) {
+U2DbiIterator<U2Feature>* MysqlFeatureDbi::getFeaturesBySequence(const QString& featureName,
+                                                                 const U2DataId& seqId,
+                                                                 U2OpStatus& os) {
     static const QString queryStringk("SELECT " + getFeatureFields() + " FROM Feature AS f "
                                                                        "WHERE f.sequence = :sequence and f.name = :name ORDER BY f.start");
     QSharedPointer<U2SqlQuery> q(new U2SqlQuery(queryStringk, db, os));
@@ -784,10 +784,10 @@ U2DbiIterator<U2Feature> *MysqlFeatureDbi::getFeaturesBySequence(const QString &
     return new MysqlRSIterator<U2Feature>(q, new MysqlFeatureRSLoader(), nullptr, U2Feature(), os);
 }
 
-U2DbiIterator<U2Feature> *MysqlFeatureDbi::getFeaturesByParent(const U2DataId &parentId,
-                                                               const QString &featureName,
-                                                               const U2DataId &seqId,
-                                                               U2OpStatus &os,
+U2DbiIterator<U2Feature>* MysqlFeatureDbi::getFeaturesByParent(const U2DataId& parentId,
+                                                               const QString& featureName,
+                                                               const U2DataId& seqId,
+                                                               U2OpStatus& os,
                                                                SubfeatureSelectionMode mode) {
     const bool includeParent = SelectParentFeature == mode;
     const QString queryStringk("SELECT " + getFeatureFields() + " FROM Feature AS f "
@@ -803,7 +803,7 @@ U2DbiIterator<U2Feature> *MysqlFeatureDbi::getFeaturesByParent(const U2DataId &p
     return new MysqlRSIterator<U2Feature>(q, new MysqlFeatureRSLoader(), new MysqlFeatureFilter(featureName, seqId), U2Feature(), os);
 }
 
-U2DbiIterator<U2Feature> *MysqlFeatureDbi::getFeaturesByRoot(const U2DataId &rootId, const FeatureFlags &types, U2OpStatus &os) {
+U2DbiIterator<U2Feature>* MysqlFeatureDbi::getFeaturesByRoot(const U2DataId& rootId, const FeatureFlags& types, U2OpStatus& os) {
     const QString queryStringk("SELECT " + getFeatureFields() + " FROM Feature AS f "
                                                                 "WHERE f.root = :root" +
                                getWhereQueryPartFromType("f", types) + "ORDER BY f.start");
@@ -813,7 +813,7 @@ U2DbiIterator<U2Feature> *MysqlFeatureDbi::getFeaturesByRoot(const U2DataId &roo
     return new MysqlRSIterator<U2Feature>(q, new MysqlFeatureRSLoader(), new MysqlFeatureFilter(QString(), U2DataId()), U2Feature(), os);
 }
 
-U2DbiIterator<U2Feature> *MysqlFeatureDbi::getFeaturesByName(const U2DataId &rootId, const QString &name, const FeatureFlags &types, U2OpStatus &os) {
+U2DbiIterator<U2Feature>* MysqlFeatureDbi::getFeaturesByName(const U2DataId& rootId, const QString& name, const FeatureFlags& types, U2OpStatus& os) {
     const QString queryStringk("SELECT " + getFeatureFields() + " FROM Feature AS f "
                                                                 "WHERE f.root = :root" +
                                getWhereQueryPartFromType("f", types) + " AND nameHash = :nameHash ORDER BY f.start");
@@ -825,7 +825,7 @@ U2DbiIterator<U2Feature> *MysqlFeatureDbi::getFeaturesByName(const U2DataId &roo
     return new MysqlRSIterator<U2Feature>(q, new MysqlFeatureRSLoader(), new MysqlFeatureFilter(QString(), U2DataId()), U2Feature(), os);
 }
 
-QList<FeatureAndKey> MysqlFeatureDbi::getFeatureTable(const U2DataId &rootFeatureId, U2OpStatus &os) {
+QList<FeatureAndKey> MysqlFeatureDbi::getFeatureTable(const U2DataId& rootFeatureId, U2OpStatus& os) {
     static const QString queryStringk("SELECT " + getFeatureFields() + ", fk.name, fk.value FROM Feature AS f "
                                                                        "LEFT OUTER JOIN FeatureKey AS fk ON f.id = fk.feature WHERE f.root = :root ORDER BY f.class DESC, f.start, f.len");
     U2SqlQuery q(queryStringk, db, os);
@@ -844,7 +844,7 @@ QList<FeatureAndKey> MysqlFeatureDbi::getFeatureTable(const U2DataId &rootFeatur
     return result;
 }
 
-QMap<U2DataId, QStringList> MysqlFeatureDbi::getAnnotationTablesByFeatureKey(const QStringList &values, U2OpStatus &os) {
+QMap<U2DataId, QStringList> MysqlFeatureDbi::getAnnotationTablesByFeatureKey(const QStringList& values, U2OpStatus& os) {
     QMap<U2DataId, QStringList> result;
     CHECK(!values.isEmpty(), result);
     // Pay attention here if there is the need of processing more search terms

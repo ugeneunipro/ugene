@@ -29,7 +29,7 @@
 namespace U2 {
 using namespace HI;
 
-ExtractAssemblyRegionDialogFiller::ExtractAssemblyRegionDialogFiller(HI::GUITestOpStatus &os, const QString &filepath, const U2Region &region, const QString &format)
+ExtractAssemblyRegionDialogFiller::ExtractAssemblyRegionDialogFiller(HI::GUITestOpStatus& os, const QString& filepath, const U2Region& region, const QString& format)
     : Filler(os, "ExtractAssemblyRegionDialog"), filepath(filepath), regionToExtract(region), format(format) {
 }
 
@@ -37,21 +37,21 @@ ExtractAssemblyRegionDialogFiller::ExtractAssemblyRegionDialogFiller(HI::GUITest
 
 #define GT_METHOD_NAME "commonScenario"
 void ExtractAssemblyRegionDialogFiller::commonScenario() {
-    QWidget *widget = GTWidget::getActiveModalWidget(os);
+    QWidget* widget = GTWidget::getActiveModalWidget(os);
 
-    QComboBox *docFormatCB = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "documentFormatComboBox", widget));
+    QComboBox* docFormatCB = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "documentFormatComboBox", widget));
     CHECK_SET_ERR(docFormatCB != nullptr, "docFormatCB widget is NULL");
     GTComboBox::selectItemByText(os, docFormatCB, format);
 
-    QLineEdit *startLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "start_edit_line", widget));
+    QLineEdit* startLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "start_edit_line", widget));
     CHECK_SET_ERR(startLineEdit != nullptr, "startLineEdit widget is NULL");
     GTLineEdit::setText(os, startLineEdit, QString::number(regionToExtract.startPos));
 
-    QLineEdit *endLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "end_edit_line", widget));
+    QLineEdit* endLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "end_edit_line", widget));
     CHECK_SET_ERR(endLineEdit != nullptr, "endLineEdit widget is NULL");
     GTLineEdit::setText(os, endLineEdit, QString::number(regionToExtract.endPos()));
 
-    QLineEdit *filepathLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "filepathLineEdit", widget));
+    QLineEdit* filepathLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "filepathLineEdit", widget));
     CHECK_SET_ERR(filepathLineEdit != nullptr, "filepathLineEdit widget is NULL");
     GTLineEdit::setText(os, filepathLineEdit, filepath);
 

@@ -40,16 +40,16 @@ public:
     UniprobeInfo();
 
     // constructor from parsed data
-    UniprobeInfo(const QMap<QString, QString> &properties);
+    UniprobeInfo(const QMap<QString, QString>& properties);
 
     // constructor from raw data
-    UniprobeInfo(const QString &data);
+    UniprobeInfo(const QString& data);
 
-    QString getProperty(const QString &name) const;
+    QString getProperty(const QString& name) const;
 
     QMap<QString, QString> getProperties() const;
 
-    bool operator==(const UniprobeInfo &i1) const {
+    bool operator==(const UniprobeInfo& i1) const {
         return i1.properties == properties;
     }
 
@@ -67,7 +67,7 @@ public:
     PWMatrix();
 
     // create matrix from pre-counted data
-    PWMatrix(const QVarLengthArray<float> &matrix, const PWMatrixType &type);
+    PWMatrix(const QVarLengthArray<float>& matrix, const PWMatrixType& type);
 
     // get internal index of position in 1-dimensional array
     int index(int row, int column) const;
@@ -88,15 +88,15 @@ public:
     float getMaxSum() const;
 
     // set UniPROBE info for matrix
-    void setInfo(const UniprobeInfo &info);
+    void setInfo(const UniprobeInfo& info);
 
     // get specified UniPROBE property
-    QString getProperty(const QString &propertyName) const;
+    QString getProperty(const QString& propertyName) const;
 
     // get all UniPROBE properties
     QMap<QString, QString> getProperties() const;
 
-    bool operator==(const PWMatrix &m1) const {
+    bool operator==(const PWMatrix& m1) const {
         // FIXME: for some reasons QT == operator didn't work for gcc compiler
         if (m1.data.size() != data.size())
             return false;

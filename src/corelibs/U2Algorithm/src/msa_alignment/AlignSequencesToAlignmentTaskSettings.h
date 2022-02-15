@@ -29,8 +29,8 @@ namespace U2 {
 class U2ALGORITHM_EXPORT AlignSequencesToAlignmentTaskSettings : public AbstractAlignmentTaskSettings {
 public:
     AlignSequencesToAlignmentTaskSettings();
-    AlignSequencesToAlignmentTaskSettings(const U2EntityRef &msaRef, const U2AlphabetId &newAlphabet, bool addAsFragments = false);
-    AlignSequencesToAlignmentTaskSettings(const AlignSequencesToAlignmentTaskSettings &s);
+    AlignSequencesToAlignmentTaskSettings(const U2EntityRef& msaRef, const U2AlphabetId& newAlphabet, bool addAsFragments = false);
+    AlignSequencesToAlignmentTaskSettings(const AlignSequencesToAlignmentTaskSettings& s);
 
     virtual bool isValid() const;
 

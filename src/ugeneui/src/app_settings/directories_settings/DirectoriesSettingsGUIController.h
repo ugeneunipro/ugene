@@ -35,21 +35,21 @@ namespace U2 {
 class DirectoriesSettingsPageUtils {
 public:
     static QString getIndexDir();
-    static void setIndexDir(const QString &indexDir);
+    static void setIndexDir(const QString& indexDir);
 };
 
 class DirectoriesSettingsPageController : public AppSettingsGUIPageController {
     Q_OBJECT
 public:
-    DirectoriesSettingsPageController(QObject *p = nullptr);
+    DirectoriesSettingsPageController(QObject* p = nullptr);
 
-    virtual AppSettingsGUIPageState *getSavedState();
+    virtual AppSettingsGUIPageState* getSavedState();
 
-    virtual void saveState(AppSettingsGUIPageState *s);
+    virtual void saveState(AppSettingsGUIPageState* s);
 
-    virtual AppSettingsGUIPageWidget *createWidget(AppSettingsGUIPageState *data);
+    virtual AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* data);
 
-    const QString &getHelpPageId() const {
+    const QString& getHelpPageId() const {
         return helpPageId;
     };
 
@@ -71,11 +71,11 @@ public:
 class DirectoriesSettingsPageWidget : public AppSettingsGUIPageWidget, public Ui_DirectoriesSettingsWidget {
     Q_OBJECT
 public:
-    DirectoriesSettingsPageWidget(DirectoriesSettingsPageController *ctrl);
+    DirectoriesSettingsPageWidget(DirectoriesSettingsPageController* ctrl);
 
-    virtual void setState(AppSettingsGUIPageState *state);
+    virtual void setState(AppSettingsGUIPageState* state);
 
-    virtual AppSettingsGUIPageState *getState(QString &err) const;
+    virtual AppSettingsGUIPageState* getState(QString& err) const;
 
 private slots:
     void sl_browseDownloadsDirButtonClicked();

@@ -40,7 +40,7 @@ const QString PassFilterWorkerFactory::ACTOR_ID("filter-by-values");
 /*******************************
  * FilterSequenceWorker
  *******************************/
-PassFilterWorker::PassFilterWorker(Actor *p)
+PassFilterWorker::PassFilterWorker(Actor* p)
     : BaseWorker(p), inChannel(nullptr), outChannel(nullptr) {
 }
 
@@ -54,7 +54,7 @@ void PassFilterWorker::init() {
     }
 }
 
-Task *PassFilterWorker::tick() {
+Task* PassFilterWorker::tick() {
     while (inChannel->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(inChannel);
         if (inputMessage.isEmpty()) {
@@ -81,8 +81,8 @@ void PassFilterWorker::cleanup() {
  * FilterSequenceWorkerFactory
  *******************************/
 void PassFilterWorkerFactory::init() {
-    QList<PortDescriptor *> portDescs;
-    QList<Attribute *> attrs;
+    QList<PortDescriptor*> portDescs;
+    QList<Attribute*> attrs;
 
     QMap<Descriptor, DataTypePtr> inTypeMap;
     QMap<Descriptor, DataTypePtr> outTypeMap;
@@ -104,8 +104,8 @@ void PassFilterWorkerFactory::init() {
                          PassFilterWorker::tr("Filter"),
                          PassFilterWorker::tr("Passes through only data that matches the input filter value (or values)."));
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
-    proto->setEditor(new DelegateEditor(QMap<QString, PropertyDelegate *>()));
+    ActorPrototype* proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
+    proto->setEditor(new DelegateEditor(QMap<QString, PropertyDelegate*>()));
     proto->setPrompter(new PassFilterPrompter());
     proto->setInfluenceOnPathFlag(true);
 
@@ -113,7 +113,7 @@ void PassFilterWorkerFactory::init() {
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new PassFilterWorkerFactory());
 }
 
-Worker *PassFilterWorkerFactory::createWorker(Actor *a) {
+Worker* PassFilterWorkerFactory::createWorker(Actor* a) {
     return new PassFilterWorker(a);
 }
 
@@ -121,8 +121,8 @@ Worker *PassFilterWorkerFactory::createWorker(Actor *a) {
  * FilterSequencePrompter
  *******************************/
 QString PassFilterPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort("in-data"));
-    Actor *producer = input->getProducer(BaseSlots::TEXT_SLOT().getId());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort("in-data"));
+    Actor* producer = input->getProducer(BaseSlots::TEXT_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr("<u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
     QString passVals = getRequiredParam(BaseSlots::TEXT_SLOT().getId());

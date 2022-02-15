@@ -33,19 +33,19 @@ class MultipleChromatogramAlignmentObject;
 class ExportMca2MsaTask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    ExportMca2MsaTask(MultipleChromatogramAlignmentObject *mcaObject, const QString &fileName, const DocumentFormatId &formatId, bool includeReference);
+    ExportMca2MsaTask(MultipleChromatogramAlignmentObject* mcaObject, const QString& fileName, const DocumentFormatId& formatId, bool includeReference);
 
 private:
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
-    MultipleChromatogramAlignmentObject *mcaObject;
+    MultipleChromatogramAlignmentObject* mcaObject;
     QString fileName;
     DocumentFormatId formatId;
     const bool includeReference;
 
-    ConvertMca2MsaTask *convertTask;
-    ExportAlignmentTask *exportTask;
+    ConvertMca2MsaTask* convertTask;
+    ExportAlignmentTask* exportTask;
 };
 
 }  // namespace U2

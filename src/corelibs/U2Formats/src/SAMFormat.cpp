@@ -76,7 +76,7 @@ const SAMFormat::Field SAMFormat::samFields[] = {  // alignment section fields e
     Field("SEQ", "\\*|[A-Za-z=.]+"),
     Field("QUAL", "[!-~]+|\\*")};
 
-bool SAMFormat::validateField(int num, QByteArray &field, U2OpStatus *ti) {
+bool SAMFormat::validateField(int num, QByteArray& field, U2OpStatus* ti) {
     if (!samFields[num].getPattern().exactMatch(field)) {
         if (ti != nullptr) {
             ti->setError(SAMFormat::tr("Field \"%1\" not matched pattern \"%2\", expected pattern \"%3\"").arg(samFields[num].name).arg(QString(field)).arg(samFields[num].getPattern().pattern()));
@@ -86,7 +86,7 @@ bool SAMFormat::validateField(int num, QByteArray &field, U2OpStatus *ti) {
     return true;
 }
 
-SAMFormat::SAMFormat(QObject *p)
+SAMFormat::SAMFormat(QObject* p)
     : TextDocumentFormatDeprecated(p, BaseDocumentFormats::SAM, DocumentFormatFlags(DocumentFormatFlag_SupportWriting | DocumentFormatFlag_CannotBeCompressed), QStringList() << "sam") {
     formatName = tr("SAM");
     formatDescription = tr("The Sequence Alignment/Map (SAM) format is a generic alignment format for"
@@ -96,7 +96,7 @@ SAMFormat::SAMFormat(QObject *p)
     formatFlags |= DocumentFormatFlag_Hidden;
 }
 
-FormatCheckResult SAMFormat::checkRawTextData(const QByteArray &rawData, const GUrl &) const {
+FormatCheckResult SAMFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
     if (skipDetection) {
         return FormatDetection_NotMatched;
     }
@@ -167,7 +167,7 @@ FormatCheckResult SAMFormat::checkRawTextData(const QByteArray &rawData, const G
 //     }
 // }
 
-Document *SAMFormat::loadTextDocument(IOAdapter * /* io */, const U2DbiRef & /* dbiRef */, const QVariantMap & /* _fs */, U2OpStatus & /* os */) {
+Document* SAMFormat::loadTextDocument(IOAdapter* /* io */, const U2DbiRef& /* dbiRef */, const QVariantMap& /* _fs */, U2OpStatus& /* os */) {
     FAIL("Not implemented", nullptr);
 
     // CHECK_EXT(io != NULL   && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), NULL);
@@ -324,11 +324,11 @@ Document *SAMFormat::loadTextDocument(IOAdapter * /* io */, const U2DbiRef & /* 
     // return doc;
 }
 
-void SAMFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &os) {
+void SAMFormat::storeDocument(Document* d, IOAdapter* io, U2OpStatus& os) {
     CHECK_EXT(d != nullptr, os.setError(L10N::badArgument("doc")), );
     CHECK_EXT(io != nullptr && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), );
 
-    QList<GObject *> als = d->findGObjectByType(GObjectTypes::ASSEMBLY);
+    QList<GObject*> als = d->findGObjectByType(GObjectTypes::ASSEMBLY);
     GUrl url = io->getURL();
     io->close();
 
@@ -339,7 +339,7 @@ void SAMFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &os) {
         os);
 }
 
-void SAMFormat::storeEntry(IOAdapter * /* io */, const QMap<GObjectType, QList<GObject *>> & /* objectsMap */, U2OpStatus & /*os*/) {
+void SAMFormat::storeEntry(IOAdapter* /* io */, const QMap<GObjectType, QList<GObject*>>& /* objectsMap */, U2OpStatus& /*os*/) {
     FAIL("Not implemented", );
     // SAFE_POINT(objectsMap.contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT), "Clustal entry storing: no alignment", );
     // const QList<GObject*> &als = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
@@ -407,7 +407,7 @@ void SAMFormat::storeEntry(IOAdapter * /* io */, const QMap<GObjectType, QList<G
     //}
 }
 
-bool SAMFormat::getSectionTags(QByteArray &line, const QByteArray &sectionName, QList<QByteArray> &tags) {
+bool SAMFormat::getSectionTags(QByteArray& line, const QByteArray& sectionName, QList<QByteArray>& tags) {
     if (!line.startsWith(sectionName))
         return false;
     QByteArray tagsLine = QByteArray(line.constData() + 3, line.length() - 3);
@@ -416,7 +416,7 @@ bool SAMFormat::getSectionTags(QByteArray &line, const QByteArray &sectionName, 
     return true;
 }
 
-bool SAMFormat::storeHeader(IOAdapter *io, const QVector<QByteArray> &names, const QVector<int> &lengths, bool coordinateSorted) {
+bool SAMFormat::storeHeader(IOAdapter* io, const QVector<QByteArray>& names, const QVector<int>& lengths, bool coordinateSorted) {
     assert(names.size() > 0);
     assert(names.size() == lengths.size());
     io->setFormatMode(IOAdapter::TextMode);
@@ -440,7 +440,7 @@ bool SAMFormat::storeHeader(IOAdapter *io, const QVector<QByteArray> &names, con
     return true;
 }
 
-bool SAMFormat::storeAlignedRead(int offset, const DNASequence &read, IOAdapter *io, const QByteArray &refName, int refLength, bool first, bool useCigar, const QByteArray &cigar) {
+bool SAMFormat::storeAlignedRead(int offset, const DNASequence& read, IOAdapter* io, const QByteArray& refName, int refLength, bool first, bool useCigar, const QByteArray& cigar) {
     static const QByteArray TAB = "\t";
     static const QByteArray flag("0");  // can contains strand, mapped/unmapped, etc.
     static const QByteArray mapq("255");  // 255 indicating the mapping quality is not available

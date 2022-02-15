@@ -38,7 +38,7 @@ public:
     ReportResult report();
 
 private:
-    LoadRemoteDocumentTask *t;
+    LoadRemoteDocumentTask* t;
     QString dbName;
     QString docId;
     QString expectedDoc;
@@ -46,7 +46,7 @@ private:
 
 class LoadRemoteDocumentTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

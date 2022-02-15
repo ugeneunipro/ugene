@@ -50,7 +50,7 @@ namespace U2 {
 namespace LocalWorkflow {
 
 //////////////////////////////////////////////////////////////////////////
-//CAP3WorkerFactory
+// CAP3WorkerFactory
 //////////////////////////////////////////////////////////////////////////
 
 const QString CAP3WorkerFactory::ACTOR_ID("cap3");
@@ -78,11 +78,11 @@ const QString TMP_DIR_PATH("tmp-dir");
 const QString IN_PORT_DESCR("in-data");
 const QString IN_URL_SLOT_ID("in.url");
 const QString IN_TYPE_ID("cap3-in-data");
-}    // namespace
+}  // namespace
 
 void CAP3WorkerFactory::init() {
-    QList<PortDescriptor *> portDescriptors;
-    QList<Attribute *> attributes;
+    QList<PortDescriptor*> portDescriptors;
+    QList<Attribute*> attributes;
 
     // Input port
     Descriptor inPortDesc(IN_PORT_DESCR,
@@ -255,10 +255,10 @@ void CAP3WorkerFactory::init() {
     attributes << new Attribute(tmpDir, BaseTypes::STRING_TYPE(), true, QVariant(L10N::defaultStr()));
 
     // Create the actor prototype
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, portDescriptors, attributes);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, portDescriptors, attributes);
 
     // Values range of parameters
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     delegates[OUTPUT_FILE] = new URLDelegate("", "", false, false);
     delegates[CAP3_EXT_TOOL_PATH] = new URLDelegate("", "executable", false, false, false);
     delegates[TMP_DIR_PATH] = new URLDelegate("", "TmpDir", false, true);
@@ -360,7 +360,7 @@ void CAP3WorkerFactory::init() {
     proto->addExternalTool(CAP3Support::ET_CAP3_ID, CAP3_EXT_TOOL_PATH);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ASSEMBLY(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new CAP3WorkerFactory());
 }
 
@@ -368,13 +368,13 @@ void CAP3WorkerFactory::init() {
 // CAP3Prompter
 //////////////////////////////////////////////////////////////////////////
 
-CAP3Prompter::CAP3Prompter(Actor *p)
+CAP3Prompter::CAP3Prompter(Actor* p)
     : PrompterBase<CAP3Prompter>(p) {
 }
 
 QString CAP3Prompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(IN_PORT_DESCR));
-    Actor *producer = input->getProducer(IN_URL_SLOT_ID);
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(IN_PORT_DESCR));
+    Actor* producer = input->getProducer(IN_URL_SLOT_ID);
     QString producerName = producer ? tr(" from %1").arg(producer->getLabel()) : "";
     QString doc = CAP3Worker::tr("Aligns long DNA reads from <u>%1</u> with CAP3.").arg(producerName);
 
@@ -385,7 +385,7 @@ QString CAP3Prompter::composeRichDoc() {
 // CAP3Worker
 //////////////////////////////////////////////////////////////////////////
 
-CAP3Worker::CAP3Worker(Actor *a)
+CAP3Worker::CAP3Worker(Actor* a)
     : BaseWorker(a), input(nullptr), datasetNumber(0) {
 }
 
@@ -421,7 +421,7 @@ void CAP3Worker::initPaths() {
     }
 }
 
-Task *CAP3Worker::runCap3() {
+Task* CAP3Worker::runCap3() {
     // Modify output file name, if required
     QString fileName = getValue<QString>(OUTPUT_FILE);
     const QString ext = ".ace";
@@ -442,7 +442,7 @@ Task *CAP3Worker::runCap3() {
     }
 
     // Run the task
-    CAP3SupportTask *capTask = new CAP3SupportTask(settings);
+    CAP3SupportTask* capTask = new CAP3SupportTask(settings);
     capTask->addListeners(createLogListeners());
     connect(capTask, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
 
@@ -459,7 +459,7 @@ void CAP3Worker::init() {
     initPaths();
 }
 
-Task *CAP3Worker::tick() {
+Task* CAP3Worker::tick() {
     U2OpStatus2Log os;
 
     if (input->hasMessage()) {
@@ -505,7 +505,7 @@ Task *CAP3Worker::tick() {
 }
 
 void CAP3Worker::sl_taskFinished() {
-    CAP3SupportTask *capTask = qobject_cast<CAP3SupportTask *>(sender());
+    CAP3SupportTask* capTask = qobject_cast<CAP3SupportTask*>(sender());
     SAFE_POINT(nullptr != capTask, "NULL task!", );
 
     if (!capTask->isFinished()) {
@@ -523,5 +523,5 @@ void CAP3Worker::cleanup() {
     currentDatasetName = "";
 }
 
-}    //namespace LocalWorkflow
-}    //namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

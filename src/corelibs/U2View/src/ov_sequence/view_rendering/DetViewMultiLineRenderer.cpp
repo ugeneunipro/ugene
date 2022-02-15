@@ -34,7 +34,7 @@ namespace U2 {
 /* DetViewMultiLineRenderer */
 /************************************************************************/
 const int DetViewMultiLineRenderer::INDENT_BETWEEN_LINES = 30;
-DetViewMultiLineRenderer::DetViewMultiLineRenderer(DetView *detView, SequenceObjectContext *ctx)
+DetViewMultiLineRenderer::DetViewMultiLineRenderer(DetView* detView, SequenceObjectContext* ctx)
     : DetViewRenderer(detView, ctx),
       extraIndent(0) {
     singleLineRenderer = new DetViewSingleLineRenderer(detView, ctx);
@@ -44,7 +44,7 @@ DetViewMultiLineRenderer::~DetViewMultiLineRenderer() {
     delete singleLineRenderer;
 }
 
-qint64 DetViewMultiLineRenderer::coordToPos(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const {
+qint64 DetViewMultiLineRenderer::coordToPos(const QPoint& p, const QSize& canvasSize, const U2Region& visibleRange) const {
     qint64 symbolsPerLine = getSymbolsPerLine(canvasSize.width());
     U2Region firstLineVisibleRange(visibleRange.startPos, symbolsPerLine);
     qint64 posOnFirstLine = singleLineRenderer->coordToPos(p, canvasSize, firstLineVisibleRange);
@@ -52,14 +52,14 @@ qint64 DetViewMultiLineRenderer::coordToPos(const QPoint &p, const QSize &canvas
     return qMin(ctx->getSequenceLength(), posOnFirstLine + line * symbolsPerLine);
 }
 
-int DetViewMultiLineRenderer::posToXCoord(qint64 pos, const QSize &canvasSize, const U2Region &visibleRange) const {
+int DetViewMultiLineRenderer::posToXCoord(qint64 pos, const QSize& canvasSize, const U2Region& visibleRange) const {
     CHECK(visibleRange.contains(pos), -1);
 
     qint64 symbolsPerLine = getSymbolsPerLine(canvasSize.width());
     return commonMetrics.charWidth * (pos % symbolsPerLine);
 }
 
-QList<U2Region> DetViewMultiLineRenderer::getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, const QSize &canvasSize, const U2Region &visibleRange) const {
+QList<U2Region> DetViewMultiLineRenderer::getAnnotationYRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings, const QSize& canvasSize, const U2Region& visibleRange) const {
     SAFE_POINT(locationRegionIndex >= 0 && locationRegionIndex < annotation->getRegions().length(), "Invalid locationRegionIndex", QList<U2Region>());
 
     // Compute region offset within a single line.
@@ -75,7 +75,7 @@ QList<U2Region> DetViewMultiLineRenderer::getAnnotationYRegions(Annotation *anno
 
     // Compute continuous yRegions split across multiple lines for the given location region.
     QList<U2Region> yRegionList;
-    const U2Region &locationRegion = annotation->getRegions()[locationRegionIndex];
+    const U2Region& locationRegion = annotation->getRegions()[locationRegionIndex];
     U2Region visibleLocationRegion = visibleRange.intersect(locationRegion);
     if (visibleLocationRegion.isEmpty()) {
         return yRegionList;
@@ -88,11 +88,11 @@ QList<U2Region> DetViewMultiLineRenderer::getAnnotationYRegions(Annotation *anno
     return yRegionList;
 }
 
-U2Region DetViewMultiLineRenderer::getCutSiteYRange(const U2Strand &, int) const {
+U2Region DetViewMultiLineRenderer::getCutSiteYRange(const U2Strand&, int) const {
     FAIL("The method must never be called", U2Region());
 }
 
-bool DetViewMultiLineRenderer::isOnTranslationsLine(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const {
+bool DetViewMultiLineRenderer::isOnTranslationsLine(const QPoint& p, const QSize& canvasSize, const U2Region& visibleRange) const {
     qint64 symbolsPerLine = getSymbolsPerLine(canvasSize.width());
     U2Region range(visibleRange.startPos, qMin(symbolsPerLine, visibleRange.length));
     do {
@@ -105,7 +105,7 @@ bool DetViewMultiLineRenderer::isOnTranslationsLine(const QPoint &p, const QSize
     return false;
 }
 
-bool DetViewMultiLineRenderer::isOnAnnotationLine(const QPoint &p, Annotation *a, int region, const AnnotationSettings *as, const QSize &canvasSize, const U2Region & /*visibleRange*/) const {
+bool DetViewMultiLineRenderer::isOnAnnotationLine(const QPoint& p, Annotation* a, int region, const AnnotationSettings* as, const QSize& canvasSize, const U2Region& /*visibleRange*/) const {
     int availableHeightForSingleLine = singleLineRenderer->getOneLineHeight();  // Use minimal required height to draw a single line in singleLineRenderer.
     U2Region yRange = singleLineRenderer->getAnnotationYRange(a, region, as, availableHeightForSingleLine);
     yRange.startPos += (INDENT_BETWEEN_LINES + extraIndent) / 2;
@@ -127,7 +127,7 @@ qint64 DetViewMultiLineRenderer::getOneLineHeight() const {
     return singleLineRenderer->getOneLineHeight() + INDENT_BETWEEN_LINES + extraIndent;
 }
 
-qint64 DetViewMultiLineRenderer::getLinesCount(const QSize &canvasSize) const {
+qint64 DetViewMultiLineRenderer::getLinesCount(const QSize& canvasSize) const {
     return canvasSize.height() / getOneLineHeight();
 }
 
@@ -139,7 +139,7 @@ int DetViewMultiLineRenderer::getRowsInLineCount() const {
     return singleLineRenderer->getRowsInLineCount() + 2;
 }
 
-QSize DetViewMultiLineRenderer::getBaseCanvasSize(const U2Region &visibleRange) const {
+QSize DetViewMultiLineRenderer::getBaseCanvasSize(const U2Region& visibleRange) const {
     int defaultW = detView->getRenderArea()->width();
     int lineCount = visibleRange.length / getSymbolsPerLine(defaultW);
     if (visibleRange.length % getSymbolsPerLine(defaultW)) {
@@ -149,7 +149,7 @@ QSize DetViewMultiLineRenderer::getBaseCanvasSize(const U2Region &visibleRange) 
     return QSize(defaultW, (getOneLineHeight() - extraIndent) * lineCount);
 }
 
-void DetViewMultiLineRenderer::drawAll(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) {
+void DetViewMultiLineRenderer::drawAll(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange) {
     int symbolsPerLine = getSymbolsPerLine(canvasSize.width());
     U2Region oneLineRegion(visibleRange.startPos, symbolsPerLine);
     p.fillRect(QRect(QPoint(0, 0), canvasSize), Qt::white);
@@ -184,7 +184,7 @@ void DetViewMultiLineRenderer::drawAll(QPainter &p, const QSize &canvasSize, con
     p.translate(0, -indentCounter);
 }
 
-void DetViewMultiLineRenderer::drawSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) {
+void DetViewMultiLineRenderer::drawSelection(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange) {
     int symbolsPerLine = getSymbolsPerLine(canvasSize.width());
     U2Region oneLineRegion(visibleRange.startPos, symbolsPerLine);
 
@@ -208,7 +208,7 @@ void DetViewMultiLineRenderer::drawSelection(QPainter &p, const QSize &canvasSiz
     p.translate(0, -indentCounter);
 }
 
-void DetViewMultiLineRenderer::drawCursor(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) {
+void DetViewMultiLineRenderer::drawCursor(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange) {
     CHECK(detView->isEditMode(), );
 
     int symbolsPerLine = getSymbolsPerLine(canvasSize.width());
@@ -236,7 +236,7 @@ void DetViewMultiLineRenderer::update() {
     singleLineRenderer->update();
 }
 
-U2Region DetViewMultiLineRenderer::getAnnotationYRange(Annotation *, int, const AnnotationSettings *, int) const {
+U2Region DetViewMultiLineRenderer::getAnnotationYRange(Annotation*, int, const AnnotationSettings*, int) const {
     FAIL("This method must never be called and exists due to a design flow. DetViewMultiLineRenderer delegates annotation rendering to DetViewSingleLineRenderer", U2Region());
 }
 

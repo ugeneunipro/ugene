@@ -41,17 +41,17 @@ class FastqSequenceInfo {
 public:
     FastqSequenceInfo() {
     }
-    FastqSequenceInfo(const DNASequence &seq);
+    FastqSequenceInfo(const DNASequence& seq);
 
     bool isValid() const;
 
     QString getSeqName() const;
-    const DNASequence &getDNASeq() const {
+    const DNASequence& getDNASeq() const {
         return seq;
     }
 
-    bool operator==(const FastqSequenceInfo &other) const;
-    bool operator!=(const FastqSequenceInfo &other) const;
+    bool operator==(const FastqSequenceInfo& other) const;
+    bool operator!=(const FastqSequenceInfo& other) const;
 
 private:
     DNASequence seq;
@@ -63,8 +63,8 @@ private:
 class U2FORMATS_EXPORT PairedFastqComparator : public QObject {
     Q_OBJECT
 public:
-    PairedFastqComparator(const QString &inputFile_1, const QString &inputFile_2, const QString &outputFile_1, const QString &outputFile_2, U2OpStatus &os);
-    void compare(U2OpStatus &os);
+    PairedFastqComparator(const QString& inputFile_1, const QString& inputFile_2, const QString& outputFile_1, const QString& outputFile_2, U2OpStatus& os);
+    void compare(U2OpStatus& os);
 
     int getPairsCount() const {
         return pairsCounter;
@@ -74,13 +74,13 @@ public:
     }
 
 private:
-    void dropUntilItem(U2OpStatus &os, QList<FastqSequenceInfo> &list, const FastqSequenceInfo &untilItem);
+    void dropUntilItem(U2OpStatus& os, QList<FastqSequenceInfo>& list, const FastqSequenceInfo& untilItem);
 
-    const FastqSequenceInfo tryToFindPair(U2OpStatus &os, QList<FastqSequenceInfo> &initializer, const FastqSequenceInfo &info, QList<FastqSequenceInfo> &searchIn);
+    const FastqSequenceInfo tryToFindPair(U2OpStatus& os, QList<FastqSequenceInfo>& initializer, const FastqSequenceInfo& info, QList<FastqSequenceInfo>& searchIn);
 
-    void tryToFindPairInTail(U2OpStatus &os, FASTQIterator &reads, QList<FastqSequenceInfo> &unpaired, bool iteratorContentIsFirst);
+    void tryToFindPairInTail(U2OpStatus& os, FASTQIterator& reads, QList<FastqSequenceInfo>& unpaired, bool iteratorContentIsFirst);
 
-    void writePair(U2OpStatus &os, const FastqSequenceInfo &seqInfo_1, const FastqSequenceInfo &seqInfo_2);
+    void writePair(U2OpStatus& os, const FastqSequenceInfo& seqInfo_1, const FastqSequenceInfo& seqInfo_2);
 
 private:
     FASTQIterator it_1;

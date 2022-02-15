@@ -28,7 +28,7 @@
 namespace U2 {
 namespace BAM {
 
-BgzfReader::BgzfReader(IOAdapter &ioAdapter)
+BgzfReader::BgzfReader(IOAdapter& ioAdapter)
     : ioAdapter(ioAdapter),
       headerOffset(ioAdapter.bytesRead()),
       endOfFile(false) {
@@ -48,11 +48,11 @@ BgzfReader::~BgzfReader() {
     inflateEnd(&stream);
 }
 
-qint64 BgzfReader::read(char *buff, qint64 maxSize) {
+qint64 BgzfReader::read(char* buff, qint64 maxSize) {
     if (0 == maxSize) {
         return 0;
     }
-    stream.next_out = (Bytef *)buff;
+    stream.next_out = (Bytef*)buff;
     stream.avail_out = maxSize;
     while (stream.avail_out > 0) {
         if (0 == stream.avail_in) {
@@ -68,7 +68,7 @@ qint64 BgzfReader::read(char *buff, qint64 maxSize) {
                 break;
             } else {
                 stream.avail_in = returnedValue;
-                stream.next_in = (Bytef *)buffer;
+                stream.next_in = (Bytef*)buffer;
             }
         }
         int returnedValue = inflate(&stream, Z_SYNC_FLUSH);
@@ -163,7 +163,7 @@ void BgzfReader::nextBlock() {
                 break;
             } else {
                 stream.avail_in = returnedValue;
-                stream.next_in = (Bytef *)buffer;
+                stream.next_in = (Bytef*)buffer;
             }
         }
         int returnedValue = inflate(&stream, Z_SYNC_FLUSH);

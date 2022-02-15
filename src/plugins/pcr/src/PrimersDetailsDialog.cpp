@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-PrimersDetailsDialog::PrimersDetailsDialog(QWidget *parent, const QString &details)
+PrimersDetailsDialog::PrimersDetailsDialog(QWidget* parent, const QString& details)
     : QDialog(parent) {
     GCOUNTER(cvar, "PrimersDetailsDialog");
     setupUi(this);

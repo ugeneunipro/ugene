@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-DetViewRenderer::DetViewRenderer(DetView *detView, SequenceObjectContext *ctx)
+DetViewRenderer::DetViewRenderer(DetView* detView, SequenceObjectContext* ctx)
     : SequenceViewAnnotatedRenderer(ctx),
       detView(detView) {
 }
@@ -42,7 +42,7 @@ qint64 DetViewRenderer::getSymbolsPerLine(const qint64 width) const {
     return width / commonMetrics.charWidth;
 }
 
-DetViewRenderer *DetViewRendererFactory::createRenderer(DetView *detView, SequenceObjectContext *ctx, bool multiLine) {
+DetViewRenderer* DetViewRendererFactory::createRenderer(DetView* detView, SequenceObjectContext* ctx, bool multiLine) {
     if (multiLine) {
         return new DetViewMultiLineRenderer(detView, ctx);
     } else {

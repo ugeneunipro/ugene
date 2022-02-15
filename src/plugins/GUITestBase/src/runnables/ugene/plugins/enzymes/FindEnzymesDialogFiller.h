@@ -29,16 +29,16 @@ using namespace HI;
 
 class FindEnzymesDialogFiller : public Filler {
 public:
-    FindEnzymesDialogFiller(HI::GUITestOpStatus &os, const QStringList &enzymesToFind, CustomScenario *scenario = nullptr);
-    FindEnzymesDialogFiller(HI::GUITestOpStatus &os, const QStringList &enzymesToFind, qint64 searchRegionStart, qint64 searchRegionEnd, qint64 excludedRegionStart = -1, qint64 excludedRegionEnd = -1, CustomScenario *scenario = nullptr);
+    FindEnzymesDialogFiller(HI::GUITestOpStatus& os, const QStringList& enzymesToFind, CustomScenario* scenario = nullptr);
+    FindEnzymesDialogFiller(HI::GUITestOpStatus& os, const QStringList& enzymesToFind, qint64 searchRegionStart, qint64 searchRegionEnd, qint64 excludedRegionStart = -1, qint64 excludedRegionEnd = -1, CustomScenario* scenario = nullptr);
 
     void commonScenario() override;
 
     /** Opens FindEnzymesDialog in by clicking an action in the main toolbar. */
-    static void openDialogWithToolbarAction(HI::GUITestOpStatus &os);
+    static void openDialogWithToolbarAction(HI::GUITestOpStatus& os);
 
     /** Calls 'openDialogWithToolbarAction' to open the dialog and selects enzymes from 'enzymeNames'. */
-    static void selectEnzymes(HI::GUITestOpStatus &os, const QStringList &enzymeNames);
+    static void selectEnzymes(HI::GUITestOpStatus& os, const QStringList& enzymeNames);
 
 private:
     QStringList enzymesToFind;

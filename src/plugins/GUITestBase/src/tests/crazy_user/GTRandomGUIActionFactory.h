@@ -32,7 +32,7 @@ int randInt(int low, int high);
 
 class GTRandomGUIActionFactory {
 public:
-    static GTAbstractGUIAction *create(QObject *obj);
+    static GTAbstractGUIAction* create(QObject* obj);
 
     static GTAbstractGUIActionMap actionMap;
 };

@@ -61,7 +61,7 @@ class FeatureStore {
     int minFeatureSize;
 
 public:
-    FeatureStore(const QString &storeName, const QString &filePath)
+    FeatureStore(const QString& storeName, const QString& filePath)
         : name(storeName), path(filePath), minFeatureSize(0) {
     }
     void load();
@@ -70,9 +70,9 @@ public:
 
     int getMinFeatureSize() const;
 
-    const QString &getName() const;
+    const QString& getName() const;
 
-    const QList<FeaturePattern> &getFeatures() const;
+    const QList<FeaturePattern>& getFeatures() const;
 };
 
 typedef QSharedPointer<FeatureStore> SharedFeatureStore;
@@ -80,10 +80,10 @@ typedef QSharedPointer<FeatureStore> SharedFeatureStore;
 class CustomPatternAnnotationTask : public Task {
     Q_OBJECT
 public:
-    CustomPatternAnnotationTask(AnnotationTableObject *aobj, const U2EntityRef &entityRef, const SharedFeatureStore &store, const QStringList &filteredFeatures = QStringList());
+    CustomPatternAnnotationTask(AnnotationTableObject* aobj, const U2EntityRef& entityRef, const SharedFeatureStore& store, const QStringList& filteredFeatures = QStringList());
 
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
     struct PatternInfo {
         QString name;
@@ -91,17 +91,17 @@ public:
         PatternInfo()
             : forwardStrand(true) {
         }
-        PatternInfo(const QString &nm, bool isForward)
+        PatternInfo(const QString& nm, bool isForward)
             : name(nm), forwardStrand(isForward) {
         }
     };
 
 private:
     QSharedPointer<SArrayIndex> index;
-    QMap<Task *, PatternInfo> taskFeatureNames;
+    QMap<Task*, PatternInfo> taskFeatureNames;
     QList<SharedAnnotationData> annotations;
     U2SequenceObject dnaObj;
-    AnnotationTableObject *aTableObj;
+    AnnotationTableObject* aTableObj;
     QByteArray sequence;
     SharedFeatureStore featureStore;
     QStringList filteredFeatures;
@@ -112,9 +112,9 @@ class CustomPatternAutoAnnotationUpdater : public AutoAnnotationsUpdater {
     SharedFeatureStore featureStore;
 
 public:
-    CustomPatternAutoAnnotationUpdater(const SharedFeatureStore &store);
-    Task *createAutoAnnotationsUpdateTask(const AutoAnnotationObject *aa);
-    bool checkConstraints(const AutoAnnotationConstraints &constraints);
+    CustomPatternAutoAnnotationUpdater(const SharedFeatureStore& store);
+    Task* createAutoAnnotationsUpdateTask(const AutoAnnotationObject* aa);
+    bool checkConstraints(const AutoAnnotationConstraints& constraints);
 };
 
 }  // namespace U2

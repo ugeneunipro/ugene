@@ -42,17 +42,17 @@ public:
 
 class U2CORE_EXPORT DNAAlphabet {
 public:
-    DNAAlphabet(const QString &id, const QString &name, DNAAlphabetType t, const QBitArray &map, Qt::CaseSensitivity caseMode, char defSym);
+    DNAAlphabet(const QString& id, const QString& name, DNAAlphabetType t, const QBitArray& map, Qt::CaseSensitivity caseMode, char defSym);
 
-    const QBitArray &getMap() const {
+    const QBitArray& getMap() const {
         return map;
     }
 
-    const QString &getName() const {
+    const QString& getName() const {
         return name;
     }
 
-    const QString &getId() const {
+    const QString& getId() const {
         return id;
     }
 
@@ -60,7 +60,7 @@ public:
         return map.at(c);
     }
 
-    bool containsAll(const char *str, int len) const;
+    bool containsAll(const char* str, int len) const;
 
     DNAAlphabetType getType() const {
         return type;
@@ -123,13 +123,13 @@ private:
 
 class U2CORE_EXPORT DNAAlphabetRegistry : public QObject {
 public:
-    virtual bool registerAlphabet(const DNAAlphabet *a) = 0;
+    virtual bool registerAlphabet(const DNAAlphabet* a) = 0;
 
-    virtual void unregisterAlphabet(const DNAAlphabet *a) = 0;
+    virtual void unregisterAlphabet(const DNAAlphabet* a) = 0;
 
-    virtual const DNAAlphabet *findById(const QString &id) const = 0;
+    virtual const DNAAlphabet* findById(const QString& id) const = 0;
 
-    virtual QList<const DNAAlphabet *> getRegisteredAlphabets() const = 0;
+    virtual QList<const DNAAlphabet*> getRegisteredAlphabets() const = 0;
 };
 
 }  // namespace U2

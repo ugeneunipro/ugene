@@ -36,7 +36,7 @@
 namespace U2 {
 
 template<class T>
-inline T sqr(const T &x) {
+inline T sqr(const T& x) {
     return x * x;
 }
 
@@ -58,14 +58,14 @@ class U2ALGORITHM_EXPORT MolecularSurface {
 public:
     virtual ~MolecularSurface();
 
-    virtual void calculate(const QList<SharedAtom> &atoms, int &progress) = 0;
+    virtual void calculate(const QList<SharedAtom>& atoms, int& progress) = 0;
     virtual qint64 estimateMemoryUsage(int numberOfAtoms);
 
-    const QVector<Face> &getFaces() const;
+    const QVector<Face>& getFaces() const;
 
-    static QList<SharedAtom> findAtomNeighbors(const SharedAtom &a, const QList<SharedAtom> &atoms);
-    static GeodesicSphere getAtomSurfaceDots(const SharedAtom &a, int detaillevel);
-    static bool vertexNeighboursOneOf(const Vector3D &v, const QList<SharedAtom> &atoms);
+    static QList<SharedAtom> findAtomNeighbors(const SharedAtom& a, const QList<SharedAtom>& atoms);
+    static GeodesicSphere getAtomSurfaceDots(const SharedAtom& a, int detaillevel);
+    static bool vertexNeighboursOneOf(const Vector3D& v, const QList<SharedAtom>& atoms);
 
 protected:
     QVector<Face> faces;
@@ -74,13 +74,13 @@ protected:
 
 class U2ALGORITHM_EXPORT MolecularSurfaceCalcTask : public Task {
     Q_OBJECT
-    MolecularSurface *molSurface;
+    MolecularSurface* molSurface;
     QString typeName;
     const QList<SharedAtom> atoms;
 
 public:
-    MolecularSurfaceCalcTask(const QString &surfaceTypeName, const QList<SharedAtom> &atoms);
-    MolecularSurface *getCalculatedSurface();
+    MolecularSurfaceCalcTask(const QString& surfaceTypeName, const QList<SharedAtom>& atoms);
+    MolecularSurface* getCalculatedSurface();
     virtual void run();
     virtual ReportResult report();
 };
@@ -88,8 +88,8 @@ public:
 class U2ALGORITHM_EXPORT MolecularSurfaceFactory {
 public:
     virtual ~MolecularSurfaceFactory();
-    virtual MolecularSurface *createInstance() const = 0;
-    virtual bool hasConstraints(const BioStruct3D &) const {
+    virtual MolecularSurface* createInstance() const = 0;
+    virtual bool hasConstraints(const BioStruct3D&) const {
         return false;
     }
 };

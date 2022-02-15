@@ -30,12 +30,12 @@ class U2ALGORITHM_EXPORT VanDerWaalsSurface : public MolecularSurface {
 public:
     VanDerWaalsSurface();
     qint64 estimateMemoryUsage(int numberOfAtoms);
-    virtual void calculate(const QList<SharedAtom> &atoms, int &progress);
+    virtual void calculate(const QList<SharedAtom>& atoms, int& progress);
 };
 
 class U2ALGORITHM_EXPORT VanDerWaalsSurfaceFactory : public MolecularSurfaceFactory {
 public:
-    virtual MolecularSurface *createInstance() const;
+    virtual MolecularSurface* createInstance() const;
 };
 
 }  // namespace U2

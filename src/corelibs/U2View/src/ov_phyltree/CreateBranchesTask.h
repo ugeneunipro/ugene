@@ -39,12 +39,12 @@ public:
 
     virtual TreeLayout getLayoutType() const = 0;
 
-    GraphicsBranchItem *getResult() const {
+    GraphicsBranchItem* getResult() const {
         return root;
     }
 
 protected:
-    GraphicsBranchItem *root;
+    GraphicsBranchItem* root;
 };
 
 }  // namespace U2

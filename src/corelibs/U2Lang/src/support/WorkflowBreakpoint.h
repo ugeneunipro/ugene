@@ -38,14 +38,14 @@ class AttributeScript;
 class WorkflowBreakpoint {
     Q_DISABLE_COPY(WorkflowBreakpoint)
 public:
-    WorkflowBreakpoint(const ActorId &actor, Workflow::WorkflowContext *context = nullptr);
+    WorkflowBreakpoint(const ActorId& actor, Workflow::WorkflowContext* context = nullptr);
     ~WorkflowBreakpoint();
 
     //////////////////////////////////////////////////////////////////////////
     ///////////        Common methods       //////////////////////////////////
 
     ActorId getActorId() const;
-    void setContext(Workflow::WorkflowContext *context);
+    void setContext(Workflow::WorkflowContext* context);
 
     void setEnabled(bool enable);
     bool isEnabled() const;
@@ -53,7 +53,7 @@ public:
     //////////////////////////////////////////////////////////////////////////
     ///////////         Label control       //////////////////////////////////
 
-    void setLabels(const QList<BreakpointLabel> &newLabels);
+    void setLabels(const QList<BreakpointLabel>& newLabels);
     QList<BreakpointLabel> getLabels() const;
 
     //////////////////////////////////////////////////////////////////////////
@@ -70,17 +70,17 @@ public:
     BreakpointConditionDump getConditionDump() const;
     void setConditionEnabled(bool enabled);
     void setConditionParameter(BreakpointConditionParameter newParameter);
-    void setConditionText(const QString &text);
+    void setConditionText(const QString& text);
 
     // this method should be called before execution of an appropriate worker
     // to keep hit count actual
-    bool hit(const AttributeScript *conditionContext);
+    bool hit(const AttributeScript* conditionContext);
 
 private:
     bool enabled;
     const ActorId actorId;
     QList<BreakpointLabel> labels;
-    BaseBreakpointHitCounter *hitCounter;
+    BaseBreakpointHitCounter* hitCounter;
     BreakpointConditionChecker conditionChecker;
 };
 

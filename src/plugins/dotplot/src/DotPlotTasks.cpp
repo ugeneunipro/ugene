@@ -63,7 +63,7 @@ void LoadDotPlotTask::run() {
 }
 
 // check if the file opens
-DotPlotErrors SaveDotPlotTask::checkFile(const QString &filename) {
+DotPlotErrors SaveDotPlotTask::checkFile(const QString& filename) {
     QFile file(filename);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         return ErrorOpen;
@@ -73,7 +73,7 @@ DotPlotErrors SaveDotPlotTask::checkFile(const QString &filename) {
     return NoErrors;
 }
 
-void SaveDotPlotTask::saveDotPlot(QTextStream &stream) {
+void SaveDotPlotTask::saveDotPlot(QTextStream& stream) {
     SAFE_POINT(sequenceX, "sequenceX is NULL", );
     SAFE_POINT(sequenceY, "sequenceY is NULL", );
 
@@ -88,7 +88,7 @@ void SaveDotPlotTask::saveDotPlot(QTextStream &stream) {
     SAFE_POINT(listSizes, "listSizes is NULL", );
 
     int i = 0;
-    foreach (const DotPlotResults &r, *directList) {
+    foreach (const DotPlotResults& r, *directList) {
         if (stateInfo.cancelFlag) {
             return;
         }
@@ -104,7 +104,7 @@ void SaveDotPlotTask::saveDotPlot(QTextStream &stream) {
 
     SAFE_POINT(inverseList, "inverseList is NULL", );
 
-    foreach (const DotPlotResults &r, *inverseList) {
+    foreach (const DotPlotResults& r, *inverseList) {
         if (stateInfo.cancelFlag) {
             return;
         }
@@ -117,7 +117,7 @@ void SaveDotPlotTask::saveDotPlot(QTextStream &stream) {
 }
 
 // check if the file opens and sequence names are the same
-DotPlotErrors LoadDotPlotTask::checkFile(const QString &filename, const QString &seqXName, const QString &seqYName) {
+DotPlotErrors LoadDotPlotTask::checkFile(const QString& filename, const QString& seqXName, const QString& seqYName) {
     QFile file(filename);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         return ErrorOpen;
@@ -142,7 +142,7 @@ DotPlotErrors LoadDotPlotTask::checkFile(const QString &filename, const QString 
     return err;
 }
 
-bool LoadDotPlotTask::loadDotPlot(QTextStream &stream, int fileSize) {
+bool LoadDotPlotTask::loadDotPlot(QTextStream& stream, int fileSize) {
     QString readedXName;
     QString readedYName;
 
@@ -225,7 +225,7 @@ DotPlotLoadDocumentsTask::DotPlotLoadDocumentsTask(QString firstF, int firstG, Q
 
 void DotPlotLoadDocumentsTask::prepare() {
     // load sequences
-    Document *doc = loadFile(firstFile, firstGap);
+    Document* doc = loadFile(firstFile, firstGap);
     if (doc) {
         docs << doc;
     }
@@ -239,16 +239,16 @@ void DotPlotLoadDocumentsTask::prepare() {
     }
 }
 
-Document *DotPlotLoadDocumentsTask::loadFile(QString inFile, int gapSize) {
+Document* DotPlotLoadDocumentsTask::loadFile(QString inFile, int gapSize) {
     if (inFile == "") {
         return nullptr;
     }
     GUrl url(inFile);
 
-    Project *project = AppContext::getProject();
+    Project* project = AppContext::getProject();
 
     SAFE_POINT(project, "project is NULL", nullptr);
-    Document *doc = project->findDocumentByURL(url);
+    Document* doc = project->findDocumentByURL(url);
 
     // document already present in the project
     if (doc) {
@@ -261,9 +261,9 @@ Document *DotPlotLoadDocumentsTask::loadFile(QString inFile, int gapSize) {
         return nullptr;
     }
 
-    DocumentFormat *format = formats.first().format;
+    DocumentFormat* format = formats.first().format;
     SAFE_POINT(format, "format is NULL", nullptr);
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
 
     QVariantMap hints;
     if (gapSize >= 0) {
@@ -284,27 +284,27 @@ Document *DotPlotLoadDocumentsTask::loadFile(QString inFile, int gapSize) {
 DotPlotLoadDocumentsTask::~DotPlotLoadDocumentsTask() {
     // error while loading documents
     if (hasError()) {
-        Project *project = AppContext::getProject();
+        Project* project = AppContext::getProject();
 
         // skip added to the project documents
         if (project) {
-            QList<Document *> projectDocs = project->getDocuments();
+            QList<Document*> projectDocs = project->getDocuments();
 
-            foreach (Document *doc, projectDocs) {
+            foreach (Document* doc, projectDocs) {
                 docs.removeAll(doc);
             }
         }
 
-        foreach (Document *doc, docs) {
+        foreach (Document* doc, docs) {
             delete doc;
         }
     }
 }
 
-DotPlotFilterTask::DotPlotFilterTask(ADVSequenceObjectContext *_sequenceX,
-                                     ADVSequenceObjectContext *_sequenceY,
+DotPlotFilterTask::DotPlotFilterTask(ADVSequenceObjectContext* _sequenceX,
+                                     ADVSequenceObjectContext* _sequenceY,
                                      const QMultiMap<FilterIntersectionParameter,
-                                                     QString> &_annotationNames,
+                                                     QString>& _annotationNames,
                                      QSharedPointer<QList<DotPlotResults>> _initialResults,
                                      QSharedPointer<QList<DotPlotResults>> _filteredResults,
                                      FilterType _type)
@@ -351,26 +351,26 @@ Task::ReportResult DotPlotFilterTask::report() {
     return ReportResult_Finished;
 }
 
-void DotPlotFilterTask::createSuperRegionsList(ADVSequenceObjectContext *seq, FilterIntersectionParameter currentIntersParam) {
+void DotPlotFilterTask::createSuperRegionsList(ADVSequenceObjectContext* seq, FilterIntersectionParameter currentIntersParam) {
     superRegions.clear();
     if (isCanceled()) {
         return;
     }
 
-    QSet<AnnotationTableObject *> aTableSet = seq->getAnnotationObjects(true);
-    QList<Annotation *> selectedAnnotations;
+    QSet<AnnotationTableObject*> aTableSet = seq->getAnnotationObjects(true);
+    QList<Annotation*> selectedAnnotations;
     QStringList cursequenceAnnotationNames = annotationNames.values(currentIntersParam);
     if (cursequenceAnnotationNames.isEmpty()) {
         return;
     }
 
-    foreach (const QString &aName, cursequenceAnnotationNames) {
-        foreach (AnnotationTableObject *at, aTableSet) {
+    foreach (const QString& aName, cursequenceAnnotationNames) {
+        foreach (AnnotationTableObject* at, aTableSet) {
             selectedAnnotations << at->getAnnotationsByName(aName);
         }
     }
 
-    foreach (Annotation *a, selectedAnnotations) {
+    foreach (Annotation* a, selectedAnnotations) {
         superRegions += a->getRegions();
     }
 

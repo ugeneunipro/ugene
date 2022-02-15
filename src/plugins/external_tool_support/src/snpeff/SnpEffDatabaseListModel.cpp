@@ -35,12 +35,12 @@ SnpEffDatabaseInfo::SnpEffDatabaseInfo(QString line) {
     organism = info.at(1);
 }
 
-SnpEffDatabaseListModel::SnpEffDatabaseListModel(QObject *parent)
+SnpEffDatabaseListModel::SnpEffDatabaseListModel(QObject* parent)
     : QAbstractTableModel(parent) {
     databaseCount = 0;
 }
 
-void SnpEffDatabaseListModel::getData(const QString &databaseListFilePath) {
+void SnpEffDatabaseListModel::getData(const QString& databaseListFilePath) {
     GTIMER(cvar, tvar, "GetSnpEffDatabaseList");
     GCOUNTER(cv, "GetSnpEffDatabaseList");
 
@@ -68,17 +68,17 @@ QString SnpEffDatabaseListModel::getGenome(int index) const {
     return databaseList.value(index).getGenome();
 }
 
-int SnpEffDatabaseListModel::rowCount(const QModelIndex &) const {
+int SnpEffDatabaseListModel::rowCount(const QModelIndex&) const {
     return databaseCount;
 }
 
-int SnpEffDatabaseListModel::columnCount(const QModelIndex &) const {
+int SnpEffDatabaseListModel::columnCount(const QModelIndex&) const {
     return 2;
 }
 
-QVariant SnpEffDatabaseListModel::data(const QModelIndex &index, int role) const {
+QVariant SnpEffDatabaseListModel::data(const QModelIndex& index, int role) const {
     if (role == Qt::DisplayRole) {
-        const SnpEffDatabaseInfo &info = databaseList.value(index.row());
+        const SnpEffDatabaseInfo& info = databaseList.value(index.row());
         switch (index.column()) {
             case 0:
                 return QVariant(info.getGenome());
@@ -102,4 +102,4 @@ QVariant SnpEffDatabaseListModel::headerData(int section, Qt::Orientation orient
     return QVariant();
 }
 
-}    // namespace U2
+}  // namespace U2

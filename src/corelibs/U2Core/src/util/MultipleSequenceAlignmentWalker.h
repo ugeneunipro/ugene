@@ -30,17 +30,17 @@ class RowWalker;
 
 class U2CORE_EXPORT MultipleSequenceAlignmentWalker {
 public:
-    MultipleSequenceAlignmentWalker(const MultipleSequenceAlignment &msa, char gapChar = U2Msa::GAP_CHAR);
+    MultipleSequenceAlignmentWalker(const MultipleSequenceAlignment& msa, char gapChar = U2Msa::GAP_CHAR);
     ~MultipleSequenceAlignmentWalker();
 
     bool isEnded() const;
 
-    QList<QByteArray> nextData(int length, U2OpStatus &os);
+    QList<QByteArray> nextData(int length, U2OpStatus& os);
 
 private:
-    const MultipleSequenceAlignment &msa;
+    const MultipleSequenceAlignment& msa;
     int currentOffset;
-    QList<RowWalker *> rowWalkerList;
+    QList<RowWalker*> rowWalkerList;
 };
 
 }  // namespace U2

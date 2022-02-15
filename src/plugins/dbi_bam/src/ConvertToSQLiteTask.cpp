@@ -49,7 +49,7 @@
 namespace U2 {
 namespace BAM {
 
-ConvertToSQLiteTask::ConvertToSQLiteTask(const GUrl &_sourceUrl, const U2DbiRef &dstDbiRef, BAMInfo &_bamInfo, bool _sam)
+ConvertToSQLiteTask::ConvertToSQLiteTask(const GUrl& _sourceUrl, const U2DbiRef& dstDbiRef, BAMInfo& _bamInfo, bool _sam)
     : Task(tr("Convert BAM to UGENE database (%1)").arg(_sourceUrl.fileName()), TaskFlag_None),
       sourceUrl(_sourceUrl),
       dstDbiRef(dstDbiRef),
@@ -59,7 +59,7 @@ ConvertToSQLiteTask::ConvertToSQLiteTask(const GUrl &_sourceUrl, const U2DbiRef 
     tpm = Progress_Manual;
 }
 
-static void enableCoverageOnImport(U2AssemblyCoverageImportInfo &cii, int referenceLength) {
+static void enableCoverageOnImport(U2AssemblyCoverageImportInfo& cii, int referenceLength) {
     cii.computeCoverage = true;
     int coverageInfoSize = qMin(U2AssemblyUtils::MAX_COVERAGE_VECTOR_SIZE, referenceLength);
     cii.coverageBasesPerPoint = qMax(1.0, ((double)referenceLength) / coverageInfoSize);
@@ -70,7 +70,7 @@ namespace {
 
 class BamIterator : public Iterator {
 public:
-    BamIterator(BamReader &reader)
+    BamIterator(BamReader& reader)
         : reader(reader),
           alignmentReader(nullptr, 0, 0),
           alignmentReaderValid(false),
@@ -110,7 +110,7 @@ public:
         readValid = false;
     }
 
-    virtual const U2AssemblyRead &peek() {
+    virtual const U2AssemblyRead& peek() {
         if (!hasNext()) {
             throw Exception(BAMDbiPlugin::tr("The iteration has no next element"));
         }
@@ -139,7 +139,7 @@ public:
     }
 
 private:
-    BamReader &reader;
+    BamReader& reader;
     BamReader::AlignmentReader alignmentReader;
     bool alignmentReaderValid;
     U2AssemblyRead read;
@@ -148,7 +148,7 @@ private:
 
 class SamIterator : public Iterator {
 public:
-    SamIterator(SamReader &reader)
+    SamIterator(SamReader& reader)
         : reader(reader),
           readReferenceId(-1),
           readValid(false) {
@@ -174,7 +174,7 @@ public:
         next();
     }
 
-    virtual const U2AssemblyRead &peek() {
+    virtual const U2AssemblyRead& peek() {
         if (!hasNext()) {
             throw Exception(BAMDbiPlugin::tr("The iteration has no next element"));
         }
@@ -203,7 +203,7 @@ public:
     }
 
 private:
-    SamReader &reader;
+    SamReader& reader;
     U2AssemblyRead read;
     int readReferenceId;
     bool readValid;
@@ -211,7 +211,7 @@ private:
 
 class ReferenceIterator : public Iterator {
 public:
-    ReferenceIterator(int referenceId, Iterator &iterator)
+    ReferenceIterator(int referenceId, Iterator& iterator)
         : referenceId(referenceId),
           iterator(iterator) {
     }
@@ -234,7 +234,7 @@ public:
         iterator.skip();
     }
 
-    virtual const U2AssemblyRead &peek() {
+    virtual const U2AssemblyRead& peek() {
         if (!hasNext()) {
             throw Exception(BAMDbiPlugin::tr("The iteration has no next element"));
         }
@@ -250,12 +250,12 @@ public:
 
 private:
     int referenceId;
-    Iterator &iterator;
+    Iterator& iterator;
 };
 
 class SkipUnmappedIterator : public Iterator {
 public:
-    SkipUnmappedIterator(Iterator &iterator)
+    SkipUnmappedIterator(Iterator& iterator)
         : iterator(iterator) {
     }
 
@@ -280,7 +280,7 @@ public:
         iterator.skip();
     }
 
-    virtual const U2AssemblyRead &peek() {
+    virtual const U2AssemblyRead& peek() {
         skipUnmappedReads();
         if (!hasNext()) {
             throw Exception(BAMDbiPlugin::tr("The iteration has no next element"));
@@ -310,7 +310,7 @@ private:
     }
 
 private:
-    Iterator &iterator;
+    Iterator& iterator;
 };
 
 class DbiIterator : public U2DbiIterator<U2AssemblyRead> {
@@ -329,10 +329,10 @@ public:
 
 class SequentialDbiIterator : public DbiIterator {
 public:
-    SequentialDbiIterator(int referenceId, bool skipUnmapped, Iterator &inputIterator, TaskStateInfo &stateInfo, const IOAdapter &ioAdapter)
+    SequentialDbiIterator(int referenceId, bool skipUnmapped, Iterator& inputIterator, TaskStateInfo& stateInfo, const IOAdapter& ioAdapter)
         : referenceIterator(referenceId, inputIterator),
           skipUnmappedIterator(skipUnmapped ? new SkipUnmappedIterator(referenceIterator) : nullptr),
-          iterator(skipUnmapped ? dynamic_cast<Iterator *>(skipUnmappedIterator.data()) : dynamic_cast<Iterator *>(&referenceIterator)),
+          iterator(skipUnmapped ? dynamic_cast<Iterator*>(skipUnmappedIterator.data()) : dynamic_cast<Iterator*>(&referenceIterator)),
           readsImported(0),
           stateInfo(stateInfo),
           ioAdapter(ioAdapter) {
@@ -368,22 +368,22 @@ public:
 private:
     ReferenceIterator referenceIterator;
     QScopedPointer<SkipUnmappedIterator> skipUnmappedIterator;
-    Iterator *iterator;
+    Iterator* iterator;
     qint64 readsImported;
-    TaskStateInfo &stateInfo;
-    const IOAdapter &ioAdapter;
+    TaskStateInfo& stateInfo;
+    const IOAdapter& ioAdapter;
 };
 
 class IndexedBamDbiIterator : public DbiIterator {
 public:
-    IndexedBamDbiIterator(int referenceId, bool skipUnmapped, BamReader &reader, const Index &index, TaskStateInfo &stateInfo, const IOAdapter &ioAdapter)
+    IndexedBamDbiIterator(int referenceId, bool skipUnmapped, BamReader& reader, const Index& index, TaskStateInfo& stateInfo, const IOAdapter& ioAdapter)
         : iterator(reader),
           dbiIterator(referenceId, skipUnmapped, iterator, stateInfo, ioAdapter),
           hasReads(false) {
         {
             VirtualOffset minOffset = VirtualOffset(0xffffffffffffLL, 0xffff);
-            foreach (const Index::ReferenceIndex::Bin &bin, index.getReferenceIndices()[referenceId].getBins()) {
-                foreach (const Index::ReferenceIndex::Chunk &chunk, bin.getChunks()) {
+            foreach (const Index::ReferenceIndex::Bin& bin, index.getReferenceIndices()[referenceId].getBins()) {
+                foreach (const Index::ReferenceIndex::Chunk& chunk, bin.getChunks()) {
                     if (minOffset > chunk.getStart()) {
                         minOffset = chunk.getStart();
                         hasReads = true;
@@ -444,7 +444,7 @@ void ConvertToSQLiteTask::run() {
 
         updateAttributes();
 
-        foreach (AssemblyImporter *importer, importers) {
+        foreach (AssemblyImporter* importer, importers) {
             importedAssemblies << importer->getAssembly();
         }
         qDeleteAll(importers);
@@ -459,7 +459,7 @@ void ConvertToSQLiteTask::run() {
                          .arg(totalTime)
                          .arg(packTime));
 
-    } catch (const CancelledException & /*e*/) {
+    } catch (const CancelledException& /*e*/) {
         qDeleteAll(importers);
         importers.clear();
         if (getDestinationUrl().isLocalFile()) {
@@ -468,7 +468,7 @@ void ConvertToSQLiteTask::run() {
         taskLog.info(tr("Converting assembly from %1 to %2 cancelled")
                          .arg(sourceUrl.fileName())
                          .arg(getDestinationUrl().fileName()));
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         qDeleteAll(importers);
         importers.clear();
         setError(tr("Converting assembly from %1 to %2 failed: %3")
@@ -489,7 +489,7 @@ QList<U2Assembly> ConvertToSQLiteTask::getAssemblies() const {
     return importedAssemblies;
 }
 
-bool ConvertToSQLiteTask::isSorted(Reader *reader) const {
+bool ConvertToSQLiteTask::isSorted(Reader* reader) const {
     return Header::Coordinate == reader->getHeader().getSortingOrder() ||
            Header::QueryName == reader->getHeader().getSortingOrder() ||
            bamInfo.hasIndex();
@@ -499,8 +499,8 @@ qint64 ConvertToSQLiteTask::importReads() {
     qint64 totalReadsImported = 0;
     QScopedPointer<IOAdapter> ioAdapter(prepareIoAdapter());
 
-    BamReader *bamReader = nullptr;
-    SamReader *samReader = nullptr;
+    BamReader* bamReader = nullptr;
+    SamReader* samReader = nullptr;
     QScopedPointer<Reader> reader(nullptr);
     if (sam) {
         samReader = new SamReader(*ioAdapter);
@@ -553,11 +553,11 @@ void ConvertToSQLiteTask::packReads() {
 void ConvertToSQLiteTask::updateAttributes() {
     DbiConnection connection(dstDbiRef, stateInfo);
     SAFE_POINT_EXT(!stateInfo.hasError(), throw Exception(getError()), );
-    U2AttributeDbi *attributeDbi = connection.dbi->getAttributeDbi();
+    U2AttributeDbi* attributeDbi = connection.dbi->getAttributeDbi();
     CHECK(nullptr != attributeDbi, );
 
     foreach (int referenceId, importers.keys()) {
-        const U2Assembly &assembly = importers[referenceId]->getAssembly();
+        const U2Assembly& assembly = importers[referenceId]->getAssembly();
 
         if (-1 != referenceId) {
             updateReferenceLengthAttribute(references[referenceId].getLength(), assembly, attributeDbi);
@@ -566,7 +566,7 @@ void ConvertToSQLiteTask::updateAttributes() {
             updateReferenceUriAttribute(references[referenceId].getUri(), assembly, attributeDbi);
         }
 
-        const U2AssemblyReadsImportInfo &importInfo = importInfos[referenceId];
+        const U2AssemblyReadsImportInfo& importInfo = importInfos[referenceId];
 
         updateImportInfoMaxProwAttribute(importInfo, assembly, attributeDbi);
         updateImportInfoReadsCountAttribute(importInfo, assembly, attributeDbi);
@@ -574,7 +574,7 @@ void ConvertToSQLiteTask::updateAttributes() {
     }
 }
 
-qint64 ConvertToSQLiteTask::importSortedReads(SamReader *samReader, BamReader *bamReader, Reader *reader, IOAdapter *ioAdapter) {
+qint64 ConvertToSQLiteTask::importSortedReads(SamReader* samReader, BamReader* bamReader, Reader* reader, IOAdapter* ioAdapter) {
     qint64 totalReadsImported = 0;
 
     QScopedPointer<Iterator> iterator;
@@ -595,7 +595,7 @@ qint64 ConvertToSQLiteTask::importSortedReads(SamReader *samReader, BamReader *b
     return totalReadsImported;
 }
 
-qint64 ConvertToSQLiteTask::importMappedSortedReads(BamReader *bamReader, Reader *reader, Iterator *iterator, IOAdapter *ioAdapter) {
+qint64 ConvertToSQLiteTask::importMappedSortedReads(BamReader* bamReader, Reader* reader, Iterator* iterator, IOAdapter* ioAdapter) {
     qint64 totalReadsImported = 0;
 
     const QList<Header::Reference> references = reader->getHeader().getReferences();
@@ -609,7 +609,7 @@ qint64 ConvertToSQLiteTask::importMappedSortedReads(BamReader *bamReader, Reader
                                 .arg(referenceId + 1)
                                 .arg(references.size()));
 
-            U2AssemblyReadsImportInfo &importInfo = importInfos[referenceId];
+            U2AssemblyReadsImportInfo& importInfo = importInfos[referenceId];
             enableCoverageOnImport(importInfo.coverageInfo, references[referenceId].getLength());
 
             QScopedPointer<DbiIterator> dbiIterator;
@@ -644,17 +644,17 @@ qint64 ConvertToSQLiteTask::importMappedSortedReads(BamReader *bamReader, Reader
     return totalReadsImported;
 }
 
-qint64 ConvertToSQLiteTask::importUnmappedSortedReads(BamReader *bamReader, Reader *reader, QScopedPointer<Iterator> &iterator, IOAdapter *ioAdapter) {
+qint64 ConvertToSQLiteTask::importUnmappedSortedReads(BamReader* bamReader, Reader* reader, QScopedPointer<Iterator>& iterator, IOAdapter* ioAdapter) {
     taskLog.details(tr("Importing unmapped reads"));
 
     if (bamInfo.hasIndex() && !reader->getHeader().getReferences().isEmpty()) {
-        const Index &index = bamInfo.getIndex();
+        const Index& index = bamInfo.getIndex();
         bool maxOffsetFound = false;
         VirtualOffset maxOffset = VirtualOffset(0, 0);
 
         for (int refId = 0; refId < reader->getHeader().getReferences().size(); ++refId) {
-            foreach (const Index::ReferenceIndex::Bin &bin, index.getReferenceIndices()[refId].getBins()) {
-                foreach (const Index::ReferenceIndex::Chunk &chunk, bin.getChunks()) {
+            foreach (const Index::ReferenceIndex::Bin& bin, index.getReferenceIndices()[refId].getBins()) {
+                foreach (const Index::ReferenceIndex::Chunk& chunk, bin.getChunks()) {
                     if (chunk.getStart() < chunk.getEnd() && maxOffset < chunk.getStart()) {
                         maxOffset = chunk.getStart();
                         maxOffsetFound = true;
@@ -687,7 +687,7 @@ qint64 ConvertToSQLiteTask::importUnmappedSortedReads(BamReader *bamReader, Read
     return dbiIterator.getReadsImported();
 }
 
-qint64 ConvertToSQLiteTask::importUnsortedReads(SamReader *samReader, BamReader *bamReader, Reader *reader, QMap<int, U2AssemblyReadsImportInfo> &importInfos) {
+qint64 ConvertToSQLiteTask::importUnsortedReads(SamReader* samReader, BamReader* bamReader, Reader* reader, QMap<int, U2AssemblyReadsImportInfo>& importInfos) {
     taskLog.details(tr("No bam index given, preparing sequential import"));
 
     for (int referenceId = 0; referenceId < reader->getHeader().getReferences().size(); referenceId++) {
@@ -710,7 +710,7 @@ qint64 ConvertToSQLiteTask::importUnsortedReads(SamReader *samReader, BamReader 
     }
 
     QScopedPointer<SkipUnmappedIterator> skipUnmappedIterator;
-    Iterator *iterator = nullptr;
+    Iterator* iterator = nullptr;
     if (!bamInfo.isUnmappedSelected()) {
         skipUnmappedIterator.reset(new SkipUnmappedIterator(*inputIterator));
         iterator = skipUnmappedIterator.data();
@@ -721,7 +721,7 @@ qint64 ConvertToSQLiteTask::importUnsortedReads(SamReader *samReader, BamReader 
     return importReadsSequentially(iterator);
 }
 
-void ConvertToSQLiteTask::createAssemblyObjectForUnsortedReads(int referenceId, Reader *reader, QMap<int, U2::U2AssemblyReadsImportInfo> &importInfos) {
+void ConvertToSQLiteTask::createAssemblyObjectForUnsortedReads(int referenceId, Reader* reader, QMap<int, U2::U2AssemblyReadsImportInfo>& importInfos) {
     U2Assembly assembly;
     assembly.visualName = (referenceId == -1 ? "Unmapped" : reader->getHeader().getReferences()[referenceId].getName());
 
@@ -734,7 +734,7 @@ void ConvertToSQLiteTask::createAssemblyObjectForUnsortedReads(int referenceId, 
     importInfos[referenceId].packed = false;
 }
 
-qint64 ConvertToSQLiteTask::importReadsSequentially(Iterator *iterator) {
+qint64 ConvertToSQLiteTask::importReadsSequentially(Iterator* iterator) {
     qint64 totalReadsImported = 0;
 
     U2OpStatusImpl opStatus;
@@ -747,7 +747,7 @@ qint64 ConvertToSQLiteTask::importReadsSequentially(Iterator *iterator) {
             const int referenceId = iterator->peekReferenceId();
             if ((-1 == referenceId && bamInfo.isUnmappedSelected()) ||
                 bamInfo.isReferenceSelected(referenceId)) {
-                U2AssemblyReadsImportInfo &importInfo = importInfos[referenceId];
+                U2AssemblyReadsImportInfo& importInfo = importInfos[referenceId];
                 reads[referenceId] << iterator->next();
                 readCount++;
                 importInfo.nReads++;
@@ -766,7 +766,7 @@ qint64 ConvertToSQLiteTask::importReadsSequentially(Iterator *iterator) {
     return totalReadsImported;
 }
 
-void ConvertToSQLiteTask::flushReads(const QMap<int, QList<U2AssemblyRead>> &reads) {
+void ConvertToSQLiteTask::flushReads(const QMap<int, QList<U2AssemblyRead>>& reads) {
     foreach (int index, reads.keys()) {
         if (!reads[index].isEmpty()) {
             BufferedDbiIterator<U2AssemblyRead> readsIterator(reads[index]);
@@ -776,7 +776,7 @@ void ConvertToSQLiteTask::flushReads(const QMap<int, QList<U2AssemblyRead>> &rea
     }
 }
 
-void ConvertToSQLiteTask::updateReferenceLengthAttribute(int length, const U2Assembly &assembly, U2AttributeDbi *attributeDbi) {
+void ConvertToSQLiteTask::updateReferenceLengthAttribute(int length, const U2Assembly& assembly, U2AttributeDbi* attributeDbi) {
     U2IntegerAttribute lenAttr;
     lenAttr.objectId = assembly.id;
     lenAttr.name = U2BaseAttributeName::reference_length;
@@ -790,7 +790,7 @@ void ConvertToSQLiteTask::updateReferenceLengthAttribute(int length, const U2Ass
     }
 }
 
-void ConvertToSQLiteTask::updateReferenceMd5Attribute(const QByteArray &md5, const U2Assembly &assembly, U2AttributeDbi *attributeDbi) {
+void ConvertToSQLiteTask::updateReferenceMd5Attribute(const QByteArray& md5, const U2Assembly& assembly, U2AttributeDbi* attributeDbi) {
     CHECK(!md5.isEmpty(), );
 
     U2ByteArrayAttribute md5Attr;
@@ -806,7 +806,7 @@ void ConvertToSQLiteTask::updateReferenceMd5Attribute(const QByteArray &md5, con
     }
 }
 
-void ConvertToSQLiteTask::updateReferenceSpeciesAttribute(const QByteArray &species, const U2Assembly &assembly, U2AttributeDbi *attributeDbi) {
+void ConvertToSQLiteTask::updateReferenceSpeciesAttribute(const QByteArray& species, const U2Assembly& assembly, U2AttributeDbi* attributeDbi) {
     CHECK(!species.isEmpty(), );
 
     U2ByteArrayAttribute speciesAttr;
@@ -822,7 +822,7 @@ void ConvertToSQLiteTask::updateReferenceSpeciesAttribute(const QByteArray &spec
     }
 }
 
-void ConvertToSQLiteTask::updateReferenceUriAttribute(const QString &uri, const U2Assembly &assembly, U2AttributeDbi *attributeDbi) {
+void ConvertToSQLiteTask::updateReferenceUriAttribute(const QString& uri, const U2Assembly& assembly, U2AttributeDbi* attributeDbi) {
     CHECK(!uri.isEmpty(), );
 
     U2StringAttribute uriAttr;
@@ -838,7 +838,7 @@ void ConvertToSQLiteTask::updateReferenceUriAttribute(const QString &uri, const 
     }
 }
 
-void ConvertToSQLiteTask::updateImportInfoMaxProwAttribute(const U2AssemblyReadsImportInfo &importInfo, const U2Assembly &assembly, U2AttributeDbi *attributeDbi) {
+void ConvertToSQLiteTask::updateImportInfoMaxProwAttribute(const U2AssemblyReadsImportInfo& importInfo, const U2Assembly& assembly, U2AttributeDbi* attributeDbi) {
     const qint64 maxProw = importInfo.packStat.maxProw;
 
     if (maxProw > 0) {
@@ -859,7 +859,7 @@ void ConvertToSQLiteTask::updateImportInfoMaxProwAttribute(const U2AssemblyReads
     }
 }
 
-void ConvertToSQLiteTask::updateImportInfoReadsCountAttribute(const U2AssemblyReadsImportInfo &importInfo, const U2Assembly &assembly, U2AttributeDbi *attributeDbi) {
+void ConvertToSQLiteTask::updateImportInfoReadsCountAttribute(const U2AssemblyReadsImportInfo& importInfo, const U2Assembly& assembly, U2AttributeDbi* attributeDbi) {
     const qint64 readsCount = importInfo.packStat.readsCount;
     CHECK(readsCount > 0, );
 
@@ -876,8 +876,8 @@ void ConvertToSQLiteTask::updateImportInfoReadsCountAttribute(const U2AssemblyRe
     }
 }
 
-void ConvertToSQLiteTask::updateImportInfoCoverageStatAttribute(const U2AssemblyReadsImportInfo &importInfo, const U2Assembly &assembly, U2AttributeDbi *attributeDbi) {
-    const U2AssemblyCoverageStat &coverageStat = importInfo.coverageInfo.coverage;
+void ConvertToSQLiteTask::updateImportInfoCoverageStatAttribute(const U2AssemblyReadsImportInfo& importInfo, const U2Assembly& assembly, U2AttributeDbi* attributeDbi) {
+    const U2AssemblyCoverageStat& coverageStat = importInfo.coverageInfo.coverage;
     CHECK(!coverageStat.isEmpty(), );
 
     U2ByteArrayAttribute attribute;
@@ -893,8 +893,8 @@ void ConvertToSQLiteTask::updateImportInfoCoverageStatAttribute(const U2Assembly
     }
 }
 
-IOAdapter *ConvertToSQLiteTask::prepareIoAdapter() {
-    IOAdapterFactory *factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(sourceUrl));
+IOAdapter* ConvertToSQLiteTask::prepareIoAdapter() {
+    IOAdapterFactory* factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(sourceUrl));
     SAFE_POINT_EXT(nullptr != factory, throw IOException(L10N::nullPointerError("IO adapter factory")), nullptr);
     QScopedPointer<IOAdapter> ioAdapter(factory->createIOAdapter());
 

@@ -33,14 +33,14 @@ namespace U2 {
 class U2ALGORITHM_EXPORT PhyTreeGeneratorTask : public Task {
     Q_OBJECT
 public:
-    PhyTreeGeneratorTask(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &_settings);
+    PhyTreeGeneratorTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& _settings);
     ~PhyTreeGeneratorTask() {
     }
     void run();
     PhyTree getResult() {
         return result;
     }
-    const CreatePhyTreeSettings &getSettings() {
+    const CreatePhyTreeSettings& getSettings() {
         return settings;
     }
     ReportResult report();
@@ -57,11 +57,11 @@ public:
         : lastIdStr("a") {
     }
 
-    void replaceNamesWithAlphabeticIds(MultipleSequenceAlignment &ma);
-    void restoreNames(const PhyTree &tree);
+    void replaceNamesWithAlphabeticIds(MultipleSequenceAlignment& ma);
+    void restoreNames(const PhyTree& tree);
 
 private:
-    const QString &generateNewAlphabeticId();
+    const QString& generateNewAlphabeticId();
 
     QString lastIdStr;
     QMap<QString, QString> namesMap;
@@ -70,7 +70,7 @@ private:
 class U2ALGORITHM_EXPORT PhyTreeGeneratorLauncherTask : public Task {
     Q_OBJECT
 public:
-    PhyTreeGeneratorLauncherTask(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &_settings);
+    PhyTreeGeneratorLauncherTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& _settings);
     ~PhyTreeGeneratorLauncherTask() {};
     PhyTree getResult() {
         return result;
@@ -85,7 +85,7 @@ private:
     MultipleSequenceAlignment inputMA;
     PhyTree result;
     CreatePhyTreeSettings settings;
-    PhyTreeGeneratorTask *task;
+    PhyTreeGeneratorTask* task;
     SeqNamesConvertor namesConvertor;
 };
 

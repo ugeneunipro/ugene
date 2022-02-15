@@ -55,7 +55,7 @@ PythonSupport::PythonSupport()
     muted = true;
 }
 
-PythonModuleSupport::PythonModuleSupport(const QString &id, const QString &name)
+PythonModuleSupport::PythonModuleSupport(const QString& id, const QString& name)
     : ExternalToolModule(id, "python2", name) {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/python.png");

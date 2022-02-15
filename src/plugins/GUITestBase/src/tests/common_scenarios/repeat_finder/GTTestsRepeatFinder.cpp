@@ -49,7 +49,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsDocument::checkDocument(os, "seq4.fa");
 
     // 2. Run Find Repeats dialog
-    Runnable *swDialog = new FindRepeatsDialogFiller(os, testDir + "_common_data/scenarios/sandbox/");
+    Runnable* swDialog = new FindRepeatsDialogFiller(os, testDir + "_common_data/scenarios/sandbox/");
     GTUtilsDialog::waitForDialog(os, swDialog);
 
     GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find repeats..."}, GTGlobals::UseMouse);
@@ -62,7 +62,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTMouseDriver::doubleClick();
 
     // 4. Check that annotation has the qualifier "repeat homology"
-    QTreeWidgetItem *repeatsGroupItem = GTUtilsAnnotationsTreeView::findItem(os, "repeat_unit  (0, 325)");
+    QTreeWidgetItem* repeatsGroupItem = GTUtilsAnnotationsTreeView::findItem(os, "repeat_unit  (0, 325)");
     GTTreeWidget::expand(os, repeatsGroupItem);
     GTTreeWidget::expand(os, repeatsGroupItem->child(0));
 

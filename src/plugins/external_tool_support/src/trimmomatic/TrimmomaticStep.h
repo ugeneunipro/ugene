@@ -40,58 +40,58 @@ public:
     virtual bool validate() const = 0;
 
     virtual QVariantMap getState() const = 0;
-    virtual void setState(const QVariantMap &state) = 0;
+    virtual void setState(const QVariantMap& state) = 0;
 
 signals:
     void si_valueChanged();
-    void si_widgetIsAboutToBeDestroyed(const QVariantMap &state);
+    void si_widgetIsAboutToBeDestroyed(const QVariantMap& state);
 };
 
 class TrimmomaticStep : public QObject {
     Q_OBJECT
 public:
-    TrimmomaticStep(const QString &id);
+    TrimmomaticStep(const QString& id);
     ~TrimmomaticStep();
 
-    const QString &getId() const;
-    const QString &getVisualName() const;
-    const QString &getName() const;
-    const QString &getDescription() const;
+    const QString& getId() const;
+    const QString& getVisualName() const;
+    const QString& getName() const;
+    const QString& getDescription() const;
 
     QString getCommand() const;
-    void setCommand(const QString &command);
+    void setCommand(const QString& command);
 
     bool validate() const;
 
-    TrimmomaticStepSettingsWidget *getSettingsWidget() const;
+    TrimmomaticStepSettingsWidget* getSettingsWidget() const;
 
 private slots:
     void sl_widgetDestroyed();
-    void sl_widgetIsAboutToBeDestroyed(const QVariantMap &state);
+    void sl_widgetIsAboutToBeDestroyed(const QVariantMap& state);
 
 signals:
     void si_valueChanged();
 
 protected:
-    virtual TrimmomaticStepSettingsWidget *createWidget() const = 0;
+    virtual TrimmomaticStepSettingsWidget* createWidget() const = 0;
 
-    virtual QString serializeState(const QVariantMap &widgetState) const = 0;
-    virtual QVariantMap parseState(const QString &command) const = 0;
+    virtual QString serializeState(const QVariantMap& widgetState) const = 0;
+    virtual QVariantMap parseState(const QString& command) const = 0;
 
     QString id;
     QString name;
     QString description;
-    mutable TrimmomaticStepSettingsWidget *settingsWidget;
+    mutable TrimmomaticStepSettingsWidget* settingsWidget;
     QVariantMap widgetState;
 };
 
 class TrimmomaticStepFactory {
 public:
-    TrimmomaticStepFactory(const QString &id);
+    TrimmomaticStepFactory(const QString& id);
     virtual ~TrimmomaticStepFactory();
 
-    const QString &getId() const;
-    virtual TrimmomaticStep *createStep() const = 0;
+    const QString& getId() const;
+    virtual TrimmomaticStep* createStep() const = 0;
 
 private:
     const QString id;
@@ -99,14 +99,14 @@ private:
 
 class TrimmomaticStepsRegistry : public IdRegistry<TrimmomaticStepFactory> {
 public:
-    static TrimmomaticStepsRegistry *getInstance();
+    static TrimmomaticStepsRegistry* getInstance();
     static void releaseInstance();
 
 private:
     static QScopedPointer<TrimmomaticStepsRegistry> instance;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_TRIMMOMATIC_STEP_H_
+#endif  // _U2_TRIMMOMATIC_STEP_H_

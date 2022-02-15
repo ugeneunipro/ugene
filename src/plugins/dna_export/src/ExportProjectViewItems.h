@@ -35,10 +35,10 @@ class GUrl;
 class ExportProjectViewItemsContoller : public QObject {
     Q_OBJECT
 public:
-    ExportProjectViewItemsContoller(QObject *p);
+    ExportProjectViewItemsContoller(QObject* p);
 
 private slots:
-    void sl_addToProjectViewMenu(QMenu &);
+    void sl_addToProjectViewMenu(QMenu&);
 
     void sl_saveSequencesToSequenceFormat();
     void sl_saveCorrespondingSequence();
@@ -53,20 +53,20 @@ private slots:
     void sl_exportObject();
 
 private:
-    void addExportImportMenu(QMenu &m);
-    void exportSequences(const QList<GObject *> &seqs);
+    void addExportImportMenu(QMenu& m);
+    void exportSequences(const QList<GObject*>& seqs);
 
-    QAction *exportSequencesToSequenceFormatAction;
-    QAction *exportCorrespondingSeqsAction;
-    QAction *exportSequencesAsAlignmentAction;
-    QAction *exportAlignmentAsSequencesAction;
-    QAction *exportMcaToMsaAction;
-    QAction *exportNucleicAlignmentToAminoAction;
-    QAction *importAnnotationsFromCSVAction;
-    QAction *exportDNAChromatogramAction;
-    QAction *exportAnnotations2CSV;
-    QAction *exportSequenceQuality;
-    QAction *exportObjectAction;
+    QAction* exportSequencesToSequenceFormatAction;
+    QAction* exportCorrespondingSeqsAction;
+    QAction* exportSequencesAsAlignmentAction;
+    QAction* exportAlignmentAsSequencesAction;
+    QAction* exportMcaToMsaAction;
+    QAction* exportNucleicAlignmentToAminoAction;
+    QAction* importAnnotationsFromCSVAction;
+    QAction* exportDNAChromatogramAction;
+    QAction* exportAnnotations2CSV;
+    QAction* exportSequenceQuality;
+    QAction* exportObjectAction;
 };
 
 }  // namespace U2

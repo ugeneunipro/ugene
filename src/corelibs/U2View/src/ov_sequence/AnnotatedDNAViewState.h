@@ -34,15 +34,15 @@ class AnnotatedDNAView;
 class U2VIEW_EXPORT AnnotatedDNAViewState {
 public:
     AnnotatedDNAViewState();
-    AnnotatedDNAViewState(const QVariantMap &_stateData)
+    AnnotatedDNAViewState(const QVariantMap& _stateData)
         : stateData(_stateData) {
     }
 
-    static QVariantMap saveState(AnnotatedDNAView *v);
+    static QVariantMap saveState(AnnotatedDNAView* v);
 
     bool isValid() const;
 
-    void setSequenceObjects(const QList<GObjectReference> &objs, const QVector<U2Region> &selections);
+    void setSequenceObjects(const QList<GObjectReference>& objs, const QVector<U2Region>& selections);
 
     QList<GObjectReference> getSequenceObjects() const;
 
@@ -50,7 +50,7 @@ public:
 
     QList<GObjectReference> getAnnotationObjects() const;
 
-    void setAnnotationObjects(const QList<GObjectReference> &objs);
+    void setAnnotationObjects(const QList<GObjectReference>& objs);
 
     QVariantMap stateData;
 };

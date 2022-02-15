@@ -43,10 +43,10 @@ const int BUFFER_SIZE = 4 * 1024 * 1024;
 class DbiHelper {
     Q_DISABLE_COPY(DbiHelper)
 
-    DbiConnection *con;
+    DbiConnection* con;
 
 public:
-    DbiHelper(const U2DbiRef &dbiRef, U2OpStatus &os)
+    DbiHelper(const U2DbiRef& dbiRef, U2OpStatus& os)
         : dbi(nullptr) {
         con = new DbiConnection(dbiRef, os);
         CHECK_OP(os, );
@@ -59,17 +59,17 @@ public:
         delete con;
     }
 
-    UdrDbi *dbi;
+    UdrDbi* dbi;
 };
 
-UdrRecordId getRecordId(UdrDbi *dbi, const U2DataId &objId, U2OpStatus &os) {
+UdrRecordId getRecordId(UdrDbi* dbi, const U2DataId& objId, U2OpStatus& os) {
     const QList<UdrRecord> records = dbi->getObjectRecords(RawDataUdrSchema::ID, objId, os);
     CHECK_OP(os, UdrRecordId("", ""));
     CHECK_EXT(1 == records.size(), os.setError("Unexpected records count"), UdrRecordId("", ""));
     return records.first().getId();
 }
 
-UdrRecordId retrieveObject(UdrDbi *dbi, U2RawData &object, U2OpStatus &os) {
+UdrRecordId retrieveObject(UdrDbi* dbi, U2RawData& object, U2OpStatus& os) {
     UdrRecordId recId = getRecordId(dbi, object.id, os);
     CHECK_OP(os, recId);
 
@@ -90,7 +90,7 @@ UdrRecordId retrieveObject(UdrDbi *dbi, U2RawData &object, U2OpStatus &os) {
     return recId;
 }
 
-UdrRecordId createObjectCore(UdrDbi *dbi, const QString &folder, U2RawData &object, U2OpStatus &os) {
+UdrRecordId createObjectCore(UdrDbi* dbi, const QString& folder, U2RawData& object, U2OpStatus& os) {
     dbi->createObject(RawDataUdrSchema::ID, object, folder, os);
     CHECK_OP(os, UdrRecordId("", ""));
 
@@ -103,7 +103,7 @@ UdrRecordId createObjectCore(UdrDbi *dbi, const QString &folder, U2RawData &obje
 }
 }  // namespace
 
-void RawDataUdrSchema::init(U2OpStatus &os) {
+void RawDataUdrSchema::init(U2OpStatus& os) {
     UdrSchema::FieldDesc content("content", UdrSchema::BLOB);
     UdrSchema::FieldDesc serializer("serializer", UdrSchema::STRING);
 
@@ -119,7 +119,7 @@ void RawDataUdrSchema::init(U2OpStatus &os) {
     }
 }
 
-U2RawData RawDataUdrSchema::getObject(const U2EntityRef &objRef, U2OpStatus &os) {
+U2RawData RawDataUdrSchema::getObject(const U2EntityRef& objRef, U2OpStatus& os) {
     DbiHelper con(objRef.dbiRef, os);
     CHECK_OP(os, U2RawData());
 
@@ -129,18 +129,18 @@ U2RawData RawDataUdrSchema::getObject(const U2EntityRef &objRef, U2OpStatus &os)
     return result;
 }
 
-void RawDataUdrSchema::createObject(const U2DbiRef &dbiRef, U2RawData &object, U2OpStatus &os) {
+void RawDataUdrSchema::createObject(const U2DbiRef& dbiRef, U2RawData& object, U2OpStatus& os) {
     createObject(dbiRef, U2ObjectDbi::ROOT_FOLDER, object, os);
 }
 
-void RawDataUdrSchema::createObject(const U2DbiRef &dbiRef, const QString &folder, U2RawData &object, U2OpStatus &os) {
+void RawDataUdrSchema::createObject(const U2DbiRef& dbiRef, const QString& folder, U2RawData& object, U2OpStatus& os) {
     DbiHelper con(dbiRef, os);
     CHECK_OP(os, );
 
     createObjectCore(con.dbi, folder, object, os);
 }
 
-void RawDataUdrSchema::writeContent(const QByteArray &data, const U2EntityRef &objRef, U2OpStatus &os) {
+void RawDataUdrSchema::writeContent(const QByteArray& data, const U2EntityRef& objRef, U2OpStatus& os) {
     DbiHelper con(objRef.dbiRef, os);
     CHECK_OP(os, );
 
@@ -152,7 +152,7 @@ void RawDataUdrSchema::writeContent(const QByteArray &data, const U2EntityRef &o
     oStream->write(data.data(), data.size(), os);
 }
 
-void RawDataUdrSchema::writeContent(const U2DataId &masterId, const QByteArray &data, const U2EntityRef &objRef, U2OpStatus &os) {
+void RawDataUdrSchema::writeContent(const U2DataId& masterId, const QByteArray& data, const U2EntityRef& objRef, U2OpStatus& os) {
     DbiHelper con(objRef.dbiRef, os);
     CHECK_OP(os, );
     QScopedPointer<ModificationAction> updateAction(con.dbi->getModificationAction(masterId));
@@ -171,7 +171,7 @@ void RawDataUdrSchema::writeContent(const U2DataId &masterId, const QByteArray &
     updateAction->complete(os);
 }
 
-QByteArray RawDataUdrSchema::readAllContent(const U2EntityRef &objRef, U2OpStatus &os) {
+QByteArray RawDataUdrSchema::readAllContent(const U2EntityRef& objRef, U2OpStatus& os) {
     DbiHelper con(objRef.dbiRef, os);
     CHECK_OP(os, "");
 
@@ -188,7 +188,7 @@ QByteArray RawDataUdrSchema::readAllContent(const U2EntityRef &objRef, U2OpStatu
     return result;
 }
 
-void RawDataUdrSchema::cloneObject(const U2EntityRef &srcObjRef, const U2DbiRef &dstDbiRef, const QString &dstFolder, U2RawData &dstObject, U2OpStatus &os) {
+void RawDataUdrSchema::cloneObject(const U2EntityRef& srcObjRef, const U2DbiRef& dstDbiRef, const QString& dstFolder, U2RawData& dstObject, U2OpStatus& os) {
     DbiOperationsBlock srcOpBlock(srcObjRef.dbiRef, os);
     CHECK_OP(os, );
     DbiOperationsBlock dstOpBlock(dstDbiRef, os);
@@ -215,7 +215,7 @@ void RawDataUdrSchema::cloneObject(const U2EntityRef &srcObjRef, const U2DbiRef 
     QScopedPointer<OutputStream> oStream(dst.dbi->createOutputStream(dstId, CONTENT, iStream->available(), os));
     CHECK_OP(os, );
     QByteArray buffer(BUFFER_SIZE, 0);
-    char *bytes = buffer.data();
+    char* bytes = buffer.data();
     while (iStream->available() > 0) {
         int read = iStream->read(bytes, BUFFER_SIZE, os);
         CHECK_OP(os, );

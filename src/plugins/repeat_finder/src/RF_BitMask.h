@@ -29,23 +29,23 @@
 // Attention! Works correctly only on little-endian systems!
 
 namespace U2 {
-inline void memset(void *_arr, const char _val, const size_t _size) {
-    char *arr = (char *)_arr;
+inline void memset(void* _arr, const char _val, const size_t _size) {
+    char* arr = (char*)_arr;
     for (size_t i = 0; i < _size; i++) {
         arr[i] = _val;
     }
 }
-inline void memmove(void *_src, void *_dst, const size_t _size) {
-    char *src = (char *)_src;
-    char *dst = (char *)_dst;
+inline void memmove(void* _src, void* _dst, const size_t _size) {
+    char* src = (char*)_src;
+    char* dst = (char*)_dst;
     if (_src < _dst) {
-        const char *srcend = src + _size;
+        const char* srcend = src + _size;
         for (; src < srcend;) {
             *src++ = *dst++;
         }
     } else {
-        char *srclast = src + _size - 1;
-        char *dstlast = dst + _size - 1;
+        char* srclast = src + _size - 1;
+        char* dstlast = dst + _size - 1;
         for (; srclast >= src;) {
             *srclast-- = *dstlast--;
         }
@@ -66,9 +66,9 @@ class BitMask {
     BitMask()
         : origSequence(nullptr), origSequenceSize(0) {
     }
-    const char *origSequence;
+    const char* origSequence;
     const quint32 origSequenceSize;
-    quint64 *bitSequence;
+    quint64* bitSequence;
     quint32 bitSequenceSize;
     const static int SYMB_PER_INTEGER = sizeof(quint64) * 8 / 2;  // 32 symbols per one request
 
@@ -81,15 +81,15 @@ class BitMask {
     quint64 nextPrefix;
 
 public:
-    BitMask(const char *sequence, const quint32 size)
+    BitMask(const char* sequence, const quint32 size)
         : origSequence(sequence), origSequenceSize(size) {
         bitSequenceSize = origSequenceSize / SYMB_PER_INTEGER + 2;
         bitSequence = new quint64[bitSequenceSize];
 
-        quint64 *bitSeqRunner = bitSequence;
-        quint64 *charSeqRunner = (quint64 *)origSequence;
+        quint64* bitSeqRunner = bitSequence;
+        quint64* charSeqRunner = (quint64*)origSequence;
         // number of bytes multiple to 32
-        const quint64 *charSeqRunnerStop = (quint64 *)(origSequence + (origSequenceSize & (~0x1f)));
+        const quint64* charSeqRunnerStop = (quint64*)(origSequence + (origSequenceSize & (~0x1f)));
         // construct bitSequence
         while (charSeqRunner < charSeqRunnerStop) {
             quint64 bitSeqBit = 0;
@@ -104,7 +104,7 @@ public:
         char restStr[32];
         U2::memset(restStr, 'A', 32);  // TODO: what is the best fill for tail?
         U2::memmove(restStr, charSeqRunner, origSequenceSize & 0x1f);
-        charSeqRunner = (quint64 *)restStr;
+        charSeqRunner = (quint64*)restStr;
         *bitSeqRunner = word4(*charSeqRunner++);
         *bitSeqRunner |= word3(*charSeqRunner++);
         *bitSeqRunner |= word2(*charSeqRunner++);
@@ -142,9 +142,9 @@ public:
         mask = ~((quint64)~0 >> maskSize);
     }
     inline quint64 operator[](const quint64 index) const {
-        const quint64 *localCell = bitSequence + index / SYMB_PER_INTEGER;
+        const quint64* localCell = bitSequence + index / SYMB_PER_INTEGER;
         const int bitPosition = index % SYMB_PER_INTEGER * 2;
-        const int &q0 = bitPosition;
+        const int& q0 = bitPosition;
         // const int q1 = (q0+maskSize)%(SYMB_PER_INTEGER*2);
         return q0 == 0 ? (mask & localCell[0]) : mask & ((localCell[0] << q0) | (localCell[1] >> (64 - q0)));
     }
@@ -164,22 +164,22 @@ public:
         return res;
     }
     inline quint64 next() const {
-        return const_cast<BitMask *>(this)->next();
+        return const_cast<BitMask*>(this)->next();
     }
 
-    inline quint64 w1(const quint64 &v) const {
+    inline quint64 w1(const quint64& v) const {
         return ((v >> 16) | (v >> 56)) & 0x0000ffffLL;
     }
-    inline quint64 w2(const quint64 &v) const {
+    inline quint64 w2(const quint64& v) const {
         return ((v >> 0) | (v >> 40)) & 0xffff0000;
     }
-    inline quint64 w3(const quint64 &v) const {
+    inline quint64 w3(const quint64& v) const {
         return ((v << 16) | (v >> 24)) & 0x0000ffff00000000LL;
     }
-    inline quint64 w4(const quint64 &v) const {
+    inline quint64 w4(const quint64& v) const {
         return ((v << 32) | (v >> 8)) & 0xffff000000000000LL;
     }
-    inline quint64 decode(const quint64 &str) {
+    inline quint64 decode(const quint64& str) {
         // decode symbols
         const quint64 r = (str & c1f) - c01;
         const quint64 s = r + (r << 1);

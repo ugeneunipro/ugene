@@ -31,7 +31,7 @@ using namespace HI;
 
 class DNASequenceGeneratorDialogFillerModel {
 public:
-    DNASequenceGeneratorDialogFillerModel(const QString &url);
+    DNASequenceGeneratorDialogFillerModel(const QString& url);
 
     QString url;
 
@@ -58,7 +58,7 @@ public:
 class DNASequenceGeneratorDialogFiller : public Filler {
 public:
     /** Fills generator dialog with the given set of values and runs it. */
-    DNASequenceGeneratorDialogFiller(GUITestOpStatus &os, const DNASequenceGeneratorDialogFillerModel &model);
+    DNASequenceGeneratorDialogFiller(GUITestOpStatus& os, const DNASequenceGeneratorDialogFillerModel& model);
     void commonScenario() override;
 
 private:

@@ -62,7 +62,7 @@ private:
     QString url;
 
 private:
-    void removeDir(const QString &url);
+    void removeDir(const QString& url);
 };
 
 class GTest_RemoveTmpFile : public XmlTest {
@@ -108,7 +108,7 @@ public:
     ReportResult report();
 
 private:
-    bool findRecursive(const QString &currentDirUrl);
+    bool findRecursive(const QString& currentDirUrl);
 
     QString storageUrl;
     QString fileName;
@@ -142,7 +142,7 @@ private:
 
 class GUrlTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

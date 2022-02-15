@@ -20,7 +20,6 @@
  */
 
 #include "CreateObjectRelationDialogController.h"
-#include <ui_CreateObjectRelationDialog.h>
 
 #include <QIcon>
 #include <QMessageBox>
@@ -34,14 +33,16 @@
 
 #include <U2Gui/HelpButton.h>
 
+#include <ui_CreateObjectRelationDialog.h>
+
 namespace U2 {
 
-CreateObjectRelationDialogController::CreateObjectRelationDialogController(GObject *_assObj,
-                                                                           const QList<GObject *> &_objects,
+CreateObjectRelationDialogController::CreateObjectRelationDialogController(GObject* _assObj,
+                                                                           const QList<GObject*>& _objects,
                                                                            GObjectRelationRole _role,
                                                                            bool rd,
-                                                                           const QString &relationHint,
-                                                                           QWidget *p)
+                                                                           const QString& relationHint,
+                                                                           QWidget* p)
     : QDialog(p), selectedObject(nullptr), assObj(_assObj), objects(_objects), role(_role), removeDuplicates(rd), relationIsSet(false) {
     assert(!objects.isEmpty());
     assert(assObj != nullptr);
@@ -51,7 +52,7 @@ CreateObjectRelationDialogController::CreateObjectRelationDialogController(GObje
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     QIcon objectIcon(":/core/images/gobject.png");
-    foreach (GObject *obj, objects) {
+    foreach (GObject* obj, objects) {
         ui->listWidget->addItem(new QListWidgetItem(objectIcon, obj->getGObjectName()));
     }
     ui->listWidget->setItemSelected(ui->listWidget->item(0), true);
@@ -62,10 +63,10 @@ void CreateObjectRelationDialogController::accept() {
     int idx = ui->listWidget->currentRow();
     assert(idx >= 0 && idx < objects.size());
 
-    GObject *selObj = objects[idx];
+    GObject* selObj = objects[idx];
     if (role == ObjectRole_Sequence && assObj->getGObjectType() == GObjectTypes::ANNOTATION_TABLE) {
-        U2SequenceObject *dnaObj = qobject_cast<U2SequenceObject *>(selObj);
-        AnnotationTableObject *ao = qobject_cast<AnnotationTableObject *>(assObj);
+        U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*>(selObj);
+        AnnotationTableObject* ao = qobject_cast<AnnotationTableObject*>(assObj);
         AnnotationTableObjectConstraints c;
         c.sequenceSizeToFit = dnaObj->getSequenceLength();
         bool res = ao->checkConstraints(&c);
@@ -77,7 +78,7 @@ void CreateObjectRelationDialogController::accept() {
         }
         if (removeDuplicates) {
             QList<GObjectRelation> oldRel = assObj->findRelatedObjectsByRole(role);
-            foreach (const GObjectRelation &r, oldRel) {
+            foreach (const GObjectRelation& r, oldRel) {
                 assObj->removeObjectRelation(r);
             }
         }

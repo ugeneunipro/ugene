@@ -32,7 +32,7 @@ const int INVALID_ITEM_INDEX = -1;
 
 namespace U2 {
 
-BaseCompleter::BaseCompleter(CompletionFiller *filler, QLineEdit *parent /* = 0*/)
+BaseCompleter::BaseCompleter(CompletionFiller* filler, QLineEdit* parent /* = 0*/)
     : QObject(parent), filler(filler), editor(parent), lastChosenItemIndex(INVALID_ITEM_INDEX) {
     popup = new QTreeWidget(parent);
     popup->setWindowFlags(Qt::Popup);
@@ -52,7 +52,7 @@ BaseCompleter::BaseCompleter(CompletionFiller *filler, QLineEdit *parent /* = 0*
     popup->installEventFilter(this);
     editor->installEventFilter(this);
 
-    connect(popup, SIGNAL(itemClicked(QTreeWidgetItem *, int)), SLOT(doneCompletion()));
+    connect(popup, SIGNAL(itemClicked(QTreeWidgetItem*, int)), SLOT(doneCompletion()));
     connect(editor, SIGNAL(textChanged(QString)), SLOT(sl_textChanged(QString)));
 }
 
@@ -60,11 +60,11 @@ BaseCompleter::~BaseCompleter() {
     delete filler;
 }
 
-bool BaseCompleter::eventFilter(QObject *obj, QEvent *ev) {
+bool BaseCompleter::eventFilter(QObject* obj, QEvent* ev) {
     QEvent::Type eventType = ev->type();
     if (obj == editor) {
         if (eventType == QEvent::FocusOut) {
-            QFocusEvent *focusEvent = static_cast<QFocusEvent *>(ev);
+            QFocusEvent* focusEvent = static_cast<QFocusEvent*>(ev);
             if (focusEvent->reason() == Qt::PopupFocusReason) {
                 return true;
             }
@@ -84,7 +84,7 @@ bool BaseCompleter::eventFilter(QObject *obj, QEvent *ev) {
 
     bool isConsumed = false;
     if (eventType == QEvent::KeyPress || eventType == QEvent::ShortcutOverride) {
-        int key = static_cast<QKeyEvent *>(ev)->key();
+        int key = static_cast<QKeyEvent*>(ev)->key();
         switch (key) {
             case Qt::Key_Enter:
             case Qt::Key_Return:
@@ -112,7 +112,7 @@ bool BaseCompleter::eventFilter(QObject *obj, QEvent *ev) {
     return isConsumed;
 }
 
-void BaseCompleter::showCompletion(const QStringList &choices) {
+void BaseCompleter::showCompletion(const QStringList& choices) {
     if (choices.isEmpty()) {
         popup->hide();
         return;
@@ -121,7 +121,7 @@ void BaseCompleter::showCompletion(const QStringList &choices) {
     popup->setUpdatesEnabled(false);
     popup->clear();
     for (int i = 0; i < choices.count(); ++i) {
-        QTreeWidgetItem *item;
+        QTreeWidgetItem* item;
         item = new QTreeWidgetItem(popup);
         item->setText(0, choices[i]);
     }
@@ -139,7 +139,7 @@ void BaseCompleter::showCompletion(const QStringList &choices) {
 void BaseCompleter::doneCompletion() {
     popup->hide();
     editor->setFocus();
-    QTreeWidgetItem *item = popup->currentItem();
+    QTreeWidgetItem* item = popup->currentItem();
     if (item) {
         QString result = filler->finalyze(editor->text(), item->text(0));
         editor->setText(result);
@@ -149,7 +149,7 @@ void BaseCompleter::doneCompletion() {
     }
 }
 
-void BaseCompleter::sl_textChanged(const QString &typedText) {
+void BaseCompleter::sl_textChanged(const QString& typedText) {
     if (typedText.isEmpty()) {
         popup->hide();
         return;
@@ -168,7 +168,7 @@ int BaseCompleter::getLastChosenItemIndex() const {
     return lastChosenItemIndex;
 }
 
-QStringList MSACompletionFiller::getSuggestions(const QString &userText) {
+QStringList MSACompletionFiller::getSuggestions(const QString& userText) {
     QStringList result;
     QString userTextLc = userText.toLower();  // TODO: does toLower work correctly for non-Latin1 characters range?
     for (QString sequenceName : qAsConst(seqNameList)) {
@@ -183,7 +183,7 @@ QStringList MSACompletionFiller::getSuggestions(const QString &userText) {
     return result;
 }
 
-QString MSACompletionFiller::finalyze(const QString & /*editorText*/, const QString &suggestion) {
+QString MSACompletionFiller::finalyze(const QString& /*editorText*/, const QString& suggestion) {
     return suggestion;
 }
 

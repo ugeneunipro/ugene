@@ -53,14 +53,14 @@ const QString ALGO_ATTR_ID("algorithm");
 const QString GAPS_ATTR_ID("keep-gaps");
 }  // namespace
 
-ExtractConsensusWorker::ExtractConsensusWorker(Actor *actor)
+ExtractConsensusWorker::ExtractConsensusWorker(Actor* actor)
     : BaseWorker(actor) {
 }
 
 void ExtractConsensusWorker::init() {
 }
 
-Task *ExtractConsensusWorker::tick() {
+Task* ExtractConsensusWorker::tick() {
     if (hasAssembly()) {
         U2OpStatusImpl os;
         const U2EntityRef assembly = takeAssembly(os);
@@ -74,7 +74,7 @@ Task *ExtractConsensusWorker::tick() {
 }
 
 void ExtractConsensusWorker::sl_taskFinished() {
-    ExtractConsensusTaskHelper *t = dynamic_cast<ExtractConsensusTaskHelper *>(sender());
+    ExtractConsensusTaskHelper* t = dynamic_cast<ExtractConsensusTaskHelper*>(sender());
     CHECK(nullptr != t, );
     CHECK(t->isFinished() && !t->hasError(), );
     CHECK(!t->isCanceled(), );
@@ -86,12 +86,12 @@ void ExtractConsensusWorker::cleanup() {
 }
 
 bool ExtractConsensusWorker::hasAssembly() const {
-    const IntegralBus *port = ports[BasePorts::IN_ASSEMBLY_PORT_ID()];
+    const IntegralBus* port = ports[BasePorts::IN_ASSEMBLY_PORT_ID()];
     SAFE_POINT(nullptr != port, "NULL assembly port", false);
     return port->hasMessage();
 }
 
-U2EntityRef ExtractConsensusWorker::takeAssembly(U2OpStatus &os) {
+U2EntityRef ExtractConsensusWorker::takeAssembly(U2OpStatus& os) {
     const Message m = getMessageAndSetupScriptValues(ports[BasePorts::IN_ASSEMBLY_PORT_ID()]);
     const QVariantMap data = m.getData().toMap();
     if (!data.contains(BaseSlots::ASSEMBLY_SLOT().getId())) {
@@ -99,7 +99,7 @@ U2EntityRef ExtractConsensusWorker::takeAssembly(U2OpStatus &os) {
         return U2EntityRef();
     }
     const SharedDbiDataHandler dbiId = data[BaseSlots::ASSEMBLY_SLOT().getId()].value<SharedDbiDataHandler>();
-    const AssemblyObject *obj = StorageUtils::getAssemblyObject(context->getDataStorage(), dbiId);
+    const AssemblyObject* obj = StorageUtils::getAssemblyObject(context->getDataStorage(), dbiId);
     if (nullptr == obj) {
         os.setError(tr("Error with assembly object"));
         return U2EntityRef();
@@ -107,29 +107,29 @@ U2EntityRef ExtractConsensusWorker::takeAssembly(U2OpStatus &os) {
     return obj->getEntityRef();
 }
 
-Task *ExtractConsensusWorker::createTask(const U2EntityRef &assembly) {
+Task* ExtractConsensusWorker::createTask(const U2EntityRef& assembly) {
     const QString algoId = getValue<QString>(ALGO_ATTR_ID);
     const bool keepGaps = getValue<bool>(GAPS_ATTR_ID);
-    Task *t = new ExtractConsensusTaskHelper(algoId, keepGaps, assembly, context->getDataStorage()->getDbiRef());
+    Task* t = new ExtractConsensusTaskHelper(algoId, keepGaps, assembly, context->getDataStorage()->getDbiRef());
     connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
     return t;
 }
 
 void ExtractConsensusWorker::finish() {
-    IntegralBus *inPort = ports[BasePorts::IN_ASSEMBLY_PORT_ID()];
+    IntegralBus* inPort = ports[BasePorts::IN_ASSEMBLY_PORT_ID()];
     SAFE_POINT(nullptr != inPort, "NULL assembly port", );
     SAFE_POINT(inPort->isEnded(), "The assembly is not ended", );
-    IntegralBus *outPort = ports[BasePorts::OUT_SEQ_PORT_ID()];
+    IntegralBus* outPort = ports[BasePorts::OUT_SEQ_PORT_ID()];
     SAFE_POINT(nullptr != outPort, "NULL sequence port", );
 
     outPort->setEnded();
     setDone();
 }
 
-void ExtractConsensusWorker::sendResult(const SharedDbiDataHandler &seqId) {
+void ExtractConsensusWorker::sendResult(const SharedDbiDataHandler& seqId) {
     QVariantMap data;
     data[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(seqId);
-    IntegralBus *outPort = ports[BasePorts::OUT_SEQ_PORT_ID()];
+    IntegralBus* outPort = ports[BasePorts::OUT_SEQ_PORT_ID()];
     SAFE_POINT(nullptr != outPort, "NULL sequence port", );
 
     outPort->put(Message(outPort->getBusType(), data));
@@ -138,7 +138,7 @@ void ExtractConsensusWorker::sendResult(const SharedDbiDataHandler &seqId) {
 /************************************************************************/
 /* ExtractConsensusTaskHelper */
 /************************************************************************/
-ExtractConsensusTaskHelper::ExtractConsensusTaskHelper(const QString &algoId, bool keepGaps, const U2EntityRef &assembly, const U2DbiRef &targetDbi)
+ExtractConsensusTaskHelper::ExtractConsensusTaskHelper(const QString& algoId, bool keepGaps, const U2EntityRef& assembly, const U2DbiRef& targetDbi)
     : Task(tr("Extract consensus"), TaskFlags_NR_FOSCOE),
       algoId(algoId),
       keepGaps(keepGaps),
@@ -174,11 +174,11 @@ U2EntityRef ExtractConsensusTaskHelper::getResult() const {
     return ref;
 }
 
-AssemblyConsensusAlgorithm *ExtractConsensusTaskHelper::createAlgorithm() {
-    AssemblyConsensusAlgorithmRegistry *reg = AppContext::getAssemblyConsensusAlgorithmRegistry();
+AssemblyConsensusAlgorithm* ExtractConsensusTaskHelper::createAlgorithm() {
+    AssemblyConsensusAlgorithmRegistry* reg = AppContext::getAssemblyConsensusAlgorithmRegistry();
     SAFE_POINT_EXT(nullptr != reg, setError("NULL registry"), nullptr);
 
-    AssemblyConsensusAlgorithmFactory *f = reg->getAlgorithmFactory(algoId);
+    AssemblyConsensusAlgorithmFactory* f = reg->getAlgorithmFactory(algoId);
     if (nullptr == f) {
         setError(tr("Unknown consensus algorithm: ") + algoId);
         return nullptr;
@@ -187,17 +187,17 @@ AssemblyConsensusAlgorithm *ExtractConsensusTaskHelper::createAlgorithm() {
     return f->createAlgorithm();
 }
 
-AssemblyModel *ExtractConsensusTaskHelper::createModel() {
+AssemblyModel* ExtractConsensusTaskHelper::createModel() {
     const DbiConnection con(assembly.dbiRef, stateInfo);
     CHECK_OP(stateInfo, nullptr);
 
-    U2AssemblyDbi *dbi = con.dbi->getAssemblyDbi();
+    U2AssemblyDbi* dbi = con.dbi->getAssemblyDbi();
     SAFE_POINT_EXT(nullptr != dbi, setError("NULL assembly dbi"), nullptr);
 
     const U2Assembly object = dbi->getAssemblyObject(assembly.entityId, stateInfo);
     CHECK_OP(stateInfo, nullptr);
 
-    AssemblyModel *model = new AssemblyModel(con);
+    AssemblyModel* model = new AssemblyModel(con);
     model->setAssembly(dbi, object);
 
     return model;
@@ -210,19 +210,19 @@ ExtractConsensusWorkerFactory::ExtractConsensusWorkerFactory()
     : DomainFactory(ACTOR_ID) {
 }
 
-Worker *ExtractConsensusWorkerFactory::createWorker(Actor *actor) {
+Worker* ExtractConsensusWorkerFactory::createWorker(Actor* actor) {
     return new ExtractConsensusWorker(actor);
 }
 
 void ExtractConsensusWorkerFactory::init() {
-    AssemblyConsensusAlgorithmRegistry *reg = AppContext::getAssemblyConsensusAlgorithmRegistry();
+    AssemblyConsensusAlgorithmRegistry* reg = AppContext::getAssemblyConsensusAlgorithmRegistry();
     SAFE_POINT(nullptr != reg, "NULL registry", );
 
     const Descriptor desc(ACTOR_ID,
                           QObject::tr("Extract Consensus from Assembly"),
                           QObject::tr("Extract the consensus sequence from the incoming assembly."));
 
-    QList<PortDescriptor *> ports;
+    QList<PortDescriptor*> ports;
     {
         QMap<Descriptor, DataTypePtr> inData;
         inData[BaseSlots::ASSEMBLY_SLOT()] = BaseTypes::ASSEMBLY_TYPE();
@@ -235,7 +235,7 @@ void ExtractConsensusWorkerFactory::init() {
         ports << new PortDescriptor(BasePorts::OUT_SEQ_PORT_ID(), outType, false, true);
     }
 
-    QList<Attribute *> attrs;
+    QList<Attribute*> attrs;
     {
         const Descriptor algoDesc(ALGO_ATTR_ID,
                                   QObject::tr("Algorithm"),
@@ -247,29 +247,29 @@ void ExtractConsensusWorkerFactory::init() {
         attrs << new Attribute(gapsDesc, BaseTypes::BOOL_TYPE(), true, true);
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap algos;
         foreach (const QString algoId, reg->getAlgorithmIds()) {
-            AssemblyConsensusAlgorithmFactory *f = reg->getAlgorithmFactory(algoId);
+            AssemblyConsensusAlgorithmFactory* f = reg->getAlgorithmFactory(algoId);
             algos[f->getName()] = algoId;
         }
         delegates[ALGO_ATTR_ID] = new ComboBoxDelegate(algos);
     }
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attrs);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, ports, attrs);
     proto->setPrompter(new ExtractConsensusWorkerPrompter());
     proto->setEditor(new DelegateEditor(delegates));
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new ExtractConsensusWorkerFactory());
 }
 
 /************************************************************************/
 /* ExtractConsensusWorkerPrompter */
 /************************************************************************/
-ExtractConsensusWorkerPrompter::ExtractConsensusWorkerPrompter(Actor *actor)
+ExtractConsensusWorkerPrompter::ExtractConsensusWorkerPrompter(Actor* actor)
     : PrompterBase<ExtractConsensusWorkerPrompter>(actor) {
 }
 

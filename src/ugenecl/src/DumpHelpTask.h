@@ -41,7 +41,7 @@ public:
 
 protected:
     /// Called by scheduler when subtask is finished.
-    virtual QList<Task *> onSubTaskFinished(Task *subTask);
+    virtual QList<Task*> onSubTaskFinished(Task* subTask);
 };
 
 }  // namespace U2

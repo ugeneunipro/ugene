@@ -34,18 +34,18 @@ ProjectFilterTaskRegistry::~ProjectFilterTaskRegistry() {
     qDeleteAll(factories);
 }
 
-QList<AbstractProjectFilterTask *> ProjectFilterTaskRegistry::createFilterTasks(const ProjectTreeControllerModeSettings &settings,
-                                                                                const QList<QPointer<Document>> &docs) {
+QList<AbstractProjectFilterTask*> ProjectFilterTaskRegistry::createFilterTasks(const ProjectTreeControllerModeSettings& settings,
+                                                                               const QList<QPointer<Document>>& docs) {
     QMutexLocker guard(&lock);
 
-    QList<AbstractProjectFilterTask *> result;
-    foreach (ProjectFilterTaskFactory *factory, factories) {
+    QList<AbstractProjectFilterTask*> result;
+    foreach (ProjectFilterTaskFactory* factory, factories) {
         result.append(factory->registerNewTask(settings, docs));
     }
     return result;
 }
 
-void ProjectFilterTaskRegistry::registerTaskFactory(ProjectFilterTaskFactory *factory) {
+void ProjectFilterTaskRegistry::registerTaskFactory(ProjectFilterTaskFactory* factory) {
     SAFE_POINT(nullptr != factory, L10N::nullPointerError("Project filter task factory"), );
     SAFE_POINT(!factories.contains(factory), "Attempting to register a factory twice", );
 

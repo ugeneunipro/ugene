@@ -32,16 +32,16 @@ class PrimerLibraryTable;
 class PrimerLibraryTableController : public QObject {
     Q_OBJECT
 public:
-    PrimerLibraryTableController(QObject *parent, PrimerLibraryTable *table);
+    PrimerLibraryTableController(QObject* parent, PrimerLibraryTable* table);
 
 private slots:
-    void sl_primerAdded(const U2DataId &primerId);
-    void sl_primerChanged(const U2DataId &primerId);
-    void sl_primerRemoved(const U2DataId &primerId);
+    void sl_primerAdded(const U2DataId& primerId);
+    void sl_primerChanged(const U2DataId& primerId);
+    void sl_primerRemoved(const U2DataId& primerId);
 
 private:
-    PrimerLibraryTable *table;
-    PrimerLibrary *library;
+    PrimerLibraryTable* table;
+    PrimerLibrary* library;
 };
 
 }  // namespace U2

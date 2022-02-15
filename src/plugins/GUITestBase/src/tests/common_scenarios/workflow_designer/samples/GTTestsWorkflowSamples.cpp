@@ -50,8 +50,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     class FilterShortScaffoldsWizard : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) override {
-            QWidget *const wizard = GTWidget::getActiveModalWidget(os);
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* const wizard = GTWidget::getActiveModalWidget(os);
 
             const QString dirPath = QDir(dataDir + "samples/Genbank").absolutePath();
             const auto chooseDirDialog = new GTFileDialogUtils(os, dirPath, "", HI::GTFileDialogUtils::Choose);

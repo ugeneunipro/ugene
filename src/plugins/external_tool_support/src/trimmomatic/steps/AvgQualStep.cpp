@@ -43,15 +43,15 @@ AvgQualStep::AvgQualStep()
                      "</body></html>");
 }
 
-TrimmomaticStepSettingsWidget *AvgQualStep::createWidget() const {
+TrimmomaticStepSettingsWidget* AvgQualStep::createWidget() const {
     return new QualitySettingsWidget(tr("The minimum average quality required to keep a read."));
 }
 
-QString AvgQualStep::serializeState(const QVariantMap &widgetState) const {
+QString AvgQualStep::serializeState(const QVariantMap& widgetState) const {
     return QualitySettingsWidget::serializeState(widgetState);
 }
 
-QVariantMap AvgQualStep::parseState(const QString &command) const {
+QVariantMap AvgQualStep::parseState(const QString& command) const {
     return QualitySettingsWidget::parseState(command, id);
 }
 
@@ -59,9 +59,9 @@ AvgQualStepFactory::AvgQualStepFactory()
     : TrimmomaticStepFactory(ID) {
 }
 
-AvgQualStep *AvgQualStepFactory::createStep() const {
+AvgQualStep* AvgQualStepFactory::createStep() const {
     return new AvgQualStep();
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

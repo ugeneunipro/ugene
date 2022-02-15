@@ -26,7 +26,7 @@
 
 namespace HI {
 
-MainThreadRunnable::MainThreadRunnable(GUITestOpStatus &os, CustomScenario *scenario)
+MainThreadRunnable::MainThreadRunnable(GUITestOpStatus& os, CustomScenario* scenario)
     : QObject(nullptr),
       os(os),
       scenario(scenario) {
@@ -51,9 +51,9 @@ void MainThreadRunnable::doRequest() {
     obj.moveToThread(QApplication::instance()->thread());
 
     QMetaObject::Connection connection = connect(this,
-                                                 SIGNAL(si_request(MainThreadRunnable *)),
+                                                 SIGNAL(si_request(MainThreadRunnable*)),
                                                  &obj,
-                                                 SLOT(sl_requestAsked(MainThreadRunnable *)),
+                                                 SLOT(sl_requestAsked(MainThreadRunnable*)),
                                                  Qt::BlockingQueuedConnection);
 
     emit si_request(this);
@@ -68,7 +68,7 @@ void MainThreadRunnable::run() {
     scenario->run(os);
 }
 
-void MainThreadRunnable::runInMainThread(GUITestOpStatus &os, CustomScenario *scenario) {
+void MainThreadRunnable::runInMainThread(GUITestOpStatus& os, CustomScenario* scenario) {
     if (Q_UNLIKELY(NULL == scenario)) {
         os.setError("Custom scenario is NULL");
         return;
@@ -81,7 +81,7 @@ MainThreadRunnableObject::MainThreadRunnableObject()
     : QObject(NULL) {
 }
 
-void MainThreadRunnableObject::sl_requestAsked(MainThreadRunnable *runnable) {
+void MainThreadRunnableObject::sl_requestAsked(MainThreadRunnable* runnable) {
     runnable->run();
 }
 

@@ -100,7 +100,7 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0002) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Ctrl + C(Cmd + C on Mac OS X) keyboard shortcut is shown nearby the "Copy sequence" item.
     QKeySequence check_ks = QKeySequence(QKeySequence(Qt::CTRL | Qt::Key_C));
-    QAction *copy = GTAction::findActionByText(os, "Copy selected sequence");
+    QAction* copy = GTAction::findActionByText(os, "Copy selected sequence");
     QKeySequence ks = copy->shortcut();
     CHECK_SET_ERR(ks == check_ks, "Unexpected shortcut");
 
@@ -149,10 +149,10 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0003) {
     //    Expected state :
     //    The Details View has been scrolled to the annotation location.The annotation has wide border.There is dashed selection of the region.
     //    The "CDS" group in the Annotations Editor has been opened.The annotation is selected in the tree view.
-    QList<QTreeWidgetItem *> items = GTUtilsAnnotationsTreeView::findItems(os, "CDS");
+    QList<QTreeWidgetItem*> items = GTUtilsAnnotationsTreeView::findItems(os, "CDS");
     CHECK_SET_ERR(items.size() == 4, QString("Incorect size of CDS items in the tree, expcted: 4, current: %1").arg(items.size()));
     CHECK_SET_ERR(items[2]->isSelected(), "Item is not selected");
-    QTreeWidgetItem *par = items[2]->parent();
+    QTreeWidgetItem* par = items[2]->parent();
     while (par != nullptr) {
         CHECK_SET_ERR(par->isExpanded(), "Item is not expanded");
         par = par->parent();
@@ -160,7 +160,7 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0003) {
     CHECK_SET_ERR(!items[2]->isExpanded(), "Item is expanded");
 
     // 3. Click on the "Zoom In" button in the Zoom View left toolbar.
-    QAction *zoom = GTAction::findActionByText(os, "Zoom In");
+    QAction* zoom = GTAction::findActionByText(os, "Zoom In");
     CHECK_SET_ERR(zoom != nullptr, "Cannot find Zoom In action");
     GTWidget::click(os, GTAction::button(os, zoom));
 
@@ -178,7 +178,7 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0003) {
     CHECK_SET_ERR(start < 1000, "Location moved incorrect, second check");
 
     // 5. In the Details View scroll to coordinate 5050. Double - click on the annotation located there.
-    QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
+    QAction* wrapMode = GTAction::findActionByText(os, "Wrap sequence");
     CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
     GTWidget::click(os, GTAction::button(os, wrapMode));
     GTUtilsSequenceView::clickAnnotationDet(os, "CDS", 5048, 0, true);
@@ -196,7 +196,7 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0004) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Switch on the editing mode.
-    QAction *editMode = GTAction::findActionByText(os, "Switch on the editing mode");
+    QAction* editMode = GTAction::findActionByText(os, "Switch on the editing mode");
     CHECK_SET_ERR(editMode != nullptr, "Cannot find Edit mode action");
     GTWidget::click(os, GTAction::button(os, editMode));
 
@@ -210,7 +210,7 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0004) {
     // Expected state:
     // The "misc_feature" annotations with locations (2..590) and (13..15) have been removed.
     // The sequence has been modified. It starts from characters "AGTGGGGGCT".
-    QList<QTreeWidgetItem *> items = GTUtilsAnnotationsTreeView::findItems(os, "misc_feature");
+    QList<QTreeWidgetItem*> items = GTUtilsAnnotationsTreeView::findItems(os, "misc_feature");
     CHECK_SET_ERR(items.size() == 1, "Annotation was not removed");
 }
 
@@ -237,7 +237,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0001) {
     CHECK_SET_ERR(selection.isEmpty(), "Some incorrect selection");
 
     //    In the Annotations Editor : both annotations are selected in the tree view.
-    QList<QTreeWidgetItem *> items = GTUtilsAnnotationsTreeView::findItems(os, "CDS");
+    QList<QTreeWidgetItem*> items = GTUtilsAnnotationsTreeView::findItems(os, "CDS");
     CHECK_SET_ERR(items.size() == 4, QString("Incorect size of CDS items in the tree, expcted: 4, current: %1").arg(items.size()));
     CHECK_SET_ERR(items[0]->isSelected(), "First item in the annotation tree view is not selected");
     CHECK_SET_ERR(items[1]->isSelected(), "Second item in the annotation tree view is not selected");
@@ -425,7 +425,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0003) {
     CHECK_SET_ERR(sel == U2Region(2658, 311), QString("Unexpected selected region, expected: start 2658, length 311, current: start %1 length %2").arg(sel.startPos).arg(sel.length));
 
     //    The first and the second CDS annotations are selected(but not their regions).
-    QList<QTreeWidgetItem *> items = GTUtilsAnnotationsTreeView::findItems(os, "CDS");
+    QList<QTreeWidgetItem*> items = GTUtilsAnnotationsTreeView::findItems(os, "CDS");
     CHECK_SET_ERR(items.size() == 4, QString("Incorrect size of CDS items in the tree, expected: 4, current: %1").arg(items.size()));
     CHECK_SET_ERR(items[0]->isSelected(), "First item in the annotation tree view is not selected");
     CHECK_SET_ERR(items[1]->isSelected(), "Second item in the annotation tree view is not selected");
@@ -507,7 +507,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0002) {
 
     //    Ctrl + C(Cmd + C on Mac OS X) keyboard shortcut is shown nearby the "Copy annotation sequence" item.
     QKeySequence check_ks = QKeySequence(QKeySequence(Qt::CTRL | Qt::Key_C));
-    QAction *copy = GTAction::findActionByText(os, "Copy annotation sequence");
+    QAction* copy = GTAction::findActionByText(os, "Copy annotation sequence");
     QKeySequence ks = copy->shortcut();
     CHECK_SET_ERR(ks == check_ks, "Unexpected shortcut");
 
@@ -617,10 +617,10 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0004) {
     //    Expected state :
     //    The Details View has been scrolled to the annotation location.The annotation has wide border.
     //    The "CDS" group in the Annotations Editor has been opened.The annotation is selected in the tree view.
-    QList<QTreeWidgetItem *> items = GTUtilsAnnotationsTreeView::findItems(os, "CDS");
+    QList<QTreeWidgetItem*> items = GTUtilsAnnotationsTreeView::findItems(os, "CDS");
     CHECK_SET_ERR(items.size() == 4, QString("Incorect size of CDS items in the tree, expcted: 4, current: %1").arg(items.size()));
     CHECK_SET_ERR(items[2]->isSelected(), "Item is not selected");
-    QTreeWidgetItem *par = items[2]->parent();
+    QTreeWidgetItem* par = items[2]->parent();
     while (par != nullptr) {
         CHECK_SET_ERR(par->isExpanded(), "Item is not expanded");
         par = par->parent();
@@ -628,7 +628,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0004) {
     CHECK_SET_ERR(!items[2]->isExpanded(), "Item is expanded");
 
     // 3. Click on the "Zoom In" button in the Zoom View left toolbar.
-    QAction *zoom = GTAction::findActionByText(os, "Zoom In");
+    QAction* zoom = GTAction::findActionByText(os, "Zoom In");
     CHECK_SET_ERR(zoom != nullptr, "Cannot find Zoom In action");
     GTWidget::click(os, GTAction::button(os, zoom));
 
@@ -646,7 +646,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0004) {
     CHECK_SET_ERR(start < 1000, "Location moved incorrect, second check");
 
     // 5. In the Details View scroll to coordinate 5050. Click on the annotation located there.
-    QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
+    QAction* wrapMode = GTAction::findActionByText(os, "Wrap sequence");
     CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
     GTWidget::click(os, GTAction::button(os, wrapMode));
     GTUtilsSequenceView::clickAnnotationDet(os, "CDS", 5048, 0, false);
@@ -664,7 +664,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0005) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Switch on the editing mode.
-    QAction *editMode = GTAction::findActionByText(os, "Switch on the editing mode");
+    QAction* editMode = GTAction::findActionByText(os, "Switch on the editing mode");
     CHECK_SET_ERR(editMode != nullptr, "Cannot find Edit mode action");
     GTWidget::click(os, GTAction::button(os, editMode));
 
@@ -675,7 +675,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0005) {
     GTKeyboardDriver::keyClick('g');
 
     //    Expected state : the sequence has been modified.It starts from characters "AAATGAGAAGAC".
-    QList<QTreeWidgetItem *> items = GTUtilsAnnotationsTreeView::findItems(os, "misc_feature");
+    QList<QTreeWidgetItem*> items = GTUtilsAnnotationsTreeView::findItems(os, "misc_feature");
     CHECK_SET_ERR(items.size() == 2, "Annotation was removed");
 }
 

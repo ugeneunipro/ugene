@@ -68,7 +68,7 @@ Task::ReportResult TmpDirChecker::report() {
     return ReportResult_Finished;
 }
 
-QString TmpDirChecker::getNewFilePath(const QString &dirPath, const QString &baseName) {
+QString TmpDirChecker::getNewFilePath(const QString& dirPath, const QString& baseName) {
     QString filePath;
     int idx = 0;
     do {
@@ -78,7 +78,7 @@ QString TmpDirChecker::getNewFilePath(const QString &dirPath, const QString &bas
     return filePath;
 }
 
-bool TmpDirChecker::checkPath(QString &path) {
+bool TmpDirChecker::checkPath(QString& path) {
     QDir dir;
     dir.mkpath(path);
     return FileAndDirectoryUtils::isDirectoryWritable(path);

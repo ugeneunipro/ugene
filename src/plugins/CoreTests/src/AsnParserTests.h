@@ -44,7 +44,7 @@ public:
 private:
     QString asnTreeContextName;
     bool contextAdded;
-    AsnNode *rootElem;
+    AsnNode* rootElem;
 };
 
 class GTest_FindFirstNodeByName : public XmlTest {
@@ -99,7 +99,7 @@ private:
 
 class AsnParserTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

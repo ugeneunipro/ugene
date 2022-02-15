@@ -56,7 +56,7 @@ public:
     TaskViewDockWidget();
     ~TaskViewDockWidget();
 
-    void selectTask(Task *t);
+    void selectTask(Task* t);
 
     int countAvailableReports() const;
 
@@ -69,80 +69,80 @@ signals:
     void si_reportsCountChanged();
 
 private slots:
-    void sl_onTopLevelTaskRegistered(Task *);
-    void sl_onTopLevelTaskUnregistered(Task *t);
-    void sl_onStateChanged(Task *t);
-    void sl_onSubtaskAdded(Task *sub);
+    void sl_onTopLevelTaskRegistered(Task*);
+    void sl_onTopLevelTaskUnregistered(Task* t);
+    void sl_onStateChanged(Task* t);
+    void sl_onSubtaskAdded(Task* sub);
     void sl_onTaskProgress();
     void sl_onTaskDescription();
-    void sl_onContextMenuRequested(const QPoint &pos);
+    void sl_onContextMenuRequested(const QPoint& pos);
     void sl_onTreeSelectionChanged();
     void sl_onCancelTask();
     void sl_onViewTaskReport();
     void sl_onRemoveTaskReport();
     void sl_cancelTaskByButton();
     void sl_activateReportByButton();
-    void sl_itemDoubleClicked(QTreeWidgetItem *item, int column);
-    void sl_itemExpanded(QTreeWidgetItem *i);
+    void sl_itemDoubleClicked(QTreeWidgetItem* item, int column);
+    void sl_itemExpanded(QTreeWidgetItem* i);
 
 private:
-    void activateReport(TVTreeItem *i);
-    void removeReport(TVTreeItem *i);
+    void activateReport(TVTreeItem* i);
+    void removeReport(TVTreeItem* i);
     void initActions();
     void updateState();
     void buildTree();
-    TVTreeItem *createTaskItem(Task *t);
-    void addTopLevelTask(Task *t);
+    TVTreeItem* createTaskItem(Task* t);
+    void addTopLevelTask(Task* t);
 
-    TVTreeItem *findItem(Task *t, bool topLevelOnly) const;
-    TVTreeItem *findChildItem(TVTreeItem *i, Task *t) const;
+    TVTreeItem* findItem(Task* t, bool topLevelOnly) const;
+    TVTreeItem* findChildItem(TVTreeItem* i, Task* t) const;
 
     // actual widget
-    QTreeWidget *tree;
-    QAction *viewReportAction;
-    QAction *cancelTaskAction;
-    QAction *removeReportAction;
+    QTreeWidget* tree;
+    QAction* viewReportAction;
+    QAction* cancelTaskAction;
+    QAction* removeReportAction;
 };
 
 class TVReportWindow : public MWMDIWindow {
     Q_OBJECT
 public:
-    TVReportWindow(const QString &taskName, qint64 taskId, const QString &report);
+    TVReportWindow(const QString& taskName, qint64 taskId, const QString& report);
 
-    static QString genWindowName(const QString &taskName);
-    static QString prepareReportHTML(Task *t);
+    static QString genWindowName(const QString& taskName);
+    static QString prepareReportHTML(Task* t);
 
     qint64 taskId;
-    QTextEdit *textEdit;
-    bool eventFilter(QObject *o, QEvent *e);
+    QTextEdit* textEdit;
+    bool eventFilter(QObject* o, QEvent* e);
 
 private slots:
     void sl_open();
 
 private:
     static QString convertTime(int msecs);
-    void showContextMenu(const QPoint &pos, const QString &url);
-    QAction *createDirAction(const QString &url, QObject *parent);
-    QAction *createFileAction(const QString &url, QObject *parent);
-    QAction *createOpenAction(const QString &name, const QString &url, QObject *parent, const QString &icon = QString());
+    void showContextMenu(const QPoint& pos, const QString& url);
+    QAction* createDirAction(const QString& url, QObject* parent);
+    QAction* createFileAction(const QString& url, QObject* parent);
+    QAction* createOpenAction(const QString& name, const QString& url, QObject* parent, const QString& icon = QString());
 };
 
 class TVButton;
 class TVTreeItem : public QTreeWidgetItem {
 public:
-    TVTreeItem(TaskViewDockWidget *w, Task *t);
+    TVTreeItem(TaskViewDockWidget* w, Task* t);
 
     void updateVisual();
 
-    Task *task;
-    TaskViewDockWidget *w;
+    Task* task;
+    TaskViewDockWidget* w;
 
     qint64 taskId;
     QString taskName;
 
     QString taskReport;
-    TVButton *reportButton;
-    TVButton *cancelButton;
+    TVButton* reportButton;
+    TVButton* cancelButton;
     int reportWindowId;
     bool wasCanceled;
     bool wasError;
@@ -153,9 +153,9 @@ public:
 class TVButton : public QPushButton {
     Q_OBJECT
 public:
-    TVButton(TVTreeItem *t)
+    TVButton(TVTreeItem* t)
         : ti(t) {};
-    TVTreeItem *ti;
+    TVTreeItem* ti;
 };
 
 }  // namespace U2

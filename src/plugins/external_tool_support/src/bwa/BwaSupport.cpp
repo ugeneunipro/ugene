@@ -50,4 +50,4 @@ BwaSupport::BwaSupport()
     toolKitName = "BWA";
 }
 
-}    // namespace U2
+}  // namespace U2

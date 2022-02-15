@@ -40,15 +40,15 @@ bool U2MsaGap::isValid() const {
     return startPos >= 0 && length > 0;
 }
 
-bool U2MsaGap::operator==(const U2MsaGap &g) const {
+bool U2MsaGap::operator==(const U2MsaGap& g) const {
     return ((startPos == g.startPos) && (length == g.length));
 }
 
-bool U2MsaGap::lessThan(const U2MsaGap &first, const U2MsaGap &second) {
+bool U2MsaGap::lessThan(const U2MsaGap& first, const U2MsaGap& second) {
     return first.startPos < second.startPos;
 }
 
-U2MsaGap U2MsaGap::intersect(const U2MsaGap &anotherGap) const {
+U2MsaGap U2MsaGap::intersect(const U2MsaGap& anotherGap) const {
     const qint64 newOffset = qMax(startPos, anotherGap.startPos);
     const qint64 newEnd = qMin(endPos(), anotherGap.endPos());
     if (newOffset > newEnd) {
@@ -80,7 +80,7 @@ U2Msa::U2Msa()
     : length(0) {
 }
 
-U2Msa::U2Msa(const U2DataId &id, const QString &dbId, qint64 version)
+U2Msa::U2Msa(const U2DataId& id, const QString& dbId, qint64 version)
     : U2Object(id, dbId, version) {
 }
 

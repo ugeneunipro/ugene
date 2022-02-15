@@ -41,23 +41,23 @@ class SequenceExportSettingsWidget;
 class SingleSequenceImageExportController : public ImageExportController {
     Q_OBJECT
 public:
-    SingleSequenceImageExportController(ADVSingleSequenceWidget *sequenceWidget);
+    SingleSequenceImageExportController(ADVSingleSequenceWidget* sequenceWidget);
 
 protected:
     void initSettingsWidget();
 
-    Task *getExportToSvgTask(const ImageExportTaskSettings &imageSettings) const;
-    Task *getExportToPdfTask(const ImageExportTaskSettings &imageSettings) const;
-    Task *getExportToBitmapTask(const ImageExportTaskSettings &imageSettings) const;
+    Task* getExportToSvgTask(const ImageExportTaskSettings& imageSettings) const;
+    Task* getExportToPdfTask(const ImageExportTaskSettings& imageSettings) const;
+    Task* getExportToBitmapTask(const ImageExportTaskSettings& imageSettings) const;
 
 public slots:
-    void sl_onFormatChanged(const QString &format);
+    void sl_onFormatChanged(const QString& format);
     void sl_customSettingsChanged();
 
 private:
     void checkExportSettings();
-    ADVSingleSequenceWidget *sequenceWidget;
-    SequenceExportSettingsWidget *seqSettingsWidget;
+    ADVSingleSequenceWidget* sequenceWidget;
+    SequenceExportSettingsWidget* seqSettingsWidget;
     QString format;
 
     QSharedPointer<ExportImagePainter> currentPainter;

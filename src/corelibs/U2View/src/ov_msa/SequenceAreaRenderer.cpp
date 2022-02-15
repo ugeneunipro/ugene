@@ -42,26 +42,26 @@ namespace U2 {
  */
 const int SequenceAreaRenderer::SELECTION_SATURATION_INCREASE = 40;
 
-SequenceAreaRenderer::SequenceAreaRenderer(MaEditorWgt *ui, MaEditorSequenceArea *seqAreaWgt)
+SequenceAreaRenderer::SequenceAreaRenderer(MaEditorWgt* ui, MaEditorSequenceArea* seqAreaWgt)
     : QObject(seqAreaWgt),
       ui(ui),
       seqAreaWgt(seqAreaWgt),
       drawLeadingAndTrailingGaps(true) {
 }
 
-bool SequenceAreaRenderer::drawContent(QPainter &painter, const U2Region &columns, const QList<int> &maRows, int xStart, int yStart) const {
+bool SequenceAreaRenderer::drawContent(QPainter& painter, const U2Region& columns, const QList<int>& maRows, int xStart, int yStart) const {
     CHECK(!columns.isEmpty(), false);
     CHECK(!maRows.isEmpty(), false);
 
-    MsaHighlightingScheme *highlightingScheme = seqAreaWgt->getCurrentHighlightingScheme();
-    MaEditor *editor = seqAreaWgt->getEditor();
+    MsaHighlightingScheme* highlightingScheme = seqAreaWgt->getCurrentHighlightingScheme();
+    MaEditor* editor = seqAreaWgt->getEditor();
 
     painter.setPen(Qt::black);
     painter.setFont(editor->getFont());
 
-    MultipleAlignmentObject *maObj = editor->getMaObject();
+    MultipleAlignmentObject* maObj = editor->getMaObject();
     SAFE_POINT(maObj != nullptr, tr("Alignment object is NULL"), false);
-    const MultipleAlignment &ma = maObj->getMultipleAlignment();
+    const MultipleAlignment& ma = maObj->getMultipleAlignment();
 
     // Use dots to draw regions, which are similar to reference sequence
     highlightingScheme->setUseDots(seqAreaWgt->getUseDotsCheckedState());
@@ -77,8 +77,8 @@ bool SequenceAreaRenderer::drawContent(QPainter &painter, const U2Region &column
 
 #define SELECTION_STROKE_WIDTH 2
 
-void SequenceAreaRenderer::drawSelectionFrame(QPainter &painter) const {
-    const MaEditorSelection &selection = seqAreaWgt->getEditor()->getSelection();
+void SequenceAreaRenderer::drawSelectionFrame(QPainter& painter) const {
+    const MaEditorSelection& selection = seqAreaWgt->getEditor()->getSelection();
     CHECK(!selection.isEmpty(), );
 
     painter.save();
@@ -90,7 +90,7 @@ void SequenceAreaRenderer::drawSelectionFrame(QPainter &painter) const {
     painter.setPen(pen);
 
     const QList<QRect> selectionRects = selection.getRectList();
-    for (const QRect &selectionRect : qAsConst(selectionRects)) {
+    for (const QRect& selectionRect : qAsConst(selectionRects)) {
         QRect screenRect = ui->getDrawHelper()->getScreenRect(selectionRect);
         int viewWidth = ui->getSequenceArea()->width();
         if (screenRect.right() < 0 || screenRect.left() > viewWidth) {
@@ -117,20 +117,20 @@ void SequenceAreaRenderer::drawSelectionFrame(QPainter &painter) const {
     painter.restore();
 }
 
-void SequenceAreaRenderer::drawFocus(QPainter &painter) const {
+void SequenceAreaRenderer::drawFocus(QPainter& painter) const {
     if (seqAreaWgt->hasFocus()) {
         painter.setPen(QPen(Qt::black, 1, Qt::DotLine));
         painter.drawRect(0, 0, seqAreaWgt->width() - 1, seqAreaWgt->height() - 1);
     }
 }
 
-int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma, int maRowIndex, const U2Region &columns, int xStart, int yStart) const {
+int SequenceAreaRenderer::drawRow(QPainter& painter, const MultipleAlignment& ma, int maRowIndex, const U2Region& columns, int xStart, int yStart) const {
     // SANGER_TODO: deal with frequent handling of editor or h/color schemes through the editor etc.
     // move to class parameter
-    MsaHighlightingScheme *highlightingScheme = seqAreaWgt->getCurrentHighlightingScheme();
+    MsaHighlightingScheme* highlightingScheme = seqAreaWgt->getCurrentHighlightingScheme();
     highlightingScheme->setUseDots(seqAreaWgt->getUseDotsCheckedState());
 
-    MaEditor *editor = seqAreaWgt->getEditor();
+    MaEditor* editor = seqAreaWgt->getEditor();
     QString schemeName = highlightingScheme->metaObject()->className();
     bool isGapsScheme = schemeName == "U2::MSAHighlightingSchemeGaps";
     bool isResizeMode = editor->getResizeMode() == MSAEditor::ResizeMode_FontAndContent;
@@ -141,7 +141,7 @@ int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma
     bool hasReference = referenceMaRowIndex >= 0;
 
     qint64 regionEnd = qMin(columns.endPos(), (qint64)editor->getAlignmentLen() - 1);
-    const MultipleAlignmentRow &maRow = ma->getRow(maRowIndex);
+    const MultipleAlignmentRow& maRow = ma->getRow(maRowIndex);
     int rowHeight = ui->getRowHeightController()->getSingleRowHeight();
     int baseWidth = ui->getBaseWidthController()->getBaseWidth();
 

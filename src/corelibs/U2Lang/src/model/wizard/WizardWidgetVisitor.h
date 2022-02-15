@@ -29,18 +29,18 @@ namespace U2 {
 
 class U2LANG_EXPORT WizardWidgetVisitor {
 public:
-    virtual void visit(AttributeWidget *) = 0;
-    virtual void visit(WidgetsArea *) = 0;
-    virtual void visit(GroupWidget *) = 0;
-    virtual void visit(LogoWidget *) = 0;
-    virtual void visit(ElementSelectorWidget *) = 0;
-    virtual void visit(PairedReadsWidget *) = 0;
-    virtual void visit(UrlAndDatasetWidget *) = 0;
-    virtual void visit(RadioWidget *) = 0;
-    virtual void visit(SettingsWidget *) = 0;
-    virtual void visit(BowtieWidget *) = 0;
-    virtual void visit(TophatSamplesWidget *) = 0;
-    virtual void visit(LabelWidget *) = 0;
+    virtual void visit(AttributeWidget*) = 0;
+    virtual void visit(WidgetsArea*) = 0;
+    virtual void visit(GroupWidget*) = 0;
+    virtual void visit(LogoWidget*) = 0;
+    virtual void visit(ElementSelectorWidget*) = 0;
+    virtual void visit(PairedReadsWidget*) = 0;
+    virtual void visit(UrlAndDatasetWidget*) = 0;
+    virtual void visit(RadioWidget*) = 0;
+    virtual void visit(SettingsWidget*) = 0;
+    virtual void visit(BowtieWidget*) = 0;
+    virtual void visit(TophatSamplesWidget*) = 0;
+    virtual void visit(LabelWidget*) = 0;
 };
 
 }  // namespace U2

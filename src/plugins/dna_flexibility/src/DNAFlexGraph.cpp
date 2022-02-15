@@ -43,22 +43,22 @@ static QString nameByType() {
 /**
  * Constructor of the DNA Flexibility graph
  */
-DNAFlexGraphFactory::DNAFlexGraphFactory(QObject *parent)
+DNAFlexGraphFactory::DNAFlexGraphFactory(QObject* parent)
     : GSequenceGraphFactory(nameByType(), parent) {
 }
 
 /**
  * Verifies that the sequence alphabet is standard DNA alphabet
  */
-bool DNAFlexGraphFactory::isEnabled(const U2SequenceObject *sequenceObject) const {
-    const DNAAlphabet *alphabet = sequenceObject->getAlphabet();
+bool DNAFlexGraphFactory::isEnabled(const U2SequenceObject* sequenceObject) const {
+    const DNAAlphabet* alphabet = sequenceObject->getAlphabet();
     return alphabet->getId() == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT();
 }
 
 /**
  * Initializes graph data
  */
-QList<QSharedPointer<GSequenceGraphData>> DNAFlexGraphFactory::createGraphs(GSequenceGraphView *view) {
+QList<QSharedPointer<GSequenceGraphData>> DNAFlexGraphFactory::createGraphs(GSequenceGraphView* view) {
     assert(isEnabled(view->getSequenceObject()));
     return {QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(view, getGraphName(), new DNAFlexGraphAlgorithm()))};
 }
@@ -66,7 +66,7 @@ QList<QSharedPointer<GSequenceGraphData>> DNAFlexGraphFactory::createGraphs(GSeq
 /**
  * Initializes the graph drawer
  */
-GSequenceGraphDrawer *DNAFlexGraphFactory::getDrawer(GSequenceGraphView *view) {
+GSequenceGraphDrawer* DNAFlexGraphFactory::getDrawer(GSequenceGraphView* view) {
     qint64 window = qMin(DEFAULT_WINDOW_SIZE, view->getSequenceLength());
     return new GSequenceGraphDrawer(view, window, DEFAULT_WINDOW_STEP);
 }

@@ -27,23 +27,23 @@
 
 namespace U2 {
 
-ActorCfgFilterProxyModel::ActorCfgFilterProxyModel(QObject *p)
+ActorCfgFilterProxyModel::ActorCfgFilterProxyModel(QObject* p)
     : QSortFilterProxyModel(p) {
     setDynamicSortFilter(true);
 }
 
-bool ActorCfgFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex & /*sourceParent*/) const {
-    ActorCfgModel *srcModel = qobject_cast<ActorCfgModel *>(sourceModel());
+bool ActorCfgFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex& /*sourceParent*/) const {
+    ActorCfgModel* srcModel = qobject_cast<ActorCfgModel*>(sourceModel());
     SAFE_POINT(nullptr != srcModel, "Invalid actor configuration model", true);
 
-    Attribute *attr = srcModel->getAttributeByRow(sourceRow);
+    Attribute* attr = srcModel->getAttributeByRow(sourceRow);
     SAFE_POINT(nullptr != attr, "Invalid actor attribute", true);
 
     return srcModel->isVisible(attr);
 }
 
-bool ActorCfgFilterProxyModel::filterAcceptsColumn(int sourceColumn, const QModelIndex & /*sourceParent*/) const {
-    ActorCfgModel *srcModel = qobject_cast<ActorCfgModel *>(sourceModel());
+bool ActorCfgFilterProxyModel::filterAcceptsColumn(int sourceColumn, const QModelIndex& /*sourceParent*/) const {
+    ActorCfgModel* srcModel = qobject_cast<ActorCfgModel*>(sourceModel());
     SAFE_POINT(nullptr != srcModel, "Invalid actor configuration model", true);
 
     return srcModel->getScriptMode() || sourceColumn < 2;

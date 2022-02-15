@@ -38,42 +38,42 @@ namespace Workflow {
  */
 class ActionPerformer {
 public:
-    ActionPerformer(const QString &outSlot, const GrouperSlotAction &action, WorkflowContext *context);
+    ActionPerformer(const QString& outSlot, const GrouperSlotAction& action, WorkflowContext* context);
     virtual ~ActionPerformer() {
     }
-    virtual bool applyAction(const QVariant &newData) = 0;
-    virtual QVariant finishAction(U2OpStatus &os) = 0;
-    virtual void setParameters(const QVariantMap &);
+    virtual bool applyAction(const QVariant& newData) = 0;
+    virtual QVariant finishAction(U2OpStatus& os) = 0;
+    virtual void setParameters(const QVariantMap&);
     virtual QVariantMap getParameters() const;
     virtual QString getActionType() const;
 
     QString getOutSlot() const;
-    void setParentPerformer(ActionPerformer *parent) {
+    void setParentPerformer(ActionPerformer* parent) {
         this->parent = parent;
     }
-    ActionPerformer *getParentPerformer() const {
+    ActionPerformer* getParentPerformer() const {
         return parent;
     }
 
 protected:
     QString outSlot;
     GrouperSlotAction action;
-    WorkflowContext *context;
+    WorkflowContext* context;
     bool started;
     qint64 lastDataNumber;
-    ActionPerformer *parent;
+    ActionPerformer* parent;
 };
 
-typedef QMap<QString, ActionPerformer *> PerformersMap;
+typedef QMap<QString, ActionPerformer*> PerformersMap;
 
 /**
  * Utility class for grouper actions
  */
 class GrouperActionUtils {
 public:
-    static ActionPerformer *getActionPerformer(const GrouperOutSlot &slot, WorkflowContext *context, const PerformersMap &perfs);
-    static bool equalData(const QString &groupOp, const QVariant &data1, const QVariant &data2, DataTypePtr dataType, WorkflowContext *context);
-    static void applyActions(WorkflowContext *context, QList<GrouperOutSlot> outSlots, const QVariantMap &mData, PerformersMap &perfs);
+    static ActionPerformer* getActionPerformer(const GrouperOutSlot& slot, WorkflowContext* context, const PerformersMap& perfs);
+    static bool equalData(const QString& groupOp, const QVariant& data1, const QVariant& data2, DataTypePtr dataType, WorkflowContext* context);
+    static void applyActions(WorkflowContext* context, QList<GrouperOutSlot> outSlots, const QVariantMap& mData, PerformersMap& perfs);
 };
 
 /************************************************************************/
@@ -81,9 +81,9 @@ public:
 /************************************************************************/
 class MergeSequencePerformer : public ActionPerformer {
 public:
-    MergeSequencePerformer(const QString &outSlot, const GrouperSlotAction &action, WorkflowContext *context);
-    virtual bool applyAction(const QVariant &newData);
-    virtual QVariant finishAction(U2OpStatus &os);
+    MergeSequencePerformer(const QString& outSlot, const GrouperSlotAction& action, WorkflowContext* context);
+    virtual bool applyAction(const QVariant& newData);
+    virtual QVariant finishAction(U2OpStatus& os);
     virtual QVariantMap getParameters() const;
 
     static QString PREV_SEQ_LENGTH;
@@ -95,9 +95,9 @@ private:
 
 class Sequence2MSAPerformer : public ActionPerformer {
 public:
-    Sequence2MSAPerformer(const QString &outSlot, const GrouperSlotAction &action, WorkflowContext *context);
-    virtual bool applyAction(const QVariant &newData);
-    virtual QVariant finishAction(U2OpStatus &os);
+    Sequence2MSAPerformer(const QString& outSlot, const GrouperSlotAction& action, WorkflowContext* context);
+    virtual bool applyAction(const QVariant& newData);
+    virtual QVariant finishAction(U2OpStatus& os);
 
 private:
     MultipleSequenceAlignment result;
@@ -105,9 +105,9 @@ private:
 
 class MergerMSAPerformer : public ActionPerformer {
 public:
-    MergerMSAPerformer(const QString &outSlot, const GrouperSlotAction &action, WorkflowContext *context);
-    virtual bool applyAction(const QVariant &newData);
-    virtual QVariant finishAction(U2OpStatus &os);
+    MergerMSAPerformer(const QString& outSlot, const GrouperSlotAction& action, WorkflowContext* context);
+    virtual bool applyAction(const QVariant& newData);
+    virtual QVariant finishAction(U2OpStatus& os);
 
 private:
     MultipleSequenceAlignment result;
@@ -115,9 +115,9 @@ private:
 
 class MergerStringPerformer : public ActionPerformer {
 public:
-    MergerStringPerformer(const QString &outSlot, const GrouperSlotAction &action, WorkflowContext *context);
-    virtual bool applyAction(const QVariant &newData);
-    virtual QVariant finishAction(U2OpStatus &os);
+    MergerStringPerformer(const QString& outSlot, const GrouperSlotAction& action, WorkflowContext* context);
+    virtual bool applyAction(const QVariant& newData);
+    virtual QVariant finishAction(U2OpStatus& os);
 
 private:
     QString result;
@@ -125,11 +125,11 @@ private:
 
 class MergeAnnotationPerformer : public ActionPerformer {
 public:
-    MergeAnnotationPerformer(const QString &outSlot, const GrouperSlotAction &action, WorkflowContext *context);
-    virtual bool applyAction(const QVariant &newData);
-    virtual QVariant finishAction(U2OpStatus &os);
+    MergeAnnotationPerformer(const QString& outSlot, const GrouperSlotAction& action, WorkflowContext* context);
+    virtual bool applyAction(const QVariant& newData);
+    virtual QVariant finishAction(U2OpStatus& os);
     virtual QVariantMap getParameters() const;
-    virtual void setParameters(const QVariantMap &map);
+    virtual void setParameters(const QVariantMap& map);
 
     static QString PARENT_SEQUENCE_SLOT;
 

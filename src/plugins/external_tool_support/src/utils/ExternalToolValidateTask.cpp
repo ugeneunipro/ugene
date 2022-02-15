@@ -42,21 +42,21 @@
 
 namespace U2 {
 
-ExternalToolValidateTask::ExternalToolValidateTask(const QString &toolId, const QString &toolName, TaskFlags flags)
+ExternalToolValidateTask::ExternalToolValidateTask(const QString& toolId, const QString& toolName, TaskFlags flags)
     : Task(tr("%1 validate task").arg(toolName), flags),
       toolId(toolId),
       toolName(toolName),
       isValid(false) {
 }
 
-ExternalToolJustValidateTask::ExternalToolJustValidateTask(const QString &toolId, const QString &toolName, const QString &path)
+ExternalToolJustValidateTask::ExternalToolJustValidateTask(const QString& toolId, const QString& toolName, const QString& path)
     : ExternalToolValidateTask(toolId, toolName, TaskFlag_None),
       externalToolProcess(nullptr),
       tool(nullptr) {
     toolPath = path;
     SAFE_POINT_EXT(!toolPath.isEmpty(), setError(tr("Tool's path is empty")), );
 
-    ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
+    ExternalToolRegistry* etRegistry = AppContext::getExternalToolRegistry();
     SAFE_POINT(etRegistry, "An external tool registry is NULL", );
     tool = etRegistry->getById(toolId);
     SAFE_POINT(tool, QString("External tool '%1' isn't found in the registry").arg(toolName), );
@@ -77,7 +77,7 @@ ExternalToolJustValidateTask::~ExternalToolJustValidateTask() {
 }
 
 void ExternalToolJustValidateTask::run() {
-    ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
+    ExternalToolRegistry* etRegistry = AppContext::getExternalToolRegistry();
     SAFE_POINT(etRegistry, "An external tool registry is NULL", );
     tool = etRegistry->getById(toolId);
     SAFE_POINT(tool, QString("External tool '%1' isn't found in the registry").arg(toolName), );
@@ -87,9 +87,9 @@ void ExternalToolJustValidateTask::run() {
     originalValidation.executableFile = toolPath;
 
     if (!originalValidation.toolRunnerProgram.isEmpty()) {
-        ScriptingToolRegistry *stRegistry = AppContext::getScriptingToolRegistry();
+        ScriptingToolRegistry* stRegistry = AppContext::getScriptingToolRegistry();
         SAFE_POINT_EXT(nullptr != stRegistry, setError(tr("Scripting tool registry is NULL")), );
-        ScriptingTool *stool = stRegistry->getById(originalValidation.toolRunnerProgram);
+        ScriptingTool* stool = stRegistry->getById(originalValidation.toolRunnerProgram);
         CHECK_EXT(nullptr != stool, setError(tr("Scripting tool '%1' isn't found in the registry").arg(originalValidation.toolRunnerProgram)), );
 
         if (stool->getPath().isEmpty()) {
@@ -119,7 +119,7 @@ void ExternalToolJustValidateTask::run() {
 
     CHECK(!hasError(), );
 
-    for (const ExternalToolValidation &validation : qAsConst(validations)) {
+    for (const ExternalToolValidation& validation : qAsConst(validations)) {
         if (externalToolProcess != nullptr) {
             delete externalToolProcess;
             externalToolProcess = nullptr;
@@ -152,7 +152,7 @@ void ExternalToolJustValidateTask::run() {
         }
 
         int elapsedTime = 0;
-        const int timeout = tool->isCustom() ? 0 : TIMEOUT_MS;    // Custom tools can't be validated properly now, there is no need to wait them
+        const int timeout = tool->isCustom() ? 0 : TIMEOUT_MS;  // Custom tools can't be validated properly now, there is no need to wait them
         while (!externalToolProcess->waitForFinished(CHECK_PERIOD_MS)) {
             elapsedTime += CHECK_PERIOD_MS;
             if (isCanceled() || elapsedTime >= timeout) {
@@ -191,10 +191,10 @@ void ExternalToolJustValidateTask::cancelProcess() {
     CmdlineTaskRunner::killProcessTree(externalToolProcess);
 }
 
-void ExternalToolJustValidateTask::setEnvironment(ExternalTool *externalTool) {
+void ExternalToolJustValidateTask::setEnvironment(ExternalTool* externalTool) {
     QStringList additionalPaths;
-    for (const QString &toolId : qAsConst(externalTool->getDependencies())) {
-        ExternalTool *masterTool = AppContext::getExternalToolRegistry()->getById(toolId);
+    for (const QString& toolId : qAsConst(externalTool->getDependencies())) {
+        ExternalTool* masterTool = AppContext::getExternalToolRegistry()->getById(toolId);
         if (nullptr != masterTool) {
             additionalPaths << QFileInfo(masterTool->getPath()).dir().absolutePath();
         }
@@ -216,7 +216,7 @@ void ExternalToolJustValidateTask::setEnvironment(ExternalTool *externalTool) {
     externalToolProcess->setProcessEnvironment(processEnvironment);
 }
 
-bool ExternalToolJustValidateTask::parseLog(const ExternalToolValidation &validation) {
+bool ExternalToolJustValidateTask::parseLog(const ExternalToolValidation& validation) {
     errorMsg = validation.possibleErrorsDescr.value(ExternalToolValidation::DEFAULT_DESCR_KEY, "");
 
     QString errLog = QString(externalToolProcess->readAllStandardError());
@@ -227,7 +227,7 @@ bool ExternalToolJustValidateTask::parseLog(const ExternalToolValidation &valida
             tool->extractAdditionalParameters(errLog);
         } else {
             isValid = false;
-            foreach (const QString &errStr, validation.possibleErrorsDescr.keys()) {
+            foreach (const QString& errStr, validation.possibleErrorsDescr.keys()) {
                 if (errLog.contains(errStr)) {
                     errorMsg = validation.possibleErrorsDescr[errStr];
                     return false;
@@ -244,7 +244,7 @@ bool ExternalToolJustValidateTask::parseLog(const ExternalToolValidation &valida
             tool->extractAdditionalParameters(log);
         } else {
             isValid = false;
-            foreach (const QString &errStr, validation.possibleErrorsDescr.keys()) {
+            foreach (const QString& errStr, validation.possibleErrorsDescr.keys()) {
                 if (log.contains(errStr)) {
                     errorMsg = validation.possibleErrorsDescr[errStr];
                     return false;
@@ -260,7 +260,7 @@ bool ExternalToolJustValidateTask::parseLog(const ExternalToolValidation &valida
     return true;
 }
 
-void ExternalToolJustValidateTask::checkVersion(const QString &partOfLog) {
+void ExternalToolJustValidateTask::checkVersion(const QString& partOfLog) {
     if (checkVersionRegExp.isEmpty()) {
         version = tool->getPredefinedVersion();
     } else {
@@ -275,7 +275,7 @@ void ExternalToolJustValidateTask::checkVersion(const QString &partOfLog) {
     }
 }
 
-void ExternalToolJustValidateTask::checkArchitecture(const QString &toolPath) {
+void ExternalToolJustValidateTask::checkArchitecture(const QString& toolPath) {
     Q_UNUSED(toolPath);
 #ifdef Q_OS_DARWIN
     QProcess archProcess;
@@ -319,7 +319,7 @@ void ExternalToolJustValidateTask::performAdditionalChecks() {
     }
 }
 
-ExternalToolSearchAndValidateTask::ExternalToolSearchAndValidateTask(const QString &_toolId, const QString &_toolName)
+ExternalToolSearchAndValidateTask::ExternalToolSearchAndValidateTask(const QString& _toolId, const QString& _toolName)
     : ExternalToolValidateTask(_toolId, _toolName, TaskFlags(TaskFlag_CancelOnSubtaskCancel | TaskFlag_NoRun)),
       toolIsFound(false),
       searchTask(nullptr),
@@ -331,8 +331,8 @@ void ExternalToolSearchAndValidateTask::prepare() {
     addSubTask(searchTask);
 }
 
-QList<Task *> ExternalToolSearchAndValidateTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> subTasks;
+QList<Task*> ExternalToolSearchAndValidateTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> subTasks;
     CHECK(!subTask->isCanceled(), subTasks);
 
     if (subTask == searchTask) {
@@ -345,7 +345,7 @@ QList<Task *> ExternalToolSearchAndValidateTask::onSubTaskFinished(Task *subTask
         } else {
             toolIsFound = true;
             validateTask = new ExternalToolJustValidateTask(toolId, toolName, toolPaths.first());
-            if (validateTask->isValidTool()) {    // in-place path-only validation. Used in GUI tests.
+            if (validateTask->isValidTool()) {  // in-place path-only validation. Used in GUI tests.
                 isValid = true;
                 toolPath = validateTask->getToolPath();
                 version = validateTask->getToolVersion();
@@ -378,13 +378,13 @@ QList<Task *> ExternalToolSearchAndValidateTask::onSubTaskFinished(Task *subTask
 }
 
 Task::ReportResult ExternalToolSearchAndValidateTask::report() {
-    if (qgetenv("UGENE_GUI_TEST") == "1") {    // dump external tool validation time in GUI tests mode.
+    if (qgetenv("UGENE_GUI_TEST") == "1") {  // dump external tool validation time in GUI tests mode.
         qint64 taskRunMillis = (GTimer::currentTimeMicros() - timeInfo.startTime) / 1000;
         coreLog.trace(QString("ExternalToolSearchAndValidateTask[%1] time: %2 millis").arg(toolId).arg(taskRunMillis));
     }
-    ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
+    ExternalToolRegistry* etRegistry = AppContext::getExternalToolRegistry();
     SAFE_POINT(etRegistry, "An external tool registry is NULL", ReportResult_Finished);
-    ExternalTool *tool = etRegistry->getById(toolId);
+    ExternalTool* tool = etRegistry->getById(toolId);
     SAFE_POINT(tool, QString("An external tool '%1' isn't found in the registry").arg(toolName), ReportResult_Finished);
 
     if (!isValid && toolIsFound && !toolPath.isEmpty()) {
@@ -405,7 +405,7 @@ Task::ReportResult ExternalToolSearchAndValidateTask::report() {
     return ReportResult_Finished;
 }
 
-ExternalToolsValidationMasterTask::ExternalToolsValidationMasterTask(const QList<Task *> &tasks, ExternalToolValidationListener *listener)
+ExternalToolsValidationMasterTask::ExternalToolsValidationMasterTask(const QList<Task*>& tasks, ExternalToolValidationListener* listener)
     : SequentialMultiTask(tr("Validate external tools"),
                           tasks,
                           TaskFlags(TaskFlag_NoRun | TaskFlag_CancelOnSubtaskCancel)),
@@ -413,15 +413,15 @@ ExternalToolsValidationMasterTask::ExternalToolsValidationMasterTask(const QList
     setMaxParallelSubtasks(5);
 }
 
-QList<Task *> ExternalToolsValidationMasterTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> subTasks;
-    ExternalToolValidateTask *validateTask = qobject_cast<ExternalToolValidateTask *>(subTask);
+QList<Task*> ExternalToolsValidationMasterTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> subTasks;
+    ExternalToolValidateTask* validateTask = qobject_cast<ExternalToolValidateTask*>(subTask);
     bool muted = false;
 
     if (validateTask) {
-        ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
+        ExternalToolRegistry* etRegistry = AppContext::getExternalToolRegistry();
         SAFE_POINT(etRegistry, "An external tool registry is NULL", subTasks);
-        ExternalTool *tool = etRegistry->getById(validateTask->getToolId());
+        ExternalTool* tool = etRegistry->getById(validateTask->getToolId());
         SAFE_POINT(tool, QString("An external tool '%1' isn't found in the registry").arg(validateTask->getToolName()), subTasks);
         muted = tool->isMuted();
     }
@@ -440,8 +440,8 @@ QList<Task *> ExternalToolsValidationMasterTask::onSubTaskFinished(Task *subTask
 
 Task::ReportResult ExternalToolsValidationMasterTask::report() {
     if (listener != nullptr) {
-        for (const QPointer<Task> &subTask : qAsConst(getSubtasks())) {
-            ExternalToolValidateTask *task = qobject_cast<ExternalToolValidateTask *>(subTask.data());
+        for (const QPointer<Task>& subTask : qAsConst(getSubtasks())) {
+            ExternalToolValidateTask* task = qobject_cast<ExternalToolValidateTask*>(subTask.data());
             SAFE_POINT(task, "Unexpected ExternalToolValidateTask subtask", ReportResult_Finished);
             listener->setToolState(task->getToolId(), task->isValidTool());
         }
@@ -450,15 +450,15 @@ Task::ReportResult ExternalToolsValidationMasterTask::report() {
     return ReportResult_Finished;
 }
 
-ExternalToolsInstallTask::ExternalToolsInstallTask(const QList<Task *> &_tasks)
+ExternalToolsInstallTask::ExternalToolsInstallTask(const QList<Task*>& _tasks)
     : SequentialMultiTask(tr("Installing external tools"), _tasks, TaskFlags(TaskFlag_NoRun | TaskFlag_CancelOnSubtaskCancel)) {
 }
 
-QList<Task *> ExternalToolsInstallTask::onSubTaskFinished(Task *subTask) {
+QList<Task*> ExternalToolsInstallTask::onSubTaskFinished(Task* subTask) {
     if (subTask->hasError()) {
         taskLog.error(subTask->getTaskName() + tr(" failed: ") + subTask->getError());
     }
     return SequentialMultiTask::onSubTaskFinished(subTask);
 }
 
-}    // namespace U2
+}  // namespace U2

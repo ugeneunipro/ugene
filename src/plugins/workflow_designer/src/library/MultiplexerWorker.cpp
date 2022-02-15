@@ -47,7 +47,7 @@ static const QString RULE_ID("multiplexing-rule");
 /*******************************
  * MultiplexerWorker
  *******************************/
-MultiplexerWorker::MultiplexerWorker(Actor *p)
+MultiplexerWorker::MultiplexerWorker(Actor* p)
     : BaseWorker(p, false), inChannel1(nullptr), inChannel2(nullptr), outChannel(nullptr), rule(ONE_TO_ONE),
       hasMultiData(false), multiMetadataId(-1), messagesInited(false) {
 }
@@ -109,12 +109,12 @@ bool MultiplexerWorker::hasDataFotMultiplexing() const {
     return inChannel1->hasMessage() || hasMultiData;
 }
 
-inline void MultiplexerWorker::sendUnitedMessage(const QVariantMap &m1, QVariantMap &m2, int metadataId) {
+inline void MultiplexerWorker::sendUnitedMessage(const QVariantMap& m1, QVariantMap& m2, int metadataId) {
     m2.unite(m1);
     outChannel->putWithoutContext(Message(outChannel->getBusType(), m2, metadataId));
 }
 
-Task *MultiplexerWorker::tick() {
+Task* MultiplexerWorker::tick() {
     if (ONE_TO_MANY == rule) {
         multiplexManyMode();
     } else if (ONE_TO_ONE == rule) {
@@ -228,11 +228,11 @@ void MultiplexerWorker::multiplexManyMode() {
     }
 }
 
-QString MultiplexerWorker::getInputActorName(IntegralBus *bus) const {
-    Port *port = actor->getPort(bus->getPortId());
+QString MultiplexerWorker::getInputActorName(IntegralBus* bus) const {
+    Port* port = actor->getPort(bus->getPortId());
     SAFE_POINT(nullptr != port, L10N::nullPointerError("Port"), "");
     SAFE_POINT(!port->getLinks().isEmpty(), "No input links", "");
-    Port *inputPort = port->getLinks().keys().first();
+    Port* inputPort = port->getLinks().keys().first();
     return inputPort->owner()->getLabel();
 }
 
@@ -255,7 +255,7 @@ void MultiplexerWorker::cleanup() {
  * MultiplexerWorkerFactory
  *******************************/
 void MultiplexerWorkerFactory::init() {
-    QList<PortDescriptor *> portDescs;
+    QList<PortDescriptor*> portDescs;
     {
         QMap<Descriptor, DataTypePtr> emptyTypeMap;
         DataTypePtr emptyTypeSet(new MapDataType(Descriptor(DataType::EMPTY_TYPESET_ID), emptyTypeMap));
@@ -273,7 +273,7 @@ void MultiplexerWorkerFactory::init() {
         portDescs << new PortDescriptor(outputDesc, emptyTypeSet, false, true);
     }
 
-    QList<Attribute *> attrs;
+    QList<Attribute*> attrs;
     {
         // attributes
         Descriptor ruleDesc(RULE_ID, MultiplexerWorker::tr("Multiplexing rule"), MultiplexerWorker::tr("Specifies how to multiplex the input messages:"
@@ -288,7 +288,7 @@ void MultiplexerWorkerFactory::init() {
         attrs << new Attribute(ruleDesc, BaseTypes::STRING_TYPE(), true, ONE_TO_ONE);
     }
 
-    QMap<QString, PropertyDelegate *> delegateMap;
+    QMap<QString, PropertyDelegate*> delegateMap;
     {
         // delegates
         QVariantMap rules;
@@ -304,7 +304,7 @@ void MultiplexerWorkerFactory::init() {
                                                " i.e. to join messages from two input ports into concatenated messages and send them to the output."
                                                " The concatenation approach is determined by the <i>Multiplexing rule</i> parameter."));
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
+    ActorPrototype* proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
 
     proto->setEditor(new DelegateEditor(delegateMap));
     proto->setPrompter(new MultiplexerPrompter());
@@ -314,7 +314,7 @@ void MultiplexerWorkerFactory::init() {
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new MultiplexerWorkerFactory());
 }
 
-Worker *MultiplexerWorkerFactory::createWorker(Actor *a) {
+Worker* MultiplexerWorkerFactory::createWorker(Actor* a) {
     return new MultiplexerWorker(a);
 }
 
@@ -324,18 +324,18 @@ Worker *MultiplexerWorkerFactory::createWorker(Actor *a) {
 QString MultiplexerPrompter::composeRichDoc() {
     uint rule = getParameter(RULE_ID).toUInt();
 
-    IntegralBusPort *input1 = qobject_cast<IntegralBusPort *>(target->getPort(INPUT_PORT_1));
-    IntegralBusPort *input2 = qobject_cast<IntegralBusPort *>(target->getPort(INPUT_PORT_2));
+    IntegralBusPort* input1 = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT_1));
+    IntegralBusPort* input2 = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT_2));
 
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString inputName1 = unsetStr;
     if (input1->getLinks().size() > 0) {
-        Port *p = input1->getLinks().keys().first();
+        Port* p = input1->getLinks().keys().first();
         inputName1 = p->owner()->getLabel();
     }
     QString inputName2 = unsetStr;
     if (input2->getLinks().size() > 0) {
-        Port *p = input2->getLinks().keys().first();
+        Port* p = input2->getLinks().keys().first();
         inputName2 = p->owner()->getLabel();
     }
 

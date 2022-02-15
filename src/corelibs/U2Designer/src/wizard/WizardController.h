@@ -55,25 +55,25 @@ public:
     };
 
 public:
-    WizardController(const QSharedPointer<Schema> &s, const Wizard *w);
+    WizardController(const QSharedPointer<Schema>& s, const Wizard* w);
     virtual ~WizardController();
 
-    QWizard *createGui();
-    ApplyResult applyChanges(Metadata &meta);
-    const QList<Actor *> &getCurrentActors() const;
+    QWizard* createGui();
+    ApplyResult applyChanges(Metadata& meta);
+    const QList<Actor*>& getCurrentActors() const;
     bool isRunAfterApply() const;
 
-    QVariant getVariableValue(const QString &var);
-    void setVariableValue(const QString &var, const QString &value);
+    QVariant getVariableValue(const QString& var);
+    void setVariableValue(const QString& var, const QString& value);
 
-    QVariant getSelectorValue(ElementSelectorWidget *widget);
-    void setSelectorValue(ElementSelectorWidget *widget, const QVariant &value);
+    QVariant getSelectorValue(ElementSelectorWidget* widget);
+    void setSelectorValue(ElementSelectorWidget* widget, const QVariant& value);
 
     /** Returns id of the Qt page object by @hrId.
      * @hrId - human-readable id of the page.
      */
-    int getQtPageId(const QString &hrId) const;
-    const QMap<QString, Variable> &getVariables() const;
+    int getQtPageId(const QString& hrId) const;
+    const QMap<QString, Variable>& getVariables() const;
 
     /** Wizard pages are validated in runtime. If some page is not validated
      * then wizard becomes broken
@@ -83,46 +83,46 @@ public:
 
     bool isRejected() const;
 
-    void addPropertyController(const AttributeInfo &info, PropertyWizardController *ctrl);
+    void addPropertyController(const AttributeInfo& info, PropertyWizardController* ctrl);
     void clearControllers();
 
     // SchemaConfig
-    virtual RunFileSystem *getRFS();
-    QVariant getAttributeValue(const AttributeInfo &info) const;
-    void setAttributeValue(const AttributeInfo &info, const QVariant &value);
+    virtual RunFileSystem* getRFS();
+    QVariant getAttributeValue(const AttributeInfo& info) const;
+    void setAttributeValue(const AttributeInfo& info, const QVariant& value);
 
-    Attribute *getAttribute(const AttributeInfo &info) const;
-    DelegateTags *getTags(const AttributeInfo &info, bool returnNewTags = false);
-    DelegateTags *getTagsWithoutController(const AttributeInfo &info) const;
+    Attribute* getAttribute(const AttributeInfo& info) const;
+    DelegateTags* getTags(const AttributeInfo& info, bool returnNewTags = false);
+    DelegateTags* getTagsWithoutController(const AttributeInfo& info) const;
 
-    bool eventFilter(QObject *watched, QEvent *event);
+    bool eventFilter(QObject* watched, QEvent* event);
 
 private:
     bool rejected;
     bool broken;
     const QSharedPointer<Schema> schema;
-    const Wizard *wizard;
-    QList<WizardPageController *> pageControllers;
-    QList<Actor *> currentActors;
+    const Wizard* wizard;
+    QList<WizardPageController*> pageControllers;
+    QList<Actor*> currentActors;
     QMap<QString, int> pageIdMap;  // hr-id <-> qt-id
     QMap<QString, Variable> vars;
     QMap<QString, SelectorActors> selectors;  // varName <-> actors
     QVariantMap values;
-    QMap<QString, PropertyWizardController *> propertyControllers;
-    QMap<QString, DelegateTags *> tagsWithoutController;
+    QMap<QString, PropertyWizardController*> propertyControllers;
+    QMap<QString, DelegateTags*> tagsWithoutController;
     bool runAfterApply;
 
 private:
-    void setupButtons(QWizard *wizard);
-    QWizardPage *createPage(WizardPage *page);
-    void registerSelector(ElementSelectorWidget *widget);
-    void replaceCurrentActor(const QString &actorId, const QString &selectorValue);
+    void setupButtons(QWizard* wizard);
+    QWizardPage* createPage(WizardPage* page);
+    void registerSelector(ElementSelectorWidget* widget);
+    void replaceCurrentActor(const QString& actorId, const QString& selectorValue);
     void assignParameters();
     void applySettings();
     void saveDelegateTags();
     void run();
-    void defaults(QWizardPage *wPage);
-    WizardPage *findPage(QWizardPage *wPage);
+    void defaults(QWizardPage* wPage);
+    WizardPage* findPage(QWizardPage* wPage);
 
 private slots:
     void sl_customButtonClicked(int num);
@@ -135,63 +135,63 @@ private slots:
 class GroupBox;
 class WidgetCreator : public WizardWidgetVisitor {
 public:
-    WidgetCreator(WizardController *wc);
-    WidgetCreator(WizardController *wc, int labelSize);
+    WidgetCreator(WizardController* wc);
+    WidgetCreator(WizardController* wc, int labelSize);
 
-    virtual void visit(AttributeWidget *aw);
-    virtual void visit(WidgetsArea *wa);
-    virtual void visit(GroupWidget *gw);
-    virtual void visit(LogoWidget *lw);
-    virtual void visit(ElementSelectorWidget *esw);
-    virtual void visit(PairedReadsWidget *dsw);
-    virtual void visit(UrlAndDatasetWidget *dsw);
-    virtual void visit(RadioWidget *rw);
-    virtual void visit(SettingsWidget *sw);
-    virtual void visit(BowtieWidget *sw);
-    virtual void visit(TophatSamplesWidget *tsw);
-    virtual void visit(LabelWidget *lw);
+    virtual void visit(AttributeWidget* aw);
+    virtual void visit(WidgetsArea* wa);
+    virtual void visit(GroupWidget* gw);
+    virtual void visit(LogoWidget* lw);
+    virtual void visit(ElementSelectorWidget* esw);
+    virtual void visit(PairedReadsWidget* dsw);
+    virtual void visit(UrlAndDatasetWidget* dsw);
+    virtual void visit(RadioWidget* rw);
+    virtual void visit(SettingsWidget* sw);
+    virtual void visit(BowtieWidget* sw);
+    virtual void visit(TophatSamplesWidget* tsw);
+    virtual void visit(LabelWidget* lw);
 
-    QWidget *getResult();
-    QList<WidgetController *> &getControllers();
-    QBoxLayout *getLayout();
+    QWidget* getResult();
+    QList<WidgetController*>& getControllers();
+    QBoxLayout* getLayout();
 
     bool hasFullWidth();
 
 private:
-    WizardController *wc;
+    WizardController* wc;
     int labelSize;
-    QWidget *result;
-    QList<WidgetController *> controllers;
-    QBoxLayout *layout;
-    QScrollArea *widgetsArea;
+    QWidget* result;
+    QList<WidgetController*> controllers;
+    QBoxLayout* layout;
+    QScrollArea* widgetsArea;
     bool fullWidth;
 
 private:
-    void setGroupBoxLayout(GroupBox *gb);
-    void setupScrollArea(QWidget *scrollContent);
+    void setGroupBoxLayout(GroupBox* gb);
+    void setupScrollArea(QWidget* scrollContent);
 };
 
 class PageContentCreator : public TemplatedPageVisitor {
 public:
-    PageContentCreator(WizardController *wc);
+    PageContentCreator(WizardController* wc);
 
-    virtual void visit(DefaultPageContent *content);
-    void setPageTitle(const QString &title);
-    void setPageSubtitle(const QString &subtitle);
+    virtual void visit(DefaultPageContent* content);
+    void setPageTitle(const QString& title);
+    void setPageSubtitle(const QString& subtitle);
 
-    QLayout *getResult();
-    QList<WidgetController *> &getControllers();
-
-private:
-    WizardController *wc;
-    QLayout *result;
-    QList<WidgetController *> controllers;
-    QLabel *pageTitle;
-    QLabel *pageSubtitle;
+    QLayout* getResult();
+    QList<WidgetController*>& getControllers();
 
 private:
-    void createTitle(QVBoxLayout *contentLayout);
-    void createSubTitle(QVBoxLayout *contentLayout);
+    WizardController* wc;
+    QLayout* result;
+    QList<WidgetController*> controllers;
+    QLabel* pageTitle;
+    QLabel* pageSubtitle;
+
+private:
+    void createTitle(QVBoxLayout* contentLayout);
+    void createSubTitle(QVBoxLayout* contentLayout);
 };
 
 /************************************************************************/
@@ -200,9 +200,9 @@ private:
 class GroupBox : public QGroupBox {
     Q_OBJECT
 public:
-    GroupBox(bool collapsible, const QString &title, bool fullWidth = false);
+    GroupBox(bool collapsible, const QString& title, bool fullWidth = false);
 
-    void setLayout(QLayout *l);
+    void setLayout(QLayout* l);
 
 private slots:
     void sl_collapse();
@@ -210,15 +210,15 @@ private slots:
     void sl_onCheck();
 
 private:
-    QWidget *ui;
-    QHBoxLayout *hLayout;
-    QLabel *tip;
-    QToolButton *showHideButton;
+    QWidget* ui;
+    QHBoxLayout* hLayout;
+    QLabel* tip;
+    QToolButton* showHideButton;
 
     static const int MARGIN;
 
 private:
-    void changeView(const QString &buttonText, const QString &showHide);
+    void changeView(const QString& buttonText, const QString& showHide);
 };
 
 }  // namespace U2

@@ -46,7 +46,7 @@ const QString SaveDocumentInFolderController::HOME_DIR_IDENTIFIER = "~/";
 const QString SaveDocumentInFolderController::HOME_DIR_IDENTIFIER = "%UserProfile%/";
 #endif
 
-SaveSelectedSequenceFromMSADialogController::SaveSelectedSequenceFromMSADialogController(QWidget *p, const QString &defaultCustomFilename)
+SaveSelectedSequenceFromMSADialogController::SaveSelectedSequenceFromMSADialogController(QWidget* p, const QString& defaultCustomFilename)
     : QDialog(p),
       saveController(nullptr),
       ui(new Ui_SaveSelectedSequenceFromMSADialog()) {
@@ -70,7 +70,7 @@ SaveSelectedSequenceFromMSADialogController::~SaveSelectedSequenceFromMSADialogC
 void SaveSelectedSequenceFromMSADialogController::accept() {
     url = saveController->getSaveDirName();
     formatId = ui->formatCombo->currentData().toString();
-    DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
+    DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
     CHECK(df != nullptr, )
     QString extension = df->getSupportedDocumentFileExtensions().first();
     if (ui->customFileNameEdit->isEnabled()) {
@@ -132,15 +132,15 @@ SaveDocumentInFolderControllerConfig::SaveDocumentInFolderControllerConfig()
       folderLineEdit(nullptr) {
 }
 
-SaveDocumentInFolderController::SaveDocumentInFolderController(const SaveDocumentInFolderControllerConfig &config, const DocumentFormatConstraints &formatConstraints, QObject *parent)
+SaveDocumentInFolderController::SaveDocumentInFolderController(const SaveDocumentInFolderControllerConfig& config, const DocumentFormatConstraints& formatConstraints, QObject* parent)
     : QObject(parent),
       conf(config) {
     DocumentFormatConstraints fc(formatConstraints);
     fc.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
 
-    DocumentFormatRegistry *fr = AppContext::getDocumentFormatRegistry();
+    DocumentFormatRegistry* fr = AppContext::getDocumentFormatRegistry();
     QList<DocumentFormatId> selectedFormats = fr->selectFormats(fc);
-    foreach (const DocumentFormatId &id, selectedFormats) {
+    foreach (const DocumentFormatId& id, selectedFormats) {
         formatsInfo.addFormat(id,
                               fr->getFormatById(id)->getFormatName(),
                               fr->getFormatById(id)->getSupportedDocumentFileExtensions());
@@ -161,7 +161,7 @@ void SaveDocumentInFolderController::init() {
     connect(conf.fileDialogButton, SIGNAL(clicked()), SLOT(sl_fileDialogButtonClicked()));
 }
 
-void SaveDocumentInFolderController::setPath(const QString &path) {
+void SaveDocumentInFolderController::setPath(const QString& path) {
     conf.folderLineEdit->setText(QDir::toNativeSeparators(path));
     emit si_pathChanged(path);
 }

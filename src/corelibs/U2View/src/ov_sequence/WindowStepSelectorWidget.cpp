@@ -32,7 +32,7 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 // WindowStepSelectorWidget
 
-WindowStepSelectorWidget::WindowStepSelectorWidget(QWidget *p, const U2Region &winRange, int win, int step)
+WindowStepSelectorWidget::WindowStepSelectorWidget(QWidget* p, const U2Region& winRange, int win, int step)
     : QWidget(p) {
     assert(win >= step);
 
@@ -84,12 +84,12 @@ QString WindowStepSelectorWidget::validate() const {
 
 class MinMaxDoubleSpinBox : public QDoubleSpinBox {
 public:
-    QLineEdit *getLineEdit() const {
+    QLineEdit* getLineEdit() const {
         return lineEdit();
     }
 };
 
-MinMaxSelectorWidget::MinMaxSelectorWidget(QWidget *p, double min, double max, bool enabled) {
+MinMaxSelectorWidget::MinMaxSelectorWidget(QWidget* p, double min, double max, bool enabled) {
     Q_UNUSED(p);
 
     minmaxGroup = new QGroupBox(QString(tr("Cutoff for minimum and maximum values")), this);
@@ -114,20 +114,20 @@ MinMaxSelectorWidget::MinMaxSelectorWidget(QWidget *p, double min, double max, b
 
     normalPalette = maxBox->palette();
 
-    QFormLayout *l = new QFormLayout;
+    QFormLayout* l = new QFormLayout;
     l->setSizeConstraint(QLayout::SetMinAndMaxSize);
     l->addRow(tr("Minimum"), minBox);
     l->addRow(tr("Maximum"), maxBox);
     minmaxGroup->setLayout(l);
 
-    QVBoxLayout *mainLayout = new QVBoxLayout;
+    QVBoxLayout* mainLayout = new QVBoxLayout;
     mainLayout->setSizeConstraint(QLayout::SetFixedSize);
     mainLayout->setMargin(0);
     mainLayout->addWidget(minmaxGroup);
     setLayout(mainLayout);
 
-    connect(minBox, SIGNAL(valueChanged(const QString &)), SLOT(sl_valueChanged(const QString &)));
-    connect(maxBox, SIGNAL(valueChanged(const QString &)), SLOT(sl_valueChanged(const QString &)));
+    connect(minBox, SIGNAL(valueChanged(const QString&)), SLOT(sl_valueChanged(const QString&)));
+    connect(maxBox, SIGNAL(valueChanged(const QString&)), SLOT(sl_valueChanged(const QString&)));
 }
 
 double MinMaxSelectorWidget::getMin() const {
@@ -145,15 +145,15 @@ bool MinMaxSelectorWidget::getState() const {
     return minmaxGroup->isChecked();
 }
 
-void MinMaxSelectorWidget::sl_valueChanged(const QString &) {
+void MinMaxSelectorWidget::sl_valueChanged(const QString&) {
     double min = minBox->value();
     double max = maxBox->value();
     QPalette p = normalPalette;
     if (min >= max) {
         p.setColor(QPalette::Base, QColor(255, 200, 200));
     }
-    ((MinMaxDoubleSpinBox *)minBox)->getLineEdit()->setPalette(p);
-    ((MinMaxDoubleSpinBox *)maxBox)->getLineEdit()->setPalette(p);
+    ((MinMaxDoubleSpinBox*)minBox)->getLineEdit()->setPalette(p);
+    ((MinMaxDoubleSpinBox*)maxBox)->getLineEdit()->setPalette(p);
 }
 
 QString MinMaxSelectorWidget::validate() const {
@@ -171,15 +171,15 @@ QString MinMaxSelectorWidget::validate() const {
 //////////////////////////////////////////////////////////////////////////
 /// Dialog
 
-WindowStepSelectorDialog::WindowStepSelectorDialog(QWidget *p, const U2Region &winRange, int win, int step, double min, double max, bool e)
+WindowStepSelectorDialog::WindowStepSelectorDialog(QWidget* p, const U2Region& winRange, int win, int step, double min, double max, bool e)
     : QDialog(p) {
     wss = new WindowStepSelectorWidget(this, winRange, win, step);
     mms = new MinMaxSelectorWidget(this, min, max, e);
-    QVBoxLayout *l = new QVBoxLayout();
-    QHBoxLayout *buttonsLayout = new QHBoxLayout();
+    QVBoxLayout* l = new QVBoxLayout();
+    QHBoxLayout* buttonsLayout = new QHBoxLayout();
     buttonsLayout->addStretch(10);
-    QPushButton *cancelButton = new QPushButton(tr("Cancel"), this);
-    QPushButton *okButton = new QPushButton(tr("OK"), this);
+    QPushButton* cancelButton = new QPushButton(tr("Cancel"), this);
+    QPushButton* okButton = new QPushButton(tr("OK"), this);
     buttonsLayout->addWidget(okButton);
     buttonsLayout->addWidget(cancelButton);
 

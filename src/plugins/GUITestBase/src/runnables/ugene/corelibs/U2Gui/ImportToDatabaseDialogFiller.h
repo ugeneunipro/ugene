@@ -49,7 +49,7 @@ public:
             CANCEL  // close the dialog the "Cancel" button
         };
 
-        Action(Type type, const QVariantMap &data);
+        Action(Type type, const QVariantMap& data);
         Type type;
         QVariantMap data;
 
@@ -60,29 +60,29 @@ public:
         static const QString ACTION_DATA__PROJECT_ITEMS_LIST;
     };
 
-    ImportToDatabaseDialogFiller(HI::GUITestOpStatus &os, const QList<Action> &actions);
-    ImportToDatabaseDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c)
+    ImportToDatabaseDialogFiller(HI::GUITestOpStatus& os, const QList<Action>& actions);
+    ImportToDatabaseDialogFiller(HI::GUITestOpStatus& os, CustomScenario* c)
         : Filler(os, "ImportToDatabaseDialog", c) {
     }
 
     void commonScenario();
 
 private:
-    void addFiles(const Action &action);
-    void addDirs(const Action &action);
-    void addProjectItems(const Action &action);
-    void selectItems(const Action &action);
-    void editDestinationFolder(const Action &action);
-    void editGeneralOptions(const Action &action);
-    void editPrivateOptions(const Action &action);
-    void resetPrivateOptions(const Action &action);
-    void remove(const Action &action);
-    void import(const Action &action);
-    void cancel(const Action &action);
+    void addFiles(const Action& action);
+    void addDirs(const Action& action);
+    void addProjectItems(const Action& action);
+    void selectItems(const Action& action);
+    void editDestinationFolder(const Action& action);
+    void editGeneralOptions(const Action& action);
+    void editPrivateOptions(const Action& action);
+    void resetPrivateOptions(const Action& action);
+    void remove(const Action& action);
+    void import(const Action& action);
+    void cancel(const Action& action);
 
-    QPoint getItemCenter(const QString &text);
-    QPoint getFolderColumnCenter(const QString &text);
-    QTreeWidgetItem *findItem(const QString &text);
+    QPoint getItemCenter(const QString& text);
+    QPoint getFolderColumnCenter(const QString& text);
+    QTreeWidgetItem* findItem(const QString& text);
 
     QPointer<QWidget> dialog;
     QList<Action> actions;

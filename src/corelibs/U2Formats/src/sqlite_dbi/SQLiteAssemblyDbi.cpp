@@ -39,7 +39,7 @@
 
 namespace U2 {
 
-SQLiteAssemblyDbi::SQLiteAssemblyDbi(SQLiteDbi *dbi)
+SQLiteAssemblyDbi::SQLiteAssemblyDbi(SQLiteDbi* dbi)
     : U2AssemblyDbi(dbi), SQLiteChildDBICommon(dbi) {
 }
 
@@ -47,7 +47,7 @@ SQLiteAssemblyDbi::~SQLiteAssemblyDbi() {
     assert(adaptersById.isEmpty());
 }
 
-void SQLiteAssemblyDbi::initSqlSchema(U2OpStatus &os) {
+void SQLiteAssemblyDbi::initSqlSchema(U2OpStatus& os) {
     if (os.hasError()) {
         return;
     }
@@ -60,17 +60,17 @@ void SQLiteAssemblyDbi::initSqlSchema(U2OpStatus &os) {
     SQLiteWriteQuery(getCreateAssemblyTableQuery(), db, os).execute();
 }
 
-void SQLiteAssemblyDbi::shutdown(U2OpStatus &os) {
-    foreach (AssemblyAdapter *a, adaptersById.values()) {
+void SQLiteAssemblyDbi::shutdown(U2OpStatus& os) {
+    foreach (AssemblyAdapter* a, adaptersById.values()) {
         a->shutdown(os);
         delete a;
     }
     adaptersById.clear();
 }
 
-AssemblyAdapter *SQLiteAssemblyDbi::getAdapter(const U2DataId &assemblyId, U2OpStatus &os) {
+AssemblyAdapter* SQLiteAssemblyDbi::getAdapter(const U2DataId& assemblyId, U2OpStatus& os) {
     qint64 sqliteId = U2DbiUtils::toDbiId(assemblyId);
-    AssemblyAdapter *res = adaptersById.value(sqliteId);
+    AssemblyAdapter* res = adaptersById.value(sqliteId);
     if (res != nullptr) {
         return res;
     }
@@ -100,7 +100,7 @@ AssemblyAdapter *SQLiteAssemblyDbi::getAdapter(const U2DataId &assemblyId, U2OpS
     return res;
 }
 
-U2Assembly SQLiteAssemblyDbi::getAssemblyObject(const U2DataId &assemblyId, U2OpStatus &os) {
+U2Assembly SQLiteAssemblyDbi::getAssemblyObject(const U2DataId& assemblyId, U2OpStatus& os) {
     U2Assembly res;
 
     DBI_TYPE_CHECK(assemblyId, U2Type::Assembly, os, res);
@@ -122,35 +122,35 @@ U2Assembly SQLiteAssemblyDbi::getAssemblyObject(const U2DataId &assemblyId, U2Op
     return res;
 }
 
-qint64 SQLiteAssemblyDbi::countReads(const U2DataId &assemblyId, const U2Region &r, U2OpStatus &os) {
+qint64 SQLiteAssemblyDbi::countReads(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os) {
     GTIMER(c2, t2, "SQLiteAssemblyDbi::countReadsAt");
-    AssemblyAdapter *a = getAdapter(assemblyId, os);
+    AssemblyAdapter* a = getAdapter(assemblyId, os);
     if (a == nullptr) {
         return -1;
     }
     return a->countReads(r, os);
 }
 
-U2DbiIterator<U2AssemblyRead> *SQLiteAssemblyDbi::getReads(const U2DataId &assemblyId, const U2Region &r, U2OpStatus &os, bool sortedHint) {
+U2DbiIterator<U2AssemblyRead>* SQLiteAssemblyDbi::getReads(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os, bool sortedHint) {
     GTIMER(c2, t2, "SQLiteAssemblyDbi::getReadsAt");
-    AssemblyAdapter *a = getAdapter(assemblyId, os);
+    AssemblyAdapter* a = getAdapter(assemblyId, os);
     if (a != nullptr) {
         return a->getReads(r, os, sortedHint);
     }
     return nullptr;
 }
 
-U2DbiIterator<U2AssemblyRead> *SQLiteAssemblyDbi::getReadsByRow(const U2DataId &assemblyId, const U2Region &r, qint64 minRow, qint64 maxRow, U2OpStatus &os) {
+U2DbiIterator<U2AssemblyRead>* SQLiteAssemblyDbi::getReadsByRow(const U2DataId& assemblyId, const U2Region& r, qint64 minRow, qint64 maxRow, U2OpStatus& os) {
     GTIMER(c2, t2, "SQLiteAssemblyDbi::getReadsAt");
 
     quint64 t0 = GTimer::currentTimeMicros();
-    AssemblyAdapter *a = getAdapter(assemblyId, os);
+    AssemblyAdapter* a = getAdapter(assemblyId, os);
 
     if (a == nullptr) {
         return nullptr;
     }
 
-    U2DbiIterator<U2AssemblyRead> *res = a->getReadsByRow(r, minRow, maxRow, os);
+    U2DbiIterator<U2AssemblyRead>* res = a->getReadsByRow(r, minRow, maxRow, os);
 
     t2.stop();
     perfLog.trace(QString("Assembly: reads 2D select time: %1 seconds").arg((GTimer::currentTimeMicros() - t0) / float(1000 * 1000)));
@@ -158,19 +158,19 @@ U2DbiIterator<U2AssemblyRead> *SQLiteAssemblyDbi::getReadsByRow(const U2DataId &
     return res;
 }
 
-U2DbiIterator<U2AssemblyRead> *SQLiteAssemblyDbi::getReadsByName(const U2DataId &assemblyId, const QByteArray &name, U2OpStatus &os) {
+U2DbiIterator<U2AssemblyRead>* SQLiteAssemblyDbi::getReadsByName(const U2DataId& assemblyId, const QByteArray& name, U2OpStatus& os) {
     GTIMER(c2, t2, "SQLiteAssemblyDbi::getReadsByName");
-    AssemblyAdapter *a = getAdapter(assemblyId, os);
+    AssemblyAdapter* a = getAdapter(assemblyId, os);
     if (a != nullptr) {
         return a->getReadsByName(name, os);
     }
     return nullptr;
 }
 
-qint64 SQLiteAssemblyDbi::getMaxPackedRow(const U2DataId &assemblyId, const U2Region &r, U2OpStatus &os) {
+qint64 SQLiteAssemblyDbi::getMaxPackedRow(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os) {
     quint64 t0 = GTimer::currentTimeMicros();
 
-    AssemblyAdapter *a = getAdapter(assemblyId, os);
+    AssemblyAdapter* a = getAdapter(assemblyId, os);
 
     if (a == nullptr) {
         return -1;
@@ -181,10 +181,10 @@ qint64 SQLiteAssemblyDbi::getMaxPackedRow(const U2DataId &assemblyId, const U2Re
     return res;
 }
 
-qint64 SQLiteAssemblyDbi::getMaxEndPos(const U2DataId &assemblyId, U2OpStatus &os) {
+qint64 SQLiteAssemblyDbi::getMaxEndPos(const U2DataId& assemblyId, U2OpStatus& os) {
     quint64 t0 = GTimer::currentTimeMicros();
 
-    AssemblyAdapter *a = getAdapter(assemblyId, os);
+    AssemblyAdapter* a = getAdapter(assemblyId, os);
     if (a == nullptr) {
         return -1;
     }
@@ -194,7 +194,7 @@ qint64 SQLiteAssemblyDbi::getMaxEndPos(const U2DataId &assemblyId, U2OpStatus &o
     return res;
 }
 
-void SQLiteAssemblyDbi::createAssemblyObject(U2Assembly &assembly, const QString &folder, U2DbiIterator<U2AssemblyRead> *it, U2AssemblyReadsImportInfo &importInfo, U2OpStatus &os) {
+void SQLiteAssemblyDbi::createAssemblyObject(U2Assembly& assembly, const QString& folder, U2DbiIterator<U2AssemblyRead>* it, U2AssemblyReadsImportInfo& importInfo, U2OpStatus& os) {
     dbi->getSQLiteObjectDbi()->createObject(assembly, folder, U2DbiObjectRank_TopLevel, os);
     SAFE_POINT_OP(os, );
 
@@ -210,7 +210,7 @@ void SQLiteAssemblyDbi::createAssemblyObject(U2Assembly &assembly, const QString
     q.insert();
     SAFE_POINT_OP(os, );
 
-    AssemblyAdapter *a = getAdapter(assembly.id, os);
+    AssemblyAdapter* a = getAdapter(assembly.id, os);
     SAFE_POINT_OP(os, );
 
     a->createReadsTables(os);
@@ -222,10 +222,10 @@ void SQLiteAssemblyDbi::createAssemblyObject(U2Assembly &assembly, const QString
     }
 }
 
-void SQLiteAssemblyDbi::finalizeAssemblyObject(U2Assembly &assembly, U2OpStatus &os) {
+void SQLiteAssemblyDbi::finalizeAssemblyObject(U2Assembly& assembly, U2OpStatus& os) {
     const quint64 t0 = GTimer::currentTimeMicros();
 
-    AssemblyAdapter *a = getAdapter(assembly.id, os);
+    AssemblyAdapter* a = getAdapter(assembly.id, os);
     SAFE_POINT_OP(os, );
 
     a->createReadsIndexes(os);
@@ -234,7 +234,7 @@ void SQLiteAssemblyDbi::finalizeAssemblyObject(U2Assembly &assembly, U2OpStatus 
     perfLog.trace(QString("Assembly: re-indexing pack time: %1 seconds").arg((GTimer::currentTimeMicros() - t0) / float(1000 * 1000)));
 }
 
-void SQLiteAssemblyDbi::removeAssemblyData(const U2DataId &assemblyId, U2OpStatus &os) {
+void SQLiteAssemblyDbi::removeAssemblyData(const U2DataId& assemblyId, U2OpStatus& os) {
     SQLiteTransaction t(db, os);
     CHECK_OP(os, );
 
@@ -243,7 +243,7 @@ void SQLiteAssemblyDbi::removeAssemblyData(const U2DataId &assemblyId, U2OpStatu
     removeAssemblyEntry(assemblyId, os);
 }
 
-void SQLiteAssemblyDbi::updateAssemblyObject(U2Assembly &assembly, U2OpStatus &os) {
+void SQLiteAssemblyDbi::updateAssemblyObject(U2Assembly& assembly, U2OpStatus& os) {
     SQLiteTransaction t(db, os);
 
     SQLiteWriteQuery q("UPDATE Assembly SET reference = ?1 WHERE object = ?2", db, os);
@@ -259,14 +259,14 @@ void SQLiteAssemblyDbi::updateAssemblyObject(U2Assembly &assembly, U2OpStatus &o
     SAFE_POINT_OP(os, );
 }
 
-void SQLiteAssemblyDbi::removeReads(const U2DataId &assemblyId, const QList<U2DataId> &rowIds, U2OpStatus &os) {
-    AssemblyAdapter *a = getAdapter(assemblyId, os);
+void SQLiteAssemblyDbi::removeReads(const U2DataId& assemblyId, const QList<U2DataId>& rowIds, U2OpStatus& os) {
+    AssemblyAdapter* a = getAdapter(assemblyId, os);
     if (a != nullptr) {
         a->removeReads(rowIds, os);
     }
 }
 
-QString SQLiteAssemblyDbi::getCreateAssemblyTableQuery(const QString &tableAlias) {
+QString SQLiteAssemblyDbi::getCreateAssemblyTableQuery(const QString& tableAlias) {
     return QString("CREATE TABLE %1 (object INTEGER PRIMARY KEY, "
                    "reference INTEGER, imethod TEXT NOT NULL, cmethod TEXT NOT NULL, idata BLOB, cdata BLOB, "
                    "FOREIGN KEY(object) REFERENCES Object(id), "
@@ -274,7 +274,7 @@ QString SQLiteAssemblyDbi::getCreateAssemblyTableQuery(const QString &tableAlias
         .arg(tableAlias);
 }
 
-void SQLiteAssemblyDbi::addReads(AssemblyAdapter *a, U2DbiIterator<U2AssemblyRead> *it, U2AssemblyReadsImportInfo &ii, U2OpStatus &os) {
+void SQLiteAssemblyDbi::addReads(AssemblyAdapter* a, U2DbiIterator<U2AssemblyRead>* it, U2AssemblyReadsImportInfo& ii, U2OpStatus& os) {
     GTIMER(c2, t2, "SQLiteAssemblyDbi::addReads");
 
     quint64 t0 = GTimer::currentTimeMicros();
@@ -288,13 +288,13 @@ void SQLiteAssemblyDbi::addReads(AssemblyAdapter *a, U2DbiIterator<U2AssemblyRea
                       .arg(ii.packStat.readsCount > 0 ? "yes" : "no"));
 }
 
-void SQLiteAssemblyDbi::removeTables(const U2DataId &assemblyId, U2OpStatus &os) {
-    AssemblyAdapter *adapter = getAdapter(assemblyId, os);
+void SQLiteAssemblyDbi::removeTables(const U2DataId& assemblyId, U2OpStatus& os) {
+    AssemblyAdapter* adapter = getAdapter(assemblyId, os);
     CHECK(nullptr != adapter, );
     adapter->dropReadsTables(os);
 }
 
-void SQLiteAssemblyDbi::removeAssemblyEntry(const U2DataId &assemblyId, U2OpStatus &os) {
+void SQLiteAssemblyDbi::removeAssemblyEntry(const U2DataId& assemblyId, U2OpStatus& os) {
     static const QString queryString("DELETE FROM Assembly WHERE object = ?1");
     SQLiteWriteQuery q(queryString, db, os);
     CHECK_OP(os, );
@@ -302,8 +302,8 @@ void SQLiteAssemblyDbi::removeAssemblyEntry(const U2DataId &assemblyId, U2OpStat
     q.execute();
 }
 
-void SQLiteAssemblyDbi::addReads(const U2DataId &assemblyId, U2DbiIterator<U2AssemblyRead> *it, U2OpStatus &os) {
-    AssemblyAdapter *a = getAdapter(assemblyId, os);
+void SQLiteAssemblyDbi::addReads(const U2DataId& assemblyId, U2DbiIterator<U2AssemblyRead>* it, U2OpStatus& os) {
+    AssemblyAdapter* a = getAdapter(assemblyId, os);
     if (a != nullptr) {
         U2AssemblyReadsImportInfo ii;
         addReads(a, it, ii, os);
@@ -311,12 +311,12 @@ void SQLiteAssemblyDbi::addReads(const U2DataId &assemblyId, U2DbiIterator<U2Ass
 }
 
 /**  Packs assembly rows: assigns packedViewRow value for every read in assembly */
-void SQLiteAssemblyDbi::pack(const U2DataId &assemblyId, U2AssemblyPackStat &stat, U2OpStatus &os) {
+void SQLiteAssemblyDbi::pack(const U2DataId& assemblyId, U2AssemblyPackStat& stat, U2OpStatus& os) {
     GTIMER(c2, t2, "SQLiteAssemblyDbi::pack");
 
     quint64 t0 = GTimer::currentTimeMicros();
 
-    AssemblyAdapter *a = getAdapter(assemblyId, os);
+    AssemblyAdapter* a = getAdapter(assemblyId, os);
     if (a == nullptr) {
         return;
     }
@@ -325,12 +325,12 @@ void SQLiteAssemblyDbi::pack(const U2DataId &assemblyId, U2AssemblyPackStat &sta
     perfLog.trace(QString("Assembly: full pack time: %1 seconds").arg((GTimer::currentTimeMicros() - t0) / float(1000 * 1000)));
 }
 
-void SQLiteAssemblyDbi::calculateCoverage(const U2DataId &assemblyId, const U2Region &region, U2AssemblyCoverageStat &coverage, U2OpStatus &os) {
+void SQLiteAssemblyDbi::calculateCoverage(const U2DataId& assemblyId, const U2Region& region, U2AssemblyCoverageStat& coverage, U2OpStatus& os) {
     GTIMER(c2, t2, "SQLiteAssemblyDbi::calculateCoverage");
 
     quint64 t0 = GTimer::currentTimeMicros();
 
-    AssemblyAdapter *a = getAdapter(assemblyId, os);
+    AssemblyAdapter* a = getAdapter(assemblyId, os);
     if (a == nullptr) {
         return;
     }
@@ -341,19 +341,19 @@ void SQLiteAssemblyDbi::calculateCoverage(const U2DataId &assemblyId, const U2Re
 //////////////////////////////////////////////////////////////////////////
 // SQLiteAssemblyUtils
 
-static QByteArray getQuality(const U2AssemblyRead &read) {
+static QByteArray getQuality(const U2AssemblyRead& read) {
     if (read->readSequence.length() == read->quality.length()) {
         return read->quality;
     }
     return QByteArray(read->readSequence.length(), char(0xFF));
 }
 
-QByteArray SQLiteAssemblyUtils::packData(SQLiteAssemblyDataMethod method, const U2AssemblyRead &read, U2OpStatus &os) {
-    const QByteArray &name = read->name;
-    const QByteArray &seq = read->readSequence;
+QByteArray SQLiteAssemblyUtils::packData(SQLiteAssemblyDataMethod method, const U2AssemblyRead& read, U2OpStatus& os) {
+    const QByteArray& name = read->name;
+    const QByteArray& seq = read->readSequence;
     QByteArray cigarText = U2AssemblyUtils::cigar2String(read->cigar);
     QByteArray qualityString = getQuality(read);
-    const QByteArray &rnext = read->rnext;
+    const QByteArray& rnext = read->rnext;
     QByteArray pnext = QByteArray::number(read->pnext);
     QByteArray aux = SamtoolsAdapter::aux2string(read->aux);
 
@@ -370,7 +370,7 @@ QByteArray SQLiteAssemblyUtils::packData(SQLiteAssemblyDataMethod method, const 
         }
     }
     QByteArray res(nBytes, Qt::Uninitialized);
-    char *data = res.data();
+    char* data = res.data();
     int pos = 0;
 
     // packing type
@@ -437,16 +437,16 @@ QByteArray SQLiteAssemblyUtils::packData(SQLiteAssemblyDataMethod method, const 
     return res;
 }
 
-void SQLiteAssemblyUtils::unpackData(const QByteArray &packedData, U2AssemblyRead &read, U2OpStatus &os) {
-    QByteArray &name = read->name;
-    QByteArray &sequence = read->readSequence;
-    QByteArray &qualityString = read->quality;
+void SQLiteAssemblyUtils::unpackData(const QByteArray& packedData, U2AssemblyRead& read, U2OpStatus& os) {
+    QByteArray& name = read->name;
+    QByteArray& sequence = read->readSequence;
+    QByteArray& qualityString = read->quality;
 
     if (packedData.isEmpty()) {
         os.setError(U2DbiL10n::tr("Packed data are empty!"));
         return;
     }
-    const char *data = packedData.constData();
+    const char* data = packedData.constData();
 
     // packing type
     if (data[0] != '0') {
@@ -530,7 +530,7 @@ void SQLiteAssemblyUtils::unpackData(const QByteArray &packedData, U2AssemblyRea
     }
 }
 
-void SQLiteAssemblyUtils::calculateCoverage(SQLiteReadQuery &q, const U2Region &r, U2AssemblyCoverageStat &coverage, U2OpStatus &os) {
+void SQLiteAssemblyUtils::calculateCoverage(SQLiteReadQuery& q, const U2Region& r, U2AssemblyCoverageStat& coverage, U2OpStatus& os) {
     int csize = coverage.size();
     SAFE_POINT(csize > 0, "illegal coverage vector size!", );
 
@@ -553,7 +553,7 @@ void SQLiteAssemblyUtils::calculateCoverage(SQLiteReadQuery &q, const U2Region &
         // we have used effective length of the read, so insertions/deletions are already taken into account
         // cigarString can be longer than needed
         QVector<U2CigarOp> cigarVector;
-        foreach (const U2CigarToken &cigar, read->cigar) {
+        foreach (const U2CigarToken& cigar, read->cigar) {
             cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
         }
         cigarVector.removeAll(U2CigarOp_I);
@@ -578,14 +578,14 @@ void SQLiteAssemblyUtils::calculateCoverage(SQLiteReadQuery &q, const U2Region &
     }
 }
 
-void SQLiteAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo &ii, const U2AssemblyRead &read) {
+void SQLiteAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& ii, const U2AssemblyRead& read) {
     if (!ii.computeCoverage) {
         return;
     }
     int csize = ii.coverage.size();
 
     QVector<U2CigarOp> cigarVector;
-    foreach (const U2CigarToken &cigar, read->cigar) {
+    foreach (const U2CigarToken& cigar, read->cigar) {
         cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
     }
     cigarVector.removeAll(U2CigarOp_I);
@@ -597,7 +597,7 @@ void SQLiteAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo &ii, const 
     if (endPos > csize - 1) {
         endPos = csize - 1;
     }
-    int *coverageData = ii.coverage.data();
+    int* coverageData = ii.coverage.data();
     for (int i = startPos; i <= endPos && i < csize; i++) {
         switch (cigarVector[(i - startPos) * ii.coverageBasesPerPoint]) {
             case U2CigarOp_D:  // skip the deletion
@@ -611,7 +611,7 @@ void SQLiteAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo &ii, const 
 
 //////////////////////////////////////////////////////////////////////////
 // read loader
-U2AssemblyRead SimpleAssemblyReadLoader::load(SQLiteQuery *q) {
+U2AssemblyRead SimpleAssemblyReadLoader::load(SQLiteQuery* q) {
     U2AssemblyRead read(new U2AssemblyReadData());
 
     read->id = q->getDataId(0, U2Type::AssemblyRead);
@@ -639,7 +639,7 @@ U2AssemblyRead SimpleAssemblyReadLoader::load(SQLiteQuery *q) {
     return read;
 }
 
-PackAlgorithmData SimpleAssemblyReadPackedDataLoader::load(SQLiteQuery *q) {
+PackAlgorithmData SimpleAssemblyReadPackedDataLoader::load(SQLiteQuery* q) {
     PackAlgorithmData data;
     data.readId = q->getDataId(0, U2Type::AssemblyRead);
     data.leftmostPos = q->getInt64(1);

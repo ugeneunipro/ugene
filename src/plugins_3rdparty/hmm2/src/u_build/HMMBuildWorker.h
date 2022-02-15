@@ -14,7 +14,7 @@ namespace LocalWorkflow {
 class HMMBuildPrompter : public PrompterBase<HMMBuildPrompter> {
     Q_OBJECT
 public:
-    HMMBuildPrompter(Actor *p = 0)
+    HMMBuildPrompter(Actor* p = 0)
         : PrompterBase<HMMBuildPrompter>(p) {
     }
 
@@ -25,16 +25,16 @@ protected:
 class HMMBuildWorker : public BaseWorker {
     Q_OBJECT
 public:
-    HMMBuildWorker(Actor *a);
+    HMMBuildWorker(Actor* a);
 
     virtual void init();
     virtual bool isReady() const;
-    virtual Task *tick();
+    virtual Task* tick();
     virtual bool isDone() const;
     virtual void cleanup();
 
 private slots:
-    void sl_taskFinished(Task *);
+    void sl_taskFinished(Task*);
     void sl_taskFinished();
 
 protected:
@@ -42,7 +42,7 @@ protected:
     UHMMBuildSettings cfg;
     UHMMCalibrateSettings calSettings;
     bool calibrate;
-    Task *nextTick;
+    Task* nextTick;
 };
 
 class HMMBuildWorkerFactory : public DomainFactory {
@@ -53,7 +53,7 @@ public:
     HMMBuildWorkerFactory()
         : DomainFactory(ACTOR) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new HMMBuildWorker(a);
     }
 };

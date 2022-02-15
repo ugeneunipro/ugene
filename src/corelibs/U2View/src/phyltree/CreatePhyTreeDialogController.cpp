@@ -54,7 +54,7 @@
 
 namespace U2 {
 
-CreatePhyTreeDialogController::CreatePhyTreeDialogController(QWidget *parent, const MultipleSequenceAlignmentObject *msaObject, CreatePhyTreeSettings &settings)
+CreatePhyTreeDialogController::CreatePhyTreeDialogController(QWidget* parent, const MultipleSequenceAlignmentObject* msaObject, CreatePhyTreeSettings& settings)
     : QDialog(parent),
       msa(msaObject->getMsaCopy()),
       settings(settings),
@@ -73,7 +73,7 @@ CreatePhyTreeDialogController::CreatePhyTreeDialogController(QWidget *parent, co
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Build"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    PhyTreeGeneratorRegistry *registry = AppContext::getPhyTreeGeneratorRegistry();
+    PhyTreeGeneratorRegistry* registry = AppContext::getPhyTreeGeneratorRegistry();
     ui->algorithmBox->addItems(registry->getNameList());
 
     initSaveController(msaObject);
@@ -106,8 +106,8 @@ void CreatePhyTreeDialogController::accept() {
 void CreatePhyTreeDialogController::sl_comboIndexChanged(int) {
     delete settingsWidget;
     settingsWidget = nullptr;
-    PhyTreeGeneratorRegistry *registry = AppContext::getPhyTreeGeneratorRegistry();
-    PhyTreeGenerator *generator = registry->getGenerator(ui->algorithmBox->currentText());
+    PhyTreeGeneratorRegistry* registry = AppContext::getPhyTreeGeneratorRegistry();
+    PhyTreeGenerator* generator = registry->getGenerator(ui->algorithmBox->currentText());
     SAFE_POINT(generator != nullptr, "PhyTree Generator is NULL", );
     settingsWidget = generator->createPhyTreeSettingsWidget(msa, this);
     SAFE_POINT(settingsWidget != nullptr, "Settings widget is NULL", );
@@ -174,7 +174,7 @@ bool CreatePhyTreeDialogController::checkMemory() {
     return true;
 }
 
-void CreatePhyTreeDialogController::initSaveController(const MultipleSequenceAlignmentObject *msaObject) {
+void CreatePhyTreeDialogController::initSaveController(const MultipleSequenceAlignmentObject* msaObject) {
     SaveDocumentControllerConfig config;
     GUrl msaDocumentUrl = msaObject->getDocument()->getURL();
     QString saveDirPath = QFileInfo(msaDocumentUrl.getURLString()).absolutePath();

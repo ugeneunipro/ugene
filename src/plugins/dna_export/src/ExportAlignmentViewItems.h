@@ -38,19 +38,19 @@ class MSAEditor;
 class ExportAlignmentViewItemsController : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    ExportAlignmentViewItemsController(QObject *p);
+    ExportAlignmentViewItemsController(QObject* p);
 
 protected:
-    void initViewContext(GObjectView *view) override;
+    void initViewContext(GObjectView* view) override;
 
-    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
+    void buildStaticOrContextMenu(GObjectView* view, QMenu* menu) override;
 };
 
 class MSAExportContext : public QObject {
     Q_OBJECT
 public:
-    MSAExportContext(MSAEditor *e);
-    void buildMenu(QMenu *m);
+    MSAExportContext(MSAEditor* e);
+    void buildMenu(QMenu* m);
 
 protected slots:
     void sl_exportNucleicMsaToAmino();
@@ -58,8 +58,8 @@ protected slots:
     void updateActions();
 
 private:
-    MSAEditor *editor;
-    QAction *translateMSAAction;
+    MSAEditor* editor;
+    QAction* translateMSAAction;
 };
 
 }  // namespace U2

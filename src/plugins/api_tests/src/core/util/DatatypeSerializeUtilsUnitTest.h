@@ -32,7 +32,7 @@ namespace U2 {
 
 class CompareUtils {
 public:
-    static void checkEqual(const DNAChromatogram &chr1, const DNAChromatogram &chr2, U2OpStatus &os);
+    static void checkEqual(const DNAChromatogram& chr1, const DNAChromatogram& chr2, U2OpStatus& os);
 };
 
 /* DNAChromatogramSerializer 1 */

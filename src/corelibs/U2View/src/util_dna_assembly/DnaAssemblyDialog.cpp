@@ -60,7 +60,7 @@ bool DnaAssemblyDialog::samOutput = false;
 #define MATE_UPSTREAM "Upstream"
 #define MATE_DOWNSTREAM "Downstream"
 
-DnaAssemblyDialog::DnaAssemblyDialog(QWidget *p, const QStringList &shortReadsUrls, const QString &refSeqUrl)
+DnaAssemblyDialog::DnaAssemblyDialog(QWidget* p, const QStringList& shortReadsUrls, const QString& refSeqUrl)
     : QDialog(p),
       assemblyRegistry(AppContext::getDnaAssemblyAlgRegistry()),
       customGUI(nullptr),
@@ -93,7 +93,7 @@ DnaAssemblyDialog::DnaAssemblyDialog(QWidget *p, const QStringList &shortReadsUr
     }
 
     shortReadsTable->installEventFilter(this);
-    QHeaderView *header = shortReadsTable->header();
+    QHeaderView* header = shortReadsTable->header();
     header->setStretchLastSection(false);
     header->setSectionsClickable(false);
     header->setSectionResizeMode(0, QHeaderView::Stretch);
@@ -104,7 +104,7 @@ DnaAssemblyDialog::DnaAssemblyDialog(QWidget *p, const QStringList &shortReadsUr
     connect(addShortreadsButton, SIGNAL(clicked()), SLOT(sl_onAddShortReadsButtonClicked()));
     connect(removeShortReadsButton, SIGNAL(clicked()), SLOT(sl_onRemoveShortReadsButtonClicked()));
     connect(addRefButton, SIGNAL(clicked()), SLOT(sl_onAddRefButtonClicked()));
-    connect(methodNamesBox, SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_onAlgorithmChanged(const QString &)));
+    connect(methodNamesBox, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_onAlgorithmChanged(const QString&)));
     connect(samBox, SIGNAL(clicked()), SLOT(sl_onSamBoxClicked()));
     connect(libraryComboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_onLibraryTypeChanged()));
 
@@ -121,8 +121,8 @@ DnaAssemblyDialog::DnaAssemblyDialog(QWidget *p, const QStringList &shortReadsUr
     }
 
     QStringList activeShortReadsUrl = shortReadsUrls.isEmpty() ? lastShortReadsUrls : shortReadsUrls;
-    foreach (const QString &read, activeShortReadsUrl) {
-        ShortReadsTableItem *item = new ShortReadsTableItem(shortReadsTable, read);
+    foreach (const QString& read, activeShortReadsUrl) {
+        ShortReadsTableItem* item = new ShortReadsTableItem(shortReadsTable, read);
         ShortReadsTableItem::addItemToTable(item, shortReadsTable);
     }
 }
@@ -139,8 +139,8 @@ void DnaAssemblyDialog::sl_onAddShortReadsButtonClicked() {
     }
     lod.url = fileNames.at(fileNames.count() - 1);
 
-    foreach (const QString &f, fileNames) {
-        ShortReadsTableItem *item = new ShortReadsTableItem(shortReadsTable, f);
+    foreach (const QString& f, fileNames) {
+        ShortReadsTableItem* item = new ShortReadsTableItem(shortReadsTable, f);
         item->setLibraryType(libraryComboBox->currentIndex() == 0 ? LIBRARY_TYPE_SINGLE : LIBRARY_TYPE_PAIRED);
         ShortReadsTableItem::addItemToTable(item, shortReadsTable);
     }
@@ -254,10 +254,10 @@ void DnaAssemblyDialog::initSaveController() {
 
     saveController = new SaveDocumentController(config, formats, this);
 
-    connect(saveController, SIGNAL(si_formatChanged(const QString &)), SLOT(sl_formatChanged(const QString &)));
+    connect(saveController, SIGNAL(si_formatChanged(const QString&)), SLOT(sl_formatChanged(const QString&)));
 }
 
-void DnaAssemblyDialog::buildResultUrl(const QString &refUrl) {
+void DnaAssemblyDialog::buildResultUrl(const QString& refUrl) {
     if (saveController->getSaveFileName().isEmpty()) {
         const QString formatId = saveController->getFormatIdToSave();
         const QFileInfo refinfo(refUrl);
@@ -277,7 +277,7 @@ const QList<ShortReadSet> DnaAssemblyDialog::getShortReadSets() {
     int numItems = shortReadsTable->topLevelItemCount();
 
     for (int i = 0; i < numItems; ++i) {
-        ShortReadsTableItem *item = static_cast<ShortReadsTableItem *>(shortReadsTable->topLevelItem(i));
+        ShortReadsTableItem* item = static_cast<ShortReadsTableItem*>(shortReadsTable->topLevelItem(i));
         sets.append(ShortReadSet(item->getUrl(), item->getType(), item->getOrder()));
     }
     return sets;
@@ -292,7 +292,7 @@ void DnaAssemblyDialog::sl_onRemoveShortReadsButtonClicked() {
     shortReadsTable->takeTopLevelItem(currentRow);
 }
 
-void DnaAssemblyDialog::sl_onAlgorithmChanged(const QString &text) {
+void DnaAssemblyDialog::sl_onAlgorithmChanged(const QString& text) {
     methodName = text;
     updateState();
 }
@@ -342,7 +342,7 @@ void DnaAssemblyDialog::addGuiExtension() {
     }
 
     // insert new extension widget
-    DnaAssemblyAlgorithmEnv *env = assemblyRegistry->getAlgorithm(methodNamesBox->currentText());
+    DnaAssemblyAlgorithmEnv* env = assemblyRegistry->getAlgorithm(methodNamesBox->currentText());
 
     if (nullptr == env) {
         adjustSize();
@@ -366,7 +366,7 @@ void DnaAssemblyDialog::addGuiExtension() {
     } else {
         samBox->setEnabled(true);
     }
-    DnaAssemblyGUIExtensionsFactory *gui = env->getGUIExtFactory();
+    DnaAssemblyGUIExtensionsFactory* gui = env->getGUIExtFactory();
     if (gui != nullptr && gui->hasMainWidget()) {
         customGUI = gui->createMainWidget(this);
         int extensionMinWidth = customGUI->sizeHint().width();
@@ -393,10 +393,10 @@ void DnaAssemblyDialog::addGuiExtension() {
     }
 }
 
-bool DnaAssemblyDialog::eventFilter(QObject *obj, QEvent *event) {
+bool DnaAssemblyDialog::eventFilter(QObject* obj, QEvent* event) {
     if (obj == shortReadsTable) {
         if (event->type() == QEvent::KeyPress) {
-            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+            QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
             if (keyEvent->key() == Qt::Key_Delete) {
                 sl_onRemoveShortReadsButtonClicked();
             }
@@ -413,16 +413,16 @@ bool DnaAssemblyDialog::eventFilter(QObject *obj, QEvent *event) {
 void DnaAssemblyDialog::sl_onLibraryTypeChanged() {
     int count = shortReadsTable->topLevelItemCount();
     for (int i = 0; i < count; ++i) {
-        ShortReadsTableItem *item = static_cast<ShortReadsTableItem *>(shortReadsTable->topLevelItem(i));
+        ShortReadsTableItem* item = static_cast<ShortReadsTableItem*>(shortReadsTable->topLevelItem(i));
         item->setLibraryType(libraryComboBox->currentIndex() == 0 ? LIBRARY_TYPE_SINGLE : LIBRARY_TYPE_PAIRED);
     }
 }
 
-void DnaAssemblyDialog::sl_formatChanged(const QString &newFormat) {
+void DnaAssemblyDialog::sl_formatChanged(const QString& newFormat) {
     samBox->setChecked(BaseDocumentFormats::SAM == newFormat);
 }
 
-DnaAssemblyToRefTaskSettings DnaAssemblyGUIUtils::getSettings(DnaAssemblyDialog *dialog) {
+DnaAssemblyToRefTaskSettings DnaAssemblyGUIUtils::getSettings(DnaAssemblyDialog* dialog) {
     DnaAssemblyToRefTaskSettings s;
     SAFE_POINT(nullptr != dialog, "NULL dialog", s);
     s.samOutput = dialog->isSamOutput();
@@ -436,7 +436,7 @@ DnaAssemblyToRefTaskSettings DnaAssemblyGUIUtils::getSettings(DnaAssemblyDialog 
     return s;
 }
 
-void DnaAssemblyGUIUtils::runAssembly2ReferenceDialog(const QStringList &shortReadUrls, const QString &refSeqUrl) {
+void DnaAssemblyGUIUtils::runAssembly2ReferenceDialog(const QStringList& shortReadUrls, const QString& refSeqUrl) {
     QObjectScopedPointer<DnaAssemblyDialog> dlg = new DnaAssemblyDialog(QApplication::activeWindow(), shortReadUrls, refSeqUrl);
     dlg->exec();
     CHECK(!dlg.isNull(), );
@@ -444,12 +444,12 @@ void DnaAssemblyGUIUtils::runAssembly2ReferenceDialog(const QStringList &shortRe
     if (QDialog::Accepted == dlg->result()) {
         DnaAssemblyToRefTaskSettings s = getSettings(dlg.data());
         s.openView = true;
-        Task *assemblyTask = new DnaAssemblyTaskWithConversions(s, true);
+        Task* assemblyTask = new DnaAssemblyTaskWithConversions(s, true);
         AppContext::getTaskScheduler()->registerTopLevelTask(assemblyTask);
     }
 }
 
-ShortReadsTableItem::ShortReadsTableItem(QTreeWidget *treeWidget, const QString &url)
+ShortReadsTableItem::ShortReadsTableItem(QTreeWidget* treeWidget, const QString& url)
     : QTreeWidgetItem(treeWidget) {
     mateTypeBox = new QComboBox(treeWidget);
     mateTypeBox->addItem(MATE_UPSTREAM);
@@ -471,12 +471,12 @@ ShortReadSet::MateOrder ShortReadsTableItem::getOrder() const {
     return mateTypeBox->currentText() == MATE_DOWNSTREAM ? ShortReadSet::DownstreamMate : ShortReadSet::UpstreamMate;
 }
 
-void ShortReadsTableItem::addItemToTable(ShortReadsTableItem *item, QTreeWidget *treeWidget) {
+void ShortReadsTableItem::addItemToTable(ShortReadsTableItem* item, QTreeWidget* treeWidget) {
     treeWidget->addTopLevelItem(item);
     treeWidget->setItemWidget(item, 2, item->mateTypeBox);
 }
 
-void ShortReadsTableItem::setLibraryType(const QString &libraryType) {
+void ShortReadsTableItem::setLibraryType(const QString& libraryType) {
     setData(1, 0, libraryType);
     if (libraryType == LIBRARY_TYPE_SINGLE) {
         mateTypeBox->setCurrentIndex(0);

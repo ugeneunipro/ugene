@@ -41,56 +41,56 @@ class U2DESIGNER_EXPORT MarkerEditor : public ActorConfigurationEditor {
     Q_OBJECT
 public:
     MarkerEditor();
-    MarkerEditor(const MarkerEditor &)
+    MarkerEditor(const MarkerEditor&)
         : ActorConfigurationEditor(), markerModel(nullptr) {
     }
     virtual ~MarkerEditor();
-    virtual QWidget *getWidget();
-    virtual void setConfiguration(Actor *actor);
-    virtual ConfigurationEditor *clone() {
+    virtual QWidget* getWidget();
+    virtual void setConfiguration(Actor* actor);
+    virtual ConfigurationEditor* clone() {
         return new MarkerEditor(*this);
     }
 
 public slots:
-    void sl_onMarkerEdited(const QString &newMarkerName, const QString &oldMarkerName);
-    void sl_onMarkerAdded(const QString &markerName);
-    void sl_onMarkerRemoved(const QString &markerName);
+    void sl_onMarkerEdited(const QString& newMarkerName, const QString& oldMarkerName);
+    void sl_onMarkerAdded(const QString& markerName);
+    void sl_onMarkerRemoved(const QString& markerName);
 
 private:
-    MarkerGroupListCfgModel *markerModel;
+    MarkerGroupListCfgModel* markerModel;
 
 private:
-    QWidget *createGUI();
+    QWidget* createGUI();
 };  // MarkerEditor
 
 class MarkerGroupListCfgModel : public QAbstractTableModel {
     Q_OBJECT
 public:
-    MarkerGroupListCfgModel(QObject *parent, QList<Marker *> &markers);
+    MarkerGroupListCfgModel(QObject* parent, QList<Marker*>& markers);
 
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
-    int columnCount(const QModelIndex &) const;
-    int rowCount(const QModelIndex &) const;
-    Qt::ItemFlags flags(const QModelIndex &index) const;
-    bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
+    int columnCount(const QModelIndex&) const;
+    int rowCount(const QModelIndex&) const;
+    Qt::ItemFlags flags(const QModelIndex& index) const;
+    bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex());
 
-    Marker *getMarker(int row) const;
-    Marker *getMarker(const QString &markerName) const;
-    QList<Marker *> &getMarkers();
-    void addMarker(Marker *newMarker);
-    void replaceMarker(int row, Marker *newMarker);
-    QString suggestName(const QString &type);
-    bool containsName(const QString &name);
+    Marker* getMarker(int row) const;
+    Marker* getMarker(const QString& markerName) const;
+    QList<Marker*>& getMarkers();
+    void addMarker(Marker* newMarker);
+    void replaceMarker(int row, Marker* newMarker);
+    QString suggestName(const QString& type);
+    bool containsName(const QString& name);
 
 signals:
-    void si_markerEdited(const QString &newMarkerName, const QString &oldMarkerName);
-    void si_markerAdded(const QString &markerName);
-    void si_markerRemoved(const QString &markerName);
+    void si_markerEdited(const QString& newMarkerName, const QString& oldMarkerName);
+    void si_markerAdded(const QString& markerName);
+    void si_markerRemoved(const QString& markerName);
 
 private:
-    QList<Marker *> &markers;
+    QList<Marker*>& markers;
 };
 
 }  // namespace Workflow

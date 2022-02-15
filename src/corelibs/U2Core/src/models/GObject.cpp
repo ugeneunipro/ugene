@@ -36,7 +36,7 @@
 
 namespace U2 {
 
-GObject::GObject(QString _type, const QString &_name, const QVariantMap &hintsMap)
+GObject::GObject(QString _type, const QString& _name, const QVariantMap& hintsMap)
     : dataLoaded(false), type(_type), name(_name), arePermanentRelationsFetched(false) {
     SAFE_POINT(!name.isEmpty(), "Got an empty object name, type: " + type, );
     setupHints(hintsMap);
@@ -51,18 +51,18 @@ QVariantMap GObject::getGHintsMap() const {
     return getGHints()->getMap();
 }
 
-Document *GObject::getDocument() const {
-    StateLockableTreeItem *sl = getParentStateLockItem();
-    Document *doc = qobject_cast<Document *>(sl);
+Document* GObject::getDocument() const {
+    StateLockableTreeItem* sl = getParentStateLockItem();
+    Document* doc = qobject_cast<Document*>(sl);
     return doc;
 }
 
-void GObject::setGHints(GHints *s) {
+void GObject::setGHints(GHints* s) {
     delete hints;
     hints = s;
 }
 
-void GObject::setGObjectName(const QString &newName) {
+void GObject::setGObjectName(const QString& newName) {
     CHECK(name != newName, );
 
     if (entityRef.dbiRef.isValid()) {
@@ -70,7 +70,7 @@ void GObject::setGObjectName(const QString &newName) {
         DbiConnection con(entityRef.dbiRef, os);
         CHECK_OP(os, );
         CHECK(nullptr != con.dbi, );
-        U2ObjectDbi *oDbi = con.dbi->getObjectDbi();
+        U2ObjectDbi* oDbi = con.dbi->getObjectDbi();
         CHECK(nullptr != oDbi, );
 
         oDbi->renameObject(entityRef.entityId, newName, os);
@@ -80,7 +80,7 @@ void GObject::setGObjectName(const QString &newName) {
     setGObjectNameNotDbi(newName);
 }
 
-void GObject::setGObjectNameNotDbi(const QString &newName) {
+void GObject::setGObjectNameNotDbi(const QString& newName) {
     CHECK(name != newName, );
 
     QString oldName = name;
@@ -96,7 +96,7 @@ QList<GObjectRelation> GObject::getObjectRelations() const {
 
     // fetch permanent object relations from DB
     // only for the first time for objects from shared DBs
-    Document *parentDoc = getDocument();
+    Document* parentDoc = getDocument();
     if (!arePermanentRelationsFetched && !isUnloaded() && !(nullptr != parentDoc && !parentDoc->isDatabaseConnection())) {
         fetchPermanentGObjectRelations(res);
     }
@@ -104,8 +104,8 @@ QList<GObjectRelation> GObject::getObjectRelations() const {
     return res;
 }
 
-void GObject::fetchPermanentGObjectRelations(QList<GObjectRelation> &res) const {
-    Document *parentDoc = getDocument();
+void GObject::fetchPermanentGObjectRelations(QList<GObjectRelation>& res) const {
+    Document* parentDoc = getDocument();
     // take into account the case when the object was not added to document
     CHECK(nullptr != parentDoc && entityRef.dbiRef.isValid(), );
 
@@ -113,7 +113,7 @@ void GObject::fetchPermanentGObjectRelations(QList<GObjectRelation> &res) const 
     DbiConnection con(entityRef.dbiRef, os);
     SAFE_POINT_OP(os, );
 
-    U2ObjectRelationsDbi *rDbi = con.dbi->getObjectRelationsDbi();
+    U2ObjectRelationsDbi* rDbi = con.dbi->getObjectRelationsDbi();
     SAFE_POINT(rDbi != nullptr, "Invalid object relations DBI detected!", );
 
     const QList<U2ObjectRelation> rawDbRelations = rDbi->getObjectRelations(entityRef.entityId, os);
@@ -121,7 +121,7 @@ void GObject::fetchPermanentGObjectRelations(QList<GObjectRelation> &res) const 
 
     const QString docUrl = parentDoc->getURLString();
     QList<GObjectRelation> dbRelations;
-    foreach (const U2ObjectRelation &relation, rawDbRelations) {
+    foreach (const U2ObjectRelation& relation, rawDbRelations) {
         if (nullptr != parentDoc->findGObjectByName(relation.referencedName)) {
             GObjectReference reference(docUrl, relation.referencedName, relation.referencedType);
             reference.entityRef = U2EntityRef(entityRef.dbiRef, relation.referencedObject);
@@ -135,20 +135,20 @@ void GObject::fetchPermanentGObjectRelations(QList<GObjectRelation> &res) const 
     }
 
     QList<GObjectRelation> relationsMissedFromDb;
-    foreach (const GObjectRelation &relation, res) {
+    foreach (const GObjectRelation& relation, res) {
         if (!dbRelations.contains(relation)) {
             relationsMissedFromDb.append(relation);
         }
     }
     if (!relationsMissedFromDb.isEmpty()) {
-        const_cast<GObject *>(this)->setRelationsInDb(relationsMissedFromDb);
+        const_cast<GObject*>(this)->setRelationsInDb(relationsMissedFromDb);
     }
 
     hints->set(GObjectHint_RelatedObjects, QVariant::fromValue<QList<GObjectRelation>>(res));
-    const_cast<GObject *>(this)->arePermanentRelationsFetched = true;
+    const_cast<GObject*>(this)->arePermanentRelationsFetched = true;
 }
 
-void GObject::setObjectRelations(const QList<GObjectRelation> &list) {
+void GObject::setObjectRelations(const QList<GObjectRelation>& list) {
     QList<GObjectRelation> internalCopy = list;
     QList<GObjectRelation> oldRelations = getObjectRelations();
     setRelationsInDb(internalCopy);
@@ -156,19 +156,19 @@ void GObject::setObjectRelations(const QList<GObjectRelation> &list) {
     emit si_relationChanged(oldRelations);
 }
 
-void GObject::setRelationsInDb(QList<GObjectRelation> &list) const {
+void GObject::setRelationsInDb(QList<GObjectRelation>& list) const {
     U2OpStatus2Log os;
     DbiConnection con(entityRef.dbiRef, os);
     CHECK_OP(os, );  // Database is not available for some reason. It is may be deleted.
-    U2ObjectRelationsDbi *rDbi = con.dbi->getObjectRelationsDbi();
+    U2ObjectRelationsDbi* rDbi = con.dbi->getObjectRelationsDbi();
     SAFE_POINT(rDbi != nullptr, "Invalid object relations DBI detected!", );
     rDbi->removeReferencesForObject(entityRef.entityId, os);
     SAFE_POINT_OP(os, );
-    U2ObjectDbi *oDbi = con.dbi->getObjectDbi();
+    U2ObjectDbi* oDbi = con.dbi->getObjectDbi();
 
     QList<U2ObjectRelation> dbRelations;
     for (int i = 0, n = list.size(); i < n; ++i) {
-        GObjectRelation &relation = list[i];
+        GObjectRelation& relation = list[i];
         const U2DataType refType = U2ObjectTypeUtils::toDataType(relation.ref.objType);
         const bool relatedObjectDbReferenceValid = relation.ref.entityRef.dbiRef.isValid();
 
@@ -211,10 +211,10 @@ void GObject::setupHints(QVariantMap hintsMap) {
     hints = new GHintsDefaultImpl(hintsMap);
 }
 
-QList<GObjectRelation> GObject::findRelatedObjectsByRole(const GObjectRelationRole &role) const {
+QList<GObjectRelation> GObject::findRelatedObjectsByRole(const GObjectRelationRole& role) const {
     QList<GObjectRelation> res;
     QList<GObjectRelation> relations = getObjectRelations();
-    foreach (const GObjectRelation &ref, relations) {
+    foreach (const GObjectRelation& ref, relations) {
         if (ref.role == role) {
             res.append(ref);
         }
@@ -222,9 +222,9 @@ QList<GObjectRelation> GObject::findRelatedObjectsByRole(const GObjectRelationRo
     return res;
 }
 
-QList<GObjectRelation> GObject::findRelatedObjectsByType(const GObjectType &objType) const {
+QList<GObjectRelation> GObject::findRelatedObjectsByType(const GObjectType& objType) const {
     QList<GObjectRelation> res;
-    foreach (const GObjectRelation &rel, getObjectRelations()) {
+    foreach (const GObjectRelation& rel, getObjectRelations()) {
         if (rel.ref.objType == objType) {
             res.append(rel);
         }
@@ -232,7 +232,7 @@ QList<GObjectRelation> GObject::findRelatedObjectsByType(const GObjectType &objT
     return res;
 }
 
-void GObject::addObjectRelation(const GObjectRelation &rel) {
+void GObject::addObjectRelation(const GObjectRelation& rel) {
     SAFE_POINT(rel.isValid(), "Object relation is not valid!", );
     QList<GObjectRelation> list = getObjectRelations();
     CHECK(!list.contains(rel), );
@@ -240,7 +240,7 @@ void GObject::addObjectRelation(const GObjectRelation &rel) {
     setObjectRelations(list);
 }
 
-void GObject::removeObjectRelation(const GObjectRelation &ref) {
+void GObject::removeObjectRelation(const GObjectRelation& ref) {
     QList<GObjectRelation> list = getObjectRelations();
     bool ok = list.removeOne(ref);
     if (ok) {
@@ -248,24 +248,24 @@ void GObject::removeObjectRelation(const GObjectRelation &ref) {
     }
 }
 
-void GObject::addObjectRelation(const GObject *obj, const GObjectRelationRole &role) {
+void GObject::addObjectRelation(const GObject* obj, const GObjectRelationRole& role) {
     GObjectRelation rel(obj, role);
     addObjectRelation(rel);
 }
 
 namespace {
 
-bool relationsAreEqualExceptDbId(const GObjectRelation &f, const GObjectRelation &s) {
+bool relationsAreEqualExceptDbId(const GObjectRelation& f, const GObjectRelation& s) {
     return f.role == s.role && f.ref.objName == s.ref.objName && f.getDocURL() == s.getDocURL() && f.ref.objType == s.ref.objType &&
            (!f.ref.entityRef.isValid() || !s.ref.entityRef.isValid() || f.ref.entityRef.dbiRef == s.ref.entityRef.dbiRef);
 }
 
 }  // namespace
 
-bool GObject::hasObjectRelation(const GObjectRelation &r) const {
-    Document *parentDoc = getDocument();
+bool GObject::hasObjectRelation(const GObjectRelation& r) const {
+    Document* parentDoc = getDocument();
     if (nullptr != parentDoc && !parentDoc->isDatabaseConnection()) {
-        foreach (const GObjectRelation &rel, getObjectRelations()) {
+        foreach (const GObjectRelation& rel, getObjectRelations()) {
             if (relationsAreEqualExceptDbId(rel, r)) {
                 return true;
             }
@@ -276,7 +276,7 @@ bool GObject::hasObjectRelation(const GObjectRelation &r) const {
     }
 }
 
-bool GObject::hasObjectRelation(const GObject *obj, const GObjectRelationRole &role) const {
+bool GObject::hasObjectRelation(const GObject* obj, const GObjectRelationRole& role) const {
     GObjectRelation rel(obj, role);
     return hasObjectRelation(rel);
 }
@@ -285,7 +285,7 @@ bool GObject::isUnloaded() const {
     return type == GObjectTypes::UNLOADED;
 }
 
-StateLock *GObject::getGObjectModLock(GObjectModLock type) const {
+StateLock* GObject::getGObjectModLock(GObjectModLock type) const {
     return modLocks.value(type, nullptr);
 }
 
@@ -293,15 +293,15 @@ void GObject::relatedObjectRelationChanged() {
     emit si_relatedObjectRelationChanged();
 }
 
-bool GObject::objectLessThan(GObject *first, GObject *second) {
+bool GObject::objectLessThan(GObject* first, GObject* second) {
     return QString::compare(first->getGObjectName(), second->getGObjectName(), Qt::CaseInsensitive) < 0;
 }
 
-void GObject::updateRefInRelations(const GObjectReference &oldRef, const GObjectReference &newRef) {
+void GObject::updateRefInRelations(const GObjectReference& oldRef, const GObjectReference& newRef) {
     QList<GObjectRelation> rels = getObjectRelations();
     bool changed = false;
     for (int i = 0; i < rels.size(); i++) {
-        GObjectRelation &rel = rels[i];
+        GObjectRelation& rel = rels[i];
         if (rel.ref == oldRef) {
             rel.ref = newRef;
             changed = true;
@@ -311,11 +311,11 @@ void GObject::updateRefInRelations(const GObjectReference &oldRef, const GObject
         setObjectRelations(rels);
     }
 }
-void GObject::removeRelations(const QString &removedDocUrl) {
+void GObject::removeRelations(const QString& removedDocUrl) {
     QList<GObjectRelation> rels = getObjectRelations();
     bool changed = false;
     for (int i = 0; i < rels.size(); i++) {
-        GObjectRelation &rel = rels[i];
+        GObjectRelation& rel = rels[i];
         if (rel.ref.docUrl == removedDocUrl) {
             rels.removeAll(rel);
             changed = true;
@@ -326,11 +326,11 @@ void GObject::removeRelations(const QString &removedDocUrl) {
     }
 }
 
-void GObject::updateDocInRelations(const QString &oldDocUrl, const QString &newDocUrl) {
+void GObject::updateDocInRelations(const QString& oldDocUrl, const QString& newDocUrl) {
     QList<GObjectRelation> rels = getObjectRelations();
     bool changed = false;
     for (int i = 0; i < rels.size(); i++) {
-        GObjectRelation &rel = rels[i];
+        GObjectRelation& rel = rels[i];
         if (rel.ref.docUrl == oldDocUrl) {
             rel.ref.docUrl = newDocUrl;
             changed = true;
@@ -346,25 +346,25 @@ void GObject::ensureDataLoaded() const {
     ensureDataLoaded(os);
 }
 
-void GObject::ensureDataLoaded(U2OpStatus &os) const {
+void GObject::ensureDataLoaded(U2OpStatus& os) const {
     QMutexLocker locker(&dataGuard);
     CHECK(!dataLoaded, );
-    const_cast<GObject *>(this)->loadDataCore(os);
+    const_cast<GObject*>(this)->loadDataCore(os);
     CHECK_OP(os, );
     dataLoaded = true;
 }
 
-void GObject::loadDataCore(U2OpStatus & /*os*/) {
+void GObject::loadDataCore(U2OpStatus& /*os*/) {
     FAIL("Not implemented!", );
 }
 
-void GObject::setParentStateLockItem(StateLockableTreeItem *p) {
+void GObject::setParentStateLockItem(StateLockableTreeItem* p) {
     StateLockableTreeItem::setParentStateLockItem(p);
     checkIfBelongToSharedDatabase(p);
 }
 
-void GObject::checkIfBelongToSharedDatabase(StateLockableTreeItem *parent) {
-    Document *parentDoc = qobject_cast<Document *>(parent);
+void GObject::checkIfBelongToSharedDatabase(StateLockableTreeItem* parent) {
+    Document* parentDoc = qobject_cast<Document*>(parent);
     CHECK(nullptr != parentDoc, );
 
     if (parentDoc->isDatabaseConnection()) {
@@ -373,7 +373,7 @@ void GObject::checkIfBelongToSharedDatabase(StateLockableTreeItem *parent) {
             lockState(modLocks[GObjectModLock_IO]);
         }
     } else if (modLocks.contains(GObjectModLock_IO)) {
-        StateLock *lock = modLocks[GObjectModLock_IO];
+        StateLock* lock = modLocks[GObjectModLock_IO];
         unlockState(lock);
         modLocks.remove(GObjectModLock_IO);
         delete lock;
@@ -381,7 +381,7 @@ void GObject::checkIfBelongToSharedDatabase(StateLockableTreeItem *parent) {
 }
 
 void GObject::removeAllLocks() {
-    foreach (StateLock *lock, modLocks.values()) {
+    foreach (StateLock* lock, modLocks.values()) {
         unlockState(lock);
     }
     qDeleteAll(modLocks.values());
@@ -396,7 +396,7 @@ int GObject::getObjectVersion() const {
     CHECK_OP(os, -1);
     CHECK(con.dbi != nullptr, -1);
 
-    U2ObjectDbi *objectDbi = con.dbi->getObjectDbi();
+    U2ObjectDbi* objectDbi = con.dbi->getObjectDbi();
     CHECK(objectDbi != nullptr, -1);
 
     int version = objectDbi->getObjectVersion(entityRef.entityId, os);
@@ -408,7 +408,7 @@ int GObject::getObjectVersion() const {
 // mime
 const QString GObjectMimeData::MIME_TYPE("application/x-ugene-object-mime");
 
-bool GObjectMimeData::hasFormat(const QString &mimeType) const {
+bool GObjectMimeData::hasFormat(const QString& mimeType) const {
     return mimeType == MIME_TYPE;
 }
 

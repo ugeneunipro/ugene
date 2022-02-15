@@ -35,7 +35,7 @@ namespace LocalWorkflow {
 class GroupPrompter : public PrompterBase<GroupPrompter> {
     Q_OBJECT
 public:
-    GroupPrompter(Actor *p = nullptr)
+    GroupPrompter(Actor* p = nullptr)
         : PrompterBase<GroupPrompter>(p) {
     }
 
@@ -47,15 +47,15 @@ protected:
 class GroupWorker : public BaseWorker {
     Q_OBJECT
 public:
-    GroupWorker(Actor *p);
+    GroupWorker(Actor* p);
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private:
-    IntegralBus *inChannel;
-    IntegralBus *outChannel;
+    IntegralBus* inChannel;
+    IntegralBus* outChannel;
     DataTypePtr mtype;
 
     bool produceOneGroup;
@@ -78,7 +78,7 @@ public:
         : DomainFactory(ACTOR_ID) {
     }
     static void init();
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 
 };  // GroupWorkerFactory
 

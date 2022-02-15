@@ -32,10 +32,10 @@ namespace U2 {
 template<class T>
 class IdRegistry {
 public:
-    virtual T *getById(const QString &id) {
+    virtual T* getById(const QString& id) {
         return registry.value(id, nullptr);
     }
-    virtual bool registerEntry(T *t) {
+    virtual bool registerEntry(T* t) {
         if (registry.contains(t->getId())) {
             return false;
         } else {
@@ -43,14 +43,14 @@ public:
             return true;
         }
     }
-    virtual T *unregisterEntry(const QString &id) {
+    virtual T* unregisterEntry(const QString& id) {
         return registry.contains(id) ? registry.take(id) : nullptr;
     }
     virtual ~IdRegistry() {
         qDeleteAll(registry.values());
     }
 
-    virtual QList<T *> getAllEntries() const {
+    virtual QList<T*> getAllEntries() const {
         return registry.values();
     }
     virtual QList<QString> getAllIds() const {
@@ -58,7 +58,7 @@ public:
     }
 
 protected:
-    QMap<QString, T *> registry;
+    QMap<QString, T*> registry;
 
 };  // IdRegistry
 

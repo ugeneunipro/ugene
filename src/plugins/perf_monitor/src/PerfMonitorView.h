@@ -38,18 +38,18 @@ public:
     PerfMonitorView();
 
 protected:
-    void timerEvent(QTimerEvent *e);
+    void timerEvent(QTimerEvent* e);
 
 private:
     void updateCounters();
-    PerfTreeItem *findCounterItem(const GCounter *c) const;
-    QTreeWidget *tree;
+    PerfTreeItem* findCounterItem(const GCounter* c) const;
+    QTreeWidget* tree;
 };
 
 class PerfTreeItem : public QTreeWidgetItem {
 public:
-    PerfTreeItem(const GCounter *counter);
-    const GCounter *counter;
+    PerfTreeItem(const GCounter* counter);
+    const GCounter* counter;
     void update();
 };
 

@@ -39,21 +39,21 @@ public:
                   Import,
                   Export,
                   Close };
-    static QWidget *openLibrary(HI::GUITestOpStatus &os);
-    static void clickButton(HI::GUITestOpStatus &os, Button button);
-    static QAbstractButton *getButton(HI::GUITestOpStatus &os, Button button);
-    static int librarySize(HI::GUITestOpStatus &os);
-    static QString getPrimerSequence(HI::GUITestOpStatus &os, int number);
-    static QString getPrimerSequence(HI::GUITestOpStatus &os, const QString &name);
-    static QPoint getPrimerPoint(HI::GUITestOpStatus &os, int number);
-    static void clickPrimer(HI::GUITestOpStatus &os, int number);
-    static void clearLibrary(HI::GUITestOpStatus &os);
-    static void addPrimer(HI::GUITestOpStatus &os, const QString &name, const QString &data);
-    static void selectPrimers(HI::GUITestOpStatus &os, const QList<int> &numbers);
-    static void selectAll(HI::GUITestOpStatus &os);
+    static QWidget* openLibrary(HI::GUITestOpStatus& os);
+    static void clickButton(HI::GUITestOpStatus& os, Button button);
+    static QAbstractButton* getButton(HI::GUITestOpStatus& os, Button button);
+    static int librarySize(HI::GUITestOpStatus& os);
+    static QString getPrimerSequence(HI::GUITestOpStatus& os, int number);
+    static QString getPrimerSequence(HI::GUITestOpStatus& os, const QString& name);
+    static QPoint getPrimerPoint(HI::GUITestOpStatus& os, int number);
+    static void clickPrimer(HI::GUITestOpStatus& os, int number);
+    static void clearLibrary(HI::GUITestOpStatus& os);
+    static void addPrimer(HI::GUITestOpStatus& os, const QString& name, const QString& data);
+    static void selectPrimers(HI::GUITestOpStatus& os, const QList<int>& numbers);
+    static void selectAll(HI::GUITestOpStatus& os);
 
 private:
-    static QTableView *table(HI::GUITestOpStatus &os);
+    static QTableView* table(HI::GUITestOpStatus& os);
 };
 
 }  // namespace U2

@@ -38,7 +38,7 @@ namespace U2 {
 #define PLATFORM_WIN "win"
 #define PLATFORM_UNIX "unix"
 
-void GTest_ConvertPath::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_ConvertPath::init(XMLTestFormat*, const QDomElement& el) {
     originalUrl = el.attribute(ORIGINAL_URL_ATTR);
     expectedResult = el.attribute(EXPECTED_RESULT_ATTR);
     platform = el.attribute(PLATFORM_ATTR);
@@ -76,7 +76,7 @@ Task::ReportResult GTest_ConvertPath::report() {
 #define DATA_ATTR "data"
 #define EXISTS_ATTR "exists"
 
-void GTest_CreateTmpDir::init(XMLTestFormat * /*tf*/, const QDomElement &el) {
+void GTest_CreateTmpDir::init(XMLTestFormat* /*tf*/, const QDomElement& el) {
     url = el.attribute(URL_ATTR);
 }
 
@@ -95,7 +95,7 @@ Task::ReportResult GTest_CreateTmpDir::report() {
 /************************************************************************/
 /* GTest_RemoveTmpDir */
 /************************************************************************/
-void GTest_RemoveTmpDir::init(XMLTestFormat * /*tf*/, const QDomElement &el) {
+void GTest_RemoveTmpDir::init(XMLTestFormat* /*tf*/, const QDomElement& el) {
     url = env->getVar(TEMP_DATA_DIR_ENV_ID) + "/" + el.attribute(URL_ATTR);
 }
 
@@ -104,7 +104,7 @@ Task::ReportResult GTest_RemoveTmpDir::report() {
     return ReportResult_Finished;
 }
 
-void GTest_RemoveTmpDir::removeDir(const QString &url) {
+void GTest_RemoveTmpDir::removeDir(const QString& url) {
     QDir dir(url);
     bool removed = dir.removeRecursively();
     if (!removed) {
@@ -115,7 +115,7 @@ void GTest_RemoveTmpDir::removeDir(const QString &url) {
 /************************************************************************/
 /* GTest_RemoveTmpFile */
 /************************************************************************/
-void GTest_RemoveTmpFile::init(XMLTestFormat * /*tf*/, const QDomElement &el) {
+void GTest_RemoveTmpFile::init(XMLTestFormat* /*tf*/, const QDomElement& el) {
     url = env->getVar(TEMP_DATA_DIR_ENV_ID) + "/" + el.attribute(URL_ATTR);
 }
 
@@ -130,7 +130,7 @@ Task::ReportResult GTest_RemoveTmpFile::report() {
 /************************************************************************/
 /* GTest_CreateTmpFile */
 /************************************************************************/
-void GTest_CreateTmpFile::init(XMLTestFormat * /*tf*/, const QDomElement &el) {
+void GTest_CreateTmpFile::init(XMLTestFormat* /*tf*/, const QDomElement& el) {
     url = env->getVar(TEMP_DATA_DIR_ENV_ID) + "/" + el.attribute(URL_ATTR);
     data = el.attribute(DATA_ATTR);
 }
@@ -150,7 +150,7 @@ Task::ReportResult GTest_CreateTmpFile::report() {
 /************************************************************************/
 /* GTest_CheckTmpFile */
 /************************************************************************/
-void GTest_CheckTmpFile::init(XMLTestFormat * /*tf*/, const QDomElement &el) {
+void GTest_CheckTmpFile::init(XMLTestFormat* /*tf*/, const QDomElement& el) {
     url = env->getVar(TEMP_DATA_DIR_ENV_ID) + "/" + el.attribute(URL_ATTR);
     exists = bool(el.attribute(EXISTS_ATTR).toInt());
 }
@@ -166,7 +166,7 @@ Task::ReportResult GTest_CheckTmpFile::report() {
 /************************************************************************/
 /* GTest_CheckStorageFile */
 /************************************************************************/
-void GTest_CheckStorageFile::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_CheckStorageFile::init(XMLTestFormat*, const QDomElement& el) {
     storageUrl = AppContext::getAppFileStorage()->getStorageDir();
     fileName = el.attribute(URL_ATTR);
     exists = bool(el.attribute(EXISTS_ATTR).toInt());
@@ -180,7 +180,7 @@ Task::ReportResult GTest_CheckStorageFile::report() {
     return ReportResult_Finished;
 }
 
-bool GTest_CheckStorageFile::findRecursive(const QString &currentDirUrl) {
+bool GTest_CheckStorageFile::findRecursive(const QString& currentDirUrl) {
     QDir currentDir(currentDirUrl);
     QFileInfoList subDirList = currentDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
     QFileInfoList fileList = currentDir.entryInfoList(QDir::Files);
@@ -206,7 +206,7 @@ bool GTest_CheckStorageFile::findRecursive(const QString &currentDirUrl) {
 #define URL_ATTR "url"
 #define LESS_ATTR "lessThen"
 #define MORE_ATTR "moreThen"
-void GTest_CheckCreationTime::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_CheckCreationTime::init(XMLTestFormat*, const QDomElement& el) {
     url = el.attribute(URL_ATTR);
     XMLTestUtils::replacePrefix(env, url);
 
@@ -275,7 +275,7 @@ Task::ReportResult GTest_CheckCreationTime::report() {
 /************************************************************************/
 #define FOLDER_ATTR "folder"
 #define EXP_NUM "expected"
-void GTest_CheckFilesNum::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_CheckFilesNum::init(XMLTestFormat*, const QDomElement& el) {
     folder = el.attribute(FOLDER_ATTR);
     QString num_string = el.attribute(EXP_NUM);
     if (num_string.isEmpty()) {
@@ -309,8 +309,8 @@ Task::ReportResult GTest_CheckFilesNum::report() {
 /*******************************
  * GUrlTests
  *******************************/
-QList<XMLTestFactory *> GUrlTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> GUrlTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_ConvertPath::createFactory());
     res.append(GTest_CreateTmpDir::createFactory());
     res.append(GTest_RemoveTmpDir::createFactory());

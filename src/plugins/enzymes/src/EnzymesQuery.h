@@ -42,7 +42,7 @@ class EnzymesSelectorDialogHandler;
 class QDEnzymesActor : public QDActor {
     Q_OBJECT
 public:
-    QDEnzymesActor(QDActorPrototype const *proto);
+    QDEnzymesActor(QDActorPrototype const* proto);
     int getMinResultLen() const {
         return 1;
     }
@@ -50,7 +50,7 @@ public:
         return 20;
     }
     QString getText() const;
-    Task *getAlgorithmTask(const QVector<U2Region> &location);
+    Task* getAlgorithmTask(const QVector<U2Region>& location);
     QColor defaultColor() const {
         return QColor(0xB4, 0x9F, 0xD4);
     }
@@ -62,8 +62,8 @@ private slots:
 
 private:
     QStringList ids;
-    QList<FindEnzymesTask *> enzymesTasks;
-    EnzymesSelectorDialogHandler *selectorFactory;
+    QList<FindEnzymesTask*> enzymesTasks;
+    EnzymesSelectorDialogHandler* selectorFactory;
 };
 
 class QDEnzymesActorPrototype : public QDActorPrototype {
@@ -72,7 +72,7 @@ public:
     QIcon getIcon() const {
         return QIcon(":enzymes/images/enzymes.png");
     }
-    QDActor *createInstance() const {
+    QDActor* createInstance() const {
         return new QDEnzymesActor(this);
     }
 };
@@ -80,22 +80,22 @@ public:
 class EnzymesSelectorDialog : public QDialog, public Ui_EnzymesSelectorDialog {
     Q_OBJECT
 public:
-    EnzymesSelectorDialog(EnzymesSelectorDialogHandler *parent);
+    EnzymesSelectorDialog(EnzymesSelectorDialogHandler* parent);
     QString getSelectedString() const;
 
 private:
-    EnzymesSelectorDialogHandler *factory;
-    EnzymesSelectorWidget *enzSel;
+    EnzymesSelectorDialogHandler* factory;
+    EnzymesSelectorWidget* enzSel;
 };
 
 class EnzymesSelectorDialogHandler : public SelectorDialogHandler {
 public:
     EnzymesSelectorDialogHandler() {
     }
-    virtual QDialog *createSelectorDialog(const QString &) {
+    virtual QDialog* createSelectorDialog(const QString&) {
         return new EnzymesSelectorDialog(this);
     }
-    virtual QString getSelectedString(QDialog *dlg);
+    virtual QString getSelectedString(QDialog* dlg);
 };
 
 }  // namespace U2

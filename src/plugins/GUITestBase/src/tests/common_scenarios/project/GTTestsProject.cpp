@@ -159,8 +159,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     QString expectedTitle = "UGENE";
     GTMainWindow::checkTitle(os, expectedTitle);
 
-    QMenu *m = GTMenu::showMainMenu(os, MWMENU_FILE);
-    QAction *result = GTMenu::getMenuItem(os, m, ACTION_PROJECTSUPPORT__EXPORT_PROJECT, false);
+    QMenu* m = GTMenu::showMainMenu(os, MWMENU_FILE);
+    QAction* result = GTMenu::getMenuItem(os, m, ACTION_PROJECTSUPPORT__EXPORT_PROJECT, false);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     GTUtilsProject::checkProject(os, GTUtilsProject::NotExists);
@@ -207,7 +207,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Export document"}, GTGlobals::UseMouse));
 
-    Runnable *filler = new ExportDocumentDialogFiller(os, testDir + "_common_data/scenarios/sandbox/", "1.gb", ExportDocumentDialogFiller::Genbank, true, true, GTGlobals::UseMouse);
+    Runnable* filler = new ExportDocumentDialogFiller(os, testDir + "_common_data/scenarios/sandbox/", "1.gb", ExportDocumentDialogFiller::Genbank, true, true, GTGlobals::UseMouse);
     GTUtilsDialog::waitForDialog(os, filler);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1.gb"));
     GTMouseDriver::click(Qt::RightButton);
@@ -261,7 +261,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
 
 GUI_TEST_CLASS_DEFINITION(test_0014) {
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1HTQ", 3));
-    GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."},  GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."}, GTGlobals::UseKey);
 
     GTUtilsTaskTreeView::openView(os);
     GTUtilsTaskTreeView::cancelTask(os, "Download remote documents");
@@ -317,7 +317,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     CHECK_SET_ERR(fse1.bold(), "se1 are not marked with bold text");
     CHECK_SET_ERR(fse2.bold(), "se2 are not marked with bold text");
 
-    QWidget *w = GTWidget::findWidget(os, "render_area_se1");
+    QWidget* w = GTWidget::findWidget(os, "render_area_se1");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_REMOVE", ACTION_EDIT_SELECT_SEQUENCE_FROM_VIEW}));
     GTMenu::showContextMenu(os, w);
@@ -380,7 +380,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/1m.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget *w = GTUtilsMdi::findWindow(os, "Multiple alignment [1m.fa]");
+    QWidget* w = GTUtilsMdi::findWindow(os, "Multiple alignment [1m.fa]");
     CHECK_SET_ERR(w != nullptr, "Sequence view window title is not 1m [m] Multiple alignment");
 }
 
@@ -425,12 +425,12 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QMdiSubWindow *fasta = (QMdiSubWindow *)GTUtilsMdi::findWindow(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134) [human_T1.fa]");
+    QMdiSubWindow* fasta = (QMdiSubWindow*)GTUtilsMdi::findWindow(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134) [human_T1.fa]");
 
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget *coi = GTUtilsMdi::findWindow(os, "COI [COI.aln]");
+    QWidget* coi = GTUtilsMdi::findWindow(os, "COI [COI.aln]");
     CHECK_SET_ERR(fasta->windowIcon().cacheKey() != coi->windowIcon().cacheKey(), "Icons must not be equals");
     GTUtilsLog::check(os, logTracer);
 }
@@ -456,7 +456,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {
     GTUtilsProjectTreeView::openView(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QLineEdit *nameFilterEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "nameFilterEdit"));
+    QLineEdit* nameFilterEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "nameFilterEdit"));
     GTLineEdit::setText(os, nameFilterEdit, "BBBB");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -635,7 +635,7 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
     GTUtilsProjectTreeView::findIndex(os, "human_T1 (UCS");
 }
 
-QString readFileToStr(const QString &path) {
+QString readFileToStr(const QString& path) {
     GUrl url(path);
     QFile f(url.getURLString());
     if (!f.open(QFile::ReadOnly | QFile::Text)) {
@@ -890,8 +890,8 @@ GUI_TEST_CLASS_DEFINITION(test_0055) {
     public:
         CustomScenarioCancel() {
         }
-        virtual void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+        virtual void run(HI::GUITestOpStatus& os) {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
     };
@@ -926,12 +926,12 @@ GUI_TEST_CLASS_DEFINITION(test_0057) {
     public:
         CheckPathScenario() {
         }
-        virtual void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            QTreeWidget *treeWidget = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "shortReadsTable", dialog));
+        virtual void run(HI::GUITestOpStatus& os) {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+            QTreeWidget* treeWidget = qobject_cast<QTreeWidget*>(GTWidget::findWidget(os, "shortReadsTable", dialog));
             CHECK_SET_ERR(treeWidget != nullptr, "Tree widget is NULL");
-            QList<QTreeWidgetItem *> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());
-            QTreeWidgetItem *firstItem = treeItems.first();
+            QList<QTreeWidgetItem*> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());
+            QTreeWidgetItem* firstItem = treeItems.first();
             QString path = firstItem->text(0);
             CHECK_SET_ERR(!path.isEmpty(), "Reads filepath should not be empty");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -1086,7 +1086,7 @@ GUI_TEST_CLASS_DEFINITION(test_0068) {
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 2);
     GTClipboard::setUrls(os, QList<QString>() << dataDir + "samples/FASTA/human_T1.fa");
 
-    QAction *editMode = GTAction::findActionByText(os, "Switch on the editing mode");
+    QAction* editMode = GTAction::findActionByText(os, "Switch on the editing mode");
     CHECK_SET_ERR(editMode != nullptr, "Cannot find Edit mode action");
     GTWidget::click(os, GTAction::button(os, editMode));
 
@@ -1103,7 +1103,7 @@ GUI_TEST_CLASS_DEFINITION(test_0069) {
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 2);
     GTClipboard::setText(os, ">human_T1\r\nACGTACGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\r\n");
 
-    QAction *editMode = GTAction::findActionByText(os, "Switch on the editing mode");
+    QAction* editMode = GTAction::findActionByText(os, "Switch on the editing mode");
     CHECK_SET_ERR(editMode != nullptr, "Cannot find Edit mode action");
     GTWidget::click(os, GTAction::button(os, editMode));
 

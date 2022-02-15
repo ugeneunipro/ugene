@@ -107,14 +107,14 @@ public:
         return regions.size() == 1;
     }
 
-    bool operator==(const U2LocationData &l) const;
+    bool operator==(const U2LocationData& l) const;
 
-    bool operator!=(const U2LocationData &l) const {
+    bool operator!=(const U2LocationData& l) const {
         return !(*this == l);
     }
 };
 
-inline bool U2LocationData::operator==(const U2LocationData &l) const {
+inline bool U2LocationData::operator==(const U2LocationData& l) const {
     bool res = regions == l.regions && strand == l.strand && op == l.op && regionType == l.regionType;
     return res;
 }
@@ -130,40 +130,40 @@ public:
     U2Location()
         : d(new U2LocationData()) {
     }
-    U2Location(U2LocationData *l)
+    U2Location(U2LocationData* l)
         : d(l) {
     }
-    U2Location(const U2Location &) = default;
+    U2Location(const U2Location&) = default;
 
-    U2LocationData &operator*() {
+    U2LocationData& operator*() {
         return *d;
     }
-    const U2LocationData &operator*() const {
+    const U2LocationData& operator*() const {
         return *d;
     }
 
-    U2LocationData *operator->() {
+    U2LocationData* operator->() {
         return d;
     }
-    const U2LocationData *operator->() const {
+    const U2LocationData* operator->() const {
         return d;
     }
 
-    U2LocationData *data() {
+    U2LocationData* data() {
         return d.data();
     }
-    const U2LocationData *data() const {
+    const U2LocationData* data() const {
         return d.constData();
     }
 
-    inline operator U2LocationData *() {
+    inline operator U2LocationData*() {
         return d;
     }
-    inline operator const U2LocationData *() const {
+    inline operator const U2LocationData*() const {
         return d;
     }
 
-    U2Location &operator=(const U2Location &other) {
+    U2Location& operator=(const U2Location& other) {
         d = other.d;
         return *this;
     }
@@ -172,22 +172,22 @@ private:
     QSharedDataPointer<U2LocationData> d;
 };
 
-inline bool operator!=(const U2Location &ptr1, const U2Location &ptr2) {
+inline bool operator!=(const U2Location& ptr1, const U2Location& ptr2) {
     return *ptr1 != *ptr2;
 }
-inline bool operator!=(const U2Location &ptr1, const U2LocationData *ptr2) {
+inline bool operator!=(const U2Location& ptr1, const U2LocationData* ptr2) {
     return *ptr1 != *ptr2;
 }
-inline bool operator!=(const U2LocationData *ptr1, const U2Location &ptr2) {
+inline bool operator!=(const U2LocationData* ptr1, const U2Location& ptr2) {
     return *ptr1 != *ptr2;
 }
-inline bool operator==(const U2Location &ptr1, const U2Location &ptr2) {
+inline bool operator==(const U2Location& ptr1, const U2Location& ptr2) {
     return *ptr1 == *ptr2;
 }
-inline bool operator==(const U2Location &ptr1, const U2LocationData *ptr2) {
+inline bool operator==(const U2Location& ptr1, const U2LocationData* ptr2) {
     return *ptr1 == *ptr2;
 }
-inline bool operator==(const U2LocationData *ptr1, const U2Location &ptr2) {
+inline bool operator==(const U2LocationData* ptr1, const U2Location& ptr2) {
     return *ptr1 == *ptr2;
 }
 

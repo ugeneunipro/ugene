@@ -66,17 +66,17 @@ class OpenProjectTask : public Task {
     Q_OBJECT
 
 public:
-    OpenProjectTask(const QString &url, const QString &name = QString());
+    OpenProjectTask(const QString& url, const QString& name = QString());
 
     virtual void prepare();
 
 protected:
-    virtual QList<Task *> onSubTaskFinished(Task *subTask);
+    virtual QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
     QString url;
     QString name;
-    LoadProjectTask *loadProjectTask;
+    LoadProjectTask* loadProjectTask;
 };
 
 /// SaveProjectTask schema:
@@ -86,14 +86,14 @@ class SaveProjectTask : public Task {
     Q_OBJECT
 
 public:
-    SaveProjectTask(SaveProjectTaskKind k, Project *p = nullptr, const QString &url = QString(), bool silentSave_ = false);
+    SaveProjectTask(SaveProjectTaskKind k, Project* p = nullptr, const QString& url = QString(), bool silentSave_ = false);
     ~SaveProjectTask();
 
     virtual void prepare();
 
 private:
     SaveProjectTaskKind k;
-    Project *proj;
+    Project* proj;
     QString url;
     bool silentSave;
 };
@@ -101,21 +101,21 @@ private:
 class SaveOnlyProjectTask : public Task {
     Q_OBJECT
 public:
-    SaveOnlyProjectTask(Project *p = nullptr, const QString &url = QString());
+    SaveOnlyProjectTask(Project* p = nullptr, const QString& url = QString());
     ~SaveOnlyProjectTask();
 
     virtual void prepare();
     ReportResult report();
 
 private:
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
     void _run();
 
-    Task *sub;
-    Project *proj;
+    Task* sub;
+    Project* proj;
     QString url;
-    StateLock *lock;
-    QList<Document *> phantomDocs;
+    StateLock* lock;
+    QList<Document*> phantomDocs;
 };
 
 /// LoadProjectTask
@@ -123,26 +123,26 @@ class LoadProjectTask : public Task {
     Q_OBJECT
 
 public:
-    LoadProjectTask(const QString &url);
+    LoadProjectTask(const QString& url);
     ~LoadProjectTask();
 
     virtual void run();
     ReportResult report();
 
-    Project *getProject() const {
+    Project* getProject() const {
         return proj;
     }
-    Project *detachProject() {
-        Project *tmp = proj;
+    Project* detachProject() {
+        Project* tmp = proj;
         proj = nullptr;
         return tmp;
     }
 
 private:
     QString version;
-    Project *proj;
+    Project* proj;
     QString url;
-    QDomDocument *xmlDoc;
+    QDomDocument* xmlDoc;
 };
 
 /// register project task
@@ -151,23 +151,23 @@ private:
 class RegisterProjectServiceTask : public Task {
     Q_OBJECT
 public:
-    RegisterProjectServiceTask(Project *proj);
+    RegisterProjectServiceTask(Project* proj);
     void prepare();
 
 private:
-    Project *proj;
+    Project* proj;
 };
 
 class ExportProjectTask : public Task {
     Q_OBJECT
 public:
-    ExportProjectTask(const QString &_destinationDir, const QString &projectFile, bool _compress = false);
+    ExportProjectTask(const QString& _destinationDir, const QString& projectFile, bool _compress = false);
 
     void prepare();
     ReportResult report();
 
 private:
-    void _run(TaskStateInfo &ts, Project *p, QString url, QStringList paths);
+    void _run(TaskStateInfo& ts, Project* p, QString url, QStringList paths);
 
     bool compress;
     QString destinationDir;
@@ -186,13 +186,13 @@ public:
 
     virtual void cleanup();
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
     QStringList docContextList;
     QString projContextName;
-    LoadProjectTask *loadTask;
-    MultiTask *mt;
+    LoadProjectTask* loadTask;
+    MultiTask* mt;
     bool contextAdded;
     QString url;
 };
@@ -210,10 +210,10 @@ public:
     virtual void cleanup();
 
 private:
-    bool removeDir(const QDir &dir);
+    bool removeDir(const QDir& dir);
     QString url;
     QString projContextname;
-    ExportProjectTask *exportTask;
+    ExportProjectTask* exportTask;
 };
 
 // cppcheck-suppress noConstructor
@@ -239,15 +239,15 @@ public:
     ReportResult report();
 
 private:
-    LoadUnloadedDocumentTask *loadTask;
-    Document *loadedDoc;
+    LoadUnloadedDocumentTask* loadTask;
+    Document* loadedDoc;
     QString documentFileName;
     bool contextAdded;
 };
 
 class ProjectTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

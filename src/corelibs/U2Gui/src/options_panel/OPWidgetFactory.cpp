@@ -49,7 +49,7 @@ OPWidgetFactory::OPWidgetFactory()
 OPWidgetFactory::~OPWidgetFactory() {
 }
 
-bool OPWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface *filter) {
+bool OPWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface* filter) {
     // by default checks type only
     bool res = false;
 
@@ -58,7 +58,7 @@ bool OPWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface *filter) {
     return res;
 }
 
-void OPWidgetFactory::applyOptionsToWidget(QWidget * /*widget*/, const QVariantMap & /*options*/) {
+void OPWidgetFactory::applyOptionsToWidget(QWidget* /*widget*/, const QVariantMap& /*options*/) {
     // Do nothing by default. Override in widgets that support this feature.
 }
 

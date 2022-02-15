@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-MsaColorSchemeClustalX::MsaColorSchemeClustalX(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj)
+MsaColorSchemeClustalX::MsaColorSchemeClustalX(QObject* parent, const MsaColorSchemeFactory* factory, MultipleAlignmentObject* maObj)
     : MsaColorScheme(parent, factory, maObj),
       objVersion(1),
       cacheVersion(0),
@@ -41,7 +41,7 @@ MsaColorSchemeClustalX::MsaColorSchemeClustalX(QObject *parent, const MsaColorSc
     colorByIdx[ClustalColor_CYAN] = "#15a4a4";
     colorByIdx[ClustalColor_YELLOW] = "#c0c000";
 
-    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), SLOT(sl_alignmentChanged()));
+    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_alignmentChanged()));
 }
 
 QColor MsaColorSchemeClustalX::getBackgroundColor(int seq, int pos, char) const {
@@ -68,7 +68,7 @@ void MsaColorSchemeClustalX::sl_alignmentChanged() {
 
 namespace {
 
-int basesContent(const int *freqs, const char *str, int len) {
+int basesContent(const int* freqs, const char* str, int len) {
     int res = 0;
     for (int i = 0; i < len; i++) {
         uchar c = str[i];
@@ -124,7 +124,7 @@ void MsaColorSchemeClustalX::updateCache() const {
     */
 
     QVector<int> freqsByChar(256);
-    const int *freqs = freqsByChar.data();
+    const int* freqs = freqsByChar.data();
 
     for (int pos = 0; pos < aliLen; pos++) {
         int nonGapChars = 0;
@@ -228,7 +228,7 @@ void MsaColorSchemeClustalX::updateCache() const {
     }
 }
 
-int MsaColorSchemeClustalX::getCacheIdx(int seq, int pos, bool &low) const {
+int MsaColorSchemeClustalX::getCacheIdx(int seq, int pos, bool& low) const {
     assert(objVersion == cacheVersion);
     int res = seq * aliLen + pos;
     low = !(res & 0x1);
@@ -257,11 +257,11 @@ void MsaColorSchemeClustalX::setColorIdx(int seq, int pos, int colorIdx) const {
     colorsCache[cacheIdx] = val;
 }
 
-MsaColorSchemeClustalXFactory::MsaColorSchemeClustalXFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets)
+MsaColorSchemeClustalXFactory::MsaColorSchemeClustalXFactory(QObject* parent, const QString& id, const QString& name, const AlphabetFlags& supportedAlphabets)
     : MsaColorSchemeFactory(parent, id, name, supportedAlphabets) {
 }
 
-MsaColorScheme *MsaColorSchemeClustalXFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
+MsaColorScheme* MsaColorSchemeClustalXFactory::create(QObject* parent, MultipleAlignmentObject* maObj) const {
     return new MsaColorSchemeClustalX(parent, this, maObj);
 }
 

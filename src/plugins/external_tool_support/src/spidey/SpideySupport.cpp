@@ -83,7 +83,7 @@ SpideySupport::SpideySupport()
 }
 
 void SpideySupport::sl_validationStatusChanged(bool isValid) {
-    SplicedAlignmentTaskRegistry *registry = AppContext::getSplicedAlignmentTaskRegistry();
+    SplicedAlignmentTaskRegistry* registry = AppContext::getSplicedAlignmentTaskRegistry();
     if (isValid) {
         if (!registry->hadRegistered(ET_SPIDEY_ID)) {
             registry->registerTaskFactory(new SpideyAlignmentTaskFactory, ET_SPIDEY_ID);
@@ -94,14 +94,14 @@ void SpideySupport::sl_validationStatusChanged(bool isValid) {
 }
 
 ////////////////////////////////////////
-//SpideySupportContext
+// SpideySupportContext
 
-SpideySupportContext::SpideySupportContext(QObject *p)
+SpideySupportContext::SpideySupportContext(QObject* p)
     : GObjectViewWindowContext(p, AnnotatedDNAViewFactory::ID) {
 }
 
-void SpideySupportContext::initViewContext(GObjectView *view) {
-    AnnotatedDNAView *dnaView = qobject_cast<AnnotatedDNAView *>(view);
+void SpideySupportContext::initViewContext(GObjectView* view) {
+    AnnotatedDNAView* dnaView = qobject_cast<AnnotatedDNAView*>(view);
     assert(dnaView != nullptr);
     if (dnaView->getActiveSequenceContext() == nullptr) {
         return;
@@ -109,18 +109,18 @@ void SpideySupportContext::initViewContext(GObjectView *view) {
 
     // add spidey action
     QString spideyTitle = tr("Align sequence to mRNA");
-    ADVGlobalAction *alignAction = new ADVGlobalAction(dnaView, QIcon(), spideyTitle, 1000 * 2000, ADVGlobalActionFlags(ADVGlobalActionFlag_SingleSequenceOnly));
+    ADVGlobalAction* alignAction = new ADVGlobalAction(dnaView, QIcon(), spideyTitle, 1000 * 2000, ADVGlobalActionFlags(ADVGlobalActionFlag_SingleSequenceOnly));
     alignAction->setObjectName("Align sequence to mRNA");
     addViewAction(alignAction);
 
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_Spidey()));
 }
 
-void SpideySupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *m) {
-    QList<GObjectViewAction *> actions = getViewActions(view);
-    QMenu *alignMenu = GUIUtils::findSubMenu(m, ADV_MENU_ALIGN);
+void SpideySupportContext::buildStaticOrContextMenu(GObjectView* view, QMenu* m) {
+    QList<GObjectViewAction*> actions = getViewActions(view);
+    QMenu* alignMenu = GUIUtils::findSubMenu(m, ADV_MENU_ALIGN);
     SAFE_POINT(alignMenu != nullptr, "alignMenu", );
-    foreach (GObjectViewAction *a, actions) {
+    foreach (GObjectViewAction* a, actions) {
         a->addToMenuWithOrder(alignMenu);
     }
 }
@@ -130,9 +130,9 @@ void SpideySupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *m)
 #define MAX_SPIDEY_SEQUENCE_LENGTH_32_BIT_OS (100 * 1000 * 1000)
 
 void SpideySupportContext::sl_align_with_Spidey() {
-    QWidget *parent = QApplication::activeWindow();
+    QWidget* parent = QApplication::activeWindow();
 
-    //Check that Spidey and tempory folder path defined
+    // Check that Spidey and tempory folder path defined
     if (AppContext::getExternalToolRegistry()->getById(SpideySupport::ET_SPIDEY_ID)->getPath().isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(parent);
         msgBox->setWindowTitle(SpideySupport::ET_SPIDEY);
@@ -156,17 +156,17 @@ void SpideySupportContext::sl_align_with_Spidey() {
     seqConstraints->alphabetType = DNAAlphabet_NUCL;
     settings.objectConstraints.insert(seqConstraints.data());
 
-    QList<GObject *> objects = ProjectTreeItemSelectorDialog::selectObjects(settings, parent);
+    QList<GObject*> objects = ProjectTreeItemSelectorDialog::selectObjects(settings, parent);
     if (objects.size() != 1) {
         return;
     }
 
-    U2SequenceObject *rnaObj = qobject_cast<U2SequenceObject *>(objects.first());
+    U2SequenceObject* rnaObj = qobject_cast<U2SequenceObject*>(objects.first());
 
-    ADVGlobalAction *action = qobject_cast<ADVGlobalAction *>(sender());
+    ADVGlobalAction* action = qobject_cast<ADVGlobalAction*>(sender());
     assert(action != nullptr);
-    AnnotatedDNAView *dnaView = qobject_cast<AnnotatedDNAView *>(action->getObjectView());
-    U2SequenceObject *dnaObj = dnaView->getActiveSequenceContext()->getSequenceObject();
+    AnnotatedDNAView* dnaView = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
+    U2SequenceObject* dnaObj = dnaView->getActiveSequenceContext()->getSequenceObject();
 
     if (rnaObj && dnaObj) {
         CreateAnnotationModel m;
@@ -185,9 +185,9 @@ void SpideySupportContext::sl_align_with_Spidey() {
         }
 
         SplicedAlignmentTaskConfig cfg(rnaObj, dnaObj);
-        SpideySupportTask *spideyTask = new SpideySupportTask(cfg, m.getAnnotationObject(), m.description);
+        SpideySupportTask* spideyTask = new SpideySupportTask(cfg, m.getAnnotationObject(), m.description);
         AppContext::getTaskScheduler()->registerTopLevelTask(spideyTask);
     }
 }
 
-}    // namespace U2
+}  // namespace U2

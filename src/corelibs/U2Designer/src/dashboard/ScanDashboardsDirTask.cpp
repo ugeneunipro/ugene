@@ -37,7 +37,7 @@ ScanDashboardsDirTask::ScanDashboardsDirTask()
     tpm = Progress_Manual;
 }
 
-const QList<DashboardInfo> &ScanDashboardsDirTask::getResult() const {
+const QList<DashboardInfo>& ScanDashboardsDirTask::getResult() const {
     return dashboardInfos;
 }
 
@@ -47,7 +47,7 @@ void ScanDashboardsDirTask::run() {
 
     QFileInfoList dirs = outDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
     int counter = 0;
-    foreach (const QFileInfo &info, dirs) {
+    foreach (const QFileInfo& info, dirs) {
         CHECK_OP(stateInfo, );
         QString dirPath = info.absoluteFilePath() + "/";
         if (isDashboardDir(dirPath)) {
@@ -57,7 +57,7 @@ void ScanDashboardsDirTask::run() {
     }
 }
 
-bool ScanDashboardsDirTask::isDashboardDir(const QString &dirPath) {
+bool ScanDashboardsDirTask::isDashboardDir(const QString& dirPath) {
     QDir dir(dirPath + Dashboard::REPORT_SUB_DIR);
     CHECK(dir.exists(), false);
     CHECK(dir.exists(Dashboard::DB_FILE_NAME), false);
@@ -65,7 +65,7 @@ bool ScanDashboardsDirTask::isDashboardDir(const QString &dirPath) {
     return true;
 }
 
-DashboardInfo ScanDashboardsDirTask::readDashboardInfo(const QString &dirPath) {
+DashboardInfo ScanDashboardsDirTask::readDashboardInfo(const QString& dirPath) {
     DashboardInfo info(dirPath);
     QSettings settings(dirPath + Dashboard::REPORT_SUB_DIR + Dashboard::SETTINGS_FILE_NAME, QSettings::IniFormat);
     info.opened = settings.value(Dashboard::OPENED_SETTING).toBool();

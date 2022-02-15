@@ -22,14 +22,14 @@
 #ifndef _U2_WORKFLOW_EDITOR_H_
 #define _U2_WORKFLOW_EDITOR_H_
 
-#include <ui_WorkflowEditorWidget.h>
-
 #include <QShortcutEvent>
 
 #include <U2Lang/ActorModel.h>
 #include <U2Lang/Dataset.h>
 #include <U2Lang/Schema.h>
 #include <U2Lang/WorkflowDebugStatus.h>
+
+#include <ui_WorkflowEditorWidget.h>
 
 class QSortFilterProxyModel;
 
@@ -43,25 +43,25 @@ class WorkflowView;
 class WorkflowEditor : public QWidget, Ui_WorkflowEditorWidget {
     Q_OBJECT
 public:
-    WorkflowEditor(WorkflowView *parent);
+    WorkflowEditor(WorkflowView* parent);
 
     QVariant saveState() const;
-    void restoreState(const QVariant &);
+    void restoreState(const QVariant&);
 
     void changeScriptMode(bool _mode);
 
     void setEditable(bool editable);
 
-    bool eventFilter(QObject *object, QEvent *event);
+    bool eventFilter(QObject* object, QEvent* event);
 
     void setSpecialPanelEnabled(bool isEnabled);
-    void commitDatasets(const QString &attrId, const QList<Dataset> &sets);
+    void commitDatasets(const QString& attrId, const QList<Dataset>& sets);
 
 public slots:
-    void editActor(Actor *);
-    void editPort(Port *);
-    void setDescriptor(Descriptor *d, const QString &hint = QString());
-    void edit(Configuration *subject);
+    void editActor(Actor*);
+    void editPort(Port*);
+    void setDescriptor(Descriptor* d, const QString& hint = QString());
+    void edit(Configuration* subject);
     void reset();
     void commit();
     void sendModified();
@@ -71,32 +71,32 @@ public slots:
 private slots:
     void finishPropertyEditing();
     void updateEditingData();
-    void handleDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+    void handleDataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight);
     void editingLabelFinished();
     void sl_showPropDoc();
     void sl_changeVisibleParameters(bool);
     void sl_changeVisibleInput(bool);
     void sl_changeVisibleOutput(bool);
-    void sl_showDoc(const QString &);
-    void sl_linkActivated(const QString &);
+    void sl_showDoc(const QString&);
+    void sl_linkActivated(const QString&);
 
 private:
-    void changeSizes(QWidget *w, int h);
-    static void removePortTable(QList<QWidget *> &portWidgets);
-    void createInputPortTable(Actor *a);
-    void createOutputPortTable(Actor *a);
+    void changeSizes(QWidget* w, int h);
+    static void removePortTable(QList<QWidget*>& portWidgets);
+    void createInputPortTable(Actor* a);
+    void createOutputPortTable(Actor* a);
 
-    SpecialParametersPanel *specialParameters;
-    WorkflowView *owner;
+    SpecialParametersPanel* specialParameters;
+    WorkflowView* owner;
     QPointer<ConfigurationEditor> custom;
-    QWidget *customWidget;
-    Configuration *subject;
-    Actor *actor;
+    QWidget* customWidget;
+    Configuration* subject;
+    Actor* actor;
     friend class SuperDelegate;
-    ActorCfgModel *actorModel;
-    QSortFilterProxyModel *proxyModel;
-    QList<QWidget *> inputPortWidget;
-    QList<QWidget *> outputPortWidget;
+    ActorCfgModel* actorModel;
+    QSortFilterProxyModel* proxyModel;
+    QList<QWidget*> inputPortWidget;
+    QList<QWidget*> outputPortWidget;
     int paramHeight, inputHeight, outputHeight;
 
     bool onFirstTableShow;
@@ -105,10 +105,10 @@ private:
 class SpecialParametersPanel : public QWidget {
     Q_OBJECT
 public:
-    SpecialParametersPanel(WorkflowEditor *parent);
+    SpecialParametersPanel(WorkflowEditor* parent);
     virtual ~SpecialParametersPanel();
 
-    void editActor(Actor *a);
+    void editActor(Actor* a);
     void reset();
     void setDatasetsEnabled(bool isEnabled);
     int contentHeight() const;
@@ -120,13 +120,13 @@ private slots:
     void sl_datasetsChanged();
 
 private:
-    WorkflowEditor *editor;
-    QMap<QString, AttributeDatasetsController *> controllers;  // attrId <-> controller
+    WorkflowEditor* editor;
+    QMap<QString, AttributeDatasetsController*> controllers;  // attrId <-> controller
     QMap<QString, QList<Dataset>> sets;  // attrId <-> datasets
 
 private:
-    void addWidget(AttributeDatasetsController *controller);
-    void removeWidget(AttributeDatasetsController *controller);
+    void addWidget(AttributeDatasetsController* controller);
+    void removeWidget(AttributeDatasetsController* controller);
 };
 
 }  // namespace U2

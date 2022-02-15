@@ -34,7 +34,7 @@ namespace LocalWorkflow {
 class GenomeAlignerPrompter : public PrompterBase<GenomeAlignerPrompter> {
     Q_OBJECT
 public:
-    GenomeAlignerPrompter(Actor *p = 0)
+    GenomeAlignerPrompter(Actor* p = 0)
         : PrompterBase<GenomeAlignerPrompter>(p) {
     }
 
@@ -45,19 +45,19 @@ protected:
 class GenomeAlignerWorker : public BaseWorker {
     Q_OBJECT
 public:
-    GenomeAlignerWorker(Actor *a);
+    GenomeAlignerWorker(Actor* a);
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 private slots:
     void sl_taskFinished();
 
 private:
-    DnaAssemblyToRefTaskSettings getSettings(U2OpStatus &os);
+    DnaAssemblyToRefTaskSettings getSettings(U2OpStatus& os);
 
 protected:
-    IntegralBus *inChannel;
-    IntegralBus *output;
+    IntegralBus* inChannel;
+    IntegralBus* output;
 };
 
 class GenomeAlignerWorkerFactory : public DomainFactory {
@@ -67,7 +67,7 @@ public:
     GenomeAlignerWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new GenomeAlignerWorker(a);
     }
     static bool openclEnabled;

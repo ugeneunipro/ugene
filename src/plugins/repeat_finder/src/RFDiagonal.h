@@ -35,7 +35,7 @@ class RFDiagonalAlgorithmWK : public RFAlgorithmBase {
     friend class RFDiagonalWKSubtask;
 
 public:
-    RFDiagonalAlgorithmWK(RFResultsListener *rl, const char *seqX, int sizeX, const char *seqY, int sizeY, DNAAlphabetType seqType, int w, int k);
+    RFDiagonalAlgorithmWK(RFResultsListener* rl, const char* seqX, int sizeX, const char* seqY, int sizeY, DNAAlphabetType seqType, int w, int k);
 
     void prepare();
 
@@ -49,21 +49,21 @@ class RFDiagonalWKSubtask : public Task {
     friend class RFDiagonalAlgorithmWK;
 
 public:
-    RFDiagonalWKSubtask(RFDiagonalAlgorithmWK *owner, int threadNum, int totalThreads);
+    RFDiagonalWKSubtask(RFDiagonalAlgorithmWK* owner, int threadNum, int totalThreads);
 
     void run();
 
 private:
     void processDiagonal(int x, int y);
     int getDiagLen(int d) const;
-    int processMatch(const char *x, const char *y, const char *xEnd, const char *yEnd, int c);
+    int processMatch(const char* x, const char* y, const char* xEnd, const char* yEnd, int c);
 
-    RFDiagonalAlgorithmWK *owner;
+    RFDiagonalAlgorithmWK* owner;
 
     int threadNum;
     int nThreads;
-    const char *dataX;
-    const char *dataY;
+    const char* dataX;
+    const char* dataY;
 
     QVector<RFResult> diagResults;
 

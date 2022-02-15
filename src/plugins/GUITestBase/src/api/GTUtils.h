@@ -33,12 +33,12 @@ using namespace HI;
 class GTUtils {
 public:
     /** Generates unique string with the given prefix. Tries to preserve suffix uniqueness to be used safely in parallel test runs. */
-    static QString genUniqueString(const QString &prefix = "");
+    static QString genUniqueString(const QString& prefix = "");
 
     /** Waits until service is enabled. Fails if the service in not active within the default timeout. */
-    static void checkServiceIsEnabled(HI::GUITestOpStatus &os, const QString &serviceName);
+    static void checkServiceIsEnabled(HI::GUITestOpStatus& os, const QString& serviceName);
 
-    static void checkExportServiceIsEnabled(HI::GUITestOpStatus &os) {
+    static void checkExportServiceIsEnabled(HI::GUITestOpStatus& os) {
         checkServiceIsEnabled(os, "DNA export service");
     }
 
@@ -47,10 +47,10 @@ public:
      * For all 'contains'-line matchers 'textInUi' is checked to contain 'textInTest'.
      * If some match flag from the flags is not supported an error is set to 'os'.
      */
-    static bool matchText(HI::GUITestOpStatus &os, const QString &textInTest, const QString &textInUi, const Qt::MatchFlags &matchFlags);
+    static bool matchText(HI::GUITestOpStatus& os, const QString& textInTest, const QString& textInUi, const Qt::MatchFlags& matchFlags);
 
     /** Returns "QRect(x, y, width, height)" text constructed from the rect values. */
-    static QString rectToString(const QRect &rect);
+    static QString rectToString(const QRect& rect);
 };
 
 }  // namespace U2

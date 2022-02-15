@@ -56,17 +56,17 @@ public:
 
 class U2CORE_EXPORT DNATranslation {
 public:
-    DNATranslation(const QString &_id, const QString &_name, const DNAAlphabet *src, const DNAAlphabet *dst);
+    DNATranslation(const QString& _id, const QString& _name, const DNAAlphabet* src, const DNAAlphabet* dst);
     virtual ~DNATranslation() {
     }
 
-    virtual qint64 translate(const char *src, qint64 src_len, char *dst, qint64 dst_capacity) const = 0;
-    virtual int translate(char *src_and_dst, int len) const = 0;
+    virtual qint64 translate(const char* src, qint64 src_len, char* dst, qint64 dst_capacity) const = 0;
+    virtual int translate(char* src_and_dst, int len) const = 0;
 
-    const QString &getTranslationName() const {
+    const QString& getTranslationName() const {
         return name;
     }
-    const QString &getTranslationId() const {
+    const QString& getTranslationId() const {
         return id;
     }
 
@@ -74,11 +74,11 @@ public:
         return type;
     }
 
-    const DNAAlphabet *getSrcAlphabet() const {
+    const DNAAlphabet* getSrcAlphabet() const {
         return srcAlphabet;
     }
 
-    const DNAAlphabet *getDstAlphabet() const {
+    const DNAAlphabet* getDstAlphabet() const {
         return dstAlphabet;
     }
 
@@ -107,7 +107,7 @@ public:
         return 0;
     }
 
-    virtual char *translate1to3(char c) const {
+    virtual char* translate1to3(char c) const {
         Q_UNUSED(c);
         assert(0);
         return nullptr;
@@ -117,8 +117,8 @@ protected:
     DNATranslationType type;
     QString name;
     QString id;
-    const DNAAlphabet *srcAlphabet;
-    const DNAAlphabet *dstAlphabet;
+    const DNAAlphabet* srcAlphabet;
+    const DNAAlphabet* dstAlphabet;
 };
 
 enum DNACodonGroup {
@@ -166,38 +166,38 @@ private:
 
 class U2CORE_EXPORT DNATranslationRegistry : public QObject {
 public:
-    DNATranslationRegistry(QObject *p = 0)
+    DNATranslationRegistry(QObject* p = 0)
         : QObject(p) {
     }
     ~DNATranslationRegistry();
 
-    DNATranslation *getStandardGeneticCodeTranslation(const DNAAlphabet *srcAlphabet);
+    DNATranslation* getStandardGeneticCodeTranslation(const DNAAlphabet* srcAlphabet);
 
     QStringList getDNATranlations() const;
 
     QStringList getDNATranslationIds() const;
 
-    QStringList getDNATranslationIds(const QString &name) const;
+    QStringList getDNATranslationIds(const QString& name) const;
 
-    void registerDNATranslation(DNATranslation *t);
+    void registerDNATranslation(DNATranslation* t);
 
-    void registerDNACodon(DNACodon *codon);
+    void registerDNACodon(DNACodon* codon);
 
-    QList<DNATranslation *> lookupTranslation(const DNAAlphabet *srcAlphabet, DNATranslationType type);
+    QList<DNATranslation*> lookupTranslation(const DNAAlphabet* srcAlphabet, DNATranslationType type);
 
-    DNATranslation *lookupTranslation(const DNAAlphabet *srcAlphabet, DNATranslationType type, const QString &id);
+    DNATranslation* lookupTranslation(const DNAAlphabet* srcAlphabet, DNATranslationType type, const QString& id);
 
-    DNATranslation *lookupTranslation(const QString &id);
+    DNATranslation* lookupTranslation(const QString& id);
 
-    DNATranslation *lookupTranslation(const DNAAlphabet *srcAlphabet, const QString &id);
+    DNATranslation* lookupTranslation(const DNAAlphabet* srcAlphabet, const QString& id);
 
-    DNATranslation *lookupComplementTranslation(const DNAAlphabet *srcAlphabet);
+    DNATranslation* lookupComplementTranslation(const DNAAlphabet* srcAlphabet);
 
-    DNACodon *lookupCodon(char symbol);
+    DNACodon* lookupCodon(char symbol);
 
 private:
-    QList<DNATranslation *> translations;
-    QList<DNACodon *> codons;
+    QList<DNATranslation*> translations;
+    QList<DNACodon*> codons;
 };
 
 }  // namespace U2

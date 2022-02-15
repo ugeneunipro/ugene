@@ -37,7 +37,7 @@ namespace U2 {
 #define VERSION_HEIGHT_PX 15
 #define TASK_HEIGHT_PX 13
 
-SplashScreen::SplashScreen(QWidget *parent /* = NULL*/)
+SplashScreen::SplashScreen(QWidget* parent /* = NULL*/)
     : QDialog(parent) {
     setEnabled(false);
     setAttribute(Qt::WA_DeleteOnClose);
@@ -46,21 +46,21 @@ SplashScreen::SplashScreen(QWidget *parent /* = NULL*/)
         setWindowFlags(windowFlags() | Qt::MSWindowsFixedSizeDialogHint);
     }
     setWindowModality(Qt::ApplicationModal);
-    QHBoxLayout *mainLayout = new QHBoxLayout();
+    QHBoxLayout* mainLayout = new QHBoxLayout();
     setLayout(mainLayout);
     setContentsMargins(0, 0, 0, 0);
     mainLayout->setMargin(0);
-    QFrame *frame = new QFrame(this);
+    QFrame* frame = new QFrame(this);
     mainLayout->addWidget(frame);
 
-    QHBoxLayout *frameLayout = new QHBoxLayout();
+    QHBoxLayout* frameLayout = new QHBoxLayout();
     frameLayout->setMargin(0);
     frame->setContentsMargins(0, 0, 0, 0);
     frame->setLayout(frameLayout);
 
-    SplashScreenWidget *sWidget = new SplashScreenWidget();
+    SplashScreenWidget* sWidget = new SplashScreenWidget();
 
-    QVBoxLayout *aWLayout = (QVBoxLayout *)frame->layout();
+    QVBoxLayout* aWLayout = (QVBoxLayout*)frame->layout();
     aWLayout->insertWidget(0, sWidget);
     aWLayout->setStretchFactor(sWidget, 100);
     installEventFilter(this);
@@ -71,7 +71,7 @@ void SplashScreen::sl_close() {
     close();
 }
 
-bool SplashScreen::eventFilter(QObject * /*obj*/, QEvent *ev) {
+bool SplashScreen::eventFilter(QObject* /*obj*/, QEvent* ev) {
     if (ev->type() == QEvent::Close) {
         ev->ignore();
         return true;
@@ -106,8 +106,8 @@ SplashScreenWidget::SplashScreenWidget() {
     drawInfo();
 }
 
-static Task *selectTaskToShowAsActive(const QList<Task *> &taskList, bool preferFirst) {
-    foreach (Task *task, taskList) {
+static Task* selectTaskToShowAsActive(const QList<Task*>& taskList, bool preferFirst) {
+    foreach (Task* task, taskList) {
         if (task->isRunning()) {
             return task;
         }
@@ -116,16 +116,16 @@ static Task *selectTaskToShowAsActive(const QList<Task *> &taskList, bool prefer
 }
 
 void SplashScreenWidget::updateActiveTaskName() {
-    TaskScheduler *scheduler = AppContext::getTaskScheduler();
+    TaskScheduler* scheduler = AppContext::getTaskScheduler();
     CHECK(scheduler != nullptr, )
-    QList<Task *> topLevelTasks = scheduler->getTopLevelTasks();
-    Task *activeTopLevelTask = selectTaskToShowAsActive(topLevelTasks, true);
+    QList<Task*> topLevelTasks = scheduler->getTopLevelTasks();
+    Task* activeTopLevelTask = selectTaskToShowAsActive(topLevelTasks, true);
     if (activeTopLevelTask == nullptr) {
         activeTaskName = "";
         return;
     }
-    QList<Task *> subTasks = activeTopLevelTask->getPureSubtasks();
-    Task *activeTask = subTasks.isEmpty() ? activeTopLevelTask : selectTaskToShowAsActive(subTasks, false);
+    QList<Task*> subTasks = activeTopLevelTask->getPureSubtasks();
+    Task* activeTask = subTasks.isEmpty() ? activeTopLevelTask : selectTaskToShowAsActive(subTasks, false);
     activeTaskName = activeTask->getTaskName();
 }
 
@@ -137,7 +137,7 @@ void SplashScreenWidget::getDots() {
     }
 }
 
-void SplashScreenWidget::timerEvent(QTimerEvent *e) {
+void SplashScreenWidget::timerEvent(QTimerEvent* e) {
     updateActiveTaskName();
     if (e->timerId() == dots_timer_id) {
         getDots();
@@ -148,7 +148,7 @@ void SplashScreenWidget::timerEvent(QTimerEvent *e) {
     QObject::timerEvent(e);
 }
 
-void SplashScreenWidget::paintEvent(QPaintEvent *e) {
+void SplashScreenWidget::paintEvent(QPaintEvent* e) {
     QWidget::paintEvent(e);
 
     QPainter p(this);

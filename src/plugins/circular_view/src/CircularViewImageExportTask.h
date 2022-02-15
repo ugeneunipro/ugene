@@ -43,9 +43,9 @@ public:
 
 class CircularViewImageExportTask : public ImageExportTask {
 public:
-    CircularViewImageExportTask(CircularView *cv,
-                                const CircularViewImageExportSettings &cvExportSettings,
-                                const ImageExportTaskSettings &settings)
+    CircularViewImageExportTask(CircularView* cv,
+                                const CircularViewImageExportSettings& cvExportSettings,
+                                const ImageExportTaskSettings& settings)
         : ImageExportTask(settings),
           cvWidget(cv),
           cvExportSettings(cvExportSettings) {
@@ -53,15 +53,15 @@ public:
     virtual void run() = 0;
 
 protected:
-    CircularView *cvWidget;
+    CircularView* cvWidget;
     CircularViewImageExportSettings cvExportSettings;
 };
 
 class CircularViewImageExportToSVGTask : public CircularViewImageExportTask {
 public:
-    CircularViewImageExportToSVGTask(CircularView *cv,
-                                     const CircularViewImageExportSettings &cvExportSettings,
-                                     const ImageExportTaskSettings &settings)
+    CircularViewImageExportToSVGTask(CircularView* cv,
+                                     const CircularViewImageExportSettings& cvExportSettings,
+                                     const ImageExportTaskSettings& settings)
         : CircularViewImageExportTask(cv, cvExportSettings, settings) {
     }
     void run();
@@ -69,9 +69,9 @@ public:
 
 class CircularViewImageExportToPDFTask : public CircularViewImageExportTask {
 public:
-    CircularViewImageExportToPDFTask(CircularView *cv,
-                                     const CircularViewImageExportSettings &cvExportSettings,
-                                     const ImageExportTaskSettings &settings)
+    CircularViewImageExportToPDFTask(CircularView* cv,
+                                     const CircularViewImageExportSettings& cvExportSettings,
+                                     const ImageExportTaskSettings& settings)
         : CircularViewImageExportTask(cv, cvExportSettings, settings) {
     }
     void run();
@@ -79,9 +79,9 @@ public:
 
 class CircularViewImageExportToBitmapTask : public CircularViewImageExportTask {
 public:
-    CircularViewImageExportToBitmapTask(CircularView *cv,
-                                        const CircularViewImageExportSettings &cvExportSettings,
-                                        const ImageExportTaskSettings &settings)
+    CircularViewImageExportToBitmapTask(CircularView* cv,
+                                        const CircularViewImageExportSettings& cvExportSettings,
+                                        const ImageExportTaskSettings& settings)
         : CircularViewImageExportTask(cv, cvExportSettings, settings) {
     }
     void run();
@@ -90,10 +90,10 @@ public:
 class CircularViewImageExportController : public ImageExportController {
     Q_OBJECT
 public:
-    CircularViewImageExportController(CircularView *cv);
+    CircularViewImageExportController(CircularView* cv);
 
-    CircularViewImageExportController(const QList<CircularView *> &list,
-                                      CircularView *defaultCV = nullptr);
+    CircularViewImageExportController(const QList<CircularView*>& list,
+                                      CircularView* defaultCV = nullptr);
 
     int getImageWidth() const;
     int getImageHeight() const;
@@ -101,20 +101,20 @@ public:
 protected:
     void initSettingsWidget();
 
-    Task *getExportToSvgTask(const ImageExportTaskSettings &settings) const;
-    Task *getExportToPdfTask(const ImageExportTaskSettings &settings) const;
-    Task *getExportToBitmapTask(const ImageExportTaskSettings &settings) const;
+    Task* getExportToSvgTask(const ImageExportTaskSettings& settings) const;
+    Task* getExportToPdfTask(const ImageExportTaskSettings& settings) const;
+    Task* getExportToBitmapTask(const ImageExportTaskSettings& settings) const;
 
 private:
     void updateCvWidget() const;
 
-    mutable CircularView *cvWidget;
-    QList<CircularView *> cvList;
+    mutable CircularView* cvWidget;
+    QList<CircularView*> cvList;
 
-    QCheckBox *includeMarkerCheckbox;
-    QCheckBox *includeSelectionCheckbox;
+    QCheckBox* includeMarkerCheckbox;
+    QCheckBox* includeSelectionCheckbox;
 
-    QComboBox *sequenceComboBox;
+    QComboBox* sequenceComboBox;
 };
 
 }  // namespace U2

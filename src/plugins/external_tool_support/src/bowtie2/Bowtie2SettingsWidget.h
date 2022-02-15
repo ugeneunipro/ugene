@@ -31,15 +31,15 @@ namespace U2 {
 class Bowtie2SettingsWidget : public DnaAssemblyAlgorithmMainWidget, Ui_Bowtie2Settings {
     Q_OBJECT
 public:
-    Bowtie2SettingsWidget(QWidget *parent);
+    Bowtie2SettingsWidget(QWidget* parent);
     QMap<QString, QVariant> getDnaAssemblyCustomSettings() const;
-    bool isValidIndex(const QString &oneFileUrl) const;
+    bool isValidIndex(const QString& oneFileUrl) const;
 };
 
 class Bowtie2BuildSettingsWidget : public DnaAssemblyAlgorithmBuildIndexWidget {
     Q_OBJECT
 public:
-    Bowtie2BuildSettingsWidget(QWidget *parent)
+    Bowtie2BuildSettingsWidget(QWidget* parent)
         : DnaAssemblyAlgorithmBuildIndexWidget(parent) {
     }
     virtual QMap<QString, QVariant> getBuildIndexCustomSettings() {
@@ -48,18 +48,18 @@ public:
     virtual QString getIndexFileExtension() {
         return QString();
     }
-    virtual GUrl buildIndexUrl(const GUrl & /*url*/) {
+    virtual GUrl buildIndexUrl(const GUrl& /*url*/) {
         return GUrl();
     }
 };
 
 class Bowtie2GUIExtensionsFactory : public DnaAssemblyGUIExtensionsFactory {
-    DnaAssemblyAlgorithmMainWidget *createMainWidget(QWidget *parent);
-    DnaAssemblyAlgorithmBuildIndexWidget *createBuildIndexWidget(QWidget *parent);
+    DnaAssemblyAlgorithmMainWidget* createMainWidget(QWidget* parent);
+    DnaAssemblyAlgorithmBuildIndexWidget* createBuildIndexWidget(QWidget* parent);
     bool hasMainWidget();
     bool hasBuildIndexWidget();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_BOWTIE2_SETTINGS_WIDGET_H
+#endif  // _U2_BOWTIE2_SETTINGS_WIDGET_H

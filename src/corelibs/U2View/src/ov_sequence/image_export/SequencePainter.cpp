@@ -35,10 +35,10 @@
 
 namespace U2 {
 
-bool checkAnnotationsCountInRegion(SequenceObjectContext *ctx, const U2Region &region) {
+bool checkAnnotationsCountInRegion(SequenceObjectContext* ctx, const U2Region& region) {
     SAFE_POINT(ctx != nullptr, "SequenceContext is NULL", false);
     int count = 0;
-    foreach (AnnotationTableObject *table, ctx->getAnnotationObjects(true)) {
+    foreach (AnnotationTableObject* table, ctx->getAnnotationObjects(true)) {
         SAFE_POINT(table != nullptr, "AnnotationTableObject is NULL", false)
         count += table->getAnnotationsByRegion(region).size();
     }
@@ -53,7 +53,7 @@ SequenceExportType SequenceExportSettings::getType() const {
     return type;
 }
 
-void SequenceExportSettings::setRegion(const U2Region &r) {
+void SequenceExportSettings::setRegion(const U2Region& r) {
     region = r;
     emit si_changed();
 }
@@ -66,16 +66,16 @@ void SequenceExportSettings::setType(SequenceExportType t) {
 /************************************************************************/
 /* CurrentViewPainter */
 /************************************************************************/
-void CurrentViewPainter::paint(QPainter &p, CustomExportSettings * /*settings*/) const {
+void CurrentViewPainter::paint(QPainter& p, CustomExportSettings* /*settings*/) const {
     QPixmap screenshot = seqWidget->grab();
     p.drawPixmap(screenshot.rect(), screenshot);
 }
 
-QSize CurrentViewPainter::getImageSize(CustomExportSettings * /*settings*/) const {
+QSize CurrentViewPainter::getImageSize(CustomExportSettings* /*settings*/) const {
     return seqWidget->size();
 }
 
-bool CurrentViewPainter::canPaintSvg(CustomExportSettings * /*settings*/, U2OpStatus &os) const {
+bool CurrentViewPainter::canPaintSvg(CustomExportSettings* /*settings*/, U2OpStatus& os) const {
     os.setError(tr("Warning: SVG is not supported for the currently viewed area. Please, choose another export area."));
     return false;
 }
@@ -83,48 +83,48 @@ bool CurrentViewPainter::canPaintSvg(CustomExportSettings * /*settings*/, U2OpSt
 /************************************************************************/
 /* ZoomedViewPainter */
 /************************************************************************/
-ZoomedViewPainter::ZoomedViewPainter(PanView *panView)
+ZoomedViewPainter::ZoomedViewPainter(PanView* panView)
     : ExportImagePainter(),
       panView(panView) {
-    PanViewRenderArea *ra = qobject_cast<PanViewRenderArea *>(panView->getRenderArea());
+    PanViewRenderArea* ra = qobject_cast<PanViewRenderArea*>(panView->getRenderArea());
     panViewRenderer = ra->getRenderer();
 }
 
-void ZoomedViewPainter::paint(QPainter &p, CustomExportSettings *settings) const {
-    SequenceExportSettings *s = qobject_cast<SequenceExportSettings *>(settings);
+void ZoomedViewPainter::paint(QPainter& p, CustomExportSettings* settings) const {
+    SequenceExportSettings* s = qobject_cast<SequenceExportSettings*>(settings);
     SAFE_POINT(s != nullptr, "Cannot cast CustomExportSettings to SequenceExportSettings", );
 
     panViewRenderer->drawAll(p, s->getRegion());
 }
 
-QSize ZoomedViewPainter::getImageSize(CustomExportSettings *settings) const {
-    SequenceExportSettings *s = qobject_cast<SequenceExportSettings *>(settings);
+QSize ZoomedViewPainter::getImageSize(CustomExportSettings* settings) const {
+    SequenceExportSettings* s = qobject_cast<SequenceExportSettings*>(settings);
     SAFE_POINT(s != nullptr, "Cannot cast CustomExportSettings to SequenceExportSettings", QSize());
 
     return panViewRenderer->getBaseCanvasSize(s->getRegion());
 }
 
-bool ZoomedViewPainter::canPaintSvg(CustomExportSettings *settings, U2OpStatus & /*os*/) const {
-    SequenceExportSettings *s = qobject_cast<SequenceExportSettings *>(settings);
+bool ZoomedViewPainter::canPaintSvg(CustomExportSettings* settings, U2OpStatus& /*os*/) const {
+    SequenceExportSettings* s = qobject_cast<SequenceExportSettings*>(settings);
     return checkAnnotationsCountInRegion(panView->getSequenceContext(), s->getRegion());
 }
 
 /************************************************************************/
 /* DetailsViewPainter */
 /************************************************************************/
-DetailsViewPainter::DetailsViewPainter(DetView *detView)
+DetailsViewPainter::DetailsViewPainter(DetView* detView)
     : ExportImagePainter() {
     detViewRenderer = detView->getDetViewRenderArea()->getRenderer();
 }
-void DetailsViewPainter::paint(QPainter &p, CustomExportSettings *settings) const {
-    SequenceExportSettings *s = qobject_cast<SequenceExportSettings *>(settings);
+void DetailsViewPainter::paint(QPainter& p, CustomExportSettings* settings) const {
+    SequenceExportSettings* s = qobject_cast<SequenceExportSettings*>(settings);
     SAFE_POINT(s != nullptr, "Cannot cast CustomExportSettings to SequenceExportSettings", );
 
     detViewRenderer->drawAll(p, detViewRenderer->getBaseCanvasSize(s->getRegion()), s->getRegion());
 }
 
-QSize DetailsViewPainter::getImageSize(CustomExportSettings *settings) const {
-    SequenceExportSettings *s = qobject_cast<SequenceExportSettings *>(settings);
+QSize DetailsViewPainter::getImageSize(CustomExportSettings* settings) const {
+    SequenceExportSettings* s = qobject_cast<SequenceExportSettings*>(settings);
     SAFE_POINT(s != nullptr, "Cannot cast CustomExportSettings to SequenceExportSettings", QSize());
 
     return detViewRenderer->getBaseCanvasSize(s->getRegion());
@@ -133,7 +133,7 @@ QSize DetailsViewPainter::getImageSize(CustomExportSettings *settings) const {
 /************************************************************************/
 /* SequencePainterFactory */
 /************************************************************************/
-QSharedPointer<ExportImagePainter> SequencePainterFactory::createPainter(ADVSingleSequenceWidget *seqWidget, SequenceExportType exportType) {
+QSharedPointer<ExportImagePainter> SequencePainterFactory::createPainter(ADVSingleSequenceWidget* seqWidget, SequenceExportType exportType) {
     SAFE_POINT(seqWidget != nullptr, "SequenceWidget is NULL", QSharedPointer<ExportImagePainter>());
 
     switch (exportType) {

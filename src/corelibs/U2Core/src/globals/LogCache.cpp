@@ -29,16 +29,16 @@
 
 namespace U2 {
 
-LogCache *LogCache::appGlobalCache = nullptr;
+LogCache* LogCache::appGlobalCache = nullptr;
 
-LogFilterItem::LogFilterItem(const QString &_category, LogLevel _minLevel) {
+LogFilterItem::LogFilterItem(const QString& _category, LogLevel _minLevel) {
     category = _category;
     minLevel = _minLevel;
 }
 
-QString LogFilter::selectEffectiveCategory(const LogMessage &msg) const {
+QString LogFilter::selectEffectiveCategory(const LogMessage& msg) const {
     QString result;
-    foreach (const LogFilterItem &f, filters) {
+    foreach (const LogFilterItem& f, filters) {
         if (msg.level >= f.minLevel && msg.categories.contains(f.category)) {
             result = f.category;
             break;
@@ -47,7 +47,7 @@ QString LogFilter::selectEffectiveCategory(const LogMessage &msg) const {
     return result;
 }
 
-bool LogFilter::matches(const LogMessage &msg) const {
+bool LogFilter::matches(const LogMessage& msg) const {
     return !selectEffectiveCategory(msg).isEmpty();
 }
 
@@ -62,12 +62,12 @@ LogCache::LogCache(int maxLogMessages)
 LogCache::~LogCache() {
     LogServer::getInstance()->removeListener(this);
     while (!messages.empty()) {
-        LogMessage *m = messages.takeFirst();
+        LogMessage* m = messages.takeFirst();
         delete m;
     }
 }
 
-void LogCache::onMessage(const LogMessage &msg) {
+void LogCache::onMessage(const LogMessage& msg) {
     lock.lockForWrite();
     if (!filter.isEmpty() && !filter.matches(msg)) {
         lock.unlock();
@@ -81,12 +81,12 @@ void LogCache::onMessage(const LogMessage &msg) {
 
 void LogCache::updateSize() {
     while (messages.size() > maxLogMessages) {
-        LogMessage *m = messages.takeFirst();
+        LogMessage* m = messages.takeFirst();
         delete m;
     }
 }
 
-void LogCache::setAppGlobalInstance(LogCache *cache) {
+void LogCache::setAppGlobalInstance(LogCache* cache) {
     assert(appGlobalCache == nullptr);
     appGlobalCache = cache;
 }
@@ -101,7 +101,7 @@ QList<LogMessage> LogCache::getLastMessages(int count) {
 
     QList<LogMessage> lastMessages;
     for (int i = cacheSize; --i >= lastToAdd;) {
-        LogMessage *m = messages.at(i);
+        LogMessage* m = messages.at(i);
         if (m->categories.contains(ULOG_CAT_USER_ACTIONS))
             continue;
         lastMessages.prepend(*m);
@@ -119,7 +119,7 @@ LogCacheExt::LogCacheExt() {
     fileEnabled = false;
 }
 
-bool LogCacheExt::setFileOutputEnabled(const QString &fileName) {
+bool LogCacheExt::setFileOutputEnabled(const QString& fileName) {
     if (fileName.isEmpty()) {
         file.close();
         fileEnabled = false;
@@ -139,13 +139,13 @@ bool LogCacheExt::setFileOutputEnabled(const QString &fileName) {
     return true;
 }
 
-void LogCacheExt::onMessage(const LogMessage &msg) {
+void LogCacheExt::onMessage(const LogMessage& msg) {
     if (!filter.isEmpty() && !filter.matches(msg)) {
         return;
     }
     if (consoleEnabled) {
         QByteArray ba = msg.text.toLocal8Bit();
-        char *buf = ba.data();
+        char* buf = ba.data();
 #ifdef Q_OS_WIN32
         // a bit of magic to workaround Windows console encoding issues
         CharToOemA(buf, buf);
@@ -155,7 +155,7 @@ void LogCacheExt::onMessage(const LogMessage &msg) {
 
     if (fileEnabled) {
         QByteArray ba = msg.text.toLocal8Bit();
-        char *buf = ba.data();
+        char* buf = ba.data();
         file.write(buf, ba.length());
         file.write("\n", 1);
         file.flush();

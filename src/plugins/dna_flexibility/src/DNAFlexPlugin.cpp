@@ -38,8 +38,8 @@
 
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
-    DNAFlexPlugin *plugin = new DNAFlexPlugin();
+extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
+    DNAFlexPlugin* plugin = new DNAFlexPlugin();
     return plugin;
 }
 
@@ -54,21 +54,21 @@ DNAFlexPlugin::DNAFlexPlugin()
     }
 }
 
-DNAFlexViewContext::DNAFlexViewContext(QObject *parent)
+DNAFlexViewContext::DNAFlexViewContext(QObject* parent)
     : GObjectViewWindowContext(parent, ANNOTATED_DNA_VIEW_FACTORY_ID) {
     graphFactory = new DNAFlexGraphFactory(this);
 }
 
 void DNAFlexViewContext::sl_showDNAFlexDialog() {
-    QAction *action = (QAction *)sender();
-    GObjectViewAction *viewAction = qobject_cast<GObjectViewAction *>(action);
-    AnnotatedDNAView *annotView = qobject_cast<AnnotatedDNAView *>(viewAction->getObjectView());
+    QAction* action = (QAction*)sender();
+    GObjectViewAction* viewAction = qobject_cast<GObjectViewAction*>(action);
+    AnnotatedDNAView* annotView = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
     assert(annotView);
 
-    ADVSequenceObjectContext *seqCtx = annotView->getActiveSequenceContext();
+    ADVSequenceObjectContext* seqCtx = annotView->getActiveSequenceContext();
     SAFE_POINT(seqCtx != nullptr, "no sequence to perform flex search", );
 
-    const DNAAlphabet *alphabet = seqCtx->getAlphabet();
+    const DNAAlphabet* alphabet = seqCtx->getAlphabet();
     SAFE_POINT(alphabet->isNucleic(), "alphabet is not nucleic, dialog should not have been invoked", );
 
     if (alphabet->getId() == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()) {
@@ -81,20 +81,20 @@ void DNAFlexViewContext::sl_showDNAFlexDialog() {
     }
 }
 
-void DNAFlexViewContext::initViewContext(GObjectView *view) {
-    AnnotatedDNAView *annotView = qobject_cast<AnnotatedDNAView *>(view);
+void DNAFlexViewContext::initViewContext(GObjectView* view) {
+    AnnotatedDNAView* annotView = qobject_cast<AnnotatedDNAView*>(view);
 
     // Adding the graphs item
     connect(annotView,
-            SIGNAL(si_sequenceWidgetAdded(ADVSequenceWidget *)),
-            SLOT(sl_sequenceWidgetAdded(ADVSequenceWidget *)));
+            SIGNAL(si_sequenceWidgetAdded(ADVSequenceWidget*)),
+            SLOT(sl_sequenceWidgetAdded(ADVSequenceWidget*)));
 
-    foreach (ADVSequenceWidget *sequenceWidget, annotView->getSequenceWidgets()) {
+    foreach (ADVSequenceWidget* sequenceWidget, annotView->getSequenceWidgets()) {
         sl_sequenceWidgetAdded(sequenceWidget);
     }
 
     // Adding the action to the Analyze menu, but not to the toolbar
-    ADVGlobalAction *action = new ADVGlobalAction(annotView,
+    ADVGlobalAction* action = new ADVGlobalAction(annotView,
                                                   QIcon(":dna_flexibility/images/flexibility.png"),
                                                   tr("Find high DNA flexibility regions..."),
                                                   2000,
@@ -103,8 +103,8 @@ void DNAFlexViewContext::initViewContext(GObjectView *view) {
     connect(action, SIGNAL(triggered()), SLOT(sl_showDNAFlexDialog()));
 }
 
-void DNAFlexViewContext::sl_sequenceWidgetAdded(ADVSequenceWidget *_sequenceWidget) {
-    ADVSingleSequenceWidget *sequenceWidget = qobject_cast<ADVSingleSequenceWidget *>(_sequenceWidget);
+void DNAFlexViewContext::sl_sequenceWidgetAdded(ADVSequenceWidget* _sequenceWidget) {
+    ADVSingleSequenceWidget* sequenceWidget = qobject_cast<ADVSingleSequenceWidget*>(_sequenceWidget);
     if (sequenceWidget == nullptr || sequenceWidget->getSequenceObject() == nullptr) {
         return;
     }
@@ -115,8 +115,8 @@ void DNAFlexViewContext::sl_sequenceWidgetAdded(ADVSequenceWidget *_sequenceWidg
     }
 
     // Otherwise add the "DNA Flexibility" action to the graphs menu
-    GraphAction *graphAction = new GraphAction(graphFactory);
-    connect(sequenceWidget, SIGNAL(si_updateGraphView(const QStringList &, const QVariantMap &)), graphAction, SLOT(sl_updateGraphView(const QStringList &, const QVariantMap &)));
+    GraphAction* graphAction = new GraphAction(graphFactory);
+    connect(sequenceWidget, SIGNAL(si_updateGraphView(const QStringList&, const QVariantMap&)), graphAction, SLOT(sl_updateGraphView(const QStringList&, const QVariantMap&)));
     GraphMenuAction::addGraphAction(sequenceWidget->getActiveSequenceContext(), graphAction);
 }
 

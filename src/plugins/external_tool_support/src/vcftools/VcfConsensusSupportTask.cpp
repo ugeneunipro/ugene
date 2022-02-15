@@ -36,7 +36,7 @@
 
 namespace U2 {
 
-VcfConsensusSupportTask::VcfConsensusSupportTask(const GUrl &inputFA, const GUrl &inputVcf, const GUrl &output)
+VcfConsensusSupportTask::VcfConsensusSupportTask(const GUrl& inputFA, const GUrl& inputVcf, const GUrl& output)
     : ExternalToolSupportTask(tr("Create Vcf Consensus"), TaskFlags_NR_FOSE_COSC),
       inputFA(inputFA),
       inputVcf(inputVcf),
@@ -49,7 +49,7 @@ void VcfConsensusSupportTask::prepare() {
     algoLog.details(tr("VcfConsensus started"));
 
     SAFE_POINT_EXT(AppContext::getAppSettings() != nullptr, setError(tr("AppSettings is NULL")), );
-    const UserAppsSettings *userAS = AppContext::getAppSettings()->getUserAppsSettings();
+    const UserAppsSettings* userAS = AppContext::getAppSettings()->getUserAppsSettings();
     SAFE_POINT_EXT(userAS != nullptr, setError(tr("UserAppsSettings is NULL")), );
     QString tmpDirPath(userAS->getCurrentProcessTemporaryDirPath(VcfConsensusSupport::VCF_CONSENSUS_TMP_DIR));
     SAFE_POINT_EXT(!tmpDirPath.isEmpty(), setError(tr("Temporary folder is not set!")), );
@@ -64,13 +64,13 @@ void VcfConsensusSupportTask::prepare() {
     algoLog.info(tr("Saving temporary data to file '%1'").arg(tmp.getURLString()));
 
     tabixTask = new TabixSupportTask(inputVcf, tmp);
-    tabixTask->addListeners(QList<ExternalToolListener *>() << getListener(0));
+    tabixTask->addListeners(QList<ExternalToolListener*>() << getListener(0));
 
     addSubTask(tabixTask);
 }
 
-QList<Task *> VcfConsensusSupportTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> VcfConsensusSupportTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
 
     if (hasError() || isCanceled()) {
         return res;
@@ -79,11 +79,11 @@ QList<Task *> VcfConsensusSupportTask::onSubTaskFinished(Task *subTask) {
         return res;
     }
 
-    ExternalToolRegistry *extToolReg = AppContext::getExternalToolRegistry();
+    ExternalToolRegistry* extToolReg = AppContext::getExternalToolRegistry();
     SAFE_POINT_EXT(extToolReg, setError(tr("ExternalToolRegistry is NULL")), res);
 
-    ExternalTool *vcfToolsET = extToolReg->getById(VcfConsensusSupport::ET_VCF_CONSENSUS_ID);
-    ExternalTool *tabixET = extToolReg->getById(TabixSupport::ET_TABIX_ID);
+    ExternalTool* vcfToolsET = extToolReg->getById(VcfConsensusSupport::ET_VCF_CONSENSUS_ID);
+    ExternalTool* tabixET = extToolReg->getById(TabixSupport::ET_TABIX_ID);
     SAFE_POINT_EXT(vcfToolsET, setError(tr("There is no VcfConsensus external tool registered")), res);
     SAFE_POINT_EXT(tabixET, setError(tr("There is no Tabix external tool registered")), res);
 
@@ -100,11 +100,11 @@ QList<Task *> VcfConsensusSupportTask::onSubTaskFinished(Task *subTask) {
     return res;
 }
 
-const GUrl &VcfConsensusSupportTask::getResultUrl() {
+const GUrl& VcfConsensusSupportTask::getResultUrl() {
     return output;
 }
 
-QString VcfConsensusSupportTask::getPath(ExternalTool *et) {
+QString VcfConsensusSupportTask::getPath(ExternalTool* et) {
     if (et == nullptr) {
         setError(tr("Trying to get path of NULL external tool"));
         return QString();
@@ -117,4 +117,4 @@ QString VcfConsensusSupportTask::getPath(ExternalTool *et) {
     return fileInfo.absolutePath();
 }
 
-}    // namespace U2
+}  // namespace U2

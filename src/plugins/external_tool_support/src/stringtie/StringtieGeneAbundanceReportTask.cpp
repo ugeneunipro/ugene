@@ -43,13 +43,13 @@ const QString StringtieGeneAbundanceReportTask::columnName = "FPKM";
 
 // The comparator must be a static function,
 // Otherwise it will not be possible to pass it as an argument
-static bool compareFpkm(const QStringList &first, const QStringList &second) {
+static bool compareFpkm(const QStringList& first, const QStringList& second) {
     return first[0] < second[0];
 }
 
-StringtieGeneAbundanceReportTask::StringtieGeneAbundanceReportTask(const QStringList &_stringtieReports,
-                                                                   const QString &_reportUrl,
-                                                                   const QString &_workingDir)
+StringtieGeneAbundanceReportTask::StringtieGeneAbundanceReportTask(const QStringList& _stringtieReports,
+                                                                   const QString& _reportUrl,
+                                                                   const QString& _workingDir)
     : Task(tr("StringTie Gene Abundance Report Task"), TaskFlag_None),
       stringtieReports(_stringtieReports),
       workingDir(_workingDir),
@@ -61,7 +61,7 @@ StringtieGeneAbundanceReportTask::StringtieGeneAbundanceReportTask(const QString
     SAFE_POINT_EXT(!reportUrl.isEmpty(), setError("Report URL is empty"), );
 }
 
-const QString &StringtieGeneAbundanceReportTask::getReportUrl() const {
+const QString& StringtieGeneAbundanceReportTask::getReportUrl() const {
     return reportUrl;
 }
 
@@ -120,7 +120,7 @@ bool StringtieGeneAbundanceReportTask::mergeFpkmToReportUrl(QMap<QString, QStrin
         QString tsvFile = mapFiles[tempFile];
         GUrl url(tempFile);
         IOAdapterId ioId = IOAdapterUtils::url2io(url);
-        IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioId);
+        IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioId);
         QScopedPointer<IOAdapter> io(iof->createIOAdapter());
 
         if (!io->open(url, IOAdapterMode_Read)) {
@@ -148,7 +148,7 @@ bool StringtieGeneAbundanceReportTask::mergeFpkmToReportUrl(QMap<QString, QStrin
                           setError(tr("Bad line format of input: \"%1\"").arg(line)),
                           false);
                 QString key = buf[0] + outputDelimiter + buf[1];
-                QVector<QString> &values = map[key];
+                QVector<QString>& values = map[key];
                 if (values.size() != valueCount) {
                     values.resize(valueCount);
                 }
@@ -185,8 +185,8 @@ bool StringtieGeneAbundanceReportTask::mergeFpkmToReportUrl(QMap<QString, QStrin
     }
     out << "\n";
 
-    //values
-    foreach (const QString &key, map.keys()) {
+    // values
+    foreach (const QString& key, map.keys()) {
         QVector<QString> values = map[key];
         out << key;
         foreach (const QString val, values) {
@@ -202,7 +202,7 @@ bool StringtieGeneAbundanceReportTask::mergeFpkmToReportUrl(QMap<QString, QStrin
 QString StringtieGeneAbundanceReportTask::sortAndShrinkToTemp(QString tsvFile, QString runDir) {
     GUrl url(tsvFile);
     IOAdapterId ioId = IOAdapterUtils::url2io(url);
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioId);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioId);
     QScopedPointer<IOAdapter> io(iof->createIOAdapter());
 
     if (!io->open(url, IOAdapterMode_Read)) {
@@ -267,15 +267,15 @@ QString StringtieGeneAbundanceReportTask::sortAndShrinkToTemp(QString tsvFile, Q
     return fileFpkm;
 }
 
-QList<QStringList> StringtieGeneAbundanceReportTask::parseLinesIntoTokens(const QString &text) {
+QList<QStringList> StringtieGeneAbundanceReportTask::parseLinesIntoTokens(const QString& text) {
     QList<QStringList> result;
     QStringList lines = text.split('\n', QString::SkipEmptyParts);
-    foreach (const QString &line, lines) {
+    foreach (const QString& line, lines) {
         QStringList tokens = line.split(inputDelimiter, QString::KeepEmptyParts);
         result.append(tokens);
     }
     return result;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

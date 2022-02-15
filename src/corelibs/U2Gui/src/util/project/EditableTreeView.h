@@ -30,7 +30,7 @@ namespace U2 {
 
 class U2GUI_EXPORT EditableTreeView : public QTreeView {
 public:
-    EditableTreeView(QWidget *p);
+    EditableTreeView(QWidget* p);
 
     bool isEditingActive();
 };

@@ -39,7 +39,7 @@ class AssemblyBrowser;
 class AssemblyRuler : public QWidget {
     Q_OBJECT
 public:
-    AssemblyRuler(AssemblyBrowserUi *ui);
+    AssemblyRuler(AssemblyBrowserUi* ui);
 
     void setShowCoordsOnRuler(bool showCoords);
     bool getShowCoordsOnRuler() const;
@@ -48,11 +48,11 @@ public:
     bool getShowCoverageOnRuler() const;
 
 protected:
-    void paintEvent(QPaintEvent *e);
-    void mouseMoveEvent(QMouseEvent *e);
+    void paintEvent(QPaintEvent* e);
+    void mouseMoveEvent(QMouseEvent* e);
 
 public slots:
-    void sl_handleMoveToPos(const QPoint &);
+    void sl_handleMoveToPos(const QPoint&);
 
 private slots:
     void sl_redraw();
@@ -60,12 +60,12 @@ private slots:
 private:
     void connectSlots();
     void drawAll();
-    void drawRuler(QPainter &p);
-    void drawCursor(QPainter &p);
+    void drawRuler(QPainter& p);
+    void drawCursor(QPainter& p);
 
 private:
-    AssemblyBrowserUi *ui;
-    AssemblyBrowser *browser;
+    AssemblyBrowserUi* ui;
+    AssemblyBrowser* browser;
     QSharedPointer<AssemblyModel> model;
 
     bool redraw;
@@ -80,7 +80,7 @@ private:
 
     bool showCoords;
     bool showCoverage;
-    QObject *startPositionObject;
+    QObject* startPositionObject;
 };
 
 }  // namespace U2

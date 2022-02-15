@@ -113,7 +113,7 @@ public:
     Task::ReportResult report() override;
 
 private:
-    SiteconSearchTask *task;
+    SiteconSearchTask* task;
     QString seqName;
     int tresh;
     SiteconModel model;

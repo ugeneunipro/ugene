@@ -64,7 +64,7 @@ const DocumentFormatId BaseDocumentFormats::VCF4("vcf");
 const DocumentFormatId BaseDocumentFormats::VECTOR_NTI_ALIGNX("Vector_nti_alignx");
 const DocumentFormatId BaseDocumentFormats::VECTOR_NTI_SEQUENCE("vector_nti_sequence");
 
-DocumentFormat *BaseDocumentFormats::get(const DocumentFormatId &formatId) {
+DocumentFormat* BaseDocumentFormats::get(const DocumentFormatId& formatId) {
     return AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
 }
 
@@ -164,19 +164,19 @@ StrStrMap initFormatIdsMap() {
 
 }  // namespace
 
-bool BaseDocumentFormats::equal(const DocumentFormatId &first, const DocumentFormatId &second) {
+bool BaseDocumentFormats::equal(const DocumentFormatId& first, const DocumentFormatId& second) {
     // After UGENE-5719 fix format IDs were occasionally changed
     // Case insensitive comparison grants a correct comparison result
     static const StrStrMap formatIds = initFormatIdsMap();
     return formatIds.value(first, first) == formatIds.value(second, second);
 }
 
-bool BaseDocumentFormats::isInvalidId(const DocumentFormatId &formatId) {
+bool BaseDocumentFormats::isInvalidId(const DocumentFormatId& formatId) {
     static const QStringList invalidIdsList = initInvalidFormatIdsMap().keys();
     return invalidIdsList.contains(formatId);
 }
 
-DocumentFormatId BaseDocumentFormats::toValidId(const DocumentFormatId &invalidFormatId) {
+DocumentFormatId BaseDocumentFormats::toValidId(const DocumentFormatId& invalidFormatId) {
     static const StrStrMap invalidIds = initInvalidFormatIdsMap();
     return invalidIds.value(invalidFormatId, invalidFormatId);
 }

@@ -31,15 +31,15 @@ namespace U2 {
 class U2CORE_EXPORT LocalFileAdapterFactory : public IOAdapterFactory {
     Q_OBJECT
 public:
-    LocalFileAdapterFactory(QObject *p = nullptr);
+    LocalFileAdapterFactory(QObject* p = nullptr);
 
-    virtual IOAdapter *createIOAdapter();
+    virtual IOAdapter* createIOAdapter();
 
     virtual IOAdapterId getAdapterId() const {
         return BaseIOAdapters::LOCAL_FILE;
     }
 
-    virtual const QString &getAdapterName() const {
+    virtual const QString& getAdapterName() const {
         return name;
     }
 
@@ -48,7 +48,7 @@ public:
         return true;
     }  // files can be read and be written
 
-    virtual TriState isResourceAvailable(const GUrl &url) const {
+    virtual TriState isResourceAvailable(const GUrl& url) const {
         return QFileInfo(url.getURLString()).exists() ? TriState_Yes : TriState_No;
     }
 
@@ -59,9 +59,9 @@ protected:
 class U2CORE_EXPORT GzippedLocalFileAdapterFactory : public LocalFileAdapterFactory {
     Q_OBJECT
 public:
-    GzippedLocalFileAdapterFactory(QObject *p = nullptr);
+    GzippedLocalFileAdapterFactory(QObject* p = nullptr);
 
-    virtual IOAdapter *createIOAdapter();
+    virtual IOAdapter* createIOAdapter();
 
     virtual IOAdapterId getAdapterId() const {
         return BaseIOAdapters::GZIPPED_LOCAL_FILE;
@@ -71,18 +71,18 @@ public:
 class U2CORE_EXPORT LocalFileAdapter : public IOAdapter {
     Q_OBJECT
 public:
-    LocalFileAdapter(LocalFileAdapterFactory *f, QObject *o = nullptr, bool bufferOptimization = false);
+    LocalFileAdapter(LocalFileAdapterFactory* f, QObject* o = nullptr, bool bufferOptimization = false);
     ~LocalFileAdapter();
 
-    virtual bool open(const GUrl &url, IOAdapterMode m);
+    virtual bool open(const GUrl& url, IOAdapterMode m);
 
     virtual bool isOpen() const;
 
     virtual void close();
 
-    virtual qint64 readBlock(char *data, qint64 maxSize);
+    virtual qint64 readBlock(char* data, qint64 maxSize);
 
-    virtual qint64 writeBlock(const char *data, qint64 size);
+    virtual qint64 writeBlock(const char* data, qint64 size);
 
     virtual bool skip(qint64 nBytes);
 
@@ -97,12 +97,12 @@ public:
     virtual QString errorString() const;
 
 private:
-    QFile *f;
+    QFile* f;
     quint64 fileSize;
 
     bool bufferOptimization;
     QByteArray buffer;
-    char *bufData;
+    char* bufData;
     qint64 bufLen;
     qint64 currentPos;
     static const quint64 BUF_SIZE;

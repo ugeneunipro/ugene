@@ -31,7 +31,7 @@ namespace U2 {
 class U2FORMATS_EXPORT SimpleSNPVariationFormat : public AbstractVariationFormat {
     Q_OBJECT
 public:
-    SimpleSNPVariationFormat(QObject *p);
+    SimpleSNPVariationFormat(QObject* p);
 
 protected:
     bool checkFormatByColumnCount(int columnCount) const override;

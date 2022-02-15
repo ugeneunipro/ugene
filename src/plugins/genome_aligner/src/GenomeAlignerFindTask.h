@@ -45,7 +45,7 @@ class GenomeAlignerIndex;
 #define CHECK_LOG(a, b) CHECK_EXT(a, algoLog.trace("Check failed " #a), b)
 
 struct ShortReadData {
-    ShortReadData(DataBunch *dataBunch, int i)
+    ShortReadData(DataBunch* dataBunch, int i)
         : valid(false) {
         CHECK_LOG(dataBunch, );
         int length = dataBunch->bitValuesV.size();
@@ -79,8 +79,8 @@ struct ShortReadData {
     int rn;
     int pos;
     int nextRn;
-    SearchQuery *shortRead;
-    SearchQuery *revCompl;
+    SearchQuery* shortRead;
+    SearchQuery* revCompl;
 };
 
 class AlignContext {
@@ -102,7 +102,7 @@ public:
     int minReadLength;
     int maxReadLength;
 
-    QList<DataBunch *> data;
+    QList<DataBunch*> data;
 
     bool isReadingFinished;
     bool isReadingStarted;
@@ -125,7 +125,7 @@ class GenomeAlignerFindTask : public Task {
     friend class ShortReadAlignerOpenCL;
 
 public:
-    GenomeAlignerFindTask(GenomeAlignerIndex *i, AlignContext *s, GenomeAlignerWriteTask *writeTask);
+    GenomeAlignerFindTask(GenomeAlignerIndex* i, AlignContext* s, GenomeAlignerWriteTask* writeTask);
     virtual void run();
     virtual void prepare();
 
@@ -135,12 +135,12 @@ public:
 
 protected:
     void requirePartForAligning(int part);
-    DataBunch *waitForDataBunch();
+    DataBunch* waitForDataBunch();
 
 private:
-    GenomeAlignerIndex *index;
-    GenomeAlignerWriteTask *writeTask;
-    AlignContext *alignContext;
+    GenomeAlignerIndex* index;
+    GenomeAlignerWriteTask* writeTask;
+    AlignContext* alignContext;
 
     int alignerTaskCount;
     int waiterCount;
@@ -156,43 +156,43 @@ private:
 class LoadIndexTask : public Task {
     Q_OBJECT
 public:
-    LoadIndexTask(GenomeAlignerIndex *_index, AlignContext *_alignContext)
+    LoadIndexTask(GenomeAlignerIndex* _index, AlignContext* _alignContext)
         : Task("LoadIndexTask", TaskFlag_None), index(_index), alignContext(_alignContext), part(0) {
     }
     virtual void run();
 
 private:
-    GenomeAlignerIndex *index;
-    AlignContext *alignContext;
+    GenomeAlignerIndex* index;
+    AlignContext* alignContext;
     int part;
 };
 
-typedef QVector<SearchQuery *>::iterator QueryIter;
+typedef QVector<SearchQuery*>::iterator QueryIter;
 
 class ShortReadAlignerCPU : public Task {
     Q_OBJECT
 public:
-    ShortReadAlignerCPU(int taskNo, GenomeAlignerIndex *index, AlignContext *alignContext, GenomeAlignerWriteTask *writeTask);
+    ShortReadAlignerCPU(int taskNo, GenomeAlignerIndex* index, AlignContext* alignContext, GenomeAlignerWriteTask* writeTask);
     virtual void run();
 
 private:
     int taskNo;
-    GenomeAlignerIndex *index;
-    AlignContext *alignContext;
-    GenomeAlignerWriteTask *writeTask;
+    GenomeAlignerIndex* index;
+    AlignContext* alignContext;
+    GenomeAlignerWriteTask* writeTask;
 };
 
 class ShortReadAlignerOpenCL : public Task {
     Q_OBJECT
 public:
-    ShortReadAlignerOpenCL(int taskNo, GenomeAlignerIndex *index, AlignContext *alignContext, GenomeAlignerWriteTask *writeTask);
+    ShortReadAlignerOpenCL(int taskNo, GenomeAlignerIndex* index, AlignContext* alignContext, GenomeAlignerWriteTask* writeTask);
     virtual void run();
 
 private:
     int taskNo;
-    GenomeAlignerIndex *index;
-    AlignContext *alignContext;
-    GenomeAlignerWriteTask *writeTask;
+    GenomeAlignerIndex* index;
+    AlignContext* alignContext;
+    GenomeAlignerWriteTask* writeTask;
 };
 
 }  // namespace U2

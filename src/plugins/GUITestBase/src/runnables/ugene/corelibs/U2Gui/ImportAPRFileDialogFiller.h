@@ -29,12 +29,12 @@ using namespace HI;
 
 class ImportAPRFileFiller : public Filler {
 public:
-    ImportAPRFileFiller(HI::GUITestOpStatus &os,
+    ImportAPRFileFiller(HI::GUITestOpStatus& os,
                         bool isReadOnly,
                         QString dstUrl = QString(),
                         QString formatToConvertTo = "fasta",
                         int timeoutMs = 120000);
-    ImportAPRFileFiller(HI::GUITestOpStatus &os, CustomScenario *_c);
+    ImportAPRFileFiller(HI::GUITestOpStatus& os, CustomScenario* _c);
 
     virtual void commonScenario();
 

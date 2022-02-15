@@ -71,11 +71,11 @@ IlluminaClipStep::IlluminaClipStep()
                      "</body></html>");
 }
 
-TrimmomaticStepSettingsWidget *IlluminaClipStep::createWidget() const {
+TrimmomaticStepSettingsWidget* IlluminaClipStep::createWidget() const {
     return new IlluminaClipSettingsWidget();
 }
 
-QString IlluminaClipStep::serializeState(const QVariantMap &widgetState) const {
+QString IlluminaClipStep::serializeState(const QVariantMap& widgetState) const {
     QString serializedState;
     serializedState += "\'" + widgetState.value(IlluminaClipSettingsWidget::FASTA_WITH_ADAPTERS_ETC, "").toString() + "\'";
 
@@ -114,7 +114,7 @@ QString IlluminaClipStep::serializeState(const QVariantMap &widgetState) const {
     return serializedState;
 }
 
-QVariantMap IlluminaClipStep::parseState(const QString &command) const {
+QVariantMap IlluminaClipStep::parseState(const QString& command) const {
     QVariantMap state;
     QRegExp regExp(id + ":" + "\\\'([^\\\']*)\\'" + ":" + "(\\d*)" + ":" + "(\\d*)" + ":" + "(\\d*)" +
                        "(:" + "(\\d*)" + ":" + "((true|false){0,1})" + ")?",
@@ -205,7 +205,7 @@ QVariantMap IlluminaClipSettingsWidget::getState() const {
     return state.unite(additionalOptions);
 }
 
-void IlluminaClipSettingsWidget::setState(const QVariantMap &state) {
+void IlluminaClipSettingsWidget::setState(const QVariantMap& state) {
     bool contains = state.contains(FASTA_WITH_ADAPTERS_ETC);
     if (contains) {
         fileName->setText(state[FASTA_WITH_ADAPTERS_ETC].toString());
@@ -259,7 +259,7 @@ const QString IlluminaClipAdditionalSettingsDialog::ADDITIONAL_SETTINGS_ENABLED 
 const QString IlluminaClipAdditionalSettingsDialog::MIN_ADAPTER_LENGTH = "minAdapterLength";
 const QString IlluminaClipAdditionalSettingsDialog::KEEP_BOTH_READS = "keepBothReads";
 
-IlluminaClipAdditionalSettingsDialog::IlluminaClipAdditionalSettingsDialog(const QVariantMap &widgetState, QWidget *parent)
+IlluminaClipAdditionalSettingsDialog::IlluminaClipAdditionalSettingsDialog(const QVariantMap& widgetState, QWidget* parent)
     : QDialog(parent) {
     setupUi(this);
 
@@ -275,7 +275,7 @@ IlluminaClipAdditionalSettingsDialog::IlluminaClipAdditionalSettingsDialog(const
     keepBothCombo->setCurrentIndex(keepBothCombo->findData(widgetState.value(KEEP_BOTH_READS, false).toBool()));
 }
 
-QVariantMap IlluminaClipAdditionalSettingsDialog::extractState(const QVariantMap &fromState) {
+QVariantMap IlluminaClipAdditionalSettingsDialog::extractState(const QVariantMap& fromState) {
     QVariantMap state;
     state[ADDITIONAL_SETTINGS_ENABLED] = fromState.value(ADDITIONAL_SETTINGS_ENABLED, false);
     state[MIN_ADAPTER_LENGTH] = fromState.value(MIN_ADAPTER_LENGTH, 8);
@@ -295,7 +295,7 @@ IlluminaClipStepFactory::IlluminaClipStepFactory()
     : TrimmomaticStepFactory(ID) {
 }
 
-IlluminaClipStep *IlluminaClipStepFactory::createStep() const {
+IlluminaClipStep* IlluminaClipStepFactory::createStep() const {
     return new IlluminaClipStep();
 }
 

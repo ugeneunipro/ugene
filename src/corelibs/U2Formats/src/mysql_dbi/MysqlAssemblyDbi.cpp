@@ -38,7 +38,7 @@
 
 namespace U2 {
 
-MysqlAssemblyDbi::MysqlAssemblyDbi(MysqlDbi *dbi)
+MysqlAssemblyDbi::MysqlAssemblyDbi(MysqlDbi* dbi)
     : U2AssemblyDbi(dbi), MysqlChildDbiCommon(dbi) {
 }
 
@@ -46,7 +46,7 @@ MysqlAssemblyDbi::~MysqlAssemblyDbi() {
     SAFE_POINT(adaptersById.isEmpty(), "Adapters list is not empty", );
 }
 
-void MysqlAssemblyDbi::initSqlSchema(U2OpStatus &os) {
+void MysqlAssemblyDbi::initSqlSchema(U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     // assembly object
@@ -65,8 +65,8 @@ void MysqlAssemblyDbi::initSqlSchema(U2OpStatus &os) {
         .execute();
 }
 
-void MysqlAssemblyDbi::shutdown(U2OpStatus &os) {
-    foreach (MysqlAssemblyAdapter *a, adaptersById.values()) {
+void MysqlAssemblyDbi::shutdown(U2OpStatus& os) {
+    foreach (MysqlAssemblyAdapter* a, adaptersById.values()) {
         a->shutdown(os);
         delete a;
     }
@@ -74,9 +74,9 @@ void MysqlAssemblyDbi::shutdown(U2OpStatus &os) {
     adaptersById.clear();
 }
 
-MysqlAssemblyAdapter *MysqlAssemblyDbi::getAdapter(const U2DataId &assemblyId, U2OpStatus &os) {
+MysqlAssemblyAdapter* MysqlAssemblyDbi::getAdapter(const U2DataId& assemblyId, U2OpStatus& os) {
     qint64 dbiId = U2DbiUtils::toDbiId(assemblyId);
-    MysqlAssemblyAdapter *res = adaptersById.value(dbiId);
+    MysqlAssemblyAdapter* res = adaptersById.value(dbiId);
     if (res != nullptr) {
         return res;
     }
@@ -105,7 +105,7 @@ MysqlAssemblyAdapter *MysqlAssemblyDbi::getAdapter(const U2DataId &assemblyId, U
     return res;
 }
 
-U2Assembly MysqlAssemblyDbi::getAssemblyObject(const U2DataId &assemblyId, U2OpStatus &os) {
+U2Assembly MysqlAssemblyDbi::getAssemblyObject(const U2DataId& assemblyId, U2OpStatus& os) {
     U2Assembly res;
 
     DBI_TYPE_CHECK(assemblyId, U2Type::Assembly, os, res);
@@ -126,35 +126,35 @@ U2Assembly MysqlAssemblyDbi::getAssemblyObject(const U2DataId &assemblyId, U2OpS
     return res;
 }
 
-qint64 MysqlAssemblyDbi::countReads(const U2DataId &assemblyId, const U2Region &r, U2OpStatus &os) {
+qint64 MysqlAssemblyDbi::countReads(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os) {
     GTIMER(c2, t2, "MysqlAssemblyDbi::countReadsAt");
-    MysqlAssemblyAdapter *a = getAdapter(assemblyId, os);
+    MysqlAssemblyAdapter* a = getAdapter(assemblyId, os);
     if (a == nullptr) {
         return -1;
     }
     return a->countReads(r, os);
 }
 
-U2DbiIterator<U2AssemblyRead> *MysqlAssemblyDbi::getReads(const U2DataId &assemblyId, const U2Region &r, U2OpStatus &os, bool sortedHint) {
+U2DbiIterator<U2AssemblyRead>* MysqlAssemblyDbi::getReads(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os, bool sortedHint) {
     GTIMER(c2, t2, "MysqlAssemblyDbi::getReadsAt");
-    MysqlAssemblyAdapter *a = getAdapter(assemblyId, os);
+    MysqlAssemblyAdapter* a = getAdapter(assemblyId, os);
     if (a != nullptr) {
         return a->getReads(r, os, sortedHint);
     }
     return nullptr;
 }
 
-U2DbiIterator<U2AssemblyRead> *MysqlAssemblyDbi::getReadsByRow(const U2DataId &assemblyId, const U2Region &r, qint64 minRow, qint64 maxRow, U2OpStatus &os) {
+U2DbiIterator<U2AssemblyRead>* MysqlAssemblyDbi::getReadsByRow(const U2DataId& assemblyId, const U2Region& r, qint64 minRow, qint64 maxRow, U2OpStatus& os) {
     GTIMER(c2, t2, "MysqlAssemblyDbi::getReadsAt");
 
     quint64 t0 = GTimer::currentTimeMicros();
-    MysqlAssemblyAdapter *a = getAdapter(assemblyId, os);
+    MysqlAssemblyAdapter* a = getAdapter(assemblyId, os);
 
     if (a == nullptr) {
         return nullptr;
     }
 
-    U2DbiIterator<U2AssemblyRead> *res = a->getReadsByRow(r, minRow, maxRow, os);
+    U2DbiIterator<U2AssemblyRead>* res = a->getReadsByRow(r, minRow, maxRow, os);
 
     t2.stop();
     perfLog.trace(QString("Assembly: reads 2D select time: %1 seconds").arg((GTimer::currentTimeMicros() - t0) / float(1000 * 1000)));
@@ -162,19 +162,19 @@ U2DbiIterator<U2AssemblyRead> *MysqlAssemblyDbi::getReadsByRow(const U2DataId &a
     return res;
 }
 
-U2DbiIterator<U2AssemblyRead> *MysqlAssemblyDbi::getReadsByName(const U2DataId &assemblyId, const QByteArray &name, U2OpStatus &os) {
+U2DbiIterator<U2AssemblyRead>* MysqlAssemblyDbi::getReadsByName(const U2DataId& assemblyId, const QByteArray& name, U2OpStatus& os) {
     GTIMER(c2, t2, "MysqlAssemblyDbi::getReadsByName");
-    MysqlAssemblyAdapter *a = getAdapter(assemblyId, os);
+    MysqlAssemblyAdapter* a = getAdapter(assemblyId, os);
     if (a != nullptr) {
         return a->getReadsByName(name, os);
     }
     return nullptr;
 }
 
-qint64 MysqlAssemblyDbi::getMaxPackedRow(const U2DataId &assemblyId, const U2Region &r, U2OpStatus &os) {
+qint64 MysqlAssemblyDbi::getMaxPackedRow(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os) {
     quint64 t0 = GTimer::currentTimeMicros();
 
-    MysqlAssemblyAdapter *a = getAdapter(assemblyId, os);
+    MysqlAssemblyAdapter* a = getAdapter(assemblyId, os);
 
     if (a == nullptr) {
         return -1;
@@ -185,10 +185,10 @@ qint64 MysqlAssemblyDbi::getMaxPackedRow(const U2DataId &assemblyId, const U2Reg
     return res;
 }
 
-qint64 MysqlAssemblyDbi::getMaxEndPos(const U2DataId &assemblyId, U2OpStatus &os) {
+qint64 MysqlAssemblyDbi::getMaxEndPos(const U2DataId& assemblyId, U2OpStatus& os) {
     quint64 t0 = GTimer::currentTimeMicros();
 
-    MysqlAssemblyAdapter *a = getAdapter(assemblyId, os);
+    MysqlAssemblyAdapter* a = getAdapter(assemblyId, os);
     if (a == nullptr) {
         return -1;
     }
@@ -198,11 +198,11 @@ qint64 MysqlAssemblyDbi::getMaxEndPos(const U2DataId &assemblyId, U2OpStatus &os
     return res;
 }
 
-void MysqlAssemblyDbi::createAssemblyObject(U2Assembly &assembly,
-                                            const QString &folder,
-                                            U2DbiIterator<U2AssemblyRead> *it,
-                                            U2AssemblyReadsImportInfo &importInfo,
-                                            U2OpStatus &os) {
+void MysqlAssemblyDbi::createAssemblyObject(U2Assembly& assembly,
+                                            const QString& folder,
+                                            U2DbiIterator<U2AssemblyRead>* it,
+                                            U2AssemblyReadsImportInfo& importInfo,
+                                            U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     U2Object fakeObject;
@@ -229,7 +229,7 @@ void MysqlAssemblyDbi::createAssemblyObject(U2Assembly &assembly,
     q.insert();
     SAFE_POINT_OP(os, );
 
-    MysqlAssemblyAdapter *a = getAdapter(assembly.id, os);
+    MysqlAssemblyAdapter* a = getAdapter(assembly.id, os);
     SAFE_POINT_OP(os, );
 
     a->createReadsTables(os);
@@ -244,7 +244,7 @@ void MysqlAssemblyDbi::createAssemblyObject(U2Assembly &assembly,
     SAFE_POINT_OP(os, );
 }
 
-void MysqlAssemblyDbi::finalizeAssemblyObject(U2Assembly &assembly, U2OpStatus &os) {
+void MysqlAssemblyDbi::finalizeAssemblyObject(U2Assembly& assembly, U2OpStatus& os) {
     U2OpStatusImpl correctTypeOs;
     U2OpStatusImpl removeObjectOs;
 
@@ -261,7 +261,7 @@ void MysqlAssemblyDbi::finalizeAssemblyObject(U2Assembly &assembly, U2OpStatus &
     }
 }
 
-void MysqlAssemblyDbi::removeAssemblyData(const U2DataId &assemblyId, U2OpStatus &os) {
+void MysqlAssemblyDbi::removeAssemblyData(const U2DataId& assemblyId, U2OpStatus& os) {
     MysqlTransaction t(db, os);
     CHECK_OP(os, );
 
@@ -270,7 +270,7 @@ void MysqlAssemblyDbi::removeAssemblyData(const U2DataId &assemblyId, U2OpStatus
     removeAssemblyEntry(assemblyId, os);
 }
 
-void MysqlAssemblyDbi::updateAssemblyObject(U2Assembly &assembly, U2OpStatus &os) {
+void MysqlAssemblyDbi::updateAssemblyObject(U2Assembly& assembly, U2OpStatus& os) {
     MysqlTransaction t(db, os);
 
     U2SqlQuery q("UPDATE Assembly SET reference = :reference WHERE object = :object", db, os);
@@ -287,14 +287,14 @@ void MysqlAssemblyDbi::updateAssemblyObject(U2Assembly &assembly, U2OpStatus &os
     SAFE_POINT_OP(os, );
 }
 
-void MysqlAssemblyDbi::removeReads(const U2DataId &assemblyId, const QList<U2DataId> &rowIds, U2OpStatus &os) {
-    MysqlAssemblyAdapter *a = getAdapter(assemblyId, os);
+void MysqlAssemblyDbi::removeReads(const U2DataId& assemblyId, const QList<U2DataId>& rowIds, U2OpStatus& os) {
+    MysqlAssemblyAdapter* a = getAdapter(assemblyId, os);
     if (a != nullptr) {
         a->removeReads(rowIds, os);
     }
 }
 
-void MysqlAssemblyDbi::addReads(MysqlAssemblyAdapter *a, U2DbiIterator<U2AssemblyRead> *it, U2AssemblyReadsImportInfo &ii, U2OpStatus &os) {
+void MysqlAssemblyDbi::addReads(MysqlAssemblyAdapter* a, U2DbiIterator<U2AssemblyRead>* it, U2AssemblyReadsImportInfo& ii, U2OpStatus& os) {
     GTIMER(c2, t2, "MysqlAssemblyDbi::addReads");
 
     quint64 t0 = GTimer::currentTimeMicros();
@@ -308,16 +308,16 @@ void MysqlAssemblyDbi::addReads(MysqlAssemblyAdapter *a, U2DbiIterator<U2Assembl
                       .arg(ii.packStat.readsCount > 0 ? "yes" : "no"));
 }
 
-void MysqlAssemblyDbi::removeTables(const U2DataId &assemblyId, U2OpStatus &os) {
+void MysqlAssemblyDbi::removeTables(const U2DataId& assemblyId, U2OpStatus& os) {
     MysqlTransaction t(db, os);
     CHECK_OP(os, );
 
-    AssemblyAdapter *adapter = getAdapter(assemblyId, os);
+    AssemblyAdapter* adapter = getAdapter(assemblyId, os);
     CHECK(nullptr != adapter, );
     adapter->dropReadsTables(os);
 }
 
-void MysqlAssemblyDbi::removeAssemblyEntry(const U2DataId &assemblyId, U2OpStatus &os) {
+void MysqlAssemblyDbi::removeAssemblyEntry(const U2DataId& assemblyId, U2OpStatus& os) {
     MysqlTransaction t(db, os);
     CHECK_OP(os, );
 
@@ -327,13 +327,13 @@ void MysqlAssemblyDbi::removeAssemblyEntry(const U2DataId &assemblyId, U2OpStatu
     q.execute();
 }
 
-void MysqlAssemblyDbi::correctAssemblyType(U2Assembly &assembly, U2OpStatus &os) {
+void MysqlAssemblyDbi::correctAssemblyType(U2Assembly& assembly, U2OpStatus& os) {
     dbi->getMysqlObjectDbi()->updateObjectType(assembly, os);
     SAFE_POINT_OP(os, );
 }
 
-void MysqlAssemblyDbi::addReads(const U2DataId &assemblyId, U2DbiIterator<U2AssemblyRead> *it, U2OpStatus &os) {
-    MysqlAssemblyAdapter *a = getAdapter(assemblyId, os);
+void MysqlAssemblyDbi::addReads(const U2DataId& assemblyId, U2DbiIterator<U2AssemblyRead>* it, U2OpStatus& os) {
+    MysqlAssemblyAdapter* a = getAdapter(assemblyId, os);
     if (a != nullptr) {
         U2AssemblyReadsImportInfo ii;
         addReads(a, it, ii, os);
@@ -341,12 +341,12 @@ void MysqlAssemblyDbi::addReads(const U2DataId &assemblyId, U2DbiIterator<U2Asse
 }
 
 /**  Packs assembly rows: assigns packedViewRow value for every read in assembly */
-void MysqlAssemblyDbi::pack(const U2DataId &assemblyId, U2AssemblyPackStat &stat, U2OpStatus &os) {
+void MysqlAssemblyDbi::pack(const U2DataId& assemblyId, U2AssemblyPackStat& stat, U2OpStatus& os) {
     GTIMER(c2, t2, "MysqlAssemblyDbi::pack");
 
     quint64 t0 = GTimer::currentTimeMicros();
 
-    MysqlAssemblyAdapter *a = getAdapter(assemblyId, os);
+    MysqlAssemblyAdapter* a = getAdapter(assemblyId, os);
     if (a == nullptr) {
         return;
     }
@@ -355,12 +355,12 @@ void MysqlAssemblyDbi::pack(const U2DataId &assemblyId, U2AssemblyPackStat &stat
     perfLog.trace(QString("Assembly: full pack time: %1 seconds").arg((GTimer::currentTimeMicros() - t0) / float(1000 * 1000)));
 }
 
-void MysqlAssemblyDbi::calculateCoverage(const U2DataId &assemblyId, const U2Region &region, U2AssemblyCoverageStat &coverage, U2OpStatus &os) {
+void MysqlAssemblyDbi::calculateCoverage(const U2DataId& assemblyId, const U2Region& region, U2AssemblyCoverageStat& coverage, U2OpStatus& os) {
     GTIMER(c2, t2, "MysqlAssemblyDbi::calculateCoverage");
 
     quint64 t0 = GTimer::currentTimeMicros();
 
-    MysqlAssemblyAdapter *a = getAdapter(assemblyId, os);
+    MysqlAssemblyAdapter* a = getAdapter(assemblyId, os);
     if (a == nullptr) {
         return;
     }

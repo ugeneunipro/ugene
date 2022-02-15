@@ -42,7 +42,7 @@ public:
 };
 
 template<typename T>
-U2Range<T> operator+(const U2Range<T> &r1, const U2Range<T> &r2) {
+U2Range<T> operator+(const U2Range<T>& r1, const U2Range<T>& r2) {
     U2Range<T> result(qMin(r1.minValue, r2.minValue), qMax(r1.maxValue, r2.maxValue));
     return result;
 }

@@ -49,7 +49,7 @@ namespace U2 {
 //// AceImporterTask
 ///////////////////////////////////
 
-AceImporterTask::AceImporterTask(const GUrl &url, const QVariantMap &settings)
+AceImporterTask::AceImporterTask(const GUrl& url, const QVariantMap& settings)
     : DocumentProviderTask(tr("ACE file import: %1").arg(url.fileName()), TaskFlags_NR_FOSE_COSC),
       convertTask(nullptr),
       loadDocTask(nullptr),
@@ -73,7 +73,7 @@ void AceImporterTask::prepare() {
         QDir().mkpath(tmpDir);
 
         const QString pattern = tmpDir + "XXXXXX.ugenedb";
-        QTemporaryFile *tempLocalDb = new QTemporaryFile(pattern, this);
+        QTemporaryFile* tempLocalDb = new QTemporaryFile(pattern, this);
 
         tempLocalDb->open();
         const QString filePath = tempLocalDb->fileName();
@@ -88,8 +88,8 @@ void AceImporterTask::prepare() {
     addSubTask(convertTask);
 }
 
-QList<Task *> AceImporterTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> AceImporterTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     CHECK_OP(stateInfo, res);
 
     if (isSqliteDbTransit && subTask == convertTask) {
@@ -124,7 +124,7 @@ Task::ReportResult AceImporterTask::report() {
 void AceImporterTask::initCloneObjectTasks() {
     const QMap<U2Sequence, U2Assembly> importedObjects = convertTask->getImportedObjects();
     const QList<U2Sequence> referenceList = importedObjects.keys();
-    for (const U2Sequence &reference : qAsConst(referenceList)) {
+    for (const U2Sequence& reference : qAsConst(referenceList)) {
         cloneTasks << new CloneAssemblyWithReferenceToDbiTask(importedObjects[reference], reference, localDbiRef, dstDbiRef, settings);
     }
 }
@@ -156,12 +156,12 @@ AceImporter::AceImporter()
     supportedObjectTypes << GObjectTypes::ASSEMBLY;
 }
 
-FormatCheckResult AceImporter::checkRawData(const QByteArray &rawData, const GUrl &url) {
+FormatCheckResult AceImporter::checkRawData(const QByteArray& rawData, const GUrl& url) {
     ACEFormat aceFormat(nullptr);
     return aceFormat.checkRawData(rawData, url);
 }
 
-DocumentProviderTask *AceImporter::createImportTask(const FormatDetectionResult &res, bool, const QVariantMap &hints) {
+DocumentProviderTask* AceImporter::createImportTask(const FormatDetectionResult& res, bool, const QVariantMap& hints) {
     QVariantMap settings;
     settings.insert(SRC_URL, res.url.getURLString());
     if (hints.contains(DocumentFormat::DBI_REF_HINT)) {

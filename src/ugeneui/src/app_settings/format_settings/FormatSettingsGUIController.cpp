@@ -30,29 +30,29 @@
 
 namespace U2 {
 
-FormatSettingsGUIPageController::FormatSettingsGUIPageController(QObject *p)
+FormatSettingsGUIPageController::FormatSettingsGUIPageController(QObject* p)
     : AppSettingsGUIPageController(tr("File Format"), APP_SETTINGS_FORMAT, p) {
 }
 
-AppSettingsGUIPageState *FormatSettingsGUIPageController::getSavedState() {
-    FormatSettingsGUIPageState *state = new FormatSettingsGUIPageState();
-    FormatAppsSettings *s = AppContext::getAppSettings()->getFormatAppsSettings();
+AppSettingsGUIPageState* FormatSettingsGUIPageController::getSavedState() {
+    FormatSettingsGUIPageState* state = new FormatSettingsGUIPageState();
+    FormatAppsSettings* s = AppContext::getAppSettings()->getFormatAppsSettings();
     state->caseMode = s->getCaseAnnotationsMode();
 
     return state;
 }
 
-void FormatSettingsGUIPageController::saveState(AppSettingsGUIPageState *_state) {
-    FormatSettingsGUIPageState *state = qobject_cast<FormatSettingsGUIPageState *>(_state);
-    FormatAppsSettings *s = AppContext::getAppSettings()->getFormatAppsSettings();
+void FormatSettingsGUIPageController::saveState(AppSettingsGUIPageState* _state) {
+    FormatSettingsGUIPageState* state = qobject_cast<FormatSettingsGUIPageState*>(_state);
+    FormatAppsSettings* s = AppContext::getAppSettings()->getFormatAppsSettings();
     CaseAnnotationsMode prevMode = s->getCaseAnnotationsMode();
     s->setCaseAnnotationsMode(state->caseMode);
-    Project *p = AppContext::getProject();
+    Project* p = AppContext::getProject();
     if (state->caseMode != prevMode && p != nullptr) {
-        QList<Document *> docs = p->getDocuments(), toReload;
-        foreach (Document *d, docs) {
+        QList<Document*> docs = p->getDocuments(), toReload;
+        foreach (Document* d, docs) {
             if (d->isLoaded()) {
-                QList<GObject *> gobjList = d->findGObjectByType(GObjectTypes::SEQUENCE);
+                QList<GObject*> gobjList = d->findGObjectByType(GObjectTypes::SEQUENCE);
                 if (!gobjList.isEmpty()) {
                     toReload.append(d);
                 }
@@ -63,15 +63,15 @@ void FormatSettingsGUIPageController::saveState(AppSettingsGUIPageState *_state)
     }
 }
 
-AppSettingsGUIPageWidget *FormatSettingsGUIPageController::createWidget(AppSettingsGUIPageState *state) {
-    FormatSettingsGUIPageWidget *r = new FormatSettingsGUIPageWidget(this);
+AppSettingsGUIPageWidget* FormatSettingsGUIPageController::createWidget(AppSettingsGUIPageState* state) {
+    FormatSettingsGUIPageWidget* r = new FormatSettingsGUIPageWidget(this);
     r->setState(state);
     return r;
 }
 
 const QString FormatSettingsGUIPageController::helpPageId = QString("65929351");
 
-FormatSettingsGUIPageWidget::FormatSettingsGUIPageWidget(FormatSettingsGUIPageController *) {
+FormatSettingsGUIPageWidget::FormatSettingsGUIPageWidget(FormatSettingsGUIPageController*) {
     setupUi(this);
     caseAnnsModeNames.insert(NO_CASE_ANNS, tr("Don't use case annotations"));
     caseAnnsModeNames.insert(LOWER_CASE, tr("Use lower case annotations"));
@@ -79,8 +79,8 @@ FormatSettingsGUIPageWidget::FormatSettingsGUIPageWidget(FormatSettingsGUIPageCo
     caseCombo->addItems(caseAnnsModeNames.values());
 }
 
-void FormatSettingsGUIPageWidget::setState(AppSettingsGUIPageState *s) {
-    FormatSettingsGUIPageState *state = qobject_cast<FormatSettingsGUIPageState *>(s);
+void FormatSettingsGUIPageWidget::setState(AppSettingsGUIPageState* s) {
+    FormatSettingsGUIPageState* state = qobject_cast<FormatSettingsGUIPageState*>(s);
 
     int caseModeIdx = caseCombo->findText(caseAnnsModeNames.value(state->caseMode), Qt::MatchFixedString);
     if (caseModeIdx != -1) {
@@ -88,9 +88,9 @@ void FormatSettingsGUIPageWidget::setState(AppSettingsGUIPageState *s) {
     }
 }
 
-AppSettingsGUIPageState *FormatSettingsGUIPageWidget::getState(QString &err) const {
+AppSettingsGUIPageState* FormatSettingsGUIPageWidget::getState(QString& err) const {
     Q_UNUSED(err);
-    FormatSettingsGUIPageState *state = new FormatSettingsGUIPageState();
+    FormatSettingsGUIPageState* state = new FormatSettingsGUIPageState();
     state->caseMode = caseAnnsModeNames.key(caseCombo->currentText(), NO_CASE_ANNS);
 
     return state;

@@ -31,27 +31,27 @@ namespace U2 {
 class U2FORMATS_EXPORT SwissProtPlainTextFormat : public EMBLGenbankAbstractDocument {
     Q_OBJECT
 public:
-    SwissProtPlainTextFormat(QObject *p);
+    SwissProtPlainTextFormat(QObject* p);
 
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray &rawData, const GUrl & = GUrl()) const;
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
-    bool readIdLine(ParserState *);
-    bool readEntry(ParserState *, U2SequenceImporter &, int &seqSize, int &fullSeqSize, bool merge, int gapSize, U2OpStatus &);
-    bool readSequence(ParserState *, U2SequenceImporter &, int &, int &, U2OpStatus &);
-    void readAnnotations(ParserState *, int offset);
+    bool readIdLine(ParserState*);
+    bool readEntry(ParserState*, U2SequenceImporter&, int& seqSize, int& fullSeqSize, bool merge, int gapSize, U2OpStatus&);
+    bool readSequence(ParserState*, U2SequenceImporter&, int&, int&, U2OpStatus&);
+    void readAnnotations(ParserState*, int offset);
     // SWISS-PROT presented new format rules 11.12.2019
     // If the file has been changed since this date, the following function will return true
     // Otherwise - false
-    bool isNewAnnotationFormat(const QVariant &dateList, U2OpStatus &si);
-    SharedAnnotationData readAnnotationOldFormat(IOAdapter *io, char *cbuff, int contentLen, int bufSize, U2OpStatus &si, int offset);
-    SharedAnnotationData readAnnotationNewFormat(char *cbuff, U2OpStatus &si, int offset);
+    bool isNewAnnotationFormat(const QVariant& dateList, U2OpStatus& si);
+    SharedAnnotationData readAnnotationOldFormat(IOAdapter* io, char* cbuff, int contentLen, int bufSize, U2OpStatus& si, int offset);
+    SharedAnnotationData readAnnotationNewFormat(char* cbuff, U2OpStatus& si, int offset);
 
     QMap<QString, QString> tagMap;
 
 private:
-    static void check4SecondaryStructure(AnnotationData *a);
-    static void processAnnotationRegion(AnnotationData *a, const int start, const int end, const int offset);
+    static void check4SecondaryStructure(AnnotationData* a);
+    static void processAnnotationRegion(AnnotationData* a, const int start, const int end, const int offset);
 
     static const QDate UPDATE_DATE;
     static const QMap<QString, int> MONTH_STRING_2_INT;

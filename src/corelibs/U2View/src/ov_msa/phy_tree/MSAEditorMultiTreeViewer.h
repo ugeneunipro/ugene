@@ -38,27 +38,27 @@ class MsaEditorTreeTab;
 class U2VIEW_EXPORT MSAEditorMultiTreeViewer : public QWidget {
     Q_OBJECT
 public:
-    MSAEditorMultiTreeViewer(const QString &title, MSAEditor *msaEditor);
+    MSAEditorMultiTreeViewer(const QString& title, MSAEditor* msaEditor);
 
-    void addTreeView(GObjectViewWindow *treeView);
+    void addTreeView(GObjectViewWindow* treeView);
 
-    QWidget *getCurrentWidget() const;
+    QWidget* getCurrentWidget() const;
 
-    MsaEditorTreeTab *getCurrentTabWidget() const;
+    MsaEditorTreeTab* getCurrentTabWidget() const;
 
-    const QStringList &getTreeNames() const;
+    const QStringList& getTreeNames() const;
 
 signals:
     void si_tabsCountChanged(int tabsCount);
 
 public slots:
-    void sl_onTabCloseRequested(QWidget *);
+    void sl_onTabCloseRequested(QWidget*);
 
 private:
-    MsaEditorTreeTabArea *treeTabArea;
-    QWidget *titleWidget;
-    MSAEditor *editor;
-    QList<QWidget *> treeViewList;
+    MsaEditorTreeTabArea* treeTabArea;
+    QWidget* titleWidget;
+    MSAEditor* editor;
+    QList<QWidget*> treeViewList;
     QStringList tabsNameList;
 };
 

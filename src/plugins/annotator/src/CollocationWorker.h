@@ -37,7 +37,7 @@ typedef PrompterBase<CollocationPrompter> CollocationPrompterBase;
 class CollocationPrompter : public CollocationPrompterBase {
     Q_OBJECT
 public:
-    CollocationPrompter(Actor *p = 0)
+    CollocationPrompter(Actor* p = 0)
         : CollocationPrompterBase(p) {
     }
     virtual ~CollocationPrompter() {
@@ -50,13 +50,13 @@ protected:
 class CollocationWorker : public BaseWorker {
     Q_OBJECT
 public:
-    CollocationWorker(Actor *a)
+    CollocationWorker(Actor* a)
         : BaseWorker(a), input(nullptr), output(nullptr) {
     }
     virtual ~CollocationWorker() {
     }
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup() {
     }
 private slots:
@@ -76,7 +76,7 @@ public:
     }
     virtual ~CollocationWorkerFactory() {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new CollocationWorker(a);
     }
 };

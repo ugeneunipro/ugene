@@ -33,19 +33,19 @@
 
 namespace U2 {
 
-LabelClickProvider::LabelClickProvider(QLabel *label, QRadioButton *rb)
+LabelClickProvider::LabelClickProvider(QLabel* label, QRadioButton* rb)
     : QObject(label),
       label(label),
       rb(rb) {
 }
 
-bool LabelClickProvider::eventFilter(QObject *object, QEvent *event) {
+bool LabelClickProvider::eventFilter(QObject* object, QEvent* event) {
     CHECK(nullptr != label, false);
     CHECK(nullptr != rb, false);
     CHECK(label == object, false);
 
     CHECK(QEvent::MouseButtonPress == event->type(), false);
-    QMouseEvent *mouseEvent = dynamic_cast<QMouseEvent *>(event);
+    QMouseEvent* mouseEvent = dynamic_cast<QMouseEvent*>(event);
     CHECK(nullptr != event, false);
     CHECK(Qt::LeftButton == mouseEvent->button(), false);
 
@@ -53,7 +53,7 @@ bool LabelClickProvider::eventFilter(QObject *object, QEvent *event) {
     return false;
 }
 
-DocumentFormatSelectorController::DocumentFormatSelectorController(QList<FormatDetectionResult> &results, QWidget *p)
+DocumentFormatSelectorController::DocumentFormatSelectorController(QList<FormatDetectionResult>& results, QWidget* p)
     : QDialog(p), formatDetectionResults(results) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929285");
@@ -63,7 +63,7 @@ DocumentFormatSelectorController::DocumentFormatSelectorController(QList<FormatD
     setObjectName("DocumentFormatSelectorDialog");
 }
 
-int DocumentFormatSelectorController::selectResult(const GUrl &url, const QString &rawDataPreview, QList<FormatDetectionResult> &results) {
+int DocumentFormatSelectorController::selectResult(const GUrl& url, const QString& rawDataPreview, QList<FormatDetectionResult>& results) {
     SAFE_POINT(!results.isEmpty(), "Results list is empty!", -1);
     if (results.size() == 1) {
         return 0;
@@ -73,10 +73,10 @@ int DocumentFormatSelectorController::selectResult(const GUrl &url, const QStrin
     d->optionsBox->setTitle(tr("Options for %1").arg(url.fileName()));
     d->previewEdit->setPlainText(rawDataPreview);
 
-    QVBoxLayout *vbox = new QVBoxLayout();
+    QVBoxLayout* vbox = new QVBoxLayout();
     QList<DocumentFormatId> detectedIds;
     for (int i = 0; i < results.size(); i++) {
-        const FormatDetectionResult &r = results[i];
+        const FormatDetectionResult& r = results[i];
         if (nullptr != r.format) {
             detectedIds.append(r.format->getFormatId());
         }
@@ -93,18 +93,18 @@ int DocumentFormatSelectorController::selectResult(const GUrl &url, const QStrin
             assert(0);
             continue;
         }
-        QHBoxLayout *hbox = new QHBoxLayout();
-        QRadioButton *rb = new QRadioButton();
+        QHBoxLayout* hbox = new QHBoxLayout();
+        QRadioButton* rb = new QRadioButton();
         rb->setObjectName(objName);
         rb->setChecked(i == 0);
 
-        QLabel *label = new QLabel(text);
+        QLabel* label = new QLabel(text);
         label->setObjectName(QString("label_%1").arg(i + 1));
         label->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
         label->setSizePolicy(QSizePolicy::Expanding, label->sizePolicy().verticalPolicy());
         label->installEventFilter(new LabelClickProvider(label, rb));
 
-        QToolButton *moreButton = new QToolButton();
+        QToolButton* moreButton = new QToolButton();
         moreButton->setText(tr("more.."));
         moreButton->setEnabled(!r.getFormatDescriptionText().isEmpty());
         d->moreButtons << moreButton;
@@ -120,23 +120,23 @@ int DocumentFormatSelectorController::selectResult(const GUrl &url, const QStrin
     // additional option: user selecting format
     {
         QString text(tr("Choose format manually"));
-        QHBoxLayout *hbox = new QHBoxLayout();
-        QRadioButton *rb = new QRadioButton();
+        QHBoxLayout* hbox = new QHBoxLayout();
+        QRadioButton* rb = new QRadioButton();
         rb->setObjectName("chooseFormatManuallyRadio");
 
-        QLabel *label = new QLabel(text);
+        QLabel* label = new QLabel(text);
         label->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
         label->setSizePolicy(QSizePolicy::Expanding, label->sizePolicy().verticalPolicy());
         label->installEventFilter(new LabelClickProvider(label, rb));
 
         d->userSelectedFormat = new QComboBox();
         d->userSelectedFormat->setObjectName("userSelectedFormat");
-        const DocumentFormatRegistry *formatRegistry = AppContext::getDocumentFormatRegistry();
+        const DocumentFormatRegistry* formatRegistry = AppContext::getDocumentFormatRegistry();
         SAFE_POINT(formatRegistry != nullptr, "FormatRegistry is NULL!", -1);
         DocumentFormatConstraints constraints;
         constraints.addFlagToExclude(DocumentFormatFlag_Hidden);
         QMap<DocumentFormatId, QString> formats;
-        foreach (const DocumentFormatId &id, formatRegistry->selectFormats(constraints)) {
+        foreach (const DocumentFormatId& id, formatRegistry->selectFormats(constraints)) {
             if (!detectedIds.contains(id)) {
                 const QString formatName = formatRegistry->getFormatById(id)->getFormatName();
                 formats[id] = formatName;
@@ -144,7 +144,7 @@ int DocumentFormatSelectorController::selectResult(const GUrl &url, const QStrin
         }
         QStringList formatNamesSorted = formats.values();
         formatNamesSorted.sort(Qt::CaseInsensitive);
-        foreach (const QString &name, formatNamesSorted) {
+        foreach (const QString& name, formatNamesSorted) {
             d->userSelectedFormat->addItem(name, formats.key(name));
         }
 
@@ -166,7 +166,7 @@ int DocumentFormatSelectorController::selectResult(const GUrl &url, const QStrin
     }
     int idx = d->getSelectedFormatIdx();
     if (idx == results.size()) {
-        FormatDetectionResult *r = new FormatDetectionResult();
+        FormatDetectionResult* r = new FormatDetectionResult();
         DocumentFormatId id = d->userSelectedFormat->itemData(d->userSelectedFormat->currentIndex()).toString();
         r->format = AppContext::getDocumentFormatRegistry()->getFormatById(id);
         results.insert(idx, *r);
@@ -197,10 +197,10 @@ QString DocumentFormatSelectorController::score2Text(int score) {
 }
 
 void DocumentFormatSelectorController::sl_moreFormatInfo() {
-    QToolButton *tb = qobject_cast<QToolButton *>(sender());
+    QToolButton* tb = qobject_cast<QToolButton*>(sender());
     SAFE_POINT(tb != nullptr, "Failed to derive selected format info!", );
     int idx = moreButtons.indexOf(tb);
-    const FormatDetectionResult &dr = formatDetectionResults[idx];
+    const FormatDetectionResult& dr = formatDetectionResults[idx];
     QMessageBox::information(this, tr("Format details for '%1' format").arg(dr.getFormatOrImporterName()), dr.getFormatDescriptionText());
 }
 

@@ -34,20 +34,20 @@ class IOAdapter;
 class U2FORMATS_EXPORT MSFFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
-    MSFFormat(QObject *parent);
+    MSFFormat(QObject* parent);
 
-    FormatCheckResult checkRawTextData(const QString &dataPrefix, const GUrl &originalDataUrl) const override;
+    FormatCheckResult checkRawTextData(const QString& dataPrefix, const GUrl& originalDataUrl) const override;
 
-    Document *loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) override;
+    Document* loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) override;
 
-    void storeTextDocument(IOAdapterWriter &writer, Document *document, U2OpStatus &os) override;
+    void storeTextDocument(IOAdapterWriter& writer, Document* document, U2OpStatus& os) override;
 
-    void storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) override;
+    void storeTextEntry(IOAdapterWriter& writer, const QMap<GObjectType, QList<GObject*>>& objectsMap, U2OpStatus& os) override;
 
 private:
-    static void load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QList<GObject *> &objects, const QVariantMap &hints, U2OpStatus &os);
+    static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& os);
 
-    static int getCheckSum(const QByteArray &seq);
+    static int getCheckSum(const QByteArray& seq);
 
     static const int CHECK_SUM_MOD;
     static const QByteArray MSF_FIELD;

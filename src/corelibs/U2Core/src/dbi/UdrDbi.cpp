@@ -23,7 +23,7 @@
 
 namespace U2 {
 
-UdrDbi::UdrDbi(U2Dbi *rootDbi)
+UdrDbi::UdrDbi(U2Dbi* rootDbi)
     : U2ChildDbi(rootDbi) {
 }
 

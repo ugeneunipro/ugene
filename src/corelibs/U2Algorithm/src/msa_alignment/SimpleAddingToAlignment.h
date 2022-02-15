@@ -33,9 +33,9 @@ namespace U2 {
 class SimpleAddToAlignmentTask : public AbstractAlignmentTask {
     Q_OBJECT
 public:
-    SimpleAddToAlignmentTask(const AlignSequencesToAlignmentTaskSettings &settings);
+    SimpleAddToAlignmentTask(const AlignSequencesToAlignmentTaskSettings& settings);
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
     ReportResult report();
 
@@ -49,14 +49,14 @@ private:
 class BestPositionFindTask : public Task {
     Q_OBJECT
 public:
-    BestPositionFindTask(const MultipleSequenceAlignment &alignment, const U2EntityRef &sequenceRef, const QString &sequenceId, int referenceRowId);
+    BestPositionFindTask(const MultipleSequenceAlignment& alignment, const U2EntityRef& sequenceRef, const QString& sequenceId, int referenceRowId);
     void run();
 
     int getPosition() const;
-    const QString &getSequenceId() const;
+    const QString& getSequenceId() const;
 
 private:
-    const MultipleSequenceAlignment &inputMsa;
+    const MultipleSequenceAlignment& inputMsa;
     U2EntityRef sequenceRef;
     QString sequenceId;
     int bestPosition;
@@ -65,7 +65,7 @@ private:
 
 class SimpleAddToAlignmentTaskFactory : public AbstractAlignmentTaskFactory {
 public:
-    virtual AbstractAlignmentTask *getTaskInstance(AbstractAlignmentTaskSettings *_settings) const;
+    virtual AbstractAlignmentTask* getTaskInstance(AbstractAlignmentTaskSettings* _settings) const;
 };
 
 class SimpleAddToAlignmentAlgorithm : public AlignmentAlgorithm {

@@ -33,7 +33,7 @@ namespace U2 {
 class BowtieBuildTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    BowtieBuildTask(const QString &referencePath, const QString &indexPath);
+    BowtieBuildTask(const QString& referencePath, const QString& indexPath);
 
     void prepare();
 
@@ -52,8 +52,8 @@ private:
         };
 
         LogParser();
-        void parseOutput(const QString &partOfLog);
-        void parseErrOutput(const QString &partOfLog);
+        void parseOutput(const QString& partOfLog);
+        void parseErrOutput(const QString& partOfLog);
         int getProgress();
 
     private:
@@ -73,7 +73,7 @@ private:
 class BowtieAlignTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    BowtieAlignTask(const DnaAssemblyToRefTaskSettings &settings);
+    BowtieAlignTask(const DnaAssemblyToRefTaskSettings& settings);
 
     bool hasResult() const;
 
@@ -84,8 +84,8 @@ private:
     public:
         LogParser();
 
-        void parseOutput(const QString &partOfLog);
-        void parseErrOutput(const QString &partOfLog);
+        void parseOutput(const QString& partOfLog);
+        void parseErrOutput(const QString& partOfLog);
 
         bool hasResult() const;
 
@@ -93,7 +93,7 @@ private:
         bool hasResults;
     };
 
-    LogParser *logParser;
+    LogParser* logParser;
     DnaAssemblyToRefTaskSettings settings;
 };
 
@@ -101,12 +101,12 @@ class BowtieTask : public DnaAssemblyToReferenceTask {
     Q_OBJECT
     DNA_ASSEMBLEY_TO_REF_TASK_FACTORY(BowtieTask)
 public:
-    BowtieTask(const DnaAssemblyToRefTaskSettings &settings, bool justBuildIndex = false);
+    BowtieTask(const DnaAssemblyToRefTaskSettings& settings, bool justBuildIndex = false);
 
     void prepare();
     ReportResult report();
 protected slots:
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 public:
     static const QString OPTION_N_MISMATCHES;
@@ -128,20 +128,20 @@ public:
     static const QStringList largeIndexSuffixes;
 
 private:
-    BowtieBuildTask *buildIndexTask;
-    BowtieAlignTask *alignTask;
+    BowtieBuildTask* buildIndexTask;
+    BowtieAlignTask* alignTask;
 
-    Task *unzipTask;
+    Task* unzipTask;
     QTemporaryFile temp;
 };
 
 class BowtieTaskFactory : public DnaAssemblyToRefTaskFactory {
 public:
-    DnaAssemblyToReferenceTask *createTaskInstance(const DnaAssemblyToRefTaskSettings &settings, bool justBuildIndex = false);
+    DnaAssemblyToReferenceTask* createTaskInstance(const DnaAssemblyToRefTaskSettings& settings, bool justBuildIndex = false);
 
 protected:
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_BOWTIE_TASK_H_
+#endif  // _U2_BOWTIE_TASK_H_

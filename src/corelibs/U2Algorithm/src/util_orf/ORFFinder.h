@@ -38,10 +38,10 @@ public:
     ORFFindResult()
         : region(0, 0), frame(0), isJoined(false) {
     }
-    ORFFindResult(const U2Region &_r, int frame)
+    ORFFindResult(const U2Region& _r, int frame)
         : region(_r), frame(frame), isJoined(false) {
     }
-    ORFFindResult(const U2Region &_r, const U2Region &_r_joined, int frame)
+    ORFFindResult(const U2Region& _r, const U2Region& _r_joined, int frame)
         : region(_r), joinedRegion(_r_joined), frame(frame), isJoined(true) {
     }
 
@@ -55,11 +55,11 @@ public:
         return region.startPos == 0 && region.length == 0;
     }
 
-    bool operator==(const ORFFindResult &o) const {
+    bool operator==(const ORFFindResult& o) const {
         return region == o.region && frame == o.frame;
     }
 
-    SharedAnnotationData toAnnotation(const QString &name) const {
+    SharedAnnotationData toAnnotation(const QString& name) const {
         SharedAnnotationData data(new AnnotationData);
         data->name = name;
         data->location->regions << region;
@@ -81,9 +81,9 @@ public:
     int frame;
     bool isJoined;
 
-    static QList<SharedAnnotationData> toTable(const QList<ORFFindResult> &res, const QString &name) {
+    static QList<SharedAnnotationData> toTable(const QList<ORFFindResult>& res, const QString& name) {
         QList<SharedAnnotationData> list;
-        foreach (const ORFFindResult &f, res) {
+        foreach (const ORFFindResult& f, res) {
             list << f.toAnnotation(name);
         }
         return list;
@@ -94,7 +94,7 @@ class U2ALGORITHM_EXPORT ORFFindResultsListener {
 public:
     virtual ~ORFFindResultsListener() {
     }
-    virtual void onResult(const ORFFindResult &r, U2OpStatus &os) = 0;
+    virtual void onResult(const ORFFindResult& r, U2OpStatus& os) = 0;
 };
 
 enum ORFAlgorithmStrand {
@@ -106,9 +106,9 @@ enum ORFAlgorithmStrand {
 class U2ALGORITHM_EXPORT ORFAlgorithmSettings {
 public:
     ORFAlgorithmSettings(ORFAlgorithmStrand strand = ORFAlgorithmStrand_Both,
-                         DNATranslation *complementTT = nullptr,
-                         DNATranslation *proteinTT = nullptr,
-                         const U2Region &searchRegion = U2Region(),
+                         DNATranslation* complementTT = nullptr,
+                         DNATranslation* proteinTT = nullptr,
+                         const U2Region& searchRegion = U2Region(),
                          int minLen = 0,
                          bool mustFit = false,
                          bool mustInit = true,
@@ -132,8 +132,8 @@ public:
     }
 
     ORFAlgorithmStrand strand;
-    DNATranslation *complementTT;
-    DNATranslation *proteinTT;
+    DNATranslation* complementTT;
+    DNATranslation* proteinTT;
     U2Region searchRegion;
     int minLen;
     bool mustFit;
@@ -150,30 +150,30 @@ public:
     static const QString STRAND_COMPL;
     static const QString STRAND_BOTH;
     static QString getStrandStringId(ORFAlgorithmStrand strand);
-    static ORFAlgorithmStrand getStrandByStringId(const QString &id);
+    static ORFAlgorithmStrand getStrandByStringId(const QString& id);
 };
 
 class U2ALGORITHM_EXPORT ORFFindAlgorithm {
 public:
     static void find(
-        ORFFindResultsListener *rl,
-        const ORFAlgorithmSettings &config,
-        U2EntityRef &entityRef,
-        int &stopFlag,
-        int &percentsCompleted);
+        ORFFindResultsListener* rl,
+        const ORFAlgorithmSettings& config,
+        U2EntityRef& entityRef,
+        int& stopFlag,
+        int& percentsCompleted);
 
 private:
-    static void addStartCodonsFromJunction(const U2SequenceObject &seq,
-                                           const ORFAlgorithmSettings &cfg,
+    static void addStartCodonsFromJunction(const U2SequenceObject& seq,
+                                           const ORFAlgorithmSettings& cfg,
                                            ORFAlgorithmStrand strand,
-                                           QList<int> *start);
-    static void checkStopCodonOnJunction(const U2SequenceObject &dnaSeq,
-                                         const ORFAlgorithmSettings &cfg,
+                                           QList<int>* start);
+    static void checkStopCodonOnJunction(const U2SequenceObject& dnaSeq,
+                                         const ORFAlgorithmSettings& cfg,
                                          ORFAlgorithmStrand strand,
-                                         ORFFindResultsListener *rl,
-                                         QList<int> *start,
-                                         TaskStateInfo &os);
-    static char *getCodonFromJunction(const U2SequenceObject &dnaSeq,
+                                         ORFFindResultsListener* rl,
+                                         QList<int>* start,
+                                         TaskStateInfo& os);
+    static char* getCodonFromJunction(const U2SequenceObject& dnaSeq,
                                       ORFAlgorithmStrand strand,
                                       // points to number of characters that are located in the end of the sequence
                                       int symbolsFromEnd);

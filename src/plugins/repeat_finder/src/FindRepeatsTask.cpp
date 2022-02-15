@@ -39,20 +39,20 @@
 
 namespace U2 {
 
-RevComplSequenceTask::RevComplSequenceTask(const DNASequence &s, const U2Region &reg)
+RevComplSequenceTask::RevComplSequenceTask(const DNASequence& s, const U2Region& reg)
     : Task(tr("Reverse complement sequence"), TaskFlag_None), sequence(s), region(reg) {
 }
 
 void RevComplSequenceTask::run() {
-    DNATranslation *complT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(sequence.alphabet);
+    DNATranslation* complT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(sequence.alphabet);
     if (complT == nullptr) {
         stateInfo.setError(tr("Can't find complement translation for alphabet: %1").arg(sequence.alphabet->getId()));
         return;
     }
     complementSequence.alphabet = complT->getDstAlphabet();
     complementSequence.seq.resize(region.length);
-    const char *src = sequence.constData();
-    char *dst = complementSequence.seq.data();
+    const char* src = sequence.constData();
+    char* dst = complementSequence.seq.data();
 
     complT->translate(src + region.startPos, region.length, dst, region.length);
     TextUtils::reverse(dst, region.length);
@@ -63,7 +63,7 @@ void RevComplSequenceTask::cleanup() {
     complementSequence.seq.clear();
 }
 
-FindRepeatsTask::FindRepeatsTask(const FindRepeatsTaskSettings &s, const DNASequence &seq, const DNASequence &seq2)
+FindRepeatsTask::FindRepeatsTask(const FindRepeatsTaskSettings& s, const DNASequence& seq, const DNASequence& seq2)
     : Task(tr("Find repeats in a single sequence"), TaskFlags_FOSCOE), settings(s),
       seq1(seq), seq2(seq2), tandemTask1(nullptr), tandemTask2(nullptr) {
     GCOUNTER(cvar, "FindRepeatsTask");
@@ -97,12 +97,12 @@ void FindRepeatsTask::prepare() {
             addSubTask(tandemTask2);
         }
     } else {
-        Task *subTask = createRepeatFinderTask();
+        Task* subTask = createRepeatFinderTask();
         addSubTask(subTask);
     }
 }
 
-Task *FindRepeatsTask::createRepeatFinderTask() {
+Task* FindRepeatsTask::createRepeatFinderTask() {
     if (settings.inverted) {
         stateInfo.setDescription(tr("Rev-complementing sequence"));
         assert(seq1.alphabet && seq1.alphabet->isNucleic());
@@ -115,25 +115,25 @@ Task *FindRepeatsTask::createRepeatFinderTask() {
     }
 }
 
-void FindRepeatsTask::filterTandems(const QList<SharedAnnotationData> &tandems, DNASequence &seq) {
+void FindRepeatsTask::filterTandems(const QList<SharedAnnotationData>& tandems, DNASequence& seq) {
     char unknownChar = RFAlgorithmBase::getUnknownChar(seq.alphabet->getType());
     QByteArray gap;
 
-    foreach (const SharedAnnotationData &d, tandems) {
-        const QVector<U2Region> &regs = d->getRegions();
-        foreach (const U2Region &r, regs) {
+    foreach (const SharedAnnotationData& d, tandems) {
+        const QVector<U2Region>& regs = d->getRegions();
+        foreach (const U2Region& r, regs) {
             gap.fill(unknownChar, r.length);
             seq.seq.replace(r.startPos, r.length, gap);
         }
     }
 }
 
-QList<Task *> FindRepeatsTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> FindRepeatsTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     if (hasError() || isCanceled()) {
         return res;
     }
-    FindTandemsToAnnotationsTask *t = qobject_cast<FindTandemsToAnnotationsTask *>(subTask);
+    FindTandemsToAnnotationsTask* t = qobject_cast<FindTandemsToAnnotationsTask*>(subTask);
     if (nullptr != t) {
         if (t == tandemTask1) {
             filterTandems(t->getResult(), seq1);
@@ -149,11 +149,11 @@ QList<Task *> FindRepeatsTask::onSubTaskFinished(Task *subTask) {
     return res;
 }
 
-RFAlgorithmBase *FindRepeatsTask::createRFTask() {
+RFAlgorithmBase* FindRepeatsTask::createRFTask() {
     stateInfo.setDescription(tr("Searching repeats ..."));
 
-    const char *seqX = seq1.constData() + settings.seqRegion.startPos;
-    const char *seqY = revComplTask == nullptr ? seqX : revComplTask->complementSequence.constData();
+    const char* seqX = seq1.constData() + settings.seqRegion.startPos;
+    const char* seqY = revComplTask == nullptr ? seqX : revComplTask->complementSequence.constData();
     int seqXLen = settings.seqRegion.length;
     int seqYLen = settings.seqRegion.length;
 
@@ -161,7 +161,7 @@ RFAlgorithmBase *FindRepeatsTask::createRFTask() {
         seqY = seq2.constData();
         seqYLen = seq2.length();
     }
-    RFAlgorithmBase *t = RFAlgorithmBase::createTask(this, seqX, seqXLen, seqY, seqYLen, seq1.alphabet, settings.minLen, settings.mismatches, settings.algo, settings.nThreads);
+    RFAlgorithmBase* t = RFAlgorithmBase::createTask(this, seqX, seqXLen, seqY, seqYLen, seq1.alphabet, settings.minLen, settings.mismatches, settings.algo, settings.nThreads);
 
     t->setReportReflected(settings.reportReflected);
     return t;
@@ -201,7 +201,7 @@ void FindRepeatsTask::filterUniqueRepeats() {
 
     bool changed = false;
     for (int i = 0, n = results.size(); i < n; i++) {
-        RFResult &ri = results[i];
+        RFResult& ri = results[i];
 
         for (int j = i + 1; j < results.size(); j++) {
             int Index = results[j].fragment.indexOf(ri.fragment);
@@ -216,7 +216,7 @@ void FindRepeatsTask::filterUniqueRepeats() {
     if (changed) {
         QVector<RFResult> prev = results;
         results.clear();
-        foreach (const RFResult &r, prev) {
+        foreach (const RFResult& r, prev) {
             if (r.l != -1) {
                 results.append(r);
             }
@@ -240,12 +240,12 @@ void FindRepeatsTask::filterNestedRepeats() {
     bool changed = false;
     int extraLen = settings.mismatches;  // extra len added to repeat region to search for duplicates
     for (int i = 0, n = results.size(); i < n; i++) {
-        RFResult &ri = results[i];
+        RFResult& ri = results[i];
         if (ri.l == -1) {  // this result was filtered
             continue;
         }
         for (int j = i + 1; j < n; j++) {
-            RFResult &rj = results[j];
+            RFResult& rj = results[j];
             assert(rj.x >= ri.x);
             if (rj.l == -1) {  // was filtered
                 continue;
@@ -284,7 +284,7 @@ void FindRepeatsTask::filterNestedRepeats() {
     if (changed) {
         QVector<RFResult> prev = results;
         results.clear();
-        foreach (const RFResult &r, prev) {
+        foreach (const RFResult& r, prev) {
             if (r.l != -1) {
                 results.append(r);
             }
@@ -304,7 +304,7 @@ void FindRepeatsTask::cleanup() {
     results.clear();
 }
 
-void FindRepeatsTask::addResult(const RFResult &r) {
+void FindRepeatsTask::addResult(const RFResult& r) {
     int x = r.x + settings.seqRegion.startPos;
     int y = settings.inverted ? settings.seqRegion.endPos() - r.y - r.l : r.y + settings.seq2Region.startPos;
     int l = r.l;
@@ -338,7 +338,7 @@ void FindRepeatsTask::addResult(const RFResult &r) {
 }
 
 void FindRepeatsTask::_addResult(int x, int y, int l, int c) {
-    const QByteArray &locDNA = seq1.constSequence();
+    const QByteArray& locDNA = seq1.constSequence();
 
     if (settings.reportReflected || x <= y) {
         QString locFragment = QString(locDNA.mid(x, l));
@@ -349,7 +349,7 @@ void FindRepeatsTask::_addResult(int x, int y, int l, int c) {
     }
 }
 
-void FindRepeatsTask::onResult(const RFResult &r) {
+void FindRepeatsTask::onResult(const RFResult& r) {
     if (settings.hasRegionFilters() && isFilteredByRegions(r)) {
         return;
     }
@@ -357,23 +357,23 @@ void FindRepeatsTask::onResult(const RFResult &r) {
     addResult(r);
 }
 
-void FindRepeatsTask::onResults(const QVector<RFResult> &results) {
+void FindRepeatsTask::onResults(const QVector<RFResult>& results) {
     QVector<RFResult> filteredResults = results;
     if (settings.hasRegionFilters()) {
         filteredResults.clear();
-        foreach (const RFResult &r, results) {
+        foreach (const RFResult& r, results) {
             if (!isFilteredByRegions(r)) {
                 filteredResults.append(r);
             }
         }
     }
     QMutexLocker ml(&resultsLock);
-    foreach (const RFResult &r, filteredResults) {
+    foreach (const RFResult& r, filteredResults) {
         addResult(r);
     }
 }
 
-bool FindRepeatsTask::isFilteredByRegions(const RFResult &r) {
+bool FindRepeatsTask::isFilteredByRegions(const RFResult& r) {
     int x1 = r.x + settings.seqRegion.startPos;
     int y1 = settings.inverted ? settings.seqRegion.endPos() - r.y - 1 : r.y + settings.seqRegion.startPos;
 
@@ -389,7 +389,7 @@ bool FindRepeatsTask::isFilteredByRegions(const RFResult &r) {
     // check mid range includes
     if (!settings.midRegionsToInclude.isEmpty()) {
         bool checkOk = false;
-        for (const U2Region &regionToInclude : qAsConst(settings.midRegionsToInclude)) {
+        for (const U2Region& regionToInclude : qAsConst(settings.midRegionsToInclude)) {
             if (regionToInclude.startPos >= x2 && regionToInclude.endPos() <= y1) {
                 checkOk = true;
                 break;
@@ -402,7 +402,7 @@ bool FindRepeatsTask::isFilteredByRegions(const RFResult &r) {
 
     // check mid range excludes
     if (!settings.midRegionsToExclude.isEmpty()) {
-        for (const U2Region &regionToExclude : qAsConst(settings.midRegionsToExclude)) {
+        for (const U2Region& regionToExclude : qAsConst(settings.midRegionsToExclude)) {
             if (regionToExclude.intersects(U2Region(x1, y2 - x1))) {
                 return true;
             }
@@ -412,7 +412,7 @@ bool FindRepeatsTask::isFilteredByRegions(const RFResult &r) {
     // check allowed regions
     if (!settings.allowedRegions.isEmpty()) {
         bool checkOk = false;
-        for (const U2Region &allowedRegion : qAsConst(settings.allowedRegions)) {
+        for (const U2Region& allowedRegion : qAsConst(settings.allowedRegions)) {
             if (allowedRegion.startPos <= x1 && allowedRegion.endPos() >= y2) {
                 checkOk = true;
                 break;
@@ -425,7 +425,7 @@ bool FindRepeatsTask::isFilteredByRegions(const RFResult &r) {
     return false;
 }
 
-FindRepeatsToAnnotationsTask::FindRepeatsToAnnotationsTask(const FindRepeatsTaskSettings &s, const DNASequence &seq, const QString &_an, const QString &_gn, const QString &annDescription, const GObjectReference &_aor)
+FindRepeatsToAnnotationsTask::FindRepeatsToAnnotationsTask(const FindRepeatsTaskSettings& s, const DNASequence& seq, const QString& _an, const QString& _gn, const QString& annDescription, const GObjectReference& _aor)
     : Task(tr("Find repeats to annotations"), TaskFlags_NR_FOSCOE), annName(_an), annGroup(_gn), annDescription(annDescription), annObjRef(_aor), findTask(nullptr), settings(s) {
     setVerboseLogMode(true);
     if (annObjRef.isValid()) {
@@ -436,8 +436,8 @@ FindRepeatsToAnnotationsTask::FindRepeatsToAnnotationsTask(const FindRepeatsTask
     addSubTask(findTask);
 }
 
-QList<Task *> FindRepeatsToAnnotationsTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> FindRepeatsToAnnotationsTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     if (hasError() || isCanceled()) {
         return res;
     }
@@ -446,7 +446,7 @@ QList<Task *> FindRepeatsToAnnotationsTask::onSubTaskFinished(Task *subTask) {
         QList<SharedAnnotationData> annotations = importAnnotations();
         if (!annotations.isEmpty()) {
             algoLog.info(tr("Found %1 repeat regions").arg(annotations.size()));
-            Task *createTask = new CreateAnnotationsTask(annObjRef, annotations, annGroup);
+            Task* createTask = new CreateAnnotationsTask(annObjRef, annotations, annGroup);
             createTask->setSubtaskProgressWeight(0);
             res.append(createTask);
         }
@@ -456,7 +456,7 @@ QList<Task *> FindRepeatsToAnnotationsTask::onSubTaskFinished(Task *subTask) {
 
 QList<SharedAnnotationData> FindRepeatsToAnnotationsTask::importAnnotations() {
     QList<SharedAnnotationData> res;
-    foreach (const RFResult &r, findTask->getResults()) {
+    foreach (const RFResult& r, findTask->getResults()) {
         SharedAnnotationData ad(new AnnotationData);
         ad->type = U2FeatureTypes::RepeatRegion;
         ad->name = annName;

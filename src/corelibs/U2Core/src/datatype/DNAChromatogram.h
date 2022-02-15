@@ -67,7 +67,7 @@ public:
 
     ushort getValue(Trace trace, qint64 position) const;
 
-    bool operator==(const DNAChromatogram &otherChromatogram) const;
+    bool operator==(const DNAChromatogram& otherChromatogram) const;
 
     static const ushort INVALID_VALUE;
     static const char DEFAULT_PROBABILITY;

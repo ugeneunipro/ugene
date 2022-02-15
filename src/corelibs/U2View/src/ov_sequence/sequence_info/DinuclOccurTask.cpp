@@ -30,9 +30,9 @@
 
 namespace U2 {
 
-DinuclOccurTask::DinuclOccurTask(const DNAAlphabet *_alphabet,
+DinuclOccurTask::DinuclOccurTask(const DNAAlphabet* _alphabet,
                                  const U2EntityRef _seqRef,
-                                 const QVector<U2Region> &regions)
+                                 const QVector<U2Region>& regions)
     : BackgroundTask<QMap<QByteArray, qint64>>(
           "Calculating dinucleotides occurrence",
           TaskFlag_None),
@@ -52,7 +52,7 @@ void DinuclOccurTask::run() {
     DbiConnection dbiConnection(seqRef.dbiRef, os);
     CHECK_OP(os, );
 
-    U2SequenceDbi *sequenceDbi = dbiConnection.dbi->getSequenceDbi();
+    U2SequenceDbi* sequenceDbi = dbiConnection.dbi->getSequenceDbi();
 
     // Verify the alphabet
     SAFE_POINT(0 != alphabet, "The alphabet is NULL!", )
@@ -70,9 +70,9 @@ void DinuclOccurTask::run() {
     QVector<quint64> dinuclOccurrence(256 * 256, 0);
     qint64 totalLength = U2Region::sumLength(regions);
     qint64 processedLength = 0;
-    foreach (const U2Region &region, regions) {
+    foreach (const U2Region& region, regions) {
         QList<U2Region> blocks = U2Region::split(region, REGION_TO_ANALAYZE);
-        foreach (const U2Region &block, blocks) {
+        foreach (const U2Region& block, blocks) {
             // Get the selected region and verify that the data has been correctly read
             QByteArray sequence = sequenceDbi->getSequenceData(seqRef.entityId, block, os);
             if (os.hasError() || sequence.isEmpty()) {

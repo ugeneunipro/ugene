@@ -37,7 +37,7 @@ BioStruct3DSettingsDialog::BioStruct3DSettingsDialog()
     initColorSchemes();
 }
 
-void BioStruct3DSettingsDialog::setWidget(BioStruct3DGLWidget *glWidget) {
+void BioStruct3DSettingsDialog::setWidget(BioStruct3DGLWidget* glWidget) {
     this->glWidget = glWidget;
 
     state = glWidget->getState();
@@ -52,7 +52,7 @@ void BioStruct3DSettingsDialog::initColorSchemes() {
     glassesColorSchemes.append(GlassesColorScheme(QString(tr("Red - Green")), QColor(255, 0, 0), QColor(0, 150, 0)));
     glassesColorSchemes.append(GlassesColorScheme(QString(tr("Magenta - Green")), QColor(255, 0, 150), QColor(0, 150, 0)));
 
-    foreach (const GlassesColorScheme &scheme, glassesColorSchemes)
+    foreach (const GlassesColorScheme& scheme, glassesColorSchemes)
         BioStruct3DSettingsDialog::glassesColorSchemeComboBox->addItem(scheme.name);
 }
 
@@ -137,12 +137,12 @@ float BioStruct3DSettingsDialog::getRenderDetailLevel() const {
     return renderDetailLevel / 100.0;
 }
 
-void BioStruct3DSettingsDialog::setGlassesColorScheme(QColor &leftEyeColor, QColor &rightEyeColor) {
+void BioStruct3DSettingsDialog::setGlassesColorScheme(QColor& leftEyeColor, QColor& rightEyeColor) {
     setLeftEyeColor(leftEyeColor);
     setRightEyeColor(rightEyeColor);
 
     int currentNumber = 0;
-    foreach (const GlassesColorScheme &scheme, glassesColorSchemes) {
+    foreach (const GlassesColorScheme& scheme, glassesColorSchemes) {
         if (scheme.leftEyeColor == leftEyeColor && scheme.rightEyeColor == rightEyeColor) {
             glassesColorSchemeComboBox->setCurrentIndex(currentNumber);
             return;
@@ -208,7 +208,7 @@ AnaglyphStatus BioStruct3DSettingsDialog::getAnaglyphStatus() const {
     return anaglyphStatus;
 }
 
-const AnaglyphSettings &BioStruct3DSettingsDialog::getAnaglyphSettings() const {
+const AnaglyphSettings& BioStruct3DSettingsDialog::getAnaglyphSettings() const {
     return anaglyphSettings;
 }
 
@@ -231,7 +231,7 @@ void BioStruct3DSettingsDialog::setAnaglyphStatus(AnaglyphStatus status) {
     }
 }
 
-void BioStruct3DSettingsDialog::setAnaglyphSettings(const AnaglyphSettings &settings) {
+void BioStruct3DSettingsDialog::setAnaglyphSettings(const AnaglyphSettings& settings) {
     anaglyphSettings = settings;
 
     setLeftEyeColor(anaglyphSettings.leftEyeColor);

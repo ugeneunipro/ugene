@@ -31,11 +31,11 @@ class ADVSequenceObjectContext;
 class CustomAutoAnnotationDialog : public QDialog, Ui_CustomAutoAnnotationDialog {
     Q_OBJECT
 public:
-    CustomAutoAnnotationDialog(ADVSequenceObjectContext *ctx);
+    CustomAutoAnnotationDialog(ADVSequenceObjectContext* ctx);
     virtual void accept();
 
 private:
-    ADVSequenceObjectContext *seqCtx;
+    ADVSequenceObjectContext* seqCtx;
     void loadSettings();
     void saveSettings();
 };

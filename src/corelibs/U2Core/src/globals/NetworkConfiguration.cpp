@@ -28,15 +28,15 @@
 
 namespace U2 {
 
-static const char *SETTINGS_HTTP_PROXY_HOST = "network_settings/http_proxy/host";
-static const char *SETTINGS_HTTP_PROXY_PORT = "network_settings/http_proxy/port";
-static const char *SETTINGS_HTTP_PROXY_USER = "network_settings/http_proxy/user";
-static const char *SETTINGS_HTTP_PROXY_PASSWORD = "network_settings/http_proxy/password";
-static const char *SETTINGS_HTTP_PROXY_ENABLED = "network_settings/http_proxy/enabled";
-static const char *SETTINGS_PROXY_EXCEPTED_URLS = "network_settings/proxy_exc_urls";
-static const char *SETTINGS_PROXY_EXCEPTED_URLS_ENABLED = "network_settings/proxy_exc_urls_enabled";
-static const char *SETTINGS_SSL_PROTOCOL = "network_settings/ssl_protocol";
-static const char *SETTINGS_REMOTE_REQUEST_TIMEOUT = "network_settings/remote_request/timeout";
+static const char* SETTINGS_HTTP_PROXY_HOST = "network_settings/http_proxy/host";
+static const char* SETTINGS_HTTP_PROXY_PORT = "network_settings/http_proxy/port";
+static const char* SETTINGS_HTTP_PROXY_USER = "network_settings/http_proxy/user";
+static const char* SETTINGS_HTTP_PROXY_PASSWORD = "network_settings/http_proxy/password";
+static const char* SETTINGS_HTTP_PROXY_ENABLED = "network_settings/http_proxy/enabled";
+static const char* SETTINGS_PROXY_EXCEPTED_URLS = "network_settings/proxy_exc_urls";
+static const char* SETTINGS_PROXY_EXCEPTED_URLS_ENABLED = "network_settings/proxy_exc_urls_enabled";
+static const char* SETTINGS_SSL_PROTOCOL = "network_settings/ssl_protocol";
+static const char* SETTINGS_REMOTE_REQUEST_TIMEOUT = "network_settings/remote_request/timeout";
 
 const QString SslConfig::TLSV1 = "TlsV1";
 const QString SslConfig::SSLV2 = "SslV2";
@@ -46,7 +46,7 @@ const int RemoteRequestConfig::DEFAULT_REMOTE_REQUEST_TIMEOUT_SECONDS = 60;
 const QString RemoteRequestConfig::HTTP_BODY_SEPARATOR("HTTP_BODY_SEPARATOR");
 
 NetworkConfiguration::NetworkConfiguration() {
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     pc.excepted_addr_enabled = s->getValue(SETTINGS_PROXY_EXCEPTED_URLS_ENABLED).toBool();
     pc.excepted_addr = s->getValue(SETTINGS_PROXY_EXCEPTED_URLS).toStringList();
 
@@ -74,7 +74,7 @@ NetworkConfiguration::NetworkConfiguration() {
 }
 
 NetworkConfiguration::~NetworkConfiguration() {
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     s->setValue(SETTINGS_PROXY_EXCEPTED_URLS_ENABLED, pc.excepted_addr_enabled);
     s->setValue(SETTINGS_PROXY_EXCEPTED_URLS, pc.excepted_addr);
     s->setValue(SETTINGS_SSL_PROTOCOL, sslConfig.currentProtocol);
@@ -91,14 +91,14 @@ NetworkConfiguration::~NetworkConfiguration() {
     }
 }
 
-int NetworkConfiguration::addProxy(const QNetworkProxy &p) {
+int NetworkConfiguration::addProxy(const QNetworkProxy& p) {
     int ret = !pc.proxyz.contains(p.type());
     pc.proxyz.insert(p.type(), p);
     pc.proxyz_usage.insert(p.type(), false);  // needs explicit enabling
     return ret;
 }
 
-QNetworkProxy NetworkConfiguration::getProxyByUrl(const QUrl &url) const {
+QNetworkProxy NetworkConfiguration::getProxyByUrl(const QUrl& url) const {
     Proxy_t prtype = url2type(url);
     if (pc.proxyz.contains(prtype)) {
         assert(pc.proxyz_usage.contains(prtype));
@@ -121,7 +121,7 @@ bool NetworkConfiguration::isProxyUsed(Proxy_t prtype) const {
     return pc.proxyz_usage.contains(prtype) ? pc.proxyz_usage[prtype] : false;
 }
 
-void NetworkConfiguration::setExceptionsList(const QStringList &exc_addr) {
+void NetworkConfiguration::setExceptionsList(const QStringList& exc_addr) {
     pc.excepted_addr = exc_addr;
 }
 
@@ -131,7 +131,7 @@ void NetworkConfiguration::setProxyUsed(Proxy_t prtype, bool flag) {
     }
 }
 
-Proxy_t NetworkConfiguration::url2type(const QUrl &url) {
+Proxy_t NetworkConfiguration::url2type(const QUrl& url) {
     if ("http" == url.scheme() || "https" == url.scheme()) {
         return QNetworkProxy::HttpProxy;
     }
@@ -142,7 +142,7 @@ Proxy_t NetworkConfiguration::url2type(const QUrl &url) {
     return QNetworkProxy::NoProxy;
 }
 
-void NetworkConfiguration::copyFrom(const NetworkConfiguration &image) {
+void NetworkConfiguration::copyFrom(const NetworkConfiguration& image) {
     pc = image.pc;
     sslConfig = image.sslConfig;
     rrConfig = image.rrConfig;
@@ -172,7 +172,7 @@ QString NetworkConfiguration::getSslProtocolName() const {
     }
 }
 
-void NetworkConfiguration::setSslProtocol(const QString &name) {
+void NetworkConfiguration::setSslProtocol(const QString& name) {
     sslConfig.currentProtocol = name;
 }
 

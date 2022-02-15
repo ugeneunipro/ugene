@@ -35,9 +35,9 @@ TestDbiProvider FeatureTestData::dbiProvider = TestDbiProvider();
 TestDbiProvider FeatureTestData::subgroupsDbiProvider = TestDbiProvider();
 const QString FeatureTestData::featureDbiUrl("features-dbi.ugenedb");
 const QString FeatureTestData::subgroupDbiUrl("featureSubgroupsSorting.ugenedb");
-U2FeatureDbi *FeatureTestData::featureDbi = nullptr;
-U2FeatureDbi *FeatureTestData::subgroupDbi = nullptr;
-U2SequenceDbi *FeatureTestData::sequenceDbi = nullptr;
+U2FeatureDbi* FeatureTestData::featureDbi = nullptr;
+U2FeatureDbi* FeatureTestData::subgroupDbi = nullptr;
+U2SequenceDbi* FeatureTestData::sequenceDbi = nullptr;
 
 void FeatureTestData::init() {
     SAFE_POINT(nullptr == featureDbi, "featuresDbi has been already initialized!", );
@@ -45,7 +45,7 @@ void FeatureTestData::init() {
     bool ok = dbiProvider.init(featureDbiUrl, false);
     SAFE_POINT(ok, "Dbi provider failed to initialize in FeaturesTestData::init()!", );
 
-    U2Dbi *dbi = dbiProvider.getDbi();
+    U2Dbi* dbi = dbiProvider.getDbi();
     featureDbi = dbi->getFeatureDbi();
     SAFE_POINT(nullptr != featureDbi, "Failed to get featureDbi!", );
 
@@ -81,28 +81,28 @@ void FeatureTestData::shutdown() {
     }
 }
 
-U2FeatureDbi *FeatureTestData::getFeatureDbi() {
+U2FeatureDbi* FeatureTestData::getFeatureDbi() {
     if (nullptr == featureDbi) {
         init();
     }
     return featureDbi;
 }
 
-U2FeatureDbi *FeatureTestData::getSubgroupDbi() {
+U2FeatureDbi* FeatureTestData::getSubgroupDbi() {
     if (nullptr == subgroupDbi) {
         init();
     }
     return subgroupDbi;
 }
 
-U2SequenceDbi *FeatureTestData::getSequenceDbi() {
+U2SequenceDbi* FeatureTestData::getSequenceDbi() {
     if (nullptr == sequenceDbi) {
         init();
     }
     return sequenceDbi;
 }
 
-U2Feature FeatureTestData::createTestFeature1(const U2Sequence &seq, U2OpStatus &os, const U2Feature &parentFeature) {
+U2Feature FeatureTestData::createTestFeature1(const U2Sequence& seq, U2OpStatus& os, const U2Feature& parentFeature) {
     U2Feature feature;
     feature.sequenceId = seq.id;
     feature.location = U2FeatureLocation(U2Strand::Complementary, U2Region(1000, 100));
@@ -119,7 +119,7 @@ U2Feature FeatureTestData::createTestFeature1(const U2Sequence &seq, U2OpStatus 
     return feature;
 }
 
-U2Feature FeatureTestData::createTestFeature2(const U2Sequence &seq, U2OpStatus &os, const U2Feature &parentFeature) {
+U2Feature FeatureTestData::createTestFeature2(const U2Sequence& seq, U2OpStatus& os, const U2Feature& parentFeature) {
     U2Feature feature;
     feature.sequenceId = seq.id;
     feature.location = U2FeatureLocation(U2Strand::Direct, U2Region(500, 600));
@@ -136,7 +136,7 @@ U2Feature FeatureTestData::createTestFeature2(const U2Sequence &seq, U2OpStatus 
     return feature;
 }
 
-U2Feature FeatureTestData::createTestFeature3(const U2Sequence &seq, U2OpStatus &os, const U2Feature &parentFeature) {
+U2Feature FeatureTestData::createTestFeature3(const U2Sequence& seq, U2OpStatus& os, const U2Feature& parentFeature) {
     U2Feature feature;
     feature.sequenceId = seq.id;
     feature.location = U2FeatureLocation(U2Strand::Direct, U2Region(800, 10));
@@ -153,7 +153,7 @@ U2Feature FeatureTestData::createTestFeature3(const U2Sequence &seq, U2OpStatus 
     return feature;
 }
 
-U2Feature FeatureTestData::createTestFeatureWithoutKeys(const U2Sequence &seq, U2OpStatus &os, const U2Feature &parentFeature) {
+U2Feature FeatureTestData::createTestFeatureWithoutKeys(const U2Sequence& seq, U2OpStatus& os, const U2Feature& parentFeature) {
     U2Feature feature;
     feature.sequenceId = seq.id;
     feature.location = U2FeatureLocation(U2Strand::Direct, U2Region(800, 10));
@@ -169,8 +169,8 @@ U2Feature FeatureTestData::createTestFeatureWithoutKeys(const U2Sequence &seq, U
 }
 
 IMPLEMENT_TEST(FeatureDbiUnitTests, createFeature) {
-    U2FeatureDbi *featureDbi = FeatureTestData::getFeatureDbi();
-    U2SequenceDbi *sequenceDbi = FeatureTestData::getSequenceDbi();
+    U2FeatureDbi* featureDbi = FeatureTestData::getFeatureDbi();
+    U2SequenceDbi* sequenceDbi = FeatureTestData::getSequenceDbi();
 
     U2OpStatusImpl os;
     U2Sequence seq;
@@ -195,8 +195,8 @@ IMPLEMENT_TEST(FeatureDbiUnitTests, createFeature) {
 }
 
 IMPLEMENT_TEST(FeatureDbiUnitTests, getFeature) {
-    U2FeatureDbi *featureDbi = FeatureTestData::getFeatureDbi();
-    U2SequenceDbi *sequenceDbi = FeatureTestData::getSequenceDbi();
+    U2FeatureDbi* featureDbi = FeatureTestData::getFeatureDbi();
+    U2SequenceDbi* sequenceDbi = FeatureTestData::getSequenceDbi();
 
     U2OpStatusImpl os;
     U2Sequence seq;
@@ -224,8 +224,8 @@ IMPLEMENT_TEST(FeatureDbiUnitTests, getFeature) {
 }
 
 IMPLEMENT_TEST(FeatureDbiUnitTests, countFeatures) {
-    U2FeatureDbi *featureDbi = FeatureTestData::getFeatureDbi();
-    U2SequenceDbi *sequenceDbi = FeatureTestData::getSequenceDbi();
+    U2FeatureDbi* featureDbi = FeatureTestData::getFeatureDbi();
+    U2SequenceDbi* sequenceDbi = FeatureTestData::getSequenceDbi();
 
     U2OpStatusImpl os;
     U2Sequence seq1;
@@ -292,8 +292,8 @@ IMPLEMENT_TEST(FeatureDbiUnitTests, countFeatures) {
 }
 
 IMPLEMENT_TEST(FeatureDbiUnitTests, getFeatures) {
-    U2FeatureDbi *featureDbi = FeatureTestData::getFeatureDbi();
-    U2SequenceDbi *sequenceDbi = FeatureTestData::getSequenceDbi();
+    U2FeatureDbi* featureDbi = FeatureTestData::getFeatureDbi();
+    U2SequenceDbi* sequenceDbi = FeatureTestData::getSequenceDbi();
 
     U2OpStatusImpl os;
     U2Sequence seq1;
@@ -315,7 +315,7 @@ IMPLEMENT_TEST(FeatureDbiUnitTests, getFeatures) {
     query.intersectRegion = U2Region(700, 1500);
     query.sequenceId = seq2.id;
     query.topLevelOnly = true;
-    U2DbiIterator<U2Feature> *iter = featureDbi->getFeatures(query, os);
+    U2DbiIterator<U2Feature>* iter = featureDbi->getFeatures(query, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(false, iter->hasNext(), "first feature query");
 
@@ -374,8 +374,8 @@ IMPLEMENT_TEST(FeatureDbiUnitTests, getFeatures) {
 }
 
 IMPLEMENT_TEST(FeatureDbiUnitTests, getFeatureKeys) {
-    U2FeatureDbi *featureDbi = FeatureTestData::getFeatureDbi();
-    U2SequenceDbi *sequenceDbi = FeatureTestData::getSequenceDbi();
+    U2FeatureDbi* featureDbi = FeatureTestData::getFeatureDbi();
+    U2SequenceDbi* sequenceDbi = FeatureTestData::getSequenceDbi();
 
     U2OpStatusImpl os;
     U2Sequence seq;
@@ -408,8 +408,8 @@ IMPLEMENT_TEST(FeatureDbiUnitTests, getFeatureKeys) {
 }
 
 IMPLEMENT_TEST(FeatureDbiUnitTests, addKey) {
-    U2FeatureDbi *featureDbi = FeatureTestData::getFeatureDbi();
-    U2SequenceDbi *sequenceDbi = FeatureTestData::getSequenceDbi();
+    U2FeatureDbi* featureDbi = FeatureTestData::getFeatureDbi();
+    U2SequenceDbi* sequenceDbi = FeatureTestData::getSequenceDbi();
 
     U2OpStatusImpl os;
     U2Sequence seq;
@@ -436,8 +436,8 @@ IMPLEMENT_TEST(FeatureDbiUnitTests, addKey) {
 }
 
 IMPLEMENT_TEST(FeatureDbiUnitTests, removeAllKeysByName) {
-    U2FeatureDbi *featureDbi = FeatureTestData::getFeatureDbi();
-    U2SequenceDbi *sequenceDbi = FeatureTestData::getSequenceDbi();
+    U2FeatureDbi* featureDbi = FeatureTestData::getFeatureDbi();
+    U2SequenceDbi* sequenceDbi = FeatureTestData::getSequenceDbi();
 
     U2OpStatusImpl os;
     U2Sequence seq;
@@ -473,8 +473,8 @@ IMPLEMENT_TEST(FeatureDbiUnitTests, removeAllKeysByName) {
 }
 
 IMPLEMENT_TEST(FeatureDbiUnitTests, removeAllKeys) {
-    U2FeatureDbi *featureDbi = FeatureTestData::getFeatureDbi();
-    U2SequenceDbi *sequenceDbi = FeatureTestData::getSequenceDbi();
+    U2FeatureDbi* featureDbi = FeatureTestData::getFeatureDbi();
+    U2SequenceDbi* sequenceDbi = FeatureTestData::getSequenceDbi();
 
     U2OpStatusImpl os;
     U2Sequence seq;
@@ -526,8 +526,8 @@ IMPLEMENT_TEST(FeatureDbiUnitTests, removeAllKeys) {
 }
 
 IMPLEMENT_TEST(FeatureDbiUnitTests, updateKeyValue) {
-    U2FeatureDbi *featureDbi = FeatureTestData::getFeatureDbi();
-    U2SequenceDbi *sequenceDbi = FeatureTestData::getSequenceDbi();
+    U2FeatureDbi* featureDbi = FeatureTestData::getFeatureDbi();
+    U2SequenceDbi* sequenceDbi = FeatureTestData::getSequenceDbi();
 
     U2OpStatusImpl os;
     U2Sequence seq;
@@ -574,8 +574,8 @@ IMPLEMENT_TEST(FeatureDbiUnitTests, updateKeyValue) {
 }
 
 IMPLEMENT_TEST(FeatureDbiUnitTests, updateLocation) {
-    U2FeatureDbi *featureDbi = FeatureTestData::getFeatureDbi();
-    U2SequenceDbi *sequenceDbi = FeatureTestData::getSequenceDbi();
+    U2FeatureDbi* featureDbi = FeatureTestData::getFeatureDbi();
+    U2SequenceDbi* sequenceDbi = FeatureTestData::getSequenceDbi();
 
     U2OpStatusImpl os;
     U2Sequence seq;
@@ -598,8 +598,8 @@ IMPLEMENT_TEST(FeatureDbiUnitTests, updateLocation) {
 }
 
 IMPLEMENT_TEST(FeatureDbiUnitTests, updateName) {
-    U2FeatureDbi *featureDbi = FeatureTestData::getFeatureDbi();
-    U2SequenceDbi *sequenceDbi = FeatureTestData::getSequenceDbi();
+    U2FeatureDbi* featureDbi = FeatureTestData::getFeatureDbi();
+    U2SequenceDbi* sequenceDbi = FeatureTestData::getSequenceDbi();
 
     U2OpStatusImpl os;
     U2Sequence seq;
@@ -618,8 +618,8 @@ IMPLEMENT_TEST(FeatureDbiUnitTests, updateName) {
 }
 
 IMPLEMENT_TEST(FeatureDbiUnitTests, updateParentId) {
-    U2FeatureDbi *featureDbi = FeatureTestData::getFeatureDbi();
-    U2SequenceDbi *sequenceDbi = FeatureTestData::getSequenceDbi();
+    U2FeatureDbi* featureDbi = FeatureTestData::getFeatureDbi();
+    U2SequenceDbi* sequenceDbi = FeatureTestData::getSequenceDbi();
 
     U2OpStatusImpl os;
     U2Sequence seq;
@@ -640,8 +640,8 @@ IMPLEMENT_TEST(FeatureDbiUnitTests, updateParentId) {
 }
 
 IMPLEMENT_TEST(FeatureDbiUnitTests, removeFeature) {
-    U2FeatureDbi *featureDbi = FeatureTestData::getFeatureDbi();
-    U2SequenceDbi *sequenceDbi = FeatureTestData::getSequenceDbi();
+    U2FeatureDbi* featureDbi = FeatureTestData::getFeatureDbi();
+    U2SequenceDbi* sequenceDbi = FeatureTestData::getSequenceDbi();
 
     U2OpStatusImpl os;
     U2Sequence seq;
@@ -658,8 +658,8 @@ IMPLEMENT_TEST(FeatureDbiUnitTests, removeFeature) {
 }
 
 IMPLEMENT_TEST(FeatureDbiUnitTests, getFeaturesByRegion) {
-    U2FeatureDbi *featureDbi = FeatureTestData::getFeatureDbi();
-    U2SequenceDbi *sequenceDbi = FeatureTestData::getSequenceDbi();
+    U2FeatureDbi* featureDbi = FeatureTestData::getFeatureDbi();
+    U2SequenceDbi* sequenceDbi = FeatureTestData::getSequenceDbi();
 
     U2OpStatusImpl os;
     U2Sequence seq;
@@ -672,7 +672,7 @@ IMPLEMENT_TEST(FeatureDbiUnitTests, getFeaturesByRegion) {
     CHECK_NO_ERROR(os);
     U2Feature feature3 = FeatureTestData::createTestFeature3(seq, os);
     CHECK_NO_ERROR(os);
-    U2DbiIterator<U2Feature> *iter = featureDbi->getFeaturesByRegion(U2Region(900, 200),
+    U2DbiIterator<U2Feature>* iter = featureDbi->getFeaturesByRegion(U2Region(900, 200),
                                                                      U2DataId(),
                                                                      "misc_feature",
                                                                      seq.id,
@@ -687,8 +687,8 @@ IMPLEMENT_TEST(FeatureDbiUnitTests, getFeaturesByRegion) {
 }
 
 IMPLEMENT_TEST(FeatureDbiUnitTests, getSubFeatures) {
-    U2FeatureDbi *featureDbi = FeatureTestData::getFeatureDbi();
-    U2SequenceDbi *sequenceDbi = FeatureTestData::getSequenceDbi();
+    U2FeatureDbi* featureDbi = FeatureTestData::getFeatureDbi();
+    U2SequenceDbi* sequenceDbi = FeatureTestData::getSequenceDbi();
 
     U2OpStatusImpl os;
     U2Sequence seq;
@@ -701,7 +701,7 @@ IMPLEMENT_TEST(FeatureDbiUnitTests, getSubFeatures) {
     CHECK_NO_ERROR(os);
     U2Feature feature3 = FeatureTestData::createTestFeature3(seq, os, feature2);
     CHECK_NO_ERROR(os);
-    U2DbiIterator<U2Feature> *iter = featureDbi->getFeaturesByParent(feature2.id, QString(), seq.id, os);
+    U2DbiIterator<U2Feature>* iter = featureDbi->getFeaturesByParent(feature2.id, QString(), seq.id, os);
     CHECK_NO_ERROR(os);
 
     while (iter->hasNext()) {
@@ -712,8 +712,8 @@ IMPLEMENT_TEST(FeatureDbiUnitTests, getSubFeatures) {
 }
 
 IMPLEMENT_TEST(FeatureDbiUnitTests, getFeaturesBySequence) {
-    U2FeatureDbi *featureDbi = FeatureTestData::getFeatureDbi();
-    U2SequenceDbi *sequenceDbi = FeatureTestData::getSequenceDbi();
+    U2FeatureDbi* featureDbi = FeatureTestData::getFeatureDbi();
+    U2SequenceDbi* sequenceDbi = FeatureTestData::getSequenceDbi();
 
     U2OpStatusImpl os;
     U2Sequence seq1;
@@ -729,7 +729,7 @@ IMPLEMENT_TEST(FeatureDbiUnitTests, getFeaturesBySequence) {
     CHECK_NO_ERROR(os);
     U2Feature feature3 = FeatureTestData::createTestFeature3(seq1, os, feature2);
     CHECK_NO_ERROR(os);
-    U2DbiIterator<U2Feature> *iter = featureDbi->getFeaturesBySequence("misc_feature", seq1.id, os);
+    U2DbiIterator<U2Feature>* iter = featureDbi->getFeaturesBySequence("misc_feature", seq1.id, os);
     CHECK_NO_ERROR(os);
 
     while (iter->hasNext()) {
@@ -741,7 +741,7 @@ IMPLEMENT_TEST(FeatureDbiUnitTests, getFeaturesBySequence) {
 
 IMPLEMENT_TEST(FeatureDbiUnitTests, sortingSubgroups) {
     U2OpStatusImpl os;
-    U2FeatureDbi *subgroupDbi = FeatureTestData::getSubgroupDbi();
+    U2FeatureDbi* subgroupDbi = FeatureTestData::getSubgroupDbi();
 
     U2DataId rootFeatureId = U2DbiUtils::toU2DataId(2, U2Type::AnnotationTable);
     QList<FeatureAndKey> rawData = subgroupDbi->getFeatureTable(rootFeatureId, os);

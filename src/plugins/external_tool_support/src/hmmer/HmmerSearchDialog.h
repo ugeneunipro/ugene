@@ -43,8 +43,8 @@ public:
 class HmmerSearchDialog : public QDialog, public Ui_HmmerSearchDialog {
     Q_OBJECT
 public:
-    HmmerSearchDialog(U2SequenceObject *seqObj, QWidget *parent = nullptr);
-    HmmerSearchDialog(ADVSequenceObjectContext *seqCtx, QWidget *parent = nullptr);
+    HmmerSearchDialog(U2SequenceObject* seqObj, QWidget* parent = nullptr);
+    HmmerSearchDialog(ADVSequenceObjectContext* seqCtx, QWidget* parent = nullptr);
 
     static const QString DOM_E_PLUS_PREFIX;
     static const QString DOM_E_MINUS_PREFIX;
@@ -64,15 +64,15 @@ private slots:
 private:
     void setModelValues();
     void getModelValues();
-    void init(U2SequenceObject *seqObj);
+    void init(U2SequenceObject* seqObj);
     QString checkModel();
 
     QButtonGroup useScoreTresholdGroup;
-    CreateAnnotationWidgetController *annotationsWidgetController;
+    CreateAnnotationWidgetController* annotationsWidgetController;
     HmmerSearchDialogModel model;
-    ADVSequenceObjectContext *seqCtx;
+    ADVSequenceObjectContext* seqCtx;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_HMMER_SEARCH_DIALOG_H_
+#endif  // _U2_HMMER_SEARCH_DIALOG_H_

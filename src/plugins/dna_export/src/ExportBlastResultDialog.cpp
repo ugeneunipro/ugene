@@ -32,7 +32,7 @@
 
 namespace U2 {
 
-ExportBlastResultDialog::ExportBlastResultDialog(QWidget *p, const QString &defaultUrl)
+ExportBlastResultDialog::ExportBlastResultDialog(QWidget* p, const QString& defaultUrl)
     : QDialog(p),
       saveController(nullptr) {
     setupUi(this);
@@ -65,7 +65,7 @@ void ExportBlastResultDialog::accept() {
     QDialog::accept();
 }
 
-void ExportBlastResultDialog::initSaveController(const QString &defaultUrl) {
+void ExportBlastResultDialog::initSaveController(const QString& defaultUrl) {
     SaveDocumentControllerConfig config;
     config.defaultFileName = defaultUrl;
     config.defaultFormatId = BaseDocumentFormats::CLUSTAL_ALN;
@@ -81,7 +81,7 @@ void ExportBlastResultDialog::initSaveController(const QString &defaultUrl) {
     saveController = new SaveDocumentController(config, formatConstraints, this);
 }
 
-void ExportBlastResultDialog::setFileLabelText(const QString &text) const {
+void ExportBlastResultDialog::setFileLabelText(const QString& text) const {
     fileLabel->setText(text);
 }
 

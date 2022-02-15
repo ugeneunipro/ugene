@@ -31,7 +31,7 @@ namespace LocalWorkflow {
 class ConvertSnpeffVariationsToAnnotationsPrompter : public PrompterBase<ConvertSnpeffVariationsToAnnotationsPrompter> {
     Q_OBJECT
 public:
-    ConvertSnpeffVariationsToAnnotationsPrompter(Actor *actor);
+    ConvertSnpeffVariationsToAnnotationsPrompter(Actor* actor);
 
 private:
     QString composeRichDoc();
@@ -40,7 +40,7 @@ private:
 class ConvertSnpeffVariationsToAnnotationsFactory : public DomainFactory {
 public:
     ConvertSnpeffVariationsToAnnotationsFactory();
-    Worker *createWorker(Actor *actor);
+    Worker* createWorker(Actor* actor);
 
     static void init();
     static const QString ACTOR_ID;
@@ -49,19 +49,19 @@ public:
 class ConvertSnpeffVariationsToAnnotationsWorker : public BaseWorker {
     Q_OBJECT
 public:
-    ConvertSnpeffVariationsToAnnotationsWorker(Actor *actor);
+    ConvertSnpeffVariationsToAnnotationsWorker(Actor* actor);
 
     void init();
-    Task *tick();
+    Task* tick();
     void cleanup();
 
 private slots:
-    void sl_taskFinished(Task *task);
+    void sl_taskFinished(Task* task);
 
 private:
-    Task *createTask(const Message &message);
+    Task* createTask(const Message& message);
 
-    IntegralBus *input;
+    IntegralBus* input;
 };
 
 }  // namespace LocalWorkflow

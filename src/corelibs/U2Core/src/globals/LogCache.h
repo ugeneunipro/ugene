@@ -35,7 +35,7 @@ class U2CORE_EXPORT LogFilterItem {
 public:
     QString category;
     LogLevel minLevel;
-    LogFilterItem(const QString &category = QString(), LogLevel minLevel = LogLevel_INFO);
+    LogFilterItem(const QString& category = QString(), LogLevel minLevel = LogLevel_INFO);
 };
 
 class U2CORE_EXPORT LogFilter {
@@ -46,8 +46,8 @@ public:
     bool isEmpty() const {
         return filters.isEmpty();
     }
-    bool matches(const LogMessage &msg) const;
-    QString selectEffectiveCategory(const LogMessage &msg) const;
+    bool matches(const LogMessage& msg) const;
+    QString selectEffectiveCategory(const LogMessage& msg) const;
 };
 
 class U2CORE_EXPORT LogCache : public QObject, public LogListener {
@@ -56,23 +56,23 @@ public:
     LogCache(int maxLogMessages = MAX_CACHE_SIZE);
     virtual ~LogCache();
 
-    static void setAppGlobalInstance(LogCache *cache);
-    static LogCache *getAppGlobalInstance() {
+    static void setAppGlobalInstance(LogCache* cache);
+    static LogCache* getAppGlobalInstance() {
         return appGlobalCache;
     }
 
-    virtual void onMessage(const LogMessage &msg);
+    virtual void onMessage(const LogMessage& msg);
     QList<LogMessage> getLastMessages(int count = -1);
 
 private:
-    static LogCache *appGlobalCache;
+    static LogCache* appGlobalCache;
     void updateSize();
 
     QReadWriteLock lock;
     int maxLogMessages;
 
 public:
-    QList<LogMessage *> messages;
+    QList<LogMessage*> messages;
     LogFilter filter;
 };
 
@@ -89,7 +89,7 @@ public:
         return consoleEnabled;
     }
 
-    bool setFileOutputEnabled(const QString &file);
+    bool setFileOutputEnabled(const QString& file);
     void setFileOutputDisabled();
     bool isFileOutputEnabled() const {
         return fileEnabled;
@@ -98,7 +98,7 @@ public:
         return QFileInfo(file).canonicalFilePath();
     }
 
-    virtual void onMessage(const LogMessage &msg);
+    virtual void onMessage(const LogMessage& msg);
 
 private:
     bool consoleEnabled;

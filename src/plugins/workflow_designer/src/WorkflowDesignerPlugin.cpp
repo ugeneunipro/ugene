@@ -64,8 +64,8 @@
 
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
-    WorkflowDesignerPlugin *plug = new WorkflowDesignerPlugin();
+extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
+    WorkflowDesignerPlugin* plug = new WorkflowDesignerPlugin();
     return plug;
 }
 
@@ -109,13 +109,13 @@ WorkflowDesignerPlugin::WorkflowDesignerPlugin()
     CHECK(AppContext::getPluginSupport(), );
     connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), SLOT(sl_initWorkers()));
 
-    DashboardInfoRegistry *dashboardsInfoRegistry = AppContext::getDashboardInfoRegistry();
+    DashboardInfoRegistry* dashboardsInfoRegistry = AppContext::getDashboardInfoRegistry();
     SAFE_POINT(nullptr != dashboardsInfoRegistry, "dashboardsInfoRegistry is nullptr", );
     AppContext::getDashboardInfoRegistry()->scanDashboardsDir();
 }
 
 void WorkflowDesignerPlugin::processCMDLineOptions() {
-    CMDLineRegistry *cmdlineReg = AppContext::getCMDLineRegistry();
+    CMDLineRegistry* cmdlineReg = AppContext::getCMDLineRegistry();
     assert(cmdlineReg != nullptr);
 
     if (cmdlineReg->hasParameter(CUSTOM_EL_WITH_SCRIPTS_DIR)) {
@@ -150,16 +150,16 @@ void WorkflowDesignerPlugin::processCMDLineOptions() {
             const QString ugenePath = cmdlineReg->getParameterValue(GalaxyConfigTask::UGENE_PATH_OPTION);
             const QString galaxyPath = cmdlineReg->getParameterValue(GalaxyConfigTask::GALAXY_PATH_OPTION);
             const QString destinationPath = nullptr;
-            Task *t = new GalaxyConfigTask(schemePath, ugenePath, galaxyPath, destinationPath);
+            Task* t = new GalaxyConfigTask(schemePath, ugenePath, galaxyPath, destinationPath);
             connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), new TaskStarter(t), SLOT(registerTask()));
         }
     }
 }
 
 void WorkflowDesignerPlugin::registerWorkflowTasks() {
-    WorkflowTasksRegistry *registry = WorkflowEnv::getWorkflowTasksRegistry();
+    WorkflowTasksRegistry* registry = WorkflowEnv::getWorkflowTasksRegistry();
 
-    ReadDocumentTaskFactory *readAssemblyFactory = new ReadAssemblyTaskFactory();
+    ReadDocumentTaskFactory* readAssemblyFactory = new ReadAssemblyTaskFactory();
     bool ok = registry->registerReadDocumentTaskFactory(readAssemblyFactory);
     if (!ok) {
         coreLog.error("Can not register read assembly task");
@@ -167,10 +167,10 @@ void WorkflowDesignerPlugin::registerWorkflowTasks() {
 }
 
 void WorkflowDesignerPlugin::registerCMDLineHelp() {
-    CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
+    CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
     assert(nullptr != cmdLineRegistry);
 
-    CMDLineHelpProvider *taskSection = new CMDLineHelpProvider(
+    CMDLineHelpProvider* taskSection = new CMDLineHelpProvider(
         RUN_WORKFLOW,
         tr("Runs the specified task."),
         tr("Runs the specified task. A path to a user-defined UGENE workflow"
@@ -179,7 +179,7 @@ void WorkflowDesignerPlugin::registerCMDLineHelp() {
 
     cmdLineRegistry->registerCMDLineHelpProvider(taskSection);
 
-    CMDLineHelpProvider *printSection = new CMDLineHelpProvider(
+    CMDLineHelpProvider* printSection = new CMDLineHelpProvider(
         PRINT,
         tr("Prints the content of the specified slot."),
         tr("Prints the content of the specified slot. The incoming/outcoming content of"
@@ -187,7 +187,7 @@ void WorkflowDesignerPlugin::registerCMDLineHelp() {
         tr("<actor_name>.<port_name>.<slot_name>"));
     Q_UNUSED(printSection);
 
-    CMDLineHelpProvider *galaxyConfigSection = new CMDLineHelpProvider(
+    CMDLineHelpProvider* galaxyConfigSection = new CMDLineHelpProvider(
         GalaxyConfigTask::GALAXY_CONFIG_OPTION,
         tr("Creates new Galaxy tool config."),
         tr("Creates new Galaxy tool config from existing workflow. Paths to UGENE"
@@ -215,14 +215,14 @@ WorkflowDesignerPlugin::~WorkflowDesignerPlugin() {
 
 class CloseDesignerTask : public Task {
 public:
-    CloseDesignerTask(WorkflowDesignerService *s)
+    CloseDesignerTask(WorkflowDesignerService* s)
         : Task(U2::WorkflowDesignerPlugin::tr("Close Designer"), TaskFlag_NoRun),
           service(s) {
     }
     virtual void prepare();
 
 private:
-    WorkflowDesignerService *service;
+    WorkflowDesignerService* service;
 };
 
 void CloseDesignerTask::prepare() {
@@ -231,7 +231,7 @@ void CloseDesignerTask::prepare() {
     }
 }
 
-Task *WorkflowDesignerService::createServiceDisablingTask() {
+Task* WorkflowDesignerService::createServiceDisablingTask() {
     return new CloseDesignerTask(this);
 }
 
@@ -241,7 +241,7 @@ WorkflowDesignerService::WorkflowDesignerService()
 }
 
 void WorkflowDesignerService::serviceStateChangedCallback(ServiceState, bool enabledStateChanged) {
-    IdRegistry<WelcomePageAction> *welcomePageActions = AppContext::getWelcomePageActionRegistry();
+    IdRegistry<WelcomePageAction>* welcomePageActions = AppContext::getWelcomePageActionRegistry();
     SAFE_POINT(nullptr != welcomePageActions, L10N::nullPointerError("Welcome Page Actions"), );
 
     if (!enabledStateChanged) {
@@ -288,9 +288,9 @@ void WorkflowDesignerService::initNewWorkflowAction() {
     newWorkflowAction->setObjectName("New workflow");
     connect(newWorkflowAction, SIGNAL(triggered()), SLOT(sl_showDesignerWindow()));
 
-    QMenu *fileMenu = AppContext::getMainWindow()->getTopLevelMenu(MWMENU_FILE);
-    QAction *beforeAction = nullptr;
-    foreach (QAction *action, fileMenu->actions()) {
+    QMenu* fileMenu = AppContext::getMainWindow()->getTopLevelMenu(MWMENU_FILE);
+    QAction* beforeAction = nullptr;
+    foreach (QAction* action, fileMenu->actions()) {
         if (action->objectName() == ACTION_PROJECTSUPPORT__NEW_SECTION_SEPARATOR) {
             beforeAction = action;
             break;
@@ -300,10 +300,10 @@ void WorkflowDesignerService::initNewWorkflowAction() {
 }
 
 bool WorkflowDesignerService::closeViews() {
-    MWMDIManager *wm = AppContext::getMainWindow()->getMDIManager();
+    MWMDIManager* wm = AppContext::getMainWindow()->getMDIManager();
     assert(wm);
-    foreach (MWMDIWindow *w, wm->getWindows()) {
-        WorkflowView *view = qobject_cast<WorkflowView *>(w);
+    foreach (MWMDIWindow* w, wm->getWindows()) {
+        WorkflowView* view = qobject_cast<WorkflowView*>(w);
         if (view) {
             if (!AppContext::getMainWindow()->getMDIManager()->closeMDIWindow(view)) {
                 return false;
@@ -326,24 +326,24 @@ void WorkflowDesignerService::sl_showDesignerWindow() {
     WorkflowView::openWD(nullptr);  // FIXME
 }
 
-void WorkflowDesignerService::sl_sampleActionClicked(const SampleAction &action) {
+void WorkflowDesignerService::sl_sampleActionClicked(const SampleAction& action) {
     CHECK(checkServiceState(), );
 
-    WorkflowView *view = WorkflowView::openWD(nullptr);
+    WorkflowView* view = WorkflowView::openWD(nullptr);
     CHECK(nullptr != view, );
 
     view->sl_loadScene(QDir("data:workflow_samples").path() + "/" + action.samplePath, false);
 }
 
-Task *WorkflowDesignerService::createServiceEnablingTask() {
+Task* WorkflowDesignerService::createServiceEnablingTask() {
     QString defaultDir = QDir::searchPaths(PATH_PREFIX_DATA).first() + "/workflow_samples";
 
     return SampleRegistry::init(QStringList(defaultDir));
 }
 
 void WorkflowDesignerService::initSampleActions() {
-    SampleActionsManager *samples = new SampleActionsManager(this);
-    connect(samples, SIGNAL(si_clicked(const SampleAction &)), SLOT(sl_sampleActionClicked(const SampleAction &)));
+    SampleActionsManager* samples = new SampleActionsManager(this);
+    connect(samples, SIGNAL(si_clicked(const SampleAction&)), SLOT(sl_sampleActionClicked(const SampleAction&)));
 
     const QString externalToolsPlugin = "external_tool_support";
 
@@ -407,7 +407,7 @@ void WorkflowDesignerService::initSampleActions() {
 /************************************************************************/
 /* WorkflowWelcomePageAction */
 /************************************************************************/
-WorkflowWelcomePageAction::WorkflowWelcomePageAction(WorkflowDesignerService *service)
+WorkflowWelcomePageAction::WorkflowWelcomePageAction(WorkflowDesignerService* service)
     : WelcomePageAction(BaseWelcomePageActions::CREATE_WORKFLOW), service(service) {
 }
 

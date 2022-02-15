@@ -38,9 +38,9 @@ class MysqlSingleTablePackAlgorithmAdapter;
 class MysqlMtaSingleTableAdapter {
 public:
     /** Wrapper over 1 table in database. If singleTableAdapter == NULL the table was not created yet */
-    MysqlMtaSingleTableAdapter(MysqlSingleTableAssemblyAdapter *adapter, int rowPos, int elenPos, const QByteArray &extra);
+    MysqlMtaSingleTableAdapter(MysqlSingleTableAssemblyAdapter* adapter, int rowPos, int elenPos, const QByteArray& extra);
 
-    MysqlSingleTableAssemblyAdapter *singleTableAdapter;
+    MysqlSingleTableAssemblyAdapter* singleTableAdapter;
     int rowPos;
     int elenPos;
     QByteArray idExtra;
@@ -48,71 +48,71 @@ public:
 
 class MysqlMultiTableAssemblyAdapter : public MysqlAssemblyAdapter {
 public:
-    MysqlMultiTableAssemblyAdapter(MysqlDbi *dbi, const U2DataId &assemblyId, const AssemblyCompressor *compressor, MysqlDbRef *ref, U2OpStatus &os);
+    MysqlMultiTableAssemblyAdapter(MysqlDbi* dbi, const U2DataId& assemblyId, const AssemblyCompressor* compressor, MysqlDbRef* ref, U2OpStatus& os);
     ~MysqlMultiTableAssemblyAdapter();
 
-    virtual qint64 countReads(const U2Region &region, U2OpStatus &os);
+    virtual qint64 countReads(const U2Region& region, U2OpStatus& os);
 
-    virtual qint64 getMaxPackedRow(const U2Region &region, U2OpStatus &os);
-    virtual qint64 getMaxEndPos(U2OpStatus &os);
+    virtual qint64 getMaxPackedRow(const U2Region& region, U2OpStatus& os);
+    virtual qint64 getMaxEndPos(U2OpStatus& os);
 
-    virtual U2DbiIterator<U2AssemblyRead> *getReads(const U2Region &region, U2OpStatus &os, bool sortedHint = false);
-    virtual U2DbiIterator<U2AssemblyRead> *getReadsByRow(const U2Region &region, qint64 minRow, qint64 maxRow, U2OpStatus &os);
-    virtual U2DbiIterator<U2AssemblyRead> *getReadsByName(const QByteArray &name, U2OpStatus &os);
+    virtual U2DbiIterator<U2AssemblyRead>* getReads(const U2Region& region, U2OpStatus& os, bool sortedHint = false);
+    virtual U2DbiIterator<U2AssemblyRead>* getReadsByRow(const U2Region& region, qint64 minRow, qint64 maxRow, U2OpStatus& os);
+    virtual U2DbiIterator<U2AssemblyRead>* getReadsByName(const QByteArray& name, U2OpStatus& os);
 
-    virtual void addReads(U2DbiIterator<U2AssemblyRead> *it, U2AssemblyReadsImportInfo &ii, U2OpStatus &os);
-    virtual void removeReads(const QList<U2DataId> &readIds, U2OpStatus &os);
-    virtual void dropReadsTables(U2OpStatus &os);
+    virtual void addReads(U2DbiIterator<U2AssemblyRead>* it, U2AssemblyReadsImportInfo& ii, U2OpStatus& os);
+    virtual void removeReads(const QList<U2DataId>& readIds, U2OpStatus& os);
+    virtual void dropReadsTables(U2OpStatus& os);
 
-    virtual void pack(U2AssemblyPackStat &stat, U2OpStatus &os);
-    virtual void calculateCoverage(const U2Region &region, U2AssemblyCoverageStat &coverage, U2OpStatus &os);
+    virtual void pack(U2AssemblyPackStat& stat, U2OpStatus& os);
+    virtual void calculateCoverage(const U2Region& region, U2AssemblyCoverageStat& coverage, U2OpStatus& os);
 
-    virtual void createReadsIndexes(U2OpStatus &os);
+    virtual void createReadsIndexes(U2OpStatus& os);
 
     int getElenRangePosByLength(qint64 readLength) const;
-    int getElenRangePosById(const U2DataId &id) const;
+    int getElenRangePosById(const U2DataId& id) const;
     int getNumberOfElenRanges() const;
 
     int getRowRangePosByRow(quint64 row) const;
-    int getRowRangePosById(const U2DataId &id) const;
+    int getRowRangePosById(const U2DataId& id) const;
     int getRowsPerRange() const;
 
-    const QVector<MysqlMtaSingleTableAdapter *> &getAdapters() const;
-    const QVector<QByteArray> &getIdExtrasPerRange() const;
+    const QVector<MysqlMtaSingleTableAdapter*>& getAdapters() const;
+    const QVector<QByteArray>& getIdExtrasPerRange() const;
 
-    MysqlDbRef *getDbRef() const;
+    MysqlDbRef* getDbRef() const;
 
-    MysqlMtaSingleTableAdapter *getAdapterByRowAndElenRange(int rowRange, int elenRange, bool createIfNotExits, U2OpStatus &os);
+    MysqlMtaSingleTableAdapter* getAdapterByRowAndElenRange(int rowRange, int elenRange, bool createIfNotExits, U2OpStatus& os);
 
 private:
     QString getTableSuffix(int rowRange, int elenRange);
     static QByteArray getIdExtra(int rowRange, int elenRange);
 
     /** Checks if table info must be re-read from DB and calls re-read if needed */
-    void syncTables(U2OpStatus &os);
+    void syncTables(U2OpStatus& os);
 
     /** For a new and empty assembly analyzes reads data and calculate ranges */
-    void initTables(const QList<U2AssemblyRead> &reads, U2OpStatus &os);
+    void initTables(const QList<U2AssemblyRead>& reads, U2OpStatus& os);
 
     /** Re-reads table info from DB */
-    void rereadTables(const QByteArray &idata, U2OpStatus &os);
+    void rereadTables(const QByteArray& idata, U2OpStatus& os);
 
     /** Flushes tables info into database */
-    void flushTables(U2OpStatus &os);
+    void flushTables(U2OpStatus& os);
 
     void clearTableAdaptersInfo();
 
-    MysqlMtaSingleTableAdapter *createAdapter(int rowRange, int elenRange, U2OpStatus &os);
+    MysqlMtaSingleTableAdapter* createAdapter(int rowRange, int elenRange, U2OpStatus& os);
 
     void initAdaptersGrid(int nRows, int nRanges);
 
-    MysqlDbi *dbi;
+    MysqlDbi* dbi;
 
     /** All non-NUL adapters */
-    QVector<MysqlMtaSingleTableAdapter *> adapters;
+    QVector<MysqlMtaSingleTableAdapter*> adapters;
 
     /** outer dim -> prow, inner dim -> elen */
-    QVector<QVector<MysqlMtaSingleTableAdapter *>> adaptersGrid;
+    QVector<QVector<MysqlMtaSingleTableAdapter*>> adaptersGrid;
 
     /** id extras for every table, same hierarchy with tableAdapters */
     QVector<QByteArray> idExtras;
@@ -137,32 +137,32 @@ private:
 class MysqlReadTableMigrationData {
 public:
     MysqlReadTableMigrationData();
-    MysqlReadTableMigrationData(qint64 oldId, MysqlMtaSingleTableAdapter *oldT, int newP);
+    MysqlReadTableMigrationData(qint64 oldId, MysqlMtaSingleTableAdapter* oldT, int newP);
 
     qint64 readId;
-    MysqlMtaSingleTableAdapter *oldTable;
+    MysqlMtaSingleTableAdapter* oldTable;
     int newProw;
 };
 
 class MysqlMultiTablePackAlgorithmAdapter : public PackAlgorithmAdapter {
 public:
-    MysqlMultiTablePackAlgorithmAdapter(MysqlMultiTableAssemblyAdapter *a);
+    MysqlMultiTablePackAlgorithmAdapter(MysqlMultiTableAssemblyAdapter* a);
     ~MysqlMultiTablePackAlgorithmAdapter();
 
-    virtual U2DbiIterator<PackAlgorithmData> *selectAllReads(U2OpStatus &os);
-    virtual void assignProw(const U2DataId &readId, qint64 prow, U2OpStatus &os);
+    virtual U2DbiIterator<PackAlgorithmData>* selectAllReads(U2OpStatus& os);
+    virtual void assignProw(const U2DataId& readId, qint64 prow, U2OpStatus& os);
 
     void releaseDbResources();
-    void migrateAll(U2OpStatus &os);
+    void migrateAll(U2OpStatus& os);
 
 private:
     void ensureGridSize(int nRows);
-    void migrate(MysqlMtaSingleTableAdapter *newA, const QVector<MysqlReadTableMigrationData> &data, qint64 migratedBefore, qint64 totalMigrationCount, U2OpStatus &os);
+    void migrate(MysqlMtaSingleTableAdapter* newA, const QVector<MysqlReadTableMigrationData>& data, qint64 migratedBefore, qint64 totalMigrationCount, U2OpStatus& os);
 
-    MysqlMultiTableAssemblyAdapter *multiTableAdapter;
-    QVector<MysqlSingleTablePackAlgorithmAdapter *> packAdapters;
-    QVector<QVector<MysqlSingleTablePackAlgorithmAdapter *>> packAdaptersGrid;
-    QHash<MysqlMtaSingleTableAdapter *, QVector<MysqlReadTableMigrationData>> migrations;
+    MysqlMultiTableAssemblyAdapter* multiTableAdapter;
+    QVector<MysqlSingleTablePackAlgorithmAdapter*> packAdapters;
+    QVector<QVector<MysqlSingleTablePackAlgorithmAdapter*>> packAdaptersGrid;
+    QHash<MysqlMtaSingleTableAdapter*, QVector<MysqlReadTableMigrationData>> migrations;
 
     static const int MAX_PERCENT_TO_REINDEX = 20;
 };
@@ -170,7 +170,7 @@ private:
 // Class that multiplexes multiple read iterators into 1
 class MysqlMtaReadsIterator : public U2DbiIterator<U2AssemblyRead> {
 public:
-    MysqlMtaReadsIterator(QVector<U2DbiIterator<U2AssemblyRead> *> &iterators, const QVector<QByteArray> &idExtras, bool sortedHint);
+    MysqlMtaReadsIterator(QVector<U2DbiIterator<U2AssemblyRead>*>& iterators, const QVector<QByteArray>& idExtras, bool sortedHint);
 
     virtual ~MysqlMtaReadsIterator();
 
@@ -181,7 +181,7 @@ public:
     virtual U2AssemblyRead peek();
 
 private:
-    QVector<U2DbiIterator<U2AssemblyRead> *> iterators;
+    QVector<U2DbiIterator<U2AssemblyRead>*> iterators;
     int currentRange;
     QVector<QByteArray> idExtras;
     bool sortedHint;
@@ -190,7 +190,7 @@ private:
 // Class that multiplexes multiple read packed data iterators into 1 and supports ordering
 class MysqlMTAPackAlgorithmDataIterator : public U2DbiIterator<PackAlgorithmData> {
 public:
-    MysqlMTAPackAlgorithmDataIterator(QVector<U2DbiIterator<PackAlgorithmData> *> &iterators, const QVector<QByteArray> &idExtras);
+    MysqlMTAPackAlgorithmDataIterator(QVector<U2DbiIterator<PackAlgorithmData>*>& iterators, const QVector<QByteArray>& idExtras);
 
     virtual ~MysqlMTAPackAlgorithmDataIterator();
 
@@ -203,7 +203,7 @@ public:
 private:
     void fetchNextData();
 
-    QVector<U2DbiIterator<PackAlgorithmData> *> iterators;
+    QVector<U2DbiIterator<PackAlgorithmData>*> iterators;
     PackAlgorithmData nextData;
     QVector<QByteArray> idExtras;
 };

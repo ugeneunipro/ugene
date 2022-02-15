@@ -69,32 +69,32 @@ public:
     GeneByGeneComparator() {
     }
 
-    static GeneByGeneCompareResult compareGeneAnnotation(const DNASequence &seq, const QList<SharedAnnotationData> &annData, const QString &annName, float identity);
+    static GeneByGeneCompareResult compareGeneAnnotation(const DNASequence& seq, const QList<SharedAnnotationData>& annData, const QString& annName, float identity);
 
-    static float parseBlastQual(const QString &ident);
+    static float parseBlastQual(const QString& ident);
 };
 
 //////////////////////////////////////////////////////////////////////////
 // IO
 class GeneByGeneReportIO {
 public:
-    GeneByGeneReportIO(const QString &_outFile, const QString &_existingMode);
+    GeneByGeneReportIO(const QString& _outFile, const QString& _existingMode);
     ~GeneByGeneReportIO();
 
-    void prepareOutputFile(U2OpStatus &os);
-    void writeTableItem(const QString &geneName, const QString &identicalString, U2OpStatus &os);
+    void prepareOutputFile(U2OpStatus& os);
+    void writeTableItem(const QString& geneName, const QString& identicalString, U2OpStatus& os);
 
 private:
     QString outFile;
     QString existingMode;
     QMap<QString, QList<QString>> mergedTable;
-    IOAdapter *io;
+    IOAdapter* io;
     int mergedGenomesSize;
 
 private:
-    void readMergedTable(const QString &filePath, U2OpStatus &os);
-    void writeHeader(IOAdapter *io);
-    void writeRow(const QList<QString> &rowData);
+    void readMergedTable(const QString& filePath, U2OpStatus& os);
+    void writeHeader(IOAdapter* io);
+    void writeRow(const QList<QString>& rowData);
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -102,12 +102,12 @@ private:
 class GeneByGeneReportTask : public Task {
     Q_OBJECT
 public:
-    GeneByGeneReportTask(const GeneByGeneReportSettings &settings, const QMap<QString, QPair<DNASequence, QList<SharedAnnotationData>>> &geneData);
+    GeneByGeneReportTask(const GeneByGeneReportSettings& settings, const QMap<QString, QPair<DNASequence, QList<SharedAnnotationData>>>& geneData);
     virtual ~GeneByGeneReportTask();
 
     virtual void run();
 
-    const GeneByGeneReportSettings &getSettings() const;
+    const GeneByGeneReportSettings& getSettings() const;
 
 private:
     GeneByGeneReportSettings settings;

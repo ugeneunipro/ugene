@@ -28,7 +28,7 @@ namespace HI {
 
 class HI_EXPORT FontDialogFiller : public Filler {
 public:
-    FontDialogFiller(GUITestOpStatus &_os)
+    FontDialogFiller(GUITestOpStatus& _os)
         : Filler(_os, "") {
     }
     void commonScenario();

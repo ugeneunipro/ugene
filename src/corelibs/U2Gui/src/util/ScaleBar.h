@@ -36,7 +36,7 @@ namespace U2 {
 class U2GUI_EXPORT ScaleBar : public QWidget {
     Q_OBJECT
 public:
-    ScaleBar(Qt::Orientation ori = Qt::Vertical, QWidget *parent = 0);
+    ScaleBar(Qt::Orientation ori = Qt::Vertical, QWidget* parent = 0);
 
     int value() const;
     void setValue(int value);
@@ -44,11 +44,11 @@ public:
     void setRange(int minumum, int maximum);
     void setTickInterval(int interval);
 
-    QAction *getPlusAction() const;
-    QAction *getMinusAction() const;
+    QAction* getPlusAction() const;
+    QAction* getMinusAction() const;
 
-    QAbstractButton *getPlusButton() const;
-    QAbstractButton *getMinusButton() const;
+    QAbstractButton* getPlusButton() const;
+    QAbstractButton* getMinusButton() const;
 
 signals:
     void valueChanged(int value);
@@ -59,11 +59,11 @@ private slots:
     void sl_updateState();
 
 protected:
-    QSlider *scaleBar;
-    QAction *minusAction;
-    QAction *plusAction;
-    QToolButton *plusButton;
-    QToolButton *minusButton;
+    QSlider* scaleBar;
+    QAction* minusAction;
+    QAction* plusAction;
+    QToolButton* plusButton;
+    QToolButton* minusButton;
 };
 
 }  // namespace U2

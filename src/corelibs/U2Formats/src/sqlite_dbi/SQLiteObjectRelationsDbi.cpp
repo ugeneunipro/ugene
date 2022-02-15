@@ -26,11 +26,11 @@
 
 namespace U2 {
 
-SQLiteObjectRelationsDbi::SQLiteObjectRelationsDbi(SQLiteDbi *dbi)
+SQLiteObjectRelationsDbi::SQLiteObjectRelationsDbi(SQLiteDbi* dbi)
     : U2ObjectRelationsDbi(dbi), SQLiteChildDBICommon(dbi) {
 }
 
-void SQLiteObjectRelationsDbi::initSqlSchema(U2OpStatus &os) {
+void SQLiteObjectRelationsDbi::initSqlSchema(U2OpStatus& os) {
     SQLiteWriteQuery("CREATE TABLE IF NOT EXISTS ObjectRelation (object INTEGER NOT NULL, "
                      "reference INTEGER NOT NULL, role INTEGER NOT NULL, "
                      "PRIMARY KEY(object, reference), "
@@ -44,7 +44,7 @@ void SQLiteObjectRelationsDbi::initSqlSchema(U2OpStatus &os) {
     SQLiteWriteQuery("CREATE INDEX IF NOT EXISTS ObjectRelationRole ON ObjectRelation(role)", db, os).execute();
 }
 
-void SQLiteObjectRelationsDbi::createObjectRelation(U2ObjectRelation &relation, U2OpStatus &os) {
+void SQLiteObjectRelationsDbi::createObjectRelation(U2ObjectRelation& relation, U2OpStatus& os) {
     static const QString queryString("INSERT INTO ObjectRelation (object, reference, role) VALUES(?1, ?2, ?3)");
     SQLiteWriteQuery q(queryString, db, os);
     CHECK_OP(os, );
@@ -54,8 +54,8 @@ void SQLiteObjectRelationsDbi::createObjectRelation(U2ObjectRelation &relation, 
     q.insert();
 }
 
-QList<U2ObjectRelation> SQLiteObjectRelationsDbi::getObjectRelations(const U2DataId &object,
-                                                                     U2OpStatus &os) {
+QList<U2ObjectRelation> SQLiteObjectRelationsDbi::getObjectRelations(const U2DataId& object,
+                                                                     U2OpStatus& os) {
     QList<U2ObjectRelation> result;
 
     static const QString queryString = "SELECT o.type, o.name, o_r.object, o_r.reference, o_r.role FROM ObjectRelation AS o_r "
@@ -79,9 +79,9 @@ QList<U2ObjectRelation> SQLiteObjectRelationsDbi::getObjectRelations(const U2Dat
     return result;
 }
 
-QList<U2DataId> SQLiteObjectRelationsDbi::getReferenceRelatedObjects(const U2DataId &reference,
+QList<U2DataId> SQLiteObjectRelationsDbi::getReferenceRelatedObjects(const U2DataId& reference,
                                                                      GObjectRelationRole relationRole,
-                                                                     U2OpStatus &os) {
+                                                                     U2OpStatus& os) {
     QList<U2DataId> result;
 
     static const QString queryString = "SELECT o.id, o.type FROM Object AS o INNER JOIN ObjectRelation AS o_r "
@@ -99,7 +99,7 @@ QList<U2DataId> SQLiteObjectRelationsDbi::getReferenceRelatedObjects(const U2Dat
     return result;
 }
 
-void SQLiteObjectRelationsDbi::removeObjectRelation(U2ObjectRelation &relation, U2OpStatus &os) {
+void SQLiteObjectRelationsDbi::removeObjectRelation(U2ObjectRelation& relation, U2OpStatus& os) {
     static const QString queryString("DELETE FROM ObjectRelation "
                                      "WHERE object = ?1 AND reference = ?2");
     SQLiteWriteQuery q(queryString, db, os);
@@ -109,7 +109,7 @@ void SQLiteObjectRelationsDbi::removeObjectRelation(U2ObjectRelation &relation, 
     q.execute();
 }
 
-void SQLiteObjectRelationsDbi::removeAllObjectRelations(const U2DataId &object, U2OpStatus &os) {
+void SQLiteObjectRelationsDbi::removeAllObjectRelations(const U2DataId& object, U2OpStatus& os) {
     static const QString queryString("DELETE FROM ObjectRelation WHERE object = ?1 OR reference = ?1");
     SQLiteWriteQuery q(queryString, db, os);
     CHECK_OP(os, );
@@ -117,7 +117,7 @@ void SQLiteObjectRelationsDbi::removeAllObjectRelations(const U2DataId &object, 
     q.execute();
 }
 
-void SQLiteObjectRelationsDbi::removeReferencesForObject(const U2DataId &object, U2OpStatus &os) {
+void SQLiteObjectRelationsDbi::removeReferencesForObject(const U2DataId& object, U2OpStatus& os) {
     static const QString queryString("DELETE FROM ObjectRelation WHERE object = ?1");
     SQLiteWriteQuery q(queryString, db, os);
     CHECK_OP(os, );

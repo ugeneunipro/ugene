@@ -7,9 +7,9 @@ namespace U2 {
 
 class ProxyStyle : public QProxyStyle {
 public:
-    ProxyStyle(QStyle *style = nullptr);
+    ProxyStyle(QStyle* style = nullptr);
 
-    void polish(QWidget *widget) override;
+    void polish(QWidget* widget) override;
 };
 
 #endif  // PROXYSTYLE_H

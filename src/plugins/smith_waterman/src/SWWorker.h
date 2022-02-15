@@ -37,7 +37,7 @@ namespace LocalWorkflow {
 class SWPrompter : public PrompterBase<SWPrompter> {
     Q_OBJECT
 public:
-    SWPrompter(Actor *p = 0)
+    SWPrompter(Actor* p = 0)
         : PrompterBase<SWPrompter>(p) {
     }
 
@@ -48,34 +48,34 @@ protected:
 class SWAlgoEditor : public ComboBoxDelegate {
     Q_OBJECT
 public:
-    SWAlgoEditor(ActorPrototype *proto)
+    SWAlgoEditor(ActorPrototype* proto)
         : ComboBoxDelegate(QVariantMap()), proto(proto) {
     }
 public slots:
     void populate();
 
 private:
-    ActorPrototype *proto;
+    ActorPrototype* proto;
 };
 
 class SWWorker : public BaseWorker {
     Q_OBJECT
 public:
-    SWWorker(Actor *a);
+    SWWorker(Actor* a);
 
     virtual void init();
     virtual bool isReady() const;
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private slots:
-    void sl_taskFinished(Task *);
+    void sl_taskFinished(Task*);
 
 private:
     IntegralBus *input, *patternPort, *output;
-    QMap<Task *, SmithWatermanReportCallbackAnnotImpl *> callbacks;
+    QMap<Task*, SmithWatermanReportCallbackAnnotImpl*> callbacks;
     QList<QByteArray> patternList;
-    QMap<Task *, QByteArray> patterns;
+    QMap<Task*, QByteArray> patterns;
     QMap<QString, QString> patternNames;
 };
 
@@ -86,7 +86,7 @@ public:
     SWWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new SWWorker(a);
     }
 };

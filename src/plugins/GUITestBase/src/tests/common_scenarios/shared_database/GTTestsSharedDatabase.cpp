@@ -72,27 +72,27 @@ namespace GUITest_common_scenarios_shared_database {
 using namespace HI;
 namespace {
 
-QListWidgetItem *getConnectionItem(HI::GUITestOpStatus &os, const QString &connectionName) {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
-    QListWidget *list = GTWidget::findExactWidget<QListWidget *>(os, "lwConnections", dialog);
+QListWidgetItem* getConnectionItem(HI::GUITestOpStatus& os, const QString& connectionName) {
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QListWidget* list = GTWidget::findExactWidget<QListWidget*>(os, "lwConnections", dialog);
     CHECK_SET_ERR_RESULT(nullptr != list, "Connections list widget is NULL", nullptr);
-    const QList<QListWidgetItem *> items = list->findItems(connectionName, Qt::MatchExactly);
+    const QList<QListWidgetItem*> items = list->findItems(connectionName, Qt::MatchExactly);
     CHECK_SET_ERR_RESULT(1 == items.size(), QString("List item '%1'' not found").arg(connectionName), nullptr);
 
     return items.first();
 }
 
-void checkButtonStateForConnectionItem(HI::GUITestOpStatus &os, const QString &connectionName, const QString &buttonText, bool isEnabled) {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
-    GTListWidget::click(os, GTWidget::findExactWidget<QListWidget *>(os, "lwConnections", dialog), connectionName);
+void checkButtonStateForConnectionItem(HI::GUITestOpStatus& os, const QString& connectionName, const QString& buttonText, bool isEnabled) {
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    GTListWidget::click(os, GTWidget::findExactWidget<QListWidget*>(os, "lwConnections", dialog), connectionName);
 
-    QWidget *button = GTWidget::findButtonByText(os, buttonText, dialog);
+    QWidget* button = GTWidget::findButtonByText(os, buttonText, dialog);
     CHECK_SET_ERR(nullptr != button, "Button is NULL");
     CHECK_SET_ERR(isEnabled == button->isEnabled(), QString("Button '%1' has an incorrect state").arg(buttonText));
 }
 
-void checkConnectionItemIcon(HI::GUITestOpStatus &os, const QString &connectionName, const QString &expectedIconPath) {
-    QListWidgetItem *connectionItem = getConnectionItem(os, connectionName);
+void checkConnectionItemIcon(HI::GUITestOpStatus& os, const QString& connectionName, const QString& expectedIconPath) {
+    QListWidgetItem* connectionItem = getConnectionItem(os, connectionName);
     CHECK_OP(os, );
     const QIcon icon = connectionItem->icon();
     const QIcon expectedIcon(expectedIconPath);
@@ -142,7 +142,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0001) {
     GTUtilsProjectTreeView::findIndex(os, "Recycle bin");
 
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus& os) {
             checkConnectionItemIcon(os, "cm_test_0001: new shared database", ":/core/images/db/database_lightning.png");
             checkButtonStateForConnectionItem(os, "cm_test_0001: new shared database", "Edit", false);
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Close);
@@ -151,7 +151,6 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0001) {
 
     GTUtilsDialog::waitForDialog(os, new SharedConnectionsDialogFiller(os, new Scenario));
     GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
-
 }
 
 GUI_TEST_CLASS_DEFINITION(cm_test_0002) {
@@ -180,9 +179,8 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0002) {
     }
     GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
-
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus& os) {
             checkConnectionItemIcon(os, "cm_test_0002: new shared database", ":/core/images/db/database_lightning.png");
             checkButtonStateForConnectionItem(os, "cm_test_0002: new shared database", "Edit", false);
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Close);
@@ -247,7 +245,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0003) {
     GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) override {
+        void run(HI::GUITestOpStatus& os) override {
             checkConnectionItemIcon(os, "cm_test_0003: new shared database 1", ":/core/images/db/database_lightning.png");
             checkButtonStateForConnectionItem(os, "cm_test_0003: new shared database 1", "Edit", false);
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Close);
@@ -267,7 +265,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0003) {
     GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
     class Scenario2 : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) override {
+        void run(HI::GUITestOpStatus& os) override {
             checkConnectionItemIcon(os, "cm_test_0003: new shared database 1", "");
             checkButtonStateForConnectionItem(os, "cm_test_0003: new shared database 1", "Edit", true);
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Close);
@@ -304,7 +302,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0004) {
     GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus& os) {
             checkConnectionItemIcon(os, "ugene_gui_test", ":/core/images/db/database_lightning.png");
             checkButtonStateForConnectionItem(os, "ugene_gui_test", "Edit", false);
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Close);
@@ -343,7 +341,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0005) {
     GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus& os) {
             checkConnectionItemIcon(os, "ugene_gui_test", ":/core/images/db/database_lightning.png");
             checkButtonStateForConnectionItem(os, "ugene_gui_test", "Edit", false);
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Close);
@@ -363,7 +361,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0005) {
     GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
     class Scenario2 : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus& os) {
             checkConnectionItemIcon(os, "ugene_gui_test", "");
             checkButtonStateForConnectionItem(os, "ugene_gui_test", "Edit", true);
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Close);
@@ -401,10 +399,10 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0006) {
     GTDatabaseConfig::initTestConnectionInfo(conName, GTDatabaseConfig::uninitializedDatabase());
 
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+        void run(HI::GUITestOpStatus& os) {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-            GTListWidget::click(os, GTWidget::findExactWidget<QListWidget *>(os, "lwConnections", dialog), "cm_test_0006: uninitialized database");
+            GTListWidget::click(os, GTWidget::findExactWidget<QListWidget*>(os, "lwConnections", dialog), "cm_test_0006: uninitialized database");
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "is not initialized"));
             GTWidget::click(os, GTWidget::findWidget(os, "pbConnect", dialog));
@@ -422,7 +420,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0006) {
     CHECK_SET_ERR(exists, "A database connection not found in the project view");
 
     class Scenario2 : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus& os) {
             QString conName = "cm_test_0006: uninitialized database";
             checkConnectionItemIcon(os, conName, ":/core/images/db/database_lightning.png");
             checkButtonStateForConnectionItem(os, conName, "Edit", false);
@@ -488,7 +486,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0008) {
     GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus& os) {
             checkConnectionItemIcon(os, "ugene_gui_test", ":/core/images/db/database_lightning.png");
             checkButtonStateForConnectionItem(os, "ugene_gui_test", "Edit", false);
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Close);
@@ -512,7 +510,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0008) {
     GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
     class Scenario2 : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus& os) {
             checkConnectionItemIcon(os, "ugene_gui_test_2", ":/core/images/db/database_lightning.png");
             checkButtonStateForConnectionItem(os, "ugene_gui_test_2", "Edit", false);
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Close);
@@ -611,7 +609,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0013) {
     GTMenu::clickMainMenuItem(os, {"File", "Connect to UGENE shared database..."});
 
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus& os) {
             checkConnectionItemIcon(os, "cm_test_0013: new shared database", "");
             checkButtonStateForConnectionItem(os, "cm_test_0013: new shared database", "Edit", true);
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Close);
@@ -641,15 +639,15 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0014) {
     }
     {
         class ReadOnlyCheckScenario : public CustomScenario {
-            void run(HI::GUITestOpStatus &os) {
-                QWidget *dialog = GTWidget::getActiveModalWidget(os);
-                QWidget *leName = GTWidget::findWidget(os, "leName", dialog);
-                QWidget *leHost = GTWidget::findWidget(os, "leHost", dialog);
-                QWidget *lePort = GTWidget::findWidget(os, "lePort", dialog);
-                QWidget *leDatabase = GTWidget::findWidget(os, "leDatabase", dialog);
-                QWidget *leLogin = GTWidget::findWidget(os, "leLogin", dialog);
-                QWidget *lePassword = GTWidget::findWidget(os, "lePassword", dialog);
-                QWidget *cbRememberMe = GTWidget::findWidget(os, "cbRemember", dialog);
+            void run(HI::GUITestOpStatus& os) {
+                QWidget* dialog = GTWidget::getActiveModalWidget(os);
+                QWidget* leName = GTWidget::findWidget(os, "leName", dialog);
+                QWidget* leHost = GTWidget::findWidget(os, "leHost", dialog);
+                QWidget* lePort = GTWidget::findWidget(os, "lePort", dialog);
+                QWidget* leDatabase = GTWidget::findWidget(os, "leDatabase", dialog);
+                QWidget* leLogin = GTWidget::findWidget(os, "leLogin", dialog);
+                QWidget* lePassword = GTWidget::findWidget(os, "lePassword", dialog);
+                QWidget* cbRememberMe = GTWidget::findWidget(os, "cbRemember", dialog);
 
                 CHECK_SET_ERR(nullptr != leName, "Connection name field is NULL");
                 CHECK_SET_ERR(nullptr != leHost, "Host field is NULL");
@@ -703,7 +701,7 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0002) {
     GTLogTracer lt;
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
-    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
+    QTreeView* treeView = GTUtilsProjectTreeView::getTreeView(os);
     CHECK_SET_ERR(treeView != nullptr, "Invalid project tree view");
 
     QModelIndex dirItem = GTUtilsProjectTreeView::findIndex(os, "proj_test_0002");
@@ -735,10 +733,10 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0003) {
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     QModelIndex dirItem = GTUtilsProjectTreeView::findIndex(os, "proj_test_0003");
-    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
+    QTreeView* treeView = GTUtilsProjectTreeView::getTreeView(os);
     GTTreeView::checkItemIsExpanded(os, treeView, dirItem);
 
-    QAbstractItemModel *model = treeView->model();
+    QAbstractItemModel* model = treeView->model();
     CHECK_SET_ERR(model->rowCount(dirItem) == 1, "Invalid child item count");
 
     QModelIndex subfolderItem = model->index(0, 0, dirItem);
@@ -772,8 +770,8 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0004) {
     GTLogTracer lt;
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
-    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    QAbstractItemModel *model = treeView->model();
+    QTreeView* treeView = GTUtilsProjectTreeView::getTreeView(os);
+    QAbstractItemModel* model = treeView->model();
 
     QModelIndex dirItem1 = GTUtilsProjectTreeView::findIndex(os, "pt0004_dir1");
     QModelIndex dirItem2 = GTUtilsProjectTreeView::findIndex(os, "pt0004_dir2", dirItem1);
@@ -806,9 +804,9 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0005) {
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
     CHECK_OP(os, );
 
-    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
+    QTreeView* treeView = GTUtilsProjectTreeView::getTreeView(os);
     CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
-    QAbstractItemModel *model = treeView->model();
+    QAbstractItemModel* model = treeView->model();
 
     {  // drag'n'drop
         const QModelIndex dirItem1 = GTUtilsProjectTreeView::findIndex(os, "pt0005_dir1");
@@ -852,9 +850,9 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0006) {
     GTLogTracer lt;
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
     CHECK_OP(os, );
-    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
+    QTreeView* treeView = GTUtilsProjectTreeView::getTreeView(os);
     CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
-    QAbstractItemModel *model = treeView->model();
+    QAbstractItemModel* model = treeView->model();
 
     {  // drag'n'drop
         const QModelIndex dirItem = GTUtilsProjectTreeView::findIndex(os, "proj_test_0006");
@@ -895,9 +893,9 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0007) {
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
+    QTreeView* treeView = GTUtilsProjectTreeView::getTreeView(os);
     CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
-    QAbstractItemModel *model = treeView->model();
+    QAbstractItemModel* model = treeView->model();
 
     GTGlobals::sleep();
 
@@ -943,7 +941,7 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0008) {
 
     GTLogTracer lt;
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
     QString testFolder = GTUtilsSharedDatabaseDocument::genTestFolderName("proj_test_0008");
     GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, "/", testFolder);
     GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, "/" + testFolder, "abcdefgh");
@@ -998,7 +996,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0001) {
     GTFileDialog::openFile(os, dataDir + "/samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, parentFolderPath, newFolderName);
     QModelIndex newFolderItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, newFolderPath);
@@ -1038,7 +1036,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0002) {
     GTFileDialog::openFile(os, dataDir + "/samples/FASTA/", "human_T1.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, parentFolderPath, newFolderName);
     QModelIndex newFolderItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, newFolderPath);
@@ -1076,7 +1074,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0003) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMdi::closeActiveWindow(os);
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     // Create a new folder
     QString folderName = GTUtilsSharedDatabaseDocument::genTestFolderName("import_test_0003");
@@ -1107,7 +1105,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0003) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
-    QTreeWidget *annotationTableWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
+    QTreeWidget* annotationTableWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
     GTUtilsProjectTreeView::dragAndDrop(os, databaseAnnotationObjectItemIndex, annotationTableWidget);
 
     // Disconnect and connect to the database again.
@@ -1158,7 +1156,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0004) {
     const QString sequenceObjectName = "human_T1 (UCSC April 2002 chr7:115977709-117855134)";
     const QString databaseSequenceObjectPath = resultFolderPath + U2ObjectDbi::PATH_SEP + sequenceObjectName;
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, parentFolderPath, dstFolderName);
 
@@ -1206,7 +1204,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0005) {
     const QString sequenceObjectName = "human_T1 (UCSC April 2002 chr7:115977709-117855134)";
     const QString databaseSequenceObjectPath = dstFolderPath + U2ObjectDbi::PATH_SEP + "human_T1" + U2ObjectDbi::PATH_SEP + sequenceObjectName;
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, U2ObjectDbi::ROOT_FOLDER, dstFolderName);
 
@@ -1258,7 +1256,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0006) {
     const QString sequenceObjectName = "SEQUENCE_WITH_A_ENTRY";
     const QString databaseSequenceObjectPath = resultFolderPath + U2ObjectDbi::PATH_SEP + sequenceObjectName;
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, U2ObjectDbi::ROOT_FOLDER, dstFolderName);
 
@@ -1322,7 +1320,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0007) {
     const QString sequenceObjectName = "human_T1 (UCSC April 2002 chr7:115977709-117855134)";
     const QString databaseSequenceObjectPath = resultFolderPath + U2ObjectDbi::PATH_SEP + sequenceObjectName;
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, U2ObjectDbi::ROOT_FOLDER, dstFolderName);
 
@@ -1388,7 +1386,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0008) {
     const QString databaseSequenceFirstObjectPath = resultFirstFolderPath + U2ObjectDbi::PATH_SEP + sequenceFirstObjectName;
     const QString databaseSequenceSecondObjectPath = resultSecondFolderPath + U2ObjectDbi::PATH_SEP + sequenceSecondObjectName;
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, U2ObjectDbi::ROOT_FOLDER, dstFolderName);
 
@@ -1455,7 +1453,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0009) {
     const QString databaseSequenceFirstObjectPath = resultFirstFolderPath + U2ObjectDbi::PATH_SEP + sequenceFirstObjectName;
     const QString databaseSequenceSecondObjectPath = resultSecondFolderPath + U2ObjectDbi::PATH_SEP + sequenceSecondObjectName;
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, U2ObjectDbi::ROOT_FOLDER, dstFolderName);
 
@@ -1512,7 +1510,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0010) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", documentName);
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
     GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, U2ObjectDbi::ROOT_FOLDER, dstFolderName);
 
     QList<ImportToDatabaseDialogFiller::Action> actions;
@@ -1566,7 +1564,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0011) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     GTUtilsMdi::closeActiveWindow(os);
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, U2ObjectDbi::ROOT_FOLDER, dstFolderName);
 
@@ -1622,7 +1620,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0012) {
     const QString malignmentObjectName = "Multiple alignment";
     const QString databaseMalignmentObjectPath = objectFolderPath + U2ObjectDbi::PATH_SEP + malignmentObjectName;
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     QVariantMap options;
     options.insert(ImportToDatabaseOptions::MULTI_SEQUENCE_POLICY, ImportToDatabaseOptions::MALIGNMENT);
@@ -1675,7 +1673,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0013) {
     const QString contigFeatureName = "contig  (0, 2)";
     const QString expectedSecondContigRegion = "243..362";
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     QVariantMap options;
     options.insert(ImportToDatabaseOptions::MULTI_SEQUENCE_POLICY, ImportToDatabaseOptions::MERGE);
@@ -1692,9 +1690,9 @@ GUI_TEST_CLASS_DEFINITION(import_test_0013) {
 
     GTUtilsAnnotationsTreeView::getTreeWidget(os);
 
-    QTreeWidgetItem *contigGroup = GTUtilsAnnotationsTreeView::findItem(os, contigFeatureName);
+    QTreeWidgetItem* contigGroup = GTUtilsAnnotationsTreeView::findItem(os, contigFeatureName);
 
-    QTreeWidgetItem *secondContig = contigGroup->child(1);
+    QTreeWidgetItem* secondContig = contigGroup->child(1);
     CHECK_SET_ERR(contigGroup != nullptr, "Second contig annotation is NULL");
 
     QString secondContigRegion = secondContig->text(AnnotationsTreeView::COLUMN_VALUE);
@@ -1729,7 +1727,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0014) {
     const QString databaseSequenceFirstObjectPath = objectFolderPath + U2ObjectDbi::PATH_SEP + sequenceFirstObjectName;
     const QString databaseSequenceSecondObjectPath = objectFolderPath + U2ObjectDbi::PATH_SEP + sequenceSecondObjectName;
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::importFiles(os, databaseDoc, dstFolderPath, QStringList() << testDir + "_common_data/fasta/multy_fa.fa");
 
@@ -1770,7 +1768,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0015) {
     const qint64 expectedLength = 85779;
     const qint64 expectedReadsCount = 2;
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     QDir(sandBoxDir).mkdir(name);
     GTFile::copy(os, testDir + "_common_data/bam/scerevisiae.bam", sandBoxDir + name + "/scerevisiae.bam");
@@ -1819,7 +1817,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0016) {
     const qint64 expectedLength = 85779;
     const qint64 expectedReadsCount = 2;
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     QDir(sandBoxDir).mkdir(name);
     GTFile::copy(os, testDir + "_common_data/sam/scerevisiae.sam", sandBoxDir + name + "/scerevisiae.sam");
@@ -1881,7 +1879,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0017) {
     const qint64 expectedLengthSecond = 3296;
     const qint64 expectedReadsCountSecond = 14;
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     QVariantMap options;
     options.insert(ImportToDatabaseOptions::PREFERRED_FORMATS, {"ace-importer"});
@@ -1944,7 +1942,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0018) {
     const QString assemblyObjectName = "Scmito";
     const QString databaseAssemblyObjectPath = resultFolderPath + U2ObjectDbi::PATH_SEP + assemblyObjectName;
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, U2ObjectDbi::ROOT_FOLDER, dstFolderName);
 
@@ -1999,7 +1997,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0019) {
     const QString assemblyObjectName = ">chrM";
     const QString databaseAssemblyObjectPath = resultFolderPath + U2ObjectDbi::PATH_SEP + assemblyObjectName;
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::createFolder(os, databaseDoc, parentFolderPath, dstFolderName);
 
@@ -2057,7 +2055,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0020) {
     const qint64 expectedLengthSecond = 3296;
     const qint64 expectedSequencesCountSecond = 15;
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::importFiles(os, databaseDoc, dstFolderPath, QStringList() << testDir + "_common_data/ace/ace_test_2.ace");
 
@@ -2103,7 +2101,7 @@ GUI_TEST_CLASS_DEFINITION(view_test_0001) {
     const QString databaseSequenceObjectPath = folderPath + U2ObjectDbi::PATH_SEP + sequenceVisibleName;
     const int position = 2970;
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseSequenceObjectPath);
     GTWidget::findWidget(os, sequenceVisibleWidgetName);
@@ -2132,10 +2130,10 @@ GUI_TEST_CLASS_DEFINITION(view_test_0002) {
     const QString databaseMalignmentObjectPath = folderPath + U2ObjectDbi::PATH_SEP + malignmentVisibleName;
     const QPoint position(300, 6);
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseMalignmentObjectPath);
-    QWidget *msaView = GTWidget::findWidget(os, malignmentVisibleNameWidget);
+    QWidget* msaView = GTWidget::findWidget(os, malignmentVisibleNameWidget);
     CHECK_SET_ERR(nullptr != msaView, "View wasn't opened");
 
     GTUtilsMSAEditorSequenceArea::clickToPosition(os, position);
@@ -2159,7 +2157,7 @@ GUI_TEST_CLASS_DEFINITION(view_test_0003) {
     const QString assemblyVisibleNameWidget = "chrM";
     const QString databaseAssemblyObjectPath = folderPath + U2ObjectDbi::PATH_SEP + assemblyVisibleName;
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     QModelIndexList list = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, assemblyVisibleName, GTUtilsProjectTreeView::findIndex(os, folderName));
     foreach (QModelIndex index, list) {
@@ -2167,7 +2165,7 @@ GUI_TEST_CLASS_DEFINITION(view_test_0003) {
             GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, index);
         }
     }
-    QWidget *assemblyView = GTWidget::findWidget(os, assemblyVisibleNameWidget);
+    QWidget* assemblyView = GTWidget::findWidget(os, assemblyVisibleNameWidget);
     CHECK_SET_ERR(nullptr != assemblyView, "View wasn't opened");
 
     bool hasReference = GTUtilsAssemblyBrowser::hasReference(os, assemblyView);
@@ -2192,10 +2190,10 @@ GUI_TEST_CLASS_DEFINITION(view_test_0004) {
     const QString textVisibleNameWidget = "Text";
     const QString databaseTextObjectPath = folderPath + U2ObjectDbi::PATH_SEP + textVisibleName;
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseTextObjectPath);
-    QWidget *textView = GTWidget::findWidget(os, textVisibleNameWidget);
+    QWidget* textView = GTWidget::findWidget(os, textVisibleNameWidget);
     CHECK_SET_ERR(nullptr != textView, "View wasn't opened");
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
@@ -2215,14 +2213,14 @@ GUI_TEST_CLASS_DEFINITION(view_test_0005) {
     const QString chromatogramVisibleName = "Chromatogram";
     const QString databaseChromatogramObjectPath = folderPath + U2ObjectDbi::PATH_SEP + chromatogramVisibleName;
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseChromatogramObjectPath);
 
-    QWidget *seqView = GTWidget::findWidget(os, sequenceObjectName);
+    QWidget* seqView = GTWidget::findWidget(os, sequenceObjectName);
     CHECK_SET_ERR(nullptr != seqView, "Sequence view wasn't opened");
 
-    QWidget *chromaView = seqView->findChild<QWidget *>("chromatogram_view_" + sequenceObjectName);
+    QWidget* chromaView = seqView->findChild<QWidget*>("chromatogram_view_" + sequenceObjectName);
     CHECK_SET_ERR(nullptr != chromaView, "Chromatogram view wasn't opened");
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
@@ -2242,10 +2240,10 @@ GUI_TEST_CLASS_DEFINITION(view_test_0006) {
     const QString treeVisibleNameWidget = "COI";
     const QString databaseTreeObjectPath = folderPath + U2ObjectDbi::PATH_SEP + treeVisibleName;
 
-    Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+    Document* databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseTreeObjectPath);
-    QWidget *treeView = GTWidget::findWidget(os, treeVisibleNameWidget);
+    QWidget* treeView = GTWidget::findWidget(os, treeVisibleNameWidget);
     CHECK_SET_ERR(nullptr != treeView, "View wasn't opened");
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
@@ -2296,9 +2294,9 @@ GUI_TEST_CLASS_DEFINITION(del_test_0002) {
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
     CHECK_OP(os, );
 
-    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
+    QTreeView* treeView = GTUtilsProjectTreeView::getTreeView(os);
     CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
-    QAbstractItemModel *model = treeView->model();
+    QAbstractItemModel* model = treeView->model();
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "dt0002_human_T1"));
     GTMouseDriver::doubleClick();
@@ -2314,9 +2312,9 @@ GUI_TEST_CLASS_DEFINITION(del_test_0002) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
     GTMouseDriver::click(Qt::RightButton);
 
-    QWidget *seqView = GTWidget::findWidget(os, "ADV_single_sequence_widget_0", nullptr, {false});
+    QWidget* seqView = GTWidget::findWidget(os, "ADV_single_sequence_widget_0", nullptr, {false});
     CHECK_SET_ERR(nullptr == seqView, "Sequence view is not closed");
-    QWidget *msaView = GTWidget::findWidget(os, "msa_editor_dt0002_COI", nullptr, {false});
+    QWidget* msaView = GTWidget::findWidget(os, "msa_editor_dt0002_COI", nullptr, {false});
     CHECK_SET_ERR(nullptr == msaView, "MSA Editor is not closed");
 
     const QModelIndex rbItem = GTUtilsProjectTreeView::findIndex(os, "Recycle bin");
@@ -2336,9 +2334,9 @@ GUI_TEST_CLASS_DEFINITION(del_test_0003) {
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
-    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
+    QTreeView* treeView = GTUtilsProjectTreeView::getTreeView(os);
     CHECK_SET_ERR(treeView != nullptr, "Invalid project tree view");
-    QAbstractItemModel *model = treeView->model();
+    QAbstractItemModel* model = treeView->model();
 
     QModelIndex rbItem = GTUtilsProjectTreeView::findIndex(os, "Recycle bin");
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, rbItem));
@@ -2363,7 +2361,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0001) {
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
     CHECK_OP(os, );
 
-    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
+    QTreeView* treeView = GTUtilsProjectTreeView::getTreeView(os);
     CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "et0001_sequence"));
@@ -2387,7 +2385,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0002) {
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
     CHECK_OP(os, );
 
-    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
+    QTreeView* treeView = GTUtilsProjectTreeView::getTreeView(os);
     CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "et0002_features"));
@@ -2410,7 +2408,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0003) {
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
     CHECK_OP(os, );
 
-    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
+    QTreeView* treeView = GTUtilsProjectTreeView::getTreeView(os);
     CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "et0003_alignment"));
@@ -2433,7 +2431,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0004) {
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
     CHECK_OP(os, );
 
-    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
+    QTreeView* treeView = GTUtilsProjectTreeView::getTreeView(os);
     CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "et0004_assembly"));
@@ -2458,7 +2456,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0005) {
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
     CHECK_OP(os, );
 
-    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
+    QTreeView* treeView = GTUtilsProjectTreeView::getTreeView(os);
     CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "et0005_variations"));
@@ -2481,7 +2479,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0006) {
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
     CHECK_OP(os, );
 
-    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
+    QTreeView* treeView = GTUtilsProjectTreeView::getTreeView(os);
     CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "et0006_text"));
@@ -2505,7 +2503,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0007) {
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
     CHECK_OP(os, );
 
-    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
+    QTreeView* treeView = GTUtilsProjectTreeView::getTreeView(os);
     CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "et0007_chroma"));
@@ -2528,7 +2526,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0008) {
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
     CHECK_OP(os, );
 
-    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
+    QTreeView* treeView = GTUtilsProjectTreeView::getTreeView(os);
     CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "et0008_tree"));
@@ -2551,7 +2549,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0009) {
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
     CHECK_OP(os, );
 
-    QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
+    QTreeView* treeView = GTUtilsProjectTreeView::getTreeView(os);
     CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "long name with bad symbols : /?/=+\\|*"));

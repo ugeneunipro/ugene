@@ -22,8 +22,8 @@
 #ifndef _U2_PRIMER_H_
 #define _U2_PRIMER_H_
 
-#include <U2Core/global.h>
 #include <U2Core/U2Type.h>
+#include <U2Core/global.h>
 
 namespace U2 {
 

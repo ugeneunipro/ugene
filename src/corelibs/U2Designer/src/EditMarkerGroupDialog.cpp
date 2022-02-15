@@ -40,7 +40,7 @@ namespace U2 {
 /************************************************************************/
 /* EditMarkerGroupDialog */
 /************************************************************************/
-EditMarkerGroupDialog::EditMarkerGroupDialog(bool isNew, Marker *marker, Workflow::MarkerGroupListCfgModel *_allModel, QWidget *parent)
+EditMarkerGroupDialog::EditMarkerGroupDialog(bool isNew, Marker* marker, Workflow::MarkerGroupListCfgModel* _allModel, QWidget* parent)
     : QDialog(parent), isNew(isNew), marker(nullptr), allModel(_allModel), currentTypeIndex(-1) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930090");
@@ -97,8 +97,8 @@ EditMarkerGroupDialog::EditMarkerGroupDialog(bool isNew, Marker *marker, Workflo
     connect(editButton, SIGNAL(clicked()), SLOT(sl_onEditButtonClicked()));
     connect(removeButton, SIGNAL(clicked()), SLOT(sl_onRemoveButtonClicked()));
     connect(typeBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_onTypeChanged(int)));
-    connect(table, SIGNAL(entered(const QModelIndex &)), SLOT(sl_onItemEntered(const QModelIndex &)));
-    connect(table, SIGNAL(pressed(const QModelIndex &)), SLOT(sl_onItemSelected(const QModelIndex &)));
+    connect(table, SIGNAL(entered(const QModelIndex&)), SLOT(sl_onItemEntered(const QModelIndex&)));
+    connect(table, SIGNAL(pressed(const QModelIndex&)), SLOT(sl_onItemSelected(const QModelIndex&)));
 
     updateUi();
 }
@@ -122,18 +122,18 @@ EditMarkerGroupDialog::~EditMarkerGroupDialog() {
     delete marker;
 }
 
-Marker *EditMarkerGroupDialog::getMarker() {
+Marker* EditMarkerGroupDialog::getMarker() {
     return marker->clone();
 }
 
-void EditMarkerGroupDialog::sl_onItemEntered(const QModelIndex &idx) {
+void EditMarkerGroupDialog::sl_onItemEntered(const QModelIndex& idx) {
     Qt::MouseButtons bs = QApplication::mouseButtons();
     if (bs.testFlag(Qt::LeftButton)) {
         sl_onItemSelected(idx);
     }
 }
 
-void EditMarkerGroupDialog::sl_onItemSelected(const QModelIndex &) {
+void EditMarkerGroupDialog::sl_onItemSelected(const QModelIndex&) {
     editButton->setEnabled(true);
     removeButton->setEnabled(true);
 }
@@ -154,7 +154,7 @@ void EditMarkerGroupDialog::sl_onAddButtonClicked() {
 }
 
 void EditMarkerGroupDialog::sl_onEditButtonClicked() {
-    QItemSelectionModel *m = table->selectionModel();
+    QItemSelectionModel* m = table->selectionModel();
     QModelIndexList selected = m->selectedRows();
     if (1 != selected.size()) {
         return;
@@ -180,7 +180,7 @@ void EditMarkerGroupDialog::sl_onEditButtonClicked() {
 }
 
 void EditMarkerGroupDialog::sl_onRemoveButtonClicked() {
-    QItemSelectionModel *m = table->selectionModel();
+    QItemSelectionModel* m = table->selectionModel();
     QModelIndexList selected = m->selectedRows();
     if (1 != selected.size()) {
         return;
@@ -214,11 +214,11 @@ void EditMarkerGroupDialog::sl_onTypeChanged(int newTypeIndex) {
     }
 
     if (changeMarker) {
-        Marker *oldMarker = marker;
+        Marker* oldMarker = marker;
         marker = MarkerFactory::createInstanse(newTypeId, addParamEdit->text());
         marker->setName(oldMarker->getName());
         if (oldMarkerType == newMarkerType) {
-            foreach (const QString &key, oldMarker->getValues().keys()) {
+            foreach (const QString& key, oldMarker->getValues().keys()) {
                 marker->addValue(key, oldMarker->getValues().value(key));
             }
         } else {
@@ -233,7 +233,7 @@ void EditMarkerGroupDialog::sl_onTypeChanged(int newTypeIndex) {
     markerGroupNameEdit->setText(allModel->suggestName(marker->getType()));
 }
 
-bool EditMarkerGroupDialog::checkEditMarkerResult(const QString &oldName, const QString &newName, const QString &newValue, QString &message) {
+bool EditMarkerGroupDialog::checkEditMarkerResult(const QString& oldName, const QString& newName, const QString& newValue, QString& message) {
     QMap<QString, QString> values = marker->getValues();
 
     if (newName.contains(",")) {
@@ -257,7 +257,7 @@ bool EditMarkerGroupDialog::checkEditMarkerResult(const QString &oldName, const 
     return true;
 }
 
-bool EditMarkerGroupDialog::checkAddMarkerResult(const QString &newName, const QString &newValue, QString &message) {
+bool EditMarkerGroupDialog::checkAddMarkerResult(const QString& newName, const QString& newValue, QString& message) {
     QMap<QString, QString> values = marker->getValues();
 
     if (newName.contains(",")) {
@@ -280,7 +280,7 @@ bool EditMarkerGroupDialog::checkAddMarkerResult(const QString &newName, const Q
 void EditMarkerGroupDialog::accept() {
     marker->setName(markerGroupNameEdit->text());
     {  // check edit/add marker result
-        MarkerEditorWidget *parent = dynamic_cast<MarkerEditorWidget *>(this->parent());
+        MarkerEditorWidget* parent = dynamic_cast<MarkerEditorWidget*>(this->parent());
         QString message;
 
         ParameterState state = marker->hasAdditionalParameter();
@@ -310,11 +310,11 @@ void EditMarkerGroupDialog::accept() {
 /************************************************************************/
 /* MarkerListCfgModel */
 /************************************************************************/
-MarkerListCfgModel::MarkerListCfgModel(QObject *parent, Marker *marker)
+MarkerListCfgModel::MarkerListCfgModel(QObject* parent, Marker* marker)
     : QAbstractTableModel(parent), marker(marker) {
 }
 
-QVariant MarkerListCfgModel::data(const QModelIndex &index, int role) const {
+QVariant MarkerListCfgModel::data(const QModelIndex& index, int role) const {
     if (Qt::DisplayRole == role || Qt::ToolTipRole == role) {
         QString key = marker->getValues().keys()[index.row()];
 
@@ -329,15 +329,15 @@ QVariant MarkerListCfgModel::data(const QModelIndex &index, int role) const {
     return QVariant();
 }
 
-int MarkerListCfgModel::columnCount(const QModelIndex &) const {
+int MarkerListCfgModel::columnCount(const QModelIndex&) const {
     return 2;
 }
 
-int MarkerListCfgModel::rowCount(const QModelIndex &) const {
+int MarkerListCfgModel::rowCount(const QModelIndex&) const {
     return marker->getValues().size();
 }
 
-Qt::ItemFlags MarkerListCfgModel::flags(const QModelIndex &index) const {
+Qt::ItemFlags MarkerListCfgModel::flags(const QModelIndex& index) const {
     Q_UNUSED(index);
     return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
@@ -357,14 +357,14 @@ QVariant MarkerListCfgModel::headerData(int section, Qt::Orientation orientation
     return QVariant();
 }
 
-bool MarkerListCfgModel::setData(const QModelIndex &index, const QVariant &value, int role) {
+bool MarkerListCfgModel::setData(const QModelIndex& index, const QVariant& value, int role) {
     Q_UNUSED(index);
     Q_UNUSED(value);
     Q_UNUSED(role);
     return true;
 }
 
-bool MarkerListCfgModel::removeRows(int row, int count, const QModelIndex &parent) {
+bool MarkerListCfgModel::removeRows(int row, int count, const QModelIndex& parent) {
     Q_UNUSED(parent);
     if (1 != count) {
         return true;
@@ -382,7 +382,7 @@ bool MarkerListCfgModel::removeRows(int row, int count, const QModelIndex &paren
     return true;
 }
 
-void MarkerListCfgModel::addMarker(const QString &valueString, const QString &name) {
+void MarkerListCfgModel::addMarker(const QString& valueString, const QString& name) {
     QMap<QString, QString> allValues = marker->getValues();
     allValues[valueString] = name;
     int newRow = allValues.keys().indexOf(valueString);
@@ -395,7 +395,7 @@ void MarkerListCfgModel::addMarker(const QString &valueString, const QString &na
 /************************************************************************/
 /* EditMarkerDialog */
 /************************************************************************/
-EditMarkerDialog::EditMarkerDialog(bool isNew, const QString &type, const QString &name, const QVariantList &values, QWidget *parent)
+EditMarkerDialog::EditMarkerDialog(bool isNew, const QString& type, const QString& name, const QVariantList& values, QWidget* parent)
     : QDialog(parent), isNew(isNew), type(type), name(name), values(values), editWidget(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930090");
@@ -426,14 +426,14 @@ EditMarkerDialog::EditMarkerDialog(bool isNew, const QString &type, const QStrin
             default:
                 assert(0);
         }
-        QVBoxLayout *layout = qobject_cast<QVBoxLayout *>(this->layout());
+        QVBoxLayout* layout = qobject_cast<QVBoxLayout*>(this->layout());
         layout->insertWidget(1, editWidget);
     }
 }
 
 void EditMarkerDialog::accept() {
     {  // check edit/add marker result
-        EditMarkerGroupDialog *parent = dynamic_cast<EditMarkerGroupDialog *>(this->parent());
+        EditMarkerGroupDialog* parent = dynamic_cast<EditMarkerGroupDialog*>(this->parent());
         QString message;
         QString valueString;
         QVariantList newVals;
@@ -467,7 +467,7 @@ void EditMarkerDialog::accept() {
 /************************************************************************/
 /* EditTypedMarkerWidget */
 /************************************************************************/
-EditIntegerMarkerWidget::EditIntegerMarkerWidget(bool isNew, const QVariantList &values, QWidget *parent)
+EditIntegerMarkerWidget::EditIntegerMarkerWidget(bool isNew, const QVariantList& values, QWidget* parent)
     : EditTypedMarkerWidget(values, parent) {
     setupUi(this);
     lessButton->toggle();
@@ -518,7 +518,7 @@ QVariantList EditIntegerMarkerWidget::getValues() {
     return values;
 }
 
-EditFloatMarkerWidget::EditFloatMarkerWidget(bool isNew, const QVariantList &values, QWidget *parent)
+EditFloatMarkerWidget::EditFloatMarkerWidget(bool isNew, const QVariantList& values, QWidget* parent)
     : EditTypedMarkerWidget(values, parent) {
     setupUi(this);
     lessButton->toggle();
@@ -569,7 +569,7 @@ QVariantList EditFloatMarkerWidget::getValues() {
     return values;
 }
 
-EditStringMarkerWidget::EditStringMarkerWidget(bool isNew, const QVariantList &values, QWidget *parent)
+EditStringMarkerWidget::EditStringMarkerWidget(bool isNew, const QVariantList& values, QWidget* parent)
     : EditTypedMarkerWidget(values, parent) {
     setupUi(this);
     endsButton->toggle();

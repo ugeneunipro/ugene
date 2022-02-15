@@ -46,7 +46,7 @@
 
 namespace U2 {
 
-ADVCreateAnnotationsTask::ADVCreateAnnotationsTask(AnnotatedDNAView *sequenceView, const GObjectReference &aobjRef, const QString &group, const QList<SharedAnnotationData> &data, bool selectNewAnnotations)
+ADVCreateAnnotationsTask::ADVCreateAnnotationsTask(AnnotatedDNAView* sequenceView, const GObjectReference& aobjRef, const QString& group, const QList<SharedAnnotationData>& data, bool selectNewAnnotations)
     : Task(tr("Create annotations task"), TaskFlags_NR_FOSCOE), sequenceView(sequenceView), selectNewAnnotations(selectNewAnnotations) {
     LoadUnloadedDocumentTask::addLoadingSubtask(this, LoadDocumentTaskConfig(true, aobjRef, new LDTObjectFactory(this)));
     createAnnotationsTask = new CreateAnnotationsTask(aobjRef, data, group);
@@ -57,7 +57,7 @@ Task::ReportResult ADVCreateAnnotationsTask::report() {
     if (hasError() || sequenceView.isNull()) {
         return ReportResult_Finished;
     }
-    AnnotationTableObject *annotationObject = createAnnotationsTask->getAnnotationTableObject();
+    AnnotationTableObject* annotationObject = createAnnotationsTask->getAnnotationTableObject();
     if (!sequenceView->getAnnotationObjects().contains(annotationObject)) {
         // for documents loaded during annotation creation object is added here.
         QString errorMessage = sequenceView->addObject(annotationObject);
@@ -66,7 +66,7 @@ Task::ReportResult ADVCreateAnnotationsTask::report() {
         }
     }
     if (!hasError() && selectNewAnnotations) {
-        AnnotationSelection *selection = sequenceView->getAnnotationsSelection();
+        AnnotationSelection* selection = sequenceView->getAnnotationsSelection();
         selection->setAnnotations(createAnnotationsTask->getResultAnnotations());
     }
     return ReportResult_Finished;
@@ -75,7 +75,7 @@ Task::ReportResult ADVCreateAnnotationsTask::report() {
 //////////////////////////////////////////////////////////////////////////
 /// ADVAnnotationCreation
 
-ADVAnnotationCreation::ADVAnnotationCreation(AnnotatedDNAView *c)
+ADVAnnotationCreation::ADVAnnotationCreation(AnnotatedDNAView* c)
     : QObject(c) {
     ctx = c;
     createAction = new QAction(QIcon(":core/images/create_annotation_icon.png"), tr("New annotation..."), this);
@@ -86,7 +86,7 @@ ADVAnnotationCreation::ADVAnnotationCreation(AnnotatedDNAView *c)
 }
 
 void ADVAnnotationCreation::sl_createAnnotation() {
-    ADVSequenceObjectContext *seqCtx = ctx->getActiveSequenceContext();
+    ADVSequenceObjectContext* seqCtx = ctx->getActiveSequenceContext();
     SAFE_POINT(seqCtx != nullptr, "Invalid sequence context detected!", );
     CreateAnnotationModel m;
     m.useUnloadedObjects = true;
@@ -99,13 +99,13 @@ void ADVAnnotationCreation::sl_createAnnotation() {
 
     // The default document and group are derived from the currently selected item.
     // This way we optimize a scenario when a user creates many annotations in a sequence: one after another.
-    AnnotationsTreeView *treeView = ctx->getAnnotationsView();
-    AVItem *annotationItem = treeView->currentItem();
+    AnnotationsTreeView* treeView = ctx->getAnnotationsView();
+    AVItem* annotationItem = treeView->currentItem();
     if (annotationItem != nullptr && !annotationItem->isReadonly() && annotationItem->isSelected()) {
-        AnnotationTableObject *annotationObject = annotationItem->getAnnotationTableObject();
+        AnnotationTableObject* annotationObject = annotationItem->getAnnotationTableObject();
         if (seqCtx->getAnnotationGObjects().contains(annotationObject)) {
             m.annotationObjectRef = annotationObject;
-            AnnotationGroup *annotationGroup = annotationItem->getAnnotationGroup();
+            AnnotationGroup* annotationGroup = annotationItem->getAnnotationGroup();
             if (annotationGroup != annotationObject->getRootGroup()) {
                 m.groupName = annotationGroup->getGroupPath();
             }
@@ -122,7 +122,7 @@ void ADVAnnotationCreation::sl_createAnnotation() {
 
     QList<SharedAnnotationData> data;
     data << m.data;
-    ADVCreateAnnotationsTask *t = new ADVCreateAnnotationsTask(ctx, m.annotationObjectRef, m.groupName, data);
+    ADVCreateAnnotationsTask* t = new ADVCreateAnnotationsTask(ctx, m.annotationObjectRef, m.groupName, data);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 

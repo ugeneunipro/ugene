@@ -41,7 +41,7 @@ public:
     }
 
 protected:
-    BackgroundTask(const QString &_name, TaskFlags f)
+    BackgroundTask(const QString& _name, TaskFlags f)
         : Task(_name, f) {
         setVerboseOnTaskCancel(false);  // do not add messages about the task canceling into the log
     }
@@ -80,7 +80,7 @@ public:
         cancel();
     }
 
-    void run(BackgroundTask<Result> *newTask) {
+    void run(BackgroundTask<Result>* newTask) {
         if (task) {
             task->cancel();
         }
@@ -120,7 +120,7 @@ public:
 
 private:
     virtual void sl_finished() {
-        BackgroundTask<Result> *senderr = dynamic_cast<BackgroundTask<Result> *>(sender());
+        BackgroundTask<Result>* senderr = dynamic_cast<BackgroundTask<Result>*>(sender());
         assert(senderr);
         if (task != senderr) {
             return;
@@ -136,14 +136,14 @@ private:
     }
 
 private:
-    BackgroundTask<Result> *task;
+    BackgroundTask<Result>* task;
     Result result;
     bool success;
     QString lastError;
 
 private:
-    BackgroundTaskRunner(const BackgroundTaskRunner &);
-    BackgroundTaskRunner operator=(const BackgroundTaskRunner &);
+    BackgroundTaskRunner(const BackgroundTaskRunner&);
+    BackgroundTaskRunner operator=(const BackgroundTaskRunner&);
 };
 
 }  // namespace U2

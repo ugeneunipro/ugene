@@ -51,33 +51,33 @@ const QString ReadVariationWorkerFactory::ACTOR_ID("read-variations");
 /************************************************************************/
 /* Worker */
 /************************************************************************/
-ReadVariationWorker::ReadVariationWorker(Actor *p)
+ReadVariationWorker::ReadVariationWorker(Actor* p)
     : GenericDocReader(p), splitMode(ReadVariationProto::NOSPLIT) {
 }
 
 void ReadVariationWorker::init() {
     GenericDocReader::init();
     splitMode = ReadVariationProto::SplitAlleles(getValue<int>(ReadVariationProto::SPLIT_ATTR));
-    IntegralBus *outBus = dynamic_cast<IntegralBus *>(ch);
+    IntegralBus* outBus = dynamic_cast<IntegralBus*>(ch);
     assert(outBus);
     mtype = outBus->getBusType();
 }
 
-Task *ReadVariationWorker::createReadTask(const QString &url, const QString &datasetName) {
+Task* ReadVariationWorker::createReadTask(const QString& url, const QString& datasetName) {
     bool splitAlleles = (splitMode == ReadVariationProto::SPLIT);
     return new ReadVariationTask(url, datasetName, context->getDataStorage(), splitAlleles);
 }
 
-void ReadVariationWorker::onTaskFinished(Task *task) {
-    ReadVariationTask *t = qobject_cast<ReadVariationTask *>(task);
+void ReadVariationWorker::onTaskFinished(Task* task) {
+    ReadVariationTask* t = qobject_cast<ReadVariationTask*>(task);
     MessageMetadata metadata(t->getUrl(), t->getDatasetName());
     context->getMetadataStorage().put(metadata);
-    foreach (const QVariantMap &m, t->takeResults()) {
+    foreach (const QVariantMap& m, t->takeResults()) {
         cache.append(Message(mtype, m, metadata.getId()));
     }
 }
 
-QString ReadVariationWorker::addReadDbObjectToData(const QString &objUrl, QVariantMap &data) {
+QString ReadVariationWorker::addReadDbObjectToData(const QString& objUrl, QVariantMap& data) {
     SharedDbiDataHandler handler = getDbObjectHandlerByUrl(objUrl);
     data[BaseSlots::VARIATION_TRACK_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(handler);
     // return getObjectName(handler, U2Type::VariantTrack);
@@ -87,7 +87,7 @@ QString ReadVariationWorker::addReadDbObjectToData(const QString &objUrl, QVaria
 /************************************************************************/
 /* Task */
 /************************************************************************/
-ReadVariationTask::ReadVariationTask(const QString &url, const QString &_datasetName, DbiDataStorage *storage, bool _splitAlleles)
+ReadVariationTask::ReadVariationTask(const QString& url, const QString& _datasetName, DbiDataStorage* storage, bool _splitAlleles)
     : Task(tr("Read variations from %1").arg(url), TaskFlag_None), url(url), datasetName(_datasetName), storage(storage), splitAlleles(_splitAlleles) {
 }
 
@@ -95,11 +95,11 @@ ReadVariationTask::~ReadVariationTask() {
     results.clear();
 }
 
-const QString &ReadVariationTask::getUrl() const {
+const QString& ReadVariationTask::getUrl() const {
     return url;
 }
 
-const QString &ReadVariationTask::getDatasetName() const {
+const QString& ReadVariationTask::getDatasetName() const {
     return datasetName;
 }
 
@@ -113,7 +113,7 @@ void ReadVariationTask::prepare() {
     int memUseMB = 0;
     QFileInfo file(url);
     memUseMB = file.size() / (1024 * 1024);
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     if (iof->getAdapterId() == BaseIOAdapters::GZIPPED_LOCAL_FILE || iof->getAdapterId() == BaseIOAdapters::GZIPPED_HTTP_FILE) {
         memUseMB *= 2.5;  // Need to calculate compress level
     }
@@ -130,11 +130,11 @@ void ReadVariationTask::run() {
         stateInfo.setError(tr("File '%1' not exists").arg(url));
         return;
     }
-    QList<DocumentFormat *> fs = DocumentUtils::toFormats(DocumentUtils::detectFormat(url));
-    DocumentFormat *format = nullptr;
+    QList<DocumentFormat*> fs = DocumentUtils::toFormats(DocumentUtils::detectFormat(url));
+    DocumentFormat* format = nullptr;
 
-    foreach (DocumentFormat *f, fs) {
-        const QSet<GObjectType> &types = f->getSupportedObjectTypes();
+    foreach (DocumentFormat* f, fs) {
+        const QSet<GObjectType>& types = f->getSupportedObjectTypes();
         if (types.contains(GObjectTypes::VARIANT_TRACK)) {
             format = f;
             break;
@@ -146,7 +146,7 @@ void ReadVariationTask::run() {
         return;
     }
     ioLog.info(tr("Reading variations from %1 [%2]").arg(url).arg(format->getFormatName()));
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     QVariantMap hints;
     if (splitAlleles) {
         hints[DocumentReadingMode_SplitVariationAlleles] = true;
@@ -156,8 +156,8 @@ void ReadVariationTask::run() {
     CHECK_OP(stateInfo, );
     doc->setDocumentOwnsDbiResources(false);
 
-    foreach (GObject *go, doc->findGObjectByType(GObjectTypes::VARIANT_TRACK)) {
-        VariantTrackObject *trackObj = dynamic_cast<VariantTrackObject *>(go);
+    foreach (GObject* go, doc->findGObjectByType(GObjectTypes::VARIANT_TRACK)) {
+        VariantTrackObject* trackObj = dynamic_cast<VariantTrackObject*>(go);
         CHECK_EXT(nullptr != trackObj, taskLog.error(tr("Incorrect track object in %1").arg(url)), )
 
         QVariantMap m;
@@ -199,7 +199,7 @@ ReadVariationProto::ReadVariationProto()
 
     attrs << new Attribute(md, BaseTypes::NUM_TYPE(), true, NOSPLIT);
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap modeMap;
         QString splitStr = ReadVariationWorker::tr("Split");
@@ -216,12 +216,12 @@ ReadVariationProto::ReadVariationProto()
 }
 
 void ReadVariationWorkerFactory::init() {
-    ActorPrototype *proto = new ReadVariationProto();
+    ActorPrototype* proto = new ReadVariationProto();
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_DATASRC(), proto);
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new ReadVariationWorkerFactory());
 }
 
-Worker *ReadVariationWorkerFactory::createWorker(Actor *a) {
+Worker* ReadVariationWorkerFactory::createWorker(Actor* a) {
     return new ReadVariationWorker(a);
 }
 

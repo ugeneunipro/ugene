@@ -43,7 +43,7 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 static int PROCESSING_PROGRESS_WEIGHT(80);
 
-QDScheduler::QDScheduler(const QDRunSettings &_settings)
+QDScheduler::QDScheduler(const QDRunSettings& _settings)
     : Task(tr("QDScheduler"), TaskFlags_NR_FOSCOE), settings(_settings) {
     GCOUNTER(cvar, "QueryDesignerScheduler");
     loadTask = nullptr;
@@ -57,7 +57,7 @@ QDScheduler::QDScheduler(const QDRunSettings &_settings)
     // if annotation table is not added to project
     // annotations will be added in subtask thread
     // => leave some progress bar space for it
-    Document *annObjDoc = settings.annotationsObj == nullptr ? nullptr : settings.annotationsObj->getDocument();
+    Document* annObjDoc = settings.annotationsObj == nullptr ? nullptr : settings.annotationsObj->getDocument();
     int actorsCount = settings.scheme->getActors().size();
 
     if (annObjDoc) {
@@ -71,7 +71,7 @@ QDScheduler::QDScheduler(const QDRunSettings &_settings)
     }
 
     if (settings.annotationsObj == nullptr) {
-        GObject *ao = GObjectUtils::selectObjectByReference(settings.annotationsObjRef, UOF_LoadedAndUnloaded);
+        GObject* ao = GObjectUtils::selectObjectByReference(settings.annotationsObjRef, UOF_LoadedAndUnloaded);
         if (ao == nullptr) {
             setError(tr("Can't find annotation object: %1 in document: %2").arg(settings.annotationsObjRef.objName).arg(settings.annotationsObjRef.docUrl));
             return;
@@ -80,7 +80,7 @@ QDScheduler::QDScheduler(const QDRunSettings &_settings)
         loadTask = new LoadUnloadedDocumentTask(ao->getDocument(), cfg);
         addSubTask(loadTask);
     }
-    QDTask *qdt = new QDTask(currentStep, linker);
+    QDTask* qdt = new QDTask(currentStep, linker);
     addSubTask(qdt);
 }
 
@@ -89,8 +89,8 @@ QDScheduler::~QDScheduler() {
     delete currentStep;
 }
 
-QList<Task *> QDScheduler::onSubTaskFinished(Task *subTask) {
-    QList<Task *> subs;
+QList<Task*> QDScheduler::onSubTaskFinished(Task* subTask) {
+    QList<Task*> subs;
     propagateSubtaskError();
     CHECK_OP(stateInfo, subs);
     if (linker->isCancelled()) {
@@ -102,7 +102,7 @@ QList<Task *> QDScheduler::onSubTaskFinished(Task *subTask) {
     }
 
     if (subTask == loadTask) {
-        settings.annotationsObj = qobject_cast<AnnotationTableObject *>(loadTask->getDocument()->findGObjectByName(settings.annotationsObjRef.objName));
+        settings.annotationsObj = qobject_cast<AnnotationTableObject*>(loadTask->getDocument()->findGObjectByName(settings.annotationsObjRef.objName));
         return subs;
     }
     if (settings.annotationsObj == nullptr) {
@@ -112,7 +112,7 @@ QList<Task *> QDScheduler::onSubTaskFinished(Task *subTask) {
 
     if (currentStep->hasNext()) {
         currentStep->next();
-        QDTask *t = new QDTask(currentStep, linker);
+        QDTask* t = new QDTask(currentStep, linker);
         connect(t, SIGNAL(si_progressChanged()), SLOT(sl_updateProgress()));
         subs.append(t);
     } else {
@@ -124,7 +124,7 @@ QList<Task *> QDScheduler::onSubTaskFinished(Task *subTask) {
 
 #define PUSH_WEIGTH (1.0f - PROCESSING_PROGRESS_WEIGHT / 100.0f)
 void QDScheduler::sl_updateProgress() {
-    Task *sub = qobject_cast<Task *>(sender());
+    Task* sub = qobject_cast<Task*>(sender());
     int numProcessed = currentStep->getLinkedActors().size();
     if (numProcessed < settings.scheme->getActors().size()) {
         stateInfo.progress = progressDelta * (numProcessed + sub->getProgress() / 100.0f);
@@ -140,7 +140,7 @@ Task::ReportResult QDScheduler::report() {
     linker->pushToTable();
     // last task is finished, add annotation table object to view if needed
     if (!settings.viewName.isEmpty()) {
-        GObjectViewWindow *viewWindow = GObjectViewUtils::findViewByName(settings.viewName);
+        GObjectViewWindow* viewWindow = GObjectViewUtils::findViewByName(settings.viewName);
         if (viewWindow != nullptr) {
             viewWindow->getObjectView()->addObject(settings.annotationsObj);
         }
@@ -151,21 +151,21 @@ Task::ReportResult QDScheduler::report() {
 
 // QDResultLinker
 //////////////////////////////////////////////////////////////////////////
-QDResultLinker::QDResultLinker(QDScheduler *_sched)
+QDResultLinker::QDResultLinker(QDScheduler* _sched)
     : scheme(_sched->getSettings().scheme), sched(_sched), cancelled(false), currentStep(nullptr),
       needInit(true), maxMemorySizeInMB(-1) {
-    const AppSettings *appSettings = AppContext::getAppSettings();
+    const AppSettings* appSettings = AppContext::getAppSettings();
     SAFE_POINT_EXT(nullptr != appSettings, taskLog.error(QDScheduler::tr("Invalid applications settings detected")), );
 
-    AppResourcePool *appResourcePool = appSettings->getAppResourcePool();
+    AppResourcePool* appResourcePool = appSettings->getAppResourcePool();
     SAFE_POINT_EXT(nullptr != appResourcePool, taskLog.error(QDScheduler::tr("Invalid users applications settings detected")), );
     maxMemorySizeInMB = AppContext::getAppSettings()->getAppResourcePool()->getMaxMemorySizeInMB();
 }
 
-QString QDResultLinker::prepareAnnotationName(const QDResultUnit &res) {
+QString QDResultLinker::prepareAnnotationName(const QDResultUnit& res) {
     QString aname = res->owner->getActor()->annotateAs();
     if (aname == "<rsite>") {
-        foreach (const U2Qualifier &qual, res->quals) {
+        foreach (const U2Qualifier& qual, res->quals) {
             if (qual.name == "id") {
                 return qual.value;
             }
@@ -175,26 +175,26 @@ QString QDResultLinker::prepareAnnotationName(const QDResultUnit &res) {
 }
 
 // for 1..3, 5..7 returns 1..7
-U2Region uniteRegions(const QVector<U2Region> &regions) {
+U2Region uniteRegions(const QVector<U2Region>& regions) {
     assert(!regions.isEmpty());
     qint64 startPos = regions.first().startPos;
     qint64 endPos = regions.first().endPos();
     for (int i = 1, n = regions.size(); i < n; i++) {
-        const U2Region &r = regions.at(i);
+        const U2Region& r = regions.at(i);
         startPos = qMin(startPos, r.startPos);
         endPos = qMax(endPos, r.endPos());
     }
     return U2Region(startPos, endPos - startPos);
 }
 
-QVector<U2Region> joinRegions(QVector<U2Region> &regions) {
+QVector<U2Region> joinRegions(QVector<U2Region>& regions) {
     QVector<U2Region> result;
     std::sort(regions.begin(), regions.end());
     for (int i = 0, size = regions.size(); i < size;) {
         U2Region joined = regions[i];
         ++i;
         while (i < size && joined.intersects(regions.at(i))) {
-            const U2Region &next = regions.at(i);
+            const U2Region& next = regions.at(i);
             joined = U2Region::containingRegion(joined, next);
             ++i;
         }
@@ -203,23 +203,23 @@ QVector<U2Region> joinRegions(QVector<U2Region> &regions) {
     return result;
 }
 
-QVector<U2Region> QDResultLinker::findLocation(QDStep *step) {
+QVector<U2Region> QDResultLinker::findLocation(QDStep* step) {
     QVector<U2Region> res;
     if (candidates.isEmpty() || cancelled) {
         res << U2Region(0, scheme->getSequence().length());
         return res;
     }
-    QDActor *actor = step->getActor();
-    const QList<QDSchemeUnit *> &units = actor->getSchemeUnits();
-    foreach (QDResultGroup *candidate, candidates) {
+    QDActor* actor = step->getActor();
+    const QList<QDSchemeUnit*>& units = actor->getSchemeUnits();
+    foreach (QDResultGroup* candidate, candidates) {
         bool complement = candidate->strand == QDStrand_ComplementOnly;
         QVector<U2Region> actorLocation;
-        foreach (QDSchemeUnit *su, units) {
+        foreach (QDSchemeUnit* su, units) {
             U2Region suRegion(0, scheme->getSequence().length());
-            foreach (const QDResultUnit &ru, candidate->getResultsList()) {
-                foreach (QDConstraint *c, step->getConstraints(su, ru->owner)) {
-                    QDDistanceConstraint *dc = static_cast<QDDistanceConstraint *>(c);
-                    const U2Region &reg = QDConstraintController::matchLocation(dc, ru, complement);
+            foreach (const QDResultUnit& ru, candidate->getResultsList()) {
+                foreach (QDConstraint* c, step->getConstraints(su, ru->owner)) {
+                    QDDistanceConstraint* dc = static_cast<QDDistanceConstraint*>(c);
+                    const U2Region& reg = QDConstraintController::matchLocation(dc, ru, complement);
                     suRegion = suRegion.intersect(reg);
                 }
             }
@@ -231,7 +231,7 @@ QVector<U2Region> QDResultLinker::findLocation(QDStep *step) {
             }
         }
         if (!actorLocation.isEmpty()) {
-            const U2Region &region4candidate = uniteRegions(actorLocation);
+            const U2Region& region4candidate = uniteRegions(actorLocation);
             res.append(region4candidate);
         }
     }
@@ -239,16 +239,16 @@ QVector<U2Region> QDResultLinker::findLocation(QDStep *step) {
     return res;
 }
 
-void QDResultLinker::updateCandidates(QDStep *step, int &progress) {
+void QDResultLinker::updateCandidates(QDStep* step, int& progress) {
     currentStep = step;
-    QDActor *currentActor = step->getActor();
+    QDActor* currentActor = step->getActor();
     currentResults = currentActor->popResults();
 
     QString actorGroup = scheme->getActorGroup(currentActor);
     if (!actorGroup.isEmpty()) {
-        QList<QDActor *> grpMembers = scheme->getActors(actorGroup);
+        QList<QDActor*> grpMembers = scheme->getActors(actorGroup);
         int unlinkedGroupMembersLeft = grpMembers.size() - 1;
-        foreach (QDActor *a, grpMembers) {
+        foreach (QDActor* a, grpMembers) {
             if (step->getLinkedActors().contains(a)) {
                 unlinkedGroupMembersLeft--;
             }
@@ -260,10 +260,10 @@ void QDResultLinker::updateCandidates(QDStep *step, int &progress) {
         if (unlinkedGroupMembersLeft == 0) {
             formGroupResults();
             processNewResults(progress);
-            QMapIterator<QDActor *, QList<QDResultGroup *>> i(currentGroupResults);
+            QMapIterator<QDActor*, QList<QDResultGroup*>> i(currentGroupResults);
             while (i.hasNext()) {
                 i.next();
-                const QList<QDResultGroup *> &res = i.value();
+                const QList<QDResultGroup*>& res = i.value();
                 qDeleteAll(res);
             }
             currentGroupResults.clear();
@@ -278,10 +278,10 @@ void QDResultLinker::updateCandidates(QDStep *step, int &progress) {
 }
 
 template<class T>
-QList<T> addNextSelection(const QList<T> &prev, const QList<T> &source, QList<QList<T>> &result) {
+QList<T> addNextSelection(const QList<T>& prev, const QList<T>& source, QList<QList<T>>& result) {
     int idx = prev.size() - 1;
     while (idx >= 0) {
-        const T &item = prev.at(idx);
+        const T& item = prev.at(idx);
         int itemIdx = source.indexOf(item);
         if (itemIdx < source.size() - prev.size() + idx) {
             QList<T> newSelection(prev);
@@ -298,7 +298,7 @@ QList<T> addNextSelection(const QList<T> &prev, const QList<T> &source, QList<QL
 }
 
 template<class T>
-void buildSelections(const QList<T> &source, int len, QList<QList<T>> &result) {
+void buildSelections(const QList<T>& source, int len, QList<QList<T>>& result) {
     QList<T> newSelection;
     for (int i = 0; i < len; i++) {
         newSelection.append(source.at(i));
@@ -310,28 +310,28 @@ void buildSelections(const QList<T> &source, int len, QList<QList<T>> &result) {
 }
 
 void QDResultLinker::formGroupResults() {
-    QDActor *currentActor = currentStep->getActor();
+    QDActor* currentActor = currentStep->getActor();
     QString grp = scheme->getActorGroup(currentActor);
-    const QList<QDActor *> &grpMembers = scheme->getActors(grp);
+    const QList<QDActor*>& grpMembers = scheme->getActors(grp);
     assert(grpMembers.size() == currentGroupResults.size());
 
-    QList<QList<QDActor *>> groupSelections;
+    QList<QList<QDActor*>> groupSelections;
     int reqNum = scheme->getRequiredNumber(grp);
     for (int resNum = reqNum, n = grpMembers.size(); resNum <= n; resNum++) {
         buildSelections(grpMembers, resNum, groupSelections);
     }
 
     currentResults.clear();
-    foreach (const QList<QDActor *> &selection, groupSelections) {
+    foreach (const QList<QDActor*>& selection, groupSelections) {
         assert(currentGroupResults.keys().contains(selection.first()));
-        QList<QDResultGroup *> results = currentGroupResults.value(selection.first());
+        QList<QDResultGroup*> results = currentGroupResults.value(selection.first());
         for (int i = 1; i < selection.size(); i++) {
-            QList<QDResultGroup *> newResults;
+            QList<QDResultGroup*> newResults;
             assert(currentGroupResults.keys().contains(selection.at(i)));
-            QList<QDResultGroup *> nextResults = currentGroupResults.value(selection.at(i));
-            foreach (QDResultGroup *res, results) {
-                foreach (QDResultGroup *nextRes, nextResults) {
-                    QDResultGroup *newRes = new QDResultGroup(*res);
+            QList<QDResultGroup*> nextResults = currentGroupResults.value(selection.at(i));
+            foreach (QDResultGroup* res, results) {
+                foreach (QDResultGroup* nextRes, nextResults) {
+                    QDResultGroup* newRes = new QDResultGroup(*res);
                     newRes->add(nextRes->getResultsList());
                     newResults.append(newRes);
                 }
@@ -346,7 +346,7 @@ void QDResultLinker::cleanupCandidates() {
     qDeleteAll(candidates);
     candidates.clear();
 }
-void QDResultLinker::processNewResults(int &progress) {
+void QDResultLinker::processNewResults(int& progress) {
     if (needInit) {
         initCandidates(progress);
         needInit = false;
@@ -389,18 +389,18 @@ void QDResultLinker::processNewResults(int &progress) {
 //     }
 // }
 
-void QDResultLinker::initCandidates(int &progress) {
+void QDResultLinker::initCandidates(int& progress) {
     int i = 0;
-    foreach (QDResultGroup *actorRes, currentResults) {
+    foreach (QDResultGroup* actorRes, currentResults) {
         QDStrandOption candidateStrand = findResultStrand(actorRes);
-        QDResultGroup *newCandidate = new QDResultGroup(candidateStrand);
+        QDResultGroup* newCandidate = new QDResultGroup(candidateStrand);
         newCandidate->add(actorRes->getResultsList());
         candidates.append(newCandidate);
         progress = 100 * ++i / currentResults.size();
     }
 }
 
-QDStrandOption QDResultLinker::findResultStrand(QDResultGroup *actorRes) {
+QDStrandOption QDResultLinker::findResultStrand(QDResultGroup* actorRes) {
     QDStrandOption curActorStrand = currentStep->getActor()->getStrand();
     QDStrandOption resStrand = QDStrand_Both;
     if (curActorStrand == QDStrand_DirectOnly) {
@@ -419,12 +419,12 @@ QDStrandOption QDResultLinker::findResultStrand(QDResultGroup *actorRes) {
     return resStrand;
 }
 
-void QDResultLinker::updateCandidates(int &progress) {
-    QList<QDResultGroup *> newCandidates;
+void QDResultLinker::updateCandidates(int& progress) {
+    QList<QDResultGroup*> newCandidates;
     int i = 0;
 
-    foreach (QDResultGroup *candidate, candidates) {
-        foreach (QDResultGroup *actorRes, currentResults) {
+    foreach (QDResultGroup* candidate, candidates) {
+        foreach (QDResultGroup* actorRes, currentResults) {
             if (sched->isCanceled()) {
                 cleanupCandidates();
                 qDeleteAll(newCandidates);
@@ -465,7 +465,7 @@ void QDResultLinker::updateCandidates(int &progress) {
             }
 
             if (matches) {
-                QDResultGroup *newCandidate = new QDResultGroup(*candidate);
+                QDResultGroup* newCandidate = new QDResultGroup(*candidate);
                 newCandidate->add(actorRes->getResultsList());
 #ifdef DEBUG
                 if (newCandidate->strand == QDStrand_DirectOnly) {
@@ -497,7 +497,7 @@ void QDResultLinker::updateCandidates(int &progress) {
     candidates = newCandidates;
 }
 
-bool QDResultLinker::canAdd(QDResultGroup *actorResult, QDResultGroup *candidate, bool complement) const {
+bool QDResultLinker::canAdd(QDResultGroup* actorResult, QDResultGroup* candidate, bool complement) const {
     QList<QDResultUnit> actorResults;
     QList<QDResultUnit> candidateResults;
     if (complement) {
@@ -507,10 +507,10 @@ bool QDResultLinker::canAdd(QDResultGroup *actorResult, QDResultGroup *candidate
         actorResults = actorResult->getResultsList();
         candidateResults = candidate->getResultsList();
     }
-    foreach (const QDResultUnit &actorResUnit, actorResults) {
-        foreach (const QDResultUnit &candidateResUnit, candidateResults) {
-            const QList<QDConstraint *> &cl = currentStep->getConstraints(actorResUnit->owner, candidateResUnit->owner);
-            foreach (QDConstraint *c, cl) {
+    foreach (const QDResultUnit& actorResUnit, actorResults) {
+        foreach (const QDResultUnit& candidateResUnit, candidateResults) {
+            const QList<QDConstraint*>& cl = currentStep->getConstraints(actorResUnit->owner, candidateResUnit->owner);
+            foreach (QDConstraint* c, cl) {
                 if (!QDConstraintController::match(c, actorResUnit, candidateResUnit, complement)) {
                     return false;
                 }
@@ -520,21 +520,21 @@ bool QDResultLinker::canAdd(QDResultGroup *actorResult, QDResultGroup *candidate
     return true;
 }
 
-QList<QDResultUnit> QDResultLinker::prepareComplResults(QDResultGroup *src) const {
+QList<QDResultUnit> QDResultLinker::prepareComplResults(QDResultGroup* src) const {
     QList<QDResultUnit> res = src->getResultsList();
-    QList<QDActor *> simActors;
+    QList<QDActor*> simActors;
     foreach (QDResultUnit ru, res) {
-        QDActor *a = ru->owner->getActor();
+        QDActor* a = ru->owner->getActor();
         if (a->isSimmetric() && !simActors.contains(a)) {
             simActors.append(a);
 
-            QList<QDSchemeUnit *> units = a->getSchemeUnits();
+            QList<QDSchemeUnit*> units = a->getSchemeUnits();
             for (int i = 0, n = units.size() / 2; i < n; i++) {
-                QDSchemeUnit *begin = units[i];
-                QDSchemeUnit *end = units[units.size() - i - 1];
+                QDSchemeUnit* begin = units[i];
+                QDSchemeUnit* end = units[units.size() - i - 1];
                 QMutableListIterator<QDResultUnit> it(res);
                 while (it.hasNext()) {
-                    QDResultUnit &resUn = it.next();
+                    QDResultUnit& resUn = it.next();
                     if (resUn->owner == begin) {
                         resUn->owner = end;
                     } else if (resUn->owner == end) {
@@ -563,20 +563,20 @@ void QDResultLinker::prepareAnnotations() {
     perfLog.details(QString("push to table in %1 ms").arg(GTimer::millisBetween(start, end)));
 }
 
-void QDResultLinker::createAnnotations(const QString &groupPrefix) {
+void QDResultLinker::createAnnotations(const QString& groupPrefix) {
     int counter = 0;
-    foreach (QDResultGroup *candidate, candidates) {
+    foreach (QDResultGroup* candidate, candidates) {
         if (sched->isCanceled()) {
             cleanupCandidates();
             return;
         }
-        const QString &grpName = QString("%1 %2")
+        const QString& grpName = QString("%1 %2")
                                      .arg(groupPrefix)
                                      .arg(QString::number(++counter));
 
         QList<SharedAnnotationData> groupAnns;
 
-        foreach (const QDResultUnit &res, candidate->getResultsList()) {
+        foreach (const QDResultUnit& res, candidate->getResultsList()) {
             SharedAnnotationData a = result2annotation.value(res, SharedAnnotationData());
             if (a == SharedAnnotationData()) {
                 SharedAnnotationData ad(new AnnotationData);
@@ -596,12 +596,12 @@ void QDResultLinker::createAnnotations(const QString &groupPrefix) {
     candidates.clear();
 }
 
-void QDResultLinker::createMergedAnnotations(const QString &groupPrefix) {
-    const QDRunSettings &settings = sched->getSettings();
+void QDResultLinker::createMergedAnnotations(const QString& groupPrefix) {
+    const QDRunSettings& settings = sched->getSettings();
     int offset = settings.offset;
     U2Region seqRange(0, scheme->getSequence().length());
     QList<SharedAnnotationData> anns;
-    foreach (QDResultGroup *candidate, candidates) {
+    foreach (QDResultGroup* candidate, candidates) {
         if (sched->isCanceled()) {
             cleanupCandidates();
             return;
@@ -609,7 +609,7 @@ void QDResultLinker::createMergedAnnotations(const QString &groupPrefix) {
 
         qint64 startPos = candidate->getResultsList().first()->region.startPos;
         qint64 endPos = candidate->getResultsList().first()->region.endPos();
-        foreach (const QDResultUnit &ru, candidate->getResultsList()) {
+        foreach (const QDResultUnit& ru, candidate->getResultsList()) {
             startPos = qMin(startPos, ru->region.startPos);
             endPos = qMax(endPos, ru->region.endPos());
         }
@@ -629,11 +629,11 @@ void QDResultLinker::createMergedAnnotations(const QString &groupPrefix) {
 }
 
 void QDResultLinker::pushToTable() {
-    const QDRunSettings &settings = sched->getSettings();
-    AnnotationTableObject *ao = settings.annotationsObj;
+    const QDRunSettings& settings = sched->getSettings();
+    AnnotationTableObject* ao = settings.annotationsObj;
     SAFE_POINT(nullptr != ao, "Invalid annotation table detected!", );
 
-    AnnotationGroup *root = ao->getRootGroup();
+    AnnotationGroup* root = ao->getRootGroup();
     if (!settings.groupName.isEmpty()) {
         root = root->getSubgroup(settings.groupName, true);
     }
@@ -641,7 +641,7 @@ void QDResultLinker::pushToTable() {
     QMapIterator<QString, QList<SharedAnnotationData>> iter(annotations);
     while (iter.hasNext()) {
         iter.next();
-        AnnotationGroup *ag = root;
+        AnnotationGroup* ag = root;
         if (!iter.key().isEmpty()) {
             ag = root->getSubgroup(iter.key(), true);
         }
@@ -653,7 +653,7 @@ void QDResultLinker::pushToTable() {
 
 // QDStep
 //////////////////////////////////////////////////////////////////////////
-QDStep::QDStep(QDScheme *_scheme)
+QDStep::QDStep(QDScheme* _scheme)
     : scheme(_scheme) {
     assert(!scheme->getActors().isEmpty());
     actor = scheme->getActors().first();
@@ -661,27 +661,27 @@ QDStep::QDStep(QDScheme *_scheme)
 }
 
 void QDStep::initTotalMap() {
-    QList<QDSchemeUnit *> units;
-    foreach (QDActor const *a, scheme->getActors()) {
+    QList<QDSchemeUnit*> units;
+    foreach (QDActor const* a, scheme->getActors()) {
         units << a->getSchemeUnits();
     }
     for (int srcIdx = 0; srcIdx < units.size() - 1; srcIdx++) {
         for (int dstIdx = srcIdx + 1; dstIdx < units.size(); dstIdx++) {
-            QDSchemeUnit *srcSu = units.at(srcIdx);
-            QDSchemeUnit *dstSu = units.at(dstIdx);
-            QList<QDConstraint *> sharedConstraints = scheme->getConstraints(srcSu, dstSu);
+            QDSchemeUnit* srcSu = units.at(srcIdx);
+            QDSchemeUnit* dstSu = units.at(dstIdx);
+            QList<QDConstraint*> sharedConstraints = scheme->getConstraints(srcSu, dstSu);
             // build rough constraint if there is no direct constraints
             if (sharedConstraints.isEmpty()) {
-                const QList<QDPath *> &paths = scheme->findPaths(srcSu, dstSu);
+                const QList<QDPath*>& paths = scheme->findPaths(srcSu, dstSu);
                 // use only paths containing no linked units except source(destination)
-                QList<QDPath *> allowedPaths = paths;
+                QList<QDPath*> allowedPaths = paths;
                 // remove paths containing optional items
-                QMutableListIterator<QDPath *> allowedPathIterator(allowedPaths);
+                QMutableListIterator<QDPath*> allowedPathIterator(allowedPaths);
                 while (allowedPathIterator.hasNext()) {
-                    QDPath *p = allowedPathIterator.next();
-                    foreach (QDSchemeUnit *su, p->getSchemeUnits()) {
+                    QDPath* p = allowedPathIterator.next();
+                    foreach (QDSchemeUnit* su, p->getSchemeUnits()) {
                         if (su != srcSu && su != dstSu) {
-                            QDActor *a = su->getActor();
+                            QDActor* a = su->getActor();
                             QString group = scheme->getActorGroup(a);
                             if (!group.isEmpty()) {
                                 allowedPathIterator.remove();
@@ -691,12 +691,12 @@ void QDStep::initTotalMap() {
                 }
                 // create overall constraint from list of paths between srcSu and dstSu
                 if (!allowedPaths.isEmpty()) {
-                    QDDistanceConstraint *overallConstraint = allowedPaths.first()->toConstraint();
+                    QDDistanceConstraint* overallConstraint = allowedPaths.first()->toConstraint();
                     int min = overallConstraint->getMin();
                     int max = overallConstraint->getMax();
                     for (int allowedPathIndex = 1, n = allowedPaths.size(); allowedPathIndex < n; allowedPathIndex++) {
-                        QDPath *curPath = allowedPaths.at(allowedPathIndex);
-                        QDDistanceConstraint *curDc = curPath->toConstraint();
+                        QDPath* curPath = allowedPaths.at(allowedPathIndex);
+                        QDDistanceConstraint* curDc = curPath->toConstraint();
 
                         if (curDc->getSource() != overallConstraint->getSource()) {
                             curDc->invert();
@@ -717,22 +717,22 @@ void QDStep::initTotalMap() {
     }
 }
 
-QList<QDConstraint *> QDStep::getConstraints(QDSchemeUnit *subj, QDSchemeUnit *linked) const {
-    const QPair<QDSchemeUnit *, QDSchemeUnit *> &pair = qMakePair(subj, linked);
+QList<QDConstraint*> QDStep::getConstraints(QDSchemeUnit* subj, QDSchemeUnit* linked) const {
+    const QPair<QDSchemeUnit*, QDSchemeUnit*>& pair = qMakePair(subj, linked);
     assert(constraintsMap.contains(pair));
     return constraintsMap.value(pair);
 }
 
 void QDStep::next() {
     linkedActors.append(actor);
-    const QList<QDActor *> &actors = scheme->getActors();
+    const QList<QDActor*>& actors = scheme->getActors();
     int idx = actors.indexOf(actor) + 1;
     assert(idx >= 0 && idx < actors.size());
     actor = actors.at(idx);
 }
 
 bool QDStep::hasNext() const {
-    const QList<QDActor *> &actors = scheme->getActors();
+    const QList<QDActor*>& actors = scheme->getActors();
     int idx = actors.indexOf(actor);
     if (++idx >= actors.size()) {
         return false;
@@ -741,7 +741,7 @@ bool QDStep::hasNext() const {
 }
 
 bool QDStep::hasPrev() const {
-    const QList<QDActor *> &actors = scheme->getActors();
+    const QList<QDActor*>& actors = scheme->getActors();
     int idx = actors.indexOf(actor);
     if (idx > 0) {
         return true;
@@ -751,7 +751,7 @@ bool QDStep::hasPrev() const {
 
 // QDTask
 //////////////////////////////////////////////////////////////////////////
-QDTask::QDTask(QDStep *_step, QDResultLinker *_linker)
+QDTask::QDTask(QDStep* _step, QDResultLinker* _linker)
     : Task(tr("Query task: %1").arg(_step->getActor()->getParameters()->getLabel()), TaskFlag_NoRun), step(_step), linker(_linker), runTask(nullptr) {
     tpm = Progress_Manual;
     stateInfo.progress = 0;
@@ -760,8 +760,8 @@ QDTask::QDTask(QDStep *_step, QDResultLinker *_linker)
     addSubTask(findLocationTask);
 }
 
-QList<Task *> QDTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> subs;
+QList<Task*> QDTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> subs;
     if (subTask->hasError()) {
         propagateSubtaskError();
         return subs;
@@ -771,7 +771,7 @@ QList<Task *> QDTask::onSubTaskFinished(Task *subTask) {
     }
     if (subTask == findLocationTask) {
         stateInfo.progress = 10;
-        const QVector<U2Region> &searchLocation = findLocationTask->getSearchLocation();
+        const QVector<U2Region>& searchLocation = findLocationTask->getSearchLocation();
         curActorLocation = findLocationTask->getResultLocation();
         if (searchLocation.isEmpty()) {
             return subs;
@@ -785,7 +785,7 @@ QList<Task *> QDTask::onSubTaskFinished(Task *subTask) {
         stateInfo.progress = 50;
         assert(!curActorLocation.isEmpty());
         step->getActor()->filterResults(curActorLocation);
-        QDLinkResultsTask *linkTask = new QDLinkResultsTask(step, linker);
+        QDLinkResultsTask* linkTask = new QDLinkResultsTask(step, linker);
         connect(linkTask, SIGNAL(si_progressChanged()), SLOT(sl_updateProgress()));
         subs.append(linkTask);
     }
@@ -799,7 +799,7 @@ static const int RUN_START = FIND_LOC_PROGRESS_WEIGHT * 100;
 static const int LINK_START = (FIND_LOC_PROGRESS_WEIGHT + RUN_TASK_PROGRESS_WEIGHT) * 100;
 
 void QDTask::sl_updateProgress() {
-    Task *sub = qobject_cast<Task *>(sender());
+    Task* sub = qobject_cast<Task*>(sender());
     if (sub == findLocationTask) {
     } else if (sub == runTask) {
         stateInfo.progress = RUN_START + sub->getProgress() * RUN_TASK_PROGRESS_WEIGHT;
@@ -813,10 +813,10 @@ void QDTask::sl_updateProgress() {
 const int QDFindLocationTask::REGION_DELTA(10);
 
 void QDFindLocationTask::run() {
-    const U2Region &seqReg = linker->getScheduler()->getSettings().region;
+    const U2Region& seqReg = linker->getScheduler()->getSettings().region;
     if (step->hasPrev()) {
         resultLocation = linker->findLocation(step);
-        foreach (const U2Region &r, resultLocation) {
+        foreach (const U2Region& r, resultLocation) {
             qint64 startPos = qMax(seqReg.startPos, r.startPos - REGION_DELTA);
             qint64 endPos = qMin(seqReg.endPos(), r.endPos() + REGION_DELTA);
             U2Region extended(startPos, endPos - startPos);

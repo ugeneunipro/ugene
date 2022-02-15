@@ -48,12 +48,12 @@ public:
     void prepare();
     Task::ReportResult report();
 
-    static void sortByScore(QList<SmithWatermanResult> &resultsForSort);
+    static void sortByScore(QList<SmithWatermanResult>& resultsForSort);
 
 private:
     SmithWatermanSettings s;
     bool parseExpected_res();
-    bool toInt(QString &str, int &num);
+    bool toInt(QString& str, int& num);
 
     QByteArray patternSeq;
     QByteArray searchSeq;
@@ -70,7 +70,7 @@ private:
     QString resultDocContextName;
     QList<SWresult> expectedRes;
 
-    Task *swAlgorithmTask;
+    Task* swAlgorithmTask;
 
     QString machinePath;
 };
@@ -100,7 +100,7 @@ private:
     QString resultDocContextName;
     QList<SWresult> expectedRes;
 
-    Task *swAlgorithmTask;
+    Task* swAlgorithmTask;
 };
 
 }  // namespace U2

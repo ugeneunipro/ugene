@@ -38,10 +38,10 @@ enum AnnotationModificationType {
 
 class U2CORE_EXPORT AnnotationModification {
 public:
-    AnnotationModification(AnnotationModificationType type, Annotation *a);
+    AnnotationModification(AnnotationModificationType type, Annotation* a);
 
     AnnotationModificationType type;
-    Annotation *annotation;
+    Annotation* annotation;
 
 protected:
     QVariant additionalData;
@@ -49,16 +49,16 @@ protected:
 
 class U2CORE_EXPORT QualifierModification : public AnnotationModification {
 public:
-    QualifierModification(AnnotationModificationType type, Annotation *a, const U2Qualifier &q);
+    QualifierModification(AnnotationModificationType type, Annotation* a, const U2Qualifier& q);
 
     U2Qualifier getQualifier() const;
 };
 
 class U2CORE_EXPORT AnnotationGroupModification : public AnnotationModification {
 public:
-    AnnotationGroupModification(AnnotationModificationType type, Annotation *a, AnnotationGroup *g);
+    AnnotationGroupModification(AnnotationModificationType type, Annotation* a, AnnotationGroup* g);
 
-    AnnotationGroup *getGroup() const;
+    AnnotationGroup* getGroup() const;
 };
 
 }  // namespace U2

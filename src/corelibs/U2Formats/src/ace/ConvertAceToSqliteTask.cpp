@@ -43,7 +43,7 @@
 
 namespace U2 {
 
-ConvertAceToSqliteTask::ConvertAceToSqliteTask(const GUrl &_sourceUrl, const U2DbiRef &dstDbiRef)
+ConvertAceToSqliteTask::ConvertAceToSqliteTask(const GUrl& _sourceUrl, const U2DbiRef& dstDbiRef)
     : Task(tr("Convert ACE to UGENE database (%1)").arg(_sourceUrl.fileName()), TaskFlag_None),
       sourceUrl(_sourceUrl),
       dstDbiRef(dstDbiRef),
@@ -62,7 +62,7 @@ void ConvertAceToSqliteTask::run() {
     qint64 startTime = TimeCounter::getCounter();
 
     QScopedPointer<IOAdapter> ioAdapter;
-    IOAdapterFactory *factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(sourceUrl));
+    IOAdapterFactory* factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(sourceUrl));
     SAFE_POINT_EXT(factory, setError(tr("IOAdapterFactory is NULL")), );
     ioAdapter.reset(factory->createIOAdapter());
 
@@ -81,7 +81,7 @@ void ConvertAceToSqliteTask::run() {
 
     dbi = dbiHandle.dbi;
     SAFE_POINT(dbi, tr("DBI is NULL"), );
-    U2ObjectDbi *objDbi = dbi->getObjectDbi();
+    U2ObjectDbi* objDbi = dbi->getObjectDbi();
     SAFE_POINT(objDbi, tr("Object DBI is NULL"), );
 
     stateInfo.setDescription("Importing");
@@ -129,10 +129,10 @@ QMap<U2Sequence, U2Assembly> ConvertAceToSqliteTask::getImportedObjects() const 
     return importedObjects;
 }
 
-qint64 ConvertAceToSqliteTask::importAssemblies(IOAdapter &ioAdapter) {
+qint64 ConvertAceToSqliteTask::importAssemblies(IOAdapter& ioAdapter) {
     qint64 totalReadsImported = 0;
 
-    U2SequenceDbi *seqDbi = dbi->getSequenceDbi();
+    U2SequenceDbi* seqDbi = dbi->getSequenceDbi();
     SAFE_POINT(seqDbi, tr("Sequence DBI is NULL"), totalReadsImported);
 
     U2OpStatusChildImpl os(&stateInfo, U2OpStatusMapping(0, 50));
@@ -175,7 +175,7 @@ qint64 ConvertAceToSqliteTask::importAssemblies(IOAdapter &ioAdapter) {
         assembly.visualName = aceAssembly.getName();
         assembly.referenceId = reference.id;
 
-        U2AssemblyReadsImportInfo &importInfo = importInfos[countImportedAssembly];
+        U2AssemblyReadsImportInfo& importInfo = importInfos[countImportedAssembly];
         AssemblyImporter importer(stateInfo);
         importer.createAssembly(dstDbiRef, U2ObjectDbi::ROOT_FOLDER, nullptr, importInfo, assembly);
         CHECK_OP(stateInfo, totalReadsImported);
@@ -209,11 +209,11 @@ qint64 ConvertAceToSqliteTask::packReads() {
         progressStep = 40;
     }
 
-    U2AssemblyDbi *assDbi = dbi->getAssemblyDbi();
+    U2AssemblyDbi* assDbi = dbi->getAssemblyDbi();
     SAFE_POINT(assDbi, tr("Assembly DBI is NULL"), 0);
 
     foreach (int assemblyNum, assemblies.keys()) {
-        U2AssemblyReadsImportInfo &importInfo = importInfos[assemblyNum];
+        U2AssemblyReadsImportInfo& importInfo = importInfos[assemblyNum];
         // Pack reads only if it were not packed on import
         if (!importInfo.packed) {
             taskLog.details(tr("Packing reads for assembly '%1' (%2 of %3)")
@@ -241,12 +241,12 @@ void ConvertAceToSqliteTask::updateAttributeDbi() {
         progressStep = 10;
     }
 
-    U2AttributeDbi *attrDbi = dbi->getAttributeDbi();
+    U2AttributeDbi* attrDbi = dbi->getAttributeDbi();
     SAFE_POINT(attrDbi, tr("Attribute DBI is NULL"), );
 
     foreach (int assemblyNum, assemblies.keys()) {
-        const U2Assembly &assembly = assemblies[assemblyNum];
-        const Assembly::Sequence &reference = referencesData[assemblyNum];
+        const U2Assembly& assembly = assemblies[assemblyNum];
+        const Assembly::Sequence& reference = referencesData[assemblyNum];
         {
             U2IntegerAttribute lenAttr;
             lenAttr.objectId = assembly.id;
@@ -257,10 +257,10 @@ void ConvertAceToSqliteTask::updateAttributeDbi() {
             CHECK_OP(stateInfo, );
         }
 
-        U2AssemblyReadsImportInfo &importInfo = importInfos[assemblyNum];
+        U2AssemblyReadsImportInfo& importInfo = importInfos[assemblyNum];
         qint64 maxProw = importInfo.packStat.maxProw;
         qint64 readsCount = importInfo.packStat.readsCount;
-        const U2AssemblyCoverageStat &coverageStat = importInfo.coverageInfo.coverage;
+        const U2AssemblyCoverageStat& coverageStat = importInfo.coverageInfo.coverage;
         if (maxProw > 0) {
             U2IntegerAttribute maxProwAttr;
             maxProwAttr.objectId = assembly.id;

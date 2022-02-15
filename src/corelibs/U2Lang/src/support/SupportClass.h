@@ -40,13 +40,13 @@ typedef QList<WorkflowNotification> NotificationsList;
 
 class U2LANG_EXPORT WorkflowNotification {
 public:
-    WorkflowNotification(const QString &message = "", const QString &actorId = "", const QString &type = U2_ERROR);
+    WorkflowNotification(const QString& message = "", const QString& actorId = "", const QString& type = U2_ERROR);
     QString message;
     QString actorId;
     QString type;
     QString port;
 
-    bool operator==(const WorkflowNotification &other) const;
+    bool operator==(const WorkflowNotification& other) const;
 
     static const QString U2_ERROR;
     static const QString U2_WARNING;

@@ -22,8 +22,6 @@
 #ifndef _U2_DOCUMENT_FORMAT_SELECTOR_CONTROLLER_
 #define _U2_DOCUMENT_FORMAT_SELECTOR_CONTROLLER_
 
-#include <ui_DocumentFormatSelectorDialog.h>
-
 #include <QComboBox>
 #include <QRadioButton>
 #include <QToolButton>
@@ -31,27 +29,29 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentUtils.h>
 
+#include <ui_DocumentFormatSelectorDialog.h>
+
 namespace U2 {
 
 class LabelClickProvider : public QObject {
     Q_OBJECT
 public:
-    LabelClickProvider(QLabel *label, QRadioButton *rb);
+    LabelClickProvider(QLabel* label, QRadioButton* rb);
 
 private:
-    bool eventFilter(QObject *object, QEvent *event);
+    bool eventFilter(QObject* object, QEvent* event);
 
-    QLabel *label;
-    QRadioButton *rb;
+    QLabel* label;
+    QRadioButton* rb;
 };
 
 class DocumentFormatSelectorController : public QDialog, public Ui_DocumentFormatSelectorDialog {
     Q_OBJECT
 
-    DocumentFormatSelectorController(QList<FormatDetectionResult> &results, QWidget *p);
+    DocumentFormatSelectorController(QList<FormatDetectionResult>& results, QWidget* p);
 
 public:
-    static int selectResult(const GUrl &url, const QString &rawDataPreview, QList<FormatDetectionResult> &results);
+    static int selectResult(const GUrl& url, const QString& rawDataPreview, QList<FormatDetectionResult>& results);
     static QString score2Text(int score);
 
 private slots:
@@ -60,10 +60,10 @@ private slots:
 private:
     int getSelectedFormatIdx() const;
 
-    QList<QRadioButton *> radioButtons;
-    QList<QToolButton *> moreButtons;
-    QComboBox *userSelectedFormat;
-    const QList<FormatDetectionResult> &formatDetectionResults;
+    QList<QRadioButton*> radioButtons;
+    QList<QToolButton*> moreButtons;
+    QComboBox* userSelectedFormat;
+    const QList<FormatDetectionResult>& formatDetectionResults;
 };
 
 }  // namespace U2

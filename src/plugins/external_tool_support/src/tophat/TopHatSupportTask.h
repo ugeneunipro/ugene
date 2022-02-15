@@ -41,11 +41,11 @@ class TopHatSupportTask : public ExternalToolSupportTask {
     Q_OBJECT
 
 public:
-    TopHatSupportTask(const TopHatSettings &settings);
+    TopHatSupportTask(const TopHatSettings& settings);
     ~TopHatSupportTask();
 
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
     Task::ReportResult report();
     QStringList getOutputFiles() const;
     QString getOutBamUrl() const;
@@ -63,9 +63,9 @@ private:
         DELETIONS
     };
 
-    void registerOutputFile(FileRole role, const QString &url);
+    void registerOutputFile(FileRole role, const QString& url);
     void registerOutputFiles();
-    void renameOutputFile(FileRole role, const QString &newUrl);
+    void renameOutputFile(FileRole role, const QString& newUrl);
     void renameOutputFiles();
 
     TopHatSettings settings;
@@ -74,10 +74,10 @@ private:
     QPointer<Document> tmpDocPaired;
     QString workingDirectory;
 
-    SaveDocumentTask *saveTmpDocTask;
-    SaveDocumentTask *savePairedTmpDocTask;
-    ExternalToolRunTask *topHatExtToolTask;
-    Workflow::ReadDocumentTask *readAssemblyOutputTask;
+    SaveDocumentTask* saveTmpDocTask;
+    SaveDocumentTask* savePairedTmpDocTask;
+    ExternalToolRunTask* topHatExtToolTask;
+    Workflow::ReadDocumentTask* readAssemblyOutputTask;
 
     /** Specifies whether a document, or both documents (in case of paired reads) were saved */
     bool tmpDocSaved;
@@ -86,17 +86,17 @@ private:
     Workflow::SharedDbiDataHandler acceptedHits;
     QMap<FileRole, QString> outputFiles;
 
-    ExternalToolSupportTask *bowtieIndexTask;
+    ExternalToolSupportTask* bowtieIndexTask;
 
     static const QString outSubDirBaseName;
 
 private:
     QString setupTmpDir();
-    SaveDocumentTask *createSaveTask(const QString &url, QPointer<Document> &doc, const QList<Workflow::SharedDbiDataHandler> &seqs);
-    ExternalToolRunTask *runTophat();
+    SaveDocumentTask* createSaveTask(const QString& url, QPointer<Document>& doc, const QList<Workflow::SharedDbiDataHandler>& seqs);
+    ExternalToolRunTask* runTophat();
 
-    ExternalToolSupportTask *createIndexTask();
+    ExternalToolSupportTask* createIndexTask();
 };
-}    // namespace U2
+}  // namespace U2
 
 #endif

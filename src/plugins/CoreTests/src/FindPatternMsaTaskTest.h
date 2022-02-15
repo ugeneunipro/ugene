@@ -45,17 +45,17 @@ public:
 
 private:
     QString inputObjectName;
-    MultipleSequenceAlignmentObject *msaObj;
-    Document *doc;
+    MultipleSequenceAlignmentObject* msaObj;
+    Document* doc;
     FindPatternMsaSettings settings;
-    FindPatternMsaTask *findPatternTask;
+    FindPatternMsaTask* findPatternTask;
     int expectedResultsSize;
     QList<U2Region> regionsToCheck;
 };
 
 class FindPatternMsaTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

@@ -38,7 +38,7 @@ namespace HI {
 #define GT_CLASS_NAME "GTMenu"
 
 #define GT_METHOD_NAME "clickMainMenuItem"
-void GTMenuPrivate::clickMainMenuItem(GUITestOpStatus &os, const QStringList &itemPath, GTGlobals::UseMethod method, Qt::MatchFlag matchFlag) {
+void GTMenuPrivate::clickMainMenuItem(GUITestOpStatus& os, const QStringList& itemPath, GTGlobals::UseMethod method, Qt::MatchFlag matchFlag) {
     GT_CHECK(itemPath.count() > 1, QString("Menu item path is too short: { %1 }").arg(itemPath.join(" -> ")));
     qWarning("clickMainMenuItem is going to click menu: '%s'", itemPath.join(" -> ").toLocal8Bit().constData());
 
@@ -50,7 +50,7 @@ void GTMenuPrivate::clickMainMenuItem(GUITestOpStatus &os, const QStringList &it
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkMainMenuItemState"
-void GTMenuPrivate::checkMainMenuItemState(GUITestOpStatus &os, const QStringList &itemPath, PopupChecker::CheckOption expectedState) {
+void GTMenuPrivate::checkMainMenuItemState(GUITestOpStatus& os, const QStringList& itemPath, PopupChecker::CheckOption expectedState) {
     GT_CHECK(itemPath.count() > 1, QString("Menu item path is too short: { %1 }").arg(itemPath.join(" -> ")));
 
 #ifdef Q_OS_DARWIN
@@ -66,7 +66,7 @@ void GTMenuPrivate::checkMainMenuItemState(GUITestOpStatus &os, const QStringLis
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkMainMenuItemState"
-void GTMenuPrivate::checkMainMenuItemsState(GUITestOpStatus &os, const QStringList &menuPath, const QStringList &itemsNames, PopupChecker::CheckOption expectedState) {
+void GTMenuPrivate::checkMainMenuItemsState(GUITestOpStatus& os, const QStringList& menuPath, const QStringList& itemsNames, PopupChecker::CheckOption expectedState) {
     GT_CHECK(menuPath.count() > 0, QString("Menu path is too short: { %1 }").arg(menuPath.join(" -> ")));
     GT_CHECK(itemsNames.count() > 0, QString("There are no menu items to check: %1").arg(itemsNames.join(", ")));
 
@@ -83,13 +83,13 @@ void GTMenuPrivate::checkMainMenuItemsState(GUITestOpStatus &os, const QStringLi
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "showMainMenu"
-void GTMenuPrivate::showMainMenu(GUITestOpStatus &os, const QString &menuName, GTGlobals::UseMethod m) {
-    QMainWindow *mainWindow = NULL;
-    QList<QAction *> resultList;
-    foreach (QWidget *parent, GTMainWindow::getMainWindowsAsWidget(os)) {
-        QList<QAction *> list = parent->findChildren<QAction *>();
+void GTMenuPrivate::showMainMenu(GUITestOpStatus& os, const QString& menuName, GTGlobals::UseMethod m) {
+    QMainWindow* mainWindow = NULL;
+    QList<QAction*> resultList;
+    foreach (QWidget* parent, GTMainWindow::getMainWindowsAsWidget(os)) {
+        QList<QAction*> list = parent->findChildren<QAction*>();
         bool isContainMenu = false;
-        for (QAction *act : qAsConst(list)) {
+        for (QAction* act : qAsConst(list)) {
             QString name = act->text().replace('&', "");
             if (name == menuName) {
                 resultList << act;
@@ -97,13 +97,13 @@ void GTMenuPrivate::showMainMenu(GUITestOpStatus &os, const QString &menuName, G
             }
         }
         if (isContainMenu) {
-            mainWindow = qobject_cast<QMainWindow *>(parent);
+            mainWindow = qobject_cast<QMainWindow*>(parent);
         }
     }
     GT_CHECK_RESULT(resultList.count() != 0, "action not found", );
     GT_CHECK_RESULT(resultList.count() < 2, QString("There are %1 actions with this text").arg(resultList.count()), );
 
-    QAction *menu = resultList.takeFirst();
+    QAction* menu = resultList.takeFirst();
 
     QPoint pos;
     QPoint gPos;

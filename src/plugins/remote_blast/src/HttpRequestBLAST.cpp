@@ -29,8 +29,8 @@ namespace U2 {
 const QString HttpRequestBLAST::host = "https://blast.ncbi.nlm.nih.gov/Blast.cgi?";
 
 QString HttpRequestBLAST::runHttpRequest(QString request) {
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::HTTP_FILE);
-    IOAdapter *io = iof->createIOAdapter();
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::HTTP_FILE);
+    IOAdapter* io = iof->createIOAdapter();
     if (!io->open(request, IOAdapterMode_Read)) {
         error = tr("Cannot open the IO adapter");
         return "";
@@ -59,7 +59,7 @@ QString HttpRequestBLAST::runHttpRequest(QString request) {
     return QString(response);
 }
 
-void HttpRequestBLAST::sendRequest(const QString &params, const QString &query) {
+void HttpRequestBLAST::sendRequest(const QString& params, const QString& query) {
     QString request = host;
     request.append(RemoteRequestConfig::HTTP_BODY_SEPARATOR);
     request.append(params);
@@ -106,7 +106,7 @@ void HttpRequestBLAST::sendRequest(const QString &params, const QString &query) 
     request = host + "CMD=Get&FORMAT_TYPE=XML&RID=";
     request.append(requestID);
     buf.close();
-    RemoteBlastHttpRequestTask *rTask = qobject_cast<RemoteBlastHttpRequestTask *>(task);
+    RemoteBlastHttpRequestTask* rTask = qobject_cast<RemoteBlastHttpRequestTask*>(task);
     int progr, timeout;
     progr = 50;
     timeout = (rtoe + 5) * 20;  // REAL timeout = 50*(rtoe + 5) * 20 = 1000*(rtoe + 5) msec
@@ -154,7 +154,7 @@ QByteArray HttpRequestBLAST::getOutputFile() {
     return output;
 }
 
-void HttpRequestBLAST::parseResult(const QByteArray &buf) {
+void HttpRequestBLAST::parseResult(const QByteArray& buf) {
     QDomDocument xmlDoc;
     QString xmlError;
     xmlDoc.setContent(buf, false, &xmlError);
@@ -167,13 +167,13 @@ void HttpRequestBLAST::parseResult(const QByteArray &buf) {
         parseHit(hits.at(i));
     }
 
-    RemoteBlastHttpRequestTask *rTask = qobject_cast<RemoteBlastHttpRequestTask *>(task);
+    RemoteBlastHttpRequestTask* rTask = qobject_cast<RemoteBlastHttpRequestTask*>(task);
     for (int i = rTask->getProgress(); i < 100; i++) {
         rTask->updateProgress();
     }
 }
 
-void HttpRequestBLAST::parseHit(const QDomNode &xml) {
+void HttpRequestBLAST::parseHit(const QDomNode& xml) {
     QString id, def, accession;
 
     QDomElement tmp = xml.lastChildElement("Hit_id");
@@ -200,7 +200,7 @@ void HttpRequestBLAST::parseHit(const QDomNode &xml) {
     }
 }
 
-void HttpRequestBLAST::parseHsp(const QDomNode &xml, const QString &id, const QString &def, const QString &accession, const QString &hitLen) {
+void HttpRequestBLAST::parseHsp(const QDomNode& xml, const QString& id, const QString& def, const QString& accession, const QString& hitLen) {
     SharedAnnotationData ad(new AnnotationData);
     bool isOk;
     int from = -1, to = -1, align_len = -1, gaps = -1, identities = -1;

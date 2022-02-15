@@ -30,29 +30,29 @@ namespace U2 {
 class ExternalTool;
 
 /**
-  * Search the possible paths to the external tool.
-  * Search order:
-  * 1. Tools folder (%UGENE_DIR%/tools)
-  * 2. PATH variable
-  * 3. Current tool's path (if it isn't empty)
-  **/
+ * Search the possible paths to the external tool.
+ * Search order:
+ * 1. Tools folder (%UGENE_DIR%/tools)
+ * 2. PATH variable
+ * 3. Current tool's path (if it isn't empty)
+ **/
 class ExternalToolSearchTask : public Task {
     Q_OBJECT
 public:
-    ExternalToolSearchTask(const QString &toolId);
+    ExternalToolSearchTask(const QString& toolId);
 
     void run() override;
 
-    const QString &getToolId() const {
+    const QString& getToolId() const {
         return toolId;
     }
 
-    const QStringList &getPaths() const {
+    const QStringList& getPaths() const {
         return toolPaths;
     }
 
 private:
-    QString getExecutableFileName(ExternalTool *tool);
+    QString getExecutableFileName(ExternalTool* tool);
 
     QString toolId;
     QStringList toolPaths;
@@ -61,11 +61,11 @@ private:
 class ExternalToolsSearchTask : public SequentialMultiTask {
     Q_OBJECT
 public:
-    ExternalToolsSearchTask(const QList<Task *> &_tasks);
+    ExternalToolsSearchTask(const QList<Task*>& _tasks);
 
-    virtual QList<Task *> onSubTaskFinished(Task *subTask);
+    virtual QList<Task*> onSubTaskFinished(Task* subTask);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_EXTERNAL_TOOL_SEARCH_TASK_H_
+#endif  // _U2_EXTERNAL_TOOL_SEARCH_TASK_H_

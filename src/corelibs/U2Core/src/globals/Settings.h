@@ -32,20 +32,20 @@ namespace U2 {
 class U2CORE_EXPORT Settings : public QObject {
     Q_OBJECT
 public:
-    virtual QStringList getAllKeys(const QString &path) const = 0;
-    virtual QStringList getChildGroups(const QString &path) const = 0;
-    virtual void cleanSection(const QString &path) = 0;
+    virtual QStringList getAllKeys(const QString& path) const = 0;
+    virtual QStringList getChildGroups(const QString& path) const = 0;
+    virtual void cleanSection(const QString& path) = 0;
 
-    virtual bool contains(const QString &key) const = 0;
-    virtual void remove(const QString &key) = 0;
+    virtual bool contains(const QString& key) const = 0;
+    virtual void remove(const QString& key) = 0;
 
     // for versioned default value is returned if versions don't match
     // all version-specific values must use versioneedValue = true
-    virtual QVariant getValue(const QString &key, const QVariant &defaultValue = QVariant(), bool versionedValue = false) const = 0;
-    virtual void setValue(const QString &key, const QVariant &value, bool versionedValue = false) = 0;
+    virtual QVariant getValue(const QString& key, const QVariant& defaultValue = QVariant(), bool versionedValue = false) const = 0;
+    virtual void setValue(const QString& key, const QVariant& value, bool versionedValue = false) = 0;
 
-    virtual QString toVersionKey(const QString &key) const = 0;
-    virtual QString toMinorVersionKey(const QString &key) const = 0;
+    virtual QString toVersionKey(const QString& key) const = 0;
+    virtual QString toMinorVersionKey(const QString& key) const = 0;
 
     virtual void sync() = 0;
     virtual QString fileName() const = 0;

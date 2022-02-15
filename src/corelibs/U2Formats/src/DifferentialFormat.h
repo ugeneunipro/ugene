@@ -39,27 +39,27 @@ namespace U2 {
 class U2FORMATS_EXPORT DifferentialFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
-    DifferentialFormat(QObject *parent);
+    DifferentialFormat(QObject* parent);
 
 protected:
-    FormatCheckResult checkRawTextData(const QString &dataPrefix, const GUrl &originalDataUrl) const override;
+    FormatCheckResult checkRawTextData(const QString& dataPrefix, const GUrl& originalDataUrl) const override;
 
-    Document *loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) override;
+    Document* loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) override;
 
-    void storeTextDocument(IOAdapterWriter &writer, Document *document, U2OpStatus &os) override;
+    void storeTextDocument(IOAdapterWriter& writer, Document* document, U2OpStatus& os) override;
 
 private:
     static QList<ColumnDataParser::Column> getColumns();
     static QString getAnnotationName();
-    static QList<SharedAnnotationData> parseAnnotations(IOAdapterReader &reader, U2OpStatus &os);
-    static QList<SharedAnnotationData> parseAnnotations(const ColumnDataParser &parser, IOAdapterReader &reader, U2OpStatus &os);
-    static QList<ColumnDataParser::Column> getHeaderColumns(const QList<GObject *> &anns, U2OpStatus &os);
-    static void writeHeader(IOAdapterWriter &writer, const QList<ColumnDataParser::Column> &columns, U2OpStatus &os);
+    static QList<SharedAnnotationData> parseAnnotations(IOAdapterReader& reader, U2OpStatus& os);
+    static QList<SharedAnnotationData> parseAnnotations(const ColumnDataParser& parser, IOAdapterReader& reader, U2OpStatus& os);
+    static QList<ColumnDataParser::Column> getHeaderColumns(const QList<GObject*>& anns, U2OpStatus& os);
+    static void writeHeader(IOAdapterWriter& writer, const QList<ColumnDataParser::Column>& columns, U2OpStatus& os);
 
-    static QString readLine(IOAdapterReader &reader, QByteArray &buffer, U2OpStatus &os);
-    static bool parseLocus(const QString &locus, SharedAnnotationData &data, U2OpStatus &os);
-    static QString createLocus(const SharedAnnotationData &data, U2OpStatus &os);
-    static QString createValue(const SharedAnnotationData &data, const ColumnDataParser::Column &column, U2OpStatus &os);
+    static QString readLine(IOAdapterReader& reader, QByteArray& buffer, U2OpStatus& os);
+    static bool parseLocus(const QString& locus, SharedAnnotationData& data, U2OpStatus& os);
+    static QString createLocus(const SharedAnnotationData& data, U2OpStatus& os);
+    static QString createValue(const SharedAnnotationData& data, const ColumnDataParser::Column& column, U2OpStatus& os);
 
 private:
     /** Maximum line length supported by the format. */

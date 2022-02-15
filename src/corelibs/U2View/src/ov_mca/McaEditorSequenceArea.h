@@ -24,8 +24,8 @@
 
 #include <U2Gui/ScaleBar.h>
 
-#include "McaEditor.h"
 #include "../ov_msa/MaEditorSequenceArea.h"
+#include "McaEditor.h"
 
 namespace U2 {
 
@@ -49,13 +49,13 @@ public:
 class U2VIEW_EXPORT McaEditorSequenceArea : public MaEditorSequenceArea {
     Q_OBJECT
 public:
-    McaEditorSequenceArea(McaEditorWgt *ui, GScrollBar *hb, GScrollBar *vb);
+    McaEditorSequenceArea(McaEditorWgt* ui, GScrollBar* hb, GScrollBar* vb);
 
-    McaEditor *getEditor() const {
-        return qobject_cast<McaEditor *>(editor);
+    McaEditor* getEditor() const {
+        return qobject_cast<McaEditor*>(editor);
     }
 
-    const ChromatogramViewSettings &getSettings() const {
+    const ChromatogramViewSettings& getSettings() const {
         return settings;
     }
     bool getShowQA() const {
@@ -64,19 +64,19 @@ public:
 
     void moveSelection(int dx, int dy, bool allowSelectionResize = false);
 
-    virtual void adjustReferenceLength(U2OpStatus &os);
+    virtual void adjustReferenceLength(U2OpStatus& os);
 
-    MaAmbiguousCharactersController *getAmbiguousCharactersController() const;
+    MaAmbiguousCharactersController* getAmbiguousCharactersController() const;
 
-    QMenu *getTraceActionsMenu() const;
-    QAction *getIncreasePeaksHeightAction() const;
-    QAction *getDecreasePeaksHeightAction() const;
-    QAction *getInsertAction() const;
-    QAction *getInsertGapAction() const;
-    QAction *getRemoveGapBeforeSelectionAction() const;
-    QAction *getRemoveColumnsOfGapsAction() const;
-    QAction *getTrimLeftEndAction() const;
-    QAction *getTrimRightEndAction() const;
+    QMenu* getTraceActionsMenu() const;
+    QAction* getIncreasePeaksHeightAction() const;
+    QAction* getDecreasePeaksHeightAction() const;
+    QAction* getInsertAction() const;
+    QAction* getInsertGapAction() const;
+    QAction* getRemoveGapBeforeSelectionAction() const;
+    QAction* getRemoveColumnsOfGapsAction() const;
+    QAction* getTrimLeftEndAction() const;
+    QAction* getTrimRightEndAction() const;
 
 public slots:
     void sl_backgroundSelectionChanged();
@@ -86,7 +86,7 @@ private slots:
     void sl_showAllTraces();
     void sl_setRenderAreaHeight(int k);
 
-    void sl_buildStaticToolbar(GObjectView *v, QToolBar *t);
+    void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
 
     void sl_addInsertion();
     void sl_removeGapBeforeSelection();
@@ -98,38 +98,38 @@ private slots:
 
 private:
     void initRenderer();
-    void drawBackground(QPainter &p);
+    void drawBackground(QPainter& p);
 
-    void updateCollapseModel(const MaModificationInfo &modInfo) override;
+    void updateCollapseModel(const MaModificationInfo& modInfo) override;
 
-    void getColorAndHighlightingIds(QString &csid, QString &hsid);
+    void getColorAndHighlightingIds(QString& csid, QString& hsid);
 
-    QAction *createToggleTraceAction(const QString &actionName);
+    QAction* createToggleTraceAction(const QString& actionName);
 
     void insertChar(char newCharacter);
-    bool isCharacterAcceptable(const QString &text) const;
-    const QString &getInacceptableCharacterErrorMessage() const;
+    bool isCharacterAcceptable(const QString& text) const;
+    const QString& getInacceptableCharacterErrorMessage() const;
 
-    McaEditorWgt *getMcaEditorWgt() const;
+    McaEditorWgt* getMcaEditorWgt() const;
 
     void trimRowEnd(MultipleChromatogramAlignmentObject::TrimEdge edge);
 
     void updateTrimActions(bool isEnabled);
 
     ChromatogramViewSettings settings;
-    MaAmbiguousCharactersController *ambiguousCharactersController;
+    MaAmbiguousCharactersController* ambiguousCharactersController;
 
-    QAction *showQVAction;
-    QAction *showAllTraces;
-    QMenu *traceActionsMenu;
-    ScaleBar *scaleBar;
-    QAction *scaleAction;
+    QAction* showQVAction;
+    QAction* showAllTraces;
+    QMenu* traceActionsMenu;
+    ScaleBar* scaleBar;
+    QAction* scaleAction;
 
-    QAction *insertAction;
-    QAction *removeGapBeforeSelectionAction;
-    QAction *removeColumnsOfGapsAction;
-    QAction *trimLeftEndAction;
-    QAction *trimRightEndAction;
+    QAction* insertAction;
+    QAction* removeGapBeforeSelectionAction;
+    QAction* removeColumnsOfGapsAction;
+    QAction* trimLeftEndAction;
+    QAction* trimRightEndAction;
 };
 
 }  // namespace U2

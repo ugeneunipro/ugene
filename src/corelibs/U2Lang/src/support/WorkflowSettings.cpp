@@ -53,7 +53,7 @@ namespace U2 {
 #define WORKFLOW_OUTPUT_PATH SETTINGS + "workflowOutputPath"
 #define SHOW_LOAD_BUTTON_HINT SETTINGS + "showLoadButtonHint"
 
-Watcher *const WorkflowSettings::watcher = new Watcher;
+Watcher* const WorkflowSettings::watcher = new Watcher;
 
 bool WorkflowSettings::showGrid() {
     return AppContext::getSettings()->getValue(GRID_STATE, true).toBool();
@@ -94,7 +94,7 @@ QString WorkflowSettings::defaultStyle() {
     return AppContext::getSettings()->getValue(STYLE, "ext").toString();
 }
 
-void WorkflowSettings::setDefaultStyle(const QString &s) {
+void WorkflowSettings::setDefaultStyle(const QString& s) {
     if (s != defaultStyle()) {
         AppContext::getSettings()->setValue(STYLE, s);
         emit watcher->changed();
@@ -105,7 +105,7 @@ QFont WorkflowSettings::defaultFont() {
     return AppContext::getSettings()->getValue(FONT, true).value<QFont>();
 }
 
-void WorkflowSettings::setDefaultFont(const QFont &f) {
+void WorkflowSettings::setDefaultFont(const QFont& f) {
     if (defaultFont() != f) {
         AppContext::getSettings()->setValue(FONT, qVariantFromValue(f));
         emit watcher->changed();
@@ -123,14 +123,14 @@ static QString getDataDirPath() {
 }
 
 const QString WorkflowSettings::getUserDirectory() {
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     QString defaultPath = getDataDirPath() + "/workflow_samples/users/";
     QString path = s->getValue(DIR, defaultPath, true).toString();
     return path;
 }
 
-void WorkflowSettings::setUserDirectory(const QString &newDir) {
-    Settings *s = AppContext::getSettings();
+void WorkflowSettings::setUserDirectory(const QString& newDir) {
+    Settings* s = AppContext::getSettings();
     QString defaultPath = getDataDirPath() + "/workflow_samples/users/";
     QString path = s->getValue(DIR, defaultPath, true).toString();
     QString newFixedDir = GUrlUtils::getSlashEndedPath(QDir::fromNativeSeparators(newDir));
@@ -144,7 +144,7 @@ void WorkflowSettings::setUserDirectory(const QString &newDir) {
         }
         dir.setNameFilters(QStringList() << "*.usa");
         QFileInfoList fileList = dir.entryInfoList();
-        foreach (const QFileInfo &fileInfo, fileList) {
+        foreach (const QFileInfo& fileInfo, fileList) {
             QString newFileUrl = newFixedDir + fileInfo.fileName();
             QFile::copy(fileInfo.filePath(), newFileUrl);
         }
@@ -152,11 +152,11 @@ void WorkflowSettings::setUserDirectory(const QString &newDir) {
 }
 
 bool WorkflowSettings::isOutputDirectorySet() {
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     return s->contains(WORKFLOW_OUTPUT_PATH);
 }
 
-void WorkflowSettings::setWorkflowOutputDirectory(const QString &newDir) {
+void WorkflowSettings::setWorkflowOutputDirectory(const QString& newDir) {
     QString newFixedDir = GUrlUtils::getSlashEndedPath(QDir::fromNativeSeparators(newDir));
     AppContext::getSettings()->setValue(WORKFLOW_OUTPUT_PATH, newFixedDir);
 }
@@ -170,7 +170,7 @@ const QString WorkflowSettings::getWorkflowOutputDirectory() {
 }
 
 const QString WorkflowSettings::getExternalToolDirectory() {
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     GUrl url(s->fileName());
     QString defaultPath = url.dirPath();
     defaultPath += "/ExternalToolConfig/";
@@ -178,8 +178,8 @@ const QString WorkflowSettings::getExternalToolDirectory() {
     return path;
 }
 
-void WorkflowSettings::setExternalToolDirectory(const QString &newDir) {
-    Settings *s = AppContext::getSettings();
+void WorkflowSettings::setExternalToolDirectory(const QString& newDir) {
+    Settings* s = AppContext::getSettings();
     GUrl url(s->fileName());
     QString defaultPath = url.dirPath();
     defaultPath += "/ExternalToolConfig/";
@@ -195,7 +195,7 @@ void WorkflowSettings::setExternalToolDirectory(const QString &newDir) {
         }
         dir.setNameFilters(QStringList() << "*.etc");
         QFileInfoList fileList = dir.entryInfoList();
-        foreach (const QFileInfo &fileInfo, fileList) {
+        foreach (const QFileInfo& fileInfo, fileList) {
             QString newFileUrl = newFixedDir + fileInfo.fileName();
             QFile::copy(fileInfo.filePath(), newFileUrl);
         }
@@ -203,7 +203,7 @@ void WorkflowSettings::setExternalToolDirectory(const QString &newDir) {
 }
 
 QColor WorkflowSettings::getBGColor() {
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     QColor ret(Qt::darkCyan);
     ret.setAlpha(200);
     int r, g, b, a;
@@ -223,16 +223,16 @@ QColor WorkflowSettings::getBGColor() {
     return res;
 }
 
-void WorkflowSettings::setBGColor(const QColor &color) {
+void WorkflowSettings::setBGColor(const QColor& color) {
     int r, g, b, a;
     color.getRgb(&r, &g, &b, &a);
     QString newColor = QString::number(r) + "," + QString::number(g) + "," + QString::number(b) + "," + QString::number(a);
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     s->setValue(BG_COLOR, newColor);
 }
 
 int WorkflowSettings::getRunMode() {
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     int ret = 0;
     QString runModeStr = s->getValue(RUN_MODE).value<QString>();
     if (!runModeStr.isEmpty()) {
@@ -246,7 +246,7 @@ int WorkflowSettings::getRunMode() {
 }
 
 void WorkflowSettings::setRunMode(int md) {
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     s->setValue(RUN_MODE, QString::number(md));
 }
 
@@ -266,13 +266,13 @@ QString WorkflowSettings::getCmdlineUgenePath() {
     return path;
 }
 
-void WorkflowSettings::setIncludedElementsDirectory(const QString &newDir) {
+void WorkflowSettings::setIncludedElementsDirectory(const QString& newDir) {
     QString newFixedDir = GUrlUtils::getSlashEndedPath(QDir::fromNativeSeparators(newDir));
     AppContext::getSettings()->setValue(INCLUDED_WORKER_PATH, newFixedDir, true);
 }
 
 const QString WorkflowSettings::getIncludedElementsDirectory() {
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     GUrl url(s->fileName());
     QString defaultPath = url.dirPath();
     defaultPath += "/IncludedWorkers/";
@@ -281,14 +281,14 @@ const QString WorkflowSettings::getIncludedElementsDirectory() {
 }
 
 bool WorkflowSettings::isShowLoadButtonHint() {
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     SAFE_POINT(nullptr != s, "NULL settings!", false);
 
     return s->getValue(SHOW_LOAD_BUTTON_HINT, QVariant(true)).toBool();
 }
 
 void WorkflowSettings::setShowLoadButtonHint(bool value) {
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     SAFE_POINT(nullptr != s, "NULL settings!", );
 
     s->setValue(SHOW_LOAD_BUTTON_HINT, value);

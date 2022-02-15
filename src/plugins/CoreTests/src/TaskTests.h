@@ -56,7 +56,7 @@ enum StateOrderType {
 
 class StateOrderTestTaskCallback {
 public:
-    virtual void func(StateOrderTestTask *t, StateOrderType st) = 0;
+    virtual void func(StateOrderTestTask* t, StateOrderType st) = 0;
     virtual ~StateOrderTestTaskCallback() {
     }
 };
@@ -64,7 +64,7 @@ public:
 class StateOrderTestTask : public Task {
     Q_OBJECT
 public:
-    StateOrderTestTask(StateOrderTestTaskCallback *ptr, TaskFlags _f);
+    StateOrderTestTask(StateOrderTestTaskCallback* ptr, TaskFlags _f);
     ~StateOrderTestTask();
     void prepare();
     void run();
@@ -72,7 +72,7 @@ public:
     int step;
 
 private:
-    StateOrderTestTaskCallback *callback;
+    StateOrderTestTaskCallback* callback;
 };
 
 class GTest_TaskCreateTest : public XmlTest {
@@ -84,7 +84,7 @@ public:
     void cleanup();
 
 private:
-    Task *task;
+    Task* task;
     bool deleteTask;
     QString resultContextName;
 };
@@ -158,14 +158,14 @@ class GTest_TaskStateOrder : public XmlTest, public StateOrderTestTaskCallback {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_TaskStateOrder, "task-state-order-test", TaskFlags_FOSCOE);
-    void func(StateOrderTestTask *t, StateOrderType st);
+    void func(StateOrderTestTask* t, StateOrderType st);
     Task::ReportResult report();
     void run();
 
 private:
     bool done_flag;
-    StateOrderTestTask *task;
-    QList<StateOrderTestTask *> subs;
+    StateOrderTestTask* task;
+    QList<StateOrderTestTask*> subs;
     int subtask_num;
     bool serial_flag;
     bool cancel_flag;
@@ -196,7 +196,7 @@ private:
 
 class TaskTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

@@ -41,7 +41,7 @@ namespace U2 {
 #    define M_PI 3.14159265358979323846
 #endif
 
-GraphicsCircularBranchItem::GraphicsCircularBranchItem(QGraphicsItem *parent, qreal h, GraphicsRectangularBranchItem *from, double nodeValue)
+GraphicsCircularBranchItem::GraphicsCircularBranchItem(QGraphicsItem* parent, qreal h, GraphicsRectangularBranchItem* from, double nodeValue)
     : GraphicsBranchItem(true, nodeValue), height(h), direction(from->getDirection()), visible(true) {
     setParentItem(parent);
     settings = from->getSettings();
@@ -75,7 +75,7 @@ QRectF GraphicsCircularBranchItem::boundingRect() const {
     return QRectF(-w, direction == GraphicsBranchItem::up ? 0 : -h, w, h);
 }
 
-void GraphicsCircularBranchItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) {
+void GraphicsCircularBranchItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) {
     if (!visible)
         return;
     painter->setPen(pen());

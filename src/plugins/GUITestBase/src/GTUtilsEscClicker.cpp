@@ -26,7 +26,7 @@
 
 namespace U2 {
 
-GTUtilsEscClicker::GTUtilsEscClicker(HI::GUITestOpStatus &_os, const QString &menuObjectName, bool _mouse)
+GTUtilsEscClicker::GTUtilsEscClicker(HI::GUITestOpStatus& _os, const QString& menuObjectName, bool _mouse)
     : Filler(_os, GUIDialogWaiter::WaitSettings(menuObjectName, GUIDialogWaiter::Popup)),
       mouse(_mouse) {
 }

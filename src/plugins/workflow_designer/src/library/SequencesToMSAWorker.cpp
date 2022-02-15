@@ -50,7 +50,7 @@ void SequencesToMSAWorker::init() {
 void SequencesToMSAWorker::cleanup() {
 }
 
-Task *SequencesToMSAWorker::tick() {
+Task* SequencesToMSAWorker::tick() {
     if (inPort->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(inPort);
         QVariantMap qm = inputMessage.getData().toMap();
@@ -65,8 +65,8 @@ Task *SequencesToMSAWorker::tick() {
         data.append(seq);
     }
     if (!inPort->hasMessage() && inPort->isEnded()) {
-        Task *t = new MSAFromSequencesTask(data);
-        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_onTaskFinished(Task *)));
+        Task* t = new MSAFromSequencesTask(data);
+        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_onTaskFinished(Task*)));
         return t;
     }
     return nullptr;
@@ -84,8 +84,8 @@ void MSAFromSequencesTask::run() {
     }
 }
 
-void SequencesToMSAWorker::sl_onTaskFinished(Task *t) {
-    MSAFromSequencesTask *maTask = qobject_cast<MSAFromSequencesTask *>(t);
+void SequencesToMSAWorker::sl_onTaskFinished(Task* t) {
+    MSAFromSequencesTask* maTask = qobject_cast<MSAFromSequencesTask*>(t);
     MultipleSequenceAlignment ma = maTask->getResult();
 
     if (!ma->isEmpty()) {
@@ -109,8 +109,8 @@ void SequencesToMSAWorker::sl_onTaskFinished(Task *t) {
 const QString SequencesToMSAWorkerFactory::ACTOR_ID("sequences-to-msa");
 
 void SequencesToMSAWorkerFactory::init() {
-    QList<PortDescriptor *> p;
-    QList<Attribute *> a;
+    QList<PortDescriptor*> p;
+    QList<Attribute*> a;
     {
         Descriptor id(BasePorts::IN_SEQ_PORT_ID(),
                       SequencesToMSAWorker::tr("Input sequences"),
@@ -132,13 +132,13 @@ void SequencesToMSAWorkerFactory::init() {
     Descriptor desc(SequencesToMSAWorkerFactory::ACTOR_ID,
                     SequencesToMSAWorker::tr("Join Sequences into Alignment"),
                     SequencesToMSAWorker::tr("Creates multiple sequence alignment from sequences."));
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, QList<Attribute *>());
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, QList<Attribute*>());
 
-    proto->setEditor(new DelegateEditor(QMap<QString, PropertyDelegate *>()));
+    proto->setEditor(new DelegateEditor(QMap<QString, PropertyDelegate*>()));
     proto->setPrompter(new SequencesToMSAPromter());
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new SequencesToMSAWorkerFactory());
 }
 

@@ -30,16 +30,16 @@ namespace U2 {
 class U2GUI_EXPORT HoverQLabel : public QLabel {
     Q_OBJECT
 public:
-    HoverQLabel(const QString &html, const QString &normalStyle, const QString &hoveredStyle, const QString &objectName = QString());
-    void updateStyles(const QString &newNormalStyle, const QString &newHoveredStyle);
+    HoverQLabel(const QString& html, const QString& normalStyle, const QString& hoveredStyle, const QString& objectName = QString());
+    void updateStyles(const QString& newNormalStyle, const QString& newHoveredStyle);
 
 signals:
     void clicked();
 
 protected:
-    void enterEvent(QEvent *event);
-    void leaveEvent(QEvent *event);
-    void mousePressEvent(QMouseEvent *event);
+    void enterEvent(QEvent* event);
+    void leaveEvent(QEvent* event);
+    void mousePressEvent(QMouseEvent* event);
 
 public:
     QString normalStyle;

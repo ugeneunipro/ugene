@@ -32,7 +32,7 @@ namespace U2 {
 class U2CORE_EXPORT U2McaRow : public U2MsaRow {
 public:
     U2McaRow();
-    U2McaRow(const U2MsaRow &msaRow);
+    U2McaRow(const U2MsaRow& msaRow);
 
     bool hasValidChildObjectIds() const;
 
@@ -42,8 +42,8 @@ public:
 class U2CORE_EXPORT U2Mca : public U2Msa {
 public:
     U2Mca();
-    U2Mca(const U2Msa &dbMsa);
-    U2Mca(const U2DataId &id, const QString &dbId, qint64 version);
+    U2Mca(const U2Msa& dbMsa);
+    U2Mca(const U2DataId& id, const QString& dbId, qint64 version);
 
     U2DataType getType() const;
 };

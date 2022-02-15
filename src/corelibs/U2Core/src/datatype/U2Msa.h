@@ -55,13 +55,13 @@ public:
     /** The gap is valid if it has a length >= 0 & startPos >=0. */
     bool isValid() const;
 
-    bool operator==(const U2MsaGap &g) const;
+    bool operator==(const U2MsaGap& g) const;
 
     /** Compares 2 gaps by 'startPos'. */
-    static bool lessThan(const U2MsaGap &first, const U2MsaGap &second);
+    static bool lessThan(const U2MsaGap& first, const U2MsaGap& second);
 
     /** Returns another gap (region) that is intersection of this and 'anotherGap' regions. */
-    U2MsaGap intersect(const U2MsaGap &anotherGap) const;
+    U2MsaGap intersect(const U2MsaGap& anotherGap) const;
 
     operator U2Region() const;
 
@@ -109,7 +109,7 @@ public:
 class U2CORE_EXPORT U2Msa : public U2Object {
 public:
     U2Msa();
-    U2Msa(const U2DataId &id, const QString &dbId, qint64 version);
+    U2Msa(const U2DataId& id, const QString& dbId, qint64 version);
 
     U2DataType getType() const;
 

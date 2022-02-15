@@ -39,12 +39,12 @@ public:
     bool acceptByDoubleClick;
 
 private slots:
-    void sl_objectClicked(GObject *obj);
+    void sl_objectClicked(GObject* obj);
 
 private:
     friend class ProjectTreeItemSelectorDialog;
-    ProjectTreeItemSelectorDialogImpl(QWidget *p, const ProjectTreeControllerModeSettings &s);
-    ProjectTreeController *controller;
+    ProjectTreeItemSelectorDialogImpl(QWidget* p, const ProjectTreeControllerModeSettings& s);
+    ProjectTreeController* controller;
 };
 
 }  // namespace U2

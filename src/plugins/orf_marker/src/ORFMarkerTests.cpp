@@ -43,19 +43,19 @@ namespace U2 {
 #define TRANSLATION_ID_ATTR "translation_id"
 #define EXPECTED_RESULTS_ATTR "expected_results"
 
-Translator::Translator(const U2SequenceObject *s, const QString &tid)
+Translator::Translator(const U2SequenceObject* s, const QString& tid)
     : seq(s), complTransl(nullptr), aminoTransl(nullptr) {
-    const DNAAlphabet *al = seq->getAlphabet();
-    DNATranslationRegistry *tr = AppContext::getDNATranslationRegistry();
+    const DNAAlphabet* al = seq->getAlphabet();
+    DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
     aminoTransl = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO, ("NCBI-GenBank #" + tid));
     assert(aminoTransl);
-    DNATranslation *complT = tr->lookupComplementTranslation(al);
+    DNATranslation* complT = tr->lookupComplementTranslation(al);
     if (complT != nullptr) {
         complTransl = complT;
     }
 }
 
-void GTest_ORFMarkerTask::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_ORFMarkerTask::init(XMLTestFormat*, const QDomElement& el) {
     seqName = el.attribute(SEQ_ATTR);
     if (seqName.isEmpty()) {
         failMissingValue(SEQ_ATTR);
@@ -172,7 +172,7 @@ void GTest_ORFMarkerTask::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 void GTest_ORFMarkerTask::prepare() {
-    U2SequenceObject *mySequence = getContext<U2SequenceObject>(this, seqName);
+    U2SequenceObject* mySequence = getContext<U2SequenceObject>(this, seqName);
     CHECK_EXT(mySequence != nullptr, setError("Can't cast to sequence from GObject"), );
 
     Translator tr(mySequence, translationId);

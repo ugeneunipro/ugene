@@ -34,22 +34,22 @@ class U2ALGORITHM_EXPORT PWMConversionAlgorithmRegistry : public QObject {
     Q_OBJECT
 
 public:
-    PWMConversionAlgorithmRegistry(QObject *p = nullptr);
+    PWMConversionAlgorithmRegistry(QObject* p = nullptr);
 
     ~PWMConversionAlgorithmRegistry();
 
-    PWMConversionAlgorithmFactory *getAlgorithmFactory(const QString &algoId);
+    PWMConversionAlgorithmFactory* getAlgorithmFactory(const QString& algoId);
 
-    void addAlgorithm(PWMConversionAlgorithmFactory *algo);
+    void addAlgorithm(PWMConversionAlgorithmFactory* algo);
 
     QStringList getAlgorithmIds() const;
 
-    QList<PWMConversionAlgorithmFactory *> getAlgorithmFactories() const {
+    QList<PWMConversionAlgorithmFactory*> getAlgorithmFactories() const {
         return algorithms.values();
     }
 
 private:
-    QMap<QString, PWMConversionAlgorithmFactory *> algorithms;
+    QMap<QString, PWMConversionAlgorithmFactory*> algorithms;
 };
 
 }  // namespace U2

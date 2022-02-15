@@ -37,10 +37,10 @@
 
 namespace U2 {
 
-SaveGraphCutoffsDialogController::SaveGraphCutoffsDialogController(QSharedPointer<GSequenceGraphData> &_graph,
-                                                                   const GSequenceGraphMinMaxCutOffState &cutOffState,
-                                                                   QWidget *parent,
-                                                                   SequenceObjectContext *ctx)
+SaveGraphCutoffsDialogController::SaveGraphCutoffsDialogController(QSharedPointer<GSequenceGraphData>& _graph,
+                                                                   const GSequenceGraphMinMaxCutOffState& cutOffState,
+                                                                   QWidget* parent,
+                                                                   SequenceObjectContext* ctx)
     : QDialog(parent), ctx(ctx), graph(_graph) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929579");
@@ -56,8 +56,8 @@ SaveGraphCutoffsDialogController::SaveGraphCutoffsDialogController(QSharedPointe
     m.sequenceLen = ctx->getSequenceObject()->getSequenceLength();
     createAnnotationController = new CreateAnnotationWidgetController(m, this);
 
-    QWidget *caw = createAnnotationController->getWidget();
-    QVBoxLayout *l = new QVBoxLayout();
+    QWidget* caw = createAnnotationController->getWidget();
+    QVBoxLayout* l = new QVBoxLayout();
     l->setSizeConstraint(QLayout::SetMinAndMaxSize);
     l->setMargin(0);
     l->addWidget(caw);
@@ -130,9 +130,9 @@ void SaveGraphCutoffsDialogController::accept() {
         return;
     }
 
-    const CreateAnnotationModel &annotationModel = createAnnotationController->getModel();
+    const CreateAnnotationModel& annotationModel = createAnnotationController->getModel();
     QList<SharedAnnotationData> data;
-    for (const U2Region &r : qAsConst(resultRegions)) {
+    for (const U2Region& r : qAsConst(resultRegions)) {
         SharedAnnotationData annotationData(new AnnotationData());
         annotationData->location->regions.append(r);
         annotationData->type = annotationModel.data->type;
@@ -161,8 +161,8 @@ bool SaveGraphCutoffsDialogController::validate() {
     return true;
 }
 
-void SaveGraphCutoffsDialogController::tryAddObject(AnnotationTableObject *annotationTableObject) {
-    ADVSequenceObjectContext *advContext = qobject_cast<ADVSequenceObjectContext *>(ctx);
+void SaveGraphCutoffsDialogController::tryAddObject(AnnotationTableObject* annotationTableObject) {
+    ADVSequenceObjectContext* advContext = qobject_cast<ADVSequenceObjectContext*>(ctx);
     CHECK(advContext != nullptr, );
     advContext->getAnnotatedDNAView()->tryAddObject(annotationTableObject);
 }

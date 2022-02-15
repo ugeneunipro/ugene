@@ -31,15 +31,15 @@ namespace U2 {
 class U2LANG_EXPORT MessageMetadata {
 public:
     MessageMetadata();
-    MessageMetadata(const QString &datasetName);
-    MessageMetadata(const QString &fileUrl, const QString &datasetName);
-    MessageMetadata(const QString &databaseUrl, const QString &databaseId, const QString &datasetName);
+    MessageMetadata(const QString& datasetName);
+    MessageMetadata(const QString& fileUrl, const QString& datasetName);
+    MessageMetadata(const QString& databaseUrl, const QString& databaseId, const QString& datasetName);
 
     int getId() const;
-    const QString &getDatasetName() const;
-    const QString &getFileUrl() const;
-    const QString &getDatabaseUrl() const;
-    const QString &getDatabaseId() const;
+    const QString& getDatasetName() const;
+    const QString& getFileUrl() const;
+    const QString& getDatabaseUrl() const;
+    const QString& getDatabaseId() const;
 
     static const int INVALID_ID;
 
@@ -56,7 +56,7 @@ private:
 
 class U2LANG_EXPORT MessageMetadataStorage {
 public:
-    void put(const MessageMetadata &value);
+    void put(const MessageMetadata& value);
     MessageMetadata get(int metadataId) const;
 
 private:

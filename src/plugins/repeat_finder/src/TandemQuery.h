@@ -35,28 +35,28 @@ public:
     virtual int getMinResultLen() const;
     virtual int getMaxResultLen() const;
     virtual QString getText() const;
-    virtual Task *getAlgorithmTask(const QVector<U2Region> &location);
+    virtual Task* getAlgorithmTask(const QVector<U2Region>& location);
     virtual bool hasStrand() const;
     virtual QList<QPair<QString, QString>> saveConfiguration() const;
-    virtual void loadConfiguration(const QList<QPair<QString, QString>> &strMap);
+    virtual void loadConfiguration(const QList<QPair<QString, QString>>& strMap);
     virtual QColor defaultColor() const;
 
 protected:
-    QDTandemActor(QDActorPrototype const *prototype);
+    QDTandemActor(QDActorPrototype const* prototype);
     friend class QDTandemActorPrototype;
 private slots:
     void sl_onAlgorithmTaskFinished();
 
 private:
     FindTandemsTaskSettings settings;
-    QList<TandemFinder *> subTasks;
+    QList<TandemFinder*> subTasks;
 };
 
 class QDTandemActorPrototype : public QDActorPrototype {
 public:
     QDTandemActorPrototype();
     QIcon getIcon() const;
-    virtual QDActor *createInstance() const;
+    virtual QDActor* createInstance() const;
 };
 
 }  // namespace U2

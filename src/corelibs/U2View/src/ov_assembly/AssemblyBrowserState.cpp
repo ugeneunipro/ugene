@@ -36,7 +36,7 @@ bool AssemblyBrowserState::isValid() const {
     return stateData.value(VIEW_ID) == AssemblyBrowserFactory::ID;
 }
 
-void AssemblyBrowserState::setGObjectRef(const GObjectReference &ref) {
+void AssemblyBrowserState::setGObjectRef(const GObjectReference& ref) {
     stateData[OBJ_REF] = QVariant::fromValue(ref);
 }
 
@@ -44,7 +44,7 @@ GObjectReference AssemblyBrowserState::getGObjectRef() const {
     return stateData.value(OBJ_REF).value<GObjectReference>();
 }
 
-void AssemblyBrowserState::setVisibleBasesRegion(const U2Region &r) {
+void AssemblyBrowserState::setVisibleBasesRegion(const U2Region& r) {
     stateData[REGION] = QVariant::fromValue(r);
 }
 
@@ -64,9 +64,9 @@ int AssemblyBrowserState::getYOffset() const {
     return 0;
 }
 
-void AssemblyBrowserState::saveState(const AssemblyBrowser *ab) {
+void AssemblyBrowserState::saveState(const AssemblyBrowser* ab) {
     stateData[VIEW_ID] = AssemblyBrowserFactory::ID;
-    AssemblyObject *gObj = ab->getAssemblyObject();
+    AssemblyObject* gObj = ab->getAssemblyObject();
     if (gObj != nullptr) {
         setGObjectRef(GObjectReference(gObj));
     }
@@ -75,7 +75,7 @@ void AssemblyBrowserState::saveState(const AssemblyBrowser *ab) {
     setYOffset(ab->getYOffsetInAssembly());
 }
 
-void AssemblyBrowserState::restoreState(AssemblyBrowser *ab) const {
+void AssemblyBrowserState::restoreState(AssemblyBrowser* ab) const {
     if (nullptr != ab->getMainWidget() && ab->getMainWidget()->isCorrectView()) {
         ab->navigateToRegion(getVisibleBasesRegion());
         ab->setYOffsetInAssembly(getYOffset());

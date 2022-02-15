@@ -33,7 +33,7 @@ namespace U2 {
 class U2VIEW_EXPORT MaSimpleOverview : public MaOverview {
     Q_OBJECT
 public:
-    MaSimpleOverview(MaEditorWgt *ui);
+    MaSimpleOverview(MaEditorWgt* ui);
 
     /** Height of the overview. */
     const static int FIXED_HEIGHT = 70;
@@ -48,13 +48,13 @@ public slots:
     void sl_highlightingChanged();
 
 protected:
-    void paintEvent(QPaintEvent *e) override;
-    void resizeEvent(QResizeEvent *e) override;
+    void paintEvent(QPaintEvent* e) override;
+    void resizeEvent(QResizeEvent* e) override;
 
 private:
-    void drawOverview(QPainter &p) override;
-    void drawVisibleRange(QPainter &p) override;
-    void drawSelection(QPainter &p) override;
+    void drawOverview(QPainter& p) override;
+    void drawVisibleRange(QPainter& p) override;
+    void drawSelection(QPainter& p) override;
 
     void moveVisibleRange(QPoint pos) override;
 

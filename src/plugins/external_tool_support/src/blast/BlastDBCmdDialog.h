@@ -36,12 +36,12 @@ class SaveDocumentController;
 class BlastDBCmdDialog : public QDialog, public Ui_BlastDBCmdDialog {
     Q_OBJECT
 public:
-    BlastDBCmdDialog(QWidget *parent);
+    BlastDBCmdDialog(QWidget* parent);
 
-    void setQueryId(const QString &queryId);
+    void setQueryId(const QString& queryId);
 
     /** Returns the original settings adjusted after the dialog is accepted. */
-    const BlastDBCmdSupportTaskSettings &getTaskSettings() const;
+    const BlastDBCmdSupportTaskSettings& getTaskSettings() const;
 
 private slots:
     void accept() override;
@@ -50,10 +50,10 @@ private slots:
 private:
     void initSaveController();
 
-    BlastDBSelectorWidgetController *dbSelector = nullptr;
-    SaveDocumentController *saveController = nullptr;
+    BlastDBSelectorWidgetController* dbSelector = nullptr;
+    SaveDocumentController* saveController = nullptr;
     BlastDBCmdSupportTaskSettings settings;
-    QPushButton *fetchButton = nullptr;
+    QPushButton* fetchButton = nullptr;
 };
 
 }  // namespace U2

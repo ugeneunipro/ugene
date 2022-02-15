@@ -35,7 +35,7 @@
 
 namespace U2 {
 
-static QString fixProjectFile(const QString &name) {
+static QString fixProjectFile(const QString& name) {
     QString result = name;
     if (result.isEmpty()) {
         result = "project" + PROJECTFILE_EXT;
@@ -45,7 +45,7 @@ static QString fixProjectFile(const QString &name) {
     return result;
 }
 
-ExportProjectDialogController::ExportProjectDialogController(QWidget *p, const QString &defaultProjectFilePath)
+ExportProjectDialogController::ExportProjectDialogController(QWidget* p, const QString& defaultProjectFilePath)
     : QDialog(p) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929324");
@@ -54,14 +54,14 @@ ExportProjectDialogController::ExportProjectDialogController(QWidget *p, const Q
     setModal(true);
     projectFilePath = fixProjectFile(defaultProjectFilePath);
     projectFilePathEdit->setText(projectFilePath);
-    Project *proj = AppContext::getProject();
+    Project* proj = AppContext::getProject();
     if (proj == nullptr || !proj->isItemModified() || proj->getProjectURL().isEmpty()) {
         warningLabel->setVisible(false);
     }
     connect(fileSelectButton, SIGNAL(clicked()), this, SLOT(sl_onFileSelectButton()));
 
     SAFE_POINT(buttonBox, "buttonBox not initialized", );
-    QPushButton *b = buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* b = buttonBox->button(QDialogButtonBox::Ok);
     SAFE_POINT(b, "buttonBox without OK button", );
     b->setText(tr("Export"));
 }

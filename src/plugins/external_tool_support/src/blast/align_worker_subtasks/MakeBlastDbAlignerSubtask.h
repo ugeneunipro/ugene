@@ -33,12 +33,12 @@ namespace Workflow {
 class MakeBlastDbAlignerSubtask : public Task {
     Q_OBJECT
 public:
-    MakeBlastDbAlignerSubtask(const QString &referenceUrl,
-                              const SharedDbiDataHandler &referenceDbHandler,
-                              DbiDataStorage *storage);
+    MakeBlastDbAlignerSubtask(const QString& referenceUrl,
+                              const SharedDbiDataHandler& referenceDbHandler,
+                              DbiDataStorage* storage);
     void prepare() override;
 
-    const QString &getResultPath() const;
+    const QString& getResultPath() const;
 
 private:
     QString getAcceptableTempDir() const;
@@ -46,7 +46,7 @@ private:
     const QString referenceUrl;
     const SharedDbiDataHandler referenceDbHandler;
 
-    DbiDataStorage *storage = nullptr;
+    DbiDataStorage* storage = nullptr;
 
     QString databaseNameAndPath;
 };

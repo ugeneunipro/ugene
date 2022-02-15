@@ -29,33 +29,33 @@ namespace U2 {
 
 const QString Wizard::DEFAULT_NAME("Wizard");
 
-Wizard::Wizard(const QString &_name, const QList<WizardPage *> &_pages, const QString &_helpPageId)
+Wizard::Wizard(const QString& _name, const QList<WizardPage*>& _pages, const QString& _helpPageId)
     : name(_name), pages(_pages), autoRun(false), withRunButton(true), withDefaultsButton(true), helpPageId(_helpPageId) {
 }
 
 Wizard::~Wizard() {
-    foreach (WizardPage *page, pages) {
+    foreach (WizardPage* page, pages) {
         delete page;
     }
     pages.clear();
 }
 
-const QString &Wizard::getName() const {
+const QString& Wizard::getName() const {
     return name;
 }
 
-const QList<WizardPage *> &Wizard::getPages() const {
+const QList<WizardPage*>& Wizard::getPages() const {
     return pages;
 }
 
-void Wizard::validate(const Workflow::Schema *schema, U2OpStatus &os) const {
-    foreach (WizardPage *page, pages) {
+void Wizard::validate(const Workflow::Schema* schema, U2OpStatus& os) const {
+    foreach (WizardPage* page, pages) {
         page->validate(schema->getProcesses(), os);
         CHECK_OP(os, );
     }
 }
 
-void Wizard::addVariable(const Variable &v) {
+void Wizard::addVariable(const Variable& v) {
     vars[v.getName()] = v;
 }
 
@@ -71,7 +71,7 @@ void Wizard::setAutoRun(bool value) {
     autoRun = value;
 }
 
-void Wizard::addResult(const QList<Predicate> &preds, const QString &result) {
+void Wizard::addResult(const QList<Predicate>& preds, const QString& result) {
     results[result] = preds;
 }
 
@@ -79,11 +79,11 @@ QMap<QString, QList<Predicate>> Wizard::getResults() const {
     return results;
 }
 
-QString Wizard::getResult(const QMap<QString, Variable> &vars) const {
-    foreach (const QString &result, results.keys()) {
-        const QList<Predicate> &preds = results[result];
+QString Wizard::getResult(const QMap<QString, Variable>& vars) const {
+    foreach (const QString& result, results.keys()) {
+        const QList<Predicate>& preds = results[result];
         bool match = true;
-        for (const Predicate &p : qAsConst(preds)) {
+        for (const Predicate& p : qAsConst(preds)) {
             match &= p.isTrue(vars);
         }
         if (match) {
@@ -97,7 +97,7 @@ QString Wizard::getFinishLabel() const {
     return finishLabel;
 }
 
-void Wizard::setFinishLabel(const QString &value) {
+void Wizard::setFinishLabel(const QString& value) {
     finishLabel = value;
 }
 

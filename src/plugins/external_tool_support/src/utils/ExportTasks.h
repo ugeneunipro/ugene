@@ -35,13 +35,13 @@ class CloneObjectTask;
 class SaveAlignmentTask : public Task {
     Q_OBJECT
 public:
-    SaveAlignmentTask(const MultipleSequenceAlignment &ma, const QString &fileName, DocumentFormatId f, const QVariantMap &hints = QVariantMap());
+    SaveAlignmentTask(const MultipleSequenceAlignment& ma, const QString& fileName, DocumentFormatId f, const QVariantMap& hints = QVariantMap());
 
     void run() override;
 
-    virtual Document *getDocument() const;
-    const QString &getUrl() const;
-    const MultipleSequenceAlignment &getMAlignment() const;
+    virtual Document* getDocument() const;
+    const QString& getUrl() const;
+    const MultipleSequenceAlignment& getMAlignment() const;
 
 private:
     MultipleSequenceAlignment ma;
@@ -55,11 +55,11 @@ private:
 class SaveMSA2SequencesTask : public Task {
     Q_OBJECT
 public:
-    SaveMSA2SequencesTask(const MultipleSequenceAlignment &ma, const QString &url, bool trimAli, const DocumentFormatId& format);
+    SaveMSA2SequencesTask(const MultipleSequenceAlignment& ma, const QString& url, bool trimAli, const DocumentFormatId& format);
 
     void run() override;
 
-    virtual Document *getDocument() const {
+    virtual Document* getDocument() const {
         return doc.data();
     }
 
@@ -73,20 +73,20 @@ private:
 class SaveSequenceTask : public Task {
     Q_OBJECT
 public:
-    SaveSequenceTask(const QPointer<U2SequenceObject> &sequence, const QString &url, const DocumentFormatId &formatId);
+    SaveSequenceTask(const QPointer<U2SequenceObject>& sequence, const QString& url, const DocumentFormatId& formatId);
 
 private:
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
     QPointer<U2SequenceObject> sequence;
     const QString url;
     const DocumentFormatId formatId;
 
-    StateLocker *locker;
-    CloneObjectTask *cloneTask;
+    StateLocker* locker;
+    CloneObjectTask* cloneTask;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_EXPORT_PLUGIN_TASKS_H_
+#endif  // _U2_EXPORT_PLUGIN_TASKS_H_

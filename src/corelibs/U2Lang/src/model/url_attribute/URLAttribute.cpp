@@ -28,14 +28,14 @@
 
 namespace U2 {
 
-URLAttribute::URLAttribute(const Descriptor &d, const DataTypePtr type, bool required)
+URLAttribute::URLAttribute(const Descriptor& d, const DataTypePtr type, bool required)
     : Attribute(d, type, required) {
     sets << Dataset();
     defaultValue = qVariantFromValue<QList<Dataset>>(sets);
     value = qVariantFromValue<QList<Dataset>>(sets);
 }
 
-void URLAttribute::setAttributeValue(const QVariant &newVal) {
+void URLAttribute::setAttributeValue(const QVariant& newVal) {
     if (newVal.canConvert<QList<Dataset>>()) {
         sets = newVal.value<QList<Dataset>>();
     } else {
@@ -50,11 +50,11 @@ void URLAttribute::setAttributeValue(const QVariant &newVal) {
     value = qVariantFromValue<QList<Dataset>>(sets);
 }
 
-const QVariant &URLAttribute::getAttributePureValue() const {
+const QVariant& URLAttribute::getAttributePureValue() const {
     return value;
 }
 
-const QVariant &URLAttribute::getDefaultPureValue() const {
+const QVariant& URLAttribute::getDefaultPureValue() const {
     return defaultValue;
 }
 
@@ -63,7 +63,7 @@ bool URLAttribute::isEmpty() const {
         return true;
     }
 
-    foreach (const Dataset &set, sets) {
+    foreach (const Dataset& set, sets) {
         if (!set.getUrls().isEmpty()) {
             return false;
         }
@@ -75,38 +75,38 @@ bool URLAttribute::isDefaultValue() const {
     return false;
 }
 
-URLAttribute *URLAttribute::clone() {
+URLAttribute* URLAttribute::clone() {
     return new URLAttribute(*this);
 }
 
-QList<Dataset> &URLAttribute::getDatasets() {
+QList<Dataset>& URLAttribute::getDatasets() {
     return sets;
 }
 
 void URLAttribute::updateValue() {
     QList<Dataset> res;
-    foreach (const Dataset &dSet, sets) {
+    foreach (const Dataset& dSet, sets) {
         res << dSet;
     }
     value = qVariantFromValue<QList<Dataset>>(res);
 }
 
-URLAttribute::URLAttribute(const URLAttribute &other)
+URLAttribute::URLAttribute(const URLAttribute& other)
     : Attribute(other) {
     copy(other);
 }
 
-URLAttribute &URLAttribute::operator=(const URLAttribute &other) {
+URLAttribute& URLAttribute::operator=(const URLAttribute& other) {
     CHECK(this != &other, *this);
     Attribute::operator=(other);
     copy(other);
     return *this;
 }
 
-QStringList URLAttribute::emptyDatasetNames(bool &hasUrl) {
+QStringList URLAttribute::emptyDatasetNames(bool& hasUrl) {
     QStringList emptySets;
     hasUrl = false;
-    foreach (const Dataset &dSet, sets) {
+    foreach (const Dataset& dSet, sets) {
         if (dSet.getUrls().isEmpty()) {
             emptySets << dSet.getName();
         } else {
@@ -116,12 +116,12 @@ QStringList URLAttribute::emptyDatasetNames(bool &hasUrl) {
     return emptySets;
 }
 
-void URLAttribute::copy(const URLAttribute &other) {
+void URLAttribute::copy(const URLAttribute& other) {
     sets = other.sets;
     compatibleObjectTypes = other.compatibleObjectTypes;
 }
 
-bool URLAttribute::validate(NotificationsList &notificationList) {
+bool URLAttribute::validate(NotificationsList& notificationList) {
     if (!isRequiredAttribute() || canBeEmpty()) {
         return true;
     }
@@ -137,7 +137,7 @@ bool URLAttribute::validate(NotificationsList &notificationList) {
         return false;
     }
     if (!emptySets.isEmpty()) {
-        foreach (const QString &name, emptySets) {
+        foreach (const QString& name, emptySets) {
             notificationList << WorkflowNotification(WorkflowUtils::tr("Required parameter %1 has empty dataset: %2").arg(getDisplayName()).arg(name));
         }
         return false;
@@ -145,11 +145,11 @@ bool URLAttribute::validate(NotificationsList &notificationList) {
     return true;
 }
 
-const QSet<GObjectType> &URLAttribute::getCompatibleObjectTypes() const {
+const QSet<GObjectType>& URLAttribute::getCompatibleObjectTypes() const {
     return compatibleObjectTypes;
 }
 
-void URLAttribute::setCompatibleObjectTypes(const QSet<GObjectType> &types) {
+void URLAttribute::setCompatibleObjectTypes(const QSet<GObjectType>& types) {
     compatibleObjectTypes = types;
 }
 

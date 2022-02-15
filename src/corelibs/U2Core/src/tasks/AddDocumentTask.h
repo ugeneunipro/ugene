@@ -43,19 +43,19 @@ public:
 class U2CORE_EXPORT AddDocumentTask : public Task {
     Q_OBJECT
 public:
-    AddDocumentTask(Document *d, const AddDocumentTaskConfig &c = AddDocumentTaskConfig());
-    AddDocumentTask(DocumentProviderTask *dp, const AddDocumentTaskConfig &c = AddDocumentTaskConfig());
+    AddDocumentTask(Document* d, const AddDocumentTaskConfig& c = AddDocumentTaskConfig());
+    AddDocumentTask(DocumentProviderTask* dp, const AddDocumentTaskConfig& c = AddDocumentTaskConfig());
 
     ReportResult report();
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
-    Document *getDocument() {
+    QList<Task*> onSubTaskFinished(Task* subTask);
+    Document* getDocument() {
         return document;
     }
 
 private:
-    Document *document;
-    DocumentProviderTask *dpt;
+    Document* document;
+    DocumentProviderTask* dpt;
     AddDocumentTaskConfig conf;
 };
 

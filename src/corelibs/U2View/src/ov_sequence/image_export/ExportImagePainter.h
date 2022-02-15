@@ -44,9 +44,9 @@ public:
     virtual ~ExportImagePainter() {
     }
 
-    virtual void paint(QPainter &p, CustomExportSettings *settings) const = 0;
-    virtual QSize getImageSize(CustomExportSettings *settings) const = 0;
-    virtual bool canPaintSvg(CustomExportSettings *settings, U2OpStatus &os) const = 0;
+    virtual void paint(QPainter& p, CustomExportSettings* settings) const = 0;
+    virtual QSize getImageSize(CustomExportSettings* settings) const = 0;
+    virtual bool canPaintSvg(CustomExportSettings* settings, U2OpStatus& os) const = 0;
 };
 
 }  // namespace U2

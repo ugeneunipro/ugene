@@ -30,9 +30,9 @@ namespace U2 {
 
 class TestViewReporter {
 public:
-    static QString generateHtmlReport(QTreeWidget *tree, int runTime);
-    static void saveReportToFileAndOpenBrowser(QTreeWidget *tree, int runTime);
-    static void saveReport(const QString &url, const QString &data);
+    static QString generateHtmlReport(QTreeWidget* tree, int runTime);
+    static void saveReportToFileAndOpenBrowser(QTreeWidget* tree, int runTime);
+    static void saveReport(const QString& url, const QString& data);
 };
 
 }  // namespace U2

@@ -44,12 +44,12 @@ public:
     virtual ~SequenceDbiWalkerCallback() {
     }
 
-    virtual void onRegion(SequenceDbiWalkerSubtask *t, TaskStateInfo &ti) = 0;
+    virtual void onRegion(SequenceDbiWalkerSubtask* t, TaskStateInfo& ti) = 0;
 
     /* implement this to give SequenceDbiWalkerSubtask required resources
      * here are resources for ONE(!) SequenceDbiWalkerSubtask execution e.g. for one execution of onRegion function
      */
-    virtual QList<TaskResourceUsage> getResources(SequenceDbiWalkerSubtask *) {
+    virtual QList<TaskResourceUsage> getResources(SequenceDbiWalkerSubtask*) {
         return QList<TaskResourceUsage>();
     }
 };
@@ -57,51 +57,51 @@ public:
 class U2CORE_EXPORT SequenceDbiWalkerTask : public Task {
     Q_OBJECT
 public:
-    SequenceDbiWalkerTask(const SequenceDbiWalkerConfig &config, SequenceDbiWalkerCallback *callback, const QString &name, TaskFlags tf = TaskFlags_NR_FOSE_COSC);
+    SequenceDbiWalkerTask(const SequenceDbiWalkerConfig& config, SequenceDbiWalkerCallback* callback, const QString& name, TaskFlags tf = TaskFlags_NR_FOSE_COSC);
 
-    SequenceDbiWalkerCallback *getCallback() const {
+    SequenceDbiWalkerCallback* getCallback() const {
         return callback;
     }
-    const SequenceDbiWalkerConfig &getConfig() const {
+    const SequenceDbiWalkerConfig& getConfig() const {
         return config;
     }
 
     // reverseMode - start splitting from the end of the range
-    static QVector<U2Region> splitRange(const U2Region &range, int chunkSize, int overlapSize, int lastChunkExtraLen, bool reverseMode);
+    static QVector<U2Region> splitRange(const U2Region& range, int chunkSize, int overlapSize, int lastChunkExtraLen, bool reverseMode);
 
-    void setError(const QString &err) {
+    void setError(const QString& err) {
         stateInfo.setError(err);
     }
 
 private:
-    QList<SequenceDbiWalkerSubtask *> prepareSubtasks();
-    QList<SequenceDbiWalkerSubtask *> createSubs(const QVector<U2Region> &chunks, bool doCompl, bool doAmino);
+    QList<SequenceDbiWalkerSubtask*> prepareSubtasks();
+    QList<SequenceDbiWalkerSubtask*> createSubs(const QVector<U2Region>& chunks, bool doCompl, bool doAmino);
 
     SequenceDbiWalkerConfig config;
-    SequenceDbiWalkerCallback *callback;
+    SequenceDbiWalkerCallback* callback;
 };
 
 class U2CORE_EXPORT SequenceDbiWalkerSubtask : public Task {
     Q_OBJECT
 public:
-    SequenceDbiWalkerSubtask(SequenceDbiWalkerTask *_t, const U2Region &glob, bool lo, bool ro, const U2EntityRef &seqRef, bool _doCompl, bool _doAmino);
+    SequenceDbiWalkerSubtask(SequenceDbiWalkerTask* _t, const U2Region& glob, bool lo, bool ro, const U2EntityRef& seqRef, bool _doCompl, bool _doAmino);
 
     void run() override;
 
     /** Returns region sequence with all transformation applied. Computes the region sequence during the first call. */
-    const QByteArray &getRegionSequence();
+    const QByteArray& getRegionSequence();
 
     /** Returns global coordinates of the sequence region processed by this sub-task. */
-    const U2Region &getGlobalRegion() const;
+    const U2Region& getGlobalRegion() const;
 
     /** Returns top-level sequence walker task. */
-    SequenceDbiWalkerTask *getSequenceDbiWalkerTask() const;
+    SequenceDbiWalkerTask* getSequenceDbiWalkerTask() const;
 
 private:
     /** Prepares region sequence data if needed. */
     void prepareRegionSequence();
 
-    SequenceDbiWalkerTask *t;
+    SequenceDbiWalkerTask* t;
     U2Region globalRegion;
     U2EntityRef seqRef;
     bool doCompl;

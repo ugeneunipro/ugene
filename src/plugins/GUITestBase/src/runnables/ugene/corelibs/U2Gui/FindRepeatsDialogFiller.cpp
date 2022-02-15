@@ -34,8 +34,8 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::FindRepeatsDialogFiller"
 #define GT_METHOD_NAME "run"
 
-FindRepeatsDialogFiller::FindRepeatsDialogFiller(HI::GUITestOpStatus &os,
-                                                 const QString &_resultFilesPath,
+FindRepeatsDialogFiller::FindRepeatsDialogFiller(HI::GUITestOpStatus& os,
+                                                 const QString& _resultFilesPath,
                                                  bool _searchInverted,
                                                  int _minRepeatLength,
                                                  int _repeatsIdentity,
@@ -44,7 +44,7 @@ FindRepeatsDialogFiller::FindRepeatsDialogFiller(HI::GUITestOpStatus &os,
       searchInverted(_searchInverted), minRepeatLength(_minRepeatLength), repeatsIdentity(_repeatsIdentity), minDistance(_minDistance) {
 }
 
-FindRepeatsDialogFiller::FindRepeatsDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario)
+FindRepeatsDialogFiller::FindRepeatsDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
     : Filler(os, "FindRepeatsDialog", scenario),
       button(Start),
       searchInverted(false),
@@ -54,7 +54,7 @@ FindRepeatsDialogFiller::FindRepeatsDialogFiller(HI::GUITestOpStatus &os, Custom
 }
 
 void FindRepeatsDialogFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
     if (button == Cancel) {
         GTWidget::click(os, GTWidget::findWidget(os, "cancelButton", dialog));
         return;

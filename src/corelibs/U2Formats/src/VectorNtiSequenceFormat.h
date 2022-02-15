@@ -33,23 +33,23 @@ class AnnotationGroup;
 class U2FORMATS_EXPORT VectorNtiSequenceFormat : public GenbankPlainTextFormat {
     Q_OBJECT
 public:
-    VectorNtiSequenceFormat(QObject *parent);
+    VectorNtiSequenceFormat(QObject* parent);
 
-    virtual void storeEntry(IOAdapter *io, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os);
+    virtual void storeEntry(IOAdapter* io, const QMap<GObjectType, QList<GObject*>>& objectsMap, U2OpStatus& os);
 
 private:
-    virtual FormatCheckResult checkRawTextData(const QByteArray &rawData, const GUrl & = GUrl()) const;
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
-    QList<StrPair> processCommentKeys(QMultiMap<QString, QVariant> &tags);
-    void createCommentAnnotation(const QStringList &comments, int sequenceLength, AnnotationTableObject *annTable) const;
-    U2Qualifier createQualifier(const QString &qualifierName, const QString &qualifierValue, bool containsDoubleQuotes) const;
-    U2FeatureType getFeatureType(const QString &typeString) const;
+    QList<StrPair> processCommentKeys(QMultiMap<QString, QVariant>& tags);
+    void createCommentAnnotation(const QStringList& comments, int sequenceLength, AnnotationTableObject* annTable) const;
+    U2Qualifier createQualifier(const QString& qualifierName, const QString& qualifierValue, bool containsDoubleQuotes) const;
+    U2FeatureType getFeatureType(const QString& typeString) const;
     QString getFeatureTypeString(U2FeatureType featureType, bool isAmino) const;
-    StrStrMap parseComments(const QStringList &comments) const;
+    StrStrMap parseComments(const QStringList& comments) const;
     static QString parseDate(int date);
-    QList<SharedAnnotationData> prepareAnnotations(const QList<GObject *> &tablesList, bool isAmino, U2OpStatus &os) const;
-    void writeAnnotations(IOAdapter *io, const QList<GObject *> &aos, bool isAmino, U2OpStatus &os);
-    void prepareQualifiersToWrite(QMap<AnnotationGroup *, QList<SharedAnnotationData>> &annotationsByGroups, bool isAmino) const;
+    QList<SharedAnnotationData> prepareAnnotations(const QList<GObject*>& tablesList, bool isAmino, U2OpStatus& os) const;
+    void writeAnnotations(IOAdapter* io, const QList<GObject*>& aos, bool isAmino, U2OpStatus& os);
+    void prepareQualifiersToWrite(QMap<AnnotationGroup*, QList<SharedAnnotationData>>& annotationsByGroups, bool isAmino) const;
 
     enum VntiDnaFeatureTypes {
         DnaAttenuator = 0,

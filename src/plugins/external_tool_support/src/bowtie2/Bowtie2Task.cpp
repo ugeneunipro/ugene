@@ -34,7 +34,7 @@ namespace U2 {
 
 // Bowtie2BuildIndexTask
 
-Bowtie2BuildIndexTask::Bowtie2BuildIndexTask(const QString &referencePath, const QString &indexPath)
+Bowtie2BuildIndexTask::Bowtie2BuildIndexTask(const QString& referencePath, const QString& indexPath)
     : ExternalToolSupportTask("Build Bowtie2 index", TaskFlags_NR_FOSE_COSC),
       referencePath(referencePath),
       indexPath(indexPath) {
@@ -53,14 +53,14 @@ void Bowtie2BuildIndexTask::prepare() {
     arguments.append(referencePath);
     arguments.append(indexPath);
 
-    ExternalToolRunTask *task = new ExternalToolRunTask(Bowtie2Support::ET_BOWTIE2_BUILD_ID, arguments, new ExternalToolLogParser());
+    ExternalToolRunTask* task = new ExternalToolRunTask(Bowtie2Support::ET_BOWTIE2_BUILD_ID, arguments, new ExternalToolLogParser());
     setListenerForTask(task);
     addSubTask(task);
 }
 
 // Bowtie2AlignTask
 
-Bowtie2AlignTask::Bowtie2AlignTask(const DnaAssemblyToRefTaskSettings &settings)
+Bowtie2AlignTask::Bowtie2AlignTask(const DnaAssemblyToRefTaskSettings& settings)
     : ExternalToolSupportTask("Bowtie2 reads assembly", TaskFlags_NR_FOSE_COSC),
       settings(settings) {
 }
@@ -178,7 +178,7 @@ void Bowtie2AlignTask::prepare() {
             QStringList upstreamReads, downstreamReads;
 
             for (int i = 0; i < setCount; ++i) {
-                const ShortReadSet &set = settings.shortReadSets.at(i);
+                const ShortReadSet& set = settings.shortReadSets.at(i);
                 if (set.order == ShortReadSet::UpstreamMate) {
                     upstreamReads.append(set.url.getURLString());
                 } else {
@@ -200,7 +200,7 @@ void Bowtie2AlignTask::prepare() {
     arguments.append("-S");
     arguments.append(settings.resultFileName.getURLString());
 
-    ExternalToolRunTask *task = new ExternalToolRunTask(Bowtie2Support::ET_BOWTIE2_ALIGN_ID, arguments, new ExternalToolLogParser());
+    ExternalToolRunTask* task = new ExternalToolRunTask(Bowtie2Support::ET_BOWTIE2_ALIGN_ID, arguments, new ExternalToolLogParser());
     setListenerForTask(task);
     addSubTask(task);
 }
@@ -237,7 +237,7 @@ const QStringList Bowtie2Task::largeIndexSuffixes = QStringList() << ".1.bt2l"
                                                                   << ".rev.1.bt2l"
                                                                   << ".rev.2.bt2l";
 
-Bowtie2Task::Bowtie2Task(const DnaAssemblyToRefTaskSettings &settings, bool justBuildIndex)
+Bowtie2Task::Bowtie2Task(const DnaAssemblyToRefTaskSettings& settings, bool justBuildIndex)
     : DnaAssemblyToReferenceTask(settings, TaskFlags_NR_FOSE_COSC, justBuildIndex),
       buildIndexTask(nullptr),
       alignTask(nullptr),
@@ -253,7 +253,7 @@ void Bowtie2Task::prepare() {
     }
 
     if (GzipDecompressTask::checkZipped(settings.refSeqUrl)) {
-        temp.open();    //opening creates new temporary file
+        temp.open();  // opening creates new temporary file
         temp.close();
         unzipTask = new GzipDecompressTask(settings.refSeqUrl, GUrl(QFileInfo(temp).absoluteFilePath()));
         settings.refSeqUrl = GUrl(QFileInfo(temp).absoluteFilePath());
@@ -269,11 +269,11 @@ void Bowtie2Task::prepare() {
             }
         }
         buildIndexTask = new Bowtie2BuildIndexTask(settings.refSeqUrl.getURLString(), indexFileName);
-        buildIndexTask->addListeners(QList<ExternalToolListener *>() << getListener(0));
+        buildIndexTask->addListeners(QList<ExternalToolListener*>() << getListener(0));
     }
     if (!isBuildOnlyTask) {
         alignTask = new Bowtie2AlignTask(settings);
-        alignTask->addListeners(QList<ExternalToolListener *>() << getListener(1));
+        alignTask->addListeners(QList<ExternalToolListener*>() << getListener(1));
     }
 
     if (unzipTask != nullptr) {
@@ -294,8 +294,8 @@ Task::ReportResult Bowtie2Task::report() {
     return ReportResult_Finished;
 }
 
-QList<Task *> Bowtie2Task::onSubTaskFinished(Task *subTask) {
-    QList<Task *> result;
+QList<Task*> Bowtie2Task::onSubTaskFinished(Task* subTask) {
+    QList<Task*> result;
 
     if (subTask == unzipTask) {
         if (!settings.prebuiltIndex) {
@@ -313,8 +313,8 @@ QList<Task *> Bowtie2Task::onSubTaskFinished(Task *subTask) {
 
 // Bowtie2TaskFactory
 
-DnaAssemblyToReferenceTask *Bowtie2TaskFactory::createTaskInstance(const DnaAssemblyToRefTaskSettings &settings, bool justBuildIndex) {
+DnaAssemblyToReferenceTask* Bowtie2TaskFactory::createTaskInstance(const DnaAssemblyToRefTaskSettings& settings, bool justBuildIndex) {
     return new Bowtie2Task(settings, justBuildIndex);
 }
 
-}    // namespace U2
+}  // namespace U2

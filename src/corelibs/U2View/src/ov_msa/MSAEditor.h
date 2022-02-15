@@ -77,34 +77,34 @@ class U2VIEW_EXPORT MSAEditor : public MaEditor {
     friend class SequenceWithChromatogramAreaRenderer;
 
 public:
-    MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *obj);
+    MSAEditor(const QString& viewName, MultipleSequenceAlignmentObject* obj);
     ~MSAEditor();
 
     QString getSettingsRoot() const override {
         return MSAE_SETTINGS_ROOT;
     }
 
-    MultipleSequenceAlignmentObject *getMaObject() const override {
-        return qobject_cast<MultipleSequenceAlignmentObject *>(maObject);
+    MultipleSequenceAlignmentObject* getMaObject() const override {
+        return qobject_cast<MultipleSequenceAlignmentObject*>(maObject);
     }
 
     /** Returns selection controller instance. The instance is always defined and is never null. */
-    MaEditorSelectionController *getSelectionController() const override;
+    MaEditorSelectionController* getSelectionController() const override;
 
-    void buildStaticToolbar(QToolBar *tb) override;
+    void buildStaticToolbar(QToolBar* tb) override;
 
-    void buildMenu(QMenu *m, const QString &type) override;
+    void buildMenu(QMenu* m, const QString& type) override;
 
-    MsaEditorWgt *getUI() const override;
+    MsaEditorWgt* getUI() const override;
 
     // Return alignment row that is displayed on target line in MSAEditor
     MultipleSequenceAlignmentRow getRowByViewRowIndex(int viewRowIndex) const;
 
-    PairwiseAlignmentWidgetsSettings *getPairwiseAlignmentWidgetsSettings() const {
+    PairwiseAlignmentWidgetsSettings* getPairwiseAlignmentWidgetsSettings() const {
         return pairwiseAlignmentWidgetsSettings;
     }
 
-    MSAEditorTreeManager *getTreeManager() {
+    MSAEditorTreeManager* getTreeManager() {
         return &treeManager;
     }
 
@@ -114,7 +114,7 @@ public:
 
     char getReferenceCharAt(int pos) const override;
 
-    void sortSequences(const MultipleAlignment::SortType &sortType, const MultipleAlignment::Order &sortOrder);
+    void sortSequences(const MultipleAlignment::SortType& sortType, const MultipleAlignment::Order& sortOrder);
 
     /** Forces complete re-computation of the active collapse model based on the current MSA editor state. */
     void updateCollapseModel();
@@ -122,13 +122,13 @@ public:
     void setRowOrderMode(MaEditorRowOrderMode mode) override;
 
     /** Returns current set of free-mode markers. */
-    const QSet<QObject *> &getFreeModeMasterMarkersSet() const;
+    const QSet<QObject*>& getFreeModeMasterMarkersSet() const;
 
     /** Adds new marker object into freeModeMasterMarkersSet. */
-    void addFreeModeMasterMarker(QObject *marker);
+    void addFreeModeMasterMarker(QObject* marker);
 
     /** Removes the given marker object from the freeModeMasterMarkersSet. */
-    void removeFreeModeMasterMarker(QObject *marker);
+    void removeFreeModeMasterMarker(QObject* marker);
 
     /**
      * Maximum supported length of MSA object.
@@ -137,7 +137,7 @@ public:
     static constexpr int MAX_SUPPORTED_MSA_OBJECT_LENGTH = 100 * 1000 * 1000;
 
 protected slots:
-    void sl_onContextMenuRequested(const QPoint &pos) override;
+    void sl_onContextMenuRequested(const QPoint& pos) override;
 
     void sl_buildTree();
     void sl_align();
@@ -155,7 +155,7 @@ protected slots:
 
     void sl_showTreeOP();
     void sl_hideTreeOP();
-    void sl_rowsRemoved(const QList<qint64> &rowIds);
+    void sl_rowsRemoved(const QList<qint64>& rowIds);
     void sl_updateRealignAction();
     void sl_showCustomSettings();
     void sl_sortSequencesByName();
@@ -181,73 +181,73 @@ protected slots:
     void sl_exportImage();
 
 protected:
-    QWidget *createWidget() override;
-    bool eventFilter(QObject *o, QEvent *e) override;
-    bool onObjectRemoved(GObject *obj) override;
-    void onObjectRenamed(GObject *obj, const QString &oldName) override;
+    QWidget* createWidget() override;
+    bool eventFilter(QObject* o, QEvent* e) override;
+    bool onObjectRemoved(GObject* obj) override;
+    void onObjectRenamed(GObject* obj, const QString& oldName) override;
 
-    void addCopyPasteMenu(QMenu *m) override;
-    void addEditMenu(QMenu *m) override;
-    void addSortMenu(QMenu *m);
-    void addAlignMenu(QMenu *m);
-    void addExportMenu(QMenu *m) override;
-    void addAppearanceMenu(QMenu *m);
-    void addColorsMenu(QMenu *m);
-    void addHighlightingMenu(QMenu *m);
-    void addNavigationMenu(QMenu *m);
-    void addTreeMenu(QMenu *m);
-    void addAdvancedMenu(QMenu *m);
-    void addStatisticsMenu(QMenu *m);
+    void addCopyPasteMenu(QMenu* m) override;
+    void addEditMenu(QMenu* m) override;
+    void addSortMenu(QMenu* m);
+    void addAlignMenu(QMenu* m);
+    void addExportMenu(QMenu* m) override;
+    void addAppearanceMenu(QMenu* m);
+    void addColorsMenu(QMenu* m);
+    void addHighlightingMenu(QMenu* m);
+    void addNavigationMenu(QMenu* m);
+    void addTreeMenu(QMenu* m);
+    void addAdvancedMenu(QMenu* m);
+    void addStatisticsMenu(QMenu* m);
 
     void updateActions() override;
 
     void initDragAndDropSupport();
 
 public:
-    QAction *buildTreeAction = nullptr;
-    QAction *alignAction = nullptr;
+    QAction* buildTreeAction = nullptr;
+    QAction* alignAction = nullptr;
 
     /** Aligns new sequences (from an external file) to the current alignment. */
-    QAction *alignNewSequencesToAlignmentAction = nullptr;
+    QAction* alignNewSequencesToAlignmentAction = nullptr;
 
     /** Aligns selected sequences (from the current alignment) to the current rest of the alignment. */
-    QAction *alignSelectedSequencesToAlignmentAction = nullptr;
+    QAction* alignSelectedSequencesToAlignmentAction = nullptr;
 
-    QAction *setAsReferenceSequenceAction = nullptr;
-    QAction *unsetReferenceSequenceAction = nullptr;
-    QAction *gotoAction = nullptr;
-    QAction *searchInSequencesAction = nullptr;
-    QAction *searchInSequenceNamesAction = nullptr;
-    QAction *openCustomSettingsAction = nullptr;
-    QAction *sortByNameAscendingAction = nullptr;
-    QAction *sortByNameDescendingAction = nullptr;
-    QAction *sortByLengthAscendingAction = nullptr;
-    QAction *sortByLengthDescendingAction = nullptr;
-    QAction *sortByLeadingGapAscendingAction = nullptr;
-    QAction *sortByLeadingGapDescendingAction = nullptr;
+    QAction* setAsReferenceSequenceAction = nullptr;
+    QAction* unsetReferenceSequenceAction = nullptr;
+    QAction* gotoAction = nullptr;
+    QAction* searchInSequencesAction = nullptr;
+    QAction* searchInSequenceNamesAction = nullptr;
+    QAction* openCustomSettingsAction = nullptr;
+    QAction* sortByNameAscendingAction = nullptr;
+    QAction* sortByNameDescendingAction = nullptr;
+    QAction* sortByLengthAscendingAction = nullptr;
+    QAction* sortByLengthDescendingAction = nullptr;
+    QAction* sortByLeadingGapAscendingAction = nullptr;
+    QAction* sortByLeadingGapDescendingAction = nullptr;
 
     /** Initiates a dialog to export the alignment using some image format. */
-    QAction *saveScreenshotAction = nullptr;
+    QAction* saveScreenshotAction = nullptr;
 
     /**
      * Sorts collapsing groups by number of sequences in ascending order.
      * The action is only enabled in 'MaEditorRowOrderMode::Sequence' mode when there are groups of length >=2.
      */
-    QAction *sortGroupsBySizeAscendingAction = nullptr;
+    QAction* sortGroupsBySizeAscendingAction = nullptr;
 
     /**
      * Sorts collapsing groups by number of sequences in descending descending order.
      * The action is only enabled in 'MaEditorRowOrderMode::Sequence' mode when there are groups of length >=2.
      */
-    QAction *sortGroupsBySizeDescendingAction = nullptr;
+    QAction* sortGroupsBySizeDescendingAction = nullptr;
 
-    QAction *convertDnaToRnaAction = nullptr;
-    QAction *convertRnaToDnaAction = nullptr;
-    QAction *convertRawToDnaAction = nullptr;
-    QAction *convertRawToAminoAction = nullptr;
+    QAction* convertDnaToRnaAction = nullptr;
+    QAction* convertRnaToDnaAction = nullptr;
+    QAction* convertRawToDnaAction = nullptr;
+    QAction* convertRawToAminoAction = nullptr;
 
 private:
-    PairwiseAlignmentWidgetsSettings *pairwiseAlignmentWidgetsSettings = nullptr;
+    PairwiseAlignmentWidgetsSettings* pairwiseAlignmentWidgetsSettings = nullptr;
     MSAEditorTreeManager treeManager;
 
     /**
@@ -265,10 +265,10 @@ private:
      *
      * MSAEditor can any time reset this set and switch to 'Original' or 'Sequence' mode.
      */
-    QSet<QObject *> freeModeMasterMarkersSet;
+    QSet<QObject*> freeModeMasterMarkersSet;
 
     /** Selection state controller. */
-    MaEditorSelectionController *selectionController;
+    MaEditorSelectionController* selectionController;
 };
 
 /** Set of custom menu actions in MSA editor. */

@@ -36,10 +36,10 @@ class ArrowHeaderWidget;
 class U2GUI_EXPORT ShowHideSubgroupWidget : public QWidget {
     Q_OBJECT
 public:
-    ShowHideSubgroupWidget(QWidget *parent);
-    ShowHideSubgroupWidget(const QString &id, const QString &caption, QWidget *innerWidget, bool isOpened);
+    ShowHideSubgroupWidget(QWidget* parent);
+    ShowHideSubgroupWidget(const QString& id, const QString& caption, QWidget* innerWidget, bool isOpened);
 
-    void init(const QString &id, const QString &caption, QWidget *innerWidget, bool isOpened);
+    void init(const QString& id, const QString& caption, QWidget* innerWidget, bool isOpened);
 
     bool isSubgroupOpened() const;
     void setSubgroupOpened(bool open);
@@ -50,12 +50,12 @@ public:
     void setPermanentlyOpen(bool isOpened);
 
 signals:
-    void si_subgroupStateChanged(const QString &id);
+    void si_subgroupStateChanged(const QString& id);
 
 private:
-    ArrowHeaderWidget *arrowHeaderWidget;
+    ArrowHeaderWidget* arrowHeaderWidget;
     QString subgroupId;
-    QWidget *innerWidget;
+    QWidget* innerWidget;
 
 private slots:
     void updateSubgroupState(bool isSubgroupOpened);
@@ -64,7 +64,7 @@ private slots:
 class ArrowHeaderWidget : public QWidget {
     Q_OBJECT
 public:
-    ArrowHeaderWidget(const QString &caption, bool isOpened);
+    ArrowHeaderWidget(const QString& caption, bool isOpened);
     ~ArrowHeaderWidget();
 
     bool isArrowOpened() {
@@ -82,13 +82,13 @@ private slots:
     void sl_showProgress();
 
 private:
-    virtual void mousePressEvent(QMouseEvent *);
+    virtual void mousePressEvent(QMouseEvent*);
 
     bool isOpened;
-    QLabel *arrow;
+    QLabel* arrow;
 
-    QLabel *progressMovieLabel;
-    QMovie *progressMovie;
+    QLabel* progressMovieLabel;
+    QMovie* progressMovie;
 
     /**
      * Used to provide a small timeout before the progress start

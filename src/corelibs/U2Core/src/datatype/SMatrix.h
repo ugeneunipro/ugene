@@ -43,7 +43,7 @@ public:
 // Example: Blosum70, PAM200, VTML200
 class U2CORE_EXPORT SMatrix {
 public:
-    SMatrix(const QString &name, const DNAAlphabet *alphabet, const QList<SScore> &rawMatrix, const QString &description = QString());
+    SMatrix(const QString& name, const DNAAlphabet* alphabet, const QList<SScore>& rawMatrix, const QString& description = QString());
 
     // constructs empty anonymous matrix
     SMatrix() {
@@ -60,15 +60,15 @@ public:
 
     void setScore(char c1, char c2, float score);
 
-    const QString &getName() const {
+    const QString& getName() const {
         return name;
     }
 
-    const QString &getDescription() const {
+    const QString& getDescription() const {
         return description;
     }
 
-    const DNAAlphabet *getAlphabet() const {
+    const DNAAlphabet* getAlphabet() const {
         return alphabet;
     }
 
@@ -83,7 +83,7 @@ public:
     // TODO: make this class serializable
     QVariant toQVariant() const;
 
-    static SMatrix fromQVariant(const QVariant &v);
+    static SMatrix fromQVariant(const QVariant& v);
 
 private:
     int getScoreIdx(char c1, char c2) const;
@@ -92,7 +92,7 @@ private:
     QString name;
     QString description;
 
-    const DNAAlphabet *alphabet;
+    const DNAAlphabet* alphabet;
     QVarLengthArray<float> scores;  // TODO: make scores integer ?
     char minChar;  // used for optimization of scores size. Minimal character in the alphabet.
     char maxChar;  // used for optimization of scores size. Maximum character in the alphabet.

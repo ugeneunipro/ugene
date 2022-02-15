@@ -37,7 +37,7 @@ namespace U2 {
 
 // Bowtie2SettingsWidget
 
-Bowtie2SettingsWidget::Bowtie2SettingsWidget(QWidget *parent)
+Bowtie2SettingsWidget::Bowtie2SettingsWidget(QWidget* parent)
     : DnaAssemblyAlgorithmMainWidget(parent) {
     setupUi(this);
     layout()->setContentsMargins(0, 0, 0, 0);
@@ -96,7 +96,7 @@ QMap<QString, QVariant> Bowtie2SettingsWidget::getDnaAssemblyCustomSettings() co
     return settings;
 }
 
-bool Bowtie2SettingsWidget::isValidIndex(const QString &oneIndexFileUrl) const {
+bool Bowtie2SettingsWidget::isValidIndex(const QString& oneIndexFileUrl) const {
     QStringList suffixes;
     suffixes << Bowtie2Task::indexSuffixes;
     suffixes << Bowtie2Task::largeIndexSuffixes;
@@ -109,11 +109,11 @@ bool Bowtie2SettingsWidget::isValidIndex(const QString &oneIndexFileUrl) const {
 
 // Bowtie2GUIExtensionsFactory
 
-DnaAssemblyAlgorithmMainWidget *Bowtie2GUIExtensionsFactory::createMainWidget(QWidget *parent) {
+DnaAssemblyAlgorithmMainWidget* Bowtie2GUIExtensionsFactory::createMainWidget(QWidget* parent) {
     return new Bowtie2SettingsWidget(parent);
 }
 
-DnaAssemblyAlgorithmBuildIndexWidget *Bowtie2GUIExtensionsFactory::createBuildIndexWidget(QWidget *parent) {
+DnaAssemblyAlgorithmBuildIndexWidget* Bowtie2GUIExtensionsFactory::createBuildIndexWidget(QWidget* parent) {
     return new Bowtie2BuildSettingsWidget(parent);
 }
 
@@ -125,4 +125,4 @@ bool Bowtie2GUIExtensionsFactory::hasBuildIndexWidget() {
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -27,16 +27,16 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SequenceDbi.h>
 
-static const char *NULL_MSA_DBI_ERROR = "NULL MSA Dbi during exporting rows of an alignment!";
-static const char *OPENED_DBI_CONNECTION_ERROR = "Connection is already opened!";
-static const char *ROWS_SEQS_COUNT_MISMATCH_ERROR = "Different number of rows and sequences!";
+static const char* NULL_MSA_DBI_ERROR = "NULL MSA Dbi during exporting rows of an alignment!";
+static const char* OPENED_DBI_CONNECTION_ERROR = "Connection is already opened!";
+static const char* ROWS_SEQS_COUNT_MISMATCH_ERROR = "Different number of rows and sequences!";
 
 namespace U2 {
 
 MultipleSequenceAlignmentExporter::MultipleSequenceAlignmentExporter() {
 }
 
-MultipleSequenceAlignment MultipleSequenceAlignmentExporter::getAlignment(const U2DbiRef &dbiRef, const U2DataId &msaId, U2OpStatus &os) const {
+MultipleSequenceAlignment MultipleSequenceAlignmentExporter::getAlignment(const U2DbiRef& dbiRef, const U2DataId& msaId, U2OpStatus& os) const {
     SAFE_POINT(!con.isOpen(), OPENED_DBI_CONNECTION_ERROR, MultipleSequenceAlignment());
     con.open(dbiRef, false, os);
     CHECK_OP(os, MultipleSequenceAlignment());
@@ -66,7 +66,7 @@ MultipleSequenceAlignment MultipleSequenceAlignmentExporter::getAlignment(const 
     U2Msa msa = exportAlignmentObject(msaId, os);
     CHECK_OP(os, MultipleSequenceAlignment());
 
-    const DNAAlphabet *alphabet = U2AlphabetUtils::getById(msa.alphabet);
+    const DNAAlphabet* alphabet = U2AlphabetUtils::getById(msa.alphabet);
     al->setAlphabet(alphabet);
     al->setName(msa.visualName);
     al->setLength(msa.length);
@@ -74,7 +74,7 @@ MultipleSequenceAlignment MultipleSequenceAlignmentExporter::getAlignment(const 
     return al;
 }
 
-U2Msa MultipleSequenceAlignmentExporter::getAlignmentObject(const U2DbiRef &dbiRef, const U2DataId &msaId, U2OpStatus &os) const {
+U2Msa MultipleSequenceAlignmentExporter::getAlignmentObject(const U2DbiRef& dbiRef, const U2DataId& msaId, U2OpStatus& os) const {
     SAFE_POINT(!con.isOpen(), OPENED_DBI_CONNECTION_ERROR, U2Msa());
     con.open(dbiRef, false, os);
 
@@ -84,10 +84,10 @@ U2Msa MultipleSequenceAlignmentExporter::getAlignmentObject(const U2DbiRef &dbiR
     return msa;
 }
 
-QList<MsaRowReplacementData> MultipleSequenceAlignmentExporter::getAlignmentRows(const U2DbiRef &dbiRef,
-                                                                                 const U2DataId &msaId,
+QList<MsaRowReplacementData> MultipleSequenceAlignmentExporter::getAlignmentRows(const U2DbiRef& dbiRef,
+                                                                                 const U2DataId& msaId,
                                                                                  const QList<qint64> rowIds,
-                                                                                 U2OpStatus &os) const {
+                                                                                 U2OpStatus& os) const {
     SAFE_POINT(!con.isOpen(), OPENED_DBI_CONNECTION_ERROR, QList<MsaRowReplacementData>());
     con.open(dbiRef, false, os);
     CHECK_OP(os, QList<MsaRowReplacementData>());
@@ -106,15 +106,15 @@ QList<MsaRowReplacementData> MultipleSequenceAlignmentExporter::getAlignmentRows
     return result;
 }
 
-QList<U2MsaRow> MultipleSequenceAlignmentExporter::exportRows(const U2DataId &msaId, U2OpStatus &os) const {
-    U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
+QList<U2MsaRow> MultipleSequenceAlignmentExporter::exportRows(const U2DataId& msaId, U2OpStatus& os) const {
+    U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
     SAFE_POINT(nullptr != msaDbi, NULL_MSA_DBI_ERROR, QList<U2MsaRow>());
 
     return msaDbi->getRows(msaId, os);
 }
 
-QList<U2MsaRow> MultipleSequenceAlignmentExporter::exportRows(const U2DataId &msaId, const QList<qint64> rowIds, U2OpStatus &os) const {
-    U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
+QList<U2MsaRow> MultipleSequenceAlignmentExporter::exportRows(const U2DataId& msaId, const QList<qint64> rowIds, U2OpStatus& os) const {
+    U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
     SAFE_POINT(nullptr != msaDbi, NULL_MSA_DBI_ERROR, QList<U2MsaRow>());
     QList<U2MsaRow> result;
     foreach (qint64 rowId, rowIds) {
@@ -124,14 +124,14 @@ QList<U2MsaRow> MultipleSequenceAlignmentExporter::exportRows(const U2DataId &ms
     return result;
 }
 
-QList<DNASequence> MultipleSequenceAlignmentExporter::exportSequencesOfRows(QList<U2MsaRow> rows, U2OpStatus &os) const {
-    U2SequenceDbi *sequenceDbi = con.dbi->getSequenceDbi();
+QList<DNASequence> MultipleSequenceAlignmentExporter::exportSequencesOfRows(QList<U2MsaRow> rows, U2OpStatus& os) const {
+    U2SequenceDbi* sequenceDbi = con.dbi->getSequenceDbi();
     SAFE_POINT(nullptr != sequenceDbi, "NULL Sequence Dbi during exporting rows sequences!", QList<DNASequence>());
 
     QList<DNASequence> sequences;
     sequences.reserve(rows.count());
     for (int i = 0, n = rows.count(); i < n; ++i) {
-        const U2DataId &sequenceId = rows[i].sequenceId;
+        const U2DataId& sequenceId = rows[i].sequenceId;
         qint64 gstart = rows[i].gstart;
         qint64 gend = rows[i].gend;
         U2Region regionInSequence(gstart, gend - gstart);
@@ -149,8 +149,8 @@ QList<DNASequence> MultipleSequenceAlignmentExporter::exportSequencesOfRows(QLis
     return sequences;
 }
 
-QVariantMap MultipleSequenceAlignmentExporter::exportAlignmentInfo(const U2DataId &msaId, U2OpStatus &os) const {
-    U2AttributeDbi *attrDbi = con.dbi->getAttributeDbi();
+QVariantMap MultipleSequenceAlignmentExporter::exportAlignmentInfo(const U2DataId& msaId, U2OpStatus& os) const {
+    U2AttributeDbi* attrDbi = con.dbi->getAttributeDbi();
     SAFE_POINT(nullptr != attrDbi, "NULL Attribute Dbi during exporting an alignment info!", QVariantMap());
 
     // Get all MSA attributes
@@ -171,8 +171,8 @@ QVariantMap MultipleSequenceAlignmentExporter::exportAlignmentInfo(const U2DataI
     return alInfo;
 }
 
-U2Msa MultipleSequenceAlignmentExporter::exportAlignmentObject(const U2DataId &msaId, U2OpStatus &os) const {
-    U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
+U2Msa MultipleSequenceAlignmentExporter::exportAlignmentObject(const U2DataId& msaId, U2OpStatus& os) const {
+    U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
     SAFE_POINT(nullptr != msaDbi, "NULL MSA Dbi during exporting an alignment object!", U2Msa());
 
     return msaDbi->getMsaObject(msaId, os);

@@ -37,42 +37,42 @@ class U2OpStatus;
 class U2CORE_EXPORT AnnotationSelection : public GSelection {
     Q_OBJECT
 public:
-    AnnotationSelection(QObject *p = nullptr);
+    AnnotationSelection(QObject* p = nullptr);
 
-    const QList<Annotation *> &getAnnotations() const;
+    const QList<Annotation*>& getAnnotations() const;
 
     /** Adds annotation to selection. Does nothing if annotation is already in the selection. */
-    void add(Annotation *a);
+    void add(Annotation* a);
 
     /** Clears the current selection and adds all annotation from the list into the selection. */
-    void setAnnotations(QList<Annotation *> annotationList);
+    void setAnnotations(QList<Annotation*> annotationList);
 
-    void remove(Annotation *a);
+    void remove(Annotation* a);
 
     bool isEmpty() const;
 
     void clear();
 
-    void removeObjectAnnotations(const AnnotationTableObject *obj);
+    void removeObjectAnnotations(const AnnotationTableObject* obj);
 
-    bool contains(Annotation *a) const;
+    bool contains(Annotation* a) const;
 
     /**
      * Returns sequence under annotation.
      * If complTT or transTT is not 'nullptr', the corresponding transformation is applied.
      */
-    static QByteArray getSequenceUnderAnnotation(const U2EntityRef &sequenceObjectRef,
-                                                 const Annotation *annotation,
-                                                 const DNATranslation *complTT,
-                                                 const DNATranslation *aminoTT,
-                                                 U2OpStatus &os);
+    static QByteArray getSequenceUnderAnnotation(const U2EntityRef& sequenceObjectRef,
+                                                 const Annotation* annotation,
+                                                 const DNATranslation* complTT,
+                                                 const DNATranslation* aminoTT,
+                                                 U2OpStatus& os);
 
 signals:
 
-    void si_selectionChanged(AnnotationSelection *thiz, const QList<Annotation *> &added, const QList<Annotation *> &removed);
+    void si_selectionChanged(AnnotationSelection* thiz, const QList<Annotation*>& added, const QList<Annotation*>& removed);
 
 private:
-    QList<Annotation *> selection;
+    QList<Annotation*> selection;
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -81,26 +81,26 @@ private:
 class U2CORE_EXPORT AnnotationGroupSelection : public GSelection {
     Q_OBJECT
 public:
-    AnnotationGroupSelection(QObject *p = nullptr);
+    AnnotationGroupSelection(QObject* p = nullptr);
 
-    const QList<AnnotationGroup *> &getSelection() const;
+    const QList<AnnotationGroup*>& getSelection() const;
 
-    void addToSelection(AnnotationGroup *g);
+    void addToSelection(AnnotationGroup* g);
 
-    void removeFromSelection(AnnotationGroup *g);
+    void removeFromSelection(AnnotationGroup* g);
 
     bool isEmpty() const;
 
     void clear();
 
-    bool contains(AnnotationGroup *g) const;
+    bool contains(AnnotationGroup* g) const;
 
 signals:
 
-    void si_selectionChanged(AnnotationGroupSelection *thiz, const QList<AnnotationGroup *> &added, const QList<AnnotationGroup *> &removed);
+    void si_selectionChanged(AnnotationGroupSelection* thiz, const QList<AnnotationGroup*>& added, const QList<AnnotationGroup*>& removed);
 
 private:
-    QList<AnnotationGroup *> selection;
+    QList<AnnotationGroup*> selection;
 };
 
 }  // namespace U2

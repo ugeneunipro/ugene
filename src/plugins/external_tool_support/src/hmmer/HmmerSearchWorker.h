@@ -34,7 +34,7 @@ namespace LocalWorkflow {
 class HmmerSearchPrompter : public PrompterBase<HmmerSearchPrompter> {
     Q_OBJECT
 public:
-    HmmerSearchPrompter(Actor *p = nullptr);
+    HmmerSearchPrompter(Actor* p = nullptr);
 
 protected:
     QString composeRichDoc();
@@ -43,20 +43,20 @@ protected:
 class HmmerSearchWorker : public BaseWorker {
     Q_OBJECT
 public:
-    HmmerSearchWorker(Actor *a);
+    HmmerSearchWorker(Actor* a);
 
     void init();
     bool isReady() const;
-    Task *tick();
+    Task* tick();
     void cleanup();
 
 private slots:
-    void sl_taskFinished(Task *task);
+    void sl_taskFinished(Task* task);
 
 protected:
-    IntegralBus *hmmPort;
-    IntegralBus *seqPort;
-    IntegralBus *output;
+    IntegralBus* hmmPort;
+    IntegralBus* seqPort;
+    IntegralBus* output;
     QString resultName;
     HmmerSearchSettings cfg;
     QStringList hmms;
@@ -68,10 +68,10 @@ public:
 
     static void init();
     HmmerSearchWorkerFactory();
-    Worker *createWorker(Actor *a);
+    Worker* createWorker(Actor* a);
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    //_U2_HMMER_SEARCH_WORKER_H_
+#endif  //_U2_HMMER_SEARCH_WORKER_H_

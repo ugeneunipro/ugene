@@ -35,25 +35,25 @@ class DocumentProviderTask;
 class U2CORE_EXPORT ImportFileToDatabaseTask : public Task {
     Q_OBJECT
 public:
-    ImportFileToDatabaseTask(const QString &srcUrl, const U2DbiRef &dstDbiRef, const QString &dstFolder, const ImportToDatabaseOptions &options);
+    ImportFileToDatabaseTask(const QString& srcUrl, const U2DbiRef& dstDbiRef, const QString& dstFolder, const ImportToDatabaseOptions& options);
 
     void prepare();
     void run();
 
-    const QString &getFilePath() const;
+    const QString& getFilePath() const;
 
 private:
-    DocumentProviderTask *detectFormat();
+    DocumentProviderTask* detectFormat();
     QVariantMap prepareHints() const;
     QString getFolderName() const;
-    FormatDetectionResult getPreferredFormat(const QList<FormatDetectionResult> &detectedFormats) const;
+    FormatDetectionResult getPreferredFormat(const QList<FormatDetectionResult>& detectedFormats) const;
 
     QString srcUrl;
     U2DbiRef dstDbiRef;
     QString dstFolder;
     ImportToDatabaseOptions options;
 
-    DocumentFormat *format;
+    DocumentFormat* format;
 };
 
 }  // namespace U2

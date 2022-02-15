@@ -29,13 +29,13 @@ namespace U2 {
 
 class SQLiteSequenceDbi : public U2SequenceDbi, public SQLiteChildDBICommon {
 public:
-    SQLiteSequenceDbi(SQLiteDbi *dbi);
+    SQLiteSequenceDbi(SQLiteDbi* dbi);
 
     /** Reads sequence object from database */
-    virtual U2Sequence getSequenceObject(const U2DataId &sequenceId, U2OpStatus &os);
+    virtual U2Sequence getSequenceObject(const U2DataId& sequenceId, U2OpStatus& os);
 
     /**  Reads specified sequence data region from database */
-    virtual QByteArray getSequenceData(const U2DataId &sequenceId, const U2Region &region, U2OpStatus &os);
+    virtual QByteArray getSequenceData(const U2DataId& sequenceId, const U2Region& region, U2OpStatus& os);
 
     /**  Adds new (empty) sequence instance into database, sets the assigned id on the passed U2Sequence instance.
         The folder must exist in the database.
@@ -43,14 +43,14 @@ public:
 
         //TODO do we need to allow empty folder??
     */
-    virtual void createSequenceObject(U2Sequence &sequence, const QString &folder, U2OpStatus &os, U2DbiObjectRank rank);
+    virtual void createSequenceObject(U2Sequence& sequence, const QString& folder, U2OpStatus& os, U2DbiObjectRank rank);
 
     /**
         Updates sequence object fields.
 
         Requires: U2DbiFeature_WriteSequence feature support.
     */
-    virtual void updateSequenceObject(U2Sequence &sequence, U2OpStatus &os);
+    virtual void updateSequenceObject(U2Sequence& sequence, U2OpStatus& os);
 
     /**
         Updates sequence region.
@@ -59,32 +59,32 @@ public:
 
         //TODO think about annotations: should we fix locations automatically?? If yes, emit notifications??
     */
-    virtual void updateSequenceData(const U2DataId &sequenceId, const U2Region &regionToReplace, const QByteArray &dataToInsert, const QVariantMap &hints, U2OpStatus &os);
-    virtual void updateSequenceData(const U2DataId &masterId, const U2DataId &sequenceId, const U2Region &regionToReplace, const QByteArray &dataToInsert, const QVariantMap &hints, U2OpStatus &os);
+    virtual void updateSequenceData(const U2DataId& sequenceId, const U2Region& regionToReplace, const QByteArray& dataToInsert, const QVariantMap& hints, U2OpStatus& os);
+    virtual void updateSequenceData(const U2DataId& masterId, const U2DataId& sequenceId, const U2Region& regionToReplace, const QByteArray& dataToInsert, const QVariantMap& hints, U2OpStatus& os);
 
     /** The same as above, except passed modification action is used */
-    void updateSequenceData(SQLiteModificationAction &updateAction, const U2DataId &sequenceId, const U2Region &regionToReplace, const QByteArray &dataToInsert, const QVariantMap &hints, U2OpStatus &os);
+    void updateSequenceData(SQLiteModificationAction& updateAction, const U2DataId& sequenceId, const U2Region& regionToReplace, const QByteArray& dataToInsert, const QVariantMap& hints, U2OpStatus& os);
 
-    virtual void initSqlSchema(U2OpStatus &os);
+    virtual void initSqlSchema(U2OpStatus& os);
 
     /** Undo the operation for the sequence. */
-    void undo(const U2DataId &msaId, qint64 modType, const QByteArray &modDetails, U2OpStatus &os);
+    void undo(const U2DataId& msaId, qint64 modType, const QByteArray& modDetails, U2OpStatus& os);
 
     /** Redo the operation for the sequence. */
-    void redo(const U2DataId &msaId, qint64 modType, const QByteArray &modDetails, U2OpStatus &os);
+    void redo(const U2DataId& msaId, qint64 modType, const QByteArray& modDetails, U2OpStatus& os);
 
 private:
     ///////////////////////////////////////////////////////////
     // Core methods
-    void updateSequenceDataCore(const U2DataId &sequenceId, const U2Region &regionToReplace, const QByteArray &dataToInsert, const QVariantMap &hints, U2OpStatus &os);
+    void updateSequenceDataCore(const U2DataId& sequenceId, const U2Region& regionToReplace, const QByteArray& dataToInsert, const QVariantMap& hints, U2OpStatus& os);
 
     ///////////////////////////////////////////////////////////
     // Undo methods
-    void undoUpdateSequenceData(const U2DataId &sequenceId, const QByteArray &modDetails, U2OpStatus &os);
+    void undoUpdateSequenceData(const U2DataId& sequenceId, const QByteArray& modDetails, U2OpStatus& os);
 
     ///////////////////////////////////////////////////////////
     // Redo methods
-    void redoUpdateSequenceData(const U2DataId &sequenceId, const QByteArray &modDetails, U2OpStatus &os);
+    void redoUpdateSequenceData(const U2DataId& sequenceId, const QByteArray& modDetails, U2OpStatus& os);
 };
 
 }  // namespace U2

@@ -65,12 +65,12 @@ class U2SequenceObject;
 /** Each biostruct added to scene should be represented by context */
 class BioStruct3DRendererContext {
 public:
-    BioStruct3DRendererContext(const BioStruct3DObject *obj)
+    BioStruct3DRendererContext(const BioStruct3DObject* obj)
         : obj(obj), biostruct(&obj->getBioStruct3D()) {
     }
 
-    const BioStruct3DObject *obj;
-    const BioStruct3D *biostruct;
+    const BioStruct3DObject* obj;
+    const BioStruct3D* biostruct;
 
     QSharedPointer<BioStruct3DGLRenderer> renderer;
     QSharedPointer<BioStruct3DColorScheme> colorScheme;
@@ -104,13 +104,13 @@ public:
      * @param manager GlFrameManager is required for OpenGL frame manipulation
      * @param parent Parent widget
      */
-    BioStruct3DGLWidget(BioStruct3DObject *bsObj, const AnnotatedDNAView *view, GLFrameManager *manager, QWidget *parent);
+    BioStruct3DGLWidget(BioStruct3DObject* bsObj, const AnnotatedDNAView* view, GLFrameManager* manager, QWidget* parent);
 
     //! Destructor.
     ~BioStruct3DGLWidget();
 
     //! @return BioStruct3D const reference.
-    const BioStruct3D &getBioStruct3D() const;
+    const BioStruct3D& getBioStruct3D() const;
 
     //! @return BioStruct3D Protein Data Bank id.
     const QString getPDBId() const;
@@ -121,7 +121,7 @@ public:
     /*!
      * @return Menu containing display actions: renderers, color schemes etc.
      */
-    QMenu *getDisplayMenu();
+    QMenu* getDisplayMenu();
     /*!
      * Records widget active settings (part of UGENE architecture).
      * @return Current widgets settings.
@@ -131,7 +131,7 @@ public:
      * Restores widget settings with given (part of UGENE architecture).
      * @param state Widgets settings.
      */
-    void setState(const QVariantMap &state);
+    void setState(const QVariantMap& state);
     /*!
      * Restores default widget settings (viewMatrix, glRenderer, color scheme)
      */
@@ -144,12 +144,12 @@ public:
     /*!
      * Creates 2d vector image of BioStruct3DGLWidget contents using gl2ps.
      */
-    void writeImage2DToFile(int format, int options, int nbcol, const char *fileName);
+    void writeImage2DToFile(int format, int options, int nbcol, const char* fileName);
 
     void setBackgroundColor(QColor backgroundColor);
 
     /** @returns This widget GLFrame */
-    GLFrame *getGLFrame();
+    GLFrame* getGLFrame();
 
     /** Draws scene without setting camera */
     void draw();
@@ -180,19 +180,19 @@ protected:
     /*!
      * QWidget virtual function, mouse button down event handler.
      */
-    void mousePressEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent* event);
     /*!
      * QWidget virtual function, mouse move event handler.
      */
-    void mouseMoveEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent* event);
     /*!
      * QWidget virtual function, mouse wheel event handler.
      */
-    void wheelEvent(QWheelEvent *event);
+    void wheelEvent(QWheelEvent* event);
     /*!
      * QWidget virtual function, executes context menu.
      */
-    void contextMenuEvent(QContextMenuEvent *_event);
+    void contextMenuEvent(QContextMenuEvent* _event);
 
 private:
     //! Sets unselected regions shading level
@@ -202,11 +202,11 @@ private:
      * Sets light position.
      * @param pos New light source position. Directional light is being used.
      */
-    void setLightPosition(const Vector3D &pos);
+    void setLightPosition(const Vector3D& pos);
 
     // controller logic
     //! Creates actions for existing GLRenderers, loads default renderer.
-    void loadGLRenderers(const QList<QString> &availableRenderers);
+    void loadGLRenderers(const QList<QString>& availableRenderers);
     //! Creates actions for existing ColorSchemes, loads default color scheme.
     void loadColorSchemes();
 
@@ -214,7 +214,7 @@ private:
     void createStructuralAlignmentActions();
 
     //! Creates menu for structural alignment
-    QMenu *createStructuralAlignmentMenu();
+    QMenu* createStructuralAlignmentMenu();
 
     void createActions();
     void createMenus();
@@ -223,13 +223,13 @@ private:
     /** Adds biostruct object to scene.
      * @param shownModels is a modelId list (same as in PDB)
      */
-    void addBiostruct(const BioStruct3DObject *biostruct, const QList<int> &shownModels = QList<int>());
+    void addBiostruct(const BioStruct3DObject* biostruct, const QList<int>& shownModels = QList<int>());
 
     //! Creates renderers for all biostructs.
-    void setupRenderer(const QString &name);
+    void setupRenderer(const QString& name);
 
     //! Creates color scheme for all biostructs.
-    void setupColorScheme(const QString &name);
+    void setupColorScheme(const QString& name);
 
     //! Updates color scheme for all renderers.
     void updateAllColorSchemes();
@@ -254,20 +254,20 @@ private:
 
 private:
     // related sequences view
-    const AnnotatedDNAView *dnaView;
+    const AnnotatedDNAView* dnaView;
 
     QList<BioStruct3DRendererContext> contexts;
 
     // Settings common for all renderers, such as detail level
     BioStruct3DRendererSettings rendererSettings;
 
-    GLFrameManager *frameManager;
+    GLFrameManager* frameManager;
     QScopedPointer<GLFrame> glFrame;
 
     QScopedPointer<MolecularSurface> molSurface;
     QScopedPointer<MolecularSurfaceRenderer> surfaceRenderer;
 
-    MolecularSurfaceCalcTask *surfaceCalcTask;
+    MolecularSurfaceCalcTask* surfaceCalcTask;
 
     AnaglyphStatus anaglyphStatus;
     QScopedPointer<AnaglyphRenderer> anaglyph;
@@ -287,42 +287,42 @@ private:
 
     QColor backgroundColor;
     QColor selectionColor;
-    QTimer *animationTimer;
+    QTimer* animationTimer;
 
     int unselectedShadingLevel;
     // Should be true when painting an image
     bool imageRenderingMode;
 
     // controller logic
-    QAction *spinAction;
-    QAction *settingsAction;
-    QAction *closeAction;
-    QAction *exportImageAction;
+    QAction* spinAction;
+    QAction* settingsAction;
+    QAction* closeAction;
+    QAction* exportImageAction;
 
     // actions for selecting/deselecting shown models
-    QAction *selectModelsAction;
+    QAction* selectModelsAction;
 
     // structural alignment related actions
-    QAction *alignWithAction;
-    QAction *resetAlignmentAction;
+    QAction* alignWithAction;
+    QAction* resetAlignmentAction;
 
-    QActionGroup *colorSchemeActions;
-    QActionGroup *rendererActions;
-    QActionGroup *molSurfaceRenderActions;
-    QActionGroup *molSurfaceTypeActions;
+    QActionGroup* colorSchemeActions;
+    QActionGroup* rendererActions;
+    QActionGroup* molSurfaceRenderActions;
+    QActionGroup* molSurfaceTypeActions;
 
-    QMenu *selectColorSchemeMenu;
-    QMenu *selectRendererMenu;
-    QMenu *displayMenu;
+    QMenu* selectColorSchemeMenu;
+    QMenu* selectRendererMenu;
+    QMenu* displayMenu;
 
     // if OpenGL has error, label is not null and overlaps GlWidget with text "Failed to initialize OpenGL",
     // otherwise label is null
-    QLabel *lblGlError;
+    QLabel* lblGlError;
 
 private slots:
-    void sl_selectColorScheme(QAction *action);
-    void sl_selectGLRenderer(QAction *action);
-    void sl_updateRenderSettings(const QStringList &list);
+    void sl_selectColorScheme(QAction* action);
+    void sl_selectGLRenderer(QAction* action);
+    void sl_updateRenderSettings(const QStringList& list);
     void sl_activateSpin();
     void sl_updateAnimation();
     void sl_settings();
@@ -331,12 +331,12 @@ private slots:
     // structural alignment related slots
     void sl_alignWith();
     void sl_resetAlignment();
-    void sl_onAlignmentDone(Task *);
+    void sl_onAlignmentDone(Task*);
 
     // slots for handling sequence selection
-    void sl_onSequenceAddedToADV(ADVSequenceObjectContext *ctx);
-    void sl_onSequenceRemovedFromADV(ADVSequenceObjectContext *ctx);
-    void sl_onSequenceSelectionChanged(LRegionsSelection *s, const QVector<U2Region> &added, const QVector<U2Region> &removed);
+    void sl_onSequenceAddedToADV(ADVSequenceObjectContext* ctx);
+    void sl_onSequenceRemovedFromADV(ADVSequenceObjectContext* ctx);
+    void sl_onSequenceSelectionChanged(LRegionsSelection* s, const QVector<U2Region>& added, const QVector<U2Region>& removed);
 
     // slots for select/deselect shown models actions
     // they affect only first biostruct
@@ -345,11 +345,11 @@ private slots:
     // slots for surface renderers
     void sl_showSurface();
     void sl_hideSurface();
-    void sl_selectSurfaceRenderer(QAction *surfaceRenderer);
+    void sl_selectSurfaceRenderer(QAction* surfaceRenderer);
 
     // used only for handling MolecularSurfaceCalcTask
     // should be in special MolecularSurfaceProxy
-    void sl_onTaskFinished(Task *task);
+    void sl_onTaskFinished(Task* task);
 
 public:
     static const QString BACKGROUND_COLOR_NAME;

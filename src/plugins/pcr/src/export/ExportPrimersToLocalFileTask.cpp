@@ -35,7 +35,7 @@
 
 namespace U2 {
 
-ExportPrimersToLocalFileTask::ExportPrimersToLocalFileTask(const QList<Primer> &primers, const DocumentFormatId &formatId, const QString &localFilePath)
+ExportPrimersToLocalFileTask::ExportPrimersToLocalFileTask(const QList<Primer>& primers, const DocumentFormatId& formatId, const QString& localFilePath)
     : Task(tr("Export primers"), TaskFlags_NR_FOSE_COSC | TaskFlag_OnlyNotificationReport),
       primers(primers),
       format(AppContext::getDocumentFormatRegistry()->getFormatById(formatId)),
@@ -49,14 +49,14 @@ void ExportPrimersToLocalFileTask::prepare() {
     addSubTask(new ExportPrimersToDatabaseTask(primers, AppContext::getDbiRegistry()->getSessionTmpDbiRef(stateInfo), U2ObjectDbi::ROOT_FOLDER));
 }
 
-QList<Task *> ExportPrimersToLocalFileTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> result;
+QList<Task*> ExportPrimersToLocalFileTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> result;
     CHECK_OP(stateInfo, result);
 
-    auto convertTask = qobject_cast<ExportPrimersToDatabaseTask *>(subTask);
+    auto convertTask = qobject_cast<ExportPrimersToDatabaseTask*>(subTask);
     CHECK(convertTask != nullptr, result);
 
-    Document *document = prepareDocument();
+    Document* document = prepareDocument();
     CHECK_OP(stateInfo, result);
 
     addObjects(document, convertTask);
@@ -66,21 +66,21 @@ QList<Task *> ExportPrimersToLocalFileTask::onSubTaskFinished(Task *subTask) {
     return result;
 }
 
-Document *ExportPrimersToLocalFileTask::prepareDocument() {
-    IOAdapterFactory *ioAdapterFactory = IOAdapterUtils::get(IOAdapterUtils::url2io(url));
+Document* ExportPrimersToLocalFileTask::prepareDocument() {
+    IOAdapterFactory* ioAdapterFactory = IOAdapterUtils::get(IOAdapterUtils::url2io(url));
     SAFE_POINT_EXT(ioAdapterFactory != nullptr, setError(L10N::nullPointerError("I/O adapter factory")), nullptr);
     return format->createNewLoadedDocument(ioAdapterFactory, url, stateInfo);
 }
 
-void ExportPrimersToLocalFileTask::addObjects(Document *document, ExportPrimersToDatabaseTask *convertTask) {
+void ExportPrimersToLocalFileTask::addObjects(Document* document, ExportPrimersToDatabaseTask* convertTask) {
     const U2DbiRef dbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(stateInfo);
     DbiConnection connection(dbiRef, stateInfo);
     CHECK_OP(stateInfo, );
     SAFE_POINT_EXT(connection.dbi != nullptr, setError(L10N::nullPointerError("dbi")), );
-    U2ObjectDbi *objectDbi = connection.dbi->getObjectDbi();
+    U2ObjectDbi* objectDbi = connection.dbi->getObjectDbi();
     SAFE_POINT_EXT(objectDbi != nullptr, setError(L10N::nullPointerError("object dbi")), );
 
-    const QMap<U2DataId, U2DataId> &objectIds = convertTask->getImportedObjectIds();
+    const QMap<U2DataId, U2DataId>& objectIds = convertTask->getImportedObjectIds();
     QMap<U2DataId, U2DataId>::ConstIterator iterator = objectIds.constBegin();
     while (iterator != objectIds.constEnd()) {
         U2Object sequence;

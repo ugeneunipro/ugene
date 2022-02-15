@@ -29,11 +29,11 @@ namespace U2 {
 class ActorCfgFilterProxyModel : public QSortFilterProxyModel {
     Q_OBJECT
 public:
-    ActorCfgFilterProxyModel(QObject *p = nullptr);
+    ActorCfgFilterProxyModel(QObject* p = nullptr);
 
 protected:
-    virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
-    virtual bool filterAcceptsColumn(int sourceColumn, const QModelIndex &sourceParent) const;
+    virtual bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const;
+    virtual bool filterAcceptsColumn(int sourceColumn, const QModelIndex& sourceParent) const;
 };
 
 }  // namespace U2

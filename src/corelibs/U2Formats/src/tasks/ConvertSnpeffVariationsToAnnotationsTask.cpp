@@ -46,17 +46,17 @@ const QString ConvertSnpeffVariationsToAnnotationsTask::ALTERNATE_QUALIFIER_NAME
 const QString ConvertSnpeffVariationsToAnnotationsTask::ALLELE_QUALIFIER_NAME = "Allele";
 const QString ConvertSnpeffVariationsToAnnotationsTask::ID_QUALIFIER_NAME = "ID";
 
-ConvertSnpeffVariationsToAnnotationsTask::ConvertSnpeffVariationsToAnnotationsTask(const QList<VariantTrackObject *> &variantTrackObjects)
+ConvertSnpeffVariationsToAnnotationsTask::ConvertSnpeffVariationsToAnnotationsTask(const QList<VariantTrackObject*>& variantTrackObjects)
     : Task(tr("Convert SnpEff variations to annotations task"), TaskFlag_None),
       variantTrackObjects(variantTrackObjects) {
 }
 
-const QMap<QString, QList<SharedAnnotationData>> &ConvertSnpeffVariationsToAnnotationsTask::getAnnotationsData() const {
+const QMap<QString, QList<SharedAnnotationData>>& ConvertSnpeffVariationsToAnnotationsTask::getAnnotationsData() const {
     return annotationTablesData;
 }
 
 void ConvertSnpeffVariationsToAnnotationsTask::run() {
-    for (VariantTrackObject *variantTrackObject : qAsConst(variantTrackObjects)) {
+    for (VariantTrackObject* variantTrackObject : qAsConst(variantTrackObjects)) {
         QList<SharedAnnotationData> annotationTableData;
 
         U2VariantTrack variantTrack = variantTrackObject->getVariantTrack(stateInfo);
@@ -90,7 +90,7 @@ void ConvertSnpeffVariationsToAnnotationsTask::run() {
             CHECK_OP(stateInfo, );
             stateInfo.addWarnings(os.getWarnings());
 
-            for (const QList<U2Qualifier> &qualifiers : qAsConst(qualifiersList)) {
+            for (const QList<U2Qualifier>& qualifiers : qAsConst(qualifiersList)) {
                 if (qualifiers.isEmpty()) {
                     continue;
                 }
@@ -111,10 +111,10 @@ void ConvertSnpeffVariationsToAnnotationsTask::run() {
     }
 }
 
-LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::LoadConvertAndSaveSnpeffVariationsToAnnotationsTask(const QString &variationsUrl,
-                                                                                                         const U2DbiRef &dstDbiRef,
-                                                                                                         const QString &dstUrl,
-                                                                                                         const QString &formatId)
+LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::LoadConvertAndSaveSnpeffVariationsToAnnotationsTask(const QString& variationsUrl,
+                                                                                                         const U2DbiRef& dstDbiRef,
+                                                                                                         const QString& dstUrl,
+                                                                                                         const QString& formatId)
     : Task(tr("Load file and convert SnpEff variations to annotations task"), TaskFlags_NR_FOSE_COSC | TaskFlag_CollectChildrenWarnings),
       variationsUrl(variationsUrl),
       dstDbiRef(dstDbiRef),
@@ -137,7 +137,7 @@ LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::~LoadConvertAndSaveSnpeffVa
     delete annotationsDocument;
 }
 
-const QString &LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::getResultUrl() const {
+const QString& LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::getResultUrl() const {
     return dstUrl;
 }
 
@@ -148,8 +148,8 @@ void LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::prepare() {
     addSubTask(loadTask);
 }
 
-QList<Task *> LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> newSubtasks;
+QList<Task*> LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> newSubtasks;
     CHECK_OP(stateInfo, newSubtasks);
 
     if (loadTask == subTask) {
@@ -157,12 +157,12 @@ QList<Task *> LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::onSubTaskFini
         CHECK_EXT(nullptr != loadedVariationsDocument, setError(tr("'%1' load failed, the result document is NULL").arg(variationsUrl)), newSubtasks);
         loadedVariationsDocument->setDocumentOwnsDbiResources(false);
 
-        QList<GObject *> objects = loadedVariationsDocument->findGObjectByType(GObjectTypes::VARIANT_TRACK);
+        QList<GObject*> objects = loadedVariationsDocument->findGObjectByType(GObjectTypes::VARIANT_TRACK);
         CHECK_EXT(!objects.isEmpty(), setError(tr("File '%1' doesn't contain variation tracks").arg(variationsUrl)), newSubtasks);
 
-        QList<VariantTrackObject *> variantTrackObjects;
-        foreach (GObject *object, objects) {
-            VariantTrackObject *variantTrackObject = qobject_cast<VariantTrackObject *>(object);
+        QList<VariantTrackObject*> variantTrackObjects;
+        foreach (GObject* object, objects) {
+            VariantTrackObject* variantTrackObject = qobject_cast<VariantTrackObject*>(object);
             SAFE_POINT_EXT(nullptr != variantTrackObject, setError("Can't cast GObject to VariantTrackObject"), newSubtasks);
             variantTrackObjects << variantTrackObject;
         }
@@ -173,8 +173,8 @@ QList<Task *> LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::onSubTaskFini
 
     if (convertTask == subTask) {
         QMap<QString, QList<SharedAnnotationData>> annotationsData = convertTask->getAnnotationsData();
-        foreach (const QString &chromosome, annotationsData.keys()) {
-            AnnotationTableObject *annotationTableObject = new AnnotationTableObject(chromosome, dstDbiRef);
+        foreach (const QString& chromosome, annotationsData.keys()) {
+            AnnotationTableObject* annotationTableObject = new AnnotationTableObject(chromosome, dstDbiRef);
             annotationTableObjects << annotationTableObject;
 
             createAnnotationsTasks << new CreateAnnotationsTask(annotationTableObject, annotationsData[chromosome], "Variations");
@@ -203,20 +203,20 @@ QList<Task *> LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::onSubTaskFini
     return newSubtasks;
 }
 
-Document *LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::prepareDocument() {
-    DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
+Document* LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::prepareDocument() {
+    DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
     SAFE_POINT_EXT(nullptr != format, setError(QString("Document format '%1' not found in the registry").arg(formatId)), nullptr);
-    IOAdapterFactory *ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(dstUrl));
+    IOAdapterFactory* ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(dstUrl));
     SAFE_POINT_EXT(nullptr != ioAdapterFactory, setError(L10N::nullPointerError("ioAdapterFactory")), nullptr);
 
     QVariantMap hints;
     hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue<U2DbiRef>(dstDbiRef);
 
-    Document *document = format->createNewLoadedDocument(ioAdapterFactory, dstUrl, stateInfo, hints);
+    Document* document = format->createNewLoadedDocument(ioAdapterFactory, dstUrl, stateInfo, hints);
     CHECK_OP(stateInfo, nullptr);
     document->setDocumentOwnsDbiResources(false);
 
-    foreach (AnnotationTableObject *annotationTableObject, annotationTableObjects) {
+    foreach (AnnotationTableObject* annotationTableObject, annotationTableObjects) {
         document->addObject(annotationTableObject);
     }
     annotationTableObjects.clear();

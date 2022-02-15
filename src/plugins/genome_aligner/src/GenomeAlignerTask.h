@@ -52,11 +52,11 @@ class GenomeAlignerTask : public DnaAssemblyToReferenceTask {
     friend class ReadShortReadsSubTask;
 
 public:
-    GenomeAlignerTask(const DnaAssemblyToRefTaskSettings &settings, bool justBuildIndex = false);
+    GenomeAlignerTask(const DnaAssemblyToRefTaskSettings& settings, bool justBuildIndex = false);
     ~GenomeAlignerTask();
     virtual void prepare();
     virtual ReportResult report();
-    virtual QList<Task *> onSubTaskFinished(Task *subTask);
+    virtual QList<Task*> onSubTaskFinished(Task* subTask);
     QString getIndexPath();
     static const QString OPTION_ALIGN_REVERSED;
     static const QString OPTION_OPENCL;
@@ -73,16 +73,16 @@ public:
 
     DNA_ASSEMBLEY_TO_REF_TASK_FACTORY(GenomeAlignerTask)
 private:
-    LoadDocumentTask *loadDbiTask;
-    GenomeAlignerIndexTask *createIndexTask;
-    ReadShortReadsSubTask *readTask;
-    GenomeAlignerFindTask *findTask;
-    WriteAlignedReadsSubTask *writeTask;
-    GenomeAlignerWriteTask *pWriteTask;
-    Task *unzipTask;
+    LoadDocumentTask* loadDbiTask;
+    GenomeAlignerIndexTask* createIndexTask;
+    ReadShortReadsSubTask* readTask;
+    GenomeAlignerFindTask* findTask;
+    WriteAlignedReadsSubTask* writeTask;
+    GenomeAlignerWriteTask* pWriteTask;
+    Task* unzipTask;
 
-    GenomeAlignerReader *seqReader;
-    GenomeAlignerWriter *seqWriter;
+    GenomeAlignerReader* seqReader;
+    GenomeAlignerWriter* seqWriter;
     AlignContext alignContext;
 
     QTemporaryFile temp;
@@ -93,11 +93,11 @@ private:
     bool dbiIO;
     QString indexFileName;
     bool prebuiltIndex;
-    GenomeAlignerIndex *index;
+    GenomeAlignerIndex* index;
     int qualityThreshold;
     qint64 readMemSize;
     int seqPartSize;
-    SearchQuery *lastQuery;
+    SearchQuery* lastQuery;
     bool noDataToAlign;
 
     // statistics

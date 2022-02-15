@@ -180,7 +180,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
 
     // 3. Select annotation C in annotation tree. Click F2. Change name to CC.
 
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "C");
+    QTreeWidgetItem* item = GTUtilsAnnotationsTreeView::findItem(os, "C");
     GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, "CC", "80 ..90"));
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
@@ -188,7 +188,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
 
     GTUtilsAnnotationsTreeView::findItem(os, "CC");
 
-    QTreeWidgetItem *item1 = GTUtilsAnnotationsTreeView::findItem(os, "CC");
+    QTreeWidgetItem* item1 = GTUtilsAnnotationsTreeView::findItem(os, "CC");
     GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, "C", "80 ..90"));
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item1));
     GTMouseDriver::click();
@@ -215,7 +215,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
 
     // 3. Select annotation C in annotation tree. Click F2. Change name to CC.
 
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "C");
+    QTreeWidgetItem* item = GTUtilsAnnotationsTreeView::findItem(os, "C");
     GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, "CC", "80 ..90"));
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
@@ -223,7 +223,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
 
     GTUtilsAnnotationsTreeView::findItem(os, "CC");
 
-    QTreeWidgetItem *item1 = GTUtilsAnnotationsTreeView::findItem(os, "B");
+    QTreeWidgetItem* item1 = GTUtilsAnnotationsTreeView::findItem(os, "B");
     GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, "BB", "30 ..120"));
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item1));
     GTMouseDriver::click();
@@ -250,7 +250,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     // 3. Select annotation C in annotation tree. Click F2. Change name to CC.
 
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "C");
+    QTreeWidgetItem* item = GTUtilsAnnotationsTreeView::findItem(os, "C");
     GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, "C", "20 ..40"));
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
@@ -278,8 +278,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
 
     // 3. Select annotation C in annotation tree. Click F2. Change name to CC.
 
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "C");
-    Runnable *filler = new EditAnnotationFiller(os, "C", "20 ..40");
+    QTreeWidgetItem* item = GTUtilsAnnotationsTreeView::findItem(os, "C");
+    Runnable* filler = new EditAnnotationFiller(os, "C", "20 ..40");
     GTUtilsDialog::waitForDialog(os, filler);
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
@@ -289,8 +289,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
     CHECK_SET_ERR(found == true, "There is no {20 ..40} region in annotation");
     // 4. Select annotation C in annotation tree. Click F2. Change name to CC.
 
-    QTreeWidgetItem *item1 = GTUtilsAnnotationsTreeView::findItem(os, "C");
-    Runnable *filler1 = new EditAnnotationFiller(os, "C", "10 ..90");
+    QTreeWidgetItem* item1 = GTUtilsAnnotationsTreeView::findItem(os, "C");
+    Runnable* filler1 = new EditAnnotationFiller(os, "C", "10 ..90");
     GTUtilsDialog::waitForDialog(os, filler1);
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item1));
     GTMouseDriver::click();
@@ -317,8 +317,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
     GTMouseDriver::doubleClick();
 
     // 3. Select annotation C in annotation tree. Click F2. Change name to CC.
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "C");
-    Runnable *filler = new EditAnnotationFiller(os, "CC", "20 ..40");
+    QTreeWidgetItem* item = GTUtilsAnnotationsTreeView::findItem(os, "C");
+    Runnable* filler = new EditAnnotationFiller(os, "CC", "20 ..40");
     GTUtilsDialog::waitForDialog(os, filler);
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
@@ -327,8 +327,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
     bool found = GTUtilsAnnotationsTreeView::findRegion(os, "CC", U2Region(20, 40));
     CHECK_SET_ERR(found == true, "There is no {20 ..40} region in annotation");
 
-    QTreeWidgetItem *item1 = GTUtilsAnnotationsTreeView::findItem(os, "B");
-    Runnable *filler1 = new EditAnnotationFiller(os, "BB", "20 ..40");
+    QTreeWidgetItem* item1 = GTUtilsAnnotationsTreeView::findItem(os, "B");
+    Runnable* filler1 = new EditAnnotationFiller(os, "BB", "20 ..40");
     GTUtilsDialog::waitForDialog(os, filler1);
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item1));
     GTMouseDriver::click();
@@ -355,14 +355,14 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
     // 3. Select annotation C in annotation tree. Click F2. Change name to CC.
 
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "C");
-    Runnable *filler = new EditAnnotationFiller(os, "C", "20 ..40", true);
+    QTreeWidgetItem* item = GTUtilsAnnotationsTreeView::findItem(os, "C");
+    Runnable* filler = new EditAnnotationFiller(os, "C", "20 ..40", true);
     GTUtilsDialog::waitForDialog(os, filler);
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
 
-    Runnable *checker = new EditAnnotationChecker(os, "", "complement(20..40)");
+    Runnable* checker = new EditAnnotationChecker(os, "", "complement(20..40)");
     GTUtilsDialog::waitForDialog(os, checker);
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
@@ -385,14 +385,14 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
 
     // 3. Select annotation C in annotation tree. Click F2. Change name to CC.
 
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "C");
-    Runnable *filler = new EditAnnotationFiller(os, "CC", "20 ..40", true);
+    QTreeWidgetItem* item = GTUtilsAnnotationsTreeView::findItem(os, "C");
+    Runnable* filler = new EditAnnotationFiller(os, "CC", "20 ..40", true);
     GTUtilsDialog::waitForDialog(os, filler);
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
 
-    Runnable *checker = new EditAnnotationChecker(os, "CC", "complement(20..40)");
+    Runnable* checker = new EditAnnotationChecker(os, "CC", "complement(20..40)");
     GTUtilsDialog::waitForDialog(os, checker);
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
@@ -415,14 +415,14 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
 
     // 3. Select annotation C in annotation tree. Click F2. Change name to CC.
 
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "B");
-    Runnable *filler = new EditAnnotationFiller(os, "B", "20 ..40", true);
+    QTreeWidgetItem* item = GTUtilsAnnotationsTreeView::findItem(os, "B");
+    Runnable* filler = new EditAnnotationFiller(os, "B", "20 ..40", true);
     GTUtilsDialog::waitForDialog(os, filler);
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
 
-    Runnable *checker = new EditAnnotationChecker(os, "", "complement(20..40)");
+    Runnable* checker = new EditAnnotationChecker(os, "", "complement(20..40)");
     GTUtilsDialog::waitForDialog(os, checker);
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
@@ -449,7 +449,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     // 4. CHECK if new gb-format document is loaded into the annotation editor
     // 4.1 CHECK if it contains group "group" with annotation "misc_feature" in it
     GTUtilsAnnotationsTreeView::findItem(os, "group  (0, 1)");
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
+    QTreeWidgetItem* item = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
 
     // 5. Select misc_feature annotation and press <DEL>
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
@@ -482,7 +482,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     // 4.1 CHECK if it contains group "group" with annotation "misc_feature" in it
     // TODO: 4.2 CHECK if "group" subgroups/annotations counter displays (0,1)
     auto groupItem = GTUtilsAnnotationsTreeView::findItem(os, "group  (0, 1)");
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature", groupItem);
+    QTreeWidgetItem* item = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature", groupItem);
 
     // 5. Select misc_feature annotation and press <DEL>
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
@@ -490,7 +490,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     // 6. CHECK if misc_feature annotation is removed
     // TODO: 6.1 CHECK if "group" subgroups/annotations counter displays (0,0)
-    QTreeWidgetItem *annotationItem = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature", groupItem, {false});
+    QTreeWidgetItem* annotationItem = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature", groupItem, {false});
     CHECK_SET_ERR(annotationItem == nullptr, "The annotation 'misc_feature' unexpectedly was not removed");
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "group_new", "misc_feature_1", "1..500"));
@@ -498,7 +498,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
 
     GTUtilsAnnotationsTreeView::findItem(os, "group_new  (0, 1)");
     GTUtilsAnnotationsTreeView::findItem(os, "group  (0, 0)");
-    QTreeWidgetItem *item1 = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature_1");
+    QTreeWidgetItem* item1 = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature_1");
 
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item1));
     GTMouseDriver::click();
@@ -533,10 +533,10 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
     // 4.1 CHECK if it contains group "group" with annotation "misc_feature" in it
     // TODO: 4.2 CHECK if "group" subgroups/annotations counter displays (0,1)
     GTUtilsAnnotationsTreeView::findItem(os, "group  (0, 1)");
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
+    QTreeWidgetItem* item = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
 
     GTUtilsAnnotationsTreeView::findItem(os, "group_new  (0, 1)");
-    QTreeWidgetItem *item1 = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature_1");
+    QTreeWidgetItem* item1 = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature_1");
 
     // 5. Select misc_feature annotation and press <DEL>
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
@@ -565,7 +565,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsDocument::checkDocument(os, "1.gb");
 
     // Click "Hide zoom view"
-    QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
+    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
     CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
@@ -593,7 +593,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     GTUtilsDocument::checkDocument(os, "1.gb");
 
     // Click "Hide zoom view"
-    QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
+    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
     CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
@@ -602,7 +602,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     GTMouseDriver::doubleClick();
 
     // 3. Select annotation B in annotation tree.
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "B_group  (0, 2)");
+    QTreeWidgetItem* item = GTUtilsAnnotationsTreeView::findItem(os, "B_group  (0, 2)");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::doubleClick();
 
@@ -627,12 +627,12 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Click "Hide zoom view"
-    QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363");
+    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363");
     CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     // 2. Select a group on annotations editor
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
+    QTreeWidgetItem* item = GTUtilsAnnotationsTreeView::findItem(os, "CDS  (0, 4)");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
 

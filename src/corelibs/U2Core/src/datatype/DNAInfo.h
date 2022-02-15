@@ -132,10 +132,10 @@ keyword/exactly one record.
     static const QString GENBANK_HEADER;
     static const QString FASTQ_COMMENT;
 
-    static QString getPrimaryAccession(const QVariantMap &);
-    static QString getContig(const QVariantMap &);
-    static QString getName(const QVariantMap &);
-    static QString getFastqComment(const QVariantMap &);
+    static QString getPrimaryAccession(const QVariantMap&);
+    static QString getContig(const QVariantMap&);
+    static QString getName(const QVariantMap&);
+    static QString getFastqComment(const QVariantMap&);
 };
 
 class U2CORE_EXPORT DNALocusInfo {

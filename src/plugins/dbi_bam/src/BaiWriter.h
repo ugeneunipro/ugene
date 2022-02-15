@@ -31,17 +31,17 @@ namespace BAM {
 
 class BaiWriter {
 public:
-    BaiWriter(IOAdapter &ioAdapter);
-    void writeIndex(const Index &index);
+    BaiWriter(IOAdapter& ioAdapter);
+    void writeIndex(const Index& index);
 
 private:
-    void writeBytes(const char *buff, qint64 size);
-    void writeBytes(const QByteArray &buffer);
+    void writeBytes(const char* buff, qint64 size);
+    void writeBytes(const QByteArray& buffer);
     void writeUint64(quint64 value);
     void writeInt32(qint32 value);
     void writeUint32(quint32 value);
 
-    IOAdapter &ioAdapter;
+    IOAdapter& ioAdapter;
 };
 
 }  // namespace BAM

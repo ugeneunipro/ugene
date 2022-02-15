@@ -47,16 +47,16 @@ public:
     static QString getAllMatrixFileFilter(bool isSingleFileFilterMode = false);
     static QString getPFMFileFilter(bool isSingleFileFilterMode = false);
     static QString getPWMFileFilter();
-    static PFMatrix readPFMatrix(IOAdapterFactory *iof, const QString &url, TaskStateInfo &si);
-    static PWMatrix readPWMatrix(IOAdapterFactory *iof, const QString &url, TaskStateInfo &si);
-    static void writePFMatrix(IOAdapterFactory *iof, const QString &url, TaskStateInfo &si, const PFMatrix &model);
-    static void writePWMatrix(IOAdapterFactory *iof, const QString &url, TaskStateInfo &si, const PWMatrix &model);
+    static PFMatrix readPFMatrix(IOAdapterFactory* iof, const QString& url, TaskStateInfo& si);
+    static PWMatrix readPWMatrix(IOAdapterFactory* iof, const QString& url, TaskStateInfo& si);
+    static void writePFMatrix(IOAdapterFactory* iof, const QString& url, TaskStateInfo& si, const PFMatrix& model);
+    static void writePWMatrix(IOAdapterFactory* iof, const QString& url, TaskStateInfo& si, const PWMatrix& model);
 };
 
 class PFMatrixReadTask : public Task {
     Q_OBJECT
 public:
-    PFMatrixReadTask(const QString &url)
+    PFMatrixReadTask(const QString& url)
         : Task(tr("Read Frequency Matrix"), TaskFlag_None), url(url) {
     }
     void run();
@@ -75,7 +75,7 @@ private:
 class PWMatrixReadTask : public Task {
     Q_OBJECT
 public:
-    PWMatrixReadTask(const QString &url)
+    PWMatrixReadTask(const QString& url)
         : Task(tr("Read Weight Matrix"), TaskFlag_None), url(url) {
     }
     void run();
@@ -94,7 +94,7 @@ private:
 class PFMatrixWriteTask : public Task {
     Q_OBJECT
 public:
-    PFMatrixWriteTask(const QString &url, const PFMatrix &model, uint f = 0)
+    PFMatrixWriteTask(const QString& url, const PFMatrix& model, uint f = 0)
         : Task(tr("Save position frequency matrix"), TaskFlag_None), url(url), model(model), fileMode(f) {
     }
     virtual void run();
@@ -108,7 +108,7 @@ private:
 class PWMatrixWriteTask : public Task {
     Q_OBJECT
 public:
-    PWMatrixWriteTask(const QString &url, const PWMatrix &model, uint f = 0)
+    PWMatrixWriteTask(const QString& url, const PWMatrix& model, uint f = 0)
         : Task(tr("Save weight matrix"), TaskFlag_None), url(url), model(model), fileMode(f) {
     }
     virtual void run();

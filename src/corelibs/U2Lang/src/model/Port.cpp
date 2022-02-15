@@ -28,7 +28,7 @@ namespace Workflow {
 /**************************
  * PortDescriptor
  **************************/
-PortDescriptor::PortDescriptor(const Descriptor &desc, DataTypePtr t, bool input, bool multi, uint f)
+PortDescriptor::PortDescriptor(const Descriptor& desc, DataTypePtr t, bool input, bool multi, uint f)
     : Descriptor(desc), type(t), input(input), multi(multi), flags(f) {
     assert(type->isMap());
     defaultType = type;
@@ -61,7 +61,7 @@ DataTypePtr PortDescriptor::getOutputType() const {
     return type;
 }
 
-void PortDescriptor::setNewType(const DataTypePtr &newType) {
+void PortDescriptor::setNewType(const DataTypePtr& newType) {
     type = newType;
 }
 
@@ -70,24 +70,24 @@ QMap<Descriptor, DataTypePtr> PortDescriptor::getOwnTypeMap() const {
         return type->getDatatypesMap();
     } else {
         QMap<Descriptor, DataTypePtr> result;
-        Descriptor d = (Descriptor &)(*this);
+        Descriptor d = (Descriptor&)(*this);
         result[d] = type;
 
         return result;
     }
 }
 
-void PortDescriptor::setVisibleSlot(const QString &slotId, const bool isVisible) {
+void PortDescriptor::setVisibleSlot(const QString& slotId, const bool isVisible) {
     QMap<Descriptor, DataTypePtr> newMap = type->getDatatypesMap();
     if (isVisible) {
         QMap<Descriptor, DataTypePtr> defaultMap = defaultType->getDatatypesMap();
-        foreach (const Descriptor &desc, defaultMap.keys()) {
+        foreach (const Descriptor& desc, defaultMap.keys()) {
             if (slotId == desc.getId()) {
                 newMap[desc] = defaultMap[desc];
             }
         }
     } else {
-        foreach (const Descriptor &desc, newMap.keys()) {
+        foreach (const Descriptor& desc, newMap.keys()) {
             if (slotId == desc.getId()) {
                 newMap.remove(desc);
             }
@@ -97,10 +97,10 @@ void PortDescriptor::setVisibleSlot(const QString &slotId, const bool isVisible)
     type = DataTypePtr(new MapDataType(id, newMap));
 }
 
-QString PortDescriptor::getSlotNameById(const QString &id) const {
+QString PortDescriptor::getSlotNameById(const QString& id) const {
     QMap<Descriptor, DataTypePtr> map = getOwnTypeMap();
     QString result;
-    foreach (const Descriptor &descriptor, map.keys()) {
+    foreach (const Descriptor& descriptor, map.keys()) {
         CHECK_CONTINUE(descriptor.getId() == id);
 
         result = descriptor.getDisplayName();
@@ -112,15 +112,15 @@ QString PortDescriptor::getSlotNameById(const QString &id) const {
 /**************************
  * Port
  **************************/
-Port::Port(const PortDescriptor &d, Actor *p)
+Port::Port(const PortDescriptor& d, Actor* p)
     : PortDescriptor(d), proc(p), enabled(true) {
 }
 
-Actor *Port::owner() const {
+Actor* Port::owner() const {
     return proc;
 }
 
-QMap<Port *, Link *> Port::getLinks() const {
+QMap<Port*, Link*> Port::getLinks() const {
     return bindings;
 }
 
@@ -128,24 +128,24 @@ int Port::getWidth() const {
     return bindings.size();
 }
 
-void Port::setParameter(const QString &name, const QVariant &val) {
+void Port::setParameter(const QString& name, const QVariant& val) {
     Configuration::setParameter(name, val);
     emit bindingChanged();
 }
 
-void Port::remap(const QMap<ActorId, ActorId> &) {
+void Port::remap(const QMap<ActorId, ActorId>&) {
     // nothing to do with the port
 }
 
-void Port::updateBindings(const QMap<ActorId, ActorId> &) {
+void Port::updateBindings(const QMap<ActorId, ActorId>&) {
     // nothing to do with the port
 }
 
-void Port::replaceActor(Actor * /*oldActor*/, Actor * /*newActor*/, const QList<PortMapping> & /*mappings*/) {
+void Port::replaceActor(Actor* /*oldActor*/, Actor* /*newActor*/, const QList<PortMapping>& /*mappings*/) {
     // nothing to do with the port
 }
 
-bool Port::canBind(const Port *other) const {
+bool Port::canBind(const Port* other) const {
     if (this == other || proc == other->proc || isInput() == other->isInput()) {
         return false;
     }
@@ -156,11 +156,11 @@ bool Port::canBind(const Port *other) const {
     if ((!thisMulty && thisWidth != 0) || (!otherMulty && otherWidth != 0)) {
         return false;
     }
-    return !bindings.contains(const_cast<Port *>(other));
+    return !bindings.contains(const_cast<Port*>(other));
 }
 
-void Port::addLink(Link *b) {
-    Port *peer = isInput() ? b->source() : b->destination();
+void Port::addLink(Link* b) {
+    Port* peer = isInput() ? b->source() : b->destination();
     assert(this == (isInput() ? b->destination() : b->source()));
     // assert(canBind(peer));
     assert(!bindings.contains(peer));
@@ -168,8 +168,8 @@ void Port::addLink(Link *b) {
     emit bindingChanged();
 }
 
-void Port::removeLink(Link *b) {
-    Port *peer = isInput() ? b->source() : b->destination();
+void Port::removeLink(Link* b) {
+    Port* peer = isInput() ? b->source() : b->destination();
     assert(this == (isInput() ? b->destination() : b->source()));
     assert(bindings.contains(peer));
     bindings.remove(peer);
@@ -190,19 +190,19 @@ Link::Link()
     : src(nullptr), dest(nullptr) {
 }
 
-Link::Link(Port *p1, Port *p2) {
+Link::Link(Port* p1, Port* p2) {
     connect(p1, p2);
 }
 
-Port *Link::source() const {
+Port* Link::source() const {
     return src;
 }
 
-Port *Link::destination() const {
+Port* Link::destination() const {
     return dest;
 }
 
-void Link::connect(Port *p1, Port *p2) {
+void Link::connect(Port* p1, Port* p2) {
     assert(p1->canBind(p2));
     if (p1->isInput()) {
         dest = p1;

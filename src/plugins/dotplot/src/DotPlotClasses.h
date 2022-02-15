@@ -38,10 +38,10 @@ namespace U2 {
 class DotPlotMiniMap {
 public:
     DotPlotMiniMap(int bigMapW, int bigMapH, float ratio);
-    void draw(QPainter &p, int shiftX, int shiftY, const QPointF &zoom) const;
+    void draw(QPainter& p, int shiftX, int shiftY, const QPointF& zoom) const;
 
     QRectF getBoundary() const;
-    QPointF fromMiniMap(const QPointF &p, const QPointF &zoom) const;
+    QPointF fromMiniMap(const QPointF& p, const QPointF& zoom) const;
 
     void updatePosition(int bigMapW, int bigMapH);
 
@@ -70,7 +70,7 @@ struct DotPlotResults {
     int y;
     int len;
 
-    inline bool intersectRegion(const U2Region &r, const FilterIntersectionParameter &currentIntersParam) {
+    inline bool intersectRegion(const U2Region& r, const FilterIntersectionParameter& currentIntersParam) {
         qint64 sd = -r.startPos;
         if (currentIntersParam == SequenceY) {
             sd += y;
@@ -89,10 +89,10 @@ public:
     DotPlotResultsListener();
     virtual ~DotPlotResultsListener();
 
-    void setTask(Task *);
+    void setTask(Task*);
 
-    virtual void onResult(const RFResult &r);
-    virtual void onResults(const QVector<RFResult> &v);
+    virtual void onResult(const RFResult& r);
+    virtual void onResults(const QVector<RFResult>& v);
 
 private:
     QSharedPointer<QList<DotPlotResults>> dotPlotList;
@@ -101,7 +101,7 @@ private:
     bool stateOk;
 
     static const int maxResults = 8 * 1024 * 1024;
-    Task *rfTask;
+    Task* rfTask;
 };
 
 // apply rev-compl transformation for X sequence results
@@ -110,8 +110,8 @@ public:
     DotPlotRevComplResultsListener()
         : xLen(0) {
     }
-    virtual void onResult(const RFResult &r);
-    virtual void onResults(const QVector<RFResult> &v);
+    virtual void onResult(const RFResult& r);
+    virtual void onResults(const QVector<RFResult>& v);
 
     int xLen;
 };

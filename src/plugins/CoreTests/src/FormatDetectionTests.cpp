@@ -47,7 +47,7 @@ static bool more_than(int a, int b) {
 }
 
 typedef bool (*CmpFun)(int, int);
-static CmpFun getCmpFun(const QString &name) {
+static CmpFun getCmpFun(const QString& name) {
     if (name == EQUAL_TO) {
         return equal_to;
     } else if (name == LESS_THAN) {
@@ -59,7 +59,7 @@ static CmpFun getCmpFun(const QString &name) {
     return 0;
 }
 
-void GTest_CheckScore::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_CheckScore::init(XMLTestFormat*, const QDomElement& el) {
     QString fileURLStr = el.attribute(URL);
     if (fileURLStr.isEmpty()) {
         failMissingValue(URL);
@@ -78,7 +78,7 @@ void GTest_CheckScore::init(XMLTestFormat *, const QDomElement &el) {
 
     // There is no ability to check if one constraint given multiple times
     // last value will be taken in this case
-    const QDomNamedNodeMap &attrs = el.attributes();
+    const QDomNamedNodeMap& attrs = el.attributes();
     int constraintn = 0;
     constraintn += attrs.contains(EQUAL_TO);
     constraintn += attrs.contains(LESS_THAN);
@@ -116,7 +116,7 @@ Task::ReportResult GTest_CheckScore::report() {
     assert(cmpFun);
 
     int score = 0;
-    foreach (const FormatDetectionResult &dr, matchedFormats) {
+    foreach (const FormatDetectionResult& dr, matchedFormats) {
         if (dr.format->getFormatId() == expectedFormat) {
             score = dr.score();
         }
@@ -131,7 +131,7 @@ Task::ReportResult GTest_CheckScore::report() {
 
 /*class GTest_PerfectMatch : public XmlTest */
 
-void GTest_PerfectMatch::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_PerfectMatch::init(XMLTestFormat*, const QDomElement& el) {
     QString fileURLStr = el.attribute(URL);
     if (fileURLStr.isEmpty()) {
         failMissingValue(URL);
@@ -167,7 +167,7 @@ Task::ReportResult GTest_PerfectMatch::report() {
             (matchedFormats[0].score() == matchedFormats[1].score() || (matchedFormats[1].score() > FormatDetection_AverageSimilarity && matchedFormats[0].score() < FormatDetection_Matched) || (matchedFormats[0].score() <= FormatDetection_AverageSimilarity))) {
             // matched to multipe formats
             QString matchedFormatsStr;
-            foreach (const FormatDetectionResult &dr, matchedFormats) {
+            foreach (const FormatDetectionResult& dr, matchedFormats) {
                 assert(dr.format && "Importers should be disabled");
                 matchedFormatsStr += QString("%1 (score: %2), ").arg(dr.format->getFormatId()).arg(dr.score());
             }
@@ -176,7 +176,7 @@ Task::ReportResult GTest_PerfectMatch::report() {
             stateInfo.setError(QString("Matched to multiple formats: %1; expected %2").arg(matchedFormatsStr).arg(expectedFormat));
         } else {
             // matched exactly
-            FormatDetectionResult &dr = matchedFormats.first();
+            FormatDetectionResult& dr = matchedFormats.first();
             assert(dr.format && "Importers should be disabled");
 
             if (dr.format->getFormatId() != expectedFormat) {
@@ -192,8 +192,8 @@ Task::ReportResult GTest_PerfectMatch::report() {
 }
 
 /* class FormatDetectionTests */
-QList<XMLTestFactory *> FormatDetectionTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> FormatDetectionTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
 
     res.append(GTest_CheckScore::createFactory());
     res.append(GTest_PerfectMatch::createFactory());

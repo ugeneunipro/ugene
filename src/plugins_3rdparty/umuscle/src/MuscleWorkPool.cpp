@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-MuscleWorkPool::MuscleWorkPool(MuscleContext *_ctx, const MuscleTaskSettings &_config, TaskStateInfo &_ti, int _nThreads, const MultipleSequenceAlignment &_ma, MultipleSequenceAlignment &_res, bool _mhack)
+MuscleWorkPool::MuscleWorkPool(MuscleContext* _ctx, const MuscleTaskSettings& _config, TaskStateInfo& _ti, int _nThreads, const MultipleSequenceAlignment& _ma, MultipleSequenceAlignment& _res, bool _mhack)
     : ctx(_ctx), config(_config), ma(_ma->getCopy()), res(_res), mhack(_mhack), Weights(nullptr), ProgNodes(nullptr), ph(nullptr), ti(_ti),
       treeNodeStatus(nullptr), treeNodeIndexes(nullptr), nThreads(_nThreads), uJoin(0), ptrbOscillating(nullptr), bAnyAccepted(false), InternalNodeIndexes(nullptr), uInternalNodeCount(0),
       bReversed(false), bRight(false), History(nullptr), bLockLeft(nullptr), bLockRight(false), msaIn(nullptr) {
@@ -130,7 +130,7 @@ void MuscleWorkPool::reset() {
     }
 }
 
-unsigned MuscleWorkPool::refineGetJob(MSA *_msaIn, int workerID) {
+unsigned MuscleWorkPool::refineGetJob(MSA* _msaIn, int workerID) {
     QMutexLocker lock(&mut);
     bool availible = false;
     if (ctx->isCanceled())
@@ -155,7 +155,7 @@ unsigned MuscleWorkPool::refineGetJob(MSA *_msaIn, int workerID) {
     return currentNodeIndex[workerID];
 }
 
-unsigned MuscleWorkPool::refineGetNextJob(MSA *_msaIn, bool accepted, SCORE scoreMax, const unsigned index, int workerID) {
+unsigned MuscleWorkPool::refineGetNextJob(MSA* _msaIn, bool accepted, SCORE scoreMax, const unsigned index, int workerID) {
     QMutexLocker lock(&mut);
     if (ctx->isCanceled()) {
 #if TRACE

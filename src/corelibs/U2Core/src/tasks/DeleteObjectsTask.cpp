@@ -32,14 +32,14 @@ namespace U2 {
 namespace {
 
 class ProgressUpdater {
-    U2OpStatus &os;
+    U2OpStatus& os;
     const int size;
     const int percentStep;
     int ticksCount;
     int currentStep;
 
 public:
-    ProgressUpdater(U2OpStatus &os, int size)
+    ProgressUpdater(U2OpStatus& os, int size)
         : os(os), size(size), percentStep(size / 100), ticksCount(0), currentStep(0) {
         os.setProgress(0);
     }
@@ -60,13 +60,13 @@ public:
 // DeleteObjectsTask
 //////////////////////////////////////////////////////////////////////////
 
-DeleteObjectsTask::DeleteObjectsTask(const QList<GObject *> &objs)
+DeleteObjectsTask::DeleteObjectsTask(const QList<GObject*>& objs)
     : Task(tr("Delete objects"), TaskFlag_None) {
     tpm = Progress_Manual;
 
-    foreach (GObject *obj, objs) {
+    foreach (GObject* obj, objs) {
         CHECK_EXT(nullptr != obj, stateInfo.setError("Invalid object detected!"), );
-        const U2EntityRef &objRef = obj->getEntityRef();
+        const U2EntityRef& objRef = obj->getEntityRef();
         if (!dbiRef2Objs.contains(objRef.dbiRef)) {
             dbiRef2Objs.insert(objRef.dbiRef, QList<U2DataId>());
         }
@@ -75,7 +75,7 @@ DeleteObjectsTask::DeleteObjectsTask(const QList<GObject *> &objs)
 }
 
 void DeleteObjectsTask::run() {
-    foreach (const U2DbiRef &dbiRef, dbiRef2Objs.keys()) {
+    foreach (const U2DbiRef& dbiRef, dbiRef2Objs.keys()) {
         DbiConnection con(dbiRef, stateInfo);
         CHECK_OP(stateInfo, );
 
@@ -92,11 +92,11 @@ void DeleteObjectsTask::run() {
 // DeleteFoldersTask
 //////////////////////////////////////////////////////////////////////////
 
-DeleteFoldersTask::DeleteFoldersTask(const QList<Folder> &folders)
+DeleteFoldersTask::DeleteFoldersTask(const QList<Folder>& folders)
     : Task(tr("Delete folders"), TaskFlag_None) {
     tpm = Progress_Manual;
-    foreach (const Folder &folder, folders) {
-        Document *doc = folder.getDocument();
+    foreach (const Folder& folder, folders) {
+        Document* doc = folder.getDocument();
         CHECK_EXT(nullptr != doc, stateInfo.setError("Invalid document detected!"), );
         const U2DbiRef dbiRef = doc->getDbiRef();
         CHECK_EXT(dbiRef.isValid(), stateInfo.setError("Invalid DBI reference detected!"), );
@@ -106,12 +106,12 @@ DeleteFoldersTask::DeleteFoldersTask(const QList<Folder> &folders)
 
 void DeleteFoldersTask::run() {
     ProgressUpdater progressUpdater(stateInfo, dbi2Path.size());
-    foreach (const U2DbiRef &dbiRef, dbi2Path.keys()) {
+    foreach (const U2DbiRef& dbiRef, dbi2Path.keys()) {
         DbiConnection con(dbiRef, stateInfo);
         CHECK_OP(stateInfo, );
 
         QList<QString> pathList = dbi2Path.values(dbiRef);
-        for (const QString &path : qAsConst(pathList)) {
+        for (const QString& path : qAsConst(pathList)) {
             con.dbi->getObjectDbi()->removeFolder(path, stateInfo);
         }
         progressUpdater.tick();

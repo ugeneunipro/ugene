@@ -33,43 +33,43 @@ const int MsaRowTestUtils::rowWithoutGapsLength = 5;
 
 const QString MsaRowTestUtils::rowWithGapsName = "Row with gaps name";
 
-MultipleSequenceAlignmentRow MsaRowTestUtils::initTestRowWithGaps(MultipleSequenceAlignment &almnt) {
+MultipleSequenceAlignmentRow MsaRowTestUtils::initTestRowWithGaps(MultipleSequenceAlignment& almnt) {
     almnt->setName("For row with gaps");
     almnt->addRow(rowWithGapsName, "---AG-T");
     return almnt->getMsaRow(0)->getExplicitCopy();  // "---AG-T"
 }
 
-MultipleSequenceAlignmentRow MsaRowTestUtils::initTestRowWithGapsInMiddle(MultipleSequenceAlignment &almnt) {
+MultipleSequenceAlignmentRow MsaRowTestUtils::initTestRowWithGapsInMiddle(MultipleSequenceAlignment& almnt) {
     almnt->setName("For row with gaps in middle");
     almnt->addRow("Test sequence", "GG-T--AT");
     return almnt->getMsaRow(0)->getExplicitCopy();  // "GG-T--AT"
 }
 
-MultipleSequenceAlignmentRow MsaRowTestUtils::initTestRowWithTrailingGaps(MultipleSequenceAlignment &almnt) {
+MultipleSequenceAlignmentRow MsaRowTestUtils::initTestRowWithTrailingGaps(MultipleSequenceAlignment& almnt) {
     almnt->setName("For row with trailing gaps");
     almnt->addRow("Row with trailing gaps", "CA-GT--T--");
     return almnt->getMsaRow(0)->getExplicitCopy();  // "CA-GT--T--"
 }
 
-MultipleSequenceAlignmentRow MsaRowTestUtils::initTestRowWithoutGaps(MultipleSequenceAlignment &almnt) {
+MultipleSequenceAlignmentRow MsaRowTestUtils::initTestRowWithoutGaps(MultipleSequenceAlignment& almnt) {
     almnt->setName("For a row without gaps");
     almnt->addRow("Row without gaps", "ACGTA");
     return almnt->getMsaRow(0)->getExplicitCopy();  // "ACGTA"
 }
 
-MultipleSequenceAlignmentRow MsaRowTestUtils::initEmptyRow(MultipleSequenceAlignment &almnt) {
+MultipleSequenceAlignmentRow MsaRowTestUtils::initEmptyRow(MultipleSequenceAlignment& almnt) {
     almnt->setName("For empty row");
     almnt->addRow("Empty", "");
     return almnt->getMsaRow(0)->getExplicitCopy();  // ""
 }
 
-MultipleSequenceAlignmentRow MsaRowTestUtils::initTestRowForModification(MultipleSequenceAlignment &almnt) {
+MultipleSequenceAlignmentRow MsaRowTestUtils::initTestRowForModification(MultipleSequenceAlignment& almnt) {
     almnt->setName("For row for modifications");
     almnt->addRow("Test sequence", "A---ACG--GTT-A-C---G");
     return almnt->getMsaRow(0)->getExplicitCopy();  // "A---ACG--GTT-A-C---G"
 }
 
-QString MsaRowTestUtils::getRowData(const MultipleSequenceAlignmentRow &row) {
+QString MsaRowTestUtils::getRowData(const MultipleSequenceAlignmentRow& row) {
     U2OpStatusImpl os;
     QString result = row->toByteArray(os, row->getRowLength()).data();
     SAFE_POINT_OP(os, QString());

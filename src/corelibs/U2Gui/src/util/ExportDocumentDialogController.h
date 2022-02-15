@@ -37,8 +37,8 @@ class U2GUI_EXPORT ExportDocumentDialogController : public QDialog {
     Q_OBJECT
     Q_DISABLE_COPY(ExportDocumentDialogController)
 public:
-    ExportDocumentDialogController(Document *d, QWidget *p);
-    ExportDocumentDialogController(GObject *object, QWidget *parent, const QString &initUrl = "");
+    ExportDocumentDialogController(Document* d, QWidget* p);
+    ExportDocumentDialogController(GObject* object, QWidget* parent, const QString& initUrl = "");
     ~ExportDocumentDialogController();
 
     QString getDocumentURL() const;
@@ -48,19 +48,19 @@ public:
 
     DocumentFormatId getDocumentFormatId() const;
 
-    Document *getSourceDoc() const;
-    GObject *getSourceObject() const;
+    Document* getSourceDoc() const;
+    GObject* getSourceObject() const;
 
 private:
-    void initSaveController(const QList<GObject *> &objects, const QString &fileUrl);
-    static DocumentFormatConstraints getAcceptableConstraints(const QList<GObject *> &objects);
+    void initSaveController(const QList<GObject*>& objects, const QString& fileUrl);
+    static DocumentFormatConstraints getAcceptableConstraints(const QList<GObject*>& objects);
 
-    SaveDocumentController *saveController;
-    Ui_ExportDocumentDialog *ui;
+    SaveDocumentController* saveController;
+    Ui_ExportDocumentDialog* ui;
     // the following fields are used to determine whether the object was used for
     // creating a Document from single GObeject or another Document
-    Document *sourceDoc;
-    GObject *sourceObject;
+    Document* sourceDoc;
+    GObject* sourceObject;
 };
 
 }  // namespace U2

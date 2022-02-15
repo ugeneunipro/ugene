@@ -41,7 +41,7 @@
 namespace U2 {
 namespace Workflow {
 
-static qint64 calcMemUsageBytes(DbiDataStorage *storage, const SharedDbiDataHandler &seqId, U2OpStatus &os) {
+static qint64 calcMemUsageBytes(DbiDataStorage* storage, const SharedDbiDataHandler& seqId, U2OpStatus& os) {
     QScopedPointer<U2SequenceObject> object(StorageUtils::getSequenceObject(storage, seqId));
     CHECK_EXT(!object.isNull(), os.setError(L10N::nullPointerError("Sequence object")), 0);
 
@@ -55,9 +55,9 @@ static int toMb(qint64 bytes) {
 /************************************************************************/
 /* ComposeResultSubTask */
 /************************************************************************/
-ComposeResultSubtask::ComposeResultSubtask(const SharedDbiDataHandler &_reference,
-                                           const QList<AlignToReferenceResult> &_pairwiseAlignments,
-                                           DbiDataStorage *storage)
+ComposeResultSubtask::ComposeResultSubtask(const SharedDbiDataHandler& _reference,
+                                           const QList<AlignToReferenceResult>& _pairwiseAlignments,
+                                           DbiDataStorage* storage)
     : Task(tr("Compose alignment"), TaskFlags_FOSE_COSC),
       reference(_reference),
       pairwiseAlignments(_pairwiseAlignments),
@@ -69,7 +69,7 @@ void ComposeResultSubtask::prepare() {
     qint64 memUsage = calcMemUsageBytes(storage, reference, stateInfo);
     CHECK_OP(stateInfo, );
 
-    for (const AlignToReferenceResult &result : qAsConst(pairwiseAlignments)) {
+    for (const AlignToReferenceResult& result : qAsConst(pairwiseAlignments)) {
         memUsage += calcMemUsageBytes(storage, result.readHandle, stateInfo);
         CHECK_OP(stateInfo, );
     }
@@ -104,11 +104,11 @@ void ComposeResultSubtask::run() {
     referenceSequenceObject->moveToThread(thread());
 }
 
-const SharedDbiDataHandler &ComposeResultSubtask::getAnnotations() const {
+const SharedDbiDataHandler& ComposeResultSubtask::getAnnotations() const {
     return annotationsDataHandler;
 }
 
-U2SequenceObject *ComposeResultSubtask::takeReferenceSequenceObject() {
+U2SequenceObject* ComposeResultSubtask::takeReferenceSequenceObject() {
     QScopedPointer<DbiConnection> con(new DbiConnection(storage->getDbiRef(), stateInfo));
     CHECK_OP(stateInfo, nullptr);
     CHECK(con->dbi != nullptr, nullptr);
@@ -117,15 +117,15 @@ U2SequenceObject *ComposeResultSubtask::takeReferenceSequenceObject() {
     con->dbi->getObjectDbi()->setTrackModType(seqId, TrackOnUpdate, stateInfo);
     CHECK_OP(stateInfo, nullptr);
 
-    U2SequenceObject *resultSequenceObject = referenceSequenceObject;
+    U2SequenceObject* resultSequenceObject = referenceSequenceObject;
     referenceSequenceObject->setParent(nullptr);
     resultSequenceObject->moveToThread(QThread::currentThread());
     referenceSequenceObject = nullptr;
     return resultSequenceObject;
 }
 
-MultipleChromatogramAlignmentObject *ComposeResultSubtask::takeMcaObject() {
-    MultipleChromatogramAlignmentObject *resultMcaObject = mcaObject;
+MultipleChromatogramAlignmentObject* ComposeResultSubtask::takeMcaObject() {
+    MultipleChromatogramAlignmentObject* resultMcaObject = mcaObject;
     mcaObject->setParent(nullptr);
     mcaObject->moveToThread(QThread::currentThread());
     mcaObject = nullptr;
@@ -144,7 +144,7 @@ void ComposeResultSubtask::createAlignmentAndAnnotations() {
     QScopedPointer<AnnotationTableObject> annotationsObject(new AnnotationTableObject(annotationsObjectName, storage->getDbiRef()));
     QList<SharedAnnotationData> annotations;
 
-    for (const AlignToReferenceResult &pairwiseAlignment : qAsConst(pairwiseAlignments)) {
+    for (const AlignToReferenceResult& pairwiseAlignment : qAsConst(pairwiseAlignments)) {
         QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, pairwiseAlignment.readHandle));
         CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("Read sequence")), );
         DNASequence readSequence = readObject->getWholeSequence(stateInfo);
@@ -164,8 +164,8 @@ void ComposeResultSubtask::createAlignmentAndAnnotations() {
             resultMca->getMcaRow(mcaRowIndex)->reverseComplement();
         }
 
-        const QVector<U2MsaGap> &gaps = pairwiseAlignment.readGaps;
-        for (const U2MsaGap &gap : qAsConst(gaps)) {
+        const QVector<U2MsaGap>& gaps = pairwiseAlignment.readGaps;
+        for (const U2MsaGap& gap : qAsConst(gaps)) {
             resultMca->insertGaps(mcaRowIndex, gap.startPos, gap.length, stateInfo);
             CHECK_OP(stateInfo, );
         }
@@ -227,7 +227,7 @@ void ComposeResultSubtask::enlargeReferenceByGaps() {
     }
 }
 
-U2Region ComposeResultSubtask::getReadRegion(const MultipleChromatogramAlignmentRow &readRow, const QVector<U2MsaGap> &referenceGapModel) const {
+U2Region ComposeResultSubtask::getReadRegion(const MultipleChromatogramAlignmentRow& readRow, const QVector<U2MsaGap>& referenceGapModel) const {
     U2Region region(0, readRow->getRowLengthWithoutTrailing());
 
     // calculate read start
@@ -241,7 +241,7 @@ U2Region ComposeResultSubtask::getReadRegion(const MultipleChromatogramAlignment
 
     qint64 leftGap = 0;
     qint64 innerGap = 0;
-    for (const U2MsaGap &gap : qAsConst(referenceGapModel)) {
+    for (const U2MsaGap& gap : qAsConst(referenceGapModel)) {
         qint64 endPos = gap.startPos + gap.length;
         if (gap.startPos < region.startPos) {
             leftGap += gap.length;
@@ -257,7 +257,7 @@ U2Region ComposeResultSubtask::getReadRegion(const MultipleChromatogramAlignment
     return region;
 }
 
-U2Location ComposeResultSubtask::getLocation(const U2Region &region, bool isComplement) {
+U2Location ComposeResultSubtask::getLocation(const U2Region& region, bool isComplement) {
     U2Location result;
     result->strand = isComplement ? U2Strand(U2Strand::Complementary) : U2Strand(U2Strand::Direct);
 
@@ -274,18 +274,18 @@ U2Location ComposeResultSubtask::getLocation(const U2Region &region, bool isComp
 
 QVector<U2MsaGap> ComposeResultSubtask::getReferenceGaps() const {
     QVector<U2MsaGap> result;
-    for (const AlignToReferenceResult &pairwiseAlignment : qAsConst(pairwiseAlignments)) {
+    for (const AlignToReferenceResult& pairwiseAlignment : qAsConst(pairwiseAlignments)) {
         result << getShiftedGaps(pairwiseAlignment.referenceGaps);
     }
-    std::sort(result.begin(), result.end(), [](const auto &gap1, const auto &gap2) { return gap1.startPos < gap2.startPos; });
+    std::sort(result.begin(), result.end(), [](const auto& gap1, const auto& gap2) { return gap1.startPos < gap2.startPos; });
     return result;
 }
 
-QVector<U2MsaGap> ComposeResultSubtask::getShiftedGaps(const QVector<U2MsaGap> &gaps) {
+QVector<U2MsaGap> ComposeResultSubtask::getShiftedGaps(const QVector<U2MsaGap>& gaps) {
     QVector<U2MsaGap> result;
 
     qint64 wholeGap = 0;
-    for (const U2MsaGap &gap : qAsConst(gaps)) {
+    for (const U2MsaGap& gap : qAsConst(gaps)) {
         result << U2MsaGap(gap.startPos - wholeGap, gap.length);
         wholeGap += gap.length;
     }
@@ -301,7 +301,7 @@ void ComposeResultSubtask::insertShiftedGapsIntoReference() {
     DNASequence dnaSeq = referenceSequenceObject->getWholeSequence(stateInfo);
     CHECK_OP(stateInfo, );
     for (int i = referenceGaps.size() - 1; i >= 0; i--) {
-        const U2MsaGap &gap = referenceGaps[i];
+        const U2MsaGap& gap = referenceGaps[i];
         dnaSeq.seq.insert(gap.startPos, QByteArray(gap.length, U2Msa::GAP_CHAR));
     }
     referenceSequenceObject->setWholeSequence(dnaSeq);
@@ -310,14 +310,14 @@ void ComposeResultSubtask::insertShiftedGapsIntoReference() {
     mcaObject->deleteColumnsWithGaps(stateInfo);
 }
 
-void ComposeResultSubtask::insertShiftedGapsIntoRead(MultipleChromatogramAlignment &alignment,
+void ComposeResultSubtask::insertShiftedGapsIntoRead(MultipleChromatogramAlignment& alignment,
                                                      int mcaRowIndex,
-                                                     const AlignToReferenceResult &alignResult,
-                                                     const QVector<U2MsaGap> &mergedReferenceGaps) {
+                                                     const AlignToReferenceResult& alignResult,
+                                                     const QVector<U2MsaGap>& mergedReferenceGaps) {
     QVector<U2MsaGap> ownGaps = getShiftedGaps(alignResult.referenceGaps);
 
     qint64 globalOffset = 0;
-    for (const U2MsaGap &gap : qAsConst(mergedReferenceGaps)) {
+    for (const U2MsaGap& gap : qAsConst(mergedReferenceGaps)) {
         if (ownGaps.contains(gap)) {  // Task takes gaps into account but don't insert them.
             globalOffset += gap.length;
             ownGaps.removeOne(gap);

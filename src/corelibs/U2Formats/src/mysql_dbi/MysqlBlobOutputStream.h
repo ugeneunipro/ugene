@@ -31,13 +31,13 @@ class MysqlDbRef;
 
 class MysqlBlobOutputStream : public OutputStream {
 public:
-    MysqlBlobOutputStream(MysqlDbRef *db, const QByteArray &tableId, const QByteArray &columnId, const U2DataId &rowId, int size, U2OpStatus &os);
+    MysqlBlobOutputStream(MysqlDbRef* db, const QByteArray& tableId, const QByteArray& columnId, const U2DataId& rowId, int size, U2OpStatus& os);
 
     void close();
-    void write(const char *buffer, int length, U2OpStatus &os);
+    void write(const char* buffer, int length, U2OpStatus& os);
 
 private:
-    MysqlDbRef *db;
+    MysqlDbRef* db;
     const QByteArray tableId;
     const QByteArray columnId;
     const U2DataId rowId;

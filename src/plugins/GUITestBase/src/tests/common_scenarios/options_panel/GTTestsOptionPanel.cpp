@@ -63,9 +63,9 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //    2. Activate Information tab on Options panel at the right edge of UGENE window.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_SEQ_INFO"));
 
-    QWidget *w = GTWidget::findWidget(os, "Characters Occurrence");
+    QWidget* w = GTWidget::findWidget(os, "Characters Occurrence");
     GTWidget::click(os, w);
-    QLabel *l = w->findChild<QLabel *>();
+    QLabel* l = w->findChild<QLabel*>();
     QString s = QString("<table cellspacing=5><tr><td><b>A:&nbsp;&nbsp;"
                         "</td><td>62 842 &nbsp;&nbsp;</td><td>31.4%&nbsp;&nbsp;"
                         "</td></tr><tr><td><b>C:&nbsp;&nbsp;</td><td>40 041 &nbsp;"
@@ -89,9 +89,9 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
     //    2. Activate Information tab on Options panel at the right edge of UGENE window.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_SEQ_INFO"));
 
-    QWidget *w = GTWidget::findWidget(os, "Characters Occurrence");
+    QWidget* w = GTWidget::findWidget(os, "Characters Occurrence");
     GTWidget::click(os, w);
-    QLabel *l = w->findChild<QLabel *>();
+    QLabel* l = w->findChild<QLabel*>();
     QString s = QString("<table cellspacing=5><tr><td><b>A:&nbsp;&nbsp;</td><td>31 &nbsp;&nbsp;"
                         "</td><td>27.2%&nbsp;&nbsp;</td></tr><tr><td><b>C:&nbsp;&nbsp;"
                         "</td><td>30 &nbsp;&nbsp;</td><td>26.3%&nbsp;&nbsp;</td></tr><tr><td><b>G:&nbsp;"
@@ -109,9 +109,9 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     // 2. Activate Information tab on Options panel at the right edge of UGENE window. Expand Dinucleotides
     GTWidget::click(os, GTWidget::findWidget(os, "OP_SEQ_INFO"));
 
-    QWidget *w = GTWidget::findWidget(os, "Dinucleotides");
+    QWidget* w = GTWidget::findWidget(os, "Dinucleotides");
     GTWidget::click(os, w);
-    QLabel *l = w->findChild<QLabel *>();
+    QLabel* l = w->findChild<QLabel*>();
     QString s = QString("<table cellspacing=5><tr><td><b>AA:&nbsp;&nbsp;</td><td>"
                         "21 960 &nbsp;&nbsp;</td></tr><tr><td><b>AC:&nbsp;&nbsp;</td>"
                         "<td>10 523 &nbsp;&nbsp;</td></tr><tr><td><b>AG:&nbsp;&nbsp;"
@@ -157,9 +157,9 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     // 2. Activate Information tab on Options panel at the right edge of UGENE window. Expand Dinucleotides
     GTWidget::click(os, GTWidget::findWidget(os, "OP_SEQ_INFO"));
 
-    QWidget *w = GTWidget::findWidget(os, "Dinucleotides");
+    QWidget* w = GTWidget::findWidget(os, "Dinucleotides");
     GTWidget::click(os, w);
-    QLabel *l = w->findChild<QLabel *>();
+    QLabel* l = w->findChild<QLabel*>();
     QString s = QString("<table cellspacing=5><tr><td><b>AA:&nbsp;&nbsp;"
                         "</td><td>6 &nbsp;&nbsp;</td></tr><tr><td><b>AC:&nbsp;&nbsp;"
                         "</td><td>9 &nbsp;&nbsp;</td></tr><tr><td><b>AG:&nbsp;&nbsp;"
@@ -189,7 +189,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //    2. Activate Information tab on Options panel at the right edge of UGENE window.
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
 
-    QLabel *statisticsLabel = GTWidget::findExactWidget<QLabel *>(os, "Common Statistics");
+    QLabel* statisticsLabel = GTWidget::findExactWidget<QLabel*>(os, "Common Statistics");
     CHECK_SET_ERR(statisticsLabel != nullptr, "No Common Statistics label");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -208,7 +208,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
     //    2. Activate Information tab on Options panel at the right edge of UGENE window.
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
 
-    QLabel *statisticsLabel = GTWidget::findExactWidget<QLabel *>(os, "Common Statistics");
+    QLabel* statisticsLabel = GTWidget::findExactWidget<QLabel*>(os, "Common Statistics");
     CHECK_SET_ERR(statisticsLabel != nullptr, "No Common Statistics label");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -223,7 +223,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Activate Information tab on Options panel at the right edge of UGENE window.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_SEQ_INFO"));
-    QWidget *w = GTWidget::findWidget(os, "Characters Occurrence");
+    QWidget* w = GTWidget::findWidget(os, "Characters Occurrence");
     GTWidget::click(os, w);
 
     QPoint point = GTMouseDriver::getMousePosition();
@@ -263,10 +263,10 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     //    2. Activate Information tab on Options panel at the right edge of UGENE window.
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
     GTWidget::click(os, GTWidget::findWidget(os, "OP_SEQ_INFO"));
-    QWidget *w = GTWidget::findWidget(os, "Characters Occurrence");
+    QWidget* w = GTWidget::findWidget(os, "Characters Occurrence");
     GTWidget::click(os, w);
 
-    QLabel *l = w->findChild<QLabel *>();
+    QLabel* l = w->findChild<QLabel*>();
     QString s = l->text();
 
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_1"));
@@ -305,13 +305,13 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
+    QTreeWidgetItem* item = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
     QList<QString> keys = GTUtilsProjectTreeView::getDocuments(os).keys();
     QString name;
-    foreach (const QString &key, keys) {
+    foreach (const QString& key, keys) {
         if (key.startsWith("MyDocument")) {
             name = key;
             break;
@@ -329,7 +329,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
 
-    QLabel *statisticsLabel = GTWidget::findExactWidget<QLabel *>(os, "Common Statistics");
+    QLabel* statisticsLabel = GTWidget::findExactWidget<QLabel*>(os, "Common Statistics");
     CHECK_SET_ERR(statisticsLabel != nullptr, "No Common Statistics widget");
 
     QString s = QString("<table cellspacing=5>"
@@ -362,7 +362,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QLabel *statisticsLabel = GTWidget::findExactWidget<QLabel *>(os, "Common Statistics");
+    QLabel* statisticsLabel = GTWidget::findExactWidget<QLabel*>(os, "Common Statistics");
     CHECK_SET_ERR(statisticsLabel != nullptr, "No Common Statistics widget");
 
     QString s = QString("Length: </td><td>199 950 nt");
@@ -405,7 +405,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QLabel *statisticsLabel = GTWidget::findExactWidget<QLabel *>(os, "Common Statistics");
+    QLabel* statisticsLabel = GTWidget::findExactWidget<QLabel*>(os, "Common Statistics");
     CHECK_SET_ERR(statisticsLabel != nullptr, "No Common Statistics widget");
 
     QString s = QString("<table cellspacing=5>"
@@ -424,7 +424,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QLabel *statisticsLabel = GTWidget::findExactWidget<QLabel *>(os, "Common Statistics");
+    QLabel* statisticsLabel = GTWidget::findExactWidget<QLabel*>(os, "Common Statistics");
     CHECK_SET_ERR(statisticsLabel != nullptr, "No Common Statistics widget");
     GTUtilsOptionsPanel::resizeToMaximum(os);
     QString labelText = statisticsLabel->text();
@@ -474,7 +474,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QLabel *statisticsLabel = GTWidget::findExactWidget<QLabel *>(os, "Common Statistics");
+    QLabel* statisticsLabel = GTWidget::findExactWidget<QLabel*>(os, "Common Statistics");
     CHECK_SET_ERR(statisticsLabel != nullptr, "No Common Statistics widget");
 
     QString s = QString("<table cellspacing=5>"
@@ -494,10 +494,10 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QLabel *statisticsLabel = GTWidget::findExactWidget<QLabel *>(os, "Common Statistics");
+    QLabel* statisticsLabel = GTWidget::findExactWidget<QLabel*>(os, "Common Statistics");
     CHECK_SET_ERR(statisticsLabel != nullptr, "No Common Statistics widget");
 
-    QWidget *w0 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
+    QWidget* w0 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
     CHECK_SET_ERR(w0 != nullptr, "ADV single sequence widget 0 is NULL");
     GTWidget::click(os, w0);
     QString s = QString("<table cellspacing=5>"
@@ -505,7 +505,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
                         "</table>");
     CHECK_SET_ERR(statisticsLabel->text() == s, "Statistics is wrong!");
 
-    QWidget *w1 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
+    QWidget* w1 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
     CHECK_SET_ERR(w1 != nullptr, "ADV single sequence widget 1 is NULL");
     GTWidget::click(os, w1);
     s = QString("<table cellspacing=5>"
@@ -527,7 +527,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
 
     CHECK_SET_ERR(statisticsLabel->text() == s, "Statistics is wrong!");
 
-    QWidget *w2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_2");
+    QWidget* w2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_2");
     CHECK_SET_ERR(w2 != nullptr, "ADV single sequence widget 2 is NULL");
     GTWidget::click(os, w2);
     s = QString("<table cellspacing=5>"
@@ -546,7 +546,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::CircularView);
 
     // 3. Check the hint: it is visible
-    QWidget *openCvWidget = GTWidget::findWidget(os, "openCvWidget");
+    QWidget* openCvWidget = GTWidget::findWidget(os, "openCvWidget");
     CHECK_SET_ERR(openCvWidget != nullptr, "No hint widget");
     CHECK_SET_ERR(openCvWidget->isVisible(), "Hint label and OpenCV button should be visible");
 
@@ -591,7 +591,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     GTUtilsOptionPanelSequenceView::toggleCircularView(os);
 
     // 4. Select each available label position option
-    QComboBox *positionComboBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "labelPositionComboBox"));
+    QComboBox* positionComboBox = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "labelPositionComboBox"));
     CHECK_SET_ERR(positionComboBox != nullptr, "Position comboBox is NULL");
     CHECK_SET_ERR(positionComboBox->count() == 4, "Wrong amount of available label position");
     GTComboBox::selectItemByIndex(os, positionComboBox, 0);
@@ -609,9 +609,9 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::CircularView);
 
     // 3. Check font spinboxes bound values
-    QSpinBox *titleFontSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "fontSizeSpinBox"));
-    QSpinBox *rulerFontSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "rulerFontSizeSpinBox"));
-    QSpinBox *annotFontSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "labelFontSizeSpinBox"));
+    QSpinBox* titleFontSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "fontSizeSpinBox"));
+    QSpinBox* rulerFontSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "rulerFontSizeSpinBox"));
+    QSpinBox* annotFontSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "labelFontSizeSpinBox"));
 
     CHECK_SET_ERR(titleFontSpinBox != nullptr, "Title font size spinBox is NULL");
     CHECK_SET_ERR(rulerFontSpinBox != nullptr, "Ruler font size spinBox is NULL");
@@ -631,10 +631,10 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::CircularView);
 
     // 3. Check default conditions of checkboxes, uncheck them
-    QCheckBox *titleCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "titleCheckBox"));
-    QCheckBox *lengthCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "lengthCheckBox"));
-    QCheckBox *rulerLineCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "rulerLineCheckBox"));
-    QCheckBox *rulerCoordsCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "rulerCoordsCheckBox"));
+    QCheckBox* titleCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "titleCheckBox"));
+    QCheckBox* lengthCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "lengthCheckBox"));
+    QCheckBox* rulerLineCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "rulerLineCheckBox"));
+    QCheckBox* rulerCoordsCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "rulerCoordsCheckBox"));
 
     CHECK_SET_ERR(titleCheckBox != nullptr, "Show/hide title checkBox is NULL");
     CHECK_SET_ERR(lengthCheckBox != nullptr, "Show/hide seqeuence length checkBox is NULL");
@@ -662,12 +662,12 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     GTUtilsOptionPanelSequenceView::toggleCircularView(os);
 
     // 3. Check font combobox and bold attribute button
-    QWidget *boldButton = GTWidget::findWidget(os, "boldButton");
+    QWidget* boldButton = GTWidget::findWidget(os, "boldButton");
     CHECK_SET_ERR(boldButton != nullptr, "Bold button is NULL");
     GTWidget::click(os, boldButton);
-    CHECK_SET_ERR(qobject_cast<QPushButton *>(boldButton)->isChecked(), "Bold button is not checked");
+    CHECK_SET_ERR(qobject_cast<QPushButton*>(boldButton)->isChecked(), "Bold button is not checked");
 
-    QFontComboBox *fontComboBox = qobject_cast<QFontComboBox *>(GTWidget::findWidget(os, "fontComboBox"));
+    QFontComboBox* fontComboBox = qobject_cast<QFontComboBox*>(GTWidget::findWidget(os, "fontComboBox"));
     CHECK_SET_ERR(fontComboBox != nullptr, "Font comboBox is NULL");
 #ifdef Q_OS_LINUX
     GTComboBox::selectItemByText(os, fontComboBox, "Serif");
@@ -685,13 +685,13 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     // 6. Hide CV, using tool bar
     // 7. The hint is visible again
 
-    ADVSingleSequenceWidget *seqWidget = GTUtilsProject::openFileExpectSequence(os,
+    ADVSingleSequenceWidget* seqWidget = GTUtilsProject::openFileExpectSequence(os,
                                                                                 dataDir + "samples/Genbank",
                                                                                 "sars.gb",
                                                                                 "NC_004718");
     GTWidget::click(os, GTWidget::findWidget(os, "OP_CV_SETTINGS"));
 
-    QWidget *openCvWidget = GTWidget::findWidget(os, "openCvWidget");
+    QWidget* openCvWidget = GTWidget::findWidget(os, "openCvWidget");
     CHECK_SET_ERR(openCvWidget != nullptr, "No hint widget");
     CHECK_SET_ERR(openCvWidget->isVisible(), "Hint label and OpenCV button should be visible");
 
@@ -713,27 +713,27 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     // 7. Return to the first question
     // 8. The hint is visible, the settings are hidden
 
-    ADVSingleSequenceWidget *seqWidget1 = GTUtilsProject::openFileExpectSequence(os,
+    ADVSingleSequenceWidget* seqWidget1 = GTUtilsProject::openFileExpectSequence(os,
                                                                                  dataDir + "samples/Genbank",
                                                                                  "sars.gb",
                                                                                  "NC_004718");
     CHECK_SET_ERR(!GTUtilsCv::isCvPresent(os, seqWidget1), "CV opened");
     GTWidget::click(os, GTWidget::findWidget(os, "OP_CV_SETTINGS"));
 
-    QWidget *openCvWidget1 = GTWidget::findWidget(os, "openCvWidget");
+    QWidget* openCvWidget1 = GTWidget::findWidget(os, "openCvWidget");
     CHECK_SET_ERR(openCvWidget1 != nullptr, "No hint widget");
     CHECK_SET_ERR(openCvWidget1->isVisible(), "Hint label and OpenCV button should be visible");
 
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "NC_014267.1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    QList<ADVSingleSequenceWidget *> seqWidgets = GTUtilsMdi::activeWindow(os)->findChildren<ADVSingleSequenceWidget *>();
+    QList<ADVSingleSequenceWidget*> seqWidgets = GTUtilsMdi::activeWindow(os)->findChildren<ADVSingleSequenceWidget*>();
     CHECK_SET_ERR(seqWidgets.size() == 1, "Wrong number of sequences");
-    ADVSingleSequenceWidget *seqWidget2 = seqWidgets.first();
+    ADVSingleSequenceWidget* seqWidget2 = seqWidgets.first();
     CHECK_SET_ERR(GTUtilsCv::isCvPresent(os, seqWidget2), "No CV opened");
 
-    QWidget *parent = GTWidget::findWidget(os, "NC_014267 [NC_014267.1.gb]");
+    QWidget* parent = GTWidget::findWidget(os, "NC_014267 [NC_014267.1.gb]");
     GTWidget::click(os, GTWidget::findWidget(os, "OP_CV_SETTINGS", parent));
-    QWidget *openCvWidget2 = GTWidget::findWidget(os, "openCvWidget", parent);
+    QWidget* openCvWidget2 = GTWidget::findWidget(os, "openCvWidget", parent);
     CHECK_SET_ERR(openCvWidget2 != nullptr, "No hint widget");
     CHECK_SET_ERR(openCvWidget2->isHidden(), "Hint label and OpenCV button should be hidden");
 }
@@ -746,12 +746,12 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     // Activate Information tab on Options panel at the right edge of UGENE window. Expand "Codons"
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
 
-    QWidget *reportPanel = GTWidget::findWidget(os, "options_panel_codons_widget");
+    QWidget* reportPanel = GTWidget::findWidget(os, "options_panel_codons_widget");
     GTWidget::click(os, reportPanel);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Whole sequence.
-    QLabel *reportLabel = GTWidget::findWidgetByType<QLabel *>(os, reportPanel, "Failed to find label inside codons panel");
+    QLabel* reportLabel = GTWidget::findWidgetByType<QLabel*>(os, reportPanel, "Failed to find label inside codons panel");
     QString text = reportLabel->text();
     CHECK_SET_ERR(text.contains("whole sequence"), "Expected to see 'whole sequence' in the report");
     CHECK_SET_ERR(text.contains("<td><b>AAA:&nbsp;&nbsp;</b></td><td>16 558 &nbsp;&nbsp;</td>"),
@@ -808,12 +808,12 @@ GUI_TEST_CLASS_DEFINITION(test_0022) {
     // Activate Information tab on Options panel at the right edge of UGENE window. Expand "Amino Acids".
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
 
-    QWidget *reportPanel = GTWidget::findWidget(os, "options_panel_amino_acids_widget");
+    QWidget* reportPanel = GTWidget::findWidget(os, "options_panel_amino_acids_widget");
     GTWidget::click(os, reportPanel);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Whole sequence.
-    QLabel *reportLabel = GTWidget::findWidgetByType<QLabel *>(os, reportPanel, "Failed to find label inside amino acids panel");
+    QLabel* reportLabel = GTWidget::findWidgetByType<QLabel*>(os, reportPanel, "Failed to find label inside amino acids panel");
     QString text = reportLabel->text();
     CHECK_SET_ERR(text.contains("whole sequence"), "Expected to see 'whole sequence' in the report");
     CHECK_SET_ERR(text.contains("<td><b>L:&nbsp;&nbsp;</b></td><td>44 225 &nbsp;&nbsp;</td>"),

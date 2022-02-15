@@ -32,7 +32,7 @@ static U2DataId emptyId;
 static QByteArray emptyBlob;
 static QString emptyString;
 
-qint64 SQLiteUtils::remove(const QString &table, const QString &field, const U2DataId &id, qint64 expectedRows, DbRef *db, U2OpStatus &os) {
+qint64 SQLiteUtils::remove(const QString& table, const QString& field, const U2DataId& id, qint64 expectedRows, DbRef* db, U2OpStatus& os) {
     QMutexLocker m(&db->lock);  // lock db in order to retrieve valid row id for insert
 
     SQLiteWriteQuery q(QString("DELETE FROM %1 WHERE %2 = ?1").arg(table).arg(field), db, os);
@@ -40,24 +40,24 @@ qint64 SQLiteUtils::remove(const QString &table, const QString &field, const U2D
     return q.update(expectedRows);
 }
 
-bool SQLiteUtils::isTableExists(const QString &tableName, DbRef *db, U2OpStatus &os) {
+bool SQLiteUtils::isTableExists(const QString& tableName, DbRef* db, U2OpStatus& os) {
     SQLiteReadQuery q("SELECT name FROM sqlite_master WHERE type='table' AND name=?1", db, os);
     q.bindString(1, tableName);
     return q.step();
 }
 
-int SQLiteUtils::isDatabaseReadOnly(const DbRef *db, QString dbName) {
+int SQLiteUtils::isDatabaseReadOnly(const DbRef* db, QString dbName) {
     int res = sqlite3_db_readonly(db->handle, dbName.toUtf8());
     return res;
 }
 
-bool SQLiteUtils::getMemoryHint(int &currentMemory, int &maxMemory, int resetMax) {
+bool SQLiteUtils::getMemoryHint(int& currentMemory, int& maxMemory, int resetMax) {
     return SQLITE_OK == sqlite3_status(SQLITE_STATUS_MEMORY_USED, &currentMemory, &maxMemory, resetMax);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // L10N
-QString U2DbiL10n::queryError(const QString &err) {
+QString U2DbiL10n::queryError(const QString& err) {
     return tr("Error querying database: %1").arg(err);
 }
 
@@ -73,18 +73,18 @@ QString U2DbiL10n::tooManyResults() {
 #ifdef U2_TRACE_SQLITE_QUERIES
 static int nActiveQueries = 0;
 
-static void traceQueryPrepare(const QString &q) {
+static void traceQueryPrepare(const QString& q) {
     nActiveQueries++;
     ioLog.trace(QString("SQLite new query! Active queries: %1, Q: %2").arg(nActiveQueries).arg(q));
 }
 
-static void traceQueryDestroy(const QString &q) {
+static void traceQueryDestroy(const QString& q) {
     nActiveQueries--;
     ioLog.trace(QString("SQLite destroying query! Active queries: %1, Q: %2").arg(nActiveQueries).arg(q));
 }
 #endif
 
-SQLiteQuery::SQLiteQuery(const QString &_sql, DbRef *d, U2OpStatus &_os)
+SQLiteQuery::SQLiteQuery(const QString& _sql, DbRef* d, U2OpStatus& _os)
     : db(d), os(&_os), st(nullptr), sql(_sql) {
     prepare();
 
@@ -93,7 +93,7 @@ SQLiteQuery::SQLiteQuery(const QString &_sql, DbRef *d, U2OpStatus &_os)
 #endif
 }
 
-SQLiteQuery::SQLiteQuery(const QString &_sql, qint64 offset, qint64 count, DbRef *d, U2OpStatus &_os)
+SQLiteQuery::SQLiteQuery(const QString& _sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& _os)
     : db(d), os(&_os), st(nullptr), sql(_sql) {
     U2DbiUtils::addLimit(sql, offset, count);
     prepare();
@@ -103,7 +103,7 @@ SQLiteQuery::SQLiteQuery(const QString &_sql, qint64 offset, qint64 count, DbRef
 #endif
 }
 
-void SQLiteQuery::setError(const QString &err) {
+void SQLiteQuery::setError(const QString& err) {
     ioLog.trace("SQL: error: " + err + " in query: " + sql);
     if (!os->hasError()) {
         os->setError(err);
@@ -214,7 +214,7 @@ double SQLiteQuery::getDouble(int column) const {
     return sqlite3_column_double(st, column);
 }
 
-U2DataId SQLiteQuery::getDataId(int column, U2DataType type, const QByteArray &dbExtra) const {
+U2DataId SQLiteQuery::getDataId(int column, U2DataType type, const QByteArray& dbExtra) const {
     if (hasError()) {
         return 0;
     }
@@ -250,7 +250,7 @@ QString SQLiteQuery::getString(int column) const {
         return emptyString;
     }
     assert(st != nullptr);
-    return QString::fromUtf8((const char *)sqlite3_column_text(st, column));
+    return QString::fromUtf8((const char*)sqlite3_column_text(st, column));
 }
 
 QByteArray SQLiteQuery::getCString(int column) const {
@@ -258,7 +258,7 @@ QByteArray SQLiteQuery::getCString(int column) const {
         return emptyBlob;
     }
     assert(st != nullptr);
-    return QByteArray((const char *)sqlite3_column_text(st, column));
+    return QByteArray((const char*)sqlite3_column_text(st, column));
 }
 
 QByteArray SQLiteQuery::getBlob(int column) const {
@@ -270,12 +270,12 @@ QByteArray SQLiteQuery::getBlob(int column) const {
     if (nBytes == 0) {
         return emptyBlob;
     }
-    QByteArray res(static_cast<const char *>(sqlite3_column_blob(st, column)), nBytes);
+    QByteArray res(static_cast<const char*>(sqlite3_column_blob(st, column)), nBytes);
     return res;
 }
 
 // param binding methods
-void SQLiteQuery::bindDataId(int idx, const U2DataId &val) {
+void SQLiteQuery::bindDataId(int idx, const U2DataId& val) {
     if (!val.isEmpty()) {
         bindInt64(idx, U2DbiUtils::toDbiId(val));
     } else {
@@ -287,7 +287,7 @@ void SQLiteQuery::bindType(int idx, U2DataType type) {
     bindInt64(idx, type);
 }
 
-void SQLiteQuery::bindString(int idx, const QString &val) {
+void SQLiteQuery::bindString(int idx, const QString& val) {
     if (hasError()) {
         return;
     }
@@ -349,7 +349,7 @@ void SQLiteQuery::bindBool(int idx, bool val) {
     }
 }
 
-void SQLiteQuery::bindBlob(int idx, const QByteArray &blob, bool transient) {
+void SQLiteQuery::bindBlob(int idx, const QByteArray& blob, bool transient) {
     if (hasError()) {
         return;
     }
@@ -401,7 +401,7 @@ qint64 SQLiteQuery::insert() {
     return getLastRowId();
 }
 
-U2DataId SQLiteQuery::insert(U2DataType type, const QByteArray &dbExtra) {
+U2DataId SQLiteQuery::insert(U2DataType type, const QByteArray& dbExtra) {
     qint64 lastRowId = insert();
     if (hasError()) {
         return emptyId;
@@ -430,7 +430,7 @@ qint64 SQLiteQuery::selectInt64(qint64 defaultValue) {
     return defaultValue;
 }
 
-QList<U2DataId> SQLiteQuery::selectDataIds(U2DataType type, const QByteArray &dbExtra) {
+QList<U2DataId> SQLiteQuery::selectDataIds(U2DataType type, const QByteArray& dbExtra) {
     QList<U2DataId> res;
     while (step()) {
         U2DataId id = getDataId(0, type, dbExtra);
@@ -464,11 +464,11 @@ qint64 SQLiteQuery::getLastRowId() {
 
 //////////////////////////////////////////////////////////////////////////
 /// SQLiteReadQuery
-SQLiteReadQuery::SQLiteReadQuery(const QString &_sql, DbRef *d, U2OpStatus &_os)
+SQLiteReadQuery::SQLiteReadQuery(const QString& _sql, DbRef* d, U2OpStatus& _os)
     : SQLiteQuery(_sql, d, _os) {
 }
 
-SQLiteReadQuery::SQLiteReadQuery(const QString &_sql, qint64 offset, qint64 count, DbRef *d, U2OpStatus &_os)
+SQLiteReadQuery::SQLiteReadQuery(const QString& _sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& _os)
     : SQLiteQuery(_sql, offset, count, d, _os) {
 }
 
@@ -479,11 +479,11 @@ bool SQLiteReadQuery::step() {
 
 //////////////////////////////////////////////////////////////////////////
 /// SQLiteWriteQuery
-SQLiteWriteQuery::SQLiteWriteQuery(const QString &_sql, DbRef *d, U2OpStatus &_os)
+SQLiteWriteQuery::SQLiteWriteQuery(const QString& _sql, DbRef* d, U2OpStatus& _os)
     : SQLiteQuery(_sql, d, _os) {
 }
 
-SQLiteWriteQuery::SQLiteWriteQuery(const QString &_sql, qint64 offset, qint64 count, DbRef *d, U2OpStatus &_os)
+SQLiteWriteQuery::SQLiteWriteQuery(const QString& _sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& _os)
     : SQLiteQuery(_sql, offset, count, d, _os) {
 }
 
@@ -496,11 +496,11 @@ bool SQLiteWriteQuery::step() {
 //////////////////////////////////////////////////////////////////////////
 // SQLite transaction helper
 
-static void checkStack(const QVector<SQLiteTransaction *> &stack) {
+static void checkStack(const QVector<SQLiteTransaction*>& stack) {
 #ifdef _DEBUG
-    QThread *expectedThread = QThread::currentThread();
+    QThread* expectedThread = QThread::currentThread();
     for (int i = 0; i < stack.size(); i++) {
-        SQLiteTransaction *t = stack[i];
+        SQLiteTransaction* t = stack[i];
         assert(t->thread == expectedThread);
     }
 #else
@@ -508,7 +508,7 @@ static void checkStack(const QVector<SQLiteTransaction *> &stack) {
 #endif
 }
 
-SQLiteTransaction::SQLiteTransaction(DbRef *ref, U2OpStatus &_os)
+SQLiteTransaction::SQLiteTransaction(DbRef* ref, U2OpStatus& _os)
     : db(ref), os(_os), cacheQueries(true), started(false) {
 #ifdef _DEBUG
     thread = QThread::currentThread();
@@ -531,7 +531,7 @@ SQLiteTransaction::SQLiteTransaction(DbRef *ref, U2OpStatus &_os)
 }
 
 void SQLiteTransaction::clearPreparedQueries() {
-    foreach (const QString &sql, db->preparedQueries.keys()) {
+    foreach (const QString& sql, db->preparedQueries.keys()) {
         db->preparedQueries[sql].clear();
     }
     db->preparedQueries.clear();
@@ -562,7 +562,7 @@ SQLiteTransaction::~SQLiteTransaction() {
     }
 }
 
-QSharedPointer<SQLiteQuery> SQLiteTransaction::getPreparedQuery(const QString &sql, DbRef *d, U2OpStatus &os) {
+QSharedPointer<SQLiteQuery> SQLiteTransaction::getPreparedQuery(const QString& sql, DbRef* d, U2OpStatus& os) {
     if (db->preparedQueries.contains(sql)) {
         QSharedPointer<SQLiteQuery> result = db->preparedQueries[sql];
         result->setOpStatus(os);
@@ -577,7 +577,7 @@ QSharedPointer<SQLiteQuery> SQLiteTransaction::getPreparedQuery(const QString &s
     return result;
 }
 
-QSharedPointer<SQLiteQuery> SQLiteTransaction::getPreparedQuery(const QString &sql, qint64 offset, qint64 count, DbRef *d, U2OpStatus &os) {
+QSharedPointer<SQLiteQuery> SQLiteTransaction::getPreparedQuery(const QString& sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& os) {
     if (db->preparedQueries.contains(sql)) {
         QSharedPointer<SQLiteQuery> result = db->preparedQueries[sql];
         result->setOpStatus(os);

@@ -42,7 +42,7 @@ const QString MIN_RES_LEN("min-length");
 const QString MAX_RES_LEN("max-length");
 static const QString QUAL_ATTR = "pattern";
 
-QDCDDActor::QDCDDActor(QDActorPrototype const *proto)
+QDCDDActor::QDCDDActor(QDActorPrototype const* proto)
     : QDActor(proto) {
     cfg->setAnnotationKey("CDD result");
     units[UNIT_ID] = new QDSchemeUnit(this);
@@ -60,8 +60,8 @@ QString QDCDDActor::getText() const {
     return tr("Searches through the NCBI CDD database for annotations.");
 }
 
-Task *QDCDDActor::getAlgorithmTask(const QVector<U2Region> &location) {
-    const DNASequence &dnaSeq = scheme->getSequence();
+Task* QDCDDActor::getAlgorithmTask(const QVector<U2Region>& location) {
+    const DNASequence& dnaSeq = scheme->getSequence();
 
     settings.dbChoosen = "cdd";
     settings.params = "db=cdd";  // to do: supply db choice
@@ -73,7 +73,7 @@ Task *QDCDDActor::getAlgorithmTask(const QVector<U2Region> &location) {
 
     settings.retries = 60;
 
-    const DNAAlphabet *alph = dnaSeq.alphabet;
+    const DNAAlphabet* alph = dnaSeq.alphabet;
     settings.complT = GObjectUtils::findComplementTT(dnaSeq.alphabet);
     settings.aminoT = nullptr;
     if (!alph->isAmino()) {
@@ -83,7 +83,7 @@ Task *QDCDDActor::getAlgorithmTask(const QVector<U2Region> &location) {
         } else {
             tt = DNATranslationType_RAW_2_AMINO;
         }
-        QList<DNATranslation *> TTs = AppContext::getDNATranslationRegistry()->lookupTranslation(alph, tt);
+        QList<DNATranslation*> TTs = AppContext::getDNATranslationRegistry()->lookupTranslation(alph, tt);
         if (!TTs.isEmpty()) {
             settings.aminoT = AppContext::getDNATranslationRegistry()->getStandardGeneticCodeTranslation(alph);
         } else {
@@ -91,31 +91,31 @@ Task *QDCDDActor::getAlgorithmTask(const QVector<U2Region> &location) {
         }
     }
 
-    Task *t = new Task(tr("CDD Search"), TaskFlag_NoRun);
-    foreach (const U2Region &r, location) {
+    Task* t = new Task(tr("CDD Search"), TaskFlag_NoRun);
+    foreach (const U2Region& r, location) {
         RemoteBLASTTaskSettings s(settings);
         s.query = dnaSeq.seq.mid(r.startPos, r.length);
-        RemoteBLASTTask *sub = new RemoteBLASTTask(s);
+        RemoteBLASTTask* sub = new RemoteBLASTTask(s);
         t->addSubTask(sub);
         offsetMap[sub] = r.startPos;
     }
-    connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_onAlgorithmTaskFinished()));
+    connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_onAlgorithmTaskFinished()));
 
     return t;
 }
 
 void QDCDDActor::sl_onAlgorithmTaskFinished() {
     QList<SharedAnnotationData> res;
-    QMapIterator<RemoteBLASTTask *, int> iter(offsetMap);
+    QMapIterator<RemoteBLASTTask*, int> iter(offsetMap);
     while (iter.hasNext()) {
         iter.next();
-        RemoteBLASTTask *rqt = iter.key();
+        RemoteBLASTTask* rqt = iter.key();
         QList<SharedAnnotationData> annotations = rqt->getResultedAnnotations();
         // shift by offset
         int offset = offsetMap.value(rqt);
         QMutableListIterator<SharedAnnotationData> annIter(annotations);
         while (annIter.hasNext()) {
-            QVector<U2Region> &location = annIter.next()->location->regions;
+            QVector<U2Region>& location = annIter.next()->location->regions;
             U2Region::shift(offset, location);
         }
         res << annotations;
@@ -124,20 +124,20 @@ void QDCDDActor::sl_onAlgorithmTaskFinished() {
 
     int minLen = cfg->getParameter(MIN_RES_LEN)->getAttributeValueWithoutScript<int>();
     int maxLen = cfg->getParameter(MAX_RES_LEN)->getAttributeValueWithoutScript<int>();
-    const QString &qualVal = cfg->getParameter(QUAL_ATTR)->getAttributeValueWithoutScript<QString>();
-    foreach (const SharedAnnotationData &ad, res) {
-        const U2Region &reg = ad->location->regions.first();
+    const QString& qualVal = cfg->getParameter(QUAL_ATTR)->getAttributeValueWithoutScript<QString>();
+    foreach (const SharedAnnotationData& ad, res) {
+        const U2Region& reg = ad->location->regions.first();
         if (reg.length < minLen || reg.length > maxLen) {
             continue;
         }
-        foreach (const U2Qualifier &qual, ad->qualifiers) {
+        foreach (const U2Qualifier& qual, ad->qualifiers) {
             if (qual.value.contains(qualVal)) {
                 QDResultUnit ru(new QDResultUnitData);
                 ru->strand = ad->getStrand();
                 ru->quals = ad->qualifiers;
                 ru->region = reg;
                 ru->owner = units.values().first();
-                QDResultGroup *g = new QDResultGroup(QDStrand_Both);
+                QDResultGroup* g = new QDResultGroup(QDStrand_Both);
                 g->add(ru);
                 results.append(g);
                 break;
@@ -161,7 +161,7 @@ QDCDDActorPrototype::QDCDDActorPrototype() {
     attributes << new Attribute(maxResLen, BaseTypes::NUM_TYPE(), false, 5000);
     attributes << new Attribute(qual, BaseTypes::STRING_TYPE(), true);
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap m;
         m["1e-100"] = 1e-100;

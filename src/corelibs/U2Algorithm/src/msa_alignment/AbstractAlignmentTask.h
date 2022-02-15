@@ -38,13 +38,13 @@ namespace U2 {
 class U2ALGORITHM_EXPORT AbstractAlignmentTaskSettings {
 public:
     AbstractAlignmentTaskSettings();
-    AbstractAlignmentTaskSettings(const QVariantMap &someSettings);
-    AbstractAlignmentTaskSettings(const AbstractAlignmentTaskSettings &s);
+    AbstractAlignmentTaskSettings(const QVariantMap& someSettings);
+    AbstractAlignmentTaskSettings(const AbstractAlignmentTaskSettings& s);
     virtual ~AbstractAlignmentTaskSettings();
 
-    void appendCustomSettings(const QVariantMap &settings);
-    QVariant getCustomValue(const QString &optionName, const QVariant &defaultVal) const;
-    void setCustomValue(const QString &optionName, const QVariant &val);
+    void appendCustomSettings(const QVariantMap& settings);
+    QVariant getCustomValue(const QString& optionName, const QVariant& defaultVal) const;
+    void setCustomValue(const QString& optionName, const QVariant& val);
     virtual bool convertCustomSettings();
     virtual bool isValid() const;
 
@@ -69,12 +69,12 @@ class U2ALGORITHM_EXPORT AbstractAlignmentTask : public Task {
     Q_OBJECT
 
 public:
-    AbstractAlignmentTask(const QString &taskName, TaskFlags flags);
+    AbstractAlignmentTask(const QString& taskName, TaskFlags flags);
 };
 
 class U2ALGORITHM_EXPORT AbstractAlignmentTaskFactory {
 public:
-    virtual AbstractAlignmentTask *getTaskInstance(AbstractAlignmentTaskSettings *settings) const = 0;
+    virtual AbstractAlignmentTask* getTaskInstance(AbstractAlignmentTaskSettings* settings) const = 0;
     virtual ~AbstractAlignmentTaskFactory();
 };
 

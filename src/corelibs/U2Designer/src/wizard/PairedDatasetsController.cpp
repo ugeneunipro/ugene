@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-PairedDatasetsController::PairedDatasetsController(WizardController *wc, PairedReadsWidget *_widget)
+PairedDatasetsController::PairedDatasetsController(WizardController* wc, PairedReadsWidget* _widget)
     : WidgetController(wc), widget(_widget), dsc(nullptr) {
 }
 
@@ -35,7 +35,7 @@ PairedDatasetsController::~PairedDatasetsController() {
     delete dsc;
 }
 
-QWidget *PairedDatasetsController::createGUI(U2OpStatus &os) {
+QWidget* PairedDatasetsController::createGUI(U2OpStatus& os) {
     if (2 != widget->getInfos().size()) {
         os.setError("Only 2 datasets are supported");
         return nullptr;

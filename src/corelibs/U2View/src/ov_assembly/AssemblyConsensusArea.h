@@ -36,11 +36,11 @@ class AssemblyBrowserUi;
 class AssemblyConsensusArea : public AssemblySequenceArea {
     Q_OBJECT
 public:
-    AssemblyConsensusArea(AssemblyBrowserUi *ui);
+    AssemblyConsensusArea(AssemblyBrowserUi* ui);
 
-    QMenu *getConsensusAlgorithmMenu();
-    QList<QAction *> getAlgorithmActions();
-    QAction *getDiffAction() {
+    QMenu* getConsensusAlgorithmMenu();
+    QList<QAction*> getAlgorithmActions();
+    QAction* getDiffAction() {
         return diffAction;
     }
 
@@ -49,17 +49,17 @@ public slots:
     void sl_exportConsensusVariations();
 
 protected:
-    virtual QByteArray getSequenceRegion(U2OpStatus &os);
+    virtual QByteArray getSequenceRegion(U2OpStatus& os);
     virtual bool canDrawSequence();
-    virtual void drawSequence(QPainter &p);
-    virtual void mousePressEvent(QMouseEvent *e);
+    virtual void drawSequence(QPainter& p);
+    virtual void mousePressEvent(QMouseEvent* e);
 
 protected slots:
     virtual void sl_offsetsChanged();
     virtual void sl_zoomPerformed();
 
 private slots:
-    void sl_consensusAlgorithmChanged(QAction *a);
+    void sl_consensusAlgorithmChanged(QAction* a);
     void sl_drawDifferenceChanged(bool value);
     void sl_consensusReady();
 
@@ -68,11 +68,11 @@ private:
     void launchConsensusCalculation();
     void updateActions();
 
-    QMenu *contextMenu;
-    QMenu *consensusAlgorithmMenu;
-    QList<QAction *> algorithmActions;
-    QAction *diffAction;
-    QAction *exportConsensusVariationsAction;
+    QMenu* contextMenu;
+    QMenu* consensusAlgorithmMenu;
+    QList<QAction*> algorithmActions;
+    QAction* diffAction;
+    QAction* exportConsensusVariationsAction;
     QSharedPointer<AssemblyConsensusAlgorithm> consensusAlgorithm;
 
     ConsensusInfo cache;

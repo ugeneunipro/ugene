@@ -32,7 +32,7 @@
 
 namespace U2 {
 
-ExportPrimersToDatabaseTask::ExportPrimersToDatabaseTask(const QList<Primer> &primers, const U2DbiRef &dbiRef, const QString &folder)
+ExportPrimersToDatabaseTask::ExportPrimersToDatabaseTask(const QList<Primer>& primers, const U2DbiRef& dbiRef, const QString& folder)
     : Task(tr("Export primers"), TaskFlags_FOSE_COSC | TaskFlag_OnlyNotificationReport),
       primers(primers),
       dbiRef(dbiRef),
@@ -45,10 +45,10 @@ ExportPrimersToDatabaseTask::ExportPrimersToDatabaseTask(const QList<Primer> &pr
 }
 
 void ExportPrimersToDatabaseTask::run() {
-    for (const Primer &primer : qAsConst(primers)) {
+    for (const Primer& primer : qAsConst(primers)) {
         U2SequenceImporter importer;
         QByteArray sequence = primer.sequence.toLocal8Bit();
-        const DNAAlphabet *alphabet = U2AlphabetUtils::findBestAlphabet(sequence);  // In most cases primers have DNA alphabet, but it may also be a 'DNA extended'.
+        const DNAAlphabet* alphabet = U2AlphabetUtils::findBestAlphabet(sequence);  // In most cases primers have DNA alphabet, but it may also be a 'DNA extended'.
         importer.startSequence(stateInfo, dbiRef, folder, primer.name, false, alphabet->getId());
         CHECK_OP(stateInfo, );
 
@@ -86,7 +86,7 @@ Task::ReportResult ExportPrimersToDatabaseTask::report() {
     return ReportResult_Finished;
 }
 
-const QMap<U2DataId, U2DataId> &ExportPrimersToDatabaseTask::getImportedObjectIds() const {
+const QMap<U2DataId, U2DataId>& ExportPrimersToDatabaseTask::getImportedObjectIds() const {
     return importedObjectIds;
 }
 

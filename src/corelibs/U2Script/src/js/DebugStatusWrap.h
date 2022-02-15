@@ -35,24 +35,24 @@ namespace Js {
 class DebugStatusWrap : public node::ObjectWrap {
 public:
     static void init();
-    static Handle<Value> newInstance(int argc, const Handle<Value> *argv);
+    static Handle<Value> newInstance(int argc, const Handle<Value>* argv);
 
 private:
-    DebugStatusWrap(WorkflowDebugStatus *initDebugStatus);
+    DebugStatusWrap(WorkflowDebugStatus* initDebugStatus);
     ~DebugStatusWrap();
 
-    static Handle<Value> newObject(const Arguments &args);
-    static Handle<Value> addBreakpointToActor(const Arguments &args);
-    static Handle<Value> removeBreakpointFromActor(const Arguments &args);
-    static Handle<Value> setBreakpointEnabled(const Arguments &args);
-    static Handle<Value> getActorsWithBreakpoints(const Arguments &args);
-    static Handle<Value> setPaused(const Arguments &args);
-    static Handle<Value> isPaused(const Arguments &args);
+    static Handle<Value> newObject(const Arguments& args);
+    static Handle<Value> addBreakpointToActor(const Arguments& args);
+    static Handle<Value> removeBreakpointFromActor(const Arguments& args);
+    static Handle<Value> setBreakpointEnabled(const Arguments& args);
+    static Handle<Value> getActorsWithBreakpoints(const Arguments& args);
+    static Handle<Value> setPaused(const Arguments& args);
+    static Handle<Value> isPaused(const Arguments& args);
 
     static Persistent<Function> CONSTRUCTOR;
-    static const char *CLASS_NAME;
+    static const char* CLASS_NAME;
 
-    WorkflowDebugStatus *debugStatus;
+    WorkflowDebugStatus* debugStatus;
 };
 
 }  // namespace Js

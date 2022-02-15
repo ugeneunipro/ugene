@@ -23,7 +23,7 @@
 
 namespace U2 {
 
-void PairAlignSequences::setValues(int _score, const U2Region &_refSubseqInterval, const U2Region &_ptrnSubseqInterval, QByteArray _pairAlignment) {
+void PairAlignSequences::setValues(int _score, const U2Region& _refSubseqInterval, const U2Region& _ptrnSubseqInterval, QByteArray _pairAlignment) {
     score = _score;
     refSubseqInterval = _refSubseqInterval;
     ptrnSubseqInterval = _ptrnSubseqInterval;

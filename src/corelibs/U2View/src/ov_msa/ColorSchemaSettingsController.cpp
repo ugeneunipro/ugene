@@ -40,7 +40,7 @@
 
 namespace U2 {
 
-static void setSchemaColors(const ColorSchemeData &customSchema) {
+static void setSchemaColors(const ColorSchemeData& customSchema) {
     QString dirPath = ColorSchemeUtils::getColorsDir();
 
     QDir dir(dirPath);
@@ -48,11 +48,11 @@ static void setSchemaColors(const ColorSchemeData &customSchema) {
         dir.mkpath(".");
     }
 
-    IOAdapterFactory *factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+    IOAdapterFactory* factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
 
     QScopedPointer<IOAdapter> io(factory->createIOAdapter());
 
-    const QMap<char, QColor> &alphColors = customSchema.alpColors;
+    const QMap<char, QColor>& alphColors = customSchema.alpColors;
     bool defaultType = customSchema.defaultAlpType;
 
     QString keyword(customSchema.type == DNAAlphabet_AMINO ? ColorSchemeUtils::COLOR_SCHEME_AMINO_KEYWORD : (defaultType ? ColorSchemeUtils::COLOR_SCHEME_NUCL_DEFAULT_KEYWORD : ColorSchemeUtils::COLOR_SCHEME_NUCL_EXTENDED_KEYWORD));
@@ -80,35 +80,35 @@ static void setSchemaColors(const ColorSchemeData &customSchema) {
 
 const QString ColorSchemaSettingsPageController::helpPageId = QString("65929359");
 
-ColorSchemaSettingsPageController::ColorSchemaSettingsPageController(MsaColorSchemeRegistry *mcsr, QObject *p)
+ColorSchemaSettingsPageController::ColorSchemaSettingsPageController(MsaColorSchemeRegistry* mcsr, QObject* p)
     : AppSettingsGUIPageController(tr("Alignment Color Scheme"), ColorSchemaSettingsPageId, p) {
     connect(this, SIGNAL(si_customSettingsChanged()), mcsr, SLOT(sl_onCustomSettingsChanged()));
 }
 
-AppSettingsGUIPageState *ColorSchemaSettingsPageController::getSavedState() {
-    ColorSchemaSettingsPageState *state = new ColorSchemaSettingsPageState();
+AppSettingsGUIPageState* ColorSchemaSettingsPageController::getSavedState() {
+    ColorSchemaSettingsPageState* state = new ColorSchemaSettingsPageState();
     state->colorsDir = ColorSchemeUtils::getColorsDir();
     state->customSchemas = ColorSchemeUtils::getSchemas();
 
     return state;
 }
 
-void ColorSchemaSettingsPageController::saveState(AppSettingsGUIPageState *s) {
-    ColorSchemaSettingsPageState *state = qobject_cast<ColorSchemaSettingsPageState *>(s);
+void ColorSchemaSettingsPageController::saveState(AppSettingsGUIPageState* s) {
+    ColorSchemaSettingsPageState* state = qobject_cast<ColorSchemaSettingsPageState*>(s);
 
     ColorSchemeUtils::setColorsDir(state->colorsDir);
     QDir dir(ColorSchemeUtils::getColorsDir());
-    foreach (const ColorSchemeData &schema, state->removedCustomSchemas) {
+    foreach (const ColorSchemeData& schema, state->removedCustomSchemas) {
         dir.remove(schema.name + ColorSchemeUtils::COLOR_SCHEME_NAME_FILTERS);
     }
-    foreach (const ColorSchemeData &schema, state->customSchemas) {
+    foreach (const ColorSchemeData& schema, state->customSchemas) {
         setSchemaColors(schema);
     }
     emit si_customSettingsChanged();
 }
 
-AppSettingsGUIPageWidget *ColorSchemaSettingsPageController::createWidget(AppSettingsGUIPageState *state) {
-    ColorSchemaSettingsPageWidget *r = new ColorSchemaSettingsPageWidget(this);
+AppSettingsGUIPageWidget* ColorSchemaSettingsPageController::createWidget(AppSettingsGUIPageState* state) {
+    ColorSchemaSettingsPageWidget* r = new ColorSchemaSettingsPageWidget(this);
     r->setState(state);
     return r;
 }

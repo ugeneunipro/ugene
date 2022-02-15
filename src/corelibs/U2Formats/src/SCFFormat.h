@@ -36,21 +36,21 @@ class U2OpStatus;
 class U2FORMATS_EXPORT SCFFormat : public DocumentFormat {
     Q_OBJECT
 public:
-    SCFFormat(QObject *p);
+    SCFFormat(QObject* p);
 
-    virtual FormatCheckResult checkRawData(const QByteArray &rawData, const GUrl & = GUrl()) const;
+    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
-    static void exportDocumentToSCF(const QString &fileName, const DNAChromatogram &cd, const QByteArray &seq, U2OpStatus &ts);
+    static void exportDocumentToSCF(const QString& fileName, const DNAChromatogram& cd, const QByteArray& seq, U2OpStatus& ts);
 
 protected:
-    virtual Document *loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os);
+    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
-    virtual DNASequence *loadSequence(IOAdapter *io, U2OpStatus &ti);
+    virtual DNASequence* loadSequence(IOAdapter* io, U2OpStatus& ti);
 
 private:
-    Document *parseSCF(const U2DbiRef &dbiRef, IOAdapter *io, const QVariantMap &fs, U2OpStatus &os);
+    Document* parseSCF(const U2DbiRef& dbiRef, IOAdapter* io, const QVariantMap& fs, U2OpStatus& os);
 
-    bool loadSCFObjects(IOAdapter *io, DNASequence &dna, DNAChromatogram &cd, U2OpStatus &os);
+    bool loadSCFObjects(IOAdapter* io, DNASequence& dna, DNAChromatogram& cd, U2OpStatus& os);
 };
 
 }  // namespace U2

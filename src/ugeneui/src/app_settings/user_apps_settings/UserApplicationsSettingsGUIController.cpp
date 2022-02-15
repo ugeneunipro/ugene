@@ -35,7 +35,7 @@
 namespace U2 {
 #define TRANSMAP_FILE_NAME "translations.txt"
 
-UserApplicationsSettingsPageController::UserApplicationsSettingsPageController(QObject *p)
+UserApplicationsSettingsPageController::UserApplicationsSettingsPageController(QObject* p)
     : AppSettingsGUIPageController(tr("General"), APP_SETTINGS_USER_APPS, p) {
     translations.insert(tr("Autodetection"), "");
     QFile file(QString(PATH_PREFIX_DATA) + ":" + TRANSMAP_FILE_NAME);
@@ -63,9 +63,9 @@ UserApplicationsSettingsPageController::UserApplicationsSettingsPageController(Q
     file.close();
 }
 
-AppSettingsGUIPageState *UserApplicationsSettingsPageController::getSavedState() {
-    UserApplicationsSettingsPageState *state = new UserApplicationsSettingsPageState();
-    UserAppsSettings *s = AppContext::getAppSettings()->getUserAppsSettings();
+AppSettingsGUIPageState* UserApplicationsSettingsPageController::getSavedState() {
+    UserApplicationsSettingsPageState* state = new UserApplicationsSettingsPageState();
+    UserAppsSettings* s = AppContext::getAppSettings()->getUserAppsSettings();
     state->translFile = s->getTranslationFile();
     state->openLastProjectFlag = s->openLastProjectAtStartup();
     state->askToSaveProject = s->getAskToSaveProject();
@@ -77,9 +77,9 @@ AppSettingsGUIPageState *UserApplicationsSettingsPageController::getSavedState()
     return state;
 }
 
-void UserApplicationsSettingsPageController::saveState(AppSettingsGUIPageState *s) {
-    UserApplicationsSettingsPageState *state = qobject_cast<UserApplicationsSettingsPageState *>(s);
-    UserAppsSettings *st = AppContext::getAppSettings()->getUserAppsSettings();
+void UserApplicationsSettingsPageController::saveState(AppSettingsGUIPageState* s) {
+    UserApplicationsSettingsPageState* state = qobject_cast<UserApplicationsSettingsPageState*>(s);
+    UserAppsSettings* st = AppContext::getAppSettings()->getUserAppsSettings();
     st->setTranslationFile(state->translFile);
     st->setOpenLastProjectAtStartup(state->openLastProjectFlag);
     st->setAskToSaveProject(state->askToSaveProject);
@@ -89,14 +89,14 @@ void UserApplicationsSettingsPageController::saveState(AppSettingsGUIPageState *
     st->setUpdatesEnabled(state->updatesEnabled);
 
     if (0 != state->style.compare(st->getVisualStyle(), Qt::CaseInsensitive)) {
-        QStyle *style = QStyleFactory::create(state->style);
+        QStyle* style = QStyleFactory::create(state->style);
         QApplication::setStyle(style);
         st->setVisualStyle(state->style);
     }
 }
 
-AppSettingsGUIPageWidget *UserApplicationsSettingsPageController::createWidget(AppSettingsGUIPageState *state) {
-    UserApplicationsSettingsPageWidget *r = new UserApplicationsSettingsPageWidget(this);
+AppSettingsGUIPageWidget* UserApplicationsSettingsPageController::createWidget(AppSettingsGUIPageState* state) {
+    UserApplicationsSettingsPageWidget* r = new UserApplicationsSettingsPageWidget(this);
     r->setState(state);
     return r;
 }
@@ -105,7 +105,7 @@ const QString UserApplicationsSettingsPageController::helpPageId = QString("6592
 const QMap<QString, QString> UserApplicationsSettingsPageWidget::FIXED_CASE_QSTYLE_KEY_MAP =
     {{"windowsvista", "WindowsVista"}, {"macintosh", "Macintosh"}};
 
-UserApplicationsSettingsPageWidget::UserApplicationsSettingsPageWidget(UserApplicationsSettingsPageController *ctrl) {
+UserApplicationsSettingsPageWidget::UserApplicationsSettingsPageWidget(UserApplicationsSettingsPageController* ctrl) {
     setupUi(this);
     connect(langButton, SIGNAL(clicked()), SLOT(sl_transFileClicked()));
     QMapIterator<QString, QString> it(ctrl->translations);
@@ -114,13 +114,13 @@ UserApplicationsSettingsPageWidget::UserApplicationsSettingsPageWidget(UserAppli
         langCombo->addItem(it.key(), it.value());
     }
     auto keys = QStyleFactory::keys();
-    for (const auto &key : qAsConst(keys)) {
+    for (const auto& key : qAsConst(keys)) {
         styleCombo->addItem(FIXED_CASE_QSTYLE_KEY_MAP.value(key, key));
     }
 }
 
-void UserApplicationsSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
-    UserApplicationsSettingsPageState *state = qobject_cast<UserApplicationsSettingsPageState *>(s);
+void UserApplicationsSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
+    UserApplicationsSettingsPageState* state = qobject_cast<UserApplicationsSettingsPageState*>(s);
     enableStatisticsEdit->setChecked(state->enableStatistics);
 
     int idx = langCombo->findData(state->translFile);
@@ -145,8 +145,8 @@ void UserApplicationsSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
     updatesCheckBox->setChecked(state->updatesEnabled);
 }
 
-AppSettingsGUIPageState *UserApplicationsSettingsPageWidget::getState(QString & /*err*/) const {
-    UserApplicationsSettingsPageState *state = new UserApplicationsSettingsPageState();
+AppSettingsGUIPageState* UserApplicationsSettingsPageWidget::getState(QString& /*err*/) const {
+    UserApplicationsSettingsPageState* state = new UserApplicationsSettingsPageState();
     state->translFile = langCombo->itemData(langCombo->currentIndex()).toString();
     state->openLastProjectFlag = autoOpenProjectBox->isChecked();
     state->askToSaveProject = askToSaveProject->itemData(askToSaveProject->currentIndex()).toInt();

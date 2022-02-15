@@ -30,26 +30,26 @@ static AppContextImpl appContext;
 
 AppContextImpl::~AppContextImpl() {
     for (int i = appGlobalObjects.size(); --i >= 0;) {  // remove objects in reverse mode, so the last added deleted first
-        AppGlobalObject *obj = appGlobalObjects[i];
+        AppGlobalObject* obj = appGlobalObjects[i];
         delete obj;
     }
     delete appFileStorage;
 }
 
-AppContextImpl *AppContextImpl::getApplicationContext() {
+AppContextImpl* AppContextImpl::getApplicationContext() {
     return &appContext;
 }
 
-void AppContextImpl::_registerGlobalObject(AppGlobalObject *go) {
-    const QString &id = go->getId();
+void AppContextImpl::_registerGlobalObject(AppGlobalObject* go) {
+    const QString& id = go->getId();
     assert(_getGlobalObjectById(id) == nullptr);
     Q_UNUSED(id);
     appGlobalObjects.append(go);
 }
 
-void AppContextImpl::_unregisterGlobalObject(const QString &id) {
+void AppContextImpl::_unregisterGlobalObject(const QString& id) {
     for (int i = 0, n = appGlobalObjects.size(); i < n; i++) {
-        AppGlobalObject *obj = appGlobalObjects.at(i);
+        AppGlobalObject* obj = appGlobalObjects.at(i);
         if (obj->getId() == id) {
             appGlobalObjects.removeAt(i);
             break;
@@ -57,8 +57,8 @@ void AppContextImpl::_unregisterGlobalObject(const QString &id) {
     }
 }
 
-AppGlobalObject *AppContextImpl::_getGlobalObjectById(const QString &id) const {
-    foreach (AppGlobalObject *obj, appGlobalObjects) {
+AppGlobalObject* AppContextImpl::_getGlobalObjectById(const QString& id) const {
+    foreach (AppGlobalObject* obj, appGlobalObjects) {
         if (obj->getId() == id) {
             return obj;
         }

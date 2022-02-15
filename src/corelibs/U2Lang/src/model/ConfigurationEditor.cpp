@@ -27,9 +27,9 @@
 
 namespace U2 {
 
-PropertyWidget::PropertyWidget(QWidget *parent, DelegateTags *_tags)
+PropertyWidget::PropertyWidget(QWidget* parent, DelegateTags* _tags)
     : QWidget(parent), _tags(_tags), schemaConfig(nullptr) {
-    QHBoxLayout *l = new QHBoxLayout();
+    QHBoxLayout* l = new QHBoxLayout();
     l->setContentsMargins(0, 0, 0, 0);
     l->setSpacing(0);
     this->setLayout(l);
@@ -38,14 +38,14 @@ PropertyWidget::PropertyWidget(QWidget *parent, DelegateTags *_tags)
 PropertyWidget::~PropertyWidget() {
 }
 
-void PropertyWidget::addMainWidget(QWidget *w) {
+void PropertyWidget::addMainWidget(QWidget* w) {
     w->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     layout()->addWidget(w);
     setFocusProxy(w);
     w->setObjectName("mainWidget");
 }
 
-QWidget *PropertyWidget::getField() {
+QWidget* PropertyWidget::getField() {
     return nullptr;
 }
 
@@ -55,20 +55,20 @@ void PropertyWidget::setRequired() {
 void PropertyWidget::activate() {
 }
 
-const DelegateTags *PropertyWidget::tags() const {
+const DelegateTags* PropertyWidget::tags() const {
     return _tags;
 }
 
-void PropertyWidget::setDelegateTags(const DelegateTags *value) {
+void PropertyWidget::setDelegateTags(const DelegateTags* value) {
     _tags = value;
     processDelegateTags();
 }
 
-void PropertyWidget::setSchemaConfig(SchemaConfig *value) {
+void PropertyWidget::setSchemaConfig(SchemaConfig* value) {
     schemaConfig = value;
 }
 
-PropertyDelegate::PropertyDelegate(QObject *parent)
+PropertyDelegate::PropertyDelegate(QObject* parent)
     : QItemDelegate(parent), schemaConfig(nullptr) {
     _tags = new DelegateTags();
     _tags->setParent(this);
@@ -77,15 +77,15 @@ PropertyDelegate::PropertyDelegate(QObject *parent)
 PropertyDelegate::~PropertyDelegate() {
 }
 
-QVariant PropertyDelegate::getDisplayValue(const QVariant &v) const {
+QVariant PropertyDelegate::getDisplayValue(const QVariant& v) const {
     return v;
 }
 
-PropertyDelegate *PropertyDelegate::clone() {
+PropertyDelegate* PropertyDelegate::clone() {
     return new PropertyDelegate(parent());
 }
 
-PropertyWidget *PropertyDelegate::createWizardWidget(U2OpStatus &os, QWidget * /*parent*/) const {
+PropertyWidget* PropertyDelegate::createWizardWidget(U2OpStatus& os, QWidget* /*parent*/) const {
     os.setError("Unsupported operation");
     return nullptr;
 }
@@ -94,11 +94,11 @@ PropertyDelegate::Type PropertyDelegate::type() const {
     return NO_TYPE;
 }
 
-DelegateTags *PropertyDelegate::tags() const {
+DelegateTags* PropertyDelegate::tags() const {
     return _tags;
 }
 
-void PropertyDelegate::setSchemaConfig(SchemaConfig *value) {
+void PropertyDelegate::setSchemaConfig(SchemaConfig* value) {
     schemaConfig = value;
 }
 
@@ -106,11 +106,11 @@ const QString DelegateTags::PLACEHOLDER_TEXT = "placeholder_text";
 const QString DelegateTags::FILTER = "filter";
 const QString DelegateTags::FORMAT = "format";
 
-DelegateTags::DelegateTags(QObject *parent)
+DelegateTags::DelegateTags(QObject* parent)
     : QObject(parent) {
 }
 
-DelegateTags::DelegateTags(const DelegateTags &other)
+DelegateTags::DelegateTags(const DelegateTags& other)
     : QObject(nullptr) {
     tags = other.tags;
 }
@@ -119,29 +119,29 @@ QStringList DelegateTags::names() const {
     return tags.keys();
 }
 
-QVariant DelegateTags::get(const QString &name) const {
+QVariant DelegateTags::get(const QString& name) const {
     return tags.value(name);
 }
 
-void DelegateTags::set(const QString &name, const QVariant &value) {
+void DelegateTags::set(const QString& name, const QVariant& value) {
     tags[name] = value;
 }
 
-void DelegateTags::set(const DelegateTags &other) {
+void DelegateTags::set(const DelegateTags& other) {
     tags = other.tags;
 }
 
-QString DelegateTags::getString(const DelegateTags *tags, const QString &name) {
+QString DelegateTags::getString(const DelegateTags* tags, const QString& name) {
     CHECK(nullptr != tags, "");
     return tags->get(name).toString();
 }
 
-QStringList DelegateTags::getStringList(const DelegateTags *tags, const QString &name) {
+QStringList DelegateTags::getStringList(const DelegateTags* tags, const QString& name) {
     CHECK(nullptr != tags, QStringList());
     return tags->get(name).toStringList();
 }
 
-DelegateTags &DelegateTags::operator=(const DelegateTags &other) {
+DelegateTags& DelegateTags::operator=(const DelegateTags& other) {
     tags = other.tags;
     return *this;
 }

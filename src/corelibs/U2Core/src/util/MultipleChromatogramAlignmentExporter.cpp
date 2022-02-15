@@ -36,7 +36,7 @@
 
 namespace U2 {
 
-MultipleChromatogramAlignment MultipleChromatogramAlignmentExporter::getAlignment(U2OpStatus &os, const U2DbiRef &dbiRef, const U2DataId &mcaId) const {
+MultipleChromatogramAlignment MultipleChromatogramAlignmentExporter::getAlignment(U2OpStatus& os, const U2DbiRef& dbiRef, const U2DataId& mcaId) const {
     SAFE_POINT_EXT(!connection.isOpen(), os.setError("Connection is already opened"), MultipleChromatogramAlignment());
     connection.open(dbiRef, false, os);
     CHECK_OP(os, MultipleChromatogramAlignment());
@@ -65,7 +65,7 @@ MultipleChromatogramAlignment MultipleChromatogramAlignmentExporter::getAlignmen
     U2Msa dbMca = exportAlignmentObject(os, mcaId);
     CHECK_OP(os, MultipleChromatogramAlignment());
 
-    const DNAAlphabet *alphabet = U2AlphabetUtils::getById(dbMca.alphabet);
+    const DNAAlphabet* alphabet = U2AlphabetUtils::getById(dbMca.alphabet);
     SAFE_POINT_EXT(nullptr != alphabet, os.setError(QString("Alphabet with ID '%1' not found").arg(dbMca.alphabet.id)), MultipleChromatogramAlignment());
     mca->setAlphabet(alphabet);
     mca->setName(dbMca.visualName);
@@ -74,7 +74,7 @@ MultipleChromatogramAlignment MultipleChromatogramAlignmentExporter::getAlignmen
     return mca;
 }
 
-QMap<qint64, McaRowMemoryData> MultipleChromatogramAlignmentExporter::getMcaRowMemoryData(U2OpStatus &os, const U2DbiRef &dbiRef, const U2DataId &mcaId, const QList<qint64> rowIds) const {
+QMap<qint64, McaRowMemoryData> MultipleChromatogramAlignmentExporter::getMcaRowMemoryData(U2OpStatus& os, const U2DbiRef& dbiRef, const U2DataId& mcaId, const QList<qint64> rowIds) const {
     QMap<qint64, McaRowMemoryData> result;
     SAFE_POINT_EXT(!connection.isOpen(), os.setError("Connection is already opened"), result);
     connection.open(dbiRef, false, os);
@@ -94,11 +94,11 @@ QMap<qint64, McaRowMemoryData> MultipleChromatogramAlignmentExporter::getMcaRowM
     return result;
 }
 
-QList<U2McaRow> MultipleChromatogramAlignmentExporter::exportRows(U2OpStatus &os, const U2DbiRef &dbiRef, const U2DataId &mcaId) const {
+QList<U2McaRow> MultipleChromatogramAlignmentExporter::exportRows(U2OpStatus& os, const U2DbiRef& dbiRef, const U2DataId& mcaId) const {
     return McaDbiUtils::getMcaRows(os, U2EntityRef(dbiRef, mcaId));
 }
 
-QList<U2McaRow> MultipleChromatogramAlignmentExporter::exportRows(U2OpStatus &os, const U2DbiRef &dbiRef, const U2DataId &mcaId, const QList<qint64> rowIds) const {
+QList<U2McaRow> MultipleChromatogramAlignmentExporter::exportRows(U2OpStatus& os, const U2DbiRef& dbiRef, const U2DataId& mcaId, const QList<qint64> rowIds) const {
     QList<U2McaRow> result;
     foreach (qint64 rowId, rowIds) {
         result << McaDbiUtils::getMcaRow(os, U2EntityRef(dbiRef, mcaId), rowId);
@@ -107,11 +107,11 @@ QList<U2McaRow> MultipleChromatogramAlignmentExporter::exportRows(U2OpStatus &os
     return result;
 }
 
-QList<McaRowMemoryData> MultipleChromatogramAlignmentExporter::exportDataOfRows(U2OpStatus &os, const QList<U2McaRow> &rows) const {
+QList<McaRowMemoryData> MultipleChromatogramAlignmentExporter::exportDataOfRows(U2OpStatus& os, const QList<U2McaRow>& rows) const {
     QList<McaRowMemoryData> mcaRowsMemoryData;
     mcaRowsMemoryData.reserve(rows.count());
 
-    foreach (const U2McaRow &row, rows) {
+    foreach (const U2McaRow& row, rows) {
         McaRowMemoryData mcaRowMemoryData;
         mcaRowMemoryData.chromatogram = ChromatogramUtils::exportChromatogram(os, U2EntityRef(connection.dbi->getDbiRef(), row.chromatogramId));
         CHECK_OP(os, QList<McaRowMemoryData>());
@@ -130,8 +130,8 @@ QList<McaRowMemoryData> MultipleChromatogramAlignmentExporter::exportDataOfRows(
     return mcaRowsMemoryData;
 }
 
-DNASequence MultipleChromatogramAlignmentExporter::exportSequence(U2OpStatus &os, const U2DataId &sequenceId) const {
-    U2SequenceDbi *sequenceDbi = connection.dbi->getSequenceDbi();
+DNASequence MultipleChromatogramAlignmentExporter::exportSequence(U2OpStatus& os, const U2DataId& sequenceId) const {
+    U2SequenceDbi* sequenceDbi = connection.dbi->getSequenceDbi();
     SAFE_POINT_EXT(nullptr != sequenceDbi, os.setError("NULL Sequence Dbi during exporting rows sequences"), DNASequence());
 
     U2Sequence dbSequence = sequenceDbi->getSequenceObject(sequenceId, os);
@@ -141,8 +141,8 @@ DNASequence MultipleChromatogramAlignmentExporter::exportSequence(U2OpStatus &os
     return sequenceObject->getSequence(U2_REGION_MAX, os);
 }
 
-QVariantMap MultipleChromatogramAlignmentExporter::exportRowAdditionalInfo(U2OpStatus &os, const U2DataId &chromatogramId) const {
-    U2AttributeDbi *attributeDbi = connection.dbi->getAttributeDbi();
+QVariantMap MultipleChromatogramAlignmentExporter::exportRowAdditionalInfo(U2OpStatus& os, const U2DataId& chromatogramId) const {
+    U2AttributeDbi* attributeDbi = connection.dbi->getAttributeDbi();
     SAFE_POINT_EXT(nullptr != attributeDbi, os.setError("NULL Attribute Dbi during exporting an alignment info"), QVariantMap());
 
     QVariantMap additionalInfo;
@@ -163,17 +163,17 @@ QVariantMap MultipleChromatogramAlignmentExporter::exportRowAdditionalInfo(U2OpS
     return additionalInfo;
 }
 
-QVariantMap MultipleChromatogramAlignmentExporter::exportAlignmentInfo(U2OpStatus &os, const U2DataId &mcaId) const {
-    U2AttributeDbi *attributeDbi = connection.dbi->getAttributeDbi();
+QVariantMap MultipleChromatogramAlignmentExporter::exportAlignmentInfo(U2OpStatus& os, const U2DataId& mcaId) const {
+    U2AttributeDbi* attributeDbi = connection.dbi->getAttributeDbi();
     SAFE_POINT_EXT(nullptr != attributeDbi, os.setError("NULL Attribute Dbi during exporting an alignment info"), QVariantMap());
-    U2Dbi *dbi = attributeDbi->getRootDbi();
+    U2Dbi* dbi = attributeDbi->getRootDbi();
     SAFE_POINT_EXT(nullptr != dbi, os.setError("NULL root Dbi during exporting an alignment info"), QVariantMap());
 
     QVariantMap info;
     QList<U2DataId> attributeIds = attributeDbi->getObjectAttributes(mcaId, "", os);
     CHECK_OP(os, QVariantMap());
 
-    foreach (const U2DataId &attributeId, attributeIds) {
+    foreach (const U2DataId& attributeId, attributeIds) {
         if (dbi->getEntityTypeById(attributeId) != U2Type::AttributeString) {
             continue;
         }
@@ -185,8 +185,8 @@ QVariantMap MultipleChromatogramAlignmentExporter::exportAlignmentInfo(U2OpStatu
     return info;
 }
 
-U2Mca MultipleChromatogramAlignmentExporter::exportAlignmentObject(U2OpStatus &os, const U2DataId &mcaId) const {
-    U2MsaDbi *msaDbi = connection.dbi->getMsaDbi();
+U2Mca MultipleChromatogramAlignmentExporter::exportAlignmentObject(U2OpStatus& os, const U2DataId& mcaId) const {
+    U2MsaDbi* msaDbi = connection.dbi->getMsaDbi();
     SAFE_POINT_EXT(nullptr != msaDbi, os.setError("NULL MSA Dbi during exporting an alignment object"), U2Msa());
     U2Msa dbMsa = msaDbi->getMsaObject(mcaId, os);
     return U2Mca(dbMsa);

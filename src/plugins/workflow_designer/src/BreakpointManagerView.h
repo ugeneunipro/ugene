@@ -44,81 +44,81 @@ class WorkflowDebugStatus;
 class BreakpointManagerView : public QWidget {
     Q_OBJECT
 public:
-    BreakpointManagerView(WorkflowDebugStatus *initDebugInfo, const QSharedPointer<Schema> &initScheme, QGraphicsScene *scene, QWidget *parent = nullptr);
+    BreakpointManagerView(WorkflowDebugStatus* initDebugInfo, const QSharedPointer<Schema>& initScheme, QGraphicsScene* scene, QWidget* parent = nullptr);
 
     void onBreakpointReached(ActorId actor);
 
-    QAction *getNewBreakpointAction() {
+    QAction* getNewBreakpointAction() {
         return newBreakpointAction;
     }
 
-    bool eventFilter(QObject *object, QEvent *event);
+    bool eventFilter(QObject* object, QEvent* event);
     void clear();
 
 signals:
-    void si_highlightingRequested(const ActorId &actor);
+    void si_highlightingRequested(const ActorId& actor);
 
 protected:
-    virtual void paintEvent(QPaintEvent *event);
+    virtual void paintEvent(QPaintEvent* event);
 
 public slots:
-    void sl_breakpointRemoved(const ActorId &actorId);
+    void sl_breakpointRemoved(const ActorId& actorId);
     void sl_deleteAllBreakpoints();
 
 private slots:
-    void sl_breakpointAdded(const ActorId &actorId);
+    void sl_breakpointAdded(const ActorId& actorId);
     void sl_newBreakpoint();
     void sl_deleteSelectedBreakpoint();
     void sl_disableAllBreakpoints();
     void sl_breakpointsSelectionChanged();
     void sl_breakpointStateChanged(int state);
     void sl_highlightItem();
-    void sl_breakpointDoubleClicked(QTreeWidgetItem *item, int column);
+    void sl_breakpointDoubleClicked(QTreeWidgetItem* item, int column);
     void sl_labelsCreated(QStringList newLabels);
     void sl_labelAddedToCurrentBreakpoint(QStringList newLabels);
     void sl_resetHitCount();
-    void sl_hitCounterAssigned(const QString &hitCounterCondition, quint32 parameter);
-    void sl_breakpointEnabled(const ActorId &actor);
-    void sl_breakpointDisabled(const ActorId &actor);
-    void sl_addBreakpoint(const QString &elementName);
-    void sl_contextMenuForBreakpointListRequested(const QPoint &pos);
+    void sl_hitCounterAssigned(const QString& hitCounterCondition, quint32 parameter);
+    void sl_breakpointEnabled(const ActorId& actor);
+    void sl_breakpointDisabled(const ActorId& actor);
+    void sl_addBreakpoint(const QString& elementName);
+    void sl_contextMenuForBreakpointListRequested(const QPoint& pos);
     void sl_hitCount();
     void sl_editLabels();
     void sl_setCondition();
-    void sl_conditionTextChanged(const QString &text);
+    void sl_conditionTextChanged(const QString& text);
     void sl_conditionSwitched(bool enabled);
     void sl_conditionParameterChanged(HitCondition newParameter);
     void sl_pauseStateChanged(bool paused);
 
 private:
     void createActions();
-    QToolBar *initToolBar();
+    QToolBar* initToolBar();
     void initBreakpointsList();
-    void removeBreakpointFromList(QTreeWidgetItem *item);
-    void removeBreakpointsFromList(QList<QTreeWidgetItem *> items);
+    void removeBreakpointFromList(QTreeWidgetItem* item);
+    void removeBreakpointsFromList(QList<QTreeWidgetItem*> items);
     void disableGenericActionsIfNoItemsExist();
-    QWidget *getBreakpointStateController(const ActorId &actor);
+    QWidget* getBreakpointStateController(const ActorId& actor);
     void updateCurrentHitCountLabels(bool show) const;
-    void setBreakpointBackgroundColor(QTreeWidgetItem *breakpoint, const QColor &newBackground);
+    void setBreakpointBackgroundColor(QTreeWidgetItem* breakpoint, const QColor& newBackground);
 
-    WorkflowDebugStatus *debugInfo;
-    QGraphicsScene *scene;
+    WorkflowDebugStatus* debugInfo;
+    QGraphicsScene* scene;
     const QSharedPointer<Schema> scheme;
 
-    QTreeWidget *breakpointsList;
-    QMap<QTreeWidgetItem *, ActorId> actorConnections;
-    QMap<QWidget *, QTreeWidgetItem *> breakpointStateControls;
+    QTreeWidget* breakpointsList;
+    QMap<QTreeWidgetItem*, ActorId> actorConnections;
+    QMap<QWidget*, QTreeWidgetItem*> breakpointStateControls;
     QStringList allExistingLabels;
-    QTreeWidgetItem *lastReachedBreakpoint;
+    QTreeWidgetItem* lastReachedBreakpoint;
 
-    QAction *newBreakpointAction;
-    QAction *deleteSelectedBreakpointAction;
-    QAction *deleteAllBreakpointsAction;
-    QAction *disableAllBreakpointsAction;
-    QAction *highlightItemWithBreakpoint;
-    QAction *hitCountAction;
-    QAction *editLabelsAction;
-    QAction *setConditionAction;
+    QAction* newBreakpointAction;
+    QAction* deleteSelectedBreakpointAction;
+    QAction* deleteAllBreakpointsAction;
+    QAction* disableAllBreakpointsAction;
+    QAction* highlightItemWithBreakpoint;
+    QAction* hitCountAction;
+    QAction* editLabelsAction;
+    QAction* setConditionAction;
 
     static QMap<BreakpointConditionParameter, HitCondition> conditionParametertranslations;
 };

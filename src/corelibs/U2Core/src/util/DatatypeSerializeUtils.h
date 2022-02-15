@@ -47,12 +47,12 @@ public:
     /**
      * Returns the binary representation of @chroma.
      */
-    static QByteArray serialize(const DNAChromatogram &chroma);
+    static QByteArray serialize(const DNAChromatogram& chroma);
 
     /**
      * Returns DNAChromatogram extracted from @binary.
      */
-    static DNAChromatogram deserialize(const QByteArray &binary, U2OpStatus &os);
+    static DNAChromatogram deserialize(const QByteArray& binary, U2OpStatus& os);
 };
 
 /**
@@ -66,13 +66,13 @@ public:
     static const QString ID;
 
     /** Returns serialized (textual) representation of the tree. */
-    static QString serialize(const PhyTree &tree, U2OpStatus &os);
+    static QString serialize(const PhyTree& tree, U2OpStatus& os);
 
     /** Returns PhyTree extracted from form serial representation. */
-    static PhyTree deserialize(const QString &text, U2OpStatus &os);
+    static PhyTree deserialize(const QString& text, U2OpStatus& os);
 
     /** Returns the list of trees parsed from reader stream. */
-    static QList<PhyTree> parseTrees(IOAdapterReader &reader, U2OpStatus &os);
+    static QList<PhyTree> parseTrees(IOAdapterReader& reader, U2OpStatus& os);
 };
 
 /**
@@ -89,12 +89,12 @@ public:
     /**
      * Returns the binary representation of @bioStruct.
      */
-    static QByteArray serialize(const BioStruct3D &bioStruct);
+    static QByteArray serialize(const BioStruct3D& bioStruct);
 
     /**
      * Returns BioStruct3D extracted from @binary.
      */
-    static BioStruct3D deserialize(const QByteArray &binary, U2OpStatus &os);
+    static BioStruct3D deserialize(const QByteArray& binary, U2OpStatus& os);
 };
 
 /**
@@ -111,12 +111,12 @@ public:
     /**
      * Returns the binary representation of @matrix.
      */
-    static QByteArray serialize(const PWMatrix &matrix);
+    static QByteArray serialize(const PWMatrix& matrix);
 
     /**
      * Returns PWMatrix extracted from @binary.
      */
-    static PWMatrix deserialize(const QByteArray &binary, U2OpStatus &os);
+    static PWMatrix deserialize(const QByteArray& binary, U2OpStatus& os);
 };
 
 /**
@@ -133,12 +133,12 @@ public:
     /**
      * Returns the binary representation of @matrix.
      */
-    static QByteArray serialize(const PFMatrix &matrix);
+    static QByteArray serialize(const PFMatrix& matrix);
 
     /**
      * Returns PFMatrix extracted from @binary.
      */
-    static PFMatrix deserialize(const QByteArray &binary, U2OpStatus &os);
+    static PFMatrix deserialize(const QByteArray& binary, U2OpStatus& os);
 };
 
 class DatatypeSerializers : public QObject {

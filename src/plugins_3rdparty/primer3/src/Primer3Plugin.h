@@ -41,24 +41,24 @@ public:
     ~Primer3Plugin();
 
 private:
-    Primer3ADVContext *viewCtx;
+    Primer3ADVContext* viewCtx;
 };
 
 class Primer3ADVContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    Primer3ADVContext(QObject *p);
+    Primer3ADVContext(QObject* p);
 protected slots:
     void sl_showDialog();
 
 protected:
-    void initViewContext(GObjectView *v) override;
+    void initViewContext(GObjectView* v) override;
     // virtual void makeBaseMenu(GObjectView* v, QMenu* m);
 };
 
 class Primer3Tests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

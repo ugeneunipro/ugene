@@ -30,8 +30,8 @@ namespace U2 {
 
 class SmithWatermanTaskFactory {  // for ADV search only
 public:
-    virtual Task *getTaskInstance(const SmithWatermanSettings &config,
-                                  const QString &taskName) const = 0;
+    virtual Task* getTaskInstance(const SmithWatermanSettings& config,
+                                  const QString& taskName) const = 0;
     virtual bool hasAdvancedSettings() const {
         return false;
     }

@@ -43,18 +43,18 @@ static QString nameByType() {
     return EntropyGraphFactory::tr("Informational Entropy");
 }
 
-EntropyGraphFactory::EntropyGraphFactory(QObject *p)
+EntropyGraphFactory::EntropyGraphFactory(QObject* p)
     : GSequenceGraphFactory(nameByType(), p) {
 }
 
 #define MAX_CHARS_IN_ALPHABET 7
 
-bool EntropyGraphFactory::isEnabled(const U2SequenceObject *o) const {
-    const DNAAlphabet *al = o->getAlphabet();
+bool EntropyGraphFactory::isEnabled(const U2SequenceObject* o) const {
+    const DNAAlphabet* al = o->getAlphabet();
     return al->isNucleic() && al->getAlphabetChars().size() <= MAX_CHARS_IN_ALPHABET;
 }
 
-QList<QSharedPointer<GSequenceGraphData>> EntropyGraphFactory::createGraphs(GSequenceGraphView *view) {
+QList<QSharedPointer<GSequenceGraphData>> EntropyGraphFactory::createGraphs(GSequenceGraphView* view) {
     assert(isEnabled(view->getSequenceObject()));
     return {QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(view, graphName, new EntropyGraphAlgorithm()))};
 }
@@ -62,28 +62,28 @@ QList<QSharedPointer<GSequenceGraphData>> EntropyGraphFactory::createGraphs(GSeq
 //////////////////////////////////////////////////////////////////////////
 // EntropyGraphAlgorithm
 
-void EntropyGraphAlgorithm::calculate(QVector<float> &result, U2SequenceObject *sequenceObject, qint64 window, qint64 step, U2OpStatus &os) {
+void EntropyGraphAlgorithm::calculate(QVector<float>& result, U2SequenceObject* sequenceObject, qint64 window, qint64 step, U2OpStatus& os) {
     U2Region vr(0, sequenceObject->getSequenceLength());
     int nSteps = GSequenceGraphUtils::getNumSteps(vr, window, step);
     result.reserve(nSteps);
 
     QByteArray seq = sequenceObject->getWholeSequenceData(os);
     CHECK_OP(os, );
-    const DNAAlphabet *al = sequenceObject->getAlphabet();
+    const DNAAlphabet* al = sequenceObject->getAlphabet();
 
     // prepare index -> TODO: make it once and cache!
     IndexedMapping3To1<int> index(al->getAlphabetChars(), 0);
-    int *mapData = index.mapData();
+    int* mapData = index.mapData();
     int indexSize = index.getMapSize();
 
     // algorithm
     float log10_2 = log10(2.0);
-    const char *seqStr = seq.constData();
+    const char* seqStr = seq.constData();
     for (int i = 0; i < nSteps; i++) {
         int start = vr.startPos + i * step;
         int end = start + window;
         for (int x = start; x < end - 2; x++) {
-            int &val = index.mapNC(seqStr + x);
+            int& val = index.mapNC(seqStr + x);
             val++;
         }
         // derive entropy from triplets and zero them

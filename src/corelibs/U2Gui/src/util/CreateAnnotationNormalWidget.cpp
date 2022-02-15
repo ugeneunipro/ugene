@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-CreateAnnotationNormalWidget::CreateAnnotationNormalWidget(QWidget *parent)
+CreateAnnotationNormalWidget::CreateAnnotationNormalWidget(QWidget* parent)
     : CreateAnnotationWidget(parent) {
     setupUi(this);
     initLayout();
@@ -113,11 +113,11 @@ void CreateAnnotationNormalWidget::focusLocation() {
     leLocation->setFocus();
 }
 
-void CreateAnnotationNormalWidget::setNewTablePath(const QString &path) {
+void CreateAnnotationNormalWidget::setNewTablePath(const QString& path) {
     leNewTablePath->setText(path);
 }
 
-void CreateAnnotationNormalWidget::setGroupName(const QString &name) {
+void CreateAnnotationNormalWidget::setGroupName(const QString& name) {
     leGroupName->setText(name);
 }
 
@@ -130,15 +130,15 @@ void CreateAnnotationNormalWidget::setAnnotationType(U2FeatureType type) {
     cbAnnotationType->setCurrentIndex(index);
 }
 
-void CreateAnnotationNormalWidget::setAnnotationName(const QString &name) {
+void CreateAnnotationNormalWidget::setAnnotationName(const QString& name) {
     leAnnotationName->setText(name);
 }
 
-void CreateAnnotationNormalWidget::setLocation(const U2Location &location) {
+void CreateAnnotationNormalWidget::setLocation(const U2Location& location) {
     leLocation->setText(getGenbankLocationString(location));
 }
 
-void CreateAnnotationNormalWidget::setDescription(const QString &description) {
+void CreateAnnotationNormalWidget::setDescription(const QString& description) {
     leDescription->setText(description);
 }
 
@@ -197,12 +197,12 @@ bool CreateAnnotationNormalWidget::isAutoTableOptionSelected() const {
     return rbUseAutoTable->isChecked();
 }
 
-void CreateAnnotationNormalWidget::showSelectGroupMenu(QMenu &menu) {
+void CreateAnnotationNormalWidget::showSelectGroupMenu(QMenu& menu) {
     const QPoint menuPos = tbSelectGroupName->mapToGlobal(tbSelectGroupName->rect().bottomLeft());
     menu.exec(menuPos);
 }
 
-GObjectComboBoxController *CreateAnnotationNormalWidget::createGObjectComboBoxController(const GObjectComboBoxControllerConstraints &constraints) {
+GObjectComboBoxController* CreateAnnotationNormalWidget::createGObjectComboBoxController(const GObjectComboBoxControllerConstraints& constraints) {
     return new GObjectComboBoxController(this, constraints, cbExistingTable);
 }
 
@@ -212,13 +212,13 @@ void CreateAnnotationNormalWidget::countDescriptionUsage() const {
     }
 }
 
-void CreateAnnotationNormalWidget::fillSaveDocumentControllerConfig(SaveDocumentControllerConfig &config) const {
+void CreateAnnotationNormalWidget::fillSaveDocumentControllerConfig(SaveDocumentControllerConfig& config) const {
     config.fileNameEdit = leNewTablePath;
     config.fileDialogButton = tbBrowseNewTable;
 }
 
 void CreateAnnotationNormalWidget::initLayout() {
-    ShowHideSubgroupWidget *saveShowHideWidget = new ShowHideSubgroupWidget("save_params", tr("Save annotation(s) to"), saveAnnotationsInnerWidget, true);
+    ShowHideSubgroupWidget* saveShowHideWidget = new ShowHideSubgroupWidget("save_params", tr("Save annotation(s) to"), saveAnnotationsInnerWidget, true);
     saveShowHideWidget->setPermanentlyOpen(true);
     mainLayout->insertWidget(0, saveShowHideWidget);
 
@@ -235,10 +235,10 @@ void CreateAnnotationNormalWidget::connectSignals() {
     connect(tbBrowseExistingTable, SIGNAL(clicked()), SIGNAL(si_selectExistingTableRequest()));
     connect(tbSelectGroupName, SIGNAL(clicked()), SIGNAL(si_selectGroupNameMenuRequest()));
     connect(tbDoComplement, SIGNAL(clicked()), SLOT(sl_complementLocation()));
-    connect(leGroupName, SIGNAL(textEdited(const QString &)), SIGNAL(si_groupNameEdited()));
-    connect(leGroupName, SIGNAL(textChanged(const QString &)), SIGNAL(si_groupNameEdited()));
-    connect(leAnnotationName, SIGNAL(textEdited(const QString &)), SIGNAL(si_annotationNameEdited()));
-    connect(leAnnotationName, SIGNAL(textChanged(const QString &)), SIGNAL(si_annotationNameEdited()));
+    connect(leGroupName, SIGNAL(textEdited(const QString&)), SIGNAL(si_groupNameEdited()));
+    connect(leGroupName, SIGNAL(textChanged(const QString&)), SIGNAL(si_groupNameEdited()));
+    connect(leAnnotationName, SIGNAL(textEdited(const QString&)), SIGNAL(si_annotationNameEdited()));
+    connect(leAnnotationName, SIGNAL(textChanged(const QString&)), SIGNAL(si_annotationNameEdited()));
     connect(chbUsePatternNames, SIGNAL(stateChanged(int)), SIGNAL(si_usePatternNamesStateChanged()));
 }
 

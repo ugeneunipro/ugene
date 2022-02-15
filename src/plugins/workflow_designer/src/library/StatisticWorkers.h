@@ -31,19 +31,19 @@ namespace LocalWorkflow {
 class DNAStatWorker : public BaseWorker {
     Q_OBJECT
 public:
-    DNAStatWorker(Actor *a)
+    DNAStatWorker(Actor* a)
         : BaseWorker(a), input(nullptr), output(nullptr) {
     }
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup() {};
 
 private:
-    float calcGCContent(const QByteArray &seq);
-    float calcGC1Content(const QByteArray &seq);
-    float calcGC2Content(const QByteArray &seq);
-    float calcGC3Content(const QByteArray &seq);
+    float calcGCContent(const QByteArray& seq);
+    float calcGC1Content(const QByteArray& seq);
+    float calcGC2Content(const QByteArray& seq);
+    float calcGC3Content(const QByteArray& seq);
     IntegralBus *input, *output;
 };
 
@@ -54,7 +54,7 @@ public:
     DNAStatWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new DNAStatWorker(a);
     }
 };
@@ -62,7 +62,7 @@ public:
 class DNAStatWorkerPrompter : public PrompterBase<DNAStatWorkerPrompter> {
     Q_OBJECT
 public:
-    DNAStatWorkerPrompter(Actor *p = 0)
+    DNAStatWorkerPrompter(Actor* p = 0)
         : PrompterBase<DNAStatWorkerPrompter>(p) {
     }
 

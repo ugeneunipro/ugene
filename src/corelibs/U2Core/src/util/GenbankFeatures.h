@@ -120,7 +120,7 @@ class U2CORE_EXPORT GBFeatureKeyInfo {
 public:
     GBFeatureKeyInfo() = default;
 
-    GBFeatureKeyInfo(const GBFeatureKey &_id, const U2FeatureType &type, const QString &_text)
+    GBFeatureKeyInfo(const GBFeatureKey& _id, const U2FeatureType& type, const QString& _text)
         : id(_id), type(type), text(_text) {
     }
 
@@ -134,18 +134,18 @@ class U2CORE_EXPORT GBFeatureUtils : public QObject {
     Q_OBJECT
 public:
     static QMutex allKeys_mutex;
-    static const QVector<GBFeatureKeyInfo> &allKeys();
+    static const QVector<GBFeatureKeyInfo>& allKeys();
 
-    static const GBFeatureKeyInfo &getKeyInfo(GBFeatureKey key) {
+    static const GBFeatureKeyInfo& getKeyInfo(GBFeatureKey key) {
         return allKeys().at(key);
     }
 
     static QMutex getKey_mutex;
-    static GBFeatureKey getKey(const QString &text);
+    static GBFeatureKey getKey(const QString& text);
     static GBFeatureKey getKey(U2FeatureType featureType);
 
     // Some features do not have values in GenBank (e.g. "/pseudo")
-    static bool isFeatureHasNoValue(const QString &featureName);
+    static bool isFeatureHasNoValue(const QString& featureName);
 
     static const QByteArray QUALIFIER_AMINO_STRAND;
 

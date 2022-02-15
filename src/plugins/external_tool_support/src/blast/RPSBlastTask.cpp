@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-ExternalToolRunTask *RPSBlastTask::createBlastTask() {
+ExternalToolRunTask* RPSBlastTask::createBlastTask() {
     QStringList arguments;
     arguments << "-db" << settings.databaseNameAndPath;
     arguments << "-evalue" << QString::number(settings.expectValue);
@@ -44,7 +44,7 @@ ExternalToolRunTask *RPSBlastTask::createBlastTask() {
     return runTask;
 }
 
-LocalCDSearch::LocalCDSearch(const CDSearchSettings &cdSearchSettings) {
+LocalCDSearch::LocalCDSearch(const CDSearchSettings& cdSearchSettings) {
     BlastTaskSettings settings;
     settings.databaseNameAndPath = cdSearchSettings.localDbFolder + "/" + cdSearchSettings.dbName;
     settings.querySequences = {cdSearchSettings.query};

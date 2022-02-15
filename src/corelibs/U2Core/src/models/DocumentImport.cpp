@@ -31,8 +31,8 @@ DocumentImportersRegistry::~DocumentImportersRegistry() {
     importers.clear();
 }
 
-DocumentImporter *DocumentImportersRegistry::getDocumentImporter(const QString &importerId) const {
-    foreach (DocumentImporter *i, importers) {
+DocumentImporter* DocumentImportersRegistry::getDocumentImporter(const QString& importerId) const {
+    foreach (DocumentImporter* i, importers) {
         if (i->getId() == importerId) {
             return i;
         }
@@ -40,7 +40,7 @@ DocumentImporter *DocumentImportersRegistry::getDocumentImporter(const QString &
     return nullptr;
 }
 
-void DocumentImportersRegistry::addDocumentImporter(DocumentImporter *i) {
+void DocumentImportersRegistry::addDocumentImporter(DocumentImporter* i) {
     importers << i;
     if (i->getImporterDescription().isEmpty()) {
         coreLog.trace("Warn! Importer has no description: " + i->getImporterName());
@@ -49,14 +49,14 @@ void DocumentImportersRegistry::addDocumentImporter(DocumentImporter *i) {
 
 const QString DocumentImporter::LOAD_RESULT_DOCUMENT = "load_result_document";
 
-void DocumentImporter::setWidgetFactory(ImportWidgetFactory *factory) {
+void DocumentImporter::setWidgetFactory(ImportWidgetFactory* factory) {
     if (widgetFactory) {
         delete widgetFactory;
     }
     widgetFactory = factory;
 }
 
-const QSet<GObjectType> &DocumentImporter::getSupportedObjectTypes() const {
+const QSet<GObjectType>& DocumentImporter::getSupportedObjectTypes() const {
     return supportedObjectTypes;
 }
 
@@ -72,8 +72,8 @@ QString DocumentImporter::getRadioButtonText() const {
     return QString();
 }
 
-ImportWidget *DocumentImporter::createImportWidget(const GUrl &url, const QVariantMap &settings) const {
-    ImportWidget *res = widgetFactory->getWidget(url, settings);
+ImportWidget* DocumentImporter::createImportWidget(const GUrl& url, const QVariantMap& settings) const {
+    ImportWidget* res = widgetFactory->getWidget(url, settings);
     return res;
 }
 

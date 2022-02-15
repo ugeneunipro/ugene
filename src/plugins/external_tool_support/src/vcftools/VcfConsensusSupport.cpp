@@ -56,4 +56,4 @@ VcfConsensusSupport::VcfConsensusSupport()
     dependencies << PerlSupport::ET_PERL_ID << TabixSupport::ET_TABIX_ID;
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -36,15 +36,15 @@ const QString SINGLE_DASH = "-";
 const QString DOUBLE_DASH = "--";
 const QString EQUALS = "=";
 
-static bool isDoubleDashParameter(const QString &val) {
+static bool isDoubleDashParameter(const QString& val) {
     return val.startsWith(DOUBLE_DASH) && val.length() > 2 && val.at(2).isLetter();
 }
 
-static bool isSingleDashParameter(const QString &val) {
+static bool isSingleDashParameter(const QString& val) {
     return val.startsWith(SINGLE_DASH) && val.length() > 1 && val.at(1).isLetter();
 }
 
-static bool tryParseDoubleDashParameter(const QString &argument, QString &paramName, QString &paramValue) {
+static bool tryParseDoubleDashParameter(const QString& argument, QString& paramName, QString& paramValue) {
     if (!isDoubleDashParameter(argument)) {
         return false;
     }
@@ -58,7 +58,7 @@ static bool tryParseDoubleDashParameter(const QString &argument, QString &paramN
     return true;
 }
 
-static bool tryParseSingleDashParameter(const QString &argument, const QString &nextArgument, QString &paramName, QString &paramValue) {
+static bool tryParseSingleDashParameter(const QString& argument, const QString& nextArgument, QString& paramName, QString& paramValue) {
     if (!isSingleDashParameter(argument)) {
         return false;
     }
@@ -69,10 +69,10 @@ static bool tryParseSingleDashParameter(const QString &argument, const QString &
     return true;
 }
 
-CMDLineRegistry::CMDLineRegistry(const QStringList &arguments) {
+CMDLineRegistry::CMDLineRegistry(const QStringList& arguments) {
     int sz = arguments.size();
     for (int i = 0; i < sz; i++) {
-        const QString &argument = arguments.at(i);
+        const QString& argument = arguments.at(i);
         StrStrPair pair;
         if (!tryParseDoubleDashParameter(argument, pair.first, pair.second)) {
             QString nextArgument;
@@ -100,7 +100,7 @@ CMDLineRegistry::~CMDLineRegistry() {
     qDeleteAll(helpProviders);
 }
 
-const QList<StrStrPair> &CMDLineRegistry::getParameters() const {
+const QList<StrStrPair>& CMDLineRegistry::getParameters() const {
     return params;
 }
 
@@ -114,10 +114,10 @@ QStringList CMDLineRegistry::getOrderedParameterNames() const {
     return res;
 }
 
-bool CMDLineRegistry::hasParameter(const QString &paramName, int startWithIdx) const {
+bool CMDLineRegistry::hasParameter(const QString& paramName, int startWithIdx) const {
     int sz = params.size();
     for (int i = qMax(0, startWithIdx); i < sz; ++i) {
-        const StrStrPair &param = params[i];
+        const StrStrPair& param = params[i];
         if (param.first == paramName) {
             return true;
         }
@@ -125,10 +125,10 @@ bool CMDLineRegistry::hasParameter(const QString &paramName, int startWithIdx) c
     return false;
 }
 
-QString CMDLineRegistry::getParameterValue(const QString &paramName, int startWithIdx) const {
+QString CMDLineRegistry::getParameterValue(const QString& paramName, int startWithIdx) const {
     int sz = params.size();
     for (int i = qMax(0, startWithIdx); i < sz; ++i) {
-        const StrStrPair &param = params[i];
+        const StrStrPair& param = params[i];
         if (param.first == paramName) {
             return param.second;
         }
@@ -136,16 +136,16 @@ QString CMDLineRegistry::getParameterValue(const QString &paramName, int startWi
     return QString();
 }
 
-static bool providerNameComparator(const CMDLineHelpProvider *p1, const CMDLineHelpProvider *p2) {
+static bool providerNameComparator(const CMDLineHelpProvider* p1, const CMDLineHelpProvider* p2) {
     return p1->getHelpSectionFullName().compare(p2->getHelpSectionFullName()) > 0;
 }
 
-void CMDLineRegistry::registerCMDLineHelpProvider(CMDLineHelpProvider *provider) {
+void CMDLineRegistry::registerCMDLineHelpProvider(CMDLineHelpProvider* provider) {
     helpProviders.append(provider);
     std::stable_sort(helpProviders.begin(), helpProviders.end(), providerNameComparator);
 }
 
-void CMDLineRegistry::unregisterCMDLineHelpProvider(CMDLineHelpProvider *provider) {
+void CMDLineRegistry::unregisterCMDLineHelpProvider(CMDLineHelpProvider* provider) {
     helpProviders.removeOne(provider);
 }
 

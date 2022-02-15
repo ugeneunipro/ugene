@@ -62,7 +62,7 @@ TrimmomaticSupport::~TrimmomaticSupport() {
 }
 
 void TrimmomaticSupport::initTrimmomaticSteps() {
-    LocalWorkflow::TrimmomaticStepsRegistry *registry = LocalWorkflow::TrimmomaticStepsRegistry::getInstance();
+    LocalWorkflow::TrimmomaticStepsRegistry* registry = LocalWorkflow::TrimmomaticStepsRegistry::getInstance();
     registry->registerEntry(new LocalWorkflow::AvgQualStepFactory());
     registry->registerEntry(new LocalWorkflow::CropStepFactory());
     registry->registerEntry(new LocalWorkflow::HeadCropStepFactory());
@@ -76,4 +76,4 @@ void TrimmomaticSupport::initTrimmomaticSteps() {
     registry->registerEntry(new LocalWorkflow::TrailingStepFactory());
 }
 
-}    // namespace U2
+}  // namespace U2

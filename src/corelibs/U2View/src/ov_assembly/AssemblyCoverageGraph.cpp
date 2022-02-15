@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-AssemblyCoverageGraph::AssemblyCoverageGraph(AssemblyBrowserUi *ui_)
+AssemblyCoverageGraph::AssemblyCoverageGraph(AssemblyBrowserUi* ui_)
     : QWidget(ui_), ui(ui_), browser(ui_->getWindow()), model(ui_->getModel()), canceled(false) {
     setFixedHeight(FIXED_HEIGHT);
     connectSlots();
@@ -79,10 +79,10 @@ void AssemblyCoverageGraph::drawAll() {
     }
 }
 
-void AssemblyCoverageGraph::drawGraph(QPainter &p, const CoverageInfo &ci, int alpha) {
+void AssemblyCoverageGraph::drawGraph(QPainter& p, const CoverageInfo& ci, int alpha) {
     int cellWidth = browser->getCellWidth();
     int visibleBases = browser->basesVisible();
-    const U2AssemblyCoverageStat &coverageInfo = ci.coverageInfo;
+    const U2AssemblyCoverageStat& coverageInfo = ci.coverageInfo;
     qint32 maxCoverage = ci.maxCoverage;
 
     SAFE_POINT(visibleBases == coverageInfo.size(), "in AssemblyCoverageGraph::drawGraph: incorrect coverageInfo size", )
@@ -100,12 +100,12 @@ void AssemblyCoverageGraph::drawGraph(QPainter &p, const CoverageInfo &ci, int a
     redraw = false;
 }
 
-void AssemblyCoverageGraph::paintEvent(QPaintEvent *e) {
+void AssemblyCoverageGraph::paintEvent(QPaintEvent* e) {
     drawAll();
     QWidget::paintEvent(e);
 }
 
-void AssemblyCoverageGraph::mouseMoveEvent(QMouseEvent *e) {
+void AssemblyCoverageGraph::mouseMoveEvent(QMouseEvent* e) {
     emit si_mouseMovedToPos(e->pos());
     QWidget::mouseMoveEvent(e);
 }

@@ -32,7 +32,7 @@ public:
     enum saveFormat { NONE,
                       HTML,
                       CSV };
-    GenerateAlignmentProfileDialogFiller(HI::GUITestOpStatus &os, bool _counts = true, saveFormat _format = NONE, QString _filePath = "")
+    GenerateAlignmentProfileDialogFiller(HI::GUITestOpStatus& os, bool _counts = true, saveFormat _format = NONE, QString _filePath = "")
         : Filler(os, "DNAStatMSAProfileDialog"),
           counts(_counts),
           gapScore(false),
@@ -45,7 +45,7 @@ public:
         checkBoxItems[CSV] = "csvRB";
     }
 
-    GenerateAlignmentProfileDialogFiller(HI::GUITestOpStatus &os, bool _gapsScore, bool _symbolScore, bool _skipGaps)
+    GenerateAlignmentProfileDialogFiller(HI::GUITestOpStatus& os, bool _gapsScore, bool _symbolScore, bool _skipGaps)
         : Filler(os, "DNAStatMSAProfileDialog"),
           counts(true),
           gapScore(_gapsScore),
@@ -54,7 +54,7 @@ public:
           format(NONE) {
     }
 
-    GenerateAlignmentProfileDialogFiller(HI::GUITestOpStatus &os, CustomScenario *customScenario)
+    GenerateAlignmentProfileDialogFiller(HI::GUITestOpStatus& os, CustomScenario* customScenario)
         : Filler(os, "DNAStatMSAProfileDialog", customScenario),
           counts(true),
           gapScore(false),

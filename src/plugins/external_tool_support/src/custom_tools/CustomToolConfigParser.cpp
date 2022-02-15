@@ -48,12 +48,12 @@ const QString CustomToolConfigParser::DEPENDENCIES = "dependencies";
 const QString CustomToolConfigParser::BINARY_NAME = "executableName";
 
 namespace {
-bool compareCaseInsensetive(const QString &first, const QString &second) {
+bool compareCaseInsensetive(const QString& first, const QString& second) {
     return QString::compare(first, second, Qt::CaseInsensitive) == 0;
 }
-}    // namespace
+}  // namespace
 
-CustomExternalTool *CustomToolConfigParser::parse(U2OpStatus &os, const QString &url) {
+CustomExternalTool* CustomToolConfigParser::parse(U2OpStatus& os, const QString& url) {
     QFile file(url);
     CHECK_EXT(file.open(QIODevice::ReadOnly), os.setError(tr("Invalid config file format: file %1 cann not be opened").arg(url)), nullptr);
 
@@ -70,7 +70,7 @@ CustomExternalTool *CustomToolConfigParser::parse(U2OpStatus &os, const QString 
     QDomElement configElement = nodesList.item(0).toElement();
     CHECK_EXT(!configElement.isNull(), os.setError(tr("Can't parse the config file")), nullptr);
 
-    const QString &version = configElement.attribute(ATTRIBUTE_VERSION);
+    const QString& version = configElement.attribute(ATTRIBUTE_VERSION);
     CHECK_EXT(HARDCODED_EXPECTED_VERSION == version, os.setError(tr("Can't parse config with version %1").arg(version)), nullptr);
 
     const QDomNodeList toolConfigElements = configElement.childNodes();
@@ -106,7 +106,7 @@ CustomExternalTool *CustomToolConfigParser::parse(U2OpStatus &os, const QString 
             tool->setLauncher(element.text());
         } else if (compareCaseInsensetive(DEPENDENCIES, tagName)) {
             QStringList dependencies;
-            foreach (const QString &dependency, element.text().split(",", QString::SkipEmptyParts)) {
+            foreach (const QString& dependency, element.text().split(",", QString::SkipEmptyParts)) {
                 dependencies << dependency.trimmed();
             }
             tool->setDependencies(dependencies);
@@ -135,7 +135,7 @@ CustomExternalTool *CustomToolConfigParser::parse(U2OpStatus &os, const QString 
     return tool.take();
 }
 
-QDomDocument CustomToolConfigParser::serialize(CustomExternalTool *tool) {
+QDomDocument CustomToolConfigParser::serialize(CustomExternalTool* tool) {
     QDomDocument doc;
     QDomProcessingInstruction xmlHeader = doc.createProcessingInstruction("xml", "version = \"1.0\" encoding = \"UTF-8\"");
     doc.appendChild(xmlHeader);
@@ -155,7 +155,7 @@ QDomDocument CustomToolConfigParser::serialize(CustomExternalTool *tool) {
     return doc;
 }
 
-bool CustomToolConfigParser::validate(U2OpStatus &os, CustomExternalTool *tool) {
+bool CustomToolConfigParser::validate(U2OpStatus& os, CustomExternalTool* tool) {
     CHECK(nullptr != tool, false);
     CHECK_EXT(!tool->getId().isEmpty(), os.setError(tr("The tool id is not specified in the config file.")), false);
     CHECK_EXT(!tool->getId().contains(QRegularExpression("[^A-Za-z0-9_\\-]")), os.setError(tr("The tool id contains unexpected characters, the only letters, numbers, underlines and dashes are allowed.")), false);
@@ -176,11 +176,11 @@ bool CustomToolConfigParser::validate(U2OpStatus &os, CustomExternalTool *tool) 
     return true;
 }
 
-QDomElement CustomToolConfigParser::addChildElement(QDomDocument &doc, const QString &elementName, const QString &elementData) {
+QDomElement CustomToolConfigParser::addChildElement(QDomDocument& doc, const QString& elementName, const QString& elementData) {
     QDomElement element = doc.createElement(elementName);
     QDomText elementDataNode = doc.createTextNode(elementData);
     element.appendChild(elementDataNode);
     return element;
 }
 
-}    // namespace U2
+}  // namespace U2
