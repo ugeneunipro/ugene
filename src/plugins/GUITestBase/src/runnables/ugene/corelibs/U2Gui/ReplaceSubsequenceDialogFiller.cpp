@@ -40,22 +40,22 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::replaceSubsequenceDialogFiller"
-ReplaceSubsequenceDialogFiller::ReplaceSubsequenceDialogFiller(HI::GUITestOpStatus &_os, const QString &_pasteDataHere, bool recalculateQuals)
+ReplaceSubsequenceDialogFiller::ReplaceSubsequenceDialogFiller(HI::GUITestOpStatus& _os, const QString& _pasteDataHere, bool recalculateQuals)
     : Filler(_os, "EditSequenceDialog"),
       pasteDataHere(_pasteDataHere),
       recalculateQuals(recalculateQuals) {
 }
 
-ReplaceSubsequenceDialogFiller::ReplaceSubsequenceDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario)
+ReplaceSubsequenceDialogFiller::ReplaceSubsequenceDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
     : Filler(os, "EditSequenceDialog", scenario),
       recalculateQuals(false) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void ReplaceSubsequenceDialogFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QPlainTextEdit *plainText = dialog->findChild<QPlainTextEdit *>("sequenceEdit");
+    QPlainTextEdit* plainText = dialog->findChild<QPlainTextEdit*>("sequenceEdit");
     GT_CHECK(plainText != nullptr, "plain text not found");
     // GTKeyboardDriver::keyClick( GTKeyboardDriver::key["a"], Qt::ControlModifier);
     // GTGlobals::sleep();
@@ -63,7 +63,7 @@ void ReplaceSubsequenceDialogFiller::commonScenario() {
     GTGlobals::sleep();
     GTPlainTextEdit::setPlainText(os, plainText, pasteDataHere);
 
-    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox *>(os, "recalculateQualsCheckBox"), recalculateQuals);
+    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "recalculateQualsCheckBox"), recalculateQuals);
 
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
 

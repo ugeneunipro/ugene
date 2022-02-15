@@ -30,7 +30,7 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportChromatogramFiller"
-EditSettingsDialogFiller::EditSettingsDialogFiller(HI::GUITestOpStatus &_os,
+EditSettingsDialogFiller::EditSettingsDialogFiller(HI::GUITestOpStatus& _os,
                                                    AnnotationPolicy _policy,
                                                    bool _recalculateQualifiers)
     : Filler(_os, "EditSettingDialogForm"),
@@ -40,7 +40,7 @@ EditSettingsDialogFiller::EditSettingsDialogFiller(HI::GUITestOpStatus &_os,
 
 #define GT_METHOD_NAME "commonScenario"
 void EditSettingsDialogFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     QString radioButtonName;
     switch (policy) {

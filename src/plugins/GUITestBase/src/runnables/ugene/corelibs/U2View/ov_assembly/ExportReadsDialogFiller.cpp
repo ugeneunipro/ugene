@@ -34,7 +34,7 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportReadsDialogFiller"
 
-ExportReadsDialogFiller::ExportReadsDialogFiller(HI::GUITestOpStatus &os, const QString &filePath, const QString format, bool addToProject)
+ExportReadsDialogFiller::ExportReadsDialogFiller(HI::GUITestOpStatus& os, const QString& filePath, const QString format, bool addToProject)
     : Filler(os, "ExportReadsDialog"),
       filePath(filePath),
       format(format),
@@ -43,17 +43,17 @@ ExportReadsDialogFiller::ExportReadsDialogFiller(HI::GUITestOpStatus &os, const 
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportReadsDialogFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit *fileLineEdit = dialog->findChild<QLineEdit *>("filepathLineEdit");
+    QLineEdit* fileLineEdit = dialog->findChild<QLineEdit*>("filepathLineEdit");
     GT_CHECK(fileLineEdit != nullptr, "File path lineEdit not found");
     GTLineEdit::setText(os, fileLineEdit, filePath);
 
-    QComboBox *formatComboBox = dialog->findChild<QComboBox *>("documentFormatComboBox");
+    QComboBox* formatComboBox = dialog->findChild<QComboBox*>("documentFormatComboBox");
     GT_CHECK(formatComboBox != nullptr, "Format comboBox not found");
     GTComboBox::selectItemByText(os, formatComboBox, format);
 
-    QCheckBox *addToPrj = dialog->findChild<QCheckBox *>("addToProjectCheckBox");
+    QCheckBox* addToPrj = dialog->findChild<QCheckBox*>("addToProjectCheckBox");
     GT_CHECK(addToPrj != nullptr, "Add to project check box not found");
     GTCheckBox::setChecked(os, addToPrj, addToProject);
 

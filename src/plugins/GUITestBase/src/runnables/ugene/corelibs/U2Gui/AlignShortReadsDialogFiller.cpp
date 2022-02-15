@@ -40,7 +40,7 @@
 
 namespace U2 {
 
-AlignShortReadsFiller::BwaSwParameters::BwaSwParameters(const QString &refDir, const QString &refFileName, const QString &readsDir, const QString &readsFileName)
+AlignShortReadsFiller::BwaSwParameters::BwaSwParameters(const QString& refDir, const QString& refFileName, const QString& readsDir, const QString& readsFileName)
     : Parameters(refDir, refFileName, readsDir, readsFileName, BwaSw),
       matchScore(1),
       mismatchPenalty(3),
@@ -62,7 +62,7 @@ AlignShortReadsFiller::BwaSwParameters::BwaSwParameters(const QString &refDir, c
 void AlignShortReadsFiller::commonScenario() {
     SAFE_POINT_EXT(parameters, GT_CHECK(0, "Invalid input parameters: NULL pointer"), );
 
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     setCommonParameters(dialog);
     CHECK_OP(os, );
@@ -77,8 +77,8 @@ void AlignShortReadsFiller::commonScenario() {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setCommonParameters"
-void AlignShortReadsFiller::setCommonParameters(QWidget *dialog) {
-    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "methodNamesBox", dialog), parameters->getAlignmentMethod());
+void AlignShortReadsFiller::setCommonParameters(QWidget* dialog) {
+    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "methodNamesBox", dialog), parameters->getAlignmentMethod());
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, parameters->referenceFile));
     GTWidget::click(os, GTWidget::findWidget(os, "addRefButton", dialog));
@@ -88,18 +88,18 @@ void AlignShortReadsFiller::setCommonParameters(QWidget *dialog) {
         GTWidget::click(os, GTWidget::findWidget(os, "setResultFileNameButton", dialog));
     }
 
-    foreach (const QString &readsFile, parameters->readsFiles) {
+    foreach (const QString& readsFile, parameters->readsFiles) {
         GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, readsFile));
         GTWidget::click(os, GTWidget::findWidget(os, "addShortreadsButton", dialog));
     }
 
-    QComboBox *libraryComboBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "libraryComboBox", dialog));
+    QComboBox* libraryComboBox = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "libraryComboBox", dialog));
     GT_CHECK(libraryComboBox, "libraryComboBox is NULL");
     if (libraryComboBox->isEnabled()) {
         GTComboBox::selectItemByText(os, libraryComboBox, parameters->getLibrary());
     }
 
-    QCheckBox *samBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "samBox", dialog));
+    QCheckBox* samBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "samBox", dialog));
     GT_CHECK(samBox, "samBox is NULL");
     if (samBox->isEnabled()) {
         GTCheckBox::setChecked(os, samBox, parameters->samOutput);
@@ -108,26 +108,26 @@ void AlignShortReadsFiller::setCommonParameters(QWidget *dialog) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setAdditionalParameters"
-void AlignShortReadsFiller::setAdditionalParameters(QWidget *dialog) {
-    Bowtie2Parameters *bowtie2Parameters = dynamic_cast<Bowtie2Parameters *>(parameters);
+void AlignShortReadsFiller::setAdditionalParameters(QWidget* dialog) {
+    Bowtie2Parameters* bowtie2Parameters = dynamic_cast<Bowtie2Parameters*>(parameters);
     if (nullptr != bowtie2Parameters) {
         setBowtie2AdditionalParameters(bowtie2Parameters, dialog);
         return;
     }
 
-    UgeneGenomeAlignerParams *ugaParameters = dynamic_cast<UgeneGenomeAlignerParams *>(parameters);
+    UgeneGenomeAlignerParams* ugaParameters = dynamic_cast<UgeneGenomeAlignerParams*>(parameters);
     if (nullptr != ugaParameters) {
         setUgaAdditionalParameters(ugaParameters, dialog);
         return;
     }
 
-    BwaSwParameters *bwaSwParameters = dynamic_cast<BwaSwParameters *>(parameters);
+    BwaSwParameters* bwaSwParameters = dynamic_cast<BwaSwParameters*>(parameters);
     if (nullptr != bwaSwParameters) {
         setBwaSwAdditionalParameters(bwaSwParameters, dialog);
         return;
     }
 
-    BwaParameters *bwaParameters = dynamic_cast<BwaParameters *>(parameters);
+    BwaParameters* bwaParameters = dynamic_cast<BwaParameters*>(parameters);
     if (nullptr != bwaParameters) {
         setBwaAdditionalParameters(bwaParameters, dialog);
         return;
@@ -136,27 +136,27 @@ void AlignShortReadsFiller::setAdditionalParameters(QWidget *dialog) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setBowtie2AdditionalParameters"
-void AlignShortReadsFiller::setBowtie2AdditionalParameters(Bowtie2Parameters *bowtie2Parameters, QWidget *dialog) {
+void AlignShortReadsFiller::setBowtie2AdditionalParameters(Bowtie2Parameters* bowtie2Parameters, QWidget* dialog) {
     // Parameters
-    QComboBox *modeComboBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "modeComboBox", dialog));
+    QComboBox* modeComboBox = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "modeComboBox", dialog));
     CHECK_OP(os, );
     GT_CHECK(modeComboBox, "modeComboBox is NULL");
     GTComboBox::selectItemByText(os, modeComboBox, bowtie2Parameters->getMode());
     CHECK_OP(os, );
 
-    QSpinBox *mismatchesSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "mismatchesSpinBox", dialog));
+    QSpinBox* mismatchesSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "mismatchesSpinBox", dialog));
     CHECK_OP(os, );
     GT_CHECK(mismatchesSpinBox, "mismatchesSpinBox is NULL");
     GTSpinBox::setValue(os, mismatchesSpinBox, bowtie2Parameters->numberOfMismatches);
     CHECK_OP(os, );
 
-    QCheckBox *seedlenCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "seedlenCheckBox", dialog));
+    QCheckBox* seedlenCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "seedlenCheckBox", dialog));
     CHECK_OP(os, );
     GT_CHECK(seedlenCheckBox, "seedlenCheckBox is NULL");
     GTCheckBox::setChecked(os, seedlenCheckBox, bowtie2Parameters->seedLengthCheckBox);
     CHECK_OP(os, );
 
-    QSpinBox *seedlenSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "seedlenSpinBox", dialog));
+    QSpinBox* seedlenSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "seedlenSpinBox", dialog));
     CHECK_OP(os, );
     GT_CHECK(seedlenSpinBox, "seedlenSpinBox is NULL");
     if (seedlenCheckBox->isChecked()) {
@@ -164,13 +164,13 @@ void AlignShortReadsFiller::setBowtie2AdditionalParameters(Bowtie2Parameters *bo
     }
     CHECK_OP(os, );
 
-    QCheckBox *dpadCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "dpadCheckBox", dialog));
+    QCheckBox* dpadCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "dpadCheckBox", dialog));
     CHECK_OP(os, );
     GT_CHECK(dpadCheckBox, "dpadCheckBox is NULL");
     GTCheckBox::setChecked(os, dpadCheckBox, bowtie2Parameters->addColumnsToAllowGapsCheckBox);
     CHECK_OP(os, );
 
-    QSpinBox *dpadSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "dpadSpinBox", dialog));
+    QSpinBox* dpadSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "dpadSpinBox", dialog));
     CHECK_OP(os, );
     GT_CHECK(dpadSpinBox, "dpadSpinBox is NULL");
     if (dpadCheckBox->isChecked()) {
@@ -178,13 +178,13 @@ void AlignShortReadsFiller::setBowtie2AdditionalParameters(Bowtie2Parameters *bo
     }
     CHECK_OP(os, );
 
-    QCheckBox *gbarCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "gbarCheckBox", dialog));
+    QCheckBox* gbarCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "gbarCheckBox", dialog));
     CHECK_OP(os, );
     GT_CHECK(gbarCheckBox, "gbarCheckBox is NULL");
     GTCheckBox::setChecked(os, gbarCheckBox, bowtie2Parameters->disallowGapsCheckBox);
     CHECK_OP(os, );
 
-    QSpinBox *gbarSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "gbarSpinBox", dialog));
+    QSpinBox* gbarSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "gbarSpinBox", dialog));
     CHECK_OP(os, );
     GT_CHECK(gbarSpinBox, "gbarSpinBox is NULL");
     if (gbarCheckBox->isChecked()) {
@@ -192,13 +192,13 @@ void AlignShortReadsFiller::setBowtie2AdditionalParameters(Bowtie2Parameters *bo
     }
     CHECK_OP(os, );
 
-    QCheckBox *seedCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "seedCheckBox", dialog));
+    QCheckBox* seedCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "seedCheckBox", dialog));
     CHECK_OP(os, );
     GT_CHECK(seedCheckBox, "seedCheckBox is NULL");
     GTCheckBox::setChecked(os, seedCheckBox, bowtie2Parameters->seedCheckBox);
     CHECK_OP(os, );
 
-    QSpinBox *seedSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "seedSpinBox", dialog));
+    QSpinBox* seedSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "seedSpinBox", dialog));
     CHECK_OP(os, );
     GT_CHECK(seedSpinBox, "seedSpinBox is NULL");
     if (seedCheckBox->isChecked()) {
@@ -207,7 +207,7 @@ void AlignShortReadsFiller::setBowtie2AdditionalParameters(Bowtie2Parameters *bo
     CHECK_OP(os, );
 
 #ifndef Q_OS_WIN
-    QSpinBox *threadsSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "threadsSpinBox", dialog));
+    QSpinBox* threadsSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "threadsSpinBox", dialog));
     CHECK_OP(os, );
     GT_CHECK(threadsSpinBox, "threadsSpinBox is NULL");
     if (threadsSpinBox->minimum() <= bowtie2Parameters->threads && threadsSpinBox->maximum() >= bowtie2Parameters->threads) {
@@ -217,37 +217,37 @@ void AlignShortReadsFiller::setBowtie2AdditionalParameters(Bowtie2Parameters *bo
 #endif
 
     // Flags
-    QCheckBox *nomixedCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "nomixedCheckBox", dialog));
+    QCheckBox* nomixedCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "nomixedCheckBox", dialog));
     CHECK_OP(os, );
     GT_CHECK(nomixedCheckBox, "nomixedCheckBox is NULL");
     GTCheckBox::setChecked(os, nomixedCheckBox, bowtie2Parameters->noUnpairedAlignments);
     CHECK_OP(os, );
 
-    QCheckBox *nodiscordantCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "nodiscordantCheckBox", dialog));
+    QCheckBox* nodiscordantCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "nodiscordantCheckBox", dialog));
     CHECK_OP(os, );
     GT_CHECK(nodiscordantCheckBox, "nodiscordantCheckBox is NULL");
     GTCheckBox::setChecked(os, nodiscordantCheckBox, bowtie2Parameters->noDiscordantAlignments);
     CHECK_OP(os, );
 
-    QCheckBox *nofwCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "nofwCheckBox", dialog));
+    QCheckBox* nofwCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "nofwCheckBox", dialog));
     CHECK_OP(os, );
     GT_CHECK(nofwCheckBox, "nofwCheckBox is NULL");
     GTCheckBox::setChecked(os, nofwCheckBox, bowtie2Parameters->noForwardOrientation);
     CHECK_OP(os, );
 
-    QCheckBox *norcCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "norcCheckBox", dialog));
+    QCheckBox* norcCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "norcCheckBox", dialog));
     CHECK_OP(os, );
     GT_CHECK(norcCheckBox, "norcCheckBox is NULL");
     GTCheckBox::setChecked(os, norcCheckBox, bowtie2Parameters->noReverseComplementOrientation);
     CHECK_OP(os, );
 
-    QCheckBox *nooverlapCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "nooverlapCheckBox", dialog));
+    QCheckBox* nooverlapCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "nooverlapCheckBox", dialog));
     CHECK_OP(os, );
     GT_CHECK(nooverlapCheckBox, "nooverlapCheckBox is NULL");
     GTCheckBox::setChecked(os, nooverlapCheckBox, bowtie2Parameters->noOverlappingMates);
     CHECK_OP(os, );
 
-    QCheckBox *nocontainCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "nocontainCheckBox", dialog));
+    QCheckBox* nocontainCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "nocontainCheckBox", dialog));
     CHECK_OP(os, );
     GT_CHECK(nocontainCheckBox, "nocontainCheckBox is NULL");
     GTCheckBox::setChecked(os, nocontainCheckBox, bowtie2Parameters->noMatesContainingOneAnother);
@@ -256,58 +256,58 @@ void AlignShortReadsFiller::setBowtie2AdditionalParameters(Bowtie2Parameters *bo
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setUgaAdditionalParameters"
-void AlignShortReadsFiller::setUgaAdditionalParameters(UgeneGenomeAlignerParams *ugaParameters, QWidget *dialog) {
+void AlignShortReadsFiller::setUgaAdditionalParameters(UgeneGenomeAlignerParams* ugaParameters, QWidget* dialog) {
     if (ugaParameters->mismatchesAllowed) {
         GTGroupBox::setChecked(os, "groupBox_mismatches", dialog);
     }
-    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox *>(os, "firstMatchBox", dialog), ugaParameters->useBestMode);
+    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "firstMatchBox", dialog), ugaParameters->useBestMode);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setBwaAdditionalParameters"
-void AlignShortReadsFiller::setBwaAdditionalParameters(AlignShortReadsFiller::BwaParameters *bwaParameters, QWidget *dialog) {
-    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "indexAlgorithmComboBox", dialog), bwaParameters->getIndexAlgorithmString());
+void AlignShortReadsFiller::setBwaAdditionalParameters(AlignShortReadsFiller::BwaParameters* bwaParameters, QWidget* dialog) {
+    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "indexAlgorithmComboBox", dialog), bwaParameters->getIndexAlgorithmString());
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setAdditionalParameters"
-void AlignShortReadsFiller::setBwaSwAdditionalParameters(AlignShortReadsFiller::BwaSwParameters *bwaSwParameters, QWidget *dialog) {
-    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "matchScoreSpinbox", dialog), bwaSwParameters->matchScore);
-    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "mismatchScoreSpinbox", dialog), bwaSwParameters->mismatchPenalty);
-    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "gapOpenSpinbox", dialog), bwaSwParameters->gapOpenPenalty);
-    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "gapExtSpinbox", dialog), bwaSwParameters->gapExtensionPenalty);
-    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "bandWidthSpinbox", dialog), bwaSwParameters->bandWidth);
-    GTDoubleSpinbox::setValue(os, GTWidget::findExactWidget<QDoubleSpinBox *>(os, "maskLevelSpinbox", dialog), bwaSwParameters->maskLevel);
-    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "numThreadsSpinbox", dialog), bwaSwParameters->threadsNumber);
-    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "chunkSizeSpinbox", dialog), bwaSwParameters->readsChunkSize);
-    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "scoreThresholdSpinbox", dialog), bwaSwParameters->thresholdScore);
-    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "zBestSpinbox", dialog), bwaSwParameters->zBest);
-    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "revAlnThreshold", dialog), bwaSwParameters->seedsNumber);
-    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox *>(os, "hardClippingCheckBox", dialog), bwaSwParameters->preferHardClippingInSam);
+void AlignShortReadsFiller::setBwaSwAdditionalParameters(AlignShortReadsFiller::BwaSwParameters* bwaSwParameters, QWidget* dialog) {
+    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "matchScoreSpinbox", dialog), bwaSwParameters->matchScore);
+    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "mismatchScoreSpinbox", dialog), bwaSwParameters->mismatchPenalty);
+    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "gapOpenSpinbox", dialog), bwaSwParameters->gapOpenPenalty);
+    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "gapExtSpinbox", dialog), bwaSwParameters->gapExtensionPenalty);
+    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "bandWidthSpinbox", dialog), bwaSwParameters->bandWidth);
+    GTDoubleSpinbox::setValue(os, GTWidget::findExactWidget<QDoubleSpinBox*>(os, "maskLevelSpinbox", dialog), bwaSwParameters->maskLevel);
+    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "numThreadsSpinbox", dialog), bwaSwParameters->threadsNumber);
+    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "chunkSizeSpinbox", dialog), bwaSwParameters->readsChunkSize);
+    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "scoreThresholdSpinbox", dialog), bwaSwParameters->thresholdScore);
+    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "zBestSpinbox", dialog), bwaSwParameters->zBest);
+    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "revAlnThreshold", dialog), bwaSwParameters->seedsNumber);
+    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "hardClippingCheckBox", dialog), bwaSwParameters->preferHardClippingInSam);
 }
 #undef GT_METHOD_NAME
 
-AlignShortReadsFiller::UgeneGenomeAlignerParams::UgeneGenomeAlignerParams(const QString &refDir,
-                                                                          const QString &refFileName,
-                                                                          const QString &readsDir,
-                                                                          const QString &readsFileName,
+AlignShortReadsFiller::UgeneGenomeAlignerParams::UgeneGenomeAlignerParams(const QString& refDir,
+                                                                          const QString& refFileName,
+                                                                          const QString& readsDir,
+                                                                          const QString& readsFileName,
                                                                           bool allowMismatches)
     : Parameters(refDir, refFileName, readsDir, readsFileName, UgeneGenomeAligner),
       mismatchesAllowed(allowMismatches),
       useBestMode(true) {
 }
 
-AlignShortReadsFiller::UgeneGenomeAlignerParams::UgeneGenomeAlignerParams(const QString &referenceFile,
-                                                                          const QStringList &readsFiles)
+AlignShortReadsFiller::UgeneGenomeAlignerParams::UgeneGenomeAlignerParams(const QString& referenceFile,
+                                                                          const QStringList& readsFiles)
     : Parameters(referenceFile, readsFiles, UgeneGenomeAligner),
       mismatchesAllowed(false),
       useBestMode(true) {
 }
 
-AlignShortReadsFiller::Parameters::Parameters(const QString &refDir,
-                                              const QString &refFileName,
-                                              const QString &readsDir,
-                                              const QString &readsFileName,
+AlignShortReadsFiller::Parameters::Parameters(const QString& refDir,
+                                              const QString& refFileName,
+                                              const QString& readsDir,
+                                              const QString& readsFileName,
                                               AlignShortReadsFiller::Parameters::AlignmentMethod alignmentMethod)
     : alignmentMethod(alignmentMethod),
       referenceFile(refDir + "/" + refFileName),
@@ -318,7 +318,7 @@ AlignShortReadsFiller::Parameters::Parameters(const QString &refDir,
       useDefaultResultPath(true) {
 }
 
-AlignShortReadsFiller::Parameters::Parameters(const QString &reference, const QStringList &reads, AlignmentMethod alignmentMethod)
+AlignShortReadsFiller::Parameters::Parameters(const QString& reference, const QStringList& reads, AlignmentMethod alignmentMethod)
     : alignmentMethod(alignmentMethod),
       referenceFile(reference),
       readsFiles(reads),
@@ -349,13 +349,13 @@ QMap<AlignShortReadsFiller::Parameters::Library, QString> AlignShortReadsFiller:
     return result;
 }
 
-AlignShortReadsFiller::BwaParameters::BwaParameters(const QString &referenceFile,
-                                                    const QStringList &readsFiles)
+AlignShortReadsFiller::BwaParameters::BwaParameters(const QString& referenceFile,
+                                                    const QStringList& readsFiles)
     : Parameters(referenceFile, readsFiles, Bwa),
       indexAlgorithm(Autodetect) {
 }
 
-AlignShortReadsFiller::BwaParameters::BwaParameters(const QString &referenceFile, const QString &readsFile)
+AlignShortReadsFiller::BwaParameters::BwaParameters(const QString& referenceFile, const QString& readsFile)
     : Parameters(referenceFile, QStringList() << readsFile, Bwa),
       indexAlgorithm(Autodetect) {
 }

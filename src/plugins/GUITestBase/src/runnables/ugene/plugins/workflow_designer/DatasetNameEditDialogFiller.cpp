@@ -33,10 +33,10 @@ using namespace HI;
 #define GT_CLASS_NAME "DatasetNameEditDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void DatasetNameEditDialogFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (!datasetName.isEmpty()) {
-        QLineEdit *line = dialog->findChild<QLineEdit *>();
+        QLineEdit* line = dialog->findChild<QLineEdit*>();
         GT_CHECK(line, "lineEdit not found");
         GTLineEdit::setText(os, line, datasetName);
     }

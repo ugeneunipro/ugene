@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-EditFragmentDialogFiller::EditFragmentDialogFiller(HI::GUITestOpStatus &os, const Parameters &parameters)
+EditFragmentDialogFiller::EditFragmentDialogFiller(HI::GUITestOpStatus& os, const Parameters& parameters)
     : Filler(os, "EditFragmentDialog"), parameters(parameters) {
 }
 
@@ -39,82 +39,82 @@ EditFragmentDialogFiller::EditFragmentDialogFiller(HI::GUITestOpStatus &os, cons
 #define GT_METHOD_NAME "commonScenario"
 
 void EditFragmentDialogFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     // GUITest_regression_scenarios_test_0574
     if (parameters.checkRComplText) {
-        GTRadioButton::click(os, qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "rStickyButton", dialog)));
-        auto rCustomOverhangBox = GTWidget::findExactWidget<QGroupBox *>(os, "rCustomOverhangBox", dialog);
+        GTRadioButton::click(os, qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "rStickyButton", dialog)));
+        auto rCustomOverhangBox = GTWidget::findExactWidget<QGroupBox*>(os, "rCustomOverhangBox", dialog);
         GTGroupBox::setChecked(os, rCustomOverhangBox, true);
-        GTRadioButton::click(os, qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "rComplRadioButton", dialog)));
-        QLineEdit *rComplOverhangEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "rComplOverhangEdit", dialog));
+        GTRadioButton::click(os, qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "rComplRadioButton", dialog)));
+        QLineEdit* rComplOverhangEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "rComplOverhangEdit", dialog));
         GT_CHECK(rComplOverhangEdit->text() == parameters.rComplText, "Wrong rComplTextEdit text");
         GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         return;
     }
 
     if (parameters.lSticky) {
-        QRadioButton *lStickyButton = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "lStickyButton", dialog));
+        QRadioButton* lStickyButton = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "lStickyButton", dialog));
         GT_CHECK(lStickyButton, "lStickyButton not found");
         GTRadioButton::click(os, lStickyButton);
 
-        auto lCustomOverhangBox = GTWidget::findExactWidget<QGroupBox *>(os, "lCustomOverhangBox", dialog);
+        auto lCustomOverhangBox = GTWidget::findExactWidget<QGroupBox*>(os, "lCustomOverhangBox", dialog);
         GTGroupBox::setChecked(os, lCustomOverhangBox, parameters.lCustom);
 
         if (parameters.lCustom) {
             if (parameters.lDirect) {
-                QRadioButton *lDirectRadioButton = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "lDirectRadioButton", dialog));
+                QRadioButton* lDirectRadioButton = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "lDirectRadioButton", dialog));
                 GT_CHECK(lDirectRadioButton, "lDirectRadioButton not found");
                 GTRadioButton::click(os, lDirectRadioButton);
 
-                QLineEdit *lDirectOverhangEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "lDirectOverhangEdit", dialog));
+                QLineEdit* lDirectOverhangEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "lDirectOverhangEdit", dialog));
                 GT_CHECK(lDirectOverhangEdit, "lDirectOverhangEdit is NULL");
                 GTLineEdit::setText(os, lDirectOverhangEdit, parameters.lDirectText);
             } else {
-                QRadioButton *lComplRadioButton = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "lComplRadioButton", dialog));
+                QRadioButton* lComplRadioButton = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "lComplRadioButton", dialog));
                 GT_CHECK(lComplRadioButton, "lComplRadioButton not found");
                 GTRadioButton::click(os, lComplRadioButton);
 
-                QLineEdit *lComplOverhangEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "lComplOverhangEdit", dialog));
+                QLineEdit* lComplOverhangEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "lComplOverhangEdit", dialog));
                 GT_CHECK(lComplOverhangEdit, "lComplOverhangEdit is NULL");
                 GTLineEdit::setText(os, lComplOverhangEdit, parameters.lComplText);
             }
         }
     } else {
-        QRadioButton *lBluntButton = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "lBluntButton", dialog));
+        QRadioButton* lBluntButton = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "lBluntButton", dialog));
         GT_CHECK(lBluntButton, "lBluntButton not found");
         GTRadioButton::click(os, lBluntButton);
     }
 
     if (parameters.rSticky) {
-        QRadioButton *rStickyButton = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "rStickyButton", dialog));
+        QRadioButton* rStickyButton = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "rStickyButton", dialog));
         GT_CHECK(rStickyButton, "rStickyButton not found");
         GTRadioButton::click(os, rStickyButton);
 
-        auto rCustomOverhangBox = GTWidget::findExactWidget<QGroupBox *>(os, "rCustomOverhangBox", dialog);
+        auto rCustomOverhangBox = GTWidget::findExactWidget<QGroupBox*>(os, "rCustomOverhangBox", dialog);
         GTGroupBox::setChecked(os, rCustomOverhangBox, parameters.rCustom);
 
         if (parameters.rCustom) {
             if (parameters.rDirect) {
-                QRadioButton *rDirectRadioButton = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "rDirectRadioButton", dialog));
+                QRadioButton* rDirectRadioButton = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "rDirectRadioButton", dialog));
                 GT_CHECK(rDirectRadioButton, "rDirectRadioButton not found");
                 GTRadioButton::click(os, rDirectRadioButton);
 
-                QLineEdit *rDirectOverhangEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "rDirectOverhangEdit", dialog));
+                QLineEdit* rDirectOverhangEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "rDirectOverhangEdit", dialog));
                 GT_CHECK(rDirectOverhangEdit, "rDirectOverhangEdit is NULL");
                 GTLineEdit::setText(os, rDirectOverhangEdit, parameters.rDirectText);
             } else {
-                QRadioButton *rComplRadioButton = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "rComplRadioButton", dialog));
+                QRadioButton* rComplRadioButton = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "rComplRadioButton", dialog));
                 GT_CHECK(rComplRadioButton, "rComplRadioButton not found");
                 GTRadioButton::click(os, rComplRadioButton);
 
-                QLineEdit *rComplOverhangEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "rComplOverhangEdit", dialog));
+                QLineEdit* rComplOverhangEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "rComplOverhangEdit", dialog));
                 GT_CHECK(rComplOverhangEdit, "rComplOverhangEdit is NULL");
                 GTLineEdit::setText(os, rComplOverhangEdit, parameters.rComplText);
             }
         }
     } else {
-        QRadioButton *rBluntButton = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "rBluntButton", dialog));
+        QRadioButton* rBluntButton = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "rBluntButton", dialog));
         GT_CHECK(rBluntButton, "rBluntButton not found");
         GTRadioButton::click(os, rBluntButton);
     }

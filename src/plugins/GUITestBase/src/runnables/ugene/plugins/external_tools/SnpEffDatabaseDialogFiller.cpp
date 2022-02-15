@@ -34,7 +34,7 @@
 namespace U2 {
 using namespace HI;
 
-SnpEffDatabaseDialogFiller::SnpEffDatabaseDialogFiller(GUITestOpStatus &os, const QString &dbName, bool dbShouldBeFound)
+SnpEffDatabaseDialogFiller::SnpEffDatabaseDialogFiller(GUITestOpStatus& os, const QString& dbName, bool dbShouldBeFound)
     : Filler(os, "SnpEffDatabaseDialog"),
       dbName(dbName),
       dbShouldBeFound(dbShouldBeFound) {
@@ -43,17 +43,17 @@ SnpEffDatabaseDialogFiller::SnpEffDatabaseDialogFiller(GUITestOpStatus &os, cons
 #define GT_CLASS_NAME "SnpEffDatabaseDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void SnpEffDatabaseDialogFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit *lineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "lineEdit", dialog);
+    QLineEdit* lineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "lineEdit", dialog);
     GT_CHECK(lineEdit, "lineEdit is NULL");
     GTLineEdit::setText(os, lineEdit, dbName, false, true);
     GTGlobals::sleep();
 
-    QTableView *table = dynamic_cast<QTableView *>(GTWidget::findWidget(os, "tableView"));
+    QTableView* table = dynamic_cast<QTableView*>(GTWidget::findWidget(os, "tableView"));
     GT_CHECK(table, "tableView is NULL");
 
-    QAbstractItemModel *model = table->model();
+    QAbstractItemModel* model = table->model();
     GT_CHECK(model, "model is NULL");
 
     int rowCount = GTTableView::rowCount(os, table);

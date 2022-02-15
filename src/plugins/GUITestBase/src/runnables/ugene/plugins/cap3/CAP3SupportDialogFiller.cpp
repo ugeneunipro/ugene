@@ -32,7 +32,7 @@ namespace U2 {
 #define GT_METHOD_NAME "run"
 
 void CAP3SupportDialogFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     foreach (QString file, input) {
         int num = file.lastIndexOf('/');

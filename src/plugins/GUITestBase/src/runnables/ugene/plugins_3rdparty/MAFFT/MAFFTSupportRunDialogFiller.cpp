@@ -46,42 +46,42 @@ MAFFTSupportRunDialogFiller::Parameters::Parameters()
 
 #define GT_CLASS_NAME "GTUtilsDialog::MAFFTSupportRunDialogFiller"
 
-MAFFTSupportRunDialogFiller::MAFFTSupportRunDialogFiller(GUITestOpStatus &os, MAFFTSupportRunDialogFiller::Parameters *parameters)
+MAFFTSupportRunDialogFiller::MAFFTSupportRunDialogFiller(GUITestOpStatus& os, MAFFTSupportRunDialogFiller::Parameters* parameters)
     : Filler(os, "MAFFTSupportRunDialog"),
       parameters(parameters) {
     CHECK_SET_ERR(parameters, "Invalid filler parameters: NULL pointer");
 }
 
-MAFFTSupportRunDialogFiller::MAFFTSupportRunDialogFiller(GUITestOpStatus &os, CustomScenario *scenario)
+MAFFTSupportRunDialogFiller::MAFFTSupportRunDialogFiller(GUITestOpStatus& os, CustomScenario* scenario)
     : Filler(os, "MAFFTSupportRunDialog", scenario),
       parameters(nullptr) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void MAFFTSupportRunDialogFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QCheckBox *gapOpenCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "gapOpenCheckBox", dialog));
+    QCheckBox* gapOpenCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "gapOpenCheckBox", dialog));
     GT_CHECK(gapOpenCheckBox, "gapOpenCheckBox is NULL");
     GTCheckBox::setChecked(os, gapOpenCheckBox, parameters->checkBox_gapOpenCheckBox_checked);
 
-    QDoubleSpinBox *gapOpenSpinBox = qobject_cast<QDoubleSpinBox *>(GTWidget::findWidget(os, "gapOpenSpinBox", dialog));
+    QDoubleSpinBox* gapOpenSpinBox = qobject_cast<QDoubleSpinBox*>(GTWidget::findWidget(os, "gapOpenSpinBox", dialog));
     GT_CHECK(gapOpenSpinBox, "gapOpenSpinBox is NULL");
     GTDoubleSpinbox::setValue(os, gapOpenSpinBox, parameters->doubleSpin_gapOpenSpinBox_value);
 
-    QCheckBox *gapExtCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "gapExtCheckBox", dialog));
+    QCheckBox* gapExtCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "gapExtCheckBox", dialog));
     GT_CHECK(gapExtCheckBox, "gapExtCheckBox is NULL");
     GTCheckBox::setChecked(os, gapExtCheckBox, parameters->checkBox_gapExtCheckBox_checked);
 
-    QDoubleSpinBox *gapExtSpinBox = qobject_cast<QDoubleSpinBox *>(GTWidget::findWidget(os, "gapExtSpinBox", dialog));
+    QDoubleSpinBox* gapExtSpinBox = qobject_cast<QDoubleSpinBox*>(GTWidget::findWidget(os, "gapExtSpinBox", dialog));
     GT_CHECK(gapExtSpinBox, "gapExtSpinBox is NULL");
     GTDoubleSpinbox::setValue(os, gapExtSpinBox, parameters->doubleSpin_gapExtSpinBox_value);
 
-    QCheckBox *maxNumberIterRefinementCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "maxNumberIterRefinementCheckBox", dialog));
+    QCheckBox* maxNumberIterRefinementCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "maxNumberIterRefinementCheckBox", dialog));
     GT_CHECK(maxNumberIterRefinementCheckBox, "maxNumberIterRefinementCheckBox is NULL");
     GTCheckBox::setChecked(os, maxNumberIterRefinementCheckBox, parameters->checkBox_maxNumberIterRefinementCheckBox_checked);
 
-    QSpinBox *maxNumberIterRefinementSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "maxNumberIterRefinementSpinBox", dialog));
+    QSpinBox* maxNumberIterRefinementSpinBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "maxNumberIterRefinementSpinBox", dialog));
     GT_CHECK(maxNumberIterRefinementSpinBox, "maxNumberIterRefinementSpinBox is NULL");
     GTSpinBox::setValue(os, maxNumberIterRefinementSpinBox, parameters->spin_maxNumberIterRefinementSpinBox_value);
 

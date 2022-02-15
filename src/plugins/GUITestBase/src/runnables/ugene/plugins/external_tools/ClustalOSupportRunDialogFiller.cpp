@@ -27,13 +27,13 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ClustalOSupportRunDialogFiller"
-ClustalOSupportRunDialogFiller::ClustalOSupportRunDialogFiller(HI::GUITestOpStatus &os)
+ClustalOSupportRunDialogFiller::ClustalOSupportRunDialogFiller(HI::GUITestOpStatus& os)
     : Filler(os, "ClustalOSupportRunDialog") {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void ClustalOSupportRunDialogFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }

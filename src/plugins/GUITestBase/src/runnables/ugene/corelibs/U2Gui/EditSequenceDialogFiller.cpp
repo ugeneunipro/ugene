@@ -43,7 +43,7 @@ namespace U2 {
 using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsDialog::insertSequenceFiller"
-InsertSequenceFiller::InsertSequenceFiller(HI::GUITestOpStatus &_os, const QString &_pasteDataHere, RegionResolvingMode _regionResolvingMode, int _insertPosition, const QString &_documentLocation, documentFormat _format, bool _saveToNewFile, bool _mergeAnnotations, GTGlobals::UseMethod method, bool _wrongInput, bool recalculateQuals)
+InsertSequenceFiller::InsertSequenceFiller(HI::GUITestOpStatus& _os, const QString& _pasteDataHere, RegionResolvingMode _regionResolvingMode, int _insertPosition, const QString& _documentLocation, documentFormat _format, bool _saveToNewFile, bool _mergeAnnotations, GTGlobals::UseMethod method, bool _wrongInput, bool recalculateQuals)
     : Filler(_os, "EditSequenceDialog"), pasteDataHere(_pasteDataHere), regionResolvingMode(_regionResolvingMode), insertPosition(_insertPosition),
       documentLocation(_documentLocation), format(_format), saveToNewFile(_saveToNewFile), mergeAnnotations(_mergeAnnotations),
       useMethod(method), wrongInput(_wrongInput), recalculateQuals(recalculateQuals) {
@@ -57,9 +57,9 @@ InsertSequenceFiller::InsertSequenceFiller(HI::GUITestOpStatus &_os, const QStri
 
 #define GT_METHOD_NAME "commonScenario"
 void InsertSequenceFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QPlainTextEdit *plainText = dialog->findChild<QPlainTextEdit *>("sequenceEdit");
+    QPlainTextEdit* plainText = dialog->findChild<QPlainTextEdit*>("sequenceEdit");
     GT_CHECK(plainText != nullptr, "plain text not found");
     GTPlainTextEdit::setPlainText(os, plainText, pasteDataHere);
 
@@ -79,17 +79,17 @@ void InsertSequenceFiller::commonScenario() {
             break;
     }
 
-    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox *>(os, "recalculateQualsCheckBox"), recalculateQuals);
+    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "recalculateQualsCheckBox"), recalculateQuals);
 
-    QRadioButton *regionResolvingMode = dialog->findChild<QRadioButton *>(radioButtonName);  //"regionResolvingMode");
+    QRadioButton* regionResolvingMode = dialog->findChild<QRadioButton*>(radioButtonName);  //"regionResolvingMode");
     GT_CHECK(regionResolvingMode != nullptr, "regionResolvingMode not found");
     GTRadioButton::click(os, regionResolvingMode);
 
-    QSpinBox *insertPositionSpin = dialog->findChild<QSpinBox *>("insertPositionSpin");
+    QSpinBox* insertPositionSpin = dialog->findChild<QSpinBox*>("insertPositionSpin");
     GT_CHECK(insertPositionSpin != nullptr, "insertPositionSpin not found");
     GTSpinBox::setValue(os, insertPositionSpin, insertPosition, GTGlobals::UseKeyBoard);
 
-    QGroupBox *checkButton = dialog->findChild<QGroupBox *>(QString::fromUtf8("saveToAnotherBox"));
+    QGroupBox* checkButton = dialog->findChild<QGroupBox*>(QString::fromUtf8("saveToAnotherBox"));
     GT_CHECK(checkButton != nullptr, "Check box not found");
 
     if ((saveToNewFile && !checkButton->isChecked()) || (!saveToNewFile && checkButton->isChecked())) {
@@ -112,15 +112,15 @@ void InsertSequenceFiller::commonScenario() {
     GTGlobals::sleep(1000);
 
     if (saveToNewFile) {
-        QCheckBox *checkButton1 = dialog->findChild<QCheckBox *>(QString::fromUtf8("mergeAnnotationsBox"));
+        QCheckBox* checkButton1 = dialog->findChild<QCheckBox*>(QString::fromUtf8("mergeAnnotationsBox"));
         GT_CHECK(checkButton1 != nullptr, "Check box not found");
         GTCheckBox::setChecked(os, checkButton1, mergeAnnotations);
 
-        QLineEdit *lineEdit = dialog->findChild<QLineEdit *>("filepathEdit");
+        QLineEdit* lineEdit = dialog->findChild<QLineEdit*>("filepathEdit");
         GT_CHECK(lineEdit != nullptr, "line edit not found");
         GTLineEdit::setText(os, lineEdit, documentLocation);
 
-        QComboBox *comboBox = dialog->findChild<QComboBox *>();
+        QComboBox* comboBox = dialog->findChild<QComboBox*>();
         GT_CHECK(comboBox != nullptr, "ComboBox not found");
 
         int index = comboBox->findText(comboBoxItems[format]);

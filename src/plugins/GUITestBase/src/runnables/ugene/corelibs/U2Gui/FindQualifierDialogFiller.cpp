@@ -33,38 +33,38 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::FindQualifierFiller"
 
-FindQualifierFiller::FindQualifierFiller(HI::GUITestOpStatus &os, const FindQualifierFiller::FindQualifierFillerSettings &settings)
+FindQualifierFiller::FindQualifierFiller(HI::GUITestOpStatus& os, const FindQualifierFiller::FindQualifierFillerSettings& settings)
     : Filler(os, "SearchQualifierDialog"),
       settings(settings) {
 }
 
-FindQualifierFiller::FindQualifierFiller(HI::GUITestOpStatus &os, CustomScenario *scenario)
+FindQualifierFiller::FindQualifierFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
     : Filler(os, "SearchQualifierDialog", scenario) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void FindQualifierFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit *nameEdit = dialog->findChild<QLineEdit *>("nameEdit");
+    QLineEdit* nameEdit = dialog->findChild<QLineEdit*>("nameEdit");
     GT_CHECK(nameEdit != nullptr, "nameEdit not found");
     GTLineEdit::setText(os, nameEdit, settings.name);
 
-    QLineEdit *valueEdit = dialog->findChild<QLineEdit *>("valueEdit");
+    QLineEdit* valueEdit = dialog->findChild<QLineEdit*>("valueEdit");
     GT_CHECK(valueEdit != nullptr, "valueEdit not found");
     GTLineEdit::setText(os, valueEdit, settings.value);
 
     if (settings.exactMatch) {
-        QRadioButton *exactButton = dialog->findChild<QRadioButton *>("exactButton");
+        QRadioButton* exactButton = dialog->findChild<QRadioButton*>("exactButton");
         GT_CHECK(exactButton != nullptr, "exactButton not found");
         GTRadioButton::click(os, exactButton);
     } else {
-        QRadioButton *containsButton = dialog->findChild<QRadioButton *>("containsButton");
+        QRadioButton* containsButton = dialog->findChild<QRadioButton*>("containsButton");
         GT_CHECK(containsButton != nullptr, "exactButton not found");
         GTRadioButton::click(os, containsButton);
     }
 
-    QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
+    QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
     GT_CHECK(box != nullptr, "buttonBox is NULL");
 
     if (settings.expectTheEndOfTree) {
@@ -76,7 +76,7 @@ void FindQualifierFiller::commonScenario() {
     }
 
     if (settings.nextQualifier && settings.nextCount > 0) {
-        QPushButton *nextButton = box->button(QDialogButtonBox::Ok);
+        QPushButton* nextButton = box->button(QDialogButtonBox::Ok);
         GT_CHECK(nextButton != nullptr, "\"Next\" button is NULL");
         for (unsigned int i = 0; i < settings.nextCount; i++) {
             GTWidget::click(os, nextButton);
@@ -84,7 +84,7 @@ void FindQualifierFiller::commonScenario() {
     }
 
     if (settings.selectAll) {
-        QPushButton *selectAllButton = box->button(QDialogButtonBox::Yes);
+        QPushButton* selectAllButton = box->button(QDialogButtonBox::Yes);
         GT_CHECK(selectAllButton != nullptr, "\"Select all\" button is NULL");
         GTWidget::click(os, selectAllButton);
     }

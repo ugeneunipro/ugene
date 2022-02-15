@@ -39,54 +39,54 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::RemovePartFromSequenceDialogFiller"
-RemovePartFromSequenceDialogFiller::RemovePartFromSequenceDialogFiller(HI::GUITestOpStatus &_os, QString _range, bool recalculateQuals)
+RemovePartFromSequenceDialogFiller::RemovePartFromSequenceDialogFiller(HI::GUITestOpStatus& _os, QString _range, bool recalculateQuals)
     : Filler(_os, "RemovePartFromSequenceDialog"), range(_range), removeType(Resize), format(FASTA), saveNew(false),
       recalculateQuals(recalculateQuals) {
 }
 
-RemovePartFromSequenceDialogFiller::RemovePartFromSequenceDialogFiller(HI::GUITestOpStatus &_os, RemoveType _removeType, bool _saveNew, const QString &_saveToFile, FormatToUse _format)
+RemovePartFromSequenceDialogFiller::RemovePartFromSequenceDialogFiller(HI::GUITestOpStatus& _os, RemoveType _removeType, bool _saveNew, const QString& _saveToFile, FormatToUse _format)
     : Filler(_os, "RemovePartFromSequenceDialog"), removeType(_removeType), format(_format), saveNew(_saveNew), recalculateQuals(false) {
     saveToFile = GTFileDialog::toAbsoluteNativePath(_saveToFile);
     comboBoxItems[FASTA] = "FASTA";
     comboBoxItems[Genbank] = "GenBank";
 }
 
-RemovePartFromSequenceDialogFiller::RemovePartFromSequenceDialogFiller(HI::GUITestOpStatus &_os, RemoveType _removeType)
+RemovePartFromSequenceDialogFiller::RemovePartFromSequenceDialogFiller(HI::GUITestOpStatus& _os, RemoveType _removeType)
     : Filler(_os, "RemovePartFromSequenceDialog"), removeType(_removeType), format(FASTA), recalculateQuals(false) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void RemovePartFromSequenceDialogFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (!range.isEmpty()) {
-        QLineEdit *removeLocationEdit = dialog->findChild<QLineEdit *>(QString::fromUtf8("removeLocationEdit"));
+        QLineEdit* removeLocationEdit = dialog->findChild<QLineEdit*>(QString::fromUtf8("removeLocationEdit"));
         GT_CHECK(removeLocationEdit != nullptr, "QLineEdit \"removeLocationEdit\" not found");
         GTLineEdit::setText(os, removeLocationEdit, range);
     }
     if (removeType == Resize) {
-        QRadioButton *resizeRB = dialog->findChild<QRadioButton *>(QString::fromUtf8("resizeRB"));
+        QRadioButton* resizeRB = dialog->findChild<QRadioButton*>(QString::fromUtf8("resizeRB"));
         GT_CHECK(resizeRB != nullptr, "radio button not found");
         GTRadioButton::click(os, resizeRB);
     } else {
-        QRadioButton *removeRB = dialog->findChild<QRadioButton *>(QString::fromUtf8("removeRB"));
+        QRadioButton* removeRB = dialog->findChild<QRadioButton*>(QString::fromUtf8("removeRB"));
         GT_CHECK(removeRB != nullptr, "radio button not found");
         GTRadioButton::click(os, removeRB);
     }
 
-    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox *>(os, "recalculateQualsCheckBox"), recalculateQuals);
+    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "recalculateQualsCheckBox"), recalculateQuals);
 
     GTGlobals::sleep(1000);
     if (saveNew) {
-        QGroupBox *saveToAnotherBox = dialog->findChild<QGroupBox *>(QString::fromUtf8("saveToAnotherBox"));
+        QGroupBox* saveToAnotherBox = dialog->findChild<QGroupBox*>(QString::fromUtf8("saveToAnotherBox"));
         GTGroupBox::setChecked(os, saveToAnotherBox, true);
-        QLineEdit *filepathEdit = dialog->findChild<QLineEdit *>(QString::fromUtf8("filepathEdit"));
+        QLineEdit* filepathEdit = dialog->findChild<QLineEdit*>(QString::fromUtf8("filepathEdit"));
         GT_CHECK(filepathEdit != nullptr, "QLineEdit \"filepathEdit\" not found");
 
         GTLineEdit::setText(os, filepathEdit, saveToFile);
     }
     if (format != FASTA) {
-        QComboBox *formatBox = dialog->findChild<QComboBox *>(QString::fromUtf8("formatBox"));
+        QComboBox* formatBox = dialog->findChild<QComboBox*>(QString::fromUtf8("formatBox"));
         GT_CHECK(formatBox != nullptr, "format box not found");
         int index = formatBox->findText(comboBoxItems[format]);
         GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));

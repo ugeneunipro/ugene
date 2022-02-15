@@ -26,18 +26,18 @@
 
 namespace U2 {
 
-CreateFragmentDialogFiller::CreateFragmentDialogFiller(HI::GUITestOpStatus &os)
+CreateFragmentDialogFiller::CreateFragmentDialogFiller(HI::GUITestOpStatus& os)
     : Filler(os, "CreateFragmentDialog") {
 }
 
-CreateFragmentDialogFiller::CreateFragmentDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario)
+CreateFragmentDialogFiller::CreateFragmentDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
     : Filler(os, "CreateFragmentDialog", scenario) {
 }
 
 #define GT_CLASS_NAME "GTUtilsDialog::CreateFragmentDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void CreateFragmentDialogFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }

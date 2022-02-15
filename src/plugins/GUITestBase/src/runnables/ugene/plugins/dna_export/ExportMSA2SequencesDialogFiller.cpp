@@ -36,7 +36,7 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportToSequenceFormatFiller"
 
-ExportToSequenceFormatFiller::ExportToSequenceFormatFiller(HI::GUITestOpStatus &_os, const QString &_path, const QString &_name, documentFormat _format, bool saveFile, bool keepCharacters, GTGlobals::UseMethod method)
+ExportToSequenceFormatFiller::ExportToSequenceFormatFiller(HI::GUITestOpStatus& _os, const QString& _path, const QString& _name, documentFormat _format, bool saveFile, bool keepCharacters, GTGlobals::UseMethod method)
     : Filler(_os, "U2__ExportMSA2SequencesDialog"), name(_name), format(_format), saveFile(saveFile), keepCharacters(keepCharacters),
       useMethod(method) {
     path = GTFileDialog::toAbsoluteNativePath(_path, true);
@@ -50,13 +50,13 @@ ExportToSequenceFormatFiller::ExportToSequenceFormatFiller(HI::GUITestOpStatus &
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportToSequenceFormatFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit *lineEdit = dialog->findChild<QLineEdit *>();
+    QLineEdit* lineEdit = dialog->findChild<QLineEdit*>();
     GT_CHECK(lineEdit != nullptr, "line edit not found");
     GTLineEdit::setText(os, lineEdit, path + name);
 
-    QComboBox *comboBox = dialog->findChild<QComboBox *>();
+    QComboBox* comboBox = dialog->findChild<QComboBox*>();
     GT_CHECK(comboBox != nullptr, "ComboBox not found");
 
     int index = comboBox->findText(comboBoxItems[format]);
@@ -67,7 +67,7 @@ void ExportToSequenceFormatFiller::commonScenario() {
     }
 
     if (saveFile) {
-        QCheckBox *saveFileCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "addToProjectBox", dialog));
+        QCheckBox* saveFileCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "addToProjectBox", dialog));
         GTCheckBox::setChecked(os, saveFileCheckBox);
     }
 

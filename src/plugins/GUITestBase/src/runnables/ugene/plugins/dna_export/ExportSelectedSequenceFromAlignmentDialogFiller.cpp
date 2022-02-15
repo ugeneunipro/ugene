@@ -35,7 +35,7 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::exportSelectedSequenceFromAlignment"
 
-ExportSelectedSequenceFromAlignment::ExportSelectedSequenceFromAlignment(HI::GUITestOpStatus &_os, const QString &_path, documentFormat _format, bool _keepGaps, bool _addToProj)
+ExportSelectedSequenceFromAlignment::ExportSelectedSequenceFromAlignment(HI::GUITestOpStatus& _os, const QString& _path, documentFormat _format, bool _keepGaps, bool _addToProj)
     : Filler(_os, "U2__SaveSelectedSequenceFromMSADialog"),
       path(_path),
       format(_format),
@@ -50,7 +50,7 @@ ExportSelectedSequenceFromAlignment::ExportSelectedSequenceFromAlignment(HI::GUI
     comboBoxItems[Ugene_db] = "UGENE Database";
 }
 
-ExportSelectedSequenceFromAlignment::ExportSelectedSequenceFromAlignment(HI::GUITestOpStatus &os, CustomScenario *scenario)
+ExportSelectedSequenceFromAlignment::ExportSelectedSequenceFromAlignment(HI::GUITestOpStatus& os, CustomScenario* scenario)
     : Filler(os, "U2__SaveSelectedSequenceFromMSADialog", scenario),
       format(EMBL),
       keepGaps(false),
@@ -59,23 +59,23 @@ ExportSelectedSequenceFromAlignment::ExportSelectedSequenceFromAlignment(HI::GUI
 
 #define GT_METHOD_NAME "run"
 void ExportSelectedSequenceFromAlignment::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit *lineEdit = dialog->findChild<QLineEdit *>();
+    QLineEdit* lineEdit = dialog->findChild<QLineEdit*>();
     GT_CHECK(lineEdit != nullptr, "line edit not found");
     GTLineEdit::setText(os, lineEdit, path);
 
-    QComboBox *comboBox = dialog->findChild<QComboBox *>("formatCombo");
+    QComboBox* comboBox = dialog->findChild<QComboBox*>("formatCombo");
     GT_CHECK(comboBox != nullptr, "ComboBox not found");
 
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
     GTComboBox::selectItemByIndex(os, comboBox, index);
 
-    QCheckBox *addToProjectBox = dialog->findChild<QCheckBox *>("addToProjectBox");
+    QCheckBox* addToProjectBox = dialog->findChild<QCheckBox*>("addToProjectBox");
     GTCheckBox::setChecked(os, addToProjectBox, addToProj);
 
-    QCheckBox *keepGapsBox = dialog->findChild<QCheckBox *>("keepGapsBox");
+    QCheckBox* keepGapsBox = dialog->findChild<QCheckBox*>("keepGapsBox");
     GTCheckBox::setChecked(os, keepGapsBox, keepGaps);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

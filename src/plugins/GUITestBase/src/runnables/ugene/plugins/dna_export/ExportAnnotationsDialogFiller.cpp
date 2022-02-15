@@ -35,7 +35,7 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportAnnotationsFiller"
-ExportAnnotationsFiller::ExportAnnotationsFiller(const QString &exportToFile, fileFormat format, HI::GUITestOpStatus &os)
+ExportAnnotationsFiller::ExportAnnotationsFiller(const QString& exportToFile, fileFormat format, HI::GUITestOpStatus& os)
     : Filler(os, "U2__ExportAnnotationsDialog"),
       softMode(true),
       format(format),
@@ -46,8 +46,8 @@ ExportAnnotationsFiller::ExportAnnotationsFiller(const QString &exportToFile, fi
     init(exportToFile);
 }
 
-ExportAnnotationsFiller::ExportAnnotationsFiller(HI::GUITestOpStatus &_os,
-                                                 const QString &_exportToFile,
+ExportAnnotationsFiller::ExportAnnotationsFiller(HI::GUITestOpStatus& _os,
+                                                 const QString& _exportToFile,
                                                  fileFormat _format,
                                                  bool addToProject,
                                                  bool saveSequencesUnderAnnotations,
@@ -63,7 +63,7 @@ ExportAnnotationsFiller::ExportAnnotationsFiller(HI::GUITestOpStatus &_os,
     init(_exportToFile);
 }
 
-ExportAnnotationsFiller::ExportAnnotationsFiller(HI::GUITestOpStatus &os, CustomScenario *scenario)
+ExportAnnotationsFiller::ExportAnnotationsFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
     : Filler(os, "U2__ExportAnnotationsDialog", scenario),
       softMode(false),
       format(genbank),
@@ -73,7 +73,7 @@ ExportAnnotationsFiller::ExportAnnotationsFiller(HI::GUITestOpStatus &os, Custom
       useMethod(GTGlobals::UseMouse) {
 }
 
-void ExportAnnotationsFiller::init(const QString &exportToFileParam) {
+void ExportAnnotationsFiller::init(const QString& exportToFileParam) {
     exportToFile = QDir::toNativeSeparators(QDir::cleanPath(exportToFileParam));
 
     comboBoxItems[bed] = "BED";
@@ -86,20 +86,20 @@ void ExportAnnotationsFiller::init(const QString &exportToFileParam) {
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportAnnotationsFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit *lineEdit = dialog->findChild<QLineEdit *>("fileNameEdit");
+    QLineEdit* lineEdit = dialog->findChild<QLineEdit*>("fileNameEdit");
     GT_CHECK(lineEdit != nullptr, "line edit not found");
     GTLineEdit::setText(os, lineEdit, exportToFile);
 
-    QComboBox *comboBox = dialog->findChild<QComboBox *>();
+    QComboBox* comboBox = dialog->findChild<QComboBox*>();
     GT_CHECK(comboBox != nullptr, "ComboBox not found");
 
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
     GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
     if (!addToProject) {
-        QCheckBox *addToProjectButton = dialog->findChild<QCheckBox *>(QString::fromUtf8("addToProjectCheck"));
+        QCheckBox* addToProjectButton = dialog->findChild<QCheckBox*>(QString::fromUtf8("addToProjectCheck"));
         GT_CHECK(addToProjectButton != nullptr, "Check box not found");
         if (addToProjectButton->isEnabled()) {
             GTCheckBox::setChecked(os, addToProjectButton, false);
@@ -107,11 +107,11 @@ void ExportAnnotationsFiller::commonScenario() {
     }
 
     if (!softMode) {
-        QCheckBox *checkButton = dialog->findChild<QCheckBox *>(QString::fromUtf8("exportSequenceCheck"));
+        QCheckBox* checkButton = dialog->findChild<QCheckBox*>(QString::fromUtf8("exportSequenceCheck"));
         GT_CHECK(checkButton != nullptr, "Check box not found");
         GTCheckBox::setChecked(os, checkButton, saveSequencesUnderAnnotations);
 
-        checkButton = dialog->findChild<QCheckBox *>(QString::fromUtf8("exportSequenceNameCheck"));
+        checkButton = dialog->findChild<QCheckBox*>(QString::fromUtf8("exportSequenceNameCheck"));
         GT_CHECK(checkButton != nullptr, "Check box not found");
         GTCheckBox::setChecked(os, checkButton, saveSequenceNames);
     }

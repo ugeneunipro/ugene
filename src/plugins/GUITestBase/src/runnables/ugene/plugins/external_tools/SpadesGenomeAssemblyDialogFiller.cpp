@@ -35,12 +35,12 @@ namespace U2 {
 #define GT_CLASS_NAME "SpadesGenomeAssemblyDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void SpadesGenomeAssemblyDialogFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, output, GTGlobals::UseMouse, GTFileDialogUtils::Choose));
     GTWidget::click(os, GTWidget::findWidget(os, "setResultDirNameButton", dialog));
 
-    QComboBox *libraryComboBox = GTWidget::findExactWidget<QComboBox *>(os, "libraryComboBox", dialog);
+    QComboBox* libraryComboBox = GTWidget::findExactWidget<QComboBox*>(os, "libraryComboBox", dialog);
     GTComboBox::selectItemByText(os, libraryComboBox, library);
 
     foreach (QString s, leftReads) {
@@ -53,18 +53,18 @@ void SpadesGenomeAssemblyDialogFiller::commonScenario() {
         GTWidget::click(os, GTWidget::findWidget(os, "addFightButton", dialog));
     }
 
-    QComboBox *combo;
+    QComboBox* combo;
     if (!datasetType.isEmpty()) {
-        combo = GTWidget::findExactWidget<QComboBox *>(os, "typeCombo", dialog);
+        combo = GTWidget::findExactWidget<QComboBox*>(os, "typeCombo", dialog);
         GTComboBox::selectItemByText(os, combo, datasetType);
     }
 
     if (!runningMode.isEmpty()) {
-        combo = GTWidget::findExactWidget<QComboBox *>(os, "modeCombo", dialog);
+        combo = GTWidget::findExactWidget<QComboBox*>(os, "modeCombo", dialog);
         GTComboBox::selectItemByText(os, combo, runningMode);
     }
 
-    QLineEdit *lineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "kmerEdit", dialog);
+    QLineEdit* lineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "kmerEdit", dialog);
     if (!kmerSizes.isEmpty()) {
         GTLineEdit::setText(os, lineEdit, kmerSizes);
     }

@@ -41,9 +41,9 @@ using namespace HI;
 #define GT_CLASS_NAME "GTUtilsDialog::EditGroupAnnotationsFiller"
 #define GT_METHOD_NAME "commonScenario"
 void EditGroupAnnotationsFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit *lineEdit = dialog->findChild<QLineEdit *>();
+    QLineEdit* lineEdit = dialog->findChild<QLineEdit*>();
     GT_CHECK(lineEdit != nullptr, "line edit not found");
     GTLineEdit::setText(os, lineEdit, groupName);
 

@@ -22,8 +22,6 @@
 #include "TrimmomaticDialogFiller.h"
 
 #include <QApplication>
-#include <QLayout>
-#include <QSpinBox>
 #include <QToolButton>
 #include <QVBoxLayout>
 
@@ -74,9 +72,9 @@ const QMap<TrimmomaticDialogFiller::TrimmomaticValues, QString> TrimmomaticDialo
     {TrimmomaticDialogFiller::TrimmomaticValues::Strictness, "dsbStrictness"},
     {TrimmomaticDialogFiller::TrimmomaticValues::WindowSize, "leWindowSize"}};
 
-void TrimmomaticDialogFiller::openDialog(HI::GUITestOpStatus &os, WorkflowProcessItem *trimmomaticElement) {
+void TrimmomaticDialogFiller::openDialog(HI::GUITestOpStatus& os, WorkflowProcessItem* trimmomaticElement) {
     GTUtilsWorkflowDesigner::click(os, trimmomaticElement);
-    QTableView *table = GTWidget::findExactWidget<QTableView *>(os, "table");
+    QTableView* table = GTWidget::findExactWidget<QTableView*>(os, "table");
     GTMouseDriver::moveTo(GTTableView::getCellPoint(os, table, 1, 1));
     GTMouseDriver::click();
     GTGlobals::sleep();
@@ -84,29 +82,29 @@ void TrimmomaticDialogFiller::openDialog(HI::GUITestOpStatus &os, WorkflowProces
     GTGlobals::sleep(500);
 }
 
-TrimmomaticDialogFiller::TrimmomaticDialogFiller(HI::GUITestOpStatus &os, const QList<QPair<TrimmomaticSteps, QMap<TrimmomaticValues, QVariant>>> &_addValues)
+TrimmomaticDialogFiller::TrimmomaticDialogFiller(HI::GUITestOpStatus& os, const QList<QPair<TrimmomaticSteps, QMap<TrimmomaticValues, QVariant>>>& _addValues)
     : Filler(os, "TrimmomaticPropertyDialog"), addValues(_addValues) {
     a = U2::TrimmomaticDialogFiller::Action::AddSteps;
 }
 
-TrimmomaticDialogFiller::TrimmomaticDialogFiller(HI::GUITestOpStatus &os, const QList<QPair<QPair<TrimmomaticSteps, int>, TrimmomaticDirection>> &_moveValues)
+TrimmomaticDialogFiller::TrimmomaticDialogFiller(HI::GUITestOpStatus& os, const QList<QPair<QPair<TrimmomaticSteps, int>, TrimmomaticDirection>>& _moveValues)
     : Filler(os, "TrimmomaticPropertyDialog"), moveValues(_moveValues) {
     a = U2::TrimmomaticDialogFiller::Action::MoveSteps;
 }
 
-TrimmomaticDialogFiller::TrimmomaticDialogFiller(HI::GUITestOpStatus &os, const QList<QPair<TrimmomaticSteps, int>> &_removeValues)
+TrimmomaticDialogFiller::TrimmomaticDialogFiller(HI::GUITestOpStatus& os, const QList<QPair<TrimmomaticSteps, int>>& _removeValues)
     : Filler(os, "TrimmomaticPropertyDialog"), removeValues(_removeValues) {
     a = U2::TrimmomaticDialogFiller::Action::RemoveSteps;
 }
 
-TrimmomaticDialogFiller::TrimmomaticDialogFiller(HI::GUITestOpStatus &os, CustomScenario *customScenario)
+TrimmomaticDialogFiller::TrimmomaticDialogFiller(HI::GUITestOpStatus& os, CustomScenario* customScenario)
     : Filler(os, "TrimmomaticPropertyDialog", customScenario) {
     a = U2::TrimmomaticDialogFiller::Action::AddSteps;
 }
 
 #define GT_METHOD_NAME "run"
 void TrimmomaticDialogFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     switch (a) {
         case U2::TrimmomaticDialogFiller::Action::AddSteps:
@@ -124,14 +122,14 @@ void TrimmomaticDialogFiller::commonScenario() {
 }
 
 void TrimmomaticDialogFiller::addSteps() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     for (auto step : qAsConst(addValues)) {
         auto stepString = STEPS.value(step.first);
         GT_CHECK(!stepString.isEmpty(), "Step not found");
 
         GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-        QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
+        QMenu* menu = qobject_cast<QMenu*>(GTWidget::findWidget(os, "stepsMenu"));
         GTMenu::clickMenuItemByName(os, menu, QStringList() << stepString);
         GTKeyboardDriver::keyClick(Qt::Key_Escape);
         GTGlobals::sleep(500);
@@ -139,14 +137,14 @@ void TrimmomaticDialogFiller::addSteps() {
         auto settings = step.second;
         auto keys = settings.keys();
         for (int i = 0; i < keys.size(); i++) {
-            const auto &set = keys[i];
+            const auto& set = keys[i];
             auto widgetName = VALUES.value(set);
             GT_CHECK(!widgetName.isEmpty(), "widgetName not found");
 
             auto widget = GTWidget::findWidget(os, "widgetStepSettings", dialog);
             GT_CHECK(widget != nullptr, "widgetStepSettings not found");
 
-            auto l = qobject_cast<QVBoxLayout *>(widget->layout());
+            auto l = qobject_cast<QVBoxLayout*>(widget->layout());
             GT_CHECK(l != nullptr, "layout not found");
 
             auto parentWidget = l->itemAt(l->count() - 1)->widget();
@@ -171,9 +169,9 @@ void TrimmomaticDialogFiller::addSteps() {
                 case U2::TrimmomaticDialogFiller::TrimmomaticValues::ProvideOptionalSettings:
                 case U2::TrimmomaticDialogFiller::TrimmomaticValues::MinAdapterLength:
                 case U2::TrimmomaticDialogFiller::TrimmomaticValues::KeepBothReads:
-                    GTWidget::click(os, GTWidget::findExactWidget<QPushButton *>(os, "pushButton"));
+                    GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "pushButton"));
                     GTGlobals::sleep(200);
-                    QWidget *addSettingsDialog = GTWidget::getActiveModalWidget(os);
+                    QWidget* addSettingsDialog = GTWidget::getActiveModalWidget(os);
 
                     if (keys.contains(U2::TrimmomaticDialogFiller::TrimmomaticValues::ProvideOptionalSettings)) {
                         auto provide = settings[U2::TrimmomaticDialogFiller::TrimmomaticValues::ProvideOptionalSettings];
@@ -208,13 +206,13 @@ void TrimmomaticDialogFiller::addSteps() {
 }
 
 void TrimmomaticDialogFiller::moveSteps() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     for (auto step : qAsConst(moveValues)) {
         auto stepString = STEPS.value(step.first.first);
         GT_CHECK(!stepString.isEmpty(), "Step not found");
 
-        QListWidget *listSteps = GTWidget::findListWidget(os, "listSteps", dialog);
+        QListWidget* listSteps = GTWidget::findListWidget(os, "listSteps", dialog);
 
         GTListWidget::click(os, listSteps, stepString, Qt::LeftButton, step.first.second);
 
@@ -227,12 +225,12 @@ void TrimmomaticDialogFiller::moveSteps() {
                 buttonName = "buttonDown";
                 break;
         }
-        GTWidget::click(os, GTWidget::findExactWidget<QToolButton *>(os, buttonName, dialog));
+        GTWidget::click(os, GTWidget::findExactWidget<QToolButton*>(os, buttonName, dialog));
     }
 }
 
 void TrimmomaticDialogFiller::removeSteps() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     for (auto step : qAsConst(removeValues)) {
         auto stepString = STEPS.value(step.first);
