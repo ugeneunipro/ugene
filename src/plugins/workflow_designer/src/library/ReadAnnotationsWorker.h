@@ -44,7 +44,7 @@ class ReadAnnotationsWorker : public GenericDocReader {
 public:
     ReadAnnotationsWorker(Actor* p);
     virtual void init();
-    Task *tick() override;
+    Task* tick() override;
 
 protected:
     virtual void onTaskFinished(Task* task);
@@ -74,11 +74,11 @@ public:
 class ReadAnnotationsTask : public Task {
     Q_OBJECT
 public:
-    ReadAnnotationsTask(const QString &url,
-                        const QString &datasetName,
-                        WorkflowContext *context,
-                        const ReadAnnotationsProto::Mode &mergeAnnotations,
-                        const QString &mergedAnnTableName = QString());
+    ReadAnnotationsTask(const QString& url,
+                        const QString& datasetName,
+                        WorkflowContext* context,
+                        const ReadAnnotationsProto::Mode& mergeAnnotations,
+                        const QString& mergedAnnTableName = QString());
     virtual void prepare();
     virtual void run();
     virtual void cleanup();
@@ -102,16 +102,16 @@ class MergeAnnotationsTask : public Task {
 public:
     // datasetData is a list of SharedDbiDataHandlers. These tables will be deleted from the db at the end of the run
     // method. tableName and storage must be non-null.
-    MergeAnnotationsTask(const QList<QVariantMap> &datasetData,
-                         const QString &mergedAnnTableName,
-                         DbiDataStorage *storage);
+    MergeAnnotationsTask(const QList<QVariantMap>& datasetData,
+                         const QString& mergedAnnTableName,
+                         DbiDataStorage* storage);
     void run() override;
     QList<QVariantMap> takeResults() const;
 
 private:
     QList<QVariantMap> datasetData;
     QString mergedAnnTableName;
-    DbiDataStorage *storage;
+    DbiDataStorage* storage;
     QList<QVariantMap> results;
 };
 
