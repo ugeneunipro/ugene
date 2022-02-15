@@ -5089,7 +5089,7 @@ GUI_TEST_CLASS_DEFINITION(test_1554) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Click a "Build Tree" button on the toolbar.
-    //    Expected state: a "Build Philogenetic Tree" dialog appears.
+    //    Expected state: a "Build Phylogenetic Tree" dialog appears.
     //    3. Set the out file location and click a "Build" button.
     //    Expected state: a tree view synchronized with msa appears.
     QDir().mkpath(sandBoxDir + "test_1554");

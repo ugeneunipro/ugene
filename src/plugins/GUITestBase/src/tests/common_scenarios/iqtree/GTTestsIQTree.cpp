@@ -92,7 +92,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             GTComboBox::selectItemByText(os, "algorithmBox", dialog, "IQ-TREE");
 
             auto paramsEditor = GTWidget::findPlainTextEdit(os, "extra_parameters_text_edit");
-            GTPlainTextEdit::setPlainText(os, paramsEditor, "-seed\n12345");
+            GTPlainTextEdit::setPlainText(os, paramsEditor, "-seed\n12345 -m\"ra\"te \"E,I,G,I+G\"");
 
             // Set output file name.
             GTLineEdit::setText(os, "fileNameEdit", sandBoxDir + "GUITest_common_scenarios_iqtree_test_0002.nwk", dialog);
@@ -106,8 +106,9 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Check that tool is launched.
-    CHECK_SET_ERR(GTLogTracer::checkMessage("Launching IQ-TREE tool"), "1. No tool launch message found");
-    CHECK_SET_ERR(GTLogTracer::checkMessage("-seed 12345"), "2. No custom argument message found");
+    CHECK_SET_ERR(GTLogTracer::checkMessage("Launching IQ-TREE tool"), "No tool launch message found");
+    CHECK_SET_ERR(GTLogTracer::checkMessage("-seed 12345"), "No custom argument message found/-seed");
+    CHECK_SET_ERR(GTLogTracer::checkMessage("-mrate E,I,G,I+G"), "No custom argument message found/-mrate");
     CHECK_SET_ERR(logTracer.getJoinedErrorString().isEmpty(), "Errors in the log: " + logTracer.getJoinedErrorString());
 
     // Check that tree view is opened.

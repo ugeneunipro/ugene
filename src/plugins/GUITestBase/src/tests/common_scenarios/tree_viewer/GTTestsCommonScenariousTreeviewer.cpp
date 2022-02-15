@@ -72,10 +72,10 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     QAbstractButton* tree = GTAction::button(os, "Build Tree");
     GTWidget::click(os, tree);
-    // Expected state: "Create Philogenetic Tree" dialog appears
+    // Expected state: "Create Phylogenetic Tree" dialog appears
 
     // 3. Set save path to _common_data/scenarios/sandbox/COI.nwk . Click  OK button
-    // Expected state: philogenetic tree appears
+    // Expected state: Phylogenetic tree appears
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 4. Use "Capture tree" button on toolbar to make screenshots
@@ -98,10 +98,10 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
 
     QAbstractButton* tree = GTAction::button(os, "Build Tree");
     GTWidget::click(os, tree);
-    // Expected state: "Create Philogenetic Tree" dialog appears
+    // Expected state: "Create Phylogenetic Tree" dialog appears
 
     // 3. Set save path to _common_data/scenarios/sandbox/COI.nwk . Click  OK button
-    // Expected state: philogenetic tree appears
+    // Expected state: Phylogenetic tree appears
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 4. Use "Capture tree" button on toolbar to make screenshots
@@ -124,10 +124,10 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
 
     QAbstractButton* tree = GTAction::button(os, "Build Tree");
     GTWidget::click(os, tree);
-    // Expected state: "Create Philogenetic Tree" dialog appears
+    // Expected state: "Create Phylogenetic Tree" dialog appears
 
     // 3. Set save path to _common_data/scenarios/sandbox/COI.nwk . Click  OK button
-    // Expected state: philogenetic tree appears
+    // Expected state: Phylogenetic tree appears
 
     // 4. Use "Capture tree" button on toolbar to make screenshots
     GTUtilsDialog::waitForDialog(os, new ExportImage(os, testDir + "_common_data/scenarios/sandbox/image.svg", "JPG", 50));
@@ -145,13 +145,13 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Click on "Build tree" button on toolbar "Build Tree"
-    // Expected state: "Create Philogenetic Tree" dialog appears
+    // Expected state: "Create Phylogenetic Tree" dialog appears
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk"));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 3. Set save path to _common_data/scenarios/sandbox/COI.nwk Click  OK button
-    // Expected state: philogenetic tree appears
+    // Expected state: Phylogenetic tree appears
     QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
     CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
 
@@ -169,13 +169,13 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTMouseDriver::doubleClick();
 
     // 6. Click on "Build tree" button on toolbar
-    // Expected state: "Create Philogenetic Tree" dialog appears
+    // Expected state: "Create Phylogenetic Tree" dialog appears
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk"));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 7. Click  OK button
-    // Expected state: philogenetic tree appears
+    // Expected state: Phylogenetic tree appears
     QWidget* w1 = GTWidget::findWidget(os, "treeView");
     CHECK_SET_ERR(w1 != nullptr, "treeView not found");
 }
@@ -187,7 +187,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Click on "Build tree" button on toolbar "Build Tree"
-    // Expected state: "Create Philogenetic Tree" dialog appears
+    // Expected state: "Create Phylogenetic Tree" dialog appears
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk"));
 
     // DIFFERENCE: Context menu is used for building tree
@@ -197,7 +197,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 3. Set save path to _common_data/scenarios/sandbox/COI.nwk Click  OK button
-    // Expected state: philogenetic tree appears
+    // Expected state: Phylogenetic tree appears
     QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
     CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
 
@@ -206,20 +206,21 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI.nwk"));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QWidget* w = GTWidget::findWidget(os, "treeView", nullptr, {false});
-    CHECK_SET_ERR(w == 0, "treeView not deleted")
+    CHECK_SET_ERR(w == nullptr, "treeView not deleted")
 
     GTUtilsProjectTreeView::findIndex(os, "COI.nwk", {false});
     // Expected state: document "COI.nwk" not presents at project tree, tree editor view window closes
 
-    // 5. Double click on COI object.
+    // 5. Double-click on COI object.
     // Expected state: MSA editor view window opens
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI.aln"));
     GTMouseDriver::doubleClick();
 
     // 6. Click on "Build tree" button on toolbar
-    // Expected state: "Create Philogenetic Tree" dialog appears
+    // Expected state: "Create Phylogenetic Tree" dialog appears
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk"));
     // DIFFERENCE: Context menu is used for building tree
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_TREES << "Build Tree"));
@@ -228,7 +229,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     // 7. Click  OK button
-    // Expected state: philogenetic tree appears
+    // Expected state: phylogenetic tree appears
     QWidget* w1 = GTWidget::findWidget(os, "treeView");
     CHECK_SET_ERR(w1 != nullptr, "treeView not found");
 }
@@ -385,7 +386,7 @@ int getCoord(HI::GUITestOpStatus& os, QGraphicsSimpleTextItem* node) {
 GUI_TEST_CLASS_DEFINITION(test_0006) {
     //    Tree layouts test
     //    1. Open file _common_data/scenario/tree_view/COI.nwk
-    //    Expected state: philogenetic tree appears
+    //    Expected state: Phylogenetic tree appears
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/tree_view/", "COI.nwk");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Click on {Layout->Circilar layout} button on toolbar
@@ -429,7 +430,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     // Labels aligniment test
 
     // 1. Open file _common_data/scenario/tree_view/COI.nwk
-    // Expected state: philogenetic tree appears
+    // Expected state: Phylogenetic tree appears
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/tree_view/", "COI.nwk");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -484,7 +485,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     // Sequence labels test
 
     // 1. Open file _common_data/scenario/tree_view/COI.nwk
-    // Expected state: philogenetic tree appears
+    // Expected state: Phylogenetic tree appears
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/tree_view/", "COI.nwk");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Click on "Show sequence names" button on toolbar
@@ -555,7 +556,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {  // difference: main menu is used
     // Sequence labels test
 
     // 1. Open file _common_data/scenario/tree_view/COI.nwk
-    // Expected state: philogenetic tree appears
+    // Expected state: Phylogenetic tree appears
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/tree_view/", "COI.nwk");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Click on "Show sequence names" button on toolbar
@@ -685,7 +686,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/tree_view/", "COI.nwk");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: philogenetic tree appears
+    //    Expected state: Phylogenetic tree appears
     QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
     QList<GraphicsButtonItem*> nodeList = GTUtilsPhyTree::getNodes(os);
 
@@ -731,7 +732,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/tree_view/", "COI.nwk");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: philogenetic tree appears
+    //    Expected state: Phylogenetic tree appears
     QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
     QList<GraphicsButtonItem*> nodeList = GTUtilsPhyTree::getNodes(os);
 
@@ -1042,7 +1043,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     //    Reroot action.
 
     //    1. Open file "data/samples/Newick/COI.nwk".
-    //    Expected state: a philogenetic tree appears.
+    //    Expected state: a Phylogenetic tree appears.
     GTFileDialog::openFile(os, dataDir + "samples/Newick/COI.nwk");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
