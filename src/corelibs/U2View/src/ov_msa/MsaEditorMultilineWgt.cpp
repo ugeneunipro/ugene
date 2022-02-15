@@ -104,7 +104,7 @@ void MsaEditorMultilineWgt::addChild(MaEditorWgt *child, int index) {
     QVBoxLayout *vbox = (QVBoxLayout *)uiChildrenArea->layout();
     vbox->addWidget(child);
 
-    child->setObjectName(QString("msa_editor_" + editor->getMaObject()->getGObjectName() + "%1").arg(index));
+    child->setObjectName(QString("msa_editor_" + editor->getMaObject()->getGObjectName() + "_%1").arg(index));
     child->getScrollController()->setHScrollBarVisible(!getMultilineMode());
 
     connect(child->getScrollController(), SIGNAL(si_visibleAreaChanged()),
