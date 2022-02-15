@@ -73,8 +73,10 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     auto simpleOverview = GTWidget::findWidget(os, "msa_overview_area_simple");
     CHECK_SET_ERR(!simpleOverview->isVisible(), "simple overview is visible");
 
+    // Is not visible for too big size
+    // See MSAEditor::initActions()
     auto graphOverview = GTWidget::findWidget(os, "msa_overview_area_graph");
-    CHECK_SET_ERR(graphOverview->isVisible(), "graph overview is visible");
+    CHECK_SET_ERR(!graphOverview->isVisible(), "graph overview is visible");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
