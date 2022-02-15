@@ -544,11 +544,11 @@ GUI_TEST_CLASS_DEFINITION(test_5130) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget* msaEditorView = GTWidget::findWidget(os, "msa_editor_COI");
-    MsaEditorWgt* msaWidget = qobject_cast<MsaEditorWgt*>(msaEditorView);
-    MaEditorNameList* nameListWidget = msaWidget->getEditorNameList();
-    MaEditorConsensusArea* consWidget = msaWidget->getConsensusArea();
-    MaEditorSequenceArea* seqAreaWidget = msaWidget->getSequenceArea();
+    QWidget *msaEditorView = GTWidget::findWidget(os, "msa_editor_COI_0");
+    MsaEditorWgt *msaWidget = qobject_cast<MsaEditorWgt *>(msaEditorView);
+    MaEditorNameList *nameListWidget = msaWidget->getEditorNameList();
+    MaEditorConsensusArea *consWidget = msaWidget->getConsensusArea();
+    MaEditorSequenceArea *seqAreaWidget = msaWidget->getSequenceArea();
 
     QFont nameListFontBefore = nameListWidget->getFont(false);
     nameListFontBefore.setItalic(false);
