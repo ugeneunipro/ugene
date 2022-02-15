@@ -885,31 +885,32 @@ Task::ReportResult GTest_CheckAnnotationsNamesInTwoObjects::report() {
     return ReportResult_Finished;
 }
 
-void GTest_CheckAnnotationsInTwoObjects::init(XMLTestFormat *, const QDomElement &el) {
-    docContextName = el.attribute(DOC_ATTR);
-    if (docContextName.isEmpty()) {
+//---------------------------------------------------------------
+void GTest_CheckAnnotationsInTwoDocuments::init(XMLTestFormat *, const QDomElement &el) {
+    doc1ContextName = el.attribute(DOC_ATTR);
+    if (doc1ContextName.isEmpty()) {
         failMissingValue(DOC_ATTR);
         return;
     }
 
-    secondDocContextName = el.attribute(VALUE_ATTR);
-    if (secondDocContextName.isEmpty()) {
+    doc2ContextName = el.attribute(VALUE_ATTR);
+    if (doc2ContextName.isEmpty()) {
         failMissingValue(VALUE_ATTR);
     }
 }
 
-Task::ReportResult GTest_CheckAnnotationsInTwoObjects::report() {
-    auto doc = getContext<Document>(this, docContextName),
-         doc2 = getContext<Document>(this, secondDocContextName);
-    if (doc == nullptr || doc2 == nullptr) {
-        setError(QString("One of the documents '%1', '%2' was not found").arg(docContextName, secondDocContextName));
+Task::ReportResult GTest_CheckAnnotationsInTwoDocuments::report() {
+    Document *doc1 = getContext<Document>(this, doc1ContextName);
+    Document *doc2 = getContext<Document>(this, doc2ContextName);
+    if (doc1 == nullptr || doc2 == nullptr) {
+        setError(QString("One of the documents '%1', '%2' was not found").arg(doc1ContextName, doc2ContextName));
         return ReportResult_Finished;
     }
 
     auto getAnnotationTables = [this](Document *document) -> QList<AnnotationTableObject *> {
         QList<GObject *> objs = document->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
         QList<AnnotationTableObject *> tables;
-        for (GObject *obj : qAsConst(objs))
+        for (GObject *obj : qAsConst(objs)) {
             if (auto table = qobject_cast<AnnotationTableObject *>(obj)) {
                 tables.push_back(table);
             } else {
@@ -917,26 +918,27 @@ Task::ReportResult GTest_CheckAnnotationsInTwoObjects::report() {
                              .arg(obj->getGObjectName(), document->getName()));
                 return {};
             }
+        }
         return tables;
     };
 
-    QString docName = doc->getName(),
-            docName2 = doc2->getName();
-    QList<AnnotationTableObject *> tables = getAnnotationTables(doc),
-                                   tables2 = getAnnotationTables(doc2);  // The order of the tables matters, the name
-                                                                         // and other characteristics do not matter.
-    if (hasError())
+    QString docName1 = doc1->getName();
+    QString docName2 = doc2->getName();
+    QList<AnnotationTableObject *> tables1 = getAnnotationTables(doc1);  // The order of the tables matters, the name
+    QList<AnnotationTableObject *> tables2 = getAnnotationTables(doc2);  // and other characteristics do not matter.
+    if (hasError()) {
         return ReportResult_Finished;
-    if (tables.size() != tables2.size() || tables.empty()) {
+    }
+    if (tables1.size() != tables2.size() || tables1.empty()) {
         setError(QString("The first document '%1' has %2 annotation tables, the second '%3' has %4")
-                     .arg(docName)
-                     .arg(tables.size())
+                     .arg(docName1)
+                     .arg(tables1.size())
                      .arg(docName2)
                      .arg(tables2.size()));
         return ReportResult_Finished;
     }
 
-    for (int i = 0; i < tables.size(); i++) {
+    for (int i = 0; i < tables1.size(); i++) {
         auto annotToString = [](Annotation *a) {
             return a->getName() + ' ' + U2FeatureTypes::getVisualName(a->getType()) + ' ' +
                    a->getGroup()->getGroupPath() + ' ' + buildSortedLocationString(a);
@@ -949,37 +951,38 @@ Task::ReportResult GTest_CheckAnnotationsInTwoObjects::report() {
                        anns.end());
             return anns;
         };
-        AnnotationTableObject *table = tables[i],
-                              *table2 = tables2[i];
-        QString tableName = table->getGObjectName(),
-                tableName2 = table2->getGObjectName();
-        QList<Annotation *> anns = getAnnotationsNotComments(table),
-                            anns2 = getAnnotationsNotComments(table2);  // Annotation order doesn't matter.
-        if (anns.size() != anns2.size()) {
+
+        AnnotationTableObject *table1 = tables1[i];
+        AnnotationTableObject *table2 = tables2[i];
+        QString tableName1 = table1->getGObjectName();
+        QString tableName2 = table2->getGObjectName();
+        QList<Annotation *> anns1 = getAnnotationsNotComments(table1);
+        QList<Annotation *> anns2 = getAnnotationsNotComments(table2);  // Annotation order doesn't matter.
+        if (anns1.size() != anns2.size()) {
             setError(QString("Table '%1' ('%2') has %3 annotations, table '%4' ('%5') has %6")
-                         .arg(tableName, docName)
-                         .arg(anns.size())
+                         .arg(tableName1, docName1)
+                         .arg(anns1.size())
                          .arg(tableName2, docName2)
                          .arg(anns2.size()));
             return ReportResult_Finished;
         }
-        for (Annotation *a : qAsConst(anns)) {
-            auto foundAnn = std::find_if(anns2.begin(), anns2.end(), [a](Annotation *a2) {
+        for (Annotation *a : qAsConst(anns1)) {
+            auto foundAnnotation = std::find_if(anns2.begin(), anns2.end(), [a](Annotation *a2) {
                 return *a->getData() == *(a2)->getData() &&
-                       a->getGroup()->getGroupPath() == a2->getGroup()->getGroupPath();  // Case sensitive.
-                                                                         // AnnotationData::operator== may contain bugs.
+                       a->getGroup()->getGroupPath() == a2->getGroup()->getGroupPath();
             });
-            if (foundAnn == anns2.end()) {
+            if (foundAnnotation == anns2.end()) {
                 setError(QString("Annotation '%1' from table '%2' ('%3') was not found in table '%4' ('%5')")
-                             .arg(annotToString(a), tableName, docName, tableName2, docName2));
+                             .arg(annotToString(a), tableName1, docName1, tableName2, docName2));
                 return ReportResult_Finished;
             }
-            anns2.erase(foundAnn);
+            anns2.erase(foundAnnotation);
         }
     }
     return ReportResult_Finished;
 }
 
+//---------------------------------------------------------------
 void GTest_FindAnnotationByLocation::init(XMLTestFormat *, const QDomElement &el) {
     result = nullptr;
     objContextName = el.attribute(OBJ_ATTR);
@@ -1125,7 +1128,7 @@ QList<XMLTestFactory *> AnnotationTableObjectTest::createTestFactories() {
     res.append(GTest_CheckAnnotationsLocationsAndNumReorderdered::createFactory());
     res.append(GTest_CheckAnnotationsQualifiersInTwoObjects::createFactory());
     res.append(GTest_CheckAnnotationsNamesInTwoObjects::createFactory());
-    res.append(GTest_CheckAnnotationsInTwoObjects::createFactory());
+    res.append(GTest_CheckAnnotationsInTwoDocuments::createFactory());
     res.append(GTest_CheckAnnotationSequence::createFactory());
     res.append(GTest_CreateTmpAnnotationObject::createFactory());
     return res;
