@@ -91,7 +91,7 @@ protected:
      * Returns match length for the current point in the matrix.
      * Returns -1 if some unexpected error occurs.
      */
-    int getLen(int x, int y) const {
+    int getLen(int x, int y) const { // NOLINT(misc-no-recursion)
         if (y == -1 || x == -1) {
             return 0;  // End of the matrix.
         }
