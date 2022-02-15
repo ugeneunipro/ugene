@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-MsaEditorUserModStepController::MsaEditorUserModStepController(const U2EntityRef &_msaEntityRef)
+MsaEditorUserModStepController::MsaEditorUserModStepController(const U2EntityRef& _msaEntityRef)
     : msaEntityRef(_msaEntityRef), msaChangeTracker(nullptr) {
 }
 
@@ -35,7 +35,7 @@ MsaEditorUserModStepController::~MsaEditorUserModStepController() {
     delete msaChangeTracker;
 }
 
-void MsaEditorUserModStepController::startTracking(U2OpStatus &os) {
+void MsaEditorUserModStepController::startTracking(U2OpStatus& os) {
     if (msaChangeTracker != nullptr) {
         os.setError("Another action changing alignment is being performed now");
         return;

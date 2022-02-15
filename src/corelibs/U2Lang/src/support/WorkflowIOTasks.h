@@ -37,7 +37,7 @@ using namespace Workflow;
 class U2LANG_EXPORT LoadWorkflowTask : public Task {
     Q_OBJECT
 public:
-    LoadWorkflowTask(const QSharedPointer<Schema> &schema, Metadata *meta, const QString &url);
+    LoadWorkflowTask(const QSharedPointer<Schema>& schema, Metadata* meta, const QString& url);
     virtual void run();
     Task::ReportResult report();
     QSharedPointer<Schema> getSchema() const {
@@ -46,7 +46,7 @@ public:
     QString getURL() const {
         return url;
     }
-    Metadata *getMetadata() {
+    Metadata* getMetadata() {
         return meta;
     }
     QMap<ActorId, ActorId> getRemapping() {
@@ -58,12 +58,12 @@ public:
         XML,
         UNKNOWN
     };
-    static FileFormat detectFormat(const QString &rawData);
+    static FileFormat detectFormat(const QString& rawData);
 
 protected:
     const QString url;
     const QSharedPointer<Schema> schema;
-    Metadata *meta;
+    Metadata* meta;
     QString rawData;
     FileFormat format;
     QMap<ActorId, ActorId> remap;
@@ -73,7 +73,7 @@ protected:
 class U2LANG_EXPORT SaveWorkflowTask : public Task {
     Q_OBJECT
 public:
-    SaveWorkflowTask(Schema *schema, const Metadata &meta, bool copyMode);
+    SaveWorkflowTask(Schema* schema, const Metadata& meta, bool copyMode);
     Task::ReportResult report();
     virtual void run();
 

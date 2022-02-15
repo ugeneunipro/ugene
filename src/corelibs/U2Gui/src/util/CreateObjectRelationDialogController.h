@@ -36,12 +36,12 @@ class GObject;
 class U2GUI_EXPORT CreateObjectRelationDialogController : public QDialog {
     Q_OBJECT
 public:
-    CreateObjectRelationDialogController(GObject *obj, const QList<GObject *> &objects, GObjectRelationRole role, bool removeDuplicates, const QString &relationHint, QWidget *p = nullptr);
+    CreateObjectRelationDialogController(GObject* obj, const QList<GObject*>& objects, GObjectRelationRole role, bool removeDuplicates, const QString& relationHint, QWidget* p = nullptr);
     ~CreateObjectRelationDialogController();
 
-    GObject *selectedObject;
-    GObject *assObj;
-    QList<GObject *> objects;
+    GObject* selectedObject;
+    GObject* assObj;
+    QList<GObject*> objects;
     GObjectRelationRole role;
     bool removeDuplicates;
     bool relationIsSet;
@@ -50,7 +50,7 @@ public slots:
     virtual void accept();
 
 private:
-    Ui_CreateObjectRelationDialog *ui;
+    Ui_CreateObjectRelationDialog* ui;
 };
 
 }  // namespace U2

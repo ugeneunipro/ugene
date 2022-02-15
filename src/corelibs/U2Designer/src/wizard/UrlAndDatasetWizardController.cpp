@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-UrlAndDatasetWizardController::UrlAndDatasetWizardController(WizardController *wc, UrlAndDatasetWidget *_widget)
+UrlAndDatasetWizardController::UrlAndDatasetWizardController(WizardController* wc, UrlAndDatasetWidget* _widget)
     : WidgetController(wc), widget(_widget), dsc(nullptr) {
 }
 
@@ -37,7 +37,7 @@ UrlAndDatasetWizardController::~UrlAndDatasetWizardController() {
     delete dsc;
 }
 
-QWidget *UrlAndDatasetWizardController::createGUI(U2OpStatus &os) {
+QWidget* UrlAndDatasetWizardController::createGUI(U2OpStatus& os) {
     if (2 != widget->getInfos().count()) {
         os.setError("Invalid info");
         return nullptr;

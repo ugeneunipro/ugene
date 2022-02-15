@@ -65,7 +65,7 @@ void CuffmergeWorkerFactory::init() {
                                                        " to Cuffmerge in order to gracefully merge input (e.g. novel) isoforms and"
                                                        " known isoforms and maximize overall assembly quality."));
 
-    QList<Attribute *> attributes;
+    QList<Attribute*> attributes;
     {  // Define parameters of the element
         Descriptor outDir(OUT_DIR,
                           CuffmergeWorker::tr("Output folder"),
@@ -108,7 +108,7 @@ void CuffmergeWorkerFactory::init() {
         attributes << new Attribute(tmpDir, BaseTypes::STRING_TYPE(), true, QVariant(L10N::defaultStr()));
     }
 
-    QList<PortDescriptor *> portDescriptors;
+    QList<PortDescriptor*> portDescriptors;
     {  // Define ports of the element
         Descriptor inDesc(BasePorts::IN_ANNOTATIONS_PORT_ID(),
                           CuffmergeWorker::tr("Set of annotations"),
@@ -130,12 +130,12 @@ void CuffmergeWorkerFactory::init() {
     }
 
     // Create the actor prototype
-    ActorPrototype *proto = new IntegralBusActorPrototype(cuffmergeDescriptor,
+    ActorPrototype* proto = new IntegralBusActorPrototype(cuffmergeDescriptor,
                                                           portDescriptors,
                                                           attributes);
 
     // Values range of some parameters
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         delegates[OUT_DIR] = new URLDelegate("", "", false, true /*path*/);
         QString allFormatsFilter = FileFilters::createAllSupportedFormatsFileFilter();
@@ -163,14 +163,14 @@ void CuffmergeWorkerFactory::init() {
         BaseActorCategories::CATEGORY_RNA_SEQ(),
         proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new CuffmergeWorkerFactory());
 }
 
 /*****************************
  * CuffmergePrompter
  *****************************/
-CuffmergePrompter::CuffmergePrompter(Actor *parent)
+CuffmergePrompter::CuffmergePrompter(Actor* parent)
     : PrompterBase<CuffmergePrompter>(parent) {
 }
 
@@ -183,7 +183,7 @@ QString CuffmergePrompter::composeRichDoc() {
 /*****************************
  * CuffmergeWorker
  *****************************/
-CuffmergeWorker::CuffmergeWorker(Actor *actor)
+CuffmergeWorker::CuffmergeWorker(Actor* actor)
     : BaseWorker(actor, false /*autoTransit*/),
       input(nullptr),
       output(nullptr) {
@@ -197,14 +197,14 @@ void CuffmergeWorker::init() {
     output = ports[BasePorts::OUT_ANNOTATIONS_PORT_ID()];
 }
 
-Task *CuffmergeWorker::tick() {
+Task* CuffmergeWorker::tick() {
     while (input->hasMessage()) {
         takeAnnotations();
     }
     if (!input->isEnded()) {
         return nullptr;  // Continue waiting for more input.
     }
-    Task *cuffmergeTask = createCuffmergeTask();
+    Task* cuffmergeTask = createCuffmergeTask();
     if (cuffmergeTask == nullptr) {
         setDone();
         return nullptr;
@@ -214,7 +214,7 @@ Task *CuffmergeWorker::tick() {
 }
 
 void CuffmergeWorker::sl_taskFinished() {
-    auto task = dynamic_cast<CuffmergeSupportTask *>(sender());
+    auto task = dynamic_cast<CuffmergeSupportTask*>(sender());
     SAFE_POINT_EXT(task, setDone(), );
     CHECK(task->isFinished(), );
     if (task->isCanceled() || task->hasError()) {
@@ -223,14 +223,14 @@ void CuffmergeWorker::sl_taskFinished() {
     }
 
     QVariantMap data;
-    QList<AnnotationTableObject *> annTables = task->takeResult();
+    QList<AnnotationTableObject*> annTables = task->takeResult();
     data[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = QVariant::fromValue(context->getDataStorage()->putAnnotationTables(annTables));
     Message m(output->getBusType(), data);
     output->put(m);
     qDeleteAll(annTables);
 
     output->setEnded();
-    foreach (const QString &url, task->getOutputFiles()) {
+    foreach (const QString& url, task->getOutputFiles()) {
         context->getMonitor()->addOutputFile(url, getActor()->getId());
     }
     setDone();
@@ -248,7 +248,7 @@ void CuffmergeWorker::takeAnnotations() {
     annTableHandlers << StorageUtils::getAnnotationTableHandlers(annsVar);
 }
 
-Task *CuffmergeWorker::createCuffmergeTask() {
+Task* CuffmergeWorker::createCuffmergeTask() {
     if (annTableHandlers.isEmpty()) {
         return nullptr;  // Nothing to merge, no task is needed.
     }

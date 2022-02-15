@@ -38,16 +38,16 @@ class U2VIEW_EXPORT McaEditorConsensusArea : public MaEditorConsensusArea {
     Q_DISABLE_COPY(McaEditorConsensusArea)
 
 public:
-    McaEditorConsensusArea(McaEditorWgt *ui);
+    McaEditorConsensusArea(McaEditorWgt* ui);
 
     QString getDefaultAlgorithmId() const override {
         return BuiltInConsensusAlgorithms::SIMPLE_EXTENDED_ALGO;
     }
 
-    MaConsensusMismatchController *getMismatchController() {
+    MaConsensusMismatchController* getMismatchController() {
         return mismatchController;
     }
-    void buildStaticToolbar(QToolBar *tb);
+    void buildStaticToolbar(QToolBar* tb);
 
 protected:
     QString getConsensusPercentTip(int pos, int minReportPercent, int maxReportChars) const override;
@@ -56,7 +56,7 @@ protected:
     QString getLastUsedAlgoSettingsKey() const override;
 
 private:
-    MaConsensusMismatchController *mismatchController;
+    MaConsensusMismatchController* mismatchController;
 };
 
 }  // namespace U2

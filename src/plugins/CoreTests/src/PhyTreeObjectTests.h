@@ -39,7 +39,7 @@ class GTest_CalculateTreeFromAligment : public XmlTest {
     ReportResult report();
     void prepare();
 
-    PhyTreeGeneratorLauncherTask *task;
+    PhyTreeGeneratorLauncherTask* task;
     QString objContextName;
     QString treeObjContextName;
     QString algId;
@@ -78,7 +78,7 @@ class GTest_CompareTreesInTwoObjects : public XmlTest {
 
 class PhyTreeObjectTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

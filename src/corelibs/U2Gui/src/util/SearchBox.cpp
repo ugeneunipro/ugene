@@ -31,7 +31,7 @@ static const QString CLEAR_BUTTON_STYLE_SHEET = "border: 0px; padding: 1px 0px 0
 
 namespace U2 {
 
-SearchBox::SearchBox(QWidget *p)
+SearchBox::SearchBox(QWidget* p)
     : QLineEdit(p), firstShow(true), progressLabel(new QLabel(this)), progressMovie(new QMovie(":/core/images/progress.gif", QByteArray(), progressLabel)),
       searchIconLabel(new QLabel(this)), clearButton(new QToolButton(this)) {
     setObjectName("nameFilterEdit");
@@ -48,7 +48,7 @@ SearchBox::SearchBox(QWidget *p)
     clearButton->setCursor(Qt::ArrowCursor);
     clearButton->setVisible(false);
     connect(clearButton, SIGNAL(clicked()), SLOT(sl_filterCleared()));
-    connect(this, SIGNAL(textChanged(const QString &)), SLOT(sl_textChanged(const QString &)));
+    connect(this, SIGNAL(textChanged(const QString&)), SLOT(sl_textChanged(const QString&)));
     clearButton->setObjectName("project filter clear button");
 
     initStyle();
@@ -72,11 +72,11 @@ void SearchBox::sl_filterCleared() {
     setText(QString());
 }
 
-void SearchBox::sl_textChanged(const QString &text) {
+void SearchBox::sl_textChanged(const QString& text) {
     clearButton->setVisible(!text.isEmpty());
 }
 
-void SearchBox::paintEvent(QPaintEvent *event) {
+void SearchBox::paintEvent(QPaintEvent* event) {
     if (firstShow) {
         firstShow = false;
         sl_filteringFinished();
@@ -114,7 +114,7 @@ void SearchBox::updateInternalControlsPosition() {
     searchIconLabel->move(widgetRect.left() + 2 * frameWidth, (widgetRect.bottom() - iconLabelSize.height() + 1) / 2);
 }
 
-void SearchBox::resizeEvent(QResizeEvent *event) {
+void SearchBox::resizeEvent(QResizeEvent* event) {
     updateInternalControlsPosition();
     QLineEdit::resizeEvent(event);
 }

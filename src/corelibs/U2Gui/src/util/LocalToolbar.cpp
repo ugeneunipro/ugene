@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-LocalToolbar::LocalToolbar(QWidget *p)
+LocalToolbar::LocalToolbar(QWidget* p)
     : OrderedToolbar(p, Qt::Vertical) {
     setBackgroundRole(QPalette::Window);
     setAutoFillBackground(true);
@@ -40,10 +40,10 @@ LocalToolbar::LocalToolbar(QWidget *p)
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
 }
 
-void LocalToolbar::addAction(QAction *a) {
+void LocalToolbar::addAction(QAction* a) {
     QToolBar::addAction(a);
 
-    QToolButton *button = qobject_cast<QToolButton *>(widgetForAction(a));
+    QToolButton* button = qobject_cast<QToolButton*>(widgetForAction(a));
     button->setFixedSize(TOOLBAR_BUTTON_SIZE, TOOLBAR_BUTTON_SIZE);
 }
 

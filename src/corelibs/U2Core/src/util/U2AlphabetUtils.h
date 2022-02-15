@@ -33,7 +33,7 @@ namespace U2 {
 
 class DNAAlphabetComparator {
 public:
-    DNAAlphabetComparator(const DNAAlphabet *_al1, const DNAAlphabet *_al2)
+    DNAAlphabetComparator(const DNAAlphabet* _al1, const DNAAlphabet* _al2)
         : al1(_al1), al2(_al2) {
         assert(al1->getType() == al2->getType());
     }
@@ -42,8 +42,8 @@ public:
 
     virtual bool equals(char c1, char c2) const = 0;
 
-    const DNAAlphabet *al1;
-    const DNAAlphabet *al2;
+    const DNAAlphabet* al1;
+    const DNAAlphabet* al2;
 };
 
 // NOTE: use comparators as template params to optimize comparison with virtual call
@@ -51,7 +51,7 @@ public:
 // compares symbols exactly, 'N' does not match any symbol ('N'!='N')
 class ExactDNAAlphabetComparatorN0 : public DNAAlphabetComparator {
 public:
-    ExactDNAAlphabetComparatorN0(const DNAAlphabet *_al1, const DNAAlphabet *_al2)
+    ExactDNAAlphabetComparatorN0(const DNAAlphabet* _al1, const DNAAlphabet* _al2)
         : DNAAlphabetComparator(_al1, _al2) {
         assert(al1 == al2);
     }
@@ -64,7 +64,7 @@ public:
 // compares symbols, 'N' does not match any symbol except 'N'
 class ExactDNAAlphabetComparatorStrict : public DNAAlphabetComparator {
 public:
-    ExactDNAAlphabetComparatorStrict(const DNAAlphabet *_al1, const DNAAlphabet *_al2)
+    ExactDNAAlphabetComparatorStrict(const DNAAlphabet* _al1, const DNAAlphabet* _al2)
         : DNAAlphabetComparator(_al1, _al2) {
         assert(al1 == al2);
     }
@@ -77,7 +77,7 @@ public:
 // compares symbols, 'N' matches any symbol if found in first sequence. N in  the second sequence matches 'N' only
 class ExactDNAAlphabetComparatorN1M : public DNAAlphabetComparator {
 public:
-    ExactDNAAlphabetComparatorN1M(const DNAAlphabet *_al1, const DNAAlphabet *_al2)
+    ExactDNAAlphabetComparatorN1M(const DNAAlphabet* _al1, const DNAAlphabet* _al2)
         : DNAAlphabetComparator(_al1, _al2) {
         assert(al1 == al2);
     }
@@ -90,7 +90,7 @@ public:
 // compares symbols, 'N' matches any symbol
 class ExactDNAAlphabetComparatorN1M_N2M : public DNAAlphabetComparator {
 public:
-    ExactDNAAlphabetComparatorN1M_N2M(const DNAAlphabet *_al1, const DNAAlphabet *_al2)
+    ExactDNAAlphabetComparatorN1M_N2M(const DNAAlphabet* _al1, const DNAAlphabet* _al2)
         : DNAAlphabetComparator(_al1, _al2) {
         assert(al1 == al2);
     }
@@ -105,7 +105,7 @@ public:
 // compares extended alphabet symbols, 'N' matches any symbol
 class U2CORE_EXPORT ExtendedDNAlphabetComparator : public DNAAlphabetComparator {
 public:
-    ExtendedDNAlphabetComparator(const DNAAlphabet *_al1, const DNAAlphabet *_al2);
+    ExtendedDNAlphabetComparator(const DNAAlphabet* _al1, const DNAAlphabet* _al2);
     virtual bool equals(char c1, char c2) const;
 
 private:
@@ -126,49 +126,49 @@ int ExtendedDNAlphabetComparator::getMatchMask(char c) const {
 
 class U2CORE_EXPORT U2AlphabetUtils {
 public:
-    static bool matches(const DNAAlphabet *al, const char *seq, qint64 len);
+    static bool matches(const DNAAlphabet* al, const char* seq, qint64 len);
 
-    static bool matches(const DNAAlphabet *al, const char *seq, qint64 len, const U2Region &r);
+    static bool matches(const DNAAlphabet* al, const char* seq, qint64 len, const U2Region& r);
 
-    static char getDefaultSymbol(const U2AlphabetId &alphaId);
+    static char getDefaultSymbol(const U2AlphabetId& alphaId);
 
-    static void assignAlphabet(MultipleSequenceAlignment &ma);
+    static void assignAlphabet(MultipleSequenceAlignment& ma);
 
-    static void assignAlphabet(MultipleSequenceAlignment &ma, char ignore);
+    static void assignAlphabet(MultipleSequenceAlignment& ma, char ignore);
 
-    static const DNAAlphabet *getById(const U2AlphabetId &id) {
+    static const DNAAlphabet* getById(const U2AlphabetId& id) {
         return getById(id.id);
     }
 
-    static const DNAAlphabet *getById(const QString &id);
+    static const DNAAlphabet* getById(const QString& id);
 
-    static const DNAAlphabet *findBestAlphabet(const char *seq, qint64 len);
+    static const DNAAlphabet* findBestAlphabet(const char* seq, qint64 len);
 
-    static const DNAAlphabet *findBestAlphabet(const QByteArray &arr) {
+    static const DNAAlphabet* findBestAlphabet(const QByteArray& arr) {
         return findBestAlphabet(arr.constData(), arr.length());
     }
 
-    static const DNAAlphabet *findBestAlphabet(const char *seq, qint64 len, const QVector<U2Region> &regionsToProcess);
+    static const DNAAlphabet* findBestAlphabet(const char* seq, qint64 len, const QVector<U2Region>& regionsToProcess);
 
-    static const DNAAlphabet *findBestAlphabet(const QByteArray &arr, const QVector<U2Region> &regionsToProcess) {
+    static const DNAAlphabet* findBestAlphabet(const QByteArray& arr, const QVector<U2Region>& regionsToProcess) {
         return findBestAlphabet(arr.constData(), arr.length(), regionsToProcess);
     }
 
-    static QList<const DNAAlphabet *> findAllAlphabets(const char *seq, qint64 len);
+    static QList<const DNAAlphabet*> findAllAlphabets(const char* seq, qint64 len);
 
-    static QList<const DNAAlphabet *> findAllAlphabets(const QByteArray &arr) {
+    static QList<const DNAAlphabet*> findAllAlphabets(const QByteArray& arr) {
         return findAllAlphabets(arr.constData(), arr.length());
     }
 
-    static QList<const DNAAlphabet *> findAllAlphabets(const char *seq, qint64 len, const QVector<U2Region> &regionsToProcess);
+    static QList<const DNAAlphabet*> findAllAlphabets(const char* seq, qint64 len, const QVector<U2Region>& regionsToProcess);
 
-    static QList<const DNAAlphabet *> findAllAlphabets(const QByteArray &arr, const QVector<U2Region> &regionsToProcess) {
+    static QList<const DNAAlphabet*> findAllAlphabets(const QByteArray& arr, const QVector<U2Region>& regionsToProcess) {
         return findAllAlphabets(arr.constData(), arr.length(), regionsToProcess);
     }
 
-    static const DNAAlphabet *deriveCommonAlphabet(const DNAAlphabet *al1, const DNAAlphabet *al2);
+    static const DNAAlphabet* deriveCommonAlphabet(const DNAAlphabet* al1, const DNAAlphabet* al2);
 
-    static const DNAAlphabet *getExtendedAlphabet(const DNAAlphabet *al);
+    static const DNAAlphabet* getExtendedAlphabet(const DNAAlphabet* al);
 };
 
 }  // namespace U2

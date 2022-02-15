@@ -29,7 +29,7 @@ namespace U2 {
 
 #define DEFAULT_FILL_VALUE -1000000.0f
 
-SMatrix::SMatrix(const QString &_name, const DNAAlphabet *_alphabet, const QList<SScore> &rawMatrix, const QString &_description)
+SMatrix::SMatrix(const QString& _name, const DNAAlphabet* _alphabet, const QList<SScore>& rawMatrix, const QString& _description)
     : name(_name), description(_description), alphabet(_alphabet) {
     validCharacters = alphabet->getAlphabetChars();
     TextUtils::charBounds(validCharacters.constData(), validCharacters.size(), minChar, maxChar);
@@ -40,7 +40,7 @@ SMatrix::SMatrix(const QString &_name, const DNAAlphabet *_alphabet, const QList
 
     minScore = 1000000;
     maxScore = -1000000;
-    foreach (const SScore &s, rawMatrix) {
+    foreach (const SScore& s, rawMatrix) {
         int idx = getScoreIdx(s.c1, s.c2);
         scores[idx] = s.score;
         minScore = qMin(minScore, s.score);
@@ -98,7 +98,7 @@ QVariant SMatrix::toQVariant() const {
     return res;
 }
 
-SMatrix SMatrix::fromQVariant(const QVariant &v) {
+SMatrix SMatrix::fromQVariant(const QVariant& v) {
     QList<QVariant> list = v.toList();
     SMatrix m;
 

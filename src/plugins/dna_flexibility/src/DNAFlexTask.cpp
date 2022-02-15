@@ -35,12 +35,12 @@
 
 namespace U2 {
 
-DNAFlexTask::DNAFlexTask(const HighFlexSettings &_settings,
-                         AnnotationTableObject *_annotObject,
-                         const QString &_annotName,
-                         const QString &_annotGroup,
-                         const QString &annDescription,
-                         const DNASequence &_sequence)
+DNAFlexTask::DNAFlexTask(const HighFlexSettings& _settings,
+                         AnnotationTableObject* _annotObject,
+                         const QString& _annotName,
+                         const QString& _annotGroup,
+                         const QString& annDescription,
+                         const DNASequence& _sequence)
 
     : Task(tr("DNA Flexibility task"), TaskFlags_NR_FOSCOE),
       settings(_settings),
@@ -52,8 +52,8 @@ DNAFlexTask::DNAFlexTask(const HighFlexSettings &_settings,
     addSubTask(findHighFlexTask = new FindHighFlexRegions(_sequence, settings));
 }
 
-QList<Task *> DNAFlexTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> resultsList;
+QList<Task*> DNAFlexTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> resultsList;
 
     if (subTask->hasError() && subTask == findHighFlexTask) {
         stateInfo.setError(subTask->getError());
@@ -69,8 +69,8 @@ QList<Task *> DNAFlexTask::onSubTaskFinished(Task *subTask) {
     }
 
     if (subTask == findHighFlexTask) {
-        FindHighFlexRegions *findTask = qobject_cast<FindHighFlexRegions *>(findHighFlexTask);
-        SAFE_POINT(findTask, "Failed to cast FindHighFlexRegions task!", QList<Task *>());
+        FindHighFlexRegions* findTask = qobject_cast<FindHighFlexRegions*>(findHighFlexTask);
+        SAFE_POINT(findTask, "Failed to cast FindHighFlexRegions task!", QList<Task*>());
 
         QList<HighFlexResult> results = findTask->getResults();
         QList<SharedAnnotationData> annots = getAnnotationsFromResults(results);
@@ -82,10 +82,10 @@ QList<Task *> DNAFlexTask::onSubTaskFinished(Task *subTask) {
     return resultsList;
 }
 
-QList<SharedAnnotationData> DNAFlexTask::getAnnotationsFromResults(const QList<HighFlexResult> &results) {
+QList<SharedAnnotationData> DNAFlexTask::getAnnotationsFromResults(const QList<HighFlexResult>& results) {
     QList<SharedAnnotationData> annotResults;
 
-    foreach (const HighFlexResult &result, results) {
+    foreach (const HighFlexResult& result, results) {
         SharedAnnotationData annotData(new AnnotationData);
         annotData->name = annotName;
         annotData->location->regions << result.region;

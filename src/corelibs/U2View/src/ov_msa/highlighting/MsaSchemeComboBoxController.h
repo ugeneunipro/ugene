@@ -38,43 +38,43 @@ namespace U2 {
 class ComboBoxSignalHandler : public QObject {
     Q_OBJECT
 public:
-    ComboBoxSignalHandler(QWidget *parent = nullptr)
+    ComboBoxSignalHandler(QWidget* parent = nullptr)
         : QObject(parent) {
         comboBox = new QComboBox(parent);
         comboBox->setItemDelegate(new GroupedComboBoxDelegate(comboBox));
         connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(sl_indexChanged(int)));
     }
-    QComboBox *getComboBox() {
+    QComboBox* getComboBox() {
         return comboBox;
     }
 signals:
-    void si_dataChanged(const QString &newScheme);
+    void si_dataChanged(const QString& newScheme);
 private slots:
     void sl_indexChanged(int index) {
         emit si_dataChanged(comboBox->itemData(index).toString());
     }
 
 protected:
-    QComboBox *comboBox;
+    QComboBox* comboBox;
 };
 
 template<class Factory, class Registry>
 class MsaSchemeComboBoxController : public ComboBoxSignalHandler {
 public:
-    MsaSchemeComboBoxController(MSAEditor *msa, Registry *registry, QWidget *parent = nullptr);
+    MsaSchemeComboBoxController(MSAEditor* msa, Registry* registry, QWidget* parent = nullptr);
     void init();
-    void setCurrentItemById(const QString &id);
+    void setCurrentItemById(const QString& id);
 
 private:
     void fillCbWithGrouping();
-    void createAndFillGroup(QList<Factory *> rawSchemesFactories, const QString &groupName);
+    void createAndFillGroup(QList<Factory*> rawSchemesFactories, const QString& groupName);
 
-    MSAEditor *msa;
-    Registry *registry;
+    MSAEditor* msa;
+    Registry* registry;
 };
 
 template<class Factory, class Registry>
-MsaSchemeComboBoxController<Factory, Registry>::MsaSchemeComboBoxController(MSAEditor *_msa, Registry *_registry, QWidget *parent /*= NULL*/)
+MsaSchemeComboBoxController<Factory, Registry>::MsaSchemeComboBoxController(MSAEditor* _msa, Registry* _registry, QWidget* parent /*= NULL*/)
     : ComboBoxSignalHandler(parent), msa(_msa), registry(_registry) {
     init();
 }
@@ -93,11 +93,11 @@ void MsaSchemeComboBoxController<Factory, Registry>::init() {
         CHECK(msa->getMaObject(), );
         CHECK(msa->getMaObject()->getAlphabet(), );
         DNAAlphabetType alphabetType = msa->getMaObject()->getAlphabet()->getType();
-        QList<Factory *> schemesFactories = registry->getAllSchemes(alphabetType);
-        Factory *emptySchemeFactory = registry->getEmptySchemeFactory();
+        QList<Factory*> schemesFactories = registry->getAllSchemes(alphabetType);
+        Factory* emptySchemeFactory = registry->getEmptySchemeFactory();
         schemesFactories.removeAll(emptySchemeFactory);
         schemesFactories.prepend(emptySchemeFactory);
-        foreach (Factory *factory, schemesFactories) {
+        foreach (Factory* factory, schemesFactories) {
             comboBox->addItem(factory->getName(), factory->getId());
         }
     }
@@ -105,18 +105,18 @@ void MsaSchemeComboBoxController<Factory, Registry>::init() {
 }
 
 template<class Factory, class Registry>
-void MsaSchemeComboBoxController<Factory, Registry>::setCurrentItemById(const QString &id) {
+void MsaSchemeComboBoxController<Factory, Registry>::setCurrentItemById(const QString& id) {
     comboBox->setCurrentIndex(comboBox->findData(id));
 }
 
 template<class Factory, class Registry>
 void MsaSchemeComboBoxController<Factory, Registry>::fillCbWithGrouping() {
-    QMap<AlphabetFlags, QList<Factory *>> schemesFactories = registry->getAllSchemesGrouped();
-    Factory *emptySchemeFactory = registry->getEmptySchemeFactory();
+    QMap<AlphabetFlags, QList<Factory*>> schemesFactories = registry->getAllSchemesGrouped();
+    Factory* emptySchemeFactory = registry->getEmptySchemeFactory();
 
-    QList<Factory *> commonSchemesFactories = schemesFactories[DNAAlphabet_RAW | DNAAlphabet_AMINO | DNAAlphabet_NUCL];
-    QList<Factory *> aminoSchemesFactories = schemesFactories[DNAAlphabet_RAW | DNAAlphabet_AMINO];
-    QList<Factory *> nucleotideSchemesFactories = schemesFactories[DNAAlphabet_RAW | DNAAlphabet_NUCL];
+    QList<Factory*> commonSchemesFactories = schemesFactories[DNAAlphabet_RAW | DNAAlphabet_AMINO | DNAAlphabet_NUCL];
+    QList<Factory*> aminoSchemesFactories = schemesFactories[DNAAlphabet_RAW | DNAAlphabet_AMINO];
+    QList<Factory*> nucleotideSchemesFactories = schemesFactories[DNAAlphabet_RAW | DNAAlphabet_NUCL];
 
     commonSchemesFactories.removeAll(emptySchemeFactory);
     commonSchemesFactories.prepend(emptySchemeFactory);
@@ -127,14 +127,14 @@ void MsaSchemeComboBoxController<Factory, Registry>::fillCbWithGrouping() {
 }
 
 template<class Factory, class Registry>
-void MsaSchemeComboBoxController<Factory, Registry>::createAndFillGroup(QList<Factory *> rawSchemesFactories, const QString &groupName) {
+void MsaSchemeComboBoxController<Factory, Registry>::createAndFillGroup(QList<Factory*> rawSchemesFactories, const QString& groupName) {
     CHECK(!rawSchemesFactories.isEmpty(), );
-    GroupedComboBoxDelegate *schemeDelegate = qobject_cast<GroupedComboBoxDelegate *>(comboBox->itemDelegate());
-    QStandardItemModel *schemeModel = qobject_cast<QStandardItemModel *>(comboBox->model());
+    GroupedComboBoxDelegate* schemeDelegate = qobject_cast<GroupedComboBoxDelegate*>(comboBox->itemDelegate());
+    QStandardItemModel* schemeModel = qobject_cast<QStandardItemModel*>(comboBox->model());
     CHECK(schemeDelegate != nullptr, );
     CHECK(schemeModel != nullptr, );
     schemeDelegate->addParentItem(schemeModel, groupName);
-    foreach (Factory *factory, rawSchemesFactories) {
+    foreach (Factory* factory, rawSchemesFactories) {
         schemeDelegate->addChildItem(schemeModel, factory->getName(), factory->getId());
     }
 }

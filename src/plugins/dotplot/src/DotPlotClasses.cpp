@@ -43,7 +43,7 @@ QRectF DotPlotMiniMap::getBoundary() const {
 }
 
 // get coordinates on the dotplot picture matching point on the minimap
-QPointF DotPlotMiniMap::fromMiniMap(const QPointF &p, const QPointF &zoom) const {
+QPointF DotPlotMiniMap::fromMiniMap(const QPointF& p, const QPointF& zoom) const {
     float lx = p.x() - x;
     float ly = p.y() - y;
 
@@ -66,7 +66,7 @@ void DotPlotMiniMap::updatePosition(int bigMapW, int bigMapH) {
 }
 
 // draw minimap
-void DotPlotMiniMap::draw(QPainter &p, int shiftX, int shiftY, const QPointF &zoom) const {
+void DotPlotMiniMap::draw(QPainter& p, int shiftX, int shiftY, const QPointF& zoom) const {
     p.save();
 
     p.setBrush(QBrush(QColor(200, 200, 200, 100)));
@@ -97,13 +97,13 @@ DotPlotResultsListener::~DotPlotResultsListener() {
     dotPlotList.clear();
 }
 
-void DotPlotResultsListener::setTask(Task *t) {
+void DotPlotResultsListener::setTask(Task* t) {
     rfTask = t;
     stateOk = true;
 }
 
 // add new found results to the list
-void DotPlotResultsListener::onResult(const RFResult &r) {
+void DotPlotResultsListener::onResult(const RFResult& r) {
     QMutexLocker locker(&mutex);
 
     if (!dotPlotList) {
@@ -122,10 +122,10 @@ void DotPlotResultsListener::onResult(const RFResult &r) {
     dotPlotList->push_back(vec);
 }
 
-void DotPlotResultsListener::onResults(const QVector<RFResult> &v) {
+void DotPlotResultsListener::onResults(const QVector<RFResult>& v) {
     QMutexLocker locker(&mutex);
 
-    foreach (const RFResult &r, v) {
+    foreach (const RFResult& r, v) {
         if (!dotPlotList) {
             return;
         }
@@ -144,16 +144,16 @@ void DotPlotResultsListener::onResults(const QVector<RFResult> &v) {
 }
 
 // add new found results to the list
-void DotPlotRevComplResultsListener::onResult(const RFResult &r) {
+void DotPlotRevComplResultsListener::onResult(const RFResult& r) {
     RFResult res(xLen - r.x - r.l, r.y, r.l);
     assert(res.x >= 0 && res.x < xLen);
     DotPlotResultsListener::onResult(res);
 }
 
-void DotPlotRevComplResultsListener::onResults(const QVector<RFResult> &v) {
+void DotPlotRevComplResultsListener::onResults(const QVector<RFResult>& v) {
     QVector<RFResult> results;
     results.reserve(v.size());
-    foreach (const RFResult &r, v) {
+    foreach (const RFResult& r, v) {
         RFResult res(xLen - r.x - r.l, r.y, r.l);
         assert(res.x >= 0 && res.x < xLen);
         results << res;

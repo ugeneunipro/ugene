@@ -43,14 +43,14 @@
 
 namespace U2 {
 
-bool isNoWritePermission(GUrl &url) {
+bool isNoWritePermission(GUrl& url) {
     if (!QFile::exists(url.getURLString())) {
         return !FileAndDirectoryUtils::isDirectoryWritable(url.dirPath());
     }
     return !QFile::permissions(url.getURLString()).testFlag(QFile::WriteUser);
 }
 
-SaveDocumentTask::SaveDocumentTask(Document *_doc, IOAdapterFactory *_io, const GUrl &_url, SaveDocFlags _flags)
+SaveDocumentTask::SaveDocumentTask(Document* _doc, IOAdapterFactory* _io, const GUrl& _url, SaveDocFlags _flags)
     : Task(tr("Save document"), TaskFlag_None), doc(_doc), iof(_io), url(_url), flags(_flags) {
     assert(doc != nullptr);
     if (iof == nullptr) {
@@ -66,7 +66,7 @@ SaveDocumentTask::SaveDocumentTask(Document *_doc, IOAdapterFactory *_io, const 
     lock = nullptr;
 }
 
-SaveDocumentTask::SaveDocumentTask(Document *_doc, SaveDocFlags f, const QSet<QString> &_excludeFileNames)
+SaveDocumentTask::SaveDocumentTask(Document* _doc, SaveDocFlags f, const QSet<QString>& _excludeFileNames)
     : Task(tr("Save document"), TaskFlag_None),
       doc(_doc), iof(doc->getIOAdapterFactory()), url(doc->getURL()), flags(f), excludeFileNames(_excludeFileNames) {
     assert(doc != nullptr);
@@ -100,7 +100,7 @@ void SaveDocumentTask::run() {
     } else {
         coreLog.info(message);
     }
-    DocumentFormat *df = doc->getDocumentFormat();
+    DocumentFormat* df = doc->getDocumentFormat();
 
     QString originalFilePath = url.getURLString();
     QFile originalFile(originalFilePath);
@@ -190,7 +190,7 @@ Task::ReportResult SaveDocumentTask::report() {
         }
     }
     if (flags.testFlag(SaveDoc_OpenAfter)) {
-        Task *openTask = AppContext::getProjectLoader()->openWithProjectTask(url, openDocumentWithProjectHints);
+        Task* openTask = AppContext::getProjectLoader()->openWithProjectTask(url, openDocumentWithProjectHints);
         if (nullptr != openTask) {
             AppContext::getTaskScheduler()->registerTopLevelTask(openTask);
         }
@@ -204,17 +204,17 @@ QVariantMap SaveDocumentTask::getOpenDocumentWithProjectHints() const {
 }
 
 /** Sets new 'openDocumentWithProjectHints'. See 'openDocumentWithProjectHints' for details. */
-void SaveDocumentTask::setOpenDocumentWithProjectHints(const QVariantMap &hints) {
+void SaveDocumentTask::setOpenDocumentWithProjectHints(const QVariantMap& hints) {
     openDocumentWithProjectHints = hints;
 }
 
 //////////////////////////////////////////////////////////////////////////
 /// save multiple
 
-SaveMultipleDocuments::SaveMultipleDocuments(const QList<Document *> &docs, bool askBeforeSave, SavedNewDocFlag saveAndOpenFlag)
+SaveMultipleDocuments::SaveMultipleDocuments(const QList<Document*>& docs, bool askBeforeSave, SavedNewDocFlag saveAndOpenFlag)
     : Task(tr("Save multiple documents"), TaskFlag_NoRun) {
     bool saveAll = false;
-    foreach (Document *doc, docs) {
+    foreach (Document* doc, docs) {
         bool save = true;
         if (askBeforeSave) {
             QMessageBox::StandardButtons buttons = QMessageBox::StandardButtons(QMessageBox::Yes) | QMessageBox::No | QMessageBox::Cancel;
@@ -262,9 +262,9 @@ SaveMultipleDocuments::SaveMultipleDocuments(const QList<Document *> &docs, bool
     }
 }
 
-QList<Document *> SaveMultipleDocuments::findModifiedDocuments(const QList<Document *> &docs) {
-    QList<Document *> res;
-    foreach (Document *doc, docs) {
+QList<Document*> SaveMultipleDocuments::findModifiedDocuments(const QList<Document*>& docs) {
+    QList<Document*> res;
+    foreach (Document* doc, docs) {
         if (doc->isTreeItemModified()) {
             res.append(doc);
         }
@@ -272,7 +272,7 @@ QList<Document *> SaveMultipleDocuments::findModifiedDocuments(const QList<Docum
     return res;
 }
 
-GUrl SaveMultipleDocuments::chooseAnotherUrl(Document *doc) {
+GUrl SaveMultipleDocuments::chooseAnotherUrl(Document* doc) {
     GUrl url;
     do {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
@@ -282,8 +282,8 @@ GUrl SaveMultipleDocuments::chooseAnotherUrl(Document *doc) {
         msgBox->setText(tr("You have no permission to write to '%1' file.\nUGENE contains unsaved modifications.").arg(doc->getURL().fileName()));
         msgBox->setInformativeText(tr("Do you want to save changes to another file?"));
 
-        QPushButton *saveButton = msgBox->addButton(QMessageBox::Save);
-        QPushButton *cancelButton = msgBox->addButton(QMessageBox::Cancel);
+        QPushButton* saveButton = msgBox->addButton(QMessageBox::Save);
+        QPushButton* cancelButton = msgBox->addButton(QMessageBox::Cancel);
         msgBox->setDefaultButton(saveButton);
         msgBox->setObjectName("permissionBox");
         msgBox->exec();
@@ -292,7 +292,7 @@ GUrl SaveMultipleDocuments::chooseAnotherUrl(Document *doc) {
         if (msgBox->clickedButton() == saveButton) {
             QString newFileUrl = GUrlUtils::rollFileName(doc->getURLString(), "_modified_", DocumentUtils::getNewDocFileNameExcludesHint());
             QString saveFileFilter = doc->getDocumentFormat()->getSupportedDocumentFileExtensions().join(" *.").prepend("*.");
-            QWidget *activeWindow = qobject_cast<QWidget *>(QApplication::activeWindow());
+            QWidget* activeWindow = qobject_cast<QWidget*>(QApplication::activeWindow());
             QFileDialog::Options options(qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0 ? QFileDialog::DontUseNativeDialog : 0);
             const QString fileName = QFileDialog::getSaveFileName(activeWindow, tr("Save as"), newFileUrl, saveFileFilter, 0, options);
             if (isOsMac()) {
@@ -318,7 +318,7 @@ GUrl SaveMultipleDocuments::chooseAnotherUrl(Document *doc) {
 
 //////////////////////////////////////////////////////////////////////////
 // save a copy and add to project
-SaveCopyAndAddToProjectTask::SaveCopyAndAddToProjectTask(Document *doc, IOAdapterFactory *iof, const GUrl &_url)
+SaveCopyAndAddToProjectTask::SaveCopyAndAddToProjectTask(Document* doc, IOAdapterFactory* iof, const GUrl& _url)
     : Task(tr("Save a copy %1").arg(_url.getURLString()), TaskFlags_NR_FOSCOE), url(_url) {
     origURL = doc->getURL();
     df = doc->getDocumentFormat();
@@ -328,25 +328,25 @@ SaveCopyAndAddToProjectTask::SaveCopyAndAddToProjectTask(Document *doc, IOAdapte
     saveTask->setExcludeFileNames(DocumentUtils::getNewDocFileNameExcludesHint());
     addSubTask(saveTask);
 
-    foreach (GObject *obj, doc->getObjects()) {
+    foreach (GObject* obj, doc->getObjects()) {
         info.append(UnloadedObjectInfo(obj));
     }
 }
 
 Task::ReportResult SaveCopyAndAddToProjectTask::report() {
     CHECK_OP(stateInfo, ReportResult_Finished);
-    Project *project = AppContext::getProject();
+    Project* project = AppContext::getProject();
     CHECK_EXT(project != nullptr, setError(tr("No active project found")), ReportResult_Finished);
     CHECK_EXT(!project->isStateLocked(), setError(tr("Project is locked")), ReportResult_Finished);
 
-    const GUrl &saveUrl = saveTask->getURL();
+    const GUrl& saveUrl = saveTask->getURL();
     if (project->findDocumentByURL(saveUrl)) {
         setError(tr("Document is already added to the project %1").arg(saveUrl.getURLString()));
         return ReportResult_Finished;
     }
-    Document *doc = df->createNewUnloadedDocument(saveTask->getIOAdapterFactory(), saveUrl, stateInfo, hints, info);
+    Document* doc = df->createNewUnloadedDocument(saveTask->getIOAdapterFactory(), saveUrl, stateInfo, hints, info);
     CHECK_OP(stateInfo, ReportResult_Finished);
-    foreach (GObject *o, doc->getObjects()) {
+    foreach (GObject* o, doc->getObjects()) {
         GObjectUtils::updateRelationsURL(o, origURL, saveUrl);
     }
     doc->setModified(false);
@@ -357,12 +357,12 @@ Task::ReportResult SaveCopyAndAddToProjectTask::report() {
 ///////////////////////////////////////////////////////////////////////////
 // relocate task
 
-RelocateDocumentTask::RelocateDocumentTask(const GUrl &fu, const GUrl &tu)
+RelocateDocumentTask::RelocateDocumentTask(const GUrl& fu, const GUrl& tu)
     : Task(tr("Relocate document %1 -> %2").arg(fu.getURLString()).arg(tu.getURLString()), TaskFlag_NoRun), fromURL(fu), toURL(tu) {
 }
 
 Task::ReportResult RelocateDocumentTask::report() {
-    Project *project = AppContext::getProject();
+    Project* project = AppContext::getProject();
     if (project == nullptr) {
         setError(tr("No active project found"));
         return ReportResult_Finished;
@@ -371,7 +371,7 @@ Task::ReportResult RelocateDocumentTask::report() {
         setError(tr("Project is locked"));
         return ReportResult_Finished;
     }
-    Document *fromDocument = project->findDocumentByURL(fromURL);
+    Document* fromDocument = project->findDocumentByURL(fromURL);
     if (fromDocument == nullptr) {
         setError(L10N::errorDocumentNotFound(fromURL));
         return ReportResult_Finished;
@@ -387,9 +387,9 @@ Task::ReportResult RelocateDocumentTask::report() {
     }
 
     // Update relations to the new url.
-    const QList<Document *> &projectDocs = project->getDocuments();
-    for (Document *projectDoc : qAsConst(projectDocs)) {
-        for (GObject *o : qAsConst(projectDoc->getObjects())) {
+    const QList<Document*>& projectDocs = project->getDocuments();
+    for (Document* projectDoc : qAsConst(projectDocs)) {
+        for (GObject* o : qAsConst(projectDoc->getObjects())) {
             GObjectUtils::updateRelationsURL(o, fromURL, toURL);
         }
     }

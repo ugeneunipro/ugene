@@ -45,13 +45,13 @@ public:
 class U2GUI_EXPORT EditSettingsDialog : public QDialog {
     Q_OBJECT
 public:
-    EditSettingsDialog(const EditSettings &settings, QWidget *parent);
+    EditSettingsDialog(const EditSettings& settings, QWidget* parent);
     ~EditSettingsDialog();
 
     EditSettings getSettings() const;
 
 private:
-    Ui_EditSettingDialogForm *ui;
+    Ui_EditSettingDialogForm* ui;
 };
 
 }  // namespace U2

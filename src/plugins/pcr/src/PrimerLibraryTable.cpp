@@ -31,25 +31,24 @@
 #include "PrimerGroupBox.h"
 #include "PrimerLibrary.h"
 
-
 namespace U2 {
 
 /************************************************************************/
 /* PrimerLibraryModel */
 /************************************************************************/
-PrimerLibraryModel::PrimerLibraryModel(QObject *parent)
+PrimerLibraryModel::PrimerLibraryModel(QObject* parent)
     : QAbstractItemModel(parent) {
     U2OpStatus2Log os;
-    PrimerLibrary *primerLibrary = PrimerLibrary::getInstance(os);
+    PrimerLibrary* primerLibrary = PrimerLibrary::getInstance(os);
     SAFE_POINT_OP(os, );
     primers = primerLibrary->getPrimers(os);
 }
 
-int PrimerLibraryModel::columnCount(const QModelIndex & /*parent*/) const {
+int PrimerLibraryModel::columnCount(const QModelIndex& /*parent*/) const {
     return 5;
 }
 
-QVariant PrimerLibraryModel::data(const QModelIndex &index, int role) const {
+QVariant PrimerLibraryModel::data(const QModelIndex& index, int role) const {
     CHECK(index.isValid(), QVariant());
     CHECK(index.row() < rowCount(index.parent()), QVariant());
 
@@ -79,45 +78,45 @@ QVariant PrimerLibraryModel::headerData(int section, Qt::Orientation /*orientati
     }
 }
 
-QModelIndex PrimerLibraryModel::index(int row, int column, const QModelIndex & /*parent*/) const {
+QModelIndex PrimerLibraryModel::index(int row, int column, const QModelIndex& /*parent*/) const {
     CHECK(row < primers.size(), QModelIndex());
     return createIndex(row, column);
 }
 
-QModelIndex PrimerLibraryModel::parent(const QModelIndex & /*index*/) const {
+QModelIndex PrimerLibraryModel::parent(const QModelIndex& /*index*/) const {
     return QModelIndex();
 }
 
-int PrimerLibraryModel::rowCount(const QModelIndex &parent) const {
+int PrimerLibraryModel::rowCount(const QModelIndex& parent) const {
     if (parent.isValid()) {
         return 0;
     }
     return primers.size();
 }
 
-Primer PrimerLibraryModel::getPrimer(const QModelIndex &index, U2OpStatus &os) const {
+Primer PrimerLibraryModel::getPrimer(const QModelIndex& index, U2OpStatus& os) const {
     CHECK_EXT(index.row() >= 0 && index.row() < primers.size(), os.setError(L10N::internalError("Incorrect primer number")), Primer());
     return primers.at(index.row());
 }
 
-void PrimerLibraryModel::addPrimer(const Primer &primer) {
+void PrimerLibraryModel::addPrimer(const Primer& primer) {
     beginInsertRows(QModelIndex(), primers.size(), primers.size());
     primers << primer;
     endInsertRows();
 }
 
-void PrimerLibraryModel::updatePrimer(const Primer &primer) {
+void PrimerLibraryModel::updatePrimer(const Primer& primer) {
     onPrimerChanged(primer);
 }
 
-void PrimerLibraryModel::removePrimer(const QModelIndex &index, U2OpStatus &os) {
+void PrimerLibraryModel::removePrimer(const QModelIndex& index, U2OpStatus& os) {
     SAFE_POINT_EXT(index.row() >= 0 && index.row() < primers.size(), os.setError(tr("Incorrect primer number")), );
     beginRemoveRows(QModelIndex(), index.row(), index.row());
     primers.removeAt(index.row());
     endRemoveRows();
 }
 
-void PrimerLibraryModel::removePrimer(const U2DataId &primerId, U2OpStatus &os) {
+void PrimerLibraryModel::removePrimer(const U2DataId& primerId, U2OpStatus& os) {
     int row = getRow(primerId);
     SAFE_POINT_EXT(row >= 0 && row < primers.size(), os.setError(tr("Incorrect primer number")), );
     beginRemoveRows(QModelIndex(), row, row);
@@ -125,7 +124,7 @@ void PrimerLibraryModel::removePrimer(const U2DataId &primerId, U2OpStatus &os) 
     endRemoveRows();
 }
 
-QVariant PrimerLibraryModel::displayData(const QModelIndex &index) const {
+QVariant PrimerLibraryModel::displayData(const QModelIndex& index) const {
     Primer primer = primers[index.row()];
     switch (index.column()) {
         case 0:
@@ -143,9 +142,9 @@ QVariant PrimerLibraryModel::displayData(const QModelIndex &index) const {
     }
 }
 
-int PrimerLibraryModel::getRow(const U2DataId &primerId) const {
+int PrimerLibraryModel::getRow(const U2DataId& primerId) const {
     int row = 0;
-    foreach (const Primer &primer, primers) {
+    foreach (const Primer& primer, primers) {
         if (primer.id == primerId) {
             return row;
         }
@@ -154,7 +153,7 @@ int PrimerLibraryModel::getRow(const U2DataId &primerId) const {
     return -1;
 }
 
-void PrimerLibraryModel::onPrimerChanged(const Primer &newPrimer) {
+void PrimerLibraryModel::onPrimerChanged(const Primer& newPrimer) {
     int row = getRow(newPrimer.id);
     CHECK(row >= 0, );
 
@@ -167,7 +166,7 @@ void PrimerLibraryModel::onPrimerChanged(const Primer &newPrimer) {
 /************************************************************************/
 /* PrimerLibraryTable */
 /************************************************************************/
-PrimerLibraryTable::PrimerLibraryTable(QWidget *parent)
+PrimerLibraryTable::PrimerLibraryTable(QWidget* parent)
     : QTableView(parent), mode(Browser) {
     model = new PrimerLibraryModel(this);
     setModel(model);
@@ -179,7 +178,7 @@ QList<Primer> PrimerLibraryTable::getSelection() const {
     QList<Primer> result;
 
     QModelIndexList selection = selectionModel()->selectedIndexes();
-    foreach (const QModelIndex &index, selection) {
+    foreach (const QModelIndex& index, selection) {
         if (index.column() > 0) {
             continue;
         }
@@ -191,19 +190,19 @@ QList<Primer> PrimerLibraryTable::getSelection() const {
     return result;
 }
 
-void PrimerLibraryTable::addPrimer(const Primer &primer) {
+void PrimerLibraryTable::addPrimer(const Primer& primer) {
     model->addPrimer(primer);
 }
 
-void PrimerLibraryTable::updatePrimer(const Primer &primer) {
+void PrimerLibraryTable::updatePrimer(const Primer& primer) {
     model->updatePrimer(primer);
 }
 
-void PrimerLibraryTable::removePrimer(const U2DataId &primerId, U2OpStatus &os) {
+void PrimerLibraryTable::removePrimer(const U2DataId& primerId, U2OpStatus& os) {
     model->removePrimer(primerId, os);
 }
 
-bool PrimerLibraryTable::eventFilter(QObject *watched, QEvent *event) {
+bool PrimerLibraryTable::eventFilter(QObject* watched, QEvent* event) {
     CHECK(Selector == mode, false);
     CHECK(event->type() == QEvent::Paint, false);
     CHECK(viewport() == watched, false);

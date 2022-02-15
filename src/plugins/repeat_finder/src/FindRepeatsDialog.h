@@ -22,13 +22,13 @@
 #ifndef _U2_FIND_REPEATS_DIALOG_H_
 #define _U2_FIND_REPEATS_DIALOG_H_
 
-#include <ui_FindRepeatsDialog.h>
-
 #include <QAction>
 
 #include <U2Core/U2Region.h>
 
 #include "FindRepeatsTask.h"
+
+#include <ui_FindRepeatsDialog.h>
 
 namespace U2 {
 
@@ -39,7 +39,7 @@ class RegionSelector;
 class FindRepeatsDialog : public QDialog, public Ui_FindRepeatsDialog {
     Q_OBJECT
 public:
-    FindRepeatsDialog(ADVSequenceObjectContext *seq);
+    FindRepeatsDialog(ADVSequenceObjectContext* seq);
 
     static FindRepeatsTaskSettings defaultSettings();
 
@@ -49,7 +49,7 @@ protected slots:
     void sl_setPredefinedAnnotationName();
     void sl_minDistChanged(int i);
     void sl_maxDistChanged(int i);
-    void sl_onRegionChanged(const U2Region &);
+    void sl_onRegionChanged(const U2Region&);
     void sl_minLenHeuristics();
     void sl_hundredPercent();
     void sl_repeatParamsChanged(int);
@@ -58,26 +58,26 @@ protected slots:
 private:
     void saveState();
     QStringList getAvailableAnnotationNames() const;
-    bool getRegions(QCheckBox *cb, QLineEdit *le, QVector<U2Region> &res);
-    void prepareAMenu(QToolButton *tb, QLineEdit *le, const QStringList &names);
+    bool getRegions(QCheckBox* cb, QLineEdit* le, QVector<U2Region>& res);
+    void prepareAMenu(QToolButton* tb, QLineEdit* le, const QStringList& names);
     void updateStatus();
 
     // methods for results count estimation
     quint64 areaSize() const;
     int estimateResultsCount() const;
 
-    ADVSequenceObjectContext *sc;
-    CreateAnnotationWidgetController *ac;
-    RegionSelector *rs;
+    ADVSequenceObjectContext* sc;
+    CreateAnnotationWidgetController* ac;
+    RegionSelector* rs;
 };
 
 class SetAnnotationNameAction : public QAction {
     Q_OBJECT
 public:
-    SetAnnotationNameAction(const QString &txt, QObject *p, QLineEdit *_le)
+    SetAnnotationNameAction(const QString& txt, QObject* p, QLineEdit* _le)
         : QAction(txt, p), le(_le) {
     }
-    QLineEdit *le;
+    QLineEdit* le;
 };
 
 }  // namespace U2

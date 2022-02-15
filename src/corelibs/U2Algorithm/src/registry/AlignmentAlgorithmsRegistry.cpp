@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-AlignmentAlgorithmsRegistry::AlignmentAlgorithmsRegistry(QObject *parent)
+AlignmentAlgorithmsRegistry::AlignmentAlgorithmsRegistry(QObject* parent)
     : QObject(parent) {
     registerAlgorithm(new SimpleAddToAlignmentAlgorithm());
 }
@@ -40,7 +40,7 @@ AlignmentAlgorithmsRegistry::~AlignmentAlgorithmsRegistry() {
     qDeleteAll(algorithms.values());
 }
 
-bool AlignmentAlgorithmsRegistry::registerAlgorithm(AlignmentAlgorithm *algorithm) {
+bool AlignmentAlgorithmsRegistry::registerAlgorithm(AlignmentAlgorithm* algorithm) {
     QMutexLocker locker(&mutex);
 
     if (algorithms.contains(algorithm->getId())) {
@@ -50,14 +50,14 @@ bool AlignmentAlgorithmsRegistry::registerAlgorithm(AlignmentAlgorithm *algorith
     return true;
 }
 
-AlignmentAlgorithm *AlignmentAlgorithmsRegistry::getAlgorithm(const QString &id) const {
+AlignmentAlgorithm* AlignmentAlgorithmsRegistry::getAlgorithm(const QString& id) const {
     QMutexLocker locker(&mutex);
     return algorithms.value(id, nullptr);
 }
 
 QStringList AlignmentAlgorithmsRegistry::getAvailableAlgorithmIds(AlignmentAlgorithmType type) const {
     QStringList selectedAlgorithmIds;
-    foreach (const AlignmentAlgorithm *algorithm, algorithms) {
+    foreach (const AlignmentAlgorithm* algorithm, algorithms) {
         if (algorithm->getAlignmentType() == type && algorithm->isAlgorithmAvailable()) {
             selectedAlgorithmIds.append(algorithm->getId());
         }
@@ -65,7 +65,7 @@ QStringList AlignmentAlgorithmsRegistry::getAvailableAlgorithmIds(AlignmentAlgor
     return selectedAlgorithmIds;
 }
 
-AlignmentAlgorithm::AlignmentAlgorithm(AlignmentAlgorithmType alignmentType, const QString &_id, const QString &_actionName, AbstractAlignmentTaskFactory *tf, AlignmentAlgorithmGUIExtensionFactory *guif, const QString &_realizationId)
+AlignmentAlgorithm::AlignmentAlgorithm(AlignmentAlgorithmType alignmentType, const QString& _id, const QString& _actionName, AbstractAlignmentTaskFactory* tf, AlignmentAlgorithmGUIExtensionFactory* guif, const QString& _realizationId)
     : id(_id), actionName(_actionName), alignmentType(alignmentType) {
     realizations.insert(_realizationId, new AlgorithmRealization(_realizationId, tf, guif));
 }
@@ -74,24 +74,24 @@ AlignmentAlgorithm::~AlignmentAlgorithm() {
     qDeleteAll(realizations);
 }
 
-AbstractAlignmentTaskFactory *AlignmentAlgorithm::getFactory(const QString &_realizationId) const {
+AbstractAlignmentTaskFactory* AlignmentAlgorithm::getFactory(const QString& _realizationId) const {
     QMutexLocker locker(&mutex);
     SAFE_POINT(realizations.keys().contains(_realizationId), "Realization is not registered", nullptr);
     return realizations.value(_realizationId)->getTaskFactory();
 }
 
-AlignmentAlgorithmGUIExtensionFactory *AlignmentAlgorithm::getGUIExtFactory(const QString &_realizationId) const {
+AlignmentAlgorithmGUIExtensionFactory* AlignmentAlgorithm::getGUIExtFactory(const QString& _realizationId) const {
     QMutexLocker locker(&mutex);
     SAFE_POINT(realizations.keys().contains(_realizationId), "Realization is not registered", nullptr);
-    AlgorithmRealization *algReal = realizations.value(_realizationId, nullptr);
+    AlgorithmRealization* algReal = realizations.value(_realizationId, nullptr);
     return algReal->getGUIExtFactory();
 }
 
-const QString &AlignmentAlgorithm::getId() const {
+const QString& AlignmentAlgorithm::getId() const {
     return id;
 }
 
-const QString &AlignmentAlgorithm::getActionName() const {
+const QString& AlignmentAlgorithm::getActionName() const {
     return actionName;
 }
 
@@ -100,7 +100,7 @@ QStringList AlignmentAlgorithm::getRealizationsList() const {
     return realizations.keys();
 }
 
-bool AlignmentAlgorithm::addAlgorithmRealization(AbstractAlignmentTaskFactory *tf, AlignmentAlgorithmGUIExtensionFactory *guif, const QString &_realizationId) {
+bool AlignmentAlgorithm::addAlgorithmRealization(AbstractAlignmentTaskFactory* tf, AlignmentAlgorithmGUIExtensionFactory* guif, const QString& _realizationId) {
     QMutexLocker locker(&mutex);
     if (realizations.keys().contains(_realizationId)) {
         return false;
@@ -109,7 +109,7 @@ bool AlignmentAlgorithm::addAlgorithmRealization(AbstractAlignmentTaskFactory *t
     return true;
 }
 
-AlgorithmRealization *AlignmentAlgorithm::getAlgorithmRealization(const QString &_realizationId) const {
+AlgorithmRealization* AlignmentAlgorithm::getAlgorithmRealization(const QString& _realizationId) const {
     QMutexLocker locker(&mutex);
     return realizations.value(_realizationId, nullptr);
 }
@@ -122,7 +122,7 @@ AlignmentAlgorithmType AlignmentAlgorithm::getAlignmentType() const {
     return alignmentType;
 }
 
-AlgorithmRealization::AlgorithmRealization(const QString &_realizationId, AbstractAlignmentTaskFactory *tf, AlignmentAlgorithmGUIExtensionFactory *guif)
+AlgorithmRealization::AlgorithmRealization(const QString& _realizationId, AbstractAlignmentTaskFactory* tf, AlignmentAlgorithmGUIExtensionFactory* guif)
     : realizationId(_realizationId), alignmentAlgorithmTaskFactory(tf), alignmentAlgorithmGUIExtensionsFactory(guif) {
 }
 
@@ -131,15 +131,15 @@ AlgorithmRealization::~AlgorithmRealization() {
     delete alignmentAlgorithmGUIExtensionsFactory;
 }
 
-const QString &AlgorithmRealization::getRealizationId() const {
+const QString& AlgorithmRealization::getRealizationId() const {
     return realizationId;
 }
 
-AbstractAlignmentTaskFactory *AlgorithmRealization::getTaskFactory() const {
+AbstractAlignmentTaskFactory* AlgorithmRealization::getTaskFactory() const {
     return alignmentAlgorithmTaskFactory;
 }
 
-AlignmentAlgorithmGUIExtensionFactory *AlgorithmRealization::getGUIExtFactory() const {
+AlignmentAlgorithmGUIExtensionFactory* AlgorithmRealization::getGUIExtFactory() const {
     return alignmentAlgorithmGUIExtensionsFactory;
 }
 

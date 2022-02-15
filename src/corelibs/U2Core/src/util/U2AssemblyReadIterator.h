@@ -48,7 +48,7 @@ public:
      * Constructs iterator from raw data and CIGAR model. Iterations can be started
      * form any position using startPos argument.
      */
-    U2AssemblyReadIterator(const QByteArray &read_, QList<U2CigarToken> cigar_, int startPos = 0);
+    U2AssemblyReadIterator(const QByteArray& read_, QList<U2CigarToken> cigar_, int startPos = 0);
 
     /**
      * Returns true if the next letter is a match (mismatch) or deletion/skip.
@@ -74,7 +74,7 @@ private:
     bool isPaddingOrHardClip() const;
 
     int offsetInRead;
-    const QByteArray &read;
+    const QByteArray& read;
 
     int offsetInToken;
     int offsetInCigar;

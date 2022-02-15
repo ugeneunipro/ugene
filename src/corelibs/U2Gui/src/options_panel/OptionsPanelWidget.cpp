@@ -33,7 +33,7 @@
 
 namespace U2 {
 
-OptionsScrollArea::OptionsScrollArea(QWidget *parent)
+OptionsScrollArea::OptionsScrollArea(QWidget* parent)
     : QScrollArea(parent) {
     setObjectName("OP_SCROLL_AREA");
     setWidgetResizable(true);
@@ -61,27 +61,27 @@ OptionsPanelWidget::OptionsPanelWidget() {
                   " }");
 
     initOptionsLayout();
-    QWidget *groupsWidget = initGroupsLayout();
+    QWidget* groupsWidget = initGroupsLayout();
     initMainLayout(groupsWidget);
 
     // Init the state
     opMainWidgetState = OPMainWidgetState_Closed;
 }
 
-QWidget *OptionsPanelWidget::initGroupsLayout() {
+QWidget* OptionsPanelWidget::initGroupsLayout() {
     groupsLayout = new QVBoxLayout();
     groupsLayout->setContentsMargins(0, 60, 0, 0);
     groupsLayout->setSpacing(0);
 
     // External groups layout is used to add a spacer below the image headers
-    QVBoxLayout *externalGroupsLayout = new QVBoxLayout();
+    QVBoxLayout* externalGroupsLayout = new QVBoxLayout();
     externalGroupsLayout->setContentsMargins(0, 0, 0, 0);
     externalGroupsLayout->setSpacing(0);
     externalGroupsLayout->addLayout(groupsLayout);
     externalGroupsLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
 
     // The widget is used to add additional decoration to the groups panel
-    QWidget *groupsWidget = new QWidget();
+    QWidget* groupsWidget = new QWidget();
     groupsWidget->setLayout(externalGroupsLayout);
     groupsWidget->setStyleSheet(
         "background: palette(mid);"
@@ -99,7 +99,7 @@ void OptionsPanelWidget::initOptionsLayout() {
     optionsLayout->setContentsMargins(0, 0, 0, 0);
     optionsLayout->setSpacing(0);
 
-    QWidget *optionsWidget = new QWidget();
+    QWidget* optionsWidget = new QWidget();
     optionsWidget->setObjectName("OP_OPTIONS_WIDGET");
     optionsWidget->setLayout(optionsLayout);
     optionsWidget->setStyleSheet("QWidget#OP_OPTIONS_WIDGET { "
@@ -113,8 +113,8 @@ void OptionsPanelWidget::initOptionsLayout() {
     optionsScrollArea->setWidget(optionsWidget);
 }
 
-void OptionsPanelWidget::initMainLayout(QWidget *groupsWidget) {
-    QHBoxLayout *mainLayout = new QHBoxLayout();
+void OptionsPanelWidget::initMainLayout(QWidget* groupsWidget) {
+    QHBoxLayout* mainLayout = new QHBoxLayout();
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSpacing(0);
     mainLayout->setAlignment(Qt::AlignRight);  // prevents blinking when the options panel has been opened/closed
@@ -122,12 +122,12 @@ void OptionsPanelWidget::initMainLayout(QWidget *groupsWidget) {
     setLayout(mainLayout);
 }
 
-QWidget *OptionsPanelWidget::getOptionsWidget() const {
+QWidget* OptionsPanelWidget::getOptionsWidget() const {
     return optionsScrollArea;
 }
 
-GroupHeaderImageWidget *OptionsPanelWidget::createHeaderImageWidget(const QString &groupId, const QPixmap &image) {
-    GroupHeaderImageWidget *widget = new GroupHeaderImageWidget(groupId, image);
+GroupHeaderImageWidget* OptionsPanelWidget::createHeaderImageWidget(const QString& groupId, const QPixmap& image) {
+    GroupHeaderImageWidget* widget = new GroupHeaderImageWidget(groupId, image);
 
     // Add widget to the layout and "parent" it
     groupsLayout->addWidget(widget);
@@ -137,18 +137,18 @@ GroupHeaderImageWidget *OptionsPanelWidget::createHeaderImageWidget(const QStrin
     return widget;
 }
 
-GroupOptionsWidget *OptionsPanelWidget::createOptionsWidget(const QString &groupId,
-                                                            const QString &title,
-                                                            const QString &documentationPage,
-                                                            QWidget *mainWidget,
-                                                            QList<QWidget *> commonWidgets) {
+GroupOptionsWidget* OptionsPanelWidget::createOptionsWidget(const QString& groupId,
+                                                            const QString& title,
+                                                            const QString& documentationPage,
+                                                            QWidget* mainWidget,
+                                                            QList<QWidget*> commonWidgets) {
     SAFE_POINT(mainWidget != nullptr, "NULL main widget!", nullptr);
-    QWidget *innerWidgets = new QWidget;
-    QVBoxLayout *layout = new QVBoxLayout;
+    QWidget* innerWidgets = new QWidget;
+    QVBoxLayout* layout = new QVBoxLayout;
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setMargin(0);
 
-    foreach (QWidget *commonWidget, commonWidgets) {
+    foreach (QWidget* commonWidget, commonWidgets) {
         SAFE_POINT(commonWidget != nullptr, "NULL common widget!", nullptr);
         layout->addWidget(commonWidget);
     }
@@ -157,7 +157,7 @@ GroupOptionsWidget *OptionsPanelWidget::createOptionsWidget(const QString &group
 
     innerWidgets->setLayout(layout);
 
-    GroupOptionsWidget *groupWidget = new GroupOptionsWidget(groupId, title, documentationPage, innerWidgets, mainWidget);
+    GroupOptionsWidget* groupWidget = new GroupOptionsWidget(groupId, title, documentationPage, innerWidgets, mainWidget);
 
     // Add widget to the layout and "parent" it
     optionsLayout->insertWidget(0, groupWidget);
@@ -179,8 +179,8 @@ void OptionsPanelWidget::closeOptionsPanel() {
     opMainWidgetState = OPMainWidgetState_Closed;
 }
 
-GroupHeaderImageWidget *OptionsPanelWidget::findHeaderWidgetByGroupId(const QString &groupId) {
-    foreach (GroupHeaderImageWidget *widget, headerWidgets) {
+GroupHeaderImageWidget* OptionsPanelWidget::findHeaderWidgetByGroupId(const QString& groupId) {
+    foreach (GroupHeaderImageWidget* widget, headerWidgets) {
         if (widget->getGroupId() == groupId) {
             return widget;
         }
@@ -188,8 +188,8 @@ GroupHeaderImageWidget *OptionsPanelWidget::findHeaderWidgetByGroupId(const QStr
     return nullptr;
 }
 
-GroupOptionsWidget *OptionsPanelWidget::findOptionsWidgetByGroupId(const QString &groupId) {
-    foreach (GroupOptionsWidget *widget, optionsWidgets) {
+GroupOptionsWidget* OptionsPanelWidget::findOptionsWidgetByGroupId(const QString& groupId) {
+    foreach (GroupOptionsWidget* widget, optionsWidgets) {
         if (widget->getGroupId() == groupId) {
             return widget;
         }
@@ -197,8 +197,8 @@ GroupOptionsWidget *OptionsPanelWidget::findOptionsWidgetByGroupId(const QString
     return nullptr;
 }
 
-void OptionsPanelWidget::deleteOptionsWidget(const QString &groupId) {
-    GroupOptionsWidget *optionsWidget = findOptionsWidgetByGroupId(groupId);
+void OptionsPanelWidget::deleteOptionsWidget(const QString& groupId) {
+    GroupOptionsWidget* optionsWidget = findOptionsWidgetByGroupId(groupId);
     SAFE_POINT(optionsWidget != nullptr,
                QString("Internal error: failed to find an options widget for group '%1' to delete it.").arg(groupId), );
 
@@ -207,8 +207,8 @@ void OptionsPanelWidget::deleteOptionsWidget(const QString &groupId) {
     optionsWidgets.removeAll(optionsWidget);
 }
 
-GroupOptionsWidget *OptionsPanelWidget::focusOptionsWidget(const QString &groupId) {
-    GroupOptionsWidget *optionsWidget = findOptionsWidgetByGroupId(groupId);
+GroupOptionsWidget* OptionsPanelWidget::focusOptionsWidget(const QString& groupId) {
+    GroupOptionsWidget* optionsWidget = findOptionsWidgetByGroupId(groupId);
     SAFE_POINT(optionsWidget != nullptr,
                QString("Internal error: failed to find an options widget for group '%1' to activate it.").arg(groupId),
                nullptr);

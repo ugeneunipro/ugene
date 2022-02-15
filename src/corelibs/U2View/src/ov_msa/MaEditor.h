@@ -110,29 +110,29 @@ public:
     static const float zoomMult;  // SANGER_TODO: should be dependable on the view
 
 public:
-    MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, MultipleAlignmentObject *obj);
+    MaEditor(GObjectViewFactoryId factoryId, const QString& viewName, MultipleAlignmentObject* obj);
 
     virtual QVariantMap saveState();
 
-    virtual Task *updateViewTask(const QString &stateName, const QVariantMap &stateData);
+    virtual Task* updateViewTask(const QString& stateName, const QVariantMap& stateData);
 
     virtual QString getSettingsRoot() const = 0;
 
-    virtual MultipleAlignmentObject *getMaObject() const {
+    virtual MultipleAlignmentObject* getMaObject() const {
         return maObject;
     }
 
     QList<qint64> getMaRowIds() const;
 
-    virtual MaEditorWgt *getUI() const {
+    virtual MaEditorWgt* getUI() const {
         return ui;
     }
 
-    virtual OptionsPanel *getOptionsPanel() {
+    virtual OptionsPanel* getOptionsPanel() {
         return optionsPanel;
     }
 
-    const QFont &getFont() const {
+    const QFont& getFont() const {
         return font;
     }
 
@@ -147,19 +147,19 @@ public:
     bool isAlignmentEmpty() const;
 
     /* Returns current selection controller. */
-    virtual MaEditorSelectionController *getSelectionController() const = 0;
+    virtual MaEditorSelectionController* getSelectionController() const = 0;
 
     /* Returns current selection. */
-    const MaEditorSelection &getSelection() const;
+    const MaEditorSelection& getSelection() const;
 
     virtual int getRowContentIndent(int rowId) const;
     int getSequenceRowHeight() const;  // SANGER_TODO: order the methods
 
     int getColumnWidth() const;
 
-    QVariantMap getHighlightingSettings(const QString &highlightingFactoryId) const;
+    QVariantMap getHighlightingSettings(const QString& highlightingFactoryId) const;
 
-    void saveHighlightingSettings(const QString &highlightingFactoryId, const QVariantMap &settingsMap = QVariantMap());
+    void saveHighlightingSettings(const QString& highlightingFactoryId, const QVariantMap& settingsMap = QVariantMap());
 
     qint64 getReferenceRowId() const {
         return snp.seqId;
@@ -181,16 +181,16 @@ public:
     }
 
     /** Returns current cursor position. */
-    const QPoint &getCursorPosition() const;
+    const QPoint& getCursorPosition() const;
 
     /** Sets new cursor position. Emits si_cursorPositionChanged() signal. */
-    void setCursorPosition(const QPoint &cursorPosition);
+    void setCursorPosition(const QPoint& cursorPosition);
 
     /** Sets selection to the given view rows. */
     virtual void selectRows(int firstViewRowIndex, int numberOfRows);
 
     /** Returns a unified bounding rect for a single sequence character for the given font. */
-    QRect getUnifiedSequenceFontCharRect(const QFont &sequenceFont) const;
+    QRect getUnifiedSequenceFontCharRect(const QFont& sequenceFont) const;
 
     /** Returns active row ordering mode. See docs for 'MaEditorRowOrderMode' enum for details. */
     MaEditorRowOrderMode getRowOrderMode() const;
@@ -202,22 +202,22 @@ public:
     virtual void setRowOrderMode(MaEditorRowOrderMode mode);
 
     /** Returns collapse model instance. The returned value is never null. */
-    MaCollapseModel *getCollapseModel() const;
+    MaCollapseModel* getCollapseModel() const;
 
     /** Returns undo-redo framework. The returned value is never null. */
-    MaUndoRedoFramework *getUndoRedoFramework() const;
+    MaUndoRedoFramework* getUndoRedoFramework() const;
 
 signals:
-    void si_fontChanged(const QFont &f);
+    void si_fontChanged(const QFont& f);
     void si_zoomOperationPerformed(bool resizeModeChanged);
     void si_referenceSeqChanged(qint64 referenceId);
     void si_sizeChanged(int newHeight, bool isMinimumSize, bool isMaximumSize);
     void si_completeUpdate();
     void si_updateActions();
-    void si_cursorPositionChanged(const QPoint &cursorPosition);
+    void si_cursorPositionChanged(const QPoint& cursorPosition);
 
 protected slots:
-    virtual void sl_onContextMenuRequested(const QPoint &pos) = 0;
+    virtual void sl_onContextMenuRequested(const QPoint& pos) = 0;
 
     void sl_zoomIn();
     void sl_zoomOut();
@@ -234,10 +234,10 @@ protected slots:
     void sl_onClearActionTriggered();
 
     /** The slot is called each time alignment is changed. By default calls 'updateActions'. */
-    virtual void sl_onAlignmentChanged(const MultipleAlignment &ma, const MaModificationInfo &modInfo);
+    virtual void sl_onAlignmentChanged(const MultipleAlignment& ma, const MaModificationInfo& modInfo);
 
     /** The slot is called each time selection is changed. By default calls 'updateActions'. */
-    virtual void sl_selectionChanged(const MaEditorSelection &ma, const MaEditorSelection &modInfo);
+    virtual void sl_selectionChanged(const MaEditorSelection& ma, const MaEditorSelection& modInfo);
 
     /** Callback for the 'gotoSelectedReadAction' action. See docs for 'gotoSelectedReadAction'. */
     void sl_gotoSelectedRead();
@@ -246,18 +246,18 @@ private slots:
     void sl_resetColumnWidthCache();
 
 protected:
-    virtual QWidget *createWidget() = 0;
+    virtual QWidget* createWidget() = 0;
     virtual void initActions();
     virtual void initZoom();
     virtual void initFont();
     void updateResizeMode();
 
-    virtual void addCopyPasteMenu(QMenu *m);
-    virtual void addEditMenu(QMenu *m) = 0;
-    virtual void addExportMenu(QMenu *m);
-    void addLoadMenu(QMenu *m);
+    virtual void addCopyPasteMenu(QMenu* m);
+    virtual void addEditMenu(QMenu* m) = 0;
+    virtual void addExportMenu(QMenu* m);
+    void addLoadMenu(QMenu* m);
 
-    void setFont(const QFont &f);
+    void setFont(const QFont& f);
 
     /** Updates font metrics like fontPixelToPointSize, minimum-font-size. Called on every font update. */
     void updateFontMetrics();
@@ -267,8 +267,8 @@ protected:
 
     virtual void updateActions();
 
-    MultipleAlignmentObject *maObject;
-    MaEditorWgt *ui;
+    MultipleAlignmentObject* maObject;
+    MaEditorWgt* ui;
 
     QFont font;
     ResizeMode resizeMode;
@@ -295,27 +295,27 @@ protected:
     MaEditorRowOrderMode rowOrderMode;
 
     /** Collapse model instance. Created in the constructor and is never changed. */
-    MaCollapseModel *const collapseModel;
+    MaCollapseModel* const collapseModel;
 
     /** Undo-redo support. */
-    MaUndoRedoFramework *undoRedoFramework = nullptr;
+    MaUndoRedoFramework* undoRedoFramework = nullptr;
 
 public:
-    QAction *saveAlignmentAction = nullptr;
-    QAction *saveAlignmentAsAction = nullptr;
-    QAction *zoomInAction = nullptr;
-    QAction *zoomOutAction = nullptr;
-    QAction *zoomToSelectionAction = nullptr;
-    QAction *showOverviewAction = nullptr;
-    QAction *changeFontAction = nullptr;
-    QAction *resetZoomAction = nullptr;
-    QAction *exportHighlightedAction = nullptr;
+    QAction* saveAlignmentAction = nullptr;
+    QAction* saveAlignmentAsAction = nullptr;
+    QAction* zoomInAction = nullptr;
+    QAction* zoomOutAction = nullptr;
+    QAction* zoomToSelectionAction = nullptr;
+    QAction* showOverviewAction = nullptr;
+    QAction* changeFontAction = nullptr;
+    QAction* resetZoomAction = nullptr;
+    QAction* exportHighlightedAction = nullptr;
 
     /** Clears selection in normal mode or exits from editing mode in the edit mode. */
-    QAction *clearSelectionAction = nullptr;
+    QAction* clearSelectionAction = nullptr;
 
-    QAction *copyConsensusAction = nullptr;
-    QAction *copyConsensusWithGapsAction = nullptr;
+    QAction* copyConsensusAction = nullptr;
+    QAction* copyConsensusWithGapsAction = nullptr;
 
     /**
      * When activated MA editor moves start of the currently selected read into the view.
@@ -328,13 +328,13 @@ public:
      *
      * When the action is triggered for the already selected read it tries to center the opposite side of the read: 'start' -> 'end', 'end' -> 'start'.
      */
-    QAction *gotoSelectedReadAction = nullptr;
+    QAction* gotoSelectedReadAction = nullptr;
 
     /** Undo action in MA Editor. Never null after the initialization. */
-    QAction *undoAction = nullptr;
+    QAction* undoAction = nullptr;
 
     /** Redo action. Never null after the initialization.*/
-    QAction *redoAction = nullptr;
+    QAction* redoAction = nullptr;
 };
 
 }  // namespace U2

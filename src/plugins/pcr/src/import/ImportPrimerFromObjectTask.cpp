@@ -26,8 +26,8 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObject.h>
 #include <U2Core/GObjectTypes.h>
-#include <U2Core/Primer.h>
 #include <U2Core/L10n.h>
+#include <U2Core/Primer.h>
 #include <U2Core/Theme.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -36,13 +36,13 @@
 
 namespace U2 {
 
-ImportPrimerFromObjectTask::ImportPrimerFromObjectTask(GObject *object)
+ImportPrimerFromObjectTask::ImportPrimerFromObjectTask(GObject* object)
     : Task(tr("Import primer from the shared database object: %1").arg(nullptr == object ? "N/A" : object->getGObjectName()),
            TaskFlags(TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported)),
       validator(this) {
     SAFE_POINT_EXT(nullptr != object, setError(L10N::nullPointerError("an input object")), );
     SAFE_POINT_EXT(GObjectTypes::SEQUENCE == object->getGObjectType(), setError(tr("A non-sequence object was provided")), );
-    sequenceObject = qobject_cast<U2SequenceObject *>(object);
+    sequenceObject = qobject_cast<U2SequenceObject*>(object);
     SAFE_POINT_EXT(nullptr != sequenceObject, setError(L10N::nullPointerError("sequence object")), );
     SAFE_POINT_EXT(sequenceObject->getAlphabet(), setError(L10N::nullPointerError("sequence alphabet")), );
     CHECK_EXT(sequenceObject->getAlphabet()->isDNA(), setError(tr("The sequence has an unsupported alphabet: only nucleotide alphabet is supported")), );
@@ -60,7 +60,7 @@ void ImportPrimerFromObjectTask::run() {
         return;
     }
 
-    PrimerLibrary *library = PrimerLibrary::getInstance(stateInfo);
+    PrimerLibrary* library = PrimerLibrary::getInstance(stateInfo);
     CHECK_OP(stateInfo, );
     library->addRawPrimer(primer, stateInfo);
 }

@@ -35,21 +35,21 @@ class U2OpStatus;
 class U2FORMATS_EXPORT TabulatedFormatReader : public QObject {
     Q_OBJECT
 public:
-    TabulatedFormatReader(U2OpStatus &os, IOAdapter *ioAdapter);
+    TabulatedFormatReader(U2OpStatus& os, IOAdapter* ioAdapter);
 
     bool hasNextLine() const;
     QStringList getNextLine();
     qint64 getCurrentLineNumber() const;
 
-    const QStringList &getComments() const;
+    const QStringList& getComments() const;
 
 private:
     void readNextLine();
     QString read();
-    static bool isComment(const QString &line);
-    void storeLine(const QString &line);
+    static bool isComment(const QString& line);
+    void storeLine(const QString& line);
 
-    IOAdapter *ioAdapter;
+    IOAdapter* ioAdapter;
 
     QStringList storedLine;
     QStringList comments;

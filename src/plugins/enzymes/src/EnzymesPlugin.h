@@ -43,27 +43,27 @@ private slots:
     void sl_onOpenCreateFragmentDialog();
 
 private:
-    EnzymesADVContext *ctxADV;
-    QAction *openDigestSequenceDialog;
-    QAction *openConstructMoleculeDialog;
-    QAction *openCreateFragmentDialog;
+    EnzymesADVContext* ctxADV;
+    QAction* openDigestSequenceDialog;
+    QAction* openConstructMoleculeDialog;
+    QAction* openCreateFragmentDialog;
 };
 
 class EnzymesADVContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    EnzymesADVContext(QObject *p, const QList<QAction *> &cloningActions);
+    EnzymesADVContext(QObject* p, const QList<QAction*>& cloningActions);
 
 protected slots:
     void sl_search();
     void sl_createPCRProduct();
 
 protected:
-    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
+    void buildStaticOrContextMenu(GObjectView* view, QMenu* menu) override;
 
-    void initViewContext(GObjectView *view) override;
+    void initViewContext(GObjectView* view) override;
 
-    QList<QAction *> cloningActions;
+    QList<QAction*> cloningActions;
 };
 
 }  // namespace U2

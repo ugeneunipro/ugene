@@ -35,10 +35,10 @@ namespace LocalWorkflow {
 class ExtractAssemblyCoverageWorker : public BaseWorker {
     Q_OBJECT
 public:
-    ExtractAssemblyCoverageWorker(Actor *actor);
+    ExtractAssemblyCoverageWorker(Actor* actor);
 
     void init();
-    Task *tick();
+    Task* tick();
     void cleanup();
 
 private slots:
@@ -46,9 +46,9 @@ private slots:
 
 private:
     bool hasAssembly() const;
-    U2EntityRef takeAssembly(U2OpStatus &os);
+    U2EntityRef takeAssembly(U2OpStatus& os);
     ExportCoverageSettings getSettings() const;
-    Task *createTask(const U2EntityRef &assembly);
+    Task* createTask(const U2EntityRef& assembly);
     void finish();
 };
 
@@ -56,7 +56,7 @@ class ExtractAssemblyCoverageWorkerFactory : public DomainFactory {
 public:
     ExtractAssemblyCoverageWorkerFactory();
 
-    Worker *createWorker(Actor *actor);
+    Worker* createWorker(Actor* actor);
 
     static void init();
 
@@ -68,7 +68,7 @@ public:
 class ExtractAssemblyCoverageWorkerPrompter : public PrompterBase<ExtractAssemblyCoverageWorkerPrompter> {
     Q_OBJECT
 public:
-    ExtractAssemblyCoverageWorkerPrompter(Actor *actor = nullptr);
+    ExtractAssemblyCoverageWorkerPrompter(Actor* actor = nullptr);
 
 protected:
     QString composeRichDoc();
@@ -79,15 +79,15 @@ protected:
  */
 class ExtractAssemblyCoverageFileExtensionRelation : public AttributeRelation {
 public:
-    ExtractAssemblyCoverageFileExtensionRelation(const QString &relatedAttrId);
+    ExtractAssemblyCoverageFileExtensionRelation(const QString& relatedAttrId);
 
-    QVariant getAffectResult(const QVariant &influencingValue,
-                             const QVariant &dependentValue,
-                             DelegateTags *infTags,
-                             DelegateTags *depTags) const;
-    void updateDelegateTags(const QVariant &influencingValue, DelegateTags *dependentTags) const;
+    QVariant getAffectResult(const QVariant& influencingValue,
+                             const QVariant& dependentValue,
+                             DelegateTags* infTags,
+                             DelegateTags* depTags) const;
+    void updateDelegateTags(const QVariant& influencingValue, DelegateTags* dependentTags) const;
     RelationType getType() const;
-    ExtractAssemblyCoverageFileExtensionRelation *clone() const;
+    ExtractAssemblyCoverageFileExtensionRelation* clone() const;
 };
 
 }  // namespace LocalWorkflow

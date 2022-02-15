@@ -28,7 +28,7 @@ namespace HI {
 
 class HI_EXPORT DefaultDialogFiller : public Filler {
 public:
-    DefaultDialogFiller(GUITestOpStatus &os, const QString &name = "", QDialogButtonBox::StandardButton _b = QDialogButtonBox::Ok, CustomScenario *scenario = NULL);
+    DefaultDialogFiller(GUITestOpStatus& os, const QString& name = "", QDialogButtonBox::StandardButton _b = QDialogButtonBox::Ok, CustomScenario* scenario = NULL);
     void commonScenario();
 
 private:

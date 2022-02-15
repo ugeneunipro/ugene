@@ -32,13 +32,13 @@ class GObjectMimeData;
 
 class U2CORE_EXPORT MimeDataIterator {
 public:
-    MimeDataIterator(const QMimeData *md);
+    MimeDataIterator(const QMimeData* md);
 
     bool hasNextDocument() const;
-    Document *nextDocument();
+    Document* nextDocument();
 
     bool hasNextObject() const;
-    GObject *nextObject();
+    GObject* nextObject();
 
     bool hasNextFolder() const;
     Folder nextFolder();

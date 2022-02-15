@@ -39,9 +39,9 @@ class BaseContentGraphFactory : public GSequenceGraphFactory {
 public:
     enum GType { GC,
                  AG };
-    BaseContentGraphFactory(GType t, QObject *p);
-    virtual QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView *v);
-    virtual bool isEnabled(const U2SequenceObject *o) const;
+    BaseContentGraphFactory(GType t, QObject* p);
+    virtual QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView* v);
+    virtual bool isEnabled(const U2SequenceObject* o) const;
 
 private:
     QBitArray map;
@@ -49,12 +49,12 @@ private:
 
 class BaseContentGraphAlgorithm : public GSequenceGraphAlgorithm {
 public:
-    BaseContentGraphAlgorithm(const QBitArray &map);
+    BaseContentGraphAlgorithm(const QBitArray& map);
 
-    void calculate(QVector<float> &result, U2SequenceObject *sequenceObject, qint64 window, qint64 step, U2OpStatus &os) override;
+    void calculate(QVector<float>& result, U2SequenceObject* sequenceObject, qint64 window, qint64 step, U2OpStatus& os) override;
 
 private:
-    void windowStrategyWithoutMemorize(QVector<float> &res, const QByteArray &seq, qint64 startPos, qint64 window, qint64 step, qint64 nSteps, U2OpStatus &os);
+    void windowStrategyWithoutMemorize(QVector<float>& res, const QByteArray& seq, qint64 startPos, qint64 window, qint64 step, qint64 nSteps, U2OpStatus& os);
 
     QBitArray map;
 };

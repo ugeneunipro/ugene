@@ -116,19 +116,19 @@ const QString PRINT("print-filtered");
 
 class EmptySlotValidator : public ConfigurationValidator {
 public:
-    EmptySlotValidator(const QString &slot)
+    EmptySlotValidator(const QString& slot)
         : screenedSlot(slot) {
     }
 
-    virtual bool validate(const Configuration *cfg, NotificationsList &notificationList) const {
-        const IntegralBusPort *vport = static_cast<const IntegralBusPort *>(cfg);
+    virtual bool validate(const Configuration* cfg, NotificationsList& notificationList) const {
+        const IntegralBusPort* vport = static_cast<const IntegralBusPort*>(cfg);
         assert(vport);
 
         StrStrMap bm = vport->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
         QMapIterator<QString, QString> it(bm);
         while (it.hasNext()) {
             it.next();
-            const QString &slot = it.key();
+            const QString& slot = it.key();
             QString slotName = vport->getType()->getDatatypeDescriptor(slot).getDisplayName();
             // assert(!slotName.isEmpty());
             if (it.value().isEmpty()) {
@@ -148,7 +148,7 @@ protected:
 
 void CallVariantsWorkerFactory::init() {
     // port descriptor
-    QList<PortDescriptor *> p;
+    QList<PortDescriptor*> p;
     {
         QMap<Descriptor, DataTypePtr> refSeqMap;
         refSeqMap[BaseSlots::URL_SLOT()] = BaseTypes::STRING_TYPE();
@@ -174,7 +174,7 @@ void CallVariantsWorkerFactory::init() {
     Descriptor desc(ACTOR_ID, CallVariantsWorker::tr("Call Variants with SAMtools"), CallVariantsWorker::tr("Calls SNPs and INDELS with SAMtools mpileup and bcftools."));
 
     // attributes
-    QList<Attribute *> attributes;
+    QList<Attribute*> attributes;
 
     Descriptor outUrl(OUT_URL,
                       CallVariantsWorker::tr("Output variants file"),
@@ -381,13 +381,13 @@ void CallVariantsWorkerFactory::init() {
 
     attributes << new Attribute(outUrl, BaseTypes::STRING_TYPE(), true, "");
 
-    Attribute *refUrlAttr = new Attribute(refUrl, BaseTypes::STRING_TYPE(), true, "");
+    Attribute* refUrlAttr = new Attribute(refUrl, BaseTypes::STRING_TYPE(), true, "");
     QVariantList refUrlVisibilityValues;
     refUrlVisibilityValues << QVariant(REF_SOURCE_FILE);
     refUrlAttr->addRelation(new VisibilityRelation(REF_SOURCE, refUrlVisibilityValues));
     attributes << refUrlAttr;
 
-    Attribute *refLocationAttr = new Attribute(refLocation, BaseTypes::STRING_TYPE(), false, QVariant(REF_SOURCE_FILE));
+    Attribute* refLocationAttr = new Attribute(refLocation, BaseTypes::STRING_TYPE(), false, QVariant(REF_SOURCE_FILE));
     QVariantList refPortVisibilityValues;
     refPortVisibilityValues << QVariant(REF_SOURCE_PORT);
     refLocationAttr->addPortRelation(new PortRelationDescriptor(BasePorts::IN_SEQ_PORT_ID(), refPortVisibilityValues));
@@ -444,8 +444,8 @@ void CallVariantsWorkerFactory::init() {
     attributes << new Attribute(printF, BaseTypes::BOOL_TYPE(), false, false);
 
     // prototype
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, attributes);
-    QMap<QString, PropertyDelegate *> delegates;
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, attributes);
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap vm;
         vm["minimum"] = 0;
@@ -674,23 +674,23 @@ void CallVariantsWorkerFactory::init() {
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_VARIATION_ANALYSIS(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new CallVariantsWorkerFactory());
 }
 
 QString CallVariantsPrompter::composeRichDoc() {
     QString reference;
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
-    Port *refPort = target->getPort(BasePorts::IN_SEQ_PORT_ID());
+    Port* refPort = target->getPort(BasePorts::IN_SEQ_PORT_ID());
     if (refPort->isEnabled()) {
-        Actor *seqProducer = qobject_cast<IntegralBusPort *>(refPort)->getProducer(BaseSlots::URL_SLOT().getId());
+        Actor* seqProducer = qobject_cast<IntegralBusPort*>(refPort)->getProducer(BaseSlots::URL_SLOT().getId());
         reference = seqProducer ? seqProducer->getLabel() : unsetStr;
     } else {
         reference = getHyperlink(REF_URL, getURL(REF_URL));
     }
     QString seqName = tr("For reference sequence from <u>%1</u>,").arg(reference);
 
-    Actor *assemblyProducer = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_ASSEMBLY_PORT_ID()))->getProducer(BaseSlots::URL_SLOT().getId());
+    Actor* assemblyProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_ASSEMBLY_PORT_ID()))->getProducer(BaseSlots::URL_SLOT().getId());
     QString assemblyName = tr("with assembly data provided by <u>%1</u>").arg(assemblyProducer ? assemblyProducer->getLabel() : unsetStr);
 
     QString doc = tr("%1 call variants %2.")
@@ -700,7 +700,7 @@ QString CallVariantsPrompter::composeRichDoc() {
     return doc;
 }
 
-CallVariantsWorker::CallVariantsWorker(Actor *a)
+CallVariantsWorker::CallVariantsWorker(Actor* a)
     : BaseWorker(a, false),
       refSeqPort(nullptr),
       assemblyPort(nullptr),
@@ -710,13 +710,13 @@ CallVariantsWorker::CallVariantsWorker(Actor *a)
 }
 
 void CallVariantsWorker::initDatasetMode() {
-    Port *port = actor->getPort(BasePorts::IN_ASSEMBLY_PORT_ID());
+    Port* port = actor->getPort(BasePorts::IN_ASSEMBLY_PORT_ID());
     SAFE_POINT(nullptr != port, "Internal error during CallVariantsWorker initializing: assembly port is NULL!", );
 
-    IntegralBusPort *bus = dynamic_cast<IntegralBusPort *>(port);
+    IntegralBusPort* bus = dynamic_cast<IntegralBusPort*>(port);
     SAFE_POINT(nullptr != bus, "Internal error during CallVariantsWorker initializing: assembly bus is NULL!", );
 
-    QList<Actor *> producers = bus->getProducers(BaseSlots::DATASET_SLOT().getId());
+    QList<Actor*> producers = bus->getProducers(BaseSlots::DATASET_SLOT().getId());
     useDatasets = !producers.isEmpty();
 }
 
@@ -762,7 +762,7 @@ bool CallVariantsWorker::isReady() const {
     return seqEnded && assemblyEnded;
 }
 
-Task *CallVariantsWorker::tick() {
+Task* CallVariantsWorker::tick() {
     U2OpStatus2Log os;
 
     // put variant tracks
@@ -795,7 +795,7 @@ Task *CallVariantsWorker::tick() {
     // do
     if (cache.isEmpty() && !settings.refSeqUrl.isEmpty() && !settings.assemblyUrls.isEmpty()) {
         settings.variationsUrl = GUrlUtils::rollFileName(getValue<QString>(OUT_URL), "_", QSet<QString>());
-        CallVariantsTask *t = new CallVariantsTask(settings, context->getDataStorage());
+        CallVariantsTask* t = new CallVariantsTask(settings, context->getDataStorage());
         t->addListeners(createLogListeners(3));
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
 
@@ -808,14 +808,14 @@ Task *CallVariantsWorker::tick() {
 }
 
 void CallVariantsWorker::sl_taskFinished() {
-    CallVariantsTask *t = qobject_cast<CallVariantsTask *>(sender());
+    CallVariantsTask* t = qobject_cast<CallVariantsTask*>(sender());
     if (t->getState() != Task::State_Finished || t->isCanceled() || t->hasError()) {
         return;
     }
 
     DataTypePtr mtype = output->getBusType();
-    const QList<QVariantMap> &res = t->getResults();
-    foreach (const QVariantMap &m, res) {
+    const QList<QVariantMap>& res = t->getResults();
+    foreach (const QVariantMap& m, res) {
         cache.append(Message(mtype, m));
     }
     t->clearResults();
@@ -825,7 +825,7 @@ void CallVariantsWorker::sl_taskFinished() {
 void CallVariantsWorker::cleanup() {
 }
 
-void CallVariantsWorker::takeAssembly(U2OpStatus &os) {
+void CallVariantsWorker::takeAssembly(U2OpStatus& os) {
     Message m = assemblyPort->lookMessage();
     CHECK(!m.isEmpty(), );
 
@@ -850,7 +850,7 @@ void CallVariantsWorker::takeAssembly(U2OpStatus &os) {
     }
 }
 
-void CallVariantsWorker::takeReference(U2OpStatus &os) {
+void CallVariantsWorker::takeReference(U2OpStatus& os) {
     Message m = getMessageAndSetupScriptValues(refSeqPort);
     CHECK_EXT(!m.isEmpty(), output->transit(), );
 
@@ -916,17 +916,17 @@ CallVariantsTaskSettings CallVariantsWorker::getSettings() {
     return settings;
 }
 
-void CallVariantsWorker::processError(const U2OpStatus &os) {
+void CallVariantsWorker::processError(const U2OpStatus& os) {
     settings.assemblyUrls.clear();
     settings.refSeqUrl.clear();
 
-    WorkflowMonitor *wMonitor = monitor();
+    WorkflowMonitor* wMonitor = monitor();
     if (wMonitor) {
         wMonitor->addError(os.getError(), actor->getId());
     }
 }
 
-void CallVariantsWorker::checkState(U2OpStatus &os) {
+void CallVariantsWorker::checkState(U2OpStatus& os) {
     if (referenceSource == FromFile) {
         if (!hasAssembly()) {
             setDone();
@@ -969,55 +969,55 @@ bool CallVariantsWorker::hasReferenceInPort() const {
 /************************************************************************/
 /* ScientificDoubleDelegate */
 /************************************************************************/
-ScientificDoubleWidget::ScientificDoubleWidget(QWidget *parent)
+ScientificDoubleWidget::ScientificDoubleWidget(QWidget* parent)
     : PropertyWidget(parent) {
     lineEdit = new QLineEdit(this);
-    QDoubleValidator *validator = new QDoubleValidator();
+    QDoubleValidator* validator = new QDoubleValidator();
     validator->setNotation(QDoubleValidator::ScientificNotation);
     lineEdit->setValidator(validator);
     addMainWidget(lineEdit);
 
-    connect(lineEdit, SIGNAL(textChanged(const QString &)), SLOT(sl_valueChanged(const QVariant &)));
+    connect(lineEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_valueChanged(const QVariant&)));
 }
 
 QVariant ScientificDoubleWidget::value() {
     return lineEdit->text();
 }
 
-void ScientificDoubleWidget::setValue(const QVariant &value) {
+void ScientificDoubleWidget::setValue(const QVariant& value) {
     lineEdit->setText(value.toString());
 }
 
-ScientificDoubleDelegate::ScientificDoubleDelegate(QObject *parent)
+ScientificDoubleDelegate::ScientificDoubleDelegate(QObject* parent)
     : PropertyDelegate(parent) {
 }
 
 // PropertyDelegate
-QVariant ScientificDoubleDelegate::getDisplayValue(const QVariant &v) const {
+QVariant ScientificDoubleDelegate::getDisplayValue(const QVariant& v) const {
     return v;
 }
 
-PropertyDelegate *ScientificDoubleDelegate::clone() {
+PropertyDelegate* ScientificDoubleDelegate::clone() {
     return new ScientificDoubleDelegate(parent());
 }
 
-PropertyWidget *ScientificDoubleDelegate::createWizardWidget(U2OpStatus & /*os*/, QWidget *parent) const {
+PropertyWidget* ScientificDoubleDelegate::createWizardWidget(U2OpStatus& /*os*/, QWidget* parent) const {
     return new ScientificDoubleWidget(parent);
 }
 
 // QItemDelegate
-QWidget *ScientificDoubleDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem & /*option*/, const QModelIndex & /*index*/) const {
+QWidget* ScientificDoubleDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& /*option*/, const QModelIndex& /*index*/) const {
     return new ScientificDoubleWidget(parent);
 }
 
-void ScientificDoubleDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const {
+void ScientificDoubleDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const {
     QVariant value = index.model()->data(index, ConfigurationEditor::ItemValueRole);
-    PropertyWidget *widget = static_cast<PropertyWidget *>(editor);
+    PropertyWidget* widget = static_cast<PropertyWidget*>(editor);
     widget->setValue(value);
 }
 
-void ScientificDoubleDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const {
-    PropertyWidget *widget = static_cast<PropertyWidget *>(editor);
+void ScientificDoubleDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const {
+    PropertyWidget* widget = static_cast<PropertyWidget*>(editor);
     model->setData(index, widget->value(), ConfigurationEditor::ItemValueRole);
 }
 

@@ -110,6 +110,7 @@ HEADERS += src/ETSProjectViewItemsController.h \
            src/hmmer/PhmmerSearchSettings.h \
            src/hmmer/PhmmerSearchTask.h \
            src/hmmer/PhmmerSearchTaskTest.h \
+           src/iqtree/CmdlineParamsParser.h \
            src/iqtree/IQTreeSupport.h \
            src/iqtree/IQTreeTask.h \
            src/iqtree/IQTreeWidget.h \
@@ -342,6 +343,7 @@ SOURCES += src/ETSProjectViewItemsController.cpp \
            src/hmmer/PhmmerSearchSettings.cpp \
            src/hmmer/PhmmerSearchTask.cpp \
            src/hmmer/PhmmerSearchTaskTest.cpp \
+           src/iqtree/CmdlineParamsParser.cpp \
            src/iqtree/IQTreeSupport.cpp \
            src/iqtree/IQTreeTask.cpp \
            src/iqtree/IQTreeWidget.cpp \

@@ -35,29 +35,29 @@ class ADVSequenceObjectContext;
 class InSilicoPcrProductsTable : public QTableWidget {
     Q_OBJECT
 public:
-    InSilicoPcrProductsTable(QWidget *parent);
+    InSilicoPcrProductsTable(QWidget* parent);
 
-    void showProducts(const QList<InSilicoPcrProduct> &products, ADVSequenceObjectContext *sequenceContext);
+    void showProducts(const QList<InSilicoPcrProduct>& products, ADVSequenceObjectContext* sequenceContext);
     /* Returns if current context is the modified one */
-    bool onSequenceChanged(ADVSequenceObjectContext *sequenceContext);
+    bool onSequenceChanged(ADVSequenceObjectContext* sequenceContext);
 
-    ADVSequenceObjectContext *productsContext() const;
+    ADVSequenceObjectContext* productsContext() const;
 
     QList<InSilicoPcrProduct> getSelectedProducts() const;
-    const QList<InSilicoPcrProduct> &getAllProducts() const;
+    const QList<InSilicoPcrProduct>& getAllProducts() const;
 
-    ADVSequenceObjectContext *getCurrentSequenceContext() const;
+    ADVSequenceObjectContext* getCurrentSequenceContext() const;
 
 private slots:
     void sl_selectionChanged();
 
 private:
     QVector<U2Region> getSelection() const;
-    void replaceContext(ADVSequenceObjectContext *sequenceContext);
-    void setCurrentProducts(const QList<InSilicoPcrProduct> &products);
+    void replaceContext(ADVSequenceObjectContext* sequenceContext);
+    void setCurrentProducts(const QList<InSilicoPcrProduct>& products);
 
 private:
-    ADVSequenceObjectContext *sequenceContext;
+    ADVSequenceObjectContext* sequenceContext;
     QList<InSilicoPcrProduct> currentProducts;
 };
 

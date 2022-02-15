@@ -33,16 +33,16 @@ class SequenceSelectorWidgetController;
 class RefSeqCommonWidget : public QWidget {
     Q_OBJECT
 public:
-    RefSeqCommonWidget(MSAEditor *msaEditor);
+    RefSeqCommonWidget(MSAEditor* msaEditor);
 
 private slots:
     void sl_refSeqChanged(qint64);
     void sl_textControllerChanged();
 
 private:
-    QWidget *createReferenceGroup();
-    MSAEditor *msaEditor;
-    SequenceSelectorWidgetController *reSeqSelector;
+    QWidget* createReferenceGroup();
+    MSAEditor* msaEditor;
+    SequenceSelectorWidgetController* reSeqSelector;
 };
 
 class U2VIEW_EXPORT RefSeqCommonWidgetFactory : public OPCommonWidgetFactory {
@@ -51,7 +51,7 @@ public:
     RefSeqCommonWidgetFactory(QList<QString> groups);
     virtual ~RefSeqCommonWidgetFactory();
 
-    virtual QWidget *createWidget(GObjectView *objView, const QVariantMap &options);
+    virtual QWidget* createWidget(GObjectView* objView, const QVariantMap& options);
 };
 
 }  // namespace U2

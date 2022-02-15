@@ -31,7 +31,7 @@ DatasetFetcher::DatasetFetcher()
     : worker(nullptr), port(nullptr), context(nullptr), datasetInitialized(false), fullDataset(false) {
 }
 
-DatasetFetcher::DatasetFetcher(BaseWorker *worker, IntegralBus *port, WorkflowContext *context)
+DatasetFetcher::DatasetFetcher(BaseWorker* worker, IntegralBus* port, WorkflowContext* context)
     : worker(worker), port(port), context(context), datasetInitialized(false), fullDataset(false) {
 }
 
@@ -43,7 +43,7 @@ bool DatasetFetcher::isDone() const {
     return datasetMessages.isEmpty() && !port->hasMessage() && port->isEnded();
 }
 
-const QString &DatasetFetcher::getDatasetName() const {
+const QString& DatasetFetcher::getDatasetName() const {
     return datasetName;
 }
 
@@ -72,13 +72,13 @@ QString DatasetFetcher::getPortId() const {
     return port->getPortId();
 }
 
-QString DatasetFetcher::getDatasetName(const Message &message) const {
+QString DatasetFetcher::getDatasetName(const Message& message) const {
     const int metadataId = message.getMetadataId();
     const MessageMetadata metadata = context->getMetadataStorage().get(metadataId);
     return metadata.getDatasetName();
 }
 
-bool DatasetFetcher::datasetChanged(const Message &message) const {
+bool DatasetFetcher::datasetChanged(const Message& message) const {
     if (!datasetInitialized) {
         return false;
     }

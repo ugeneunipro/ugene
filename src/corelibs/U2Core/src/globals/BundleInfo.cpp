@@ -37,7 +37,7 @@ static QString getMacBundlePath() {
     CFURLRef appUrlRef = CFBundleCopyBundleURL(CFBundleGetMainBundle());
     CFStringRef macPath = CFURLCopyFileSystemPath(appUrlRef,
                                                   kCFURLPOSIXPathStyle);
-    const char *bundlePath = CFStringGetCStringPtr(macPath,
+    const char* bundlePath = CFStringGetCStringPtr(macPath,
                                                    CFStringGetSystemEncoding());
     CFRelease(appUrlRef);
     CFRelease(macPath);
@@ -46,7 +46,7 @@ static QString getMacBundlePath() {
 }
 #endif
 
-QString BundleInfo::getExtraTranslationSearchPath(CMDLineRegistry *cmdLineRegistry) {
+QString BundleInfo::getExtraTranslationSearchPath(CMDLineRegistry* cmdLineRegistry) {
 #ifdef Q_OS_DARWIN
     QString translationFileDir = getMacBundlePath() + "/Contents/Resources";
     QString transl = "transl_en";

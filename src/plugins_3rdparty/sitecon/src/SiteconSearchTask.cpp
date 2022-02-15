@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-SiteconSearchTask::SiteconSearchTask(const SiteconModel &m, const QByteArray &seq, const SiteconSearchCfg &cfg, int ro)
+SiteconSearchTask::SiteconSearchTask(const SiteconModel& m, const QByteArray& seq, const SiteconSearchCfg& cfg, int ro)
     : Task(tr("SITECON search"), TaskFlags_NR_FOSCOE), model(new SiteconModel(m)), cfg(new SiteconSearchCfg(cfg)), resultsOffset(ro), wholeSeq(seq) {
     lock = new QMutex();
     GCOUNTER(cvar, "SiteconSearchTask");
@@ -42,23 +42,23 @@ SiteconSearchTask::SiteconSearchTask(const SiteconModel &m, const QByteArray &se
     c.chunkSize = seq.length();
     c.overlapSize = 0;
 
-    SequenceWalkerTask *t = new SequenceWalkerTask(c, this, tr("SITECON search parallel subtask"));
+    SequenceWalkerTask* t = new SequenceWalkerTask(c, this, tr("SITECON search parallel subtask"));
     addSubTask(t);
 }
 
-void SiteconSearchTask::onRegion(SequenceWalkerSubtask *t, TaskStateInfo &ti) {
+void SiteconSearchTask::onRegion(SequenceWalkerSubtask* t, TaskStateInfo& ti) {
     // TODO: process border case as if there are 'N' chars before 0 and after seqlen
     if (cfg->complOnly && !t->isDNAComplemented()) {
         return;
     }
     U2Region globalRegion = t->getGlobalRegion();
     qint64 seqLen = globalRegion.length;
-    const char *seq = t->getGlobalConfig().seq + globalRegion.startPos;
+    const char* seq = t->getGlobalConfig().seq + globalRegion.startPos;
     int modelSize = model->settings.windowSize;
     ti.progress = 0;
     qint64 lenPerPercent = seqLen / 100;
     qint64 pLeft = lenPerPercent;
-    DNATranslation *complTT = t->isDNAComplemented() ? t->getGlobalConfig().complTrans : nullptr;
+    DNATranslation* complTT = t->isDNAComplemented() ? t->getGlobalConfig().complTrans : nullptr;
     for (int i = 0, n = seqLen - modelSize; i <= n && !ti.cancelFlag; i++, --pLeft) {
         float psum = SiteconAlgorithm::calculatePSum(seq + i, modelSize, model->matrix, model->settings, model->deviationThresh, complTT);
         if (psum < 0 || psum >= 1) {
@@ -84,7 +84,7 @@ void SiteconSearchTask::onRegion(SequenceWalkerSubtask *t, TaskStateInfo &ti) {
     }
 }
 
-void SiteconSearchTask::addResult(const SiteconSearchResult &r) {
+void SiteconSearchTask::addResult(const SiteconSearchResult& r) {
     lock->lock();
     results.append(r);
     lock->unlock();

@@ -40,8 +40,8 @@
 
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
-    PhylipPlugin *plug = new PhylipPlugin();
+extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
+    PhylipPlugin* plug = new PhylipPlugin();
     return plug;
 }
 
@@ -50,17 +50,17 @@ const QString PhylipPlugin::PHYLIP_NEIGHBOUR_JOIN_ALGORITHM_NAME_AND_KEY("PHYLIP
 PhylipPlugin::PhylipPlugin()
     : Plugin(tr("PHYLIP"), tr("PHYLIP (the PHYLogeny Inference Package) is a package of programs for inferring phylogenies (evolutionary trees)."
                               " Original version at: http://evolution.genetics.washington.edu/phylip.html")) {
-    PhyTreeGeneratorRegistry *registry = AppContext::getPhyTreeGeneratorRegistry();
+    PhyTreeGeneratorRegistry* registry = AppContext::getPhyTreeGeneratorRegistry();
     registry->registerPhyTreeGenerator(new NeighborJoinAdapter(), PHYLIP_NEIGHBOUR_JOIN_ALGORITHM_NAME_AND_KEY);
 
-    GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
+    GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
+    XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
     assert(xmlTestFormat != nullptr);
 
-    GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
+    GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = PhylipPluginTests::createTestFactories();
 
-    foreach (XMLTestFactory *f, l->qlist) {
+    foreach (XMLTestFactory* f, l->qlist) {
         bool res = xmlTestFormat->registerTestFactory(f);
         Q_UNUSED(res);
         assert(res);
@@ -72,7 +72,7 @@ PhylipPlugin::PhylipPlugin()
 namespace {
 CreatePhyTreeSettings fetchSettings() {
     CreatePhyTreeSettings settings;
-    CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
+    CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
     if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::MATRIX_ARG)) {
         settings.matrixId = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::MATRIX_ARG);
     }
@@ -105,7 +105,7 @@ CreatePhyTreeSettings fetchSettings() {
 }  // namespace
 
 void PhylipPlugin::processCmdlineOptions() {
-    CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
+    CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
     CHECK(cmdLineRegistry->hasParameter(PhylipCmdlineTask::PHYLIP_CMDLINE), );
     CHECK(cmdLineRegistry->hasParameter(CmdlineInOutTaskRunner::OUT_DB_ARG), );
     CHECK(cmdLineRegistry->hasParameter(CmdlineInOutTaskRunner::IN_DB_ARG), );
@@ -124,7 +124,7 @@ void PhylipPlugin::processCmdlineOptions() {
     U2DataId dataId = CmdlineInOutTaskRunner::parseDataId(idString, inDbiRef, os);
     CHECK_OP(os, );
 
-    Task *t = new PhylipTask(U2EntityRef(inDbiRef, dataId), outDbiRef, settings);
+    Task* t = new PhylipTask(U2EntityRef(inDbiRef, dataId), outDbiRef, settings);
     connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), new TaskStarter(t), SLOT(registerTask()));
 }
 

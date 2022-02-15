@@ -36,7 +36,7 @@
 
 namespace U2 {
 
-HmmerBuildFromMsaTask::HmmerBuildFromMsaTask(const HmmerBuildSettings &settings, const MultipleSequenceAlignment &msa)
+HmmerBuildFromMsaTask::HmmerBuildFromMsaTask(const HmmerBuildSettings& settings, const MultipleSequenceAlignment& msa)
     : ExternalToolSupportTask(tr("Build HMMER profile from msa"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
       settings(settings),
       msa(msa),
@@ -46,7 +46,7 @@ HmmerBuildFromMsaTask::HmmerBuildFromMsaTask(const HmmerBuildSettings &settings,
     SAFE_POINT_EXT(!settings.profileUrl.isEmpty(), setError(tr("HMM profile URL is empty")), );
 }
 
-const QString &HmmerBuildFromMsaTask::getHmmUrl() const {
+const QString& HmmerBuildFromMsaTask::getHmmUrl() const {
     return settings.profileUrl;
 }
 
@@ -54,14 +54,14 @@ namespace {
 
 const QString PHMMER_TEMP_DIR = "hmmer";
 
-QString getTaskTempDirName(const QString &prefix, Task *task) {
+QString getTaskTempDirName(const QString& prefix, Task* task) {
     return prefix + QString::number(task->getTaskId()) + "_" +
            QDate::currentDate().toString("dd.MM.yyyy") + "_" +
            QTime::currentTime().toString("hh.mm.ss.zzz") + "_" +
            QString::number(QCoreApplication::applicationPid());
 }
 
-}    // namespace
+}  // namespace
 
 void HmmerBuildFromMsaTask::prepare() {
     prepareWorkingDir();
@@ -73,8 +73,8 @@ void HmmerBuildFromMsaTask::prepare() {
     addSubTask(saveTask);
 }
 
-QList<Task *> HmmerBuildFromMsaTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> result;
+QList<Task*> HmmerBuildFromMsaTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> result;
     CHECK_OP(stateInfo, result);
     if (saveTask == subTask) {
         hmmerTask = new HmmerBuildTask(settings, saveTask->getUrl());
@@ -114,4 +114,4 @@ void HmmerBuildFromMsaTask::removeTempDir() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

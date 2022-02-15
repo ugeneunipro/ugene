@@ -28,20 +28,20 @@
 
 namespace U2 {
 
-VFSAdapterFactory::VFSAdapterFactory(QObject *o)
+VFSAdapterFactory::VFSAdapterFactory(QObject* o)
     : IOAdapterFactory(o) {
     name = tr("Memory buffer");
 }
 
-IOAdapter *VFSAdapterFactory::createIOAdapter() {
+IOAdapter* VFSAdapterFactory::createIOAdapter() {
     return new VFSAdapter(this);
 }
 
-VFSAdapter::VFSAdapter(VFSAdapterFactory *factory, QObject *o)
+VFSAdapter::VFSAdapter(VFSAdapterFactory* factory, QObject* o)
     : IOAdapter(factory, o), url("", GUrl_VFSFile), buffer(nullptr) {
 }
 
-bool VFSAdapter::open(const GUrl &_url, IOAdapterMode m) {
+bool VFSAdapter::open(const GUrl& _url, IOAdapterMode m) {
     SAFE_POINT(!isOpen(), "Adapter is already opened!", false);
     SAFE_POINT(buffer == nullptr, "Buffers is not null!", false);
 
@@ -50,14 +50,14 @@ bool VFSAdapter::open(const GUrl &_url, IOAdapterMode m) {
     if (!_url.getURLString().startsWith(vfsPrefix)) {
         return false;  // not a file in vfs
     }
-    VirtualFileSystemRegistry *vfsReg = AppContext::getVirtualFileSystemRegistry();
+    VirtualFileSystemRegistry* vfsReg = AppContext::getVirtualFileSystemRegistry();
     SAFE_POINT(vfsReg != nullptr, "VirtualFileSystemRegistry not found!", false);
 
     QStringList urlArgs = _url.getURLString().mid(vfsPrefix.size()).split(U2_VFS_FILE_SEPARATOR, QString::SkipEmptyParts);
     if (2 != urlArgs.size()) {  // urlArgs - vfsname and filename
         return false;
     }
-    VirtualFileSystem *vfs = vfsReg->getFileSystemById(urlArgs[0]);
+    VirtualFileSystem* vfs = vfsReg->getFileSystemById(urlArgs[0]);
     if (nullptr == vfs) {
         return false;  // no such vfs registered
     }
@@ -87,7 +87,7 @@ void VFSAdapter::close() {
     url = GUrl("", GUrl_VFSFile);
 }
 
-qint64 VFSAdapter::readBlock(char *data, qint64 size) {
+qint64 VFSAdapter::readBlock(char* data, qint64 size) {
     qint64 l = buffer->read(data, size);
     if (formatMode == TextMode) {
         l = TextUtils::cutByteOrderMarks(data, errorMessage, l);
@@ -96,7 +96,7 @@ qint64 VFSAdapter::readBlock(char *data, qint64 size) {
     return l;
 }
 
-qint64 VFSAdapter::writeBlock(const char *data, qint64 size) {
+qint64 VFSAdapter::writeBlock(const char* data, qint64 size) {
     qint64 l = buffer->write(data, size);
     return l;
 }

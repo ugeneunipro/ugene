@@ -38,22 +38,22 @@ public:
         WORKFLOW_INTERNAL_CUSTOM
     };
 
-    static QString getWorkingDir(const QString &fileUrl, int dirMode, const QString &customDir, const QString &workingDir);
-    static QString createWorkingDir(const QString &fileUrl, int dirMode, const QString &customDir, const QString &workingDir);
-    static QString detectFormat(const QString &url);
-    static bool isFileEmpty(const QString &url);
-    static void dumpStringToFile(QFile *f, QString &str);  // Be aware: string will be cleared after dumping
-    static QString getAbsolutePath(const QString &filePath);
-    static bool isDirectoryWritable(const QString &path);
+    static QString getWorkingDir(const QString& fileUrl, int dirMode, const QString& customDir, const QString& workingDir);
+    static QString createWorkingDir(const QString& fileUrl, int dirMode, const QString& customDir, const QString& workingDir);
+    static QString detectFormat(const QString& url);
+    static bool isFileEmpty(const QString& url);
+    static void dumpStringToFile(QFile* f, QString& str);  // Be aware: string will be cleared after dumping
+    static QString getAbsolutePath(const QString& filePath);
+    static bool isDirectoryWritable(const QString& path);
 
     /**
      * Returns "true" if it is possible to create a file (or a sub-path) in absoluteDirPath.
      * The difference with 'isDirectoryWritable' is that this method doesn't check that the 'absoluteDirPath' dir exists.
      */
-    static bool canWriteToPath(const QString &absoluteDirPath);
+    static bool canWriteToPath(const QString& absoluteDirPath);
 
 private:
-    static QString getFormatId(const FormatDetectionResult &r);
+    static QString getFormatId(const FormatDetectionResult& r);
 
     static int MIN_LENGTH_TO_WRITE;
     static const QString HOME_DIR_IDENTIFIER;

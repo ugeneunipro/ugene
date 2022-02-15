@@ -45,12 +45,12 @@ private:
     QVector<int64_t> findNumbers;
     QVector<int> windowSizes;
     QVector<int64_t> expectedResults;
-    int64_t *results;
+    int64_t* results;
 };
 
 class BinaryFindOpenCLTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

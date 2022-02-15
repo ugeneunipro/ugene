@@ -22,30 +22,30 @@
 #ifndef _U2_USER_APP_SETTINGS_GUI_CONTROLLER_H_
 #define _U2_USER_APP_SETTINGS_GUI_CONTROLLER_H_
 
-#include <ui_UserApplicationsSettingsWidget.h>
-
 #include <QUrl>
 
 #include <U2Core/NetworkConfiguration.h>
 
 #include <U2Gui/AppSettingsGUI.h>
 
+#include <ui_UserApplicationsSettingsWidget.h>
+
 namespace U2 {
 
 class UserApplicationsSettingsPageController : public AppSettingsGUIPageController {
     Q_OBJECT
 public:
-    UserApplicationsSettingsPageController(QObject *p = nullptr);
+    UserApplicationsSettingsPageController(QObject* p = nullptr);
 
-    virtual AppSettingsGUIPageState *getSavedState();
+    virtual AppSettingsGUIPageState* getSavedState();
 
-    virtual void saveState(AppSettingsGUIPageState *s);
+    virtual void saveState(AppSettingsGUIPageState* s);
 
-    virtual AppSettingsGUIPageWidget *createWidget(AppSettingsGUIPageState *data);
+    virtual AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* data);
 
     QMap<QString, QString> translations;
 
-    const QString &getHelpPageId() const {
+    const QString& getHelpPageId() const {
         return helpPageId;
     };
 
@@ -74,11 +74,11 @@ public:
 class UserApplicationsSettingsPageWidget : public AppSettingsGUIPageWidget, public Ui_UserApplicationsSettingsWidget {
     Q_OBJECT
 public:
-    UserApplicationsSettingsPageWidget(UserApplicationsSettingsPageController *ctrl);
+    UserApplicationsSettingsPageWidget(UserApplicationsSettingsPageController* ctrl);
 
-    virtual void setState(AppSettingsGUIPageState *state);
+    virtual void setState(AppSettingsGUIPageState* state);
 
-    virtual AppSettingsGUIPageState *getState(QString &err) const;
+    virtual AppSettingsGUIPageState* getState(QString& err) const;
 
 private slots:
     void sl_transFileClicked();

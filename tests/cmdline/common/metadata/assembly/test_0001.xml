@@ -11,7 +11,7 @@
             working-dir="assembly_metadata_0001"
     />
 
-    <load-document index="doc" url="assembly_metadata_0001/small_out.bam" io="local_file" format="bam" dir="temp"/>
+    <load-document index="doc" url="assembly_metadata_0001/small.bam.sorted_out.bam" io="local_file" format="bam" dir="temp"/>
     <check-num-objects doc="doc" value="1"/>
 
     <find-object-by-name index="obj" doc="doc" name="ref_and_others" type="OT_ASSEMBLY"/>

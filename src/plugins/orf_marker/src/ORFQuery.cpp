@@ -49,14 +49,14 @@ static const QString MAX_LENGTH_ATTR("max-length");
 static const QString RES_ATTR("max-result-attribute");
 static const QString LIMIT_ATTR("limit-results");
 
-QDORFActor::QDORFActor(QDActorPrototype const *proto)
+QDORFActor::QDORFActor(QDActorPrototype const* proto)
     : QDActor(proto) {
     units["orf"] = new QDSchemeUnit(this);
     cfg->setAnnotationKey("ORF");
 }
 
 QString QDORFActor::getText() const {
-    QMap<QString, Attribute *> params = cfg->getParameters();
+    QMap<QString, Attribute*> params = cfg->getParameters();
 
     QString strandName;
     switch (strand) {
@@ -71,7 +71,7 @@ QString QDORFActor::getText() const {
             break;
     }
 
-    const QString &transId = cfg->getParameters().value(ID_ATTR)->getAttributeValueWithoutScript<QString>();
+    const QString& transId = cfg->getParameters().value(ID_ATTR)->getAttributeValueWithoutScript<QString>();
     QString ttName = AppContext::getDNATranslationRegistry()->lookupTranslation(AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()), DNATranslationType_NUCL_2_AMINO, transId)->getTranslationName();
     ttName = QString("<a href=%1>%2</a>").arg(ID_ATTR).arg(ttName);
 
@@ -104,10 +104,10 @@ QString QDORFActor::getText() const {
     return doc;
 }
 
-Task *QDORFActor::getAlgorithmTask(const QVector<U2Region> &searchLocation) {
-    Task *t = nullptr;
-    const DNASequence &dnaSeq = scheme->getSequence();
-    QMap<QString, Attribute *> params = cfg->getParameters();
+Task* QDORFActor::getAlgorithmTask(const QVector<U2Region>& searchLocation) {
+    Task* t = nullptr;
+    const DNASequence& dnaSeq = scheme->getSequence();
+    QMap<QString, Attribute*> params = cfg->getParameters();
 
     switch (getStrandToRun()) {
         case QDStrand_Both:
@@ -129,7 +129,7 @@ Task *QDORFActor::getAlgorithmTask(const QVector<U2Region> &searchLocation) {
     settings.searchRegion = U2Region(0, dnaSeq.length());
 
     if (settings.strand != ORFAlgorithmStrand_Direct) {
-        DNATranslation *compTT = nullptr;
+        DNATranslation* compTT = nullptr;
         if (dnaSeq.alphabet->isNucleic()) {
             compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(dnaSeq.alphabet);
         }
@@ -140,7 +140,7 @@ Task *QDORFActor::getAlgorithmTask(const QVector<U2Region> &searchLocation) {
         }
     }
 
-    const QString &transId = params.value(ID_ATTR)->getAttributeValueWithoutScript<QString>();
+    const QString& transId = params.value(ID_ATTR)->getAttributeValueWithoutScript<QString>();
     settings.proteinTT = AppContext::getDNATranslationRegistry()->lookupTranslation(dnaSeq.alphabet, DNATranslationType_NUCL_2_AMINO, transId);
 
     if (!settings.proteinTT) {
@@ -149,25 +149,25 @@ Task *QDORFActor::getAlgorithmTask(const QVector<U2Region> &searchLocation) {
 
     t = new Task(tr("ORF find"), TaskFlag_NoRun);
     assert(orfTasks.isEmpty());
-    foreach (const U2Region &r, searchLocation) {
+    foreach (const U2Region& r, searchLocation) {
         ORFAlgorithmSettings stngs(settings);
         stngs.searchRegion = r;
-        ORFFindTask *sub = new ORFFindTask(stngs, scheme->getEntityRef());
+        ORFFindTask* sub = new ORFFindTask(stngs, scheme->getEntityRef());
         orfTasks.append(sub);
         t->addSubTask(sub);
     }
-    connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_onAlgorithmTaskFinished(Task *)));
+    connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_onAlgorithmTaskFinished(Task*)));
     return t;
 }
 
-void QDORFActor::sl_onAlgorithmTaskFinished(Task *) {
+void QDORFActor::sl_onAlgorithmTaskFinished(Task*) {
     QList<ORFFindResult> res;
-    foreach (ORFFindTask *oft, orfTasks) {
+    foreach (ORFFindTask* oft, orfTasks) {
         res << oft->popResults();
     }
     QList<SharedAnnotationData> dataList = ORFFindResult::toTable(res, "1");
-    foreach (const SharedAnnotationData &ad, dataList) {
-        const U2Region &first = ad->location->regions[0];
+    foreach (const SharedAnnotationData& ad, dataList) {
+        const U2Region& first = ad->location->regions[0];
         if (first.length > getMaxResultLen()) {
             continue;
         }
@@ -222,7 +222,7 @@ QDORFActorPrototype::QDORFActorPrototype() {
     attributes << new Attribute(mr, BaseTypes::NUM_TYPE(), false, 100000);
     attributes << new Attribute(lr, BaseTypes::BOOL_TYPE(), false, QVariant(true));
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
 
     QVariantMap lenMap;
     lenMap["minimum"] = QVariant(0);
@@ -232,9 +232,9 @@ QDORFActorPrototype::QDORFActorPrototype() {
     delegates[MAX_LENGTH_ATTR] = new SpinBoxDelegate(lenMap);
 
     QVariantMap idMap;
-    QList<DNATranslation *> TTs = AppContext::getDNATranslationRegistry()->lookupTranslation(AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()),
-                                                                                             DNATranslationType_NUCL_2_AMINO);
-    foreach (DNATranslation *tt, TTs) {
+    QList<DNATranslation*> TTs = AppContext::getDNATranslationRegistry()->lookupTranslation(AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()),
+                                                                                            DNATranslationType_NUCL_2_AMINO);
+    foreach (DNATranslation* tt, TTs) {
         idMap[tt->getTranslationName()] = tt->getTranslationId();
     }
     delegates[ID_ATTR] = new ComboBoxDelegate(idMap);

@@ -30,25 +30,25 @@
 
 namespace U2 {
 
-WorkflowScriptEngine *ScriptEngineUtils::workflowEngine(QScriptEngine *engine) {
-    return dynamic_cast<WorkflowScriptEngine *>(engine);
+WorkflowScriptEngine* ScriptEngineUtils::workflowEngine(QScriptEngine* engine) {
+    return dynamic_cast<WorkflowScriptEngine*>(engine);
 }
 
-DbiDataStorage *ScriptEngineUtils::dataStorage(QScriptEngine *engine) {
-    WorkflowScriptEngine *we = workflowEngine(engine);
+DbiDataStorage* ScriptEngineUtils::dataStorage(QScriptEngine* engine) {
+    WorkflowScriptEngine* we = workflowEngine(engine);
     CHECK(nullptr != we, nullptr);
-    WorkflowContext *wc = we->getWorkflowContext();
+    WorkflowContext* wc = we->getWorkflowContext();
     CHECK(nullptr != wc, nullptr);
     return wc->getDataStorage();
 }
 
-SequenceScriptClass *ScriptEngineUtils::getSequenceClass(QScriptEngine *engine) {
+SequenceScriptClass* ScriptEngineUtils::getSequenceClass(QScriptEngine* engine) {
     QScriptValue cls = engine->globalObject().property(SequenceScriptClass::CLASS_NAME);
     CHECK(!cls.isNull(), nullptr);
-    return qscriptvalue_cast<SequenceScriptClass *>(cls.data());
+    return qscriptvalue_cast<SequenceScriptClass*>(cls.data());
 }
 
-SharedDbiDataHandler ScriptEngineUtils::getDbiId(QScriptEngine *engine, const QScriptValue &value, const QString &className) {
+SharedDbiDataHandler ScriptEngineUtils::getDbiId(QScriptEngine* engine, const QScriptValue& value, const QString& className) {
     QScriptValue sClass = engine->globalObject().property(className);
 
     QScriptValue idValue = value;
@@ -68,7 +68,7 @@ SharedDbiDataHandler ScriptEngineUtils::getDbiId(QScriptEngine *engine, const QS
     return SharedDbiDataHandler();
 }
 
-SharedDbiDataHandler ScriptEngineUtils::getDbiId(QScriptEngine * /*engine*/, const QScriptValue &value) {
+SharedDbiDataHandler ScriptEngineUtils::getDbiId(QScriptEngine* /*engine*/, const QScriptValue& value) {
     if (value.isVariant()) {
         QVariant var = value.toVariant();
         if (var.canConvert<SharedDbiDataHandler>()) {
@@ -78,9 +78,9 @@ SharedDbiDataHandler ScriptEngineUtils::getDbiId(QScriptEngine * /*engine*/, con
     return SharedDbiDataHandler();
 }
 
-QScriptValue ScriptEngineUtils::toScriptValue(QScriptEngine *engine, const QVariant &value, DataTypePtr type) {
+QScriptValue ScriptEngineUtils::toScriptValue(QScriptEngine* engine, const QVariant& value, DataTypePtr type) {
     if (BaseTypes::DNA_SEQUENCE_TYPE() == type) {
-        SequenceScriptClass *sClass = getSequenceClass(engine);
+        SequenceScriptClass* sClass = getSequenceClass(engine);
         CHECK(nullptr != sClass, engine->newVariant(value));
 
         if (value.canConvert<SharedDbiDataHandler>()) {
@@ -91,7 +91,7 @@ QScriptValue ScriptEngineUtils::toScriptValue(QScriptEngine *engine, const QVari
     return engine->newVariant(value);
 }
 
-QVariant ScriptEngineUtils::fromScriptValue(QScriptEngine *engine, const QScriptValue &value, DataTypePtr type) {
+QVariant ScriptEngineUtils::fromScriptValue(QScriptEngine* engine, const QScriptValue& value, DataTypePtr type) {
     if (BaseTypes::DNA_SEQUENCE_TYPE() == type) {
         SharedDbiDataHandler seqId = ScriptEngineUtils::getDbiId(engine, value, SequenceScriptClass::CLASS_NAME);
         return qVariantFromValue(seqId);

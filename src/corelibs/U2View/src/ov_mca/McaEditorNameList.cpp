@@ -42,7 +42,7 @@ const qreal McaEditorNameList::ARROW_HEAD_LENGTH = 7;
 const QColor McaEditorNameList::ARROW_DIRECT_COLOR = "blue";  // another possible color: "#4EADE1";
 const QColor McaEditorNameList::ARROW_REVERSE_COLOR = "green";  // another possible color: "#03c03c";
 
-McaEditorNameList::McaEditorNameList(McaEditorWgt *ui, QScrollBar *nhBar)
+McaEditorNameList::McaEditorNameList(McaEditorWgt* ui, QScrollBar* nhBar)
     : MaEditorNameList(ui, nhBar) {
     setObjectName("mca_editor_name_list");
 
@@ -52,19 +52,19 @@ McaEditorNameList::McaEditorNameList(McaEditorWgt *ui, QScrollBar *nhBar)
     setMinimumWidth(getMinimumWidgetWidth());
 }
 
-void McaEditorNameList::sl_selectionChanged(const MaEditorSelection & /*current*/, const MaEditorSelection & /*oldSelection*/) {
+void McaEditorNameList::sl_selectionChanged(const MaEditorSelection& /*current*/, const MaEditorSelection& /*oldSelection*/) {
     sl_updateActions();
     sl_completeRedraw();
 }
 
-void McaEditorNameList::drawCollapsibleSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect, bool isSelected, bool isCollapsed, bool isReference) {
+void McaEditorNameList::drawCollapsibleSequenceItem(QPainter& painter, int rowIndex, const QString& name, const QRect& rect, bool isSelected, bool isCollapsed, bool isReference) {
     const bool isReversed = isRowReversed(rowIndex);
     const QRectF arrowRect = calculateArrowRect(U2Region(rect.y(), rect.height()));
     MaEditorNameList::drawCollapsibleSequenceItem(painter, rowIndex, name, rect, isSelected, isCollapsed, isReference);
     drawArrow(painter, isReversed, arrowRect);
 }
 
-void McaEditorNameList::setSelection(const MaEditorSelection &selection) {
+void McaEditorNameList::setSelection(const MaEditorSelection& selection) {
     MaEditorNameList::setSelection(selection);
     bool isWholeReadSelected = selection.getWidth() == editor->getAlignmentLen();
     if (isWholeReadSelected) {  // Whole sequence selection in the name list should not trigger reference selection.
@@ -72,21 +72,21 @@ void McaEditorNameList::setSelection(const MaEditorSelection &selection) {
     }
 }
 
-McaEditor *McaEditorNameList::getEditor() const {
-    return qobject_cast<McaEditor *>(editor);
+McaEditor* McaEditorNameList::getEditor() const {
+    return qobject_cast<McaEditor*>(editor);
 }
 
 bool McaEditorNameList::isRowReversed(int rowIndex) const {
     return getEditor()->getMaObject()->getMcaRow(rowIndex)->isReversed();
 }
 
-void McaEditorNameList::drawText(QPainter &painter, const QString &text, const QRect &rect, bool selected) {
+void McaEditorNameList::drawText(QPainter& painter, const QString& text, const QRect& rect, bool selected) {
     const QFontMetrics fontMetrics(getFont(selected));
     const QString elidedText = fontMetrics.elidedText(text, Qt::ElideRight, rect.width());
     MaEditorNameList::drawText(painter, elidedText, rect, selected);
 }
 
-void McaEditorNameList::drawArrow(QPainter &painter, bool isReversed, const QRectF &arrowRect) {
+void McaEditorNameList::drawArrow(QPainter& painter, bool isReversed, const QRectF& arrowRect) {
     GraphUtils::ArrowConfig config;
     config.lineWidth = ARROW_LINE_WIDTH;
     config.lineLength = arrowRect.width();
@@ -97,7 +97,7 @@ void McaEditorNameList::drawArrow(QPainter &painter, bool isReversed, const QRec
     GraphUtils::drawArrow(painter, arrowRect, config);
 }
 
-QRectF McaEditorNameList::calculateArrowRect(const U2Region &yRange) const {
+QRectF McaEditorNameList::calculateArrowRect(const U2Region& yRange) const {
     const int widgetWidth = width();
     const qreal arrowWidth = ARROW_LENGTH;
     const qreal arrowHeight = ARROW_HEAD_LENGTH;

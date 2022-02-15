@@ -30,7 +30,7 @@ namespace U2 {
 
 class U2VIEW_EXPORT AnnotHighlightTreeItem : public QTreeWidgetItem {
 public:
-    AnnotHighlightTreeItem(const QString &annotName, const QColor &annotColor);
+    AnnotHighlightTreeItem(const QString& annotName, const QColor& annotColor);
 
     inline QString getName() {
         return annotName;
@@ -39,7 +39,7 @@ public:
     inline QColor getColor() {
         return annotColor;
     }
-    void setColor(const QColor &_annotColor);
+    void setColor(const QColor& _annotColor);
 
     static const int ROW_HEIGHT;
     static const int COLOR_ICON_SIZE;

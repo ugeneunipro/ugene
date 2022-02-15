@@ -59,7 +59,7 @@ public:
      * @param closeAction QAction provided for correct widget closing
      * @param view DnaView context for connecting structure 3D representation and sequence view
      */
-    BioStruct3DSplitter(QAction *closeAction, AnnotatedDNAView *view);
+    BioStruct3DSplitter(QAction* closeAction, AnnotatedDNAView* view);
     /*!
      * Destructor.
      */
@@ -67,25 +67,25 @@ public:
     /*!
      * @return True, if GObject has type BioStruct3D and could be added to splitter.
      */
-    virtual bool acceptsGObject(GObject *obj);
+    virtual bool acceptsGObject(GObject* obj);
     /*!
      * Creates BioStruct3DWidget for object visualization and adds it to the splitter.
      */
-    BioStruct3DGLWidget *addBioStruct3DGLWidget(BioStruct3DObject *obj);
+    BioStruct3DGLWidget* addBioStruct3DGLWidget(BioStruct3DObject* obj);
     /*!
      * @return First found BioStruct3DObject with corresponding name, NULL if nothing is found.
      */
-    BioStruct3DObject *findBioStruct3DObjByName(const QString &objName);
-    virtual void saveState(QVariantMap &m);
-    virtual void updateState(const QVariantMap &m);
+    BioStruct3DObject* findBioStruct3DObjByName(const QString& objName);
+    virtual void saveState(QVariantMap& m);
+    virtual void updateState(const QVariantMap& m);
     /*!
      * @return List of splitter children widgets.
      */
-    QList<BioStruct3DGLWidget *> getChildWidgets() const;
+    QList<BioStruct3DGLWidget*> getChildWidgets() const;
     /*!
      * @return Current active view.
      */
-    const QList<QAction *> getSettingsMenuActions() const;
+    const QList<QAction*> getSettingsMenuActions() const;
     /*!
      * @return ADVDNAView splitter, parent widget for BioStruct3DSplitter.
      */
@@ -97,15 +97,15 @@ public:
     /*!
      * @return GLFrameManager for splitter child widgets.
      */
-    GLFrameManager *getGLFrameManager();
+    GLFrameManager* getGLFrameManager();
     /*!
      *Removes widgets, updates context
      */
-    void removeBioStruct3DGLWidget(BioStruct3DGLWidget *widget);
+    void removeBioStruct3DGLWidget(BioStruct3DGLWidget* widget);
     /*!
      * This is used to close 3D split widget from toolbar
      */
-    QAction *getCloseSplitterAction();
+    QAction* getCloseSplitterAction();
     /*!
      * QWidget virtual function, returns preferred widget size.
      */
@@ -115,47 +115,47 @@ public:
     /*!
      * Adds object and its new view.
      */
-    void addObject(BioStruct3DObject *obj);
+    void addObject(BioStruct3DObject* obj);
     /*!
      * AddModelTask helper function.
      */
-    void addModelFromObject(BioStruct3DObject *obj);
+    void addModelFromObject(BioStruct3DObject* obj);
     /*!
      * Removes object and its views.
      */
-    bool removeObject(BioStruct3DObject *obj);
+    bool removeObject(BioStruct3DObject* obj);
     /*!
      * Adds action button to the toolbar on the left
      */
-    void addActionToLocalToolBar(QAction *action);
+    void addActionToLocalToolBar(QAction* action);
 
 signals:
-    void si_bioStruct3DGLWidgetAdded(BioStruct3DGLWidget *widget);
-    void si_bioStruct3DGLWidgetRemoved(BioStruct3DGLWidget *widget);
+    void si_bioStruct3DGLWidgetAdded(BioStruct3DGLWidget* widget);
+    void si_bioStruct3DGLWidgetRemoved(BioStruct3DGLWidget* widget);
 
 protected:
-    void dragEnterEvent(QDragEnterEvent *event);
-    void dropEvent(QDropEvent *event);
-    bool eventFilter(QObject *o, QEvent *e);
+    void dragEnterEvent(QDragEnterEvent* event);
+    void dropEvent(QDropEvent* event);
+    bool eventFilter(QObject* o, QEvent* e);
 
 private:
-    QSplitter *getParentSplitter();
-    QMultiMap<BioStruct3DObject *, BioStruct3DGLWidget *> biostrucViewMap;
+    QSplitter* getParentSplitter();
+    QMultiMap<BioStruct3DObject*, BioStruct3DGLWidget*> biostrucViewMap;
     QScopedPointer<GLFrameManager> glFrameManager;
-    QSplitter *splitter;
-    QSplitter *parentSplitter;
-    QAction *closeAction;
-    QLayout *layout;
-    QList<QAction *> toggleActions;
+    QSplitter* splitter;
+    QSplitter* parentSplitter;
+    QAction* closeAction;
+    QLayout* layout;
+    QList<QAction*> toggleActions;
     int splitterHeight;
     bool isViewCollapsed;
-    WidgetWithLocalToolbar *widgetWithToolbar;
+    WidgetWithLocalToolbar* widgetWithToolbar;
 
-    SplitterHeaderWidget *header;
+    SplitterHeaderWidget* header;
 };
 
 struct DBLink {
-    DBLink(const QString &_name, QString _url)
+    DBLink(const QString& _name, QString _url)
         : name(_name), url(_url) {
     }
     QString name;
@@ -174,47 +174,47 @@ public:
 class AddModelToSplitterTask : public Task {
     Q_OBJECT
 public:
-    AddModelToSplitterTask(GObject *o, BioStruct3DSplitter *s);
+    AddModelToSplitterTask(GObject* o, BioStruct3DSplitter* s);
     virtual void prepare();
     virtual void run();
     virtual ReportResult report();
 
 private:
-    Document *doc;
-    GObject *obj;
-    BioStruct3DObject *bObj;
-    BioStruct3DSplitter *splitter;
+    Document* doc;
+    GObject* obj;
+    BioStruct3DObject* bObj;
+    BioStruct3DSplitter* splitter;
 };
 
 class SplitterHeaderWidget : public QWidget {
     Q_OBJECT
 
 public:
-    SplitterHeaderWidget(BioStruct3DSplitter *splitter);
+    SplitterHeaderWidget(BioStruct3DSplitter* splitter);
 
 private:
-    BioStruct3DSplitter *splitter;
-    QAction *widgetStateMenuAction;
-    QAction *addModelAction;
-    QAction *webMenuAction;
-    QAction *displayMenuAction;
-    QAction *restoreDefaultsAction;
-    QAction *zoomInAction;
-    QAction *zoomOutAction;
-    QAction *syncLockAction;
-    QComboBox *activeWidgetBox;
-    QMap<QAction *, QString> webActionMap;
-    QList<QAction *> toggleActions;
+    BioStruct3DSplitter* splitter;
+    QAction* widgetStateMenuAction;
+    QAction* addModelAction;
+    QAction* webMenuAction;
+    QAction* displayMenuAction;
+    QAction* restoreDefaultsAction;
+    QAction* zoomInAction;
+    QAction* zoomOutAction;
+    QAction* syncLockAction;
+    QComboBox* activeWidgetBox;
+    QMap<QAction*, QString> webActionMap;
+    QList<QAction*> toggleActions;
 
-    OrderedToolbar *toolbar;
+    OrderedToolbar* toolbar;
 
 protected:
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject* obj, QEvent* event);
 
 private slots:
 
-    void sl_bioStruct3DGLWidgetAdded(BioStruct3DGLWidget *glWidget);
-    void sl_bioStruct3DGLWidgetRemoved(BioStruct3DGLWidget *glWidget);
+    void sl_bioStruct3DGLWidgetAdded(BioStruct3DGLWidget* glWidget);
+    void sl_bioStruct3DGLWidgetRemoved(BioStruct3DGLWidget* glWidget);
     void sl_toggleBioStruct3DWidget(bool visible);
     void sl_toggleSyncLock(bool on);
     void sl_addModel();
@@ -228,13 +228,13 @@ private slots:
     void sl_openBioStructUrl();
 
 private:
-    BioStruct3DGLWidget *getActiveWidget();
-    void addToolbarAction(QAction *action);
+    BioStruct3DGLWidget* getActiveWidget();
+    void addToolbarAction(QAction* action);
     void updateToolbar();
     void updateActiveWidgetBox();
     void enableToolbar();
     void registerWebUrls();
-    void setActiveView(BioStruct3DGLWidget *glWidget);
+    void setActiveView(BioStruct3DGLWidget* glWidget);
 };
 
 }  // namespace U2

@@ -60,15 +60,15 @@ namespace U2 {
 ////////////////////////////////////
 /// MsaExcludeListContext
 ///////////////////////////////////
-MsaExcludeListContext::MsaExcludeListContext(QObject *parent)
+MsaExcludeListContext::MsaExcludeListContext(QObject* parent)
     : GObjectViewWindowContext(parent, MsaEditorFactory::ID) {
 }
 
-static const char *TOGGLE_EXCLUDE_LIST_ACTION_NAME = "exclude_list_toggle_action";
-static const char *MOVE_MSA_SELECTION_TO_EXCLUDE_LIST_ACTION_NAME = "exclude_list_move_from_msa_action";
+static const char* TOGGLE_EXCLUDE_LIST_ACTION_NAME = "exclude_list_toggle_action";
+static const char* MOVE_MSA_SELECTION_TO_EXCLUDE_LIST_ACTION_NAME = "exclude_list_move_from_msa_action";
 
-void MsaExcludeListContext::initViewContext(GObjectView *view) {
-    auto msaEditor = qobject_cast<MSAEditor *>(view);
+void MsaExcludeListContext::initViewContext(GObjectView* view) {
+    auto msaEditor = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "View is not MSAEditor!", );
     msaEditor->registerActionProvider(this);
 
@@ -79,7 +79,7 @@ void MsaExcludeListContext::initViewContext(GObjectView *view) {
     toggleExcludeListAction->setObjectName(TOGGLE_EXCLUDE_LIST_ACTION_NAME);
     toggleExcludeListAction->setToolTip(tr("Show/Hide Exclude List view visibility"));
     connect(toggleExcludeListAction, &QAction::triggered, this, [this, msaEditor] { toggleExcludeListView(msaEditor); });
-    connect(view, &GObjectView::si_buildStaticToolbar, this, [toggleExcludeListAction](GObjectView *, QToolBar *toolBar) { toolBar->addAction(toggleExcludeListAction); });
+    connect(view, &GObjectView::si_buildStaticToolbar, this, [toggleExcludeListAction](GObjectView*, QToolBar* toolBar) { toolBar->addAction(toggleExcludeListAction); });
     addViewAction(toggleExcludeListAction);
 
     auto moveFromMsaAction = new GObjectViewAction(this, view, tr("Move to Exclude List"));
@@ -109,8 +109,8 @@ void MsaExcludeListContext::initViewContext(GObjectView *view) {
         CHECK(!msaObjectPtr.isNull(), );
         msaObjectPtr->disconnect(this);
     });
-    connect(view, &GObjectView::si_buildMenu, this, [msaEditor, moveFromMsaAction](GObjectView *, QMenu *menu) {
-        QMenu *copyMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_COPY);
+    connect(view, &GObjectView::si_buildMenu, this, [msaEditor, moveFromMsaAction](GObjectView*, QMenu* menu) {
+        QMenu* copyMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_COPY);
         GUIUtils::insertActionAfter(copyMenu, msaEditor->getUI()->cutSelectionAction, moveFromMsaAction);
     });
     addViewAction(moveFromMsaAction);
@@ -118,13 +118,13 @@ void MsaExcludeListContext::initViewContext(GObjectView *view) {
     updateState(msaEditor);
 }
 
-MsaExcludeListWidget *MsaExcludeListContext::findActiveExcludeList(MSAEditor *msaEditor) {
+MsaExcludeListWidget* MsaExcludeListContext::findActiveExcludeList(MSAEditor* msaEditor) {
     auto mainSplitter = msaEditor->getUI()->getMainSplitter();
-    return mainSplitter->findChild<MsaExcludeListWidget *>();
+    return mainSplitter->findChild<MsaExcludeListWidget*>();
 }
 
-MsaExcludeListWidget *MsaExcludeListContext::openExcludeList(MSAEditor *msaEditor) {
-    MsaExcludeListWidget *excludeList = findActiveExcludeList(msaEditor);
+MsaExcludeListWidget* MsaExcludeListContext::openExcludeList(MSAEditor* msaEditor) {
+    MsaExcludeListWidget* excludeList = findActiveExcludeList(msaEditor);
     CHECK(excludeList == nullptr, excludeList);
     GCOUNTER(cvar, "MsaExcludeListWidget");
 
@@ -136,12 +136,12 @@ MsaExcludeListWidget *MsaExcludeListContext::openExcludeList(MSAEditor *msaEdito
     return excludeList;
 }
 
-void MsaExcludeListContext::updateMsaEditorSplitterStyle(MSAEditor *msaEditor) {
+void MsaExcludeListContext::updateMsaEditorSplitterStyle(MSAEditor* msaEditor) {
     auto mainSplitter = msaEditor->getUI()->getMainSplitter();
     MaSplitterUtils::updateFixedSizeHandleStyle(mainSplitter);
 }
 
-void MsaExcludeListContext::toggleExcludeListView(MSAEditor *msaEditor) {
+void MsaExcludeListContext::toggleExcludeListView(MSAEditor* msaEditor) {
     auto excludeList = findActiveExcludeList(msaEditor);
     if (excludeList != nullptr) {
         delete excludeList;
@@ -151,7 +151,7 @@ void MsaExcludeListContext::toggleExcludeListView(MSAEditor *msaEditor) {
     updateMsaEditorSplitterStyle(msaEditor);
 }
 
-void MsaExcludeListContext::updateState(MSAEditor *msaEditor) {
+void MsaExcludeListContext::updateState(MSAEditor* msaEditor) {
     bool isRegisteredView = viewResources.contains(msaEditor);
     CHECK(isRegisteredView, );
     // MSA editor emits signals during the destruction process (TreeWidget resets rows ordering and updates collapse model & selection).
@@ -162,7 +162,7 @@ void MsaExcludeListContext::updateState(MSAEditor *msaEditor) {
     moveAction->setEnabled(isEnabled);
 }
 
-QAction *MsaExcludeListContext::getMoveMsaSelectionToExcludeListAction(MSAEditor *msaEditor) {
+QAction* MsaExcludeListContext::getMoveMsaSelectionToExcludeListAction(MSAEditor* msaEditor) {
     auto moveAction = findViewAction(msaEditor, MOVE_MSA_SELECTION_TO_EXCLUDE_LIST_ACTION_NAME);
     SAFE_POINT(moveAction != nullptr, "Can't find move action in Msa editor", nullptr)
     return moveAction;
@@ -176,12 +176,12 @@ QAction *MsaExcludeListContext::getMoveMsaSelectionToExcludeListAction(MSAEditor
 static constexpr int LIST_ITEM_DATA_ROW_ID = 1000;
 
 /** Property key for the last used exclude list file name. Stored in MsaEditor memory. */
-static const char *PROPERTY_LAST_USED_EXCLUDE_LIST_FILE = "MsaExcludeList_lastUsedFile";
+static const char* PROPERTY_LAST_USED_EXCLUDE_LIST_FILE = "MsaExcludeList_lastUsedFile";
 
 /** A constant for Exclude List file. An Exclude List file name for "file.aln" is constructed like  "file." + EXCLUDE_LIST_FILE_SUFFIX. */
-static const char *EXCLUDE_LIST_FILE_SUFFIX = "exclude-list.fasta";
+static const char* EXCLUDE_LIST_FILE_SUFFIX = "exclude-list.fasta";
 
-MsaExcludeListWidget::MsaExcludeListWidget(QWidget *parent, MSAEditor *_msaEditor, MsaExcludeListContext *viewContext)
+MsaExcludeListWidget::MsaExcludeListWidget(QWidget* parent, MSAEditor* _msaEditor, MsaExcludeListContext* viewContext)
     : QWidget(parent), msaEditor(_msaEditor) {
     setObjectName("msa_exclude_list");
     auto layout = new QVBoxLayout(this);
@@ -287,7 +287,7 @@ MsaExcludeListWidget::~MsaExcludeListWidget() {
     }
 }
 
-int MsaExcludeListWidget::addEntry(const DNASequence &sequence, int excludeListRowId) {
+int MsaExcludeListWidget::addEntry(const DNASequence& sequence, int excludeListRowId) {
     SAFE_POINT(sequence.alphabet != nullptr, "Sequence must be fully defined!", 0);  // By default MSA row sequences have no alphabet. Catch this kind of error ASAP.
     int computedExcludeListRowId = excludeListRowId <= 0 ? ++excludeListRowIdGenerator : excludeListRowId;
     auto item = new QListWidgetItem();
@@ -299,17 +299,17 @@ int MsaExcludeListWidget::addEntry(const DNASequence &sequence, int excludeListR
     return computedExcludeListRowId;
 }
 
-int MsaExcludeListWidget::addMsaRowEntry(const MultipleAlignmentRow &row, int excludeListRowId) {
+int MsaExcludeListWidget::addMsaRowEntry(const MultipleAlignmentRow& row, int excludeListRowId) {
     DNASequence sequence = row->getUngappedSequence();
     sequence.alphabet = msaEditor->getMaObject()->getAlphabet();  // TODO: MSA row must return a fully defined sequence with a correct alphabet.
     return addEntry(sequence, excludeListRowId);
 }
 
-void MsaExcludeListWidget::removeEntries(const QList<QListWidgetItem *> &items) {
+void MsaExcludeListWidget::removeEntries(const QList<QListWidgetItem*>& items) {
     CHECK(!items.isEmpty(), );
     bool hasSelectionBefore = !nameListView->selectedItems().isEmpty();
     int firstRemovedIndex = -1;
-    QHash<QListWidgetItem *, int> indexByItem;
+    QHash<QListWidgetItem*, int> indexByItem;
     for (int i = 0; i < nameListView->count(); i++) {
         indexByItem[nameListView->item(i)] = i;
     }
@@ -346,21 +346,21 @@ bool MsaExcludeListWidget::hasActiveTask() const {
     return loadTask != nullptr || saveTask != nullptr;
 }
 
-int MsaExcludeListWidget::getExcludeListRowId(const QListWidgetItem *item) const {
+int MsaExcludeListWidget::getExcludeListRowId(const QListWidgetItem* item) const {
     SAFE_POINT(item != nullptr, "Exclude list item is null!", 0);
     int id = item->data(LIST_ITEM_DATA_ROW_ID).toInt();
     SAFE_POINT(id > 0, "Invalid exclude list row id: " + QString::number(id), id);
     return id;
 }
 
-DNASequence MsaExcludeListWidget::getExcludeListRowSequence(const QListWidgetItem *item) const {
+DNASequence MsaExcludeListWidget::getExcludeListRowSequence(const QListWidgetItem* item) const {
     int id = getExcludeListRowId(item);
     SAFE_POINT(sequenceByExcludeListRowId.contains(id), "Sequence not found: exclude list row id: " + QString::number(id), {});
     return sequenceByExcludeListRowId[id];
 }
 
 void MsaExcludeListWidget::updateSequenceView() {
-    QList<QListWidgetItem *> selectedItems = nameListView->selectedItems();
+    QList<QListWidgetItem*> selectedItems = nameListView->selectedItems();
     sequenceView->setEnabled(selectedItems.count() == 1);
     if (selectedItems.isEmpty()) {
         sequenceView->clear();
@@ -381,7 +381,7 @@ void MsaExcludeListWidget::showNameListContextMenu() {
 }
 
 void MsaExcludeListWidget::moveMsaSelectionToExcludeList() {
-    const MaEditorSelection &selection = msaEditor->getSelection();
+    const MaEditorSelection& selection = msaEditor->getSelection();
     SAFE_POINT(!selection.isEmpty(), "Msa editor selection is empty!", );
     QList<QRect> selectedRects = selection.getRectList();
     QList<int> selectedMsaRowIndexes = msaEditor->getCollapseModel()->getMaRowIndexesFromSelectionRects(selectedRects);
@@ -401,12 +401,12 @@ void MsaExcludeListWidget::moveMsaSelectionToExcludeList() {
     }
 }
 
-void MsaExcludeListWidget::moveMsaRowIndexesToExcludeList(const QList<int> &msaRowIndexes) {
+void MsaExcludeListWidget::moveMsaRowIndexesToExcludeList(const QList<int>& msaRowIndexes) {
     CHECK(!msaRowIndexes.isEmpty(), )
     SAFE_POINT(loadTask == nullptr, "Can't add rows with an active load task!", )
 
     QList<int> excludeListRowIds;
-    MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
+    MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
     for (int msaRowIndex : qAsConst(msaRowIndexes)) {
         excludeListRowIds << addMsaRowEntry(msaObject->getRow(msaRowIndex));
     }
@@ -433,11 +433,11 @@ void MsaExcludeListWidget::moveMsaRowIndexesToExcludeList(const QList<int> &msaR
 
 void MsaExcludeListWidget::moveExcludeListSelectionToMaObject() {
     GCOUNTER(cvar, "MsaExcludeListWidget::moveToMsa");
-    MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
+    MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
     QList<DNASequence> sequences;
     QList<int> excludeListRowIdsMovedToMsa;
-    QList<QListWidgetItem *> selectedItems = nameListView->selectedItems();
-    for (const QListWidgetItem *listItem : qAsConst(selectedItems)) {
+    QList<QListWidgetItem*> selectedItems = nameListView->selectedItems();
+    for (const QListWidgetItem* listItem : qAsConst(selectedItems)) {
         sequences << getExcludeListRowSequence(listItem);
         excludeListRowIdsMovedToMsa << getExcludeListRowId(listItem);
     }
@@ -457,11 +457,11 @@ void MsaExcludeListWidget::moveExcludeListSelectionToMaObject() {
     updateState();
 }
 
-void MsaExcludeListWidget::handleUndoRedoInMsaEditor(const MultipleAlignment &maBefore, const MaModificationInfo &modInfo) {
+void MsaExcludeListWidget::handleUndoRedoInMsaEditor(const MultipleAlignment& maBefore, const MaModificationInfo& modInfo) {
     auto msaObject = msaEditor->getMaObject();
     int version = msaObject->getObjectVersion();
     if (modInfo.type != MaModificationType_Undo && modInfo.type != MaModificationType_Redo) {
-        auto truncateVersionData = [version](QMap<int, UndoRedoStep> &undoRedoMap) {
+        auto truncateVersionData = [version](QMap<int, UndoRedoStep>& undoRedoMap) {
             CHECK(!undoRedoMap.isEmpty() && version <= undoRedoMap.lastKey(), );
             QList<int> allUndoRedoVersions = undoRedoMap.keys();
             for (int undoRedoVersion : qAsConst(allUndoRedoVersions)) {
@@ -477,26 +477,26 @@ void MsaExcludeListWidget::handleUndoRedoInMsaEditor(const MultipleAlignment &ma
     bool isRedo = modInfo.type == MaModificationType_Redo;
     CHECK((isRedo && trackedRedoMsaVersions.contains(version)) || (!isRedo && trackedUndoMsaVersions.contains(version)), );
 
-    const UndoRedoStep &undoRedoContext = isRedo ? trackedRedoMsaVersions.value(version) : trackedUndoMsaVersions.value(version);
+    const UndoRedoStep& undoRedoContext = isRedo ? trackedRedoMsaVersions.value(version) : trackedUndoMsaVersions.value(version);
     bool isAddToExcludeList = (isRedo && undoRedoContext.isMoveFromMsaToExcludeList) || (!isRedo && !undoRedoContext.isMoveFromMsaToExcludeList);
     if (isAddToExcludeList) {  // Add rows removed from MSA to Exclude list
         QList<MultipleAlignmentRow> msaRows;
         QSet<qint64> msaRowIdsAfter = msaObject->getRowIds().toSet();
         for (int i = 0; i < maBefore->getRowCount(); i++) {
-            const MultipleAlignmentRow &row = maBefore->getRow(i);
+            const MultipleAlignmentRow& row = maBefore->getRow(i);
             if (!msaRowIdsAfter.contains(row->getRowId())) {
                 msaRows << row;
             }
         }
         SAFE_POINT(msaRows.size() == undoRedoContext.excludeListRowIdsDelta.size(), "Failed to map Exclude List rows to Msa rows", )
         for (int i = 0; i < msaRows.size(); i++) {
-            const auto &msaRow = msaRows[i];
+            const auto& msaRow = msaRows[i];
             int excludeListRowId = undoRedoContext.excludeListRowIdsDelta[i];
             addMsaRowEntry(msaRow, excludeListRowId);
         }
     } else {  // Remove rows from Exclude List.
         QSet<int> rowIdsToRemove = undoRedoContext.excludeListRowIdsDelta.toSet();
-        QList<QListWidgetItem *> listItemsToRemove;
+        QList<QListWidgetItem*> listItemsToRemove;
         for (int rowIndex = nameListView->count(); --rowIndex >= 0;) {
             auto listItem = nameListView->item(rowIndex);
             int rowId = listItem->data(LIST_ITEM_DATA_ROW_ID).toInt();
@@ -537,7 +537,7 @@ void MsaExcludeListWidget::loadExcludeList(bool create) {
         }
     } else if (exists) {
         CHECK(loadTask == nullptr, );
-        IOAdapterFactory *ioFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(excludeListFilePath));
+        IOAdapterFactory* ioFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(excludeListFilePath));
         loadTask = new LoadDocumentTask(BaseDocumentFormats::FASTA, excludeListFilePath, ioFactory, {{DocumentReadingMode_AllowEmptyFile, true}});
         stateLabel->setText(tr("Loading exclude list file: %1").arg(excludeListFilePath));
         connect(loadTask, &Task::si_stateChanged, this, &MsaExcludeListWidget::handleLoadTaskStateChange);
@@ -567,15 +567,15 @@ void MsaExcludeListWidget::changeExcludeListFile() {
     loadExcludeList();
 }
 
-Task *MsaExcludeListWidget::runSaveTask(const QString &savePath) {
+Task* MsaExcludeListWidget::runSaveTask(const QString& savePath) {
     SAFE_POINT(!hasActiveTask(), "Can't save exclude list file when there is an active load/save task. ", nullptr);
-    IOAdapterFactory *ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-    DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::FASTA);
+    IOAdapterFactory* ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+    DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::FASTA);
 
     U2OpStatus2Log os;
-    Document *document = format->createNewLoadedDocument(ioAdapterFactory, savePath, os);
+    Document* document = format->createNewLoadedDocument(ioAdapterFactory, savePath, os);
     for (int i = 0; i < nameListView->count(); i++) {
-        QListWidgetItem *listItem = nameListView->item(i);
+        QListWidgetItem* listItem = nameListView->item(i);
         int excludeListRowId = listItem->data(LIST_ITEM_DATA_ROW_ID).toInt();
         DNASequence sequence = sequenceByExcludeListRowId[excludeListRowId];
         U2EntityRef ref = U2SequenceUtils::import(os, document->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, sequence);
@@ -623,11 +623,11 @@ void MsaExcludeListWidget::handleLoadTaskStateChange() {
     if (task->hasError()) {
         stateLabel->setText(tr("Error loading exclude list file: ").arg(task->getError()));
     } else if (!task->isCanceled()) {
-        QList<GObject *> objects = task->getDocument()->findGObjectByType(GObjectTypes::SEQUENCE);
+        QList<GObject*> objects = task->getDocument()->findGObjectByType(GObjectTypes::SEQUENCE);
         nameListView->clear();
         U2OpStatus2Log os;
         for (auto object : qAsConst(objects)) {
-            auto sequenceObject = qobject_cast<U2SequenceObject *>(object);
+            auto sequenceObject = qobject_cast<U2SequenceObject*>(object);
             SAFE_POINT(sequenceObject != nullptr, "Not a sequence object: " + object->getGObjectName(), );
             DNASequence sequence = sequenceObject->getWholeSequence(os);
             SAFE_POINT_OP(os, );
@@ -650,8 +650,8 @@ void MsaExcludeListWidget::handleLoadTaskStateChange() {
     updateState();
 }
 
-void MsaExcludeListWidget::trackMsaObjectSaveTask(Task *task) {
-    auto saveMsaObjectTask = qobject_cast<SaveDocumentTask *>(task);
+void MsaExcludeListWidget::trackMsaObjectSaveTask(Task* task) {
+    auto saveMsaObjectTask = qobject_cast<SaveDocumentTask*>(task);
     CHECK(saveMsaObjectTask != nullptr && saveMsaObjectTask->getDocument() == msaEditor->getMaObject()->getDocument(), );
     CHECK(saveMsaObjectTask->isFinished() && !saveMsaObjectTask->getStateInfo().isCoR(), );
     runSaveTask(excludeListFilePath);

@@ -28,7 +28,7 @@ namespace U2 {
 
 class CustomExternalToolRunTaskHelper : public ExternalToolRunTaskHelper {
 public:
-    CustomExternalToolRunTaskHelper(QProcess *process, ExternalToolLogParser *logParser, U2OpStatus &os)
+    CustomExternalToolRunTaskHelper(QProcess* process, ExternalToolLogParser* logParser, U2OpStatus& os)
         : ExternalToolRunTaskHelper(process, logParser, os) {
     }
 

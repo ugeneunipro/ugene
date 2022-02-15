@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-WDWizardPage::WDWizardPage(WizardPageController *controller, QWidget *parent)
+WDWizardPage::WDWizardPage(WizardPageController* controller, QWidget* parent)
     : QWizardPage(parent), controller(controller) {
     controller->setQtPage(this);
 }
@@ -39,18 +39,18 @@ void WDWizardPage::initializePage() {
     controller->applyLayout();
 }
 
-static QAbstractButton *getRunButton(QWizard *w) {
-    QAbstractButton *runButton = w->button(QWizard::CustomButton1);
+static QAbstractButton* getRunButton(QWizard* w) {
+    QAbstractButton* runButton = w->button(QWizard::CustomButton1);
     CHECK(nullptr != runButton, nullptr);
     CHECK(!runButton->text().isEmpty(), nullptr);
     return runButton;
 }
 
-void WDWizardPage::showEvent(QShowEvent *event) {
+void WDWizardPage::showEvent(QShowEvent* event) {
     if (wizard()->currentPage() == this) {
         setupDialogSize();
     }
-    QAbstractButton *runButton = getRunButton(wizard());
+    QAbstractButton* runButton = getRunButton(wizard());
     if (nullptr != runButton) {
         runButton->setVisible(isFinalPage());
     }

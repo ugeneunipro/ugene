@@ -33,15 +33,15 @@
 
 namespace U2 {
 
-QString MysqlDbiUtils::createAuthDbiUrl(const QString &userName, const QString &password, const QString &host, int port, const QString &dbName) {
+QString MysqlDbiUtils::createAuthDbiUrl(const QString& userName, const QString& password, const QString& host, int port, const QString& dbName) {
     return userName + ":" + password + "@" + host + ":" + QString::number(port) + "/" + dbName;
 }
 
-QString MysqlDbiUtils::createAuthDbiUrl(const QString &userName, const QString &password, const QString &dbUrl) {
+QString MysqlDbiUtils::createAuthDbiUrl(const QString& userName, const QString& password, const QString& dbUrl) {
     return userName + ":" + password + "@" + dbUrl;
 }
 
-bool MysqlDbiUtils::parseAuthDbiUrl(const QString &url, QString &userName, QString &password, QString &host, int &port, QString &dbName) {
+bool MysqlDbiUtils::parseAuthDbiUrl(const QString& url, QString& userName, QString& password, QString& host, int& port, QString& dbName) {
     //    user:password@host:port/db
     int sepIndex = url.indexOf("@");
     if (sepIndex < 0) {
@@ -82,11 +82,11 @@ bool MysqlDbiUtils::parseAuthDbiUrl(const QString &url, QString &userName, QStri
     return true;
 }
 
-U2::U2DbiId MysqlDbiUtils::createDbiUrl(const QString &host, int port, const QString &dbName) {
+U2::U2DbiId MysqlDbiUtils::createDbiUrl(const QString& host, int port, const QString& dbName) {
     return host + ":" + QString::number(port) + "/" + dbName;
 }
 
-bool MysqlDbiUtils::parseDbiUrl(const U2DbiId &dbiId, QString &host, int &port, QString &dbName) {
+bool MysqlDbiUtils::parseDbiUrl(const U2DbiId& dbiId, QString& host, int& port, QString& dbName) {
     int sepIndex = dbiId.indexOf(":");
     if (sepIndex < 0) {
         return false;
@@ -112,13 +112,13 @@ bool MysqlDbiUtils::parseDbiUrl(const U2DbiId &dbiId, QString &host, int &port, 
     return true;
 }
 
-bool MysqlDbiUtils::isDbInitialized(const U2DbiRef &dbiRef, U2OpStatus &os) {
+bool MysqlDbiUtils::isDbInitialized(const U2DbiRef& dbiRef, U2OpStatus& os) {
     DbiConnection con(dbiRef, os);
     CHECK_OP(os, false);
     return con.dbi->isInitialized(os);
 }
 
-void MysqlDbiUtils::renameObject(MysqlDbi *dbi, U2Object &object, const QString &newName, U2OpStatus &os) {
+void MysqlDbiUtils::renameObject(MysqlDbi* dbi, U2Object& object, const QString& newName, U2OpStatus& os) {
     CHECK_OP(os, );
     SAFE_POINT(nullptr != dbi, "NULL dbi", );
     MysqlTransaction t(dbi->getDbRef(), os);
@@ -134,7 +134,7 @@ void MysqlDbiUtils::renameObject(MysqlDbi *dbi, U2Object &object, const QString 
     updateAction.complete(os);
 }
 
-void MysqlDbiUtils::renameObject(MysqlModificationAction &updateAction, MysqlDbi *dbi, U2Object &object, const QString &newName, U2OpStatus &os) {
+void MysqlDbiUtils::renameObject(MysqlModificationAction& updateAction, MysqlDbi* dbi, U2Object& object, const QString& newName, U2OpStatus& os) {
     CHECK_OP(os, );
     SAFE_POINT(nullptr != dbi, "NULL dbi", );
     MysqlTransaction t(dbi->getDbRef(), os);
@@ -151,11 +151,11 @@ void MysqlDbiUtils::renameObject(MysqlModificationAction &updateAction, MysqlDbi
     updateAction.addModification(object.id, U2ModType::objUpdatedName, modDetails, os);
 }
 
-void MysqlDbiUtils::upgrade(const U2DbiRef &dbiRef, U2OpStatus &os) {
+void MysqlDbiUtils::upgrade(const U2DbiRef& dbiRef, U2OpStatus& os) {
     DbiConnection con(dbiRef, os);
     CHECK_OP(os, );
 
-    MysqlDbi *mysqlDbi = dynamic_cast<MysqlDbi *>(con.dbi);
+    MysqlDbi* mysqlDbi = dynamic_cast<MysqlDbi*>(con.dbi);
     SAFE_POINT_EXT(nullptr != mysqlDbi, os.setError("The proposed dbi reference doesn't corresponds a mysql database"), );
 
     mysqlDbi->upgrade(os);

@@ -30,7 +30,7 @@ namespace U2 {
 
 class U2LANG_EXPORT TophatSample {
 public:
-    TophatSample(const QString &name, const QStringList &datasets);
+    TophatSample(const QString& name, const QStringList& datasets);
 
     QString name;
     QStringList datasets;

@@ -32,18 +32,18 @@ class MultipleAlignmentObject;
 class MaConsensusModeWidget : public QWidget, public Ui_MaConsensusModeWidget {
     Q_OBJECT
 public:
-    MaConsensusModeWidget(QWidget *parent = nullptr);
-    void init(MultipleAlignmentObject *maObject, MaEditorConsensusArea *consArea);
+    MaConsensusModeWidget(QWidget* parent = nullptr);
+    void init(MultipleAlignmentObject* maObject, MaEditorConsensusArea* consArea);
 
     void updateState();
     void updateThresholdState(bool enable, int minVal = 0, int maxVal = 0, int value = 0);
 
 signals:
-    void si_algorithmChanged(const QString &algoId);
+    void si_algorithmChanged(const QString& algoId);
     void si_thresholdChanged(int val);
 
 public slots:
-    void sl_algorithmChanged(const QString &algoId);
+    void sl_algorithmChanged(const QString& algoId);
     void sl_algorithmSelectionChanged(int index);
     void sl_thresholdSliderChanged(int value);
     void sl_thresholdSpinBoxChanged(int value);
@@ -53,8 +53,8 @@ public slots:
 private:
     void initConsensusTypeCombo();
 
-    MaEditorConsensusArea *consArea;
-    MultipleAlignmentObject *maObject;
+    MaEditorConsensusArea* consArea;
+    MultipleAlignmentObject* maObject;
     QString curAlphabetId;
 };
 

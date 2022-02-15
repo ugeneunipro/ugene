@@ -35,7 +35,7 @@
 
 namespace U2 {
 
-ExportReadsDialog::ExportReadsDialog(QWidget *p, const QList<DocumentFormatId> &formats)
+ExportReadsDialog::ExportReadsDialog(QWidget* p, const QList<DocumentFormatId>& formats)
     : QDialog(p) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929841");

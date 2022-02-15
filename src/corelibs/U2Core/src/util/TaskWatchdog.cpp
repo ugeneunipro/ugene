@@ -25,12 +25,12 @@
 
 namespace U2 {
 
-TaskWatchdog::TaskWatchdog(QObject *resource, Task *task)
+TaskWatchdog::TaskWatchdog(QObject* resource, Task* task)
     : resource(resource), task(task), cancelWithError(false) {
     connect(resource, SIGNAL(destroyed()), SLOT(sl_onResourceDestroyed()));
 }
 
-void TaskWatchdog::setCancelError(const QString &errorMessage) {
+void TaskWatchdog::setCancelError(const QString& errorMessage) {
     cancelWithError = true;
     this->errorMessage = errorMessage;
 }
@@ -42,13 +42,13 @@ void TaskWatchdog::sl_onResourceDestroyed() {
     }
 }
 
-void TaskWatchdog::trackResourceExistence(QObject *resource, Task *task) {
-    TaskWatchdog *tracker = new TaskWatchdog(resource, task);
+void TaskWatchdog::trackResourceExistence(QObject* resource, Task* task) {
+    TaskWatchdog* tracker = new TaskWatchdog(resource, task);
     tracker->setParent(task);
 }
 
-void TaskWatchdog::trackResourceExistence(QObject *resource, Task *task, const QString &errorMessage) {
-    TaskWatchdog *tracker = new TaskWatchdog(resource, task);
+void TaskWatchdog::trackResourceExistence(QObject* resource, Task* task, const QString& errorMessage) {
+    TaskWatchdog* tracker = new TaskWatchdog(resource, task);
     tracker->setParent(task);
     tracker->setCancelError(errorMessage);
 }

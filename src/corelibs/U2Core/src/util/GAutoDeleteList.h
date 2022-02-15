@@ -29,29 +29,29 @@ namespace U2 {
 template<class T>
 class GAutoDeleteList : public QObject {
 public:
-    GAutoDeleteList(QObject *p = nullptr)
+    GAutoDeleteList(QObject* p = nullptr)
         : QObject(p) {
     }
     virtual ~GAutoDeleteList() {
         qDeleteAll(qlist);
     }
-    QList<T *> qlist;
+    QList<T*> qlist;
 };
 
 // todo: move to separate header
 template<class T>
 class gauto_array {
 public:
-    gauto_array(T *p = nullptr)
+    gauto_array(T* p = nullptr)
         : data(p) {
     }
     ~gauto_array() {
         delete[] data;
     }
-    T *get() const {
+    T* get() const {
         return data;
     }
-    T *data;
+    T* data;
 };
 
 }  // namespace U2

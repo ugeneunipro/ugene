@@ -32,9 +32,9 @@
 
 namespace U2 {
 
-BuildDotPlotFiller::BuildDotPlotFiller(HI::GUITestOpStatus &_os,
-                                       const QString &_firstFileName,
-                                       const QString &_secondFileName,
+BuildDotPlotFiller::BuildDotPlotFiller(HI::GUITestOpStatus& _os,
+                                       const QString& _firstFileName,
+                                       const QString& _secondFileName,
                                        bool _mergeFirstBoxChecked,
                                        bool _oneSequenceBoxChecked,
                                        bool _mergeSecondBoxChecked,
@@ -50,7 +50,7 @@ BuildDotPlotFiller::BuildDotPlotFiller(HI::GUITestOpStatus &_os,
 #define GT_CLASS_NAME "GTUtilsDialog::DotPlotFiller"
 #define GT_METHOD_NAME "commonScenario"
 void BuildDotPlotFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     GTCheckBox::setChecked(os, "oneSequenceCheckBox", oneSequenceBoxChecked, dialog);
     GTLineEdit::setText(os, "firstFileEdit", firstFileName, dialog);

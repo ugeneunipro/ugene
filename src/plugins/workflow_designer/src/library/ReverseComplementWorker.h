@@ -31,7 +31,7 @@ namespace LocalWorkflow {
 class RCWorkerPrompter : public PrompterBase<RCWorkerPrompter> {
     Q_OBJECT
 public:
-    RCWorkerPrompter(Actor *p = 0)
+    RCWorkerPrompter(Actor* p = 0)
         : PrompterBase<RCWorkerPrompter>(p) {
     }
 
@@ -42,12 +42,12 @@ protected:
 class RCWorker : public BaseWorker {
     Q_OBJECT
 public:
-    RCWorker(Actor *a)
+    RCWorker(Actor* a)
         : BaseWorker(a), input(nullptr), output(nullptr) {
     }
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup() {
     }
 
@@ -65,7 +65,7 @@ public:
     RCWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new RCWorker(a);
     }
 };

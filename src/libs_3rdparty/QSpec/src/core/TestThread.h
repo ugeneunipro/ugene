@@ -10,7 +10,7 @@ namespace HI {
 
 class HI_EXPORT TestThread : public QThread {
 public:
-    TestThread(GUITest *test, GUITestOpStatus &os)
+    TestThread(GUITest* test, GUITestOpStatus& os)
         : test(test), os(os) {
     }
 
@@ -18,7 +18,7 @@ public:
     virtual void run();
 
 private:
-    GUITest *test;
+    GUITest* test;
     GUITestOpStatus os;
 };
 

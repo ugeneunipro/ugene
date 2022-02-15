@@ -30,7 +30,7 @@ namespace U2 {
 
 class AnnotationsMessageTranslator : public BaseMessageTranslator {
 public:
-    AnnotationsMessageTranslator(const QVariant &atomicMessage, Workflow::WorkflowContext *initContext);
+    AnnotationsMessageTranslator(const QVariant& atomicMessage, Workflow::WorkflowContext* initContext);
 
     QString getTranslation() const;
 

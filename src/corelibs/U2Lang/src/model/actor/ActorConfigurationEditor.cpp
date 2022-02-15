@@ -28,16 +28,16 @@ ActorConfigurationEditor::ActorConfigurationEditor()
     : ConfigurationEditor(), cfg(nullptr) {
 }
 
-ActorConfigurationEditor::ActorConfigurationEditor(const ActorConfigurationEditor &other)
+ActorConfigurationEditor::ActorConfigurationEditor(const ActorConfigurationEditor& other)
     : ConfigurationEditor(other) {
     cfg = other.cfg;
 }
 
-void ActorConfigurationEditor::setConfiguration(Actor *actor) {
+void ActorConfigurationEditor::setConfiguration(Actor* actor) {
     cfg = actor;
 }
 
-ConfigurationEditor *ActorConfigurationEditor::clone() {
+ConfigurationEditor* ActorConfigurationEditor::clone() {
     return new ActorConfigurationEditor(*this);
 }
 

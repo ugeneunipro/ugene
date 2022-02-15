@@ -34,19 +34,19 @@ public:
     MSATreeOptionsWidgetFactory();
     ~MSATreeOptionsWidgetFactory();
 
-    QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
+    QWidget* createWidget(GObjectView* objView, const QVariantMap& options) override;
 
     OPGroupParameters getOPGroupParameters() override;
 
 private slots:
-    void sl_onWidgetViewSaved(const TreeOpWidgetViewSettings &settings);
+    void sl_onWidgetViewSaved(const TreeOpWidgetViewSettings& settings);
 
 private:
     static const QString GROUP_ID;
     static const QString GROUP_ICON_STR;
     static const QString GROUP_DOC_PAGE;
 
-    TreeOpWidgetViewSettings *viewSettings;
+    TreeOpWidgetViewSettings* viewSettings;
 };
 
 class U2VIEW_EXPORT TreeOptionsWidgetFactory : public OPWidgetFactory {
@@ -55,19 +55,19 @@ public:
     TreeOptionsWidgetFactory();
     ~TreeOptionsWidgetFactory();
 
-    QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
+    QWidget* createWidget(GObjectView* objView, const QVariantMap& options) override;
 
     OPGroupParameters getOPGroupParameters() override;
 
 private slots:
-    void sl_onWidgetViewSaved(const TreeOpWidgetViewSettings &settings);
+    void sl_onWidgetViewSaved(const TreeOpWidgetViewSettings& settings);
 
 private:
     static const QString GROUP_ID;
     static const QString GROUP_ICON_STR;
     static const QString GROUP_DOC_PAGE;
 
-    TreeOpWidgetViewSettings *viewSettings;
+    TreeOpWidgetViewSettings* viewSettings;
 };
 
 class U2VIEW_EXPORT AddTreeWidgetFactory : public OPWidgetFactory {
@@ -75,7 +75,7 @@ class U2VIEW_EXPORT AddTreeWidgetFactory : public OPWidgetFactory {
 public:
     AddTreeWidgetFactory();
 
-    QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
+    QWidget* createWidget(GObjectView* objView, const QVariantMap& options) override;
 
     OPGroupParameters getOPGroupParameters() override;
 

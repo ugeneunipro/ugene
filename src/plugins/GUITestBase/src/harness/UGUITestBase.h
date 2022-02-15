@@ -58,13 +58,13 @@ public:
      * Registers test in the test base. Returns true if the test was successfully registered
      * or false if another test is already registered with the given name.
      * */
-    bool registerTest(GUITest *test, TestType testType = Normal);
+    bool registerTest(GUITest* test, TestType testType = Normal);
 
     /** Finds a registered test by the full test name and type. Returns nullptr if no registered test was found. */
-    GUITest *getTest(const QString &name, TestType testType = Normal) const;
+    GUITest* getTest(const QString& name, TestType testType = Normal) const;
 
     /** Finds a registered test by the full test name and type. Returns nullptr if no registered test was found. */
-    GUITest *getTest(const QString &suite, const QString &name, TestType testType = Normal) const;
+    GUITest* getTest(const QString& suite, const QString& name, TestType testType = Normal) const;
 
     /**
      * Returns list of registered tests of the given type that have all labels from the list.
@@ -73,28 +73,28 @@ public:
      * filtering: tests with such labels will be excluded from the result.
      * Example: "Nightly,-Ignored" will return all tests that have "Nightly" label but have no "Ignored" label.
      */
-    QList<GUITest *> getTests(TestType testType = Normal, const QStringList &labelList = QStringList()) const;
+    QList<GUITest*> getTests(TestType testType = Normal, const QStringList& labelList = QStringList()) const;
 
     /** Returns UGUITestBase instance. There is only 1 instance of the database per application. */
-    static UGUITestBase *getInstance();
+    static UGUITestBase* getInstance();
 
 private:
     /** Normal tests. */
-    QMap<QString, GUITest *> tests;
+    QMap<QString, GUITest*> tests;
 
     /** PreAdditional tests. */
-    QMap<QString, GUITest *> preAdditional;
+    QMap<QString, GUITest*> preAdditional;
 
     /** PostAdditionalChecks tests. */
-    QMap<QString, GUITest *> postAdditionalChecks;
+    QMap<QString, GUITest*> postAdditionalChecks;
 
     /** PostAdditionalActions tests. */
-    QMap<QString, GUITest *> postAdditionalActions;
+    QMap<QString, GUITest*> postAdditionalActions;
 
     /** Returns tests map of the given type. */
-    QMap<QString, GUITest *> &getMap(TestType testType);
+    QMap<QString, GUITest*>& getMap(TestType testType);
 
-    const QMap<QString, GUITest *> &getConstMap(TestType testType) const;
+    const QMap<QString, GUITest*>& getConstMap(TestType testType) const;
 };
 
 }  // namespace U2

@@ -32,12 +32,12 @@ namespace U2 {
 /// TextContentFilterTask
 //////////////////////////////////////////////////////////////////////////
 
-TextContentFilterTask::TextContentFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document>> &docs)
+TextContentFilterTask::TextContentFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs)
     : AbstractProjectFilterTask(settings, ProjectFilterNames::TEXT_CONTENT_FILTER_NAME, docs) {
 }
 
-bool TextContentFilterTask::filterAcceptsObject(GObject *obj) {
-    TextObject *textObject = qobject_cast<TextObject *>(obj);
+bool TextContentFilterTask::filterAcceptsObject(GObject* obj) {
+    TextObject* textObject = qobject_cast<TextObject*>(obj);
     CHECK(nullptr != textObject, false);
     return settings.nameFilterAcceptsString(textObject->getText());
 }
@@ -46,8 +46,8 @@ bool TextContentFilterTask::filterAcceptsObject(GObject *obj) {
 /// TextContentFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
 
-AbstractProjectFilterTask *TextContentFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings &settings,
-                                                                       const QList<QPointer<Document>> &docs) const {
+AbstractProjectFilterTask* TextContentFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
+                                                                       const QList<QPointer<Document>>& docs) const {
     return new TextContentFilterTask(settings, docs);
 }
 

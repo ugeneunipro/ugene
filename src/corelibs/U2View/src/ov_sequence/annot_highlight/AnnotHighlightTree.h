@@ -68,21 +68,21 @@ signals:
     void si_colorChanged(QString annotName, QColor annotColor);
 
 private slots:
-    void sl_onCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
-    void sl_onItemClicked(QTreeWidgetItem *item, int column);
+    void sl_onCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous);
+    void sl_onItemClicked(QTreeWidgetItem* item, int column);
 
 private:
     /** Do not use these methods to add an item to the tree, use addItem(...) instead */
-    virtual void addTopLevelItem(QTreeWidgetItem *item) {
+    virtual void addTopLevelItem(QTreeWidgetItem* item) {
         QTreeWidget::addTopLevelItem(item);
     }
-    virtual void addTopLevelItems(const QList<QTreeWidgetItem *> &items) {
+    virtual void addTopLevelItems(const QList<QTreeWidgetItem*>& items) {
         QTreeWidget::addTopLevelItems(items);
     }
-    virtual void insertTopLevelItem(int index, QTreeWidgetItem *item) {
+    virtual void insertTopLevelItem(int index, QTreeWidgetItem* item) {
         QTreeWidget::insertTopLevelItem(index, item);
     }
-    virtual void insertTopLevelItems(int index, const QList<QTreeWidgetItem *> &items) {
+    virtual void insertTopLevelItems(int index, const QList<QTreeWidgetItem*>& items) {
         QTreeWidget::insertTopLevelItems(index, items);
     }
 

@@ -35,28 +35,28 @@
 
 namespace U2 {
 
-SqliteUpgraderFrom_1_13_To_1_25::SqliteUpgraderFrom_1_13_To_1_25(SQLiteDbi *dbi)
+SqliteUpgraderFrom_1_13_To_1_25::SqliteUpgraderFrom_1_13_To_1_25(SQLiteDbi* dbi)
     : SqliteUpgrader(Version::parseVersion("1.13.0"), Version::parseVersion("1.25.0"), dbi) {
 }
 
-void SqliteUpgraderFrom_1_13_To_1_25::upgrade(U2OpStatus &os) const {
+void SqliteUpgraderFrom_1_13_To_1_25::upgrade(U2OpStatus& os) const {
     SQLiteTransaction t(dbi->getDbRef(), os);
 
     upgradeCoverageAttribute(os);
     CHECK_OP(os, );
 
-    dbi->setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, versionTo.text, os);
+    dbi->setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, versionTo.toString(), os);
 }
 
-void SqliteUpgraderFrom_1_13_To_1_25::upgradeCoverageAttribute(U2OpStatus &os) const {
+void SqliteUpgraderFrom_1_13_To_1_25::upgradeCoverageAttribute(U2OpStatus& os) const {
     // get assembly ids
     QList<U2DataId> assemblyIds = dbi->getObjectDbi()->getObjects(U2Type::Assembly, 0, U2DbiOptions::U2_DBI_NO_LIMIT, os);
     CHECK_OP(os, );
     CHECK(!assemblyIds.isEmpty(), );
-    U2AttributeDbi *attributeDbi = dbi->getAttributeDbi();
+    U2AttributeDbi* attributeDbi = dbi->getAttributeDbi();
     CHECK_EXT(attributeDbi != nullptr, os.setError("Attribute dbi is NULL"), );
 
-    foreach (const U2DataId &id, assemblyIds) {
+    foreach (const U2DataId& id, assemblyIds) {
         // find and remove coverage attribute from ByteArrayAttribute table
         U2ByteArrayAttribute attr = U2AttributeUtils::findByteArrayAttribute(attributeDbi, id, U2BaseAttributeName::coverage_statistics, os);
 
@@ -65,7 +65,7 @@ void SqliteUpgraderFrom_1_13_To_1_25::upgradeCoverageAttribute(U2OpStatus &os) c
         }
 
         // calculate new coverage
-        U2AssemblyDbi *assemblyDbi = dbi->getAssemblyDbi();
+        U2AssemblyDbi* assemblyDbi = dbi->getAssemblyDbi();
         CHECK_EXT(attributeDbi != nullptr, os.setError("Assembly dbi is NULL"), );
         U2Assembly assembly = assemblyDbi->getAssemblyObject(id, os);
         CHECK_OP(os, );

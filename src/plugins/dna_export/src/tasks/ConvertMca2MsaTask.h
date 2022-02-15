@@ -33,7 +33,7 @@ class MultipleChromatogramAlignmentObject;
 class ConvertMca2MsaTask : public Task {
     Q_OBJECT
 public:
-    ConvertMca2MsaTask(MultipleChromatogramAlignmentObject *mcaObject, bool includeReference);
+    ConvertMca2MsaTask(MultipleChromatogramAlignmentObject* mcaObject, bool includeReference);
 
     MultipleSequenceAlignment getMsa() const;
 
@@ -42,7 +42,7 @@ private:
     void run();
     ReportResult report();
 
-    MultipleChromatogramAlignmentObject *mcaObject;
+    MultipleChromatogramAlignmentObject* mcaObject;
     const bool includeReference;
 
     MultipleSequenceAlignment msa;

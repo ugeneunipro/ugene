@@ -56,8 +56,8 @@
 
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
-    RemoteBLASTPlugin *plug = new RemoteBLASTPlugin();
+extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
+    RemoteBLASTPlugin* plug = new RemoteBLASTPlugin();
     return plug;
 }
 
@@ -68,39 +68,39 @@ RemoteBLASTPlugin::RemoteBLASTPlugin()
         ctx->init();
     }
 
-    DataBaseRegistry *reg = AppContext::getDataBaseRegistry();
+    DataBaseRegistry* reg = AppContext::getDataBaseRegistry();
     reg->registerDataBase(new BLASTFactory(), "blastn");
     reg->registerDataBase(new BLASTFactory(), "blastp");
     reg->registerDataBase(new BLASTFactory(), "cdd");
 
     LocalWorkflow::RemoteBLASTWorkerFactory::init();
 
-    QDActorPrototypeRegistry *qdpr = AppContext::getQDActorProtoRegistry();
+    QDActorPrototypeRegistry* qdpr = AppContext::getQDActorProtoRegistry();
     qdpr->registerProto(new QDCDDActorPrototype());
 
     AppContext::getCDSFactoryRegistry()->registerFactory(new RemoteCDSearchFactory(), CDSearchFactoryRegistry::RemoteSearch);
 
-    GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
+    GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
+    XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
     assert(xmlTestFormat != nullptr);
 
-    GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
+    GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = RemoteBLASTPluginTests::createTestFactories();
 
-    foreach (XMLTestFactory *f, l->qlist) {
+    foreach (XMLTestFactory* f, l->qlist) {
         bool res = xmlTestFormat->registerTestFactory(f);
         Q_UNUSED(res);
         assert(res);
     }
 }
 
-RemoteBLASTViewContext::RemoteBLASTViewContext(QObject *p)
+RemoteBLASTViewContext::RemoteBLASTViewContext(QObject* p)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID) {
 }
 
-void RemoteBLASTViewContext::initViewContext(GObjectView *view) {
-    AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(view);
-    ADVGlobalAction *a = new ADVGlobalAction(av, QIcon(":/remote_blast/images/remote_db_request.png"), tr("Query NCBI BLAST database..."), 60);
+void RemoteBLASTViewContext::initViewContext(GObjectView* view) {
+    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(view);
+    ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":/remote_blast/images/remote_db_request.png"), tr("Query NCBI BLAST database..."), 60);
     a->setObjectName("Query NCBI BLAST database");
     connect(a, SIGNAL(triggered()), SLOT(sl_showDialog()));
 }
@@ -115,12 +115,12 @@ void RemoteBLASTViewContext::initViewContext(GObjectView *view) {
 #define MAX_REGION_SIZE_TO_SEARCH_WITH_REMOTE_BLAST (10 * 1000 * 1000)
 
 void RemoteBLASTViewContext::sl_showDialog() {
-    QAction *a = (QAction *)sender();
-    GObjectViewAction *viewAction = qobject_cast<GObjectViewAction *>(a);
-    AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(viewAction->getObjectView());
+    QAction* a = (QAction*)sender();
+    GObjectViewAction* viewAction = qobject_cast<GObjectViewAction*>(a);
+    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
     assert(av);
 
-    ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
+    ADVSequenceObjectContext* seqCtx = av->getActiveSequenceContext();
 
     bool isAminoSeq = seqCtx->getAlphabet()->isAmino();
     QObjectScopedPointer<SendSelectionDialog> dlg = new SendSelectionDialog(seqCtx, isAminoSeq, av->getWidget());
@@ -129,7 +129,7 @@ void RemoteBLASTViewContext::sl_showDialog() {
 
     if (QDialog::Accepted == dlg->result()) {
         // prepare query
-        DNASequenceSelection *s = seqCtx->getSequenceSelection();
+        DNASequenceSelection* s = seqCtx->getSequenceSelection();
         QVector<U2Region> regions;
         if (s->isEmpty()) {
             regions.append(U2Region(0, seqCtx->getSequenceLength()));
@@ -138,19 +138,19 @@ void RemoteBLASTViewContext::sl_showDialog() {
         }
 
         // First check that the regions are not too large: remote service will not accept gigs of data.
-        foreach (const U2Region &region, regions) {
+        foreach (const U2Region& region, regions) {
             if (region.length > MAX_REGION_SIZE_TO_SEARCH_WITH_REMOTE_BLAST) {
                 QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), tr("Selected region is too large!"));
                 return;
             }
         }
         U2OpStatusImpl os;
-        foreach (const U2Region &r, regions) {
+        foreach (const U2Region& r, regions) {
             QByteArray query = seqCtx->getSequenceData(r, os);
             CHECK_OP_EXT(os, QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );
 
-            DNATranslation *aminoT = (dlg->translateToAmino ? seqCtx->getAminoTT() : 0);
-            DNATranslation *complT = (dlg->translateToAmino ? seqCtx->getComplementTT() : 0);
+            DNATranslation* aminoT = (dlg->translateToAmino ? seqCtx->getAminoTT() : 0);
+            DNATranslation* complT = (dlg->translateToAmino ? seqCtx->getComplementTT() : 0);
 
             RemoteBLASTTaskSettings cfg = dlg->cfg;
             cfg.query = query;
@@ -159,18 +159,18 @@ void RemoteBLASTViewContext::sl_showDialog() {
             cfg.aminoT = aminoT;
             cfg.complT = complT;
 
-            AnnotationTableObject *aobject = dlg->getAnnotationObject();
+            AnnotationTableObject* aobject = dlg->getAnnotationObject();
             if (aobject == nullptr) {
                 return;
             }
-            Task *t = new RemoteBLASTToAnnotationsTask(cfg, r.startPos, aobject, dlg->getUrl(), dlg->getGroupName(), dlg->getAnnotationDescription());
+            Task* t = new RemoteBLASTToAnnotationsTask(cfg, r.startPos, aobject, dlg->getUrl(), dlg->getGroupName(), dlg->getAnnotationDescription());
             AppContext::getTaskScheduler()->registerTopLevelTask(t);
         }
     }
 }
 
-QList<XMLTestFactory *> RemoteBLASTPluginTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> RemoteBLASTPluginTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_RemoteBLAST::createFactory());
     return res;
 }

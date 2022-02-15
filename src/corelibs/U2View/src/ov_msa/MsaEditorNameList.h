@@ -29,15 +29,15 @@ namespace U2 {
 class MsaEditorNameList : public MaEditorNameList {
     Q_OBJECT
 public:
-    MsaEditorNameList(MaEditorWgt *ui, QScrollBar *nhBar);
+    MsaEditorNameList(MaEditorWgt* ui, QScrollBar* nhBar);
 
 private slots:
-    void sl_buildMenu(GObjectView *view, QMenu *menu, const QString &type);
+    void sl_buildMenu(GObjectView* view, QMenu* menu, const QString& type);
 
 private:
-    void buildMenu(QMenu *menu);
+    void buildMenu(QMenu* menu);
 
-    MSAEditor *getEditor() const;
+    MSAEditor* getEditor() const;
 };
 
 }  // namespace U2

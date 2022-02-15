@@ -41,7 +41,7 @@ static const int DASHBOARD_MAX_DISPLAING_NAME_COUNT = 5;
 
 namespace U2 {
 
-DashboardsManagerDialog::DashboardsManagerDialog(QWidget *parent)
+DashboardsManagerDialog::DashboardsManagerDialog(QWidget* parent)
     : QDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929962");
@@ -66,10 +66,10 @@ void DashboardsManagerDialog::setupList() {
     listWidget->header()->resizeSection(0, defaultNameColumnWidth);
 
     const QList<DashboardInfo> dashboardInfos = AppContext::getDashboardInfoRegistry()->getAllEntries();
-    foreach (const DashboardInfo &info, dashboardInfos) {
+    foreach (const DashboardInfo& info, dashboardInfos) {
         QStringList data;
         data << info.name << info.dirName;
-        QTreeWidgetItem *item = new QTreeWidgetItem(listWidget, data);
+        QTreeWidgetItem* item = new QTreeWidgetItem(listWidget, data);
         item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
         Qt::CheckState state = info.opened ? Qt::Checked : Qt::Unchecked;
         item->setCheckState(0, state);
@@ -79,36 +79,36 @@ void DashboardsManagerDialog::setupList() {
     listWidget->sortByColumn(1, Qt::AscendingOrder);
 }
 
-QList<QTreeWidgetItem *> DashboardsManagerDialog::allItems() const {
+QList<QTreeWidgetItem*> DashboardsManagerDialog::allItems() const {
     return listWidget->findItems("*", Qt::MatchWildcard);
 }
 
 QMap<QString, bool> DashboardsManagerDialog::getDashboardsVisibility() const {
     QMap<QString, bool> result;
-    foreach (QTreeWidgetItem *item, allItems()) {
+    foreach (QTreeWidgetItem* item, allItems()) {
         result.insert(item->data(0, Qt::UserRole).value<DashboardInfo>().getId(), Qt::Checked == item->checkState(0));
     }
     return result;
 }
 
-const QStringList &DashboardsManagerDialog::removedDashboards() const {
+const QStringList& DashboardsManagerDialog::removedDashboards() const {
     return toRemove;
 }
 
 void DashboardsManagerDialog::sl_check() {
-    foreach (QTreeWidgetItem *item, listWidget->selectedItems()) {
+    foreach (QTreeWidgetItem* item, listWidget->selectedItems()) {
         item->setCheckState(0, Qt::Checked);
     }
 }
 
 void DashboardsManagerDialog::sl_uncheck() {
-    foreach (QTreeWidgetItem *item, listWidget->selectedItems()) {
+    foreach (QTreeWidgetItem* item, listWidget->selectedItems()) {
         item->setCheckState(0, Qt::Unchecked);
     }
 }
 
 void DashboardsManagerDialog::sl_selectAll() {
-    foreach (QTreeWidgetItem *item, allItems()) {
+    foreach (QTreeWidgetItem* item, allItems()) {
         item->setSelected(true);
     }
 }
@@ -118,14 +118,14 @@ void DashboardsManagerDialog::sl_remove() {
         return;
     }
 
-    foreach (QTreeWidgetItem *item, listWidget->selectedItems()) {
+    foreach (QTreeWidgetItem* item, listWidget->selectedItems()) {
         toRemove << item->data(0, Qt::UserRole).value<DashboardInfo>().getId();
         delete item;
     }
 }
 
 bool DashboardsManagerDialog::confirmDashboardsRemoving() const {
-    QList<QTreeWidgetItem *> selectedItems = listWidget->selectedItems();
+    QList<QTreeWidgetItem*> selectedItems = listWidget->selectedItems();
     if (selectedItems.isEmpty()) {
         return false;
     }
@@ -137,7 +137,7 @@ bool DashboardsManagerDialog::confirmDashboardsRemoving() const {
 
     const bool tooManyDashboardsSelected = (DASHBOARD_MAX_DISPLAING_NAME_COUNT < selectedItems.count());
     int dashboardCounter = 0;
-    foreach (QTreeWidgetItem *item, selectedItems) {
+    foreach (QTreeWidgetItem* item, selectedItems) {
         QString dashboardName = item->data(0, Qt::DisplayRole).value<QString>();
         if (tooManyDashboardsSelected) {
             fullDashboardNamesList += " - " + dashboardName + "\n";
@@ -168,14 +168,14 @@ bool DashboardsManagerDialog::confirmDashboardsRemoving() const {
     if (tooManyDashboardsSelected) {
         questionBox->setDetailedText(fullDashboardNamesList);
     }
-    QPushButton *confirmButton = questionBox->addButton(tr("Confirm"), QMessageBox::ApplyRole);
-    const QPushButton *cancelButton = questionBox->addButton(tr("Cancel"),
+    QPushButton* confirmButton = questionBox->addButton(tr("Confirm"), QMessageBox::ApplyRole);
+    const QPushButton* cancelButton = questionBox->addButton(tr("Cancel"),
                                                              QMessageBox::RejectRole);
     questionBox->setDefaultButton(confirmButton);
     questionBox->exec();
     CHECK(!questionBox.isNull(), false);
 
-    return (dynamic_cast<const QAbstractButton *>(cancelButton) != questionBox->clickedButton());
+    return (dynamic_cast<const QAbstractButton*>(cancelButton) != questionBox->clickedButton());
 }
 
 }  // namespace U2

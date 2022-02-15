@@ -49,18 +49,18 @@ private:
     QString inputDocCtxName;
     QString resultCtxName;
     int mbSeed;
-    Document *maDoc;
-    Document *treeDoc;
-    PhyTreeGeneratorLauncherTask *task;
-    MultipleSequenceAlignmentObject *input;
-    PhyTreeObject *treeObjFromDoc;
+    Document* maDoc;
+    Document* treeDoc;
+    PhyTreeGeneratorLauncherTask* task;
+    MultipleSequenceAlignmentObject* input;
+    PhyTreeObject* treeObjFromDoc;
 };
 
 class MrBayesToolTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MRBAYES_TESTS_H
+#endif  // _U2_MRBAYES_TESTS_H

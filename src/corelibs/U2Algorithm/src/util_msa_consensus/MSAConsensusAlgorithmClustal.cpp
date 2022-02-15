@@ -34,14 +34,14 @@ QString MSAConsensusAlgorithmFactoryClustal::getName() const {
     return tr("ClustalW");
 }
 
-MSAConsensusAlgorithm *MSAConsensusAlgorithmFactoryClustal::createAlgorithm(const MultipleAlignment &, bool ignoreTrailingLeadingGaps, QObject *p) {
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryClustal::createAlgorithm(const MultipleAlignment&, bool ignoreTrailingLeadingGaps, QObject* p) {
     return new MSAConsensusAlgorithmClustal(this, ignoreTrailingLeadingGaps, p);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleAlignment &ma, int pos, QVector<int> seqIdx) const {
+char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleAlignment& ma, int pos, QVector<int> seqIdx) const {
     CHECK(filterIdx(seqIdx, ma, pos), INVALID_CONS_CHAR);
 
     if (!ma->getAlphabet()->isAmino()) {
@@ -88,12 +88,12 @@ char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleAlignment &ma,
         } else {
             bool ok = false;
             int currentLen = currentGroup.length();
-            const char *currentGroupData = currentGroup.data();
+            const char* currentGroupData = currentGroup.data();
             // check strong groups
             if (currentLen <= maxStrongGroupLen) {
                 for (int sgi = 0, sgn = sizeof(strongGroups) / sizeof(QByteArray); sgi < sgn && !ok; sgi++) {
                     bool matches = true;
-                    const QByteArray &sgroup = strongGroups[sgi];
+                    const QByteArray& sgroup = strongGroups[sgi];
                     for (int j = 0; j < currentLen && matches; j++) {
                         char c = currentGroupData[j];
                         matches = sgroup.contains(c);
@@ -109,7 +109,7 @@ char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleAlignment &ma,
             if (!ok && currentLen <= maxWeakGroupLen) {
                 for (int wgi = 0, wgn = sizeof(weakGroups) / sizeof(QByteArray); wgi < wgn && !ok; wgi++) {
                     bool matches = true;
-                    const QByteArray &wgroup = weakGroups[wgi];
+                    const QByteArray& wgroup = weakGroups[wgi];
                     for (int j = 0; j < currentLen && matches; j++) {
                         char c = currentGroupData[j];
                         matches = wgroup.contains(c);
@@ -129,7 +129,7 @@ char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleAlignment &ma,
     }
 }
 
-U2::MSAConsensusAlgorithmClustal *MSAConsensusAlgorithmClustal::clone() const {
+U2::MSAConsensusAlgorithmClustal* MSAConsensusAlgorithmClustal::clone() const {
     return new MSAConsensusAlgorithmClustal(*this);
 }
 

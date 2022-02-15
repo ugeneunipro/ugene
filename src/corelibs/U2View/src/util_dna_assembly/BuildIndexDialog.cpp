@@ -44,7 +44,7 @@ namespace U2 {
 
 QString BuildIndexDialog::genomePath;
 
-BuildIndexDialog::BuildIndexDialog(const DnaAssemblyAlgRegistry *registry, QWidget *p)
+BuildIndexDialog::BuildIndexDialog(const DnaAssemblyAlgRegistry* registry, QWidget* p)
     : QDialog(p), assemblyRegistry(registry), customGUI(nullptr) {
     setupUi(this);
     QMap<QString, QString> helpPagesMap;
@@ -67,7 +67,7 @@ BuildIndexDialog::BuildIndexDialog(const DnaAssemblyAlgRegistry *registry, QWidg
     sl_onAlgorithmChanged(methodNamesBox->currentText());
     connect(setIndexFileNameButton, SIGNAL(clicked()), SLOT(sl_onSetIndexFileNameButtonClicked()));
     connect(addRefButton, SIGNAL(clicked()), SLOT(sl_onAddRefButtonClicked()));
-    connect(methodNamesBox, SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_onAlgorithmChanged(const QString &)));
+    connect(methodNamesBox, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_onAlgorithmChanged(const QString&)));
 
     if (!genomePath.isEmpty()) {
         refSeqEdit->setText(genomePath);
@@ -114,7 +114,7 @@ void BuildIndexDialog::sl_onSetIndexFileNameButtonClicked() {
     }
 }
 
-void BuildIndexDialog::sl_onAlgorithmChanged(const QString &) {
+void BuildIndexDialog::sl_onAlgorithmChanged(const QString&) {
     updateState();
 }
 
@@ -132,12 +132,12 @@ void BuildIndexDialog::addGuiExtension() {
     }
 
     // insert new extension widget
-    DnaAssemblyAlgorithmEnv *env = assemblyRegistry->getAlgorithm(methodNamesBox->currentText());
+    DnaAssemblyAlgorithmEnv* env = assemblyRegistry->getAlgorithm(methodNamesBox->currentText());
     if (nullptr == env) {
         adjustSize();
         return;
     }
-    DnaAssemblyGUIExtensionsFactory *gui = env->getGUIExtFactory();
+    DnaAssemblyGUIExtensionsFactory* gui = env->getGUIExtFactory();
     if (gui != nullptr && gui->hasBuildIndexWidget()) {
         customGUI = gui->createBuildIndexWidget(this);
         int insertPos = verticalLayout->count() - 1;
@@ -151,7 +151,7 @@ void BuildIndexDialog::addGuiExtension() {
     adjustSize();
 }
 
-void BuildIndexDialog::buildIndexUrl(const GUrl &refUrl) {
+void BuildIndexDialog::buildIndexUrl(const GUrl& refUrl) {
     QString extension("");
     GUrl url;
     if (nullptr != customGUI) {

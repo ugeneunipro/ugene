@@ -30,12 +30,12 @@ class U2OpStatus;
 
 class U2CORE_EXPORT U2DbiUpgrader {
 public:
-    U2DbiUpgrader(const Version &versionFrom, const Version &versionTo);
+    U2DbiUpgrader(const Version& versionFrom, const Version& versionTo);
     virtual ~U2DbiUpgrader();
 
-    virtual void upgrade(U2OpStatus &os) const = 0;
-    bool isAppliable(const Version &dbVersion) const;
-    bool operator<(const U2DbiUpgrader &other) const;
+    virtual void upgrade(U2OpStatus& os) const = 0;
+    bool isAppliable(const Version& dbVersion) const;
+    bool operator<(const U2DbiUpgrader& other) const;
 
 protected:
     const Version versionFrom;

@@ -32,34 +32,34 @@ namespace U2 {
 namespace LocalWorkflow {
 
 //////////////////////////////////////////////////
-//CutAdaptFastq
+// CutAdaptFastq
 class CutAdaptFastqPrompter;
 typedef PrompterBase<CutAdaptFastqPrompter> CutAdaptFastqBase;
 
 class CutAdaptFastqPrompter : public CutAdaptFastqBase {
     Q_OBJECT
 public:
-    CutAdaptFastqPrompter(Actor *p = 0)
+    CutAdaptFastqPrompter(Actor* p = 0)
         : CutAdaptFastqBase(p) {
     }
 
 protected:
     QString composeRichDoc();
-};    //CutAdaptFastqPrompter
+};  // CutAdaptFastqPrompter
 
 class CutAdaptFastqWorker : public BaseNGSWorker {
     Q_OBJECT
 public:
-    CutAdaptFastqWorker(Actor *a);
+    CutAdaptFastqWorker(Actor* a);
 
 protected:
     QVariantMap getCustomParameters() const;
     QString getDefaultFileName() const;
-    Task *getTask(const BaseNGSSetting &settings) const;
+    Task* getTask(const BaseNGSSetting& settings) const;
 
     QStringList inputUrls;
 
-};    //CutAdaptFastqWorker
+};  // CutAdaptFastqWorker
 
 class CutAdaptFastqWorkerFactory : public DomainFactory {
     static const QString ACTOR_ID;
@@ -69,26 +69,26 @@ public:
     CutAdaptFastqWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    Worker *createWorker(Actor *a) {
+    Worker* createWorker(Actor* a) {
         return new CutAdaptFastqWorker(a);
     }
-};    //CutAdaptFastqWorkerFactory
+};  // CutAdaptFastqWorkerFactory
 
 class CutAdaptFastqTask : public BaseNGSTask {
     Q_OBJECT
 public:
-    CutAdaptFastqTask(const BaseNGSSetting &settings);
+    CutAdaptFastqTask(const BaseNGSSetting& settings);
 
 protected:
     void prepareStep();
-    QStringList getParameters(U2OpStatus &os);
+    QStringList getParameters(U2OpStatus& os);
 };
 
 class CutAdaptParser : public ExternalToolLogParser {
 public:
-    void parseErrOutput(const QString &partOfLog);
+    void parseErrOutput(const QString& partOfLog);
 
-    static QString parseTextForErrors(const QStringList &lastPartOfLog);
+    static QString parseTextForErrors(const QStringList& lastPartOfLog);
 
 private:
     static QStringList initStringsToIgnore();
@@ -100,16 +100,16 @@ private:
 
 class CutAdaptLogProcessor : public ExternalToolLogProcessor {
 public:
-    CutAdaptLogProcessor(WorkflowMonitor *monitor, const QString &actor);
+    CutAdaptLogProcessor(WorkflowMonitor* monitor, const QString& actor);
 
-    void processLogMessage(const QString &message);
+    void processLogMessage(const QString& message);
 
 private:
-    WorkflowMonitor *monitor;
+    WorkflowMonitor* monitor;
     const QString actor;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    //_U2_CUTADAPT_WORKER_H_
+#endif  //_U2_CUTADAPT_WORKER_H_

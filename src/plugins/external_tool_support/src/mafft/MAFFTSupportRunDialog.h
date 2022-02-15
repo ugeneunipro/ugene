@@ -35,19 +35,19 @@ class SaveDocumentController;
 class MAFFTSupportRunDialog : public QDialog, public Ui_MAFFTSupportRunDialog {
     Q_OBJECT
 public:
-    MAFFTSupportRunDialog(MAFFTSupportTaskSettings &settings, QWidget *parent);
+    MAFFTSupportRunDialog(MAFFTSupportTaskSettings& settings, QWidget* parent);
 
 private slots:
     void accept();
 
 private:
-    MAFFTSupportTaskSettings &settings;
+    MAFFTSupportTaskSettings& settings;
 };
 
 class MAFFTWithExtFileSpecifySupportRunDialog : public QDialog, public Ui_MAFFTSupportRunDialog {
     Q_OBJECT
 public:
-    MAFFTWithExtFileSpecifySupportRunDialog(MAFFTSupportTaskSettings &settings, QWidget *parent);
+    MAFFTWithExtFileSpecifySupportRunDialog(MAFFTSupportTaskSettings& settings, QWidget* parent);
 
 private slots:
     void accept();
@@ -56,8 +56,8 @@ private slots:
 private:
     void initSaveController();
 
-    MAFFTSupportTaskSettings &settings;
-    SaveDocumentController *saveController;
+    MAFFTSupportTaskSettings& settings;
+    SaveDocumentController* saveController;
 };
 
 }  // namespace U2

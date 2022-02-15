@@ -38,7 +38,7 @@
 
 namespace U2 {
 
-ShiftSequenceStartTask::ShiftSequenceStartTask(U2SequenceObject *sequenceObject, qint64 newSequenceStartPosition)
+ShiftSequenceStartTask::ShiftSequenceStartTask(U2SequenceObject* sequenceObject, qint64 newSequenceStartPosition)
     : Task(tr("ShiftSequenceStartTask"), TaskFlag_NoRun), sequenceObject(sequenceObject), newSequenceStartPosition(newSequenceStartPosition) {
     GCOUNTER(cvar, "ShiftSequenceStartTask");
 }
@@ -55,7 +55,7 @@ Task::ReportResult ShiftSequenceStartTask::report() {
         return ReportResult_Finished;
     }
 
-    Document *documentWithSequence = sequenceObject->getDocument();
+    Document* documentWithSequence = sequenceObject->getDocument();
     CHECK_EXT(!documentWithSequence->isStateLocked(), setError(tr("Document is locked")), ReportResult_Finished);
 
     DNASequence dnaSequence = sequenceObject->getWholeSequence(stateInfo);
@@ -63,8 +63,8 @@ Task::ReportResult ShiftSequenceStartTask::report() {
     dnaSequence.seq = dnaSequence.seq.mid(newSequenceStartPosition) + dnaSequence.seq.mid(0, newSequenceStartPosition);
     sequenceObject->setWholeSequence(dnaSequence);
 
-    QList<Document *> documentsToUpdate;
-    Project *p = AppContext::getProject();
+    QList<Document*> documentsToUpdate;
+    Project* p = AppContext::getProject();
     if (p != nullptr) {
         if (p->isStateLocked()) {
             return ReportResult_CallMeAgain;
@@ -76,13 +76,13 @@ Task::ReportResult ShiftSequenceStartTask::report() {
         documentsToUpdate.append(documentWithSequence);
     }
 
-    foreach (Document *document, documentsToUpdate) {
-        QList<GObject *> annotationTablesList = document->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
-        foreach (GObject *object, annotationTablesList) {
-            AnnotationTableObject *annotationTableObject = qobject_cast<AnnotationTableObject *>(object);
+    foreach (Document* document, documentsToUpdate) {
+        QList<GObject*> annotationTablesList = document->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
+        foreach (GObject* object, annotationTablesList) {
+            AnnotationTableObject* annotationTableObject = qobject_cast<AnnotationTableObject*>(object);
             if (annotationTableObject->hasObjectRelation(sequenceObject, ObjectRole_Sequence)) {
-                foreach (Annotation *annotation, annotationTableObject->getAnnotations()) {
-                    const U2Location &location = annotation->getLocation();
+                foreach (Annotation* annotation, annotationTableObject->getAnnotations()) {
+                    const U2Location& location = annotation->getLocation();
                     U2Location newLocation = U1AnnotationUtils::shiftLocation(location, -newSequenceStartPosition, sequenceLength);
                     annotation->setLocation(newLocation);
                 }

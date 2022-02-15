@@ -47,7 +47,7 @@
 
 namespace U2 {
 
-void ExportUtils::loadDNAExportSettingsFromDlg(ExportSequenceTaskSettings &s, ExportSequencesDialog *d) {
+void ExportUtils::loadDNAExportSettingsFromDlg(ExportSequenceTaskSettings& s, ExportSequencesDialog* d) {
     s.fileName = d->file;
     s.merge = d->merge;
     s.mergeGap = d->mergeGap;
@@ -59,14 +59,14 @@ void ExportUtils::loadDNAExportSettingsFromDlg(ExportSequenceTaskSettings &s, Ex
     s.sequenceName = d->sequenceName;
 }
 
-Task *ExportUtils::wrapExportTask(DocumentProviderTask *t, bool addToProject) {
+Task* ExportUtils::wrapExportTask(DocumentProviderTask* t, bool addToProject) {
     if (!addToProject) {
         return t;
     }
     return new AddDocumentAndOpenViewTask(t);
 }
 
-QString ExportUtils::genUniqueName(const QSet<QString> &names, QString prefix) {
+QString ExportUtils::genUniqueName(const QSet<QString>& names, QString prefix) {
     if (!names.contains(prefix)) {
         return prefix;
     }
@@ -81,10 +81,10 @@ QString ExportUtils::genUniqueName(const QSet<QString> &names, QString prefix) {
     return name;
 }
 
-void ExportUtils::launchExportMca2MsaTask(MultipleChromatogramAlignmentObject *mcaObject) {
+void ExportUtils::launchExportMca2MsaTask(MultipleChromatogramAlignmentObject* mcaObject) {
     SAFE_POINT(nullptr != mcaObject, "Can't cast the object to MultipleChromatogramAlignmentObject", );
 
-    Document *document = mcaObject->getDocument();
+    Document* document = mcaObject->getDocument();
     QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(document->getURL(), mcaObject->getGObjectName(), BaseDocumentFormats::UGENEDB, "");
 
     QObjectScopedPointer<ExportMca2MsaDialog> dialog = new ExportMca2MsaDialog(defaultUrl, AppContext::getMainWindow()->getQMainWindow());
@@ -92,7 +92,7 @@ void ExportUtils::launchExportMca2MsaTask(MultipleChromatogramAlignmentObject *m
     CHECK(!dialog.isNull(), );
     CHECK(result != QDialog::Rejected, );
 
-    Task *task = ExportUtils::wrapExportTask(new ExportMca2MsaTask(mcaObject,
+    Task* task = ExportUtils::wrapExportTask(new ExportMca2MsaTask(mcaObject,
                                                                    dialog->getSavePath(),
                                                                    dialog->getFormatId(),
                                                                    dialog->getIncludeReferenceOption()),

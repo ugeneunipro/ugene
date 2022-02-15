@@ -28,17 +28,17 @@ namespace U2 {
 
 class U2LANG_EXPORT SlotRelationDescriptor {
 public:
-    SlotRelationDescriptor(const QString &portId, const QString &slotId, const QVariantList &valuesWithEnabledSlot)
+    SlotRelationDescriptor(const QString& portId, const QString& slotId, const QVariantList& valuesWithEnabledSlot)
         : portId(portId), slotId(slotId), valuesWithEnabledSlot(valuesWithEnabledSlot) {
     }
     virtual ~SlotRelationDescriptor() {
     }
 
-    virtual SlotRelationDescriptor *clone() const {
+    virtual SlotRelationDescriptor* clone() const {
         return new SlotRelationDescriptor(*this);
     }
 
-    virtual bool isSlotEnabled(const QVariant &attrValue) const {
+    virtual bool isSlotEnabled(const QVariant& attrValue) const {
         return valuesWithEnabledSlot.contains(attrValue);
     }
 

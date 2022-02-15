@@ -45,19 +45,19 @@ public:
 
     class Reference {
     public:
-        Reference(const QByteArray &name, int length);
-        const QByteArray &getName() const;
+        Reference(const QByteArray& name, int length);
+        const QByteArray& getName() const;
         int getLength() const;
-        const QByteArray &getAssemblyId() const;
-        const QByteArray &getMd5() const;
-        const QByteArray &getSpecies() const;
-        const QString &getUri() const;
-        void setName(const QByteArray &name);
+        const QByteArray& getAssemblyId() const;
+        const QByteArray& getMd5() const;
+        const QByteArray& getSpecies() const;
+        const QString& getUri() const;
+        void setName(const QByteArray& name);
         void setLength(int length);
-        void setAssemblyId(const QByteArray &assemblyId);
-        void setMd5(const QByteArray &md5);
-        void setSpecies(const QByteArray &species);
-        void setUri(const QString &uri);
+        void setAssemblyId(const QByteArray& assemblyId);
+        void setMd5(const QByteArray& md5);
+        void setSpecies(const QByteArray& species);
+        void setUri(const QString& uri);
 
     private:
         QByteArray name;
@@ -70,24 +70,24 @@ public:
     class ReadGroup {
     public:
         ReadGroup();
-        const QByteArray &getSequencingCenter() const;
-        const QByteArray &getDescription() const;
-        const QVariant &getDate() const;
-        const QByteArray &getLibrary() const;
-        const QByteArray &getPrograms() const;
+        const QByteArray& getSequencingCenter() const;
+        const QByteArray& getDescription() const;
+        const QVariant& getDate() const;
+        const QByteArray& getLibrary() const;
+        const QByteArray& getPrograms() const;
         int getPredictedInsertSize() const;
-        const QByteArray &getPlatform() const;
-        const QByteArray &getPlatformUnit() const;
-        const QByteArray &getSample() const;
-        void setSequencingCenter(const QByteArray &sequencingCenter);
-        void setDescription(const QByteArray &description);
-        void setDate(const QVariant &date);
-        void setLibrary(const QByteArray &library);
-        void setPrograms(const QByteArray &programs);
+        const QByteArray& getPlatform() const;
+        const QByteArray& getPlatformUnit() const;
+        const QByteArray& getSample() const;
+        void setSequencingCenter(const QByteArray& sequencingCenter);
+        void setDescription(const QByteArray& description);
+        void setDate(const QVariant& date);
+        void setLibrary(const QByteArray& library);
+        void setPrograms(const QByteArray& programs);
         void setPredictedInsertSize(int medianInsertSize);
-        void setPlatform(const QByteArray &platform);
-        void setPlatformUnit(const QByteArray &platformUnit);
-        void setSample(const QByteArray &sample);
+        void setPlatform(const QByteArray& platform);
+        void setPlatformUnit(const QByteArray& platformUnit);
+        void setSample(const QByteArray& sample);
 
     private:
         QByteArray sequencingCenter;
@@ -103,14 +103,14 @@ public:
     class Program {
     public:
         Program();
-        const QByteArray &getName() const;
-        const QByteArray &getCommandLine() const;
+        const QByteArray& getName() const;
+        const QByteArray& getCommandLine() const;
         int getPreviousId() const;
-        const QByteArray &getVersion() const;
-        void setName(const QByteArray &name);
-        void setCommandLine(const QByteArray &commandLine);
+        const QByteArray& getVersion() const;
+        void setName(const QByteArray& name);
+        void setCommandLine(const QByteArray& commandLine);
         void setPreviousId(int previousId);
-        void setVersion(const QByteArray &version);
+        void setVersion(const QByteArray& version);
 
     private:
         QByteArray name;
@@ -118,18 +118,18 @@ public:
         int previousId;
         QByteArray version;
     };
-    const Version &getFormatVersion() const;
+    const Version& getFormatVersion() const;
     SortingOrder getSortingOrder() const;
-    const QList<Reference> &getReferences() const;
-    const QList<ReadGroup> &getReadGroups() const;
-    const QList<Program> &getPrograms() const;
-    const QString &getText() const;
-    void setFormatVersion(const Version &formatVersion);
+    const QList<Reference>& getReferences() const;
+    const QList<ReadGroup>& getReadGroups() const;
+    const QList<Program>& getPrograms() const;
+    const QString& getText() const;
+    void setFormatVersion(const Version& formatVersion);
     void setSortingOrder(SortingOrder sortingOrder);
-    void setReferences(const QList<Reference> &references);
-    void setReadGroups(const QList<ReadGroup> &readGroups);
-    void setPrograms(const QList<Program> &programs);
-    void setText(const QString &text);
+    void setReferences(const QList<Reference>& references);
+    void setReadGroups(const QList<ReadGroup>& readGroups);
+    void setPrograms(const QList<Program>& programs);
+    void setText(const QString& text);
 
 private:
     Version formatVersion;

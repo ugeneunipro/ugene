@@ -34,7 +34,7 @@ class ImportObjectToDatabaseTask;
 class U2CORE_EXPORT ImportToDatabaseTask : public MultiTask {
     Q_OBJECT
 public:
-    ImportToDatabaseTask(QList<Task *> tasks, int maxParallelSubtasks = 1);
+    ImportToDatabaseTask(QList<Task*> tasks, int maxParallelSubtasks = 1);
 
     void run();
     QString generateReport() const;
@@ -61,10 +61,10 @@ private:
     QString reportString;
     qint64 startTime;
 
-    mutable QList<ImportDirToDatabaseTask *> dirSubtasks;
-    mutable QList<ImportDocumentToDatabaseTask *> documentSubtasks;
-    mutable QList<ImportFileToDatabaseTask *> fileSubtasks;
-    mutable QList<ImportObjectToDatabaseTask *> objectSubtasks;
+    mutable QList<ImportDirToDatabaseTask*> dirSubtasks;
+    mutable QList<ImportDocumentToDatabaseTask*> documentSubtasks;
+    mutable QList<ImportFileToDatabaseTask*> fileSubtasks;
+    mutable QList<ImportObjectToDatabaseTask*> objectSubtasks;
 
     static const int MAX_SHOWN_ITEMS_IN_REPORT = 100;
 };

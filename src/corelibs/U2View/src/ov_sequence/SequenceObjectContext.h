@@ -49,62 +49,62 @@ class U2Region;
 class U2VIEW_EXPORT SequenceObjectContext : public QObject {
     Q_OBJECT
 public:
-    SequenceObjectContext(U2SequenceObject *obj, QObject *parent);
+    SequenceObjectContext(U2SequenceObject* obj, QObject* parent);
 
-    DNATranslation *getComplementTT() const {
+    DNATranslation* getComplementTT() const {
         return complTT;
     }
-    DNATranslation *getAminoTT() const {
+    DNATranslation* getAminoTT() const {
         return aminoTT;
     }
-    U2SequenceObject *getSequenceObject() const {
+    U2SequenceObject* getSequenceObject() const {
         return seqObj;
     }
-    GObject *getSequenceGObject() const;
+    GObject* getSequenceGObject() const;
 
     qint64 getSequenceLength() const;
-    const DNAAlphabet *getAlphabet() const;
-    QByteArray getSequenceData(const U2Region &r, U2OpStatus &os) const;
+    const DNAAlphabet* getAlphabet() const;
+    QByteArray getSequenceData(const U2Region& r, U2OpStatus& os) const;
     U2EntityRef getSequenceRef() const;
     bool isRowChoosed();
 
-    DNASequenceSelection *getSequenceSelection() const {
+    DNASequenceSelection* getSequenceSelection() const {
         return selection;
     }
 
-    QSet<AnnotationTableObject *> getAnnotationObjects(bool includeAutoAnnotations = false) const;
-    QSet<AnnotationTableObject *> getAutoAnnotationObjects() const {
+    QSet<AnnotationTableObject*> getAnnotationObjects(bool includeAutoAnnotations = false) const;
+    QSet<AnnotationTableObject*> getAutoAnnotationObjects() const {
         return autoAnnotations;
     }
-    QList<GObject *> getAnnotationGObjects() const;
+    QList<GObject*> getAnnotationGObjects() const;
 
-    QMenu *createGeneticCodeMenu();
-    QMenu *createTranslationFramesMenu(QList<QAction *> menuActions);
-    void setAminoTranslation(const QString &tid);
+    QMenu* createGeneticCodeMenu();
+    QMenu* createTranslationFramesMenu(QList<QAction*> menuActions);
+    void setAminoTranslation(const QString& tid);
 
-    void addAnnotationObject(AnnotationTableObject *obj);
-    void addAutoAnnotationObject(AnnotationTableObject *obj);
-    void removeAnnotationObject(AnnotationTableObject *obj);
+    void addAnnotationObject(AnnotationTableObject* obj);
+    void addAutoAnnotationObject(AnnotationTableObject* obj);
+    void removeAnnotationObject(AnnotationTableObject* obj);
 
     /*
      * Emits 'si_annotationActivated' signal that triggers 'activation' logic for the annotation.
      * See signal docs for the details.
      */
-    void emitAnnotationActivated(Annotation *annotation, int regionIndex);
+    void emitAnnotationActivated(Annotation* annotation, int regionIndex);
 
-    void emitAnnotationDoubleClicked(Annotation *annotation, int regionIndex);
+    void emitAnnotationDoubleClicked(Annotation* annotation, int regionIndex);
     void emitClearSelectedAnnotationRegions();
 
     // temporary virtual
-    virtual AnnotationSelection *getAnnotationsSelection() const;
+    virtual AnnotationSelection* getAnnotationsSelection() const;
 
-    const QList<ADVSequenceWidget *> &getSequenceWidgets() const {
+    const QList<ADVSequenceWidget*>& getSequenceWidgets() const {
         return seqWidgets;
     }
-    void addSequenceWidget(ADVSequenceWidget *w);
-    void removeSequenceWidget(ADVSequenceWidget *w);
+    void addSequenceWidget(ADVSequenceWidget* w);
+    void removeSequenceWidget(ADVSequenceWidget* w);
 
-    QList<Annotation *> selectRelatedAnnotations(const QList<Annotation *> &alist) const;
+    QList<Annotation*> selectRelatedAnnotations(const QList<Annotation*>& alist) const;
     QVector<bool> getTranslationRowsVisibleStatus() const;
     void setTranslationsVisible(bool visible);
     void showComplementActions(bool show);
@@ -120,10 +120,10 @@ public:
     void setTranslationState(const TranslationState state);
     TranslationState getTranslationState() const;
 
-    StatisticsCache<DNAStatistics> *getCommonStatisticsCache();
-    StatisticsCache<CharactersOccurrence> *getCharactersOccurrenceCache();
-    StatisticsCache<DinucleotidesOccurrence> *getDinucleotidesOccurrenceCache();
-    StatisticsCache<QMap<QByteArray, qint64>> *getCodonsOccurrenceCache();
+    StatisticsCache<DNAStatistics>* getCommonStatisticsCache();
+    StatisticsCache<CharactersOccurrence>* getCharactersOccurrenceCache();
+    StatisticsCache<DinucleotidesOccurrence>* getDinucleotidesOccurrenceCache();
+    StatisticsCache<QMap<QByteArray, qint64>>* getCodonsOccurrenceCache();
 
 private slots:
     void sl_setAminoTranslation();
@@ -134,16 +134,16 @@ private slots:
 
 signals:
     void si_aminoTranslationChanged();
-    void si_annotationObjectAdded(AnnotationTableObject *obj);
-    void si_annotationObjectRemoved(AnnotationTableObject *obj);
+    void si_annotationObjectAdded(AnnotationTableObject* obj);
+    void si_annotationObjectRemoved(AnnotationTableObject* obj);
 
     /*
      * Emitted when annotation is 'activated' by some action: pressed, double clicked, etc..
      * For the all views it means that the annotation should be brought to the view area and made 'current'.
      */
-    void si_annotationActivated(Annotation *annotation, int regionIndex);
+    void si_annotationActivated(Annotation* annotation, int regionIndex);
 
-    void si_annotationDoubleClicked(Annotation *annotation, int regionIndex);
+    void si_annotationDoubleClicked(Annotation* annotation, int regionIndex);
     void si_clearSelectedAnnotationRegions();
     void si_translationRowsChanged();
 
@@ -151,19 +151,19 @@ protected slots:
     virtual void sl_onAnnotationRelationChange();
 
 protected:
-    void guessAminoTT(const AnnotationTableObject *ao);
+    void guessAminoTT(const AnnotationTableObject* ao);
 
-    U2SequenceObject *seqObj;
-    DNATranslation *aminoTT;
-    DNATranslation *complTT;
-    DNASequenceSelection *selection;
-    QActionGroup *translations;
-    QActionGroup *visibleFrames;
-    QActionGroup *translationMenuActions;
-    QVector<QAction *> translationRowsStatus;
-    QList<ADVSequenceWidget *> seqWidgets;
-    QSet<AnnotationTableObject *> annotations;
-    QSet<AnnotationTableObject *> autoAnnotations;
+    U2SequenceObject* seqObj;
+    DNATranslation* aminoTT;
+    DNATranslation* complTT;
+    DNASequenceSelection* selection;
+    QActionGroup* translations;
+    QActionGroup* visibleFrames;
+    QActionGroup* translationMenuActions;
+    QVector<QAction*> translationRowsStatus;
+    QList<ADVSequenceWidget*> seqWidgets;
+    QSet<AnnotationTableObject*> annotations;
+    QSet<AnnotationTableObject*> autoAnnotations;
     bool clarifyAminoTT;
     bool rowChoosed;
 
@@ -174,7 +174,7 @@ protected:
     StatisticsCache<QMap<QByteArray, qint64>> codonsOccurrenceCache;
 
     // SANGER_TODO:
-    AnnotationSelection *annSelection;
+    AnnotationSelection* annSelection;
 
     static const QString MANUAL_FRAMES;
     static const QVariantList DEFAULT_TRANSLATIONS;

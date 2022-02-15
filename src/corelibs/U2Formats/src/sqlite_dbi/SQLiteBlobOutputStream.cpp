@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-SQLiteBlobOutputStream::SQLiteBlobOutputStream(DbRef *db, const QByteArray &tableId, const QByteArray &columnId, const U2DataId &rowId, int size, U2OpStatus &os)
+SQLiteBlobOutputStream::SQLiteBlobOutputStream(DbRef* db, const QByteArray& tableId, const QByteArray& columnId, const U2DataId& rowId, int size, U2OpStatus& os)
     : OutputStream(), SQLiteBlobStream() {
     SAFE_POINT_EXT(nullptr != db, os.setError("NULL db ref"), );
     SAFE_POINT_EXT(nullptr != db->handle, os.setError("NULL db handle"), );
@@ -42,9 +42,9 @@ void SQLiteBlobOutputStream::close() {
     releaseHandle();
 }
 
-void SQLiteBlobOutputStream::write(const char *buffer, int length, U2OpStatus &os) {
+void SQLiteBlobOutputStream::write(const char* buffer, int length, U2OpStatus& os) {
     SAFE_POINT_EXT(nullptr != handle, os.setError("blob handle is not opened"), );
-    int status = sqlite3_blob_write(handle, (void *)buffer, length, offset);
+    int status = sqlite3_blob_write(handle, (void*)buffer, length, offset);
     if (SQLITE_OK != status) {
         os.setError(QObject::tr("Can not write data. The database is closed or the data were changed."));
         return;
@@ -52,7 +52,7 @@ void SQLiteBlobOutputStream::write(const char *buffer, int length, U2OpStatus &o
     offset += length;
 }
 
-void SQLiteBlobOutputStream::update(DbRef *db, const QByteArray &tableId, const QByteArray &columnId, const U2DataId &rowId, int size, U2OpStatus &os) {
+void SQLiteBlobOutputStream::update(DbRef* db, const QByteArray& tableId, const QByteArray& columnId, const U2DataId& rowId, int size, U2OpStatus& os) {
     SQLiteWriteQuery q("UPDATE " + tableId + " SET " + columnId + " = ?1 WHERE " + UdrSchema::RECORD_ID_FIELD_NAME + " = ?2", db, os);
     CHECK_OP(os, );
 

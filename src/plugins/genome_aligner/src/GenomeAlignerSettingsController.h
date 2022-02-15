@@ -22,16 +22,16 @@
 #ifndef _U2_GA_SETTINGS_GUI_CONTROLLER_H_
 #define _U2_GA_SETTINGS_GUI_CONTROLLER_H_
 
-#include <ui_GenomeAlignerSettingsWidget.h>
-
 #include <U2Gui/AppSettingsGUI.h>
+
+#include <ui_GenomeAlignerSettingsWidget.h>
 
 namespace U2 {
 
 class GenomeAlignerSettingsUtils {
 public:
     static QString getIndexDir();
-    static void setIndexDir(const QString &indexDir);
+    static void setIndexDir(const QString& indexDir);
 };
 
 }  // namespace U2

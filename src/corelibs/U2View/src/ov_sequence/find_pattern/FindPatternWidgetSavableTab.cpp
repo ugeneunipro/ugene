@@ -29,9 +29,9 @@
 
 namespace U2 {
 
-FindPatternWidgetSavableTab::FindPatternWidgetSavableTab(QWidget *wrappedWidget, MWMDIWindow *contextWindow)
+FindPatternWidgetSavableTab::FindPatternWidgetSavableTab(QWidget* wrappedWidget, MWMDIWindow* contextWindow)
     : U2SavableWidget(wrappedWidget, contextWindow) {
-    SAFE_POINT(nullptr != qobject_cast<FindPatternWidget *>(wrappedWidget), "Invalid widget provided", );
+    SAFE_POINT(nullptr != qobject_cast<FindPatternWidget*>(wrappedWidget), "Invalid widget provided", );
 }
 
 FindPatternWidgetSavableTab::~FindPatternWidgetSavableTab() {
@@ -39,13 +39,13 @@ FindPatternWidgetSavableTab::~FindPatternWidgetSavableTab() {
     widgetStateSaved = true;
 }
 
-void FindPatternWidgetSavableTab::setChildValue(const QString &childId, const QVariant &value) {
+void FindPatternWidgetSavableTab::setChildValue(const QString& childId, const QVariant& value) {
     SAFE_POINT(childExists(childId), "Child widget expected", );
     QVariant result = value;
     if (regionWidgetIds.contains(childId)) {
         bool ok = false;
         int intVal = value.toInt(&ok);
-        FindPatternWidget *parentWidget = qobject_cast<FindPatternWidget *>(wrappedWidget);
+        FindPatternWidget* parentWidget = qobject_cast<FindPatternWidget*>(wrappedWidget);
         SAFE_POINT(parentWidget != nullptr, "Wrong casting", )
         int sequenceLength = parentWidget->getTargetSequenceLength();
         SAFE_POINT(ok, "Invalid conversion to int", );
@@ -61,7 +61,7 @@ void FindPatternWidgetSavableTab::setChildValue(const QString &childId, const QV
     U2SavableWidget::setChildValue(childId, result);
 }
 
-void FindPatternWidgetSavableTab::setRegionWidgetIds(const QStringList &s) {
+void FindPatternWidgetSavableTab::setRegionWidgetIds(const QStringList& s) {
     /*
     First item should be start position, second - end
     */

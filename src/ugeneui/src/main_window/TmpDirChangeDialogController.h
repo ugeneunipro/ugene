@@ -37,9 +37,9 @@ namespace U2 {
 class TmpDirChangeDialogController : public QDialog, public Ui_TmpDirChangeDialog {
     Q_OBJECT
 public:
-    TmpDirChangeDialogController(const QString& path, QWidget *p);
+    TmpDirChangeDialogController(const QString& path, QWidget* p);
 
-    const QString &getTmpDirPath() const;
+    const QString& getTmpDirPath() const;
 
 public slots:
     void sl_changeDirButtonClicked();
@@ -48,7 +48,7 @@ public slots:
 
 private:
     QString tmpDirPath;
-    TmpDirChecker *tmpDirChecker;
+    TmpDirChecker* tmpDirChecker;
 };
 
 }  // namespace U2

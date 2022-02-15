@@ -35,13 +35,13 @@ AssemblyConsensusAlgorithmRegistry::~AssemblyConsensusAlgorithmRegistry() {
     qDeleteAll(getAlgorithmFactories());
 }
 
-AssemblyConsensusAlgorithmFactory *AssemblyConsensusAlgorithmRegistry::getAlgorithmFactory(const QString &algoId) {
+AssemblyConsensusAlgorithmFactory* AssemblyConsensusAlgorithmRegistry::getAlgorithmFactory(const QString& algoId) {
     return algorithms.value(algoId);
 }
 
-void AssemblyConsensusAlgorithmRegistry::addAlgorithmFactory(AssemblyConsensusAlgorithmFactory *algo) {
-    const QString &id = algo->getId();
-    AssemblyConsensusAlgorithmFactory *oldVersion = algorithms.value(id);
+void AssemblyConsensusAlgorithmRegistry::addAlgorithmFactory(AssemblyConsensusAlgorithmFactory* algo) {
+    const QString& id = algo->getId();
+    AssemblyConsensusAlgorithmFactory* oldVersion = algorithms.value(id);
     if (oldVersion != nullptr) {
         delete oldVersion;
         oldVersion = nullptr;

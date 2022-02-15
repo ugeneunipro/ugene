@@ -35,13 +35,13 @@ class U2DESIGNER_EXPORT DashboardTabPage : public QScrollArea {
     Q_OBJECT
 
 public:
-    DashboardTabPage(const QString &tabObjectName);
+    DashboardTabPage(const QString& tabObjectName);
 
-    DashboardWidget *addDashboardWidget(const QString &title, QWidget *contentWidget);
+    DashboardWidget* addDashboardWidget(const QString& title, QWidget* contentWidget);
 
 private:
-    QVBoxLayout *leftColumnLayout;
-    QVBoxLayout *rightColumnLayout;
+    QVBoxLayout* leftColumnLayout;
+    QVBoxLayout* rightColumnLayout;
 };
 
 }  // namespace U2

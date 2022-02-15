@@ -42,12 +42,12 @@ class GLFrame {
     static const GLfloat DEFAULT_ZOOM;
     // static const Vector3D DEFAULT_CAMERA;
 public:
-    GLFrame(QOpenGLWidget *widget);
+    GLFrame(QOpenGLWidget* widget);
 
-    void setState(const QVariantMap &state);
-    void writeStateToMap(QVariantMap &states);
+    void setState(const QVariantMap& state);
+    void writeStateToMap(QVariantMap& states);
 
-    QOpenGLWidget *getGLWidget();
+    QOpenGLWidget* getGLWidget();
 
     void makeCurrent();
 
@@ -58,21 +58,21 @@ public:
 
     GLfloat getZoomFactor() const;
 
-    float *getRotationMatrix();
+    float* getRotationMatrix();
 
-    void rotateCamera(const Vector3D &rotAxis, float rotAngle);
+    void rotateCamera(const Vector3D& rotAxis, float rotAngle);
 
     void setCameraClip(float clipNear, float clipFar);
 
     const Vector3D getCameraPosition() const;
-    void setCameraPosition(const Vector3D &v);
+    void setCameraPosition(const Vector3D& v);
     void setCameraPosition(float x, float y, float z);
 
     void performZoom(float delta);
     void performShift(float deltaX, float deltaY);
 
 private:
-    QOpenGLWidget *glWidget;
+    QOpenGLWidget* glWidget;
     Matrix44 rotMatrix;
     float cameraClipNear, cameraClipFar;
 
@@ -81,7 +81,7 @@ private:
 };
 
 class GLFrameManager {
-    QMap<QOpenGLWidget *, GLFrame *> widgetFrameMap;
+    QMap<QOpenGLWidget*, GLFrame*> widgetFrameMap;
     bool syncLock;
 
 public:
@@ -92,13 +92,13 @@ public:
 
     bool getSyncLock() const;
 
-    void setSyncLock(bool lockOn, QOpenGLWidget *syncWidget);
-    void addGLFrame(GLFrame *frame);
-    GLFrame *getGLWidgetFrame(QOpenGLWidget *widget);
-    void removeGLWidgetFrame(QOpenGLWidget *widget);
+    void setSyncLock(bool lockOn, QOpenGLWidget* syncWidget);
+    void addGLFrame(GLFrame* frame);
+    GLFrame* getGLWidgetFrame(QOpenGLWidget* widget);
+    void removeGLWidgetFrame(QOpenGLWidget* widget);
     void clear();
-    QList<GLFrame *> getGLFrames();
-    QList<GLFrame *> getActiveGLFrameList(GLFrame *currentFrame, bool syncModeOn);
+    QList<GLFrame*> getGLFrames();
+    QList<GLFrame*> getActiveGLFrameList(GLFrame* currentFrame, bool syncModeOn);
 };
 
 }  // namespace U2

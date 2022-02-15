@@ -34,7 +34,7 @@ using namespace WorkflowSerialize;
 /*************************************
  *  Attribute
  *************************************/
-Attribute::Attribute(const Descriptor &_descriptor, const DataTypePtr _type, const Flags _flags, const QVariant &_defaultValue)
+Attribute::Attribute(const Descriptor& _descriptor, const DataTypePtr _type, const Flags _flags, const QVariant& _defaultValue)
     : Descriptor(_descriptor),
       type(_type),
       flags(_flags),
@@ -43,7 +43,7 @@ Attribute::Attribute(const Descriptor &_descriptor, const DataTypePtr _type, con
     debugCheckAttributeId();
 }
 
-Attribute::Attribute(const Descriptor &d, const DataTypePtr t, bool req, const QVariant &defaultValue)
+Attribute::Attribute(const Descriptor& d, const DataTypePtr t, bool req, const QVariant& defaultValue)
     : Descriptor(d), type(t), defaultValue(defaultValue) {
     flags |= req ? Required : None;
     value = defaultValue;
@@ -65,7 +65,7 @@ void Attribute::debugCheckAttributeId() const {
     assert(id != Constants::ELEM_ID_ATTR);
 }
 
-void Attribute::copy(const Attribute &other) {
+void Attribute::copy(const Attribute& other) {
     this->Descriptor::operator=(other);
 
     type = other.type;
@@ -76,29 +76,29 @@ void Attribute::copy(const Attribute &other) {
 
     qDeleteAll(relations);
     relations.clear();
-    foreach (const AttributeRelation *relation, other.relations) {
+    foreach (const AttributeRelation* relation, other.relations) {
         relations << relation->clone();
     }
 
     qDeleteAll(portRelations);
     portRelations.clear();
-    foreach (const PortRelationDescriptor *portRelation, other.portRelations) {
+    foreach (const PortRelationDescriptor* portRelation, other.portRelations) {
         portRelations << portRelation->clone();
     }
 
     qDeleteAll(slotRelations);
     slotRelations.clear();
-    foreach (const SlotRelationDescriptor *slotRelation, other.slotRelations) {
+    foreach (const SlotRelationDescriptor* slotRelation, other.slotRelations) {
         slotRelations << slotRelation->clone();
     }
 }
 
-Attribute::Attribute(const Attribute &other)
+Attribute::Attribute(const Attribute& other)
     : Descriptor(other) {
     copy(other);
 }
 
-Attribute &Attribute::operator=(const Attribute &other) {
+Attribute& Attribute::operator=(const Attribute& other) {
     CHECK(this != &other, *this);
     copy(other);
     return *this;
@@ -124,7 +124,7 @@ Attribute::Flags Attribute::getFlags() const {
     return flags;
 }
 
-void Attribute::setAttributeValue(const QVariant &newVal) {
+void Attribute::setAttributeValue(const QVariant& newVal) {
     if (QVariant() == newVal) {
         value = defaultValue;
     } else {
@@ -132,11 +132,11 @@ void Attribute::setAttributeValue(const QVariant &newVal) {
     }
 }
 
-const QVariant &Attribute::getAttributePureValue() const {
+const QVariant& Attribute::getAttributePureValue() const {
     return value;
 }
 
-const QVariant &Attribute::getDefaultPureValue() const {
+const QVariant& Attribute::getDefaultPureValue() const {
     return defaultValue;
 }
 
@@ -144,11 +144,11 @@ bool Attribute::isDefaultValue() const {
     return (value == defaultValue);
 }
 
-const AttributeScript &Attribute::getAttributeScript() const {
+const AttributeScript& Attribute::getAttributeScript() const {
     return scriptData;
 }
 
-AttributeScript &Attribute::getAttributeScript() {
+AttributeScript& Attribute::getAttributeScript() {
     return scriptData;
 }
 
@@ -157,14 +157,14 @@ QVariant Attribute::toVariant() const {
     res << value;
     res << qVariantFromValue<QString>(scriptData.getScriptText());
     QVariantList scriptVars;
-    foreach (const Descriptor &varDesc, scriptData.getScriptVars().keys()) {
+    foreach (const Descriptor& varDesc, scriptData.getScriptVars().keys()) {
         scriptVars << qVariantFromValue<QString>(varDesc.getId());
     }
     res << QVariant(scriptVars);
     return res;
 }
 
-bool Attribute::fromVariant(const QVariant &variant) {
+bool Attribute::fromVariant(const QVariant& variant) {
     if (!variant.canConvert(QVariant::List)) {
         return false;
     }
@@ -198,31 +198,31 @@ bool Attribute::isEmptyString() const {
     return value.type() == QVariant::String && getAttributeValueWithoutScript<QString>().isEmpty();
 }
 
-void Attribute::addRelation(const AttributeRelation *relation) {
+void Attribute::addRelation(const AttributeRelation* relation) {
     relations.append(relation);
 }
 
-QVector<const AttributeRelation *> &Attribute::getRelations() {
+QVector<const AttributeRelation*>& Attribute::getRelations() {
     return relations;
 }
 
-void Attribute::addPortRelation(PortRelationDescriptor *relationDesc) {
+void Attribute::addPortRelation(PortRelationDescriptor* relationDesc) {
     portRelations << relationDesc;
 }
 
-const QList<PortRelationDescriptor *> &Attribute::getPortRelations() const {
+const QList<PortRelationDescriptor*>& Attribute::getPortRelations() const {
     return portRelations;
 }
 
-void Attribute::addSlotRelation(SlotRelationDescriptor *relationDesc) {
+void Attribute::addSlotRelation(SlotRelationDescriptor* relationDesc) {
     slotRelations << relationDesc;
 }
 
-const QList<SlotRelationDescriptor *> &Attribute::getSlotRelations() const {
+const QList<SlotRelationDescriptor*>& Attribute::getSlotRelations() const {
     return slotRelations;
 }
 
-Attribute *Attribute::clone() {
+Attribute* Attribute::clone() {
     return new Attribute(*this);
 }
 
@@ -230,11 +230,11 @@ AttributeGroup Attribute::getGroup() {
     return COMMON_GROUP;
 }
 
-void Attribute::updateActorIds(const QMap<ActorId, ActorId> &actorIdsMap) {
+void Attribute::updateActorIds(const QMap<ActorId, ActorId>& actorIdsMap) {
     Q_UNUSED(actorIdsMap);
 }
 
-bool Attribute::validate(NotificationsList &notificationList) {
+bool Attribute::validate(NotificationsList& notificationList) {
     if (!isRequiredAttribute() || canBeEmpty()) {
         return true;
     }
@@ -248,7 +248,7 @@ bool Attribute::validate(NotificationsList &notificationList) {
 /*************************************
  *  AttributeScript
  *************************************/
-AttributeScript::AttributeScript(const QString &t)
+AttributeScript::AttributeScript(const QString& t)
     : text(t) {
 }
 
@@ -256,15 +256,15 @@ bool AttributeScript::isEmpty() const {
     return text.isEmpty();
 }
 
-void AttributeScript::setScriptText(const QString &t) {
+void AttributeScript::setScriptText(const QString& t) {
     text = t;
 }
 
-const QString &AttributeScript::getScriptText() const {
+const QString& AttributeScript::getScriptText() const {
     return text;
 }
 
-const QMap<Descriptor, QVariant> &AttributeScript::getScriptVars() const {
+const QMap<Descriptor, QVariant>& AttributeScript::getScriptVars() const {
     return vars;
 }
 
@@ -272,12 +272,12 @@ void AttributeScript::clearScriptVars() {
     vars.clear();
 }
 
-void AttributeScript::setScriptVar(const Descriptor &desc, const QVariant &val) {
+void AttributeScript::setScriptVar(const Descriptor& desc, const QVariant& val) {
     vars.insert(desc, val);
 }
 
-bool AttributeScript::hasVarWithId(const QString &varName) const {
-    foreach (const Descriptor &varDesc, vars.keys()) {
+bool AttributeScript::hasVarWithId(const QString& varName) const {
+    foreach (const Descriptor& varDesc, vars.keys()) {
         if (varDesc.getId() == varName) {
             return true;
         }
@@ -285,8 +285,8 @@ bool AttributeScript::hasVarWithId(const QString &varName) const {
     return false;
 }
 
-bool AttributeScript::hasVarWithDesc(const QString &varName) const {
-    foreach (const Descriptor &varDesc, vars.keys()) {
+bool AttributeScript::hasVarWithDesc(const QString& varName) const {
+    foreach (const Descriptor& varDesc, vars.keys()) {
         if (varDesc.getDisplayName() == varName) {
             return true;
         }
@@ -294,8 +294,8 @@ bool AttributeScript::hasVarWithDesc(const QString &varName) const {
     return false;
 }
 
-void AttributeScript::setVarValueWithId(const QString &varName, const QVariant &value) {
-    foreach (const Descriptor &varDesc, vars.keys()) {
+void AttributeScript::setVarValueWithId(const QString& varName, const QVariant& value) {
+    foreach (const Descriptor& varDesc, vars.keys()) {
         if (varDesc.getId() == varName) {
             vars[varDesc] = value;
             break;

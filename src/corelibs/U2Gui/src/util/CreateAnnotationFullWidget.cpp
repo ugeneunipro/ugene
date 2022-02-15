@@ -33,7 +33,7 @@
 
 namespace U2 {
 
-CreateAnnotationFullWidget::CreateAnnotationFullWidget(const qint64 seqLen, QWidget *parent)
+CreateAnnotationFullWidget::CreateAnnotationFullWidget(const qint64 seqLen, QWidget* parent)
     : CreateAnnotationWidget(parent),
       formatType(Simple),
       seqLen(seqLen),
@@ -125,16 +125,16 @@ void CreateAnnotationFullWidget::focusLocation() {
     }
 }
 
-void CreateAnnotationFullWidget::setNewTablePath(const QString &path) {
+void CreateAnnotationFullWidget::setNewTablePath(const QString& path) {
     leNewTablePath->setText(path);
 }
 
-void CreateAnnotationFullWidget::setGroupName(const QString &name) {
+void CreateAnnotationFullWidget::setGroupName(const QString& name) {
     leGroupName->setText(name);
 }
 
 void CreateAnnotationFullWidget::setAnnotationType(U2FeatureType type) {
-    QList<QListWidgetItem *> items = lwAnnotationType->findItems(U2FeatureTypes::getVisualName(type), Qt::MatchExactly);
+    QList<QListWidgetItem*> items = lwAnnotationType->findItems(U2FeatureTypes::getVisualName(type), Qt::MatchExactly);
     if (Q_LIKELY(!items.isEmpty())) {
         lwAnnotationType->setCurrentItem(items.first());
         return;
@@ -150,11 +150,11 @@ void CreateAnnotationFullWidget::setAnnotationType(U2FeatureType type) {
     lwAnnotationType->setCurrentRow(0);
 }
 
-void CreateAnnotationFullWidget::setAnnotationName(const QString &name) {
+void CreateAnnotationFullWidget::setAnnotationName(const QString& name) {
     leAnnotationName->setText(name);
 }
 
-void CreateAnnotationFullWidget::setLocation(const U2Location &location) {
+void CreateAnnotationFullWidget::setLocation(const U2Location& location) {
     // Example: (200..len,1..100)=(200..100), lambda returns true
     auto isSimpleSplitLocation = [&location](qint64 seqLen) {
         if (location->regions.size() < 2) {
@@ -201,12 +201,12 @@ void CreateAnnotationFullWidget::setLocation(const U2Location &location) {
     }
 }
 
-void CreateAnnotationFullWidget::setDescription(const QString &description) {
+void CreateAnnotationFullWidget::setDescription(const QString& description) {
     leDescription->setText(description);
 }
 
 QString CreateAnnotationFullWidget::getAnnotationTypeString() const {
-    QListWidgetItem *currentItem = lwAnnotationType->currentItem();
+    QListWidgetItem* currentItem = lwAnnotationType->currentItem();
     SAFE_POINT(nullptr != currentItem, "Annotation type is not selected", "");
     return currentItem->text();
 }
@@ -269,7 +269,7 @@ bool CreateAnnotationFullWidget::isAutoTableOptionSelected() const {
     return rbUseAutoTable->isChecked();
 }
 
-void CreateAnnotationFullWidget::showSelectGroupMenu(QMenu &menu) {
+void CreateAnnotationFullWidget::showSelectGroupMenu(QMenu& menu) {
     const QPoint menuPos = tbSelectGroupName->mapToGlobal(tbSelectGroupName->rect().bottomLeft());
     menu.exec(menuPos);
 }
@@ -330,19 +330,19 @@ void CreateAnnotationFullWidget::initOsDependingLayoutSettings() {
 
 void CreateAnnotationFullWidget::connectSignals() {
     connect(tbBrowseExistingTable, SIGNAL(clicked()), SLOT(sl_selectExistingTableRequest()));
-    connect(leGroupName, SIGNAL(textEdited(const QString &)), SLOT(sl_groupNameEdited()));
-    connect(leGroupName, SIGNAL(textChanged(const QString &)), SLOT(sl_groupNameEdited()));
-    connect(leAnnotationName, SIGNAL(textEdited(const QString &)), SLOT(sl_annotationNameEdited()));
-    connect(leAnnotationName, SIGNAL(textChanged(const QString &)), SLOT(sl_annotationNameEdited()));
-    connect(leRegionStart, SIGNAL(textEdited(const QString &)), SLOT(sl_regionChanged()));
-    connect(leRegionEnd, SIGNAL(textEdited(const QString &)), SLOT(sl_regionChanged()));
+    connect(leGroupName, SIGNAL(textEdited(const QString&)), SLOT(sl_groupNameEdited()));
+    connect(leGroupName, SIGNAL(textChanged(const QString&)), SLOT(sl_groupNameEdited()));
+    connect(leAnnotationName, SIGNAL(textEdited(const QString&)), SLOT(sl_annotationNameEdited()));
+    connect(leAnnotationName, SIGNAL(textChanged(const QString&)), SLOT(sl_annotationNameEdited()));
+    connect(leRegionStart, SIGNAL(textEdited(const QString&)), SLOT(sl_regionChanged()));
+    connect(leRegionEnd, SIGNAL(textEdited(const QString&)), SLOT(sl_regionChanged()));
     connect(leLocation, SIGNAL(editingFinished()), SLOT(sl_locationChanged()));
     connect(tbDoComplement, SIGNAL(clicked()), SLOT(sl_complementLocation()));
     connect(chbComplement, SIGNAL(clicked()), SLOT(sl_complementLocation()));
     connect(tbSelectGroupName, SIGNAL(clicked()), SLOT(sl_selectGroupNameMenuRequest()));
 }
 
-GObjectComboBoxController *CreateAnnotationFullWidget::createGObjectComboBoxController(const GObjectComboBoxControllerConstraints &constraints) {
+GObjectComboBoxController* CreateAnnotationFullWidget::createGObjectComboBoxController(const GObjectComboBoxControllerConstraints& constraints) {
     return new GObjectComboBoxController(this, constraints, cbExistingTable);
 }
 
@@ -352,7 +352,7 @@ void CreateAnnotationFullWidget::countDescriptionUsage() const {
     }
 }
 
-void CreateAnnotationFullWidget::fillSaveDocumentControllerConfig(SaveDocumentControllerConfig &config) const {
+void CreateAnnotationFullWidget::fillSaveDocumentControllerConfig(SaveDocumentControllerConfig& config) const {
     config.fileNameEdit = leNewTablePath;
     config.fileDialogButton = tbBrowseNewTable;
 }

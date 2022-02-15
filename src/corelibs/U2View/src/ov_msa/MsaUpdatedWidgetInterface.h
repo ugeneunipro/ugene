@@ -33,8 +33,8 @@ public:
     UpdatedWidgetSettings()
         : ma(nullptr), ui(nullptr), autoUpdate(true) {
     }
-    const MultipleSequenceAlignmentObject *ma;
-    MsaEditorWgt *ui;
+    const MultipleSequenceAlignmentObject* ma;
+    MsaEditorWgt* ui;
     bool autoUpdate;
 };
 
@@ -48,11 +48,11 @@ class UpdatedWidgetInterface {
 public:
     virtual ~UpdatedWidgetInterface() {
     }
-    virtual void onAlignmentChanged(const MultipleSequenceAlignment &maBefore, const MaModificationInfo &modInfo) = 0;
-    virtual void setSettings(const UpdatedWidgetSettings *settings) = 0;
+    virtual void onAlignmentChanged(const MultipleSequenceAlignment& maBefore, const MaModificationInfo& modInfo) = 0;
+    virtual void setSettings(const UpdatedWidgetSettings* settings) = 0;
     virtual void cancelPendingTasks() = 0;
-    virtual QWidget *getWidget() = 0;
-    virtual const UpdatedWidgetSettings &getSettings() const = 0;
+    virtual QWidget* getWidget() = 0;
+    virtual const UpdatedWidgetSettings& getSettings() const = 0;
     virtual void updateWidget() = 0;
     virtual QString getHeaderText() const = 0;
 };

@@ -36,16 +36,16 @@
 
 namespace U2 {
 
-DatasetsListWidget::DatasetsListWidget(DatasetsController *_ctrl)
+DatasetsListWidget::DatasetsListWidget(DatasetsController* _ctrl)
     : QWidget(), ctrl(_ctrl) {
-    QVBoxLayout *l = new QVBoxLayout(this);
+    QVBoxLayout* l = new QVBoxLayout(this);
     l->setMargin(0);
     tabs = new DatasetsTabWidget(this);
     l->addWidget(tabs);
 
     setObjectName("DatasetsListWidget");
 
-    QToolButton *newTabButton = new QToolButton(this);
+    QToolButton* newTabButton = new QToolButton(this);
     tabs->setCornerWidget(newTabButton, Qt::TopRightCorner);
     newTabButton->setCursor(Qt::ArrowCursor);
     newTabButton->setAutoRaise(true);
@@ -57,17 +57,17 @@ DatasetsListWidget::DatasetsListWidget(DatasetsController *_ctrl)
 
     connect(newTabButton, SIGNAL(clicked()), SLOT(sl_newDataset()));
     connect(tabs, SIGNAL(tabCloseRequested(int)), SLOT(sl_deleteDataset(int)));
-    connect(tabs, SIGNAL(si_contextMenu(const QPoint &, int)), SLOT(sl_contextMenu(const QPoint &, int)));
+    connect(tabs, SIGNAL(si_contextMenu(const QPoint&, int)), SLOT(sl_contextMenu(const QPoint&, int)));
 }
 
-void DatasetsListWidget::appendPage(const QString &name, QWidget *page) {
+void DatasetsListWidget::appendPage(const QString& name, QWidget* page) {
     int lastPos = tabs->count();
     tabs->insertTab(lastPos, page, name);
 }
 
 void DatasetsListWidget::sl_deleteDataset(int idx) {
     GCOUNTER(cvar, "WD::Dataset::Delete Dataset");
-    QWidget *w = tabs->widget(idx);
+    QWidget* w = tabs->widget(idx);
     tabs->removeTab(idx);
     ctrl->deleteDataset(idx);
     delete w;
@@ -117,7 +117,7 @@ void DatasetsListWidget::sl_newDataset() {
 
 void DatasetsListWidget::sl_renameDataset() {
     GCOUNTER(cvar, "WD::Dataset::Rename Dataset");
-    QAction *a = dynamic_cast<QAction *>(sender());
+    QAction* a = dynamic_cast<QAction*>(sender());
     CHECK(nullptr != a, );
 
     int idx = a->property("idx").toInt();
@@ -147,9 +147,9 @@ void DatasetsListWidget::sl_renameDataset() {
     tabs->setTabText(idx, text);
 }
 
-void DatasetsListWidget::sl_contextMenu(const QPoint &p, int idx) {
+void DatasetsListWidget::sl_contextMenu(const QPoint& p, int idx) {
     QMenu menu;
-    QAction *renameAction = new QAction(tr("Rename dataset"), &menu);
+    QAction* renameAction = new QAction(tr("Rename dataset"), &menu);
     renameAction->setProperty("idx", idx);
     connect(renameAction, SIGNAL(triggered()), SLOT(sl_renameDataset()));
     menu.addAction(renameAction);
@@ -159,13 +159,13 @@ void DatasetsListWidget::sl_contextMenu(const QPoint &p, int idx) {
 /************************************************************************/
 /* DatasetsTabWidget */
 /************************************************************************/
-DatasetsTabWidget::DatasetsTabWidget(QWidget *parent)
+DatasetsTabWidget::DatasetsTabWidget(QWidget* parent)
     : QTabWidget(parent) {
     setObjectName("DatasetsTabWidget");
     setUsesScrollButtons(true);
     setTabsClosable(true);
     tabBar()->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(tabBar(), SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(sl_contextMenu(const QPoint &)));
+    connect(tabBar(), SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(sl_contextMenu(const QPoint&)));
 #ifdef Q_OS_DARWIN
     QString style = "QTabWidget::pane {"
                     "border-top: 1px solid #9B9B9B;"
@@ -202,7 +202,7 @@ DatasetsTabWidget::DatasetsTabWidget(QWidget *parent)
 #endif
 }
 
-void DatasetsTabWidget::sl_contextMenu(const QPoint &p) {
+void DatasetsTabWidget::sl_contextMenu(const QPoint& p) {
     int idx = tabBar()->tabAt(p);
     if (-1 != idx) {
         emit si_contextMenu(tabBar()->mapToGlobal(p), idx);

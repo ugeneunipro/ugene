@@ -37,22 +37,22 @@ namespace Workflow {
  */
 class U2LANG_EXPORT IntegralBusType : public MapDataType {
 public:
-    IntegralBusType(const Descriptor &d, const QMap<Descriptor, DataTypePtr> &m);
+    IntegralBusType(const Descriptor& d, const QMap<Descriptor, DataTypePtr>& m);
 
     // add port's type to map
-    void addInputs(const Port *p, bool addPaths);
-    void addOutput(DataTypePtr, const Port *producer);
+    void addInputs(const Port* p, bool addPaths);
+    void addOutput(DataTypePtr, const Port* producer);
 
 public:
     // in busmap (see IntegralBusPort) attributes of other actors saved as 'actorId:attrId'
     // these are utility functions to work with it
-    static Descriptor assignSlotDesc(const Descriptor &elementDesc, const Port *producer);
-    static ActorId parseSlotDesc(const QString &id);
-    static QString parseAttributeIdFromSlotDesc(const QString &str);
+    static Descriptor assignSlotDesc(const Descriptor& elementDesc, const Port* producer);
+    static ActorId parseSlotDesc(const QString& id);
+    static QString parseAttributeIdFromSlotDesc(const QString& str);
     // when schema is deeply copied we need to remap actorIds in busmap
-    static void remap(StrStrMap &busMap, const QMap<ActorId, ActorId> &);
-    static void remapPaths(SlotPathMap &pathsMap, const QMap<ActorId, ActorId> &actorIdsMap);
-    static void remapSlotString(QString &slotStr, const QMap<ActorId, ActorId> &actorIdsMap);
+    static void remap(StrStrMap& busMap, const QMap<ActorId, ActorId>&);
+    static void remapPaths(SlotPathMap& pathsMap, const QMap<ActorId, ActorId>& actorIdsMap);
+    static void remapSlotString(QString& slotStr, const QMap<ActorId, ActorId>& actorIdsMap);
 
 };  // IntegralBusType
 

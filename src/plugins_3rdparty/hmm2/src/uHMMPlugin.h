@@ -47,33 +47,33 @@ private slots:
     void sl_search();
 
 private:
-    HMMMSAEditorContext *ctxMSA;
-    HMMADVContext *ctxADV;
+    HMMMSAEditorContext* ctxMSA;
+    HMMADVContext* ctxADV;
 };
 
 class HMMMSAEditorContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    HMMMSAEditorContext(QObject *p);
+    HMMMSAEditorContext(QObject* p);
 
 protected slots:
     void sl_build();
 
 protected:
-    void initViewContext(GObjectView *view) override;
-    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
+    void initViewContext(GObjectView* view) override;
+    void buildStaticOrContextMenu(GObjectView* view, QMenu* menu) override;
 };
 
 class HMMADVContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    HMMADVContext(QObject *p);
+    HMMADVContext(QObject* p);
 
 protected slots:
     void sl_search();
 
 protected:
-    void initViewContext(GObjectView *view) override;
+    void initViewContext(GObjectView* view) override;
 };
 
 }  // namespace U2

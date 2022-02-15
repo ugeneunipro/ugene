@@ -29,16 +29,16 @@ namespace U2 {
 
 static const QString ALL_CHAINS("All chains");
 
-BioStruct3DSubsetEditor::BioStruct3DSubsetEditor(const QList<BioStruct3DObject *> &biostructs, const BioStruct3DObject *selected /* = 0*/, int selectedModel /* = -1*/, QWidget *parent /* = 0*/)
+BioStruct3DSubsetEditor::BioStruct3DSubsetEditor(const QList<BioStruct3DObject*>& biostructs, const BioStruct3DObject* selected /* = 0*/, int selectedModel /* = -1*/, QWidget* parent /* = 0*/)
     : QWidget(parent) {
     setupUi(this);
 
-    foreach (BioStruct3DObject *bs, biostructs) {
-        objectCombo->addItem(bs->getGObjectName(), qVariantFromValue((void *)bs));
+    foreach (BioStruct3DObject* bs, biostructs) {
+        objectCombo->addItem(bs->getGObjectName(), qVariantFromValue((void*)bs));
     }
 
     if (selected) {
-        int idx = objectCombo->findData(qVariantFromValue((void *)selected));
+        int idx = objectCombo->findData(qVariantFromValue((void*)selected));
         assert(idx != -1 && "Selected object must present in biostructs");
         objectCombo->setCurrentIndex(idx);
     }
@@ -59,7 +59,7 @@ BioStruct3DSubsetEditor::BioStruct3DSubsetEditor(const QList<BioStruct3DObject *
 }
 
 void BioStruct3DSubsetEditor::fillChainCombo() {
-    BioStruct3DObject *bso = static_cast<BioStruct3DObject *>(objectCombo->itemData(objectCombo->currentIndex()).value<void *>());
+    BioStruct3DObject* bso = static_cast<BioStruct3DObject*>(objectCombo->itemData(objectCombo->currentIndex()).value<void*>());
     chainCombo->clear();
     chainCombo->addItem(ALL_CHAINS);
 
@@ -74,7 +74,7 @@ void BioStruct3DSubsetEditor::fillChainCombo() {
 }
 
 void BioStruct3DSubsetEditor::fillModelCombo() {
-    BioStruct3DObject *bso = static_cast<BioStruct3DObject *>(objectCombo->itemData(objectCombo->currentIndex()).value<void *>());
+    BioStruct3DObject* bso = static_cast<BioStruct3DObject*>(objectCombo->itemData(objectCombo->currentIndex()).value<void*>());
     modelCombo->clear();
     foreach (const int modelId, bso->getBioStruct3D().modelMap.keys()) {
         modelCombo->addItem(QString::number(modelId), qVariantFromValue(modelId));
@@ -83,7 +83,7 @@ void BioStruct3DSubsetEditor::fillModelCombo() {
 
 void BioStruct3DSubsetEditor::fillRegionEdit() {
     if (chainCombo->currentText() != ALL_CHAINS) {
-        BioStruct3DObject *bso = static_cast<BioStruct3DObject *>(objectCombo->itemData(objectCombo->currentIndex()).value<void *>());
+        BioStruct3DObject* bso = static_cast<BioStruct3DObject*>(objectCombo->itemData(objectCombo->currentIndex()).value<void*>());
         int chainId = chainCombo->itemData(chainCombo->currentIndex()).value<int>();
         int length = bso->getBioStruct3D().moleculeMap.value(chainId)->residueMap.size();
 
@@ -111,7 +111,7 @@ void BioStruct3DSubsetEditor::sl_onChainChanged(int idx) {
 BioStruct3DReference BioStruct3DSubsetEditor::getSubset() {
     assert(validate().isEmpty() && "validate first!");
 
-    BioStruct3DObject *obj = static_cast<BioStruct3DObject *>(objectCombo->itemData(objectCombo->currentIndex()).value<void *>());
+    BioStruct3DObject* obj = static_cast<BioStruct3DObject*>(objectCombo->itemData(objectCombo->currentIndex()).value<void*>());
     int modelId = modelCombo->itemData(modelCombo->currentIndex()).value<int>();
 
     if (chainCombo->currentText() == ALL_CHAINS) {
@@ -131,7 +131,7 @@ QString BioStruct3DSubsetEditor::validate() const {
             return QString("invalid region spec %1").arg(regionText);
         }
 
-        BioStruct3DObject *bso = static_cast<BioStruct3DObject *>(objectCombo->itemData(objectCombo->currentIndex()).value<void *>());
+        BioStruct3DObject* bso = static_cast<BioStruct3DObject*>(objectCombo->itemData(objectCombo->currentIndex()).value<void*>());
         int chainId = chainCombo->itemData(chainCombo->currentIndex()).value<int>();
         int length = bso->getBioStruct3D().moleculeMap.value(chainId)->residueMap.size();
 
@@ -166,7 +166,7 @@ U2Region BioStruct3DSubsetEditor::getRegion() const {
     return ret;
 }
 
-void BioStruct3DSubsetEditor::setRegion(const U2Region &region) {
+void BioStruct3DSubsetEditor::setRegion(const U2Region& region) {
     QString text = QString("%1..%2").arg(region.startPos + 1).arg(region.endPos());
     regionEdit->setText(text);
 }

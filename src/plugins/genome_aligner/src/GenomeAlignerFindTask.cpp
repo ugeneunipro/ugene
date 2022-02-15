@@ -37,7 +37,7 @@
 
 namespace U2 {
 
-GenomeAlignerFindTask::GenomeAlignerFindTask(U2::GenomeAlignerIndex *i, AlignContext *s, GenomeAlignerWriteTask *w)
+GenomeAlignerFindTask::GenomeAlignerFindTask(U2::GenomeAlignerIndex* i, AlignContext* s, GenomeAlignerWriteTask* w)
     : Task("GenomeAlignerFindTask", TaskFlag_None),
       index(i), writeTask(w), alignContext(s) {
     nextElementToGive = 0;
@@ -49,13 +49,13 @@ GenomeAlignerFindTask::GenomeAlignerFindTask(U2::GenomeAlignerIndex *i, AlignCon
 void GenomeAlignerFindTask::prepare() {
     alignerTaskCount = alignContext->openCL ? 1 : AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount();
     if (alignContext->openCL) {
-        Task *subTask = new ShortReadAlignerOpenCL(0, index, alignContext, writeTask);
+        Task* subTask = new ShortReadAlignerOpenCL(0, index, alignContext, writeTask);
         subTask->setSubtaskProgressWeight(1.0f);
         addSubTask(subTask);
     } else {
         setMaxParallelSubtasks(alignerTaskCount);
         for (int i = 0; i < alignerTaskCount; i++) {
-            Task *subTask = new ShortReadAlignerCPU(i, index, alignContext, writeTask);
+            Task* subTask = new ShortReadAlignerCPU(i, index, alignContext, writeTask);
             subTask->setSubtaskProgressWeight(1.0f / alignerTaskCount);
             addSubTask(subTask);
         }
@@ -138,7 +138,7 @@ void GenomeAlignerFindTask::requirePartForAligning(int part) {
     nextElementToGive = 0;
 }
 
-DataBunch *GenomeAlignerFindTask::waitForDataBunch() {
+DataBunch* GenomeAlignerFindTask::waitForDataBunch() {
     QMutexLocker lock(&waitDataForAligningMutex);
 
     int lastDataBunchesIndex = -1;
@@ -166,7 +166,7 @@ DataBunch *GenomeAlignerFindTask::waitForDataBunch() {
     if (nextElementToGive > lastDataBunchesIndex) {
         return nullptr;
     } else {
-        DataBunch *dataBunch = alignContext->data.at(nextElementToGive++);
+        DataBunch* dataBunch = alignContext->data.at(nextElementToGive++);
         return dataBunch;
     }
 }
@@ -186,7 +186,7 @@ DataBunch *GenomeAlignerFindTask::waitForDataBunch() {
         } \
     }
 
-ShortReadAlignerCPU::ShortReadAlignerCPU(int taskNo, GenomeAlignerIndex *i, AlignContext *s, GenomeAlignerWriteTask *w)
+ShortReadAlignerCPU::ShortReadAlignerCPU(int taskNo, GenomeAlignerIndex* i, AlignContext* s, GenomeAlignerWriteTask* w)
     : Task("ShortReadAlignerCPU", TaskFlag_None), taskNo(taskNo), index(i), alignContext(s), writeTask(w) {
 }
 
@@ -194,7 +194,7 @@ void ShortReadAlignerCPU::run() {
     SAFE_POINT_EXT(nullptr != alignContext, setError("Align context error"), );
     assert(!alignContext->openCL);
 
-    GenomeAlignerFindTask *parent = static_cast<GenomeAlignerFindTask *>(getParentTask());
+    GenomeAlignerFindTask* parent = static_cast<GenomeAlignerFindTask*>(getParentTask());
     SAFE_POINT_EXT(nullptr != parent, setError("Aligner parent error"), );
 
     QVector<int> binarySearchResults;
@@ -220,7 +220,7 @@ void ShortReadAlignerCPU::run() {
             if (isCanceled()) {
                 break;
             }
-            DataBunch *dataBunch = parent->waitForDataBunch();
+            DataBunch* dataBunch = parent->waitForDataBunch();
             GA_CHECK_BREAK(dataBunch);
             CHECK_OP(stateInfo, );
             algoLog.trace(QString("[%1] Got for aligning").arg(taskNo));
@@ -279,7 +279,7 @@ void ShortReadAlignerCPU::run() {
     }
 }
 
-ShortReadAlignerOpenCL::ShortReadAlignerOpenCL(int taskNo, GenomeAlignerIndex *i, AlignContext *s, GenomeAlignerWriteTask *w)
+ShortReadAlignerOpenCL::ShortReadAlignerOpenCL(int taskNo, GenomeAlignerIndex* i, AlignContext* s, GenomeAlignerWriteTask* w)
     : Task("ShortReadAlignerOpenCL", TaskFlag_None), taskNo(taskNo), index(i), alignContext(s), writeTask(w) {
 }
 
@@ -288,7 +288,7 @@ void ShortReadAlignerOpenCL::run() {
     SAFE_POINT_EXT(nullptr != alignContext, setError("Align context error"), );
     assert(alignContext->openCL);
 
-    GenomeAlignerFindTask *parent = static_cast<GenomeAlignerFindTask *>(getParentTask());
+    GenomeAlignerFindTask* parent = static_cast<GenomeAlignerFindTask*>(getParentTask());
     SAFE_POINT_EXT(nullptr != parent, setError("Aligner parent error"), );
 
     SAFE_POINT_EXT(nullptr != index, setError("Aligner index error"), );
@@ -316,14 +316,14 @@ void ShortReadAlignerOpenCL::run() {
             if (isCanceled()) {
                 break;
             }
-            DataBunch *dataBunch = parent->waitForDataBunch();
+            DataBunch* dataBunch = parent->waitForDataBunch();
             GA_CHECK_BREAK(dataBunch);
             algoLog.trace(QString("[%1] Got for aligning").arg(taskNo));
 
             int length = dataBunch->bitValuesV.size();
             GA_CHECK_BREAK(length);
 
-            BinarySearchResult *binarySearchResults = index->bitMaskBinarySearchOpenCL(dataBunch->bitValuesV.constData(), dataBunch->bitValuesV.size(), dataBunch->windowSizes.constData());
+            BinarySearchResult* binarySearchResults = index->bitMaskBinarySearchOpenCL(dataBunch->bitValuesV.constData(), dataBunch->bitValuesV.size(), dataBunch->windowSizes.constData());
             SAFE_POINT_EXT(
                 nullptr != binarySearchResults, {alignContext->listM.unlock(); setError("OpenCL binary find error"); }, );
 

@@ -61,7 +61,7 @@ const QString CollocationWorkerFactory::ACTOR_ID("collocated-annotation-search")
 
 class CollocationValidator : public ConfigurationValidator {
 public:
-    virtual bool validate(const Configuration *cfg, NotificationsList &notificationList) const {
+    virtual bool validate(const Configuration* cfg, NotificationsList& notificationList) const {
         QString annotations = cfg->getParameter(ANN_ATTR)->getAttributeValueWithoutScript<QString>();
         QSet<QString> names = QSet<QString>::fromList(annotations.split(QRegExp("\\W+"), QString::SkipEmptyParts));
         if (names.size() < 2) {
@@ -79,12 +79,12 @@ void CollocationWorkerFactory::init() {
         m[BaseSlots::ANNOTATION_TABLE_SLOT()] = BaseTypes::ANNOTATION_TABLE_LIST_TYPE();
     }
     DataTypePtr inSet(new MapDataType(Descriptor("regioned.sequence"), m));
-    DataTypeRegistry *dr = WorkflowEnv::getDataTypeRegistry();
+    DataTypeRegistry* dr = WorkflowEnv::getDataTypeRegistry();
     assert(dr);
     dr->registerEntry(inSet);
 
-    QList<PortDescriptor *> p;
-    QList<Attribute *> a;
+    QList<PortDescriptor*> p;
+    QList<Attribute*> a;
     p << new PortDescriptor(Descriptor(BasePorts::IN_SEQ_PORT_ID(), CollocationWorker::tr("Input data"), CollocationWorker::tr("An input sequence and a set of annotations to search in.")), inSet, true /*input*/);
     QMap<Descriptor, DataTypePtr> outM;
     outM[BaseSlots::ANNOTATION_TABLE_SLOT()] = BaseTypes::ANNOTATION_TABLE_TYPE();
@@ -102,9 +102,9 @@ void CollocationWorkerFactory::init() {
         Descriptor fd(FIT_ATTR, CollocationWorker::tr("Must fit into region"), CollocationWorker::tr("Whether the interesting annotations should entirely fit into the specified region to form a group."));
         Descriptor td(TYPE_ATTR, CollocationWorker::tr("Result type"), CollocationWorker::tr("Copy original annotations or annotate found regions with new ones."));
         Descriptor id(INC_BOUNDARY_ATTR, CollocationWorker::tr("Include boundaries"), CollocationWorker::tr("Include most left and most right boundary annotations regions into result or exclude them."));
-        Attribute *nameAttr = new Attribute(nd, BaseTypes::STRING_TYPE(), true, QVariant("misc_feature"));
-        Attribute *typeAttr = new Attribute(td, BaseTypes::STRING_TYPE(), false, NEW_TYPE_ATTR);
-        Attribute *boundAttr = new Attribute(id, BaseTypes::BOOL_TYPE(), false, true);
+        Attribute* nameAttr = new Attribute(nd, BaseTypes::STRING_TYPE(), true, QVariant("misc_feature"));
+        Attribute* typeAttr = new Attribute(td, BaseTypes::STRING_TYPE(), false, NEW_TYPE_ATTR);
+        Attribute* boundAttr = new Attribute(id, BaseTypes::BOOL_TYPE(), false, true);
         a << typeAttr;
         a << nameAttr;
         a << boundAttr;
@@ -117,8 +117,8 @@ void CollocationWorkerFactory::init() {
     }
 
     Descriptor desc(ACTOR_ID, CollocationWorker::tr("Collocation Search"), CollocationWorker::tr("Finds groups of specified annotations in each supplied set of annotations, stores found regions as annotations."));
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
-    QMap<QString, PropertyDelegate *> delegates;
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap lenMap;
         lenMap["minimum"] = QVariant(0);
@@ -138,13 +138,13 @@ void CollocationWorkerFactory::init() {
     proto->setPrompter(new CollocationPrompter());
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new CollocationWorkerFactory());
 }
 
 QString CollocationPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
-    Actor *seqProducer = input->getProducer(SEQ_SLOT);
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
+    Actor* seqProducer = input->getProducer(SEQ_SLOT);
     QString seqName = seqProducer ? tr(" sequence from <u>%1</u>").arg(seqProducer->getLabel()) : "";
     QString annName = getProducers(BasePorts::IN_SEQ_PORT_ID(), FEATURE_TABLE_SLOT);
     if (!annName.isEmpty()) {
@@ -193,7 +193,7 @@ void CollocationWorker::init() {
     output = ports.value(BasePorts::OUT_ANNOTATIONS_PORT_ID());
 }
 
-Task *CollocationWorker::tick() {
+Task* CollocationWorker::tick() {
     if (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
@@ -219,7 +219,7 @@ Task *CollocationWorker::tick() {
         if ((0 != seqLength) && !atl.isEmpty()) {
             cfg.searchRegion.length = seqLength;
             bool keepSourceAnns = (COPY_TYPE_ATTR == resultType);
-            Task *t = new CollocationSearchTask(atl, names, cfg, keepSourceAnns);
+            Task* t = new CollocationSearchTask(atl, names, cfg, keepSourceAnns);
             connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
             return t;
         } else {
@@ -238,7 +238,7 @@ Task *CollocationWorker::tick() {
 }
 
 void CollocationWorker::sl_taskFinished() {
-    CollocationSearchTask *t = qobject_cast<CollocationSearchTask *>(sender());
+    CollocationSearchTask* t = qobject_cast<CollocationSearchTask*>(sender());
     if (t->getState() != Task::State_Finished || t->isCanceled() || t->hasError()) {
         return;
     }

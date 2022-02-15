@@ -36,8 +36,8 @@ public:
     static void shutdown();
     static U2DbiRef getDbiRef();
     static U2EntityRef getObjRef();
-    static U2ObjectDbi *getObjDbi();
-    static UdrDbi *getUdrDbi();
+    static U2ObjectDbi* getObjDbi();
+    static UdrDbi* getUdrDbi();
 
 private:
     static TestDbiProvider dbiProvider;

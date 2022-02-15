@@ -27,40 +27,40 @@
 namespace U2 {
 namespace BAM {
 
-BaiWriter::BaiWriter(IOAdapter &ioAdapter)
+BaiWriter::BaiWriter(IOAdapter& ioAdapter)
     : ioAdapter(ioAdapter) {
 }
 
-void BaiWriter::writeIndex(const Index &index) {
+void BaiWriter::writeIndex(const Index& index) {
     writeBytes(QByteArray("BAI\001"));
     writeInt32(index.getReferenceIndices().size());
-    foreach (const Index::ReferenceIndex &referenceIndex, index.getReferenceIndices()) {
+    foreach (const Index::ReferenceIndex& referenceIndex, index.getReferenceIndices()) {
         writeInt32(referenceIndex.getBins().size());
         for (int i = 0; i < referenceIndex.getBins().size(); i++) {
-            const Index::ReferenceIndex::Bin &bin = referenceIndex.getBins()[i];
+            const Index::ReferenceIndex::Bin& bin = referenceIndex.getBins()[i];
             if (!bin.getChunks().isEmpty()) {
                 writeUint32(bin.getBin());
                 writeInt32(bin.getChunks().size());
-                foreach (const Index::ReferenceIndex::Chunk &chunk, bin.getChunks()) {
+                foreach (const Index::ReferenceIndex::Chunk& chunk, bin.getChunks()) {
                     writeUint64(chunk.getStart().getPackedOffset());
                     writeUint64(chunk.getEnd().getPackedOffset());
                 }
             }
         }
         writeInt32(referenceIndex.getIntervals().size());
-        foreach (const VirtualOffset &offset, referenceIndex.getIntervals()) {
+        foreach (const VirtualOffset& offset, referenceIndex.getIntervals()) {
             writeUint64(offset.getPackedOffset());
         }
     }
 }
 
-void BaiWriter::writeBytes(const char *buff, qint64 size) {
+void BaiWriter::writeBytes(const char* buff, qint64 size) {
     if (ioAdapter.writeBlock(buff, size) != size) {
         throw IOException(BAMDbiPlugin::tr("Can't write output"));
     }
 }
 
-void BaiWriter::writeBytes(const QByteArray &buffer) {
+void BaiWriter::writeBytes(const QByteArray& buffer) {
     writeBytes(buffer.constData(), buffer.size());
 }
 

@@ -28,14 +28,14 @@
 
 namespace U2 {
 
-HelpButton::HelpButton(QObject *parent, QDialogButtonBox *b, const QString &_pageId)
+HelpButton::HelpButton(QObject* parent, QDialogButtonBox* b, const QString& _pageId)
     : QObject(parent), pageId(_pageId), dialogBox(b) {
     helpButton = new QPushButton(tr("Help"));
     connect(helpButton, SIGNAL(clicked()), SLOT(sl_buttonClicked()));
     dialogBox->addButton(helpButton, QDialogButtonBox::HelpRole);
 }
 
-HelpButton::HelpButton(QObject *parent, QAbstractButton *hb, const QString &_pageId)
+HelpButton::HelpButton(QObject* parent, QAbstractButton* hb, const QString& _pageId)
     : QObject(parent), pageId(_pageId), helpButton(nullptr), dialogBox(nullptr) {
     connect(hb, SIGNAL(clicked()), SLOT(sl_buttonClicked()));
 }
@@ -44,11 +44,11 @@ void HelpButton::sl_buttonClicked() {
     GUIUtils::runWebBrowser("https://doc.ugene.net/wiki/pages/viewpage.action?pageId=" + pageId + "&from=ugene");
 }
 
-void HelpButton::updatePageId(const QString &newPageId) {
+void HelpButton::updatePageId(const QString& newPageId) {
     pageId = newPageId;
 }
 
-ComboboxDependentHelpButton::ComboboxDependentHelpButton(QObject *parent, QDialogButtonBox *b, QComboBox *_cb, const QMap<QString, QString> &_pageMap)
+ComboboxDependentHelpButton::ComboboxDependentHelpButton(QObject* parent, QDialogButtonBox* b, QComboBox* _cb, const QMap<QString, QString>& _pageMap)
     : HelpButton(parent, b, ""), pageMap(_pageMap), cb(_cb) {
 }
 

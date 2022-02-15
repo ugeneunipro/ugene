@@ -40,12 +40,12 @@ public:
     void run();
 
 signals:
-    void si_objectsFiltered(const QString &filterGroupName, const SafeObjList &objects);
+    void si_objectsFiltered(const QString& filterGroupName, const SafeObjList& objects);
 
 protected:
-    AbstractProjectFilterTask(const ProjectTreeControllerModeSettings &settings, const QString &filterGroupName, const QList<QPointer<Document>> &docs);
+    AbstractProjectFilterTask(const ProjectTreeControllerModeSettings& settings, const QString& filterGroupName, const QList<QPointer<Document>>& docs);
 
-    virtual bool filterAcceptsObject(GObject *obj);
+    virtual bool filterAcceptsObject(GObject* obj);
 
     const ProjectTreeControllerModeSettings settings;
     const QList<QPointer<Document>> docs;
@@ -57,7 +57,7 @@ protected:
     int processedObjectCount;
 
 private:
-    void filterDocument(const QPointer<Document> &doc);
+    void filterDocument(const QPointer<Document>& doc);
 
     static void doStaticInitialization();
 };
@@ -70,11 +70,11 @@ class U2CORE_EXPORT ProjectFilterTaskFactory {
 public:
     virtual ~ProjectFilterTaskFactory();
 
-    AbstractProjectFilterTask *registerNewTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document>> &docs) const;
+    AbstractProjectFilterTask* registerNewTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs) const;
 
 protected:
-    virtual AbstractProjectFilterTask *createNewTask(const ProjectTreeControllerModeSettings &settings,
-                                                     const QList<QPointer<Document>> &docs) const = 0;
+    virtual AbstractProjectFilterTask* createNewTask(const ProjectTreeControllerModeSettings& settings,
+                                                     const QList<QPointer<Document>>& docs) const = 0;
 };
 
 }  // namespace U2

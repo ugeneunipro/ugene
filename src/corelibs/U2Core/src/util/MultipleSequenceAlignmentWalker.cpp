@@ -30,11 +30,11 @@ namespace U2 {
 
 class RowWalker {
 public:
-    RowWalker(const MultipleSequenceAlignmentRow &row, char gapChar)
+    RowWalker(const MultipleSequenceAlignmentRow& row, char gapChar)
         : row(row), gaps(row->getGaps()), seqPos(0), gapChar(gapChar) {
     }
 
-    QByteArray nextData(int startPos, int length, U2OpStatus &os) {
+    QByteArray nextData(int startPos, int length, U2OpStatus& os) {
         QByteArray result = row->getSequence().constSequence().mid(seqPos, length);
 
         if (gaps.isEmpty()) {  // add trailing gaps if it is possible
@@ -70,9 +70,9 @@ public:
     }
 
 private:
-    bool hasGapsInRegion(int startPos, int length, U2OpStatus &os) const {
+    bool hasGapsInRegion(int startPos, int length, U2OpStatus& os) const {
         CHECK(!gaps.isEmpty(), false);
-        const U2MsaGap &gap = gaps.first();
+        const U2MsaGap& gap = gaps.first();
 
         SAFE_POINT_EXT(gap.startPos >= startPos, os.setError(L10N::badArgument(MultipleSequenceAlignmentObject::tr("Unexpected gap start"))), false);
 
@@ -82,7 +82,7 @@ private:
         return true;
     }
 
-    static void splitGap(int startPos, int length, const U2MsaGap &gap, U2MsaGap &inRegion, U2MsaGap &outRegion, U2OpStatus &os) {
+    static void splitGap(int startPos, int length, const U2MsaGap& gap, U2MsaGap& inRegion, U2MsaGap& outRegion, U2OpStatus& os) {
         SAFE_POINT_EXT(gap.startPos >= startPos, os.setError(L10N::badArgument(MultipleSequenceAlignmentObject::tr("Unexpected gap start (too small)"))), );
         SAFE_POINT_EXT(gap.startPos < startPos + length, os.setError(L10N::badArgument(MultipleSequenceAlignmentObject::tr("Unexpected gap start (too big)"))), );
 
@@ -114,7 +114,7 @@ private:
 /************************************************************************/
 /* MultipleSequenceAlignmentWalker */
 /************************************************************************/
-MultipleSequenceAlignmentWalker::MultipleSequenceAlignmentWalker(const MultipleSequenceAlignment &msa, char gapChar)
+MultipleSequenceAlignmentWalker::MultipleSequenceAlignmentWalker(const MultipleSequenceAlignment& msa, char gapChar)
     : msa(msa), currentOffset(0) {
     for (int i = 0; i < msa->getRowCount(); i++) {
         rowWalkerList << new RowWalker(msa->getMsaRow(i), gapChar);
@@ -129,7 +129,7 @@ bool MultipleSequenceAlignmentWalker::isEnded() const {
     return currentOffset >= msa->getLength();
 }
 
-QList<QByteArray> MultipleSequenceAlignmentWalker::nextData(int length, U2OpStatus &os) {
+QList<QByteArray> MultipleSequenceAlignmentWalker::nextData(int length, U2OpStatus& os) {
     QList<QByteArray> result;
     SAFE_POINT_EXT(!isEnded(), os.setError(L10N::internalError() + MultipleSequenceAlignmentObject::tr(" Alignment walker is ended")), result);
     SAFE_POINT_EXT(msa->getRowCount() == rowWalkerList.size(), os.setError(L10N::internalError() + MultipleSequenceAlignmentObject::tr(" Alignment changed")), result);

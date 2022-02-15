@@ -32,7 +32,7 @@
 
 namespace U2 {
 
-PrepareInputFastaFilesTask::PrepareInputFastaFilesTask(const QStringList &_inputFiles, const QString &_tempDir)
+PrepareInputFastaFilesTask::PrepareInputFastaFilesTask(const QStringList& _inputFiles, const QString& _tempDir)
     : Task(tr("Prepare input FASTA files"), TaskFlags_NR_FOSE_COSC),
       inputFiles(_inputFiles),
       tempDir(_tempDir) {
@@ -47,7 +47,7 @@ QStringList PrepareInputFastaFilesTask::getTempFiles() const {
 }
 
 void PrepareInputFastaFilesTask::prepare() {
-    for (const QString &filePath : qAsConst(inputFiles)) {
+    for (const QString& filePath : qAsConst(inputFiles)) {
         QString formatId = getBestFormatId(filePath);
         CHECK_CONTINUE(!formatId.isEmpty());
 
@@ -64,14 +64,14 @@ void PrepareInputFastaFilesTask::prepare() {
     }
 }
 
-QList<Task *> PrepareInputFastaFilesTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> newSubTasks;
+QList<Task*> PrepareInputFastaFilesTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> newSubTasks;
     CHECK_OP(stateInfo, newSubTasks);
 
-    if (auto convertTask = qobject_cast<DefaultConvertFileTask *>(subTask)) {
+    if (auto convertTask = qobject_cast<DefaultConvertFileTask*>(subTask)) {
         fastaFiles << convertTask->getResult();
         tempFiles << convertTask->getResult();
-    } else if (auto copyTask = qobject_cast<CopyFileTask *>(subTask)) {
+    } else if (auto copyTask = qobject_cast<CopyFileTask*>(subTask)) {
         fastaFiles << copyTask->getTargetFilePath();
         tempFiles << copyTask->getTargetFilePath();
     }
@@ -79,7 +79,7 @@ QList<Task *> PrepareInputFastaFilesTask::onSubTaskFinished(Task *subTask) {
     return newSubTasks;
 }
 
-QString PrepareInputFastaFilesTask::getBestFormatId(const QString &filePath) {
+QString PrepareInputFastaFilesTask::getBestFormatId(const QString& filePath) {
     QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(filePath);
     if (formats.isEmpty()) {
         stateInfo.addWarning(tr("File '%1' was skipped. Cannot detect the file format.").arg(filePath));
@@ -89,11 +89,11 @@ QString PrepareInputFastaFilesTask::getBestFormatId(const QString &filePath) {
     return formats.first().format->getFormatId();
 }
 
-bool PrepareInputFastaFilesTask::isFilePathAcceptable(const QString &filePath) const {
+bool PrepareInputFastaFilesTask::isFilePathAcceptable(const QString& filePath) const {
     return !filePath.contains(" ");
 }
 
-QString PrepareInputFastaFilesTask::getFixedFileName(const QString &filePath) const {
+QString PrepareInputFastaFilesTask::getFixedFileName(const QString& filePath) const {
     QFileInfo fileInfo(filePath);
     return fileInfo.fileName().replace(" ", "_");
 }

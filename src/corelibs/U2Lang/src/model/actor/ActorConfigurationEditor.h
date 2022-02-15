@@ -36,13 +36,13 @@ class U2LANG_EXPORT ActorConfigurationEditor : public ConfigurationEditor {
     Q_OBJECT
 public:
     ActorConfigurationEditor();
-    ActorConfigurationEditor(const ActorConfigurationEditor &other);
+    ActorConfigurationEditor(const ActorConfigurationEditor& other);
 
-    virtual void setConfiguration(Actor *actor);
-    virtual ConfigurationEditor *clone();
+    virtual void setConfiguration(Actor* actor);
+    virtual ConfigurationEditor* clone();
 
 protected:
-    Actor *cfg;
+    Actor* cfg;
 };  // ActorConfigurationEditor
 
 }  // namespace Workflow

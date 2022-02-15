@@ -33,8 +33,8 @@
 #include <U2Core/SequenceWalkerTask.h>
 #include <U2Core/U2Region.h>
 
-static const char *ANNOTATION_RESULT_VIEW = "Annotations";
-static const char *MULTIPLE_ALIGNMENT_RESULT_VIEW = "Multiple alignment";
+static const char* ANNOTATION_RESULT_VIEW = "Annotations";
+static const char* MULTIPLE_ALIGNMENT_RESULT_VIEW = "Multiple alignment";
 const qint32 STRING_HAS_NO_KEY_MESSAGE = -1;
 
 namespace U2 {
@@ -80,19 +80,19 @@ struct SmithWatermanSettings {
     GapModel gapModel;
     SMatrix pSm;
 
-    DNATranslation *complTT;
-    DNATranslation *aminoTT;
+    DNATranslation* complTT;
+    DNATranslation* aminoTT;
 
-    SmithWatermanResultListener *resultListener;
-    SmithWatermanResultFilter *resultFilter;
-    SmithWatermanReportCallback *resultCallback;
+    SmithWatermanResultListener* resultListener;
+    SmithWatermanResultFilter* resultFilter;
+    SmithWatermanReportCallback* resultCallback;
 
     SWResultView resultView;
     bool includePatternContent;  // specifies whether the pattern subsequences appropriate
                                  // to reference subsequences are to be included to algorithm
                                  // results in case of annotation result view
 
-    bool operator==(const SmithWatermanSettings &op) const {
+    bool operator==(const SmithWatermanSettings& op) const {
         return ptrn == op.ptrn &&
                sqnc == op.sqnc &&
                searchCircular == op.searchCircular &&
@@ -102,8 +102,8 @@ struct SmithWatermanSettings {
                gapModel.scoreGapOpen == op.gapModel.scoreGapOpen;
     }
 
-    qint32 getResultViewKeyForString(const QString &value) {
-        foreach (const char *name, getResultViewNames().values()) {
+    qint32 getResultViewKeyForString(const QString& value) {
+        foreach (const char* name, getResultViewNames().values()) {
             QByteArray understandableName(name);
             if (understandableName == value.toLocal8Bit()) {
                 return getResultViewNames().key(name);
@@ -112,8 +112,8 @@ struct SmithWatermanSettings {
         return STRING_HAS_NO_KEY_MESSAGE;
     }
 
-    static QHash<SWResultView, const char *> &getResultViewNames(const char *newResultName = nullptr, SWResultView key = static_cast<SWResultView>(0)) {
-        static QHash<SWResultView, const char *> resultViewNames;
+    static QHash<SWResultView, const char*>& getResultViewNames(const char* newResultName = nullptr, SWResultView key = static_cast<SWResultView>(0)) {
+        static QHash<SWResultView, const char*> resultViewNames;
 
         if (nullptr != newResultName && static_cast<SWResultView>(0) != key) {
             if (!resultViewNames.contains(key)) {

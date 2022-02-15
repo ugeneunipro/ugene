@@ -43,7 +43,7 @@
 
 namespace U2 {
 
-ExportSequencesTask::ExportSequencesTask(const MultipleSequenceAlignment &msa, const QSet<qint64> &rowIds, bool trimGaps, bool addToProjectFlag, const QString &dirUrl, const DocumentFormatId &format, const QString &extension, const QString &customFileName)
+ExportSequencesTask::ExportSequencesTask(const MultipleSequenceAlignment& msa, const QSet<qint64>& rowIds, bool trimGaps, bool addToProjectFlag, const QString& dirUrl, const DocumentFormatId& format, const QString& extension, const QString& customFileName)
     : Task(tr("Export selected sequences from alignment"), TaskFlags_NR_FOSE_COSC),
       addToProjectFlag(addToProjectFlag),
       dirUrl(dirUrl),
@@ -54,9 +54,9 @@ ExportSequencesTask::ExportSequencesTask(const MultipleSequenceAlignment &msa, c
 }
 
 void ExportSequencesTask::prepare() {
-    QList<Task *> tasks;
+    QList<Task*> tasks;
     QSet<QString> existingFilenames;
-    for (const DNASequence &sequence : qAsConst(sequences)) {
+    for (const DNASequence& sequence : qAsConst(sequences)) {
         QString filename = GUrlUtils::fixFileName(customFileName.isEmpty() ? sequence.getName() : customFileName);
         QString filePath = GUrlUtils::prepareFileLocation(dirUrl + "/" + filename + "." + extension, stateInfo);
         CHECK_OP(stateInfo, );
@@ -64,8 +64,8 @@ void ExportSequencesTask::prepare() {
         filePath = GUrlUtils::rollFileName(filePath, "_", existingFilenames);
         existingFilenames.insert(filePath);
         GUrl url(filePath);
-        IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
-        DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(format);
+        IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+        DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(format);
         SAFE_POINT(df != nullptr, "Cant get DocuemtFormat by given DocumentFormatId", );
 
         QScopedPointer<Document> doc(df->createNewLoadedDocument(iof, filePath, stateInfo));
@@ -79,7 +79,7 @@ void ExportSequencesTask::prepare() {
         auto sequenceObject = new U2SequenceObject(sequence.getName(), ref);
         doc->addObject(sequenceObject);
 
-        Document *takenDoc = doc.take();
+        Document* takenDoc = doc.take();
         auto saveTask = new SaveDocumentTask(takenDoc, takenDoc->getIOAdapterFactory(), takenDoc->getURL());
         saveTask->addFlag(addToProjectFlag ? SaveDoc_OpenAfter : SaveDoc_DestroyAfter);
         addSubTask(saveTask);

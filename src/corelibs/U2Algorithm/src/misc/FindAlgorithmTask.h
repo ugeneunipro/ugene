@@ -38,7 +38,7 @@ public:
     FindAlgorithmTaskSettings()
         : searchIsCircular(false), countTask(true) {
     }
-    FindAlgorithmTaskSettings(const FindAlgorithmSettings &f)
+    FindAlgorithmTaskSettings(const FindAlgorithmSettings& f)
         : FindAlgorithmSettings(f), searchIsCircular(false), countTask(true) {
     }
 
@@ -51,14 +51,14 @@ public:
 class U2ALGORITHM_EXPORT FindAlgorithmTask : public Task, public FindAlgorithmResultsListener {
     Q_OBJECT
 public:
-    FindAlgorithmTask(const FindAlgorithmTaskSettings &s);
+    FindAlgorithmTask(const FindAlgorithmTaskSettings& s);
 
     virtual void run();
-    virtual void onResult(const FindAlgorithmResult &r);
+    virtual void onResult(const FindAlgorithmResult& r);
 
     QList<FindAlgorithmResult> popResults();
 
-    const FindAlgorithmTaskSettings &getSettings() const {
+    const FindAlgorithmTaskSettings& getSettings() const {
         return config;
     }
 
@@ -73,14 +73,14 @@ class Document;
 class U2ALGORITHM_EXPORT LoadPatternsFileTask : public Task {
     Q_OBJECT
 public:
-    LoadPatternsFileTask(const QString &_filePath, const QString &annotationName = QString());
+    LoadPatternsFileTask(const QString& _filePath, const QString& annotationName = QString());
     QList<QPair<QString, QString>> getNamesPatterns() {
         return namesPatterns;
     }
     void run();
 
 private:
-    Document *getDocumentFromFilePath();
+    Document* getDocumentFromFilePath();
 
     QString filePath;
     QList<QPair<QString, QString>> namesPatterns;

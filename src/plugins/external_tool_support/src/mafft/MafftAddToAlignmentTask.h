@@ -40,11 +40,11 @@ class U2UseCommonUserModStep;
 class MafftAddToAlignmentTask : public AbstractAlignmentTask {
     Q_OBJECT
 public:
-    MafftAddToAlignmentTask(const AlignSequencesToAlignmentTaskSettings &settings);
+    MafftAddToAlignmentTask(const AlignSequencesToAlignmentTaskSettings& settings);
 
     void prepare();
     void run();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
     ReportResult report();
 
@@ -57,13 +57,13 @@ private:
 
     QSharedPointer<Document> tmpDoc;
     QString url;
-    MAFFTLogParser *logParser;
+    MAFFTLogParser* logParser;
 
-    SaveDocumentTask *saveSequencesDocumentTask;
-    SaveMSA2SequencesTask *saveAlignmentDocumentTask;
-    ExternalToolRunTask *mafftTask;
-    LoadDocumentTask *loadTmpDocumentTask;
-    U2UseCommonUserModStep *modStep;
+    SaveDocumentTask* saveSequencesDocumentTask;
+    SaveMSA2SequencesTask* saveAlignmentDocumentTask;
+    ExternalToolRunTask* mafftTask;
+    LoadDocumentTask* loadTmpDocumentTask;
+    U2UseCommonUserModStep* modStep;
     QMap<QString, QString> uniqueIdsToNames;
 
     QString tmpDirUrl;
@@ -72,12 +72,12 @@ private:
 
 class MafftAddToAlignmentTaskFactory : public AbstractAlignmentTaskFactory {
 public:
-    virtual AbstractAlignmentTask *getTaskInstance(AbstractAlignmentTaskSettings *_settings) const;
+    virtual AbstractAlignmentTask* getTaskInstance(AbstractAlignmentTaskSettings* _settings) const;
 };
 
 class MafftAlignSequencesToAlignmentAlgorithm : public AlignmentAlgorithm {
 public:
-    MafftAlignSequencesToAlignmentAlgorithm(const AlignmentAlgorithmType &type);
+    MafftAlignSequencesToAlignmentAlgorithm(const AlignmentAlgorithmType& type);
 
     bool isAlgorithmAvailable() const override;
 };

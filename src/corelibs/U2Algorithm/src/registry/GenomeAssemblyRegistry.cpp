@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-GenomeAssemblyTask::GenomeAssemblyTask(const GenomeAssemblyTaskSettings &s, TaskFlags _flags)
+GenomeAssemblyTask::GenomeAssemblyTask(const GenomeAssemblyTaskSettings& s, TaskFlags _flags)
     : Task("GenomeAssemblyTask", _flags), settings(s), resultUrl("") {
 }
 
@@ -33,7 +33,7 @@ QString GenomeAssemblyTask::getResultUrl() const {
     return resultUrl;
 }
 
-QVariant GenomeAssemblyTaskSettings::getCustomValue(const QString &optionName, const QVariant &defaultVal) const {
+QVariant GenomeAssemblyTaskSettings::getCustomValue(const QString& optionName, const QVariant& defaultVal) const {
     if (customSettings.contains(optionName)) {
         return customSettings.value(optionName);
     } else {
@@ -41,23 +41,23 @@ QVariant GenomeAssemblyTaskSettings::getCustomValue(const QString &optionName, c
     }
 }
 
-bool GenomeAssemblyTaskSettings::hasCustomValue(const QString &name) const {
+bool GenomeAssemblyTaskSettings::hasCustomValue(const QString& name) const {
     return customSettings.contains(name);
 }
 
-void GenomeAssemblyTaskSettings::setCustomValue(const QString &optionName, const QVariant &val) {
+void GenomeAssemblyTaskSettings::setCustomValue(const QString& optionName, const QVariant& val) {
     customSettings.insert(optionName, val);
 }
 
-void GenomeAssemblyTaskSettings::setCustomSettings(const QMap<QString, QVariant> &settings) {
+void GenomeAssemblyTaskSettings::setCustomSettings(const QMap<QString, QVariant>& settings) {
     customSettings = settings;
 }
 
 GenomeAssemblyAlgorithmEnv::GenomeAssemblyAlgorithmEnv(
-    const QString &id,
-    GenomeAssemblyTaskFactory *taskFactory,
-    GenomeAssemblyGUIExtensionsFactory *guiExtFactory,
-    const QStringList &readsFormats)
+    const QString& id,
+    GenomeAssemblyTaskFactory* taskFactory,
+    GenomeAssemblyGUIExtensionsFactory* guiExtFactory,
+    const QStringList& readsFormats)
     : id(id), taskFactory(taskFactory), guiExtFactory(guiExtFactory),
       readsFormats(readsFormats) {
 }
@@ -67,17 +67,17 @@ GenomeAssemblyAlgorithmEnv::~GenomeAssemblyAlgorithmEnv() {
     delete guiExtFactory;
 }
 
-GenomeAssemblyAlgRegistry::GenomeAssemblyAlgRegistry(QObject *pOwn /* = 0*/)
+GenomeAssemblyAlgRegistry::GenomeAssemblyAlgRegistry(QObject* pOwn /* = 0*/)
     : QObject(pOwn) {
 }
 
 GenomeAssemblyAlgRegistry::~GenomeAssemblyAlgRegistry() {
-    foreach (GenomeAssemblyAlgorithmEnv *algo, algorithms.values()) {
+    foreach (GenomeAssemblyAlgorithmEnv* algo, algorithms.values()) {
         delete algo;
     }
 }
 
-bool GenomeAssemblyAlgRegistry::registerAlgorithm(GenomeAssemblyAlgorithmEnv *algo) {
+bool GenomeAssemblyAlgRegistry::registerAlgorithm(GenomeAssemblyAlgorithmEnv* algo) {
     QMutexLocker locker(&mutex);
 
     if (algorithms.contains(algo->getId())) {
@@ -87,18 +87,18 @@ bool GenomeAssemblyAlgRegistry::registerAlgorithm(GenomeAssemblyAlgorithmEnv *al
     return true;
 }
 
-GenomeAssemblyAlgorithmEnv *GenomeAssemblyAlgRegistry::unregisterAlgorithm(const QString &id) {
+GenomeAssemblyAlgorithmEnv* GenomeAssemblyAlgRegistry::unregisterAlgorithm(const QString& id) {
     QMutexLocker locker(&mutex);
 
     if (!algorithms.contains(id)) {
         return nullptr;
     }
-    GenomeAssemblyAlgorithmEnv *res = algorithms.value(id);
+    GenomeAssemblyAlgorithmEnv* res = algorithms.value(id);
     algorithms.remove(id);
     return res;
 }
 
-GenomeAssemblyAlgorithmEnv *GenomeAssemblyAlgRegistry::getAlgorithm(const QString &id) const {
+GenomeAssemblyAlgorithmEnv* GenomeAssemblyAlgRegistry::getAlgorithm(const QString& id) const {
     QMutexLocker locker(&mutex);
     return algorithms.value(id);
 }
@@ -111,7 +111,7 @@ QStringList GenomeAssemblyUtils::getOrientationTypes() {
     return QStringList() << ORIENTATION_FR << ORIENTATION_RF << ORIENTATION_FF;
 }
 
-bool GenomeAssemblyUtils::isLibraryPaired(const QString &libName) {
+bool GenomeAssemblyUtils::isLibraryPaired(const QString& libName) {
     return (libName == LIB_PAIR_DEFAULT ||
             libName == LIB_PAIR_MATE ||
             libName == LIB_PAIR_MATE_HQ);

@@ -35,7 +35,7 @@ public:
     virtual bool hasNext() = 0;
 
     /** returns next read or error */
-    virtual U2AssemblyRead next(U2OpStatus &os) = 0;
+    virtual U2AssemblyRead next(U2OpStatus& os) = 0;
 };
 
 class U2AssemblyCoverageImportInfo {
@@ -57,7 +57,7 @@ public:
 /** Additional reads info used during reads import into assembly */
 class U2AssemblyReadsImportInfo {
 public:
-    U2AssemblyReadsImportInfo(U2AssemblyReadsImportInfo *parentInfo = nullptr)
+    U2AssemblyReadsImportInfo(U2AssemblyReadsImportInfo* parentInfo = nullptr)
         : nReads(0), packed(false), parentInfo(parentInfo) {
     }
     virtual ~U2AssemblyReadsImportInfo() {
@@ -81,7 +81,7 @@ public:
     }
 
 private:
-    U2AssemblyReadsImportInfo *parentInfo;
+    U2AssemblyReadsImportInfo* parentInfo;
 };
 
 /**
@@ -89,7 +89,7 @@ private:
 */
 class U2AssemblyDbi : public U2ChildDbi {
 protected:
-    U2AssemblyDbi(U2Dbi *rootDbi)
+    U2AssemblyDbi(U2Dbi* rootDbi)
         : U2ChildDbi(rootDbi) {
     }
 
@@ -98,7 +98,7 @@ public:
         Reads assembly object by its id.
         If there is no assembly object with the specified id returns a default constructed assembly object.
     */
-    virtual U2Assembly getAssemblyObject(const U2DataId &id, U2OpStatus &os) = 0;
+    virtual U2Assembly getAssemblyObject(const U2DataId& id, U2OpStatus& os) = 0;
 
     /**
         Returns number of reads located near or intersecting the region.
@@ -112,7 +112,7 @@ public:
         Note2: Use U2_ASSEMBLY_REGION_MAX to count all reads in assembly in effective way
 
     */
-    virtual qint64 countReads(const U2DataId &assemblyId, const U2Region &r, U2OpStatus &os) = 0;
+    virtual qint64 countReads(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os) = 0;
 
     /**
         Returns reads that intersect given region.
@@ -120,7 +120,7 @@ public:
 
         Note: iterator instance must be deallocated by caller method
     */
-    virtual U2DbiIterator<U2AssemblyRead> *getReads(const U2DataId &assemblyId, const U2Region &r, U2OpStatus &os, bool sortedHint = false) = 0;
+    virtual U2DbiIterator<U2AssemblyRead>* getReads(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os, bool sortedHint = false) = 0;
 
     /**
         Returns reads with packed row value bounded by 'minRow' and 'maxRow' that intersect given region.
@@ -128,7 +128,7 @@ public:
 
         Note: iterator instance must be deallocated by caller method
     */
-    virtual U2DbiIterator<U2AssemblyRead> *getReadsByRow(const U2DataId &assemblyId, const U2Region &r, qint64 minRow, qint64 maxRow, U2OpStatus &os) = 0;
+    virtual U2DbiIterator<U2AssemblyRead>* getReadsByRow(const U2DataId& assemblyId, const U2Region& r, qint64 minRow, qint64 maxRow, U2OpStatus& os) = 0;
 
     /**
         Returns reads with a specified name. Used to find paired reads that must have equal names.
@@ -136,20 +136,20 @@ public:
 
         Note: iterator instance must be deallocated by caller method.
     */
-    virtual U2DbiIterator<U2AssemblyRead> *getReadsByName(const U2DataId &assemblyId, const QByteArray &name, U2OpStatus &os) = 0;
+    virtual U2DbiIterator<U2AssemblyRead>* getReadsByName(const U2DataId& assemblyId, const QByteArray& name, U2OpStatus& os) = 0;
 
     /**
         Returns maximum packed row value of reads that intersect 'r'.
         'Intersect' here means that region(leftmost pos, rightmost pos) intersects with 'r'
         If there is no assembly object with the specified id returns -1.
     */
-    virtual qint64 getMaxPackedRow(const U2DataId &assemblyId, const U2Region &r, U2OpStatus &os) = 0;
+    virtual qint64 getMaxPackedRow(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os) = 0;
 
     /**
         Count 'length of assembly' - position of the rightmost base of all reads.
         If there is no assembly object with the specified id returns -1.
     */
-    virtual qint64 getMaxEndPos(const U2DataId &assemblyId, U2OpStatus &os) = 0;
+    virtual qint64 getMaxEndPos(const U2DataId& assemblyId, U2OpStatus& os) = 0;
 
     /**
         Creates new empty assembly object. Reads iterator can be NULL.
@@ -160,7 +160,7 @@ public:
 
         Requires: U2DbiFeature_WriteAssembly feature support
     */
-    virtual void createAssemblyObject(U2Assembly &assembly, const QString &folder, U2DbiIterator<U2AssemblyRead> *it, U2AssemblyReadsImportInfo &importInfo, U2OpStatus &os) = 0;
+    virtual void createAssemblyObject(U2Assembly& assembly, const QString& folder, U2DbiIterator<U2AssemblyRead>* it, U2AssemblyReadsImportInfo& importInfo, U2OpStatus& os) = 0;
 
     /**
         Does some additional actions that should be done after object creating and reads adding.
@@ -169,21 +169,21 @@ public:
 
         Requires: U2DbiFeature_WriteAssembly feature support
     */
-    virtual void finalizeAssemblyObject(U2Assembly &assembly, U2OpStatus &os) = 0;
+    virtual void finalizeAssemblyObject(U2Assembly& assembly, U2OpStatus& os) = 0;
 
     /**
         Removes all assembly data and tables.
         Does not remove entry from the 'Object' table.
         Requires: U2DbiFeature_WriteAssembly feature support
     */
-    virtual void removeAssemblyData(const U2DataId &assemblyId, U2OpStatus &os) = 0;
+    virtual void removeAssemblyData(const U2DataId& assemblyId, U2OpStatus& os) = 0;
 
     /**
         Updates assembly object fields.
 
         Requires: U2DbiFeature_WriteAssembly feature support.
     */
-    virtual void updateAssemblyObject(U2Assembly &assembly, U2OpStatus &os) = 0;
+    virtual void updateAssemblyObject(U2Assembly& assembly, U2OpStatus& os) = 0;
 
     /**
         Removes reads from assembly.
@@ -191,7 +191,7 @@ public:
 
         Requires: U2DbiFeature_WriteAssembly feature support.
     */
-    virtual void removeReads(const U2DataId &assemblyId, const QList<U2DataId> &readIds, U2OpStatus &os) = 0;
+    virtual void removeReads(const U2DataId& assemblyId, const QList<U2DataId>& readIds, U2OpStatus& os) = 0;
 
     /**
         Adds sequences to assembly.
@@ -199,7 +199,7 @@ public:
 
         Requires: U2DbiFeature_WriteAssembly feature support.
     */
-    virtual void addReads(const U2DataId &assemblyId, U2DbiIterator<U2AssemblyRead> *it, U2OpStatus &os) = 0;
+    virtual void addReads(const U2DataId& assemblyId, U2DbiIterator<U2AssemblyRead>* it, U2OpStatus& os) = 0;
 
     /**
         Packs assembly rows: assigns packedViewRow value (i.e. read's vertical position in view)
@@ -207,7 +207,7 @@ public:
 
         Requires: U2DbiFeature_WriteAssembly and U2DbiFeature_AssemblyReadsPacking features support
     */
-    virtual void pack(const U2DataId &assemblyId, U2AssemblyPackStat &stats, U2OpStatus &os) = 0;
+    virtual void pack(const U2DataId& assemblyId, U2AssemblyPackStat& stats, U2OpStatus& os) = 0;
 
     /**
         Calculates coverage information for the given region and stores it in 'coverage' vector.
@@ -216,7 +216,7 @@ public:
         where N is 'coverage' vector size. Number of reads intersecting each window is guaranteed
         to be in range stored at corresponding index in vector 'coverage'.
     */
-    virtual void calculateCoverage(const U2DataId &assemblyId, const U2Region &region, U2AssemblyCoverageStat &coverage, U2OpStatus &os) = 0;
+    virtual void calculateCoverage(const U2DataId& assemblyId, const U2Region& region, U2AssemblyCoverageStat& coverage, U2OpStatus& os) = 0;
 };
 
 }  // namespace U2

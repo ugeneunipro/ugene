@@ -24,11 +24,11 @@
 namespace U2 {
 namespace Workflow {
 
-SlotAlias::SlotAlias(const Port *port, const QString &slotId, const QString &alias)
+SlotAlias::SlotAlias(const Port* port, const QString& slotId, const QString& alias)
     : port(port), slotId(slotId), alias(alias) {
 }
 
-const Port *SlotAlias::getSourcePort() const {
+const Port* SlotAlias::getSourcePort() const {
     return port;
 }
 
@@ -40,16 +40,16 @@ QString SlotAlias::getAlias() const {
     return alias;
 }
 
-PortAlias::PortAlias(const Port *sourcePort, const QString &alias, const QString &description)
+PortAlias::PortAlias(const Port* sourcePort, const QString& alias, const QString& description)
     : port(sourcePort), alias(alias), description(description) {
 }
 
-bool PortAlias::operator==(const PortAlias &another) {
+bool PortAlias::operator==(const PortAlias& another) {
     return (alias == another.getAlias());
 }
 
-bool PortAlias::addSlot(const SlotAlias &newSlot) {
-    foreach (const SlotAlias &slot, slotAliases) {
+bool PortAlias::addSlot(const SlotAlias& newSlot) {
+    foreach (const SlotAlias& slot, slotAliases) {
         if (slot.getSourcePort() == newSlot.getSourcePort()) {
             if (slot.getAlias() == newSlot.getAlias() ||
                 slot.getSourceSlotId() == newSlot.getSourceSlotId()) {
@@ -62,13 +62,13 @@ bool PortAlias::addSlot(const SlotAlias &newSlot) {
     return true;
 }
 
-bool PortAlias::addSlot(const Port *sourcePort, const QString &slotId, const QString &alias) {
+bool PortAlias::addSlot(const Port* sourcePort, const QString& slotId, const QString& alias) {
     SlotAlias newSlot(sourcePort, slotId, alias);
 
     return this->addSlot(newSlot);
 }
 
-const Port *PortAlias::getSourcePort() const {
+const Port* PortAlias::getSourcePort() const {
     return port;
 }
 
@@ -80,15 +80,15 @@ QString PortAlias::getDescription() const {
     return description;
 }
 
-const QList<SlotAlias> &PortAlias::getSlotAliases() const {
+const QList<SlotAlias>& PortAlias::getSlotAliases() const {
     return slotAliases;
 }
 
-void PortAlias::setNewSlotAliases(const QList<SlotAlias> &newSlotAliases) {
+void PortAlias::setNewSlotAliases(const QList<SlotAlias>& newSlotAliases) {
     slotAliases = newSlotAliases;
 }
 
-void PortAlias::setNewSourcePort(const Port *sourcePort) {
+void PortAlias::setNewSourcePort(const Port* sourcePort) {
     port = sourcePort;
 }
 

@@ -37,25 +37,25 @@ class MSAEditor;
 class MSAEditorTreeViewer : public TreeViewer {
     Q_OBJECT
 public:
-    MSAEditorTreeViewer(const QString &viewName, GObject *obj, GraphicsRectangularBranchItem *root, qreal scale);
+    MSAEditorTreeViewer(const QString& viewName, GObject* obj, GraphicsRectangularBranchItem* root, qreal scale);
     ~MSAEditorTreeViewer();
 
-    const CreatePhyTreeSettings &getCreatePhyTreeSettings() {
+    const CreatePhyTreeSettings& getCreatePhyTreeSettings() {
         return buildSettings;
     }
-    const QString &getParentAlignmentName() {
+    const QString& getParentAlignmentName() {
         return alignmentName;
     }
-    virtual OptionsPanel *getOptionsPanel() {
+    virtual OptionsPanel* getOptionsPanel() {
         return 0;
     }
 
-    void setCreatePhyTreeSettings(const CreatePhyTreeSettings &newBuildSettings);
-    void setParentAignmentName(const QString &_alignmentName) {
+    void setCreatePhyTreeSettings(const CreatePhyTreeSettings& newBuildSettings);
+    void setParentAignmentName(const QString& _alignmentName) {
         alignmentName = _alignmentName;
     }
 
-    QAction *getSortSeqsAction() const {
+    QAction* getSortSeqsAction() const {
         return syncModeAction;
     }
 
@@ -72,15 +72,15 @@ public:
     /** Returns true if Tree and MSA are in 'sync' mode. */
     bool isSyncModeEnabled() const;
 
-    void setMSAEditor(MSAEditor *newEditor);
+    void setMSAEditor(MSAEditor* newEditor);
 
-    MSAEditor *getMsaEditor() const;
+    MSAEditor* getMsaEditor() const;
 
     /** Updates order of sequences and collapsed group states in the alignment using the tree state as the reference. */
     void orderAlignmentByTree();
 
 protected:
-    QWidget *createWidget() override;
+    QWidget* createWidget() override;
 
 private slots:
 
@@ -96,7 +96,7 @@ private slots:
     void sl_alignmentCollapseModelChanged();
 
 signals:
-    void si_refreshTree(MSAEditorTreeViewer *treeViewer);
+    void si_refreshTree(MSAEditorTreeViewer* treeViewer);
 
 private:
     /** Update internal state of the syncModeAction: text, icon, checked state. */
@@ -112,7 +112,7 @@ private:
     void disableSyncModeIfTreeAndMsaContentIsNotInSync();
 
     /** Re-calculates the tree using originally used parameters & the current MSA state. */
-    QAction *refreshTreeAction;
+    QAction* refreshTreeAction;
 
     /**
      * Sync mode action is used to enable or disable 'sync' mode between Tree & MSA view.
@@ -132,18 +132,18 @@ private:
      *  - Enabled: the sync mode is possible. Use 'isChecked' if the sync mode is ON or OFF.
      *  - Checked: the sync mode is ON. Note: the action can't be checked in the disabled state.
      */
-    QAction *syncModeAction;
+    QAction* syncModeAction;
     QString alignmentName;
     CreatePhyTreeSettings buildSettings;
     QPointer<MSAEditor> editor;
-    MSAEditorTreeViewerUI *msaTreeViewerUi;
+    MSAEditorTreeViewerUI* msaTreeViewerUi;
 };
 
 class U2VIEW_EXPORT MSAEditorTreeViewerUI : public TreeViewerUI {
     Q_OBJECT
 
 public:
-    MSAEditorTreeViewerUI(MSAEditorTreeViewer *treeViewer);
+    MSAEditorTreeViewerUI(MSAEditorTreeViewer* treeViewer);
 
     /** Update tree sub-widgets state to match the current enableSyncMode mode. */
     void updateSyncModeState(bool isSyncModeOn);
@@ -159,16 +159,16 @@ public:
     QList<QStringList> getGroupingStateForMsa() const;
 
 protected:
-    void wheelEvent(QWheelEvent *e) override;
-    void resizeEvent(QResizeEvent *e) override;
+    void wheelEvent(QWheelEvent* e) override;
+    void resizeEvent(QResizeEvent* e) override;
 
-    void onLayoutChanged(const TreeLayout &layout) override;
-    void onSettingsChanged(TreeViewOption option, const QVariant &newValue) override;
+    void onLayoutChanged(const TreeLayout& layout) override;
+    void onSettingsChanged(TreeViewOption option, const QVariant& newValue) override;
 
     /** Overrides the original method to trigger MSA related updates as the result of tree update. */
     void updateScene(bool fitSceneToView) override;
 
-    void setTreeLayout(const TreeLayout &newLayout) override;
+    void setTreeLayout(const TreeLayout& newLayout) override;
 
 signals:
     void si_zoomIn();
@@ -181,26 +181,26 @@ protected slots:
     void sl_zoomOut() override;
 
 private slots:
-    void sl_selectionChanged(const QStringList &selectedSequenceNameList);
+    void sl_selectionChanged(const QStringList& selectedSequenceNameList);
     void sl_sequenceNameChanged(QString prevName, QString newName);
     void sl_onReferenceSeqChanged(qint64);
     void sl_rectLayoutRecomputed() override;
-    void sl_onVisibleRangeChanged(const QStringList &visibleSeqs, int height);
-    void sl_onBranchCollapsed(GraphicsRectangularBranchItem *branch) override;
+    void sl_onVisibleRangeChanged(const QStringList& visibleSeqs, int height);
+    void sl_onBranchCollapsed(GraphicsRectangularBranchItem* branch) override;
 
 private:
-    QList<GraphicsBranchItem *> getBranchItemsWithNames() const;
+    QList<GraphicsBranchItem*> getBranchItemsWithNames() const;
 
     bool isRectangularLayout;
 
-    MSAEditorTreeViewer *const msaEditorTreeViewer;
+    MSAEditorTreeViewer* const msaEditorTreeViewer;
 
     QTransform rectangularTransform;
 };
 
 class MSAEditorTreeViewerUtils {
 public:
-    static QStringList getSeqsNamesInBranch(const GraphicsBranchItem *branch);
+    static QStringList getSeqsNamesInBranch(const GraphicsBranchItem* branch);
 };
 
 }  // namespace U2

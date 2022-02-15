@@ -22,14 +22,14 @@
 #ifndef _U2_WCFG_SCHEMA_ALIASES_DIALOG_CONTROLLER_H_
 #define _U2_WCFG_SCHEMA_ALIASES_DIALOG_CONTROLLER_H_
 
-#include <ui_SchemaAliasesConfigurationDialog.h>
-
 #include <U2Lang/Schema.h>
+
+#include <ui_SchemaAliasesConfigurationDialog.h>
 
 namespace U2 {
 namespace Workflow {
 
-//typedef QMap<ActorId, QMap<Descriptor, QString> > SchemaAliasesCfgDlgModel;
+// typedef QMap<ActorId, QMap<Descriptor, QString> > SchemaAliasesCfgDlgModel;
 struct SchemaAliasesCfgDlgModel {
     QMap<ActorId, QMap<Descriptor, QString>> aliases;
     QMap<ActorId, QMap<Descriptor, QString>> help;
@@ -38,14 +38,14 @@ struct SchemaAliasesCfgDlgModel {
 class SchemaAliasesConfigurationDialogImpl : public QDialog, public Ui_SchemaAliasesConfigurationDialog {
     Q_OBJECT
 public:
-    SchemaAliasesConfigurationDialogImpl(const Schema &sc, QWidget *p = nullptr);
+    SchemaAliasesConfigurationDialogImpl(const Schema& sc, QWidget* p = nullptr);
     // remove empty aliases from model
     SchemaAliasesCfgDlgModel getModel() const;
     // aliases for schema should be different
     bool validateModel() const;
 
 private:
-    void initializeModel(const Schema &schema);
+    void initializeModel(const Schema& schema);
     void clearAliasTable();
 
 private slots:
@@ -54,11 +54,11 @@ private slots:
 
 private:
     SchemaAliasesCfgDlgModel model;
-    QMap<int, ActorId> procListMap;    // pairs (row, actorId)
+    QMap<int, ActorId> procListMap;  // pairs (row, actorId)
 
-};    // SchemaAliasesConfigurationDialogImpl
+};  // SchemaAliasesConfigurationDialogImpl
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2
 
-#endif    // _U2_WCFG_SCHEMA_ALIASES_DIALOG_CONTROLLER_H_
+#endif  // _U2_WCFG_SCHEMA_ALIASES_DIALOG_CONTROLLER_H_

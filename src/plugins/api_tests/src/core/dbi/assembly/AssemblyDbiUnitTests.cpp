@@ -32,35 +32,35 @@
 
 namespace U2 {
 
-static const QString &INVALID_ASSEMBLY_ID = "invalid_assembly_id";
+static const QString& INVALID_ASSEMBLY_ID = "invalid_assembly_id";
 
-static const QString &TOTAL_NUM_READS = "total_num_reads";
-static const QString &NUM_READS_IN = "num_reads_in";
-static const QString &NUM_READS_OUT = "num_reads_out";
+static const QString& TOTAL_NUM_READS = "total_num_reads";
+static const QString& NUM_READS_IN = "num_reads_in";
+static const QString& NUM_READS_OUT = "num_reads_out";
 
-static const QString &GET_READS_IN = "get_reads_region";
-static const QString &GET_READS_OUT = "get_reads_out";
+static const QString& GET_READS_IN = "get_reads_region";
+static const QString& GET_READS_OUT = "get_reads_out";
 
-static const QString &GET_READS_BY_ROW_REGION = "get_reads_by_row_region";
-static const QString &GET_READS_BY_ROW_BEGIN = "get_reads_by_row_begin";
-static const QString &GET_READS_BY_ROW_END = "get_reads_by_row_end";
-static const QString &GET_READS_BY_ROW_OUT = "get_reads_by_row_out";
+static const QString& GET_READS_BY_ROW_REGION = "get_reads_by_row_region";
+static const QString& GET_READS_BY_ROW_BEGIN = "get_reads_by_row_begin";
+static const QString& GET_READS_BY_ROW_END = "get_reads_by_row_end";
+static const QString& GET_READS_BY_ROW_OUT = "get_reads_by_row_out";
 
-static const QString &READS_BY_NAME_IN = "reads_by_name_in";
+static const QString& READS_BY_NAME_IN = "reads_by_name_in";
 
-static const QString &MAX_END_POS = "max_end_pos";
+static const QString& MAX_END_POS = "max_end_pos";
 
-static const QString &MAX_PACKED_ROW_IN = "max_packed_row_in";
-static const QString &MAX_PACKED_ROW_OUT = "max_packed_row_out";
+static const QString& MAX_PACKED_ROW_IN = "max_packed_row_in";
+static const QString& MAX_PACKED_ROW_OUT = "max_packed_row_out";
 
-static const QString &REMOVE_READS_IN = "remove_reads_in";
+static const QString& REMOVE_READS_IN = "remove_reads_in";
 
-static const QString &ADD_READ = "add_read";
+static const QString& ADD_READ = "add_read";
 
-const QString &AssemblyTestData::ASS_DB_URL("assembly-dbi.ugenedb");
+const QString& AssemblyTestData::ASS_DB_URL("assembly-dbi.ugenedb");
 
-U2AssemblyDbi *AssemblyTestData::assemblyDbi = nullptr;
-QList<U2DataId> *AssemblyTestData::assemblyIds = nullptr;
+U2AssemblyDbi* AssemblyTestData::assemblyDbi = nullptr;
+QList<U2DataId>* AssemblyTestData::assemblyIds = nullptr;
 TestDbiProvider AssemblyTestData::dbiProvider = TestDbiProvider();
 
 static bool registerTests() {
@@ -95,8 +95,8 @@ bool AssemblyTestData::registerTest = registerTests();
 void AssemblyTestData::init() {
     bool ok = dbiProvider.init(ASS_DB_URL, false);
     SAFE_POINT(ok, "dbi provider failed to initialize", );
-    U2Dbi *dbi = dbiProvider.getDbi();
-    U2ObjectDbi *objDbi = dbi->getObjectDbi();
+    U2Dbi* dbi = dbiProvider.getDbi();
+    U2ObjectDbi* objDbi = dbi->getObjectDbi();
     U2OpStatusImpl opStatus;
 
     assemblyIds = new QList<U2DataId>(objDbi->getObjects(U2Type::Assembly, 0, U2DbiOptions::U2_DBI_NO_LIMIT, opStatus));
@@ -106,7 +106,7 @@ void AssemblyTestData::init() {
     SAFE_POINT(nullptr != assemblyDbi, "assembly database not loaded", );
 }
 
-U2AssemblyDbi *AssemblyTestData::getAssemblyDbi() {
+U2AssemblyDbi* AssemblyTestData::getAssemblyDbi() {
     if (assemblyDbi == nullptr) {
         AssemblyTestData::init();
     }
@@ -123,7 +123,7 @@ void AssemblyTestData::shutdown() {
 }
 
 void AssemblyDbiUnitTests_getAssemblyObject::Test() {
-    U2AssemblyDbi *assemblyDbi = AssemblyTestData::getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = AssemblyTestData::getAssemblyDbi();
 
     const U2DataId id = AssemblyTestData::getAssemblyIds()->first();
     U2OpStatusImpl os;
@@ -133,19 +133,19 @@ void AssemblyDbiUnitTests_getAssemblyObject::Test() {
 }
 
 void AssemblyDbiUnitTests_getAssemblyObjectInvalid::Test() {
-    U2AssemblyDbi *assemblyDbi = AssemblyTestData::getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = AssemblyTestData::getAssemblyDbi();
 
     APITestData testData;
     testData.addValue(INVALID_ASSEMBLY_ID, QByteArray("zZÿÿ"));
 
-    const U2DataId &invalidId = testData.getValue<QByteArray>(INVALID_ASSEMBLY_ID);
+    const U2DataId& invalidId = testData.getValue<QByteArray>(INVALID_ASSEMBLY_ID);
     U2OpStatusImpl os;
-    const U2Assembly &assembly = assemblyDbi->getAssemblyObject(invalidId, os);
+    const U2Assembly& assembly = assemblyDbi->getAssemblyObject(invalidId, os);
     CHECK_TRUE(assembly.id.isEmpty(), "assembly id is empty");
 }
 
 void AssemblyDbiUnitTests_countReads::Test() {
-    U2AssemblyDbi *assemblyDbi = AssemblyTestData::getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = AssemblyTestData::getAssemblyDbi();
 
     APITestData testData;
 
@@ -164,25 +164,25 @@ void AssemblyDbiUnitTests_countReads::Test() {
     }
 
     U2OpStatusImpl os;
-    const U2Region &testRegion = testData.getValue<U2Region>(NUM_READS_IN);
+    const U2Region& testRegion = testData.getValue<U2Region>(NUM_READS_IN);
     qint64 numReads = assemblyDbi->countReads(id, testRegion, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(numReads, testData.getValue<qint64>(NUM_READS_OUT), "incorrect total num reads");
 }
 
 void AssemblyDbiUnitTests_countReadsInvalid::Test() {
-    U2AssemblyDbi *assemblyDbi = AssemblyTestData::getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = AssemblyTestData::getAssemblyDbi();
 
     APITestData testData;
     testData.addValue(INVALID_ASSEMBLY_ID, QByteArray("zZÿÿ"));
-    const U2DataId &id = testData.getValue<U2DataId>(INVALID_ASSEMBLY_ID);
+    const U2DataId& id = testData.getValue<U2DataId>(INVALID_ASSEMBLY_ID);
     U2OpStatusImpl os;
     qint64 val = assemblyDbi->countReads(id, U2_REGION_MAX, os);
     CHECK_EQUAL(-1, val, "count reads should be -1")
 }
 
 void AssemblyDbiUnitTests_getReads::Test() {
-    U2AssemblyDbi *assemblyDbi = AssemblyTestData::getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = AssemblyTestData::getAssemblyDbi();
 
     APITestData testData;
     // getReads
@@ -221,8 +221,8 @@ void AssemblyDbiUnitTests_getReads::Test() {
         testData.addValue(GET_READS_OUT, reads);
     }
 
-    const U2DataId &id = AssemblyTestData::getAssemblyIds()->first();
-    const U2Region &region = testData.getValue<U2Region>(GET_READS_IN);
+    const U2DataId& id = AssemblyTestData::getAssemblyIds()->first();
+    const U2Region& region = testData.getValue<U2Region>(GET_READS_IN);
     U2OpStatusImpl os;
 
     QScopedPointer<U2DbiIterator<U2AssemblyRead>> iter;
@@ -236,12 +236,12 @@ void AssemblyDbiUnitTests_getReads::Test() {
 }
 
 void AssemblyDbiUnitTests_getReadsInvalid::Test() {
-    U2AssemblyDbi *assemblyDbi = AssemblyTestData::getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = AssemblyTestData::getAssemblyDbi();
 
     APITestData testData;
     testData.addValue(INVALID_ASSEMBLY_ID, QByteArray("zZÿÿ"));
 
-    const U2DataId &id = testData.getValue<U2DataId>(INVALID_ASSEMBLY_ID);
+    const U2DataId& id = testData.getValue<U2DataId>(INVALID_ASSEMBLY_ID);
     U2OpStatusImpl os;
     QScopedPointer<U2DbiIterator<U2AssemblyRead>> iter;
     iter.reset(assemblyDbi->getReads(id, U2_REGION_MAX, os));
@@ -249,7 +249,7 @@ void AssemblyDbiUnitTests_getReadsInvalid::Test() {
 }
 
 void AssemblyDbiUnitTests_getReadsByRow::Test() {
-    U2AssemblyDbi *assemblyDbi = AssemblyTestData::getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = AssemblyTestData::getAssemblyDbi();
 
     APITestData testData;
     // getReadsByRow
@@ -281,8 +281,8 @@ void AssemblyDbiUnitTests_getReadsByRow::Test() {
         testData.addValue(GET_READS_BY_ROW_OUT, reads);
     }
 
-    const U2DataId &id = AssemblyTestData::getAssemblyIds()->first();
-    const U2Region &region = testData.getValue<U2Region>(GET_READS_BY_ROW_REGION);
+    const U2DataId& id = AssemblyTestData::getAssemblyIds()->first();
+    const U2Region& region = testData.getValue<U2Region>(GET_READS_BY_ROW_REGION);
     U2OpStatusImpl os;
 
     qint64 begin = testData.getValue<qint64>(GET_READS_BY_ROW_BEGIN);
@@ -299,7 +299,7 @@ void AssemblyDbiUnitTests_getReadsByRow::Test() {
 }
 
 void AssemblyDbiUnitTests_getReadsByRowInvalid::Test() {
-    U2AssemblyDbi *assemblyDbi = AssemblyTestData::getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = AssemblyTestData::getAssemblyDbi();
 
     APITestData testData;
     {
@@ -309,10 +309,10 @@ void AssemblyDbiUnitTests_getReadsByRowInvalid::Test() {
         testData.addValue(GET_READS_BY_ROW_END, 11);
     }
 
-    const U2DataId &id = testData.getValue<U2DataId>(INVALID_ASSEMBLY_ID);
+    const U2DataId& id = testData.getValue<U2DataId>(INVALID_ASSEMBLY_ID);
     qint64 begin = testData.getValue<qint64>(GET_READS_BY_ROW_BEGIN);
     qint64 end = testData.getValue<qint64>(GET_READS_BY_ROW_END);
-    const U2Region &region = testData.getValue<U2Region>(GET_READS_BY_ROW_REGION);
+    const U2Region& region = testData.getValue<U2Region>(GET_READS_BY_ROW_REGION);
     U2OpStatusImpl os;
 
     QScopedPointer<U2DbiIterator<U2AssemblyRead>> iter;
@@ -321,7 +321,7 @@ void AssemblyDbiUnitTests_getReadsByRowInvalid::Test() {
 }
 
 void AssemblyDbiUnitTests_getReadsByName::Test() {
-    U2AssemblyDbi *assemblyDbi = AssemblyTestData::getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = AssemblyTestData::getAssemblyDbi();
 
     APITestData testData;
     // getReadsByName
@@ -344,8 +344,8 @@ void AssemblyDbiUnitTests_getReadsByName::Test() {
 
     QList<U2AssemblyRead> reads;
     AssemblyDbiTestUtil::var2readList(readsVar, reads);
-    const QByteArray &name = reads.first()->name;
-    const U2DataId &id = AssemblyTestData::getAssemblyIds()->first();
+    const QByteArray& name = reads.first()->name;
+    const U2DataId& id = AssemblyTestData::getAssemblyIds()->first();
 
     {
         U2OpStatusImpl os;
@@ -362,12 +362,12 @@ void AssemblyDbiUnitTests_getReadsByName::Test() {
 }
 
 void AssemblyDbiUnitTests_getReadsByNameInvalid::Test() {
-    U2AssemblyDbi *assemblyDbi = AssemblyTestData::getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = AssemblyTestData::getAssemblyDbi();
 
     APITestData testData;
     testData.addValue(INVALID_ASSEMBLY_ID, QByteArray("zZÿÿ"));
 
-    const U2DataId &id = testData.getValue<U2DataId>(INVALID_ASSEMBLY_ID);
+    const U2DataId& id = testData.getValue<U2DataId>(INVALID_ASSEMBLY_ID);
 
     U2OpStatusImpl os;
     QScopedPointer<U2DbiIterator<U2AssemblyRead>> iter;
@@ -376,13 +376,13 @@ void AssemblyDbiUnitTests_getReadsByNameInvalid::Test() {
 }
 
 void AssemblyDbiUnitTests_getMaxPackedRow::Test() {
-    U2AssemblyDbi *assemblyDbi = AssemblyTestData::getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = AssemblyTestData::getAssemblyDbi();
 
     APITestData testData;
     testData.addValue(MAX_PACKED_ROW_IN, U2Region(10, 6));
     testData.addValue(MAX_PACKED_ROW_OUT, 3);
 
-    const U2DataId &id = AssemblyTestData::getAssemblyIds()->first();
+    const U2DataId& id = AssemblyTestData::getAssemblyIds()->first();
     U2OpStatusImpl os;
 
     qint64 actual = assemblyDbi->getMaxPackedRow(id, testData.getValue<U2Region>(MAX_PACKED_ROW_IN), os);
@@ -391,19 +391,19 @@ void AssemblyDbiUnitTests_getMaxPackedRow::Test() {
 }
 
 void AssemblyDbiUnitTests_getMaxPackedRowInvalid::Test() {
-    U2AssemblyDbi *assemblyDbi = AssemblyTestData::getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = AssemblyTestData::getAssemblyDbi();
 
     APITestData testData;
     testData.addValue(INVALID_ASSEMBLY_ID, QByteArray("zZÿÿ"));
 
-    const U2DataId &id = testData.getValue<U2DataId>(INVALID_ASSEMBLY_ID);
+    const U2DataId& id = testData.getValue<U2DataId>(INVALID_ASSEMBLY_ID);
     U2OpStatusImpl os;
     qint64 val = assemblyDbi->getMaxPackedRow(id, U2_REGION_MAX, os);
     CHECK_TRUE(val == -1, "max packed row should be -1");
 }
 
 void AssemblyDbiUnitTests_getMaxEndPos::Test() {
-    U2AssemblyDbi *assemblyDbi = AssemblyTestData::getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = AssemblyTestData::getAssemblyDbi();
     APITestData testData;
     testData.addValue(MAX_END_POS, qint64(146));
 
@@ -415,19 +415,19 @@ void AssemblyDbiUnitTests_getMaxEndPos::Test() {
 }
 
 void AssemblyDbiUnitTests_getMaxEndPosInvalid::Test() {
-    U2AssemblyDbi *assemblyDbi = AssemblyTestData::getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = AssemblyTestData::getAssemblyDbi();
 
     APITestData testData;
     testData.addValue(INVALID_ASSEMBLY_ID, QByteArray("zZÿÿ"));
 
-    const U2DataId &id = testData.getValue<U2DataId>(INVALID_ASSEMBLY_ID);
+    const U2DataId& id = testData.getValue<U2DataId>(INVALID_ASSEMBLY_ID);
     U2OpStatusImpl os;
     qint64 val = assemblyDbi->getMaxEndPos(id, os);
     CHECK_TRUE(val == -1, "max end position should be -1");
 }
 
 void AssemblyDbiUnitTests_createAssemblyObject::Test() {
-    U2AssemblyDbi *assemblyDbi = AssemblyTestData::getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = AssemblyTestData::getAssemblyDbi();
 
     U2Assembly assembly;
     U2AssemblyReadsImportInfo importInfo;
@@ -441,12 +441,12 @@ void AssemblyDbiUnitTests_createAssemblyObject::Test() {
 }
 
 void AssemblyDbiUnitTests_removeReads::Test() {
-    U2AssemblyDbi *assemblyDbi = AssemblyTestData::getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = AssemblyTestData::getAssemblyDbi();
     APITestData testData;
     testData.addValue(REMOVE_READS_IN, U2Region(10, 10));
 
-    const U2DataId &id = AssemblyTestData::getAssemblyIds()->first();
-    const U2Region &region = testData.getValue<U2Region>(REMOVE_READS_IN);
+    const U2DataId& id = AssemblyTestData::getAssemblyIds()->first();
+    const U2Region& region = testData.getValue<U2Region>(REMOVE_READS_IN);
     U2OpStatusImpl os;
 
     QList<U2DataId> readIds;
@@ -456,7 +456,7 @@ void AssemblyDbiUnitTests_removeReads::Test() {
         CHECK_NO_ERROR(os);
 
         while (iter->hasNext()) {
-            const U2AssemblyRead &read = iter->next();
+            const U2AssemblyRead& read = iter->next();
             readIds.append(read->id);
         }
     }
@@ -470,19 +470,19 @@ void AssemblyDbiUnitTests_removeReads::Test() {
 }
 
 void AssemblyDbiUnitTests_removeReadsInvalid::Test() {
-    U2AssemblyDbi *assemblyDbi = AssemblyTestData::getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = AssemblyTestData::getAssemblyDbi();
 
     APITestData testData;
     testData.addValue(INVALID_ASSEMBLY_ID, QByteArray("zZÿÿ"));
 
-    const U2DataId &id = testData.getValue<U2DataId>(INVALID_ASSEMBLY_ID);
+    const U2DataId& id = testData.getValue<U2DataId>(INVALID_ASSEMBLY_ID);
     U2OpStatusImpl os;
     assemblyDbi->removeReads(id, QList<U2DataId>(), os);
     CHECK_TRUE(os.hasError(), "error should be thrown");
 }
 
 void AssemblyDbiUnitTests_addReads::Test() {
-    U2AssemblyDbi *assemblyDbi = AssemblyTestData::getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = AssemblyTestData::getAssemblyDbi();
     APITestData testData;
     // addReads
     {
@@ -499,12 +499,12 @@ void AssemblyDbiUnitTests_addReads::Test() {
 
     QVariantList reads2add = testData.getValue<QVariantList>(ADD_READ);
     QList<U2AssemblyRead> reads;
-    foreach (const QVariant &var, reads2add) {
+    foreach (const QVariant& var, reads2add) {
         const U2AssemblyRead read = var.value<U2AssemblyRead>();
         reads.append(read);
     }
 
-    const U2DataId &id = AssemblyTestData::getAssemblyIds()->first();
+    const U2DataId& id = AssemblyTestData::getAssemblyIds()->first();
     BufferedDbiIterator<U2AssemblyRead> it(reads);
     U2OpStatusImpl os;
 
@@ -528,12 +528,12 @@ void AssemblyDbiUnitTests_addReads::Test() {
 }
 
 void AssemblyDbiUnitTests_addReadsInvalid::Test() {
-    U2AssemblyDbi *assemblyDbi = AssemblyTestData::getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = AssemblyTestData::getAssemblyDbi();
 
     APITestData testData;
     testData.addValue(INVALID_ASSEMBLY_ID, QByteArray("zZÿÿ"));
 
-    const U2DataId &id = testData.getValue<U2DataId>(INVALID_ASSEMBLY_ID);
+    const U2DataId& id = testData.getValue<U2DataId>(INVALID_ASSEMBLY_ID);
     QList<U2AssemblyRead> reads;
     BufferedDbiIterator<U2AssemblyRead> it(reads);
     U2OpStatusImpl os;
@@ -542,9 +542,9 @@ void AssemblyDbiUnitTests_addReadsInvalid::Test() {
 }
 
 void AssemblyDbiUnitTests_pack::Test() {
-    U2AssemblyDbi *assemblyDbi = AssemblyTestData::getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = AssemblyTestData::getAssemblyDbi();
 
-    const U2DataId &id = AssemblyTestData::getAssemblyIds()->first();
+    const U2DataId& id = AssemblyTestData::getAssemblyIds()->first();
     U2AssemblyPackStat stats;
     U2OpStatusImpl os;
 
@@ -556,12 +556,12 @@ void AssemblyDbiUnitTests_pack::Test() {
 }
 
 void AssemblyDbiUnitTests_packInvalid::Test() {
-    U2AssemblyDbi *assemblyDbi = AssemblyTestData::getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = AssemblyTestData::getAssemblyDbi();
 
     APITestData testData;
     testData.addValue(INVALID_ASSEMBLY_ID, QByteArray("zZÿÿ"));
 
-    const U2DataId &id = testData.getValue<U2DataId>(INVALID_ASSEMBLY_ID);
+    const U2DataId& id = testData.getValue<U2DataId>(INVALID_ASSEMBLY_ID);
     U2AssemblyPackStat stat;
     U2OpStatusImpl os;
     assemblyDbi->pack(id, stat, os);
@@ -569,11 +569,11 @@ void AssemblyDbiUnitTests_packInvalid::Test() {
 }
 
 void AssemblyDbiUnitTests_calculateCoverage::Test() {
-    U2AssemblyDbi *assemblyDbi = AssemblyTestData::getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = AssemblyTestData::getAssemblyDbi();
 
     U2OpStatusImpl os;
-    const U2DataId &id = AssemblyTestData::getAssemblyIds()->first();
-    const U2Region &region = U2Region(20, 1);
+    const U2DataId& id = AssemblyTestData::getAssemblyIds()->first();
+    const U2Region& region = U2Region(20, 1);
     U2AssemblyCoverageStat c;
     c.resize(1);
     assemblyDbi->calculateCoverage(id, region, c, os);
@@ -583,12 +583,12 @@ void AssemblyDbiUnitTests_calculateCoverage::Test() {
 }
 
 void AssemblyDbiUnitTests_calculateCoverageInvalid::Test() {
-    U2AssemblyDbi *assemblyDbi = AssemblyTestData::getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = AssemblyTestData::getAssemblyDbi();
     APITestData testData;
     testData.addValue(INVALID_ASSEMBLY_ID, QByteArray("zZÿÿ"));
 
-    const U2DataId &id = testData.getValue<U2DataId>(INVALID_ASSEMBLY_ID);
-    const U2Region &region = U2Region(20, 1);
+    const U2DataId& id = testData.getValue<U2DataId>(INVALID_ASSEMBLY_ID);
+    const U2Region& region = U2Region(20, 1);
     U2AssemblyCoverageStat c;
     U2OpStatusImpl os;
     assemblyDbi->calculateCoverage(id, region, c, os);

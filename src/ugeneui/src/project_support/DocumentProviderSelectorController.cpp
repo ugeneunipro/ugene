@@ -47,7 +47,7 @@ namespace U2 {
 const QString DocumentProviderSelectorController::DOCUMENT_PROVIDER_SELECTOR_CONTROLLER_ROOT = "/document_provider_selector_controller_settings/";
 const QString DocumentProviderSelectorController::SELECTION = "selected";
 
-int DocumentProviderSelectorController::selectResult(const GUrl &url, QList<FormatDetectionResult> &results) {
+int DocumentProviderSelectorController::selectResult(const GUrl& url, QList<FormatDetectionResult>& results) {
     SAFE_POINT(!results.isEmpty(), "Results list is empty!", -1);
     if (results.size() == 1) {
         return 0;
@@ -65,7 +65,7 @@ int DocumentProviderSelectorController::selectResult(const GUrl &url, QList<Form
     return d->getSelectedFormatIdx();
 }
 
-DocumentProviderSelectorController::DocumentProviderSelectorController(const GUrl &url, QList<FormatDetectionResult> &results, QWidget *parent)
+DocumentProviderSelectorController::DocumentProviderSelectorController(const GUrl& url, QList<FormatDetectionResult>& results, QWidget* parent)
     : QDialog(parent),
       formatDetectionResults(results),
       selectedRadioButton(0) {
@@ -79,7 +79,7 @@ DocumentProviderSelectorController::DocumentProviderSelectorController(const GUr
     buttonBox->button(QDialogButtonBox::Ok)->setAutoDefault(true);
     buttonBox->button(QDialogButtonBox::Ok)->setDefault(true);
 
-    QButtonGroup *bg = new QButtonGroup();
+    QButtonGroup* bg = new QButtonGroup();
     connect(bg, SIGNAL(buttonClicked(int)), SLOT(sl_enableConvertInfo(int)));
 
     int size = formatDetectionResults.size();
@@ -87,7 +87,7 @@ DocumentProviderSelectorController::DocumentProviderSelectorController(const GUr
         fillTitle(results[i]);
     }
 
-    Settings *set = AppContext::getSettings();
+    Settings* set = AppContext::getSettings();
     selectedFormat = set->getValue(DOCUMENT_PROVIDER_SELECTOR_CONTROLLER_ROOT + title + "/" + SELECTION).toString();
 
     for (int i = 0; i < size; i++) {
@@ -110,8 +110,8 @@ int DocumentProviderSelectorController::getSelectedFormatIdx() const {
     return 0;
 }
 
-QString DocumentProviderSelectorController::getButtonName(const GObjectType &objectType) {
-    GObjectViewFactoryRegistry *objectViewFactoriesRegistry = AppContext::getObjectViewFactoryRegistry();
+QString DocumentProviderSelectorController::getButtonName(const GObjectType& objectType) {
+    GObjectViewFactoryRegistry* objectViewFactoriesRegistry = AppContext::getObjectViewFactoryRegistry();
     SAFE_POINT(nullptr != objectViewFactoriesRegistry, L10N::nullPointerError("Object View Factories Registry"), "");
 
     QString typeName;
@@ -126,15 +126,15 @@ QString DocumentProviderSelectorController::getButtonName(const GObjectType &obj
         FAIL("An unexpected type", "");
     }
 
-    GObjectViewFactory *factory = objectViewFactoriesRegistry->getFactoryById(id);
+    GObjectViewFactory* factory = objectViewFactoriesRegistry->getFactoryById(id);
     SAFE_POINT(nullptr != factory, L10N::nullPointerError("GObject View Factory"), "");
 
     QString res = tr("%1 in the %2").arg(typeName).arg(factory->getName());
     return res;
 }
 
-ImportWidget *DocumentProviderSelectorController::getRadioButtonWgt(const FormatDetectionResult &result, QString &radioButtonName, const GUrl &url, int it) {
-    ImportWidget *wgt = nullptr;
+ImportWidget* DocumentProviderSelectorController::getRadioButtonWgt(const FormatDetectionResult& result, QString& radioButtonName, const GUrl& url, int it) {
+    ImportWidget* wgt = nullptr;
     if (result.format != nullptr) {
         GObjectType supportedType = result.format->getSupportedObjectTypes().toList().first();
         radioButtonName = result.format->getRadioButtonText();
@@ -148,7 +148,7 @@ ImportWidget *DocumentProviderSelectorController::getRadioButtonWgt(const Format
         if (radioButtonName.isEmpty() && !supportedType.isEmpty()) {
             radioButtonName = getButtonName(supportedType);
         }
-        Settings *set = AppContext::getSettings();
+        Settings* set = AppContext::getSettings();
         QVariantMap settings;
         QVariant defaultFormatId = set->getValue(DOCUMENT_PROVIDER_SELECTOR_CONTROLLER_ROOT + title + "/" + formatId);
         settings[ImportHint_FormatId] = defaultFormatId;
@@ -163,12 +163,12 @@ ImportWidget *DocumentProviderSelectorController::getRadioButtonWgt(const Format
     return wgt;
 }
 
-void DocumentProviderSelectorController::addFormatRadioButton(const GUrl &url, QList<FormatDetectionResult> &results, QButtonGroup *bg, int it) {
-    const FormatDetectionResult &result = results[it];
+void DocumentProviderSelectorController::addFormatRadioButton(const GUrl& url, QList<FormatDetectionResult>& results, QButtonGroup* bg, int it) {
+    const FormatDetectionResult& result = results[it];
     QString text;
-    ImportWidget *wgt = getRadioButtonWgt(result, text, url, it);
+    ImportWidget* wgt = getRadioButtonWgt(result, text, url, it);
 
-    QRadioButton *rbFormat = new QRadioButton(text);
+    QRadioButton* rbFormat = new QRadioButton(text);
     QString name = QString::number(it) + "_radio";
     rbFormat->setObjectName(name);
     formatsRadioButtons << rbFormat;
@@ -182,7 +182,7 @@ void DocumentProviderSelectorController::addFormatRadioButton(const GUrl &url, Q
 }
 
 void DocumentProviderSelectorController::accept() {
-    Settings *set = AppContext::getSettings();
+    Settings* set = AppContext::getSettings();
     QString selectedRadioButton;
     int size = formatInfo.size();
     for (int i = 0; i < size; i++) {
@@ -213,7 +213,7 @@ void DocumentProviderSelectorController::sl_enableConvertInfo(int) {
     }
 }
 
-void DocumentProviderSelectorController::fillTitle(const FormatDetectionResult &result) {
+void DocumentProviderSelectorController::fillTitle(const FormatDetectionResult& result) {
     if (result.format != nullptr) {
         QString formatId = result.format->getFormatId();
         title += QString("%1__").arg(formatId);

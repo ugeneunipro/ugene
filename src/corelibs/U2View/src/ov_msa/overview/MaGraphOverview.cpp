@@ -46,12 +46,12 @@
 
 namespace U2 {
 
-MaGraphOverview::MaGraphOverview(MaEditorWgt *ui)
+MaGraphOverview::MaGraphOverview(MaEditorWgt* ui)
     : MaOverview(ui) {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     setFixedHeight(FIXED_HEIGHT);
 
-    Settings *settings = AppContext::getSettings();
+    Settings* settings = AppContext::getSettings();
     displaySettings.color = settings->getValue(MSA_GRAPH_OVERVIEW_COLOR_KEY, displaySettings.color).value<QColor>();
     displaySettings.type = (MaGraphOverviewDisplaySettings::GraphType)settings->getValue(MSA_GRAPH_OVERVIEW_TYPE_KEY, displaySettings.type).toInt();
     displaySettings.orientation = (MaGraphOverviewDisplaySettings::OrientationMode)settings->getValue(MSA_GRAPH_OVERVIEW_ORIENTATION_KEY, displaySettings.orientation).toInt();
@@ -84,7 +84,7 @@ void MaGraphOverview::sl_redraw() {
     MaOverview::sl_redraw();
 }
 
-void MaGraphOverview::paintEvent(QPaintEvent *e) {
+void MaGraphOverview::paintEvent(QPaintEvent* e) {
     QPainter p(this);
     if (!isValid()) {
         GUIUtils::showMessage(this, p, tr("Multiple sequence alignment is too big. Overview is unavailable."));
@@ -118,7 +118,7 @@ void MaGraphOverview::paintEvent(QPaintEvent *e) {
     QWidget::paintEvent(e);
 }
 
-void MaGraphOverview::resizeEvent(QResizeEvent *e) {
+void MaGraphOverview::resizeEvent(QResizeEvent* e) {
     QWidget::resizeEvent(e);
     if (isVisible()) {
         redrawGraph = true;
@@ -127,17 +127,17 @@ void MaGraphOverview::resizeEvent(QResizeEvent *e) {
     }
 }
 
-void MaGraphOverview::hideEvent(QHideEvent *event) {
+void MaGraphOverview::hideEvent(QHideEvent* event) {
     graphCalculationTaskRunner.cancel();
     MaOverview::hideEvent(event);
 }
 
-void MaGraphOverview::showEvent(QShowEvent *event) {
+void MaGraphOverview::showEvent(QShowEvent* event) {
     MaOverview::showEvent(event);
     QTimer::singleShot(0, this, [this]() { recomputeGraphIfNeeded(); });
 }
 
-void MaGraphOverview::drawVisibleRange(QPainter &p) {
+void MaGraphOverview::drawVisibleRange(QPainter& p) {
     if (editor->isAlignmentEmpty()) {
         setVisibleRangeForEmptyAlignment();
     } else {
@@ -168,7 +168,7 @@ void MaGraphOverview::recomputeGraphIfNeeded() {
     CHECK(!isMaChangeInProgress && isVisible() && state != (graphCalculationTaskRunner.isIdle() ? renderedState : inProgressState), );
     graphCalculationTaskRunner.cancel();
     auto maObject = editor->getMaObject();
-    MaGraphCalculationTask *task;
+    MaGraphCalculationTask* task;
     switch (state.method) {
         case MaGraphCalculationMethod::Strict:
             task = new MaConsensusOverviewCalculationTask(maObject, width(), height());
@@ -199,9 +199,9 @@ void MaGraphOverview::sl_highlightingChanged() {
 
 void MaGraphOverview::updateHighlightingSchemes() {
     if (state.method == MaGraphCalculationMethod::Highlighting) {
-        MaEditorSequenceArea *sequenceArea = ui->getSequenceArea();
-        MsaHighlightingScheme *highlightingScheme = sequenceArea->getCurrentHighlightingScheme();
-        MsaColorScheme *colorScheme = sequenceArea->getCurrentColorScheme();
+        MaEditorSequenceArea* sequenceArea = ui->getSequenceArea();
+        MsaHighlightingScheme* highlightingScheme = sequenceArea->getCurrentHighlightingScheme();
+        MsaColorScheme* colorScheme = sequenceArea->getCurrentColorScheme();
         state.highlightingSchemeId = highlightingScheme->getFactory()->getId();
         state.colorSchemeId = colorScheme->getFactory()->getId();
         SAFE_POINT(!state.highlightingSchemeId.isEmpty() && !state.colorSchemeId.isEmpty(), "There must be valid highlighting and color schemes", );
@@ -211,34 +211,34 @@ void MaGraphOverview::updateHighlightingSchemes() {
     }
 }
 
-void MaGraphOverview::sl_graphOrientationChanged(const MaGraphOverviewDisplaySettings::OrientationMode &orientation) {
+void MaGraphOverview::sl_graphOrientationChanged(const MaGraphOverviewDisplaySettings::OrientationMode& orientation) {
     CHECK(displaySettings.orientation != orientation, );
     displaySettings.orientation = orientation;
     AppContext::getSettings()->setValue(MSA_GRAPH_OVERVIEW_ORIENTATION_KEY, orientation);
     update();
 }
 
-void MaGraphOverview::sl_graphTypeChanged(const MaGraphOverviewDisplaySettings::GraphType &type) {
+void MaGraphOverview::sl_graphTypeChanged(const MaGraphOverviewDisplaySettings::GraphType& type) {
     CHECK(displaySettings.type != type, );
     displaySettings.type = type;
     AppContext::getSettings()->setValue(MSA_GRAPH_OVERVIEW_TYPE_KEY, type);
     update();
 }
 
-void MaGraphOverview::sl_graphColorChanged(const QColor &color) {
+void MaGraphOverview::sl_graphColorChanged(const QColor& color) {
     CHECK(displaySettings.color != color, )
     displaySettings.color = color;
     AppContext::getSettings()->setValue(MSA_GRAPH_OVERVIEW_COLOR_KEY, color);
     update();
 }
 
-void MaGraphOverview::sl_calculationMethodChanged(const MaGraphCalculationMethod &method) {
+void MaGraphOverview::sl_calculationMethodChanged(const MaGraphCalculationMethod& method) {
     state.method = method;
     updateHighlightingSchemes();
     recomputeGraphIfNeeded();
 }
 
-void MaGraphOverview::drawOverview(QPainter &p) {
+void MaGraphOverview::drawOverview(QPainter& p) {
     bool isTopToBottom = displaySettings.orientation == MaGraphOverviewDisplaySettings::FromTopToBottom;
     if (isTopToBottom) {
         // transform coordinate system
@@ -298,11 +298,11 @@ void MaGraphOverview::moveVisibleRange(QPoint pos) {
     update();
 }
 
-const MaGraphOverviewDisplaySettings &MaGraphOverview::getDisplaySettings() const {
+const MaGraphOverviewDisplaySettings& MaGraphOverview::getDisplaySettings() const {
     return displaySettings;
 }
 
-const MaGraphOverviewState &MaGraphOverview::getState() const {
+const MaGraphOverviewState& MaGraphOverview::getState() const {
     return state;
 }
 

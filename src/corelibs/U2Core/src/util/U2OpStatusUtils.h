@@ -55,7 +55,7 @@ public:
     }
 #endif
 
-    virtual void setError(const QString &err) {
+    virtual void setError(const QString& err) {
         error = err;
     }
     virtual QString getError() const {
@@ -85,20 +85,20 @@ public:
     virtual QString getDescription() const {
         return statusDesc;
     }
-    virtual void setDescription(const QString &desc) {
+    virtual void setDescription(const QString& desc) {
         statusDesc = desc;
     }
 
     virtual bool hasWarnings() const {
         return !warnings.isEmpty();
     }
-    virtual void addWarning(const QString &w) {
+    virtual void addWarning(const QString& w) {
         warnings << w;
     }
     virtual QStringList getWarnings() const {
         return warnings;
     }
-    virtual void addWarnings(const QStringList &wList) {
+    virtual void addWarnings(const QStringList& wList) {
         warnings << wList;
     }
 
@@ -137,7 +137,7 @@ public:
     U2OpStatus2Log(LogLevel l = LogLevel_ERROR)
         : level(l) {
     }
-    virtual void setError(const QString &err) {
+    virtual void setError(const QString& err) {
         U2OpStatusImpl::setError(err);
         coreLog.message(level, err);
     }
@@ -157,10 +157,10 @@ public:
 
 class U2OpStatusChildImpl : public U2OpStatusImpl {
 public:
-    U2OpStatusChildImpl(U2OpStatus *_parent = 0, const U2OpStatusMapping &_mapping = U2OpStatusMapping(0, 100))
+    U2OpStatusChildImpl(U2OpStatus* _parent = 0, const U2OpStatusMapping& _mapping = U2OpStatusMapping(0, 100))
         : parent(_parent), mapping(_mapping) {
     }
-    virtual void setError(const QString &err) {
+    virtual void setError(const QString& err) {
         parent->setError(err);
         error = err;
     }
@@ -182,13 +182,13 @@ public:
         progress = v;
     }
 
-    virtual void setDescription(const QString &desc) {
+    virtual void setDescription(const QString& desc) {
         parent->setDescription(desc);
         statusDesc = desc;
     }
 
 private:
-    U2OpStatus *parent;
+    U2OpStatus* parent;
     U2OpStatusMapping mapping;
 };
 

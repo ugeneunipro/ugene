@@ -47,12 +47,12 @@
 
 namespace U2 {
 
-static QString parseUrl(const QString &url) {
+static QString parseUrl(const QString& url) {
     const QString fileString = "file://";
     return url.startsWith(fileString) ? url.mid(fileString.length()) : url;
 }
 
-static QString joinDirs(const QStringList &dirs, const QString &separator) {
+static QString joinDirs(const QStringList& dirs, const QString& separator) {
     static const int maxDirsNumber = 4;
     QStringList result = dirs.mid(0, maxDirsNumber);
     if (dirs.size() > maxDirsNumber) {
@@ -63,7 +63,7 @@ static QString joinDirs(const QStringList &dirs, const QString &separator) {
 
 static QSet<QString> pasteTaskExcludeUrlSet;
 
-static QString generateClipboardUrl(const QStringList &extensions) {
+static QString generateClipboardUrl(const QStringList& extensions) {
     QString result = AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath() + "/clipboard";
     if (!extensions.isEmpty()) {
         result += "." + extensions.first();
@@ -77,14 +77,14 @@ PasteTaskImpl::PasteTaskImpl(bool addToProject)
     : PasteTask(TaskFlags_NR_FOSCOE), addToProject(addToProject) {
 }
 
-QList<Task *> PasteTaskImpl::onSubTaskFinished(Task *task) {
-    QList<Task *> res;
+QList<Task*> PasteTaskImpl::onSubTaskFinished(Task* task) {
+    QList<Task*> res;
     if (task->isCanceled() || task->hasError()) {
         return res;
     }
-    DocumentProviderTask *loadTask = qobject_cast<DocumentProviderTask *>(task);
+    DocumentProviderTask* loadTask = qobject_cast<DocumentProviderTask*>(task);
     if (loadTask != nullptr) {
-        Document *doc = loadTask->takeDocument();
+        Document* doc = loadTask->takeDocument();
         processDocument(doc);
         documents.append(doc);
         if (addToProject) {
@@ -96,13 +96,13 @@ QList<Task *> PasteTaskImpl::onSubTaskFinished(Task *task) {
 
 ///////////////////
 /// PasteFactoryImpl
-PasteFactoryImpl::PasteFactoryImpl(QObject *parent)
+PasteFactoryImpl::PasteFactoryImpl(QObject* parent)
     : PasteFactory(parent) {
 }
 
-PasteTask *PasteFactoryImpl::createPasteTask(bool isAddToProject) {
-    QClipboard *clipboard = QApplication::clipboard();
-    const QMimeData *mimeData = clipboard->mimeData();
+PasteTask* PasteFactoryImpl::createPasteTask(bool isAddToProject) {
+    QClipboard* clipboard = QApplication::clipboard();
+    const QMimeData* mimeData = clipboard->mimeData();
     if (mimeData->hasUrls()) {
         return new PasteUrlsTask(mimeData->urls(), isAddToProject);
     }
@@ -123,10 +123,10 @@ PasteTask *PasteFactoryImpl::createPasteTask(bool isAddToProject) {
 
 ///////////////////////
 /// PasteTextTask
-PasteUrlsTask::PasteUrlsTask(const QList<QUrl> &toPasteUrls, bool isAddToProject)
+PasteUrlsTask::PasteUrlsTask(const QList<QUrl>& toPasteUrls, bool isAddToProject)
     : PasteTaskImpl(isAddToProject) {
     QStringList dirs;
-    for (const QUrl &url : qAsConst(toPasteUrls)) {
+    for (const QUrl& url : qAsConst(toPasteUrls)) {
         QString parsedUrl = parseUrl(url.toLocalFile());
         if (QFileInfo(parsedUrl).isDir()) {
             dirs << parsedUrl;
@@ -140,8 +140,8 @@ PasteUrlsTask::PasteUrlsTask(const QList<QUrl> &toPasteUrls, bool isAddToProject
         return;
     }
     CHECK(!urls.isEmpty(), );
-    for (const GUrl &url : qAsConst(urls)) {
-        DocumentProviderTask *loadDocTask = LoadDocumentTask::getCommonLoadDocTask(url);
+    for (const GUrl& url : qAsConst(urls)) {
+        DocumentProviderTask* loadDocTask = LoadDocumentTask::getCommonLoadDocTask(url);
         if (loadDocTask) {
             addSubTask(loadDocTask);
         }
@@ -150,7 +150,7 @@ PasteUrlsTask::PasteUrlsTask(const QList<QUrl> &toPasteUrls, bool isAddToProject
 
 ///////////////////////
 /// PasteTextTask
-PasteTextTask::PasteTextTask(const QString &clipboardText, bool isAddToProject)
+PasteTextTask::PasteTextTask(const QString& clipboardText, bool isAddToProject)
     : PasteTaskImpl(isAddToProject) {
     StringAdapterFactoryWithStringData ioAdapterFactory(clipboardText);
     QScopedPointer<IOAdapter> ioAdapter(ioAdapterFactory.createIOAdapter());
@@ -161,7 +161,7 @@ PasteTextTask::PasteTextTask(const QString &clipboardText, bool isAddToProject)
         setError(tr("Failed to detect pasted data format."));
         return;
     }
-    DocumentFormat *df = documentFormatList.first().format;
+    DocumentFormat* df = documentFormatList.first().format;
 
     clipboardUrl = generateClipboardUrl(df->getSupportedDocumentFileExtensions());
     pasteTaskExcludeUrlSet << clipboardUrl;
@@ -170,7 +170,7 @@ PasteTextTask::PasteTextTask(const QString &clipboardText, bool isAddToProject)
         return;
     }
 
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(clipboardUrl));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(clipboardUrl));
     CHECK(iof != nullptr, );
 
     if (isAddToProject) {

@@ -22,17 +22,17 @@
 #ifndef _TREE_SETTINGS_DIALOG_
 #define _TREE_SETTINGS_DIALOG_
 
-#include <ui_TreeSettingsDialog.h>
-
 #include "BaseSettingsDialog.h"
 #include "ov_phyltree/TreeSettings.h"
+
+#include <ui_TreeSettingsDialog.h>
 
 namespace U2 {
 
 class TreeSettingsDialog : public BaseSettingsDialog, public Ui_TreeSettingsDialog {
     Q_OBJECT
 public:
-    TreeSettingsDialog(QWidget *parent, const OptionsMap &settings, bool isRectLayout);
+    TreeSettingsDialog(QWidget* parent, const OptionsMap& settings, bool isRectLayout);
 
     void accept() override;
 

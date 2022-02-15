@@ -58,8 +58,8 @@ const QString EXT_TOOL_PATH("path");
 const QString TMP_DIR_PATH("temp-dir");
 
 void MAFFTWorkerFactory::init() {
-    QList<PortDescriptor *> p;
-    QList<Attribute *> a;
+    QList<PortDescriptor*> p;
+    QList<Attribute*> a;
     Descriptor ind(BasePorts::IN_MSA_PORT_ID(), MAFFTWorker::tr("Input MSA"), MAFFTWorker::tr("Multiple sequence alignment to be processed."));
     Descriptor oud(BasePorts::OUT_MSA_PORT_ID(), MAFFTWorker::tr("Multiple sequence alignment"), MAFFTWorker::tr("Result of alignment."));
 
@@ -86,9 +86,9 @@ void MAFFTWorkerFactory::init() {
                                                                                    "<p><dfn>It offers a range of multiple alignment methods, "
                                                                                    "L-INS-i (accurate; for alignment of &lt;&#126;200 sequences), "
                                                                                    "FFT-NS-2 (fast; for alignment of &lt;&#126;10,000 sequences), etc. </dfn></p>"));
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap m;
         m["minimum"] = double(.00);
@@ -118,19 +118,19 @@ void MAFFTWorkerFactory::init() {
     proto->addExternalTool(MAFFTSupport::ET_MAFFT_ID, EXT_TOOL_PATH);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new MAFFTWorkerFactory());
 }
 
 /****************************
-* MAFFTPrompter
-****************************/
-MAFFTPrompter::MAFFTPrompter(Actor *p)
+ * MAFFTPrompter
+ ****************************/
+MAFFTPrompter::MAFFTPrompter(Actor* p)
     : PrompterBase<MAFFTPrompter>(p) {
 }
 QString MAFFTPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
-    Actor *producer = input->getProducer(BasePorts::IN_MSA_PORT_ID());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
+    Actor* producer = input->getProducer(BasePorts::IN_MSA_PORT_ID());
     QString producerName = producer ? tr(" from %1").arg(producer->getLabel()) : "";
 
     QString doc = tr("Aligns each MSA supplied <u>%1</u> with <u>\"MAFFT\"</u>.")
@@ -139,9 +139,9 @@ QString MAFFTPrompter::composeRichDoc() {
     return doc;
 }
 /****************************
-* MAFFTWorker
-****************************/
-MAFFTWorker::MAFFTWorker(Actor *a)
+ * MAFFTWorker
+ ****************************/
+MAFFTWorker::MAFFTWorker(Actor* a)
     : BaseWorker(a), input(nullptr), output(nullptr) {
 }
 
@@ -150,7 +150,7 @@ void MAFFTWorker::init() {
     output = ports.value(BasePorts::OUT_MSA_PORT_ID());
 }
 
-Task *MAFFTWorker::tick() {
+Task* MAFFTWorker::tick() {
     if (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
@@ -179,9 +179,9 @@ Task *MAFFTWorker::tick() {
             algoLog.error(tr("An empty MSA '%1' has been supplied to MAFFT.").arg(msa->getName()));
             return nullptr;
         }
-        MAFFTSupportTask *supportTask = new MAFFTSupportTask(msa, GObjectReference(), cfg);
+        MAFFTSupportTask* supportTask = new MAFFTSupportTask(msa, GObjectReference(), cfg);
         supportTask->addListeners(createLogListeners());
-        Task *t = new NoFailTaskWrapper(supportTask);
+        Task* t = new NoFailTaskWrapper(supportTask);
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
     } else if (input->isEnded()) {
@@ -192,9 +192,9 @@ Task *MAFFTWorker::tick() {
 }
 
 void MAFFTWorker::sl_taskFinished() {
-    NoFailTaskWrapper *wrapper = qobject_cast<NoFailTaskWrapper *>(sender());
+    NoFailTaskWrapper* wrapper = qobject_cast<NoFailTaskWrapper*>(sender());
     CHECK(wrapper->isFinished(), );
-    MAFFTSupportTask *t = qobject_cast<MAFFTSupportTask *>(wrapper->originalTask());
+    MAFFTSupportTask* t = qobject_cast<MAFFTSupportTask*>(wrapper->originalTask());
     if (t->isCanceled()) {
         return;
     }
@@ -211,7 +211,7 @@ void MAFFTWorker::sl_taskFinished() {
 void MAFFTWorker::cleanup() {
 }
 
-void MAFFTWorker::send(const MultipleSequenceAlignment &msa) {
+void MAFFTWorker::send(const MultipleSequenceAlignment& msa) {
     SAFE_POINT(nullptr != output, "NULL output!", );
     SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(msa);
     QVariantMap m;
@@ -219,5 +219,5 @@ void MAFFTWorker::send(const MultipleSequenceAlignment &msa) {
     output->put(Message(BaseTypes::MULTIPLE_ALIGNMENT_TYPE(), m));
 }
 
-}    //namespace LocalWorkflow
-}    //namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

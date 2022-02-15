@@ -62,8 +62,8 @@ const static QString GAP_LENGTH_ATTR("merge-gap-length");
 const static QString SPLIT_ATTR("split-joined-annotations");
 
 QString SequenceSplitPromter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
-    Actor *seqProducer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
+    Actor* seqProducer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString seqProducerText = tr("from <u>%1</u>").arg(seqProducer ? seqProducer->getLabel() : unsetStr);
 
@@ -114,7 +114,7 @@ void SequenceSplitWorker::init() {
     outPort = ports.value(BasePorts::OUT_SEQ_PORT_ID());
 }
 
-Task *SequenceSplitWorker::tick() {
+Task* SequenceSplitWorker::tick() {
     if (seqPort->hasMessage()) {
         seqPort->getContext();
         Message inputMessage = getMessageAndSetupScriptValues(seqPort);
@@ -157,16 +157,16 @@ Task *SequenceSplitWorker::tick() {
 
         ssTasks.clear();
 
-        foreach (const SharedAnnotationData &ann, inputAnns) {
-            Task *t = new ExtractAnnotatedRegionTask(inputSeq, ann, cfg);
+        foreach (const SharedAnnotationData& ann, inputAnns) {
+            Task* t = new ExtractAnnotatedRegionTask(inputSeq, ann, cfg);
             ssTasks.push_back(t);
         }
         if (ssTasks.isEmpty()) {
             return new FailTask(tr("Nothing to extract: no sequence region match the constraints"));
         }
 
-        Task *t = new MultiTask("Sequence split tasks", ssTasks);
-        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_onTaskFinished(Task *)));
+        Task* t = new MultiTask("Sequence split tasks", ssTasks);
+        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_onTaskFinished(Task*)));
         return t;
     } else if (seqPort->isEnded()) {
         setDone();
@@ -178,17 +178,17 @@ Task *SequenceSplitWorker::tick() {
 void SequenceSplitWorker::cleanup() {
 }
 
-void SequenceSplitWorker::sl_onTaskFinished(Task *) {
+void SequenceSplitWorker::sl_onTaskFinished(Task*) {
     QVariantMap channelContext = outPort->getContext();
     int metadataId = outPort->getContextMetadataId();
-    foreach (Task *t, ssTasks) {
-        ExtractAnnotatedRegionTask *ssT = qobject_cast<ExtractAnnotatedRegionTask *>(t);
+    foreach (Task* t, ssTasks) {
+        ExtractAnnotatedRegionTask* ssT = qobject_cast<ExtractAnnotatedRegionTask*>(t);
         SAFE_POINT(ssT, "Finished task 'ExtractAnnotatedRegionTask' is NULL", );
         int seqCount = 1;
         QList<DNASequence> sequences = ssT->getResultedSequences();
         QList<DNASequence>::Iterator iter(sequences.begin());
         for (; iter != sequences.end(); iter++) {
-            DNASequence &resSeq = *iter;
+            DNASequence& resSeq = *iter;
             QString name = resSeq.getName() + " " + U1AnnotationUtils::buildLocationString(ssT->getInputAnnotation()->getRegions()) + " " + ssT->getInputAnnotation()->name;
             if (sequences.size() > 1) {
                 name += " " + QString::number(seqCount++);
@@ -212,8 +212,8 @@ void SequenceSplitWorker::sl_onTaskFinished(Task *) {
 }
 
 void SequenceSplitWorkerFactory::init() {
-    QList<PortDescriptor *> portDescs;
-    QList<Attribute *> attribs;
+    QList<PortDescriptor*> portDescs;
+    QList<Attribute*> attribs;
 
     // accept sequence and annotated regions as input
     QMap<Descriptor, DataTypePtr> inputMap;
@@ -224,7 +224,7 @@ void SequenceSplitWorkerFactory::init() {
     outMap[BaseSlots::DNA_SEQUENCE_SLOT()] = BaseTypes::DNA_SEQUENCE_TYPE();
 
     DataTypePtr inSet(new MapDataType(Descriptor(REGIONED_SEQ_TYPE), inputMap));
-    DataTypeRegistry *dr = WorkflowEnv::getDataTypeRegistry();
+    DataTypeRegistry* dr = WorkflowEnv::getDataTypeRegistry();
     assert(dr);
     dr->registerEntry(inSet);
 
@@ -270,10 +270,10 @@ void SequenceSplitWorkerFactory::init() {
     Descriptor desc(SequenceSplitWorkerFactory::ACTOR,
                     SequenceSplitWorker::tr("Get Sequences by Annotations"),
                     SequenceSplitWorker::tr("Creates sequences from annotated regions of input sequence."));
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, portDescs, attribs);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, portDescs, attribs);
 
     // create delegates for attribute editing
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap eMap;
         eMap["minimum"] = (0);
@@ -289,11 +289,11 @@ void SequenceSplitWorkerFactory::init() {
     proto->setPrompter(new SequenceSplitPromter());
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new SequenceSplitWorkerFactory());
 }
 
-Worker *SequenceSplitWorkerFactory::createWorker(Actor *a) {
+Worker* SequenceSplitWorkerFactory::createWorker(Actor* a) {
     return new SequenceSplitWorker(a);
 }
 

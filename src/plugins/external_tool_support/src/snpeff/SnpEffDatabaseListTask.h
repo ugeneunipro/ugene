@@ -43,6 +43,6 @@ private:
     QString snpEffVersion;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SNPEFF_DATABASE_LIST_TASK_H_
+#endif  // _U2_SNPEFF_DATABASE_LIST_TASK_H_

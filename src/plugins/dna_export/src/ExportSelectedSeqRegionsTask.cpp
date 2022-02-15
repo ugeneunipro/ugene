@@ -30,7 +30,7 @@ namespace U2 {
 
 namespace {
 
-bool isSeqObjectValid(const QPointer<U2SequenceObject> &seqObject, U2OpStatus &os) {
+bool isSeqObjectValid(const QPointer<U2SequenceObject>& seqObject, U2OpStatus& os) {
     if (seqObject.isNull()) {
         os.setError(CreateExportItemsFromSeqRegionsTask::tr("Invalid sequence object detected"));
         return false;
@@ -41,11 +41,11 @@ bool isSeqObjectValid(const QPointer<U2SequenceObject> &seqObject, U2OpStatus &o
 
 // removes all annotation regions that does not intersect the given region
 // adjusts startpos to make in relative to the given region
-void adjustAnnotationLocations(const U2Region &r, QList<SharedAnnotationData> &anns) {
+void adjustAnnotationLocations(const U2Region& r, QList<SharedAnnotationData>& anns) {
     for (int i = anns.size(); --i >= 0;) {
-        SharedAnnotationData &d = anns[i];
+        SharedAnnotationData& d = anns[i];
         for (int j = d->location->regions.size(); --j >= 0;) {
-            U2Region &ar = d->location->regions[j];
+            U2Region& ar = d->location->regions[j];
             U2Region resr = ar.intersect(r);
             if (resr.isEmpty()) {
                 d->location->regions.remove(j);
@@ -66,18 +66,18 @@ void adjustAnnotationLocations(const U2Region &r, QList<SharedAnnotationData> &a
 /// CreateExportItemsFromSeqRegionsTask
 //////////////////////////////////////////////////////////////////////////
 
-CreateExportItemsFromSeqRegionsTask::CreateExportItemsFromSeqRegionsTask(const QPointer<U2SequenceObject> &seqObject,
-                                                                         const QList<QPointer<AnnotationTableObject>> &connectedAts,
-                                                                         const QVector<U2Region> &regions,
-                                                                         const ExportSequenceTaskSettings &exportSettings,
-                                                                         const DNATranslation *aminoTrans,
-                                                                         const DNATranslation *backTranslation,
-                                                                         const DNATranslation *complTrans)
+CreateExportItemsFromSeqRegionsTask::CreateExportItemsFromSeqRegionsTask(const QPointer<U2SequenceObject>& seqObject,
+                                                                         const QList<QPointer<AnnotationTableObject>>& connectedAts,
+                                                                         const QVector<U2Region>& regions,
+                                                                         const ExportSequenceTaskSettings& exportSettings,
+                                                                         const DNATranslation* aminoTrans,
+                                                                         const DNATranslation* backTranslation,
+                                                                         const DNATranslation* complTrans)
     : Task(tr("Extract sequences from regions task"), TaskFlag_None), seqObject(seqObject), annotations(connectedAts), regions(regions),
       exportSettings(exportSettings), aminoTrans(aminoTrans), backTranslation(backTranslation), complTrans(complTrans) {
     CHECK(isSeqObjectValid(seqObject, stateInfo), );
 
-    foreach (const QPointer<AnnotationTableObject> &aobj, annotations) {
+    foreach (const QPointer<AnnotationTableObject>& aobj, annotations) {
         if (aobj.isNull()) {
             stateInfo.setError(tr("Invalid annotation table detected"));
             return;
@@ -85,18 +85,18 @@ CreateExportItemsFromSeqRegionsTask::CreateExportItemsFromSeqRegionsTask(const Q
     }
 }
 
-const ExportSequenceTaskSettings &CreateExportItemsFromSeqRegionsTask::getExportSettings() const {
+const ExportSequenceTaskSettings& CreateExportItemsFromSeqRegionsTask::getExportSettings() const {
     return exportSettings;
 }
 
-QList<SharedAnnotationData> CreateExportItemsFromSeqRegionsTask::findAnnotationsInRegion(const U2Region &region) {
+QList<SharedAnnotationData> CreateExportItemsFromSeqRegionsTask::findAnnotationsInRegion(const U2Region& region) {
     QList<SharedAnnotationData> result;
-    foreach (const QPointer<AnnotationTableObject> &aobj, annotations) {
+    foreach (const QPointer<AnnotationTableObject>& aobj, annotations) {
         if (aobj.isNull()) {
             stateInfo.setError(tr("Invalid annotation table detected"));
             return result;
         }
-        foreach (Annotation *a, aobj->getAnnotationsByRegion(region)) {
+        foreach (Annotation* a, aobj->getAnnotationsByRegion(region)) {
             result.append(a->getData());
         }
     }
@@ -117,7 +117,7 @@ void CreateExportItemsFromSeqRegionsTask::run() {
     ExportSequenceItem endItem;
     int regionCount = 0;
     QSet<QString> usedNames;
-    foreach (const U2Region &r, regions) {
+    foreach (const U2Region& r, regions) {
         const QString prefix = QString("region [%1 %2]").arg(r.startPos + 1).arg(r.endPos());
         QString name = prefix;
 
@@ -161,10 +161,14 @@ void CreateExportItemsFromSeqRegionsTask::run() {
 
         stateInfo.setProgress(100 * ++regionCount / regions.size());
 
-        const qint64 endPos = r.endPos();
+        qint64 endPos = r.endPos();
         CHECK_CONTINUE(!(r.startPos == 0 && endPos == seqLength));
-        CHECK_OPERATIONS(r.startPos != 0, startItem = ei, continue);
-        CHECK_OPERATIONS(endPos != seqLength, endItem = ei, continue);
+
+        if (r.startPos == 0) {
+            startItem = ei;
+        } else if (endPos == seqLength) {
+            endItem = ei;
+        }
     }
 
     if (!startItem.isEmpty() && !endItem.isEmpty() && seqObject->isCircular()) {
@@ -181,12 +185,12 @@ void CreateExportItemsFromSeqRegionsTask::run() {
 /// ExportSelectedSeqRegionsTask
 //////////////////////////////////////////////////////////////////////////
 
-ExportSelectedSeqRegionsTask::ExportSelectedSeqRegionsTask(U2SequenceObject *seqObject, const QSet<AnnotationTableObject *> &connectedAts, const QVector<U2Region> &regions, const ExportSequenceTaskSettings &exportSettings, const DNATranslation *aminoTrans, const DNATranslation *backTrans, const DNATranslation *complTrans)
+ExportSelectedSeqRegionsTask::ExportSelectedSeqRegionsTask(U2SequenceObject* seqObject, const QSet<AnnotationTableObject*>& connectedAts, const QVector<U2Region>& regions, const ExportSequenceTaskSettings& exportSettings, const DNATranslation* aminoTrans, const DNATranslation* backTrans, const DNATranslation* complTrans)
     : DocumentProviderTask(tr("Export selected regions from a sequence task"), TaskFlags_NR_FOSE_COSC), seqObject(seqObject),
       regions(regions), exportSettings(exportSettings), aminoTrans(aminoTrans), backTrans(backTrans), complTrans(complTrans) {
     CHECK(isSeqObjectValid(seqObject, stateInfo), );
 
-    foreach (AnnotationTableObject *aObj, connectedAts) {
+    foreach (AnnotationTableObject* aObj, connectedAts) {
         if (nullptr == aObj) {
             stateInfo.setError(tr("Invalid annotation table detected"));
             return;
@@ -197,22 +201,22 @@ ExportSelectedSeqRegionsTask::ExportSelectedSeqRegionsTask(U2SequenceObject *seq
 }
 
 void ExportSelectedSeqRegionsTask::prepare() {
-    CreateExportItemsFromSeqRegionsTask *t = new CreateExportItemsFromSeqRegionsTask(seqObject, annotations, regions, exportSettings, aminoTrans, backTrans, complTrans);
+    CreateExportItemsFromSeqRegionsTask* t = new CreateExportItemsFromSeqRegionsTask(seqObject, annotations, regions, exportSettings, aminoTrans, backTrans, complTrans);
     addSubTask(t);
 }
 
-QList<Task *> ExportSelectedSeqRegionsTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> resultTasks;
+QList<Task*> ExportSelectedSeqRegionsTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> resultTasks;
 
     CHECK(!subTask->hasError() && !subTask->isCanceled(), resultTasks);
 
-    CreateExportItemsFromSeqRegionsTask *createExportItemsTask = qobject_cast<CreateExportItemsFromSeqRegionsTask *>(subTask);
+    CreateExportItemsFromSeqRegionsTask* createExportItemsTask = qobject_cast<CreateExportItemsFromSeqRegionsTask*>(subTask);
     if (nullptr != createExportItemsTask) {
         resultTasks.append(new ExportSequenceTask(createExportItemsTask->getExportSettings()));
         return resultTasks;
     }
 
-    ExportSequenceTask *exportSeqTask = qobject_cast<ExportSequenceTask *>(subTask);
+    ExportSequenceTask* exportSeqTask = qobject_cast<ExportSequenceTask*>(subTask);
     if (nullptr != exportSeqTask) {
         resultDocument = exportSeqTask->takeDocument();
     }

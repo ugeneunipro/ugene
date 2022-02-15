@@ -37,7 +37,7 @@ typedef PrompterBase<RepeatPrompter> RepeatPrompterBase;
 class RepeatPrompter : public RepeatPrompterBase {
     Q_OBJECT
 public:
-    RepeatPrompter(Actor *p = 0)
+    RepeatPrompter(Actor* p = 0)
         : RepeatPrompterBase(p) {
     }
 
@@ -48,10 +48,10 @@ protected:
 class RepeatWorker : public BaseWorker {
     Q_OBJECT
 public:
-    RepeatWorker(Actor *a);
+    RepeatWorker(Actor* a);
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private slots:
@@ -72,7 +72,7 @@ public:
     RepeatWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new RepeatWorker(a);
     }
 };

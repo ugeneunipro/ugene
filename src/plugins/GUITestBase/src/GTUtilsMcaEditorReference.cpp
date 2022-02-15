@@ -41,9 +41,9 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsMcaEditorReference"
 
 #define GT_METHOD_NAME "clickToPosition"
-void GTUtilsMcaEditorReference::clickToPosition(HI::GUITestOpStatus &os, int position) {
-    McaEditorReferenceArea *referenceArea = GTUtilsMcaEditor::getReferenceArea(os);
-    McaEditorWgt *mcaEditorWgt = GTUtilsMcaEditor::getEditorUi(os);
+void GTUtilsMcaEditorReference::clickToPosition(HI::GUITestOpStatus& os, int position) {
+    McaEditorReferenceArea* referenceArea = GTUtilsMcaEditor::getReferenceArea(os);
+    McaEditorWgt* mcaEditorWgt = GTUtilsMcaEditor::getEditorUi(os);
     GT_CHECK(mcaEditorWgt->getSequenceArea()->isInRange(QPoint(position, 0)), QString("Position %1 is out of range").arg(position));
 
     scrollToPosition(os, position);
@@ -58,7 +58,7 @@ void GTUtilsMcaEditorReference::clickToPosition(HI::GUITestOpStatus &os, int pos
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "scrollToPosition"
-void GTUtilsMcaEditorReference::scrollToPosition(HI::GUITestOpStatus &os, int position) {
+void GTUtilsMcaEditorReference::scrollToPosition(HI::GUITestOpStatus& os, int position) {
     const int scrollBarValue = GTUtilsMcaEditor::getEditorUi(os)->getBaseWidthController()->getBaseGlobalRange(position).center() -
                                GTUtilsMcaEditor::getEditorUi(os)->getSequenceArea()->width() / 2;
     CHECK(!GTUtilsMcaEditor::getReferenceArea(os)->getVisibleRange().contains(position), );

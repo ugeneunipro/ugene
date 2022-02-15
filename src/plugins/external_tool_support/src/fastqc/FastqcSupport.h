@@ -31,7 +31,7 @@ class FastQCSupport : public ExternalTool {
 public:
     FastQCSupport();
 
-    static ExternalTool *getJava();
+    static ExternalTool* getJava();
 
     static const QString ET_FASTQC;
     static const QString ET_FASTQC_ID;
@@ -40,5 +40,5 @@ private slots:
     void sl_javaPathChanged();
 };
 
-}    // namespace U2
-#endif    // _U2_FASTQC_SUPPORT_H_
+}  // namespace U2
+#endif  // _U2_FASTQC_SUPPORT_H_

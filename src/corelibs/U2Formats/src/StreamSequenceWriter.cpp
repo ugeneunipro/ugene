@@ -31,18 +31,18 @@
 
 namespace U2 {
 
-StreamShortReadsWriter::StreamShortReadsWriter(const GUrl &url, const QString &refName, int refLength)
+StreamShortReadsWriter::StreamShortReadsWriter(const GUrl& url, const QString& refName, int refLength)
     : numSeqWritten(0), refSeqLength(refLength) {
     refSeqName = QString(refName).replace(QRegExp("\\s|\\t"), "_").toLatin1();
 
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     io = iof->createIOAdapter();
     bool res = io->open(url, IOAdapterMode_Write);
     assert(res == true);
     Q_UNUSED(res);
 }
 
-bool StreamShortReadsWriter::writeNextAlignedRead(int offset, const DNASequence &seq) {
+bool StreamShortReadsWriter::writeNextAlignedRead(int offset, const DNASequence& seq) {
     bool writeOk = format.storeAlignedRead(offset, seq, io, refSeqName, refSeqLength, numSeqWritten == 0);
     if (writeOk) {
         ++numSeqWritten;
@@ -61,7 +61,7 @@ StreamShortReadsWriter::~StreamShortReadsWriter() {
 }
 
 StreamShortReadWriter::StreamShortReadWriter() {
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     io = iof->createIOAdapter();
 }
 
@@ -70,20 +70,20 @@ StreamShortReadWriter::~StreamShortReadWriter() {
     delete io;
 }
 
-bool StreamShortReadWriter::init(const GUrl &url) {
+bool StreamShortReadWriter::init(const GUrl& url) {
     outputPath = url;
     bool res = io->open(url, IOAdapterMode_Write);
     return res;
 }
 
-bool StreamShortReadWriter::writeNextSequence(const DNASequence &seq) {
+bool StreamShortReadWriter::writeNextSequence(const DNASequence& seq) {
     U2OpStatus2Log os;
     FastaFormat::storeSequence(seq, io, os);
 
     return !os.hasError();
 }
 
-bool StreamShortReadWriter::writeNextSequence(const U2SequenceObject *seq) {
+bool StreamShortReadWriter::writeNextSequence(const U2SequenceObject* seq) {
     U2OpStatus2Log os;
     FastaFormat::storeSequence(seq, io, os);
 
@@ -100,7 +100,7 @@ StreamGzippedShortReadWriter::StreamGzippedShortReadWriter()
     delete io;
     io = nullptr;
 
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::GZIPPED_LOCAL_FILE);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::GZIPPED_LOCAL_FILE);
     io = iof->createIOAdapter();
 }
 

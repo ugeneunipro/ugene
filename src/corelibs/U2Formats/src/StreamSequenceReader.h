@@ -53,8 +53,8 @@ class U2FORMATS_EXPORT StreamSequenceReader : public QObject {
         ReaderContext()
             : io(nullptr), format(nullptr) {
         }
-        IOAdapter *io;
-        DocumentFormat *format;
+        IOAdapter* io;
+        DocumentFormat* format;
     };
     QList<ReaderContext> readers;
     int currentReaderIndex;
@@ -67,11 +67,11 @@ public:
     StreamSequenceReader();
     ~StreamSequenceReader();
 
-    bool init(const QStringList &urls);
-    bool init(const QList<GUrl> &urls);
+    bool init(const QStringList& urls);
+    bool init(const QList<GUrl>& urls);
 
-    const IOAdapter *getIO() const;
-    DocumentFormat *getFormat() const;
+    const IOAdapter* getIO() const;
+    DocumentFormat* getFormat() const;
 
     bool hasNext();
     bool hasError() {
@@ -79,9 +79,9 @@ public:
     }
     int getProgress();
     QString getErrorMessage();
-    DNASequence *getNextSequenceObject();
+    DNASequence* getNextSequenceObject();
 
-    static int getNumberOfSequences(const QString &url, U2OpStatus &os);
+    static int getNumberOfSequences(const QString& url, U2OpStatus& os);
 };
 
 }  // namespace U2

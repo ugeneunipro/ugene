@@ -26,8 +26,8 @@
 namespace U2 {
 
 FindHighFlexRegions::FindHighFlexRegions(
-    const DNASequence &_sequence,
-    const HighFlexSettings &_settings)
+    const DNASequence& _sequence,
+    const HighFlexSettings& _settings)
     : Task(tr("Searching for regions of high DNA flexibility"), TaskFlags_FOSCOE),
       sequence(_sequence),
       settings(_settings) {
@@ -35,7 +35,7 @@ FindHighFlexRegions::FindHighFlexRegions(
 
 void FindHighFlexRegions::run() {
     FindHighFlexRegionsAlgorithm::find(
-        dynamic_cast<FindHighFlexRegionsListener *>(this),
+        dynamic_cast<FindHighFlexRegionsListener*>(this),
         settings,
         sequence.constSequence(),
         sequence.length(),
@@ -47,7 +47,7 @@ QList<HighFlexResult> FindHighFlexRegions::getResults() const {
     return results;
 }
 
-void FindHighFlexRegions::onResult(const HighFlexResult &result) {
+void FindHighFlexRegions::onResult(const HighFlexResult& result) {
     results.append(result);
 }
 

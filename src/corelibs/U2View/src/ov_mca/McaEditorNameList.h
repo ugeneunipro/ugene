@@ -32,26 +32,26 @@ class McaEditorWgt;
 class U2VIEW_EXPORT McaEditorNameList : public MaEditorNameList {
     Q_OBJECT
 public:
-    McaEditorNameList(McaEditorWgt *ui, QScrollBar *nhBar);
+    McaEditorNameList(McaEditorWgt* ui, QScrollBar* nhBar);
 
 protected slots:
-    void sl_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &oldSelection) override;
+    void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& oldSelection) override;
 
 protected:
-    void drawCollapsibleSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect, bool isSelected, bool isCollapsed, bool isReference) override;
+    void drawCollapsibleSequenceItem(QPainter& painter, int rowIndex, const QString& name, const QRect& rect, bool isSelected, bool isCollapsed, bool isReference) override;
 
     /**
      * Sets selection to the given rects list as result of the Name List triggered selection change.
      * Clears reference selection if the list whole sequence selection.
      */
-    void setSelection(const MaEditorSelection &selection) override;
+    void setSelection(const MaEditorSelection& selection) override;
 
 private:
-    McaEditor *getEditor() const;
+    McaEditor* getEditor() const;
     bool isRowReversed(int rowIndex) const;
-    void drawText(QPainter &painter, const QString &text, const QRect &rect, bool selected) override;
-    void drawArrow(QPainter &painter, bool isReversed, const QRectF &arrowRect);
-    QRectF calculateArrowRect(const U2Region &yRange) const;
+    void drawText(QPainter& painter, const QString& text, const QRect& rect, bool selected) override;
+    void drawArrow(QPainter& painter, bool isReversed, const QRectF& arrowRect);
+    QRectF calculateArrowRect(const U2Region& yRange) const;
 
     int getAvailableWidth() const override;
     int getMinimumWidgetWidth() const;

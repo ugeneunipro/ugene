@@ -49,8 +49,8 @@ public:
         U2Region searchRegion;
     };
 
-    BlastLocalSearchDialogFiller(const Parameters &parameters, HI::GUITestOpStatus &os);
-    BlastLocalSearchDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario);
+    BlastLocalSearchDialogFiller(const Parameters& parameters, HI::GUITestOpStatus& os);
+    BlastLocalSearchDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario);
 
     void commonScenario() override;
 

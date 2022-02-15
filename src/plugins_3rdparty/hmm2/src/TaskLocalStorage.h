@@ -40,10 +40,10 @@ struct ContextIdContainer {
 
 class TaskLocalData {
 public:
-    static HMMERTaskLocalData *current();
+    static HMMERTaskLocalData* current();
 
     // initializes HMMContext for current thread
-    static HMMERTaskLocalData *createHMMContext(qint64 contextId, bool bindThreadToContext);
+    static HMMERTaskLocalData* createHMMContext(qint64 contextId, bool bindThreadToContext);
 
     static void freeHMMContext(qint64 contextId);
 
@@ -53,8 +53,8 @@ public:
     static qint64 detachFromHMMContext();
 
 private:
-    static QHash<qint64, struct HMMERTaskLocalData *> data;
-    static QThreadStorage<ContextIdContainer *> tls;
+    static QHash<qint64, struct HMMERTaskLocalData*> data;
+    static QThreadStorage<ContextIdContainer*> tls;
     static QMutex mutex;
 };
 }  // namespace U2

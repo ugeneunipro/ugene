@@ -27,13 +27,13 @@ namespace U2 {
 
 namespace Workflow {
 
-ReadDbObjActorPrototype::ReadDbObjActorPrototype(const Descriptor &desc, const QList<PortDescriptor *> &ports, const QList<Attribute *> &attrs)
+ReadDbObjActorPrototype::ReadDbObjActorPrototype(const Descriptor& desc, const QList<PortDescriptor*>& ports, const QList<Attribute*>& attrs)
     : IntegralBusActorPrototype(desc, ports, attrs) {
 }
 
-void ReadDbObjActorPrototype::setCompatibleDbObjectTypes(const QSet<GObjectType> &types) {
-    foreach (Attribute *a, attrs) {
-        URLAttribute *urlAttr = dynamic_cast<URLAttribute *>(a);
+void ReadDbObjActorPrototype::setCompatibleDbObjectTypes(const QSet<GObjectType>& types) {
+    foreach (Attribute* a, attrs) {
+        URLAttribute* urlAttr = dynamic_cast<URLAttribute*>(a);
         if (nullptr != urlAttr) {
             urlAttr->setCompatibleObjectTypes(types);
             break;

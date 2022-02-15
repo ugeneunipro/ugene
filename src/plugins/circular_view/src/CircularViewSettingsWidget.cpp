@@ -33,7 +33,7 @@
 
 namespace U2 {
 
-CircularViewSettingsWidget::CircularViewSettingsWidget(CircularViewSettings *s, CircularViewSplitter *cv)
+CircularViewSettingsWidget::CircularViewSettingsWidget(CircularViewSettings* s, CircularViewSplitter* cv)
     : circularViewSplitter(cv),
       settings(s),
       settingsWidget(nullptr),
@@ -79,7 +79,7 @@ void CircularViewSettingsWidget::sl_modifySettings() {
     }
 }
 
-void CircularViewSettingsWidget::sl_cvSplitterWasCreatedOrRemoved(CircularViewSplitter *splitter, CircularViewSettings *settings) {
+void CircularViewSettingsWidget::sl_cvSplitterWasCreatedOrRemoved(CircularViewSplitter* splitter, CircularViewSettings* settings) {
     if (settings != this->settings) {
         return;
     }
@@ -122,18 +122,18 @@ void CircularViewSettingsWidget::initLayout() {
     }
 
     settingsWidget = new QWidget(this);
-    QVBoxLayout *settingsLayout = new QVBoxLayout(settingsWidget);
+    QVBoxLayout* settingsLayout = new QVBoxLayout(settingsWidget);
     settingsLayout->setMargin(0);
     settingsLayout->setSpacing(0);
     settingsWidget->setLayout(settingsLayout);
 
-    ShowHideSubgroupWidget *titleGroup = new ShowHideSubgroupWidget("CV_TITLE", tr("Title"), titleWidget, true);
+    ShowHideSubgroupWidget* titleGroup = new ShowHideSubgroupWidget("CV_TITLE", tr("Title"), titleWidget, true);
     settingsLayout->addWidget(titleGroup);
 
-    ShowHideSubgroupWidget *rulerGroup = new ShowHideSubgroupWidget("CV_RULER", tr("Ruler"), rulerWidget, true);
+    ShowHideSubgroupWidget* rulerGroup = new ShowHideSubgroupWidget("CV_RULER", tr("Ruler"), rulerWidget, true);
     settingsLayout->addWidget(rulerGroup);
 
-    ShowHideSubgroupWidget *annotationGroup = new ShowHideSubgroupWidget("CV_ANNOTATION", tr("Annotations"), annotationLabelWidget, true);
+    ShowHideSubgroupWidget* annotationGroup = new ShowHideSubgroupWidget("CV_ANNOTATION", tr("Annotations"), annotationLabelWidget, true);
     settingsLayout->addWidget(annotationGroup);
 
     cvSettingsMainLayout->addWidget(settingsWidget);

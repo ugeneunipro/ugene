@@ -46,7 +46,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
         "e_coli_1000.gff",
         AlignShortReadsFiller::Parameters::Bowtie2);
 
-    AlignShortReadsFiller *alignShortReadsFiller = new AlignShortReadsFiller(os, &parameters);
+    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(os, &parameters);
     CHECK_OP(os, );
     GTUtilsDialog::waitForDialog(os, alignShortReadsFiller);
     CHECK_OP(os, );
@@ -73,7 +73,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
         "e_coli_1000.fastq",
         AlignShortReadsFiller::Parameters::Bowtie);
 
-    AlignShortReadsFiller *alignShortReadsFiller = new AlignShortReadsFiller(os, &parameters);
+    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(os, &parameters);
     CHECK_OP(os, );
     GTUtilsDialog::waitForDialog(os, alignShortReadsFiller);
     CHECK_OP(os, );
@@ -103,7 +103,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
         "scerevisiae.bam.bai",
         AlignShortReadsFiller::Parameters::Bwa);
 
-    AlignShortReadsFiller *alignShortReadsFiller = new AlignShortReadsFiller(os, &parameters);
+    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(os, &parameters);
     CHECK_OP(os, );
     GTUtilsDialog::waitForDialog(os, alignShortReadsFiller);
     CHECK_OP(os, );
@@ -124,7 +124,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
         testDir + "_common_data/e_coli/",
         "e_coli_1000.gff");
 
-    AlignShortReadsFiller *alignShortReadsFiller = new AlignShortReadsFiller(os, &parameters);
+    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(os, &parameters);
     CHECK_OP(os, );
     GTUtilsDialog::waitForDialog(os, alignShortReadsFiller);
     CHECK_OP(os, );

@@ -32,16 +32,16 @@ namespace U2 {
  */
 class U2CORE_EXPORT UdrRecordId {
 public:
-    UdrRecordId(const UdrSchemaId &schemaId, const U2DataId &recordId);
+    UdrRecordId(const UdrSchemaId& schemaId, const U2DataId& recordId);
 
     /**
      * Schema identifier that is unique within UGENE.
      */
-    const UdrSchemaId &getSchemaId() const;
+    const UdrSchemaId& getSchemaId() const;
     /**
      * Record identifier that is unique within the schema.
      */
-    const U2DataId &getRecordId() const;
+    const U2DataId& getRecordId() const;
 
 private:
     UdrSchemaId schemaId;
@@ -59,25 +59,25 @@ public:
     UdrValue();
     UdrValue(qint64 intValue);
     UdrValue(double doubleValue);
-    UdrValue(const QString &stringValue);
-    UdrValue(const U2DataId &dataId);
+    UdrValue(const QString& stringValue);
+    UdrValue(const U2DataId& dataId);
 
     /**
      * Returns an integer value if it is the integer container.
      */
-    qint64 getInt(U2OpStatus &os) const;
+    qint64 getInt(U2OpStatus& os) const;
     /**
      * Returns a double value if it is the double container.
      */
-    double getDouble(U2OpStatus &os) const;
+    double getDouble(U2OpStatus& os) const;
     /**
      * Returns a string value if it is the string container.
      */
-    QString getString(U2OpStatus &os) const;
+    QString getString(U2OpStatus& os) const;
     /**
      * Returns a object id if it is the U2DataId container.
      */
-    U2DataId getDataId(U2OpStatus &os) const;
+    U2DataId getDataId(U2OpStatus& os) const;
 
 private:
     bool isNull;
@@ -89,7 +89,7 @@ private:
 
 private:
     void init(UdrSchema::DataType dataType, bool isNull = false);
-    bool checkType(UdrSchema::DataType askedDataType, U2OpStatus &os) const;
+    bool checkType(UdrSchema::DataType askedDataType, U2OpStatus& os) const;
 };
 
 /**
@@ -98,40 +98,40 @@ private:
  */
 class U2CORE_EXPORT UdrRecord {
 public:
-    UdrRecord(const UdrRecordId &id, const QList<UdrValue> &data, U2OpStatus &os);
+    UdrRecord(const UdrRecordId& id, const QList<UdrValue>& data, U2OpStatus& os);
 
     /**
      * Returns the unique record identifier.
      */
-    const UdrRecordId &getId() const;
+    const UdrRecordId& getId() const;
 
     /**
      * Returns the integer value of the field with the number @fieldNum.
      */
-    qint64 getInt(int fieldNum, U2OpStatus &os) const;
+    qint64 getInt(int fieldNum, U2OpStatus& os) const;
 
     /**
      * Returns the double value of the field with the number @fieldNum.
      */
-    double getDouble(int fieldNum, U2OpStatus &os) const;
+    double getDouble(int fieldNum, U2OpStatus& os) const;
 
     /**
      * Returns the string value of the field with the number @fieldNum.
      */
-    QString getString(int fieldNum, U2OpStatus &os) const;
+    QString getString(int fieldNum, U2OpStatus& os) const;
 
     /**
      * Returns the object id value of the field with the number @fieldNum.
      */
-    U2DataId getDataId(int fieldNum, U2OpStatus &os) const;
+    U2DataId getDataId(int fieldNum, U2OpStatus& os) const;
 
 private:
     UdrRecordId id;
-    const UdrSchema *schema;
+    const UdrSchema* schema;
     QList<UdrValue> data;
 
 private:
-    bool checkNum(int fieldNum, U2OpStatus &os) const;
+    bool checkNum(int fieldNum, U2OpStatus& os) const;
 };
 
 }  // namespace U2

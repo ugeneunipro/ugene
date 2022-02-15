@@ -63,12 +63,12 @@ extern "C" {
 
 namespace U2 {
 
-BAMUtils::ConvertOption::ConvertOption(bool samToBam, const QString &referenceUrl)
+BAMUtils::ConvertOption::ConvertOption(bool samToBam, const QString& referenceUrl)
     : samToBam(samToBam), referenceUrl(referenceUrl) {
 }
 
 namespace {
-void closeFiles(samfile_t *in, samfile_t *out) {
+void closeFiles(samfile_t* in, samfile_t* out) {
     if (in != nullptr) {
         samclose(in);
     }
@@ -78,7 +78,7 @@ void closeFiles(samfile_t *in, samfile_t *out) {
     }
 }
 
-samfile_t *openSamWithFai(const GUrl &samUrl, U2OpStatus &os) {
+samfile_t* openSamWithFai(const GUrl& samUrl, U2OpStatus& os) {
     QStringList references = BAMUtils::scanSamForReferenceNames(samUrl.getURLString(), os);
     CHECK_OP(os, nullptr);
 
@@ -89,48 +89,48 @@ samfile_t *openSamWithFai(const GUrl &samUrl, U2OpStatus &os) {
     CHECK_OP(os, nullptr);
 
     QByteArray faiUrlData = faiUrl.toLocal8Bit();
-    void *aux = (void *)faiUrlData.constData();
+    void* aux = (void*)faiUrlData.constData();
     return samopen(samUrl.getURLStringAnsi(), "r", aux);
 }
 
-QString openFileError(const QString &file) {
+QString openFileError(const QString& file) {
     return QObject::tr("Fail to open \"%1\" for reading").arg(file);
 }
 
-QString openFileError(const QByteArray &file) {
+QString openFileError(const QByteArray& file) {
     return QObject::tr("Fail to open \"%1\" for reading").arg(file.constData());
 }
 
-QString headerError(const QString &file) {
+QString headerError(const QString& file) {
     return QObject::tr("Fail to read the header from the file: \"%1\"").arg(file);
 }
 
-QString headerError(const QByteArray &file) {
+QString headerError(const QByteArray& file) {
     return QObject::tr("Fail to read the header from the file: \"%1\"").arg(file.constData());
 }
 
-QString faiError(const QByteArray &file) {
+QString faiError(const QByteArray& file) {
     return QObject::tr("Can not build the fasta index for the file: \"%1\"").arg(file.constData());
 }
 
-QString readsError(const QString &file) {
+QString readsError(const QString& file) {
     return QObject::tr("Error parsing the reads from the file: \"%1\"").arg(file);
 }
 
-QString readsError(const QByteArray &file) {
+QString readsError(const QByteArray& file) {
     return QObject::tr("Error parsing the reads from the file: \"%1\"").arg(file.constData());
 }
 
-QString truncatedError(const QByteArray &file) {
+QString truncatedError(const QByteArray& file) {
     return QObject::tr("Truncated file: \"%1\"").arg(file.constData());
 }
 
-QString truncatedError(const QString &file) {
+QString truncatedError(const QString& file) {
     return QObject::tr("Truncated file: \"%1\"").arg(file);
 }
 
 template<typename T>
-void samreadCheck(int read, U2OpStatus &os, const T &fileName) {
+void samreadCheck(int read, U2OpStatus& os, const T& fileName) {
     if (READ_ERROR_CODE == read) {
         if (nullptr != SAMTOOLS_ERROR_MESSAGE) {
             os.setError(SAMTOOLS_ERROR_MESSAGE);
@@ -141,16 +141,16 @@ void samreadCheck(int read, U2OpStatus &os, const T &fileName) {
         os.setError(truncatedError(fileName));
     }
 }
-QList<QByteArray> convertStringList(const QStringList &sList) {
+QList<QByteArray> convertStringList(const QStringList& sList) {
     QList<QByteArray> result;
     for (int i = 0; i < sList.size(); i++) {
         result.append(sList.at(i).toLocal8Bit());
     }
     return result;
 }
-void convertByteArray(const QList<QByteArray> &byteArray, char **charArray) {
+void convertByteArray(const QList<QByteArray>& byteArray, char** charArray) {
     for (int i = 0; i < byteArray.size(); i++) {
-        charArray[i] = const_cast<char *>(byteArray[i].constData());
+        charArray[i] = const_cast<char*>(byteArray[i].constData());
     }
 }
 }  // namespace
@@ -166,7 +166,7 @@ void convertByteArray(const QList<QByteArray> &byteArray, char **charArray) {
         return ret; \
     }
 
-void BAMUtils::convertToSamOrBam(const GUrl &samUrl, const GUrl &bamUrl, const ConvertOption &options, U2OpStatus &os) {
+void BAMUtils::convertToSamOrBam(const GUrl& samUrl, const GUrl& bamUrl, const ConvertOption& options, U2OpStatus& os) {
     QByteArray samPath = samUrl.getURLStringAnsi();
     QByteArray bamPath = bamUrl.getURLStringAnsi();
 
@@ -175,13 +175,13 @@ void BAMUtils::convertToSamOrBam(const GUrl &samUrl, const GUrl &bamUrl, const C
     QByteArray source_path = (options.samToBam) ? samPath : bamPath;
     QByteArray target_path = (options.samToBam) ? bamPath : samPath;
 
-    samfile_t *in = nullptr;
-    samfile_t *out = nullptr;
+    samfile_t* in = nullptr;
+    samfile_t* out = nullptr;
 
     // open files
     {
         QByteArray readMode = (options.samToBam) ? "r" : "rb";
-        void *aux = nullptr;
+        void* aux = nullptr;
         if (options.samToBam && !options.referenceUrl.isEmpty()) {
             aux = samfaipath(options.referenceUrl.toLocal8Bit().constData());
             SAMTOOL_CHECK(nullptr != aux, faiError(options.referenceUrl.toLocal8Bit()), );
@@ -205,7 +205,7 @@ void BAMUtils::convertToSamOrBam(const GUrl &samUrl, const GUrl &bamUrl, const C
         SAMTOOL_CHECK(nullptr != out, openFileError(targetFileUrl.getURLString()), );
     }
     // convert files
-    bam1_t *b = bam_init1();
+    bam1_t* b = bam_init1();
     {
         int r = 0;
         while ((r = samread(in, b)) >= 0) {  // read one alignment from `in'
@@ -220,20 +220,20 @@ void BAMUtils::convertToSamOrBam(const GUrl &samUrl, const GUrl &bamUrl, const C
     return;
 }
 
-static bool isSorted(const QString &headerText) {
+static bool isSorted(const QString& headerText) {
     QString text = headerText;
     text = text.replace('\r', QString(""));
     QStringList lines = text.split('\n');
 
     bool result = false;
-    foreach (const QString &line, lines) {
+    foreach (const QString& line, lines) {
         if (!line.startsWith("@HD")) {
             continue;
         }
 
         QStringList tokens = line.split('\t');
         for (int i = 1; i < tokens.size(); i++) {
-            QString &token = tokens[i];
+            QString& token = tokens[i];
             int colonIdx = token.indexOf(':');
             if (-1 == colonIdx) {
                 continue;
@@ -251,11 +251,11 @@ static bool isSorted(const QString &headerText) {
     return result;
 }
 
-bool BAMUtils::isSortedBam(const GUrl &bamUrl, U2OpStatus &os) {
+bool BAMUtils::isSortedBam(const GUrl& bamUrl, U2OpStatus& os) {
     QByteArray urlPath = bamUrl.getURLStringAnsi();
 
     bamFile bamHandler = nullptr;
-    bam_header_t *header = nullptr;
+    bam_header_t* header = nullptr;
     QString error;
     bool result = false;
 
@@ -314,8 +314,8 @@ inline static qint64 mB2bytes(int mb) {
 #define INITIAL_SAMTOOLS_MEM_SIZE_MB 500
 #define SAMTOOLS_MEM_BOOST 5
 
-GUrl BAMUtils::sortBam(const GUrl &bamUrl, const QString &sortedBamBaseName, U2OpStatus &os) {
-    const QByteArray &bamFileName = bamUrl.getURLString().toLocal8Bit();
+GUrl BAMUtils::sortBam(const GUrl& bamUrl, const QString& sortedBamBaseName, U2OpStatus& os) {
+    const QByteArray& bamFileName = bamUrl.getURLString().toLocal8Bit();
 
     QString baseName = sortedBamBaseName;
     if (baseName.endsWith(".bam")) {
@@ -324,9 +324,9 @@ GUrl BAMUtils::sortBam(const GUrl &bamUrl, const QString &sortedBamBaseName, U2O
     QByteArray sortedFileName = baseName.toLocal8Bit() + ".bam";
 
     // get memory resource
-    AppSettings *appSettings = AppContext::getAppSettings();
-    AppResourcePool *resPool = appSettings->getAppResourcePool();
-    AppResource *memory = resPool->getResource(RESOURCE_MEMORY);
+    AppSettings* appSettings = AppContext::getAppSettings();
+    AppResourcePool* resPool = appSettings->getAppResourcePool();
+    AppResource* memory = resPool->getResource(RESOURCE_MEMORY);
     SAFE_POINT_EXT(nullptr != memory, os.setError("No memory resource"), QString());
 
     // calculate needed memory
@@ -361,13 +361,13 @@ GUrl BAMUtils::sortBam(const GUrl &bamUrl, const QString &sortedBamBaseName, U2O
     return QString::fromLocal8Bit(sortedFileName);
 }
 
-GUrl BAMUtils::mergeBam(const QStringList &bamUrls, const QString &mergetBamTargetUrl, U2OpStatus & /*os*/) {
+GUrl BAMUtils::mergeBam(const QStringList& bamUrls, const QString& mergetBamTargetUrl, U2OpStatus& /*os*/) {
     coreLog.details(BAMUtils::tr("Merging BAM files: \"%1\". Resulting merged file is: \"%2\"")
                         .arg(QString(bamUrls.join(",")))
                         .arg(QString(mergetBamTargetUrl)));
 
     int urlsSize = bamUrls.size();
-    char **mergeArgv = new char *[urlsSize];
+    char** mergeArgv = new char*[urlsSize];
     QList<QByteArray> byteArray = convertStringList(bamUrls);
     convertByteArray(byteArray, mergeArgv);
 
@@ -378,7 +378,7 @@ GUrl BAMUtils::mergeBam(const QStringList &bamUrls, const QString &mergetBamTarg
     return QString(mergetBamTargetUrl);
 }
 
-GUrl BAMUtils::rmdupBam(const QString &bamUrl, const QString &rmdupBamTargetUrl, U2OpStatus &os, bool removeSingleEnd, bool treatReads) {
+GUrl BAMUtils::rmdupBam(const QString& bamUrl, const QString& rmdupBamTargetUrl, U2OpStatus& os, bool removeSingleEnd, bool treatReads) {
     coreLog.details(BAMUtils::tr("Remove PCR duplicate in BAM file: \"%1\". Resulting  file is: \"%2\"")
                         .arg(QString(bamUrl))
                         .arg(QString(rmdupBamTargetUrl)));
@@ -393,10 +393,10 @@ GUrl BAMUtils::rmdupBam(const QString &bamUrl, const QString &rmdupBamTargetUrl,
         force_se = 1;
     }
 
-    const QByteArray &inFileName = bamUrl.toLocal8Bit();
-    const QByteArray &outFileName = rmdupBamTargetUrl.toLocal8Bit();
-    samfile_t *in = nullptr;
-    samfile_t *out = nullptr;
+    const QByteArray& inFileName = bamUrl.toLocal8Bit();
+    const QByteArray& outFileName = rmdupBamTargetUrl.toLocal8Bit();
+    samfile_t* in = nullptr;
+    samfile_t* out = nullptr;
     {
         in = samopen(inFileName, "rb", 0);
         SAMTOOL_CHECK(nullptr != in, openFileError(inFileName), QString(""));
@@ -418,9 +418,9 @@ GUrl BAMUtils::rmdupBam(const QString &bamUrl, const QString &rmdupBamTargetUrl,
     return QString(rmdupBamTargetUrl);
 }
 
-bool BAMUtils::hasValidBamIndex(const GUrl &bamUrl) {
+bool BAMUtils::hasValidBamIndex(const GUrl& bamUrl) {
     QByteArray urlPath = bamUrl.getURLStringAnsi();
-    bam_index_t *index = bam_index_load(urlPath);
+    bam_index_t* index = bam_index_load(urlPath);
 
     if (nullptr == index) {
         return false;
@@ -443,10 +443,10 @@ bool BAMUtils::hasValidBamIndex(const GUrl &bamUrl) {
     }
 }
 
-bool BAMUtils::hasValidFastaIndex(const GUrl &fastaUrl) {
+bool BAMUtils::hasValidFastaIndex(const GUrl& fastaUrl) {
     const QByteArray fastaFileName = fastaUrl.getURLString().toLocal8Bit();
 
-    char *index = samfaipath(fastaFileName.constData());
+    char* index = samfaipath(fastaFileName.constData());
 
     if (nullptr == index) {
         return false;
@@ -463,8 +463,8 @@ bool BAMUtils::hasValidFastaIndex(const GUrl &fastaUrl) {
     }
 }
 
-void BAMUtils::createBamIndex(const GUrl &bamUrl, U2OpStatus &os) {
-    const QByteArray &bamFileName = bamUrl.getURLString().toLocal8Bit();
+void BAMUtils::createBamIndex(const GUrl& bamUrl, U2OpStatus& os) {
+    const QByteArray& bamFileName = bamUrl.getURLString().toLocal8Bit();
 
     coreLog.details(BAMUtils::tr("Build index for bam file: \"%1\"").arg(QString::fromLocal8Bit(bamFileName)));
 
@@ -475,7 +475,7 @@ void BAMUtils::createBamIndex(const GUrl &bamUrl, U2OpStatus &os) {
     }
 }
 
-GUrl BAMUtils::getBamIndexUrl(const GUrl &bamUrl) {
+GUrl BAMUtils::getBamIndexUrl(const GUrl& bamUrl) {
     CHECK(hasValidBamIndex(bamUrl), GUrl());
 
     const QByteArray bamFileName = bamUrl.getURLString().toUtf8();
@@ -491,13 +491,13 @@ GUrl BAMUtils::getBamIndexUrl(const GUrl &bamUrl) {
     return GUrl(fileInfo.filePath());
 }
 
-static qint64 getSequenceLength(U2Dbi *dbi, const U2DataId &objectId, U2OpStatus &os) {
+static qint64 getSequenceLength(U2Dbi* dbi, const U2DataId& objectId, U2OpStatus& os) {
     qint64 seqLength = -1;
 
-    U2AssemblyDbi *assemblyDbi = dbi->getAssemblyDbi();
+    U2AssemblyDbi* assemblyDbi = dbi->getAssemblyDbi();
     SAFE_POINT_EXT(nullptr != assemblyDbi, os.setError("NULL assembly DBI"), seqLength);
 
-    U2AttributeDbi *attributeDbi = dbi->getAttributeDbi();
+    U2AttributeDbi* attributeDbi = dbi->getAttributeDbi();
     bool useMaxPos = true;
     if (nullptr != attributeDbi) {
         U2IntegerAttribute attr = U2AttributeUtils::findIntegerAttribute(attributeDbi, objectId, U2BaseAttributeName::reference_length, os);
@@ -515,19 +515,19 @@ static qint64 getSequenceLength(U2Dbi *dbi, const U2DataId &objectId, U2OpStatus
     return seqLength;
 }
 
-static void createHeader(bam_header_t *header, const QList<GObject *> &objects, U2OpStatus &os) {
+static void createHeader(bam_header_t* header, const QList<GObject*>& objects, U2OpStatus& os) {
     CHECK_EXT(nullptr != header, os.setError("NULL header"), );
 
     header->n_targets = objects.size();
-    header->target_name = new char *[header->n_targets];
+    header->target_name = new char*[header->n_targets];
     header->target_len = new uint32_t[header->n_targets];
 
     QByteArray headerText;
     headerText += "@HD\tVN:1.4\tSO:coordinate\n";
 
     int objIdx = 0;
-    foreach (GObject *obj, objects) {
-        AssemblyObject *assemblyObj = dynamic_cast<AssemblyObject *>(obj);
+    foreach (GObject* obj, objects) {
+        AssemblyObject* assemblyObj = dynamic_cast<AssemblyObject*>(obj);
         SAFE_POINT_EXT(nullptr != assemblyObj, os.setError("NULL assembly object"), );
 
         DbiConnection con(obj->getEntityRef().dbiRef, os);
@@ -539,7 +539,7 @@ static void createHeader(bam_header_t *header, const QList<GObject *> &objects, 
         QByteArray seqName = obj->getGObjectName().toLatin1();
         header->target_name[objIdx] = new char[seqName.length() + 1];
         {
-            char *name = header->target_name[objIdx];
+            char* name = header->target_name[objIdx];
             qstrncpy(name, seqName.constData(), seqName.length() + 1);
             name[seqName.length()] = 0;
         }
@@ -559,11 +559,11 @@ static void createHeader(bam_header_t *header, const QList<GObject *> &objects, 
     }
 }
 
-static QMap<QString, int> getNumMap(const QList<GObject *> &objects, U2OpStatus &os) {
+static QMap<QString, int> getNumMap(const QList<GObject*>& objects, U2OpStatus& os) {
     QMap<QString, int> result;
     int i = 0;
-    foreach (GObject *obj, objects) {
-        AssemblyObject *assemblyObj = dynamic_cast<AssemblyObject *>(obj);
+    foreach (GObject* obj, objects) {
+        AssemblyObject* assemblyObj = dynamic_cast<AssemblyObject*>(obj);
         SAFE_POINT_EXT(nullptr != assemblyObj, os.setError("NULL assembly object"), result);
 
         QString name = assemblyObj->getGObjectName();
@@ -573,15 +573,15 @@ static QMap<QString, int> getNumMap(const QList<GObject *> &objects, U2OpStatus 
     return result;
 }
 
-static void writeObjectsWithSamtools(samfile_t *out, const QList<GObject *> &objects, U2OpStatus &os, const U2Region &desiredRegion) {
-    foreach (GObject *obj, objects) {
-        AssemblyObject *assemblyObj = dynamic_cast<AssemblyObject *>(obj);
+static void writeObjectsWithSamtools(samfile_t* out, const QList<GObject*>& objects, U2OpStatus& os, const U2Region& desiredRegion) {
+    foreach (GObject* obj, objects) {
+        AssemblyObject* assemblyObj = dynamic_cast<AssemblyObject*>(obj);
         SAFE_POINT_EXT(nullptr != assemblyObj, os.setError("NULL assembly object"), );
 
         DbiConnection con(assemblyObj->getEntityRef().dbiRef, os);
         CHECK_OP(os, );
 
-        U2AssemblyDbi *dbi = con.dbi->getAssemblyDbi();
+        U2AssemblyDbi* dbi = con.dbi->getAssemblyDbi();
         SAFE_POINT_EXT(nullptr != dbi, os.setError("NULL assembly DBI"), );
 
         U2DataId assemblyId = assemblyObj->getEntityRef().entityId;
@@ -595,7 +595,7 @@ static void writeObjectsWithSamtools(samfile_t *out, const QList<GObject *> &obj
 
         ReadsContext ctx(assemblyObj->getGObjectName(), getNumMap(objects, os));
         CHECK_OP(os, );
-        bam1_t *read = bam_init1();
+        bam1_t* read = bam_init1();
         while (reads->hasNext()) {
             U2AssemblyRead r = reads->next();
             SamtoolsAdapter::read2samtools(r, ctx, os, *read);
@@ -606,7 +606,7 @@ static void writeObjectsWithSamtools(samfile_t *out, const QList<GObject *> &obj
     }
 }
 
-void BAMUtils::writeDocument(Document *doc, U2OpStatus &os) {
+void BAMUtils::writeDocument(Document* doc, U2OpStatus& os) {
     writeObjects(
         doc->findGObjectByType(GObjectTypes::ASSEMBLY),
         doc->getURL(),
@@ -614,7 +614,7 @@ void BAMUtils::writeDocument(Document *doc, U2OpStatus &os) {
         os);
 }
 
-void BAMUtils::writeObjects(const QList<GObject *> &objects, const GUrl &urlStr, const DocumentFormatId &formatId, U2OpStatus &os, const U2Region &desiredRegion) {
+void BAMUtils::writeObjects(const QList<GObject*>& objects, const GUrl& urlStr, const DocumentFormatId& formatId, U2OpStatus& os, const U2Region& desiredRegion) {
     CHECK_EXT(!objects.isEmpty(), os.setError("No assembly objects"), );
 
     QByteArray url = urlStr.getURLString().toLocal8Bit();
@@ -631,14 +631,14 @@ void BAMUtils::writeObjects(const QList<GObject *> &objects, const GUrl &urlStr,
         return;
     }
 
-    bam_header_t *header = bam_header_init();
+    bam_header_t* header = bam_header_init();
     createHeader(header, objects, os);
     if (os.isCoR()) {
         bam_header_destroy(header);
         return;
     }
 
-    samfile_t *out = samopen(urlPath, openMode.constData(), header);
+    samfile_t* out = samopen(urlPath, openMode.constData(), header);
     bam_header_destroy(header);
     CHECK_EXT(nullptr != out, os.setError(QString("Can not open file for writing: %1").arg(urlPath.constData())), );
 
@@ -647,19 +647,19 @@ void BAMUtils::writeObjects(const QList<GObject *> &objects, const GUrl &urlStr,
 }
 
 // the function assumes the equal order of alignments in files
-bool BAMUtils::isEqualByLength(const GUrl &fileUrl1, const GUrl &fileUrl2, U2OpStatus &os, bool isBAM) {
-    const QByteArray &fileName1 = fileUrl1.getURLString().toLocal8Bit();
-    const QByteArray &fileName2 = fileUrl2.getURLString().toLocal8Bit();
+bool BAMUtils::isEqualByLength(const GUrl& fileUrl1, const GUrl& fileUrl2, U2OpStatus& os, bool isBAM) {
+    const QByteArray& fileName1 = fileUrl1.getURLString().toLocal8Bit();
+    const QByteArray& fileName2 = fileUrl2.getURLString().toLocal8Bit();
 
-    samfile_t *in = nullptr;
-    samfile_t *out = nullptr;
+    samfile_t* in = nullptr;
+    samfile_t* out = nullptr;
 
     QByteArray readMode = "r";
     if (isBAM) {
         readMode = "rb";
     }
     {
-        void *aux = nullptr;
+        void* aux = nullptr;
         in = samopen(fileName1.constData(), readMode.constData(), aux);
         SAMTOOL_CHECK(nullptr != in, openFileError(fileName1), false);
         SAMTOOL_CHECK(nullptr != in->header, headerError(fileName1), false);
@@ -678,8 +678,8 @@ bool BAMUtils::isEqualByLength(const GUrl &fileUrl1, const GUrl &fileUrl2, U2OpS
         }
     }
 
-    bam1_t *b1 = bam_init1();
-    bam1_t *b2 = bam_init1();
+    bam1_t* b1 = bam_init1();
+    bam1_t* b2 = bam_init1();
     {
         int r1 = 0;
         int r2 = 0;
@@ -717,7 +717,7 @@ namespace {
 const int bufferSize = 1024 * 1024;  // 1 Mb
 const int referenceColumn = 2;  // 5 Mb
 
-inline QByteArray readLine(IOAdapter *io, char *buffer, int bufferSize) {
+inline QByteArray readLine(IOAdapter* io, char* buffer, int bufferSize) {
     QByteArray result;
     bool terminatorFound = false;
     do {
@@ -728,7 +728,7 @@ inline QByteArray readLine(IOAdapter *io, char *buffer, int bufferSize) {
     return result;
 }
 
-inline QByteArray parseReferenceName(const QByteArray &line) {
+inline QByteArray parseReferenceName(const QByteArray& line) {
     QList<QByteArray> columns = line.split('\t');
     if (columns.size() <= referenceColumn) {
         coreLog.error(BAMUtils::tr("Wrong line in a SAM file."));
@@ -738,13 +738,13 @@ inline QByteArray parseReferenceName(const QByteArray &line) {
 }
 }  // namespace
 
-QStringList BAMUtils::scanSamForReferenceNames(const GUrl &samUrl, U2OpStatus &os) {
+QStringList BAMUtils::scanSamForReferenceNames(const GUrl& samUrl, U2OpStatus& os) {
     QStringList result;
     QScopedPointer<IOAdapter> io(IOAdapterUtils::open(samUrl, os));
     CHECK_OP(os, result);
 
     QByteArray buffer(bufferSize, 0);
-    char *bufferData = buffer.data();
+    char* bufferData = buffer.data();
     do {
         QByteArray line = readLine(io.data(), bufferData, bufferSize);
         if (line.isEmpty() || line.startsWith("@")) {
@@ -758,10 +758,10 @@ QStringList BAMUtils::scanSamForReferenceNames(const GUrl &samUrl, U2OpStatus &o
     return result;
 }
 
-void BAMUtils::createFai(const GUrl &faiUrl, const QStringList &references, U2OpStatus &os) {
+void BAMUtils::createFai(const GUrl& faiUrl, const QStringList& references, U2OpStatus& os) {
     QScopedPointer<IOAdapter> io(IOAdapterUtils::open(faiUrl, os, IOAdapterMode_Write));
     CHECK_OP(os, );
-    foreach (const QString &reference, references) {
+    foreach (const QString& reference, references) {
         QString line = reference + "\n";
         io->writeBlock(line.toLocal8Bit());
     }
@@ -786,7 +786,7 @@ KSEQ_INIT(gzFile, gzread)
 #    pragma GCC diagnostic pop
 #endif
 
-FASTQIterator::FASTQIterator(const QString &fileUrl, U2OpStatus &os)
+FASTQIterator::FASTQIterator(const QString& fileUrl, U2OpStatus& os)
     : seq(nullptr) {
     fp = gzopen(fileUrl.toLocal8Bit().constData(), "r");
     if (fp == nullptr) {
@@ -798,13 +798,13 @@ FASTQIterator::FASTQIterator(const QString &fileUrl, U2OpStatus &os)
 }
 
 FASTQIterator::~FASTQIterator() {
-    kseq_destroy(static_cast<kseq_t *>(seq));
+    kseq_destroy(static_cast<kseq_t*>(seq));
     gzclose(static_cast<gzFile>(fp));
 }
 
 DNASequence FASTQIterator::next() {
     if (hasNext()) {
-        kseq_t *realSeq = static_cast<kseq_t *>(seq);
+        kseq_t* realSeq = static_cast<kseq_t*>(seq);
         QString name = realSeq->name.l != 0 ? QString::fromLatin1(realSeq->name.s) : "";
         QString comment = realSeq->comment.l != 0 ? QString::fromLatin1(realSeq->comment.s) : "";
         QString rseq = realSeq->seq.l != 0 ? QString::fromLatin1(realSeq->seq.s) : "";
@@ -825,7 +825,7 @@ bool FASTQIterator::hasNext() const {
 }
 
 void FASTQIterator::fetchNext() {
-    if (kseq_read(static_cast<kseq_t *>(seq)) < 0) {
+    if (kseq_read(static_cast<kseq_t*>(seq)) < 0) {
         seq = nullptr;
     }
 }

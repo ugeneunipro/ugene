@@ -32,10 +32,10 @@ namespace U2 {
 
 class TextContentFilterTask : public AbstractProjectFilterTask {
 public:
-    TextContentFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document>> &docs);
+    TextContentFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs);
 
 protected:
-    bool filterAcceptsObject(GObject *obj);
+    bool filterAcceptsObject(GObject* obj);
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -44,7 +44,7 @@ protected:
 
 class U2GUI_EXPORT TextContentFilterTaskFactory : public ProjectFilterTaskFactory {
 protected:
-    AbstractProjectFilterTask *createNewTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document>> &docs) const;
+    AbstractProjectFilterTask* createNewTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs) const;
 };
 
 }  // namespace U2

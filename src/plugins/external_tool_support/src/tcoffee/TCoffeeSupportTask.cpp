@@ -52,7 +52,7 @@ void TCoffeeSupportTaskSettings::reset() {
     inputFilePath = "";
 }
 
-TCoffeeSupportTask::TCoffeeSupportTask(const MultipleSequenceAlignment &_inputMsa, const GObjectReference &_objRef, const TCoffeeSupportTaskSettings &_settings)
+TCoffeeSupportTask::TCoffeeSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const TCoffeeSupportTaskSettings& _settings)
     : ExternalToolSupportTask("Run T-Coffee alignment task", TaskFlags_NR_FOSCOE),
       inputMsa(_inputMsa->getExplicitCopy()),
       objRef(_objRef),
@@ -71,12 +71,12 @@ TCoffeeSupportTask::~TCoffeeSupportTask() {
     if (nullptr != tmpDoc) {
         delete tmpDoc;
     }
-    //Unlock the alignment object if the task has been failed
+    // Unlock the alignment object if the task has been failed
     if (!lock.isNull()) {
         if (objRef.isValid()) {
-            GObject *obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
+            GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
             if (nullptr != obj) {
-                MultipleSequenceAlignmentObject *alObj = dynamic_cast<MultipleSequenceAlignmentObject *>(obj);
+                MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
                 CHECK(nullptr != alObj, );
                 if (alObj->isStateLocked()) {
                     alObj->unlockState(lock);
@@ -98,17 +98,17 @@ void TCoffeeSupportTask::prepare() {
     algoLog.info(tr("T-Coffee alignment started"));
 
     if (objRef.isValid()) {
-        GObject *obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
+        GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
         if (nullptr != obj) {
-            MultipleSequenceAlignmentObject *alObj = dynamic_cast<MultipleSequenceAlignmentObject *>(obj);
+            MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
             SAFE_POINT(nullptr != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!", );
             lock = new StateLock("ClustalWAlignment");
             alObj->lockState(lock);
         }
     }
 
-    //Add new subdir for temporary files
-    //Folder name is ExternalToolName + CurrentDate + CurrentTime
+    // Add new subdir for temporary files
+    // Folder name is ExternalToolName + CurrentDate + CurrentTime
 
     QString tmpDirName = "TCoffee_" + QString::number(this->getTaskId()) + "_" +
                          QDate::currentDate().toString("dd.MM.yyyy") + "_" +
@@ -118,7 +118,7 @@ void TCoffeeSupportTask::prepare() {
     url = tmpDirPath + "tmp.fa";
     ioLog.details(tr("Saving data to temporary file '%1'").arg(url));
 
-    //Check and remove subdir for temporary files
+    // Check and remove subdir for temporary files
     QDir tmpDir(tmpDirPath);
     if (tmpDir.exists()) {
         foreach (QString file, tmpDir.entryList()) {
@@ -138,8 +138,8 @@ void TCoffeeSupportTask::prepare() {
     saveTemporaryDocumentTask->setSubtaskProgressWeight(5);
     addSubTask(saveTemporaryDocumentTask);
 }
-QList<Task *> TCoffeeSupportTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> TCoffeeSupportTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     if (subTask->hasError()) {
         stateInfo.setError(subTask->getError());
         return res;
@@ -193,7 +193,7 @@ QList<Task *> TCoffeeSupportTask::onSubTaskFinished(Task *subTask) {
         }
         ioLog.details(tr("Loading output file '%1'").arg(outputUrl));
 
-        IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+        IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
         QVariantMap hints;
         loadTmpDocumentTask = new LoadDocumentTask(BaseDocumentFormats::MSF, outputUrl, iof, hints);
 
@@ -205,10 +205,10 @@ QList<Task *> TCoffeeSupportTask::onSubTaskFinished(Task *subTask) {
         SAFE_POINT(tmpDoc->getObjects().length() != 0, QString("no objects in output document '%1'").arg(tmpDoc->getURLString()), res);
 
         // Get the result alignment
-        const QList<GObject *> &newDocumentObjects = tmpDoc->getObjects();
+        const QList<GObject*>& newDocumentObjects = tmpDoc->getObjects();
         SAFE_POINT(!newDocumentObjects.empty(), "No objects in the temporary document!", res);
 
-        MultipleSequenceAlignmentObject *newMAligmentObject = qobject_cast<MultipleSequenceAlignmentObject *>(newDocumentObjects.first());
+        MultipleSequenceAlignmentObject* newMAligmentObject = qobject_cast<MultipleSequenceAlignmentObject*>(newDocumentObjects.first());
         SAFE_POINT(nullptr != newMAligmentObject, "Failed to cast object from temporary document to an alignment!", res);
 
         resultMA = newMAligmentObject->getMsaCopy();
@@ -217,9 +217,9 @@ QList<Task *> TCoffeeSupportTask::onSubTaskFinished(Task *subTask) {
 
         // If an alignment object has been specified, save the result to it
         if (objRef.isValid()) {
-            GObject *obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
+            GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
             if (nullptr != obj) {
-                MultipleSequenceAlignmentObject *alObj = dynamic_cast<MultipleSequenceAlignmentObject *>(obj);
+                MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
                 SAFE_POINT(nullptr != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying TCoffee results!", res);
 
                 MSAUtils::assignOriginalDataIds(inputMsa, resultMA, stateInfo);
@@ -228,7 +228,7 @@ QList<Task *> TCoffeeSupportTask::onSubTaskFinished(Task *subTask) {
                 QMap<qint64, QVector<U2MsaGap>> rowsGapModel;
                 for (int i = 0, n = resultMA->getRowCount(); i < n; ++i) {
                     qint64 rowId = resultMA->getMsaRow(i)->getRowDbInfo().rowId;
-                    const QVector<U2MsaGap> &newGapModel = resultMA->getMsaRow(i)->getGaps();
+                    const QVector<U2MsaGap>& newGapModel = resultMA->getMsaRow(i)->getGaps();
                     rowsGapModel.insert(rowId, newGapModel);
                 }
 
@@ -262,7 +262,7 @@ QList<Task *> TCoffeeSupportTask::onSubTaskFinished(Task *subTask) {
                     }
                 }
 
-                Document *currentDocument = alObj->getDocument();
+                Document* currentDocument = alObj->getDocument();
                 SAFE_POINT(nullptr != currentDocument, "Document is NULL!", res);
                 currentDocument->setModified(true);
             } else {
@@ -272,12 +272,12 @@ QList<Task *> TCoffeeSupportTask::onSubTaskFinished(Task *subTask) {
         }
 
         algoLog.info(tr("T-Coffee alignment successfully finished"));
-        //new document deleted in destructor of LoadDocumentTask
+        // new document deleted in destructor of LoadDocumentTask
     }
     return res;
 }
 Task::ReportResult TCoffeeSupportTask::report() {
-    //Remove subdir for temporary files, that created in prepare
+    // Remove subdir for temporary files, that created in prepare
     if (!url.isEmpty()) {
         QDir tmpDir(QFileInfo(url).absoluteDir());
         foreach (QString file, tmpDir.entryList()) {
@@ -292,8 +292,8 @@ Task::ReportResult TCoffeeSupportTask::report() {
     return ReportResult_Finished;
 }
 ////////////////////////////////////////
-//TCoffeeWithExtFileSpecifySupportTask
-TCoffeeWithExtFileSpecifySupportTask::TCoffeeWithExtFileSpecifySupportTask(const TCoffeeSupportTaskSettings &_settings)
+// TCoffeeWithExtFileSpecifySupportTask
+TCoffeeWithExtFileSpecifySupportTask::TCoffeeWithExtFileSpecifySupportTask(const TCoffeeSupportTaskSettings& _settings)
     : Task("Run T-Coffee alignment task", TaskFlags_NR_FOSCOE),
       settings(_settings) {
     GCOUNTER(cvar, "TCoffeeSupportTask");
@@ -322,7 +322,7 @@ void TCoffeeWithExtFileSpecifySupportTask::prepare() {
     }
 
     DocumentFormatId alnFormat = formats.first();
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(settings.inputFilePath));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(settings.inputFilePath));
     QVariantMap hints;
     if (alnFormat == BaseDocumentFormats::FASTA) {
         hints[DocumentReadingMode_SequenceAsAlignmentHint] = true;
@@ -330,8 +330,8 @@ void TCoffeeWithExtFileSpecifySupportTask::prepare() {
     loadDocumentTask = new LoadDocumentTask(alnFormat, settings.inputFilePath, iof, hints);
     addSubTask(loadDocumentTask);
 }
-QList<Task *> TCoffeeWithExtFileSpecifySupportTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> TCoffeeWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     if (subTask->hasError()) {
         stateInfo.setError(subTask->getError());
         return res;
@@ -343,7 +343,7 @@ QList<Task *> TCoffeeWithExtFileSpecifySupportTask::onSubTaskFinished(Task *subT
         currentDocument = loadDocumentTask->takeDocument();
         SAFE_POINT(currentDocument != nullptr, QString("Failed loading document: %1").arg(loadDocumentTask->getURLString()), res);
         SAFE_POINT(currentDocument->getObjects().length() == 1, QString("Number of objects != 1 : %1").arg(loadDocumentTask->getURLString()), res);
-        mAObject = qobject_cast<MultipleSequenceAlignmentObject *>(currentDocument->getObjects().first());
+        mAObject = qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != nullptr, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
 
         // Launch the task, objRef is empty - the input document maybe not in project
@@ -351,7 +351,7 @@ QList<Task *> TCoffeeWithExtFileSpecifySupportTask::onSubTaskFinished(Task *subT
         res.append(tCoffeeSupportTask);
     } else if (subTask == tCoffeeSupportTask) {
         // Set the result alignment to the alignment object of the current document
-        mAObject = qobject_cast<MultipleSequenceAlignmentObject *>(currentDocument->getObjects().first());
+        mAObject = qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != nullptr, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
         mAObject->updateGapModel(tCoffeeSupportTask->resultMA->getMsaRows());
 
@@ -361,7 +361,7 @@ QList<Task *> TCoffeeWithExtFileSpecifySupportTask::onSubTaskFinished(Task *subT
                                                 settings.outputFilePath);
         res.append(saveDocumentTask);
     } else if (subTask == saveDocumentTask) {
-        Task *openTask = AppContext::getProjectLoader()->openWithProjectTask(settings.outputFilePath);
+        Task* openTask = AppContext::getProjectLoader()->openWithProjectTask(settings.outputFilePath);
         if (openTask != nullptr) {
             res << openTask;
         }
@@ -373,16 +373,16 @@ Task::ReportResult TCoffeeWithExtFileSpecifySupportTask::report() {
 }
 
 ////////////////////////////////////////
-//TCoffeeLogParser
+// TCoffeeLogParser
 TCoffeeLogParser::TCoffeeLogParser() {
     progress = 0;
 }
 
-void TCoffeeLogParser::parseOutput(const QString &partOfLog) {
+void TCoffeeLogParser::parseOutput(const QString& partOfLog) {
     Q_UNUSED(partOfLog)
 }
 
-void TCoffeeLogParser::parseErrOutput(const QString &partOfLog) {
+void TCoffeeLogParser::parseErrOutput(const QString& partOfLog) {
     lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
     lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
     lastErrLine = lastPartOfLog.takeLast();
@@ -410,4 +410,4 @@ int TCoffeeLogParser::getProgress() {
     }
     return progress;
 }
-}    // namespace U2
+}  // namespace U2

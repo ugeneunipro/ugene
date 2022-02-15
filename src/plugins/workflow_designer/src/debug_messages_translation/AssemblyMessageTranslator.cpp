@@ -30,15 +30,15 @@
 #include <U2Lang/DbiDataHandler.h>
 #include <U2Lang/WorkflowContext.h>
 
-const char *ASSEMBLY_LENGTH_LABEL = "Length: ";
-const char *COUNT_OF_READS_LABEL = " Count of reads: ";
+const char* ASSEMBLY_LENGTH_LABEL = "Length: ";
+const char* COUNT_OF_READS_LABEL = " Count of reads: ";
 
 namespace U2 {
 
 using namespace Workflow;
 
-AssemblyMessageTranslator::AssemblyMessageTranslator(const QVariant &atomicMessage,
-                                                     Workflow::WorkflowContext *initContext)
+AssemblyMessageTranslator::AssemblyMessageTranslator(const QVariant& atomicMessage,
+                                                     Workflow::WorkflowContext* initContext)
     : BaseMessageTranslator(atomicMessage, initContext) {
     SAFE_POINT(source.canConvert<SharedDbiDataHandler>(), "Message doesn't contain dbi reference", );
     SharedDbiDataHandler dbId = source.value<SharedDbiDataHandler>();
@@ -53,7 +53,7 @@ QString AssemblyMessageTranslator::getTranslation() const {
     DbiConnection connection(assemblyRef.dbiRef, os);
     SAFE_POINT_OP(os, QString());
 
-    U2AssemblyDbi *dbi = connection.dbi->getAssemblyDbi();
+    U2AssemblyDbi* dbi = connection.dbi->getAssemblyDbi();
     SAFE_POINT(nullptr != dbi, "Invalid assembly DBI!", QString());
     const U2DataId assemblyId = assemblyRef.entityId;
     const qint64 assemblyLength = dbi->getMaxEndPos(assemblyId, os) + 1;

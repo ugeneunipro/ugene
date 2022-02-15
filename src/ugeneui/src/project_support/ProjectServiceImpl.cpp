@@ -44,7 +44,7 @@ namespace U2 {
 
 #define SETTINGS_DIR QString("project_loader/")
 
-ProjectServiceImpl::ProjectServiceImpl(Project *_pr)
+ProjectServiceImpl::ProjectServiceImpl(Project* _pr)
     : ProjectService(tr("Project"), tr("Project service is available when opened a project file. Other services that depends on Project service will be automatically started after this service is enabled.")) {
     saveAction = nullptr;
     saveAsAction = nullptr;
@@ -60,11 +60,11 @@ ProjectServiceImpl::~ProjectServiceImpl() {
     delete pr;
 }
 
-Task *ProjectServiceImpl::saveProjectTask(SaveProjectTaskKind k) {
+Task* ProjectServiceImpl::saveProjectTask(SaveProjectTaskKind k) {
     return new SaveProjectTask(k);
 }
 
-Task *ProjectServiceImpl::closeProjectTask() {
+Task* ProjectServiceImpl::closeProjectTask() {
     return new CloseProjectTask();
 }
 
@@ -74,11 +74,11 @@ void ProjectServiceImpl::enableSaveAction(bool e) {
     }
 }
 
-Task *ProjectServiceImpl::createServiceEnablingTask() {
+Task* ProjectServiceImpl::createServiceEnablingTask() {
     return new ProjectServiceEnableTask(this);
 }
 
-Task *ProjectServiceImpl::createServiceDisablingTask() {
+Task* ProjectServiceImpl::createServiceDisablingTask() {
     return new ProjectServiceDisableTask(this);
 }
 
@@ -91,7 +91,7 @@ void ProjectServiceImpl::sl_save() {
 }
 
 void ProjectServiceImpl::sl_saveAs() {
-    QWidget *p = qobject_cast<QWidget *>(AppContext::getMainWindow()->getQMainWindow());
+    QWidget* p = qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow());
     QObjectScopedPointer<ProjectDialogController> d = new ProjectDialogController(ProjectDialogController::Save_Project, p);
     const int rc = d->exec();
     CHECK(!d.isNull(), );
@@ -114,7 +114,7 @@ void ProjectServiceImpl::sl_saveAs() {
 }
 
 void ProjectServiceImpl::sl_exportProject() {
-    Project *p = getProject();
+    Project* p = getProject();
     QString pUrl = p->getProjectURL();
     QString projectFilePath = pUrl.isEmpty() ? GUrlUtils::getDefaultDataPath() + "/project" + PROJECTFILE_EXT : pUrl;
     QObjectScopedPointer<ExportProjectDialogController> dialog = new ExportProjectDialogController(AppContext::getMainWindow()->getQMainWindow(), projectFilePath);
@@ -122,7 +122,7 @@ void ProjectServiceImpl::sl_exportProject() {
     CHECK(!dialog.isNull(), );
 
     if (dialog->result() == QDialog::Accepted) {
-        Task *t = new ExportProjectTask(dialog->getDirToSave(), dialog->getProjectFile(), dialog->useCompression());
+        Task* t = new ExportProjectTask(dialog->getDirToSave(), dialog->getProjectFile(), dialog->useCompression());
         AppContext::getTaskScheduler()->registerTopLevelTask(t);
     }
 }
@@ -130,7 +130,7 @@ void ProjectServiceImpl::sl_exportProject() {
 //////////////////////////////////////////////////////////////////////////
 /// Service tasks
 
-ProjectServiceEnableTask::ProjectServiceEnableTask(ProjectServiceImpl *_psi)
+ProjectServiceEnableTask::ProjectServiceEnableTask(ProjectServiceImpl* _psi)
     : Task(tr("Enable Project"), TaskFlag_NoRun), psi(_psi) {
 }
 
@@ -163,23 +163,23 @@ Task::ReportResult ProjectServiceEnableTask::report() {
     psi->projectActionsSeparator = new QAction("", psi);
     psi->projectActionsSeparator->setSeparator(true);
 
-    MainWindow *mw = AppContext::getMainWindow();
-    QMenu *fileMenu = mw->getTopLevelMenu(MWMENU_FILE);
-    QAction *beforeAction = GUIUtils::findActionAfter(fileMenu->actions(), ACTION_PROJECTSUPPORT__RECENT_PROJECTS_MENU);
+    MainWindow* mw = AppContext::getMainWindow();
+    QMenu* fileMenu = mw->getTopLevelMenu(MWMENU_FILE);
+    QAction* beforeAction = GUIUtils::findActionAfter(fileMenu->actions(), ACTION_PROJECTSUPPORT__RECENT_PROJECTS_MENU);
     fileMenu->insertAction(beforeAction, psi->projectActionsSeparator);
     fileMenu->insertAction(beforeAction, psi->saveAction);
     fileMenu->insertAction(beforeAction, psi->saveAsAction);
     fileMenu->insertAction(beforeAction, psi->exportProjectAction);
     fileMenu->insertAction(beforeAction, psi->closeProjectAction);
 
-    QToolBar *tb = mw->getToolbar(MWTOOLBAR_MAIN);
+    QToolBar* tb = mw->getToolbar(MWTOOLBAR_MAIN);
     beforeAction = GUIUtils::findActionAfter(tb->actions(), ACTION_PROJECTSUPPORT__OPEN_PROJECT);
     tb->insertAction(beforeAction, psi->saveAction);
 
     return ReportResult_Finished;
 }
 
-ProjectServiceDisableTask::ProjectServiceDisableTask(ProjectServiceImpl *_psi)
+ProjectServiceDisableTask::ProjectServiceDisableTask(ProjectServiceImpl* _psi)
     : Task(tr("Disable Project"), TaskFlag_NoRun), psi(_psi) {
 }
 

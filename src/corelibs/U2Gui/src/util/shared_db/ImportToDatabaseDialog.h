@@ -46,14 +46,14 @@ class ImportToDatabaseDialog : public QDialog {
     };
 
 public:
-    ImportToDatabaseDialog(Document *dbConnection, const QString &baseFolder, QWidget *parent = 0);
+    ImportToDatabaseDialog(Document* dbConnection, const QString& baseFolder, QWidget* parent = 0);
     ~ImportToDatabaseDialog();
 
 private slots:
     void sl_selectionChanged();
-    void sl_itemDoubleClicked(QTreeWidgetItem *item, int column);
-    void sl_itemChanged(QTreeWidgetItem *item, int column);
-    void sl_customContextMenuRequested(const QPoint &position);
+    void sl_itemDoubleClicked(QTreeWidgetItem* item, int column);
+    void sl_itemChanged(QTreeWidgetItem* item, int column);
+    void sl_customContextMenuRequested(const QPoint& position);
     void sl_resetOptions();
 
     void sl_addFileClicked();
@@ -70,50 +70,50 @@ private:
     void init();
     void connectSignals();
     void updateState();
-    void updateItemsState(const ImportToDatabaseOptions &oldOptions, const ImportToDatabaseOptions &newOptions);
-    void updateItemState(QTreeWidgetItem *item, const ImportToDatabaseOptions &oldOptions, const ImportToDatabaseOptions &newOptions);
-    void markItem(QTreeWidgetItem *item, bool mark);
-    bool isEssential(QTreeWidgetItem *item) const;
+    void updateItemsState(const ImportToDatabaseOptions& oldOptions, const ImportToDatabaseOptions& newOptions);
+    void updateItemState(QTreeWidgetItem* item, const ImportToDatabaseOptions& oldOptions, const ImportToDatabaseOptions& newOptions);
+    void markItem(QTreeWidgetItem* item, bool mark);
+    bool isEssential(QTreeWidgetItem* item) const;
 
     QStringList getFilesToImport();
     QString getFolderToImport();
-    void getProjectItemsToImport(QList<Document *> &docList, QList<GObject *> &objList);
+    void getProjectItemsToImport(QList<Document*>& docList, QList<GObject*>& objList);
 
-    void addFolder(const QString &url);
-    void addFile(const QString &url);
-    void addObjectsAndDocuments(const QList<Document *> &docsToImport, const QList<GObject *> &objsToImport);
-    void addDocument(Document *document);
-    void addObject(GObject *object, QTreeWidgetItem *parent);
+    void addFolder(const QString& url);
+    void addFile(const QString& url);
+    void addObjectsAndDocuments(const QList<Document*>& docsToImport, const QList<GObject*>& objsToImport);
+    void addDocument(Document* document);
+    void addObject(GObject* object, QTreeWidgetItem* parent);
 
-    void addSubObjects(Document *document, QTreeWidgetItem *docItem);
+    void addSubObjects(Document* document, QTreeWidgetItem* docItem);
 
-    void removeItems(QList<QTreeWidgetItem *> itemList);
-    QList<QTreeWidgetItem *> removeRecursively(QTreeWidgetItem *item);
+    void removeItems(QList<QTreeWidgetItem*> itemList);
+    QList<QTreeWidgetItem*> removeRecursively(QTreeWidgetItem* item);
 
-    QList<Task *> createImportFilesTasks() const;
-    QList<Task *> createImportFoldersTasks() const;
-    QList<Task *> createimportObjectsTasks() const;
-    QList<Task *> createImportDocumentsTasks() const;
+    QList<Task*> createImportFilesTasks() const;
+    QList<Task*> createImportFoldersTasks() const;
+    QList<Task*> createimportObjectsTasks() const;
+    QList<Task*> createImportDocumentsTasks() const;
 
-    QTreeWidgetItem *getHeaderItem(HeaderType headerType) const;
+    QTreeWidgetItem* getHeaderItem(HeaderType headerType) const;
 
-    void setTooltip(QTreeWidgetItem *item);
-    void setFileTooltip(QTreeWidgetItem *item);
-    void setFolderTooltip(QTreeWidgetItem *item);
-    void setObjectTooltip(QTreeWidgetItem *item);
-    void setDocumentTooltip(QTreeWidgetItem *item);
+    void setTooltip(QTreeWidgetItem* item);
+    void setFileTooltip(QTreeWidgetItem* item);
+    void setFolderTooltip(QTreeWidgetItem* item);
+    void setObjectTooltip(QTreeWidgetItem* item);
+    void setDocumentTooltip(QTreeWidgetItem* item);
 
-    Ui_ImportToDatabaseDialog *ui;
-    Document *dbConnection;
+    Ui_ImportToDatabaseDialog* ui;
+    Document* dbConnection;
     QString baseFolder;
 
     ImportToDatabaseOptions commonOptions;
-    QMap<QTreeWidgetItem *, ImportToDatabaseOptions> privateOptions;
+    QMap<QTreeWidgetItem*, ImportToDatabaseOptions> privateOptions;
 
-    QList<QTreeWidgetItem *> files;
-    QList<QTreeWidgetItem *> folders;
-    QMap<QTreeWidgetItem *, Document *> treeItem2Document;
-    QMap<QTreeWidgetItem *, GObject *> treeItem2Object;
+    QList<QTreeWidgetItem*> files;
+    QList<QTreeWidgetItem*> folders;
+    QMap<QTreeWidgetItem*, Document*> treeItem2Document;
+    QMap<QTreeWidgetItem*, GObject*> treeItem2Object;
 
     QString DIR_HELPER_NAME;
     QString FILES_AND_FOLDERS;

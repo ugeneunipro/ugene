@@ -22,17 +22,17 @@
 #ifndef _U2_PHYLTREE_TEXT_SETTINGS_DIALOG_H_
 #define _U2_PHYLTREE_TEXT_SETTINGS_DIALOG_H_
 
-#include <ui_TextSettingsDialog.h>
-
 #include "BaseSettingsDialog.h"
 #include "ov_phyltree/TreeSettings.h"
+
+#include <ui_TextSettingsDialog.h>
 
 namespace U2 {
 
 class TextSettingsDialog : public BaseSettingsDialog, public Ui_TextSettingsDialog {
     Q_OBJECT
 public:
-    TextSettingsDialog(QWidget *parent, const OptionsMap &settings);
+    TextSettingsDialog(QWidget* parent, const OptionsMap& settings);
 
     void accept() override;
 

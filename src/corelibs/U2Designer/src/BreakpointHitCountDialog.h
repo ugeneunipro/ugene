@@ -38,17 +38,17 @@ class U2DESIGNER_EXPORT BreakpointHitCountDialog : public QDialog {
     Q_OBJECT
     Q_DISABLE_COPY(BreakpointHitCountDialog)
 public:
-    BreakpointHitCountDialog(const QStringList &hitCountConditions, const QString &conditionOnLaunch = "", quint32 hitCountParameterOnLaunch = LOWER_BOUNDARY_FOR_HIT_COUNTER_PARAMETER, quint32 hitCountOnLaunch = 0, const QStringList &hitCountersListWithoutParameter = QStringList(), QWidget *parent = 0, Qt::WindowFlags f = 0);
+    BreakpointHitCountDialog(const QStringList& hitCountConditions, const QString& conditionOnLaunch = "", quint32 hitCountParameterOnLaunch = LOWER_BOUNDARY_FOR_HIT_COUNTER_PARAMETER, quint32 hitCountOnLaunch = 0, const QStringList& hitCountersListWithoutParameter = QStringList(), QWidget* parent = 0, Qt::WindowFlags f = 0);
     ~BreakpointHitCountDialog();
 
 signals:
     void si_resetHitCount();
-    void si_hitCounterAssigned(const QString &hitCounterCondition, quint32 parameter);
+    void si_hitCounterAssigned(const QString& hitCounterCondition, quint32 parameter);
 
 private slots:
     void sl_dialogAccepted();
     void sl_resetHitCount();
-    void sl_hitConditionChanged(const QString &text);
+    void sl_hitConditionChanged(const QString& text);
 
 private:
     const QString initialCondition;
@@ -57,7 +57,7 @@ private:
     QString chosenCondition;
     quint32 hitCounterParameter;
     bool isHitCounterReset;
-    Ui_BreakpointHitCountDialog *ui;
+    Ui_BreakpointHitCountDialog* ui;
 };
 
 }  // namespace U2

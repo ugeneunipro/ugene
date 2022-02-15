@@ -26,35 +26,35 @@
 namespace U2 {
 
 #define FN_MIN_LEN 30
-QueryViewAdapter::QueryViewAdapter(QDScheme *scheme, const QPointF &topLeftCorner)
+QueryViewAdapter::QueryViewAdapter(QDScheme* scheme, const QPointF& topLeftCorner)
     : scheme(scheme) {
     Q_UNUSED(this->scheme);
-    QMap<QDSchemeUnit *, QDElement *> unitMap;
-    QList<QDConstraint *> constraints = scheme->getConstraints();
-    foreach (QDActor const *a, scheme->getActors()) {
-        foreach (QDSchemeUnit *su, a->getSchemeUnits()) {
-            QDElement *uv = new QDElement(su);
+    QMap<QDSchemeUnit*, QDElement*> unitMap;
+    QList<QDConstraint*> constraints = scheme->getConstraints();
+    foreach (QDActor const* a, scheme->getActors()) {
+        foreach (QDSchemeUnit* su, a->getSchemeUnits()) {
+            QDElement* uv = new QDElement(su);
             uv->moveBy(topLeftCorner.x(), topLeftCorner.y());
             createdElements.append(uv);
             unitMap.insertMulti(su, uv);
         }
         constraints << a->getParamConstraints();
     }
-    foreach (QDConstraint *c, constraints) {
-        QDDistanceConstraint *dc = static_cast<QDDistanceConstraint *>(c);
+    foreach (QDConstraint* c, constraints) {
+        QDDistanceConstraint* dc = static_cast<QDDistanceConstraint*>(c);
         if (dc) {
-            QDElement *src = unitMap.value(dc->getSource());
-            QDElement *dst = unitMap.value(dc->getDestination());
+            QDElement* src = unitMap.value(dc->getSource());
+            QDElement* dst = unitMap.value(dc->getDestination());
             createdFootnotes << new Footnote(src, dst, dc->distanceType(), dc);
         }
     }
 }
 
-void QueryViewAdapter::placeElement(QDElement *uv) {
+void QueryViewAdapter::placeElement(QDElement* uv) {
     // rearrange other adjacent units positions if necessary
-    foreach (Footnote *fn, uv->getFootnotes()) {
-        const QPointF &srcPt = fn->getSrcPoint();
-        const QPointF &dstPt = fn->getDstPoint();
+    foreach (Footnote* fn, uv->getFootnotes()) {
+        const QPointF& srcPt = fn->getSrcPoint();
+        const QPointF& dstPt = fn->getDstPoint();
         qreal fnLen = dstPt.x() - srcPt.x();
         qreal dx = fnLen - FN_MIN_LEN;
         if (dx < 0) {
@@ -68,17 +68,17 @@ void QueryViewAdapter::placeElement(QDElement *uv) {
     }
 }
 
-void QueryViewAdapter::moveElement(QDElement *uv, int dx) {
+void QueryViewAdapter::moveElement(QDElement* uv, int dx) {
     assert(currentPath.isEmpty());
-    QList<QDElement *> affectedUnits;
+    QList<QDElement*> affectedUnits;
     if (needToMove(uv, dx, affectedUnits)) {
-        foreach (QDElement *u, affectedUnits) {
+        foreach (QDElement* u, affectedUnits) {
             u->moveBy(dx, 0);
         }
     }
 }
 
-bool QueryViewAdapter::needToMove(QDElement *current, int dx, QList<QDElement *> &res) {
+bool QueryViewAdapter::needToMove(QDElement* current, int dx, QList<QDElement*>& res) {
     // check recursion
     if (currentPath.contains(current)) {
         currentPath.clear();
@@ -89,7 +89,7 @@ bool QueryViewAdapter::needToMove(QDElement *current, int dx, QList<QDElement *>
         res.append(current);
     }
     if (dx > 0) {
-        foreach (Footnote *fn, current->getFootnotes()) {
+        foreach (Footnote* fn, current->getFootnotes()) {
             if (fn->getSrc() == current) {
                 if (!needToMove(fn->getDst(), dx, res)) {
                     return false;
@@ -97,7 +97,7 @@ bool QueryViewAdapter::needToMove(QDElement *current, int dx, QList<QDElement *>
             }
         }
     } else {
-        foreach (Footnote *fn, current->getFootnotes()) {
+        foreach (Footnote* fn, current->getFootnotes()) {
             if (fn->getDst() == current) {
                 if (!needToMove(fn->getSrc(), dx, res)) {
                     return false;
@@ -109,17 +109,17 @@ bool QueryViewAdapter::needToMove(QDElement *current, int dx, QList<QDElement *>
     return true;
 }
 
-QRectF getUnitLocation(QDElement *uv) {
+QRectF getUnitLocation(QDElement* uv) {
     QRectF res = uv->boundingRect();
     res.moveTopLeft(uv->scenePos());
     return res;
 }
 
-bool intersects(QDElement *uv, const QList<QDElement *> &others) {
-    foreach (QDElement *other, others) {
+bool intersects(QDElement* uv, const QList<QDElement*>& others) {
+    foreach (QDElement* other, others) {
         if (uv != other) {
-            const QRectF &uvRect = getUnitLocation(uv);
-            const QRectF &otherRect = getUnitLocation(other);
+            const QRectF& uvRect = getUnitLocation(uv);
+            const QRectF& otherRect = getUnitLocation(other);
             if (uvRect.intersects(otherRect)) {
                 return true;
             }
@@ -129,17 +129,17 @@ bool intersects(QDElement *uv, const QList<QDElement *> &others) {
 }
 
 void QueryViewAdapter::sortVertically() {
-    foreach (QDElement *uv, createdElements) {
+    foreach (QDElement* uv, createdElements) {
         while (intersects(uv, createdElements)) {
             uv->moveBy(0, GRID_STEP);
         }
     }
 }
 
-QList<Footnote *> QueryViewAdapter::getSharedFootnotes(QDElement *uv1, QDElement *uv2) const {
-    QList<Footnote *> uv1Fns = uv1->getFootnotes();
-    const QList<Footnote *> &uv2Fns = uv2->getFootnotes();
-    foreach (Footnote *uv2fn, uv2Fns) {
+QList<Footnote*> QueryViewAdapter::getSharedFootnotes(QDElement* uv1, QDElement* uv2) const {
+    QList<Footnote*> uv1Fns = uv1->getFootnotes();
+    const QList<Footnote*>& uv2Fns = uv2->getFootnotes();
+    foreach (Footnote* uv2fn, uv2Fns) {
         if (!uv1Fns.contains(uv2fn)) {
             uv1Fns.removeAll(uv2fn);
         }

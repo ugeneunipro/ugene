@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-WorkflowBreakpoint::WorkflowBreakpoint(const ActorId &actor, Workflow::WorkflowContext *context)
+WorkflowBreakpoint::WorkflowBreakpoint(const ActorId& actor, Workflow::WorkflowContext* context)
     : enabled(true),
       actorId(actor),
       hitCounter(BaseBreakpointHitCounter::createInstance()),
@@ -48,7 +48,7 @@ ActorId WorkflowBreakpoint::getActorId() const {
     return actorId;
 }
 
-void WorkflowBreakpoint::setLabels(const QList<BreakpointLabel> &newLabels) {
+void WorkflowBreakpoint::setLabels(const QList<BreakpointLabel>& newLabels) {
     labels = newLabels;
 }
 
@@ -81,7 +81,7 @@ void WorkflowBreakpoint::setConditionParameter(BreakpointConditionParameter newP
     conditionChecker.setConditionParameter(newParameter);
 }
 
-void WorkflowBreakpoint::setConditionText(const QString &text) {
+void WorkflowBreakpoint::setConditionText(const QString& text) {
     conditionChecker.setConditionText(text);
 }
 
@@ -93,7 +93,7 @@ quint32 WorkflowBreakpoint::getHitCount() const {
     return hitCounter->getHitCount();
 }
 
-bool WorkflowBreakpoint::hit(const AttributeScript *conditionContext) {
+bool WorkflowBreakpoint::hit(const AttributeScript* conditionContext) {
     Q_ASSERT(nullptr != hitCounter);
     return (conditionChecker.evaluateCondition(conditionContext) && hitCounter->hit());
 }
@@ -103,7 +103,7 @@ void WorkflowBreakpoint::resetHitCounter() {
     hitCounter->reset();
 }
 
-void WorkflowBreakpoint::setContext(Workflow::WorkflowContext *context) {
+void WorkflowBreakpoint::setContext(Workflow::WorkflowContext* context) {
     conditionChecker.setContext(context);
 }
 

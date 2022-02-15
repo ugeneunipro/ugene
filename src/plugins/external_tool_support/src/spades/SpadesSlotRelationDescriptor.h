@@ -28,13 +28,13 @@ namespace U2 {
 
 class SpadesSlotRelationDescriptor : public SlotRelationDescriptor {
 public:
-    SpadesSlotRelationDescriptor(const QString &portId, const QString &slotId);
+    SpadesSlotRelationDescriptor(const QString& portId, const QString& slotId);
 
-    SpadesSlotRelationDescriptor *clone() const;
+    SpadesSlotRelationDescriptor* clone() const;
 
-    bool isSlotEnabled(const QVariant &attrValue) const;
+    bool isSlotEnabled(const QVariant& attrValue) const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SPADES_SLOT_RELATION_DESCRIPTOR_H_
+#endif  // _U2_SPADES_SLOT_RELATION_DESCRIPTOR_H_

@@ -42,29 +42,29 @@ public:
                 WorkflowDesigner,
                 ExternalTools,
                 OpenCL };
-    AppSettingsDialogFiller(HI::GUITestOpStatus &_os, style _itemStyle = extended)
+    AppSettingsDialogFiller(HI::GUITestOpStatus& _os, style _itemStyle = extended)
         : Filler(_os, "AppSettingsDialog"),
           itemStyle(_itemStyle), r(-1), g(-1), b(-1) {
     }
-    AppSettingsDialogFiller(HI::GUITestOpStatus &_os, int _r, int _g, int _b)
+    AppSettingsDialogFiller(HI::GUITestOpStatus& _os, int _r, int _g, int _b)
         : Filler(_os, "AppSettingsDialog"),
           itemStyle(none), r(_r), g(_g), b(_b) {
     }
-    AppSettingsDialogFiller(HI::GUITestOpStatus &os, CustomScenario *customScenario);
+    AppSettingsDialogFiller(HI::GUITestOpStatus& os, CustomScenario* customScenario);
     void commonScenario();
 
-    static void openTab(HI::GUITestOpStatus &os, Tabs tab);
-    static void clickOnTool(HI::GUITestOpStatus &os, const QString &toolName);
-    static void setExternalToolsDir(HI::GUITestOpStatus &os, const QString &dirPath);
-    static void setExternalToolPath(HI::GUITestOpStatus &os, const QString &toolName, const QString &toolPath);
-    static void setExternalToolPath(HI::GUITestOpStatus &os, const QString &toolName, const QString &path, const QString &name);
-    static QString getExternalToolPath(HI::GUITestOpStatus &os, const QString &toolName);
-    static bool isExternalToolValid(HI::GUITestOpStatus &os, const QString &toolName);
-    static void clearToolPath(HI::GUITestOpStatus &os, const QString &toolName);
-    static bool isToolDescriptionContainsString(HI::GUITestOpStatus &os, const QString &toolName, const QString &checkIfContains);
-    static void setTemporaryDirPath(HI::GUITestOpStatus &os, const QString &path);
-    static void setDocumentsDirPath(HI::GUITestOpStatus &os, const QString &path);
-    static void setWorkflowOutputDirPath(HI::GUITestOpStatus &os, const QString &path);
+    static void openTab(HI::GUITestOpStatus& os, Tabs tab);
+    static void clickOnTool(HI::GUITestOpStatus& os, const QString& toolName);
+    static void setExternalToolsDir(HI::GUITestOpStatus& os, const QString& dirPath);
+    static void setExternalToolPath(HI::GUITestOpStatus& os, const QString& toolName, const QString& toolPath);
+    static void setExternalToolPath(HI::GUITestOpStatus& os, const QString& toolName, const QString& path, const QString& name);
+    static QString getExternalToolPath(HI::GUITestOpStatus& os, const QString& toolName);
+    static bool isExternalToolValid(HI::GUITestOpStatus& os, const QString& toolName);
+    static void clearToolPath(HI::GUITestOpStatus& os, const QString& toolName);
+    static bool isToolDescriptionContainsString(HI::GUITestOpStatus& os, const QString& toolName, const QString& checkIfContains);
+    static void setTemporaryDirPath(HI::GUITestOpStatus& os, const QString& path);
+    static void setDocumentsDirPath(HI::GUITestOpStatus& os, const QString& path);
+    static void setWorkflowOutputDirPath(HI::GUITestOpStatus& os, const QString& path);
 
 private:
     style itemStyle;
@@ -80,8 +80,8 @@ public:
     enum Action { Create,
                   Delete,
                   Change };
-    NewColorSchemeCreator(HI::GUITestOpStatus &_os, QString _schemeName, alphabet _al, Action _act = Create, bool cancel = false);
-    NewColorSchemeCreator(HI::GUITestOpStatus &os, CustomScenario *c);
+    NewColorSchemeCreator(HI::GUITestOpStatus& _os, QString _schemeName, alphabet _al, Action _act = Create, bool cancel = false);
+    NewColorSchemeCreator(HI::GUITestOpStatus& os, CustomScenario* c);
     virtual void commonScenario();
 
 private:
@@ -93,10 +93,10 @@ private:
 
 class CreateAlignmentColorSchemeDialogFiller : public Filler {
 public:
-    CreateAlignmentColorSchemeDialogFiller(HI::GUITestOpStatus &os, QString _schemeName, NewColorSchemeCreator::alphabet _al)
+    CreateAlignmentColorSchemeDialogFiller(HI::GUITestOpStatus& os, QString _schemeName, NewColorSchemeCreator::alphabet _al)
         : Filler(os, "CreateMSAScheme"), schemeName(_schemeName), al(_al) {
     }
-    CreateAlignmentColorSchemeDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c)
+    CreateAlignmentColorSchemeDialogFiller(HI::GUITestOpStatus& os, CustomScenario* c)
         : Filler(os, "CreateMSAScheme", c), al(NewColorSchemeCreator::nucl) {
     }
     virtual void commonScenario();
@@ -108,10 +108,10 @@ private:
 
 class ColorSchemeDialogFiller : public Filler {
 public:
-    ColorSchemeDialogFiller(HI::GUITestOpStatus &os)
+    ColorSchemeDialogFiller(HI::GUITestOpStatus& os)
         : Filler(os, "ColorSchemaDialog") {
     }
-    ColorSchemeDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c)
+    ColorSchemeDialogFiller(HI::GUITestOpStatus& os, CustomScenario* c)
         : Filler(os, "ColorSchemaDialog", c) {
     }
     virtual void commonScenario();

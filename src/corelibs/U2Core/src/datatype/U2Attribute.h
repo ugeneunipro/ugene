@@ -34,7 +34,7 @@ namespace U2 {
     */
 class U2CORE_EXPORT U2Attribute : public U2Entity {
 public:
-    U2Attribute(const U2DataId &o = U2DataId(), const QString &n = QString())
+    U2Attribute(const U2DataId& o = U2DataId(), const QString& n = QString())
         : objectId(o), version(0), name(n) {
     }
 
@@ -54,7 +54,7 @@ public:
 /** 64 bit signed integer attribute */
 class U2CORE_EXPORT U2IntegerAttribute : public U2Attribute {
 public:
-    U2IntegerAttribute(const U2DataId &o = U2DataId(), const QString &n = QString(), qint64 val = 0)
+    U2IntegerAttribute(const U2DataId& o = U2DataId(), const QString& n = QString(), qint64 val = 0)
         : U2Attribute(o, n), value(val) {
     }
     qint64 value;
@@ -63,7 +63,7 @@ public:
 /** 64 bit real attribute */
 class U2CORE_EXPORT U2RealAttribute : public U2Attribute {
 public:
-    U2RealAttribute(const U2DataId &o = U2DataId(), const QString &n = QString(), double val = 0.0)
+    U2RealAttribute(const U2DataId& o = U2DataId(), const QString& n = QString(), double val = 0.0)
         : U2Attribute(o, n), value(val) {
     }
     double value;
@@ -72,7 +72,7 @@ public:
 /** String attribute */
 class U2CORE_EXPORT U2StringAttribute : public U2Attribute {
 public:
-    U2StringAttribute(const U2DataId &o = U2DataId(), const QString &n = QString(), const QString &val = QString())
+    U2StringAttribute(const U2DataId& o = U2DataId(), const QString& n = QString(), const QString& val = QString())
         : U2Attribute(o, n), value(val) {
     }
 
@@ -82,7 +82,7 @@ public:
 /** Byte array attribute */
 class U2CORE_EXPORT U2ByteArrayAttribute : public U2Attribute {
 public:
-    U2ByteArrayAttribute(const U2DataId &o = U2DataId(), const QString &n = QString(), const QByteArray &val = QByteArray())
+    U2ByteArrayAttribute(const U2DataId& o = U2DataId(), const QString& n = QString(), const QByteArray& val = QByteArray())
         : U2Attribute(o, n), value(val) {
     }
 

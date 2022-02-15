@@ -39,7 +39,7 @@ QMutex BallAndStickGLRenderer::mutex;
 
 #define MAX_OPEN_VIEWS_NUMBER 8086
 
-BallAndStickGLRenderer::BallAndStickGLRenderer(const BioStruct3D &struc, const BioStruct3DColorScheme *s, const QList<int> &shownModels, const BioStruct3DRendererSettings *settings)
+BallAndStickGLRenderer::BallAndStickGLRenderer(const BioStruct3D& struc, const BioStruct3DColorScheme* s, const QList<int>& shownModels, const BioStruct3DRendererSettings* settings)
     : BioStruct3DGLRenderer(struc, s, shownModels, settings),
       inited(false) {
 }
@@ -105,8 +105,8 @@ void BallAndStickGLRenderer::init() {
     create();
 }
 
-static void drawAtomsBonds(const Color4f &viewAtomColor, float renderDetailLevel, const Molecule3DModel &model, const BioStruct3DColorScheme *colorScheme) {
-    GLUquadricObj *pObj = gluNewQuadric();
+static void drawAtomsBonds(const Color4f& viewAtomColor, float renderDetailLevel, const Molecule3DModel& model, const BioStruct3DColorScheme* colorScheme) {
+    GLUquadricObj* pObj = gluNewQuadric();
     gluQuadricNormals(pObj, GLU_SMOOTH);
 
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, viewAtomColor.getConstData());
@@ -131,8 +131,8 @@ static void drawAtomsBonds(const Color4f &viewAtomColor, float renderDetailLevel
         const SharedAtom a1 = bond.getAtom1();
         const SharedAtom a2 = bond.getAtom2();
 
-        const Color4f &a1Color = colorScheme->getAtomColor(a1);
-        const Color4f &a2Color = colorScheme->getAtomColor(a2);
+        const Color4f& a1Color = colorScheme->getAtomColor(a1);
+        const Color4f& a2Color = colorScheme->getAtomColor(a2);
 
         Vector3D middle = (a1->coord3d + a2->coord3d) / 2;
 
@@ -167,7 +167,7 @@ void BallAndStickGLRenderer::createDisplayList() {
 
     foreach (const SharedMolecule mol, bioStruct.moleculeMap) {
         foreach (int index, shownModels) {
-            const Molecule3DModel &model = mol->models.value(index);
+            const Molecule3DModel& model = mol->models.value(index);
 
             colors.clear();
 

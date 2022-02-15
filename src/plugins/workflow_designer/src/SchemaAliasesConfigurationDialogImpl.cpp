@@ -33,15 +33,15 @@
 namespace U2 {
 namespace Workflow {
 
-SchemaAliasesConfigurationDialogImpl::SchemaAliasesConfigurationDialogImpl(const Schema &schema, QWidget *p)
+SchemaAliasesConfigurationDialogImpl::SchemaAliasesConfigurationDialogImpl(const Schema& schema, QWidget* p)
     : QDialog(p) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930020");
 
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
-    QPushButton *cancelPushButton = buttonBox->button(QDialogButtonBox::Cancel);
-    QPushButton *okPushButton = buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* cancelPushButton = buttonBox->button(QDialogButtonBox::Cancel);
+    QPushButton* okPushButton = buttonBox->button(QDialogButtonBox::Ok);
 
     connect(cancelPushButton, SIGNAL(clicked()), SLOT(reject()));
     connect(okPushButton, SIGNAL(clicked()), SLOT(accept()));
@@ -51,10 +51,10 @@ SchemaAliasesConfigurationDialogImpl::SchemaAliasesConfigurationDialogImpl(const
     paramAliasesTableWidget->horizontalHeader()->setSectionsClickable(false);
     paramAliasesTableWidget->horizontalHeader()->setStretchLastSection(true);
 
-    foreach (Actor *actor, schema.getProcesses()) {
+    foreach (Actor* actor, schema.getProcesses()) {
         assert(actor != nullptr);
         int pos = procsListWidget->count();
-        QListWidgetItem *item = new QListWidgetItem(actor->getLabel());
+        QListWidgetItem* item = new QListWidgetItem(actor->getLabel());
         procsListWidget->insertItem(pos, item);
         procListMap.insert(pos, actor->getId());
     }
@@ -65,12 +65,12 @@ SchemaAliasesConfigurationDialogImpl::SchemaAliasesConfigurationDialogImpl(const
     initializeModel(schema);
 }
 
-void SchemaAliasesConfigurationDialogImpl::initializeModel(const Schema &schema) {
-    foreach (Actor *actor, schema.getProcesses()) {
+void SchemaAliasesConfigurationDialogImpl::initializeModel(const Schema& schema) {
+    foreach (Actor* actor, schema.getProcesses()) {
         assert(actor != nullptr);
         QMap<Descriptor, QString> aliasMap;
         QMap<Descriptor, QString> helpMap;
-        foreach (Attribute *attr, actor->getParameters().values()) {
+        foreach (Attribute* attr, actor->getParameters().values()) {
             assert(attr != nullptr);
             QString alias = actor->getParamAliases().value(attr->getId());
             QString help = actor->getAliasHelp().value(alias);
@@ -85,9 +85,9 @@ void SchemaAliasesConfigurationDialogImpl::initializeModel(const Schema &schema)
 
 SchemaAliasesCfgDlgModel SchemaAliasesConfigurationDialogImpl::getModel() const {
     SchemaAliasesCfgDlgModel ret;
-    foreach (const ActorId &id, model.aliases.keys()) {
+    foreach (const ActorId& id, model.aliases.keys()) {
         QMap<Descriptor, QString> aliases;
-        foreach (const Descriptor &d, model.aliases.value(id).keys()) {
+        foreach (const Descriptor& d, model.aliases.value(id).keys()) {
             QString aliasStr = model.aliases.value(id).value(d);
             if (!aliasStr.isEmpty()) {
                 aliases.insert(d, aliasStr);
@@ -95,7 +95,7 @@ SchemaAliasesCfgDlgModel SchemaAliasesConfigurationDialogImpl::getModel() const 
         }
         ret.aliases.insert(id, aliases);
         QMap<Descriptor, QString> help;
-        foreach (const Descriptor &d, model.help.value(id).keys()) {
+        foreach (const Descriptor& d, model.help.value(id).keys()) {
             QString helpStr = model.help.value(id).value(d);
             if (!helpStr.isEmpty()) {
                 help.insert(d, helpStr);
@@ -109,8 +109,8 @@ SchemaAliasesCfgDlgModel SchemaAliasesConfigurationDialogImpl::getModel() const 
 bool SchemaAliasesConfigurationDialogImpl::validateModel() const {
     SchemaAliasesCfgDlgModel m = getModel();
     QStringList allAliases;
-    foreach (const ActorId &id, m.aliases.keys()) {
-        foreach (const Descriptor &d, m.aliases.value(id).keys()) {
+    foreach (const ActorId& id, m.aliases.keys()) {
+        foreach (const Descriptor& d, m.aliases.value(id).keys()) {
             allAliases << m.aliases.value(id).value(d);
         }
     }
@@ -138,15 +138,15 @@ void SchemaAliasesConfigurationDialogImpl::sl_procSelected(int row) {
     while (it != aliasMap.constEnd()) {
         paramAliasesTableWidget->insertRow(rowInd);
 
-        QTableWidgetItem *paramNameItem = new QTableWidgetItem(it.key().getDisplayName());
+        QTableWidgetItem* paramNameItem = new QTableWidgetItem(it.key().getDisplayName());
         paramAliasesTableWidget->setItem(rowInd, 0, paramNameItem);
         paramNameItem->setData(Qt::UserRole, QVariant::fromValue(it.key()));
         paramNameItem->setFlags(paramNameItem->flags() ^ Qt::ItemIsSelectable ^ Qt::ItemIsEditable);
 
-        QTableWidgetItem *aliasItem = new QTableWidgetItem(it.value());
+        QTableWidgetItem* aliasItem = new QTableWidgetItem(it.value());
         paramAliasesTableWidget->setItem(rowInd, 1, aliasItem);
 
-        QTableWidgetItem *helpItem = new QTableWidgetItem(model.help.value(currentActor).value(it.key()));
+        QTableWidgetItem* helpItem = new QTableWidgetItem(model.help.value(currentActor).value(it.key()));
         paramAliasesTableWidget->setItem(rowInd, 2, helpItem);
         paramAliasesTableWidget->horizontalHeader()->setStretchLastSection(true);
 
@@ -174,5 +174,5 @@ void SchemaAliasesConfigurationDialogImpl::sl_onDataChange(int row, int col) {
     }
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

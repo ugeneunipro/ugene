@@ -25,13 +25,13 @@
 
 namespace U2 {
 
-AnnotationTableObjectConstraints::AnnotationTableObjectConstraints(QObject *p)
+AnnotationTableObjectConstraints::AnnotationTableObjectConstraints(QObject* p)
     : GObjectConstraints(GObjectTypes::ANNOTATION_TABLE, p), sequenceSizeToFit(0) {
 }
 
 AnnotationTableObjectConstraints::AnnotationTableObjectConstraints(
-    const AnnotationTableObjectConstraints &c,
-    QObject *p)
+    const AnnotationTableObjectConstraints& c,
+    QObject* p)
     : GObjectConstraints(GObjectTypes::ANNOTATION_TABLE, p),
       sequenceSizeToFit(c.sequenceSizeToFit) {
 }

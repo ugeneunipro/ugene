@@ -52,19 +52,19 @@ enum {
 class QDElementDescription : public QGraphicsTextItem {
     Q_OBJECT
 public:
-    QDElementDescription(QGraphicsItem *parent = nullptr);
+    QDElementDescription(QGraphicsItem* parent = nullptr);
     QRectF boundingRect() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
     void setHeight(qreal h) {
         height = h;
     }
 signals:
-    void linkClicked(const QString &link);
+    void linkClicked(const QString& link);
 
 protected:
-    bool sceneEvent(QEvent *event);
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
+    bool sceneEvent(QEvent* event);
+    void mousePressEvent(QGraphicsSceneMouseEvent* event);
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) {
         event->ignore();
     }
 
@@ -79,36 +79,36 @@ class QDElement : public QGraphicsObject {
     friend class QueryViewController;
     Q_OBJECT
 public:
-    QDElement(QDSchemeUnit *_unit);
+    QDElement(QDSchemeUnit* _unit);
     ~QDElement() {
         assert(links.isEmpty());
     }
-    void setBoundingRect(const QRectF &r) {
+    void setBoundingRect(const QRectF& r) {
         bound = r;
     }
     QRectF boundingRect() const {
         return bound;
     }
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget /* = 0 */);
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget /* = 0 */);
 
-    void saveState(QDElementStatement *el) const;
-    void loadState(QDElementStatement *el);
+    void saveState(QDElementStatement* el) const;
+    void loadState(QDElementStatement* el);
     // returns constraint's connection point in scene coords
     QPointF getRightConnector();
     QPointF getLeftConnector();
-    bool isLinkedWith(QDElement *other, QDDistanceType kind);
+    bool isLinkedWith(QDElement* other, QDDistanceType kind);
 
-    QDActor *getActor() const {
+    QDActor* getActor() const {
         return unit->getActor();
     }
-    QDSchemeUnit *getSchemeUnit() const {
+    QDSchemeUnit* getSchemeUnit() const {
         return unit;
     }
-    const QList<Footnote *> &getFootnotes() const {
+    const QList<Footnote*>& getFootnotes() const {
         return links;
     }
-    QList<Footnote *> getOutcomeFootnotes() const;
-    QList<Footnote *> getIncomeFootnotes() const;
+    QList<Footnote*> getOutcomeFootnotes() const;
+    QList<Footnote*> getIncomeFootnotes() const;
 
     void adaptSize();
     void rememberSize();
@@ -128,14 +128,14 @@ public:
 public slots:
     void sl_refresh();
 private slots:
-    void sl_onHoverLink(const QString &link);
+    void sl_onHoverLink(const QString& link);
 
 protected:
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-    bool sceneEvent(QEvent *event);
-    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
+    QVariant itemChange(GraphicsItemChange change, const QVariant& value);
+    bool sceneEvent(QEvent* event);
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 
 private:
     void updateDescription();
@@ -143,30 +143,30 @@ private:
     QString getHeaderString() const;
 
 private:
-    QDSchemeUnit *unit;
+    QDSchemeUnit* unit;
     QFont font;
     QRectF bound;
     QPointF dragPoint;
     bool dragging;
-    QList<Footnote *> links;
-    QTextDocument *doc;
+    QList<Footnote*> links;
+    QTextDocument* doc;
     qreal extendedHeight;
 
     typedef QFlags<ResizeFlag> ResizeFlags;
     ResizeFlags itemResizeFlags;
 
-    QDElementDescription *itemDescription;
+    QDElementDescription* itemDescription;
 };
 
 class Footnote : public QGraphicsObject {
     friend class QDElement;
     Q_OBJECT
 public:
-    Footnote(QDElement *_from, QDElement *_to, QDDistanceType _distType, QDConstraint *parent, const QFont &_font = QFont());
+    Footnote(QDElement* _from, QDElement* _to, QDDistanceType _distType, QDConstraint* parent, const QFont& _font = QFont());
     ~Footnote();
     void init();
     QRectF boundingRect() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget /* = 0 */);
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget /* = 0 */);
     void updatePos();
 
     enum { Type = FootnoteItemType };
@@ -176,14 +176,14 @@ public:
 
     QPointF getSrcPoint() const;
     QPointF getDstPoint() const;
-    QDElement *getSrc() const {
+    QDElement* getSrc() const {
         return from;
     }
-    QDElement *getDst() const {
+    QDElement* getDst() const {
         return to;
     }
-    QDElement *adjacent(QDElement *uv) const;
-    QDConstraint *getConstraint() const {
+    QDElement* adjacent(QDElement* uv) const;
+    QDConstraint* getConstraint() const {
         return constraint;
     }
     QDDistanceType getDistType() const {
@@ -193,29 +193,29 @@ public slots:
     void sl_update();
 
 protected:
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    QVariant itemChange(GraphicsItemChange change, const QVariant& value);
 
 private:
-    void updateLines(const QPointF &p);
+    void updateLines(const QPointF& p);
     QString getText() const;
 
-    QDElement *from;
-    QDElement *to;
+    QDElement* from;
+    QDElement* to;
     QDDistanceType distType;
-    QDConstraint *constraint;
+    QDConstraint* constraint;
     QFont font;
     bool draging;
-    QGraphicsLineItem *leftRef;
-    QGraphicsLineItem *rightRef;
+    QGraphicsLineItem* leftRef;
+    QGraphicsLineItem* rightRef;
 };
 
 class QDLabelItem : public QGraphicsTextItem {
     Q_OBJECT
 public:
-    QDLabelItem(const QString &text = "");
-    void keyPressEvent(QKeyEvent *event);
-    void focusOutEvent(QFocusEvent *event);
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    QDLabelItem(const QString& text = "");
+    void keyPressEvent(QKeyEvent* event);
+    void focusOutEvent(QFocusEvent* event);
+    void mousePressEvent(QGraphicsSceneMouseEvent* event);
 signals:
     void si_editingFinished();
 };
@@ -223,12 +223,12 @@ signals:
 class QDDescriptionItem : public QGraphicsTextItem {
     Q_OBJECT
 public:
-    QDDescriptionItem(const QString &text = "");
+    QDDescriptionItem(const QString& text = "");
     QRectF boundingRect() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    bool sceneEvent(QEvent *event);
-    void focusOutEvent(QFocusEvent *event);
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
+    bool sceneEvent(QEvent* event);
+    void focusOutEvent(QFocusEvent* event);
+    void mousePressEvent(QGraphicsSceneMouseEvent* event);
     QPainterPath shape() const;
 
 private:
@@ -241,14 +241,14 @@ public:
     QDRulerItem()
         : leftPos(0), rightPos(0) {
     }
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget /* = 0 */);
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget /* = 0 */);
     QRectF boundingRect() const;
 public slots:
     void sl_updateGeometry();
     void sl_updateText();
 
 protected:
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    QVariant itemChange(GraphicsItemChange change, const QVariant& value);
 
 private:
     QRectF txtBound() const;
@@ -262,6 +262,6 @@ private:
 
 }  // namespace U2
 
-Q_DECLARE_METATYPE(U2::QDElement *);
+Q_DECLARE_METATYPE(U2::QDElement*);
 
 #endif

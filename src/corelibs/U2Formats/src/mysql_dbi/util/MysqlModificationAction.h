@@ -33,7 +33,7 @@ class MysqlDbi;
 /** Helper class to track info about an object */
 class MysqlModificationAction : public ModificationAction {
 public:
-    MysqlModificationAction(MysqlDbi *dbi, const U2DataId &masterObjId);
+    MysqlModificationAction(MysqlDbi* dbi, const U2DataId& masterObjId);
 
     /**
         Verifies if modification tracking is enabled for the object.
@@ -41,22 +41,22 @@ public:
         If there are tracking steps with greater or equal version (e.g. left from "undo"), removes these records.
         Returns the type of modifications  tracking for the object.
      */
-    U2TrackModType prepare(U2OpStatus &os);
+    U2TrackModType prepare(U2OpStatus& os);
 
     /**
         Adds the object ID to the object IDs set.
         If tracking is enabled, adds a new single step to the list.
      */
-    void addModification(const U2DataId &objId, qint64 modType, const QByteArray &modDetails, U2OpStatus &os);
+    void addModification(const U2DataId& objId, qint64 modType, const QByteArray& modDetails, U2OpStatus& os);
 
     /**
         If tracking is enabled, creates modification steps in the database.
         Increments version of all objects in the set.
      */
-    void complete(U2OpStatus &os);
+    void complete(U2OpStatus& os);
 
 private:
-    MysqlDbi *getDbi() const;
+    MysqlDbi* getDbi() const;
 };
 
 }  // namespace U2

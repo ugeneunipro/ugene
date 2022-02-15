@@ -42,54 +42,54 @@ using namespace Workflow;
 class ActorCfgModel : public QAbstractTableModel {
     Q_OBJECT
 public:
-    ActorCfgModel(QObject *parent, SchemaConfig *schemaConfig);
+    ActorCfgModel(QObject* parent, SchemaConfig* schemaConfig);
     ~ActorCfgModel();
 
-    void setActor(Actor *cfg);
+    void setActor(Actor* cfg);
 
     void update();
 
-    int columnCount(const QModelIndex &) const;
+    int columnCount(const QModelIndex&) const;
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const;
 
-    Qt::ItemFlags flags(const QModelIndex &index) const;
+    Qt::ItemFlags flags(const QModelIndex& index) const;
 
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
     /*Used to supply item data to views and delegates.
     Generally, models only need to supply data for Qt::DisplayRole and any application-specific user roles,
     but it is also good practice to provide data for Qt::ToolTipRole, Qt::AccessibleTextRole, and Qt::AccessibleDescriptionRole.*/
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 
     /*Used to modify the item of data associated with a specified model index.
     To be able to accept user input, provided by user interface elements, this function must handle data associated with Qt::EditRole.
     The implementation may also accept data associated with many different kinds of roles specified by Qt::ItemDataRole.
     After changing the item of data, models must emit the dataChanged() signal to inform other components of the change.*/
-    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
 
     void changeScriptMode(bool _mode);
     bool getScriptMode() const;
 
-    QModelIndex modelIndexById(const QString &id) const;
+    QModelIndex modelIndexById(const QString& id) const;
 
-    Attribute *getAttributeByRow(int row) const;
-    bool isVisible(Attribute *a) const;
+    Attribute* getAttributeByRow(int row) const;
+    bool isVisible(Attribute* a) const;
 
 private:
-    bool setAttributeValue(const Attribute *attr, QVariant &attrValue) const;
+    bool setAttributeValue(const Attribute* attr, QVariant& attrValue) const;
     void setupAttributesScripts();
-    bool canSetData(Attribute *attr, const QVariant &value);
+    bool canSetData(Attribute* attr, const QVariant& value);
 
-    QMap<Attribute *, bool> getAttributeRelatedVisibility(Attribute *changedAttr,
-                                                          const QMap<Attribute *, bool> &foundRelatedAttrs = (QMap<Attribute *, bool>())) const;
-    void checkIfAttributeVisibilityChanged(const QMap<Attribute *, bool> &attributeVisibility);
+    QMap<Attribute*, bool> getAttributeRelatedVisibility(Attribute* changedAttr,
+                                                         const QMap<Attribute*, bool>& foundRelatedAttrs = (QMap<Attribute*, bool>())) const;
+    void checkIfAttributeVisibilityChanged(const QMap<Attribute*, bool>& attributeVisibility);
 
 private:
-    SchemaConfig *schemaConfig;
-    Actor *subject;
-    QList<Attribute *> attrs;
-    AttributeScriptDelegate *scriptDelegate;
+    SchemaConfig* schemaConfig;
+    Actor* subject;
+    QList<Attribute*> attrs;
+    AttributeScriptDelegate* scriptDelegate;
     QVariantMap listValues;
     bool scriptMode;
 

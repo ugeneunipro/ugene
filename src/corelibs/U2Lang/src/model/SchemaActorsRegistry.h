@@ -31,12 +31,12 @@ namespace Workflow {
 
 class U2LANG_EXPORT SchemaActorsRegistry {
 public:
-    bool registerSchema(const QString &protoId, Schema *schema);
-    Schema *unregisterSchema(const QString &protoId);
-    Schema *getSchema(const QString &protoId);
+    bool registerSchema(const QString& protoId, Schema* schema);
+    Schema* unregisterSchema(const QString& protoId);
+    Schema* getSchema(const QString& protoId);
 
 private:
-    QMap<QString, Schema *> schemas;
+    QMap<QString, Schema*> schemas;
     QMutex mutex;
 };
 

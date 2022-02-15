@@ -40,7 +40,7 @@ QString GenomeAlignerSettingsUtils::getIndexDir() {
     return res;
 }
 
-void GenomeAlignerSettingsUtils::setIndexDir(const QString &indexDir) {
+void GenomeAlignerSettingsUtils::setIndexDir(const QString& indexDir) {
     QString defaultDir = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath("aligner");
     if (defaultDir != indexDir) {
         AppContext::getSettings()->setValue(SETTINGS_ROOT + INDEX_DIR, indexDir, true);

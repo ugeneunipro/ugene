@@ -43,10 +43,10 @@ private slots:
     void sl_showWindow();
 
 private:
-    void registerTests(UGUITestBase *guiTestBase);
-    void registerAdditionalActions(UGUITestBase *guiTestBase);
+    void registerTests(UGUITestBase* guiTestBase);
+    void registerAdditionalActions(UGUITestBase* guiTestBase);
 
-    QAction *openGUITestRunnerAction;
+    QAction* openGUITestRunnerAction;
     QPointer<GUITestRunner> view;
 };
 

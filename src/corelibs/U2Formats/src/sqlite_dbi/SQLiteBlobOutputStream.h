@@ -31,13 +31,13 @@ namespace U2 {
 
 class SQLiteBlobOutputStream : public OutputStream, public SQLiteBlobStream {
 public:
-    SQLiteBlobOutputStream(DbRef *db, const QByteArray &tableId, const QByteArray &columnId, const U2DataId &rowId, int size, U2OpStatus &os);
+    SQLiteBlobOutputStream(DbRef* db, const QByteArray& tableId, const QByteArray& columnId, const U2DataId& rowId, int size, U2OpStatus& os);
 
     void close();
-    void write(const char *buffer, int length, U2OpStatus &os);
+    void write(const char* buffer, int length, U2OpStatus& os);
 
 private:
-    void update(DbRef *db, const QByteArray &tableId, const QByteArray &columnId, const U2DataId &rowId, int size, U2OpStatus &os);
+    void update(DbRef* db, const QByteArray& tableId, const QByteArray& columnId, const U2DataId& rowId, int size, U2OpStatus& os);
 };
 
 }  // namespace U2

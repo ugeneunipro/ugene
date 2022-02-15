@@ -35,22 +35,22 @@ class U2Region;
 class SequenceExportSettingsWidget : public QWidget, public Ui_SequenceExportSettingsWidget {
     Q_OBJECT
 public:
-    SequenceExportSettingsWidget(U2SequenceObject *seqObj, QSharedPointer<CustomExportSettings> settings, DNASequenceSelection *selection = nullptr);
+    SequenceExportSettingsWidget(U2SequenceObject* seqObj, QSharedPointer<CustomExportSettings> settings, DNASequenceSelection* selection = nullptr);
 
 signals:
     void si_regionChanged(U2Region region);
 
 private slots:
     void sl_areaChanged();
-    void sl_regionChanged(const U2Region &r);
+    void sl_regionChanged(const U2Region& r);
 
 private:
     SequenceExportType getExportType() const;
 
     QSharedPointer<SequenceExportSettings> settings;
 
-    U2SequenceObject *seqObject;
-    RegionSelector *regionSelector;
+    U2SequenceObject* seqObject;
+    RegionSelector* regionSelector;
 };
 
 }  // namespace U2

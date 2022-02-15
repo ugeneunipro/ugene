@@ -22,11 +22,11 @@
 #ifndef _U2_WEIGHT_MATRIX_SET_PARAMETERS_DIALOG_CONTROLLER_H_
 #define _U2_WEIGHT_MATRIX_SET_PARAMETERS_DIALOG_CONTROLLER_H_
 
-#include <ui_SetDefaultParametersDialog.h>
-
 #include <QDialog>
 
 #include "WeightMatrixPlugin.h"
+
+#include <ui_SetDefaultParametersDialog.h>
 
 namespace U2 {
 
@@ -34,7 +34,7 @@ class SetParametersDialogController : public QDialog, public Ui_SetDefaultParame
     Q_OBJECT
 
 public:
-    SetParametersDialogController(QWidget *w = nullptr);
+    SetParametersDialogController(QWidget* w = nullptr);
 
 private slots:
     void sl_onOkButton();

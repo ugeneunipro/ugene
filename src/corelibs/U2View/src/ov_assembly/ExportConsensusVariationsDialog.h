@@ -22,11 +22,11 @@
 #ifndef _U2_EXPORT_CONSENSUS_VARIATIONS_DIALOG_H_
 #define _U2_EXPORT_CONSENSUS_VARIATIONS_DIALOG_H_
 
-#include <ui_ExportConsensusDialog.h>
-
 #include <QDialog>
 
 #include "ExportConsensusVariationsTask.h"
+
+#include <ui_ExportConsensusDialog.h>
 
 namespace U2 {
 
@@ -36,18 +36,18 @@ class SaveDocumentController;
 class ExportConsensusVariationsDialog : public QDialog, private Ui_ExportConsensusDialog {
     Q_OBJECT
 public:
-    ExportConsensusVariationsDialog(QWidget *p, const ExportConsensusVariationsTaskSettings &settings, const U2Region &visibleRegion);
+    ExportConsensusVariationsDialog(QWidget* p, const ExportConsensusVariationsTaskSettings& settings, const U2Region& visibleRegion);
 
     virtual void accept();
 
-    const ExportConsensusVariationsTaskSettings &getSettings() const;
+    const ExportConsensusVariationsTaskSettings& getSettings() const;
 
 private:
     void initSaveController();
 
     ExportConsensusVariationsTaskSettings settings;
-    SaveDocumentController *saveController;
-    RegionSelector *regionSelector;
+    SaveDocumentController* saveController;
+    RegionSelector* regionSelector;
 };
 
 }  // namespace U2

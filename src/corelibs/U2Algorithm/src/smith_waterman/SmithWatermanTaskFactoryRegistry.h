@@ -36,17 +36,17 @@ namespace U2 {
 class U2ALGORITHM_EXPORT SmithWatermanTaskFactoryRegistry : public QObject {
     Q_OBJECT
 public:
-    SmithWatermanTaskFactoryRegistry(QObject *pOwn = 0);
+    SmithWatermanTaskFactoryRegistry(QObject* pOwn = 0);
     ~SmithWatermanTaskFactoryRegistry();
 
-    bool registerFactory(SmithWatermanTaskFactory *factory, const QString &factoryId);
-    bool hadRegistered(const QString &factoryId);
-    SmithWatermanTaskFactory *getFactory(const QString &factoryId);
+    bool registerFactory(SmithWatermanTaskFactory* factory, const QString& factoryId);
+    bool hadRegistered(const QString& factoryId);
+    SmithWatermanTaskFactory* getFactory(const QString& factoryId);
     QStringList getListFactoryNames();
 
 private:
     QMutex mutex;
-    QHash<QString, SmithWatermanTaskFactory *> factories;
+    QHash<QString, SmithWatermanTaskFactory*> factories;
 };
 
 }  // namespace U2

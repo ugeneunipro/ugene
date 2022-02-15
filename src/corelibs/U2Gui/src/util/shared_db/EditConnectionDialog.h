@@ -36,7 +36,7 @@ class U2GUI_EXPORT EditConnectionDialog : public QDialog {
     Q_DISABLE_COPY(EditConnectionDialog)
     Q_OBJECT
 public:
-    EditConnectionDialog(QWidget *parent = 0, const QString &dbiUrl = "", const QString &userName = "", const QString &connectionName = "");
+    EditConnectionDialog(QWidget* parent = 0, const QString& dbiUrl = "", const QString& userName = "", const QString& connectionName = "");
     ~EditConnectionDialog();
 
     void setReadOnly(bool readOnly);
@@ -49,13 +49,13 @@ public slots:
     void accept();
 
 private:
-    void init(const QString &dbiUrl, const QString &connectionName, const QString &userName);
+    void init(const QString& dbiUrl, const QString& connectionName, const QString& userName);
     void initTabOrder();
     void saveCredentials() const;
     void removeCredentials() const;
     bool checkFields();
 
-    Ui_EditConnectionDialog *ui;
+    Ui_EditConnectionDialog* ui;
 
     static const QString DEFAULT_PORT;
 };

@@ -38,7 +38,7 @@ IMPLEMENT_TEST(MsaUtilsUnitTests, one_name_with_spaces) {
     U2OpStatusImpl os;
 
     // Prepare input data
-    const DNAAlphabet *alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
+    const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
     MultipleSequenceAlignment ma1("msa1_one_name_with_spaces", alphabet);
     ma1->addRow("diss1", "AAAA--AAA", -1);
     ma1->addRow("fiss 2", "C--CCCCCC", -1);
@@ -59,7 +59,7 @@ IMPLEMENT_TEST(MsaUtilsUnitTests, two_names_with_spaces) {
     U2OpStatusImpl os;
 
     // Prepare input data
-    const DNAAlphabet *alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
+    const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
     MultipleSequenceAlignment ma1("msa1_two_names_with_spaces", alphabet);
     ma1->addRow("diss1", "AAAA--AAA", -1);
     ma1->addRow("fiss 2", "C--CCCCCC", -1);
@@ -80,7 +80,7 @@ IMPLEMENT_TEST(MsaUtilsUnitTests, all_names_with_spaces) {
     U2OpStatusImpl os;
 
     // Prepare input data
-    const DNAAlphabet *alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
+    const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
     MultipleSequenceAlignment ma1("msa1_all_names_with_spaces", alphabet);
     ma1->addRow("diss 1", "AAAA--AAA", -1);
     ma1->addRow("fiss 2", "C--CCCCCC", -1);

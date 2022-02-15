@@ -27,8 +27,8 @@
 
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
-    LinkDataSupportPlugin *plug = new LinkDataSupportPlugin();
+extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
+    LinkDataSupportPlugin* plug = new LinkDataSupportPlugin();
     return plug;
 }
 
@@ -37,7 +37,7 @@ LinkDataSupportPlugin::LinkDataSupportPlugin()
     AppContext::getWorkflowScriptRegistry()->registerScriptFactory(new LinkDataScriptFactory());
 }
 
-void LinkDataScriptFactory::createScript(WorkflowScriptEngine *engine) {
+void LinkDataScriptFactory::createScript(WorkflowScriptEngine* engine) {
     LinkDataScriptLibrary::init(engine);
 }
 

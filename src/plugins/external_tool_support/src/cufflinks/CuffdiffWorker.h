@@ -34,7 +34,7 @@ class CuffdiffPrompter : public PrompterBase<CuffdiffPrompter> {
     Q_OBJECT
 
 public:
-    CuffdiffPrompter(Actor *parent = 0);
+    CuffdiffPrompter(Actor* parent = 0);
 
 protected:
     QString composeRichDoc();
@@ -43,19 +43,19 @@ protected:
 class CuffdiffWorker : public BaseWorker {
     Q_OBJECT
 public:
-    CuffdiffWorker(Actor *actor);
+    CuffdiffWorker(Actor* actor);
 
     void init();
     bool isReady() const;
-    Task *tick();
+    Task* tick();
     void cleanup();
 
 private slots:
     void sl_onTaskFinished();
 
 private:
-    CommunicationChannel *inAssembly;
-    CommunicationChannel *inTranscript;
+    CommunicationChannel* inAssembly;
+    CommunicationChannel* inTranscript;
 
     bool groupBySamples;
     QMap<QString, QStringList> assemblyUrls;
@@ -74,12 +74,12 @@ public:
     CuffdiffWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *actor) {
+    virtual Worker* createWorker(Actor* actor) {
         return new CuffdiffWorker(actor);
     }
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
 #endif

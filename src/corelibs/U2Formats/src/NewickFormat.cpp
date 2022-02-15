@@ -33,25 +33,25 @@
 
 namespace U2 {
 
-NewickFormat::NewickFormat(QObject *p)
+NewickFormat::NewickFormat(QObject* p)
     : TextDocumentFormat(p, BaseDocumentFormats::NEWICK, DocumentFormatFlags_W1, {"nwk", "newick", "nh", "ph"}) {
     formatName = tr("Newick Standard");
     formatDescription = tr("Newick is a simple format used to write out trees in a text file");
     supportedObjectTypes += GObjectTypes::PHYLOGENETIC_TREE;
 }
 
-static QList<GObject *> parseTrees(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &si);
+static QList<GObject*> parseTrees(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& si);
 
-Document *NewickFormat::loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) {
-    QList<GObject *> objects = parseTrees(reader, dbiRef, hints, os);
+Document* NewickFormat::loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) {
+    QList<GObject*> objects = parseTrees(reader, dbiRef, hints, os);
     CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
     return new Document(this, reader.getFactory(), reader.getURL(), dbiRef, objects, hints);
 }
 
-void NewickFormat::storeTextDocument(IOAdapterWriter &writer, Document *document, U2OpStatus &os) {
-    const QList<GObject *> &objects = document->getObjects();
-    for (GObject *obj : qAsConst(objects)) {
-        if (auto phyObj = qobject_cast<PhyTreeObject *>(obj)) {
+void NewickFormat::storeTextDocument(IOAdapterWriter& writer, Document* document, U2OpStatus& os) {
+    const QList<GObject*>& objects = document->getObjects();
+    for (GObject* obj : qAsConst(objects)) {
+        if (auto phyObj = qobject_cast<PhyTreeObject*>(obj)) {
             QString text = NewickPhyTreeSerializer::serialize(phyObj->getTree(), os);
             CHECK_OP(os, );
             writer.write(os, text);
@@ -60,7 +60,7 @@ void NewickFormat::storeTextDocument(IOAdapterWriter &writer, Document *document
     }
 }
 
-FormatCheckResult NewickFormat::checkRawTextData(const QString &dataPrefix, const GUrl &) const {
+FormatCheckResult NewickFormat::checkRawTextData(const QString& dataPrefix, const GUrl&) const {
     int brackets = 0;
     typedef enum { letter,
                    letter_than_whites,
@@ -131,19 +131,19 @@ FormatCheckResult NewickFormat::checkRawTextData(const QString &dataPrefix, cons
     return FormatDetection_HighSimilarity;
 }
 
-static QList<GObject *> parseTrees(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &si) {
-    QList<GObject *> objects;
+static QList<GObject*> parseTrees(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& si) {
+    QList<GObject*> objects;
     DbiOperationsBlock opBlock(dbiRef, si);
     CHECK_OP(si, objects);
     QList<PhyTree> trees = NewickPhyTreeSerializer::parseTrees(reader, si);
     CHECK_OP(si, objects);
 
     for (int i = 0; i < trees.size(); i++) {
-        const PhyTree &tree = trees[i];
+        const PhyTree& tree = trees[i];
         QString objName = (i == 0) ? QString("Tree") : QString("Tree%1").arg(i + 1);
         QVariantMap hints;
         hints.insert(DocumentFormat::DBI_FOLDER_HINT, fs.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER));
-        PhyTreeObject *obj = PhyTreeObject::createInstance(tree, objName, dbiRef, si, hints);
+        PhyTreeObject* obj = PhyTreeObject::createInstance(tree, objName, dbiRef, si, hints);
         CHECK_OP(si, objects);
         objects.append(obj);
     }

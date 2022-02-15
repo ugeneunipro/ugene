@@ -37,9 +37,9 @@ namespace U2 {
 
 XMLTestFactory::~XMLTestFactory() {
 #ifdef TEST_FACTORIES_AUTO_CLEANUP
-    GTestFormatRegistry *testFormatRegistry = AppContext::getTestFramework()->getTestFormatRegistry();
+    GTestFormatRegistry* testFormatRegistry = AppContext::getTestFramework()->getTestFormatRegistry();
     if (testFormatRegistry != nullptr) {
-        XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(testFormatRegistry->findFormat("XML"));
+        XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(testFormatRegistry->findFormat("XML"));
         if (xmlTestFormat != nullptr) {
             xmlTestFormat->unregisterTestFactory(this);
         }
@@ -54,13 +54,13 @@ XMLTestFormat::XMLTestFormat()
 }
 
 XMLTestFormat::~XMLTestFormat() {
-    const QList<XMLTestFactory *> factoryList = testFactories.values();
-    for (XMLTestFactory *f : qAsConst(factoryList)) {
+    const QList<XMLTestFactory*> factoryList = testFactories.values();
+    for (XMLTestFactory* f : qAsConst(factoryList)) {
         delete f;
     }
 }
 
-GTest *XMLTestFormat::createTest(const QString &name, GTest *cp, const GTestEnvironment *env, const QByteArray &testData, QString &err) {
+GTest* XMLTestFormat::createTest(const QString& name, GTest* cp, const GTestEnvironment* env, const QByteArray& testData, QString& err) {
     QDomDocument doc;
     int line = 0;
     int col = 0;
@@ -79,19 +79,19 @@ GTest *XMLTestFormat::createTest(const QString &name, GTest *cp, const GTestEnvi
     return createTest(name, cp, env, testEl, err);
 }
 
-GTest *XMLTestFormat::createTest(const QString &name, GTest *cp, const GTestEnvironment *env, const QDomElement &el, QString &err) {
+GTest* XMLTestFormat::createTest(const QString& name, GTest* cp, const GTestEnvironment* env, const QDomElement& el, QString& err) {
     QString tagName = el.tagName();
-    XMLTestFactory *factory = testFactories.value(tagName);
+    XMLTestFactory* factory = testFactories.value(tagName);
     if (factory == nullptr) {
         err = QString("XMLTestFactory not found '%1'").arg(tagName);
         return nullptr;
     }
-    QList<GTest *> subs;
+    QList<GTest*> subs;
     return factory->createTest(this, name, cp, env, subs, el);
 }
 
-bool XMLTestFormat::registerTestFactory(XMLTestFactory *tf) {
-    const QString &tagName = tf->getTagName();
+bool XMLTestFormat::registerTestFactory(XMLTestFactory* tf) {
+    const QString& tagName = tf->getTagName();
     if (testFactories.contains(tagName)) {
         return false;
     }
@@ -99,16 +99,16 @@ bool XMLTestFormat::registerTestFactory(XMLTestFactory *tf) {
     return true;
 }
 
-void XMLTestFormat::registerTestFactories(const QList<XMLTestFactory *> &factoryList) {
-    for (XMLTestFactory *factory : qAsConst(factoryList)) {
+void XMLTestFormat::registerTestFactories(const QList<XMLTestFactory*>& factoryList) {
+    for (XMLTestFactory* factory : qAsConst(factoryList)) {
         bool ok = registerTestFactory(factory);
         Q_UNUSED(ok);
         Q_ASSERT(ok);
     }
 }
 
-bool XMLTestFormat::unregisterTestFactory(XMLTestFactory *tf) {
-    const QString &tagName = tf->getTagName();
+bool XMLTestFormat::unregisterTestFactory(XMLTestFactory* tf) {
+    const QString& tagName = tf->getTagName();
     if (!testFactories.contains(tagName)) {
         return false;
     }

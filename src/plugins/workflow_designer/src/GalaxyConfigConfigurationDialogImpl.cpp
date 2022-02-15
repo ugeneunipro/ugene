@@ -30,7 +30,7 @@
 namespace U2 {
 namespace Workflow {
 
-GalaxyConfigConfigurationDialogImpl::GalaxyConfigConfigurationDialogImpl(const QString &_schemePath, QWidget *p)
+GalaxyConfigConfigurationDialogImpl::GalaxyConfigConfigurationDialogImpl(const QString& _schemePath, QWidget* p)
     : QDialog(p) {
     setupUi(this);
 
@@ -70,7 +70,7 @@ void GalaxyConfigConfigurationDialogImpl::sl_destinationToolButtonClicked() {
 }
 
 bool GalaxyConfigConfigurationDialogImpl::createGalaxyConfigTask() {
-    Task *task = new GalaxyConfigTask(schemePath, ugenePathLineEdit->text(), galaxyPathLineEdit->text(), destinationPathLineEdit->text());
+    Task* task = new GalaxyConfigTask(schemePath, ugenePathLineEdit->text(), galaxyPathLineEdit->text(), destinationPathLineEdit->text());
     if (task != nullptr) {
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
         return true;
@@ -78,5 +78,5 @@ bool GalaxyConfigConfigurationDialogImpl::createGalaxyConfigTask() {
     return false;
 }
 
-}    // namespace Workflow
-}    // namespace U2
+}  // namespace Workflow
+}  // namespace U2

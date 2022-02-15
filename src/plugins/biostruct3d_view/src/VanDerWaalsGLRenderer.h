@@ -28,7 +28,7 @@ namespace U2 {
 
 class VanDerWaalsGLRenderer : public BioStruct3DGLRenderer {
 protected:
-    VanDerWaalsGLRenderer(const BioStruct3D &struc, const BioStruct3DColorScheme *s, const QList<int> &shownModels, const BioStruct3DRendererSettings *settings);
+    VanDerWaalsGLRenderer(const BioStruct3D& struc, const BioStruct3DColorScheme* s, const QList<int>& shownModels, const BioStruct3DRendererSettings* settings);
 
 public:
     void drawBioStruct3D();
@@ -43,7 +43,7 @@ public:
     }
 
 private:
-    void drawAtoms(const BioStruct3DColorScheme *s);
+    void drawAtoms(const BioStruct3DColorScheme* s);
 
     RENDERER_FACTORY(VanDerWaalsGLRenderer)
 };

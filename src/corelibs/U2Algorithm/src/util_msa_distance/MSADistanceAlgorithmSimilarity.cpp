@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-MSADistanceAlgorithmFactorySimilarity::MSADistanceAlgorithmFactorySimilarity(QObject *p)
+MSADistanceAlgorithmFactorySimilarity::MSADistanceAlgorithmFactorySimilarity(QObject* p)
     : MSADistanceAlgorithmFactory(BuiltInDistanceAlgorithms::SIMILARITY_ALGO, DistanceAlgorithmFlags_NuclAmino, p) {
 }
 
@@ -37,8 +37,8 @@ QString MSADistanceAlgorithmFactorySimilarity::getName() const {
     return tr("Similarity");
 }
 
-MSADistanceAlgorithm *MSADistanceAlgorithmFactorySimilarity::createAlgorithm(const MultipleSequenceAlignment &ma, QObject *) {
-    MSADistanceAlgorithm *res = new MSADistanceAlgorithmSimilarity(this, ma);
+MSADistanceAlgorithm* MSADistanceAlgorithmFactorySimilarity::createAlgorithm(const MultipleSequenceAlignment& ma, QObject*) {
+    MSADistanceAlgorithm* res = new MSADistanceAlgorithmSimilarity(this, ma);
     if (flags.testFlag(DistanceAlgorithmFlag_ExcludeGaps)) {
         res->setExcludeGaps(true);
     } else {

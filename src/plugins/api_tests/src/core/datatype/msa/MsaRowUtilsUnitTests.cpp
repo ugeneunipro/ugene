@@ -29,7 +29,7 @@ namespace U2 {
 static const QByteArray SEQUENCE = "0123456789";
 
 /** Helper method that returns QString instead of QByteArray. Used for compatibility with CHECK_EQUAL macro. */
-static QString getGappedSubsequence(const U2Region &region, const QByteArray &sequence, const QVector<U2MsaGap> &gaps) {
+static QString getGappedSubsequence(const U2Region& region, const QByteArray& sequence, const QVector<U2MsaGap>& gaps) {
     QByteArray result = MsaRowUtils::getGappedSubsequence(region, sequence, gaps);
     return QString::fromUtf8(result);
 }

@@ -35,7 +35,7 @@ bool GTMouseDriver::click(Qt::MouseButton button) {
 }
 
 #ifndef Q_OS_DARWIN
-bool GTMouseDriver::click(const QPoint &p, Qt::MouseButton button) {
+bool GTMouseDriver::click(const QPoint& p, Qt::MouseButton button) {
     DRIVER_CHECK(moveTo(p), "Mouse move was failed");
     return click(button);
 }
@@ -44,14 +44,14 @@ bool GTMouseDriver::click(const QPoint &p, Qt::MouseButton button) {
 namespace {
 
 #ifdef Q_OS_WIN
-bool isFarEnoughToStartDnd(const QPoint &start, const QPoint &end) {
+bool isFarEnoughToStartDnd(const QPoint& start, const QPoint& end) {
     return (end - start).manhattanLength() > 2 * QApplication::startDragDistance();
 }
 #endif
 
 }  // namespace
 
-bool GTMouseDriver::dragAndDrop(const QPoint &start, const QPoint &end) {
+bool GTMouseDriver::dragAndDrop(const QPoint& start, const QPoint& end) {
     GTGlobals::sleep(QApplication::doubleClickInterval() + 1);  // Protect from double-clicks.
     DRIVER_CHECK(moveTo(start), QString("Mouse was not moved to the start point (%1, %2)").arg(start.x()).arg(start.y()));
     DRIVER_CHECK(press(), "Mouse button was not be pressed");
@@ -72,7 +72,7 @@ bool GTMouseDriver::dragAndDrop(const QPoint &start, const QPoint &end) {
     return true;
 }
 
-bool GTMouseDriver::selectArea(const QPoint &start, const QPoint &end) {
+bool GTMouseDriver::selectArea(const QPoint& start, const QPoint& end) {
     DRIVER_CHECK(dragAndDrop(start, end), "Drag and drop failed");
     return true;
 }

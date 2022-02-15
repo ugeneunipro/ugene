@@ -43,7 +43,7 @@ Dbi::Dbi()
     : U2AbstractDbi(DbiFactory::ID), assembliesCount(0) {
 }
 
-void Dbi::init(const QHash<QString, QString> &properties, const QVariantMap & /*persistentData*/, U2OpStatus &os) {
+void Dbi::init(const QHash<QString, QString>& properties, const QVariantMap& /*persistentData*/, U2OpStatus& os) {
     try {
         if (U2DbiState_Void != state) {
             throw Exception(BAMDbiPlugin::tr("Invalid DBI state"));
@@ -57,7 +57,7 @@ void Dbi::init(const QHash<QString, QString> &properties, const QVariantMap & /*
             throw Exception(BAMDbiPlugin::tr("Non-local files are not supported"));
         }
         {
-            IOAdapterFactory *factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+            IOAdapterFactory* factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
             ioAdapter.reset(factory->createIOAdapter());
         }
         if (!ioAdapter->open(url, IOAdapterMode_Read)) {
@@ -102,7 +102,7 @@ void Dbi::init(const QHash<QString, QString> &properties, const QVariantMap & /*
         features.insert(U2DbiFeature_AssemblyReadsPacking);
         dbiId = url.getURLString();
         state = U2DbiState_Ready;
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         os.setError(e.getMessage());
         assemblyDbi.reset();
         objectDbi.reset();
@@ -118,7 +118,7 @@ void Dbi::init(const QHash<QString, QString> &properties, const QVariantMap & /*
     }
 }
 
-QVariantMap Dbi::shutdown(U2OpStatus &os) {
+QVariantMap Dbi::shutdown(U2OpStatus& os) {
     try {
         if (U2DbiState_Ready != state) {
             throw Exception(BAMDbiPlugin::tr("Invalid DBI state"));
@@ -134,13 +134,13 @@ QVariantMap Dbi::shutdown(U2OpStatus &os) {
         }
         state = U2DbiState_Void;
         return QVariantMap();
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         os.setError(e.getMessage());
         return QVariantMap();
     }
 }
 
-QHash<QString, QString> Dbi::getDbiMetaInfo(U2OpStatus &os) {
+QHash<QString, QString> Dbi::getDbiMetaInfo(U2OpStatus& os) {
     try {
         if (U2DbiState_Ready != state) {
             throw Exception(BAMDbiPlugin::tr("Invalid DBI state"));
@@ -148,13 +148,13 @@ QHash<QString, QString> Dbi::getDbiMetaInfo(U2OpStatus &os) {
         QHash<QString, QString> result;
         result["url"] = url.getURLString();
         return result;
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         os.setError(e.getMessage());
         return QHash<QString, QString>();
     }
 }
 
-U2DataType Dbi::getEntityTypeById(const U2DataId &id) const {
+U2DataType Dbi::getEntityTypeById(const U2DataId& id) const {
     if (id.isEmpty()) {
         return U2Type::Unknown;
     } else {
@@ -167,7 +167,7 @@ U2DataType Dbi::getEntityTypeById(const U2DataId &id) const {
     }
 }
 
-U2ObjectDbi *Dbi::getObjectDbi() {
+U2ObjectDbi* Dbi::getObjectDbi() {
     if (U2DbiState_Ready == state) {
         return objectDbi.data();
     } else {
@@ -175,7 +175,7 @@ U2ObjectDbi *Dbi::getObjectDbi() {
     }
 }
 
-U2AssemblyDbi *Dbi::getAssemblyDbi() {
+U2AssemblyDbi* Dbi::getAssemblyDbi() {
     if (U2DbiState_Ready == state) {
         return assemblyDbi.data();
     } else {
@@ -187,7 +187,7 @@ bool Dbi::isReadOnly() const {
     return SQLiteUtils::isDatabaseReadOnly(&dbRef, "main") == 1;
 }
 
-void Dbi::buildIndex(U2OpStatus &os) {
+void Dbi::buildIndex(U2OpStatus& os) {
     {
         U2OpStatusImpl opStatus;
         int tableCount = SQLiteReadQuery("SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND (name = 'assemblies' OR name = 'assemblyReads');", &dbRef, opStatus).selectInt64();
@@ -233,7 +233,7 @@ void Dbi::buildIndex(U2OpStatus &os) {
                     throw Exception(opStatus.getError());
                 }
             }
-            const Header &header = reader->getHeader();
+            const Header& header = reader->getHeader();
             QList<qint64> maxEndPositions;
             QList<qint64> maxReadLengths;
             QList<QList<qint64>> rowEnds;
@@ -315,7 +315,7 @@ void Dbi::buildIndex(U2OpStatus &os) {
                     throw Exception(opStatus.getError());
                 }
             }
-        } catch (const Exception &e) {
+        } catch (const Exception& e) {
             transactionOpStatus.setError(e.getMessage());
             throw;
         }
@@ -328,7 +328,7 @@ DbiFactory::DbiFactory()
     : U2DbiFactory() {
 }
 
-U2Dbi *DbiFactory::createDbi() {
+U2Dbi* DbiFactory::createDbi() {
     return new Dbi();
 }
 
@@ -336,13 +336,13 @@ U2DbiFactoryId DbiFactory::getId() const {
     return ID;
 }
 
-FormatCheckResult DbiFactory::isValidDbi(const QHash<QString, QString> &properties, const QByteArray &rawData, U2OpStatus & /*os*/) const {
+FormatCheckResult DbiFactory::isValidDbi(const QHash<QString, QString>& properties, const QByteArray& rawData, U2OpStatus& /*os*/) const {
     BAMFormatUtils f;
     FormatCheckResult res = f.checkRawData(rawData, properties.value(U2DbiOptions::U2_DBI_OPTION_URL));
     return res;
 }
 
-bool DbiFactory::isDbiExists(const U2DbiId &id) const {
+bool DbiFactory::isDbiExists(const U2DbiId& id) const {
     return QFile::exists(id);
 }
 
@@ -350,18 +350,18 @@ const QString DbiFactory::ID = "BAMDbi";
 
 // ObjectDbi
 
-ObjectDbi::ObjectDbi(Dbi &dbi, DbRef &dbRef, int assembliesCount)
+ObjectDbi::ObjectDbi(Dbi& dbi, DbRef& dbRef, int assembliesCount)
     : U2SimpleObjectDbi(&dbi),
       dbi(dbi),
       dbRef(dbRef),
       assembliesCount(assembliesCount) {
 }
 
-qint64 ObjectDbi::countObjects(U2OpStatus &os) {
+qint64 ObjectDbi::countObjects(U2OpStatus& os) {
     return countObjects(U2Type::Assembly, os);
 }
 
-qint64 ObjectDbi::countObjects(U2DataType type, U2OpStatus &os) {
+qint64 ObjectDbi::countObjects(U2DataType type, U2OpStatus& os) {
     try {
         if (U2DbiState_Ready != dbi.getState()) {
             throw Exception(BAMDbiPlugin::tr("Invalid DBI state"));
@@ -371,13 +371,13 @@ qint64 ObjectDbi::countObjects(U2DataType type, U2OpStatus &os) {
         } else {
             return 0;
         }
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         os.setError(e.getMessage());
         return 0;
     }
 }
 
-QHash<U2DataId, QString> ObjectDbi::getObjectNames(qint64 offset, qint64 count, U2OpStatus &os) {
+QHash<U2DataId, QString> ObjectDbi::getObjectNames(qint64 offset, qint64 count, U2OpStatus& os) {
     QHash<U2DataId, QString> result;
 
     try {
@@ -395,17 +395,17 @@ QHash<U2DataId, QString> ObjectDbi::getObjectNames(qint64 offset, qint64 count, 
             result.insert(id, name);
         }
         return result;
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         os.setError(e.getMessage());
         return result;
     }
 }
 
-QList<U2DataId> ObjectDbi::getObjects(qint64 offset, qint64 count, U2OpStatus &os) {
+QList<U2DataId> ObjectDbi::getObjects(qint64 offset, qint64 count, U2OpStatus& os) {
     return getObjects(U2Type::Assembly, offset, count, os);
 }
 
-QList<U2DataId> ObjectDbi::getObjects(U2DataType type, qint64 offset, qint64 count, U2OpStatus &os) {
+QList<U2DataId> ObjectDbi::getObjects(U2DataType type, qint64 offset, qint64 count, U2OpStatus& os) {
     try {
         if (U2DbiState_Ready != dbi.getState()) {
             throw Exception(BAMDbiPlugin::tr("Invalid DBI state"));
@@ -418,37 +418,37 @@ QList<U2DataId> ObjectDbi::getObjects(U2DataType type, qint64 offset, qint64 cou
         } else {
             return QList<U2DataId>();
         }
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         os.setError(e.getMessage());
         return QList<U2DataId>();
     }
 }
 
-QList<U2DataId> ObjectDbi::getParents(const U2DataId & /*entityId*/, U2OpStatus &os) {
+QList<U2DataId> ObjectDbi::getParents(const U2DataId& /*entityId*/, U2OpStatus& os) {
     try {
         if (U2DbiState_Ready != dbi.getState()) {
             throw Exception(BAMDbiPlugin::tr("Invalid DBI state"));
         }
         return QList<U2DataId>();
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         os.setError(e.getMessage());
         return QList<U2DataId>();
     }
 }
 
-QStringList ObjectDbi::getFolders(U2OpStatus &os) {
+QStringList ObjectDbi::getFolders(U2OpStatus& os) {
     try {
         if (U2DbiState_Ready != dbi.getState()) {
             throw Exception(BAMDbiPlugin::tr("Invalid DBI state"));
         }
         return QStringList("/");
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         os.setError(e.getMessage());
         return QStringList();
     }
 }
 
-qint64 ObjectDbi::countObjects(const QString &folder, U2OpStatus &os) {
+qint64 ObjectDbi::countObjects(const QString& folder, U2OpStatus& os) {
     try {
         if (U2DbiState_Ready != dbi.getState()) {
             throw Exception(BAMDbiPlugin::tr("Invalid DBI state"));
@@ -457,13 +457,13 @@ qint64 ObjectDbi::countObjects(const QString &folder, U2OpStatus &os) {
             throw Exception(BAMDbiPlugin::tr("No such folder: %1").arg(folder));
         }
         return countObjects(os);
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         os.setError(e.getMessage());
         return 0;
     }
 }
 
-QList<U2DataId> ObjectDbi::getObjects(const QString &folder, qint64 offset, qint64 count, U2OpStatus &os) {
+QList<U2DataId> ObjectDbi::getObjects(const QString& folder, qint64 offset, qint64 count, U2OpStatus& os) {
     try {
         if (U2DbiState_Ready != dbi.getState()) {
             throw Exception(BAMDbiPlugin::tr("Invalid DBI state"));
@@ -472,13 +472,13 @@ QList<U2DataId> ObjectDbi::getObjects(const QString &folder, qint64 offset, qint
             throw Exception(BAMDbiPlugin::tr("No such folder: %1").arg(folder));
         }
         return getObjects(offset, count, os);
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         os.setError(e.getMessage());
         return QList<U2DataId>();
     }
 }
 
-QStringList ObjectDbi::getObjectFolders(const U2DataId &objectId, U2OpStatus &os) {
+QStringList ObjectDbi::getObjectFolders(const U2DataId& objectId, U2OpStatus& os) {
     try {
         if (U2DbiState_Ready != dbi.getState()) {
             throw Exception(BAMDbiPlugin::tr("Invalid DBI state"));
@@ -488,40 +488,25 @@ QStringList ObjectDbi::getObjectFolders(const U2DataId &objectId, U2OpStatus &os
         } else {
             return QStringList();
         }
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         os.setError(e.getMessage());
         return QStringList();
     }
 }
 
-qint64 ObjectDbi::getObjectVersion(const U2DataId & /*objectId*/, U2OpStatus &os) {
+qint64 ObjectDbi::getObjectVersion(const U2DataId& /*objectId*/, U2OpStatus& os) {
     try {
         if (U2DbiState_Ready != dbi.getState()) {
             throw Exception(BAMDbiPlugin::tr("Invalid DBI state"));
         }
         return 0;
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         os.setError(e.getMessage());
         return 0;
     }
 }
 
-qint64 ObjectDbi::getFolderLocalVersion(const QString &folder, U2OpStatus &os) {
-    try {
-        if (U2DbiState_Ready != dbi.getState()) {
-            throw Exception(BAMDbiPlugin::tr("Invalid DBI state"));
-        }
-        if ("/" != folder) {
-            throw Exception(BAMDbiPlugin::tr("No such folder: %1").arg(folder));
-        }
-        return 0;
-    } catch (const Exception &e) {
-        os.setError(e.getMessage());
-        return 0;
-    }
-}
-
-qint64 ObjectDbi::getFolderGlobalVersion(const QString &folder, U2OpStatus &os) {
+qint64 ObjectDbi::getFolderLocalVersion(const QString& folder, U2OpStatus& os) {
     try {
         if (U2DbiState_Ready != dbi.getState()) {
             throw Exception(BAMDbiPlugin::tr("Invalid DBI state"));
@@ -530,36 +515,51 @@ qint64 ObjectDbi::getFolderGlobalVersion(const QString &folder, U2OpStatus &os) 
             throw Exception(BAMDbiPlugin::tr("No such folder: %1").arg(folder));
         }
         return 0;
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         os.setError(e.getMessage());
         return 0;
     }
 }
 
-U2DbiIterator<U2DataId> *ObjectDbi::getObjectsByVisualName(const QString &, U2DataType, U2OpStatus &) {
+qint64 ObjectDbi::getFolderGlobalVersion(const QString& folder, U2OpStatus& os) {
+    try {
+        if (U2DbiState_Ready != dbi.getState()) {
+            throw Exception(BAMDbiPlugin::tr("Invalid DBI state"));
+        }
+        if ("/" != folder) {
+            throw Exception(BAMDbiPlugin::tr("No such folder: %1").arg(folder));
+        }
+        return 0;
+    } catch (const Exception& e) {
+        os.setError(e.getMessage());
+        return 0;
+    }
+}
+
+U2DbiIterator<U2DataId>* ObjectDbi::getObjectsByVisualName(const QString&, U2DataType, U2OpStatus&) {
     // todo:
     return nullptr;
 }
 
-void ObjectDbi::renameObject(const U2DataId & /*id*/, const QString & /*newName*/, U2OpStatus &os) {
+void ObjectDbi::renameObject(const U2DataId& /*id*/, const QString& /*newName*/, U2OpStatus& os) {
     os.setError("Not implemented!");
 }
 
-void ObjectDbi::setObjectRank(const U2DataId & /*objectId*/, U2DbiObjectRank /*newRank*/, U2OpStatus &os) {
+void ObjectDbi::setObjectRank(const U2DataId& /*objectId*/, U2DbiObjectRank /*newRank*/, U2OpStatus& os) {
     os.setError("Not implemented!");
 }
 
-U2DbiObjectRank ObjectDbi::getObjectRank(const U2DataId & /*objectId*/, U2OpStatus &os) {
+U2DbiObjectRank ObjectDbi::getObjectRank(const U2DataId& /*objectId*/, U2OpStatus& os) {
     os.setError("Not implemented!");
     return U2DbiObjectRank_TopLevel;
 }
 
-void ObjectDbi::setParent(const U2DataId & /*parentId*/, const U2DataId & /*childId*/, U2OpStatus &os) {
+void ObjectDbi::setParent(const U2DataId& /*parentId*/, const U2DataId& /*childId*/, U2OpStatus& os) {
     os.setError("Not implemented!");
 }
 
 // AssemblyDbi
-AssemblyDbi::AssemblyDbi(Dbi &dbi, BamReader &reader, DbRef &dbRef, QList<qint64> maxReadLengths)
+AssemblyDbi::AssemblyDbi(Dbi& dbi, BamReader& reader, DbRef& dbRef, QList<qint64> maxReadLengths)
     : U2SimpleAssemblyDbi(&dbi),
       dbi(dbi),
       reader(reader),
@@ -567,7 +567,7 @@ AssemblyDbi::AssemblyDbi(Dbi &dbi, BamReader &reader, DbRef &dbRef, QList<qint64
       maxReadLengths(maxReadLengths) {
 }
 
-U2Assembly AssemblyDbi::getAssemblyObject(const U2DataId &id, U2OpStatus &os) {
+U2Assembly AssemblyDbi::getAssemblyObject(const U2DataId& id, U2OpStatus& os) {
     try {
         if (U2DbiState_Ready != dbi.getState()) {
             throw Exception(BAMDbiPlugin::tr("Invalid DBI state"));
@@ -581,13 +581,13 @@ U2Assembly AssemblyDbi::getAssemblyObject(const U2DataId &id, U2OpStatus &os) {
         quint64 dbiDataId = U2DbiUtils::toDbiId(id);
         result.visualName = reader.getHeader().getReferences()[dbiDataId - 1].getName();
         return result;
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         os.setError(e.getMessage());
         return U2Assembly();
     }
 }
 
-qint64 AssemblyDbi::countReads(const U2DataId &assemblyId, const U2Region &r, U2OpStatus &os) {
+qint64 AssemblyDbi::countReads(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os) {
     try {
         if (U2DbiState_Ready != dbi.getState()) {
             throw Exception(BAMDbiPlugin::tr("Invalid DBI state"));
@@ -609,13 +609,13 @@ qint64 AssemblyDbi::countReads(const U2DataId &assemblyId, const U2Region &r, U2
             }
         }
         return result;
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         os.setError(e.getMessage());
         return 0;
     }
 }
 
-U2DbiIterator<U2AssemblyRead> *AssemblyDbi::getReads(const U2DataId &assemblyId, const U2Region &r, U2OpStatus &os, bool) {
+U2DbiIterator<U2AssemblyRead>* AssemblyDbi::getReads(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os, bool) {
     try {
         if (U2DbiState_Ready != dbi.getState()) {
             throw Exception(BAMDbiPlugin::tr("Invalid DBI state"));
@@ -650,13 +650,13 @@ U2DbiIterator<U2AssemblyRead> *AssemblyDbi::getReads(const U2DataId &assemblyId,
             }
         }
         return new BufferedDbiIterator<U2AssemblyRead>(result, U2AssemblyRead());
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         os.setError(e.getMessage());
         return nullptr;
     }
 }
 
-U2AssemblyRead AssemblyDbi::getReadById(const U2DataId &rowId, U2OpStatus &os) {
+U2AssemblyRead AssemblyDbi::getReadById(const U2DataId& rowId, U2OpStatus& os) {
     try {
         if (U2DbiState_Ready != dbi.getState()) {
             throw Exception(BAMDbiPlugin::tr("Invalid DBI state"));
@@ -683,13 +683,13 @@ U2AssemblyRead AssemblyDbi::getReadById(const U2DataId &rowId, U2OpStatus &os) {
             }
         }
         return result;
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         os.setError(e.getMessage());
         return U2AssemblyRead();
     }
 }
 
-qint64 AssemblyDbi::getMaxPackedRow(const U2DataId &assemblyId, const U2Region &r, U2OpStatus &os) {
+qint64 AssemblyDbi::getMaxPackedRow(const U2DataId& assemblyId, const U2Region& r, U2OpStatus& os) {
     try {
         if (U2DbiState_Ready != dbi.getState()) {
             throw Exception(BAMDbiPlugin::tr("Invalid DBI state"));
@@ -711,13 +711,13 @@ qint64 AssemblyDbi::getMaxPackedRow(const U2DataId &assemblyId, const U2Region &
             }
         }
         return result;
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         os.setError(e.getMessage());
         return 0;
     }
 }
 
-U2DbiIterator<U2AssemblyRead> *AssemblyDbi::getReadsByRow(const U2DataId &assemblyId, const U2Region &r, qint64 minRow, qint64 maxRow, U2OpStatus &os) {
+U2DbiIterator<U2AssemblyRead>* AssemblyDbi::getReadsByRow(const U2DataId& assemblyId, const U2Region& r, qint64 minRow, qint64 maxRow, U2OpStatus& os) {
     try {
         if (U2DbiState_Ready != dbi.getState()) {
             throw Exception(BAMDbiPlugin::tr("Invalid DBI state"));
@@ -753,18 +753,18 @@ U2DbiIterator<U2AssemblyRead> *AssemblyDbi::getReadsByRow(const U2DataId &assemb
             }
         }
         return new BufferedDbiIterator<U2AssemblyRead>(result, U2AssemblyRead());
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         os.setError(e.getMessage());
         return nullptr;
     }
 }
 
-U2DbiIterator<U2AssemblyRead> *AssemblyDbi::getReadsByName(const U2DataId &, const QByteArray &, U2OpStatus &os) {
+U2DbiIterator<U2AssemblyRead>* AssemblyDbi::getReadsByName(const U2DataId&, const QByteArray&, U2OpStatus& os) {
     os.setError("Operation not supported: BAM::AssemblyDbi::getReadsByName");
     return nullptr;
 }
 
-qint64 AssemblyDbi::getMaxEndPos(const U2DataId &assemblyId, U2OpStatus &os) {
+qint64 AssemblyDbi::getMaxEndPos(const U2DataId& assemblyId, U2OpStatus& os) {
     try {
         if (U2DbiState_Ready != dbi.getState()) {
             throw Exception(BAMDbiPlugin::tr("Invalid DBI state"));
@@ -783,13 +783,13 @@ qint64 AssemblyDbi::getMaxEndPos(const U2DataId &assemblyId, U2OpStatus &os) {
             }
         }
         return result;
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         os.setError(e.getMessage());
         return 0;
     }
 }
 
-U2AssemblyRead AssemblyDbi::alignmentToRead(const Alignment &alignment) {
+U2AssemblyRead AssemblyDbi::alignmentToRead(const Alignment& alignment) {
     U2AssemblyRead row(new U2AssemblyReadData());
     row->name = alignment.getName();
     row->leftmostPos = alignment.getPosition();
@@ -801,7 +801,7 @@ U2AssemblyRead AssemblyDbi::alignmentToRead(const Alignment &alignment) {
     row->rnext = alignment.getNextReferenceName();
     row->pnext = alignment.getNextPosition();
     row->aux = alignment.getAuxData();
-    foreach (const Alignment::CigarOperation &cigarOperation, alignment.getCigar()) {
+    foreach (const Alignment::CigarOperation& cigarOperation, alignment.getCigar()) {
         U2CigarOp cigarOp = U2CigarOp_Invalid;
         switch (cigarOperation.getOperation()) {
             case Alignment::CigarOperation::AlignmentMatch:
@@ -839,12 +839,12 @@ U2AssemblyRead AssemblyDbi::alignmentToRead(const Alignment &alignment) {
     return row;
 }
 
-qint64 AssemblyDbi::getMaxReadLength(const U2DataId &assemblyId, const U2Region & /*r*/) {
+qint64 AssemblyDbi::getMaxReadLength(const U2DataId& assemblyId, const U2Region& /*r*/) {
     qint64 dbDataId = U2DbiUtils::toDbiId(assemblyId);
     return maxReadLengths[dbDataId - 1];
 }
 
-U2AssemblyRead AssemblyDbi::getReadById(const U2DataId &rowId, qint64 packedRow, U2OpStatus &os) {
+U2AssemblyRead AssemblyDbi::getReadById(const U2DataId& rowId, qint64 packedRow, U2OpStatus& os) {
     try {
         quint64 dbDataId = (quint64)U2DbiUtils::toDbiId(rowId);
         reader.seek(VirtualOffset(dbDataId));
@@ -852,13 +852,13 @@ U2AssemblyRead AssemblyDbi::getReadById(const U2DataId &rowId, qint64 packedRow,
         row->id = rowId;
         row->packedViewRow = packedRow;
         return row;
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         os.setError(e.getMessage());
         return U2AssemblyRead();
     }
 }
 
-QList<U2AssemblyRead> AssemblyDbi::getReadsByIds(QList<U2DataId> rowIds, QList<qint64> packedRows, U2OpStatus &os) {
+QList<U2AssemblyRead> AssemblyDbi::getReadsByIds(QList<U2DataId> rowIds, QList<qint64> packedRows, U2OpStatus& os) {
     try {
         QList<U2AssemblyRead> result;
         for (int index = 0; index < rowIds.size(); index++) {
@@ -874,7 +874,7 @@ QList<U2AssemblyRead> AssemblyDbi::getReadsByIds(QList<U2DataId> rowIds, QList<q
             result.append(read);
         }
         return result;
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         os.setError(e.getMessage());
         return QList<U2AssemblyRead>();
     }

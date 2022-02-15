@@ -30,9 +30,9 @@ namespace U2 {
 class U2FORMATS_EXPORT DNAQualityIOUtils : public QObject {
     Q_OBJECT
 public:
-    static void writeDNAQuality(const U2SequenceObject *seqObj, const QString &fileName, bool appendData, bool decode, U2OpStatus &op);
+    static void writeDNAQuality(const U2SequenceObject* seqObj, const QString& fileName, bool appendData, bool decode, U2OpStatus& op);
 
-    static void writeDNAQuality(const QString &seqName, const DNAQuality &quality, const QString &filePath, bool appendData, bool decode, U2OpStatus &op);
+    static void writeDNAQuality(const QString& seqName, const DNAQuality& quality, const QString& filePath, bool appendData, bool decode, U2OpStatus& op);
 };
 
 }  // namespace U2

@@ -31,7 +31,7 @@ namespace LocalWorkflow {
 class PassFilterPrompter : public PrompterBase<PassFilterPrompter> {
     Q_OBJECT
 public:
-    PassFilterPrompter(Actor *p = nullptr)
+    PassFilterPrompter(Actor* p = nullptr)
         : PrompterBase<PassFilterPrompter>(p) {
     }
 
@@ -43,15 +43,15 @@ protected:
 class PassFilterWorker : public BaseWorker {
     Q_OBJECT
 public:
-    PassFilterWorker(Actor *p);
+    PassFilterWorker(Actor* p);
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private:
-    CommunicationChannel *inChannel;
-    CommunicationChannel *outChannel;
+    CommunicationChannel* inChannel;
+    CommunicationChannel* outChannel;
     DataTypePtr mtype;
     QStringList passedValues;
 
@@ -65,7 +65,7 @@ public:
         : DomainFactory(ACTOR_ID) {
     }
     static void init();
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 
 };  // PassFilterWorkerFactory
 

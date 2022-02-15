@@ -31,11 +31,11 @@ namespace U2 {
 template<typename T>
 class Identifiable {
 public:
-    Identifiable(const T &_id)
+    Identifiable(const T& _id)
         : id(_id) {
     }
 
-    const T &getId() const {
+    const T& getId() const {
         return id;
     }
 

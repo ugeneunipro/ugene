@@ -33,11 +33,11 @@ namespace U2 {
 class QDCDDActor : public QDActor {
     Q_OBJECT
 public:
-    QDCDDActor(QDActorPrototype const *a);
+    QDCDDActor(QDActorPrototype const* a);
     int getMinResultLen() const;
     int getMaxResultLen() const;
     QString getText() const;
-    Task *getAlgorithmTask(const QVector<U2Region> &location);
+    Task* getAlgorithmTask(const QVector<U2Region>& location);
     QColor defaultColor() const {
         return QColor(0x6A, 0x94, 0xd4);
     }
@@ -49,13 +49,13 @@ private slots:
 
 private:
     RemoteBLASTTaskSettings settings;
-    QMap<RemoteBLASTTask *, int> offsetMap;
+    QMap<RemoteBLASTTask*, int> offsetMap;
 };
 
 class QDCDDActorPrototype : public QDActorPrototype {
 public:
     QDCDDActorPrototype();
-    virtual QDActor *createInstance() const {
+    virtual QDActor* createInstance() const {
         return new QDCDDActor(this);
     }
     virtual QIcon getIcon() const {

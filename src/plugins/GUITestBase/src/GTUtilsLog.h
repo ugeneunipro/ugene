@@ -33,10 +33,10 @@ namespace U2 {
 class GTLogTracer : public QObject, public LogListener {
     Q_OBJECT
 public:
-    GTLogTracer(const QString &expectedMessage = QString());
+    GTLogTracer(const QString& expectedMessage = QString());
     ~GTLogTracer();
 
-    void onMessage(const LogMessage &msg);
+    void onMessage(const LogMessage& msg);
 
     bool hasErrors() const {
         return !errorsList.isEmpty();
@@ -46,9 +46,9 @@ public:
         return errorsList.isEmpty() ? "" : errorsList.join("\n");
     }
 
-    static QList<LogMessage *> getMessages();
+    static QList<LogMessage*> getMessages();
 
-    static bool checkMessage(const QString &s);
+    static bool checkMessage(const QString& s);
 
     bool isExpectedMessageFound;
     QStringList errorsList;
@@ -57,19 +57,19 @@ public:
 
 class GTUtilsLog {
 public:
-    static void check(HI::GUITestOpStatus &os, const GTLogTracer &logTracer);
-    static void checkContainsError(HI::GUITestOpStatus &os, const GTLogTracer &logTracer, const QString &messagePart);
-    static void checkContainsMessage(HI::GUITestOpStatus &os, const GTLogTracer &logTracer, bool expected = true);
-    static QStringList getErrors(HI::GUITestOpStatus &os, const GTLogTracer &logTracer);
+    static void check(HI::GUITestOpStatus& os, const GTLogTracer& logTracer);
+    static void checkContainsError(HI::GUITestOpStatus& os, const GTLogTracer& logTracer, const QString& messagePart);
+    static void checkContainsMessage(HI::GUITestOpStatus& os, const GTLogTracer& logTracer, bool expected = true);
+    static QStringList getErrors(HI::GUITestOpStatus& os, const GTLogTracer& logTracer);
 
     /** Waits for the message to appear in the log with the given timeout. */
-    static void checkMessageWithWait(HI::GUITestOpStatus &os, const GTLogTracer &logTracer, const QString &message, int timeoutMillis = 30000);
+    static void checkMessageWithWait(HI::GUITestOpStatus& os, const GTLogTracer& logTracer, const QString& message, int timeoutMillis = 30000);
 
     /**
      * Checks that there are exactly 'expectedMessageCount' in the log with 'messagePart' text token inside.
      * 'context' is a message marker added to the failure string. Used to identify individual method calls.
      */
-    static void checkMessageWithTextCount(HI::GUITestOpStatus &os, const QString &messagePart, int expectedMessageCount, const QString &context = "");
+    static void checkMessageWithTextCount(HI::GUITestOpStatus& os, const QString& messagePart, int expectedMessageCount, const QString& context = "");
 };
 
 }  // namespace U2

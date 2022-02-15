@@ -33,7 +33,7 @@ class McaEditor;
 class MaSangerOverview : public MaOverview {
     Q_OBJECT
 public:
-    MaSangerOverview(MaEditorWgt *ui);
+    MaSangerOverview(MaEditorWgt* ui);
 
     bool isValid() const;
     QPixmap getView();
@@ -45,17 +45,17 @@ private slots:
     void sl_screenMoved();
 
 private:
-    bool eventFilter(QObject *object, QEvent *event);
-    void resizeEvent(QResizeEvent *event);
+    bool eventFilter(QObject* object, QEvent* event);
+    void resizeEvent(QResizeEvent* event);
 
-    void drawOverview(QPainter &painter);
-    void drawVisibleRange(QPainter &painter);
+    void drawOverview(QPainter& painter);
+    void drawVisibleRange(QPainter& painter);
     void drawReference();
     void drawReads();
 
     void moveVisibleRange(QPoint pos);
 
-    McaEditor *getEditor() const;
+    McaEditor* getEditor() const;
 
     int getContentWidgetWidth() const;
     int getContentWidgetHeight() const;
@@ -63,9 +63,9 @@ private:
     int getReferenceHeight() const;
     int getScrollBarValue() const;
 
-    QScrollBar *vScrollBar;
-    QWidget *referenceArea;
-    QWidget *renderArea;
+    QScrollBar* vScrollBar;
+    QWidget* referenceArea;
+    QWidget* renderArea;
 
     QPixmap cachedReadsView;
     QPixmap cachedReferenceView;

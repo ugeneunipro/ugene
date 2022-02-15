@@ -37,14 +37,14 @@ namespace U2 {
 class U2VIEW_EXPORT CodonTableView : public ADVSplitWidget {
     Q_OBJECT
 public:
-    CodonTableView(AnnotatedDNAView *view);
+    CodonTableView(AnnotatedDNAView* view);
 
-    virtual bool acceptsGObject(GObject *) {
+    virtual bool acceptsGObject(GObject*) {
         return false;
     }
-    virtual void updateState(const QVariantMap &) {
+    virtual void updateState(const QVariantMap&) {
     }
-    virtual void saveState(QVariantMap &) {
+    virtual void saveState(QVariantMap&) {
     }
 
     static const QColor NONPOLAR_COLOR;
@@ -58,17 +58,17 @@ public slots:
     void sl_setAminoTranslation();
 
     /** Updates amino translation to match the new active sequence translation. */
-    void sl_onActiveSequenceChanged(ADVSequenceWidget *from, ADVSequenceWidget *to);
+    void sl_onActiveSequenceChanged(ADVSequenceWidget* from, ADVSequenceWidget* to);
 
 private:
-    QTableWidget *table;
+    QTableWidget* table;
 
-    void addItemToTable(int row, int column, const QString &text, const QColor &backgroundColor = QColor(0, 0, 0, 0), int rowSpan = 1, int columnSpan = 1);
-    void addItemToTable(int row, int column, const QString &text, int rowSpan = 1, int columnSpan = 1);
-    void addItemToTable(int row, int column, const QString &text, const QColor &backgroundColor, const QString &link, int rowSpan = 1, int columnSpan = 1);
-    void addItemToTable(int row, int column, DNACodon *codon);
+    void addItemToTable(int row, int column, const QString& text, const QColor& backgroundColor = QColor(0, 0, 0, 0), int rowSpan = 1, int columnSpan = 1);
+    void addItemToTable(int row, int column, const QString& text, int rowSpan = 1, int columnSpan = 1);
+    void addItemToTable(int row, int column, const QString& text, const QColor& backgroundColor, const QString& link, int rowSpan = 1, int columnSpan = 1);
+    void addItemToTable(int row, int column, DNACodon* codon);
 
-    void setAminoTranslation(const QString &trId);
+    void setAminoTranslation(const QString& trId);
     void spanEqualCells();
     QColor getColor(DNACodonGroup gr);
 };

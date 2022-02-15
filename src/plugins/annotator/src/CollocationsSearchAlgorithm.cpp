@@ -19,22 +19,22 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/U2SafePoints.h>
-
 #include "CollocationsSearchAlgorithm.h"
+
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
-void CollocationsAlgorithm::find(const QList<CollocationsAlgorithmItem> &items, TaskStateInfo &si, CollocationsAlgorithmListener *l, const CollocationsAlgorithmSettings &cfg) {
+void CollocationsAlgorithm::find(const QList<CollocationsAlgorithmItem>& items, TaskStateInfo& si, CollocationsAlgorithmListener* l, const CollocationsAlgorithmSettings& cfg) {
     cfg.st == NormalSearch ? findN(items, si, l, cfg.searchRegion, cfg.distance) : findP(items, si, l, cfg.searchRegion, cfg.distance);
 }
 
-void CollocationsAlgorithm::findN(const QList<CollocationsAlgorithmItem> &items, TaskStateInfo &si, CollocationsAlgorithmListener *l, const U2Region &searchRegion, qint64 distance) {
+void CollocationsAlgorithm::findN(const QList<CollocationsAlgorithmItem>& items, TaskStateInfo& si, CollocationsAlgorithmListener* l, const U2Region& searchRegion, qint64 distance) {
     // todo: progress
 
     qint64 i = searchRegion.endPos();
-    foreach (const CollocationsAlgorithmItem &item, items) {
-        foreach (const U2Region &r, item.regions) {
+    foreach (const CollocationsAlgorithmItem& item, items) {
+        foreach (const U2Region& r, item.regions) {
             SAFE_POINT(searchRegion.contains(r), "Region is not in the search region", );
             i = qMin(i, r.startPos);
         }
@@ -49,10 +49,10 @@ void CollocationsAlgorithm::findN(const QList<CollocationsAlgorithmItem> &items,
         U2Region currentRegion(i, qMin(i + distance, searchRegion.endPos()) - i);
         bool onResult = true;
         qint64 nextI = currentRegion.endPos();
-        foreach (const CollocationsAlgorithmItem &item, items) {
+        foreach (const CollocationsAlgorithmItem& item, items) {
             bool foundItem = false;
             qint64 nextItemStart = currentRegion.endPos();
-            foreach (const U2Region &r, item.regions) {
+            foreach (const U2Region& r, item.regions) {
                 if (r.startPos > currentRegion.startPos) {
                     nextItemStart = qMin(nextItemStart, r.startPos);
                 }
@@ -79,7 +79,7 @@ void CollocationsAlgorithm::findN(const QList<CollocationsAlgorithmItem> &items,
     } while (i + distance < searchRegion.endPos());
 }
 
-void averagingRes(U2Region &res, const U2Region &min, const U2Region &max, qint64 distance, const U2Region &searchRegion) {
+void averagingRes(U2Region& res, const U2Region& min, const U2Region& max, qint64 distance, const U2Region& searchRegion) {
     //?
     if (!min.intersects(max)) {
         res.startPos = min.endPos() - 1;
@@ -103,10 +103,10 @@ void averagingRes(U2Region &res, const U2Region &min, const U2Region &max, qint6
         res.startPos = 0;
 }
 
-void CollocationsAlgorithm::findP(const QList<CollocationsAlgorithmItem> &items, TaskStateInfo &si, CollocationsAlgorithmListener *l, const U2Region &searchRegion, qint64 distance) {
+void CollocationsAlgorithm::findP(const QList<CollocationsAlgorithmItem>& items, TaskStateInfo& si, CollocationsAlgorithmListener* l, const U2Region& searchRegion, qint64 distance) {
     qint64 i = searchRegion.endPos();
-    foreach (const CollocationsAlgorithmItem &item, items) {
-        foreach (const U2Region &r, item.regions) {
+    foreach (const CollocationsAlgorithmItem& item, items) {
+        foreach (const U2Region& r, item.regions) {
             SAFE_POINT(searchRegion.contains(r), "Region is not in the search region", );
             if (i > r.endPos() - 1) {
                 i = r.endPos() - 1;
@@ -126,10 +126,10 @@ void CollocationsAlgorithm::findP(const QList<CollocationsAlgorithmItem> &items,
         max.startPos = 0;
         bool onResult = true;
         qint64 nextI = currentRegion.endPos();
-        foreach (const CollocationsAlgorithmItem &item, items) {
+        foreach (const CollocationsAlgorithmItem& item, items) {
             bool foundItem = false;
             qint64 nextItemEnd = searchRegion.endPos();
-            foreach (const U2Region &r, item.regions) {
+            foreach (const U2Region& r, item.regions) {
                 if (r.endPos() <= searchRegion.endPos() && r.endPos() - 1 > currentRegion.startPos && nextItemEnd > r.endPos() - 1) {
                     nextItemEnd = r.endPos() - 1;
                 }

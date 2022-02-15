@@ -38,7 +38,7 @@
 
 namespace U2 {
 
-ExportMSA2MSADialog::ExportMSA2MSADialog(const QString &defaultFileName, const DocumentFormatId &defaultFormatId, bool wholeAlignmentOnly, QWidget *p)
+ExportMSA2MSADialog::ExportMSA2MSADialog(const QString& defaultFileName, const DocumentFormatId& defaultFormatId, bool wholeAlignmentOnly, QWidget* p)
     : QDialog(p),
       saveController(nullptr) {
     setupUi(this);
@@ -51,17 +51,17 @@ ExportMSA2MSADialog::ExportMSA2MSADialog(const QString &defaultFileName, const D
 
     initSaveController(defaultFileName, defaultFormatId);
 
-    const DNAAlphabet *al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    DNATranslationRegistry *tr = AppContext::getDNATranslationRegistry();
-    QList<DNATranslation *> aminoTs = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
+    const DNAAlphabet* al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
+    DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
+    QList<DNATranslation*> aminoTs = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
     assert(!aminoTs.empty());
-    foreach (DNATranslation *t, aminoTs) {
+    foreach (DNATranslation* t, aminoTs) {
         translationCombo->addItem(t->getTranslationName());
         tableID.append(t->getTranslationId());
     }
     translationTable = tableID[translationCombo->currentIndex()];
 
-    QPushButton *exportButton = buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* exportButton = buttonBox->button(QDialogButtonBox::Ok);
     connect(exportButton, SIGNAL(clicked()), SLOT(sl_exportClicked()));
 
     rangeGroupBox->setDisabled(wholeAlignmentOnly);
@@ -108,7 +108,7 @@ void ExportMSA2MSADialog::sl_exportClicked() {
     accept();
 }
 
-void ExportMSA2MSADialog::initSaveController(const QString &defaultFileName, const DocumentFormatId &defaultFormatId) {
+void ExportMSA2MSADialog::initSaveController(const QString& defaultFileName, const DocumentFormatId& defaultFormatId) {
     SaveDocumentControllerConfig config;
     config.defaultFileName = defaultFileName;
     config.defaultFormatId = defaultFormatId;

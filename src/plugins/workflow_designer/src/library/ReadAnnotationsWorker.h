@@ -42,17 +42,17 @@ public:
 class ReadAnnotationsWorker : public GenericDocReader {
     Q_OBJECT
 public:
-    ReadAnnotationsWorker(Actor *p);
+    ReadAnnotationsWorker(Actor* p);
     virtual void init();
     Task *tick() override;
 
 protected:
-    virtual void onTaskFinished(Task *task);
-    virtual Task *createReadTask(const QString &url, const QString &datasetName);
-    virtual QString addReadDbObjectToData(const QString &objUrl, QVariantMap &data);
+    virtual void onTaskFinished(Task* task);
+    virtual Task* createReadTask(const QString& url, const QString& datasetName);
+    virtual QString addReadDbObjectToData(const QString& objUrl, QVariantMap& data);
 
 private:
-    void sendData(const QList<QVariantMap> &data);
+    void sendData(const QList<QVariantMap>& data);
 
 private:
     ReadAnnotationsProto::Mode mode;
@@ -67,7 +67,7 @@ public:
         : DomainFactory(ACTOR_ID) {
     }
     static void init();
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 
 };  // ReadAnnotationsWorkerFactory
 
@@ -90,7 +90,7 @@ private:
     QString datasetName;
     ReadAnnotationsProto::Mode mergeAnnotations;
     QString mergedAnnTableName;
-    WorkflowContext *context;
+    WorkflowContext* context;
 
     QList<QVariantMap> results;
 };

@@ -42,67 +42,67 @@ class QueryScene;
 class QDSaveSceneTask : public Task {
     Q_OBJECT
 public:
-    QDSaveSceneTask(QueryScene *scene, const QDSceneInfo &info);
+    QDSaveSceneTask(QueryScene* scene, const QDSceneInfo& info);
     void run();
 
 private:
     QString path;
-    QueryScene *scene;
+    QueryScene* scene;
     QByteArray rawData;
 };
 
 class QDLoadSceneTask : public Task {
     Q_OBJECT
 public:
-    QDLoadSceneTask(QueryScene *scene, const QString &url);
+    QDLoadSceneTask(QueryScene* scene, const QString& url);
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
     Task::ReportResult report();
 
 private:
-    QueryScene *scene;
+    QueryScene* scene;
     QString url;
-    QList<QDDocument *> docs;
+    QList<QDDocument*> docs;
 };
 
 class QDLoadSchemeTask : public Task {
     Q_OBJECT
 public:
-    QDLoadSchemeTask(const QString &uri);
-    QDScheme *getScheme() const {
+    QDLoadSchemeTask(const QString& uri);
+    QDScheme* getScheme() const {
         return scheme;
     }
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
     Task::ReportResult report();
 
 private:
     QString uri;
-    QDScheme *scheme;
-    QList<QDDocument *> docs;
+    QDScheme* scheme;
+    QList<QDDocument*> docs;
 };
 
 class QDLoadDocumentTask : public Task {
     Q_OBJECT
 public:
-    QDLoadDocumentTask(const QString &url);
+    QDLoadDocumentTask(const QString& url);
     void run();
-    QDDocument *getDocument() const {
+    QDDocument* getDocument() const {
         return doc;
     }
 
 private:
-    QDDocument *doc;
+    QDDocument* doc;
     QString url;
 };
 
 class QDSceneSerializer {
 public:
-    static bool doc2scene(QueryScene *scene, const QList<QDDocument *> &docs);
-    static QDDocument *scene2doc(QueryScene *scene);
-    static bool doc2scheme(const QList<QDDocument *> &docs,
-                           QMap<QDElementStatement *, QDActor *> &stmt2actor,
-                           QDScheme *scheme);
-    static bool doc2scheme(const QList<QDDocument *> &docs, QDScheme *scheme);
+    static bool doc2scene(QueryScene* scene, const QList<QDDocument*>& docs);
+    static QDDocument* scene2doc(QueryScene* scene);
+    static bool doc2scheme(const QList<QDDocument*>& docs,
+                           QMap<QDElementStatement*, QDActor*>& stmt2actor,
+                           QDScheme* scheme);
+    static bool doc2scheme(const QList<QDDocument*>& docs, QDScheme* scheme);
 };
 
 class QDActor;
@@ -111,21 +111,21 @@ class QDSchemeUnit;
 class QDConstraint;
 class QDSchemeSerializer {
 public:
-    static QDElementStatement *saveActor(QDActor *actor, QDDocument *doc);
+    static QDElementStatement* saveActor(QDActor* actor, QDDocument* doc);
 
-    static QDActor *loadActor(QDElementStatement *actorElement, QString &group);
+    static QDActor* loadActor(QDElementStatement* actorElement, QString& group);
 
-    static QDLinkStatement *saveConstraint(QDConstraint *constraint, QDDocument *doc, const QMap<QDSchemeUnit *, QDElementStatement *> &unit2stmt);
+    static QDLinkStatement* saveConstraint(QDConstraint* constraint, QDDocument* doc, const QMap<QDSchemeUnit*, QDElementStatement*>& unit2stmt);
 
-    static QDConstraint *loadConstraint(QDLinkStatement *lnk,
-                                        const QMap<QDElementStatement *, QDActor *> &stmt2unit,
-                                        const QList<QDDocument *> &docs);
+    static QDConstraint* loadConstraint(QDLinkStatement* lnk,
+                                        const QMap<QDElementStatement*, QDActor*>& stmt2unit,
+                                        const QList<QDDocument*>& docs);
 
-    static QDSchemeUnit *findSchemeUnit(const QString &id, QDDocument *doc, const QMap<QDElementStatement *, QDActor *> stmt2actor, const QList<QDDocument *> &docs);
+    static QDSchemeUnit* findSchemeUnit(const QString& id, QDDocument* doc, const QMap<QDElementStatement*, QDActor*> stmt2actor, const QList<QDDocument*>& docs);
 
-    static void saveGroups(QDScheme *scheme, QDDocument *doc);
+    static void saveGroups(QDScheme* scheme, QDDocument* doc);
 
-    static bool loadGroups(QDScheme *scheme, QDDocument *doc);
+    static bool loadGroups(QDScheme* scheme, QDDocument* doc);
 
     static const QMap<QDStrandOption, QString> STRAND_MAP;
 };

@@ -32,17 +32,17 @@ using namespace Workflow;
 
 class U2LANG_EXPORT SelectorValue {
 public:
-    SelectorValue(const QString &value, const QString &replaceProtoId);
+    SelectorValue(const QString& value, const QString& replaceProtoId);
 
-    void addPortMapping(const PortMapping &value);
-    void setName(const QString &value);
+    void addPortMapping(const PortMapping& value);
+    void setName(const QString& value);
 
-    const QString &getValue() const;
-    const QString &getProtoId() const;
-    const QString &getName() const;
-    const QList<PortMapping> &getMappings() const;
+    const QString& getValue() const;
+    const QString& getProtoId() const;
+    const QString& getName() const;
+    const QList<PortMapping>& getMappings() const;
 
-    void validate(Actor *actor, U2OpStatus &os) const;
+    void validate(Actor* actor, U2OpStatus& os) const;
 
 private:
     QString value;
@@ -52,18 +52,18 @@ private:
 
 private:
     /** Returns found port or NULL */
-    Port *validateSrcPort(const PortMapping &mapping, Actor *actor, U2OpStatus &os) const;
+    Port* validateSrcPort(const PortMapping& mapping, Actor* actor, U2OpStatus& os) const;
     /** Returns found port descriptor or NULL */
-    PortDescriptor *validateDstPort(const PortMapping &mapping,
-                                    const QList<PortDescriptor *> &descs,
-                                    U2OpStatus &os) const;
-    void validateDuplicates(const PortMapping &mapping,
-                            const QSet<QString> &srcIdSet,
-                            U2OpStatus &os) const;
-    void validatePortsCount(const QList<Port *> &src,
-                            const QList<PortDescriptor *> &dst,
-                            U2OpStatus &os) const;
-    void validateMappingsCount(const QList<Port *> &srcPorts, U2OpStatus &os) const;
+    PortDescriptor* validateDstPort(const PortMapping& mapping,
+                                    const QList<PortDescriptor*>& descs,
+                                    U2OpStatus& os) const;
+    void validateDuplicates(const PortMapping& mapping,
+                            const QSet<QString>& srcIdSet,
+                            U2OpStatus& os) const;
+    void validatePortsCount(const QList<Port*>& src,
+                            const QList<PortDescriptor*>& dst,
+                            U2OpStatus& os) const;
+    void validateMappingsCount(const QList<Port*>& srcPorts, U2OpStatus& os) const;
 };
 
 }  // namespace U2

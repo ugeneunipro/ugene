@@ -51,24 +51,24 @@ public:
         SupportScaling
     };
 
-    ExportImageDialog(QWidget *screenShotWidget,
+    ExportImageDialog(QWidget* screenShotWidget,
                       InvokedFrom invoSource,
-                      const QString &file,
+                      const QString& file,
                       ImageScalingPolicy scalingPolicy = NoScaling,
-                      QWidget *parent = nullptr);
+                      QWidget* parent = nullptr);
 
-    ExportImageDialog(ImageExportController *factory,
+    ExportImageDialog(ImageExportController* factory,
                       InvokedFrom invoSource,
-                      const QString &file,
+                      const QString& file,
                       ImageScalingPolicy scalingPolicy = NoScaling,
-                      QWidget *parent = nullptr);
+                      QWidget* parent = nullptr);
 
     ~ExportImageDialog();
 
-    const QString &getFilename() const {
+    const QString& getFilename() const {
         return filename;
     }
-    const QString &getFormat() const {
+    const QString& getFormat() const {
         return format;
     }
     int getWidth() const;
@@ -81,31 +81,31 @@ public slots:
     void accept();
 
 private slots:
-    void sl_onFormatsBoxItemChanged(const QString &format);
+    void sl_onFormatsBoxItemChanged(const QString& format);
 
-    void sl_showMessage(const QString &message);
+    void sl_showMessage(const QString& message);
     void sl_disableExport(bool disable);
 
 private:
     void init();
-    void initSaveController(const QString &defaultFormat);
+    void initSaveController(const QString& defaultFormat);
     void setSizeControlsEnabled(bool enabled);
     QStringList getFormats();
     QStringList getRasterFormats();
     QStringList getSvgAndPdfFormats();
 
-    static bool isVectorGraphicFormat(const QString &formatName);
-    static bool isLossyFormat(const QString &formatName);
+    static bool isVectorGraphicFormat(const QString& formatName);
+    static bool isLossyFormat(const QString& formatName);
 
-    SaveDocumentController *saveController;
-    ImageExportController *exportController;
+    SaveDocumentController* saveController;
+    ImageExportController* exportController;
     ImageScalingPolicy scalingPolicy;
 
     QString filename;
     QString origFilename;
     QString format;
 
-    Ui_ImageExportForm *ui;
+    Ui_ImageExportForm* ui;
     InvokedFrom source;
 };  // class ExportImageDialog
 

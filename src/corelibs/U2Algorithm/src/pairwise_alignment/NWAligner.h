@@ -35,41 +35,41 @@ class FMatrix;
  */
 class U2ALGORITHM_EXPORT NWAligner : public PairwiseAligner {
 public:
-    NWAligner(const QByteArray &seq1, const QByteArray &seq2);
+    NWAligner(const QByteArray& seq1, const QByteArray& seq2);
     virtual ~NWAligner();
 
-    virtual void setSeq1(const QByteArray &value);
-    virtual void setSeq2(const QByteArray &value);
-    virtual void setSeqs(const QByteArray &value1, const QByteArray &value2);
+    virtual void setSeq1(const QByteArray& value);
+    virtual void setSeq2(const QByteArray& value);
+    virtual void setSeqs(const QByteArray& value1, const QByteArray& value2);
 
     MultipleSequenceAlignment align();
 
 private:
     SMatrix sMatrix;
-    FMatrix *fMatrix;
+    FMatrix* fMatrix;
 
 private:
-    void reassignSMatrixByAlphabet(const QByteArray &newSeq);
+    void reassignSMatrixByAlphabet(const QByteArray& newSeq);
 };
 
 class FMatrix {
 public:
-    FMatrix(const SMatrix &sMatrix, float gapPenalty);
+    FMatrix(const SMatrix& sMatrix, float gapPenalty);
     ~FMatrix();
 
-    void calculate(const QByteArray &seq1, const QByteArray &seq2);
+    void calculate(const QByteArray& seq1, const QByteArray& seq2);
     float getFValue(int i, int j);
 
 private:
     SMatrix sMatrix;
     float gapPenalty;
-    float *f;
+    float* f;
     int h;
     int w;
 
 private:
     void cleanup();
-    void init(const QByteArray &seq1, const QByteArray &seq2);
+    void init(const QByteArray& seq1, const QByteArray& seq2);
     void setFValue(int i, int j, float v);
 };
 

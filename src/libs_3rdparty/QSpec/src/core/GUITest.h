@@ -12,7 +12,7 @@ namespace HI {
 class HI_EXPORT GUITest : public QObject {
     Q_OBJECT
 public:
-    GUITest(const QString &name, const QString &suite, int timeout, const QSet<QString> &labelSet = QSet<QString>())
+    GUITest(const QString& name, const QString& suite, int timeout, const QSet<QString>& labelSet = QSet<QString>())
         : name(name), suite(suite), timeout(timeout), labelSet(labelSet) {
     }
     virtual ~GUITest() {
@@ -27,7 +27,7 @@ public:
     static const QString screenshotDir;
 
     /** Scenario of the test. Must be implemented in the child class. */
-    virtual void run(GUITestOpStatus &os) = 0;
+    virtual void run(GUITestOpStatus& os) = 0;
 
     /** Post-run cleanup. Optional. */
     virtual void cleanup() {
@@ -45,29 +45,29 @@ public:
     /** Set of test labels. */
     const QSet<QString> labelSet;
 
-    static QString getFullTestName(const QString &suiteName, const QString &testName) {
+    static QString getFullTestName(const QString& suiteName, const QString& testName) {
         return suiteName + ":" + testName;
     }
 
     /** See docs for the field. */
-    const QString &getDescription() const {
+    const QString& getDescription() const {
         return description;
     }
 
     /** See docs for the field. */
-    void setDescription(const QString &newDescription) {
+    void setDescription(const QString& newDescription) {
         description = newDescription;
     }
 
 private:
-    GUITest(const GUITest &);
-    GUITest &operator=(const GUITest &);
+    GUITest(const GUITest&);
+    GUITest& operator=(const GUITest&);
 
     /** Extra description about the test available to the test runner (example: Teamcity). */
     QString description;
 };
 
-typedef QList<GUITest *> GUITests;
+typedef QList<GUITest*> GUITests;
 
 #define TESTNAME(className) #className
 #define SUITENAME(className) QString(GUI_TEST_SUITE)
@@ -79,7 +79,7 @@ typedef QList<GUITest *> GUITests;
         } \
 \
     protected: \
-        virtual void run(HI::GUITestOpStatus &os); \
+        virtual void run(HI::GUITestOpStatus& os); \
     };
 
 #define TEST_CLASS_DECLARATION_SET_TIMEOUT(className, timeout) \
@@ -89,11 +89,11 @@ typedef QList<GUITest *> GUITests;
         } \
 \
     protected: \
-        virtual void run(HI::GUITestOpStatus &os); \
+        virtual void run(HI::GUITestOpStatus& os); \
     };
 
 #define TEST_CLASS_DEFINITION(className) \
-    void className::run(HI::GUITestOpStatus &os)
+    void className::run(HI::GUITestOpStatus& os)
 
 }  // namespace HI
 

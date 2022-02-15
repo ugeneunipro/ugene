@@ -33,10 +33,10 @@ namespace BAM {
 
 class BgzfWriter {
 public:
-    BgzfWriter(IOAdapter &ioAdapter);
+    BgzfWriter(IOAdapter& ioAdapter);
     ~BgzfWriter();
 
-    void write(const char *buff, qint64 size);
+    void write(const char* buff, qint64 size);
     void finish();
 
     VirtualOffset getOffset() const;
@@ -46,7 +46,7 @@ private:
 
     static const int BUFFER_SIZE = 16384;
     static const int BLOCK_SIZE = 65536;
-    IOAdapter &ioAdapter;
+    IOAdapter& ioAdapter;
     z_stream stream;
     char buffer[BUFFER_SIZE];
     quint64 headerOffset;

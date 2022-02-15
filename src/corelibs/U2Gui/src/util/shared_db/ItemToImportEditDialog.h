@@ -33,15 +33,15 @@ namespace U2 {
 class ItemToImportEditDialog : public QDialog {
     Q_OBJECT
 public:
-    explicit ItemToImportEditDialog(const QString &item, const QString &folder, const ImportToDatabaseOptions &options, QWidget *parent = 0);
+    explicit ItemToImportEditDialog(const QString& item, const QString& folder, const ImportToDatabaseOptions& options, QWidget* parent = 0);
     ~ItemToImportEditDialog();
 
     QString getFolder() const;
     ImportToDatabaseOptions getOptions() const;
 
 private:
-    void init(const QString &item, const QString &folder, const ImportToDatabaseOptions &options);
-    Ui_ItemToImportEditDialog *ui;
+    void init(const QString& item, const QString& folder, const ImportToDatabaseOptions& options);
+    Ui_ItemToImportEditDialog* ui;
 };
 
 }  // namespace U2

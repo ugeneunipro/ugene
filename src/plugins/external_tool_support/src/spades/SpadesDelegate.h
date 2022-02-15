@@ -35,18 +35,18 @@ namespace LocalWorkflow {
 class SpadesDelegate : public PropertyDelegate {
     Q_OBJECT
 public:
-    SpadesDelegate(QObject *parent = 0);
+    SpadesDelegate(QObject* parent = 0);
 
-    QVariant getDisplayValue(const QVariant &value) const;
-    PropertyDelegate *clone();
-    QWidget *createEditor(QWidget *parent,
-                          const QStyleOptionViewItem &option,
-                          const QModelIndex &index) const;
-    PropertyWidget *createWizardWidget(U2OpStatus &os,
-                                       QWidget *parent) const;
+    QVariant getDisplayValue(const QVariant& value) const;
+    PropertyDelegate* clone();
+    QWidget* createEditor(QWidget* parent,
+                          const QStyleOptionViewItem& option,
+                          const QModelIndex& index) const;
+    PropertyWidget* createWizardWidget(U2OpStatus& os,
+                                       QWidget* parent) const;
 
-    void setEditorData(QWidget *editor, const QModelIndex &index) const;
-    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
+    void setEditorData(QWidget* editor, const QModelIndex& index) const;
+    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
 
     static const QString PLACEHOLDER;
 private slots:
@@ -56,26 +56,26 @@ private slots:
 class SpadesPropertyWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    SpadesPropertyWidget(QWidget *parent = nullptr, DelegateTags *tags = nullptr);
+    SpadesPropertyWidget(QWidget* parent = nullptr, DelegateTags* tags = nullptr);
 
     QVariant value();
 
 public slots:
-    void setValue(const QVariant &value);
+    void setValue(const QVariant& value);
 
 private slots:
     void sl_showDialog();
 
 private:
-    QLineEdit *lineEdit;
-    QToolButton *toolButton;
+    QLineEdit* lineEdit;
+    QToolButton* toolButton;
     QVariantMap dialogValue;
 };
 
 class SpadesPropertyDialog : public QDialog, private Ui_SpadesInputData {
     Q_OBJECT
 public:
-    SpadesPropertyDialog(const QMap<QString, QVariant> &value, QWidget *parent);
+    SpadesPropertyDialog(const QMap<QString, QVariant>& value, QWidget* parent);
 
     QMap<QString, QVariant> getValue() const;
 
@@ -83,17 +83,17 @@ public slots:
     void accept();
 
 private:
-    void setValue(const QMap<QString, QVariant> &value);
+    void setValue(const QMap<QString, QVariant>& value);
     void setItemsData();
     bool isSomeRequiredParemeterChecked() const;
     bool needRequiredSequencingPlatform() const;
     bool needAdditionalSequencingPlatform() const;
 
-    static QStringList getDataFromComboBoxes(QComboBox *directionComboBox, QComboBox *typeComboBox);
-    static void setDataForComboBoxes(QComboBox *directionComboBox, QComboBox *typeComboBox, const QVariant &value);
+    static QStringList getDataFromComboBoxes(QComboBox* directionComboBox, QComboBox* typeComboBox);
+    static void setDataForComboBoxes(QComboBox* directionComboBox, QComboBox* typeComboBox, const QVariant& value);
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_SPADES_DELEGATE_H_
+#endif  // _U2_SPADES_DELEGATE_H_

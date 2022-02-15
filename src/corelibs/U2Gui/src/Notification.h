@@ -53,16 +53,16 @@ class U2GUI_EXPORT Notification : public QLabel {
     Q_OBJECT
 
 public:
-    Notification(NotificationStack *stack, const QString &message, const NotificationType &type, QAction *action = nullptr);
+    Notification(NotificationStack* stack, const QString& message, const NotificationType& type, QAction* action = nullptr);
 
-    const QString &getText() const;
+    const QString& getText() const;
 
-    const NotificationType &getType() const;
+    const NotificationType& getType() const;
 
-    QAction *getAction() const;
+    QAction* getAction() const;
 
     /** Increments counter of the notification and re-sets on-screen timeout. */
-    bool eventFilter(QObject *target, QEvent *event) override;
+    bool eventFilter(QObject* target, QEvent* event) override;
 
     /** Start on-screen timer. The notification must be positioned & shown by the external controller. */
     void showFloatingOnScreen();
@@ -117,13 +117,13 @@ signals:
 
 protected:
     /** Shows tooltip & update hovered styles. */
-    bool event(QEvent *e) override;
+    bool event(QEvent* e) override;
 
     /**
      * Triggers notification action.
      * TODO: replace all MousePress with MouseRelease events around notifications code.
      */
-    void mousePressEvent(QMouseEvent *ev) override;
+    void mousePressEvent(QMouseEvent* ev) override;
 
 private:
     /** Updates display text. Display text is a timestamp + original text.  */
@@ -133,16 +133,16 @@ private:
      * Action to execute when notification is activated (clicked).
      * If action is null a popup dialog with notification text is shown.
      */
-    QAction *action;
+    QAction* action;
 
     /** A button to remove the notification. Visible only for notifications inside of the notification stack widget. */
-    QLabel *closeButton;
+    QLabel* closeButton;
 
     /** On screen timer. Updates notification geometry & size. */
     QTimer onScreenTimer;
 
     /** The stack this notification belongs too. Not null.*/
-    NotificationStack *stack;
+    NotificationStack* stack;
 
     /**
      * Last recorded height in on-screen stack.
@@ -169,7 +169,7 @@ class U2GUI_EXPORT NotificationStack : public QObject {
 
 public:
     /** Instantiates notification stack that will work inside of the parentWidget. */
-    NotificationStack(QWidget *parentWidget);
+    NotificationStack(QWidget* parentWidget);
     ~NotificationStack();
 
     /** Returns number of notifications in the stack. */
@@ -185,10 +185,10 @@ public:
     void setFixed(bool val);
 
     /** Adds a new instance of Notification to the notification stack. Handles duplicates (repeating notifications). */
-    void add(const QString &text, const NotificationType &type = NotificationType::Info_Not, QAction *action = nullptr);
+    void add(const QString& text, const NotificationType& type = NotificationType::Info_Not, QAction* action = nullptr);
 
     /** Adds notification to the default UGENE's notification stack. */
-    static void addNotification(const QString &text, const NotificationType &type = NotificationType::Info_Not, QAction *action = nullptr);
+    static void addNotification(const QString& text, const NotificationType& type = NotificationType::Info_Not, QAction* action = nullptr);
 
     /** Updates on-screen notifications positions. Compacts the onscreen stack. */
     void updateOnScreenNotificationPositions();
@@ -197,7 +197,7 @@ public:
     static constexpr int MAX_STACK_SIZE = 100;
 
     /** Updates on-screen notifications & stack widget position on main window move/resize events. */
-    bool eventFilter(QObject *target, QEvent *event) override;
+    bool eventFilter(QObject* target, QEvent* event) override;
 
 private slots:
     /** Called when notification is hidden. The caller is an instance of 'Notification'. */
@@ -215,15 +215,15 @@ private:
     QPoint getStackBottomRightPoint() const;
 
     // Adds notification as a child to notification widget
-    void moveToNotificationWidget(Notification *t);
+    void moveToNotificationWidget(Notification* t);
 
     /** The widget this stack is created for. */
-    QWidget *parentWidget;
+    QWidget* parentWidget;
 
     /** Container with all notifications. Shown when user clicks on notification icon in status bar. */
-    NotificationWidget *notificationWidget;
+    NotificationWidget* notificationWidget;
 
-    QList<Notification *> notifications;
+    QList<Notification*> notifications;
 };
 
 /**
@@ -238,7 +238,7 @@ public:
         : U2OpStatus2Log(level), notificationType(type) {
     }
 
-    void setError(const QString &error) override {
+    void setError(const QString& error) override {
         U2OpStatus2Log::setError(error);
         NotificationStack::addNotification(error, notificationType);
     }

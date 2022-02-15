@@ -23,7 +23,7 @@
 
 namespace U2 {
 
-SignalBlocker::SignalBlocker(QObject *const object)
+SignalBlocker::SignalBlocker(QObject* const object)
     : object(object),
       previousState(true) {
     previousState = object->blockSignals(true);

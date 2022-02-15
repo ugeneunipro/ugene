@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-UrlItem::UrlItem(const QString &url, QListWidget *parent)
+UrlItem::UrlItem(const QString& url, QListWidget* parent)
     : QListWidgetItem(url, parent) {
     QFileInfo info(url);
     QString name = info.fileName();
@@ -39,7 +39,7 @@ UrlItem::UrlItem(const QString &url, QListWidget *parent)
     setToolTip("<p>" + url + "</p>");
 }
 
-QWidget *UrlItem::getOptionsWidget() {
+QWidget* UrlItem::getOptionsWidget() {
     return nullptr;
 }
 

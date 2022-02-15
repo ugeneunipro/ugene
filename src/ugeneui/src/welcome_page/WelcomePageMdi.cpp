@@ -28,9 +28,9 @@
 
 namespace U2 {
 
-WelcomePageMdi::WelcomePageMdi(const QString &title, WelcomePageMdiController *controller)
+WelcomePageMdi::WelcomePageMdi(const QString& title, WelcomePageMdiController* controller)
     : MWMDIWindow(title), controller(controller) {
-    QVBoxLayout *l = new QVBoxLayout(this);
+    QVBoxLayout* l = new QVBoxLayout(this);
     l->setMargin(0);
 
     widget = new WelcomePageWidget(this);
@@ -38,7 +38,7 @@ WelcomePageMdi::WelcomePageMdi(const QString &title, WelcomePageMdiController *c
     installEventFilter(this);
 }
 
-bool WelcomePageMdi::eventFilter(QObject *obj, QEvent *event) {
+bool WelcomePageMdi::eventFilter(QObject* obj, QEvent* event) {
     if (QEvent::Show == event->type()) {
         widget->adjustSize();
         widget->updateGeometry();
@@ -46,7 +46,7 @@ bool WelcomePageMdi::eventFilter(QObject *obj, QEvent *event) {
     return QWidget::eventFilter(obj, event);
 }
 
-void WelcomePageMdi::updateRecent(const QStringList &recentProjects, const QStringList &recentFiles) {
+void WelcomePageMdi::updateRecent(const QStringList& recentProjects, const QStringList& recentFiles) {
     widget->updateRecent(recentProjects, recentFiles);
 }
 

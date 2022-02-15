@@ -35,10 +35,10 @@ class Shtirlitz;
 class Shtirlitz {
 public:
     // Sends all of the reports, if needed.
-    static QList<Task *> wakeup();
+    static QList<Task*> wakeup();
 
     // Sends custom reports, created by somebody other than Shtirlitz.
-    static Task *sendCustomReport(const QString &customReport);
+    static Task* sendCustomReport(const QString& customReport);
 
     // Saves to settings gathered during the current launch info
     static void saveGatheredInfo();
@@ -48,27 +48,27 @@ public:
 
 private:
     // Creates and sends counters info (statistics about UGENE main tasks usage)
-    static Task *sendCountersReport();
+    static Task* sendCountersReport();
     // Creates and sends system info: OS, hardware platform, etc.
-    static Task *sendSystemReport();
+    static Task* sendSystemReport();
 
     static QString formCountersReport();
     static QString formSystemReport();
 
-    static void getSysInfo(QString &name,
-                           QString &version,
-                           QString &kernelType,
-                           QString &kernelVersion,
-                           QString &productVersion,
-                           QString &productType,
-                           QString &prettyProductName,
-                           QString &cpuArchitecture);
+    static void getSysInfo(QString& name,
+                           QString& version,
+                           QString& kernelType,
+                           QString& kernelVersion,
+                           QString& productVersion,
+                           QString& productType,
+                           QString& prettyProductName,
+                           QString& cpuArchitecture);
 
-    static void getFirstLaunchInfo(bool &allVersions, bool &majorVersions);
+    static void getFirstLaunchInfo(bool& allVersions, bool& majorVersions);
     static bool enabled();
 
     // ugly stub for convenience - calls ShtirlitzPlugin::tr
-    static QString tr(const char *str);
+    static QString tr(const char* str);
 
 private:
     // loads uuid from settings if necessary
@@ -82,7 +82,7 @@ private:
 class ShtirlitzTask : public Task {
     Q_OBJECT
 public:
-    ShtirlitzTask(const QString &_report);
+    ShtirlitzTask(const QString& _report);
     void run() override;
 
 private:

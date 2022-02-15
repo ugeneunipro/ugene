@@ -33,7 +33,7 @@ namespace U2 {
 class PrimerLibrarySelector : public QDialog, Ui_PrimerLibrarySelector {
     Q_OBJECT
 public:
-    PrimerLibrarySelector(QWidget *parent);
+    PrimerLibrarySelector(QWidget* parent);
 
     Primer getResult() const;
 

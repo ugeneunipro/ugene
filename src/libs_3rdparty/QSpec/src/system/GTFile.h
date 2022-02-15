@@ -30,42 +30,42 @@ namespace HI {
 
 class HI_EXPORT GTFile {
 public:
-    static void setReadWrite(GUITestOpStatus &os, const QString &path, bool recursive = false);
-    static void setReadOnly(GUITestOpStatus &os, const QString &path, bool recursive = false);
+    static void setReadWrite(GUITestOpStatus& os, const QString& path, bool recursive = false);
+    static void setReadOnly(GUITestOpStatus& os, const QString& path, bool recursive = false);
 
-    static bool equals(GUITestOpStatus &os, const QString &, const QString &);
-    static bool equals(GUITestOpStatus &os, const QString &);
+    static bool equals(GUITestOpStatus& os, const QString&, const QString&);
+    static bool equals(GUITestOpStatus& os, const QString&);
 
-    static qint64 getSize(GUITestOpStatus &os, const QString &);
+    static qint64 getSize(GUITestOpStatus& os, const QString&);
 
     // backup file to the file with backupPostfix. fail the given file can't be opened
-    static void backup(GUITestOpStatus &os, const QString &);
+    static void backup(GUITestOpStatus& os, const QString&);
 
     // backup directory to the file with backupPostfix
-    static void backupDir(GUITestOpStatus &os, const QString &);
+    static void backupDir(GUITestOpStatus& os, const QString&);
 
     // copy file removing target file if exist
-    static void copy(GUITestOpStatus &os, const QString &from, const QString &to);
+    static void copy(GUITestOpStatus& os, const QString& from, const QString& to);
 
     // copy directory entries removing target file if exist
-    static void copyDir(GUITestOpStatus &os, const QString &dirToCopy, const QString &dirToPaste);
+    static void copyDir(GUITestOpStatus& os, const QString& dirToCopy, const QString& dirToPaste);
 
     /** Removes the dir if exists. */
     static void removeDir(const QString& dirName);
 
     // restores file and deletes backup. fail if there is no backup or can't write to the given file
-    static void restore(GUITestOpStatus &os, const QString &);
+    static void restore(GUITestOpStatus& os, const QString&);
 
     // restores file and deletes backup. fail if there is no backup or can't write to the given file
-    static void restoreDir(GUITestOpStatus &os, const QString &);
+    static void restoreDir(GUITestOpStatus& os, const QString&);
 
     // checks if file exists
-    static bool check(GUITestOpStatus &os, const QString &);
+    static bool check(GUITestOpStatus& os, const QString&);
 
     // creates a new empty file, rewrite the file if it already exists
-    static void create(GUITestOpStatus &os, const QString &filePath);
+    static void create(GUITestOpStatus& os, const QString& filePath);
 
-    static QByteArray readAll(GUITestOpStatus &os, const QString &filePath);
+    static QByteArray readAll(GUITestOpStatus& os, const QString& filePath);
 
     static const QString backupPostfix;
 };

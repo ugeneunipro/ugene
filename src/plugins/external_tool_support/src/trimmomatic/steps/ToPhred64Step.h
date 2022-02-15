@@ -32,11 +32,11 @@ class ToPhred64Step : public TrimmomaticStep {
 public:
     ToPhred64Step();
 
-    TrimmomaticStepSettingsWidget *createWidget() const;
+    TrimmomaticStepSettingsWidget* createWidget() const;
 
 private:
-    QString serializeState(const QVariantMap &widgetState) const;
-    QVariantMap parseState(const QString &command) const;
+    QString serializeState(const QVariantMap& widgetState) const;
+    QVariantMap parseState(const QString& command) const;
 };
 
 class ToPhred64StepFactory : public TrimmomaticStepFactory {
@@ -45,10 +45,10 @@ public:
 
     ToPhred64StepFactory();
 
-    ToPhred64Step *createStep() const;
+    ToPhred64Step* createStep() const;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_TO_PHRED_64_STEP_H_
+#endif  // _U2_TO_PHRED_64_STEP_H_

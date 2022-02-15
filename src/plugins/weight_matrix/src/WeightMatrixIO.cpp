@@ -66,7 +66,7 @@ QString WeightMatrixIO::getPWMFileFilter() {
 #define BUFF_SIZE 4096
 #define MATRIX_VAL_SEPARATOR ';'
 
-PFMatrix WeightMatrixIO::readPFMatrix(IOAdapterFactory *iof, const QString &url, TaskStateInfo &si) {
+PFMatrix WeightMatrixIO::readPFMatrix(IOAdapterFactory* iof, const QString& url, TaskStateInfo& si) {
     PFMatrix matrix;
     QVarLengthArray<int> res;
     int len = -1, msize = 0;
@@ -169,7 +169,7 @@ PFMatrix WeightMatrixIO::readPFMatrix(IOAdapterFactory *iof, const QString &url,
     return matrix;
 }
 
-PWMatrix WeightMatrixIO::readPWMatrix(IOAdapterFactory *iof, const QString &url, TaskStateInfo &si) {
+PWMatrix WeightMatrixIO::readPWMatrix(IOAdapterFactory* iof, const QString& url, TaskStateInfo& si) {
     PWMatrix matrix;
     QVarLengthArray<float> res;
     int len = -1, msize = 0;
@@ -250,7 +250,7 @@ PWMatrix WeightMatrixIO::readPWMatrix(IOAdapterFactory *iof, const QString &url,
     return matrix;
 }
 
-void WeightMatrixIO::writePFMatrix(IOAdapterFactory *iof, const QString &url, TaskStateInfo &si, const PFMatrix &model) {
+void WeightMatrixIO::writePFMatrix(IOAdapterFactory* iof, const QString& url, TaskStateInfo& si, const PFMatrix& model) {
     assert(model.getLength() >= 0);
     QByteArray res;
     int size = (model.getType() == PFM_MONONUCLEOTIDE) ? 4 : 16;
@@ -274,7 +274,7 @@ void WeightMatrixIO::writePFMatrix(IOAdapterFactory *iof, const QString &url, Ta
     io->close();
 }
 
-void WeightMatrixIO::writePWMatrix(IOAdapterFactory *iof, const QString &url, TaskStateInfo &si, const PWMatrix &model) {
+void WeightMatrixIO::writePWMatrix(IOAdapterFactory* iof, const QString& url, TaskStateInfo& si, const PWMatrix& model) {
     assert(model.getLength() >= 0);
     QByteArray res;
     int size = (model.getType() == PWM_MONONUCLEOTIDE) ? 4 : 16;
@@ -307,12 +307,12 @@ void WeightMatrixIO::writePWMatrix(IOAdapterFactory *iof, const QString &url, Ta
 }
 
 void PFMatrixReadTask::run() {
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     model = WeightMatrixIO::readPFMatrix(iof, url, stateInfo);
 }
 
 void PFMatrixWriteTask::run() {
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     if (fileMode & SaveDoc_Roll && !GUrlUtils::renameFileWithNameRoll(url, stateInfo)) {
         return;
     }
@@ -320,12 +320,12 @@ void PFMatrixWriteTask::run() {
 }
 
 void PWMatrixReadTask::run() {
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     model = WeightMatrixIO::readPWMatrix(iof, url, stateInfo);
 }
 
 void PWMatrixWriteTask::run() {
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     if (fileMode & SaveDoc_Roll && !GUrlUtils::renameFileWithNameRoll(url, stateInfo)) {
         return;
     }

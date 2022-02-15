@@ -38,23 +38,23 @@ using namespace Monitor;
 
 const QString WorkflowMonitor::WORKFLOW_FILE_NAME("workflow.uwl");
 
-WorkflowMonitor::WorkflowMonitor(WorkflowAbstractIterationRunner *_task, Schema *_schema)
+WorkflowMonitor::WorkflowMonitor(WorkflowAbstractIterationRunner* _task, Schema* _schema)
     : QObject(), schema(_schema), task(_task), saveSchema(false), started(false), externalTools(false) {
-    foreach (Actor *p, schema->getProcesses()) {
+    foreach (Actor* p, schema->getProcesses()) {
         procMap[p->getId()] = p;
         processNames[p->getId()] = p->getLabel();
         addTime(0, p->getId());
     }
 
-    foreach (Actor *p, schema->getProcesses()) {
+    foreach (Actor* p, schema->getProcesses()) {
         WorkerParamsInfo info;
         info.actor = p;
         info.workerName = p->getLabel();
-        QMap<QString, Attribute *> params = p->getParameters();
-        QMapIterator<QString, Attribute *> paramsIter(params);
+        QMap<QString, Attribute*> params = p->getParameters();
+        QMapIterator<QString, Attribute*> paramsIter(params);
         while (paramsIter.hasNext()) {
             paramsIter.next();
-            Attribute *attr = paramsIter.value();
+            Attribute* attr = paramsIter.value();
             SAFE_POINT(nullptr != attr, "NULL attribute in params!", );
 
             info.parameters << attr;
@@ -70,36 +70,36 @@ WorkflowMonitor::WorkflowMonitor(WorkflowAbstractIterationRunner *_task, Schema 
     connect(task.data(), SIGNAL(si_stateChanged()), SLOT(sl_taskStateChanged()));
 }
 
-const QList<FileInfo> &WorkflowMonitor::getOutputFiles() const {
+const QList<FileInfo>& WorkflowMonitor::getOutputFiles() const {
     return outputFiles;
 }
 
-const QList<WorkflowNotification> &WorkflowMonitor::getNotifications() const {
+const QList<WorkflowNotification>& WorkflowMonitor::getNotifications() const {
     return notifications;
 }
 
-const QMap<QString, WorkerInfo> &WorkflowMonitor::getWorkersInfo() const {
+const QMap<QString, WorkerInfo>& WorkflowMonitor::getWorkersInfo() const {
     return workers;
 }
 
-const QList<WorkerParamsInfo> &WorkflowMonitor::getWorkersParameters() const {
+const QList<WorkerParamsInfo>& WorkflowMonitor::getWorkersParameters() const {
     return workersParamsInfo;
 }
 
-const QMap<QString, Monitor::WorkerLogInfo> &WorkflowMonitor::getWorkersLog() const {
+const QMap<QString, Monitor::WorkerLogInfo>& WorkflowMonitor::getWorkersLog() const {
     return workersLog;
 }
 
-const QMap<QString, QMultiMap<QString, QString>> &WorkflowMonitor::getWorkersReports() const {
+const QMap<QString, QMultiMap<QString, QString>>& WorkflowMonitor::getWorkersReports() const {
     return workersReports;
 }
 
-QString WorkflowMonitor::actorName(const QString &id) const {
+QString WorkflowMonitor::actorName(const QString& id) const {
     SAFE_POINT(processNames.contains(id), QString("Unknown actor id: '%1'").arg(id), "");
     return processNames[id];
 }
 
-void WorkflowMonitor::addOutputFile(const QString &url, const QString &producer, bool openBySystem) {
+void WorkflowMonitor::addOutputFile(const QString& url, const QString& producer, bool openBySystem) {
     CHECK(!url.isEmpty(), );
     FileInfo info(MonitorUtils::toSlashedUrl(url), producer, openBySystem);
 
@@ -109,20 +109,20 @@ void WorkflowMonitor::addOutputFile(const QString &url, const QString &producer,
     emit si_newOutputFile(info);
 }
 
-void WorkflowMonitor::addOutputFolder(const QString &url, const QString &producer) {
+void WorkflowMonitor::addOutputFolder(const QString& url, const QString& producer) {
     addOutputFile(url, producer, true);
 }
 
-void WorkflowMonitor::addInfo(const QString &message, const QString &actor, const QString &type) {
+void WorkflowMonitor::addInfo(const QString& message, const QString& actor, const QString& type) {
     addNotification(WorkflowNotification(message, actor, type));
 }
 
-void WorkflowMonitor::addError(const QString &message, const QString &actor, const QString &type) {
+void WorkflowMonitor::addError(const QString& message, const QString& actor, const QString& type) {
     addNotification(WorkflowNotification(message, actor, type));
     coreLog.error(message);
 }
 
-void WorkflowMonitor::addTaskError(Task *task, const QString &message) {
+void WorkflowMonitor::addTaskError(Task* task, const QString& message) {
     SAFE_POINT(taskMap.contains(task), "Unregistered task", );
     CHECK(!errorTasks.contains(task), );
     QString error = message.isEmpty() ? task->getError() : message;
@@ -130,25 +130,25 @@ void WorkflowMonitor::addTaskError(Task *task, const QString &message) {
     errorTasks << task;
 }
 
-void WorkflowMonitor::addTaskWarning(Task *task, const QString &message) {
+void WorkflowMonitor::addTaskWarning(Task* task, const QString& message) {
     SAFE_POINT(taskMap.contains(task), "Unregistered task", );
     ActorId id = taskMap[task]->getId();
     if (!message.isEmpty()) {
         addError(message, id, WorkflowNotification::U2_WARNING);
     } else {
-        foreach (const QString &warning, task->getWarnings()) {
+        foreach (const QString& warning, task->getWarnings()) {
             addError(warning, id, WorkflowNotification::U2_WARNING);
         }
     }
 }
 
-void WorkflowMonitor::addTime(qint64 timeMks, const QString &actor) {
-    WorkerInfo &info = workers[actor];
+void WorkflowMonitor::addTime(qint64 timeMks, const QString& actor) {
+    WorkerInfo& info = workers[actor];
     info.timeMks += timeMks;
     emit si_workerInfoChanged(actor, info);
 }
 
-void WorkflowMonitor::addTick(qint64 timeMks, const QString &actor) {
+void WorkflowMonitor::addTick(qint64 timeMks, const QString& actor) {
     workers[actor].ticks += 1;
     addTime(timeMks, actor);
 }
@@ -173,13 +173,13 @@ bool WorkflowMonitor::isExternalToolScheme() const {
     return externalTools;
 }
 
-void WorkflowMonitor::registerTask(Task *task, const QString &actor) {
+void WorkflowMonitor::registerTask(Task* task, const QString& actor) {
     SAFE_POINT(procMap.contains(actor), "Unknown actor id", );
     taskMap[task] = procMap[actor];
-    connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_workerTaskFinished(Task *)));
+    connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task*)), SLOT(sl_workerTaskFinished(Task*)));
 }
 
-void WorkflowMonitor::setOutputDir(const QString &dir) {
+void WorkflowMonitor::setOutputDir(const QString& dir) {
     _outputDir = dir;
     emit si_dirSet(outputDir());
 
@@ -198,8 +198,8 @@ QString WorkflowMonitor::getLogsDir() const {
     return outputDir() + "logs";
 }
 
-QString WorkflowMonitor::getLogUrl(const QString &actorId, int actorRunNumber, const QString &toolName, int toolRunNumber, int contentType) const {
-    WDListener *listener = getListener(actorId, actorRunNumber, toolName, toolRunNumber);
+QString WorkflowMonitor::getLogUrl(const QString& actorId, int actorRunNumber, const QString& toolName, int toolRunNumber, int contentType) const {
+    WDListener* listener = getListener(actorId, actorRunNumber, toolName, toolRunNumber);
     switch (contentType) {
         case ExternalToolListener::OUTPUT_LOG:
             return listener->getStdoutLogFileUrl();
@@ -231,7 +231,7 @@ Monitor::TaskState WorkflowMonitor::getTaskState() const {
             }
         }
     } else {
-        for (const WorkflowNotification &notification : qAsConst(notifications)) {
+        for (const WorkflowNotification& notification : qAsConst(notifications)) {
             if (WorkflowNotification::U2_ERROR == notification.type || WorkflowNotification::U2_WARNING == notification.type) {
                 state = RUNNING_WITH_PROBLEMS;
                 break;
@@ -251,14 +251,14 @@ void WorkflowMonitor::sl_taskStateChanged() {
     emit si_taskStateChanged(state);
 }
 
-void WorkflowMonitor::sl_workerTaskFinished(Task *workerTask) {
-    Actor *actor = taskMap.value(workerTask, nullptr);
+void WorkflowMonitor::sl_workerTaskFinished(Task* workerTask) {
+    Actor* actor = taskMap.value(workerTask, nullptr);
     SAFE_POINT(nullptr != actor, QString("An unknown task finished: %1").arg(workerTask->getTaskName()), );
     CHECK(workerTask->isReportingEnabled(), );
     workersReports[actor->getId()].insert(workerTask->getTaskName(), workerTask->generateReport());
 }
 
-void WorkflowMonitor::setWorkerInfo(const QString &actorId, const WorkerInfo &info) {
+void WorkflowMonitor::setWorkerInfo(const QString& actorId, const WorkerInfo& info) {
     workers[actorId] = info;
     emit si_workerInfoChanged(actorId, info);
 }
@@ -267,13 +267,13 @@ void WorkflowMonitor::setRunState(bool paused) {
     emit si_runStateChanged(paused);
 }
 
-int WorkflowMonitor::getDataProduced(const QString &actor) const {
+int WorkflowMonitor::getDataProduced(const QString& actor) const {
     CHECK(!task.isNull(), 0);
     return task->getDataProduced(actor);
 }
 
-bool WorkflowMonitor::containsOutputFile(const QString &url) const {
-    foreach (const FileInfo &info, outputFiles) {
+bool WorkflowMonitor::containsOutputFile(const QString& url) const {
+    foreach (const FileInfo& info, outputFiles) {
         if (info.url == MonitorUtils::toSlashedUrl(url)) {
             return true;
         }
@@ -281,7 +281,7 @@ bool WorkflowMonitor::containsOutputFile(const QString &url) const {
     return false;
 }
 
-void WorkflowMonitor::addNotification(const WorkflowNotification &notification) {
+void WorkflowMonitor::addNotification(const WorkflowNotification& notification) {
     bool isFirstNotification = notifications.isEmpty();
     notifications.append(notification);
 
@@ -294,7 +294,7 @@ void WorkflowMonitor::addNotification(const WorkflowNotification &notification) 
         }
     }
     int count = 0;
-    for (const WorkflowNotification &n : qAsConst(notifications)) {
+    for (const WorkflowNotification& n : qAsConst(notifications)) {
         if (n == notification) {
             count++;
         }
@@ -303,7 +303,7 @@ void WorkflowMonitor::addNotification(const WorkflowNotification &notification) 
 }
 
 bool WorkflowMonitor::hasWarnings() const {
-    for (const WorkflowNotification &notification : qAsConst(notifications)) {
+    for (const WorkflowNotification& notification : qAsConst(notifications)) {
         if (notification.type == WorkflowNotification::U2_WARNING) {
             return true;
         }
@@ -312,7 +312,7 @@ bool WorkflowMonitor::hasWarnings() const {
 }
 
 bool WorkflowMonitor::hasErrors() const {
-    for (const WorkflowNotification &notification : qAsConst(notifications)) {
+    for (const WorkflowNotification& notification : qAsConst(notifications)) {
         if (notification.type == WorkflowNotification::U2_ERROR) {
             return true;
         }
@@ -320,26 +320,26 @@ bool WorkflowMonitor::hasErrors() const {
     return false;
 }
 
-void WorkflowMonitor::setSaveSchema(const Metadata &_meta) {
+void WorkflowMonitor::setSaveSchema(const Metadata& _meta) {
     meta.reset(new Metadata(_meta));
     saveSchema = true;
 }
 
-QList<ExternalToolListener *> WorkflowMonitor::createWorkflowListeners(const QString &workerId, const QString &workerName, int listenersNumber) {
-    QList<ExternalToolListener *> listeners;
-    WorkerLogInfo &logInfo = workersLog[workerId];
+QList<ExternalToolListener*> WorkflowMonitor::createWorkflowListeners(const QString& workerId, const QString& workerName, int listenersNumber) {
+    QList<ExternalToolListener*> listeners;
+    WorkerLogInfo& logInfo = workersLog[workerId];
     logInfo.workerRunNumber++;
     for (int i = 0; i < listenersNumber; i++) {
-        WDListener *newListener = new WDListener(this, workerId, workerName, logInfo.workerRunNumber);
+        WDListener* newListener = new WDListener(this, workerId, workerName, logInfo.workerRunNumber);
         listeners.append(newListener);
     }
     logInfo.logs.append(listeners);
     return listeners;
 }
 
-WDListener *WorkflowMonitor::getListener(const QString &actorId, int actorRunNumber, const QString &toolName, int toolRunNumber) const {
-    foreach (ExternalToolListener *listener, workersLog[actorId].logs) {
-        WDListener *wdListener = dynamic_cast<WDListener *>(listener);
+WDListener* WorkflowMonitor::getListener(const QString& actorId, int actorRunNumber, const QString& toolName, int toolRunNumber) const {
+    foreach (ExternalToolListener* listener, workersLog[actorId].logs) {
+        WDListener* wdListener = dynamic_cast<WDListener*>(listener);
         SAFE_POINT(nullptr != wdListener, "Can't cast ExternalToolListener to WDListener", nullptr);
         if (actorRunNumber == wdListener->getActorRunNumber() &&
             actorId == wdListener->getActorId() &&
@@ -351,10 +351,10 @@ WDListener *WorkflowMonitor::getListener(const QString &actorId, int actorRunNum
     return nullptr;
 }
 
-int WorkflowMonitor::getNewToolRunNumber(const QString &actorId, int actorRunNumber, const QString &toolName) {
+int WorkflowMonitor::getNewToolRunNumber(const QString& actorId, int actorRunNumber, const QString& toolName) {
     int toolRunNumber = 1;
-    foreach (ExternalToolListener *listener, workersLog[actorId].logs) {
-        WDListener *wdListener = dynamic_cast<WDListener *>(listener);
+    foreach (ExternalToolListener* listener, workersLog[actorId].logs) {
+        WDListener* wdListener = dynamic_cast<WDListener*>(listener);
         SAFE_POINT(nullptr != wdListener, "Can't cast ExternalToolListener to WDListener", 0);
         if (toolName == wdListener->getToolName() && actorRunNumber == wdListener->getActorRunNumber()) {
             toolRunNumber++;
@@ -363,7 +363,7 @@ int WorkflowMonitor::getNewToolRunNumber(const QString &actorId, int actorRunNum
     return toolRunNumber;
 }
 
-void WorkflowMonitor::onLogChanged(const WDListener *listener, int messageType, const QString &message) {
+void WorkflowMonitor::onLogChanged(const WDListener* listener, int messageType, const QString& message) {
     U2::Workflow::Monitor::LogEntry entry;
     entry.toolName = listener->getToolName();
     entry.actorId = listener->getActorId();
@@ -382,7 +382,7 @@ FileInfo::FileInfo()
     : url(), actor(), openBySystem(false), isDir(false) {
 }
 
-FileInfo::FileInfo(const QString &_url, const QString &_producer, bool _openBySystem)
+FileInfo::FileInfo(const QString& _url, const QString& _producer, bool _openBySystem)
     : url(_url),
       actor(_producer),
       openBySystem(_openBySystem),
@@ -395,7 +395,7 @@ FileInfo::FileInfo(const QString &_url, const QString &_producer, bool _openBySy
     }
 }
 
-bool FileInfo::operator==(const FileInfo &other) const {
+bool FileInfo::operator==(const FileInfo& other) const {
     return url == other.url;
 }
 
@@ -415,17 +415,17 @@ WorkerParamsInfo::WorkerParamsInfo() {
 /************************************************************************/
 /* MonitorUtils */
 /************************************************************************/
-QMap<QString, QList<FileInfo>> MonitorUtils::filesByActor(const WorkflowMonitor *m) {
+QMap<QString, QList<FileInfo>> MonitorUtils::filesByActor(const WorkflowMonitor* m) {
     QMap<QString, QList<FileInfo>> result;
-    foreach (const FileInfo &info, m->getOutputFiles()) {
+    foreach (const FileInfo& info, m->getOutputFiles()) {
         result[info.actor] << info;
     }
     return result;
 }
 
-QStringList MonitorUtils::sortedByAppearanceActorIds(const WorkflowMonitor *m) {
+QStringList MonitorUtils::sortedByAppearanceActorIds(const WorkflowMonitor* m) {
     QStringList result;
-    foreach (const FileInfo &info, m->getOutputFiles()) {
+    foreach (const FileInfo& info, m->getOutputFiles()) {
         if (!result.contains(info.actor)) {
             result << info.actor;
         }
@@ -433,7 +433,7 @@ QStringList MonitorUtils::sortedByAppearanceActorIds(const WorkflowMonitor *m) {
     return result;
 }
 
-QString MonitorUtils::toSlashedUrl(const QString &url) {
+QString MonitorUtils::toSlashedUrl(const QString& url) {
     QString result = url;
     result.replace("\\", "/");
     return result;
@@ -457,7 +457,7 @@ const bool Registrator::isMetaRegistered = registerMeta();
 /************************************************************************/
 /* WDListener */
 /************************************************************************/
-WDListener::WDListener(WorkflowMonitor *_monitor, const QString &_actorId, const QString &_actorName, int _actorRunNumber)
+WDListener::WDListener(WorkflowMonitor* _monitor, const QString& _actorId, const QString& _actorName, int _actorRunNumber)
     : monitor(_monitor),
       actorId(_actorId),
       actorName(_actorName),
@@ -468,7 +468,7 @@ WDListener::WDListener(WorkflowMonitor *_monitor, const QString &_actorId, const
     FileAndDirectoryUtils::createWorkingDir("", FileAndDirectoryUtils::CUSTOM, monitor->getLogsDir(), "");
 }
 
-void WDListener::addNewLogMessage(const QString &message, int messageType) {
+void WDListener::addNewLogMessage(const QString& message, int messageType) {
     if (nullptr != logProcessor) {
         logProcessor->processLogMessage(message);
     }
@@ -476,7 +476,7 @@ void WDListener::addNewLogMessage(const QString &message, int messageType) {
     monitor->onLogChanged(this, messageType, message);
 }
 
-void WDListener::setToolName(const QString &toolName) {
+void WDListener::setToolName(const QString& toolName) {
     toolRunNumber = monitor->getNewToolRunNumber(actorId, actorRunNumber, toolName);
     ExternalToolListener::setToolName(toolName);
 }
@@ -495,13 +495,13 @@ QString WDListener::getStderrLogFileUrl() {
     return errorLogFile.fileName();
 }
 
-QString WDListener::getStdoutLogFileUrl(const QString &actorId, int runNumber, const QString &toolName, int toolRunNumber) {
+QString WDListener::getStdoutLogFileUrl(const QString& actorId, int runNumber, const QString& toolName, int toolRunNumber) {
     return actorId + "_run_" + QString::number(runNumber) + "_" +
            toolName + "_run_" + QString::number(toolRunNumber) +
            "_stdout_log.txt";
 }
 
-QString WDListener::getStderrLogFileUrl(const QString &actorId, int runNumber, const QString &toolName, int toolRunNumber) {
+QString WDListener::getStderrLogFileUrl(const QString& actorId, int runNumber, const QString& toolName, int toolRunNumber) {
     return actorId + "_run_" + QString::number(runNumber) + "_" +
            toolName + "_run_" + QString::number(toolRunNumber) +
            "_stderr_log.txt";
@@ -527,7 +527,7 @@ void WDListener::initLogFile(int contentType) {
     }
 }
 
-void WDListener::writeToFile(int messageType, const QString &message) {
+void WDListener::writeToFile(int messageType, const QString& message) {
     switch (messageType) {
         case OUTPUT_LOG:
             if (!outputLogFile.isOpen()) {
@@ -553,7 +553,7 @@ void WDListener::writeToFile(int messageType, const QString &message) {
     }
 }
 
-void WDListener::writeToFile(QTextStream &logStream, const QString &message) {
+void WDListener::writeToFile(QTextStream& logStream, const QString& message) {
     CHECK(logStream.device()->isOpen(), );
     logStream << message;
 }

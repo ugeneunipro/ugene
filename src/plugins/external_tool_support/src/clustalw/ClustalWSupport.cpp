@@ -108,18 +108,18 @@ void ClustalWSupport::sl_runWithExtFileSpecify() {
     }
     assert(!settings.inputFilePath.isEmpty());
 
-    ClustalWWithExtFileSpecifySupportTask *clustalWSupportTask = new ClustalWWithExtFileSpecifySupportTask(settings);
+    ClustalWWithExtFileSpecifySupportTask* clustalWSupportTask = new ClustalWWithExtFileSpecifySupportTask(settings);
     AppContext::getTaskScheduler()->registerTopLevelTask(clustalWSupportTask);
 }
 
 ////////////////////////////////////////
 // ExternalToolSupportMSAContext
-ClustalWSupportContext::ClustalWSupportContext(QObject *p)
+ClustalWSupportContext::ClustalWSupportContext(QObject* p)
     : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
 
-void ClustalWSupportContext::initViewContext(GObjectView *view) {
-    auto msaEditor = qobject_cast<MSAEditor *>(view);
+void ClustalWSupportContext::initViewContext(GObjectView* view) {
+    auto msaEditor = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
     msaEditor->registerActionProvider(this);
 
@@ -160,10 +160,10 @@ void ClustalWSupportContext::sl_align() {
     CHECK_OP(os, );
 
     // Call run ClustalW align dialog
-    AlignMsaAction *action = qobject_cast<AlignMsaAction *>(sender());
+    AlignMsaAction* action = qobject_cast<AlignMsaAction*>(sender());
     SAFE_POINT(action != nullptr, "Sender is not 'AlignMsaAction'", );
-    MSAEditor *msaEditor = action->getMsaEditor();
-    MultipleSequenceAlignmentObject *obj = msaEditor->getMaObject();
+    MSAEditor* msaEditor = action->getMsaEditor();
+    MultipleSequenceAlignmentObject* obj = msaEditor->getMaObject();
     if (obj == nullptr || obj->isStateLocked()) {
         return;
     }
@@ -177,7 +177,7 @@ void ClustalWSupportContext::sl_align() {
         return;
     }
 
-    ClustalWSupportTask *clustalWSupportTask = new ClustalWSupportTask(obj->getMultipleAlignment(), GObjectReference(obj), settings);
+    ClustalWSupportTask* clustalWSupportTask = new ClustalWSupportTask(obj->getMultipleAlignment(), GObjectReference(obj), settings);
     connect(obj, SIGNAL(destroyed()), clustalWSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(clustalWSupportTask);
 

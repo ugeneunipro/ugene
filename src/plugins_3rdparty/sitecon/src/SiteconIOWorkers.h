@@ -36,27 +36,27 @@ namespace LocalWorkflow {
 
 class SiteconIOProto : public IntegralBusActorPrototype {
 public:
-    SiteconIOProto(const Descriptor &desc, const QList<PortDescriptor *> &ports, const QList<Attribute *> &attrs = QList<Attribute *>());
-    virtual bool isAcceptableDrop(const QMimeData *, QVariantMap *) const = 0;
-    bool isAcceptableDrop(const QMimeData *, QVariantMap *, const QString &urlAttrId) const;
+    SiteconIOProto(const Descriptor& desc, const QList<PortDescriptor*>& ports, const QList<Attribute*>& attrs = QList<Attribute*>());
+    virtual bool isAcceptableDrop(const QMimeData*, QVariantMap*) const = 0;
+    bool isAcceptableDrop(const QMimeData*, QVariantMap*, const QString& urlAttrId) const;
 };
 
 class ReadSiteconProto : public SiteconIOProto {
 public:
-    ReadSiteconProto(const Descriptor &desc, const QList<PortDescriptor *> &ports, const QList<Attribute *> &attrs = QList<Attribute *>());
-    virtual bool isAcceptableDrop(const QMimeData *, QVariantMap *) const;
+    ReadSiteconProto(const Descriptor& desc, const QList<PortDescriptor*>& ports, const QList<Attribute*>& attrs = QList<Attribute*>());
+    virtual bool isAcceptableDrop(const QMimeData*, QVariantMap*) const;
 };
 
 class WriteSiteconProto : public SiteconIOProto {
 public:
-    WriteSiteconProto(const Descriptor &desc, const QList<PortDescriptor *> &ports, const QList<Attribute *> &attrs = QList<Attribute *>());
-    virtual bool isAcceptableDrop(const QMimeData *, QVariantMap *) const;
+    WriteSiteconProto(const Descriptor& desc, const QList<PortDescriptor*>& ports, const QList<Attribute*>& attrs = QList<Attribute*>());
+    virtual bool isAcceptableDrop(const QMimeData*, QVariantMap*) const;
 };
 
 class SiteconReadPrompter : public PrompterBase<SiteconReadPrompter> {
     Q_OBJECT
 public:
-    SiteconReadPrompter(Actor *p = 0)
+    SiteconReadPrompter(Actor* p = 0)
         : PrompterBase<SiteconReadPrompter>(p) {
     }
 
@@ -67,7 +67,7 @@ protected:
 class SiteconWritePrompter : public PrompterBase<SiteconWritePrompter> {
     Q_OBJECT
 public:
-    SiteconWritePrompter(Actor *p = 0)
+    SiteconWritePrompter(Actor* p = 0)
         : PrompterBase<SiteconWritePrompter>(p) {
     }
 
@@ -79,20 +79,20 @@ class SiteconReader : public BaseWorker {
     Q_OBJECT
 public:
     static const QString ACTOR_ID;
-    SiteconReader(Actor *a)
+    SiteconReader(Actor* a)
         : BaseWorker(a), output(nullptr) {
     }
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup() {
     }
 private slots:
     void sl_taskFinished();
 
 protected:
-    CommunicationChannel *output;
+    CommunicationChannel* output;
     QStringList urls;
-    QList<Task *> tasks;
+    QList<Task*> tasks;
     DataTypePtr mtype;
 };
 
@@ -100,16 +100,16 @@ class SiteconWriter : public BaseWorker {
     Q_OBJECT
 public:
     static const QString ACTOR_ID;
-    SiteconWriter(Actor *a)
+    SiteconWriter(Actor* a)
         : BaseWorker(a), input(nullptr), done(false), fileMode(SaveDoc_Overwrite) {
     }
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup() {
     }
 
 protected:
-    CommunicationChannel *input;
+    CommunicationChannel* input;
     QString url;
     QMap<QString, int> counter;
     bool done;

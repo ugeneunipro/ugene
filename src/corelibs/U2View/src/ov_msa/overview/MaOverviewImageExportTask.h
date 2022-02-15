@@ -46,19 +46,19 @@ public:
 class MaOverviewImageExportToBitmapTask : public ImageExportTask {
     Q_OBJECT
 public:
-    MaOverviewImageExportToBitmapTask(MaSimpleOverview *simpleOverview, MaGraphOverview *graphOverview, const MaOverviewImageExportSettings &overviewSettings, const ImageExportTaskSettings &settings);
+    MaOverviewImageExportToBitmapTask(MaSimpleOverview* simpleOverview, MaGraphOverview* graphOverview, const MaOverviewImageExportSettings& overviewSettings, const ImageExportTaskSettings& settings);
     void run();
 
 private:
-    MaSimpleOverview *simpleOverview;
-    MaGraphOverview *graphOverview;
+    MaSimpleOverview* simpleOverview;
+    MaGraphOverview* graphOverview;
     MaOverviewImageExportSettings overviewSettings;
 };
 
 class MaOverviewImageExportController : public ImageExportController {
     Q_OBJECT
 public:
-    MaOverviewImageExportController(MaSimpleOverview *simpleOverview, MaGraphOverview *graphOverview);
+    MaOverviewImageExportController(MaSimpleOverview* simpleOverview, MaGraphOverview* graphOverview);
 
     int getImageWidth() const;
     int getImageHeight() const;
@@ -66,14 +66,14 @@ public:
 protected:
     void initSettingsWidget();
 
-    Task *getExportToBitmapTask(const ImageExportTaskSettings &settings) const;
+    Task* getExportToBitmapTask(const ImageExportTaskSettings& settings) const;
 
 private:
-    MaSimpleOverview *simpleOverview;
-    MaGraphOverview *graphOverview;
+    MaSimpleOverview* simpleOverview;
+    MaGraphOverview* graphOverview;
 
-    QCheckBox *exportSimpleOverview;
-    QCheckBox *exportGraphOverview;
+    QCheckBox* exportSimpleOverview;
+    QCheckBox* exportGraphOverview;
 };
 
 }  // namespace U2

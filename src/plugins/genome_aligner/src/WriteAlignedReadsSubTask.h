@@ -33,19 +33,19 @@ namespace U2 {
 class WriteAlignedReadsSubTask : public Task {
     Q_OBJECT
 public:
-    WriteAlignedReadsSubTask(QReadWriteLock &listM, QMutex &_writeLock, GenomeAlignerWriter *seqWriter, QList<DataBunch *> &data, qint64 &readsAligned);
+    WriteAlignedReadsSubTask(QReadWriteLock& listM, QMutex& _writeLock, GenomeAlignerWriter* seqWriter, QList<DataBunch*>& data, qint64& readsAligned);
     void run() override;
 
 private:
-    GenomeAlignerWriter *seqWriter;
-    QList<DataBunch *> &data;
-    qint64 &readsAligned;
+    GenomeAlignerWriter* seqWriter;
+    QList<DataBunch*>& data;
+    qint64& readsAligned;
 
-    inline void setReadWritten(SearchQuery *read, SearchQuery *revCompl);
-    QReadWriteLock &listM;
+    inline void setReadWritten(SearchQuery* read, SearchQuery* revCompl);
+    QReadWriteLock& listM;
 
     // lock to use when data is written to output.
-    QMutex &writeLock;
+    QMutex& writeLock;
 };
 
 }  // namespace U2

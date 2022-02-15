@@ -39,7 +39,7 @@
 namespace U2 {
 namespace Workflow {
 
-Actor::Actor(const ActorId &actorId, ActorPrototype *proto, AttributeScript *_script)
+Actor::Actor(const ActorId& actorId, ActorPrototype* proto, AttributeScript* _script)
     : id(actorId), proto(proto), doc(nullptr), script(_script), condition(new AttributeScript()) {
     if (script == nullptr) {
         if (proto->isScriptFlagSet()) {
@@ -61,7 +61,7 @@ Actor::Actor(const ActorId &actorId, ActorPrototype *proto, AttributeScript *_sc
     connect(proto, SIGNAL(si_descriptionChanged()), SIGNAL(si_descriptionChanged()));
 }
 
-Actor::Actor(const Actor &)
+Actor::Actor(const Actor&)
     : QObject(), Configuration(), Peer() {
     assert(false);
 }
@@ -77,9 +77,9 @@ void Actor::sl_labelChanged() {
     setLabel(proto->getDisplayName());
 }
 
-void Actor::setupVariablesForPort(AttributeScript *_script, bool inputOnly) {
-    QList<PortDescriptor *> portDesciptors = proto->getPortDesciptors();
-    for (const PortDescriptor *descr : qAsConst(portDesciptors)) {
+void Actor::setupVariablesForPort(AttributeScript* _script, bool inputOnly) {
+    QList<PortDescriptor*> portDesciptors = proto->getPortDesciptors();
+    for (const PortDescriptor* descr : qAsConst(portDesciptors)) {
         QString prefix;
         if (descr->isInput()) {
             prefix = "in_";
@@ -92,12 +92,12 @@ void Actor::setupVariablesForPort(AttributeScript *_script, bool inputOnly) {
         DataTypePtr dataTypePtr = descr->getType();
         if (dataTypePtr->isMap()) {
             QMap<Descriptor, DataTypePtr> map = dataTypePtr->getDatatypesMap();
-            foreach (const Descriptor &d, map.keys()) {
+            foreach (const Descriptor& d, map.keys()) {
                 Descriptor var(prefix + d.getId(), d.getDisplayName(), d.getDocumentation());
                 _script->setScriptVar(var, QVariant());
             }
         } else if (dataTypePtr->isList()) {
-            foreach (const Descriptor &typeDescr, dataTypePtr->getAllDescriptors()) {
+            foreach (const Descriptor& typeDescr, dataTypePtr->getAllDescriptors()) {
                 Descriptor var(prefix + typeDescr.getId(), typeDescr.getDisplayName(), typeDescr.getDocumentation());
                 _script->setScriptVar(var, QVariant());
             }
@@ -110,23 +110,23 @@ void Actor::setupVariablesForPort(AttributeScript *_script, bool inputOnly) {
     }
 }
 
-void Actor::setupVariablesForAttribute(AttributeScript *_script) {
-    foreach (Attribute *attribute, proto->getAttributes()) {
+void Actor::setupVariablesForAttribute(AttributeScript* _script) {
+    foreach (Attribute* attribute, proto->getAttributes()) {
         assert(attribute != nullptr);
         QString attrVarName = attribute->getDisplayName();
         _script->setScriptVar(Descriptor(attribute->getId().replace(".", "_"), attrVarName.replace(".", "_"), attribute->getDocumentation()), QVariant());
     }
 }
 
-AttributeScript *Actor::getScript() const {
+AttributeScript* Actor::getScript() const {
     return script;
 }
 
-void Actor::setScript(AttributeScript *_script) {
+void Actor::setScript(AttributeScript* _script) {
     script->setScriptText(_script->getScriptText());
 }
 
-AttributeScript *Actor::getCondition() const {
+AttributeScript* Actor::getCondition() const {
     return condition;
 }
 
@@ -134,21 +134,21 @@ ActorId Actor::getOwner() const {
     return owner;
 }
 
-void Actor::setOwner(const ActorId &owner) {
+void Actor::setOwner(const ActorId& owner) {
     this->owner = owner;
 }
 
-void Actor::updateActorIds(const QMap<ActorId, ActorId> &actorIdsMap) {
+void Actor::updateActorIds(const QMap<ActorId, ActorId>& actorIdsMap) {
     if (actorIdsMap.contains(owner)) {
         owner = actorIdsMap[owner];
     }
 
-    foreach (Attribute *a, this->getAttributes()) {
+    foreach (Attribute* a, this->getAttributes()) {
         a->updateActorIds(actorIdsMap);
     }
 }
 
-ActorPrototype *Actor::getProto() const {
+ActorPrototype* Actor::getProto() const {
     return proto;
 }
 
@@ -156,7 +156,7 @@ ActorId Actor::getId() const {
     return id;
 }
 
-void Actor::setId(const ActorId &id) {
+void Actor::setId(const ActorId& id) {
     this->id = id;
 }
 
@@ -168,22 +168,22 @@ QString Actor::getLabel() const {
     }
 }
 
-void Actor::setLabel(const QString &l) {
+void Actor::setLabel(const QString& l) {
     label = l;
     emit si_labelChanged();
 }
 
-Port *Actor::getPort(const QString &id) const {
+Port* Actor::getPort(const QString& id) const {
     return ports.value(id);
 }
 
-QList<Port *> Actor::getPorts() const {
+QList<Port*> Actor::getPorts() const {
     return ports.values();
 }
 
-QList<Port *> Actor::getInputPorts() const {
-    QList<Port *> l;
-    foreach (Port *p, ports.values()) {
+QList<Port*> Actor::getInputPorts() const {
+    QList<Port*> l;
+    foreach (Port* p, ports.values()) {
         if (p->isInput()) {
             l << p;
         }
@@ -191,9 +191,9 @@ QList<Port *> Actor::getInputPorts() const {
     return l;
 }
 
-QList<Port *> Actor::getOutputPorts() const {
-    QList<Port *> l;
-    foreach (Port *p, ports.values()) {
+QList<Port*> Actor::getOutputPorts() const {
+    QList<Port*> l;
+    foreach (Port* p, ports.values()) {
         if (p->isOutput()) {
             l << p;
         }
@@ -201,9 +201,9 @@ QList<Port *> Actor::getOutputPorts() const {
     return l;
 }
 
-QList<Port *> Actor::getEnabledPorts() const {
-    QList<Port *> l;
-    foreach (Port *p, ports.values()) {
+QList<Port*> Actor::getEnabledPorts() const {
+    QList<Port*> l;
+    foreach (Port* p, ports.values()) {
         if (p->isEnabled()) {
             l << p;
         }
@@ -211,9 +211,9 @@ QList<Port *> Actor::getEnabledPorts() const {
     return l;
 }
 
-QList<Port *> Actor::getEnabledInputPorts() const {
-    QList<Port *> l;
-    foreach (Port *p, ports.values()) {
+QList<Port*> Actor::getEnabledInputPorts() const {
+    QList<Port*> l;
+    foreach (Port* p, ports.values()) {
         if (p->isEnabled() && p->isInput()) {
             l << p;
         }
@@ -221,9 +221,9 @@ QList<Port *> Actor::getEnabledInputPorts() const {
     return l;
 }
 
-QList<Port *> Actor::getEnabledOutputPorts() const {
-    QList<Port *> l;
-    foreach (Port *p, ports.values()) {
+QList<Port*> Actor::getEnabledOutputPorts() const {
+    QList<Port*> l;
+    foreach (Port* p, ports.values()) {
         if (p->isEnabled() && p->isOutput()) {
             l << p;
         }
@@ -231,26 +231,26 @@ QList<Port *> Actor::getEnabledOutputPorts() const {
     return l;
 }
 
-void Actor::setParameter(const QString &name, const QVariant &val) {
+void Actor::setParameter(const QString& name, const QVariant& val) {
     Configuration::setParameter(name, val);
     updateItemsAvailability(getParameter(name));
     emit si_modified();
 }
 
-ActorDocument *Actor::getDescription() const {
+ActorDocument* Actor::getDescription() const {
     return doc;
 }
 
-void Actor::setDescription(ActorDocument *d) {
+void Actor::setDescription(ActorDocument* d) {
     assert(d != nullptr);
     doc = d;
 }
 
-const QMap<QString, QString> &Actor::getParamAliases() const {
+const QMap<QString, QString>& Actor::getParamAliases() const {
     return paramAliases;
 }
 
-QMap<QString, QString> &Actor::getParamAliases() {
+QMap<QString, QString>& Actor::getParamAliases() {
     return paramAliases;
 }
 
@@ -258,16 +258,16 @@ bool Actor::hasParamAliases() const {
     return !paramAliases.isEmpty();
 }
 
-const QMap<QString, QString> &Actor::getAliasHelp() const {
+const QMap<QString, QString>& Actor::getAliasHelp() const {
     return aliasHelpDescs;
 }
 
-QMap<QString, QString> &Actor::getAliasHelp() {
+QMap<QString, QString>& Actor::getAliasHelp() {
     return aliasHelpDescs;
 }
 
 bool Actor::hasAliasHelp() const {
-    foreach (const QString &alias, paramAliases.values()) {
+    foreach (const QString& alias, paramAliases.values()) {
         if (aliasHelpDescs.contains(alias)) {
             return true;
         }
@@ -275,14 +275,14 @@ bool Actor::hasAliasHelp() const {
     return false;
 }
 
-void Actor::remap(const QMap<ActorId, ActorId> &m) {
-    foreach (Port *p, ports) {
+void Actor::remap(const QMap<ActorId, ActorId>& m) {
+    foreach (Port* p, ports) {
         p->remap(m);
     }
 }
 
-void Actor::update(const QMap<ActorId, ActorId> &actorsMapping) {
-    foreach (Port *p, getPorts()) {
+void Actor::update(const QMap<ActorId, ActorId>& actorsMapping) {
+    foreach (Port* p, getPorts()) {
         p->updateBindings(actorsMapping);
     }
     if (CoreLibConstants::GROUPER_ID == proto->getId()) {
@@ -290,32 +290,32 @@ void Actor::update(const QMap<ActorId, ActorId> &actorsMapping) {
     }
 }
 
-void Actor::updateGrouperSlots(const QMap<ActorId, ActorId> &actorsMapping) {
+void Actor::updateGrouperSlots(const QMap<ActorId, ActorId>& actorsMapping) {
     SAFE_POINT(1 == getOutputPorts().size(), "Grouper port error 1", );
     SAFE_POINT(1 == getInputPorts().size(), "Grouper port error 2", );
-    Port *outPort = getOutputPorts().first();
+    Port* outPort = getOutputPorts().first();
     SAFE_POINT(outPort->getOutputType()->isMap(), "Grouper port error 3", );
     QMap<Descriptor, DataTypePtr> outBusMap = outPort->getOutputType()->getDatatypesMap();
     QMap<Descriptor, DataTypePtr> inBusMap;
     {
-        Port *inPort = getInputPorts().first();
+        Port* inPort = getInputPorts().first();
         inBusMap = WorkflowUtils::getBusType(inPort);
     }
 
     // update in slot attribute
     {
-        Attribute *attr = getParameter(CoreLibConstants::GROUPER_SLOT_ATTR);
+        Attribute* attr = getParameter(CoreLibConstants::GROUPER_SLOT_ATTR);
         QString groupSlot = attr->getAttributeValueWithoutScript<QString>();
         if (!groupSlot.isEmpty()) {
             groupSlot = GrouperOutSlot::readable2busMap(groupSlot);
             U2OpStatus2Log logOs;
             IntegralBusSlot slot = IntegralBusSlot::fromString(groupSlot, logOs);
-            foreach (const ActorId &oldId, actorsMapping.keys()) {
+            foreach (const ActorId& oldId, actorsMapping.keys()) {
                 slot.replaceActorId(oldId, actorsMapping[oldId]);
             }
             groupSlot = slot.toString();
             bool found = false;
-            foreach (const Descriptor &d, inBusMap.keys()) {
+            foreach (const Descriptor& d, inBusMap.keys()) {
                 if (d.getId() == groupSlot) {
                     found = true;
                     break;
@@ -329,20 +329,20 @@ void Actor::updateGrouperSlots(const QMap<ActorId, ActorId> &actorsMapping) {
     }
     // update out slots
     {
-        GrouperOutSlotAttribute *attr = dynamic_cast<GrouperOutSlotAttribute *>(getParameter(CoreLibConstants::GROUPER_OUT_SLOTS_ATTR));
-        QList<GrouperOutSlot> &outSlots = attr->getOutSlots();
+        GrouperOutSlotAttribute* attr = dynamic_cast<GrouperOutSlotAttribute*>(getParameter(CoreLibConstants::GROUPER_OUT_SLOTS_ATTR));
+        QList<GrouperOutSlot>& outSlots = attr->getOutSlots();
         QList<GrouperOutSlot>::iterator i = outSlots.begin();
         while (i != outSlots.end()) {
             QString in = i->getBusMapInSlotId();
             U2OpStatus2Log logOs;
             IntegralBusSlot slot = IntegralBusSlot::fromString(in, logOs);
-            foreach (const ActorId &oldId, actorsMapping.keys()) {
+            foreach (const ActorId& oldId, actorsMapping.keys()) {
                 slot.replaceActorId(oldId, actorsMapping[oldId]);
             }
             in = slot.toString();
             i->setBusMapInSlotStr(in);
             bool found = false;
-            foreach (const Descriptor &d, inBusMap.keys()) {
+            foreach (const Descriptor& d, inBusMap.keys()) {
                 if (d.getId() == in) {
                     found = true;
                     break;
@@ -357,31 +357,31 @@ void Actor::updateGrouperSlots(const QMap<ActorId, ActorId> &actorsMapping) {
         }
     }
 
-    DataTypePtr newType(new MapDataType(dynamic_cast<Descriptor &>(*(outPort->getType())), outBusMap));
+    DataTypePtr newType(new MapDataType(dynamic_cast<Descriptor&>(*(outPort->getType())), outBusMap));
     outPort->setNewType(newType);
 }
 
-void Actor::replaceActor(Actor *oldActor, Actor *newActor, const QList<PortMapping> &mappings) {
-    foreach (Port *p, getPorts()) {
+void Actor::replaceActor(Actor* oldActor, Actor* newActor, const QList<PortMapping>& mappings) {
+    foreach (Port* p, getPorts()) {
         p->replaceActor(oldActor, newActor, mappings);
     }
     if (CoreLibConstants::GROUPER_ID == proto->getId()) {
         {
-            Attribute *attr = getParameter(CoreLibConstants::GROUPER_SLOT_ATTR);
+            Attribute* attr = getParameter(CoreLibConstants::GROUPER_SLOT_ATTR);
             QString groupSlot = attr->getAttributeValueWithoutScript<QString>();
             groupSlot = GrouperOutSlot::readable2busMap(groupSlot);
-            foreach (const PortMapping &pm, mappings) {
+            foreach (const PortMapping& pm, mappings) {
                 IntegralBusUtils::remapPathedSlotString(groupSlot, oldActor->getId(), newActor->getId(), pm);
             }
             attr->setAttributeValue(GrouperOutSlot::busMap2readable(groupSlot));
         }
 
         {
-            GrouperOutSlotAttribute *attr = dynamic_cast<GrouperOutSlotAttribute *>(getParameter(CoreLibConstants::GROUPER_OUT_SLOTS_ATTR));
+            GrouperOutSlotAttribute* attr = dynamic_cast<GrouperOutSlotAttribute*>(getParameter(CoreLibConstants::GROUPER_OUT_SLOTS_ATTR));
             QList<GrouperOutSlot>::iterator i = attr->getOutSlots().begin();
             for (; i != attr->getOutSlots().end(); i++) {
                 QString in = i->getBusMapInSlotId();
-                foreach (const PortMapping &pm, mappings) {
+                foreach (const PortMapping& pm, mappings) {
                     IntegralBusUtils::remapPathedSlotString(in, oldActor->getId(), newActor->getId(), pm);
                 }
                 i->setBusMapInSlotStr(in);
@@ -392,10 +392,10 @@ void Actor::replaceActor(Actor *oldActor, Actor *newActor, const QList<PortMappi
 
 void Actor::updateDelegateTags() {
     CHECK(editor != nullptr, );
-    foreach (Attribute *influencing, getAttributes()) {
-        QVector<const AttributeRelation *> relations = influencing->getRelations();
-        for (const AttributeRelation *rel : qAsConst(relations)) {
-            PropertyDelegate *dependentDelegate = editor->getDelegate(rel->getRelatedAttrId());
+    foreach (Attribute* influencing, getAttributes()) {
+        QVector<const AttributeRelation*> relations = influencing->getRelations();
+        for (const AttributeRelation* rel : qAsConst(relations)) {
+            PropertyDelegate* dependentDelegate = editor->getDelegate(rel->getRelatedAttrId());
             if (dependentDelegate == nullptr) {
                 continue;
             }
@@ -405,21 +405,21 @@ void Actor::updateDelegateTags() {
 }
 
 void Actor::updateItemsAvailability() {
-    foreach (Attribute *influencing, getAttributes()) {
+    foreach (Attribute* influencing, getAttributes()) {
         updateItemsAvailability(influencing);
     }
 }
 
-void Actor::updateItemsAvailability(const Attribute *influencingAttribute) {
-    foreach (PortRelationDescriptor *rel, influencingAttribute->getPortRelations()) {
-        Port *dependentPort = getPort(rel->getPortId());
+void Actor::updateItemsAvailability(const Attribute* influencingAttribute) {
+    foreach (PortRelationDescriptor* rel, influencingAttribute->getPortRelations()) {
+        Port* dependentPort = getPort(rel->getPortId());
         CHECK_CONTINUE(dependentPort != nullptr);
 
         dependentPort->setEnabled(rel->isPortEnabled(influencingAttribute->getAttributePureValue()));
     }
 
-    foreach (SlotRelationDescriptor *rel, influencingAttribute->getSlotRelations()) {
-        Port *dependentPort = getPort(rel->portId);
+    foreach (SlotRelationDescriptor* rel, influencingAttribute->getSlotRelations()) {
+        Port* dependentPort = getPort(rel->portId);
         CHECK_CONTINUE(dependentPort != nullptr);
 
         const bool isEnabled = rel->isSlotEnabled(influencingAttribute->getAttributePureValue());
@@ -427,11 +427,11 @@ void Actor::updateItemsAvailability(const Attribute *influencingAttribute) {
     }
 }
 
-void Actor::addCustomValidator(const ValidatorDesc &desc) {
+void Actor::addCustomValidator(const ValidatorDesc& desc) {
     customValidators << desc;
 }
 
-const QList<ValidatorDesc> &Actor::getCustomValidators() const {
+const QList<ValidatorDesc>& Actor::getCustomValidators() const {
     return customValidators;
 }
 
@@ -440,7 +440,7 @@ const QList<ValidatorDesc> &Actor::getCustomValidators() const {
  * Attributes with scripts are ignored (the method returns "true").
  * Attributes with value "Default" (case-insensitive) are ignored.
  */
-static bool validateUrlAttribute(Attribute *attr, UrlAttributeType urlType, NotificationsList &infoList) {
+static bool validateUrlAttribute(Attribute* attr, UrlAttributeType urlType, NotificationsList& infoList) {
     SAFE_POINT(nullptr != attr, "NULL attribute!", false);
     SAFE_POINT(NotAnUrl != urlType, "Can't pass not an URL to the method!", false);
 
@@ -476,7 +476,7 @@ static bool validateUrlAttribute(Attribute *attr, UrlAttributeType urlType, Noti
     return res;
 }
 
-static bool validateCodePage(const QString &url) {
+static bool validateCodePage(const QString& url) {
     QString url2 = QString::fromLocal8Bit(url.toLocal8Bit());
     if (url.compare(url2, Qt::CaseSensitive) != 0) {
         return false;
@@ -491,7 +491,7 @@ static bool validateCodePage(const QString &url) {
  *   - then, convert back 8Bit to QString
  *   - both QString must be equal
  */
-static bool validateCodePage(Attribute *attr, NotificationsList &infoList) {
+static bool validateCodePage(Attribute* attr, NotificationsList& infoList) {
     SAFE_POINT(nullptr != attr, "NULL attribute!", false);
 
     QStringList urlsList = WorkflowUtils::getAttributeUrls(attr);
@@ -501,7 +501,7 @@ static bool validateCodePage(Attribute *attr, NotificationsList &infoList) {
 
     // Verify each URL
     bool res = true;
-    foreach (const QString &url, urlsList) {
+    foreach (const QString& url, urlsList) {
         if (!validateCodePage(url)) {
             res = false;
             infoList << WorkflowNotification(L10N::warningCharactersCodePage(attr->getDisplayName()), "", WorkflowNotification::U2_WARNING);
@@ -510,10 +510,10 @@ static bool validateCodePage(Attribute *attr, NotificationsList &infoList) {
     return res;
 }
 
-bool Actor::validate(NotificationsList &notificationList) const {
+bool Actor::validate(NotificationsList& notificationList) const {
     bool result = Configuration::validate(notificationList);
-    foreach (const ValidatorDesc &desc, customValidators) {
-        ActorValidator *v = WorkflowEnv::getActorValidatorRegistry()->findValidator(desc.type);
+    foreach (const ValidatorDesc& desc, customValidators) {
+        ActorValidator* v = WorkflowEnv::getActorValidatorRegistry()->findValidator(desc.type);
         if (nullptr != v) {
             result &= v->validate(this, notificationList, desc.options);
         }
@@ -521,7 +521,7 @@ bool Actor::validate(NotificationsList &notificationList) const {
 
     // Validate URL and Numeric parameters
     bool urlsRes = true;
-    foreach (Attribute *attr, getParameters()) {
+    foreach (Attribute* attr, getParameters()) {
         SAFE_POINT(nullptr != attr, "NULL attribute!", false);
         if (!isAttributeVisible(attr)) {
             continue;

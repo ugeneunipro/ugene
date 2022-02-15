@@ -46,27 +46,27 @@ public:
     };
     Q_DECLARE_FLAGS(Options, Option)
 
-    U2DataPath(const QString &name, const QString &path, const QString &descr = "", Options options = None);
+    U2DataPath(const QString& name, const QString& path, const QString& descr = "", Options options = None);
 
-    const QString &getName() const;
-    const QString &getPath() const;
-    const QString &getDescription() const;
+    const QString& getName() const;
+    const QString& getPath() const;
+    const QString& getDescription() const;
 
-    const QMap<QString, QString> &getDataItems() const;
+    const QMap<QString, QString>& getDataItems() const;
     QList<QString> getDataNames() const;
 
     bool isValid() const;
     bool isFolders() const;
 
     QVariantMap getDataItemsVariantMap() const;
-    QString getPathByName(const QString &name) const;  // first name found is returned. if your items have similar names use getDataItems()
+    QString getPathByName(const QString& name) const;  // first name found is returned. if your items have similar names use getDataItems()
 
-    bool operator==(const U2DataPath &other) const;
-    bool operator!=(const U2DataPath &other) const;
+    bool operator==(const U2DataPath& other) const;
+    bool operator!=(const U2DataPath& other) const;
 
 private:
     void init();
-    void fillDataItems(const QDir &dir, bool recursive);
+    void fillDataItems(const QDir& dir, bool recursive);
     QString chopExtention(QString name);
 
     QString name;
@@ -82,15 +82,15 @@ class U2CORE_EXPORT U2DataPathRegistry : public QObject {
 public:
     ~U2DataPathRegistry();
 
-    U2DataPath *getDataPathByName(const QString &name);
+    U2DataPath* getDataPathByName(const QString& name);
 
-    bool registerEntry(U2DataPath *dp);
-    void unregisterEntry(const QString &name);
+    bool registerEntry(U2DataPath* dp);
+    void unregisterEntry(const QString& name);
 
-    QList<U2DataPath *> getAllEntries() const;
+    QList<U2DataPath*> getAllEntries() const;
 
 private:
-    QMap<QString, U2DataPath *> registry;
+    QMap<QString, U2DataPath*> registry;
 };
 
 }  // namespace U2

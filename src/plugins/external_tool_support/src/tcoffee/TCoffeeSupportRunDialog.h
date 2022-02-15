@@ -35,19 +35,19 @@ class SaveDocumentController;
 class TCoffeeSupportRunDialog : public QDialog, public Ui_TCoffeeSupportRunDialog {
     Q_OBJECT
 public:
-    TCoffeeSupportRunDialog(TCoffeeSupportTaskSettings &settings, QWidget *parent);
+    TCoffeeSupportRunDialog(TCoffeeSupportTaskSettings& settings, QWidget* parent);
 
 private slots:
     void accept();
 
 private:
-    TCoffeeSupportTaskSettings &settings;
+    TCoffeeSupportTaskSettings& settings;
 };
 
 class TCoffeeWithExtFileSpecifySupportRunDialog : public QDialog, public Ui_TCoffeeSupportRunDialog {
     Q_OBJECT
 public:
-    TCoffeeWithExtFileSpecifySupportRunDialog(TCoffeeSupportTaskSettings &settings, QWidget *parent);
+    TCoffeeWithExtFileSpecifySupportRunDialog(TCoffeeSupportTaskSettings& settings, QWidget* parent);
 
 private slots:
     void accept();
@@ -56,8 +56,8 @@ private slots:
 private:
     void initSaveController();
 
-    TCoffeeSupportTaskSettings &settings;
-    SaveDocumentController *saveController;
+    TCoffeeSupportTaskSettings& settings;
+    SaveDocumentController* saveController;
 };
 
 }  // namespace U2

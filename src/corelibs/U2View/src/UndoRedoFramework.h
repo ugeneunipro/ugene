@@ -34,11 +34,11 @@ class MultipleAlignmentObject;
 class MaUndoRedoFramework : public QObject {
     Q_OBJECT
 public:
-    MaUndoRedoFramework(QObject *parent, MultipleAlignmentObject *maObject);
+    MaUndoRedoFramework(QObject* parent, MultipleAlignmentObject* maObject);
 
-    QAction *getUndoAction() const;
+    QAction* getUndoAction() const;
 
-    QAction *getRedoAction() const;
+    QAction* getRedoAction() const;
 
 private slots:
     void sl_updateUndoRedoState();
@@ -50,11 +50,11 @@ private slots:
 private:
     void checkUndoRedoEnabled();
 
-    MultipleAlignmentObject *maObject = nullptr;
+    MultipleAlignmentObject* maObject = nullptr;
     bool stateComplete = true;
 
-    QAction *undoAction = nullptr;
-    QAction *redoAction = nullptr;
+    QAction* undoAction = nullptr;
+    QAction* redoAction = nullptr;
 };
 
 }  // namespace U2

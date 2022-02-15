@@ -42,22 +42,22 @@ class U2VIEW_EXPORT MaEditorFactory : public GObjectViewFactory {
 public:
     MaEditorFactory(GObjectType type, GObjectViewFactoryId id);
 
-    virtual bool canCreateView(const MultiGSelection &multiSelection);
+    virtual bool canCreateView(const MultiGSelection& multiSelection);
 
-    virtual Task *createViewTask(const MultiGSelection &multiSelection, bool single = false);
+    virtual Task* createViewTask(const MultiGSelection& multiSelection, bool single = false);
 
-    virtual bool isStateInSelection(const MultiGSelection &multiSelection, const QVariantMap &stateData);
+    virtual bool isStateInSelection(const MultiGSelection& multiSelection, const QVariantMap& stateData);
 
-    virtual Task *createViewTask(const QString &viewName, const QVariantMap &stateData);
+    virtual Task* createViewTask(const QString& viewName, const QVariantMap& stateData);
 
     virtual bool supportsSavedStates() const;
 
-    virtual MaEditor *getEditor(const QString &viewName, GObject *obj, U2OpStatus &os) = 0;
+    virtual MaEditor* getEditor(const QString& viewName, GObject* obj, U2OpStatus& os) = 0;
 
 protected:
-    virtual OpenMaEditorTask *getOpenMaEditorTask(MultipleAlignmentObject *obj) = 0;
-    virtual OpenMaEditorTask *getOpenMaEditorTask(UnloadedObject *obj) = 0;
-    virtual OpenMaEditorTask *getOpenMaEditorTask(Document *doc) = 0;
+    virtual OpenMaEditorTask* getOpenMaEditorTask(MultipleAlignmentObject* obj) = 0;
+    virtual OpenMaEditorTask* getOpenMaEditorTask(UnloadedObject* obj) = 0;
+    virtual OpenMaEditorTask* getOpenMaEditorTask(Document* doc) = 0;
 
     GObjectType type;
 };
@@ -70,7 +70,7 @@ class U2VIEW_EXPORT MsaEditorFactory : public MaEditorFactory {
 public:
     MsaEditorFactory();
 
-    MaEditor *getEditor(const QString &viewName, GObject *obj, U2OpStatus& os) override;
+    MaEditor* getEditor(const QString& viewName, GObject* obj, U2OpStatus& os) override;
 
     static const GObjectViewFactoryId ID;
 
@@ -81,9 +81,9 @@ public:
     void registerMsaEditorViewFeatures();
 
 private:
-    OpenMaEditorTask *getOpenMaEditorTask(MultipleAlignmentObject *obj);
-    OpenMaEditorTask *getOpenMaEditorTask(UnloadedObject *obj);
-    OpenMaEditorTask *getOpenMaEditorTask(Document *doc);
+    OpenMaEditorTask* getOpenMaEditorTask(MultipleAlignmentObject* obj);
+    OpenMaEditorTask* getOpenMaEditorTask(UnloadedObject* obj);
+    OpenMaEditorTask* getOpenMaEditorTask(Document* doc);
 };
 
 /************************************************************************/
@@ -94,14 +94,14 @@ class U2VIEW_EXPORT McaEditorFactory : public MaEditorFactory {
 public:
     McaEditorFactory();
 
-    MaEditor *getEditor(const QString &viewName, GObject *obj, U2OpStatus& os) override;
+    MaEditor* getEditor(const QString& viewName, GObject* obj, U2OpStatus& os) override;
 
     static const GObjectViewFactoryId ID;
 
 private:
-    OpenMaEditorTask *getOpenMaEditorTask(MultipleAlignmentObject *obj);
-    OpenMaEditorTask *getOpenMaEditorTask(UnloadedObject *obj);
-    OpenMaEditorTask *getOpenMaEditorTask(Document *doc);
+    OpenMaEditorTask* getOpenMaEditorTask(MultipleAlignmentObject* obj);
+    OpenMaEditorTask* getOpenMaEditorTask(UnloadedObject* obj);
+    OpenMaEditorTask* getOpenMaEditorTask(Document* doc);
 };
 
 }  // namespace U2

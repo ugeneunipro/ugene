@@ -30,10 +30,10 @@
 
 namespace U2 {
 
-BreakpointConditionEditDialog::BreakpointConditionEditDialog(QWidget *parent,
-                                                             const QString &variablesText,
+BreakpointConditionEditDialog::BreakpointConditionEditDialog(QWidget* parent,
+                                                             const QString& variablesText,
                                                              bool conditionEnabled,
-                                                             const QString &conditionText,
+                                                             const QString& conditionText,
                                                              HitCondition initCondition)
     : QDialog(parent), initHitCondition(initCondition) {
     ui = new Ui_BreakpointConditionEditDialog();

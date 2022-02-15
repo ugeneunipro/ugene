@@ -34,13 +34,13 @@ public:
 
     bool validate() const;
     QVariantMap getState() const;
-    void setState(const QVariantMap &state);
+    void setState(const QVariantMap& state);
 
-    static QString serializeState(const QVariantMap &widgetState);
-    static QVariantMap parseState(const QString &command);
+    static QString serializeState(const QVariantMap& widgetState);
+    static QVariantMap parseState(const QString& command);
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_NO_SETTINGS_WIDGET_H_
+#endif  // _U2_NO_SETTINGS_WIDGET_H_

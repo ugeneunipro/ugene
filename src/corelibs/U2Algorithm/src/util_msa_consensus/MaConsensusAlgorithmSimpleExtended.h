@@ -79,11 +79,11 @@ class MaConsensusAlgorithmFactorySimpleExtended;
 class MaConsensusAlgorithmSimpleExtended : public MSAConsensusAlgorithm {
     Q_OBJECT
 public:
-    MaConsensusAlgorithmSimpleExtended(MaConsensusAlgorithmFactorySimpleExtended *factory, bool ignoreTrailingLeadingGaps, QObject *parent);
+    MaConsensusAlgorithmSimpleExtended(MaConsensusAlgorithmFactorySimpleExtended* factory, bool ignoreTrailingLeadingGaps, QObject* parent);
 
-    char getConsensusChar(const MultipleAlignment &ma, int column, QVector<int> seqIdx = QVector<int>()) const;
+    char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx = QVector<int>()) const;
 
-    virtual MaConsensusAlgorithmSimpleExtended *clone() const;
+    virtual MaConsensusAlgorithmSimpleExtended* clone() const;
 
     enum Character {
         None = 0,
@@ -112,7 +112,7 @@ private:
     static Character character2Flag(char character);
     static char flag2Character(Character flag);
     static char flags2Character(Characters flags);
-    static char mergeCharacters(const QVector<char> &characters);
+    static char mergeCharacters(const QVector<char>& characters);
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(MaConsensusAlgorithmSimpleExtended::Characters)
@@ -120,9 +120,9 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(MaConsensusAlgorithmSimpleExtended::Characters)
 class MaConsensusAlgorithmFactorySimpleExtended : public MSAConsensusAlgorithmFactory {
     Q_OBJECT
 public:
-    MaConsensusAlgorithmFactorySimpleExtended(QObject *parent = nullptr);
+    MaConsensusAlgorithmFactorySimpleExtended(QObject* parent = nullptr);
 
-    MSAConsensusAlgorithm *createAlgorithm(const MultipleAlignment &ma, bool ignoreTrailingLeadingGaps, QObject *parent);
+    MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* parent);
 
     QString getDescription() const;
     QString getName() const;

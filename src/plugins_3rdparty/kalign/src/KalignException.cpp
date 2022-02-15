@@ -23,11 +23,11 @@
 #include <assert.h>
 #include <string.h>
 
-extern "C" void throwKalignException(char *message) {
+extern "C" void throwKalignException(char* message) {
     throw U2::KalignException(message);
 }
 
-extern "C" void checkAllocatedMemory(void *ptr) {
+extern "C" void checkAllocatedMemory(void* ptr) {
     if (NULL == ptr) {
         throw U2::KalignException("Not enough memory to finish KAlign task");
     }
@@ -35,7 +35,7 @@ extern "C" void checkAllocatedMemory(void *ptr) {
 
 namespace U2 {
 
-KalignException::KalignException(const char *_str) {
+KalignException::KalignException(const char* _str) {
     int len = strlen(_str);
     assert(len < 4096);
     memcpy(str, _str, len);

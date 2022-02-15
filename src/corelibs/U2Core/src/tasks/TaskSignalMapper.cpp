@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-TaskSignalMapper::TaskSignalMapper(Task *t)
+TaskSignalMapper::TaskSignalMapper(Task* t)
     : QObject(t), task(t) {
     connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskStateChanged()), Qt::DirectConnection);
 }
@@ -53,7 +53,7 @@ void TaskSignalMapper::sl_taskStateChanged() {
     }
 }
 
-Task *TaskSignalMapper::getTask() const {
+Task* TaskSignalMapper::getTask() const {
     return task;
 }
 

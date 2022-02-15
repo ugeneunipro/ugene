@@ -29,15 +29,15 @@ MessageMetadata::MessageMetadata()
     : id(INVALID_ID) {
 }
 
-MessageMetadata::MessageMetadata(const QString &datasetName)
+MessageMetadata::MessageMetadata(const QString& datasetName)
     : id(nextId()), datasetName(datasetName) {
 }
 
-MessageMetadata::MessageMetadata(const QString &fileUrl, const QString &datasetName)
+MessageMetadata::MessageMetadata(const QString& fileUrl, const QString& datasetName)
     : id(nextId()), datasetName(datasetName), fileUrl(fileUrl) {
 }
 
-MessageMetadata::MessageMetadata(const QString &databaseUrl, const QString &databaseId, const QString &datasetName)
+MessageMetadata::MessageMetadata(const QString& databaseUrl, const QString& databaseId, const QString& datasetName)
     : id(nextId()), datasetName(datasetName), databaseUrl(databaseUrl), databaseId(databaseId) {
 }
 
@@ -45,19 +45,19 @@ int MessageMetadata::getId() const {
     return id;
 }
 
-const QString &MessageMetadata::getDatasetName() const {
+const QString& MessageMetadata::getDatasetName() const {
     return datasetName;
 }
 
-const QString &MessageMetadata::getFileUrl() const {
+const QString& MessageMetadata::getFileUrl() const {
     return fileUrl;
 }
 
-const QString &MessageMetadata::getDatabaseUrl() const {
+const QString& MessageMetadata::getDatabaseUrl() const {
     return databaseUrl;
 }
 
-const QString &MessageMetadata::getDatabaseId() const {
+const QString& MessageMetadata::getDatabaseId() const {
     return databaseId;
 }
 
@@ -69,7 +69,7 @@ int MessageMetadata::nextId() {
 /************************************************************************/
 /* MessageMetadataStorage */
 /************************************************************************/
-void MessageMetadataStorage::put(const MessageMetadata &value) {
+void MessageMetadataStorage::put(const MessageMetadata& value) {
     data[value.getId()] = value;
 }
 

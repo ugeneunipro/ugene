@@ -34,7 +34,7 @@
 namespace U2 {
 
 // TabixSupportTask
-TabixSupportTask::TabixSupportTask(const GUrl &fileUrl, const GUrl &outputUrl)
+TabixSupportTask::TabixSupportTask(const GUrl& fileUrl, const GUrl& outputUrl)
     : ExternalToolSupportTask(tr("Generate index with Tabix task"), TaskFlags_NR_FOSE_COSC),
       fileUrl(fileUrl),
       bgzfUrl(outputUrl),
@@ -64,8 +64,8 @@ void TabixSupportTask::prepare() {
     addSubTask(bgzipTask);
 }
 
-QList<Task *> TabixSupportTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> TabixSupportTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
 
     if (hasError() || isCanceled()) {
         return res;
@@ -83,7 +83,7 @@ QList<Task *> TabixSupportTask::onSubTaskFinished(Task *subTask) {
     return res;
 }
 
-const GUrl &TabixSupportTask::getOutputBgzf() const {
+const GUrl& TabixSupportTask::getOutputBgzf() const {
     return bgzfUrl;
 }
 
@@ -100,4 +100,4 @@ void TabixSupportTask::initTabixTask() {
     setListenerForTask(tabixTask);
 }
 
-}    // namespace U2
+}  // namespace U2

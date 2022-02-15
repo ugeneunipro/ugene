@@ -38,8 +38,8 @@ namespace FileStorage {
 
 class U2CORE_EXPORT FileInfo : public U2Triplet {
 public:
-    FileInfo(const QString &url, const QString &role, const QString &info);
-    FileInfo(const U2Triplet &triplet);
+    FileInfo(const QString& url, const QString& role, const QString& info);
+    FileInfo(const U2Triplet& triplet);
 
     QString getFile() const;
     QString getInfo() const;
@@ -51,7 +51,7 @@ class U2CORE_EXPORT WorkflowProcess {
     friend class U2::AppFileStorage;
 
 public:
-    WorkflowProcess(const QString &id);
+    WorkflowProcess(const QString& id);
     virtual ~WorkflowProcess();
 
     QString getId() const;
@@ -60,9 +60,9 @@ public:
 private:
     QString id;
     QString tempDirectory;
-    QList<QFile *> usedFiles;
+    QList<QFile*> usedFiles;
 
-    void addFile(const QString &url);
+    void addFile(const QString& url);
     void unuseFiles();
 };
 
@@ -74,24 +74,24 @@ public:
     AppFileStorage();
     virtual ~AppFileStorage();
 
-    void init(U2OpStatus &os);
+    void init(U2OpStatus& os);
 
     /**
      * A file is used by some processes (e.g. workflows). These processes are the owners of the file.
      * It is impossible to delete file and corresponding data if it is used by some owner.
      * One file could have several owners (see addFileOwner)
      */
-    void addFileInfo(const FileStorage::FileInfo &info, FileStorage::WorkflowProcess &process, U2OpStatus &os);
-    void addFileOwner(const FileStorage::FileInfo &info, FileStorage::WorkflowProcess &process, U2OpStatus &os);
+    void addFileInfo(const FileStorage::FileInfo& info, FileStorage::WorkflowProcess& process, U2OpStatus& os);
+    void addFileOwner(const FileStorage::FileInfo& info, FileStorage::WorkflowProcess& process, U2OpStatus& os);
 
-    bool contains(const QString &url, const QString &role, U2OpStatus &os) const;
-    QString getFileInfo(const QString &url, const QString &role, FileStorage::WorkflowProcess &process, U2OpStatus &os) const;
+    bool contains(const QString& url, const QString& role, U2OpStatus& os) const;
+    QString getFileInfo(const QString& url, const QString& role, FileStorage::WorkflowProcess& process, U2OpStatus& os) const;
 
     QString getStorageDir() const;
 
     /** Sets tempDirectory for the @process*/
-    void registerWorkflowProcess(FileStorage::WorkflowProcess &process, U2OpStatus &os);
-    void unregisterWorkflowProcess(FileStorage::WorkflowProcess &process, U2OpStatus &os);
+    void registerWorkflowProcess(FileStorage::WorkflowProcess& process, U2OpStatus& os);
+    void unregisterWorkflowProcess(FileStorage::WorkflowProcess& process, U2OpStatus& os);
 
     /**
      * Removes all files from the storage folder and all records from the storage
@@ -99,7 +99,7 @@ public:
      * These active owners could be created not only by current process,
      * but by some other UGENE processes
      */
-    void cleanup(U2OpStatus &os);
+    void cleanup(U2OpStatus& os);
 
     /**
      * Returns the absolute path to the new folder in the storage folder.
@@ -108,7 +108,7 @@ public:
     QString createDirectory() const;
 
 private:
-    U2SQLiteTripleStore *storage;
+    U2SQLiteTripleStore* storage;
     QString storageDir;
 
     QMutex cleanupMutex;

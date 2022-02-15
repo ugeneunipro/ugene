@@ -103,10 +103,10 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence", true);
-    WorkflowProcessItem *reader = GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence");
+    WorkflowProcessItem* reader = GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence");
 
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Write FASTA");
-    WorkflowProcessItem *writer = GTUtilsWorkflowDesigner::getWorker(os, "Write FASTA");
+    WorkflowProcessItem* writer = GTUtilsWorkflowDesigner::getWorker(os, "Write FASTA");
 
     GTUtilsWorkflowDesigner::connect(os, reader, writer);
 
@@ -143,15 +143,15 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogFiller(os, "", "if(size(in_seq) >= 10000) {out_seq = in_seq;}"));
     GTMenu::clickMainMenuItem(os, {"Actions", "Edit script of the element..."}, GTGlobals::UseMouse);
 
-    WorkflowProcessItem *script = GTUtilsWorkflowDesigner::getWorker(os, "workflow_scripting_test_0004");
+    WorkflowProcessItem* script = GTUtilsWorkflowDesigner::getWorker(os, "workflow_scripting_test_0004");
     QString text = script->getProcess()->getScript()->getScriptText();
 
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence", true);
-    WorkflowProcessItem *reader = GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence");
+    WorkflowProcessItem* reader = GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence");
     GTUtilsWorkflowDesigner::connect(os, reader, script);
 
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Sequence", true);
-    WorkflowProcessItem *writer = GTUtilsWorkflowDesigner::getWorker(os, "Write Sequence");
+    WorkflowProcessItem* writer = GTUtilsWorkflowDesigner::getWorker(os, "Write Sequence");
     GTUtilsWorkflowDesigner::connect(os, script, writer);
 
     QString workflowPath = testDir + "_common_data/scenarios/sandbox/workflow_scripting_test_0004.uwl";
@@ -165,7 +165,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    WorkflowProcessItem *newScript = GTUtilsWorkflowDesigner::getWorker(os, "workflow_scripting_test_0004");
+    WorkflowProcessItem* newScript = GTUtilsWorkflowDesigner::getWorker(os, "workflow_scripting_test_0004");
     QString newText = newScript->getProcess()->getScript()->getScriptText();
     CHECK_SET_ERR(text == newText, "Different script text");
 }

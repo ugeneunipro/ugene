@@ -39,61 +39,61 @@ class ClearAnnotationsTask;
 class U2VIEW_EXPORT GSequenceLineViewAnnotated : public GSequenceLineView {
     Q_OBJECT
 public:
-    GSequenceLineViewAnnotated(QWidget *p, SequenceObjectContext *ctx);
+    GSequenceLineViewAnnotated(QWidget* p, SequenceObjectContext* ctx);
 
-    bool isAnnotationVisible(const Annotation *a) const;
+    bool isAnnotationVisible(const Annotation* a) const;
 
     /**
      * Returns list of annotations that hold the on-screen point.
      * The method is delegated to the renderArea. Override the renderArea's variant of the method when needed.
      */
-    QList<Annotation *> findAnnotationsByCoord(const QPoint &renderAreaPoint) const;
+    QList<Annotation*> findAnnotationsByCoord(const QPoint& renderAreaPoint) const;
 
-    static QString prepareAnnotationText(const SharedAnnotationData &a, const AnnotationSettings *as);
+    static QString prepareAnnotationText(const SharedAnnotationData& a, const AnnotationSettings* as);
 
-    QList<Annotation *> findAnnotationsInRange(const U2Region &range) const;
+    QList<Annotation*> findAnnotationsInRange(const U2Region& range) const;
 
     bool isAnnotationSelectionInVisibleRange() const;
 
 protected:
-    void mousePressEvent(QMouseEvent *e);
+    void mousePressEvent(QMouseEvent* e);
 
-    void mouseDoubleClickEvent(QMouseEvent *me);
+    void mouseDoubleClickEvent(QMouseEvent* me);
 
-    virtual bool event(QEvent *e);
+    virtual bool event(QEvent* e);
 
     /** Creates a tooltip for the given render area coordinate. */
-    virtual QString createToolTip(const QPoint &renderAreaPoint);
+    virtual QString createToolTip(const QPoint& renderAreaPoint);
 
-    virtual void registerAnnotations(const QList<Annotation *> &l);
+    virtual void registerAnnotations(const QList<Annotation*>& l);
 
-    virtual void unregisterAnnotations(const QList<Annotation *> &l);
+    virtual void unregisterAnnotations(const QList<Annotation*>& l);
 
-    virtual void ensureVisible(Annotation *a, int locationIdx);
+    virtual void ensureVisible(Annotation* a, int locationIdx);
 
 protected slots:
 
-    virtual void sl_onAnnotationSettingsChanged(const QStringList &changedSettings);
+    virtual void sl_onAnnotationSettingsChanged(const QStringList& changedSettings);
 
-    void sl_onAnnotationObjectAdded(AnnotationTableObject *);
+    void sl_onAnnotationObjectAdded(AnnotationTableObject*);
 
-    void sl_onAnnotationObjectRemoved(AnnotationTableObject *);
+    void sl_onAnnotationObjectRemoved(AnnotationTableObject*);
 
-    void sl_onAnnotationsInGroupRemoved(const QList<Annotation *> &, AnnotationGroup *);
+    void sl_onAnnotationsInGroupRemoved(const QList<Annotation*>&, AnnotationGroup*);
 
-    void sl_onAnnotationsAdded(const QList<Annotation *> &);
+    void sl_onAnnotationsAdded(const QList<Annotation*>&);
 
-    void sl_onAnnotationsRemoved(const QList<Annotation *> &);
+    void sl_onAnnotationsRemoved(const QList<Annotation*>&);
 
-    virtual void sl_onAnnotationsModified(const QList<AnnotationModification> &annotationModifications);
+    virtual void sl_onAnnotationsModified(const QList<AnnotationModification>& annotationModifications);
 
     /* Updates view so annotation becomes visible. */
-    virtual void sl_onAnnotationActivated(Annotation *annotation, int regionIndex);
+    virtual void sl_onAnnotationActivated(Annotation* annotation, int regionIndex);
 
-    virtual void sl_onAnnotationSelectionChanged(AnnotationSelection *, const QList<Annotation *> &added, const QList<Annotation *> &removed);
+    virtual void sl_onAnnotationSelectionChanged(AnnotationSelection*, const QList<Annotation*>& added, const QList<Annotation*>& removed);
 
 private:
-    void connectAnnotationObject(const AnnotationTableObject *ao);
+    void connectAnnotationObject(const AnnotationTableObject* ao);
 
 protected:
     friend class ClearAnnotationsTask;
@@ -102,24 +102,24 @@ protected:
 class U2VIEW_EXPORT GSequenceLineViewAnnotatedRenderArea : public GSequenceLineViewRenderArea {
     Q_OBJECT
 public:
-    GSequenceLineViewAnnotatedRenderArea(GSequenceLineViewAnnotated *sequenceLineViewAnnotated);
+    GSequenceLineViewAnnotatedRenderArea(GSequenceLineViewAnnotated* sequenceLineViewAnnotated);
     ~GSequenceLineViewAnnotatedRenderArea();
 
     /** Returns all annotations by a coordinate inside render area. */
-    virtual QList<Annotation *> findAnnotationsByCoord(const QPoint &coord) const = 0;
+    virtual QList<Annotation*> findAnnotationsByCoord(const QPoint& coord) const = 0;
 
 protected:
-    virtual void drawAll(QPaintDevice *pd) = 0;
+    virtual void drawAll(QPaintDevice* pd) = 0;
 
-    GSequenceLineViewAnnotated *const sequenceLineViewAnnotated;
+    GSequenceLineViewAnnotated* const sequenceLineViewAnnotated;
 
     //! VIEW_RENDERER_REFACTORING: this parameters are also doubled in SequenceViewAnnotaterRenderer
     // af* == annotation font
-    QFont *afNormal;
-    QFont *afSmall;
+    QFont* afNormal;
+    QFont* afSmall;
 
-    QFontMetrics *afmNormal;
-    QFontMetrics *afmSmall;
+    QFontMetrics* afmNormal;
+    QFontMetrics* afmSmall;
 
     int afNormalCharWidth;
     int afSmallCharWidth;
@@ -134,32 +134,32 @@ protected:
 class U2VIEW_EXPORT GSequenceLineViewGridAnnotationRenderArea : public GSequenceLineViewAnnotatedRenderArea {
     Q_OBJECT
 public:
-    GSequenceLineViewGridAnnotationRenderArea(GSequenceLineViewAnnotated *sequenceLineView);
+    GSequenceLineViewGridAnnotationRenderArea(GSequenceLineViewAnnotated* sequenceLineView);
 
     /** Returns all annotations by a coordinate inside render area. */
-    QList<Annotation *> findAnnotationsByCoord(const QPoint &coord) const override;
+    QList<Annotation*> findAnnotationsByCoord(const QPoint& coord) const override;
 
     /** Returns true if the given annotation region contains 'y' point. */
-    bool checkAnnotationRegionContainsYPoint(int y, Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings) const;
+    bool checkAnnotationRegionContainsYPoint(int y, Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const;
 
     /**
      * Returns all y-regions covered by the annotation location region.
      * TODO: rework to return list of QRects (may require a bigger refactoring).
      */
-    virtual QList<U2Region> getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings) const = 0;
+    virtual QList<U2Region> getAnnotationYRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const = 0;
 };
 
 class ClearAnnotationsTask : public Task {
 public:
-    ClearAnnotationsTask(const QList<Annotation *> &list,
-                         GSequenceLineViewAnnotated *view);
+    ClearAnnotationsTask(const QList<Annotation*>& list,
+                         GSequenceLineViewAnnotated* view);
 
     void run();
     Task::ReportResult report();
 
 private:
-    QList<Annotation *> l;
-    GSequenceLineViewAnnotated *view;
+    QList<Annotation*> l;
+    GSequenceLineViewAnnotated* view;
 };
 
 }  // namespace U2

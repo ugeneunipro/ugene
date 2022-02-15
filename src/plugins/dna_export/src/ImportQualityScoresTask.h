@@ -47,11 +47,11 @@ public:
 class ReadQualityScoresTask : public Task {
     Q_OBJECT
 public:
-    ReadQualityScoresTask(const QString &fileName, DNAQualityType t, const DNAQualityFormat &f);
+    ReadQualityScoresTask(const QString& fileName, DNAQualityType t, const DNAQualityFormat& f);
 
     void run();
 
-    const QMap<QString, DNAQuality> &getResult() const {
+    const QMap<QString, DNAQuality>& getResult() const {
         return result;
     }
 
@@ -70,15 +70,15 @@ private:
 class ImportPhredQualityScoresTask : public Task {
     Q_OBJECT
 public:
-    ImportPhredQualityScoresTask(const QList<U2SequenceObject *> &sequences, ImportQualityScoresConfig &config);
+    ImportPhredQualityScoresTask(const QList<U2SequenceObject*>& sequences, ImportQualityScoresConfig& config);
 
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
-    ReadQualityScoresTask *readQualitiesTask;
+    ReadQualityScoresTask* readQualitiesTask;
     ImportQualityScoresConfig config;
-    QList<U2SequenceObject *> seqList;
+    QList<U2SequenceObject*> seqList;
 };
 
 }  // namespace U2

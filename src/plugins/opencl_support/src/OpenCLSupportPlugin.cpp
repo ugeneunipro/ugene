@@ -35,8 +35,8 @@
 
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
-    OpenCLSupportPlugin *plug = new OpenCLSupportPlugin();
+extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
+    OpenCLSupportPlugin* plug = new OpenCLSupportPlugin();
     return plug;
 }
 
@@ -48,11 +48,11 @@ extern "C" Q_DECL_EXPORT bool U2_PLUGIN_VERIFY_FUNC() {
     return true;
 }
 
-extern "C" Q_DECL_EXPORT QString *U2_PLUGIN_FAIL_MASSAGE_FUNC() {
+extern "C" Q_DECL_EXPORT QString* U2_PLUGIN_FAIL_MASSAGE_FUNC() {
     return new QString(OpenCLSupportPlugin::tr("Problem occurred loading the OpenCL driver. Please update video drivers"));
 }
 
-const char *OpenCLSupportPlugin::RESOURCE_OPENCL_GPU_NAME = "OpenCLGpu";
+const char* OpenCLSupportPlugin::RESOURCE_OPENCL_GPU_NAME = "OpenCLGpu";
 
 OpenCLSupportPlugin::OpenCLSupportPlugin()
     : Plugin(tr("OpenCL Support"),
@@ -62,7 +62,7 @@ OpenCLSupportPlugin::OpenCLSupportPlugin()
 
     QString err_str;
 
-    OpenCLGpuRegistry *registry = AppContext::getOpenCLGpuRegistry();
+    OpenCLGpuRegistry* registry = AppContext::getOpenCLGpuRegistry();
     registry->setOpenCLHelper(&openCLHelper);
 
     err = obtainGpusInfo(err_str);
@@ -84,12 +84,12 @@ OpenCLSupportPlugin::OpenCLSupportPlugin()
 
     // registering gpu resource
     if (!gpus.empty()) {
-        AppResource *gpuResource = new AppResourceSemaphore(RESOURCE_OPENCL_GPU, gpus.size(), RESOURCE_OPENCL_GPU_NAME);
+        AppResource* gpuResource = new AppResourceSemaphore(RESOURCE_OPENCL_GPU, gpus.size(), RESOURCE_OPENCL_GPU_NAME);
         AppResourcePool::instance()->registerResource(gpuResource);
     }
 }
 OpenCLSupportPlugin::~OpenCLSupportPlugin() {
-    OpenCLGpuRegistry *registry = AppContext::getOpenCLGpuRegistry();
+    OpenCLGpuRegistry* registry = AppContext::getOpenCLGpuRegistry();
     CHECK(nullptr != registry, );
     registry->saveGpusSettings();
     unregisterAvailableGpus();
@@ -121,7 +121,7 @@ QString OpenCLSupportPlugin::getSettingsErrorString(OpenCLSupportError err) {
     }
 }
 
-OpenCLSupportPlugin::OpenCLSupportError OpenCLSupportPlugin::obtainGpusInfo(QString &errStr) {
+OpenCLSupportPlugin::OpenCLSupportError OpenCLSupportPlugin::obtainGpusInfo(QString& errStr) {
     // load driver library
     if (!openCLHelper.isLoaded()) {
         errStr = openCLHelper.getErrorString();
@@ -244,7 +244,7 @@ OpenCLSupportPlugin::OpenCLSupportError OpenCLSupportPlugin::obtainGpusInfo(QStr
             }
 
             // create OpenCL model
-            OpenCLGpuModel *openCLGpuModel = new OpenCLGpuModel(vendorName + " " + deviceName,
+            OpenCLGpuModel* openCLGpuModel = new OpenCLGpuModel(vendorName + " " + deviceName,
                                                                 cl_context(deviceContext),
                                                                 cl_device_id(deviceId),
                                                                 (qint64)platformIDs.get()[i],
@@ -270,7 +270,7 @@ OpenCLSupportPlugin::OpenCLSupportError OpenCLSupportPlugin::obtainGpusInfo(QStr
     return Error_NoError;
 }
 
-bool OpenCLSupportPlugin::hasOPENCLError(cl_int errCode, QString &errMessage) {
+bool OpenCLSupportPlugin::hasOPENCLError(cl_int errCode, QString& errMessage) {
     // TODO: print details error message
     if (errCode != CL_SUCCESS) {
         errMessage = tr("OpenCL error code (%1)").arg(errCode);
@@ -281,13 +281,13 @@ bool OpenCLSupportPlugin::hasOPENCLError(cl_int errCode, QString &errMessage) {
 }
 
 void OpenCLSupportPlugin::registerAvailableGpus() {
-    foreach (OpenCLGpuModel *m, gpus) {
+    foreach (OpenCLGpuModel* m, gpus) {
         AppContext::getOpenCLGpuRegistry()->registerOpenCLGpu(m);
     }
 }
 
 void OpenCLSupportPlugin::unregisterAvailableGpus() {
-    foreach (OpenCLGpuModel *m, gpus) {
+    foreach (OpenCLGpuModel* m, gpus) {
         AppContext::getOpenCLGpuRegistry()->unregisterOpenCLGpu(m);
     }
 }
@@ -295,11 +295,11 @@ void OpenCLSupportPlugin::unregisterAvailableGpus() {
 void OpenCLSupportPlugin::loadGpusSettings() {
     CHECK(!gpus.isEmpty(), );
 
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     QString enabledGpuName = s->getValue(OPENCL_GPU_REGISTRY_SETTINGS_GPU_ENABLED, QVariant()).toString();
     CHECK_EXT(!enabledGpuName.isEmpty(), gpus.first()->setEnabled(true), );
 
-    OpenCLGpuModel *enabledGpu = AppContext::getOpenCLGpuRegistry()->getGpuByName(enabledGpuName);
+    OpenCLGpuModel* enabledGpu = AppContext::getOpenCLGpuRegistry()->getGpuByName(enabledGpuName);
     if (nullptr != enabledGpu) {
         SAFE_POINT(gpus.contains(enabledGpu), "The GPU is absent", );
 

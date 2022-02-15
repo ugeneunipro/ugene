@@ -48,16 +48,16 @@ private:
     QString inputDocCtxName;
     QString resultCtxName;
     int bootStrapSeed;
-    Document *maDoc;
-    Document *treeDoc;
-    PhyTreeGeneratorLauncherTask *task;
-    MultipleSequenceAlignmentObject *input;
-    PhyTreeObject *treeObjFromDoc;
+    Document* maDoc;
+    Document* treeDoc;
+    PhyTreeGeneratorLauncherTask* task;
+    MultipleSequenceAlignmentObject* input;
+    PhyTreeObject* treeObjFromDoc;
 };
 
 class PhylipPluginTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

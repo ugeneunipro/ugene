@@ -34,9 +34,9 @@ public:
     TmpDirChecker();
     void run();
     ReportResult report();
-    bool checkPath(QString &path);
+    bool checkPath(QString& path);
 
-    static QString getNewFilePath(const QString &dirPath, const QString &baseName);
+    static QString getNewFilePath(const QString& dirPath, const QString& baseName);
 
 signals:
     void si_checkFailed(QString path);

@@ -54,4 +54,4 @@ TabixSupport::TabixSupport()
     toolKitName = "SAMtools";
 }
 
-}    // namespace U2
+}  // namespace U2

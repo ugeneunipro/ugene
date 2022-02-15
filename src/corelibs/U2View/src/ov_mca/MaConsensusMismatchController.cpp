@@ -38,9 +38,9 @@
 
 namespace U2 {
 
-MaConsensusMismatchController::MaConsensusMismatchController(QObject *p,
-                                                             const QSharedPointer<MSAEditorConsensusCache> &consCache,
-                                                             MaEditor *editor)
+MaConsensusMismatchController::MaConsensusMismatchController(QObject* p,
+                                                             const QSharedPointer<MSAEditorConsensusCache>& consCache,
+                                                             MaEditor* editor)
     : QObject(p),
       consCache(consCache),
       editor(editor),
@@ -68,11 +68,11 @@ bool MaConsensusMismatchController::isMismatch(int pos) const {
     return mismatchCache[pos];
 }
 
-QAction *MaConsensusMismatchController::getPrevMismatchAction() const {
+QAction* MaConsensusMismatchController::getPrevMismatchAction() const {
     return prevMismatch;
 }
 
-QAction *MaConsensusMismatchController::getNextMismatchAction() const {
+QAction* MaConsensusMismatchController::getNextMismatchAction() const {
     return nextMismatch;
 }
 
@@ -97,19 +97,19 @@ void MaConsensusMismatchController::sl_prev() {
 }
 
 void MaConsensusMismatchController::selectNextMismatch(NavigationDirection direction) {
-    McaEditor *mcaEditor = qobject_cast<McaEditor *>(editor);
+    McaEditor* mcaEditor = qobject_cast<McaEditor*>(editor);
     CHECK(mcaEditor != nullptr, );
 
-    SequenceObjectContext *ctx = mcaEditor->getReferenceContext();
+    SequenceObjectContext* ctx = mcaEditor->getReferenceContext();
     int initialPos = -1;
 
     if (ctx->getSequenceSelection()->isEmpty()) {
         // find next/prev from visible range
-        MaEditorSequenceArea *seqArea = mcaEditor->getUI()->getSequenceArea();
+        MaEditorSequenceArea* seqArea = mcaEditor->getUI()->getSequenceArea();
         initialPos = seqArea->getFirstVisibleBase() != 0 ? seqArea->getFirstVisibleBase() - 1 : mismatchCache.size() - 1;
     } else {
         // find next/prev from referenece selection
-        DNASequenceSelection *selection = ctx->getSequenceSelection();
+        DNASequenceSelection* selection = ctx->getSequenceSelection();
         initialPos = selection->getSelectedRegions().first().startPos;
     }
 

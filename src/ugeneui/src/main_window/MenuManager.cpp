@@ -28,7 +28,7 @@
 namespace U2 {
 #define STATIC_MENU_MODEL 1
 
-MWMenuManagerImpl::MWMenuManagerImpl(QObject *p, QMenuBar *mb)
+MWMenuManagerImpl::MWMenuManagerImpl(QObject* p, QMenuBar* mb)
     : QObject(p) {
     menuBar = mb;
     menuBar->setObjectName(MWMENU);
@@ -41,8 +41,8 @@ MWMenuManagerImpl::MWMenuManagerImpl(QObject *p, QMenuBar *mb)
     createTopLevelMenu(MWMENU_HELP, tr("&Help"), MWMENU_WINDOW);
 }
 
-QMenu *MWMenuManagerImpl::getTopLevelMenu(const QString &sysName) const {
-    foreach (QMenu *m, toplevelMenus) {
+QMenu* MWMenuManagerImpl::getTopLevelMenu(const QString& sysName) const {
+    foreach (QMenu* m, toplevelMenus) {
         if (m->menuAction()->objectName() == sysName) {
             return m;
         }
@@ -51,28 +51,28 @@ QMenu *MWMenuManagerImpl::getTopLevelMenu(const QString &sysName) const {
 }
 
 void MWMenuManagerImpl::setMenuBarEnabled(bool enable) {
-    foreach (QMenu *menu, toplevelMenus) {
+    foreach (QMenu* menu, toplevelMenus) {
         menu->setEnabled(enable);
     }
 
-    foreach (const QPointer<QAction> &action, additionalActions) {
+    foreach (const QPointer<QAction>& action, additionalActions) {
         if (nullptr != action) {
             action->setEnabled(enable);
         }
     }
 }
 
-void MWMenuManagerImpl::registerAction(QAction *action) {
+void MWMenuManagerImpl::registerAction(QAction* action) {
     additionalActions << QPointer<QAction>(action);
 }
 
-QMenu *MWMenuManagerImpl::createTopLevelMenu(const QString &sysName, const QString &title, const QString &afterSysName) {
-    QMenu *qmenu = getTopLevelMenu(sysName);
+QMenu* MWMenuManagerImpl::createTopLevelMenu(const QString& sysName, const QString& title, const QString& afterSysName) {
+    QMenu* qmenu = getTopLevelMenu(sysName);
     assert(!qmenu);
     if (qmenu) {
         return qmenu;
     }
-    QMenu *menuBefore = getTopLevelMenu(afterSysName);
+    QMenu* menuBefore = getTopLevelMenu(afterSysName);
     if (menuBefore == nullptr) {
         menuBefore = getTopLevelMenu(MWMENU_TOOLS);
     }
@@ -102,9 +102,9 @@ QMenu *MWMenuManagerImpl::createTopLevelMenu(const QString &sysName, const QStri
     return qmenu;
 }
 
-static void touchMenu(QMenu *menu) {
-    QList<QMenu *> menus = menu->findChildren<QMenu *>();
-    for (QMenu *childMenu : qAsConst(menus)) {
+static void touchMenu(QMenu* menu) {
+    QList<QMenu*> menus = menu->findChildren<QMenu*>();
+    for (QMenu* childMenu : qAsConst(menus)) {
         if (!childMenu->isEnabled()) {
             continue;
         }
@@ -115,9 +115,9 @@ static void touchMenu(QMenu *menu) {
     }
 }
 
-bool MWMenuManagerImpl::eventFilter(QObject *obj, QEvent *event) {
+bool MWMenuManagerImpl::eventFilter(QObject* obj, QEvent* event) {
     if (event->type() == QEvent::ActionAdded || event->type() == QEvent::ActionRemoved) {
-        QMenu *menu = qobject_cast<QMenu *>(obj);
+        QMenu* menu = qobject_cast<QMenu*>(obj);
         assert(menu != nullptr);
         // coreLog.trace("aaa:EventFilter (Menu Manager)");
 #ifndef Q_OS_DARWIN
@@ -131,8 +131,8 @@ bool MWMenuManagerImpl::eventFilter(QObject *obj, QEvent *event) {
     return QObject::eventFilter(obj, event);
 }
 
-void MWMenuManagerImpl::updateTopLevelMenuVisibility(QMenu *m) {
-    const QList<QAction *> &activeActions = menuBar->actions();
+void MWMenuManagerImpl::updateTopLevelMenuVisibility(QMenu* m) {
+    const QList<QAction*>& activeActions = menuBar->actions();
     if (m->isEmpty() && activeActions.contains(m->menuAction()) && m->menuAction()->objectName() != MWMENU_WINDOW) {
         unlinkTopLevelMenu(m);
     } else if (!m->isEmpty() && !activeActions.contains(m->menuAction())) {
@@ -140,18 +140,18 @@ void MWMenuManagerImpl::updateTopLevelMenuVisibility(QMenu *m) {
     }
 }
 
-void MWMenuManagerImpl::unlinkTopLevelMenu(QMenu *m) {
+void MWMenuManagerImpl::unlinkTopLevelMenu(QMenu* m) {
     Q_UNUSED(m);
     // assert(menuBar->actions().contains(m->menuAction()));
     // menuBar->removeAction(m->menuAction());
 }
 
-void MWMenuManagerImpl::linkTopLevelMenu(QMenu *m) {
+void MWMenuManagerImpl::linkTopLevelMenu(QMenu* m) {
     assert(!menuBar->actions().contains(m->menuAction()));
-    const QList<QAction *> &activeActions = menuBar->actions();
-    QAction *nextActiveAction = nullptr;
+    const QList<QAction*>& activeActions = menuBar->actions();
+    QAction* nextActiveAction = nullptr;
     for (int i = toplevelMenus.indexOf(m) + 1; i < toplevelMenus.size(); i++) {
-        QMenu *tmpM = toplevelMenus.at(i);
+        QMenu* tmpM = toplevelMenus.at(i);
         if (activeActions.contains(tmpM->menuAction())) {
             nextActiveAction = tmpM->menuAction();
             break;

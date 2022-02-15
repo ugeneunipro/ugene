@@ -37,7 +37,7 @@ public:
     DotPlotPlugin();
 
 private:
-    GObjectViewWindowContext *viewCtx;
+    GObjectViewWindowContext* viewCtx;
 
 private slots:
     void sl_initDotPlotView();
@@ -47,26 +47,26 @@ class DotPlotViewContext : public GObjectViewWindowContext {
     Q_OBJECT
 
 public:
-    DotPlotViewContext(QObject *p);
+    DotPlotViewContext(QObject* p);
 
 protected:
-    void initViewContext(GObjectView *view) override;
+    void initViewContext(GObjectView* view) override;
 
     void createSplitter();
-    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
-    DotPlotSplitter *getView(GObjectView *view, bool create);
-    void removeDotPlotView(GObjectView *view);
+    void buildStaticOrContextMenu(GObjectView* view, QMenu* menu) override;
+    DotPlotSplitter* getView(GObjectView* view, bool create);
+    void removeDotPlotView(GObjectView* view);
 
 private slots:
     void sl_buildDotPlot();
     void sl_removeDotPlot();
 
     void sl_showDotPlotDialog();
-    void sl_loadTaskStateChanged(Task *task);
-    void sl_windowActivated(MWMDIWindow *w);
+    void sl_loadTaskStateChanged(Task* task);
+    void sl_windowActivated(MWMDIWindow* w);
 
 private:
-    void showBuildDotPlotDialog(GObjectView *v);
+    void showBuildDotPlotDialog(GObjectView* v);
 
     bool createdByWizard;
     QString firstFile;
@@ -83,7 +83,7 @@ public:
     }
     ~DotPlotViewAction() {
     }
-    DotPlotWidget *view;
+    DotPlotWidget* view;
 };
 
 }  // namespace U2

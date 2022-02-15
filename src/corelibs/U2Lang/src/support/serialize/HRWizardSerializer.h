@@ -38,30 +38,30 @@ namespace WorkflowSerialize {
 class HRWizardParser : public QObject {
     Q_OBJECT
 public:
-    HRWizardParser(Tokenizer &tokenizer, const QMap<QString, Actor *> &actorMap);
+    HRWizardParser(Tokenizer& tokenizer, const QMap<QString, Actor*>& actorMap);
     virtual ~HRWizardParser();
 
-    Wizard *parseWizard(U2OpStatus &os);
+    Wizard* parseWizard(U2OpStatus& os);
 
 private:
-    Tokenizer &tokenizer;
-    const QMap<QString, Actor *> &actorMap;
+    Tokenizer& tokenizer;
+    const QMap<QString, Actor*>& actorMap;
     QString wizardName;
     QString finishLabel;
     QString helpPageId;
-    QList<WizardPage *> pages;
+    QList<WizardPage*> pages;
     QMap<QString, Variable> vars;
 
     QMap<QString, QString> nextIds;  // id <-> nextId
-    QMap<QString, WizardPage *> pagesMap;  // id <-> page
+    QMap<QString, WizardPage*> pagesMap;  // id <-> page
     QMap<QString, QList<Predicate>> results;
 
 private:
-    void parsePage(U2OpStatus &os);
-    void parseResult(U2OpStatus &os);
-    void finilizePagesOrder(U2OpStatus &os);
-    Wizard *takeResult();
-    void parseNextIds(ParsedPairs &pairs, WizardPage *page, U2OpStatus &os);
+    void parsePage(U2OpStatus& os);
+    void parseResult(U2OpStatus& os);
+    void finilizePagesOrder(U2OpStatus& os);
+    Wizard* takeResult();
+    void parseNextIds(ParsedPairs& pairs, WizardPage* page, U2OpStatus& os);
 
 public:
     static const QString WIZARD;
@@ -101,12 +101,12 @@ public:
 
 class U2LANG_EXPORT HRWizardSerializer {
 public:
-    QString serialize(Wizard *wizard, int depth);
+    QString serialize(Wizard* wizard, int depth);
 
 private:
-    QString serializePage(WizardPage *page, int depth);
+    QString serializePage(WizardPage* page, int depth);
     QString serializeResults(const QMap<QString, QList<Predicate>> results, int depth);
-    QString serializeNextId(WizardPage *page, int depth);
+    QString serializeNextId(WizardPage* page, int depth);
 };
 
 /************************************************************************/
@@ -114,60 +114,60 @@ private:
 /************************************************************************/
 class WizardWidgetParser : public WizardWidgetVisitor {
 public:
-    WizardWidgetParser(const QString &title,
-                       const QString &data,
-                       const QMap<QString, Actor *> &actorMap,
-                       QMap<QString, Variable> &vars,
-                       U2OpStatus &os);
+    WizardWidgetParser(const QString& title,
+                       const QString& data,
+                       const QMap<QString, Actor*>& actorMap,
+                       QMap<QString, Variable>& vars,
+                       U2OpStatus& os);
 
-    virtual void visit(AttributeWidget *aw);
-    virtual void visit(WidgetsArea *w);
-    virtual void visit(LogoWidget *lw);
-    virtual void visit(GroupWidget *gw);
-    virtual void visit(ElementSelectorWidget *esw);
-    virtual void visit(PairedReadsWidget *dsw);
-    virtual void visit(UrlAndDatasetWidget *ldsw);
-    virtual void visit(RadioWidget *rw);
-    virtual void visit(SettingsWidget *sw);
-    virtual void visit(BowtieWidget *bw);
-    virtual void visit(TophatSamplesWidget *tsw);
-    virtual void visit(LabelWidget *lw);
+    virtual void visit(AttributeWidget* aw);
+    virtual void visit(WidgetsArea* w);
+    virtual void visit(LogoWidget* lw);
+    virtual void visit(GroupWidget* gw);
+    virtual void visit(ElementSelectorWidget* esw);
+    virtual void visit(PairedReadsWidget* dsw);
+    virtual void visit(UrlAndDatasetWidget* ldsw);
+    virtual void visit(RadioWidget* rw);
+    virtual void visit(SettingsWidget* sw);
+    virtual void visit(BowtieWidget* bw);
+    virtual void visit(TophatSamplesWidget* tsw);
+    virtual void visit(LabelWidget* lw);
 
 private:
     QString title;
     QString data;
-    const QMap<QString, Actor *> &actorMap;
-    QMap<QString, Variable> &vars;
-    U2OpStatus &os;
+    const QMap<QString, Actor*>& actorMap;
+    QMap<QString, Variable>& vars;
+    U2OpStatus& os;
 
     ParsedPairs pairs;
 
 private:
-    void getLabelSize(WidgetsArea *wa);
-    void getTitle(WidgetsArea *wa);
-    WizardWidget *createWidget(const QString &id);
-    SelectorValue parseSelectorValue(ActorPrototype *srcProto, const QString &valueDef);
-    PortMapping parsePortMapping(const QString &mappingDef);
-    void parseSlotsMapping(PortMapping &pm, const QString &mappingDef);
-    void addVariable(const Variable &v);
+    void getLabelSize(WidgetsArea* wa);
+    void getTitle(WidgetsArea* wa);
+    WizardWidget* createWidget(const QString& id);
+    SelectorValue parseSelectorValue(ActorPrototype* srcProto, const QString& valueDef);
+    PortMapping parsePortMapping(const QString& mappingDef);
+    void parseSlotsMapping(PortMapping& pm, const QString& mappingDef);
+    void addVariable(const Variable& v);
 
-    AttributeInfo parseInfo(const QString &attrStr, const QString &body);
+    AttributeInfo parseInfo(const QString& attrStr, const QString& body);
 };
 
 class PageContentParser : public TemplatedPageVisitor {
 public:
-    PageContentParser(ParsedPairs &pairs,
-                      const QMap<QString, Actor *> &actorMap,
-                      QMap<QString, Variable> &vars,
-                      U2OpStatus &os);
+    PageContentParser(ParsedPairs& pairs,
+                      const QMap<QString, Actor*>& actorMap,
+                      QMap<QString, Variable>& vars,
+                      U2OpStatus& os);
 
-    virtual void visit(DefaultPageContent *content);
+    virtual void visit(DefaultPageContent* content);
 
 private:
-    ParsedPairs &pairs;
-    const QMap<QString, Actor *> &actorMap;
-    QMap<QString, Variable> &vars;
-    U2OpStatus &os;
+    ParsedPairs& pairs;
+    const QMap<QString, Actor*>& actorMap;
+    QMap<QString, Variable>& vars;
+    U2OpStatus& os;
 };
 
 /************************************************************************/
@@ -177,20 +177,20 @@ class WizardWidgetSerializer : public WizardWidgetVisitor {
 public:
     WizardWidgetSerializer(int depth);
 
-    virtual void visit(AttributeWidget *aw);
-    virtual void visit(WidgetsArea *wa);
-    virtual void visit(GroupWidget *gw);
-    virtual void visit(LogoWidget *lw);
-    virtual void visit(ElementSelectorWidget *esw);
-    virtual void visit(PairedReadsWidget *dsw);
-    virtual void visit(UrlAndDatasetWidget *ldsw);
-    virtual void visit(RadioWidget *rw);
-    virtual void visit(SettingsWidget *sw);
-    virtual void visit(BowtieWidget *bw);
-    virtual void visit(TophatSamplesWidget *tsw);
-    virtual void visit(LabelWidget *lw);
+    virtual void visit(AttributeWidget* aw);
+    virtual void visit(WidgetsArea* wa);
+    virtual void visit(GroupWidget* gw);
+    virtual void visit(LogoWidget* lw);
+    virtual void visit(ElementSelectorWidget* esw);
+    virtual void visit(PairedReadsWidget* dsw);
+    virtual void visit(UrlAndDatasetWidget* ldsw);
+    virtual void visit(RadioWidget* rw);
+    virtual void visit(SettingsWidget* sw);
+    virtual void visit(BowtieWidget* bw);
+    virtual void visit(TophatSamplesWidget* tsw);
+    virtual void visit(LabelWidget* lw);
 
-    const QString &getResult();
+    const QString& getResult();
 
 private:
     int depth;
@@ -198,19 +198,19 @@ private:
     QString addInfo;
 
 private:
-    QString serializeSlotsMapping(const QList<SlotMapping> &mappings, int depth) const;
-    QString serializePortMapping(const PortMapping &mapping, int depth) const;
-    QString serializeSelectorValue(const SelectorValue &value, int depth) const;
-    QString serializeInfo(const AttributeInfo &info, int depth) const;
+    QString serializeSlotsMapping(const QList<SlotMapping>& mappings, int depth) const;
+    QString serializePortMapping(const PortMapping& mapping, int depth) const;
+    QString serializeSelectorValue(const SelectorValue& value, int depth) const;
+    QString serializeInfo(const AttributeInfo& info, int depth) const;
 };
 
 class PageContentSerializer : public TemplatedPageVisitor {
 public:
     PageContentSerializer(int depth);
 
-    virtual void visit(DefaultPageContent *content);
+    virtual void visit(DefaultPageContent* content);
 
-    const QString &getResult() const;
+    const QString& getResult() const;
 
 private:
     int depth;

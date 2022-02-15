@@ -51,24 +51,24 @@
 
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
-    PsipredPlugin *plug = new PsipredPlugin();
+extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
+    PsipredPlugin* plug = new PsipredPlugin();
     return plug;
 }
 
 PsipredPlugin::PsipredPlugin()
     : Plugin(tr(PSIPRED_PLUGIN_NAME), tr("PsiPred protein secondary structure prediction"), false) {
     // Register PsiPred algorithm
-    SecStructPredictAlgRegistry *registry = AppContext::getSecStructPredictAlgRegistry();
-    SecStructPredictTaskFactory *taskFactory = new PsipredAlgTask::Factory;
+    SecStructPredictAlgRegistry* registry = AppContext::getSecStructPredictAlgRegistry();
+    SecStructPredictTaskFactory* taskFactory = new PsipredAlgTask::Factory;
     registry->registerAlgorithm(taskFactory, PSIPRED_PLUGIN_NAME);
 
     // Register PsiPred annotation settings
-    AnnotationSettingsRegistry *asr = AppContext::getAnnotationsSettingsRegistry();
-    AnnotationSettings *as = new AnnotationSettings(PSIPRED_ANNOTATION_NAME, true, QColor(102, 255, 0), true);
+    AnnotationSettingsRegistry* asr = AppContext::getAnnotationsSettingsRegistry();
+    AnnotationSettings* as = new AnnotationSettings(PSIPRED_ANNOTATION_NAME, true, QColor(102, 255, 0), true);
     as->showNameQuals = true;
     as->nameQuals.append(BioStruct3D::SecStructTypeQualifierName);
-    asr->changeSettings(QList<AnnotationSettings *>() << as, false);
+    asr->changeSettings(QList<AnnotationSettings*>() << as, false);
 }
 
 PsipredPlugin::~PsipredPlugin() {

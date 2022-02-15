@@ -79,11 +79,11 @@ public:
 class FindTandemsToAnnotationsTask : public Task {
     Q_OBJECT
 public:
-    FindTandemsToAnnotationsTask(const FindTandemsTaskSettings &s, const DNASequence &seq, const QString &annName, const QString &groupName, const QString &annDescription, const GObjectReference &annObjRef);
-    FindTandemsToAnnotationsTask(const FindTandemsTaskSettings &s, const DNASequence &seq);
+    FindTandemsToAnnotationsTask(const FindTandemsTaskSettings& s, const DNASequence& seq, const QString& annName, const QString& groupName, const QString& annDescription, const GObjectReference& annObjRef);
+    FindTandemsToAnnotationsTask(const FindTandemsTaskSettings& s, const DNASequence& seq);
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
-    QList<SharedAnnotationData> importTandemAnnotations(const QList<Tandem> &tandems, qint64 seqStart, const bool showOverlapped);
+    QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<SharedAnnotationData> importTandemAnnotations(const QList<Tandem>& tandems, qint64 seqStart, const bool showOverlapped);
 
     QList<SharedAnnotationData> getResult() const {
         return result;
@@ -104,36 +104,36 @@ private:
 class TandemFinder : public Task, public SequenceWalkerCallback {
     Q_OBJECT
 public:
-    TandemFinder(const FindTandemsTaskSettings &s, const DNASequence &seq);
+    TandemFinder(const FindTandemsTaskSettings& s, const DNASequence& seq);
     void prepare();
     void run();
-    const QList<Tandem> &getResults() {
+    const QList<Tandem>& getResults() {
         return foundTandems;
     }
-    const FindTandemsTaskSettings &getSettings() const {
+    const FindTandemsTaskSettings& getSettings() const {
         return settings;
     }
     const static quint32 maxCheckPeriod = 1024;  // max period is 1k
 protected:
     // main sequence
-    char *sequence;
+    char* sequence;
     FindTandemsTaskSettings settings;
     QMutex tandemsAccessMutex;
     QList<Tandem> foundTandems;
-    QList<Task *> onSubTaskFinished(Task *subTask);
-    void onRegion(SequenceWalkerSubtask *t, TaskStateInfo &ti);
+    QList<Task*> onSubTaskFinished(Task* subTask);
+    void onRegion(SequenceWalkerSubtask* t, TaskStateInfo& ti);
 
 private:
     QMutex subtasksQueue;
     quint32 regionCount;
     quint64 startTime;
-    QList<Task *> regionTasks;
+    QList<Task*> regionTasks;
 };
 
 class TandemFinder_Region : public Task {
     Q_OBJECT
 public:
-    TandemFinder_Region(const int regionId, const char *_sequence, const quint32 _seqSize, const quint64 _regionOffset, const FindTandemsTaskSettings &_settings)
+    TandemFinder_Region(const int regionId, const char* _sequence, const quint32 _seqSize, const quint64 _regionOffset, const FindTandemsTaskSettings& _settings)
         : Task(tr("Find tandems in %1 region").arg(regionId), TaskFlags_NR_FOSCOE),
           sequence(_sequence), seqSize(_seqSize), id(regionId), regionOffset(_regionOffset), settings(_settings) {
     }
@@ -154,28 +154,28 @@ public:
 
 protected:
     // main sequence
-    const char *sequence;
+    const char* sequence;
     const long seqSize;
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
     const int id;
     const quint64 regionOffset;
 
-    const FindTandemsTaskSettings &settings;
+    const FindTandemsTaskSettings& settings;
     QList<Tandem> foundTandems;
     QMutex tandemsAccessMutex;
     friend class ExactSizedTandemFinder;
     friend class LargeSizedTandemFinder;
-    void addResult(const Tandem &tandem);
-    void addResults(const QMap<Tandem, Tandem> &tandems);
+    void addResult(const Tandem& tandem);
+    void addResults(const QMap<Tandem, Tandem>& tandems);
 };
 
 class ConcreteTandemFinder : public Task {
     Q_OBJECT
 public:
-    ConcreteTandemFinder(QString taskName, const char *_sequence, const long _seqSize, const FindTandemsTaskSettings &_settings, const int _analysisSize);
+    ConcreteTandemFinder(QString taskName, const char* _sequence, const long _seqSize, const FindTandemsTaskSettings& _settings, const int _analysisSize);
     ~ConcreteTandemFinder() {};
 
     void prepare();
@@ -183,16 +183,16 @@ public:
 
 protected:
     // main sequence
-    const char *sequence;
+    const char* sequence;
     const int seqSize;
 
-    SArrayIndex *index;
-    SuffixArray *suffixArray;
-    const FindTandemsTaskSettings &settings;
+    SArrayIndex* index;
+    SuffixArray* suffixArray;
+    const FindTandemsTaskSettings& settings;
     const int prefixLength;
 
     const quint32 suffArrSize;
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
     const BitsTable bitsTable;
@@ -204,29 +204,29 @@ protected:
 class ExactSizedTandemFinder : public ConcreteTandemFinder {
     Q_OBJECT
 public:
-    ExactSizedTandemFinder(const char *_sequence, const long _seqSize, const FindTandemsTaskSettings &_settings, const int _analysisSize);
+    ExactSizedTandemFinder(const char* _sequence, const long _seqSize, const FindTandemsTaskSettings& _settings, const int _analysisSize);
     ~ExactSizedTandemFinder();
 
     void run();
 
 private:
-    quint32 *checkAndSpreadTandem(const quint32 *tandemStart, const quint32 *tandemLast, quint32 repeatLen);
-    quint32 *checkAndSpreadTandem_bv(const quint32 *tandemStart, const quint32 *tandemLast, quint32 repeatLen);
-    bool comparePrefixChars(const char *, const char *);
+    quint32* checkAndSpreadTandem(const quint32* tandemStart, const quint32* tandemLast, quint32 repeatLen);
+    quint32* checkAndSpreadTandem_bv(const quint32* tandemStart, const quint32* tandemLast, quint32 repeatLen);
+    bool comparePrefixChars(const char*, const char*);
 };
 
 class LargeSizedTandemFinder : public ConcreteTandemFinder {
     Q_OBJECT
 public:
-    LargeSizedTandemFinder(const char *_sequence, const long _seqSize, const FindTandemsTaskSettings &_settings, const int _analysisSize);
+    LargeSizedTandemFinder(const char* _sequence, const long _seqSize, const FindTandemsTaskSettings& _settings, const int _analysisSize);
     ~LargeSizedTandemFinder();
 
     void run();
 
 private:
-    quint32 *checkAndSpreadTandem(const quint32 *tandemStart, const quint32 *tandemLast, const unsigned repeatLen);
-    quint32 *checkAndSpreadTandem_bv(const quint32 *tandemStart, const quint32 *tandemLast, const unsigned repeatLen);
-    bool comparePrefixChars(const char *, const char *);
+    quint32* checkAndSpreadTandem(const quint32* tandemStart, const quint32* tandemLast, const unsigned repeatLen);
+    quint32* checkAndSpreadTandem_bv(const quint32* tandemStart, const quint32* tandemLast, const unsigned repeatLen);
+    bool comparePrefixChars(const char*, const char*);
 };
 
 }  // namespace U2

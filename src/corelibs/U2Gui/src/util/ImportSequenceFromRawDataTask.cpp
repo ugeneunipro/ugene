@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-ImportSequenceFromRawDataTask::ImportSequenceFromRawDataTask(const U2DbiRef &dbiRef, const QString &folder, const DNASequence &sequence)
+ImportSequenceFromRawDataTask::ImportSequenceFromRawDataTask(const U2DbiRef& dbiRef, const QString& folder, const DNASequence& sequence)
     : Task(tr("Import sequence from raw data"), TaskFlag_None),
       dbiRef(dbiRef),
       folder(folder),
@@ -39,7 +39,7 @@ QString ImportSequenceFromRawDataTask::getSequenceName() const {
     return sequence.getName();
 }
 
-const U2EntityRef &ImportSequenceFromRawDataTask::getEntityRef() const {
+const U2EntityRef& ImportSequenceFromRawDataTask::getEntityRef() const {
     return sequenceRef;
 }
 

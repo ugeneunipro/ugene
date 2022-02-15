@@ -48,19 +48,19 @@ enum EditSequenceDialogMode {
 class U2GUI_EXPORT SeqPasterEventFilter : public QObject {
     Q_OBJECT
 public:
-    SeqPasterEventFilter(QObject *parent);
+    SeqPasterEventFilter(QObject* parent);
 
 signals:
     void si_enterPressed();
 
 protected:
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject* obj, QEvent* event);
 };
 
 struct U2GUI_EXPORT EditSequencDialogConfig {
     EditSequenceDialogMode mode;
     U2Region source;
-    const DNAAlphabet *alphabet;
+    const DNAAlphabet* alphabet;
     QByteArray initialText;
     QVector<U2Region> selectionRegions;
     int position;
@@ -69,7 +69,7 @@ struct U2GUI_EXPORT EditSequencDialogConfig {
 class U2GUI_EXPORT EditSequenceDialogController : public QDialog {
     Q_OBJECT
 public:
-    EditSequenceDialogController(const EditSequencDialogConfig &cfg, QWidget *p = nullptr);
+    EditSequenceDialogController(const EditSequencDialogConfig& cfg, QWidget* p = nullptr);
     ~EditSequenceDialogController();
 
     void accept();
@@ -97,10 +97,10 @@ private:
 
     QString filter;
     int pos;
-    SeqPasterWidgetController *w;
-    SaveDocumentController *saveController;
+    SeqPasterWidgetController* w;
+    SaveDocumentController* saveController;
     EditSequencDialogConfig config;
-    Ui_EditSequenceDialog *ui;
+    Ui_EditSequenceDialog* ui;
 
     int seqEndPos;
 };

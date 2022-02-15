@@ -33,13 +33,13 @@ namespace U2 {
 class U2GUI_EXPORT PositionSelector : public QWidget {
     Q_OBJECT
 public:
-    PositionSelector(QWidget *p, qint64 rangeStart, qint64 rangeEnd, bool fixedSize = true);
-    PositionSelector(QDialog *d, qint64 rangeStart, qint64 rangeEnd, bool autoclose);
+    PositionSelector(QWidget* p, qint64 rangeStart, qint64 rangeEnd, bool fixedSize = true);
+    PositionSelector(QDialog* d, qint64 rangeStart, qint64 rangeEnd, bool autoclose);
 
     ~PositionSelector();
 
     void updateRange(qint64 rangeStart, qint64 rangeEnd);
-    QLineEdit *getPosEdit() const {
+    QLineEdit* getPosEdit() const {
         return posEdit;
     }
 
@@ -56,9 +56,9 @@ private:
 
     qint64 rangeStart;
     qint64 rangeEnd;
-    QLineEdit *posEdit;
+    QLineEdit* posEdit;
     bool autoclose;
-    QDialog *dialog;
+    QDialog* dialog;
 };
 
 }  // namespace U2

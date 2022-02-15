@@ -23,11 +23,11 @@
 
 namespace U2 {
 
-WriteAlignedReadsSubTask::WriteAlignedReadsSubTask(QReadWriteLock &_listM, QMutex &_writeLock, GenomeAlignerWriter *_seqWriter, QList<DataBunch *> &_data, qint64 &r)
+WriteAlignedReadsSubTask::WriteAlignedReadsSubTask(QReadWriteLock& _listM, QMutex& _writeLock, GenomeAlignerWriter* _seqWriter, QList<DataBunch*>& _data, qint64& r)
     : Task("WriteAlignedReadsSubTask", TaskFlag_None), seqWriter(_seqWriter), data(_data), readsAligned(r), listM(_listM), writeLock(_writeLock) {
 }
 
-void WriteAlignedReadsSubTask::setReadWritten(SearchQuery *read, SearchQuery *revCompl) {
+void WriteAlignedReadsSubTask::setReadWritten(SearchQuery* read, SearchQuery* revCompl) {
     if (!read->isWroteResult()) {
         readsAligned++;
         read->writeResult();
@@ -44,15 +44,15 @@ void WriteAlignedReadsSubTask::run() {
 
     stateInfo.setProgress(0);
 
-    foreach (DataBunch *d, data) {
+    foreach (DataBunch* d, data) {
         SAFE_POINT(nullptr != d, "NULL data bunch", );
 
-        QVector<SearchQuery *> &queries = d->queries;
+        QVector<SearchQuery*>& queries = d->queries;
 
         try {
-            SearchQuery *read = nullptr;
-            SearchQuery *revCompl = nullptr;
-            SearchQuery **q = queries.data();
+            SearchQuery* read = nullptr;
+            SearchQuery* revCompl = nullptr;
+            SearchQuery** q = queries.data();
             int size = queries.size();
 
             for (int i = 0; i < size; i++) {

@@ -75,7 +75,7 @@ static ObjectType toObjectType(U2::GObjectType type) {
 
 extern "C" {
 
-U2SCRIPT_EXPORT void importFileToUgeneDb(const wchar_t *_url, UgeneDbHandle *resultObjects, int maxObjectCount) {
+U2SCRIPT_EXPORT void importFileToUgeneDb(const wchar_t* _url, UgeneDbHandle* resultObjects, int maxObjectCount) {
     using namespace U2;
 
     const QString url = QString::fromWCharArray(_url);
@@ -85,13 +85,13 @@ U2SCRIPT_EXPORT void importFileToUgeneDb(const wchar_t *_url, UgeneDbHandle *res
         return;
     }
     const GUrl adoptedUrl(url);
-    QList<DocumentFormat *> formatList = DocumentUtils::toFormats(
+    QList<DocumentFormat*> formatList = DocumentUtils::toFormats(
         DocumentUtils::detectFormat(adoptedUrl));
     CHECK_EXT(!formatList.isEmpty(), coreLog.error(QObject::tr("Could not detect file format")), );
-    DocumentFormat *format = formatList.first();
+    DocumentFormat* format = formatList.first();
 
     ioLog.info(QObject::tr("Importing objects from %1 [%2]").arg(url, format->getFormatName()));
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(
         IOAdapterUtils::url2io(adoptedUrl));
     QVariantMap hints;
     U2OpStatusImpl stateInfo;
@@ -100,7 +100,7 @@ U2SCRIPT_EXPORT void importFileToUgeneDb(const wchar_t *_url, UgeneDbHandle *res
     doc->setDocumentOwnsDbiResources(false);
 
     int objectCount = 0;
-    foreach (GObject *object, doc->getObjects()) {
+    foreach (GObject* object, doc->getObjects()) {
         resultObjects[objectCount] = object;
         if (++objectCount >= maxObjectCount) {
             break;
@@ -109,13 +109,13 @@ U2SCRIPT_EXPORT void importFileToUgeneDb(const wchar_t *_url, UgeneDbHandle *res
 }
 
 U2SCRIPT_EXPORT void releaseObject(UgeneDbHandle resultObject) {
-    U2::GObject *unwrappedObject = reinterpret_cast<U2::GObject *>(resultObject);
+    U2::GObject* unwrappedObject = reinterpret_cast<U2::GObject*>(resultObject);
     delete unwrappedObject;  // TODO: make sure about db resources deallocation
 }
 
 U2SCRIPT_EXPORT UgeneDbHandle cloneObject(UgeneDbHandle object) {
-    U2::GObject *unwrappedObject = reinterpret_cast<U2::GObject *>(object);
-    U2::GObject *result = nullptr;
+    U2::GObject* unwrappedObject = reinterpret_cast<U2::GObject*>(object);
+    U2::GObject* result = nullptr;
     if (nullptr != unwrappedObject) {
         U2::U2OpStatusImpl statusInfo;
         result = unwrappedObject->clone(unwrappedObject->getEntityRef().dbiRef, statusInfo);
@@ -124,12 +124,12 @@ U2SCRIPT_EXPORT UgeneDbHandle cloneObject(UgeneDbHandle object) {
     return result;
 }
 
-U2SCRIPT_EXPORT void saveObjectsToFile(UgeneDbHandle *objects, int objectCount, const wchar_t *_url, FileFormat format) {
+U2SCRIPT_EXPORT void saveObjectsToFile(UgeneDbHandle* objects, int objectCount, const wchar_t* _url, FileFormat format) {
     using namespace U2;
 
     CHECK(nullptr != objects && nullptr != _url, );
 
-    DocumentFormat *docFormat = AppContext::getDocumentFormatRegistry()->getFormatById(
+    DocumentFormat* docFormat = AppContext::getDocumentFormatRegistry()->getFormatById(
         toDocumentFormatId(format));
     CHECK_EXT(nullptr != docFormat, coreLog.error(QObject::tr("The unsupported format"
                                                               " was provided")), );
@@ -141,22 +141,22 @@ U2SCRIPT_EXPORT void saveObjectsToFile(UgeneDbHandle *objects, int objectCount, 
     CHECK_OP_EXT(stateInfo, coreLog.error(QString("Could not prepare folder"
                                                   " according to supplied path \"%1\"")
                                               .arg(url)), );
-    Document *doc = docFormat->createNewLoadedDocument(IOAdapterUtils::get(
+    Document* doc = docFormat->createNewLoadedDocument(IOAdapterUtils::get(
                                                            BaseIOAdapters::LOCAL_FILE),
                                                        adoptedUrl,
                                                        stateInfo);
     for (int i = 0; i < objectCount; ++i) {
-        GObject *object = reinterpret_cast<GObject *>(objects[i]);
+        GObject* object = reinterpret_cast<GObject*>(objects[i]);
         if (nullptr != object) {
             doc->addObject(object);
         }
     }
-    Task *saveDoc = new SaveDocumentTask(doc);
+    Task* saveDoc = new SaveDocumentTask(doc);
     AppContext::getTaskScheduler()->registerTopLevelTask(saveDoc);
 }
 
 U2SCRIPT_EXPORT ObjectType getObjectType(UgeneDbHandle object) {
-    U2::GObject *unwrappedObject = reinterpret_cast<U2::GObject *>(object);
+    U2::GObject* unwrappedObject = reinterpret_cast<U2::GObject*>(object);
     U2::GObjectType result = U2::GObjectTypes::UNKNOWN;
     if (nullptr != unwrappedObject) {
         result = unwrappedObject->getGObjectType();
@@ -164,8 +164,8 @@ U2SCRIPT_EXPORT ObjectType getObjectType(UgeneDbHandle object) {
     return toObjectType(result);
 }
 
-U2SCRIPT_EXPORT void getObjectName(UgeneDbHandle object, int expectedMaxNameLength, wchar_t *name) {
-    U2::GObject *unwrappedObject = reinterpret_cast<U2::GObject *>(object);
+U2SCRIPT_EXPORT void getObjectName(UgeneDbHandle object, int expectedMaxNameLength, wchar_t* name) {
+    U2::GObject* unwrappedObject = reinterpret_cast<U2::GObject*>(object);
     QString result;
     if (nullptr != unwrappedObject) {
         result = unwrappedObject->getGObjectName();
@@ -174,8 +174,8 @@ U2SCRIPT_EXPORT void getObjectName(UgeneDbHandle object, int expectedMaxNameLeng
     Q_UNUSED(error);
 }
 
-U2SCRIPT_EXPORT void setObjectName(UgeneDbHandle object, const wchar_t *newName) {
-    U2::GObject *unwrappedObject = reinterpret_cast<U2::GObject *>(object);
+U2SCRIPT_EXPORT void setObjectName(UgeneDbHandle object, const wchar_t* newName) {
+    U2::GObject* unwrappedObject = reinterpret_cast<U2::GObject*>(object);
     if (nullptr != unwrappedObject && nullptr != newName) {
         unwrappedObject->setGObjectName(QString::fromWCharArray(newName));
     }

@@ -34,15 +34,15 @@ class QDDocStatement {
 public:
     virtual ~QDDocStatement();
 
-    const QList<QPair<QString, QString>> &getAttributes() const {
+    const QList<QPair<QString, QString>>& getAttributes() const {
         return attributes;
     }
-    QString getAttribute(const QString &name) const;
-    void setAttribute(const QString &name, const QString &value);
-    void setComment(const QString &com) {
+    QString getAttribute(const QString& name) const;
+    void setAttribute(const QString& name, const QString& value);
+    void setComment(const QString& com) {
         comment = com;
     }
-    const QString &getComment() const {
+    const QString& getComment() const {
         return comment;
     }
     virtual QString toString() const;
@@ -62,10 +62,10 @@ class QDElementStatement : public QDDocStatement {
     friend class QDDocument;
 
 public:
-    QDElementStatement(const QString &_id, QDStatementType _type)
+    QDElementStatement(const QString& _id, QDStatementType _type)
         : id(_id), type(_type), document(nullptr) {
     }
-    const QString &getId() const {
+    const QString& getId() const {
         return id;
     }
     QDStatementType getType() const {
@@ -73,7 +73,7 @@ public:
     }
     QString toString() const;
     QString definedIn() const;
-    QDDocument *getDocument() const {
+    QDDocument* getDocument() const {
         return document;
     }
 
@@ -84,21 +84,21 @@ public:
 private:
     QString id;
     QDStatementType type;
-    QDDocument *document;
+    QDDocument* document;
 };
 
 class QDLinkStatement : public QDDocStatement {
     friend class QDDocument;
 
 public:
-    QDLinkStatement(const QList<QString> &ids)
+    QDLinkStatement(const QList<QString>& ids)
         : elementIds(ids), document(nullptr) {
     }
-    const QList<QString> &getElementIds() const {
+    const QList<QString>& getElementIds() const {
         return elementIds;
     }
     QString toString() const;
-    QDDocument *getDocument() const {
+    QDDocument* getDocument() const {
         return document;
     }
 
@@ -107,7 +107,7 @@ public:
 
 private:
     QList<QString> elementIds;
-    QDDocument *document;
+    QDDocument* document;
 };
 
 class QDDocument : public QObject {
@@ -117,46 +117,46 @@ public:
         : schemaStrand(QDStrand_Both) {
     }
     ~QDDocument();
-    bool setContent(const QString &content);
+    bool setContent(const QString& content);
     QByteArray toByteArray() const;
-    void setName(const QString &name) {
+    void setName(const QString& name) {
         docName = name;
     }
-    const QString &getName() const {
+    const QString& getName() const {
         return docName;
     }
-    bool addElement(QDElementStatement *el);
-    void addLink(QDLinkStatement *lnk) {
+    bool addElement(QDElementStatement* el);
+    void addLink(QDLinkStatement* lnk) {
         assert(lnk->document == nullptr);
         links.append(lnk);
         lnk->document = this;
     }
-    const QList<QDElementStatement *> &getElements() const {
+    const QList<QDElementStatement*>& getElements() const {
         return elements;
     }
-    QList<QDElementStatement *> getElements(QDStatementType type) const;
-    QDElementStatement *getElement(const QString &id) const;
-    const QList<QDLinkStatement *> &getLinks() const {
+    QList<QDElementStatement*> getElements(QDStatementType type) const;
+    QDElementStatement* getElement(const QString& id) const;
+    const QList<QDLinkStatement*>& getLinks() const {
         return links;
     }
-    const QList<QString> &getImportedUrls() const {
+    const QList<QString>& getImportedUrls() const {
         return importedUrls;
     }
-    static QString definedIn(const QString &id);
-    static QString getLocalName(const QString &id);
-    QDElementStatement *findElementByUnitName(QDElementStatement *parent, const QString &unitName) const;
+    static QString definedIn(const QString& id);
+    static QString getLocalName(const QString& id);
+    QDElementStatement* findElementByUnitName(QDElementStatement* parent, const QString& unitName) const;
 
-    const QString &getDocDesc() const {
+    const QString& getDocDesc() const {
         return docDesc;
     }
-    void setDocDesc(const QString &newDesc) {
+    void setDocDesc(const QString& newDesc) {
         docDesc = newDesc;
     }
-    const QStringList &getOrder() const {
+    const QStringList& getOrder() const {
         return order;
     }
-    void saveOrder(const QList<QDActor *> &actors);
-    void parseSchemaStrand(const QString &str);
+    void saveOrder(const QList<QDActor*>& actors);
+    void parseSchemaStrand(const QString& str);
     QDStrandOption getSchemaStrand() const {
         return schemaStrand;
     }
@@ -164,7 +164,7 @@ public:
         schemaStrand = stOp;
     }
 
-    static bool isHeaderLine(const QString &line);
+    static bool isHeaderLine(const QString& line);
 
 public:
     static const QString HEADER_LINE;
@@ -173,18 +173,18 @@ public:
     static const QString ID_PATTERN;
 
 private:
-    void findImportedUrls(const QString &str);
-    bool findElementStatements(const QString &str);
-    bool findLinkStatements(const QString &str);
-    void findComments(const QString &str);
-    void parseOrder(const QString &str);
-    static QMap<QString, QString> string2attributesMap(const QString &str);
-    static QList<QString> idsFromString(const QString &str);
+    void findImportedUrls(const QString& str);
+    bool findElementStatements(const QString& str);
+    bool findLinkStatements(const QString& str);
+    void findComments(const QString& str);
+    void parseOrder(const QString& str);
+    static QMap<QString, QString> string2attributesMap(const QString& str);
+    static QList<QString> idsFromString(const QString& str);
 
 private:
     QString docName;
-    QList<QDElementStatement *> elements;
-    QList<QDLinkStatement *> links;
+    QList<QDElementStatement*> elements;
+    QList<QDLinkStatement*> links;
     QList<QString> importedUrls;
     QString docDesc;
     // ID, comment
@@ -196,13 +196,13 @@ private:
 class QDIdMapper {
 public:
     static QString distance2string(QDDistanceType type);
-    static int string2distance(const QString &str);
-    static QDConstraintType string2constraintType(const QString &str);
-    static QString constraintType2string(const QDConstraintType &type);
+    static int string2distance(const QString& str);
+    static QDConstraintType string2constraintType(const QString& str);
+    static QString constraintType2string(const QDConstraintType& type);
 };
 
 }  // namespace U2
 
-Q_DECLARE_METATYPE(U2::QDDocument *)
+Q_DECLARE_METATYPE(U2::QDDocument*)
 
 #endif

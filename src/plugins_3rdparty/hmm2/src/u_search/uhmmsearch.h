@@ -30,13 +30,13 @@ public:
     float domE;
     float domT;
     int searchChunkSize;
-    int extraLen;    //-1 -> auto
+    int extraLen;  //-1 -> auto
     HMMSearchAlgo alg;
 };
 
 class UHMMSearchResult {
 public:
-    UHMMSearchResult(const U2Region &_r, float sc, float eval)
+    UHMMSearchResult(const U2Region& _r, float sc, float eval)
         : r(_r), score(sc), evalue(eval) {
     }
     U2Region r;
@@ -48,9 +48,9 @@ class UHMMSearch : public QObject {
     Q_OBJECT
 
 public:
-    static QList<UHMMSearchResult> search(plan7_s *hmm, const char *seq, int seqLen, const UHMMSearchSettings &s, TaskStateInfo &si);
+    static QList<UHMMSearchResult> search(plan7_s* hmm, const char* seq, int seqLen, const UHMMSearchSettings& s, TaskStateInfo& si);
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

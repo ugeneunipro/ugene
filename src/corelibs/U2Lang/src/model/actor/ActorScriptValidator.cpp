@@ -31,7 +31,7 @@ namespace Workflow {
 /************************************************************************/
 /* ActorScriptValidator */
 /************************************************************************/
-bool ActorScriptValidator::validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const {
+bool ActorScriptValidator::validate(const Actor* actor, NotificationsList& notificationList, const QMap<QString, QString>& options) const {
     QScriptEngine engine;
     ValidationContext context(engine, actor);
     {
@@ -54,12 +54,12 @@ bool ActorScriptValidator::validate(const Actor *actor, NotificationsList &notif
 /************************************************************************/
 /* ValidationContext */
 /************************************************************************/
-ValidationContext::ValidationContext(QScriptEngine &engine, const Actor *actor)
+ValidationContext::ValidationContext(QScriptEngine& engine, const Actor* actor)
     : engine(engine), actor(actor) {
 }
 
-QScriptValue ValidationContext::attributeValue(const QString &attrId) {
-    Attribute *attr = actor->getParameter(attrId);
+QScriptValue ValidationContext::attributeValue(const QString& attrId) {
+    Attribute* attr = actor->getParameter(attrId);
     if (nullptr == attr) {
         engine.evaluate("throw \"" + tr("Wrong attribute id: ") + attrId + "\"");
         return QScriptValue::NullValue;
@@ -74,20 +74,20 @@ QScriptValue ValidationContext::attributeValue(const QString &attrId) {
     return engine.newVariant(value);
 }
 
-void ValidationContext::error(const QString &message) {
+void ValidationContext::error(const QString& message) {
     errors << message;
 }
 
-void ValidationContext::warning(const QString &message) {
+void ValidationContext::warning(const QString& message) {
     warnings << message;
 }
 
 NotificationsList ValidationContext::notifications() const {
     NotificationsList result;
-    foreach (const QString &e, errors) {
+    foreach (const QString& e, errors) {
         result << WorkflowNotification(e, actor->getId(), WorkflowNotification::U2_ERROR);
     }
-    foreach (const QString &w, warnings) {
+    foreach (const QString& w, warnings) {
         result << WorkflowNotification(w, actor->getId(), WorkflowNotification::U2_WARNING);
     }
     return result;

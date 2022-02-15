@@ -42,10 +42,10 @@ const QString CAP3Support::ET_CAP3 = "CAP3";
 const QString CAP3Support::ET_CAP3_ID = "USUPP_CAP3";
 const QString CAP3Support::CAP3_TMP_DIR = "cap3";
 
-CAP3Support::CAP3Support(const QString &id, const QString &name, const QString &path)
+CAP3Support::CAP3Support(const QString& id, const QString& name, const QString& path)
     : ExternalTool(id, "cap3", name, path) {
     if (AppContext::getMainWindow() != nullptr) {
-        viewCtx = nullptr;    //new CAP3SupportContext(this);
+        viewCtx = nullptr;  // new CAP3SupportContext(this);
         icon = QIcon(":external_tool_support/images/cmdline.png");
         grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
         warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
@@ -69,7 +69,7 @@ CAP3Support::CAP3Support(const QString &id, const QString &name, const QString &
 }
 
 void CAP3Support::sl_runWithExtFileSpecify() {
-    //Check that CAP3 and temporary folder path defined
+    // Check that CAP3 and temporary folder path defined
     if (path.isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(name);
@@ -97,7 +97,7 @@ void CAP3Support::sl_runWithExtFileSpecify() {
     ExternalToolSupportSettings::checkTemporaryDir(os);
     CHECK_OP(os, );
 
-    //Call select input file and setup settings dialog
+    // Call select input file and setup settings dialog
     CAP3SupportTaskSettings settings;
     QObjectScopedPointer<CAP3SupportDialog> cap3Dialog = new CAP3SupportDialog(settings, QApplication::activeWindow());
     cap3Dialog->exec();
@@ -109,8 +109,8 @@ void CAP3Support::sl_runWithExtFileSpecify() {
 
     assert(!settings.inputFiles.isEmpty());
 
-    RunCap3AndOpenResultTask *task = new RunCap3AndOpenResultTask(settings);
+    RunCap3AndOpenResultTask* task = new RunCap3AndOpenResultTask(settings);
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }
 
-}    // namespace U2
+}  // namespace U2

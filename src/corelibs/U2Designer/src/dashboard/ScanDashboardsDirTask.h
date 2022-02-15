@@ -33,13 +33,13 @@ class U2DESIGNER_EXPORT ScanDashboardsDirTask : public Task {
 public:
     ScanDashboardsDirTask();
 
-    const QList<DashboardInfo> &getResult() const;
+    const QList<DashboardInfo>& getResult() const;
 
 private:
     void run() override;
 
-    static bool isDashboardDir(const QString &dirPath);
-    static DashboardInfo readDashboardInfo(const QString &dirPath);
+    static bool isDashboardDir(const QString& dirPath);
+    static DashboardInfo readDashboardInfo(const QString& dirPath);
 
     QList<DashboardInfo> dashboardInfos;
 };

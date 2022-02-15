@@ -28,76 +28,76 @@ namespace U2 {
 
 class SQLiteAttributeDbi : public U2AttributeDbi, public SQLiteChildDBICommon {
 public:
-    SQLiteAttributeDbi(SQLiteDbi *dbi);
+    SQLiteAttributeDbi(SQLiteDbi* dbi);
 
     /** Returns all attribute names available in the database */
-    virtual QStringList getAvailableAttributeNames(U2OpStatus &os);
+    virtual QStringList getAvailableAttributeNames(U2OpStatus& os);
 
     /** Returns all attribute ids for the given object */
-    virtual QList<U2DataId> getObjectAttributes(const U2DataId &objectId, const QString &name, U2OpStatus &os);
+    virtual QList<U2DataId> getObjectAttributes(const U2DataId& objectId, const QString& name, U2OpStatus& os);
 
     /** Returns all attribute ids for the given object */
-    virtual QList<U2DataId> getObjectPairAttributes(const U2DataId &objectId, const U2DataId &childId, const QString &name, U2OpStatus &os);
+    virtual QList<U2DataId> getObjectPairAttributes(const U2DataId& objectId, const U2DataId& childId, const QString& name, U2OpStatus& os);
 
     /** Loads int64 attribute by id */
-    virtual U2IntegerAttribute getIntegerAttribute(const U2DataId &attributeId, U2OpStatus &os);
+    virtual U2IntegerAttribute getIntegerAttribute(const U2DataId& attributeId, U2OpStatus& os);
 
     /** Loads real64 attribute by id */
-    virtual U2RealAttribute getRealAttribute(const U2DataId &attributeId, U2OpStatus &os);
+    virtual U2RealAttribute getRealAttribute(const U2DataId& attributeId, U2OpStatus& os);
 
     /** Loads String attribute by id */
-    virtual U2StringAttribute getStringAttribute(const U2DataId &attributeId, U2OpStatus &os);
+    virtual U2StringAttribute getStringAttribute(const U2DataId& attributeId, U2OpStatus& os);
 
     /** Loads byte attribute by id */
-    virtual U2ByteArrayAttribute getByteArrayAttribute(const U2DataId &attributeId, U2OpStatus &os);
+    virtual U2ByteArrayAttribute getByteArrayAttribute(const U2DataId& attributeId, U2OpStatus& os);
 
     /** Sorts all objects in database according to U2DbiSortConfig provided  */
-    virtual QList<U2DataId> sort(const U2DbiSortConfig &sc, qint64 offset, qint64 count, U2OpStatus &os);
+    virtual QList<U2DataId> sort(const U2DbiSortConfig& sc, qint64 offset, qint64 count, U2OpStatus& os);
 
     /**
         Removes attributes from database
         Requires U2DbiFeature_WriteAttribute feature support
     */
-    virtual void removeAttributes(const QList<U2DataId> &attributeIds, U2OpStatus &os);
+    virtual void removeAttributes(const QList<U2DataId>& attributeIds, U2OpStatus& os);
 
     /**
         Removes all attributes associated with the object
         Requires U2DbiFeature_WriteAttribute feature support
     */
-    virtual void removeObjectAttributes(const U2DataId &objectId, U2OpStatus &os);
+    virtual void removeObjectAttributes(const U2DataId& objectId, U2OpStatus& os);
 
     /**
         Creates int64 attribute in database. ObjectId must be already set in attribute and present in the same database
         Requires U2DbiFeature_WriteAttribute feature support
     */
-    virtual void createIntegerAttribute(U2IntegerAttribute &a, U2OpStatus &os);
+    virtual void createIntegerAttribute(U2IntegerAttribute& a, U2OpStatus& os);
 
     /**
         Creates real64 attribute in database. ObjectId must be already set in attribute and present in the same database
         Requires U2DbiFeature_WriteAttribute feature support
     */
-    virtual void createRealAttribute(U2RealAttribute &a, U2OpStatus &os);
+    virtual void createRealAttribute(U2RealAttribute& a, U2OpStatus& os);
 
     /**
         Creates String attribute in database. ObjectId must be already set in attribute and present in the same database
         Requires U2DbiFeature_WriteAttribute feature support
     */
-    virtual void createStringAttribute(U2StringAttribute &a, U2OpStatus &os);
+    virtual void createStringAttribute(U2StringAttribute& a, U2OpStatus& os);
 
     /**
         Creates Byte attribute in database. ObjectId must be already set in attribute and present in the same database
         Requires U2DbiFeature_WriteAttribute feature support
     */
-    virtual void createByteArrayAttribute(U2ByteArrayAttribute &a, U2OpStatus &os);
+    virtual void createByteArrayAttribute(U2ByteArrayAttribute& a, U2OpStatus& os);
 
-    virtual void initSqlSchema(U2OpStatus &os);
+    virtual void initSqlSchema(U2OpStatus& os);
 
 private:
-    qint64 createAttribute(U2Attribute &attr, U2DataType type, SQLiteTransaction &t, U2OpStatus &os);
+    qint64 createAttribute(U2Attribute& attr, U2DataType type, SQLiteTransaction& t, U2OpStatus& os);
 
-    QString buildSelectAttributeQuery(const QString &attributeTable);
+    QString buildSelectAttributeQuery(const QString& attributeTable);
 
-    void readAttribute(SQLiteReadQuery &q, U2Attribute &attr);
+    void readAttribute(SQLiteReadQuery& q, U2Attribute& attr);
 };
 
 }  // namespace U2

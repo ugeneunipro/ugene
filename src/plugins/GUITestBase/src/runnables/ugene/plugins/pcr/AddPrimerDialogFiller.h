@@ -37,10 +37,10 @@ public:
 
         QString primer;
         QString name;
-        CustomScenario *scenario;
+        CustomScenario* scenario;
     };
 
-    AddPrimerDialogFiller(HI::GUITestOpStatus &os, const Parameters &parameters);
+    AddPrimerDialogFiller(HI::GUITestOpStatus& os, const Parameters& parameters);
     void commonScenario();
 
 private:

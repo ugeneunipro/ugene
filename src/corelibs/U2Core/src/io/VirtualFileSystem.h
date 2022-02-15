@@ -42,28 +42,28 @@ public:
 
 public:
     VirtualFileSystem();
-    VirtualFileSystem(const QString &fsName);
+    VirtualFileSystem(const QString& fsName);
     ~VirtualFileSystem();
 
     // if file exist in vfs: return false, do nothing
-    bool createFile(const QString &filename, const QByteArray &data);
+    bool createFile(const QString& filename, const QByteArray& data);
 
     // maps filePath file from disk to memory and adds it to vfs
     // if filename exists in vfs: replace prev
-    bool mapFile(const QString &filename, const QString &filePath);
+    bool mapFile(const QString& filename, const QString& filePath);
     // maps back to disk (from memory)
-    bool mapBack(const QString &filename, const QString &filePath) const;
+    bool mapBack(const QString& filename, const QString& filePath) const;
     // if file does not exist: create new file
-    void modifyFile(const QString &filename, const QByteArray &data);
+    void modifyFile(const QString& filename, const QByteArray& data);
 
-    QByteArray removeFile(const QString &filename);
+    QByteArray removeFile(const QString& filename);
     void removeAllFiles();
 
-    bool fileExists(const QString &filename) const;
-    QByteArray &getFileByName(const QString &filename);
-    QByteArray getFileByName(const QString &filename) const;
+    bool fileExists(const QString& filename) const;
+    QByteArray& getFileByName(const QString& filename);
+    QByteArray getFileByName(const QString& filename) const;
 
-    void setId(const QString &id);
+    void setId(const QString& id);
     QString getId() const;
     QStringList getAllFilenames() const;
 
@@ -78,15 +78,15 @@ public:
     VirtualFileSystemRegistry();
     ~VirtualFileSystemRegistry();
 
-    bool registerFileSystem(VirtualFileSystem *entry);
-    VirtualFileSystem *unregisterFileSystem(const QString &id);
+    bool registerFileSystem(VirtualFileSystem* entry);
+    VirtualFileSystem* unregisterFileSystem(const QString& id);
 
-    VirtualFileSystem *getFileSystemById(const QString &id) const;
-    QList<VirtualFileSystem *> getAllFileSystems() const;
+    VirtualFileSystem* getFileSystemById(const QString& id) const;
+    QList<VirtualFileSystem*> getAllFileSystems() const;
     QStringList getAllIds() const;
 
 private:
-    QMap<QString, VirtualFileSystem *> registry;
+    QMap<QString, VirtualFileSystem*> registry;
 
 };  // VirtualFileSystemRegistry
 

@@ -36,25 +36,25 @@ class GObject;
 class U2CORE_EXPORT ImportDocumentToDatabaseTask : public Task {
     Q_OBJECT
 public:
-    ImportDocumentToDatabaseTask(Document *document, const U2DbiRef &dstDbiRef, const QString &dstFolder, const ImportToDatabaseOptions &options);
+    ImportDocumentToDatabaseTask(Document* document, const U2DbiRef& dstDbiRef, const QString& dstFolder, const ImportToDatabaseOptions& options);
 
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
     ReportResult report();
 
-    Document *getSourceDocument() const;
+    Document* getSourceDocument() const;
 
     QStringList getImportedObjectNames() const;
     QStringList getSkippedObjectNames() const;
 
-    QSet<GObject *> getImportedObjects() const;
-    const QString &getDstFolder() const;
-    const U2DbiRef &getDstDbiRef() const;
+    QSet<GObject*> getImportedObjects() const;
+    const QString& getDstFolder() const;
+    const U2DbiRef& getDstDbiRef() const;
 
 private:
-    QMap<GObject *, GObject *> getObjectPairs() const;
-    void propagateObjectsRelations(QStringList &errors) const;
-    static GObject *getAppropriateObject(const QList<GObject *> objects, const GObject *pattern);
+    QMap<GObject*, GObject*> getObjectPairs() const;
+    void propagateObjectsRelations(QStringList& errors) const;
+    static GObject* getAppropriateObject(const QList<GObject*> objects, const GObject* pattern);
 
     QPointer<Document> document;
     U2DbiRef dstDbiRef;

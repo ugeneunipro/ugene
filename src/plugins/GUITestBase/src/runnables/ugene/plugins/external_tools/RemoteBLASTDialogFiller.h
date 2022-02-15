@@ -31,8 +31,8 @@ using namespace HI;
 
 class RemoteBLASTDialogFiller : public Filler {
 public:
-    RemoteBLASTDialogFiller(HI::GUITestOpStatus &os);
-    RemoteBLASTDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario);
+    RemoteBLASTDialogFiller(HI::GUITestOpStatus& os);
+    RemoteBLASTDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario);
 
     virtual void commonScenario();
 };

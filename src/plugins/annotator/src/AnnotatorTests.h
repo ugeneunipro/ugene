@@ -50,7 +50,7 @@ private:
     QSet<QString> groupsToSearch;
     int regionSize;
     CollocationsAlgorithm::SearchType st;
-    CollocationSearchTask *searchTask;
+    CollocationSearchTask* searchTask;
     QVector<U2Region> expectedResults;
 };
 
@@ -67,7 +67,7 @@ private:
     QString docName;
     QString resultDocContextName;
     bool isCircular;
-    CustomPatternAnnotationTask *searchTask;
+    CustomPatternAnnotationTask* searchTask;
 };
 
 class GTest_GeneByGeneApproach : public XmlTest {

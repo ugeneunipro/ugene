@@ -35,23 +35,23 @@ class WizardController;
 
 class WidgetController : public QObject {
 public:
-    WidgetController(WizardController *wc);
+    WidgetController(WizardController* wc);
     virtual ~WidgetController();
 
-    virtual QWidget *createGUI(U2OpStatus &os) = 0;
+    virtual QWidget* createGUI(U2OpStatus& os) = 0;
 
 protected:
-    WizardController *wc;
+    WizardController* wc;
 };
 
 class LabeledPropertyWidget : public QWidget {
 public:
-    LabeledPropertyWidget(const QString &labelText, PropertyWidget *widget, QWidget *parent = nullptr);
+    LabeledPropertyWidget(const QString& labelText, PropertyWidget* widget, QWidget* parent = nullptr);
 
     void setLabelWidth(int width);
 
 private:
-    QLabel *label;
+    QLabel* label;
 };
 
 }  // namespace U2

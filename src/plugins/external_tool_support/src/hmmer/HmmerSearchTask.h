@@ -35,13 +35,13 @@ class SaveSequenceTask;
 class HmmerSearchTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    HmmerSearchTask(const HmmerSearchSettings &settings);
+    HmmerSearchTask(const HmmerSearchSettings& settings);
 
     QList<SharedAnnotationData> getAnnotations() const;
 
 private:
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
     QString generateReport() const;
 
     void prepareWorkingDir();
@@ -54,9 +54,9 @@ private:
 
     HmmerSearchSettings settings;
 
-    SaveSequenceTask *saveSequenceTask;
-    ExternalToolRunTask *hmmerTask;
-    HmmerParseSearchResultsTask *parseTask;
+    SaveSequenceTask* saveSequenceTask;
+    ExternalToolRunTask* hmmerTask;
+    HmmerParseSearchResultsTask* parseTask;
     bool removeWorkingDir;
     bool hmm2Mode;
 
@@ -64,6 +64,6 @@ private:
     static const QString PER_DOMAIN_HITS_FILENAME;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_HMMER_SEARCH_TASK_H_
+#endif  // _U2_HMMER_SEARCH_TASK_H_

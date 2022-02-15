@@ -25,20 +25,20 @@
 
 namespace U2 {
 
-MarkerAttribute::MarkerAttribute(const Descriptor &d, const DataTypePtr type, bool required, const QVariant &defaultValue)
+MarkerAttribute::MarkerAttribute(const Descriptor& d, const DataTypePtr type, bool required, const QVariant& defaultValue)
     : Attribute(d, type, required, defaultValue) {
 }
 
-void MarkerAttribute::setAttributeValue(const QVariant & /*newVal*/) {
+void MarkerAttribute::setAttributeValue(const QVariant& /*newVal*/) {
     FAIL("marker set value", );
 }
 
-const QVariant &MarkerAttribute::getAttributePureValue() const {
+const QVariant& MarkerAttribute::getAttributePureValue() const {
     QStringList names;
-    foreach (Marker *marker, markers) {
+    foreach (Marker* marker, markers) {
         names << marker->getName();
     }
-    const_cast<QVariant &>(value) = names.join(",");
+    const_cast<QVariant&>(value) = names.join(",");
     return value;
 }
 
@@ -46,7 +46,7 @@ bool MarkerAttribute::isDefaultValue() const {
     return (defaultValue == getAttributePureValue());
 }
 
-Attribute *MarkerAttribute::clone() {
+Attribute* MarkerAttribute::clone() {
     return new MarkerAttribute(*this);
 }
 
@@ -54,12 +54,12 @@ AttributeGroup MarkerAttribute::getGroup() {
     return MARKER_GROUP;
 }
 
-QList<Marker *> &MarkerAttribute::getMarkers() {
+QList<Marker*>& MarkerAttribute::getMarkers() {
     return markers;
 }
 
-bool MarkerAttribute::contains(const QString &markerId) const {
-    foreach (Marker *marker, markers) {
+bool MarkerAttribute::contains(const QString& markerId) const {
+    foreach (Marker* marker, markers) {
         if (nullptr == marker) {
             continue;
         }

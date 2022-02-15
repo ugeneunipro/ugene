@@ -30,7 +30,7 @@ namespace U2 {
 const int AnnotHighlightTreeItem::ROW_HEIGHT = 22;
 const int AnnotHighlightTreeItem::COLOR_ICON_SIZE = 14;
 
-AnnotHighlightTreeItem::AnnotHighlightTreeItem(const QString &_annotName, const QColor &_annotColor)
+AnnotHighlightTreeItem::AnnotHighlightTreeItem(const QString& _annotName, const QColor& _annotColor)
     : annotName(_annotName), annotColor(_annotColor) {
     setText(AnnotHighlightTree::COL_NUM_ANNOT_NAME, annotName);
     drawColorCell();
@@ -42,7 +42,7 @@ void AnnotHighlightTreeItem::drawColorCell() {
     setIcon(AnnotHighlightTree::COL_NUM_COLOR, icon);
 }
 
-void AnnotHighlightTreeItem::setColor(const QColor &_annotColor) {
+void AnnotHighlightTreeItem::setColor(const QColor& _annotColor) {
     annotColor = _annotColor;
     drawColorCell();
 }

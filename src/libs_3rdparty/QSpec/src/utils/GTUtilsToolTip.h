@@ -30,7 +30,7 @@ namespace HI {
 
 class HI_EXPORT GTUtilsToolTip {
 public:
-    static void checkExistingToolTip(GUITestOpStatus &os, const QString &tooltip);
+    static void checkExistingToolTip(GUITestOpStatus& os, const QString& tooltip);
 
     static QString getToolTip();
 };

@@ -48,17 +48,17 @@ const QString WriteVariationWorkerFactory::ACTOR_ID("write-variations");
 /************************************************************************/
 /* Worker */
 /************************************************************************/
-WriteVariationWorker::WriteVariationWorker(Actor *p, const DocumentFormatId &fid)
+WriteVariationWorker::WriteVariationWorker(Actor* p, const DocumentFormatId& fid)
     : BaseDocWriter(p, fid) {
 }
 
-void WriteVariationWorker::data2doc(Document *doc, const QVariantMap &data) {
+void WriteVariationWorker::data2doc(Document* doc, const QVariantMap& data) {
     Q_UNUSED(doc);
     Q_UNUSED(data);
     SAFE_POINT(false, tr("Write variants: internal error"), );
 }
 
-void WriteVariationWorker::storeEntry(IOAdapter *io, const QVariantMap &data, int entryNum) {
+void WriteVariationWorker::storeEntry(IOAdapter* io, const QVariantMap& data, int entryNum) {
     CHECK(hasDataToWrite(data), );
     U2OpStatusImpl os;
     QScopedPointer<VariantTrackObject> trackObj(nullptr);
@@ -69,14 +69,14 @@ void WriteVariationWorker::storeEntry(IOAdapter *io, const QVariantMap &data, in
         SAFE_POINT(!trackObj.isNull(), "Can't get track object", );
     }
 
-    QMap<GObjectType, QList<GObject *>> objectsMap;
+    QMap<GObjectType, QList<GObject*>> objectsMap;
     {
-        QList<GObject *> tracks;
+        QList<GObject*> tracks;
         tracks << trackObj.data();
         objectsMap[GObjectTypes::VARIANT_TRACK] = tracks;
     }
     if (entryNum == 1) {
-        if (auto variationFormat = qobject_cast<AbstractVariationFormat *>(format)) {
+        if (auto variationFormat = qobject_cast<AbstractVariationFormat*>(format)) {
             IOAdapterWriter writer(io);
             variationFormat->storeHeader(trackObj.data(), writer, os);
             SAFE_POINT_OP(os, );
@@ -86,13 +86,13 @@ void WriteVariationWorker::storeEntry(IOAdapter *io, const QVariantMap &data, in
     SAFE_POINT_OP(os, );
 }
 
-bool WriteVariationWorker::hasDataToWrite(const QVariantMap &data) const {
+bool WriteVariationWorker::hasDataToWrite(const QVariantMap& data) const {
     return data.contains(BaseSlots::VARIATION_TRACK_SLOT().getId());
 }
 
-QSet<GObject *> WriteVariationWorker::getObjectsToWrite(const QVariantMap &data) const {
+QSet<GObject*> WriteVariationWorker::getObjectsToWrite(const QVariantMap& data) const {
     SharedDbiDataHandler objId = data[BaseSlots::VARIATION_TRACK_SLOT().getId()].value<SharedDbiDataHandler>();
-    return QSet<GObject *>() << StorageUtils::getVariantTrackObject(context->getDataStorage(), objId);
+    return QSet<GObject*>() << StorageUtils::getVariantTrackObject(context->getDataStorage(), objId);
 }
 
 /************************************************************************/
@@ -117,7 +117,7 @@ void WriteVariationWorkerFactory::init() {
                                                       " to the specified file(s) in one of the appropriate formats"
                                                       " (e.g. VCF)."));
 
-        QList<PortDescriptor *> portDescs;
+        QList<PortDescriptor*> portDescs;
         {
             QMap<Descriptor, DataTypePtr> inTypeMap;
             Descriptor writeUrlD(BaseSlots::URL_SLOT().getId(),
@@ -130,10 +130,10 @@ void WriteVariationWorkerFactory::init() {
             portDescs << new PortDescriptor(inDesc, writeVariationsType, true);
         }
 
-        QList<Attribute *> attrs;
-        Attribute *docFormatAttr;
+        QList<Attribute*> attrs;
+        Attribute* docFormatAttr;
         {
-            Attribute *accumulateAttr = new Attribute(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE(), BaseTypes::BOOL_TYPE(), false, true);
+            Attribute* accumulateAttr = new Attribute(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE(), BaseTypes::BOOL_TYPE(), false, true);
             accumulateAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
             attrs << accumulateAttr;
 
@@ -142,12 +142,12 @@ void WriteVariationWorkerFactory::init() {
             attrs << docFormatAttr;
         }
 
-        WriteDocActorProto *childProto = new WriteDocActorProto(format, protoDesc, portDescs, inDesc.getId(), attrs, true, false);
-        IntegralBusActorPrototype *proto = childProto;
+        WriteDocActorProto* childProto = new WriteDocActorProto(format, protoDesc, portDescs, inDesc.getId(), attrs, true, false);
+        IntegralBusActorPrototype* proto = childProto;
         docFormatAttr->addRelation(new FileExtensionRelation(childProto->getUrlAttr()->getId()));
 
         QVariantMap formatsMap;
-        foreach (const DocumentFormatId &fid, supportedFormats) {
+        foreach (const DocumentFormatId& fid, supportedFormats) {
             formatsMap[AppContext::getDocumentFormatRegistry()->getFormatById(fid)->getFormatName()] = fid;
         }
         proto->getEditor()->addDelegate(new ComboBoxDelegate(formatsMap), BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
@@ -159,8 +159,8 @@ void WriteVariationWorkerFactory::init() {
     }
 }
 
-Worker *WriteVariationWorkerFactory::createWorker(Actor *a) {
-    Attribute *formatAttr = a->getParameter(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
+Worker* WriteVariationWorkerFactory::createWorker(Actor* a) {
+    Attribute* formatAttr = a->getParameter(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
     QString fid = formatAttr->getAttributePureValue().toString();
     return new WriteVariationWorker(a, fid);
 }

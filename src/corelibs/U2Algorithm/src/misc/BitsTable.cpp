@@ -72,7 +72,7 @@ quint32 BitsTable::getBitMaskCharBitsNum(DNAAlphabetType al) const {
                                                                              : RAW_BITS_SIZE;
 }
 
-const quint32 *BitsTable::getBitMaskCharBits(DNAAlphabetType al) const {
+const quint32* BitsTable::getBitMaskCharBits(DNAAlphabetType al) const {
     return al == DNAAlphabet_NUCL ? NUCL_BITS : al == DNAAlphabet_AMINO ? PROTEIN_BITS
                                                                         : RAW_BITS;
 }

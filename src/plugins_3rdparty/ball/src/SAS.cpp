@@ -41,7 +41,7 @@ SolventAccessibleSurface::SolventAccessibleSurface() {
     GCOUNTER(cvar, "SolventAccessibleSurface");
 }
 
-void SolventAccessibleSurface::calculate(const QList<SharedAtom> &atoms, int & /*progress*/) {
+void SolventAccessibleSurface::calculate(const QList<SharedAtom>& atoms, int& /*progress*/) {
     BALL::Surface surface;
     {
         std::vector<BALL::TSphere3<double>> spheres;
@@ -61,7 +61,7 @@ void SolventAccessibleSurface::calculate(const QList<SharedAtom> &atoms, int & /
         triangulatedSAS.exportSurface(surface);
     }
     for (unsigned int faceIndex = 0; faceIndex < surface.getNumberOfTriangles(); faceIndex++) {
-        const BALL::Surface::Triangle &triangle = surface.getTriangle(faceIndex);
+        const BALL::Surface::Triangle& triangle = surface.getTriangle(faceIndex);
         Face face;
         for (int coordIndex = 0; coordIndex < 3; coordIndex++) {
             face.v[0][coordIndex] = surface.getVertex(triangle.v1)[coordIndex];
@@ -81,7 +81,7 @@ qint64 SolventAccessibleSurface::estimateMemoryUsage(int) {
 
 // SolventAccessibleSurfaceFactory
 
-MolecularSurface *SolventAccessibleSurfaceFactory::createInstance() const {
+MolecularSurface* SolventAccessibleSurfaceFactory::createInstance() const {
     return new SolventAccessibleSurface();
 }
 

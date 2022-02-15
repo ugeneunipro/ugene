@@ -35,7 +35,7 @@ class U2OpStatus;
 class U2CORE_EXPORT U2SequenceObject : public GObject {
     Q_OBJECT
 public:
-    U2SequenceObject(const QString &name, const U2EntityRef &seqRef, const QVariantMap &hintsMap = QVariantMap());
+    U2SequenceObject(const QString& name, const U2EntityRef& seqRef, const QVariantMap& hintsMap = QVariantMap());
 
     U2EntityRef getSequenceRef() const {
         return getEntityRef();
@@ -45,72 +45,72 @@ public:
 
     QString getSequenceName() const;
 
-    DNASequence getSequence(const U2Region &region, U2OpStatus &os) const;
-    DNASequence getWholeSequence(U2OpStatus &os) const;
+    DNASequence getSequence(const U2Region& region, U2OpStatus& os) const;
+    DNASequence getWholeSequence(U2OpStatus& os) const;
 
-    QByteArray getWholeSequenceData(U2OpStatus &os) const;
+    QByteArray getWholeSequenceData(U2OpStatus& os) const;
 
     /** Obsolete, use the next method instead */
-    QByteArray getSequenceData(const U2Region &r) const;
+    QByteArray getSequenceData(const U2Region& r) const;
 
-    QByteArray getSequenceData(const U2Region &r, U2OpStatus &os) const;
+    QByteArray getSequenceData(const U2Region& r, U2OpStatus& os) const;
 
     /** Checks whether getting object from dbi can be performed correctly, error returned through U2OpStatus */
-    bool isValidDbiObject(U2OpStatus &os);
+    bool isValidDbiObject(U2OpStatus& os);
 
-    void setWholeSequence(const DNASequence &seq);
+    void setWholeSequence(const DNASequence& seq);
 
-    virtual void setGObjectName(const QString &newName);
+    virtual void setGObjectName(const QString& newName);
 
     bool isCircular() const;
 
     void setCircular(bool v);
 
-    const DNAAlphabet *getAlphabet() const;
+    const DNAAlphabet* getAlphabet() const;
 
-    void replaceRegion(const U2Region &region, const DNASequence &seq, U2OpStatus &os);
-    void replaceRegion(const U2DataId &masterId, const U2Region &region, const DNASequence &seq, U2OpStatus &os);
+    void replaceRegion(const U2Region& region, const DNASequence& seq, U2OpStatus& os);
+    void replaceRegion(const U2DataId& masterId, const U2Region& region, const DNASequence& seq, U2OpStatus& os);
 
-    void removeRegion(U2OpStatus &os, const U2Region &region);
+    void removeRegion(U2OpStatus& os, const U2Region& region);
 
-    GObject *clone(const U2DbiRef &ref, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const;
+    GObject* clone(const U2DbiRef& ref, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const;
 
-    bool checkConstraints(const GObjectConstraints *c) const;
+    bool checkConstraints(const GObjectConstraints* c) const;
 
-    void setQuality(const DNAQuality &q);
+    void setQuality(const DNAQuality& q);
 
     DNAQuality getQuality() const;
 
-    void setSequenceInfo(const QVariantMap &info);
+    void setSequenceInfo(const QVariantMap& info);
 
     QVariantMap getSequenceInfo() const;
 
     /** Returns string attribute value of empty string if the attribute does not exist. */
-    QString getStringAttribute(const QString &name) const;
+    QString getStringAttribute(const QString& name) const;
 
     /** Sets string attribute by name.*/
-    void setStringAttribute(const QString &name, const QString &value);
+    void setStringAttribute(const QString& name, const QString& value);
 
     /** Returns integer attribute value of 0.0 if the attribute does not exist. */
-    qint64 getIntegerAttribute(const QString &name) const;
+    qint64 getIntegerAttribute(const QString& name) const;
 
     /** Sets integer attribute by name.*/
-    void setIntegerAttribute(const QString &name, int value);
+    void setIntegerAttribute(const QString& name, int value);
 
     /** Returns real attribute value of 0.0 if the attribute does not exist. */
-    double getRealAttribute(const QString &name) const;
+    double getRealAttribute(const QString& name) const;
 
     /** Sets real attribute by name. */
-    void setRealAttribute(const QString &name, double value);
+    void setRealAttribute(const QString& name, double value);
 
     /** Returns QByteArray attribute value of empty QByteArray if the attribute does not exist. */
-    QByteArray getByteArrayAttribute(const QString &name) const;
+    QByteArray getByteArrayAttribute(const QString& name) const;
 
     /** Sets QByteArray attribute by name. */
-    void setByteArrayAttribute(const QString &name, const QByteArray &value);
+    void setByteArrayAttribute(const QString& name, const QByteArray& value);
 
     /** Compares names of 2 sequence objects using '<' operator of QStrings.. */
-    static bool lessThan(const U2SequenceObject *one, const U2SequenceObject *two) {
+    static bool lessThan(const U2SequenceObject* one, const U2SequenceObject* two) {
         return one->name < two->name;
     }
 
@@ -124,7 +124,7 @@ signals:
 protected:
     void updateCachedValues() const;
 
-    mutable const DNAAlphabet *cachedAlphabet;
+    mutable const DNAAlphabet* cachedAlphabet;
     mutable qint64 cachedLength;
     mutable QString cachedName;
     mutable TriState cachedCircular;
@@ -134,7 +134,7 @@ protected:
 class U2CORE_EXPORT U2SequenceObjectConstraints : public GObjectConstraints {
     Q_OBJECT
 public:
-    U2SequenceObjectConstraints(QObject *p = nullptr);
+    U2SequenceObjectConstraints(QObject* p = nullptr);
     qint64 sequenceSize;
     DNAAlphabetType alphabetType;
 };

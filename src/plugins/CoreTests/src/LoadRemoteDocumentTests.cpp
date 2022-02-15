@@ -33,7 +33,7 @@ namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
 
-void GTest_LoadRemoteDocumentTask::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_LoadRemoteDocumentTask::init(XMLTestFormat*, const QDomElement& el) {
     dbName.clear();
     docId.clear();
     expectedDoc.clear();
@@ -63,10 +63,10 @@ void GTest_LoadRemoteDocumentTask::init(XMLTestFormat *, const QDomElement &el) 
 }
 
 void GTest_LoadRemoteDocumentTask::prepare() {
-    RemoteDBRegistry &registry = RemoteDBRegistry::getRemoteDBRegistry();
+    RemoteDBRegistry& registry = RemoteDBRegistry::getRemoteDBRegistry();
     const QList<QString> dataBases = registry.getDBs();
     bool checked = false;
-    foreach (const QString &db, dataBases) {
+    foreach (const QString& db, dataBases) {
         if (dbName == db) {
             checked = true;
         }
@@ -95,8 +95,8 @@ Task::ReportResult GTest_LoadRemoteDocumentTask::report() {
     return ReportResult_Finished;
 }
 
-QList<XMLTestFactory *> LoadRemoteDocumentTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> LoadRemoteDocumentTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_LoadRemoteDocumentTask::createFactory());
     return res;
 }

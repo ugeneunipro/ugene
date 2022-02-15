@@ -10,7 +10,7 @@ SOURCE_DIR="${TEAMCITY_WORK_DIR}/ugene_git"
 OUTPUT_DIR="${TEAMCITY_WORK_DIR}/out"
 
 # Disable crash handler
-export USE_CRASH_HANDLER=0
+export UGENE_USE_CRASH_HANDLER=0
 export UGENE_DEV=1
 
 # Disable check for updates. TODO: rename.

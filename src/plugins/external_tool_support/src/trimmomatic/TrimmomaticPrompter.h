@@ -32,13 +32,13 @@ namespace LocalWorkflow {
 class TrimmomaticPrompter : public PrompterBase<TrimmomaticPrompter> {
     Q_DECLARE_TR_FUNCTIONS(TrimmomaticPrompter)
 public:
-    TrimmomaticPrompter(Actor *actor = nullptr);
+    TrimmomaticPrompter(Actor* actor = nullptr);
 
 private:
     QString composeRichDoc();
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_TRIMMOMATIC_PROMPTER_H_
+#endif  // _U2_TRIMMOMATIC_PROMPTER_H_

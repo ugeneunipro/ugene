@@ -42,7 +42,7 @@ class CreateAnnotationWidget : public QWidget {
     friend class CreateAnnotationWidgetController;
 
 public:
-    CreateAnnotationWidget(QWidget *parent = nullptr);
+    CreateAnnotationWidget(QWidget* parent = nullptr);
 
     virtual void setGroupNameVisible(bool visible) = 0;
     virtual void setLocationVisible(bool visible) = 0;
@@ -63,12 +63,12 @@ public:
     virtual void focusAnnotationName() = 0;
     virtual void focusLocation() = 0;
 
-    virtual void setNewTablePath(const QString &path) = 0;
-    virtual void setGroupName(const QString &name) = 0;
+    virtual void setNewTablePath(const QString& path) = 0;
+    virtual void setGroupName(const QString& name) = 0;
     virtual void setAnnotationType(U2FeatureType featureType) = 0;
-    virtual void setAnnotationName(const QString &name) = 0;
-    virtual void setLocation(const U2Location &location) = 0;
-    virtual void setDescription(const QString &description) = 0;
+    virtual void setAnnotationName(const QString& name) = 0;
+    virtual void setLocation(const U2Location& location) = 0;
+    virtual void setDescription(const QString& description) = 0;
 
     virtual QString getAnnotationTypeString() const = 0;
     virtual QString getGroupName() const = 0;
@@ -88,12 +88,12 @@ public:
     virtual bool isExistingTableOptionSelected() const = 0;
     virtual bool isAutoTableOptionSelected() const = 0;
 
-    virtual void showSelectGroupMenu(QMenu &menu) = 0;
-    QPair<QWidget *, QWidget *> getTabOrderEntryAndExitPoints() const;
-    virtual GObjectComboBoxController *createGObjectComboBoxController(const GObjectComboBoxControllerConstraints &constraints) = 0;
+    virtual void showSelectGroupMenu(QMenu& menu) = 0;
+    QPair<QWidget*, QWidget*> getTabOrderEntryAndExitPoints() const;
+    virtual GObjectComboBoxController* createGObjectComboBoxController(const GObjectComboBoxControllerConstraints& constraints) = 0;
 
     virtual void countDescriptionUsage() const = 0;
-    virtual void fillSaveDocumentControllerConfig(SaveDocumentControllerConfig &config) const = 0;
+    virtual void fillSaveDocumentControllerConfig(SaveDocumentControllerConfig& config) const = 0;
 
 signals:
     void si_selectExistingTableRequest();
@@ -113,11 +113,11 @@ private slots:
     void sl_complementLocation();
 
 protected:
-    static QString getGenbankLocationString(const U2Location &location);
-    static U2Location parseGenbankLocationString(const QString &locationString);
-    static bool isComplementLocation(const QString &locationString);
+    static QString getGenbankLocationString(const U2Location& location);
+    static U2Location parseGenbankLocationString(const QString& locationString);
+    static bool isComplementLocation(const QString& locationString);
     static QStringList getFeatureTypes(bool useAminoAnnotationTypes);
-    static bool caseInsensitiveLessThan(const QString &first, const QString &second);
+    static bool caseInsensitiveLessThan(const QString& first, const QString& second);
 };
 
 }  // namespace U2

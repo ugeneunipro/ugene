@@ -65,15 +65,15 @@ public:
     bool closeViews();
 
 protected:
-    virtual Task *createServiceEnablingTask();
+    virtual Task* createServiceEnablingTask();
 
-    virtual Task *createServiceDisablingTask();
+    virtual Task* createServiceDisablingTask();
 
     virtual void serviceStateChangedCallback(ServiceState oldState, bool enabledStateChanged);
 
 public slots:
     void sl_showDesignerWindow();
-    void sl_sampleActionClicked(const SampleAction &action);
+    void sl_sampleActionClicked(const SampleAction& action);
 
 private slots:
     void sl_startWorkflowPlugin();
@@ -85,14 +85,14 @@ private:
     void initSampleActions();
 
 private:
-    QAction *designerAction;
-    QAction *managerAction;
-    QAction *newWorkflowAction;
+    QAction* designerAction;
+    QAction* managerAction;
+    QAction* newWorkflowAction;
 };
 
 class WorkflowWelcomePageAction : public WelcomePageAction {
 public:
-    WorkflowWelcomePageAction(WorkflowDesignerService *service);
+    WorkflowWelcomePageAction(WorkflowDesignerService* service);
     void perform();
 
 private:

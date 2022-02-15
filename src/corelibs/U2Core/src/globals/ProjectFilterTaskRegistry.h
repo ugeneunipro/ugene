@@ -36,13 +36,13 @@ class U2CORE_EXPORT ProjectFilterTaskRegistry {
 public:
     virtual ~ProjectFilterTaskRegistry();
 
-    QList<AbstractProjectFilterTask *> createFilterTasks(const ProjectTreeControllerModeSettings &settings,
-                                                         const QList<QPointer<Document>> &docs);
-    void registerTaskFactory(ProjectFilterTaskFactory *factory);
+    QList<AbstractProjectFilterTask*> createFilterTasks(const ProjectTreeControllerModeSettings& settings,
+                                                        const QList<QPointer<Document>>& docs);
+    void registerTaskFactory(ProjectFilterTaskFactory* factory);
 
 private:
     QMutex lock;
-    QList<ProjectFilterTaskFactory *> factories;
+    QList<ProjectFilterTaskFactory*> factories;
 };
 
 }  // namespace U2

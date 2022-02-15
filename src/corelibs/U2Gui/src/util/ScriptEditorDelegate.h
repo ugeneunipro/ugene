@@ -38,22 +38,22 @@ enum ScriptEditorType {
 class AbstractScriptEditorDelegate : public QWidget {
     Q_OBJECT
 public:
-    AbstractScriptEditorDelegate(QWidget *parent);
+    AbstractScriptEditorDelegate(QWidget* parent);
     virtual ~AbstractScriptEditorDelegate();
 
-    virtual void setText(const QString &text) = 0;
+    virtual void setText(const QString& text) = 0;
     virtual QString text() const = 0;
     virtual int cursorLineNumber() const = 0;
     virtual void installScriptHighlighter() const;
 
-    static AbstractScriptEditorDelegate *createInstance(QWidget *parent, ScriptEditorType type);
+    static AbstractScriptEditorDelegate* createInstance(QWidget* parent, ScriptEditorType type);
 
 signals:
     void si_textChanged();
     void si_cursorPositionChanged();
 
 protected:
-    QBoxLayout *layout;
+    QBoxLayout* layout;
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -61,28 +61,28 @@ protected:
 
 class LineEditDelegate : public AbstractScriptEditorDelegate {
 public:
-    LineEditDelegate(QWidget *parent);
+    LineEditDelegate(QWidget* parent);
 
-    void setText(const QString &text);
+    void setText(const QString& text);
     QString text() const;
     int cursorLineNumber() const;
 
 private:
-    QLineEdit *edit;
+    QLineEdit* edit;
 };
 
 class TextEditDelegate : public AbstractScriptEditorDelegate {
     Q_OBJECT
 public:
-    TextEditDelegate(QWidget *parent);
+    TextEditDelegate(QWidget* parent);
 
-    void setText(const QString &text);
+    void setText(const QString& text);
     QString text() const;
     int cursorLineNumber() const;
     void installScriptHighlighter() const;
 
 private:
-    QTextEdit *edit;
+    QTextEdit* edit;
 };
 
 }  // namespace U2

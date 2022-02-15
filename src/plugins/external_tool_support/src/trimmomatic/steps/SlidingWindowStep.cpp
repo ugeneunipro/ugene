@@ -47,11 +47,11 @@ SlidingWindowStep::SlidingWindowStep()
                      "</body></html>");
 }
 
-TrimmomaticStepSettingsWidget *SlidingWindowStep::createWidget() const {
+TrimmomaticStepSettingsWidget* SlidingWindowStep::createWidget() const {
     return new SlidingWindowSettingsWidget();
 }
 
-QString SlidingWindowStep::serializeState(const QVariantMap &widgetState) const {
+QString SlidingWindowStep::serializeState(const QVariantMap& widgetState) const {
     QString serializedState;
     if (widgetState.contains(SlidingWindowSettingsWidget::WINDOW_SIZE)) {
         serializedState += QString::number(widgetState.value(SlidingWindowSettingsWidget::WINDOW_SIZE).toInt());
@@ -63,7 +63,7 @@ QString SlidingWindowStep::serializeState(const QVariantMap &widgetState) const 
     return serializedState;
 }
 
-QVariantMap SlidingWindowStep::parseState(const QString &command) const {
+QVariantMap SlidingWindowStep::parseState(const QString& command) const {
     QVariantMap state;
     QRegExp regExp(id + ":" + "(\\d*)" + ":" + "(\\d*)");
 
@@ -120,7 +120,7 @@ QVariantMap SlidingWindowSettingsWidget::getState() const {
     return state;
 }
 
-void SlidingWindowSettingsWidget::setState(const QVariantMap &state) {
+void SlidingWindowSettingsWidget::setState(const QVariantMap& state) {
     bool contains = state.contains(WINDOW_SIZE);
     bool valid = false;
     const int windowSize = state.value(WINDOW_SIZE).toInt(&valid);
@@ -139,9 +139,9 @@ SlidingWindowStepFactory::SlidingWindowStepFactory()
     : TrimmomaticStepFactory(ID) {
 }
 
-SlidingWindowStep *SlidingWindowStepFactory::createStep() const {
+SlidingWindowStep* SlidingWindowStepFactory::createStep() const {
     return new SlidingWindowStep();
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

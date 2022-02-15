@@ -31,39 +31,39 @@ namespace Workflow {
 
 class U2LANG_EXPORT SlotAlias {
 public:
-    SlotAlias(const Port *sourcePort, const QString &slotId, const QString &alias);
+    SlotAlias(const Port* sourcePort, const QString& slotId, const QString& alias);
 
-    const Port *getSourcePort() const;
+    const Port* getSourcePort() const;
     QString getSourceSlotId() const;
     QString getAlias() const;
 
 private:
-    const Port *port;
+    const Port* port;
     QString slotId;
     QString alias;
 };
 
 class U2LANG_EXPORT PortAlias {
 public:
-    PortAlias(const Port *sourcePort, const QString &alias, const QString &description);
-    bool operator==(const PortAlias &another);
+    PortAlias(const Port* sourcePort, const QString& alias, const QString& description);
+    bool operator==(const PortAlias& another);
 
     // these return true if adding is successful
-    bool addSlot(const SlotAlias &slot);
-    bool addSlot(const Port *sourcePort, const QString &slotId, const QString &alias);
+    bool addSlot(const SlotAlias& slot);
+    bool addSlot(const Port* sourcePort, const QString& slotId, const QString& alias);
 
-    const Port *getSourcePort() const;
+    const Port* getSourcePort() const;
     QString getAlias() const;
     QString getDescription() const;
-    const QList<SlotAlias> &getSlotAliases() const;
+    const QList<SlotAlias>& getSlotAliases() const;
 
-    void setNewSlotAliases(const QList<SlotAlias> &newSlotAliases);
-    void setNewSourcePort(const Port *sourcePort);
+    void setNewSlotAliases(const QList<SlotAlias>& newSlotAliases);
+    void setNewSourcePort(const Port* sourcePort);
 
     bool isInput() const;
 
 private:
-    const Port *port;
+    const Port* port;
     QString alias;
     QString description;
     QList<SlotAlias> slotAliases;

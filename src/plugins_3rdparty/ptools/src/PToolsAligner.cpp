@@ -32,12 +32,12 @@ namespace U2 {
 
 /* class PToolsAligner : public StructuralAlignmentAlgorithm */
 
-static PTools::Rigidbody *createRigidBody(const BioStruct3DReference &subset) {
-    PTools::Rigidbody *body = new PTools::Rigidbody();
-    const BioStruct3D &biostruct = subset.obj->getBioStruct3D();
+static PTools::Rigidbody* createRigidBody(const BioStruct3DReference& subset) {
+    PTools::Rigidbody* body = new PTools::Rigidbody();
+    const BioStruct3D& biostruct = subset.obj->getBioStruct3D();
 
     foreach (int chainId, subset.chains) {
-        const Molecule3DModel &model = biostruct.getModelByName(chainId, subset.modelId);
+        const Molecule3DModel& model = biostruct.getModelByName(chainId, subset.modelId);
 
         U2Region region;
         if (subset.chains.size() == 1) {
@@ -50,7 +50,7 @@ static PTools::Rigidbody *createRigidBody(const BioStruct3DReference &subset) {
 
         // built in assumtion that order of atoms in BioStruct3D matches order of residues
         int i = 0;
-        foreach (const SharedAtom &atom, model.atoms) {
+        foreach (const SharedAtom& atom, model.atoms) {
             // take into account only CA atoms (backbone) because subsets may have different residues,
             // i.e. different number of atoms on the same nuber of residues
             if (atom->name == "CA") {
@@ -60,7 +60,7 @@ static PTools::Rigidbody *createRigidBody(const BioStruct3DReference &subset) {
                     pproperty.SetResidId(atom->residueIndex.toInt());
                     // pproperty.SetAtomId();
 
-                    const Vector3D &coord = atom->coord3d;
+                    const Vector3D& coord = atom->coord3d;
                     PTools::Coord3D pcoord(coord.x, coord.y, coord.z);
 
                     PTools::Atom patom(pproperty, pcoord);
@@ -75,7 +75,7 @@ static PTools::Rigidbody *createRigidBody(const BioStruct3DReference &subset) {
 }
 
 /** @returns Number of residues (CA atoms) in subset */
-static int getSubsetSize(const BioStruct3DReference &subset) {
+static int getSubsetSize(const BioStruct3DReference& subset) {
     int res = 0;
     if (subset.chains.size() == 1) {
         // lenggth of region
@@ -91,7 +91,7 @@ static int getSubsetSize(const BioStruct3DReference &subset) {
     return res;
 }
 
-QString PToolsAligner::validate(const StructuralAlignmentTaskSettings &settings) {
+QString PToolsAligner::validate(const StructuralAlignmentTaskSettings& settings) {
     int refSize = getSubsetSize(settings.ref), altSize = getSubsetSize(settings.alt);
     if (refSize != altSize) {
         return QString("structure subsets has different size (number of residues)");
@@ -100,7 +100,7 @@ QString PToolsAligner::validate(const StructuralAlignmentTaskSettings &settings)
     return QString();
 }
 
-StructuralAlignment PToolsAligner::align(const StructuralAlignmentTaskSettings &settings, TaskStateInfo &state) {
+StructuralAlignment PToolsAligner::align(const StructuralAlignmentTaskSettings& settings, TaskStateInfo& state) {
     algoLog.trace(QString("PToolsAligner started on %1 (reference) vs %2").arg(settings.ref.print(), settings.alt.print()));
 
     QString error;
@@ -120,7 +120,7 @@ StructuralAlignment PToolsAligner::align(const StructuralAlignmentTaskSettings &
                 result.transform[i] = presult.matrix(i / 4, i % 4);
             }
         }
-    } catch (const std::exception &e) {
+    } catch (const std::exception& e) {
         error = QString("Internal ptools error: %1").arg(e.what());
     } catch (...) {
         error = QString("Internal ptools error");

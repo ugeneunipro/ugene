@@ -33,7 +33,7 @@ namespace U2 {
 class U2GUI_EXPORT PluginViewer : public Service {
     Q_OBJECT
 public:
-    PluginViewer(const QString &name, const QString &desc)
+    PluginViewer(const QString& name, const QString& desc)
         : Service(Service_PluginViewer, name, desc) {
     }
 };

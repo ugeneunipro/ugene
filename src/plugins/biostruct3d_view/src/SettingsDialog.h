@@ -65,10 +65,10 @@ private slots:
 public:
     // anaglyph related settings
     AnaglyphStatus getAnaglyphStatus() const;
-    const AnaglyphSettings &getAnaglyphSettings() const;
+    const AnaglyphSettings& getAnaglyphSettings() const;
 
     void setAnaglyphStatus(AnaglyphStatus status);
-    void setAnaglyphSettings(const AnaglyphSettings &settings);
+    void setAnaglyphSettings(const AnaglyphSettings& settings);
 
     void setRightEyeColor(QColor rightEyecolor);
     void setLeftEyeColor(QColor leftEyecolor);
@@ -82,18 +82,18 @@ public:
     void setBackgroundColor(QColor color);
     void setSelectionColor(QColor color);
 
-    void setGlassesColorScheme(QColor &leftEyeColor, QColor &rightEyeColor);
+    void setGlassesColorScheme(QColor& leftEyeColor, QColor& rightEyeColor);
     void setGlassesColorScheme(int num);
 
     void setRenderDetailLevel(float renderDetailLevel);
     void setShadingLevel(int shading);
 
-    void setWidget(BioStruct3DGLWidget *glWidget);
+    void setWidget(BioStruct3DGLWidget* glWidget);
 
 private:
     QVariantMap state;
 
-    BioStruct3DGLWidget *glWidget;
+    BioStruct3DGLWidget* glWidget;
     QList<GlassesColorScheme> glassesColorSchemes;
 
     void initColorSchemes();

@@ -39,7 +39,7 @@ FSItem::FSItem()
     : parentItem(nullptr), dir(false) {
 }
 
-FSItem::FSItem(const QString &name, bool isDirectory, FSItem *parent)
+FSItem::FSItem(const QString& name, bool isDirectory, FSItem* parent)
     : parentItem(parent), itemName(name), dir(isDirectory) {
 }
 
@@ -55,16 +55,16 @@ QString FSItem::name() const {
     return itemName;
 }
 
-QVector<FSItem *> FSItem::children() const {
-    SAFE_POINT(isDir(), "Files can not have children", QVector<FSItem *>());
+QVector<FSItem*> FSItem::children() const {
+    SAFE_POINT(isDir(), "Files can not have children", QVector<FSItem*>());
     return items;
 }
 
-FSItem *FSItem::parent() const {
+FSItem* FSItem::parent() const {
     return parentItem;
 }
 
-FSItem *FSItem::child(int pos) const {
+FSItem* FSItem::child(int pos) const {
     SAFE_POINT(isDir(), "Files can not have children", nullptr);
     if (pos >= items.size() || pos < 0) {
         return nullptr;
@@ -74,19 +74,19 @@ FSItem *FSItem::child(int pos) const {
 
 int FSItem::row() const {
     CHECK(nullptr != parentItem, 0);
-    return parentItem->items.indexOf(const_cast<FSItem *>(this));
+    return parentItem->items.indexOf(const_cast<FSItem*>(this));
 }
 
-bool FSItem::contains(const QString &name) const {
+bool FSItem::contains(const QString& name) const {
     SAFE_POINT(isDir(), "Files can not have children", false);
     return (nullptr != getItem(children(), name));
 }
 
-void FSItem::rename(const QString &newName) {
+void FSItem::rename(const QString& newName) {
     itemName = newName;
 }
 
-void FSItem::addChild(FSItem *item) {
+void FSItem::addChild(FSItem* item) {
     SAFE_POINT(isDir(), "Files can not have children", );
     SAFE_POINT(!contains(item->name()), "This item already exists: " + item->name(), );
 
@@ -95,10 +95,10 @@ void FSItem::addChild(FSItem *item) {
     item->parentItem = this;
 }
 
-int FSItem::posToInsert(FSItem *item) const {
+int FSItem::posToInsert(FSItem* item) const {
     int pos = 0;
     while (pos < items.size()) {
-        FSItem *i = items[pos];
+        FSItem* i = items[pos];
         if (i->isDir() && !item->isDir()) {
             pos++;
             continue;
@@ -113,9 +113,9 @@ int FSItem::posToInsert(FSItem *item) const {
     return pos;
 }
 
-void FSItem::removeChild(const QString &name, U2OpStatus &os) {
+void FSItem::removeChild(const QString& name, U2OpStatus& os) {
     SAFE_POINT(isDir(), "Files can not have children", );
-    FSItem *item = FSItem::getItem(children(), name);
+    FSItem* item = FSItem::getItem(children(), name);
     SAFE_POINT(nullptr != item, "No child with the name " + name, );
 
     if (item->isDir() && !item->children().isEmpty()) {
@@ -125,8 +125,8 @@ void FSItem::removeChild(const QString &name, U2OpStatus &os) {
     items.remove(items.indexOf(item));
 }
 
-FSItem *FSItem::getItem(const QVector<FSItem *> &items, const QString &name) {
-    foreach (FSItem *item, items) {
+FSItem* FSItem::getItem(const QVector<FSItem*>& items, const QString& name) {
+    foreach (FSItem* item, items) {
         if (item->name() == name) {
             return item;
         }
@@ -135,7 +135,7 @@ FSItem *FSItem::getItem(const QVector<FSItem *> &items, const QString &name) {
 }
 
 void FSItem::noChildren() {
-    foreach (FSItem *item, items) {
+    foreach (FSItem* item, items) {
         item->parentItem = nullptr;
     }
     items.clear();
@@ -144,7 +144,7 @@ void FSItem::noChildren() {
 /************************************************************************/
 /* RunFileSystem */
 /************************************************************************/
-RunFileSystem::RunFileSystem(QObject *parent)
+RunFileSystem::RunFileSystem(QObject* parent)
     : QObject(parent) {
     root = new FSItem(tr("Workflow-run output"), true);
 }
@@ -153,34 +153,34 @@ RunFileSystem::~RunFileSystem() {
     delete root;
 }
 
-bool RunFileSystem::contains(const QString &pathStr) {
+bool RunFileSystem::contains(const QString& pathStr) {
     bool found = false;
     find(getPath(pathStr), found);
     return found;
 }
 
-bool RunFileSystem::canAdd(const QString &pathStr, bool isDirectory) {
+bool RunFileSystem::canAdd(const QString& pathStr, bool isDirectory) {
     CHECK(RFSUtils::isCorrectUrl(pathStr), false);
     QStringList parentPath;
     QString name;
     CHECK(getPath(pathStr, parentPath, name), false);
 
-    FSItem *current = root;
-    foreach (const QString &dirName, parentPath) {
+    FSItem* current = root;
+    foreach (const QString& dirName, parentPath) {
         CHECK(current->isDir(), false);
-        FSItem *item = FSItem::getItem(current->children(), dirName);
+        FSItem* item = FSItem::getItem(current->children(), dirName);
         CHECK(nullptr != item, true);
         current = item;
     }
 
     CHECK(current->contains(name), true);
-    FSItem *target = FSItem::getItem(current->children(), name);
+    FSItem* target = FSItem::getItem(current->children(), name);
     return (target->isDir() == isDirectory);
 }
 
-void RunFileSystem::addItem(const QString &pathStr, bool isDirectory, U2OpStatus &os) {
+void RunFileSystem::addItem(const QString& pathStr, bool isDirectory, U2OpStatus& os) {
     QStringList path = getPath(pathStr);
-    FSItem *dir = createPath(path.mid(0, path.size() - 1), os);
+    FSItem* dir = createPath(path.mid(0, path.size() - 1), os);
     CHECK_OP(os, );
 
     if (dir->contains(path.last())) {
@@ -191,13 +191,13 @@ void RunFileSystem::addItem(const QString &pathStr, bool isDirectory, U2OpStatus
     dir->addChild(new FSItem(path.last(), isDirectory));
 }
 
-void RunFileSystem::removeItem(const QString &pathStr, U2OpStatus &os) {
+void RunFileSystem::removeItem(const QString& pathStr, U2OpStatus& os) {
     QStringList path = getPath(pathStr);
     QStringList parentPath = path.mid(0, path.size() - 1);
     QString name = path.last();
 
     bool found = true;
-    FSItem *parent = find(parentPath, found);
+    FSItem* parent = find(parentPath, found);
     if (!found) {
         os.setError(parentPath.join("/") + " does not exist");
         return;
@@ -216,20 +216,20 @@ void RunFileSystem::reset() {
     root->items.clear();
 }
 
-FSItem *RunFileSystem::getRoot() {
+FSItem* RunFileSystem::getRoot() {
     return root;
 }
 
-FSItem *RunFileSystem::find(const QStringList &path, bool &found) {
+FSItem* RunFileSystem::find(const QStringList& path, bool& found) {
     found = true;
-    FSItem *current = root;
-    foreach (const QString &name, path) {
+    FSItem* current = root;
+    foreach (const QString& name, path) {
         if (!current->isDir()) {
             found = false;
             break;
         }
 
-        FSItem *item = FSItem::getItem(current->children(), name);
+        FSItem* item = FSItem::getItem(current->children(), name);
         if (nullptr == item) {
             found = false;
             break;
@@ -239,11 +239,11 @@ FSItem *RunFileSystem::find(const QStringList &path, bool &found) {
     return current;
 }
 
-FSItem *RunFileSystem::createPath(const QStringList &path, U2OpStatus &os) {
-    FSItem *current = root;
+FSItem* RunFileSystem::createPath(const QStringList& path, U2OpStatus& os) {
+    FSItem* current = root;
     QString pathStr = root->name();
-    foreach (const QString &dirName, path) {
-        FSItem *item = FSItem::getItem(current->children(), dirName);
+    foreach (const QString& dirName, path) {
+        FSItem* item = FSItem::getItem(current->children(), dirName);
         if (nullptr == item) {
             item = new FSItem(dirName, true);
             current->addChild(item);
@@ -258,13 +258,13 @@ FSItem *RunFileSystem::createPath(const QStringList &path, U2OpStatus &os) {
     return current;
 }
 
-QStringList RunFileSystem::getPath(const QString &pathStr) const {
+QStringList RunFileSystem::getPath(const QString& pathStr) const {
     QString correctPath = pathStr;
     correctPath.replace("\\", "/");
     return correctPath.split("/", QString::SkipEmptyParts);
 }
 
-bool RunFileSystem::getPath(const QString &pathStr, QStringList &parentPath, QString &name) const {
+bool RunFileSystem::getPath(const QString& pathStr, QStringList& parentPath, QString& name) const {
     QStringList path = getPath(pathStr);
     CHECK(!path.isEmpty(), false);
     parentPath = path.mid(0, path.size() - 1);
@@ -272,7 +272,7 @@ bool RunFileSystem::getPath(const QString &pathStr, QStringList &parentPath, QSt
     return true;
 }
 
-void RunFileSystem::test(const QString &file) {
+void RunFileSystem::test(const QString& file) {
     QFile f(file);
     f.open(QIODevice::WriteOnly);
     f.write(test(*root).join("\n").toLatin1());
@@ -281,15 +281,15 @@ void RunFileSystem::test(const QString &file) {
     return;
 }
 
-QStringList RunFileSystem::test(FSItem &root) {
+QStringList RunFileSystem::test(FSItem& root) {
     QStringList result;
-    for (QVector<FSItem *>::Iterator i = root.items.begin(); i != root.items.end(); i++) {
+    for (QVector<FSItem*>::Iterator i = root.items.begin(); i != root.items.end(); i++) {
         if ((*i)->isDir()) {
             QStringList mid = test(*(*i));
             if (mid.isEmpty()) {
                 result << root.name() + "/" + (*i)->name() + "/";
             } else {
-                foreach (const QString &m, mid) {
+                foreach (const QString& m, mid) {
                     result << root.name() + "/" + m;
                 }
             }
@@ -303,14 +303,14 @@ QStringList RunFileSystem::test(FSItem &root) {
 /************************************************************************/
 /* RFSUtils */
 /************************************************************************/
-void RFSUtils::initRFS(RunFileSystem &rfs, const QList<Workflow::Actor *> &actors, SchemaConfig *cfg) {
+void RFSUtils::initRFS(RunFileSystem& rfs, const QList<Workflow::Actor*>& actors, SchemaConfig* cfg) {
     rfs.reset();
     {  // add report dir
         U2OpStatus2Log os;
         rfs.addItem("report", true, os);
     }
-    for (Workflow::Actor *actor : qAsConst(actors)) {
-        foreach (Attribute *attr, actor->getParameters()) {
+    for (Workflow::Actor* actor : qAsConst(actors)) {
+        foreach (Attribute* attr, actor->getParameters()) {
             bool dir = false;
             if (!isOutUrlAttribute(attr, actor, dir)) {
                 continue;
@@ -336,11 +336,11 @@ void RFSUtils::initRFS(RunFileSystem &rfs, const QList<Workflow::Actor *> &actor
     }
 }
 
-bool RFSUtils::isOutUrlAttribute(Attribute *attr, Workflow::Actor *actor, bool &dir) {
-    ConfigurationEditor *editor = actor->getEditor();
+bool RFSUtils::isOutUrlAttribute(Attribute* attr, Workflow::Actor* actor, bool& dir) {
+    ConfigurationEditor* editor = actor->getEditor();
     CHECK(editor != nullptr, false);
 
-    PropertyDelegate *delegate = editor->getDelegate(attr->getId());
+    PropertyDelegate* delegate = editor->getDelegate(attr->getId());
     CHECK(delegate != nullptr, false);
 
     dir = delegate->type() == PropertyDelegate::OUTPUT_DIR;
@@ -353,7 +353,7 @@ bool RFSUtils::isOutUrlAttribute(Attribute *attr, Workflow::Actor *actor, bool &
     return false;
 }
 
-bool RFSUtils::isCorrectUrl(const QString &url) {
+bool RFSUtils::isCorrectUrl(const QString& url) {
     if (url.isEmpty()) {
         return false;
     }

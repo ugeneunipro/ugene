@@ -44,7 +44,7 @@
 namespace HI {
 #define GT_CLASS_NAME "GTFileDialogUtils"
 
-GTFileDialogUtils::GTFileDialogUtils(GUITestOpStatus &_os, const QString &_path, const QString &_fileName, Button _button, GTGlobals::UseMethod _method, TextInput textInput, const QString &_filter)
+GTFileDialogUtils::GTFileDialogUtils(GUITestOpStatus& _os, const QString& _path, const QString& _fileName, Button _button, GTGlobals::UseMethod _method, TextInput textInput, const QString& _filter)
     : Filler(_os, "QFileDialog"),
       fileName(_fileName),
       button(_button),
@@ -54,7 +54,7 @@ GTFileDialogUtils::GTFileDialogUtils(GUITestOpStatus &_os, const QString &_path,
     init(_path + "/" + fileName);
 }
 
-GTFileDialogUtils::GTFileDialogUtils(GUITestOpStatus &os, const QString &filePath, GTGlobals::UseMethod method, Button b, TextInput textInput, const QString &_filter)
+GTFileDialogUtils::GTFileDialogUtils(GUITestOpStatus& os, const QString& filePath, GTGlobals::UseMethod method, Button b, TextInput textInput, const QString& _filter)
     : Filler(os, "QFileDialog"),
       button(b),
       method(method),
@@ -63,7 +63,7 @@ GTFileDialogUtils::GTFileDialogUtils(GUITestOpStatus &os, const QString &filePat
     init(filePath);
 }
 
-GTFileDialogUtils::GTFileDialogUtils(GUITestOpStatus &os, CustomScenario *customScenario)
+GTFileDialogUtils::GTFileDialogUtils(GUITestOpStatus& os, CustomScenario* customScenario)
     : Filler(os, "QFileDialog", customScenario),
       button(Open),
       method(GTGlobals::UseMouse),
@@ -103,7 +103,7 @@ void GTFileDialogUtils::commonScenario() {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "init"
-void GTFileDialogUtils::init(const QString &filePath) {
+void GTFileDialogUtils::init(const QString& filePath) {
     const QFileInfo fileInfo(filePath);
     path = fileInfo.absoluteDir().absolutePath();
     fileName = fileInfo.fileName();
@@ -113,15 +113,15 @@ void GTFileDialogUtils::init(const QString &filePath) {
 }
 #undef GT_METHOD_NAME
 
-GTFileDialogUtils_list::GTFileDialogUtils_list(GUITestOpStatus &_os, const QString &_path, const QStringList &_fileNamesList)
+GTFileDialogUtils_list::GTFileDialogUtils_list(GUITestOpStatus& _os, const QString& _path, const QStringList& _fileNamesList)
     : GTFileDialogUtils(_os, _path, "", Open, GTGlobals::UseMouse),
       fileNamesList(_fileNamesList) {
-    for (const QString &name : qAsConst(fileNamesList)) {
+    for (const QString& name : qAsConst(fileNamesList)) {
         filePaths << _path + "/" + name;
     }
 }
 
-GTFileDialogUtils_list::GTFileDialogUtils_list(GUITestOpStatus &os, const QStringList &_filePaths)
+GTFileDialogUtils_list::GTFileDialogUtils_list(GUITestOpStatus& os, const QStringList& _filePaths)
     : GTFileDialogUtils(os, "", "", Open, GTGlobals::UseMouse),
       filePaths(_filePaths) {
 }
@@ -137,7 +137,7 @@ void GTFileDialogUtils_list::commonScenario() {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setNameList"
-void GTFileDialogUtils_list::setNameList(GUITestOpStatus &os, const QStringList &nameList, QWidget *parent) {
+void GTFileDialogUtils_list::setNameList(GUITestOpStatus& os, const QStringList& nameList, QWidget* parent) {
     QString str;
     for (QString name : qAsConst(nameList)) {
         if (QFileInfo(name).isRelative()) {
@@ -152,7 +152,7 @@ void GTFileDialogUtils_list::setNameList(GUITestOpStatus &os, const QStringList 
 
 void GTFileDialogUtils_list::selectFile() {
     GTKeyboardDriver::keyPress(Qt::Key_Control);
-    for (const QString &name : qAsConst(fileNamesList)) {
+    for (const QString& name : qAsConst(fileNamesList)) {
         GTFileDialogUtils::fileName = name;
         GTFileDialogUtils::selectFile();
     }
@@ -200,7 +200,7 @@ void GTFileDialogUtils::setName() {
 void GTFileDialogUtils::selectFile() {
     auto treeWidget = GTWidget::findTreeView(os, "treeView", fileDialog);
 
-    auto model = qobject_cast<QFileSystemModel *>(treeWidget->model());
+    auto model = qobject_cast<QFileSystemModel*>(treeWidget->model());
     GT_CHECK(model != nullptr, "QFileSystemModel is null");
 
     QModelIndex index = model->index(path + fileName);
@@ -230,7 +230,7 @@ void GTFileDialogUtils::selectFile() {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickButton"
-void GTFileDialogUtils::clickButton(const Button &buttonType) {
+void GTFileDialogUtils::clickButton(const Button& buttonType) {
     static const QMap<Button, QString> BUTTON_NAME_MAP = {
         {Open, "Open"},
         {Cancel, "Cancel"},
@@ -257,7 +257,7 @@ void GTFileDialogUtils::clickButton(const Button &buttonType) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setViewMode"
-void GTFileDialogUtils::setViewMode(const ViewMode &viewMode) {
+void GTFileDialogUtils::setViewMode(const ViewMode& viewMode) {
     static const QMap<ViewMode, QString> BUTTON_NAME_MAP = {
         {List, "listModeButton"},
         {Detail, "detailModeButton"},
@@ -292,7 +292,7 @@ void GTFileDialogUtils::applyFilter() {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openFile"
-void GTFileDialog::openFile(GUITestOpStatus &os, const QString &path, const QString &fileName, Button button, GTGlobals::UseMethod m) {
+void GTFileDialog::openFile(GUITestOpStatus& os, const QString& path, const QString& fileName, Button button, GTGlobals::UseMethod m) {
     bool isDirectApiMode = button == Open && qgetenv("UGENE_USE_DIRECT_API_TO_OPEN_FILES") == "1";
     if (!isDirectApiMode) {
         openFileWithDialog(os, path, fileName, button, m);
@@ -300,10 +300,10 @@ void GTFileDialog::openFile(GUITestOpStatus &os, const QString &path, const QStr
     }
     class OpenFileScenario : public CustomScenario {
     public:
-        OpenFileScenario(const QString &pathToFile)
+        OpenFileScenario(const QString& pathToFile)
             : pathToFile(pathToFile) {
         }
-        void run(HI::GUITestOpStatus &os) override {
+        void run(HI::GUITestOpStatus& os) override {
             auto openFileTask = U2::AppContext::getProjectLoader()->openWithProjectTask(pathToFile);
             if (openFileTask == nullptr) {
                 os.setError("Failed to create open file task: " + pathToFile + ". Is the file already in the project?");
@@ -319,7 +319,7 @@ void GTFileDialog::openFile(GUITestOpStatus &os, const QString &path, const QStr
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openFileWithDialog"
-void GTFileDialog::openFileWithDialog(GUITestOpStatus &os, const QString &path, const QString &fileName, Button button, GTGlobals::UseMethod m) {
+void GTFileDialog::openFileWithDialog(GUITestOpStatus& os, const QString& path, const QString& fileName, Button button, GTGlobals::UseMethod m) {
     auto utils = new GTFileDialogUtils(os, path, fileName, (GTFileDialogUtils::Button)button, m);
     GTUtilsDialog::waitForDialog(os, utils);
     utils->openFileDialog();
@@ -328,7 +328,7 @@ void GTFileDialog::openFileWithDialog(GUITestOpStatus &os, const QString &path, 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openFileByPath"
-void GTFileDialog::openFile(GUITestOpStatus &os, const QString &filePath, Button button, GTGlobals::UseMethod m) {
+void GTFileDialog::openFile(GUITestOpStatus& os, const QString& filePath, Button button, GTGlobals::UseMethod m) {
     int num = filePath.lastIndexOf('/');
     if (num == -1) {
         num = filePath.lastIndexOf('\\');
@@ -341,19 +341,19 @@ void GTFileDialog::openFile(GUITestOpStatus &os, const QString &filePath, Button
 }
 #undef GT_METHOD_NAME
 
-void GTFileDialog::openFileList(GUITestOpStatus &os, const QString &path, const QStringList &fileNameList) {
+void GTFileDialog::openFileList(GUITestOpStatus& os, const QString& path, const QStringList& fileNameList) {
     auto fileListFiller = new GTFileDialogUtils_list(os, path, fileNameList);
     GTUtilsDialog::waitForDialog(os, fileListFiller);
     fileListFiller->openFileDialog();
 }
 
-void GTFileDialog::openFileList(GUITestOpStatus &os, const QStringList &filePaths) {
-    GTFileDialogUtils_list *openFileDialogFiller = new GTFileDialogUtils_list(os, filePaths);
+void GTFileDialog::openFileList(GUITestOpStatus& os, const QStringList& filePaths) {
+    GTFileDialogUtils_list* openFileDialogFiller = new GTFileDialogUtils_list(os, filePaths);
     GTUtilsDialog::waitForDialog(os, openFileDialogFiller);
     openFileDialogFiller->openFileDialog();
 }
 
-QString GTFileDialog::toAbsoluteNativePath(const QString &path, bool appendSlash) {
+QString GTFileDialog::toAbsoluteNativePath(const QString& path, bool appendSlash) {
     QString result = path;
     if (!QFileInfo(result).isAbsolute()) {
         result = QDir::currentPath() + "/" + result;

@@ -36,7 +36,7 @@ class SaveDocumentController;
 class U2GUI_EXPORT RemovePartFromSequenceDialogController : public QDialog {
     Q_OBJECT
 public:
-    RemovePartFromSequenceDialogController(U2Region _toDelete, U2Region _source, const QString &docUrl, QWidget *p = nullptr);
+    RemovePartFromSequenceDialogController(U2Region _toDelete, U2Region _source, const QString& docUrl, QWidget* p = nullptr);
     ~RemovePartFromSequenceDialogController();
     void accept();
 
@@ -52,13 +52,13 @@ private slots:
     void sl_mergeAnnotationsToggled(bool);
 
 private:
-    void initSaveController(const QString &docUrl);
+    void initSaveController(const QString& docUrl);
 
     QString filter;
     U2Region toDelete;
     U2Region source;
-    Ui_RemovePartFromSequenceDialog *ui;
-    SaveDocumentController *saveController;
+    Ui_RemovePartFromSequenceDialog* ui;
+    SaveDocumentController* saveController;
 };
 
 }  // namespace U2

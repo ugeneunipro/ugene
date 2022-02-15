@@ -43,7 +43,7 @@ TreeViewerFactory::TreeViewerFactory()
     : GObjectViewFactory(ID, tr("Phylogenetic tree viewer")) {
 }
 
-bool TreeViewerFactory::canCreateView(const MultiGSelection &multiSelection) {
+bool TreeViewerFactory::canCreateView(const MultiGSelection& multiSelection) {
     bool hasPhyDocuments = !SelectionUtils::findDocumentsWithObjects(
                                 GObjectTypes::PHYLOGENETIC_TREE, &multiSelection, UOF_LoadedAndUnloaded, true)
                                 .isEmpty();
@@ -55,18 +55,18 @@ bool TreeViewerFactory::canCreateView(const MultiGSelection &multiSelection) {
 
 #define MAX_VIEWS 10
 
-Task *TreeViewerFactory::createViewTask(const MultiGSelection &multiSelection, bool single) {
-    QList<GObject *> phyObjects = SelectionUtils::findObjects(GObjectTypes::PHYLOGENETIC_TREE, &multiSelection, UOF_LoadedAndUnloaded);
-    QSet<Document *> docsWithPhy = SelectionUtils::findDocumentsWithObjects(GObjectTypes::PHYLOGENETIC_TREE,
-                                                                            &multiSelection,
-                                                                            UOF_LoadedAndUnloaded,
-                                                                            false);
-    QList<OpenTreeViewerTask *> resTasks;
+Task* TreeViewerFactory::createViewTask(const MultiGSelection& multiSelection, bool single) {
+    QList<GObject*> phyObjects = SelectionUtils::findObjects(GObjectTypes::PHYLOGENETIC_TREE, &multiSelection, UOF_LoadedAndUnloaded);
+    QSet<Document*> docsWithPhy = SelectionUtils::findDocumentsWithObjects(GObjectTypes::PHYLOGENETIC_TREE,
+                                                                           &multiSelection,
+                                                                           UOF_LoadedAndUnloaded,
+                                                                           false);
+    QList<OpenTreeViewerTask*> resTasks;
 
-    foreach (Document *doc, docsWithPhy) {
-        QList<GObject *> docObjs = doc->findGObjectByType(GObjectTypes::PHYLOGENETIC_TREE, UOF_LoadedAndUnloaded);
+    foreach (Document* doc, docsWithPhy) {
+        QList<GObject*> docObjs = doc->findGObjectByType(GObjectTypes::PHYLOGENETIC_TREE, UOF_LoadedAndUnloaded);
         if (!docObjs.isEmpty()) {
-            foreach (GObject *obj, docObjs) {
+            foreach (GObject* obj, docObjs) {
                 if (!phyObjects.contains(obj)) {
                     phyObjects.append(obj);
                 }
@@ -80,15 +80,15 @@ Task *TreeViewerFactory::createViewTask(const MultiGSelection &multiSelection, b
     }
 
     if (!phyObjects.isEmpty()) {
-        foreach (GObject *o, phyObjects) {
+        foreach (GObject* o, phyObjects) {
             if (resTasks.size() == MAX_VIEWS) {
                 break;
             }
             if (o->getGObjectType() == GObjectTypes::UNLOADED) {
-                resTasks.append(new OpenTreeViewerTask(qobject_cast<UnloadedObject *>(o)));
+                resTasks.append(new OpenTreeViewerTask(qobject_cast<UnloadedObject*>(o)));
             } else {
                 assert(o->getGObjectType() == GObjectTypes::PHYLOGENETIC_TREE);
-                resTasks.append(new OpenTreeViewerTask(qobject_cast<PhyTreeObject *>(o)));
+                resTasks.append(new OpenTreeViewerTask(qobject_cast<PhyTreeObject*>(o)));
             }
         }
     }
@@ -101,36 +101,36 @@ Task *TreeViewerFactory::createViewTask(const MultiGSelection &multiSelection, b
         return resTasks.first();
     }
 
-    Task *result = new Task(tr("Open multiple views"), TaskFlag_NoRun);
-    foreach (Task *t, resTasks) {
+    Task* result = new Task(tr("Open multiple views"), TaskFlag_NoRun);
+    foreach (Task* t, resTasks) {
         result->addSubTask(t);
     }
     return result;
 }
 
-bool TreeViewerFactory::isStateInSelection(const MultiGSelection &multiSelection, const QVariantMap &stateData) {
+bool TreeViewerFactory::isStateInSelection(const MultiGSelection& multiSelection, const QVariantMap& stateData) {
     TreeViewerState state(stateData);
     if (!state.isValid()) {
         return false;
     }
     GObjectReference ref = state.getPhyObject();
-    Document *doc = AppContext::getProject()->findDocumentByURL(ref.docUrl);
+    Document* doc = AppContext::getProject()->findDocumentByURL(ref.docUrl);
     if (doc == nullptr) {  // todo: accept to use invalid state removal routines of ObjectViewTask ???
         return false;
     }
     // check that document is in selection
-    QList<Document *> selectedDocs = SelectionUtils::getSelectedDocs(multiSelection);
+    QList<Document*> selectedDocs = SelectionUtils::getSelectedDocs(multiSelection);
     if (selectedDocs.contains(doc)) {
         return true;
     }
     // check that object is in selection
-    QList<GObject *> selectedObjects = SelectionUtils::getSelectedObjects(multiSelection);
-    GObject *obj = doc->findGObjectByName(ref.objName);
+    QList<GObject*> selectedObjects = SelectionUtils::getSelectedObjects(multiSelection);
+    GObject* obj = doc->findGObjectByName(ref.objName);
     bool res = obj != nullptr && selectedObjects.contains(obj);
     return res;
 }
 
-Task *TreeViewerFactory::createViewTask(const QString &viewName, const QVariantMap &stateData) {
+Task* TreeViewerFactory::createViewTask(const QString& viewName, const QVariantMap& stateData) {
     return new OpenSavedTreeViewerTask(viewName, stateData);
 }
 

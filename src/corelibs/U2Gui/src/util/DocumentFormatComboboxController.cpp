@@ -25,25 +25,25 @@
 
 namespace U2 {
 
-DocumentFormatComboboxController::DocumentFormatComboboxController(QObject *p, QComboBox *cb, const DocumentFormatConstraints &_c, const DocumentFormatId &active)
+DocumentFormatComboboxController::DocumentFormatComboboxController(QObject* p, QComboBox* cb, const DocumentFormatConstraints& _c, const DocumentFormatId& active)
     : QObject(p), combo(cb), c(_c) {
     assert(combo->count() == 0);
 
-    DocumentFormatRegistry *fr = AppContext::getDocumentFormatRegistry();
-    connect(fr, SIGNAL(si_documentFormatRegistered(DocumentFormat *)), SLOT(sl_onDocumentFormatRegistered(DocumentFormat *)));
-    connect(fr, SIGNAL(si_documentFormatUnregistered(DocumentFormat *)), SLOT(sl_onDocumentFormatUnregistered(DocumentFormat *)));
+    DocumentFormatRegistry* fr = AppContext::getDocumentFormatRegistry();
+    connect(fr, SIGNAL(si_documentFormatRegistered(DocumentFormat*)), SLOT(sl_onDocumentFormatRegistered(DocumentFormat*)));
+    connect(fr, SIGNAL(si_documentFormatUnregistered(DocumentFormat*)), SLOT(sl_onDocumentFormatUnregistered(DocumentFormat*)));
 
     updateCombo(active);
 }
 
-void DocumentFormatComboboxController::sl_onDocumentFormatRegistered(DocumentFormat *f) {
+void DocumentFormatComboboxController::sl_onDocumentFormatRegistered(DocumentFormat* f) {
     if (!f->checkConstraints(c)) {
         return;
     }
     combo->addItem(QIcon(), f->getFormatName(), f->getFormatId());
 }
 
-void DocumentFormatComboboxController::sl_onDocumentFormatUnregistered(DocumentFormat *f) {
+void DocumentFormatComboboxController::sl_onDocumentFormatUnregistered(DocumentFormat* f) {
     for (int i = 0; i < combo->count(); i++) {
         DocumentFormatId id = combo->itemData(i).toString();
         if (id == f->getFormatId()) {
@@ -72,20 +72,20 @@ QList<DocumentFormatId> DocumentFormatComboboxController::getFormatsInCombo() {
     return getFormatsInCombo(combo);
 }
 
-void DocumentFormatComboboxController::updateConstraints(const DocumentFormatConstraints &_c) {
+void DocumentFormatComboboxController::updateConstraints(const DocumentFormatConstraints& _c) {
     c = _c;
     updateCombo(getActiveFormatId());
 }
 
 void DocumentFormatComboboxController::updateCombo(DocumentFormatId active) {
-    DocumentFormatRegistry *fr = AppContext::getDocumentFormatRegistry();
+    DocumentFormatRegistry* fr = AppContext::getDocumentFormatRegistry();
     QList<DocumentFormatId> selectedFormats = fr->selectFormats(c);
     fill(combo, selectedFormats, active);
 }
 
-void DocumentFormatComboboxController::fill(QComboBox *combo, QList<DocumentFormatId> &formatIds, DocumentFormatId active) {
+void DocumentFormatComboboxController::fill(QComboBox* combo, QList<DocumentFormatId>& formatIds, DocumentFormatId active) {
     combo->clear();
-    DocumentFormatRegistry *fr = AppContext::getDocumentFormatRegistry();
+    DocumentFormatRegistry* fr = AppContext::getDocumentFormatRegistry();
     foreach (DocumentFormatId id, formatIds) {
         combo->addItem(QIcon(), fr->getFormatById(id)->getFormatName(), id);
         if (id == active) {
@@ -95,7 +95,7 @@ void DocumentFormatComboboxController::fill(QComboBox *combo, QList<DocumentForm
     combo->model()->sort(0);
 }
 
-DocumentFormatId DocumentFormatComboboxController::getActiveFormatId(QComboBox *combo) {
+DocumentFormatId DocumentFormatComboboxController::getActiveFormatId(QComboBox* combo) {
     int i = combo->currentIndex();
     if (i == -1) {
         return DocumentFormatId();
@@ -104,7 +104,7 @@ DocumentFormatId DocumentFormatComboboxController::getActiveFormatId(QComboBox *
     return id;
 }
 
-QList<DocumentFormatId> DocumentFormatComboboxController::getFormatsInCombo(QComboBox *combo) {
+QList<DocumentFormatId> DocumentFormatComboboxController::getFormatsInCombo(QComboBox* combo) {
     QList<DocumentFormatId> res;
     for (int i = 0, n = combo->count(); i < n; i++) {
         DocumentFormatId id = combo->itemData(i).toString();

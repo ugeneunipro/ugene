@@ -69,23 +69,23 @@ void TopHatSettings::cleanupReads() {
     data.cleanupReads();
 }
 
-Workflow::WorkflowContext *TopHatSettings::workflowContext() const {
+Workflow::WorkflowContext* TopHatSettings::workflowContext() const {
     return data.workflowContext;
 }
 
-Workflow::DbiDataStorage *TopHatSettings::storage() const {
+Workflow::DbiDataStorage* TopHatSettings::storage() const {
     CHECK(nullptr != workflowContext(), nullptr);
     return workflowContext()->getDataStorage();
 }
 
 uint TopHatSettings::getThreadsCount() {
-    AppSettings *settings = AppContext::getAppSettings();
+    AppSettings* settings = AppContext::getAppSettings();
     SAFE_POINT(nullptr != settings, "NULL settings", 1);
-    AppResourcePool *pool = settings->getAppResourcePool();
+    AppResourcePool* pool = settings->getAppResourcePool();
     SAFE_POINT(nullptr != pool, "NULL resource pool", 1);
 
     uint threads = pool->getIdealThreadCount();
     CHECK(0 != threads, 1);
     return threads;
 }
-}    // namespace U2
+}  // namespace U2

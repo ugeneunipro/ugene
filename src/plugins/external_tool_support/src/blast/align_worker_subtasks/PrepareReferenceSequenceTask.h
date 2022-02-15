@@ -35,22 +35,22 @@ class U2SequenceObject;
 class PrepareReferenceSequenceTask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    PrepareReferenceSequenceTask(const QString &referenceUrl, const U2DbiRef &dstDbiRef);
+    PrepareReferenceSequenceTask(const QString& referenceUrl, const U2DbiRef& dstDbiRef);
 
-    const U2EntityRef &getReferenceEntityRef() const;
+    const U2EntityRef& getReferenceEntityRef() const;
 
-    const QString &getPreparedReferenceUrl() const;
+    const QString& getPreparedReferenceUrl() const;
 
 private:
     void prepare() override;
 
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     const QString referenceUrl;
     const U2DbiRef dstDbiRef;
 
-    CopyFileTask *copyTask = nullptr;
-    LoadDocumentTask *loadTask = nullptr;
+    CopyFileTask* copyTask = nullptr;
+    LoadDocumentTask* loadTask = nullptr;
 
     U2EntityRef referenceEntityRef;
     QString preparedReferenceUrl;

@@ -55,7 +55,7 @@ MaEditorFactory::MaEditorFactory(GObjectType type, GObjectViewFactoryId id)
     }
 }
 
-bool MaEditorFactory::canCreateView(const MultiGSelection &multiSelection) {
+bool MaEditorFactory::canCreateView(const MultiGSelection& multiSelection) {
     bool hasMaDocuments = !SelectionUtils::findDocumentsWithObjects(type, &multiSelection, UOF_LoadedAndUnloaded, true).isEmpty();
     if (hasMaDocuments) {
         return true;
@@ -65,18 +65,18 @@ bool MaEditorFactory::canCreateView(const MultiGSelection &multiSelection) {
 
 #define MAX_VIEWS 10
 
-Task *MaEditorFactory::createViewTask(const MultiGSelection &multiSelection, bool single) {
-    QList<GObject *> msaObjects = SelectionUtils::findObjects(type, &multiSelection, UOF_LoadedAndUnloaded);
-    QSet<Document *> docsWithMSA = SelectionUtils::findDocumentsWithObjects(type,
-                                                                            &multiSelection,
-                                                                            UOF_LoadedAndUnloaded,
-                                                                            false);
-    QList<OpenMaEditorTask *> resTasks;
+Task* MaEditorFactory::createViewTask(const MultiGSelection& multiSelection, bool single) {
+    QList<GObject*> msaObjects = SelectionUtils::findObjects(type, &multiSelection, UOF_LoadedAndUnloaded);
+    QSet<Document*> docsWithMSA = SelectionUtils::findDocumentsWithObjects(type,
+                                                                           &multiSelection,
+                                                                           UOF_LoadedAndUnloaded,
+                                                                           false);
+    QList<OpenMaEditorTask*> resTasks;
 
-    foreach (Document *doc, docsWithMSA) {
-        QList<GObject *> docObjs = doc->findGObjectByType(type, UOF_LoadedAndUnloaded);
+    foreach (Document* doc, docsWithMSA) {
+        QList<GObject*> docObjs = doc->findGObjectByType(type, UOF_LoadedAndUnloaded);
         if (!docObjs.isEmpty()) {
-            foreach (GObject *obj, docObjs) {
+            foreach (GObject* obj, docObjs) {
                 if (!msaObjects.contains(obj)) {
                     msaObjects.append(obj);
                 }
@@ -91,15 +91,15 @@ Task *MaEditorFactory::createViewTask(const MultiGSelection &multiSelection, boo
     }
 
     if (!msaObjects.isEmpty()) {
-        foreach (GObject *o, msaObjects) {
+        foreach (GObject* o, msaObjects) {
             if (resTasks.size() == MAX_VIEWS) {
                 break;
             }
             if (o->getGObjectType() == GObjectTypes::UNLOADED) {
-                resTasks.append(getOpenMaEditorTask(qobject_cast<UnloadedObject *>(o)));
+                resTasks.append(getOpenMaEditorTask(qobject_cast<UnloadedObject*>(o)));
             } else {
                 assert(o->getGObjectType() == type);
-                resTasks.append(getOpenMaEditorTask(qobject_cast<MultipleAlignmentObject *>(o)));
+                resTasks.append(getOpenMaEditorTask(qobject_cast<MultipleAlignmentObject*>(o)));
             }
         }
     }
@@ -112,36 +112,36 @@ Task *MaEditorFactory::createViewTask(const MultiGSelection &multiSelection, boo
         return resTasks.first();
     }
 
-    Task *result = new Task(tr("Open multiple views"), TaskFlag_NoRun);
-    foreach (Task *t, resTasks) {
+    Task* result = new Task(tr("Open multiple views"), TaskFlag_NoRun);
+    foreach (Task* t, resTasks) {
         result->addSubTask(t);
     }
     return result;
 }
 
-bool MaEditorFactory::isStateInSelection(const MultiGSelection &multiSelection, const QVariantMap &stateData) {
+bool MaEditorFactory::isStateInSelection(const MultiGSelection& multiSelection, const QVariantMap& stateData) {
     MaEditorState state(stateData);
     if (!state.isValid()) {
         return false;
     }
     GObjectReference ref = state.getMaObjectRef();
-    Document *doc = AppContext::getProject()->findDocumentByURL(ref.docUrl);
+    Document* doc = AppContext::getProject()->findDocumentByURL(ref.docUrl);
     if (doc == nullptr) {  // todo: accept to use invalid state removal routines of ObjectViewTask ???
         return false;
     }
     // check that document is in selection
-    QList<Document *> selectedDocs = SelectionUtils::getSelectedDocs(multiSelection);
+    QList<Document*> selectedDocs = SelectionUtils::getSelectedDocs(multiSelection);
     if (selectedDocs.contains(doc)) {
         return true;
     }
     // check that object is in selection
-    QList<GObject *> selectedObjects = SelectionUtils::getSelectedObjects(multiSelection);
-    GObject *obj = doc->findGObjectByName(ref.objName);
+    QList<GObject*> selectedObjects = SelectionUtils::getSelectedObjects(multiSelection);
+    GObject* obj = doc->findGObjectByName(ref.objName);
     bool res = obj != nullptr && selectedObjects.contains(obj);
     return res;
 }
 
-Task *MaEditorFactory::createViewTask(const QString &viewName, const QVariantMap &stateData) {
+Task* MaEditorFactory::createViewTask(const QString& viewName, const QVariantMap& stateData) {
     return new OpenSavedMaEditorTask(type, this, viewName, stateData);
 }
 
@@ -156,8 +156,8 @@ MsaEditorFactory::MsaEditorFactory()
     : MaEditorFactory(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, ID) {
 }
 
-MaEditor *MsaEditorFactory::getEditor(const QString &viewName, GObject *obj, U2OpStatus &os) {
-    auto msaObj = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
+MaEditor* MsaEditorFactory::getEditor(const QString& viewName, GObject* obj, U2OpStatus& os) {
+    auto msaObj = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     SAFE_POINT(msaObj != nullptr, "Invalid GObject", nullptr);
     if (msaObj->getLength() > MSAEditor::MAX_SUPPORTED_MSA_OBJECT_LENGTH) {
         os.setError(tr("MSA object is too large to be opened in MSA Editor!"));
@@ -166,15 +166,15 @@ MaEditor *MsaEditorFactory::getEditor(const QString &viewName, GObject *obj, U2O
     return new MSAEditor(viewName, msaObj);
 }
 
-OpenMaEditorTask *MsaEditorFactory::getOpenMaEditorTask(MultipleAlignmentObject *obj) {
+OpenMaEditorTask* MsaEditorFactory::getOpenMaEditorTask(MultipleAlignmentObject* obj) {
     return new OpenMsaEditorTask(obj);
 }
 
-OpenMaEditorTask *MsaEditorFactory::getOpenMaEditorTask(UnloadedObject *obj) {
+OpenMaEditorTask* MsaEditorFactory::getOpenMaEditorTask(UnloadedObject* obj) {
     return new OpenMsaEditorTask(obj);
 }
 
-OpenMaEditorTask *MsaEditorFactory::getOpenMaEditorTask(Document *doc) {
+OpenMaEditorTask* MsaEditorFactory::getOpenMaEditorTask(Document* doc) {
     return new OpenMsaEditorTask(doc);
 }
 
@@ -190,21 +190,21 @@ McaEditorFactory::McaEditorFactory()
     : MaEditorFactory(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT, ID) {
 }
 
-MaEditor *McaEditorFactory::getEditor(const QString &viewName, GObject *obj, U2OpStatus &) {
-    MultipleChromatogramAlignmentObject *mcaObj = qobject_cast<MultipleChromatogramAlignmentObject *>(obj);
+MaEditor* McaEditorFactory::getEditor(const QString& viewName, GObject* obj, U2OpStatus&) {
+    MultipleChromatogramAlignmentObject* mcaObj = qobject_cast<MultipleChromatogramAlignmentObject*>(obj);
     SAFE_POINT(mcaObj != nullptr, "Invalid GObject", nullptr);
     return new McaEditor(viewName, mcaObj);
 }
 
-OpenMaEditorTask *McaEditorFactory::getOpenMaEditorTask(MultipleAlignmentObject *obj) {
+OpenMaEditorTask* McaEditorFactory::getOpenMaEditorTask(MultipleAlignmentObject* obj) {
     return new OpenMcaEditorTask(obj);
 }
 
-OpenMaEditorTask *McaEditorFactory::getOpenMaEditorTask(UnloadedObject *obj) {
+OpenMaEditorTask* McaEditorFactory::getOpenMaEditorTask(UnloadedObject* obj) {
     return new OpenMcaEditorTask(obj);
 }
 
-OpenMaEditorTask *McaEditorFactory::getOpenMaEditorTask(Document *doc) {
+OpenMaEditorTask* McaEditorFactory::getOpenMaEditorTask(Document* doc) {
     return new OpenMcaEditorTask(doc);
 }
 

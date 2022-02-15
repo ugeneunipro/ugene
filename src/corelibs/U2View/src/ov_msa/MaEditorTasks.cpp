@@ -59,14 +59,14 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 /// open new view
 
-OpenMaEditorTask::OpenMaEditorTask(MultipleAlignmentObject *_obj, GObjectViewFactoryId fid, GObjectType type)
+OpenMaEditorTask::OpenMaEditorTask(MultipleAlignmentObject* _obj, GObjectViewFactoryId fid, GObjectType type)
     : ObjectViewTask(fid),
       type(type),
       maObject(_obj) {
     assert(!maObject.isNull());
 }
 
-OpenMaEditorTask::OpenMaEditorTask(UnloadedObject *_obj, GObjectViewFactoryId fid, GObjectType type)
+OpenMaEditorTask::OpenMaEditorTask(UnloadedObject* _obj, GObjectViewFactoryId fid, GObjectType type)
     : ObjectViewTask(fid),
       type(type),
       unloadedReference(_obj) {
@@ -74,7 +74,7 @@ OpenMaEditorTask::OpenMaEditorTask(UnloadedObject *_obj, GObjectViewFactoryId fi
     documentsToLoad.append(_obj->getDocument());
 }
 
-OpenMaEditorTask::OpenMaEditorTask(Document *doc, GObjectViewFactoryId fid, GObjectType type)
+OpenMaEditorTask::OpenMaEditorTask(Document* doc, GObjectViewFactoryId fid, GObjectType type)
     : ObjectViewTask(fid),
       type(type),
       maObject(nullptr) {
@@ -87,19 +87,19 @@ void OpenMaEditorTask::open() {
         return;
     }
     if (maObject.isNull()) {
-        Document *doc = documentsToLoad.first();
+        Document* doc = documentsToLoad.first();
         if (!doc) {
             stateInfo.setError(tr("Document removed from project"));
             return;
         }
         if (unloadedReference.isValid()) {
-            GObject *obj = GObjectUtils::selectObjectByReference(unloadedReference, UOF_LoadedOnly);
+            GObject* obj = GObjectUtils::selectObjectByReference(unloadedReference, UOF_LoadedOnly);
             if (obj != nullptr && obj->getGObjectType() == type) {
-                maObject = qobject_cast<MultipleAlignmentObject *>(obj);
+                maObject = qobject_cast<MultipleAlignmentObject*>(obj);
             }
         } else {
-            QList<GObject *> objects = doc->findGObjectByType(type, UOF_LoadedAndUnloaded);
-            maObject = objects.isEmpty() ? nullptr : qobject_cast<MultipleAlignmentObject *>(objects.first());
+            QList<GObject*> objects = doc->findGObjectByType(type, UOF_LoadedAndUnloaded);
+            maObject = objects.isEmpty() ? nullptr : qobject_cast<MultipleAlignmentObject*>(objects.first());
         }
         if (maObject.isNull()) {
             stateInfo.setError(tr("Multiple alignment object not found"));
@@ -109,54 +109,54 @@ void OpenMaEditorTask::open() {
     viewName = GObjectViewUtils::genUniqueViewName(maObject->getDocument(), maObject);
     uiLog.details(tr("Opening MSA editor for object: %1").arg(maObject->getGObjectName()));
 
-    MaEditor *maEditor = getEditor(viewName, maObject);
+    MaEditor* maEditor = getEditor(viewName, maObject);
     CHECK_OP(stateInfo, );
 
     auto objectViewWindow = new GObjectViewWindow(maEditor, viewName, false);
-    MWMDIManager *mdiManager = AppContext::getMainWindow()->getMDIManager();
+    MWMDIManager* mdiManager = AppContext::getMainWindow()->getMDIManager();
     mdiManager->addMDIWindow(objectViewWindow);
 }
 
-void OpenMaEditorTask::updateTitle(MSAEditor *msaEd) {
-    const QString &oldViewName = msaEd->getName();
-    GObjectViewWindow *w = GObjectViewUtils::findViewByName(oldViewName);
+void OpenMaEditorTask::updateTitle(MSAEditor* msaEd) {
+    const QString& oldViewName = msaEd->getName();
+    GObjectViewWindow* w = GObjectViewUtils::findViewByName(oldViewName);
     if (w != nullptr) {
-        MultipleAlignmentObject *msaObject = msaEd->getMaObject();
+        MultipleAlignmentObject* msaObject = msaEd->getMaObject();
         QString newViewName = GObjectViewUtils::genUniqueViewName(msaObject->getDocument(), msaObject);
         msaEd->setName(newViewName);
         w->setWindowTitle(newViewName);
     }
 }
 
-OpenMsaEditorTask::OpenMsaEditorTask(MultipleAlignmentObject *obj)
+OpenMsaEditorTask::OpenMsaEditorTask(MultipleAlignmentObject* obj)
     : OpenMaEditorTask(obj, MsaEditorFactory::ID, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
 }
 
-OpenMsaEditorTask::OpenMsaEditorTask(UnloadedObject *obj)
+OpenMsaEditorTask::OpenMsaEditorTask(UnloadedObject* obj)
     : OpenMaEditorTask(obj, MsaEditorFactory::ID, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
 }
 
-OpenMsaEditorTask::OpenMsaEditorTask(Document *doc)
+OpenMsaEditorTask::OpenMsaEditorTask(Document* doc)
     : OpenMaEditorTask(doc, MsaEditorFactory::ID, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
 }
 
-MaEditor *OpenMsaEditorTask::getEditor(const QString &viewName, GObject *obj) {
+MaEditor* OpenMsaEditorTask::getEditor(const QString& viewName, GObject* obj) {
     return MsaEditorFactory().getEditor(viewName, obj, stateInfo);
 }
 
-OpenMcaEditorTask::OpenMcaEditorTask(MultipleAlignmentObject *obj)
+OpenMcaEditorTask::OpenMcaEditorTask(MultipleAlignmentObject* obj)
     : OpenMaEditorTask(obj, McaEditorFactory::ID, GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT) {
 }
 
-OpenMcaEditorTask::OpenMcaEditorTask(UnloadedObject *obj)
+OpenMcaEditorTask::OpenMcaEditorTask(UnloadedObject* obj)
     : OpenMaEditorTask(obj, McaEditorFactory::ID, GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT) {
 }
 
-OpenMcaEditorTask::OpenMcaEditorTask(Document *doc)
+OpenMcaEditorTask::OpenMcaEditorTask(Document* doc)
     : OpenMaEditorTask(doc, McaEditorFactory::ID, GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT) {
 }
 
-MaEditor *OpenMcaEditorTask::getEditor(const QString &viewName, GObject *obj) {
+MaEditor* OpenMcaEditorTask::getEditor(const QString& viewName, GObject* obj) {
     QList<GObjectRelation> relations = obj->findRelatedObjectsByRole(ObjectRole_ReferenceSequence);
     SAFE_POINT(relations.size() <= 1, "Wrong amount of reference sequences", nullptr);
     return McaEditorFactory().getEditor(viewName, obj, stateInfo);
@@ -165,13 +165,13 @@ MaEditor *OpenMcaEditorTask::getEditor(const QString &viewName, GObject *obj) {
 //////////////////////////////////////////////////////////////////////////
 // open view from state
 
-OpenSavedMaEditorTask::OpenSavedMaEditorTask(GObjectType type, MaEditorFactory *factory, const QString &viewName, const QVariantMap &stateData)
+OpenSavedMaEditorTask::OpenSavedMaEditorTask(GObjectType type, MaEditorFactory* factory, const QString& viewName, const QVariantMap& stateData)
     : ObjectViewTask(factory->getId(), viewName, stateData),
       type(type),
       factory(factory) {
     MaEditorState state(stateData);
     GObjectReference ref = state.getMaObjectRef();
-    Document *doc = AppContext::getProject()->findDocumentByURL(ref.docUrl);
+    Document* doc = AppContext::getProject()->findDocumentByURL(ref.docUrl);
     if (doc == nullptr) {
         doc = createDocumentAndAddToProject(ref.docUrl, AppContext::getProject(), stateInfo);
         CHECK_OP_EXT(stateInfo, stateIsIllegal = true, );
@@ -186,20 +186,20 @@ void OpenSavedMaEditorTask::open() {
 
     MaEditorState state(stateData);
     GObjectReference ref = state.getMaObjectRef();
-    Document *doc = AppContext::getProject()->findDocumentByURL(ref.docUrl);
+    Document* doc = AppContext::getProject()->findDocumentByURL(ref.docUrl);
     if (doc == nullptr) {
         stateIsIllegal = true;
         stateInfo.setError(L10N::errorDocumentNotFound(ref.docUrl));
         return;
     }
-    GObject *obj = nullptr;
+    GObject* obj = nullptr;
     if (doc->isDatabaseConnection() && ref.entityRef.isValid()) {
         obj = doc->getObjectById(ref.entityRef.entityId);
     } else {
         // TODO: this methods does not work! UGENE-4904
         //        obj = doc->findGObjectByName(ref.objName);
-        QList<GObject *> objs = doc->findGObjectByType(ref.objType);
-        foreach (GObject *curObj, objs) {
+        QList<GObject*> objs = doc->findGObjectByType(ref.objType);
+        foreach (GObject* curObj, objs) {
             if (curObj->getGObjectName() == ref.objName) {
                 obj = curObj;
                 break;
@@ -211,21 +211,21 @@ void OpenSavedMaEditorTask::open() {
         stateInfo.setError(tr("Alignment object not found: %1").arg(ref.objName));
         return;
     }
-    MultipleAlignmentObject *maObject = qobject_cast<MultipleAlignmentObject *>(obj);
+    MultipleAlignmentObject* maObject = qobject_cast<MultipleAlignmentObject*>(obj);
     assert(maObject != nullptr);
 
-    MaEditor *maEditor = factory->getEditor(viewName, maObject, stateInfo);
+    MaEditor* maEditor = factory->getEditor(viewName, maObject, stateInfo);
     CHECK_OP(stateInfo, );
     SAFE_POINT(maEditor != nullptr, "MaEditor is null!", );
 
-    GObjectViewWindow *w = new GObjectViewWindow(maEditor, viewName, true);
-    MWMDIManager *mdiManager = AppContext::getMainWindow()->getMDIManager();
+    GObjectViewWindow* w = new GObjectViewWindow(maEditor, viewName, true);
+    MWMDIManager* mdiManager = AppContext::getMainWindow()->getMDIManager();
     mdiManager->addMDIWindow(w);
 
     updateRanges(stateData, maEditor);
 }
 
-void OpenSavedMaEditorTask::updateRanges(const QVariantMap &stateData, MaEditor *ctx) {
+void OpenSavedMaEditorTask::updateRanges(const QVariantMap& stateData, MaEditor* ctx) {
     Q_UNUSED(ctx);
     MaEditorState state(stateData);
 
@@ -240,7 +240,7 @@ void OpenSavedMaEditorTask::updateRanges(const QVariantMap &stateData, MaEditor 
 
 //////////////////////////////////////////////////////////////////////////
 // update
-UpdateMaEditorTask::UpdateMaEditorTask(GObjectView *v, const QString &stateName, const QVariantMap &stateData)
+UpdateMaEditorTask::UpdateMaEditorTask(GObjectView* v, const QString& stateName, const QVariantMap& stateData)
     : ObjectViewTask(v, stateName, stateData) {
 }
 
@@ -249,13 +249,13 @@ void UpdateMaEditorTask::update() {
         return;  // view was closed;
     }
 
-    MaEditor *maView = qobject_cast<MaEditor *>(view.data());
+    MaEditor* maView = qobject_cast<MaEditor*>(view.data());
     SAFE_POINT_EXT(maView != nullptr, setError("MaEditor is NULL"), );
 
     OpenSavedMaEditorTask::updateRanges(stateData, maView);
 }
 
-ExportMaConsensusTask::ExportMaConsensusTask(const ExportMaConsensusTaskSettings &s)
+ExportMaConsensusTask::ExportMaConsensusTask(const ExportMaConsensusTaskSettings& s)
     : DocumentProviderTask(tr("Export consensus"),
                            (TaskFlags(TaskFlag_NoRun) | TaskFlag_FailOnSubtaskError | TaskFlag_CancelOnSubtaskCancel)),
       settings(s),
@@ -269,21 +269,21 @@ void ExportMaConsensusTask::prepare() {
     addSubTask(extractConsensus);
 }
 
-const QString &ExportMaConsensusTask::getConsensusUrl() const {
+const QString& ExportMaConsensusTask::getConsensusUrl() const {
     return settings.url;
 }
 
-QList<Task *> ExportMaConsensusTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> taskList;
+QList<Task*> ExportMaConsensusTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> taskList;
     if (subTask != extractConsensus || isCanceled() || hasError()) {
         return taskList;
     }
-    Document *consensusDocument = createDocument();
+    Document* consensusDocument = createDocument();
     CHECK_OP(stateInfo, taskList);
     auto saveTask = new SaveDocumentTask(consensusDocument, consensusDocument->getIOAdapterFactory(), consensusDocument->getURL());
     taskList << saveTask;
 
-    Project *proj = AppContext::getProject();
+    Project* proj = AppContext::getProject();
     if (proj == nullptr || proj->findDocumentByURL(consensusDocument->getURL()) == nullptr) {
         saveTask->addFlag(SaveDoc_OpenAfter);
         if (settings.format == BaseDocumentFormats::RAW_DNA_SEQUENCE || settings.format == BaseDocumentFormats::PLAIN_TEXT) {
@@ -296,17 +296,17 @@ QList<Task *> ExportMaConsensusTask::onSubTaskFinished(Task *subTask) {
     return taskList;
 }
 
-Document *ExportMaConsensusTask::createDocument() {
+Document* ExportMaConsensusTask::createDocument() {
     filteredConsensus = extractConsensus->getExtractedConsensus();
     CHECK_EXT(!filteredConsensus.isEmpty(), setError("Consensus is empty!"), nullptr);
     QString fullPath = GUrlUtils::prepareFileLocation(settings.url, stateInfo);
     CHECK_OP(stateInfo, nullptr);
     GUrl url(fullPath);
 
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(settings.url));
-    DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(settings.format);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(settings.url));
+    DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(settings.format);
     CHECK_EXT(df, setError("Document format is NULL!"), nullptr);
-    GObject *obj = nullptr;
+    GObject* obj = nullptr;
     QScopedPointer<Document> doc(df->createNewLoadedDocument(iof, fullPath, stateInfo));
     CHECK_OP(stateInfo, nullptr);
     if (df->getFormatId() == BaseDocumentFormats::PLAIN_TEXT) {
@@ -321,7 +321,7 @@ Document *ExportMaConsensusTask::createDocument() {
     return doc.take();
 }
 
-ExtractConsensusTask::ExtractConsensusTask(bool keepGaps_, MaEditor *ma_, MSAConsensusAlgorithm *algorithm_)
+ExtractConsensusTask::ExtractConsensusTask(bool keepGaps_, MaEditor* ma_, MSAConsensusAlgorithm* algorithm_)
     : Task(tr("Extract consensus"), TaskFlags(TaskFlag_None)),
       keepGaps(keepGaps_),
       ma(ma_),
@@ -358,7 +358,7 @@ void ExtractConsensusTask::run() {
     }
 }
 
-const QByteArray &ExtractConsensusTask::getExtractedConsensus() const {
+const QByteArray& ExtractConsensusTask::getExtractedConsensus() const {
     return filteredConsensus;
 }
 

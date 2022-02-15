@@ -34,7 +34,7 @@ public:
         Large = 1,
         Refine = 2
     };
-    MuscleDialogFiller(HI::GUITestOpStatus &os, Mode mode = Default, bool _doNotReArr = true, bool translateToAmino = false);
+    MuscleDialogFiller(HI::GUITestOpStatus& os, Mode mode = Default, bool _doNotReArr = true, bool translateToAmino = false);
     void commonScenario();
 
 private:

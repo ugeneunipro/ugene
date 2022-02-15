@@ -37,7 +37,7 @@ public:
     Task::ReportResult report();
 
 private:
-    SecStructPredictTask *task;
+    SecStructPredictTask* task;
     QString algName;
     QString inputSeq;
     QString outputSeq;
@@ -53,8 +53,8 @@ public:
 
 private:
     bool contextAdded;
-    SecStructPredictTask *task;
-    AnnotationTableObject *aObj;
+    SecStructPredictTask* task;
+    AnnotationTableObject* aObj;
     QString seqName;
     QString algName;
     QString resultsTableContextName;
@@ -62,7 +62,7 @@ private:
 
 class SecStructPredictTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

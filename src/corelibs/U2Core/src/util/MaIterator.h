@@ -28,20 +28,20 @@ namespace U2 {
 
 class U2CORE_EXPORT MaIterator {
 public:
-    MaIterator(const MultipleAlignment &ma, NavigationDirection direction, const QList<int> &rowsIndexes = QList<int>());
+    MaIterator(const MultipleAlignment& ma, NavigationDirection direction, const QList<int>& rowsIndexes = QList<int>());
 
     bool hasNext() const;
     char next();
 
-    MaIterator &operator++();
+    MaIterator& operator++();
     char operator*();
 
-    bool operator==(const MaIterator &other) const;
-    bool operator!=(const MaIterator &other) const;
+    bool operator==(const MaIterator& other) const;
+    bool operator!=(const MaIterator& other) const;
 
     void setCircular(bool isCircular);
     void setIterateInCoreRegionsOnly(bool coreRegionsOnly);
-    void setMaPoint(const QPoint &maPoint);
+    void setMaPoint(const QPoint& maPoint);
     void setDirection(NavigationDirection direction);
 
     QPoint getMaPoint() const;

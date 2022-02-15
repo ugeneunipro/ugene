@@ -46,24 +46,24 @@
 
 namespace U2 {
 
-PrimerGroupBox::PrimerGroupBox(QWidget *parent)
+PrimerGroupBox::PrimerGroupBox(QWidget* parent)
     : QWidget(parent),
       findPrimerTask(nullptr),
       annotatedDnaView(nullptr) {
     setupUi(this);
 
-    connect(primerEdit, SIGNAL(textChanged(const QString &)), SLOT(sl_onPrimerChanged(const QString &)));
+    connect(primerEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_onPrimerChanged(const QString&)));
     connect(reverseComplementButton, SIGNAL(clicked()), SLOT(sl_translate()));
     connect(browseButton, SIGNAL(clicked()), SLOT(sl_browse()));
 }
 
-void PrimerGroupBox::setAnnotatedDnaView(AnnotatedDNAView *dnaView) {
+void PrimerGroupBox::setAnnotatedDnaView(AnnotatedDNAView* dnaView) {
     cancelFindPrimerTask();
     annotatedDnaView = dnaView;
-    connect(annotatedDnaView, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget *, ADVSequenceWidget *)), SLOT(sl_activeSequenceChanged()));
+    connect(annotatedDnaView, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget*, ADVSequenceWidget*)), SLOT(sl_activeSequenceChanged()));
 }
 
-void PrimerGroupBox::sl_onPrimerChanged(const QString &primer) {
+void PrimerGroupBox::sl_onPrimerChanged(const QString& primer) {
     if (PrimerStatistics::validate(primer) || primer.isEmpty() || annotatedDnaView == nullptr) {
         updateStatistics(primer);
     } else {
@@ -106,9 +106,9 @@ void PrimerGroupBox::sl_findPrimerTaskStateChanged() {
         QList<FindAlgorithmResult> results = findPrimerTask->popResults();
         if (results.size() == 1) {
             // in case of the sequence context was changed the task is canceled
-            ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getActiveSequenceContext();
+            ADVSequenceObjectContext* sequenceContext = annotatedDnaView->getActiveSequenceContext();
             SAFE_POINT(nullptr != sequenceContext, L10N::nullPointerError("Sequence Context"), );
-            U2SequenceObject *sequenceObject = sequenceContext->getSequenceObject();
+            U2SequenceObject* sequenceObject = sequenceContext->getSequenceObject();
             SAFE_POINT(nullptr != sequenceObject, L10N::nullPointerError("Sequence Object"), );
 
             QByteArray primerOnSeq = sequenceObject->getSequenceData(results.first().region);
@@ -133,22 +133,22 @@ void PrimerGroupBox::sl_activeSequenceChanged() {
     }
 }
 
-QString PrimerGroupBox::getTmString(const QString &sequence) {
+QString PrimerGroupBox::getTmString(const QString& sequence) {
     double tm = PrimerStatistics::getMeltingTemperature(sequence.toLocal8Bit());
     QString tmString = tm != Primer::INVALID_TM ? PrimerStatistics::getDoubleStringValue(tm) + QString::fromLatin1("\x00B0") + "C" : tr("N/A");
     return tr("Tm = ") + tmString;
 }
 
-void PrimerGroupBox::findPrimerAlternatives(const QString &primer) {
+void PrimerGroupBox::findPrimerAlternatives(const QString& primer) {
     cancelFindPrimerTask();
     updateStatistics(primer);
 
     FindAlgorithmTaskSettings settings;
 
     SAFE_POINT(annotatedDnaView != nullptr, L10N::nullPointerError("Annotated DNA view"), );
-    ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getActiveSequenceContext();
+    ADVSequenceObjectContext* sequenceContext = annotatedDnaView->getActiveSequenceContext();
     SAFE_POINT(nullptr != sequenceContext, L10N::nullPointerError("Sequence Context"), );
-    U2SequenceObject *sequenceObject = sequenceContext->getSequenceObject();
+    U2SequenceObject* sequenceObject = sequenceContext->getSequenceObject();
     SAFE_POINT(nullptr != sequenceObject, L10N::nullPointerError("Sequence Object"), );
 
     U2OpStatusImpl os;
@@ -161,9 +161,9 @@ void PrimerGroupBox::findPrimerAlternatives(const QString &primer) {
     settings.useAmbiguousBases = true;
     settings.pattern = primer.toLatin1();
 
-    const DNAAlphabet *alphabet = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
+    const DNAAlphabet* alphabet = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
     SAFE_POINT(nullptr != alphabet, L10N::nullPointerError("DNA Alphabet"), );
-    DNATranslation *translator = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(alphabet);
+    DNATranslation* translator = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(alphabet);
     SAFE_POINT(nullptr != translator, L10N::nullPointerError("DNA Translator"), );
     settings.complementTT = translator;
 
@@ -183,7 +183,7 @@ void PrimerGroupBox::cancelFindPrimerTask() {
     }
 }
 
-void PrimerGroupBox::updateStatistics(const QString &primer) {
+void PrimerGroupBox::updateStatistics(const QString& primer) {
     QString characteristics;
 
     if (!primer.isEmpty()) {

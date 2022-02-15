@@ -29,13 +29,13 @@ using namespace HI;
 
 class ExportSelectedRegionFiller : public Filler {
 public:
-    ExportSelectedRegionFiller(HI::GUITestOpStatus &_os, const QString &_path, const QString &_name, bool translate = false, const QString &seqName = QString(), bool saveAllAminoFrames = true);
-    ExportSelectedRegionFiller(HI::GUITestOpStatus &os, const QString &filePath);
-    ExportSelectedRegionFiller(HI::GUITestOpStatus &os, CustomScenario *customScenario);
+    ExportSelectedRegionFiller(HI::GUITestOpStatus& _os, const QString& _path, const QString& _name, bool translate = false, const QString& seqName = QString(), bool saveAllAminoFrames = true);
+    ExportSelectedRegionFiller(HI::GUITestOpStatus& os, const QString& filePath);
+    ExportSelectedRegionFiller(HI::GUITestOpStatus& os, CustomScenario* customScenario);
 
     void commonScenario();
-    void setPath(const QString &value);
-    void setName(const QString &value);
+    void setPath(const QString& value);
+    void setName(const QString& value);
 
     static QString defaultExportPath;
 
@@ -55,8 +55,8 @@ public:
     enum MergeOptions { SaveAsSeparate,
                         Merge };
 
-    ExportSequenceOfSelectedAnnotationsFiller(HI::GUITestOpStatus &_os,
-                                              const QString &_path,
+    ExportSequenceOfSelectedAnnotationsFiller(HI::GUITestOpStatus& _os,
+                                              const QString& _path,
                                               FormatToUse _format,
                                               MergeOptions _options,
                                               int _gapLength = 0,

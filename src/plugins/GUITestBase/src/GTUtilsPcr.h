@@ -34,22 +34,22 @@ using namespace HI;
 
 class GTUtilsPcr {
 public:
-    static void setPrimer(HI::GUITestOpStatus &os, U2Strand::Direction direction, const QByteArray &primer);
-    static void setMismatches(HI::GUITestOpStatus &os, U2Strand::Direction direction, int mismatches);
-    static void setPerfectMatch(HI::GUITestOpStatus &os, int number);
-    static void setMaxProductSize(HI::GUITestOpStatus &os, int number);
+    static void setPrimer(HI::GUITestOpStatus& os, U2Strand::Direction direction, const QByteArray& primer);
+    static void setMismatches(HI::GUITestOpStatus& os, U2Strand::Direction direction, int mismatches);
+    static void setPerfectMatch(HI::GUITestOpStatus& os, int number);
+    static void setMaxProductSize(HI::GUITestOpStatus& os, int number);
     static void setUseAmbiguousBases(HI::GUITestOpStatus& os, bool useAmbiguousBases);
-    static QWidget *browseButton(HI::GUITestOpStatus &os, U2Strand::Direction direction);
-    static int productsCount(HI::GUITestOpStatus &os);
-    static QString getResultRegion(HI::GUITestOpStatus &os, int number);
-    static QPoint getResultPoint(HI::GUITestOpStatus &os, int number);
-    static QPoint getDetailsPoint(HI::GUITestOpStatus &os);
-    static QString getPrimerInfo(HI::GUITestOpStatus &os, U2Strand::Direction direction);
-    static QWidget *primerBox(HI::GUITestOpStatus &os, U2Strand::Direction direction);
-    static void clearPcrDir(HI::GUITestOpStatus &os);
+    static QWidget* browseButton(HI::GUITestOpStatus& os, U2Strand::Direction direction);
+    static int productsCount(HI::GUITestOpStatus& os);
+    static QString getResultRegion(HI::GUITestOpStatus& os, int number);
+    static QPoint getResultPoint(HI::GUITestOpStatus& os, int number);
+    static QPoint getDetailsPoint(HI::GUITestOpStatus& os);
+    static QString getPrimerInfo(HI::GUITestOpStatus& os, U2Strand::Direction direction);
+    static QWidget* primerBox(HI::GUITestOpStatus& os, U2Strand::Direction direction);
+    static void clearPcrDir(HI::GUITestOpStatus& os);
 
 private:
-    static QTableView *getTable(HI::GUITestOpStatus &os);
+    static QTableView* getTable(HI::GUITestOpStatus& os);
 };
 
 }  // namespace U2

@@ -67,7 +67,7 @@ QStringList WorkflowUtils::initExtensions() {
     return exts;
 }
 
-QString WorkflowUtils::getRichDoc(const Descriptor &d) {
+QString WorkflowUtils::getRichDoc(const Descriptor& d) {
     QString result = QString();
     if (d.getDisplayName().isEmpty()) {
         if (!d.getDocumentation().isEmpty()) {
@@ -84,18 +84,18 @@ QString WorkflowUtils::getRichDoc(const Descriptor &d) {
     return result;
 }
 
-QString WorkflowUtils::getDropUrl(QList<DocumentFormat *> &fs, const QMimeData *md) {
+QString WorkflowUtils::getDropUrl(QList<DocumentFormat*>& fs, const QMimeData* md) {
     QString url;
-    const GObjectMimeData *gomd = qobject_cast<const GObjectMimeData *>(md);
-    const DocumentMimeData *domd = qobject_cast<const DocumentMimeData *>(md);
+    const GObjectMimeData* gomd = qobject_cast<const GObjectMimeData*>(md);
+    const DocumentMimeData* domd = qobject_cast<const DocumentMimeData*>(md);
     if (gomd) {
-        GObject *obj = gomd->objPtr.data();
+        GObject* obj = gomd->objPtr.data();
         if (obj) {
             fs << obj->getDocument()->getDocumentFormat();
             url = obj->getDocument()->getURLString();
         }
     } else if (domd) {
-        Document *doc = domd->objPtr.data();
+        Document* doc = domd->objPtr.data();
         if (doc) {
             fs << doc->getDocumentFormat();
             url = doc->getURLString();
@@ -105,7 +105,7 @@ QString WorkflowUtils::getDropUrl(QList<DocumentFormat *> &fs, const QMimeData *
         if (urls.size() == 1) {
             url = urls.first().toLocalFile();
             QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(url);
-            foreach (const FormatDetectionResult &di, formats) {
+            foreach (const FormatDetectionResult& di, formats) {
                 fs << di.format;
             }
         }
@@ -113,7 +113,7 @@ QString WorkflowUtils::getDropUrl(QList<DocumentFormat *> &fs, const QMimeData *
     return url;
 }
 
-void WorkflowUtils::setQObjectProperties(QObject &o, const QVariantMap &params) {
+void WorkflowUtils::setQObjectProperties(QObject& o, const QVariantMap& params) {
     QMapIterator<QString, QVariant> i(params);
     while (i.hasNext()) {
         i.next();
@@ -122,7 +122,7 @@ void WorkflowUtils::setQObjectProperties(QObject &o, const QVariantMap &params) 
     }
 }
 
-QStringList WorkflowUtils::expandToUrls(const QString &s) {
+QStringList WorkflowUtils::expandToUrls(const QString& s) {
     QStringList urls = s.split(";");
     QStringList result;
     QRegExp wcard("[*?\\[\\]]");
@@ -151,9 +151,9 @@ QStringList WorkflowUtils::expandToUrls(const QString &s) {
 
 namespace {
 
-bool validateParameters(const Schema &schema, NotificationsList &infoList) {
+bool validateParameters(const Schema& schema, NotificationsList& infoList) {
     bool good = true;
-    foreach (Actor *a, schema.getProcesses()) {
+    foreach (Actor* a, schema.getProcesses()) {
         const int notificationCountBefore = infoList.size();
         good = a->validate(infoList) && good;
         for (int i = notificationCountBefore; i < infoList.size(); ++i) {
@@ -163,12 +163,12 @@ bool validateParameters(const Schema &schema, NotificationsList &infoList) {
     return good;
 }
 
-bool validateExternalTools(Actor *actor, NotificationsList &infoList) {
+bool validateExternalTools(Actor* actor, NotificationsList& infoList) {
     bool isValid = true;
     StrStrMap tools = actor->getProto()->getExternalTools();
-    foreach (const QString &toolId, tools.keys()) {
-        Attribute *attr = actor->getParameter(tools[toolId]);
-        ExternalTool *tool = AppContext::getExternalToolRegistry()->getById(toolId);
+    foreach (const QString& toolId, tools.keys()) {
+        Attribute* attr = actor->getParameter(tools[toolId]);
+        ExternalTool* tool = AppContext::getExternalToolRegistry()->getById(toolId);
         if (tool == nullptr) {
             isValid = false;
             infoList << WorkflowNotification(WorkflowUtils::externalToolIsAbsentError(toolId),
@@ -199,9 +199,9 @@ bool validateExternalTools(Actor *actor, NotificationsList &infoList) {
     return isValid;
 }
 
-bool validatePorts(Actor *a, NotificationsList &infoList) {
+bool validatePorts(Actor* a, NotificationsList& infoList) {
     bool good = true;
-    foreach (Port *p, a->getEnabledPorts()) {
+    foreach (Port* p, a->getEnabledPorts()) {
         NotificationsList notificationList;
         good = p->validate(notificationList) && good;
         if (!notificationList.isEmpty()) {
@@ -218,16 +218,16 @@ bool validatePorts(Actor *a, NotificationsList &infoList) {
     return good;
 }
 
-bool graphDepthFirstSearch(Actor *vertex, QList<Actor *> &visitedVertices) {
+bool graphDepthFirstSearch(Actor* vertex, QList<Actor*>& visitedVertices) {
     visitedVertices.append(vertex);
-    const QList<Port *> outputPorts = vertex->getOutputPorts();
-    QList<Actor *> receivingVertices;
-    foreach (Port *outputPort, outputPorts) {
-        foreach (Port *receivingPort, outputPort->getLinks().keys()) {
+    const QList<Port*> outputPorts = vertex->getOutputPorts();
+    QList<Actor*> receivingVertices;
+    foreach (Port* outputPort, outputPorts) {
+        foreach (Port* receivingPort, outputPort->getLinks().keys()) {
             receivingVertices.append(receivingPort->owner());
         }
     }
-    foreach (Actor *receivingVertex, receivingVertices) {
+    foreach (Actor* receivingVertex, receivingVertices) {
         if (visitedVertices.contains(receivingVertex)) {
             return false;
         } else {
@@ -238,9 +238,9 @@ bool graphDepthFirstSearch(Actor *vertex, QList<Actor *> &visitedVertices) {
 }
 
 // the returning values signals about cycles existence in the scheme
-bool hasSchemeCycles(const Schema &scheme) {
-    foreach (Actor *vertex, scheme.getProcesses()) {
-        QList<Actor *> visitedVertices;
+bool hasSchemeCycles(const Schema& scheme) {
+    foreach (Actor* vertex, scheme.getProcesses()) {
+        QList<Actor*> visitedVertices;
         if (!graphDepthFirstSearch(vertex, visitedVertices)) {
             return false;
         }
@@ -248,7 +248,7 @@ bool hasSchemeCycles(const Schema &scheme) {
     return true;
 }
 
-bool validateScript(Actor *a, NotificationsList &infoList) {
+bool validateScript(Actor* a, NotificationsList& infoList) {
     SAFE_POINT(nullptr != a, "NULL actor", false);
     SAFE_POINT(nullptr != a->getScript(), "NULL script", false);
     const QString scriptText = a->getScript()->getScriptText();
@@ -274,9 +274,9 @@ bool validateScript(Actor *a, NotificationsList &infoList) {
 
 }  // namespace
 
-bool WorkflowUtils::validate(const Schema &schema, NotificationsList &notificationList) {
+bool WorkflowUtils::validate(const Schema& schema, NotificationsList& notificationList) {
     bool isValid = validateOutputDir(WorkflowSettings::getWorkflowOutputDirectory(), notificationList);
-    foreach (Actor *actor, schema.getProcesses()) {
+    foreach (Actor* actor, schema.getProcesses()) {
         isValid = validatePorts(actor, notificationList) && isValid;
         if (actor->getProto()->isScriptFlagSet()) {
             isValid = validateScript(actor, notificationList) && isValid;
@@ -293,13 +293,13 @@ bool WorkflowUtils::validate(const Schema &schema, NotificationsList &notificati
 }
 
 // used in GUI schema validating
-bool WorkflowUtils::validate(const Schema &schema, QList<QListWidgetItem *> &infoList) {
+bool WorkflowUtils::validate(const Schema& schema, QList<QListWidgetItem*>& infoList) {
     NotificationsList notifications;
     bool good = validate(schema, notifications);
 
-    foreach (const WorkflowNotification &notification, notifications) {
-        QListWidgetItem *item = nullptr;
-        Actor *a = nullptr;
+    foreach (const WorkflowNotification& notification, notifications) {
+        QListWidgetItem* item = nullptr;
+        Actor* a = nullptr;
         if (notification.actorId.isEmpty()) {
             item = new QListWidgetItem(notification.message);
         } else {
@@ -326,13 +326,13 @@ bool WorkflowUtils::validate(const Schema &schema, QList<QListWidgetItem *> &inf
 }
 
 // used in cmdline schema validating
-bool WorkflowUtils::validate(const Workflow::Schema &schema, QStringList &errs) {
+bool WorkflowUtils::validate(const Workflow::Schema& schema, QStringList& errs) {
     NotificationsList notifications;
     bool good = validate(schema, notifications);
 
-    foreach (const WorkflowNotification &notification, notifications) {
+    foreach (const WorkflowNotification& notification, notifications) {
         QString res = QString();
-        Actor *a = schema.actorById(notification.actorId);
+        Actor* a = schema.actorById(notification.actorId);
         if (notification.actorId.isEmpty() || a == nullptr) {
             res = notification.message;
         } else {
@@ -340,7 +340,7 @@ bool WorkflowUtils::validate(const Workflow::Schema &schema, QStringList &errs) 
             res = QString("%1: %2").arg(a->getLabel()).arg(message);
 
             QString option;
-            foreach (const Attribute *attr, a->getAttributes()) {
+            foreach (const Attribute* attr, a->getAttributes()) {
                 if (message.contains(attr->getDisplayName())) {
                     option = a->getParamAliases().value(attr->getId());
                 }
@@ -357,7 +357,7 @@ bool WorkflowUtils::validate(const Workflow::Schema &schema, QStringList &errs) 
 
 QList<Descriptor> WorkflowUtils::findMatchingTypes(DataTypePtr set, DataTypePtr elementDataType) {
     QList<Descriptor> result;
-    foreach (const Descriptor &d, set->getAllDescriptors()) {
+    foreach (const Descriptor& d, set->getAllDescriptors()) {
         if (set->getDatatypeByDescriptor(d) == elementDataType) {
             result.append(d);
         }
@@ -365,9 +365,9 @@ QList<Descriptor> WorkflowUtils::findMatchingTypes(DataTypePtr set, DataTypePtr 
     return result;
 }
 
-QStringList WorkflowUtils::candidatesAsStringList(const QList<Descriptor> &descList) {
+QStringList WorkflowUtils::candidatesAsStringList(const QList<Descriptor>& descList) {
     QStringList res;
-    foreach (const Descriptor &desc, descList) {
+    foreach (const Descriptor& desc, descList) {
         res << desc.getId();
     }
     return res;
@@ -392,11 +392,11 @@ QList<Descriptor> WorkflowUtils::findMatchingCandidates(DataTypePtr from, DataTy
     return candidates;
 }
 
-QList<Descriptor> WorkflowUtils::findMatchingCandidates(DataTypePtr from, DataTypePtr to, const Descriptor &key) {
+QList<Descriptor> WorkflowUtils::findMatchingCandidates(DataTypePtr from, DataTypePtr to, const Descriptor& key) {
     return findMatchingCandidates(from, to->getDatatypeByDescriptor(key));
 }
 
-Descriptor WorkflowUtils::getCurrentMatchingDescriptor(const QList<Descriptor> &candidates, DataTypePtr to, const Descriptor &key, const StrStrMap &bindings) {
+Descriptor WorkflowUtils::getCurrentMatchingDescriptor(const QList<Descriptor>& candidates, DataTypePtr to, const Descriptor& key, const StrStrMap& bindings) {
     DataTypePtr elementDatatype = to->getDatatypeByDescriptor(key);
     if (elementDatatype->isList()) {
         QString currentVal = bindings.value(key.getId());
@@ -411,7 +411,7 @@ Descriptor WorkflowUtils::getCurrentMatchingDescriptor(const QList<Descriptor> &
     }
 }
 
-DataTypePtr WorkflowUtils::getToDatatypeForBusport(IntegralBusPort *p) {
+DataTypePtr WorkflowUtils::getToDatatypeForBusport(IntegralBusPort* p) {
     assert(p != nullptr);
     DataTypePtr to;
     DataTypePtr t = to = p->getType();
@@ -425,7 +425,7 @@ DataTypePtr WorkflowUtils::getToDatatypeForBusport(IntegralBusPort *p) {
     return to;
 }
 
-DataTypePtr WorkflowUtils::getFromDatatypeForBusport(IntegralBusPort *p, DataTypePtr to) {
+DataTypePtr WorkflowUtils::getFromDatatypeForBusport(IntegralBusPort* p, DataTypePtr to) {
     assert(p != nullptr);
 
     DataTypePtr from;
@@ -434,14 +434,14 @@ DataTypePtr WorkflowUtils::getFromDatatypeForBusport(IntegralBusPort *p, DataTyp
         from = to;
     } else {
         // port is input and has links, go editing mode
-        IntegralBusType *bt = new IntegralBusType(Descriptor(), QMap<Descriptor, DataTypePtr>());
+        IntegralBusType* bt = new IntegralBusType(Descriptor(), QMap<Descriptor, DataTypePtr>());
         bt->addInputs(p, false);
         from = bt;
     }
     return from;
 }
 
-QString WorkflowUtils::findPathToSchemaFile(const QString &name) {
+QString WorkflowUtils::findPathToSchemaFile(const QString& name) {
     // full path given
     if (QFile::exists(name)) {
         return name;
@@ -451,7 +451,7 @@ QString WorkflowUtils::findPathToSchemaFile(const QString &name) {
     if (QFile::exists(filenameWithDataPrefix)) {
         return filenameWithDataPrefix;
     }
-    foreach (const QString &ext, WorkflowUtils::WD_FILE_EXTENSIONS) {
+    foreach (const QString& ext, WorkflowUtils::WD_FILE_EXTENSIONS) {
         QString filenameWithDataPrefixAndExt = QString(PATH_PREFIX_DATA) + ":" + "cmdline/" + name + "." + ext;
         if (QFile::exists(filenameWithDataPrefixAndExt)) {
             return filenameWithDataPrefixAndExt;
@@ -459,7 +459,7 @@ QString WorkflowUtils::findPathToSchemaFile(const QString &name) {
     }
 
     // if no such file found -> search name in settings. user saved schemas
-    Settings *settings = AppContext::getSettings();
+    Settings* settings = AppContext::getSettings();
     assert(settings != nullptr);
 
     // FIXME: same as WorkflowSceneIOTasks::SCHEMA_PATHS_SETTINGS_TAG
@@ -471,11 +471,11 @@ QString WorkflowUtils::findPathToSchemaFile(const QString &name) {
     return QString();
 }
 
-void WorkflowUtils::getLinkedActorsId(Actor *a, QList<QString> &linkedActors) {
+void WorkflowUtils::getLinkedActorsId(Actor* a, QList<QString>& linkedActors) {
     if (!linkedActors.contains(a->getId())) {
         linkedActors.append(a->getId());
-        foreach (Port *p, a->getPorts()) {
-            foreach (Port *pp, p->getLinks().keys()) {
+        foreach (Port* p, a->getPorts()) {
+            foreach (Port* pp, p->getLinks().keys()) {
                 getLinkedActorsId(pp->owner(), linkedActors);
             }
         }
@@ -484,20 +484,20 @@ void WorkflowUtils::getLinkedActorsId(Actor *a, QList<QString> &linkedActors) {
     }
 }
 
-bool WorkflowUtils::isPathExist(const Port *src, const Port *dest) {
+bool WorkflowUtils::isPathExist(const Port* src, const Port* dest) {
     SAFE_POINT((src->isInput() ^ dest->isInput()), "The ports have the same direction", true);
     if (!src->isOutput() && !dest->isInput()) {
-        const Port *tmp = dest;
+        const Port* tmp = dest;
         dest = src;
         src = tmp;
     }
-    const Actor *destElement = dest->owner();
+    const Actor* destElement = dest->owner();
 
-    foreach (const Port *port, src->owner()->getPorts()) {
+    foreach (const Port* port, src->owner()->getPorts()) {
         if (src == port) {
             continue;
         }
-        foreach (const Port *p, port->getLinks().keys()) {
+        foreach (const Port* p, port->getLinks().keys()) {
             if (destElement == p->owner()) {
                 return true;
             }
@@ -509,7 +509,7 @@ bool WorkflowUtils::isPathExist(const Port *src, const Port *dest) {
     return false;
 }
 
-Descriptor WorkflowUtils::getSlotDescOfDatatype(const DataTypePtr &dt) {
+Descriptor WorkflowUtils::getSlotDescOfDatatype(const DataTypePtr& dt) {
     QString dtId = dt->getId();
     if (dtId == BaseTypes::DNA_SEQUENCE_TYPE()->getId()) {
         return BaseSlots::DNA_SEQUENCE_SLOT();
@@ -535,10 +535,10 @@ static QStringList initLowerToUpperList() {
 }
 static const QStringList lowerToUpperList = initLowerToUpperList();
 
-QString WorkflowUtils::getStringForParameterDisplayRole(const QVariant &value) {
+QString WorkflowUtils::getStringForParameterDisplayRole(const QVariant& value) {
     if (value.canConvert<QList<Dataset>>()) {
         QString res;
-        foreach (const Dataset &dSet, value.value<QList<Dataset>>()) {
+        foreach (const Dataset& dSet, value.value<QList<Dataset>>()) {
             res += dSet.getName() + "; ";
         }
         return res;
@@ -550,9 +550,9 @@ QString WorkflowUtils::getStringForParameterDisplayRole(const QVariant &value) {
     return str;
 }
 
-Actor *WorkflowUtils::findActorByParamAlias(const QList<Actor *> &procs, const QString &alias, QString &attrName, bool writeLog) {
-    QList<Actor *> actors;
-    foreach (Actor *actor, procs) {
+Actor* WorkflowUtils::findActorByParamAlias(const QList<Actor*>& procs, const QString& alias, QString& attrName, bool writeLog) {
+    QList<Actor*> actors;
+    foreach (Actor* actor, procs) {
         assert(actor != nullptr);
         if (actor->getParamAliases().values().contains(alias)) {
             actors << actor;
@@ -567,14 +567,14 @@ Actor *WorkflowUtils::findActorByParamAlias(const QList<Actor *> &procs, const Q
         }
     }
 
-    Actor *ret = actors.first();
+    Actor* ret = actors.first();
     attrName = ret->getParamAliases().key(alias);
     return ret;
 }
 
-QString WorkflowUtils::getParamIdFromHref(const QString &href) {
+QString WorkflowUtils::getParamIdFromHref(const QString& href) {
     QStringList args = href.split('&');
-    const QString &prefix = QString("%1:").arg(HREF_PARAM_ID);
+    const QString& prefix = QString("%1:").arg(HREF_PARAM_ID);
     QString id;
     foreach (QString arg, args) {
         if (arg.startsWith(prefix)) {
@@ -585,21 +585,21 @@ QString WorkflowUtils::getParamIdFromHref(const QString &href) {
     return id;
 }
 
-QString WorkflowUtils::generateIdFromName(const QString &name) {
+QString WorkflowUtils::generateIdFromName(const QString& name) {
     QString id = name;
     id.replace(QRegularExpression("\\s"), "-").replace(WorkflowEntityValidator::INACCEPTABLE_SYMBOLS_IN_ID, "_");
     return id;
 }
 
-static void data2text(WorkflowContext *context, DocumentFormatId formatId, GObject *obj, QString &text) {
-    QList<GObject *> objList;
+static void data2text(WorkflowContext* context, DocumentFormatId formatId, GObject* obj, QString& text) {
+    QList<GObject*> objList;
     objList << obj;
 
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::STRING);
-    DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::STRING);
+    DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
     QScopedPointer<Document> d(new Document(df, iof, GUrl(), context->getDataStorage()->getDbiRef(), objList));
     d->setDocumentOwnsDbiResources(false);
-    StringAdapter *io = dynamic_cast<StringAdapter *>(iof->createIOAdapter());
+    StringAdapter* io = dynamic_cast<StringAdapter*>(iof->createIOAdapter());
     io->open(GUrl(), IOAdapterMode_Write);
     U2OpStatusImpl os;
 
@@ -614,9 +614,9 @@ static void data2text(WorkflowContext *context, DocumentFormatId formatId, GObje
 #define MSA_TYPE QVariant::UserType
 #define ANNOTATIONS_TYPE QVariant::List
 
-void WorkflowUtils::print(const QString &slotString, const QVariant &data, DataTypePtr type, WorkflowContext *context) {
+void WorkflowUtils::print(const QString& slotString, const QVariant& data, DataTypePtr type, WorkflowContext* context) {
     QString text = slotString + ":\n";
-    Workflow::DbiDataStorage *storage = context->getDataStorage();
+    Workflow::DbiDataStorage* storage = context->getDataStorage();
     if ("string" == type->getId() || BaseTypes::STRING_LIST_TYPE() == type) {
         text += data.toString();
     } else if (BaseTypes::DNA_SEQUENCE_TYPE() == type) {
@@ -638,12 +638,12 @@ void WorkflowUtils::print(const QString &slotString, const QVariant &data, DataT
     printf("\n%s\n", text.toLatin1().data());
 }
 
-bool WorkflowUtils::validateSchemaForIncluding(const Schema &s, QString &error) {
+bool WorkflowUtils::validateSchemaForIncluding(const Schema& s, QString& error) {
     // TEMPORARY disallow filter and grouper elements in includes
     static QString errorStr = tr("The %1 element is a %2. Sorry, but current version of "
                                  "UGENE doesn't support of filters and groupers in the includes.");
-    foreach (Actor *actor, s.getProcesses()) {
-        ActorPrototype *proto = actor->getProto();
+    foreach (Actor* actor, s.getProcesses()) {
+        ActorPrototype* proto = actor->getProto();
         if (proto->getInfluenceOnPathFlag() || CoreLibConstants::GROUPER_ID == proto->getId()) {
             error = errorStr;
             error = error.arg(actor->getLabel());
@@ -656,15 +656,15 @@ bool WorkflowUtils::validateSchemaForIncluding(const Schema &s, QString &error) 
         }
     }
 
-    const QList<PortAlias> &portAliases = s.getPortAliases();
+    const QList<PortAlias>& portAliases = s.getPortAliases();
     if (portAliases.isEmpty()) {
         error = tr("The workflow has not any aliased ports");
         return false;
     }
 
-    foreach (Actor *actor, s.getProcesses()) {
+    foreach (Actor* actor, s.getProcesses()) {
         // check that free input ports are aliased
-        foreach (Port *port, actor->getPorts()) {
+        foreach (Port* port, actor->getPorts()) {
             if (!port->isInput()) {
                 continue;
             }
@@ -672,7 +672,7 @@ bool WorkflowUtils::validateSchemaForIncluding(const Schema &s, QString &error) 
                 continue;
             }
             bool aliased = false;
-            foreach (const PortAlias &alias, portAliases) {
+            foreach (const PortAlias& alias, portAliases) {
                 if (alias.getSourcePort() == port) {
                     if (alias.getSlotAliases().isEmpty()) {
                         error = tr("The aliased port %1.%2 has no aliased slots").arg(actor->getLabel()).arg(port->getDisplayName());
@@ -690,9 +690,9 @@ bool WorkflowUtils::validateSchemaForIncluding(const Schema &s, QString &error) 
         }
 
         // check that every required attribute is aliased or has set value
-        const QMap<QString, QString> &paramAliases = actor->getParamAliases();
-        foreach (const QString &attrName, actor->getParameters().keys()) {
-            Attribute *attr = actor->getParameters().value(attrName);
+        const QMap<QString, QString>& paramAliases = actor->getParamAliases();
+        foreach (const QString& attrName, actor->getParameters().keys()) {
+            Attribute* attr = actor->getParameters().value(attrName);
             if (attr->isRequiredAttribute() && !attr->canBeEmpty()) {
                 if (!paramAliases.contains(attr->getId())) {
                     QVariant val = attr->getAttributeValueWithoutScript<QVariant>();
@@ -708,12 +708,12 @@ bool WorkflowUtils::validateSchemaForIncluding(const Schema &s, QString &error) 
     return true;
 }
 
-void WorkflowUtils::extractPathsFromBindings(StrStrMap &busMap, SlotPathMap &pathMap) {
+void WorkflowUtils::extractPathsFromBindings(StrStrMap& busMap, SlotPathMap& pathMap) {
     QString srcId;
     QStringList path;
-    foreach (const QString &dest, busMap.keys()) {
+    foreach (const QString& dest, busMap.keys()) {
         QStringList srcs = busMap.value(dest).split(";");
-        foreach (const QString &src, srcs) {
+        foreach (const QString& src, srcs) {
             BusMap::parseSource(src, srcId, path);
             if (!path.isEmpty()) {
                 QPair<QString, QString> slotPair(dest, srcId);
@@ -724,8 +724,8 @@ void WorkflowUtils::extractPathsFromBindings(StrStrMap &busMap, SlotPathMap &pat
     }
 }
 
-void WorkflowUtils::applyPathsToBusMap(StrStrMap &busMap, const SlotPathMap &pathMap) {
-    foreach (const QString &dest, busMap.keys()) {
+void WorkflowUtils::applyPathsToBusMap(StrStrMap& busMap, const SlotPathMap& pathMap) {
+    foreach (const QString& dest, busMap.keys()) {
         QStringList newSrcs;
 
         QStringList srcs = busMap.value(dest).split(";");
@@ -736,12 +736,12 @@ void WorkflowUtils::applyPathsToBusMap(StrStrMap &busMap, const SlotPathMap &pat
             }
         }
 
-        foreach (const QString &src, uniqList) {
+        foreach (const QString& src, uniqList) {
             QPair<QString, QString> slotPair(dest, src);
             if (pathMap.contains(slotPair)) {
                 QList<QStringList> paths = pathMap.values(slotPair);
                 if (!paths.isEmpty()) {
-                    foreach (const QStringList &path, paths) {
+                    foreach (const QStringList& path, paths) {
                         QString newSrc = src + ">" + path.join(",");
                         newSrcs << newSrc;
                     }
@@ -754,21 +754,21 @@ void WorkflowUtils::applyPathsToBusMap(StrStrMap &busMap, const SlotPathMap &pat
     }
 }
 
-bool WorkflowUtils::startExternalProcess(QProcess *process, const QString &program, const QStringList &arguments) {
+bool WorkflowUtils::startExternalProcess(QProcess* process, const QString& program, const QStringList& arguments) {
     return ExternalToolSupportUtils::startExternalProcess(process, program, arguments);
 }
 
-QStringList WorkflowUtils::getDatasetsUrls(const QList<Dataset> &sets) {
+QStringList WorkflowUtils::getDatasetsUrls(const QList<Dataset>& sets) {
     QStringList result;
-    foreach (const Dataset &dSet, sets) {
-        foreach (URLContainer *url, dSet.getUrls()) {
+    foreach (const Dataset& dSet, sets) {
+        foreach (URLContainer* url, dSet.getUrls()) {
             result << url->getUrl();
         }
     }
     return result;
 }
 
-QStringList WorkflowUtils::getAttributeUrls(Attribute *attribute) {
+QStringList WorkflowUtils::getAttributeUrls(Attribute* attribute) {
     QStringList urlList;
     QVariant var = attribute->getAttributePureValue();
     if (var.canConvert<QList<Dataset>>()) {
@@ -779,8 +779,8 @@ QStringList WorkflowUtils::getAttributeUrls(Attribute *attribute) {
     return urlList;
 }
 
-Actor *WorkflowUtils::actorById(const QList<Actor *> &actors, const ActorId &id) {
-    foreach (Actor *a, actors) {
+Actor* WorkflowUtils::actorById(const QList<Actor*>& actors, const ActorId& id) {
+    foreach (Actor* a, actors) {
         if (a->getId() == id) {
             return a;
         }
@@ -788,12 +788,12 @@ Actor *WorkflowUtils::actorById(const QList<Actor *> &actors, const ActorId &id)
     return nullptr;
 }
 
-QMap<Descriptor, DataTypePtr> WorkflowUtils::getBusType(Port *inPort) {
-    QMap<Port *, Link *> links = inPort->getLinks();
+QMap<Descriptor, DataTypePtr> WorkflowUtils::getBusType(Port* inPort) {
+    QMap<Port*, Link*> links = inPort->getLinks();
     if (links.size() == 1) {
-        Port *src = links.keys().first();
+        Port* src = links.keys().first();
         assert(src->isOutput());
-        IntegralBusPort *bus = dynamic_cast<IntegralBusPort *>(src);
+        IntegralBusPort* bus = dynamic_cast<IntegralBusPort*>(src);
         assert(nullptr != bus);
         DataTypePtr type = bus->getType();
         return type->getDatatypesMap();
@@ -801,11 +801,11 @@ QMap<Descriptor, DataTypePtr> WorkflowUtils::getBusType(Port *inPort) {
     return QMap<Descriptor, DataTypePtr>();
 }
 
-bool WorkflowUtils::isBindingValid(const QString &srcSlotId, const QMap<Descriptor, DataTypePtr> &srcBus, const QString &dstSlotId, const QMap<Descriptor, DataTypePtr> &dstBus) {
+bool WorkflowUtils::isBindingValid(const QString& srcSlotId, const QMap<Descriptor, DataTypePtr>& srcBus, const QString& dstSlotId, const QMap<Descriptor, DataTypePtr>& dstBus) {
     DataTypePtr srcType;
     // Check that incoming bus contains source slot
     bool found = false;
-    foreach (const Descriptor &d, srcBus.keys()) {
+    foreach (const Descriptor& d, srcBus.keys()) {
         if (d.getId() == srcSlotId) {
             srcType = srcBus.value(d);
             found = true;
@@ -817,7 +817,7 @@ bool WorkflowUtils::isBindingValid(const QString &srcSlotId, const QMap<Descript
     }
 
     // Check that source and destination slots have equal types
-    foreach (const Descriptor &d, dstBus.keys()) {
+    foreach (const Descriptor& d, dstBus.keys()) {
         if (d.getId() == dstSlotId) {
             DataTypePtr destType = dstBus.value(d);
             QString stringTypeId("string");
@@ -839,11 +839,11 @@ bool WorkflowUtils::isBindingValid(const QString &srcSlotId, const QMap<Descript
     return false;
 }
 
-QString WorkflowUtils::createUniqueString(const QString &str, const QString &sep, const QStringList &uniqueStrs) {
+QString WorkflowUtils::createUniqueString(const QString& str, const QString& sep, const QStringList& uniqueStrs) {
     QString result = str;
     int number = 0;
     bool found = false;
-    foreach (const QString &uniq, uniqueStrs) {
+    foreach (const QString& uniq, uniqueStrs) {
         if (uniq == str) {
             found = true;
             number = qMax(number, 1);
@@ -870,10 +870,10 @@ QString WorkflowUtils::createUniqueString(const QString &str, const QString &sep
     return result;
 }
 
-QString WorkflowUtils::updateExternalToolPath(const QString &id, const QString &path) {
-    ExternalToolRegistry *registry = AppContext::getExternalToolRegistry();
+QString WorkflowUtils::updateExternalToolPath(const QString& id, const QString& path) {
+    ExternalToolRegistry* registry = AppContext::getExternalToolRegistry();
     SAFE_POINT(nullptr != registry, "NULL external tool registry", "");
-    ExternalTool *tool = registry->getById(id);
+    ExternalTool* tool = registry->getById(id);
     SAFE_POINT(nullptr != tool, QString("Unknown tool: %1").arg(id), "");
 
     if (QString::compare(path, "default", Qt::CaseInsensitive) != 0) {
@@ -882,33 +882,33 @@ QString WorkflowUtils::updateExternalToolPath(const QString &id, const QString &
     return tool->getPath();
 }
 
-QString WorkflowUtils::getExternalToolPath(const QString &toolId) {
-    ExternalToolRegistry *registry = AppContext::getExternalToolRegistry();
+QString WorkflowUtils::getExternalToolPath(const QString& toolId) {
+    ExternalToolRegistry* registry = AppContext::getExternalToolRegistry();
     SAFE_POINT(nullptr != registry, "NULL external tool registry", "");
 
-    ExternalTool *tool = registry->getById(toolId);
+    ExternalTool* tool = registry->getById(toolId);
     SAFE_POINT(nullptr != tool, QString("Unknown tool (id): %1").arg(toolId), "");
 
     return tool->getPath();
 }
 
-QString WorkflowUtils::externalToolIsAbsentError(const QString &toolName) {
+QString WorkflowUtils::externalToolIsAbsentError(const QString& toolName) {
     return tr("Specified variable \"%%1%\" does not exist, please check the command again.").arg(toolName);
 }
 
-QString WorkflowUtils::externalToolError(const QString &toolName) {
+QString WorkflowUtils::externalToolError(const QString& toolName) {
     return tr("External tool \"%1\" is not set. You can set it in Settings -> Preferences -> External Tools").arg(toolName);
 }
 
-QString WorkflowUtils::externalToolInvalidError(const QString &toolName) {
+QString WorkflowUtils::externalToolInvalidError(const QString& toolName) {
     return tr("External tool \"%1\" is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected").arg(toolName);
 }
 
-QString WorkflowUtils::customExternalToolInvalidError(const QString &toolName, const QString &elementName) {
+QString WorkflowUtils::customExternalToolInvalidError(const QString& toolName, const QString& elementName) {
     return tr("Custom tool \"%1\", specified for the \"%2\" element, didn't pass validation.").arg(toolName).arg(elementName);
 }
 
-void WorkflowUtils::schemaFromFile(const QString &url, Schema *schema, Metadata *meta, U2OpStatus &os) {
+void WorkflowUtils::schemaFromFile(const QString& url, Schema* schema, Metadata* meta, U2OpStatus& os) {
     QFile file(url);
     if (!file.open(QIODevice::ReadOnly)) {
         os.setError(L10N::errorOpeningFileRead(url));
@@ -925,12 +925,12 @@ void WorkflowUtils::schemaFromFile(const QString &url, Schema *schema, Metadata 
     }
 }
 
-static bool isDatasetsAttr(Attribute *attr) {
-    URLAttribute *dsa = dynamic_cast<URLAttribute *>(attr);
+static bool isDatasetsAttr(Attribute* attr) {
+    URLAttribute* dsa = dynamic_cast<URLAttribute*>(attr);
     return (nullptr != dsa);
 }
 
-UrlAttributeType WorkflowUtils::isUrlAttribute(Attribute *attr, const Actor *actor) {
+UrlAttributeType WorkflowUtils::isUrlAttribute(Attribute* attr, const Actor* actor) {
     SAFE_POINT(nullptr != attr, "NULL attribute!", NotAnUrl);
     SAFE_POINT(nullptr != actor, "NULL actor!", NotAnUrl);
 
@@ -938,9 +938,9 @@ UrlAttributeType WorkflowUtils::isUrlAttribute(Attribute *attr, const Actor *act
         return DatasetAttr;
     }
 
-    ConfigurationEditor *editor = actor->getEditor();
+    ConfigurationEditor* editor = actor->getEditor();
     CHECK(nullptr != editor, NotAnUrl);
-    PropertyDelegate *delegate = editor->getDelegate(attr->getId());
+    PropertyDelegate* delegate = editor->getDelegate(attr->getId());
     CHECK(nullptr != delegate, NotAnUrl);
 
     if (PropertyDelegate::INPUT_FILE == delegate->type()) {
@@ -960,13 +960,13 @@ UrlAttributeType WorkflowUtils::isUrlAttribute(Attribute *attr, const Actor *act
 }
 
 /** Truncate the last ';' character */
-static void normalizeUrls(QString &urls) {
+static void normalizeUrls(QString& urls) {
     if (!urls.isEmpty() && (1 != urls.size()) && (urls[urls.size() - 1] == ';')) {
         urls.truncate(urls.size() - 1);
     }
 }
 
-bool WorkflowUtils::validateInputFiles(QString urls, NotificationsList &notificationList) {
+bool WorkflowUtils::validateInputFiles(QString urls, NotificationsList& notificationList) {
     normalizeUrls(urls);
     if (urls.isEmpty()) {
         return true;
@@ -975,7 +975,7 @@ bool WorkflowUtils::validateInputFiles(QString urls, NotificationsList &notifica
     // Verify each URL
     QStringList urlsList = urls.split(';');
     bool res = true;
-    foreach (const QString &url, urlsList) {
+    foreach (const QString& url, urlsList) {
         QFileInfo fi(url);
         if (!fi.exists()) {
             notificationList << WorkflowNotification(L10N::errorFileNotFound(url));
@@ -996,7 +996,7 @@ bool WorkflowUtils::validateInputFiles(QString urls, NotificationsList &notifica
     return res;
 }
 
-bool WorkflowUtils::validateInputDirs(QString urls, NotificationsList &notificationList) {
+bool WorkflowUtils::validateInputDirs(QString urls, NotificationsList& notificationList) {
     normalizeUrls(urls);
     if (urls.isEmpty()) {
         return true;
@@ -1004,7 +1004,7 @@ bool WorkflowUtils::validateInputDirs(QString urls, NotificationsList &notificat
 
     QStringList urlsList = urls.split(';');
     bool res = true;
-    foreach (const QString &url, urlsList) {
+    foreach (const QString& url, urlsList) {
         QFileInfo fi(url);
         if (!fi.exists()) {
             notificationList << WorkflowNotification(L10N::errorDirNotFound(url));
@@ -1019,14 +1019,14 @@ bool WorkflowUtils::validateInputDirs(QString urls, NotificationsList &notificat
 
 namespace {
 
-U2DbiRef url2Ref(const QString &url) {
+U2DbiRef url2Ref(const QString& url) {
     const QStringList urlParts = url.split(SharedDbUrlUtils::DB_PROVIDER_SEP);
     CHECK(urlParts.size() == 2, U2DbiRef());
 
     return U2DbiRef(urlParts[0], urlParts[1]);
 }
 
-bool checkDbCredentials(const QString &dbUrl) {
+bool checkDbCredentials(const QString& dbUrl) {
     QString userName;
     const QString shortDbiUrl = U2DbiUtils::full2shortDbiUrl(dbUrl, userName);
     CHECK(!userName.isEmpty(), false);
@@ -1038,7 +1038,7 @@ bool checkDbCredentials(const QString &dbUrl) {
     }
 }
 
-bool checkObjectInDb(const QString &url) {
+bool checkObjectInDb(const QString& url) {
     const QStringList urlParts = url.split(",");
     SAFE_POINT(urlParts.size() == 2, "Invalid DB object URL", false);
     const QString dbUrl = urlParts[0];
@@ -1054,7 +1054,7 @@ bool checkObjectInDb(const QString &url) {
     CHECK_OP(os, false);
     CHECK(nullptr != connection.dbi, false);
 
-    U2ObjectDbi *oDbi = connection.dbi->getObjectDbi();
+    U2ObjectDbi* oDbi = connection.dbi->getObjectDbi();
     CHECK(nullptr != oDbi, false);
     U2Object testObject;
     oDbi->getObject(testObject, realId, os);
@@ -1063,7 +1063,7 @@ bool checkObjectInDb(const QString &url) {
     return testObject.hasValidId();
 }
 
-bool checkFolderInDb(const QString &dbUrl, const QString &folderPath) {
+bool checkFolderInDb(const QString& dbUrl, const QString& folderPath) {
     U2OpStatusImpl os;
     const U2DbiRef dbRef = url2Ref(dbUrl);
     CHECK(dbRef.isValid(), false);
@@ -1074,7 +1074,7 @@ bool checkFolderInDb(const QString &dbUrl, const QString &folderPath) {
     CHECK_OP(os, false);
     CHECK(nullptr != connection.dbi, false);
 
-    U2ObjectDbi *oDbi = connection.dbi->getObjectDbi();
+    U2ObjectDbi* oDbi = connection.dbi->getObjectDbi();
     CHECK(nullptr != oDbi, false);
     const qint64 folderVersion = oDbi->getFolderLocalVersion(folderPath, os);
     CHECK_OP(os, false);
@@ -1082,7 +1082,7 @@ bool checkFolderInDb(const QString &dbUrl, const QString &folderPath) {
     return -1 != folderVersion;
 }
 
-bool checkWritePermissionsForDb(const QString &fullDbUrl) {
+bool checkWritePermissionsForDb(const QString& fullDbUrl) {
     U2OpStatusImpl os;
     const U2DbiRef dbRef = SharedDbUrlUtils::getDbRefFromEntityUrl(fullDbUrl);
     CHECK(dbRef.isValid(), false);
@@ -1094,7 +1094,7 @@ bool checkWritePermissionsForDb(const QString &fullDbUrl) {
 
 // If a database was unavailable for some reasons during previous validation procedures
 // and now has become available, it is needed to remove previous error messages regarding this from a notification list.
-bool checkDbConnectionAndFixProblems(const QString &dbUrl, NotificationsList &notificationList, const WorkflowNotification &notificationMsg) {
+bool checkDbConnectionAndFixProblems(const QString& dbUrl, NotificationsList& notificationList, const WorkflowNotification& notificationMsg) {
     if (!WorkflowUtils::checkSharedDbConnection(dbUrl)) {
         notificationList << notificationMsg;
         return false;
@@ -1110,7 +1110,7 @@ bool checkDbConnectionAndFixProblems(const QString &dbUrl, NotificationsList &no
 
 }  // namespace
 
-bool WorkflowUtils::checkSharedDbConnection(const QString &fullDbUrl) {
+bool WorkflowUtils::checkSharedDbConnection(const QString& fullDbUrl) {
     U2OpStatusImpl os;
     const U2DbiRef dbRef = SharedDbUrlUtils::getDbRefFromEntityUrl(fullDbUrl);
     CHECK(dbRef.isValid(), false);
@@ -1121,7 +1121,7 @@ bool WorkflowUtils::checkSharedDbConnection(const QString &fullDbUrl) {
     return connection.isOpen();
 }
 
-bool WorkflowUtils::validateInputDbObject(const QString &url, NotificationsList &notificationList) {
+bool WorkflowUtils::validateInputDbObject(const QString& url, NotificationsList& notificationList) {
     const QString dbUrl = SharedDbUrlUtils::getDbUrlFromEntityUrl(url);
     const U2DataId objId = SharedDbUrlUtils::getObjectIdByUrl(url);
     const QString objName = SharedDbUrlUtils::getDbObjectNameByUrl(url);
@@ -1138,7 +1138,7 @@ bool WorkflowUtils::validateInputDbObject(const QString &url, NotificationsList 
     return true;
 }
 
-bool WorkflowUtils::validateInputDbFolders(QString urls, NotificationsList &notificationList) {
+bool WorkflowUtils::validateInputDbFolders(QString urls, NotificationsList& notificationList) {
     normalizeUrls(urls);
     if (urls.isEmpty()) {
         return true;
@@ -1146,7 +1146,7 @@ bool WorkflowUtils::validateInputDbFolders(QString urls, NotificationsList &noti
 
     QStringList urlsList = urls.split(';');
     bool res = true;
-    foreach (const QString &url, urlsList) {
+    foreach (const QString& url, urlsList) {
         const QString dbUrl = SharedDbUrlUtils::getDbUrlFromEntityUrl(url);
         const QString folderPath = SharedDbUrlUtils::getDbFolderPathByUrl(url);
         const U2DataType dataType = SharedDbUrlUtils::getDbFolderDataTypeByUrl(url);
@@ -1164,7 +1164,7 @@ bool WorkflowUtils::validateInputDbFolders(QString urls, NotificationsList &noti
     return res;
 }
 
-bool WorkflowUtils::validateOutputFile(const QString &url, NotificationsList &notificationList) {
+bool WorkflowUtils::validateOutputFile(const QString& url, NotificationsList& notificationList) {
     if (url.isEmpty()) {
         return true;
     }
@@ -1181,7 +1181,7 @@ bool WorkflowUtils::validateOutputFile(const QString &url, NotificationsList &no
     return false;
 }
 
-bool WorkflowUtils::validateOutputDir(const QString &url, NotificationsList &notificationList) {
+bool WorkflowUtils::validateOutputDir(const QString& url, NotificationsList& notificationList) {
     if (url.isEmpty()) {
         return true;
     }
@@ -1202,19 +1202,19 @@ bool WorkflowUtils::validateOutputDir(const QString &url, NotificationsList &not
     return false;
 }
 
-bool WorkflowUtils::isSharedDbUrlAttribute(const Attribute *attr, const Actor *actor) {
+bool WorkflowUtils::isSharedDbUrlAttribute(const Attribute* attr, const Actor* actor) {
     SAFE_POINT(nullptr != attr, "Invalid attribute supplied", false);
     SAFE_POINT(nullptr != actor, "Invalid actor supplied", false);
 
-    ConfigurationEditor *editor = actor->getEditor();
+    ConfigurationEditor* editor = actor->getEditor();
     CHECK(nullptr != editor, false);
-    PropertyDelegate *delegate = editor->getDelegate(attr->getId());
+    PropertyDelegate* delegate = editor->getDelegate(attr->getId());
     CHECK(nullptr != delegate, false);
 
     return PropertyDelegate::SHARED_DB_URL == delegate->type();
 }
 
-bool WorkflowUtils::validateSharedDbUrl(const QString &url, NotificationsList &notificationList) {
+bool WorkflowUtils::validateSharedDbUrl(const QString& url, NotificationsList& notificationList) {
     if (url.isEmpty()) {
         notificationList << WorkflowNotification(tr("Empty shared database URL specified"));
         return false;
@@ -1235,10 +1235,10 @@ bool WorkflowUtils::validateSharedDbUrl(const QString &url, NotificationsList &n
     return true;
 }
 
-bool WorkflowUtils::validateDatasets(const QList<Dataset> &sets, NotificationsList &notificationList) {
+bool WorkflowUtils::validateDatasets(const QList<Dataset>& sets, NotificationsList& notificationList) {
     bool res = true;
-    foreach (const Dataset &set, sets) {
-        foreach (URLContainer *urlContainer, set.getUrls()) {
+    foreach (const Dataset& set, sets) {
+        foreach (URLContainer* urlContainer, set.getUrls()) {
             SAFE_POINT(nullptr != urlContainer, "NULL URLContainer!", false);
             bool urlIsValid = urlContainer->validateUrl(notificationList);
             res = res && urlIsValid;
@@ -1247,7 +1247,7 @@ bool WorkflowUtils::validateDatasets(const QList<Dataset> &sets, NotificationsLi
     return res;
 }
 
-QScriptValue WorkflowUtils::datasetsToScript(const QList<Dataset> &sets, QScriptEngine &engine) {
+QScriptValue WorkflowUtils::datasetsToScript(const QList<Dataset>& sets, QScriptEngine& engine) {
     QScriptValue setsArray = engine.newArray(sets.size());
 
     for (int setIdx = 0; setIdx < sets.size(); setIdx++) {
@@ -1263,7 +1263,7 @@ QScriptValue WorkflowUtils::datasetsToScript(const QList<Dataset> &sets, QScript
     return setsArray;
 }
 
-QString WorkflowUtils::getDatasetSplitter(const QString &filePaths) {
+QString WorkflowUtils::getDatasetSplitter(const QString& filePaths) {
     static const QString defaultSplitter = ";";
     static const QString additionalSplitter = ",";
 
@@ -1273,19 +1273,19 @@ QString WorkflowUtils::getDatasetSplitter(const QString &filePaths) {
     return additionalSplitter;
 }
 
-QString WorkflowUtils::packSamples(const QList<TophatSample> &samples) {
+QString WorkflowUtils::packSamples(const QList<TophatSample>& samples) {
     QStringList result;
-    foreach (const TophatSample &sample, samples) {
+    foreach (const TophatSample& sample, samples) {
         result << sample.name + ":" + sample.datasets.join(";");
     }
     return result.join(";;");
 }
 
-QList<TophatSample> WorkflowUtils::unpackSamples(const QString &samplesStr, U2OpStatus &os) {
+QList<TophatSample> WorkflowUtils::unpackSamples(const QString& samplesStr, U2OpStatus& os) {
     QList<TophatSample> result;
 
     QStringList pairs = samplesStr.split(";;", QString::SkipEmptyParts);
-    foreach (const QString &pairStr, pairs) {
+    foreach (const QString& pairStr, pairs) {
         QStringList pair = pairStr.split(":", QString::KeepEmptyParts);
         if (2 != pair.size()) {
             os.setError(tr("Wrong samples map string"));
@@ -1307,7 +1307,7 @@ const QRegularExpression WorkflowEntityValidator::INACCEPTABLE_SYMBOLS_IN_ID("[^
 /*****************************
  * PrompterBaseImpl
  *****************************/
-QVariant PrompterBaseImpl::getParameter(const QString &id) {
+QVariant PrompterBaseImpl::getParameter(const QString& id) {
     if (map.contains(id)) {
         return map.value(id);
     } else {
@@ -1315,7 +1315,7 @@ QVariant PrompterBaseImpl::getParameter(const QString &id) {
     }
 }
 
-QString PrompterBaseImpl::getURL(const QString &id, bool *empty, const QString &onEmpty, const QString &defaultValue) {
+QString PrompterBaseImpl::getURL(const QString& id, bool* empty, const QString& onEmpty, const QString& defaultValue) {
     QVariant urlVar = getParameter(id);
     QString url;
     if (urlVar.canConvert<QList<Dataset>>()) {
@@ -1356,7 +1356,7 @@ QString PrompterBaseImpl::getURL(const QString &id, bool *empty, const QString &
     return url;
 }
 
-QString PrompterBaseImpl::getRequiredParam(const QString &id) {
+QString PrompterBaseImpl::getRequiredParam(const QString& id) {
     QString url = getParameter(id).toString();
     if (url.isEmpty()) {
         url = "<font color='red'>" + tr("unset") + "</font>";
@@ -1364,14 +1364,14 @@ QString PrompterBaseImpl::getRequiredParam(const QString &id) {
     return url;
 }
 
-QString PrompterBaseImpl::getScreenedURL(IntegralBusPort *input, const QString &id, const QString &slot, const QString &onEmpty) {
+QString PrompterBaseImpl::getScreenedURL(IntegralBusPort* input, const QString& id, const QString& slot, const QString& onEmpty) {
     bool empty = false;
     QString attrUrl = QString("<u>%1</u>").arg(getURL(id, &empty, onEmpty));
     if (!empty) {
         return attrUrl;
     }
 
-    Actor *origin = input->getProducer(slot);
+    Actor* origin = input->getProducer(slot);
     QString slotUrl;
     if (origin != nullptr) {
         slotUrl = tr("file(s) alongside of input sources of <u>%1</u>").arg(origin->getLabel());
@@ -1382,33 +1382,33 @@ QString PrompterBaseImpl::getScreenedURL(IntegralBusPort *input, const QString &
     return attrUrl;
 }
 
-QString PrompterBaseImpl::getProducers(const QString &port, const QString &slot) {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(port));
+QString PrompterBaseImpl::getProducers(const QString& port, const QString& slot) {
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(port));
     CHECK(nullptr != input, "");
-    QList<Actor *> producers = input->getProducers(slot);
+    QList<Actor*> producers = input->getProducers(slot);
 
     QStringList labels;
-    foreach (Actor *a, producers) {
+    foreach (Actor* a, producers) {
         labels << a->getLabel();
     }
     return labels.join(", ");
 }
 
-QString PrompterBaseImpl::getProducersOrUnset(const QString &port, const QString &slot) {
+QString PrompterBaseImpl::getProducersOrUnset(const QString& port, const QString& slot) {
     static const QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString prods = getProducers(port, slot);
     return prods.isEmpty() ? unsetStr : prods;
 }
 
-QString PrompterBaseImpl::getHyperlink(const QString &id, const QString &val) {
+QString PrompterBaseImpl::getHyperlink(const QString& id, const QString& val) {
     return QString("<a href=%1:%2>%3</a>").arg(WorkflowUtils::HREF_PARAM_ID).arg(id).arg(val);
 }
 
-QString PrompterBaseImpl::getHyperlink(const QString &id, int val) {
+QString PrompterBaseImpl::getHyperlink(const QString& id, int val) {
     return getHyperlink(id, QString::number(val));
 }
 
-QString PrompterBaseImpl::getHyperlink(const QString &id, qreal val) {
+QString PrompterBaseImpl::getHyperlink(const QString& id, qreal val) {
     return getHyperlink(id, QString::number(val));
 }
 

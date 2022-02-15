@@ -35,16 +35,16 @@ class U2AssemblyReadsImportInfo;
 
 class MysqlAssemblyAdapter : public AssemblyAdapter {
 public:
-    MysqlAssemblyAdapter(const U2DataId &assemblyId, const AssemblyCompressor *compressor, MysqlDbRef *ref);
+    MysqlAssemblyAdapter(const U2DataId& assemblyId, const AssemblyCompressor* compressor, MysqlDbRef* ref);
 
 protected:
-    MysqlDbRef *db;
+    MysqlDbRef* db;
 };
 
 class MysqlAssemblyNameFilter : public MysqlRSFilter<U2AssemblyRead> {
 public:
-    MysqlAssemblyNameFilter(const QByteArray &expectedName);
-    virtual bool filter(const U2AssemblyRead &r);
+    MysqlAssemblyNameFilter(const QByteArray& expectedName);
+    virtual bool filter(const U2AssemblyRead& r);
 
 protected:
     QByteArray name;
@@ -52,12 +52,12 @@ protected:
 
 class MysqlSimpleAssemblyReadLoader : public MysqlRSLoader<U2AssemblyRead> {
 public:
-    U2AssemblyRead load(U2SqlQuery *q);
+    U2AssemblyRead load(U2SqlQuery* q);
 };
 
 class MysqlSimpleAssemblyReadPackedDataLoader : public MysqlRSLoader<PackAlgorithmData> {
 public:
-    virtual PackAlgorithmData load(U2SqlQuery *q);
+    virtual PackAlgorithmData load(U2SqlQuery* q);
 };
 
 }  // namespace U2

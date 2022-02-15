@@ -29,7 +29,7 @@ namespace U2 {
 
 class U2CrossDatabaseReferenceDbi : public U2ChildDbi {
 protected:
-    U2CrossDatabaseReferenceDbi(U2Dbi *rootDbi)
+    U2CrossDatabaseReferenceDbi(U2Dbi* rootDbi)
         : U2ChildDbi(rootDbi) {
     }
 
@@ -39,24 +39,24 @@ public:
         Sets local object id assigned to the new value
         Requires: U2DbiFeature_WriteCrossDatabaseReferences
     */
-    virtual void createCrossReference(U2CrossDatabaseReference &reference, const QString &folder, U2OpStatus &os) = 0;
+    virtual void createCrossReference(U2CrossDatabaseReference& reference, const QString& folder, U2OpStatus& os) = 0;
 
     /**
         Removes a DB representation of CrossDatabaseReference
     */
-    virtual void removeCrossReferenceData(const U2DataId &referenceId, U2OpStatus &os) = 0;
+    virtual void removeCrossReferenceData(const U2DataId& referenceId, U2OpStatus& os) = 0;
 
     /**
         Loads remote object information from DB
         Requires: U2DbiFeature_ReadCrossDatabaseReferences
     */
-    virtual U2CrossDatabaseReference getCrossReference(const U2DataId &objectId, U2OpStatus &os) = 0;
+    virtual U2CrossDatabaseReference getCrossReference(const U2DataId& objectId, U2OpStatus& os) = 0;
 
     /**
         Updates all fields of cross database reference object
         Requires: U2DbiFeature_WriteCrossDatabaseReferences
     */
-    virtual void updateCrossReference(const U2CrossDatabaseReference &reference, U2OpStatus &os) = 0;
+    virtual void updateCrossReference(const U2CrossDatabaseReference& reference, U2OpStatus& os) = 0;
 };
 
 }  // namespace U2

@@ -33,8 +33,8 @@ TrimmomaticLogParser::TrimmomaticLogParser()
     : ExternalToolLogParser() {
 }
 
-bool TrimmomaticLogParser::isError(const QString &line) const {
-    foreach (const QString &wellKnownErrors, wellKnownErrors) {
+bool TrimmomaticLogParser::isError(const QString& line) const {
+    foreach (const QString& wellKnownErrors, wellKnownErrors) {
         if (line.contains(wellKnownErrors)) {
             return true;
         }
@@ -42,4 +42,4 @@ bool TrimmomaticLogParser::isError(const QString &line) const {
     return false;
 }
 
-}    // namespace U2
+}  // namespace U2

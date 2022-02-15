@@ -44,14 +44,14 @@ struct GUrlLess {
     }
 };
 
-bool MultipleDocumentsReadingModeSelectorController::adjustReadingMode(QVariantMap &props, QList<GUrl> &urls, const QMap<QString, qint64> &headerSequenceLengths) {
+bool MultipleDocumentsReadingModeSelectorController::adjustReadingMode(QVariantMap& props, QList<GUrl>& urls, const QMap<QString, qint64>& headerSequenceLengths) {
     std::sort(urls.begin(), urls.end(), GUrlLess());
 
     MultipleDocumentsReadingModeDialog d(urls, QApplication::activeWindow());
     return d.setupGUI(urls, props, headerSequenceLengths);
 }
 
-bool MultipleDocumentsReadingModeSelectorController::mergeDocumentOption(const FormatDetectionResult &formatResult, QMap<QString, qint64> *headerSequenceLengths) {
+bool MultipleDocumentsReadingModeSelectorController::mergeDocumentOption(const FormatDetectionResult& formatResult, QMap<QString, qint64>* headerSequenceLengths) {
     QVariantMap docHints = formatResult.rawDataCheckResult.properties;
     if (formatResult.format == nullptr) {
         return false;
@@ -89,7 +89,7 @@ bool MultipleDocumentsReadingModeSelectorController::mergeDocumentOption(const F
     return docHints.value(RawDataCheckResult_Sequence).toBool();
 }
 
-MultipleDocumentsReadingModeDialog::MultipleDocumentsReadingModeDialog(const QList<GUrl> &_urls, QWidget *parent)
+MultipleDocumentsReadingModeDialog::MultipleDocumentsReadingModeDialog(const QList<GUrl>& _urls, QWidget* parent)
     : QDialog(parent),
       saveController(nullptr),
       urls(_urls) {
@@ -114,7 +114,7 @@ QString MultipleDocumentsReadingModeDialog::setupNewUrl() {
     return urlStr + "/merged_document." + extension4MergedDocument;
 }
 
-bool MultipleDocumentsReadingModeDialog::setupGUI(QList<GUrl> &_urls, QVariantMap &props, const QMap<QString, qint64> &headerSequenceLengths) {
+bool MultipleDocumentsReadingModeDialog::setupGUI(QList<GUrl>& _urls, QVariantMap& props, const QMap<QString, qint64>& headerSequenceLengths) {
     setModal(true);
     setupUi(this);
     new HelpButton(this, buttonBox, "65929449");
@@ -160,7 +160,7 @@ bool MultipleDocumentsReadingModeDialog::setupGUI(QList<GUrl> &_urls, QVariantMa
         props[DocumentReadingMode_SequenceMergeGapSize] = fileGap->value();
         props[ProjectLoaderHint_MultipleFilesMode_RealDocumentFormat] = BaseDocumentFormats::PLAIN_GENBANK;
 
-        foreach (const GUrl &url, _urls) {
+        foreach (const GUrl& url, _urls) {
             props[RawDataCheckResult_HeaderSequenceLength + url.getURLString()] = headerSequenceLengths.value(url.getURLString(), -1);
         }
     } else if (join2alignmentMode->isChecked()) {
@@ -184,7 +184,7 @@ bool MultipleDocumentsReadingModeDialog::setupGUI(QList<GUrl> &_urls, QVariantMa
     return true;
 }
 
-QString MultipleDocumentsReadingModeDialog::findUrlByFileName(const QString &fileName) {
+QString MultipleDocumentsReadingModeDialog::findUrlByFileName(const QString& fileName) {
     foreach (GUrl url, urls) {
         QString _fileName = url.fileName();
         if (_fileName == fileName) {
@@ -253,7 +253,7 @@ void MultipleDocumentsReadingModeDialog::initMsaSaveController() {
 }
 
 void MultipleDocumentsReadingModeDialog::sl_onMoveUp() {
-    QListWidgetItem *item = listDocuments->currentItem();
+    QListWidgetItem* item = listDocuments->currentItem();
     if (item == nullptr) {
         return;
     }
@@ -262,7 +262,7 @@ void MultipleDocumentsReadingModeDialog::sl_onMoveUp() {
         return;
     }
 
-    QListWidgetItem *newCurrent = new QListWidgetItem(item->text());
+    QListWidgetItem* newCurrent = new QListWidgetItem(item->text());
     listDocuments->insertItem(row - 1, newCurrent);
     listDocuments->removeItemWidget(item);
     delete item;
@@ -272,7 +272,7 @@ void MultipleDocumentsReadingModeDialog::sl_onMoveUp() {
 }
 
 void MultipleDocumentsReadingModeDialog::sl_onMoveDown() {
-    QListWidgetItem *item = listDocuments->currentItem();
+    QListWidgetItem* item = listDocuments->currentItem();
     if (item == nullptr) {
         return;
     }
@@ -281,7 +281,7 @@ void MultipleDocumentsReadingModeDialog::sl_onMoveDown() {
         return;
     }
 
-    QListWidgetItem *newCurrent = new QListWidgetItem(item->text());
+    QListWidgetItem* newCurrent = new QListWidgetItem(item->text());
     listDocuments->insertItem(row + 2, newCurrent);
     listDocuments->removeItemWidget(item);
     delete item;

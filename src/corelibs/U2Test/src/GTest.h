@@ -37,11 +37,11 @@ namespace U2 {
 
 class U2TEST_EXPORT GTestEnvironment {
 public:
-    void setVar(const QString &varName, const QString &val) {
+    void setVar(const QString& varName, const QString& val) {
         vars[varName] = val;
     }
 
-    QString getVar(const QString &varName) const {
+    QString getVar(const QString& varName) const {
         return vars.value(varName);
     }
 
@@ -60,51 +60,51 @@ private:
 class U2TEST_EXPORT GTest : public Task {
     Q_OBJECT
 public:
-    GTest(const QString &taskName, GTest *cp, const GTestEnvironment *env, TaskFlags flags, const QList<GTest *> &subtasks = QList<GTest *>());
+    GTest(const QString& taskName, GTest* cp, const GTestEnvironment* env, TaskFlags flags, const QList<GTest*>& subtasks = QList<GTest*>());
 
-    QObject *getContext(const QString &name) const;
+    QObject* getContext(const QString& name) const;
 
-    void addContext(const QString &name, QObject *v);
+    void addContext(const QString& name, QObject* v);
 
-    void removeContext(const QString &name);
+    void removeContext(const QString& name);
 
     template<class T>
-    static T *getContext(const GTest *test, const QString &name) {
-        QObject *o = test->getContext(name);
-        T *res = qobject_cast<T *>(o);
+    static T* getContext(const GTest* test, const QString& name) {
+        QObject* o = test->getContext(name);
+        T* res = qobject_cast<T*>(o);
         return res;
     }
 
-    const GTestEnvironment *getEnv() const {
+    const GTestEnvironment* getEnv() const {
         return env;
     }
 
     void removeTempDir();
 
 protected:
-    GTest *getContextProvider() const {
+    GTest* getContextProvider() const {
         return contextProvider;
     }
 
-    void failMissingValue(const QString &attribute);
-    void wrongValue(const QString &attribute);
-    void emptyValue(const QString &attribute);
+    void failMissingValue(const QString& attribute);
+    void wrongValue(const QString& attribute);
+    void emptyValue(const QString& attribute);
 
-    GTest *contextProvider;
-    const GTestEnvironment *env;
-    QMap<QString, QObject *> subtestsContext;
+    GTest* contextProvider;
+    const GTestEnvironment* env;
+    QMap<QString, QObject*> subtestsContext;
 };
 
 class U2TEST_EXPORT GTestFormat : public QObject {
 public:
-    GTestFormat(const QString &_formatId)
+    GTestFormat(const QString& _formatId)
         : formatId(_formatId) {};
 
     const QString getFormatId() const {
         return formatId;
     }
 
-    virtual GTest *createTest(const QString &name, GTest *cp, const GTestEnvironment *env, const QByteArray &testData, QString &err) = 0;
+    virtual GTest* createTest(const QString& name, GTest* cp, const GTestEnvironment* env, const QByteArray& testData, QString& err) = 0;
 
 protected:
     QString formatId;
@@ -113,15 +113,15 @@ protected:
 class GTestSuite;
 class U2TEST_EXPORT GTestRef {
 public:
-    GTestRef(const QString &_url, const QString &sName, const GTestFormatId f)
+    GTestRef(const QString& _url, const QString& sName, const GTestFormatId f)
         : url(_url), shortName(sName), formatId(f), suite(nullptr) {
     }
 
-    const QString &getURL() const {
+    const QString& getURL() const {
         return url;
     }
 
-    const QString &getShortName() const {
+    const QString& getShortName() const {
         return shortName;
     }
 
@@ -129,15 +129,15 @@ public:
         return formatId;
     }
 
-    void setSuite(GTestSuite *_suite) {
+    void setSuite(GTestSuite* _suite) {
         suite = _suite;
     }
 
-    GTestSuite *getSuite() const {
+    GTestSuite* getSuite() const {
         return suite;
     }
 
-    bool operator==(const GTestRef &other) const {
+    bool operator==(const GTestRef& other) const {
         return (url == other.url) && (formatId == other.formatId);
     }
 
@@ -145,17 +145,17 @@ private:
     QString url;
     QString shortName;
     GTestFormatId formatId;
-    GTestSuite *suite;
+    GTestSuite* suite;
 };
 
 class U2TEST_EXPORT GTestState : public QObject {
     Q_OBJECT
 public:
-    GTestState(GTestRef *ref)
+    GTestState(GTestRef* ref)
         : testRef(ref), state(TriState_Unknown) {
     }
 
-    GTestRef *getTestRef() const {
+    GTestRef* getTestRef() const {
         return testRef;
     }
 
@@ -171,21 +171,21 @@ public:
         return state == TriState_Unknown;
     }
 
-    const QString &getErrorMessage() const {
+    const QString& getErrorMessage() const {
         return errMessage;
     }
 
     void clearState();
 
-    void setFailed(const QString &err);
+    void setFailed(const QString& err);
 
     void setPassed();
 
 signals:
-    void si_stateChanged(GTestState *ts);
+    void si_stateChanged(GTestState* ts);
 
 private:
-    GTestRef *testRef;
+    GTestRef* testRef;
     TriState state;
     QString errMessage;
 };
@@ -195,22 +195,22 @@ class U2TEST_EXPORT GTestSuite : public QObject {
 public:
     virtual ~GTestSuite();
 
-    GTestEnvironment *getEnv() {
+    GTestEnvironment* getEnv() {
         return &env;
     }
 
-    const QList<GTestRef *> &getTests() const {
+    const QList<GTestRef*>& getTests() const {
         return tests;
     }
-    const QMap<GTestRef *, QString> &getExcludedTests() const {
+    const QMap<GTestRef*, QString>& getExcludedTests() const {
         return excluded;
     }
 
-    const QString &getURL() const {
+    const QString& getURL() const {
         return url;
     }
 
-    const QString &getName() const {
+    const QString& getName() const {
         return name;
     }
 
@@ -218,8 +218,8 @@ public:
         return testTimeout;
     }
 
-    static GTestSuite *readTestSuite(const QString &url, QString &err);
-    static QList<GTestSuite *> readTestSuiteList(const QString &url, QStringList &err);
+    static GTestSuite* readTestSuite(const QString& url, QString& err);
+    static QList<GTestSuite*> readTestSuiteList(const QString& url, QStringList& err);
 
 protected:
     GTestSuite()
@@ -229,8 +229,8 @@ protected:
     QString url;
     QString name;
 
-    QList<GTestRef *> tests;
-    QMap<GTestRef *, QString> excluded;
+    QList<GTestRef*> tests;
+    QMap<GTestRef*, QString> excluded;
 
     /** Maximum run time for single test in sutie.
         timeout = 0 means this parameter unused */
@@ -261,12 +261,12 @@ public:
     GTestLogHelper();
     ~GTestLogHelper();
 
-    void initMessages(const QStringList &expectedMessages, const QStringList &unexpectedMessages);
+    void initMessages(const QStringList& expectedMessages, const QStringList& unexpectedMessages);
 
     GTestLogHelperStatus verifyStatus();
 
 private:
-    void onMessage(const LogMessage &logMessage);
+    void onMessage(const LogMessage& logMessage);
 
     QMap<QString, bool> expectedMessages;
     QMap<QString, bool> unexpectedMessages;  // Messages that mustn't be present in the log

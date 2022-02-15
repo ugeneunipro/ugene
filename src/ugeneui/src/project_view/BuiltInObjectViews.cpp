@@ -34,7 +34,7 @@
 namespace U2 {
 
 void ProjectViewImpl::registerBuiltInObjectViews() {
-    GObjectViewFactoryRegistry *reg = AppContext::getObjectViewFactoryRegistry();
+    GObjectViewFactoryRegistry* reg = AppContext::getObjectViewFactoryRegistry();
 
     reg->registerGObjectViewFactory(new SimpleTextObjectViewFactory());
     reg->registerGObjectViewFactory(new AnnotatedDNAViewFactory());
@@ -50,9 +50,9 @@ void ProjectViewImpl::registerBuiltInObjectViews() {
 }
 
 void ProjectViewImpl::unregisterBuiltInObjectViews() {
-    GObjectViewFactoryRegistry *reg = AppContext::getObjectViewFactoryRegistry();
+    GObjectViewFactoryRegistry* reg = AppContext::getObjectViewFactoryRegistry();
 
-    GObjectViewFactory *f = reg->getFactoryById(SimpleTextObjectViewFactory::ID);
+    GObjectViewFactory* f = reg->getFactoryById(SimpleTextObjectViewFactory::ID);
     assert(f != nullptr);
     reg->unregisterGObjectViewFactory(f);
     delete f;

@@ -36,6 +36,6 @@ public:
     static const QString VCF_CONSENSUS_TMP_DIR;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_VCF_CONSENSUS_SUPPORT_H_
+#endif  // _U2_VCF_CONSENSUS_SUPPORT_H_

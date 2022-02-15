@@ -27,11 +27,11 @@
 
 namespace U2 {
 
-SQLiteAttributeDbi::SQLiteAttributeDbi(SQLiteDbi *dbi)
+SQLiteAttributeDbi::SQLiteAttributeDbi(SQLiteDbi* dbi)
     : U2AttributeDbi(dbi), SQLiteChildDBICommon(dbi) {
 }
 
-void SQLiteAttributeDbi::initSqlSchema(U2OpStatus &os) {
+void SQLiteAttributeDbi::initSqlSchema(U2OpStatus& os) {
     if (os.hasError()) {
         return;
     }
@@ -85,12 +85,12 @@ void SQLiteAttributeDbi::initSqlSchema(U2OpStatus &os) {
 }
 
 /** Returns all attribute names available in the database */
-QStringList SQLiteAttributeDbi::getAvailableAttributeNames(U2OpStatus &os) {
+QStringList SQLiteAttributeDbi::getAvailableAttributeNames(U2OpStatus& os) {
     return SQLiteReadQuery("SELECT DISTINCT name FROM Attribute", db, os).selectStrings();
 }
 
 /** Returns all attribute ids for the given object */
-QList<U2DataId> SQLiteAttributeDbi::getObjectAttributes(const U2DataId &objectId, const QString &name, U2OpStatus &os) {
+QList<U2DataId> SQLiteAttributeDbi::getObjectAttributes(const U2DataId& objectId, const QString& name, U2OpStatus& os) {
     if (name.isEmpty()) {
         static const QString queryString("SELECT id, type, '' FROM Attribute WHERE object = ?1 ORDER BY id");
         SQLiteReadQuery q(queryString, db, os);
@@ -105,7 +105,7 @@ QList<U2DataId> SQLiteAttributeDbi::getObjectAttributes(const U2DataId &objectId
 }
 
 /** Returns all attribute ids for the given object */
-QList<U2DataId> SQLiteAttributeDbi::getObjectPairAttributes(const U2DataId &objectId, const U2DataId &childId, const QString &name, U2OpStatus &os) {
+QList<U2DataId> SQLiteAttributeDbi::getObjectPairAttributes(const U2DataId& objectId, const U2DataId& childId, const QString& name, U2OpStatus& os) {
     if (name.isEmpty()) {
         static const QString queryString("SELECT id, type, '' FROM Attribute WHERE object = ?1 AND child = ?2 ORDER BY id");
         SQLiteReadQuery q(queryString, db, os);
@@ -122,7 +122,7 @@ QList<U2DataId> SQLiteAttributeDbi::getObjectPairAttributes(const U2DataId &obje
 }
 
 /** Loads int64 attribute by id */
-U2IntegerAttribute SQLiteAttributeDbi::getIntegerAttribute(const U2DataId &attributeId, U2OpStatus &os) {
+U2IntegerAttribute SQLiteAttributeDbi::getIntegerAttribute(const U2DataId& attributeId, U2OpStatus& os) {
     static const QString queryString(buildSelectAttributeQuery("IntegerAttribute"));
     SQLiteReadQuery q(queryString, db, os);
     q.bindDataId(1, attributeId);
@@ -134,7 +134,7 @@ U2IntegerAttribute SQLiteAttributeDbi::getIntegerAttribute(const U2DataId &attri
 }
 
 /** Loads real64 attribute by id */
-U2RealAttribute SQLiteAttributeDbi::getRealAttribute(const U2DataId &attributeId, U2OpStatus &os) {
+U2RealAttribute SQLiteAttributeDbi::getRealAttribute(const U2DataId& attributeId, U2OpStatus& os) {
     static const QString queryString(buildSelectAttributeQuery("RealAttribute"));
     SQLiteReadQuery q(queryString, db, os);
     q.bindDataId(1, attributeId);
@@ -146,7 +146,7 @@ U2RealAttribute SQLiteAttributeDbi::getRealAttribute(const U2DataId &attributeId
 }
 
 /** Loads String attribute by id */
-U2StringAttribute SQLiteAttributeDbi::getStringAttribute(const U2DataId &attributeId, U2OpStatus &os) {
+U2StringAttribute SQLiteAttributeDbi::getStringAttribute(const U2DataId& attributeId, U2OpStatus& os) {
     static const QString queryString(buildSelectAttributeQuery("StringAttribute"));
     SQLiteReadQuery q(queryString, db, os);
     q.bindDataId(1, attributeId);
@@ -158,7 +158,7 @@ U2StringAttribute SQLiteAttributeDbi::getStringAttribute(const U2DataId &attribu
 }
 
 /** Loads byte attribute by id */
-U2ByteArrayAttribute SQLiteAttributeDbi::getByteArrayAttribute(const U2DataId &attributeId, U2OpStatus &os) {
+U2ByteArrayAttribute SQLiteAttributeDbi::getByteArrayAttribute(const U2DataId& attributeId, U2OpStatus& os) {
     static const QString queryString(buildSelectAttributeQuery("ByteArrayAttribute"));
     SQLiteReadQuery q(queryString, db, os);
     q.bindDataId(1, attributeId);
@@ -169,13 +169,13 @@ U2ByteArrayAttribute SQLiteAttributeDbi::getByteArrayAttribute(const U2DataId &a
     return res;
 }
 
-QString SQLiteAttributeDbi::buildSelectAttributeQuery(const QString &attributeTable) {
+QString SQLiteAttributeDbi::buildSelectAttributeQuery(const QString& attributeTable) {
     return "SELECT t.value, a.id, a.type, '', a.object, a.otype, a.oextra, a.child, a.ctype, a.cextra, a.version, a.name "
            " FROM Attribute AS a, " +
            attributeTable + " AS t WHERE a.id = ?1 AND t.attribute = a.id";
 }
 
-void SQLiteAttributeDbi::readAttribute(SQLiteReadQuery &q, U2Attribute &attr) {
+void SQLiteAttributeDbi::readAttribute(SQLiteReadQuery& q, U2Attribute& attr) {
     if (q.hasError()) {
         return;
     }
@@ -191,13 +191,13 @@ void SQLiteAttributeDbi::readAttribute(SQLiteReadQuery &q, U2Attribute &attr) {
 }
 
 /** Sorts all objects in database according to U2DbiSortConfig provided  */
-QList<U2DataId> SQLiteAttributeDbi::sort(const U2DbiSortConfig &, qint64, qint64, U2OpStatus &os) {
+QList<U2DataId> SQLiteAttributeDbi::sort(const U2DbiSortConfig&, qint64, qint64, U2OpStatus& os) {
     QList<U2DataId> res;
     os.setError("not implemented");
     return res;
 }
 
-static void removeAttribute(SQLiteQuery *q, const U2DataId &id) {
+static void removeAttribute(SQLiteQuery* q, const U2DataId& id) {
     q->reset();
     q->bindDataId(1, id);
     q->execute();
@@ -206,7 +206,7 @@ static void removeAttribute(SQLiteQuery *q, const U2DataId &id) {
 Removes attribute from database
 Requires U2DbiFeature_WriteAttribute feature support
 */
-void SQLiteAttributeDbi::removeAttributes(const QList<U2DataId> &attributeIds, U2OpStatus &os) {
+void SQLiteAttributeDbi::removeAttributes(const QList<U2DataId>& attributeIds, U2OpStatus& os) {
     SQLiteTransaction t(db, os);
     static const QString qString("DELETE FROM Attribute WHERE id = ?1");
     static const QString qiString("DELETE FROM IntegerAttribute WHERE attribute = ?1");
@@ -218,7 +218,7 @@ void SQLiteAttributeDbi::removeAttributes(const QList<U2DataId> &attributeIds, U
     QSharedPointer<SQLiteQuery> qr = t.getPreparedQuery(qrString, db, os);
     QSharedPointer<SQLiteQuery> qs = t.getPreparedQuery(qsString, db, os);
     QSharedPointer<SQLiteQuery> qb = t.getPreparedQuery(qbString, db, os);
-    foreach (const U2DataId &id, attributeIds) {
+    foreach (const U2DataId& id, attributeIds) {
         U2DataType type = U2DbiUtils::toType(id);
         switch (type) {
             case U2Type::AttributeInteger:
@@ -246,7 +246,7 @@ void SQLiteAttributeDbi::removeAttributes(const QList<U2DataId> &attributeIds, U
     }
 }
 
-void SQLiteAttributeDbi::removeObjectAttributes(const U2DataId &objectId, U2OpStatus &os) {
+void SQLiteAttributeDbi::removeObjectAttributes(const U2DataId& objectId, U2OpStatus& os) {
     SQLiteTransaction t(db, os);
     QList<U2DataId> attributes = getObjectAttributes(objectId, "", os);
     if (!attributes.isEmpty()) {
@@ -254,7 +254,7 @@ void SQLiteAttributeDbi::removeObjectAttributes(const U2DataId &objectId, U2OpSt
     }
 }
 
-qint64 SQLiteAttributeDbi::createAttribute(U2Attribute &attr, U2DataType type, SQLiteTransaction &t, U2OpStatus &os) {
+qint64 SQLiteAttributeDbi::createAttribute(U2Attribute& attr, U2DataType type, SQLiteTransaction& t, U2OpStatus& os) {
     static const QString queryString("INSERT INTO Attribute(type, object, child, otype, ctype, oextra, cextra, version, name) "
                                      " VALUES(?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)");
     QSharedPointer<SQLiteQuery> q = t.getPreparedQuery(queryString, db, os);
@@ -277,7 +277,7 @@ qint64 SQLiteAttributeDbi::createAttribute(U2Attribute &attr, U2DataType type, S
 Creates int64 attribute in database. ObjectId must be already set in attribute and present in the same database
 Requires U2DbiFeature_WriteAttribute feature support
 */
-void SQLiteAttributeDbi::createIntegerAttribute(U2IntegerAttribute &a, U2OpStatus &os) {
+void SQLiteAttributeDbi::createIntegerAttribute(U2IntegerAttribute& a, U2OpStatus& os) {
     SQLiteTransaction t(db, os);
     qint64 id = createAttribute(a, U2Type::AttributeInteger, t, os);
     if (os.hasError()) {
@@ -297,7 +297,7 @@ void SQLiteAttributeDbi::createIntegerAttribute(U2IntegerAttribute &a, U2OpStatu
 Creates real64 attribute in database. ObjectId must be already set in attribute and present in the same database
 Requires U2DbiFeature_WriteAttribute feature support
 */
-void SQLiteAttributeDbi::createRealAttribute(U2RealAttribute &a, U2OpStatus &os) {
+void SQLiteAttributeDbi::createRealAttribute(U2RealAttribute& a, U2OpStatus& os) {
     SQLiteTransaction t(db, os);
     qint64 id = createAttribute(a, U2Type::AttributeReal, t, os);
     if (os.hasError()) {
@@ -317,7 +317,7 @@ void SQLiteAttributeDbi::createRealAttribute(U2RealAttribute &a, U2OpStatus &os)
 Creates String attribute in database. ObjectId must be already set in attribute and present in the same database
 Requires U2DbiFeature_WriteAttribute feature support
 */
-void SQLiteAttributeDbi::createStringAttribute(U2StringAttribute &a, U2OpStatus &os) {
+void SQLiteAttributeDbi::createStringAttribute(U2StringAttribute& a, U2OpStatus& os) {
     SQLiteTransaction t(db, os);
     qint64 id = createAttribute(a, U2Type::AttributeString, t, os);
     if (os.hasError()) {
@@ -337,7 +337,7 @@ void SQLiteAttributeDbi::createStringAttribute(U2StringAttribute &a, U2OpStatus 
 Creates Byte attribute in database. ObjectId must be already set in attribute and present in the same database
 Requires U2DbiFeature_WriteAttribute feature support
 */
-void SQLiteAttributeDbi::createByteArrayAttribute(U2ByteArrayAttribute &a, U2OpStatus &os) {
+void SQLiteAttributeDbi::createByteArrayAttribute(U2ByteArrayAttribute& a, U2OpStatus& os) {
     SQLiteTransaction t(db, os);
     qint64 id = createAttribute(a, U2Type::AttributeByteArray, t, os);
     if (os.hasError()) {

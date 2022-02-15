@@ -29,14 +29,14 @@
 namespace U2 {
 using namespace HI;
 
-SelectDocumentFormatDialogFiller::SelectDocumentFormatDialogFiller(HI::GUITestOpStatus &_os, CustomScenario *scenario)
+SelectDocumentFormatDialogFiller::SelectDocumentFormatDialogFiller(HI::GUITestOpStatus& _os, CustomScenario* scenario)
     : Filler(_os, "DocumentFormatSelectorDialog", scenario) {
 }
 
 #define GT_CLASS_NAME "GTUtilsDialog::SelectDocumentFormatDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void SelectDocumentFormatDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
+    QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog != nullptr, "dialog not found");
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

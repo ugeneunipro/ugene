@@ -79,7 +79,7 @@ void RangeSelector::init() {
         maxButton->setShortcut(QKeySequence(Qt::ALT | Qt::Key_X));
     }
 
-    QHBoxLayout *l = new QHBoxLayout(this);
+    QHBoxLayout* l = new QHBoxLayout(this);
     if (dialog == nullptr) {
         l->setContentsMargins(5, 0, 5, 0);
         l->setSizeConstraint(QLayout::SetFixedSize);
@@ -106,30 +106,30 @@ void RangeSelector::init() {
     setLayout(l);
 }
 
-RangeSelector::RangeSelector(QDialog *dialog, int rangeStart, int rangeEnd, int len, bool autoClose)
+RangeSelector::RangeSelector(QDialog* dialog, int rangeStart, int rangeEnd, int len, bool autoClose)
     : QWidget(dialog), rangeStart(rangeStart), rangeEnd(rangeEnd), len(len), startEdit(nullptr), endEdit(nullptr),
       minButton(nullptr), maxButton(nullptr), rangeLabel(nullptr), dialog(dialog), autoClose(autoClose) {
     init();
 
-    QPushButton *okButton = new QPushButton(this);
+    QPushButton* okButton = new QPushButton(this);
     okButton->setText(tr("OK"));
     okButton->setDefault(true);
     okButton->setObjectName("ok_button");
     connect(okButton, SIGNAL(clicked(bool)), SLOT(sl_onGoButtonClicked(bool)));
 
-    QPushButton *cancelButton = new QPushButton(this);
+    QPushButton* cancelButton = new QPushButton(this);
     cancelButton->setText(tr("Cancel"));
     cancelButton->setObjectName("cancel_button");
     connect(cancelButton, SIGNAL(clicked()), dialog, SLOT(reject()));
 
-    QHBoxLayout *l3 = new QHBoxLayout();
+    QHBoxLayout* l3 = new QHBoxLayout();
     l3->setMargin(0);
     l3->addStretch();
     l3->addWidget(okButton);
     l3->addWidget(cancelButton);
 
     assert(dialog != nullptr);
-    QVBoxLayout *l2 = new QVBoxLayout();
+    QVBoxLayout* l2 = new QVBoxLayout();
     l2->addWidget(this);
     l2->addStretch();
     l2->addLayout(l3);
@@ -190,7 +190,7 @@ int RangeSelector::getEnd() const {
     return v;
 }
 
-MultipleRangeSelector::MultipleRangeSelector(QWidget *_parent, const QVector<U2Region> &_regions, int _seqLen, bool _isCircular)
+MultipleRangeSelector::MultipleRangeSelector(QWidget* _parent, const QVector<U2Region>& _regions, int _seqLen, bool _isCircular)
     : QDialog(_parent), seqLen(_seqLen), selectedRanges(_regions), isCircular(_isCircular) {
     ui = new Ui_RangeSelectionDialog;
     ui->setupUi(this);
@@ -229,16 +229,16 @@ MultipleRangeSelector::MultipleRangeSelector(QWidget *_parent, const QVector<U2R
 
     connect(ui->startEdit, SIGNAL(returnPressed()), SLOT(sl_returnPressed()));
     connect(ui->endEdit, SIGNAL(returnPressed()), SLOT(sl_returnPressed()));
-    connect(ui->startEdit, SIGNAL(textEdited(QString)), SLOT(sl_textEdited(const QString &)));
-    connect(ui->endEdit, SIGNAL(textEdited(QString)), SLOT(sl_textEdited(const QString &)));
-    connect(ui->startEdit, SIGNAL(textChanged(QString)), SLOT(sl_textEdited(const QString &)));
-    connect(ui->endEdit, SIGNAL(textChanged(QString)), SLOT(sl_textEdited(const QString &)));
+    connect(ui->startEdit, SIGNAL(textEdited(QString)), SLOT(sl_textEdited(const QString&)));
+    connect(ui->endEdit, SIGNAL(textEdited(QString)), SLOT(sl_textEdited(const QString&)));
+    connect(ui->startEdit, SIGNAL(textChanged(QString)), SLOT(sl_textEdited(const QString&)));
+    connect(ui->endEdit, SIGNAL(textChanged(QString)), SLOT(sl_textEdited(const QString&)));
 
     connect(ui->multipleRegionEdit, SIGNAL(returnPressed()), SLOT(sl_returnPressed()));
     connect(ui->minButton, SIGNAL(clicked()), SLOT(sl_minButton()));
     connect(ui->maxButton, SIGNAL(clicked()), SLOT(sl_maxButton()));
 
-    connect(ui->buttonGroup, SIGNAL(buttonClicked(QAbstractButton *)), SLOT(sl_buttonClicked(QAbstractButton *)));
+    connect(ui->buttonGroup, SIGNAL(buttonClicked(QAbstractButton*)), SLOT(sl_buttonClicked(QAbstractButton*)));
     ui->singleButton->toggle();
     sl_buttonClicked(ui->singleButton);
 }
@@ -274,7 +274,7 @@ void MultipleRangeSelector::accept() {
     QDialog::accept();
 }
 
-void MultipleRangeSelector::sl_textEdited(const QString &) {
+void MultipleRangeSelector::sl_textEdited(const QString&) {
     int min = ui->startEdit->text().toInt();
     int max = ui->endEdit->text().toInt();
     QPalette p = normalPalette;
@@ -288,7 +288,7 @@ void MultipleRangeSelector::sl_textEdited(const QString &) {
     ui->endEdit->setPalette(p);
 }
 
-void MultipleRangeSelector::sl_buttonClicked(QAbstractButton *b) {
+void MultipleRangeSelector::sl_buttonClicked(QAbstractButton* b) {
     bool singleMode = b == ui->singleButton;
 
     ui->labelS1->setEnabled(singleMode);
@@ -347,7 +347,7 @@ void MultipleRangeSelector::sl_returnPressed() {
 
 void MultipleRangeSelector::sl_multipleButtonToggled(bool toggleState) {
     if (toggleState) {
-        QValidator *v = new GenbankLocationValidator(ui->buttonBox->button(QDialogButtonBox::Ok), seqLen, isCircular, ui->multipleRegionEdit);
+        QValidator* v = new GenbankLocationValidator(ui->buttonBox->button(QDialogButtonBox::Ok), seqLen, isCircular, ui->multipleRegionEdit);
         ui->multipleRegionEdit->setValidator(v);
         int size = ui->multipleRegionEdit->text().size();
         QString toValidate = ui->multipleRegionEdit->text();

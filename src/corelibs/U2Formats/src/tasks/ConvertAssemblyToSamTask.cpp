@@ -50,14 +50,14 @@ ConvertAssemblyToSamTask::ConvertAssemblyToSamTask(GUrl db, GUrl sam)
       handle(nullptr) {
 }
 
-ConvertAssemblyToSamTask::ConvertAssemblyToSamTask(const DbiConnection *h, GUrl sam)
+ConvertAssemblyToSamTask::ConvertAssemblyToSamTask(const DbiConnection* h, GUrl sam)
     : Task("ConvertAssemblyToSamTask", TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
       dbFileUrl(nullptr),
       samFileUrl(sam),
       handle(h) {
 }
 
-ConvertAssemblyToSamTask::ConvertAssemblyToSamTask(const U2EntityRef &entityRef, GUrl sam)
+ConvertAssemblyToSamTask::ConvertAssemblyToSamTask(const U2EntityRef& entityRef, GUrl sam)
     : Task("ConvertAssemblyToSamTask", TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
       dbFileUrl(nullptr),
       samFileUrl(sam),
@@ -90,7 +90,7 @@ void ConvertAssemblyToSamTask::run() {
         return;
     }
 
-    U2ObjectDbi *odbi = handle->dbi->getObjectDbi();
+    U2ObjectDbi* odbi = handle->dbi->getObjectDbi();
     QList<U2DataId> objectIds;
     // If the entityRef has been passed to the class constructor,
     // then leave only one object with the specified ID
@@ -102,12 +102,12 @@ void ConvertAssemblyToSamTask::run() {
         objectIds = odbi->getObjects(U2Type::Assembly, 0, U2DbiOptions::U2_DBI_NO_LIMIT, stateInfo);
     }
 
-    DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::SAM);
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(samFileUrl));
+    DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::SAM);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(samFileUrl));
     QScopedPointer<Document> doc(format->createNewLoadedDocument(iof, samFileUrl, stateInfo));
     CHECK_OP(stateInfo, );
     doc->setDocumentOwnsDbiResources(false);
-    foreach (const U2DataId &id, objectIds) {
+    foreach (const U2DataId& id, objectIds) {
         U2Assembly assembly = handle->dbi->getAssemblyDbi()->getAssemblyObject(id, stateInfo);
         CHECK_OP(stateInfo, );
         U2EntityRef ref(handle->dbi->getDbiRef(), id);

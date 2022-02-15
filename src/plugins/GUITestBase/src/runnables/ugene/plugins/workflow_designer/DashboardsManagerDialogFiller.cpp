@@ -34,7 +34,7 @@ using namespace HI;
 #define GT_CLASS_NAME "DashboardsManagerDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void DashboardsManagerDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
+    QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog, "activeModalWidget is NULL");
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -42,13 +42,13 @@ void DashboardsManagerDialogFiller::commonScenario() {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "selectDashboards"
-void DashboardsManagerDialogFiller::selectDashboards(HI::GUITestOpStatus &os, QStringList names) {
-    QWidget *dialog = QApplication::activeModalWidget();
+void DashboardsManagerDialogFiller::selectDashboards(HI::GUITestOpStatus& os, QStringList names) {
+    QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog, "activeModalWidget is NULL");
 
-    QTreeWidget *listWidget = GTWidget::findExactWidget<QTreeWidget *>(os, "listWidget", dialog);
+    QTreeWidget* listWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "listWidget", dialog);
     foreach (QString name, names) {
-        QTreeWidgetItem *item = GTTreeWidget::findItem(os, listWidget, name);
+        QTreeWidgetItem* item = GTTreeWidget::findItem(os, listWidget, name);
         GTKeyboardDriver::keyPress(Qt::Key_Control);
         GTTreeWidget::click(os, item);
         GTKeyboardDriver::keyRelease(Qt::Key_Control);
@@ -57,26 +57,26 @@ void DashboardsManagerDialogFiller::selectDashboards(HI::GUITestOpStatus &os, QS
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isDashboardPresent"
-bool DashboardsManagerDialogFiller::isDashboardPresent(HI::GUITestOpStatus &os, QString name) {
-    QWidget *dialog = QApplication::activeModalWidget();
+bool DashboardsManagerDialogFiller::isDashboardPresent(HI::GUITestOpStatus& os, QString name) {
+    QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK_RESULT(dialog, "activeModalWidget is NULL", false);
 
-    QTreeWidget *listWidget = GTWidget::findExactWidget<QTreeWidget *>(os, "listWidget", dialog);
-    QTreeWidgetItem *item = GTTreeWidget::findItem(os, listWidget, name, nullptr, 0, {false});
+    QTreeWidget* listWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "listWidget", dialog);
+    QTreeWidgetItem* item = GTTreeWidget::findItem(os, listWidget, name, nullptr, 0, {false});
     return item != nullptr;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getDashboardsState"
-QList<QPair<QString, bool>> DashboardsManagerDialogFiller::getDashboardsState(HI::GUITestOpStatus &os) {
+QList<QPair<QString, bool>> DashboardsManagerDialogFiller::getDashboardsState(HI::GUITestOpStatus& os) {
     QList<QPair<QString, bool>> result;
 
-    QWidget *dialog = QApplication::activeModalWidget();
+    QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK_RESULT(dialog, "activeModalWidget is NULL", result);
 
-    QTreeWidget *treeWidget = GTWidget::findExactWidget<QTreeWidget *>(os, "listWidget", dialog);
+    QTreeWidget* treeWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "listWidget", dialog);
     for (int i = 0; i < treeWidget->topLevelItemCount(); ++i) {
-        QTreeWidgetItem *item = treeWidget->topLevelItem(i);
+        QTreeWidgetItem* item = treeWidget->topLevelItem(i);
         result << QPair<QString, bool>(item->text(0), Qt::Checked == item->checkState(0));
     }
     return result;

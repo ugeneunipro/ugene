@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-AssemblySequenceArea::AssemblySequenceArea(AssemblyBrowserUi *ui_, char skipChar_)
+AssemblySequenceArea::AssemblySequenceArea(AssemblyBrowserUi* ui_, char skipChar_)
     : QWidget(ui_), browser(ui_->getWindow()), ui(ui_), model(ui_->getModel()), cellRenderer(nullptr), skipChar(skipChar_) {
     setFixedHeight(FIXED_HEIGHT);
     connectSlots();
@@ -59,8 +59,8 @@ void AssemblySequenceArea::setDiffCellRenderer() {
 }
 
 void AssemblySequenceArea::initCellRenderer(QString id) {
-    AssemblyCellRendererFactoryRegistry *factories = browser->getCellRendererRegistry();
-    AssemblyCellRendererFactory *f = factories->getFactoryById(id);
+    AssemblyCellRendererFactoryRegistry* factories = browser->getCellRendererRegistry();
+    AssemblyCellRendererFactory* f = factories->getFactoryById(id);
     SAFE_POINT(f != nullptr, QString("AssemblyCellRendererFactory with id '%1' not found!").arg(id), );
     cellRenderer.reset(f->create());
 }
@@ -88,7 +88,7 @@ bool AssemblySequenceArea::areCellsVisible() const {
     return browser->areCellsVisible();
 }
 
-void AssemblySequenceArea::drawSequence(QPainter &p) {
+void AssemblySequenceArea::drawSequence(QPainter& p) {
     GTIMER(c1, t1, "AssemblySequenceArea::drawSequence");
 
     if (areCellsVisible()) {
@@ -137,17 +137,17 @@ void AssemblySequenceArea::drawSequence(QPainter &p) {
     }
 }
 
-void AssemblySequenceArea::paintEvent(QPaintEvent *e) {
+void AssemblySequenceArea::paintEvent(QPaintEvent* e) {
     drawAll();
     QWidget::paintEvent(e);
 }
 
-void AssemblySequenceArea::resizeEvent(QResizeEvent *e) {
+void AssemblySequenceArea::resizeEvent(QResizeEvent* e) {
     sl_redraw();
     QWidget::resizeEvent(e);
 }
 
-void AssemblySequenceArea::mouseMoveEvent(QMouseEvent *e) {
+void AssemblySequenceArea::mouseMoveEvent(QMouseEvent* e) {
     emit si_mouseMovedToPos(e->pos());
     QWidget::mouseMoveEvent(e);
 }
@@ -168,7 +168,7 @@ void AssemblySequenceArea::sl_zoomPerformed() {
 /////////////////////////////////////////////////////////////////
 // AssemblyReferenceArea
 
-AssemblyReferenceArea::AssemblyReferenceArea(AssemblyBrowserUi *ui_)
+AssemblyReferenceArea::AssemblyReferenceArea(AssemblyBrowserUi* ui_)
     : AssemblySequenceArea(ui_), referenceAreaMenu(new QMenu(this)), unassociateReferenceAction(nullptr) {
     setToolTip(tr("Reference sequence"));
     // setup menu
@@ -184,17 +184,17 @@ bool AssemblyReferenceArea::canDrawSequence() {
     return !getModel()->isEmpty() && (getModel()->hasReference() || getModel()->isLoadingReference());
 }
 
-QByteArray AssemblyReferenceArea::getSequenceRegion(U2OpStatus &os) {
+QByteArray AssemblyReferenceArea::getSequenceRegion(U2OpStatus& os) {
     return getModel()->getReferenceRegion(getVisibleRegion(), os);
 }
 
-void AssemblyReferenceArea::mousePressEvent(QMouseEvent *e) {
+void AssemblyReferenceArea::mousePressEvent(QMouseEvent* e) {
     if (e->button() == Qt::RightButton) {
         referenceAreaMenu->exec(QCursor::pos());
     }
 }
 
-void AssemblyReferenceArea::drawSequence(QPainter &p) {
+void AssemblyReferenceArea::drawSequence(QPainter& p) {
     if (getModel()->isLoadingReference()) {
         p.drawText(rect(), Qt::AlignCenter, tr("Reference is loading..."));
     } else {

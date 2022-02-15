@@ -58,7 +58,7 @@ static const QString SITECON_IN_PORT_ID("in-sitecon");
 const QString SiteconWorkerFactory::SITECON_MODEL_TYPE_ID("sitecon.model");
 
 DataTypePtr const SiteconWorkerFactory::SITECON_MODEL_TYPE() {
-    DataTypeRegistry *dtr = WorkflowEnv::getDataTypeRegistry();
+    DataTypeRegistry* dtr = WorkflowEnv::getDataTypeRegistry();
     assert(dtr);
     static bool startup = true;
     if (startup) {
@@ -74,11 +74,11 @@ const Descriptor SiteconWorkerFactory::SITECON_CATEGORY() {
     return Descriptor("hsitecon", SiteconIO::tr("SITECON"), "");
 }
 
-SiteconIOProto::SiteconIOProto(const Descriptor &_desc, const QList<PortDescriptor *> &_ports, const QList<Attribute *> &_attrs)
+SiteconIOProto::SiteconIOProto(const Descriptor& _desc, const QList<PortDescriptor*>& _ports, const QList<Attribute*>& _attrs)
     : IntegralBusActorPrototype(_desc, _ports, _attrs) {
 }
 
-bool SiteconIOProto::isAcceptableDrop(const QMimeData *md, QVariantMap *params, const QString &urlAttrId) const {
+bool SiteconIOProto::isAcceptableDrop(const QMimeData* md, QVariantMap* params, const QString& urlAttrId) const {
     if (md->hasUrls()) {
         QList<QUrl> urls = md->urls();
         if (urls.size() == 1) {
@@ -95,25 +95,25 @@ bool SiteconIOProto::isAcceptableDrop(const QMimeData *md, QVariantMap *params, 
     return false;
 }
 
-ReadSiteconProto::ReadSiteconProto(const Descriptor &_desc, const QList<PortDescriptor *> &_ports, const QList<Attribute *> &_attrs)
+ReadSiteconProto::ReadSiteconProto(const Descriptor& _desc, const QList<PortDescriptor*>& _ports, const QList<Attribute*>& _attrs)
     : SiteconIOProto(_desc, _ports, _attrs) {
     attrs << new Attribute(BaseAttributes::URL_IN_ATTRIBUTE(), BaseTypes::STRING_TYPE(), true);
-    QMap<QString, PropertyDelegate *> delegateMap;
+    QMap<QString, PropertyDelegate*> delegateMap;
     delegateMap[BaseAttributes::URL_IN_ATTRIBUTE().getId()] = new URLDelegate(SiteconIO::getFileFilter(), SiteconIO::SITECON_ID, true, false, false);
     setEditor(new DelegateEditor(delegateMap));
     setIconPath(":sitecon/images/sitecon.png");
 }
 
-bool ReadSiteconProto::isAcceptableDrop(const QMimeData *md, QVariantMap *params) const {
+bool ReadSiteconProto::isAcceptableDrop(const QMimeData* md, QVariantMap* params) const {
     return SiteconIOProto::isAcceptableDrop(md, params, BaseAttributes::URL_IN_ATTRIBUTE().getId());
 }
 
-WriteSiteconProto::WriteSiteconProto(const Descriptor &_desc, const QList<PortDescriptor *> &_ports, const QList<Attribute *> &_attrs)
+WriteSiteconProto::WriteSiteconProto(const Descriptor& _desc, const QList<PortDescriptor*>& _ports, const QList<Attribute*>& _attrs)
     : SiteconIOProto(_desc, _ports, _attrs) {
     attrs << new Attribute(BaseAttributes::URL_OUT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), true);
     attrs << new Attribute(BaseAttributes::FILE_MODE_ATTRIBUTE(), BaseTypes::NUM_TYPE(), false, SaveDoc_Roll);
 
-    QMap<QString, PropertyDelegate *> delegateMap;
+    QMap<QString, PropertyDelegate*> delegateMap;
     delegateMap[BaseAttributes::URL_OUT_ATTRIBUTE().getId()] = new URLDelegate(SiteconIO::getFileFilter(), SiteconIO::SITECON_ID);
     delegateMap[BaseAttributes::FILE_MODE_ATTRIBUTE().getId()] = new FileModeDelegate(false);
 
@@ -123,12 +123,12 @@ WriteSiteconProto::WriteSiteconProto(const Descriptor &_desc, const QList<PortDe
     setPortValidator(SITECON_IN_PORT_ID, new ScreenedSlotValidator(BaseSlots::URL_SLOT().getId()));
 }
 
-bool WriteSiteconProto::isAcceptableDrop(const QMimeData *md, QVariantMap *params) const {
+bool WriteSiteconProto::isAcceptableDrop(const QMimeData* md, QVariantMap* params) const {
     return SiteconIOProto::isAcceptableDrop(md, params, BaseAttributes::URL_OUT_ATTRIBUTE().getId());
 }
 
 void SiteconWorkerFactory::init() {
-    ActorPrototypeRegistry *r = WorkflowEnv::getProtoRegistry();
+    ActorPrototypeRegistry* r = WorkflowEnv::getProtoRegistry();
     assert(r);
     {
         QMap<Descriptor, DataTypePtr> m;
@@ -136,18 +136,18 @@ void SiteconWorkerFactory::init() {
         m[SiteconWorkerFactory::SITECON_SLOT] = SiteconWorkerFactory::SITECON_MODEL_TYPE();
         DataTypePtr t(new MapDataType(Descriptor("write.sitecon.content"), m));
 
-        QList<PortDescriptor *> p;
-        QList<Attribute *> a;
+        QList<PortDescriptor*> p;
+        QList<Attribute*> a;
         Descriptor pd(SITECON_IN_PORT_ID, SiteconIO::tr("Sitecon model"), SiteconIO::tr("Input Sitecon model"));
         p << new PortDescriptor(pd, t, true /*input*/);
         Descriptor desc(SiteconWriter::ACTOR_ID, SiteconIO::tr("Write SITECON Model"), SiteconIO::tr("Saves all input SITECON profiles to specified location."));
-        IntegralBusActorPrototype *proto = new WriteSiteconProto(desc, p, a);
+        IntegralBusActorPrototype* proto = new WriteSiteconProto(desc, p, a);
         proto->setPrompter(new SiteconWritePrompter());
         r->registerProto(BaseActorCategories::CATEGORY_TRANSCRIPTION(), proto);
     }
     {
-        QList<PortDescriptor *> p;
-        QList<Attribute *> a;
+        QList<PortDescriptor*> p;
+        QList<Attribute*> a;
         Descriptor pd(SITECON_OUT_PORT_ID, SiteconIO::tr("Sitecon model"), SiteconIO::tr("Loaded SITECON profile data."));
 
         QMap<Descriptor, DataTypePtr> outM;
@@ -155,7 +155,7 @@ void SiteconWorkerFactory::init() {
         p << new PortDescriptor(pd, DataTypePtr(new MapDataType("sitecon.read.out", outM)), false /*input*/, true /*multi*/);
 
         Descriptor desc(SiteconReader::ACTOR_ID, SiteconIO::tr("Read SITECON Model"), SiteconIO::tr("Reads SITECON profiles from file(s). The files can be local or Internet URLs."));
-        IntegralBusActorPrototype *proto = new ReadSiteconProto(desc, p, a);
+        IntegralBusActorPrototype* proto = new ReadSiteconProto(desc, p, a);
         proto->setPrompter(new SiteconReadPrompter());
         r->registerProto(BaseActorCategories::CATEGORY_TRANSCRIPTION(), proto);
     }
@@ -163,15 +163,15 @@ void SiteconWorkerFactory::init() {
     SiteconBuildWorker::registerProto();
     SiteconSearchWorker::registerProto();
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new SiteconWorkerFactory(SiteconReader::ACTOR_ID));
     localDomain->registerEntry(new SiteconWorkerFactory(SiteconWriter::ACTOR_ID));
     localDomain->registerEntry(new SiteconWorkerFactory(SiteconSearchWorker::ACTOR_ID));
     localDomain->registerEntry(new SiteconWorkerFactory(SiteconBuildWorker::ACTOR_ID));
 }
 
-Worker *SiteconWorkerFactory::createWorker(Actor *a) {
-    BaseWorker *w = nullptr;
+Worker* SiteconWorkerFactory::createWorker(Actor* a) {
+    BaseWorker* w = nullptr;
     if (SiteconReader::ACTOR_ID == a->getProto()->getId()) {
         w = new SiteconReader(a);
     } else if (SiteconWriter::ACTOR_ID == a->getProto()->getId()) {
@@ -190,7 +190,7 @@ QString SiteconReadPrompter::composeRichDoc() {
 }
 
 QString SiteconWritePrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(SITECON_IN_PORT_ID));
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(SITECON_IN_PORT_ID));
     SAFE_POINT(nullptr != input, "NULL input port", "");
     QString from = getProducersOrUnset(SITECON_IN_PORT_ID, SiteconWorkerFactory::SITECON_SLOT.getId());
     QString url = getScreenedURL(input, BaseAttributes::URL_OUT_ATTRIBUTE().getId(), BaseSlots::URL_SLOT().getId());
@@ -204,12 +204,12 @@ void SiteconReader::init() {
     mtype = SiteconWorkerFactory::SITECON_MODEL_TYPE();
 }
 
-Task *SiteconReader::tick() {
+Task* SiteconReader::tick() {
     if (urls.isEmpty() && tasks.isEmpty()) {
         setDone();
         output->setEnded();
     } else {
-        Task *t = new SiteconReadTask(urls.takeFirst());
+        Task* t = new SiteconReadTask(urls.takeFirst());
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         tasks.append(t);
         return t;
@@ -218,7 +218,7 @@ Task *SiteconReader::tick() {
 }
 
 void SiteconReader::sl_taskFinished() {
-    SiteconReadTask *t = qobject_cast<SiteconReadTask *>(sender());
+    SiteconReadTask* t = qobject_cast<SiteconReadTask*>(sender());
     if (t->isCanceled()) {
         return;
     }
@@ -238,7 +238,7 @@ void SiteconWriter::init() {
     input = ports.value(SITECON_IN_PORT_ID);
 }
 
-Task *SiteconWriter::tick() {
+Task* SiteconWriter::tick() {
     if (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {

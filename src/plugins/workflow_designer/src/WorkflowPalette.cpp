@@ -47,7 +47,7 @@ namespace U2 {
 
 const QString WorkflowPalette::MIME_TYPE("application/x-ugene-workflow-id");
 
-WorkflowPalette::WorkflowPalette(ActorPrototypeRegistry *reg, SchemaConfig *schemaConfig, QWidget *parent)
+WorkflowPalette::WorkflowPalette(ActorPrototypeRegistry* reg, SchemaConfig* schemaConfig, QWidget* parent)
     : QWidget(parent) {
     setupUi(this);
     nameFilter = new NameFilterLayout(nullptr);
@@ -55,25 +55,25 @@ WorkflowPalette::WorkflowPalette(ActorPrototypeRegistry *reg, SchemaConfig *sche
     setFocusPolicy(Qt::NoFocus);
     setMouseTracking(true);
 
-    QVBoxLayout *vl = dynamic_cast<QVBoxLayout *>(layout());
+    QVBoxLayout* vl = dynamic_cast<QVBoxLayout*>(layout());
     vl->addLayout(nameFilter);
     vl->addWidget(elementsList);
 
-    connect(elementsList, SIGNAL(processSelected(Workflow::ActorPrototype *, bool)), SIGNAL(processSelected(Workflow::ActorPrototype *, bool)));
-    connect(elementsList, SIGNAL(si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *)), SIGNAL(si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *)));
+    connect(elementsList, SIGNAL(processSelected(Workflow::ActorPrototype*, bool)), SIGNAL(processSelected(Workflow::ActorPrototype*, bool)));
+    connect(elementsList, SIGNAL(si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype*)), SIGNAL(si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype*)));
     connect(elementsList, SIGNAL(si_protoChanged()), SIGNAL(si_protoChanged()));
     connect(elementsList, SIGNAL(si_protoListModified()), SIGNAL(si_protoListModified()));
 
-    connect(nameFilter->getNameEdit(), SIGNAL(textChanged(const QString &)), elementsList, SLOT(sl_nameFilterChanged(const QString &)));
+    connect(nameFilter->getNameEdit(), SIGNAL(textChanged(const QString&)), elementsList, SLOT(sl_nameFilterChanged(const QString&)));
     setObjectName("palette");
     setFocusProxy(nameFilter->getNameEdit());
 }
 
-QMenu *WorkflowPalette::createMenu(const QString &name) {
+QMenu* WorkflowPalette::createMenu(const QString& name) {
     return elementsList->createMenu(name);
 }
 
-void WorkflowPalette::createMenu(QMenu *menu) {
+void WorkflowPalette::createMenu(QMenu* menu) {
     elementsList->createMenu(menu);
 }
 
@@ -85,7 +85,7 @@ QVariant WorkflowPalette::saveState() const {
     return elementsList->saveState();
 }
 
-void WorkflowPalette::restoreState(const QVariant &v) {
+void WorkflowPalette::restoreState(const QVariant& v) {
     elementsList->restoreState(v);
 }
 
@@ -93,25 +93,25 @@ QString WorkflowPalette::createPrototype() {
     return elementsList->createPrototype();
 }
 
-bool WorkflowPalette::editPrototype(ActorPrototype *proto) {
+bool WorkflowPalette::editPrototype(ActorPrototype* proto) {
     return elementsList->editPrototype(proto);
 }
 
 class PaletteDelegate : public QItemDelegate {
 public:
-    PaletteDelegate(WorkflowPaletteElements *view)
+    PaletteDelegate(WorkflowPaletteElements* view)
         : QItemDelegate(view), m_view(view) {
     }
 
-    virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    virtual QSize sizeHint(const QStyleOptionViewItem &opt, const QModelIndex &index) const;
+    virtual void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const;
+    virtual QSize sizeHint(const QStyleOptionViewItem& opt, const QModelIndex& index) const;
 
 private:
-    WorkflowPaletteElements *m_view;
+    WorkflowPaletteElements* m_view;
 };
 
-void PaletteDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
-    const QAbstractItemModel *model = index.model();
+void PaletteDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const {
+    const QAbstractItemModel* model = index.model();
     Q_ASSERT(model);
 
     if (!model->parent(index).isValid()) {
@@ -158,7 +158,7 @@ void PaletteDelegate::paint(QPainter *painter, const QStyleOptionViewItem &optio
         buttonOption.subControls = QStyle::SC_ToolButton;
         buttonOption.features = QStyleOptionToolButton::None;
 
-        QAction *action = index.data(Qt::UserRole).value<QAction *>();
+        QAction* action = index.data(Qt::UserRole).value<QAction*>();
         buttonOption.text = action->text();
         buttonOption.icon = action->icon();
         if (!buttonOption.icon.isNull()) {
@@ -186,8 +186,8 @@ void PaletteDelegate::paint(QPainter *painter, const QStyleOptionViewItem &optio
     }
 }
 
-QSize PaletteDelegate::sizeHint(const QStyleOptionViewItem &opt, const QModelIndex &index) const {
-    const QAbstractItemModel *model = index.model();
+QSize PaletteDelegate::sizeHint(const QStyleOptionViewItem& opt, const QModelIndex& index) const {
+    const QAbstractItemModel* model = index.model();
     Q_ASSERT(model);
 
     QStyleOptionViewItem option = opt;
@@ -199,7 +199,7 @@ QSize PaletteDelegate::sizeHint(const QStyleOptionViewItem &opt, const QModelInd
 /************************************************************************/
 /* WorkflowPaletteElements */
 /************************************************************************/
-WorkflowPaletteElements::WorkflowPaletteElements(ActorPrototypeRegistry *reg, SchemaConfig *_schemaConfig, QWidget *parent)
+WorkflowPaletteElements::WorkflowPaletteElements(ActorPrototypeRegistry* reg, SchemaConfig* _schemaConfig, QWidget* parent)
     : QTreeWidget(parent), overItem(nullptr), currentAction(nullptr), protoRegistry(reg), schemaConfig(_schemaConfig) {
     setFocusPolicy(Qt::NoFocus);
     setSelectionMode(QAbstractItemView::NoSelection);
@@ -216,35 +216,35 @@ WorkflowPaletteElements::WorkflowPaletteElements(ActorPrototypeRegistry *reg, Sc
     // setTextElideMode (Qt::ElideMiddle);
     setContent(reg);
     connect(reg, SIGNAL(si_registryModified()), SLOT(rebuild()));
-    connect(this, SIGNAL(si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *)), SLOT(sl_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *)));
+    connect(this, SIGNAL(si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype*)), SLOT(sl_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype*)));
     this->setObjectName("WorkflowPaletteElements");
 }
 
-QMenu *WorkflowPaletteElements::createMenu(const QString &name) {
-    QMenu *menu = new QMenu(name, this);
+QMenu* WorkflowPaletteElements::createMenu(const QString& name) {
+    QMenu* menu = new QMenu(name, this);
     createMenu(menu);
     return menu;
 }
 
 #define MENU_ACTION_MARKER QString("menu-action")
 
-void WorkflowPaletteElements::createMenu(QMenu *menu) {
+void WorkflowPaletteElements::createMenu(QMenu* menu) {
     menu->clear();
     QMenu *dataSink = nullptr, *dataSource = nullptr, *userScript = nullptr, *externalTools = nullptr;
-    QAction *firstAction = nullptr;
-    QMapIterator<QString, QList<QAction *>> it(categoryMap);
+    QAction* firstAction = nullptr;
+    QMapIterator<QString, QList<QAction*>> it(categoryMap);
     while (it.hasNext()) {
         it.next();
-        QMenu *grpMenu = new QMenu(it.key(), menu);
-        QMap<QString, QAction *> map;
-        foreach (QAction *a, it.value()) {
+        QMenu* grpMenu = new QMenu(it.key(), menu);
+        QMap<QString, QAction*> map;
+        foreach (QAction* a, it.value()) {
             map[a->text()] = a;
         }
-        QMapIterator<QString, QAction *> jt(map);
+        QMapIterator<QString, QAction*> jt(map);
         while (jt.hasNext()) {
             jt.next();
-            QAction *elementAction = jt.value();
-            QAction *menuAction = new QAction(elementAction->icon(), elementAction->text(), elementAction);
+            QAction* elementAction = jt.value();
+            QAction* menuAction = new QAction(elementAction->icon(), elementAction->text(), elementAction);
             menuAction->setData(MENU_ACTION_MARKER);
             connect(menuAction, SIGNAL(triggered(bool)), SLOT(sl_selectProcess(bool)));
             grpMenu->addAction(menuAction);
@@ -258,7 +258,7 @@ void WorkflowPaletteElements::createMenu(QMenu *menu) {
         } else if (it.key() == BaseActorCategories::CATEGORY_EXTERNAL().getDisplayName()) {
             externalTools = grpMenu;
         } else {
-            QAction *a = menu->addMenu(grpMenu);
+            QAction* a = menu->addMenu(grpMenu);
             firstAction = firstAction ? firstAction : a;
         }
     }
@@ -277,15 +277,15 @@ void WorkflowPaletteElements::createMenu(QMenu *menu) {
     }
 }
 
-void WorkflowPaletteElements::setContent(ActorPrototypeRegistry *reg) {
-    QMapIterator<Descriptor, QList<ActorPrototype *>> it(reg->getProtos());
+void WorkflowPaletteElements::setContent(ActorPrototypeRegistry* reg) {
+    QMapIterator<Descriptor, QList<ActorPrototype*>> it(reg->getProtos());
     categoryMap.clear();
     actionMap.clear();
     while (it.hasNext()) {
         it.next();
-        QTreeWidgetItem *category = nullptr;
+        QTreeWidgetItem* category = nullptr;
 
-        foreach (ActorPrototype *proto, it.value()) {
+        foreach (ActorPrototype* proto, it.value()) {
             QString name = proto->getDisplayName();
             if (!NameFilterLayout::filterMatched(nameFilter, name) &&
                 !NameFilterLayout::filterMatched(nameFilter, it.key().getDisplayName())) {
@@ -297,11 +297,11 @@ void WorkflowPaletteElements::setContent(ActorPrototypeRegistry *reg) {
                 category->setData(0, Qt::UserRole, it.key().getId());
                 addTopLevelItem(category);
             }
-            QAction *action = createItemAction(proto);
+            QAction* action = createItemAction(proto);
 
             int i = 0;
             while (category->child(i)) {
-                QString s1 = category->child(i)->data(0, Qt::UserRole).value<QAction *>()->text();
+                QString s1 = category->child(i)->data(0, Qt::UserRole).value<QAction*>()->text();
                 QString s2 = action->text();
 
                 if (QString::compare(s1, s2, Qt::CaseInsensitive) > 0) {
@@ -323,7 +323,7 @@ void WorkflowPaletteElements::setContent(ActorPrototypeRegistry *reg) {
 void WorkflowPaletteElements::rebuild() {
     setMouseTracking(false);
     resetSelection();
-    ActorPrototypeRegistry *reg = qobject_cast<ActorPrototypeRegistry *>(sender());
+    ActorPrototypeRegistry* reg = qobject_cast<ActorPrototypeRegistry*>(sender());
     if (!reg) {
         reg = protoRegistry;
     }
@@ -346,7 +346,7 @@ void WorkflowPaletteElements::sortTree() {
     int categoryIdx = 0;
 
     QString text = BaseActorCategories::CATEGORY_DATASRC().getDisplayName();
-    QTreeWidgetItem *item;
+    QTreeWidgetItem* item;
     if (!findItems(text, Qt::MatchExactly).isEmpty()) {
         item = findItems(text, Qt::MatchExactly).first();
         takeTopLevelItem(indexFromItem(item).row());
@@ -391,8 +391,8 @@ void WorkflowPaletteElements::sortTree() {
     }
 }
 
-QTreeWidgetItem *WorkflowPaletteElements::createItemWidget(QAction *a) {
-    QTreeWidgetItem *item = new QTreeWidgetItem();
+QTreeWidgetItem* WorkflowPaletteElements::createItemWidget(QAction* a) {
+    QTreeWidgetItem* item = new QTreeWidgetItem();
     item->setToolTip(0, a->toolTip());
     item->setData(0, Qt::UserRole, QVariant::fromValue(a));
     actionMap[a] = item;
@@ -402,8 +402,8 @@ QTreeWidgetItem *WorkflowPaletteElements::createItemWidget(QAction *a) {
     return item;
 }
 
-QAction *WorkflowPaletteElements::createItemAction(ActorPrototype *item) {
-    QAction *a = new QAction(item->getDisplayName(), this);
+QAction* WorkflowPaletteElements::createItemAction(ActorPrototype* item) {
+    QAction* a = new QAction(item->getDisplayName(), this);
     a->setToolTip(item->getDocumentation());
     a->setCheckable(true);
     if (item->getIcon().isNull()) {
@@ -416,9 +416,9 @@ QAction *WorkflowPaletteElements::createItemAction(ActorPrototype *item) {
     return a;
 }
 
-QAction *WorkflowPaletteElements::getActionByProto(Workflow::ActorPrototype *proto) const {
-    foreach (QAction *action, actionMap.keys()) {
-        if (proto == action->data().value<ActorPrototype *>()) {
+QAction* WorkflowPaletteElements::getActionByProto(Workflow::ActorPrototype* proto) const {
+    foreach (QAction* action, actionMap.keys()) {
+        if (proto == action->data().value<ActorPrototype*>()) {
             return action;
         }
     }
@@ -435,13 +435,13 @@ void WorkflowPaletteElements::resetSelection() {
 QVariant WorkflowPaletteElements::saveState() const {
     QVariantMap m = expandState;
     for (int i = 0, count = topLevelItemCount(); i < count; ++i) {
-        QTreeWidgetItem *it = topLevelItem(i);
+        QTreeWidgetItem* it = topLevelItem(i);
         m.insert(it->data(0, Qt::UserRole).toString(), it->isExpanded());
     }
     return m;
 }
 
-void WorkflowPaletteElements::restoreState(const QVariant &v) {
+void WorkflowPaletteElements::restoreState(const QVariant& v) {
     expandState = v.toMap();
     QMapIterator<QString, QVariant> it(expandState);
     while (it.hasNext()) {
@@ -472,7 +472,7 @@ QString WorkflowPaletteElements::createPrototype() {
     return QString();
 }
 
-bool WorkflowPaletteElements::editPrototype(ActorPrototype *proto) {
+bool WorkflowPaletteElements::editPrototype(ActorPrototype* proto) {
     if (!isExclusivePrototypeUsage(proto)) {
         QMessageBox::warning(this,
                              tr("Unable to Edit Element"),
@@ -481,7 +481,7 @@ bool WorkflowPaletteElements::editPrototype(ActorPrototype *proto) {
                              QMessageBox::Ok);
         return false;
     }
-    ExternalProcessConfig *oldCfg = WorkflowEnv::getExternalCfgRegistry()->getConfigById(proto->getId());
+    ExternalProcessConfig* oldCfg = WorkflowEnv::getExternalCfgRegistry()->getConfigById(proto->getId());
     QObjectScopedPointer<CreateCmdlineBasedWorkerWizard> dlg = new CreateCmdlineBasedWorkerWizard(schemaConfig, oldCfg, this);
     dlg->exec();
     CHECK(!dlg.isNull(), false);
@@ -509,7 +509,7 @@ bool WorkflowPaletteElements::editPrototype(ActorPrototype *proto) {
 }
 
 void WorkflowPaletteElements::handleItemAction() {
-    QAction *a = qobject_cast<QAction *>(sender());
+    QAction* a = qobject_cast<QAction*>(sender());
     assert(a);
     assert(actionMap[a]);
     if (a) {
@@ -522,27 +522,27 @@ void WorkflowPaletteElements::sl_selectProcess(bool checked) {
         currentAction->setChecked(false);
     }
 
-    QAction *senderAction = qobject_cast<QAction *>(sender());
+    QAction* senderAction = qobject_cast<QAction*>(sender());
     bool fromMenu = false;
     if (senderAction->data() == MENU_ACTION_MARKER) {
         fromMenu = true;
-        currentAction = qobject_cast<QAction *>(senderAction->parent());
+        currentAction = qobject_cast<QAction*>(senderAction->parent());
     } else if (checked) {
         currentAction = senderAction;
     } else {
         currentAction = nullptr;
     }
     if (currentAction) {
-        Workflow::ActorPrototype *actor = currentAction->data().value<Workflow::ActorPrototype *>();
+        Workflow::ActorPrototype* actor = currentAction->data().value<Workflow::ActorPrototype*>();
         emit processSelected(actor, fromMenu);
     }
 }
 
 void WorkflowPaletteElements::editElement() {
-    ActorPrototype *proto = currentAction->data().value<ActorPrototype *>();
-    ActorPrototypeRegistry *prototypeRegistry = WorkflowEnv::getProtoRegistry();
+    ActorPrototype* proto = currentAction->data().value<ActorPrototype*>();
+    ActorPrototypeRegistry* prototypeRegistry = WorkflowEnv::getProtoRegistry();
 
-    QMap<Descriptor, QList<ActorPrototype *>> categories = prototypeRegistry->getProtos();
+    QMap<Descriptor, QList<ActorPrototype*>> categories = prototypeRegistry->getProtos();
 
     if (categories.value(BaseActorCategories::CATEGORY_SCRIPT()).contains(proto)) {
         QString oldName = proto->getDisplayName();
@@ -553,7 +553,7 @@ void WorkflowPaletteElements::editElement() {
         if (dlg->result() == QDialog::Accepted) {
             QList<DataTypePtr> input = dlg->getInput();
             QList<DataTypePtr> output = dlg->getOutput();
-            QList<Attribute *> attrs = dlg->getAttributes();
+            QList<Attribute*> attrs = dlg->getAttributes();
             QString name = dlg->getName();
             QString desc = dlg->getDescription();
 
@@ -584,14 +584,14 @@ bool WorkflowPaletteElements::removeElement() {
         return false;
     }
 
-    removePrototype(currentAction->data().value<ActorPrototype *>());
+    removePrototype(currentAction->data().value<ActorPrototype*>());
     return true;
 }
 
-void WorkflowPaletteElements::sl_prototypeIsAboutToBeRemoved(ActorPrototype *proto) {
-    QAction *action = getActionByProto(proto);
+void WorkflowPaletteElements::sl_prototypeIsAboutToBeRemoved(ActorPrototype* proto) {
+    QAction* action = getActionByProto(proto);
 
-    for (auto &actionsList : categoryMap) {
+    for (auto& actionsList : categoryMap) {
         actionsList.removeAll(action);
     }
 
@@ -602,7 +602,7 @@ void WorkflowPaletteElements::sl_prototypeIsAboutToBeRemoved(ActorPrototype *pro
     actionMap.remove(action);
 }
 
-void WorkflowPaletteElements::contextMenuEvent(QContextMenuEvent *e) {
+void WorkflowPaletteElements::contextMenuEvent(QContextMenuEvent* e) {
     QMenu menu;
     menu.addAction(tr("Expand all"), this, SLOT(expandAll()));
     menu.addAction(tr("Collapse all"), this, SLOT(collapseAll()));
@@ -615,24 +615,24 @@ void WorkflowPaletteElements::contextMenuEvent(QContextMenuEvent *e) {
     menu.exec(mapToGlobal(e->pos()));
 }
 
-void WorkflowPaletteElements::mouseMoveEvent(QMouseEvent *event) {
+void WorkflowPaletteElements::mouseMoveEvent(QMouseEvent* event) {
     if (!hasMouseTracking())
         return;
     if ((event->buttons() & Qt::LeftButton) && !dragStartPosition.isNull()) {
         if ((event->pos() - dragStartPosition).manhattanLength() <= QApplication::startDragDistance())
             return;
-        QTreeWidgetItem *item = itemAt(event->pos());
+        QTreeWidgetItem* item = itemAt(event->pos());
         if (!item)
             return;
-        QAction *action = item->data(0, Qt::UserRole).value<QAction *>();
+        QAction* action = item->data(0, Qt::UserRole).value<QAction*>();
         if (!action)
             return;
-        ActorPrototype *proto = action->data().value<ActorPrototype *>();
+        ActorPrototype* proto = action->data().value<ActorPrototype*>();
         assert(proto);
-        QMimeData *mime = new QMimeData();
+        QMimeData* mime = new QMimeData();
         mime->setData(WorkflowPalette::MIME_TYPE, proto->getId().toLatin1());
         mime->setText(proto->getId());
-        QDrag *drag = new QDrag(this);
+        QDrag* drag = new QDrag(this);
         drag->setMimeData(mime);
         drag->setPixmap(action->icon().pixmap(QSize(44, 44)));
 
@@ -642,7 +642,7 @@ void WorkflowPaletteElements::mouseMoveEvent(QMouseEvent *event) {
         Q_UNUSED(dropAction);
         return;
     }
-    QTreeWidgetItem *prev = overItem;
+    QTreeWidgetItem* prev = overItem;
     overItem = itemAt(event->pos());
     if (prev) {
         update(indexFromItem(prev));
@@ -654,12 +654,12 @@ void WorkflowPaletteElements::mouseMoveEvent(QMouseEvent *event) {
     QTreeWidget::mouseMoveEvent(event);
 }
 
-void WorkflowPaletteElements::mousePressEvent(QMouseEvent *event) {
+void WorkflowPaletteElements::mousePressEvent(QMouseEvent* event) {
     if (!hasMouseTracking())
         return;
     dragStartPosition = QPoint();
     if ((event->buttons() & Qt::LeftButton)) {
-        QTreeWidgetItem *item = itemAt(event->pos());
+        QTreeWidgetItem* item = itemAt(event->pos());
         if (!item)
             return;
         event->accept();
@@ -668,7 +668,7 @@ void WorkflowPaletteElements::mousePressEvent(QMouseEvent *event) {
             return;
         }
 
-        QAction *action = item->data(0, Qt::UserRole).value<QAction *>();
+        QAction* action = item->data(0, Qt::UserRole).value<QAction*>();
         if (action) {
             action->toggle();
             dragStartPosition = event->pos();
@@ -676,11 +676,11 @@ void WorkflowPaletteElements::mousePressEvent(QMouseEvent *event) {
     }
 }
 
-void WorkflowPaletteElements::leaveEvent(QEvent *) {
+void WorkflowPaletteElements::leaveEvent(QEvent*) {
     if (!hasMouseTracking()) {
         return;
     }
-    QTreeWidgetItem *prev = overItem;
+    QTreeWidgetItem* prev = overItem;
     overItem = nullptr;
     if (prev) {
         QModelIndex index = indexFromItem(prev);
@@ -688,11 +688,11 @@ void WorkflowPaletteElements::leaveEvent(QEvent *) {
     };
 }
 
-QVariant WorkflowPaletteElements::changeState(const QVariant &savedState) {
+QVariant WorkflowPaletteElements::changeState(const QVariant& savedState) {
     QVariantMap m = savedState.toMap();
 
     for (int i = 0, count = topLevelItemCount(); i < count; ++i) {
-        QTreeWidgetItem *it = topLevelItem(i);
+        QTreeWidgetItem* it = topLevelItem(i);
         bool expanded = m.value(it->data(0, Qt::UserRole).toString()).toBool();
 
         QRegExp nonWhitespase("\\s");
@@ -712,7 +712,7 @@ QVariant WorkflowPaletteElements::changeState(const QVariant &savedState) {
     return m;
 }
 
-void WorkflowPaletteElements::removePrototype(ActorPrototype *proto) {
+void WorkflowPaletteElements::removePrototype(ActorPrototype* proto) {
     if (!isExclusivePrototypeUsage(proto)) {
         QMessageBox::warning(this,
                              tr("Unable to Remove Element"),
@@ -731,10 +731,10 @@ void WorkflowPaletteElements::removePrototype(ActorPrototype *proto) {
     delete WorkflowEnv::getProtoRegistry()->unregisterProto(proto->getId());
 }
 
-bool WorkflowPaletteElements::editPrototypeWithoutElementRemoving(Workflow::ActorPrototype *proto, ExternalProcessConfig *newConfig) {
+bool WorkflowPaletteElements::editPrototypeWithoutElementRemoving(Workflow::ActorPrototype* proto, ExternalProcessConfig* newConfig) {
     replaceConfigFiles(proto, newConfig);
 
-    ExternalProcessConfig *currentConfig = IncludedProtoFactory::getExternalToolWorker(proto->getId());
+    ExternalProcessConfig* currentConfig = IncludedProtoFactory::getExternalToolWorker(proto->getId());
     SAFE_POINT(nullptr != currentConfig, "ExternalProcessConfig is absent", false);
 
     replaceOldConfigWithNewConfig(currentConfig, newConfig);
@@ -744,7 +744,7 @@ bool WorkflowPaletteElements::editPrototypeWithoutElementRemoving(Workflow::Acto
 
     QStringList commandIdList = CustomWorkerUtils::getToolIdsFromCommand(currentConfig->cmdLine);
     proto->clearExternalTools();
-    foreach (const QString &id, commandIdList) {
+    foreach (const QString& id, commandIdList) {
         proto->addExternalTool(id);
     }
 
@@ -753,7 +753,7 @@ bool WorkflowPaletteElements::editPrototypeWithoutElementRemoving(Workflow::Acto
     return true;
 }
 
-void WorkflowPaletteElements::replaceConfigFiles(Workflow::ActorPrototype *proto, ExternalProcessConfig *newConfig) {
+void WorkflowPaletteElements::replaceConfigFiles(Workflow::ActorPrototype* proto, ExternalProcessConfig* newConfig) {
     if (!QFile::remove(proto->getFilePath())) {
         uiLog.error(tr("Can't remove element '%1'").arg(proto->getDisplayName()));
     }
@@ -761,7 +761,7 @@ void WorkflowPaletteElements::replaceConfigFiles(Workflow::ActorPrototype *proto
     proto->setNonStandard(newConfig->filePath);
 }
 
-void WorkflowPaletteElements::replaceOldConfigWithNewConfig(ExternalProcessConfig *oldConfig, ExternalProcessConfig *newConfig) {
+void WorkflowPaletteElements::replaceOldConfigWithNewConfig(ExternalProcessConfig* oldConfig, ExternalProcessConfig* newConfig) {
     oldConfig->cmdLine = newConfig->cmdLine;
     oldConfig->name = newConfig->name;
     oldConfig->description = newConfig->description;
@@ -772,17 +772,17 @@ void WorkflowPaletteElements::replaceOldConfigWithNewConfig(ExternalProcessConfi
     oldConfig->integratedToolId = newConfig->integratedToolId;
 }
 
-bool WorkflowPaletteElements::isExclusivePrototypeUsage(ActorPrototype *proto) const {
-    WorkflowView *wv = dynamic_cast<WorkflowView *>(schemaConfig);
+bool WorkflowPaletteElements::isExclusivePrototypeUsage(ActorPrototype* proto) const {
+    WorkflowView* wv = dynamic_cast<WorkflowView*>(schemaConfig);
     CHECK(wv != nullptr, false);
     int actorWithCurrentProtoCounter = 0;
-    const QList<Actor *> actorList = wv->getSchema()->getProcesses();
+    const QList<Actor*> actorList = wv->getSchema()->getProcesses();
     for (auto actor : qAsConst(actorList)) {
         if (actor->getProto() == proto) {
             actorWithCurrentProtoCounter++;
         }
     }
-    Actor *currentActor = wv->getActor();
+    Actor* currentActor = wv->getActor();
     if (currentActor != nullptr && currentActor->getProto() == proto) {
         actorWithCurrentProtoCounter++;
     }
@@ -790,7 +790,7 @@ bool WorkflowPaletteElements::isExclusivePrototypeUsage(ActorPrototype *proto) c
     return result;
 }
 
-void WorkflowPaletteElements::sl_nameFilterChanged(const QString &filter) {
+void WorkflowPaletteElements::sl_nameFilterChanged(const QString& filter) {
     overItem = nullptr;
     oldNameFilter = nameFilter;
     nameFilter = filter.toLower();

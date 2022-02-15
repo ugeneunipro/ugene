@@ -49,9 +49,9 @@ public:
 protected:
     virtual void serviceStateChangedCallback(ServiceState oldState, bool enabledStateChanged);
 
-    ETSProjectViewItemsController *projectViewController;
+    ETSProjectViewItemsController* projectViewController;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

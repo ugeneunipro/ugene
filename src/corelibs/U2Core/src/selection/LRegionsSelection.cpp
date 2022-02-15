@@ -23,13 +23,13 @@
 
 namespace U2 {
 
-LRegionsSelection::LRegionsSelection(const GSelectionType &type, QObject *p)
+LRegionsSelection::LRegionsSelection(const GSelectionType& type, QObject* p)
     : GSelection(type, p) {
-    connect(this, SIGNAL(si_selectionChanged(LRegionsSelection *, QVector<U2Region>, QVector<U2Region>)), SLOT(sl_selectionChanged()));
+    connect(this, SIGNAL(si_selectionChanged(LRegionsSelection*, QVector<U2Region>, QVector<U2Region>)), SLOT(sl_selectionChanged()));
 }
 
 bool LRegionsSelection::contains(qint64 pos) const {
-    for (const U2Region &region : qAsConst(regions)) {
+    for (const U2Region& region : qAsConst(regions)) {
         if (region.contains(pos)) {
             return true;
         }
@@ -49,9 +49,9 @@ void LRegionsSelection::clear() {
     }
 }
 
-QVector<U2Region> LRegionsSelection::cropSelection(qint64 sequenceLength, const QVector<U2Region> &regions) {
+QVector<U2Region> LRegionsSelection::cropSelection(qint64 sequenceLength, const QVector<U2Region>& regions) {
     QVector<U2Region> result;
-    for (const U2Region &region : qAsConst(regions)) {
+    for (const U2Region& region : qAsConst(regions)) {
         if (region.endPos() < sequenceLength) {
             result << region;
         } else if (region.startPos < sequenceLength) {
@@ -61,7 +61,7 @@ QVector<U2Region> LRegionsSelection::cropSelection(qint64 sequenceLength, const 
     return result;
 }
 
-void LRegionsSelection::addRegion(const U2Region &r) {
+void LRegionsSelection::addRegion(const U2Region& r) {
     if (r.length <= 0 || regions.contains(r)) {
         return;
     }
@@ -71,7 +71,7 @@ void LRegionsSelection::addRegion(const U2Region &r) {
     emit si_selectionChanged(this, addedRegions, removedRegions);
 }
 
-void LRegionsSelection::removeRegion(const U2Region &r) {
+void LRegionsSelection::removeRegion(const U2Region& r) {
     int idx = regions.indexOf(r);
     if (idx == -1) {
         return;
@@ -82,7 +82,7 @@ void LRegionsSelection::removeRegion(const U2Region &r) {
     emit si_selectionChanged(this, addedRegions, removedRegions);
 }
 
-void LRegionsSelection::setRegion(const U2Region &r) {
+void LRegionsSelection::setRegion(const U2Region& r) {
     if (r.length == 0) {
         clear();
         return;
@@ -90,7 +90,7 @@ void LRegionsSelection::setRegion(const U2Region &r) {
     setSelectedRegions({r});
 }
 
-void LRegionsSelection::setSelectedRegions(const QVector<U2Region> &newSelection) {
+void LRegionsSelection::setSelectedRegions(const QVector<U2Region>& newSelection) {
     if (newSelection == regions) {
         return;
     }
@@ -99,7 +99,7 @@ void LRegionsSelection::setSelectedRegions(const QVector<U2Region> &newSelection
     emit si_selectionChanged(this, newSelection, removedRegions);
 }
 
-const QVector<U2Region> &LRegionsSelection::getSelectedRegions() const {
+const QVector<U2Region>& LRegionsSelection::getSelectedRegions() const {
     return regions;
 }
 

@@ -33,16 +33,16 @@ namespace U2 {
 class RadioController : public WidgetController {
     Q_OBJECT
 public:
-    RadioController(WizardController *wc, RadioWidget *rw);
+    RadioController(WizardController* wc, RadioWidget* rw);
     virtual ~RadioController();
 
-    virtual QWidget *createGUI(U2OpStatus &os);
+    virtual QWidget* createGUI(U2OpStatus& os);
 
 private slots:
-    void sl_buttonClicked(QAbstractButton *button);
+    void sl_buttonClicked(QAbstractButton* button);
 
 private:
-    RadioWidget *rw;
+    RadioWidget* rw;
 };
 
 }  // namespace U2

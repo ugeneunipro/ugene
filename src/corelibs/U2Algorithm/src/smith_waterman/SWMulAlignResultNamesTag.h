@@ -34,11 +34,11 @@ public:
     inline SWMulAlignResultNamesTag(const QString _shorthand, const QString _label);
     virtual ~SWMulAlignResultNamesTag() {
     }
-    virtual QString expandTag(const QVariant &argument = QVariant()) const = 0;
+    virtual QString expandTag(const QVariant& argument = QVariant()) const = 0;
 
-    inline const QString &getShorthand() const;
-    inline const QString &getLabel() const;
-    inline const bool &isAcceptableForSubseqNamesOnly() const;
+    inline const QString& getShorthand() const;
+    inline const QString& getLabel() const;
+    inline const bool& isAcceptableForSubseqNamesOnly() const;
 
 protected:
     bool acceptableForSubseqNamesOnly;
@@ -52,15 +52,15 @@ inline SWMulAlignResultNamesTag::SWMulAlignResultNamesTag(const QString _shortha
     : shorthand(_shorthand), label(_label) {
 }
 
-inline const QString &SWMulAlignResultNamesTag::getShorthand() const {
+inline const QString& SWMulAlignResultNamesTag::getShorthand() const {
     return shorthand;
 }
 
-inline const QString &SWMulAlignResultNamesTag::getLabel() const {
+inline const QString& SWMulAlignResultNamesTag::getLabel() const {
     return label;
 }
 
-inline const bool &SWMulAlignResultNamesTag::isAcceptableForSubseqNamesOnly() const {
+inline const bool& SWMulAlignResultNamesTag::isAcceptableForSubseqNamesOnly() const {
     return acceptableForSubseqNamesOnly;
 }
 

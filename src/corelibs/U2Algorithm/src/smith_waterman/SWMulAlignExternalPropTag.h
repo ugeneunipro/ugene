@@ -35,7 +35,7 @@ public:
     };
 
     inline SWMulAlignExternalPropTag(const QString _shorthand, const QString _label, Type _type);
-    virtual QString expandTag(const QVariant &argument) const;
+    virtual QString expandTag(const QVariant& argument) const;
     inline void resetCounter();
     inline Type getType() const;
 

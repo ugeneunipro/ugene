@@ -27,29 +27,29 @@
 namespace U2 {
 namespace Workflow {
 
-bool WriteAnnotationsValidator::validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const {
+bool WriteAnnotationsValidator::validate(const Actor* actor, NotificationsList& notificationList, const QMap<QString, QString>& options) const {
     Q_UNUSED(options);
 
-    Port *port = actor->getPort(BasePorts::IN_ANNOTATIONS_PORT_ID());
+    Port* port = actor->getPort(BasePorts::IN_ANNOTATIONS_PORT_ID());
     if (port == nullptr) {
         notificationList << WorkflowNotification(tr("Input port is NULL"), actor->getId(), WorkflowNotification::U2_ERROR);
         FAIL("Input port is NULL", false);
     }
 
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(port);
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(port);
     if (input == nullptr) {
         notificationList << WorkflowNotification(tr("IntegralBusPort is NULL"), actor->getId(), WorkflowNotification::U2_ERROR);
         FAIL("IntegralBusPort is NULL", false);
     }
 
-    Attribute *attribute = actor->getParameter("write_names");
+    Attribute* attribute = actor->getParameter("write_names");
     if (attribute == nullptr) {
         notificationList << WorkflowNotification(tr("Attribute is NULL"), actor->getId(), WorkflowNotification::U2_ERROR);
         FAIL("Attribute is NULL", false);
     }
     const bool writeSequence = attribute->getAttributeValueWithoutScript<bool>();
 
-    const QList<Actor *> inputSeq = input->getProducers(BaseSlots::DNA_SEQUENCE_SLOT().getId());
+    const QList<Actor*> inputSeq = input->getProducers(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     if (inputSeq.isEmpty() && writeSequence) {
         notificationList << WorkflowNotification(QObject::tr("Sequence names were not saved, the input slot 'Sequence' is empty."), actor->getId(), WorkflowNotification::U2_WARNING);
     }

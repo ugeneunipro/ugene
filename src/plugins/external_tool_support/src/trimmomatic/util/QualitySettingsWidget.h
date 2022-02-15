@@ -31,21 +31,21 @@ namespace LocalWorkflow {
 class QualitySettingsWidget : public TrimmomaticStepSettingsWidget, private Ui_QualitySettingsWidget {
     Q_OBJECT
 public:
-    QualitySettingsWidget(const QString &toolTip);
+    QualitySettingsWidget(const QString& toolTip);
     ~QualitySettingsWidget();
 
     bool validate() const;
 
     QVariantMap getState() const;
-    void setState(const QVariantMap &state);
+    void setState(const QVariantMap& state);
 
-    static QString serializeState(const QVariantMap &widgetState);
-    static QVariantMap parseState(const QString &command, const QString &stepName);
+    static QString serializeState(const QVariantMap& widgetState);
+    static QVariantMap parseState(const QString& command, const QString& stepName);
 
     static const QString QUALITY;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_QUALITY_SETTINGS_WIDGET_H_
+#endif  // _U2_QUALITY_SETTINGS_WIDGET_H_

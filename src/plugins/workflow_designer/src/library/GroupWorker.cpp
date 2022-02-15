@@ -50,7 +50,7 @@ static const QString OPER_ATTR_ID("group-op");
 /************************************************************************/
 /* GroupWorker */
 /************************************************************************/
-GroupWorker::GroupWorker(Actor *p)
+GroupWorker::GroupWorker(Actor* p)
     : BaseWorker(p, false), inChannel(nullptr), outChannel(nullptr), produceOneGroup(false) {
 }
 
@@ -59,7 +59,7 @@ void GroupWorker::init() {
     outChannel = ports.value(OUTPUT_PORT);
     mtype = outChannel->getBusType();
 
-    GrouperOutSlotAttribute *slotsAttr = dynamic_cast<GrouperOutSlotAttribute *>(actor->getParameter(CoreLibConstants::GROUPER_OUT_SLOTS_ATTR));
+    GrouperOutSlotAttribute* slotsAttr = dynamic_cast<GrouperOutSlotAttribute*>(actor->getParameter(CoreLibConstants::GROUPER_OUT_SLOTS_ATTR));
     outSlots = slotsAttr->getOutSlots();
     groupSlot = actor->getParameter(CoreLibConstants::GROUPER_SLOT_ATTR)->getAttributePureValue().toString();
     produceOneGroup = groupSlot.isEmpty();
@@ -74,7 +74,7 @@ void GroupWorker::init() {
     }
 }
 
-Task *GroupWorker::tick() {
+Task* GroupWorker::tick() {
     while (inChannel->hasMessage()) {
         Message inMessage = inChannel->look();
         inChannel->get();
@@ -98,7 +98,7 @@ Task *GroupWorker::tick() {
             QVariant gsData = mData.value(groupSlot);
             // search group slot data at unique data
             foreach (int id, uniqueData.keys()) {
-                const QVariant &d = uniqueData[id];
+                const QVariant& d = uniqueData[id];
                 bool equal = GrouperActionUtils::equalData(groupOp, d, gsData, inType, context);
                 if (equal) {
                     foundId = id;
@@ -122,13 +122,13 @@ Task *GroupWorker::tick() {
     }
     if (inChannel->isEnded()) {
         foreach (int id, groupedData.keys()) {
-            QMap<QString, ActionPerformer *> perfs = groupedData[id];
+            QMap<QString, ActionPerformer*> perfs = groupedData[id];
 
             QVariantMap data;
             data[GROUP_SIZE_SLOT_ID] = QByteArray::number(groupSize[id]);
             // create output data set from action performers
-            foreach (const QString &slotId, perfs.keys()) {
-                ActionPerformer *perf = perfs[slotId];
+            foreach (const QString& slotId, perfs.keys()) {
+                ActionPerformer* perf = perfs[slotId];
                 U2OpStatusImpl os;
                 QVariant slotData = perf->finishAction(os);
                 if (os.isCoR()) {
@@ -155,8 +155,8 @@ Task *GroupWorker::tick() {
 }
 
 void GroupWorker::cleanup() {
-    foreach (const PerformersMap &perfs, groupedData.values()) {
-        foreach (ActionPerformer *p, perfs.values()) {
+    foreach (const PerformersMap& perfs, groupedData.values()) {
+        foreach (ActionPerformer* p, perfs.values()) {
             delete p;
         }
     }
@@ -170,7 +170,7 @@ void GroupWorker::cleanup() {
 const QString GroupWorkerFactory::ACTOR_ID = CoreLibConstants::GROUPER_ID;
 
 void GroupWorkerFactory::init() {
-    QList<PortDescriptor *> portDescs;
+    QList<PortDescriptor*> portDescs;
     {
         QMap<Descriptor, DataTypePtr> emptyTypeMap;
         DataTypePtr emptyTypeSet(new MapDataType(Descriptor(DataType::EMPTY_TYPESET_ID), emptyTypeMap));
@@ -187,16 +187,16 @@ void GroupWorkerFactory::init() {
         portDescs << new PortDescriptor(outputDesc, outTypeSet, false, true);
     }
 
-    QList<Attribute *> attrs;
+    QList<Attribute*> attrs;
     {
         Descriptor slotsDesc(CoreLibConstants::GROUPER_OUT_SLOTS_ATTR, GroupWorker::tr("Out slots"), GroupWorker::tr("Out slots"));
-        Attribute *slotsAttr = new GrouperOutSlotAttribute(slotsDesc, BaseTypes::STRING_TYPE(), false);
+        Attribute* slotsAttr = new GrouperOutSlotAttribute(slotsDesc, BaseTypes::STRING_TYPE(), false);
 
         Descriptor groupDesc(CoreLibConstants::GROUPER_SLOT_ATTR, GroupWorker::tr("Group slot"), GroupWorker::tr("Group slot"));
-        Attribute *groupAttr = new GroupSlotAttribute(groupDesc, BaseTypes::STRING_TYPE(), false);
+        Attribute* groupAttr = new GroupSlotAttribute(groupDesc, BaseTypes::STRING_TYPE(), false);
 
         Descriptor opDesc(OPER_ATTR_ID, GroupWorker::tr("Group operation"), GroupWorker::tr("Group operation"));
-        Attribute *opAttr = new Attribute(opDesc, BaseTypes::STRING_TYPE(), true);
+        Attribute* opAttr = new Attribute(opDesc, BaseTypes::STRING_TYPE(), true);
 
         attrs << slotsAttr;
         attrs << groupAttr;
@@ -207,7 +207,7 @@ void GroupWorkerFactory::init() {
                          GroupWorker::tr("Grouper"),
                          GroupWorker::tr("Groups data supplied to the specified slot by the specified property (for example, by value). Additionally, it is possible to merge data from another slots associated with the specified one."));
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
+    ActorPrototype* proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
 
     proto->setEditor(new GrouperEditor());
     proto->setPrompter(new GroupPrompter());
@@ -217,7 +217,7 @@ void GroupWorkerFactory::init() {
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new GroupWorkerFactory());
 }
 
-Worker *GroupWorkerFactory::createWorker(Actor *a) {
+Worker* GroupWorkerFactory::createWorker(Actor* a) {
     return new GroupWorker(a);
 }
 
@@ -228,19 +228,19 @@ QString GroupPrompter::composeRichDoc() {
     QString inputName;
     bool produceOneGroup = true;
 
-    Port *input = target->getInputPorts().first();
+    Port* input = target->getInputPorts().first();
     if (input->getLinks().size() > 0) {
-        Port *src = input->getLinks().keys().first();
-        IntegralBusPort *bus = dynamic_cast<IntegralBusPort *>(src);
+        Port* src = input->getLinks().keys().first();
+        IntegralBusPort* bus = dynamic_cast<IntegralBusPort*>(src);
         assert(nullptr != bus);
         DataTypePtr type = bus->getType();
         QMap<Descriptor, DataTypePtr> busMap = type->getDatatypesMap();
 
-        Attribute *groupSlotAttr = target->getParameter(CoreLibConstants::GROUPER_SLOT_ATTR);
+        Attribute* groupSlotAttr = target->getParameter(CoreLibConstants::GROUPER_SLOT_ATTR);
         QString groupSlot = groupSlotAttr->getAttributeValueWithoutScript<QString>();
         groupSlot = GrouperOutSlot::readable2busMap(groupSlot);
 
-        foreach (const Descriptor &d, busMap.keys()) {
+        foreach (const Descriptor& d, busMap.keys()) {
             if (d.getId() == groupSlot) {
                 inputName = d.getDisplayName();
                 produceOneGroup = false;
@@ -253,7 +253,7 @@ QString GroupPrompter::composeRichDoc() {
         return tr("Groups all incoming messages into one message.");
     } else {
         QString result = tr("Groups all incoming messages <u>%1</u> of <u>%2</u> slot data.");
-        Attribute *groupOpAttr = target->getParameter(CoreLibConstants::GROUPER_OPER_ATTR);
+        Attribute* groupOpAttr = target->getParameter(CoreLibConstants::GROUPER_OPER_ATTR);
         QString opId = groupOpAttr->getAttributeValueWithoutScript<QString>();
 
         QString op;

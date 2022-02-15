@@ -33,30 +33,30 @@ class QDElement;
 class Footnote;
 class QueryViewAdapter {
 public:
-    QueryViewAdapter(QDScheme *scheme, const QPointF &topLeftCorner = QPointF(0, 0));
-    const QList<QDElement *> &getElements() const {
+    QueryViewAdapter(QDScheme* scheme, const QPointF& topLeftCorner = QPointF(0, 0));
+    const QList<QDElement*>& getElements() const {
         return createdElements;
     }
-    const QList<Footnote *> &getFootnotes() const {
+    const QList<Footnote*>& getFootnotes() const {
         return createdFootnotes;
     }
-    void placeElement(QDElement *uv);
+    void placeElement(QDElement* uv);
     void sortVertically();
 
     // void scheme2graph();
 
 private:
-    void moveElement(QDElement *uv, int dx);
+    void moveElement(QDElement* uv, int dx);
     // returns false if recursive
-    bool needToMove(QDElement *current, int dx, QList<QDElement *> &res);
+    bool needToMove(QDElement* current, int dx, QList<QDElement*>& res);
 
-    QList<Footnote *> getSharedFootnotes(QDElement *uv1, QDElement *uv2) const;
+    QList<Footnote*> getSharedFootnotes(QDElement* uv1, QDElement* uv2) const;
 
 private:
-    QDScheme *scheme;
-    QList<QDElement *> createdElements;
-    QList<Footnote *> createdFootnotes;
-    QList<QDElement *> currentPath;
+    QDScheme* scheme;
+    QList<QDElement*> createdElements;
+    QList<Footnote*> createdFootnotes;
+    QList<QDElement*> currentPath;
 };
 
 }  // namespace U2

@@ -36,7 +36,7 @@ namespace U2 {
 
 const QString EditConnectionDialog::DEFAULT_PORT = "3306";
 
-EditConnectionDialog::EditConnectionDialog(QWidget *parent, const QString &dbiUrl, const QString &userName, const QString &connectionName)
+EditConnectionDialog::EditConnectionDialog(QWidget* parent, const QString& dbiUrl, const QString& userName, const QString& connectionName)
     : QDialog(parent),
       ui(new Ui_EditConnectionDialog) {
     ui->setupUi(this);
@@ -89,7 +89,7 @@ void EditConnectionDialog::accept() {
     QDialog::accept();
 }
 
-void EditConnectionDialog::init(const U2DbiId &dbiUrl, const QString &connectionName, const QString &userName) {
+void EditConnectionDialog::init(const U2DbiId& dbiUrl, const QString& connectionName, const QString& userName) {
     initTabOrder();
 
     ui->leName->setText(connectionName);

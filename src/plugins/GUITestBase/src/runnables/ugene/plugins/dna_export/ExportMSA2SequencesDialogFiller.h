@@ -35,7 +35,7 @@ public:
                           GFF,
                           Genbank,
                           Swiss_Prot };
-    ExportToSequenceFormatFiller(HI::GUITestOpStatus &os, const QString &path, const QString &name, documentFormat format, bool saveFile, bool keepCharacters, GTGlobals::UseMethod method = GTGlobals::UseMouse);
+    ExportToSequenceFormatFiller(HI::GUITestOpStatus& os, const QString& path, const QString& name, documentFormat format, bool saveFile, bool keepCharacters, GTGlobals::UseMethod method = GTGlobals::UseMouse);
 
     void commonScenario() override;
 

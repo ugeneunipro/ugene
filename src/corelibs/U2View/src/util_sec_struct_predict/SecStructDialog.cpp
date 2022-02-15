@@ -52,7 +52,7 @@
 
 namespace U2 {
 
-SecStructDialog::SecStructDialog(ADVSequenceObjectContext *_ctx, QWidget *p)
+SecStructDialog::SecStructDialog(ADVSequenceObjectContext* _ctx, QWidget* p)
     : QDialog(p), ctx(_ctx), task(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930792");
@@ -80,7 +80,7 @@ SecStructDialog::SecStructDialog(ADVSequenceObjectContext *_ctx, QWidget *p)
     resultsTable->setHorizontalHeaderLabels(headerNames);
     resultsTable->horizontalHeader()->setStretchLastSection(true);
 
-    connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task *)), SLOT(sl_onTaskFinished(Task *)));
+    connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task*)), SLOT(sl_onTaskFinished(Task*)));
     connectGUI();
 }
 
@@ -104,13 +104,13 @@ void SecStructDialog::updateState() {
 void SecStructDialog::sl_onStartPredictionClicked() {
     SAFE_POINT(task == nullptr, "Found pending prediction task!", );
 
-    SecStructPredictTaskFactory *factory = sspr->getAlgorithm(algorithmComboBox->currentText());
+    SecStructPredictTaskFactory* factory = sspr->getAlgorithm(algorithmComboBox->currentText());
     SAFE_POINT(nullptr != factory, "Unregistered factory name", );
 
     // Check license
     QString algorithm = algorithmComboBox->currentText();
-    QList<Plugin *> plugins = AppContext::getPluginSupport()->getPlugins();
-    foreach (Plugin *plugin, plugins) {
+    QList<Plugin*> plugins = AppContext::getPluginSupport()->getPlugins();
+    foreach (Plugin* plugin, plugins) {
         if (plugin->getName() == algorithm) {
             if (!plugin->isFree() && !plugin->isLicenseAccepted()) {
                 QObjectScopedPointer<LicenseDialog> licenseDialog = new LicenseDialog(plugin);
@@ -139,7 +139,7 @@ void SecStructDialog::sl_onStartPredictionClicked() {
     updateState();
 }
 
-void SecStructDialog::sl_onTaskFinished(Task *t) {
+void SecStructDialog::sl_onTaskFinished(Task* t) {
     if (t != task || t->getState() != Task::State_Finished) {
         return;
     }
@@ -147,7 +147,7 @@ void SecStructDialog::sl_onTaskFinished(Task *t) {
 
     // shifting results according to startPos
     for (QMutableListIterator<SharedAnnotationData> it_ad(results); it_ad.hasNext();) {
-        SharedAnnotationData &ad = it_ad.next();
+        SharedAnnotationData& ad = it_ad.next();
         U2Region::shift(region.startPos, ad->location->regions);
     }
     task = nullptr;
@@ -157,12 +157,12 @@ void SecStructDialog::sl_onTaskFinished(Task *t) {
 void SecStructDialog::showResults() {
     int rowIndex = 0;
     resultsTable->setRowCount(results.size());
-    foreach (const SharedAnnotationData &data, results) {
+    foreach (const SharedAnnotationData& data, results) {
         U2Region annRegion = data->getRegions().first();
-        QTableWidgetItem *locItem = new QTableWidgetItem(QString("[%1..%2]").arg(annRegion.startPos).arg(annRegion.endPos()));
+        QTableWidgetItem* locItem = new QTableWidgetItem(QString("[%1..%2]").arg(annRegion.startPos).arg(annRegion.endPos()));
         resultsTable->setItem(rowIndex, 0, locItem);
         SAFE_POINT(data->qualifiers.size() == 1, "Only one qualifier expected!", );
-        QTableWidgetItem *nameItem = new QTableWidgetItem(QString(data->qualifiers.first().value));
+        QTableWidgetItem* nameItem = new QTableWidgetItem(QString(data->qualifiers.first().value));
         resultsTable->setItem(rowIndex, 1, nameItem);
         ++rowIndex;
     }
@@ -190,7 +190,7 @@ void SecStructDialog::sl_onSaveAnnotations() {
 
     U1AnnotationUtils::addDescriptionQualifier(results, m.description);
 
-    CreateAnnotationsTask *t = new CreateAnnotationsTask(m.getAnnotationObject(), results, m.groupName);
+    CreateAnnotationsTask* t = new CreateAnnotationsTask(m.getAnnotationObject(), results, m.groupName);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 
     QDialog::accept();

@@ -33,16 +33,16 @@
 
 const qint16 HEADER_TEXT_MARGIN = 40;
 const int DEFAULT_SELECTED_COLUMN = -1;
-const char *CONVERT_TO_DOC_ACTION_NAME = "Convert to document";
-const char *COPY_TO_CLIPBOARD_ACTION_NAME = "Copy to clipboard";
-const char *HIDE_SELECTED_COLUMN_ACTION_NAME = "Hide this column";
-const char *HIDE_ALL_COLUMNS_BUT_SELECTED_ACTION_NAME = "Hide all columns but this";
-const char *SHOW_ALL_COLUMNS_ACTION_NAME = "Show all columns";
+const char* CONVERT_TO_DOC_ACTION_NAME = "Convert to document";
+const char* COPY_TO_CLIPBOARD_ACTION_NAME = "Copy to clipboard";
+const char* HIDE_SELECTED_COLUMN_ACTION_NAME = "Hide this column";
+const char* HIDE_ALL_COLUMNS_BUT_SELECTED_ACTION_NAME = "Hide all columns but this";
+const char* SHOW_ALL_COLUMNS_ACTION_NAME = "Show all columns";
 
 namespace U2 {
 
-WorkflowInvestigationWidgetsController::WorkflowInvestigationWidgetsController(QWidget *parent)
-    : QObject(qobject_cast<QObject *>(parent)),
+WorkflowInvestigationWidgetsController::WorkflowInvestigationWidgetsController(QWidget* parent)
+    : QObject(qobject_cast<QObject*>(parent)),
       investigationView(nullptr),
       investigationModel(nullptr),
       investigatedLink(nullptr),
@@ -55,7 +55,7 @@ WorkflowInvestigationWidgetsController::WorkflowInvestigationWidgetsController(Q
       showAllColumnsAction(nullptr),
       selectedColumn(DEFAULT_SELECTED_COLUMN),
       columnWidths() {
-    QTabWidget *container = dynamic_cast<QTabWidget *>(parent);
+    QTabWidget* container = dynamic_cast<QTabWidget*>(parent);
     Q_ASSERT(nullptr != container);
     Q_UNUSED(container);
 
@@ -84,8 +84,8 @@ WorkflowInvestigationWidgetsController::~WorkflowInvestigationWidgetsController(
     deleteBusInvestigations();
 }
 
-bool WorkflowInvestigationWidgetsController::eventFilter(QObject *watched, QEvent *event) {
-    if (QEvent::Paint == event->type() && nullptr != investigationView && watched == dynamic_cast<QObject *>(investigationView->viewport())) {
+bool WorkflowInvestigationWidgetsController::eventFilter(QObject* watched, QEvent* event) {
+    if (QEvent::Paint == event->type() && nullptr != investigationView && watched == dynamic_cast<QObject*>(investigationView->viewport())) {
         if (nullptr == investigationView->model() && nullptr != investigatedLink) {
             createInvestigationModel();
             investigationView->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
@@ -95,8 +95,8 @@ bool WorkflowInvestigationWidgetsController::eventFilter(QObject *watched, QEven
     return QObject::eventFilter(watched, event);
 }
 
-void WorkflowInvestigationWidgetsController::setCurrentInvestigation(const Workflow::Link *bus) {
-    QTabWidget *container = dynamic_cast<QTabWidget *>(parent());
+void WorkflowInvestigationWidgetsController::setCurrentInvestigation(const Workflow::Link* bus) {
+    QTabWidget* container = dynamic_cast<QTabWidget*>(parent());
     Q_ASSERT(nullptr != container);
     const int tabNumberForInvestigation = container->indexOf(investigationView);
     if (-1 != tabNumberForInvestigation) {
@@ -139,45 +139,45 @@ void WorkflowInvestigationWidgetsController::createNewInvestigation() {
     investigationView = new QTableView();
     investigationView->viewport()->installEventFilter(this);
     investigationView->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(investigationView, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(sl_contextMenuRequested(const QPoint &)));
+    connect(investigationView, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(sl_contextMenuRequested(const QPoint&)));
     investigationView->horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(investigationView->horizontalHeader(),
-            SIGNAL(customContextMenuRequested(const QPoint &)),
-            SLOT(sl_hotizontalHeaderContextMenuRequested(const QPoint &)));
+            SIGNAL(customContextMenuRequested(const QPoint&)),
+            SLOT(sl_hotizontalHeaderContextMenuRequested(const QPoint&)));
 }
 
 void WorkflowInvestigationWidgetsController::createInvestigationModel() {
     Q_ASSERT(nullptr != investigatedLink && nullptr != investigationView);
     investigationModel = new InvestigationDataModel(investigatedLink, this);
 
-    connect(investigationModel, SIGNAL(si_investigationRequested(const Workflow::Link *, int)), SIGNAL(si_updateCurrentInvestigation(const Workflow::Link *, int)));
-    connect(investigationModel, SIGNAL(si_countOfMessagesRequested(const Workflow::Link *)), SIGNAL(si_countOfMessagesRequested(const Workflow::Link *)));
+    connect(investigationModel, SIGNAL(si_investigationRequested(const Workflow::Link*, int)), SIGNAL(si_updateCurrentInvestigation(const Workflow::Link*, int)));
+    connect(investigationModel, SIGNAL(si_countOfMessagesRequested(const Workflow::Link*)), SIGNAL(si_countOfMessagesRequested(const Workflow::Link*)));
     connect(investigationModel, SIGNAL(si_columnsVisibilityRequested()), SLOT(sl_columnsVisibilityResponse()));
 
     investigationView->setModel(investigationModel);
 }
 
 void WorkflowInvestigationWidgetsController::adjustInvestigationColumnWidth(
-    WorkflowInvestigationWidget *investigator) {
+    WorkflowInvestigationWidget* investigator) {
     for (int currentColumn = 0; investigationModel->columnCount() > currentColumn; ++currentColumn) {
         const int absoluteColumnNumber = investigationModel->getAbsoluteNumberOfVisibleColumn(currentColumn);
         const int width = (columnWidths[investigatedLink].size() <= absoluteColumnNumber || 0 == columnWidths[investigatedLink][absoluteColumnNumber]) ? investigator->fontMetrics().width(investigationModel->headerData(
                                                                                                                                                                                                                  currentColumn, Qt::Horizontal)
                                                                                                                                                                                                .toString()) +
-                                                                                                                                                             HEADER_TEXT_MARGIN :
-                                                                                                                                                         columnWidths[investigatedLink][absoluteColumnNumber];
+                                                                                                                                                             HEADER_TEXT_MARGIN
+                                                                                                                                                       : columnWidths[investigatedLink][absoluteColumnNumber];
         Q_ASSERT(0 < width);
         investigator->setColumnWidth(currentColumn, width);
     }
 }
 
 void WorkflowInvestigationWidgetsController::setInvestigationWidgetsVisible(bool visible) {
-    QTabWidget *container = dynamic_cast<QTabWidget *>(parent());
+    QTabWidget* container = dynamic_cast<QTabWidget*>(parent());
     Q_ASSERT(nullptr != container);
     if (!visible && nullptr != investigationView) {
-        WorkflowInvestigationWidget *currentWidget = dynamic_cast<WorkflowInvestigationWidget *>(container->currentWidget());
+        WorkflowInvestigationWidget* currentWidget = dynamic_cast<WorkflowInvestigationWidget*>(container->currentWidget());
         wasDisplayed = (investigationView == currentWidget);
-        container->removeTab(container->indexOf(static_cast<QWidget *>(investigationView)));
+        container->removeTab(container->indexOf(static_cast<QWidget*>(investigationView)));
         deleteBusInvestigations();
         if (wasDisplayed) {
             container->hide();
@@ -194,8 +194,8 @@ void WorkflowInvestigationWidgetsController::setInvestigationWidgetsVisible(bool
 }
 
 void WorkflowInvestigationWidgetsController::sl_currentInvestigationUpdateResponse(
-    const WorkflowInvestigationData &investigationInfo,
-    const Workflow::Link *bus) {
+    const WorkflowInvestigationData& investigationInfo,
+    const Workflow::Link* bus) {
     Q_ASSERT(bus == investigatedLink);
     Q_UNUSED(bus);
     if (!investigationInfo.isEmpty()) {
@@ -224,13 +224,13 @@ void WorkflowInvestigationWidgetsController::sl_currentInvestigationUpdateRespon
     }
 }
 
-void WorkflowInvestigationWidgetsController::sl_countOfMessagesResponse(const Workflow::Link * /*bus*/,
+void WorkflowInvestigationWidgetsController::sl_countOfMessagesResponse(const Workflow::Link* /*bus*/,
                                                                         int countOfMessages) {
     investigationModel->insertRows(0, countOfMessages, QModelIndex());
 }
 
-void WorkflowInvestigationWidgetsController::sl_contextMenuRequested(const QPoint &cursorPosition) {
-    const QItemSelectionModel *selectionModel = investigationView->selectionModel();
+void WorkflowInvestigationWidgetsController::sl_contextMenuRequested(const QPoint& cursorPosition) {
+    const QItemSelectionModel* selectionModel = investigationView->selectionModel();
     const QModelIndexList selection = selectionModel->selectedIndexes();
     if (1 == selection.size()) {
         QMenu contextMenu;
@@ -242,7 +242,7 @@ void WorkflowInvestigationWidgetsController::sl_contextMenuRequested(const QPoin
 }
 
 void WorkflowInvestigationWidgetsController::sl_hotizontalHeaderContextMenuRequested(
-    const QPoint &cursorPosition) {
+    const QPoint& cursorPosition) {
     QMenu contextMenu;
     selectedColumn = investigationView->columnAt(cursorPosition.x());
     if (DEFAULT_SELECTED_COLUMN != selectedColumn) {
@@ -260,7 +260,7 @@ void WorkflowInvestigationWidgetsController::sl_hotizontalHeaderContextMenuReque
 }
 
 void WorkflowInvestigationWidgetsController::sl_exportInvestigation() {
-    const QItemSelectionModel *selectionModel = investigationView->selectionModel();
+    const QItemSelectionModel* selectionModel = investigationView->selectionModel();
     const QModelIndexList selected = selectionModel->selectedIndexes();
     Q_ASSERT(1 == selected.size());
     const QModelIndex item = selected.first();
@@ -320,4 +320,4 @@ void WorkflowInvestigationWidgetsController::sl_columnsVisibilityResponse() {
     investigationModel->setColumnsVisibility(hiddenColumns);
 }
 
-}    // namespace U2
+}  // namespace U2

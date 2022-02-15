@@ -35,7 +35,7 @@ class SaveDocumentController;
 class ConstructMoleculeDialog : public QDialog, public Ui_ConstructMoleculeDialog {
     Q_OBJECT
 public:
-    ConstructMoleculeDialog(const QList<DNAFragment> &fragments, QWidget *parent);
+    ConstructMoleculeDialog(const QList<DNAFragment>& fragments, QWidget* parent);
     virtual void accept();
 
 private slots:
@@ -49,10 +49,10 @@ private slots:
     void sl_makeCircularBoxClicked();
     void sl_forceBluntBoxClicked();
     void sl_onEditFragmentButtonClicked();
-    void sl_onItemClicked(QTreeWidgetItem *item, int column);
+    void sl_onItemClicked(QTreeWidgetItem* item, int column);
 
 protected:
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject* obj, QEvent* event);
 
 private:
     void update();
@@ -60,7 +60,7 @@ private:
 
     QList<DNAFragment> fragments;
     QList<int> selected;
-    SaveDocumentController *saveController;
+    SaveDocumentController* saveController;
 };
 
 }  // namespace U2

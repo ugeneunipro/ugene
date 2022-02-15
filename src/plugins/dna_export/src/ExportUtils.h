@@ -39,14 +39,14 @@ class Task;
 class ExportUtils : public QObject {
     Q_OBJECT
 public:
-    static void loadDNAExportSettingsFromDlg(ExportSequenceTaskSettings &s, U2::ExportSequencesDialog *d);
+    static void loadDNAExportSettingsFromDlg(ExportSequenceTaskSettings& s, U2::ExportSequencesDialog* d);
 
-    static Task *wrapExportTask(DocumentProviderTask *t, bool addToProject);
+    static Task* wrapExportTask(DocumentProviderTask* t, bool addToProject);
 
     // generates unique name using prefix + numbers
-    static QString genUniqueName(const QSet<QString> &names, QString prefix);
+    static QString genUniqueName(const QSet<QString>& names, QString prefix);
 
-    static void launchExportMca2MsaTask(MultipleChromatogramAlignmentObject *mcaObject);
+    static void launchExportMca2MsaTask(MultipleChromatogramAlignmentObject* mcaObject);
 };
 
 }  // namespace U2

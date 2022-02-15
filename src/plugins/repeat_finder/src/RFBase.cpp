@@ -32,7 +32,7 @@
 namespace U2 {
 
 // factory method
-RFAlgorithmBase *RFAlgorithmBase::createTask(RFResultsListener *l, const char *seqX, int sizeX, const char *seqY, int sizeY, const DNAAlphabet *al, int w, int mismatches, RFAlgorithm alg, int nThreads) {
+RFAlgorithmBase* RFAlgorithmBase::createTask(RFResultsListener* l, const char* seqX, int sizeX, const char* seqY, int sizeY, const DNAAlphabet* al, int w, int mismatches, RFAlgorithm alg, int nThreads) {
     assert(l != nullptr);
     assert(mismatches < w);
     algoLog.trace(QString("Repeat finder: sizex=%1, sizey=%2, alphabet=%3, w=%4, mismatches=%5, threads=%6")
@@ -43,7 +43,7 @@ RFAlgorithmBase *RFAlgorithmBase::createTask(RFResultsListener *l, const char *s
                       .arg(mismatches)
                       .arg(nThreads));
 
-    RFAlgorithmBase *res = nullptr;
+    RFAlgorithmBase* res = nullptr;
     if (alg == RFAlgorithm_Auto) {
         // alg = RFAlgorithm_Diagonal; //the slowest but tested better
         alg = RFAlgorithm_Suffix;
@@ -77,12 +77,12 @@ RFAlgorithmBase *RFAlgorithmBase::createTask(RFResultsListener *l, const char *s
 //////////////////////////////////////////////////////////////////////////
 // Task
 
-char RFAlgorithmBase::getUnknownChar(const DNAAlphabetType &type) {
+char RFAlgorithmBase::getUnknownChar(const DNAAlphabetType& type) {
     return type == DNAAlphabet_AMINO ? 'X' : type == DNAAlphabet_NUCL ? 'N'
                                                                       : '\0';
 }
 
-RFAlgorithmBase::RFAlgorithmBase(RFResultsListener *l, const char *seqx, int sizex, const char *seqy, int sizey, DNAAlphabetType seqType, int w, int k, TaskFlags flags)
+RFAlgorithmBase::RFAlgorithmBase(RFResultsListener* l, const char* seqx, int sizex, const char* seqy, int sizey, DNAAlphabetType seqType, int w, int k, TaskFlags flags)
     : Task(tr("Find Repeats"), flags),
       seqX(seqx), seqY(seqy), SIZE_X(sizex), SIZE_Y(sizey),
       SEQ_TYPE(seqType), WINDOW_SIZE(w), K(k), C(w - k),
@@ -91,12 +91,12 @@ RFAlgorithmBase::RFAlgorithmBase(RFResultsListener *l, const char *seqx, int siz
     unknownChar = getUnknownChar(seqType);
 }
 
-void RFAlgorithmBase::setRFResultsListener(RFResultsListener *newListener) {
+void RFAlgorithmBase::setRFResultsListener(RFResultsListener* newListener) {
     resultsListener = newListener;
 }
 
 // adds single result to global results
-void RFAlgorithmBase::addToResults(const RFResult &r) {
+void RFAlgorithmBase::addToResults(const RFResult& r) {
 #ifdef _DEBUG
     checkResult(r);
 #endif
@@ -110,7 +110,7 @@ void RFAlgorithmBase::addToResults(const RFResult &r) {
 }
 
 // adds single result to global results
-void RFAlgorithmBase::addToResults(const QVector<RFResult> &results) {
+void RFAlgorithmBase::addToResults(const QVector<RFResult>& results) {
 #ifdef _DEBUG
     checkResults(results);
 #endif
@@ -124,7 +124,7 @@ void RFAlgorithmBase::addToResults(const QVector<RFResult> &results) {
             setError("Not enough memory");
             return;
         }
-        foreach (const RFResult &r, results) {
+        foreach (const RFResult& r, results) {
             if (r.x == r.y) {
                 assert(r.l == qMin(SIZE_X, SIZE_Y));
                 continue;
@@ -148,15 +148,15 @@ void RFAlgorithmBase::prepare() {
     }
 }
 
-bool RFAlgorithmBase::checkResults(const QVector<RFResult> &v) {
+bool RFAlgorithmBase::checkResults(const QVector<RFResult>& v) {
     // debug mode self-check routine
-    foreach (const RFResult &r, v) {
+    foreach (const RFResult& r, v) {
         checkResult(r);
     }
     return true;
 }
 
-bool RFAlgorithmBase::checkResult(const RFResult &r) {
+bool RFAlgorithmBase::checkResult(const RFResult& r) {
     assert(r.x >= 0 && r.y >= 0 && r.x + r.l <= SIZE_X && r.y + r.l <= SIZE_Y);
 
     // check that there is mismatch before and after the result
@@ -208,7 +208,7 @@ bool RFAlgorithmBase::checkResult(const RFResult &r) {
     return true;
 }
 
-bool Tandem::extend(const Tandem &t) {
+bool Tandem::extend(const Tandem& t) {
     qint64 newEnd = qMax(offset + size, t.offset + t.size);
     offset = qMin(offset, t.offset);
     qint64 oldSize = size;
@@ -216,7 +216,7 @@ bool Tandem::extend(const Tandem &t) {
     return size > oldSize;
 }
 
-bool Tandem::operator<(const Tandem &t) const {
+bool Tandem::operator<(const Tandem& t) const {
     return repeatLen < t.repeatLen || (repeatLen == t.repeatLen && rightSide < t.offset);
 }
 

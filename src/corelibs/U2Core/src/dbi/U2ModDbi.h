@@ -31,30 +31,30 @@ namespace U2 {
 /** An interface to access tracks of modifications of dbi objects */
 class U2ModDbi : public U2ChildDbi {
 protected:
-    U2ModDbi(U2Dbi *rootDbi)
+    U2ModDbi(U2Dbi* rootDbi)
         : U2ChildDbi(rootDbi) {
     }
 
 public:
     /** Returns a modification step with the specified version for the object */
-    virtual U2SingleModStep getModStep(const U2DataId &objectId, qint64 trackVersion, U2OpStatus &os) = 0;
+    virtual U2SingleModStep getModStep(const U2DataId& objectId, qint64 trackVersion, U2OpStatus& os) = 0;
 
     /** Removes all modification tracks and steps for the object */
-    virtual void removeObjectMods(const U2DataId &objectId, U2OpStatus &os) = 0;
+    virtual void removeObjectMods(const U2DataId& objectId, U2OpStatus& os) = 0;
 
     /**
      * Starts a common user modifications step (can be only one at a time).
      * Do not use this method, create a "U2UseCommonUserModStep" instance instead!
      * The method can be called only in the main thread.
      */
-    virtual void startCommonUserModStep(const U2DataId &masterObjId, U2OpStatus &os) = 0;
+    virtual void startCommonUserModStep(const U2DataId& masterObjId, U2OpStatus& os) = 0;
 
     /**
      * Ends a common user modifications step (can be only one at a time).
      * Do not use this method, use "U2UseCommonUserModStep" instead!
      * The method can be called only in the main thread.
      */
-    virtual void endCommonUserModStep(const U2DataId &masterObjId, U2OpStatus &os) = 0;
+    virtual void endCommonUserModStep(const U2DataId& masterObjId, U2OpStatus& os) = 0;
 };
 
 }  // namespace U2

@@ -46,13 +46,13 @@ const QString MARKER_TYPE("marker-type");
 const QString MARKER_NAME("marker-name");
 const QString MARKERS("markers");
 
-void parseOldMarker(Actor *proc, ParsedPairs &pairs) {
-    MarkerAttribute *markerAttr = dynamic_cast<MarkerAttribute *>(proc->getParameter(Constants::MARKER));
+void parseOldMarker(Actor* proc, ParsedPairs& pairs) {
+    MarkerAttribute* markerAttr = dynamic_cast<MarkerAttribute*>(proc->getParameter(Constants::MARKER));
     if (nullptr == markerAttr) {
         throw ReadFailed(QObject::tr("%1 actor has not markers attribute").arg(proc->getId()));
     }
 
-    Marker *marker = HRSchemaSerializer::parseMarker(pairs, MARKER_TYPE, MARKER_NAME);
+    Marker* marker = HRSchemaSerializer::parseMarker(pairs, MARKER_TYPE, MARKER_NAME);
     SAFE_POINT(nullptr != marker, "NULL marker", );
     if (markerAttr->contains(marker->getName())) {
         throw ReadFailed(QObject::tr("Redefinition of %1 marker at %2 actor").arg(marker->getName()).arg(proc->getId()));
@@ -61,24 +61,24 @@ void parseOldMarker(Actor *proc, ParsedPairs &pairs) {
     markerAttr->getMarkers() << marker;
 
     assert(1 == proc->getOutputPorts().size());
-    Port *outPort = proc->getOutputPorts().at(0);
+    Port* outPort = proc->getOutputPorts().at(0);
     assert(outPort->getOutputType()->isMap());
     QMap<Descriptor, DataTypePtr> outTypeMap = outPort->getOutputType()->getDatatypesMap();
     Descriptor newSlot = MarkerSlots::getSlotByMarkerType(marker->getType(), marker->getName());
     outTypeMap[newSlot] = BaseTypes::STRING_TYPE();
-    DataTypePtr newType(new MapDataType(dynamic_cast<Descriptor &>(*(outPort->getType())), outTypeMap));
+    DataTypePtr newType(new MapDataType(dynamic_cast<Descriptor&>(*(outPort->getType())), outTypeMap));
     outPort->setNewType(newType);
 }
 
-bool isOldMarkerActor(Actor *actor) {
-    const QMap<QString, Attribute *> attrs = actor->getParameters();
+bool isOldMarkerActor(Actor* actor) {
+    const QMap<QString, Attribute*> attrs = actor->getParameters();
     CHECK(1 == attrs.size(), false);
-    MarkerAttribute *attr = dynamic_cast<MarkerAttribute *>(*attrs.begin());
+    MarkerAttribute* attr = dynamic_cast<MarkerAttribute*>(*attrs.begin());
     return (nullptr != attr);
 }
 }  // namespace
 
-void OldUWL::parseMarkerDefinition(Tokenizer &tokenizer, QMap<QString, Actor *> &actorMap) {
+void OldUWL::parseMarkerDefinition(Tokenizer& tokenizer, QMap<QString, Actor*>& actorMap) {
     QString name = tokenizer.take();
     QString actorName = HRSchemaSerializer::parseAt(name, 0);
     QString markerId = HRSchemaSerializer::parseAfter(name, 0);
@@ -96,7 +96,7 @@ void OldUWL::parseMarkerDefinition(Tokenizer &tokenizer, QMap<QString, Actor *> 
     parseOldMarker(actorMap[actorName], pairs);
 }
 
-void OldUWL::parseOldAttributes(Actor *proc, ParsedPairs &pairs) {
+void OldUWL::parseOldAttributes(Actor* proc, ParsedPairs& pairs) {
     if (isOldMarkerActor(proc)) {
         pairs.equalPairs.take(MARKERS);
     }

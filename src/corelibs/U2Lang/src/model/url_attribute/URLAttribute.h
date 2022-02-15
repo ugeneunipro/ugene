@@ -29,28 +29,28 @@ namespace U2 {
 
 class U2LANG_EXPORT URLAttribute : public Attribute {
 public:
-    URLAttribute(const Descriptor &d, const DataTypePtr type, bool required = false);
+    URLAttribute(const Descriptor& d, const DataTypePtr type, bool required = false);
 
-    virtual void setAttributeValue(const QVariant &newVal);
-    virtual const QVariant &getAttributePureValue() const;
-    virtual const QVariant &getDefaultPureValue() const;
+    virtual void setAttributeValue(const QVariant& newVal);
+    virtual const QVariant& getAttributePureValue() const;
+    virtual const QVariant& getDefaultPureValue() const;
     virtual bool isDefaultValue() const;
     virtual bool isEmpty() const;
-    virtual URLAttribute *clone();
-    virtual bool validate(NotificationsList &notificationList);
+    virtual URLAttribute* clone();
+    virtual bool validate(NotificationsList& notificationList);
 
-    virtual const QSet<GObjectType> &getCompatibleObjectTypes() const;
-    virtual void setCompatibleObjectTypes(const QSet<GObjectType> &types);
+    virtual const QSet<GObjectType>& getCompatibleObjectTypes() const;
+    virtual void setCompatibleObjectTypes(const QSet<GObjectType>& types);
 
-    QList<Dataset> &getDatasets();
+    QList<Dataset>& getDatasets();
     void updateValue();
 
 private:
-    URLAttribute(const URLAttribute &other);
-    URLAttribute &operator=(const URLAttribute &other);
+    URLAttribute(const URLAttribute& other);
+    URLAttribute& operator=(const URLAttribute& other);
 
-    QStringList emptyDatasetNames(bool &hasUrls);
-    void copy(const URLAttribute &other);
+    QStringList emptyDatasetNames(bool& hasUrls);
+    void copy(const URLAttribute& other);
 
     QList<Dataset> sets;
     QSet<GObjectType> compatibleObjectTypes;

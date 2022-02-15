@@ -31,7 +31,7 @@ struct DataBunch {
         qDeleteAll(queries);
     }
 
-    QVector<SearchQuery *> queries;
+    QVector<SearchQuery*> queries;
     QVector<BMType> bitValuesV;
     QVector<int> windowSizes;
     QVector<int> readNumbersV;

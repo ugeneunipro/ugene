@@ -27,12 +27,12 @@
 
 namespace U2 {
 
-MultiTask::MultiTask(const QString &name, const QList<Task *> &taskz, bool withLock, TaskFlags f)
+MultiTask::MultiTask(const QString& name, const QList<Task*>& taskz, bool withLock, TaskFlags f)
     : Task(name, f), l(nullptr), tasks(taskz) {
     setMaxParallelSubtasks(1);
     SAFE_POINT(!taskz.empty(), "No tasks provided to multitask", );
 
-    foreach (Task *t, taskz) {
+    foreach (Task* t, taskz) {
         addSubTask(t);
     }
     if (withLock) {
@@ -42,18 +42,18 @@ MultiTask::MultiTask(const QString &name, const QList<Task *> &taskz, bool withL
     }
 }
 
-QList<Task *> MultiTask::getTasks() const {
+QList<Task*> MultiTask::getTasks() const {
     return tasks;
 }
 
 Task::ReportResult MultiTask::report() {
-    Project *p = AppContext::getProject();
+    Project* p = AppContext::getProject();
     if (l != nullptr && p != nullptr) {
         p->unlockState(l);
         delete l;
         l = nullptr;
     }
-    foreach (Task *t, tasks) {
+    foreach (Task* t, tasks) {
         CHECK_CONTINUE(t->isConcatenateChildrenErrors());
 
         setReportingSupported(true);
@@ -65,7 +65,7 @@ Task::ReportResult MultiTask::report() {
 
 QString MultiTask::generateReport() const {
     QString report = "<hr><br>";
-    foreach (Task *subtask, tasks) {
+    foreach (Task* subtask, tasks) {
         if (subtask->hasFlags(TaskFlags(TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled))) {
             report += QString("Subtask <b>'%1'</b>:<br><br>").arg(subtask->getTaskName());
             report += subtask->generateReport();
@@ -78,7 +78,7 @@ QString MultiTask::generateReport() const {
 //////////////////////////////////////////////////////////////////////////
 // SequentialMultiTask
 
-SequentialMultiTask::SequentialMultiTask(const QString &name, const QList<Task *> &taskz, TaskFlags f)
+SequentialMultiTask::SequentialMultiTask(const QString& name, const QList<Task*>& taskz, TaskFlags f)
     : Task(name, f), tasks(taskz) {
     setMaxParallelSubtasks(1);
 }
@@ -90,8 +90,8 @@ void SequentialMultiTask::prepare() {
     }
 }
 
-QList<Task *> SequentialMultiTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> SequentialMultiTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
 
     int idx = tasks.indexOf(subTask);
     if ((idx != -1) && (idx + 1 < tasks.size())) {
@@ -101,7 +101,7 @@ QList<Task *> SequentialMultiTask::onSubTaskFinished(Task *subTask) {
     return res;
 }
 
-QList<Task *> SequentialMultiTask::getTasks() const {
+QList<Task*> SequentialMultiTask::getTasks() const {
     return tasks;
 }
 

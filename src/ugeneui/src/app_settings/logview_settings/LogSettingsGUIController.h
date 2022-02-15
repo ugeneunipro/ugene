@@ -23,13 +23,14 @@
 #define _U2_LOG_SETTINGS_WIDGET_IMPL_H_
 
 #include <LogSettings.h>
-#include <ui_LogSettingsWidget.h>
 
 #include <QLabel>
 #include <QTableWidgetItem>
 #include <QUrl>
 
 #include <U2Gui/AppSettingsGUI.h>
+
+#include <ui_LogSettingsWidget.h>
 
 namespace U2 {
 
@@ -38,20 +39,20 @@ class SaveDocumentController;
 class LogSettingsPageController : public AppSettingsGUIPageController {
     Q_OBJECT
 public:
-    LogSettingsPageController(LogSettingsHolder *target, QObject *p = nullptr);
+    LogSettingsPageController(LogSettingsHolder* target, QObject* p = nullptr);
 
-    virtual AppSettingsGUIPageState *getSavedState();
+    virtual AppSettingsGUIPageState* getSavedState();
 
-    virtual void saveState(AppSettingsGUIPageState *s);
+    virtual void saveState(AppSettingsGUIPageState* s);
 
-    virtual AppSettingsGUIPageWidget *createWidget(AppSettingsGUIPageState *data);
+    virtual AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* data);
 
-    const QString &getHelpPageId() const {
+    const QString& getHelpPageId() const {
         return helpPageId;
     }
 
 private:
-    LogSettingsHolder *target;
+    LogSettingsHolder* target;
     static const QString helpPageId;
 };
 
@@ -67,33 +68,33 @@ class LogSettingsPageWidget : public AppSettingsGUIPageWidget, public Ui_LogSett
 public:
     LogSettingsPageWidget();
 
-    virtual void setState(AppSettingsGUIPageState *state);
+    virtual void setState(AppSettingsGUIPageState* state);
 
-    virtual AppSettingsGUIPageState *getState(QString &err) const;
+    virtual AppSettingsGUIPageState* getState(QString& err) const;
 
 private slots:
     void sl_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
     void sl_levelStateChanged(int state);
-    void sl_catItemStateChanged(QTableWidgetItem *item);
-    void sl_changeColor(const QString &v);
+    void sl_catItemStateChanged(QTableWidgetItem* item);
+    void sl_changeColor(const QString& v);
     void sl_outFileStateChanged(int state);
 
 private:
-    void updateColorLabel(QLabel *l, const QString &color);
+    void updateColorLabel(QLabel* l, const QString& color);
     void initSaveController();
 
-    SaveDocumentController *saveController;
+    SaveDocumentController* saveController;
 };
 
 class LogSettingsTopLineWidget : public QWidget {
     Q_OBJECT
 public:
-    LogSettingsTopLineWidget(QWidget *parent, const QString &_color, LogLevel _level)
+    LogSettingsTopLineWidget(QWidget* parent, const QString& _color, LogLevel _level)
         : QWidget(parent), color(_color), level(_level), cb(nullptr) {
     }
     QString color;
     LogLevel level;
-    QCheckBox *cb;
+    QCheckBox* cb;
 };
 
 }  // namespace U2

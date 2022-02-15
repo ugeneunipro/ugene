@@ -31,17 +31,17 @@ namespace BAM {
 
 class Reader {
 public:
-    Reader(IOAdapter &_ioAdapter)
+    Reader(IOAdapter& _ioAdapter)
         : ioAdapter(_ioAdapter) {
     }
-    virtual const Header &getHeader() const = 0;
+    virtual const Header& getHeader() const = 0;
     virtual bool isEof() const = 0;
     virtual ~Reader() {
     }
 
 protected:
     Header header;
-    IOAdapter &ioAdapter;
+    IOAdapter& ioAdapter;
 
     QHash<QByteArray, int> referencesMap;
     QHash<QByteArray, int> readGroupsMap;
@@ -52,7 +52,7 @@ class BamReader : public Reader {
 public:
     class AlignmentReader {
     public:
-        AlignmentReader(BamReader *reader, int id, int blockSize);
+        AlignmentReader(BamReader* reader, int id, int blockSize);
         int getId();
         Alignment read();
         void skip();
@@ -60,16 +60,16 @@ public:
     private:
         int id;
         int blockSize;
-        BamReader *r;
+        BamReader* r;
 
         /**
          * Returns true if a number was read
          */
-        bool readNumber(char type, QVariant &value, int &bytesRead);
+        bool readNumber(char type, QVariant& value, int& bytesRead);
     };
 
-    BamReader(IOAdapter &ioAdapter);
-    const Header &getHeader() const;
+    BamReader(IOAdapter& ioAdapter);
+    const Header& getHeader() const;
     Alignment readAlignment();
     AlignmentReader getAlignmentReader();
     bool isEof() const;
@@ -77,7 +77,7 @@ public:
     void seek(VirtualOffset offset);
 
 private:
-    void readBytes(char *buffer, qint64 size);
+    void readBytes(char* buffer, qint64 size);
     QByteArray readBytes(qint64 size);
     qint32 readInt32();
     quint32 readUint32();

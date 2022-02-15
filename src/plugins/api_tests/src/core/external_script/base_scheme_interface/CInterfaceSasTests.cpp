@@ -50,18 +50,18 @@ static QString getCommonDataDir() {
 
 static const QString WD_SCHEMES_PATH = getCommonDataDir() + "cmdline/wd-sas-schemes/";
 
-static U2ErrorType getActorDisplayName(const QString &actorId, QString &actorName) {
-    U2::Workflow::ActorPrototypeRegistry *prototypeRegistry = U2::Workflow::WorkflowEnv::getProtoRegistry();
+static U2ErrorType getActorDisplayName(const QString& actorId, QString& actorName) {
+    U2::Workflow::ActorPrototypeRegistry* prototypeRegistry = U2::Workflow::WorkflowEnv::getProtoRegistry();
     CHECK(nullptr != prototypeRegistry, U2_INVALID_CALL);
-    U2::Workflow::ActorPrototype *prototype = prototypeRegistry->getProto(actorId);
+    U2::Workflow::ActorPrototype* prototype = prototypeRegistry->getProto(actorId);
     CHECK(nullptr != prototype, U2_UNKNOWN_ELEMENT);
     actorName = prototype->getDisplayName();
     return U2_OK;
 }
 
-static wchar_t *toDisposableWString(const QString &source) {
+static wchar_t* toDisposableWString(const QString& source) {
     CHECK(!source.isEmpty(), nullptr);
-    wchar_t *result = new wchar_t[source.size() + 1];
+    wchar_t* result = new wchar_t[source.size() + 1];
     source.toWCharArray(result);
     result[source.size()] = '\0';
     return result;

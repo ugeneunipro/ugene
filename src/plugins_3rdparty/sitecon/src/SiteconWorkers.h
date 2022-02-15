@@ -35,7 +35,7 @@ namespace LocalWorkflow {
 class SiteconBuildPrompter : public PrompterBase<SiteconBuildPrompter> {
     Q_OBJECT
 public:
-    SiteconBuildPrompter(Actor *p = 0)
+    SiteconBuildPrompter(Actor* p = 0)
         : PrompterBase<SiteconBuildPrompter>(p) {
     }
 
@@ -46,7 +46,7 @@ protected:
 class SiteconSearchPrompter : public PrompterBase<SiteconSearchPrompter> {
     Q_OBJECT
 public:
-    SiteconSearchPrompter(Actor *p = 0)
+    SiteconSearchPrompter(Actor* p = 0)
         : PrompterBase<SiteconSearchPrompter>(p) {
     }
 
@@ -60,11 +60,11 @@ public:
     static const QString ACTOR_ID;
     static void registerProto();
 
-    SiteconBuildWorker(Actor *a)
+    SiteconBuildWorker(Actor* a)
         : BaseWorker(a), input(nullptr), output(nullptr) {
     }
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup() {
     }
 private slots:
@@ -82,18 +82,18 @@ public:
     static const QString ACTOR_ID;
     static void registerProto();
 
-    SiteconSearchWorker(Actor *a)
+    SiteconSearchWorker(Actor* a)
         : BaseWorker(a, false),  // FIXME??
           modelPort(nullptr), dataPort(nullptr), output(nullptr), strand(0) {
     }
     virtual void init();
     virtual bool isReady() const;
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup() {
     }
 
 private slots:
-    void sl_taskFinished(Task *);
+    void sl_taskFinished(Task*);
 
 protected:
     IntegralBus *modelPort, *dataPort, *output;
@@ -110,10 +110,10 @@ public:
     static const Descriptor SITECON_SLOT;
     static DataTypePtr const SITECON_MODEL_TYPE();
     static void init();
-    SiteconWorkerFactory(const Descriptor &d)
+    SiteconWorkerFactory(const Descriptor& d)
         : DomainFactory(d) {
     }
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 };
 
 }  // namespace LocalWorkflow

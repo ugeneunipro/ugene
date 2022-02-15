@@ -60,7 +60,7 @@ const QString MAX_PRODUCT_ATTR_ID = "max-product";
 const QString USE_AMBIGUOUS_BASES_ID = "use-ambiguous-bases";
 const QString EXTRACT_ANNOTATIONS_ATTR_ID = "extract-annotations";
 
-const char *PAIR_NUMBER_PROP_ID = "pair-number";
+const char* PAIR_NUMBER_PROP_ID = "pair-number";
 }  // namespace
 
 /************************************************************************/
@@ -70,12 +70,12 @@ InSilicoPcrWorkerFactory::InSilicoPcrWorkerFactory()
     : DomainFactory(ACTOR_ID) {
 }
 
-Worker *InSilicoPcrWorkerFactory::createWorker(Actor *a) {
+Worker* InSilicoPcrWorkerFactory::createWorker(Actor* a) {
     return new InSilicoPcrWorker(a);
 }
 
 void InSilicoPcrWorkerFactory::init() {
-    QList<PortDescriptor *> ports;
+    QList<PortDescriptor*> ports;
     {
         Descriptor inDesc(BasePorts::IN_SEQ_PORT_ID(), InSilicoPcrWorker::tr("Input sequence"), InSilicoPcrWorker::tr("Input sequence."));
         Descriptor outDesc(OUT_PORT_ID, InSilicoPcrWorker::tr("PCR product"), InSilicoPcrWorker::tr("PCR product sequence."));
@@ -91,7 +91,7 @@ void InSilicoPcrWorkerFactory::init() {
         ports << new PortDescriptor(inDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-in", inType)), true /*input*/);
         ports << new PortDescriptor(outDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-out", outType)), false /*input*/, true /*multi*/);
     }
-    QList<Attribute *> attributes;
+    QList<Attribute*> attributes;
     {
         Descriptor primersDesc(PRIMERS_ATTR_ID, InSilicoPcrWorker::tr("Primers URL"), InSilicoPcrWorker::tr("A URL to the input file with primer pairs."));
         Descriptor reportDesc(REPORT_ATTR_ID, InSilicoPcrWorker::tr("Report URL"), InSilicoPcrWorker::tr("A URL to the output file with the PCR report."));
@@ -109,7 +109,7 @@ void InSilicoPcrWorkerFactory::init() {
         attributes << new Attribute(useAmbiguousBases, BaseTypes::BOOL_TYPE(), false, true);
         attributes << new Attribute(annotationsDesc, BaseTypes::NUM_TYPE(), false, ExtractProductSettings::Inner);
     }
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         delegates[PRIMERS_ATTR_ID] = new URLDelegate("", "", false, false, false);
         delegates[REPORT_ATTR_ID] = new URLDelegate("", "", false, false, true);
@@ -141,26 +141,26 @@ void InSilicoPcrWorkerFactory::init() {
     }
 
     Descriptor desc(ACTOR_ID, InSilicoPcrWorker::tr("In Silico PCR"), InSilicoPcrWorker::tr("Simulates PCR for input sequences and primer pairs. Creates the table with the PCR statistics."));
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new InSilicoPcrPrompter(nullptr));
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new InSilicoPcrWorkerFactory());
 }
 
 /************************************************************************/
 /* InSilicoPcrPrompter */
 /************************************************************************/
-InSilicoPcrPrompter::InSilicoPcrPrompter(Actor *a)
+InSilicoPcrPrompter::InSilicoPcrPrompter(Actor* a)
     : PrompterBase<InSilicoPcrPrompter>(a) {
 }
 
 QString InSilicoPcrPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
     SAFE_POINT(nullptr != input, "No input port", "");
-    const Actor *producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
+    const Actor* producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     const QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     const QString producerName = (nullptr != producer) ? producer->getLabel() : unsetStr;
     const QString primersLink = getHyperlink(PRIMERS_ATTR_ID, getURL(PRIMERS_ATTR_ID));
@@ -170,37 +170,37 @@ QString InSilicoPcrPrompter::composeRichDoc() {
 /************************************************************************/
 /* InSilicoPcrWorker */
 /************************************************************************/
-InSilicoPcrWorker::InSilicoPcrWorker(Actor *a)
+InSilicoPcrWorker::InSilicoPcrWorker(Actor* a)
     : BaseThroughWorker(a, BasePorts::IN_SEQ_PORT_ID(), OUT_PORT_ID), reported(false) {
 }
 
-Task *InSilicoPcrWorker::createPrepareTask(U2OpStatus &os) const {
+Task* InSilicoPcrWorker::createPrepareTask(U2OpStatus& os) const {
     QString primersUrl = getValue<QString>(PRIMERS_ATTR_ID);
     QVariantMap hints;
     hints[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(context->getDataStorage()->getDbiRef());
-    LoadDocumentTask *task = LoadDocumentTask::getDefaultLoadDocTask(primersUrl, hints);
+    LoadDocumentTask* task = LoadDocumentTask::getDefaultLoadDocTask(primersUrl, hints);
     if (nullptr == task) {
         os.setError(tr("Can not read the primers file: ") + primersUrl);
     }
     return task;
 }
 
-void InSilicoPcrWorker::onPrepared(Task *task, U2OpStatus &os) {
-    LoadDocumentTask *loadTask = qobject_cast<LoadDocumentTask *>(task);
+void InSilicoPcrWorker::onPrepared(Task* task, U2OpStatus& os) {
+    LoadDocumentTask* loadTask = qobject_cast<LoadDocumentTask*>(task);
     CHECK_EXT(nullptr != loadTask, os.setError(L10N::internalError("Unexpected prepare task")), );
 
     QScopedPointer<Document> doc(loadTask->takeDocument());
     CHECK_EXT(!doc.isNull(), os.setError(tr("Can't read the file: ") + loadTask->getURLString()), );
     doc->setDocumentOwnsDbiResources(false);
 
-    QList<GObject *> objects = doc->findGObjectByType(GObjectTypes::SEQUENCE);
+    QList<GObject*> objects = doc->findGObjectByType(GObjectTypes::SEQUENCE);
     CHECK_EXT(!objects.isEmpty(), os.setError(tr("No primer sequences in the file: ") + loadTask->getURLString()), );
     CHECK_EXT(0 == objects.size() % 2, os.setError(tr("There is the odd number of primers in the file: ") + loadTask->getURLString()), );
 
     fetchPrimers(objects, os);
 }
 
-void InSilicoPcrWorker::fetchPrimers(const QList<GObject *> &objects, U2OpStatus &os) {
+void InSilicoPcrWorker::fetchPrimers(const QList<GObject*>& objects, U2OpStatus& os) {
     for (int i = 0; i < objects.size() / 2; i++) {
         bool skipped = false;
 
@@ -218,9 +218,9 @@ void InSilicoPcrWorker::fetchPrimers(const QList<GObject *> &objects, U2OpStatus
     }
 }
 
-Primer InSilicoPcrWorker::createPrimer(GObject *object, bool &skipped, U2OpStatus &os) {
+Primer InSilicoPcrWorker::createPrimer(GObject* object, bool& skipped, U2OpStatus& os) {
     Primer result;
-    U2SequenceObject *primerSeq = qobject_cast<U2SequenceObject *>(object);
+    U2SequenceObject* primerSeq = qobject_cast<U2SequenceObject*>(object);
     CHECK_EXT(nullptr != primerSeq, os.setError(L10N::nullPointerError("Primer sequence")), result);
 
     if (primerSeq->getSequenceLength() > Primer::MAX_LEN) {
@@ -235,20 +235,20 @@ Primer InSilicoPcrWorker::createPrimer(GObject *object, bool &skipped, U2OpStatu
     return result;
 }
 
-QList<Message> InSilicoPcrWorker::fetchResult(Task *task, U2OpStatus &os) {
+QList<Message> InSilicoPcrWorker::fetchResult(Task* task, U2OpStatus& os) {
     QList<Message> result;
-    InSilicoPcrReportTask *reportTask = qobject_cast<InSilicoPcrReportTask *>(task);
+    InSilicoPcrReportTask* reportTask = qobject_cast<InSilicoPcrReportTask*>(task);
     if (nullptr != reportTask) {
         monitor()->addOutputFile(getValue<QString>(REPORT_ATTR_ID), actor->getId(), true);
         return result;
     }
 
-    MultiTask *multiTask = qobject_cast<MultiTask *>(task);
+    MultiTask* multiTask = qobject_cast<MultiTask*>(task);
     CHECK_EXT(nullptr != multiTask, os.setError(L10N::nullPointerError("MultiTask")), result);
 
     InSilicoPcrReportTask::TableRow tableRow;
-    foreach (Task *t, multiTask->getTasks()) {
-        InSilicoPcrWorkflowTask *pcrTask = qobject_cast<InSilicoPcrWorkflowTask *>(t);
+    foreach (Task* t, multiTask->getTasks()) {
+        InSilicoPcrWorkflowTask* pcrTask = qobject_cast<InSilicoPcrWorkflowTask*>(t);
         CHECK_EXT(nullptr != multiTask, os.setError(L10N::nullPointerError("InSilicoPcrTask")), result);
 
         int pairNumber = pcrTask->property(PAIR_NUMBER_PROP_ID).toInt();
@@ -259,7 +259,7 @@ QList<Message> InSilicoPcrWorker::fetchResult(Task *task, U2OpStatus &os) {
         QList<InSilicoPcrWorkflowTask::Result> pcrResults = pcrTask->takeResult();
         tableRow.productsNumber[pairNumber] = pcrResults.size();
 
-        foreach (const InSilicoPcrWorkflowTask::Result &pcrResult, pcrResults) {
+        foreach (const InSilicoPcrWorkflowTask::Result& pcrResult, pcrResults) {
             QVariant sequence = fetchSequence(pcrResult.doc);
             QVariant annotations = fetchAnnotations(pcrResult.doc);
             pcrResult.doc->setDocumentOwnsDbiResources(false);
@@ -279,8 +279,8 @@ QList<Message> InSilicoPcrWorker::fetchResult(Task *task, U2OpStatus &os) {
     return result;
 }
 
-QVariant InSilicoPcrWorker::fetchSequence(Document *doc) {
-    QList<GObject *> seqObjects = doc->findGObjectByType(GObjectTypes::SEQUENCE);
+QVariant InSilicoPcrWorker::fetchSequence(Document* doc) {
+    QList<GObject*> seqObjects = doc->findGObjectByType(GObjectTypes::SEQUENCE);
     if (1 != seqObjects.size()) {
         reportError(L10N::internalError(tr("Wrong sequence objects count")));
         return QVariant();
@@ -289,8 +289,8 @@ QVariant InSilicoPcrWorker::fetchSequence(Document *doc) {
     return qVariantFromValue<SharedDbiDataHandler>(seqId);
 }
 
-QVariant InSilicoPcrWorker::fetchAnnotations(Document *doc) {
-    QList<GObject *> annsObjects = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
+QVariant InSilicoPcrWorker::fetchAnnotations(Document* doc) {
+    QList<GObject*> annsObjects = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
     if (1 != annsObjects.size()) {
         reportError(L10N::internalError(tr("Wrong annotations objects count")));
         return QVariant();
@@ -299,7 +299,7 @@ QVariant InSilicoPcrWorker::fetchAnnotations(Document *doc) {
     return qVariantFromValue<SharedDbiDataHandler>(annsId);
 }
 
-int InSilicoPcrWorker::createMetadata(const InSilicoPcrTaskSettings &settings, const U2Region &productRegion, int pairNumber) {
+int InSilicoPcrWorker::createMetadata(const InSilicoPcrTaskSettings& settings, const U2Region& productRegion, int pairNumber) {
     MessageMetadata oldMetadata = context->getMetadataStorage().get(output->getContextMetadataId());
     QString primerName = primers[pairNumber].first.name;
     QString suffix = "_" + ExtractProductTask::getProductName(primerName, settings.sequence.length(), productRegion, true);
@@ -310,13 +310,13 @@ int InSilicoPcrWorker::createMetadata(const InSilicoPcrTaskSettings &settings, c
     return metadata.getId();
 }
 
-Task *InSilicoPcrWorker::onInputEnded() {
+Task* InSilicoPcrWorker::onInputEnded() {
     CHECK(!reported, nullptr);
     reported = true;
     return new InSilicoPcrReportTask(table, primers, getValue<QString>(REPORT_ATTR_ID), getValue<QString>(PRIMERS_ATTR_ID));
 }
 
-Task *InSilicoPcrWorker::createTask(const Message &message, U2OpStatus &os) {
+Task* InSilicoPcrWorker::createTask(const Message& message, U2OpStatus& os) {
     QVariantMap data = message.getData().toMap();
     SharedDbiDataHandler seqId = data[BaseSlots::DNA_SEQUENCE_SLOT().getId()].value<SharedDbiDataHandler>();
     QScopedPointer<U2SequenceObject> seq(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
@@ -332,8 +332,8 @@ Task *InSilicoPcrWorker::createTask(const Message &message, U2OpStatus &os) {
 
     ExtractProductSettings productSettings;
     productSettings.sequenceRef = seq->getEntityRef();
-    QList<AnnotationTableObject *> anns = StorageUtils::getAnnotationTableObjects(context->getDataStorage(), data[BaseSlots::ANNOTATION_TABLE_SLOT().getId()]);
-    foreach (AnnotationTableObject *annsObject, anns) {
+    QList<AnnotationTableObject*> anns = StorageUtils::getAnnotationTableObjects(context->getDataStorage(), data[BaseSlots::ANNOTATION_TABLE_SLOT().getId()]);
+    foreach (AnnotationTableObject* annsObject, anns) {
         productSettings.annotationRefs << annsObject->getEntityRef();
         delete annsObject;
     }
@@ -352,11 +352,11 @@ Task *InSilicoPcrWorker::createTask(const Message &message, U2OpStatus &os) {
     pcrSettings.perfectMatch = getValue<int>(PERFECT_ATTR_ID);
     pcrSettings.sequenceName = seq->getSequenceName();
 
-    QList<Task *> tasks;
+    QList<Task*> tasks;
     for (int i = 0; i < primers.size(); i++) {
         pcrSettings.forwardPrimer = primers[i].first.sequence.toLocal8Bit();
         pcrSettings.reversePrimer = primers[i].second.sequence.toLocal8Bit();
-        Task *pcrTask = new InSilicoPcrWorkflowTask(pcrSettings, productSettings);
+        Task* pcrTask = new InSilicoPcrWorkflowTask(pcrSettings, productSettings);
         pcrTask->setProperty(PAIR_NUMBER_PROP_ID, i);
         tasks << pcrTask;
     }
@@ -369,7 +369,7 @@ Task *InSilicoPcrWorker::createTask(const Message &message, U2OpStatus &os) {
 /************************************************************************/
 /* InSilicoPcrReportTask */
 /************************************************************************/
-InSilicoPcrReportTask::InSilicoPcrReportTask(const QList<TableRow> &table, const QList<QPair<Primer, Primer>> &primers, const QString &reportUrl, const QString &_primersUrl)
+InSilicoPcrReportTask::InSilicoPcrReportTask(const QList<TableRow>& table, const QList<QPair<Primer, Primer>>& primers, const QString& reportUrl, const QString& _primersUrl)
     : Task(tr("Generate In Silico PCR report"), TaskFlag_None), table(table), primers(primers), reportUrl(reportUrl), primersUrl(_primersUrl) {
 }
 
@@ -402,7 +402,7 @@ QByteArray InSilicoPcrReportTask::productsTable() const {
         result += PrimerGrouperTask::createColumn(primers[i].first.name + "<br/>" + primers[i].second.name);
     }
     result += "</tr>";
-    foreach (const TableRow &tableRow, table) {
+    foreach (const TableRow& tableRow, table) {
         result += "<tr>";
         result += PrimerGrouperTask::createCell(tableRow.sequenceName);
         for (int i = 0; i < primers.size(); i++) {
@@ -432,15 +432,15 @@ QString InSilicoPcrReportTask::primerDetails() {
     return chapterName(tr("Primer pair details")) + chapterContent(result);
 }
 
-QByteArray InSilicoPcrReportTask::chapterName(const QString &name) const {
+QByteArray InSilicoPcrReportTask::chapterName(const QString& name) const {
     return "<h3>" + name.toLocal8Bit() + "</h3>\n";
 }
 
-QByteArray InSilicoPcrReportTask::chapterContent(const QByteArray &content) const {
+QByteArray InSilicoPcrReportTask::chapterContent(const QByteArray& content) const {
     return "<div class=\"chapter-content\">\n" + content + "</div>\n";
 }
 
-QByteArray InSilicoPcrReportTask::chapter(const QByteArray &name, const QByteArray &content) const {
+QByteArray InSilicoPcrReportTask::chapter(const QByteArray& name, const QByteArray& content) const {
     QByteArray result;
     result += "<div>\n";
     result += "<a href=\"#\" onclick=\"showContent(this);\">" + name + "</a>\n";

@@ -53,26 +53,26 @@ public:
     TestRunnerService();
     ~TestRunnerService();
 
-    const QList<GTestSuite *> getTestSuites() const {
+    const QList<GTestSuite*> getTestSuites() const {
         return suites;
     }
-    void addTestSuite(GTestSuite *);
-    void removeTestSuite(GTestSuite *);
-    GTestSuite *findTestSuiteByURL(const QString &url);
+    void addTestSuite(GTestSuite*);
+    void removeTestSuite(GTestSuite*);
+    GTestSuite* findTestSuiteByURL(const QString& url);
 
-    GTestEnvironment *getEnv() {
+    GTestEnvironment* getEnv() {
         return env;
     }
-    void setVar(const QString &varName, const QString &val);
+    void setVar(const QString& varName, const QString& val);
     void setEnvironment();
 
 signals:
-    void si_testSuiteAdded(GTestSuite *ts);
-    void si_testSuiteRemoved(GTestSuite *ts);
+    void si_testSuiteAdded(GTestSuite* ts);
+    void si_testSuiteRemoved(GTestSuite* ts);
 
 protected:
     virtual void serviceStateChangedCallback(ServiceState oldState, bool enabledStateChanged);
-    virtual bool eventFilter(QObject *obj, QEvent *event);
+    virtual bool eventFilter(QObject* obj, QEvent* event);
 
 public slots:
     void sl_refresh();
@@ -87,12 +87,12 @@ private:
 
     void readEnvForKeys(QStringList keys);
     void saveEnv();
-    void updateDefaultEnvValues(GTestSuite *ts);
+    void updateDefaultEnvValues(GTestSuite* ts);
 
-    TestViewController *view;
-    QAction *windowAction;
-    QList<GTestSuite *> suites;
-    GTestEnvironment *env;
+    TestViewController* view;
+    QAction* windowAction;
+    QList<GTestSuite*> suites;
+    GTestEnvironment* env;
 };
 /*class TestRunnerScriptModule : public GScriptModule
 {

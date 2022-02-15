@@ -29,13 +29,13 @@ namespace U2 {
 class SplashScreen : public QDialog {
     Q_OBJECT
 public:
-    explicit SplashScreen(QWidget *parent = nullptr);
+    explicit SplashScreen(QWidget* parent = nullptr);
 
 public slots:
     void sl_close();
 
 protected:
-    bool eventFilter(QObject *obj, QEvent *ev) override;
+    bool eventFilter(QObject* obj, QEvent* ev) override;
 };
 
 ////////////////////////////////////////////////////
@@ -50,8 +50,8 @@ public:
     void getDots();
 
 protected:
-    void timerEvent(QTimerEvent *e) override;
-    void paintEvent(QPaintEvent *e) override;
+    void timerEvent(QTimerEvent* e) override;
+    void paintEvent(QPaintEvent* e) override;
 
 private:
     void drawInfo();

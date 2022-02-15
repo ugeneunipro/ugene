@@ -35,17 +35,17 @@ class URLContainerVisitor;
 
 class U2LANG_EXPORT URLContainer {
 public:
-    URLContainer(const QString &url, bool convertUrlToAbsolute = true);
+    URLContainer(const QString& url, bool convertUrlToAbsolute = true);
     virtual ~URLContainer();
 
-    const QString &getUrl() const;
+    const QString& getUrl() const;
 
-    virtual FilesIterator *getFileUrls() = 0;
-    virtual URLContainer *clone() = 0;
-    virtual void accept(URLContainerVisitor *visitor) = 0;
+    virtual FilesIterator* getFileUrls() = 0;
+    virtual URLContainer* clone() = 0;
+    virtual void accept(URLContainerVisitor* visitor) = 0;
 
     /** Validate the URL is present and readable */
-    virtual bool validateUrl(NotificationsList &notificationList) = 0;
+    virtual bool validateUrl(NotificationsList& notificationList) = 0;
 
 protected:
     QString url;
@@ -53,53 +53,53 @@ protected:
 
 class U2LANG_EXPORT URLContainerFactory {
 public:
-    static URLContainer *createUrlContainer(const QString &url);
+    static URLContainer* createUrlContainer(const QString& url);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 class U2LANG_EXPORT FileUrlContainer : public URLContainer {
 public:
-    FileUrlContainer(const QString &url);
+    FileUrlContainer(const QString& url);
 
-    virtual FilesIterator *getFileUrls();
-    virtual URLContainer *clone();
-    virtual void accept(URLContainerVisitor *visitor);
+    virtual FilesIterator* getFileUrls();
+    virtual URLContainer* clone();
+    virtual void accept(URLContainerVisitor* visitor);
 
-    virtual bool validateUrl(NotificationsList &notificationList);
+    virtual bool validateUrl(NotificationsList& notificationList);
 };
 
 class U2LANG_EXPORT DbObjUrlContainer : public URLContainer {
 public:
-    DbObjUrlContainer(const QString &url);
+    DbObjUrlContainer(const QString& url);
 
-    virtual FilesIterator *getFileUrls();
-    virtual URLContainer *clone();
-    virtual void accept(URLContainerVisitor *visitor);
+    virtual FilesIterator* getFileUrls();
+    virtual URLContainer* clone();
+    virtual void accept(URLContainerVisitor* visitor);
 
-    virtual bool validateUrl(NotificationsList &notificationList);
+    virtual bool validateUrl(NotificationsList& notificationList);
 };
 
 class U2LANG_EXPORT DirUrlContainer : public URLContainer {
 public:
-    DirUrlContainer(const QString &url);
-    DirUrlContainer(const QString &url, const QString &incFilter, const QString &excFilter, bool recursive);
+    DirUrlContainer(const QString& url);
+    DirUrlContainer(const QString& url, const QString& incFilter, const QString& excFilter, bool recursive);
 
-    virtual FilesIterator *getFileUrls();
-    virtual URLContainer *clone();
-    virtual void accept(URLContainerVisitor *visitor);
+    virtual FilesIterator* getFileUrls();
+    virtual URLContainer* clone();
+    virtual void accept(URLContainerVisitor* visitor);
 
     /**
      * Validates filtered files inside the folder
      * are present and accessible for reading.
      */
-    virtual bool validateUrl(NotificationsList &notificationList);
+    virtual bool validateUrl(NotificationsList& notificationList);
 
-    const QString &getIncludeFilter() const;
-    const QString &getExcludeFilter() const;
+    const QString& getIncludeFilter() const;
+    const QString& getExcludeFilter() const;
     bool isRecursive() const;
 
-    void setIncludeFilter(const QString &value);
-    void setExcludeFilter(const QString &value);
+    void setIncludeFilter(const QString& value);
+    void setExcludeFilter(const QString& value);
     void setRecursive(bool value);
 
 private:
@@ -110,20 +110,20 @@ private:
 
 class U2LANG_EXPORT DbFolderUrlContainer : public URLContainer {
 public:
-    DbFolderUrlContainer(const QString &url);
-    DbFolderUrlContainer(const QString &url, const QString &accFilter, const QString &objNameFilter, bool recursive);
+    DbFolderUrlContainer(const QString& url);
+    DbFolderUrlContainer(const QString& url, const QString& accFilter, const QString& objNameFilter, bool recursive);
 
-    virtual FilesIterator *getFileUrls();
-    virtual URLContainer *clone();
-    virtual void accept(URLContainerVisitor *visitor);
+    virtual FilesIterator* getFileUrls();
+    virtual URLContainer* clone();
+    virtual void accept(URLContainerVisitor* visitor);
 
-    virtual bool validateUrl(NotificationsList &notificationList);
+    virtual bool validateUrl(NotificationsList& notificationList);
 
-    void setSequenceAccFilter(const QString &acc);
-    void setObjNameFilter(const QString &name);
+    void setSequenceAccFilter(const QString& acc);
+    void setObjNameFilter(const QString& name);
 
-    const QString &getSequenceAccFilter() const;
-    const QString &getObjNameFilter() const;
+    const QString& getSequenceAccFilter() const;
+    const QString& getObjNameFilter() const;
 
     bool isRecursive() const;
     void setRecursive(bool value);
@@ -139,10 +139,10 @@ class U2LANG_EXPORT URLContainerVisitor {
 public:
     virtual ~URLContainerVisitor();
 
-    virtual void visit(FileUrlContainer *) = 0;
-    virtual void visit(DirUrlContainer *) = 0;
-    virtual void visit(DbObjUrlContainer *) = 0;
-    virtual void visit(DbFolderUrlContainer *) = 0;
+    virtual void visit(FileUrlContainer*) = 0;
+    virtual void visit(DirUrlContainer*) = 0;
+    virtual void visit(DbObjUrlContainer*) = 0;
+    virtual void visit(DbFolderUrlContainer*) = 0;
 };
 
 }  // namespace U2

@@ -36,7 +36,7 @@
 
 namespace U2 {
 
-GenbankLocationValidator::GenbankLocationValidator(QPushButton *_okButton, int length, bool _isCircular, QLineEdit *_le)
+GenbankLocationValidator::GenbankLocationValidator(QPushButton* _okButton, int length, bool _isCircular, QLineEdit* _le)
     : QValidator(),
       okButton(_okButton),
       isCircular(_isCircular),
@@ -44,7 +44,7 @@ GenbankLocationValidator::GenbankLocationValidator(QPushButton *_okButton, int l
       le(_le) {
 }
 
-QValidator::State GenbankLocationValidator::validate(QString &str, int & /*ii*/) const {
+QValidator::State GenbankLocationValidator::validate(QString& str, int& /*ii*/) const {
     U2Location loc;
     Genbank::LocationParser::ParsingResult parsingResult = Genbank::LocationParser::Success;
     if (isCircular) {
@@ -57,7 +57,7 @@ QValidator::State GenbankLocationValidator::validate(QString &str, int & /*ii*/)
         if (loc.data()->isEmpty()) {
             return failValidate();
         }
-        foreach (const U2Region &r, loc.data()->regions) {
+        foreach (const U2Region& r, loc.data()->regions) {
             if (r.startPos < 0 || r.startPos > seqLen) {
                 return failValidate();
             }

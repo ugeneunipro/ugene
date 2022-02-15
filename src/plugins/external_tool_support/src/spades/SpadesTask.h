@@ -32,7 +32,7 @@ class SpadesTask : public GenomeAssemblyTask {
     Q_OBJECT
     GENOME_ASSEMBLEY_TASK_FACTORY(SpadesTask)
 public:
-    SpadesTask(const GenomeAssemblyTaskSettings &settings);
+    SpadesTask(const GenomeAssemblyTaskSettings& settings);
 
     void prepare();
     ReportResult report();
@@ -40,7 +40,7 @@ public:
     QString getContigsUrl() const;
 
 protected slots:
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 public:
     static const QString OPTION_DATASET_TYPE;
@@ -55,7 +55,7 @@ public:
     static const QString SCAFFOLDS_NAME;
 
 private:
-    ExternalToolRunTask *assemblyTask;
+    ExternalToolRunTask* assemblyTask;
     QString contigsUrl;
 
 private:
@@ -64,20 +64,20 @@ private:
 
 class SpadesTaskFactory : public GenomeAssemblyTaskFactory {
 public:
-    GenomeAssemblyTask *createTaskInstance(const GenomeAssemblyTaskSettings &settings);
+    GenomeAssemblyTask* createTaskInstance(const GenomeAssemblyTaskSettings& settings);
 };
 
 class SpadesLogParser : public ExternalToolLogParser {
 public:
     SpadesLogParser();
-    void parseOutput(const QString &partOfLog);
-    void parseErrOutput(const QString &partOfLog);
+    void parseOutput(const QString& partOfLog);
+    void parseErrOutput(const QString& partOfLog);
 
 private:
     QString lastLine;
     QString lastErrLine;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SPADES_TASK_H_
+#endif  // _U2_SPADES_TASK_H_

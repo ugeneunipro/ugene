@@ -39,7 +39,7 @@ public:
     virtual QVariantMap getSettings() const = 0;
 
 protected:
-    SaveDocumentController *saveController;
+    SaveDocumentController* saveController;
 };
 
 }  // namespace U2

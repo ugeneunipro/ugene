@@ -34,7 +34,7 @@
 
 namespace U2 {
 
-OptionsPanel::OptionsPanel(GObjectView *_objView)
+OptionsPanel::OptionsPanel(GObjectView* _objView)
     : objView(_objView) {
     widget = new OptionsPanelWidget();
 }
@@ -45,14 +45,14 @@ OptionsPanel::~OptionsPanel() {
     }
 }
 
-OptionsPanelWidget *OptionsPanel::getMainWidget() {
+OptionsPanelWidget* OptionsPanel::getMainWidget() {
     return widget;
 }
 
-void OptionsPanel::addGroup(OPWidgetFactory *factory) {
+void OptionsPanel::addGroup(OPWidgetFactory* factory) {
     // Create a widget with icon at the right side
     OPGroupParameters groupParameters = factory->getOPGroupParameters();
-    GroupHeaderImageWidget *headerImageWidget =
+    GroupHeaderImageWidget* headerImageWidget =
         widget->createHeaderImageWidget(groupParameters.getGroupId(), groupParameters.getIcon());
 
     headerImageWidget->setObjectName(groupParameters.getGroupId());
@@ -64,7 +64,7 @@ void OptionsPanel::addGroup(OPWidgetFactory *factory) {
     opWidgetFactories.append(factory);
 }
 
-void OptionsPanel::openGroupById(const QString &groupId, const QVariantMap &options) {
+void OptionsPanel::openGroupById(const QString& groupId, const QVariantMap& options) {
     if (widget->getState() == OPMainWidgetState_Closed) {
         widget->openOptionsPanel();
     } else if (activeGroupId != groupId) {
@@ -74,7 +74,7 @@ void OptionsPanel::openGroupById(const QString &groupId, const QVariantMap &opti
 }
 
 void OptionsPanel::sl_groupHeaderPressed(QString groupId) {
-    OPWidgetFactory *opWidgetFactory = findFactoryByGroupId(groupId);
+    OPWidgetFactory* opWidgetFactory = findFactoryByGroupId(groupId);
     SAFE_POINT(nullptr != opWidgetFactory,
                QString("Internal error: can't open a group with ID '%1' on the Options Panel.").arg(groupId), );
 
@@ -99,41 +99,41 @@ void OptionsPanel::sl_groupHeaderPressed(QString groupId) {
     }
 }
 
-void OptionsPanel::openOptionsGroup(const QString &groupId, const QVariantMap &options) {
+void OptionsPanel::openOptionsGroup(const QString& groupId, const QVariantMap& options) {
     GCounter::increment(QString("Opening tab: %1").arg(groupId), objView->getFactoryId());
     SAFE_POINT(!groupId.isEmpty(), "Empty 'groupId'!", );
 
-    OPWidgetFactory *opWidgetFactory = findFactoryByGroupId(groupId);
+    OPWidgetFactory* opWidgetFactory = findFactoryByGroupId(groupId);
     SAFE_POINT(opWidgetFactory != nullptr,
                QString("Internal error: can't open a group with ID '%1' on the Options Panel.").arg(groupId), );
 
     if (activeGroupId == groupId) {
-        GroupOptionsWidget *optionsWidget = widget->focusOptionsWidget(groupId);
+        GroupOptionsWidget* optionsWidget = widget->focusOptionsWidget(groupId);
         if (optionsWidget != nullptr) {
             opWidgetFactory->applyOptionsToWidget(optionsWidget->getMainWidget(), options);
         }
         return;
     }
 
-    GroupHeaderImageWidget *headerWidget = widget->findHeaderWidgetByGroupId(groupId);
+    GroupHeaderImageWidget* headerWidget = widget->findHeaderWidgetByGroupId(groupId);
     SAFE_POINT(headerWidget != nullptr,
                QString("Internal error: can't find a header widget for group '%1'").arg(groupId), );
 
     OPGroupParameters parameters = opWidgetFactory->getOPGroupParameters();
 
     // Get common widgets
-    OPCommonWidgetFactoryRegistry *opCommonWidgetFactoryRegistry = AppContext::getOPCommonWidgetFactoryRegistry();
-    QList<OPCommonWidgetFactory *> opCommonWidgetFactories = opCommonWidgetFactoryRegistry->getRegisteredFactories(groupId);
+    OPCommonWidgetFactoryRegistry* opCommonWidgetFactoryRegistry = AppContext::getOPCommonWidgetFactoryRegistry();
+    QList<OPCommonWidgetFactory*> opCommonWidgetFactories = opCommonWidgetFactoryRegistry->getRegisteredFactories(groupId);
 
-    QList<QWidget *> commonWidgets;
-    foreach (OPCommonWidgetFactory *commonWidgetFactory, opCommonWidgetFactories) {
+    QList<QWidget*> commonWidgets;
+    foreach (OPCommonWidgetFactory* commonWidgetFactory, opCommonWidgetFactories) {
         SAFE_POINT(nullptr != commonWidgetFactory, "NULL OP common widget factory!", );
-        QWidget *commonWidget = commonWidgetFactory->createWidget(objView, options);
+        QWidget* commonWidget = commonWidgetFactory->createWidget(objView, options);
         commonWidgets.append(commonWidget);
     }
 
     // Create the tab widget
-    QWidget *mainWidget = opWidgetFactory->createWidget(objView, options);
+    QWidget* mainWidget = opWidgetFactory->createWidget(objView, options);
     widget->createOptionsWidget(groupId, parameters.getTitle(), parameters.getDocumentationPage(), mainWidget, commonWidgets);
     headerWidget->setHeaderSelected();
     // Re-apply options in case if they were overriden by SavableTab.
@@ -141,12 +141,12 @@ void OptionsPanel::openOptionsGroup(const QString &groupId, const QVariantMap &o
     activeGroupId = groupId;
 }
 
-void OptionsPanel::closeOptionsGroup(const QString &groupId) {
+void OptionsPanel::closeOptionsGroup(const QString& groupId) {
     if (activeGroupId != groupId || groupId.isEmpty()) {
         return;
     }
 
-    GroupHeaderImageWidget *headerWidget = widget->findHeaderWidgetByGroupId(groupId);
+    GroupHeaderImageWidget* headerWidget = widget->findHeaderWidgetByGroupId(groupId);
     SAFE_POINT(nullptr != headerWidget, QString("Internal error: can't find a header widget for group '%1'").arg(groupId), );
 
     widget->deleteOptionsWidget(groupId);
@@ -154,8 +154,8 @@ void OptionsPanel::closeOptionsGroup(const QString &groupId) {
     activeGroupId = "";
 }
 
-OPWidgetFactory *OptionsPanel::findFactoryByGroupId(const QString &groupId) {
-    foreach (OPWidgetFactory *factory, opWidgetFactories) {
+OPWidgetFactory* OptionsPanel::findFactoryByGroupId(const QString& groupId) {
+    foreach (OPWidgetFactory* factory, opWidgetFactories) {
         OPGroupParameters parameters = factory->getOPGroupParameters();
         if (parameters.getGroupId() == groupId) {
             return factory;

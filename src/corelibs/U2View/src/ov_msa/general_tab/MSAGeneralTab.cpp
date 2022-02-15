@@ -39,7 +39,7 @@
 
 namespace U2 {
 
-MSAGeneralTab::MSAGeneralTab(MSAEditor *msaEditor)
+MSAGeneralTab::MSAGeneralTab(MSAEditor* msaEditor)
     : Ui_GeneralTabOptionsPanelWidget(), msaEditor(msaEditor), savableTab(this, GObjectViewUtils::findViewByName(msaEditor->getName())) {
     SAFE_POINT(msaEditor != nullptr, "MSA Editor is not defined.", );
 
@@ -83,7 +83,7 @@ void MSAGeneralTab::sl_copyFormatSelectionChanged(int index) {
 }
 
 void MSAGeneralTab::connectSignals() {
-    MSAEditorSequenceArea *sequenceArea = msaEditor->getUI()->getSequenceArea();
+    MSAEditorSequenceArea* sequenceArea = msaEditor->getUI()->getSequenceArea();
 
     // Inner signals
     connect(copyType, SIGNAL(currentIndexChanged(int)), SLOT(sl_copyFormatSelectionChanged(int)));
@@ -92,9 +92,9 @@ void MSAGeneralTab::connectSignals() {
     connect(convertNucleicAlphabetButton, SIGNAL(clicked()), SLOT(sl_convertNucleicAlphabetButtonClicked()));
 
     // External signals
-    MultipleSequenceAlignmentObject *maObject = msaEditor->getMaObject();
+    MultipleSequenceAlignmentObject* maObject = msaEditor->getMaObject();
     connect(maObject,
-            SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)),
+            SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
             SLOT(sl_alignmentChanged()));
     connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_alignmentChanged()));
     connect(sequenceArea, SIGNAL(si_copyFormattedChanging(bool)), copyButton, SLOT(setEnabled(bool)));
@@ -116,12 +116,12 @@ void MSAGeneralTab::initializeParameters() {
     constr.supportedObjectTypes.insert(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     constr.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
     constr.addFlagToSupport(DocumentFormatFlag_SupportWriting);
-    DocumentFormatRegistry *formatRegistry = AppContext::getDocumentFormatRegistry();
+    DocumentFormatRegistry* formatRegistry = AppContext::getDocumentFormatRegistry();
     QList<DocumentFormatId> supportedFormats = formatRegistry->selectFormats(constr);
     supportedFormats.append(BaseDocumentFormats::PLAIN_TEXT);
 
-    for (const DocumentFormatId &fid : qAsConst(supportedFormats)) {
-        DocumentFormat *format = formatRegistry->getFormatById(fid);
+    for (const DocumentFormatId& fid : qAsConst(supportedFormats)) {
+        DocumentFormat* format = formatRegistry->getFormatById(fid);
         copyType->addItem(QIcon(), format->getFormatName(), format->getFormatId());
     }
     copyType->addItem(QIcon(), tr("Rich text (HTML)"), "RTF");

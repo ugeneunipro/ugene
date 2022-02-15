@@ -32,7 +32,7 @@ namespace HI {
 #ifdef Q_OS_DARWIN
 
 int asciiToVirtual(int);
-bool extractShiftModifier(char &key);
+bool extractShiftModifier(char& key);
 bool keyPressMac(int key);
 bool keyReleaseMac(int key);
 
@@ -295,7 +295,7 @@ int asciiToVirtual(int key) {
     return key;
 }
 
-bool extractShiftModifier(char &key) {
+bool extractShiftModifier(char& key) {
     switch (key) {
         case '_':
             key = asciiToVirtual('-');

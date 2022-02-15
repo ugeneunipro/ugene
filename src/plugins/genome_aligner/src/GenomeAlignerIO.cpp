@@ -44,7 +44,7 @@ namespace U2 {
 /* GenomeAlignerUrlReader                                               */
 /************************************************************************/
 
-GenomeAlignerUrlReader::GenomeAlignerUrlReader(const QList<GUrl> &dnaList) {
+GenomeAlignerUrlReader::GenomeAlignerUrlReader(const QList<GUrl>& dnaList) {
     initOk = reader.init(dnaList);
 }
 
@@ -59,7 +59,7 @@ int GenomeAlignerUrlReader::getProgress() {
     return reader.getProgress();
 }
 
-SearchQuery *GenomeAlignerUrlReader::read() {
+SearchQuery* GenomeAlignerUrlReader::read() {
     return new SearchQuery(reader.getNextSequenceObject());
 }
 
@@ -71,12 +71,12 @@ QString GenomeAlignerUrlReader::getMemberError() {
 /* GenomeAlignerUrlWriter                                               */
 /************************************************************************/
 
-GenomeAlignerUrlWriter::GenomeAlignerUrlWriter(const GUrl &resultFile, const QString &refName, int refLength)
+GenomeAlignerUrlWriter::GenomeAlignerUrlWriter(const GUrl& resultFile, const QString& refName, int refLength)
     : seqWriter(resultFile, refName, refLength) {
     writtenReadsCount = 0;
 }
 
-void GenomeAlignerUrlWriter::write(SearchQuery *seq, SAType offset) {
+void GenomeAlignerUrlWriter::write(SearchQuery* seq, SAType offset) {
     seqWriter.writeNextAlignedRead(offset, DNASequence(seq->getName(), seq->constSequence()));
     writtenReadsCount++;
 }
@@ -85,7 +85,7 @@ void GenomeAlignerUrlWriter::close() {
     seqWriter.close();
 }
 
-void GenomeAlignerUrlWriter::setReferenceName(const QString &refName) {
+void GenomeAlignerUrlWriter::setReferenceName(const QString& refName) {
     this->refName = refName;
     seqWriter.setRefSeqName(refName);
 }
@@ -96,7 +96,7 @@ namespace LocalWorkflow {
 /* GenomeAlignerCommunicationChanelReader                               */
 /************************************************************************/
 
-GenomeAlignerCommunicationChanelReader::GenomeAlignerCommunicationChanelReader(CommunicationChannel *reads) {
+GenomeAlignerCommunicationChanelReader::GenomeAlignerCommunicationChanelReader(CommunicationChannel* reads) {
     assert(reads != nullptr);
     this->reads = reads;
 }
@@ -109,7 +109,7 @@ int GenomeAlignerCommunicationChanelReader::getProgress() {
     return 100;
 }
 
-SearchQuery *GenomeAlignerCommunicationChanelReader::read() {
+SearchQuery* GenomeAlignerCommunicationChanelReader::read() {
     DNASequence seq = reads->get().getData().toMap().value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<DNASequence>();
 
     return new SearchQuery(&seq);
@@ -130,11 +130,11 @@ void GenomeAlignerMsaWriter::close() {
     result->setAlphabet(AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()));
 }
 
-MultipleSequenceAlignment &GenomeAlignerMsaWriter::getResult() {
+MultipleSequenceAlignment& GenomeAlignerMsaWriter::getResult() {
     return result;
 }
 
-void GenomeAlignerMsaWriter::write(SearchQuery *seq, SAType offset) {
+void GenomeAlignerMsaWriter::write(SearchQuery* seq, SAType offset) {
     QByteArray offsetGaps;
     offsetGaps.fill(U2Msa::GAP_CHAR, offset);
     QByteArray seqWithOffset = seq->constSequence();
@@ -143,7 +143,7 @@ void GenomeAlignerMsaWriter::write(SearchQuery *seq, SAType offset) {
     writtenReadsCount++;
 }
 
-void GenomeAlignerMsaWriter::setReferenceName(const QString &refName) {
+void GenomeAlignerMsaWriter::setReferenceName(const QString& refName) {
     this->refName = refName;
     result->setName(refName);
 }
@@ -155,7 +155,7 @@ void GenomeAlignerMsaWriter::setReferenceName(const QString &refName) {
 /************************************************************************/
 const qint64 GenomeAlignerDbiReader::readBunchSize = 1000;
 
-GenomeAlignerDbiReader::GenomeAlignerDbiReader(U2AssemblyDbi *_rDbi, U2Assembly _assembly)
+GenomeAlignerDbiReader::GenomeAlignerDbiReader(U2AssemblyDbi* _rDbi, U2Assembly _assembly)
     : rDbi(_rDbi), assembly(_assembly) {
     wholeAssembly.startPos = 0;
     wholeAssembly.length = rDbi->getMaxEndPos(assembly.id, status) + 1;
@@ -173,7 +173,7 @@ GenomeAlignerDbiReader::GenomeAlignerDbiReader(U2AssemblyDbi *_rDbi, U2Assembly 
     end = false;
 }
 
-SearchQuery *GenomeAlignerDbiReader::read() {
+SearchQuery* GenomeAlignerDbiReader::read() {
     if (end) {
         return nullptr;
     }
@@ -204,18 +204,18 @@ int GenomeAlignerDbiReader::getProgress() {
 /************************************************************************/
 const qint64 GenomeAlignerDbiWriter::readBunchSize = 10000;
 
-inline void checkOperationStatus(const U2OpStatus &status) {
+inline void checkOperationStatus(const U2OpStatus& status) {
     if (status.hasError()) {
         coreLog.error(status.getError());
         throw status.getError();
     }
 }
 
-GenomeAlignerDbiWriter::GenomeAlignerDbiWriter(const QString &dbiFilePath,
-                                               const QString &assemblyName,
+GenomeAlignerDbiWriter::GenomeAlignerDbiWriter(const QString& dbiFilePath,
+                                               const QString& assemblyName,
                                                int refLength,
-                                               const QString &referenceObjectName,
-                                               const QString &referenceUrlForCrossLink)
+                                               const QString& referenceObjectName,
+                                               const QString& referenceUrlForCrossLink)
     : importer(status) {
     // TODO: support several assemblies.
     dbiHandle = QSharedPointer<DbiConnection>(new DbiConnection(U2DbiRef(SQLITE_DBI_ID, dbiFilePath), true, status));
@@ -250,7 +250,7 @@ GenomeAlignerDbiWriter::GenomeAlignerDbiWriter(const QString &dbiFilePath,
     sqliteDbi->getAttributeDbi()->createIntegerAttribute(lenAttr, status);
 }
 
-void GenomeAlignerDbiWriter::write(SearchQuery *seq, SAType offset) {
+void GenomeAlignerDbiWriter::write(SearchQuery* seq, SAType offset) {
     writtenReadsCount++;
 
     U2AssemblyRead read(new U2AssemblyReadData());

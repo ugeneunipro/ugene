@@ -37,7 +37,7 @@ class U2SequenceObject;
 class U2OpStatus;
 
 struct DNAFragmentTerm {
-    DNAFragmentTerm(const QString &eId, const QByteArray &seq, bool directStrand)
+    DNAFragmentTerm(const QString& eId, const QByteArray& seq, bool directStrand)
         : enzymeId(eId.toLatin1()), overhang(seq), isDirect(directStrand) {
     }
 
@@ -56,27 +56,27 @@ private:
     // Contains fragment region and cuts info
     SharedAnnotationData annotatedFragment;
     // Parent sequence of the fragment
-    U2SequenceObject *dnaObj;
+    U2SequenceObject* dnaObj;
     // Annotations associated with parent sequence
     // When ligate or export fragments they must be saved
-    QList<AnnotationTableObject *> relatedAnnotations;
+    QList<AnnotationTableObject*> relatedAnnotations;
     // reverse complement
     bool reverseCompl;
     void updateTerms();
     void updateLeftTerm();
     void updateRightTerm();
-    void toRevCompl(QByteArray &buf);
-    void setTermType(const QByteArray &qName, const QByteArray &type);
-    void setOverhang(const QByteArray &qName, const QByteArray &overhang);
+    void toRevCompl(QByteArray& buf);
+    void setTermType(const QByteArray& qName, const QByteArray& type);
+    void setOverhang(const QByteArray& qName, const QByteArray& overhang);
     DNAFragmentTerm leftTerm, rightTerm;
 
 public:
     DNAFragment()
         : annotatedFragment(nullptr), dnaObj(nullptr), reverseCompl(false) {
     }
-    DNAFragment(const SharedAnnotationData &fragment, U2SequenceObject *sObj, const QList<AnnotationTableObject *> relatedAnns);
-    DNAFragment(const DNAFragment &other);
-    DNAFragment &operator=(const DNAFragment &other);
+    DNAFragment(const SharedAnnotationData& fragment, U2SequenceObject* sObj, const QList<AnnotationTableObject*> relatedAnns);
+    DNAFragment(const DNAFragment& other);
+    DNAFragment& operator=(const DNAFragment& other);
     bool isEmpty() const {
         return annotatedFragment.data() == nullptr || dnaObj == nullptr;
     }
@@ -84,30 +84,30 @@ public:
     QString getSequenceName() const;
     QString getSequenceDocName() const;
     QVector<U2Region> getFragmentRegions() const;
-    QByteArray getSequence(U2OpStatus &os) const;
+    QByteArray getSequence(U2OpStatus& os) const;
     int getLength() const;
     bool isInverted() const {
         return reverseCompl;
     }
-    const DNAAlphabet *getAlphabet() const;
-    QByteArray getSourceSequence(U2OpStatus &os) const;
-    QByteArray getSourceSequenceRegion(const U2Region region, U2OpStatus &os) const;
-    const DNAFragmentTerm &getLeftTerminus() const;
-    const DNAFragmentTerm &getRightTerminus() const;
+    const DNAAlphabet* getAlphabet() const;
+    QByteArray getSourceSequence(U2OpStatus& os) const;
+    QByteArray getSourceSequenceRegion(const U2Region region, U2OpStatus& os) const;
+    const DNAFragmentTerm& getLeftTerminus() const;
+    const DNAFragmentTerm& getRightTerminus() const;
     void setInverted(bool inverted = true);
-    void setRightTermType(const QByteArray &termType);
-    void setLeftTermType(const QByteArray &termType);
-    void setLeftOverhang(const QByteArray &overhang);
-    void setRightOverhang(const QByteArray &overhang);
+    void setRightTermType(const QByteArray& termType);
+    void setLeftTermType(const QByteArray& termType);
+    void setLeftOverhang(const QByteArray& overhang);
+    void setRightOverhang(const QByteArray& overhang);
     void setLeftOverhangStrand(bool direct);
     void setRightOverhangStrand(bool direct);
 
-    const QList<AnnotationTableObject *> &getRelatedAnnotations() const {
+    const QList<AnnotationTableObject*>& getRelatedAnnotations() const {
         return relatedAnnotations;
     }
 
     static QList<DNAFragment> findAvailableFragments();
-    static QList<DNAFragment> findAvailableFragments(const QList<GObject *> &aObjects, const QList<GObject *> &sObjects);
+    static QList<DNAFragment> findAvailableFragments(const QList<GObject*>& aObjects, const QList<GObject*>& sObjects);
 };
 
 }  // namespace U2

@@ -33,16 +33,16 @@ class U2LANG_EXPORT ElementSelectorWidget : public WizardWidget {
 public:
     ElementSelectorWidget();
 
-    virtual void accept(WizardWidgetVisitor *visitor);
-    virtual void validate(const QList<Actor *> &actors, U2OpStatus &os) const;
+    virtual void accept(WizardWidgetVisitor* visitor);
+    virtual void validate(const QList<Actor*>& actors, U2OpStatus& os) const;
 
-    void setActorId(const QString &value);
-    void addValue(const SelectorValue &value);
-    void setLabel(const QString &value);
+    void setActorId(const QString& value);
+    void addValue(const SelectorValue& value);
+    void setLabel(const QString& value);
 
-    const QString &getActorId() const;
-    const QList<SelectorValue> &getValues() const;
-    const QString &getLabel() const;
+    const QString& getActorId() const;
+    const QList<SelectorValue>& getValues() const;
+    const QString& getLabel() const;
 
     static const QString ID;
 
@@ -52,10 +52,10 @@ private:
     QList<SelectorValue> values;
 
     /** Returns found actor or NULL */
-    Workflow::Actor *validateActorId(QList<Workflow::Actor *> actors, U2OpStatus &os) const;
-    void validateDuplicates(const SelectorValue &value,
-                            const QSet<QString> &valueSet,
-                            U2OpStatus &os) const;
+    Workflow::Actor* validateActorId(QList<Workflow::Actor*> actors, U2OpStatus& os) const;
+    void validateDuplicates(const SelectorValue& value,
+                            const QSet<QString>& valueSet,
+                            U2OpStatus& os) const;
 };
 
 }  // namespace U2

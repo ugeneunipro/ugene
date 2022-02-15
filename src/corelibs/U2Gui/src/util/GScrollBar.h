@@ -31,7 +31,7 @@ namespace U2 {
 class U2GUI_EXPORT GScrollBar : public QScrollBar {
     Q_OBJECT
 public:
-    GScrollBar(Qt::Orientation o, QWidget *p = 0)
+    GScrollBar(Qt::Orientation o, QWidget* p = 0)
         : QScrollBar(o, p) {
     }
 

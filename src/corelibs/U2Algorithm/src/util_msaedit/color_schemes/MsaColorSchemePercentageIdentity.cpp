@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-MsaColorSchemePercentageIdentity::MsaColorSchemePercentageIdentity(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj)
+MsaColorSchemePercentageIdentity::MsaColorSchemePercentageIdentity(QObject* parent, const MsaColorSchemeFactory* factory, MultipleAlignmentObject* maObj)
     : MsaColorScheme(parent, factory, maObj),
       cacheVersion(0),
       objVersion(1) {
@@ -47,7 +47,7 @@ MsaColorSchemePercentageIdentity::MsaColorSchemePercentageIdentity(QObject *pare
     memset(tmpChars, 0, sizeof(char) * 4);
     memset(tmpRanges, 0, sizeof(int) * 4);
 
-    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), SLOT(sl_alignmentChanged()));
+    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_alignmentChanged()));
 }
 
 QColor MsaColorSchemePercentageIdentity::getBackgroundColor(int seq, int pos, char c) const {
@@ -93,11 +93,11 @@ void MsaColorSchemePercentageIdentity::updateCache() const {
     cacheVersion = objVersion;
 }
 
-MsaColorSchemePercentageIdentityFactory::MsaColorSchemePercentageIdentityFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets)
+MsaColorSchemePercentageIdentityFactory::MsaColorSchemePercentageIdentityFactory(QObject* parent, const QString& id, const QString& name, const AlphabetFlags& supportedAlphabets)
     : MsaColorSchemeFactory(parent, id, name, supportedAlphabets) {
 }
 
-MsaColorScheme *MsaColorSchemePercentageIdentityFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
+MsaColorScheme* MsaColorSchemePercentageIdentityFactory::create(QObject* parent, MultipleAlignmentObject* maObj) const {
     return new MsaColorSchemePercentageIdentity(parent, this, maObj);
 }
 

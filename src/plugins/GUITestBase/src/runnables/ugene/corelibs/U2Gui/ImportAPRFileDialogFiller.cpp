@@ -32,7 +32,7 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ImportBAMFileFiller"
 #define GT_METHOD_NAME "run"
-ImportAPRFileFiller::ImportAPRFileFiller(HI::GUITestOpStatus &os,
+ImportAPRFileFiller::ImportAPRFileFiller(HI::GUITestOpStatus& os,
                                          bool _isReadOnly,
                                          QString dstUrl,
                                          QString formatToConvertTo,
@@ -44,7 +44,7 @@ ImportAPRFileFiller::ImportAPRFileFiller(HI::GUITestOpStatus &os,
     settings.timeout = timeoutMs;
 }
 
-ImportAPRFileFiller::ImportAPRFileFiller(HI::GUITestOpStatus &os, CustomScenario *_c)
+ImportAPRFileFiller::ImportAPRFileFiller(HI::GUITestOpStatus& os, CustomScenario* _c)
     : Filler(os, "Select Document Format", _c),
       isReadOnly(false) {
     settings.timeout = 120000;
@@ -52,16 +52,16 @@ ImportAPRFileFiller::ImportAPRFileFiller(HI::GUITestOpStatus &os, CustomScenario
 
 void ImportAPRFileFiller::commonScenario() {
     GTGlobals::sleep(500);
-    QWidget *dialog = QApplication::activeModalWidget();
+    QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog, "activeModalWidget is NULL");
 
     if (isReadOnly) {
-        QRadioButton *rb = GTWidget::findExactWidget<QRadioButton *>(os, "0_radio", dialog);
+        QRadioButton* rb = GTWidget::findExactWidget<QRadioButton*>(os, "0_radio", dialog);
         CHECK_SET_ERR(rb != nullptr, "Radio Button not found");
         GTRadioButton::click(os, rb);
         GTGlobals::sleep();
     } else {
-        QRadioButton *rb = GTWidget::findExactWidget<QRadioButton *>(os, "1_radio", dialog);
+        QRadioButton* rb = GTWidget::findExactWidget<QRadioButton*>(os, "1_radio", dialog);
         CHECK_SET_ERR(rb != nullptr, "Radio Button not found");
         GTRadioButton::click(os, rb);
         GTGlobals::sleep();
@@ -71,7 +71,7 @@ void ImportAPRFileFiller::commonScenario() {
         }
 
         if (!format.isEmpty()) {
-            QComboBox *cb = GTWidget::findExactWidget<QComboBox *>(os, "formatCombo", dialog);
+            QComboBox* cb = GTWidget::findExactWidget<QComboBox*>(os, "formatCombo", dialog);
             CHECK_SET_ERR(cb != nullptr, "Radio Button not found");
             GTComboBox::selectItemByText(os, cb, format);
         }

@@ -33,7 +33,7 @@ namespace LocalWorkflow {
 class FilterAnnotationsPrompter : public PrompterBase<FilterAnnotationsPrompter> {
     Q_OBJECT
 public:
-    FilterAnnotationsPrompter(Actor *p = 0)
+    FilterAnnotationsPrompter(Actor* p = 0)
         : PrompterBase<FilterAnnotationsPrompter>(p) {
     }
 
@@ -44,18 +44,18 @@ protected:
 class FilterAnnotationsWorker : public BaseWorker {
     Q_OBJECT
 public:
-    FilterAnnotationsWorker(Actor *a)
+    FilterAnnotationsWorker(Actor* a)
         : BaseWorker(a), input(nullptr), output(nullptr) {};
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 private slots:
-    void sl_taskFinished(Task *t);
+    void sl_taskFinished(Task* t);
 
 private:
-    IntegralBus *input;
-    IntegralBus *output;
+    IntegralBus* input;
+    IntegralBus* output;
 };
 
 class FilterAnnotationsWorkerFactory : public DomainFactory {
@@ -65,27 +65,27 @@ public:
     FilterAnnotationsWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new FilterAnnotationsWorker(a);
     }
 };
 
 class FilterAnnotationsValidator : public ActorValidator {
 public:
-    bool validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const;
+    bool validate(const Actor* actor, NotificationsList& notificationList, const QMap<QString, QString>& options) const;
 };
 
 class FilterAnnotationsTask : public Task {
     Q_OBJECT
 public:
-    FilterAnnotationsTask(const QList<SharedAnnotationData> &annotations, const QString &namesString, const QString &namesUrl, bool accept);
+    FilterAnnotationsTask(const QList<SharedAnnotationData>& annotations, const QString& namesString, const QString& namesUrl, bool accept);
 
     void run();
 
     QList<SharedAnnotationData> takeResult();
 
 private:
-    QStringList readAnnotationNames(U2OpStatus &os) const;
+    QStringList readAnnotationNames(U2OpStatus& os) const;
 
 private:
     QList<SharedAnnotationData> annotations;

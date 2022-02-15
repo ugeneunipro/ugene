@@ -25,18 +25,18 @@
 
 namespace U2 {
 
-MolecularSurfaceFactoryRegistry::MolecularSurfaceFactoryRegistry(QObject *pOwn /* = 0*/)
+MolecularSurfaceFactoryRegistry::MolecularSurfaceFactoryRegistry(QObject* pOwn /* = 0*/)
     : QObject(pOwn) {
     registerSurfaceFactory(new VanDerWaalsSurfaceFactory(), QString("vdWS"));
 }
 
 MolecularSurfaceFactoryRegistry::~MolecularSurfaceFactoryRegistry() {
-    foreach (MolecularSurfaceFactory *factory, surfMap.values()) {
+    foreach (MolecularSurfaceFactory* factory, surfMap.values()) {
         delete factory;
     }
 }
 
-bool MolecularSurfaceFactoryRegistry::registerSurfaceFactory(MolecularSurfaceFactory *surf, const QString &surfId) {
+bool MolecularSurfaceFactoryRegistry::registerSurfaceFactory(MolecularSurfaceFactory* surf, const QString& surfId) {
     if (surfMap.contains(surfId)) {
         return false;
     }
@@ -44,11 +44,11 @@ bool MolecularSurfaceFactoryRegistry::registerSurfaceFactory(MolecularSurfaceFac
     return true;
 }
 
-bool MolecularSurfaceFactoryRegistry::hadRegistered(const QString &surfId) {
+bool MolecularSurfaceFactoryRegistry::hadRegistered(const QString& surfId) {
     return surfMap.contains(surfId);
 }
 
-MolecularSurfaceFactory *MolecularSurfaceFactoryRegistry::getSurfaceFactory(const QString &surfId) {
+MolecularSurfaceFactory* MolecularSurfaceFactoryRegistry::getSurfaceFactory(const QString& surfId) {
     if (surfMap.contains(surfId)) {
         return surfMap.value(surfId);
     } else {

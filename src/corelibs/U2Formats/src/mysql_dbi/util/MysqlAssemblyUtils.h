@@ -39,13 +39,13 @@ enum MysqlAssemblyDataMethod {
 
 class MysqlAssemblyUtils {
 public:
-    static QByteArray packData(MysqlAssemblyDataMethod method, const U2AssemblyRead &read, U2OpStatus &os);
+    static QByteArray packData(MysqlAssemblyDataMethod method, const U2AssemblyRead& read, U2OpStatus& os);
 
-    static void unpackData(const QByteArray &packed, U2AssemblyRead &read, U2OpStatus &os);
+    static void unpackData(const QByteArray& packed, U2AssemblyRead& read, U2OpStatus& os);
 
-    static void calculateCoverage(U2SqlQuery &q, const U2Region &r, U2AssemblyCoverageStat &coverage, U2OpStatus &os);
+    static void calculateCoverage(U2SqlQuery& q, const U2Region& r, U2AssemblyCoverageStat& coverage, U2OpStatus& os);
 
-    static void addToCoverage(U2AssemblyCoverageImportInfo &cii, const U2AssemblyRead &read);
+    static void addToCoverage(U2AssemblyCoverageImportInfo& cii, const U2AssemblyRead& read);
 };
 
 }  // namespace U2

@@ -28,12 +28,12 @@
 
 namespace U2 {
 
-PrimerLineEdit::PrimerLineEdit(QWidget *parent)
+PrimerLineEdit::PrimerLineEdit(QWidget* parent)
     : QLineEdit(parent) {
     setValidator(new PrimerValidator(this));
 }
 
-void PrimerLineEdit::setInvalidatedText(const QString &text) {
+void PrimerLineEdit::setInvalidatedText(const QString& text) {
     QString result = text;
     int pos = 0;
     if (QValidator::Acceptable != validator()->validate(result, pos)) {
@@ -42,7 +42,7 @@ void PrimerLineEdit::setInvalidatedText(const QString &text) {
     setText(result);
 }
 
-void PrimerLineEdit::paintEvent(QPaintEvent *event) {
+void PrimerLineEdit::paintEvent(QPaintEvent* event) {
     QLineEdit::paintEvent(event);
     if (!text().isEmpty()) {
         return;
@@ -81,4 +81,4 @@ QRect PrimerLineEdit::getPlaceHolderRect() const {
     return lineRect.adjusted(minLB, 0, -minRB, 0);
 }
 
-}    // namespace U2
+}  // namespace U2

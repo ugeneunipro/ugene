@@ -225,32 +225,32 @@ public:
     };
     Q_DECLARE_FLAGS(Alphabets, Alphabet)
 
-    static QList<U2FeatureType> getTypes(const Alphabets &alphabets);
+    static QList<U2FeatureType> getTypes(const Alphabets& alphabets);
 
     /** Returns visual feature type by feature type. */
-    static QString getVisualName(const U2FeatureType &type);
+    static QString getVisualName(const U2FeatureType& type);
 
     /** Returns alphabets info by feature type. */
-    static Alphabets getAlphabets(const U2FeatureType &type);
+    static Alphabets getAlphabets(const U2FeatureType& type);
 
     /** Returns feature color by feature type. */
-    static QColor getColor(const U2FeatureType &type);
+    static QColor getColor(const U2FeatureType& type);
 
     /** Returns feature description by feature type. */
-    static QColor getDescription(const U2FeatureType &type);
+    static QColor getDescription(const U2FeatureType& type);
 
     /** Returns true if the feature should be drawn on amino frame when has a nucleic alphabet. Example: CDS. */
-    static bool isShowOnAminoFrame(const U2FeatureType &type);
+    static bool isShowOnAminoFrame(const U2FeatureType& type);
 
-    static U2FeatureType getTypeByName(const QString &visualName);
+    static U2FeatureType getTypeByName(const QString& visualName);
 
     class U2FeatureTypeInfo {
     public:
-        U2FeatureTypeInfo(const U2FeatureType &featureType,
-                          const QString &visualName,
-                          const Alphabets &alphabets,
-                          const QColor &color,
-                          const QString &description,
+        U2FeatureTypeInfo(const U2FeatureType& featureType,
+                          const QString& visualName,
+                          const Alphabets& alphabets,
+                          const QColor& color,
+                          const QString& description,
                           bool isShowOnAminoFrame);
 
         U2FeatureType featureType;

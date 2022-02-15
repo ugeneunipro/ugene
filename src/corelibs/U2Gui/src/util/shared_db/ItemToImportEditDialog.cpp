@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-ItemToImportEditDialog::ItemToImportEditDialog(const QString &item, const QString &folder, const ImportToDatabaseOptions &options, QWidget *parent)
+ItemToImportEditDialog::ItemToImportEditDialog(const QString& item, const QString& folder, const ImportToDatabaseOptions& options, QWidget* parent)
     : QDialog(parent),
       ui(new Ui_ItemToImportEditDialog) {
     ui->setupUi(this);
@@ -48,7 +48,7 @@ ImportToDatabaseOptions ItemToImportEditDialog::getOptions() const {
     return ui->optionsWidget->getOptions();
 }
 
-void ItemToImportEditDialog::init(const QString &item, const QString &folder, const ImportToDatabaseOptions &options) {
+void ItemToImportEditDialog::init(const QString& item, const QString& folder, const ImportToDatabaseOptions& options) {
     ui->optionsWidget->init(folder, options);
     ui->leItem->setText(item);
 }

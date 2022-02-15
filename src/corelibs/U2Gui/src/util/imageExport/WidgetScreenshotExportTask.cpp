@@ -87,7 +87,9 @@ void WidgetScreenshotExportToPdfTask::run() {
     painter.setRenderHint(QPainter::Antialiasing);
     painter.begin(&printer);
     widget->render(&painter);
-    CHECK_OPERATION(painter.end(), setError(EXPORT_FAIL_MESSAGE.arg(settings.fileName)));
+    if (!painter.end()) {
+        setError(EXPORT_FAIL_MESSAGE.arg(settings.fileName));
+    };
 }
 
 void WidgetScreenshotExportToBitmapTask::run() {
@@ -98,11 +100,12 @@ void WidgetScreenshotExportToBitmapTask::run() {
 
     image = image.scaled(settings.imageSize, Qt::KeepAspectRatio);
 
-    CHECK_OPERATION(image.save(settings.fileName, qPrintable(settings.format), settings.imageQuality),
-                    setError(EXPORT_FAIL_MESSAGE.arg(settings.fileName)));
+    if (!image.save(settings.fileName, QtPrivate::asString(settings.format).toLocal8Bit().constData(), settings.imageQuality)) {
+        setError(EXPORT_FAIL_MESSAGE.arg(settings.fileName));
+    }
 }
 
-WidgetScreenshotImageExportController::WidgetScreenshotImageExportController(QWidget *widget)
+WidgetScreenshotImageExportController::WidgetScreenshotImageExportController(QWidget* widget)
     : ImageExportController(ExportImageFormatPolicy_SupportAll),
       widget(widget) {
     shortDescription = tr("Screenshot");
@@ -116,13 +119,13 @@ int WidgetScreenshotImageExportController::getImageHeight() const {
     return widget->height();
 }
 
-Task *WidgetScreenshotImageExportController::getExportToSvgTask(const ImageExportTaskSettings &settings) const {
+Task* WidgetScreenshotImageExportController::getExportToSvgTask(const ImageExportTaskSettings& settings) const {
     return new WidgetScreenshotExportToSvgTask(widget, settings);
 }
-Task *WidgetScreenshotImageExportController::getExportToPdfTask(const ImageExportTaskSettings &settings) const {
+Task* WidgetScreenshotImageExportController::getExportToPdfTask(const ImageExportTaskSettings& settings) const {
     return new WidgetScreenshotExportToPdfTask(widget, settings);
 }
-Task *WidgetScreenshotImageExportController::getExportToBitmapTask(const ImageExportTaskSettings &settings) const {
+Task* WidgetScreenshotImageExportController::getExportToBitmapTask(const ImageExportTaskSettings& settings) const {
     return new WidgetScreenshotExportToBitmapTask(widget, settings);
 }
 

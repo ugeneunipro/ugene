@@ -40,10 +40,10 @@ class TubeGLRenderer : public BioStruct3DGLRenderer {
 
     QMap<int, Tube> tubeMap;
 
-    void drawTubes(const BioStruct3DColorScheme *colorScheme);
+    void drawTubes(const BioStruct3DColorScheme* colorScheme);
 
 protected:
-    TubeGLRenderer(const BioStruct3D &struc, const BioStruct3DColorScheme *s, const QList<int> &shownModels, const BioStruct3DRendererSettings *settings);
+    TubeGLRenderer(const BioStruct3D& struc, const BioStruct3DColorScheme* s, const QList<int>& shownModels, const BioStruct3DRendererSettings* settings);
 
 public:
     void drawBioStruct3D();
@@ -54,7 +54,7 @@ public:
     virtual void updateSettings() {};
 
 public:
-    static bool isAvailableFor(const BioStruct3D &);
+    static bool isAvailableFor(const BioStruct3D&);
 
     RENDERER_FACTORY(TubeGLRenderer)
 };

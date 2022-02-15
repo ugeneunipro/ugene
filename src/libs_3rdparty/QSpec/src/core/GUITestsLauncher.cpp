@@ -6,7 +6,7 @@ namespace HI {
 
 void GUITestsLauncher::sl_runTest() {
     QString fullTestName = qgetenv("HI_GUI_TEST");  // Format is "Suite_name:Test_name"
-    GUITest *test = guiTestBase.getTest(fullTestName);
+    GUITest* test = guiTestBase.getTest(fullTestName);
     if (test == nullptr) {
         qCritical("Test not found: %s", fullTestName.toLocal8Bit().constData());
         qApp->exit(1);

@@ -39,7 +39,7 @@ const int DockWidgetPaintData::MIN_LABEL_EXTRA_HEIGHT = 6;
 const int DockWidgetPaintData::ICON_TEXT_DIST = 6;
 const int DockWidgetPaintData::ICON_SIZE = 16;
 
-void DockWidgetPainter::updateLabel(DockData *d, bool active) {
+void DockWidgetPainter::updateLabel(DockData* d, bool active) {
     const QIcon icon = d->wrapWidget->windowIcon();
     const QString text = d->wrapWidget->windowTitle();
     const QString keyPrefix = findKeyPrefix(d->action);
@@ -70,7 +70,7 @@ void DockWidgetPainter::updateLabel(DockData *d, bool active) {
     d->label->setPixmap(pixmap);
 }
 
-QString DockWidgetPainter::findKeyPrefix(const QAction *action) {
+QString DockWidgetPainter::findKeyPrefix(const QAction* action) {
     const QKeySequence ks = action == nullptr ? QKeySequence() : action->shortcut();
     if (ks.count() == 1) {
         for (int k = (int)Qt::Key_0; k <= (int)Qt::Key_9; k++) {
@@ -90,7 +90,7 @@ QColor DockWidgetPainter::getBackgroundColor() {
 #endif
 }
 
-QColor DockWidgetPainter::getInnerColor(bool active, const QColor &backgroundColor) {
+QColor DockWidgetPainter::getInnerColor(bool active, const QColor& backgroundColor) {
 #ifdef Q_OS_WIN
     Q_UNUSED(active);
     Q_UNUSED(backgroundColor);
@@ -104,7 +104,7 @@ QColor DockWidgetPainter::getInnerColor(bool active, const QColor &backgroundCol
 #endif
 }
 
-void DockWidgetPainter::drawBorder(bool active, const QSize &widgetSize, const QColor &backgroundColor, QPainter &painter) {
+void DockWidgetPainter::drawBorder(bool active, const QSize& widgetSize, const QColor& backgroundColor, QPainter& painter) {
     const QRectF roundedRect(2, 2, widgetSize.width() - 4, widgetSize.height() - 4);
     const QColor innerColor = getInnerColor(active, backgroundColor);
     painter.setPen(Qt::black);
@@ -115,7 +115,7 @@ void DockWidgetPainter::drawBorder(bool active, const QSize &widgetSize, const Q
     painter.drawLine((int)roundedRect.right(), (int)roundedRect.top() + 1, (int)roundedRect.right(), (int)roundedRect.bottom() - 1);
 }
 
-void DockWidgetPainter::setupOrientation(MWDockArea area, QPainter &painter) {
+void DockWidgetPainter::setupOrientation(MWDockArea area, QPainter& painter) {
     if (area == MWDockArea_Left) {
         painter.rotate(-90);
     } else if (area == MWDockArea_Right) {
@@ -123,12 +123,12 @@ void DockWidgetPainter::setupOrientation(MWDockArea area, QPainter &painter) {
     }
 }
 
-void DockWidgetPainter::drawIcon(const QIcon &icon, const QPoint &iconPoint, int iconSize, QPainter &painter) {
+void DockWidgetPainter::drawIcon(const QIcon& icon, const QPoint& iconPoint, int iconSize, QPainter& painter) {
     const QPixmap p = icon.pixmap(iconSize, iconSize);
     painter.drawPixmap(iconPoint, p);
 }
 
-void DockWidgetPainter::drawText(const QString &keyPrefix, const QString &text, const QPoint &textPoint, QPainter &painter) {
+void DockWidgetPainter::drawText(const QString& keyPrefix, const QString& text, const QPoint& textPoint, QPainter& painter) {
     int prefixDx = 0;
     QString plainText = text;
     if (!keyPrefix.isEmpty()) {
@@ -146,7 +146,7 @@ void DockWidgetPainter::drawText(const QString &keyPrefix, const QString &text, 
     painter.drawText(textPoint.x() + prefixDx, textPoint.y(), plainText);
 }
 
-DockWidgetPaintData::DockWidgetPaintData(const QIcon &icon, const QString &text, MWDockArea area)
+DockWidgetPaintData::DockWidgetPaintData(const QIcon& icon, const QString& text, MWDockArea area)
     : area(area),
       fm(QFontMetrics(QFont()))  // app default
 {
@@ -165,7 +165,7 @@ QSize DockWidgetPaintData::calculateWidgetSize() const {
     return QSize(horizontal ? width : height, horizontal ? height : width);
 }
 
-QPoint DockWidgetPaintData::calculateTextPoint(const QSize &widgetSize) const {
+QPoint DockWidgetPaintData::calculateTextPoint(const QSize& widgetSize) const {
     const int widgetWidth = (area == MWDockArea_Bottom) ? widgetSize.width() : widgetSize.height();
     const int fontYOffset = fm.ascent() / 2;
     const int fontXOffset = (widgetWidth - textWidth - iconSize - iconTextDist) / 2 + iconSize + iconTextDist;
@@ -178,7 +178,7 @@ QPoint DockWidgetPaintData::calculateTextPoint(const QSize &widgetSize) const {
     }
 }
 
-QPoint DockWidgetPaintData::calculateIconPoint(const QPoint &textPoint, const QSize &widgetSize) const {
+QPoint DockWidgetPaintData::calculateIconPoint(const QPoint& textPoint, const QSize& widgetSize) const {
     CHECK(hasIcon, QPoint());
 
     const int x = textPoint.x() - iconTextDist - iconSize;

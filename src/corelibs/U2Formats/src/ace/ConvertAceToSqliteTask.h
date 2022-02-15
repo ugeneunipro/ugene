@@ -35,7 +35,7 @@ namespace U2 {
 class ConvertAceToSqliteTask : public Task {
     Q_OBJECT
 public:
-    ConvertAceToSqliteTask(const GUrl &sourceUrl, const U2DbiRef &dstDbiRef);
+    ConvertAceToSqliteTask(const GUrl& sourceUrl, const U2DbiRef& dstDbiRef);
 
     virtual void run();
     virtual ReportResult report();
@@ -44,14 +44,14 @@ public:
     QMap<U2Sequence, U2Assembly> getImportedObjects() const;
 
 private:
-    qint64 importAssemblies(IOAdapter &ioAdapter);
+    qint64 importAssemblies(IOAdapter& ioAdapter);
     qint64 packReads();
     void updateAttributeDbi();
 
     const GUrl sourceUrl;
 
     U2DbiRef dstDbiRef;
-    U2Dbi *dbi;
+    U2Dbi* dbi;
 
     bool databaseWasCreated;
     int countImportedAssembly;

@@ -52,29 +52,29 @@ public:
 public:
     ConfigurationEditor() {
     }
-    ConfigurationEditor(const ConfigurationEditor &)
+    ConfigurationEditor(const ConfigurationEditor&)
         : QObject() {
     }
     virtual ~ConfigurationEditor() {
     }
 
     // editing widget
-    virtual QWidget *getWidget() {
+    virtual QWidget* getWidget() {
         return nullptr;
     }
 
     // this controller is a container of delegates
-    virtual PropertyDelegate *getDelegate(const QString &) {
+    virtual PropertyDelegate* getDelegate(const QString&) {
         return nullptr;
     }
-    virtual PropertyDelegate *removeDelegate(const QString &) {
+    virtual PropertyDelegate* removeDelegate(const QString&) {
         return nullptr;
     }
     virtual void updateDelegates() {
     }
-    virtual void updateDelegate(const QString &) {
+    virtual void updateDelegate(const QString&) {
     }
-    virtual void addDelegate(PropertyDelegate *, const QString &) {
+    virtual void addDelegate(PropertyDelegate*, const QString&) {
     }
 
     // commit data to model
@@ -82,7 +82,7 @@ public:
     }
 
     // make another editor
-    virtual ConfigurationEditor *clone() {
+    virtual ConfigurationEditor* clone() {
         return new ConfigurationEditor(*this);
     }
 
@@ -101,7 +101,7 @@ signals:
 class U2LANG_EXPORT PropertyWidget : public QWidget {
     Q_OBJECT
 public:
-    PropertyWidget(QWidget *parent = nullptr, DelegateTags *tags = nullptr);
+    PropertyWidget(QWidget* parent = nullptr, DelegateTags* tags = nullptr);
     virtual ~PropertyWidget();
 
     virtual QVariant value() = 0;
@@ -112,26 +112,26 @@ public:
      * Returns the widget that can be registered as a field of wizard pages.
      * Returns NULL if there is no such widget.
      */
-    virtual QWidget *getField();
+    virtual QWidget* getField();
 
-    void setDelegateTags(const DelegateTags *value);
-    const DelegateTags *tags() const;
-    void setSchemaConfig(SchemaConfig *value);
+    void setDelegateTags(const DelegateTags* value);
+    const DelegateTags* tags() const;
+    void setSchemaConfig(SchemaConfig* value);
 
 public slots:
-    virtual void setValue(const QVariant &value) = 0;
+    virtual void setValue(const QVariant& value) = 0;
     virtual void processDelegateTags() {
     }
 
 signals:
-    void si_valueChanged(const QVariant &value);
+    void si_valueChanged(const QVariant& value);
 
 protected:
-    void addMainWidget(QWidget *w);
+    void addMainWidget(QWidget* w);
 
 protected:
-    const DelegateTags *_tags;
-    SchemaConfig *schemaConfig;
+    const DelegateTags* _tags;
+    SchemaConfig* schemaConfig;
 };
 
 /**
@@ -149,39 +149,39 @@ public:
         OUTPUT_DIR,
         SHARED_DB_URL
     };
-    PropertyDelegate(QObject *parent = 0);
+    PropertyDelegate(QObject* parent = 0);
     virtual ~PropertyDelegate();
-    virtual QVariant getDisplayValue(const QVariant &v) const;
-    virtual PropertyDelegate *clone();
-    virtual PropertyWidget *createWizardWidget(U2OpStatus &os, QWidget *parent) const;
-    virtual void getItems(QVariantMap &) const {
+    virtual QVariant getDisplayValue(const QVariant& v) const;
+    virtual PropertyDelegate* clone();
+    virtual PropertyWidget* createWizardWidget(U2OpStatus& os, QWidget* parent) const;
+    virtual void getItems(QVariantMap&) const {
     }
     virtual Type type() const;
     virtual void update() {
     }
 
-    DelegateTags *tags() const;
-    void setSchemaConfig(SchemaConfig *value);
+    DelegateTags* tags() const;
+    void setSchemaConfig(SchemaConfig* value);
 
 protected:
-    DelegateTags *_tags;
-    SchemaConfig *schemaConfig;
+    DelegateTags* _tags;
+    SchemaConfig* schemaConfig;
 };  // PropertyDelegate
 
 class U2LANG_EXPORT DelegateTags : public QObject {
 public:
-    DelegateTags(QObject *parent = nullptr);
-    DelegateTags(const DelegateTags &other);
+    DelegateTags(QObject* parent = nullptr);
+    DelegateTags(const DelegateTags& other);
 
     QStringList names() const;
-    QVariant get(const QString &name) const;
-    void set(const QString &name, const QVariant &value);
-    void set(const DelegateTags &other);
+    QVariant get(const QString& name) const;
+    void set(const QString& name, const QVariant& value);
+    void set(const DelegateTags& other);
 
-    static QString getString(const DelegateTags *tags, const QString &name);
-    static QStringList getStringList(const DelegateTags *tags, const QString &name);
+    static QString getString(const DelegateTags* tags, const QString& name);
+    static QStringList getStringList(const DelegateTags* tags, const QString& name);
 
-    DelegateTags &operator=(const DelegateTags &other);
+    DelegateTags& operator=(const DelegateTags& other);
 
     static const QString PLACEHOLDER_TEXT;  // placeholder (like in QLineEdit)
     static const QString FILTER;  // file filter (like in QFileDialog)

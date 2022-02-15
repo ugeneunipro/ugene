@@ -29,11 +29,11 @@
 
 namespace U2 {
 
-AssemblyAnnotationsArea::AssemblyAnnotationsArea(AssemblyBrowserUi *ui)
+AssemblyAnnotationsArea::AssemblyAnnotationsArea(AssemblyBrowserUi* ui)
     : QWidget(ui) {
     this->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Maximum);
     variantRowManager = new AssemblyVariantRowManager(ui);
-    QVBoxLayout *vLayout = new QVBoxLayout(this);
+    QVBoxLayout* vLayout = new QVBoxLayout(this);
     this->setLayout(vLayout);
     vLayout->setMargin(0);
     vLayout->setSpacing(0);

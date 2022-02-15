@@ -47,9 +47,9 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(ConsensusAlgorithmFlags)
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactory : public QObject {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmFactory(const QString &algoId, ConsensusAlgorithmFlags flags, QObject *p = nullptr);
+    MSAConsensusAlgorithmFactory(const QString& algoId, ConsensusAlgorithmFlags flags, QObject* p = nullptr);
 
-    virtual MSAConsensusAlgorithm *createAlgorithm(const MultipleAlignment &ma, bool ignoreTrailingLeadingGaps = false, QObject *parent = nullptr) = 0;
+    virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps = false, QObject* parent = nullptr) = 0;
 
     QString getId() const {
         return algorithmId;
@@ -80,7 +80,7 @@ public:
     virtual bool isSequenceLikeResult() const = 0;
 
     // utility method
-    static ConsensusAlgorithmFlags getAphabetFlags(const DNAAlphabet *al);
+    static ConsensusAlgorithmFlags getAphabetFlags(const DNAAlphabet* al);
 
 private:
     QString algorithmId;
@@ -90,19 +90,19 @@ private:
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithm : public QObject {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory *factory, bool ignoreTrailingLeadingGaps, QObject *p = nullptr);
-    MSAConsensusAlgorithm(const MSAConsensusAlgorithm &algorithm);
+    MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory* factory, bool ignoreTrailingLeadingGaps, QObject* p = nullptr);
+    MSAConsensusAlgorithm(const MSAConsensusAlgorithm& algorithm);
 
     /**
         Returns consensus char and score for the given row
         Score is a number: [0, num] sequences. Usually is means count of the char in the row
         Note that consensus character may be out of the to MSA alphabet symbols range
     */
-    virtual char getConsensusCharAndScore(const MultipleAlignment &ma, int column, int &score, QVector<int> seqIdx = QVector<int>()) const;
+    virtual char getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score, QVector<int> seqIdx = QVector<int>()) const;
 
-    virtual char getConsensusChar(const MultipleAlignment &ma, int column, QVector<int> seqIdx = QVector<int>()) const = 0;
+    virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx = QVector<int>()) const = 0;
 
-    virtual MSAConsensusAlgorithm *clone() const = 0;
+    virtual MSAConsensusAlgorithm* clone() const = 0;
 
     virtual QString getDescription() const {
         return factory->getDescription();
@@ -142,7 +142,7 @@ public:
         return factory->getId();
     }
 
-    MSAConsensusAlgorithmFactory *getFactory() const {
+    MSAConsensusAlgorithmFactory* getFactory() const {
         return factory;
     }
 
@@ -153,10 +153,10 @@ signals:
 
 protected:
     // returns true if there are meaningful symbols on @pos, depending on @ignoreTrailingleadingGaps flag
-    bool filterIdx(QVector<int> &seqIdx, const MultipleAlignment &ma, const int pos) const;
+    bool filterIdx(QVector<int>& seqIdx, const MultipleAlignment& ma, const int pos) const;
 
 private:
-    MSAConsensusAlgorithmFactory *factory;
+    MSAConsensusAlgorithmFactory* factory;
     int threshold;
     bool ignoreTrailingAndLeadingGaps;
 };

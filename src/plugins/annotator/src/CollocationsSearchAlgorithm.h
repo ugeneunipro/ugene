@@ -31,14 +31,14 @@ namespace U2 {
 class CollocationsAlgorithmListener {
 public:
     virtual ~CollocationsAlgorithmListener() {};
-    virtual void onResult(const U2Region &r) = 0;
+    virtual void onResult(const U2Region& r) = 0;
 };
 
 class CollocationsAlgorithmItem {
 public:
     CollocationsAlgorithmItem() {
     }
-    CollocationsAlgorithmItem(const QString &_name)
+    CollocationsAlgorithmItem(const QString& _name)
         : name(_name) {
     }
 
@@ -52,11 +52,11 @@ class CollocationsAlgorithm {
 public:
     enum SearchType { NormalSearch,
                       PartialSearch };
-    static void find(const QList<CollocationsAlgorithmItem> &items, TaskStateInfo &si, CollocationsAlgorithmListener *l, const CollocationsAlgorithmSettings &cfg);
+    static void find(const QList<CollocationsAlgorithmItem>& items, TaskStateInfo& si, CollocationsAlgorithmListener* l, const CollocationsAlgorithmSettings& cfg);
 
 private:
-    static void findN(const QList<CollocationsAlgorithmItem> &items, TaskStateInfo &si, CollocationsAlgorithmListener *l, const U2Region &searchRegion, qint64 distance);
-    static void findP(const QList<CollocationsAlgorithmItem> &items, TaskStateInfo &si, CollocationsAlgorithmListener *l, const U2Region &searchRegion, qint64 distance);
+    static void findN(const QList<CollocationsAlgorithmItem>& items, TaskStateInfo& si, CollocationsAlgorithmListener* l, const U2Region& searchRegion, qint64 distance);
+    static void findP(const QList<CollocationsAlgorithmItem>& items, TaskStateInfo& si, CollocationsAlgorithmListener* l, const U2Region& searchRegion, qint64 distance);
 };
 
 class CollocationsAlgorithmSettings {

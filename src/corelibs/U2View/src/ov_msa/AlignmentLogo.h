@@ -42,7 +42,7 @@ enum SequenceType { Auto,
 /************************************************************************/
 class U2VIEW_EXPORT AlignmentLogoSettings {
 public:
-    AlignmentLogoSettings(const MultipleSequenceAlignment &_ma)
+    AlignmentLogoSettings(const MultipleSequenceAlignment& _ma)
         : ma(_ma->getCopy()) {
         for (int i = 0; i < 256; i++) {
             colorScheme[i] = Qt::black;
@@ -117,12 +117,12 @@ private:
 /************************************************************************/
 class U2VIEW_EXPORT AlignmentLogoRenderArea : public QWidget {
 public:
-    AlignmentLogoRenderArea(const AlignmentLogoSettings &s, QWidget *p);
-    void replaceSettings(const AlignmentLogoSettings &s);
+    AlignmentLogoRenderArea(const AlignmentLogoSettings& s, QWidget* p);
+    void replaceSettings(const AlignmentLogoSettings& s);
 
 protected:
-    virtual void paintEvent(QPaintEvent *e);
-    virtual void resizeEvent(QResizeEvent *e);
+    virtual void paintEvent(QPaintEvent* e);
+    virtual void resizeEvent(QResizeEvent* e);
 
     void evaluateHeights();
     void sortCharsByHeight();
@@ -132,7 +132,7 @@ private:
     AlignmentLogoSettings settings;
     qreal s;  // 4||20
     qreal error;
-    QVector<char> *acceptableChars;
+    QVector<char>* acceptableChars;
     QVector<char> bases;
     QVector<char> aminoacids;
 
@@ -153,7 +153,7 @@ public:
     AlignmentLogoItem(char _ch, QPointF _baseline, int _charWidth, int _charHeight, QFont _font, QColor _color = Qt::black);
 
     QRectF boundingRect() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget /* = 0 */);
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget /* = 0 */);
 
 private:
     char ch;

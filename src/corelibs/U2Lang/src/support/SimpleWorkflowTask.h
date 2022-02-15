@@ -46,7 +46,7 @@ class MultipleSequenceAlignmentObject;
 class U2LANG_EXPORT SimpleInOutWorkflowTaskConfig {
 public:
     SimpleInOutWorkflowTaskConfig();
-    QList<GObject *> objects;
+    QList<GObject*> objects;
     DocumentFormatId inFormat;
     QVariantMap inDocHints;
     DocumentFormatId outFormat;
@@ -64,24 +64,24 @@ public:
 class U2LANG_EXPORT SimpleInOutWorkflowTask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    SimpleInOutWorkflowTask(const SimpleInOutWorkflowTaskConfig &conf);
+    SimpleInOutWorkflowTask(const SimpleInOutWorkflowTaskConfig& conf);
     void prepare();
-    virtual QList<Task *> onSubTaskFinished(Task *subTask);
+    virtual QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
-    void prepareTmpFile(QTemporaryFile &tmpFile, const QString &tmpl);
+    void prepareTmpFile(QTemporaryFile& tmpFile, const QString& tmpl);
 
     SimpleInOutWorkflowTaskConfig conf;
 
-    Document *inDoc;
+    Document* inDoc;
 
-    SaveDocumentTask *saveInputTask;
+    SaveDocumentTask* saveInputTask;
     QTemporaryFile inputTmpFile;
 
-    CmdlineTaskRunner *runWorkflowTask;
+    CmdlineTaskRunner* runWorkflowTask;
 
     QTemporaryFile resultTmpFile;
-    LoadDocumentTask *loadResultTask;
+    LoadDocumentTask* loadResultTask;
 
     QString schemaPath;
 };
@@ -97,7 +97,7 @@ class U2LANG_EXPORT SimpleMSAWorkflow4GObjectTask : public Task {
     Q_OBJECT
 
 public:
-    SimpleMSAWorkflow4GObjectTask(const QString &taskName, MultipleSequenceAlignmentObject *maObj, const SimpleMSAWorkflowTaskConfig &conf);
+    SimpleMSAWorkflow4GObjectTask(const QString& taskName, MultipleSequenceAlignmentObject* maObj, const SimpleMSAWorkflowTaskConfig& conf);
 
     void prepare();
     ReportResult report();
@@ -107,7 +107,7 @@ private:
     QPointer<MultipleSequenceAlignmentObject> msaObjectPointer;
     QString docName;
     SimpleMSAWorkflowTaskConfig conf;
-    SimpleInOutWorkflowTask *runWorkflowTask;
+    SimpleInOutWorkflowTask* runWorkflowTask;
     QPointer<StateLock> msaObjectLock;
 };
 

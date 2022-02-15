@@ -39,9 +39,9 @@ public:
 
 class IQTreeAdapter : public PhyTreeGenerator {
 public:
-    Task *createCalculatePhyTreeTask(const MultipleSequenceAlignment &msa, const CreatePhyTreeSettings &settings) override;
+    Task* createCalculatePhyTreeTask(const MultipleSequenceAlignment& msa, const CreatePhyTreeSettings& settings) override;
 
-    CreatePhyTreeWidget *createPhyTreeSettingsWidget(const MultipleSequenceAlignment &msa, QWidget *parent = nullptr) override;
+    CreatePhyTreeWidget* createPhyTreeSettingsWidget(const MultipleSequenceAlignment& msa, QWidget* parent = nullptr) override;
 };
 
 }  // namespace U2

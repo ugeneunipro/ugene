@@ -27,27 +27,27 @@
 
 namespace U2 {
 
-PortMapping::PortMapping(const QString &srcPortId, const QString &dstPortId)
+PortMapping::PortMapping(const QString& srcPortId, const QString& dstPortId)
     : IdMapping(srcPortId, dstPortId) {
 }
 
-void PortMapping::addSlotMapping(const SlotMapping &value) {
+void PortMapping::addSlotMapping(const SlotMapping& value) {
     slotList << value;
 }
 
-const QList<SlotMapping> &PortMapping::getMappings() const {
+const QList<SlotMapping>& PortMapping::getMappings() const {
     return slotList;
 }
 
-void PortMapping::validate(const QMap<Descriptor, DataTypePtr> &srcType,
-                           const QMap<Descriptor, DataTypePtr> &dstType,
-                           U2OpStatus &os) const {
+void PortMapping::validate(const QMap<Descriptor, DataTypePtr>& srcType,
+                           const QMap<Descriptor, DataTypePtr>& dstType,
+                           U2OpStatus& os) const {
     validateSlotsCount(srcType, dstType, os);
     CHECK_OP(os, );
 
     QSet<QString> srcIds;
     QSet<QString> dstIds;
-    foreach (const SlotMapping &mapping, slotList) {
+    foreach (const SlotMapping& mapping, slotList) {
         tryAddId(mapping.getSrcId(), srcIds, os);
         CHECK_OP(os, );
         tryAddId(mapping.getDstId(), dstIds, os);
@@ -64,15 +64,15 @@ void PortMapping::validate(const QMap<Descriptor, DataTypePtr> &srcType,
     CHECK_OP(os, );
 }
 
-void PortMapping::validateSlotsCount(const QMap<Descriptor, DataTypePtr> &srcType,
-                                     const QMap<Descriptor, DataTypePtr> &dstType,
-                                     U2OpStatus &os) const {
+void PortMapping::validateSlotsCount(const QMap<Descriptor, DataTypePtr>& srcType,
+                                     const QMap<Descriptor, DataTypePtr>& dstType,
+                                     U2OpStatus& os) const {
     if (srcType.size() != dstType.size()) {
         os.setError(QObject::tr("Ports can not be mapped: %1, %2. Slots count is different").arg(srcId).arg(dstId));
     }
 }
 
-DataTypePtr PortMapping::validateSlotId(const QString &portId, const QString &slotId, const QMap<Descriptor, DataTypePtr> &type, U2OpStatus &os) const {
+DataTypePtr PortMapping::validateSlotId(const QString& portId, const QString& slotId, const QMap<Descriptor, DataTypePtr>& type, U2OpStatus& os) const {
     if (!type.contains(slotId)) {
         os.setError(QObject::tr("%1 port does not contain a slot with id: %2").arg(portId).arg(slotId));
         return DataTypePtr();
@@ -80,9 +80,9 @@ DataTypePtr PortMapping::validateSlotId(const QString &portId, const QString &sl
     return type[slotId];
 }
 
-void PortMapping::tryAddId(const QString &id,
-                           QSet<QString> &idSet,
-                           U2OpStatus &os) const {
+void PortMapping::tryAddId(const QString& id,
+                           QSet<QString>& idSet,
+                           U2OpStatus& os) const {
     if (idSet.contains(id)) {
         os.setError(QObject::tr("Duplicated mapping of slot with id: %1").arg(id));
         return;
@@ -90,15 +90,15 @@ void PortMapping::tryAddId(const QString &id,
     idSet << id;
 }
 
-void PortMapping::validateMappingsCount(const QMap<Descriptor, DataTypePtr> &srcType,
-                                        U2OpStatus &os) const {
+void PortMapping::validateMappingsCount(const QMap<Descriptor, DataTypePtr>& srcType,
+                                        U2OpStatus& os) const {
     if (slotList.count() < srcType.count()) {
         os.setError(QObject::tr("Not all slots are mapped"));
     }
 }
 
-PortMapping PortMapping::getMappingBySrcPort(const QString &srcPortId, const QList<PortMapping> &mappings, U2OpStatus &os) {
-    foreach (const PortMapping &m, mappings) {
+PortMapping PortMapping::getMappingBySrcPort(const QString& srcPortId, const QList<PortMapping>& mappings, U2OpStatus& os) {
+    foreach (const PortMapping& m, mappings) {
         if (m.getSrcId() == srcPortId) {
             return m;
         }
@@ -107,8 +107,8 @@ PortMapping PortMapping::getMappingBySrcPort(const QString &srcPortId, const QLi
     return PortMapping("", "");
 }
 
-QString PortMapping::getDstSlotId(const QString &srcSlotId, U2OpStatus &os) const {
-    foreach (const SlotMapping &m, slotList) {
+QString PortMapping::getDstSlotId(const QString& srcSlotId, U2OpStatus& os) const {
+    foreach (const SlotMapping& m, slotList) {
         if (m.getSrcId() == srcSlotId) {
             return m.getDstId();
         }

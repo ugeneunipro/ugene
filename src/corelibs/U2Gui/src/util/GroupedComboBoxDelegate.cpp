@@ -25,11 +25,11 @@
 
 namespace U2 {
 
-GroupedComboBoxDelegate::GroupedComboBoxDelegate(QObject *parent)
+GroupedComboBoxDelegate::GroupedComboBoxDelegate(QObject* parent)
     : QItemDelegate(parent) {
 }
 
-void GroupedComboBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
+void GroupedComboBoxDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const {
     if (index.data(Qt::AccessibleDescriptionRole).toString() == QLatin1String("separator")) {
         painter->setPen(Qt::gray);
         painter->drawLine(option.rect.left(), option.rect.center().y(), option.rect.right(), option.rect.center().y());
@@ -48,7 +48,7 @@ void GroupedComboBoxDelegate::paint(QPainter *painter, const QStyleOptionViewIte
     }
 }
 
-QSize GroupedComboBoxDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
+QSize GroupedComboBoxDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const {
     QString type = index.data(Qt::AccessibleDescriptionRole).toString();
     if (type == QLatin1String("separator")) {
         return QSize(0, 10);
@@ -56,8 +56,8 @@ QSize GroupedComboBoxDelegate::sizeHint(const QStyleOptionViewItem &option, cons
     return QItemDelegate::sizeHint(option, index);
 }
 
-void GroupedComboBoxDelegate::addParentItem(QStandardItemModel *model, const QString &text, bool setItalic, bool setBold) {
-    QStandardItem *item = new QStandardItem(text);
+void GroupedComboBoxDelegate::addParentItem(QStandardItemModel* model, const QString& text, bool setItalic, bool setBold) {
+    QStandardItem* item = new QStandardItem(text);
     item->setData("parent", Qt::AccessibleDescriptionRole);
     item->setFlags(item->flags() & ~(Qt::ItemIsEnabled | Qt::ItemIsSelectable));
     QFont font = item->font();
@@ -67,15 +67,15 @@ void GroupedComboBoxDelegate::addParentItem(QStandardItemModel *model, const QSt
     model->appendRow(item);
 }
 
-void GroupedComboBoxDelegate::addChildItem(QStandardItemModel *model, const QString &text, const QVariant &data) {
-    QStandardItem *item = new QStandardItem(text + QString(4, QChar(' ')));
+void GroupedComboBoxDelegate::addChildItem(QStandardItemModel* model, const QString& text, const QVariant& data) {
+    QStandardItem* item = new QStandardItem(text + QString(4, QChar(' ')));
     item->setData(data, Qt::UserRole);
     item->setData("child", Qt::AccessibleDescriptionRole);
     model->appendRow(item);
 }
 
-void GroupedComboBoxDelegate::addUngroupedItem(QStandardItemModel *model, const QString &text, const QVariant &data) {
-    QStandardItem *item = new QStandardItem(text);
+void GroupedComboBoxDelegate::addUngroupedItem(QStandardItemModel* model, const QString& text, const QVariant& data) {
+    QStandardItem* item = new QStandardItem(text);
     item->setData(data, Qt::UserRole);
     item->setData("ungrouped", Qt::AccessibleDescriptionRole);
     model->appendRow(item);

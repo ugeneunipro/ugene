@@ -35,7 +35,7 @@ typedef PrompterBase<SequenceQualityTrimPrompter> SequenceQualityTrimBase;
 class SequenceQualityTrimPrompter : public SequenceQualityTrimBase {
     Q_OBJECT
 public:
-    SequenceQualityTrimPrompter(Actor *actor = nullptr);
+    SequenceQualityTrimPrompter(Actor* actor = nullptr);
 
 private:
     QString composeRichDoc();
@@ -44,11 +44,11 @@ private:
 class SequenceQualityTrimWorker : public BaseThroughWorker {
     Q_OBJECT
 public:
-    SequenceQualityTrimWorker(Actor *actor);
+    SequenceQualityTrimWorker(Actor* actor);
 
 protected:
-    Task *createTask(const Message &message, U2OpStatus &os);
-    QList<Message> fetchResult(Task *task, U2OpStatus &os);
+    Task* createTask(const Message& message, U2OpStatus& os);
+    QList<Message> fetchResult(Task* task, U2OpStatus& os);
 };
 
 class SequenceQualityTrimWorkerFactory : public DomainFactory {
@@ -58,7 +58,7 @@ public:
     SequenceQualityTrimWorkerFactory();
 
     static void init();
-    Worker *createWorker(Actor *actor);
+    Worker* createWorker(Actor* actor);
 };
 
 }  // namespace LocalWorkflow

@@ -33,7 +33,7 @@
 
 namespace U2 {
 
-ImportDirToDatabaseTask::ImportDirToDatabaseTask(const QString &srcUrl, const U2DbiRef &dstDbiRef, const QString &dstFolder, const ImportToDatabaseOptions &options)
+ImportDirToDatabaseTask::ImportDirToDatabaseTask(const QString& srcUrl, const U2DbiRef& dstDbiRef, const QString& dstFolder, const ImportToDatabaseOptions& options)
     : Task(tr("Import folder %1 to the database").arg(QFileInfo(srcUrl).fileName()), TaskFlag_NoRun),
       srcUrl(srcUrl),
       dstDbiRef(dstDbiRef),
@@ -51,11 +51,11 @@ void ImportDirToDatabaseTask::prepare() {
     foreach (QFileInfo subentryInfo, subentriesInfo) {
         if (options.processFoldersRecursively && subentryInfo.isDir()) {
             const QString dstDirFolder = dstFolder + (options.keepFoldersStructure ? U2ObjectDbi::PATH_SEP + subentryInfo.fileName() : "");
-            ImportDirToDatabaseTask *importSubdirTask = new ImportDirToDatabaseTask(subentryInfo.filePath(), dstDbiRef, dstDirFolder, options);
+            ImportDirToDatabaseTask* importSubdirTask = new ImportDirToDatabaseTask(subentryInfo.filePath(), dstDbiRef, dstDirFolder, options);
             importSubdirsTasks << importSubdirTask;
             addSubTask(importSubdirTask);
         } else if (subentryInfo.isFile()) {
-            ImportFileToDatabaseTask *importSubfileTask = new ImportFileToDatabaseTask(subentryInfo.filePath(), dstDbiRef, dstFolder, options);
+            ImportFileToDatabaseTask* importSubfileTask = new ImportFileToDatabaseTask(subentryInfo.filePath(), dstDbiRef, dstFolder, options);
             importSubfilesTasks << importSubfileTask;
             addSubTask(importSubfileTask);
         }
@@ -66,11 +66,11 @@ QStringList ImportDirToDatabaseTask::getImportedFiles() const {
     QStringList importedFiles;
     CHECK(isFinished(), importedFiles);
 
-    foreach (ImportDirToDatabaseTask *importSubdirTask, importSubdirsTasks) {
+    foreach (ImportDirToDatabaseTask* importSubdirTask, importSubdirsTasks) {
         importedFiles << importSubdirTask->getImportedFiles();
     }
 
-    foreach (ImportFileToDatabaseTask *importSubfileTask, importSubfilesTasks) {
+    foreach (ImportFileToDatabaseTask* importSubfileTask, importSubfilesTasks) {
         if (!importSubfileTask->hasError() && !importSubfileTask->isCanceled()) {
             importedFiles << importSubfileTask->getFilePath();
         }
@@ -83,11 +83,11 @@ StrStrMap ImportDirToDatabaseTask::getSkippedFiles() const {
     StrStrMap skippedFiles;
     CHECK(isFinished(), skippedFiles);
 
-    foreach (ImportDirToDatabaseTask *importSubdirTask, importSubdirsTasks) {
+    foreach (ImportDirToDatabaseTask* importSubdirTask, importSubdirsTasks) {
         skippedFiles.unite(importSubdirTask->getSkippedFiles());
     }
 
-    foreach (ImportFileToDatabaseTask *importSubfileTask, importSubfilesTasks) {
+    foreach (ImportFileToDatabaseTask* importSubfileTask, importSubfilesTasks) {
         if (importSubfileTask->isCanceled()) {
             skippedFiles.insert(importSubfileTask->getFilePath(), tr("Import was cancelled"));
         } else if (importSubfileTask->hasError()) {

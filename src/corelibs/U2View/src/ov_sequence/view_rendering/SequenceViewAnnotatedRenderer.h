@@ -77,25 +77,25 @@ protected:
     };
 
 public:
-    SequenceViewAnnotatedRenderer(SequenceObjectContext *ctx);
+    SequenceViewAnnotatedRenderer(SequenceObjectContext* ctx);
 
-    virtual qint64 coordToPos(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const = 0;
+    virtual qint64 coordToPos(const QPoint& p, const QSize& canvasSize, const U2Region& visibleRange) const = 0;
 
     virtual double getCurrentScale() const = 0;
 
     /** Returns Y range of the cut-site for an annotation on the given strand. */
-    virtual U2Region getCutSiteYRange(const U2Strand &mStrand, int availableHeight) const = 0;
+    virtual U2Region getCutSiteYRange(const U2Strand& mStrand, int availableHeight) const = 0;
 
     virtual int getMinimumHeight() const = 0;
 
-    virtual void drawAll(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) = 0;
-    virtual void drawSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) = 0;
+    virtual void drawAll(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange) = 0;
+    virtual void drawSelection(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange) = 0;
 
-    virtual void drawAnnotations(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange, const AnnotationDisplaySettings &displaySettings);
-    virtual void drawAnnotationSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange, const AnnotationDisplaySettings &displaySettings);
+    virtual void drawAnnotations(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange, const AnnotationDisplaySettings& displaySettings);
+    virtual void drawAnnotationSelection(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange, const AnnotationDisplaySettings& displaySettings);
 
 protected:
-    virtual void drawAnnotation(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange, Annotation *a, const AnnotationDisplaySettings &displaySettings, bool selected = false, const AnnotationSettings *as = nullptr);
+    virtual void drawAnnotation(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange, Annotation* a, const AnnotationDisplaySettings& displaySettings, bool selected = false, const AnnotationSettings* as = nullptr);
 
     /**
      * Returns visible Y range of the annotation region.
@@ -107,18 +107,18 @@ protected:
      *  When GSequenceLineViewGridAnnotationRenderArea will be able to return QRects instead of Regions this annotation rendering logic can be re-written
      *  and this method is removed.
      */
-    virtual U2Region getAnnotationYRange(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, int availableHeight) const = 0;
+    virtual U2Region getAnnotationYRange(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings, int availableHeight) const = 0;
 
-    void drawBoundedText(QPainter &p, const QRect &r, const QString &text);
+    void drawBoundedText(QPainter& p, const QRect& r, const QString& text);
 
-    void drawAnnotationConnections(QPainter &p, Annotation *a, const AnnotationSettings *as, const AnnotationDisplaySettings &drawSettings, const QSize &canvasSize, const U2Region &visibleRange);
+    void drawAnnotationConnections(QPainter& p, Annotation* a, const AnnotationSettings* as, const AnnotationDisplaySettings& drawSettings, const QSize& canvasSize, const U2Region& visibleRange);
 
-    void drawCutSite(QPainter &p, const SharedAnnotationData &aData, const U2Region &r, const QRect &annotationRect, const QColor &color, const QSize &canvasSize, const U2Region &visibleRange);
-    void drawCutSite(QPainter &p, const CutSiteDrawData &cData, const QSize &canvasSize, const U2Region &visibleRange);
+    void drawCutSite(QPainter& p, const SharedAnnotationData& aData, const U2Region& r, const QRect& annotationRect, const QColor& color, const QSize& canvasSize, const U2Region& visibleRange);
+    void drawCutSite(QPainter& p, const CutSiteDrawData& cData, const QSize& canvasSize, const U2Region& visibleRange);
 
-    QString prepareAnnotationText(const SharedAnnotationData &a, const AnnotationSettings *as) const;
+    QString prepareAnnotationText(const SharedAnnotationData& a, const AnnotationSettings* as) const;
 
-    void addArrowPath(QPainterPath &path, const QRect &rect, bool leftArrow) const;
+    void addArrowPath(QPainterPath& path, const QRect& rect, bool leftArrow) const;
 
     qint64 correctCutPos(qint64 pos) const;
 

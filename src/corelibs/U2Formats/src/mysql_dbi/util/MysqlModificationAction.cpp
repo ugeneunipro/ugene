@@ -30,11 +30,11 @@
 
 namespace U2 {
 
-MysqlModificationAction::MysqlModificationAction(MysqlDbi *_dbi, const U2DataId &_masterObjId)
+MysqlModificationAction::MysqlModificationAction(MysqlDbi* _dbi, const U2DataId& _masterObjId)
     : ModificationAction(_dbi, _masterObjId) {
 }
 
-U2TrackModType MysqlModificationAction::prepare(U2OpStatus &os) {
+U2TrackModType MysqlModificationAction::prepare(U2OpStatus& os) {
     CHECK_OP(os, NoTrack);
     MysqlTransaction t(getDbi()->getDbRef(), os);
 
@@ -69,7 +69,7 @@ U2TrackModType MysqlModificationAction::prepare(U2OpStatus &os) {
     return trackMod;
 }
 
-void MysqlModificationAction::addModification(const U2DataId &objId, qint64 modType, const QByteArray &modDetails, U2OpStatus &os) {
+void MysqlModificationAction::addModification(const U2DataId& objId, qint64 modType, const QByteArray& modDetails, U2OpStatus& os) {
     CHECK_OP(os, );
 
     objIds.insert(objId);
@@ -94,7 +94,7 @@ void MysqlModificationAction::addModification(const U2DataId &objId, qint64 modT
     }
 }
 
-void MysqlModificationAction::complete(U2OpStatus &os) {
+void MysqlModificationAction::complete(U2OpStatus& os) {
     // TODO: rewrite it with another U2UseCommonMultiModStep
     CHECK_OP(os, );
     MysqlTransaction t(getDbi()->getDbRef(), os);
@@ -119,14 +119,14 @@ void MysqlModificationAction::complete(U2OpStatus &os) {
     }
 
     // Increment versions of all objects
-    foreach (const U2DataId &objId, objIds) {
+    foreach (const U2DataId& objId, objIds) {
         MysqlObjectDbi::incrementVersion(objId, getDbi()->getDbRef(), os);
         CHECK_OP(os, );
     }
 }
 
-MysqlDbi *MysqlModificationAction::getDbi() const {
-    return static_cast<MysqlDbi *>(dbi);
+MysqlDbi* MysqlModificationAction::getDbi() const {
+    return static_cast<MysqlDbi*>(dbi);
 }
 
 }  // namespace U2

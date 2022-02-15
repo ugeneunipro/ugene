@@ -74,7 +74,7 @@ namespace U2 {
 #define NON_ITERATIVE_MODE_ATTR "non-iterative-mode"
 #define ALG_NAME_ATTR "alg"
 
-void GTest_Bwa::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_Bwa::init(XMLTestFormat*, const QDomElement& el) {
     bwaTask = nullptr;
     indexName = "";
     readsFileName = "";
@@ -318,9 +318,9 @@ void GTest_Bwa::prepare() {
     addSubTask(bwaTask);
 }
 
-QList<Task *> GTest_Bwa::onSubTaskFinished(Task *subTask) {
+QList<Task*> GTest_Bwa::onSubTaskFinished(Task* subTask) {
     Q_UNUSED(subTask);
-    QList<Task *> res;
+    QList<Task*> res;
     if (hasError() || subTask->hasError() || isCanceled()) {
         subTaskFailed = true;
         return res;
@@ -377,7 +377,7 @@ void GTest_Bwa::cleanup() {
         }
     }
 
-    //delete tmp result
+    // delete tmp result
     if (!hasError() && QFileInfo(resultDirPath).exists()) {
         ioLog.trace(QString("Deleting tmp result dir %1").arg(resultDirPath));
         GUrlUtils::removeDir(resultDirPath, stateInfo);
@@ -397,10 +397,10 @@ QString GTest_Bwa::getTempDataDir() {
     return dir;
 }
 
-QList<XMLTestFactory *> BwaTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> BwaTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_Bwa::createFactory());
     return res;
 }
 
-}    // namespace U2
+}  // namespace U2

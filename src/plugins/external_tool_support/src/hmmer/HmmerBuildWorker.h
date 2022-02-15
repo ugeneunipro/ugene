@@ -34,7 +34,7 @@ namespace LocalWorkflow {
 class HmmerBuildPrompter : public PrompterBase<HmmerBuildPrompter> {
     Q_OBJECT
 public:
-    HmmerBuildPrompter(Actor *p = 0);
+    HmmerBuildPrompter(Actor* p = 0);
 
 protected:
     QString composeRichDoc() override;
@@ -43,19 +43,19 @@ protected:
 class HmmerBuildWorker : public BaseWorker {
     Q_OBJECT
 public:
-    HmmerBuildWorker(Actor *a);
+    HmmerBuildWorker(Actor* a);
 
     void init() override;
     bool isReady() const override;
-    Task *tick() override;
+    Task* tick() override;
     void cleanup() override;
 
 private slots:
-    void sl_taskFinished(Task *task);
+    void sl_taskFinished(Task* task);
 
 protected:
-    IntegralBus *input;
-    IntegralBus *output;
+    IntegralBus* input;
+    IntegralBus* output;
     HmmerBuildSettings cfg;
 };
 
@@ -66,10 +66,10 @@ public:
     static void init();
     static void cleanup();
     HmmerBuildWorkerFactory();
-    Worker *createWorker(Actor *a) override;
+    Worker* createWorker(Actor* a) override;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_HMMER_BUILD_WORKER_H_
+#endif  // _U2_HMMER_BUILD_WORKER_H_

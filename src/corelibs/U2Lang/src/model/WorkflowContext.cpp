@@ -45,21 +45,21 @@
 namespace U2 {
 namespace Workflow {
 
-static QString getWorkflowId(WorkflowContext *ctx) {
+static QString getWorkflowId(WorkflowContext* ctx) {
     qint64 pid = QApplication::applicationPid();
     QString wId = QByteArray::number(pid) + "_" + QByteArray::number(qint64(ctx));
 
     return wId;
 }
 
-WorkflowContext::WorkflowContext(const QList<Actor *> &procs, WorkflowMonitor *_monitor)
+WorkflowContext::WorkflowContext(const QList<Actor*>& procs, WorkflowMonitor* _monitor)
     : monitor(_monitor), storage(nullptr), process("") {
-    foreach (Actor *p, procs) {
+    foreach (Actor* p, procs) {
         procMap.insert(p->getId(), p);
     }
 
     {  // register WD process
-        AppFileStorage *fileStorage = AppContext::getAppFileStorage();
+        AppFileStorage* fileStorage = AppContext::getAppFileStorage();
         CHECK(nullptr != fileStorage, );
 
         U2OpStatusImpl os;
@@ -70,14 +70,14 @@ WorkflowContext::WorkflowContext(const QList<Actor *> &procs, WorkflowMonitor *_
 }
 
 WorkflowContext::~WorkflowContext() {
-    foreach (const QString &url, externalProcessFiles) {
+    foreach (const QString& url, externalProcessFiles) {
         QFile::remove(url);
     }
     delete storage;
 
     // unregister WD process
     if (!process.getId().isEmpty()) {
-        AppFileStorage *fileStorage = AppContext::getAppFileStorage();
+        AppFileStorage* fileStorage = AppContext::getAppFileStorage();
         CHECK(nullptr != fileStorage, );
 
         U2OpStatusImpl os;
@@ -91,32 +91,32 @@ bool WorkflowContext::init() {
     return storage->init();
 }
 
-DbiDataStorage *WorkflowContext::getDataStorage() {
+DbiDataStorage* WorkflowContext::getDataStorage() {
     return storage;
 }
 
-WorkflowMonitor *WorkflowContext::getMonitor() {
+WorkflowMonitor* WorkflowContext::getMonitor() {
     return monitor;
 }
 
-void WorkflowContext::addExternalProcessFile(const QString &url) {
+void WorkflowContext::addExternalProcessFile(const QString& url) {
     QMutexLocker locker(&addFileMutex);
     externalProcessFiles << url;
 }
 
-DataTypePtr WorkflowContext::getOutSlotType(const QString &slotStr) {
+DataTypePtr WorkflowContext::getOutSlotType(const QString& slotStr) {
     QStringList tokens = slotStr.split(">");
     assert(tokens.size() > 0);
     tokens = tokens[0].split(".");
     assert(2 == tokens.size());
 
-    Actor *proc = procMap.value(tokens[0], nullptr);
+    Actor* proc = procMap.value(tokens[0], nullptr);
     if (nullptr == proc) {
         return DataTypePtr();
     }
 
     QString slotId = tokens[1];
-    foreach (Port *port, proc->getOutputPorts()) {
+    foreach (Port* port, proc->getOutputPorts()) {
         assert(port->getOutputType()->isMap());
         QMap<Descriptor, DataTypePtr> typeMap = port->getOutputType()->getDatatypesMap();
 
@@ -130,11 +130,11 @@ DataTypePtr WorkflowContext::getOutSlotType(const QString &slotStr) {
     return DataTypePtr();
 }
 
-const WorkflowProcess &WorkflowContext::getWorkflowProcess() const {
+const WorkflowProcess& WorkflowContext::getWorkflowProcess() const {
     return process;
 }
 
-WorkflowProcess &WorkflowContext::getWorkflowProcess() {
+WorkflowProcess& WorkflowContext::getWorkflowProcess() {
     return process;
 }
 
@@ -142,7 +142,7 @@ QString WorkflowContext::workingDir() const {
     return _workingDir;
 }
 
-QString WorkflowContext::absolutePath(const QString &relative) const {
+QString WorkflowContext::absolutePath(const QString& relative) const {
     CHECK(!relative.isEmpty(), "");
     QFileInfo info(relative);
     if (info.isAbsolute()) {
@@ -156,7 +156,7 @@ QString WorkflowContext::absolutePath(const QString &relative) const {
     return workingDir() + relative;
 }
 
-MessageMetadataStorage &WorkflowContext::getMetadataStorage() {
+MessageMetadataStorage& WorkflowContext::getMetadataStorage() {
     return metadataStorage;
 }
 
@@ -191,11 +191,11 @@ bool WorkflowContext::initWorkingDir() {
 
 const QString WorkflowContextCMDLine::WORKING_DIR = "working-dir";
 
-QString WorkflowContextCMDLine::getOutputDirectory(U2OpStatus &os) {
+QString WorkflowContextCMDLine::getOutputDirectory(U2OpStatus& os) {
     // 1. Detect folder
     QString root;
 
-    CMDLineRegistry *cmdlineReg = AppContext::getCMDLineRegistry();
+    CMDLineRegistry* cmdlineReg = AppContext::getCMDLineRegistry();
     assert(cmdlineReg != nullptr);
 
     if (useOutputDir()) {
@@ -218,7 +218,7 @@ QString WorkflowContextCMDLine::getOutputDirectory(U2OpStatus &os) {
     return rootDir.absolutePath();
 }
 
-QString WorkflowContextCMDLine::createSubDirectoryForRun(const QString &root, U2OpStatus &os) {
+QString WorkflowContextCMDLine::createSubDirectoryForRun(const QString& root, U2OpStatus& os) {
     QDir rootDir(root);
     // 1. Find free sub-folder name
     QString baseDirName = QDateTime::currentDateTime().toString("yyyy.MM.dd_hh-mm");
@@ -250,7 +250,7 @@ bool WorkflowContextCMDLine::useSubDirs() {
     return useOutputDir();
 }
 
-void WorkflowContextCMDLine::saveRunInfo(const QString &dir) {
+void WorkflowContextCMDLine::saveRunInfo(const QString& dir) {
     QFile runInfo(dir + "run.info");
     bool opened = runInfo.open(QIODevice::WriteOnly);
     CHECK(opened, );

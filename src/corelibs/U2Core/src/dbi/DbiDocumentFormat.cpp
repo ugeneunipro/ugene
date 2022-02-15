@@ -34,7 +34,7 @@
 
 namespace U2 {
 
-DbiDocumentFormat::DbiDocumentFormat(const U2DbiFactoryId &_id, const DocumentFormatId &_formatId, const QString &_formatName, const QStringList &exts, DocumentFormatFlags flags, QObject *p)
+DbiDocumentFormat::DbiDocumentFormat(const U2DbiFactoryId& _id, const DocumentFormatId& _formatId, const QString& _formatName, const QStringList& exts, DocumentFormatFlags flags, QObject* p)
     : DocumentFormat(p, _formatId, flags, exts) {
     id = _id;
     formatName = _formatName;
@@ -48,7 +48,7 @@ DbiDocumentFormat::DbiDocumentFormat(const U2DbiFactoryId &_id, const DocumentFo
     formatFlags |= DocumentFormatFlag_DirectWriteOperations;
 }
 
-static void renameObjectsIfNamesEqual(QList<GObject *> &objs) {
+static void renameObjectsIfNamesEqual(QList<GObject*>& objs) {
     for (int i = 0; i < objs.size(); ++i) {
         int howManyEquals = 0;
         for (int j = i + 1; j < objs.size(); ++j) {
@@ -59,7 +59,7 @@ static void renameObjectsIfNamesEqual(QList<GObject *> &objs) {
     }
 }
 
-Document *DbiDocumentFormat::loadDocument(IOAdapter *io, const U2DbiRef &dstDbiRef, const QVariantMap &fs, U2OpStatus &os) {
+Document* DbiDocumentFormat::loadDocument(IOAdapter* io, const U2DbiRef& dstDbiRef, const QVariantMap& fs, U2OpStatus& os) {
     // 1. open db
     // 2. read all objects
     // 3. if there is a DEEP_COPY_OBJECT hint, all objects are cloned to the db defined by dstDbiRef
@@ -69,13 +69,13 @@ Document *DbiDocumentFormat::loadDocument(IOAdapter *io, const U2DbiRef &dstDbiR
     DbiConnection handle(srcDbiRef, true, os);
     CHECK_OP(os, nullptr);
 
-    U2ObjectDbi *odbi = handle.dbi->getObjectDbi();
+    U2ObjectDbi* odbi = handle.dbi->getObjectDbi();
     QList<U2DataId> objectIds = odbi->getObjects(U2ObjectDbi::ROOT_FOLDER, 0, U2DbiOptions::U2_DBI_NO_LIMIT, os);
     CHECK_OP(os, nullptr);
 
-    QList<GObject *> objects = prepareObjects(handle, objectIds);
+    QList<GObject*> objects = prepareObjects(handle, objectIds);
     if (fs.value(DEEP_COPY_OBJECT, false).toBool()) {
-        QList<GObject *> clonedObjects = cloneObjects(objects, dstDbiRef, fs, os);
+        QList<GObject*> clonedObjects = cloneObjects(objects, dstDbiRef, fs, os);
         qDeleteAll(objects);
         CHECK_OP_EXT(os, qDeleteAll(clonedObjects), nullptr);
         objects = clonedObjects;
@@ -84,34 +84,34 @@ Document *DbiDocumentFormat::loadDocument(IOAdapter *io, const U2DbiRef &dstDbiR
     }
 
     QString lockReason = handle.dbi->isReadOnly() ? "The database is read-only" : "";
-    Document *d = new Document(this, io->getFactory(), io->getURL(), dstDbiRef, objects, fs, lockReason);
+    Document* d = new Document(this, io->getFactory(), io->getURL(), dstDbiRef, objects, fs, lockReason);
     d->setDocumentOwnsDbiResources(false);
     d->setModificationTrack(false);
 
     return d;
 }
 
-QList<GObject *> DbiDocumentFormat::prepareObjects(DbiConnection &handle, const QList<U2DataId> &objectIds) {
-    QList<GObject *> objects;
+QList<GObject*> DbiDocumentFormat::prepareObjects(DbiConnection& handle, const QList<U2DataId>& objectIds) {
+    QList<GObject*> objects;
     U2EntityRef ref;
     ref.dbiRef = handle.dbi->getDbiRef();
 
-    QMap<U2DataId, GObject *> match;
+    QMap<U2DataId, GObject*> match;
 
-    for (const U2DataId &dataId : qAsConst(objectIds)) {
+    for (const U2DataId& dataId : qAsConst(objectIds)) {
         U2OpStatus2Log status;
         ref.entityId = dataId;
 
         U2Object object;
         handle.dbi->getObjectDbi()->getObject(object, dataId, status);
-        CHECK_OPERATION(!status.isCoR(), continue);
+        CHECK_CONTINUE(!status.isCoR());
 
         if (object.visualName.isEmpty()) {
             object.visualName = "Unnamed object";
         }
 
-        GObject *gobject = GObjectUtils::createObject(ref.dbiRef, dataId, object.visualName);
-        CHECK_OPERATION(gobject != nullptr, continue);
+        GObject* gobject = GObjectUtils::createObject(ref.dbiRef, dataId, object.visualName);
+        CHECK_CONTINUE(gobject != nullptr);
 
         match[dataId] = gobject;
         objects << gobject;
@@ -119,14 +119,14 @@ QList<GObject *> DbiDocumentFormat::prepareObjects(DbiConnection &handle, const 
 
     if (handle.dbi->getObjectRelationsDbi() != nullptr) {
         const QList<U2DataId> matchKeys = match.keys();
-        for (const U2DataId &dataId : qAsConst(matchKeys)) {
+        for (const U2DataId& dataId : qAsConst(matchKeys)) {
             U2OpStatus2Log status;
-            GObject *srcObj = match.value(dataId, nullptr);
-            SAFE_POINT(srcObj != nullptr, "Source object is NULL", QList<GObject *>());
+            GObject* srcObj = match.value(dataId, nullptr);
+            SAFE_POINT(srcObj != nullptr, "Source object is NULL", QList<GObject*>());
             QList<GObjectRelation> gRelations;
             QList<U2ObjectRelation> relations = handle.dbi->getObjectRelationsDbi()->getObjectRelations(dataId, status);
-            foreach (const U2ObjectRelation &r, relations) {
-                GObject *relatedObject = match[r.referencedObject];
+            foreach (const U2ObjectRelation& r, relations) {
+                GObject* relatedObject = match[r.referencedObject];
                 if (relatedObject == nullptr) {
                     continue;
                 }
@@ -141,16 +141,16 @@ QList<GObject *> DbiDocumentFormat::prepareObjects(DbiConnection &handle, const 
 
     return objects;
 }
-QList<GObject *> DbiDocumentFormat::cloneObjects(const QList<GObject *> &srcObjects, const U2DbiRef &dstDbiRef, const QVariantMap &hints, U2OpStatus &os) {
-    QList<GObject *> clonedObjects;
+QList<GObject*> DbiDocumentFormat::cloneObjects(const QList<GObject*>& srcObjects, const U2DbiRef& dstDbiRef, const QVariantMap& hints, U2OpStatus& os) {
+    QList<GObject*> clonedObjects;
     CHECK_EXT(dstDbiRef.isValid(), os.setError(tr("Invalid destination database reference")), clonedObjects);
 
     int number = 0;
     int total = srcObjects.size();
-    foreach (GObject *srcObject, srcObjects) {
+    foreach (GObject* srcObject, srcObjects) {
         U2OpStatusMapping mapping(number, (number + 1) / total);
         U2OpStatusChildImpl childOs(&os, mapping);
-        GObject *clonedObject = srcObject->clone(dstDbiRef, childOs, hints);
+        GObject* clonedObject = srcObject->clone(dstDbiRef, childOs, hints);
         CHECK_OP(os, clonedObjects);
         clonedObjects << clonedObject;
         number++;
@@ -159,7 +159,7 @@ QList<GObject *> DbiDocumentFormat::cloneObjects(const QList<GObject *> &srcObje
     return clonedObjects;
 }
 
-void DbiDocumentFormat::storeDocument(Document *d, IOAdapter *ioAdapter, U2OpStatus &os) {
+void DbiDocumentFormat::storeDocument(Document* d, IOAdapter* ioAdapter, U2OpStatus& os) {
     const QString url = ioAdapter->getURL().getURLString();
 
     const U2DbiRef dstDbiRef(id, url);
@@ -168,10 +168,10 @@ void DbiDocumentFormat::storeDocument(Document *d, IOAdapter *ioAdapter, U2OpSta
     Q_UNUSED(dstCon);
 
     // The relations should be saved
-    QMap<GObject *, GObject *> clonedObjects;
+    QMap<GObject*, GObject*> clonedObjects;
     QMap<GObjectReference, GObjectReference> match;
 
-    foreach (GObject *object, d->getObjects()) {
+    foreach (GObject* object, d->getObjects()) {
         if (!supportedObjectTypes.contains(object->getGObjectType())) {
             continue;
         }
@@ -182,18 +182,18 @@ void DbiDocumentFormat::storeDocument(Document *d, IOAdapter *ioAdapter, U2OpSta
             continue;
         }
 
-        GObject *resultObject = object->clone(dstDbiRef, os);
+        GObject* resultObject = object->clone(dstDbiRef, os);
         CHECK_OP(os, );
 
         clonedObjects[object] = resultObject;
         match[GObjectReference(object, false)] = GObjectReference(url, resultObject->getGObjectName(), resultObject->getGObjectType(), resultObject->getEntityRef());
     }
 
-    foreach (GObject *initialObj, clonedObjects.keys()) {
-        GObject *cloned = clonedObjects[initialObj];
+    foreach (GObject* initialObj, clonedObjects.keys()) {
+        GObject* cloned = clonedObjects[initialObj];
         QList<GObjectRelation> relations;
         QList<GObjectRelation> initialRelations = initialObj->getObjectRelations();
-        for (const GObjectRelation &r : qAsConst(initialRelations)) {
+        for (const GObjectRelation& r : qAsConst(initialRelations)) {
             if (match.contains(r.ref)) {
                 relations << GObjectRelation(match[r.ref], r.role);
             }
@@ -205,8 +205,8 @@ void DbiDocumentFormat::storeDocument(Document *d, IOAdapter *ioAdapter, U2OpSta
     clonedObjects.clear();
 }
 
-FormatCheckResult DbiDocumentFormat::checkRawData(const QByteArray &rawData, const GUrl &url) const {
-    U2DbiFactory *f = AppContext::getDbiRegistry()->getDbiFactoryById(id);
+FormatCheckResult DbiDocumentFormat::checkRawData(const QByteArray& rawData, const GUrl& url) const {
+    U2DbiFactory* f = AppContext::getDbiRegistry()->getDbiFactoryById(id);
     if (f != nullptr) {
         QHash<QString, QString> props;
         props[U2DbiOptions::U2_DBI_OPTION_URL] = url.getURLString();

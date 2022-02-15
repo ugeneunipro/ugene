@@ -31,8 +31,8 @@ namespace U2 {
 class MsaTestUtils {
 public:
     static MultipleSequenceAlignment initTestAlignment();
-    static QString getRowData(const MultipleSequenceAlignment &, int rowNum);
-    static bool testAlignmentNotChanged(const MultipleSequenceAlignment &);
+    static QString getRowData(const MultipleSequenceAlignment&, int rowNum);
+    static bool testAlignmentNotChanged(const MultipleSequenceAlignment&);
 
     static const int rowsNum;
     static const int firstRowLength;

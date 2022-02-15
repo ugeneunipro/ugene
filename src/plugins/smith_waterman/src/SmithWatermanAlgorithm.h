@@ -39,28 +39,28 @@ public:
     virtual ~SmithWatermanAlgorithm() {
     }
 
-    virtual void launch(const SMatrix &m, const QByteArray &_patternSeq, const QByteArray &_searchSeq, int _gapOpen, int _gapExtension, int _minScore, SmithWatermanSettings::SWResultView _resultView);
+    virtual void launch(const SMatrix& m, const QByteArray& _patternSeq, const QByteArray& _searchSeq, int _gapOpen, int _gapExtension, int _minScore, SmithWatermanSettings::SWResultView _resultView);
 
     QList<PairAlignSequences> getResults();
-    
+
     const QString& getCalculationError() const;
     void setMemoryLimitError();
 
-    static void sortByScore(QList<PairAlignSequences> &pairAlignmentStrings);
-    static quint64 estimateNeededRamAmount(const qint32 gapOpen, const qint32 gapExtension, const quint32 minScore, const quint32 maxScore, const QByteArray &patternSeq, const QByteArray &searchSeq, const SmithWatermanSettings::SWResultView resultView);
+    static void sortByScore(QList<PairAlignSequences>& pairAlignmentStrings);
+    static quint64 estimateNeededRamAmount(const qint32 gapOpen, const qint32 gapExtension, const quint32 minScore, const quint32 maxScore, const QByteArray& patternSeq, const QByteArray& searchSeq, const SmithWatermanSettings::SWResultView resultView);
     static const char STOP;
     static const char UP;
     static const char LEFT;
     static const char DIAG;
-    static constexpr unsigned int MEMORY_SIZE_LIMIT_MB = 1024;  //1GB
+    static constexpr unsigned int MEMORY_SIZE_LIMIT_MB = 1024;  // 1GB
     static constexpr unsigned int MB_TO_BYTES_FACTOR = 1048576;
 
 protected:
     bool calculateMatrixLength();
     bool isValidParams();
-    void setValues(const SMatrix &_substitutionMatrix,
-                   const QByteArray &_patternSeq,
-                   const QByteArray &_searchSeq,
+    void setValues(const SMatrix& _substitutionMatrix,
+                   const QByteArray& _patternSeq,
+                   const QByteArray& _searchSeq,
                    int _gapOpen,
                    int _gapExtension,
                    int _minScore,
@@ -83,7 +83,7 @@ protected:
     QVector<QVector<char>> directionMatrix;
 
     struct KeyOfPairAlignSeq {
-        KeyOfPairAlignSeq(int _score, U2Region const &_intervalSeq1) {
+        KeyOfPairAlignSeq(int _score, U2Region const& _intervalSeq1) {
             setValues(_score, _intervalSeq1);
         }
 
@@ -94,7 +94,7 @@ protected:
             intervalSeq1.length = 0;
         };
 
-        static void exchange(PairAlignSequences &a, PairAlignSequences &b) {
+        static void exchange(PairAlignSequences& a, PairAlignSequences& b) {
             PairAlignSequences bufKey;
 
             bufKey = a;
@@ -102,7 +102,7 @@ protected:
             b = bufKey;
         }
 
-        void setValues(int _score, U2Region const &_intervalSeq1) {
+        void setValues(int _score, U2Region const& _intervalSeq1) {
             score = _score;
             intervalSeq1 = _intervalSeq1;
         }

@@ -78,7 +78,7 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0002) {
     // Maximize the main window
 
     Q_UNUSED(os);
-    QMainWindow *mainWindow = AppContext::getMainWindow()->getQMainWindow();
+    QMainWindow* mainWindow = AppContext::getMainWindow()->getQMainWindow();
     CHECK_SET_ERR(mainWindow != nullptr, "main window is NULL");
 
     if (!mainWindow->isMaximized()) {
@@ -103,6 +103,8 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0003) {
 
         // Files from the projects above.
         GTFile::backup(os, testDir + "_common_data/scenarios/project/1.gb");
+
+        GTFile::backup(os, dataDir + "workflow_samples/NGS/consensus.uwl");
     }
 }
 
@@ -119,7 +121,7 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0004) {
 PRELIMINARY_ACTION_DEFINITION(pre_action_0005) {
     // Click somewhere to the main window in mac to be sure that the focus is on the application
 
-    QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
+    QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
     CHECK_SET_ERR(mw != nullptr, "main window is NULL");
 #ifdef Q_OS_DARWIN
     GTWidget::click(os, mw, Qt::LeftButton, QPoint(200, 200));

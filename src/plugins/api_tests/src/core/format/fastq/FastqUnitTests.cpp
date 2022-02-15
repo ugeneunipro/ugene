@@ -36,18 +36,18 @@
 
 namespace U2 {
 
-IOAdapter *FastqFormatTestData::ioAdapter = nullptr;
-FastqFormat *FastqFormatTestData::format = nullptr;
+IOAdapter* FastqFormatTestData::ioAdapter = nullptr;
+FastqFormat* FastqFormatTestData::format = nullptr;
 
 void FastqFormatTestData::init() {
-    TestRunnerSettings *trs = AppContext::getAppSettings()->getTestRunnerSettings();
+    TestRunnerSettings* trs = AppContext::getAppSettings()->getTestRunnerSettings();
     QString originalFile = trs->getVar("COMMON_DATA_DIR") + "/tmp.fastq";
     QString tmpFile = QDir::temp().absoluteFilePath(QFileInfo(originalFile).fileName());
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     ioAdapter = iof->createIOAdapter();
     /*bool open = */ ioAdapter->open(tmpFile, IOAdapterMode_Append);
     // CHECK_EQUAL(true, open, "ioAdapter is not opened");
-    format = qobject_cast<FastqFormat *>(AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::FASTQ));
+    format = qobject_cast<FastqFormat*>(AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::FASTQ));
     // CHECK_NOT_EQUAL(NULL, format, "Format is NULL");
 }
 

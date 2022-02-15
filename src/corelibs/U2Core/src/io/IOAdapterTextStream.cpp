@@ -31,7 +31,7 @@ namespace U2 {
 ///////////////////////////////////////////////
 ////      IOAdapterDevice
 ///////////////////////////////////////////////
-IOAdapterDevice::IOAdapterDevice(IOAdapter *_ioAdapter, QObject *parent)
+IOAdapterDevice::IOAdapterDevice(IOAdapter* _ioAdapter, QObject* parent)
     : QIODevice(parent), ioAdapter(_ioAdapter), currentPos(0) {
     SAFE_POINT(ioAdapter->isOpen(), "IOAdapter must be opened", );
     bool isReadable = ioAdapter->isIOModeSupported(IOAdapterMode_Read);
@@ -53,13 +53,13 @@ bool IOAdapterDevice::atEnd() const {
     return ioAdapter->isEof();
 }
 
-qint64 IOAdapterDevice::readData(char *data, qint64 length) {
+qint64 IOAdapterDevice::readData(char* data, qint64 length) {
     qint64 bytesRead = ioAdapter->readBlock(data, length);
     currentPos += bytesRead;
     return bytesRead;
 }
 
-qint64 IOAdapterDevice::writeData(const char *data, qint64 length) {
+qint64 IOAdapterDevice::writeData(const char* data, qint64 length) {
     qint64 bytesWritten = ioAdapter->writeBlock(data, length);
     currentPos += bytesWritten;
     return bytesWritten;
@@ -81,7 +81,7 @@ bool IOAdapterDevice::seek(qint64 seekPos) {
 ///////////////////////////////////////////////
 ////      IOAdapterReaderAndWriterBase
 ///////////////////////////////////////////////
-IOAdapterReaderAndWriterBase::IOAdapterReaderAndWriterBase(IOAdapter *_ioAdapter, QTextCodec *codec)
+IOAdapterReaderAndWriterBase::IOAdapterReaderAndWriterBase(IOAdapter* _ioAdapter, QTextCodec* codec)
     : ioAdapter(_ioAdapter) {
     ioDevice.reset(new IOAdapterDevice(ioAdapter));
     stream.setDevice(ioDevice.data());
@@ -98,14 +98,14 @@ GUrl IOAdapterReaderAndWriterBase::getURL() const {
     return ioAdapter->getURL();
 }
 
-IOAdapterFactory *IOAdapterReaderAndWriterBase::getFactory() const {
+IOAdapterFactory* IOAdapterReaderAndWriterBase::getFactory() const {
     return ioAdapter->getFactory();
 }
 
 ///////////////////////////////////////////////
 ////      IOAdapterReader
 ///////////////////////////////////////////////
-IOAdapterReader::IOAdapterReader(IOAdapter *ioAdapter)
+IOAdapterReader::IOAdapterReader(IOAdapter* ioAdapter)
     : IOAdapterReaderAndWriterBase(ioAdapter), unreadCharsBufferPos(0) {
 }
 
@@ -119,7 +119,7 @@ IOAdapterReader::~IOAdapterReader() {
     }
 }
 
-int IOAdapterReader::read(U2OpStatus &os, QString &result, int maxLength, const QBitArray &terminators, IOAdapter::TerminatorHandling terminatorMode, bool *terminatorFound) {
+int IOAdapterReader::read(U2OpStatus& os, QString& result, int maxLength, const QBitArray& terminators, IOAdapter::TerminatorHandling terminatorMode, bool* terminatorFound) {
     CHECK_OP(os, 0);
     result.clear();
     textForUndo.clear();
@@ -157,7 +157,7 @@ int IOAdapterReader::read(U2OpStatus &os, QString &result, int maxLength, const 
     return result.length();
 }
 
-bool IOAdapterReader::readLine(U2OpStatus &os, QString &result, int maxLength) {
+bool IOAdapterReader::readLine(U2OpStatus& os, QString& result, int maxLength) {
     bool terminatorsFound = false;
     read(os, result, maxLength, TextUtils::LINE_BREAKS, IOAdapter::Term_Exclude, &terminatorsFound);
     if (terminatorsFound) {
@@ -170,13 +170,13 @@ bool IOAdapterReader::readLine(U2OpStatus &os, QString &result, int maxLength) {
     return terminatorsFound;
 }
 
-QString IOAdapterReader::readLine(U2OpStatus &os, int maxLength) {
+QString IOAdapterReader::readLine(U2OpStatus& os, int maxLength) {
     QString result;
     readLine(os, result, maxLength);
     return result;
 }
 
-QChar IOAdapterReader::readChar(U2OpStatus &os) {
+QChar IOAdapterReader::readChar(U2OpStatus& os) {
     QChar ch;
     if (unreadCharsBuffer.isEmpty()) {
         stream >> ch;
@@ -193,7 +193,7 @@ QChar IOAdapterReader::readChar(U2OpStatus &os) {
     return ch;
 }
 
-void IOAdapterReader::unreadChar(U2OpStatus &os) {
+void IOAdapterReader::unreadChar(U2OpStatus& os) {
     SAFE_POINT_EXT(!textForUndo.isEmpty(), os.setError(L10N::internalError()), );
     QChar ch = textForUndo[textForUndo.length() - 1];
     textForUndo.resize(textForUndo.length() - 1);
@@ -218,7 +218,7 @@ void IOAdapterReader::unreadChar(U2OpStatus &os) {
     }
 }
 
-void IOAdapterReader::undo(U2OpStatus &os) {
+void IOAdapterReader::undo(U2OpStatus& os) {
     // Undo is allowed to be called only when the last read()/readLine() op returned some result.
     SAFE_POINT_EXT(!textForUndo.isEmpty(), os.setError(L10N::internalError()), );
     unreadCharsBufferPos -= textForUndo.length();  // Step back in the unread buffer.
@@ -241,11 +241,11 @@ bool IOAdapterReader::atEnd() const {
 ///////////////////////////////////////////////
 ////      IOAdapterWriter
 ///////////////////////////////////////////////
-IOAdapterWriter::IOAdapterWriter(IOAdapter *ioAdapter, QTextCodec *codec)
+IOAdapterWriter::IOAdapterWriter(IOAdapter* ioAdapter, QTextCodec* codec)
     : IOAdapterReaderAndWriterBase(ioAdapter, codec) {
 }
 
-void IOAdapterWriter::write(U2OpStatus &os, const QString &text) {
+void IOAdapterWriter::write(U2OpStatus& os, const QString& text) {
     CHECK_OP(os, );
     stream << text;
     if (ioAdapter->hasError()) {

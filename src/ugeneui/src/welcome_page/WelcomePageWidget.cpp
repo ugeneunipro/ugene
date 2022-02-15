@@ -44,14 +44,14 @@
 
 namespace U2 {
 
-static QString newImageAndTextHtml(const QString &image, const QString &text) {
+static QString newImageAndTextHtml(const QString& image, const QString& text) {
     return QString("<center>") +
            "<img src=':/ugene/images/welcome_page/" + image + "'>" +
            "<br>" + text +
            "</center>";
 }
 
-WelcomePageWidget::WelcomePageWidget(QWidget *parent)
+WelcomePageWidget::WelcomePageWidget(QWidget* parent)
     : QScrollArea(parent) {
     auto widget = new QWidget();
     auto layout = new QVBoxLayout(widget);
@@ -70,7 +70,7 @@ WelcomePageWidget::WelcomePageWidget(QWidget *parent)
     installEventFilter(this);
 }
 
-QWidget *WelcomePageWidget::createHeaderWidget() {
+QWidget* WelcomePageWidget::createHeaderWidget() {
     auto headerWidget = new QWidget();
     headerWidget->setContentsMargins(0, 0, 0, 0);
     headerWidget->setStyleSheet("background: qlineargradient(x1:0 y1:0, x2:1 y2:0, stop:0 #E0E7E9, stop:1 white);");
@@ -84,7 +84,7 @@ QWidget *WelcomePageWidget::createHeaderWidget() {
     return headerWidget;
 }
 
-QWidget *WelcomePageWidget::createMiddleWidget() {
+QWidget* WelcomePageWidget::createMiddleWidget() {
     auto middleWidget = new QWidget();
     middleWidget->setStyleSheet("background: white;");
     auto middleWidgetVCenteringLayout = new QVBoxLayout();
@@ -162,7 +162,7 @@ QWidget *WelcomePageWidget::createMiddleWidget() {
     return middleWidget;
 }
 
-QWidget *WelcomePageWidget::createFooterWidget() {
+QWidget* WelcomePageWidget::createFooterWidget() {
     auto footerWidget = new QWidget();
     footerWidget->setStyleSheet("background-color: #B2C4C9;");
     footerWidget->setFixedHeight(150);
@@ -214,9 +214,9 @@ QWidget *WelcomePageWidget::createFooterWidget() {
 #define PATH_PROPERTY "path"
 #define MAX_RECENT 7
 
-void WelcomePageWidget::updateRecent(const QStringList &recentProjects, const QStringList &recentFiles) {
+void WelcomePageWidget::updateRecent(const QStringList& recentProjects, const QStringList& recentFiles) {
     // Clean lists.
-    QLayoutItem *layoutItem;
+    QLayoutItem* layoutItem;
     while ((layoutItem = recentFilesLayout->takeAt(0)) != nullptr) {
         delete layoutItem->widget();
         delete layoutItem;
@@ -268,15 +268,15 @@ void WelcomePageWidget::updateRecent(const QStringList &recentProjects, const QS
     }
 }
 
-void WelcomePageWidget::dragEnterEvent(QDragEnterEvent *event) {
+void WelcomePageWidget::dragEnterEvent(QDragEnterEvent* event) {
     MainWindowDragNDrop::dragEnterEvent(event);
 }
 
-void WelcomePageWidget::dropEvent(QDropEvent *event) {
+void WelcomePageWidget::dropEvent(QDropEvent* event) {
     MainWindowDragNDrop::dropEvent(event);
 }
 
-void WelcomePageWidget::dragMoveEvent(QDragMoveEvent *event) {
+void WelcomePageWidget::dragMoveEvent(QDragMoveEvent* event) {
     MainWindowDragNDrop::dragMoveEvent(event);
 }
 
@@ -297,23 +297,23 @@ void WelcomePageWidget::sl_openQuickStart() {
 }
 
 void WelcomePageWidget::sl_openRecentFile() {
-    HoverQLabel *label = qobject_cast<HoverQLabel *>(sender());
+    HoverQLabel* label = qobject_cast<HoverQLabel*>(sender());
     SAFE_POINT(label != nullptr, "sl_openRecentFile sender is not HoverQLabel", );
     QString url = label->property(PATH_PROPERTY).toString();
     AppContext::getProjectLoader()->runOpenRecentFileOrProjectTask(url);
 }
 
-bool WelcomePageWidget::eventFilter(QObject *watched, QEvent *event) {
+bool WelcomePageWidget::eventFilter(QObject* watched, QEvent* event) {
     CHECK(this == watched, false);
     switch (event->type()) {
         case QEvent::DragEnter:
-            dragEnterEvent(dynamic_cast<QDragEnterEvent *>(event));
+            dragEnterEvent(dynamic_cast<QDragEnterEvent*>(event));
             return true;
         case QEvent::DragMove:
-            dragMoveEvent(dynamic_cast<QDragMoveEvent *>(event));
+            dragMoveEvent(dynamic_cast<QDragMoveEvent*>(event));
             return true;
         case QEvent::Drop:
-            dropEvent(dynamic_cast<QDropEvent *>(event));
+            dropEvent(dynamic_cast<QDropEvent*>(event));
             return true;
         case QEvent::FocusIn:
             setFocus();
@@ -324,7 +324,7 @@ bool WelcomePageWidget::eventFilter(QObject *watched, QEvent *event) {
     return false;
 }
 
-void WelcomePageWidget::runAction(const QString &actionId) {
+void WelcomePageWidget::runAction(const QString& actionId) {
     auto action = AppContext::getWelcomePageActionRegistry()->getById(actionId);
     if (action != nullptr) {
         GCounter::increment("Welcome Page: " + actionId);

@@ -41,7 +41,7 @@ namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
 // MergeBamTask
-MergeBamTask::MergeBamTask(const QStringList &urls, const QString &dir, const QString &outName, bool sortInputBams)
+MergeBamTask::MergeBamTask(const QStringList& urls, const QString& dir, const QString& outName, bool sortInputBams)
     : Task(DocumentFormatUtils::tr("Merge BAM files with SAMTools merge"), TaskFlags_FOSCOE), outputName(outName), workingDir(dir), targetUrl(""), bamUrls(urls), sortInputBams(sortInputBams) {
     if (!workingDir.endsWith("/") && !workingDir.endsWith("\\")) {
         this->workingDir += "/";
@@ -55,8 +55,8 @@ QString MergeBamTask::getResult() const {
     return targetUrl;
 }
 
-void cleanupTempDir(const QStringList &tempDirFiles) {
-    foreach (const QString &url, tempDirFiles) {
+void cleanupTempDir(const QStringList& tempDirFiles) {
+    foreach (const QString& url, tempDirFiles) {
         QFile toDelete(url);
         if (toDelete.exists(url)) {
             toDelete.remove(url);
@@ -73,7 +73,7 @@ void MergeBamTask::run() {
     QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
     if (sortInputBams) {
         QStringList sortedNamesList;
-        foreach (const QString &url, bamUrls) {
+        foreach (const QString& url, bamUrls) {
             QFileInfo fi(url);
             QString sortedName = tmpDirPath + "/" + fi.completeBaseName() + "_sorted.bam";
             sortedNamesList.append(sortedName);

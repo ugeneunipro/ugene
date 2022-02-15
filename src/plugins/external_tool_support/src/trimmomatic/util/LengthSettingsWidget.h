@@ -31,21 +31,21 @@ namespace LocalWorkflow {
 class LengthSettingsWidget : public TrimmomaticStepSettingsWidget, private Ui_LengthSettingsWidget {
     Q_OBJECT
 public:
-    LengthSettingsWidget(const QString &toolTip);
+    LengthSettingsWidget(const QString& toolTip);
     ~LengthSettingsWidget();
 
     bool validate() const;
 
     QVariantMap getState() const;
-    void setState(const QVariantMap &state);
+    void setState(const QVariantMap& state);
 
-    static QString serializeState(const QVariantMap &widgetState);
-    static QVariantMap parseState(const QString &command, const QString &stepName);
+    static QString serializeState(const QVariantMap& widgetState);
+    static QVariantMap parseState(const QString& command, const QString& stepName);
 
     static const QString LENGTH;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_LENGTH_SETTINGS_WIDGET_H_
+#endif  // _U2_LENGTH_SETTINGS_WIDGET_H_

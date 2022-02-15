@@ -42,15 +42,15 @@ public:
 class ReadVariationWorker : public GenericDocReader {
     Q_OBJECT
 public:
-    ReadVariationWorker(Actor *p);
+    ReadVariationWorker(Actor* p);
     virtual void init();
 
 protected:
-    virtual void onTaskFinished(Task *task);
-    virtual QString addReadDbObjectToData(const QString &objUrl, QVariantMap &data);
+    virtual void onTaskFinished(Task* task);
+    virtual QString addReadDbObjectToData(const QString& objUrl, QVariantMap& data);
 
 protected:
-    virtual Task *createReadTask(const QString &url, const QString &datasetName);
+    virtual Task* createReadTask(const QString& url, const QString& datasetName);
 
 private:
     ReadVariationProto::SplitAlleles splitMode;
@@ -64,27 +64,27 @@ public:
         : DomainFactory(ACTOR_ID) {
     }
     static void init();
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 
 };  // ReadVariationWorkerFactory
 
 class ReadVariationTask : public Task {
     Q_OBJECT
 public:
-    ReadVariationTask(const QString &url, const QString &datasetName, DbiDataStorage *storage, bool splitAlleles = false);
+    ReadVariationTask(const QString& url, const QString& datasetName, DbiDataStorage* storage, bool splitAlleles = false);
     virtual ~ReadVariationTask();
 
     virtual void prepare();
     virtual void run();
 
-    const QString &getUrl() const;
-    const QString &getDatasetName() const;
+    const QString& getUrl() const;
+    const QString& getDatasetName() const;
     QList<QVariantMap> takeResults();
 
 private:
     QString url;
     QString datasetName;
-    DbiDataStorage *storage;
+    DbiDataStorage* storage;
     bool splitAlleles;
     QList<QVariantMap> results;
 };

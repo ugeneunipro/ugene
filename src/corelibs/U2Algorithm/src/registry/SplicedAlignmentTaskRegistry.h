@@ -37,17 +37,17 @@ class SplicedAlignmentTask;
 class U2ALGORITHM_EXPORT SplicedAlignmentTaskRegistry : public QObject {
     Q_OBJECT
 public:
-    explicit SplicedAlignmentTaskRegistry(QObject *parent = 0);
+    explicit SplicedAlignmentTaskRegistry(QObject* parent = 0);
     ~SplicedAlignmentTaskRegistry();
-    bool registerTaskFactory(SplicedAlignmentTaskFactory *alg, const QString &algId);
-    void unregisterTaskFactory(const QString &algId);
-    bool hadRegistered(const QString &algId);
-    SplicedAlignmentTaskFactory *getAlgorithm(const QString &algId);
+    bool registerTaskFactory(SplicedAlignmentTaskFactory* alg, const QString& algId);
+    void unregisterTaskFactory(const QString& algId);
+    bool hadRegistered(const QString& algId);
+    SplicedAlignmentTaskFactory* getAlgorithm(const QString& algId);
     QStringList getAlgNameList();
 
 private:
     QMutex mutex;
-    QMap<QString, SplicedAlignmentTaskFactory *> algMap;
+    QMap<QString, SplicedAlignmentTaskFactory*> algMap;
     Q_DISABLE_COPY(SplicedAlignmentTaskRegistry)
 };
 

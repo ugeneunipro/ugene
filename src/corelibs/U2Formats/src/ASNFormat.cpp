@@ -49,7 +49,7 @@
 // Returns list of
 // "Mol_id: 1; Molecule: Molecule name; Chain: A, C; Some_specification: Specification value"
 // "Mol_id: 2; Molecule: Molecule name; Chain: B, D; Some_specification: Specification value"
-static QStringList parseMolecules(const QString &comment) {
+static QStringList parseMolecules(const QString& comment) {
     QStringList ans;
     const QString molIdStr("Mol_id");
 
@@ -76,7 +76,7 @@ static QStringList parseMolecules(const QString &comment) {
 // mol is string like
 // "Mol_id: 1; Chain: A, C; Some_specification: Specification value"
 // Returns {'A', 'C'}
-static QList<char> parseChains(const QString &mol) {
+static QList<char> parseChains(const QString& mol) {
     QList<char> ans;
 
     int start = mol.indexOf("Chain:", Qt::CaseInsensitive);
@@ -86,7 +86,7 @@ static QList<char> parseChains(const QString &mol) {
     start += 6;  // "Chain:" length
     const int end = mol.indexOf(';', start);
     const QString chains = mol.mid(start, end > start ? end - start : -1);
-    for (QString &str : chains.split(',', QString::SkipEmptyParts)) {
+    for (QString& str : chains.split(',', QString::SkipEmptyParts)) {
         str = str.trimmed();
         if (str.length() == 1) {
             ans << str.at(0).toLatin1();
@@ -98,7 +98,7 @@ static QList<char> parseChains(const QString &mol) {
 // mol is string like
 // "Mol_id: 1; Molecule: Molecule name; Some_specification: Specification value"
 // Returns "Molecule name"
-static QString parseMolName(const QString &mol) {
+static QString parseMolName(const QString& mol) {
     QString ans;
 
     int start = mol.indexOf("Molecule:", Qt::CaseInsensitive);
@@ -113,7 +113,7 @@ static QString parseMolName(const QString &mol) {
 
 namespace U2 {
 
-ASNFormat::ASNFormat(QObject *p)
+ASNFormat::ASNFormat(QObject* p)
     : DocumentFormat(p, BaseDocumentFormats::PLAIN_ASN, DocumentFormatFlag(0), QStringList() << "prt") {
     formatName = tr("MMDB");
     formatDescription = tr("ASN is a format used my the Molecular Modeling Database (MMDB)");
@@ -122,8 +122,8 @@ ASNFormat::ASNFormat(QObject *p)
     supportedObjectTypes += GObjectTypes::ANNOTATION_TABLE;
 }
 
-FormatCheckResult ASNFormat::checkRawData(const QByteArray &rawData, const GUrl &) const {
-    static const char *formatTag = "Ncbi-mime-asn1 ::= strucseq";
+FormatCheckResult ASNFormat::checkRawData(const QByteArray& rawData, const GUrl&) const {
+    static const char* formatTag = "Ncbi-mime-asn1 ::= strucseq";
 
     if (!rawData.startsWith(formatTag)) {
         return FormatDetection_NotMatched;
@@ -133,10 +133,10 @@ FormatCheckResult ASNFormat::checkRawData(const QByteArray &rawData, const GUrl 
     return textOnly ? FormatDetection_VeryHighSimilarity : FormatDetection_NotMatched;
 }
 
-Document *ASNFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
+Document* ASNFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) {
     BioStruct3D bioStruct;
 
-    const StdResidueDictionary *stdResidueDict = StdResidueDictionary::getStandardDictionary();
+    const StdResidueDictionary* stdResidueDict = StdResidueDictionary::getStandardDictionary();
     CHECK_EXT(stdResidueDict != nullptr, os.setError(tr("Standard residue dictionary not found")), nullptr);
 
     AsnParser asnParser(io, os);
@@ -159,7 +159,7 @@ Document *ASNFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const Q
     bioStruct.calcCenterAndMaxDistance();
     os.setProgress(90);
 
-    Document *doc = PDBFormat::createDocumentFromBioStruct3D(dbiRef, bioStruct, this, io->getFactory(), io->toString(), os, fs);
+    Document* doc = PDBFormat::createDocumentFromBioStruct3D(dbiRef, bioStruct, this, io->getFactory(), io->toString(), os, fs);
 
     ioLog.trace("ASN Parsing finished: " + io->toString());
     os.setProgress(100);
@@ -167,13 +167,13 @@ Document *ASNFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const Q
     return doc;
 }
 
-AsnNode *ASNFormat::findFirstNodeByName(AsnNode *rootElem, const QString &nodeName) {
+AsnNode* ASNFormat::findFirstNodeByName(AsnNode* rootElem, const QString& nodeName) {
     if (rootElem->name == nodeName) {
         return rootElem;
     }
 
-    foreach (AsnNode *node, rootElem->children) {
-        AsnNode *child = findFirstNodeByName(node, nodeName);
+    foreach (AsnNode* node, rootElem->children) {
+        AsnNode* child = findFirstNodeByName(node, nodeName);
         if (child != nullptr) {
             return child;
         }
@@ -182,19 +182,19 @@ AsnNode *ASNFormat::findFirstNodeByName(AsnNode *rootElem, const QString &nodeNa
     return nullptr;
 }
 
-AsnNodeList ASNFormat::findNodesByName(AsnNode *root, const QString &nodeName, AsnNodeList &nodes) {
+AsnNodeList ASNFormat::findNodesByName(AsnNode* root, const QString& nodeName, AsnNodeList& nodes) {
     if (root->name == nodeName) {
         nodes.append(root);
     }
 
-    foreach (AsnNode *child, root->children) {
+    foreach (AsnNode* child, root->children) {
         findNodesByName(child, nodeName, nodes);
     }
 
     return nodes;
 }
 
-QString ASNFormat::getAsnNodeTypeName(const AsnNode *node) {
+QString ASNFormat::getAsnNodeTypeName(const AsnNode* node) {
     switch (node->kind) {
         case ASN_NO_KIND:
             return QString("ASN_NO_KIND");
@@ -210,13 +210,13 @@ QString ASNFormat::getAsnNodeTypeName(const AsnNode *node) {
     return QString("");
 }
 
-void ASNFormat::BioStructLoader::loadBioStructPdbId(AsnNode *rootNode, BioStruct3D &struc) {
-    AsnNode *nameNode = ASNFormat::findFirstNodeByName(rootNode, "name");
+void ASNFormat::BioStructLoader::loadBioStructPdbId(AsnNode* rootNode, BioStruct3D& struc) {
+    AsnNode* nameNode = ASNFormat::findFirstNodeByName(rootNode, "name");
     SAFE_POINT(nameNode != nullptr, "nameNode == NULL?", );
     struc.pdbId = nameNode->value;
 }
 
-void ASNFormat::BioStructLoader::loadBioStructFromAsnTree(AsnNode *rootNode, BioStruct3D &struc, U2OpStatus &ti) {
+void ASNFormat::BioStructLoader::loadBioStructFromAsnTree(AsnNode* rootNode, BioStruct3D& struc, U2OpStatus& ti) {
     /*
         id              SEQUENCE OF Biostruc-id,
         descr           SEQUENCE OF Biostruc-descr OPTIONAL,
@@ -232,20 +232,20 @@ void ASNFormat::BioStructLoader::loadBioStructFromAsnTree(AsnNode *rootNode, Bio
         loadBioStructPdbId(rootNode, struc);
 
         // Load biostruct molecules
-        AsnNode *graphNode = findFirstNodeByName(rootNode, "chemical-graph");
+        AsnNode* graphNode = findFirstNodeByName(rootNode, "chemical-graph");
         if (graphNode == nullptr) {
             throw AsnBioStructError("models not found");
         }
         loadBioStructGraph(graphNode, struc);
 
         // Load secondary structure
-        AsnNode *featureSetNode = findFirstNodeByName(rootNode, "features");
+        AsnNode* featureSetNode = findFirstNodeByName(rootNode, "features");
         if (featureSetNode != nullptr) {
             loadBioStructSecondaryStruct(featureSetNode, struc);
         }
 
         // Load biostruct models (coordinates)
-        AsnNode *modelsNode = findFirstNodeByName(rootNode, "model");
+        AsnNode* modelsNode = findFirstNodeByName(rootNode, "model");
         if (modelsNode == nullptr) {
             throw AsnBioStructError("models not found");
         }
@@ -257,7 +257,7 @@ void ASNFormat::BioStructLoader::loadBioStructFromAsnTree(AsnNode *rootNode, Bio
 
         stdResidueCache.clear();
         atomSetCache.clear();
-    } catch (const AsnBaseException &ex) {
+    } catch (const AsnBaseException& ex) {
         ti.setError(ex.msg);
         return;
     } catch (...) {
@@ -270,7 +270,7 @@ inline quint64 calcStdResidueIndex(int chainId, int resId) {
     return (((quint64)chainId << 32) | (quint64)resId);
 }
 
-void ASNFormat::BioStructLoader::loadModelCoordsFromNode(AsnNode *modelNode, AtomCoordSet &coordSet, QMap<int, Molecule3DModel> &molModels, const BioStruct3D &struc) {
+void ASNFormat::BioStructLoader::loadModelCoordsFromNode(AsnNode* modelNode, AtomCoordSet& coordSet, QMap<int, Molecule3DModel>& molModels, const BioStruct3D& struc) {
     /*
         Atomic-coordinates ::= SEQUENCE {
             number-of-points    INTEGER,
@@ -295,25 +295,25 @@ void ASNFormat::BioStructLoader::loadModelCoordsFromNode(AsnNode *modelNode, Ato
 
     */
 
-    AsnNode *aCoordsNode = modelNode->findChildByName("coordinates literal atomic");
+    AsnNode* aCoordsNode = modelNode->findChildByName("coordinates literal atomic");
 
     bool ok = false;
-    AsnNode *numAtomsNode = aCoordsNode->getChildById(0);
+    AsnNode* numAtomsNode = aCoordsNode->getChildById(0);
     int numAtoms = numAtomsNode->value.toInt(&ok);
     Q_ASSERT(ok == true);
 
-    AsnNode *atomPntrsNode = aCoordsNode->getChildById(1);
+    AsnNode* atomPntrsNode = aCoordsNode->getChildById(1);
     Q_ASSERT(atomPntrsNode->name == "atoms");
-    AsnNode *chainIds = atomPntrsNode->getChildById(1);
-    AsnNode *resIds = atomPntrsNode->getChildById(2);
-    AsnNode *atomIds = atomPntrsNode->getChildById(3);
+    AsnNode* chainIds = atomPntrsNode->getChildById(1);
+    AsnNode* resIds = atomPntrsNode->getChildById(2);
+    AsnNode* atomIds = atomPntrsNode->getChildById(3);
 
-    AsnNode *sitesNode = aCoordsNode->getChildById(2);
+    AsnNode* sitesNode = aCoordsNode->getChildById(2);
     Q_ASSERT(sitesNode->name == "sites");
-    AsnNode *sfNode = sitesNode->getChildById(0);
-    AsnNode *xCoords = sitesNode->getChildById(1);
-    AsnNode *yCoords = sitesNode->getChildById(2);
-    AsnNode *zCoords = sitesNode->getChildById(3);
+    AsnNode* sfNode = sitesNode->getChildById(0);
+    AsnNode* xCoords = sitesNode->getChildById(1);
+    AsnNode* yCoords = sitesNode->getChildById(2);
+    AsnNode* zCoords = sitesNode->getChildById(3);
     int scaleFactor = sfNode->value.toInt();
 
     for (int i = 0; i < numAtoms; ++i) {
@@ -323,7 +323,7 @@ void ASNFormat::BioStructLoader::loadModelCoordsFromNode(AsnNode *modelNode, Ato
         float x = (float)xCoords->children.at(i)->value.toInt() / scaleFactor;
         float y = (float)yCoords->children.at(i)->value.toInt() / scaleFactor;
         float z = (float)zCoords->children.at(i)->value.toInt() / scaleFactor;
-        AtomData *a = new AtomData();
+        AtomData* a = new AtomData();
         a->chainIndex = chainId;
         a->residueIndex = ResidueIndex(resId, ' ');
         a->coord3d = Vector3D(x, y, z);
@@ -347,7 +347,7 @@ void ASNFormat::BioStructLoader::loadModelCoordsFromNode(AsnNode *modelNode, Ato
     }
 }
 
-const StdResidue ASNFormat::BioStructLoader::loadResidueFromNode(AsnNode *resNode, ResidueData *residue) {
+const StdResidue ASNFormat::BioStructLoader::loadResidueFromNode(AsnNode* resNode, ResidueData* residue) {
     /*
         Residue ::= SEQUENCE {
             id          Residue-id,
@@ -365,8 +365,8 @@ const StdResidue ASNFormat::BioStructLoader::loadResidueFromNode(AsnNode *resNod
 
     */
 
-    AsnNode *resGraphPntrNode = resNode->getChildById(2);
-    const StdResidueDictionary *dictionary = nullptr;
+    AsnNode* resGraphPntrNode = resNode->getChildById(2);
+    const StdResidueDictionary* dictionary = nullptr;
     int stdResidueId = 0;
     bool ok = false;
     if ((resGraphPntrNode->kind == ASN_VALUE) && (resGraphPntrNode->value.contains("local"))) {
@@ -386,7 +386,7 @@ const StdResidue ASNFormat::BioStructLoader::loadResidueFromNode(AsnNode *resNod
     return stdResidue;
 }
 
-void ASNFormat::BioStructLoader::loadMoleculeFromNode(AsnNode *moleculeNode, MoleculeData *molecule) {
+void ASNFormat::BioStructLoader::loadMoleculeFromNode(AsnNode* moleculeNode, MoleculeData* molecule) {
     /*
         Molecule-graph ::= SEQUENCE {
             id          Molecule-id,
@@ -404,13 +404,13 @@ void ASNFormat::BioStructLoader::loadMoleculeFromNode(AsnNode *moleculeNode, Mol
 
     int chainId = moleculeNode->getChildById(0)->value.toInt();
 
-    AsnNode *resideusNode = moleculeNode->findChildByName("residue-sequence");
-    foreach (AsnNode *resNode, resideusNode->children) {
+    AsnNode* resideusNode = moleculeNode->findChildByName("residue-sequence");
+    foreach (AsnNode* resNode, resideusNode->children) {
         // Load residue id
-        AsnNode *idNode = resNode->getChildById(0);
+        AsnNode* idNode = resNode->getChildById(0);
         int resId = idNode->value.toInt();
         // Load residue
-        ResidueData *resData = new ResidueData();
+        ResidueData* resData = new ResidueData();
         resData->chainIndex = chainId;
         StdResidue stdResidue = loadResidueFromNode(resNode, resData);
         molecule->residueMap.insert(ResidueIndex(resId, ' '), SharedResidue(resData));
@@ -418,7 +418,7 @@ void ASNFormat::BioStructLoader::loadMoleculeFromNode(AsnNode *moleculeNode, Mol
     }
 }
 
-void ASNFormat::BioStructLoader::loadBioStructModels(QList<AsnNode *> modelNodes, BioStruct3D &struc) {
+void ASNFormat::BioStructLoader::loadBioStructModels(QList<AsnNode*> modelNodes, BioStruct3D& struc) {
     /*
         Biostruc-model ::= SEQUENCE {
             id          Model-id,
@@ -430,13 +430,13 @@ void ASNFormat::BioStructLoader::loadBioStructModels(QList<AsnNode *> modelNodes
 
     Q_ASSERT(modelNodes.count() != 0);
 
-    for (AsnNode *modelNode : qAsConst(modelNodes)) {
+    for (AsnNode* modelNode : qAsConst(modelNodes)) {
         // Load model id
-        AsnNode *idNode = modelNode->getChildById(0);
+        AsnNode* idNode = modelNode->getChildById(0);
         int modelId = idNode->value.toInt();
         // Load model
         AtomCoordSet atomCoords;
-        AsnNode *modelCoordsNode = modelNode->findChildByName("model-coordinates");
+        AsnNode* modelCoordsNode = modelNode->findChildByName("model-coordinates");
         QMap<int, Molecule3DModel> molModels;
         loadModelCoordsFromNode(modelCoordsNode->getChildById(0), atomCoords, molModels, struc);
         struc.modelMap.insert(modelId, atomCoords);
@@ -447,7 +447,7 @@ void ASNFormat::BioStructLoader::loadBioStructModels(QList<AsnNode *> modelNodes
     }
 }
 
-void ASNFormat::BioStructLoader::loadBioStructGraph(AsnNode *graphNode, BioStruct3D &struc) {
+void ASNFormat::BioStructLoader::loadBioStructGraph(AsnNode* graphNode, BioStruct3D& struc) {
     /*
         Biostruc-graph ::= SEQUENCE {
             descr           SEQUENCE OF Biomol-descr OPTIONAL,
@@ -474,19 +474,19 @@ void ASNFormat::BioStructLoader::loadBioStructGraph(AsnNode *graphNode, BioStruc
 
     QMap<char, QString> names = loadMoleculeNames(graphNode->findChildByName("descr"));
 
-    AsnNode *moleculesNode = graphNode->findChildByName("molecule-graphs");
+    AsnNode* moleculesNode = graphNode->findChildByName("molecule-graphs");
 
-    foreach (AsnNode *molNode, moleculesNode->children) {
+    foreach (AsnNode* molNode, moleculesNode->children) {
         // Load molecule id
         bool ok = false;
         int molId = molNode->getChildById(0)->value.toInt(&ok);
         SAFE_POINT(ok, "Invalid type conversion", );
         // Load molecule data
-        AsnNode *const descrNode = molNode->findChildByName("descr");
+        AsnNode* const descrNode = molNode->findChildByName("descr");
         QByteArray molTypeName = descrNode->findChildByName("molecule-type")->value;
         QByteArray molChainId = descrNode->findChildByName("name")->value;
         if (molTypeName == "protein" || molTypeName == "dna" || molTypeName == "rna") {
-            MoleculeData *mol = new MoleculeData();
+            MoleculeData* mol = new MoleculeData();
             if (molChainId.length() == 1) {
                 mol->chainId = molChainId[0];
                 if (names.contains(mol->chainId)) {
@@ -503,7 +503,7 @@ void ASNFormat::BioStructLoader::loadBioStructGraph(AsnNode *graphNode, BioStruc
 ASNFormat::~ASNFormat() {
 }
 
-void ASNFormat::BioStructLoader::loadBioStructSecondaryStruct(AsnNode *setsNode, BioStruct3D &struc) {
+void ASNFormat::BioStructLoader::loadBioStructSecondaryStruct(AsnNode* setsNode, BioStruct3D& struc) {
     /*
         Biostruc-feature-set ::= SEQUENCE {
             id      Biostruc-feature-set-id,
@@ -518,21 +518,21 @@ void ASNFormat::BioStructLoader::loadBioStructSecondaryStruct(AsnNode *setsNode,
 
    */
 
-    for (AsnNode *featureSet : qAsConst(setsNode->children)) {
+    for (AsnNode* featureSet : qAsConst(setsNode->children)) {
         QByteArray descr = featureSet->findChildByName("descr")->getChildById(0)->value;
         if (descr != "PDB secondary structure") {
             continue;
         }
 
-        AsnNode *features = featureSet->getChildById(2);
+        AsnNode* features = featureSet->getChildById(2);
         Q_ASSERT(features->name == "features");
-        for (AsnNode *featureNode : qAsConst(features->children)) {
+        for (AsnNode* featureNode : qAsConst(features->children)) {
             loadBioStructFeature(featureNode, struc);
         }
     }
 }
 
-void ASNFormat::BioStructLoader::loadBioStructFeature(AsnNode *featureNode, BioStruct3D &struc) {
+void ASNFormat::BioStructLoader::loadBioStructFeature(AsnNode* featureNode, BioStruct3D& struc) {
     /*
         Biostruc-feature ::= SEQUENCE {
             id      Biostruc-feature-id OPTIONAL,
@@ -559,7 +559,7 @@ void ASNFormat::BioStructLoader::loadBioStructFeature(AsnNode *featureNode, BioS
 
     */
 
-    AsnNode *typeNode = featureNode->findChildByName("type");
+    AsnNode* typeNode = featureNode->findChildByName("type");
     SecondaryStructure::Type ssType(SecondaryStructure::Type_None);
     if (typeNode->value == "helix") {
         ssType = SecondaryStructure::Type_AlphaHelix;
@@ -571,13 +571,13 @@ void ASNFormat::BioStructLoader::loadBioStructFeature(AsnNode *featureNode, BioS
         return;
     }
 
-    AsnNode *locatioNode = featureNode->findChildByName("location subgraph residues interval")->getChildById(0);
+    AsnNode* locatioNode = featureNode->findChildByName("location subgraph residues interval")->getChildById(0);
     bool idOK = false, fromOK = false, toOK = false;
     int chainId = locatioNode->getChildById(0)->value.toInt(&idOK);
     int from = locatioNode->getChildById(1)->value.toInt(&fromOK);
     int to = locatioNode->getChildById(2)->value.toInt(&toOK);
     Q_ASSERT(idOK && fromOK && toOK);
-    SecondaryStructure *ssData = new SecondaryStructure();
+    SecondaryStructure* ssData = new SecondaryStructure();
     ssData->chainIndex = chainId;
     ssData->type = ssType;
     ssData->startSequenceNumber = from;
@@ -586,14 +586,14 @@ void ASNFormat::BioStructLoader::loadBioStructFeature(AsnNode *featureNode, BioS
     struc.secondaryStructures.append(SharedSecondaryStructure(ssData));
 }
 
-void ASNFormat::BioStructLoader::loadIntraResidueBonds(BioStruct3D &struc) {
+void ASNFormat::BioStructLoader::loadIntraResidueBonds(BioStruct3D& struc) {
     Q_ASSERT(!stdResidueCache.isEmpty());
     foreach (int chainId, struc.moleculeMap.keys()) {
-        SharedMolecule &mol = struc.moleculeMap[chainId];
+        SharedMolecule& mol = struc.moleculeMap[chainId];
         int numModels = mol->models.count();
         for (int modelId = 0; modelId < numModels; ++modelId) {
             QList<ResidueIndex> residueKeys = mol->residueMap.keys();
-            for (const ResidueIndex &resId : qAsConst(residueKeys)) {
+            for (const ResidueIndex& resId : qAsConst(residueKeys)) {
                 quint64 index = calcStdResidueIndex(chainId, resId.toInt());
                 if (!stdResidueCache.contains(index)) {
                     continue;
@@ -602,9 +602,9 @@ void ASNFormat::BioStructLoader::loadIntraResidueBonds(BioStruct3D &struc) {
                 if (!atomSetCache.contains(index)) {
                     continue;
                 }
-                const AtomCoordSet &atomSet = atomSetCache.value(index);
+                const AtomCoordSet& atomSet = atomSetCache.value(index);
                 Q_ASSERT(!atomSet.isEmpty());
-                for (const StdBond &bond : qAsConst(residue.bonds)) {
+                for (const StdBond& bond : qAsConst(residue.bonds)) {
                     if (atomSet.contains(bond.atom1Id) && atomSet.contains(bond.atom2Id)) {
                         const SharedAtom a1 = atomSet.value(bond.atom1Id);
                         const SharedAtom a2 = atomSet.value(bond.atom2Id);
@@ -616,16 +616,16 @@ void ASNFormat::BioStructLoader::loadIntraResidueBonds(BioStruct3D &struc) {
     }
 }
 
-QMap<char, QString> ASNFormat::BioStructLoader::loadMoleculeNames(AsnNode *biostructGraphDescr) {
+QMap<char, QString> ASNFormat::BioStructLoader::loadMoleculeNames(AsnNode* biostructGraphDescr) {
     QMap<char, QString> ans;
     if (biostructGraphDescr == nullptr) {
         return ans;
     }
 
-    if (AsnNode *const comment = biostructGraphDescr->findChildByName("pdb-comment")) {
+    if (AsnNode* const comment = biostructGraphDescr->findChildByName("pdb-comment")) {
         QStringList molecules = parseMolecules(comment->value);
 
-        for (const QString &mol : qAsConst(molecules)) {
+        for (const QString& mol : qAsConst(molecules)) {
             QString name = parseMolName(mol);
             if (name.isEmpty()) {
                 continue;
@@ -642,20 +642,20 @@ QMap<char, QString> ASNFormat::BioStructLoader::loadMoleculeNames(AsnNode *biost
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-AsnNode *ASNFormat::AsnParser::loadAsnTree() {
+AsnNode* ASNFormat::AsnParser::loadAsnTree() {
     try {
         if (!readRootElement()) {
             throw AsnParserError(ASNFormat::tr("no root element"));
         }
 
-        AsnNode *rootElem = new AsnNode(curElementName, ASN_ROOT);
+        AsnNode* rootElem = new AsnNode(curElementName, ASN_ROOT);
         parseNextElement(rootElem);
         if (states.count() != 0) {
             throw AsnParserError(ASNFormat::tr("states stack is not empty"));
         }
         return rootElem;
 
-    } catch (const AsnBaseException &ex) {
+    } catch (const AsnBaseException& ex) {
         ts.setError(ex.msg);
         return nullptr;
     } catch (...) {
@@ -668,7 +668,7 @@ bool ASNFormat::AsnParser::readRootElement() {
     Q_ASSERT(io->getProgress() == 0);
 
     QByteArray readBuff(DocumentFormat::READ_BUFF_SIZE + 1, 0);
-    char *buf = readBuff.data();
+    char* buf = readBuff.data();
     quint64 len = 0;
 
     bool lineOk = true;
@@ -696,24 +696,24 @@ bool ASNFormat::AsnParser::readRootElement() {
     }
 }
 
-void ASNFormat::AsnParser::initState(const QByteArray &parentName) {
+void ASNFormat::AsnParser::initState(const QByteArray& parentName) {
     curState.parentName = parentName;
     curState.numOpenedTags = 1;
     curState.atEnd = false;
 }
 
-void ASNFormat::AsnParser::parseNextElement(AsnNode *node) {
+void ASNFormat::AsnParser::parseNextElement(AsnNode* node) {
     Q_ASSERT(insideRoot);
 
     while (!curState.atEnd) {
         if (readNextElement()) {
             if (curElementKind == ASN_VALUE) {
-                AsnNode *child = new AsnNode(curElementName, curElementKind);
+                AsnNode* child = new AsnNode(curElementName, curElementKind);
                 child->value = curElementValue;
                 node->children.append(child);
             } else if (curElementKind == ASN_SEQ) {
                 saveState();
-                AsnNode *child = new AsnNode(curElementName, curElementKind);
+                AsnNode* child = new AsnNode(curElementName, curElementKind);
                 parseNextElement(child);
                 restoreState();
                 node->children.append(child);
@@ -808,9 +808,9 @@ void ASNFormat::AsnParser::processValue() {
     curElementKind = ASN_VALUE;
 }
 
-void ASNFormat::AsnParser::dbgPrintAsnTree(const AsnNode *rootElem, int deepness) {
+void ASNFormat::AsnParser::dbgPrintAsnTree(const AsnNode* rootElem, int deepness) {
     ++deepness;
-    foreach (const AsnNode *node, rootElem->children) {
+    foreach (const AsnNode* node, rootElem->children) {
         QString str;
         for (int i = 0; i < deepness; ++i) {
             str += "  ";
@@ -827,7 +827,7 @@ void ASNFormat::AsnParser::dbgPrintAsnTree(const AsnNode *rootElem, int deepness
     --deepness;
 }
 
-bool ASNFormat::AsnParser::isQuoted(const QByteArray &str) {
+bool ASNFormat::AsnParser::isQuoted(const QByteArray& str) {
     int length = str.length();
     static const char quoteChar('\"');
     if ((str.at(0) == quoteChar) && (str.at(length - 1) == quoteChar)) {
@@ -836,7 +836,7 @@ bool ASNFormat::AsnParser::isQuoted(const QByteArray &str) {
     return false;
 }
 
-void ASNFormat::AsnParser::removeQuotes(QByteArray &str) {
+void ASNFormat::AsnParser::removeQuotes(QByteArray& str) {
     int len = str.length();
     str.remove(len - 1, 1);
     str.remove(0, 1);
@@ -873,7 +873,7 @@ AsnNode::AsnNode()
     : name(""), kind(ASN_NO_KIND) {
 }
 
-AsnNode::AsnNode(const QByteArray &_name, AsnElementKind _kind)
+AsnNode::AsnNode(const QByteArray& _name, AsnElementKind _kind)
     : name(_name), kind(_kind) {
 }
 
@@ -883,22 +883,22 @@ AsnNode::~AsnNode() {
     }
 }
 
-void AsnNode::deleteChildren(AsnNode *node) {
-    foreach (AsnNode *child, node->children) {
+void AsnNode::deleteChildren(AsnNode* node) {
+    foreach (AsnNode* child, node->children) {
         deleteChildren(child);
         delete child;
     }
 }
 
-AsnNode *AsnNode::findChildByName(const QByteArray &name) {
-    foreach (AsnNode *child, children) {
+AsnNode* AsnNode::findChildByName(const QByteArray& name) {
+    foreach (AsnNode* child, children) {
         if (child->name == name)
             return child;
     }
     return nullptr;
 }
 
-AsnNode *AsnNode::getChildById(int id) {
+AsnNode* AsnNode::getChildById(int id) {
     return children.at(id);
 }
 

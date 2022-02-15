@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-ExtractAnnotatedRegionTask::ExtractAnnotatedRegionTask(const DNASequence &sequence_, const SharedAnnotationData &sd_, const ExtractAnnotatedRegionTaskSettings &cfg_)
+ExtractAnnotatedRegionTask::ExtractAnnotatedRegionTask(const DNASequence& sequence_, const SharedAnnotationData& sd_, const ExtractAnnotatedRegionTaskSettings& cfg_)
     : Task(tr("Extract annotated regions"), TaskFlag_None), inputSeq(sequence_), inputAnn(sd_), cfg(cfg_), complT(nullptr), aminoT(nullptr) {
 }
 
@@ -43,7 +43,7 @@ void ExtractAnnotatedRegionTask::prepareTranslations() {
         return;
     }
     if (cfg.complement && inputAnn->getStrand().isComplementary()) {
-        DNATranslation *compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(inputSeq.alphabet);
+        DNATranslation* compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(inputSeq.alphabet);
         if (compTT != nullptr) {
             complT = compTT;
         }
@@ -51,7 +51,7 @@ void ExtractAnnotatedRegionTask::prepareTranslations() {
 
     if (cfg.translate) {
         DNATranslationType dnaTranslType = (inputSeq.alphabet->getType() == DNAAlphabet_NUCL) ? DNATranslationType_NUCL_2_AMINO : DNATranslationType_RAW_2_AMINO;
-        QList<DNATranslation *> aminoTTs = AppContext::getDNATranslationRegistry()->lookupTranslation(inputSeq.alphabet, dnaTranslType);
+        QList<DNATranslation*> aminoTTs = AppContext::getDNATranslationRegistry()->lookupTranslation(inputSeq.alphabet, dnaTranslType);
         if (!aminoTTs.isEmpty()) {
             aminoT = AppContext::getDNATranslationRegistry()->getStandardGeneticCodeTranslation(inputSeq.alphabet);
         }
@@ -90,7 +90,7 @@ void ExtractAnnotatedRegionTask::run() {
     } else {
         resParts = U1SequenceUtils::translateRegions(resParts, aminoT, inputAnn->isJoin());
     }
-    foreach (const QByteArray &seq, resParts) {
+    foreach (const QByteArray& seq, resParts) {
         bool onlyOneIteration = false;
         DNASequence s;
         s.info[DNAInfo::ID] = inputSeq.getName();
@@ -116,11 +116,11 @@ void ExtractAnnotatedRegionTask::run() {
     }
 }
 
-const QList<DNASequence> &ExtractAnnotatedRegionTask::getResultedSequences() const {
+const QList<DNASequence>& ExtractAnnotatedRegionTask::getResultedSequences() const {
     return resultedSeqList;
 }
 
-const SharedAnnotationData &ExtractAnnotatedRegionTask::getInputAnnotation() const {
+const SharedAnnotationData& ExtractAnnotatedRegionTask::getInputAnnotation() const {
     return inputAnn;
 }
 

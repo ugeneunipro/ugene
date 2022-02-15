@@ -66,7 +66,7 @@ namespace U2 {
 
 class FastaPatternsWalker {
 public:
-    FastaPatternsWalker(const QString &patternsString, int cursor = 0)
+    FastaPatternsWalker(const QString& patternsString, int cursor = 0)
         : patternsString(patternsString.toLatin1()), cursor(cursor), current(-1), comment(false), header(false) {
     }
 
@@ -162,7 +162,7 @@ private:
  */
 class FindPatternTextEdit : public QTextEdit {
 public:
-    FindPatternTextEdit(QTextEdit *originalEdit) {
+    FindPatternTextEdit(QTextEdit* originalEdit) {
         // Copy all important fields from the original edit. These fields can be set in QtDesigner.
         setObjectName(originalEdit->objectName());
         setSizePolicy(originalEdit->sizePolicy());
@@ -179,11 +179,11 @@ protected:
         return toPlainText().size() + extraTextSize <= MAX_SUPPORTED_TEXT_EDIT_SEQUENCE_SIZE;
     }
 
-    bool canInsertFromMimeData(const QMimeData *source) const override {
+    bool canInsertFromMimeData(const QMimeData* source) const override {
         return isSafeToAddExtraTextSize(source->text().length()) && QTextEdit::canInsertFromMimeData(source);
     }
 
-    void insertFromMimeData(const QMimeData *source) override {
+    void insertFromMimeData(const QMimeData* source) override {
         if (isSafeToAddExtraTextSize(source->text().length())) {
             QTextEdit::insertFromMimeData(source);
             return;
@@ -193,15 +193,15 @@ protected:
     }
 };
 
-FindPatternEventFilter::FindPatternEventFilter(QTextEdit *textEdit)
+FindPatternEventFilter::FindPatternEventFilter(QTextEdit* textEdit)
     : QObject(textEdit) {
     textEdit->installEventFilter(this);
 }
 
-bool FindPatternEventFilter::eventFilter(QObject *obj, QEvent *event) {
+bool FindPatternEventFilter::eventFilter(QObject* obj, QEvent* event) {
     const QEvent::Type eventType = event->type();
     if (eventType == QEvent::KeyPress) {
-        QKeyEvent *keyEvent = dynamic_cast<QKeyEvent *>(event);
+        QKeyEvent* keyEvent = dynamic_cast<QKeyEvent*>(event);
         if (keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return) {
             if (keyEvent->modifiers().testFlag(Qt::ShiftModifier)) {
                 emit si_shiftEnterPressed();
@@ -215,7 +215,7 @@ bool FindPatternEventFilter::eventFilter(QObject *obj, QEvent *event) {
             }
         }
     } else if (eventType == QEvent::Show) {
-        QWidget *watched = dynamic_cast<QWidget *>(obj);
+        QWidget* watched = dynamic_cast<QWidget*>(obj);
         if (nullptr != watched) {
             watched->setFocus();
         }
@@ -230,7 +230,7 @@ const int FindPatternWidget::REG_EXP_MIN_RESULT_LEN = 1;
 const int FindPatternWidget::REG_EXP_MAX_RESULT_LEN = 1000;
 const int FindPatternWidget::REG_EXP_MAX_RESULT_SINGLE_STEP = 20;
 
-FindPatternWidget::FindPatternWidget(AnnotatedDNAView *annotatedDnaView)
+FindPatternWidget::FindPatternWidget(AnnotatedDNAView* annotatedDnaView)
     : annotatedDnaView(annotatedDnaView),
       trackedSelection(nullptr),
       currentResultIndex(-1),
@@ -253,7 +253,7 @@ FindPatternWidget::FindPatternWidget(AnnotatedDNAView *annotatedDnaView)
     savableWidget.setRegionWidgetIds(QStringList() << editStart->objectName()
                                                    << editEnd->objectName());
 
-    ADVSequenceObjectContext *activeContext = annotatedDnaView->getActiveSequenceContext();
+    ADVSequenceObjectContext* activeContext = annotatedDnaView->getActiveSequenceContext();
     progressLabel->setMovie(progressMovie);
     if (activeContext != nullptr) {
         // Initializing the annotation model
@@ -273,7 +273,7 @@ FindPatternWidget::FindPatternWidget(AnnotatedDNAView *annotatedDnaView)
         annotationsWidget = createAnnotationController->getWidget();
         annotationsWidget->setObjectName("annotationsWidget");
 
-        const DNAAlphabet *alphabet = activeContext->getAlphabet();
+        const DNAAlphabet* alphabet = activeContext->getAlphabet();
         isAminoSequenceSelected = alphabet->isAmino();
 
         initLayout();
@@ -383,7 +383,7 @@ void FindPatternWidget::initRegionSelection() {
     boxRegion->addItem(tr("Custom region"), RegionSelectionIndex_CustomRegion);
     boxRegion->addItem(tr("Selected region"), RegionSelectionIndex_CurrentSelectedRegion);
 
-    ADVSequenceObjectContext *activeContext = annotatedDnaView->getActiveSequenceContext();
+    ADVSequenceObjectContext* activeContext = annotatedDnaView->getActiveSequenceContext();
     SAFE_POINT(activeContext != nullptr, "Internal error: sequence context is NULL during region selection init.", );
 
     setRegionToWholeSequence();
@@ -406,7 +406,7 @@ void FindPatternWidget::initResultsLimit() {
 void FindPatternWidget::initUseAmbiguousBasesContainer() {
     useAmbiguousBasesContainer = new QWidget();
 
-    QHBoxLayout *useAmbiguousBasesLayout = new QHBoxLayout();
+    QHBoxLayout* useAmbiguousBasesLayout = new QHBoxLayout();
     useAmbiguousBasesLayout->setContentsMargins(0, 0, 0, 0);
     useAmbiguousBasesLayout->setSpacing(10);
     useAmbiguousBasesLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
@@ -414,7 +414,7 @@ void FindPatternWidget::initUseAmbiguousBasesContainer() {
 
     useAmbiguousBasesBox = new QCheckBox();
     useAmbiguousBasesBox->setObjectName("useAmbiguousBasesBox");
-    QLabel *useAmbiguousBasesLabel = new QLabel(tr("Search with ambiguous bases"));
+    QLabel* useAmbiguousBasesLabel = new QLabel(tr("Search with ambiguous bases"));
     useAmbiguousBasesLabel->setWordWrap(true);
 
     useAmbiguousBasesLayout->addWidget(useAmbiguousBasesBox, 0);
@@ -431,13 +431,13 @@ void FindPatternWidget::initMaxResultLenContainer() {
     layoutRegExpLen->setSizeConstraint(QLayout::SetMinAndMaxSize);
     useMaxResultLenContainer->setLayout(layoutRegExpLen);
 
-    QHBoxLayout *layoutUseMaxResultLen = new QHBoxLayout();
+    QHBoxLayout* layoutUseMaxResultLen = new QHBoxLayout();
     layoutUseMaxResultLen->setSpacing(10);
     layoutUseMaxResultLen->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
     boxUseMaxResultLen = new QCheckBox();
     boxUseMaxResultLen->setObjectName("boxUseMaxResultLen");
-    QLabel *labelUseMaxResultLen = new QLabel(tr("Results no longer than:"));
+    QLabel* labelUseMaxResultLen = new QLabel(tr("Results no longer than:"));
     labelUseMaxResultLen->setWordWrap(true);
     layoutUseMaxResultLen->addWidget(boxUseMaxResultLen, 0);
     layoutUseMaxResultLen->addWidget(labelUseMaxResultLen, 1);
@@ -473,7 +473,7 @@ void FindPatternWidget::connectSlots() {
     connect(removeOverlapsBox, SIGNAL(stateChanged(int)), SLOT(sl_activateNewSearch()));
 
     // A sequence has been activated in the Sequence View
-    connect(annotatedDnaView, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget *, ADVSequenceWidget *)), this, SLOT(sl_onActiveSequenceChanged()));
+    connect(annotatedDnaView, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget*, ADVSequenceWidget*)), this, SLOT(sl_onActiveSequenceChanged()));
 
     // A sequence has been modified (a subsequence added, removed, etc.)
     connect(annotatedDnaView->getActiveSequenceContext()->getSequenceObject(), SIGNAL(si_sequenceChanged()), this, SLOT(sl_onSequenceModified()));
@@ -484,7 +484,7 @@ void FindPatternWidget::connectSlots() {
     usePatternFromTextEditRadioButton->setChecked(true);
     updatePatternSourceControlsUiState();
 
-    connect(filePathLineEdit, SIGNAL(textChanged(const QString &)), SLOT(sl_activateNewSearch()));
+    connect(filePathLineEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_activateNewSearch()));
 
     connect(getAnnotationsPushButton, SIGNAL(clicked()), SLOT(sl_getAnnotationsButtonClicked()));
     connect(prevPushButton, SIGNAL(clicked()), SLOT(sl_prevButtonClicked()));
@@ -578,11 +578,11 @@ void FindPatternWidget::sl_onSearchRegionIsChangedByUser() {
 void FindPatternWidget::sl_onActiveSequenceChanged() {
     stopTrackingFocusedSequenceSelection();
 
-    ADVSequenceObjectContext *activeContext = annotatedDnaView->getActiveSequenceContext();
+    ADVSequenceObjectContext* activeContext = annotatedDnaView->getActiveSequenceContext();
     if (activeContext == nullptr) {
         return;
     }
-    const DNAAlphabet *alphabet = activeContext->getAlphabet();
+    const DNAAlphabet* alphabet = activeContext->getAlphabet();
     isAminoSequenceSelected = alphabet->isAmino();
     updateLayout();
 
@@ -654,7 +654,7 @@ void FindPatternWidget::updateLayout() {
     }
 }
 
-void FindPatternWidget::setMessageFlag(const MessageFlag &messageFlag, bool show, const QString &additionalMsg) {
+void FindPatternWidget::setMessageFlag(const MessageFlag& messageFlag, bool show, const QString& additionalMsg) {
     if (show) {
         messageFlagMap.insert(messageFlag, additionalMsg);
     } else {
@@ -690,7 +690,7 @@ QString FindPatternWidget::buildErrorLabelHtml() const {
     }
     QString text = "";
     QList<MessageFlag> errorFlags = messageFlagMap.keys();
-    for (const MessageFlag &flag : qAsConst(errorFlags)) {
+    for (const MessageFlag& flag : qAsConst(errorFlags)) {
         QString customErrorMessage = messageFlagMap[flag];
         text += text.isEmpty() ? "" : "<br>";
         switch (flag) {
@@ -830,7 +830,7 @@ void FindPatternWidget::setCorrectPatternsString() {
 }
 
 void FindPatternWidget::setRegionToWholeSequence() {
-    ADVSequenceObjectContext *activeContext = annotatedDnaView->getActiveSequenceContext();
+    ADVSequenceObjectContext* activeContext = annotatedDnaView->getActiveSequenceContext();
     SAFE_POINT(activeContext != nullptr, "Internal error: sequence context is NULL during setting region to whole sequence.", );
 
     editStart->setText(QString::number(1));
@@ -844,7 +844,7 @@ bool FindPatternWidget::verifyPatternAlphabet() {
 
     QStringList patternNoNames;
     QList<NamePattern> patternsWithNames = getPatternsFromTextPatternField(os);
-    for (const NamePattern &name_pattern : qAsConst(patternsWithNames)) {
+    for (const NamePattern& name_pattern : qAsConst(patternsWithNames)) {
         patternNoNames.append(name_pattern.second);
     }
 
@@ -897,7 +897,7 @@ void FindPatternWidget::checkState() {
         return;
     }
     if (usePatternNames && !usePatternFromFileRadioButton->isChecked()) {
-        for (const QString &name : qAsConst(nameList)) {
+        for (const QString& name : qAsConst(nameList)) {
             if (!Annotation::isValidAnnotationName(name)) {
                 setMessageFlag(AnnotationNotValidFastaParsedName, true);
                 return;
@@ -942,7 +942,7 @@ void FindPatternWidget::enableDisableMatchSpin() {
 }
 
 U2Region FindPatternWidget::getSearchRegion() const {
-    ADVSequenceObjectContext *activeContext = annotatedDnaView->getActiveSequenceContext();
+    ADVSequenceObjectContext* activeContext = annotatedDnaView->getActiveSequenceContext();
     qint64 sequenceLength = activeContext->getSequenceLength();
     if (boxRegion->itemData(boxRegion->currentIndex()).toInt() == RegionSelectionIndex_WholeSequence) {
         return U2Region(0, sequenceLength);
@@ -956,20 +956,20 @@ U2Region FindPatternWidget::getSearchRegion() const {
     return resultRegion;
 }
 
-QList<QPair<QString, QString>> FindPatternWidget::getPatternsFromTextPatternField(U2OpStatus &os) const {
+QList<QPair<QString, QString>> FindPatternWidget::getPatternsFromTextPatternField(U2OpStatus& os) const {
     QString inputText = textPattern->toPlainText().toLocal8Bit();
     QList<NamePattern> result = FastaFormat::getSequencesAndNamesFromUserInput(inputText, os);
 
     if (result.isEmpty()) {
         QStringList patterns = inputText.split(QRegExp("\n"), QString::SkipEmptyParts);
-        for (const QString &pattern : qAsConst(patterns)) {
+        for (const QString& pattern : qAsConst(patterns)) {
             result.append(qMakePair(QString(""), pattern));
         }
     }
 
     if (!usePatternNames) {
         createAnnotationController->validate();
-        const CreateAnnotationModel &model = createAnnotationController->getModel();
+        const CreateAnnotationModel& model = createAnnotationController->getModel();
         for (int i = 0; i < result.size(); i++) {
             result[i].first = model.data->name;
         }
@@ -1011,14 +1011,14 @@ void FindPatternWidget::sl_onFileSelectorToggled(bool on) {
     sl_activateNewSearch(true);
 }
 
-void FindPatternWidget::initFindPatternTask(const QList<NamePattern> &patterns) {
+void FindPatternWidget::initFindPatternTask(const QList<NamePattern>& patterns) {
     CHECK(!patterns.isEmpty(), );
 
     if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
         QRegExp regExp(textPattern->toPlainText());
         CHECK(regExp.isValid(), );
     }
-    ADVSequenceObjectContext *activeContext = annotatedDnaView->getActiveSequenceContext();
+    ADVSequenceObjectContext* activeContext = annotatedDnaView->getActiveSequenceContext();
     SAFE_POINT(activeContext != nullptr, "Internal error: there is no sequence in focus!", );
 
     FindAlgorithmTaskSettings settings;
@@ -1095,7 +1095,7 @@ void FindPatternWidget::initFindPatternTask(const QList<NamePattern> &patterns) 
 }
 
 void FindPatternWidget::sl_loadPatternTaskStateChanged() {
-    LoadPatternsFileTask *loadTask = qobject_cast<LoadPatternsFileTask *>(sender());
+    LoadPatternsFileTask* loadTask = qobject_cast<LoadPatternsFileTask*>(sender());
     CHECK(loadTask != nullptr, );
     CHECK(loadTask->isFinished() && !loadTask->isCanceled(), );
     CHECK(!loadTask->hasError(), );
@@ -1114,12 +1114,12 @@ void FindPatternWidget::sl_loadPatternTaskStateChanged() {
     updateAnnotationsWidget();
 }
 
-bool compareByRegionStartPos(const SharedAnnotationData &r1, const SharedAnnotationData &r2) {
+bool compareByRegionStartPos(const SharedAnnotationData& r1, const SharedAnnotationData& r2) {
     return r1->getRegions().first().startPos < r2->getRegions().first().startPos;
 }
 
 void FindPatternWidget::sl_findPatternTaskStateChanged() {
-    FindPatternListTask *findTask = qobject_cast<FindPatternListTask *>(sender());
+    FindPatternListTask* findTask = qobject_cast<FindPatternListTask*>(sender());
     CHECK(findTask != nullptr, );
     if (findTask != searchTask) {
         return;
@@ -1144,7 +1144,7 @@ void FindPatternWidget::sl_findPatternTaskStateChanged() {
             checkState();
             // Activate the first search result.
             if (currentResultIndex >= 0) {
-                ADVSingleSequenceWidget *seqWdgt = qobject_cast<ADVSingleSequenceWidget *>(annotatedDnaView->getActiveSequenceWidget());
+                ADVSingleSequenceWidget* seqWdgt = qobject_cast<ADVSingleSequenceWidget*>(annotatedDnaView->getActiveSequenceWidget());
                 if (seqWdgt != nullptr) {
                     if (seqWdgt->getDetView() != nullptr && !seqWdgt->getDetView()->isEditMode()) {
                         showCurrentResult();
@@ -1159,13 +1159,13 @@ void FindPatternWidget::sl_findPatternTaskStateChanged() {
     }
 }
 
-bool FindPatternWidget::checkAlphabet(const QString &pattern) {
-    ADVSequenceObjectContext *activeContext = annotatedDnaView->getActiveSequenceContext();
+bool FindPatternWidget::checkAlphabet(const QString& pattern) {
+    ADVSequenceObjectContext* activeContext = annotatedDnaView->getActiveSequenceContext();
     SAFE_POINT(activeContext != nullptr, "Internal error: there is no sequence in focus on pattern search!", false);
 
-    const DNAAlphabet *alphabet = activeContext->getAlphabet();
+    const DNAAlphabet* alphabet = activeContext->getAlphabet();
     if (!isAminoSequenceSelected && SeqTranslIndex_Translation == boxSeqTransl->currentIndex()) {
-        DNATranslation *translation = activeContext->getAminoTT();
+        DNATranslation* translation = activeContext->getAminoTT();
         SAFE_POINT(translation != nullptr, "Failed to get translation on pattern search!", false);
 
         alphabet = translation->getDstAlphabet();
@@ -1178,7 +1178,7 @@ bool FindPatternWidget::checkAlphabet(const QString &pattern) {
         return true;
     }
     if (useAmbiguousBasesBox->isChecked() && !alphabet->isExtended()) {
-        const DNAAlphabet *extAlphabet = U2AlphabetUtils::getExtendedAlphabet(alphabet);
+        const DNAAlphabet* extAlphabet = U2AlphabetUtils::getExtendedAlphabet(alphabet);
         if (extAlphabet != nullptr) {
             bool patternFitsIntoExtAlphabet = TextUtils::fits(extAlphabet->getMap(), pattern.toLocal8Bit().data(), pattern.size());
             if (patternFitsIntoExtAlphabet) {
@@ -1199,7 +1199,7 @@ QString FindPatternWidget::checkSearchRegion() const {
         QStringList patterns = pattern.split("\n");
         QString longestPattern = *std::max_element(patterns.begin(),
                                                    patterns.end(),
-                                                   [](auto &p1, auto &p2) { return p1.length() < p2.length(); });
+                                                   [](auto& p1, auto& p2) { return p1.length() < p2.length(); });
         if (longestPattern.length() > region.length) {
             return tr("Warning: Search region is too small.");
         }
@@ -1209,7 +1209,7 @@ QString FindPatternWidget::checkSearchRegion() const {
 
 void FindPatternWidget::sl_syncSearchRegionWithTrackedSelection() {
     SAFE_POINT(trackedSelection != nullptr, "No tracked selection is found!", );
-    const QVector<U2Region> &selectedRegions = trackedSelection->getSelectedRegions();
+    const QVector<U2Region>& selectedRegions = trackedSelection->getSelectedRegions();
     if (isSearchInSelectionMode() && isRegionListInSearchResults(selectedRegions)) {
         return;  // User browses selection results (clicks Prev/Next) -> do not update the search selection range.
     }
@@ -1304,7 +1304,7 @@ QList<NamePattern> FindPatternWidget::updateNamePatterns() {
     QList<NamePattern> newPatterns = getPatternsFromTextPatternField(os);
 
     nameList.clear();
-    for (const NamePattern &newPattern : qAsConst(newPatterns)) {
+    for (const NamePattern& newPattern : qAsConst(newPatterns)) {
         nameList.append(newPattern.first);
     }
     return newPatterns;
@@ -1319,10 +1319,10 @@ void FindPatternWidget::sl_getAnnotationsButtonClicked() {
     QString validationError = createAnnotationController->validate();
     SAFE_POINT(validationError.isEmpty(), "Annotation names are invalid", );
 
-    const CreateAnnotationModel &annotationModel = createAnnotationController->getModel();
+    const CreateAnnotationModel& annotationModel = createAnnotationController->getModel();
     QString group = annotationModel.groupName;
 
-    AnnotationTableObject *annotationTableObject = annotationModel.getAnnotationObject();
+    AnnotationTableObject* annotationTableObject = annotationModel.getAnnotationObject();
     SAFE_POINT(annotationTableObject != nullptr, "Invalid annotation table detected!", );
     annotatedDnaView->tryAddObject(annotationTableObject);
     QList<SharedAnnotationData> annotationsToCreate = findPatternResults;
@@ -1387,10 +1387,10 @@ void FindPatternWidget::showCurrentResult() const {
         return;
     }
     // Activate the current result.
-    const SharedAnnotationData &findResult = findPatternResults.at(currentResultIndex);
-    ADVSequenceObjectContext *activeContext = annotatedDnaView->getActiveSequenceContext();
+    const SharedAnnotationData& findResult = findPatternResults.at(currentResultIndex);
+    ADVSequenceObjectContext* activeContext = annotatedDnaView->getActiveSequenceContext();
     CHECK(activeContext != nullptr, );
-    const QVector<U2Region> &regions = findResult->getRegions();
+    const QVector<U2Region>& regions = findResult->getRegions();
     CHECK(!regions.isEmpty(), );
     activeContext->getSequenceSelection()->setSelectedRegions(regions);
     int centerPos = regions.first().center() + 1;
@@ -1416,11 +1416,11 @@ void FindPatternWidget::sl_usePatternNamesCbClicked() {
     checkState();
 }
 
-bool FindPatternWidget::isSearchPatternsDifferent(const QList<NamePattern> &newPatterns) const {
+bool FindPatternWidget::isSearchPatternsDifferent(const QList<NamePattern>& newPatterns) const {
     if (newPatterns.size() != patternList.size()) {
         return true;
     }
-    for (const NamePattern &newPattern : qAsConst(newPatterns)) {
+    for (const NamePattern& newPattern : qAsConst(newPatterns)) {
         if (!patternList.contains(newPattern.second)) {
             return true;
         }
@@ -1444,7 +1444,7 @@ void FindPatternWidget::stopCurrentSearchTask() {
 }
 
 void FindPatternWidget::setUpTabOrder() const {
-    CreateAnnotationWidgetController *annotationWidget = qobject_cast<CreateAnnotationWidgetController *>(createAnnotationController);
+    CreateAnnotationWidgetController* annotationWidget = qobject_cast<CreateAnnotationWidgetController*>(createAnnotationController);
     SAFE_POINT(annotationWidget != nullptr, "Bad casting to CreateAnnotationWidgetController", );
 
     QWidget::setTabOrder(nextPushButton, boxAlgorithm);
@@ -1472,25 +1472,25 @@ void FindPatternWidget::startProgressAnimation() {
 
 void FindPatternWidget::startTrackingFocusedSequenceSelection() {
     stopTrackingFocusedSequenceSelection();
-    ADVSequenceObjectContext *focusedSequenceContext = annotatedDnaView->getActiveSequenceContext();
+    ADVSequenceObjectContext* focusedSequenceContext = annotatedDnaView->getActiveSequenceContext();
     if (focusedSequenceContext != nullptr) {
         trackedSelection = focusedSequenceContext->getSequenceSelection();
-        connect(trackedSelection, SIGNAL(si_selectionChanged(LRegionsSelection *, const QVector<U2Region> &, const QVector<U2Region> &)), this, SLOT(sl_syncSearchRegionWithTrackedSelection()));
+        connect(trackedSelection, SIGNAL(si_selectionChanged(LRegionsSelection*, const QVector<U2Region>&, const QVector<U2Region>&)), this, SLOT(sl_syncSearchRegionWithTrackedSelection()));
         sl_syncSearchRegionWithTrackedSelection();
     }
 }
 
 void FindPatternWidget::stopTrackingFocusedSequenceSelection() {
     if (trackedSelection != nullptr) {
-        disconnect(trackedSelection, SIGNAL(si_selectionChanged(LRegionsSelection *, const QVector<U2Region> &, const QVector<U2Region> &)), this, SLOT(sl_syncSearchRegionWithTrackedSelection()));
+        disconnect(trackedSelection, SIGNAL(si_selectionChanged(LRegionsSelection*, const QVector<U2Region>&, const QVector<U2Region>&)), this, SLOT(sl_syncSearchRegionWithTrackedSelection()));
         trackedSelection = nullptr;
     }
 }
 
-bool FindPatternWidget::isRegionListInSearchResults(const QVector<U2Region> &regionList) const {
-    for (const U2Region &region : qAsConst(regionList)) {
+bool FindPatternWidget::isRegionListInSearchResults(const QVector<U2Region>& regionList) const {
+    for (const U2Region& region : qAsConst(regionList)) {
         bool isFound = false;
-        for (const SharedAnnotationData &result : qAsConst(findPatternResults)) {
+        for (const SharedAnnotationData& result : qAsConst(findPatternResults)) {
             if (result->getRegions().contains(region)) {
                 isFound = true;
                 break;

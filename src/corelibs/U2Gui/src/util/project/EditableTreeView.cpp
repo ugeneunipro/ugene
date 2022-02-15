@@ -23,7 +23,7 @@
 
 namespace U2 {
 
-EditableTreeView::EditableTreeView(QWidget *p)
+EditableTreeView::EditableTreeView(QWidget* p)
     : QTreeView(p) {
 }
 

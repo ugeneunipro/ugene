@@ -42,7 +42,7 @@ namespace U2 {
 
 /////////////////////////////////////////////////////////////////////
 
-MuscleParallelTask::MuscleParallelTask(const MultipleSequenceAlignment &ma, MultipleSequenceAlignment &res, const MuscleTaskSettings &_config, MuscleContext *ctx)
+MuscleParallelTask::MuscleParallelTask(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, const MuscleTaskSettings& _config, MuscleContext* ctx)
     : Task(tr("MuscleParallelTask"), TaskFlags_NR_FOSCOE), progAlignTask(nullptr), refineTreeTask(nullptr), refineTask(nullptr) {
     // assert(ma->isNormalized()); //not required to be normalized    assert(_config.op == MuscleTaskOp_Align || _config.op == MuscleTaskOp_Refine);    workpool = NULL;
     setMaxParallelSubtasks(1);
@@ -57,9 +57,9 @@ MuscleParallelTask::MuscleParallelTask(const MultipleSequenceAlignment &ma, Mult
     addTaskResource(resourseUsage);
 }
 
-int MuscleParallelTask::estimateMemoryUsageInMb(const MultipleSequenceAlignment &ma) {
+int MuscleParallelTask::estimateMemoryUsageInMb(const MultipleSequenceAlignment& ma) {
     QList<int> rowsLengths;
-    foreach (const MultipleSequenceAlignmentRow &row, ma->getMsaRows()) {
+    foreach (const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {
         rowsLengths.append(row->getCoreLength());
     }
     std::sort(rowsLengths.begin(), rowsLengths.end(), std::greater<int>());
@@ -71,20 +71,20 @@ int MuscleParallelTask::estimateMemoryUsageInMb(const MultipleSequenceAlignment 
             usedBytes += qint64((rowsLengths[i] + 1025)) * (rowsLengths[j] + 1025);
         }
     }
-    //Check memory consumption for m_Dists in distfunc.cpp
+    // Check memory consumption for m_Dists in distfunc.cpp
     qint64 mDistsUsedBytes = (qint64)sizeof(float) * rowsLengths.size() * rowsLengths.size();
     usedBytes = qMax(usedBytes, mDistsUsedBytes);
     return qMin(qint64(usedBytes / 1024 / 1024), qint64(std::numeric_limits<int>::max()));
 }
 
-QList<Task *> MuscleParallelTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> MuscleParallelTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     if (isCanceled()) {
         return res;
     }
 
     if (subTask == prepareTask && workpool->res->isEmpty()) {
-        foreach (Task *task, prepareTask->res)
+        foreach (Task* task, prepareTask->res)
             res << task;
     }
     return res;
@@ -97,7 +97,7 @@ void MuscleParallelTask::cleanup() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
-MusclePrepareTask::MusclePrepareTask(MuscleWorkPool *wp)
+MusclePrepareTask::MusclePrepareTask(MuscleWorkPool* wp)
     : Task("MusclePrepareTask", TaskFlags_FOSCOE), workpool(wp) {
     // do nothing
 }
@@ -108,11 +108,11 @@ void MusclePrepareTask::run() {
     try {
         workpool->ph = new MuscleParamsHelper(workpool->ti, workpool->ctx);
         _run();
-    } catch (const MuscleException &e) {
+    } catch (const MuscleException& e) {
         if (!isCanceled()) {
             workpool->ti.setError(tr("Internal parallel MUSCLE error: %1").arg(e.str));
         }
-    } catch (std::bad_alloc &) {
+    } catch (std::bad_alloc&) {
         if (!isCanceled()) {
             workpool->ti.setError(MuscleAdapter::getBadAllocError());
         }
@@ -141,7 +141,7 @@ void MusclePrepareTask::_run() {
 }
 
 void MusclePrepareTask::alignPrepareUnsafe() {
-    MuscleContext *ctx = workpool->ctx;
+    MuscleContext* ctx = workpool->ctx;
     SetSeqWeightMethod(ctx->params.g_SeqWeight1);
 
     setupAlphaAndScore(workpool->ma->getAlphabet(), stateInfo);
@@ -149,7 +149,7 @@ void MusclePrepareTask::alignPrepareUnsafe() {
         return;
     }
 
-    SeqVect &v = workpool->v;
+    SeqVect& v = workpool->v;
 
     convertMAlignment2SecVect(v, workpool->ma, true);
     const unsigned uSeqCount = v.Length();
@@ -195,7 +195,7 @@ void MusclePrepareTask::alignPrepareUnsafe() {
     if (uSeqCount > 1 && workpool->mhack) {
         MHackStart(v);
     }
-    Tree &GuideTree = workpool->GuideTree;
+    Tree& GuideTree = workpool->GuideTree;
 
     TreeFromSeqVect(v, GuideTree, ctx->params.g_Cluster1, ctx->params.g_Distance1, ctx->params.g_Root1, ctx->params.g_pstrDistMxFileName1);
 
@@ -242,13 +242,13 @@ void MusclePrepareTask::alignPrepareUnsafe() {
     }
 #endif
 
-    Task *progAlignTask = new ProgressiveAlignTask(workpool);
+    Task* progAlignTask = new ProgressiveAlignTask(workpool);
     res << progAlignTask;
     if (workpool->ctx->params.g_uMaxIters == 1) {
         progAlignTask->setSubtaskProgressWeight(0.9f);
     } else {
-        Task *refineTreeTask = new RefineTreeTask(workpool);
-        Task *refineTask = new RefineTask(workpool);
+        Task* refineTreeTask = new RefineTreeTask(workpool);
+        Task* refineTask = new RefineTask(workpool);
         progAlignTask->setSubtaskProgressWeight(0.3f);
         refineTreeTask->setSubtaskProgressWeight(0.1f);
         refineTask->setSubtaskProgressWeight(0.5f);
@@ -259,7 +259,7 @@ void MusclePrepareTask::alignPrepareUnsafe() {
 void MusclePrepareTask::refinePrepareUnsafe() {
     workpool->ti.progress = 0;
 
-    MuscleContext *ctx = getMuscleContext();
+    MuscleContext* ctx = getMuscleContext();
 
     SetSeqWeightMethod(ctx->params.g_SeqWeight1);
 
@@ -267,7 +267,7 @@ void MusclePrepareTask::refinePrepareUnsafe() {
     if (workpool->ti.hasError()) {
         return;
     }
-    MSA &msa = workpool->a;
+    MSA& msa = workpool->a;
     convertMAlignment2MSA(msa, workpool->ma, true);
     unsigned uSeqCount = msa.GetSeqCount();
     MSA::SetIdCount(uSeqCount);
@@ -282,7 +282,7 @@ void MusclePrepareTask::refinePrepareUnsafe() {
     TreeFromMSA(msa, workpool->GuideTree, ctx->params.g_Cluster2, ctx->params.g_Distance2, ctx->params.g_Root2);
     SetMuscleTree(workpool->GuideTree);
 
-    Task *refineTask;
+    Task* refineTask;
     refineTask = new RefineTask(workpool);
     res << refineTask;
 }
@@ -292,7 +292,7 @@ void MusclePrepareTask::cleanup() {
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-ProgressiveAlignTask::ProgressiveAlignTask(MuscleWorkPool *_wp)
+ProgressiveAlignTask::ProgressiveAlignTask(MuscleWorkPool* _wp)
     : Task(tr("ProgressiveAlignTask"), TaskFlags_FOSCOE), workpool(_wp) {
     assert(_wp != nullptr);
 }
@@ -301,7 +301,7 @@ void ProgressiveAlignTask::prepare() {
     assert(workpool->nThreads >= 0);
     setMaxParallelSubtasks(workpool->nThreads);
     for (int i = 0; i < workpool->nThreads; i++) {
-        ProgressiveAlignWorker *sub = new ProgressiveAlignWorker(workpool, i);
+        ProgressiveAlignWorker* sub = new ProgressiveAlignWorker(workpool, i);
         addSubTask(sub);
     }
     timer.start();
@@ -311,11 +311,11 @@ void ProgressiveAlignTask::run() {
     TaskLocalData::bindToMuscleTLSContext(workpool->ctx);
     try {
         _run();
-    } catch (const MuscleException &e) {
+    } catch (const MuscleException& e) {
         if (!isCanceled()) {
             workpool->ti.setError(tr("Internal parallel MUSCLE error: %1").arg(e.str));
         }
-    } catch (std::bad_alloc &) {
+    } catch (std::bad_alloc&) {
         if (!isCanceled()) {
             workpool->ti.setError(MuscleAdapter::getBadAllocError());
         }
@@ -333,7 +333,7 @@ void ProgressiveAlignTask::_run() {
     if (workpool->ti.hasError()) {
         return;  // cancel on error
     }
-    MuscleContext *ctx = workpool->ctx;
+    MuscleContext* ctx = workpool->ctx;
 
     const unsigned uSeqCount = workpool->v.Length();
 
@@ -341,7 +341,7 @@ void ProgressiveAlignTask::_run() {
         ProgressStepsDone();
 
         if (getMuscleContext()->params.g_bBrenner)
-            MakeRootMSABrenner((SeqVect &)workpool->v, workpool->GuideTree, workpool->ProgNodes, workpool->a);
+            MakeRootMSABrenner((SeqVect&)workpool->v, workpool->GuideTree, workpool->ProgNodes, workpool->a);
         else
             MakeRootMSA(workpool->v, workpool->GuideTree, workpool->ProgNodes, workpool->a);
 
@@ -353,7 +353,7 @@ void ProgressiveAlignTask::_run() {
         ProgressStepsDone();
 
         unsigned uRootNodeIndex = workpool->GuideTree.GetRootNodeIndex();
-        const ProgNode &RootProgNode = workpool->ProgNodes[uRootNodeIndex];
+        const ProgNode& RootProgNode = workpool->ProgNodes[uRootNodeIndex];
         workpool->a.Copy(RootProgNode.m_MSA);
     }
 
@@ -372,7 +372,7 @@ void ProgressiveAlignTask::cleanup() {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-ProgressiveAlignWorker::ProgressiveAlignWorker(MuscleWorkPool *_wp, int _workerID)
+ProgressiveAlignWorker::ProgressiveAlignWorker(MuscleWorkPool* _wp, int _workerID)
     : Task(tr("ProgressiveAlignWorker"), TaskFlags_FOSCOE), workpool(_wp), workerID(_workerID) {
     assert(_wp != nullptr);
     assert(workerID >= 0);
@@ -383,11 +383,11 @@ void ProgressiveAlignWorker::run() {
     TaskLocalData::bindToMuscleTLSContext(workpool->ctx, workerID);
     try {
         _run();
-    } catch (const MuscleException &e) {
+    } catch (const MuscleException& e) {
         if (!isCanceled()) {
             workpool->ti.setError(tr("Internal parallel MUSCLE error: %1").arg(e.str));
         }
-    } catch (std::bad_alloc &) {
+    } catch (std::bad_alloc&) {
         if (!isCanceled()) {
             workpool->ti.setError(MuscleAdapter::getBadAllocError());
         }
@@ -396,9 +396,9 @@ void ProgressiveAlignWorker::run() {
 }
 
 void ProgressiveAlignWorker::_run() {
-    MuscleContext *ctx = workpool->ctx;
-    SeqVect &v = workpool->v;
-    Tree &GuideTree = workpool->GuideTree;
+    MuscleContext* ctx = workpool->ctx;
+    SeqVect& v = workpool->v;
+    Tree& GuideTree = workpool->GuideTree;
 
     const unsigned uSeqCount = v.Length();
     const unsigned uNodeCount = 2 * uSeqCount - 1;
@@ -412,11 +412,11 @@ void ProgressiveAlignWorker::_run() {
             if (ctx->params.g_bLow) {
                 if (uTreeNodeIndex >= uNodeCount)
                     Quit("TreeNodeIndex=%u NodeCount=%u\n", uTreeNodeIndex, uNodeCount);
-                ProgNode &Node = workpool->ProgNodes[uTreeNodeIndex];
+                ProgNode& Node = workpool->ProgNodes[uTreeNodeIndex];
                 unsigned uId = GuideTree.GetLeafId(uTreeNodeIndex);
                 if (uId >= uSeqCount)
                     Quit("Seq index out of range");
-                const Seq &s = *(v[uId]);
+                const Seq& s = *(v[uId]);
                 Node.m_MSA.FromSeq(s);
                 Node.m_MSA.SetSeqId(0, uId);
                 Node.m_uLength = Node.m_MSA.GetColCount();
@@ -428,11 +428,11 @@ void ProgressiveAlignWorker::_run() {
             } else {
                 if (uTreeNodeIndex >= uNodeCount)
                     Quit("TreeNodeIndex=%u NodeCount=%u\n", uTreeNodeIndex, uNodeCount);
-                ProgNode &Node = workpool->ProgNodes[uTreeNodeIndex];
+                ProgNode& Node = workpool->ProgNodes[uTreeNodeIndex];
                 unsigned uId = GuideTree.GetLeafId(uTreeNodeIndex);
                 if (uId >= uSeqCount)
                     Quit("Seq index out of range");
-                const Seq &s = *(v[uId]);
+                const Seq& s = *(v[uId]);
                 Node.m_MSA.FromSeq(s);
                 Node.m_MSA.SetSeqId(0, uId);
                 Node.m_uLength = Node.m_MSA.GetColCount();
@@ -445,13 +445,13 @@ void ProgressiveAlignWorker::_run() {
             }
             if (ctx->params.g_bLow) {
                 const unsigned uMergeNodeIndex = uTreeNodeIndex;
-                ProgNode &Parent = workpool->ProgNodes[uMergeNodeIndex];
+                ProgNode& Parent = workpool->ProgNodes[uMergeNodeIndex];
 
                 const unsigned uLeft = GuideTree.GetLeft(uTreeNodeIndex);
                 const unsigned uRight = GuideTree.GetRight(uTreeNodeIndex);
 
-                ProgNode &Node1 = workpool->ProgNodes[uLeft];
-                ProgNode &Node2 = workpool->ProgNodes[uRight];
+                ProgNode& Node1 = workpool->ProgNodes[uLeft];
+                ProgNode& Node2 = workpool->ProgNodes[uRight];
 
                 AlignTwoProfs(
                     Node1.m_Prof, Node1.m_uLength, Node1.m_Weight, Node2.m_Prof, Node2.m_uLength, Node2.m_Weight, Parent.m_Path, &Parent.m_Prof, &Parent.m_uLength);
@@ -465,13 +465,13 @@ void ProgressiveAlignWorker::_run() {
 
             } else {
                 const unsigned uMergeNodeIndex = uTreeNodeIndex;
-                ProgNode &Parent = workpool->ProgNodes[uMergeNodeIndex];
+                ProgNode& Parent = workpool->ProgNodes[uMergeNodeIndex];
 
                 const unsigned uLeft = GuideTree.GetLeft(uTreeNodeIndex);
                 const unsigned uRight = GuideTree.GetRight(uTreeNodeIndex);
 
-                ProgNode &Node1 = workpool->ProgNodes[uLeft];
-                ProgNode &Node2 = workpool->ProgNodes[uRight];
+                ProgNode& Node1 = workpool->ProgNodes[uLeft];
+                ProgNode& Node2 = workpool->ProgNodes[uRight];
 
                 PWPath Path;
                 AlignTwoMSAs(Node1.m_MSA, Node2.m_MSA, Parent.m_MSA, Path);
@@ -486,9 +486,9 @@ void ProgressiveAlignWorker::_run() {
 }
 
 ///////////////////////////////////////////////////////////////////
-extern bool TryRealign(MSA &msaIn, const Tree &tree, const unsigned Leaves1[], unsigned uCount1, const unsigned Leaves2[], unsigned uCount2, SCORE *ptrscoreBefore, SCORE *ptrscoreAfter, bool bLockLeft, bool bLockRight);
+extern bool TryRealign(MSA& msaIn, const Tree& tree, const unsigned Leaves1[], unsigned uCount1, const unsigned Leaves2[], unsigned uCount2, SCORE* ptrscoreBefore, SCORE* ptrscoreAfter, bool bLockLeft, bool bLockRight);
 
-RefineTreeTask::RefineTreeTask(MuscleWorkPool *_workpool)
+RefineTreeTask::RefineTreeTask(MuscleWorkPool* _workpool)
     : Task(tr("RefineTreeTask"), TaskFlags_FOSCOE), workpool(_workpool) {
     assert(workpool != nullptr);
 }
@@ -497,11 +497,11 @@ void RefineTreeTask::run() {
     TaskLocalData::bindToMuscleTLSContext(workpool->ctx);
     try {
         _run();
-    } catch (const MuscleException &e) {
+    } catch (const MuscleException& e) {
         if (!isCanceled()) {
             workpool->ti.setError(tr("Internal parallel MUSCLE error: %1").arg(e.str));
         }
-    } catch (std::bad_alloc &) {
+    } catch (std::bad_alloc&) {
         if (!isCanceled()) {
             workpool->ti.setError(MuscleAdapter::getBadAllocError());
         }
@@ -513,7 +513,7 @@ void RefineTreeTask::_run() {
     if (!workpool->res->isEmpty()) {
         return;  // no more need in align
     }
-    MuscleContext *ctx = workpool->ctx;
+    MuscleContext* ctx = workpool->ctx;
 
     if (0 == ctx->params.g_pstrUseTreeFileName) {
         ctx->params.g_bDiags = ctx->params.g_bDiags2;
@@ -535,7 +535,7 @@ void RefineTreeTask::_run() {
 }
 ///////////////////////////////////////////////////////////////////
 
-RefineTask::RefineTask(MuscleWorkPool *_workpool)
+RefineTask::RefineTask(MuscleWorkPool* _workpool)
     : Task(tr("RefineTask"), TaskFlags_RBSF_FOSCOE), workpool(_workpool) {
     assert(workpool != nullptr);
     tpm = Progress_Manual;
@@ -555,13 +555,13 @@ void RefineTask::run() {
         workpool->refineDone = true;
         workpool->mainSem.release(workpool->nThreads);
         perfLog.trace(QString("Parallel muscle refine stage complete. Elapsed %1 ms").arg(timer.elapsed()));
-    } catch (const MuscleException &e) {
+    } catch (const MuscleException& e) {
         if (!isCanceled()) {
             workpool->ti.setError(tr("Internal parallel MUSCLE error: %1").arg(e.str));
         }
         workpool->refineDone = true;
         workpool->mainSem.release(workpool->nThreads);
-    } catch (std::bad_alloc &) {
+    } catch (std::bad_alloc&) {
         if (!isCanceled()) {
             workpool->ti.setError(tr("Can't allocate enough memory to perform aligning, try to use 64bit UGENE version"));
         }
@@ -573,8 +573,8 @@ void RefineTask::_run() {
     if (!workpool->res->isEmpty()) {
         return;  // no more need in align
     }
-    MuscleContext *ctx = workpool->ctx;
-    MSA &msa = workpool->a;
+    MuscleContext* ctx = workpool->ctx;
+    MSA& msa = workpool->a;
 
     workpool->refineDone = false;
     int d = workpool->config.op == MuscleTaskOp_Refine ? 0 : 2;
@@ -600,7 +600,7 @@ void RefineTask::_run() {
 }
 ////////////////////////////////////////////////////////////////////////////
 
-RefineWorker::RefineWorker(MuscleWorkPool *_workpool, int _workerID)
+RefineWorker::RefineWorker(MuscleWorkPool* _workpool, int _workerID)
     : Task(QString("RefineWorker"), TaskFlags_FOSCOE), workpool(_workpool), workerID(_workerID), Leaves1(nullptr), Leaves2(nullptr) {
     assert(workerID >= 0);
     assert(workpool != nullptr);
@@ -610,12 +610,12 @@ void RefineWorker::run() {
     TaskLocalData::bindToMuscleTLSContext(workpool->ctx, workerID);
     try {
         _run();
-    } catch (const MuscleException &e) {
+    } catch (const MuscleException& e) {
         if (!isCanceled()) {
             workpool->ti.setError(tr("Internal parallel MUSCLE error: %1").arg(e.str));
             workpool->childSem.release();
         }
-    } catch (std::bad_alloc &) {
+    } catch (std::bad_alloc&) {
         if (!isCanceled()) {
             workpool->ti.setError(tr("Can't allocate enough memory to perform aligning, try to use 64bit UGENE version"));
         }

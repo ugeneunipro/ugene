@@ -37,7 +37,7 @@
 
 namespace U2 {
 
-SnpEffDatabaseListModel *SnpEffSupport::databaseModel = new SnpEffDatabaseListModel();
+SnpEffDatabaseListModel* SnpEffSupport::databaseModel = new SnpEffDatabaseListModel();
 const QString SnpEffSupport::ET_SNPEFF = "SnpEff";
 const QString SnpEffSupport::ET_SNPEFF_ID = "USUPP_SNPEFF";
 
@@ -65,7 +65,7 @@ SnpEffSupport::SnpEffSupport()
 }
 
 QStringList SnpEffSupport::getToolRunnerAdditionalOptions() const {
-    AppResourcePool *s = AppContext::getAppSettings()->getAppResourcePool();
+    AppResourcePool* s = AppContext::getAppSettings()->getAppResourcePool();
     int memSize = s->getMaxMemorySizeInMB();
     QStringList result;
     result << "-Xmx" + QString::number(memSize > 150 ? memSize - 150 : memSize) + "M";
@@ -74,14 +74,14 @@ QStringList SnpEffSupport::getToolRunnerAdditionalOptions() const {
 
 void SnpEffSupport::sl_validationStatusChanged(bool isValid) {
     if (isValid) {
-        SnpEffDatabaseListTask *task = new SnpEffDatabaseListTask();
+        SnpEffDatabaseListTask* task = new SnpEffDatabaseListTask();
         connect(task, SIGNAL(si_stateChanged()), SLOT(sl_databaseListIsReady()));
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
     }
 }
 
 void SnpEffSupport::sl_databaseListIsReady() {
-    SnpEffDatabaseListTask *task = dynamic_cast<SnpEffDatabaseListTask *>(sender());
+    SnpEffDatabaseListTask* task = dynamic_cast<SnpEffDatabaseListTask*>(sender());
     SAFE_POINT(task != nullptr, "SnpEffDatabaseListTask is NULL: wrong sender", );
     if (task->isCanceled() || task->hasError() || !task->isFinished()) {
         return;

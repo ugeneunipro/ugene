@@ -64,8 +64,8 @@ static const QString CUSTOM_DIR_ID("custom-dir");
 /* ConvertFilesFormatPrompter */
 /************************************************************************/
 QString ConvertFilesFormatPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(INPUT_PORT));
-    const Actor *producer = input->getProducer(BaseSlots::URL_SLOT().getId());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT));
+    const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
 
@@ -87,12 +87,12 @@ enum MapType {
     BOOLEANS = 2,
 };
 
-static QVariantMap getFormatsMap(const MapType &mapType) {
+static QVariantMap getFormatsMap(const MapType& mapType) {
     const QList<DocumentFormatId> allFormats = AppContext::getDocumentFormatRegistry()->getRegisteredFormats();
 
     QVariantMap result;
-    for (const DocumentFormatId &fid : qAsConst(allFormats)) {
-        const DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(fid);
+    for (const DocumentFormatId& fid : qAsConst(allFormats)) {
+        const DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(fid);
         if (format == nullptr || format->checkFlags(DocumentFormatFlag_CannotBeCreated)) {
             continue;
         }
@@ -108,7 +108,7 @@ static QVariantMap getFormatsMap(const MapType &mapType) {
 void ConvertFilesFormatWorkerFactory::init() {
     Descriptor desc(ACTOR_ID, ConvertFilesFormatWorker::tr("File Format Conversion"), ConvertFilesFormatWorker::tr("Converts the file to selected format if it is not excluded."));
 
-    QList<PortDescriptor *> p;
+    QList<PortDescriptor*> p;
     {
         Descriptor inD(INPUT_PORT, ConvertFilesFormatWorker::tr("File"), ConvertFilesFormatWorker::tr("A source file to convert"));
         Descriptor outD(OUTPUT_PORT, ConvertFilesFormatWorker::tr("File"), ConvertFilesFormatWorker::tr("A target file to save the converted result"));
@@ -122,7 +122,7 @@ void ConvertFilesFormatWorkerFactory::init() {
         p << new PortDescriptor(outD, DataTypePtr(new MapDataType(SHORT_NAME + ".output-url", outM)), false, true);
     }
 
-    QList<Attribute *> a;
+    QList<Attribute*> a;
     {
         Descriptor excludedFormats(EXCLUDED_FORMATS_ID, ConvertFilesFormatWorker::tr("Excluded formats"), ConvertFilesFormatWorker::tr("Input file won't be converted to any of selected formats."));
 
@@ -134,13 +134,13 @@ void ConvertFilesFormatWorkerFactory::init() {
 
         a << new Attribute(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), true);
         a << new Attribute(outDir, BaseTypes::NUM_TYPE(), false, QVariant(OutDirectory::WORKFLOW_INTERNAL));
-        Attribute *customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
+        Attribute* customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
         customDirAttr->addRelation(new VisibilityRelation(OUT_MODE_ID, OutDirectory::CUSTOM));
         a << customDirAttr;
         a << new Attribute(excludedFormats, BaseTypes::STRING_TYPE(), false);
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     QSharedPointer<StringFormatter> documentNameFormatter(new DocumentNameByIdFormatter());
     {
         QVariantMap formatsNameByIdMap = getFormatsMap(MapType::IDS);
@@ -167,19 +167,19 @@ void ConvertFilesFormatWorkerFactory::init() {
         delegates[CUSTOM_DIR_ID] = new URLDelegate("", "", false, true);
     }
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new ConvertFilesFormatPrompter());
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_CONVERTERS(), proto);
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new ConvertFilesFormatWorkerFactory());
 }
 
 /************************************************************************/
 /* ConvertFilesFormatWorker */
 /************************************************************************/
-ConvertFilesFormatWorker::ConvertFilesFormatWorker(Actor *a)
+ConvertFilesFormatWorker::ConvertFilesFormatWorker(Actor* a)
     : BaseWorker(a), inputUrlPort(nullptr), outputUrlPort(nullptr) {
 }
 
@@ -190,7 +190,7 @@ void ConvertFilesFormatWorker::init() {
     excludedFormats = getValue<QString>(EXCLUDED_FORMATS_ID).split(",", QString::SkipEmptyParts);
 }
 
-bool ConvertFilesFormatWorker::ensureFileExists(const QString &url) {
+bool ConvertFilesFormatWorker::ensureFileExists(const QString& url) {
     if (!QFile::exists(url)) {
         reportError(tr("The file does not exist: %1").arg(url));
         return false;
@@ -198,7 +198,7 @@ bool ConvertFilesFormatWorker::ensureFileExists(const QString &url) {
     return true;
 }
 
-Task *ConvertFilesFormatWorker::tick() {
+Task* ConvertFilesFormatWorker::tick() {
     if (inputUrlPort->hasMessage()) {
         const QString url = takeUrl();
         CHECK(!url.isEmpty(), nullptr);
@@ -213,8 +213,8 @@ Task *ConvertFilesFormatWorker::tick() {
             return nullptr;
         }
 
-        Task *t = getConvertTask(detectedFormat, url);
-        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
+        Task* t = getConvertTask(detectedFormat, url);
+        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
         return t;
     } else if (inputUrlPort->isEnded()) {
         setDone();
@@ -227,8 +227,8 @@ void ConvertFilesFormatWorker::cleanup() {
 }
 
 namespace {
-QString getTargetUrl(Task *task) {
-    ConvertFileTask *convertFileTask = dynamic_cast<ConvertFileTask *>(task);
+QString getTargetUrl(Task* task) {
+    ConvertFileTask* convertFileTask = dynamic_cast<ConvertFileTask*>(task);
 
     if (nullptr != convertFileTask) {
         return convertFileTask->getResult();
@@ -237,7 +237,7 @@ QString getTargetUrl(Task *task) {
 }
 }  // namespace
 
-void ConvertFilesFormatWorker::sl_taskFinished(Task *task) {
+void ConvertFilesFormatWorker::sl_taskFinished(Task* task) {
     CHECK(!task->hasError(), );
     CHECK(!task->isCanceled(), );
 
@@ -248,7 +248,7 @@ void ConvertFilesFormatWorker::sl_taskFinished(Task *task) {
     monitor()->addOutputFile(url, getActorId());
 }
 
-QString ConvertFilesFormatWorker::createWorkingDir(const QString &fileUrl) {
+QString ConvertFilesFormatWorker::createWorkingDir(const QString& fileUrl) {
     QString result;
 
     bool useInternal = false;
@@ -288,7 +288,7 @@ QString ConvertFilesFormatWorker::createWorkingDir(const QString &fileUrl) {
 }
 
 namespace {
-QString getFormatId(const FormatDetectionResult &r) {
+QString getFormatId(const FormatDetectionResult& r) {
     if (nullptr != r.format) {
         return r.format->getFormatId();
     }
@@ -310,7 +310,7 @@ QString ConvertFilesFormatWorker::takeUrl() {
     return data[BaseSlots::URL_SLOT().getId()].toString();
 }
 
-QString ConvertFilesFormatWorker::detectFormat(const QString &url) {
+QString ConvertFilesFormatWorker::detectFormat(const QString& url) {
     FormatDetectionConfig cfg;
     cfg.bestMatchesOnly = false;
     cfg.useImporters = true;
@@ -325,17 +325,17 @@ QString ConvertFilesFormatWorker::detectFormat(const QString &url) {
     return getFormatId(formats.first());
 }
 
-void ConvertFilesFormatWorker::sendResult(const QString &url) {
+void ConvertFilesFormatWorker::sendResult(const QString& url) {
     const Message message(BaseTypes::STRING_TYPE(), url);
     outputUrlPort->put(message);
 }
 
-Task *ConvertFilesFormatWorker::getConvertTask(const QString &detectedFormat, const QString &url) {
+Task* ConvertFilesFormatWorker::getConvertTask(const QString& detectedFormat, const QString& url) {
     QString workingDir = createWorkingDir(url);
 
-    ConvertFactoryRegistry *r = AppContext::getConvertFactoryRegistry();
+    ConvertFactoryRegistry* r = AppContext::getConvertFactoryRegistry();
     SAFE_POINT(r != nullptr, "ConvertFilesFormatWorker::getConvertTask ConvertFactoryRegistry is NULL", nullptr);
-    ConvertFileFactory *f = r->getFactoryByFormats(detectedFormat, targetFormat);
+    ConvertFileFactory* f = r->getFactoryByFormats(detectedFormat, targetFormat);
     SAFE_POINT(f != nullptr, "ConvertFilesFormatWorker::getConvertTask ConvertFileFactory is NULL", nullptr);
 
     return f->getTask(url, detectedFormat, targetFormat, workingDir);

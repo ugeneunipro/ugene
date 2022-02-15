@@ -38,7 +38,7 @@ class ExternalToolValidationListener;
 class ExternalToolValidateTask : public Task {
     Q_OBJECT
 public:
-    ExternalToolValidateTask(const QString &toolId, const QString &toolName, TaskFlags flags = TaskFlag_None);
+    ExternalToolValidateTask(const QString& toolId, const QString& toolName, TaskFlags flags = TaskFlag_None);
     virtual ~ExternalToolValidateTask() {
     }
 
@@ -47,16 +47,16 @@ public:
     bool isValidTool() const {
         return isValid;
     }
-    const QString &getToolId() const {
+    const QString& getToolId() const {
         return toolId;
     }
-    const QString &getToolName() const {
+    const QString& getToolName() const {
         return toolName;
     }
-    const QString &getToolPath() const {
+    const QString& getToolPath() const {
         return toolPath;
     }
-    const QString &getToolVersion() const {
+    const QString& getToolVersion() const {
         return version;
     }
 
@@ -72,7 +72,7 @@ class ExternalToolJustValidateTask : public ExternalToolValidateTask {
     Q_OBJECT
     Q_DISABLE_COPY(ExternalToolJustValidateTask)
 public:
-    ExternalToolJustValidateTask(const QString &toolId, const QString &toolName, const QString &path);
+    ExternalToolJustValidateTask(const QString& toolId, const QString& toolName, const QString& path);
     virtual ~ExternalToolJustValidateTask();
 
     virtual void run();
@@ -81,24 +81,24 @@ public:
     void cancelProcess();
 
 private:
-    void setEnvironment(ExternalTool *externalTool);
-    bool parseLog(const ExternalToolValidation &validation);
-    void checkVersion(const QString &partOfLog);
-    void checkArchitecture(const QString &toolPath);
+    void setEnvironment(ExternalTool* externalTool);
+    bool parseLog(const ExternalToolValidation& validation);
+    void checkVersion(const QString& partOfLog);
+    void checkArchitecture(const QString& toolPath);
     void performAdditionalChecks();
 
     QString errorMsg;
 
-    QList<ExternalToolValidation> validations;    //original tool validation is the last one
+    QList<ExternalToolValidation> validations;  // original tool validation is the last one
 
     QRegExp checkVersionRegExp;
 
     QString lastErrLine;
     QString lastOutLine;
 
-    QProcess *externalToolProcess;
+    QProcess* externalToolProcess;
 
-    ExternalTool *tool;
+    ExternalTool* tool;
 
     static const int TIMEOUT_MS = 30000;
     static const int CHECK_PERIOD_MS = 1000;
@@ -107,41 +107,41 @@ private:
 class ExternalToolSearchAndValidateTask : public ExternalToolValidateTask {
     Q_OBJECT
 public:
-    ExternalToolSearchAndValidateTask(const QString &toolId, const QString &toolName);
+    ExternalToolSearchAndValidateTask(const QString& toolId, const QString& toolName);
 
     void prepare() override;
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
     Task::ReportResult report() override;
 
 private:
     QStringList toolPaths;
     QString errorMsg;
     bool toolIsFound;
-    ExternalToolSearchTask *searchTask;
-    ExternalToolJustValidateTask *validateTask;
+    ExternalToolSearchTask* searchTask;
+    ExternalToolJustValidateTask* validateTask;
 };
 
 class ExternalToolsValidationMasterTask : public SequentialMultiTask {
     Q_OBJECT
 public:
-    ExternalToolsValidationMasterTask(const QList<Task *> &tasks, ExternalToolValidationListener *listener);
+    ExternalToolsValidationMasterTask(const QList<Task*>& tasks, ExternalToolValidationListener* listener);
 
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     ReportResult report() override;
 
 private:
-    ExternalToolValidationListener *listener;
+    ExternalToolValidationListener* listener;
 };
 
 class ExternalToolsInstallTask : public SequentialMultiTask {
     Q_OBJECT
 public:
-    ExternalToolsInstallTask(const QList<Task *> &_tasks);
+    ExternalToolsInstallTask(const QList<Task*>& _tasks);
 
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_EXTERNAL_TOOL_VALIDATE_TASK_H
+#endif  // _U2_EXTERNAL_TOOL_VALIDATE_TASK_H

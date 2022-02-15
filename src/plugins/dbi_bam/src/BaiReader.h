@@ -31,17 +31,17 @@ namespace BAM {
 
 class BaiReader {
 public:
-    BaiReader(IOAdapter &ioAdapter);
+    BaiReader(IOAdapter& ioAdapter);
     Index readIndex();
 
 private:
-    void readBytes(char *buff, qint64 size);
+    void readBytes(char* buff, qint64 size);
     QByteArray readBytes(qint64 size);
     quint64 readUint64();
     qint32 readInt32();
     quint64 readUint32();
 
-    IOAdapter &ioAdapter;
+    IOAdapter& ioAdapter;
 };
 
 }  // namespace BAM

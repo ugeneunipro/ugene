@@ -29,23 +29,23 @@ namespace LocalWorkflow {
 class BaseWriteAssemblyWorker : public BaseDocWriter {
     Q_OBJECT
 public:
-    BaseWriteAssemblyWorker(Actor *a);
+    BaseWriteAssemblyWorker(Actor* a);
 
 protected:
-    virtual void data2doc(Document *doc, const QVariantMap &data);
-    virtual bool hasDataToWrite(const QVariantMap &data) const;
-    virtual QSet<GObject *> getObjectsToWrite(const QVariantMap &data) const;
+    virtual void data2doc(Document* doc, const QVariantMap& data);
+    virtual bool hasDataToWrite(const QVariantMap& data) const;
+    virtual QSet<GObject*> getObjectsToWrite(const QVariantMap& data) const;
 };  // BaseWriteAssemblyWorker
 
 class WriteBAMWorker : public BaseWriteAssemblyWorker {
     Q_OBJECT
 public:
-    WriteBAMWorker(Actor *a);
+    WriteBAMWorker(Actor* a);
 
 protected:
     virtual bool isStreamingSupport() const;
-    virtual Task *getWriteDocTask(Document *doc, const SaveDocFlags &flags);
-    virtual void takeParameters(U2OpStatus &os);
+    virtual Task* getWriteDocTask(Document* doc, const SaveDocFlags& flags);
+    virtual void takeParameters(U2OpStatus& os);
 
 private:
     bool buildIndex;
@@ -59,18 +59,18 @@ public:
         : DomainFactory(ACTOR_ID) {
     }
     static void init();
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 
 };  // WriteAssemblyWorkerFactory
 
 class WriteBAMTask : public Task {
 public:
-    WriteBAMTask(Document *doc, bool buildIndex, const SaveDocFlags &flags);
+    WriteBAMTask(Document* doc, bool buildIndex, const SaveDocFlags& flags);
 
     virtual void run();
 
 private:
-    Document *doc;
+    Document* doc;
     bool buildIndex;
     SaveDocFlags flags;
 };  // WriteBAMTask

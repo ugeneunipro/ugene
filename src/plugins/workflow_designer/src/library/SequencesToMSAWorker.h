@@ -34,7 +34,7 @@ namespace LocalWorkflow {
 class SequencesToMSAPromter : public PrompterBase<SequencesToMSAPromter> {
     Q_OBJECT
 public:
-    SequencesToMSAPromter(Actor *p = 0)
+    SequencesToMSAPromter(Actor* p = 0)
         : PrompterBase<SequencesToMSAPromter>(p) {};
 
 protected:
@@ -44,18 +44,18 @@ protected:
 class SequencesToMSAWorker : public BaseWorker {
     Q_OBJECT
 public:
-    SequencesToMSAWorker(Actor *p)
+    SequencesToMSAWorker(Actor* p)
         : BaseWorker(p), inPort(nullptr), outPort(nullptr) {};
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private:
-    IntegralBus *inPort;
-    IntegralBus *outPort;
+    IntegralBus* inPort;
+    IntegralBus* outPort;
 private slots:
-    void sl_onTaskFinished(Task *t);
+    void sl_onTaskFinished(Task* t);
 
 private:
     QList<DNASequence> data;
@@ -67,7 +67,7 @@ public:
     SequencesToMSAWorkerFactory()
         : DomainFactory(ACTOR_ID) {};
     static void init();
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new SequencesToMSAWorker(a);
     }
 };
@@ -75,7 +75,7 @@ public:
 class MSAFromSequencesTask : public Task {
     Q_OBJECT
 public:
-    MSAFromSequencesTask(const QList<DNASequence> &sequences)
+    MSAFromSequencesTask(const QList<DNASequence>& sequences)
         : Task(tr("MSAFromSequencesTask"), TaskFlag_None), sequences_(sequences) {
     }
     void run();

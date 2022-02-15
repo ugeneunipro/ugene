@@ -44,14 +44,14 @@
 
 namespace U2 {
 
-Workflow::ActorPrototype *ScriptWorkerSerializer::string2actor(const QString data, const QString actorName, QString &error, const QString actorFilePath) {
+Workflow::ActorPrototype* ScriptWorkerSerializer::string2actor(const QString data, const QString actorName, QString& error, const QString actorFilePath) {
     QDomDocument xml;
     xml.setContent(data, false, &error);
     if (!error.isEmpty()) {
         return nullptr;
     }
     QDomElement doc = xml.documentElement();
-    DataTypeRegistry *dtr = Workflow::WorkflowEnv::getDataTypeRegistry();
+    DataTypeRegistry* dtr = Workflow::WorkflowEnv::getDataTypeRegistry();
     assert(dtr);
 
     QDomNodeList inputs = doc.elementsByTagName(IN_SLOT_ELEMENT);
@@ -71,7 +71,7 @@ Workflow::ActorPrototype *ScriptWorkerSerializer::string2actor(const QString dat
     }
 
     QDomNodeList attributes = doc.elementsByTagName(ATTR_ELEMENT);
-    QList<Attribute *> attrs;
+    QList<Attribute*> attrs;
     for (int i = 0; i < attributes.size(); i++) {
         QDomElement attr = attributes.item(i).toElement();
         QString typeId = attr.attribute(TYPE_ID);
@@ -98,7 +98,7 @@ Workflow::ActorPrototype *ScriptWorkerSerializer::string2actor(const QString dat
     // if actorName is not set then it is not alias name
     bool isAliasName = !actorName.isEmpty();
 
-    Workflow::ActorPrototype *proto = Workflow::IncludedProtoFactory::getScriptProto(inputTypes, outputTypes, attrs, newActorName, actorDesc, actorFilePath, isAliasName);
+    Workflow::ActorPrototype* proto = Workflow::IncludedProtoFactory::getScriptProto(inputTypes, outputTypes, attrs, newActorName, actorDesc, actorFilePath, isAliasName);
 
     if (nullptr == proto) {
         error = QObject::tr("UGENE external error. Please, try again");

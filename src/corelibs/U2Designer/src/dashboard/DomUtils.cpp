@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-QDomDocument DomUtils::fromString(const QString &string, QString &parseError) {
+QDomDocument DomUtils::fromString(const QString& string, QString& parseError) {
     parseError.clear();
     QDomDocument doc;
     int line = 0, col = 0;
@@ -33,7 +33,7 @@ QDomDocument DomUtils::fromString(const QString &string, QString &parseError) {
     return doc;
 }
 
-QDomElement DomUtils::findElementById(const QDomElement &element, const QString &id) {
+QDomElement DomUtils::findElementById(const QDomElement& element, const QString& id) {
     QString elId = element.attribute("id");
     if (elId == id) {
         return element;
@@ -47,7 +47,7 @@ QDomElement DomUtils::findElementById(const QDomElement &element, const QString 
     return QDomElement();
 }
 
-QDomElement DomUtils::findParentByTag(const QDomElement &element, const QString &tagName) {
+QDomElement DomUtils::findParentByTag(const QDomElement& element, const QString& tagName) {
     for (QDomNode parent = element.parentNode(); !parent.isNull(); parent = parent.parentNode()) {
         if (parent.toElement().tagName() == tagName) {
             return parent.toElement();
@@ -56,7 +56,7 @@ QDomElement DomUtils::findParentByTag(const QDomElement &element, const QString 
     return QDomElement();
 }
 
-bool DomUtils::hasClass(const QDomElement &element, const QString &className) {
+bool DomUtils::hasClass(const QDomElement& element, const QString& className) {
     QString elementClass = element.attribute("class");
     if (elementClass.isEmpty()) {
         return false;
@@ -67,13 +67,13 @@ bool DomUtils::hasClass(const QDomElement &element, const QString &className) {
            elementClass.contains(" " + className + " ");
 }
 
-QList<QDomElement> DomUtils::findChildElementsByClass(const QDomNode &node, const QString &className, int maxDepth) {
+QList<QDomElement> DomUtils::findChildElementsByClass(const QDomNode& node, const QString& className, int maxDepth) {
     QList<QDomElement> result;
     findChildElementsByClass(node, className, result, maxDepth);
     return result;
 }
 
-void DomUtils::findChildElementsByClass(const QDomNode &node, const QString &className, QList<QDomElement> &result, int maxDepth) {
+void DomUtils::findChildElementsByClass(const QDomNode& node, const QString& className, QList<QDomElement>& result, int maxDepth) {
     if (maxDepth == 0) {
         return;
     }
@@ -85,7 +85,7 @@ void DomUtils::findChildElementsByClass(const QDomNode &node, const QString &cla
     }
 }
 
-QDomElement DomUtils::findChildElementByClass(const QDomNode &node, const QString &className, int maxDepth) {
+QDomElement DomUtils::findChildElementByClass(const QDomNode& node, const QString& className, int maxDepth) {
     if (maxDepth == 0) {
         return QDomElement();
     }
@@ -94,7 +94,7 @@ QDomElement DomUtils::findChildElementByClass(const QDomNode &node, const QStrin
     return list.size() > 0 ? list.first() : QDomElement();
 }
 
-QString DomUtils::toString(const QDomElement &element, bool includeElement) {
+QString DomUtils::toString(const QDomElement& element, bool includeElement) {
     if (element.isNull()) {
         return "";
     }

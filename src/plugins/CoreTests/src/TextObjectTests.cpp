@@ -33,7 +33,7 @@ namespace U2 {
 #define MUST_EXIST "must_exist"
 #define NEWLINES "newlines"
 
-void GTest_CheckStringExists::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_CheckStringExists::init(XMLTestFormat*, const QDomElement& el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -56,7 +56,7 @@ void GTest_CheckStringExists::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 Task::ReportResult GTest_CheckStringExists::report() {
-    TextObject *obj = getContext<TextObject>(this, objContextName);
+    TextObject* obj = getContext<TextObject>(this, objContextName);
     if (obj == nullptr) {
         stateInfo.setError(QString("invalid object context"));
         return ReportResult_Finished;
@@ -83,8 +83,8 @@ Task::ReportResult GTest_CheckStringExists::report() {
     return ReportResult_Finished;
 }
 
-QList<XMLTestFactory *> TextObjectTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> TextObjectTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_CheckStringExists::createFactory());
     return res;
 }

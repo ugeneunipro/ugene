@@ -36,8 +36,8 @@ public:
                           Genbank,
                           Swiss_Prot,
                           Ugene_db };
-    ExportSelectedSequenceFromAlignment(HI::GUITestOpStatus &_os, const QString &_path, documentFormat _format = FASTA, bool _keepGaps = true, bool _addToProj = true);
-    ExportSelectedSequenceFromAlignment(HI::GUITestOpStatus &os, CustomScenario *scenario);
+    ExportSelectedSequenceFromAlignment(HI::GUITestOpStatus& _os, const QString& _path, documentFormat _format = FASTA, bool _keepGaps = true, bool _addToProj = true);
+    ExportSelectedSequenceFromAlignment(HI::GUITestOpStatus& os, CustomScenario* scenario);
 
     void commonScenario();
 

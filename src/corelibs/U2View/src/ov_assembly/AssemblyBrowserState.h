@@ -35,26 +35,26 @@ class U2VIEW_EXPORT AssemblyBrowserState {
 public:
     AssemblyBrowserState() {
     }
-    AssemblyBrowserState(const QVariantMap &stateData_)
+    AssemblyBrowserState(const QVariantMap& stateData_)
         : stateData(stateData_) {
     }
 
     bool isValid() const;
 
-    void saveState(const AssemblyBrowser *ab);
+    void saveState(const AssemblyBrowser* ab);
     QVariantMap data() {
         return stateData;
     }
 
     // a shortcut for saveState() and data()
-    inline static QVariantMap buildStateMap(const AssemblyBrowser *v);
+    inline static QVariantMap buildStateMap(const AssemblyBrowser* v);
 
-    void restoreState(AssemblyBrowser *ab) const;
+    void restoreState(AssemblyBrowser* ab) const;
 
-    void setGObjectRef(const GObjectReference &ref);
+    void setGObjectRef(const GObjectReference& ref);
     GObjectReference getGObjectRef() const;
 
-    void setVisibleBasesRegion(const U2Region &r);
+    void setVisibleBasesRegion(const U2Region& r);
     U2Region getVisibleBasesRegion() const;
 
     void setYOffset(int y);
@@ -68,7 +68,7 @@ private:
     QVariantMap stateData;
 };
 
-inline QVariantMap AssemblyBrowserState::buildStateMap(const AssemblyBrowser *v) {
+inline QVariantMap AssemblyBrowserState::buildStateMap(const AssemblyBrowser* v) {
     AssemblyBrowserState s;
     s.saveState(v);
     return s.data();

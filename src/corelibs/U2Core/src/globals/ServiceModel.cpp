@@ -30,25 +30,25 @@
 
 namespace U2 {
 
-Service::Service(ServiceType t, const QString &_name, const QString &_desc, const QList<ServiceType> &_parentServices, ServiceFlags f)
+Service::Service(ServiceType t, const QString& _name, const QString& _desc, const QList<ServiceType>& _parentServices, ServiceFlags f)
     : type(t), name(_name), description(_desc), parentServices(_parentServices), state(ServiceState_Disabled_New), flags(f) {
     // Register service resource
-    AppSettings *settings = AppContext::getAppSettings();
+    AppSettings* settings = AppContext::getAppSettings();
     SAFE_POINT(nullptr != settings, "Can not get application settings", );
-    AppResourcePool *resourcePool = settings->getAppResourcePool();
+    AppResourcePool* resourcePool = settings->getAppResourcePool();
     SAFE_POINT(nullptr != resourcePool, "Can not get resource pool", );
 
-    AppResource *resource = resourcePool->getResource(t.id);
+    AppResource* resource = resourcePool->getResource(t.id);
 
     if (nullptr == resource) {
-        AppResourceSemaphore *serviceResource = new AppResourceSemaphore(t.id, 1, _name);
+        AppResourceSemaphore* serviceResource = new AppResourceSemaphore(t.id, 1, _name);
         resourcePool->registerResource(serviceResource);
     } else {
         SAFE_POINT(resource->name == _name, QString("Resources %1 and %2 have the same identifiers").arg(resource->name).arg(_name), );
     }
 }
 
-void ServiceRegistry::_setServiceState(Service *s, ServiceState state) {
+void ServiceRegistry::_setServiceState(Service* s, ServiceState state) {
     assert(s->state != state);
 
     ServiceState oldState = s->state;

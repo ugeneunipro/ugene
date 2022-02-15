@@ -35,7 +35,7 @@ namespace U2 {
 namespace GUITest_crazy_user {
 
 void GTCrazyUserMonitor::checkActiveWidget() {
-    QWidget *widget = QApplication::activePopupWidget();
+    QWidget* widget = QApplication::activePopupWidget();
     if (nullptr == widget || 0 == qrand() % 20) {
         widget = QApplication::activeModalWidget();
         if (nullptr == widget) {
@@ -46,19 +46,19 @@ void GTCrazyUserMonitor::checkActiveWidget() {
 
     U2OpStatus2Log os;
 
-    GTCrazyUserMonitor *monitor = new GTCrazyUserMonitor();
+    GTCrazyUserMonitor* monitor = new GTCrazyUserMonitor();
 
-    QList<GTAbstractGUIAction *> actionList = formGUIActions(widget);
+    QList<GTAbstractGUIAction*> actionList = formGUIActions(widget);
     bool actionListEmpty = actionList.isEmpty();
     SAFE_POINT(false == actionListEmpty, "", );
 
     std::sort(actionList.begin(), actionList.end(), GTAbstractGUIAction::lessThan);
     uiLog.trace("sorted actionList:");
-    foreach (GTAbstractGUIAction *a, actionList) {
+    foreach (GTAbstractGUIAction* a, actionList) {
         uiLog.trace(QString("Action for %1 with priority %2").arg(a->objectClassName()).arg(a->getPriority()));
     }
 
-    GTAbstractGUIAction *action = nullptr;
+    GTAbstractGUIAction* action = nullptr;
     if (GTAbstractGUIAction::Priority_High == actionList.first()->getPriority()) {
         action = actionList.first();
     } else {
@@ -75,15 +75,15 @@ void GTCrazyUserMonitor::checkActiveWidget() {
     monitor->deleteLater();
 }
 
-QList<GTAbstractGUIAction *> GTCrazyUserMonitor::formGUIActions(QWidget *widget) const {
-    QList<GTAbstractGUIAction *> actionList;
+QList<GTAbstractGUIAction*> GTCrazyUserMonitor::formGUIActions(QWidget* widget) const {
+    QList<GTAbstractGUIAction*> actionList;
     SAFE_POINT(nullptr != widget, "", actionList);
 
-    QObjectList objectList = widget->findChildren<QObject *>();
+    QObjectList objectList = widget->findChildren<QObject*>();
     objectList.append(widget);
 
-    foreach (QObject *o, objectList) {
-        GTAbstractGUIAction *guiAction = GTRandomGUIActionFactory::create(o);
+    foreach (QObject* o, objectList) {
+        GTAbstractGUIAction* guiAction = GTRandomGUIActionFactory::create(o);
         if (nullptr != guiAction) {
             actionList.append(guiAction);
         }

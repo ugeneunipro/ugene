@@ -33,9 +33,9 @@ class AssemblyToSequencesTask;
 class AssemblyToSequencesWorker : public BaseWorker {
     Q_OBJECT
 public:
-    AssemblyToSequencesWorker(Actor *p);
+    AssemblyToSequencesWorker(Actor* p);
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup() {
     }
 
@@ -43,15 +43,15 @@ private slots:
     void sl_taskFinished();
 
 private:
-    AssemblyToSequencesTask *converter;
-    IntegralBus *inChannel;
-    IntegralBus *outChannel;
+    AssemblyToSequencesTask* converter;
+    IntegralBus* inChannel;
+    IntegralBus* outChannel;
 };  // AssemblyToSequencesWorker
 
 class AssemblyToSequencesTask : public Task {
     Q_OBJECT
 public:
-    AssemblyToSequencesTask(const Message &m, const QVariantMap &context, IntegralBus *channel, DbiDataStorage *storage);
+    AssemblyToSequencesTask(const Message& m, const QVariantMap& context, IntegralBus* channel, DbiDataStorage* storage);
 
     virtual void run();
     virtual void cleanup();
@@ -59,8 +59,8 @@ public:
 private:
     Message message;
     QVariantMap ctx;
-    IntegralBus *channel;
-    DbiDataStorage *storage;
+    IntegralBus* channel;
+    DbiDataStorage* storage;
 };
 
 class AssemblyToSequencesWorkerFactory : public DomainFactory {
@@ -71,14 +71,14 @@ public:
         : DomainFactory(ACTOR_ID) {
     }
     static void init();
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 
 };  // AssemblyToSequencesWorkerFactory
 
 class AssemblyToSequencesPrompter : public PrompterBase<AssemblyToSequencesPrompter> {
     Q_OBJECT
 public:
-    AssemblyToSequencesPrompter(Actor *p = nullptr)
+    AssemblyToSequencesPrompter(Actor* p = nullptr)
         : PrompterBase<AssemblyToSequencesPrompter>(p) {
     }
 

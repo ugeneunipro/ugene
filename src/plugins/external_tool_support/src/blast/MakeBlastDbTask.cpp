@@ -48,7 +48,7 @@ void MakeBlastDbSettings::reset() {
     tempDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(BlastSupport::BLAST_TMP_DIR);
 }
 
-MakeBlastDbTask::MakeBlastDbTask(const MakeBlastDbSettings &_settings)
+MakeBlastDbTask::MakeBlastDbTask(const MakeBlastDbSettings& _settings)
     : Task(tr("Run 'MakeBlastDbTask' task"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
       settings(_settings) {
     GCOUNTER(cvar, "MakeBlastDbTask");
@@ -63,8 +63,8 @@ void MakeBlastDbTask::prepare() {
     addSubTask(prepareTask);
 }
 
-QList<Task *> MakeBlastDbTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> result;
+QList<Task*> MakeBlastDbTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> result;
     CHECK(subTask != nullptr, result);
     CHECK(!subTask->isCanceled() && !subTask->hasError(), result);
 
@@ -103,7 +103,7 @@ QString MakeBlastDbTask::generateReport() const {
     if (!hasError()) {
         res += QString(tr("Blast database has been successfully created") + "<br><br>");
         res += QString(tr("Source sequences: "));
-        foreach (const QString &filePath, settings.inputFilesPath) {
+        foreach (const QString& filePath, settings.inputFilesPath) {
             res += prepareLink(filePath);
             if (filePath.size() > 1) {
                 res += "<br>    ";
@@ -146,7 +146,7 @@ QString MakeBlastDbTask::prepareTempDir() {
     return tmpDir;
 }
 
-QString MakeBlastDbTask::prepareLink(const QString &path) const {
+QString MakeBlastDbTask::prepareLink(const QString& path) const {
     QString preparedPath = path;
     if (preparedPath.startsWith("'") || preparedPath.startsWith("\"")) {
         preparedPath.remove(0, 1);

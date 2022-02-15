@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-LastUsedDirHelper::LastUsedDirHelper(const QString &d, const QString &defaultVal) {
+LastUsedDirHelper::LastUsedDirHelper(const QString& d, const QString& defaultVal) {
     domain = d;
     dir = getLastUsedDir(domain, defaultVal);
 }
@@ -53,7 +53,7 @@ void LastUsedDirHelper::saveLastUsedDir() {
 
 #define SETTINGS_ROOT QString("gui/")
 
-QString LastUsedDirHelper::getLastUsedDir(const QString &toolType, const QString &defaultVal) {
+QString LastUsedDirHelper::getLastUsedDir(const QString& toolType, const QString& defaultVal) {
     QString key = SETTINGS_ROOT + (toolType.isEmpty() ? "" : toolType + "/") + "lastDir";
     QString defDir = defaultVal;
     if (defDir.isEmpty() && toolType.isEmpty()) {
@@ -66,7 +66,7 @@ QString LastUsedDirHelper::getLastUsedDir(const QString &toolType, const QString
     return res;
 }
 
-void LastUsedDirHelper::setLastUsedDir(const QString &ld, const QString &toolType) {
+void LastUsedDirHelper::setLastUsedDir(const QString& ld, const QString& toolType) {
     QString key = SETTINGS_ROOT + (toolType.isEmpty() ? "" : toolType + "/") + "lastDir";
     AppContext::getSettings()->setValue(key, ld);
 }

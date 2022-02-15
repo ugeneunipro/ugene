@@ -42,37 +42,37 @@ public:
     /**
      * Registers the schema in UGENE.
      */
-    static void init(U2OpStatus &os);
+    static void init(U2OpStatus& os);
 
     /**
      * Creates provided @object in the database with @dbiRef.
      * Assigns the id of @object.
      */
-    static void createObject(const U2DbiRef &dbiRef, U2RawData &object, U2OpStatus &os);
-    static void createObject(const U2DbiRef &dbiRef, const QString &folder, U2RawData &object, U2OpStatus &os);
+    static void createObject(const U2DbiRef& dbiRef, U2RawData& object, U2OpStatus& os);
+    static void createObject(const U2DbiRef& dbiRef, const QString& folder, U2RawData& object, U2OpStatus& os);
 
     /**
      * Returns the retrieved object from a database by provided @objRef.
      */
-    static U2RawData getObject(const U2EntityRef &objRef, U2OpStatus &os);
+    static U2RawData getObject(const U2EntityRef& objRef, U2OpStatus& os);
 
     /**
      * Retrieves an object from the database by provided @srcObjRef
      * and creates its copy on the database with @dstDbiRef.
      * Returns the cloned object.
      */
-    static void cloneObject(const U2EntityRef &srcObjRef, const U2DbiRef &dstDbiRef, const QString &dstFolder, U2RawData &dstObject, U2OpStatus &os);
+    static void cloneObject(const U2EntityRef& srcObjRef, const U2DbiRef& dstDbiRef, const QString& dstFolder, U2RawData& dstObject, U2OpStatus& os);
 
     /**
      * Updates the data of the object by provided @objRef.
      */
-    static void writeContent(const QByteArray &data, const U2EntityRef &objRef, U2OpStatus &os);
-    static void writeContent(const U2DataId &masterId, const QByteArray &data, const U2EntityRef &objRef, U2OpStatus &os);
+    static void writeContent(const QByteArray& data, const U2EntityRef& objRef, U2OpStatus& os);
+    static void writeContent(const U2DataId& masterId, const QByteArray& data, const U2EntityRef& objRef, U2OpStatus& os);
 
     /**
      * Returns the data of the object by provided @objRef.
      */
-    static QByteArray readAllContent(const U2EntityRef &objRef, U2OpStatus &os);
+    static QByteArray readAllContent(const U2EntityRef& objRef, U2OpStatus& os);
 };
 
 }  // namespace U2

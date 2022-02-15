@@ -42,15 +42,15 @@ public:
     static const int SelectedPenWidth;
 
 private:
-    GraphicsBranchItem *correspondingItem;
-    GraphicsButtonItem *buttonItem;
+    GraphicsBranchItem* correspondingItem;
+    GraphicsButtonItem* buttonItem;
     void initText(qreal d);
     int branchLength;
-    QGraphicsEllipseItem *nameItemSelection;
+    QGraphicsEllipseItem* nameItemSelection;
 
 protected:
-    QGraphicsSimpleTextItem *distanceText;
-    QGraphicsSimpleTextItem *nameText;
+    QGraphicsSimpleTextItem* distanceText;
+    QGraphicsSimpleTextItem* nameText;
     qreal width;
     qreal dist;
     bool collapsed;
@@ -58,23 +58,23 @@ protected:
 
     OptionsMap settings;
 
-    GraphicsBranchItem(const QString &name);
+    GraphicsBranchItem(const QString& name);
     GraphicsBranchItem(qreal d, bool withButton = true, double nodeValue = -1.0);
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
+    virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr);
 
     virtual void setLabelPositions();
 
 public:
     GraphicsBranchItem(bool withButton = true, double nodeValue = -1.0);
 
-    GraphicsButtonItem *getButton() const {
+    GraphicsButtonItem* getButton() const {
         return buttonItem;
     }
     qreal getNodeLabel() const;
-    QGraphicsSimpleTextItem *getDistanceText() const {
+    QGraphicsSimpleTextItem* getDistanceText() const {
         return distanceText;
     }
-    QGraphicsSimpleTextItem *getNameText() const {
+    QGraphicsSimpleTextItem* getNameText() const {
         return nameText;
     }
     qreal getWidth() const {
@@ -83,7 +83,7 @@ public:
     qreal getDist() const {
         return dist;
     }
-    void setDistanceText(const QString &text);
+    void setDistanceText(const QString& text);
     void setWidthW(qreal w) {
         width = w;
     }
@@ -96,21 +96,21 @@ public:
     void setSelected(bool sel);
     bool isCollapsed() const;
 
-    void updateSettings(const OptionsMap &settings);
-    void updateChildSettings(const OptionsMap &settings);
+    void updateSettings(const OptionsMap& settings);
+    void updateChildSettings(const OptionsMap& settings);
     /** Update current property with given one */
-    void updateTextProperty(TreeViewOption property, const QVariant &propertyVal);
+    void updateTextProperty(TreeViewOption property, const QVariant& propertyVal);
 
-    const OptionsMap &getSettings() const;
+    const OptionsMap& getSettings() const;
 
-    GraphicsBranchItem *getCorrespondingItem() const {
+    GraphicsBranchItem* getCorrespondingItem() const {
         return correspondingItem;
     }
-    void setCorrespondingItem(GraphicsBranchItem *cItem) {
+    void setCorrespondingItem(GraphicsBranchItem* cItem) {
         correspondingItem = cItem;
     }
 
-    const QList<QGraphicsItem *> getChildItems() const {
+    const QList<QGraphicsItem*> getChildItems() const {
         return childItems();
     }
 
@@ -121,7 +121,7 @@ public:
         return branchLength;
     }
 
-    QGraphicsItem *getParentItem() const {
+    QGraphicsItem* getParentItem() const {
         return parentItem();
     }
 
@@ -132,9 +132,9 @@ public:
         return lengthCoef;
     }
 
-    void initDistanceText(const QString &text = QString());
+    void initDistanceText(const QString& text = QString());
 
-    QRectF visibleChildrenBoundingRect(const QTransform &viewTransform) const;
+    QRectF visibleChildrenBoundingRect(const QTransform& viewTransform) const;
 };
 
 }  // namespace U2

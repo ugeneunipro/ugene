@@ -22,13 +22,13 @@
 #ifndef _U2_WORKFLOW_PALETTE_H_
 #define _U2_WORKFLOW_PALETTE_H_
 
-#include <ui_PaletteWidget.h>
-
 #include <QAction>
 #include <QTreeWidget>
 
 #include <U2Lang/ActorModel.h>
 #include <U2Lang/ActorPrototypeRegistry.h>
+
+#include <ui_PaletteWidget.h>
 
 namespace U2 {
 using namespace Workflow;
@@ -44,28 +44,28 @@ class WorkflowPalette : public QWidget, Ui_PaletteWidget {
 public:
     static const QString MIME_TYPE;
 
-    WorkflowPalette(ActorPrototypeRegistry *reg, SchemaConfig *schemaConfig, QWidget *parent = 0);
-    QMenu *createMenu(const QString &name);
-    void createMenu(QMenu *menu);
+    WorkflowPalette(ActorPrototypeRegistry* reg, SchemaConfig* schemaConfig, QWidget* parent = 0);
+    QMenu* createMenu(const QString& name);
+    void createMenu(QMenu* menu);
 
     QVariant saveState() const;
-    void restoreState(const QVariant &);
+    void restoreState(const QVariant&);
 
     QString createPrototype();
-    bool editPrototype(ActorPrototype *proto);
+    bool editPrototype(ActorPrototype* proto);
 
 public slots:
     void resetSelection();
 
 signals:
-    void processSelected(Workflow::ActorPrototype *, bool);
-    void si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *proto);
+    void processSelected(Workflow::ActorPrototype*, bool);
+    void si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype* proto);
     void si_protoChanged();
     void si_protoListModified();
 
 private:
-    NameFilterLayout *nameFilter;
-    WorkflowPaletteElements *elementsList;
+    NameFilterLayout* nameFilter;
+    WorkflowPaletteElements* elementsList;
     friend class PaletteDelegate;
 };
 
@@ -73,32 +73,32 @@ class WorkflowPaletteElements : public QTreeWidget {
     Q_OBJECT
 
 public:
-    WorkflowPaletteElements(ActorPrototypeRegistry *reg, SchemaConfig *schemaConfig, QWidget *parent = 0);
-    QMenu *createMenu(const QString &name);
-    void createMenu(QMenu *menu);
+    WorkflowPaletteElements(ActorPrototypeRegistry* reg, SchemaConfig* schemaConfig, QWidget* parent = 0);
+    QMenu* createMenu(const QString& name);
+    void createMenu(QMenu* menu);
 
     QVariant saveState() const;
-    void restoreState(const QVariant &);
+    void restoreState(const QVariant&);
 
     QString createPrototype();
-    bool editPrototype(ActorPrototype *proto);
+    bool editPrototype(ActorPrototype* proto);
 
 public slots:
     void resetSelection();
-    void sl_nameFilterChanged(const QString &filter);
+    void sl_nameFilterChanged(const QString& filter);
 
 signals:
-    void processSelected(Workflow::ActorPrototype *, bool putToScene);
-    void si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *proto);
+    void processSelected(Workflow::ActorPrototype*, bool putToScene);
+    void si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype* proto);
     void si_protoChanged();
     void si_protoListModified();
 
 protected:
-    void contextMenuEvent(QContextMenuEvent *e);
+    void contextMenuEvent(QContextMenuEvent* e);
 
-    void mouseMoveEvent(QMouseEvent *event);
-    void mousePressEvent(QMouseEvent *event);
-    void leaveEvent(QEvent *event);
+    void mouseMoveEvent(QMouseEvent* event);
+    void mousePressEvent(QMouseEvent* event);
+    void leaveEvent(QEvent* event);
 
 private slots:
     void handleItemAction();
@@ -106,40 +106,40 @@ private slots:
     void rebuild();
     void editElement();
     bool removeElement();
-    void sl_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *proto);
+    void sl_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype* proto);
 
 private:
-    QTreeWidgetItem *createItemWidget(QAction *a);
-    QAction *createItemAction(Workflow::ActorPrototype *item);
-    QAction *getActionByProto(Workflow::ActorPrototype *proto) const;
-    void setContent(ActorPrototypeRegistry *);
+    QTreeWidgetItem* createItemWidget(QAction* a);
+    QAction* createItemAction(Workflow::ActorPrototype* item);
+    QAction* getActionByProto(Workflow::ActorPrototype* proto) const;
+    void setContent(ActorPrototypeRegistry*);
     void sortTree();
-    QVariant changeState(const QVariant &v);
-    void removePrototype(Workflow::ActorPrototype *proto);
-    bool editPrototypeWithoutElementRemoving(Workflow::ActorPrototype *proto, ExternalProcessConfig *newConfig);
-    void replaceConfigFiles(Workflow::ActorPrototype *proto, ExternalProcessConfig *newConfig);
-    void replaceOldConfigWithNewConfig(ExternalProcessConfig *oldConfig, ExternalProcessConfig *newConfig);
-    bool isExclusivePrototypeUsage(ActorPrototype *proto) const;
+    QVariant changeState(const QVariant& v);
+    void removePrototype(Workflow::ActorPrototype* proto);
+    bool editPrototypeWithoutElementRemoving(Workflow::ActorPrototype* proto, ExternalProcessConfig* newConfig);
+    void replaceConfigFiles(Workflow::ActorPrototype* proto, ExternalProcessConfig* newConfig);
+    void replaceOldConfigWithNewConfig(ExternalProcessConfig* oldConfig, ExternalProcessConfig* newConfig);
+    bool isExclusivePrototypeUsage(ActorPrototype* proto) const;
 
 private:
-    QMap<QString, QList<QAction *>> categoryMap;
-    QMap<QAction *, QTreeWidgetItem *> actionMap;
-    QTreeWidgetItem *overItem;
-    QAction *currentAction;
+    QMap<QString, QList<QAction*>> categoryMap;
+    QMap<QAction*, QTreeWidgetItem*> actionMap;
+    QTreeWidgetItem* overItem;
+    QAction* currentAction;
     QPoint dragStartPosition;
     QString nameFilter;
     QString oldNameFilter;
 
-    ActorPrototypeRegistry *protoRegistry;
+    ActorPrototypeRegistry* protoRegistry;
     QVariantMap expandState;
-    SchemaConfig *schemaConfig;
+    SchemaConfig* schemaConfig;
 
     friend class PaletteDelegate;
 };
 
 }  // namespace U2
 
-Q_DECLARE_METATYPE(QAction *)
-Q_DECLARE_METATYPE(U2::Workflow::ActorPrototype *)
+Q_DECLARE_METATYPE(QAction*)
+Q_DECLARE_METATYPE(U2::Workflow::ActorPrototype*)
 
 #endif

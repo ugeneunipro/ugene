@@ -50,21 +50,21 @@ public:
     DNAGraphPackPlugin();
 
 private:
-    DNAGraphPackViewContext *ctx;
+    DNAGraphPackViewContext* ctx;
 };
 
 class DNAGraphPackViewContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    DNAGraphPackViewContext(QObject *parent);
+    DNAGraphPackViewContext(QObject* parent);
 
 private:
-    QList<GSequenceGraphFactory *> graphFactories;
+    QList<GSequenceGraphFactory*> graphFactories;
 
-    void initViewContext(GObjectView *view) override;
+    void initViewContext(GObjectView* view) override;
 
 private slots:
-    void sl_sequenceWidgetAdded(ADVSequenceWidget *);
+    void sl_sequenceWidgetAdded(ADVSequenceWidget*);
 };
 
 }  // namespace U2

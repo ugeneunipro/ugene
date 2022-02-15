@@ -41,16 +41,16 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::createDocumentFiller"
-CreateDocumentFiller::CreateDocumentFiller(HI::GUITestOpStatus &_os,
-                                           const QString &_pasteDataHere,
+CreateDocumentFiller::CreateDocumentFiller(HI::GUITestOpStatus& _os,
+                                           const QString& _pasteDataHere,
                                            bool _customSettings = false,
                                            documentAlphabet _alphabet = StandardDNA,
                                            bool _skipUnknownSymbols = true,
                                            bool _replaceUnknownSymbols = false,
                                            const QString _symbol = "",
-                                           const QString &_documentLocation = QString(),
+                                           const QString& _documentLocation = QString(),
                                            documentFormat _format = FASTA,
-                                           const QString &_sequenceName = QString(),
+                                           const QString& _sequenceName = QString(),
                                            bool saveFile = false,
                                            GTGlobals::UseMethod method)
     : Filler(_os, "CreateDocumentFromTextDialog"),
@@ -75,7 +75,7 @@ CreateDocumentFiller::CreateDocumentFiller(HI::GUITestOpStatus &_os,
     comboBoxAlphabetItems[AllSymbols] = "Raw";
 }
 
-CreateDocumentFiller::CreateDocumentFiller(HI::GUITestOpStatus &os, CustomScenario *scenario)
+CreateDocumentFiller::CreateDocumentFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
     : Filler(os, "CreateDocumentFromTextDialog", scenario),
       customSettings(false),
       alphabet(StandardDNA),
@@ -88,10 +88,10 @@ CreateDocumentFiller::CreateDocumentFiller(HI::GUITestOpStatus &os, CustomScenar
 
 #define GT_METHOD_NAME "commonScenario"
 void CreateDocumentFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
+    QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog != nullptr, "dialog not found");
 
-    QPlainTextEdit *plainText = dialog->findChild<QPlainTextEdit *>("sequenceEdit");
+    QPlainTextEdit* plainText = dialog->findChild<QPlainTextEdit*>("sequenceEdit");
     GT_CHECK(plainText != nullptr, "plain text not found");
     GTPlainTextEdit::setPlainText(os, plainText, pasteDataHere);
     GTGlobals::sleep();
@@ -114,11 +114,11 @@ void CreateDocumentFiller::commonScenario() {
         GTComboBox::selectItemByIndex(os, alphabetComboBox, alphabetIndex, useMethod);
     }
 
-    QLineEdit *lineEdit = dialog->findChild<QLineEdit *>("filepathEdit");
+    QLineEdit* lineEdit = dialog->findChild<QLineEdit*>("filepathEdit");
     GT_CHECK(lineEdit != nullptr, "line edit not found");
     GTLineEdit::setText(os, lineEdit, documentLocation);
 
-    QComboBox *comboBox = dialog->findChild<QComboBox *>();
+    QComboBox* comboBox = dialog->findChild<QComboBox*>();
     GT_CHECK(comboBox != nullptr, "ComboBox not found");
 
     int index = comboBox->findText(comboBoxItems[format]);
@@ -126,12 +126,12 @@ void CreateDocumentFiller::commonScenario() {
 
     GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
 
-    QLineEdit *lineEditName = dialog->findChild<QLineEdit *>("nameEdit");
+    QLineEdit* lineEditName = dialog->findChild<QLineEdit*>("nameEdit");
     GT_CHECK(lineEditName != nullptr, "line edit not found");
     GTLineEdit::setText(os, lineEditName, sequenceName);
 
     if (saveFile) {
-        QCheckBox *saveFileCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "saveImmediatelyBox", dialog));
+        QCheckBox* saveFileCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "saveImmediatelyBox", dialog));
         GTCheckBox::setChecked(os, saveFileCheckBox);
     }
 
@@ -143,7 +143,7 @@ void CreateDocumentFiller::commonScenario() {
 #undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "GTUtilsDialog::cancelCreateDocumentFiller"
-CancelCreateDocumentFiller::CancelCreateDocumentFiller(HI::GUITestOpStatus &_os, const QString &_pasteDataHere, bool _customSettings = false, documentAlphabet _alphabet = StandardDNA, bool _skipUnknownSymbols = true, bool _replaceUnknownSymbols = false, const QString _symbol = "", const QString &_documentLocation = QString(), documentFormat _format = FASTA, const QString &_sequenceName = QString(), bool saveFile = false, GTGlobals::UseMethod method)
+CancelCreateDocumentFiller::CancelCreateDocumentFiller(HI::GUITestOpStatus& _os, const QString& _pasteDataHere, bool _customSettings = false, documentAlphabet _alphabet = StandardDNA, bool _skipUnknownSymbols = true, bool _replaceUnknownSymbols = false, const QString _symbol = "", const QString& _documentLocation = QString(), documentFormat _format = FASTA, const QString& _sequenceName = QString(), bool saveFile = false, GTGlobals::UseMethod method)
     : Filler(_os, "CreateDocumentFromTextDialog"), customSettings(_customSettings), alphabet(_alphabet), skipUnknownSymbols(_skipUnknownSymbols), replaceUnknownSymbols(_replaceUnknownSymbols),
       symbol(_symbol), format(_format), saveFile(saveFile), useMethod(method) {
     sequenceName = _sequenceName;
@@ -161,10 +161,10 @@ CancelCreateDocumentFiller::CancelCreateDocumentFiller(HI::GUITestOpStatus &_os,
 
 #define GT_METHOD_NAME "commonScenario"
 void CancelCreateDocumentFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
+    QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog != nullptr, "dialog not found");
 
-    QPlainTextEdit *plainText = dialog->findChild<QPlainTextEdit *>("sequenceEdit");
+    QPlainTextEdit* plainText = dialog->findChild<QPlainTextEdit*>("sequenceEdit");
     GT_CHECK(plainText != nullptr, "plain text not found");
     GTPlainTextEdit::setPlainText(os, plainText, pasteDataHere);
 
@@ -187,11 +187,11 @@ void CancelCreateDocumentFiller::commonScenario() {
         GTComboBox::selectItemByIndex(os, alphabetComboBox, alphabetIndex, useMethod);
     }
 
-    QLineEdit *lineEdit = dialog->findChild<QLineEdit *>("filepathEdit");
+    QLineEdit* lineEdit = dialog->findChild<QLineEdit*>("filepathEdit");
     GT_CHECK(lineEdit != nullptr, "line edit not found");
     GTLineEdit::setText(os, lineEdit, documentLocation);
 
-    QComboBox *comboBox = dialog->findChild<QComboBox *>();
+    QComboBox* comboBox = dialog->findChild<QComboBox*>();
     GT_CHECK(comboBox != nullptr, "ComboBox not found");
 
     int index = comboBox->findText(comboBoxItems[format]);
@@ -199,18 +199,18 @@ void CancelCreateDocumentFiller::commonScenario() {
 
     GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
 
-    QLineEdit *lineEditName = dialog->findChild<QLineEdit *>("nameEdit");
+    QLineEdit* lineEditName = dialog->findChild<QLineEdit*>("nameEdit");
     GT_CHECK(lineEditName != nullptr, "line edit not found");
     GTLineEdit::setText(os, lineEditName, sequenceName);
 
     if (saveFile) {
-        QCheckBox *saveFileCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "saveImmediatelyBox", dialog));
+        QCheckBox* saveFileCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "saveImmediatelyBox", dialog));
         GTCheckBox::setChecked(os, saveFileCheckBox);
     }
 
-    QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
+    QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
     GT_CHECK(box != nullptr, "buttonBox is NULL");
-    QPushButton *button = box->button(QDialogButtonBox::Cancel);
+    QPushButton* button = box->button(QDialogButtonBox::Cancel);
     GT_CHECK(button != nullptr, "cancel button is NULL");
     GTWidget::click(os, button);
 }

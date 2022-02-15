@@ -28,16 +28,16 @@
 
 #include "ScriptHighlighter.h"
 
-const char *SCRIPT_TEXT_PROPERTY_NAME = "script text";
+const char* SCRIPT_TEXT_PROPERTY_NAME = "script text";
 
 namespace U2 {
 
-ScriptEditorWidget::ScriptEditorWidget(QWidget *parent, ScriptEditorType typeOfField)
+ScriptEditorWidget::ScriptEditorWidget(QWidget* parent, ScriptEditorType typeOfField)
     : QWidget(parent) {
     scriptContainer = new QSplitter(Qt::Vertical, this);
     scriptContainer->setFocusPolicy(Qt::NoFocus);
 
-    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
+    QBoxLayout* layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
     layout->setMargin(0);
     layout->addWidget(scriptContainer);
 
@@ -52,7 +52,7 @@ ScriptEditorWidget::ScriptEditorWidget(QWidget *parent, ScriptEditorType typeOfF
     connect(scriptEdit, SIGNAL(si_cursorPositionChanged()), SIGNAL(si_cursorPositionChanged()));
 }
 
-void ScriptEditorWidget::setVariablesText(const QString &variablesText) {
+void ScriptEditorWidget::setVariablesText(const QString& variablesText) {
     variablesEdit->setText(variablesText);
 }
 
@@ -60,7 +60,7 @@ QString ScriptEditorWidget::variablesText() const {
     return variablesEdit->toPlainText();
 }
 
-void ScriptEditorWidget::setScriptText(const QString &text) {
+void ScriptEditorWidget::setScriptText(const QString& text) {
     scriptEdit->setText(text);
 }
 

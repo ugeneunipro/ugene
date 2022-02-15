@@ -34,7 +34,7 @@ const QList<QPair<QColor, QColor>> MsaColorSchemeWeakSimilarities::colorPairsByF
 
 const QPair<QColor, QColor> MsaColorSchemeWeakSimilarities::gapColorPair = QPair<QColor, QColor>(QColor("#000000"), QColor("#FFFFFF"));
 
-MsaColorSchemeWeakSimilarities::MsaColorSchemeWeakSimilarities(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj)
+MsaColorSchemeWeakSimilarities::MsaColorSchemeWeakSimilarities(QObject* parent, const MsaColorSchemeFactory* factory, MultipleAlignmentObject* maObj)
     : MsaColorSchemePercentageIdententityColored(parent, factory, maObj) {
 }
 
@@ -71,7 +71,7 @@ int MsaColorSchemeWeakSimilarities::getColorIndex(const int columnNum, const cha
     QList<Nucleotide> currentNucleotideList = currentColumnData.getNucleotideList();
     const int size = currentNucleotideList.size();
     CHECK(size > 0, index);
-    foreach (const Nucleotide &n, currentNucleotideList) {
+    foreach (const Nucleotide& n, currentNucleotideList) {
         if (n.character == c || index == 4) {
             break;
         }
@@ -80,11 +80,11 @@ int MsaColorSchemeWeakSimilarities::getColorIndex(const int columnNum, const cha
     return index;
 }
 
-MsaColorSchemeWeakSimilaritiesFactory::MsaColorSchemeWeakSimilaritiesFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets)
+MsaColorSchemeWeakSimilaritiesFactory::MsaColorSchemeWeakSimilaritiesFactory(QObject* parent, const QString& id, const QString& name, const AlphabetFlags& supportedAlphabets)
     : MsaColorSchemeFactory(parent, id, name, supportedAlphabets) {
 }
 
-MsaColorScheme *MsaColorSchemeWeakSimilaritiesFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
+MsaColorScheme* MsaColorSchemeWeakSimilaritiesFactory::create(QObject* parent, MultipleAlignmentObject* maObj) const {
     return new MsaColorSchemeWeakSimilarities(parent, this, maObj);
 }
 

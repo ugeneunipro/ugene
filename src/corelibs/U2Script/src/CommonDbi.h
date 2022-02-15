@@ -41,21 +41,21 @@ enum FileFormat {
     RAW
 };
 
-typedef void *UgeneDbHandle;
+typedef void* UgeneDbHandle;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-U2SCRIPT_EXPORT void importFileToUgeneDb(const wchar_t *url,
-                                         UgeneDbHandle *resultObjects,
+U2SCRIPT_EXPORT void importFileToUgeneDb(const wchar_t* url,
+                                         UgeneDbHandle* resultObjects,
                                          int maxObjectCount);
 U2SCRIPT_EXPORT void releaseObject(UgeneDbHandle resultObject);
 U2SCRIPT_EXPORT UgeneDbHandle cloneObject(UgeneDbHandle object);
-U2SCRIPT_EXPORT void saveObjectsToFile(UgeneDbHandle *objects, int objectCount, const wchar_t *url, FileFormat format);
+U2SCRIPT_EXPORT void saveObjectsToFile(UgeneDbHandle* objects, int objectCount, const wchar_t* url, FileFormat format);
 U2SCRIPT_EXPORT ObjectType getObjectType(UgeneDbHandle object);
-U2SCRIPT_EXPORT void getObjectName(UgeneDbHandle object, int maxExpectedNameLength, wchar_t *name);
-U2SCRIPT_EXPORT void setObjectName(UgeneDbHandle object, const wchar_t *newName);
+U2SCRIPT_EXPORT void getObjectName(UgeneDbHandle object, int maxExpectedNameLength, wchar_t* name);
+U2SCRIPT_EXPORT void setObjectName(UgeneDbHandle object, const wchar_t* newName);
 
 #ifdef __cplusplus
 }

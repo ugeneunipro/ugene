@@ -33,11 +33,11 @@ namespace U2 {
  */
 class U2CORE_EXPORT PrimerValidator : public QRegExpValidator {
 public:
-    PrimerValidator(QObject *parent, bool allowExtended = true);
+    PrimerValidator(QObject* parent, bool allowExtended = true);
 
-    State validate(QString &input, int &pos) const override;
+    State validate(QString& input, int& pos) const override;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PRIMER_VALIDATOR_H_
+#endif  // _U2_PRIMER_VALIDATOR_H_

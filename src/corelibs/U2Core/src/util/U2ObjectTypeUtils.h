@@ -29,8 +29,8 @@ namespace U2 {
 
 class U2CORE_EXPORT U2ObjectTypeUtils {
 public:
-    static U2DataType toDataType(const GObjectType &gType);
-    static GObjectType toGObjectType(const U2DataType &dbType);
+    static U2DataType toDataType(const GObjectType& gType);
+    static GObjectType toGObjectType(const U2DataType& dbType);
 };
 
 }  // namespace U2

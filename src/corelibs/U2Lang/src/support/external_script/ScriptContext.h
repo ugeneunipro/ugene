@@ -36,15 +36,15 @@ class U2LANG_EXPORT ScriptContext {
 public:
     ScriptContext();
     ~ScriptContext();
-    LastReadyScheduler *getWorkflowScheduler(Workflow::Schema *scheme) const;
-    void setWorkflowScheduler(ScriptableScheduler *newScheduler);
-    void addActorTick(const ActorId &id);
-    QMap<int, QList<Actor *>> getTopologicalSortedGraph() const;
-    Actor *getActorById(const ActorId &id) const;
-    WorkflowDebugStatus *getDebugStatus() const;
+    LastReadyScheduler* getWorkflowScheduler(Workflow::Schema* scheme) const;
+    void setWorkflowScheduler(ScriptableScheduler* newScheduler);
+    void addActorTick(const ActorId& id);
+    QMap<int, QList<Actor*>> getTopologicalSortedGraph() const;
+    Actor* getActorById(const ActorId& id) const;
+    WorkflowDebugStatus* getDebugStatus() const;
 
 private:
-    ScriptableScheduler *scheduler;
+    ScriptableScheduler* scheduler;
 };
 
 }  // namespace U2

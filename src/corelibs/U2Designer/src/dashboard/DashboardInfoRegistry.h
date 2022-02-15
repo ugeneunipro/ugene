@@ -30,23 +30,23 @@ namespace U2 {
 class U2DESIGNER_EXPORT DashboardInfoRegistry : public QObject {
     Q_OBJECT
 public:
-    bool registerEntry(const DashboardInfo &dashboardInfo);
-    bool unregisterEntry(const QString &id);
+    bool registerEntry(const DashboardInfo& dashboardInfo);
+    bool unregisterEntry(const QString& id);
 
-    DashboardInfo getById(const QString &dashboardId) const;
+    DashboardInfo getById(const QString& dashboardId) const;
     QStringList getAllIds() const;
     QList<DashboardInfo> getAllEntries() const;
 
     bool isEmpty() const;
 
     void scanDashboardsDir();
-    void removeDashboards(const QStringList &ids);
+    void removeDashboards(const QStringList& ids);
 
-    void updateDashboardInfo(const DashboardInfo &newDashboardInfo);
-    void updateDashboardInfos(const QList<DashboardInfo> &newDashboardInfos);
+    void updateDashboardInfo(const DashboardInfo& newDashboardInfo);
+    void updateDashboardInfos(const QList<DashboardInfo>& newDashboardInfos);
 
-    void reserveName(const QString &dashboardId, const QString &name);
-    void releaseReservedName(const QString &dashboardId);
+    void reserveName(const QString& dashboardId, const QString& name);
+    void releaseReservedName(const QString& dashboardId);
     QSet<QString> getReservedNames() const;
 
 private slots:
@@ -56,13 +56,13 @@ signals:
     void si_scanningStarted();
     void si_scanningFinished();
 
-    void si_dashboardsListChanged(const QStringList &added, const QStringList &removed);
-    void si_dashboardsChanged(const QStringList &ids);
+    void si_dashboardsListChanged(const QStringList& added, const QStringList& removed);
+    void si_dashboardsChanged(const QStringList& ids);
 
 private:
-    bool registerEntrySilently(const DashboardInfo &dashboardInfo);
-    bool unregisterEntrySilently(const QString &id);
-    bool updateInfo(const DashboardInfo &newDashboardInfo);
+    bool registerEntrySilently(const DashboardInfo& dashboardInfo);
+    bool unregisterEntrySilently(const QString& id);
+    bool updateInfo(const DashboardInfo& newDashboardInfo);
 
     QPointer<ScanDashboardsDirTask> scanTask;
 

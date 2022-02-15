@@ -61,20 +61,20 @@ public:
     static void setSendCrashReports(bool sendReports);
 
     static void releaseReserve();
-    static void handleException(const QString &exceptionType, const QString &dumpUrl = "");
+    static void handleException(const QString& exceptionType, const QString& dumpUrl = "");
 
 private:
     static void preallocateReservedSpace();
     static void setupLogCache();
     static void setupPrivateHandler();
 
-    static void getSubTasks(Task *t, QString &list, int lvl);
-    static void runMonitorProcess(const CrashHandlerArgsHelper &helper);
-    static QString generateReport(const QString &exceptionType, int maxReportSize);
+    static void getSubTasks(Task* t, QString& list, int lvl);
+    static void runMonitorProcess(const CrashHandlerArgsHelper& helper);
+    static QString generateReport(const QString& exceptionType, int maxReportSize);
 
-    static CrashHandlerPrivate *crashHandlerPrivate;
-    static char *buffer;
-    static LogCache *crashLogCache;
+    static CrashHandlerPrivate* crashHandlerPrivate;
+    static char* buffer;
+    static LogCache* crashLogCache;
     static bool sendCrashReports;
 };
 

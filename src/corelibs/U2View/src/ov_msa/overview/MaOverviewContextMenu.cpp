@@ -38,7 +38,7 @@
 
 namespace U2 {
 
-MaOverviewContextMenu::MaOverviewContextMenu(QWidget *parent, MaSimpleOverview *sOverview, MaGraphOverview *gOverview)
+MaOverviewContextMenu::MaOverviewContextMenu(QWidget* parent, MaSimpleOverview* sOverview, MaGraphOverview* gOverview)
     : QMenu(parent),
       simpleOverview(sOverview),
       graphOverview(gOverview) {
@@ -66,24 +66,24 @@ void MaOverviewContextMenu::connectSlots() {
     connect(exportAsImageAction, SIGNAL(triggered()), SLOT(sl_exportAsImageTriggered()));
     connect(graphOverview, SIGNAL(si_renderingStateChanged(bool)), exportAsImageAction, SLOT(setDisabled(bool)));
 
-    connect(graphTypeActionGroup, SIGNAL(triggered(QAction *)), SLOT(sl_graphTypeActionTriggered(QAction *)));
+    connect(graphTypeActionGroup, SIGNAL(triggered(QAction*)), SLOT(sl_graphTypeActionTriggered(QAction*)));
 
-    connect(orientationActionGroup, SIGNAL(triggered(QAction *)), SLOT(sl_graphOrientationActionTriggered(QAction *)));
+    connect(orientationActionGroup, SIGNAL(triggered(QAction*)), SLOT(sl_graphOrientationActionTriggered(QAction*)));
 
     connect(colorAction, SIGNAL(triggered()), SLOT(sl_colorActionTriggered()));
 
-    connect(calculationMethodActionGroup, SIGNAL(triggered(QAction *)), SLOT(sl_calculationMethodActionTriggered(QAction *)));
+    connect(calculationMethodActionGroup, SIGNAL(triggered(QAction*)), SLOT(sl_calculationMethodActionTriggered(QAction*)));
 }
 
 void MaOverviewContextMenu::sl_exportAsImageTriggered() {
     MaOverviewImageExportController factory(simpleOverview, graphOverview);
-    QWidget *p = (QWidget *)AppContext::getMainWindow()->getQMainWindow();
+    QWidget* p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
     const QString fileName = GUrlUtils::fixFileName(graphOverview->getEditor()->getMaObject()->getGObjectName());
     QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(&factory, ExportImageDialog::MSA, fileName, ExportImageDialog::NoScaling, p);
     dialog->exec();
 }
 
-void MaOverviewContextMenu::sl_graphTypeActionTriggered(QAction *action) {
+void MaOverviewContextMenu::sl_graphTypeActionTriggered(QAction* action) {
     if (action == lineGraphAction) {
         emit si_graphTypeSelected(MaGraphOverviewDisplaySettings::Line);
     }
@@ -95,7 +95,7 @@ void MaOverviewContextMenu::sl_graphTypeActionTriggered(QAction *action) {
     }
 }
 
-void MaOverviewContextMenu::sl_graphOrientationActionTriggered(QAction *action) {
+void MaOverviewContextMenu::sl_graphOrientationActionTriggered(QAction* action) {
     if (action == topToBottomOrientationAction) {
         emit si_graphOrientationSelected(MaGraphOverviewDisplaySettings::FromTopToBottom);
     } else {
@@ -119,7 +119,7 @@ void MaOverviewContextMenu::sl_colorActionTriggered() {
     }
 }
 
-void MaOverviewContextMenu::sl_calculationMethodActionTriggered(QAction *action) {
+void MaOverviewContextMenu::sl_calculationMethodActionTriggered(QAction* action) {
     if (action == strictMethodAction) {
         emit si_calculationMethodSelected(MaGraphCalculationMethod::Strict);
     }
@@ -233,8 +233,8 @@ void MaOverviewContextMenu::initOrientationSubmenu() {
     }
 }
 
-QAction *MaOverviewContextMenu::createCheckableAction(const QString &text, QActionGroup *group) {
-    QAction *a = new QAction(text, this);
+QAction* MaOverviewContextMenu::createCheckableAction(const QString& text, QActionGroup* group) {
+    QAction* a = new QAction(text, this);
     a->setCheckable(true);
 
     if (group != nullptr) {

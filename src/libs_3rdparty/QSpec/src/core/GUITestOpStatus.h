@@ -33,7 +33,7 @@ public:
     GUITestOpStatus() {
     }
 
-    virtual void setError(const QString &err) {
+    virtual void setError(const QString& err) {
         error = err;
         throw this;
     }

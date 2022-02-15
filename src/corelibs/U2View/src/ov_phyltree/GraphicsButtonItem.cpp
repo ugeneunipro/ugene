@@ -63,16 +63,16 @@ GraphicsButtonItem::GraphicsButtonItem(double nodeValue)
     }
 }
 
-const QGraphicsSimpleTextItem *GraphicsButtonItem::getLabel() const {
+const QGraphicsSimpleTextItem* GraphicsButtonItem::getLabel() const {
     return nodeLabel;
 }
 
-void GraphicsButtonItem::mousePressEvent(QGraphicsSceneMouseEvent *e) {
+void GraphicsButtonItem::mousePressEvent(QGraphicsSceneMouseEvent* e) {
     uiLog.trace("Tree button pressed");
 
     bool shiftPressed = e->modifiers() & Qt::ShiftModifier;
     bool leftButton = e->button() == Qt::LeftButton;
-    GraphicsBranchItem *p = dynamic_cast<GraphicsBranchItem *>(parentItem());
+    GraphicsBranchItem* p = dynamic_cast<GraphicsBranchItem*>(parentItem());
     if (leftButton && p != nullptr) {
         bool newSelection = true;
         if (shiftPressed) {
@@ -85,20 +85,20 @@ void GraphicsButtonItem::mousePressEvent(QGraphicsSceneMouseEvent *e) {
     }
 }
 
-void GraphicsButtonItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *e) {
+void GraphicsButtonItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
     uiLog.trace("Tree button double-clicked");
     collapse();
     QAbstractGraphicsShapeItem::mouseDoubleClickEvent(e);
 }
 
-void GraphicsButtonItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
+void GraphicsButtonItem::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {
     if (isSelected) {
         return;
     }
     QGraphicsItem::hoverEnterEvent(event);
     setHighlighting(true);
 }
-void GraphicsButtonItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
+void GraphicsButtonItem::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
     if (isSelected) {
         return;
     }
@@ -117,10 +117,10 @@ void GraphicsButtonItem::setHighlighting(bool isOn) {
 }
 
 void GraphicsButtonItem::collapse() {
-    GraphicsBranchItem *branch = dynamic_cast<GraphicsBranchItem *>(parentItem());
+    GraphicsBranchItem* branch = dynamic_cast<GraphicsBranchItem*>(parentItem());
     SAFE_POINT(nullptr != branch, "Collapsing is impossible because button has not parent branch", );
 
-    GraphicsBranchItem *parentBranch = dynamic_cast<GraphicsBranchItem *>(branch->parentItem());
+    GraphicsBranchItem* parentBranch = dynamic_cast<GraphicsBranchItem*>(branch->parentItem());
     if (nullptr != parentBranch) {
         branch->collapse();
     }
@@ -129,18 +129,18 @@ void GraphicsButtonItem::collapse() {
 void GraphicsButtonItem::swapSiblings() {
     uiLog.trace("Swapping siblings");
 
-    GraphicsBranchItem *branchItem = dynamic_cast<GraphicsBranchItem *>(parentItem());
+    GraphicsBranchItem* branchItem = dynamic_cast<GraphicsBranchItem*>(parentItem());
     if (!branchItem) {
         return;
     }
 
-    GraphicsRectangularBranchItem *rectBranchItem = dynamic_cast<GraphicsRectangularBranchItem *>(branchItem);
+    GraphicsRectangularBranchItem* rectBranchItem = dynamic_cast<GraphicsRectangularBranchItem*>(branchItem);
     if (!rectBranchItem) {
         if (!branchItem->getCorrespondingItem()) {
             return;
         }
 
-        rectBranchItem = dynamic_cast<GraphicsRectangularBranchItem *>(branchItem->getCorrespondingItem());
+        rectBranchItem = dynamic_cast<GraphicsRectangularBranchItem*>(branchItem->getCorrespondingItem());
         if (!rectBranchItem) {
             return;
         }
@@ -153,45 +153,45 @@ bool GraphicsButtonItem::isPathToRootSelected() const {
     if (!isSelected) {
         return false;
     }
-    GraphicsBranchItem *branchItem = dynamic_cast<GraphicsBranchItem *>(parentItem());
+    GraphicsBranchItem* branchItem = dynamic_cast<GraphicsBranchItem*>(parentItem());
     if (branchItem == nullptr) {
         return true;
     }
-    GraphicsBranchItem *parentBranchItem = dynamic_cast<GraphicsBranchItem *>(branchItem->parentItem());
+    GraphicsBranchItem* parentBranchItem = dynamic_cast<GraphicsBranchItem*>(branchItem->parentItem());
     return parentBranchItem == nullptr || !parentBranchItem->isSelected();
 }
 
 bool GraphicsButtonItem::isCollapsed() {
-    GraphicsBranchItem *parent = dynamic_cast<GraphicsBranchItem *>(parentItem());
+    GraphicsBranchItem* parent = dynamic_cast<GraphicsBranchItem*>(parentItem());
     Q_ASSERT(parent);
     CHECK(parent, false)
     return parent->isCollapsed();
 }
 
-void GraphicsButtonItem::rerootTree(PhyTreeObject *treeObject) {
+void GraphicsButtonItem::rerootTree(PhyTreeObject* treeObject) {
     uiLog.trace("Re-rooting of the PhyTree");
     SAFE_POINT(treeObject != nullptr, "Null pointer argument 'treeObject' was passed to 'PhyTreeUtils::rerootPhyTree' function", );
 
-    GraphicsBranchItem *branchItem = dynamic_cast<GraphicsBranchItem *>(parentItem());
+    GraphicsBranchItem* branchItem = dynamic_cast<GraphicsBranchItem*>(parentItem());
     CHECK(branchItem != nullptr, );
 
-    GraphicsRectangularBranchItem *rectBranchItem = dynamic_cast<GraphicsRectangularBranchItem *>(branchItem);
+    GraphicsRectangularBranchItem* rectBranchItem = dynamic_cast<GraphicsRectangularBranchItem*>(branchItem);
     if (rectBranchItem == nullptr) {
         CHECK(branchItem->getCorrespondingItem(), );
 
-        rectBranchItem = dynamic_cast<GraphicsRectangularBranchItem *>(branchItem->getCorrespondingItem());
+        rectBranchItem = dynamic_cast<GraphicsRectangularBranchItem*>(branchItem->getCorrespondingItem());
         CHECK(rectBranchItem != nullptr, );
     }
 
-    const PhyBranch *nodeBranch = rectBranchItem->getPhyBranch();
+    const PhyBranch* nodeBranch = rectBranchItem->getPhyBranch();
     CHECK(nodeBranch != nullptr, );
-    PhyNode *newRoot = nodeBranch->node2;
+    PhyNode* newRoot = nodeBranch->node2;
     CHECK(newRoot != nullptr, );
 
     treeObject->rerootPhyTree(newRoot);
 }
 
-void GraphicsButtonItem::updateSettings(const OptionsMap &settings) {
+void GraphicsButtonItem::updateSettings(const OptionsMap& settings) {
     CHECK(nullptr != nodeLabel, );
     QFont newFont = qvariant_cast<QFont>(settings[LABEL_FONT_TYPE]);
     newFont.setPointSize(qvariant_cast<int>(settings[LABEL_FONT_SIZE]));

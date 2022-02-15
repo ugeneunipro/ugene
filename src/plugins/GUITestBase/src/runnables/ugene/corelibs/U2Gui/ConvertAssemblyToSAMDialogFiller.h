@@ -31,9 +31,9 @@ using namespace HI;
 
 class ConvertAssemblyToSAMDialogFiller : public Filler {
 public:
-    ConvertAssemblyToSAMDialogFiller(HI::GUITestOpStatus &_os,
-                                     const QString &_dbPath,
-                                     const QString &_dbFileName)
+    ConvertAssemblyToSAMDialogFiller(HI::GUITestOpStatus& _os,
+                                     const QString& _dbPath,
+                                     const QString& _dbFileName)
         : Filler(_os, "AssemblyToSamDialog"),
           databasePath(_dbPath),
           databaseFileName(_dbFileName) {

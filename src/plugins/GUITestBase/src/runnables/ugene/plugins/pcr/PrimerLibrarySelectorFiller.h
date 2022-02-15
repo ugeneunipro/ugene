@@ -31,7 +31,7 @@ using namespace HI;
 
 class PrimerLibrarySelectorFiller : public Filler {
 public:
-    PrimerLibrarySelectorFiller(HI::GUITestOpStatus &os, int number, bool doubleClick);
+    PrimerLibrarySelectorFiller(HI::GUITestOpStatus& os, int number, bool doubleClick);
 
     void commonScenario();
 

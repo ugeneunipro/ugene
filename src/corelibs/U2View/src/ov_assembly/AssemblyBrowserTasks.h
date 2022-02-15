@@ -36,12 +36,12 @@ class AssemblyBrowser;
 class OpenAssemblyBrowserTask : public ObjectViewTask {
     Q_OBJECT
 public:
-    OpenAssemblyBrowserTask(AssemblyObject *obj);
-    OpenAssemblyBrowserTask(UnloadedObject *obj);
-    OpenAssemblyBrowserTask(Document *doc);
+    OpenAssemblyBrowserTask(AssemblyObject* obj);
+    OpenAssemblyBrowserTask(UnloadedObject* obj);
+    OpenAssemblyBrowserTask(Document* doc);
     virtual void open();
-    static void updateTitle(AssemblyBrowser *ab);
-    static AssemblyBrowser *openBrowserForObject(AssemblyObject *obj, QString viewName, bool persistent);
+    static void updateTitle(AssemblyBrowser* ab);
+    static AssemblyBrowser* openBrowserForObject(AssemblyObject* obj, QString viewName, bool persistent);
 
 private:
     GObjectReference unloadedObjRef;
@@ -50,14 +50,14 @@ private:
 class OpenSavedAssemblyBrowserTask : public ObjectViewTask {
     Q_OBJECT
 public:
-    OpenSavedAssemblyBrowserTask(const QString &viewName, const QVariantMap &stateData);
+    OpenSavedAssemblyBrowserTask(const QString& viewName, const QVariantMap& stateData);
     virtual void open();
 };
 
 class UpdateAssemblyBrowserTask : public ObjectViewTask {
     Q_OBJECT
 public:
-    UpdateAssemblyBrowserTask(GObjectView *v, const QString &stateName, const QVariantMap &stateData)
+    UpdateAssemblyBrowserTask(GObjectView* v, const QString& stateName, const QVariantMap& stateData)
         : ObjectViewTask(v, stateName, stateData) {
     }
 

@@ -73,24 +73,24 @@ void CloseProjectTask::prepare() {
     /* TODO: this is done by project view. Need to cleanup this part!
     addSubTask(new SaveProjectTask(SaveProjectTaskKind_SaveProjectAndDocumentsAskEach));
     */
-    QList<Task *> tasks;
+    QList<Task*> tasks;
     /**/
-    Project *pp = AppContext::getProject();
+    Project* pp = AppContext::getProject();
     if (pp->isTreeItemModified()) {
         tasks.append(AppContext::getProjectService()->saveProjectTask(SaveProjectTaskKind_SaveProjectAndDocumentsAskEach));
     }
     /**/
-    ServiceRegistry *sr = AppContext::getServiceRegistry();
-    QList<Service *> services = sr->findServices(Service_Project);
+    ServiceRegistry* sr = AppContext::getServiceRegistry();
+    QList<Service*> services = sr->findServices(Service_Project);
     assert(services.size() == 1);
-    Service *projectService = services.first();
+    Service* projectService = services.first();
     tasks.append(sr->unregisterServiceTask(projectService));
     addSubTask(new MultiTask(tr("Save and close project"), tasks));
 }
 
 //////////////////////////////////////////////////////////////////////////
 /// OpenProjectTask
-OpenProjectTask::OpenProjectTask(const QString &_url, const QString &_name)
+OpenProjectTask::OpenProjectTask(const QString& _url, const QString& _name)
     : Task(tr("Open project/document"), TaskFlags_NR_FOSCOE), url(_url), name(_name), loadProjectTask(nullptr) {
 }
 
@@ -108,16 +108,16 @@ void OpenProjectTask::prepare() {
         loadProjectTask = new LoadProjectTask(url);
         addSubTask(loadProjectTask);
     } else {
-        ProjectImpl *p = new ProjectImpl(name, url);
+        ProjectImpl* p = new ProjectImpl(name, url);
         addSubTask(new RegisterProjectServiceTask(p));
         //     addSubTask(new SaveProjectTask(SaveProjectTaskKind_SaveProjectOnly, p));
     }
 }
 
-QList<Task *> OpenProjectTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> OpenProjectTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     if (!isCanceled() && subTask == loadProjectTask && !loadProjectTask->hasError()) {
-        Project *p = loadProjectTask->detachProject();
+        Project* p = loadProjectTask->detachProject();
         res.append(new RegisterProjectServiceTask(p));
     }
     return res;
@@ -125,7 +125,7 @@ QList<Task *> OpenProjectTask::onSubTaskFinished(Task *subTask) {
 
 //////////////////////////////////////////////////////////////////////////
 /// Save project
-SaveProjectTask::SaveProjectTask(SaveProjectTaskKind _k, Project *p, const QString &_url, bool silentSave_)
+SaveProjectTask::SaveProjectTask(SaveProjectTaskKind _k, Project* p, const QString& _url, bool silentSave_)
     : Task(tr("Save project"), TaskFlags(TaskFlag_NoRun) | TaskFlag_CancelOnSubtaskCancel), k(_k), proj(p), url(_url), silentSave(silentSave_) {
 }
 
@@ -140,12 +140,12 @@ void SaveProjectTask::prepare() {
     if (url.isEmpty()) {
         url = proj->getProjectURL();
     }
-    QList<Task *> ssTasks;
+    QList<Task*> ssTasks;
     if (url.isEmpty() && (!proj->getGObjectViewStates().isEmpty() || proj->getDocuments().size() > 0)) {
         // show "save project?" dialog, if needed
         int savedSaveProjectState = AppContext::getAppSettings()->getUserAppsSettings()->getAskToSaveProject();
 
-        QWidget *mainWindow = AppContext::getMainWindow()->getQMainWindow();
+        QWidget* mainWindow = AppContext::getMainWindow()->getQMainWindow();
         int code;
         if (silentSave) {
             code = QDialogButtonBox::Yes;
@@ -192,7 +192,7 @@ void SaveProjectTask::prepare() {
     }
 
     if (k != SaveProjectTaskKind_SaveProjectOnly) {
-        QList<Document *> modifiedDocs = SaveMultipleDocuments::findModifiedDocuments(AppContext::getProject()->getDocuments());
+        QList<Document*> modifiedDocs = SaveMultipleDocuments::findModifiedDocuments(AppContext::getProject()->getDocuments());
         if (!modifiedDocs.isEmpty()) {
             ssTasks.append(new SaveMultipleDocuments(modifiedDocs, k == SaveProjectTaskKind_SaveProjectAndDocumentsAskEach));
         }
@@ -208,7 +208,7 @@ void SaveProjectTask::prepare() {
 //////////////////////////////////////////////////////////////////////////
 /// SaveOnlyProjectTask
 
-SaveOnlyProjectTask::SaveOnlyProjectTask(Project *p, const QString &_url)
+SaveOnlyProjectTask::SaveOnlyProjectTask(Project* p, const QString& _url)
     : Task(tr("Save project"), TaskFlag_NoRun), sub(nullptr), proj(p), url(_url) {
     lock = nullptr;
 }
@@ -226,7 +226,7 @@ void SaveOnlyProjectTask::prepare() {
         url = proj->getProjectURL();
     }
 
-    foreach (Document *d, proj->getDocuments()) {
+    foreach (Document* d, proj->getDocuments()) {
         QStringList urls = d->getGHintsMap().value(ProjectLoaderHint_MultipleFilesMode_URLDocument, QStringList()).toStringList();
         if (urls.isEmpty()) {  // not merged document
             if (d->getURL().isLocalFile()) {
@@ -254,8 +254,8 @@ void SaveOnlyProjectTask::prepare() {
     }
 }
 
-QList<Task *> SaveOnlyProjectTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> ret;
+QList<Task*> SaveOnlyProjectTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> ret;
     if (!isCanceled() && subTask == sub) {
         _run();
     }
@@ -282,7 +282,7 @@ Task::ReportResult SaveOnlyProjectTask::report() {
 
 //////////////////////////////////////////////////////////////////////////
 /// LoadProjectTask
-LoadProjectTask::LoadProjectTask(const QString &_url)
+LoadProjectTask::LoadProjectTask(const QString& _url)
     : Task(tr("Load project"), TaskFlag_None), proj(nullptr), url(_url) {
     xmlDoc = new QDomDocument();
 }
@@ -299,8 +299,8 @@ void LoadProjectTask::run() {
 
 Task::ReportResult LoadProjectTask::report() {
     if (!stateInfo.hasError()) {
-        ProjectParserRegistry *ppr = ProjectParserRegistry::instance();
-        ProjectParser *parser = ppr->getProjectParserByVersion(version);
+        ProjectParserRegistry* ppr = ProjectParserRegistry::instance();
+        ProjectParser* parser = ppr->getProjectParserByVersion(version);
         if (parser == nullptr) {
             coreLog.info(tr("Unable to detect parser for project"));
             setError(tr("failed to parse project file %1").arg(url));
@@ -314,23 +314,23 @@ Task::ReportResult LoadProjectTask::report() {
     return Task::ReportResult_Finished;
 }
 
-RegisterProjectServiceTask::RegisterProjectServiceTask(Project *_proj)
+RegisterProjectServiceTask::RegisterProjectServiceTask(Project* _proj)
     : Task(tr("Register project"), TaskFlag_NoRun), proj(_proj) {
 }
 
 void RegisterProjectServiceTask::prepare() {
-    ProjectServiceImpl *ps = new ProjectServiceImpl(proj);
+    ProjectServiceImpl* ps = new ProjectServiceImpl(proj);
     addSubTask(AppContext::getServiceRegistry()->registerServiceTask(ps));
 }
 
-ExportProjectTask::ExportProjectTask(const QString &_destinationDir, const QString &_file, bool _compress)
+ExportProjectTask::ExportProjectTask(const QString& _destinationDir, const QString& _file, bool _compress)
     : Task(tr("Export project task"), TaskFlags_NR_FOSCOE), compress(_compress), destinationDir(_destinationDir), projectFile(_file) {
     assert(!destinationDir.isEmpty());
     setVerboseLogMode(true);
 }
 
 void ExportProjectTask::prepare() {
-    Project *pr = AppContext::getProject();
+    Project* pr = AppContext::getProject();
     if (pr->isItemModified()) {
         // setting url in case of anonymous project
         if (pr->getProjectURL().isEmpty()) {
@@ -346,10 +346,10 @@ Task::ReportResult ExportProjectTask::report() {
     if (hasError() || isCanceled()) {
         return ReportResult_Finished;
     }
-    Project *pr = AppContext::getProject();
+    Project* pr = AppContext::getProject();
 
-    QList<Document *> docList = pr->getDocuments();
-    foreach (Document *doc, docList) {
+    QList<Document*> docList = pr->getDocuments();
+    foreach (Document* doc, docList) {
         if (doc->getURL().isEmpty()) {
             setError(tr("One of the project documents has empty URL"));
             return ReportResult_Finished;
@@ -360,7 +360,7 @@ Task::ReportResult ExportProjectTask::report() {
     CHECK_OP(stateInfo, ReportResult_Finished);
 
     QMap<QString, QString> urlRemap;
-    foreach (Document *doc, docList) {
+    foreach (Document* doc, docList) {
         QString origPath = doc->getURLString();
         IOAdapterId id = doc->getIOAdapterFactory()->getAdapterId();
         if (id == BaseIOAdapters::LOCAL_FILE || id == BaseIOAdapters::GZIPPED_LOCAL_FILE) {
@@ -391,7 +391,7 @@ Task::ReportResult ExportProjectTask::report() {
 //////////////////////////////////////////////////////////////////////////
 // tests
 
-void GTest_LoadProject::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_LoadProject::init(XMLTestFormat*, const QDomElement& el) {
     addTaskResource(TaskResourceUsage(RESOURCE_PROJECT, 1, true));
     projContextName = el.attribute("index");
     if (!el.attribute("load_from_temp").isEmpty()) {
@@ -402,15 +402,15 @@ void GTest_LoadProject::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 void GTest_LoadProject::prepare() {
-    QList<Task *> tasks;
-    Project *previousProject = AppContext::getProject();
-    ServiceRegistry *sr = AppContext::getServiceRegistry();
-    QList<Service *> services = sr->findServices(Service_Project);
+    QList<Task*> tasks;
+    Project* previousProject = AppContext::getProject();
+    ServiceRegistry* sr = AppContext::getServiceRegistry();
+    QList<Service*> services = sr->findServices(Service_Project);
     int servSize = services.size();
     assert(servSize <= 1);
     if (servSize == 1) {
         if (previousProject->metaObject() != nullptr) {
-            Task *tt = new CloseProjectTask();
+            Task* tt = new CloseProjectTask();
             tasks.append(tt);
         }
     } else if (previousProject != nullptr) {
@@ -434,13 +434,13 @@ Task::ReportResult GTest_LoadProject::report() {
     return ReportResult_Finished;
 }
 
-QList<Task *> GTest_LoadProject::onSubTaskFinished(Task *subTask) {
-    QList<Task *> subTasks;
+QList<Task*> GTest_LoadProject::onSubTaskFinished(Task* subTask) {
+    QList<Task*> subTasks;
     if (subTask->hasError()) {
         return subTasks;
     }
     if (subTask == mt) {
-        Project *p = loadTask->getProject();
+        Project* p = loadTask->getProject();
         if (p != nullptr) {
             AppContextImpl::getApplicationContext()->setProject(p);
         }
@@ -453,8 +453,8 @@ void GTest_LoadProject::cleanup() {
     XmlTest::cleanup();
 }
 
-QList<XMLTestFactory *> ProjectTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> ProjectTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_LoadProject::createFactory());
     res.append(GTest_ExportProject::createFactory());
     res.append(GTest_UnloadProject::createFactory());
@@ -462,7 +462,7 @@ QList<XMLTestFactory *> ProjectTests::createTestFactories() {
     return res;
 }
 
-void GTest_ExportProject::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_ExportProject::init(XMLTestFormat*, const QDomElement& el) {
     exportTask = nullptr;
     url = env->getVar("TEMP_DATA_DIR") + el.attribute("url");
 }
@@ -503,7 +503,7 @@ void GTest_ExportProject::cleanup() {
     XmlTest::cleanup();
 }
 
-bool GTest_ExportProject::removeDir(const QDir &aDir) {
+bool GTest_ExportProject::removeDir(const QDir& aDir) {
     bool has_err = false;
     if (aDir.exists())  // QDir::NoDotAndDotDot
     {
@@ -527,7 +527,7 @@ bool GTest_ExportProject::removeDir(const QDir &aDir) {
     }
     return (has_err);
 }
-void GTest_UnloadProject::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_UnloadProject::init(XMLTestFormat*, const QDomElement& el) {
     QString packedList = el.attribute("documents");
     if (packedList.isEmpty()) {
         // document list can be empty!
@@ -537,7 +537,7 @@ void GTest_UnloadProject::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 void GTest_UnloadProject::prepare() {
-    Project *p = AppContext::getProject();
+    Project* p = AppContext::getProject();
     if (p != nullptr) {
         foreach (QString doc, unloadDocList) {
             removeContext(doc);
@@ -546,13 +546,13 @@ void GTest_UnloadProject::prepare() {
     }
 }
 
-void GTest_LoadDocumentFromProject::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_LoadDocumentFromProject::init(XMLTestFormat*, const QDomElement& el) {
     documentFileName = el.attribute("document");
     contextAdded = false;
 }
 
 void GTest_LoadDocumentFromProject::prepare() {
-    Project *pr = AppContext::getProject();
+    Project* pr = AppContext::getProject();
     if (pr == nullptr) {
         stateInfo.setError(tr("No project loaded"));
         return;
@@ -561,7 +561,7 @@ void GTest_LoadDocumentFromProject::prepare() {
         stateInfo.setError(tr("Document name to load is empty"));
         return;
     }
-    foreach (Document *doc, pr->getDocuments()) {
+    foreach (Document* doc, pr->getDocuments()) {
         QFileInfo fi(doc->getURLString());
         QString tmp = fi.fileName();
         if (fi.fileName() == documentFileName) {
@@ -579,7 +579,7 @@ void GTest_LoadDocumentFromProject::prepare() {
 }
 
 void GTest_LoadDocumentFromProject::cleanup() {
-    QObject *o = getContext(documentFileName);
+    QObject* o = getContext(documentFileName);
     if (contextAdded && o != nullptr) {
         removeContext(documentFileName);
         if (loadedDoc->isLoaded()) {

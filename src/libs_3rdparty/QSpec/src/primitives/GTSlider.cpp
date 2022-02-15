@@ -28,15 +28,15 @@ namespace HI {
 #define GT_CLASS_NAME "GTSlider"
 
 #define GT_METHOD_NAME "setValue"
-void GTSlider::setValue(GUITestOpStatus &os, QSlider *slider, int value) {
+void GTSlider::setValue(GUITestOpStatus& os, QSlider* slider, int value) {
     GT_CHECK(slider != nullptr, "Slider is null!");
 
     class MainThreadScenario : public CustomScenario {
     public:
-        MainThreadScenario(QSlider *_slider, int _value)
+        MainThreadScenario(QSlider* _slider, int _value)
             : slider(_slider), value(_value) {
         }
-        void run(GUITestOpStatus &os) override {
+        void run(GUITestOpStatus& os) override {
             int min = slider->minimum();
             int max = slider->maximum();
 
@@ -46,7 +46,7 @@ void GTSlider::setValue(GUITestOpStatus &os, QSlider *slider, int value) {
 
             slider->setValue(value);
         }
-        QSlider *slider;
+        QSlider* slider;
         int value;
     };
 

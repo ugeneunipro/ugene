@@ -44,12 +44,12 @@ const QList<QString> BioStruct3DColorSchemeRegistry::factoriesNames() {
     return getInstance()->factories.keys();
 }
 
-const BioStruct3DColorSchemeFactory *BioStruct3DColorSchemeRegistry::getFactory(const QString &name) {
+const BioStruct3DColorSchemeFactory* BioStruct3DColorSchemeRegistry::getFactory(const QString& name) {
     return getInstance()->factories.value(name, 0);
 }
 
-BioStruct3DColorScheme *BioStruct3DColorSchemeRegistry::createColorScheme(const QString &name, const BioStruct3DObject *biostruct) {
-    const BioStruct3DColorSchemeFactory *fact = getFactory(name);
+BioStruct3DColorScheme* BioStruct3DColorSchemeRegistry::createColorScheme(const QString& name, const BioStruct3DObject* biostruct) {
+    const BioStruct3DColorSchemeFactory* fact = getFactory(name);
 
     if (fact) {
         return fact->createInstance(biostruct);
@@ -62,8 +62,8 @@ BioStruct3DColorSchemeRegistry::BioStruct3DColorSchemeRegistry() {
     registerFactories();
 }
 
-BioStruct3DColorSchemeRegistry *BioStruct3DColorSchemeRegistry::getInstance() {
-    static BioStruct3DColorSchemeRegistry *reg = new BioStruct3DColorSchemeRegistry();
+BioStruct3DColorSchemeRegistry* BioStruct3DColorSchemeRegistry::getInstance() {
+    static BioStruct3DColorSchemeRegistry* reg = new BioStruct3DColorSchemeRegistry();
     return reg;
 }
 
@@ -82,13 +82,13 @@ const QString SimpleColorScheme::schemeName(QObject::tr("Simple colors"));
 
 /*class BioStruct3DColorScheme */
 
-BioStruct3DColorScheme::BioStruct3DColorScheme(const BioStruct3DObject *biostruct)
+BioStruct3DColorScheme::BioStruct3DColorScheme(const BioStruct3DObject* biostruct)
     : defaultAtomColor(0.25f, 0.25f, 0.25f), selectionColor(1.0f, 1.0f, 0),
       selection(biostruct->getBioStruct3D()),
       unselectedShading(0.0) {
 }
 
-Color4f BioStruct3DColorScheme::getAtomColor(const SharedAtom &atom) const {
+Color4f BioStruct3DColorScheme::getAtomColor(const SharedAtom& atom) const {
     Color4f c;
 
     if (isInSelection(atom)) {
@@ -112,22 +112,22 @@ void BioStruct3DColorScheme::setUnselectedShadingLevel(float shading) {
     unselectedShading = shading;
 }
 
-void BioStruct3DColorScheme::updateSelectionRegion(int chainId, const QVector<U2Region> &added, const QVector<U2Region> &removed) {
+void BioStruct3DColorScheme::updateSelectionRegion(int chainId, const QVector<U2Region>& added, const QVector<U2Region>& removed) {
     selection.update(chainId, added, removed);
 }
 
-bool BioStruct3DColorScheme::isInSelection(const SharedAtom &atom) const {
+bool BioStruct3DColorScheme::isInSelection(const SharedAtom& atom) const {
     return selection.inSelection(atom->chainIndex, atom->residueIndex.toInt());
 }
 
-Color4f BioStruct3DColorScheme::getSchemeAtomColor(const SharedAtom &) const {
+Color4f BioStruct3DColorScheme::getSchemeAtomColor(const SharedAtom&) const {
     return defaultAtomColor;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 // ChemicalElemColorScheme
 
-Color4f ChemicalElemColorScheme::getSchemeAtomColor(const SharedAtom &a) const {
+Color4f ChemicalElemColorScheme::getSchemeAtomColor(const SharedAtom& a) const {
     Color4f color;
     if (elementColorMap.contains(a->atomicNumber)) {
         return elementColorMap.value(a->atomicNumber);
@@ -136,7 +136,7 @@ Color4f ChemicalElemColorScheme::getSchemeAtomColor(const SharedAtom &a) const {
     }
 }
 
-ChemicalElemColorScheme::ChemicalElemColorScheme(const BioStruct3DObject *biostruct)
+ChemicalElemColorScheme::ChemicalElemColorScheme(const BioStruct3DObject* biostruct)
     : BioStruct3DColorScheme(biostruct) {
     // CPK colors
 
@@ -157,16 +157,16 @@ ChemicalElemColorScheme::ChemicalElemColorScheme(const BioStruct3DObject *biostr
 
 /* class ChainsColorScheme : public BioStruct3DColorScheme */
 
-const QMap<int, QColor> ChainsColorScheme::getChainColors(const BioStruct3DObject *biostructObj) {
+const QMap<int, QColor> ChainsColorScheme::getChainColors(const BioStruct3DObject* biostructObj) {
     QMap<int, QColor> colorMap;
 
     if (nullptr != biostructObj->getDocument()) {
-        QList<GObject *> aObjs = GObjectUtils::selectRelationsFromParentDoc(biostructObj, GObjectTypes::ANNOTATION_TABLE, ObjectRole_AnnotationTable);
-        foreach (GObject *obj, aObjs) {
-            AnnotationTableObject *ao = qobject_cast<AnnotationTableObject *>(obj);
+        QList<GObject*> aObjs = GObjectUtils::selectRelationsFromParentDoc(biostructObj, GObjectTypes::ANNOTATION_TABLE, ObjectRole_AnnotationTable);
+        foreach (GObject* obj, aObjs) {
+            AnnotationTableObject* ao = qobject_cast<AnnotationTableObject*>(obj);
             SAFE_POINT(nullptr != ao, "Invalid annotation table!", colorMap);
 
-            foreach (Annotation *a, ao->getAnnotationsByName(BioStruct3D::MoleculeAnnotationTag)) {
+            foreach (Annotation* a, ao->getAnnotationsByName(BioStruct3D::MoleculeAnnotationTag)) {
                 const QString chainQualifier = a->findFirstQualifierValue(BioStruct3D::ChainIdQualifierName);
                 SAFE_POINT(!chainQualifier.isEmpty(), "Invalid chain id qualifier", colorMap);
                 const char chainId = chainQualifier.toLatin1().at(0);
@@ -181,7 +181,7 @@ const QMap<int, QColor> ChainsColorScheme::getChainColors(const BioStruct3DObjec
     return colorMap;
 }
 
-ChainsColorScheme::ChainsColorScheme(const BioStruct3DObject *biostruct)
+ChainsColorScheme::ChainsColorScheme(const BioStruct3DObject* biostruct)
     : BioStruct3DColorScheme(biostruct) {
     const QMap<int, QColor> chainColors = getChainColors(biostruct);
     if (!chainColors.empty()) {
@@ -193,7 +193,7 @@ ChainsColorScheme::ChainsColorScheme(const BioStruct3DObject *biostruct)
     }
 }
 
-Color4f ChainsColorScheme::getSchemeAtomColor(const SharedAtom &atom) const {
+Color4f ChainsColorScheme::getSchemeAtomColor(const SharedAtom& atom) const {
     Color4f color;
     if (chainColorMap.contains(atom->chainIndex)) {
         return chainColorMap.value(atom->chainIndex);
@@ -204,20 +204,20 @@ Color4f ChainsColorScheme::getSchemeAtomColor(const SharedAtom &atom) const {
 
 /* class SecStructColorScheme : public BioStruct3DColorScheme */
 
-const QMap<QString, QColor> SecStructColorScheme::getSecStructAnnotationColors(const BioStruct3DObject *biostruct) {
+const QMap<QString, QColor> SecStructColorScheme::getSecStructAnnotationColors(const BioStruct3DObject* biostruct) {
     QMap<QString, QColor> colors;
-    AnnotationSettingsRegistry *asr = AppContext::getAnnotationsSettingsRegistry();
+    AnnotationSettingsRegistry* asr = AppContext::getAnnotationsSettingsRegistry();
 
-    Document *doc = biostruct->getDocument();
+    Document* doc = biostruct->getDocument();
     if (doc) {
-        QList<GObject *> targetAnnotations = GObjectUtils::selectRelationsFromParentDoc(biostruct, GObjectTypes::ANNOTATION_TABLE, ObjectRole_AnnotationTable);
-        foreach (GObject *obj, targetAnnotations) {
-            AnnotationTableObject *ao = qobject_cast<AnnotationTableObject *>(obj);
+        QList<GObject*> targetAnnotations = GObjectUtils::selectRelationsFromParentDoc(biostruct, GObjectTypes::ANNOTATION_TABLE, ObjectRole_AnnotationTable);
+        foreach (GObject* obj, targetAnnotations) {
+            AnnotationTableObject* ao = qobject_cast<AnnotationTableObject*>(obj);
             SAFE_POINT(nullptr != ao, "Invalid annotation table!", colors);
 
-            foreach (Annotation *a, ao->getAnnotationsByName(BioStruct3D::SecStructAnnotationTag)) {
+            foreach (Annotation* a, ao->getAnnotationsByName(BioStruct3D::SecStructAnnotationTag)) {
                 QString ssName = a->getQualifiers().first().value;
-                AnnotationSettings *as = asr->getAnnotationSettings(ssName);
+                AnnotationSettings* as = asr->getAnnotationSettings(ssName);
                 colors.insert(ssName, as->color);
             }
         }
@@ -226,7 +226,7 @@ const QMap<QString, QColor> SecStructColorScheme::getSecStructAnnotationColors(c
     return colors;
 }
 
-SecStructColorScheme::SecStructColorScheme(const BioStruct3DObject *biostruct)
+SecStructColorScheme::SecStructColorScheme(const BioStruct3DObject* biostruct)
     : BioStruct3DColorScheme(biostruct) {
     defaultAtomColor = Color4f(0.5f, 0.9f, 0.9f);
     const QMap<QString, QColor> secStrucColors = getSecStructAnnotationColors(biostruct);
@@ -237,7 +237,7 @@ SecStructColorScheme::SecStructColorScheme(const BioStruct3DObject *biostruct)
             secStrucColorMap.insert(i.key().toLatin1(), Color4f(i.value()));
         }
 
-        foreach (const SharedSecondaryStructure &struc, biostruct->getBioStruct3D().secondaryStructures) {
+        foreach (const SharedSecondaryStructure& struc, biostruct->getBioStruct3D().secondaryStructures) {
             for (int index = struc->startSequenceNumber; index <= struc->endSequenceNumber; ++index) {
                 QByteArray type = BioStruct3D::getSecStructTypeName(struc->type).toLatin1();
                 Q_ASSERT(secStrucColorMap.contains(type));
@@ -248,7 +248,7 @@ SecStructColorScheme::SecStructColorScheme(const BioStruct3DObject *biostruct)
 
 #ifdef _DEBUG
         // Verify indices with biostruct3d
-        const BioStruct3D &bioStruc = biostruct->getBioStruct3D();
+        const BioStruct3D& bioStruc = biostruct->getBioStruct3D();
         QMapIterator<int, MolStructs> iter(molMap);
         while (iter.hasNext()) {
             iter.next();
@@ -258,12 +258,12 @@ SecStructColorScheme::SecStructColorScheme(const BioStruct3DObject *biostruct)
     }
 }
 
-Color4f SecStructColorScheme::getSchemeAtomColor(const SharedAtom &atom) const {
+Color4f SecStructColorScheme::getSchemeAtomColor(const SharedAtom& atom) const {
     Color4f c = defaultAtomColor;
     int residueIndex = atom->residueIndex.toInt();
 
     if (molMap.contains(atom->chainIndex)) {
-        const QHash<int, QByteArray> &residueTable = molMap.value(atom->chainIndex).strucResidueTable;
+        const QHash<int, QByteArray>& residueTable = molMap.value(atom->chainIndex).strucResidueTable;
         if (residueTable.contains(residueIndex)) {
             QByteArray type = residueTable.value(residueIndex);
             c = secStrucColorMap.value(type);
@@ -289,7 +289,7 @@ void SimpleColorScheme::createColors() {
     }
 }
 
-SimpleColorScheme::SimpleColorScheme(const BioStruct3DObject *biostruct)
+SimpleColorScheme::SimpleColorScheme(const BioStruct3DObject* biostruct)
     : BioStruct3DColorScheme(biostruct) {
     createColors();
     static int idx = 0;

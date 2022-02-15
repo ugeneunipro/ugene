@@ -40,33 +40,33 @@ class RFSArrayWKAlgorithm : public RFAlgorithmBase {
     friend class RFSArrayWKSubtask;
 
 public:
-    RFSArrayWKAlgorithm(RFResultsListener *rl, const char *seqX, int sizeX, const char *seqY, int sizeY, DNAAlphabetType seqType, int w, int k);
+    RFSArrayWKAlgorithm(RFResultsListener* rl, const char* seqX, int sizeX, const char* seqY, int sizeY, DNAAlphabetType seqType, int w, int k);
 
     ~RFSArrayWKAlgorithm() {
         cleanup();
     }
 
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
     void cleanup();
 
 private:
     void addResult(int a, int s, int l, int c);
-    void calculate(RFSArrayWKSubtask *t);
+    void calculate(RFSArrayWKSubtask* t);
 
 public:
     QVector<int> diagOffsets;  // holds start position for the last checked window
     int ARRAY_SIZE;
     int SEARCH_SIZE;
 
-    const char *arraySeq;
-    const char *searchSeq;
+    const char* arraySeq;
+    const char* searchSeq;
     bool arrayIsX;
 
     quint32 q;
 
-    CreateSArrayIndexTask *indexTask;
+    CreateSArrayIndexTask* indexTask;
     int nThreads;
 };
 
@@ -75,12 +75,12 @@ class RFSArrayWKSubtask : public Task, public SArrayIndex::SAISearchContext {
     friend class RFSArrayWKAlgorithm;
 
 public:
-    RFSArrayWKSubtask(RFSArrayWKAlgorithm *owner, int _tid);
+    RFSArrayWKSubtask(RFSArrayWKAlgorithm* owner, int _tid);
     virtual ~RFSArrayWKSubtask() {
     }
     void run();
 
-    RFSArrayWKAlgorithm *owner;
+    RFSArrayWKAlgorithm* owner;
 
     const int tid;
 };

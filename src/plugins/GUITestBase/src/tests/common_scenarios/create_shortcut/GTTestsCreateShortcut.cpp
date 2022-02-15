@@ -62,7 +62,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     // Expected state: the shortcut file is created.
 #if defined(Q_OS_WIN)
     HRESULT hres;
-    IShellLink *psl;
+    IShellLink* psl;
 
     // Initialize COM
     CoInitialize(0);
@@ -72,7 +72,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
                             nullptr,
                             CLSCTX_INPROC_SERVER,
                             IID_IShellLink,
-                            (LPVOID *)&psl);
+                            (LPVOID*)&psl);
     if (SUCCEEDED(hres)) {
         // Set the path to the shortcut target and add the description.
         WCHAR path[MAX_PATH];
@@ -82,8 +82,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
         // Query IShellLink for the IPersistFile interface, used for saving the
         // shortcut in persistent storage.
-        IPersistFile *ppf;
-        hres = psl->QueryInterface(IID_IPersistFile, (LPVOID *)&ppf);
+        IPersistFile* ppf;
+        hres = psl->QueryInterface(IID_IPersistFile, (LPVOID*)&ppf);
 
         if (SUCCEEDED(hres)) {
             WCHAR wsz[MAX_PATH + 1];

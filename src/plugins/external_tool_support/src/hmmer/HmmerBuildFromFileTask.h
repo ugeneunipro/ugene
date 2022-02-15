@@ -31,29 +31,29 @@ class ConvertAlignment2Stockholm;
 class HmmerBuildFromFileTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    HmmerBuildFromFileTask(const HmmerBuildSettings &settigngs, const QString &msaUrl);
+    HmmerBuildFromFileTask(const HmmerBuildSettings& settigngs, const QString& msaUrl);
 
-    const QString &getHmmProfileUrl() const;
+    const QString& getHmmProfileUrl() const;
 
 private:
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
     ReportResult report();
     QString generateReport() const;
 
     bool isStockholm();
     void prepareConvertTask();
-    void prepareBuildTask(const QString &stockholmMsaUrl);
+    void prepareBuildTask(const QString& stockholmMsaUrl);
 
     void removeTempDir();
 
-    ConvertAlignment2Stockholm *convertTask;
-    HmmerBuildTask *buildTask;
+    ConvertAlignment2Stockholm* convertTask;
+    HmmerBuildTask* buildTask;
 
     const HmmerBuildSettings settings;
     const QString msaUrl;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_HMMER_BUILD_FROM_FILE_TASK_H_
+#endif  // _U2_HMMER_BUILD_FROM_FILE_TASK_H_

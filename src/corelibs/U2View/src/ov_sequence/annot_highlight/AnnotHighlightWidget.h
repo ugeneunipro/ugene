@@ -51,7 +51,7 @@ signals:
     void si_showAllStateChanged();
 
 private:
-    virtual void mousePressEvent(QMouseEvent *);
+    virtual void mousePressEvent(QMouseEvent*);
 
     bool showAllIsSelected;
 };
@@ -59,19 +59,19 @@ private:
 class AnnotHighlightWidget : public QWidget {
     Q_OBJECT
 public:
-    AnnotHighlightWidget(AnnotatedDNAView *);
+    AnnotHighlightWidget(AnnotatedDNAView*);
 
 private slots:
     void sl_onShowAllStateChanged();
-    void sl_onSelectedItemChanged(const QString &annotName);
-    void sl_storeNewColor(const QString &annotName, const QColor &newColor);
-    void sl_storeNewSettings(AnnotationSettings *annotSettings);
-    void sl_onSequenceModified(ADVSequenceObjectContext *);
-    void sl_onAnnotationsAdded(const QList<Annotation *> &);
-    void sl_onAnnotationsRemoved(const QList<Annotation *> &);
+    void sl_onSelectedItemChanged(const QString& annotName);
+    void sl_storeNewColor(const QString& annotName, const QColor& newColor);
+    void sl_storeNewSettings(AnnotationSettings* annotSettings);
+    void sl_onSequenceModified(ADVSequenceObjectContext*);
+    void sl_onAnnotationsAdded(const QList<Annotation*>&);
+    void sl_onAnnotationsRemoved(const QList<Annotation*>&);
     void sl_onAnnotationsModified();
-    void sl_onAnnotationObjectAdded(AnnotationTableObject *);
-    void sl_onAnnotationObjectRemoved(AnnotationTableObject *);
+    void sl_onAnnotationObjectAdded(AnnotationTableObject*);
+    void sl_onAnnotationObjectRemoved(AnnotationTableObject*);
     void sl_onNextAnnotationClick();
     void sl_onPrevAnnotationClick();
     void sl_onAnnotationSelectionChanged();
@@ -94,8 +94,8 @@ private:
     void setNoAnnotTypesLabelValue();
 
     void connectSlots();
-    void connectSlotsForAnnotTableObj(const AnnotationTableObject *annotTableObj);
-    void disconnectSlotsForAnnotTableObj(const AnnotationTableObject *annotTableObj);
+    void connectSlotsForAnnotTableObj(const AnnotationTableObject* annotTableObj);
+    void disconnectSlotsForAnnotTableObj(const AnnotationTableObject* annotTableObj);
 
     /**
      * Depending on the showAllLabel loads either annotations
@@ -126,21 +126,21 @@ private:
      *  - the first one in case @fromTheBeginning is true,
      *  - the last one in case @fromTheBeginning is false.
      */
-    bool isFirstAnnotatedRegion(Annotation *annotation, const U2Region &region, bool fromTheBeginning = true) const;
+    bool isFirstAnnotatedRegion(Annotation* annotation, const U2Region& region, bool fromTheBeginning = true) const;
 
     bool noAnnotatedRegions() const;
 
-    bool findFirstAnnotatedRegion(AnnotatedRegion &annRegion, bool fromTheBeginning = true) const;
+    bool findFirstAnnotatedRegion(AnnotatedRegion& annRegion, bool fromTheBeginning = true) const;
 
-    bool findFirstAnnotatedRegionAfterPos(AnnotatedRegion &annRegion, qint64 startPos, bool isForward) const;
+    bool findFirstAnnotatedRegionAfterPos(AnnotatedRegion& annRegion, qint64 startPos, bool isForward) const;
 
-    bool findNextUnselectedAnnotatedRegion(AnnotatedRegion &annRegion, bool isForward) const;
+    bool findNextUnselectedAnnotatedRegion(AnnotatedRegion& annRegion, bool isForward) const;
 
     QList<AnnotatedRegion> getAllAnnotatedRegionsByStartPos(qint64 startPos) const;
 
     void updateAnnotationNames();
 
-    AnnotatedDNAView *annotatedDnaView;
+    AnnotatedDNAView* annotatedDnaView;
 
     /**
      * For each annotation type specifies whether the "Show on translation" option
@@ -148,14 +148,14 @@ private:
      */
     QMap<QString, bool> annotNamesWithAminoInfo;
 
-    QLabel *noAnnotTypesLabel;
-    QLabel *annotTreeTitle;
-    AnnotHighlightTree *annotTree;
-    ShowAllAnnotTypesLabel *showAllLabel;
-    QLabel *settingsTitle;
-    AnnotHighlightSettingsWidget *annotSettingsWidget;
-    QPushButton *nextAnnotationButton;
-    QPushButton *prevAnnotationButton;
+    QLabel* noAnnotTypesLabel;
+    QLabel* annotTreeTitle;
+    AnnotHighlightTree* annotTree;
+    ShowAllAnnotTypesLabel* showAllLabel;
+    QLabel* settingsTitle;
+    AnnotHighlightSettingsWidget* annotSettingsWidget;
+    QPushButton* nextAnnotationButton;
+    QPushButton* prevAnnotationButton;
 };
 
 }  // namespace U2

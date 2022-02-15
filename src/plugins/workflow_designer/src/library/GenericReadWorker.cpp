@@ -67,7 +67,7 @@ namespace LocalWorkflow {
 void GenericDocReader::init() {
     assert(ports.size() == 1);
     ch = ports.values().first();
-    Attribute *urlAttr = actor->getParameter(BaseAttributes::URL_IN_ATTRIBUTE().getId());
+    Attribute* urlAttr = actor->getParameter(BaseAttributes::URL_IN_ATTRIBUTE().getId());
     QList<Dataset> sets = urlAttr->getAttributeValue<QList<Dataset>>(context);
     files = new DatasetFilesIterator(sets);
     connect(files, SIGNAL(si_datasetEnded()), SLOT(sl_datasetEnded()), Qt::DirectConnection);
@@ -77,7 +77,7 @@ GenericDocReader::~GenericDocReader() {
     delete files;
 }
 
-Task *GenericDocReader::tick() {
+Task* GenericDocReader::tick() {
     files->tryEmitDatasetEnded();
 
     bool sendMessages = !cache.isEmpty();
@@ -98,10 +98,10 @@ Task *GenericDocReader::tick() {
     return nullptr;
 }
 
-Task *GenericDocReader::createReadTask(const QString &url, const QString &datasetName) {
+Task* GenericDocReader::createReadTask(const QString& url, const QString& datasetName) {
     if (!SharedDbUrlUtils::isDbObjectUrl(url)) {
-        Task *t = createReadTask(url, datasetName);
-        NoFailTaskWrapper *wrapper = new NoFailTaskWrapper(t);
+        Task* t = createReadTask(url, datasetName);
+        NoFailTaskWrapper* wrapper = new NoFailTaskWrapper(t);
         connect(wrapper, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return wrapper;
     } else {
@@ -110,7 +110,7 @@ Task *GenericDocReader::createReadTask(const QString &url, const QString &datase
     }
 }
 
-void GenericDocReader::readObjectFromDb(const QString &url, const QString &datasetName) {
+void GenericDocReader::readObjectFromDb(const QString& url, const QString& datasetName) {
     QVariantMap m;
     m[BaseSlots::URL_SLOT().getId()] = url;
     m[BaseSlots::DATASET_SLOT().getId()] = datasetName;
@@ -121,11 +121,11 @@ void GenericDocReader::readObjectFromDb(const QString &url, const QString &datas
     cache.append(Message(mtype, m, metadata.getId()));
 }
 
-QString GenericDocReader::addReadDbObjectToData(const QString & /*objUrl*/, QVariantMap & /*data*/) {
+QString GenericDocReader::addReadDbObjectToData(const QString& /*objUrl*/, QVariantMap& /*data*/) {
     return "";
 }
 
-SharedDbiDataHandler GenericDocReader::getDbObjectHandlerByUrl(const QString &url) const {
+SharedDbiDataHandler GenericDocReader::getDbObjectHandlerByUrl(const QString& url) const {
     const U2DataId objDbId = SharedDbUrlUtils::getObjectIdByUrl(url);
     SAFE_POINT(!objDbId.isEmpty(), "Unexpected object ID supplied", SharedDbiDataHandler());
     const U2DataType objDbType = U2DbiUtils::toType(objDbId);
@@ -137,7 +137,7 @@ SharedDbiDataHandler GenericDocReader::getDbObjectHandlerByUrl(const QString &ur
     return context->getDataStorage()->getDataHandler(objRef);
 }
 
-QString GenericDocReader::getObjectName(const SharedDbiDataHandler &handler, const U2DataType &type) const {
+QString GenericDocReader::getObjectName(const SharedDbiDataHandler& handler, const U2DataType& type) const {
     QScopedPointer<U2Object> object(context->getDataStorage()->getObject(handler, type));
     CHECK(!object.isNull(), "");
     return object->visualName;
@@ -148,9 +148,9 @@ bool GenericDocReader::isDone() const {
 }
 
 void GenericDocReader::sl_taskFinished() {
-    NoFailTaskWrapper *wrapper = qobject_cast<NoFailTaskWrapper *>(sender());
+    NoFailTaskWrapper* wrapper = qobject_cast<NoFailTaskWrapper*>(sender());
     SAFE_POINT(nullptr != wrapper, "NULL wrapper task", );
-    Task *t = wrapper->originalTask();
+    Task* t = wrapper->originalTask();
     CHECK(t->isFinished(), );
     if (t->hasError()) {
         monitor()->addTaskError(wrapper, t->getError());
@@ -170,9 +170,9 @@ void GenericMSAReader::init() {
     mtype = WorkflowEnv::getDataTypeRegistry()->getById(GenericMAActorProto::TYPE);
 }
 
-void GenericMSAReader::onTaskFinished(Task *task) {
-    LoadMSATask *t = qobject_cast<LoadMSATask *>(task);
-    foreach (const QVariant &msaHandler, t->results) {
+void GenericMSAReader::onTaskFinished(Task* task) {
+    LoadMSATask* t = qobject_cast<LoadMSATask*>(task);
+    foreach (const QVariant& msaHandler, t->results) {
         QVariantMap m;
         m[BaseSlots::URL_SLOT().getId()] = t->url;
         m[BaseSlots::DATASET_SLOT().getId()] = t->datasetName;
@@ -183,7 +183,7 @@ void GenericMSAReader::onTaskFinished(Task *task) {
     }
 }
 
-QString GenericMSAReader::addReadDbObjectToData(const QString &objUrl, QVariantMap &data) {
+QString GenericMSAReader::addReadDbObjectToData(const QString& objUrl, QVariantMap& data) {
     SharedDbiDataHandler handler = getDbObjectHandlerByUrl(objUrl);
     data[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(handler);
     // return getObjectName(handler, U2Type::Msa);
@@ -193,7 +193,7 @@ QString GenericMSAReader::addReadDbObjectToData(const QString &objUrl, QVariantM
 /**************************
  * LoadMSATask
  **************************/
-LoadMSATask::LoadMSATask(const QString &_url, const QString &_datasetName, DbiDataStorage *_storage)
+LoadMSATask::LoadMSATask(const QString& _url, const QString& _datasetName, DbiDataStorage* _storage)
     : Task(tr("Read MSA from %1").arg(_url), TaskFlag_None),
       url(_url),
       datasetName(_datasetName),
@@ -204,7 +204,7 @@ void LoadMSATask::prepare() {
     int memUseMB = 0;
     QFileInfo file(url);
     memUseMB = file.size() / (1024 * 1024);
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     if (iof->getAdapterId() == BaseIOAdapters::GZIPPED_LOCAL_FILE || iof->getAdapterId() == BaseIOAdapters::GZIPPED_HTTP_FILE) {
         memUseMB *= 2.5;  // Need to calculate compress level
     }
@@ -221,16 +221,16 @@ void LoadMSATask::run() {
         stateInfo.setError(tr("File '%1' not exists").arg(url));
         return;
     }
-    DocumentFormat *format = nullptr;
-    QList<DocumentFormat *> fs = DocumentUtils::toFormats(DocumentUtils::detectFormat(url));
-    foreach (DocumentFormat *f, fs) {
+    DocumentFormat* format = nullptr;
+    QList<DocumentFormat*> fs = DocumentUtils::toFormats(DocumentUtils::detectFormat(url));
+    foreach (DocumentFormat* f, fs) {
         if (f->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
             format = f;
             break;
         }
     }
     if (format == nullptr) {
-        foreach (DocumentFormat *f, fs) {
+        foreach (DocumentFormat* f, fs) {
             if (f->getSupportedObjectTypes().contains(GObjectTypes::SEQUENCE)) {
                 format = f;
                 break;
@@ -242,7 +242,7 @@ void LoadMSATask::run() {
         return;
     }
     ioLog.info(tr("Reading MSA from %1 [%2]").arg(url).arg(format->getFormatName()));
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
 
     cfg[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(storage->getDbiRef());
     cfg[DocumentReadingMode_DontMakeUniqueNames] = true;
@@ -251,7 +251,7 @@ void LoadMSATask::run() {
     doc->setDocumentOwnsDbiResources(false);
 
     if (!doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).isEmpty()) {
-        foreach (GObject *go, doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
+        foreach (GObject* go, doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
             SharedDbiDataHandler handler = storage->getDataHandler(go->getEntityRef());
             QVariant res = qVariantFromValue<SharedDbiDataHandler>(handler);
             results.append(res);
@@ -287,20 +287,20 @@ void GenericSeqReader::init() {
     selector.accExpr = actor->getParameter(GenericSeqActorProto::ACC_ATTR)->getAttributeValue<QString>(context);
 }
 
-Task *GenericSeqReader::createReadTask(const QString &url, const QString &datasetName) {
+Task* GenericSeqReader::createReadTask(const QString& url, const QString& datasetName) {
     QVariantMap hints = cfg;
     hints[BaseSlots::DATASET_SLOT().getId()] = datasetName;
     return new LoadSeqTask(url, hints, &selector, context->getDataStorage());
 }
 
-void GenericSeqReader::onTaskFinished(Task *task) {
-    LoadSeqTask *t = qobject_cast<LoadSeqTask *>(task);
+void GenericSeqReader::onTaskFinished(Task* task) {
+    LoadSeqTask* t = qobject_cast<LoadSeqTask*>(task);
     int limit = cfg[GenericSeqActorProto::LIMIT_ATTR].toInt();
     int currentCount = 0;
     QString datasetName = t->cfg.value(BaseSlots::DATASET_SLOT().getId(), "").toString();
     MessageMetadata metadata(t->url, datasetName);
     context->getMetadataStorage().put(metadata);
-    foreach (const QVariantMap &m, t->results) {
+    foreach (const QVariantMap& m, t->results) {
         if (0 != limit && currentCount >= limit) {
             break;
         }
@@ -310,7 +310,7 @@ void GenericSeqReader::onTaskFinished(Task *task) {
     t->results.clear();
 }
 
-QString GenericSeqReader::addReadDbObjectToData(const QString &objUrl, QVariantMap &data) {
+QString GenericSeqReader::addReadDbObjectToData(const QString& objUrl, QVariantMap& data) {
     SharedDbiDataHandler handler = getDbObjectHandlerByUrl(objUrl);
     data[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(handler);
     // return getObjectName(handler, U2Type::Sequence);
@@ -327,9 +327,9 @@ void LoadSeqTask::prepare() {
         return;
     }
 
-    QList<DocumentFormat *> fs = DocumentUtils::toFormats(DocumentUtils::detectFormat(url));
-    foreach (DocumentFormat *f, fs) {
-        const QSet<GObjectType> &types = f->getSupportedObjectTypes();
+    QList<DocumentFormat*> fs = DocumentUtils::toFormats(DocumentUtils::detectFormat(url));
+    foreach (DocumentFormat* f, fs) {
+        const QSet<GObjectType>& types = f->getSupportedObjectTypes();
         if (types.contains(GObjectTypes::SEQUENCE) || types.contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
             format = f;
             break;
@@ -344,7 +344,7 @@ void LoadSeqTask::prepare() {
 void LoadSeqTask::run() {
     CHECK(nullptr != format, );
     ioLog.info(tr("Reading sequences from %1 [%2]").arg(url).arg(format->getFormatName()));
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     cfg[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(storage->getDbiRef());
     cfg[DocumentReadingMode_DontMakeUniqueNames] = true;
     QScopedPointer<Document> doc(format->loadDocument(iof, url, cfg, stateInfo));
@@ -352,14 +352,14 @@ void LoadSeqTask::run() {
     doc->setDocumentOwnsDbiResources(false);
 
     DbiOperationsBlock opBlock(storage->getDbiRef(), stateInfo);
-    const QSet<GObjectType> &types = format->getSupportedObjectTypes();
+    const QSet<GObjectType>& types = format->getSupportedObjectTypes();
     if (types.contains(GObjectTypes::SEQUENCE)) {
-        QList<GObject *> seqObjs = doc->findGObjectByType(GObjectTypes::SEQUENCE);
-        QList<GObject *> annObjs = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
-        QList<GObject *> allLoadedAnnotations = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
-        foreach (GObject *go, seqObjs) {
+        QList<GObject*> seqObjs = doc->findGObjectByType(GObjectTypes::SEQUENCE);
+        QList<GObject*> annObjs = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
+        QList<GObject*> allLoadedAnnotations = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
+        foreach (GObject* go, seqObjs) {
             SAFE_POINT(nullptr != go, "Invalid object encountered!", );
-            if (!selector->objectMatches(static_cast<U2SequenceObject *>(go))) {
+            if (!selector->objectMatches(static_cast<U2SequenceObject*>(go))) {
                 continue;
             }
             QVariantMap m;
@@ -367,12 +367,12 @@ void LoadSeqTask::run() {
             m[BaseSlots::DATASET_SLOT().getId()] = cfg.value(BaseSlots::DATASET_SLOT().getId(), "");
             SharedDbiDataHandler handler = storage->getDataHandler(go->getEntityRef());
             m[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(handler);
-            QList<GObject *> annotations = GObjectUtils::findObjectsRelatedToObjectByRole(go, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, allLoadedAnnotations, UOF_LoadedOnly);
+            QList<GObject*> annotations = GObjectUtils::findObjectsRelatedToObjectByRole(go, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, allLoadedAnnotations, UOF_LoadedOnly);
             if (!annotations.isEmpty()) {
                 QList<SharedAnnotationData> l;
-                foreach (GObject *annGObj, annotations) {
-                    AnnotationTableObject *att = qobject_cast<AnnotationTableObject *>(annGObj);
-                    foreach (Annotation *a, att->getAnnotations()) {
+                foreach (GObject* annGObj, annotations) {
+                    AnnotationTableObject* att = qobject_cast<AnnotationTableObject*>(annGObj);
+                    foreach (Annotation* a, att->getAnnotations()) {
                         l << a->getData();
                     }
                     annObjs.removeAll(annGObj);
@@ -384,15 +384,15 @@ void LoadSeqTask::run() {
         }
 
         // if there are annotations that are not connected to a sequence -> put them  independently
-        foreach (GObject *annObj, annObjs) {
-            AnnotationTableObject *att = qobject_cast<AnnotationTableObject *>(annObj);
+        foreach (GObject* annObj, annObjs) {
+            AnnotationTableObject* att = qobject_cast<AnnotationTableObject*>(annObj);
             if (att->findRelatedObjectsByRole(ObjectRole_Sequence).isEmpty()) {
                 SAFE_POINT(nullptr != att, "Invalid annotation table object encountered!", );
                 QVariantMap m;
                 m.insert(BaseSlots::URL_SLOT().getId(), url);
 
                 QList<SharedAnnotationData> l;
-                foreach (Annotation *a, att->getAnnotations()) {
+                foreach (Annotation* a, att->getAnnotations()) {
                     l << a->getData();
                 }
                 const SharedDbiDataHandler tableId = storage->putAnnotationTable(l);
@@ -406,14 +406,14 @@ void LoadSeqTask::run() {
         //              bool merge = cfg.contains(mergeToken);
         //              int gaps = cfg.value(mergeToken).toInt();
         U2OpStatus2Log os;
-        foreach (GObject *go, doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
-            auto msaObject = qobject_cast<MultipleSequenceAlignmentObject *>(go);
+        foreach (GObject* go, doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
+            auto msaObject = qobject_cast<MultipleSequenceAlignmentObject*>(go);
             if (msaObject == nullptr) {
                 continue;
             }
             QList<DNASequence> sequenceList = MSAUtils::convertMsaToSequenceList(msaObject->getMsa(), os);
             CHECK_OP(os, )
-            for (const DNASequence &sequence : qAsConst(sequenceList)) {
+            for (const DNASequence& sequence : qAsConst(sequenceList)) {
                 if (!selector->matches(sequence)) {
                     continue;
                 }
@@ -433,7 +433,7 @@ void LoadSeqTask::run() {
 /**************************
  * DNASelector
  **************************/
-bool DNASelector::matches(const DNASequence &dna) {
+bool DNASelector::matches(const DNASequence& dna) {
     if (accExpr.isEmpty()) {
         return true;
     }
@@ -443,7 +443,7 @@ bool DNASelector::matches(const DNASequence &dna) {
     return dna.getName().contains(QRegExp(accExpr));
 }
 
-bool DNASelector::objectMatches(const U2SequenceObject *dna) {
+bool DNASelector::objectMatches(const U2SequenceObject* dna) {
     if (accExpr.isEmpty()) {
         return true;
     }

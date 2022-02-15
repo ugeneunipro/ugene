@@ -30,8 +30,8 @@ namespace U2 {
 
 class TextConversionUtils {
 public:
-    static U2ErrorType qstringToCstring(const QString &source, int maxExpectedLength, wchar_t *destination);
-    static U2ErrorType repeatLastConversion(int maxExpectedLength, wchar_t *destination, int *requiredSize);
+    static U2ErrorType qstringToCstring(const QString& source, int maxExpectedLength, wchar_t* destination);
+    static U2ErrorType repeatLastConversion(int maxExpectedLength, wchar_t* destination, int* requiredSize);
 };
 
 }  // namespace U2

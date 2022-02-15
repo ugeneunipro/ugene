@@ -27,7 +27,7 @@ static QString LAST_UNCONVERTED_STRING = QString();
 
 namespace U2 {
 
-U2ErrorType TextConversionUtils::qstringToCstring(const QString &source, int maxExpectedLength, wchar_t *destination) {
+U2ErrorType TextConversionUtils::qstringToCstring(const QString& source, int maxExpectedLength, wchar_t* destination) {
     CHECK(nullptr != destination, U2_INVALID_STRING);
     const int nameLength = source.length() + 1;
     CHECK_EXT(nameLength <= maxExpectedLength, LAST_UNCONVERTED_STRING = source, U2_TOO_SMALL_BUFFER);
@@ -36,7 +36,7 @@ U2ErrorType TextConversionUtils::qstringToCstring(const QString &source, int max
     return U2_OK;
 }
 
-U2ErrorType TextConversionUtils::repeatLastConversion(int maxExpectedLength, wchar_t *destination, int *requiredSize) {
+U2ErrorType TextConversionUtils::repeatLastConversion(int maxExpectedLength, wchar_t* destination, int* requiredSize) {
     CHECK(nullptr != requiredSize, U2_NUM_ARG_OUT_OF_RANGE);
     *requiredSize = LAST_UNCONVERTED_STRING.length() + 1;
     U2ErrorType result = qstringToCstring(LAST_UNCONVERTED_STRING, maxExpectedLength, destination);

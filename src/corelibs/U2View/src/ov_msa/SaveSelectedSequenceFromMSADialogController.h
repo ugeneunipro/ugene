@@ -36,7 +36,7 @@ class SaveDocumentInFolderController;
 class SaveSelectedSequenceFromMSADialogController : public QDialog {
     Q_OBJECT
 public:
-    SaveSelectedSequenceFromMSADialogController(QWidget *p, const QString &defaultCustomFilename);
+    SaveSelectedSequenceFromMSADialogController(QWidget* p, const QString& defaultCustomFilename);
     ~SaveSelectedSequenceFromMSADialogController();
 
     virtual void accept();
@@ -56,33 +56,33 @@ private:
     QString customFileName;
     bool trimGapsFlag;
     bool addToProjectFlag;
-    SaveDocumentInFolderController *saveController;
-    Ui_SaveSelectedSequenceFromMSADialog *ui;
+    SaveDocumentInFolderController* saveController;
+    Ui_SaveSelectedSequenceFromMSADialog* ui;
 };
 
 class SaveDocumentInFolderControllerConfig : public SaveDocumentControllerConfig {
 public:
     SaveDocumentInFolderControllerConfig();
 
-    QLineEdit *folderLineEdit;
+    QLineEdit* folderLineEdit;
 };
 
 class SaveDocumentInFolderController : public QObject {
     Q_OBJECT
 public:
-    SaveDocumentInFolderController(const SaveDocumentInFolderControllerConfig &config,
-                                   const DocumentFormatConstraints &formatConstraints,
-                                   QObject *parent);
+    SaveDocumentInFolderController(const SaveDocumentInFolderControllerConfig& config,
+                                   const DocumentFormatConstraints& formatConstraints,
+                                   QObject* parent);
 
     QString getSaveDirName() const;
 signals:
-    void si_pathChanged(const QString &path);
+    void si_pathChanged(const QString& path);
 private slots:
     void sl_fileDialogButtonClicked();
 
 private:
     void init();
-    void setPath(const QString &path);
+    void setPath(const QString& path);
     void initFormatComboBox();
 
     SaveDocumentInFolderControllerConfig conf;

@@ -35,30 +35,30 @@ public:
 
 class U2LANG_EXPORT QDConstraint {
 public:
-    QDConstraint(const QList<QDSchemeUnit *> &_units, QDConstraintType _type = QDConstraintTypes::DISTANCE)
+    QDConstraint(const QList<QDSchemeUnit*>& _units, QDConstraintType _type = QDConstraintTypes::DISTANCE)
         : cfg(nullptr), type(_type), units(_units) {
     }
     virtual ~QDConstraint() {
     }
-    QDParameters *getParameters() const {
+    QDParameters* getParameters() const {
         return cfg;
     }
-    const QList<QDSchemeUnit *> &getSchemeUnits() const {
+    const QList<QDSchemeUnit*>& getSchemeUnits() const {
         return units;
     }
     virtual QDConstraintType constraintType() const {
         return type;
     }
-    virtual QString getText(QDSchemeUnit *u1, QDSchemeUnit *u2) const = 0;
-    virtual bool drawArrow(QDSchemeUnit *u1, QDSchemeUnit *u2) const = 0;
-    void setUIEditor(ConfigurationEditor *ed) {
+    virtual QString getText(QDSchemeUnit* u1, QDSchemeUnit* u2) const = 0;
+    virtual bool drawArrow(QDSchemeUnit* u1, QDSchemeUnit* u2) const = 0;
+    void setUIEditor(ConfigurationEditor* ed) {
         cfg->setEditor(ed);
     }
 
 protected:
-    QDParameters *cfg;
+    QDParameters* cfg;
     QDConstraintType type;
-    QList<QDSchemeUnit *> units;
+    QList<QDSchemeUnit*> units;
 };
 
 enum QDDistanceType { E2S,
@@ -68,12 +68,12 @@ enum QDDistanceType { E2S,
 
 class U2LANG_EXPORT QDDistanceConstraint : public QDConstraint {
 public:
-    QDDistanceConstraint(const QList<QDSchemeUnit *> &_units, QDDistanceType type, int min, int max);
+    QDDistanceConstraint(const QList<QDSchemeUnit*>& _units, QDDistanceType type, int min, int max);
     virtual ~QDDistanceConstraint();
-    QDSchemeUnit *getSource() const {
+    QDSchemeUnit* getSource() const {
         return units.at(0);
     }
-    QDSchemeUnit *getDestination() const {
+    QDSchemeUnit* getDestination() const {
         return units.at(1);
     }
     int getMin() const;
@@ -83,8 +83,8 @@ public:
     QDDistanceType distanceType() const {
         return distType;
     }
-    QString getText(QDSchemeUnit *, QDSchemeUnit *) const;
-    bool drawArrow(QDSchemeUnit *, QDSchemeUnit *) const {
+    QString getText(QDSchemeUnit*, QDSchemeUnit*) const;
+    bool drawArrow(QDSchemeUnit*, QDSchemeUnit*) const {
         return true;
     }
     void invert();
@@ -103,12 +103,12 @@ public:
     static const QString DST_ATTR;
 
 public:
-    static bool match(QDConstraint *c, const QDResultUnit &r1, const QDResultUnit &r2, bool complement = false);
-    static U2Region matchLocation(QDDistanceConstraint *dc, const QDResultUnit &r, bool complement = false);
+    static bool match(QDConstraint* c, const QDResultUnit& r1, const QDResultUnit& r2, bool complement = false);
+    static U2Region matchLocation(QDDistanceConstraint* dc, const QDResultUnit& r, bool complement = false);
     static QDDistanceType getInvertedType(QDDistanceType type);
 
 private:
-    static bool match(const U2Region &srcReg, const U2Region &dstReg, const QDDistanceType &type, int min, int max);
+    static bool match(const U2Region& srcReg, const U2Region& dstReg, const QDDistanceType& type, int min, int max);
 };
 
 }  // namespace U2

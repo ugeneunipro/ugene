@@ -25,9 +25,9 @@
 
 namespace U2 {
 
-RegionSelectorWithExcludedRegion::RegionSelectorWithExcludedRegion(QWidget *parent,
+RegionSelectorWithExcludedRegion::RegionSelectorWithExcludedRegion(QWidget* parent,
                                                                    qint64 maxLen,
-                                                                   DNASequenceSelection *selection,
+                                                                   DNASequenceSelection* selection,
                                                                    bool isCircularAvailable)
     : QWidget(parent),
       ui(new Ui_RegionSelectorWithExcludedRegion) {
@@ -54,11 +54,11 @@ bool RegionSelectorWithExcludedRegion::isWholeSequenceSelected() const {
     return includeController->getPresetName() == RegionPreset::WHOLE_SEQUENCE();
 }
 
-U2Region RegionSelectorWithExcludedRegion::getIncludeRegion(bool *ok) const {
+U2Region RegionSelectorWithExcludedRegion::getIncludeRegion(bool* ok) const {
     return includeController->getRegion(ok);
 }
 
-U2Region RegionSelectorWithExcludedRegion::getExcludeRegion(bool *ok) const {
+U2Region RegionSelectorWithExcludedRegion::getExcludeRegion(bool* ok) const {
     if (ui->excludeCheckBox->isChecked()) {
         return excludeController->getRegion(ok);
     } else {
@@ -69,11 +69,11 @@ U2Region RegionSelectorWithExcludedRegion::getExcludeRegion(bool *ok) const {
     }
 }
 
-void RegionSelectorWithExcludedRegion::setIncludeRegion(const U2Region &r) {
+void RegionSelectorWithExcludedRegion::setIncludeRegion(const U2Region& r) {
     includeController->setRegion(r);
 }
 
-void RegionSelectorWithExcludedRegion::setExcludeRegion(const U2Region &r) {
+void RegionSelectorWithExcludedRegion::setExcludeRegion(const U2Region& r) {
     excludeController->setRegion(r);
 }
 

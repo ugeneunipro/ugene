@@ -33,10 +33,10 @@ namespace LocalWorkflow {
 class GffreadWorker : public BaseWorker {
     Q_OBJECT
 public:
-    GffreadWorker(Actor *a);
+    GffreadWorker(Actor* a);
 
     void init();
-    Task *tick();
+    Task* tick();
     void cleanup();
 
 private slots:
@@ -45,15 +45,15 @@ private slots:
 private:
     bool hasInput() const;
     QString getOutUrl();
-    GffreadSettings takeSettings(U2OpStatus &os);
-    QVariantMap takeData(U2OpStatus &os);
-    Task *runGffread(const GffreadSettings &settings);
+    GffreadSettings takeSettings(U2OpStatus& os);
+    QVariantMap takeData(U2OpStatus& os);
+    Task* runGffread(const GffreadSettings& settings);
     bool noMoreData() const;
     void finalize();
-    void sendResult(const QString &outUrl);
+    void sendResult(const QString& outUrl);
 
 private:
-    QMap<QString, int> counters;    // url <-> count suffix
+    QMap<QString, int> counters;  // url <-> count suffix
 };
 
 class GffreadWorkerFactory : public DomainFactory {
@@ -61,7 +61,7 @@ public:
     GffreadWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    Worker *createWorker(Actor *a);
+    Worker* createWorker(Actor* a);
 
     static const QString ACTOR_ID;
     static void init();
@@ -70,7 +70,7 @@ public:
 class GffreadPrompter : public PrompterBase<GffreadPrompter> {
     Q_OBJECT
 public:
-    GffreadPrompter(Actor *a = nullptr)
+    GffreadPrompter(Actor* a = nullptr)
         : PrompterBase<GffreadPrompter>(a) {
     }
 
@@ -78,7 +78,7 @@ protected:
     QString composeRichDoc();
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_GFFREAD_WORKER_H_
+#endif  // _U2_GFFREAD_WORKER_H_

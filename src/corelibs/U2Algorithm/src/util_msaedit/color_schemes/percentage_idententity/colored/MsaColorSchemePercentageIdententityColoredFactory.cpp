@@ -25,12 +25,12 @@
 
 namespace U2 {
 
-MsaColorSchemePercentageIdententityColoredFactory::MsaColorSchemePercentageIdententityColoredFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets)
+MsaColorSchemePercentageIdententityColoredFactory::MsaColorSchemePercentageIdententityColoredFactory(QObject* parent, const QString& id, const QString& name, const AlphabetFlags& supportedAlphabets)
     : MsaColorSchemeFactory(parent, id, name, supportedAlphabets) {
     needThreshold = true;
 }
 
-MsaColorScheme *MsaColorSchemePercentageIdententityColoredFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
+MsaColorScheme* MsaColorSchemePercentageIdententityColoredFactory::create(QObject* parent, MultipleAlignmentObject* maObj) const {
     return new MsaColorSchemePercentageIdententityColored(parent, this, maObj);
 }
 

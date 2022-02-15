@@ -62,7 +62,7 @@ GenomeAlignerCMDLineTask::GenomeAlignerCMDLineTask()
 
     QList<StrStrPair> options = AppContext::getCMDLineRegistry()->getParameters();
 
-    foreach (const StrStrPair &opt, options) {
+    foreach (const StrStrPair& opt, options) {
         if (opt.first == OPTION_INDEX_PATH) {
             indexPath = opt.second;
         } else if (opt.first == OPTION_BUILD_INDEX) {
@@ -73,7 +73,7 @@ GenomeAlignerCMDLineTask::GenomeAlignerCMDLineTask()
             resultPath = opt.second;
         } else if (opt.first == OPTION_SHORTREADS) {
             QStringList urls = opt.second.split(";");
-            foreach (const QString &url, urls) {
+            foreach (const QString& url, urls) {
                 shortReadUrls.append(url);
             }
         } else if (opt.first == OPTION_USE_OPENCL) {
@@ -142,7 +142,7 @@ void GenomeAlignerCMDLineTask::prepare() {
     }
 
     settings.resultFileName = resultPath;
-    foreach (const GUrl &url, shortReadUrls) {
+    foreach (const GUrl& url, shortReadUrls) {
         settings.shortReadSets.append(url);
     }
     settings.refSeqUrl = refPath;
@@ -165,7 +165,7 @@ void GenomeAlignerCMDLineTask::prepare() {
     settings.setCustomValue(GenomeAlignerTask::OPTION_BEST, bestMode);
     settings.setCustomValue(GenomeAlignerTask::OPTION_QUAL_THRESHOLD, qualityThreshold);
 
-    GenomeAlignerTask *task = new GenomeAlignerTask(settings, onlyBuildIndex);
+    GenomeAlignerTask* task = new GenomeAlignerTask(settings, onlyBuildIndex);
     addSubTask(task);
 }
 

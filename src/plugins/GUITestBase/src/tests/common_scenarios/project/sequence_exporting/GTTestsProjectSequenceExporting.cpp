@@ -81,8 +81,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsDocument::checkDocument(os, secondAnnFileName);
     // Expected state:
     //     1) Project view with document "1.gb" and "2.gb" is opened, both documents are unloaded
-    Document *doc1 = GTUtilsDocument::getDocument(os, firstAnnFileName);
-    Document *doc2 = GTUtilsDocument::getDocument(os, secondAnnFileName);
+    Document* doc1 = GTUtilsDocument::getDocument(os, firstAnnFileName);
+    Document* doc2 = GTUtilsDocument::getDocument(os, secondAnnFileName);
 
     CHECK_SET_ERR(!doc1->isLoaded(), "1.gb is loaded");
     CHECK_SET_ERR(!doc2->isLoaded(), "2.gb is loaded");
@@ -107,7 +107,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_EXPORT", "action_export_selected_sequence_region"}, GTGlobals::UseMouse));
     GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, testDir + "_common_data/scenarios/sandbox/", "exp.fasta"));
 
-    QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
+    QWidget* activeWindow = GTUtilsMdi::activeWindow(os);
     QPoint p = activeWindow->mapToGlobal(activeWindow->rect().center());
     GTMouseDriver::moveTo(QPoint(p.x(), 200));
     GTMouseDriver::click(Qt::RightButton);
@@ -161,7 +161,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     // 5. Click Export button.
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_EXPORT", "action_export_sequence_of_selected_annotations"}, GTGlobals::UseKey));
-    Runnable *filler = new ExportSequenceOfSelectedAnnotationsFiller(os,
+    Runnable* filler = new ExportSequenceOfSelectedAnnotationsFiller(os,
                                                                      testDir + "_common_data/scenarios/sandbox/exp.fasta",
                                                                      ExportSequenceOfSelectedAnnotationsFiller::Fasta,
                                                                      ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate);
@@ -221,7 +221,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //     {Gap length} 5
     // 5. Click Export button.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_EXPORT", "action_export_sequence_of_selected_annotations"}, GTGlobals::UseKey));
-    Runnable *filler = new ExportSequenceOfSelectedAnnotationsFiller(os,
+    Runnable* filler = new ExportSequenceOfSelectedAnnotationsFiller(os,
                                                                      testDir + "_common_data/scenarios/sandbox/exp.fasta",
                                                                      ExportSequenceOfSelectedAnnotationsFiller::Fasta,
                                                                      ExportSequenceOfSelectedAnnotationsFiller::Merge,
@@ -302,31 +302,27 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
     GTUtilsDocument::checkDocument(os, firstAnnFileName, AnnotatedDNAViewFactory::ID);
 
-    QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "C");
-    CHECK_SET_ERR(item != nullptr, "AnnotationsTreeView is NULL");
-
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "C"));
-    GTMouseDriver::doubleClick();
+    GTTreeWidget::doubleClick(os, GTUtilsAnnotationsTreeView::findItem(os, "C"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_EXPORT", "action_export_annotations"}, GTGlobals::UseKey));
 
-    Runnable *filler = new ExportAnnotationsFiller(os,
-                                                   testDir + "_common_data/scenarios/sandbox/1.csv",
-                                                   ExportAnnotationsFiller::csv,
-                                                   true,
-                                                   true,
-                                                   false);
-    GTUtilsDialog::waitForDialog(os, filler);
+    GTUtilsDialog::waitForDialog(os,
+                                 new ExportAnnotationsFiller(os,
+                                                             testDir + "_common_data/scenarios/sandbox/1.csv",
+                                                             ExportAnnotationsFiller::csv,
+                                                             true,
+                                                             true,
+                                                             false));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    bool equals = GTFile::equals(os, testDir + "_common_data/scenarios/sandbox/1.csv", testDir + "_common_data/scenarios/project/test_0005.csv");
-    CHECK_SET_ERR(equals == true, "Exported file differs from the test file");
+    bool isEquals = GTFile::equals(os, testDir + "_common_data/scenarios/sandbox/1.csv", testDir + "_common_data/scenarios/project/test_0005.csv");
+    CHECK_SET_ERR(isEquals, "Exported file differs from the test file");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
-    Runnable *filler = new CreateDocumentFiller(os,
+    Runnable* filler = new CreateDocumentFiller(os,
                                                 "ACGTGTGTGTACGACAGACGACAGCAGACGACAGACAGACAGACAGCAAGAGAGAGAGAG",
                                                 true,
                                                 CreateDocumentFiller::StandardRNA,
@@ -350,7 +346,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTUtils::checkExportServiceIsEnabled(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"ADV_MENU_EXPORT", "action_export_sequence_of_selected_annotations"}, GTGlobals::UseKey));
-    Runnable *filler3 = new ExportSequenceOfSelectedAnnotationsFiller(os,
+    Runnable* filler3 = new ExportSequenceOfSelectedAnnotationsFiller(os,
                                                                       testDir + "_common_data/scenarios/sandbox/exp.gb",
                                                                       ExportSequenceOfSelectedAnnotationsFiller::Genbank,
                                                                       ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate,
@@ -365,10 +361,10 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 GUI_TEST_CLASS_DEFINITION(test_0008) {
     class CustomExportSelectedRegion : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            QComboBox *formatCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "formatCombo", dialog));
-            QCheckBox *withAnnotationsBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "withAnnotationsBox", dialog));
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+            QComboBox* formatCombo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "formatCombo", dialog));
+            QCheckBox* withAnnotationsBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "withAnnotationsBox", dialog));
 
             CHECK_SET_ERR(!withAnnotationsBox->isEnabled(), "Export with annotations flag is enabled unexpectedly");
             CHECK_SET_ERR(!withAnnotationsBox->isChecked(), "Export with annotations flag is checked unexpectedly");
@@ -385,7 +381,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
             CHECK_SET_ERR(withAnnotationsBox->isEnabled(), "Export with annotations flag is disabled unexpectedly");
             CHECK_SET_ERR(withAnnotationsBox->isChecked(), "Export with annotations flag is unchecked unexpectedly");
 
-            QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
+            QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
             GTWidget::click(os, box->button(QDialogButtonBox::Cancel));
         }
     };
@@ -440,7 +436,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     // the rest part of the test checks that a newly created association can be used for sequence export
 
     QModelIndex idxGff = GTUtilsProjectTreeView::findIndex(os, "Ca21chr5 features");
-    QWidget *seqArea = GTWidget::findWidget(os, "render_area_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    QWidget* seqArea = GTWidget::findWidget(os, "render_area_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Yes"));
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
@@ -484,7 +480,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
 
     QModelIndex annIdx = GTUtilsProjectTreeView::findIndex(os, "NC_001363 features");
-    QWidget *seqArea = GTWidget::findWidget(os, "render_area_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    QWidget* seqArea = GTWidget::findWidget(os, "render_area_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
 
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
     GTUtilsProjectTreeView::dragAndDrop(os, annIdx, seqArea);

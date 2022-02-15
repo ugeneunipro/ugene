@@ -37,9 +37,9 @@ OpenCLUtils::OpenCLUtils() {
 cl_program OpenCLUtils::createProgramByResource(
     cl_context clContext,
     cl_device_id deviceId,
-    const QString &resourceName,
-    const OpenCLHelper &openCLHelper,
-    cl_int &err) {
+    const QString& resourceName,
+    const OpenCLHelper& openCLHelper,
+    cl_int& err) {
     // open and read file contains OPENCL code
     QByteArray file;
     QFile data(resourceName);
@@ -52,7 +52,7 @@ cl_program OpenCLUtils::createProgramByResource(
         return 0;
     }
 
-    const char *sourceCode = file.constData();
+    const char* sourceCode = file.constData();
     const size_t sourceLength = file.size();
     cl_program clProgram = openCLHelper.clCreateProgramWithSource_p(clContext, 1, &sourceCode, &sourceLength, &err);
 
@@ -80,8 +80,8 @@ cl_program OpenCLUtils::createProgramByResource(
 size_t OpenCLUtils::getPreferredWorkGroupSize(
     cl_kernel kernel,
     cl_device_id deviceId,
-    const OpenCLHelper &openCLHelper,
-    cl_int & /*err*/) {
+    const OpenCLHelper& openCLHelper,
+    cl_int& /*err*/) {
     cl_int err2 = 0;
     size_t preferredWorkGroupSize = 0;
     err2 |= openCLHelper.clGetKernelWorkGroupInfo_p(kernel, deviceId, CL_KERNEL_PREFERRED_WORK_GROUP_SIZE_MULTIPLE, sizeof(size_t), &preferredWorkGroupSize, nullptr);

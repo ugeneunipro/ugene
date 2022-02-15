@@ -28,25 +28,25 @@ namespace U2 {
 
 class U2PRIVATE_EXPORT IOAdapterRegistryImpl : public IOAdapterRegistry {
 public:
-    IOAdapterRegistryImpl(QObject *p = nullptr)
+    IOAdapterRegistryImpl(QObject* p = nullptr)
         : IOAdapterRegistry(p) {
         init();
     }
 
-    virtual bool registerIOAdapter(IOAdapterFactory *io);
+    virtual bool registerIOAdapter(IOAdapterFactory* io);
 
-    virtual bool unregisterIOAdapter(IOAdapterFactory *io);
+    virtual bool unregisterIOAdapter(IOAdapterFactory* io);
 
-    virtual const QList<IOAdapterFactory *> &getRegisteredIOAdapters() const {
+    virtual const QList<IOAdapterFactory*>& getRegisteredIOAdapters() const {
         return adapters;
     }
 
-    virtual IOAdapterFactory *getIOAdapterFactoryById(IOAdapterId id) const;
+    virtual IOAdapterFactory* getIOAdapterFactoryById(IOAdapterId id) const;
 
 private:
     void init();
 
-    QList<IOAdapterFactory *> adapters;
+    QList<IOAdapterFactory*> adapters;
 };
 
 }  // namespace U2

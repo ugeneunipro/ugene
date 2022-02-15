@@ -32,15 +32,15 @@ namespace U2 {
 /************************************************************************/
 /* UdrRecordId */
 /************************************************************************/
-UdrRecordId::UdrRecordId(const UdrSchemaId &schemaId, const U2DataId &recordId)
+UdrRecordId::UdrRecordId(const UdrSchemaId& schemaId, const U2DataId& recordId)
     : schemaId(schemaId), recordId(recordId) {
 }
 
-const UdrSchemaId &UdrRecordId::getSchemaId() const {
+const UdrSchemaId& UdrRecordId::getSchemaId() const {
     return schemaId;
 }
 
-const U2DataId &UdrRecordId::getRecordId() const {
+const U2DataId& UdrRecordId::getRecordId() const {
     return recordId;
 }
 
@@ -68,17 +68,17 @@ UdrValue::UdrValue(double doubleValue) {
     this->doubleValue = doubleValue;
 }
 
-UdrValue::UdrValue(const QString &stringValue) {
+UdrValue::UdrValue(const QString& stringValue) {
     init(UdrSchema::STRING);
     this->stringValue = stringValue;
 }
 
-UdrValue::UdrValue(const U2DataId &dataId) {
+UdrValue::UdrValue(const U2DataId& dataId) {
     init(UdrSchema::ID);
     this->dataId = dataId;
 }
 
-bool UdrValue::checkType(UdrSchema::DataType askedDataType, U2OpStatus &os) const {
+bool UdrValue::checkType(UdrSchema::DataType askedDataType, U2OpStatus& os) const {
     if (isNull) {
         os.setError("NULL value");
         return false;
@@ -90,22 +90,22 @@ bool UdrValue::checkType(UdrSchema::DataType askedDataType, U2OpStatus &os) cons
     return true;
 }
 
-qint64 UdrValue::getInt(U2OpStatus &os) const {
+qint64 UdrValue::getInt(U2OpStatus& os) const {
     CHECK(checkType(UdrSchema::INTEGER, os), 0);
     return intValue;
 }
 
-double UdrValue::getDouble(U2OpStatus &os) const {
+double UdrValue::getDouble(U2OpStatus& os) const {
     CHECK(checkType(UdrSchema::DOUBLE, os), 0.0);
     return doubleValue;
 }
 
-QString UdrValue::getString(U2OpStatus &os) const {
+QString UdrValue::getString(U2OpStatus& os) const {
     CHECK(checkType(UdrSchema::STRING, os), "");
     return stringValue;
 }
 
-U2DataId UdrValue::getDataId(U2OpStatus &os) const {
+U2DataId UdrValue::getDataId(U2OpStatus& os) const {
     CHECK(checkType(UdrSchema::ID, os), "");
     return dataId;
 }
@@ -113,39 +113,39 @@ U2DataId UdrValue::getDataId(U2OpStatus &os) const {
 /************************************************************************/
 /* UdrRecord */
 /************************************************************************/
-UdrRecord::UdrRecord(const UdrRecordId &id, const QList<UdrValue> &data, U2OpStatus &os)
+UdrRecord::UdrRecord(const UdrRecordId& id, const QList<UdrValue>& data, U2OpStatus& os)
     : id(id), data(data) {
-    UdrSchemaRegistry *udrRegistry = AppContext::getUdrSchemaRegistry();
+    UdrSchemaRegistry* udrRegistry = AppContext::getUdrSchemaRegistry();
     SAFE_POINT_EXT(nullptr != udrRegistry, os.setError("NULL UDR registry"), );
     schema = udrRegistry->getSchemaById(id.getSchemaId());
     SAFE_POINT_EXT(nullptr != schema, os.setError("Unknown schema id: " + QString(id.getSchemaId())), );
 }
 
-const UdrRecordId &UdrRecord::getId() const {
+const UdrRecordId& UdrRecord::getId() const {
     return id;
 }
 
-qint64 UdrRecord::getInt(int fieldNum, U2OpStatus &os) const {
+qint64 UdrRecord::getInt(int fieldNum, U2OpStatus& os) const {
     CHECK(checkNum(fieldNum, os), 0);
     return data[fieldNum].getInt(os);
 }
 
-double UdrRecord::getDouble(int fieldNum, U2OpStatus &os) const {
+double UdrRecord::getDouble(int fieldNum, U2OpStatus& os) const {
     CHECK(checkNum(fieldNum, os), 0.0);
     return data[fieldNum].getDouble(os);
 }
 
-QString UdrRecord::getString(int fieldNum, U2OpStatus &os) const {
+QString UdrRecord::getString(int fieldNum, U2OpStatus& os) const {
     CHECK(checkNum(fieldNum, os), "");
     return data[fieldNum].getString(os);
 }
 
-U2DataId UdrRecord::getDataId(int fieldNum, U2OpStatus &os) const {
+U2DataId UdrRecord::getDataId(int fieldNum, U2OpStatus& os) const {
     CHECK(checkNum(fieldNum, os), "");
     return data[fieldNum].getDataId(os);
 }
 
-bool UdrRecord::checkNum(int fieldNum, U2OpStatus &os) const {
+bool UdrRecord::checkNum(int fieldNum, U2OpStatus& os) const {
     SAFE_POINT_EXT(nullptr != schema, os.setError("NULL schema"), false);
     SAFE_POINT_EXT(data.size() == schema->size(), os.setError("Size mismatch"), false);
     SAFE_POINT_EXT(0 <= fieldNum && fieldNum < schema->size(), os.setError("Out of range"), false);

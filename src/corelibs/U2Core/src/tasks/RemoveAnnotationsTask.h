@@ -32,7 +32,7 @@ class U2CORE_EXPORT RemoveAnnotationsTask : public Task {
 public:
     // Removes annotations of specified group, handles multiple annotations ( > 10 000).
     // Also handles situations with locked objects.
-    RemoveAnnotationsTask(AnnotationTableObject *ao, const QString &groupName);
+    RemoveAnnotationsTask(AnnotationTableObject* ao, const QString& groupName);
 
     ReportResult report();
 

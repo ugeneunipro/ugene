@@ -59,7 +59,7 @@ const QString DetView::SEQUENCE_WRAPPED = SEQUENCE_SETTINGS + "/sequenceWrapped"
 const QString DetView::COMPLEMENTARY_STRAND_SHOWN = SEQUENCE_SETTINGS + "/complementaryHidden";
 const QString DetView::TRANSLATION_STATE = SEQUENCE_SETTINGS + "/translationState";
 
-DetView::DetView(QWidget *p, SequenceObjectContext *ctx)
+DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     : GSequenceLineViewAnnotated(p, ctx) {
     editor = new DetViewSequenceEditor(this);
 
@@ -154,8 +154,8 @@ DetView::~DetView() {
     removeEventFilter(editor);
 }
 
-DetViewRenderArea *DetView::getDetViewRenderArea() const {
-    return static_cast<DetViewRenderArea *>(renderArea);
+DetViewRenderArea* DetView::getDetViewRenderArea() const {
+    return static_cast<DetViewRenderArea*>(renderArea);
 }
 
 bool DetView::hasTranslations() const {
@@ -194,7 +194,7 @@ void DetView::setCenterPos(qint64 pos) {
         return;
     }
 
-    DetViewRenderArea *detArea = getDetViewRenderArea();
+    DetViewRenderArea* detArea = getDetViewRenderArea();
     qint64 line = pos / detArea->getSymbolsPerLine();
 
     qint64 newPos = (line - detArea->getLinesCount() / 2) * detArea->getSymbolsPerLine();
@@ -202,11 +202,11 @@ void DetView::setCenterPos(qint64 pos) {
     setStartPos(newPos);
 }
 
-DNATranslation *DetView::getComplementTT() const {
+DNATranslation* DetView::getComplementTT() const {
     return showComplementAction->isChecked() ? ctx->getComplementTT() : nullptr;
 }
 
-DNATranslation *DetView::getAminoTT() const {
+DNATranslation* DetView::getAminoTT() const {
     return !doNotTranslateAction->isChecked() ? ctx->getAminoTT() : nullptr;
 }
 
@@ -253,7 +253,7 @@ int DetView::getShift() const {
 void DetView::ensurePositionVisible(qint64 pos) {
     CHECK(pos >= 0 && pos <= getSequenceLength(), );
 
-    DetViewRenderArea *detViewRenderArea = getDetViewRenderArea();
+    DetViewRenderArea* detViewRenderArea = getDetViewRenderArea();
     if (isWrapMode()) {
         if (!visibleRange.contains(pos)) {
             if (pos < visibleRange.startPos) {
@@ -336,7 +336,7 @@ void DetView::sl_sequenceChanged() {
     GSequenceLineView::sl_sequenceChanged();
 }
 
-void DetView::sl_onDNASelectionChanged(LRegionsSelection *sel, const QVector<U2Region> &added, const QVector<U2Region> &removed) {
+void DetView::sl_onDNASelectionChanged(LRegionsSelection* sel, const QVector<U2Region>& added, const QVector<U2Region>& removed) {
     GSequenceLineViewAnnotated::sl_onDNASelectionChanged(sel, added, removed);
     setSelectedTranslations();
 }
@@ -394,7 +394,7 @@ void DetView::sl_showAllFrames() {
     updateSelectedTranslations(SequenceObjectContext::TS_ShowAllFrames);
 }
 
-void DetView::updateSelectedTranslations(const SequenceObjectContext::TranslationState &state) {
+void DetView::updateSelectedTranslations(const SequenceObjectContext::TranslationState& state) {
     AppContext::getSettings()->setValue(TRANSLATION_STATE, QVariant(state));
     ctx->setTranslationState(state);
     setSelectedTranslations();
@@ -410,7 +410,7 @@ void DetView::sl_wrapSequenceToggle(bool v) {
 
     currentShiftsCounter = 0;
 
-    DetViewRenderArea *detArea = getDetViewRenderArea();
+    DetViewRenderArea* detArea = getDetViewRenderArea();
     detArea->setWrapSequence(v);
     updateVerticalScrollBar();
     updateScrollBar();
@@ -428,7 +428,7 @@ void DetView::sl_wrapSequenceToggle(bool v) {
 void DetView::sl_verticalScrollBarMoved(int pos) {
     if (isWrapMode()) {
         currentShiftsCounter = pos % numShiftsInOneLine;
-        DetViewRenderArea *detArea = getDetViewRenderArea();
+        DetViewRenderArea* detArea = getDetViewRenderArea();
         if (pos / numShiftsInOneLine == visibleRange.startPos / detArea->getSymbolsPerLine()) {
             updateVisibleRange();
             completeUpdate();
@@ -441,7 +441,7 @@ void DetView::sl_verticalScrollBarMoved(int pos) {
 }
 
 void DetView::pack() {
-    QGridLayout *layout = new QGridLayout();
+    QGridLayout* layout = new QGridLayout();
     layout->setMargin(0);
     layout->setSpacing(0);
     layout->addWidget(renderArea, 0, 0);
@@ -452,7 +452,7 @@ void DetView::pack() {
     setMinimumHeight(scrollBar->height() + renderArea->minimumHeight());
 }
 
-void DetView::showEvent(QShowEvent *e) {
+void DetView::showEvent(QShowEvent* e) {
     updateVerticalScrollBar();
     updateVisibleRange();
     updateScrollBar();
@@ -460,7 +460,7 @@ void DetView::showEvent(QShowEvent *e) {
     GSequenceLineViewAnnotated::showEvent(e);
 }
 
-void DetView::hideEvent(QHideEvent *e) {
+void DetView::hideEvent(QHideEvent* e) {
     updateActions();
     GSequenceLineViewAnnotated::hideEvent(e);
 }
@@ -478,7 +478,7 @@ void DetView::setSelectedTranslations() {
 
 void DetView::updateTranslationRowsVisibilityBySelectionState() {
     QVector<bool> frameRowVisibilityFlag(6, false);
-    for (const U2Region &region : qAsConst(ctx->getSequenceSelection()->getSelectedRegions())) {
+    for (const U2Region& region : qAsConst(ctx->getSequenceSelection()->getSelectedRegions())) {
         frameRowVisibilityFlag[int(region.startPos % 3)] = true;  // direct frame
         frameRowVisibilityFlag[int(3 + (ctx->getSequenceLength() - region.endPos()) % 3)] = true;  // complement frame.
     }
@@ -488,7 +488,7 @@ void DetView::updateTranslationRowsVisibilityBySelectionState() {
     }
 }
 
-void DetView::mouseMoveEvent(QMouseEvent *me) {
+void DetView::mouseMoveEvent(QMouseEvent* me) {
     if (!me->buttons()) {
         updateCursorShapeOnMouseMove(me->pos());
     }
@@ -516,14 +516,14 @@ void DetView::mouseMoveEvent(QMouseEvent *me) {
     QWidget::mouseMoveEvent(me);
 }
 
-void DetView::mouseReleaseEvent(QMouseEvent *me) {
+void DetView::mouseReleaseEvent(QMouseEvent* me) {
     // click with 'alt' shift selects single base in GSingleSeqWidget;
     // here we adjust this behavior -> if click was done in translation line -> select 3 bases
     Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
     bool singleBaseSelectionMode = km.testFlag(Qt::AltModifier);
     if (me->button() == Qt::LeftButton && singleBaseSelectionMode) {
         QPoint areaPoint = toRenderAreaPoint(me->pos());
-        DetViewRenderArea *detArea = getDetViewRenderArea();
+        DetViewRenderArea* detArea = getDetViewRenderArea();
         if (detArea->isOnTranslationsLine(areaPoint)) {
             qint64 pos = detArea->coordToPos(areaPoint);
             if (pos == lastPressPos) {
@@ -540,7 +540,7 @@ void DetView::mouseReleaseEvent(QMouseEvent *me) {
     GSequenceLineViewAnnotated::mouseReleaseEvent(me);
 }
 
-void DetView::wheelEvent(QWheelEvent *we) {
+void DetView::wheelEvent(QWheelEvent* we) {
     bool renderAreaWheel = QRect(renderArea->x(), renderArea->y(), renderArea->width(), renderArea->height()).contains(we->pos());
     if (!renderAreaWheel) {
         QWidget::wheelEvent(we);
@@ -551,13 +551,13 @@ void DetView::wheelEvent(QWheelEvent *we) {
     bool toMin = we->delta() > 0;
     if (we->modifiers() == 0) {
         // clear wheel event
-        GScrollBar *sBar = wrapSequenceAction->isChecked() ? verticalScrollBar : scrollBar;
+        GScrollBar* sBar = wrapSequenceAction->isChecked() ? verticalScrollBar : scrollBar;
         sBar->triggerAction(toMin ? QAbstractSlider::SliderSingleStepSub : QAbstractSlider::SliderSingleStepAdd);
     }
     setSelectedTranslations();
 }
 
-void DetView::resizeEvent(QResizeEvent *e) {
+void DetView::resizeEvent(QResizeEvent* e) {
     updateVerticalScrollBar();
     updateVisibleRange();
 
@@ -565,10 +565,10 @@ void DetView::resizeEvent(QResizeEvent *e) {
     GSequenceLineView::resizeEvent(e);
 }
 
-void DetView::keyPressEvent(QKeyEvent *e) {
+void DetView::keyPressEvent(QKeyEvent* e) {
     int key = e->key();
     bool accepted = false;
-    GScrollBar *sBar = isWrapMode() ? verticalScrollBar : scrollBar;
+    GScrollBar* sBar = isWrapMode() ? verticalScrollBar : scrollBar;
     switch (key) {
         case Qt::Key_Left:
         case Qt::Key_Up:
@@ -614,7 +614,7 @@ void DetView::keyPressEvent(QKeyEvent *e) {
 }
 
 void DetView::updateVisibleRange() {
-    DetViewRenderArea *detArea = getDetViewRenderArea();
+    DetViewRenderArea* detArea = getDetViewRenderArea();
     if (isWrapMode()) {
         if (visibleRange.startPos % detArea->getSymbolsPerLine() != 0) {
             // shift to the nearest line break
@@ -666,7 +666,7 @@ void DetView::updateActions() {
 void DetView::updateSize() {
     addUpdateFlags(GSLV_UF_ViewResized);
 
-    DetViewRenderArea *detArea = getDetViewRenderArea();
+    DetViewRenderArea* detArea = getDetViewRenderArea();
     detArea->updateSize();
 
     updateVerticalScrollBar();
@@ -675,7 +675,7 @@ void DetView::updateSize() {
 void DetView::updateVerticalScrollBar() {
     verticalScrollBar->disconnect(this);
 
-    DetViewRenderArea *renderer = getDetViewRenderArea();
+    DetViewRenderArea* renderer = getDetViewRenderArea();
     bool wasVisible = verticalScrollBar->isVisible();
 
     const int shiftsCount = renderer->getShiftsCount();
@@ -689,7 +689,7 @@ void DetView::updateVerticalScrollBar() {
 
     qint64 maximum;
     if (isWrapMode()) {
-        DetViewRenderArea *detArea = getDetViewRenderArea();
+        DetViewRenderArea* detArea = getDetViewRenderArea();
         qint64 linesCount = seqLen / detArea->getSymbolsPerLine();
         if (seqLen % detArea->getSymbolsPerLine() != 0) {
             linesCount++;
@@ -727,7 +727,7 @@ void DetView::updateVerticalScrollBar() {
 
 void DetView::updateVerticalScrollBarPosition() {
     if (isWrapMode()) {
-        DetViewRenderArea *detArea = getDetViewRenderArea();
+        DetViewRenderArea* detArea = getDetViewRenderArea();
         SignalBlocker blocker(verticalScrollBar);
         Q_UNUSED(blocker);
         int newMax = currentShiftsCounter + numShiftsInOneLine * visibleRange.startPos / detArea->getSymbolsPerLine();
@@ -736,17 +736,17 @@ void DetView::updateVerticalScrollBarPosition() {
 }
 
 void DetView::setupTranslationsMenu() {
-    QMenu *translationsMenu = ctx->createTranslationFramesMenu(QList<QAction *>() << doNotTranslateAction << translateAnnotationsOrSelectionAction << setUpFramesManuallyAction << showAllFramesAction);
+    QMenu* translationsMenu = ctx->createTranslationFramesMenu(QList<QAction*>() << doNotTranslateAction << translateAnnotationsOrSelectionAction << setUpFramesManuallyAction << showAllFramesAction);
     CHECK(nullptr != translationsMenu, );
-    QToolButton *button = addActionToLocalToolbar(translationsMenu->menuAction());
+    QToolButton* button = addActionToLocalToolbar(translationsMenu->menuAction());
     button->setPopupMode(QToolButton::InstantPopup);
     button->setObjectName("translationsMenuToolbarButton");
 }
 
 void DetView::setupGeneticCodeMenu() {
-    QMenu *ttMenu = ctx->createGeneticCodeMenu();
+    QMenu* ttMenu = ctx->createGeneticCodeMenu();
     CHECK(nullptr != ttMenu, );
-    QToolButton *button = addActionToLocalToolbar(ttMenu->menuAction());
+    QToolButton* button = addActionToLocalToolbar(ttMenu->menuAction());
     SAFE_POINT(button, QString("ToolButton for %1 is NULL").arg(ttMenu->menuAction()->objectName()), );
     button->setPopupMode(QToolButton::InstantPopup);
     button->setObjectName("AminoToolbarButton");
@@ -759,7 +759,7 @@ int DetView::getVerticalScrollBarPosition() {
     return 0;
 }
 
-QPoint DetView::getRenderAreaPointAfterAutoScroll(const QPoint &pos) {
+QPoint DetView::getRenderAreaPointAfterAutoScroll(const QPoint& pos) {
     QPoint areaPoint = toRenderAreaPoint(pos);
     if (isWrapMode()) {
         if (areaPoint.y() > height()) {
@@ -786,7 +786,7 @@ QPoint DetView::getRenderAreaPointAfterAutoScroll(const QPoint &pos) {
     return areaPoint;
 }
 
-void DetView::moveBorder(const QPoint &p) {
+void DetView::moveBorder(const QPoint& p) {
     QPoint areaPoint = getRenderAreaPointAfterAutoScroll(p);
     resizeSelection(areaPoint);
 }
@@ -804,7 +804,7 @@ U2Region DetView::getCapturingRenderAreaYRegionForPos(qint64 pos) const {
 }
 
 void DetView::setDefaultState() {
-    Settings *settings = AppContext::getSettings();
+    Settings* settings = AppContext::getSettings();
     setWrapSequence(settings->getValue(SEQUENCE_WRAPPED, QVariant(true)).toBool());
     setShowComplement(settings->getValue(COMPLEMENTARY_STRAND_SHOWN, QVariant(true)).toBool());
     switch (static_cast<SequenceObjectContext::TranslationState>(settings->getValue(TRANSLATION_STATE, QVariant(SequenceObjectContext::TS_DoNotTranslate)).toInt())) {
@@ -830,7 +830,7 @@ void DetView::setDefaultState() {
 /************************************************************************/
 /* DetViewRenderArea */
 /************************************************************************/
-DetViewRenderArea::DetViewRenderArea(DetView *v)
+DetViewRenderArea::DetViewRenderArea(DetView* v)
     : GSequenceLineViewGridAnnotationRenderArea(v) {
     renderer = DetViewRendererFactory::createRenderer(getDetView(), view->getSequenceContext(), v->isWrapMode());
     setMouseTracking(true);
@@ -848,15 +848,15 @@ void DetViewRenderArea::setWrapSequence(bool v) {
     updateSize();
 }
 
-bool DetViewRenderArea::isOnTranslationsLine(const QPoint &p) const {
+bool DetViewRenderArea::isOnTranslationsLine(const QPoint& p) const {
     return renderer->isOnTranslationsLine(p, size(), view->getVisibleRange());
 }
 
-QList<U2Region> DetViewRenderArea::getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings) const {
+QList<U2Region> DetViewRenderArea::getAnnotationYRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const {
     return renderer->getAnnotationYRegions(annotation, locationRegionIndex, annotationSettings, size(), view->getVisibleRange());
 }
 
-void DetViewRenderArea::drawAll(QPaintDevice *pd) {
+void DetViewRenderArea::drawAll(QPaintDevice* pd) {
     GSLV_UpdateFlags uf = view->getUpdateFlags();
     bool completeRedraw = uf.testFlag(GSLV_UF_NeedCompleteRedraw) || uf.testFlag(GSLV_UF_ViewResized) ||
                           uf.testFlag(GSLV_UF_VisibleRangeChanged) || uf.testFlag(GSLV_UF_AnnotationsChanged);
@@ -884,7 +884,7 @@ void DetViewRenderArea::drawAll(QPaintDevice *pd) {
     }
 }
 
-qint64 DetViewRenderArea::coordToPos(const QPoint &coord) const {
+qint64 DetViewRenderArea::coordToPos(const QPoint& coord) const {
     QPoint pShifted(coord.x(), coord.y() + getDetView()->getShift());
     return renderer->coordToPos(pShifted, QSize(width(), height()), view->getVisibleRange());
 }
@@ -905,8 +905,8 @@ void DetViewRenderArea::updateSize() {
     repaint();
 }
 
-DetView *DetViewRenderArea::getDetView() const {
-    return static_cast<DetView *>(view);
+DetView* DetViewRenderArea::getDetView() const {
+    return static_cast<DetView*>(view);
 }
 
 int DetViewRenderArea::getSymbolsPerLine() const {

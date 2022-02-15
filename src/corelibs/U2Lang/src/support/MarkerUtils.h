@@ -28,8 +28,8 @@ namespace U2 {
 
 class U2LANG_EXPORT MarkerUtils {
 public:
-    static bool stringToValue(MarkerDataType dataType, const QString &string, QVariantList &value);
-    static void valueToString(MarkerDataType dataType, const QVariantList &value, QString &string);
+    static bool stringToValue(MarkerDataType dataType, const QString& string, QVariantList& value);
+    static void valueToString(MarkerDataType dataType, const QVariantList& value, QString& string);
 
     static const QString INTERVAL_OPERATION;
     static const QString LESS_OPERATION;
@@ -42,13 +42,13 @@ public:
     static const QString REST_OPERATION;
 
 private:
-    static bool stringToIntValue(const QString &string, QVariantList &value);
-    static bool stringToFloatValue(const QString &string, QVariantList &value);
-    static bool stringToTextValue(const QString &string, QVariantList &value);
+    static bool stringToIntValue(const QString& string, QVariantList& value);
+    static bool stringToFloatValue(const QString& string, QVariantList& value);
+    static bool stringToTextValue(const QString& string, QVariantList& value);
 
-    static void integerValueToString(const QVariantList &value, QString &string);
-    static void floatValueToString(const QVariantList &value, QString &string);
-    static void textValueToString(const QVariantList &value, QString &string);
+    static void integerValueToString(const QVariantList& value, QString& string);
+    static void floatValueToString(const QVariantList& value, QString& string);
+    static void textValueToString(const QVariantList& value, QString& string);
 };
 
 }  // namespace U2

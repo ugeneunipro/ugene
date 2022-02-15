@@ -40,8 +40,8 @@ public:
 
 class PhyMLAdapter : public PhyTreeGenerator {
 public:
-    Task *createCalculatePhyTreeTask(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &s);
-    CreatePhyTreeWidget *createPhyTreeSettingsWidget(const MultipleSequenceAlignment &ma, QWidget *parent = nullptr);
+    Task* createCalculatePhyTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s);
+    CreatePhyTreeWidget* createPhyTreeSettingsWidget(const MultipleSequenceAlignment& ma, QWidget* parent = nullptr);
 };
 
 enum SubstModelTrRatioType {
@@ -53,13 +53,13 @@ enum SubstModelTrRatioType {
 
 class PhyMLModelTypes {
 public:
-    static const QStringList &getAminoAcidModelTypes() {
+    static const QStringList& getAminoAcidModelTypes() {
         return aminoSubstitutionModels;
     }
-    static const QStringList &getDnaModelTypes() {
+    static const QStringList& getDnaModelTypes() {
         return dnaSubstitutionModels;
     }
-    static SubstModelTrRatioType getTtRatioType(const QString &modelName);
+    static SubstModelTrRatioType getTtRatioType(const QString& modelName);
 
 private:
     static const QStringList dnaSubstitutionModels;  // all dna models
@@ -78,10 +78,10 @@ public:
 
 class TreeSearchingParams {
 public:
-    static const QStringList &getInputTreeTypes() {
+    static const QStringList& getInputTreeTypes() {
         return inputTreeTypes;
     }
-    static const QStringList &getTreeImprovementTypes() {
+    static const QStringList& getTreeImprovementTypes() {
         return treeImprovementTypes;
     }
 

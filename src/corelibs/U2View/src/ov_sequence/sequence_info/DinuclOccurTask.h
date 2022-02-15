@@ -36,7 +36,7 @@ class U2Region;
 
 class U2VIEW_EXPORT DinuclOccurTask : public BackgroundTask<QMap<QByteArray, qint64>> {
 public:
-    DinuclOccurTask(const DNAAlphabet *alphabet, U2EntityRef seqRef, const QVector<U2Region> &regions);
+    DinuclOccurTask(const DNAAlphabet* alphabet, U2EntityRef seqRef, const QVector<U2Region>& regions);
 
     /**
      * Calculates the characters' pairs occurrence (in a different thread).
@@ -45,7 +45,7 @@ public:
     virtual void run();
 
 private:
-    const DNAAlphabet *alphabet;
+    const DNAAlphabet* alphabet;
     U2EntityRef seqRef;
     QVector<U2Region> regions;
 

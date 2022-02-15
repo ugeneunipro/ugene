@@ -39,14 +39,14 @@ namespace U2 {
 
 static const QString BAD_CHARS = "\\*\\?\\|\\\"\\:";
 
-OutputFileDialog::OutputFileDialog(RunFileSystem *_rfs, bool _saveDir, CompletionFiller *filler, QWidget *parent)
+OutputFileDialog::OutputFileDialog(RunFileSystem* _rfs, bool _saveDir, CompletionFiller* filler, QWidget* parent)
     : QDialog(parent), rfs(_rfs), saveDir(_saveDir), saveToFileSystem(false) {
     setupUi(this);
     addDirButton->setIcon(QIcon(":U2Designer/images/add_directory.png"));
     absolutePathButton->setIcon(QIcon(":U2Designer/images/outside.png"));
     settingsButton->setIcon(QIcon(":U2Designer/images/settings.png"));
-    QPushButton *saveButton = buttonBox->button(QDialogButtonBox::Save);
-    QPushButton *cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
+    QPushButton* saveButton = buttonBox->button(QDialogButtonBox::Save);
+    QPushButton* cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
     saveButton->setText(tr("Save"));
     cancelButton->setText(tr("Cancel"));
 
@@ -71,25 +71,25 @@ OutputFileDialog::OutputFileDialog(RunFileSystem *_rfs, bool _saveDir, Completio
     selectionModel->select(model->index(0, 0, QModelIndex()), QItemSelectionModel::Select);
     updateSaveButton();
 
-    connect(nameEdit, SIGNAL(textEdited(const QString &)), SLOT(sl_textChanged()));
-    connect(selectionModel, SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), SLOT(sl_selectionChanged()));
+    connect(nameEdit, SIGNAL(textEdited(const QString&)), SLOT(sl_textChanged()));
+    connect(selectionModel, SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)), SLOT(sl_selectionChanged()));
     connect(addDirButton, SIGNAL(clicked()), SLOT(sl_addDir()));
     connect(absolutePathButton, SIGNAL(clicked()), SLOT(sl_saveToFS()));
 }
 
 void OutputFileDialog::setupSettings() {
-    QMenu *m = new QMenu(this);
-    OutputDirectoryWidget *odw = new OutputDirectoryWidget(m, true /*commitOnHide*/);
+    QMenu* m = new QMenu(this);
+    OutputDirectoryWidget* odw = new OutputDirectoryWidget(m, true /*commitOnHide*/);
     connect(odw, SIGNAL(si_browsed()), settingsButton, SLOT(click()));
     odw->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
 
-    QWidgetAction *action = new QWidgetAction(m);
+    QWidgetAction* action = new QWidgetAction(m);
     action->setDefaultWidget(odw);
     m->addAction(action);
     settingsButton->setMenu(m);
 }
 
-FSItem *OutputFileDialog::selectedItem() const {
+FSItem* OutputFileDialog::selectedItem() const {
     QModelIndexList idxs = selectionModel->selectedIndexes();
     CHECK(!idxs.isEmpty(), nullptr);
 
@@ -97,7 +97,7 @@ FSItem *OutputFileDialog::selectedItem() const {
 }
 
 QString OutputFileDialog::selectedPath() const {
-    FSItem *item = selectedItem();
+    FSItem* item = selectedItem();
     SAFE_POINT(nullptr != item, "NULL item", "");
 
     if (!saveDir && !item->isDir()) {
@@ -108,7 +108,7 @@ QString OutputFileDialog::selectedPath() const {
 }
 
 void OutputFileDialog::sl_selectionChanged() {
-    FSItem *item = selectedItem();
+    FSItem* item = selectedItem();
     SAFE_POINT(nullptr != item, "NULL item", );
 
     if (!item->isDir()) {
@@ -118,7 +118,7 @@ void OutputFileDialog::sl_selectionChanged() {
 }
 
 void OutputFileDialog::sl_textChanged() {
-    FSItem *item = selectedItem();
+    FSItem* item = selectedItem();
     SAFE_POINT(nullptr != item, "NULL item", );
 
     if (!item->isDir()) {
@@ -140,7 +140,7 @@ void OutputFileDialog::sl_addDir() {
         CHECK(!idxs.isEmpty(), );
         QModelIndex index = idxs.first();
 
-        FSItem *item = model->toItem(index);
+        FSItem* item = model->toItem(index);
         SAFE_POINT(nullptr != item, "NULL item", );
         if (!item->isDir()) {
             index = index.parent();
@@ -158,7 +158,7 @@ void OutputFileDialog::sl_saveToFS() {
 }
 
 void OutputFileDialog::updateSaveButton() {
-    QPushButton *saveButton = buttonBox->button(QDialogButtonBox::Save);
+    QPushButton* saveButton = buttonBox->button(QDialogButtonBox::Save);
     QString path = getResult();
     saveButton->setEnabled(rfs->canAdd(path, saveDir));
 
@@ -201,11 +201,11 @@ void OutputFileDialog::updateFocus() {
 /************************************************************************/
 /* CreateDirectoryDialog */
 /************************************************************************/
-CreateDirectoryDialog::CreateDirectoryDialog(RunFileSystem *_rfs, const QString &_parentDir, QWidget *parent)
+CreateDirectoryDialog::CreateDirectoryDialog(RunFileSystem* _rfs, const QString& _parentDir, QWidget* parent)
     : QDialog(parent), rfs(_rfs), parentDir(_parentDir) {
     setupUi(this);
-    QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
-    QPushButton *cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
+    QPushButton* okButton = buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
 
     okButton->setText(tr("OK"));
     cancelButton->setText(tr("Cancel"));
@@ -220,11 +220,11 @@ CreateDirectoryDialog::CreateDirectoryDialog(RunFileSystem *_rfs, const QString 
 
     nameEdit->setValidator(new QRegExpValidator(QRegExp("[^" + BAD_CHARS + "\\\\\\/]+"), this));
 
-    connect(nameEdit, SIGNAL(textEdited(const QString &)), SLOT(sl_textChanged()));
+    connect(nameEdit, SIGNAL(textEdited(const QString&)), SLOT(sl_textChanged()));
 }
 
 void CreateDirectoryDialog::sl_textChanged() {
-    QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* okButton = buttonBox->button(QDialogButtonBox::Ok);
     if (nameEdit->text().isEmpty()) {
         okButton->setEnabled(false);
         return;
@@ -244,7 +244,7 @@ QString CreateDirectoryDialog::getResult() const {
 /************************************************************************/
 /* RFSTreeModel */
 /************************************************************************/
-RFSTreeModel::RFSTreeModel(FSItem *rootItem, bool _saveDir, QObject *parent)
+RFSTreeModel::RFSTreeModel(FSItem* rootItem, bool _saveDir, QObject* parent)
     : QAbstractItemModel(parent), saveDir(_saveDir) {
     superRootItem = new FSItem("", true);
     superRootItem->addChild(rootItem);
@@ -255,15 +255,15 @@ RFSTreeModel::~RFSTreeModel() {
     delete superRootItem;
 }
 
-QVariant RFSTreeModel::data(const QModelIndex &index, int role) const {
+QVariant RFSTreeModel::data(const QModelIndex& index, int role) const {
     CHECK(index.isValid(), QVariant());
 
-    FSItem *item = toItem(index);
+    FSItem* item = toItem(index);
 
     if (Qt::DisplayRole == role) {
         return item->name();
     } else if (Qt::DecorationRole == role) {
-        FSItem *root = superRootItem->child(0);
+        FSItem* root = superRootItem->child(0);
         QString iconStr;
         if (root == item) {
             iconStr = ":U2Designer/images/hard_disk.png";
@@ -278,7 +278,7 @@ QVariant RFSTreeModel::data(const QModelIndex &index, int role) const {
     return QVariant();
 }
 
-Qt::ItemFlags RFSTreeModel::flags(const QModelIndex &index) const {
+Qt::ItemFlags RFSTreeModel::flags(const QModelIndex& index) const {
     CHECK(index.isValid(), 0);
 
     if (toItem(index)->isDir() || !saveDir) {
@@ -291,15 +291,15 @@ QVariant RFSTreeModel::headerData(int /*section*/, Qt::Orientation /*orientation
     return QVariant();
 }
 
-QModelIndex RFSTreeModel::index(int row, int column, const QModelIndex &parent) const {
+QModelIndex RFSTreeModel::index(int row, int column, const QModelIndex& parent) const {
     CHECK(hasIndex(row, column, parent), QModelIndex());
 
-    FSItem *parentItem = superRootItem;
+    FSItem* parentItem = superRootItem;
     if (parent.isValid()) {
         parentItem = toItem(parent);
     }
 
-    FSItem *childItem = parentItem->child(row);
+    FSItem* childItem = parentItem->child(row);
     if (childItem) {
         return createIndex(row, column, childItem);
     } else {
@@ -307,19 +307,19 @@ QModelIndex RFSTreeModel::index(int row, int column, const QModelIndex &parent) 
     }
 }
 
-QModelIndex RFSTreeModel::parent(const QModelIndex &index) const {
+QModelIndex RFSTreeModel::parent(const QModelIndex& index) const {
     CHECK(index.isValid(), QModelIndex());
 
-    FSItem *parentItem = toItem(index)->parent();
+    FSItem* parentItem = toItem(index)->parent();
     CHECK(parentItem != superRootItem, QModelIndex());
 
     return createIndex(parentItem->row(), 0, parentItem);
 }
 
-int RFSTreeModel::rowCount(const QModelIndex &parent) const {
+int RFSTreeModel::rowCount(const QModelIndex& parent) const {
     CHECK(0 >= parent.column(), 0);
 
-    FSItem *parentItem = superRootItem;
+    FSItem* parentItem = superRootItem;
     if (parent.isValid()) {
         parentItem = toItem(parent);
     }
@@ -328,15 +328,15 @@ int RFSTreeModel::rowCount(const QModelIndex &parent) const {
     return parentItem->children().size();
 }
 
-int RFSTreeModel::columnCount(const QModelIndex & /*parent*/) const {
+int RFSTreeModel::columnCount(const QModelIndex& /*parent*/) const {
     return 1;
 }
 
-QString RFSTreeModel::getPath(FSItem *target) const {
-    FSItem *root = superRootItem->child(0);
+QString RFSTreeModel::getPath(FSItem* target) const {
+    FSItem* root = superRootItem->child(0);
 
     QStringList result;
-    FSItem *item = target;
+    FSItem* item = target;
     while (item != root) {
         result.prepend(item->name());
         item = item->parent();
@@ -344,14 +344,14 @@ QString RFSTreeModel::getPath(FSItem *target) const {
     return result.join("/");
 }
 
-FSItem *RFSTreeModel::toItem(const QModelIndex &index) const {
+FSItem* RFSTreeModel::toItem(const QModelIndex& index) const {
     CHECK(index.isValid(), nullptr);
-    return static_cast<FSItem *>(index.internalPointer());
+    return static_cast<FSItem*>(index.internalPointer());
 }
 
-QModelIndex RFSTreeModel::addDir(const QModelIndex &index, const QString &dirName) {
-    FSItem *item = toItem(index);
-    FSItem *newItem = new FSItem(dirName, true);
+QModelIndex RFSTreeModel::addDir(const QModelIndex& index, const QString& dirName) {
+    FSItem* item = toItem(index);
+    FSItem* newItem = new FSItem(dirName, true);
     int pos = item->posToInsert(newItem);
     beginInsertRows(index, pos, pos);
     item->addChild(newItem);

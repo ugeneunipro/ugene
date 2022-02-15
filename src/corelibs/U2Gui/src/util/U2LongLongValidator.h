@@ -31,9 +31,9 @@ namespace U2 {
 class U2GUI_EXPORT U2LongLongValidator : public QValidator {
     Q_OBJECT
 public:
-    U2LongLongValidator(qint64 minimum, qint64 maximum, QObject *parent = 0);
+    U2LongLongValidator(qint64 minimum, qint64 maximum, QObject* parent = 0);
 
-    State validate(QString &input, int &pos) const;
+    State validate(QString& input, int& pos) const;
 
 private:
     qint64 minimum;

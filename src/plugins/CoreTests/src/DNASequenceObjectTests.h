@@ -246,7 +246,7 @@ class GTest_DNAcompareMulSequencesAlphabetIdInTwoObjects : public XmlTest {
 
 class DNASequenceObjectTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

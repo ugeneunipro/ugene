@@ -38,13 +38,13 @@ public:
      * 'Scale' is a share of the splitter size the widget will occupy after insertion.
      * All other widgets are reduced proportionally their current size.
      */
-    static void insertWidgetWithScale(QSplitter *splitter, int index, QWidget *newWidget, qreal scale);
+    static void insertWidgetWithScale(QSplitter* splitter, int index, QWidget* newWidget, qreal scale);
 
     /** Calls insertWidgetWithScale(index, ...) with 'index' equal to 'insertionPointMarker' index plus 'insertionPointMarkerOffset'. */
-    static void insertWidgetWithScale(QSplitter *splitter, QWidget *widget, qreal scale, QWidget *insertionPointMarker, int insertionPointMarkerOffset = 0);
+    static void insertWidgetWithScale(QSplitter* splitter, QWidget* widget, qreal scale, QWidget* insertionPointMarker, int insertionPointMarkerOffset = 0);
 
     /** Makes handles of fixed height widgets disabled & invisible. */
-    static void updateFixedSizeHandleStyle(QSplitter *splitter);
+    static void updateFixedSizeHandleStyle(QSplitter* splitter);
 };
 
 }  // namespace U2

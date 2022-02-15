@@ -44,14 +44,14 @@ for visualizing them during a scheme's execution */
 
 class BaseMessageTranslator {
 public:
-    BaseMessageTranslator(const QVariant &atomicMessage, Workflow::WorkflowContext *initContext);
+    BaseMessageTranslator(const QVariant& atomicMessage, Workflow::WorkflowContext* initContext);
     virtual ~BaseMessageTranslator();
 
     virtual QString getTranslation() const;
 
 protected:
     const QVariant source;
-    Workflow::WorkflowContext *context;
+    Workflow::WorkflowContext* context;
 };
 
 }  // namespace U2

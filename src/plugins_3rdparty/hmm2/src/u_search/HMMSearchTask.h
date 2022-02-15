@@ -56,41 +56,41 @@ public:
 class HMMSearchTask : public Task, SequenceWalkerCallback {
     Q_OBJECT
 public:
-    HMMSearchTask(plan7_s *hmm, const DNASequence &seq, const UHMMSearchSettings &s);
+    HMMSearchTask(plan7_s* hmm, const DNASequence& seq, const UHMMSearchSettings& s);
 
-    HMMSearchTask(const QString &hFile, const DNASequence &seq, const UHMMSearchSettings &s);
+    HMMSearchTask(const QString& hFile, const DNASequence& seq, const UHMMSearchSettings& s);
 
     virtual void prepare();
 
-    const QList<HMMSearchTaskResult> &getResults() const {
+    const QList<HMMSearchTaskResult>& getResults() const {
         return results;
     }
 
-    virtual void onRegion(SequenceWalkerSubtask *t, TaskStateInfo &stateInfo);
+    virtual void onRegion(SequenceWalkerSubtask* t, TaskStateInfo& stateInfo);
 
     Task::ReportResult report();
 
-    QList<SharedAnnotationData> getResultsAsAnnotations(U2FeatureType type, const QString &name) const;
+    QList<SharedAnnotationData> getResultsAsAnnotations(U2FeatureType type, const QString& name) const;
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
-
-private:
-    bool checkAlphabets(int hmmAl, const DNAAlphabet *seqAl, DNATranslation *&complTrans, DNATranslation *&aminoTrans);
-
-    SequenceWalkerTask *getSWSubtask();
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
-    plan7_s *hmm;
+    bool checkAlphabets(int hmmAl, const DNAAlphabet* seqAl, DNATranslation*& complTrans, DNATranslation*& aminoTrans);
+
+    SequenceWalkerTask* getSWSubtask();
+
+private:
+    plan7_s* hmm;
     DNASequence seq;
     UHMMSearchSettings settings;
-    DNATranslation *complTrans;
-    DNATranslation *aminoTrans;
+    DNATranslation* complTrans;
+    DNATranslation* aminoTrans;
     QList<HMMSearchTaskResult> results;
     QList<HMMSearchTaskResult> overlaps;
     QString fName;
     QMutex lock;
-    HMMReadTask *readHMMTask;
-    SequenceWalkerTask *swTask;
+    HMMReadTask* readHMMTask;
+    SequenceWalkerTask* swTask;
 };
 
 }  // namespace U2

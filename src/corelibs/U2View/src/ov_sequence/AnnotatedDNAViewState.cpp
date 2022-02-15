@@ -52,7 +52,7 @@ QList<GObjectReference> AnnotatedDNAViewState::getSequenceObjects() const {
     return res;
 }
 
-void AnnotatedDNAViewState::setSequenceObjects(const QList<GObjectReference> &objs, const QVector<U2Region> &selections) {
+void AnnotatedDNAViewState::setSequenceObjects(const QList<GObjectReference>& objs, const QVector<U2Region>& selections) {
     assert(objs.size() == selections.size());
     stateData[SEQUENCE_OBJECTS] = QVariant::fromValue<QList<GObjectReference>>(objs);
     stateData[SEQUENCE_SELECTION] = QVariant::fromValue<QVector<U2Region>>(selections);
@@ -68,23 +68,23 @@ QList<GObjectReference> AnnotatedDNAViewState::getAnnotationObjects() const {
     return res;
 }
 
-void AnnotatedDNAViewState::setAnnotationObjects(const QList<GObjectReference> &objs) {
+void AnnotatedDNAViewState::setAnnotationObjects(const QList<GObjectReference>& objs) {
     stateData[ANNOTATION_OBJECTS] = QVariant::fromValue<QList<GObjectReference>>(objs);
 }
 
-QVariantMap AnnotatedDNAViewState::saveState(AnnotatedDNAView *v) {
+QVariantMap AnnotatedDNAViewState::saveState(AnnotatedDNAView* v) {
     AnnotatedDNAViewState s;
     s.stateData[VIEW_ID] = AnnotatedDNAViewFactory::ID;
     QList<GObjectReference> seqRefs;
     QVector<U2Region> seqSels;
-    foreach (const ADVSequenceObjectContext *ctx, v->getSequenceContexts()) {
+    foreach (const ADVSequenceObjectContext* ctx, v->getSequenceContexts()) {
         seqRefs.append(ctx->getSequenceObject());
-        DNASequenceSelection *sel = ctx->getSequenceSelection();
+        DNASequenceSelection* sel = ctx->getSequenceSelection();
         seqSels.append(sel->isEmpty() ? U2Region() : sel->getSelectedRegions().first());
     }
 
     QList<GObjectReference> anRefs;
-    foreach (GObject *ao, v->getAnnotationObjects()) {
+    foreach (GObject* ao, v->getAnnotationObjects()) {
         anRefs.append(ao);
     }
     s.setSequenceObjects(seqRefs, seqSels);

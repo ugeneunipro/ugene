@@ -33,12 +33,12 @@
 
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
-    CudaSupportPlugin *plug = new CudaSupportPlugin();
+extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
+    CudaSupportPlugin* plug = new CudaSupportPlugin();
     return plug;
 }
 
-const static char *RESOURCE_CUDA_GPU_NAME = "CudaGpu";
+const static char* RESOURCE_CUDA_GPU_NAME = "CudaGpu";
 
 CudaSupportPlugin::CudaSupportPlugin()
     : Plugin(tr("CUDA Support"), tr("Utility plugin for CUDA-enabled GPUs support")) {
@@ -62,7 +62,7 @@ CudaSupportPlugin::CudaSupportPlugin()
 
     // registering gpu resource
     if (!gpus.empty()) {
-        AppResource *gpuResource = new AppResourceSemaphore(RESOURCE_CUDA_GPU, gpus.size(), RESOURCE_CUDA_GPU_NAME);
+        AppResource* gpuResource = new AppResourceSemaphore(RESOURCE_CUDA_GPU, gpus.size(), RESOURCE_CUDA_GPU_NAME);
         AppResourcePool::instance()->registerResource(gpuResource);
     }
 }
@@ -119,25 +119,25 @@ See CUDA Support plugin log for details");
 #    define CALLING_CONVENTION
 #endif
 
-typedef CUresult(CALLING_CONVENTION *cuinit_f)(int);
-const static char *cuinit_n = "cuInit";
+typedef CUresult(CALLING_CONVENTION* cuinit_f)(int);
+const static char* cuinit_n = "cuInit";
 
-typedef CUresult(CALLING_CONVENTION *cu_device_get_count_f)(int *);
-const static char *cu_device_get_count_n = "cuDeviceGetCount";
+typedef CUresult(CALLING_CONVENTION* cu_device_get_count_f)(int*);
+const static char* cu_device_get_count_n = "cuDeviceGetCount";
 
-typedef CUresult(CALLING_CONVENTION *cu_device_get_f)(CUdevice *, int);
-const static char *cu_device_get_n = "cuDeviceGet";
+typedef CUresult(CALLING_CONVENTION* cu_device_get_f)(CUdevice*, int);
+const static char* cu_device_get_n = "cuDeviceGet";
 
-typedef CUresult(CALLING_CONVENTION *cu_device_get_name_f)(char *, int, CUdevice);
-const static char *cu_device_get_name_n = "cuDeviceGetName";
+typedef CUresult(CALLING_CONVENTION* cu_device_get_name_f)(char*, int, CUdevice);
+const static char* cu_device_get_name_n = "cuDeviceGetName";
 
-typedef CUresult(CALLING_CONVENTION *cu_device_total_mem_f)(unsigned int *, CUdevice);
-const static char *cu_device_total_mem_n = "cuDeviceTotalMem";
+typedef CUresult(CALLING_CONVENTION* cu_device_total_mem_f)(unsigned int*, CUdevice);
+const static char* cu_device_total_mem_n = "cuDeviceTotalMem";
 
-typedef CUresult(CALLING_CONVENTION *cu_device_get_properties_f)(CUdevprop *prop, CUdevice dev);
-const static char *cu_device_get_properties_n = "cuDeviceGetProperties";
+typedef CUresult(CALLING_CONVENTION* cu_device_get_properties_f)(CUdevprop* prop, CUdevice dev);
+const static char* cu_device_get_properties_n = "cuDeviceGetProperties";
 
-CudaSupportPlugin::Error CudaSupportPlugin::obtainGpusInfo(QString &err) {
+CudaSupportPlugin::Error CudaSupportPlugin::obtainGpusInfo(QString& err) {
     // load driver library
     coreLog.details(tr("Loading CUDA driver library"));
     QLibrary cudaLib(CUDA_DRIVER_LIB);
@@ -244,7 +244,7 @@ CudaSupportPlugin::Error CudaSupportPlugin::obtainGpusInfo(QString &err) {
         //         log.info("props.textureAlign " + QString::number(props.textureAlign));
         //         log.info("props.totalConstantMemory " + QString::number(props.totalConstantMemory));
 
-        CudaGpuModel *m = new CudaGpuModel(QString(name), CudaGpuId(cuDevice), mem);
+        CudaGpuModel* m = new CudaGpuModel(QString(name), CudaGpuId(cuDevice), mem);
         gpus.push_back(m);
         coreLog.details(tr("Registering CUDA-enabled GPU: %1, id: %2").arg(m->getName(), QString::number(m->getId())));
     }
@@ -253,14 +253,14 @@ CudaSupportPlugin::Error CudaSupportPlugin::obtainGpusInfo(QString &err) {
 }
 
 void CudaSupportPlugin::registerAvailableGpus() {
-    foreach (CudaGpuModel *m, gpus) {
+    foreach (CudaGpuModel* m, gpus) {
         AppContext::getCudaGpuRegistry()->registerCudaGpu(m);
     }
 }
 
 void CudaSupportPlugin::loadGpusSettings() {
-    Settings *s = AppContext::getSettings();
-    foreach (CudaGpuModel *m, gpus) {
+    Settings* s = AppContext::getSettings();
+    foreach (CudaGpuModel* m, gpus) {
         QString key = CUDA_GPU_REGISTRY_SETTINGS_GPU_SPECIFIC + QString::number(m->getId()) + CUDA_GPU_SETTINGS_ENABLED;
         QVariant enabled_v = s->getValue(key);
         if (!enabled_v.isNull()) {

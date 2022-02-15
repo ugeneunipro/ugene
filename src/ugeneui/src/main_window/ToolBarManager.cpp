@@ -25,9 +25,9 @@
 
 namespace U2 {
 
-MWToolBarManagerImpl::MWToolBarManagerImpl(QMainWindow *_mw)
+MWToolBarManagerImpl::MWToolBarManagerImpl(QMainWindow* _mw)
     : QObject(_mw), mw(_mw) {
-    QToolBar *tb = createToolBar(MWTOOLBAR_MAIN);
+    QToolBar* tb = createToolBar(MWTOOLBAR_MAIN);
     tb->setToolButtonStyle(Qt::ToolButtonIconOnly);
     createToolBar(MWTOOLBAR_ACTIVEMDI);
 }
@@ -35,14 +35,14 @@ MWToolBarManagerImpl::MWToolBarManagerImpl(QMainWindow *_mw)
 MWToolBarManagerImpl::~MWToolBarManagerImpl() {
 }
 
-bool MWToolBarManagerImpl::eventFilter(QObject *obj, QEvent *event) {
+bool MWToolBarManagerImpl::eventFilter(QObject* obj, QEvent* event) {
     QEvent::Type t = event->type();
     if (t == QEvent::ActionAdded || t == QEvent::ActionRemoved) {
 #ifdef Q_OS_WIN
         // mega-hack -> update all the area below toolbar by extra show()/hide() for .NET style
         // if OpenGL widget present (-> WA_NativeWindow is set)
         // if not done .NET style will leave artifacts on toolbar
-        QToolBar *tb = qobject_cast<QToolBar *>(obj);
+        QToolBar* tb = qobject_cast<QToolBar*>(obj);
         tb->hide();
 #endif
         updateToolbarVisibilty();
@@ -50,8 +50,8 @@ bool MWToolBarManagerImpl::eventFilter(QObject *obj, QEvent *event) {
     return QObject::eventFilter(obj, event);
 }
 
-QToolBar *MWToolBarManagerImpl::getToolbar(const QString &sysName) const {
-    foreach (QToolBar *tb, toolbars) {
+QToolBar* MWToolBarManagerImpl::getToolbar(const QString& sysName) const {
+    foreach (QToolBar* tb, toolbars) {
         if (tb->objectName() == sysName) {
             return tb;
         }
@@ -59,8 +59,8 @@ QToolBar *MWToolBarManagerImpl::getToolbar(const QString &sysName) const {
     return nullptr;
 }
 
-QToolBar *MWToolBarManagerImpl::createToolBar(const QString &sysName) {
-    QToolBar *tb = new QToolBar(mw);
+QToolBar* MWToolBarManagerImpl::createToolBar(const QString& sysName) {
+    QToolBar* tb = new QToolBar(mw);
     // tb->setMinimumHeight(28);
     tb->setObjectName(sysName);
     tb->setAllowedAreas(Qt::TopToolBarArea);
@@ -74,7 +74,7 @@ QToolBar *MWToolBarManagerImpl::createToolBar(const QString &sysName) {
 }
 
 void MWToolBarManagerImpl::updateToolbarVisibilty() {
-    foreach (QToolBar *tb, toolbars) {
+    foreach (QToolBar* tb, toolbars) {
         bool empty = tb->actions().empty();
         bool visible = tb->isVisible();
         if (empty && visible) {

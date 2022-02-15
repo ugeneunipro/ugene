@@ -34,7 +34,7 @@ class SimilarityStatisticsSettings;
 class U2VIEW_EXPORT SeqStatisticsWidget : public QWidget {
     Q_OBJECT
 public:
-    SeqStatisticsWidget(MSAEditor *msa);
+    SeqStatisticsWidget(MSAEditor* msa);
 
 private slots:
     void sl_onAlgoChanged();
@@ -58,12 +58,12 @@ private:
 private:
     Ui_MSADistanceColumnSettingsForm ui;
 
-    MSAEditor *msa;
-    MsaEditorWgt *msaUI;
+    MSAEditor* msa;
+    MsaEditorWgt* msaUI;
 
-    QWidget *distancesStatisticsGroup;
+    QWidget* distancesStatisticsGroup;
 
-    SimilarityStatisticsSettings *settings;
+    SimilarityStatisticsSettings* settings;
     bool statisticsIsShown;
 
     MsaOpSavableTab savableTab;

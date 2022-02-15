@@ -45,7 +45,7 @@ namespace U2 {
 
 #define CIRCULAR_LABEL "circular"
 
-U2Region stringToRegion(const QString &regionStr) {
+U2Region stringToRegion(const QString& regionStr) {
     int region[2];
     QStringList regStrList = regionStr.split("..", QString::SkipEmptyParts);
     if (regStrList.size() != 2) {
@@ -61,7 +61,7 @@ U2Region stringToRegion(const QString &regionStr) {
     return U2Region(region[0], region[1] - region[0]);
 }
 
-void GTest_FindAlgorithmTest::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_FindAlgorithmTest::init(XMLTestFormat*, const QDomElement& el) {
     QString buf = el.attribute(STRAND_ATTR);
     if (buf.isEmpty()) {
         stateInfo.setError(GTest::tr("value not set %1").arg(STRAND_ATTR));
@@ -192,20 +192,20 @@ void GTest_FindAlgorithmTest::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 void GTest_FindAlgorithmTest::prepare() {
-    Document *doc = getContext<Document>(this, docName);
+    Document* doc = getContext<Document>(this, docName);
     if (doc == nullptr) {
         stateInfo.setError(GTest::tr("context not found %1").arg(docName));
         return;
     }
-    QList<GObject *> list = doc->findGObjectByType(GObjectTypes::SEQUENCE);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::SEQUENCE);
     if (list.size() == 0) {
         stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::SEQUENCE));
         return;
     }
 
-    foreach (GObject *go, list) {
+    foreach (GObject* go, list) {
         if (go->getGObjectName() == sequenceName) {
-            se = qobject_cast<U2SequenceObject *>(go);
+            se = qobject_cast<U2SequenceObject*>(go);
             break;
         }
     }
@@ -245,8 +245,8 @@ Task::ReportResult GTest_FindAlgorithmTest::report() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-QList<XMLTestFactory *> FindAlgorithmTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> FindAlgorithmTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_FindAlgorithmTest::createFactory());
 
     return res;

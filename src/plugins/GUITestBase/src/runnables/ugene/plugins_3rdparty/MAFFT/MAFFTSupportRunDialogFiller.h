@@ -42,13 +42,13 @@ public:
         int spin_maxNumberIterRefinementSpinBox_value;
     };
 
-    MAFFTSupportRunDialogFiller(GUITestOpStatus &os, Parameters *parameters);
-    MAFFTSupportRunDialogFiller(GUITestOpStatus &os, CustomScenario *scenario);
+    MAFFTSupportRunDialogFiller(GUITestOpStatus& os, Parameters* parameters);
+    MAFFTSupportRunDialogFiller(GUITestOpStatus& os, CustomScenario* scenario);
 
     void commonScenario();
 
 private:
-    Parameters *parameters;
+    Parameters* parameters;
 };
 
 }  // namespace U2

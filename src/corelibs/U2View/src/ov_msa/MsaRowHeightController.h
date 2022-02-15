@@ -30,7 +30,7 @@ class MsaEditorWgt;
 
 class MsaRowHeightController : public RowHeightController {
 public:
-    MsaRowHeightController(MsaEditorWgt *msaEditortWgt);
+    MsaRowHeightController(MsaEditorWgt* msaEditortWgt);
 
     int getRowHeightByMaIndex(int maRowIndex) const;
 };

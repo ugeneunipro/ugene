@@ -34,7 +34,7 @@
 
 namespace U2 {
 
-DotPlotFilesDialog::DotPlotFilesDialog(QWidget *parent)
+DotPlotFilesDialog::DotPlotFilesDialog(QWidget* parent)
     : QDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929583");

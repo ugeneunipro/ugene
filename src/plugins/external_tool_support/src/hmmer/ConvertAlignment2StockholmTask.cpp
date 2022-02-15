@@ -37,7 +37,7 @@
 
 namespace U2 {
 
-ConvertAlignment2Stockholm::ConvertAlignment2Stockholm(const QString &msaUrl, const QString &workingDir)
+ConvertAlignment2Stockholm::ConvertAlignment2Stockholm(const QString& msaUrl, const QString& workingDir)
     : Task(tr("Convert alignment to Stockholm format"), TaskFlags_NR_FOSE_COSC),
       loadTask(nullptr),
       saveTask(nullptr),
@@ -46,7 +46,7 @@ ConvertAlignment2Stockholm::ConvertAlignment2Stockholm(const QString &msaUrl, co
     SAFE_POINT_EXT(!msaUrl.isEmpty(), setError("Msa URL is empty"), );
 }
 
-const QString &ConvertAlignment2Stockholm::getResultUrl() const {
+const QString& ConvertAlignment2Stockholm::getResultUrl() const {
     return resultUrl;
 }
 
@@ -57,8 +57,8 @@ void ConvertAlignment2Stockholm::prepare() {
     addSubTask(loadTask);
 }
 
-QList<Task *> ConvertAlignment2Stockholm::onSubTaskFinished(Task *subTask) {
-    QList<Task *> result;
+QList<Task*> ConvertAlignment2Stockholm::onSubTaskFinished(Task* subTask) {
+    QList<Task*> result;
     CHECK_OP(stateInfo, result);
 
     if (subTask == loadTask) {
@@ -77,14 +77,14 @@ namespace {
 
 const QString TEMP_DIR = "convert";
 
-QString getTaskTempDirName(const QString &prefix, Task *task) {
+QString getTaskTempDirName(const QString& prefix, Task* task) {
     return prefix + QString::number(task->getTaskId()) + "_" +
            QDate::currentDate().toString("dd.MM.yyyy") + "_" +
            QTime::currentTime().toString("hh.mm.ss.zzz") + "_" +
            QString::number(QCoreApplication::applicationPid());
 }
 
-}    // namespace
+}  // namespace
 
 void ConvertAlignment2Stockholm::prepareResultUrl() {
     if (workingDir.isEmpty()) {
@@ -105,17 +105,17 @@ void ConvertAlignment2Stockholm::prepareResultUrl() {
 }
 
 void ConvertAlignment2Stockholm::prepareSaveTask() {
-    Document *document = loadTask->takeDocument();
-    QList<GObject *> objects = document->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    Document* document = loadTask->takeDocument();
+    QList<GObject*> objects = document->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     CHECK_EXT(!objects.isEmpty(), setError(tr("File doesn't contain any multiple alignments.")), );
 
     if (1 < objects.size()) {
         stateInfo.addWarning(tr("File contains several multiple alignments. Only the first one is saved to the result file."));
     }
 
-    MultipleSequenceAlignmentObject *maObject = qobject_cast<MultipleSequenceAlignmentObject *>(objects.first());
+    MultipleSequenceAlignmentObject* maObject = qobject_cast<MultipleSequenceAlignmentObject*>(objects.first());
     saveTask = new SaveAlignmentTask(maObject->getMultipleAlignment(), resultUrl, BaseDocumentFormats::STOCKHOLM);
     saveTask->setSubtaskProgressWeight(50);
 }
 
-}    // namespace U2
+}  // namespace U2
