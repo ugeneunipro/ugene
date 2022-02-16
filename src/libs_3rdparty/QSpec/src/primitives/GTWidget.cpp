@@ -156,12 +156,20 @@ QSpinBox* GTWidget::findSpinBox(GUITestOpStatus& os, const QString& widgetName, 
     return findExactWidget<QSpinBox*>(os, widgetName, parentWidget, options);
 }
 
+QDoubleSpinBox* GTWidget::findDoubleSpinBox(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QDoubleSpinBox*>(os, widgetName, parentWidget, options);
+}
+
 QToolButton* GTWidget::findToolButton(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
     return findExactWidget<QToolButton*>(os, widgetName, parentWidget, options);
 }
 
 QToolBar* GTWidget::findToolBar(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
     return findExactWidget<QToolBar*>(os, widgetName, parentWidget, options);
+}
+
+QScrollBar* GTWidget::findScrollBar(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QScrollBar*>(os, widgetName, parentWidget, options);
 }
 
 QTreeWidget* GTWidget::findTreeWidget(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
