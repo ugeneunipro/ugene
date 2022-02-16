@@ -46,7 +46,7 @@ static const QString THREADS_ATTR("threads");
 static const QString MAX_LEN_ATTR("max-length");
 static const QString TANMEDS_ATTR("exclude-tandems");
 
-QDRepeatActor::QDRepeatActor(QDActorPrototype const *proto)
+QDRepeatActor::QDRepeatActor(QDActorPrototype const* proto)
     : QDActor(proto) {
     simmetric = true;
     cfg->setAnnotationKey("repeat_unit");
@@ -65,9 +65,9 @@ static const QString FA_UNIQUE = "UniqueRepeats";
 
 QList<QPair<QString, QString>> QDRepeatActor::saveConfiguration() const {
     QList<QPair<QString, QString>> res = QDActor::saveConfiguration();
-    Attribute *a = cfg->getParameter(ALGO_ATTR);
+    Attribute* a = cfg->getParameter(ALGO_ATTR);
     for (int i = 0; i < res.size(); i++) {
-        QPair<QString, QString> &attr = res[i];
+        QPair<QString, QString>& attr = res[i];
         if (attr.first == a->getId()) {
             RFAlgorithm alg = RFAlgorithm(a->getAttributeValueWithoutScript<int>());
             switch (alg) {
@@ -87,7 +87,7 @@ QList<QPair<QString, QString>> QDRepeatActor::saveConfiguration() const {
     }
 
     for (int i = 0; i < res.size(); i++) {
-        QPair<QString, QString> &attr = res[i];
+        QPair<QString, QString>& attr = res[i];
         if (attr.first == a->getId()) {
             RepeatsFilterAlgorithm falg = RepeatsFilterAlgorithm(a->getAttributeValueWithoutScript<int>());
             switch (falg) {
@@ -106,7 +106,7 @@ QList<QPair<QString, QString>> QDRepeatActor::saveConfiguration() const {
         }
     }
 
-    QDDistanceConstraint *dc = static_cast<QDDistanceConstraint *>(paramConstraints.first());
+    QDDistanceConstraint* dc = static_cast<QDDistanceConstraint*>(paramConstraints.first());
     int minDist = dc->getMin();
     int maxDist = dc->getMax();
 
@@ -116,14 +116,14 @@ QList<QPair<QString, QString>> QDRepeatActor::saveConfiguration() const {
     return res;
 }
 
-void QDRepeatActor::loadConfiguration(const QList<QPair<QString, QString>> &strMap) {
+void QDRepeatActor::loadConfiguration(const QList<QPair<QString, QString>>& strMap) {
     QDActor::loadConfiguration(strMap);
     QString minDistStr;
     QString maxDistStr;
-    foreach (const StringAttribute &attr, strMap) {
+    foreach (const StringAttribute& attr, strMap) {
         if (attr.first == ALGO_ATTR) {
             int alg;
-            const QString &strandVal = attr.second;
+            const QString& strandVal = attr.second;
             if (strandVal == ALGO_AUTO) {
                 alg = 0;
             } else if (strandVal == ALGO_DIAG) {
@@ -134,7 +134,7 @@ void QDRepeatActor::loadConfiguration(const QList<QPair<QString, QString>> &strM
             cfg->setParameter(ALGO_ATTR, qVariantFromValue(alg));
         } else if (attr.first == NESTED_ATTR) {
             int falg;
-            const QString &strandVal = attr.second;
+            const QString& strandVal = attr.second;
             if (strandVal == FA_DISJOINT) {
                 falg = 0;
             } else if (strandVal == FA_NOFILTERING) {
@@ -194,9 +194,9 @@ QString QDRepeatActor::getText() const {
     return doc;
 }
 
-Task *QDRepeatActor::getAlgorithmTask(const QVector<U2Region> &location) {
+Task* QDRepeatActor::getAlgorithmTask(const QVector<U2Region>& location) {
     assert(scheme);
-    Task *t = nullptr;
+    Task* t = nullptr;
 
     settings.algo = RFAlgorithm(cfg->getParameter(ALGO_ATTR)->getAttributeValueWithoutScript<int>());
     settings.minLen = cfg->getParameter(LEN_ATTR)->getAttributeValueWithoutScript<int>();
@@ -207,36 +207,36 @@ Task *QDRepeatActor::getAlgorithmTask(const QVector<U2Region> &location) {
     settings.filter = RepeatsFilterAlgorithm(cfg->getParameter(NESTED_ATTR)->getAttributeValueWithoutScript<int>());
     settings.excludeTandems = cfg->getParameter(TANMEDS_ATTR)->getAttributeValueWithoutScript<bool>();
 
-    QDDistanceConstraint *dc = static_cast<QDDistanceConstraint *>(paramConstraints.first());
+    QDDistanceConstraint* dc = static_cast<QDDistanceConstraint*>(paramConstraints.first());
     settings.minDist = dc->getMin();
     settings.maxDist = dc->getMax();
 
     assert(identity <= 100 && identity >= 0);
     assert(settings.minDist >= 0);
-    const DNASequence &dnaSeq = scheme->getSequence();
+    const DNASequence& dnaSeq = scheme->getSequence();
     if (!dnaSeq.alphabet->isNucleic()) {
         return new FailTask(tr("Sequence should be nucleic"));
     }
 
     t = new Task(tr("RepeatQDTask"), TaskFlag_NoRun);
-    foreach (const U2Region &r, location) {
+    foreach (const U2Region& r, location) {
         FindRepeatsTaskSettings stngs(settings);
         stngs.seqRegion = r;
-        FindRepeatsToAnnotationsTask *st = new FindRepeatsToAnnotationsTask(stngs, dnaSeq, "repeat unit", QString(), "", GObjectReference());
+        FindRepeatsToAnnotationsTask* st = new FindRepeatsToAnnotationsTask(stngs, dnaSeq, "repeat unit", QString(), "", GObjectReference());
         t->addSubTask(st);
         repTasks.append(st);
     }
-    connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_onAlgorithmTaskFinished()));
+    connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_onAlgorithmTaskFinished()));
     return t;
 }
 
 void QDRepeatActor::sl_onAlgorithmTaskFinished() {
     QList<SharedAnnotationData> res;
-    foreach (FindRepeatsToAnnotationsTask *frt, repTasks) {
+    foreach (FindRepeatsToAnnotationsTask* frt, repTasks) {
         res = frt->importAnnotations();
     }
     repTasks.clear();
-    foreach (const SharedAnnotationData &ad, res) {
+    foreach (const SharedAnnotationData& ad, res) {
         if (ad->location->regions[0].length > getMaxResultLen()) {
             continue;
         }
@@ -252,7 +252,7 @@ void QDRepeatActor::sl_onAlgorithmTaskFinished() {
         ru2->owner = units.value("right");
         ru1->strand = U2Strand::Direct;
         ru2->strand = U2Strand::Direct;
-        QDResultGroup *g = new QDResultGroup(QDStrand_Both);
+        QDResultGroup* g = new QDResultGroup(QDStrand_Both);
         g->add(ru1);
         g->add(ru2);
         results.append(g);
@@ -284,7 +284,7 @@ QDRepeatActorPrototype::QDRepeatActorPrototype() {
     attributes << new Attribute(mld, BaseTypes::NUM_TYPE(), true, QDActor::DEFAULT_MAX_RESULT_LENGTH);
     attributes << new Attribute(tan, BaseTypes::BOOL_TYPE(), false, stngs.excludeTandems);
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap m;
         m["minimum"] = 2;

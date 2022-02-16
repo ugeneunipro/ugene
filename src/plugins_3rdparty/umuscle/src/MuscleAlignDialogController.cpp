@@ -40,7 +40,7 @@
 
 namespace U2 {
 
-MuscleAlignDialogController::MuscleAlignDialogController(QWidget *w, const MultipleSequenceAlignment &_ma, MuscleTaskSettings &_settings)
+MuscleAlignDialogController::MuscleAlignDialogController(QWidget* w, const MultipleSequenceAlignment& _ma, MuscleTaskSettings& _settings)
     : QDialog(w), ma(_ma->getCopy()), settings(_settings) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930833");
@@ -61,15 +61,15 @@ MuscleAlignDialogController::MuscleAlignDialogController(QWidget *w, const Multi
     }
     connect(confBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_onPresetChanged(int)));
     initPresets();
-    foreach (const MuscleAlignPreset *p, presets.qlist) {
+    foreach (const MuscleAlignPreset* p, presets.qlist) {
         confBox->addItem(p->name);
     }
 
-    const DNAAlphabet *al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    DNATranslationRegistry *tr = AppContext::getDNATranslationRegistry();
-    QList<DNATranslation *> aminoTs = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
+    const DNAAlphabet* al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
+    DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
+    QList<DNATranslation*> aminoTs = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
     assert(!aminoTs.empty());
-    foreach (DNATranslation *t, aminoTs) {
+    foreach (DNATranslation* t, aminoTs) {
         translationTableBox->addItem(t->getTranslationName());
     }
 }
@@ -77,13 +77,13 @@ MuscleAlignDialogController::MuscleAlignDialogController(QWidget *w, const Multi
 void MuscleAlignDialogController::accept() {
     int n = confBox->currentIndex();
     assert(n >= 0 && n < presets.qlist.size());
-    const MuscleAlignPreset *p = presets.qlist[n];
+    const MuscleAlignPreset* p = presets.qlist[n];
     p->apply(settings);
-    if (dynamic_cast<const DefaultModePreset *>(p) != nullptr) {
+    if (dynamic_cast<const DefaultModePreset*>(p) != nullptr) {
         settings.mode = Default;
-    } else if (dynamic_cast<const LargeModePreset *>(p) != nullptr) {
+    } else if (dynamic_cast<const LargeModePreset*>(p) != nullptr) {
         settings.mode = Large;
-    } else if (dynamic_cast<const RefineModePreset *>(p) != nullptr) {
+    } else if (dynamic_cast<const RefineModePreset*>(p) != nullptr) {
         settings.mode = Refine;
     } else {
         assert(false);
@@ -120,13 +120,13 @@ void MuscleAlignDialogController::accept() {
 
 void MuscleAlignDialogController::sl_onPresetChanged(int newPreset) {
     assert(newPreset >= 0 && newPreset < presets.qlist.size());
-    const MuscleAlignPreset *p = presets.qlist[newPreset];
+    const MuscleAlignPreset* p = presets.qlist[newPreset];
     confEdit->setText(p->desc);
 }
 
 ////////////////////////////////////////
 // MuscleAlignWithExtFileSpecifyDialogController
-MuscleAlignWithExtFileSpecifyDialogController::MuscleAlignWithExtFileSpecifyDialogController(QWidget *w, MuscleTaskSettings &_settings)
+MuscleAlignWithExtFileSpecifyDialogController::MuscleAlignWithExtFileSpecifyDialogController(QWidget* w, MuscleTaskSettings& _settings)
     : QDialog(w),
       settings(_settings),
       saveController(nullptr) {
@@ -146,14 +146,14 @@ MuscleAlignWithExtFileSpecifyDialogController::MuscleAlignWithExtFileSpecifyDial
 
     connect(confBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_onPresetChanged(int)));
     initPresets();
-    foreach (const MuscleAlignPreset *p, presets.qlist) {
+    foreach (const MuscleAlignPreset* p, presets.qlist) {
         confBox->addItem(p->name);
     }
-    const DNAAlphabet *al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    DNATranslationRegistry *tr = AppContext::getDNATranslationRegistry();
-    QList<DNATranslation *> aminoTs = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
+    const DNAAlphabet* al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
+    DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
+    QList<DNATranslation*> aminoTs = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
     assert(!aminoTs.empty());
-    foreach (DNATranslation *t, aminoTs) {
+    foreach (DNATranslation* t, aminoTs) {
         translationTableBox->addItem(t->getTranslationName());
     }
 }
@@ -184,13 +184,13 @@ void MuscleAlignWithExtFileSpecifyDialogController::initSaveController() {
 void MuscleAlignWithExtFileSpecifyDialogController::accept() {
     int n = confBox->currentIndex();
     assert(n >= 0 && n < presets.qlist.size());
-    const MuscleAlignPreset *p = presets.qlist[n];
+    const MuscleAlignPreset* p = presets.qlist[n];
     p->apply(settings);
-    if (dynamic_cast<const DefaultModePreset *>(p) != nullptr) {
+    if (dynamic_cast<const DefaultModePreset*>(p) != nullptr) {
         settings.mode = Default;
-    } else if (dynamic_cast<const LargeModePreset *>(p) != nullptr) {
+    } else if (dynamic_cast<const LargeModePreset*>(p) != nullptr) {
         settings.mode = Large;
-    } else if (dynamic_cast<const RefineModePreset *>(p) != nullptr) {
+    } else if (dynamic_cast<const RefineModePreset*>(p) != nullptr) {
         settings.mode = Refine;
     } else {
         assert(false);
@@ -233,7 +233,7 @@ void MuscleAlignWithExtFileSpecifyDialogController::accept() {
 
 void MuscleAlignWithExtFileSpecifyDialogController::sl_onPresetChanged(int newPreset) {  //???
     assert(newPreset >= 0 && newPreset < presets.qlist.size());
-    const MuscleAlignPreset *p = presets.qlist[newPreset];
+    const MuscleAlignPreset* p = presets.qlist[newPreset];
     confEdit->setText(p->desc);
 }
 void MuscleAlignWithExtFileSpecifyDialogController::initPresets() {
@@ -273,7 +273,7 @@ bool MuscleAlignDialogController::translateToAmino() {
 }
 
 QString MuscleAlignDialogController::getTranslationId() {
-    DNATranslationRegistry *tr = AppContext::getDNATranslationRegistry();
+    DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
     QStringList ids = tr->getDNATranslationIds(translationTableBox->currentText());
     assert(!ids.empty());
 

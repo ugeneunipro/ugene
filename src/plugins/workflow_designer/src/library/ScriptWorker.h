@@ -33,21 +33,21 @@ namespace LocalWorkflow {
 class ScriptWorkerTask : public Task {
     Q_OBJECT
 public:
-    ScriptWorkerTask(WorkflowScriptEngine *engine, AttributeScript *script);
+    ScriptWorkerTask(WorkflowScriptEngine* engine, AttributeScript* script);
     void run();
     QVariant getResult() const;
-    WorkflowScriptEngine *getEngine();
+    WorkflowScriptEngine* getEngine();
 
 private:
     QVariant result;
-    WorkflowScriptEngine *engine;
-    AttributeScript *script;
+    WorkflowScriptEngine* engine;
+    AttributeScript* script;
 };
 
 class ScriptPromter : public PrompterBase<ScriptPromter> {
     Q_OBJECT
 public:
-    ScriptPromter(Actor *p = 0)
+    ScriptPromter(Actor* p = 0)
         : PrompterBase<ScriptPromter>(p) {
     }
 
@@ -58,9 +58,9 @@ protected:
 class ScriptWorker : public BaseWorker {
     Q_OBJECT
 public:
-    ScriptWorker(Actor *a);
+    ScriptWorker(Actor* a);
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
     virtual void setDone();
 
@@ -71,10 +71,10 @@ private:
     void bindAttributeVariables();
     void bindPortVariables();
 
-    CommunicationChannel *input;
-    CommunicationChannel *output;
-    WorkflowScriptEngine *engine;
-    AttributeScript *script;
+    CommunicationChannel* input;
+    CommunicationChannel* output;
+    WorkflowScriptEngine* engine;
+    AttributeScript* script;
     bool taskFinished;
 
 private:
@@ -88,9 +88,9 @@ public:
         : DomainFactory(name) {
     }
 
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 
-    static bool init(QList<DataTypePtr> input, QList<DataTypePtr> output, QList<Attribute *> attrs, const QString &name, const QString &description, const QString &actorFilePath);
+    static bool init(QList<DataTypePtr> input, QList<DataTypePtr> output, QList<Attribute*> attrs, const QString& name, const QString& description, const QString& actorFilePath);
 
 public:
     static const QString ACTOR_ID;

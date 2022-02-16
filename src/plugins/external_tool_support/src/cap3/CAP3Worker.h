@@ -34,7 +34,7 @@ namespace LocalWorkflow {
 class CAP3Prompter : public PrompterBase<CAP3Prompter> {
     Q_OBJECT
 public:
-    CAP3Prompter(Actor *p = 0);
+    CAP3Prompter(Actor* p = 0);
 
 protected:
     QString composeRichDoc();
@@ -43,21 +43,21 @@ protected:
 class CAP3Worker : public BaseWorker {
     Q_OBJECT
 public:
-    CAP3Worker(Actor *a);
+    CAP3Worker(Actor* a);
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private slots:
     void sl_taskFinished();
 
 protected:
-    IntegralBus *input;
+    IntegralBus* input;
 
     CAP3SupportTaskSettings settings;
-    QStringList inputSeqUrls;    // contains URL(s) from a current dataset
-    QString currentDatasetName;    // used on each tick() to split URL(s) in datasets
+    QStringList inputSeqUrls;  // contains URL(s) from a current dataset
+    QString currentDatasetName;  // used on each tick() to split URL(s) in datasets
     int datasetNumber;
 
 private:
@@ -71,7 +71,7 @@ private:
      * Corrects output file name, if required (for several datasets).
      * Runs the CAP3 task and cleans up input URL(s) in the settings.
      */
-    Task *runCap3();
+    Task* runCap3();
 };
 
 class CAP3WorkerFactory : public DomainFactory {
@@ -81,12 +81,12 @@ public:
     CAP3WorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new CAP3Worker(a);
     }
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_CAP3_WORKER_H_
+#endif  // _U2_CAP3_WORKER_H_

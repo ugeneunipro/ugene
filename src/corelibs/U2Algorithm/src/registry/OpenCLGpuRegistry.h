@@ -39,9 +39,9 @@ typedef long OpenCLGpuContext;
 
 class U2ALGORITHM_EXPORT OpenCLGpuModel {
 public:
-    OpenCLGpuModel(const QString &_name,
-                   const cl_context &_context,
-                   const cl_device_id &_id,
+    OpenCLGpuModel(const QString& _name,
+                   const cl_context& _context,
+                   const cl_device_id& _id,
                    quint64 _platformId,
                    quint64 _globalMemorySizeBytes,
                    quint64 _maxAllocateMemorySizeBytes,
@@ -132,33 +132,33 @@ public:
     OpenCLGpuRegistry();
     ~OpenCLGpuRegistry();
 
-    void registerOpenCLGpu(OpenCLGpuModel *gpu);
-    void unregisterOpenCLGpu(OpenCLGpuModel *gpu);
-    OpenCLGpuModel *getGpuById(cl_device_id id) const;
-    OpenCLGpuModel *getGpuByName(const QString &name) const;
-    QList<OpenCLGpuModel *> getRegisteredGpus() const;
-    OpenCLGpuModel *getEnabledGpu() const;
+    void registerOpenCLGpu(OpenCLGpuModel* gpu);
+    void unregisterOpenCLGpu(OpenCLGpuModel* gpu);
+    OpenCLGpuModel* getGpuById(cl_device_id id) const;
+    OpenCLGpuModel* getGpuByName(const QString& name) const;
+    QList<OpenCLGpuModel*> getRegisteredGpus() const;
+    OpenCLGpuModel* getEnabledGpu() const;
     QString getEnabledGpuName() const;
 
-    OpenCLGpuModel *acquireEnabledGpuIfReady();
+    OpenCLGpuModel* acquireEnabledGpuIfReady();
 
     bool empty() const {
         return gpus.empty();
     }
 
-    void setOpenCLHelper(OpenCLHelper *_openCLHelper) {
+    void setOpenCLHelper(OpenCLHelper* _openCLHelper) {
         openCLHelper = _openCLHelper;
     }
 
-    const OpenCLHelper *getOpenCLHelper() const {
+    const OpenCLHelper* getOpenCLHelper() const {
         return openCLHelper;
     }
 
     void saveGpusSettings() const;
 
 private:
-    QHash<cl_device_id, OpenCLGpuModel *> gpus;
-    OpenCLHelper *openCLHelper;
+    QHash<cl_device_id, OpenCLGpuModel*> gpus;
+    OpenCLHelper* openCLHelper;
 };
 
 }  // namespace U2

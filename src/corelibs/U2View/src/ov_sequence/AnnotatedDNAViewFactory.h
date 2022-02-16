@@ -33,13 +33,13 @@ class U2VIEW_EXPORT AnnotatedDNAViewFactory : public GObjectViewFactory {
 public:
     AnnotatedDNAViewFactory();
 
-    virtual bool canCreateView(const MultiGSelection &multiSelection);
+    virtual bool canCreateView(const MultiGSelection& multiSelection);
 
-    virtual Task *createViewTask(const MultiGSelection &multiSelection, bool single = false);
+    virtual Task* createViewTask(const MultiGSelection& multiSelection, bool single = false);
 
-    virtual bool isStateInSelection(const MultiGSelection &multiSelection, const QVariantMap &stateData);
+    virtual bool isStateInSelection(const MultiGSelection& multiSelection, const QVariantMap& stateData);
 
-    virtual Task *createViewTask(const QString &viewName, const QVariantMap &stateData);
+    virtual Task* createViewTask(const QString& viewName, const QVariantMap& stateData);
 
     virtual bool supportsSavedStates() const {
         return true;

@@ -37,7 +37,7 @@ class AssemblyBrowserUi;
 class AssemblySettingsWidget : public QWidget {
     Q_OBJECT
 public:
-    AssemblySettingsWidget(AssemblyBrowserUi *ui);
+    AssemblySettingsWidget(AssemblyBrowserUi* ui);
 
 private slots:
     void sl_cellRendererChanged();
@@ -47,17 +47,17 @@ private slots:
     void sl_changeConsensusAlgorithm(int newIndex);
 
 private:
-    QWidget *createReadsSettings();
-    QWidget *createRulerSettings();
-    QWidget *createConsensusSettings();
+    QWidget* createReadsSettings();
+    QWidget* createRulerSettings();
+    QWidget* createConsensusSettings();
 
-    AssemblyBrowserUi *ui;
+    AssemblyBrowserUi* ui;
 
     // Reads
-    QComboBox *readsHighlightCombo;
+    QComboBox* readsHighlightCombo;
     // Consensus
-    QComboBox *algorithmCombo;
-    QLabel *hint;
+    QComboBox* algorithmCombo;
+    QLabel* hint;
 
     U2SavableWidget savableTab;
 };
@@ -69,7 +69,7 @@ public:
     virtual ~AssemblySettingsWidgetFactory() {
     }
 
-    QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
+    QWidget* createWidget(GObjectView* objView, const QVariantMap& options) override;
 
     OPGroupParameters getOPGroupParameters() override;
 

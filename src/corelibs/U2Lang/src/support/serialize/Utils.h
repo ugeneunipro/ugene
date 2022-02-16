@@ -31,7 +31,7 @@ using namespace Workflow;
 namespace WorkflowSerialize {
 
 struct ReadFailed {
-    ReadFailed(const QString &msg)
+    ReadFailed(const QString& msg)
         : what(msg) {
     }
     QString what;
@@ -39,21 +39,21 @@ struct ReadFailed {
 
 class WorkflowSchemaReaderData {
 public:
-    WorkflowSchemaReaderData(const QString &bytes, Schema *s, Metadata *m, QMap<ActorId, ActorId> *im)
+    WorkflowSchemaReaderData(const QString& bytes, Schema* s, Metadata* m, QMap<ActorId, ActorId>* im)
         : schema(s), meta(m), idMap(im) {
         graphDefined = false;
         tokenizer.tokenizeSchema(bytes);
     }
 
     Tokenizer tokenizer;
-    Schema *schema;
-    Metadata *meta;
-    QMap<QString, Actor *> actorMap;
-    QList<QPair<Port *, Port *>> dataflowLinks;
-    QList<QPair<Port *, Port *>> links;
-    QMap<ActorId, ActorId> *idMap;
+    Schema* schema;
+    Metadata* meta;
+    QMap<QString, Actor*> actorMap;
+    QList<QPair<Port*, Port*>> dataflowLinks;
+    QList<QPair<Port*, Port*>> links;
+    QMap<ActorId, ActorId>* idMap;
     QList<PortAlias> portAliases;
-    QList<Wizard *> wizards;
+    QList<Wizard*> wizards;
 
     bool isGraphDefined() const {
         return graphDefined;
@@ -69,13 +69,13 @@ private:
 
 class FlowGraph {
 public:
-    FlowGraph(const QList<QPair<Port *, Port *>> &d);
-    bool findPath(Actor *from, Port *to) const;
+    FlowGraph(const QList<QPair<Port*, Port*>>& d);
+    bool findPath(Actor* from, Port* to) const;
     void removeDuplicates();
     void minimize();
 
-    QMap<Port *, QList<Port *>> graph;
-    QList<QPair<Port *, Port *>> dataflowLinks;
+    QMap<Port*, QList<Port*>> graph;
+    QList<QPair<Port*, Port*>> dataflowLinks;
     int findRecursion;
 };  // FlowGraph
 

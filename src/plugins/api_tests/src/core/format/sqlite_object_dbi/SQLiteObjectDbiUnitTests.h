@@ -40,23 +40,23 @@ public:
 
     static void shutdown();
 
-    static SQLiteDbi *getSQLiteDbi();
-    static SQLiteObjectDbi *getSQLiteObjectDbi();
-    static U2AttributeDbi *getAttributeDbi();
-    static U2MsaDbi *getMsaDbi();
-    static U2SequenceDbi *getSequenceDbi();
+    static SQLiteDbi* getSQLiteDbi();
+    static SQLiteObjectDbi* getSQLiteObjectDbi();
+    static U2AttributeDbi* getAttributeDbi();
+    static U2MsaDbi* getMsaDbi();
+    static U2SequenceDbi* getSequenceDbi();
 
-    static U2DataId createTestMsa(bool enableModTracking, U2OpStatus &os);
-    static void addTestRow(const U2DataId &msaId, U2OpStatus &os);
+    static U2DataId createTestMsa(bool enableModTracking, U2OpStatus& os);
+    static void addTestRow(const U2DataId& msaId, U2OpStatus& os);
 
 private:
     static TestDbiProvider dbiProvider;
-    static const QString &SQLITE_OBJ_DB_URL;
-    static U2AttributeDbi *attributeDbi;
-    static U2MsaDbi *msaDbi;
-    static U2SequenceDbi *sequenceDbi;
-    static SQLiteObjectDbi *sqliteObjectDbi;
-    static SQLiteDbi *sqliteDbi;
+    static const QString& SQLITE_OBJ_DB_URL;
+    static U2AttributeDbi* attributeDbi;
+    static U2MsaDbi* msaDbi;
+    static U2SequenceDbi* sequenceDbi;
+    static SQLiteObjectDbi* sqliteObjectDbi;
+    static SQLiteDbi* sqliteDbi;
 };
 
 /**

@@ -42,31 +42,31 @@ public:
     ~BioStruct3DViewPlugin();
 
 private:
-    GObjectViewWindowContext *viewContext;
+    GObjectViewWindowContext* viewContext;
 };
 
 class BioStruct3DViewContext : public GObjectViewWindowContext {
     Q_OBJECT
-    QMap<GObjectView *, BioStruct3DSplitter *> splitterMap;
+    QMap<GObjectView*, BioStruct3DSplitter*> splitterMap;
 
 public:
-    BioStruct3DViewContext(QObject *p);
+    BioStruct3DViewContext(QObject* p);
 
-    bool canHandle(GObjectView *v, GObject *o) override;
+    bool canHandle(GObjectView* v, GObject* o) override;
 
-    void onObjectAdded(GObjectView *v, GObject *obj) override;
-    void onObjectRemoved(GObjectView *v, GObject *obj) override;
+    void onObjectAdded(GObjectView* v, GObject* obj) override;
+    void onObjectRemoved(GObjectView* v, GObject* obj) override;
 
 protected:
-    void initViewContext(GObjectView *view) override;
+    void initViewContext(GObjectView* view) override;
 
-    void unregister3DView(GObjectView *view, BioStruct3DSplitter *view3d);
+    void unregister3DView(GObjectView* view, BioStruct3DSplitter* view3d);
 
-    QAction *getClose3DViewAction(GObjectView *view);
+    QAction* getClose3DViewAction(GObjectView* view);
 
 protected slots:
     void sl_close3DView();
-    virtual void sl_windowClosing(MWMDIWindow *);
+    virtual void sl_windowClosing(MWMDIWindow*);
 };
 
 }  // namespace U2

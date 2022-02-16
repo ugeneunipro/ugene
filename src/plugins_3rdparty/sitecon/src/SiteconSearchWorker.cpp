@@ -60,8 +60,8 @@ static const QString E2_ATTR("err2");
 const QString SiteconSearchWorker::ACTOR_ID("sitecon-search");
 
 void SiteconSearchWorker::registerProto() {
-    QList<PortDescriptor *> p;
-    QList<Attribute *> a;
+    QList<PortDescriptor*> p;
+    QList<Attribute*> a;
     {
         Descriptor md(MODEL_PORT, SiteconSearchWorker::tr("Sitecon Model"), SiteconSearchWorker::tr("Profile data to search with."));
         Descriptor sd(BasePorts::IN_SEQ_PORT_ID(), SiteconSearchWorker::tr("Sequence"), SiteconSearchWorker::tr("Input nucleotide sequence to search in."));
@@ -96,8 +96,8 @@ void SiteconSearchWorker::registerProto() {
 
     Descriptor desc(ACTOR_ID, tr("Search for TFBS with SITECON"), tr("Searches each input sequence for transcription factor binding sites significantly similar to specified SITECON profiles."
                                                                      " In case several profiles were supplied, searches with all profiles one by one and outputs merged set of annotations for each sequence."));
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
-    QMap<QString, PropertyDelegate *> delegates;
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
+    QMap<QString, PropertyDelegate*> delegates;
 
     {
         QVariantMap m;
@@ -128,7 +128,7 @@ void SiteconSearchWorker::registerProto() {
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_TRANSCRIPTION(), proto);
 }
 
-static int getStrand(const QString &s) {
+static int getStrand(const QString& s) {
     QString str = s.toLower();
     if (BaseAttributes::STRAND_BOTH().startsWith(str)) {
         return 0;
@@ -148,8 +148,8 @@ static int getStrand(const QString &s) {
 }
 
 QString SiteconSearchPrompter::composeRichDoc() {
-    Actor *modelProducer = qobject_cast<IntegralBusPort *>(target->getPort(MODEL_PORT))->getProducer(SiteconWorkerFactory::SITECON_SLOT.getId());
-    Actor *seqProducer = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_SEQ_PORT_ID()))->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
+    Actor* modelProducer = qobject_cast<IntegralBusPort*>(target->getPort(MODEL_PORT))->getProducer(SiteconWorkerFactory::SITECON_SLOT.getId());
+    Actor* seqProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()))->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
 
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString seqName = tr("For each sequence from <u>%1</u>,").arg(seqProducer ? seqProducer->getLabel() : unsetStr);
@@ -209,7 +209,7 @@ bool SiteconSearchWorker::isReady() const {
     return modelHasMes || (modelEnded && (dataHasMes || dataEnded));
 }
 
-Task *SiteconSearchWorker::tick() {
+Task* SiteconSearchWorker::tick() {
     if (cfg.minPSUM > 100 || cfg.minPSUM < 60) {
         return new FailTask(tr("Min score can not be less 60% or more 100%"));
     }
@@ -249,18 +249,18 @@ Task *SiteconSearchWorker::tick() {
             SiteconSearchCfg config(cfg);
             config.complOnly = (strand < 0);
             if (strand <= 0) {
-                DNATranslation *compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(seq.alphabet);
+                DNATranslation* compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(seq.alphabet);
                 if (compTT != nullptr) {
                     config.complTT = compTT;
                 }
             }
-            QList<Task *> subtasks;
-            foreach (const SiteconModel &model, models) {
-                SiteconSearchTask *sst = new SiteconSearchTask(model, seq.seq, config, 0);
+            QList<Task*> subtasks;
+            foreach (const SiteconModel& model, models) {
+                SiteconSearchTask* sst = new SiteconSearchTask(model, seq.seq, config, 0);
                 subtasks << sst;
             }
-            Task *t = new MultiTask(tr("Find TFBS in %1").arg(seq.getName()), subtasks);
-            connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
+            Task* t = new MultiTask(tr("Find TFBS in %1").arg(seq.getName()), subtasks);
+            connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
             return t;
         }
         QString err = tr("Bad sequence supplied to SiteconSearch: %1").arg(seq.getName());
@@ -273,14 +273,14 @@ Task *SiteconSearchWorker::tick() {
     return nullptr;
 }
 
-void SiteconSearchWorker::sl_taskFinished(Task *t) {
+void SiteconSearchWorker::sl_taskFinished(Task* t) {
     QList<SharedAnnotationData> res;
     SAFE_POINT(nullptr != t, "Invalid task is encountered", );
     if (t->isCanceled()) {
         return;
     }
-    foreach (const QPointer<Task> &sub, t->getSubtasks()) {
-        SiteconSearchTask *sst = qobject_cast<SiteconSearchTask *>(sub.data());
+    foreach (const QPointer<Task>& sub, t->getSubtasks()) {
+        SiteconSearchTask* sst = qobject_cast<SiteconSearchTask*>(sub.data());
         res += SiteconSearchResult::toTable(sst->takeResults(), resultName);
         sst->cleanup();
     }

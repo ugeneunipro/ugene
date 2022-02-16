@@ -33,16 +33,16 @@ namespace HI {
 #define GT_CLASS_NAME "GTTabBar"
 
 #define GT_METHOD_NAME "setCurrentIndex"
-void GTTabBar::setCurrentIndex(GUITestOpStatus &os, QTabBar *tabBar, int index) {
+void GTTabBar::setCurrentIndex(GUITestOpStatus& os, QTabBar* tabBar, int index) {
     GT_CHECK(tabBar != nullptr, "QTabBar is null");
 
     // TODO: set index by mouse/keyboard
     class MainThreadAction : public CustomScenario {
     public:
-        MainThreadAction(QTabBar *tabBar, int index)
+        MainThreadAction(QTabBar* tabBar, int index)
             : CustomScenario(), tabBar(tabBar), index(index) {
         }
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus& os) {
             if (tabBar->currentIndex() == index) {
                 return;
             }
@@ -50,7 +50,7 @@ void GTTabBar::setCurrentIndex(GUITestOpStatus &os, QTabBar *tabBar, int index) 
             GT_CHECK(index >= 0 && index < tabsCount, "invalid index");
             tabBar->setCurrentIndex(index);
         }
-        QTabBar *tabBar;
+        QTabBar* tabBar;
         int index;
     };
 

@@ -42,7 +42,7 @@ class MsaHighlightingScheme;
 class MaGraphCalculationTask : public BackgroundTask<QPolygonF> {
     Q_OBJECT
 public:
-    MaGraphCalculationTask(MultipleAlignmentObject *msa, int width, int height);
+    MaGraphCalculationTask(MultipleAlignmentObject* msa, int width, int height);
 
     void run();
 signals:
@@ -50,7 +50,7 @@ signals:
     void si_calculationStoped();
 
 protected:
-    void constructPolygon(QPolygonF &polygon);
+    void constructPolygon(QPolygonF& polygon);
     virtual int getGraphValue(int) const {
         return height;
     }
@@ -66,20 +66,20 @@ protected:
 class MaConsensusOverviewCalculationTask : public MaGraphCalculationTask {
     Q_OBJECT
 public:
-    MaConsensusOverviewCalculationTask(MultipleAlignmentObject *msa,
+    MaConsensusOverviewCalculationTask(MultipleAlignmentObject* msa,
                                        int width,
                                        int height);
 
 private:
     int getGraphValue(int pos) const;
 
-    MSAConsensusAlgorithm *algorithm;
+    MSAConsensusAlgorithm* algorithm;
 };
 
 class MaGapOverviewCalculationTask : public MaGraphCalculationTask {
     Q_OBJECT
 public:
-    MaGapOverviewCalculationTask(MultipleAlignmentObject *msa,
+    MaGapOverviewCalculationTask(MultipleAlignmentObject* msa,
                                  int width,
                                  int height);
 
@@ -90,34 +90,34 @@ private:
 class MaClustalOverviewCalculationTask : public MaGraphCalculationTask {
     Q_OBJECT
 public:
-    MaClustalOverviewCalculationTask(MultipleAlignmentObject *msa,
+    MaClustalOverviewCalculationTask(MultipleAlignmentObject* msa,
                                      int width,
                                      int height);
 
 private:
     int getGraphValue(int pos) const;
 
-    MSAConsensusAlgorithm *algorithm;
+    MSAConsensusAlgorithm* algorithm;
 };
 
 class MaHighlightingOverviewCalculationTask : public MaGraphCalculationTask {
     Q_OBJECT
 public:
-    MaHighlightingOverviewCalculationTask(MaEditor *_editor,
-                                          const QString &colorSchemeId,
-                                          const QString &highlightingSchemeId,
+    MaHighlightingOverviewCalculationTask(MaEditor* _editor,
+                                          const QString& colorSchemeId,
+                                          const QString& highlightingSchemeId,
                                           int width,
                                           int height);
 
-    static bool isCellHighlighted(const MultipleAlignment &msa,
-                                  MsaHighlightingScheme *highlightingScheme,
-                                  MsaColorScheme *colorScheme,
+    static bool isCellHighlighted(const MultipleAlignment& msa,
+                                  MsaHighlightingScheme* highlightingScheme,
+                                  MsaColorScheme* colorScheme,
                                   int seq,
                                   int pos,
                                   int refSeq);
 
-    static bool isGapScheme(const QString &schemeId);
-    static bool isEmptyScheme(const QString &schemeId);
+    static bool isGapScheme(const QString& schemeId);
+    static bool isEmptyScheme(const QString& schemeId);
 
 private:
     int getGraphValue(int pos) const;
@@ -126,8 +126,8 @@ private:
 
     int refSequenceId;
 
-    MsaColorScheme *colorScheme;
-    MsaHighlightingScheme *highlightingScheme;
+    MsaColorScheme* colorScheme;
+    MsaHighlightingScheme* highlightingScheme;
     QString schemeId;
 };
 

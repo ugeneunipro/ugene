@@ -59,14 +59,14 @@ enum RegionSelectionIndex {
 class FindPatternEventFilter : public QObject {
     Q_OBJECT
 public:
-    FindPatternEventFilter(QTextEdit *textEdit);
+    FindPatternEventFilter(QTextEdit* textEdit);
 
 signals:
     void si_enterPressed();
     void si_shiftEnterPressed();
 
 protected:
-    bool eventFilter(QObject *obj, QEvent *event) override;
+    bool eventFilter(QObject* obj, QEvent* event) override;
 };
 
 class FindPatternWidget : public QWidget, private Ui_FindPatternForm {
@@ -85,7 +85,7 @@ public:
         SequenceIsTooBig
     };
 
-    FindPatternWidget(AnnotatedDNAView *);
+    FindPatternWidget(AnnotatedDNAView*);
     int getTargetSequenceLength() const;
 
 private slots:
@@ -134,7 +134,7 @@ private:
     void updateLayout();
     void connectSlots();
     void showCurrentResult() const;
-    bool isSearchPatternsDifferent(const QList<NamePattern> &newPatterns) const;
+    bool isSearchPatternsDifferent(const QList<NamePattern>& newPatterns) const;
     void stopCurrentSearchTask();
     void setUpTabOrder() const;
     QList<NamePattern> updateNamePatterns();
@@ -168,7 +168,7 @@ private:
     void enableDisableMatchSpin();
 
     /** Toggles error message flag and updates additional error message. Does not trigger re-rendering of the error label. */
-    void setMessageFlag(const MessageFlag &messageFlag, bool show, const QString &additionalMsg = QString());
+    void setMessageFlag(const MessageFlag& messageFlag, bool show, const QString& additionalMsg = QString());
 
     /** Updates visual error label state based on the curent error flags state. */
     void updateErrorLabelState();
@@ -178,18 +178,18 @@ private:
 
     /** Checks pattern alphabet and sets error message if needed. Returns false on error or true if no error found */
     bool verifyPatternAlphabet();
-    bool checkAlphabet(const QString &pattern);
+    bool checkAlphabet(const QString& pattern);
 
     void setRegionToWholeSequence();
 
     /** Returns search region parsed from the start/end edits. Returns empty region in case of error. */
     U2Region getSearchRegion() const;
 
-    void initFindPatternTask(const QList<QPair<QString, QString>> &patterns);
+    void initFindPatternTask(const QList<QPair<QString, QString>>& patterns);
 
     /** Checks if there are several patterns in textPattern which are separated by new line symbol,
     parse them out and returns with their names (if they're exist). */
-    QList<QPair<QString, QString>> getPatternsFromTextPatternField(U2OpStatus &os) const;
+    QList<QPair<QString, QString>> getPatternsFromTextPatternField(U2OpStatus& os) const;
 
     void setCorrectPatternsString();
 
@@ -210,13 +210,13 @@ private:
     void stopTrackingFocusedSequenceSelection();
 
     /** Returns true if the all regions from the list can be found in the current search result. */
-    bool isRegionListInSearchResults(const QVector<U2Region> &regionList) const;
+    bool isRegionListInSearchResults(const QVector<U2Region>& regionList) const;
 
     /** Returns true if current search mode is CurrentSelectionRegion. */
     bool isSearchInSelectionMode() const;
 
-    AnnotatedDNAView *annotatedDnaView;
-    CreateAnnotationWidgetController *createAnnotationController;
+    AnnotatedDNAView* annotatedDnaView;
+    CreateAnnotationWidgetController* createAnnotationController;
     bool annotationModelIsPrepared;
 
     bool isAminoSequenceSelected;
@@ -229,25 +229,25 @@ private:
     QMap<MessageFlag, QString> messageFlagMap;
 
     /** Widgets in the Algorithm group */
-    QHBoxLayout *layoutMismatch;
-    QVBoxLayout *layoutRegExpLen;
+    QHBoxLayout* layoutMismatch;
+    QVBoxLayout* layoutRegExpLen;
 
-    QLabel *lblMatch;
-    QSpinBox *spinMatch;
-    QWidget *useAmbiguousBasesContainer;
-    QCheckBox *useAmbiguousBasesBox;
+    QLabel* lblMatch;
+    QSpinBox* spinMatch;
+    QWidget* useAmbiguousBasesContainer;
+    QCheckBox* useAmbiguousBasesBox;
 
-    QWidget *useMaxResultLenContainer;
-    QCheckBox *boxUseMaxResultLen;
-    QSpinBox *boxMaxResultLen;
+    QWidget* useMaxResultLenContainer;
+    QCheckBox* boxUseMaxResultLen;
+    QSpinBox* boxMaxResultLen;
 
-    QWidget *annotationsWidget;
+    QWidget* annotationsWidget;
 
     /**
      * Currently tracked selection.
      * Not null only if the current region mode is CurrentSelectionRegion and is equal to selection of the currently focused sequence.
      */
-    DNASequenceSelection *trackedSelection;
+    DNASequenceSelection* trackedSelection;
 
     static const int DEFAULT_RESULTS_NUM_LIMIT;
     static const int DEFAULT_REGEXP_RESULT_LENGTH_LIMIT;
@@ -259,13 +259,13 @@ private:
     QList<SharedAnnotationData> findPatternResults;
     /** Index of the currently selected search result. A special value '-1' means that no result is selected. */
     int currentResultIndex;
-    Task *searchTask;
+    Task* searchTask;
     QString previousPatternString;
     int previousMaxResult;
     QStringList patternList;
     QStringList nameList;
     bool usePatternNames;
-    QMovie *progressMovie;
+    QMovie* progressMovie;
 
     FindPatternWidgetSavableTab savableWidget;
 };

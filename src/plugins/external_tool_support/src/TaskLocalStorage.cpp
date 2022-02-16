@@ -22,7 +22,7 @@
 #include "TaskLocalStorage.h"
 #include <assert.h>
 
-class ETSContext *getETSContext() {
+class ETSContext* getETSContext() {
     return U2::TaskLocalData::current();
 }
 int getETSWorkerID() {
@@ -31,10 +31,10 @@ int getETSWorkerID() {
 
 namespace U2 {
 
-QThreadStorage<ETSContextTLSRef *> TaskLocalData::tls;
+QThreadStorage<ETSContextTLSRef*> TaskLocalData::tls;
 
-class ETSContext *TaskLocalData::current() {
-    ETSContextTLSRef *ref = tls.localData();
+class ETSContext* TaskLocalData::current() {
+    ETSContextTLSRef* ref = tls.localData();
     if (ref != nullptr) {
         assert(ref->ctx != nullptr);
         return ref->ctx;
@@ -44,7 +44,7 @@ class ETSContext *TaskLocalData::current() {
 }
 
 unsigned TaskLocalData::currentWorkerID() {
-    ETSContextTLSRef *ref = tls.localData();
+    ETSContextTLSRef* ref = tls.localData();
     if (ref != nullptr) {
         return ref->workerID;
     }
@@ -52,17 +52,17 @@ unsigned TaskLocalData::currentWorkerID() {
     return -1;
 }
 
-void TaskLocalData::bindToETSTLSContext(ETSContext *ctx, int workerID) {
+void TaskLocalData::bindToETSTLSContext(ETSContext* ctx, int workerID) {
     assert(ctx != nullptr);
     assert(!tls.hasLocalData());
     tls.setLocalData(new ETSContextTLSRef(ctx, workerID));
 }
 
 void TaskLocalData::detachETSTLSContext() {
-    ETSContextTLSRef *ref = tls.localData();
+    ETSContextTLSRef* ref = tls.localData();
     assert(ref != nullptr && ref->ctx != nullptr);
     ref->ctx = nullptr;
     tls.setLocalData(nullptr);
 }
 
-}    // namespace U2
+}  // namespace U2

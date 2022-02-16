@@ -28,9 +28,9 @@
 
 namespace U2 {
 
-SequenceExportSettingsWidget::SequenceExportSettingsWidget(U2SequenceObject *seqObject,
+SequenceExportSettingsWidget::SequenceExportSettingsWidget(U2SequenceObject* seqObject,
                                                            QSharedPointer<CustomExportSettings> s,
-                                                           DNASequenceSelection *selection)
+                                                           DNASequenceSelection* selection)
     : seqObject(seqObject) {
     setupUi(this);
     settings = qSharedPointerCast<SequenceExportSettings>(s);
@@ -61,7 +61,7 @@ void SequenceExportSettingsWidget::sl_areaChanged() {
     settings->setRegion(regionSelector->getRegion());
 }
 
-void SequenceExportSettingsWidget::sl_regionChanged(const U2Region &r) {
+void SequenceExportSettingsWidget::sl_regionChanged(const U2Region& r) {
     settings->setRegion(r);
 }
 

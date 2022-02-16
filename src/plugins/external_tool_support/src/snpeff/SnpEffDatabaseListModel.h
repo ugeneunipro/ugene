@@ -46,8 +46,8 @@ private:
 class SnpEffDatabaseListModel : public QAbstractTableModel {
     Q_OBJECT
 public:
-    SnpEffDatabaseListModel(QObject *parent = 0);
-    void getData(const QString &databaseListFilePath);
+    SnpEffDatabaseListModel(QObject* parent = 0);
+    void getData(const QString& databaseListFilePath);
 
     QString getGenome(int index) const;
     bool isEmpty() {
@@ -55,9 +55,9 @@ public:
     }
 
 private:
-    int rowCount(const QModelIndex &parent) const;
-    int columnCount(const QModelIndex &parent) const;
-    QVariant data(const QModelIndex &index, int role) const;
+    int rowCount(const QModelIndex& parent) const;
+    int columnCount(const QModelIndex& parent) const;
+    QVariant data(const QModelIndex& index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 
 private:
@@ -65,6 +65,6 @@ private:
     QMap<int, SnpEffDatabaseInfo> databaseList;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SNPEFF_DATABASE_LIST_MODEL_H_
+#endif  // _U2_SNPEFF_DATABASE_LIST_MODEL_H_

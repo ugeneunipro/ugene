@@ -29,19 +29,19 @@ namespace U2 {
 class U2VIEW_EXPORT ADVSequenceObjectContext : public SequenceObjectContext {
     Q_OBJECT
 public:
-    ADVSequenceObjectContext(AnnotatedDNAView *v, U2SequenceObject *obj);
+    ADVSequenceObjectContext(AnnotatedDNAView* v, U2SequenceObject* obj);
 
-    AnnotatedDNAView *getAnnotatedDNAView() const {
+    AnnotatedDNAView* getAnnotatedDNAView() const {
         return view;
     }
 
-    AnnotationSelection *getAnnotationsSelection() const;
+    AnnotationSelection* getAnnotationsSelection() const;
 
 protected slots:
     void sl_onAnnotationRelationChange();
 
 private:
-    AnnotatedDNAView *view;
+    AnnotatedDNAView* view;
 };
 
 }  // namespace U2

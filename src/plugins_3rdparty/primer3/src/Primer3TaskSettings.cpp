@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-bool Primer3TaskSettings::checkIncludedRegion(const U2Region &r) const {
+bool Primer3TaskSettings::checkIncludedRegion(const U2Region& r) const {
     int minProductSize = getMinProductSize();
     if (minProductSize > r.length && getTask() != pick_hyb_probe_only && getTask() != pick_left_only && getTask() != pick_right_only) {
         return false;
@@ -46,7 +46,7 @@ Primer3TaskSettings::Primer3TaskSettings() {
     initMaps();
 }
 
-Primer3TaskSettings::Primer3TaskSettings(const Primer3TaskSettings &settings)
+Primer3TaskSettings::Primer3TaskSettings(const Primer3TaskSettings& settings)
     : sequenceName(settings.sequenceName),
       sequence(settings.sequence),
       isCircular(settings.isCircular),
@@ -62,7 +62,7 @@ Primer3TaskSettings::Primer3TaskSettings(const Primer3TaskSettings &settings)
     initMaps();
 }
 
-Primer3TaskSettings &Primer3TaskSettings::operator=(const Primer3TaskSettings &settings) {
+Primer3TaskSettings& Primer3TaskSettings::operator=(const Primer3TaskSettings& settings) {
     sequenceName = settings.sequenceName;
     sequence = settings.sequence;
     isCircular = settings.isCircular;
@@ -118,7 +118,7 @@ Primer3TaskSettings::~Primer3TaskSettings() {
     free_seq_lib(&primerArgs.io_mishyb_library);
 }
 
-bool Primer3TaskSettings::getIntProperty(const QString &key, int *outValue) const {
+bool Primer3TaskSettings::getIntProperty(const QString& key, int* outValue) const {
     if (!intProperties.contains(key)) {
         return false;
     }
@@ -126,7 +126,7 @@ bool Primer3TaskSettings::getIntProperty(const QString &key, int *outValue) cons
     return true;
 }
 
-bool Primer3TaskSettings::getDoubleProperty(const QString &key, double *outValue) const {
+bool Primer3TaskSettings::getDoubleProperty(const QString& key, double* outValue) const {
     if (!doubleProperties.contains(key)) {
         return false;
     }
@@ -134,7 +134,7 @@ bool Primer3TaskSettings::getDoubleProperty(const QString &key, double *outValue
     return true;
 }
 
-bool Primer3TaskSettings::getAlignProperty(const QString &key, short *outValue) const {
+bool Primer3TaskSettings::getAlignProperty(const QString& key, short* outValue) const {
     if (!alignProperties.contains(key)) {
         return false;
     }
@@ -142,7 +142,7 @@ bool Primer3TaskSettings::getAlignProperty(const QString &key, short *outValue) 
     return true;
 }
 
-bool Primer3TaskSettings::setIntProperty(const QString &key, int value) {
+bool Primer3TaskSettings::setIntProperty(const QString& key, int value) {
     if (!intProperties.contains(key)) {
         return false;
     }
@@ -150,14 +150,14 @@ bool Primer3TaskSettings::setIntProperty(const QString &key, int value) {
     return true;
 }
 
-bool Primer3TaskSettings::setDoubleProperty(const QString &key, double value) {
+bool Primer3TaskSettings::setDoubleProperty(const QString& key, double value) {
     if (!doubleProperties.contains(key)) {
         return false;
     }
     *(doubleProperties.value(key)) = value;
     return true;
 }
-bool Primer3TaskSettings::setAlignProperty(const QString &key, short value) {
+bool Primer3TaskSettings::setAlignProperty(const QString& key, short value) {
     if (!alignProperties.contains(key)) {
         return false;
     }
@@ -264,7 +264,7 @@ int Primer3TaskSettings::getFirstBaseIndex() const {
     return primerArgs.first_base_index;
 }
 
-void Primer3TaskSettings::setSequenceName(const QByteArray &value) {
+void Primer3TaskSettings::setSequenceName(const QByteArray& value) {
     sequenceName = value;
     if (!value.isEmpty()) {
         seqArgs.sequence_name = sequenceName.constData();
@@ -273,7 +273,7 @@ void Primer3TaskSettings::setSequenceName(const QByteArray &value) {
     }
 }
 
-void Primer3TaskSettings::setSequence(const QByteArray &value, bool isCirc) {
+void Primer3TaskSettings::setSequence(const QByteArray& value, bool isCirc) {
     sequence = value;
     isCircular = isCirc;
     seqArgs.sequence = sequence.constData();
@@ -283,7 +283,7 @@ void Primer3TaskSettings::setCircularity(bool isCirc) {
     isCircular = isCirc;
 }
 
-void Primer3TaskSettings::setTarget(const QList<U2Region> &value) {
+void Primer3TaskSettings::setTarget(const QList<U2Region>& value) {
     for (int i = 0; i < value.size(); i++) {
         if (i >= PR_MAX_INTERVAL_ARRAY) {
             break;
@@ -294,7 +294,7 @@ void Primer3TaskSettings::setTarget(const QList<U2Region> &value) {
     seqArgs.num_targets = value.size();
 }
 
-void Primer3TaskSettings::setProductSizeRange(const QList<U2Region> &value) {
+void Primer3TaskSettings::setProductSizeRange(const QList<U2Region>& value) {
     for (int i = 0; i < value.size(); i++) {
         if (i >= PR_MAX_INTERVAL_ARRAY) {
             break;
@@ -305,11 +305,11 @@ void Primer3TaskSettings::setProductSizeRange(const QList<U2Region> &value) {
     primerArgs.num_intervals = value.size();
 }
 
-void Primer3TaskSettings::setTask(const task &value) {
+void Primer3TaskSettings::setTask(const task& value) {
     primerArgs.primer_task = value;
 }
 
-void Primer3TaskSettings::setInternalOligoExcludedRegion(const QList<U2Region> &value) {
+void Primer3TaskSettings::setInternalOligoExcludedRegion(const QList<U2Region>& value) {
     for (int i = 0; i < value.size(); i++) {
         if (i >= PR_MAX_INTERVAL_ARRAY) {
             break;
@@ -320,7 +320,7 @@ void Primer3TaskSettings::setInternalOligoExcludedRegion(const QList<U2Region> &
     seqArgs.num_internal_excl = value.size();
 }
 
-void Primer3TaskSettings::setLeftInput(const QByteArray &value) {
+void Primer3TaskSettings::setLeftInput(const QByteArray& value) {
     leftInput = value;
     if (!value.isEmpty()) {
         seqArgs.left_input = leftInput.constData();
@@ -329,7 +329,7 @@ void Primer3TaskSettings::setLeftInput(const QByteArray &value) {
     }
 }
 
-void Primer3TaskSettings::setRightInput(const QByteArray &value) {
+void Primer3TaskSettings::setRightInput(const QByteArray& value) {
     rightInput = value;
     if (!value.isEmpty()) {
         seqArgs.right_input = rightInput.constData();
@@ -338,7 +338,7 @@ void Primer3TaskSettings::setRightInput(const QByteArray &value) {
     }
 }
 
-void Primer3TaskSettings::setInternalInput(const QByteArray &value) {
+void Primer3TaskSettings::setInternalInput(const QByteArray& value) {
     internalInput = value;
     if (!value.isEmpty()) {
         seqArgs.internal_input = internalInput.constData();
@@ -347,7 +347,7 @@ void Primer3TaskSettings::setInternalInput(const QByteArray &value) {
     }
 }
 
-void Primer3TaskSettings::setExcludedRegion(const QList<U2Region> &value) {
+void Primer3TaskSettings::setExcludedRegion(const QList<U2Region>& value) {
     for (int i = 0; i < value.size(); i++) {
         if (i >= PR_MAX_INTERVAL_ARRAY) {
             break;
@@ -358,17 +358,17 @@ void Primer3TaskSettings::setExcludedRegion(const QList<U2Region> &value) {
     seqArgs.num_excl = value.size();
 }
 
-void Primer3TaskSettings::setIncludedRegion(const U2Region &value) {
+void Primer3TaskSettings::setIncludedRegion(const U2Region& value) {
     seqArgs.incl_s = static_cast<int>(value.startPos);
     seqArgs.incl_l = static_cast<int>(value.length);
 }
 
-void Primer3TaskSettings::setIncludedRegion(const qint64 &startPos, const qint64 &length) {
+void Primer3TaskSettings::setIncludedRegion(const qint64& startPos, const qint64& length) {
     seqArgs.incl_s = static_cast<int>(startPos);
     seqArgs.incl_l = static_cast<int>(length);
 }
 
-void Primer3TaskSettings::setSequenceQuality(const QVector<int> &value) {
+void Primer3TaskSettings::setSequenceQuality(const QVector<int>& value) {
     sequenceQuality = value;
     if (!value.isEmpty()) {
         seqArgs.quality = sequenceQuality.constData();
@@ -377,11 +377,11 @@ void Primer3TaskSettings::setSequenceQuality(const QVector<int> &value) {
     }
 }
 
-void Primer3TaskSettings::setRepeatLibrary(const QByteArray &value) {
+void Primer3TaskSettings::setRepeatLibrary(const QByteArray& value) {
     repeatLibrary = value;
 }
 
-void Primer3TaskSettings::setMishybLibrary(const QByteArray &value) {
+void Primer3TaskSettings::setMishybLibrary(const QByteArray& value) {
     mishybLibrary = value;
 }
 
@@ -393,11 +393,11 @@ QByteArray Primer3TaskSettings::getMishybLibrary() const {
     return mishybLibrary;
 }
 
-primer_args *Primer3TaskSettings::getPrimerArgs() {
+primer_args* Primer3TaskSettings::getPrimerArgs() {
     return &primerArgs;
 }
 
-seq_args *Primer3TaskSettings::getSeqArgs() {
+seq_args* Primer3TaskSettings::getSeqArgs() {
     return &seqArgs;
 }
 

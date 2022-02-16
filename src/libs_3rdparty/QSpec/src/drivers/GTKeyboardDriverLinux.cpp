@@ -36,7 +36,7 @@ bool GTKeyboardDriver::keyPress(char key, Qt::KeyboardModifiers modifiers) {
     QByteArray display_name = qgetenv("DISPLAY");
     DRIVER_CHECK(!display_name.isEmpty(), "Environment variable \"DISPLAY\" not found");
 
-    Display *display = XOpenDisplay(display_name.constData());
+    Display* display = XOpenDisplay(display_name.constData());
     DRIVER_CHECK(display != 0, "display is NULL");
 
     QList<Qt::Key> modifierKeys = modifiersToKeys(modifiers);
@@ -144,7 +144,7 @@ bool GTKeyboardDriver::keyRelease(char key, Qt::KeyboardModifiers modifiers) {
     QByteArray display_name = qgetenv("DISPLAY");
     DRIVER_CHECK(!display_name.isEmpty(), "Environment variable \"DISPLAY\" not found");
 
-    Display *display = XOpenDisplay(display_name.constData());
+    Display* display = XOpenDisplay(display_name.constData());
     DRIVER_CHECK(display != 0, "display is NULL");
 
     switch (key) {
@@ -282,11 +282,11 @@ bool GTKeyboardDriver::keyPress(Qt::Key key, Qt::KeyboardModifiers modifiers) {
     QByteArray displayName = qgetenv("DISPLAY");
     DRIVER_CHECK(!displayName.isEmpty(), "Environment variable 'DISPLAY' not found");
 
-    Display *display = XOpenDisplay(displayName.constData());
+    Display* display = XOpenDisplay(displayName.constData());
     DRIVER_CHECK(display != nullptr, "display is NULL");
 
     QList<Qt::Key> modifierKeys = modifiersToKeys(modifiers);
-    for (const Qt::Key &mod : qAsConst(modifierKeys)) {
+    for (const Qt::Key& mod : qAsConst(modifierKeys)) {
         KeyCode modCode = XKeysymToKeycode(display, GTKeyboardDriver::key[mod]);
         DRIVER_CHECK(XTestFakeKeyEvent(display, modCode, 1, 0) != 0, "keyPress modifier failed");
     }
@@ -304,7 +304,7 @@ bool GTKeyboardDriver::keyRelease(Qt::Key key, Qt::KeyboardModifiers modifiers) 
     QByteArray display_name = qgetenv("DISPLAY");
     DRIVER_CHECK(!display_name.isEmpty(), "Environment variable \"DISPLAY\" not found");
 
-    Display *display = XOpenDisplay(display_name.constData());
+    Display* display = XOpenDisplay(display_name.constData());
     DRIVER_CHECK(display != 0, "display is NULL");
 
     XTestFakeKeyEvent(display, XKeysymToKeycode(display, GTKeyboardDriver::key[key]), 0, 0);

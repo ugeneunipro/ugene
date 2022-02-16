@@ -40,7 +40,7 @@
 
 namespace U2 {
 
-void DistanceMatrix::calculateOutOfAlignment(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &settings) {
+void DistanceMatrix::calculateOutOfAlignment(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& settings) {
     try {
         malignment = &ma;
         int index = 0;
@@ -48,8 +48,8 @@ void DistanceMatrix::calculateOutOfAlignment(const MultipleSequenceAlignment &ma
         this->size = size;
         printdata = false;
 
-        foreach (const MultipleSequenceAlignmentRow &r, ma->getMsaRows()) {
-            const QString &str = r->getName();
+        foreach (const MultipleSequenceAlignmentRow& r, ma->getMsaRows()) {
+            const QString& str = r->getName();
             index_map.insert(str, index);
             index++;
             unprocessed_taxa.append(str);
@@ -257,7 +257,7 @@ void DistanceMatrix::calculateOutOfAlignment(const MultipleSequenceAlignment &ma
                 rawMatrix[i][j] = d[i][j];
             }
         }
-    } catch (const std::bad_alloc &) {
+    } catch (const std::bad_alloc&) {
         errorMessage = QString("Not enough memory to calculate distance matrix for alignment \"%1\"").arg(ma->getName());
         if (nullptr != gnode) {
             for (int i = 0; i < spp; i++) {
@@ -357,7 +357,7 @@ void DistanceMatrix::calculateQMatrix() {
     }
 }
 
-void DistanceMatrix::dumpRawData(matrix &m) {
+void DistanceMatrix::dumpRawData(matrix& m) {
     std::cout << "Distance Matrix " << std::endl;
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
@@ -385,7 +385,7 @@ QString DistanceMatrix::generateNodeName(QString name1, QString name2) {
     r = r.append(name2);
     return r;
 }
-void DistanceMatrix::switchName(PhyNode *node) {
+void DistanceMatrix::switchName(PhyNode* node) {
     QString str = node->getName();
     if (str.startsWith("ROOT")) {
         node->setName("");
@@ -401,17 +401,17 @@ void DistanceMatrix::switchName(PhyNode *node) {
     }
 }
 
-void DistanceMatrix::addPairToTree(QPair<int, int> *location) {
+void DistanceMatrix::addPairToTree(QPair<int, int>* location) {
     //        treedata->rootNode->dumpBranches();
     QString name1 = getTaxaName(location->first);
     if (unprocessed_taxa.contains(name1)) {
         unprocessed_taxa.removeAll(name1);
     }
-    PhyNode *oldnode1 = getNodeByName(name1);
+    PhyNode* oldnode1 = getNodeByName(name1);
     if (oldnode1 == 0) {
         return;
     }
-    PhyNode *rootnode1 = oldnode1->getParentNode();
+    PhyNode* rootnode1 = oldnode1->getParentNode();
 
     treedata->removeBranch(rootnode1, oldnode1);
 
@@ -421,8 +421,8 @@ void DistanceMatrix::addPairToTree(QPair<int, int> *location) {
     if (unprocessed_taxa.contains(name2)) {
         unprocessed_taxa.removeAll(name2);
     }
-    PhyNode *oldnode2 = getNodeByName(name2);
-    PhyNode *rootnode2 = oldnode2->getParentNode();
+    PhyNode* oldnode2 = getNodeByName(name2);
+    PhyNode* rootnode2 = oldnode2->getParentNode();
     treedata->removeBranch(rootnode2, oldnode2);
     if (oldnode1 == oldnode2) {
         return;
@@ -432,7 +432,7 @@ void DistanceMatrix::addPairToTree(QPair<int, int> *location) {
     float distance1 = calculateRootDistance(location->first, location->second);
     float distance2 = calculateAdjacentDistance(location->first, location->second, distance1);
 
-    PhyNode *new_node = new PhyNode();
+    PhyNode* new_node = new PhyNode();
     QString new_name = generateNodeName(name1, name2);
     new_node->setName(new_name);
     treedata->addBranch(new_node, oldnode1, distance1);
@@ -503,21 +503,21 @@ void DistanceMatrix::addPairToTree(QPair<int, int> *location) {
     // treedata->rootNode->dumpBranches();
 }
 
-PhyNode *DistanceMatrix::getNodeByName(QString name) {
+PhyNode* DistanceMatrix::getNodeByName(QString name) {
     visited_list.clear();
-    PhyNode *rootNode = treedata->getRootNode();
+    PhyNode* rootNode = treedata->getRootNode();
     return findNode(rootNode, name);
 }
 
-PhyNode *DistanceMatrix::findNode(PhyNode *startnode, QString name) {
+PhyNode* DistanceMatrix::findNode(PhyNode* startnode, QString name) {
     visited_list.append(startnode->getName());
     if (startnode->getName() == name) {
         return startnode;
     } else {
         for (int i = 0; i < startnode->branchCount(); i++) {
-            PhyBranch *branch = startnode->getBranch(i);
+            PhyBranch* branch = startnode->getBranch(i);
             if (!visited_list.contains(branch->node2->getName())) {
-                PhyNode *node2 = findNode(branch->node2, name);
+                PhyNode* node2 = findNode(branch->node2, name);
                 if (node2 != 0) {
                     return node2;
                 }
@@ -544,7 +544,7 @@ float DistanceMatrix::calculateAdjacentDistance(int i, int j, float rootDistance
     return result;
 }
 
-float DistanceMatrix::calculateNewDistance(QPair<int, int> *location, int current) {
+float DistanceMatrix::calculateNewDistance(QPair<int, int>* location, int current) {
     float a = middlematrix[current][location->first];
     float b = middlematrix[current][location->second];
     float c = middlematrix[location->first][location->second] / 2;
@@ -572,11 +572,11 @@ QString DistanceMatrix::getTaxaName(int index) {
     return " ";
 }
 
-void DistanceMatrix::printPhyTree(PhyTreeData *data) {
+void DistanceMatrix::printPhyTree(PhyTreeData* data) {
     data->print();
 }
 
-void DistanceMatrix::printPhyNode(PhyNode *node, int tab, QList<PhyNode *> &nodes) {
+void DistanceMatrix::printPhyNode(PhyNode* node, int tab, QList<PhyNode*>& nodes) {
     if (node == 0 || nodes.contains(node)) {
         return;
     }
@@ -587,19 +587,19 @@ void DistanceMatrix::printPhyNode(PhyNode *node, int tab, QList<PhyNode *> &node
     tab++;
     std::cout << "name: " << node->getName().toLatin1().constData() << std::endl;
     for (int i = 0; i < node->branchCount(); i++) {
-        PhyBranch *branch = node->getBranch(i);
+        PhyBranch* branch = node->getBranch(i);
         printPhyNode(branch->node2, tab, nodes);
     }
 }
-bool DistanceMatrix::areTreesEqual(PhyTree *tree1, PhyTree *tree2) {
+bool DistanceMatrix::areTreesEqual(PhyTree* tree1, PhyTree* tree2) {
     QMap<QString, int> nodes1;
     QMap<QString, int> nodes2;
 
-    QList<PhyNode *> list1;
-    QList<PhyNode *> list2;
+    QList<PhyNode*> list1;
+    QList<PhyNode*> list2;
 
-    QList<PhyBranch *> branches1;
-    QList<PhyBranch *> branches2;
+    QList<PhyBranch*> branches1;
+    QList<PhyBranch*> branches2;
 
     addNodeToList(list1, nodes1, branches1, tree1->data()->getRootNode());
     addNodeToList(list2, nodes2, branches2, tree2->data()->getRootNode());
@@ -628,14 +628,14 @@ bool DistanceMatrix::areTreesEqual(PhyTree *tree1, PhyTree *tree2) {
     return true;
 }
 
-void DistanceMatrix::addNodeToList(QList<PhyNode *> &nodelist, QMap<QString, int> &nodemap, QList<PhyBranch *> &branches, PhyNode *node) {
+void DistanceMatrix::addNodeToList(QList<PhyNode*>& nodelist, QMap<QString, int>& nodemap, QList<PhyBranch*>& branches, PhyNode* node) {
     if ((node == 0) || (nodelist.contains(node))) {
         return;
     } else {
         nodelist.append(node);
         if (node->getName() != "ROOT" && node->getName() != "" && !node->getName().startsWith("___")) {
             for (int i = 0; i < node->branchCount(); i++) {
-                PhyBranch *branch = node->getBranch(i);
+                PhyBranch* branch = node->getBranch(i);
                 if (branch->node2 == node) {
                     int d = branch->distance;
                     nodemap.insert(node->getName(), d);
@@ -643,7 +643,7 @@ void DistanceMatrix::addNodeToList(QList<PhyNode *> &nodelist, QMap<QString, int
             }
         }
         for (int i = 0; i < node->branchCount(); i++) {
-            PhyBranch *branch = node->getBranch(i);
+            PhyBranch* branch = node->getBranch(i);
             if (!branches.contains(branch)) {
                 branches.append(branch);
                 addNodeToList(nodelist, nodemap, branches, branch->node2);
@@ -653,8 +653,8 @@ void DistanceMatrix::addNodeToList(QList<PhyNode *> &nodelist, QMap<QString, int
 }
 
 void DistanceMatrix::switchNamesToAllNodes() {
-    QList<PhyNode *> nodes;
-    QList<PhyBranch *> branches;
+    QList<PhyNode*> nodes;
+    QList<PhyBranch*> branches;
     QMap<QString, int> mmap;
     addNodeToList(nodes, mmap, branches, treedata->getRootNode());
     int size = nodes.size();
@@ -664,7 +664,7 @@ void DistanceMatrix::switchNamesToAllNodes() {
     }
 }
 
-int DistanceMatrix::getNewIndex(QString name, QPair<int, int> loc, QMap<QString, int> &old_map) {
+int DistanceMatrix::getNewIndex(QString name, QPair<int, int> loc, QMap<QString, int>& old_map) {
     int old_index = old_map[name];
     if (old_index > loc.first && old_index > loc.second) {
         int new_index = old_index - 2;

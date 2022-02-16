@@ -37,21 +37,21 @@ class WorkflowMetaDialog : public QDialog, public Ui_WorkflowMetaDialog {
     Q_OBJECT
 
 public:
-    WorkflowMetaDialog(QWidget *p, const Workflow::Metadata &meta);
+    WorkflowMetaDialog(QWidget* p, const Workflow::Metadata& meta);
 
 public:
     Workflow::Metadata meta;
 
 private slots:
     void sl_onSave();
-    void sl_onURLChanged(const QString &text);
+    void sl_onURLChanged(const QString& text);
 
 private:
     void initSaveController();
 
-    SaveDocumentController *saveController;
-    QPushButton *cancelButton;
-    QPushButton *okButton;
+    SaveDocumentController* saveController;
+    QPushButton* cancelButton;
+    QPushButton* okButton;
 };
 
 }  // namespace U2

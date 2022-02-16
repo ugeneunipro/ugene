@@ -31,12 +31,12 @@ namespace U2 {
 class U2CORE_EXPORT ConnectSharedDatabaseTask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    ConnectSharedDatabaseTask(const U2DbiRef &dbiRef, const QString &documentName, bool initializeDb);
+    ConnectSharedDatabaseTask(const U2DbiRef& dbiRef, const QString& documentName, bool initializeDb);
 
     void run();
 
 private:
-    static GUrl getUrlFromRef(const U2DbiRef &dbiRef);
+    static GUrl getUrlFromRef(const U2DbiRef& dbiRef);
 
     const U2DbiRef dbiRef;
     const QString documentName;

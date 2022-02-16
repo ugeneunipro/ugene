@@ -36,12 +36,12 @@ namespace U2 {
 
 #define GT_CLASS_NAME "FindEnzymesDialogFiller"
 
-FindEnzymesDialogFiller::FindEnzymesDialogFiller(HI::GUITestOpStatus &os, const QStringList &enzymesToFind, CustomScenario *scenario)
+FindEnzymesDialogFiller::FindEnzymesDialogFiller(HI::GUITestOpStatus& os, const QStringList& enzymesToFind, CustomScenario* scenario)
     : Filler(os, "FindEnzymesDialog", scenario),
       enzymesToFind(enzymesToFind) {
 }
 
-FindEnzymesDialogFiller::FindEnzymesDialogFiller(GUITestOpStatus &os, const QStringList &enzymesToFind, qint64 searchRegionStart, qint64 searchRegionEnd, qint64 excludedRegionStart, qint64 excludedRegionEnd, CustomScenario *scenario)
+FindEnzymesDialogFiller::FindEnzymesDialogFiller(GUITestOpStatus& os, const QStringList& enzymesToFind, qint64 searchRegionStart, qint64 searchRegionEnd, qint64 excludedRegionStart, qint64 excludedRegionEnd, CustomScenario* scenario)
     : Filler(os, "FindEnzymesDialog", scenario),
       enzymesToFind(enzymesToFind),
       searchStart(searchRegionStart),
@@ -54,38 +54,38 @@ FindEnzymesDialogFiller::FindEnzymesDialogFiller(GUITestOpStatus &os, const QStr
 void FindEnzymesDialogFiller::commonScenario() {
     auto dialog = GTWidget::getActiveModalWidget(os);
 
-    QWidget *enzymesSelectorWidget = GTWidget::findWidget(os, "enzymesSelectorWidget");
+    QWidget* enzymesSelectorWidget = GTWidget::findWidget(os, "enzymesSelectorWidget");
     GTWidget::click(os, GTWidget::findWidget(os, "selectNoneButton", enzymesSelectorWidget));
 
     auto enzymesTree = GTWidget::findTreeWidget(os, "tree", enzymesSelectorWidget);
-    for (const QString &enzyme : qAsConst(enzymesToFind)) {
-        QTreeWidgetItem *item = GTTreeWidget::findItem(os, enzymesTree, enzyme);
+    for (const QString& enzyme : qAsConst(enzymesToFind)) {
+        QTreeWidgetItem* item = GTTreeWidget::findItem(os, enzymesTree, enzyme);
         GTTreeWidget::checkItem(os, item);
     }
 
     if (searchStart != -1 && searchEnd != -1) {
-        QWidget *regionSelector = GTWidget::findWidget(os, "region_selector_with_excluded");
+        QWidget* regionSelector = GTWidget::findWidget(os, "region_selector_with_excluded");
         GT_CHECK(regionSelector != nullptr, "range_selector not found");
 
-        QLineEdit *start = GTWidget::findExactWidget<QLineEdit *>(os, "startLineEdit", regionSelector);
+        QLineEdit* start = GTWidget::findExactWidget<QLineEdit*>(os, "startLineEdit", regionSelector);
         GT_CHECK(start != nullptr, "startLineEdit of 'Search In' region not found");
         GTLineEdit::setText(os, start, QString::number(searchStart));
 
-        QLineEdit *end = GTWidget::findExactWidget<QLineEdit *>(os, "endLineEdit", regionSelector);
+        QLineEdit* end = GTWidget::findExactWidget<QLineEdit*>(os, "endLineEdit", regionSelector);
         GTWidget::click(os, end);
         GT_CHECK(end != nullptr, "endLineEdit of 'Search In' region not found");
         GTLineEdit::setText(os, end, QString::number(searchEnd));
     }
 
     if (excludeStart != -1 && excludeEnd != -1) {
-        QCheckBox *exclude = GTWidget::findExactWidget<QCheckBox *>(os, "excludeCheckBox");
+        QCheckBox* exclude = GTWidget::findExactWidget<QCheckBox*>(os, "excludeCheckBox");
         GTCheckBox::setChecked(os, exclude);
 
-        QLineEdit *start = GTWidget::findExactWidget<QLineEdit *>(os, "excludeStartLineEdit");
+        QLineEdit* start = GTWidget::findExactWidget<QLineEdit*>(os, "excludeStartLineEdit");
         GT_CHECK(start != nullptr, "excludeStartLineEdit of 'Exclude' region not found");
         GTLineEdit::setText(os, start, QString::number(excludeStart));
 
-        QLineEdit *end = GTWidget::findExactWidget<QLineEdit *>(os, "excludeEndLinEdit");
+        QLineEdit* end = GTWidget::findExactWidget<QLineEdit*>(os, "excludeEndLinEdit");
         GTWidget::click(os, end);
         GT_CHECK(end != nullptr, "excludeEndLinEdit of 'Exclude' region not found");
         GTLineEdit::setText(os, end, QString::number(excludeEnd));
@@ -96,13 +96,13 @@ void FindEnzymesDialogFiller::commonScenario() {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openDialogWithToolbarAction"
-void FindEnzymesDialogFiller::openDialogWithToolbarAction(HI::GUITestOpStatus &os) {
+void FindEnzymesDialogFiller::openDialogWithToolbarAction(HI::GUITestOpStatus& os) {
     GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Find restriction sites"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "selectEnzymes"
-void FindEnzymesDialogFiller::selectEnzymes(HI::GUITestOpStatus &os, const QStringList &enzymeNames) {
+void FindEnzymesDialogFiller::selectEnzymes(HI::GUITestOpStatus& os, const QStringList& enzymeNames) {
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, enzymeNames));
     openDialogWithToolbarAction(os);
 }

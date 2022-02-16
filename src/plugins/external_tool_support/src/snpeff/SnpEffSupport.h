@@ -35,7 +35,7 @@ public:
 
     QStringList getToolRunnerAdditionalOptions() const;
 
-    static SnpEffDatabaseListModel *databaseModel;
+    static SnpEffDatabaseListModel* databaseModel;
     static const QString ET_SNPEFF;
     static const QString ET_SNPEFF_ID;
 private slots:
@@ -43,5 +43,5 @@ private slots:
     void sl_databaseListIsReady();
 };
 
-}    // namespace U2
-#endif    // _U2_SNPEFF_SUPPORT_H_
+}  // namespace U2
+#endif  // _U2_SNPEFF_SUPPORT_H_

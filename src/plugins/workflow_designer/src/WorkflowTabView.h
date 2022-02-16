@@ -42,12 +42,12 @@ class WorkflowView;
 class WorkflowTabView : public QTabWidget {
     Q_OBJECT
 public:
-    WorkflowTabView(WorkflowView *parent);
+    WorkflowTabView(WorkflowView* parent);
 
-    void addDashboard(WorkflowMonitor *monitor, const QString &name = QString());
+    void addDashboard(WorkflowMonitor* monitor, const QString& name = QString());
     bool hasDashboards() const;
 
-    bool eventFilter(QObject *watched, QEvent *event);
+    bool eventFilter(QObject* watched, QEvent* event);
 
 signals:
     void si_countChanged();
@@ -55,33 +55,33 @@ signals:
 
 private slots:
     void sl_closeTab();
-    void sl_dashboardsListChanged(const QStringList &added, const QStringList &removed);
-    void sl_dashboardsChanged(const QStringList &dashboardIds);
+    void sl_dashboardsListChanged(const QStringList& added, const QStringList& removed);
+    void sl_dashboardsChanged(const QStringList& dashboardIds);
     void sl_renameTab();
     void sl_showDashboard(int idx);
     void sl_workflowStateChanged(bool isRunning);
 
 private:
-    int appendDashboard(Dashboard *dashboard);
-    void removeDashboard(Dashboard *db);
-    QString generateName(const QString &baseName = "") const;
+    int appendDashboard(Dashboard* dashboard);
+    void removeDashboard(Dashboard* db);
+    QString generateName(const QString& baseName = "") const;
     QSet<QString> allNames() const;
     QStringList allIds() const;
-    QMap<QString, Dashboard *> getDashboards(const QStringList &dashboardIds) const;
+    QMap<QString, Dashboard*> getDashboards(const QStringList& dashboardIds) const;
 
-    WorkflowView *parent;
+    WorkflowView* parent;
 };
 
 class RegistryConnectionBlocker {
 public:
-    RegistryConnectionBlocker(WorkflowTabView *tabView);
+    RegistryConnectionBlocker(WorkflowTabView* tabView);
     ~RegistryConnectionBlocker();
 
-    static void connectRegistry(WorkflowTabView *tabView);
-    static void disconnectRegistry(WorkflowTabView *tabView);
+    static void connectRegistry(WorkflowTabView* tabView);
+    static void disconnectRegistry(WorkflowTabView* tabView);
 
 private:
-    WorkflowTabView *tabView;
+    WorkflowTabView* tabView;
     static int count;
 };
 

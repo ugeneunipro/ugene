@@ -41,13 +41,13 @@ TestDbiProvider::TestDbiProvider()
 TestDbiProvider::~TestDbiProvider() {
     close();
 }
-bool TestDbiProvider::init(const QString &dbiFileName, bool _useConnectionPool) {
+bool TestDbiProvider::init(const QString& dbiFileName, bool _useConnectionPool) {
     if (initialized) {
         close();
         initialized = false;
     }
 
-    TestRunnerSettings *trs = AppContext::getAppSettings()->getTestRunnerSettings();
+    TestRunnerSettings* trs = AppContext::getAppSettings()->getTestRunnerSettings();
     QString originalFile = trs->getVar("COMMON_DATA_DIR") + "/unit_tests/" + dbiFileName;
 
     QString tmpFile = QDir::temp().absoluteFilePath(QFileInfo(originalFile).fileName());
@@ -66,7 +66,7 @@ bool TestDbiProvider::init(const QString &dbiFileName, bool _useConnectionPool) 
     dbUrl = tmpFile;
     useConnectionPool = _useConnectionPool;
 
-    U2DbiFactory *factory = AppContext::getDbiRegistry()->getDbiFactoryById(SQLITE_DBI_ID);
+    U2DbiFactory* factory = AppContext::getDbiRegistry()->getDbiFactoryById(SQLITE_DBI_ID);
     SAFE_POINT(factory != nullptr, "No dbi factory", false);
     U2OpStatusImpl opStatus;
 
@@ -88,7 +88,7 @@ bool TestDbiProvider::init(const QString &dbiFileName, bool _useConnectionPool) 
         dbi->init(properties, persistentData, opStatus);
         SAFE_POINT_OP(opStatus, false);
     }
-    U2ObjectDbi *objDbi = dbi->getObjectDbi();
+    U2ObjectDbi* objDbi = dbi->getObjectDbi();
     SAFE_POINT(nullptr != objDbi, "object dbi not loaded", false);
 
     initialized = true;
@@ -98,7 +98,7 @@ void TestDbiProvider::close() {
     U2OpStatusImpl opStatus;
     if (dbi) {
         if (useConnectionPool) {
-            U2DbiRegistry *dbiReg = AppContext::getDbiRegistry();
+            U2DbiRegistry* dbiReg = AppContext::getDbiRegistry();
             if (nullptr != dbiReg) {
                 dbiReg->getGlobalDbiPool()->releaseDbi(dbi, opStatus);
             }
@@ -111,7 +111,7 @@ void TestDbiProvider::close() {
     dbi = nullptr;
     initialized = false;
 }
-U2Dbi *TestDbiProvider::getDbi() {
+U2Dbi* TestDbiProvider::getDbi() {
     SAFE_POINT(initialized, "Dbi Provider is not initialized", nullptr);
     return dbi;
 }

@@ -32,18 +32,18 @@
 namespace U2 {
 namespace Workflow {
 
-IntegralBusUtils::SplitResult IntegralBusUtils::splitCandidates(const QList<Descriptor> &candidates, const Descriptor &toDesc, DataTypePtr toDatatype) {
-    CandidatesSplitter *splitter = CandidatesSplitterRegistry::instance()->findSplitter(toDesc, toDatatype);
+IntegralBusUtils::SplitResult IntegralBusUtils::splitCandidates(const QList<Descriptor>& candidates, const Descriptor& toDesc, DataTypePtr toDatatype) {
+    CandidatesSplitter* splitter = CandidatesSplitterRegistry::instance()->findSplitter(toDesc, toDatatype);
     SAFE_POINT(nullptr != splitter, "NULL splitter", SplitResult());
     return splitter->splitCandidates(candidates);
 }
 
-void IntegralBusUtils::remapBus(StrStrMap &busMap, const ActorId &oldId, const ActorId &newId, const PortMapping &mapping) {
+void IntegralBusUtils::remapBus(StrStrMap& busMap, const ActorId& oldId, const ActorId& newId, const PortMapping& mapping) {
     foreach (QString key, busMap.uniqueKeys()) {
         U2OpStatus2Log os;
         QList<IntegralBusSlot> slotList = IntegralBusSlot::listFromString(busMap[key], os);
         QList<IntegralBusSlot> newSlots;
-        for (const IntegralBusSlot &slot : qAsConst(slotList)) {
+        for (const IntegralBusSlot& slot : qAsConst(slotList)) {
             IntegralBusSlot newSlot = slot;
             if (slot.actorId() == oldId) {
                 U2OpStatusImpl os2;
@@ -58,7 +58,7 @@ void IntegralBusUtils::remapBus(StrStrMap &busMap, const ActorId &oldId, const A
     }
 }
 
-void IntegralBusUtils::remapPathedSlotString(QString &pathedSlotStr, const ActorId &oldId, const ActorId &newId, const PortMapping &mapping) {
+void IntegralBusUtils::remapPathedSlotString(QString& pathedSlotStr, const ActorId& oldId, const ActorId& newId, const PortMapping& mapping) {
     if (pathedSlotStr.isEmpty()) {
         return;
     }
@@ -94,15 +94,15 @@ enum StringSlotType {
     DATASET
 };
 
-bool isUrlSlot(const Descriptor &slot) {
+bool isUrlSlot(const Descriptor& slot) {
     const QString id = slot.getId();
     return id.contains(BaseSlots::URL_SLOT().getId());
 }
-bool isDatasetSlot(const Descriptor &slot) {
+bool isDatasetSlot(const Descriptor& slot) {
     return (BaseSlots::DATASET_SLOT() == slot);
 }
 
-StringSlotType getSlotType(const Descriptor &slot) {
+StringSlotType getSlotType(const Descriptor& slot) {
     if (isUrlSlot(slot)) {
         return URL;
     }
@@ -113,13 +113,13 @@ StringSlotType getSlotType(const Descriptor &slot) {
 }
 }  // namespace
 
-QList<Descriptor> IntegralBusUtils::getSlotsByType(const QMap<Descriptor, DataTypePtr> &busMap, const Descriptor &slot, const DataTypePtr &type) {
+QList<Descriptor> IntegralBusUtils::getSlotsByType(const QMap<Descriptor, DataTypePtr>& busMap, const Descriptor& slot, const DataTypePtr& type) {
     QList<Descriptor> result = busMap.keys(type);
     CHECK(BaseTypes::STRING_TYPE() == type, result);
     CHECK(result.size() > 1, result);
 
     const StringSlotType targetType = getSlotType(slot);
-    foreach (const Descriptor &desc, result) {
+    foreach (const Descriptor& desc, result) {
         if (targetType != getSlotType(desc)) {
             result.removeOne(desc);
         }
@@ -136,14 +136,14 @@ public:
         : CandidatesSplitter(ID) {
     }
 
-    bool canSplit(const Descriptor & /*toDesc*/, DataTypePtr /*toDatatype*/) {
+    bool canSplit(const Descriptor& /*toDesc*/, DataTypePtr /*toDatatype*/) {
         return true;
     }
 
     static const QString ID;
 
 protected:
-    bool isMain(const QString & /*candidateSlotId*/) {
+    bool isMain(const QString& /*candidateSlotId*/) {
         return true;
     }
 };
@@ -156,14 +156,14 @@ public:
         : CandidatesSplitter(ID) {
     }
 
-    bool canSplit(const Descriptor & /*toDesc*/, DataTypePtr toDatatype) {
+    bool canSplit(const Descriptor& /*toDesc*/, DataTypePtr toDatatype) {
         return (BaseTypes::STRING_TYPE() == toDatatype);
     }
 
     static const QString ID;
 
 protected:
-    bool isMain(const QString &candidateSlotId) {
+    bool isMain(const QString& candidateSlotId) {
         return (BaseSlots::URL_SLOT().getId() != candidateSlotId && BaseSlots::DATASET_SLOT().getId() != candidateSlotId);
     }
 };
@@ -175,14 +175,14 @@ public:
         : CandidatesSplitter(ID) {
     }
 
-    bool canSplit(const Descriptor &toDesc, DataTypePtr toDatatype) {
+    bool canSplit(const Descriptor& toDesc, DataTypePtr toDatatype) {
         return ((BaseTypes::STRING_TYPE() == toDatatype) && isDatasetSlot(toDesc));
     }
 
     static const QString ID;
 
 protected:
-    bool isMain(const QString &candidateSlotId) {
+    bool isMain(const QString& candidateSlotId) {
         return (BaseSlots::DATASET_SLOT().getId() == candidateSlotId);
     }
 };
@@ -195,14 +195,14 @@ public:
         : CandidatesSplitter(ID) {
     }
 
-    bool canSplit(const Descriptor &toDesc, DataTypePtr toDatatype) {
+    bool canSplit(const Descriptor& toDesc, DataTypePtr toDatatype) {
         return ((BaseTypes::STRING_TYPE() == toDatatype) && isUrlSlot(toDesc));
     }
 
     static const QString ID;
 
 protected:
-    bool isMain(const QString &candidateSlotId) {
+    bool isMain(const QString& candidateSlotId) {
         return (BaseSlots::URL_SLOT().getId() == candidateSlotId);
     }
 };
@@ -212,16 +212,16 @@ const QString UrlSplitter::ID = "url";
 /************************************************************************/
 /* CandidatesSplitter */
 /************************************************************************/
-CandidatesSplitter::CandidatesSplitter(const QString &_id)
+CandidatesSplitter::CandidatesSplitter(const QString& _id)
     : id(_id) {
 }
 
 CandidatesSplitter::~CandidatesSplitter() {
 }
 
-IntegralBusUtils::SplitResult CandidatesSplitter::splitCandidates(const QList<Descriptor> &candidates) {
+IntegralBusUtils::SplitResult CandidatesSplitter::splitCandidates(const QList<Descriptor>& candidates) {
     IntegralBusUtils::SplitResult r;
-    foreach (const Descriptor &c, candidates) {
+    foreach (const Descriptor& c, candidates) {
         U2OpStatus2Log os;
         IntegralBusSlot slot = IntegralBusSlot::fromString(c.getId(), os);
         if (slot.getId().isEmpty() || isMain(slot.getId())) {
@@ -233,23 +233,23 @@ IntegralBusUtils::SplitResult CandidatesSplitter::splitCandidates(const QList<De
     return r;
 }
 
-const QString &CandidatesSplitter::getId() const {
+const QString& CandidatesSplitter::getId() const {
     return id;
 }
 
 /************************************************************************/
 /* CandidatesSplitterRegistry */
 /************************************************************************/
-CandidatesSplitterRegistry *CandidatesSplitterRegistry::_instance = nullptr;
-CandidatesSplitterRegistry *CandidatesSplitterRegistry::instance() {
+CandidatesSplitterRegistry* CandidatesSplitterRegistry::_instance = nullptr;
+CandidatesSplitterRegistry* CandidatesSplitterRegistry::instance() {
     if (nullptr == _instance) {
         _instance = new CandidatesSplitterRegistry();
     }
     return _instance;
 }
 
-CandidatesSplitter *CandidatesSplitterRegistry::findSplitter(const Descriptor &toDesc, DataTypePtr toDatatype) {
-    foreach (CandidatesSplitter *splitter, splitters) {
+CandidatesSplitter* CandidatesSplitterRegistry::findSplitter(const Descriptor& toDesc, DataTypePtr toDatatype) {
+    foreach (CandidatesSplitter* splitter, splitters) {
         if (splitter->canSplit(toDesc, toDatatype)) {
             return splitter;
         }
@@ -257,8 +257,8 @@ CandidatesSplitter *CandidatesSplitterRegistry::findSplitter(const Descriptor &t
     return nullptr;
 }
 
-CandidatesSplitter *CandidatesSplitterRegistry::findSplitter(const QString &id) {
-    foreach (CandidatesSplitter *splitter, splitters) {
+CandidatesSplitter* CandidatesSplitterRegistry::findSplitter(const QString& id) {
+    foreach (CandidatesSplitter* splitter, splitters) {
         if (id == splitter->getId()) {
             return splitter;
         }
@@ -266,14 +266,14 @@ CandidatesSplitter *CandidatesSplitterRegistry::findSplitter(const QString &id) 
     return nullptr;
 }
 
-void CandidatesSplitterRegistry::registerSplitter(CandidatesSplitter *splitter) {
+void CandidatesSplitterRegistry::registerSplitter(CandidatesSplitter* splitter) {
     if (!splitters.contains(splitter)) {
         splitters.prepend(splitter);
     }
 }
 
-void CandidatesSplitterRegistry::unregisterSplitter(const QString &id) {
-    CandidatesSplitter *splitter = findSplitter(id);
+void CandidatesSplitterRegistry::unregisterSplitter(const QString& id) {
+    CandidatesSplitter* splitter = findSplitter(id);
     CHECK(nullptr != splitter, );
     splitters.removeAll(splitter);
     delete splitter;

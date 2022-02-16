@@ -25,13 +25,13 @@
 
 namespace U2 {
 
-ImportPrimersMultiTask::ImportPrimersMultiTask(const QList<Task *> &importSubtasks)
+ImportPrimersMultiTask::ImportPrimersMultiTask(const QList<Task*>& importSubtasks)
     : MultiTask(tr("Import primers"), importSubtasks, false, TaskFlags(TaskFlag_NoRun | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported)) {
 }
 
 QString ImportPrimersMultiTask::generateReport() const {
     QString report = "<hr><br>";
-    foreach (const QPointer<Task> &subtask, getSubtasks()) {
+    foreach (const QPointer<Task>& subtask, getSubtasks()) {
         report += subtask->generateReport() + "<br>";
     }
     return report;

@@ -57,7 +57,7 @@ static QMap<char, qreal> initContent() {
 
 QMap<char, qreal> DNASequenceGeneratorDialog::content = initContent();
 
-DNASequenceGeneratorDialog::DNASequenceGeneratorDialog(QWidget *p)
+DNASequenceGeneratorDialog::DNASequenceGeneratorDialog(QWidget* p)
     : QDialog(p),
       saveController(nullptr),
       generateButton(nullptr),
@@ -162,7 +162,7 @@ void DNASequenceGeneratorDialog::sl_generate() {
         return;
     }
 
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     if (baseContentRadioButton->isChecked()) {
         s->setValue(ROOT_SETTING + SELECTED_OPTION, OPTION_BASE_CONTENT);
         int percentA = percentASpin->value();

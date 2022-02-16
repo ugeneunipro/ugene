@@ -73,8 +73,8 @@ const QString BedGraphToBigWigFactory::ACTOR_ID("bgtbw-bam");
 /* BedGraphToBigWigPrompter */
 /************************************************************************/
 QString BedGraphToBigWigPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BedGraphToBigWigWorker::INPUT_PORT));
-    const Actor *producer = input->getProducer(BaseSlots::URL_SLOT().getId());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BedGraphToBigWigWorker::INPUT_PORT));
+    const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
 
@@ -86,18 +86,18 @@ QString BedGraphToBigWigPrompter::composeRichDoc() {
 /* BedGraphToBigWigFactory */
 /************************************************************************/
 void BedGraphToBigWigFactory::init() {
-    //init data path
-    U2DataPath *dataPath = nullptr;
-    U2DataPathRegistry *dpr = AppContext::getDataPathRegistry();
+    // init data path
+    U2DataPath* dataPath = nullptr;
+    U2DataPathRegistry* dpr = AppContext::getDataPathRegistry();
     if (dpr) {
-        U2DataPath *dp = dpr->getDataPathByName(BigWigSupport::GENOMES_DATA_NAME);
+        U2DataPath* dp = dpr->getDataPathByName(BigWigSupport::GENOMES_DATA_NAME);
         if (dp && dp->isValid()) {
             dataPath = dp;
         }
     }
     Descriptor desc(ACTOR_ID, BedGraphToBigWigWorker::tr("Convert bedGraph Files to bigWig"), BedGraphToBigWigWorker::tr("Convert bedGraph Files to bigWig."));
 
-    QList<PortDescriptor *> p;
+    QList<PortDescriptor*> p;
     {
         Descriptor inD(BedGraphToBigWigWorker::INPUT_PORT, BedGraphToBigWigWorker::tr("BedGrapgh files"), BedGraphToBigWigWorker::tr("Set of bedGraph files"));
         Descriptor outD(BedGraphToBigWigWorker::OUTPUT_PORT, BedGraphToBigWigWorker::tr("BigWig files"), BedGraphToBigWigWorker::tr("BigWig files"));
@@ -111,7 +111,7 @@ void BedGraphToBigWigFactory::init() {
         p << new PortDescriptor(outD, DataTypePtr(new MapDataType("bgbw.output-url", outM)), false, true);
     }
 
-    QList<Attribute *> a;
+    QList<Attribute*> a;
     {
         Descriptor outDir(BedGraphToBigWigWorker::OUT_MODE_ID, BedGraphToBigWigWorker::tr("Output folder"), BedGraphToBigWigWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
                                                                                                                                        "<b>Workflow</b> - internal workflow folder. "
@@ -130,12 +130,12 @@ void BedGraphToBigWigFactory::init() {
         Descriptor genomeAttrDesc(BedGraphToBigWigWorker::GENOME, BedGraphToBigWigWorker::tr("Genome"), BedGraphToBigWigWorker::tr("File with genome length."));
 
         a << new Attribute(outDir, BaseTypes::NUM_TYPE(), false, QVariant(FileAndDirectoryUtils::WORKFLOW_INTERNAL));
-        Attribute *customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
+        Attribute* customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
         customDirAttr->addRelation(new VisibilityRelation(BedGraphToBigWigWorker::OUT_MODE_ID, FileAndDirectoryUtils::CUSTOM));
         a << customDirAttr;
-        Attribute *genomeAttr = nullptr;
+        Attribute* genomeAttr = nullptr;
         if (dataPath) {
-            const QList<QString> &dataNames = dataPath->getDataNames();
+            const QList<QString>& dataNames = dataPath->getDataNames();
             if (!dataNames.isEmpty()) {
                 genomeAttr = new Attribute(genomeAttrDesc, BaseTypes::STRING_TYPE(), true, dataPath->getPathByName(dataNames.first()));
             } else {
@@ -152,7 +152,7 @@ void BedGraphToBigWigFactory::init() {
         a << new Attribute(unc, BaseTypes::BOOL_TYPE(), false, QVariant(false));
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap directoryMap;
         QString fileDir = BedGraphToBigWigWorker::tr("Input file");
@@ -178,19 +178,19 @@ void BedGraphToBigWigFactory::init() {
         delegates[BedGraphToBigWigWorker::GENOME] = new ComboBoxWithUrlsDelegate(vm);
     }
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new BedGraphToBigWigPrompter());
     proto->addExternalTool(BigWigSupport::ET_BIGWIG_ID);
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_CONVERTERS(), proto);
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new BedGraphToBigWigFactory());
 }
 
 //////////////////////////////////////////////////////////////////////////
-//BedGraphToBigWigWorker
-BedGraphToBigWigWorker::BedGraphToBigWigWorker(Actor *a)
+// BedGraphToBigWigWorker
+BedGraphToBigWigWorker::BedGraphToBigWigWorker(Actor* a)
     : BaseWorker(a), inputUrlPort(nullptr), outputUrlPort(nullptr), outUrls("") {
 }
 
@@ -199,7 +199,7 @@ void BedGraphToBigWigWorker::init() {
     outputUrlPort = ports.value(OUTPUT_PORT);
 }
 
-Task *BedGraphToBigWigWorker::tick() {
+Task* BedGraphToBigWigWorker::tick() {
     if (inputUrlPort->hasMessage()) {
         const QString url = takeUrl();
         CHECK(!url.isEmpty(), nullptr);
@@ -215,9 +215,9 @@ Task *BedGraphToBigWigWorker::tick() {
         setting.uncompressed = getValue<bool>(UNCOMPRESSED);
         setting.genomePath = getValue<QString>(GENOME);
 
-        ExternalToolSupportTask *t = new BedGraphToBigWigTask(setting);
+        ExternalToolSupportTask* t = new BedGraphToBigWigTask(setting);
         t->addListeners(createLogListeners());
-        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
+        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
         return t;
     }
 
@@ -233,17 +233,17 @@ void BedGraphToBigWigWorker::cleanup() {
 }
 
 namespace {
-QString getTargetTaskUrl(Task *task) {
-    BedGraphToBigWigTask *curtask = dynamic_cast<BedGraphToBigWigTask *>(task);
+QString getTargetTaskUrl(Task* task) {
+    BedGraphToBigWigTask* curtask = dynamic_cast<BedGraphToBigWigTask*>(task);
 
     if (nullptr != curtask) {
         return curtask->getResult();
     }
     return "";
 }
-}    // namespace
+}  // namespace
 
-void BedGraphToBigWigWorker::sl_taskFinished(Task *task) {
+void BedGraphToBigWigWorker::sl_taskFinished(Task* task) {
     CHECK(!task->hasError(), );
     CHECK(!task->isCanceled(), );
 
@@ -254,7 +254,7 @@ void BedGraphToBigWigWorker::sl_taskFinished(Task *task) {
     monitor()->addOutputFile(url, getActorId());
 }
 
-QString BedGraphToBigWigWorker::getTargetName(const QString &fileUrl, const QString &outDir) {
+QString BedGraphToBigWigWorker::getTargetName(const QString& fileUrl, const QString& outDir) {
     QString name = getValue<QString>(OUT_NAME_ID);
 
     if (name == DEFAULT_NAME || name.isEmpty()) {
@@ -279,10 +279,10 @@ QString BedGraphToBigWigWorker::takeUrl() {
     return data[BaseSlots::URL_SLOT().getId()].toString();
 }
 
-void BedGraphToBigWigWorker::sendResult(const QString &url) {
+void BedGraphToBigWigWorker::sendResult(const QString& url) {
     const Message message(BaseTypes::STRING_TYPE(), url);
     outputUrlPort->put(message);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

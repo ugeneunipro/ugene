@@ -35,25 +35,25 @@ namespace U2 {
 class U2VIEW_EXPORT WindowStepSelectorWidget : public QWidget {
     Q_OBJECT
 public:
-    WindowStepSelectorWidget(QWidget *p, const U2Region &winRange, int win, int step);
+    WindowStepSelectorWidget(QWidget* p, const U2Region& winRange, int win, int step);
     QString validate() const;
 
     int getWindow() const;
     int getStep() const;
-    QFormLayout *getFormLayout() const {
+    QFormLayout* getFormLayout() const {
         return formLayout;
     }
 
 private:
-    QSpinBox *windowEdit;
-    QSpinBox *stepsPerWindowEdit;
-    QFormLayout *formLayout;
+    QSpinBox* windowEdit;
+    QSpinBox* stepsPerWindowEdit;
+    QFormLayout* formLayout;
 };
 
 class U2VIEW_EXPORT MinMaxSelectorWidget : public QWidget {
     Q_OBJECT
 public:
-    MinMaxSelectorWidget(QWidget *p, double min, double max, bool enabled);
+    MinMaxSelectorWidget(QWidget* p, double min, double max, bool enabled);
     QString validate() const;
 
     double getMin() const;
@@ -61,23 +61,23 @@ public:
     bool getState() const;
 
 private slots:
-    void sl_valueChanged(const QString &);
+    void sl_valueChanged(const QString&);
 
 private:
-    QGroupBox *minmaxGroup;
-    QDoubleSpinBox *minBox;
-    QDoubleSpinBox *maxBox;
+    QGroupBox* minmaxGroup;
+    QDoubleSpinBox* minBox;
+    QDoubleSpinBox* maxBox;
     QPalette normalPalette;
 };
 
 class U2VIEW_EXPORT WindowStepSelectorDialog : public QDialog {
     Q_OBJECT
 public:
-    WindowStepSelectorDialog(QWidget *p, const U2Region &winRange, int win, int step, double min, double max, bool e);
-    WindowStepSelectorWidget *getWindowStepSelector() const {
+    WindowStepSelectorDialog(QWidget* p, const U2Region& winRange, int win, int step, double min, double max, bool e);
+    WindowStepSelectorWidget* getWindowStepSelector() const {
         return wss;
     }
-    MinMaxSelectorWidget *getMinMaxSelector() const {
+    MinMaxSelectorWidget* getMinMaxSelector() const {
         return mms;
     }
 
@@ -86,8 +86,8 @@ private slots:
     void sl_onOkClicked(bool);
 
 private:
-    WindowStepSelectorWidget *wss;
-    MinMaxSelectorWidget *mms;
+    WindowStepSelectorWidget* wss;
+    MinMaxSelectorWidget* mms;
 };
 
 }  // namespace U2

@@ -40,9 +40,9 @@ class IndexPart {
 public:
     IndexPart();
     ~IndexPart();
-    SAType *sArray;
-    BMType *bitMask;
-    char *seq;
+    SAType* sArray;
+    BMType* bitMask;
+    char* seq;
 
     SAType getLoadedPartSize() const;
     SAType getMaxLength();
@@ -56,14 +56,14 @@ public:
 private:
     int partCount;
     int currentPart;
-    SAType *seqStarts;
-    SAType *seqLengths;
-    SAType *saLengths;
+    SAType* seqStarts;
+    SAType* seqLengths;
+    SAType* saLengths;
 
-    QFile *refFile;
-    QFile **partFiles;
+    QFile* refFile;
+    QFile** partFiles;
 
-    BMType getBitValue(uchar *seq, SAType idx);
+    BMType getBitValue(uchar* seq, SAType idx);
 };
 
 bool isLittleEndian();

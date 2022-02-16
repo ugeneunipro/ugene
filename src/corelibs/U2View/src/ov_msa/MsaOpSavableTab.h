@@ -28,11 +28,11 @@ namespace U2 {
 
 class MsaOpSavableTab : public U2SavableWidget {
 public:
-    MsaOpSavableTab(QWidget *wrappedWidget, MWMDIWindow *contextWindow);
+    MsaOpSavableTab(QWidget* wrappedWidget, MWMDIWindow* contextWindow);
     ~MsaOpSavableTab();
 
 protected:
-    QSet<QWidget *> getCompoundChildren() const;
+    QSet<QWidget*> getCompoundChildren() const;
 };
 
 }  // namespace U2

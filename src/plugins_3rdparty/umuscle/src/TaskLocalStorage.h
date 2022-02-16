@@ -30,25 +30,25 @@ namespace U2 {
 
 class MuscleContextTLSRef {
 public:
-    MuscleContextTLSRef(MuscleContext *_ctx, int _workerID)
+    MuscleContextTLSRef(MuscleContext* _ctx, int _workerID)
         : ctx(_ctx), workerID(_workerID) {
     }
-    MuscleContext *ctx;
+    MuscleContext* ctx;
     int workerID;
 };
 
 class TaskLocalData {
 public:
-    static MuscleContext *current();
+    static MuscleContext* current();
 
     static unsigned currentWorkerID();
 
-    static void bindToMuscleTLSContext(MuscleContext *ctx, int workerID = 0);
+    static void bindToMuscleTLSContext(MuscleContext* ctx, int workerID = 0);
 
     static void detachMuscleTLSContext();
 
 private:
-    static QThreadStorage<MuscleContextTLSRef *> tls;
+    static QThreadStorage<MuscleContextTLSRef*> tls;
 };
 }  // namespace U2
 

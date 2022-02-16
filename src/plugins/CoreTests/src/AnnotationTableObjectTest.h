@@ -37,10 +37,10 @@ class Document;
 class GTestAnnotationDataItem : public QObject {
     Q_OBJECT
 public:
-    GTestAnnotationDataItem(const SharedAnnotationData &ad, QObject *p)
+    GTestAnnotationDataItem(const SharedAnnotationData& ad, QObject* p)
         : QObject(p), aData(ad) {
     }
-    const SharedAnnotationData &getAnnotation() const {
+    const SharedAnnotationData& getAnnotation() const {
         return aData;
     }
 
@@ -65,7 +65,7 @@ class GTest_FindAnnotationByNum : public XmlTest {
 
     ReportResult report();
 
-    Annotation *getAnnotation() const {
+    Annotation* getAnnotation() const {
         return result;
     }
 
@@ -75,7 +75,7 @@ private:
     QString objContextName;
     QString annotationContextName;
     int number;
-    Annotation *result;
+    Annotation* result;
 };
 
 class GTest_FindAnnotationByName : public XmlTest {
@@ -84,7 +84,7 @@ class GTest_FindAnnotationByName : public XmlTest {
 
     ReportResult report();
 
-    Annotation *getAnnotation() const {
+    Annotation* getAnnotation() const {
         return result;
     }
 
@@ -95,7 +95,7 @@ private:
     QString annotationContextName;
     QString aName;
     int number;
-    Annotation *result;
+    Annotation* result;
 };
 
 class GTest_FindAnnotationByLocation : public XmlTest {
@@ -104,7 +104,7 @@ class GTest_FindAnnotationByLocation : public XmlTest {
 
     ReportResult report();
 
-    Annotation *getAnnotation() const {
+    Annotation* getAnnotation() const {
         return result;
     }
 
@@ -116,7 +116,7 @@ private:
     QString annotationName;
     U2Region location;
     U2Strand strand;
-    Annotation *result;
+    Annotation* result;
 };
 
 class GTest_CheckAnnotationLocation : public XmlTest {
@@ -232,12 +232,12 @@ class GTest_CreateTmpAnnotationObject : public XmlTest {
     ReportResult report();
     void cleanup();
     QString objContextName;
-    AnnotationTableObject *aobj;
+    AnnotationTableObject* aobj;
 };
 
 class AnnotationTableObjectTest {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

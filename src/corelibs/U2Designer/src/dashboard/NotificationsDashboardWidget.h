@@ -36,7 +36,7 @@ namespace U2 {
 
 class U2DESIGNER_EXPORT NotificationsDashboardInfo {
 public:
-    NotificationsDashboardInfo(const QString &actorId, const QString &actorName, const QString &type, const QString &message, int count);
+    NotificationsDashboardInfo(const QString& actorId, const QString& actorName, const QString& type, const QString& message, int count);
 
     QString actorId;
     QString actorName;
@@ -48,25 +48,25 @@ public:
 class U2DESIGNER_EXPORT NotificationsDashboardWidget : public QWidget, public DashboardWidgetUtils {
     Q_OBJECT
 public:
-    NotificationsDashboardWidget(const QDomElement &dom, const WorkflowMonitor *monitor = nullptr);
+    NotificationsDashboardWidget(const QDomElement& dom, const WorkflowMonitor* monitor = nullptr);
 
-    static bool isValidDom(const QDomElement &dom);
+    static bool isValidDom(const QDomElement& dom);
 
     QString toHtml() const;
 
-    void setDashboardWidget(QWidget *dashboardWidget);
+    void setDashboardWidget(QWidget* dashboardWidget);
 
     void updateVisibility();
 
 private slots:
-    void sl_newNotification(const WorkflowNotification &wdNotification, int count);
+    void sl_newNotification(const WorkflowNotification& wdNotification, int count);
 
 private:
     void updateNotificationRow(int workerIndex);
 
     const QPointer<const WorkflowMonitor> monitor;
-    QWidget *dashboardWidget;
-    QGridLayout *tableGridLayout;
+    QWidget* dashboardWidget;
+    QGridLayout* tableGridLayout;
     QList<NotificationsDashboardInfo> notificationList;
 };
 

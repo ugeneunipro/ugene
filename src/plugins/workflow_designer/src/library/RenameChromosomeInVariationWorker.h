@@ -35,7 +35,7 @@ typedef PrompterBase<RenameChomosomeInVariationPrompter> RenameChomosomeInVariat
 class RenameChomosomeInVariationPrompter : public RenameChomosomeInVariationBase {
     Q_OBJECT
 public:
-    RenameChomosomeInVariationPrompter(Actor *actor = nullptr);
+    RenameChomosomeInVariationPrompter(Actor* actor = nullptr);
 
 private:
     QString composeRichDoc();
@@ -44,14 +44,14 @@ private:
 class RenameChomosomeInVariationWorker : public BaseThroughWorker {
     Q_OBJECT
 public:
-    RenameChomosomeInVariationWorker(Actor *actor);
+    RenameChomosomeInVariationWorker(Actor* actor);
 
 private:
-    QList<Message> fetchResult(Task *task, U2OpStatus &os);
-    Task *createTask(const Message &message, U2OpStatus &os);
+    QList<Message> fetchResult(Task* task, U2OpStatus& os);
+    Task* createTask(const Message& message, U2OpStatus& os);
 
-    IntegralBus *inputUrlPort;
-    IntegralBus *outputUrlPort;
+    IntegralBus* inputUrlPort;
+    IntegralBus* outputUrlPort;
 };
 
 class RenameChomosomeInVariationWorkerFactory : public DomainFactory {
@@ -60,7 +60,7 @@ public:
 
     RenameChomosomeInVariationWorkerFactory();
     static void init();
-    Worker *createWorker(Actor *actor);
+    Worker* createWorker(Actor* actor);
 };
 
 }  // namespace LocalWorkflow

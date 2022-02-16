@@ -64,7 +64,7 @@ struct CuffdiffSettings {
 
     bool groupBySamples;
     QMap<QString, QStringList> assemblyUrls;
-    Workflow::DbiDataStorage *storage;
+    Workflow::DbiDataStorage* storage;
     QList<Workflow::SharedDbiDataHandler> transcript;
     QString workingDir;
 };
@@ -75,14 +75,14 @@ private:
     class LogParser : public ExternalToolLogParser {
     public:
         LogParser();
-        void parseErrOutput(const QString &partOfLog);
+        void parseErrOutput(const QString& partOfLog);
     };
 
 public:
-    CuffdiffSupportTask(const CuffdiffSettings &settings);
+    CuffdiffSupportTask(const CuffdiffSettings& settings);
 
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
     ReportResult report();
     QStringList getOutputFiles() const;
     QStringList getSystemOutputFiles() const;
@@ -93,24 +93,24 @@ private:
     QString transcriptUrl;
 
     QScopedPointer<Document> transcriptDoc;
-    QList<Task *> saveTasks;
+    QList<Task*> saveTasks;
 
-    ExternalToolRunTask *diffTask;
+    ExternalToolRunTask* diffTask;
     QStringList outputFiles;
     QStringList systemOutputFiles;
 
     static const QString outSubDirBaseName;
 
 private:
-    Task *createTranscriptTask();
+    Task* createTranscriptTask();
 
     void createTranscriptDoc();
-    Task *createCuffdiffTask();
+    Task* createCuffdiffTask();
     void addOutFiles();
-    void addFile(const QString &fileName, bool openBySystem = false);
+    void addFile(const QString& fileName, bool openBySystem = false);
     void setupWorkingDir();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CUFFDIFFSUPPORTTASK_H_
+#endif  // _U2_CUFFDIFFSUPPORTTASK_H_

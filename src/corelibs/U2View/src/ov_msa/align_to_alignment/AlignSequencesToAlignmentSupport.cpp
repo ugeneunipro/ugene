@@ -43,21 +43,21 @@
 
 namespace U2 {
 
-AlignSequencesToAlignmentSupport::AlignSequencesToAlignmentSupport(QObject *parent)
+AlignSequencesToAlignmentSupport::AlignSequencesToAlignmentSupport(QObject* parent)
     : GObjectViewWindowContext(parent, MsaEditorFactory::ID) {
 }
 
-void AlignSequencesToAlignmentSupport::initViewContext(GObjectView *view) {
-    auto msaEditor = qobject_cast<MSAEditor *>(view);
+void AlignSequencesToAlignmentSupport::initViewContext(GObjectView* view) {
+    auto msaEditor = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "View is not MSAEditor!", );
     CHECK(msaEditor->getMaObject() != nullptr, );
     msaEditor->registerActionProvider(this);
 
-    AlignmentAlgorithmsRegistry *alignmentAlgorithmsRegistry = AppContext::getAlignmentAlgorithmsRegistry();
+    AlignmentAlgorithmsRegistry* alignmentAlgorithmsRegistry = AppContext::getAlignmentAlgorithmsRegistry();
 
     QStringList alignNewSequencesAlgorithmIds = alignmentAlgorithmsRegistry->getAvailableAlgorithmIds(AlignNewSequencesToAlignment);
-    for (auto &algorithmId : qAsConst(alignNewSequencesAlgorithmIds)) {
-        AlignmentAlgorithm *algorithm = alignmentAlgorithmsRegistry->getAlgorithm(algorithmId);
+    for (auto& algorithmId : qAsConst(alignNewSequencesAlgorithmIds)) {
+        AlignmentAlgorithm* algorithm = alignmentAlgorithmsRegistry->getAlgorithm(algorithmId);
         auto alignAction = new AlignSequencesToAlignmentAction(this, msaEditor, algorithmId, algorithm->getActionName(), 3000);
         alignAction->setIcon(QIcon(":/core/images/add_to_alignment.png"));  // TODO: add a dedicated icon per algorithm.
         alignAction->setObjectName(algorithmId);
@@ -66,8 +66,8 @@ void AlignSequencesToAlignmentSupport::initViewContext(GObjectView *view) {
     }
 
     QStringList alignNewAlignmentAlgorithmIds = alignmentAlgorithmsRegistry->getAvailableAlgorithmIds(AlignNewAlignmentToAlignment);
-    for (auto &algorithmId : qAsConst(alignNewAlignmentAlgorithmIds)) {
-        AlignmentAlgorithm *algorithm = alignmentAlgorithmsRegistry->getAlgorithm(algorithmId);
+    for (auto& algorithmId : qAsConst(alignNewAlignmentAlgorithmIds)) {
+        AlignmentAlgorithm* algorithm = alignmentAlgorithmsRegistry->getAlgorithm(algorithmId);
         auto alignAction = new AlignSequencesToAlignmentAction(this, msaEditor, algorithmId, algorithm->getActionName(), 3000);
         alignAction->setIcon(QIcon(":/core/images/add_to_alignment.png"));  // TODO: add a dedicated icon per algorithm.
         alignAction->setObjectName(algorithmId);
@@ -76,8 +76,8 @@ void AlignSequencesToAlignmentSupport::initViewContext(GObjectView *view) {
     }
 
     QStringList alignSelectedSequencesAlgorithmIds = alignmentAlgorithmsRegistry->getAvailableAlgorithmIds(AlignSelectionToAlignment);
-    for (const QString &algorithmId : qAsConst(alignSelectedSequencesAlgorithmIds)) {
-        AlignmentAlgorithm *algorithm = alignmentAlgorithmsRegistry->getAlgorithm(algorithmId);
+    for (const QString& algorithmId : qAsConst(alignSelectedSequencesAlgorithmIds)) {
+        AlignmentAlgorithm* algorithm = alignmentAlgorithmsRegistry->getAlgorithm(algorithmId);
         auto alignAction = new AlignSelectedSequencesAction(this, msaEditor, algorithmId, algorithm->getActionName(), 3000);
         alignAction->setIcon(QIcon(":/core/images/realign_some_sequences.png"));  // TODO: add a dedicated icon per algorithm.
         alignAction->setObjectName(algorithmId);
@@ -89,22 +89,22 @@ void AlignSequencesToAlignmentSupport::initViewContext(GObjectView *view) {
 /////////////////////////////////////
 /// AlignSequencesToAlignmentAction
 /////////////////////////////////////
-BaseObjectViewAlignmentAction::BaseObjectViewAlignmentAction(QObject *parent, MSAEditor *view, const QString &_algorithmId, const QString &text, int order)
+BaseObjectViewAlignmentAction::BaseObjectViewAlignmentAction(QObject* parent, MSAEditor* view, const QString& _algorithmId, const QString& text, int order)
     : GObjectViewAction(parent, view, text, order), msaEditor(view), algorithmId(_algorithmId) {
 }
 
-MSAEditor *BaseObjectViewAlignmentAction::getEditor() const {
+MSAEditor* BaseObjectViewAlignmentAction::getEditor() const {
     return msaEditor;
 }
 
 /////////////////////////////////////
 /// AlignSequencesToAlignmentAction
 /////////////////////////////////////
-AlignSequencesToAlignmentAction::AlignSequencesToAlignmentAction(QObject *parent, MSAEditor *view, const QString &algorithmId, const QString &text, int order)
+AlignSequencesToAlignmentAction::AlignSequencesToAlignmentAction(QObject* parent, MSAEditor* view, const QString& algorithmId, const QString& text, int order)
     : BaseObjectViewAlignmentAction(parent, view, algorithmId, text, order) {
     connect(this, &QAction::triggered, this, &BaseObjectViewAlignmentAction::sl_activate);
 
-    MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
+    MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
     connect(msaObject, &MultipleSequenceAlignmentObject::si_lockedStateChanged, this, &AlignSequencesToAlignmentAction::sl_updateState);
     connect(msaObject, &MultipleSequenceAlignmentObject::si_alignmentChanged, this, &AlignSequencesToAlignmentAction::sl_updateState);
 
@@ -122,8 +122,8 @@ void AlignSequencesToAlignmentAction::sl_updateState() {
         setEnabled(false);
         return;
     }
-    AlignmentAlgorithmsRegistry *alignmentAlgorithmsRegistry = AppContext::getAlignmentAlgorithmsRegistry();
-    AlignmentAlgorithm *algorithm = alignmentAlgorithmsRegistry->getAlgorithm(algorithmId);
+    AlignmentAlgorithmsRegistry* alignmentAlgorithmsRegistry = AppContext::getAlignmentAlgorithmsRegistry();
+    AlignmentAlgorithm* algorithm = alignmentAlgorithmsRegistry->getAlgorithm(algorithmId);
     if (!algorithm->checkAlphabet(msaObject->getAlphabet())) {
         setEnabled(false);
         return;
@@ -135,17 +135,17 @@ void AlignSequencesToAlignmentAction::sl_activate() {
     auto msaObject = msaEditor->getMaObject();
     SAFE_POINT(!msaObject->isStateLocked(), "The action must never be called for a readonly object!", );
 
-    ProjectView *projectView = AppContext::getProjectView();
+    ProjectView* projectView = AppContext::getProjectView();
     SAFE_POINT(projectView != nullptr, "Project view is null", );
 
-    const GObjectSelection *selection = projectView->getGObjectSelection();
+    const GObjectSelection* selection = projectView->getGObjectSelection();
     SAFE_POINT(selection != nullptr, "GObjectSelection is null", );
 
-    QList<GObject *> objects = selection->getSelectedObjects();
+    QList<GObject*> objects = selection->getSelectedObjects();
     bool selectFromProject = !objects.isEmpty();
 
-    for (const GObject *object : qAsConst(objects)) {
-        const GObjectType &objectType = object->getGObjectType();
+    for (const GObject* object : qAsConst(objects)) {
+        const GObjectType& objectType = object->getGObjectType();
         if (object == msaObject || (objectType != GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT && objectType != GObjectTypes::SEQUENCE)) {
             selectFromProject = false;
             break;
@@ -180,7 +180,7 @@ void AlignSequencesToAlignmentAction::sl_activate() {
 /////////////////////////////////////
 /// AlignSelectedSequencesAction
 /////////////////////////////////////
-AlignSelectedSequencesAction::AlignSelectedSequencesAction(QObject *parent, MSAEditor *view, const QString &algorithmId, const QString &text, int order)
+AlignSelectedSequencesAction::AlignSelectedSequencesAction(QObject* parent, MSAEditor* view, const QString& algorithmId, const QString& text, int order)
     : BaseObjectViewAlignmentAction(parent, view, algorithmId, text, order) {
     connect(this, &QAction::triggered, this, &BaseObjectViewAlignmentAction::sl_activate);
     connect(msaEditor->alignSelectedSequencesToAlignmentAction,
@@ -194,7 +194,7 @@ void AlignSelectedSequencesAction::sl_activate() {
     auto msaObject = msaEditor->getMaObject();
     SAFE_POINT(!msaObject->isStateLocked(), "The action must never be called for a readonly object!", );
 
-    const MaEditorSelection &selection = msaEditor->getSelection();
+    const MaEditorSelection& selection = msaEditor->getSelection();
     QList<int> selectedMaRowIndexes = msaEditor->getCollapseModel()->getMaRowIndexesFromSelectionRects(selection.getRectList());
     QList<qint64> selectedRowIds = msaObject->getRowIdsByRowIndexes(selectedMaRowIndexes);
     auto realignTask = new RealignSequencesInAlignmentTask(msaObject, selectedRowIds.toSet(), algorithmId);

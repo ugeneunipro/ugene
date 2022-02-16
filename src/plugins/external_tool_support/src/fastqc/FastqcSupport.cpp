@@ -59,14 +59,14 @@ FastQCSupport::FastQCSupport()
     dependencies << JavaSupport::ET_JAVA_ID;
     dependencies << PerlSupport::ET_PERL_ID;
 
-    ExternalTool *java = getJava();
+    ExternalTool* java = getJava();
     CHECK(java != nullptr, );
     connect(java, SIGNAL(si_pathChanged()), SLOT(sl_javaPathChanged()));
     sl_javaPathChanged();
 }
 
 void FastQCSupport::sl_javaPathChanged() {
-    ExternalTool *java = getJava();
+    ExternalTool* java = getJava();
     CHECK(java != nullptr, );
 
     validationArguments.clear();
@@ -75,14 +75,14 @@ void FastQCSupport::sl_javaPathChanged() {
     validationArguments << java->getPath();
 }
 
-ExternalTool *FastQCSupport::getJava() {
-    ExternalToolRegistry *registry = AppContext::getExternalToolRegistry();
+ExternalTool* FastQCSupport::getJava() {
+    ExternalToolRegistry* registry = AppContext::getExternalToolRegistry();
     SAFE_POINT(registry != nullptr, L10N::nullPointerError("External tool registry"), nullptr);
 
-    ExternalTool *java = registry->getById(JavaSupport::ET_JAVA_ID);
+    ExternalTool* java = registry->getById(JavaSupport::ET_JAVA_ID);
     SAFE_POINT(java != nullptr, L10N::nullPointerError("Java tool"), nullptr);
 
     return java;
 }
 
-}    // namespace U2
+}  // namespace U2

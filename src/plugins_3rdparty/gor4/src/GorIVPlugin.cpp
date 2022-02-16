@@ -47,24 +47,24 @@
 
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
-    SecStructPredictPlugin *plug = new SecStructPredictPlugin();
+extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
+    SecStructPredictPlugin* plug = new SecStructPredictPlugin();
     return plug;
 }
 
 SecStructPredictPlugin::SecStructPredictPlugin()
     : Plugin(tr("GORIV"), tr("GORIV protein secondary structure prediction")) {
     // Register GORIV algorithm
-    SecStructPredictAlgRegistry *registry = AppContext::getSecStructPredictAlgRegistry();
-    SecStructPredictTaskFactory *taskFactory = new GorIVAlgTask::Factory;
+    SecStructPredictAlgRegistry* registry = AppContext::getSecStructPredictAlgRegistry();
+    SecStructPredictTaskFactory* taskFactory = new GorIVAlgTask::Factory;
     registry->registerAlgorithm(taskFactory, GorIVAlgTask::taskName);
 
     // Register GORIV annotation settings
-    AnnotationSettingsRegistry *asr = AppContext::getAnnotationsSettingsRegistry();
-    AnnotationSettings *as = new AnnotationSettings(GORIV_ANNOTATION_NAME, true, QColor(102, 255, 0), true);
+    AnnotationSettingsRegistry* asr = AppContext::getAnnotationsSettingsRegistry();
+    AnnotationSettings* as = new AnnotationSettings(GORIV_ANNOTATION_NAME, true, QColor(102, 255, 0), true);
     as->showNameQuals = true;
     as->nameQuals.append(BioStruct3D::SecStructTypeQualifierName);
-    asr->changeSettings(QList<AnnotationSettings *>() << as, false);
+    asr->changeSettings(QList<AnnotationSettings*>() << as, false);
 }
 
 SecStructPredictPlugin::~SecStructPredictPlugin() {

@@ -44,12 +44,12 @@ public:
         DoubleQuotes
     };
 
-    static QString packStringList(const QStringList &list, Options options = DoubleQuotes);
-    static QStringList unpackStringList(const QString &string, Options options = DoubleQuotes);
+    static QString packStringList(const QStringList& list, Options options = DoubleQuotes);
+    static QStringList unpackStringList(const QString& string, Options options = DoubleQuotes);
 
-    static QString packMap(const QVariantMap &map, Options options = DoubleQuotes);
-    static QString packMap(const StrStrMap &map, Options options = DoubleQuotes);
-    static StrStrMap unpackMap(const QString &string, Options options = DoubleQuotes);
+    static QString packMap(const QVariantMap& map, Options options = DoubleQuotes);
+    static QString packMap(const StrStrMap& map, Options options = DoubleQuotes);
+    static StrStrMap unpackMap(const QString& string, Options options = DoubleQuotes);
 
 private:
     static QBitArray initCharactersToEscape();
@@ -57,7 +57,7 @@ private:
     static QString escapeCharacters(QString string);
     static QString unescapeCharacters(QString string);
 
-    static QString wrapString(const QString &string, Options options = DoubleQuotes);
+    static QString wrapString(const QString& string, Options options = DoubleQuotes);
 
     static const QBitArray charactersToEscape;
     static const QString LIST_SEPARATOR;
@@ -80,12 +80,12 @@ private:
 }  // namespace U2
 
 template<>
-inline QVariant qVariantFromValue<StrStrMap>(const StrStrMap &map) {
+inline QVariant qVariantFromValue<StrStrMap>(const StrStrMap& map) {
     return qVariantFromValue(U2::StrPackUtils::packMap(map));
 }
 
 template<>
-inline StrStrMap qvariant_cast<StrStrMap>(const QVariant &variant) {
+inline StrStrMap qvariant_cast<StrStrMap>(const QVariant& variant) {
     return U2::StrPackUtils::unpackMap(qvariant_cast<QString>(variant));
 }
 

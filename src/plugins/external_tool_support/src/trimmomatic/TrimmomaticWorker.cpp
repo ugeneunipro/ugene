@@ -46,7 +46,7 @@ const QString TrimmomaticWorker::PE_OUTPUT_PAIRED_FILE_NAME_SUFFIX = "P";
 const QString TrimmomaticWorker::PE_OUTPUT_UNPAIRED_FILE_NAME_SUFFIX = "U";
 const QString TrimmomaticWorker::LOG_FILE_NAME_ENDING = "_trimlog.txt";
 
-TrimmomaticWorker::TrimmomaticWorker(Actor *actor)
+TrimmomaticWorker::TrimmomaticWorker(Actor* actor)
     : BaseDatasetWorker(actor,
                         TrimmomaticWorkerFactory::INPUT_PORT_ID,
                         TrimmomaticWorkerFactory::OUTPUT_PORT_ID),
@@ -63,7 +63,7 @@ void TrimmomaticWorker::init() {
     numberOfThreads = getValue<int>(TrimmomaticWorkerFactory::THREADS_NUMBER_ATTR_ID);
 }
 
-QPair<QString, QString> TrimmomaticWorker::getAbsoluteAndCopiedPathFromStep(const QString &trimmingStep) const {
+QPair<QString, QString> TrimmomaticWorker::getAbsoluteAndCopiedPathFromStep(const QString& trimmingStep) const {
     int indexOfFirstQuote = trimmingStep.indexOf("'");
     int indexOfSecondQuote = trimmingStep.indexOf("'", indexOfFirstQuote + 1);
     QString absoluteFilePath = trimmingStep.mid(indexOfFirstQuote + 1, (indexOfSecondQuote - 1) - indexOfFirstQuote);
@@ -74,7 +74,7 @@ QPair<QString, QString> TrimmomaticWorker::getAbsoluteAndCopiedPathFromStep(cons
 
 void TrimmomaticWorker::changeAdapters() {
     for (int i = 0, adaptersCounter = 0; i < trimmingSteps.size(); i++) {
-        QString &step = trimmingSteps[i];
+        QString& step = trimmingSteps[i];
         if (step.startsWith(IlluminaClipStepFactory::ID)) {
             int indexOfFirstQuote = step.indexOf("'");
             int indexOfSecondQuote = step.indexOf("'", indexOfFirstQuote + 1);
@@ -85,27 +85,27 @@ void TrimmomaticWorker::changeAdapters() {
     }
 }
 
-void TrimmomaticWorker::processMetadata(QList<Task *> tasks) const {
+void TrimmomaticWorker::processMetadata(QList<Task*> tasks) const {
     metaFileUrl.clear();
     CHECK(1 == tasks.size(), );
 
-    TrimmomaticTask *trimTask = qobject_cast<TrimmomaticTask *>(tasks.first());
+    TrimmomaticTask* trimTask = qobject_cast<TrimmomaticTask*>(tasks.first());
     metaFileUrl = trimTask->getInputUrl1();
 }
 
 void TrimmomaticWorker::cleanup() {
-    foreach (const QString &name, copiedAdapters) {
+    foreach (const QString& name, copiedAdapters) {
         QFile adapter(name);
         adapter.remove();
     }
 }
 
-Task *TrimmomaticWorker::createPrepareTask(U2OpStatus &os) const {
+Task* TrimmomaticWorker::createPrepareTask(U2OpStatus& os) const {
     Q_UNUSED(os);
 
-    QList<Task *> tasks;
+    QList<Task*> tasks;
     QSet<QString> takenNames;
-    for (const QString &trimmingStep : qAsConst(trimmingSteps)) {
+    for (const QString& trimmingStep : qAsConst(trimmingSteps)) {
         if (!trimmingStep.startsWith(IlluminaClipStepFactory::ID)) {
             continue;
         }
@@ -116,7 +116,7 @@ Task *TrimmomaticWorker::createPrepareTask(U2OpStatus &os) const {
         copiedAdapters.append(paths.second);
     }
 
-    Task *copyFiles = nullptr;
+    Task* copyFiles = nullptr;
     if (!tasks.isEmpty()) {
         copyFiles = new MultiTask(tr("Copy adapters to working folder"), tasks);
     }
@@ -124,30 +124,30 @@ Task *TrimmomaticWorker::createPrepareTask(U2OpStatus &os) const {
     return copyFiles;
 }
 
-void TrimmomaticWorker::onPrepared(Task *task, U2OpStatus &os) {
-    MultiTask *prepareTask = qobject_cast<MultiTask *>(task);
+void TrimmomaticWorker::onPrepared(Task* task, U2OpStatus& os) {
+    MultiTask* prepareTask = qobject_cast<MultiTask*>(task);
     CHECK_EXT(nullptr != prepareTask, os.setError(L10N::internalError("Unexpected prepare task")), );
 
     changeAdapters();
 }
 
-Task *TrimmomaticWorker::createTask(const QList<Message> &messages) const {
+Task* TrimmomaticWorker::createTask(const QList<Message>& messages) const {
     U2OpStatus2Log os;
     const QString workingDirectory = FileAndDirectoryUtils::createWorkingDir(context->workingDir(), FileAndDirectoryUtils::WORKFLOW_INTERNAL, "", context->workingDir());
     const QString trimmomaticWorkingDir = GUrlUtils::createDirectory(workingDirectory + TRIMMOMATIC_DIR, "_", os);
     CHECK_OP(os, nullptr);
 
-    QList<Task *> trimmomaticTasks;
-    foreach (const Message &message, messages) {
+    QList<Task*> trimmomaticTasks;
+    foreach (const Message& message, messages) {
         const TrimmomaticTaskSettings settings = getSettings(message, trimmomaticWorkingDir);
-        TrimmomaticTask *task = new TrimmomaticTask(settings);
+        TrimmomaticTask* task = new TrimmomaticTask(settings);
         task->addListeners(createLogListeners());
         trimmomaticTasks << task;
     }
     excludedUrls.clear();
     processMetadata(trimmomaticTasks);
 
-    Task *processTrimmomatic = nullptr;
+    Task* processTrimmomatic = nullptr;
     if (!trimmomaticTasks.isEmpty()) {
         processTrimmomatic = new MultiTask(tr("Process \"Trimmomatic\" with one dataset"), trimmomaticTasks);
     }
@@ -155,13 +155,13 @@ Task *TrimmomaticWorker::createTask(const QList<Message> &messages) const {
     return processTrimmomatic;
 }
 
-QVariantMap TrimmomaticWorker::getResult(Task *workerTask, U2OpStatus &os) const {
-    MultiTask *multiTask = qobject_cast<MultiTask *>(workerTask);
+QVariantMap TrimmomaticWorker::getResult(Task* workerTask, U2OpStatus& os) const {
+    MultiTask* multiTask = qobject_cast<MultiTask*>(workerTask);
     CHECK_EXT(multiTask != nullptr, os.setError(L10N::internalError("Unexpected task")), QVariantMap());
 
     QVariantMap result;
-    foreach (Task *childTask, multiTask->getTasks()) {
-        TrimmomaticTask *trimTask = qobject_cast<TrimmomaticTask *>(childTask);
+    foreach (Task* childTask, multiTask->getTasks()) {
+        TrimmomaticTask* trimTask = qobject_cast<TrimmomaticTask*>(childTask);
         CHECK_CONTINUE(trimTask != nullptr);
 
         if (!pairedReadsInput) {
@@ -194,13 +194,13 @@ QVariantMap TrimmomaticWorker::getResult(Task *workerTask, U2OpStatus &os) const
     return result;
 }
 
-MessageMetadata TrimmomaticWorker::generateMetadata(const QString &datasetName) const {
+MessageMetadata TrimmomaticWorker::generateMetadata(const QString& datasetName) const {
     CHECK(!metaFileUrl.isEmpty(), BaseDatasetWorker::generateMetadata(datasetName));
 
     return MessageMetadata(metaFileUrl, datasetName);
 }
 
-QString TrimmomaticWorker::setAutoUrl(const QString &paramId, const QString &inputFileUrl, const QString &workingDir, const QString &fileNameSuffix) const {
+QString TrimmomaticWorker::setAutoUrl(const QString& paramId, const QString& inputFileUrl, const QString& workingDir, const QString& fileNameSuffix) const {
     QString value = getValue<QString>(paramId);
     if (value.isEmpty()) {
         QString outputFileName = GUrlUtils::insertSuffix(QUrl(inputFileUrl).fileName(), fileNameSuffix);
@@ -211,7 +211,7 @@ QString TrimmomaticWorker::setAutoUrl(const QString &paramId, const QString &inp
     return value;
 }
 
-TrimmomaticTaskSettings TrimmomaticWorker::getSettings(const Message &message, const QString &dirForResults) const {
+TrimmomaticTaskSettings TrimmomaticWorker::getSettings(const Message& message, const QString& dirForResults) const {
     TrimmomaticTaskSettings settings;
     settings.pairedReadsInput = pairedReadsInput;
     settings.generateLog = generateLog;

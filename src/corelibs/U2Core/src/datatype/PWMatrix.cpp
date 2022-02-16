@@ -29,11 +29,11 @@ UniprobeInfo::UniprobeInfo()
     : properties(QMap<QString, QString>()) {
 }
 
-UniprobeInfo::UniprobeInfo(const QMap<QString, QString> &props)
+UniprobeInfo::UniprobeInfo(const QMap<QString, QString>& props)
     : properties(props) {
 }
 
-QString UniprobeInfo::getProperty(const QString &name) const {
+QString UniprobeInfo::getProperty(const QString& name) const {
     return properties.value(name, QString(""));
 }
 
@@ -41,7 +41,7 @@ QMap<QString, QString> UniprobeInfo::getProperties() const {
     return properties;
 }
 
-UniprobeInfo::UniprobeInfo(const QString &data) {
+UniprobeInfo::UniprobeInfo(const QString& data) {
     QStringList parsedData = data.split("\t");
     QMap<QString, QString> props;
     for (int i = 0, n = parsedData.length(); i < n; i++) {
@@ -57,7 +57,7 @@ PWMatrix::PWMatrix()
       maxSum(0) {
 }
 
-PWMatrix::PWMatrix(const QVarLengthArray<float> &matrix, const PWMatrixType &_type)
+PWMatrix::PWMatrix(const QVarLengthArray<float>& matrix, const PWMatrixType& _type)
     : data(matrix), type(_type) {
     length = (type == PWM_MONONUCLEOTIDE) ? (matrix.size() / 4) : (matrix.size() / 16);
     minSum = 0, maxSum = 0;
@@ -106,11 +106,11 @@ float PWMatrix::getMaxSum() const {
     return maxSum;
 }
 
-void PWMatrix::setInfo(const UniprobeInfo &_info) {
+void PWMatrix::setInfo(const UniprobeInfo& _info) {
     info = _info;
 }
 
-QString PWMatrix::getProperty(const QString &p) const {
+QString PWMatrix::getProperty(const QString& p) const {
     return info.getProperty(p);
 }
 

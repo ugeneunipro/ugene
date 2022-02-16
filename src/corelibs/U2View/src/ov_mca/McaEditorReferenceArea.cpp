@@ -40,11 +40,11 @@
 
 namespace U2 {
 
-McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *ui, SequenceObjectContext *ctx)
+McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt* ui, SequenceObjectContext* ctx)
     : PanView(ui, ctx, McaEditorReferenceRenderAreaFactory(ui, nullptr != ui ? ui->getEditor() : nullptr)),
       editor(nullptr != ui ? ui->getEditor() : nullptr),
       ui(ui),
-      renderer(dynamic_cast<McaReferenceAreaRenderer *>(getRenderArea()->getRenderer())),
+      renderer(dynamic_cast<McaReferenceAreaRenderer*>(getRenderArea()->getRenderer())),
       firstPressedSelectionPosition(-1) {
     SAFE_POINT(nullptr != renderer, "Renderer is NULL", );
 
@@ -60,18 +60,18 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *ui, SequenceObjectC
 
     connect(ui->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_visibleRangeChanged()));
     connect(ctx->getSequenceSelection(),
-            SIGNAL(si_selectionChanged(LRegionsSelection *, const QVector<U2Region> &, const QVector<U2Region> &)),
-            SLOT(sl_onSelectionChanged(LRegionsSelection *, const QVector<U2Region> &, const QVector<U2Region> &)));
+            SIGNAL(si_selectionChanged(LRegionsSelection*, const QVector<U2Region>&, const QVector<U2Region>&)),
+            SLOT(sl_onSelectionChanged(LRegionsSelection*, const QVector<U2Region>&, const QVector<U2Region>&)));
 
     connect(this, SIGNAL(si_selectionChanged()), ui->getSequenceArea(), SLOT(sl_backgroundSelectionChanged()));
-    connect(editor, SIGNAL(si_fontChanged(const QFont &)), SLOT(sl_fontChanged(const QFont &)));
+    connect(editor, SIGNAL(si_fontChanged(const QFont&)), SLOT(sl_fontChanged(const QFont&)));
 
     connect(ui->getConsensusArea(), SIGNAL(si_mismatchRedrawRequired()), SLOT(completeUpdate()));
     connect(scrollBar, SIGNAL(valueChanged(int)), ui->getScrollController()->getHorizontalScrollBar(), SLOT(setValue(int)));
     connect(ui->getScrollController()->getHorizontalScrollBar(), SIGNAL(valueChanged(int)), scrollBar, SLOT(setValue(int)));
     connect(editor->getSelectionController(),
-            SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
-            SLOT(sl_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)));
+            SIGNAL(si_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)),
+            SLOT(sl_selectionChanged(const MaEditorSelection&, const MaEditorSelection&)));
 
     setMouseTracking(false);
 
@@ -79,7 +79,7 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *ui, SequenceObjectC
 }
 
 void McaEditorReferenceArea::sl_selectMismatch(int pos) {
-    MaEditorSequenceArea *seqArea = ui->getSequenceArea();
+    MaEditorSequenceArea* seqArea = ui->getSequenceArea();
     if (seqArea->getFirstVisibleBase() > pos || seqArea->getLastVisibleBase(false) < pos) {
         seqArea->centerPos(pos);
     }
@@ -93,7 +93,7 @@ void McaEditorReferenceArea::sl_visibleRangeChanged() {
     update();
 }
 
-void McaEditorReferenceArea::sl_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &) {
+void McaEditorReferenceArea::sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection&) {
     QRect currentRect = current.toRect();
     setSelection(U2Region(currentRect.x(), currentRect.width()));
 }
@@ -102,12 +102,12 @@ void McaEditorReferenceArea::clearSelection() {
     ctx->getSequenceSelection()->clear();
 }
 
-void McaEditorReferenceArea::sl_fontChanged(const QFont &newFont) {
+void McaEditorReferenceArea::sl_fontChanged(const QFont& newFont) {
     renderer->setFont(newFont);
     setFixedHeight(renderer->getMinimumHeight());
 }
 
-void McaEditorReferenceArea::mousePressEvent(QMouseEvent *e) {
+void McaEditorReferenceArea::mousePressEvent(QMouseEvent* e) {
     if (e->buttons() & Qt::LeftButton) {
         Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
         const bool isShiftPressed = km.testFlag(Qt::ShiftModifier);
@@ -120,7 +120,7 @@ void McaEditorReferenceArea::mousePressEvent(QMouseEvent *e) {
     }
 }
 
-void McaEditorReferenceArea::mouseMoveEvent(QMouseEvent *e) {
+void McaEditorReferenceArea::mouseMoveEvent(QMouseEvent* e) {
     if (e->buttons() & Qt::LeftButton) {
         setReferenceSelection(e);
         e->accept();
@@ -129,7 +129,7 @@ void McaEditorReferenceArea::mouseMoveEvent(QMouseEvent *e) {
     }
 }
 
-void McaEditorReferenceArea::mouseReleaseEvent(QMouseEvent *e) {
+void McaEditorReferenceArea::mouseReleaseEvent(QMouseEvent* e) {
     if (e->button() == Qt::LeftButton) {
         setReferenceSelection(e);
         e->accept();
@@ -138,10 +138,10 @@ void McaEditorReferenceArea::mouseReleaseEvent(QMouseEvent *e) {
     }
 }
 
-void McaEditorReferenceArea::keyPressEvent(QKeyEvent *event) {
+void McaEditorReferenceArea::keyPressEvent(QKeyEvent* event) {
     const int key = event->key();
     bool accepted = false;
-    DNASequenceSelection *const selection = ctx->getSequenceSelection();
+    DNASequenceSelection* const selection = ctx->getSequenceSelection();
     U2Region selectedRegion = (nullptr != selection && !selection->isEmpty() ? selection->getSelectedRegions().first() : U2Region());
     const qint64 selectionEndPos = selectedRegion.endPos() - 1;
     Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
@@ -226,7 +226,7 @@ void McaEditorReferenceArea::keyPressEvent(QKeyEvent *event) {
     }
 }
 
-void McaEditorReferenceArea::setReferenceSelection(QMouseEvent *e) {
+void McaEditorReferenceArea::setReferenceSelection(QMouseEvent* e) {
     QPoint p = e->pos();
     QPoint areaPoint = toRenderAreaPoint(p);
     qint64 pos = renderArea->coordToPos(areaPoint);
@@ -252,7 +252,7 @@ void McaEditorReferenceArea::updateScrollBar() {
     SignalBlocker signalBlocker(scrollBar);
     Q_UNUSED(signalBlocker);
 
-    const QScrollBar *const hScrollbar = ui->getScrollController()->getHorizontalScrollBar();
+    const QScrollBar* const hScrollbar = ui->getScrollController()->getHorizontalScrollBar();
 
     scrollBar->setMinimum(hScrollbar->minimum());
     scrollBar->setMaximum(hScrollbar->maximum());
@@ -261,7 +261,7 @@ void McaEditorReferenceArea::updateScrollBar() {
     scrollBar->setPageStep(hScrollbar->pageStep());
 }
 
-void McaEditorReferenceArea::sl_onSelectionChanged(LRegionsSelection * /*selection*/, const QVector<U2Region> &addedRegions, const QVector<U2Region> &removedRegions) {
+void McaEditorReferenceArea::sl_onSelectionChanged(LRegionsSelection* /*selection*/, const QVector<U2Region>& addedRegions, const QVector<U2Region>& removedRegions) {
     if (addedRegions.size() == 1) {
         const U2Region addedRegion = addedRegions.first();
         qint64 baseToScrollTo = -1;
@@ -287,24 +287,24 @@ void McaEditorReferenceArea::sl_onSelectionChanged(LRegionsSelection * /*selecti
     emit si_selectionChanged();
 }
 
-McaEditorReferenceRenderArea::McaEditorReferenceRenderArea(McaEditorWgt *ui, PanView *d, PanViewRenderer *renderer)
+McaEditorReferenceRenderArea::McaEditorReferenceRenderArea(McaEditorWgt* ui, PanView* d, PanViewRenderer* renderer)
     : PanViewRenderArea(d, renderer),
       ui(ui) {
 }
 
-qint64 McaEditorReferenceRenderArea::coordToPos(const QPoint &coord) const {
+qint64 McaEditorReferenceRenderArea::coordToPos(const QPoint& coord) const {
     int alignmentLen = ui->getEditor()->getAlignmentLen();
     int pos = ui->getBaseWidthController()->screenXPositionToColumn(coord.x());
     return qBound(0, pos, alignmentLen);
 }
 
-McaEditorReferenceRenderAreaFactory::McaEditorReferenceRenderAreaFactory(McaEditorWgt *_ui, McaEditor *_editor)
+McaEditorReferenceRenderAreaFactory::McaEditorReferenceRenderAreaFactory(McaEditorWgt* _ui, McaEditor* _editor)
     : PanViewRenderAreaFactory(),
       ui(_ui),
       maEditor(_editor) {
 }
 
-PanViewRenderArea *McaEditorReferenceRenderAreaFactory::createRenderArea(PanView *panView) const {
+PanViewRenderArea* McaEditorReferenceRenderAreaFactory::createRenderArea(PanView* panView) const {
     return new McaEditorReferenceRenderArea(ui, panView, new McaReferenceAreaRenderer(panView, panView->getSequenceContext(), maEditor));
 }
 

@@ -28,17 +28,17 @@
 
 namespace U2 {
 
-MultiClickMenu::MultiClickMenu(QMenu *menu)
+MultiClickMenu::MultiClickMenu(QMenu* menu)
     : QObject(menu), menu(menu) {
     CHECK(nullptr != menu, );
     menu->installEventFilter(this);
 }
 
-bool MultiClickMenu::eventFilter(QObject *watched, QEvent *event) {
+bool MultiClickMenu::eventFilter(QObject* watched, QEvent* event) {
     CHECK(watched == menu, false);
     CHECK(isSelectEvent(event), false);
 
-    QAction *action = menu->activeAction();
+    QAction* action = menu->activeAction();
     CHECK(nullptr != action, false);
 
     if (action->isEnabled()) {
@@ -48,12 +48,12 @@ bool MultiClickMenu::eventFilter(QObject *watched, QEvent *event) {
     return false;
 }
 
-bool MultiClickMenu::isSelectEvent(QEvent *event) {
+bool MultiClickMenu::isSelectEvent(QEvent* event) {
     if (event->type() == QEvent::MouseButtonRelease) {
         return true;
     }
     if (event->type() == QEvent::KeyPress) {
-        QKeyEvent *keyEvent = dynamic_cast<QKeyEvent *>(event);
+        QKeyEvent* keyEvent = dynamic_cast<QKeyEvent*>(event);
         CHECK(nullptr != keyEvent, false);
         return (keyEvent->key() == Qt::Key_Enter) || (keyEvent->key() == Qt::Key_Return);
     }

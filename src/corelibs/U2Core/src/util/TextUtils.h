@@ -57,113 +57,113 @@ public:
 
     static const QBitArray QUALIFIER_NAME_CHARS;
 
-    inline static const char *getLineOfSpaces(int nspaces);
+    inline static const char* getLineOfSpaces(int nspaces);
 
-    inline static bool fits(const QBitArray &map, const char *str, int len);
+    inline static bool fits(const QBitArray& map, const char* str, int len);
 
-    inline static bool contains(const QBitArray &map, const char *str, int len);
+    inline static bool contains(const QBitArray& map, const char* str, int len);
 
     static QBitArray createBitMap(char c1);
 
-    static QBitArray createBitMap(const QByteArray &chars, bool val = true);
+    static QBitArray createBitMap(const QByteArray& chars, bool val = true);
 
-    static QByteArray createMap(const QBitArray &bits, char defaultChar);
+    static QByteArray createMap(const QBitArray& bits, char defaultChar);
 
-    inline static int skip(const QBitArray &map, const char *seq, int len);
+    inline static int skip(const QBitArray& map, const char* seq, int len);
 
     /**  Returns substring with all characters from the 'map' skipped on the left side of the original string. */
-    static QString skip(const QBitArray &map, const QString &text);
+    static QString skip(const QBitArray& map, const QString& text);
 
-    inline static int keep(const char *srcSeq, int len, char *dstSeq, const QBitArray &keepMap);
+    inline static int keep(const char* srcSeq, int len, char* dstSeq, const QBitArray& keepMap);
 
-    inline static int keep(char *srcSeq, int len, const QBitArray &keepMap) {
+    inline static int keep(char* srcSeq, int len, const QBitArray& keepMap) {
         return keep(srcSeq, len, srcSeq, keepMap);
     }
 
-    inline static int remove(const char *srcSeq, int len, char *dstSeq, const QBitArray &removeMap);
+    inline static int remove(const char* srcSeq, int len, char* dstSeq, const QBitArray& removeMap);
 
-    inline static int remove(char *srcSeq, int len, const QBitArray &removeMap) {
+    inline static int remove(char* srcSeq, int len, const QBitArray& removeMap) {
         return remove(srcSeq, len, srcSeq, removeMap);
     }
 
-    inline static void replace(char *seq, int len, const QBitArray &fromMap, char to);
+    inline static void replace(char* seq, int len, const QBitArray& fromMap, char to);
 
     /** Replaces all string characters found in the latin1CharCodeMap with the 'replacementChar' in place. */
-    static void replace(QString &text, const QBitArray &latin1CharCodeMap, QChar replacementChar);
+    static void replace(QString& text, const QBitArray& latin1CharCodeMap, QChar replacementChar);
 
-    inline static void applyMap(const QBitArray &map, const char *srcSeq, int len, char *dstSeq);
+    inline static void applyMap(const QBitArray& map, const char* srcSeq, int len, char* dstSeq);
 
-    inline static void applyMap(const QBitArray &map, char *seq, int len) {
+    inline static void applyMap(const QBitArray& map, char* seq, int len) {
         applyMap(map, seq, len, seq);
     }
 
-    inline static void translate(const QByteArray &map, char *seq, int len) {
+    inline static void translate(const QByteArray& map, char* seq, int len) {
         translate(map, seq, len, seq);
     }
 
-    inline static void translate(const QByteArray &map, const char *src, qint64 len, char *dst);
+    inline static void translate(const QByteArray& map, const char* src, qint64 len, char* dst);
 
-    inline static void reverse(const char *srcSeq, char *dstSeq, int len);
+    inline static void reverse(const char* srcSeq, char* dstSeq, int len);
 
-    inline static void reverse(char *seq, int len);
+    inline static void reverse(char* seq, int len);
 
-    inline static bool equals(const char *str1, const char *str2, int n);
+    inline static bool equals(const char* str1, const char* str2, int n);
 
-    inline static bool isQuoted(const char *str, int len, int qChar);
+    inline static bool isQuoted(const char* str, int len, int qChar);
 
-    static QString variate(const QString &prefix, const QString &sep, const QSet<QString> &filter, bool mustHaveSuffix = false, int startSeed = 0);
+    static QString variate(const QString& prefix, const QString& sep, const QSet<QString>& filter, bool mustHaveSuffix = false, int startSeed = 0);
 
-    inline static void charBounds(const char *data, int dataSize, char &minChar, char &maxChar);
+    inline static void charBounds(const char* data, int dataSize, char& minChar, char& maxChar);
 
-    static QByteArray cutByteOrderMarks(const QByteArray &data, QString &errorMessage);
+    static QByteArray cutByteOrderMarks(const QByteArray& data, QString& errorMessage);
 
-    static qint64 cutByteOrderMarks(char *data, QString &errorMessage, qint64 buffLen = -1);
+    static qint64 cutByteOrderMarks(char* data, QString& errorMessage, qint64 buffLen = -1);
 
     // todo: move this method to another class
-    inline static QByteArray selectIdx256(const QBitArray &map, bool sign);
+    inline static QByteArray selectIdx256(const QBitArray& map, bool sign);
 
     // Returns first index of the character not equal to 'c'. Returns -1 if not found
-    inline static int firstIndexOfNotEqualChar(const char *seq, int size, char c);
+    inline static int firstIndexOfNotEqualChar(const char* seq, int size, char c);
 
     // Returns last index of the character not equal to 'c'. Returns -1 if not found
-    inline static int lastIndexOfNotEqualChar(const char *seq, int size, char c);
+    inline static int lastIndexOfNotEqualChar(const char* seq, int size, char c);
 
     // Wraps input string for valid output to CSV following RFC 4180
-    inline static void wrapForCSV(QString &str);
+    inline static void wrapForCSV(QString& str);
 
-    inline static QStringList transposeCSVRows(const QStringList &rows, const QString &delimiter = "\t");
+    inline static QStringList transposeCSVRows(const QStringList& rows, const QString& delimiter = "\t");
 
     /** Splits text into chunks of the given length. */
-    static QStringList split(const QString &text, int chunkSize);
+    static QStringList split(const QString& text, int chunkSize);
 
     /** Splits latin1 text into chunks of the given length. */
-    static QList<QByteArray> split(const QByteArray &text, int chunkSize);
+    static QList<QByteArray> split(const QByteArray& text, int chunkSize);
 
     /** Returns first line found in the text with no line separtors. If there are no line separators returns the text itself. */
-    static QString readFirstLine(const QString &text);
+    static QString readFirstLine(const QString& text);
 
     /** Returns true if the character at the text[charIndex] position is in LINE_BREAK set. */
-    static bool isLineBreak(const QString &text, int charIndex);
+    static bool isLineBreak(const QString& text, int charIndex);
 
     /** Returns true if the character at the text[charIndex] position is in WHITE_SPACE set. */
-    static bool isWhiteSpace(const QString &text, int charIndex);
+    static bool isWhiteSpace(const QString& text, int charIndex);
 
     /** Returns true if the whole line contains white space characters only. */
-    static bool isWhiteSpace(const QString &text);
+    static bool isWhiteSpace(const QString& text);
 
     /** Returns index of the first whitespace character in the string or -1 if the string has no whites. */
-    static int findIndexOfFirstWhiteSpace(const QString &text);
+    static int findIndexOfFirstWhiteSpace(const QString& text);
 };
 
 template<typename T>
-inline void reverseVector(QVector<T> &);
+inline void reverseVector(QVector<T>&);
 
-inline const char *TextUtils::getLineOfSpaces(int nspaces) {
+inline const char* TextUtils::getLineOfSpaces(int nspaces) {
     assert(nspaces >= 0 && nspaces <= SPACE_LINE.size());
     return SPACE_LINE.data() + SPACE_LINE.size() - 1 - nspaces;
 }
 
-inline bool TextUtils::fits(const QBitArray &map, const char *str, int len) {
+inline bool TextUtils::fits(const QBitArray& map, const char* str, int len) {
     for (int i = 0; i < len; i++) {
         unsigned char c = str[i];
         if (!map[c]) {
@@ -173,7 +173,7 @@ inline bool TextUtils::fits(const QBitArray &map, const char *str, int len) {
     return true;
 }
 
-inline bool TextUtils::contains(const QBitArray &map, const char *str, int len) {
+inline bool TextUtils::contains(const QBitArray& map, const char* str, int len) {
     for (int i = 0; i < len; i++) {
         unsigned char c = str[i];
         if (map[c]) {
@@ -183,7 +183,7 @@ inline bool TextUtils::contains(const QBitArray &map, const char *str, int len) 
     return false;
 }
 
-inline int TextUtils::skip(const QBitArray &map, const char *seq, int len) {
+inline int TextUtils::skip(const QBitArray& map, const char* seq, int len) {
     int i = 0;
     for (; i < len; i++) {
         unsigned char c = seq[i];
@@ -194,7 +194,7 @@ inline int TextUtils::skip(const QBitArray &map, const char *seq, int len) {
     return i;
 }
 
-inline int TextUtils::keep(const char *srcSeq, int srcLen, char *dstSeq, const QBitArray &keepMap) {
+inline int TextUtils::keep(const char* srcSeq, int srcLen, char* dstSeq, const QBitArray& keepMap) {
     int dstLen = 0;
     for (int i = 0; i < srcLen; i++) {
         unsigned char c = srcSeq[i];
@@ -206,7 +206,7 @@ inline int TextUtils::keep(const char *srcSeq, int srcLen, char *dstSeq, const Q
     return dstLen;
 }
 
-inline int TextUtils::remove(const char *srcSeq, int srcLen, char *dstSeq, const QBitArray &removeMap) {
+inline int TextUtils::remove(const char* srcSeq, int srcLen, char* dstSeq, const QBitArray& removeMap) {
     int dstLen = 0;
     for (int i = 0; i < srcLen; i++) {
         unsigned char c = srcSeq[i];
@@ -218,7 +218,7 @@ inline int TextUtils::remove(const char *srcSeq, int srcLen, char *dstSeq, const
     return dstLen;
 }
 
-inline void TextUtils::replace(char *seq, int len, const QBitArray &fromMap, char to) {
+inline void TextUtils::replace(char* seq, int len, const QBitArray& fromMap, char to) {
     for (int i = 0; i < len; i++) {
         unsigned char c = seq[i];
         if (fromMap[c]) {
@@ -227,23 +227,23 @@ inline void TextUtils::replace(char *seq, int len, const QBitArray &fromMap, cha
     }
 }
 
-inline void TextUtils::applyMap(const QBitArray &map, const char *srcSeq, int len, char *dstSeq) {
+inline void TextUtils::applyMap(const QBitArray& map, const char* srcSeq, int len, char* dstSeq) {
     for (int i = 0; i < len; i++) {
         uchar c = srcSeq[i];
         dstSeq[i] = map[c];
     }
 }
 
-inline void TextUtils::translate(const QByteArray &map, const char *src, qint64 len, char *dst) {
-    const char *src_pos = src;
-    const char *mapData = map.constData();
+inline void TextUtils::translate(const QByteArray& map, const char* src, qint64 len, char* dst) {
+    const char* src_pos = src;
+    const char* mapData = map.constData();
     for (char *dst_pos = dst, *end_pos = dst + len; dst_pos < end_pos; ++dst_pos, ++src_pos) {
         uchar idx = (uchar)*src_pos;
         *dst_pos = mapData[idx];
     }
 }
 
-inline void TextUtils::reverse(const char *srcSeq, char *dstSeq, int len) {
+inline void TextUtils::reverse(const char* srcSeq, char* dstSeq, int len) {
     if (srcSeq == dstSeq) {
         reverse(dstSeq, len);
         return;
@@ -256,7 +256,7 @@ inline void TextUtils::reverse(const char *srcSeq, char *dstSeq, int len) {
     }
 }
 
-inline void TextUtils::reverse(char *seq, int len) {
+inline void TextUtils::reverse(char* seq, int len) {
     for (int i = 0, j = len - 1; i < j; i++, j--) {
         char c = seq[j];
         seq[j] = seq[i];
@@ -265,7 +265,7 @@ inline void TextUtils::reverse(char *seq, int len) {
 }
 
 template<typename T>
-inline void reverseVector(QVector<T> &seq) {
+inline void reverseVector(QVector<T>& seq) {
     const int len = seq.size();
     for (int i = 0, j = len - 1; i < j; i++, j--) {
         T t = seq[j];
@@ -274,7 +274,7 @@ inline void reverseVector(QVector<T> &seq) {
     }
 }
 
-inline bool TextUtils::equals(const char *str1, const char *str2, int n) {
+inline bool TextUtils::equals(const char* str1, const char* str2, int n) {
     assert(n > 0);
     if (str1[0] != str2[0]) {
         return false;
@@ -287,7 +287,7 @@ inline bool TextUtils::equals(const char *str1, const char *str2, int n) {
     return true;
 }
 
-inline bool TextUtils::isQuoted(const char *str, int len, int qChar) {
+inline bool TextUtils::isQuoted(const char* str, int len, int qChar) {
     assert(len >= 0);
     if (len < 2 || str[0] != qChar || str[len - 1] != qChar) {
         return false;
@@ -301,7 +301,7 @@ inline bool TextUtils::isQuoted(const char *str, int len, int qChar) {
     return (nquotes & 0x1) == 0;  // all opened quotes are closed if odd number
 }
 
-inline QByteArray TextUtils::selectIdx256(const QBitArray &map, bool sign) {
+inline QByteArray TextUtils::selectIdx256(const QBitArray& map, bool sign) {
     int n = map.size();
     assert(n <= 256);
     QByteArray res;
@@ -313,7 +313,7 @@ inline QByteArray TextUtils::selectIdx256(const QBitArray &map, bool sign) {
     return res;
 }
 
-inline void TextUtils::charBounds(const char *data, int dataSize, char &minChar, char &maxChar) {
+inline void TextUtils::charBounds(const char* data, int dataSize, char& minChar, char& maxChar) {
     assert(dataSize > 0);
     maxChar = minChar = data[0];
     for (int i = 1; i < dataSize; i++) {
@@ -324,7 +324,7 @@ inline void TextUtils::charBounds(const char *data, int dataSize, char &minChar,
 }
 
 // returns first index of the character not equal to 'c'
-inline int TextUtils::firstIndexOfNotEqualChar(const char *seq, int size, char c) {
+inline int TextUtils::firstIndexOfNotEqualChar(const char* seq, int size, char c) {
     for (int i = 0; i < size; i++) {
         char ci = seq[i];
         if (ci != c) {
@@ -335,7 +335,7 @@ inline int TextUtils::firstIndexOfNotEqualChar(const char *seq, int size, char c
 }
 
 // returns last index of the character not equal to 'c'
-inline int TextUtils::lastIndexOfNotEqualChar(const char *seq, int size, char c) {
+inline int TextUtils::lastIndexOfNotEqualChar(const char* seq, int size, char c) {
     for (int i = size - 1; i >= 0; i--) {
         char ci = seq[i];
         if (ci != c) {
@@ -346,7 +346,7 @@ inline int TextUtils::lastIndexOfNotEqualChar(const char *seq, int size, char c)
 }
 
 // Wraps input string for valid output to CSV following RFC 4180
-inline void TextUtils::wrapForCSV(QString &str) {
+inline void TextUtils::wrapForCSV(QString& str) {
     if (!str.contains(",")) {
         return;
     }
@@ -355,7 +355,7 @@ inline void TextUtils::wrapForCSV(QString &str) {
     str.append("\"");
 }
 
-inline QStringList TextUtils::transposeCSVRows(const QStringList &rows, const QString &delimiter) {
+inline QStringList TextUtils::transposeCSVRows(const QStringList& rows, const QString& delimiter) {
     QStringList transposedRows;
     if (rows.length() == 0) {
         return transposedRows;
@@ -365,7 +365,7 @@ inline QStringList TextUtils::transposeCSVRows(const QStringList &rows, const QS
         transposedRows.append("");
     }
 
-    foreach (const QString &originalRow, rows) {
+    foreach (const QString& originalRow, rows) {
         QStringList originalColumns = originalRow.split(delimiter);
         for (int i = 0; i < originalColumns.length() && i < columnNumber; i++) {
             transposedRows[i].append(originalColumns.at(i));

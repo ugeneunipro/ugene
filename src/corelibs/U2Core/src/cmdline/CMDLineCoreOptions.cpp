@@ -55,35 +55,35 @@ const QString CMDLineCoreOptions::USE_SAME_INI_FOR_TESTS = "use-same-ini-for-tes
 const QString CMDLineCoreOptions::DONT_USE_NATIVE_MENUBAR = "dont-use-native-menubar";
 
 void CMDLineCoreOptions::initHelp() {
-    CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
+    CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
     assert(nullptr != cmdLineRegistry);
 
-    CMDLineHelpProvider *helpSection = new CMDLineHelpProvider(
+    CMDLineHelpProvider* helpSection = new CMDLineHelpProvider(
         HELP,
         tr("Shows help information."),
         "",  // No full description
         "",  // No arguments
         HELP_SHORT);
 
-    CMDLineHelpProvider *loadSettingsFileSection = new CMDLineHelpProvider(
+    CMDLineHelpProvider* loadSettingsFileSection = new CMDLineHelpProvider(
         INI_FILE,
         tr("Loads UGENE configuration."),
         tr("Loads configuration from the specified .ini file. By default the UGENE.ini file is used."),
         tr("<path_to_file>"));
 
-    CMDLineHelpProvider *translSection = new CMDLineHelpProvider(
+    CMDLineHelpProvider* translSection = new CMDLineHelpProvider(
         TRANSLATION,
         tr("Specifies the language to use."),
         tr("Specifies the language to use. The following values are available: CS, EN, RU, ZH."),
         tr("<language_code>"));
 
-    CMDLineHelpProvider *tmpDirSection = new CMDLineHelpProvider(
+    CMDLineHelpProvider* tmpDirSection = new CMDLineHelpProvider(
         TMP_DIR,
         "Path to temporary folder",
         "",
         tr("<path_to_file>"));
 
-    CMDLineHelpProvider *sessionDatabaseSection = new CMDLineHelpProvider(
+    CMDLineHelpProvider* sessionDatabaseSection = new CMDLineHelpProvider(
         SESSION_DB,
         tr("Path to the session database file"),
         tr("Session database is stored in the temporary file that is created for every UGENE run.\n"

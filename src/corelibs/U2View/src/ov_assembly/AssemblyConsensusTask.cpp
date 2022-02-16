@@ -28,12 +28,12 @@
 
 namespace U2 {
 
-AssemblyConsensusTask::AssemblyConsensusTask(const AssemblyConsensusTaskSettings &settings_)
+AssemblyConsensusTask::AssemblyConsensusTask(const AssemblyConsensusTaskSettings& settings_)
     : BackgroundTask<ConsensusInfo>(tr("Calculate assembly consensus"), TaskFlag_None), settings(settings_) {
     tpm = Progress_Manual;
 }
 
-static void doCalculation(const AssemblyConsensusTaskSettings &settings, U2OpStatus &os, ConsensusInfo &result) {
+static void doCalculation(const AssemblyConsensusTaskSettings& settings, U2OpStatus& os, ConsensusInfo& result) {
     CHECK_EXT(!settings.consensusAlgorithm.isNull(), os.setError(AssemblyConsensusTask::tr("No consensus algorithm given")), );
 
     QScopedPointer<U2DbiIterator<U2AssemblyRead>> reads(settings.model->getReads(settings.region, os));
@@ -62,7 +62,7 @@ void AssemblyConsensusTask::run() {
                       .arg((GTimer::currentTimeMicros() - t0) / float(1000 * 1000)));
 }
 
-AssemblyConsensusWorker::AssemblyConsensusWorker(ConsensusSettingsQueue *settingsQueue_)
+AssemblyConsensusWorker::AssemblyConsensusWorker(ConsensusSettingsQueue* settingsQueue_)
     : Task(tr("Assembly consensus worker"), TaskFlag_None), settingsQueue(settingsQueue_) {
     tpm = Progress_Manual;
 }

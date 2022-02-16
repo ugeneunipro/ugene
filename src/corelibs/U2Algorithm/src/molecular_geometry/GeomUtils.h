@@ -46,11 +46,11 @@ class U2ALGORITHM_EXPORT GeodesicSphere {
     QVector<Face> faces;
     static QScopedPointer<QVector<Vector3D>> elementarySphere;
     static int currentDetailLevel;
-    static void interpolate(const Vector3D &v1, const Vector3D &v2, const Vector3D &v3, QVector<Vector3D> *v, int detailLevel);
+    static void interpolate(const Vector3D& v1, const Vector3D& v2, const Vector3D& v3, QVector<Vector3D>* v, int detailLevel);
 
 public:
-    GeodesicSphere(const Vector3D &center, float radius, int detaillevel);
-    static QVector<Vector3D> *createGeodesicSphere(int detailLevel);
+    GeodesicSphere(const Vector3D& center, float radius, int detaillevel);
+    static QVector<Vector3D>* createGeodesicSphere(int detailLevel);
     QVector<Vector3D> getVertices() {
         return vertices;
     }

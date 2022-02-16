@@ -35,10 +35,10 @@ class PrimerGroupBox;
 class InSilicoPcrOptionPanelWidget : public QWidget, public Ui_InSilicoPcrOptionPanelWidget {
     Q_OBJECT
 public:
-    InSilicoPcrOptionPanelWidget(AnnotatedDNAView *annotatedDnaView);
+    InSilicoPcrOptionPanelWidget(AnnotatedDNAView* annotatedDnaView);
     ~InSilicoPcrOptionPanelWidget();
 
-    AnnotatedDNAView *getDnaView() const;
+    AnnotatedDNAView* getDnaView() const;
 
     void setResultTableShown(bool show);
 
@@ -47,22 +47,22 @@ private slots:
     void sl_findProduct();
     void sl_extractProduct();
     void sl_onFindTaskFinished();
-    void sl_onSequenceChanged(ADVSequenceObjectContext *sequenceContext);
+    void sl_onSequenceChanged(ADVSequenceObjectContext* sequenceContext);
 
     /** Updates state of the widget to match the new active sequence. */
     void sl_activeSequenceChanged();
 
     void sl_onProductsSelectionChanged();
     void sl_onProductDoubleClicked();
-    void sl_showDetails(const QString &link);
+    void sl_showDetails(const QString& link);
 
 private:
-    static bool isDnaSequence(ADVSequenceObjectContext *sequenceContext);
-    void showResults(InSilicoPcrTask *task);
+    static bool isDnaSequence(ADVSequenceObjectContext* sequenceContext);
+    void showResults(InSilicoPcrTask* task);
 
 private:
-    AnnotatedDNAView *annotatedDnaView;
-    InSilicoPcrTask *pcrTask;
+    AnnotatedDNAView* annotatedDnaView;
+    InSilicoPcrTask* pcrTask;
     bool resultTableShown;
     PcrOptionsPanelSavableTab savableWidget;
 };

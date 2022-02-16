@@ -32,9 +32,9 @@ class FilesIterator;
 
 class U2CORE_EXPORT FilesIteratorFactory {
 public:
-    static FilesIterator *createDirectoryScanner(const QStringList &dirs, const QString &includeFilter, const QString &excludeFilter, bool recursive);
+    static FilesIterator* createDirectoryScanner(const QStringList& dirs, const QString& includeFilter, const QString& excludeFilter, bool recursive);
 
-    static FilesIterator *createFileList(const QStringList &files);
+    static FilesIterator* createFileList(const QStringList& files);
 };
 
 class U2CORE_EXPORT FilesIterator {
@@ -55,7 +55,7 @@ public:
 /************************************************************************/
 class U2CORE_EXPORT DirectoryScanner : public FilesIterator {
 public:
-    DirectoryScanner(const QStringList &dirs, const QString &includeFilter, const QString &excludeFilter, bool recursive);
+    DirectoryScanner(const QStringList& dirs, const QString& includeFilter, const QString& excludeFilter, bool recursive);
 
     virtual QString getNextFile();
     virtual bool hasNext();
@@ -73,13 +73,13 @@ private:
     QStringList readyResults;
 
 private:
-    QFileInfoList scanDirectory(const QDir &dir);
-    bool isPassedByFilters(const QString &fileName) const;
+    QFileInfoList scanDirectory(const QDir& dir);
+    bool isPassedByFilters(const QString& fileName) const;
 };
 
 class U2CORE_EXPORT FileList : public FilesIterator {
 public:
-    FileList(const QStringList &files);
+    FileList(const QStringList& files);
 
     virtual QString getNextFile();
     virtual bool hasNext();

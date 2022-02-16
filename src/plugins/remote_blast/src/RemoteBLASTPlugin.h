@@ -44,16 +44,16 @@ public:
     RemoteBLASTPlugin();
 
 private:
-    RemoteBLASTViewContext *ctx;
+    RemoteBLASTViewContext* ctx;
 };
 
 class RemoteBLASTViewContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    RemoteBLASTViewContext(QObject *p);
+    RemoteBLASTViewContext(QObject* p);
 
 protected:
-    void initViewContext(GObjectView *view) override;
+    void initViewContext(GObjectView* view) override;
 
 private slots:
     void sl_showDialog();
@@ -61,7 +61,7 @@ private slots:
 
 class RemoteBLASTPluginTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

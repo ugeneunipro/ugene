@@ -36,8 +36,8 @@ using namespace Workflow;
 class SaveSchemaImageUtils : public QObject {
     Q_OBJECT
 public:
-    static QPixmap generateSchemaSnapshot(const QString &data);
-    static QString saveSchemaImageToFile(const QString &schemaName, const QString &imagePath);
+    static QPixmap generateSchemaSnapshot(const QString& data);
+    static QString saveSchemaImageToFile(const QString& schemaName, const QString& imagePath);
 };
 
 class GoogleChartImage {
@@ -50,7 +50,7 @@ public:
     static const QString GOOGLE_CHART_BASE_URL;
 
 public:
-    GoogleChartImage(Schema *sc, const Metadata &meta);
+    GoogleChartImage(Schema* sc, const Metadata& meta);
     QString getImageUrl() const;
 
 private:
@@ -58,7 +58,7 @@ private:
 
 private:
     QSize chartSize;
-    Schema *schema;
+    Schema* schema;
     Metadata meta;
 };
 
@@ -68,18 +68,18 @@ private:
 class ProduceSchemaImageLinkTask : public Task {
     Q_OBJECT
 public:
-    ProduceSchemaImageLinkTask(const QString &schemaName);
+    ProduceSchemaImageLinkTask(const QString& schemaName);
 
     virtual void prepare();
     virtual ReportResult report();
-    virtual QList<Task *> onSubTaskFinished(Task *subTask);
+    virtual QList<Task*> onSubTaskFinished(Task* subTask);
 
     QString getImageLink() const;
 
 private:
     ProduceSchemaImageLinkTask();
-    ProduceSchemaImageLinkTask(const ProduceSchemaImageLinkTask &);
-    ProduceSchemaImageLinkTask &operator=(const ProduceSchemaImageLinkTask &);
+    ProduceSchemaImageLinkTask(const ProduceSchemaImageLinkTask&);
+    ProduceSchemaImageLinkTask& operator=(const ProduceSchemaImageLinkTask&);
 
 private:
     QString schemaPath;

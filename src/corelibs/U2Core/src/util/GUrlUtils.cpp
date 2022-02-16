@@ -35,7 +35,7 @@
 
 namespace U2 {
 
-QString GUrlUtils::getUncompressedExtension(const GUrl &url) {
+QString GUrlUtils::getUncompressedExtension(const GUrl& url) {
     QString ext = url.lastFileSuffix();
     if (ext == "gz") {
         QString completeSuffix = url.completeFileSuffix();
@@ -45,7 +45,7 @@ QString GUrlUtils::getUncompressedExtension(const GUrl &url) {
     return ext;
 }
 
-QString GUrlUtils::getUncompressedCompleteBaseName(const GUrl &url) {
+QString GUrlUtils::getUncompressedCompleteBaseName(const GUrl& url) {
     QString filePath = url.getURLString();
     if ("gz" == url.lastFileSuffix()) {
         filePath.chop(QString(".gz").length());
@@ -53,7 +53,7 @@ QString GUrlUtils::getUncompressedCompleteBaseName(const GUrl &url) {
     return QFileInfo(filePath).completeBaseName();
 }
 
-GUrl GUrlUtils::ensureFileExt(const GUrl &url, const QStringList &typeExt) {
+GUrl GUrlUtils::ensureFileExt(const GUrl& url, const QStringList& typeExt) {
     SAFE_POINT(!typeExt.isEmpty(), "Type extension is empty!", GUrl());
 
     if (url.isVFSFile()) {
@@ -70,15 +70,15 @@ GUrl GUrlUtils::ensureFileExt(const GUrl &url, const QStringList &typeExt) {
     return GUrl(url.getURLString() + "." + typeExt.first(), url.getType());
 }
 
-bool GUrlUtils::containSpaces(const QString &string) {
+bool GUrlUtils::containSpaces(const QString& string) {
     return string.contains(QRegExp("\\s"));
 }
 
-GUrl GUrlUtils::changeFileExt(const GUrl &url, const DocumentFormatId &newFormatId) {
+GUrl GUrlUtils::changeFileExt(const GUrl& url, const DocumentFormatId& newFormatId) {
     CHECK(url.isLocalFile(), GUrl());
-    DocumentFormatRegistry *dfRegistry = AppContext::getDocumentFormatRegistry();
+    DocumentFormatRegistry* dfRegistry = AppContext::getDocumentFormatRegistry();
     CHECK(nullptr != dfRegistry, GUrl());
-    DocumentFormat *newFormat = dfRegistry->getFormatById(newFormatId);
+    DocumentFormat* newFormat = dfRegistry->getFormatById(newFormatId);
     CHECK(nullptr != newFormat, GUrl());
 
     const QString dirPath = url.dirPath();
@@ -107,7 +107,7 @@ GUrl GUrlUtils::changeFileExt(const GUrl &url, const DocumentFormatId &newFormat
     return GUrl(dirPath + QDir::separator() + baseFileName + dotCompleteSuffix);
 }
 
-bool GUrlUtils::renameFileWithNameRoll(const QString &original, TaskStateInfo &ti, const QSet<QString> &excludeList, Logger *log) {
+bool GUrlUtils::renameFileWithNameRoll(const QString& original, TaskStateInfo& ti, const QSet<QString>& excludeList, Logger* log) {
     QString rolled = GUrlUtils::rollFileName(original, "_oldcopy", excludeList);
     if (rolled == original) {
         return true;
@@ -123,7 +123,7 @@ bool GUrlUtils::renameFileWithNameRoll(const QString &original, TaskStateInfo &t
     }
 }
 
-static void getPreNPost(const QString &originalUrl, QString &pre, QString &post, int &i, const QString &rolledSuffix) {
+static void getPreNPost(const QString& originalUrl, QString& pre, QString& post, int& i, const QString& rolledSuffix) {
     i = 0;
     pre = originalUrl;
     int idx = pre.lastIndexOf(".");
@@ -154,7 +154,7 @@ static void getPreNPost(const QString &originalUrl, QString &pre, QString &post,
     }
 }
 
-QString GUrlUtils::insertSuffix(const QString &url, const QString &baseNameSuffix) {
+QString GUrlUtils::insertSuffix(const QString& url, const QString& baseNameSuffix) {
     GUrl gUrl(url);
     QString completeExtension = gUrl.completeFileSuffix();
     if (completeExtension.isEmpty()) {
@@ -166,7 +166,7 @@ QString GUrlUtils::insertSuffix(const QString &url, const QString &baseNameSuffi
     return prefix + baseNameSuffix + "." + completeExtension;
 }
 
-QString GUrlUtils::rollFileName(const QString &originalUrl, const QString &rolledSuffix, const QSet<QString> &excludeList) {
+QString GUrlUtils::rollFileName(const QString& originalUrl, const QString& rolledSuffix, const QSet<QString>& excludeList) {
     QString pre, post;  // pre and post url parts. A number will be placed between
     int i = 0;
     getPreNPost(originalUrl, pre, post, i, rolledSuffix);
@@ -178,7 +178,7 @@ QString GUrlUtils::rollFileName(const QString &originalUrl, const QString &rolle
     return resultUrl;
 }
 
-QUrl GUrlUtils::gUrl2qUrl(const GUrl &gurl) {
+QUrl GUrlUtils::gUrl2qUrl(const GUrl& gurl) {
     if (gurl.isVFSFile()) {
         return QUrl();
     }
@@ -191,28 +191,28 @@ QUrl GUrlUtils::gUrl2qUrl(const GUrl &gurl) {
     }
 }
 
-GUrl GUrlUtils::qUrl2gUrl(const QUrl &qurl) {
+GUrl GUrlUtils::qUrl2gUrl(const QUrl& qurl) {
     QString str = qurl.toString();
     return GUrl(str);
 }
 
-QList<GUrl> GUrlUtils::qUrls2gUrls(const QList<QUrl> &qurls) {
+QList<GUrl> GUrlUtils::qUrls2gUrls(const QList<QUrl>& qurls) {
     QList<GUrl> urls;
-    foreach (const QUrl &qurl, qurls) {
+    foreach (const QUrl& qurl, qurls) {
         urls << qUrl2gUrl(qurl);
     }
     return urls;
 }
 
-QString GUrlUtils::prepareFileName(const QString &url, int count, const QStringList &typeExt) {
+QString GUrlUtils::prepareFileName(const QString& url, int count, const QStringList& typeExt) {
     return prepareFileName(url, QString("%1").arg(count, 3, 10, QChar('0')), typeExt);
 }
 
-QString GUrlUtils::prepareFileName(const QString &url, const QString &baseSuffix, const QStringList &typeExt) {
+QString GUrlUtils::prepareFileName(const QString& url, const QString& baseSuffix, const QStringList& typeExt) {
     QFileInfo fi(url);
     QStringList suffixList = fi.completeSuffix().split(".");
     QString ext;
-    foreach (const QString &suffix, suffixList) {
+    foreach (const QString& suffix, suffixList) {
         if (typeExt.contains(suffix)) {
             ext = suffix;
             break;
@@ -240,7 +240,7 @@ QString GUrlUtils::prepareFileName(const QString &url, const QString &baseSuffix
 // checks that file path is valid: creates required folder if needed.
 // Returns canonical path to file. Does not create nor remove file, affects just folder
 // Sample usage: processing URLs in "save file" inputs
-QString GUrlUtils::prepareFileLocation(const QString &filePath, U2OpStatus &os) {
+QString GUrlUtils::prepareFileLocation(const QString& filePath, U2OpStatus& os) {
     QFileInfo fi(filePath);
     QString dirPath = fi.absoluteDir().absolutePath();
     QString canonicalDirPath = prepareDirLocation(dirPath, os);
@@ -254,7 +254,7 @@ QString GUrlUtils::prepareFileLocation(const QString &filePath, U2OpStatus &os) 
 // Returns absolute (without "." or ".." but with symlinks) folder path.
 // Does not affect folder if already exists.
 // Sample usage: processing URLs in "save dir" inputs
-QString GUrlUtils::prepareDirLocation(const QString &dirPath, U2OpStatus &os) {
+QString GUrlUtils::prepareDirLocation(const QString& dirPath, U2OpStatus& os) {
     CHECK_EXT(!dirPath.isEmpty(), os.setError(tr("Folder is not specified")), QString());
     if (QFileInfo(dirPath).isFile()) {
         os.setError(tr("Folder is a regular file."));
@@ -279,7 +279,7 @@ QString GUrlUtils::prepareDirLocation(const QString &dirPath, U2OpStatus &os) {
     return absPath;
 }
 
-QString GUrlUtils::prepareTmpFileLocation(const QString &dir, const QString &prefix, const QString &ext, U2OpStatus &os) {
+QString GUrlUtils::prepareTmpFileLocation(const QString& dir, const QString& prefix, const QString& ext, U2OpStatus& os) {
     int i = 0;
     QString result;
     while (true) {
@@ -295,11 +295,11 @@ QString GUrlUtils::prepareTmpFileLocation(const QString &dir, const QString &pre
     return result;
 }
 
-void GUrlUtils::removeDir(const QString &dirPath, U2OpStatus &os) {
+void GUrlUtils::removeDir(const QString& dirPath, U2OpStatus& os) {
     QDir dir(dirPath);
     CHECK(dir.exists(), );
     QList<QFileInfo> entries = dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden | QDir::AllDirs | QDir::Files, QDir::DirsFirst);
-    foreach (const QFileInfo &info, entries) {
+    foreach (const QFileInfo& info, entries) {
         if (info.isDir()) {
             removeDir(info.absoluteFilePath(), os);
         } else {
@@ -310,7 +310,7 @@ void GUrlUtils::removeDir(const QString &dirPath, U2OpStatus &os) {
     QDir().rmdir(dirPath);
 }
 
-void GUrlUtils::removeFile(const QString &filePath, U2OpStatus &os) {
+void GUrlUtils::removeFile(const QString& filePath, U2OpStatus& os) {
     CHECK_EXT(!filePath.isEmpty(), os.setError(tr("File path is not specified")), );
     QFileInfo info(filePath);
 
@@ -321,7 +321,7 @@ void GUrlUtils::removeFile(const QString &filePath, U2OpStatus &os) {
     }
 }
 
-bool GUrlUtils::canWriteFile(const QString &path) {
+bool GUrlUtils::canWriteFile(const QString& path) {
     if (isOsWindows() && QFileInfo(path).fileName().contains(':')) {
         // Files with a colon in their names can be created but are not accessible on Windows.
         return false;
@@ -350,14 +350,14 @@ QString GUrlUtils::getDefaultDataPath() {
     return res;
 }
 
-QString GUrlUtils::getQuotedString(const QString &inString) {
+QString GUrlUtils::getQuotedString(const QString& inString) {
     if (inString.contains(QRegExp("\\s"))) {
         return "\"" + inString + "\"";
     }
     return inString;
 }
 
-QString GUrlUtils::createDirectory(const QString &path, const QString &suffix, U2OpStatus &os) {
+QString GUrlUtils::createDirectory(const QString& path, const QString& suffix, U2OpStatus& os) {
     QString newPath = rollFileName(path, suffix, QSet<QString>());
     QDir dir(newPath);
     bool created = dir.mkpath(newPath);
@@ -368,11 +368,11 @@ QString GUrlUtils::createDirectory(const QString &path, const QString &suffix, U
 }
 
 namespace {
-QString getDotExtension(const DocumentFormatId &formatId) {
-    DocumentFormatRegistry *dfr = AppContext::getDocumentFormatRegistry();
+QString getDotExtension(const DocumentFormatId& formatId) {
+    DocumentFormatRegistry* dfr = AppContext::getDocumentFormatRegistry();
     SAFE_POINT(nullptr != dfr, "NULL document format registry", "");
 
-    DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
+    DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
     CHECK(nullptr != format, "");
 
     QStringList results = format->getSupportedDocumentFileExtensions();
@@ -382,7 +382,7 @@ QString getDotExtension(const DocumentFormatId &formatId) {
 }
 }  // namespace
 
-void GUrlUtils::getLocalPathFromUrl(const GUrl &url, const QString &defaultBaseFileName, QString &dirPath, QString &baseFileName) {
+void GUrlUtils::getLocalPathFromUrl(const GUrl& url, const QString& defaultBaseFileName, QString& dirPath, QString& baseFileName) {
     if (url.isLocalFile()) {
         dirPath = url.dirPath();
         baseFileName = url.baseFileName();
@@ -392,7 +392,7 @@ void GUrlUtils::getLocalPathFromUrl(const GUrl &url, const QString &defaultBaseF
     }
 }
 
-QString GUrlUtils::getLocalUrlFromUrl(const GUrl &url, const QString &defaultBaseFileName, const QString &dotExtension, const QString &suffix) {
+QString GUrlUtils::getLocalUrlFromUrl(const GUrl& url, const QString& defaultBaseFileName, const QString& dotExtension, const QString& suffix) {
     QString dirPath;
     QString baseFileName;
     GUrlUtils::getLocalPathFromUrl(url, defaultBaseFileName, dirPath, baseFileName);
@@ -400,16 +400,16 @@ QString GUrlUtils::getLocalUrlFromUrl(const GUrl &url, const QString &defaultBas
     return QDir::toNativeSeparators(result);
 }
 
-QString GUrlUtils::getNewLocalUrlByFormat(const GUrl &url, const QString &defaultBaseFileName, const DocumentFormatId &format, const QString &suffix) {
+QString GUrlUtils::getNewLocalUrlByFormat(const GUrl& url, const QString& defaultBaseFileName, const DocumentFormatId& format, const QString& suffix) {
     return getNewLocalUrlByExtension(url, defaultBaseFileName, getDotExtension(format), suffix);
 }
 
-QString GUrlUtils::getNewLocalUrlByExtension(const GUrl &url, const QString &defaultBaseFileName, const QString &dotExtension, const QString &suffix) {
+QString GUrlUtils::getNewLocalUrlByExtension(const GUrl& url, const QString& defaultBaseFileName, const QString& dotExtension, const QString& suffix) {
     QString result = getLocalUrlFromUrl(url, defaultBaseFileName, dotExtension, suffix);
     return rollFileName(result, DocumentUtils::getNewDocFileNameExcludesHint());
 }
 
-void GUrlUtils::validateLocalFileUrl(const GUrl &url, U2OpStatus &os, const QString &urlName) {
+void GUrlUtils::validateLocalFileUrl(const GUrl& url, U2OpStatus& os, const QString& urlName) {
     QString urlStr = url.getURLString();
     if (!url.isLocalFile()) {
         os.setError(tr("%1 is not a local file [%2].").arg(urlName).arg(urlStr));
@@ -431,7 +431,7 @@ void GUrlUtils::validateLocalFileUrl(const GUrl &url, U2OpStatus &os, const QStr
     }
 }
 
-QString GUrlUtils::getPairedFastqFilesBaseName(const QString &sourceFileUrl, bool truncate) {
+QString GUrlUtils::getPairedFastqFilesBaseName(const QString& sourceFileUrl, bool truncate) {
     static const QStringList pairedSuffixes = QStringList() << "-R1"
                                                             << "-R2"
                                                             << "_1"
@@ -442,7 +442,7 @@ QString GUrlUtils::getPairedFastqFilesBaseName(const QString &sourceFileUrl, boo
                                                             << "_R2";
     QString baseName = QFileInfo(sourceFileUrl).completeBaseName();
     if (truncate) {
-        foreach (const QString &suffix, pairedSuffixes) {
+        foreach (const QString& suffix, pairedSuffixes) {
             if (baseName.endsWith(suffix)) {
                 baseName.chop(suffix.length());
                 break;
@@ -452,7 +452,7 @@ QString GUrlUtils::getPairedFastqFilesBaseName(const QString &sourceFileUrl, boo
     return baseName;
 }
 
-QString GUrlUtils::fixFileName(const QString &fileName) {
+QString GUrlUtils::fixFileName(const QString& fileName) {
     QString result = fileName;
     result.replace(QRegExp("[^0-9a-zA-Z._\\-]"), "_");
     result.replace(QRegExp("_+"), "_");
@@ -462,7 +462,7 @@ QString GUrlUtils::fixFileName(const QString &fileName) {
     return result;
 }
 
-QString GUrlUtils::getSlashEndedPath(const QString &dirPath) {
+QString GUrlUtils::getSlashEndedPath(const QString& dirPath) {
     return dirPath.endsWith("/") ? dirPath : dirPath + "/";
 }
 

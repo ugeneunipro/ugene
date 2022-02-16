@@ -28,7 +28,7 @@ namespace U2 {
 namespace LocalWorkflow {
 
 NoSettingsWidget::NoSettingsWidget() {
-    QVBoxLayout *mainLayout = new QVBoxLayout();
+    QVBoxLayout* mainLayout = new QVBoxLayout();
     mainLayout->setContentsMargins(0, 0, 0, 0);
     setLayout(mainLayout);
     mainLayout->addWidget(new QLabel(tr("There are no settings for this step.")));
@@ -42,17 +42,17 @@ QVariantMap NoSettingsWidget::getState() const {
     return QVariantMap();
 }
 
-void NoSettingsWidget::setState(const QVariantMap &) {
+void NoSettingsWidget::setState(const QVariantMap&) {
     // Do nothing
 }
 
-QString NoSettingsWidget::serializeState(const QVariantMap &) {
+QString NoSettingsWidget::serializeState(const QVariantMap&) {
     return QString();
 }
 
-QVariantMap NoSettingsWidget::parseState(const QString &) {
+QVariantMap NoSettingsWidget::parseState(const QString&) {
     return QVariantMap();
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

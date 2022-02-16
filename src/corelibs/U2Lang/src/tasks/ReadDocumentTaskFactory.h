@@ -39,14 +39,14 @@ public:
 class U2LANG_EXPORT ReadDocumentTask : public Task {
     Q_OBJECT
 public:
-    ReadDocumentTask(const QString &url, const QString &name, const QString &datasetName, TaskFlags f);
+    ReadDocumentTask(const QString& url, const QString& name, const QString& datasetName, TaskFlags f);
     virtual ~ReadDocumentTask();
 
     virtual QList<SharedDbiDataHandler> takeResult();
-    virtual const QString &getUrl() const;
-    virtual const QString &getDatasetName() const;
+    virtual const QString& getUrl() const;
+    virtual const QString& getDatasetName() const;
 
-    const QStringList &getProducedFiles() const;
+    const QStringList& getProducedFiles() const;
 
 protected:
     QList<SharedDbiDataHandler> result;
@@ -57,9 +57,9 @@ protected:
 
 class U2LANG_EXPORT ReadDocumentTaskFactory {
 public:
-    ReadDocumentTaskFactory(const QString &id);
+    ReadDocumentTaskFactory(const QString& id);
     virtual ~ReadDocumentTaskFactory();
-    virtual ReadDocumentTask *createTask(const QString &url, const QVariantMap &hints, WorkflowContext *ctx) = 0;
+    virtual ReadDocumentTask* createTask(const QString& url, const QVariantMap& hints, WorkflowContext* ctx) = 0;
     QString getId() const;
 
 private:

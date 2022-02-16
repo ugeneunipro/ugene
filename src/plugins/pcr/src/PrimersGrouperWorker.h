@@ -35,7 +35,7 @@ namespace LocalWorkflow {
 class PrimersGrouperPromter : public PrompterBase<PrimersGrouperPromter> {
     Q_OBJECT
 public:
-    PrimersGrouperPromter(Actor *p = 0)
+    PrimersGrouperPromter(Actor* p = 0)
         : PrompterBase<PrimersGrouperPromter>(p) {};
 
 protected:
@@ -45,18 +45,18 @@ protected:
 class PrimersGrouperWorker : public BaseWorker {
     Q_OBJECT
 public:
-    PrimersGrouperWorker(Actor *p)
+    PrimersGrouperWorker(Actor* p)
         : BaseWorker(p), inPort(nullptr), outPort(nullptr) {};
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private:
-    IntegralBus *inPort;
-    IntegralBus *outPort;
+    IntegralBus* inPort;
+    IntegralBus* outPort;
 private slots:
-    void sl_onTaskFinished(Task *t);
+    void sl_onTaskFinished(Task* t);
 
 private:
     QList<DNASequence> data;
@@ -69,7 +69,7 @@ public:
     PrimersGrouperWorkerFactory()
         : DomainFactory(ACTOR_ID) {};
     static void init();
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new PrimersGrouperWorker(a);
     }
 };
@@ -79,22 +79,22 @@ public:
 class PrimerGrouperTask : public Task {
     Q_OBJECT
 public:
-    PrimerGrouperTask(const QString &outputFileUrl, const QList<DNASequence> &sequences);
+    PrimerGrouperTask(const QString& outputFileUrl, const QList<DNASequence>& sequences);
 
     void run();
     QString getReport() const {
         return report;
     }
 
-    static QString createCell(const QString &value, bool center = false, const QString &attrs = "");
-    static QString createColumn(const QString &name, const QString &attrs = "");
+    static QString createCell(const QString& value, bool center = false, const QString& attrs = "");
+    static QString createColumn(const QString& name, const QString& attrs = "");
 
 private:
-    void createReport(const QList<QList<int>> &groups);
-    void fillReportTable(const QList<QList<int>> &groups);
+    void createReport(const QList<QList<int>>& groups);
+    void fillReportTable(const QList<QList<int>>& groups);
     void writeReportToFile();
 
-    QString createRow(const QString &groupName, const QString &forwardName, const QString &reverseName, const QString &forwardTm, const QString &reverseTm);
+    QString createRow(const QString& groupName, const QString& forwardName, const QString& reverseName, const QString& forwardTm, const QString& reverseTm);
 
     bool isCompatiblePairs(int firstPairIndex, int secondPairIndex);
     void findCompatibleGroups();

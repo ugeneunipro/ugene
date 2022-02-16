@@ -64,8 +64,8 @@ const QString EXT_TOOL_PATH("path");
 const QString TMP_DIR_PATH("temp-dir");
 
 void ClustalWWorkerFactory::init() {
-    QList<PortDescriptor *> p;
-    QList<Attribute *> a;
+    QList<PortDescriptor*> p;
+    QList<Attribute*> a;
     Descriptor ind(BasePorts::IN_MSA_PORT_ID(), ClustalWWorker::tr("Input MSA"), ClustalWWorker::tr("Input MSA to process."));
     Descriptor oud(BasePorts::OUT_MSA_PORT_ID(), ClustalWWorker::tr("ClustalW result MSA"), ClustalWWorker::tr("The result of the ClustalW alignment."));
 
@@ -123,9 +123,9 @@ void ClustalWWorkerFactory::init() {
                                                                                             "<p>ClustalW is a general purpose multiple sequence alignment program for DNA or proteins."
                                                                                             "Visit <a href=\"http://www.clustal.org/\">http://www.clustal.org/</a> to learn more about it."));
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap m;
         m["minimum"] = double(.00);
@@ -174,19 +174,19 @@ void ClustalWWorkerFactory::init() {
     proto->addExternalTool(ClustalWSupport::ET_CLUSTAL_ID, EXT_TOOL_PATH);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new ClustalWWorkerFactory());
 }
 
 /****************************
-* ClustalWPrompter
-****************************/
-ClustalWPrompter::ClustalWPrompter(Actor *p)
+ * ClustalWPrompter
+ ****************************/
+ClustalWPrompter::ClustalWPrompter(Actor* p)
     : PrompterBase<ClustalWPrompter>(p) {
 }
 QString ClustalWPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
-    Actor *producer = input->getProducer(BasePorts::IN_MSA_PORT_ID());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
+    Actor* producer = input->getProducer(BasePorts::IN_MSA_PORT_ID());
     QString producerName = producer ? tr(" from %1").arg(producer->getLabel()) : "";
     QString doc = tr("Aligns each MSA supplied <u>%1</u> with \"<u>ClustalW</u>\".")
                       .arg(producerName);
@@ -194,9 +194,9 @@ QString ClustalWPrompter::composeRichDoc() {
     return doc;
 }
 /****************************
-* ClustalWWorker
-****************************/
-ClustalWWorker::ClustalWWorker(Actor *a)
+ * ClustalWWorker
+ ****************************/
+ClustalWWorker::ClustalWWorker(Actor* a)
     : BaseWorker(a), input(nullptr), output(nullptr) {
 }
 
@@ -205,7 +205,7 @@ void ClustalWWorker::init() {
     output = ports.value(BasePorts::OUT_MSA_PORT_ID());
 }
 
-Task *ClustalWWorker::tick() {
+Task* ClustalWWorker::tick() {
     if (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
@@ -263,9 +263,9 @@ Task *ClustalWWorker::tick() {
             algoLog.error(tr("An empty MSA '%1' has been supplied to ClustalW.").arg(msa->getName()));
             return nullptr;
         }
-        ClustalWSupportTask *supportTask = new ClustalWSupportTask(msa, GObjectReference(), cfg);
+        ClustalWSupportTask* supportTask = new ClustalWSupportTask(msa, GObjectReference(), cfg);
         supportTask->addListeners(createLogListeners());
-        Task *t = new NoFailTaskWrapper(supportTask);
+        Task* t = new NoFailTaskWrapper(supportTask);
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
     } else if (input->isEnded()) {
@@ -276,9 +276,9 @@ Task *ClustalWWorker::tick() {
 }
 
 void ClustalWWorker::sl_taskFinished() {
-    NoFailTaskWrapper *wrapper = qobject_cast<NoFailTaskWrapper *>(sender());
+    NoFailTaskWrapper* wrapper = qobject_cast<NoFailTaskWrapper*>(sender());
     CHECK(wrapper->isFinished(), );
-    ClustalWSupportTask *t = qobject_cast<ClustalWSupportTask *>(wrapper->originalTask());
+    ClustalWSupportTask* t = qobject_cast<ClustalWSupportTask*>(wrapper->originalTask());
     if (t->isCanceled()) {
         return;
     }
@@ -295,7 +295,7 @@ void ClustalWWorker::sl_taskFinished() {
 void ClustalWWorker::cleanup() {
 }
 
-void ClustalWWorker::send(const MultipleSequenceAlignment &msa) {
+void ClustalWWorker::send(const MultipleSequenceAlignment& msa) {
     SAFE_POINT(nullptr != output, "NULL output!", );
     SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(msa);
     QVariantMap m;
@@ -303,5 +303,5 @@ void ClustalWWorker::send(const MultipleSequenceAlignment &msa) {
     output->put(Message(BaseTypes::MULTIPLE_ALIGNMENT_TYPE(), m));
 }
 
-}    //namespace LocalWorkflow
-}    //namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

@@ -35,17 +35,17 @@ namespace U2 {
  */
 class U2VIEW_EXPORT GSequenceGraphFactory : public QObject {
 public:
-    GSequenceGraphFactory(const QString &_name, QObject *p)
+    GSequenceGraphFactory(const QString& _name, QObject* p)
         : QObject(p), graphName(_name) {
     }
 
-    virtual QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView *v) = 0;
+    virtual QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView* v) = 0;
 
-    virtual GSequenceGraphDrawer *getDrawer(GSequenceGraphView *v);
+    virtual GSequenceGraphDrawer* getDrawer(GSequenceGraphView* v);
 
-    virtual bool isEnabled(const U2SequenceObject *o) const = 0;
+    virtual bool isEnabled(const U2SequenceObject* o) const = 0;
 
-    const QString &getGraphName() const {
+    const QString& getGraphName() const {
         return graphName;
     }
 
@@ -59,13 +59,13 @@ protected:
  */
 class U2VIEW_EXPORT GSequenceGraphViewWithFactory : public GSequenceGraphView {
 public:
-    GSequenceGraphViewWithFactory(ADVSingleSequenceWidget *, GSequenceGraphFactory *);
-    GSequenceGraphFactory *getFactory() const {
+    GSequenceGraphViewWithFactory(ADVSingleSequenceWidget*, GSequenceGraphFactory*);
+    GSequenceGraphFactory* getFactory() const {
         return factory;
     }
 
 private:
-    GSequenceGraphFactory *factory;
+    GSequenceGraphFactory* factory;
 };
 
 }  // namespace U2

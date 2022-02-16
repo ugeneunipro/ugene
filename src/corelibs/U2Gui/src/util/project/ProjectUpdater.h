@@ -40,23 +40,23 @@ public:
     void run();
     void stop();
 
-    void invalidate(const Document *doc);
-    bool takeData(Document *doc, DocumentFoldersUpdate &result);
+    void invalidate(const Document* doc);
+    bool takeData(Document* doc, DocumentFoldersUpdate& result);
 
-    void addDocument(Document *doc);
-    void removeDocument(Document *doc);
+    void addDocument(Document* doc);
+    void removeDocument(Document* doc);
 
 private:
     QList<U2DbiRef> getDbiRefs();
     void readData();
     void updateAccessedObjects();
-    void fetchObjectsInUse(const U2DbiRef &dbiRef, U2OpStatus &os);
+    void fetchObjectsInUse(const U2DbiRef& dbiRef, U2OpStatus& os);
 
 private:
     QMutex mutex;
     QAtomicInt stopped;
     QHash<U2DbiId, DocumentFoldersUpdate> data;
-    QList<Document *> docs;
+    QList<Document*> docs;
     QHash<U2DbiId, bool> valid;
 };
 

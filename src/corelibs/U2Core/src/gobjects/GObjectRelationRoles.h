@@ -39,7 +39,7 @@ enum GObjectRelationRole {
 class GObjectRelationRoleCompatibility {
 public:
     static QString toString(GObjectRelationRole role);
-    static GObjectRelationRole fromString(const QString &str);
+    static GObjectRelationRole fromString(const QString& str);
 };
 
 }  // namespace U2

@@ -54,9 +54,9 @@ private:
 public:
     QString getTmpFileTemplate();
     void clearGenratedSequences();  // to free memory
-    void generateSequencesFromAlignment(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &settings);
+    void generateSequencesFromAlignment(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& settings);
 
-    const MultipleSequenceAlignment &getMSA(int pos) const;
+    const MultipleSequenceAlignment& getMSA(int pos) const;
 
     void initGenerSeq(int reps, int rowC, int seqLen);
 

@@ -32,18 +32,18 @@ using namespace HI;
 
 class WizardFiller : public Filler {
 public:
-    WizardFiller(HI::GUITestOpStatus &_os, QString name, QList<QStringList> _inputFiles = QList<QStringList>(), QMap<QString, QVariant> _map = (QMap<QString, QVariant>()))
+    WizardFiller(HI::GUITestOpStatus& _os, QString name, QList<QStringList> _inputFiles = QList<QStringList>(), QMap<QString, QVariant> _map = (QMap<QString, QVariant>()))
         : Filler(_os, name), inputFiles(_inputFiles), map(_map) {
     }
-    WizardFiller(HI::GUITestOpStatus &_os, QString name, QStringList _inputFiles, QMap<QString, QVariant> _map = (QMap<QString, QVariant>()))
+    WizardFiller(HI::GUITestOpStatus& _os, QString name, QStringList _inputFiles, QMap<QString, QVariant> _map = (QMap<QString, QVariant>()))
         : Filler(_os, name), inputFiles(QList<QStringList>() << _inputFiles), map(_map) {
     }
-    WizardFiller(HI::GUITestOpStatus &_os, QString name, CustomScenario *c)
+    WizardFiller(HI::GUITestOpStatus& _os, QString name, CustomScenario* c)
         : Filler(_os, name, c) {
     }
     void commonScenario() override;
 
-    static QToolButton *getExpandButton(HI::GUITestOpStatus &_os);
+    static QToolButton* getExpandButton(HI::GUITestOpStatus& _os);
 
 private:
     QList<QStringList> inputFiles;

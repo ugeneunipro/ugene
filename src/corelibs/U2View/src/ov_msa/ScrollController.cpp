@@ -36,7 +36,7 @@
 
 namespace U2 {
 
-ScrollController::ScrollController(MaEditor *maEditor, MaEditorWgt *maEditorUi)
+ScrollController::ScrollController(MaEditor* maEditor, MaEditorWgt* maEditorUi)
     : QObject(maEditorUi),
       maEditor(maEditor),
       ui(maEditorUi),
@@ -47,7 +47,7 @@ ScrollController::ScrollController(MaEditor *maEditor, MaEditorWgt *maEditorUi)
     connect(maEditor->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_collapsibleModelChanged()));
 }
 
-void ScrollController::init(GScrollBar *hScrollBar, GScrollBar *vScrollBar) {
+void ScrollController::init(GScrollBar* hScrollBar, GScrollBar* vScrollBar) {
     this->hScrollBar = hScrollBar;
     hScrollBar->setValue(0);
     connect(hScrollBar, SIGNAL(valueChanged(int)), SIGNAL(si_visibleAreaChanged()));
@@ -63,7 +63,7 @@ QPoint ScrollController::getScreenPosition() const {
     return QPoint(hScrollBar->value(), vScrollBar->value());
 }
 
-QPoint ScrollController::getGlobalMousePosition(const QPoint &mousePos) const {
+QPoint ScrollController::getGlobalMousePosition(const QPoint& mousePos) const {
     return mousePos + getScreenPosition();
 }
 
@@ -96,7 +96,7 @@ void ScrollController::scrollToBase(int baseNumber, int widgetWidth) {
     }
 }
 
-void ScrollController::scrollToPoint(const QPoint &maPoint, const QSize &screenSize) {
+void ScrollController::scrollToPoint(const QPoint& maPoint, const QSize& screenSize) {
     scrollToBase(maPoint.x(), screenSize.width());
     scrollToViewRow(maPoint.y(), screenSize.height());
 }
@@ -124,7 +124,7 @@ void ScrollController::centerViewRow(int viewRowIndex, int widgetHeight) {
     vScrollBar->setValue(newScreenYOffset);
 }
 
-void ScrollController::centerPoint(const QPoint &maPoint, const QSize &widgetSize) {
+void ScrollController::centerPoint(const QPoint& maPoint, const QSize& widgetSize) {
     centerBase(maPoint.x(), widgetSize.width());
     centerViewRow(maPoint.y(), widgetSize.height());
 }
@@ -151,7 +151,7 @@ void ScrollController::setFirstVisibleMaRow(int maRowIndex) {
     vScrollBar->setValue(y);
 }
 
-void ScrollController::scrollSmoothly(const Directions &directions) {
+void ScrollController::scrollSmoothly(const Directions& directions) {
     QAbstractSlider::SliderAction horizontalAction = QAbstractSlider::SliderNoAction;
     QAbstractSlider::SliderAction verticalAction = QAbstractSlider::SliderNoAction;
 
@@ -338,11 +338,11 @@ int ScrollController::getLastVisibleViewRowIndex(int widgetHeight, bool countCli
     return lastVisibleViewRow - (removeClippedRow ? 1 : 0);
 }
 
-GScrollBar *ScrollController::getHorizontalScrollBar() const {
+GScrollBar* ScrollController::getHorizontalScrollBar() const {
     return hScrollBar;
 }
 
-GScrollBar *ScrollController::getVerticalScrollBar() const {
+GScrollBar* ScrollController::getVerticalScrollBar() const {
     return vScrollBar;
 }
 
@@ -454,7 +454,7 @@ void ScrollController::updateVerticalScrollBarPrivate() {
     vScrollBar->setVisible(numVisibleSequences < viewRowCount);
 }
 
-QPoint ScrollController::getViewPosByScreenPoint(const QPoint &point, bool reportOverflow) const {
+QPoint ScrollController::getViewPosByScreenPoint(const QPoint& point, bool reportOverflow) const {
     int column = ui->getBaseWidthController()->screenXPositionToColumn(point.x());
     int row = ui->getRowHeightController()->getViewRowIndexByScreenYPosition(point.y());
     QPoint result(column, row);

@@ -50,15 +50,15 @@ using namespace HI;
 const QString GTUtilsProjectTreeView::widgetName = "documentTreeWidget";
 
 #define GT_METHOD_NAME "checkProjectViewIsOpened"
-void GTUtilsProjectTreeView::checkProjectViewIsOpened(HI::GUITestOpStatus &os) {
+void GTUtilsProjectTreeView::checkProjectViewIsOpened(HI::GUITestOpStatus& os) {
     GTWidget::findWidget(os, widgetName);
     GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkProjectViewIsClosed"
-void GTUtilsProjectTreeView::checkProjectViewIsClosed(HI::GUITestOpStatus &os) {
-    QWidget *documentTreeWidget = nullptr;
+void GTUtilsProjectTreeView::checkProjectViewIsClosed(HI::GUITestOpStatus& os) {
+    QWidget* documentTreeWidget = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && documentTreeWidget == nullptr; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         documentTreeWidget = GTWidget::findWidget(os, widgetName, nullptr, {false});
@@ -68,9 +68,9 @@ void GTUtilsProjectTreeView::checkProjectViewIsClosed(HI::GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openView"
-void GTUtilsProjectTreeView::openView(HI::GUITestOpStatus &os, GTGlobals::UseMethod method) {
+void GTUtilsProjectTreeView::openView(HI::GUITestOpStatus& os, GTGlobals::UseMethod method) {
     // Wait up to 3 seconds for the project view to be available.
-    QWidget *documentTreeWidget = nullptr;
+    QWidget* documentTreeWidget = nullptr;
     for (int time = 0; time < 3000 && documentTreeWidget == nullptr; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         documentTreeWidget = GTWidget::findWidget(os, widgetName, nullptr, {false});
@@ -83,10 +83,10 @@ void GTUtilsProjectTreeView::openView(HI::GUITestOpStatus &os, GTGlobals::UseMet
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "toggleView"
-void GTUtilsProjectTreeView::toggleView(HI::GUITestOpStatus &os, GTGlobals::UseMethod method) {
-    MainWindow *mw = AppContext::getMainWindow();
+void GTUtilsProjectTreeView::toggleView(HI::GUITestOpStatus& os, GTGlobals::UseMethod method) {
+    MainWindow* mw = AppContext::getMainWindow();
     GT_CHECK(mw != nullptr, "MainWindow is NULL");
-    QMainWindow *qmw = mw->getQMainWindow();
+    QMainWindow* qmw = mw->getQMainWindow();
     GT_CHECK(qmw != nullptr, "QMainWindow is NULL");
 
     // qmw->setFocus();
@@ -109,16 +109,16 @@ void GTUtilsProjectTreeView::toggleView(HI::GUITestOpStatus &os, GTGlobals::UseM
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getItemCenter"
-QPoint GTUtilsProjectTreeView::getItemCenter(HI::GUITestOpStatus &os, const QModelIndex &itemIndex) {
+QPoint GTUtilsProjectTreeView::getItemCenter(HI::GUITestOpStatus& os, const QModelIndex& itemIndex) {
     GT_CHECK_RESULT(itemIndex.isValid(), "Item index is invalid", QPoint());
 
-    QTreeView *treeView = getTreeView(os);
+    QTreeView* treeView = getTreeView(os);
     return getItemCenter(os, treeView, itemIndex);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getItemCenter"
-QPoint GTUtilsProjectTreeView::getItemCenter(HI::GUITestOpStatus &os, QTreeView *treeView, const QModelIndex &itemIndex) {
+QPoint GTUtilsProjectTreeView::getItemCenter(HI::GUITestOpStatus& os, QTreeView* treeView, const QModelIndex& itemIndex) {
     GT_CHECK_RESULT(itemIndex.isValid(), "Item index is invalid", QPoint());
     GT_CHECK_RESULT(treeView != nullptr, "treeView is NULL", QPoint());
 
@@ -130,7 +130,7 @@ QPoint GTUtilsProjectTreeView::getItemCenter(HI::GUITestOpStatus &os, QTreeView 
 
 namespace {
 
-void editItemName(HI::GUITestOpStatus &os, const QString &newItemName, GTGlobals::UseMethod invokeMethod) {
+void editItemName(HI::GUITestOpStatus& os, const QString& newItemName, GTGlobals::UseMethod invokeMethod) {
     switch (invokeMethod) {
         case GTGlobals::UseKey:
             GTMouseDriver::click();
@@ -156,53 +156,53 @@ void editItemName(HI::GUITestOpStatus &os, const QString &newItemName, GTGlobals
 }  // namespace
 
 #define GT_METHOD_NAME "rename"
-void GTUtilsProjectTreeView::rename(HI::GUITestOpStatus &os, const QString &itemName, const QString &newItemName, GTGlobals::UseMethod invokeMethod) {
+void GTUtilsProjectTreeView::rename(HI::GUITestOpStatus& os, const QString& itemName, const QString& newItemName, GTGlobals::UseMethod invokeMethod) {
     GTMouseDriver::moveTo(getItemCenter(os, itemName));
     editItemName(os, newItemName, invokeMethod);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "rename"
-void GTUtilsProjectTreeView::rename(HI::GUITestOpStatus &os, const QModelIndex &itemIndex, const QString &newItemName, GTGlobals::UseMethod invokeMethod) {
+void GTUtilsProjectTreeView::rename(HI::GUITestOpStatus& os, const QModelIndex& itemIndex, const QString& newItemName, GTGlobals::UseMethod invokeMethod) {
     GTMouseDriver::moveTo(getItemCenter(os, itemIndex));
     editItemName(os, newItemName, invokeMethod);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getItemCenter"
-QPoint GTUtilsProjectTreeView::getItemCenter(HI::GUITestOpStatus &os, const QString &itemName) {
+QPoint GTUtilsProjectTreeView::getItemCenter(HI::GUITestOpStatus& os, const QString& itemName) {
     return getItemCenter(os, findIndex(os, itemName));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "scrollToItemName"
-void GTUtilsProjectTreeView::scrollTo(HI::GUITestOpStatus &os, const QString &itemName) {
+void GTUtilsProjectTreeView::scrollTo(HI::GUITestOpStatus& os, const QString& itemName) {
     QModelIndex index = findIndex(os, itemName);
     scrollToIndexAndMakeExpanded(os, getTreeView(os), index);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "scrollToIndexAndMakeExpanded"
-void GTUtilsProjectTreeView::scrollToIndexAndMakeExpanded(HI::GUITestOpStatus &os, QTreeView *treeView, const QModelIndex &index) {
+void GTUtilsProjectTreeView::scrollToIndexAndMakeExpanded(HI::GUITestOpStatus& os, QTreeView* treeView, const QModelIndex& index) {
     GTTreeView::scrollToItem(os, treeView, index);
     GTTreeView::expand(os, treeView, index);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "doubleClickItem"
-void GTUtilsProjectTreeView::doubleClickItem(HI::GUITestOpStatus &os, const QModelIndex &itemIndex) {
+void GTUtilsProjectTreeView::doubleClickItem(HI::GUITestOpStatus& os, const QModelIndex& itemIndex) {
     GTTreeView::doubleClick(os, getTreeView(os), itemIndex);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "doubleClickItem"
-void GTUtilsProjectTreeView::doubleClickItem(HI::GUITestOpStatus &os, const QString &itemName) {
+void GTUtilsProjectTreeView::doubleClickItem(HI::GUITestOpStatus& os, const QString& itemName) {
     doubleClickItem(os, findIndex(os, itemName));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "click"
-void GTUtilsProjectTreeView::click(HI::GUITestOpStatus &os, const QString &itemName, Qt::MouseButton button) {
+void GTUtilsProjectTreeView::click(HI::GUITestOpStatus& os, const QString& itemName, Qt::MouseButton button) {
     QModelIndex itemIndex = findIndex(os, itemName);
     scrollToIndexAndMakeExpanded(os, getTreeView(os), itemIndex);
 
@@ -215,7 +215,7 @@ void GTUtilsProjectTreeView::click(HI::GUITestOpStatus &os, const QString &itemN
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "click"
-void GTUtilsProjectTreeView::click(HI::GUITestOpStatus &os, const QString &itemName, const QString &parentName, Qt::MouseButton button) {
+void GTUtilsProjectTreeView::click(HI::GUITestOpStatus& os, const QString& itemName, const QString& parentName, Qt::MouseButton button) {
     QModelIndex parentIndex = findIndex(os, parentName);
     QModelIndex itemIndex = findIndex(os, itemName, parentIndex);
     scrollToIndexAndMakeExpanded(os, getTreeView(os), itemIndex);
@@ -226,21 +226,21 @@ void GTUtilsProjectTreeView::click(HI::GUITestOpStatus &os, const QString &itemN
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "callContextMenu"
-void GTUtilsProjectTreeView::callContextMenu(GUITestOpStatus &os, const QString &itemName) {
+void GTUtilsProjectTreeView::callContextMenu(GUITestOpStatus& os, const QString& itemName) {
     click(os, itemName, Qt::RightButton);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getTreeWidget"
-void GTUtilsProjectTreeView::callContextMenu(GUITestOpStatus &os, const QString &itemName, const QString &parentName) {
+void GTUtilsProjectTreeView::callContextMenu(GUITestOpStatus& os, const QString& itemName, const QString& parentName) {
     click(os, itemName, parentName, Qt::RightButton);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "callContextMenuByIndex"
-void GTUtilsProjectTreeView::callContextMenu(GUITestOpStatus &os, const QModelIndex &itemIndex) {
+void GTUtilsProjectTreeView::callContextMenu(GUITestOpStatus& os, const QModelIndex& itemIndex) {
     GT_CHECK(itemIndex.isValid(), "Item index is not valid!");
-    QTreeView *treeView = getTreeView(os);
+    QTreeView* treeView = getTreeView(os);
     GT_CHECK(treeView != nullptr, "Tree widget is NULL");
     scrollToIndexAndMakeExpanded(os, treeView, itemIndex);
     GTMouseDriver::moveTo(getItemCenter(os, itemIndex));
@@ -249,43 +249,43 @@ void GTUtilsProjectTreeView::callContextMenu(GUITestOpStatus &os, const QModelIn
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getTreeWidget"
-QTreeView *GTUtilsProjectTreeView::getTreeView(HI::GUITestOpStatus &os) {
+QTreeView* GTUtilsProjectTreeView::getTreeView(HI::GUITestOpStatus& os) {
     openView(os);
 
-    QTreeView *treeView = qobject_cast<QTreeView *>(GTWidget::findWidget(os, widgetName));
+    QTreeView* treeView = qobject_cast<QTreeView*>(GTWidget::findWidget(os, widgetName));
     return treeView;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findIndex1"
-QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options) {
-    QTreeView *treeView = getTreeView(os);
+QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus& os, const QString& itemName, const GTGlobals::FindOptions& options) {
+    QTreeView* treeView = getTreeView(os);
     GT_CHECK_RESULT(treeView != nullptr, "Tree view is NULL", QModelIndex());
     return findIndex(os, treeView, itemName, QModelIndex(), options);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findIndex2"
-QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const GTGlobals::FindOptions &options) {
+QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus& os, QTreeView* treeView, const QString& itemName, const GTGlobals::FindOptions& options) {
     GT_CHECK_RESULT(treeView != nullptr, "Tree view is NULL", QModelIndex());
     return findIndex(os, treeView, itemName, QModelIndex(), options);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findIndex3"
-QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus &os, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options) {
-    QTreeView *treeView = getTreeView(os);
+QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus& os, const QString& itemName, const QModelIndex& parent, const GTGlobals::FindOptions& options) {
+    QTreeView* treeView = getTreeView(os);
     GT_CHECK_RESULT(treeView != nullptr, "Tree view is NULL", QModelIndex());
     return findIndex(os, treeView, itemName, parent, options);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findIndex4"
-QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus &os,
-                                              QTreeView *treeView,
-                                              const QString &itemName,
-                                              const QModelIndex &parent,
-                                              const GTGlobals::FindOptions &options) {
+QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus& os,
+                                              QTreeView* treeView,
+                                              const QString& itemName,
+                                              const QModelIndex& parent,
+                                              const GTGlobals::FindOptions& options) {
     GT_CHECK_RESULT(treeView != nullptr, "Tree view is NULL", QModelIndex());
     GT_CHECK_RESULT(!itemName.isEmpty(), "Item name is empty", QModelIndex());
 
@@ -310,9 +310,9 @@ QModelIndex GTUtilsProjectTreeView::findIndex(HI::GUITestOpStatus &os,
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findIndex5"
-QModelIndex GTUtilsProjectTreeView::findIndex(GUITestOpStatus &os, const QStringList &itemPath, const GTGlobals::FindOptions &options) {
+QModelIndex GTUtilsProjectTreeView::findIndex(GUITestOpStatus& os, const QStringList& itemPath, const GTGlobals::FindOptions& options) {
     QModelIndex item;
-    foreach (const QString &itemName, itemPath) {
+    foreach (const QString& itemName, itemPath) {
         GTGlobals::FindOptions itemOptions = options;
         itemOptions.depth = 1;
         item = findIndex(os, itemName, item, itemOptions);
@@ -322,8 +322,8 @@ QModelIndex GTUtilsProjectTreeView::findIndex(GUITestOpStatus &os, const QString
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findIndeciesInProjectViewNoWait"
-QModelIndexList GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(HI::GUITestOpStatus &os, const QString &itemName, const QModelIndex &parent, int parentDepth, const GTGlobals::FindOptions &options) {
-    QTreeView *treeView = getTreeView(os);
+QModelIndexList GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(HI::GUITestOpStatus& os, const QString& itemName, const QModelIndex& parent, int parentDepth, const GTGlobals::FindOptions& options) {
+    QTreeView* treeView = getTreeView(os);
     GT_CHECK_RESULT(treeView != nullptr, "Tree widget is NULL", QModelIndexList());
 
     return findIndiciesInTreeNoWait(os, treeView, itemName, parent, parentDepth, options);
@@ -331,7 +331,7 @@ QModelIndexList GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(HI::GUIT
 #undef GT_METHOD_NAME
 
 namespace {
-bool compareStrings(const QString &pattern, const QString &data, Qt::MatchFlags matchPolicy) {
+bool compareStrings(const QString& pattern, const QString& data, Qt::MatchFlags matchPolicy) {
     if (matchPolicy.testFlag(Qt::MatchContains)) {
         return data.contains(pattern);
     } else if (matchPolicy.testFlag(Qt::MatchStartsWith)) {
@@ -342,25 +342,25 @@ bool compareStrings(const QString &pattern, const QString &data, Qt::MatchFlags 
 }  // namespace
 
 #define GT_METHOD_NAME "findIndicesInTreeNoWait"
-QModelIndexList GTUtilsProjectTreeView::findIndiciesInTreeNoWait(HI::GUITestOpStatus &os,
-                                                                 QTreeView *treeView,
-                                                                 const QString &itemName,
-                                                                 const QModelIndex &parent,
+QModelIndexList GTUtilsProjectTreeView::findIndiciesInTreeNoWait(HI::GUITestOpStatus& os,
+                                                                 QTreeView* treeView,
+                                                                 const QString& itemName,
+                                                                 const QModelIndex& parent,
                                                                  int parentDepth,
-                                                                 const GTGlobals::FindOptions &options) {
+                                                                 const GTGlobals::FindOptions& options) {
     CHECK(options.depth == GTGlobals::FindOptions::INFINITE_DEPTH || parentDepth < options.depth, {});
 
-    QAbstractItemModel *model = treeView->model();
+    QAbstractItemModel* model = treeView->model();
     CHECK_SET_ERR_RESULT(model != nullptr, "Model is NULL", {});
 
-    auto proxyModel = qobject_cast<QSortFilterProxyModel *>(treeView->model());
+    auto proxyModel = qobject_cast<QSortFilterProxyModel*>(treeView->model());
     QModelIndexList foundIndicies;
     int rowCount = proxyModel == nullptr ? model->rowCount(parent) : proxyModel->rowCount(parent);
     for (int i = 0; i < rowCount; i++) {
         QModelIndex index = proxyModel == nullptr ? model->index(i, 0, parent) : proxyModel->index(i, 0, parent);
         QString s = index.data(Qt::DisplayRole).toString();
 
-        GObject *object = ProjectViewModel::toObject(proxyModel == nullptr ? index : proxyModel->mapToSource(index));
+        GObject* object = ProjectViewModel::toObject(proxyModel == nullptr ? index : proxyModel->mapToSource(index));
         if (object != nullptr) {
             QString prefix = "[" + GObjectTypes::getTypeInfo(object->getGObjectType()).treeSign + "]";
             if (s.startsWith(prefix) || prefix == "[u]") {
@@ -394,12 +394,12 @@ QModelIndexList GTUtilsProjectTreeView::findIndiciesInTreeNoWait(HI::GUITestOpSt
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "filterProject"
-void GTUtilsProjectTreeView::filterProject(HI::GUITestOpStatus &os, const QString &searchField) {
+void GTUtilsProjectTreeView::filterProject(HI::GUITestOpStatus& os, const QString& searchField) {
     openView(os);
 #ifdef Q_OS_DARWIN
     GTGlobals::sleep(3000);
 #endif
-    QLineEdit *nameFilterEdit = GTWidget::findExactWidget<QLineEdit *>(os, "nameFilterEdit");
+    QLineEdit* nameFilterEdit = GTWidget::findExactWidget<QLineEdit*>(os, "nameFilterEdit");
     GTLineEdit::setText(os, nameFilterEdit, searchField);
     GTGlobals::sleep(3000);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -407,10 +407,10 @@ void GTUtilsProjectTreeView::filterProject(HI::GUITestOpStatus &os, const QStrin
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "filterProjectSequental"
-void GTUtilsProjectTreeView::filterProjectSequental(HI::GUITestOpStatus &os, const QStringList &searchField, bool waitUntilSearchEnd) {
+void GTUtilsProjectTreeView::filterProjectSequental(HI::GUITestOpStatus& os, const QStringList& searchField, bool waitUntilSearchEnd) {
     openView(os);
-    QLineEdit *nameFilterEdit = GTWidget::findExactWidget<QLineEdit *>(os, "nameFilterEdit");
-    foreach (const QString &str, searchField) {
+    QLineEdit* nameFilterEdit = GTWidget::findExactWidget<QLineEdit*>(os, "nameFilterEdit");
+    foreach (const QString& str, searchField) {
         GTLineEdit::setText(os, nameFilterEdit, str);
         GTGlobals::sleep(3000);
     }
@@ -421,11 +421,11 @@ void GTUtilsProjectTreeView::filterProjectSequental(HI::GUITestOpStatus &os, con
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findFilteredIndexes"
-QModelIndexList GTUtilsProjectTreeView::findFilteredIndexes(HI::GUITestOpStatus &os, const QString &substring, const QModelIndex &parentIndex) {
+QModelIndexList GTUtilsProjectTreeView::findFilteredIndexes(HI::GUITestOpStatus& os, const QString& substring, const QModelIndex& parentIndex) {
     QModelIndexList result;
 
-    QTreeView *treeView = getTreeView(os);
-    QAbstractItemModel *model = treeView->model();
+    QTreeView* treeView = getTreeView(os);
+    QAbstractItemModel* model = treeView->model();
     CHECK_SET_ERR_RESULT(nullptr != model, "Model is invalid", result);
 
     const int rowcount = model->rowCount(parentIndex);
@@ -443,12 +443,12 @@ QModelIndexList GTUtilsProjectTreeView::findFilteredIndexes(HI::GUITestOpStatus 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkFilteredGroup"
-void GTUtilsProjectTreeView::checkFilteredGroup(HI::GUITestOpStatus &os,
-                                                const QString &groupName,
-                                                const QStringList &namesToCheck,
-                                                const QStringList &alternativeNamesToCheck,
-                                                const QStringList &excludedNames,
-                                                const QStringList &skipGroupIfContains) {
+void GTUtilsProjectTreeView::checkFilteredGroup(HI::GUITestOpStatus& os,
+                                                const QString& groupName,
+                                                const QStringList& namesToCheck,
+                                                const QStringList& alternativeNamesToCheck,
+                                                const QStringList& excludedNames,
+                                                const QStringList& skipGroupIfContains) {
     const QModelIndexList groupIndexes = findFilteredIndexes(os, groupName);
     CHECK_SET_ERR(groupIndexes.size() == 1, QString("Expected to find a single filter group. Found %1").arg(groupIndexes.size()));
 
@@ -458,7 +458,7 @@ void GTUtilsProjectTreeView::checkFilteredGroup(HI::GUITestOpStatus &os,
     for (int i = 0; i < filteredItemsCount; ++i) {
         const QString childName = group.child(i, 0).data().toString();
         bool notSkipGroup = true;
-        foreach (const QString &checkToSkip, skipGroupIfContains) {
+        foreach (const QString& checkToSkip, skipGroupIfContains) {
             if (childName.contains(checkToSkip, Qt::CaseInsensitive)) {
                 notSkipGroup = false;
                 break;
@@ -466,13 +466,13 @@ void GTUtilsProjectTreeView::checkFilteredGroup(HI::GUITestOpStatus &os,
         }
         CHECK_CONTINUE(notSkipGroup);
 
-        foreach (const QString &nameToCheck, namesToCheck) {
+        foreach (const QString& nameToCheck, namesToCheck) {
             bool contains = childName.contains(nameToCheck, Qt::CaseInsensitive);
             CHECK_SET_ERR(contains, QString("Filtered item doesn't contain '%1'").arg(nameToCheck));
         }
 
         bool oneAlternativeFound = alternativeNamesToCheck.isEmpty();
-        foreach (const QString &nameToCheck, alternativeNamesToCheck) {
+        foreach (const QString& nameToCheck, alternativeNamesToCheck) {
             if (childName.contains(nameToCheck, Qt::CaseInsensitive)) {
                 oneAlternativeFound = true;
                 break;
@@ -480,7 +480,7 @@ void GTUtilsProjectTreeView::checkFilteredGroup(HI::GUITestOpStatus &os,
         }
         CHECK_SET_ERR(oneAlternativeFound, QString("Filtered item doesn't contain either of strings: '%1'").arg(alternativeNamesToCheck.join("', '")));
 
-        foreach (const QString &nameToCheck, excludedNames) {
+        foreach (const QString& nameToCheck, excludedNames) {
             bool doesNotContain = !childName.contains(nameToCheck, Qt::CaseInsensitive);
             CHECK_SET_ERR(doesNotContain, QString("Filtered item contains unexpectedly '%1'").arg(nameToCheck));
         }
@@ -489,40 +489,40 @@ void GTUtilsProjectTreeView::checkFilteredGroup(HI::GUITestOpStatus &os,
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "ensureFilteringIsDisabled"
-void GTUtilsProjectTreeView::ensureFilteringIsDisabled(GUITestOpStatus &os) {
+void GTUtilsProjectTreeView::ensureFilteringIsDisabled(GUITestOpStatus& os) {
     openView(os);
     GTLineEdit::checkText(os, "nameFilterEdit", nullptr, "");
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkItem"
-bool GTUtilsProjectTreeView::checkItem(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions &options) {
-    QTreeView *treeView = getTreeView(os);
+bool GTUtilsProjectTreeView::checkItem(HI::GUITestOpStatus& os, const QString& itemName, const GTGlobals::FindOptions& options) {
+    QTreeView* treeView = getTreeView(os);
     return checkItem(os, treeView, itemName, QModelIndex(), options);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkNoItem"
-void GTUtilsProjectTreeView::checkNoItem(HI::GUITestOpStatus &os, const QString &itemName) {
+void GTUtilsProjectTreeView::checkNoItem(HI::GUITestOpStatus& os, const QString& itemName) {
     bool isFound = checkItem(os, itemName, {false});
     GT_CHECK(!isFound, "Unexpected item was found in the project: " + itemName);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkItem"
-bool GTUtilsProjectTreeView::checkItem(HI::GUITestOpStatus &os, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options) {
+bool GTUtilsProjectTreeView::checkItem(HI::GUITestOpStatus& os, const QString& itemName, const QModelIndex& parent, const GTGlobals::FindOptions& options) {
     return checkItem(os, getTreeView(os), itemName, parent, options);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkItem"
-bool GTUtilsProjectTreeView::checkItem(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const GTGlobals::FindOptions &options) {
+bool GTUtilsProjectTreeView::checkItem(HI::GUITestOpStatus& os, QTreeView* treeView, const QString& itemName, const GTGlobals::FindOptions& options) {
     return checkItem(os, treeView, itemName, QModelIndex(), options);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkItem"
-bool GTUtilsProjectTreeView::checkItem(HI::GUITestOpStatus &os, QTreeView *treeView, const QString &itemName, const QModelIndex &parent, const GTGlobals::FindOptions &options) {
+bool GTUtilsProjectTreeView::checkItem(HI::GUITestOpStatus& os, QTreeView* treeView, const QString& itemName, const QModelIndex& parent, const GTGlobals::FindOptions& options) {
     GT_CHECK_RESULT(treeView != nullptr, "Tree view is NULL", false);
     GT_CHECK_RESULT(!itemName.isEmpty(), "Item name is empty", false);
     QModelIndexList indexList;
@@ -539,24 +539,24 @@ bool GTUtilsProjectTreeView::checkItem(HI::GUITestOpStatus &os, QTreeView *treeV
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkObjectTypes"
-void GTUtilsProjectTreeView::checkObjectTypes(HI::GUITestOpStatus &os, const QSet<GObjectType> &acceptableTypes, const QModelIndex &parent) {
+void GTUtilsProjectTreeView::checkObjectTypes(HI::GUITestOpStatus& os, const QSet<GObjectType>& acceptableTypes, const QModelIndex& parent) {
     checkObjectTypes(os, getTreeView(os), acceptableTypes, parent);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkObjectTypes"
-void GTUtilsProjectTreeView::checkObjectTypes(HI::GUITestOpStatus &os, QTreeView *treeView, const QSet<GObjectType> &acceptableTypes, const QModelIndex &parent) {
+void GTUtilsProjectTreeView::checkObjectTypes(HI::GUITestOpStatus& os, QTreeView* treeView, const QSet<GObjectType>& acceptableTypes, const QModelIndex& parent) {
     CHECK_SET_ERR(treeView != nullptr, "Tree view is null");
     CHECK_SET_ERR(!acceptableTypes.isEmpty(), "List of acceptable types is empty");
 
-    QAbstractItemModel *model = treeView->model();
+    QAbstractItemModel* model = treeView->model();
     CHECK_SET_ERR(model != nullptr, "Tree model is null");
 
-    auto proxyModel = qobject_cast<QSortFilterProxyModel *>(model);
+    auto proxyModel = qobject_cast<QSortFilterProxyModel*>(model);
     int rowCount = proxyModel == nullptr ? model->rowCount(parent) : proxyModel->rowCount(parent);
     for (int i = 0; i < rowCount; i++) {
         QModelIndex index = proxyModel == nullptr ? model->index(i, 0, parent) : proxyModel->mapToSource(proxyModel->index(i, 0, parent));
-        GObject *object = ProjectViewModel::toObject(index);
+        GObject* object = ProjectViewModel::toObject(index);
         if (object != nullptr && Qt::NoItemFlags != model->flags(index) && !acceptableTypes.contains(object->getGObjectType()))
             CHECK_SET_ERR(object == nullptr || Qt::NoItemFlags == model->flags(index) || acceptableTypes.contains(object->getGObjectType()), "Object has unexpected type");
 
@@ -569,8 +569,8 @@ void GTUtilsProjectTreeView::checkObjectTypes(HI::GUITestOpStatus &os, QTreeView
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSelectedItem"
-QString GTUtilsProjectTreeView::getSelectedItem(HI::GUITestOpStatus &os) {
-    QTreeView *treeView = getTreeView(os);
+QString GTUtilsProjectTreeView::getSelectedItem(HI::GUITestOpStatus& os) {
+    QTreeView* treeView = getTreeView(os);
     GT_CHECK_RESULT(treeView != nullptr, "tree view is NULL", nullptr);
 
     QModelIndexList list = treeView->selectionModel()->selectedIndexes();
@@ -585,31 +585,31 @@ QString GTUtilsProjectTreeView::getSelectedItem(HI::GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getFont"
-QFont GTUtilsProjectTreeView::getFont(HI::GUITestOpStatus &os, QModelIndex index) {
-    QTreeView *treeView = getTreeView(os);
-    QAbstractItemModel *model = treeView->model();
+QFont GTUtilsProjectTreeView::getFont(HI::GUITestOpStatus& os, QModelIndex index) {
+    QTreeView* treeView = getTreeView(os);
+    QAbstractItemModel* model = treeView->model();
     QFont result = qvariant_cast<QFont>(model->data(index, Qt::FontRole));
     return result;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getIcon"
-QIcon GTUtilsProjectTreeView::getIcon(HI::GUITestOpStatus &os, QModelIndex index) {
-    QTreeView *treeView = getTreeView(os);
-    QAbstractItemModel *model = treeView->model();
+QIcon GTUtilsProjectTreeView::getIcon(HI::GUITestOpStatus& os, QModelIndex index) {
+    QTreeView* treeView = getTreeView(os);
+    QAbstractItemModel* model = treeView->model();
     QIcon result = qvariant_cast<QIcon>(model->data(index, Qt::DecorationRole));
     return result;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "itemModificationCheck"
-void GTUtilsProjectTreeView::itemModificationCheck(HI::GUITestOpStatus &os, const QString &itemName, bool modified) {
+void GTUtilsProjectTreeView::itemModificationCheck(HI::GUITestOpStatus& os, const QString& itemName, bool modified) {
     itemModificationCheck(os, findIndex(os, itemName), modified);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "itemModificationCheck"
-void GTUtilsProjectTreeView::itemModificationCheck(HI::GUITestOpStatus &os, QModelIndex index, bool modified) {
+void GTUtilsProjectTreeView::itemModificationCheck(HI::GUITestOpStatus& os, QModelIndex index, bool modified) {
     GT_CHECK(index.isValid(), "item is valid");
     QVariant data = index.data(Qt::TextColorRole);
     bool modState = !(QVariant() == data);
@@ -618,7 +618,7 @@ void GTUtilsProjectTreeView::itemModificationCheck(HI::GUITestOpStatus &os, QMod
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "itemActiveCheck"
-void GTUtilsProjectTreeView::itemActiveCheck(HI::GUITestOpStatus &os, QModelIndex index, bool active) {
+void GTUtilsProjectTreeView::itemActiveCheck(HI::GUITestOpStatus& os, QModelIndex index, bool active) {
     GT_CHECK(index.isValid(), "item is NULL");
     QVariant data = index.data(Qt::FontRole);
 
@@ -628,10 +628,10 @@ void GTUtilsProjectTreeView::itemActiveCheck(HI::GUITestOpStatus &os, QModelInde
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isVisible"
-bool GTUtilsProjectTreeView::isVisible(HI::GUITestOpStatus &os) {
+bool GTUtilsProjectTreeView::isVisible(HI::GUITestOpStatus& os) {
     GTGlobals::FindOptions options;
     options.failIfNotFound = false;
-    QWidget *documentTreeWidget = GTWidget::findWidget(os, widgetName, nullptr, options);
+    QWidget* documentTreeWidget = GTWidget::findWidget(os, widgetName, nullptr, options);
     if (documentTreeWidget) {
         return true;
     } else {
@@ -641,25 +641,25 @@ bool GTUtilsProjectTreeView::isVisible(HI::GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "dragAndDrop"
-void GTUtilsProjectTreeView::dragAndDrop(HI::GUITestOpStatus &os, const QModelIndex &from, const QModelIndex &to) {
+void GTUtilsProjectTreeView::dragAndDrop(HI::GUITestOpStatus& os, const QModelIndex& from, const QModelIndex& to) {
     sendDragAndDrop(os, getItemCenter(os, from), getItemCenter(os, to));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "dragAndDrop"
-void GTUtilsProjectTreeView::dragAndDrop(HI::GUITestOpStatus &os, const QModelIndex &from, QWidget *to) {
+void GTUtilsProjectTreeView::dragAndDrop(HI::GUITestOpStatus& os, const QModelIndex& from, QWidget* to) {
     sendDragAndDrop(os, getItemCenter(os, from), to);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "dragAndDrop"
-void GTUtilsProjectTreeView::dragAndDrop(GUITestOpStatus &os, const QStringList &from, QWidget *to) {
+void GTUtilsProjectTreeView::dragAndDrop(GUITestOpStatus& os, const QStringList& from, QWidget* to) {
     dragAndDrop(os, findIndex(os, from), to);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isVisible"
-void GTUtilsProjectTreeView::dragAndDropSeveralElements(HI::GUITestOpStatus &os, QModelIndexList from, QModelIndex to) {
+void GTUtilsProjectTreeView::dragAndDropSeveralElements(HI::GUITestOpStatus& os, QModelIndexList from, QModelIndex to) {
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     foreach (QModelIndex index, from) {
         scrollToIndexAndMakeExpanded(os, getTreeView(os), index);
@@ -675,48 +675,48 @@ void GTUtilsProjectTreeView::dragAndDropSeveralElements(HI::GUITestOpStatus &os,
 }
 #undef GT_METHOD_NAME
 
-void GTUtilsProjectTreeView::sendDragAndDrop(HI::GUITestOpStatus & /*os*/, const QPoint &enterPos, const QPoint &dropPos) {
+void GTUtilsProjectTreeView::sendDragAndDrop(HI::GUITestOpStatus& /*os*/, const QPoint& enterPos, const QPoint& dropPos) {
     GTMouseDriver::dragAndDrop(enterPos, dropPos);
     GTGlobals::sleep(1000);
 }
 
-void GTUtilsProjectTreeView::sendDragAndDrop(HI::GUITestOpStatus &os, const QPoint &enterPos, QWidget *dropWidget) {
+void GTUtilsProjectTreeView::sendDragAndDrop(HI::GUITestOpStatus& os, const QPoint& enterPos, QWidget* dropWidget) {
     sendDragAndDrop(os, enterPos, GTWidget::getWidgetCenter(dropWidget));
 }
 
-void GTUtilsProjectTreeView::expandProjectView(HI::GUITestOpStatus &os) {
+void GTUtilsProjectTreeView::expandProjectView(HI::GUITestOpStatus& os) {
     class SetSizesScenario : public CustomScenario {
     public:
-        SetSizesScenario(QSplitter *_splitter)
+        SetSizesScenario(QSplitter* _splitter)
             : splitter(_splitter) {
         }
-        void run(HI::GUITestOpStatus &) override {
+        void run(HI::GUITestOpStatus&) override {
             splitter->setSizes(QList<int>() << splitter->height() << 0);
         }
-        QSplitter *splitter = nullptr;
+        QSplitter* splitter = nullptr;
     };
-    auto splitter = GTWidget::findExactWidget<QSplitter *>(os, "splitter", GTWidget::findWidget(os, "project_view"));
+    auto splitter = GTWidget::findExactWidget<QSplitter*>(os, "splitter", GTWidget::findWidget(os, "project_view"));
     GTThread::runInMainThread(os, new SetSizesScenario(splitter));
 }
 
 #define GT_METHOD_NAME "markSequenceAsCircular"
-void GTUtilsProjectTreeView::markSequenceAsCircular(HI::GUITestOpStatus &os, const QString &sequenceObjectName) {
+void GTUtilsProjectTreeView::markSequenceAsCircular(HI::GUITestOpStatus& os, const QString& sequenceObjectName) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Mark as circular"));
     click(os, sequenceObjectName, Qt::RightButton);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getDocuments"
-QMap<QString, QStringList> GTUtilsProjectTreeView::getDocuments(GUITestOpStatus &os) {
+QMap<QString, QStringList> GTUtilsProjectTreeView::getDocuments(GUITestOpStatus& os) {
     ensureFilteringIsDisabled(os);
     GTGlobals::FindOptions options(false, Qt::MatchContains, 1);
     const QModelIndexList documentsItems = findIndeciesInProjectViewNoWait(os, "", QModelIndex(), 0, options);
 
     QMap<QString, QStringList> documents;
-    foreach (const QModelIndex &documentItem, documentsItems) {
+    foreach (const QModelIndex& documentItem, documentsItems) {
         const QModelIndexList objectsItems = findIndeciesInProjectViewNoWait(os, "", documentItem, 0, options);
         QStringList objects;
-        foreach (const QModelIndex &objectItem, objectsItems) {
+        foreach (const QModelIndex& objectItem, objectsItems) {
             objects << objectItem.data().toString();
         }
         documents.insert(documentItem.data().toString(), objects);

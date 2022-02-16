@@ -29,27 +29,27 @@ namespace U2 {
 
 namespace Js {
 
-JsScheduler::JsScheduler(Workflow::Schema *scheme, const Local<Function> &callback)
+JsScheduler::JsScheduler(Workflow::Schema* scheme, const Local<Function>& callback)
     : ScriptableScheduler(scheme), schedulerCallback(callback) {
 }
 
 JsScheduler::~JsScheduler() {
 }
 
-Task *JsScheduler::tick() {
+Task* JsScheduler::tick() {
     Local<Value> argv;
     schedulerCallback->Call(Context::GetCurrent()->Global(), 0, &argv);
-    QList<Task *> tickTasks;
+    QList<Task*> tickTasks;
     foreach (ActorId actor, nextTicks) {
-        LocalWorkflow::BaseWorker *worker = schema->actorById(actor)->castPeer<LocalWorkflow::BaseWorker>();
+        LocalWorkflow::BaseWorker* worker = schema->actorById(actor)->castPeer<LocalWorkflow::BaseWorker>();
         worker->deleteBackupMessagesFromPreviousTick();
-        Task *newTask = worker->tick();
+        Task* newTask = worker->tick();
         debugInfo->checkActorForBreakpoint(schema->actorById(actor));
         if (nullptr != newTask) {
             tickTasks.append(newTask);
         }
     }
-    Task *result = (tickTasks.isEmpty()) ? nullptr : new MultiTask("Js-driven worker tasks", tickTasks);
+    Task* result = (tickTasks.isEmpty()) ? nullptr : new MultiTask("Js-driven worker tasks", tickTasks);
     if (nullptr != result) {
         result->setMaxParallelSubtasks(tickTasks.size());
     }

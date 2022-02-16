@@ -28,14 +28,14 @@ const QString BaseWelcomePageActions::CREATE_SEQUENCE = "create_sequence";
 const QString BaseWelcomePageActions::CREATE_WORKFLOW = "create_workflow";
 const QString BaseWelcomePageActions::QUICK_START = "quick_start";
 
-WelcomePageAction::WelcomePageAction(const QString &id)
+WelcomePageAction::WelcomePageAction(const QString& id)
     : id(id) {
 }
 
 WelcomePageAction::~WelcomePageAction() {
 }
 
-const QString &WelcomePageAction::getId() const {
+const QString& WelcomePageAction::getId() const {
     return id;
 }
 

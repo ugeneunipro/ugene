@@ -32,16 +32,16 @@ namespace U2 {
 class WelcomePageWidget : public QScrollArea {
     Q_OBJECT
 public:
-    WelcomePageWidget(QWidget *parent);
+    WelcomePageWidget(QWidget* parent);
 
-    void updateRecent(const QStringList &recentProjects, const QStringList &recentFiles);
+    void updateRecent(const QStringList& recentProjects, const QStringList& recentFiles);
 
-    bool eventFilter(QObject *watched, QEvent *event) override;
+    bool eventFilter(QObject* watched, QEvent* event) override;
 
 protected:
-    void dragEnterEvent(QDragEnterEvent *event) override;
-    void dropEvent(QDropEvent *event) override;
-    void dragMoveEvent(QDragMoveEvent *event) override;
+    void dragEnterEvent(QDragEnterEvent* event) override;
+    void dropEvent(QDropEvent* event) override;
+    void dragMoveEvent(QDragMoveEvent* event) override;
 
 private slots:
     void sl_openFiles();
@@ -52,14 +52,14 @@ private slots:
     void sl_openRecentFile();
 
 private:
-    void runAction(const QString &actionId);
+    void runAction(const QString& actionId);
 
-    QWidget *createHeaderWidget();
-    QWidget *createMiddleWidget();
-    QWidget *createFooterWidget();
+    QWidget* createHeaderWidget();
+    QWidget* createMiddleWidget();
+    QWidget* createFooterWidget();
 
-    QVBoxLayout *recentFilesLayout = nullptr;
-    QVBoxLayout *recentProjectsLayout = nullptr;
+    QVBoxLayout* recentFilesLayout = nullptr;
+    QVBoxLayout* recentProjectsLayout = nullptr;
 };
 
 }  // namespace U2

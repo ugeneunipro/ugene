@@ -37,7 +37,7 @@ typedef PrompterBase<QDPrompter> QDPrompterBase;
 class QDPrompter : public QDPrompterBase {
     Q_OBJECT
 public:
-    QDPrompter(Actor *p = 0)
+    QDPrompter(Actor* p = 0)
         : QDPrompterBase(p) {
     }
 
@@ -48,17 +48,17 @@ protected:
 class QDWorker : public BaseWorker {
     Q_OBJECT
 public:
-    QDWorker(Actor *a);
+    QDWorker(Actor* a);
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 private slots:
-    void sl_taskFinished(Task *);
+    void sl_taskFinished(Task*);
 
 protected:
     IntegralBus *input, *output;
-    QDScheme *scheme;
+    QDScheme* scheme;
 };
 
 class QDWorkerFactory : public DomainFactory {
@@ -68,7 +68,7 @@ public:
     QDWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new QDWorker(a);
     }
 };

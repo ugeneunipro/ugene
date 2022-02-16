@@ -32,14 +32,14 @@
 
 namespace U2 {
 
-PlainTextFormat::PlainTextFormat(QObject *p)
+PlainTextFormat::PlainTextFormat(QObject* p)
     : TextDocumentFormat(p, BaseDocumentFormats::PLAIN_TEXT, DocumentFormatFlags_W1, {"txt"}) {
     formatName = tr("Plain text");
     supportedObjectTypes += GObjectTypes::TEXT;
     formatDescription = tr("A simple plain text file.");
 }
 
-Document *PlainTextFormat::loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) {
+Document* PlainTextFormat::loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) {
     // Read the whole text file.
     QString text;
     reader.read(os, text, -1);
@@ -52,21 +52,21 @@ Document *PlainTextFormat::loadTextDocument(IOAdapterReader &reader, const U2Dbi
 
     QVariantMap textObjectHints;
     textObjectHints.insert(DBI_FOLDER_HINT, hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER));
-    TextObject *textObject = TextObject::createInstance(text, reader.getURL().baseFileName(), dbiRef, os, textObjectHints);
+    TextObject* textObject = TextObject::createInstance(text, reader.getURL().baseFileName(), dbiRef, os, textObjectHints);
     CHECK_OP(os, nullptr);
-    QList<GObject *> objects = {textObject};
+    QList<GObject*> objects = {textObject};
     return new Document(this, reader.getFactory(), reader.getURL(), dbiRef, objects, hints);
 }
 
-void PlainTextFormat::storeTextDocument(IOAdapterWriter &writer, Document *document, U2OpStatus &os) {
+void PlainTextFormat::storeTextDocument(IOAdapterWriter& writer, Document* document, U2OpStatus& os) {
     CHECK(document->getObjects().size() == 1, );
-    auto textObject = qobject_cast<TextObject *>(document->getObjects().first());
+    auto textObject = qobject_cast<TextObject*>(document->getObjects().first());
     SAFE_POINT(textObject != nullptr, L10N::nullPointerError("Text object"), );
     QString text = textObject->getText();
     writer.write(os, text);
 }
 
-FormatCheckResult PlainTextFormat::checkRawTextData(const QString &, const GUrl &) const {
+FormatCheckResult PlainTextFormat::checkRawTextData(const QString&, const GUrl&) const {
     // Any plain text document can be opened as a plain text.
     return FormatDetection_LowSimilarity;
 }

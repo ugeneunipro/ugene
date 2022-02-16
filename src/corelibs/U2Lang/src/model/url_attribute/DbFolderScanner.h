@@ -29,16 +29,16 @@ namespace U2 {
 
 class U2LANG_EXPORT DbFolderScanner : public FilesIterator {
 public:
-    DbFolderScanner(const QString &url, const QString &accFilter, const QString &objNameFilter, bool recursive);
+    DbFolderScanner(const QString& url, const QString& accFilter, const QString& objNameFilter, bool recursive);
 
     virtual QString getNextFile();
     virtual bool hasNext();
 
 private:
-    void initTargetObjectList(const QSet<QString> &paths, const QString &objNameFilter, U2OpStatus &os);
-    void getSubfolders(const QString &folderPath, QSet<QString> &subfolders, U2OpStatus &os);
-    bool passFilter(const QString &objUrl);
-    bool hasAccession(const QString &objUrl);
+    void initTargetObjectList(const QSet<QString>& paths, const QString& objNameFilter, U2OpStatus& os);
+    void getSubfolders(const QString& folderPath, QSet<QString>& subfolders, U2OpStatus& os);
+    bool passFilter(const QString& objUrl);
+    bool hasAccession(const QString& objUrl);
 
     DbiConnection dbConnection;
     QStringList unusedObjects;

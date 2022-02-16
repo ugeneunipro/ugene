@@ -46,7 +46,7 @@
 
 namespace U2 {
 
-DotPlotDialog::DotPlotDialog(QWidget *parent, AnnotatedDNAView *currentADV, int minLen, int identity, ADVSequenceObjectContext *sequenceX, ADVSequenceObjectContext *sequenceY, bool dir, bool inv, const QColor &dColor, const QColor &iColor, bool hideLoadSequences)
+DotPlotDialog::DotPlotDialog(QWidget* parent, AnnotatedDNAView* currentADV, int minLen, int identity, ADVSequenceObjectContext* sequenceX, ADVSequenceObjectContext* sequenceY, bool dir, bool inv, const QColor& dColor, const QColor& iColor, bool hideLoadSequences)
     : QDialog(parent), xSeq(sequenceX), ySeq(sequenceY), adv(currentADV), directColor(dColor), invertedColor(iColor), openSequenceTask(nullptr) {
     setupUi(this);
 
@@ -84,9 +84,9 @@ DotPlotDialog::DotPlotDialog(QWidget *parent, AnnotatedDNAView *currentADV, int 
     connect(loadSequenceButton, SIGNAL(clicked()), SLOT(sl_loadSequenceButton()));
 
     // listen to project modification to update list of available sequence objects.
-    Project *project = AppContext::getProject();
-    connect(project, SIGNAL(si_documentAdded(Document *)), SLOT(sl_documentAddedOrRemoved()));
-    connect(project, SIGNAL(si_documentRemoved(Document *)), SLOT(sl_documentAddedOrRemoved()));
+    Project* project = AppContext::getProject();
+    connect(project, SIGNAL(si_documentAdded(Document*)), SLOT(sl_documentAddedOrRemoved()));
+    connect(project, SIGNAL(si_documentRemoved(Document*)), SLOT(sl_documentAddedOrRemoved()));
     reconnectAllProjectDocuments();
     updateSequenceSelectors();
 
@@ -100,11 +100,11 @@ DotPlotDialog::DotPlotDialog(QWidget *parent, AnnotatedDNAView *currentADV, int 
 }
 
 void DotPlotDialog::reconnectAllProjectDocuments() {
-    Project *project = AppContext::getProject();
-    foreach (Document *d, project->getDocuments()) {
+    Project* project = AppContext::getProject();
+    foreach (Document* d, project->getDocuments()) {
         d->disconnect(this);
-        connect(d, SIGNAL(si_objectAdded(GObject *)), SLOT(sl_objectAddedOrRemoved()));
-        connect(d, SIGNAL(si_objectRemoved(GObject *)), SLOT(sl_objectAddedOrRemoved()));
+        connect(d, SIGNAL(si_objectAdded(GObject*)), SLOT(sl_objectAddedOrRemoved()));
+        connect(d, SIGNAL(si_objectRemoved(GObject*)), SLOT(sl_objectAddedOrRemoved()));
         connect(d, SIGNAL(si_loadedStateChanged()), SLOT(sl_loadedStateChanged()));
     }
 }
@@ -116,9 +116,9 @@ void DotPlotDialog::updateSequenceSelectors() {
     int xSeqIndex = -1, ySeqIndex = -1, curIndex = 0;
 
     // sequences in the project
-    QList<GObject *> sequenceObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::SEQUENCE);
-    foreach (GObject *obj, sequenceObjects) {
-        U2SequenceObject *seqObj = qobject_cast<U2SequenceObject *>(obj);
+    QList<GObject*> sequenceObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::SEQUENCE);
+    foreach (GObject* obj, sequenceObjects) {
+        U2SequenceObject* seqObj = qobject_cast<U2SequenceObject*>(obj);
         QString name = seqObj->getGObjectName();
 
         xAxisCombo->addItem(name);
@@ -160,14 +160,14 @@ void DotPlotDialog::sl_sequenceSelectorIndexChanged() {
     int xIdx = xAxisCombo->currentIndex();
     int yIdx = yAxisCombo->currentIndex();
 
-    QList<GObject *> sequenceObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::SEQUENCE);
+    QList<GObject*> sequenceObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::SEQUENCE);
     // 'sl_sequenceSelectorIndexChanged' is called twice: when the first and when the second index is set.
     // Process only valid callbacks, ignore non-valid ones.
     CHECK(xIdx >= 0 && xIdx < sequenceObjects.length(), );
     CHECK(yIdx >= 0 && yIdx < sequenceObjects.length(), );
 
-    auto objX = qobject_cast<U2SequenceObject *>(sequenceObjects[xIdx]);
-    auto objY = qobject_cast<U2SequenceObject *>(sequenceObjects[yIdx]);
+    auto objX = qobject_cast<U2SequenceObject*>(sequenceObjects[xIdx]);
+    auto objY = qobject_cast<U2SequenceObject*>(sequenceObjects[yIdx]);
     SAFE_POINT(objX != nullptr, "First object is not a sequence object", )
     SAFE_POINT(objY != nullptr, "Second object is not a sequence object", )
 
@@ -184,12 +184,12 @@ void DotPlotDialog::accept() {
     int xIdx = xAxisCombo->currentIndex();
     int yIdx = yAxisCombo->currentIndex();
 
-    QList<GObject *> sequenceObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::SEQUENCE);
+    QList<GObject*> sequenceObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::SEQUENCE);
     SAFE_POINT(xIdx >= 0 && xIdx < sequenceObjects.length(), QString("DotPlotDialog: index is out of range: %1").arg(xIdx), );
     SAFE_POINT(yIdx >= 0 && yIdx < sequenceObjects.length(), QString("DotPlotDialog: index is out of range: %1").arg(yIdx), );
 
-    U2SequenceObject *objX = qobject_cast<U2SequenceObject *>(sequenceObjects[xIdx]);
-    U2SequenceObject *objY = qobject_cast<U2SequenceObject *>(sequenceObjects[yIdx]);
+    U2SequenceObject* objX = qobject_cast<U2SequenceObject*>(sequenceObjects[xIdx]);
+    U2SequenceObject* objY = qobject_cast<U2SequenceObject*>(sequenceObjects[yIdx]);
 
     if (!isObjectInADV(objX)) {
         adv->addObject(objX);
@@ -216,12 +216,12 @@ void DotPlotDialog::sl_minLenHeuristics() {
     int xIdx = xAxisCombo->currentIndex();
     int yIdx = yAxisCombo->currentIndex();
 
-    QList<GObject *> sequenceObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::SEQUENCE);
+    QList<GObject*> sequenceObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::SEQUENCE);
     SAFE_POINT(xIdx >= 0 && xIdx < sequenceObjects.length(), QString("DotPlotDialog: index is out of range: %1").arg(xIdx), );
     SAFE_POINT(yIdx >= 0 && yIdx < sequenceObjects.length(), QString("DotPlotDialog: index is out of range: %1").arg(yIdx), );
 
-    U2SequenceObject *objX = qobject_cast<U2SequenceObject *>(sequenceObjects[xIdx]);
-    U2SequenceObject *objY = qobject_cast<U2SequenceObject *>(sequenceObjects[yIdx]);
+    U2SequenceObject* objX = qobject_cast<U2SequenceObject*>(sequenceObjects[xIdx]);
+    U2SequenceObject* objY = qobject_cast<U2SequenceObject*>(sequenceObjects[yIdx]);
 
     qint64 xSeqLen = objX->getSequenceLength();
     qint64 ySeqLen = objY->getSequenceLength();
@@ -311,7 +311,7 @@ void DotPlotDialog::sl_loadSequenceButton() {
     LastUsedDirHelper lod("DotPlot file");
     lod.url = U2FileDialog::getOpenFileName(this, tr("Open file"), lod.dir, filter);
     if (!lod.url.isEmpty()) {
-        Task *tasks = new Task("Adding document to the project", TaskFlag_NoRun);
+        Task* tasks = new Task("Adding document to the project", TaskFlag_NoRun);
 
         if (!AppContext::getProject()) {
             tasks->addSubTask(AppContext::getProjectLoader()->createNewProjectTask());
@@ -326,14 +326,14 @@ void DotPlotDialog::sl_loadSequenceButton() {
         }
         tasks->addSubTask(openSequenceTask);
 
-        connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task *)), SLOT(sl_loadTaskStateChanged(Task *)));
+        connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task*)), SLOT(sl_loadTaskStateChanged(Task*)));
 
         AppContext::getTaskScheduler()->registerTopLevelTask(tasks);
     }
 }
 
-void DotPlotDialog::sl_loadTaskStateChanged(Task *t) {
-    DotPlotLoadDocumentsTask *loadTask = qobject_cast<DotPlotLoadDocumentsTask *>(t);
+void DotPlotDialog::sl_loadTaskStateChanged(Task* t) {
+    DotPlotLoadDocumentsTask* loadTask = qobject_cast<DotPlotLoadDocumentsTask*>(t);
     if (loadTask == nullptr) {
         return;
     }
@@ -348,16 +348,16 @@ void DotPlotDialog::updateColors() {
     invertedColorButton->setStyleSheet(COLOR_STYLE.arg(invertedColor.name()));
 }
 
-bool DotPlotDialog::isObjectInADV(GObject *obj) {
+bool DotPlotDialog::isObjectInADV(GObject* obj) {
     SAFE_POINT(obj != nullptr, "Object is NULL in DotPlotDialog::isObjectInADV(GObject* obj)", false);
 
     return adv->containsObject(obj);
 }
 
-GObject *DotPlotDialog::getGObjectByName(const QString &gObjectName) {
-    QList<GObject *> allSequences = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::SEQUENCE);
-    GObject *obj = nullptr;
-    foreach (GObject *s, allSequences) {
+GObject* DotPlotDialog::getGObjectByName(const QString& gObjectName) {
+    QList<GObject*> allSequences = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::SEQUENCE);
+    GObject* obj = nullptr;
+    foreach (GObject* s, allSequences) {
         if (gObjectName == s->getGObjectName()) {
             obj = s;
         }

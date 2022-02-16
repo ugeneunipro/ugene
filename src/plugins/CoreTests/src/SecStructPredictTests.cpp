@@ -41,7 +41,7 @@ namespace U2 {
 #define OUTPUT_SEQ_ATTR "output-seq"
 #define ALG_NAME_ATTR "algorithm-name"
 
-void GTest_SecStructPredictAlgorithm::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_SecStructPredictAlgorithm::init(XMLTestFormat*, const QDomElement& el) {
     inputSeq = el.attribute(SEQ_ATTR);
     if (inputSeq.isEmpty()) {
         failMissingValue(SEQ_ATTR);
@@ -62,18 +62,18 @@ void GTest_SecStructPredictAlgorithm::init(XMLTestFormat *, const QDomElement &e
 }
 
 void GTest_SecStructPredictAlgorithm::prepare() {
-    SecStructPredictAlgRegistry *sspr = AppContext::getSecStructPredictAlgRegistry();
+    SecStructPredictAlgRegistry* sspr = AppContext::getSecStructPredictAlgRegistry();
     if (!sspr->hadRegistered(algName)) {
         stateInfo.setError(QString(tr("Algorithm named %1 not found")).arg(algName));
         return;
     }
-    SecStructPredictTaskFactory *factory = sspr->getAlgorithm(algName);
+    SecStructPredictTaskFactory* factory = sspr->getAlgorithm(algName);
     task = factory->createTaskInstance(inputSeq.toLatin1());
     addSubTask(task);
 }
 
 Task::ReportResult GTest_SecStructPredictAlgorithm::report() {
-    const QByteArray &output = task->getSSFormatResults();
+    const QByteArray& output = task->getSSFormatResults();
 
     if (output != outputSeq) {
         stateInfo.setError(tr("Output sec struct sequence is incorrect"));
@@ -85,7 +85,7 @@ Task::ReportResult GTest_SecStructPredictAlgorithm::report() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-void GTest_SecStructPredictTask::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_SecStructPredictTask::init(XMLTestFormat*, const QDomElement& el) {
     seqName = el.attribute(SEQ_NAME_ATTR);
     if (seqName.isEmpty()) {
         failMissingValue(SEQ_NAME_ATTR);
@@ -106,17 +106,17 @@ void GTest_SecStructPredictTask::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 void GTest_SecStructPredictTask::prepare() {
-    U2SequenceObject *mySequence = getContext<U2SequenceObject>(this, seqName);
+    U2SequenceObject* mySequence = getContext<U2SequenceObject>(this, seqName);
     if (mySequence == nullptr) {
         stateInfo.setError(QString("error can't cast to sequence from GObject"));
         return;
     }
-    SecStructPredictAlgRegistry *sspr = AppContext::getSecStructPredictAlgRegistry();
+    SecStructPredictAlgRegistry* sspr = AppContext::getSecStructPredictAlgRegistry();
     if (!sspr->hadRegistered(algName)) {
         stateInfo.setError(QString(tr("Algorithm named %1 not found")).arg(algName));
         return;
     }
-    SecStructPredictTaskFactory *factory = sspr->getAlgorithm(algName);
+    SecStructPredictTaskFactory* factory = sspr->getAlgorithm(algName);
     QByteArray seqData = mySequence->getWholeSequenceData(stateInfo);
     task = factory->createTaskInstance(seqData);
     CHECK_OP(stateInfo, );
@@ -149,8 +149,8 @@ void GTest_SecStructPredictTask::cleanup() {
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-QList<XMLTestFactory *> SecStructPredictTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> SecStructPredictTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_SecStructPredictAlgorithm::createFactory());
     res.append(GTest_SecStructPredictTask::createFactory());
     return res;

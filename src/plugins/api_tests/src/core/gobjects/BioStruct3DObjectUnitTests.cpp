@@ -56,14 +56,14 @@ U2EntityRef BioStruct3DObjectTestData::getObjRef() {
     return objRef;
 }
 
-U2ObjectDbi *BioStruct3DObjectTestData::getObjDbi() {
+U2ObjectDbi* BioStruct3DObjectTestData::getObjDbi() {
     if (!inited) {
         init();
     }
     return dbiProvider.getDbi()->getObjectDbi();
 }
 
-UdrDbi *BioStruct3DObjectTestData::getUdrDbi() {
+UdrDbi* BioStruct3DObjectTestData::getUdrDbi() {
     if (!inited) {
         init();
     }
@@ -107,17 +107,17 @@ void BioStruct3DObjectTestData::shutdown() {
     }
 }
 
-const BioStruct3D &BioStruct3DObjectTestData::getBioStruct() {
+const BioStruct3D& BioStruct3DObjectTestData::getBioStruct() {
     if (!inited) {
         init();
     }
     return bioStruct;
 }
 
-BioStruct3D BioStruct3DObjectTestData::readBioStruct(const QString &fileName, U2OpStatus &os, bool useSessionDbi) {
-    TestRunnerSettings *trs = AppContext::getAppSettings()->getTestRunnerSettings();
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-    DocumentFormat *f = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_PDB);
+BioStruct3D BioStruct3DObjectTestData::readBioStruct(const QString& fileName, U2OpStatus& os, bool useSessionDbi) {
+    TestRunnerSettings* trs = AppContext::getAppSettings()->getTestRunnerSettings();
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+    DocumentFormat* f = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_PDB);
     SAFE_POINT_EXT(nullptr != f, os.setError("NULL format"), BioStruct3D());
 
     QVariantMap hints;
@@ -127,10 +127,10 @@ BioStruct3D BioStruct3DObjectTestData::readBioStruct(const QString &fileName, U2
     QScopedPointer<Document> doc(f->loadDocument(iof, trs->getVar("COMMON_DATA_DIR") + "/unit_tests/" + fileName, hints, os));
     CHECK_OP(os, BioStruct3D());
 
-    QList<GObject *> objs = doc->findGObjectByType(GObjectTypes::BIOSTRUCTURE_3D);
+    QList<GObject*> objs = doc->findGObjectByType(GObjectTypes::BIOSTRUCTURE_3D);
     CHECK_EXT(1 == objs.size(), os.setError("object list size"), BioStruct3D());
 
-    BioStruct3DObject *obj = dynamic_cast<BioStruct3DObject *>(objs.first());
+    BioStruct3DObject* obj = dynamic_cast<BioStruct3DObject*>(objs.first());
     CHECK_EXT(nullptr != obj, os.setError("NULL object"), BioStruct3D());
 
     return obj->getBioStruct3D();
@@ -167,8 +167,8 @@ IMPLEMENT_TEST(BioStruct3DObjectUnitTests, clone) {
     BioStruct3DObject object("object", BioStruct3DObjectTestData::getObjRef());
 
     U2OpStatusImpl os;
-    GObject *clonedGObj = object.clone(BioStruct3DObjectTestData::getDbiRef(), os);
-    QScopedPointer<BioStruct3DObject> cloned(dynamic_cast<BioStruct3DObject *>(clonedGObj));
+    GObject* clonedGObj = object.clone(BioStruct3DObjectTestData::getDbiRef(), os);
+    QScopedPointer<BioStruct3DObject> cloned(dynamic_cast<BioStruct3DObject*>(clonedGObj));
     CHECK_NO_ERROR(os);
 
     CHECK_TRUE(cloned->getBioStruct3D().pdbId == object.getBioStruct3D().pdbId, "pdbId");
@@ -178,7 +178,7 @@ IMPLEMENT_TEST(BioStruct3DObjectUnitTests, clone_NullDbi) {
     BioStruct3DObject object("object", BioStruct3DObjectTestData::getObjRef());
 
     U2OpStatusImpl os;
-    GObject *clonedGObj = object.clone(U2DbiRef(), os);
+    GObject* clonedGObj = object.clone(U2DbiRef(), os);
     Q_UNUSED(clonedGObj);
     CHECK_TRUE(os.hasError(), "no error");
 }
@@ -189,7 +189,7 @@ IMPLEMENT_TEST(BioStruct3DObjectUnitTests, clone_NullObj) {
     BioStruct3DObject object("object", objRef);
 
     U2OpStatusImpl os;
-    GObject *clonedGObj = object.clone(BioStruct3DObjectTestData::getDbiRef(), os);
+    GObject* clonedGObj = object.clone(BioStruct3DObjectTestData::getDbiRef(), os);
     Q_UNUSED(clonedGObj);
     CHECK_TRUE(os.hasError(), "no error");
 }

@@ -1,23 +1,23 @@
 /**
-* UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
-* http://ugene.net
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-* MA 02110-1301, USA.
-*/
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * http://ugene.net
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
 
 #ifndef _U2_HMMER_BUILD_TASK_TEST_H_
 #define _U2_HMMER_BUILD_TASK_TEST_H_
@@ -31,8 +31,8 @@
 namespace U2 {
 
 /*****************************************
-* Builds hmm profile from input file
-*****************************************/
+ * Builds hmm profile from input file
+ *****************************************/
 class GTest_UHMMER3Build : public XmlTest {
     Q_OBJECT
 public:
@@ -51,7 +51,7 @@ public:
                                                         --hand ( requires RF annotation )*/
     static const QString SEED_OPTION_TAG;
 
-    static void setBuildSettings(HmmerBuildSettings &settings, const QDomElement &el, TaskStateInfo &ti);
+    static void setBuildSettings(HmmerBuildSettings& settings, const QDomElement& el, TaskStateInfo& ti);
 
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_UHMMER3Build, "uhmmer3-build")
@@ -69,13 +69,13 @@ private:
     QString outputDir;
     bool delOutFile;
     HmmerBuildSettings bldSettings;
-    HmmerBuildTask *buildTask;
+    HmmerBuildTask* buildTask;
 
-};    // GTest_UHMMER3Build
+};  // GTest_UHMMER3Build
 
 /*****************************************
-* Totally compares two hmm files
-*****************************************/
+ * Totally compares two hmm files
+ *****************************************/
 class GTest_CompareHmmFiles : public XmlTest {
     Q_OBJECT
 public:
@@ -97,8 +97,8 @@ private:
     bool file1Tmp;
     bool file2Tmp;
 
-};    // GTest_CompareHmmFiles
+};  // GTest_CompareHmmFiles
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

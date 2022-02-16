@@ -40,15 +40,15 @@ public:
     static const qreal EPSILON;
     static const int DEFAULT_HEIGHT;
 
-    GraphicsRectangularBranchItem(const QString &name, GraphicsRectangularBranchItem *pitem);
+    GraphicsRectangularBranchItem(const QString& name, GraphicsRectangularBranchItem* pitem);
     GraphicsRectangularBranchItem();
-    GraphicsRectangularBranchItem(qreal d, PhyBranch *branch, double nodeValue);
-    GraphicsRectangularBranchItem(qreal x, qreal y, const QString &name, qreal d, PhyBranch *branch);
-    GraphicsRectangularBranchItem(qreal x, qreal y, const QString &name);
+    GraphicsRectangularBranchItem(qreal d, PhyBranch* branch, double nodeValue);
+    GraphicsRectangularBranchItem(qreal x, qreal y, const QString& name, qreal d, PhyBranch* branch);
+    GraphicsRectangularBranchItem(qreal x, qreal y, const QString& name);
 
     QRectF boundingRect() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    void setParentItem(QGraphicsItem *item);
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
+    void setParentItem(QGraphicsItem* item);
 
     Direction getDirection() const {
         return direction;
@@ -71,26 +71,26 @@ public:
         collapsed = isCollapsed;
     }
     void swapSiblings();
-    void redrawBranches(int &current, qreal &minDistance, qreal &maxDistance, const PhyNode *root);
+    void redrawBranches(int& current, qreal& minDistance, qreal& maxDistance, const PhyNode* root);
 
-    const PhyBranch *getPhyBranch() const {
+    const PhyBranch* getPhyBranch() const {
         return phyBranch;
     }
-    GraphicsRectangularBranchItem *getChildItemByPhyBranch(const PhyBranch *branch);
+    GraphicsRectangularBranchItem* getChildItemByPhyBranch(const PhyBranch* branch);
 
     void drawCollapsedRegion();
-    void branchCollapsed(GraphicsRectangularBranchItem *branch) {
+    void branchCollapsed(GraphicsRectangularBranchItem* branch) {
         emit si_branchCollapsed(branch);
     }
 
 signals:
-    void si_branchCollapsed(GraphicsRectangularBranchItem *collapsedBranch);
+    void si_branchCollapsed(GraphicsRectangularBranchItem* collapsedBranch);
 
 private:
     qreal height;
     int cur_height_coef;
     Direction direction;
-    PhyBranch *phyBranch;
+    PhyBranch* phyBranch;
 };
 }  // namespace U2
 

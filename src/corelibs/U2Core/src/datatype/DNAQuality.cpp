@@ -34,12 +34,12 @@ const QString DNAQuality::ENCODED("Encoded");
 const int DNAQuality::MAX_PHRED33_VALUE = 74;
 const int DNAQuality::MIN_PHRED64_VALUE = 59;
 
-DNAQuality::DNAQuality(const QByteArray &qualScore)
+DNAQuality::DNAQuality(const QByteArray& qualScore)
     : qualCodes(qualScore),
       type(detectTypeByCodes(qualCodes)) {
 }
 
-DNAQuality::DNAQuality(const QByteArray &qualScore, DNAQualityType t)
+DNAQuality::DNAQuality(const QByteArray& qualScore, DNAQualityType t)
     : qualCodes(qualScore),
       type(t) {
 }
@@ -51,7 +51,7 @@ qint64 DNAQuality::memoryHint() const {
     return m;
 }
 
-void DNAQuality::setQualCodes(const QByteArray &qualCodes) {
+void DNAQuality::setQualCodes(const QByteArray& qualCodes) {
     bool zeroQuality = true;
     int prev = -1;
     for (int i = 0; i < qualCodes.size(); i++) {
@@ -93,7 +93,7 @@ QString DNAQuality::getDNAQualityNameByType(DNAQualityType t) {
     }
 }
 
-DNAQualityType DNAQuality::getDNAQualityTypeByName(const QString &name) {
+DNAQualityType DNAQuality::getDNAQualityTypeByName(const QString& name) {
     if (name == SOLEXA) {
         return DNAQualityType_Illumina;
     } else if (name == ILLUMINA) {
@@ -109,7 +109,7 @@ QStringList DNAQuality::getDNAQualityTypeNames() {
     return res;
 }
 
-DNAQualityType DNAQuality::detectTypeByCodes(const QByteArray &qualCodes) {
+DNAQualityType DNAQuality::detectTypeByCodes(const QByteArray& qualCodes) {
     int maxQualityValue = 33;
     int minQualityValue = 126;
     for (int i = 0; i < qualCodes.size(); i++) {

@@ -34,7 +34,7 @@ namespace U2 {
 const QString GTest_CompareTwoMsa::DOC1_ATTR = "doc1";
 const QString GTest_CompareTwoMsa::DOC2_ATTR = "doc2";
 
-void GTest_CompareTwoMsa::init(XMLTestFormat *, const QDomElement &element) {
+void GTest_CompareTwoMsa::init(XMLTestFormat*, const QDomElement& element) {
     docContextName = element.attribute(DOC1_ATTR);
     if (docContextName.isEmpty()) {
         failMissingValue(DOC1_ATTR);
@@ -49,22 +49,22 @@ void GTest_CompareTwoMsa::init(XMLTestFormat *, const QDomElement &element) {
 }
 
 Task::ReportResult GTest_CompareTwoMsa::report() {
-    Document *doc1 = getContext<Document>(this, docContextName);
+    Document* doc1 = getContext<Document>(this, docContextName);
     CHECK_EXT(nullptr != doc1, setError(QString("document not found: %1").arg(docContextName)), ReportResult_Finished);
 
-    const QList<GObject *> objs1 = doc1->getObjects();
+    const QList<GObject*> objs1 = doc1->getObjects();
     CHECK_EXT(1 == objs1.size(), setError(QString("document '%1' contains several objects: the comparison not implemented").arg(docContextName)), ReportResult_Finished);
 
-    MultipleSequenceAlignmentObject *msa1 = qobject_cast<MultipleSequenceAlignmentObject *>(objs1.first());
+    MultipleSequenceAlignmentObject* msa1 = qobject_cast<MultipleSequenceAlignmentObject*>(objs1.first());
     CHECK_EXT(nullptr != msa1, setError(QString("document '%1' contains an incorrect object: expected '%2', got '%3'").arg(docContextName).arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).arg(objs1.first()->getGObjectType())), ReportResult_Finished);
 
-    Document *doc2 = getContext<Document>(this, secondDocContextName);
+    Document* doc2 = getContext<Document>(this, secondDocContextName);
     CHECK_EXT(nullptr != doc2, setError(QString("document not found: %1").arg(secondDocContextName)), ReportResult_Finished);
 
-    const QList<GObject *> objs2 = doc2->getObjects();
+    const QList<GObject*> objs2 = doc2->getObjects();
     CHECK_EXT(1 == objs2.size(), setError(QString("document '%1' contains several objects: the comparison not implemented").arg(secondDocContextName)), ReportResult_Finished);
 
-    MultipleSequenceAlignmentObject *msa2 = qobject_cast<MultipleSequenceAlignmentObject *>(objs2.first());
+    MultipleSequenceAlignmentObject* msa2 = qobject_cast<MultipleSequenceAlignmentObject*>(objs2.first());
     CHECK_EXT(nullptr != msa2, setError(QString("document '%1' contains an incorrect object: expected '%2', got '%3'").arg(secondDocContextName).arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).arg(objs2.first()->getGObjectType())), ReportResult_Finished);
 
     const qint64 rowsNumber1 = msa1->getRowCount();
@@ -89,8 +89,8 @@ Task::ReportResult GTest_CompareTwoMsa::report() {
     return ReportResult_Finished;
 }
 
-QList<XMLTestFactory *> MsaObjectTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> MsaObjectTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_CompareTwoMsa::createFactory());
     return res;
 }

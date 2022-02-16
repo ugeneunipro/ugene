@@ -50,7 +50,7 @@ static const short SIZE_BEFORE_NUMBER_SEQUENCE_LENGTH = QString("obj|IxAlignment
 /**
  *returns the string from which the alignment information is started
  */
-static QString getLine(IOAdapter *io, char *buff, const QString &pattern, U2OpStatus &os) {
+static QString getLine(IOAdapter* io, char* buff, const QString& pattern, U2OpStatus& os) {
     bool lineOk = false;
     bool finishedReading = false;
     QString line;
@@ -76,7 +76,7 @@ static QString getLine(IOAdapter *io, char *buff, const QString &pattern, U2OpSt
     return line;
 }
 
-static int getNumber(QString string, int startPos, U2OpStatus &os) {
+static int getNumber(QString string, int startPos, U2OpStatus& os) {
     string = string.simplified();
     int resultLength = 0;
     int currentLength = 0;
@@ -128,7 +128,7 @@ static QByteArray getSequenceContent(QString string, int sequenceLength) {
     return byteArrayInfo;
 }
 
-static void createRows(IOAdapter *io, char *buff, const int sequnenceNum, const int alignmentLength, MultipleSequenceAlignment &al, U2OpStatus &os) {
+static void createRows(IOAdapter* io, char* buff, const int sequnenceNum, const int alignmentLength, MultipleSequenceAlignment& al, U2OpStatus& os) {
     for (int i = 0; i < sequnenceNum; i++) {
         QString rowInfo = getLine(io, buff, AREA_SEQUENCE, os);
         CHECK_OP(os, );
@@ -145,20 +145,20 @@ static void createRows(IOAdapter *io, char *buff, const int sequnenceNum, const 
     }
 }
 
-AprFormat::AprFormat(QObject *p)
+AprFormat::AprFormat(QObject* p)
     : TextDocumentFormatDeprecated(p, BaseDocumentFormats::VECTOR_NTI_ALIGNX, DocumentFormatFlags(DocumentFormatFlag_CannotBeCreated), QStringList("apr")) {
     formatName = tr("Vector NTI/AlignX");
     formatDescription = tr("Vector NTI/AlignX is a Vector NTI format for multiple alignment");
     supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 }
 
-FormatCheckResult AprFormat::checkRawTextData(const QByteArray &rawData, const GUrl &) const {
+FormatCheckResult AprFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
     if (TextUtils::contains(TextUtils::BINARY, rawData.constData(), rawData.size())) {
         return FormatDetection_NotMatched;
     }
 
     QTextStream s(rawData);
-    foreach (const QString &header, HEADERS) {
+    foreach (const QString& header, HEADERS) {
         QString line = s.readLine();
         bool containHeader = line.contains(header);
         if (!containHeader) {
@@ -172,8 +172,8 @@ QString AprFormat::getRadioButtonText() const {
     return tr("Open in read-only mode");
 }
 
-Document *AprFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
-    QList<GObject *> objs;
+Document* AprFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) {
+    QList<GObject*> objs;
     load(io, dbiRef, objs, fs, os);
 
     CHECK_OP_EXT(os, qDeleteAll(objs), nullptr);
@@ -182,14 +182,14 @@ Document *AprFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, con
         os.setError(AprFormat::tr("File doesn't contain any msa objects"));
         return nullptr;
     }
-    Document *doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objs, fs);
+    Document* doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objs, fs);
 
     return doc;
 }
 
-void AprFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &objects, const QVariantMap &hints, U2OpStatus &os) {
+void AprFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& os) {
     QByteArray readBuffer(READ_BUFF_SIZE, '\0');
-    char *buff = readBuffer.data();
+    char* buff = readBuffer.data();
 
     QString objName = io->getURL().baseFileName();
     MultipleSequenceAlignment al(objName);
@@ -227,7 +227,7 @@ void AprFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &ob
     CHECK_EXT(al->getAlphabet() != nullptr, os.setError(AprFormat::tr("Alphabet is unknown")), );
 
     const QString folder = hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-    MultipleSequenceAlignmentObject *obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, al, os);
+    MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, al, os);
     CHECK_OP(os, );
     objects.append(obj);
 }

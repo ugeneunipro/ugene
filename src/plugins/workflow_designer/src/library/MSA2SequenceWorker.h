@@ -31,7 +31,7 @@ namespace LocalWorkflow {
 class Alignment2SequencePrompter : public PrompterBase<Alignment2SequencePrompter> {
     Q_OBJECT
 public:
-    Alignment2SequencePrompter(Actor *p = nullptr)
+    Alignment2SequencePrompter(Actor* p = nullptr)
         : PrompterBase<Alignment2SequencePrompter>(p) {
     }
 
@@ -46,17 +46,17 @@ public:
     static QMap<QString, QString> cuteAlIdNames;
 
 public:
-    Alignment2SequenceWorker(Actor *p)
+    Alignment2SequenceWorker(Actor* p)
         : BaseWorker(p), input(nullptr), output(nullptr) {
     }
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private:
-    IntegralBus *input;
-    IntegralBus *output;
+    IntegralBus* input;
+    IntegralBus* output;
 
 };  // Text2SequenceWorker
 
@@ -68,7 +68,7 @@ public:
         : DomainFactory(ACTOR_ID) {
     }
     static void init();
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 
 };  // Text2SequenceWorkerFactory
 

@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-MSAConsensusAlgorithmFactoryStrict::MSAConsensusAlgorithmFactoryStrict(QObject *p)
+MSAConsensusAlgorithmFactoryStrict::MSAConsensusAlgorithmFactoryStrict(QObject* p)
     : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::STRICT_ALGO, ConsensusAlgorithmFlags_AllAlphabets | ConsensusAlgorithmFlag_SupportThreshold | ConsensusAlgorithmFlag_AvailableForChromatogram, p) {
 }
 
@@ -41,14 +41,14 @@ QString MSAConsensusAlgorithmFactoryStrict::getName() const {
     return tr("Strict");
 }
 
-MSAConsensusAlgorithm *MSAConsensusAlgorithmFactoryStrict::createAlgorithm(const MultipleAlignment &, bool ignoreTrailingLeadingGaps, QObject *p) {
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryStrict::createAlgorithm(const MultipleAlignment&, bool ignoreTrailingLeadingGaps, QObject* p) {
     return new MSAConsensusAlgorithmStrict(this, ignoreTrailingLeadingGaps, p);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-char MSAConsensusAlgorithmStrict::getConsensusChar(const MultipleAlignment &ma, int column, QVector<int> seqIdx) const {
+char MSAConsensusAlgorithmStrict::getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx) const {
     CHECK(filterIdx(seqIdx, ma, column), INVALID_CONS_CHAR);
 
     QVector<int> freqsByChar(256, 0);
@@ -64,7 +64,7 @@ char MSAConsensusAlgorithmStrict::getConsensusChar(const MultipleAlignment &ma, 
     return res;
 }
 
-MSAConsensusAlgorithmStrict *MSAConsensusAlgorithmStrict::clone() const {
+MSAConsensusAlgorithmStrict* MSAConsensusAlgorithmStrict::clone() const {
     return new MSAConsensusAlgorithmStrict(*this);
 }
 

@@ -22,20 +22,20 @@
 #ifndef _U2_DASHBOARDS_MANAGER_DIALOG_H_
 #define _U2_DASHBOARDS_MANAGER_DIALOG_H_
 
-#include <ui_DashboardsManagerDialog.h>
-
 #include <U2Designer/Dashboard.h>
 #include <U2Designer/DashboardInfo.h>
+
+#include <ui_DashboardsManagerDialog.h>
 
 namespace U2 {
 
 class DashboardsManagerDialog : public QDialog, public Ui_DashboardsManagerDialog {
     Q_OBJECT
 public:
-    DashboardsManagerDialog(QWidget *parent);
+    DashboardsManagerDialog(QWidget* parent);
 
     QMap<QString, bool> getDashboardsVisibility() const;
-    const QStringList &removedDashboards() const;
+    const QStringList& removedDashboards() const;
 
 private slots:
     void sl_check();
@@ -45,7 +45,7 @@ private slots:
 
 private:
     void setupList();
-    QList<QTreeWidgetItem *> allItems() const;
+    QList<QTreeWidgetItem*> allItems() const;
     bool confirmDashboardsRemoving() const;
 
 private:

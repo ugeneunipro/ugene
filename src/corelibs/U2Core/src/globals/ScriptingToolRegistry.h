@@ -34,7 +34,7 @@ class ExternalTool;
 class U2CORE_EXPORT ScriptingTool : public QObject {
     Q_OBJECT
 public:
-    ScriptingTool(const QString &id, const QString &name, const QString &path, const QStringList &runParams = QStringList());
+    ScriptingTool(const QString& id, const QString& name, const QString& path, const QStringList& runParams = QStringList());
 
     const QString getId() const {
         return id;
@@ -49,7 +49,7 @@ public:
         return runParams;
     }
 
-    static void onPathChanged(ExternalTool *tool, const QStringList &runParams = QStringList());
+    static void onPathChanged(ExternalTool* tool, const QStringList& runParams = QStringList());
 
 protected:
     QString id;
@@ -63,16 +63,16 @@ class U2CORE_EXPORT ScriptingToolRegistry : public QObject {
 public:
     ~ScriptingToolRegistry();
 
-    ScriptingTool *getById(const QString &id);
+    ScriptingTool* getById(const QString& id);
 
-    bool registerEntry(ScriptingTool *t);
-    void unregisterEntry(const QString &id);
+    bool registerEntry(ScriptingTool* t);
+    void unregisterEntry(const QString& id);
 
-    QList<ScriptingTool *> getAllEntries() const;
+    QList<ScriptingTool*> getAllEntries() const;
     QStringList getAllNames() const;
 
 protected:
-    QMap<QString, ScriptingTool *> registry;
+    QMap<QString, ScriptingTool*> registry;
 };
 
 }  // namespace U2

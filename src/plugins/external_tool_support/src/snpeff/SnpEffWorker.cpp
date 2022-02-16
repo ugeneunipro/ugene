@@ -82,8 +82,8 @@ const QString SnpEffFactory::ACTOR_ID("seff");
 // SnpEffPrompter
 
 QString SnpEffPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(SnpEffWorker::INPUT_PORT));
-    const Actor *producer = input->getProducer(BaseSlots::URL_SLOT().getId());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(SnpEffWorker::INPUT_PORT));
+    const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
 
@@ -92,11 +92,11 @@ QString SnpEffPrompter::composeRichDoc() {
 }
 
 ////////////////////////////////////////
-//SnpEffFactory
+// SnpEffFactory
 void SnpEffFactory::init() {
     Descriptor desc(ACTOR_ID, SnpEffWorker::tr("SnpEff Annotation and Filtration"), SnpEffWorker::tr("Annotates and filters variations with SnpEff."));
 
-    QList<PortDescriptor *> p;
+    QList<PortDescriptor*> p;
     {
         Descriptor inD(SnpEffWorker::INPUT_PORT, SnpEffWorker::tr("Variations"), SnpEffWorker::tr("Set of variations"));
         Descriptor outD(SnpEffWorker::OUTPUT_PORT, SnpEffWorker::tr("Annotated variations"), SnpEffWorker::tr("Annotated variations"));
@@ -110,7 +110,7 @@ void SnpEffFactory::init() {
         p << new PortDescriptor(outD, DataTypePtr(new MapDataType("seff.output-url", outM)), false, true);
     }
 
-    QList<Attribute *> a;
+    QList<Attribute*> a;
     {
         Descriptor outDir(SnpEffWorker::OUT_MODE_ID, SnpEffWorker::tr("Output folder"), SnpEffWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
                                                                                                          "<b>Workflow</b> - internal workflow folder. "
@@ -135,7 +135,7 @@ void SnpEffFactory::init() {
         Descriptor motif(SnpEffWorker::MOTIF, SnpEffWorker::tr("Annotate TFBSs motifs"), SnpEffWorker::tr("Annotate transcription factor binding site motifs (only available for latest GRCh37)"));
 
         a << new Attribute(outDir, BaseTypes::NUM_TYPE(), false, QVariant(FileAndDirectoryUtils::WORKFLOW_INTERNAL));
-        Attribute *customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
+        Attribute* customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
         customDirAttr->addRelation(new VisibilityRelation(SnpEffWorker::OUT_MODE_ID, FileAndDirectoryUtils::CUSTOM));
         a << customDirAttr;
 
@@ -149,7 +149,7 @@ void SnpEffFactory::init() {
         a << new Attribute(motif, BaseTypes::BOOL_TYPE(), false, false);
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap directoryMap;
         QString fileDir = SnpEffWorker::tr("Input file");
@@ -192,20 +192,20 @@ void SnpEffFactory::init() {
         }
     }
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new SnpEffPrompter());
     proto->addExternalTool(JavaSupport::ET_JAVA_ID);
     proto->addExternalTool(SnpEffSupport::ET_SNPEFF_ID);
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_VARIATION_ANALYSIS(), proto);
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new SnpEffFactory());
 }
 
 //////////////////////////////////////////////////////////////////////////
-//SnpEffWorker
-SnpEffWorker::SnpEffWorker(Actor *a)
+// SnpEffWorker
+SnpEffWorker::SnpEffWorker(Actor* a)
     : BaseWorker(a), inputUrlPort(nullptr), outputUrlPort(nullptr) {
 }
 
@@ -214,7 +214,7 @@ void SnpEffWorker::init() {
     outputUrlPort = ports.value(OUTPUT_PORT);
 }
 
-Task *SnpEffWorker::tick() {
+Task* SnpEffWorker::tick() {
     if (inputUrlPort->hasMessage()) {
         const QString url = takeUrl();
         CHECK(!url.isEmpty(), nullptr);
@@ -235,10 +235,10 @@ Task *SnpEffWorker::tick() {
         setting.lof = getValue<bool>(LOF);
         setting.motif = getValue<bool>(MOTIF);
 
-        SnpEffTask *t = new SnpEffTask(setting);
-        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
+        SnpEffTask* t = new SnpEffTask(setting);
+        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
 
-        QList<ExternalToolListener *> listeners = createLogListeners();
+        QList<ExternalToolListener*> listeners = createLogListeners();
         listeners[0]->setLogProcessor(new SnpEffLogProcessor(monitor(), getActorId()));
         t->addListeners(listeners);
 
@@ -256,24 +256,24 @@ void SnpEffWorker::cleanup() {
 }
 
 namespace {
-QString getTargetTaskUrl(Task *task) {
-    SnpEffTask *curtask = dynamic_cast<SnpEffTask *>(task);
+QString getTargetTaskUrl(Task* task) {
+    SnpEffTask* curtask = dynamic_cast<SnpEffTask*>(task);
     if (nullptr != curtask) {
         return curtask->getResult();
     }
     return "";
 }
 
-QString getSummaryUrl(Task *task) {
-    SnpEffTask *curtask = dynamic_cast<SnpEffTask *>(task);
+QString getSummaryUrl(Task* task) {
+    SnpEffTask* curtask = dynamic_cast<SnpEffTask*>(task);
     if (nullptr != curtask) {
         return curtask->getSummaryUrl();
     }
     return "";
 }
-}    // namespace
+}  // namespace
 
-void SnpEffWorker::sl_taskFinished(Task *task) {
+void SnpEffWorker::sl_taskFinished(Task* task) {
     CHECK(!task->hasError(), );
     CHECK(!task->isCanceled(), );
 
@@ -299,7 +299,7 @@ QString SnpEffWorker::takeUrl() {
     return data[BaseSlots::URL_SLOT().getId()].toString();
 }
 
-void SnpEffWorker::sendResult(const QString &url) {
+void SnpEffWorker::sendResult(const QString& url) {
     const Message message(BaseTypes::STRING_TYPE(), url);
     outputUrlPort->put(message);
 }
@@ -307,21 +307,21 @@ void SnpEffWorker::sendResult(const QString &url) {
 const StrStrMap SnpEffLogProcessor::wellKnownMessages = SnpEffLogProcessor::initWellKnownMessages();
 const QMap<QString, QRegExp> SnpEffLogProcessor::messageCatchers = SnpEffLogProcessor::initWellKnownCatchers();
 
-SnpEffLogProcessor::SnpEffLogProcessor(WorkflowMonitor *monitor, const QString &actor)
+SnpEffLogProcessor::SnpEffLogProcessor(WorkflowMonitor* monitor, const QString& actor)
     : ExternalToolLogProcessor(),
       monitor(monitor),
       actor(actor) {
 }
 
-void SnpEffLogProcessor::processLogMessage(const QString &message) {
-    foreach (const QRegExp &catcher, messageCatchers.values()) {
+void SnpEffLogProcessor::processLogMessage(const QString& message) {
+    foreach (const QRegExp& catcher, messageCatchers.values()) {
         if (-1 != catcher.indexIn(message)) {
             addNotification(messageCatchers.key(catcher), catcher.cap(1).toInt());
         }
     }
 }
 
-void SnpEffLogProcessor::addNotification(const QString &key, int count) {
+void SnpEffLogProcessor::addNotification(const QString& key, int count) {
     SAFE_POINT(wellKnownMessages.contains(key), "An unknown snpEff internal error: " + key, );
     const QString warningMessage = key + ": " + wellKnownMessages[key] + " (count: " + QString::number(count) + ")";
     monitor->addError(warningMessage, actor, WorkflowNotification::U2_WARNING);
@@ -334,12 +334,12 @@ StrStrMap SnpEffLogProcessor::initWellKnownMessages() {
 QMap<QString, QRegExp> SnpEffLogProcessor::initWellKnownCatchers() {
     QMap<QString, QRegExp> result;
 
-    foreach (const QString &message, wellKnownMessages.keys()) {
+    foreach (const QString& message, wellKnownMessages.keys()) {
         result[message] = QRegExp(message + "\\t(\\d+)");
     }
 
     return result;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

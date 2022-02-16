@@ -32,10 +32,10 @@
 
 namespace U2 {
 
-MaOverviewImageExportToBitmapTask::MaOverviewImageExportToBitmapTask(MaSimpleOverview *simpleOverview,
-                                                                     MaGraphOverview *graphOverview,
-                                                                     const MaOverviewImageExportSettings &overviewSettings,
-                                                                     const ImageExportTaskSettings &settings)
+MaOverviewImageExportToBitmapTask::MaOverviewImageExportToBitmapTask(MaSimpleOverview* simpleOverview,
+                                                                     MaGraphOverview* graphOverview,
+                                                                     const MaOverviewImageExportSettings& overviewSettings,
+                                                                     const ImageExportTaskSettings& settings)
     : ImageExportTask(settings),
       simpleOverview(simpleOverview),
       graphOverview(graphOverview),
@@ -66,8 +66,8 @@ void MaOverviewImageExportToBitmapTask::run() {
     CHECK_EXT(pixmap.save(settings.fileName, qPrintable(settings.format), settings.imageQuality), setError(tr("FAIL")), );
 }
 
-MaOverviewImageExportController::MaOverviewImageExportController(MaSimpleOverview *simpleOverview,
-                                                                 MaGraphOverview *graphOverview)
+MaOverviewImageExportController::MaOverviewImageExportController(MaSimpleOverview* simpleOverview,
+                                                                 MaGraphOverview* graphOverview)
     : ImageExportController(),
       simpleOverview(simpleOverview),
       graphOverview(graphOverview) {
@@ -92,7 +92,7 @@ int MaOverviewImageExportController::getImageHeight() const {
     return h;
 }
 
-Task *MaOverviewImageExportController::getExportToBitmapTask(const ImageExportTaskSettings &settings) const {
+Task* MaOverviewImageExportController::getExportToBitmapTask(const ImageExportTaskSettings& settings) const {
     MaOverviewImageExportSettings overviewSettings(exportSimpleOverview->isChecked(),
                                                    exportGraphOverview->isChecked());
     // overview has fixed size
@@ -109,7 +109,7 @@ void MaOverviewImageExportController::initSettingsWidget() {
     exportSimpleOverview->setObjectName("export_msa_simple_overview");
     exportGraphOverview->setObjectName("export_msa_graph_overview");
 
-    QVBoxLayout *layout = new QVBoxLayout(settingsWidget);
+    QVBoxLayout* layout = new QVBoxLayout(settingsWidget);
     layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     layout->setContentsMargins(0, 0, 0, 0);
 

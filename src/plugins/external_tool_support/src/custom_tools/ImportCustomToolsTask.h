@@ -35,7 +35,7 @@ class RegisterCustomToolTask;
 class ImportCustomToolsTask : public Task {
     Q_OBJECT
 public:
-    ImportCustomToolsTask(const QString &url);
+    ImportCustomToolsTask(const QString& url);
 
     static const QString SETTINGS_PATH;
 
@@ -43,12 +43,12 @@ private:
     void prepare() override;
     void run() override;
 
-    void saveToolConfig(CustomExternalTool *tool);
+    void saveToolConfig(CustomExternalTool* tool);
 
     const QString url;
-    RegisterCustomToolTask *registerTask;
+    RegisterCustomToolTask* registerTask;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_IMPORT_CUSTOM_TOOLS_TASK_H_
+#endif  // _U2_IMPORT_CUSTOM_TOOLS_TASK_H_

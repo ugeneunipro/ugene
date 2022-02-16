@@ -101,7 +101,7 @@ struct SWDialogConfig {
 
 class U2VIEW_EXPORT SmithWatermanDialogController {
 public:
-    static void run(QWidget *p, ADVSequenceObjectContext *ctx, SWDialogConfig *dialogConfig);
+    static void run(QWidget* p, ADVSequenceObjectContext* ctx, SWDialogConfig* dialogConfig);
 };
 
 }  // namespace U2

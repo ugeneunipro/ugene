@@ -22,14 +22,14 @@
 #ifndef _U2_HMMBUILD_DIALOG_CONTROLLER_H_
 #define _U2_HMMBUILD_DIALOG_CONTROLLER_H_
 
-#include <ui_HMMBuildDialog.h>
-
 #include <QDialog>
 
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/Task.h>
 
 #include "uhmmbuild.h"
+
+#include <ui_HMMBuildDialog.h>
 
 struct plan7_s;
 
@@ -41,7 +41,7 @@ class SaveDocumentController;
 class HMMBuildDialogController : public QDialog, public Ui_HMMBuildDialog {
     Q_OBJECT
 public:
-    HMMBuildDialogController(const QString &profileName, const MultipleSequenceAlignment &ma, QWidget *p = nullptr);
+    HMMBuildDialogController(const QString& profileName, const MultipleSequenceAlignment& ma, QWidget* p = nullptr);
 
 public slots:
     void reject();
@@ -58,10 +58,10 @@ private:
 
     MultipleSequenceAlignment ma;
     QString profileName;
-    Task *task;
-    QPushButton *okButton;
-    QPushButton *cancelButton;
-    SaveDocumentController *saveController;
+    Task* task;
+    QPushButton* okButton;
+    QPushButton* cancelButton;
+    SaveDocumentController* saveController;
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -70,29 +70,29 @@ private:
 class HMMBuildTask : public Task {
     Q_OBJECT
 public:
-    HMMBuildTask(const UHMMBuildSettings &s, const MultipleSequenceAlignment &ma);
+    HMMBuildTask(const UHMMBuildSettings& s, const MultipleSequenceAlignment& ma);
     ~HMMBuildTask();
 
     void run();
     void _run();
-    plan7_s *getHMM() const {
+    plan7_s* getHMM() const {
         return hmm;
     }
 
 private:
     MultipleSequenceAlignment ma;
     UHMMBuildSettings settings;
-    plan7_s *hmm;
+    plan7_s* hmm;
 };
 
 class HMMBuildToFileTask : public Task {
     Q_OBJECT
 public:
-    HMMBuildToFileTask(const QString &inFile, const QString &outFile, const UHMMBuildSettings &s);
+    HMMBuildToFileTask(const QString& inFile, const QString& outFile, const UHMMBuildSettings& s);
 
-    HMMBuildToFileTask(const MultipleSequenceAlignment &ma, const QString &outFile, const UHMMBuildSettings &s);
+    HMMBuildToFileTask(const MultipleSequenceAlignment& ma, const QString& outFile, const UHMMBuildSettings& s);
 
-    virtual QList<Task *> onSubTaskFinished(Task *subTask);
+    virtual QList<Task*> onSubTaskFinished(Task* subTask);
 
     QString generateReport() const;
 
@@ -103,8 +103,8 @@ private:
     UHMMBuildSettings settings;
     QString outFile;
     MultipleSequenceAlignment ma;
-    LoadDocumentTask *loadTask;
-    HMMBuildTask *buildTask;
+    LoadDocumentTask* loadTask;
+    HMMBuildTask* buildTask;
 };
 
 }  // namespace U2

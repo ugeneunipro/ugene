@@ -69,7 +69,7 @@ QRect ConsensusCharRenderData::getCharRect() const {
 
 const QColor MaConsensusAreaRenderer::DEFAULT_MISMATCH_COLOR = Qt::red;
 
-MaConsensusAreaRenderer::MaConsensusAreaRenderer(MaEditorConsensusArea *area)
+MaConsensusAreaRenderer::MaConsensusAreaRenderer(MaEditorConsensusArea* area)
     : QObject(area),
       editor(area->getEditorWgt()->getEditor()),
       ui(area->getEditorWgt()),
@@ -78,7 +78,7 @@ MaConsensusAreaRenderer::MaConsensusAreaRenderer(MaEditorConsensusArea *area)
 
 namespace {
 
-QFont getRulerFont(const QFont &font) {
+QFont getRulerFont(const QFont& font) {
     QFont rulerFont = font;
     rulerFont.setFamily("Arial");
     rulerFont.setPointSize(qMax(8, qRound(font.pointSize() * 0.7)));
@@ -87,7 +87,7 @@ QFont getRulerFont(const QFont &font) {
 
 }  // namespace
 
-void MaConsensusAreaRenderer::drawContent(QPainter &painter) {
+void MaConsensusAreaRenderer::drawContent(QPainter& painter) {
     CHECK(!editor->isAlignmentEmpty(), );
 
     const MaEditorConsensusAreaSettings consensusSettings = area->getDrawSettings();
@@ -97,10 +97,10 @@ void MaConsensusAreaRenderer::drawContent(QPainter &painter) {
     drawContent(painter, consensusRenderData, consensusSettings, renderSettings);
 }
 
-void MaConsensusAreaRenderer::drawContent(QPainter &painter,
-                                          const ConsensusRenderData &consensusRenderData,
-                                          const MaEditorConsensusAreaSettings &consensusSettings,
-                                          const ConsensusRenderSettings &renderSettings) {
+void MaConsensusAreaRenderer::drawContent(QPainter& painter,
+                                          const ConsensusRenderData& consensusRenderData,
+                                          const MaEditorConsensusAreaSettings& consensusSettings,
+                                          const ConsensusRenderSettings& renderSettings) {
     SAFE_POINT(consensusRenderData.isValid(), "Incorrect consensus data to draw", );
     SAFE_POINT(nullptr != renderSettings.colorScheme, "Color scheme is NULL", );
 
@@ -117,13 +117,13 @@ void MaConsensusAreaRenderer::drawContent(QPainter &painter,
     }
 }
 
-ConsensusRenderData MaConsensusAreaRenderer::getConsensusRenderData(const QList<int> &seqIdx, const U2Region &region) const {
+ConsensusRenderData MaConsensusAreaRenderer::getConsensusRenderData(const QList<int>& seqIdx, const U2Region& region) const {
     ConsensusRenderData consensusRenderData;
     consensusRenderData.region = region;
     consensusRenderData.selectedRegion = editor->getSelection().getColumnRegion();
     consensusRenderData.mismatches.resize(static_cast<int>(region.length));
 
-    MSAConsensusAlgorithm *algorithm = area->getConsensusAlgorithm();
+    MSAConsensusAlgorithm* algorithm = area->getConsensusAlgorithm();
     const MultipleAlignment ma = editor->getMaObject()->getMultipleAlignment();
     for (int i = 0, n = static_cast<int>(region.length); i < n; i++) {
         const int column = region.startPos + i;
@@ -137,7 +137,7 @@ ConsensusRenderData MaConsensusAreaRenderer::getConsensusRenderData(const QList<
     return consensusRenderData;
 }
 
-ConsensusRenderSettings MaConsensusAreaRenderer::getRenderSettigns(const U2Region &region, const MaEditorConsensusAreaSettings &consensusSettings) const {
+ConsensusRenderSettings MaConsensusAreaRenderer::getRenderSettigns(const U2Region& region, const MaEditorConsensusAreaSettings& consensusSettings) const {
     ConsensusRenderSettings renderSettings;
     renderSettings.xRangeToDrawIn = U2Region(0, ui->getBaseWidthController()->getBasesWidth(region));
     foreach (const MaEditorConsElement element, consensusSettings.order) {
@@ -165,7 +165,7 @@ int MaConsensusAreaRenderer::getHeight() const {
     return getHeight(area->getDrawSettings().visibleElements);
 }
 
-int MaConsensusAreaRenderer::getHeight(const MaEditorConsElements &visibleElements) const {
+int MaConsensusAreaRenderer::getHeight(const MaEditorConsElements& visibleElements) const {
     int height = 0;
     foreach (const MaEditorConsElement element, area->getDrawSettings().order) {
         if (visibleElements.testFlag(element)) {
@@ -175,7 +175,7 @@ int MaConsensusAreaRenderer::getHeight(const MaEditorConsElements &visibleElemen
     return height + 1;
 }
 
-U2Region MaConsensusAreaRenderer::getYRange(const MaEditorConsElements &visibleElements, MaEditorConsElement element) const {
+U2Region MaConsensusAreaRenderer::getYRange(const MaEditorConsElements& visibleElements, MaEditorConsElement element) const {
     const MaEditorConsensusAreaSettings consensusSettings = area->getDrawSettings();
     U2Region yRange;
     for (QList<MaEditorConsElement>::const_iterator it = consensusSettings.order.constBegin(); it != consensusSettings.order.constEnd(); it++) {
@@ -193,7 +193,7 @@ U2Region MaConsensusAreaRenderer::getYRange(MaEditorConsElement element) const {
     return getYRange(area->getDrawSettings().visibleElements, element);
 }
 
-void MaConsensusAreaRenderer::drawConsensus(QPainter &painter, const ConsensusRenderData &consensusRenderData, const ConsensusRenderSettings &settings) {
+void MaConsensusAreaRenderer::drawConsensus(QPainter& painter, const ConsensusRenderData& consensusRenderData, const ConsensusRenderSettings& settings) {
     painter.setPen(Qt::black);
 
     QFont font = settings.font;
@@ -219,7 +219,7 @@ void MaConsensusAreaRenderer::drawConsensus(QPainter &painter, const ConsensusRe
     }
 }
 
-void MaConsensusAreaRenderer::drawConsensusChar(QPainter &painter, const ConsensusCharRenderData &charData, const ConsensusRenderSettings &settings) {
+void MaConsensusAreaRenderer::drawConsensusChar(QPainter& painter, const ConsensusCharRenderData& charData, const ConsensusRenderSettings& settings) {
     const QRect charRect = charData.getCharRect();
 
     QColor color;
@@ -243,7 +243,7 @@ void MaConsensusAreaRenderer::drawConsensusChar(QPainter &painter, const Consens
     }
 }
 
-void MaConsensusAreaRenderer::drawRuler(QPainter &painter, const ConsensusRenderSettings &settings) {
+void MaConsensusAreaRenderer::drawRuler(QPainter& painter, const ConsensusRenderSettings& settings) {
     painter.setPen(Qt::darkGray);
 
     U2Region rulerYRange = settings.yRangeToDrawIn[MSAEditorConsElement_RULER];
@@ -276,7 +276,7 @@ void MaConsensusAreaRenderer::drawRuler(QPainter &painter, const ConsensusRender
     GraphUtils::drawRuler(painter, startPoint, firstLastDistance, settings.firstNotchedBasePosition + 1, settings.lastNotchedBasePosition + 1, settings.rulerFont, config);
 }
 
-void MaConsensusAreaRenderer::drawHistogram(QPainter &painter, const ConsensusRenderData &consensusRenderData, const ConsensusRenderSettings &settings) {
+void MaConsensusAreaRenderer::drawHistogram(QPainter& painter, const ConsensusRenderData& consensusRenderData, const ConsensusRenderSettings& settings) {
     QColor color("#255060");
     painter.setPen(color);
 
@@ -305,7 +305,7 @@ ConsensusRenderData MaConsensusAreaRenderer::getScreenDataToRender() const {
 
     ConsensusRenderData consensusRenderData;
     consensusRenderData.region = ui->getDrawHelper()->getVisibleBases(area->width());
-    const MaEditorSelection &selection = editor->getSelection();
+    const MaEditorSelection& selection = editor->getSelection();
     consensusRenderData.selectedRegion = selection.getColumnRegion();
     consensusRenderData.data = consensusCache->getConsensusLine(consensusRenderData.region, true);
     consensusRenderData.percentage << consensusCache->getConsensusPercents(consensusRenderData.region);
@@ -319,7 +319,7 @@ ConsensusRenderData MaConsensusAreaRenderer::getScreenDataToRender() const {
     return consensusRenderData;
 }
 
-ConsensusRenderSettings MaConsensusAreaRenderer::getScreenRenderSettings(const MaEditorConsensusAreaSettings &consensusSettings) const {
+ConsensusRenderSettings MaConsensusAreaRenderer::getScreenRenderSettings(const MaEditorConsensusAreaSettings& consensusSettings) const {
     const U2Region region = ui->getDrawHelper()->getVisibleBases(area->width());
 
     ConsensusRenderSettings renderSettings;

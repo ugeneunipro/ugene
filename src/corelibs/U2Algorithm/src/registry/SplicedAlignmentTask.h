@@ -30,20 +30,20 @@ namespace U2 {
 
 class SplicedAlignmentTaskConfig {
 public:
-    SplicedAlignmentTaskConfig(U2SequenceObject *cDna, U2SequenceObject *genomic)
+    SplicedAlignmentTaskConfig(U2SequenceObject* cDna, U2SequenceObject* genomic)
         : cDnaObj(cDna), genomicSeqObj(genomic) {
     }
 
-    U2SequenceObject *getGenomicSequence() {
+    U2SequenceObject* getGenomicSequence() {
         return genomicSeqObj;
     }
-    U2SequenceObject *getCDnaSequence() {
+    U2SequenceObject* getCDnaSequence() {
         return cDnaObj;
     }
 
 private:
-    U2SequenceObject *cDnaObj;
-    U2SequenceObject *genomicSeqObj;
+    U2SequenceObject* cDnaObj;
+    U2SequenceObject* genomicSeqObj;
     QVariantMap customOptions;
 };
 
@@ -52,8 +52,8 @@ private:
 class U2ALGORITHM_EXPORT SplicedAlignmentTask : public Task {
     Q_OBJECT
 public:
-    SplicedAlignmentTask(const SplicedAlignmentTaskConfig &cfg);
-    SplicedAlignmentTask(const QString &taskName, TaskFlags flags, const SplicedAlignmentTaskConfig &cfg);
+    SplicedAlignmentTask(const SplicedAlignmentTaskConfig& cfg);
+    SplicedAlignmentTask(const QString& taskName, TaskFlags flags, const SplicedAlignmentTaskConfig& cfg);
     virtual QList<SharedAnnotationData> getAlignmentResult() = 0;
 
 protected:
@@ -64,7 +64,7 @@ protected:
 
 class U2ALGORITHM_EXPORT SplicedAlignmentTaskFactory {
 public:
-    virtual SplicedAlignmentTask *createTaskInstance(const SplicedAlignmentTaskConfig &config) = 0;
+    virtual SplicedAlignmentTask* createTaskInstance(const SplicedAlignmentTaskConfig& config) = 0;
     virtual ~SplicedAlignmentTaskFactory() {
     }
 };

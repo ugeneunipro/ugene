@@ -39,12 +39,12 @@ GTestFormatRegistry::GTestFormatRegistry() {
 }
 
 GTestFormatRegistry::~GTestFormatRegistry() {
-    foreach (GTestFormat *f, formats) {
+    foreach (GTestFormat* f, formats) {
         delete f;
     }
 }
 
-bool GTestFormatRegistry::registerTestFormat(GTestFormat *f) {
+bool GTestFormatRegistry::registerTestFormat(GTestFormat* f) {
     if (formats.contains(f)) {
         return false;
     }
@@ -52,7 +52,7 @@ bool GTestFormatRegistry::registerTestFormat(GTestFormat *f) {
     return true;
 }
 
-bool GTestFormatRegistry::unregisterTestFormat(GTestFormat *f) {
+bool GTestFormatRegistry::unregisterTestFormat(GTestFormat* f) {
     if (!formats.contains(f)) {
         return false;
     }
@@ -60,8 +60,8 @@ bool GTestFormatRegistry::unregisterTestFormat(GTestFormat *f) {
     return true;
 }
 
-GTestFormat *GTestFormatRegistry::findFormat(const GTestFormatId &id) {
-    foreach (GTestFormat *f, formats) {
+GTestFormat* GTestFormatRegistry::findFormat(const GTestFormatId& id) {
+    foreach (GTestFormat* f, formats) {
         if (f->getFormatId() == id) {
             return f;
         }
@@ -84,16 +84,16 @@ void TestFramework::setTRHelpSections() {
     assert(!helpRegistered);
     helpRegistered = true;
 
-    CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
+    CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
     assert(nullptr != cmdLineRegistry);
 
-    CMDLineHelpProvider *testTimeoutSection = new CMDLineHelpProvider(
+    CMDLineHelpProvider* testTimeoutSection = new CMDLineHelpProvider(
         TEST_TIMEOUT_CMD_OPTION,
         GTestFormatRegistry::tr("Sets timeout for the tests."),
         "",  // No full description
         "<number_of_seconds>");
 
-    CMDLineHelpProvider *testRunnerThreads = new CMDLineHelpProvider(
+    CMDLineHelpProvider* testRunnerThreads = new CMDLineHelpProvider(
         CMDLineCoreOptions::TEST_THREADS,
         GTestFormatRegistry::tr("Sets the number of threads."),
         GTestFormatRegistry::tr(
@@ -101,19 +101,19 @@ void TestFramework::setTRHelpSections() {
             " that can run at the same time.",
             "<number_of_threads>"));
 
-    CMDLineHelpProvider *testReport = new CMDLineHelpProvider(
+    CMDLineHelpProvider* testReport = new CMDLineHelpProvider(
         CMDLineCoreOptions::TEST_REPORT,
         GTestFormatRegistry::tr("Sets the folder for the test report."),
         "",  // No full description
         "<path_to_dir>");
 
-    CMDLineHelpProvider *suiteUrlSection = new CMDLineHelpProvider(
+    CMDLineHelpProvider* suiteUrlSection = new CMDLineHelpProvider(
         CMDLineCoreOptions::SUITE_URLS,
         GTestFormatRegistry::tr("Loads test suites and runs them."),
         "",  // No full description
         "<test_suite1> [<test_suite2> ...]");
 
-    CMDLineHelpProvider *teamcityOutputSection = new CMDLineHelpProvider(
+    CMDLineHelpProvider* teamcityOutputSection = new CMDLineHelpProvider(
         CMDLineCoreOptions::TEAMCITY_OUTPUT,
         GTestFormatRegistry::tr("Output a test's messages to the TeamCity system."),
         "");  // No full description
@@ -126,9 +126,9 @@ void TestFramework::setTRHelpSections() {
 }
 
 void TestFramework::setTestRunnerSettings() {
-    CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
+    CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
     assert(nullptr != cmdLineRegistry);
-    Settings *settings = AppContext::getSettings();
+    Settings* settings = AppContext::getSettings();
     assert(nullptr != settings);
 
     // TODO: make constants TIME_OUT_VAR and NUM_THREADS

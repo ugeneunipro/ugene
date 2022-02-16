@@ -38,7 +38,7 @@ namespace LocalWorkflow {
 class ExportPhredQualityPrompter : public PrompterBase<ExportPhredQualityPrompter> {
     Q_OBJECT
 public:
-    ExportPhredQualityPrompter(Actor *p = 0)
+    ExportPhredQualityPrompter(Actor* p = 0)
         : PrompterBase<ExportPhredQualityPrompter>(p) {
     }
 
@@ -49,17 +49,17 @@ protected:
 class ExportPhredQualityWorker : public BaseWorker {
     Q_OBJECT
 public:
-    ExportPhredQualityWorker(Actor *a);
+    ExportPhredQualityWorker(Actor* a);
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 protected:
-    CommunicationChannel *input;
+    CommunicationChannel* input;
     QString fileName;
-    QList<U2SequenceObject *> seqObjList;
-    Task *currentTask;
+    QList<U2SequenceObject*> seqObjList;
+    Task* currentTask;
 };
 
 class ExportPhredQualityWorkerFactory : public DomainFactory {
@@ -69,7 +69,7 @@ public:
     ExportPhredQualityWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 };
 
 }  // namespace LocalWorkflow

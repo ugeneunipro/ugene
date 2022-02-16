@@ -37,7 +37,7 @@ enum DeleteMode {
 class DeleteGapsDialog : public QDialog {
     Q_OBJECT
 public:
-    DeleteGapsDialog(QWidget *parent, int alignmentLen);
+    DeleteGapsDialog(QWidget* parent, int alignmentLen);
     ~DeleteGapsDialog();
     DeleteMode getDeleteMode() const {
         return deleteMode;
@@ -53,7 +53,7 @@ private slots:
 private:
     DeleteMode deleteMode;
     int value;
-    Ui_DeleteGapsDialog *ui;
+    Ui_DeleteGapsDialog* ui;
 };
 
 }  // namespace U2

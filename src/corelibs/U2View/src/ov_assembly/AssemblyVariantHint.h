@@ -31,12 +31,12 @@ namespace U2 {
 class AssemblyVariantHint : public AssemblyReadsAreaHint {
     Q_OBJECT
 public:
-    AssemblyVariantHint(QWidget *parent);
-    void setData(const QList<U2Variant> &varList);
+    AssemblyVariantHint(QWidget* parent);
+    void setData(const QList<U2Variant>& varList);
 
 protected:
-    virtual void leaveEvent(QEvent *event);
-    virtual void mouseMoveEvent(QMouseEvent *event);
+    virtual void leaveEvent(QEvent* event);
+    virtual void mouseMoveEvent(QMouseEvent* event);
 };
 
 }  // namespace U2

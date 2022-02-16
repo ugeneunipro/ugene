@@ -34,12 +34,12 @@ namespace U2 {
 
 class U2CORE_EXPORT QVariantUtils {
 public:
-    static QVariant String2Var(const QString &string) {
+    static QVariant String2Var(const QString& string) {
         QDataStream s(QByteArray::fromBase64(string.toLatin1()));
         return QVariant(s);
     }
 
-    static QVariantMap string2Map(const QString &string, bool emptyMapIfError) {
+    static QVariantMap string2Map(const QString& string, bool emptyMapIfError) {
         QDataStream s(QByteArray::fromBase64(string.toLatin1()));
         QVariant res(QVariant::Map);
         s >> res;
@@ -50,7 +50,7 @@ public:
         return QVariantMap();
     }
 
-    static QString var2String(const QVariant &v) {
+    static QString var2String(const QVariant& v) {
         QByteArray a;
         QDataStream s(&a, QIODevice::WriteOnly);
         s << v;
@@ -58,11 +58,11 @@ public:
         return res;
     }
 
-    static QString map2String(const QVariantMap &map) {
+    static QString map2String(const QVariantMap& map) {
         return var2String(QVariant(map));
     }
 
-    static QVariant addStr2List(const QVariant &v, const QString &s) {
+    static QVariant addStr2List(const QVariant& v, const QString& s) {
         if (v.canConvert(QVariant::StringList)) {
             QStringList l = v.toStringList();
             return (l << s);
@@ -72,7 +72,7 @@ public:
         return QVariant(s);
     }
 
-    static QVariant addStr2List(const QVariant &v, const QStringList &sl) {
+    static QVariant addStr2List(const QVariant& v, const QStringList& sl) {
         if (v.canConvert(QVariant::StringList)) {
             QStringList l = v.toStringList();
             return QVariant(l += sl);

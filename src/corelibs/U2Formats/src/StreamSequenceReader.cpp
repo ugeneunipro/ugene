@@ -31,9 +31,9 @@
 
 namespace U2 {
 
-DNASequence *StreamSequenceReader::getNextSequenceObject() {
+DNASequence* StreamSequenceReader::getNextSequenceObject() {
     if (hasNext()) {
-        DNASequence *result = currentSeq.data();
+        DNASequence* result = currentSeq.data();
         lookupPerformed = false;
         return result;
     }
@@ -56,7 +56,7 @@ bool StreamSequenceReader::hasNext() {
 
         while (currentReaderIndex < readers.count()) {
             ReaderContext ctx = readers.at(currentReaderIndex);
-            DNASequence *newSeq = ctx.format->loadSequence(ctx.io, taskInfo);
+            DNASequence* newSeq = ctx.format->loadSequence(ctx.io, taskInfo);
             if (taskInfo.hasError()) {
                 errorMessage = taskInfo.getError();
             }
@@ -77,16 +77,16 @@ bool StreamSequenceReader::hasNext() {
     return true;
 }
 
-bool StreamSequenceReader::init(const QStringList &urls) {
+bool StreamSequenceReader::init(const QStringList& urls) {
     QList<GUrl> gUrls;
-    foreach (const QString &url, urls) {
+    foreach (const QString& url, urls) {
         gUrls << url;
     }
     return init(gUrls);
 }
 
-bool StreamSequenceReader::init(const QList<GUrl> &urls) {
-    foreach (const GUrl &url, urls) {
+bool StreamSequenceReader::init(const QList<GUrl>& urls) {
+    foreach (const GUrl& url, urls) {
         QList<FormatDetectionResult> detectedFormats = DocumentUtils::detectFormat(url);
         if (detectedFormats.isEmpty()) {
             taskInfo.setError(tr("File %1 unsupported format.").arg(url.getURLString()));
@@ -97,8 +97,8 @@ bool StreamSequenceReader::init(const QList<GUrl> &urls) {
         if (ctx.format->getFlags().testFlag(DocumentFormatFlag_SupportStreaming) == false) {
             break;
         }
-        IOAdapterFactory *factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
-        IOAdapter *io = factory->createIOAdapter();
+        IOAdapterFactory* factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+        IOAdapter* io = factory->createIOAdapter();
         if (!io->open(url, IOAdapterMode_Read)) {
             break;
         }
@@ -115,7 +115,7 @@ bool StreamSequenceReader::init(const QList<GUrl> &urls) {
     }
 }
 
-const IOAdapter *StreamSequenceReader::getIO() const {
+const IOAdapter* StreamSequenceReader::getIO() const {
     if (currentReaderIndex < readers.count()) {
         ReaderContext ctx = readers.at(currentReaderIndex);
         return ctx.io;
@@ -123,7 +123,7 @@ const IOAdapter *StreamSequenceReader::getIO() const {
     return nullptr;
 }
 
-DocumentFormat *StreamSequenceReader::getFormat() const {
+DocumentFormat* StreamSequenceReader::getFormat() const {
     if (currentReaderIndex < readers.count()) {
         ReaderContext ctx = readers.at(currentReaderIndex);
         return ctx.format;
@@ -156,7 +156,7 @@ StreamSequenceReader::~StreamSequenceReader() {
     }
 }
 
-int StreamSequenceReader::getNumberOfSequences(const QString &url, U2OpStatus &os) {
+int StreamSequenceReader::getNumberOfSequences(const QString& url, U2OpStatus& os) {
     int result = 0;
     StreamSequenceReader streamSequenceReader;
     bool wasInitialized = streamSequenceReader.init(QStringList() << url);

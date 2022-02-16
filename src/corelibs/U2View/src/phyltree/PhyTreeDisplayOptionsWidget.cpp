@@ -31,7 +31,7 @@ namespace U2 {
 const QString PhyTreeDisplayOptionsWidget::displayWithMsaEditor = CreatePhyTreeWidget::getAppSettingsRoot() + "/display_with_msa_editor";
 const QString PhyTreeDisplayOptionsWidget::synchronizeWithMsa = CreatePhyTreeWidget::getAppSettingsRoot() + "/synchronize_with_msa";
 
-PhyTreeDisplayOptionsWidget::PhyTreeDisplayOptionsWidget(QWidget *parent)
+PhyTreeDisplayOptionsWidget::PhyTreeDisplayOptionsWidget(QWidget* parent)
     : CreatePhyTreeWidget(parent),
       ui(new Ui_PhyTreeDisplayOptionsWidget) {
     ui->setupUi(this);
@@ -49,7 +49,7 @@ PhyTreeDisplayOptionsWidget::~PhyTreeDisplayOptionsWidget() {
     delete ui;
 }
 
-void PhyTreeDisplayOptionsWidget::fillSettings(CreatePhyTreeSettings &settings) {
+void PhyTreeDisplayOptionsWidget::fillSettings(CreatePhyTreeSettings& settings) {
     settings.displayWithAlignmentEditor = ui->displayWithAlignmentEditor->isChecked();
     settings.syncAlignmentWithTree = ui->syncCheckBox->isChecked();
 }

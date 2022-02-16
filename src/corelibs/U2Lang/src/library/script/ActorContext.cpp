@@ -33,12 +33,12 @@ const QString ActorContext::OUTPUT("output");
 const QString ActorContext::INPUT("input");
 const QString ActorContext::PARAMETERS("params");
 
-QScriptValue ActorContext::createContext(BaseWorker *worker, QScriptEngine *engine) {
+QScriptValue ActorContext::createContext(BaseWorker* worker, QScriptEngine* engine) {
     QScriptValue in = engine->newArray();
     QScriptValue out = engine->newArray();
-    foreach (const QString &portId, worker->getPorts().keys()) {
-        Port *port = worker->getActor()->getPort(portId);
-        IntegralBus *bus = worker->getPorts()[portId];
+    foreach (const QString& portId, worker->getPorts().keys()) {
+        Port* port = worker->getActor()->getPort(portId);
+        IntegralBus* bus = worker->getPorts()[portId];
         if (port->isInput()) {
             QScriptValue busArray = createInBus(bus, engine);
             in.setProperty(portId, busArray, QScriptValue::ReadOnly);
@@ -49,7 +49,7 @@ QScriptValue ActorContext::createContext(BaseWorker *worker, QScriptEngine *engi
     }
 
     QScriptValue params = engine->newArray();
-    foreach (Attribute *attr, worker->getActor()->getParameters()) {
+    foreach (Attribute* attr, worker->getActor()->getParameters()) {
         QScriptValue value = engine->newVariant(attr->getAttributePureValue());
         params.setProperty(attr->getId(), value, QScriptValue::ReadOnly);
     }
@@ -61,14 +61,14 @@ QScriptValue ActorContext::createContext(BaseWorker *worker, QScriptEngine *engi
     return ctx;
 }
 
-QScriptValue ActorContext::createInBus(IntegralBus *bus, QScriptEngine *engine) {
+QScriptValue ActorContext::createInBus(IntegralBus* bus, QScriptEngine* engine) {
     QVariantMap busData;
     if (bus->hasMessage()) {
         busData = bus->lookMessage().getData().toMap();
     }
     QScriptValue busArray = engine->newArray();
     QMap<Descriptor, DataTypePtr> types = bus->getBusType()->getDatatypesMap();
-    foreach (const Descriptor &slotDesc, types.keys()) {
+    foreach (const Descriptor& slotDesc, types.keys()) {
         QString slotId = slotDesc.getId();
         QScriptValue value = QScriptValue::NullValue;
         if (busData.contains(slotId)) {
@@ -79,9 +79,9 @@ QScriptValue ActorContext::createInBus(IntegralBus *bus, QScriptEngine *engine) 
     return busArray;
 }
 
-QScriptValue ActorContext::createOutBus(Port *port, QScriptEngine *engine) {
+QScriptValue ActorContext::createOutBus(Port* port, QScriptEngine* engine) {
     QScriptValue busArray = engine->newArray();
-    foreach (const Descriptor &slotDesc, port->getOutputType()->getDatatypesMap().keys()) {
+    foreach (const Descriptor& slotDesc, port->getOutputType()->getDatatypesMap().keys()) {
         busArray.setProperty(slotDesc.getId(), QScriptValue::NullValue);
     }
     return busArray;

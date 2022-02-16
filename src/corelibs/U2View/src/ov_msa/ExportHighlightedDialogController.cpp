@@ -39,7 +39,7 @@
 
 namespace U2 {
 
-ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt *msaui_, QWidget *p)
+ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt* msaui_, QWidget* p)
     : QDialog(p),
       msaui(msaui_),
       saveController(nullptr),
@@ -52,19 +52,19 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt
 
     CHECK(AppContext::getAppSettings(), );
     CHECK(AppContext::getAppSettings()->getUserAppsSettings(), );
-    const MaEditor *editor = msaui->getEditor();
+    const MaEditor* editor = msaui->getEditor();
     CHECK(editor, );
 
     initSaveController();
 
     int alignLength = editor->getAlignmentLen();
-    const MaEditorSelection &selection = editor->getSelection();
+    const MaEditorSelection& selection = editor->getSelection();
 
     if (selection.isEmpty() || selection.isSingleColumnSelection()) {
         startPos = 1;
         endPos = alignLength;
     } else {
-        const QRect &selectionRect = selection.getRectList()[0];
+        const QRect& selectionRect = selection.getRectList()[0];
         startPos = selectionRect.x() + 1;
         endPos = selectionRect.x() + selectionRect.width();
     }

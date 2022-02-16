@@ -43,7 +43,7 @@ public:
     FindAlgorithmResult(const int _err)
         : translation(false), err(_err) {
     }
-    FindAlgorithmResult(const U2Region &_r, bool t, U2Strand s, int _err)
+    FindAlgorithmResult(const U2Region& _r, bool t, U2Strand s, int _err)
         : region(_r), translation(t), strand(s), err(_err) {
     }
 
@@ -53,20 +53,20 @@ public:
         return region.startPos == 0 && region.length == 0;
     }
 
-    bool operator==(const FindAlgorithmResult &o) const {
+    bool operator==(const FindAlgorithmResult& o) const {
         return region == o.region && err == o.err && strand == o.strand && translation == o.translation;
     }
 
-    SharedAnnotationData toAnnotation(const QString &name, bool splitCircular = false, int seqLen = -1) const;
+    SharedAnnotationData toAnnotation(const QString& name, bool splitCircular = false, int seqLen = -1) const;
 
-    static bool lessByRegionStartPos(const FindAlgorithmResult &r1, const FindAlgorithmResult &r2);
+    static bool lessByRegionStartPos(const FindAlgorithmResult& r1, const FindAlgorithmResult& r2);
 
     U2Region region;
     bool translation;
     U2Strand strand;
     int err;
 
-    static QList<SharedAnnotationData> toTable(const QList<FindAlgorithmResult> &res, const QString &name, bool splitCircular = false, int seqLen = -1);
+    static QList<SharedAnnotationData> toTable(const QList<FindAlgorithmResult>& res, const QString& name, bool splitCircular = false, int seqLen = -1);
 };
 
 class DNATranslation;
@@ -75,7 +75,7 @@ class U2ALGORITHM_EXPORT FindAlgorithmResultsListener {
 public:
     virtual ~FindAlgorithmResultsListener() {
     }
-    virtual void onResult(const FindAlgorithmResult &r) = 0;
+    virtual void onResult(const FindAlgorithmResult& r) = 0;
 };
 
 enum FindAlgorithmStrand {
@@ -93,12 +93,12 @@ enum FindAlgorithmPatternSettings {
 
 class U2ALGORITHM_EXPORT FindAlgorithmSettings {
 public:
-    FindAlgorithmSettings(const QByteArray &pattern = QByteArray(),
+    FindAlgorithmSettings(const QByteArray& pattern = QByteArray(),
                           FindAlgorithmStrand strand = FindAlgorithmStrand_Direct,
-                          DNATranslation *complementTT = nullptr,
-                          DNATranslation *proteinTT = nullptr,
-                          const DNAAlphabet *sequenceAlphabet = nullptr,
-                          const U2Region &searchRegion = U2Region(),
+                          DNATranslation* complementTT = nullptr,
+                          DNATranslation* proteinTT = nullptr,
+                          const DNAAlphabet* sequenceAlphabet = nullptr,
+                          const U2Region& searchRegion = U2Region(),
                           int maxErr = 0,
                           FindAlgorithmPatternSettings _patternSettings = FindAlgorithmPatternSettings_Subst,
                           bool ambBases = false,
@@ -107,10 +107,10 @@ public:
 
     QByteArray pattern;
     FindAlgorithmStrand strand;
-    DNATranslation *complementTT;
-    DNATranslation *proteinTT;
+    DNATranslation* complementTT;
+    DNATranslation* proteinTT;
     /** Alphabet of the sequence. May be NULL if unknown */
-    const DNAAlphabet *sequenceAlphabet;
+    const DNAAlphabet* sequenceAlphabet;
     U2Region searchRegion;
     int maxErr;
     FindAlgorithmPatternSettings patternSettings;
@@ -126,32 +126,32 @@ public:
     // Note: pattern is never affected by either aminoTT or complTT
 
     static void find(
-        FindAlgorithmResultsListener *rl,
-        DNATranslation *aminoTT,  // if aminoTT!=NULL -> pattern must contain amino data and sequence must contain DNA data
-        DNATranslation *complTT,  // if complTT!=NULL -> sequence is complemented before comparison with pattern
+        FindAlgorithmResultsListener* rl,
+        DNATranslation* aminoTT,  // if aminoTT!=NULL -> pattern must contain amino data and sequence must contain DNA data
+        DNATranslation* complTT,  // if complTT!=NULL -> sequence is complemented before comparison with pattern
         FindAlgorithmStrand strand,  // if not direct there complTT must not be NULL
         FindAlgorithmPatternSettings patternSettings,
         bool supportAmbigiousBases,
-        const char *sequence,
+        const char* sequence,
         int seqLen,
-        const DNAAlphabet *sequenceAlphabet,  // Sequence alphabet. May be NULL if not known.
+        const DNAAlphabet* sequenceAlphabet,  // Sequence alphabet. May be NULL if not known.
         bool searchIsCircular,
-        const U2Region &range,
-        const char *pattern,
+        const U2Region& range,
+        const char* pattern,
         int patternLen,
         int maxErr,
         int maxRegExpResult,
-        int &stopFlag,
-        int &percentsCompleted);
+        int& stopFlag,
+        int& percentsCompleted);
 
     static void find(
-        FindAlgorithmResultsListener *rl,
-        const FindAlgorithmSettings &config,
-        const char *sequence,
+        FindAlgorithmResultsListener* rl,
+        const FindAlgorithmSettings& config,
+        const char* sequence,
         int seqLen,
         bool searchIsCircular,
-        int &stopFlag,
-        int &percentsCompleted) {
+        int& stopFlag,
+        int& percentsCompleted) {
         find(rl,
              config.proteinTT,
              config.complementTT,

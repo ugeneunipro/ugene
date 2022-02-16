@@ -42,10 +42,10 @@ class LoadDocumentTask;
 
 class KalignContext : public TLSContext {
 public:
-    KalignContext(kalign_context *_d)
+    KalignContext(kalign_context* _d)
         : TLSContext(KALIGN_CONTEXT_ID), d(_d) {
     }
-    kalign_context *d;
+    kalign_context* d;
 };
 
 class KalignTaskSettings {
@@ -66,13 +66,13 @@ public:
 class KalignTask : public TLSTask {
     Q_OBJECT
 public:
-    KalignTask(const MultipleSequenceAlignment &ma, const KalignTaskSettings &config);
+    KalignTask(const MultipleSequenceAlignment& ma, const KalignTaskSettings& config);
 
     void _run();
     void doAlign();
     ReportResult report();
 
-    static bool isAlphabetSupported(const QString &alphabetId);
+    static bool isAlphabetSupported(const QString& alphabetId);
 
     KalignTaskSettings config;
     MultipleSequenceAlignment inputMA;
@@ -82,23 +82,23 @@ public:
     MultipleSequenceAlignment resultSubMA;
 
 protected:
-    TLSContext *createContextInstance();
+    TLSContext* createContextInstance();
 };
 
 // locks MultipleSequenceAlignment object and propagate KalignTask results to it
 class KalignGObjectTask : public AlignGObjectTask {
     Q_OBJECT
 public:
-    KalignGObjectTask(MultipleSequenceAlignmentObject *obj, const KalignTaskSettings &config);
+    KalignGObjectTask(MultipleSequenceAlignmentObject* obj, const KalignTaskSettings& config);
     ~KalignGObjectTask();
 
     virtual void prepare();
     ReportResult report();
 
     QPointer<StateLock> lock;
-    KalignTask *kalignTask;
+    KalignTask* kalignTask;
     KalignTaskSettings config;
-    LoadDocumentTask *loadDocumentTask;
+    LoadDocumentTask* loadDocumentTask;
 };
 
 /**
@@ -116,10 +116,10 @@ public:
 class KalignGObjectRunFromSchemaTask : public AlignGObjectTask {
     Q_OBJECT
 public:
-    KalignGObjectRunFromSchemaTask(MultipleSequenceAlignmentObject *obj, const KalignTaskSettings &config);
+    KalignGObjectRunFromSchemaTask(MultipleSequenceAlignmentObject* obj, const KalignTaskSettings& config);
 
     void prepare();
-    void setMAObject(MultipleSequenceAlignmentObject *maobj);
+    void setMAObject(MultipleSequenceAlignmentObject* maobj);
 
 private:
     KalignTaskSettings config;
@@ -127,20 +127,20 @@ private:
 
 class KalignWithExtFileSpecifySupportTask : public Task {
 public:
-    KalignWithExtFileSpecifySupportTask(const KalignTaskSettings &config);
+    KalignWithExtFileSpecifySupportTask(const KalignTaskSettings& config);
     ~KalignWithExtFileSpecifySupportTask();
 
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
-    MultipleSequenceAlignmentObject *mAObject;
-    Document *currentDocument;
+    MultipleSequenceAlignmentObject* mAObject;
+    Document* currentDocument;
     bool cleanDoc;
-    SaveDocumentTask *saveDocumentTask;
-    Task *kalignGObjectTask;
+    SaveDocumentTask* saveDocumentTask;
+    Task* kalignGObjectTask;
     KalignTaskSettings config;
-    LoadDocumentTask *loadDocumentTask;
+    LoadDocumentTask* loadDocumentTask;
 };
 
 }  // namespace U2

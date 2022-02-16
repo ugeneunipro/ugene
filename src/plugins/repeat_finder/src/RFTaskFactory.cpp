@@ -26,7 +26,7 @@
 
 namespace U2 {
 
-Task *RFTaskFactory::getTaskInstance(const RepeatFinderSettings &c) const {
+Task* RFTaskFactory::getTaskInstance(const RepeatFinderSettings& c) const {
     if (c.inverted) {
         return new ReverseAndCreateTask(c);
     } else {
@@ -44,14 +44,14 @@ Task *RFTaskFactory::getTaskInstance(const RepeatFinderSettings &c) const {
     }
 }
 
-void RFTaskFactory::setRFResultsListener(Task *b, RFResultsListener *l) {
-    RFAlgorithmBase *rfTask = qobject_cast<RFAlgorithmBase *>(b);
+void RFTaskFactory::setRFResultsListener(Task* b, RFResultsListener* l) {
+    RFAlgorithmBase* rfTask = qobject_cast<RFAlgorithmBase*>(b);
     if (rfTask) {
         rfTask->setRFResultsListener(l);
     }
 }
 
-ReverseAndCreateTask::ReverseAndCreateTask(const RepeatFinderSettings &c)
+ReverseAndCreateTask::ReverseAndCreateTask(const RepeatFinderSettings& c)
     : Task("Make reverse sequence and find repeats", TaskFlag_NoRun) {
     this->c = c;
 
@@ -59,11 +59,11 @@ ReverseAndCreateTask::ReverseAndCreateTask(const RepeatFinderSettings &c)
     addSubTask(revTask);
 }
 
-QList<Task *> ReverseAndCreateTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> subTasks;
+QList<Task*> ReverseAndCreateTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> subTasks;
 
     if (revTask == subTask) {
-        Task *rfBase = RFAlgorithmBase::createTask(
+        Task* rfBase = RFAlgorithmBase::createTask(
             c.l,
             revTask->complementSequence.constData(),
             c.sizeX,

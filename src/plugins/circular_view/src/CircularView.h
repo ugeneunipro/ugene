@@ -55,18 +55,18 @@ class TextItem;
 class CircularView : public GSequenceLineViewAnnotated {
     Q_OBJECT
 public:
-    CircularView(QWidget *p, ADVSequenceObjectContext *ctx, CircularViewSettings *settings);
+    CircularView(QWidget* p, ADVSequenceObjectContext* ctx, CircularViewSettings* settings);
 
     void pack() override;
-    void mousePressEvent(QMouseEvent *e) override;
-    void mouseMoveEvent(QMouseEvent *e) override;
-    void mouseReleaseEvent(QMouseEvent *e) override;
-    void resizeEvent(QResizeEvent *e) override;
+    void mousePressEvent(QMouseEvent* e) override;
+    void mouseMoveEvent(QMouseEvent* e) override;
+    void mouseReleaseEvent(QMouseEvent* e) override;
+    void resizeEvent(QResizeEvent* e) override;
 
-    void keyPressEvent(QKeyEvent *e) override;
-    void keyReleaseEvent(QKeyEvent *e) override;
+    void keyPressEvent(QKeyEvent* e) override;
+    void keyReleaseEvent(QKeyEvent* e) override;
 
-    void wheelEvent(QWheelEvent *we) override;
+    void wheelEvent(QWheelEvent* we) override;
     QSize sizeHint() const override;
 
     static qreal coordToAngle(const QPoint point);
@@ -86,9 +86,9 @@ public:
     void updateMinSize();
 
     // used by export to file function
-    void paint(QPainter &p, int w, int h, bool paintSelection, bool paintMarker);
+    void paint(QPainter& p, int w, int h, bool paintSelection, bool paintMarker);
 
-    CircularViewSettings *getSettings() {
+    CircularViewSettings* getSettings() {
         return settings;
     }
     void redraw();
@@ -103,12 +103,12 @@ public slots:
     void sl_zoomIn();
     void sl_zoomOut();
     void sl_fitInView();
-    void sl_onSequenceObjectRenamed(const QString &oldName);
+    void sl_onSequenceObjectRenamed(const QString& oldName);
     void sl_onCircularTopologyChange();
 
 protected slots:
-    void sl_onAnnotationSelectionChanged(AnnotationSelection *, const QList<Annotation *> &added, const QList<Annotation *> &removed) override;
-    void sl_onDNASelectionChanged(LRegionsSelection *thiz, const QVector<U2Region> &added, const QVector<U2Region> &removed) override;
+    void sl_onAnnotationSelectionChanged(AnnotationSelection*, const QList<Annotation*>& added, const QList<Annotation*>& removed) override;
+    void sl_onDNASelectionChanged(LRegionsSelection* thiz, const QVector<U2Region>& added, const QVector<U2Region>& removed) override;
 
 protected:
     void adaptSizes();
@@ -122,7 +122,7 @@ protected:
 
     Direction getDirection(float a, float b) const;
 
-    QVBoxLayout *layout;
+    QVBoxLayout* layout;
 
     int lastMovePos;
     int currentSelectionLen;
@@ -131,10 +131,10 @@ protected:
     bool holdSelection;
     qreal lastPressAngle;
     qreal lastMoveAngle;
-    CircularViewSettings *settings;
+    CircularViewSettings* settings;
 
     /** A renderArea from the base class with a correct type. Used to avoid casts in the code. */
-    CircularViewRenderArea *circularViewRenderArea;
+    CircularViewRenderArea* circularViewRenderArea;
 };
 
 class CircularViewRenderArea : public GSequenceLineViewAnnotatedRenderArea {
@@ -149,13 +149,13 @@ public:
         DrawAnnotationPass_DrawBorder
     };
 
-    CircularViewRenderArea(CircularView *d);
+    CircularViewRenderArea(CircularView* d);
     ~CircularViewRenderArea();
 
     /** Returns all annotations by a coordinate inside render area. */
-    QList<Annotation *> findAnnotationsByCoord(const QPoint &coord) const override;
+    QList<Annotation*> findAnnotationsByCoord(const QPoint& coord) const override;
 
-    int getAnnotationYLevel(Annotation *a) const {
+    int getAnnotationYLevel(Annotation* a) const {
         return annotationYLevel.value(a);
     }
 
@@ -163,41 +163,41 @@ public:
     int getCenterY() const {
         return verticalOffset;
     }
-    qreal coordToAsin(const QPoint &p) const;
+    qreal coordToAsin(const QPoint& p) const;
     qint64 asinToPos(const qreal asin) const;
 
 protected:
-    qint64 coordToPos(const QPoint &p) const override;
-    void resizeEvent(QResizeEvent *e) override;
-    virtual void drawAll(QPaintDevice *pd) override;
+    qint64 coordToPos(const QPoint& p) const override;
+    void resizeEvent(QResizeEvent* e) override;
+    virtual void drawAll(QPaintDevice* pd) override;
 
-    void buildAnnotationItem(DrawAnnotationPass pass, Annotation *a, int predefinedOrbit = -1, bool selected = false, const AnnotationSettings *as = nullptr);
-    void buildAnnotationLabel(const QFont &font, Annotation *a, const AnnotationSettings *as, bool isAutoAnnotation = false);
+    void buildAnnotationItem(DrawAnnotationPass pass, Annotation* a, int predefinedOrbit = -1, bool selected = false, const AnnotationSettings* as = nullptr);
+    void buildAnnotationLabel(const QFont& font, Annotation* a, const AnnotationSettings* as, bool isAutoAnnotation = false);
     void buildItems(QFont labelFont);
 
-    virtual void drawAnnotations(QPainter &p);
+    virtual void drawAnnotations(QPainter& p);
 
     void redraw();
 
-    void paintContent(QPainter &p, bool paintSelection = true, bool paintMarker = true);
-    void paintContent(QPainter &p, int w, int h, bool paintSelection, bool paintMarker);
+    void paintContent(QPainter& p, bool paintSelection = true, bool paintMarker = true);
+    void paintContent(QPainter& p, int w, int h, bool paintSelection, bool paintMarker);
 
-    void drawSequenceName(QPainter &p);
-    void drawRuler(QPainter &p);
-    void drawRulerCoordinates(QPainter &p, int startPos, int seqLen);
-    void drawRulerNotches(QPainter &p, int start, int span, int seqLen);
-    void drawAnnotationsSelection(QPainter &p);
-    void drawSequenceSelection(QPainter &p);
-    void drawMarker(QPainter &p);
-    void evaluateLabelPositions(const QFont &f);
+    void drawSequenceName(QPainter& p);
+    void drawRuler(QPainter& p);
+    void drawRulerCoordinates(QPainter& p, int startPos, int seqLen);
+    void drawRulerNotches(QPainter& p, int start, int span, int seqLen);
+    void drawAnnotationsSelection(QPainter& p);
+    void drawSequenceSelection(QPainter& p);
+    void drawMarker(QPainter& p);
+    void evaluateLabelPositions(const QFont& f);
     qreal getVisibleAngle() const;
     QPair<int, int> getVisibleRange() const;
 
 private:
-    int findOrbit(const QVector<U2Region> &location, Annotation *a);
-    CircularAnnotationRegionItem *createAnnotationRegionItem(const U2Region &region, int seqLen, int yLevel, bool isComplementaryStrand, int index);
-    QPainterPath createAnnotationArrowPath(float startAngle, float spanAngle, float dAlpha, const QRect &outerRect, const QRect &innerRect, const QRect &middleRect, bool complementary, bool isShort) const;
-    void removeRegionsOutOfRange(QVector<U2Region> &location, int seqLen) const;
+    int findOrbit(const QVector<U2Region>& location, Annotation* a);
+    CircularAnnotationRegionItem* createAnnotationRegionItem(const U2Region& region, int seqLen, int yLevel, bool isComplementaryStrand, int index);
+    QPainterPath createAnnotationArrowPath(float startAngle, float spanAngle, float dAlpha, const QRect& outerRect, const QRect& innerRect, const QRect& middleRect, bool complementary, bool isShort) const;
+    void removeRegionsOutOfRange(QVector<U2Region>& location, int seqLen) const;
 
     static const int OUTER_ELLIPSE_SIZE;
     static const int ELLIPSE_DELTA;
@@ -226,21 +226,21 @@ private:
     int verticalOffset;
     int currentScale;  // > 0 -- zoomed IN; < 0 -- zoomed OUT; == 0 -- fits in view
 
-    CircularViewSettings *settings;
+    CircularViewSettings* settings;
     bool settingsWereChanged;
 
-    CircularView *circularView;
+    CircularView* circularView;
     QList<QVector<U2Region>> regionY;
 
-    QMap<Annotation *, CircularAnnotationItem *> circItems;
-    TextItem *seqNameItem;
-    TextItem *seqLenItem;
-    QMap<Annotation *, int> annotationYLevel;
-    QList<CircularAnnotationLabel *> labelList;
+    QMap<Annotation*, CircularAnnotationItem*> circItems;
+    TextItem* seqNameItem;
+    TextItem* seqLenItem;
+    QMap<Annotation*, int> annotationYLevel;
+    QList<CircularAnnotationLabel*> labelList;
     qreal rotationDegree;
     qreal mouseAngle;
     QVector<QRect> positionsAvailableForLabels;
-    QMap<int, CircularAnnotationLabel *> engagedLabelPositionToLabel;
+    QMap<int, CircularAnnotationLabel*> engagedLabelPositionToLabel;
     int oldYlevel;
 };
 

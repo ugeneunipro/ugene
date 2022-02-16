@@ -60,7 +60,7 @@ struct GenomicPosition {
     GenomicPosition(int crd, bool strnd)
         : coord(crd), directStrand(strnd) {
     }
-    friend bool operator<(const GenomicPosition &left, const GenomicPosition &right);
+    friend bool operator<(const GenomicPosition& left, const GenomicPosition& right);
 
     int coord;
     bool directStrand;
@@ -69,7 +69,7 @@ struct GenomicPosition {
 class DigestSequenceTask : public Task {
     Q_OBJECT
 public:
-    DigestSequenceTask(U2SequenceObject *dnaObj, AnnotationTableObject *destTable, AnnotationTableObject *sourceTable, const DigestSequenceTaskConfig &cfg);
+    DigestSequenceTask(U2SequenceObject* dnaObj, AnnotationTableObject* destTable, AnnotationTableObject* sourceTable, const DigestSequenceTaskConfig& cfg);
     virtual void prepare();
     virtual void run();
     virtual QString generateReport() const;
@@ -78,14 +78,14 @@ public:
 private:
     void findCutSites();
     void saveResults();
-    SharedAnnotationData createFragment(int pos1, const DNAFragmentTerm &leftTerm, int pos2, const DNAFragmentTerm &rightTerm);
+    SharedAnnotationData createFragment(int pos1, const DNAFragmentTerm& leftTerm, int pos2, const DNAFragmentTerm& rightTerm);
     void checkForConservedAnnotations();
     qint64 correctPos(const qint64 pos) const;
-    QByteArray getOverhang(const U2Region &region) const;
+    QByteArray getOverhang(const U2Region& region) const;
     bool isCircular;
     U2Region seqRange;
     AnnotationTableObject *sourceObj, *destObj;
-    U2SequenceObject *dnaObj;
+    U2SequenceObject* dnaObj;
     DigestSequenceTaskConfig cfg;
     QMap<GenomicPosition, SEnzymeData> cutSiteMap;
     QList<SharedAnnotationData> results;
@@ -111,26 +111,26 @@ class DNAAlphabet;
 class LigateFragmentsTask : public Task {
     Q_OBJECT
 public:
-    LigateFragmentsTask(const QList<DNAFragment> &fragments, const LigateFragmentsTaskConfig &cfg);
-    Document *getResultDocument() {
+    LigateFragmentsTask(const QList<DNAFragment>& fragments, const LigateFragmentsTaskConfig& cfg);
+    Document* getResultDocument() {
         return resultDoc;
     }
     void prepare();
 
 private:
-    static QList<SharedAnnotationData> cloneAnnotationsInRegion(const U2Region &region, AnnotationTableObject *source, int globalOffset);
-    static QList<SharedAnnotationData> cloneAnnotationsInFragmentRegion(const DNAFragment &fragment, AnnotationTableObject *source, int globalOffset);
+    static QList<SharedAnnotationData> cloneAnnotationsInRegion(const U2Region& region, AnnotationTableObject* source, int globalOffset);
+    static QList<SharedAnnotationData> cloneAnnotationsInFragmentRegion(const DNAFragment& fragment, AnnotationTableObject* source, int globalOffset);
     static SharedAnnotationData createSourceAnnotation(int regLen);
-    static SharedAnnotationData createFragmentAnnotation(const DNAFragment &, int startPos);
-    void createDocument(const QByteArray &seq, const QList<SharedAnnotationData> &annotations);
-    void processOverhangs(const DNAFragment &leftFragment, const DNAFragment &rightFragment, QByteArray &overhangAddition);
-    bool overhangsAreConsistent(const DNAFragmentTerm &leftTerm, const DNAFragmentTerm &rightTerm);
+    static SharedAnnotationData createFragmentAnnotation(const DNAFragment&, int startPos);
+    void createDocument(const QByteArray& seq, const QList<SharedAnnotationData>& annotations);
+    void processOverhangs(const DNAFragment& leftFragment, const DNAFragment& rightFragment, QByteArray& overhangAddition);
+    bool overhangsAreConsistent(const DNAFragmentTerm& leftTerm, const DNAFragmentTerm& rightTerm);
 
     QList<DNAFragment> fragmentList;
     QList<SharedAnnotationData> annotations;
     LigateFragmentsTaskConfig cfg;
-    Document *resultDoc;
-    const DNAAlphabet *resultAlphabet;
+    Document* resultDoc;
+    const DNAAlphabet* resultAlphabet;
     QMap<AnnotationData, int> offsetMap;
 };
 

@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-MsaOpSavableTab::MsaOpSavableTab(QWidget *wrappedWidget, MWMDIWindow *contextWindow)
+MsaOpSavableTab::MsaOpSavableTab(QWidget* wrappedWidget, MWMDIWindow* contextWindow)
     : U2SavableWidget(wrappedWidget, contextWindow) {
 }
 
@@ -36,10 +36,10 @@ MsaOpSavableTab::~MsaOpSavableTab() {
     widgetStateSaved = true;
 }
 
-QSet<QWidget *> MsaOpSavableTab::getCompoundChildren() const {
-    QSet<QWidget *> result;
-    foreach (QWidget *child, wrappedWidget->findChildren<QWidget *>()) {
-        if (nullptr != qobject_cast<SequenceSelectorWidgetController *>(child)) {
+QSet<QWidget*> MsaOpSavableTab::getCompoundChildren() const {
+    QSet<QWidget*> result;
+    foreach (QWidget* child, wrappedWidget->findChildren<QWidget*>()) {
+        if (nullptr != qobject_cast<SequenceSelectorWidgetController*>(child)) {
             result.insert(child);
         }
     }

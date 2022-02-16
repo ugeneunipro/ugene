@@ -31,22 +31,22 @@ namespace U2 {
 
 class U2CORE_EXPORT UdrDbi : public U2ChildDbi {
 public:
-    UdrDbi(U2Dbi *rootDbi);
+    UdrDbi(U2Dbi* rootDbi);
 
     /**
      * Creates a new record and returns its identifier.
      */
-    virtual UdrRecordId addRecord(const UdrSchemaId &schemaId, const QList<UdrValue> &data, U2OpStatus &os) = 0;
+    virtual UdrRecordId addRecord(const UdrSchemaId& schemaId, const QList<UdrValue>& data, U2OpStatus& os) = 0;
 
     /**
      * Updates the record's data.
      */
-    virtual void updateRecord(const UdrRecordId &recordId, const QList<UdrValue> &data, U2OpStatus &os) = 0;
+    virtual void updateRecord(const UdrRecordId& recordId, const QList<UdrValue>& data, U2OpStatus& os) = 0;
 
     /**
      * Returns the record with the given identifier.
      */
-    virtual UdrRecord getRecord(const UdrRecordId &recordId, U2OpStatus &os) = 0;
+    virtual UdrRecord getRecord(const UdrRecordId& recordId, U2OpStatus& os) = 0;
 
     /**
      * Adds a new (empty) UDR object instance into database.
@@ -55,23 +55,23 @@ public:
      * Requires: U2DbiFeature_WriteUdr feature support.
      *           The schema with the @schemaId must have the object reference.
      */
-    virtual void createObject(const UdrSchemaId &schemaId, U2Object &udrObject, const QString &folder, U2OpStatus &os) = 0;
+    virtual void createObject(const UdrSchemaId& schemaId, U2Object& udrObject, const QString& folder, U2OpStatus& os) = 0;
 
     /**
      * Returns the list of records associated with the given @objectId.
      * The schema with the @schemaId must have the object reference.
      */
-    virtual QList<UdrRecord> getObjectRecords(const UdrSchemaId &schemaId, const U2DataId &objectId, U2OpStatus &os) = 0;
+    virtual QList<UdrRecord> getObjectRecords(const UdrSchemaId& schemaId, const U2DataId& objectId, U2OpStatus& os) = 0;
 
     /**
      * Returns the list of records of the given schema.
      */
-    virtual QList<UdrRecord> getRecords(const UdrSchemaId &schemaId, U2OpStatus &os) = 0;
+    virtual QList<UdrRecord> getRecords(const UdrSchemaId& schemaId, U2OpStatus& os) = 0;
 
     /**
      * Removes the record with the given identifier.
      */
-    virtual void removeRecord(const UdrRecordId &recordId, U2OpStatus &os) = 0;
+    virtual void removeRecord(const UdrRecordId& recordId, U2OpStatus& os) = 0;
 
     /**
      * Returns the input stream for reading data from the specified field (@fieldNum)
@@ -79,7 +79,7 @@ public:
      * The field must be BLOB.
      * Do not forget to release the memory.
      */
-    virtual InputStream *createInputStream(const UdrRecordId &recordId, int fieldNum, U2OpStatus &os) = 0;
+    virtual InputStream* createInputStream(const UdrRecordId& recordId, int fieldNum, U2OpStatus& os) = 0;
 
     /**
      * Returns the output stream for writing data to the specified field (@fieldNum)
@@ -88,9 +88,9 @@ public:
      * The field must be BLOB.
      * Do not forget to release the memory.
      */
-    virtual OutputStream *createOutputStream(const UdrRecordId &recordId, int fieldNum, qint64 size, U2OpStatus &os) = 0;
+    virtual OutputStream* createOutputStream(const UdrRecordId& recordId, int fieldNum, qint64 size, U2OpStatus& os) = 0;
 
-    virtual ModificationAction *getModificationAction(const U2DataId &id) = 0;
+    virtual ModificationAction* getModificationAction(const U2DataId& id) = 0;
 };
 
 }  // namespace U2

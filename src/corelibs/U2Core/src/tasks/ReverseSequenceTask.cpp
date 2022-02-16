@@ -35,7 +35,7 @@ namespace U2 {
 
 const int CHUNK_SIZE = 1024 * 256;
 
-ReverseComplementSequenceTask::ReverseComplementSequenceTask(U2SequenceObject *dObj, const QList<AnnotationTableObject *> &annotations, DNASequenceSelection *s, DNATranslation *transl)
+ReverseComplementSequenceTask::ReverseComplementSequenceTask(U2SequenceObject* dObj, const QList<AnnotationTableObject*>& annotations, DNASequenceSelection* s, DNATranslation* transl)
     : Task(tr("Reverse Complement Sequence Task"), TaskFlags_NR_FOSE_COSC),
       seqObj(dObj),
       aObjs(annotations),
@@ -46,7 +46,7 @@ ReverseComplementSequenceTask::ReverseComplementSequenceTask(U2SequenceObject *d
     addSubTask(new ComplementSequenceTask(seqObj, aObjs, selection, complTT));
 }
 
-ReverseSequenceTask::ReverseSequenceTask(U2SequenceObject *seqObj, const QList<AnnotationTableObject *> &annotations, DNASequenceSelection *selection)
+ReverseSequenceTask::ReverseSequenceTask(U2SequenceObject* seqObj, const QList<AnnotationTableObject*>& annotations, DNASequenceSelection* selection)
     : Task(tr("Reverse Sequence Task"), TaskFlags_NR_FOSE_COSC),
       seqObj(seqObj),
       aObjs(annotations),
@@ -127,8 +127,8 @@ Task::ReportResult ReverseSequenceTask::report() {
     }
 
     // fix annotation locations
-    for (AnnotationTableObject *aObj : qAsConst(aObjs)) {
-        foreach (Annotation *a, aObj->getAnnotations()) {
+    for (AnnotationTableObject* aObj : qAsConst(aObjs)) {
+        foreach (Annotation* a, aObj->getAnnotations()) {
             U2Location location = a->getLocation();
             U2Region::mirror(len, location->regions);
             U2Region::reverse(location->regions);
@@ -139,10 +139,10 @@ Task::ReportResult ReverseSequenceTask::report() {
     return ReportResult_Finished;
 }
 
-ComplementSequenceTask::ComplementSequenceTask(U2SequenceObject *seqObj,
-                                               const QList<AnnotationTableObject *> &annotations,
-                                               DNASequenceSelection *selection,
-                                               DNATranslation *complTT)
+ComplementSequenceTask::ComplementSequenceTask(U2SequenceObject* seqObj,
+                                               const QList<AnnotationTableObject*>& annotations,
+                                               DNASequenceSelection* selection,
+                                               DNATranslation* complTT)
     : Task(tr("Complement Sequence Task"), TaskFlags_NR_FOSE_COSC),
       seqObj(seqObj),
       aObjs(annotations),
@@ -160,7 +160,7 @@ Task::ReportResult ComplementSequenceTask::report() {
 
     QVector<U2Region> regions = SequenceWalkerTask::splitRange(U2Region(0, seqObj->getSequenceLength()), CHUNK_SIZE, 0, 0, false);
     U2OpStatusImpl os;
-    foreach (const U2Region &r, regions) {
+    foreach (const U2Region& r, regions) {
         QByteArray chunk = seqObj->getSequenceData(r);
         complTT->translate(chunk.data(), chunk.size());
         seqObj->replaceRegion(r, DNASequence(chunk), os);
@@ -171,8 +171,8 @@ Task::ReportResult ComplementSequenceTask::report() {
     }
 
     // fix annotation locations
-    for (AnnotationTableObject *aObj : qAsConst(aObjs)) {
-        foreach (Annotation *a, aObj->getAnnotations()) {
+    for (AnnotationTableObject* aObj : qAsConst(aObjs)) {
+        foreach (Annotation* a, aObj->getAnnotations()) {
             U2Strand strand = a->getStrand();
             a->setStrand(strand == U2Strand::Direct ? U2Strand::Complementary : U2Strand::Direct);
         }

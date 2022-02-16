@@ -34,7 +34,7 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::StartupDialogFiller"
 
-StartupDialogFiller::StartupDialogFiller(HI::GUITestOpStatus &os, const QString &path, bool isPathValid)
+StartupDialogFiller::StartupDialogFiller(HI::GUITestOpStatus& os, const QString& path, bool isPathValid)
     : Filler(os, "StartupDialog"),
       path(path),
       isPathValid(isPathValid) {
@@ -42,7 +42,7 @@ StartupDialogFiller::StartupDialogFiller(HI::GUITestOpStatus &os, const QString 
 
 #define GT_METHOD_NAME "commonScenario"
 void StartupDialogFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
     if (path != UGUITest::sandBoxDir) {
         auto pathEdit = GTWidget::findLineEdit(os, "pathEdit", dialog);
 

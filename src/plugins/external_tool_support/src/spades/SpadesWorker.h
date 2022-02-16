@@ -38,7 +38,7 @@ namespace LocalWorkflow {
 class SpadesWorker : public BaseWorker {
     Q_OBJECT
 public:
-    SpadesWorker(Actor *p);
+    SpadesWorker(Actor* p);
 
     static const QString DATASET_TYPE_STANDARD_ISOLATE;
     static const QString DATASET_TYPE_MDA_SINGLE_CELL;
@@ -50,24 +50,24 @@ public:
     static const QString K_MER_AUTO;
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
     virtual bool isReady() const;
 
 private:
     bool processInputMessagesAndCheckReady();
-    void trySetDone(U2OpStatus &os);
+    void trySetDone(U2OpStatus& os);
 
     QList<DatasetFetcher> readsFetchers;
-    QList<IntegralBus *> inChannels;
-    IntegralBus *output;
+    QList<IntegralBus*> inChannels;
+    IntegralBus* output;
 
 private:
-    GenomeAssemblyTaskSettings getSettings(U2OpStatus &os);
+    GenomeAssemblyTaskSettings getSettings(U2OpStatus& os);
 
 private slots:
     void sl_taskFinished();
-};    // SpadesWorker
+};  // SpadesWorker
 
 class SpadesWorkerFactory : public DomainFactory {
     Q_DECLARE_TR_FUNCTIONS(SpadesWorkerFactory)
@@ -76,9 +76,9 @@ public:
         : DomainFactory(ACTOR_ID) {
     }
     static void init();
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 
-    static int getReadsUrlSlotIdIndex(const QString &portId, bool &isPaired);
+    static int getReadsUrlSlotIdIndex(const QString& portId, bool& isPaired);
 
     static const QString ACTOR_ID;
 
@@ -116,26 +116,26 @@ public:
 
     static const QString BASE_SPADES_SUBDIR;
 
-    static const QString getPortNameById(const QString &portId);
+    static const QString getPortNameById(const QString& portId);
 
     static const StrStrMap PORT_ID_2_YAML_LIBRARY_NAME;
     static StrStrMap getPortId2YamlLibraryName();
 
-};    // SpadesWorkerFactory
+};  // SpadesWorkerFactory
 
 class SpadesPrompter : public PrompterBase<SpadesPrompter> {
     Q_OBJECT
 public:
-    SpadesPrompter(Actor *p = nullptr)
+    SpadesPrompter(Actor* p = nullptr)
         : PrompterBase<SpadesPrompter>(p) {
     }
 
 protected:
     QString composeRichDoc();
 
-};    // SpadesPrompter
+};  // SpadesPrompter
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_SPADES_WORKER_
+#endif  // _U2_SPADES_WORKER_

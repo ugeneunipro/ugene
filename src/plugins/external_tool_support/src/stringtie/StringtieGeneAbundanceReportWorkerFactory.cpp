@@ -46,14 +46,14 @@ StringtieGeneAbundanceReportWorkerFactory::StringtieGeneAbundanceReportWorkerFac
     : DomainFactory(ACTOR_ID) {
 }
 
-Worker *StringtieGeneAbundanceReportWorkerFactory::createWorker(Actor *actor) {
+Worker* StringtieGeneAbundanceReportWorkerFactory::createWorker(Actor* actor) {
     return new StringtieGeneAbundanceReportWorker(actor);
 }
 
 void StringtieGeneAbundanceReportWorkerFactory::init() {
     const QString portId = StringtieGeneAbundanceReportWorkerFactory::INPUT_PORT_ID;
 
-    QList<PortDescriptor *> ports;
+    QList<PortDescriptor*> ports;
     {
         const Descriptor inSlotDesc(BaseSlots::URL_SLOT().getId(),
                                     tr("Input URL url"),
@@ -72,7 +72,7 @@ void StringtieGeneAbundanceReportWorkerFactory::init() {
                                     Attribute::CanBeEmpty);
     }
 
-    QList<Attribute *> attributes;
+    QList<Attribute*> attributes;
     {
         const Descriptor outputFileDesc(OUTPUT_FILE_ATTR_ID,
                                         tr("Output file"),
@@ -82,7 +82,7 @@ void StringtieGeneAbundanceReportWorkerFactory::init() {
                                     Attribute::Required | Attribute::NeedValidateEncoding | Attribute::CanBeEmpty);
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         DelegateTags outputFileTags;
         outputFileTags.set(DelegateTags::PLACEHOLDER_TEXT, tr("Auto"));
@@ -101,19 +101,19 @@ void StringtieGeneAbundanceReportWorkerFactory::init() {
                              "<br><br>Provide URL(s) to the StringTie gene abundance file(s) to the input "
                              "port of the element."));
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new StringtieGeneAbundanceReportPrompter(nullptr));
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_RNA_SEQ(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new StringtieGeneAbundanceReportWorkerFactory());
 }
 
 void StringtieGeneAbundanceReportWorkerFactory::cleanup() {
     delete WorkflowEnv::getProtoRegistry()->unregisterProto(ACTOR_ID);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     delete localDomain->unregisterEntry(ACTOR_ID);
 }
 

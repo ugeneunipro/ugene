@@ -43,8 +43,8 @@
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
 #include "primitives/PopupChooser.h"
-#include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/pcr/PrimersDetailsDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
 namespace U2 {
@@ -66,8 +66,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
 
     // Expected: The panel is unavailable, the info message about alphabets is shown.
-    QWidget *params = GTWidget::findWidget(os, "runPcrWidget");
-    QWidget *warning = GTWidget::findWidget(os, "algoWarningLabel");
+    QWidget* params = GTWidget::findWidget(os, "runPcrWidget");
+    QWidget* warning = GTWidget::findWidget(os, "algoWarningLabel");
     CHECK_SET_ERR(!params->isEnabled(), "The panel is enabled for a wrong alphabet");
     CHECK_SET_ERR(warning->isVisible(), "No alphabet warning");
 
@@ -92,8 +92,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     // 3. Set the focus at the primer line edit and write "Q%1" (not ACGT).
     //  TODO: wrap into api
-    QWidget *forwardPrimerBox = GTWidget::findWidget(os, "forwardPrimerBox");
-    QLineEdit *forwardPrimerLine = dynamic_cast<QLineEdit *>(GTWidget::findWidget(os, "primerEdit", forwardPrimerBox));
+    QWidget* forwardPrimerBox = GTWidget::findWidget(os, "forwardPrimerBox");
+    QLineEdit* forwardPrimerLine = dynamic_cast<QLineEdit*>(GTWidget::findWidget(os, "primerEdit", forwardPrimerBox));
     GTLineEdit::setText(os, forwardPrimerLine, "Q%1", true);
 
     // Expected: the line edit is empty, the statistics label is empty.
@@ -103,7 +103,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTLineEdit::setText(os, forwardPrimerLine, "atcg", true);
 
     // Expected: the line edit content is "ATCG", the statistics label shows the temperature and "4-mer".
-    QLabel *statsLabel = dynamic_cast<QLabel *>(GTWidget::findWidget(os, "characteristicsLabel", forwardPrimerBox));
+    QLabel* statsLabel = dynamic_cast<QLabel*>(GTWidget::findWidget(os, "characteristicsLabel", forwardPrimerBox));
     CHECK_SET_ERR(forwardPrimerLine->text() == "ATCG", "No upper-case");
     CHECK_SET_ERR(statsLabel->text().endsWith("4-mer"), "Wrong statistics label");
 
@@ -126,7 +126,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
 
     // Expected: the find buttom is disabled.
-    QWidget *findButton = GTWidget::findWidget(os, "findProductButton");
+    QWidget* findButton = GTWidget::findWidget(os, "findProductButton");
     CHECK_SET_ERR(!findButton->isEnabled(), "Find button is enabled 1");
 
     // 3. Enter the forward primer "TTCGGTGATGACGGTGAAAACCTCTGACACATGCAGCT".
@@ -179,7 +179,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTMouseDriver::click();
 
     // Expected: the extract button is enabled.
-    QWidget *extractButton = GTWidget::findWidget(os, "extractProductButton");
+    QWidget* extractButton = GTWidget::findWidget(os, "extractProductButton");
     CHECK_SET_ERR(extractButton->isEnabled(), "Extract button is disabled");
 
     // 6. Click the empty place of the table.
@@ -274,14 +274,14 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsPcr::setPrimer(os, U2Strand::Direct, "AGACTCTTTCGTCTCACGCACTTCGCTGATA");
 
     // Expected: primer warning is hidden.
-    QWidget *warning = GTWidget::findWidget(os, "warningLabel");
+    QWidget* warning = GTWidget::findWidget(os, "warningLabel");
     CHECK_SET_ERR(!warning->isVisible(), "Primer warning is visible");
 
     // 4. Enter the reverse primer  and "TGACCGTCTCAGGAGGTGGTTGTGTCAGAGGTTTT".
     GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "TGACCGTCTCAGGAGGTGGTTGTGTCAGAGGTTTT");
 
     // Expected: primer warning is shown, the find button text is "Find product(s) anyway".
-    QAbstractButton *findButton = dynamic_cast<QAbstractButton *>(GTWidget::findWidget(os, "findProductButton"));
+    QAbstractButton* findButton = dynamic_cast<QAbstractButton*>(GTWidget::findWidget(os, "findProductButton"));
     CHECK_SET_ERR(warning->isVisible(), "Primer warning is not visible");
     CHECK_SET_ERR(findButton->text() == "Find product(s) anyway", "Wrong find button text 1");
 
@@ -402,7 +402,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     CHECK_SET_ERR(1 == GTUtilsPcr::productsCount(os), "Wrong results count 1");
 
     // 6. Set the 3' perfect match: 16.
-    QSpinBox *perfectSpinBox = dynamic_cast<QSpinBox *>(GTWidget::findWidget(os, "perfectSpinBox"));
+    QSpinBox* perfectSpinBox = dynamic_cast<QSpinBox*>(GTWidget::findWidget(os, "perfectSpinBox"));
     GTSpinBox::setValue(os, perfectSpinBox, 16, GTGlobals::UseKeyBoard);
 
     // 7. Click the find button.
@@ -436,18 +436,18 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     CHECK_SET_ERR(GTUtilsPcr::productsCount(os) == 1, "Wrong results count");
 
     // 6. Choose "Inner" annotation extraction.
-    QComboBox *annsComboBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "annsComboBox"));
+    QComboBox* annsComboBox = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "annsComboBox"));
     GTComboBox::selectItemByIndex(os, annsComboBox, 1);
 
     // 7. Click "Export product(s)".
-    QWidget *extractPB = GTWidget::findWidget(os, "extractProductButton");
+    QWidget* extractPB = GTWidget::findWidget(os, "extractProductButton");
     GTUtilsNotifications::waitAllNotificationsClosed(os);
     GTWidget::click(os, extractPB);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: there are 3 annotations in the exported document: 2 primers and center 51..150.
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "middle", {false}) == nullptr, "Unexpected annotation 1");
-    CHECK_SET_ERR("complement(51..150)" == GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "center"), "Wrong region 1");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "middle", nullptr, {false}) == nullptr, "Unexpected annotation 1");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "center") == "complement(51..150)", "Wrong region 1");
 
     // 8. Choose "All annotations" annotation extraction.
     GTUtilsProjectTreeView::doubleClickItem(os, "begin-end.gb");
@@ -476,8 +476,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: there are only 2 primers annotations in the exported document.
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "middle", {false}) == nullptr, "Unexpected annotation 2");
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "center", {false}) == nullptr, "Unexpected annotation 3");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "middle", nullptr, {false}) == nullptr, "Unexpected annotation 2");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "center", nullptr, {false}) == nullptr, "Unexpected annotation 3");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011) {
@@ -532,7 +532,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     // Expected: the temperature is N/A, the primer pair info contains the message about non-ACGTN symbols
     CHECK_SET_ERR(GTUtilsPcr::getPrimerInfo(os, U2Strand::Complementary).contains("N/A"), "The temperature is configured");
 
-    QLabel *warningLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "warningLabel"));
+    QLabel* warningLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "warningLabel"));
     CHECK_SET_ERR(warningLabel != nullptr, "Cannot find warningLabel");
     CHECK_SET_ERR(warningLabel->text().contains("The primers contain a character from the Extended DNA alphabet."), "Incorrect warning message");
 }
@@ -586,7 +586,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "reverseComplementButton", GTUtilsPcr::primerBox(os, U2Strand::Direct)));
 
-    QLineEdit *primerLineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "primerEdit", GTUtilsPcr::primerBox(os, U2Strand::Direct));
+    QLineEdit* primerLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "primerEdit", GTUtilsPcr::primerBox(os, U2Strand::Direct));
     CHECK_SET_ERR(primerLineEdit != nullptr, "Forward primerEdit is NULL");
 
     CHECK_SET_ERR(primerLineEdit->text() == "XNVHDBMRSWYKACGT", "Incorrect reverse-complement primer translation");
@@ -649,7 +649,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     GTUtilsPcr::setPrimer(os, U2Strand::Direct, "---");
 
     // Expected state: '-' pressing is ignored
-    QLineEdit *primerEdit = dynamic_cast<QLineEdit *>(GTWidget::findWidget(os, "primerEdit", GTUtilsPcr::primerBox(os, U2Strand::Direct)));
+    QLineEdit* primerEdit = dynamic_cast<QLineEdit*>(GTWidget::findWidget(os, "primerEdit", GTUtilsPcr::primerBox(os, U2Strand::Direct)));
     CHECK_SET_ERR(primerEdit != nullptr, "Cannot find primer line edit");
     CHECK_SET_ERR(primerEdit->text().isEmpty(), "There are unexpected characters in PrimerLineEdit");
 }
@@ -666,7 +666,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
 
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::InSilicoPcr);
 
-    QLineEdit *primerEdit = dynamic_cast<QLineEdit *>(GTWidget::findWidget(os, "primerEdit", GTWidget::findWidget(os, "forwardPrimerBox")));
+    QLineEdit* primerEdit = dynamic_cast<QLineEdit*>(GTWidget::findWidget(os, "primerEdit", GTWidget::findWidget(os, "forwardPrimerBox")));
     GTLineEdit::setText(os, primerEdit, "AC\r\nCCTG   GAGAG\nCATCG\tAT", true, true);
 
     CHECK_SET_ERR(primerEdit->text() == "ACCCTGGAGAGCATCGAT", "Incorrect whitespaces removing");
@@ -717,7 +717,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
             GTWidget::click(os, wizard);
 
             // 3. Select "_common_data/cmdline/pcr/pcr_check_ambiguous.seq"
-            GTUtilsWizard::setInputFiles(os, {{ testDir + "_common_data/cmdline/pcr/pcr_check_ambiguous.seq" }});
+            GTUtilsWizard::setInputFiles(os, {{testDir + "_common_data/cmdline/pcr/pcr_check_ambiguous.seq"}});
 
             // 4. Push "Next"
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);

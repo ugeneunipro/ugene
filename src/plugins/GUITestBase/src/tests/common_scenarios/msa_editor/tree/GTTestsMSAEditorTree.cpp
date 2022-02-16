@@ -47,8 +47,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // Check that original name list is correct.
-    MSAEditor *msaEditor = GTUtilsMsaEditor::getEditor(os);
-    MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
+    MSAEditor* msaEditor = GTUtilsMsaEditor::getEditor(os);
+    MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
     QStringList nameList = msaObject->getMultipleAlignment()->getRowNames();
     QStringList originalNameList = {"a", "b", "c", "d", "e", "f", "g", "h"};
     CHECK_SET_ERR(nameList == originalNameList, "1. Wrong original name list: " + nameList.join(","));
@@ -65,8 +65,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     CHECK_SET_ERR(nameList == expectedExpandedTreeNameList, "Initial full tree name list not matched: " + nameList.join(","));
 
     // Collapse subtree. Check that MSA name list has a collapsed group.
-    QList<GraphicsButtonItem *> nodeList = GTUtilsPhyTree::getOrderedRectangularNodes(os);
-    GraphicsButtonItem *parentOfSequenceC = nodeList[1];
+    QList<GraphicsButtonItem*> nodeList = GTUtilsPhyTree::getOrderedRectangularNodes(os);
+    GraphicsButtonItem* parentOfSequenceC = nodeList[1];
     GTUtilsPhyTree::doubleClickNode(os, parentOfSequenceC);
     nameList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     expectedExpandedTreeNameList = QStringList({"h", "b", "f", "d", "g", "a"});
@@ -94,9 +94,9 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QStringList byTreeSequenceNames1 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
-    QAbstractButton *syncModeButton = GTAction::button(os, "sync_msa_action");
-    QAbstractButton *toggleSequenceOrderButton = GTAction::button(os, "toggle_sequence_row_order_action");
-    QAbstractButton *refreshSequenceOrderButton = GTAction::button(os, "refresh_sequence_row_order_action");
+    QAbstractButton* syncModeButton = GTAction::button(os, "sync_msa_action");
+    QAbstractButton* toggleSequenceOrderButton = GTAction::button(os, "toggle_sequence_row_order_action");
+    QAbstractButton* refreshSequenceOrderButton = GTAction::button(os, "refresh_sequence_row_order_action");
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON/1");
     CHECK_SET_ERR(!toggleSequenceOrderButton->isChecked(), "toggleSequenceOrderButton must be unchecked/1");
     CHECK_SET_ERR(!refreshSequenceOrderButton->isEnabled(), "refreshSequenceOrderButton must be disabled/1");
@@ -145,7 +145,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
     QStringList byTreeSequenceNames1 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     CHECK_SET_ERR(originalSequenceNames1 != byTreeSequenceNames1, "MSA must be re-ordered by tree");
 
-    QAbstractButton *syncModeButton = GTAction::button(os, "sync_msa_action");
+    QAbstractButton* syncModeButton = GTAction::button(os, "sync_msa_action");
     GTWidget::click(os, syncModeButton);
 
     QStringList originalSequenceNames2 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);

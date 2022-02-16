@@ -34,7 +34,7 @@
 namespace U2 {
 namespace LocalWorkflow {
 
-StringtieGeneAbundanceReportWorker::StringtieGeneAbundanceReportWorker(Actor *actor)
+StringtieGeneAbundanceReportWorker::StringtieGeneAbundanceReportWorker(Actor* actor)
     : BaseWorker(actor, false) {
 }
 
@@ -43,7 +43,7 @@ void StringtieGeneAbundanceReportWorker::init() {
     SAFE_POINT(nullptr != input, QString("Port with id '%1' is NULL").arg(StringtieGeneAbundanceReportWorkerFactory::INPUT_PORT_ID), );
 }
 
-Task *StringtieGeneAbundanceReportWorker::tick() {
+Task* StringtieGeneAbundanceReportWorker::tick() {
     bool noMessage = true;
     bool portIsEnded = true;
 
@@ -73,13 +73,13 @@ Task *StringtieGeneAbundanceReportWorker::tick() {
                                                     FileAndDirectoryUtils::FILE_DIRECTORY,
                                                     "",
                                                     "");
-            StringtieGeneAbundanceReportTask *task = new StringtieGeneAbundanceReportTask(stringtieReports,
+            StringtieGeneAbundanceReportTask* task = new StringtieGeneAbundanceReportTask(stringtieReports,
                                                                                           geneAbudanceReportUrl,
                                                                                           context->workingDir());
             stringtieReports.clear();
             connect(new TaskSignalMapper(task),
-                    SIGNAL(si_taskSucceeded(Task *)),
-                    SLOT(sl_taskSucceeded(Task *)));
+                    SIGNAL(si_taskSucceeded(Task*)),
+                    SLOT(sl_taskSucceeded(Task*)));
             return task;
         }
 
@@ -95,13 +95,13 @@ Task *StringtieGeneAbundanceReportWorker::tick() {
 void StringtieGeneAbundanceReportWorker::cleanup() {
 }
 
-void StringtieGeneAbundanceReportWorker::sl_taskSucceeded(Task *task) {
-    StringtieGeneAbundanceReportTask *geneAbudanceReportTask = qobject_cast<StringtieGeneAbundanceReportTask *>(task);
+void StringtieGeneAbundanceReportWorker::sl_taskSucceeded(Task* task) {
+    StringtieGeneAbundanceReportTask* geneAbudanceReportTask = qobject_cast<StringtieGeneAbundanceReportTask*>(task);
     SAFE_POINT(nullptr != geneAbudanceReportTask, "StringTieGeneAbundanceReportTask is NULL", );
 
     const QString geneAbudanceReportUrl = geneAbudanceReportTask->getReportUrl();
     monitor()->addOutputFile(geneAbudanceReportUrl, getActor()->getId(), true);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

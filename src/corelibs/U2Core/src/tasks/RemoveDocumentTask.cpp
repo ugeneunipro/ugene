@@ -30,12 +30,12 @@
 
 namespace U2 {
 
-RemoveMultipleDocumentsTask::RemoveMultipleDocumentsTask(Project *_p, const QList<Document *> &_docs, bool _saveModifiedDocs, bool _useGUI)
+RemoveMultipleDocumentsTask::RemoveMultipleDocumentsTask(Project* _p, const QList<Document*>& _docs, bool _saveModifiedDocs, bool _useGUI)
     : Task(tr("Remove document"), TaskFlags(TaskFlag_NoRun) | TaskFlag_CancelOnSubtaskCancel), p(_p), saveModifiedDocs(_saveModifiedDocs), useGUI(_useGUI) {
     assert(!_docs.empty());
     assert(p != nullptr);
 
-    foreach (Document *d, _docs) {
+    foreach (Document* d, _docs) {
         docPtrs.append(d);
     }
     lock = new StateLock(getTaskName());
@@ -48,13 +48,13 @@ RemoveMultipleDocumentsTask::~RemoveMultipleDocumentsTask() {
 void RemoveMultipleDocumentsTask::prepare() {
     p->lockState(lock);
     if (p->isTreeItemModified() && saveModifiedDocs) {
-        QList<Document *> docs;
-        foreach (Document *d, docPtrs) {
+        QList<Document*> docs;
+        foreach (Document* d, docPtrs) {
             if (d != nullptr) {
                 docs.append(d);
             }
         }
-        QList<Document *> modifiedDocs = SaveMultipleDocuments::findModifiedDocuments(docs);
+        QList<Document*> modifiedDocs = SaveMultipleDocuments::findModifiedDocuments(docs);
         if (!modifiedDocs.isEmpty()) {
             addSubTask(new SaveMultipleDocuments(modifiedDocs, useGUI));
         }
@@ -68,7 +68,7 @@ Task::ReportResult RemoveMultipleDocumentsTask::report() {
         delete lock;
         lock = nullptr;
 
-        Task *t = getSubtaskWithErrors();
+        Task* t = getSubtaskWithErrors();
         if (t != nullptr) {
             stateInfo.setError(t->getError());
             return Task::ReportResult_Finished;
@@ -87,7 +87,7 @@ Task::ReportResult RemoveMultipleDocumentsTask::report() {
         return ReportResult_Finished;
     }
 
-    foreach (Document *doc, docPtrs) {
+    foreach (Document* doc, docPtrs) {
         if (doc != nullptr) {
             // check for "stay-alive" locked objects
             if (doc->hasLocks(StateLockableTreeFlags_ItemAndChildren, StateLockFlag_LiveLock)) {

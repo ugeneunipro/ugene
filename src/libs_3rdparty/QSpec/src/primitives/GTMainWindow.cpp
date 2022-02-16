@@ -31,11 +31,11 @@ namespace HI {
 #define GT_CLASS_NAME "GTMainWindow"
 
 #define GT_METHOD_NAME "getMainWindows"
-QList<QMainWindow *> GTMainWindow::getMainWindows(GUITestOpStatus &os) {
-    QList<QMainWindow *> list;
-    foreach (QWindow *window, qApp->topLevelWindows()) {
+QList<QMainWindow*> GTMainWindow::getMainWindows(GUITestOpStatus& os) {
+    QList<QMainWindow*> list;
+    foreach (QWindow* window, qApp->topLevelWindows()) {
         if (window->inherits("QMainWindow")) {
-            list.append(qobject_cast<QMainWindow *>(window));
+            list.append(qobject_cast<QMainWindow*>(window));
         }
     }
 
@@ -45,10 +45,10 @@ QList<QMainWindow *> GTMainWindow::getMainWindows(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getMainWindowsAsWidget"
-QList<QWidget *> GTMainWindow::getMainWindowsAsWidget(GUITestOpStatus &os) {
-    QList<QWidget *> mainWindows;
-    QList<QWidget *> topLevelWidgets = qApp->topLevelWidgets();
-    for (QWidget *widget : qAsConst(topLevelWidgets)) {
+QList<QWidget*> GTMainWindow::getMainWindowsAsWidget(GUITestOpStatus& os) {
+    QList<QWidget*> mainWindows;
+    QList<QWidget*> topLevelWidgets = qApp->topLevelWidgets();
+    for (QWidget* widget : qAsConst(topLevelWidgets)) {
         if (widget->inherits("QMainWindow")) {
             mainWindows.append(widget);
         }
@@ -63,9 +63,9 @@ QList<QWidget *> GTMainWindow::getMainWindowsAsWidget(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkTitle"
-void GTMainWindow::checkTitle(GUITestOpStatus &os, const QString &title) {
-    QList<QWidget *> mainWindowWidgets = getMainWindowsAsWidget(os);
-    for (const QWidget *widget : qAsConst(mainWindowWidgets)) {
+void GTMainWindow::checkTitle(GUITestOpStatus& os, const QString& title) {
+    QList<QWidget*> mainWindowWidgets = getMainWindowsAsWidget(os);
+    for (const QWidget* widget : qAsConst(mainWindowWidgets)) {
         if (widget->windowTitle() == title) {
             return;
         }
@@ -75,16 +75,16 @@ void GTMainWindow::checkTitle(GUITestOpStatus &os, const QString &title) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "maximizeMainWindow"
-void GTMainWindow::maximizeMainWindow(GUITestOpStatus &os, QMainWindow *mainWindow) {
+void GTMainWindow::maximizeMainWindow(GUITestOpStatus& os, QMainWindow* mainWindow) {
     class MaximizeMainWindowScenario : public CustomScenario {
     public:
-        MaximizeMainWindowScenario(QMainWindow *mw)
+        MaximizeMainWindowScenario(QMainWindow* mw)
             : mainWindow(mw) {
         }
-        void run(HI::GUITestOpStatus &) override {
+        void run(HI::GUITestOpStatus&) override {
             mainWindow->setWindowState(mainWindow->windowState() & (~Qt::WindowMinimized | Qt::WindowActive));
         }
-        QMainWindow *mainWindow;
+        QMainWindow* mainWindow;
     };
     // Minimize main window.
     GTThread::runInMainThread(os, new MaximizeMainWindowScenario(mainWindow));
@@ -94,16 +94,16 @@ void GTMainWindow::maximizeMainWindow(GUITestOpStatus &os, QMainWindow *mainWind
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "minimizeMainWindow"
-void GTMainWindow::minimizeMainWindow(GUITestOpStatus &os, QMainWindow *mainWindow) {
+void GTMainWindow::minimizeMainWindow(GUITestOpStatus& os, QMainWindow* mainWindow) {
     class MinimizeMainWindowScenario : public CustomScenario {
     public:
-        MinimizeMainWindowScenario(QMainWindow *mw)
+        MinimizeMainWindowScenario(QMainWindow* mw)
             : mainWindow(mw) {
         }
-        void run(HI::GUITestOpStatus &) override {
+        void run(HI::GUITestOpStatus&) override {
             mainWindow->setWindowState(mainWindow->windowState() | Qt::WindowMinimized);
         }
-        QMainWindow *mainWindow;
+        QMainWindow* mainWindow;
     };
     // Minimize main window.
     GTThread::runInMainThread(os, new MinimizeMainWindowScenario(mainWindow));

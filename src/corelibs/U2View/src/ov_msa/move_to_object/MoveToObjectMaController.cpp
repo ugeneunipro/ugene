@@ -47,7 +47,7 @@
 
 namespace U2 {
 
-MoveToObjectMaController::MoveToObjectMaController(MaEditor *maEditor)
+MoveToObjectMaController::MoveToObjectMaController(MaEditor* maEditor)
     : QObject(maEditor), MaEditorContext(maEditor) {
     moveSelectionToAnotherObjectAction = new QAction(tr("Move selected rows to another alignment"));
     moveSelectionToAnotherObjectAction->setObjectName("move_selection_to_another_object");
@@ -61,37 +61,37 @@ MoveToObjectMaController::MoveToObjectMaController(MaEditor *maEditor)
     connect(editor, &MaEditor::si_buildMenu, this, &MoveToObjectMaController::buildMenu);
 }
 
-QMenu *MoveToObjectMaController::buildMoveSelectionToAnotherObjectMenu() const {
-    QMenu *menu = new QMenu(moveSelectionToAnotherObjectAction->text());
+QMenu* MoveToObjectMaController::buildMoveSelectionToAnotherObjectMenu() const {
+    QMenu* menu = new QMenu(moveSelectionToAnotherObjectAction->text());
     menu->setEnabled(moveSelectionToAnotherObjectAction->isEnabled());
     connect(moveSelectionToAnotherObjectAction, &QAction::changed, menu, [this, menu]() { menu->setEnabled(moveSelectionToAnotherObjectAction->isEnabled()); });
     connect(menu, &QMenu::aboutToShow, this, [this, menu]() {
         menu->clear();
         menu->addAction(moveSelectionToNewFileAction);
         menu->addSeparator();
-        QList<GObject *> writableMsaObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true);
+        QList<GObject*> writableMsaObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true);
         writableMsaObjects.removeOne(maObject);
-        std::stable_sort(writableMsaObjects.begin(), writableMsaObjects.end(), [&](const GObject *o1, const GObject *o2) {
+        std::stable_sort(writableMsaObjects.begin(), writableMsaObjects.end(), [&](const GObject* o1, const GObject* o2) {
             return o1->getGObjectName().compare(o2->getGObjectName(), Qt::CaseInsensitive);
         });
 
         if (writableMsaObjects.isEmpty()) {
-            QAction *noObjectsAction = menu->addAction(tr("No other alignment objects in the project"), []() {});
+            QAction* noObjectsAction = menu->addAction(tr("No other alignment objects in the project"), []() {});
             noObjectsAction->setObjectName("no_other_objects_item");
             noObjectsAction->setEnabled(false);
         }
         QIcon objectMenuIcon(":core/images/msa.png");
-        for (const GObject *object : qAsConst(writableMsaObjects)) {
+        for (const GObject* object : qAsConst(writableMsaObjects)) {
             GObjectReference reference(object);
             QString fileName = object->getDocument()->getURL().fileName();
             QString menuItemText = object->getGObjectName() + " [" + fileName + "]";
-            QAction *action = menu->addAction(objectMenuIcon, menuItemText, [this, reference]() {
+            QAction* action = menu->addAction(objectMenuIcon, menuItemText, [this, reference]() {
                 GCounter::increment("MoveSelectedMsaRowsToNewObject");
-                GObject *referenceObject = GObjectUtils::selectObjectByReference(reference, UOF_LoadedOnly);
+                GObject* referenceObject = GObjectUtils::selectObjectByReference(reference, UOF_LoadedOnly);
                 CHECK_EXT(referenceObject != nullptr, QMessageBox::critical(ui, L10N::errorTitle(), L10N::errorObjectNotFound(reference.objName)), );
                 CHECK_EXT(!referenceObject->isStateLocked(), QMessageBox::critical(ui, L10N::errorTitle(), L10N::errorObjectIsReadOnly(reference.objName)), );
 
-                auto targetMsaObject = qobject_cast<MultipleSequenceAlignmentObject *>(referenceObject);
+                auto targetMsaObject = qobject_cast<MultipleSequenceAlignmentObject*>(referenceObject);
                 CHECK_EXT(targetMsaObject != nullptr, QMessageBox::critical(ui, L10N::errorTitle(), L10N::nullPointerError(reference.objName)), );
 
                 QList<int> selectedViewRowIndexes = getSelection().getSelectedRowIndexes();
@@ -126,10 +126,10 @@ void MoveToObjectMaController::updateActions() {
     moveSelectionToNewFileAction->setEnabled(isMoveOk);
 }
 
-void MoveToObjectMaController::buildMenu(GObjectView *, QMenu *menu, const QString &) {
-    QMenu *exportMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_EXPORT);
+void MoveToObjectMaController::buildMenu(GObjectView*, QMenu* menu, const QString&) {
+    QMenu* exportMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_EXPORT);
     SAFE_POINT(exportMenu != nullptr, "exportMenu is null", );
-    QAction *menuAction = exportMenu->addMenu(buildMoveSelectionToAnotherObjectMenu());
+    QAction* menuAction = exportMenu->addMenu(buildMoveSelectionToAnotherObjectMenu());
     menuAction->setObjectName(moveSelectionToAnotherObjectAction->objectName());
 }
 
@@ -149,8 +149,8 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
     QString url = lod.url;
     QFileInfo urlInfo(url);
     QString fileExtension = urlInfo.suffix();
-    DocumentFormatRegistry *formatRegistry = AppContext::getDocumentFormatRegistry();
-    DocumentFormat *format = formatRegistry->selectFormatByFileExtension(fileExtension);
+    DocumentFormatRegistry* formatRegistry = AppContext::getDocumentFormatRegistry();
+    DocumentFormat* format = formatRegistry->selectFormatByFileExtension(fileExtension);
     if (format == nullptr) {
         format = formatRegistry->getFormatById(BaseDocumentFormats::CLUSTAL_ALN);
     }
@@ -169,7 +169,7 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
     msaToExport->setName(urlInfo.baseName());
     msaToExport->setAlphabet(maObject->getAlphabet());
     for (int maRowIndex : qAsConst(selectedMaRowIndexes)) {
-        const MultipleAlignmentRow &row = maObject->getRow(maRowIndex);
+        const MultipleAlignmentRow& row = maObject->getRow(maRowIndex);
         msaToExport->addRow(row->getName(), row->getSequenceWithGaps(true, true));
     }
 
@@ -183,14 +183,14 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
 /************************************************************************/
 /* RemoveRowsFromMsaObjectTask */
 /************************************************************************/
-RemoveRowsFromMaObjectTask::RemoveRowsFromMaObjectTask(MaEditor *_maEditor, const QList<qint64> &_rowIds)
+RemoveRowsFromMaObjectTask::RemoveRowsFromMaObjectTask(MaEditor* _maEditor, const QList<qint64>& _rowIds)
     : Task(tr("Remove rows from alignment"), TaskFlag_RunInMainThread), maEditor(_maEditor), rowIds(_rowIds) {
 }
 
 void RemoveRowsFromMaObjectTask::run() {
     CHECK(!maEditor.isNull(), );  // The editor may be closed while the task in the queue.
 
-    MultipleAlignmentObject *maObject = maEditor->getMaObject();
+    MultipleAlignmentObject* maObject = maEditor->getMaObject();
     CHECK_EXT(rowIds.size() < maObject->getRowCount(), setError(tr("Can't remove all rows from the alignment")), );
     U2UseCommonUserModStep userModStep(maObject->getEntityRef(), stateInfo);
     CHECK_OP(stateInfo, );

@@ -35,14 +35,14 @@ class U2LANG_EXPORT WorkflowEnvImpl : public WorkflowEnv {
 protected:
     virtual ~WorkflowEnvImpl();
 
-    virtual DataTypeRegistry *initDataRegistry();
-    virtual ActorPrototypeRegistry *initProtoRegistry();
-    virtual DomainFactoryRegistry *initDomainRegistry();
-    virtual DataTypeValueFactoryRegistry *initDataTypeValueFactoryRegistry();
-    virtual ExternalToolCfgRegistry *initExternalToolCfgRegistry();
-    virtual SchemaActorsRegistry *initSchemaActorsRegistry();
-    virtual WorkflowTasksRegistry *initWorkflowTasksRegistry();
-    virtual ActorValidatorRegistry *initActorValidatorRegistry();
+    virtual DataTypeRegistry* initDataRegistry();
+    virtual ActorPrototypeRegistry* initProtoRegistry();
+    virtual DomainFactoryRegistry* initDomainRegistry();
+    virtual DataTypeValueFactoryRegistry* initDataTypeValueFactoryRegistry();
+    virtual ExternalToolCfgRegistry* initExternalToolCfgRegistry();
+    virtual SchemaActorsRegistry* initSchemaActorsRegistry();
+    virtual WorkflowTasksRegistry* initWorkflowTasksRegistry();
+    virtual ActorValidatorRegistry* initActorValidatorRegistry();
 };  // WorkflowEnvImpl
 
 }  // namespace Workflow

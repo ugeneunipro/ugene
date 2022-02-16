@@ -37,23 +37,23 @@ public:
     DNAFlexPlugin();
 
 private:
-    GObjectViewWindowContext *viewCtx;
+    GObjectViewWindowContext* viewCtx;
 };
 
 class DNAFlexViewContext : public GObjectViewWindowContext {
     Q_OBJECT
 
 public:
-    DNAFlexViewContext(QObject *p);
+    DNAFlexViewContext(QObject* p);
 
 private slots:
     void sl_showDNAFlexDialog();
-    void sl_sequenceWidgetAdded(ADVSequenceWidget *);
+    void sl_sequenceWidgetAdded(ADVSequenceWidget*);
 
 private:
-    GSequenceGraphFactory *graphFactory;
+    GSequenceGraphFactory* graphFactory;
 
-    void initViewContext(GObjectView *view) override;
+    void initViewContext(GObjectView* view) override;
 };
 
 }  // namespace U2

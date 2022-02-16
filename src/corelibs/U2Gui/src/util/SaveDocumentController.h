@@ -35,17 +35,17 @@ class U2GUI_EXPORT SaveDocumentControllerConfig {
 public:
     SaveDocumentControllerConfig();
 
-    QLineEdit *fileNameEdit;  // edit for file name
-    QAbstractButton *fileDialogButton;  // a button to open save file dialog
-    QComboBox *formatCombo;  // combo widget to list formats
-    QCheckBox *compressCheckbox;  // checkbox for the compress option
+    QLineEdit* fileNameEdit;  // edit for file name
+    QAbstractButton* fileDialogButton;  // a button to open save file dialog
+    QComboBox* formatCombo;  // combo widget to list formats
+    QCheckBox* compressCheckbox;  // checkbox for the compress option
 
     QString defaultFileName;  // filename set by default
     DocumentFormatId defaultFormatId;  // format selected by default
     QString defaultDomain;  // domain for the last folder
 
     QString saveTitle;  // a title for save file dialog
-    QWidget *parentWidget;  // parent widget for file dialog
+    QWidget* parentWidget;  // parent widget for file dialog
 
     QString rollSuffix;
     bool rollFileName;  // roll filename
@@ -57,17 +57,17 @@ class U2GUI_EXPORT SaveDocumentController : public QObject {
 public:
     class U2GUI_EXPORT SimpleFormatsInfo {
     public:
-        void addFormat(const QString &name, const QStringList &extensions);
-        void addFormat(const QString &id, const QString &name, const QStringList &extensions);
+        void addFormat(const QString& name, const QStringList& extensions);
+        void addFormat(const QString& id, const QString& name, const QStringList& extensions);
 
         QStringList getNames() const;
-        QStringList getExtensionsByName(const QString &formatName) const;
-        QString getFirstExtensionByName(const QString &formatName) const;
+        QStringList getExtensionsByName(const QString& formatName) const;
+        QString getFirstExtensionByName(const QString& formatName) const;
 
-        QString getFormatNameById(const QString &id) const;
-        QString getFormatNameByExtension(const QString &extension) const;
+        QString getFormatNameById(const QString& id) const;
+        QString getFormatNameByExtension(const QString& extension) const;
 
-        QString getIdByName(const QString &name) const;
+        QString getIdByName(const QString& name) const;
 
     private:
         QMap<QString, QStringList> extensionsByFormatId;
@@ -76,48 +76,48 @@ public:
         QMap<QString, QString> formatIdByName;
     };
 
-    SaveDocumentController(const SaveDocumentControllerConfig &config,
-                           const DocumentFormatConstraints &formatConstraints,
-                           QObject *parent);
-    SaveDocumentController(const SaveDocumentControllerConfig &config,
-                           const QList<DocumentFormatId> &formats,
-                           QObject *parent);
-    SaveDocumentController(const SaveDocumentControllerConfig &config,
-                           const SimpleFormatsInfo &formatsDesc,
-                           QObject *parent);
+    SaveDocumentController(const SaveDocumentControllerConfig& config,
+                           const DocumentFormatConstraints& formatConstraints,
+                           QObject* parent);
+    SaveDocumentController(const SaveDocumentControllerConfig& config,
+                           const QList<DocumentFormatId>& formats,
+                           QObject* parent);
+    SaveDocumentController(const SaveDocumentControllerConfig& config,
+                           const SimpleFormatsInfo& formatsDesc,
+                           QObject* parent);
 
-    void addFormat(const QString &id, const QString &name, const QStringList &extensions);
+    void addFormat(const QString& id, const QString& name, const QStringList& extensions);
 
-    void setPath(const QString &path, const QSet<QString> &excludeList = QSet<QString>());
-    void setFormat(const QString &formatId);
+    void setPath(const QString& path, const QSet<QString>& excludeList = QSet<QString>());
+    void setFormat(const QString& formatId);
 
     QString getSaveFileName() const;
 
     /** Returns save-file-name and a validation state in op-status. */
-    QString getValidatedSaveFilePath(U2OpStatus &os) const;
+    QString getValidatedSaveFilePath(U2OpStatus& os) const;
 
     DocumentFormatId getFormatIdToSave() const;
 
-    void forceRoll(const QSet<QString> &excludeList = QSet<QString>());
+    void forceRoll(const QSet<QString>& excludeList = QSet<QString>());
 
 signals:
-    void si_formatChanged(const QString &newFormatId);
+    void si_formatChanged(const QString& newFormatId);
     void si_pathChanged(const QString newPath);
 
 private slots:
-    void sl_fileNameChanged(const QString &newName);
+    void sl_fileNameChanged(const QString& newName);
     void sl_fileDialogButtonClicked();
-    void sl_formatChanged(const QString &newFormat);
+    void sl_formatChanged(const QString& newFormat);
     void sl_compressToggled(bool enable);
 
 private:
     void init();
     void initSimpleFormatInfo(DocumentFormatConstraints formatConstraints);
-    void initSimpleFormatInfo(const QList<DocumentFormatId> &formats);
+    void initSimpleFormatInfo(const QList<DocumentFormatId>& formats);
     void initFormatComboBox();
-    bool cutGzExtension(QString &path) const;
-    void addGzExtension(QString &path) const;
-    void addFormatExtension(QString &path) const;
+    bool cutGzExtension(QString& path) const;
+    void addGzExtension(QString& path) const;
+    void addFormatExtension(QString& path) const;
     QString prepareDefaultFileFilter() const;
     QString prepareFileFilter() const;
 

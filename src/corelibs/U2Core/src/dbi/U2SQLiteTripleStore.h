@@ -35,8 +35,8 @@ class U2CORE_EXPORT U2Triplet {
     friend class U2SQLiteTripleStore;
 
 public:
-    U2Triplet(const QString &key, const QString &role, const QString &value);
-    U2Triplet(const U2Triplet &other);
+    U2Triplet(const QString& key, const QString& role, const QString& value);
+    U2Triplet(const U2Triplet& other);
     QString getKey() const;
     QString getRole() const;
     QString getValue() const;
@@ -53,8 +53,8 @@ class U2CORE_EXPORT Owner {
     friend class U2SQLiteTripleStore;
 
 public:
-    Owner(const QString &name);
-    Owner(const Owner &owner);
+    Owner(const QString& name);
+    Owner(const Owner& owner);
     QString getName() const;
 
 private:
@@ -68,29 +68,29 @@ public:
     U2SQLiteTripleStore();
     virtual ~U2SQLiteTripleStore();
 
-    void init(const QString &url, U2OpStatus &os);
-    void shutdown(U2OpStatus &os);
+    void init(const QString& url, U2OpStatus& os);
+    void shutdown(U2OpStatus& os);
 
-    void addValue(const U2Triplet &value, U2OpStatus &os);
-    bool contains(const U2Triplet &value, U2OpStatus &os) const;
-    void removeValue(const U2Triplet &value, U2OpStatus &os);
+    void addValue(const U2Triplet& value, U2OpStatus& os);
+    bool contains(const U2Triplet& value, U2OpStatus& os) const;
+    void removeValue(const U2Triplet& value, U2OpStatus& os);
 
-    bool contains(const QString &key, const QString &role, U2OpStatus &os) const;
-    QString getValue(const QString &key, const QString &role, U2OpStatus &os) const;
+    bool contains(const QString& key, const QString& role, U2OpStatus& os) const;
+    QString getValue(const QString& key, const QString& role, U2OpStatus& os) const;
 
-    QList<U2Triplet> getTriplets(U2OpStatus &os) const;
+    QList<U2Triplet> getTriplets(U2OpStatus& os) const;
 
 private:
     U2DbiState state;
-    DbRef *db;
+    DbRef* db;
 
-    bool isEmpty(U2OpStatus &os) const;
-    void createTables(U2OpStatus &os);
+    bool isEmpty(U2OpStatus& os) const;
+    void createTables(U2OpStatus& os);
 
-    qint64 getTripletId(const U2Triplet &value, bool &found, U2OpStatus &os) const;
+    qint64 getTripletId(const U2Triplet& value, bool& found, U2OpStatus& os) const;
     /** Returns triplet id */
-    qint64 insertTriplet(const U2Triplet &value, U2OpStatus &os);
-    void removeTriplet(qint64 tripletId, U2OpStatus &os);
+    qint64 insertTriplet(const U2Triplet& value, U2OpStatus& os);
+    void removeTriplet(qint64 tripletId, U2OpStatus& os);
 };
 
 class TripleStoreL10N : public QObject {

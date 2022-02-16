@@ -31,20 +31,20 @@ namespace U2 {
 class U2CORE_EXPORT Matrix44 {
 public:
     Matrix44();
-    Matrix44(const float *data);
-    Matrix44(const Matrix44 &) = default;
+    Matrix44(const float* data);
+    Matrix44(const Matrix44&) = default;
 
     void loadIdentity();
 
     void transpose();
 
-    float *data();
-    const float *data() const;
+    float* data();
+    const float* data() const;
 
-    float &operator[](unsigned int i);
+    float& operator[](unsigned int i);
     float operator[](unsigned int i) const;
 
-    void load(const QVariantList &values);
+    void load(const QVariantList& values);
     QVariantList store();
 
 private:

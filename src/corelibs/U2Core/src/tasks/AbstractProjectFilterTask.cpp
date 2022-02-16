@@ -31,7 +31,7 @@ namespace U2 {
 /// AbstractProjectFilterTask
 //////////////////////////////////////////////////////////////////////////
 
-AbstractProjectFilterTask::AbstractProjectFilterTask(const ProjectTreeControllerModeSettings &settings, const QString &filterGroupName, const QList<QPointer<Document>> &docs)
+AbstractProjectFilterTask::AbstractProjectFilterTask(const ProjectTreeControllerModeSettings& settings, const QString& filterGroupName, const QList<QPointer<Document>>& docs)
     : Task(tr("Filtering project content by the \"%1\" criterion").arg(filterGroupName), TaskFlag_None), settings(settings), docs(docs),
       filterGroupName(filterGroupName), filteredObjCountPerIteration(10), totalObjectCount(0), processedObjectCount(0) {
     tpm = Task::Progress_Manual;
@@ -39,7 +39,7 @@ AbstractProjectFilterTask::AbstractProjectFilterTask(const ProjectTreeController
     SAFE_POINT(!filterGroupName.isEmpty(), "Project filter has empty name", );
     doStaticInitialization();
 
-    foreach (const QPointer<Document> &doc, docs) {
+    foreach (const QPointer<Document>& doc, docs) {
         if (!doc.isNull()) {
             totalObjectCount += doc->getObjects().size();
         }
@@ -47,7 +47,7 @@ AbstractProjectFilterTask::AbstractProjectFilterTask(const ProjectTreeController
 }
 
 void AbstractProjectFilterTask::run() {
-    foreach (const QPointer<Document> &doc, docs) {
+    foreach (const QPointer<Document>& doc, docs) {
         filterDocument(doc.data());
     }
     const int filteredObjectCount = filteredObjs.size();
@@ -56,11 +56,11 @@ void AbstractProjectFilterTask::run() {
     }
 }
 
-void AbstractProjectFilterTask::filterDocument(const QPointer<Document> &doc) {
+void AbstractProjectFilterTask::filterDocument(const QPointer<Document>& doc) {
     CHECK(!doc.isNull(), );
     CHECK(doc->isLoaded(), );
 
-    foreach (GObject *obj, doc->getObjects()) {
+    foreach (GObject* obj, doc->getObjects()) {
         CHECK(!doc.isNull(), );
         if (filterAcceptsObject(obj)) {
             filteredObjs.append(obj);
@@ -75,7 +75,7 @@ void AbstractProjectFilterTask::filterDocument(const QPointer<Document> &doc) {
     }
 }
 
-bool AbstractProjectFilterTask::filterAcceptsObject(GObject * /*obj*/) {
+bool AbstractProjectFilterTask::filterAcceptsObject(GObject* /*obj*/) {
     FAIL("AbstractProjectFilterTask::filterAcceptsObject is not implemented", false);
 }
 
@@ -94,9 +94,9 @@ void AbstractProjectFilterTask::doStaticInitialization() {
 ProjectFilterTaskFactory::~ProjectFilterTaskFactory() {
 }
 
-AbstractProjectFilterTask *ProjectFilterTaskFactory::registerNewTask(const ProjectTreeControllerModeSettings &settings,
-                                                                     const QList<QPointer<Document>> &docs) const {
-    AbstractProjectFilterTask *task = createNewTask(settings, docs);
+AbstractProjectFilterTask* ProjectFilterTaskFactory::registerNewTask(const ProjectTreeControllerModeSettings& settings,
+                                                                     const QList<QPointer<Document>>& docs) const {
+    AbstractProjectFilterTask* task = createNewTask(settings, docs);
     SAFE_POINT(nullptr != task, L10N::nullPointerError("project filter task"), nullptr);
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
     return task;

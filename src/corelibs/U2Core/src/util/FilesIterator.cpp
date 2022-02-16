@@ -23,21 +23,21 @@
 
 namespace U2 {
 
-FilesIterator *FilesIteratorFactory::createDirectoryScanner(const QStringList &dirs, const QString &includeFilter, const QString &excludeFilter, bool recursive) {
+FilesIterator* FilesIteratorFactory::createDirectoryScanner(const QStringList& dirs, const QString& includeFilter, const QString& excludeFilter, bool recursive) {
     return new DirectoryScanner(dirs, includeFilter, excludeFilter, recursive);
 }
 
-FilesIterator *FilesIteratorFactory::createFileList(const QStringList &files) {
+FilesIterator* FilesIteratorFactory::createFileList(const QStringList& files) {
     return new FileList(files);
 }
 
 /************************************************************************/
 /* DirectoryScanner */
 /************************************************************************/
-DirectoryScanner::DirectoryScanner(const QStringList &dirs, const QString &_includeFilter, const QString &_excludeFilter, bool _recursive)
+DirectoryScanner::DirectoryScanner(const QStringList& dirs, const QString& _includeFilter, const QString& _excludeFilter, bool _recursive)
     : FilesIterator(), includeFilter(_includeFilter), excludeFilter(_excludeFilter), recursive(_recursive),
       incRx(includeFilter), excRx(excludeFilter) {
-    foreach (const QString &dirPath, dirs) {
+    foreach (const QString& dirPath, dirs) {
         unusedDirs << QFileInfo(dirPath);
     }
     incRx.setPatternSyntax(QRegExp::Wildcard);
@@ -53,7 +53,7 @@ QString DirectoryScanner::getNextFile() {
 
         QDir dir(entry.absoluteFilePath());
         QFileInfoList files = scanDirectory(dir);
-        foreach (const QFileInfo &path, files) {
+        foreach (const QFileInfo& path, files) {
             if (isPassedByFilters(path.fileName())) {
                 readyResults << path.absoluteFilePath();
             }
@@ -68,7 +68,7 @@ QString DirectoryScanner::getNextFile() {
     }
 }
 
-bool DirectoryScanner::isPassedByFilters(const QString &fileName) const {
+bool DirectoryScanner::isPassedByFilters(const QString& fileName) const {
     bool passed = true;
     if (!includeFilter.isEmpty()) {
         passed = incRx.exactMatch(fileName);
@@ -90,7 +90,7 @@ bool DirectoryScanner::hasNext() {
     }
 }
 
-QFileInfoList DirectoryScanner::scanDirectory(const QDir &dir) {
+QFileInfoList DirectoryScanner::scanDirectory(const QDir& dir) {
     QFileInfoList result;
     if (!dir.exists()) {
         return result;
@@ -98,7 +98,7 @@ QFileInfoList DirectoryScanner::scanDirectory(const QDir &dir) {
 
     QFileInfoList nestedDirs;
     QFileInfoList entries = dir.entryInfoList();
-    foreach (const QFileInfo &entry, entries) {
+    foreach (const QFileInfo& entry, entries) {
         if (entry.isDir()) {
             if ("." == entry.fileName() || ".." == entry.fileName()) {
                 continue;
@@ -122,7 +122,7 @@ QFileInfoList DirectoryScanner::scanDirectory(const QDir &dir) {
 /************************************************************************/
 /* FileList */
 /************************************************************************/
-FileList::FileList(const QStringList &_files)
+FileList::FileList(const QStringList& _files)
     : FilesIterator(), files(_files) {
 }
 

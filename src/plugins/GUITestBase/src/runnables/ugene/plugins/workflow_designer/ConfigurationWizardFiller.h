@@ -29,10 +29,10 @@ using namespace HI;
 
 class ConfigurationWizardFiller : public Filler {
 public:
-    ConfigurationWizardFiller(HI::GUITestOpStatus &os, QString name, QStringList _radioNames)
+    ConfigurationWizardFiller(HI::GUITestOpStatus& os, QString name, QStringList _radioNames)
         : Filler(os, name), radioNames(_radioNames) {
     }
-    ConfigurationWizardFiller(HI::GUITestOpStatus &os, QString name, CustomScenario *c)
+    ConfigurationWizardFiller(HI::GUITestOpStatus& os, QString name, CustomScenario* c)
         : Filler(os, name, c) {
     }
     void commonScenario() override;

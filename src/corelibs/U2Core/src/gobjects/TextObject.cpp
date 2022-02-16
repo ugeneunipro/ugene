@@ -37,7 +37,7 @@ U2Text::U2Text()
     : U2RawData() {
 }
 
-U2Text::U2Text(const U2DbiRef &dbiRef)
+U2Text::U2Text(const U2DbiRef& dbiRef)
     : U2RawData(dbiRef) {
 }
 
@@ -47,7 +47,7 @@ U2DataType U2Text::getType() const {
 
 /////// TextObject Implementation ///////////////////////////////////////////////////////////////////
 
-TextObject *TextObject::createInstance(const QString &text, const QString &objectName, const U2DbiRef &dbiRef, U2OpStatus &os, const QVariantMap &hintsMap) {
+TextObject* TextObject::createInstance(const QString& text, const QString& objectName, const U2DbiRef& dbiRef, U2OpStatus& os, const QVariantMap& hintsMap) {
     U2Text object(dbiRef);
     object.visualName = objectName;
 
@@ -62,7 +62,7 @@ TextObject *TextObject::createInstance(const QString &text, const QString &objec
     return new TextObject(objectName, entRef, hintsMap);
 }
 
-TextObject::TextObject(const QString &objectName, const U2EntityRef &textRef, const QVariantMap &hintsMap)
+TextObject::TextObject(const QString& objectName, const U2EntityRef& textRef, const QVariantMap& hintsMap)
     : GObject(GObjectTypes::TEXT, objectName, hintsMap) {
     entityRef = textRef;
 }
@@ -74,27 +74,27 @@ QString TextObject::getText() const {
     return QString::fromUtf8(content);
 }
 
-void TextObject::setText(const QString &newText) {
+void TextObject::setText(const QString& newText) {
     commitTextToDB(newText);
     setModified(true);
 }
 
-GObject *TextObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints) const {
+GObject* TextObject::clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints) const {
     GHintsDefaultImpl gHints(getGHintsMap());
     gHints.setAll(hints);
-    const QString &dstFolder = gHints.get(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
+    const QString& dstFolder = gHints.get(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
     U2Text dstObject;
     RawDataUdrSchema::cloneObject(entityRef, dstDbiRef, dstFolder, dstObject, os);
     CHECK_OP(os, nullptr);
 
     U2EntityRef dstEntRef(dstDbiRef, dstObject.id);
-    TextObject *dst = new TextObject(getGObjectName(), dstEntRef, gHints.getMap());
+    TextObject* dst = new TextObject(getGObjectName(), dstEntRef, gHints.getMap());
     dst->setIndexInfo(getIndexInfo());
     return dst;
 }
 
-void TextObject::commitTextToDB(const QString &newText) {
+void TextObject::commitTextToDB(const QString& newText) {
     U2OpStatus2Log os;
     RawDataUdrSchema::writeContent(newText.toUtf8(), entityRef, os);
 }

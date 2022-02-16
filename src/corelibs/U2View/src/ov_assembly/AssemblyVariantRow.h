@@ -41,11 +41,11 @@ class VariantTrackObject;
 class AssemblyVariantRow : public QWidget {
     Q_OBJECT
 public:
-    AssemblyVariantRow(QWidget *parent, VariantTrackObject *trackObj, AssemblyBrowser *browser);
+    AssemblyVariantRow(QWidget* parent, VariantTrackObject* trackObj, AssemblyBrowser* browser);
 
-    VariantTrackObject *getTrackObject() const;
+    VariantTrackObject* getTrackObject() const;
 
-    static bool isSNP(const U2Variant &v);
+    static bool isSNP(const U2Variant& v);
 
 public slots:
     void sl_zoomPerformed();
@@ -53,22 +53,22 @@ public slots:
     void sl_hideHint();
 
 signals:
-    void si_mouseMovedToPos(const QPoint &);
+    void si_mouseMovedToPos(const QPoint&);
     void si_removeRow();
 
 protected:
-    virtual void paintEvent(QPaintEvent *event);
-    virtual void resizeEvent(QResizeEvent *event);
-    virtual void mouseMoveEvent(QMouseEvent *event);
-    virtual void leaveEvent(QEvent *event);
-    virtual void mousePressEvent(QMouseEvent *event);
+    virtual void paintEvent(QPaintEvent* event);
+    virtual void resizeEvent(QResizeEvent* event);
+    virtual void mouseMoveEvent(QMouseEvent* event);
+    virtual void leaveEvent(QEvent* event);
+    virtual void mousePressEvent(QMouseEvent* event);
 
 private:
-    VariantTrackObject *trackObj;
-    AssemblyBrowser *browser;
+    VariantTrackObject* trackObj;
+    AssemblyBrowser* browser;
     QPixmap cachedView;
     bool redraw;
-    QMenu *contextMenu;
+    QMenu* contextMenu;
     QScopedPointer<AssemblyCellRenderer> nuclRenderer;
     QScopedPointer<AssemblyCellRenderer> snpRenderer;
 
@@ -85,7 +85,7 @@ private:
     void draw();
     void prepareRenderers(int snpWidth, int snpHeight);
     void updateHint();
-    bool findVariantOnPos(QList<U2Variant> &variants);
+    bool findVariantOnPos(QList<U2Variant>& variants);
 
     static const int FIXED_HEIGHT;
     static const int TOP_OFFSET;
@@ -97,15 +97,15 @@ private slots:
 class AssemblyVariantRowManager : public QObject {
     Q_OBJECT
 public:
-    AssemblyVariantRowManager(AssemblyBrowserUi *ui);
+    AssemblyVariantRowManager(AssemblyBrowserUi* ui);
 
 public slots:
-    void sl_trackAdded(VariantTrackObject *trackObj);
-    void sl_trackRemoved(VariantTrackObject *trackObj);
+    void sl_trackAdded(VariantTrackObject* trackObj);
+    void sl_trackRemoved(VariantTrackObject* trackObj);
 
 private:
-    AssemblyBrowserUi *ui;
-    AssemblyBrowser *browser;
+    AssemblyBrowserUi* ui;
+    AssemblyBrowser* browser;
     QSharedPointer<AssemblyModel> model;
 
 private slots:

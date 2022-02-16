@@ -74,7 +74,7 @@ SAType IndexPart::getLoadedPartSize() const {
 
 bool isLittleEndian() {
     char little[] = {1, 0, 0, 0};
-    int *n = (int *)little;
+    int* n = (int*)little;
 
     if (1 == *n) {
         return true;
@@ -96,27 +96,27 @@ bool IndexPart::load(int part) {
     }
     partFiles[part]->seek(0);
 
-    char *buff = nullptr;
+    char* buff = nullptr;
 
     size_t needRead = 0;
 
     needRead = 1 * sizeof(SAType);
-    buff = (char *)&(saLengths[currentPart]);
+    buff = (char*)&(saLengths[currentPart]);
     size = partFiles[part]->read(buff, needRead);
     SAFE_POINT(static_cast<quint64>(size) == needRead, "Index format error", false);
 
     needRead = saLengths[currentPart] * sizeof(SAType);
-    buff = (char *)sArray;
+    buff = (char*)sArray;
     size = partFiles[part]->read(buff, needRead);
     SAFE_POINT(static_cast<quint64>(size) == needRead, "Index format error", false);
 
     needRead = saLengths[currentPart] * sizeof(BMType);
-    buff = (char *)bitMask;
+    buff = (char*)bitMask;
     size = partFiles[part]->read(buff, needRead);
     SAFE_POINT(static_cast<quint64>(size) == needRead, "Index format error", false);
 
-    uchar *bitSeq = new uchar[1 + seqLengths[currentPart] / 4];
-    size = partFiles[part]->read((char *)bitSeq, 1 + seqLengths[currentPart] / 4);
+    uchar* bitSeq = new uchar[1 + seqLengths[currentPart] / 4];
+    size = partFiles[part]->read((char*)bitSeq, 1 + seqLengths[currentPart] / 4);
     assert(size == 1 + seqLengths[currentPart] / 4);
     if (size != 1 + seqLengths[currentPart] / 4) {
         delete[] bitSeq;
@@ -133,7 +133,7 @@ bool IndexPart::load(int part) {
 
     for (quint32 i = 0; i < saLengths[currentPart]; i++) {
         if (!isLittleEndian()) {
-            sArray[i] = qFromLittleEndian<quint32>((uchar *)(sArray + i));
+            sArray[i] = qFromLittleEndian<quint32>((uchar*)(sArray + i));
         }
     }
 
@@ -168,22 +168,22 @@ void IndexPart::writePart(int part, quint32 arrLen) {
 
     if (!isLittleEndian()) {
         for (quint32 i = 0; i < arrLen; i++) {
-            qToLittleEndian(sArray[i], (uchar *)(sArray + i));
-            qToLittleEndian(bitMask[i], (uchar *)(bitMask + i));
+            qToLittleEndian(sArray[i], (uchar*)(sArray + i));
+            qToLittleEndian(bitMask[i], (uchar*)(bitMask + i));
         }
     }
 
-    partFiles[part]->write((char *)&arrLen, 1 * sizeof(SAType));
+    partFiles[part]->write((char*)&arrLen, 1 * sizeof(SAType));
 
-    partFiles[part]->write((char *)sArray, arrLen * sizeof(SAType));
-    partFiles[part]->write((char *)bitMask, arrLen * sizeof(BMType));
+    partFiles[part]->write((char*)sArray, arrLen * sizeof(SAType));
+    partFiles[part]->write((char*)bitMask, arrLen * sizeof(BMType));
 
     qint64 t1 = GTimer::currentTimeMicros();
-    uchar *values = new uchar[1 + seqLengths[currentPart] / 4];
+    uchar* values = new uchar[1 + seqLengths[currentPart] / 4];
     int i = 0;
     int bitNum = 0;
     BitsTable bt;
-    const quint32 *bitTable = bt.getBitMaskCharBits(DNAAlphabet_NUCL);
+    const quint32* bitTable = bt.getBitMaskCharBits(DNAAlphabet_NUCL);
 
     for (quint32 j = 0; j < seqLengths[currentPart]; j++) {
         if (0 == bitNum) {
@@ -203,7 +203,7 @@ void IndexPart::writePart(int part, quint32 arrLen) {
     }
     algoLog.trace(QString("IndexPart::writePart some bits table time %1 ms").arg((GTimer::currentTimeMicros() - t1) / double(1000), 0, 'f', 3));
 
-    partFiles[part]->write((char *)values, 1 + seqLengths[currentPart] / 4);
+    partFiles[part]->write((char*)values, 1 + seqLengths[currentPart] / 4);
 
     delete[] values;
 
@@ -211,7 +211,7 @@ void IndexPart::writePart(int part, quint32 arrLen) {
     algoLog.trace(QString("IndexPart::writePart time %1 ms").arg((t2 - t0) / double(1000), 0, 'f', 3));
 }
 
-BMType IndexPart::getBitValue(uchar *seq, SAType idx) {
+BMType IndexPart::getBitValue(uchar* seq, SAType idx) {
     int charNum = idx / 4;
     BMType res = qFromBigEndian<BMType>(seq + charNum);
     if (0 == (idx - charNum * 4)) {

@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-HmmerBuildFromFileTask::HmmerBuildFromFileTask(const HmmerBuildSettings &settings, const QString &msaUrl)
+HmmerBuildFromFileTask::HmmerBuildFromFileTask(const HmmerBuildSettings& settings, const QString& msaUrl)
     : ExternalToolSupportTask(tr("Build HMMER profile from file"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
       convertTask(nullptr),
       buildTask(nullptr),
@@ -39,7 +39,7 @@ HmmerBuildFromFileTask::HmmerBuildFromFileTask(const HmmerBuildSettings &setting
     SAFE_POINT_EXT(!msaUrl.isEmpty(), tr("Msa URL is empty"), );
 }
 
-const QString &HmmerBuildFromFileTask::getHmmProfileUrl() const {
+const QString& HmmerBuildFromFileTask::getHmmProfileUrl() const {
     return settings.profileUrl;
 }
 
@@ -53,8 +53,8 @@ void HmmerBuildFromFileTask::prepare() {
     }
 }
 
-QList<Task *> HmmerBuildFromFileTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> result;
+QList<Task*> HmmerBuildFromFileTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> result;
     CHECK_OP(stateInfo, result);
 
     if (subTask == convertTask) {
@@ -89,7 +89,7 @@ void HmmerBuildFromFileTask::prepareConvertTask() {
     convertTask->setSubtaskProgressWeight(10);
 }
 
-void HmmerBuildFromFileTask::prepareBuildTask(const QString &stockholmMsaUrl) {
+void HmmerBuildFromFileTask::prepareBuildTask(const QString& stockholmMsaUrl) {
     buildTask = new HmmerBuildTask(settings, stockholmMsaUrl);
     setListenerForTask(buildTask);
     buildTask->setSubtaskProgressWeight(90);
@@ -102,4 +102,4 @@ void HmmerBuildFromFileTask::removeTempDir() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -37,7 +37,7 @@ namespace LocalWorkflow {
 class GenomeAlignerBuildPrompter : public PrompterBase<GenomeAlignerBuildPrompter> {
     Q_OBJECT
 public:
-    GenomeAlignerBuildPrompter(Actor *p = 0)
+    GenomeAlignerBuildPrompter(Actor* p = 0)
         : PrompterBase<GenomeAlignerBuildPrompter>(p) {
     }
 
@@ -48,19 +48,19 @@ protected:
 class GenomeAlignerBuildWorker : public BaseWorker {
     Q_OBJECT
 public:
-    GenomeAlignerBuildWorker(Actor *a)
+    GenomeAlignerBuildWorker(Actor* a)
         : BaseWorker(a), output(nullptr), done(false) {
     }
     virtual void init();
     virtual bool isReady() const;
-    virtual Task *tick();
+    virtual Task* tick();
     virtual bool isDone() const;
     virtual void cleanup();
 private slots:
     void sl_taskFinished();
 
 protected:
-    CommunicationChannel *output;
+    CommunicationChannel* output;
     QString resultName, transId;
     GUrl refSeqUrl;
     GUrl indexUrl;
@@ -75,7 +75,7 @@ public:
     GenomeAlignerBuildWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new GenomeAlignerBuildWorker(a);
     }
 };
@@ -86,7 +86,7 @@ public:
 class GenomeAlignerIndexReaderPrompter : public PrompterBase<GenomeAlignerIndexReaderPrompter> {
     Q_OBJECT
 public:
-    GenomeAlignerIndexReaderPrompter(Actor *p = 0)
+    GenomeAlignerIndexReaderPrompter(Actor* p = 0)
         : PrompterBase<GenomeAlignerIndexReaderPrompter>(p) {
     }
 
@@ -97,19 +97,19 @@ protected:
 class GenomeAlignerIndexReaderWorker : public BaseWorker {
     Q_OBJECT
 public:
-    GenomeAlignerIndexReaderWorker(Actor *a)
+    GenomeAlignerIndexReaderWorker(Actor* a)
         : BaseWorker(a), output(nullptr), done(false) {
     }
     virtual void init();
     virtual bool isReady() const;
-    virtual Task *tick();
+    virtual Task* tick();
     virtual bool isDone() const;
     virtual void cleanup();
 private slots:
     void sl_taskFinished();
 
 protected:
-    CommunicationChannel *output;
+    CommunicationChannel* output;
     QString resultName, transId;
     GUrl indexUrl;
     bool done;
@@ -122,7 +122,7 @@ public:
     GenomeAlignerIndexReaderWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new GenomeAlignerIndexReaderWorker(a);
     }
 };

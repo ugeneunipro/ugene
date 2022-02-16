@@ -38,25 +38,25 @@ namespace U2 {
 const QString McaAlternativeMutationsWidget::ALTERNATIVE_MUTATIONS_CHECKED = "ALTERNATIVE_MUTATIONS_CHECKED";
 const QString McaAlternativeMutationsWidget::ALTERNATIVE_MUTATIONS_THRESHOLD = "ALTERNATIVE_MUTATIONS_THRESHOLD";
 
-McaAlternativeMutationsWidget::McaAlternativeMutationsWidget(QWidget *parent)
+McaAlternativeMutationsWidget::McaAlternativeMutationsWidget(QWidget* parent)
     : QWidget(parent) {
     setupUi(this);
 }
 
-void McaAlternativeMutationsWidget::init(MultipleAlignmentObject *_maObject,
-                                         MaEditorSequenceArea *_seqArea,
-                                         MaEditorStatusBar *_statusBar) {
+void McaAlternativeMutationsWidget::init(MultipleAlignmentObject* _maObject,
+                                         MaEditorSequenceArea* _seqArea,
+                                         MaEditorStatusBar* _statusBar) {
     SAFE_POINT(_seqArea != nullptr, "MaConsensusModeWidget can not be initialized: MaEditorSequenceArea is nullptr", );
     SAFE_POINT(_maObject != nullptr, "MaConsensusModeWidget can not be initialized: MultipleAlignmentObject is nullptr", );
     SAFE_POINT(_statusBar != nullptr, "MaConsensusModeWidget can not be initialized: MaEditorStatusBar is nullptr", );
 
-    seqArea = qobject_cast<McaEditorSequenceArea *>(_seqArea);
+    seqArea = qobject_cast<McaEditorSequenceArea*>(_seqArea);
     SAFE_POINT(seqArea != nullptr, "MaConsensusModeWidget can not be initialized: McaEditorSequenceArea is nullptr", );
 
-    mcaObject = qobject_cast<MultipleChromatogramAlignmentObject *>(_maObject);
+    mcaObject = qobject_cast<MultipleChromatogramAlignmentObject*>(_maObject);
     SAFE_POINT(mcaObject != nullptr, "MaConsensusModeWidget can not be initialized: MultipleChromatogramAlignmentObject is nullptr", );
 
-    statusBar = qobject_cast<McaEditorStatusBar *>(_statusBar);
+    statusBar = qobject_cast<McaEditorStatusBar*>(_statusBar);
     SAFE_POINT(mcaObject != nullptr, "MaConsensusModeWidget can not be initialized: McaEditorStatusBar is nullptr", );
 
     mutationsGroupBox->setChecked(false);
@@ -87,7 +87,7 @@ void McaAlternativeMutationsWidget::sl_updateLockState() {
     mutationsGroupBox->setDisabled(mcaObject->getDocument()->isStateLocked());
 }
 
-void McaAlternativeMutationsWidget::showEvent(QShowEvent *e) {
+void McaAlternativeMutationsWidget::showEvent(QShowEvent* e) {
     updateValuesFromDb();
     QWidget::showEvent(e);
 }
@@ -100,7 +100,7 @@ void McaAlternativeMutationsWidget::updateValuesFromDb() {
     auto attributeDbi = con->dbi->getAttributeDbi();
     SAFE_POINT(attributeDbi != nullptr, "attributeDbi not found", );
 
-    auto initAttribute = [&](U2IntegerAttribute &attribute, const QString &name) {
+    auto initAttribute = [&](U2IntegerAttribute& attribute, const QString& name) {
         auto objectAttributes = attributeDbi->getObjectAttributes(mcaObject->getEntityRef().entityId, name, os);
         CHECK_OP(os, );
         SAFE_POINT(objectAttributes.size() == 0 || objectAttributes.size() == 1, QString("Unexpected %1 objectAttributes size").arg(name), );
@@ -137,14 +137,14 @@ void McaAlternativeMutationsWidget::updateValuesFromDb() {
     }
 }
 
-void McaAlternativeMutationsWidget::updateDb(U2OpStatus &os) {
+void McaAlternativeMutationsWidget::updateDb(U2OpStatus& os) {
     QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(mcaObject->getEntityRef().dbiRef, os));
     CHECK_OP(os, );
 
     auto attributeDbi = con->dbi->getAttributeDbi();
     SAFE_POINT(attributeDbi != nullptr, "attributeDbi not found", );
 
-    auto updateAttribute = [&](U2IntegerAttribute &attribute, int value) {
+    auto updateAttribute = [&](U2IntegerAttribute& attribute, int value) {
         if (!attribute.id.isEmpty()) {
             U2AttributeUtils::removeAttribute(attributeDbi, attribute.id, os);
             CHECK_OP(os, );

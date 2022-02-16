@@ -36,15 +36,15 @@ enum SaveProjectTaskKind {
 
 class U2CORE_EXPORT ProjectService : public Service {
 public:
-    ProjectService(const QString &sname, const QString &sdesc)
+    ProjectService(const QString& sname, const QString& sdesc)
         : Service(Service_Project, sname, sdesc, QList<ServiceType>(), ServiceFlag_Singleton) {
     }
 
-    virtual Project *getProject() const = 0;
+    virtual Project* getProject() const = 0;
 
-    virtual Task *saveProjectTask(SaveProjectTaskKind kind) = 0;
+    virtual Task* saveProjectTask(SaveProjectTaskKind kind) = 0;
 
-    virtual Task *closeProjectTask() = 0;
+    virtual Task* closeProjectTask() = 0;
 
     // hack to work around ambigous shortcuts
     virtual void enableSaveAction(bool e) = 0;

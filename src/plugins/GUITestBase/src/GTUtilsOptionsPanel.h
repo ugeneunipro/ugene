@@ -28,12 +28,12 @@ namespace U2 {
 
 class GTUtilsOptionsPanel {
 public:
-    static void runFindPatternWithHotKey(const QString &pattern, HI::GUITestOpStatus &os);
+    static void runFindPatternWithHotKey(const QString& pattern, HI::GUITestOpStatus& os);
 
-    static void resizeToMaximum(HI::GUITestOpStatus &os);
+    static void resizeToMaximum(HI::GUITestOpStatus& os);
 
     /** Returns active opened options panel widget. Fails if there is no opened options panel. */
-    static QWidget *getActiveOptionsWidget(HI::GUITestOpStatus &os);
+    static QWidget* getActiveOptionsWidget(HI::GUITestOpStatus& os);
 };
 
 }  // namespace U2

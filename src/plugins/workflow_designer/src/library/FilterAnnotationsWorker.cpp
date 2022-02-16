@@ -57,7 +57,7 @@ void FilterAnnotationsWorker::init() {
     output = ports.value(BasePorts::OUT_ANNOTATIONS_PORT_ID());
 }
 
-Task *FilterAnnotationsWorker::tick() {
+Task* FilterAnnotationsWorker::tick() {
     if (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
@@ -73,8 +73,8 @@ Task *FilterAnnotationsWorker::tick() {
         QString namesString = getValue<QString>(FILTER_NAMES_ATTR);
         QString namesFile = getValue<QString>(FILTER_NAMES_FILE_ATTR);
 
-        Task *t = new FilterAnnotationsTask(inputAnns, namesString, namesFile, accept);
-        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
+        Task* t = new FilterAnnotationsTask(inputAnns, namesString, namesFile, accept);
+        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
         return t;
     } else if (input->isEnded()) {
         setDone();
@@ -83,8 +83,8 @@ Task *FilterAnnotationsWorker::tick() {
     return nullptr;
 }
 
-void FilterAnnotationsWorker::sl_taskFinished(Task *t) {
-    FilterAnnotationsTask *task = dynamic_cast<FilterAnnotationsTask *>(t);
+void FilterAnnotationsWorker::sl_taskFinished(Task* t) {
+    FilterAnnotationsTask* task = dynamic_cast<FilterAnnotationsTask*>(t);
     CHECK(nullptr != task, );
     CHECK(!task->getStateInfo().isCoR(), );
 
@@ -96,8 +96,8 @@ void FilterAnnotationsWorker::cleanup() {
 }
 
 void FilterAnnotationsWorkerFactory::init() {
-    QList<PortDescriptor *> portDescs;
-    QList<Attribute *> attribs;
+    QList<PortDescriptor*> portDescs;
+    QList<Attribute*> attribs;
 
     // accept sequence and annotated regions as input
     QMap<Descriptor, DataTypePtr> inputMap;
@@ -130,17 +130,17 @@ void FilterAnnotationsWorkerFactory::init() {
     Descriptor desc(FilterAnnotationsWorkerFactory::ACTOR_ID,
                     FilterAnnotationsWorker::tr("Filter Annotations by Name"),
                     FilterAnnotationsWorker::tr("Filters annotations by name."));
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, portDescs, attribs);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, portDescs, attribs);
 
     proto->setPrompter(new FilterAnnotationsPrompter());
     {
-        QMap<QString, PropertyDelegate *> delegateMap;
+        QMap<QString, PropertyDelegate*> delegateMap;
         delegateMap[FILTER_NAMES_FILE_ATTR] = new URLDelegate(FileFilters::createAllSupportedFormatsFileFilter(), "", false, false, false);
         proto->setEditor(new DelegateEditor(delegateMap));
     }
     proto->setValidator(new FilterAnnotationsValidator());
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new FilterAnnotationsWorkerFactory());
 }
 
@@ -148,7 +148,7 @@ void FilterAnnotationsWorkerFactory::init() {
 /* FilterAnnotationsValidator */
 /************************************************************************/
 namespace {
-bool hasValue(Attribute *attr) {
+bool hasValue(Attribute* attr) {
     if (!attr->isEmpty() && !attr->isEmptyString()) {
         return true;
     }
@@ -159,9 +159,9 @@ bool hasValue(Attribute *attr) {
 }
 }  // namespace
 
-bool FilterAnnotationsValidator::validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> & /*options*/) const {
-    Attribute *namesAttr = actor->getParameter(FILTER_NAMES_ATTR);
-    Attribute *namesFileAttr = actor->getParameter(FILTER_NAMES_FILE_ATTR);
+bool FilterAnnotationsValidator::validate(const Actor* actor, NotificationsList& notificationList, const QMap<QString, QString>& /*options*/) const {
+    Attribute* namesAttr = actor->getParameter(FILTER_NAMES_ATTR);
+    Attribute* namesFileAttr = actor->getParameter(FILTER_NAMES_FILE_ATTR);
 
     if (hasValue(namesAttr) || hasValue(namesFileAttr)) {
         return true;
@@ -173,7 +173,7 @@ bool FilterAnnotationsValidator::validate(const Actor *actor, NotificationsList 
 /************************************************************************/
 /* FilterAnnotationsTask */
 /************************************************************************/
-FilterAnnotationsTask::FilterAnnotationsTask(const QList<SharedAnnotationData> &annotations, const QString &namesString, const QString &namesUrl, bool accept)
+FilterAnnotationsTask::FilterAnnotationsTask(const QList<SharedAnnotationData>& annotations, const QString& namesString, const QString& namesUrl, bool accept)
     : Task(tr("Filter annotations task"), TaskFlag_None), annotations(annotations), namesString(namesString), namesUrl(namesUrl), accept(accept) {
 }
 
@@ -188,7 +188,7 @@ void FilterAnnotationsTask::run() {
 
     QMutableListIterator<SharedAnnotationData> i(annotations);
     while (i.hasNext()) {
-        SharedAnnotationData &ad = i.next();
+        SharedAnnotationData& ad = i.next();
         if (accept) {
             if (!names.contains(ad->name)) {
                 i.remove();
@@ -207,7 +207,7 @@ QList<SharedAnnotationData> FilterAnnotationsTask::takeResult() {
     return result;
 }
 
-QStringList FilterAnnotationsTask::readAnnotationNames(U2OpStatus &os) const {
+QStringList FilterAnnotationsTask::readAnnotationNames(U2OpStatus& os) const {
     CHECK(QFileInfo(namesUrl).exists(), QStringList());
 
     QFile file(namesUrl);
@@ -221,7 +221,7 @@ QStringList FilterAnnotationsTask::readAnnotationNames(U2OpStatus &os) const {
             return QStringList();
         }
         return data.split(QRegExp("\\s+"), QString::SkipEmptyParts);
-    } catch (const std::bad_alloc &) {
+    } catch (const std::bad_alloc&) {
         os.setError(tr("Not enough memory to load the file with annotation names"));
         return QStringList();
     }

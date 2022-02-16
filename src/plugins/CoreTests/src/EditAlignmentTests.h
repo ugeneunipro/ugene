@@ -44,11 +44,11 @@ public:
     Task::ReportResult report();
 
 private:
-    MultipleSequenceAlignmentObject *maobj;
-    MultipleSequenceAlignmentObject *expectedMaobj;
+    MultipleSequenceAlignmentObject* maobj;
+    MultipleSequenceAlignmentObject* expectedMaobj;
     QString docName;
     bool negativeTest;
-    Task *t;
+    Task* t;
     QString expectedDocName;
     QStringList seqNames;
     U2Region window;
@@ -62,8 +62,8 @@ public:
     Task::ReportResult report();
 
 private:
-    MultipleSequenceAlignmentObject *maobj;
-    MultipleSequenceAlignmentObject *expectedMaobj;
+    MultipleSequenceAlignmentObject* maobj;
+    MultipleSequenceAlignmentObject* expectedMaobj;
     QString docName;
     QString expectedDocName;
     int startBase, startSeq, width, height;
@@ -77,8 +77,8 @@ public:
     Task::ReportResult report();
 
 private:
-    MultipleSequenceAlignmentObject *maobj;
-    MultipleSequenceAlignmentObject *expectedMaobj;
+    MultipleSequenceAlignmentObject* maobj;
+    MultipleSequenceAlignmentObject* expectedMaobj;
     QString docName;
     QString expectedDocName;
     QString seqFileName;
@@ -96,7 +96,7 @@ private:
 
 class CreateSubalignimentTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

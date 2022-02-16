@@ -35,10 +35,10 @@ using namespace Workflow;
 class ExtractConsensusWorker : public BaseWorker {
     Q_OBJECT
 public:
-    ExtractConsensusWorker(Actor *actor);
+    ExtractConsensusWorker(Actor* actor);
 
     void init();
-    Task *tick();
+    Task* tick();
     void cleanup();
 
 private slots:
@@ -46,16 +46,16 @@ private slots:
 
 private:
     bool hasAssembly() const;
-    U2EntityRef takeAssembly(U2OpStatus &os);
-    Task *createTask(const U2EntityRef &assembly);
+    U2EntityRef takeAssembly(U2OpStatus& os);
+    Task* createTask(const U2EntityRef& assembly);
     void finish();
-    void sendResult(const SharedDbiDataHandler &seqId);
+    void sendResult(const SharedDbiDataHandler& seqId);
 };
 
 class ExtractConsensusTaskHelper : public Task {
     Q_OBJECT
 public:
-    ExtractConsensusTaskHelper(const QString &algoId, bool keepGaps, const U2EntityRef &assembly, const U2DbiRef &targetDbi);
+    ExtractConsensusTaskHelper(const QString& algoId, bool keepGaps, const U2EntityRef& assembly, const U2DbiRef& targetDbi);
 
     void prepare();
     U2EntityRef getResult() const;
@@ -65,18 +65,18 @@ private:
     const bool keepGaps;
     const U2EntityRef assembly;
     const U2DbiRef targetDbi;
-    ExportConsensusTask *exportTask;
+    ExportConsensusTask* exportTask;
 
 private:
-    AssemblyConsensusAlgorithm *createAlgorithm();
-    AssemblyModel *createModel();
+    AssemblyConsensusAlgorithm* createAlgorithm();
+    AssemblyModel* createModel();
 };
 
 class ExtractConsensusWorkerFactory : public DomainFactory {
 public:
     ExtractConsensusWorkerFactory();
 
-    Worker *createWorker(Actor *actor);
+    Worker* createWorker(Actor* actor);
 
     static void init();
 
@@ -86,7 +86,7 @@ public:
 class ExtractConsensusWorkerPrompter : public PrompterBase<ExtractConsensusWorkerPrompter> {
     Q_OBJECT
 public:
-    ExtractConsensusWorkerPrompter(Actor *actor = nullptr);
+    ExtractConsensusWorkerPrompter(Actor* actor = nullptr);
 
 protected:
     QString composeRichDoc();

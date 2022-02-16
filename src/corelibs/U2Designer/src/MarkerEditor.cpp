@@ -47,11 +47,11 @@ MarkerEditor::MarkerEditor()
 MarkerEditor::~MarkerEditor() {
 }
 
-QWidget *MarkerEditor::getWidget() {
+QWidget* MarkerEditor::getWidget() {
     return createGUI();
 }
 
-QWidget *MarkerEditor::createGUI() {
+QWidget* MarkerEditor::createGUI() {
     if (nullptr == markerModel) {
         return nullptr;
     }
@@ -59,20 +59,20 @@ QWidget *MarkerEditor::createGUI() {
     return new MarkerEditorWidget(markerModel);
 }
 
-void MarkerEditor::setConfiguration(Actor *actor) {
+void MarkerEditor::setConfiguration(Actor* actor) {
     ActorConfigurationEditor::setConfiguration(actor);
-    QMap<QString, Attribute *> attrs = cfg->getParameters();
+    QMap<QString, Attribute*> attrs = cfg->getParameters();
 
-    MarkerAttribute *mAttr = nullptr;
+    MarkerAttribute* mAttr = nullptr;
     foreach (QString key, attrs.keys()) {
-        Attribute *attr = attrs.value(key);
+        Attribute* attr = attrs.value(key);
         if (MARKER_GROUP == attr->getGroup()) {
             if (nullptr != mAttr) {
                 assert(0);
                 mAttr = nullptr;
                 break;
             }
-            mAttr = dynamic_cast<MarkerAttribute *>(attr);
+            mAttr = dynamic_cast<MarkerAttribute*>(attr);
         }
     }
 
@@ -81,56 +81,56 @@ void MarkerEditor::setConfiguration(Actor *actor) {
     }
 
     markerModel = new MarkerGroupListCfgModel(this, mAttr->getMarkers());
-    connect(markerModel, SIGNAL(si_markerEdited(const QString &, const QString &)), SLOT(sl_onMarkerEdited(const QString &, const QString &)));
-    connect(markerModel, SIGNAL(si_markerAdded(const QString &)), SLOT(sl_onMarkerAdded(const QString &)));
-    connect(markerModel, SIGNAL(si_markerRemoved(const QString &)), SLOT(sl_onMarkerRemoved(const QString &)));
+    connect(markerModel, SIGNAL(si_markerEdited(const QString&, const QString&)), SLOT(sl_onMarkerEdited(const QString&, const QString&)));
+    connect(markerModel, SIGNAL(si_markerAdded(const QString&)), SLOT(sl_onMarkerAdded(const QString&)));
+    connect(markerModel, SIGNAL(si_markerRemoved(const QString&)), SLOT(sl_onMarkerRemoved(const QString&)));
 }
 
-void MarkerEditor::sl_onMarkerEdited(const QString &newMarkerName, const QString &oldMarkerName) {
-    Marker *marker = markerModel->getMarker(newMarkerName);
+void MarkerEditor::sl_onMarkerEdited(const QString& newMarkerName, const QString& oldMarkerName) {
+    Marker* marker = markerModel->getMarker(newMarkerName);
     SAFE_POINT(nullptr != marker, "NULL marker", );
 
     {  // TODO: make common way to get marked object output port
         assert(1 == cfg->getOutputPorts().size());
-        Port *outPort = cfg->getOutputPorts().at(0);
+        Port* outPort = cfg->getOutputPorts().at(0);
         assert(outPort->getOutputType()->isMap());
         QMap<Descriptor, DataTypePtr> outTypeMap = outPort->getOutputType()->getDatatypesMap();
 
         Descriptor newSlot = MarkerSlots::getSlotByMarkerType(marker->getType(), marker->getName());
         outTypeMap.remove(oldMarkerName);
         outTypeMap[newSlot] = BaseTypes::STRING_TYPE();
-        DataTypePtr newType(new MapDataType(dynamic_cast<Descriptor &>(*(outPort->getType())), outTypeMap));
+        DataTypePtr newType(new MapDataType(dynamic_cast<Descriptor&>(*(outPort->getType())), outTypeMap));
         outPort->setNewType(newType);
     }
     emit si_configurationChanged();
 }
 
-void MarkerEditor::sl_onMarkerAdded(const QString &markerName) {
-    Marker *marker = markerModel->getMarker(markerName);
+void MarkerEditor::sl_onMarkerAdded(const QString& markerName) {
+    Marker* marker = markerModel->getMarker(markerName);
     SAFE_POINT(nullptr != marker, "NULL marker", );
 
     {  // TODO: make common way to get marked object output port
         assert(1 == cfg->getOutputPorts().size());
-        Port *outPort = cfg->getOutputPorts().at(0);
+        Port* outPort = cfg->getOutputPorts().at(0);
         assert(outPort->getOutputType()->isMap());
         QMap<Descriptor, DataTypePtr> outTypeMap = outPort->getOutputType()->getDatatypesMap();
 
         Descriptor newSlot = MarkerSlots::getSlotByMarkerType(marker->getType(), marker->getName());
         outTypeMap[newSlot] = BaseTypes::STRING_TYPE();
-        DataTypePtr newType(new MapDataType(dynamic_cast<Descriptor &>(*(outPort->getType())), outTypeMap));
+        DataTypePtr newType(new MapDataType(dynamic_cast<Descriptor&>(*(outPort->getType())), outTypeMap));
         outPort->setNewType(newType);
     }
 }
 
-void MarkerEditor::sl_onMarkerRemoved(const QString &markerName) {
+void MarkerEditor::sl_onMarkerRemoved(const QString& markerName) {
     {  // TODO: make common way to get marked object output port
         assert(1 == cfg->getOutputPorts().size());
-        Port *outPort = cfg->getOutputPorts().at(0);
+        Port* outPort = cfg->getOutputPorts().at(0);
         assert(outPort->getOutputType()->isMap());
         QMap<Descriptor, DataTypePtr> outTypeMap = outPort->getOutputType()->getDatatypesMap();
 
         outTypeMap.remove(markerName);
-        DataTypePtr newType(new MapDataType(dynamic_cast<Descriptor &>(*(outPort->getType())), outTypeMap));
+        DataTypePtr newType(new MapDataType(dynamic_cast<Descriptor&>(*(outPort->getType())), outTypeMap));
         outPort->setNewType(newType);
     }
     emit si_configurationChanged();
@@ -139,13 +139,13 @@ void MarkerEditor::sl_onMarkerRemoved(const QString &markerName) {
 /* ***********************************************************************
  * MarkerCfgModel
  * ***********************************************************************/
-MarkerGroupListCfgModel::MarkerGroupListCfgModel(QObject *parent, QList<Marker *> &markers)
+MarkerGroupListCfgModel::MarkerGroupListCfgModel(QObject* parent, QList<Marker*>& markers)
     : QAbstractTableModel(parent), markers(markers) {
 }
 
-QVariant MarkerGroupListCfgModel::data(const QModelIndex &index, int role) const {
+QVariant MarkerGroupListCfgModel::data(const QModelIndex& index, int role) const {
     if (Qt::DisplayRole == role || Qt::ToolTipRole == role) {
-        Marker *m = *(markers.begin() + index.row());
+        Marker* m = *(markers.begin() + index.row());
         if (nullptr == m) {
             return QVariant();
         }
@@ -161,15 +161,15 @@ QVariant MarkerGroupListCfgModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-int MarkerGroupListCfgModel::columnCount(const QModelIndex &) const {
+int MarkerGroupListCfgModel::columnCount(const QModelIndex&) const {
     return 2;
 }
 
-int MarkerGroupListCfgModel::rowCount(const QModelIndex &) const {
+int MarkerGroupListCfgModel::rowCount(const QModelIndex&) const {
     return markers.size();
 }
 
-Qt::ItemFlags MarkerGroupListCfgModel::flags(const QModelIndex &) const {
+Qt::ItemFlags MarkerGroupListCfgModel::flags(const QModelIndex&) const {
     return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
@@ -188,18 +188,18 @@ QVariant MarkerGroupListCfgModel::headerData(int section, Qt::Orientation orient
     return QVariant();
 }
 
-bool MarkerGroupListCfgModel::setData(const QModelIndex &index, const QVariant &value, int role) {
+bool MarkerGroupListCfgModel::setData(const QModelIndex& index, const QVariant& value, int role) {
     Q_UNUSED(index);
     Q_UNUSED(value);
     Q_UNUSED(role);
     return true;
 }
 
-bool MarkerGroupListCfgModel::removeRows(int row, int count, const QModelIndex &) {
+bool MarkerGroupListCfgModel::removeRows(int row, int count, const QModelIndex&) {
     if (1 != count) {
         return true;
     }
-    Marker *toRemove = markers.at(row);
+    Marker* toRemove = markers.at(row);
     QString markerName = toRemove->getName();
     beginRemoveRows(QModelIndex(), row, row + count - 1);
     markers.removeAt(row);
@@ -210,13 +210,13 @@ bool MarkerGroupListCfgModel::removeRows(int row, int count, const QModelIndex &
     return true;
 }
 
-Marker *MarkerGroupListCfgModel::getMarker(int row) const {
+Marker* MarkerGroupListCfgModel::getMarker(int row) const {
     SAFE_POINT(row < markers.size(), "Markers: out of range", nullptr);
     return markers.at(row);
 }
 
-Marker *MarkerGroupListCfgModel::getMarker(const QString &markerName) const {
-    foreach (Marker *marker, markers) {
+Marker* MarkerGroupListCfgModel::getMarker(const QString& markerName) const {
+    foreach (Marker* marker, markers) {
         if (marker->getName() == markerName) {
             return marker;
         }
@@ -224,11 +224,11 @@ Marker *MarkerGroupListCfgModel::getMarker(const QString &markerName) const {
     return nullptr;
 }
 
-QList<Marker *> &MarkerGroupListCfgModel::getMarkers() {
+QList<Marker*>& MarkerGroupListCfgModel::getMarkers() {
     return markers;
 }
 
-void MarkerGroupListCfgModel::addMarker(Marker *newMarker) {
+void MarkerGroupListCfgModel::addMarker(Marker* newMarker) {
     beginInsertRows(QModelIndex(), markers.size(), markers.size());
     markers.insert(markers.size(), newMarker);
     endInsertRows();
@@ -236,8 +236,8 @@ void MarkerGroupListCfgModel::addMarker(Marker *newMarker) {
     emit si_markerAdded(newMarker->getName());
 }
 
-void MarkerGroupListCfgModel::replaceMarker(int row, Marker *newMarker) {
-    Marker *oldMarker = getMarker(row);
+void MarkerGroupListCfgModel::replaceMarker(int row, Marker* newMarker) {
+    Marker* oldMarker = getMarker(row);
     CHECK(nullptr != oldMarker, );
 
     beginRemoveRows(QModelIndex(), row, row);
@@ -254,7 +254,7 @@ void MarkerGroupListCfgModel::replaceMarker(int row, Marker *newMarker) {
     emit si_markerEdited(newMarker->getName(), oldName);
 }
 
-QString MarkerGroupListCfgModel::suggestName(const QString &type) {
+QString MarkerGroupListCfgModel::suggestName(const QString& type) {
     QString result = type;
     int idx = 1;
     while (containsName(result)) {
@@ -264,8 +264,8 @@ QString MarkerGroupListCfgModel::suggestName(const QString &type) {
     return result;
 }
 
-bool MarkerGroupListCfgModel::containsName(const QString &name) {
-    foreach (Marker *m, getMarkers()) {
+bool MarkerGroupListCfgModel::containsName(const QString& name) {
+    foreach (Marker* m, getMarkers()) {
         if (m->getName() == name) {
             return true;
         }

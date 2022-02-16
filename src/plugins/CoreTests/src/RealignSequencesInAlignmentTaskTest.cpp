@@ -33,7 +33,7 @@ namespace U2 {
 #define IN_OBJECT_NAME_ATTR "in"
 #define ROWS_LIST_ATTR "rows"
 
-void GTest_Realign::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_Realign::init(XMLTestFormat*, const QDomElement& el) {
     inputObjectName = el.attribute(IN_OBJECT_NAME_ATTR);
     if (inputObjectName.isEmpty()) {
         failMissingValue(IN_OBJECT_NAME_ATTR);
@@ -48,7 +48,7 @@ void GTest_Realign::init(XMLTestFormat *, const QDomElement &el) {
 
     QStringList rowsIndexesToAlignStringList = rows.split(",");
     bool conversionIsOk = false;
-    for (const QString &str : qAsConst(rowsIndexesToAlignStringList)) {
+    for (const QString& str : qAsConst(rowsIndexesToAlignStringList)) {
         int rowIndex = str.toInt(&conversionIsOk);
         if (!conversionIsOk) {
             wrongValue(ROWS_LIST_ATTR);
@@ -65,18 +65,18 @@ void GTest_Realign::prepare() {
         return;
     }
 
-    QList<GObject *> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.isEmpty()) {
         stateInfo.setError(QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
 
-    GObject *obj = list.first();
+    GObject* obj = list.first();
     if (obj == nullptr) {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    msaObj = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
+    msaObj = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if (msaObj == nullptr) {
         stateInfo.setError(QString("error can't cast to multiple alignment from GObject"));
         return;
@@ -104,8 +104,8 @@ void GTest_Realign::cleanup() {
     XmlTest::cleanup();
 }
 
-QList<XMLTestFactory *> RealignTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> RealignTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_Realign::createFactory());
     return res;
 }

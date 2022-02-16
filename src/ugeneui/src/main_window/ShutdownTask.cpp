@@ -36,15 +36,15 @@
 
 namespace U2 {
 
-ShutdownTask::ShutdownTask(MainWindowImpl *_mw)
+ShutdownTask::ShutdownTask(MainWindowImpl* _mw)
     : Task(tr("Shutdown"), TaskFlags(TaskFlag_NoRun)), mw(_mw), docsToRemoveAreFetched(false) {
 }
 
-static bool isReadyToBeDisabled(Service *s, ServiceRegistry *sr) {
+static bool isReadyToBeDisabled(Service* s, ServiceRegistry* sr) {
     ServiceType st = s->getType();
     int nServicesOfTheSameType = sr->findServices(st).size();
     assert(nServicesOfTheSameType >= 1);
-    foreach (Service *child, sr->getServices()) {
+    foreach (Service* child, sr->getServices()) {
         if (!child->getParentServiceTypes().contains(st) || !child->isEnabled()) {
             continue;
         }
@@ -55,9 +55,9 @@ static bool isReadyToBeDisabled(Service *s, ServiceRegistry *sr) {
     return true;
 }
 
-static Service *findServiceToDisable(ServiceRegistry *sr) {
+static Service* findServiceToDisable(ServiceRegistry* sr) {
     int nEnabled = 0;
-    foreach (Service *s, sr->getServices()) {
+    foreach (Service* s, sr->getServices()) {
         nEnabled += s->isEnabled() ? 1 : 0;
         if (s->isEnabled() && isReadyToBeDisabled(s, sr)) {
             return s;
@@ -68,8 +68,8 @@ static Service *findServiceToDisable(ServiceRegistry *sr) {
 }
 
 static bool closeViews() {
-    MWMDIManager *wm = AppContext::getMainWindow()->getMDIManager();
-    MWMDIWindow *w = nullptr;
+    MWMDIManager* wm = AppContext::getMainWindow()->getMDIManager();
+    MWMDIWindow* w = nullptr;
     // close windows one by one, asking active window first
     // straightforward foreach() cycle appears not flexible enough,
     // as interdependent windows may close each other (happened with TestRunner and TestReporter)
@@ -99,19 +99,19 @@ void ShutdownTask::prepare() {
     coreLog.info(tr("Starting shutdown process..."));
     mw->setShutDownInProcess(true);
 
-    Project *currProject = AppContext::getProject();
+    Project* currProject = AppContext::getProject();
     if (currProject == nullptr) {
         cancelProjectAutoLoad();
     }
 
-    Task *ct = new CloseWindowsTask();
+    Task* ct = new CloseWindowsTask();
     addSubTask(ct);
 
-    QList<Task *> activeTopLevelTaskList = AppContext::getTaskScheduler()->getTopLevelTasks();
+    QList<Task*> activeTopLevelTaskList = AppContext::getTaskScheduler()->getTopLevelTasks();
     activeTopLevelTaskList.removeOne(this);
     if (!activeTopLevelTaskList.isEmpty()) {
         QStringList activeUserTaskNameList;
-        for (Task *task : qAsConst(activeTopLevelTaskList)) {
+        for (Task* task : qAsConst(activeTopLevelTaskList)) {
             if (!task->hasFlags(TaskFlag_SilentCancelOnShutdown)) {
                 activeUserTaskNameList.append(task->getTaskName());
             }
@@ -131,8 +131,8 @@ void ShutdownTask::prepare() {
     }
 }
 
-QList<Task *> ShutdownTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> ShutdownTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
 
     stateInfo.cancelFlag = subTask->isCanceled();
     if (isCanceled() || subTask->hasError()) {
@@ -140,15 +140,15 @@ QList<Task *> ShutdownTask::onSubTaskFinished(Task *subTask) {
         return res;
     }
 
-    ServiceRegistry *sr = AppContext::getServiceRegistry();
-    Service *s = findServiceToDisable(sr);
+    ServiceRegistry* sr = AppContext::getServiceRegistry();
+    Service* s = findServiceToDisable(sr);
     if (s != nullptr) {
         res.append(sr->disableServiceTask(s));
     }
 
     // fetch documents from project while it's not released
     if (!docsToRemoveAreFetched) {
-        Project *proj = AppContext::getProject();
+        Project* proj = AppContext::getProject();
         if (nullptr != proj) {
             docsToRemove = proj->getDocuments();
         }
@@ -179,8 +179,8 @@ Task::ReportResult ShutdownTask::report() {
     }
 
 #ifdef _DEBUG
-    const QList<Service *> &services = AppContext::getServiceRegistry()->getServices();
-    foreach (Service *s, services) {
+    const QList<Service*>& services = AppContext::getServiceRegistry()->getServices();
+    foreach (Service* s, services) {
         assert(s->isDisabled());
     }
 #endif
@@ -194,7 +194,7 @@ CloseWindowsTask::CloseWindowsTask()
 }
 
 void CloseWindowsTask::prepare() {
-    Project *proj = AppContext::getProject();
+    Project* proj = AppContext::getProject();
     if (proj == nullptr) {
         return;
     }
@@ -203,21 +203,21 @@ void CloseWindowsTask::prepare() {
     }
 }
 
-QList<Task *> CloseWindowsTask::onSubTaskFinished(Task *subTask) {
+QList<Task*> CloseWindowsTask::onSubTaskFinished(Task* subTask) {
     if (subTask->isCanceled()) {
         stateInfo.cancelFlag = true;
-        return QList<Task *>();
+        return QList<Task*>();
     }
     coreLog.trace(tr("Closing views"));
     if (!closeViews()) {
         getTopLevelParentTask()->cancel();
     }
-    return QList<Task *>();
+    return QList<Task*>();
 }
 
 Task::ReportResult CloseWindowsTask::report() {
     // wait for saving/closing tasks if any
-    foreach (Task *t, AppContext::getTaskScheduler()->getTopLevelTasks()) {
+    foreach (Task* t, AppContext::getTaskScheduler()->getTopLevelTasks()) {
         if (t != getTopLevelParentTask() && !t->isFinished()) {
             return ReportResult_CallMeAgain;
         }
@@ -231,16 +231,16 @@ CancelAllTask::CancelAllTask()
 
 void CancelAllTask::prepare() {
     // cancel all tasks but ShutdownTask
-    QList<Task *> activeTopTasks = AppContext::getTaskScheduler()->getTopLevelTasks();
+    QList<Task*> activeTopTasks = AppContext::getTaskScheduler()->getTopLevelTasks();
     activeTopTasks.removeOne(getTopLevelParentTask());
-    foreach (Task *t, activeTopTasks) {
+    foreach (Task* t, activeTopTasks) {
         coreLog.trace(tr("Canceling: %1").arg(t->getTaskName()));
         t->cancel();
     }
 }
 
 Task::ReportResult CancelAllTask::report() {
-    foreach (Task *t, AppContext::getTaskScheduler()->getTopLevelTasks()) {
+    foreach (Task* t, AppContext::getTaskScheduler()->getTopLevelTasks()) {
         if (t->isCanceled() && !t->isFinished()) {
             return ReportResult_CallMeAgain;
         }

@@ -27,15 +27,15 @@
 
 namespace U2 {
 
-LineEditHighlighter::LineEditHighlighter(QLineEdit *_lineEdit)
+LineEditHighlighter::LineEditHighlighter(QLineEdit* _lineEdit)
     : QObject(_lineEdit),
       lineEdit(_lineEdit) {
     connect(lineEdit, SIGNAL(textChanged(QString)), SLOT(sl_textChanged(QString)));
     sl_textChanged(lineEdit->text());
 }
 
-void LineEditHighlighter::sl_textChanged(const QString &text) {
+void LineEditHighlighter::sl_textChanged(const QString& text) {
     GUIUtils::setWidgetWarning(lineEdit, text.isEmpty());
 }
 
-}    // namespace U2
+}  // namespace U2

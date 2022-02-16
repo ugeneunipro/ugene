@@ -30,13 +30,13 @@ const QString WorkflowNotification::U2_ERROR = "error";
 const QString WorkflowNotification::U2_WARNING = "warning";
 const QString WorkflowNotification::U2_INFO = "info";
 
-WorkflowNotification::WorkflowNotification(const QString &_message, const QString &_actorId, const QString &_type)
+WorkflowNotification::WorkflowNotification(const QString& _message, const QString& _actorId, const QString& _type)
     : message(_message),
       actorId(_actorId),
       type(_type) {
 }
 
-bool WorkflowNotification::operator==(const WorkflowNotification &other) const {
+bool WorkflowNotification::operator==(const WorkflowNotification& other) const {
     return (actorId == other.actorId) &&
            (message == other.message) &&
            (type == other.type);

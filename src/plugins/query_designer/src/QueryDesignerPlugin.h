@@ -42,16 +42,16 @@ private:
     void registerLibFactories();
 
 private:
-    GObjectViewWindowContext *viewCtx;
+    GObjectViewWindowContext* viewCtx;
 };
 
 class QueryDesignerViewContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    QueryDesignerViewContext(QObject *p);
+    QueryDesignerViewContext(QObject* p);
 
 protected:
-    void initViewContext(GObjectView *view) override;
+    void initViewContext(GObjectView* view) override;
 
 private slots:
     void sl_showDialog();
@@ -66,8 +66,8 @@ public:
     bool closeViews();
 
 protected:
-    virtual Task *createServiceEnablingTask();
-    virtual Task *createServiceDisablingTask();
+    virtual Task* createServiceEnablingTask();
+    virtual Task* createServiceDisablingTask();
     virtual void serviceStateChangedCallback(ServiceState oldState, bool enabledStateChanged);
 private slots:
     void sl_startQDPlugin();

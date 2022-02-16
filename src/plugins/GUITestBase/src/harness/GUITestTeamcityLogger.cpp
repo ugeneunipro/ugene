@@ -30,22 +30,22 @@ static Logger teamcityLog(ULOG_CAT_TEAMCITY);
 
 const QString GUITestTeamcityLogger::successResult = "Success";
 
-void GUITestTeamcityLogger::testStarted(const QString &testName) {
+void GUITestTeamcityLogger::testStarted(const QString& testName) {
     teamcityLog.trace(QString("##teamcity[testStarted name='%1']").arg(escaped(testName)));
 }
 
-void GUITestTeamcityLogger::testIgnored(const QString &testName, const QString &ignoreReason) {
+void GUITestTeamcityLogger::testIgnored(const QString& testName, const QString& ignoreReason) {
     teamcityLog.trace(QString("##teamcity[testIgnored name='%1' message='%2']").arg(escaped(testName), escaped(ignoreReason)));
 }
 
-void GUITestTeamcityLogger::teamCityLogResult(const QString &testName, const QString &testResult, qint64 testTimeMicros) {
+void GUITestTeamcityLogger::teamCityLogResult(const QString& testName, const QString& testResult, qint64 testTimeMicros) {
     if (isTestFailed(testResult)) {
         teamcityLog.trace(QString("##teamcity[testFailed name='%1' message='%2' details='%2' duration='%3']").arg(escaped(testName), escaped(testResult), QString::number(testTimeMicros)));
     }
     teamcityLog.trace(QString("##teamcity[testFinished name='%1' duration='%2']").arg(escaped(testName), QString::number(testTimeMicros)));
 }
 
-QString GUITestTeamcityLogger::escaped(const QString &s) {
+QString GUITestTeamcityLogger::escaped(const QString& s) {
     QString esc = s;
     esc = esc.replace("|", "||");
     esc = esc.replace("]", "|]");
@@ -55,7 +55,7 @@ QString GUITestTeamcityLogger::escaped(const QString &s) {
     return esc;
 }
 
-bool GUITestTeamcityLogger::isTestFailed(const QString &testOutput) {
+bool GUITestTeamcityLogger::isTestFailed(const QString& testOutput) {
     return !testOutput.contains(successResult);
 }
 

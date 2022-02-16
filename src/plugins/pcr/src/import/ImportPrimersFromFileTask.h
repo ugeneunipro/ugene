@@ -31,15 +31,15 @@ class DocumentProviderTask;
 class ImportPrimersFromFileTask : public Task {
     Q_OBJECT
 public:
-    ImportPrimersFromFileTask(const QString &filePath);
+    ImportPrimersFromFileTask(const QString& filePath);
 
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
     QString generateReport() const;
 
 private:
     const QString filePath;
-    DocumentProviderTask *loadTask;
+    DocumentProviderTask* loadTask;
 };
 
 }  // namespace U2

@@ -31,12 +31,12 @@
 
 namespace U2 {
 
-FindGapsInSequenceCallback::FindGapsInSequenceCallback(U2SequenceObject *const sequenceObject)
+FindGapsInSequenceCallback::FindGapsInSequenceCallback(U2SequenceObject* const sequenceObject)
     : sequenceObject(sequenceObject) {
     SAFE_POINT(sequenceObject != nullptr, "Sequence object is NULL", );
 }
 
-void FindGapsInSequenceCallback::onRegion(SequenceDbiWalkerSubtask *subtask, TaskStateInfo &stateInfo) {
+void FindGapsInSequenceCallback::onRegion(SequenceDbiWalkerSubtask* subtask, TaskStateInfo& stateInfo) {
     CHECK_OP(stateInfo, );
 
     QByteArray sequenceData = sequenceObject->getSequenceData(subtask->getGlobalRegion(), stateInfo);
@@ -50,18 +50,18 @@ void FindGapsInSequenceCallback::onRegion(SequenceDbiWalkerSubtask *subtask, Tas
     addGaps(gaps);
 }
 
-const QList<U2Region> &FindGapsInSequenceCallback::getGappedRegions() const {
+const QList<U2Region>& FindGapsInSequenceCallback::getGappedRegions() const {
     return gappedRegions;
 }
 
-void FindGapsInSequenceCallback::addGaps(const QVector<U2MsaGap> &gaps) {
+void FindGapsInSequenceCallback::addGaps(const QVector<U2MsaGap>& gaps) {
     QMutexLocker mutexLocker(&mutex);
-    for (const U2MsaGap &gap : qAsConst(gaps)) {
+    for (const U2MsaGap& gap : qAsConst(gaps)) {
         gappedRegions << gap;
     }
 }
 
-RemoveGapsFromSequenceTask::RemoveGapsFromSequenceTask(U2SequenceObject *const sequenceObject)
+RemoveGapsFromSequenceTask::RemoveGapsFromSequenceTask(U2SequenceObject* const sequenceObject)
     : Task(tr("Remove gaps from the sequence"), TaskFlags_FOSE_COSC),
       sequenceObject(sequenceObject),
       callback(sequenceObject) {

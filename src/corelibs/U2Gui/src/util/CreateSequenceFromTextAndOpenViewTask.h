@@ -35,24 +35,24 @@ class ImportSequenceFromRawDataTask;
 class CreateSequenceFromTextAndOpenViewTask : public Task {
     Q_OBJECT
 public:
-    CreateSequenceFromTextAndOpenViewTask(const QList<DNASequence> &sequences, const QString &formatId, const GUrl &saveToPath, bool saveImmediately);
+    CreateSequenceFromTextAndOpenViewTask(const QList<DNASequence>& sequences, const QString& formatId, const GUrl& saveToPath, bool saveImmediately);
 
 private:
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
-    QList<Task *> prepareImportSequenceTasks();
-    Document *createEmptyDocument();
+    QList<Task*> prepareImportSequenceTasks();
+    Document* createEmptyDocument();
     void addDocument();
 
     const QList<DNASequence> sequences;
-    DocumentFormat *format;
+    DocumentFormat* format;
     const GUrl saveToPath;
     const bool saveImmediately;
-    Task *openProjectTask;
-    QList<Task *> importTasks;
+    Task* openProjectTask;
+    QList<Task*> importTasks;
     int importedSequences;
-    Document *document;
+    Document* document;
 };
 
 }  // namespace U2

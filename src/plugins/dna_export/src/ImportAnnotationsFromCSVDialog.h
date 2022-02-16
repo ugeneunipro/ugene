@@ -22,9 +22,9 @@
 #ifndef _U2_IMPORT_ANNOTATIONS_FROM_CSV_DIALOG_H_
 #define _U2_IMPORT_ANNOTATIONS_FROM_CSV_DIALOG_H_
 
-#include <ui_ImportAnnotationsFromCSVDialog.h>
-
 #include "CSVColumnConfiguration.h"
+
+#include <ui_ImportAnnotationsFromCSVDialog.h>
 
 class QTreeWidgetItem;
 
@@ -37,10 +37,10 @@ class SaveDocumentController;
 class ImportAnnotationsFromCSVDialog : public QDialog, private Ui_ImportAnnotationsFromCSVDialog {
     Q_OBJECT
 public:
-    ImportAnnotationsFromCSVDialog(QWidget *w);
+    ImportAnnotationsFromCSVDialog(QWidget* w);
 
-    void toTaskConfig(ImportAnnotationsFromCSVTaskConfig &config) const;
-    void toParsingConfig(CSVParsingConfig &config) const;
+    void toTaskConfig(ImportAnnotationsFromCSVTaskConfig& config) const;
+    void toParsingConfig(CSVParsingConfig& config) const;
 
 public slots:
     virtual void accept();
@@ -50,9 +50,9 @@ private slots:
     void sl_previewClicked();
     void sl_guessSeparatorClicked();
     void sl_scriptSeparatorClicked();
-    void sl_separatorChanged(const QString &);
-    void sl_prefixToSkipChanged(const QString &);
-    void sl_tableItemClicked(QTableWidgetItem *);
+    void sl_separatorChanged(const QString&);
+    void sl_prefixToSkipChanged(const QString&);
+    void sl_tableItemClicked(QTableWidgetItem*);
     void sl_tableHeaderClicked(int);
     void sl_separatorRadioToggled(bool);
     void sl_scriptRadioToggled(bool);
@@ -70,15 +70,15 @@ private:
     bool checkSeparators(bool silentFail);
 
     void prepareColumnsConfig(int numColumnsHint);
-    QTableWidgetItem *createHeaderItem(int column) const;
+    QTableWidgetItem* createHeaderItem(int column) const;
     QString getHeaderItemText(int column) const;
     void configureColumn(int column);
-    QString readFileHeader(const QString &fileName, bool silentFail);
+    QString readFileHeader(const QString& fileName, bool silentFail);
 
     void guessSeparator(bool silentFail);
     void preview(bool silentFail);
 
-    SaveDocumentController *saveController;
+    SaveDocumentController* saveController;
     QList<ColumnConfig> columnsConfig;
 
     // script text used to parse separator

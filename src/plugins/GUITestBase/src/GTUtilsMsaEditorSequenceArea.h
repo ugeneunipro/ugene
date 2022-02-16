@@ -32,108 +32,108 @@ namespace U2 {
 
 class GTUtilsMSAEditorSequenceArea {
 public:
-    static MSAEditorSequenceArea *getSequenceArea(GUITestOpStatus &os);
-    static void callContextMenu(GUITestOpStatus &os, const QPoint &innerCoords = QPoint());  // zero-based position
+    static MSAEditorSequenceArea* getSequenceArea(GUITestOpStatus& os);
+    static void callContextMenu(GUITestOpStatus& os, const QPoint& innerCoords = QPoint());  // zero-based position
 
-    static void checkSelectedRect(GUITestOpStatus &os, const QRect &expectedRect);
+    static void checkSelectedRect(GUITestOpStatus& os, const QRect& expectedRect);
 
-    static void checkConsensus(GUITestOpStatus &os, QString cons);
+    static void checkConsensus(GUITestOpStatus& os, QString cons);
     // may be used for selecting visible columns only
-    static void selectColumnInConsensus(GUITestOpStatus &os, int columnNumber);
+    static void selectColumnInConsensus(GUITestOpStatus& os, int columnNumber);
 
     // MSAEditorNameList
 
     /** Returns all names in MSA object as stored in the object. */
-    static QStringList getNameList(GUITestOpStatus &os);
+    static QStringList getNameList(GUITestOpStatus& os);
 
     /**
      * Returns ordered list of row names rendered on the screen: both from the visible on the screen are and from the overflow (available with the scroll).
      * Excludes invisible rows inside of collapsed groups.
      * */
-    static QStringList getCurrentRowNames(GUITestOpStatus &os);
+    static QStringList getCurrentRowNames(GUITestOpStatus& os);
 
-    static bool hasSequencesWithNames(GUITestOpStatus &os, const QStringList &names);
+    static bool hasSequencesWithNames(GUITestOpStatus& os, const QStringList& names);
 
     /**
      * Returns list of visible row names.
      * Uses original MSA row names if 'asShownInNameList' is false (default) or the final rendered
      * row text if 'asShownInNameList' is true.
      */
-    static QStringList getVisibleNames(GUITestOpStatus &os, bool asShownInNameList = false);
+    static QStringList getVisibleNames(GUITestOpStatus& os, bool asShownInNameList = false);
 
-    static QString getSimilarityValue(GUITestOpStatus &os, int row);
-    static void clickCollapseTriangle(GUITestOpStatus &os, QString seqName);
-    static bool isCollapsed(GUITestOpStatus &os, QString seqName);
-    static bool collapsingMode(GUITestOpStatus &os);
+    static QString getSimilarityValue(GUITestOpStatus& os, int row);
+    static void clickCollapseTriangle(GUITestOpStatus& os, QString seqName);
+    static bool isCollapsed(GUITestOpStatus& os, QString seqName);
+    static bool collapsingMode(GUITestOpStatus& os);
 
-    static int getFirstVisibleBase(GUITestOpStatus &os);
-    static int getLastVisibleBase(GUITestOpStatus &os);
+    static int getFirstVisibleBase(GUITestOpStatus& os);
+    static int getLastVisibleBase(GUITestOpStatus& os);
 
-    static int getLength(GUITestOpStatus &os);
-    static int getNumVisibleBases(GUITestOpStatus &os);
+    static int getLength(GUITestOpStatus& os);
+    static int getNumVisibleBases(GUITestOpStatus& os);
 
-    static QRect getSelectedRect(GUITestOpStatus &os);
-    static void dragAndDropSelection(GUITestOpStatus &os, const QPoint &fromMaPosition, const QPoint &toMaPosition);
+    static QRect getSelectedRect(GUITestOpStatus& os);
+    static void dragAndDropSelection(GUITestOpStatus& os, const QPoint& fromMaPosition, const QPoint& toMaPosition);
 
-    static void moveTo(GUITestOpStatus &os, const QPoint &p);
+    static void moveTo(GUITestOpStatus& os, const QPoint& p);
 
     // selects area in MSA coordinates, if some p coordinate less than 0, it becomes max valid coordinate
     // zero-based position
-    static void selectArea(GUITestOpStatus &os, QPoint p1 = QPoint(0, 0), QPoint p2 = QPoint(-1, -1), GTGlobals::UseMethod method = GTGlobals::UseKey);
-    static void cancelSelection(GUITestOpStatus &os);
+    static void selectArea(GUITestOpStatus& os, QPoint p1 = QPoint(0, 0), QPoint p2 = QPoint(-1, -1), GTGlobals::UseMethod method = GTGlobals::UseKey);
+    static void cancelSelection(GUITestOpStatus& os);
     /** Returns on-screen (global) bounding rectangle for the base position. */
-    static QRect getPositionRect(GUITestOpStatus &os, const QPoint &position);
-    static QPoint convertCoordinates(GUITestOpStatus &os, const QPoint p);
-    static void click(GUITestOpStatus &os, const QPoint &screenMaPoint = QPoint(0, 0));
+    static QRect getPositionRect(GUITestOpStatus& os, const QPoint& position);
+    static QPoint convertCoordinates(GUITestOpStatus& os, const QPoint p);
+    static void click(GUITestOpStatus& os, const QPoint& screenMaPoint = QPoint(0, 0));
 
     /** Calls context menu Copy/Paste->Copy. */
-    static void copySelectionByContextMenu(GUITestOpStatus &os);
+    static void copySelectionByContextMenu(GUITestOpStatus& os);
 
     // scrolls to the position (in the MSA zero-based coordinates)
-    static void scrollToPosition(GUITestOpStatus &os, const QPoint &position);
-    static void scrollToBottom(GUITestOpStatus &os);
-    static void moveMouseToPosition(GUITestOpStatus &os, const QPoint &globalMaPosition);
-    static void clickToPosition(GUITestOpStatus &os, const QPoint &globalMaPosition);
+    static void scrollToPosition(GUITestOpStatus& os, const QPoint& position);
+    static void scrollToBottom(GUITestOpStatus& os);
+    static void moveMouseToPosition(GUITestOpStatus& os, const QPoint& globalMaPosition);
+    static void clickToPosition(GUITestOpStatus& os, const QPoint& globalMaPosition);
 
-    static void selectSequence(GUITestOpStatus &os, const QString &seqName);
-    static void selectSequence(GUITestOpStatus &os, const int row);
-    static bool isSequenceSelected(GUITestOpStatus &os, const QString &seqName);
-    static void removeSequence(GUITestOpStatus &os, const QString &sequenceName);
-    static int getSelectedSequencesNum(GUITestOpStatus &os);
-    static bool isSequenceVisible(GUITestOpStatus &os, const QString &seqName);
-    static QString getSequenceData(GUITestOpStatus &os, const QString &sequenceName);
-    static QString getSequenceData(GUITestOpStatus &os, int rowNumber);
+    static void selectSequence(GUITestOpStatus& os, const QString& seqName);
+    static void selectSequence(GUITestOpStatus& os, const int row);
+    static bool isSequenceSelected(GUITestOpStatus& os, const QString& seqName);
+    static void removeSequence(GUITestOpStatus& os, const QString& sequenceName);
+    static int getSelectedSequencesNum(GUITestOpStatus& os);
+    static bool isSequenceVisible(GUITestOpStatus& os, const QString& seqName);
+    static QString getSequenceData(GUITestOpStatus& os, const QString& sequenceName);
+    static QString getSequenceData(GUITestOpStatus& os, int rowNumber);
 
-    static bool offsetsVisible(GUITestOpStatus &os);
+    static bool offsetsVisible(GUITestOpStatus& os);
 
-    static bool hasAminoAlphabet(GUITestOpStatus &os);
-    static bool isSequenceHighlighted(GUITestOpStatus &os, const QString &seqName);
-    static QString getColor(GUITestOpStatus &os, QPoint p);
-    static bool hasPixelWithColor(GUITestOpStatus &os, const QPoint &p, const QColor &color);
-    static void checkMsaCellColors(GUITestOpStatus &os, const QPoint &pos, const QString &fgColor, const QString &bgColor);
-    static void checkMsaCellColor(GUITestOpStatus &os, const QPoint &pos, const QString &color);
-    static bool checkColor(GUITestOpStatus &os, const QPoint &p, const QString &expectedColor);
-    static int getRowHeight(GUITestOpStatus &os, int rowNumber);
+    static bool hasAminoAlphabet(GUITestOpStatus& os);
+    static bool isSequenceHighlighted(GUITestOpStatus& os, const QString& seqName);
+    static QString getColor(GUITestOpStatus& os, QPoint p);
+    static bool hasPixelWithColor(GUITestOpStatus& os, const QPoint& p, const QColor& color);
+    static void checkMsaCellColors(GUITestOpStatus& os, const QPoint& pos, const QString& fgColor, const QString& bgColor);
+    static void checkMsaCellColor(GUITestOpStatus& os, const QPoint& pos, const QString& color);
+    static bool checkColor(GUITestOpStatus& os, const QPoint& p, const QString& expectedColor);
+    static int getRowHeight(GUITestOpStatus& os, int rowNumber);
 
-    static void renameSequence(GUITestOpStatus &os, const QString &seqToRename, const QString &newName, bool useCopyPaste = false);
-    static void replaceSymbol(GUITestOpStatus &os, const QPoint &maPoint, char newSymbol);
+    static void renameSequence(GUITestOpStatus& os, const QString& seqToRename, const QString& newName, bool useCopyPaste = false);
+    static void replaceSymbol(GUITestOpStatus& os, const QPoint& maPoint, char newSymbol);
 
-    static void createColorScheme(GUITestOpStatus &os, const QString &schemeName, const NewColorSchemeCreator::alphabet al);
-    static void deleteColorScheme(GUITestOpStatus &os, const QString &schemeName);
+    static void createColorScheme(GUITestOpStatus& os, const QString& schemeName, const NewColorSchemeCreator::alphabet al);
+    static void deleteColorScheme(GUITestOpStatus& os, const QString& schemeName);
 
-    static void checkSelection(GUITestOpStatus &os, const QPoint &start, const QPoint &end, const QString &expected);
+    static void checkSelection(GUITestOpStatus& os, const QPoint& start, const QPoint& end, const QString& expected);
 
-    static bool isAlignmentLocked(GUITestOpStatus &os);
+    static bool isAlignmentLocked(GUITestOpStatus& os);
 
     /*
      *expandedBorder: 0 - top, 1 - right, 2 - bottom, 3 - left, 4 - right top, 5 - right bottom, 6 - left bottom, 7 - left top
      */
-    static void expandSelectedRegion(GUITestOpStatus &os, const int expandedBorder, const int symbolsToExpand);
+    static void expandSelectedRegion(GUITestOpStatus& os, const int expandedBorder, const int symbolsToExpand);
 
-    static void zoomIn(GUITestOpStatus &os);
-    static void zoomOut(GUITestOpStatus &os);
-    static void zoomToMax(GUITestOpStatus &os);
-    static void zoomToMin(GUITestOpStatus &os);
+    static void zoomIn(GUITestOpStatus& os);
+    static void zoomOut(GUITestOpStatus& os);
+    static void zoomToMax(GUITestOpStatus& os);
+    static void zoomToMin(GUITestOpStatus& os);
 
     static const QString highlightingColor;
 };

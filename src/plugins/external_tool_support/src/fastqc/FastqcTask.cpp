@@ -36,7 +36,7 @@
 namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
-//FastQCParser
+// FastQCParser
 
 const QMap<FastQCParser::ErrorType, QString> FastQCParser::initWellKnownErrors() {
     QMap<ErrorType, QString> errors;
@@ -50,14 +50,14 @@ const QMap<FastQCParser::ErrorType, QString> FastQCParser::initWellKnownErrors()
 
 const QMap<FastQCParser::ErrorType, QString> FastQCParser::WELL_KNOWN_ERRORS = initWellKnownErrors();
 
-FastQCParser::FastQCParser(const QString &_inputFile)
+FastQCParser::FastQCParser(const QString& _inputFile)
     : ExternalToolLogParser(false),
       inputFile(_inputFile),
       progress(-1) {
 }
 
 int FastQCParser::getProgress() {
-    //parsing Approx 20% complete for filename
+    // parsing Approx 20% complete for filename
     if (!lastPartOfLog.isEmpty()) {
         QString lastMessage = lastPartOfLog.last();
         QRegExp rx("Approx (\\d+)% complete");
@@ -72,7 +72,7 @@ int FastQCParser::getProgress() {
     return progress;
 }
 
-void FastQCParser::processErrLine(const QString &line) {
+void FastQCParser::processErrLine(const QString& line) {
     if (isCommonError(line)) {
         ExternalToolLogParser::setLastError(tr("FastQC: %1").arg(line));
     } else if (isMultiLineError(line)) {
@@ -81,17 +81,17 @@ void FastQCParser::processErrLine(const QString &line) {
     }
 }
 
-void FastQCParser::setLastError(const QString &value) {
+void FastQCParser::setLastError(const QString& value) {
     ExternalToolLogParser::setLastError(value);
-    foreach (const QString &buf, lastPartOfLog) {
+    foreach (const QString& buf, lastPartOfLog) {
         CHECK_CONTINUE(!buf.isEmpty());
 
         ioLog.trace(buf);
     }
 }
 
-bool FastQCParser::isCommonError(const QString &err) const {
-    foreach (const QString &commonError, WELL_KNOWN_ERRORS.values(Common)) {
+bool FastQCParser::isCommonError(const QString& err) const {
+    foreach (const QString& commonError, WELL_KNOWN_ERRORS.values(Common)) {
         CHECK_CONTINUE(err.contains(commonError, Qt::CaseInsensitive));
 
         return true;
@@ -100,7 +100,7 @@ bool FastQCParser::isCommonError(const QString &err) const {
     return false;
 }
 
-bool FastQCParser::isMultiLineError(const QString &err) {
+bool FastQCParser::isMultiLineError(const QString& err) {
     QStringList multiLineErrors = WELL_KNOWN_ERRORS.values(Multiline);
     if (err.contains(multiLineErrors.first()) && err.contains(multiLineErrors.last())) {
         return true;
@@ -110,8 +110,8 @@ bool FastQCParser::isMultiLineError(const QString &err) {
 }
 
 //////////////////////////////////////////////////////////////////////////
-//FastQCTask
-FastQCTask::FastQCTask(const FastQCSetting &settings)
+// FastQCTask
+FastQCTask::FastQCTask(const FastQCSetting& settings)
     : ExternalToolSupportTask(QString("FastQC for %1").arg(settings.inputFileUrl), TaskFlags_FOSE_COSC | TaskFlag_MinimizeSubtaskErrorText),
       settings(settings),
       temporaryDir(AppContext::getAppSettings()->getUserAppsSettings()->getUserTemporaryDirPath() + "/") {
@@ -182,7 +182,7 @@ QString FastQCTask::getTmpResultFileUrl() const {
     return temporaryDir.path() + QDir::separator() + resultFileName;
 }
 
-QStringList FastQCTask::getParameters(U2OpStatus &os) const {
+QStringList FastQCTask::getParameters(U2OpStatus& os) const {
     QStringList res;
 
     res << QString("-o");
@@ -198,7 +198,7 @@ QStringList FastQCTask::getParameters(U2OpStatus &os) const {
         res << settings.adaptersFileUrl;
     }
 
-    ExternalTool *java = FastQCSupport::getJava();
+    ExternalTool* java = FastQCSupport::getJava();
     CHECK_EXT(java != nullptr, os.setError(tr("Java external tool is not found")), res);
 
     res << QString("-java");
@@ -207,4 +207,4 @@ QStringList FastQCTask::getParameters(U2OpStatus &os) const {
     return res;
 }
 
-}    //namespace U2
+}  // namespace U2

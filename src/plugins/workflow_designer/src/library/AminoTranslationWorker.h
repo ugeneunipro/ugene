@@ -39,20 +39,20 @@ public:
     QVector<U2Region> regionsDirect;
     QVector<U2Region> regionsComplementary;
     QSharedPointer<U2SequenceObject> seqObj;
-    DNATranslation *aminoTT;
+    DNATranslation* aminoTT;
 };
 
 class TranslateSequence2AminoTask : public Task {
     Q_OBJECT
 public:
-    TranslateSequence2AminoTask(const AminoTranslationSettings &configs, const U2DbiRef &dbiRef);
+    TranslateSequence2AminoTask(const AminoTranslationSettings& configs, const U2DbiRef& dbiRef);
     virtual void run();
-    QList<U2SequenceObject *> popResults() {
+    QList<U2SequenceObject*> popResults() {
         return results;
     }
 
 private:
-    QList<U2SequenceObject *> results;
+    QList<U2SequenceObject*> results;
     AminoTranslationSettings configs;
     const U2DbiRef dbiRef;
 };
@@ -63,7 +63,7 @@ typedef PrompterBase<AminoTranslationPrompter> AminoTranslationPrompterBase;
 class AminoTranslationPrompter : public AminoTranslationPrompterBase {
     Q_OBJECT
 public:
-    AminoTranslationPrompter(Actor *p = 0)
+    AminoTranslationPrompter(Actor* p = 0)
         : AminoTranslationPrompterBase(p) {
     }
 
@@ -74,10 +74,10 @@ protected:
 class AminoTranslationWorker : public BaseWorker {
     Q_OBJECT
 public:
-    AminoTranslationWorker(Actor *a);
+    AminoTranslationWorker(Actor* a);
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private slots:
@@ -94,7 +94,7 @@ public:
     AminoTranslationWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new AminoTranslationWorker(a);
     }
 };

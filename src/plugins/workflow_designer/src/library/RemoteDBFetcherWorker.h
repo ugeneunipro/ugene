@@ -32,7 +32,7 @@ class RemoteDBFetcherPrompter : public PrompterBase<RemoteDBFetcherPrompter> {
     Q_OBJECT
 
 public:
-    RemoteDBFetcherPrompter(Actor *p = 0)
+    RemoteDBFetcherPrompter(Actor* p = 0)
         : PrompterBase<RemoteDBFetcherPrompter>(p) {
     }
 
@@ -44,11 +44,11 @@ class RemoteDBFetcherWorker : public BaseWorker {
     Q_OBJECT
 
 public:
-    RemoteDBFetcherWorker(Actor *a);
+    RemoteDBFetcherWorker(Actor* a);
 
     virtual void init();
     virtual bool isReady() const;
-    virtual Task *tick();
+    virtual Task* tick();
     virtual bool isDone() const;
     virtual void cleanup();
 
@@ -60,7 +60,7 @@ protected:
     QString getIdFromList();
     QString getIdFromFile();
 
-    CommunicationChannel *output;
+    CommunicationChannel* output;
 
     QString dbid;
 
@@ -87,7 +87,7 @@ public:
     }
 
     static void init();
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new RemoteDBFetcherWorker(a);
     }
 };
@@ -96,7 +96,7 @@ class FetchSequenceByIdFromAnnotationPrompter : public PrompterBase<FetchSequenc
     Q_OBJECT
 
 public:
-    FetchSequenceByIdFromAnnotationPrompter(Actor *p = 0)
+    FetchSequenceByIdFromAnnotationPrompter(Actor* p = 0)
         : PrompterBase<FetchSequenceByIdFromAnnotationPrompter>(p) {
     }
 
@@ -108,18 +108,18 @@ class FetchSequenceByIdFromAnnotationWorker : public BaseWorker {
     Q_OBJECT
 
 public:
-    FetchSequenceByIdFromAnnotationWorker(Actor *a);
+    FetchSequenceByIdFromAnnotationWorker(Actor* a);
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private slots:
     void sl_taskFinished();
 
 protected:
-    IntegralBus *input;
-    IntegralBus *output;
+    IntegralBus* input;
+    IntegralBus* output;
     QString fullPathDir;
     QString dbId;
 };
@@ -134,7 +134,7 @@ public:
     }
 
     static void init();
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new FetchSequenceByIdFromAnnotationWorker(a);
     }
 };

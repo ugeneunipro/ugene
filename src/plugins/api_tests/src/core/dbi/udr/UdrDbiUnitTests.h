@@ -36,7 +36,7 @@ class UdrTestData {
 public:
     static void shutdown();
 
-    static UdrDbi *getUdrDbi();
+    static UdrDbi* getUdrDbi();
 
     static U2DataId id1;
     static U2DataId id2;
@@ -47,8 +47,8 @@ public:
 
 private:
     static TestDbiProvider dbiProvider;
-    static const QString &UDR_DB_URL;
-    static UdrDbi *udrDbi;
+    static const QString& UDR_DB_URL;
+    static UdrDbi* udrDbi;
 
 private:
     static void init();

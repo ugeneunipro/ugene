@@ -29,15 +29,15 @@ QString CreatePhyTreeWidget::getAppSettingsRoot() {
     return QString(PHY_TREE_SETTINGS);
 }
 
-CreatePhyTreeWidget::CreatePhyTreeWidget(QWidget *parent)
+CreatePhyTreeWidget::CreatePhyTreeWidget(QWidget* parent)
     : QWidget(parent) {
 }
 
-bool CreatePhyTreeWidget::checkSettings(QString &, const CreatePhyTreeSettings &) {
+bool CreatePhyTreeWidget::checkSettings(QString&, const CreatePhyTreeSettings&) {
     return true;
 }
 
-bool CreatePhyTreeWidget::checkMemoryEstimation(QString &, const MultipleSequenceAlignment &, const CreatePhyTreeSettings &) {
+bool CreatePhyTreeWidget::checkMemoryEstimation(QString&, const MultipleSequenceAlignment&, const CreatePhyTreeSettings&) {
     return true;
 }
 

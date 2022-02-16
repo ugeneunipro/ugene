@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "KalignTests.h"
+
 #include <QDir>
 #include <QtMath>
 
@@ -37,7 +39,6 @@
 
 #include "KalignConstants.h"
 #include "KalignTask.h"
-#include "KalignTests.h"
 
 namespace U2 {
 
@@ -60,9 +61,9 @@ extern double QScore(const MultipleSequenceAlignment& maTest, const MultipleSequ
 #define MACHINE_PATH "MACHINE"
 
 struct GTestBoolProperty {
-    static bool get(QString attr, bool &value, const QDomElement &el) {
+    static bool get(QString attr, bool& value, const QDomElement& el) {
         QString value_str = el.attribute(attr);
-        if(!value_str.isEmpty()) {
+        if (!value_str.isEmpty()) {
             bool ok = false;
             value = value_str.toInt(&ok);
             return ok;
@@ -71,16 +72,16 @@ struct GTestBoolProperty {
     }
 };
 
-#define GET_BOOL_PROP(ATTR,VAL) if(GTestBoolProperty::get((ATTR),(VAL),(el))==false) {\
-failMissingValue((ATTR));\
-return;}
+#define GET_BOOL_PROP(ATTR, VAL) \
+    if (GTestBoolProperty::get((ATTR), (VAL), (el)) == false) { \
+        failMissingValue((ATTR)); \
+        return; \
+    }
 
-Kalign_Load_Align_Compare_Task::Kalign_Load_Align_Compare_Task( QString inFileURL, QString patFileURL,
-    KalignTaskSettings& _config, QString _name)
-    : Task(_name, TaskFlags_FOSCOE), str_inFileURL(inFileURL), str_patFileURL(patFileURL),kalignTask(nullptr), config(_config)
-{
-    //QFileInfo fInf(inFileURL);
-    //setTaskName("Kalign_Load_Align_Compare_Task: " + fInf.fileName());
+Kalign_Load_Align_Compare_Task::Kalign_Load_Align_Compare_Task(QString inFileURL, QString patFileURL, KalignTaskSettings& _config, QString _name)
+    : Task(_name, TaskFlags_FOSCOE), str_inFileURL(inFileURL), str_patFileURL(patFileURL), kalignTask(nullptr), config(_config) {
+    // QFileInfo fInf(inFileURL);
+    // setTaskName("Kalign_Load_Align_Compare_Task: " + fInf.fileName());
     setUseDescriptionFromSubtask(true);
     stateInfo.progress = 0;
     loadTask1 = nullptr;
@@ -92,24 +93,23 @@ Kalign_Load_Align_Compare_Task::Kalign_Load_Align_Compare_Task( QString inFileUR
 
 void Kalign_Load_Align_Compare_Task::prepare() {
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(str_inFileURL));
-    loadTask1 = new LoadDocumentTask(BaseDocumentFormats::FASTA,str_inFileURL,iof);
+    loadTask1 = new LoadDocumentTask(BaseDocumentFormats::FASTA, str_inFileURL, iof);
     loadTask1->setSubtaskProgressWeight(0);
     addSubTask(loadTask1);
     iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(str_patFileURL));
-    loadTask2 = new LoadDocumentTask(BaseDocumentFormats::FASTA,str_patFileURL,iof);
+    loadTask2 = new LoadDocumentTask(BaseDocumentFormats::FASTA, str_patFileURL, iof);
     addSubTask(loadTask2);
     loadTask1->setSubtaskProgressWeight(0);
 }
 
 MultipleSequenceAlignment Kalign_Load_Align_Compare_Task::dna_to_ma(QList<GObject*> dnaSeqs) {
-
     int seqCount = dnaSeqs.count();
-    U2SequenceObject *seq = qobject_cast<U2SequenceObject *>(dnaSeqs[0]);
+    U2SequenceObject* seq = qobject_cast<U2SequenceObject*>(dnaSeqs[0]);
     MultipleSequenceAlignment ma("Alignment", seq->getAlphabet());
-    for(int i=0; i<seqCount; i++) {
-        seq = qobject_cast<U2SequenceObject *>(dnaSeqs[i]);
-        if(seq == nullptr) {
-            stateInfo.setError(  QString("Can't cast GObject to U2SequenceObject") );
+    for (int i = 0; i < seqCount; i++) {
+        seq = qobject_cast<U2SequenceObject*>(dnaSeqs[i]);
+        if (seq == nullptr) {
+            stateInfo.setError(QString("Can't cast GObject to U2SequenceObject"));
             return ma;
         }
         QByteArray seqData = seq->getWholeSequenceData(stateInfo);
@@ -127,72 +127,69 @@ QList<Task*> Kalign_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
     }
 
     if (subTask == loadTask1) {
-        Document *doc = loadTask1->getDocument();
-        if(loadTask1->hasError()) {
+        Document* doc = loadTask1->getDocument();
+        if (loadTask1->hasError()) {
             return res;
         }
-        assert(doc!=nullptr);
+        assert(doc != nullptr);
 
         QList<GObject*> list = doc->findGObjectByType(GObjectTypes::SEQUENCE);
 
         if (list.size() == 0) {
-            stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::SEQUENCE) );
+            stateInfo.setError(QString("container of object with type \"%1\" is empty").arg(GObjectTypes::SEQUENCE));
             return res;
         }
 
         MultipleSequenceAlignment malign = dna_to_ma(list);
-        if(hasError()) {
+        if (hasError()) {
             return res;
         }
 
         ma1 = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
         CHECK_OP(stateInfo, res);
 
-        if(ma1 == nullptr){
-            stateInfo.setError(  QString("can't convert dna sequences to MultipleSequenceAlignment") );
+        if (ma1 == nullptr) {
+            stateInfo.setError(QString("can't convert dna sequences to MultipleSequenceAlignment"));
             return res;
         }
-
 
         res << kalignTask;
-        this->connect(kalignTask,SIGNAL(si_progressChanged()),SLOT(sl_kalignProgressChg()));
-    }
-    else if (subTask == kalignTask) {
-        if(kalignTask->hasError()) {
-            setError( kalignTask->getError() );
+        this->connect(kalignTask, SIGNAL(si_progressChanged()), SLOT(sl_kalignProgressChg()));
+    } else if (subTask == kalignTask) {
+        if (kalignTask->hasError()) {
+            setError(kalignTask->getError());
             return res;
         }
-        KalignTask * localKalign = qobject_cast<KalignTask*>( subTask );
-        assert( nullptr != localKalign );
+        KalignTask* localKalign = qobject_cast<KalignTask*>(subTask);
+        assert(nullptr != localKalign);
         ma1->updateGapModel(localKalign->resultMA->getMsaRows());
-    }
-    else if (subTask == loadTask2) {
+    } else if (subTask == loadTask2) {
         if (loadTask2->hasError()) {
             return res;
         }
-        Document *doc = loadTask2->getDocument();
-        if(loadTask2->hasError()) {
+        Document* doc = loadTask2->getDocument();
+        if (loadTask2->hasError()) {
             return res;
         }
-        assert(doc!=nullptr);
+        assert(doc != nullptr);
 
         QList<GObject*> list = doc->findGObjectByType(GObjectTypes::SEQUENCE);
 
         if (list.size() == 0) {
-            stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::SEQUENCE) );
+            stateInfo.setError(QString("container of object with type \"%1\" is empty").arg(GObjectTypes::SEQUENCE));
             return res;
         }
 
         MultipleSequenceAlignment malign = dna_to_ma(list);
-        if(hasError()) {
+        if (hasError()) {
             return res;
         }
 
         ma2 = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
         CHECK_OP(stateInfo, res);
 
-        if(ma2 == nullptr){
-            stateInfo.setError(  QString("can't convert dna sequences to MultipleSequenceAlignment") );
+        if (ma2 == nullptr) {
+            stateInfo.setError(QString("can't convert dna sequences to MultipleSequenceAlignment"));
             return res;
         }
     }
@@ -200,27 +197,26 @@ QList<Task*> Kalign_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
 }
 
 void Kalign_Load_Align_Compare_Task::run() {
-
     const QList<MultipleSequenceAlignmentRow> alignedSeqs1 = ma1->getMsa()->getMsaRows();
     const QList<MultipleSequenceAlignmentRow> alignedSeqs2 = ma2->getMsa()->getMsaRows();
 
-    foreach(const MultipleSequenceAlignmentRow &maItem1, alignedSeqs1) {
+    foreach (const MultipleSequenceAlignmentRow& maItem1, alignedSeqs1) {
         bool nameFound = false;
-        foreach(const MultipleSequenceAlignmentRow &maItem2, alignedSeqs2) {
+        foreach (const MultipleSequenceAlignmentRow& maItem2, alignedSeqs2) {
             if (maItem1->getName() == maItem2->getName()) {
                 nameFound = true;
-                if(maItem2->getCoreEnd() != maItem1->getCoreEnd()) {
-                    stateInfo.setError(  QString("Aligned sequences \"%1\" length not matched \"%2\", expected \"%3\"").arg(maItem1->getName()).arg(maItem1->getCoreEnd()).arg(maItem2->getCoreEnd()) );
+                if (maItem2->getCoreEnd() != maItem1->getCoreEnd()) {
+                    stateInfo.setError(QString("Aligned sequences \"%1\" length not matched \"%2\", expected \"%3\"").arg(maItem1->getName()).arg(maItem1->getCoreEnd()).arg(maItem2->getCoreEnd()));
                     return;
                 }
                 if (maItem1 != maItem2) {
-                    stateInfo.setError(  QString("Aligned sequences \"%1\" not matched \"%2\", expected \"%3\"").arg(maItem1->getName()).arg(QString(maItem1->getCore())).arg(QString(maItem2->getCore())) );
+                    stateInfo.setError(QString("Aligned sequences \"%1\" not matched \"%2\", expected \"%3\"").arg(maItem1->getName()).arg(QString(maItem1->getCore())).arg(QString(maItem2->getCore())));
                     return;
                 }
             }
         }
         if (!nameFound) {
-            stateInfo.setError(  QString("aligned sequence not found \"%1\"").arg(maItem1->getName()) );
+            stateInfo.setError(QString("aligned sequence not found \"%1\"").arg(maItem1->getName()));
         }
     }
 }
@@ -234,8 +230,8 @@ void Kalign_Load_Align_Compare_Task::cleanup() {
 
 Task::ReportResult Kalign_Load_Align_Compare_Task::report() {
     propagateSubtaskError();
-    if(hasError()) {
-        stateInfo.setError(  QString("input file \"%1\", pattern file \"%2\":\n").arg(str_inFileURL).arg(str_patFileURL) + stateInfo.getError() );
+    if (hasError()) {
+        stateInfo.setError(QString("input file \"%1\", pattern file \"%2\":\n").arg(str_inFileURL).arg(str_patFileURL) + stateInfo.getError());
     }
     return ReportResult_Finished;
 }
@@ -254,20 +250,19 @@ void GTest_Kalign_Load_Align_Compare::init(XMLTestFormat*, const QDomElement& el
 }
 
 void GTest_Kalign_Load_Align_Compare::prepare() {
-
     KalignTaskSettings mSettings;
-    QFileInfo inFile(env->getVar("COMMON_DATA_DIR")+"/"+inFileURL);
-    if(!inFile.exists()) {
-        stateInfo.setError(  QString("file not exist %1").arg(inFile.absoluteFilePath()) );
+    QFileInfo inFile(env->getVar("COMMON_DATA_DIR") + "/" + inFileURL);
+    if (!inFile.exists()) {
+        stateInfo.setError(QString("file not exist %1").arg(inFile.absoluteFilePath()));
         return;
     }
-    QFileInfo patFile(env->getVar("COMMON_DATA_DIR")+"/"+patFileURL);
-    if(!patFile.exists()) {
-        stateInfo.setError(  QString("file not exist %1").arg(patFile.absoluteFilePath()) );
+    QFileInfo patFile(env->getVar("COMMON_DATA_DIR") + "/" + patFileURL);
+    if (!patFile.exists()) {
+        stateInfo.setError(QString("file not exist %1").arg(patFile.absoluteFilePath()));
         return;
     }
 
-    worker = new Kalign_Load_Align_Compare_Task(inFile.absoluteFilePath(),patFile.absoluteFilePath(),mSettings,inFile.fileName());
+    worker = new Kalign_Load_Align_Compare_Task(inFile.absoluteFilePath(), patFile.absoluteFilePath(), mSettings, inFile.fileName());
     addSubTask(worker);
 }
 
@@ -296,13 +291,13 @@ void GTest_Kalign_Load_Align_QScore::init(XMLTestFormat*, const QDomElement& el)
     }
 
     QString str_qscore = el.attribute(QSCORE_ATTR);
-    if(str_qscore.isEmpty()) {
+    if (str_qscore.isEmpty()) {
         failMissingValue(QSCORE_ATTR);
         return;
     }
     bool ok = false;
     qscore = str_qscore.toFloat(&ok);
-    if(!ok) {
+    if (!ok) {
         failMissingValue(QSCORE_ATTR);
         return;
     }
@@ -310,9 +305,9 @@ void GTest_Kalign_Load_Align_QScore::init(XMLTestFormat*, const QDomElement& el)
     this->dqscore = 0.01;
 
     QString str_dqscore = el.attribute(QSCORE_DELTA_ATTR);
-    if(!str_dqscore.isEmpty()) {
+    if (!str_dqscore.isEmpty()) {
         dqscore = str_dqscore.toFloat(&ok);
-        if(!ok) {
+        if (!ok) {
             failMissingValue(QSCORE_DELTA_ATTR);
             return;
         }
@@ -327,38 +322,37 @@ void GTest_Kalign_Load_Align_QScore::init(XMLTestFormat*, const QDomElement& el)
 }
 
 void GTest_Kalign_Load_Align_QScore::prepare() {
-    QFileInfo inFile(env->getVar("COMMON_DATA_DIR")+"/"+inFileURL);
-    if(!inFile.exists()) {
-        stateInfo.setError(  QString("file not exist %1").arg(inFile.absoluteFilePath()) );
+    QFileInfo inFile(env->getVar("COMMON_DATA_DIR") + "/" + inFileURL);
+    if (!inFile.exists()) {
+        stateInfo.setError(QString("file not exist %1").arg(inFile.absoluteFilePath()));
         return;
     }
-    QFileInfo patFile(env->getVar("COMMON_DATA_DIR")+"/"+patFileURL);
-    if(!patFile.exists()) {
-        stateInfo.setError(  QString("file not exist %1").arg(patFile.absoluteFilePath()) );
+    QFileInfo patFile(env->getVar("COMMON_DATA_DIR") + "/" + patFileURL);
+    if (!patFile.exists()) {
+        stateInfo.setError(QString("file not exist %1").arg(patFile.absoluteFilePath()));
         return;
     }
 
-    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(env->getVar("COMMON_DATA_DIR")+"/"+inFileURL));
-    loadTask1 = new LoadDocumentTask(BaseDocumentFormats::FASTA,env->getVar("COMMON_DATA_DIR")+"/"+inFileURL,iof);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(env->getVar("COMMON_DATA_DIR") + "/" + inFileURL));
+    loadTask1 = new LoadDocumentTask(BaseDocumentFormats::FASTA, env->getVar("COMMON_DATA_DIR") + "/" + inFileURL, iof);
     loadTask1->setSubtaskProgressWeight(0);
     addSubTask(loadTask1);
-    iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(env->getVar("COMMON_DATA_DIR")+"/"+patFileURL));
+    iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(env->getVar("COMMON_DATA_DIR") + "/" + patFileURL));
 
-    loadTask2 = new LoadDocumentTask(BaseDocumentFormats::FASTA,env->getVar("COMMON_DATA_DIR")+"/"+patFileURL,iof);
+    loadTask2 = new LoadDocumentTask(BaseDocumentFormats::FASTA, env->getVar("COMMON_DATA_DIR") + "/" + patFileURL, iof);
 
     addSubTask(loadTask2);
     loadTask1->setSubtaskProgressWeight(0);
 }
 
 MultipleSequenceAlignment GTest_Kalign_Load_Align_QScore::dna_to_ma(QList<GObject*> dnaSeqs) {
-
     int seqCount = dnaSeqs.count();
-    U2SequenceObject *seq = qobject_cast<U2SequenceObject *>(dnaSeqs[0]);
+    U2SequenceObject* seq = qobject_cast<U2SequenceObject*>(dnaSeqs[0]);
     MultipleSequenceAlignment ma("Alignment", seq->getAlphabet());
-    for(int i=0; i<seqCount; i++) {
-        seq = qobject_cast<U2SequenceObject *>(dnaSeqs[i]);
-        if(seq == nullptr) {
-            stateInfo.setError(  QString("Can't cast GObject to U2SequenceObject") );
+    for (int i = 0; i < seqCount; i++) {
+        seq = qobject_cast<U2SequenceObject*>(dnaSeqs[i]);
+        if (seq == nullptr) {
+            stateInfo.setError(QString("Can't cast GObject to U2SequenceObject"));
             return ma;
         }
         QByteArray seqData = seq->getWholeSequenceData(stateInfo);
@@ -376,72 +370,70 @@ QList<Task*> GTest_Kalign_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
     }
 
     if (subTask == loadTask1) {
-        Document *doc = loadTask1->getDocument();
-        if(loadTask1->hasError()) {
+        Document* doc = loadTask1->getDocument();
+        if (loadTask1->hasError()) {
             return res;
         }
-        assert(doc!=nullptr);
+        assert(doc != nullptr);
 
         QList<GObject*> list = doc->findGObjectByType(GObjectTypes::SEQUENCE);
 
         if (list.size() == 0) {
-            stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::SEQUENCE) );
+            stateInfo.setError(QString("container of object with type \"%1\" is empty").arg(GObjectTypes::SEQUENCE));
             return res;
         }
 
         MultipleSequenceAlignment malign = dna_to_ma(list);
-        if(hasError()) {
+        if (hasError()) {
             return res;
         }
 
         ma1 = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
         CHECK_OP(stateInfo, res);
 
-        if(ma1 == nullptr){
-            stateInfo.setError(  QString("can't convert dna sequences to MultipleSequenceAlignment") );
+        if (ma1 == nullptr) {
+            stateInfo.setError(QString("can't convert dna sequences to MultipleSequenceAlignment"));
             return res;
         }
 
         kalignTask = new KalignTask(ma1->getMultipleAlignment(), config);
         res << kalignTask;
-        this->connect(kalignTask,SIGNAL(si_progressChanged()),SLOT(sl_kalignProgressChg()));
-    }
-    else if (subTask == kalignTask) {
-        if(kalignTask->hasError()) {
-            setError( kalignTask->getError() );
+        this->connect(kalignTask, SIGNAL(si_progressChanged()), SLOT(sl_kalignProgressChg()));
+    } else if (subTask == kalignTask) {
+        if (kalignTask->hasError()) {
+            setError(kalignTask->getError());
             return res;
         }
-        KalignTask * localKalign = qobject_cast<KalignTask*>( subTask );
-        assert( nullptr != localKalign );
+        KalignTask* localKalign = qobject_cast<KalignTask*>(subTask);
+        assert(nullptr != localKalign);
         ma1->updateGapModel(localKalign->resultMA->getMsaRows());
-    }
-    else if (subTask == loadTask2) {
+    } else if (subTask == loadTask2) {
         if (loadTask2->hasError()) {
             return res;
         }
-        Document *doc = loadTask2->getDocument();
-        if(loadTask2->hasError()) {
+        Document* doc = loadTask2->getDocument();
+        if (loadTask2->hasError()) {
             return res;
         }
-        assert(doc!=nullptr);
+        assert(doc != nullptr);
 
         QList<GObject*> list = doc->findGObjectByType(GObjectTypes::SEQUENCE);
 
         if (list.size() == 0) {
-            stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::SEQUENCE) );
+            stateInfo.setError(QString("container of object with type \"%1\" is empty").arg(GObjectTypes::SEQUENCE));
             return res;
         }
 
         MultipleSequenceAlignment malign = dna_to_ma(list);
-        if(hasError()) {
+        if (hasError()) {
             return res;
         }
 
         ma2 = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
         CHECK_OP(stateInfo, res);
 
-        if(ma2 == nullptr){
-            stateInfo.setError(  QString("can't convert dna sequences to MultipleSequenceAlignment") );
+        if (ma2 == nullptr) {
+            stateInfo.setError(QString("can't convert dna sequences to MultipleSequenceAlignment"));
             return res;
         }
     }
@@ -454,10 +446,10 @@ void GTest_Kalign_Load_Align_QScore::run() {
         return;
     }
 
-    bool match = fabsl (this->qscore - qscore) < dqscore;
+    bool match = fabsl(this->qscore - qscore) < dqscore;
 
     if (!match) {
-        stateInfo.setError(  QString("qscore not matched: %1, expected %2").arg(qscore).arg(this->qscore));
+        stateInfo.setError(QString("qscore not matched: %1, expected %2").arg(qscore).arg(this->qscore));
     }
 }
 
@@ -469,7 +461,6 @@ Task::ReportResult GTest_Kalign_Load_Align_QScore::report() {
 GTest_Kalign_Load_Align_QScore::~GTest_Kalign_Load_Align_QScore() {
 }
 
-
 QList<XMLTestFactory*> KalignTests::createTestFactories() {
     QList<XMLTestFactory*> res;
     res.append(GTest_Kalign_Load_Align_Compare::createFactory());
@@ -477,4 +468,4 @@ QList<XMLTestFactory*> KalignTests::createTestFactories() {
     return res;
 }
 
-}//namespace
+}  // namespace U2

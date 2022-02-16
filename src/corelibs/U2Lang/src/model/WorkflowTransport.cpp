@@ -25,7 +25,7 @@ namespace U2 {
 
 namespace Workflow {
 
-Message::Message(DataTypePtr t, const QVariant &data, int metadataId)
+Message::Message(DataTypePtr t, const QVariant& data, int metadataId)
     : t(t), data(data), metadataId(metadataId) {
 }
 

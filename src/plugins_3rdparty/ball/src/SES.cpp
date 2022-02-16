@@ -43,7 +43,7 @@ SolventExcludedSurface::SolventExcludedSurface() {
     GCOUNTER(cvar, "SolventExcludedSurface");
 }
 
-static void calcSES(BALL::Surface &surface, const QList<SharedAtom> &atoms, double TOLERANCE) {
+static void calcSES(BALL::Surface& surface, const QList<SharedAtom>& atoms, double TOLERANCE) {
     std::vector<BALL::TSphere3<double>> spheres;
     foreach (const SharedAtom a, atoms) {
         Vector3D coord = a->coord3d;
@@ -54,11 +54,11 @@ static void calcSES(BALL::Surface &surface, const QList<SharedAtom> &atoms, doub
     double probeRadius = 1.4;
     double density = 1000. / atoms.size();
 
-    BALL::ReducedSurface *reduced_surface = new BALL::ReducedSurface(spheres, probeRadius);
+    BALL::ReducedSurface* reduced_surface = new BALL::ReducedSurface(spheres, probeRadius);
     reduced_surface->compute();
 
     {
-        BALL::SolventExcludedSurface *ses = new BALL::SolventExcludedSurface(reduced_surface);
+        BALL::SolventExcludedSurface* ses = new BALL::SolventExcludedSurface(reduced_surface);
         ses->compute();
         double diff = 0.01;
         uint i = 0;
@@ -77,7 +77,7 @@ static void calcSES(BALL::Surface &surface, const QList<SharedAtom> &atoms, doub
             }
         }
         if (ok) {
-            BALL::TriangulatedSES *tSurface = new BALL::TriangulatedSES(ses, density);
+            BALL::TriangulatedSES* tSurface = new BALL::TriangulatedSES(ses, density);
             tSurface->compute();
             tSurface->exportSurface(surface);
             delete tSurface;
@@ -88,7 +88,7 @@ static void calcSES(BALL::Surface &surface, const QList<SharedAtom> &atoms, doub
     delete reduced_surface;
 }
 
-void SolventExcludedSurface::calculate(const QList<SharedAtom> &atoms, int & /*progress*/) {
+void SolventExcludedSurface::calculate(const QList<SharedAtom>& atoms, int& /*progress*/) {
     //        std::vector<BALL::TSphere3<double> > spheres;
     //         foreach(const SharedAtom a, atoms)
     //         {
@@ -120,7 +120,7 @@ void SolventExcludedSurface::calculate(const QList<SharedAtom> &atoms, int & /*p
     calcSES(surface, atoms, TOLERANCE);
 
     for (unsigned int faceIndex = 0; faceIndex < surface.getNumberOfTriangles(); faceIndex++) {
-        const BALL::Surface::Triangle &triangle = surface.getTriangle(faceIndex);
+        const BALL::Surface::Triangle& triangle = surface.getTriangle(faceIndex);
         Face face;
         for (int coordIndex = 0; coordIndex < 3; coordIndex++) {
             face.v[0][coordIndex] = surface.getVertex(triangle.v1)[coordIndex];
@@ -140,13 +140,13 @@ qint64 SolventExcludedSurface::estimateMemoryUsage(int) {
 
 // SolventExcludedSurfaceFactory
 
-MolecularSurface *SolventExcludedSurfaceFactory::createInstance() const {
+MolecularSurface* SolventExcludedSurfaceFactory::createInstance() const {
     return new SolventExcludedSurface();
 }
 
 #define MAX_ATOMS_NUMBER 10000
 
-bool SolventExcludedSurfaceFactory::hasConstraints(const BioStruct3D &biostruc) const {
+bool SolventExcludedSurfaceFactory::hasConstraints(const BioStruct3D& biostruc) const {
     if (biostruc.getNumberOfAtoms() > MAX_ATOMS_NUMBER) {
         return true;
     } else {

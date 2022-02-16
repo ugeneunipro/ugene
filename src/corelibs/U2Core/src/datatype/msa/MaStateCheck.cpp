@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-MaStateCheck::MaStateCheck(const MultipleAlignmentData *maData)
+MaStateCheck::MaStateCheck(const MultipleAlignmentData* maData)
     : maData(maData) {
 }
 

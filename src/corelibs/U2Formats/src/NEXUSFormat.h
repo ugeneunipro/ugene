@@ -39,17 +39,17 @@ class U2FORMATS_EXPORT NEXUSFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 
 public:
-    NEXUSFormat(QObject *p);
+    NEXUSFormat(QObject* p);
 
-    virtual void storeDocument(Document *d, IOAdapter *io, U2OpStatus &os);
+    virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray &rawData, const GUrl & = GUrl()) const;
-    virtual Document *loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os);
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
 private:
-    QList<GObject *> loadObjects(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &ti);
-    void storeObjects(QList<GObject *> objects, bool simpleNames, IOAdapter *io, U2OpStatus &ti);
+    QList<GObject*> loadObjects(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& ti);
+    void storeObjects(QList<GObject*> objects, bool simpleNames, IOAdapter* io, U2OpStatus& ti);
 };
 
 }  // namespace U2

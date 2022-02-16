@@ -35,7 +35,7 @@ class MAFFTSupport : public ExternalTool {
 public:
     MAFFTSupport();
 
-    GObjectViewWindowContext *getViewContext() const {
+    GObjectViewWindowContext* getViewContext() const {
         return viewCtx;
     }
 
@@ -45,20 +45,20 @@ public slots:
     void sl_runWithExtFileSpecify();
 
 private:
-    GObjectViewWindowContext *viewCtx;
+    GObjectViewWindowContext* viewCtx;
 };
 
 class MAFFTSupportContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    MAFFTSupportContext(QObject *p);
+    MAFFTSupportContext(QObject* p);
 
 protected slots:
     void sl_align_with_MAFFT();
 
 protected:
-    void initViewContext(GObjectView *view) override;
+    void initViewContext(GObjectView* view) override;
 };
 
-}    // namespace U2
-#endif    // _U2_MAFFT_SUPPORT_H
+}  // namespace U2
+#endif  // _U2_MAFFT_SUPPORT_H

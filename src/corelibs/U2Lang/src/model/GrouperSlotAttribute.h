@@ -29,16 +29,16 @@ namespace U2 {
 
 class U2LANG_EXPORT GrouperOutSlotAttribute : public Attribute {
 public:
-    GrouperOutSlotAttribute(const Descriptor &d, const DataTypePtr type, bool required = false, const QVariant &defaultValue = QVariant());
+    GrouperOutSlotAttribute(const Descriptor& d, const DataTypePtr type, bool required = false, const QVariant& defaultValue = QVariant());
     ~GrouperOutSlotAttribute();
 
-    virtual Attribute *clone();
+    virtual Attribute* clone();
     virtual AttributeGroup getGroup();
-    virtual void updateActorIds(const QMap<ActorId, ActorId> &actorIdsMap);
+    virtual void updateActorIds(const QMap<ActorId, ActorId>& actorIdsMap);
 
-    QList<GrouperOutSlot> &getOutSlots();
-    const QList<GrouperOutSlot> &getOutSlots() const;
-    void addOutSlot(const GrouperOutSlot &outSlot);
+    QList<GrouperOutSlot>& getOutSlots();
+    const QList<GrouperOutSlot>& getOutSlots() const;
+    void addOutSlot(const GrouperOutSlot& outSlot);
 
 private:
     QList<GrouperOutSlot> outSlots;
@@ -46,11 +46,11 @@ private:
 
 class U2LANG_EXPORT GroupSlotAttribute : public Attribute {
 public:
-    GroupSlotAttribute(const Descriptor &d, const DataTypePtr type, bool required = false, const QVariant &defaultValue = QVariant());
+    GroupSlotAttribute(const Descriptor& d, const DataTypePtr type, bool required = false, const QVariant& defaultValue = QVariant());
 
-    virtual Attribute *clone();
-    virtual void updateActorIds(const QMap<ActorId, ActorId> &actorIdsMap);
-    virtual void setAttributeValue(const QVariant &newVal);
+    virtual Attribute* clone();
+    virtual void updateActorIds(const QMap<ActorId, ActorId>& actorIdsMap);
+    virtual void setAttributeValue(const QVariant& newVal);
 };
 
 }  // namespace U2

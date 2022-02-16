@@ -34,7 +34,7 @@ class NeighborJoinCalculateTreeTask;
 class PhylipTask : public CmdlineTask {
     Q_OBJECT
 public:
-    PhylipTask(const U2EntityRef &msaRef, const U2DbiRef &outDbiRef, const CreatePhyTreeSettings &settings);
+    PhylipTask(const U2EntityRef& msaRef, const U2DbiRef& outDbiRef, const CreatePhyTreeSettings& settings);
 
     void prepare();
     ReportResult report();
@@ -47,7 +47,7 @@ private:
     U2DbiRef outDbiRef;
     CreatePhyTreeSettings settings;
 
-    NeighborJoinCalculateTreeTask *treeTask;
+    NeighborJoinCalculateTreeTask* treeTask;
 };
 
 }  // namespace U2

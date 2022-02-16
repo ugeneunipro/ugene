@@ -33,18 +33,18 @@ class U2VariantTrack;
 
 class MysqlUpgraderFrom_1_16_To_1_24 : public MysqlUpgrader {
 public:
-    MysqlUpgraderFrom_1_16_To_1_24(MysqlDbi *dbi);
+    MysqlUpgraderFrom_1_16_To_1_24(MysqlDbi* dbi);
 
-    void upgrade(U2OpStatus &os) const;
+    void upgrade(U2OpStatus& os) const;
 
 private:
-    void upgradeVariantDbi(U2OpStatus &os) const;
-    void repackInfo(U2OpStatus &os, const QMap<U2DataId, QStringList> &trackId2header) const;
-    void extractAttributes(U2OpStatus &os, QMap<U2DataId, QStringList> &trackId2header) const;
-    void updateScheme(U2OpStatus &os) const;
-    void addStringAttribute(U2OpStatus &os, const U2VariantTrack &variantTrack, const QString &attributeName, const QString &attributeValue) const;
+    void upgradeVariantDbi(U2OpStatus& os) const;
+    void repackInfo(U2OpStatus& os, const QMap<U2DataId, QStringList>& trackId2header) const;
+    void extractAttributes(U2OpStatus& os, QMap<U2DataId, QStringList>& trackId2header) const;
+    void updateScheme(U2OpStatus& os) const;
+    void addStringAttribute(U2OpStatus& os, const U2VariantTrack& variantTrack, const QString& attributeName, const QString& attributeValue) const;
 
-    static void splitFileHeader(const QString &fileHeader, QString &metaInfo, QStringList &header);
+    static void splitFileHeader(const QString& fileHeader, QString& metaInfo, QStringList& header);
 
     static const QString META_INFO_MARKER;
     static const QString HEADER_MARKER;

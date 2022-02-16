@@ -40,33 +40,33 @@ Configuration::~Configuration() {
     qDeleteAll(params.values());
 }
 
-QMap<QString, Attribute *> Configuration::getParameters() const {
+QMap<QString, Attribute*> Configuration::getParameters() const {
     return params;
 }
 
-Attribute *Configuration::getParameter(const QString &name) const {
+Attribute* Configuration::getParameter(const QString& name) const {
     return params.value(name, nullptr);
 }
 
-Attribute *Configuration::removeParameter(const QString &name) {
-    Attribute *attr = params.take(name);
+Attribute* Configuration::removeParameter(const QString& name) {
+    Attribute* attr = params.take(name);
     attrs.removeOne(attr);
     return attr;
 }
 
-void Configuration::addParameter(const QString &name, Attribute *attr) {
+void Configuration::addParameter(const QString& name, Attribute* attr) {
     assert(attr != nullptr);
     params[name] = attr;
     attrs << attr;
 }
 
-void Configuration::setParameter(const QString &name, const QVariant &val) {
+void Configuration::setParameter(const QString& name, const QVariant& val) {
     if (params.contains(name)) {
         params[name]->setAttributeValue(val);
     }
 }
 
-void Configuration::setParameters(const QVariantMap &cfg) {
+void Configuration::setParameters(const QVariantMap& cfg) {
     QMapIterator<QString, QVariant> it(cfg);
     while (it.hasNext()) {
         it.next();
@@ -76,38 +76,38 @@ void Configuration::setParameters(const QVariantMap &cfg) {
 
 QVariantMap Configuration::getValues() const {
     QVariantMap result;
-    foreach (Attribute *attr, params) {
+    foreach (Attribute* attr, params) {
         result[attr->getId()] = attr->getAttributePureValue();
     }
     return result;
 }
 
-bool Configuration::hasParameter(const QString &name) const {
+bool Configuration::hasParameter(const QString& name) const {
     return params.contains(name);
 }
 
-ConfigurationEditor *Configuration::getEditor() const {
+ConfigurationEditor* Configuration::getEditor() const {
     return editor;
 }
 
-void Configuration::setEditor(ConfigurationEditor *ed) {
+void Configuration::setEditor(ConfigurationEditor* ed) {
     assert(ed != nullptr);
     delete editor;
     editor = ed;
 }
 
-ConfigurationValidator *Configuration::getValidator() {
+ConfigurationValidator* Configuration::getValidator() {
     return validator;
 }
 
-void Configuration::setValidator(ConfigurationValidator *v) {
+void Configuration::setValidator(ConfigurationValidator* v) {
     assert(v != nullptr);
     validator = v;
 }
 
-bool Configuration::validate(NotificationsList &notificationList) const {
+bool Configuration::validate(NotificationsList& notificationList) const {
     bool good = true;
-    foreach (Attribute *a, getParameters()) {
+    foreach (Attribute* a, getParameters()) {
         if (!isAttributeVisible(a)) {
             continue;
         }
@@ -119,22 +119,22 @@ bool Configuration::validate(NotificationsList &notificationList) const {
     return good;
 }
 
-QList<Attribute *> Configuration::getAttributes() const {
+QList<Attribute*> Configuration::getAttributes() const {
     return /*params.values()*/ attrs;
 }
 
-bool Configuration::isAttributeVisible(Attribute *attribute) const {
+bool Configuration::isAttributeVisible(Attribute* attribute) const {
     bool isVisible = true;
     if (attribute->getFlags().testFlag(Attribute::Hidden)) {
         return false;
     }
     SAFE_POINT(nullptr != attribute, "NULL attribute", false);
-    foreach (const AttributeRelation *relation, attribute->getRelations()) {
+    foreach (const AttributeRelation* relation, attribute->getRelations()) {
         if (VISIBILITY != relation->getType()) {
             continue;
         }
 
-        Attribute *masterAttribute = getParameter(relation->getRelatedAttrId());
+        Attribute* masterAttribute = getParameter(relation->getRelatedAttrId());
         SAFE_POINT(nullptr != masterAttribute, QString("Invalid attribute relation: can't get master attribute '%1'").arg(relation->getRelatedAttrId()), false);
 
         isVisible &= isAttributeVisible(masterAttribute);

@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-BranchSettingsDialog::BranchSettingsDialog(QWidget *parent, const OptionsMap &settings)
+BranchSettingsDialog::BranchSettingsDialog(QWidget* parent, const OptionsMap& settings)
     : BaseSettingsDialog(parent) {
     updatedSettings[BRANCH_COLOR] = settings[BRANCH_COLOR];
     updatedSettings[BRANCH_THICKNESS] = settings[BRANCH_THICKNESS];
@@ -40,7 +40,7 @@ BranchSettingsDialog::BranchSettingsDialog(QWidget *parent, const OptionsMap &se
 
     thicknessSpinBox->setValue(updatedSettings[BRANCH_THICKNESS].toInt());
 
-    QStyle *buttonStyle = new QProxyStyle(QStyleFactory::create("fusion"));
+    QStyle* buttonStyle = new QProxyStyle(QStyleFactory::create("fusion"));
     buttonStyle->setParent(colorButton);
     colorButton->setStyle(buttonStyle);
 

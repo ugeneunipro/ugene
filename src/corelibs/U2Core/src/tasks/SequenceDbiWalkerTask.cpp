@@ -28,21 +28,21 @@
 
 namespace U2 {
 
-SequenceDbiWalkerTask::SequenceDbiWalkerTask(const SequenceDbiWalkerConfig &c, SequenceDbiWalkerCallback *cb, const QString &name, TaskFlags tf)
+SequenceDbiWalkerTask::SequenceDbiWalkerTask(const SequenceDbiWalkerConfig& c, SequenceDbiWalkerCallback* cb, const QString& name, TaskFlags tf)
     : Task(name, tf), config(c), callback(cb) {
     assert(config.chunkSize > static_cast<uint>(config.overlapSize));  // if chunk == overlap -> infinite loop occurs
     assert(cb != nullptr);
     assert(config.strandToWalk == StrandOption_DirectOnly || config.complTrans != nullptr);
 
     maxParallelSubtasks = config.nThreads;
-    QList<SequenceDbiWalkerSubtask *> subs = prepareSubtasks();
-    foreach (SequenceDbiWalkerSubtask *sub, subs) {
+    QList<SequenceDbiWalkerSubtask*> subs = prepareSubtasks();
+    foreach (SequenceDbiWalkerSubtask* sub, subs) {
         addSubTask(sub);
     }
 }
 
-QList<SequenceDbiWalkerSubtask *> SequenceDbiWalkerTask::prepareSubtasks() {
-    QList<SequenceDbiWalkerSubtask *> res;
+QList<SequenceDbiWalkerSubtask*> SequenceDbiWalkerTask::prepareSubtasks() {
+    QList<SequenceDbiWalkerSubtask*> res;
 
     U2SequenceObject sequenceObject("sequence", config.seqRef);
 
@@ -64,12 +64,12 @@ QList<SequenceDbiWalkerSubtask *> SequenceDbiWalkerTask::prepareSubtasks() {
         QVector<U2Region> chunks = splitRange(config.range, config.chunkSize, config.overlapSize, config.lastChunkExtraLen, false);
 
         if (config.strandToWalk == StrandOption_Both || config.strandToWalk == StrandOption_DirectOnly) {
-            QList<SequenceDbiWalkerSubtask *> directTasks = createSubs(chunks, false, false);
+            QList<SequenceDbiWalkerSubtask*> directTasks = createSubs(chunks, false, false);
             res += directTasks;
         }
         if (config.strandToWalk == StrandOption_Both || config.strandToWalk == StrandOption_ComplementOnly) {
             assert(config.complTrans != nullptr);
-            QList<SequenceDbiWalkerSubtask *> complTasks = createSubs(chunks, true, false);
+            QList<SequenceDbiWalkerSubtask*> complTasks = createSubs(chunks, true, false);
             res += complTasks;
         }
     } else {
@@ -79,7 +79,7 @@ QList<SequenceDbiWalkerSubtask *> SequenceDbiWalkerTask::prepareSubtasks() {
             for (int i = 0; i < nFrames; i++) {
                 U2Region strandRange(config.range.startPos + i, config.range.length - i);
                 QVector<U2Region> chunks = splitRange(strandRange, config.chunkSize, config.overlapSize, config.lastChunkExtraLen, false);
-                QList<SequenceDbiWalkerSubtask *> directTasks = createSubs(chunks, false, true);
+                QList<SequenceDbiWalkerSubtask*> directTasks = createSubs(chunks, false, true);
                 res += directTasks;
             }
         }
@@ -88,7 +88,7 @@ QList<SequenceDbiWalkerSubtask *> SequenceDbiWalkerTask::prepareSubtasks() {
             for (int i = 0; i < nFrames; i++) {
                 U2Region strandRange(config.range.startPos, config.range.length - i);
                 QVector<U2Region> chunks = splitRange(strandRange, config.chunkSize, config.overlapSize, config.lastChunkExtraLen, true);
-                QList<SequenceDbiWalkerSubtask *> complTasks = createSubs(chunks, true, true);
+                QList<SequenceDbiWalkerSubtask*> complTasks = createSubs(chunks, true, true);
                 res += complTasks;
             }
         }
@@ -96,19 +96,19 @@ QList<SequenceDbiWalkerSubtask *> SequenceDbiWalkerTask::prepareSubtasks() {
     return res;
 }
 
-QList<SequenceDbiWalkerSubtask *> SequenceDbiWalkerTask::createSubs(const QVector<U2Region> &chunks, bool doCompl, bool doAmino) {
-    QList<SequenceDbiWalkerSubtask *> res;
+QList<SequenceDbiWalkerSubtask*> SequenceDbiWalkerTask::createSubs(const QVector<U2Region>& chunks, bool doCompl, bool doAmino) {
+    QList<SequenceDbiWalkerSubtask*> res;
     for (int i = 0, n = chunks.size(); i < n; i++) {
-        const U2Region &chunk = chunks[i];
+        const U2Region& chunk = chunks[i];
         bool lo = config.overlapSize > 0 && i > 0;
         bool ro = config.overlapSize > 0 && i + 1 < n;
-        SequenceDbiWalkerSubtask *t = new SequenceDbiWalkerSubtask(this, chunk, lo, ro, config.seqRef, doCompl, doAmino);
+        SequenceDbiWalkerSubtask* t = new SequenceDbiWalkerSubtask(this, chunk, lo, ro, config.seqRef, doCompl, doAmino);
         res.append(t);
     }
     return res;
 }
 
-QVector<U2Region> SequenceDbiWalkerTask::splitRange(const U2Region &range, int chunkSize, int overlapSize, int lastChunkExtraLen, bool reverseMode) {
+QVector<U2Region> SequenceDbiWalkerTask::splitRange(const U2Region& range, int chunkSize, int overlapSize, int lastChunkExtraLen, bool reverseMode) {
     assert(chunkSize > overlapSize);
     int stepSize = chunkSize - overlapSize;
 
@@ -124,7 +124,7 @@ QVector<U2Region> SequenceDbiWalkerTask::splitRange(const U2Region &range, int c
 
     if (reverseMode) {
         QVector<U2Region> revertedRegions;
-        foreach (const U2Region &r, res) {
+        foreach (const U2Region& r, res) {
             U2Region rr(range.startPos + (range.endPos() - r.endPos()), r.length);
             revertedRegions.prepend(rr);
         }
@@ -135,7 +135,7 @@ QVector<U2Region> SequenceDbiWalkerTask::splitRange(const U2Region &range, int c
 
 //////////////////////////////////////////////////////////////////////////
 // subtask
-SequenceDbiWalkerSubtask::SequenceDbiWalkerSubtask(SequenceDbiWalkerTask *_t, const U2Region &glob, bool lo, bool ro, const U2EntityRef &seqRef, bool _doCompl, bool _doAmino)
+SequenceDbiWalkerSubtask::SequenceDbiWalkerSubtask(SequenceDbiWalkerTask* _t, const U2Region& glob, bool lo, bool ro, const U2EntityRef& seqRef, bool _doCompl, bool _doAmino)
     : Task(tr("Sequence walker subtask"), TaskFlag_None),
       t(_t), globalRegion(glob), seqRef(seqRef),
       doCompl(_doCompl), doAmino(_doAmino),
@@ -144,12 +144,12 @@ SequenceDbiWalkerSubtask::SequenceDbiWalkerSubtask(SequenceDbiWalkerTask *_t, co
 
     // get resources
     QList<TaskResourceUsage> resources = t->getCallback()->getResources(this);
-    foreach (const TaskResourceUsage &resource, resources) {
+    foreach (const TaskResourceUsage& resource, resources) {
         addTaskResource(resource);
     }
 }
 
-const QByteArray &SequenceDbiWalkerSubtask::getRegionSequence() {
+const QByteArray& SequenceDbiWalkerSubtask::getRegionSequence() {
     prepareRegionSequence();
     return regionSequence;
 }
@@ -164,7 +164,7 @@ void SequenceDbiWalkerSubtask::prepareRegionSequence() {
     if (doCompl) {
         // do complement;
         SAFE_POINT_EXT(t->getConfig().complTrans != nullptr, stateInfo.setError("No complement translation found!"), );
-        const QByteArray &complementMap = t->getConfig().complTrans->getOne2OneMapper();
+        const QByteArray& complementMap = t->getConfig().complTrans->getOne2OneMapper();
         TextUtils::translate(complementMap, res.data(), res.length());
         TextUtils::reverse(res.data(), res.length());
     }
@@ -183,11 +183,11 @@ void SequenceDbiWalkerSubtask::run() {
     t->getCallback()->onRegion(this, stateInfo);
 }
 
-const U2Region &SequenceDbiWalkerSubtask::getGlobalRegion() const {
+const U2Region& SequenceDbiWalkerSubtask::getGlobalRegion() const {
     return globalRegion;
 }
 
-SequenceDbiWalkerTask *SequenceDbiWalkerSubtask::getSequenceDbiWalkerTask() const {
+SequenceDbiWalkerTask* SequenceDbiWalkerSubtask::getSequenceDbiWalkerTask() const {
     return t;
 }
 

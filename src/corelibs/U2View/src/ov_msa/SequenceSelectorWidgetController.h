@@ -33,7 +33,7 @@ namespace U2 {
 class SequenceSelectorWidgetController : public QWidget, Ui_SequenceSelectorWidget {
     Q_OBJECT
 public:
-    SequenceSelectorWidgetController(MSAEditor *_msa);
+    SequenceSelectorWidgetController(MSAEditor* _msa);
     ~SequenceSelectorWidgetController();
 
     QString text() const;
@@ -46,7 +46,7 @@ signals:
 
 private slots:
     void sl_seqLineEditEditingFinished();
-    void sl_seqLineEditEditingFinished(const MultipleAlignment &, const MaModificationInfo &);
+    void sl_seqLineEditEditingFinished(const MultipleAlignment&, const MaModificationInfo&);
     void sl_addSeqClicked();
     void sl_deleteSeqClicked();
     void sl_setDefaultLineEditValue();
@@ -54,9 +54,9 @@ private slots:
 private:
     void updateCompleter();
 
-    MSAEditor *msa;
-    MSACompletionFiller *filler;
-    BaseCompleter *completer;
+    MSAEditor* msa;
+    MSACompletionFiller* filler;
+    BaseCompleter* completer;
     QString defaultSeqName;
     qint64 seqId;
 };

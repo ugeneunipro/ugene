@@ -59,42 +59,42 @@ U2DbiRef U2Dbi::getDbiRef() const {
     return U2DbiRef(getFactoryId(), getDbiId());
 }
 
-bool U2Dbi::isInitialized(U2OpStatus &) {
+bool U2Dbi::isInitialized(U2OpStatus&) {
     return false;
 }
 
-void U2Dbi::populateDefaultSchema(U2OpStatus &) {
+void U2Dbi::populateDefaultSchema(U2OpStatus&) {
 }
 
-U2ObjectRelationsDbi *U2Dbi::getObjectRelationsDbi() {
+U2ObjectRelationsDbi* U2Dbi::getObjectRelationsDbi() {
     return nullptr;
 }
 
-void U2Dbi::startOperationsBlock(U2OpStatus &) {
+void U2Dbi::startOperationsBlock(U2OpStatus&) {
 }
 
-void U2Dbi::stopOperationBlock(U2OpStatus &) {
+void U2Dbi::stopOperationBlock(U2OpStatus&) {
 }
 
-QMutex *U2Dbi::getDbMutex() const {
+QMutex* U2Dbi::getDbMutex() const {
     return nullptr;
 }
 
-void U2Dbi::setVersionProperties(const Version &minVersion, U2OpStatus &os) {
-    setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, minVersion.text, os);
+void U2Dbi::setVersionProperties(const Version& minVersion, U2OpStatus& os) {
+    setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, minVersion.toString(), os);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // U2ChildDbi
 
-U2ChildDbi::U2ChildDbi(U2Dbi *_rootDbi)
+U2ChildDbi::U2ChildDbi(U2Dbi* _rootDbi)
     : rootDbi(_rootDbi) {
 }
 
 U2ChildDbi::~U2ChildDbi() {
 }
 
-U2Dbi *U2ChildDbi::getRootDbi() const {
+U2Dbi* U2ChildDbi::getRootDbi() const {
     return rootDbi;
 }
 

@@ -37,31 +37,31 @@ class WorkflowRunTask;
 class U2LANG_EXPORT BaseSerializedSchemeRunner : public Task {
     Q_OBJECT
 public:
-    BaseSerializedSchemeRunner(const QString &pathToScheme,
-                               ScriptableScheduler *scheduler,
-                               QStringList &outputFiles);
+    BaseSerializedSchemeRunner(const QString& pathToScheme,
+                               ScriptableScheduler* scheduler,
+                               QStringList& outputFiles);
 
 protected:
-    QStringList &workflowResultFiles;
+    QStringList& workflowResultFiles;
     const QString pathToScheme;
-    ScriptableScheduler *scheduler;
+    ScriptableScheduler* scheduler;
 };
 
 class U2LANG_EXPORT WorkflowRunSerializedSchemeTask : public BaseSerializedSchemeRunner {
     Q_OBJECT
 public:
-    WorkflowRunSerializedSchemeTask(const QString &pathToScheme,
-                                    ScriptableScheduler *scheduler,
-                                    QStringList &outputFiles);
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    WorkflowRunSerializedSchemeTask(const QString& pathToScheme,
+                                    ScriptableScheduler* scheduler,
+                                    QStringList& outputFiles);
+    QList<Task*> onSubTaskFinished(Task* subTask);
     QStringList getWorkflowOutputFiles() const;
 
 private:
-    LoadWorkflowTask *createLoadSchemeTask();
+    LoadWorkflowTask* createLoadSchemeTask();
 
     QSharedPointer<Workflow::Schema> scheme;
-    LoadWorkflowTask *loadTask;
-    WorkflowRunTask *runTask;
+    LoadWorkflowTask* loadTask;
+    WorkflowRunTask* runTask;
 };
 
 }  // namespace U2

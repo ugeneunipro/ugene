@@ -33,7 +33,7 @@ namespace U2 {
 #define SETTINGS_ROOT QString("annotation_settings/")
 #define MAX_CACHE_SIZE 1000
 
-AnnotationSettingsRegistry::AnnotationSettingsRegistry(const QList<AnnotationSettings *> &predefined) {
+AnnotationSettingsRegistry::AnnotationSettingsRegistry(const QList<AnnotationSettings*>& predefined) {
     changeSettings(predefined, false);
     read();
 }
@@ -44,12 +44,12 @@ AnnotationSettingsRegistry::~AnnotationSettingsRegistry() {
     qDeleteAll(transientMap);
 }
 
-void AnnotationSettingsRegistry::changeSettings(const QList<AnnotationSettings *> &settings, bool saveAsPersistent) {
+void AnnotationSettingsRegistry::changeSettings(const QList<AnnotationSettings*>& settings, bool saveAsPersistent) {
     if (settings.isEmpty()) {
         return;
     }
     QStringList changedNames;
-    foreach (AnnotationSettings *s, settings) {
+    foreach (AnnotationSettings* s, settings) {
         assert(s->color.isValid());
         assert(!s->name.isEmpty());
         persistentMap.remove(s->name);
@@ -68,8 +68,8 @@ QStringList AnnotationSettingsRegistry::getAllSettings() const {
     return (persistentMap.keys() + transientMap.keys()).toSet().toList();
 }
 
-AnnotationSettings *AnnotationSettingsRegistry::getAnnotationSettings(const SharedAnnotationData &a) {
-    AnnotationSettings *s = getAnnotationSettings(a->name);
+AnnotationSettings* AnnotationSettingsRegistry::getAnnotationSettings(const SharedAnnotationData& a) {
+    AnnotationSettings* s = getAnnotationSettings(a->name);
     // don't show non-positional features that span the whole sequence
     if (a->findFirstQualifierValue("non-positional") != QString()) {
         s->visible = false;
@@ -77,9 +77,9 @@ AnnotationSettings *AnnotationSettingsRegistry::getAnnotationSettings(const Shar
     return s;
 }
 
-AnnotationSettings *AnnotationSettingsRegistry::getAnnotationSettings(const QString &name) {
+AnnotationSettings* AnnotationSettingsRegistry::getAnnotationSettings(const QString& name) {
     // Search in persistent settings:
-    AnnotationSettings *s = persistentMap.value(name);
+    AnnotationSettings* s = persistentMap.value(name);
     if (s != nullptr) {
         return s;
     }
@@ -102,11 +102,11 @@ AnnotationSettings *AnnotationSettingsRegistry::getAnnotationSettings(const QStr
 }
 
 void AnnotationSettingsRegistry::read() {
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     QStringList annotations = s->getChildGroups(SETTINGS_ROOT);
-    QList<AnnotationSettings *> list;
-    foreach (const QString &name, annotations) {
-        AnnotationSettings *as = transientMap.value(name);
+    QList<AnnotationSettings*> list;
+    foreach (const QString& name, annotations) {
+        AnnotationSettings* as = transientMap.value(name);
         if (as == nullptr) {
             as = new AnnotationSettings();
             as->name = name;
@@ -133,9 +133,9 @@ void AnnotationSettingsRegistry::read() {
 }
 
 void AnnotationSettingsRegistry::save() {
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     QStringList keys = s->getAllKeys(SETTINGS_ROOT);
-    foreach (const AnnotationSettings *as, persistentMap.values()) {
+    foreach (const AnnotationSettings* as, persistentMap.values()) {
         s->setValue(SETTINGS_ROOT + as->name + "/color", as->color.name());
         s->setValue(SETTINGS_ROOT + as->name + "/visible", as->visible);
         s->setValue(SETTINGS_ROOT + as->name + "/amino", as->amino);
@@ -152,7 +152,7 @@ AnnotationSettings::AnnotationSettings() {
     showNameQuals = false;
 }
 
-AnnotationSettings::AnnotationSettings(const QString &_name, bool _amino, const QColor &_color, bool _visible)
+AnnotationSettings::AnnotationSettings(const QString& _name, bool _amino, const QColor& _color, bool _visible)
     : name(_name),
       color(_color),
       amino(_amino),
@@ -160,7 +160,7 @@ AnnotationSettings::AnnotationSettings(const QString &_name, bool _amino, const 
       showNameQuals(false) {
 }
 
-bool AnnotationSettings::equals(const AnnotationSettings *as) const {
+bool AnnotationSettings::equals(const AnnotationSettings* as) const {
     return name == as->name && amino == as->amino && color == as->color && visible == as->visible && showNameQuals == as->showNameQuals && nameQuals == as->nameQuals;
 }
 

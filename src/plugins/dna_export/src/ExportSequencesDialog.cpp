@@ -42,7 +42,7 @@
 
 namespace U2 {
 
-ExportSequencesDialog::ExportSequencesDialog(bool m, bool allowComplement, bool allowTranslation, bool allowBackTranslation, const QString &defaultFileName, const QString &sourceFileBaseName, const DocumentFormatId &defaultFormatId, QWidget *p)
+ExportSequencesDialog::ExportSequencesDialog(bool m, bool allowComplement, bool allowTranslation, bool allowBackTranslation, const QString& defaultFileName, const QString& sourceFileBaseName, const DocumentFormatId& defaultFormatId, QWidget* p)
     : QDialog(p),
       sequenceName(sourceFileBaseName),
       saveController(nullptr),
@@ -91,11 +91,11 @@ ExportSequencesDialog::ExportSequencesDialog(bool m, bool allowComplement, bool 
     }
 
     if (allowTranslation) {
-        const DNAAlphabet *al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-        DNATranslationRegistry *tr = AppContext::getDNATranslationRegistry();
-        QList<DNATranslation *> aminoTs = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
+        const DNAAlphabet* al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
+        DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
+        QList<DNATranslation*> aminoTs = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
         if (!aminoTs.empty()) {
-            foreach (DNATranslation *t, aminoTs) {
+            foreach (DNATranslation* t, aminoTs) {
                 translationTableCombo->addItem(t->getTranslationName());
                 tableID.append(t->getTranslationId());
             }
@@ -104,25 +104,25 @@ ExportSequencesDialog::ExportSequencesDialog(bool m, bool allowComplement, bool 
     }
 
     if (allowBackTranslation) {
-        const DNAAlphabet *al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::AMINO_DEFAULT());
-        DNATranslationRegistry *treg = AppContext::getDNATranslationRegistry();
-        QList<DNATranslation *> nucleicTs = treg->lookupTranslation(al, DNATranslationType_AMINO_2_NUCL);
-        QTreeWidget *tree = new QTreeWidget();
+        const DNAAlphabet* al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::AMINO_DEFAULT());
+        DNATranslationRegistry* treg = AppContext::getDNATranslationRegistry();
+        QList<DNATranslation*> nucleicTs = treg->lookupTranslation(al, DNATranslationType_AMINO_2_NUCL);
+        QTreeWidget* tree = new QTreeWidget();
         tree->setHeaderHidden(true);
         organismCombo->setModel(tree->model());
         organismCombo->setView(tree);
 
         if (!nucleicTs.empty()) {
             tree->setSortingEnabled(false);
-            foreach (DNATranslation *t, nucleicTs) {
+            foreach (DNATranslation* t, nucleicTs) {
                 QStringList current = t->getTranslationId().split("/");
                 QString type = current[1];
                 QString text = t->getTranslationName();
                 int i, n = tree->topLevelItemCount();
                 for (i = 0; i < n; i++) {
-                    QTreeWidgetItem *gi = tree->topLevelItem(i);
+                    QTreeWidgetItem* gi = tree->topLevelItem(i);
                     if (gi->text(0) == type) {
-                        QTreeWidgetItem *curr = new QTreeWidgetItem(gi);
+                        QTreeWidgetItem* curr = new QTreeWidgetItem(gi);
                         curr->setText(0, text);
                         curr->setText(1, t->getTranslationId());
                         gi->addChild(curr);
@@ -130,11 +130,11 @@ ExportSequencesDialog::ExportSequencesDialog(bool m, bool allowComplement, bool 
                     }
                 }
                 if (i == n) {
-                    QTreeWidgetItem *gi = new QTreeWidgetItem(tree);
+                    QTreeWidgetItem* gi = new QTreeWidgetItem(tree);
                     gi->setFlags(gi->flags() & ~Qt::ItemIsSelectable);
                     gi->setText(0, type);
                     tree->addTopLevelItem(gi);
-                    QTreeWidgetItem *curr = new QTreeWidgetItem(gi);
+                    QTreeWidgetItem* curr = new QTreeWidgetItem(gi);
                     curr->setText(0, text);
                     curr->setText(1, t->getTranslationId());
                     gi->addChild(curr);
@@ -142,7 +142,7 @@ ExportSequencesDialog::ExportSequencesDialog(bool m, bool allowComplement, bool 
                 }
             }
             tree->sortItems(0, Qt::AscendingOrder);
-            QTreeWidgetItem *def = new QTreeWidgetItem(tree);
+            QTreeWidgetItem* def = new QTreeWidgetItem(tree);
             def->setText(0, tr("Select organism"));
             def->setFlags(def->flags() & ~Qt::ItemIsSelectable);
             tree->insertTopLevelItem(0, def);
@@ -152,7 +152,7 @@ ExportSequencesDialog::ExportSequencesDialog(bool m, bool allowComplement, bool 
     }
 
     formatId = defaultFormatId;
-    QPushButton *exportButton = buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* exportButton = buttonBox->button(QDialogButtonBox::Ok);
     connect(exportButton, SIGNAL(clicked()), SLOT(sl_exportClicked()));
     connect(translateButton, SIGNAL(clicked()), SLOT(sl_translationTableEnabler()));
     connect(translationTableButton, SIGNAL(clicked()), SLOT(sl_translationTableEnabler()));
@@ -161,8 +161,8 @@ ExportSequencesDialog::ExportSequencesDialog(bool m, bool allowComplement, bool 
     setMaximumHeight(height);
 }
 
-void ExportSequencesDialog::sl_formatChanged(const QString &newFormatId) {
-    DocumentFormatRegistry *dfr = AppContext::getDocumentFormatRegistry();
+void ExportSequencesDialog::sl_formatChanged(const QString& newFormatId) {
+    DocumentFormatRegistry* dfr = AppContext::getDocumentFormatRegistry();
     SAFE_POINT(nullptr != dfr, "Invalid document format registry", );
     if (dfr->getFormatById(newFormatId)->getSupportedObjectTypes().contains(GObjectTypes::ANNOTATION_TABLE)) {
         withAnnotationsBox->setEnabled(true);
@@ -173,7 +173,7 @@ void ExportSequencesDialog::sl_formatChanged(const QString &newFormatId) {
     }
 }
 
-void ExportSequencesDialog::initSaveController(const DocumentFormatId &defaultFormatId) {
+void ExportSequencesDialog::initSaveController(const DocumentFormatId& defaultFormatId) {
     SaveDocumentControllerConfig config;
     config.defaultFileName = defaultFileName;
     config.defaultFormatId = defaultFormatId;
@@ -190,7 +190,7 @@ void ExportSequencesDialog::initSaveController(const DocumentFormatId &defaultFo
 
     saveController = new SaveDocumentController(config, formatConstraints, this);
 
-    connect(saveController, SIGNAL(si_formatChanged(const QString &)), SLOT(sl_formatChanged(const QString &)));
+    connect(saveController, SIGNAL(si_formatChanged(const QString&)), SLOT(sl_formatChanged(const QString&)));
 }
 
 void ExportSequencesDialog::updateModel() {
@@ -218,8 +218,8 @@ void ExportSequencesDialog::updateModel() {
     }
     backTranslate = backTranslateButton->isChecked();
     if (backTranslate) {
-        QTreeWidget *tree = (QTreeWidget *)organismCombo->view();
-        QTreeWidgetItem *current = tree->currentItem();
+        QTreeWidget* tree = (QTreeWidget*)organismCombo->view();
+        QTreeWidgetItem* current = tree->currentItem();
         translationTable = current->text(1);
     }
     mostProbable = mostFrequentlyButton->isChecked();

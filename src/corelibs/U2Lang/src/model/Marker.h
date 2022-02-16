@@ -50,7 +50,7 @@ public:
     static const QString QUAL_FLOAT_VALUE_MARKER_ID;
     static const QString TEXT_MARKER_ID;
 
-    static MarkerDataType getDataTypeById(const QString &typeId);
+    static MarkerDataType getDataTypeById(const QString& typeId);
 
     static const Descriptor SEQ_LENGTH();
     static const Descriptor SEQ_NAME();
@@ -65,7 +65,7 @@ public:
 class U2LANG_EXPORT MarkerSlots : public QObject {
     Q_OBJECT
 public:
-    static const Descriptor getSlotByMarkerType(const QString &markerId, const QString &slotName);
+    static const Descriptor getSlotByMarkerType(const QString& markerId, const QString& slotName);
 };
 
 class U2LANG_EXPORT MarkerPorts : public QObject {
@@ -94,24 +94,24 @@ enum ParameterState {
 class U2LANG_EXPORT Marker : public QObject {
     Q_OBJECT
 public:
-    Marker(const QString &markerType, const QString &markerName);
-    Marker(const Marker &m);
+    Marker(const QString& markerType, const QString& markerName);
+    Marker(const Marker& m);
     virtual ~Marker() {
     }
     virtual void addValue(QString name, QString value);
-    virtual QString getMarkingResult(const QVariant &object);
+    virtual QString getMarkingResult(const QVariant& object);
     virtual MarkerGroup getGroup() = 0;
-    virtual Marker *clone() = 0;
+    virtual Marker* clone() = 0;
     virtual ParameterState hasAdditionalParameter();
-    virtual void setAdditionalParameter(const QVariant &param);
+    virtual void setAdditionalParameter(const QVariant& param);
     virtual QVariant getAdditionalParameter();
     virtual QString getAdditionalParameterName();
 
-    const QString &getName() const;
-    const QString &getType() const;
-    const QMap<QString, QString> &getValues() const;
-    QMap<QString, QString> &getValues();
-    void setName(const QString &newName);
+    const QString& getName() const;
+    const QString& getType() const;
+    const QMap<QString, QString>& getValues() const;
+    QMap<QString, QString>& getValues();
+    void setName(const QString& newName);
 
     const QString toString() const;
 
@@ -122,14 +122,14 @@ protected:
     QMap<QString, QString> values;
 
 private:
-    bool getMarkerIntResult(const QVariant &object, QVariantList &expr);
-    bool getMarkerFloatResult(const QVariant &object, QVariantList &expr);
-    bool getMarkerStringResult(const QVariant &object, QVariantList &expr);
+    bool getMarkerIntResult(const QVariant& object, QVariantList& expr);
+    bool getMarkerFloatResult(const QVariant& object, QVariantList& expr);
+    bool getMarkerStringResult(const QVariant& object, QVariantList& expr);
 };
 
 class U2LANG_EXPORT MarkerFactory {
 public:
-    static Marker *createInstanse(const QString &type, const QVariant &additionalParam);
+    static Marker* createInstanse(const QString& type, const QVariant& additionalParam);
 };
 
 /************************************************************************/
@@ -138,12 +138,12 @@ public:
 class U2LANG_EXPORT SequenceMarker : public Marker {
     Q_OBJECT
 public:
-    SequenceMarker(const QString &markerType, const QString &markerName)
+    SequenceMarker(const QString& markerType, const QString& markerName)
         : Marker(markerType, markerName) {
     }
-    virtual QString getMarkingResult(const QVariant &object);
+    virtual QString getMarkingResult(const QVariant& object);
     virtual MarkerGroup getGroup();
-    virtual Marker *clone();
+    virtual Marker* clone();
 };
 
 /************************************************************************/
@@ -152,18 +152,18 @@ public:
 class U2LANG_EXPORT QualifierMarker : public Marker {
     Q_OBJECT
 public:
-    QualifierMarker(const QString &markerType, const QString &markerName, const QString &qualName)
+    QualifierMarker(const QString& markerType, const QString& markerName, const QString& qualName)
         : Marker(markerType, markerName), qualName(qualName) {
     }
-    virtual QString getMarkingResult(const QVariant &object);
+    virtual QString getMarkingResult(const QVariant& object);
     virtual MarkerGroup getGroup();
-    virtual Marker *clone();
+    virtual Marker* clone();
     virtual ParameterState hasAdditionalParameter();
-    virtual void setAdditionalParameter(const QVariant &param);
+    virtual void setAdditionalParameter(const QVariant& param);
     virtual QVariant getAdditionalParameter();
     virtual QString getAdditionalParameterName();
 
-    const QString &getQualifierName() const;
+    const QString& getQualifierName() const;
 
 private:
     QString qualName;
@@ -175,18 +175,18 @@ private:
 class U2LANG_EXPORT AnnotationMarker : public Marker {
     Q_OBJECT
 public:
-    AnnotationMarker(const QString &markerType, const QString &markerName, const QString &annName)
+    AnnotationMarker(const QString& markerType, const QString& markerName, const QString& annName)
         : Marker(markerType, markerName), annName(annName) {
     }
-    virtual QString getMarkingResult(const QVariant &object);
+    virtual QString getMarkingResult(const QVariant& object);
     virtual MarkerGroup getGroup();
-    virtual Marker *clone();
+    virtual Marker* clone();
     virtual ParameterState hasAdditionalParameter();
-    virtual void setAdditionalParameter(const QVariant &param);
+    virtual void setAdditionalParameter(const QVariant& param);
     virtual QVariant getAdditionalParameter();
     virtual QString getAdditionalParameterName();
 
-    const QString &getAnnotationName() const;
+    const QString& getAnnotationName() const;
 
 private:
     QString annName;
@@ -198,12 +198,12 @@ private:
 class U2LANG_EXPORT TextMarker : public Marker {
     Q_OBJECT
 public:
-    TextMarker(const QString &markerType, const QString &markerName)
+    TextMarker(const QString& markerType, const QString& markerName)
         : Marker(markerType, markerName) {
     }
-    virtual QString getMarkingResult(const QVariant &object);
+    virtual QString getMarkingResult(const QVariant& object);
     virtual MarkerGroup getGroup();
-    virtual Marker *clone();
+    virtual Marker* clone();
 };
 
 }  // namespace U2

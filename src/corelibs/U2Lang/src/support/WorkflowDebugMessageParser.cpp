@@ -21,8 +21,8 @@
 
 #include "WorkflowDebugMessageParser.h"
 
-#include <U2Core/U2SafePoints.h>
 #include <U2Core/Log.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/Descriptor.h>
@@ -44,7 +44,7 @@ WorkflowDebugMessageParser::WorkflowDebugMessageParser()
 WorkflowDebugMessageParser::~WorkflowDebugMessageParser() {
 }
 
-void WorkflowDebugMessageParser::setSourceData(const QQueue<Message> &initSource) {
+void WorkflowDebugMessageParser::setSourceData(const QQueue<Message>& initSource) {
     sourceMessages.clear();
     if (Q_UNLIKELY(possibleMessageTypes.isEmpty())) {
         possibleMessageTypes << BaseSlots::DNA_SEQUENCE_SLOT().getId();
@@ -57,9 +57,9 @@ void WorkflowDebugMessageParser::setSourceData(const QQueue<Message> &initSource
         possibleMessageTypes << BaseSlots::ASSEMBLY_SLOT().getId();
         possibleMessageTypes << BaseSlots::DATASET_SLOT().getId();
     }
-    for (const Message &message : qAsConst(initSource)) {
+    for (const Message& message : qAsConst(initSource)) {
         QVariantMap data = message.getData().toMap();
-        foreach (const QString &key, data.keys()) {
+        foreach (const QString& key, data.keys()) {
             if (key.contains(MESSAGE_PATH_DELIMETER)) {
                 coreLog.trace(QString("WorkflowDebugMessageParser.cpp:%1 'key' = %2").arg(QString::number(__LINE__)).arg(key));
                 data[key.left(key.indexOf(MESSAGE_PATH_DELIMETER))] = data[key];
@@ -70,7 +70,7 @@ void WorkflowDebugMessageParser::setSourceData(const QQueue<Message> &initSource
     }
 }
 
-void WorkflowDebugMessageParser::setContext(Workflow::WorkflowContext *initContext) {
+void WorkflowDebugMessageParser::setContext(Workflow::WorkflowContext* initContext) {
     SAFE_POINT(nullptr != initContext, "Invalid workflow context!", );
     context = initContext;
 }

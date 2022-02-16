@@ -44,7 +44,7 @@ namespace U2 {
 
 const QString ImportCustomToolsTask::SETTINGS_PATH = "external_tools/custom_tool_configs";
 
-ImportCustomToolsTask::ImportCustomToolsTask(const QString &_url)
+ImportCustomToolsTask::ImportCustomToolsTask(const QString& _url)
     : Task(tr("Import custom external tools configuration"), TaskFlags_FOSE_COSC | TaskFlag_CollectChildrenWarnings),
       url(_url),
       registerTask(nullptr) {
@@ -57,12 +57,12 @@ void ImportCustomToolsTask::prepare() {
 }
 
 void ImportCustomToolsTask::run() {
-    CustomExternalTool *tool = registerTask->getTool();
+    CustomExternalTool* tool = registerTask->getTool();
     CHECK(nullptr != tool, );
     saveToolConfig(tool);
 }
 
-void ImportCustomToolsTask::saveToolConfig(CustomExternalTool *tool) {
+void ImportCustomToolsTask::saveToolConfig(CustomExternalTool* tool) {
     QDomDocument doc = CustomToolConfigParser::serialize(tool);
 
     const QString storagePath = AppContext::getAppSettings()->getUserAppsSettings()->getCustomToolsConfigsDirPath();
@@ -78,4 +78,4 @@ void ImportCustomToolsTask::saveToolConfig(CustomExternalTool *tool) {
     tool->setConfigFilePath(url);
 }
 
-}    // namespace U2
+}  // namespace U2

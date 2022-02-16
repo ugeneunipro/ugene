@@ -34,12 +34,12 @@ namespace U2 {
 class FeatureKeyFilterTask : public AbstractProjectFilterTask {
     Q_OBJECT
 public:
-    FeatureKeyFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document>> &docs);
+    FeatureKeyFilterTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs);
 
     void run();
 
 private:
-    void filterDocument(Document *doc);
+    void filterDocument(Document* doc);
 
     QMap<U2DbiRef, QMap<U2DataId, QStringList>> dbiRef2AnnotationTables;
 };
@@ -50,8 +50,8 @@ private:
 
 class U2GUI_EXPORT FeatureKeyFilterTaskFactory : public ProjectFilterTaskFactory {
 protected:
-    AbstractProjectFilterTask *createNewTask(const ProjectTreeControllerModeSettings &settings,
-                                             const QList<QPointer<Document>> &docs) const;
+    AbstractProjectFilterTask* createNewTask(const ProjectTreeControllerModeSettings& settings,
+                                             const QList<QPointer<Document>>& docs) const;
 };
 
 }  // namespace U2

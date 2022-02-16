@@ -33,17 +33,17 @@ namespace U2 {
 
 class GTUtilsQueryDesigner {
 public:
-    static void openQueryDesigner(HI::GUITestOpStatus &os);
+    static void openQueryDesigner(HI::GUITestOpStatus& os);
 
-    static QTreeWidgetItem *findAlgorithm(HI::GUITestOpStatus &os, QString itemName);
-    static void addAlgorithm(HI::GUITestOpStatus &os, QString algName);
-    static QPoint getItemCenter(HI::GUITestOpStatus &os, QString itemName);
-    static QRect getItemRect(HI::GUITestOpStatus &os, QString itemName);
+    static QTreeWidgetItem* findAlgorithm(HI::GUITestOpStatus& os, QString itemName);
+    static void addAlgorithm(HI::GUITestOpStatus& os, QString algName);
+    static QPoint getItemCenter(HI::GUITestOpStatus& os, QString itemName);
+    static QRect getItemRect(HI::GUITestOpStatus& os, QString itemName);
 
-    static int getItemLeft(HI::GUITestOpStatus &os, QString itemName);
-    static int getItemRight(HI::GUITestOpStatus &os, QString itemName);
-    static int getItemTop(HI::GUITestOpStatus &os, QString itemName);
-    static int getItemBottom(HI::GUITestOpStatus &os, QString itemName);
+    static int getItemLeft(HI::GUITestOpStatus& os, QString itemName);
+    static int getItemRight(HI::GUITestOpStatus& os, QString itemName);
+    static int getItemTop(HI::GUITestOpStatus& os, QString itemName);
+    static int getItemBottom(HI::GUITestOpStatus& os, QString itemName);
 };
 
 }  // namespace U2

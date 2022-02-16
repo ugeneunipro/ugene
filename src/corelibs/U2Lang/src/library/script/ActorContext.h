@@ -30,15 +30,15 @@ namespace LocalWorkflow {
 
 class U2LANG_EXPORT ActorContext {
 public:
-    static QScriptValue createContext(BaseWorker *worker, QScriptEngine *engine);
+    static QScriptValue createContext(BaseWorker* worker, QScriptEngine* engine);
 
     static const QString OUTPUT;
     static const QString INPUT;
     static const QString PARAMETERS;
 
 private:
-    static QScriptValue createInBus(IntegralBus *bus, QScriptEngine *engine);
-    static QScriptValue createOutBus(Port *port, QScriptEngine *engine);
+    static QScriptValue createInBus(IntegralBus* bus, QScriptEngine* engine);
+    static QScriptValue createOutBus(Port* port, QScriptEngine* engine);
 };
 
 }  // namespace LocalWorkflow

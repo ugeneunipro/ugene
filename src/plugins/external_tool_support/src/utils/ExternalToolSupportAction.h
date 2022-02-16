@@ -31,8 +31,8 @@ namespace U2 {
 class ExternalToolSupportAction : public GObjectViewAction {
     Q_OBJECT
 public:
-    ExternalToolSupportAction(QObject *p, GObjectView *v, const QString &_text, int order, const QStringList &_toolIds);
-    ExternalToolSupportAction(const QString &text, QObject *p, const QStringList &_toolIds);
+    ExternalToolSupportAction(QObject* p, GObjectView* v, const QString& _text, int order, const QStringList& _toolIds);
+    ExternalToolSupportAction(const QString& text, QObject* p, const QStringList& _toolIds);
 
     const QStringList getToolIds() const {
         return toolIds;
@@ -51,5 +51,5 @@ private:
     QStringList toolIds;
 };
 
-}    // namespace U2
-#endif    // _U2_EXTERNAL_TOOL_SUPPORT_ACTION_H
+}  // namespace U2
+#endif  // _U2_EXTERNAL_TOOL_SUPPORT_ACTION_H

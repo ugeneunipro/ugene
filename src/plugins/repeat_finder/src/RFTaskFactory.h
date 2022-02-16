@@ -36,20 +36,20 @@ class RFTaskFactory : public RepeatFinderTaskFactory {
 public:
     RFTaskFactory() {};
 
-    virtual Task *getTaskInstance(const RepeatFinderSettings &config) const;
-    virtual void setRFResultsListener(Task *, RFResultsListener *);
+    virtual Task* getTaskInstance(const RepeatFinderSettings& config) const;
+    virtual void setRFResultsListener(Task*, RFResultsListener*);
 };
 
 /** Reverses X sequence and runs repeat finder task */
 class ReverseAndCreateTask : public Task {
     Q_OBJECT
 public:
-    ReverseAndCreateTask(const RepeatFinderSettings &c);
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    ReverseAndCreateTask(const RepeatFinderSettings& c);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
     RepeatFinderSettings c;
-    RevComplSequenceTask *revTask;
+    RevComplSequenceTask* revTask;
 };
 
 }  // namespace U2

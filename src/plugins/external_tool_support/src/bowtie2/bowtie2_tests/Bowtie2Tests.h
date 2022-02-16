@@ -44,8 +44,8 @@ public:
 
 class Bowtie2Tests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
-}    //namespace U2
+}  // namespace U2
 
-#endif    //_U2_BOWTIE2_TESTS_H_
+#endif  //_U2_BOWTIE2_TESTS_H_

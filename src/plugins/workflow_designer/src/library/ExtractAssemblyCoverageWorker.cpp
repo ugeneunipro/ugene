@@ -54,14 +54,14 @@ const QString EXPORT_TYPE_ATTR_ID("export-type");
 const QString THRESHOLD_ATTR_ID("threshold");
 }  // namespace
 
-ExtractAssemblyCoverageWorker::ExtractAssemblyCoverageWorker(Actor *actor)
+ExtractAssemblyCoverageWorker::ExtractAssemblyCoverageWorker(Actor* actor)
     : BaseWorker(actor) {
 }
 
 void ExtractAssemblyCoverageWorker::init() {
 }
 
-Task *ExtractAssemblyCoverageWorker::tick() {
+Task* ExtractAssemblyCoverageWorker::tick() {
     if (hasAssembly()) {
         U2OpStatusImpl os;
         const U2EntityRef assembly = takeAssembly(os);
@@ -78,7 +78,7 @@ void ExtractAssemblyCoverageWorker::cleanup() {
 }
 
 void ExtractAssemblyCoverageWorker::sl_taskFinished() {
-    ExportCoverageTask *task = dynamic_cast<ExportCoverageTask *>(sender());
+    ExportCoverageTask* task = dynamic_cast<ExportCoverageTask*>(sender());
     CHECK(nullptr != task, );
     CHECK(task->isFinished() && !task->hasError() && !task->isCanceled(), );
 
@@ -86,12 +86,12 @@ void ExtractAssemblyCoverageWorker::sl_taskFinished() {
 }
 
 bool ExtractAssemblyCoverageWorker::hasAssembly() const {
-    const IntegralBus *port = ports[BasePorts::IN_ASSEMBLY_PORT_ID()];
+    const IntegralBus* port = ports[BasePorts::IN_ASSEMBLY_PORT_ID()];
     SAFE_POINT(nullptr != port, "NULL assembly port", false);
     return port->hasMessage();
 }
 
-U2EntityRef ExtractAssemblyCoverageWorker::takeAssembly(U2OpStatus &os) {
+U2EntityRef ExtractAssemblyCoverageWorker::takeAssembly(U2OpStatus& os) {
     const Message m = getMessageAndSetupScriptValues(ports[BasePorts::IN_ASSEMBLY_PORT_ID()]);
     const QVariantMap data = m.getData().toMap();
     if (!data.contains(BaseSlots::ASSEMBLY_SLOT().getId())) {
@@ -100,7 +100,7 @@ U2EntityRef ExtractAssemblyCoverageWorker::takeAssembly(U2OpStatus &os) {
     }
 
     const SharedDbiDataHandler dbiId = data[BaseSlots::ASSEMBLY_SLOT().getId()].value<SharedDbiDataHandler>();
-    const AssemblyObject *obj = StorageUtils::getAssemblyObject(context->getDataStorage(), dbiId);
+    const AssemblyObject* obj = StorageUtils::getAssemblyObject(context->getDataStorage(), dbiId);
     if (nullptr == obj) {
         os.setError(tr("Error with assembly object"));
         return U2EntityRef();
@@ -119,9 +119,9 @@ ExportCoverageSettings ExtractAssemblyCoverageWorker::getSettings() const {
     return settings;
 }
 
-Task *ExtractAssemblyCoverageWorker::createTask(const U2EntityRef &assembly) {
+Task* ExtractAssemblyCoverageWorker::createTask(const U2EntityRef& assembly) {
     const ExportCoverageSettings::Format format = static_cast<ExportCoverageSettings::Format>(getValue<int>(FORMAT_ATTR_ID));
-    Task *task = nullptr;
+    Task* task = nullptr;
     switch (format) {
         case ExportCoverageSettings::Histogram:
             task = new ExportCoverageHistogramTask(assembly.dbiRef, assembly.entityId, getSettings());
@@ -139,7 +139,7 @@ Task *ExtractAssemblyCoverageWorker::createTask(const U2EntityRef &assembly) {
 }
 
 void ExtractAssemblyCoverageWorker::finish() {
-    IntegralBus *inPort = ports[BasePorts::IN_ASSEMBLY_PORT_ID()];
+    IntegralBus* inPort = ports[BasePorts::IN_ASSEMBLY_PORT_ID()];
     SAFE_POINT(nullptr != inPort, "NULL assembly port", );
     SAFE_POINT(inPort->isEnded(), "The assembly is not ended", );
 
@@ -153,7 +153,7 @@ ExtractAssemblyCoverageWorkerFactory::ExtractAssemblyCoverageWorkerFactory()
     : DomainFactory(ACTOR_ID) {
 }
 
-Worker *ExtractAssemblyCoverageWorkerFactory::createWorker(Actor *actor) {
+Worker* ExtractAssemblyCoverageWorkerFactory::createWorker(Actor* actor) {
     return new ExtractAssemblyCoverageWorker(actor);
 }
 
@@ -162,7 +162,7 @@ void ExtractAssemblyCoverageWorkerFactory::init() {
                           ExtractAssemblyCoverageWorker::tr("Extract Coverage from Assembly"),
                           ExtractAssemblyCoverageWorker::tr("Extract the coverage and bases quantity from the incoming assembly."));
 
-    QList<PortDescriptor *> ports;
+    QList<PortDescriptor*> ports;
     {
         QMap<Descriptor, DataTypePtr> inData;
         inData[BaseSlots::ASSEMBLY_SLOT()] = BaseTypes::ASSEMBLY_TYPE();
@@ -170,7 +170,7 @@ void ExtractAssemblyCoverageWorkerFactory::init() {
         ports << new PortDescriptor(BasePorts::IN_ASSEMBLY_PORT_ID(), inType, true);
     }
 
-    QList<Attribute *> attrs;
+    QList<Attribute*> attrs;
     {
         const Descriptor formatDesc(FORMAT_ATTR_ID,
                                     ExtractAssemblyCoverageWorker::tr("Format"),
@@ -183,18 +183,18 @@ void ExtractAssemblyCoverageWorkerFactory::init() {
                                        ExtractAssemblyCoverageWorker::tr("The minimum coverage value to export."));
         attrs << new Attribute(BaseAttributes::URL_OUT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), true, "assembly_coverage." + ExportCoverageSettings::BEDGRAPH_EXTENSION);
 
-        Attribute *formatAttribute = new Attribute(formatDesc, BaseTypes::NUM_TYPE(), false, ExportCoverageSettings::Bedgraph);
+        Attribute* formatAttribute = new Attribute(formatDesc, BaseTypes::NUM_TYPE(), false, ExportCoverageSettings::Bedgraph);
         formatAttribute->addRelation(new ExtractAssemblyCoverageFileExtensionRelation(BaseAttributes::URL_OUT_ATTRIBUTE().getId()));
         attrs << formatAttribute;
 
-        Attribute *exportTypeAttribute = new Attribute(exportTypeDesc, BaseTypes::STRING_TYPE(), true, EXPORT_COVERAGE);
+        Attribute* exportTypeAttribute = new Attribute(exportTypeDesc, BaseTypes::STRING_TYPE(), true, EXPORT_COVERAGE);
         exportTypeAttribute->addRelation(new VisibilityRelation(formatAttribute->getId(), ExportCoverageSettings::PerBase));
         attrs << exportTypeAttribute;
 
         attrs << new Attribute(thresholdDesc, BaseTypes::NUM_TYPE(), false, 1);
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         const QString filter = FileFilters::createFileFilter(ExportCoverageSettings::BEDGRAPH, {ExportCoverageSettings::BEDGRAPH_EXTENSION}, false);
         DelegateTags tags;
@@ -219,19 +219,19 @@ void ExtractAssemblyCoverageWorkerFactory::init() {
         delegates[THRESHOLD_ATTR_ID] = new SpinBoxDelegate(thresholdMap);
     }
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attrs);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, ports, attrs);
     proto->setPrompter(new ExtractAssemblyCoverageWorkerPrompter());
     proto->setEditor(new DelegateEditor(delegates));
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new ExtractAssemblyCoverageWorkerFactory());
 }
 
 /************************************************************************/
 /* ExportAssemblyCoverageWorkerPrompter */
 /************************************************************************/
-ExtractAssemblyCoverageWorkerPrompter::ExtractAssemblyCoverageWorkerPrompter(Actor *actor)
+ExtractAssemblyCoverageWorkerPrompter::ExtractAssemblyCoverageWorkerPrompter(Actor* actor)
     : PrompterBase<ExtractAssemblyCoverageWorkerPrompter>(actor) {
 }
 
@@ -262,11 +262,11 @@ QString ExtractAssemblyCoverageWorkerPrompter::composeRichDoc() {
     return tr("Exports %1 from the incoming assembly with threshold %2 to %3 in tab delimited plain text format.").arg(exportString).arg(getHyperlink(THRESHOLD_ATTR_ID, threshold)).arg(getHyperlink(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), outputFile));
 }
 
-ExtractAssemblyCoverageFileExtensionRelation::ExtractAssemblyCoverageFileExtensionRelation(const QString &relatedAttrId)
+ExtractAssemblyCoverageFileExtensionRelation::ExtractAssemblyCoverageFileExtensionRelation(const QString& relatedAttrId)
     : AttributeRelation(relatedAttrId) {
 }
 
-QVariant ExtractAssemblyCoverageFileExtensionRelation::getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue, DelegateTags * /*infTags*/, DelegateTags *depTags) const {
+QVariant ExtractAssemblyCoverageFileExtensionRelation::getAffectResult(const QVariant& influencingValue, const QVariant& dependentValue, DelegateTags* /*infTags*/, DelegateTags* depTags) const {
     const ExportCoverageSettings::Format newFormat = static_cast<ExportCoverageSettings::Format>(influencingValue.toInt());
     updateDelegateTags(influencingValue, depTags);
 
@@ -294,7 +294,7 @@ QVariant ExtractAssemblyCoverageFileExtensionRelation::getAffectResult(const QVa
     return urlStr;
 }
 
-void ExtractAssemblyCoverageFileExtensionRelation::updateDelegateTags(const QVariant &influencingValue, DelegateTags *dependentTags) const {
+void ExtractAssemblyCoverageFileExtensionRelation::updateDelegateTags(const QVariant& influencingValue, DelegateTags* dependentTags) const {
     const ExportCoverageSettings::Format newFormat = static_cast<ExportCoverageSettings::Format>(influencingValue.toInt());
     if (nullptr != dependentTags) {
         dependentTags->set("extensions", QStringList() << ExportCoverageSettings::getFormatExtension(newFormat) << ExportCoverageSettings::getFormatExtension(newFormat) + ExportCoverageSettings::COMPRESSED_EXTENSION);
@@ -307,7 +307,7 @@ RelationType ExtractAssemblyCoverageFileExtensionRelation::getType() const {
     return FILE_EXTENSION;
 }
 
-ExtractAssemblyCoverageFileExtensionRelation *ExtractAssemblyCoverageFileExtensionRelation::clone() const {
+ExtractAssemblyCoverageFileExtensionRelation* ExtractAssemblyCoverageFileExtensionRelation::clone() const {
     return new ExtractAssemblyCoverageFileExtensionRelation(*this);
 }
 

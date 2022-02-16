@@ -47,7 +47,7 @@
 
 namespace U2 {
 
-URLListWidget::URLListWidget(URLListController *_ctrl)
+URLListWidget::URLListWidget(URLListController* _ctrl)
     : QWidget(),
       ui(new Ui_DatasetWidget),
       ctrl(_ctrl),
@@ -85,13 +85,13 @@ URLListWidget::URLListWidget(URLListController *_ctrl)
         ui->addFromDbButton->hide();
     }
 
-    QAction *deleteAction = new QAction(ui->itemsArea);
+    QAction* deleteAction = new QAction(ui->itemsArea);
     deleteAction->setShortcut(QKeySequence::Delete);
     deleteAction->setShortcutContext(Qt::WidgetShortcut);
     connect(deleteAction, SIGNAL(triggered()), SLOT(sl_deleteButton()));
     ui->itemsArea->addAction(deleteAction);
 
-    QAction *selectAction = new QAction(ui->itemsArea);
+    QAction* selectAction = new QAction(ui->itemsArea);
     selectAction->setShortcut(QKeySequence::SelectAll);
     selectAction->setShortcutContext(Qt::WidgetShortcut);
     connect(selectAction, SIGNAL(triggered()), SLOT(sl_selectAll()));
@@ -104,7 +104,7 @@ URLListWidget::~URLListWidget() {
     delete ui;
 }
 
-void URLListWidget::addUrlItem(UrlItem *urlItem) {
+void URLListWidget::addUrlItem(UrlItem* urlItem) {
     urlItem->setParent(ui->itemsArea);
     ui->itemsArea->addItem(urlItem);
     connect(urlItem, SIGNAL(si_dataChanged()), SLOT(sl_dataChanged()));
@@ -118,7 +118,7 @@ void URLListWidget::sl_addFileButton() {
     } else {
         files = U2FileDialog::getOpenFileNames(nullptr, tr("Select file"), lod.dir);
     }
-    for (const QString &file : qAsConst(files)) {
+    for (const QString& file : qAsConst(files)) {
         lod.url = file;
         addUrl(file);
     }
@@ -135,14 +135,14 @@ void URLListWidget::sl_addDirButton() {
 
 namespace {
 
-ProjectTreeControllerModeSettings createProjectTreeSettings(const QSet<GObjectType> &compatibleObjTypes) {
+ProjectTreeControllerModeSettings createProjectTreeSettings(const QSet<GObjectType>& compatibleObjTypes) {
     ProjectTreeControllerModeSettings settings;
     settings.objectTypesToShow += compatibleObjTypes;
 
-    Project *proj = AppContext::getProject();
+    Project* proj = AppContext::getProject();
     SAFE_POINT(nullptr != proj, "Invalid project", settings);
 
-    foreach (Document *doc, proj->getDocuments()) {
+    foreach (Document* doc, proj->getDocuments()) {
         if (!doc->isDatabaseConnection()) {
             settings.excludeDocList << doc;
         }
@@ -177,20 +177,20 @@ void URLListWidget::sl_addFromDbButton() {
     const ProjectTreeControllerModeSettings settings = createProjectTreeSettings(compatTypes);
 
     QList<Folder> folders;
-    QList<GObject *> objects;
+    QList<GObject*> objects;
     ProjectTreeItemSelectorDialog::selectObjectsAndFolders(settings, this, folders, objects);
 
-    foreach (const Folder &f, folders) {
+    foreach (const Folder& f, folders) {
         // FIXME when readers for different data types appear
         addUrl(SharedDbUrlUtils::createDbFolderUrl(f, U2ObjectTypeUtils::toDataType(*compatTypes.begin())));
     }
 
-    foreach (GObject *obj, objects) {
+    foreach (GObject* obj, objects) {
         addUrl(SharedDbUrlUtils::createDbObjectUrl(obj));
     }
 }
 
-void URLListWidget::addUrl(const QString &url) {
+void URLListWidget::addUrl(const QString& url) {
     U2OpStatusImpl os;
     ctrl->addUrl(url, os);
     if (os.hasError()) {
@@ -225,7 +225,7 @@ void URLListWidget::sl_downButton() {
 
     for (int pos = ui->itemsArea->count() - 2; pos >= 0; pos--) {  // without last item
         if (ui->itemsArea->item(pos)->isSelected()) {
-            QListWidgetItem *item = ui->itemsArea->takeItem(pos);
+            QListWidgetItem* item = ui->itemsArea->takeItem(pos);
             ui->itemsArea->insertItem(pos + 1, item);
             item->setSelected(true);
             ctrl->replaceUrl(pos, pos + 1);
@@ -238,7 +238,7 @@ void URLListWidget::sl_upButton() {
 
     for (int pos = 1; pos < ui->itemsArea->count(); pos++) {  // without first item
         if (ui->itemsArea->item(pos)->isSelected()) {
-            QListWidgetItem *item = ui->itemsArea->takeItem(pos);
+            QListWidgetItem* item = ui->itemsArea->takeItem(pos);
             ui->itemsArea->insertItem(pos - 1, item);
             item->setSelected(true);
             ctrl->replaceUrl(pos, pos - 1);
@@ -247,7 +247,7 @@ void URLListWidget::sl_upButton() {
 }
 
 void URLListWidget::sl_deleteButton() {
-    foreach (QListWidgetItem *item, ui->itemsArea->selectedItems()) {
+    foreach (QListWidgetItem* item, ui->itemsArea->selectedItems()) {
         int pos = ui->itemsArea->row(item);
         ctrl->deleteUrl(pos);
         delete ui->itemsArea->takeItem(pos);
@@ -261,23 +261,23 @@ void URLListWidget::sl_selectAll() {
 }
 
 void URLListWidget::sl_dataChanged() {
-    ctrl->updateUrl(dynamic_cast<UrlItem *>(sender()));
+    ctrl->updateUrl(dynamic_cast<UrlItem*>(sender()));
 }
 
-bool URLListWidget::eventFilter(QObject *obj, QEvent *event) {
+bool URLListWidget::eventFilter(QObject* obj, QEvent* event) {
     CHECK(ui->itemsArea == obj, false);
     if (event->type() == QEvent::ContextMenu) {
         CHECK(1 == ui->itemsArea->selectedItems().size(), false);
 
-        QContextMenuEvent *e = static_cast<QContextMenuEvent *>(event);
-        QListWidgetItem *item = ui->itemsArea->itemAt(e->pos());
+        QContextMenuEvent* e = static_cast<QContextMenuEvent*>(event);
+        QListWidgetItem* item = ui->itemsArea->itemAt(e->pos());
         CHECK(nullptr != item, false);
         CHECK(item->isSelected(), false);
 
-        UrlItem *urlItem = static_cast<UrlItem *>(item);
+        UrlItem* urlItem = static_cast<UrlItem*>(item);
         CHECK(nullptr != urlItem, false);
 
-        QWidget *options = urlItem->getOptionsWidget();
+        QWidget* options = urlItem->getOptionsWidget();
         if (nullptr != options) {
             popup->showOptions(options, ui->itemsArea->mapToGlobal(e->pos()));
         }
@@ -289,7 +289,7 @@ bool URLListWidget::eventFilter(QObject *obj, QEvent *event) {
 /************************************************************************/
 /* OptionsPopup */
 /************************************************************************/
-OptionsPopup::OptionsPopup(QWidget *parent)
+OptionsPopup::OptionsPopup(QWidget* parent)
     : QFrame(parent) {
     l = new QVBoxLayout(this);
     l->setMargin(0);
@@ -297,12 +297,12 @@ OptionsPopup::OptionsPopup(QWidget *parent)
     setFrameShape(QFrame::StyledPanel);
 }
 
-void OptionsPopup::closeEvent(QCloseEvent *event) {
+void OptionsPopup::closeEvent(QCloseEvent* event) {
     removeOptions();
     QWidget::closeEvent(event);
 }
 
-void OptionsPopup::showOptions(QWidget *options, const QPoint &p) {
+void OptionsPopup::showOptions(QWidget* options, const QPoint& p) {
     l->insertWidget(0, options);
     move(p);
     show();
@@ -320,7 +320,7 @@ void OptionsPopup::showOptions(QWidget *options, const QPoint &p) {
 }
 
 void OptionsPopup::removeOptions() {
-    QLayoutItem *child;
+    QLayoutItem* child;
     while (nullptr != (child = l->takeAt(0))) {
         child->widget()->setParent(nullptr);
         delete child;

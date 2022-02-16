@@ -27,7 +27,7 @@ namespace U2 {
 
 #define PCHAR_MATCH(x, y) (*(x) == *(y) && *(x) != unknownChar)
 
-SArrayBasedFindTask::SArrayBasedFindTask(SArrayIndex *i, const SArrayBasedSearchSettings &s, bool _onlyFirstMatch)
+SArrayBasedFindTask::SArrayBasedFindTask(SArrayIndex* i, const SArrayBasedSearchSettings& s, bool _onlyFirstMatch)
     : Task("SArrayBasedFindTask", TaskFlag_None), index(i), config(new SArrayBasedSearchSettings(s)),
       onlyFirstMatch(_onlyFirstMatch) {
     assert(index);
@@ -40,13 +40,13 @@ void SArrayBasedFindTask::run() {
 void SArrayBasedFindTask::runSearch() {
     bool haveResults;
     SArrayIndex::SAISearchContext context;
-    const char *querySeq = config->query.constData();
+    const char* querySeq = config->query.constData();
     if (config->useBitMask) {
-        const quint32 *bm = config->bitMask;
+        const quint32* bm = config->bitMask;
         int charBitsNum = config->bitMaskCharBitsNum;
         quint32 bitValue = 0;
         int wCharsInMask = index->getCharsInMask();
-        const char *posS = querySeq;
+        const char* posS = querySeq;
         char unknownChar = config->unknownChar;
         for (int cleanChars = 0; cleanChars < wCharsInMask; posS++) {
             if (*posS == unknownChar) {
@@ -71,8 +71,8 @@ void SArrayBasedFindTask::runSearch() {
 }
 
 void SArrayBasedFindTask::runSearchWithMismatches() {
-    const char *querySeq = config->query.constData();
-    const char *arraySeq = index->getIndexedSequence();
+    const char* querySeq = config->query.constData();
+    const char* arraySeq = index->getIndexedSequence();
     char unknownChar = config->unknownChar;
     int CMAX = config->absMismatches ? config->nMismatches
                                      : (config->query.length() * config->ptMismatches) / MAX_PERCENTAGE;
@@ -87,15 +87,15 @@ void SArrayBasedFindTask::runSearchWithMismatches() {
     }
 
     for (int i = 0; i < W - prefixSize + 1; ++i) {
-        const char *seq = querySeq + i;
+        const char* seq = querySeq + i;
         SArrayIndex::SAISearchContext context;
         bool haveResults;
         if (config->useBitMask) {
-            const quint32 *bm = config->bitMask;
+            const quint32* bm = config->bitMask;
             int charBitsNum = config->bitMaskCharBitsNum;
             quint32 bitValue = 0;
             int wCharsInMask = index->getCharsInMask();
-            const char *posS = querySeq;
+            const char* posS = querySeq;
             for (int cleanChars = 0; cleanChars < wCharsInMask; posS++) {
                 if (*posS == unknownChar) {
                     cleanChars = 0;
@@ -113,13 +113,13 @@ void SArrayBasedFindTask::runSearchWithMismatches() {
             continue;
         }
         int pos;
-        const char *endS = querySeq + W;
-        const char *endA = arraySeq + index->getSequenceLength();
+        const char* endS = querySeq + W;
+        const char* endA = arraySeq + index->getSequenceLength();
         while ((pos = index->nextArrSeqPos(&context)) != -1) {
             int c = 0;
             // forward collect
-            const char *posS = seq + prefixSize;
-            const char *posA = arraySeq + pos + prefixSize;
+            const char* posS = seq + prefixSize;
+            const char* posA = arraySeq + pos + prefixSize;
             for (; (posS < endS) && (c <= CMAX); posS++, posA++) {
                 if (posA >= endA) {
                     // out of arraySeq boundaries - > do not need to continue

@@ -31,13 +31,13 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsTask"
 
 #define GT_METHOD_NAME "getTaskByName"
-Task *GTUtilsTask::getTaskByName(HI::GUITestOpStatus &os, const QString &taskName, const GTGlobals::FindOptions &options) {
-    TaskScheduler *scheduler = AppContext::getTaskScheduler();
+Task* GTUtilsTask::getTaskByName(HI::GUITestOpStatus& os, const QString& taskName, const GTGlobals::FindOptions& options) {
+    TaskScheduler* scheduler = AppContext::getTaskScheduler();
     GT_CHECK_RESULT(scheduler != nullptr, "task scheduler is NULL", {});
-    QList<Task *> allTasks = scheduler->getTopLevelTasks();
-    Task *result = nullptr;
+    QList<Task*> allTasks = scheduler->getTopLevelTasks();
+    Task* result = nullptr;
     for (int i = 0; i < allTasks.size(); i++) {
-        Task *task = allTasks[i];
+        Task* task = allTasks[i];
         QString name = task->getTaskName();
         if (name == taskName) {
             CHECK_SET_ERR_RESULT(result == nullptr, "Found multiple tasks with the same name: " + taskName + ", example: " + name, nullptr);
@@ -51,15 +51,15 @@ Task *GTUtilsTask::getTaskByName(HI::GUITestOpStatus &os, const QString &taskNam
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkNoTask"
-void GTUtilsTask::checkNoTask(HI::GUITestOpStatus &os, const QString &taskName) {
-    Task *task = getTaskByName(os, taskName, {false});
+void GTUtilsTask::checkNoTask(HI::GUITestOpStatus& os, const QString& taskName) {
+    Task* task = getTaskByName(os, taskName, {false});
     GT_CHECK(task == nullptr, "task " + taskName + " unexpectedly found");
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "waitTaskStart"
-void GTUtilsTask::waitTaskStart(HI::GUITestOpStatus &os, const QString &taskName, int timeout) {
-    Task *task = nullptr;
+void GTUtilsTask::waitTaskStart(HI::GUITestOpStatus& os, const QString& taskName, int timeout) {
+    Task* task = nullptr;
     for (int time = 0; time < timeout && task == nullptr; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         task = getTaskByName(os, taskName, {false});

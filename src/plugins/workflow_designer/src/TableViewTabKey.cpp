@@ -24,7 +24,7 @@
 #include <QKeyEvent>
 
 namespace U2 {
-TableViewTabKey::TableViewTabKey(QWidget *parent)
+TableViewTabKey::TableViewTabKey(QWidget* parent)
     : QTableView(parent) {
 }
 
@@ -44,7 +44,7 @@ void TableViewTabKey::setNextIndex() {
     this->edit(nextIndex);
 }
 
-void TableViewTabKey::closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint) {
+void TableViewTabKey::closeEditor(QWidget* editor, QAbstractItemDelegate::EndEditHint hint) {
     if (hint == QAbstractItemDelegate::NoHint) {
         QTableView::closeEditor(editor, QAbstractItemDelegate::SubmitModelCache);
         return;
@@ -56,7 +56,7 @@ void TableViewTabKey::closeEditor(QWidget *editor, QAbstractItemDelegate::EndEdi
     QTableView::closeEditor(editor, hint);
 }
 
-void TableViewTabKey::keyPressEvent(QKeyEvent *event) {
+void TableViewTabKey::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Tab) {
         setNextIndex();
         return;

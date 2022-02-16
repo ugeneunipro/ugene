@@ -38,7 +38,7 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 ////SpideySupportTask
 
-SpideyAlignmentTask::SpideyAlignmentTask(const SplicedAlignmentTaskConfig &settings, const QString &annDescription)
+SpideyAlignmentTask::SpideyAlignmentTask(const SplicedAlignmentTaskConfig& settings, const QString& annDescription)
     : SplicedAlignmentTask("SpideySupportTask", TaskFlags_NR_FOSCOE, settings),
       annDescription(annDescription) {
     GCOUNTER(cvar, "SpideySupportTask");
@@ -48,7 +48,7 @@ SpideyAlignmentTask::SpideyAlignmentTask(const SplicedAlignmentTaskConfig &setti
 }
 
 void SpideyAlignmentTask::prepare() {
-    //Add new subdir for temporary files
+    // Add new subdir for temporary files
     tmpDirUrl = ExternalToolSupportUtils::createTmpDir(SpideySupport::SPIDEY_TMP_DIR, stateInfo);
     CHECK_OP(stateInfo, );
 
@@ -57,8 +57,8 @@ void SpideyAlignmentTask::prepare() {
     addSubTask(prepareDataForSpideyTask);
 }
 
-QList<Task *> SpideyAlignmentTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> SpideyAlignmentTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
 
     propagateSubtaskError();
 
@@ -70,7 +70,7 @@ QList<Task *> SpideyAlignmentTask::onSubTaskFinished(Task *subTask) {
         SAFE_POINT(!prepareDataForSpideyTask->getResultPath().isEmpty(), "Invalid result path!", res);
 
         tmpOutputUrl = prepareDataForSpideyTask->getResultPath();
-        const QStringList &arguments = prepareDataForSpideyTask->getArgumentsList();
+        const QStringList& arguments = prepareDataForSpideyTask->getArgumentsList();
 
         spideyTask = new ExternalToolRunTask(SpideySupport::ET_SPIDEY_ID, arguments, new SpideyLogParser());
         spideyTask->setSubtaskProgressWeight(95);
@@ -80,7 +80,7 @@ QList<Task *> SpideyAlignmentTask::onSubTaskFinished(Task *subTask) {
             if (AppContext::getExternalToolRegistry()->getById(SpideySupport::ET_SPIDEY_ID)->isValid()) {
                 stateInfo.setError(tr("Output file not found"));
             } else {
-                ExternalTool *spideyTool = AppContext::getExternalToolRegistry()->getById(SpideySupport::ET_SPIDEY_ID);
+                ExternalTool* spideyTool = AppContext::getExternalToolRegistry()->getById(SpideySupport::ET_SPIDEY_ID);
                 SAFE_POINT(nullptr != spideyTool, "Invalid Spidey tool!", res);
                 stateInfo.setError(
                     tr("Output file not found. May be %1 tool path '%2' not valid?")
@@ -167,9 +167,9 @@ int SpideyLogParser::getProgress() {
 //////////////////////////////////////////
 ////PrepareInput
 
-PrepareInputForSpideyTask::PrepareInputForSpideyTask(const U2SequenceObject *dna,
-                                                     const U2SequenceObject *mRna,
-                                                     const QString &outputDirPath)
+PrepareInputForSpideyTask::PrepareInputForSpideyTask(const U2SequenceObject* dna,
+                                                     const U2SequenceObject* mRna,
+                                                     const QString& outputDirPath)
     : Task("PrepareInputForSpideyTask", TaskFlags_FOSCOE), dnaObj(dna), mRnaObj(mRna),
       outputDir(outputDirPath) {
 }
@@ -195,7 +195,7 @@ void PrepareInputForSpideyTask::run() {
     argumentList.append("-i");
     argumentList.append(dnaPath);
 
-    //writing mRNA
+    // writing mRNA
 
     const QString mRnaPath = outputDir + "/" + MRNA_NAME;
     StreamShortReadWriter mRnaWriter;
@@ -220,9 +220,9 @@ void PrepareInputForSpideyTask::run() {
 //////////////////////////////////////////
 ////SpideySupportTask
 
-SpideySupportTask::SpideySupportTask(const SplicedAlignmentTaskConfig &cfg,
-                                     AnnotationTableObject *ao,
-                                     const QString &annDescription)
+SpideySupportTask::SpideySupportTask(const SplicedAlignmentTaskConfig& cfg,
+                                     AnnotationTableObject* ao,
+                                     const QString& annDescription)
     : Task("SpideySupportTask", TaskFlags_NR_FOSCOE),
       spideyAlignmentTask(new SpideyAlignmentTask(cfg, annDescription)), aObj(ao) {
 }
@@ -231,8 +231,8 @@ void SpideySupportTask::prepare() {
     addSubTask(spideyAlignmentTask);
 }
 
-QList<Task *> SpideySupportTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> SpideySupportTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
 
     if (hasError() || isCanceled()) {
         return res;
@@ -252,4 +252,4 @@ QList<Task *> SpideySupportTask::onSubTaskFinished(Task *subTask) {
     return res;
 }
 
-}    //namespace U2
+}  // namespace U2

@@ -35,7 +35,7 @@ class StateLock;
 class U2CORE_EXPORT RemoveMultipleDocumentsTask : public Task {
     Q_OBJECT
 public:
-    RemoveMultipleDocumentsTask(Project *p, const QList<Document *> &docs, bool saveModifiedDocs, bool useGUI);
+    RemoveMultipleDocumentsTask(Project* p, const QList<Document*>& docs, bool saveModifiedDocs, bool useGUI);
     ~RemoveMultipleDocumentsTask();
 
     virtual void prepare();
@@ -46,7 +46,7 @@ private:
     QPointer<Project> p;
     bool saveModifiedDocs;
     bool useGUI;
-    StateLock *lock;
+    StateLock* lock;
     QList<QPointer<Document>> docPtrs;
 };
 

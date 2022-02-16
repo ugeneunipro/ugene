@@ -31,17 +31,17 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtils"
 static qint64 counter = QDateTime::currentMSecsSinceEpoch();
 
-QString GTUtils::genUniqueString(const QString &prefix) {
+QString GTUtils::genUniqueString(const QString& prefix) {
     counter++;
     return prefix + "_" + QString ::number(counter);
 }
 
 #define GT_METHOD_NAME "checkServiceIsEnabled"
-void GTUtils::checkServiceIsEnabled(HI::GUITestOpStatus &os, const QString &serviceName) {
+void GTUtils::checkServiceIsEnabled(HI::GUITestOpStatus& os, const QString& serviceName) {
     for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        QList<Service *> services = AppContext::getServiceRegistry()->getServices();
-        foreach (Service *service, services) {
+        QList<Service*> services = AppContext::getServiceRegistry()->getServices();
+        foreach (Service* service, services) {
             if (service->getName() == serviceName && service->isEnabled()) {
                 return;
             }
@@ -52,7 +52,7 @@ void GTUtils::checkServiceIsEnabled(HI::GUITestOpStatus &os, const QString &serv
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "matchText"
-bool GTUtils::matchText(HI::GUITestOpStatus &os, const QString &textInTest, const QString &textInUi, const Qt::MatchFlags &matchFlags) {
+bool GTUtils::matchText(HI::GUITestOpStatus& os, const QString& textInTest, const QString& textInUi, const Qt::MatchFlags& matchFlags) {
     Qt::CaseSensitivity caseSensitivity = matchFlags.testFlag(Qt::MatchCaseSensitive) ? Qt::CaseSensitive : Qt::CaseInsensitive;
     if (matchFlags.testFlag(Qt::MatchExactly)) {
         return QString::compare(textInTest, textInUi, caseSensitivity) == 0;
@@ -67,7 +67,7 @@ bool GTUtils::matchText(HI::GUITestOpStatus &os, const QString &textInTest, cons
 }
 #undef GT_METHOD_NAME
 
-QString GTUtils::rectToString(const QRect &rect) {
+QString GTUtils::rectToString(const QRect& rect) {
     return "QRect(" + QString::number(rect.x()) + ", " +
            QString::number(rect.y()) + ", " +
            QString::number(rect.width()) + ", " +

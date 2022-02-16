@@ -34,7 +34,7 @@ namespace Workflow {
  */
 class U2LANG_EXPORT ActorDocument : public QTextDocument {
 public:
-    ActorDocument(Actor *a)
+    ActorDocument(Actor* a)
         : QTextDocument(a), target(a) {
     }
     virtual ~ActorDocument() {
@@ -43,11 +43,11 @@ public:
     // actor's description is changed when attribute value changes
     // e.g. "read sequence from '1.fa'"
     // see realization in PrompterBaseImpl
-    virtual void update(const QVariantMap &) = 0;
+    virtual void update(const QVariantMap&) = 0;
 
 protected:
     // document's target
-    Actor *target;
+    Actor* target;
 
 };  // ActorDocument
 
@@ -56,7 +56,7 @@ protected:
  */
 class U2LANG_EXPORT Prompter {
 public:
-    virtual ActorDocument *createDescription(Actor *) = 0;
+    virtual ActorDocument* createDescription(Actor*) = 0;
     virtual ~Prompter() {
     }
 };  // Prompter

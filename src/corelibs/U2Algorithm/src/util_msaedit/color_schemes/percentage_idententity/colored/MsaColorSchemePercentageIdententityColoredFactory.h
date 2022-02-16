@@ -29,9 +29,9 @@ namespace U2 {
 class MsaColorSchemePercentageIdententityColoredFactory : public MsaColorSchemeFactory {
     Q_OBJECT
 public:
-    MsaColorSchemePercentageIdententityColoredFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets);
+    MsaColorSchemePercentageIdententityColoredFactory(QObject* parent, const QString& id, const QString& name, const AlphabetFlags& supportedAlphabets);
 
-    MsaColorScheme *create(QObject *parent, MultipleAlignmentObject *maObj) const;
+    MsaColorScheme* create(QObject* parent, MultipleAlignmentObject* maObj) const;
 };
 
 }  // namespace U2

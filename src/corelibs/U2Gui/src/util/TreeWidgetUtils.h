@@ -32,10 +32,10 @@ class TreeWidgetVisitor {
 public:
     virtual ~TreeWidgetVisitor() {
     }
-    virtual bool isChildVisitRequired(QTreeWidgetItem *) {
+    virtual bool isChildVisitRequired(QTreeWidgetItem*) {
         return true;
     }
-    virtual void visit(QTreeWidgetItem *item) = 0;
+    virtual void visit(QTreeWidgetItem* item) = 0;
 };
 
 class U2GUI_EXPORT TreeWidgetUtils {
@@ -44,7 +44,7 @@ private:
     }
 
 public:
-    static void visitDFS(QTreeWidget *tree, TreeWidgetVisitor *visitor);
+    static void visitDFS(QTreeWidget* tree, TreeWidgetVisitor* visitor);
 };
 
 }  // namespace U2

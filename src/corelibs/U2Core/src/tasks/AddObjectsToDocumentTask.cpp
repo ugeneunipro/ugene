@@ -30,12 +30,12 @@
 
 namespace U2 {
 
-AddObjectsToDocumentTask::AddObjectsToDocumentTask(QList<GObject *> &_objects, Document *_doc)
+AddObjectsToDocumentTask::AddObjectsToDocumentTask(QList<GObject*>& _objects, Document* _doc)
     : Task(tr("Add objects to document"), TaskFlags_FOSE_COSC | TaskFlag_NoRun), objects(_objects), doc(_doc) {
 }
 
 void AddObjectsToDocumentTask::prepare() {
-    foreach (GObject *obj, objects) {
+    foreach (GObject* obj, objects) {
         if (obj->isUnloaded()) {
             continue;
         }
@@ -43,9 +43,9 @@ void AddObjectsToDocumentTask::prepare() {
     }
 }
 
-QList<Task *> AddObjectsToDocumentTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> result;
-    CloneObjectTask *cloneTask = qobject_cast<CloneObjectTask *>(subTask);
+QList<Task*> AddObjectsToDocumentTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> result;
+    CloneObjectTask* cloneTask = qobject_cast<CloneObjectTask*>(subTask);
     CHECK(cloneTask != nullptr, result);
     doc->addObject(cloneTask->takeResult());
     return result;

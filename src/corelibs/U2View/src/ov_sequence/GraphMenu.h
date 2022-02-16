@@ -38,17 +38,17 @@ class DNAAlphabet;
 class U2VIEW_EXPORT GraphAction : public QAction {
     Q_OBJECT
 public:
-    GraphAction(GSequenceGraphFactory *);
+    GraphAction(GSequenceGraphFactory*);
 
 private:
-    GSequenceGraphFactory *factory;
-    GSequenceGraphView *view;
+    GSequenceGraphFactory* factory;
+    GSequenceGraphView* view;
     bool isBookmarkUpdate;
     QList<QVariant> positions;
 
 private slots:
     void sl_handleGraphAction();
-    void sl_updateGraphView(const QStringList &, const QVariantMap &);
+    void sl_updateGraphView(const QStringList&, const QVariantMap&);
     void sl_renderError();
 };
 
@@ -58,17 +58,17 @@ private slots:
 class U2VIEW_EXPORT GraphMenuAction : public ADVSequenceWidgetAction {
     Q_OBJECT
 public:
-    GraphMenuAction(const DNAAlphabet *a);
-    static void addGraphAction(ADVSequenceObjectContext *, GraphAction *);
+    GraphMenuAction(const DNAAlphabet* a);
+    static void addGraphAction(ADVSequenceObjectContext*, GraphAction*);
 public slots:
     void sl_closeAllGraphs();
 
 private:
     static const QString ACTION_NAME;
-    QMenu *menu;
-    QAction *separator;
+    QMenu* menu;
+    QAction* separator;
 
-    static GraphMenuAction *findGraphMenuAction(ADVSequenceObjectContext *);
+    static GraphMenuAction* findGraphMenuAction(ADVSequenceObjectContext*);
 };
 
 }  // namespace U2

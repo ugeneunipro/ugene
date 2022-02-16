@@ -46,7 +46,7 @@ static const int LONG_NOTCH_START = 3;
 static const int LONG_NOTCH_END = 18;
 static const int LABELS_END = LONG_NOTCH_END + 2;
 
-AssemblyRuler::AssemblyRuler(AssemblyBrowserUi *ui_)
+AssemblyRuler::AssemblyRuler(AssemblyBrowserUi* ui_)
     : QWidget(ui_), ui(ui_), browser(ui->getWindow()), model(ui->getModel()), cursorPos(0),
       showCoords(AssemblyBrowserSettings::getShowCoordsOnRuler()),
       showCoverage(AssemblyBrowserSettings::getShowCoverageOnRuler()) {
@@ -55,7 +55,7 @@ AssemblyRuler::AssemblyRuler(AssemblyBrowserUi *ui_)
     sl_redraw();
     setMouseTracking(true);
 
-    QObject *startPositionParent = new QObject(this);
+    QObject* startPositionParent = new QObject(this);
     startPositionParent->setObjectName("start position");
     startPositionObject = new QObject(startPositionParent);
 
@@ -99,7 +99,7 @@ int numOfDigits(qint64 n) {
 }
 }  // namespace
 
-void AssemblyRuler::drawCursor(QPainter &p) {
+void AssemblyRuler::drawCursor(QPainter& p) {
     // 1. draw the cursor itself
     p.setPen(Qt::darkRed);
     p.drawLine(cursorPos, BORDER_NOTCH_START, cursorPos, BORDER_NOTCH_END);
@@ -138,14 +138,14 @@ void AssemblyRuler::drawCursor(QPainter &p) {
     // 5. draw cached labels. Skip labels intersecting the cursor label
     assert(cachedLabelsRects.size() == cachedLabels.size());
     for (int i = 0; i < cachedLabels.size(); i++) {
-        const QRect &labelRect = cachedLabelsRects.at(i);
+        const QRect& labelRect = cachedLabelsRects.at(i);
         if (!labelRect.intersects(offsetRect)) {
             p.drawImage(labelRect, cachedLabels.at(i));
         }
     }
 }
 
-void AssemblyRuler::drawRuler(QPainter &p) {
+void AssemblyRuler::drawRuler(QPainter& p) {
     cachedLabelsRects.clear();
     cachedLabels.clear();
     p.setPen(Qt::black);
@@ -211,7 +211,7 @@ void AssemblyRuler::drawRuler(QPainter &p) {
     }
 }
 
-void AssemblyRuler::sl_handleMoveToPos(const QPoint &pos) {
+void AssemblyRuler::sl_handleMoveToPos(const QPoint& pos) {
     int cellWidth = browser->getCellWidth();
     if (cellWidth == 0) {
         cursorPos = pos.x();
@@ -229,12 +229,12 @@ void AssemblyRuler::sl_handleMoveToPos(const QPoint &pos) {
     }
 }
 
-void AssemblyRuler::paintEvent(QPaintEvent *e) {
+void AssemblyRuler::paintEvent(QPaintEvent* e) {
     drawAll();
     QWidget::paintEvent(e);
 }
 
-void AssemblyRuler::mouseMoveEvent(QMouseEvent *e) {
+void AssemblyRuler::mouseMoveEvent(QMouseEvent* e) {
     sl_handleMoveToPos(e->pos());
     QWidget::mouseMoveEvent(e);
 }

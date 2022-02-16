@@ -38,15 +38,15 @@ namespace U2 {
 class U2CORE_EXPORT HttpFileAdapterFactory : public IOAdapterFactory {
     Q_OBJECT
 public:
-    HttpFileAdapterFactory(QObject *p = nullptr);
+    HttpFileAdapterFactory(QObject* p = nullptr);
 
-    virtual IOAdapter *createIOAdapter();
+    virtual IOAdapter* createIOAdapter();
 
     virtual IOAdapterId getAdapterId() const {
         return BaseIOAdapters::HTTP_FILE;
     }
 
-    virtual const QString &getAdapterName() const {
+    virtual const QString& getAdapterName() const {
         return name;
     }
 
@@ -54,9 +54,9 @@ public:
         return m == IOAdapterMode_Read;
     }  // read-only
 
-    QNetworkProxy getProxyByUrl(const QUrl &url) const;
+    QNetworkProxy getProxyByUrl(const QUrl& url) const;
 
-    virtual TriState isResourceAvailable(const GUrl &) const {
+    virtual TriState isResourceAvailable(const GUrl&) const {
         return TriState_Unknown;
     }
 
@@ -67,8 +67,8 @@ protected:
 class U2CORE_EXPORT GzippedHttpFileAdapterFactory : public HttpFileAdapterFactory {
     Q_OBJECT
 public:
-    GzippedHttpFileAdapterFactory(QObject *obj = 0);
-    virtual IOAdapter *createIOAdapter();
+    GzippedHttpFileAdapterFactory(QObject* obj = 0);
+    virtual IOAdapter* createIOAdapter();
     virtual IOAdapterId getAdapterId() const {
         return BaseIOAdapters::GZIPPED_HTTP_FILE;
     }
@@ -77,12 +77,12 @@ public:
 class U2CORE_EXPORT HttpFileAdapter : public IOAdapter {
     Q_OBJECT
 public:
-    HttpFileAdapter(HttpFileAdapterFactory *f, QObject *o = nullptr);
+    HttpFileAdapter(HttpFileAdapterFactory* f, QObject* o = nullptr);
     ~HttpFileAdapter();
 
-    virtual bool open(const GUrl &url, IOAdapterMode m);
+    virtual bool open(const GUrl& url, IOAdapterMode m);
 
-    bool open(const QUrl &url, const QNetworkProxy &p);
+    bool open(const QUrl& url, const QNetworkProxy& p);
 
     virtual bool isOpen() const {
         return (bool)reply;
@@ -90,9 +90,9 @@ public:
 
     virtual void close();
 
-    virtual qint64 readBlock(char *data, qint64 maxSize);
+    virtual qint64 readBlock(char* data, qint64 maxSize);
 
-    virtual qint64 writeBlock(const char *data, qint64 size);
+    virtual qint64 writeBlock(const char* data, qint64 size);
 
     virtual bool skip(qint64 nBytes);
 
@@ -124,7 +124,7 @@ private:
         return -1 == begin_ptr && 0 == end_ptr;
     }
     void popFront();
-    void readFromChunk(char *data, int size);
+    void readFromChunk(char* data, int size);
     void skipFromChunk(qint64 size);
     qint64 skipAhead(qint64 nBytes);
     qint64 waitData(qint64 until);
@@ -136,8 +136,8 @@ private:
     int begin_ptr;  // pointer to the first byte of data in first chunk
     int end_ptr;  // pointer to the first free byte in last chunk
 
-    QNetworkAccessManager *netManager;
-    QNetworkReply *reply;
+    QNetworkAccessManager* netManager;
+    QNetworkReply* reply;
     bool badstate;
     bool is_downloaded;
     int downloaded;
@@ -151,7 +151,7 @@ private slots:
     void add_data();
     void done();
     void progress(qint64 done, qint64 total);
-    void onProxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *);
+    void onProxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*);
 };
 
 }  // namespace U2

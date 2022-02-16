@@ -79,7 +79,7 @@ const QString AlignToReferenceBlastCmdlineTask::ROW_NAMING_ARG = "row-naming-pol
 const QString AlignToReferenceBlastCmdlineTask::REF_ARG = "reference";
 const QString AlignToReferenceBlastCmdlineTask::RESULT_ALIGNMENT_ARG = "result-url";
 
-AlignToReferenceBlastCmdlineTask::AlignToReferenceBlastCmdlineTask(const Settings &settings)
+AlignToReferenceBlastCmdlineTask::AlignToReferenceBlastCmdlineTask(const Settings& settings)
     : Task(tr("Map Sanger reads to reference"), TaskFlags_FOSE_COSC | TaskFlag_MinimizeSubtaskErrorText | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
       settings(settings),
       reportFile(AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath() + "/align_to_ref_XXXXXX.txt") {
@@ -101,7 +101,7 @@ void AlignToReferenceBlastCmdlineTask::prepare() {
     QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(referenceUrl, config);
     CHECK_EXT(!formats.isEmpty() && (nullptr != formats.first().format), setError(tr("wrong reference format")), );
 
-    DocumentFormat *format = formats.first().format;
+    DocumentFormat* format = formats.first().format;
     CHECK_EXT(format->getSupportedObjectTypes().contains(GObjectTypes::SEQUENCE), setError(tr("wrong reference format")), );
 
     loadRef = new LoadDocumentTask(format->getFormatId(),
@@ -118,7 +118,7 @@ static const QString ID = "id";
 static const QString CLASS_WORKER = "worker";
 static const QString CLASS_TASK = "task";
 
-QMap<QString, QMultiMap<QString, QString>> splitReports(U2OpStatus &os, const QString &reportString) {
+QMap<QString, QMultiMap<QString, QString>> splitReports(U2OpStatus& os, const QString& reportString) {
     QMap<QString, QMultiMap<QString, QString>> result;
     QDomDocument document;
     document.setContent("<html><body>" + reportString + "</body></html>");
@@ -160,7 +160,7 @@ QString AlignToReferenceBlastCmdlineTask::generateReport() const {
     }
 
     QRegExp readNameExtractor(".*\'(.*)\'.*");
-    foreach (const QString &taskReport, trimReports.values()) {
+    foreach (const QString& taskReport, trimReports.values()) {
         readNameExtractor.indexIn(taskReport);
         resultReport += "<tr><td width=50></td><td width=300 nowrap>" + readNameExtractor.cap(1) + "</td></tr>";
     }
@@ -172,8 +172,8 @@ QString AlignToReferenceBlastCmdlineTask::generateReport() const {
     return resultReport;
 }
 
-QList<Task *> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> result;
+QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> result;
     CHECK(subTask != nullptr, result);
     CHECK(!subTask->isCanceled() && !subTask->hasError(), result);
     if (loadRef == subTask) {
@@ -212,10 +212,10 @@ QList<Task *> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask)
         QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(settings.resultAlignmentFile, config);
         CHECK_EXT(!formats.isEmpty() && (nullptr != formats.first().format), setError(tr("wrong output format")), result);
 
-        DocumentFormat *format = formats.first().format;
+        DocumentFormat* format = formats.first().format;
         CHECK_EXT(format->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT), setError(tr("wrong output format")), result);
 
-        Task *loadTask = AppContext::getProjectLoader()->openWithProjectTask(settings.resultAlignmentFile);
+        Task* loadTask = AppContext::getProjectLoader()->openWithProjectTask(settings.resultAlignmentFile);
         AppContext::getTaskScheduler()->registerTopLevelTask(loadTask);
     }
 
@@ -234,7 +234,7 @@ Task::ReportResult AlignToReferenceBlastCmdlineTask::report() {
     return ReportResult_Finished;
 }
 
-AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
+AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget* parent)
     : QDialog(parent),
       saveController(nullptr),
       savableWidget(this) {
@@ -292,7 +292,7 @@ void AlignToReferenceBlastDialog::accept() {
     }
     QStringList readUrls;
     for (int i = 0; i < readsListWidget->count(); i++) {
-        QListWidgetItem *item = readsListWidget->item(i);
+        QListWidgetItem* item = readsListWidget->item(i);
         SAFE_POINT(item != nullptr, "Item is NULL", );
         QString s = item->text();
         readUrls.append(s);
@@ -349,7 +349,7 @@ void AlignToReferenceBlastDialog::sl_addRead() {
 
     QStringList readFiles = U2FileDialog::getOpenFileNames(this, tr("Select File(s) with Read(s)"), lod.dir, filter);
     CHECK(!readFiles.isEmpty(), );
-    for (const QString &read : qAsConst(readFiles)) {
+    for (const QString& read : qAsConst(readFiles)) {
         if (readsListWidget->findItems(read, Qt::MatchExactly).isEmpty()) {
             readsListWidget->addItem(read);
         }
@@ -357,16 +357,16 @@ void AlignToReferenceBlastDialog::sl_addRead() {
 }
 
 void AlignToReferenceBlastDialog::sl_removeRead() {
-    QList<QListWidgetItem *> selection = readsListWidget->selectedItems();
+    QList<QListWidgetItem*> selection = readsListWidget->selectedItems();
     CHECK(!selection.isEmpty(), );
 
-    for (QListWidgetItem *item : qAsConst(selection)) {
+    for (QListWidgetItem* item : qAsConst(selection)) {
         readsListWidget->takeItem(readsListWidget->row(item));
     }
     qDeleteAll(selection);
 }
 
-void AlignToReferenceBlastDialog::sl_referenceChanged(const QString &newRef) {
+void AlignToReferenceBlastDialog::sl_referenceChanged(const QString& newRef) {
     if (outputLineEdit->text() != defaultOutputUrl) {  // file name is set by user -> do not change
         return;
     }
@@ -381,7 +381,7 @@ void AlignToReferenceBlastDialog::connectSlots() {
     connect(setReferenceButton, SIGNAL(clicked(bool)), SLOT(sl_setReference()));
     connect(addReadButton, SIGNAL(clicked(bool)), SLOT(sl_addRead()));
     connect(removeReadButton, SIGNAL(clicked(bool)), SLOT(sl_removeRead()));
-    connect(referenceLineEdit, SIGNAL(textChanged(const QString &)), SLOT(sl_referenceChanged(const QString &)));
+    connect(referenceLineEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_referenceChanged(const QString&)));
 }
 
 }  // namespace U2

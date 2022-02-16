@@ -46,7 +46,7 @@ GObjectReference MaEditorState::getMaObjectRef() const {
     return stateData.contains(MA_OBJ) ? stateData[MA_OBJ].value<GObjectReference>() : GObjectReference();
 }
 
-void MaEditorState::setMaObjectRef(const GObjectReference &ref) {
+void MaEditorState::setMaObjectRef(const GObjectReference& ref) {
     stateData[MA_OBJ] = QVariant::fromValue<GObjectReference>(ref);
 }
 
@@ -58,7 +58,7 @@ QFont MaEditorState::getFont() const {
     return QFont();
 }
 
-void MaEditorState::setFont(const QFont &f) {
+void MaEditorState::setFont(const QFont& f) {
     stateData[FONT] = f;
 }
 
@@ -98,18 +98,18 @@ void MaEditorState::setZoomFactor(double zoomFactor) {
     stateData[ZOOM_FACTOR] = zoomFactor;
 }
 
-QVariantMap MaEditorState::saveState(MaEditor *v) {
+QVariantMap MaEditorState::saveState(MaEditor* v) {
     MaEditorState ss;
     ss.stateData[VIEW_ID] = v->getFactoryId();
 
-    MultipleAlignmentObject *maObj = v->getMaObject();
+    MultipleAlignmentObject* maObj = v->getMaObject();
     if (maObj) {
         ss.setMaObjectRef(GObjectReference(maObj));
     }
 
-    MaEditorWgt *wgt = v->getUI();
+    MaEditorWgt* wgt = v->getUI();
     SAFE_POINT(wgt != nullptr, "MaEditorWgt is NULL", QVariantMap());
-    ScrollController *scrollController = wgt->getScrollController();
+    ScrollController* scrollController = wgt->getScrollController();
     SAFE_POINT(scrollController != nullptr, "ScrollController is NULL", QVariantMap());
 
     int firstBase = scrollController->getFirstVisibleBase();

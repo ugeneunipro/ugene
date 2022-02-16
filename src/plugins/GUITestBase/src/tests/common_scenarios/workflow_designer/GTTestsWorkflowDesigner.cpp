@@ -76,12 +76,12 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //  Expected state: workflow schema opened in Workflow designer
     //    2. Change item style (Minimal - Extended - Minimal - Extended)
-    QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView"));
+    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "sceneView"));
     CHECK_SET_ERR(sceneView, "scene not found");
-    QList<QGraphicsItem *> items = sceneView->items();
+    QList<QGraphicsItem*> items = sceneView->items();
     QList<QPointF> posList;
 
-    foreach (QGraphicsItem *item, items) {
+    foreach (QGraphicsItem* item, items) {
         posList.append(item->pos());
     }
 
@@ -93,7 +93,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
 
     //  Expected state: all arrows in schema still unbroken
     items = sceneView->items();
-    foreach (QGraphicsItem *item, items) {
+    foreach (QGraphicsItem* item, items) {
         QPointF p = posList.takeFirst();
         CHECK_SET_ERR(p == item->pos(), QString("some item changed position from %1, %2 to %3, %4").arg(p.x()).arg(p.y()).arg(item->pos().x()).arg(item->pos().y()));
     }
@@ -106,7 +106,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: workflow schema opened in Workflow designer
-    QTableView *table = qobject_cast<QTableView *>(GTWidget::findWidget(os, "table"));
+    QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, "table"));
     CHECK_SET_ERR(table, "tableView not found");
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write Genbank"));
     GTMouseDriver::click();
@@ -150,10 +150,10 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsWorkflowDesigner::addAlgorithm(os, "read alignment");
     // Expected state: item style on loaded schema must be Minimal
     StyleId id;
-    QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView"));
-    QList<QGraphicsItem *> items = sceneView->items();
-    foreach (QGraphicsItem *item, items) {
-        WorkflowProcessItem *s = qgraphicsitem_cast<WorkflowProcessItem *>(item);
+    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "sceneView"));
+    QList<QGraphicsItem*> items = sceneView->items();
+    foreach (QGraphicsItem* item, items) {
+        WorkflowProcessItem* s = qgraphicsitem_cast<WorkflowProcessItem*>(item);
         if (s) {
             id = s->getStyle();
             CHECK_SET_ERR(id == "simple", "items style is not minimal");
@@ -177,10 +177,10 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     GTUtilsWorkflowDesigner::addAlgorithm(os, "read alignment");
     // Expected state: item style on loaded schema must be Minimal
     StyleId id;
-    QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView"));
-    QList<QGraphicsItem *> items = sceneView->items();
-    foreach (QGraphicsItem *item, items) {
-        WorkflowProcessItem *s = qgraphicsitem_cast<WorkflowProcessItem *>(item);
+    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "sceneView"));
+    QList<QGraphicsItem*> items = sceneView->items();
+    foreach (QGraphicsItem* item, items) {
+        WorkflowProcessItem* s = qgraphicsitem_cast<WorkflowProcessItem*>(item);
         if (s) {
             id = s->getStyle();
             CHECK_SET_ERR(id == "ext", "items style is not minimal");
@@ -212,13 +212,13 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
     //    2. Clear dashboard (select all + del button)
-    QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView"));
+    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "sceneView"));
     CHECK_SET_ERR(sceneView, "scene not found");
-    QList<QGraphicsItem *> items = sceneView->items();
+    QList<QGraphicsItem*> items = sceneView->items();
     QList<QPointF> posList;
 
-    foreach (QGraphicsItem *item, items) {
-        if (qgraphicsitem_cast<WorkflowProcessItem *>(item))
+    foreach (QGraphicsItem* item, items) {
+        if (qgraphicsitem_cast<WorkflowProcessItem*>(item))
             posList.append(item->pos());
     }
 
@@ -229,11 +229,11 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
     //    Expected state: items and links between them painted correctly
-    QList<QGraphicsItem *> items1 = sceneView->items();
+    QList<QGraphicsItem*> items1 = sceneView->items();
     QList<QPointF> posList1;
 
-    foreach (QGraphicsItem *item, items1) {
-        if (qgraphicsitem_cast<WorkflowProcessItem *>(item))
+    foreach (QGraphicsItem* item, items1) {
+        if (qgraphicsitem_cast<WorkflowProcessItem*>(item))
             posList1.append(item->pos());
     }
 
@@ -247,8 +247,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence", true);
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Sequence", true);
 
-    WorkflowProcessItem *read = GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence");
-    WorkflowProcessItem *write = GTUtilsWorkflowDesigner::getWorker(os, "Write Sequence");
+    WorkflowProcessItem* read = GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence");
+    WorkflowProcessItem* write = GTUtilsWorkflowDesigner::getWorker(os, "Write Sequence");
     GTUtilsWorkflowDesigner::connect(os, read, write);
     /*GTUtilsWorkflowDesigner::addAlgorithm(os,"hmm build");
 
@@ -272,10 +272,10 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
     //    2. Select output port.
-    WorkflowProcessItem *gr = GTUtilsWorkflowDesigner::getWorker(os, "Call Variants");
-    QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView"));
-    QList<WorkflowPortItem *> list = gr->getPortItems();
-    foreach (WorkflowPortItem *p, list) {
+    WorkflowProcessItem* gr = GTUtilsWorkflowDesigner::getWorker(os, "Call Variants");
+    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "sceneView"));
+    QList<WorkflowPortItem*> list = gr->getPortItems();
+    foreach (WorkflowPortItem* p, list) {
         if (p && p->getPort()->getId() == "out-variations") {
             QPointF scenePButton = p->mapToScene(p->boundingRect().center());
             QPoint viewP = sceneView->mapFromScene(scenePButton);
@@ -284,20 +284,20 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
             GTMouseDriver::click();
         }
     }
-    QTextEdit *doc = qobject_cast<QTextEdit *>(GTWidget::findWidget(os, "doc"));
+    QTextEdit* doc = qobject_cast<QTextEdit*>(GTWidget::findWidget(os, "doc"));
     CHECK_SET_ERR(doc->document()->toPlainText().contains("Output port \"Output variations"), "expected text not found");
 
     //    Expected state: in property editor 'Output port' item appears
 
     //    3. Select input port.
-    WorkflowPortItem *in = GTUtilsWorkflowDesigner::getPortById(os, gr, "in-assembly");
+    WorkflowPortItem* in = GTUtilsWorkflowDesigner::getPortById(os, gr, "in-assembly");
     QPointF scenePButton = in->mapToScene(in->boundingRect().center());
     QPoint viewP = sceneView->mapFromScene(scenePButton);
     QPoint globalBottomRightPos = sceneView->viewport()->mapToGlobal(viewP);
     GTMouseDriver::moveTo(globalBottomRightPos);
     GTMouseDriver::click();
 
-    doc = qobject_cast<QTextEdit *>(GTWidget::findWidget(os, "doc"));
+    doc = qobject_cast<QTextEdit*>(GTWidget::findWidget(os, "doc"));
     CHECK_SET_ERR(doc->document()->toPlainText().contains("Input port \"Input assembly"), "expected text not found");
     //    Expected state: in property editor 'Input port' item appears
 }
@@ -340,7 +340,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     //    2. Place Read align element on schema
     GTUtilsWorkflowDesigner::addAlgorithm(os, "read alignment");
     //    3. Press button "Configure command line aliases"
-    QMap<QPoint *, QString> map;
+    QMap<QPoint*, QString> map;
     QPoint p(1, 0);
     // map.i
     map[&p] = "qqq";
@@ -380,7 +380,7 @@ GUI_TEST_CLASS_DEFINITION(test_0058) {
     // Expected: Workflow Designer is opened.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    QWidget *wdView = GTUtilsMdi::activeWindow(os);
+    QWidget* wdView = GTUtilsMdi::activeWindow(os);
     CHECK_OP(os, );
     CHECK_SET_ERR(wdView->objectName() == "Workflow Designer", "Wrong mdi window " + wdView->objectName());
 }
@@ -395,9 +395,9 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
     // Expected state: all sequence objects has the corresponding region in its name
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    WorkflowProcessItem *readSeq = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
-    WorkflowProcessItem *seqByAnns = GTUtilsWorkflowDesigner::addElement(os, "Get Sequences by Annotations", true);
-    WorkflowProcessItem *writeSeq = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence", true);
+    WorkflowProcessItem* readSeq = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
+    WorkflowProcessItem* seqByAnns = GTUtilsWorkflowDesigner::addElement(os, "Get Sequences by Annotations", true);
+    WorkflowProcessItem* writeSeq = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence", true);
 
     GTUtilsWorkflowDesigner::connect(os, readSeq, seqByAnns);
     GTUtilsWorkflowDesigner::connect(os, seqByAnns, writeSeq);
@@ -467,11 +467,11 @@ GUI_TEST_CLASS_DEFINITION(test_0061) {
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    WorkflowProcessItem *item = GTUtilsWorkflowDesigner::addElement(os, "Call Variants with SAMtools");
+    WorkflowProcessItem* item = GTUtilsWorkflowDesigner::addElement(os, "Call Variants with SAMtools");
     CHECK_SET_ERR(item != nullptr, "Failed to add Call variants element");
     GTUtilsWorkflowDesigner::click(os, "Call Variants with SAMtools");
 
-    WorkflowPortItem *port = GTUtilsWorkflowDesigner::getPortById(os, item, "in-sequence");
+    WorkflowPortItem* port = GTUtilsWorkflowDesigner::getPortById(os, item, "in-sequence");
     CHECK_SET_ERR(port != nullptr, "Cannot get in-sequence port 1");
     CHECK_SET_ERR(!port->isVisible(), "In-sequence port is unexpectedly visible");
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::isParameterVisible(os, "Reference"), "Reference parameter is not visible");
@@ -510,7 +510,7 @@ GUI_TEST_CLASS_DEFINITION(test_0062) {
     // Test for SnpEff genome parameter
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    WorkflowProcessItem *snpEffItem = GTUtilsWorkflowDesigner::addElement(os, "SnpEff Annotation and Filtration");
+    WorkflowProcessItem* snpEffItem = GTUtilsWorkflowDesigner::addElement(os, "SnpEff Annotation and Filtration");
     CHECK_SET_ERR(snpEffItem != nullptr, "Failed to add SnpEff Annotation and Filtration element");
 
     GTUtilsDialog::waitForDialog(os, new SnpEffDatabaseDialogFiller(os, "hg19"));

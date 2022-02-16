@@ -31,14 +31,14 @@
 #include <U2Lang/DbiDataHandler.h>
 #include <U2Lang/WorkflowContext.h>
 
-const char *VARIATIONS_COUNT_LABEL = "Count of variations: ";
+const char* VARIATIONS_COUNT_LABEL = "Count of variations: ";
 
 namespace U2 {
 
 using namespace Workflow;
 
-VariationTrackMessageTranslator::VariationTrackMessageTranslator(const QVariant &atomicMessage,
-                                                                 WorkflowContext *initContext)
+VariationTrackMessageTranslator::VariationTrackMessageTranslator(const QVariant& atomicMessage,
+                                                                 WorkflowContext* initContext)
     : BaseMessageTranslator(atomicMessage, initContext) {
     SAFE_POINT(source.canConvert<SharedDbiDataHandler>(), "Message doesn't contain dbi reference", );
     SharedDbiDataHandler dbId = source.value<SharedDbiDataHandler>();
@@ -53,7 +53,7 @@ QString VariationTrackMessageTranslator::getTranslation() const {
     DbiConnection connection(variantTrackRef.dbiRef, os);
     SAFE_POINT_OP(os, QString());
 
-    U2VariantDbi *dbi = connection.dbi->getVariantDbi();
+    U2VariantDbi* dbi = connection.dbi->getVariantDbi();
     SAFE_POINT(nullptr != dbi, "Invalid variation DBI!", QString());
     const U2DataId variantId = variantTrackRef.entityId;
     const int variantCount = dbi->getVariantCount(variantId, os);

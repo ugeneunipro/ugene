@@ -35,17 +35,17 @@ class FindHighFlexRegionsListener;
 
 class FindHighFlexRegionsAlgorithm : public Task {
 public:
-    static void find(FindHighFlexRegionsListener *resultsListener,
-                     const HighFlexSettings &settings,
+    static void find(FindHighFlexRegionsListener* resultsListener,
+                     const HighFlexSettings& settings,
                      const QByteArray sequence,
                      const int seqLength,
-                     int &stopFlag,
-                     int &percentsCompleted);
+                     int& stopFlag,
+                     int& percentsCompleted);
 
     static double flexibilityAngle(char firstNucleotide, char secondNucleotide);
 
 private:
-    static void addToResults(FindHighFlexRegionsListener *listener, const HighFlexResult &result);
+    static void addToResults(FindHighFlexRegionsListener* listener, const HighFlexResult& result);
 };
 
 }  // namespace U2

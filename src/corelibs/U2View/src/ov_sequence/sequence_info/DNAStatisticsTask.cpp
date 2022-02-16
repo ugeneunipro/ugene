@@ -148,7 +148,7 @@ static QMap<char, QByteArray> createRnaAlphabetResolutionMap() {
     return res;
 }
 
-static void fillMapWithAvarageValues(QVector<QVector<int>> &map, const QMap<char, QByteArray> &alphabetResolutionMap) {
+static void fillMapWithAvarageValues(QVector<QVector<int>>& map, const QMap<char, QByteArray>& alphabetResolutionMap) {
     foreach (const char i, alphabetResolutionMap.keys()) {
         foreach (const char j, alphabetResolutionMap.keys()) {
             if (0 == map[i][j]) {
@@ -330,9 +330,9 @@ const QVector<double> DNAStatisticsTask::pKaMap = createPKAMap();
 const QVector<int> DNAStatisticsTask::PROTEIN_CHARGES_MAP = createChargeMap();
 const QVector<double> DNAStatisticsTask::GC_RATIO_MAP = createGcRatioMap();
 
-DNAStatisticsTask::DNAStatisticsTask(const DNAAlphabet *alphabet,
+DNAStatisticsTask::DNAStatisticsTask(const DNAAlphabet* alphabet,
                                      const U2EntityRef seqRef,
-                                     const QVector<U2Region> &regions)
+                                     const QVector<U2Region>& regions)
     : BackgroundTask<DNAStatistics>(tr("Calculate sequence statistics"), TaskFlag_None),
       alphabet(alphabet),
       seqRef(seqRef),
@@ -355,7 +355,7 @@ void DNAStatisticsTask::computeStats() {
     DbiConnection dbiConnection(seqRef.dbiRef, os);
     CHECK_OP(os, );
 
-    U2SequenceDbi *sequenceDbi = dbiConnection.dbi->getSequenceDbi();
+    U2SequenceDbi* sequenceDbi = dbiConnection.dbi->getSequenceDbi();
     CHECK(sequenceDbi != nullptr, );
     SAFE_POINT_EXT(alphabet != nullptr, setError(tr("Alphabet is NULL")), );
     qint64 totalLength = U2Region::sumLength(regions);
@@ -367,15 +367,15 @@ void DNAStatisticsTask::computeStats() {
         return;
     }
 
-    foreach (const U2Region &region, regions) {
+    foreach (const U2Region& region, regions) {
         QList<U2Region> blocks = U2Region::split(region, 1024 * 1024);
-        foreach (const U2Region &block, blocks) {
+        foreach (const U2Region& block, blocks) {
             if (isCanceled() || hasError()) {
                 break;
             }
             const QByteArray seqBlock = sequenceDbi->getSequenceData(seqRef.entityId, block, os);
             CHECK_OP(os, );
-            const char *sequenceData = seqBlock.constData();
+            const char* sequenceData = seqBlock.constData();
 
             int previousChar = U2Msa::GAP_CHAR;
             for (int i = 0, n = seqBlock.size(); i < n; i++) {
@@ -394,7 +394,7 @@ void DNAStatisticsTask::computeStats() {
 
             if (alphabet->isNucleic()) {
                 const QByteArray rcSeqBlock = DNASequenceUtils::reverseComplement(seqBlock, alphabet);
-                const char *rcSequenceData = rcSeqBlock.constData();
+                const char* rcSequenceData = rcSeqBlock.constData();
 
                 int previousRcChar = U2Msa::GAP_CHAR;
                 for (int i = 0, n = rcSeqBlock.size(); i < n; i++) {
@@ -426,7 +426,7 @@ void DNAStatisticsTask::computeStats() {
 
         // Calculating molecular weight
         // Source: http://www.basic.northwestern.edu/biotools/oligocalc.html
-        const QVector<double> *molecularWeightMap = nullptr;
+        const QVector<double>* molecularWeightMap = nullptr;
         if (alphabet->isRNA()) {
             molecularWeightMap = &RNA_MOLECULAR_WEIGHT_MAP;
         } else if (alphabet->isDNA()) {
@@ -445,8 +445,8 @@ void DNAStatisticsTask::computeStats() {
 
         // Calculating extinction coefficient
         // Source: http://www.owczarzy.net/extinctionDNA.htm
-        const MononucleotidesExtinctionCoefficientsMap *mononucleotideExtinctionCoefficientsMap = nullptr;
-        const DinucleotidesExtinctionCoefficientsMap *dinucleotideExtinctionCoefficientsMap = nullptr;
+        const MononucleotidesExtinctionCoefficientsMap* mononucleotideExtinctionCoefficientsMap = nullptr;
+        const DinucleotidesExtinctionCoefficientsMap* dinucleotideExtinctionCoefficientsMap = nullptr;
         if (alphabet->isRNA()) {
             mononucleotideExtinctionCoefficientsMap = &RNA_MONONUCLEOTIDES_EXTINCTION_COEFFICIENTS;
             dinucleotideExtinctionCoefficientsMap = &RNA_DINUCLEOTIDES_EXTINCTION_COEFFICIENTS;
@@ -512,18 +512,18 @@ void DNAStatisticsTask::computeStats() {
     }
 }
 
-double DNAStatisticsTask::calcPi(U2SequenceDbi *sequenceDbi) {
+double DNAStatisticsTask::calcPi(U2SequenceDbi* sequenceDbi) {
     U2OpStatus2Log os;
     QVector<qint64> countMap(256, 0);
-    foreach (const U2Region &region, regions) {
+    foreach (const U2Region& region, regions) {
         QList<U2Region> blocks = U2Region::split(region, 1024 * 1024);
-        foreach (const U2Region &block, blocks) {
+        foreach (const U2Region& block, blocks) {
             if (isCanceled() || hasError()) {
                 break;
             }
             QByteArray seqBlock = sequenceDbi->getSequenceData(seqRef.entityId, block, os);
             CHECK_OP(os, 0);
-            const char *sequenceData = seqBlock.constData();
+            const char* sequenceData = seqBlock.constData();
             for (int i = 0, n = seqBlock.size(); i < n; i++) {
                 char c = sequenceData[i];
                 if (pKaMap[c] != 0) {
@@ -553,7 +553,7 @@ double DNAStatisticsTask::calcPi(U2SequenceDbi *sequenceDbi) {
     return pH;
 }
 
-double DNAStatisticsTask::calcChargeState(const QVector<qint64> &countMap, double pH) {
+double DNAStatisticsTask::calcChargeState(const QVector<qint64>& countMap, double pH) {
     double chargeState = 0.;
     for (int i = 0; i < countMap.length(); i++) {
         if (isCanceled() || hasError()) {

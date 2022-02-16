@@ -39,8 +39,8 @@ class CreateCircularBranchesTask : public CreateBranchesTask {
 
 private:
     qreal coef;
-    GraphicsRectangularBranchItem *root1;
-    GraphicsCircularBranchItem *getBranch(GraphicsRectangularBranchItem *r, GraphicsCircularBranchItem *parent);
+    GraphicsRectangularBranchItem* root1;
+    GraphicsCircularBranchItem* getBranch(GraphicsRectangularBranchItem* r, GraphicsCircularBranchItem* parent);
     bool degeneratedCase;
 
     static const qreal DEGENERATED_WIDTH;
@@ -48,7 +48,7 @@ private:
     static const qreal SCALE;
 
 public:
-    CreateCircularBranchesTask(GraphicsRectangularBranchItem *r, bool degeneratedCase = false);
+    CreateCircularBranchesTask(GraphicsRectangularBranchItem* r, bool degeneratedCase = false);
     void run() override;
 };
 

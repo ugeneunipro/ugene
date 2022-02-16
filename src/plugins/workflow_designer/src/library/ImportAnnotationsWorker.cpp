@@ -62,23 +62,23 @@ void ImportAnnotationsWorker::init() {
     assert(inPort && outPort);
 }
 
-Task *ImportAnnotationsWorker::tick() {
+Task* ImportAnnotationsWorker::tick() {
     if (inPort->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(inPort);
         QList<QString> urls = WorkflowUtils::expandToUrls(
             actor->getParameter(BaseAttributes::URL_IN_ATTRIBUTE().getId())->getAttributeValue<QString>(context));
 
-        QList<Task *> loadTasks;
-        foreach (const QString &url, urls) {
-            LoadDocumentTask *loadDocTask = LoadDocumentTask::getDefaultLoadDocTask(url);
+        QList<Task*> loadTasks;
+        foreach (const QString& url, urls) {
+            LoadDocumentTask* loadDocTask = LoadDocumentTask::getDefaultLoadDocTask(url);
             if (loadDocTask == nullptr) {
                 qDeleteAll(loadTasks);
                 return new FailTask(L10N::errorOpeningFileRead(url));
             }
             loadTasks << loadDocTask;
         }
-        Task *ret = new MultiTask(tr("Load documents with annotations"), loadTasks);
-        connect(new TaskSignalMapper(ret), SIGNAL(si_taskFinished(Task *)), SLOT(sl_docsLoaded(Task *)));
+        Task* ret = new MultiTask(tr("Load documents with annotations"), loadTasks);
+        connect(new TaskSignalMapper(ret), SIGNAL(si_taskFinished(Task*)), SLOT(sl_docsLoaded(Task*)));
 
         addTaskAnnotations(inputMessage.getData(), ret);
         return ret;
@@ -89,7 +89,7 @@ Task *ImportAnnotationsWorker::tick() {
     return nullptr;
 }
 
-void ImportAnnotationsWorker::addTaskAnnotations(const QVariant &data, Task *t) {
+void ImportAnnotationsWorker::addTaskAnnotations(const QVariant& data, Task* t) {
     QVariantMap dataMap = data.toMap();
     if (dataMap.contains(BaseSlots::ANNOTATION_TABLE_SLOT().getId())) {
         const QList<SharedAnnotationData> result = StorageUtils::getAnnotationTable(context->getDataStorage(),
@@ -98,34 +98,34 @@ void ImportAnnotationsWorker::addTaskAnnotations(const QVariant &data, Task *t) 
     }
 }
 
-static QList<SharedAnnotationData> getAnnsFromDoc(Document *doc) {
+static QList<SharedAnnotationData> getAnnsFromDoc(Document* doc) {
     QList<SharedAnnotationData> ret;
     if (nullptr == doc) {
         return ret;
     }
-    QList<GObject *> objs = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
-    foreach (GObject *obj, objs) {
-        AnnotationTableObject *annObj = qobject_cast<AnnotationTableObject *>(obj);
+    QList<GObject*> objs = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
+    foreach (GObject* obj, objs) {
+        AnnotationTableObject* annObj = qobject_cast<AnnotationTableObject*>(obj);
         if (nullptr == annObj) {
             continue;
         }
-        foreach (Annotation *a, annObj->getAnnotations()) {
+        foreach (Annotation* a, annObj->getAnnotations()) {
             ret << a->getData();
         }
     }
     return ret;
 }
 
-void ImportAnnotationsWorker::sl_docsLoaded(Task *ta) {
-    MultiTask *t = qobject_cast<MultiTask *>(ta);
+void ImportAnnotationsWorker::sl_docsLoaded(Task* ta) {
+    MultiTask* t = qobject_cast<MultiTask*>(ta);
     if (nullptr == t || t->hasError()) {
         return;
     }
 
     QList<SharedAnnotationData> anns = annsMap.value(t);
-    QList<Task *> loadSubs = t->getTasks();
-    foreach (Task *s, loadSubs) {
-        LoadDocumentTask *sub = qobject_cast<LoadDocumentTask *>(s);
+    QList<Task*> loadSubs = t->getTasks();
+    foreach (Task* s, loadSubs) {
+        LoadDocumentTask* sub = qobject_cast<LoadDocumentTask*>(s);
         if (nullptr == sub || sub->hasError()) {
             continue;
         }
@@ -143,7 +143,7 @@ void ImportAnnotationsWorker::cleanup() {
  *********************************/
 void ImportAnnotationsWorkerFactory::init() {
     // ports description
-    QList<PortDescriptor *> portDescs;
+    QList<PortDescriptor*> portDescs;
     {
         QMap<Descriptor, DataTypePtr> inM;
         inM[BaseSlots::ANNOTATION_TABLE_SLOT()] = BaseTypes::ANNOTATION_TABLE_LIST_TYPE();
@@ -158,7 +158,7 @@ void ImportAnnotationsWorkerFactory::init() {
         portDescs << new PortDescriptor(outPortDesc, outSet, false);
     }
     // attributes description
-    QList<Attribute *> attrs;
+    QList<Attribute*> attrs;
     {
         attrs << new Attribute(BaseAttributes::URL_IN_ATTRIBUTE(), BaseTypes::STRING_TYPE(), true);
     }
@@ -166,10 +166,10 @@ void ImportAnnotationsWorkerFactory::init() {
     Descriptor protoDesc(ImportAnnotationsWorkerFactory::ACTOR_ID,
                          ImportAnnotationsWorker::tr("Merge Annotations"),
                          ImportAnnotationsWorker::tr("Read input annotation table and merge it with supplied annotation tables."));
-    ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
+    ActorPrototype* proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
 
     // proto delegates
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         delegates[BaseAttributes::URL_IN_ATTRIBUTE().getId()] = new URLDelegate(
             FileFilters::createFileFilterByObjectTypes({GObjectTypes::ANNOTATION_TABLE}), "", true, false, false);
@@ -180,7 +180,7 @@ void ImportAnnotationsWorkerFactory::init() {
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new ImportAnnotationsWorkerFactory());
 }
 
-Worker *ImportAnnotationsWorkerFactory::createWorker(Actor *a) {
+Worker* ImportAnnotationsWorkerFactory::createWorker(Actor* a) {
     return new ImportAnnotationsWorker(a);
 }
 

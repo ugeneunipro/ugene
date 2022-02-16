@@ -32,11 +32,11 @@ namespace U2 {
 
 void PrimerLibraryMdiWindow::showLibrary() {
     GCOUNTER(cvar, "Primer Library");
-    MWMDIManager *mdiManager = AppContext::getMainWindow()->getMDIManager();
+    MWMDIManager* mdiManager = AppContext::getMainWindow()->getMDIManager();
     SAFE_POINT(nullptr != mdiManager, L10N::nullPointerError("MDI Manager"), );
 
     static const QString title = tr("Primer Library");
-    foreach (MWMDIWindow *mdiWindow, mdiManager->getWindows()) {
+    foreach (MWMDIWindow* mdiWindow, mdiManager->getWindows()) {
         if (title == mdiWindow->windowTitle()) {
             mdiManager->activateWindow(mdiWindow);
             return;
@@ -46,18 +46,18 @@ void PrimerLibraryMdiWindow::showLibrary() {
     mdiManager->addMDIWindow(new PrimerLibraryMdiWindow(title));
 }
 
-PrimerLibraryMdiWindow::PrimerLibraryMdiWindow(const QString &title)
+PrimerLibraryMdiWindow::PrimerLibraryMdiWindow(const QString& title)
     : MWMDIWindow(title) {
-    QVBoxLayout *l = new QVBoxLayout(this);
+    QVBoxLayout* l = new QVBoxLayout(this);
     l->setMargin(0);
 
-    PrimerLibraryWidget *libraryWidget = new PrimerLibraryWidget(this);
+    PrimerLibraryWidget* libraryWidget = new PrimerLibraryWidget(this);
     l->addWidget(libraryWidget);
     connect(libraryWidget, SIGNAL(si_close()), SLOT(sl_closeWindow()));
 }
 
 void PrimerLibraryMdiWindow::sl_closeWindow() {
-    MWMDIManager *mdiManager = AppContext::getMainWindow()->getMDIManager();
+    MWMDIManager* mdiManager = AppContext::getMainWindow()->getMDIManager();
     SAFE_POINT(nullptr != mdiManager, L10N::nullPointerError("MDI Manager"), );
 
     mdiManager->closeMDIWindow(this);

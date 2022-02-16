@@ -55,7 +55,7 @@ public:
     static const uint BLIND_INPUT = 1 << 16;
 
 public:
-    IntegralBusPort(const PortDescriptor &d, Actor *p);
+    IntegralBusPort(const PortDescriptor& d, Actor* p);
 
     virtual DataTypePtr getType() const;
     DataTypePtr getOwnType() const {
@@ -63,30 +63,30 @@ public:
     }
 
     // slot is list pairs (actorId:attrId);(actorId:attrId);(actorId:attrId)...
-    Actor *getProducer(const QString &slot);
-    QList<Actor *> getProducers(const QString &slot);
-    Actor *getLinkedActorById(ActorId id) const;
+    Actor* getProducer(const QString& slot);
+    QList<Actor*> getProducers(const QString& slot);
+    Actor* getLinkedActorById(ActorId id) const;
     SlotPathMap getPaths() const;
-    QList<QStringList> getPathsBySlotsPair(const QString &dest, const QString &src) const;
-    void setPathsBySlotsPair(const QString &dest, const QString &src, const QList<QStringList> &paths);
-    void addPathBySlotsPair(const QString &dest, const QString &src, const QStringList &path);
+    QList<QStringList> getPathsBySlotsPair(const QString& dest, const QString& src) const;
+    void setPathsBySlotsPair(const QString& dest, const QString& src, const QList<QStringList>& paths);
+    void addPathBySlotsPair(const QString& dest, const QString& src, const QStringList& path);
     void clearPaths();
 
     // find matching data and assign it
     void setupBusMap();
 
-    virtual bool validate(NotificationsList &notificationList) const;
+    virtual bool validate(NotificationsList& notificationList) const;
     // reimplemented from Configuration
-    virtual void remap(const QMap<ActorId, ActorId> &);
-    virtual void updateBindings(const QMap<ActorId, ActorId> &actorsMapping);
-    virtual void replaceActor(Actor *oldActor, Actor *newActor, const QList<PortMapping> &mappings);
-    virtual void setVisibleSlot(const QString &slotId, const bool isVisible);
+    virtual void remap(const QMap<ActorId, ActorId>&);
+    virtual void updateBindings(const QMap<ActorId, ActorId>& actorsMapping);
+    virtual void replaceActor(Actor* oldActor, Actor* newActor, const QList<PortMapping>& mappings);
+    virtual void setVisibleSlot(const QString& slotId, const bool isVisible);
 
     // used when loading schema
-    void setBusMapValue(const QString &slotId, const QString &value);
+    void setBusMapValue(const QString& slotId, const QString& value);
 
     /** input ports only */
-    void copyInput(IntegralBusPort *port, const PortMapping &mapping);
+    void copyInput(IntegralBusPort* port, const PortMapping& mapping);
 
 protected:
     virtual DataTypePtr getBusType() const;
@@ -95,8 +95,8 @@ protected:
     mutable bool recursing;
 
 private:
-    void removeBusMapKey(const QString &slotId);
-    void restoreBusMapKey(const QString &slotId);
+    void removeBusMapKey(const QString& slotId);
+    void restoreBusMapKey(const QString& slotId);
     StrStrMap getBusMap() const;
     SlotPathMap getPathsMap() const;
 
@@ -110,13 +110,13 @@ private:
  */
 class U2LANG_EXPORT IntegralBusActorPrototype : public ActorPrototype {
 public:
-    IntegralBusActorPrototype(const Descriptor &desc,
-                              const QList<PortDescriptor *> &ports = QList<PortDescriptor *>(),
-                              const QList<Attribute *> &attrs = QList<Attribute *>())
+    IntegralBusActorPrototype(const Descriptor& desc,
+                              const QList<PortDescriptor*>& ports = QList<PortDescriptor*>(),
+                              const QList<Attribute*>& attrs = QList<Attribute*>())
         : ActorPrototype(desc, ports, attrs) {
     }
 
-    virtual Port *createPort(const PortDescriptor &d, Actor *p) {
+    virtual Port* createPort(const PortDescriptor& d, Actor* p) {
         return new IntegralBusPort(d, p);
     }
 
@@ -127,14 +127,14 @@ public:
  */
 class U2LANG_EXPORT ScreenedSlotValidator : public ConfigurationValidator {
 public:
-    ScreenedSlotValidator(const QString &slot)
+    ScreenedSlotValidator(const QString& slot)
         : screenedSlots(slot) {
     }
-    ScreenedSlotValidator(const QStringList &slotList)
+    ScreenedSlotValidator(const QStringList& slotList)
         : screenedSlots(slotList) {
     }
-    static bool validate(const QStringList &screenedSlots, const IntegralBusPort *, NotificationsList &notificationList);
-    virtual bool validate(const Configuration *, NotificationsList &notificationList) const;
+    static bool validate(const QStringList& screenedSlots, const IntegralBusPort*, NotificationsList& notificationList);
+    virtual bool validate(const Configuration*, NotificationsList& notificationList) const;
 
 protected:
     QStringList screenedSlots;
@@ -147,12 +147,12 @@ protected:
  */
 class U2LANG_EXPORT ScreenedParamValidator : public ConfigurationValidator {
 public:
-    ScreenedParamValidator(const QString &id, const QString &port, const QString &slot);
+    ScreenedParamValidator(const QString& id, const QString& port, const QString& slot);
     virtual ~ScreenedParamValidator() {
     }
 
-    virtual bool validate(const Configuration *, NotificationsList &notificationList) const;
-    QString validate(const Configuration *cfg) const;
+    virtual bool validate(const Configuration*, NotificationsList& notificationList) const;
+    QString validate(const Configuration* cfg) const;
 
     QString getId() const {
         return id;
@@ -174,21 +174,21 @@ protected:
 class U2LANG_EXPORT IntegralBusSlot {
 public:
     IntegralBusSlot();
-    IntegralBusSlot(const QString &slotId, const QString &portId, const ActorId &actorId);
+    IntegralBusSlot(const QString& slotId, const QString& portId, const ActorId& actorId);
 
     QString getId() const;
     QString portId() const;
     ActorId actorId() const;
 
-    void replaceActorId(const ActorId &oldId, const ActorId &newId);
+    void replaceActorId(const ActorId& oldId, const ActorId& newId);
 
     QString toString() const;
-    static QString listToString(const QList<IntegralBusSlot> &slotList);
+    static QString listToString(const QList<IntegralBusSlot>& slotList);
 
-    static IntegralBusSlot fromString(const QString &slotString, U2OpStatus &os);
-    static QList<IntegralBusSlot> listFromString(const QString &slotsString, U2OpStatus &os);
+    static IntegralBusSlot fromString(const QString& slotString, U2OpStatus& os);
+    static QList<IntegralBusSlot> listFromString(const QString& slotsString, U2OpStatus& os);
 
-    bool operator==(const IntegralBusSlot &) const;
+    bool operator==(const IntegralBusSlot&) const;
 
 private:
     QString id;
@@ -201,14 +201,14 @@ private:
 
 class U2LANG_EXPORT PortValidator : public ConfigurationValidator {
 public:
-    virtual bool validate(const Configuration *cfg, NotificationsList &notificationList) const;
-    virtual bool validate(const IntegralBusPort *port, NotificationsList &notificationList) const = 0;
+    virtual bool validate(const Configuration* cfg, NotificationsList& notificationList) const;
+    virtual bool validate(const IntegralBusPort* port, NotificationsList& notificationList) const = 0;
 
 public:
-    static StrStrMap getBusMap(const IntegralBusPort *port);
-    static QString slotName(const IntegralBusPort *port, const QString &slotId);
-    static bool isBinded(const IntegralBusPort *port, const QString &slotId);
-    static bool isBinded(const StrStrMap &busMap, const QString &slotId);
+    static StrStrMap getBusMap(const IntegralBusPort* port);
+    static QString slotName(const IntegralBusPort* port, const QString& slotId);
+    static bool isBinded(const IntegralBusPort* port, const QString& slotId);
+    static bool isBinded(const StrStrMap& busMap, const QString& slotId);
 };
 
 }  // namespace Workflow

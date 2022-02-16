@@ -23,11 +23,11 @@
 
 namespace U2 {
 
-SlotMapping::SlotMapping(const QString &srcSlotId, const QString &dstSlotId)
+SlotMapping::SlotMapping(const QString& srcSlotId, const QString& dstSlotId)
     : IdMapping(srcSlotId, dstSlotId) {
 }
 
-void SlotMapping::validate(DataTypePtr srcSlotType, DataTypePtr dstSlotType, U2OpStatus &os) const {
+void SlotMapping::validate(DataTypePtr srcSlotType, DataTypePtr dstSlotType, U2OpStatus& os) const {
     if (srcSlotType != dstSlotType) {
         os.setError(QObject::tr("Slots %1, %2 have different types").arg(srcId).arg(dstId));
     }

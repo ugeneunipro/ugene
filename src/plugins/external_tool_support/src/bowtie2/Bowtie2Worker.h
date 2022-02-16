@@ -34,14 +34,14 @@ namespace LocalWorkflow {
 class Bowtie2Worker : public BaseShortReadsAlignerWorker {
     Q_OBJECT
 public:
-    Bowtie2Worker(Actor *p);
+    Bowtie2Worker(Actor* p);
 
 protected:
     QVariantMap getCustomParameters() const;
     QString getDefaultFileName() const;
     QString getBaseSubdir() const;
-    void setGenomeIndex(DnaAssemblyToRefTaskSettings &settings);
-};    // Bowtie2Worker
+    void setGenomeIndex(DnaAssemblyToRefTaskSettings& settings);
+};  // Bowtie2Worker
 
 class Bowtie2WorkerFactory : public BaseShortReadsAlignerWorkerFactory {
 public:
@@ -51,10 +51,10 @@ public:
         : BaseShortReadsAlignerWorkerFactory(ACTOR_ID) {
     }
     static void init();
-    virtual Worker *createWorker(Actor *a);
-};    // Bowtie2WorkerFactory
+    virtual Worker* createWorker(Actor* a);
+};  // Bowtie2WorkerFactory
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_BOWTIE2_SUPPORT_WORKER_
+#endif  // _U2_BOWTIE2_SUPPORT_WORKER_

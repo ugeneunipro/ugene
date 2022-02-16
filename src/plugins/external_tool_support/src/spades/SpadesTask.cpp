@@ -49,7 +49,7 @@ const QString SpadesTask::YAML_FILE_NAME = "datasets.yaml";
 const QString SpadesTask::CONTIGS_NAME = "contigs.fasta";
 const QString SpadesTask::SCAFFOLDS_NAME = "scaffolds.fasta";
 
-SpadesTask::SpadesTask(const GenomeAssemblyTaskSettings &settings)
+SpadesTask::SpadesTask(const GenomeAssemblyTaskSettings& settings)
     : GenomeAssemblyTask(settings, TaskFlags_NR_FOSCOE) {
     GCOUNTER(cvar, "SpadesTask");
 }
@@ -102,7 +102,7 @@ void SpadesTask::prepare() {
     arguments.append("-o");
     arguments.append(settings.outDir.getURLString());
 
-    //it uses system call gzip. it might not be installed
+    // it uses system call gzip. it might not be installed
     arguments.append("--disable-gzip-output");
 
     assemblyTask = new ExternalToolRunTask(SpadesSupport::ET_SPADES_ID, arguments, new SpadesLogParser(), settings.outDir.getURLString());
@@ -141,8 +141,8 @@ QString SpadesTask::getContigsUrl() const {
     return contigsUrl;
 }
 
-QList<Task *> SpadesTask::onSubTaskFinished(Task * /*subTask*/) {
-    QList<Task *> result;
+QList<Task*> SpadesTask::onSubTaskFinished(Task* /*subTask*/) {
+    QList<Task*> result;
     return result;
 }
 
@@ -154,7 +154,7 @@ void SpadesTask::writeYamlReads() {
     }
     QString res = "";
     res.append("[\n");
-    foreach (const AssemblyReads &r, settings.reads) {
+    foreach (const AssemblyReads& r, settings.reads) {
         res.append("{\n");
 
         const bool isLibraryPaired = GenomeAssemblyUtils::isLibraryPaired(r.libName);
@@ -167,18 +167,18 @@ void SpadesTask::writeYamlReads() {
         if (!isLibraryPaired || r.readType == TYPE_INTERLACED) {
             res.append(QString("%1: [\n").arg(r.readType));
 
-            foreach (const GUrl &url, r.left) {
+            foreach (const GUrl& url, r.left) {
                 res.append(QString("\"%1\",\n").arg(url.getURLString()));
             }
             res.append("]\n");
         } else {
             res.append("left reads: [\n");
-            foreach (const GUrl &url, r.left) {
+            foreach (const GUrl& url, r.left) {
                 res.append(QString("\"%1\",\n").arg(url.getURLString()));
             }
             res.append("],\n");
             res.append("right reads: [\n");
-            foreach (const GUrl &url, r.right) {
+            foreach (const GUrl& url, r.right) {
                 res.append(QString("\"%1\",\n").arg(url.getURLString()));
             }
             res.append("],\n");
@@ -193,7 +193,7 @@ void SpadesTask::writeYamlReads() {
 
 // SpadesTaskFactory
 
-GenomeAssemblyTask *SpadesTaskFactory::createTaskInstance(const GenomeAssemblyTaskSettings &settings) {
+GenomeAssemblyTask* SpadesTaskFactory::createTaskInstance(const GenomeAssemblyTaskSettings& settings) {
     return new SpadesTask(settings);
 }
 
@@ -201,7 +201,7 @@ SpadesLogParser::SpadesLogParser()
     : ExternalToolLogParser() {
 }
 
-void SpadesLogParser::parseOutput(const QString &partOfLog) {
+void SpadesLogParser::parseOutput(const QString& partOfLog) {
     lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
     lastPartOfLog.first() = lastLine + lastPartOfLog.first();
     lastLine = lastPartOfLog.takeLast();
@@ -217,7 +217,7 @@ void SpadesLogParser::parseOutput(const QString &partOfLog) {
     }
 }
 
-void SpadesLogParser::parseErrOutput(const QString &partOfLog) {
+void SpadesLogParser::parseErrOutput(const QString& partOfLog) {
     lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
     lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
     lastErrLine = lastPartOfLog.takeLast();
@@ -233,4 +233,4 @@ void SpadesLogParser::parseErrOutput(const QString &partOfLog) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

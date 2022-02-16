@@ -32,11 +32,11 @@ namespace LocalWorkflow {
 class SchemaWorker : public BaseWorker {
     Q_OBJECT
 public:
-    SchemaWorker(Actor *a);
+    SchemaWorker(Actor* a);
 
     bool isReady() const;
     bool isDone() const;
-    Task *tick();
+    Task* tick();
     void init();
     void cleanup();
 };
@@ -46,8 +46,8 @@ public:
     SchemaWorkerFactory(QString name)
         : DomainFactory(name) {
     }
-    static bool init(Schema *schema, const QString &name, const QString &actorFilePath);
-    virtual Worker *createWorker(Actor *a) {
+    static bool init(Schema* schema, const QString& name, const QString& actorFilePath);
+    virtual Worker* createWorker(Actor* a) {
         return new SchemaWorker(a);
     }
 };
@@ -55,7 +55,7 @@ public:
 class SchemaWorkerPrompter : public PrompterBase<SchemaWorkerPrompter> {
     Q_OBJECT
 public:
-    SchemaWorkerPrompter(Actor *p = nullptr)
+    SchemaWorkerPrompter(Actor* p = nullptr)
         : PrompterBase<SchemaWorkerPrompter>(p) {
     }
     QString composeRichDoc();

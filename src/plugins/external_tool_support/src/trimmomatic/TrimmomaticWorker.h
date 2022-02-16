@@ -33,31 +33,31 @@ namespace LocalWorkflow {
 class TrimmomaticWorker : public BaseDatasetWorker {
     Q_OBJECT
 public:
-    TrimmomaticWorker(Actor *actor);
+    TrimmomaticWorker(Actor* actor);
 
     void init() override;
     void cleanup() override;
 
 protected:
-    Task *createPrepareTask(U2OpStatus &os) const override;
-    void onPrepared(Task *task, U2OpStatus &os) override;
+    Task* createPrepareTask(U2OpStatus& os) const override;
+    void onPrepared(Task* task, U2OpStatus& os) override;
 
-    Task *createTask(const QList<Message> &messages) const override;
-    QVariantMap getResult(Task *workerTask, U2OpStatus &os) const override;
-    MessageMetadata generateMetadata(const QString &datasetName) const override;
+    Task* createTask(const QList<Message>& messages) const override;
+    QVariantMap getResult(Task* workerTask, U2OpStatus& os) const override;
+    MessageMetadata generateMetadata(const QString& datasetName) const override;
 
 private:
-    TrimmomaticTaskSettings getSettings(const Message &message, const QString &dirForResults) const;
+    TrimmomaticTaskSettings getSettings(const Message& message, const QString& dirForResults) const;
 
     // Set a value of an URL parameter that can be "Auto":
     // use the specified value if available or, if it is empty,
     // generate the value autoamtically as follows:
     // working_dir/input_file_name+suffix.input_file_extension
     // Roll the file name, if required.
-    QString setAutoUrl(const QString &paramId, const QString &inputFile, const QString &workingDir, const QString &fileNameSuffix) const;
-    QPair<QString, QString> getAbsoluteAndCopiedPathFromStep(const QString &trimmingStep) const;
+    QString setAutoUrl(const QString& paramId, const QString& inputFile, const QString& workingDir, const QString& fileNameSuffix) const;
+    QPair<QString, QString> getAbsoluteAndCopiedPathFromStep(const QString& trimmingStep) const;
     void changeAdapters();
-    void processMetadata(QList<Task *> tasks) const;
+    void processMetadata(QList<Task*> tasks) const;
 
     mutable QStringList copiedAdapters;
     mutable QSet<QString> excludedUrls;
@@ -75,7 +75,7 @@ private:
     static const QString LOG_FILE_NAME_ENDING;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_TRIMMOMATIC_WORKER_H_
+#endif  // _U2_TRIMMOMATIC_WORKER_H_

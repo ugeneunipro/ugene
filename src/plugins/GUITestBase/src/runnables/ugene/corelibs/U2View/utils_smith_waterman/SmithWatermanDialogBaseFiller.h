@@ -36,11 +36,11 @@ public:
                   Cancel };
     enum SwRealization { CLASSIC,
                          SSE2 };
-    SmithWatermanDialogFiller(HI::GUITestOpStatus &_os, const QString &_pattern = "", const GTRegionSelector::RegionSelectorSettings &_s = GTRegionSelector::RegionSelectorSettings(), SwRealization _realization = CLASSIC);
+    SmithWatermanDialogFiller(HI::GUITestOpStatus& _os, const QString& _pattern = "", const GTRegionSelector::RegionSelectorSettings& _s = GTRegionSelector::RegionSelectorSettings(), SwRealization _realization = CLASSIC);
 
-    SmithWatermanDialogFiller(HI::GUITestOpStatus &_os, SwRealization _realization, const SmithWatermanSettings::SWResultView _resultView, const QString &_resultFilesPath, const QString &_pattern = "", const GTRegionSelector::RegionSelectorSettings &_s = GTRegionSelector::RegionSelectorSettings());
+    SmithWatermanDialogFiller(HI::GUITestOpStatus& _os, SwRealization _realization, const SmithWatermanSettings::SWResultView _resultView, const QString& _resultFilesPath, const QString& _pattern = "", const GTRegionSelector::RegionSelectorSettings& _s = GTRegionSelector::RegionSelectorSettings());
 
-    SmithWatermanDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario);
+    SmithWatermanDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario);
 
     virtual void commonScenario();
     Button button;

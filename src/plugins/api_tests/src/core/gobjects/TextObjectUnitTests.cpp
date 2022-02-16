@@ -49,14 +49,14 @@ U2EntityRef TextObjectTestData::getObjRef() {
     return objRef;
 }
 
-U2ObjectDbi *TextObjectTestData::getObjDbi() {
+U2ObjectDbi* TextObjectTestData::getObjDbi() {
     if (!inited) {
         init();
     }
     return dbiProvider.getDbi()->getObjectDbi();
 }
 
-UdrDbi *TextObjectTestData::getUdrDbi() {
+UdrDbi* TextObjectTestData::getUdrDbi() {
     if (!inited) {
         init();
     }
@@ -134,8 +134,8 @@ IMPLEMENT_TEST(TextObjectUnitTests, clone) {
     TextObject object("object", TextObjectTestData::getObjRef());
 
     U2OpStatusImpl os;
-    GObject *clonedGObj = object.clone(TextObjectTestData::getDbiRef(), os);
-    QScopedPointer<TextObject> cloned(dynamic_cast<TextObject *>(clonedGObj));
+    GObject* clonedGObj = object.clone(TextObjectTestData::getDbiRef(), os);
+    QScopedPointer<TextObject> cloned(dynamic_cast<TextObject*>(clonedGObj));
     CHECK_NO_ERROR(os);
 
     cloned->setText("cloned text");
@@ -148,7 +148,7 @@ IMPLEMENT_TEST(TextObjectUnitTests, clone_NullDbi) {
     TextObject object("object", TextObjectTestData::getObjRef());
 
     U2OpStatusImpl os;
-    GObject *clonedGObj = object.clone(U2DbiRef(), os);
+    GObject* clonedGObj = object.clone(U2DbiRef(), os);
     Q_UNUSED(clonedGObj);
     CHECK_TRUE(os.hasError(), "no error");
 }
@@ -159,7 +159,7 @@ IMPLEMENT_TEST(TextObjectUnitTests, clone_NullObj) {
     TextObject object("object", objRef);
 
     U2OpStatusImpl os;
-    GObject *clonedGObj = object.clone(TextObjectTestData::getDbiRef(), os);
+    GObject* clonedGObj = object.clone(TextObjectTestData::getDbiRef(), os);
     Q_UNUSED(clonedGObj);
     CHECK_TRUE(os.hasError(), "no error");
 }

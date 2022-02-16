@@ -32,7 +32,7 @@ class GraphicsRectangularBranchItem;
 class CreateRectangularBranchesTask : public CreateBranchesTask {
     Q_OBJECT
 public:
-    CreateRectangularBranchesTask(const PhyNode *n);
+    CreateRectangularBranchesTask(const PhyNode* n);
     void run() override;
 
     TreeLayout getLayoutType() const override {
@@ -47,9 +47,9 @@ private:
     int size;
     int current;
     qreal scale;
-    const PhyNode *node;
+    const PhyNode* node;
     qreal minDistance, maxDistance;
-    GraphicsRectangularBranchItem *getBranch(const PhyNode *node);
+    GraphicsRectangularBranchItem* getBranch(const PhyNode* node);
 };
 
 }  // namespace U2

@@ -39,9 +39,9 @@ class U2SequenceObject;
 class U2VIEW_EXPORT ADVAnnotationCreation : public QObject {
     Q_OBJECT
 public:
-    ADVAnnotationCreation(AnnotatedDNAView *v);
+    ADVAnnotationCreation(AnnotatedDNAView* v);
 
-    QAction *getCreateAnnotationAction() const {
+    QAction* getCreateAnnotationAction() const {
         return createAction;
     }
 
@@ -49,24 +49,24 @@ private slots:
     void sl_createAnnotation();
 
 private:
-    AnnotatedDNAView *ctx;
-    QAction *createAction;
+    AnnotatedDNAView* ctx;
+    QAction* createAction;
 };
 
 class U2VIEW_EXPORT ADVCreateAnnotationsTask : public Task {
     Q_OBJECT
 public:
-    ADVCreateAnnotationsTask(AnnotatedDNAView *sequenceView,
-                             const GObjectReference &aobjRef,
-                             const QString &group,
-                             const QList<SharedAnnotationData> &data,
+    ADVCreateAnnotationsTask(AnnotatedDNAView* sequenceView,
+                             const GObjectReference& aobjRef,
+                             const QString& group,
+                             const QList<SharedAnnotationData>& data,
                              bool selectNewAnnotations = true);
 
     ReportResult report();
 
 private:
     QPointer<AnnotatedDNAView> sequenceView;
-    CreateAnnotationsTask *createAnnotationsTask;
+    CreateAnnotationsTask* createAnnotationsTask;
 
     /** If true the created annotations are added to the sequence view selection. */
     bool selectNewAnnotations;

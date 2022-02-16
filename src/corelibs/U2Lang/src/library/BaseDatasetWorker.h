@@ -30,26 +30,26 @@ namespace LocalWorkflow {
 class U2LANG_EXPORT BaseDatasetWorker : public BaseOneOneWorker {
     Q_OBJECT
 public:
-    BaseDatasetWorker(Actor *a, const QString &inPortId, const QString &outPortId);
+    BaseDatasetWorker(Actor* a, const QString& inPortId, const QString& outPortId);
 
     void init();
     void cleanup();
 
 protected:
     // BaseOneOneWorker
-    Task *processNextInputMessage() override;
-    Task *onInputEnded() override;
-    QList<Message> fetchResult(Task *task, U2OpStatus &os) override;
+    Task* processNextInputMessage() override;
+    Task* onInputEnded() override;
+    QList<Message> fetchResult(Task* task, U2OpStatus& os) override;
 
-    virtual Task *createTask(const QList<Message> &messages) const = 0;
-    virtual QVariantMap getResult(Task *task, U2OpStatus &os) const = 0;
-    virtual MessageMetadata generateMetadata(const QString &datasetName) const;
+    virtual Task* createTask(const QList<Message>& messages) const = 0;
+    virtual QVariantMap getResult(Task* task, U2OpStatus& os) const = 0;
+    virtual MessageMetadata generateMetadata(const QString& datasetName) const;
 
 private:
-    QString getDatasetName(const Message &message) const;
-    bool datasetChanged(const Message &message) const;
+    QString getDatasetName(const Message& message) const;
+    bool datasetChanged(const Message& message) const;
     void takeMessage();
-    Task *onDatasetChanged();
+    Task* onDatasetChanged();
 
 private:
     bool datasetInited;

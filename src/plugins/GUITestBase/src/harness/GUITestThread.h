@@ -37,11 +37,11 @@ class Logger;
 class GUITestThread : public QThread {
     Q_OBJECT
 public:
-    GUITestThread(GUITest *test, bool isCleanupNeeded = true);
+    GUITestThread(GUITest* test, bool isCleanupNeeded = true);
 
     void run() override;
 
-    GUITest *getTest() const {
+    GUITest* getTest() const {
         return testToRun;
     }
 
@@ -53,14 +53,14 @@ private slots:
     void sl_testTimeOut();
 
 private:
-    QString launchTest(const QList<GUITest *> &tests);
+    QString launchTest(const QList<GUITest*>& tests);
     void clearSandbox();
-    static void removeDir(const QString &dirName);
+    static void removeDir(const QString& dirName);
     void saveScreenshot();
     void cleanup();
     void writeTestResult();
 
-    GUITest *testToRun;
+    GUITest* testToRun;
     bool isRunPostActionsAndCleanup;
     QString testResult;
 };

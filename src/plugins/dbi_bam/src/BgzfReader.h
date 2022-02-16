@@ -33,10 +33,10 @@ namespace BAM {
 
 class BgzfReader {
 public:
-    BgzfReader(IOAdapter &ioAdapter);
+    BgzfReader(IOAdapter& ioAdapter);
     ~BgzfReader();
 
-    qint64 read(char *buff, qint64 maxSize);
+    qint64 read(char* buff, qint64 maxSize);
     qint64 skip(qint64 size);
 
     bool isEof() const;
@@ -48,7 +48,7 @@ private:
     void nextBlock();
 
     static const int BUFFER_SIZE = 16384;
-    IOAdapter &ioAdapter;
+    IOAdapter& ioAdapter;
     z_stream stream;
     char buffer[BUFFER_SIZE];
     quint64 headerOffset;

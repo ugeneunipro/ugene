@@ -26,21 +26,21 @@
 
 namespace U2 {
 
-void TaskStateInfo::addWarning(const QString &warning) {
+void TaskStateInfo::addWarning(const QString& warning) {
     QWriteLocker w(&lock);
     warnings << warning;
     taskLog.error(warning);
 }
 
-void TaskStateInfo::addWarnings(const QStringList &wList) {
+void TaskStateInfo::addWarnings(const QStringList& wList) {
     QWriteLocker w(&lock);
     warnings << wList;
-    foreach (const QString &warning, wList) {
+    foreach (const QString& warning, wList) {
         taskLog.error(warning);
     }
 }
 
-void TaskStateInfo::insertWarnings(const QStringList &wList) {
+void TaskStateInfo::insertWarnings(const QStringList& wList) {
     QWriteLocker w(&lock);
     warnings << wList;
 }
@@ -52,7 +52,7 @@ static qint64 genTaskId() {
     return res;
 }
 
-Task::Task(const QString &_name, TaskFlags f) {
+Task::Task(const QString& _name, TaskFlags f) {
     taskName = _name;
     state = State_New;
     tpm = Progress_SubTasksBased;
@@ -70,14 +70,14 @@ void Task::setMaxParallelSubtasks(int n) {
     maxParallelSubtasks = n;
 }
 
-void Task::setTaskName(const QString &_taskName) {
+void Task::setTaskName(const QString& _taskName) {
     SAFE_POINT(isNew(), "Can only change name for new tasks!", );
     taskName = _taskName;
 }
 
 void Task::cancel() {
     CHECK(!isFinished(), );
-    foreach (Task *t, subtasks) {
+    foreach (Task* t, subtasks) {
         if (!t->isFinished()) {
             t->cancel();
         }
@@ -85,20 +85,20 @@ void Task::cancel() {
     stateInfo.cancelFlag = true;
 }
 
-const QList<QPointer<Task>> &Task::getSubtasks() const {
+const QList<QPointer<Task>>& Task::getSubtasks() const {
     return subtasks;
 }
 
-QList<Task *> Task::getPureSubtasks() const {
-    QList<Task *> subtasksPointers;
+QList<Task*> Task::getPureSubtasks() const {
+    QList<Task*> subtasksPointers;
     subtasksPointers.reserve(subtasks.size());
-    foreach (const QPointer<Task> &subtask, subtasks) {
+    foreach (const QPointer<Task>& subtask, subtasks) {
         subtasksPointers << subtask.data();
     }
     return subtasksPointers;
 }
 
-void Task::addSubTask(Task *sub) {
+void Task::addSubTask(Task* sub) {
     SAFE_POINT(sub != nullptr, "Trying to add NULL subtask", );
     SAFE_POINT(sub->parentTask == nullptr, "Task already has a parent!", );
     SAFE_POINT(state == State_New, "Parents can be assigned to tasks in NEW state only!", );
@@ -110,7 +110,7 @@ void Task::addSubTask(Task *sub) {
 
 void Task::cleanup() {
     assert(isFinished());
-    foreach (const QPointer<Task> &sub, getSubtasks()) {
+    foreach (const QPointer<Task>& sub, getSubtasks()) {
         CHECK_CONTINUE(!sub.isNull());
 
         sub->cleanup();
@@ -121,15 +121,15 @@ bool Task::propagateSubtaskError() {
     if (hasError()) {
         return true;
     }
-    Task *badChild = getSubtaskWithErrors();
+    Task* badChild = getSubtaskWithErrors();
     if (nullptr != badChild) {
         stateInfo.setError(badChild->getError());
     }
     return stateInfo.hasError();
 }
 
-Task *Task::getSubtaskWithErrors() const {
-    foreach (const QPointer<Task> &sub, getSubtasks()) {
+Task* Task::getSubtaskWithErrors() const {
+    foreach (const QPointer<Task>& sub, getSubtasks()) {
         if (sub->hasError()) {
             return sub.data();
         }
@@ -137,8 +137,8 @@ Task *Task::getSubtaskWithErrors() const {
     return nullptr;
 }
 
-QList<Task *> Task::onSubTaskFinished(Task *) {
-    static QList<Task *> stub;
+QList<Task*> Task::onSubTaskFinished(Task*) {
+    static QList<Task*> stub;
     return stub;
 }
 
@@ -157,7 +157,7 @@ void Task::setMinimizeSubtaskErrorText(bool v) {
     setFlag(TaskFlag_MinimizeSubtaskErrorText, v);
 }
 
-void Task::addTaskResource(const TaskResourceUsage &r) {
+void Task::addTaskResource(const TaskResourceUsage& r) {
     SAFE_POINT(state == Task::State_New, QString("Can't add task resource in current state: %1)").arg(getState()), );
     SAFE_POINT(!insidePrepare || !r.prepareStageLock, "Can't add prepare-time resource from within prepare function call!", );
     SAFE_POINT(!r.locked, QString("Resource is already locked, resource id: %1").arg(r.resourceId), );
@@ -166,7 +166,7 @@ void Task::addTaskResource(const TaskResourceUsage &r) {
 
 bool Task::isMinimizeSubtaskErrorText() const {
     bool result = false;
-    Task *parentTask = getParentTask();
+    Task* parentTask = getParentTask();
     if (getFlags().testFlag(TaskFlag_MinimizeSubtaskErrorText)) {
         result = true;
     } else if (parentTask != nullptr) {
@@ -179,7 +179,7 @@ bool Task::isMinimizeSubtaskErrorText() const {
 void Task::setCollectChildrensWarningsFlag(bool v) {
     setFlag(TaskFlag_CollectChildrenWarnings, v);
     if (v) {
-        foreach (Task *sub, subtasks) {
+        foreach (Task* sub, subtasks) {
             sub->setCollectChildrensWarningsFlag(v);
         }
     }
@@ -188,7 +188,7 @@ void Task::setCollectChildrensWarningsFlag(bool v) {
 //////////////////////////////////////////////////////////////////////////
 // task scheduler
 
-void TaskScheduler::addSubTask(Task *t, Task *sub) {
+void TaskScheduler::addSubTask(Task* t, Task* sub) {
     SAFE_POINT(t != nullptr, "When adding subtask to TaskScheduler, the parent task is NULL", );
     SAFE_POINT(sub != nullptr, "When adding subtask to TaskScheduler, the subtask is NULL", );
     SAFE_POINT(sub->getParentTask() == nullptr, "Task already has a parent!", );
@@ -202,7 +202,7 @@ void TaskScheduler::addSubTask(Task *t, Task *sub) {
     emit t->si_subtaskAdded(sub);
 }
 
-void TaskScheduler::setTaskState(Task *t, Task::State newState) {
+void TaskScheduler::setTaskState(Task* t, Task::State newState) {
     SAFE_POINT(t->getState() < newState, QString("Illegal task state change! Current state: %1, new state: %2").arg(t->getState()).arg(newState), );
 
     t->state = newState;
@@ -211,11 +211,11 @@ void TaskScheduler::setTaskState(Task *t, Task::State newState) {
     emit si_stateChanged(t);
 }
 
-void TaskScheduler::setTaskStateDesc(Task *t, const QString &desc) {
+void TaskScheduler::setTaskStateDesc(Task* t, const QString& desc) {
     t->stateInfo.setDescription(desc);
 }
 
-void TaskScheduler::setTaskInsidePrepare(Task *t, bool val) {
+void TaskScheduler::setTaskInsidePrepare(Task* t, bool val) {
     t->insidePrepare = val;
 }
 

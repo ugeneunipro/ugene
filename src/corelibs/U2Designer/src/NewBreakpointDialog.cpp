@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-NewBreakpointDialog::NewBreakpointDialog(const QStringList &elementsNames, QWidget *parent, Qt::WindowFlags f)
+NewBreakpointDialog::NewBreakpointDialog(const QStringList& elementsNames, QWidget* parent, Qt::WindowFlags f)
     : QDialog(parent, f), ui(new Ui_NewBreakpointDialog()) {
     ui->setupUi(this);
     new HelpButton(this, ui->buttonBox, "65930035");
@@ -37,7 +37,7 @@ NewBreakpointDialog::NewBreakpointDialog(const QStringList &elementsNames, QWidg
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     ui->elementCombo->addItems(elementsNames);
 
-    QPushButton *okButton = ui->buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* okButton = ui->buttonBox->button(QDialogButtonBox::Ok);
     connect(okButton, SIGNAL(clicked()), SLOT(sl_announceNewBreakpoint()));
 }
 

@@ -29,12 +29,12 @@ namespace U2 {
 class BigWigSupport : public ExternalTool {
     Q_OBJECT
 public:
-    BigWigSupport(const QString &path = "");
+    BigWigSupport(const QString& path = "");
 
     static const QString ET_BIGWIG_ID;
     static const QString GENOMES_DATA_NAME;
     static const QString GENOMES_DIR_NAME;
 };
 
-}    // namespace U2
-#endif    // _U2_BIGWIG_SUPPORT_H_
+}  // namespace U2
+#endif  // _U2_BIGWIG_SUPPORT_H_

@@ -30,25 +30,25 @@ namespace LocalWorkflow {
 class U2LANG_EXPORT DatasetFetcher {
 public:
     DatasetFetcher();
-    DatasetFetcher(BaseWorker *worker, IntegralBus *port, WorkflowContext *context);
+    DatasetFetcher(BaseWorker* worker, IntegralBus* port, WorkflowContext* context);
 
     bool hasFullDataset() const;
     bool isDone() const;
-    const QString &getDatasetName() const;  // it is valid before takeFullDataset call
+    const QString& getDatasetName() const;  // it is valid before takeFullDataset call
     QList<Message> takeFullDataset();
     void processInputMessage();
     QString getPortId() const;
 
 private:
-    QString getDatasetName(const Message &message) const;
-    bool datasetChanged(const Message &message) const;
+    QString getDatasetName(const Message& message) const;
+    bool datasetChanged(const Message& message) const;
     void takeMessage();
     void cleanup();
 
 private:
-    BaseWorker *worker;
-    IntegralBus *port;
-    WorkflowContext *context;
+    BaseWorker* worker;
+    IntegralBus* port;
+    WorkflowContext* context;
 
     bool datasetInitialized;
     bool fullDataset;

@@ -34,19 +34,19 @@ public:
     UdrSchemaRegistry();
     ~UdrSchemaRegistry();
 
-    void registerSchema(const UdrSchema *schema, U2OpStatus &os);
+    void registerSchema(const UdrSchema* schema, U2OpStatus& os);
     QList<UdrSchemaId> getRegisteredSchemas() const;
-    const UdrSchema *getSchemaById(const UdrSchemaId &id) const;
+    const UdrSchema* getSchemaById(const UdrSchemaId& id) const;
 
     /**
      * Check the names of schemas and fields that they consist of
      * Latin letters, digits (not first character) and "_" only.
      */
-    static bool isCorrectName(const QByteArray &name);
+    static bool isCorrectName(const QByteArray& name);
 
 private:
     mutable QMutex mutex;
-    QHash<UdrSchemaId, const UdrSchema *> schemas;
+    QHash<UdrSchemaId, const UdrSchema*> schemas;
 };
 
 }  // namespace U2

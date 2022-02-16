@@ -48,23 +48,23 @@ public:
 class ExtractProductTask : public Task {
     Q_OBJECT
 public:
-    ExtractProductTask(const InSilicoPcrProduct &product, const ExtractProductSettings &settings);
+    ExtractProductTask(const InSilicoPcrProduct& product, const ExtractProductSettings& settings);
     ~ExtractProductTask();
 
     // Task
     void run();
 
     /* Moves the document to the main thread */
-    Document *takeResult();
-    const InSilicoPcrProduct &getProduct() const;
+    Document* takeResult();
+    const InSilicoPcrProduct& getProduct() const;
 
-    static QString getProductName(const QString &sequenceName, qint64 sequenceLength, const U2Region &region, bool fileName = false);
+    static QString getProductName(const QString& sequenceName, qint64 sequenceLength, const U2Region& region, bool fileName = false);
 
 private:
     DNASequence getProductSequence();
     DNASequence extractTargetSequence();
-    QByteArray toProductSequence(const QByteArray &targetSequence) const;
-    void addProductAnnotations(AnnotationTableObject *targetObject, const U2EntityRef &annsRef) const;
+    QByteArray toProductSequence(const QByteArray& targetSequence) const;
+    void addProductAnnotations(AnnotationTableObject* targetObject, const U2EntityRef& annsRef) const;
 
     static SharedAnnotationData getPrimerAnnotation(int matchLengh, U2Strand::Direction strand, int sequenceLength);
 
@@ -73,24 +73,24 @@ private:
     ExtractProductSettings settings;
     qint64 wholeSequenceLength = 0;
 
-    Document *result = nullptr;
+    Document* result = nullptr;
 };
 
 class ExtractProductWrapperTask : public Task {
     Q_OBJECT
 public:
-    ExtractProductWrapperTask(const InSilicoPcrProduct &product, const QString &sequenceName, qint64 sequenceLength, const ExtractProductSettings &settings);
+    ExtractProductWrapperTask(const InSilicoPcrProduct& product, const QString& sequenceName, qint64 sequenceLength, const ExtractProductSettings& settings);
 
     // Task
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
     ReportResult report();
 
 private:
-    void prepareUrl(const InSilicoPcrProduct &product, const QString &sequenceName, qint64 sequenceLength);
+    void prepareUrl(const InSilicoPcrProduct& product, const QString& sequenceName, qint64 sequenceLength);
 
 private:
-    ExtractProductTask *extractTask = nullptr;
+    ExtractProductTask* extractTask = nullptr;
     ExtractProductSettings settings;
 };
 

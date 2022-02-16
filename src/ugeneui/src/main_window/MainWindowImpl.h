@@ -51,16 +51,16 @@ class TmpDirChecker;
 class FixedMdiArea : public QMdiArea {
     Q_OBJECT
 public:
-    FixedMdiArea(QWidget *parent = 0);
+    FixedMdiArea(QWidget* parent = 0);
     void setViewMode(QMdiArea::ViewMode mode);
-    QMdiSubWindow *addSubWindow(QWidget *widget);
+    QMdiSubWindow* addSubWindow(QWidget* widget);
 
 public slots:
     void tileSubWindows();
 
 private slots:
     // Workaround for QTBUG-17428
-    void sysContextMenuAction(QAction *);
+    void sysContextMenuAction(QAction*);
 };
 
 class MainWindowImpl : public MainWindow {
@@ -69,38 +69,39 @@ public:
     MainWindowImpl() = default;
     ~MainWindowImpl();
 
-    virtual QMenu *getTopLevelMenu(const QString &sysName) const;
-    virtual QToolBar *getToolbar(const QString &sysName) const;
+    virtual QMenu* getTopLevelMenu(const QString& sysName) const;
+    virtual QToolBar* getToolbar(const QString& sysName) const;
 
-    virtual MWMDIManager *getMDIManager() const {
+    virtual MWMDIManager* getMDIManager() const {
         return mdiManager;
     }
-    virtual MWDockManager *getDockManager() const {
+    virtual MWDockManager* getDockManager() const {
         return dockManager;
     }
-    virtual QMainWindow *getQMainWindow() const {
+    virtual QMainWindow* getQMainWindow() const {
         return mw;
     }
-    virtual NotificationStack *getNotificationStack() const {
+    virtual NotificationStack* getNotificationStack() const {
         return nStack;
     }
 
-    virtual void setWindowTitle(const QString &title);
-    void registerAction(QAction *action);
+    virtual void setWindowTitle(const QString& title);
+    void registerAction(QAction* action);
 
     void prepare();
     void close();
 
     void runClosingTask();
     void setShutDownInProcess(bool flag);
-    void registerStartupChecks(const QList<Task *>& tasks);
-    void addNotification(const QString &message, NotificationType type);
+    void registerStartupChecks(const QList<Task*>& tasks);
+    void addNotification(const QString& message, NotificationType type);
 signals:
     void si_show();
     void si_showWelcomePage();
     void si_paste();
 public slots:
     void sl_tempDirPathCheckFailed(QString path);
+    void sl_show();
 
 private slots:
     void sl_exitAction();
@@ -109,51 +110,50 @@ private slots:
     void sl_createDesktopShortcutAction();
     void sl_visitWeb();
     void sl_viewOnlineDocumentation();
-    void sl_show();
     void sl_showWhatsNew();
     void sl_crashUgene();
 #ifdef _INSTALL_TO_PATH_ACTION
     void sl_installToPathAction();
 #endif
 protected:
-    bool eventFilter(QObject *object, QEvent *event) override;
+    bool eventFilter(QObject* object, QEvent* event) override;
 
 private:
     void createActions();
     void prepareGUI();
 
-    QMainWindow *mw = nullptr;
-    FixedMdiArea *mdi = nullptr;
+    QMainWindow* mw = nullptr;
+    FixedMdiArea* mdi = nullptr;
 
-    MWMenuManagerImpl *menuManager = nullptr;
-    MWToolBarManagerImpl *toolbarManager = nullptr;
-    MWMDIManager *mdiManager = nullptr;
-    MWDockManager *dockManager = nullptr;
+    MWMenuManagerImpl* menuManager = nullptr;
+    MWToolBarManagerImpl* toolbarManager = nullptr;
+    MWMDIManager* mdiManager = nullptr;
+    MWDockManager* dockManager = nullptr;
 
-    NotificationStack *nStack = nullptr;
+    NotificationStack* nStack = nullptr;
 
-    QAction *exitAction = nullptr;
-    QAction *aboutAction = nullptr;
-    QAction *checkUpdateAction = nullptr;
-    QAction *createDesktopShortcutAction = nullptr;
-    QAction *visitWebAction = nullptr;
-    QAction *viewOnlineDocumentation = nullptr;
-    QAction *welcomePageAction = nullptr;
-    QAction *crashUgeneAction = nullptr;
-    QAction *showWhatsNewAction = nullptr;
+    QAction* exitAction = nullptr;
+    QAction* aboutAction = nullptr;
+    QAction* checkUpdateAction = nullptr;
+    QAction* createDesktopShortcutAction = nullptr;
+    QAction* visitWebAction = nullptr;
+    QAction* viewOnlineDocumentation = nullptr;
+    QAction* welcomePageAction = nullptr;
+    QAction* crashUgeneAction = nullptr;
+    QAction* showWhatsNewAction = nullptr;
 #ifdef _INSTALL_TO_PATH_ACTION
-    QAction *installToPathAction = nullptr;
+    QAction* installToPathAction = nullptr;
 #endif
     bool shutDownInProcess = false;
 
-    QList<Task *> startupTasklist;
+    QList<Task*> startupTasklist;
 };
 
 class MainWindowDragNDrop {
 public:
-    static void dragEnterEvent(QDragEnterEvent *event);
-    static void dropEvent(QDropEvent *event);
-    static void dragMoveEvent(QDragMoveEvent *event);
+    static void dragEnterEvent(QDragEnterEvent* event);
+    static void dropEvent(QDropEvent* event);
+    static void dragMoveEvent(QDragMoveEvent* event);
 };
 
 }  // namespace U2

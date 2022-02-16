@@ -74,13 +74,13 @@ class U2CORE_EXPORT NetworkConfiguration {
 public:
     NetworkConfiguration();
     ~NetworkConfiguration();
-    QNetworkProxy getProxyByUrl(const QUrl &url) const;
+    QNetworkProxy getProxyByUrl(const QUrl& url) const;
     QNetworkProxy getProxy(Proxy_t prtype) const;
     bool isProxyUsed(Proxy_t prtype) const;
     void removeProxy(Proxy_t prtype);
-    int addProxy(const QNetworkProxy &p_);  // returns non-zero if replacing
+    int addProxy(const QNetworkProxy& p_);  // returns non-zero if replacing
     void setProxyUsed(Proxy_t prtype, bool val);
-    void setExceptionsList(const QStringList &exc_addr);
+    void setExceptionsList(const QStringList& exc_addr);
     QStringList getExceptionsList() const {
         return pc.excepted_addr;
     }
@@ -94,8 +94,8 @@ public:
     QList<QString> getSslProtocolNames() const {
         return sslConfig.protocols;
     }
-    void setSslProtocol(const QString &name);
-    void copyFrom(const NetworkConfiguration &image);
+    void setSslProtocol(const QString& name);
+    void copyFrom(const NetworkConfiguration& image);
     int remoteRequestTimeout() const {
         return rrConfig.remoteRequestTimeout;
     }
@@ -106,7 +106,7 @@ public:
 #endif
 
 private:
-    static Proxy_t url2type(const QUrl &url);
+    static Proxy_t url2type(const QUrl& url);
     ProxyConfig pc;
     SslConfig sslConfig;
     RemoteRequestConfig rrConfig;

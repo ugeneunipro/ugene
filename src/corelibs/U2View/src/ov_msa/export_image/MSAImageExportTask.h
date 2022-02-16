@@ -47,8 +47,8 @@ public:
           includeRuler(includeRuler) {
     }
 
-    MSAImageExportSettings(const U2Region &region,
-                           const QList<int> &seqIdx,
+    MSAImageExportSettings(const U2Region& region,
+                           const QList<int>& seqIdx,
                            bool includeSeqNames = false,
                            bool includeConsensus = false,
                            bool includeRuler = true)
@@ -73,47 +73,47 @@ class MSAImageExportTask : public ImageExportTask {
     Q_OBJECT
 public:
     // TODO: unsafe code: ui may be destroyed during the task execution (the editor is closed)!!
-    MSAImageExportTask(MaEditorWgt *ui,
-                       const MSAImageExportSettings &msaSettings,
-                       const ImageExportTaskSettings &settings);
+    MSAImageExportTask(MaEditorWgt* ui,
+                       const MSAImageExportSettings& msaSettings,
+                       const ImageExportTaskSettings& settings);
 
 protected:
-    void paintSequencesNames(QPainter &painter);
-    void paintConsensus(QPainter &painter);
-    void paintRuler(QPainter &painter);
-    bool paintContent(QPainter &painter);
+    void paintSequencesNames(QPainter& painter);
+    void paintConsensus(QPainter& painter);
+    void paintRuler(QPainter& painter);
+    bool paintContent(QPainter& painter);
 
-    MaEditorWgt *ui;
+    MaEditorWgt* ui;
     MSAImageExportSettings msaSettings;
 };
 
 class MSAImageExportToBitmapTask : public MSAImageExportTask {
     Q_OBJECT
 public:
-    MSAImageExportToBitmapTask(MaEditorWgt *ui,
-                               const MSAImageExportSettings &msaSettings,
-                               const ImageExportTaskSettings &settings);
+    MSAImageExportToBitmapTask(MaEditorWgt* ui,
+                               const MSAImageExportSettings& msaSettings,
+                               const ImageExportTaskSettings& settings);
     void run();
 
 private:
-    QPixmap mergePixmaps(const QPixmap &sequencesPixmap,
-                         const QPixmap &namesPixmap,
-                         const QPixmap &consensusPixmap);
+    QPixmap mergePixmaps(const QPixmap& sequencesPixmap,
+                         const QPixmap& namesPixmap,
+                         const QPixmap& consensusPixmap);
 };
 
 class MSAImageExportToSvgTask : public MSAImageExportTask {
     Q_OBJECT
 public:
-    MSAImageExportToSvgTask(MaEditorWgt *ui,
-                            const MSAImageExportSettings &msaSettings,
-                            const ImageExportTaskSettings &settings);
+    MSAImageExportToSvgTask(MaEditorWgt* ui,
+                            const MSAImageExportSettings& msaSettings,
+                            const ImageExportTaskSettings& settings);
     void run();
 };
 
 class MSAImageExportController : public ImageExportController {
     Q_OBJECT
 public:
-    MSAImageExportController(MaEditorWgt *ui);
+    MSAImageExportController(MaEditorWgt* ui);
     ~MSAImageExportController();
 
 public slots:
@@ -123,11 +123,11 @@ public slots:
 protected:
     void initSettingsWidget();
 
-    Task *getExportToBitmapTask(const ImageExportTaskSettings &settings) const;
-    Task *getExportToSvgTask(const ImageExportTaskSettings &) const;
+    Task* getExportToBitmapTask(const ImageExportTaskSettings& settings) const;
+    Task* getExportToSvgTask(const ImageExportTaskSettings&) const;
 
 private slots:
-    void sl_onFormatChanged(const QString &);
+    void sl_onFormatChanged(const QString&);
 
 private:
     void checkRegionToExport();
@@ -135,8 +135,8 @@ private:
     bool canExportToSvg() const;
     void updateSeqIdx() const;
 
-    MaEditorWgt *ui;
-    Ui_MSAExportSettings *settingsUi;
+    MaEditorWgt* ui;
+    Ui_MSAExportSettings* settingsUi;
     mutable MSAImageExportSettings msaSettings;
     QString format;
 };

@@ -47,42 +47,42 @@ private:
 
 class GTUtilsTaskTreeView {
 public:
-    static void waitTaskFinished(HI::GUITestOpStatus &os, long timeoutMillis = 180000);
-    static void click(HI::GUITestOpStatus &os, const QString &itemName, Qt::MouseButton b = Qt::LeftButton);
+    static void waitTaskFinished(HI::GUITestOpStatus& os, long timeoutMillis = 180000);
+    static void click(HI::GUITestOpStatus& os, const QString& itemName, Qt::MouseButton b = Qt::LeftButton);
 
     /** Opens view if it is not opened and returns tree widget. */
-    static QTreeWidget *openView(HI::GUITestOpStatus &os);
+    static QTreeWidget* openView(HI::GUITestOpStatus& os);
 
-    static void toggleView(HI::GUITestOpStatus &os);
+    static void toggleView(HI::GUITestOpStatus& os);
 
     /**
      * Cancels tasks with the given name.
      * If "parentTaskNames" is provided first expands the top-level tasks so the task tree is populated.
      */
-    static void cancelTask(HI::GUITestOpStatus &os, const QString &itemName, bool failIfNotFound = true, const QStringList &parentTaskNames = {});
+    static void cancelTask(HI::GUITestOpStatus& os, const QString& itemName, bool failIfNotFound = true, const QStringList& parentTaskNames = {});
 
-    static QTreeWidgetItem *getTreeWidgetItem(HI::GUITestOpStatus &os, const QString &itemName, bool failOnNull = true);
+    static QTreeWidgetItem* getTreeWidgetItem(HI::GUITestOpStatus& os, const QString& itemName, bool failOnNull = true);
 
     /** Returns instance of the task tree view if found. Asserts if not found and if 'failIfNotFound' is 'true'. */
-    static QTreeWidget *getTreeWidget(HI::GUITestOpStatus &os, bool failIfNotFound = false);
+    static QTreeWidget* getTreeWidget(HI::GUITestOpStatus& os, bool failIfNotFound = false);
 
-    static void moveToOpenedView(HI::GUITestOpStatus &os, const QString &itemName);
-    static QPoint getTreeViewItemPosition(HI::GUITestOpStatus &os, const QString &itemName);
-    static void moveTo(HI::GUITestOpStatus &os, const QString &itemName);
-    static int getTopLevelTasksCount(HI::GUITestOpStatus &os);
+    static void moveToOpenedView(HI::GUITestOpStatus& os, const QString& itemName);
+    static QPoint getTreeViewItemPosition(HI::GUITestOpStatus& os, const QString& itemName);
+    static void moveTo(HI::GUITestOpStatus& os, const QString& itemName);
+    static int getTopLevelTasksCount(HI::GUITestOpStatus& os);
 
     /** Check that there/there-is-no top-level task with the given name. */
-    static void checkTaskIsPresent(HI::GUITestOpStatus &os, const QString &topLevelTaskName, bool checkIfPresent = true);
+    static void checkTaskIsPresent(HI::GUITestOpStatus& os, const QString& topLevelTaskName, bool checkIfPresent = true);
 
-    static int countTasks(HI::GUITestOpStatus &os, const QString &itemName);
-    static QString getTaskStatus(HI::GUITestOpStatus &os, const QString &itemName);
+    static int countTasks(HI::GUITestOpStatus& os, const QString& itemName);
+    static QString getTaskStatus(HI::GUITestOpStatus& os, const QString& itemName);
 
     static const QString widgetName;
 
 private:
-    static QTreeWidgetItem *getTreeWidgetItem(QTreeWidget *tree, const QString &itemName);
-    static QList<QTreeWidgetItem *> getTaskTreeViewItems(QTreeWidgetItem *root, bool recursively = true);
-    static QString getTasksInfo(QList<U2::Task *> tasks, int level);
+    static QTreeWidgetItem* getTreeWidgetItem(QTreeWidget* tree, const QString& itemName);
+    static QList<QTreeWidgetItem*> getTaskTreeViewItems(QTreeWidgetItem* root, bool recursively = true);
+    static QString getTasksInfo(QList<U2::Task*> tasks, int level);
 };
 
 }  // namespace U2

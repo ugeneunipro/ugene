@@ -33,11 +33,11 @@
 
 typedef int ScoreType;
 
-extern QList<resType> calculateOnGPU(const char *seqLib, int seqLibLength, ScoreType *queryProfile, ScoreType qProfLen, int queryLength, ScoreType gapOpen, ScoreType gapExtension, ScoreType maxScore, U2::SmithWatermanSettings::SWResultView resultView);
+extern QList<resType> calculateOnGPU(const char* seqLib, int seqLibLength, ScoreType* queryProfile, ScoreType qProfLen, int queryLength, ScoreType gapOpen, ScoreType gapExtension, ScoreType maxScore, U2::SmithWatermanSettings::SWResultView resultView);
 
 static U2::Logger u2log("Smith Waterman CUDA");
 
-QList<resType> sw_cuda_cpp::launch(const char *seqLib, int seqLibLength, ScoreType *queryProfile, ScoreType qProfLen, int queryLength, ScoreType gapOpen, ScoreType gapExtension, ScoreType maxScore, U2::SmithWatermanSettings::SWResultView resultView) {
+QList<resType> sw_cuda_cpp::launch(const char* seqLib, int seqLibLength, ScoreType* queryProfile, ScoreType qProfLen, int queryLength, ScoreType gapOpen, ScoreType gapExtension, ScoreType maxScore, U2::SmithWatermanSettings::SWResultView resultView) {
     return calculateOnGPU(seqLib, seqLibLength, queryProfile, qProfLen, queryLength, gapOpen, gapExtension, maxScore, resultView);
 }
 
@@ -112,15 +112,14 @@ const int sw_cuda_cpp::MAX_BLOCKS_NUMBER = 14;
 const int sw_cuda_cpp::MAX_SHARED_VECTOR_LENGTH = 128;
 
 //__global__
-extern void calculateMatrix_wrap(int blockSize, int threadNum, const char *seqLib, ScoreType *queryProfile, ScoreType *g_HdataUp, ScoreType *g_HdataRec, ScoreType *g_HdataMax, ScoreType *g_FdataUp, ScoreType *g_directionsUp, ScoreType *g_directionsRec, ScoreType *g_directionsMax, int iteration, int *g_directionsMatrix, int *g_backtraceBegins);
+extern void calculateMatrix_wrap(int blockSize, int threadNum, const char* seqLib, ScoreType* queryProfile, ScoreType* g_HdataUp, ScoreType* g_HdataRec, ScoreType* g_HdataMax, ScoreType* g_FdataUp, ScoreType* g_directionsUp, ScoreType* g_directionsRec, ScoreType* g_directionsMax, int iteration, int* g_directionsMatrix, int* g_backtraceBegins);
 
 extern void setConstants(int partSeqSize, int partsNumber, int overlapLength, int seqLibLength, int queryLength, int gapOpen, int gapExtension, int maxScore, int queryPartLength, char upSymbolDirectMatrix, char leftSymbolDirectMatrix, char diagSymbolDirectMatrix, char stopSymbolDirectMatrix);
 
-QList<resType> calculateOnGPU(const char *seqLib, int seqLibLength, ScoreType *queryProfile, ScoreType qProfLen, int queryLength, ScoreType gapOpen, ScoreType gapExtension, ScoreType maxScore, U2::SmithWatermanSettings::SWResultView resultView) {
+QList<resType> calculateOnGPU(const char* seqLib, int seqLibLength, ScoreType* queryProfile, ScoreType qProfLen, int queryLength, ScoreType gapOpen, ScoreType gapExtension, ScoreType maxScore, U2::SmithWatermanSettings::SWResultView resultView) {
     QList<resType> pas;
     if (seqLibLength < queryLength) {
-        u2log.details(QObject::tr("Pattern length (%1) is longer than search sequence length (%2).").arg(queryLength).
-                                                                                                     arg(seqLibLength));
+        u2log.details(QObject::tr("Pattern length (%1) is longer than search sequence length (%2).").arg(queryLength).arg(seqLibLength));
         return pas;
     }
 
@@ -147,18 +146,18 @@ QList<resType> calculateOnGPU(const char *seqLib, int seqLibLength, ScoreType *q
 
     //************************** declare some temp variables on host
 
-    ScoreType *tempRow = new ScoreType[sizeRow];
-    ScoreType *zerroArr = new ScoreType[sizeRow];
+    ScoreType* tempRow = new ScoreType[sizeRow];
+    ScoreType* zerroArr = new ScoreType[sizeRow];
     for (int i = 0; i < sizeRow; i++) {
         zerroArr[i] = 0;
     }
 
-    ScoreType *directionRow = new ScoreType[sizeRow];
+    ScoreType* directionRow = new ScoreType[sizeRow];
 
     size_t directionMatrixSize = 0;
     size_t backtraceBeginsSize = 0;
-    int *globalMatrix = nullptr;
-    int *backtraceBegins = nullptr;
+    int* globalMatrix = nullptr;
+    int* backtraceBegins = nullptr;
     if (U2::SmithWatermanSettings::MULTIPLE_ALIGNMENT == resultView) {
         directionMatrixSize = seqLibLength * queryLength * sizeof(int);
         backtraceBeginsSize = 2 * sizeRow * sizeof(int);
@@ -178,39 +177,38 @@ QList<resType> calculateOnGPU(const char *seqLib, int seqLibLength, ScoreType *q
 
     //************************** declare arrays on device
 
-    char      *g_seqLib           = nullptr;
-    ScoreType *g_queryProfile     = nullptr;
-    ScoreType *g_HdataMax         = nullptr;
-    ScoreType *g_HdataUp          = nullptr;
-    ScoreType *g_HdataRec         = nullptr;
-    ScoreType *g_HdataTmp;
-    ScoreType *g_FdataUp          = nullptr;
-    ScoreType *g_directionsUp     = nullptr;
-    ScoreType *g_directionsMax    = nullptr;
-    ScoreType *g_directionsRec    = nullptr;
-    int       *g_directionsMatrix = nullptr;
-    int       *g_backtraceBegins  = nullptr;
+    char* g_seqLib = nullptr;
+    ScoreType* g_queryProfile = nullptr;
+    ScoreType* g_HdataMax = nullptr;
+    ScoreType* g_HdataUp = nullptr;
+    ScoreType* g_HdataRec = nullptr;
+    ScoreType* g_HdataTmp;
+    ScoreType* g_FdataUp = nullptr;
+    ScoreType* g_directionsUp = nullptr;
+    ScoreType* g_directionsMax = nullptr;
+    ScoreType* g_directionsRec = nullptr;
+    int* g_directionsMatrix = nullptr;
+    int* g_backtraceBegins = nullptr;
 
     //************************** allocate global memory on device
 
-    QList<cudaError> errors = { cudaMalloc((void **)&g_seqLib, sizeL),
-                                cudaMalloc((void **)&g_queryProfile, sizeP),
-                                cudaMalloc((void **)&g_HdataMax, sizeQ),
-                                cudaMalloc((void **)&g_HdataUp, sizeQ),
-                                cudaMalloc((void **)&g_FdataUp, sizeQ),
-                                cudaMalloc((void **)&g_directionsUp, sizeQ),
-                                cudaMalloc((void **)&g_directionsMax, sizeQ),
-                                cudaMalloc((void **)&g_HdataRec, sizeQ),
-                                cudaMalloc((void **)&g_directionsRec, sizeQ) };
+    QList<cudaError> errors = {cudaMalloc((void**)&g_seqLib, sizeL),
+                               cudaMalloc((void**)&g_queryProfile, sizeP),
+                               cudaMalloc((void**)&g_HdataMax, sizeQ),
+                               cudaMalloc((void**)&g_HdataUp, sizeQ),
+                               cudaMalloc((void**)&g_FdataUp, sizeQ),
+                               cudaMalloc((void**)&g_directionsUp, sizeQ),
+                               cudaMalloc((void**)&g_directionsMax, sizeQ),
+                               cudaMalloc((void**)&g_HdataRec, sizeQ),
+                               cudaMalloc((void**)&g_directionsRec, sizeQ)};
 
     if (U2::SmithWatermanSettings::MULTIPLE_ALIGNMENT == resultView) {
-        cudaError errorMatrix = cudaMalloc(reinterpret_cast<void **>(&g_directionsMatrix), directionMatrixSize);
-        cudaError errorBacktrace = cudaMalloc(reinterpret_cast<void **>(&g_backtraceBegins), backtraceBeginsSize);
+        cudaError errorMatrix = cudaMalloc(reinterpret_cast<void**>(&g_directionsMatrix), directionMatrixSize);
+        cudaError errorBacktrace = cudaMalloc(reinterpret_cast<void**>(&g_backtraceBegins), backtraceBeginsSize);
         errors << errorMatrix << errorBacktrace;
     }
 
-    if (std::find_if(errors.constBegin(), errors.constEnd(), [](const cudaError error) {
-            return error != cudaError::cudaSuccess; }) != errors.constEnd()) {
+    if (std::find_if(errors.constBegin(), errors.constEnd(), [](const cudaError error) { return error != cudaError::cudaSuccess; }) != errors.constEnd()) {
         u2log.error(QObject::tr("CUDA malloc error"));
         cudaFree(g_seqLib);
         cudaFree(g_queryProfile);

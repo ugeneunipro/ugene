@@ -26,11 +26,11 @@
 
 namespace U2 {
 
-ADVSequenceWidget::ADVSequenceWidget(AnnotatedDNAView *_ctx)
+ADVSequenceWidget::ADVSequenceWidget(AnnotatedDNAView* _ctx)
     : QWidget(_ctx->getScrolledWidget()), ctx(_ctx) {
 }
 
-void ADVSequenceWidget::addADVSequenceWidgetAction(ADVSequenceWidgetAction *action) {
+void ADVSequenceWidget::addADVSequenceWidgetAction(ADVSequenceWidgetAction* action) {
     assert(!action->objectName().isEmpty());
     assert(getADVSequenceWidgetAction(action->objectName()) == nullptr);
     action->setParent(this);
@@ -38,8 +38,8 @@ void ADVSequenceWidget::addADVSequenceWidgetAction(ADVSequenceWidgetAction *acti
     wActions.append(action);
 }
 
-ADVSequenceWidgetAction *ADVSequenceWidget::getADVSequenceWidgetAction(const QString &objName) const {
-    foreach (ADVSequenceWidgetAction *action, wActions) {
+ADVSequenceWidgetAction* ADVSequenceWidget::getADVSequenceWidgetAction(const QString& objName) const {
+    foreach (ADVSequenceWidgetAction* action, wActions) {
         if (action->objectName() == objName) {
             return action;
         }
@@ -47,15 +47,15 @@ ADVSequenceWidgetAction *ADVSequenceWidget::getADVSequenceWidgetAction(const QSt
     return nullptr;
 }
 
-QList<U2SequenceObject *> ADVSequenceWidget::getSequenceObjects() const {
-    QList<U2SequenceObject *> res;
-    foreach (ADVSequenceObjectContext *ctx, seqContexts) {
+QList<U2SequenceObject*> ADVSequenceWidget::getSequenceObjects() const {
+    QList<U2SequenceObject*> res;
+    foreach (ADVSequenceObjectContext* ctx, seqContexts) {
         res.append(ctx->getSequenceObject());
     }
     return res;
 }
 
-void ADVSequenceWidget::buildPopupMenu(QMenu &m) {
+void ADVSequenceWidget::buildPopupMenu(QMenu& m) {
     Q_UNUSED(m);
 }
 

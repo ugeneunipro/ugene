@@ -30,24 +30,24 @@ namespace U2 {
 /************************************************************************/
 /* MimeDataIterator */
 /************************************************************************/
-MimeDataIterator::MimeDataIterator(const QMimeData *md)
+MimeDataIterator::MimeDataIterator(const QMimeData* md)
     : docIdx(0), objectIdx(0), folderIdx(0) {
-    const DocumentMimeData *dmd = dynamic_cast<const DocumentMimeData *>(md);
+    const DocumentMimeData* dmd = dynamic_cast<const DocumentMimeData*>(md);
     if (nullptr != dmd) {
         docs << dmd->objPtr;
     }
 
-    const GObjectMimeData *gomd = dynamic_cast<const GObjectMimeData *>(md);
+    const GObjectMimeData* gomd = dynamic_cast<const GObjectMimeData*>(md);
     if (nullptr != gomd) {
         objects << gomd->objPtr;
     }
 
-    const FolderMimeData *fmd = dynamic_cast<const FolderMimeData *>(md);
+    const FolderMimeData* fmd = dynamic_cast<const FolderMimeData*>(md);
     if (nullptr != fmd) {
         folders << fmd->folder;
     }
 
-    const BunchMimeData *bmd = dynamic_cast<const BunchMimeData *>(md);
+    const BunchMimeData* bmd = dynamic_cast<const BunchMimeData*>(md);
     if (nullptr != bmd) {
         docs << bmd->docs;
         objects << bmd->objects;
@@ -59,7 +59,7 @@ bool MimeDataIterator::hasNextDocument() const {
     return (docIdx < docs.size());
 }
 
-Document *MimeDataIterator::nextDocument() {
+Document* MimeDataIterator::nextDocument() {
     CHECK(hasNextDocument(), nullptr);
     docIdx++;
     return docs[docIdx - 1];
@@ -69,7 +69,7 @@ bool MimeDataIterator::hasNextObject() const {
     return (objectIdx < objects.size());
 }
 
-GObject *MimeDataIterator::nextObject() {
+GObject* MimeDataIterator::nextObject() {
     CHECK(hasNextObject(), nullptr);
     objectIdx++;
     return objects[objectIdx - 1];

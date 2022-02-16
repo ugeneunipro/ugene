@@ -32,7 +32,7 @@
 
 namespace U2 {
 
-BlastDBCmdDialog::BlastDBCmdDialog(QWidget *parent)
+BlastDBCmdDialog::BlastDBCmdDialog(QWidget* parent)
     : QDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930731");
@@ -47,7 +47,7 @@ BlastDBCmdDialog::BlastDBCmdDialog(QWidget *parent)
     initSaveController();
 
     connect(dbSelector, SIGNAL(si_dbChanged()), SLOT(sl_update()));
-    connect(queryIdEdit, SIGNAL(textChanged(const QString &)), SLOT(sl_update()));
+    connect(queryIdEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_update()));
     connect(browseOutputButton, SIGNAL(clicked(bool)), SLOT(sl_update()));
 
     sl_update();
@@ -66,7 +66,7 @@ void BlastDBCmdDialog::accept() {
     QDialog::accept();
 }
 
-const BlastDBCmdSupportTaskSettings &BlastDBCmdDialog::getTaskSettings() const {
+const BlastDBCmdSupportTaskSettings& BlastDBCmdDialog::getTaskSettings() const {
     return settings;
 }
 
@@ -95,7 +95,7 @@ void BlastDBCmdDialog::initSaveController() {
     saveController = new SaveDocumentController(config, {BaseDocumentFormats::FASTA}, this);
 }
 
-void BlastDBCmdDialog::setQueryId(const QString &queryId) {
+void BlastDBCmdDialog::setQueryId(const QString& queryId) {
     queryIdEdit->setText(queryId);
     settings.query = queryId;
     delete saveController;

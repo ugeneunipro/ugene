@@ -8,7 +8,7 @@
 
 namespace U2 {
 
-static void maximum_entropy(struct alphabet_s *al, struct plan7_s *hmm, unsigned char **dsq, MSA *msa, float eff_nseq, struct p7prior_s *prior, struct p7trace_s **tr);
+static void maximum_entropy(struct alphabet_s* al, struct plan7_s* hmm, unsigned char** dsq, MSA* msa, float eff_nseq, struct p7prior_s* prior, struct p7trace_s** tr);
 
 // weighting strategy
 enum p7_weight {
@@ -20,22 +20,22 @@ enum p7_weight {
     WGT_ME
 };
 
-plan7_s *UHMMBuild::build(msa_struct *msa, int atype, const UHMMBuildSettings &s, TaskStateInfo &si) {
-    p7_construction c_strategy = P7_MAP_CONSTRUCTION;    // construction strategy choice
-    p7_weight w_strategy = WGT_GSC;    // weighting strategy
-    float blosumlevel = 0.62;    // BLOSUM frac id filtering level [0.62]
-    float gapmax = 0.5;    // max frac gaps in mat col for -k
-    float archpri = 0.85;    // "architecture" prior on model size
-    float swentry = 0.5;    // S/W aggregate entry probability
-    float swexit = 0.5;    // S/W aggregate exit probability
-    int do_eff = TRUE;    // TRUE to set an effective seq number
-    int pbswitch = 1000;    // nseq >= this, switchover to PB weights
-    p7trace_s **trace = nullptr;    // fake tracebacks for aseq's
-    plan7_s *hmm = nullptr;    //result
+plan7_s* UHMMBuild::build(msa_struct* msa, int atype, const UHMMBuildSettings& s, TaskStateInfo& si) {
+    p7_construction c_strategy = P7_MAP_CONSTRUCTION;  // construction strategy choice
+    p7_weight w_strategy = WGT_GSC;  // weighting strategy
+    float blosumlevel = 0.62;  // BLOSUM frac id filtering level [0.62]
+    float gapmax = 0.5;  // max frac gaps in mat col for -k
+    float archpri = 0.85;  // "architecture" prior on model size
+    float swentry = 0.5;  // S/W aggregate entry probability
+    float swexit = 0.5;  // S/W aggregate exit probability
+    int do_eff = TRUE;  // TRUE to set an effective seq number
+    int pbswitch = 1000;  // nseq >= this, switchover to PB weights
+    p7trace_s** trace = nullptr;  // fake tracebacks for aseq's
+    plan7_s* hmm = nullptr;  // result
 
-    //get HMMERTaskLocalData
-    HMMERTaskLocalData *tld = getHMMERTaskLocalData();
-    alphabet_s &al = tld->al;
+    // get HMMERTaskLocalData
+    HMMERTaskLocalData* tld = getHMMERTaskLocalData();
+    alphabet_s& al = tld->al;
 
     assert(atype == hmmAMINO || atype == hmmNUCLEIC);
     SetAlphabet(atype);
@@ -46,16 +46,16 @@ plan7_s *UHMMBuild::build(msa_struct *msa, int atype, const UHMMBuildSettings &s
     // This code must be delayed until after we've seen the
     // first alignment, because we have to see the alphabet type first
 
-    //Set up Dirichlet priors
-    p7prior_s *pri = P7DefaultPrior();
+    // Set up Dirichlet priors
+    p7prior_s* pri = P7DefaultPrior();
 
     // Set up the null/random seq model
-    float randomseq[MAXABET];    // null sequence model
-    float p1;    // null sequence model p1 transition
+    float randomseq[MAXABET];  // null sequence model
+    float p1;  // null sequence model p1 transition
     P7DefaultNullModel(randomseq, &p1);
 
     // Prepare unaligned digitized sequences for internal use
-    unsigned char **dsq;    // digitized unaligned aseq's
+    unsigned char** dsq;  // digitized unaligned aseq's
     DigitizeAlignment(msa, &dsq);
 
     // In some respects we treat DNA more crudely for now;
@@ -94,7 +94,7 @@ plan7_s *UHMMBuild::build(msa_struct *msa, int atype, const UHMMBuildSettings &s
         }
     }
 
-    //Set the effective sequence number (if do_eff is FALSE, eff_nseq was set to nseq).
+    // Set the effective sequence number (if do_eff is FALSE, eff_nseq was set to nseq).
 
     FNorm(msa->wgt, msa->nseq);
     FScale(msa->wgt, msa->nseq, eff_nseq);
@@ -107,7 +107,7 @@ plan7_s *UHMMBuild::build(msa_struct *msa, int atype, const UHMMBuildSettings &s
     // gap characters in the alignment, we have to calculate the
     // alignment checksum before we enter the algorithms.
 
-    int checksum = GCGMultchecksum(msa->aseq, msa->nseq);    // checksum of the alignment
+    int checksum = GCGMultchecksum(msa->aseq, msa->nseq);  // checksum of the alignment
     if (c_strategy == P7_FAST_CONSTRUCTION) {
         P7Fastmodelmaker(msa, dsq, gapmax, &hmm, &trace);
     } else if (c_strategy == P7_HAND_CONSTRUCTION) {
@@ -202,7 +202,7 @@ plan7_s *UHMMBuild::build(msa_struct *msa, int atype, const UHMMBuildSettings &s
         P7FreeTrace(trace[idx]);
     }
     free(trace);
-    Free2DArray((void **)dsq, msa->nseq);
+    Free2DArray((void**)dsq, msa->nseq);
 
     P7FreePrior(pri);
     return hmm;
@@ -232,24 +232,24 @@ plan7_s *UHMMBuild::build(msa_struct *msa, int atype, const UHMMBuildSettings &s
 // Return:   1 on success, 0 on failure.
 //           pernode is MallocOrDie'ed [0]1..M by CALLER and filled here.
 
-static void position_average_score(struct plan7_s *hmm, unsigned char **dsq, float *wgt, int nseq, struct p7trace_s **tr, float *pernode, float *ret_avg) {
+static void position_average_score(struct plan7_s* hmm, unsigned char** dsq, float* wgt, int nseq, struct p7trace_s** tr, float* pernode, float* ret_avg) {
     unsigned char sym;
-//    int pos;    //position in seq
-    int tpos;    // position in trace/state sequence
-    float *counts;    //counts at each position
-    float avg;    // RETURN: average overall
-    int k;    // counter for model position
-    int idx;    // counter for sequence number
+    //    int pos;    //position in seq
+    int tpos;  // position in trace/state sequence
+    float* counts;  // counts at each position
+    float avg;  // RETURN: average overall
+    int k;  // counter for model position
+    int idx;  // counter for sequence number
 
     // Allocations
-    counts = (float *)MallocOrDie((hmm->M + 1) * sizeof(float));
+    counts = (float*)MallocOrDie((hmm->M + 1) * sizeof(float));
     FSet(pernode, hmm->M + 1, 0.);
     FSet(counts, hmm->M + 1, 0.);
 
     // Loop over traces, accumulate weighted scores per position
     for (idx = 0; idx < nseq; idx++) {
         for (tpos = 0; tpos < tr[idx]->tlen; tpos++) {
-//            pos = tr[idx]->pos[tpos];
+            //            pos = tr[idx]->pos[tpos];
             sym = dsq[idx][tr[idx]->pos[tpos]];
             k = tr[idx]->nodeidx[tpos];
 
@@ -297,10 +297,10 @@ static void position_average_score(struct plan7_s *hmm, unsigned char **dsq, flo
 //
 // Return:   "corrected" score.
 
-static float frag_trace_score(struct plan7_s *hmm, unsigned char *dsq, struct p7trace_s *tr, float *pernode, float expected) {
-    float sc;    // corrected score
-    float fragexp;    // expected score for a trace like this
-    int tpos;    // position in trace */
+static float frag_trace_score(struct plan7_s* hmm, unsigned char* dsq, struct p7trace_s* tr, float* pernode, float expected) {
+    float sc;  // corrected score
+    float fragexp;  // expected score for a trace like this
+    int tpos;  // position in trace */
 
     // get uncorrected score
     sc = P7TraceScore(hmm, dsq, tr);
@@ -350,36 +350,36 @@ static float frag_trace_score(struct plan7_s *hmm, unsigned char *dsq, struct p7
 //           hmm changed to an ME HMM
 //           ainfo changed, contains ME weights
 
-static void maximum_entropy(struct alphabet_s * /*al*/, struct plan7_s *hmm, unsigned char **dsq, MSA *msa, float eff_nseq, struct p7prior_s *prior, struct p7trace_s **tr) {
-    float *wgt;    // current best set of ME weights
-    float *new_wgt;    // new set of ME weights to try
-    float *sc;    // log-odds score of each sequence
-    float *grad;    // gradient
-    float epsilon;    // steepness of descent
-    float relative_entropy;    // current best relative entropy
-    float new_entropy;    // relative entropy at new weights
-    float last_new_entropy;    // last new_entropy we calc'ed
-    float use_epsilon;    // current epsilon value in use
-    int idx;    // counter over sequences
-    int i1, i2;    // counters for iterations
+static void maximum_entropy(struct alphabet_s* /*al*/, struct plan7_s* hmm, unsigned char** dsq, MSA* msa, float eff_nseq, struct p7prior_s* prior, struct p7trace_s** tr) {
+    float* wgt;  // current best set of ME weights
+    float* new_wgt;  // new set of ME weights to try
+    float* sc;  // log-odds score of each sequence
+    float* grad;  // gradient
+    float epsilon;  // steepness of descent
+    float relative_entropy;  // current best relative entropy
+    float new_entropy;  // relative entropy at new weights
+    float last_new_entropy;  // last new_entropy we calc'ed
+    float use_epsilon;  // current epsilon value in use
+    int idx;  // counter over sequences
+    int i1, i2;  // counters for iterations
 
     float converge_criterion;
-    float minw, maxw;    // min, max weight
-    int posw, highw;    // number of positive weights
-    float mins, maxs, avgs;    // min, max, avg score
-    float *pernode;    // expected score per node of HMM
-    float expscore;    // expected score of complete HMM
-    int max_iter;    // bulletproof against infinite loop bugs
+    float minw, maxw;  // min, max weight
+    int posw, highw;  // number of positive weights
+    float mins, maxs, avgs;  // min, max, avg score
+    float* pernode;  // expected score per node of HMM
+    float expscore;  // expected score of complete HMM
+    int max_iter;  // bulletproof against infinite loop bugs
 
-    epsilon = 0.2;    // works fine
+    epsilon = 0.2;  // works fine
     max_iter = 666;
 
     // Allocations
-    sc = (float *)MallocOrDie(sizeof(float) * msa->nseq);
-    wgt = (float *)MallocOrDie(sizeof(float) * msa->nseq);
-    new_wgt = (float *)MallocOrDie(sizeof(float) * msa->nseq);
-    grad = (float *)MallocOrDie(sizeof(float) * msa->nseq);
-    pernode = (float *)MallocOrDie(sizeof(float) * (hmm->M + 1));
+    sc = (float*)MallocOrDie(sizeof(float) * msa->nseq);
+    wgt = (float*)MallocOrDie(sizeof(float) * msa->nseq);
+    new_wgt = (float*)MallocOrDie(sizeof(float) * msa->nseq);
+    grad = (float*)MallocOrDie(sizeof(float) * msa->nseq);
+    pernode = (float*)MallocOrDie(sizeof(float) * (hmm->M + 1));
 
     // Initialization. Start with all weights == 1.0.
     // Find relative entropy and gradient.
@@ -506,4 +506,4 @@ static void maximum_entropy(struct alphabet_s * /*al*/, struct plan7_s *hmm, uns
     free(sc);
 }
 
-}    // namespace U2
+}  // namespace U2

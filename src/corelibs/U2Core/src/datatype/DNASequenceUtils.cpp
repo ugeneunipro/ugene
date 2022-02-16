@@ -31,15 +31,15 @@
 
 namespace U2 {
 
-void DNASequenceUtils::append(DNASequence &sequence, const DNASequence &appendedSequence) {
+void DNASequenceUtils::append(DNASequence& sequence, const DNASequence& appendedSequence) {
     sequence.seq += appendedSequence.constSequence();
 }
 
-void DNASequenceUtils::removeChars(DNASequence &sequence, int startPos, int endPos, U2OpStatus &os) {
+void DNASequenceUtils::removeChars(DNASequence& sequence, int startPos, int endPos, U2OpStatus& os) {
     removeChars(sequence.seq, startPos, endPos, os);
 }
 
-void DNASequenceUtils::removeChars(QByteArray &sequence, int startPos, int endPos, U2OpStatus &os) {
+void DNASequenceUtils::removeChars(QByteArray& sequence, int startPos, int endPos, U2OpStatus& os) {
     if ((endPos <= startPos) || (startPos < 0) || (endPos > sequence.length())) {
         coreLog.trace(L10N::internalError("incorrect parameters was passed to DNASequenceUtils::removeChars, "
                                           "startPos '%1', endPos '%2', sequence length '%3'")
@@ -53,7 +53,7 @@ void DNASequenceUtils::removeChars(QByteArray &sequence, int startPos, int endPo
     sequence.remove(startPos, endPos - startPos);
 }
 
-void DNASequenceUtils::insertChars(QByteArray &sequence, int startPos, const QByteArray &newChars, U2OpStatus &os) {
+void DNASequenceUtils::insertChars(QByteArray& sequence, int startPos, const QByteArray& newChars, U2OpStatus& os) {
     int endPos = startPos + newChars.length();
     CHECK_EXT(newChars.length() > 0, os.setError("Array of chars for replacing is empty!"), );
     if ((startPos < 0) || (startPos > sequence.length())) {
@@ -69,7 +69,7 @@ void DNASequenceUtils::insertChars(QByteArray &sequence, int startPos, const QBy
     sequence.insert(startPos, newChars);
 }
 
-void DNASequenceUtils::replaceChars(QByteArray &sequence, int startPos, const QByteArray &newChars, U2OpStatus &os) {
+void DNASequenceUtils::replaceChars(QByteArray& sequence, int startPos, const QByteArray& newChars, U2OpStatus& os) {
     int endPos = startPos + newChars.length();
     CHECK_EXT(newChars.length() > 0, os.setError("Array of chars for replacing is empty!"), );
     if ((startPos < 0) || (endPos > sequence.length())) {
@@ -85,21 +85,21 @@ void DNASequenceUtils::replaceChars(QByteArray &sequence, int startPos, const QB
     sequence.replace(startPos, newChars.length(), newChars);
 }
 
-void DNASequenceUtils::toUpperCase(DNASequence &sequence) {
+void DNASequenceUtils::toUpperCase(DNASequence& sequence) {
     sequence.seq = sequence.seq.toUpper();
 }
 
-void DNASequenceUtils::makeEmpty(DNASequence &sequence) {
+void DNASequenceUtils::makeEmpty(DNASequence& sequence) {
     sequence.seq = QByteArray();
 }
 
-QByteArray DNASequenceUtils::reverse(const QByteArray &sequence) {
+QByteArray DNASequenceUtils::reverse(const QByteArray& sequence) {
     QByteArray result = sequence;
     TextUtils::reverse(result.data(), result.length());
     return result;
 }
 
-DNASequence DNASequenceUtils::reverse(const DNASequence &dnaSequence) {
+DNASequence DNASequenceUtils::reverse(const DNASequence& dnaSequence) {
     DNASequence newDnaSequence(dnaSequence);
     newDnaSequence.seq = DNASequenceUtils::reverse(dnaSequence.seq);
     newDnaSequence.quality = DNAQuality(DNASequenceUtils::reverse(dnaSequence.quality.qualCodes), dnaSequence.quality.type);
@@ -107,13 +107,13 @@ DNASequence DNASequenceUtils::reverse(const DNASequence &dnaSequence) {
     return newDnaSequence;
 }
 
-QByteArray DNASequenceUtils::complement(const QByteArray &sequence, const DNAAlphabet *alphabet) {
+QByteArray DNASequenceUtils::complement(const QByteArray& sequence, const DNAAlphabet* alphabet) {
     if (nullptr == alphabet) {
         alphabet = U2AlphabetUtils::findBestAlphabet(sequence.data(), sequence.length());
     }
     SAFE_POINT(nullptr != alphabet, L10N::nullPointerError("DNA Alphabet"), "");
 
-    DNATranslation *translator = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(alphabet);
+    DNATranslation* translator = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(alphabet);
     SAFE_POINT(nullptr != translator, L10N::nullPointerError("DNA Translator"), "");
 
     QByteArray result(sequence.length(), 0);
@@ -121,27 +121,27 @@ QByteArray DNASequenceUtils::complement(const QByteArray &sequence, const DNAAlp
     return result;
 }
 
-DNASequence DNASequenceUtils::complement(const DNASequence &dnaSequence) {
+DNASequence DNASequenceUtils::complement(const DNASequence& dnaSequence) {
     DNASequence newDnaSequence(dnaSequence);
     newDnaSequence.seq = DNASequenceUtils::complement(dnaSequence.seq, dnaSequence.alphabet);
 
     return newDnaSequence;
 }
 
-QByteArray DNASequenceUtils::reverseComplement(const QByteArray &sequence, const DNAAlphabet *alphabet) {
+QByteArray DNASequenceUtils::reverseComplement(const QByteArray& sequence, const DNAAlphabet* alphabet) {
     return reverse(complement(sequence, alphabet));
 }
 
-DNASequence DNASequenceUtils::reverseComplement(const DNASequence &dnaSequence) {
+DNASequence DNASequenceUtils::reverseComplement(const DNASequence& dnaSequence) {
     return reverse(complement(dnaSequence));
 }
 
-void DNASequenceUtils::crop(DNASequence &sequence, int startPos, int length) {
+void DNASequenceUtils::crop(DNASequence& sequence, int startPos, int length) {
     sequence.quality.qualCodes = sequence.quality.qualCodes.mid(startPos, length);
     sequence.seq = sequence.seq.mid(startPos, length);
 }
 
-U2Region DNASequenceUtils::trimByQuality(DNASequence &sequence, int qualityThreshold, int minSequenceLength, bool trimBothEnds) {
+U2Region DNASequenceUtils::trimByQuality(DNASequence& sequence, int qualityThreshold, int minSequenceLength, bool trimBothEnds) {
     const int sequenceLength = sequence.length();
     CHECK_EXT(sequenceLength <= sequence.quality.qualCodes.length(), crop(sequence, 0, 0), U2Region());
 
@@ -173,7 +173,7 @@ int DNASequenceUtils::reverseComplementPos(int directPos, int length) {
 }
 
 U2Region DNASequenceUtils::reverseComplementRegion(const U2Region& directRegion, int length) {
-    return U2Region (length - directRegion.endPos(), directRegion.length);
+    return U2Region(length - directRegion.endPos(), directRegion.length);
 }
 
-}    // namespace U2
+}  // namespace U2

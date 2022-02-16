@@ -37,14 +37,14 @@
 
 namespace U2 {
 
-MaConsensusModeWidget::MaConsensusModeWidget(QWidget *parent)
+MaConsensusModeWidget::MaConsensusModeWidget(QWidget* parent)
     : QWidget(parent),
       consArea(nullptr),
       maObject(nullptr) {
     setupUi(this);
 }
 
-void MaConsensusModeWidget::init(MultipleAlignmentObject *_maObject, MaEditorConsensusArea *_consArea) {
+void MaConsensusModeWidget::init(MultipleAlignmentObject* _maObject, MaEditorConsensusArea* _consArea) {
     SAFE_POINT(_maObject != nullptr, "MaConsensusModeWidget can not be initialized: MultipleAlignmentObject is NULL", );
     SAFE_POINT(_consArea != nullptr, "MaConsensusModeWidget can not be initialized: MaEditorConsensusArea is NULL", );
 
@@ -72,7 +72,7 @@ void MaConsensusModeWidget::init(MultipleAlignmentObject *_maObject, MaEditorCon
 void MaConsensusModeWidget::updateState() {
     SAFE_POINT(consArea != nullptr, "MaConsensusModeWidget is not initialized", );
 
-    const MSAConsensusAlgorithm *algo = consArea->getConsensusAlgorithm();
+    const MSAConsensusAlgorithm* algo = consArea->getConsensusAlgorithm();
     updateThresholdState(algo->supportsThreshold(),
                          algo->getMinThreshold(),
                          algo->getMaxThreshold(),
@@ -99,12 +99,12 @@ void MaConsensusModeWidget::updateThresholdState(bool enable, int minVal, int ma
     thresholdSlider->setValue(qBound(minVal, value, maxVal));
 }
 
-void MaConsensusModeWidget::sl_algorithmChanged(const QString &algoId) {
+void MaConsensusModeWidget::sl_algorithmChanged(const QString& algoId) {
     GCounter::increment("Consensus type changed", consArea->getEditorWgt()->getEditor()->getFactoryId());
     // Update state for the current algorithm
     SAFE_POINT(maObject != nullptr, "MaConsensusModeWidget is not initialized", );
 
-    const DNAAlphabet *alphabet = maObject->getAlphabet();
+    const DNAAlphabet* alphabet = maObject->getAlphabet();
     if (curAlphabetId != alphabet->getId()) {
         disconnect(consensusType, SIGNAL(currentIndexChanged(int)), this, SLOT(sl_algorithmSelectionChanged(int)));
         consensusType->clear();
@@ -140,8 +140,8 @@ void MaConsensusModeWidget::sl_thresholdSpinBoxChanged(int value) {
 
 void MaConsensusModeWidget::sl_thresholdResetClicked(bool newState) {
     Q_UNUSED(newState);
-    MSAConsensusAlgorithmRegistry *reg = AppContext::getMSAConsensusAlgorithmRegistry();
-    MSAConsensusAlgorithmFactory *factory = reg->getAlgorithmFactory(consensusType->itemData(consensusType->currentIndex()).toString());
+    MSAConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
+    MSAConsensusAlgorithmFactory* factory = reg->getAlgorithmFactory(consensusType->itemData(consensusType->currentIndex()).toString());
     SAFE_POINT(nullptr != factory, "Consensus alorithm factory is NULL", );
     sl_thresholdChanged(factory->getDefaultThreshold());
 }
@@ -151,17 +151,17 @@ void MaConsensusModeWidget::sl_thresholdChanged(int value) {
 }
 
 void MaConsensusModeWidget::initConsensusTypeCombo() {
-    MSAConsensusAlgorithmRegistry *reg = AppContext::getMSAConsensusAlgorithmRegistry();
+    MSAConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
     SAFE_POINT(nullptr != reg, "Consensus algorithm registry is NULL.", );
 
-    const DNAAlphabet *alphabet = maObject->getAlphabet();
+    const DNAAlphabet* alphabet = maObject->getAlphabet();
     curAlphabetId = alphabet->getId();
     ConsensusAlgorithmFlags flags = MSAConsensusAlgorithmFactory::getAphabetFlags(alphabet);
-    if (qobject_cast<MultipleChromatogramAlignmentObject *>(maObject) != nullptr) {
+    if (qobject_cast<MultipleChromatogramAlignmentObject*>(maObject) != nullptr) {
         flags |= ConsensusAlgorithmFlag_AvailableForChromatogram;
     }
-    QList<MSAConsensusAlgorithmFactory *> algos = reg->getAlgorithmFactories(flags);
-    foreach (const MSAConsensusAlgorithmFactory *algo, algos) {
+    QList<MSAConsensusAlgorithmFactory*> algos = reg->getAlgorithmFactories(flags);
+    foreach (const MSAConsensusAlgorithmFactory* algo, algos) {
         consensusType->addItem(algo->getName(), algo->getId());
     }
     QString currentAlgorithmName = consArea->getConsensusAlgorithm()->getName();

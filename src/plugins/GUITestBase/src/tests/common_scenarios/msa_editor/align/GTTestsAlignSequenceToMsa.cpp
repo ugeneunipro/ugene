@@ -51,7 +51,7 @@ namespace U2 {
 namespace GUITest_common_scenarios_align_sequences_to_msa {
 using namespace HI;
 
-static void checkAlignedRegion(HI::GUITestOpStatus &os, const QRect &selectionRect, const QString &expectedContent) {
+static void checkAlignedRegion(HI::GUITestOpStatus& os, const QRect& selectionRect, const QString& expectedContent) {
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, selectionRect.center().x()));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
@@ -197,7 +197,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QStringList fileList = {"tub1.txt", "tub3.txt"};
-    GTFileDialogUtils_list *ob = new GTFileDialogUtils_list(os, testDir + "_common_data/alignment/align_sequence_to_an_alignment/", fileList);
+    GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, testDir + "_common_data/alignment/align_sequence_to_an_alignment/", fileList);
     GTUtilsDialog::waitForDialog(os, ob);
 
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "UGENE");

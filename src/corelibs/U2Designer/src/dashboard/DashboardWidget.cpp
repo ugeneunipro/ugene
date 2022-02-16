@@ -38,7 +38,7 @@
 
 namespace U2 {
 
-DashboardWidget::DashboardWidget(const QString &title, QWidget *contentWidget) {
+DashboardWidget::DashboardWidget(const QString& title, QWidget* contentWidget) {
     auto layout = new QHBoxLayout();
     layout->setMargin(0);
     layout->setSpacing(0);
@@ -83,7 +83,7 @@ DashboardWidget::DashboardWidget(const QString &title, QWidget *contentWidget) {
     contentStyleWidgetLayout->addWidget(contentWidget);
 }
 
-void DashboardWidgetUtils::addTableHeadersRow(QGridLayout *gridLayout, const QStringList &headerNameList) {
+void DashboardWidgetUtils::addTableHeadersRow(QGridLayout* gridLayout, const QStringList& headerNameList) {
     QString commonHeaderStyle = "border: 1px solid #999; background-color: rgb(101, 101, 101);";
     for (int i = 0; i < headerNameList.size(); i++) {
         auto headerNameWidget = new QWidget();
@@ -112,7 +112,7 @@ static QString rightCellStyle = "border-right: 1px solid #ddd;";
 static QString lastRowLeftCellStyle = "border-bottom-left-radius: 4px;";
 static QString lastRowRightCellStyle = "border-bottom-right-radius: 4px;";
 
-void DashboardWidgetUtils::addTableCell(QGridLayout *gridLayout, const QString &rowId, QWidget *widget, int row, int column, bool isLastRow, bool isLastColumn) {
+void DashboardWidgetUtils::addTableCell(QGridLayout* gridLayout, const QString& rowId, QWidget* widget, int row, int column, bool isLastRow, bool isLastColumn) {
     auto cellWidget = new QWidget();
     cellWidget->setObjectName("tableCell");
     QString extraCellStyle = "";
@@ -132,7 +132,7 @@ void DashboardWidgetUtils::addTableCell(QGridLayout *gridLayout, const QString &
 
     auto layoutItem = gridLayout->itemAtPosition(row, column);
     if (layoutItem != nullptr) {
-        QWidget *oldWidget = layoutItem->widget();
+        QWidget* oldWidget = layoutItem->widget();
         gridLayout->replaceWidget(oldWidget, cellWidget, Qt::FindDirectChildrenOnly);
         delete oldWidget;
     } else {
@@ -141,7 +141,7 @@ void DashboardWidgetUtils::addTableCell(QGridLayout *gridLayout, const QString &
     cellWidget->setProperty(ID_KEY, rowId);
 }
 
-void DashboardWidgetUtils::addTableCell(QGridLayout *gridLayout, const QString &rowId, const QString &text, int row, int column, bool isLastRow, bool isLastColumn) {
+void DashboardWidgetUtils::addTableCell(QGridLayout* gridLayout, const QString& rowId, const QString& text, int row, int column, bool isLastRow, bool isLastColumn) {
     auto cellLabel = new QLabel(text);
     cellLabel->setWordWrap(true);
     cellLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
@@ -149,7 +149,7 @@ void DashboardWidgetUtils::addTableCell(QGridLayout *gridLayout, const QString &
     addTableCell(gridLayout, rowId, cellLabel, row, column, isLastRow, isLastColumn);
 }
 
-void DashboardWidgetUtils::addTableRow(QGridLayout *gridLayout, const QString &rowId, const QStringList &valueList) {
+void DashboardWidgetUtils::addTableRow(QGridLayout* gridLayout, const QString& rowId, const QStringList& valueList) {
     // Update last border style for the old last.
     int lastRowIndex = gridLayout->rowCount() - 1;
     if (lastRowIndex > 0) {  // row = 0 is a header.
@@ -169,7 +169,7 @@ void DashboardWidgetUtils::addTableRow(QGridLayout *gridLayout, const QString &r
     }
 }
 
-bool DashboardWidgetUtils::addOrUpdateTableRow(QGridLayout *gridLayout, const QString &rowId, const QStringList &valueList) {
+bool DashboardWidgetUtils::addOrUpdateTableRow(QGridLayout* gridLayout, const QString& rowId, const QStringList& valueList) {
     bool isUpdated = false;
     for (int rowIndex = 0; rowIndex < gridLayout->rowCount(); rowIndex++) {
         auto cellLayoutItem = gridLayout->itemAtPosition(rowIndex, 0);
@@ -177,7 +177,7 @@ bool DashboardWidgetUtils::addOrUpdateTableRow(QGridLayout *gridLayout, const QS
         if (cellWidget != nullptr && cellWidget->property(ID_KEY).toString() == rowId) {
             for (int columnIndex = 0; columnIndex < valueList.size(); columnIndex++) {
                 cellLayoutItem = gridLayout->itemAtPosition(rowIndex, columnIndex);
-                auto cellLabel = qobject_cast<QLabel *>(cellLayoutItem == nullptr ? nullptr : cellLayoutItem->widget()->findChild<QLabel *>());
+                auto cellLabel = qobject_cast<QLabel*>(cellLayoutItem == nullptr ? nullptr : cellLayoutItem->widget()->findChild<QLabel*>());
                 if (cellLabel != nullptr) {
                     cellLabel->setText(valueList.at(columnIndex));
                 }
@@ -192,17 +192,17 @@ bool DashboardWidgetUtils::addOrUpdateTableRow(QGridLayout *gridLayout, const QS
     return !isUpdated;
 }
 
-QString DashboardWidgetUtils::parseOpenUrlValueFromOnClick(const QString &onclickValue) {
+QString DashboardWidgetUtils::parseOpenUrlValueFromOnClick(const QString& onclickValue) {
     int prefixLen = QString("agent.openUrl('").length();
     int suffixLen = QString("')").length();
     return onclickValue.length() > prefixLen + suffixLen ? onclickValue.mid(prefixLen, onclickValue.length() - prefixLen - suffixLen) : QString();
 }
 
-DashboardPopupMenu::DashboardPopupMenu(QAbstractButton *button, QWidget *parent)
+DashboardPopupMenu::DashboardPopupMenu(QAbstractButton* button, QWidget* parent)
     : QMenu(parent), button(button) {
 }
 
-void DashboardPopupMenu::showEvent(QShowEvent *event) {
+void DashboardPopupMenu::showEvent(QShowEvent* event) {
     Q_UNUSED(event);
     QPoint position = this->pos();
     QRect rect = button->geometry();
@@ -211,7 +211,7 @@ void DashboardPopupMenu::showEvent(QShowEvent *event) {
 
 #define FILE_URL_KEY "file-url"
 
-DashboardFileButton::DashboardFileButton(const QStringList &urlList, const QString &dashboardDir, const WorkflowMonitor *monitor, bool isFolderMode)
+DashboardFileButton::DashboardFileButton(const QStringList& urlList, const QString& dashboardDir, const WorkflowMonitor* monitor, bool isFolderMode)
     : urlList(urlList), dashboardDirInfo(dashboardDir), isFolderMode(isFolderMode) {
     setObjectName("DashboardFileButton");
     QString buttonText = urlList.size() != 1 ? tr("%1 file(s)").arg(urlList.size()) : QFileInfo(urlList[0]).fileName();
@@ -237,7 +237,7 @@ DashboardFileButton::DashboardFileButton(const QStringList &urlList, const QStri
 
     connect(this, SIGNAL(clicked()), SLOT(sl_openFileClicked()));
     if (monitor != nullptr) {
-        connect(monitor, SIGNAL(si_dirSet(const QString &)), SLOT(sl_dashboardDirChanged(const QString &)));
+        connect(monitor, SIGNAL(si_dirSet(const QString&)), SLOT(sl_dashboardDirChanged(const QString&)));
     }
     if (urlList.size() == 1) {
         QString url = urlList[0];
@@ -263,7 +263,7 @@ DashboardFileButton::DashboardFileButton(const QStringList &urlList, const QStri
     }
 }
 
-void DashboardFileButton::addUrlActionsToMenu(QMenu *menu, const QString &url, bool addOpenByUgeneAction) {
+void DashboardFileButton::addUrlActionsToMenu(QMenu* menu, const QString& url, bool addOpenByUgeneAction) {
     if (addOpenByUgeneAction) {
         auto openFolderAction = new QAction(tr("Open file with UGENE"), this);
         openFolderAction->setProperty(FILE_URL_KEY, "ugene\n" + url);
@@ -287,7 +287,7 @@ void DashboardFileButton::addUrlActionsToMenu(QMenu *menu, const QString &url, b
  * Returns new file info or the old one if the file detection algorithm is failed.
  * This method is designed to find dashboard output files in moved dashboard.
  */
-static QFileInfo findFileOpenCandidateInTheDashboardOutputDir(const QFileInfo &dashboardDirInfo, const QFileInfo &fileInfo) {
+static QFileInfo findFileOpenCandidateInTheDashboardOutputDir(const QFileInfo& dashboardDirInfo, const QFileInfo& fileInfo) {
     // Split 'fileInfo' into path tokens: list of dirs + file name.
     QStringList fileInfoPathTokens;
     QFileInfo currentPathInfo(QDir::cleanPath(fileInfo.absoluteFilePath()));
@@ -306,12 +306,12 @@ static QFileInfo findFileOpenCandidateInTheDashboardOutputDir(const QFileInfo &d
     return fileInfo;
 }
 
-void DashboardFileButton::sl_dashboardDirChanged(const QString &dashboardDir) {
+void DashboardFileButton::sl_dashboardDirChanged(const QString& dashboardDir) {
     dashboardDirInfo = QFileInfo(dashboardDir);
 }
 
 /** Returns true if the url must be opened with OS, but not with UGENE. */
-static bool isOpenWithOsOverride(const QString &url) {
+static bool isOpenWithOsOverride(const QString& url) {
     QString extension = QFileInfo(url).suffix().toLower();
     return extension == "html" || extension == "htm";
 }
@@ -343,7 +343,7 @@ void DashboardFileButton::sl_openFileClicked() {
     if (type == "ugene" && !isOpenWithOsOverride(url)) {
         QVariantMap hints;
         hints[ProjectLoaderHint_OpenBySystemIfFormatDetectionFailed] = true;
-        Task *task = AppContext::getProjectLoader()->openWithProjectTask(fileInfo.absoluteFilePath(), hints);
+        Task* task = AppContext::getProjectLoader()->openWithProjectTask(fileInfo.absoluteFilePath(), hints);
         CHECK(task != nullptr, );
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
     } else {

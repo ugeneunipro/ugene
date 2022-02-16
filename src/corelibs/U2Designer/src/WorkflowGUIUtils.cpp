@@ -32,7 +32,7 @@
 
 namespace U2 {
 
-void DesignerGUIUtils::paintSamplesArrow(QPainter *painter) {
+void DesignerGUIUtils::paintSamplesArrow(QPainter* painter) {
     QPen pen(Qt::darkGray);
     pen.setWidthF(2);
     painter->setPen(pen);
@@ -62,7 +62,7 @@ void DesignerGUIUtils::paintSamplesArrow(QPainter *painter) {
     painter->drawText(approx, Qt::AlignLeft | Qt::AlignTop, txt);
 }
 
-void DesignerGUIUtils::paintSamplesDocument(QPainter *painter, QTextDocument *doc, int w, int h, const QPalette &pal) {
+void DesignerGUIUtils::paintSamplesDocument(QPainter* painter, QTextDocument* doc, int w, int h, const QPalette& pal) {
     int pageWidth = qMax(w - 100, 100);
     int pageHeight = qMax(h - 100, 100);
     if (pageWidth != doc->pageSize().width()) {
@@ -112,7 +112,7 @@ void DesignerGUIUtils::paintSamplesDocument(QPainter *painter, QTextDocument *do
     doc->documentLayout()->draw(painter, ctx);
 }
 
-void DesignerGUIUtils::setupSamplesDocument(const Descriptor &d, const QIcon &ico, QTextDocument *doc) {
+void DesignerGUIUtils::setupSamplesDocument(const Descriptor& d, const QIcon& ico, QTextDocument* doc) {
     bool hasIcon = (ico.availableSizes().size() > 0);
     QString text =
         QString(hasIcon ? "<html>"

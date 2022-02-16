@@ -34,12 +34,12 @@ namespace U2 {
 OffsetRegions::OffsetRegions() {
 }
 
-void OffsetRegions::append(const U2Region &region, int offset) {
+void OffsetRegions::append(const U2Region& region, int offset) {
     regions.append(region);
     offsets.append(offset);
 }
 
-int OffsetRegions::findIntersectedRegion(const U2Region &region) const {
+int OffsetRegions::findIntersectedRegion(const U2Region& region) const {
     return region.findIntersectedRegion(regions);
 }
 
@@ -63,11 +63,11 @@ void OffsetRegions::clear() {
     offsets.clear();
 }
 
-McaReferenceCharController::McaReferenceCharController(QObject *p, McaEditor *editor)
+McaReferenceCharController::McaReferenceCharController(QObject* p, McaEditor* editor)
     : QObject(p),
       refObject(nullptr),
       ungappedLength(-1) {
-    SequenceObjectContext *ctx = editor->getReferenceContext();
+    SequenceObjectContext* ctx = editor->getReferenceContext();
     SAFE_POINT(ctx != nullptr, "SequenceObjectContext is NULL", );
     refObject = ctx->getSequenceObject();
     SAFE_POINT(ctx != nullptr, "Reference U2SequenceObject is NULL", );
@@ -77,7 +77,7 @@ McaReferenceCharController::McaReferenceCharController(QObject *p, McaEditor *ed
     connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), SLOT(sl_update(MultipleAlignment, MaModificationInfo)));
 }
 
-OffsetRegions McaReferenceCharController::getCharRegions(const U2Region &region) const {
+OffsetRegions McaReferenceCharController::getCharRegions(const U2Region& region) const {
     int i = charRegions.findIntersectedRegion(region);
     CHECK(i != -1, OffsetRegions());
 
@@ -117,7 +117,7 @@ void McaReferenceCharController::sl_update() {
     initRegions();
 }
 
-void McaReferenceCharController::sl_update(const MultipleAlignment &, const MaModificationInfo &modInfo) {
+void McaReferenceCharController::sl_update(const MultipleAlignment&, const MaModificationInfo& modInfo) {
     if (modInfo.type == MaModificationType_Undo || modInfo.type == MaModificationType_Redo) {
         initRegions();
     }

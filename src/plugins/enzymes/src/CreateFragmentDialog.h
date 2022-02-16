@@ -22,13 +22,13 @@
 #ifndef _U2_CREATE_FRAGMENT_DIALOG_H_
 #define _U2_CREATE_FRAGMENT_DIALOG_H_
 
-#include <ui_CreateFragmentDialog.h>
-
 #include <QSet>
 
 #include <U2Gui/RegionSelector.h>
 
 #include "DNAFragment.h"
+
+#include <ui_CreateFragmentDialog.h>
 
 namespace U2 {
 
@@ -39,23 +39,23 @@ class DNASequenceSelection;
 class CreateFragmentDialog : public QDialog, public Ui_CreateFragmentDialog {
     Q_OBJECT
 public:
-    CreateFragmentDialog(ADVSequenceObjectContext *seqCtx, QWidget *p);
-    CreateFragmentDialog(U2SequenceObject *seqObj, const U2Region &region, QWidget *p);
+    CreateFragmentDialog(ADVSequenceObjectContext* seqCtx, QWidget* p);
+    CreateFragmentDialog(U2SequenceObject* seqObj, const U2Region& region, QWidget* p);
     virtual void accept();
-    const DNAFragment &getFragment() {
+    const DNAFragment& getFragment() {
         return dnaFragment;
     }
 
 private:
     void setupAnnotationsWidget();
 
-    CreateAnnotationWidgetController *ac;
-    U2SequenceObject *seqObj;
-    QList<AnnotationTableObject *> relatedAnnotations;
+    CreateAnnotationWidgetController* ac;
+    U2SequenceObject* seqObj;
+    QList<AnnotationTableObject*> relatedAnnotations;
     QSet<QString> enzymesSelection;
     DNAFragment dnaFragment;
-    RegionSelector *rs;
-    ADVSequenceObjectContext *seqCtx;
+    RegionSelector* rs;
+    ADVSequenceObjectContext* seqCtx;
 };
 
 }  // namespace U2

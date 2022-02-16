@@ -36,8 +36,8 @@
 
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
-    PToolsPlugin *plug = new PToolsPlugin();
+extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
+    PToolsPlugin* plug = new PToolsPlugin();
     return plug;
 }
 
@@ -47,18 +47,18 @@ static const QString PTOOLS_ID("PTools");
 
 PToolsPlugin::PToolsPlugin()
     : Plugin(tr("PTools"), tr("Structural alignment algorithm (Sippl MJ, Stegbuchner H) from PTools library")) {
-    StructuralAlignmentAlgorithmFactory *ptools = new PToolsAlignerFactory();
+    StructuralAlignmentAlgorithmFactory* ptools = new PToolsAlignerFactory();
     AppContext::getStructuralAlignmentAlgorithmRegistry()->registerAlgorithmFactory(ptools, PTOOLS_ID);
 
     // PToolsAligner tests
-    GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
+    GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
+    XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
     assert(xmlTestFormat != nullptr);
 
-    GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
+    GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = StructualAlignerTests::createTestFactories();
 
-    foreach (XMLTestFactory *f, l->qlist) {
+    foreach (XMLTestFactory* f, l->qlist) {
         bool res = xmlTestFormat->registerTestFactory(f);
         Q_UNUSED(res);
         assert(res);
@@ -70,8 +70,8 @@ PToolsPlugin::~PToolsPlugin() {
 
 /* class StructualAlignerTests */
 
-QList<XMLTestFactory *> StructualAlignerTests ::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> StructualAlignerTests ::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(Gtest_PToolsAlignerTask::createFactory());
     return res;
 }

@@ -22,12 +22,12 @@
 #ifndef _U2_CREATE_RULER_DIALOG_CONTROLLER_H_
 #define _U2_CREATE_RULER_DIALOG_CONTROLLER_H_
 
-#include <ui_CreateRulerDialog.h>
-
 #include <QDialog>
 #include <QSet>
 
 #include <U2Core/U2Region.h>
+
+#include <ui_CreateRulerDialog.h>
 
 namespace U2 {
 
@@ -36,10 +36,10 @@ class U2VIEW_EXPORT CreateRulerDialogController : public QDialog, public Ui_Crea
 public:
     CreateRulerDialogController(
         /* The names in this set are already used and are not allowed */
-        const QSet<QString> &namesToFilter,
+        const QSet<QString>& namesToFilter,
         /** Ruler offset selected by default */
         int defaultOffset,
-        QWidget *p = nullptr);
+        QWidget* p = nullptr);
 
     virtual void accept();
 

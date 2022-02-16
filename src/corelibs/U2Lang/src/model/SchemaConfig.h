@@ -34,9 +34,9 @@ public:
     virtual ~SchemaConfig() {
     }
 
-    virtual RunFileSystem *getRFS() = 0;
-    virtual QVariant getAttributeValue(const AttributeInfo &info) const = 0;
-    virtual void setAttributeValue(const AttributeInfo &info, const QVariant &value) = 0;
+    virtual RunFileSystem* getRFS() = 0;
+    virtual QVariant getAttributeValue(const AttributeInfo& info) const = 0;
+    virtual void setAttributeValue(const AttributeInfo& info, const QVariant& value) = 0;
 };
 
 }  // namespace U2

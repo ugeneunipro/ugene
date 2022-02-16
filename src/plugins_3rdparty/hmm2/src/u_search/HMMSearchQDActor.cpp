@@ -45,12 +45,12 @@ static const QString DOM_T_ATTR("score");
 static const QString MIN_LEN("min-len");
 static const QString MAX_LEN("max-len");
 
-HMM2QDActor::HMM2QDActor(QDActorPrototype const *proto)
+HMM2QDActor::HMM2QDActor(QDActorPrototype const* proto)
     : QDActor(proto) {
     units["hmm"] = new QDSchemeUnit(this);
     cfg->setAnnotationKey("hmm_signal");
     CHECK(NULL != proto->getEditor(), );
-    PropertyDelegate *evpd = proto->getEditor()->getDelegate(DOM_E_ATTR);
+    PropertyDelegate* evpd = proto->getEditor()->getDelegate(DOM_E_ATTR);
     connect(evpd, SIGNAL(si_valueChanged(int)), SLOT(sl_evChanged(int)));
 }
 
@@ -66,15 +66,15 @@ QString HMM2QDActor::getText() const {
     return tr("HMM2");
 }
 
-Task *HMM2QDActor::getAlgorithmTask(const QVector<U2Region> &location) {
-    const DNASequence &dnaSeq = scheme->getSequence();
-    const char *seq = dnaSeq.seq.constData();
+Task* HMM2QDActor::getAlgorithmTask(const QVector<U2Region>& location) {
+    const DNASequence& dnaSeq = scheme->getSequence();
+    const char* seq = dnaSeq.seq.constData();
 
-    QMap<QString, Attribute *> params = cfg->getParameters();
+    QMap<QString, Attribute*> params = cfg->getParameters();
     QString hmmFileStr = params.value(PROFILE_ATTR)->getAttributeValueWithoutScript<QString>();
     QStringList hmmFiles = hmmFileStr.split(QRegExp("\\s*;\\s*"));
 
-    Task *t = new Task(tr("QD HMM2 search"), TaskFlag_NoRun);
+    Task* t = new Task(tr("QD HMM2 search"), TaskFlag_NoRun);
 
     UHMMSearchSettings stngs;
 
@@ -93,23 +93,23 @@ Task *HMM2QDActor::getAlgorithmTask(const QVector<U2Region> &location) {
             sequence.seq = QByteArray(seq + r.startPos, r.length);
             sequence.alphabet = dnaSeq.alphabet;
 
-            HMMSearchTask *st = new HMMSearchTask(hmmFile, sequence, stngs);
+            HMMSearchTask* st = new HMMSearchTask(hmmFile, sequence, stngs);
             t->addSubTask(st);
             offsets[st] = r.startPos;
         }
     }
 
-    connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_onTaskFinished(Task *)));
+    connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_onTaskFinished(Task*)));
 
     return t;
 }
 
-void HMM2QDActor::sl_onTaskFinished(Task *) {
+void HMM2QDActor::sl_onTaskFinished(Task*) {
     QString aname = cfg->getAnnotationKey();
-    foreach (HMMSearchTask *t, offsets.keys()) {
+    foreach (HMMSearchTask* t, offsets.keys()) {
         QList<SharedAnnotationData> annotations = t->getResultsAsAnnotations(U2FeatureTypes::MiscSignal, aname);
         int offset = offsets.value(t);
-        foreach (const SharedAnnotationData &d, annotations) {
+        foreach (const SharedAnnotationData& d, annotations) {
             U2Region r = d->location->regions.first();
             if (r.length < getMinResultLen() || r.length > getMaxResultLen()) {
                 continue;
@@ -128,8 +128,8 @@ void HMM2QDActor::sl_onTaskFinished(Task *) {
 
 void HMM2QDActor::sl_evChanged(int i) {
     CHECK(NULL != proto->getEditor(), );
-    PropertyDelegate *pd = proto->getEditor()->getDelegate(DOM_E_ATTR);
-    SpinBoxDelegate *evpd = qobject_cast<SpinBoxDelegate *>(pd);
+    PropertyDelegate* pd = proto->getEditor()->getDelegate(DOM_E_ATTR);
+    SpinBoxDelegate* evpd = qobject_cast<SpinBoxDelegate*>(pd);
     assert(evpd);
     if (i > 0) {
         evpd->setEditorProperty("prefix", "1e+");
@@ -188,7 +188,7 @@ HMM2QDActorPrototype::HMM2QDActorPrototype() {
         attributes << new Attribute(nsd, BaseTypes::NUM_TYPE(), false, QVariant(1));
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
 
     {
         delegates[PROFILE_ATTR] = new URLDelegate(

@@ -35,11 +35,11 @@ class AuthenticationWidget;
 class U2GUI_EXPORT AuthenticationDialog : public QDialog {
     Q_OBJECT
 public:
-    AuthenticationDialog(const QString &text, QWidget *parent);
+    AuthenticationDialog(const QString& text, QWidget* parent);
     ~AuthenticationDialog();
 
-    void setLogin(const QString &login);
-    void setPassword(const QString &password);
+    void setLogin(const QString& login);
+    void setPassword(const QString& password);
     void setRemembered(bool isChecked);
 
     QString getLogin() const;
@@ -52,8 +52,8 @@ private slots:
     void accept();
 
 private:
-    Ui_AuthenticationDialog *ui;
-    AuthenticationWidget *authenticationWidget;
+    Ui_AuthenticationDialog* ui;
+    AuthenticationWidget* authenticationWidget;
 };
 
 }  // namespace U2

@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-DeleteGapsDialog::DeleteGapsDialog(QWidget *parent, int rowNum)
+DeleteGapsDialog::DeleteGapsDialog(QWidget* parent, int rowNum)
     : QDialog(parent), ui(new Ui_DeleteGapsDialog()) {
     ui->setupUi(this);
     new HelpButton(this, ui->buttonBox, "65929664");
@@ -40,8 +40,8 @@ DeleteGapsDialog::DeleteGapsDialog(QWidget *parent, int rowNum)
     ui->absoluteSpinBox->setMinimum(1);
     ui->absoluteSpinBox->setMaximum(rowNum);
 
-    QPushButton *deleteButton = ui->buttonBox->button(QDialogButtonBox::Ok);
-    QPushButton *cancelButton = ui->buttonBox->button(QDialogButtonBox::Cancel);
+    QPushButton* deleteButton = ui->buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* cancelButton = ui->buttonBox->button(QDialogButtonBox::Cancel);
 
     connect(ui->absoluteRadioButton, SIGNAL(clicked()), SLOT(sl_onRadioButtonClicked()));
     connect(ui->relativeRadioButton, SIGNAL(clicked()), SLOT(sl_onRadioButtonClicked()));

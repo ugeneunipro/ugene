@@ -30,11 +30,11 @@ namespace U2 {
 
 class U2LANG_EXPORT WorkflowScriptEngine : public QScriptEngine {
 public:
-    WorkflowScriptEngine(Workflow::WorkflowContext *context);
-    Workflow::WorkflowContext *getWorkflowContext();
+    WorkflowScriptEngine(Workflow::WorkflowContext* context);
+    Workflow::WorkflowContext* getWorkflowContext();
 
 private:
-    Workflow::WorkflowContext *context;
+    Workflow::WorkflowContext* context;
 };
 
 }  // namespace U2

@@ -32,10 +32,10 @@ class SmithWatermanAlgorithmSSE2 : public SmithWatermanAlgorithm {
 public:
     typedef qint16 ScoreType;
 
-    virtual void launch(const SMatrix &substitutionMatrix, const QByteArray &_patternSeq, const QByteArray &_searchSeq, int _gapOpen, int _gapExtension, int _minScore, SmithWatermanSettings::SWResultView resultView);
+    virtual void launch(const SMatrix& substitutionMatrix, const QByteArray& _patternSeq, const QByteArray& _searchSeq, int _gapOpen, int _gapExtension, int _minScore, SmithWatermanSettings::SWResultView resultView);
 
-    static quint64 estimateNeededRamAmount(const QByteArray &_patternSeq,
-                                           const QByteArray &_searchSeq,
+    static quint64 estimateNeededRamAmount(const QByteArray& _patternSeq,
+                                           const QByteArray& _searchSeq,
                                            const qint32 gapOpen,
                                            const qint32 gapExtension,
                                            const quint32 minScore,
@@ -44,12 +44,12 @@ public:
 
 private:
     static const int nElementsInVec = 8;
-    void printVector(__m128i &toprint, int add);
+    void printVector(__m128i& toprint, int add);
     void calculateMatrixForMultipleAlignmentResultWithShort();
     void calculateMatrixForAnnotationsResultWithShort();
     void calculateMatrixForMultipleAlignmentResultWithInt();
     void calculateMatrixForAnnotationsResultWithInt();
-    int calculateMatrixSSE2(unsigned queryLength, unsigned char *dbSeq, unsigned dbLength, unsigned short gapOpenOrig, unsigned short gapExtend);
+    int calculateMatrixSSE2(unsigned queryLength, unsigned char* dbSeq, unsigned dbLength, unsigned short gapOpenOrig, unsigned short gapExtend);
 };
 
 }  // namespace U2

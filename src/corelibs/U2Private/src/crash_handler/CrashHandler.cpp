@@ -41,13 +41,13 @@
 #    include "CrashHandlerPrivateWin.h"
 #endif
 
-const static char *SETTINGS_UGENE_UID = "shtirlitz/uid";
+const static char* SETTINGS_UGENE_UID = "shtirlitz/uid";
 
 namespace U2 {
 
-CrashHandlerPrivate *CrashHandler::crashHandlerPrivate = nullptr;
-char *CrashHandler::buffer = nullptr;
-LogCache *CrashHandler::crashLogCache = nullptr;
+CrashHandlerPrivate* CrashHandler::crashHandlerPrivate = nullptr;
+char* CrashHandler::buffer = nullptr;
+LogCache* CrashHandler::crashLogCache = nullptr;
 bool CrashHandler::sendCrashReports = true;
 
 bool CrashHandler::isEnabled() {
@@ -76,7 +76,7 @@ void CrashHandler::setSendCrashReports(bool sendReports) {
     sendCrashReports = sendReports;
 }
 
-void CrashHandler::handleException(const QString &exceptionType, const QString &dumpUrl) {
+void CrashHandler::handleException(const QString& exceptionType, const QString& dumpUrl) {
     if (!sendCrashReports) {
         QTextStream out(stderr);
         out << "Unrecognized error";
@@ -132,13 +132,13 @@ void CrashHandler::setupPrivateHandler() {
     crashHandlerPrivate->setupHandler();
 }
 
-QString CrashHandler::generateReport(const QString &exceptionType, int maxReportSize) {
+QString CrashHandler::generateReport(const QString& exceptionType, int maxReportSize) {
     QString reportText = exceptionType + "|";
 
-    reportText += Version::appVersion().text;
+    reportText += Version::appVersion().toString();
     reportText += "|";
 
-    Settings *settings = AppContext::getSettings();
+    Settings* settings = AppContext::getSettings();
     if (settings != nullptr) {
         QVariant uuidQvar = settings->getValue(SETTINGS_UGENE_UID, "None");
         reportText += uuidQvar.toString() + "|";
@@ -156,20 +156,20 @@ QString CrashHandler::generateReport(const QString &exceptionType, int maxReport
     const QString handlerAdditionalInfo = (crashHandlerPrivate == nullptr ? "" : crashHandlerPrivate->getAdditionalInfo());
     reportText += (handlerAdditionalInfo.isEmpty() ? "None" : handlerAdditionalInfo) + "|";
 
-    QList<LogMessage *> logMessages = crashLogCache == nullptr ? QList<LogMessage *>() : crashLogCache->messages;
+    QList<LogMessage*> logMessages = crashLogCache == nullptr ? QList<LogMessage*>() : crashLogCache->messages;
     QString messageLog;
     if (!logMessages.isEmpty()) {
-        QList<LogMessage *>::iterator it;
+        QList<LogMessage*>::iterator it;
         int i;
         for (i = 0, it = --logMessages.end(); i <= maxReportSize && it != logMessages.begin(); i++, it--) {
-            LogMessage *msg = *it;
+            LogMessage* msg = *it;
             messageLog.prepend("[" + GTimer::createDateTime(msg->time).toString("hh:mm:ss.zzz") + "] " + "[" + msg->categories.first() + "] " + msg->text + "\n");
         }
     } else {
         messageLog += "None";
     }
 
-    AppResourcePool *pool = AppResourcePool::instance();
+    AppResourcePool* pool = AppResourcePool::instance();
     if (pool) {
         size_t memoryBytes = pool->getCurrentAppMemory();
         QString memInfo = QString("AppMemory: %1Mb; ").arg(memoryBytes / (1000 * 1000));
@@ -179,9 +179,9 @@ QString CrashHandler::generateReport(const QString &exceptionType, int maxReport
     reportText += messageLog + " | ";
 
     QString taskList;
-    TaskScheduler *ts = AppContext::getTaskScheduler();
-    QList<Task *> topTasks = ts != nullptr ? ts->getTopLevelTasks() : QList<Task *>();
-    for (Task *t : qAsConst(topTasks)) {
+    TaskScheduler* ts = AppContext::getTaskScheduler();
+    QList<Task*> topTasks = ts != nullptr ? ts->getTopLevelTasks() : QList<Task*>();
+    for (Task* t : qAsConst(topTasks)) {
         if (t->getState() != Task::State_Finished) {
             QString state;
             if (t->getState() == Task::State_Running) {
@@ -193,7 +193,7 @@ QString CrashHandler::generateReport(const QString &exceptionType, int maxReport
             }
             QString progress = QString::number(t->getStateInfo().progress);
             taskList.append(t->getTaskName() + "\t" + state + "\t" + progress + "\n");
-            foreach (const QPointer<Task> &tt, t->getSubtasks()) {
+            foreach (const QPointer<Task>& tt, t->getSubtasks()) {
                 getSubTasks(tt.data(), taskList, 1);
             }
         }
@@ -220,7 +220,7 @@ void CrashHandler::shutdown() {
     delete crashHandlerPrivate;
 }
 
-void CrashHandler::runMonitorProcess(const CrashHandlerArgsHelper &helper) {
+void CrashHandler::runMonitorProcess(const CrashHandlerArgsHelper& helper) {
 #ifndef Q_OS_WIN
     const QString path = AppContext::getWorkingDirectoryPath() + "/ugenem";
 #else
@@ -232,7 +232,7 @@ void CrashHandler::runMonitorProcess(const CrashHandlerArgsHelper &helper) {
     QProcess::startDetached(path, helper.getArguments());
 }
 
-void CrashHandler::getSubTasks(Task *t, QString &list, int lvl) {
+void CrashHandler::getSubTasks(Task* t, QString& list, int lvl) {
     if (t->getState() != Task::State_Finished) {
         QString prefix;
         QString state;
@@ -246,7 +246,7 @@ void CrashHandler::getSubTasks(Task *t, QString &list, int lvl) {
         }
         QString progress = QString::number(t->getStateInfo().progress);
         list.append(prefix + t->getTaskName() + "\t" + state + "\t" + progress + "\n");
-        foreach (const QPointer<Task> &tt, t->getSubtasks()) {
+        foreach (const QPointer<Task>& tt, t->getSubtasks()) {
             getSubTasks(tt.data(), list, lvl + 1);
         }
     }

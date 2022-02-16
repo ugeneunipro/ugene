@@ -29,11 +29,11 @@ namespace U2 {
 class TBlastXTask : public BlastCommonTask {
     Q_OBJECT
 public:
-    TBlastXTask(const BlastTaskSettings &settings)
+    TBlastXTask(const BlastTaskSettings& settings)
         : BlastCommonTask(settings) {
     }
 
-    ExternalToolRunTask *createBlastTask() override;
+    ExternalToolRunTask* createBlastTask() override;
 };
 
 }  // namespace U2

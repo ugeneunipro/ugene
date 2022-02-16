@@ -32,7 +32,7 @@ namespace U2 {
 #define GT_METHOD_NAME "run"
 
 void CAP3SupportDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
+    QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog != nullptr, "dialog not found");
 
     foreach (QString file, input) {

@@ -41,7 +41,7 @@ class SWTaskFactory : public SmithWatermanTaskFactory {  // for ADV search only
 public:
     SWTaskFactory(SW_AlgType _algType);
     virtual ~SWTaskFactory();
-    virtual Task *getTaskInstance(const SmithWatermanSettings &config, const QString &taskName) const;
+    virtual Task* getTaskInstance(const SmithWatermanSettings& config, const QString& taskName) const;
 
 private:
     SW_AlgType algType;
@@ -52,7 +52,7 @@ public:
     PairwiseAlignmentSmithWatermanTaskFactory(SW_AlgType _algType);
     virtual ~PairwiseAlignmentSmithWatermanTaskFactory();
 
-    virtual AbstractAlignmentTask *getTaskInstance(AbstractAlignmentTaskSettings *settings) const;
+    virtual AbstractAlignmentTask* getTaskInstance(AbstractAlignmentTaskSettings* settings) const;
 
 private:
     SW_AlgType algType;

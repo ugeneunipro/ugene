@@ -34,7 +34,7 @@
 
 namespace U2 {
 
-QueryEditor::QueryEditor(QWidget *parent /* =0 */)
+QueryEditor::QueryEditor(QWidget* parent /* =0 */)
     : QWidget(parent), current(nullptr) {
     setupUi(this);
     caption->setMinimumHeight(nameEdit->sizeHint().height());
@@ -63,7 +63,7 @@ QueryEditor::QueryEditor(QWidget *parent /* =0 */)
     connect(cfgModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), SIGNAL(modified()));
 }
 
-void QueryEditor::setCurrentAttribute(const QString &id) {
+void QueryEditor::setCurrentAttribute(const QString& id) {
     QModelIndex modelIndex = cfgModel->modelIndexById(id);
 
     QModelIndex prev = table->selectionModel()->currentIndex();
@@ -106,7 +106,7 @@ void QueryEditor::sl_showPropDoc() {
     }
 }
 
-void QueryEditor::setDescriptor(const Descriptor *d, const QString &hint) {
+void QueryEditor::setDescriptor(const Descriptor* d, const QString& hint) {
     QString text = d ? WorkflowUtils::getRichDoc(*d) + "<br><br>" + hint : hint;
     if (text.isEmpty()) {
         text = tr("Select an element to inspect.");
@@ -114,7 +114,7 @@ void QueryEditor::setDescriptor(const Descriptor *d, const QString &hint) {
     doc->setText(text);
 }
 
-void QueryEditor::showProto(QDActorPrototype *proto) {
+void QueryEditor::showProto(QDActorPrototype* proto) {
     if (proto) {
         caption->setText(tr("Element Name"));
         caption->show();
@@ -141,7 +141,7 @@ void QueryEditor::showProto(QDActorPrototype *proto) {
     }
 }
 
-void QueryEditor::edit(QDConstraint *constraint) {
+void QueryEditor::edit(QDConstraint* constraint) {
     if (constraint) {
         caption->setText("");
         caption->hide();
@@ -163,7 +163,7 @@ void QueryEditor::edit(QDConstraint *constraint) {
     }
 }
 
-void QueryEditor::edit(QDActor *a) {
+void QueryEditor::edit(QDActor* a) {
     current = a;
     if (a) {
         caption->setText(tr("Element Name"));

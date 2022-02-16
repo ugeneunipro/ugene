@@ -34,7 +34,7 @@ class U2SequenceObject;
 class HmmerSupport : public ExternalTool {
     Q_OBJECT
 public:
-    HmmerSupport(const QString &id, const QString &name);
+    HmmerSupport(const QString& id, const QString& name);
 
     static const QString BUILD_TOOL;
     static const QString BUILD_TOOL_ID;
@@ -52,46 +52,46 @@ private:
     void initSearch();
     void initPhmmer();
 
-    bool isToolSet(const QString &id) const;
+    bool isToolSet(const QString& id) const;
 };
 
 class HmmerMsaEditorContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    HmmerMsaEditorContext(QObject *parent);
+    HmmerMsaEditorContext(QObject* parent);
 
 private slots:
     void sl_build();
 
 private:
-    void initViewContext(GObjectView *view) override;
-    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
+    void initViewContext(GObjectView* view) override;
+    void buildStaticOrContextMenu(GObjectView* view, QMenu* menu) override;
 };
 
 class HmmerAdvContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    HmmerAdvContext(QObject *parent);
+    HmmerAdvContext(QObject* parent);
 
 private slots:
     void sl_search();
 
 private:
-    void initViewContext(GObjectView *view) override;
+    void initViewContext(GObjectView* view) override;
 
-    QWidget *getParentWidget(QObject *sender);
-    U2SequenceObject *getSequenceInFocus(QObject *sender);
+    QWidget* getParentWidget(QObject* sender);
+    U2SequenceObject* getSequenceInFocus(QObject* sender);
 };
 
 class HmmerContext : public QObject {
 public:
-    HmmerContext(QObject *parent);
+    HmmerContext(QObject* parent);
 
     void init();
 
 private:
-    HmmerMsaEditorContext *msaEditorContext;
-    HmmerAdvContext *advContext;
+    HmmerMsaEditorContext* msaEditorContext;
+    HmmerAdvContext* advContext;
 };
 
 class Hmmer3LogParser : public ExternalToolLogParser {
@@ -99,12 +99,12 @@ class Hmmer3LogParser : public ExternalToolLogParser {
     Q_DISABLE_COPY(Hmmer3LogParser)
 public:
     Hmmer3LogParser();
-    void parseErrOutput(const QString &partOfLog);
+    void parseErrOutput(const QString& partOfLog);
 
 private:
     QString lastErrLine;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_HMMER_SUPPORT_H_
+#endif  // _U2_HMMER_SUPPORT_H_

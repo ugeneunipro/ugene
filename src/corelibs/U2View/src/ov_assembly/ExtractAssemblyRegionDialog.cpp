@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-ExtractAssemblyRegionDialog::ExtractAssemblyRegionDialog(QWidget *p, ExtractAssemblyRegionTaskSettings *settings)
+ExtractAssemblyRegionDialog::ExtractAssemblyRegionDialog(QWidget* p, ExtractAssemblyRegionTaskSettings* settings)
     : QDialog(p), settings(settings) {
     setupUi(this);
 
@@ -48,10 +48,10 @@ ExtractAssemblyRegionDialog::ExtractAssemblyRegionDialog(QWidget *p, ExtractAsse
     regionSelectorWidget->layout()->addWidget(regionSelector);
 
     setMaximumHeight(layout()->minimumSize().height());
-    connect(regionSelector, SIGNAL(si_regionChanged(const U2Region &)), SLOT(sl_regionChanged(const U2Region &)));
+    connect(regionSelector, SIGNAL(si_regionChanged(const U2Region&)), SLOT(sl_regionChanged(const U2Region&)));
 }
 
-void ExtractAssemblyRegionDialog::sl_regionChanged(const U2Region &newRegion) {
+void ExtractAssemblyRegionDialog::sl_regionChanged(const U2Region& newRegion) {
     QString filePath = saveController->getSaveFileName();
     QFileInfo fi(filePath);
     U2Region prevRegion = settings->regionToExtract;

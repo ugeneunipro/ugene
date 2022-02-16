@@ -36,7 +36,7 @@ public:
                                SplitJoin,
                                SplitSeparate };
 
-    InsertSequenceFiller(HI::GUITestOpStatus &_os, const QString &_pasteDataHere, RegionResolvingMode _regionResolvingMode = Resize, int _insertPosition = 1, const QString &_documentLocation = "", documentFormat _format = FASTA, bool _saveToNewFile = false, bool _mergeAnnotations = false, GTGlobals::UseMethod method = GTGlobals::UseMouse, bool _wrongInput = false, bool recalculateQuals = false);
+    InsertSequenceFiller(HI::GUITestOpStatus& _os, const QString& _pasteDataHere, RegionResolvingMode _regionResolvingMode = Resize, int _insertPosition = 1, const QString& _documentLocation = "", documentFormat _format = FASTA, bool _saveToNewFile = false, bool _mergeAnnotations = false, GTGlobals::UseMethod method = GTGlobals::UseMouse, bool _wrongInput = false, bool recalculateQuals = false);
     void commonScenario();
 
 private:

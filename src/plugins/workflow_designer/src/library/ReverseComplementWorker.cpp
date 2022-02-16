@@ -55,8 +55,8 @@ enum OpType {
 };
 
 void RCWorkerFactory::init() {
-    QList<PortDescriptor *> p;
-    QList<Attribute *> attrs;
+    QList<PortDescriptor*> p;
+    QList<Attribute*> attrs;
     Descriptor ind(BasePorts::IN_SEQ_PORT_ID(), RCWorker::tr("Input sequence"), RCWorker::tr("The sequence to be complemented"));
     Descriptor outd(BasePorts::OUT_SEQ_PORT_ID(), RCWorker::tr("Output sequence"), RCWorker::tr("Reverse-complement sequence"));
 
@@ -71,9 +71,9 @@ void RCWorkerFactory::init() {
     attrs << new Attribute(opType, BaseTypes::STRING_TYPE(), true, "reverse-complement");
 
     Descriptor desc(ACTOR_ID, RCWorker::tr("Reverse Complement"), RCWorker::tr("Converts input sequence into its reverse, complement or reverse-complement counterpart"));
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, attrs);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, attrs);
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     QVariantMap m;
     m["Reverse Complement"] = "reverse-complement";
     m["Reverse"] = "nocompl";
@@ -84,13 +84,13 @@ void RCWorkerFactory::init() {
     proto->setEditor(new DelegateEditor(delegates));
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_CONVERTERS(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new RCWorkerFactory());
 }
 
 QString RCWorkerPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
-    Actor *producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
+    Actor* producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
     QString type = getRequiredParam(OP_TYPE);
@@ -107,7 +107,7 @@ void RCWorker::init() {
     output = ports.value(BasePorts::OUT_SEQ_PORT_ID());
 }
 
-Task *RCWorker::tick() {
+Task* RCWorker::tick() {
     if (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
@@ -129,7 +129,7 @@ Task *RCWorker::tick() {
 
         QString type = actor->getParameter(OP_TYPE)->getAttributeValue<QString>(context);
 
-        DNATranslation *complTT;
+        DNATranslation* complTT;
         if (!seq.alphabet->isNucleic()) {
             coreLog.info(tr("Can't complement amino sequence"));
             if (input->isEnded()) {

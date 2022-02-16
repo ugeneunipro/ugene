@@ -51,21 +51,21 @@ public:
 class MakeBlastDbTask : public Task {
     Q_OBJECT
 public:
-    MakeBlastDbTask(const MakeBlastDbSettings &settings);
+    MakeBlastDbTask(const MakeBlastDbSettings& settings);
 
 private:
     void prepare() override;
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
     Task::ReportResult report() override;
     QString generateReport() const override;
 
     QString prepareTempDir();
-    QString prepareLink(const QString &path) const;
+    QString prepareLink(const QString& path) const;
     void initMakeBlastDbExternalToolTask();
 
     QString externalToolLog;
-    PrepareInputFastaFilesTask *prepareTask = nullptr;
-    ExternalToolRunTask *makeBlastDbExternalToolTask = nullptr;
+    PrepareInputFastaFilesTask* prepareTask = nullptr;
+    ExternalToolRunTask* makeBlastDbExternalToolTask = nullptr;
     MakeBlastDbSettings settings;
 
     QStringList inputFastaFiles;

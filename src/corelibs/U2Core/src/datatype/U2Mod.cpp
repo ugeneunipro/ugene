@@ -44,7 +44,7 @@ const qint64 U2ModType::msaLengthChanged = 3009;
 
 const qint64 U2ModType::udrUpdated = 4001;
 
-U2UseCommonUserModStep::U2UseCommonUserModStep(const U2EntityRef &entity, U2OpStatus &os)
+U2UseCommonUserModStep::U2UseCommonUserModStep(const U2EntityRef& entity, U2OpStatus& os)
     : dbi(nullptr), valid(false), con(nullptr), masterObjId(entity.entityId) {
     // Open connection
     con.reset(new DbiConnection(entity.dbiRef, os));
@@ -54,12 +54,12 @@ U2UseCommonUserModStep::U2UseCommonUserModStep(const U2EntityRef &entity, U2OpSt
     init(os);
 }
 
-U2UseCommonUserModStep::U2UseCommonUserModStep(U2Dbi *_dbi, const U2DataId &_masterObjId, U2OpStatus &os)
+U2UseCommonUserModStep::U2UseCommonUserModStep(U2Dbi* _dbi, const U2DataId& _masterObjId, U2OpStatus& os)
     : dbi(_dbi), valid(false), con(nullptr), masterObjId(_masterObjId) {
     init(os);
 }
 
-void U2UseCommonUserModStep::init(U2OpStatus &os) {
+void U2UseCommonUserModStep::init(U2OpStatus& os) {
     // No mutexes are needed because start/end of
     // user mod steps are made only in main thread
     CHECK_EXT(nullptr != dbi, os.setError("NULL dbi!"), );
@@ -77,11 +77,11 @@ U2UseCommonUserModStep::~U2UseCommonUserModStep() {
     }
 }
 
-U2Dbi *U2UseCommonUserModStep::getDbi() const {
+U2Dbi* U2UseCommonUserModStep::getDbi() const {
     return dbi;
 }
 
-ModificationAction::ModificationAction(U2AbstractDbi *_dbi, const U2DataId &_masterObjId)
+ModificationAction::ModificationAction(U2AbstractDbi* _dbi, const U2DataId& _masterObjId)
     : dbi(_dbi),
       masterObjId(_masterObjId),
       trackMod(NoTrack) {

@@ -26,19 +26,19 @@
 
 namespace U2 {
 
-RepeatFinderTaskFactoryRegistry::RepeatFinderTaskFactoryRegistry(QObject *pOwn)
+RepeatFinderTaskFactoryRegistry::RepeatFinderTaskFactoryRegistry(QObject* pOwn)
     : QObject(pOwn) {
 }
 
 RepeatFinderTaskFactoryRegistry::~RepeatFinderTaskFactoryRegistry() {
-    foreach (const RepeatFinderTaskFactory *factory, factories) {
+    foreach (const RepeatFinderTaskFactory* factory, factories) {
         delete factory;
     }
 }
 
 bool RepeatFinderTaskFactoryRegistry::registerFactory(
-    RepeatFinderTaskFactory *factory,
-    const QString &factoryId) {
+    RepeatFinderTaskFactory* factory,
+    const QString& factoryId) {
     QMutexLocker locker(&mutex);
     if (factories.contains(factoryId)) {
         return false;
@@ -47,7 +47,7 @@ bool RepeatFinderTaskFactoryRegistry::registerFactory(
     return true;
 }
 
-RepeatFinderTaskFactory *RepeatFinderTaskFactoryRegistry::getFactory(const QString &factoryId) {
+RepeatFinderTaskFactory* RepeatFinderTaskFactoryRegistry::getFactory(const QString& factoryId) {
     return factories.value(factoryId, 0);
 }
 
@@ -55,7 +55,7 @@ QStringList RepeatFinderTaskFactoryRegistry::getListFactoryNames() {
     return factories.keys();
 }
 
-bool RepeatFinderTaskFactoryRegistry::hadRegistered(const QString &factoryId) {
+bool RepeatFinderTaskFactoryRegistry::hadRegistered(const QString& factoryId) {
     return factories.contains(factoryId);
 }
 

@@ -42,14 +42,14 @@ private:
     bool translatetoAmino;
     QString sequenceName;
     QString docName;
-    U2SequenceObject *se;
+    U2SequenceObject* se;
     QList<U2Region> expectedResults;
-    FindAlgorithmTask *t;
+    FindAlgorithmTask* t;
 };
 
 class FindAlgorithmTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

@@ -34,11 +34,11 @@ class IlluminaClipStep : public TrimmomaticStep {
 public:
     IlluminaClipStep();
 
-    TrimmomaticStepSettingsWidget *createWidget() const;
+    TrimmomaticStepSettingsWidget* createWidget() const;
 
 private:
-    QString serializeState(const QVariantMap &widgetState) const;
-    QVariantMap parseState(const QString &command) const;
+    QString serializeState(const QVariantMap& widgetState) const;
+    QVariantMap parseState(const QString& command) const;
 };
 
 class IlluminaClipSettingsWidget : public TrimmomaticStepSettingsWidget, private Ui_IlluminaClipSettingsWidget {
@@ -49,7 +49,7 @@ public:
 
     bool validate() const;
     QVariantMap getState() const;
-    void setState(const QVariantMap &state);
+    void setState(const QVariantMap& state);
 
     static const QString FASTA_WITH_ADAPTERS_ETC;
     static const QString SEED_MISMATCHES;
@@ -70,9 +70,9 @@ private:
 class IlluminaClipAdditionalSettingsDialog : public QDialog, public Ui_IlluminaClipAdditionalSettingsDialog {
     Q_OBJECT
 public:
-    IlluminaClipAdditionalSettingsDialog(const QVariantMap &widgetState, QWidget *parent = nullptr);
+    IlluminaClipAdditionalSettingsDialog(const QVariantMap& widgetState, QWidget* parent = nullptr);
 
-    static QVariantMap extractState(const QVariantMap &fromState);
+    static QVariantMap extractState(const QVariantMap& fromState);
     QVariantMap getState() const;
 
     static const QString ADDITIONAL_SETTINGS_ENABLED;
@@ -86,10 +86,10 @@ public:
 
     IlluminaClipStepFactory();
 
-    IlluminaClipStep *createStep() const;
+    IlluminaClipStep* createStep() const;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_ILLUMINA_CLIP_STEP_H_
+#endif  // _U2_ILLUMINA_CLIP_STEP_H_

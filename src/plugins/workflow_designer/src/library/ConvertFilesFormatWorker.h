@@ -36,7 +36,7 @@ typedef PrompterBase<ConvertFilesFormatPrompter> ConvertFilesFormatBase;
 class ConvertFilesFormatPrompter : public ConvertFilesFormatBase {
     Q_OBJECT
 public:
-    ConvertFilesFormatPrompter(Actor *p = 0)
+    ConvertFilesFormatPrompter(Actor* p = 0)
         : ConvertFilesFormatBase(p) {
     }
 
@@ -47,28 +47,28 @@ protected:
 class ConvertFilesFormatWorker : public BaseWorker {
     Q_OBJECT
 public:
-    ConvertFilesFormatWorker(Actor *a);
+    ConvertFilesFormatWorker(Actor* a);
     void init();
-    Task *tick();
+    Task* tick();
     void cleanup();
 
 private:
-    IntegralBus *inputUrlPort;
-    IntegralBus *outputUrlPort;
+    IntegralBus* inputUrlPort;
+    IntegralBus* outputUrlPort;
     QString targetFormat;
     QStringList selectedFormatExtensions;
     QStringList excludedFormats;
 
 public slots:
-    void sl_taskFinished(Task *task);
+    void sl_taskFinished(Task* task);
 
 private:
-    bool ensureFileExists(const QString &url);
+    bool ensureFileExists(const QString& url);
     QString takeUrl();
-    QString detectFormat(const QString &url);
-    QString createWorkingDir(const QString &fileUrl);
-    void sendResult(const QString &url);
-    Task *getConvertTask(const QString &detectedFormat, const QString &url);
+    QString detectFormat(const QString& url);
+    QString createWorkingDir(const QString& fileUrl);
+    void sendResult(const QString& url);
+    Task* getConvertTask(const QString& detectedFormat, const QString& url);
 };  // ConvertFilesFormatWorker
 
 class ConvertFilesFormatWorkerFactory : public DomainFactory {
@@ -79,7 +79,7 @@ public:
     ConvertFilesFormatWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    Worker *createWorker(Actor *a) {
+    Worker* createWorker(Actor* a) {
         return new ConvertFilesFormatWorker(a);
     }
 };  // ConvertFilesFormatWorkerFactory

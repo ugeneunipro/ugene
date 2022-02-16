@@ -40,7 +40,7 @@
 
 namespace U2 {
 
-SearchGenbankSequenceDialogController::SearchGenbankSequenceDialogController(QWidget *p)
+SearchGenbankSequenceDialogController::SearchGenbankSequenceDialogController(QWidget* p)
     : QDialog(p), searchTask(nullptr), summaryTask(nullptr) {
     ui = new Ui_SearchGenbankSequenceDialog();
     ui->setupUi(this);
@@ -60,8 +60,8 @@ SearchGenbankSequenceDialogController::SearchGenbankSequenceDialogController(QWi
     connect(ui->searchButton, SIGNAL(clicked()), SLOT(sl_searchButtonClicked()));
     connect(downloadButton, SIGNAL(clicked()), SLOT(sl_downloadButtonClicked()));
     connect(ui->treeWidget, SIGNAL(itemSelectionChanged()), SLOT(sl_itemSelectionChanged()));
-    connect(ui->treeWidget, SIGNAL(itemActivated(QTreeWidgetItem *, int)), SLOT(sl_downloadButtonClicked()));
-    connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task *)), SLOT(sl_taskStateChanged(Task *)));
+    connect(ui->treeWidget, SIGNAL(itemActivated(QTreeWidgetItem*, int)), SLOT(sl_downloadButtonClicked()));
+    connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task*)), SLOT(sl_taskStateChanged(Task*)));
 
     ui->treeWidget->header()->setStretchLastSection(false);
     ui->treeWidget->header()->setSectionResizeMode(1, QHeaderView::Stretch);
@@ -77,20 +77,20 @@ SearchGenbankSequenceDialogController::~SearchGenbankSequenceDialogController() 
     }
 }
 
-void SearchGenbankSequenceDialogController::addQueryBlockWidget(QWidget *w) {
+void SearchGenbankSequenceDialogController::addQueryBlockWidget(QWidget* w) {
     ui->queryBuilderBox->layout()->addWidget(w);
-    w->setObjectName("query_block_widget_" + QString::number(ui->queryBuilderBox->findChildren<QWidget *>(QRegExp("query_block_widget_\\d+")).size()));
+    w->setObjectName("query_block_widget_" + QString::number(ui->queryBuilderBox->findChildren<QWidget*>(QRegExp("query_block_widget_\\d+")).size()));
 }
 
-void SearchGenbankSequenceDialogController::removeQueryBlockWidget(QWidget *w) {
+void SearchGenbankSequenceDialogController::removeQueryBlockWidget(QWidget* w) {
     ui->queryBuilderBox->layout()->removeWidget(w);
 }
 
-void SearchGenbankSequenceDialogController::setQueryText(const QString &queryText) {
+void SearchGenbankSequenceDialogController::setQueryText(const QString& queryText) {
     ui->queryEdit->setText(queryText);
 }
 
-void SearchGenbankSequenceDialogController::prepareSummaryRequestTask(const QStringList &results) {
+void SearchGenbankSequenceDialogController::prepareSummaryRequestTask(const QStringList& results) {
     summaryTask = nullptr;
     SAFE_POINT(!results.isEmpty(), "There are no search results to process", );
     if (results.size() <= MAX_IDS_PER_QUERY) {
@@ -100,15 +100,15 @@ void SearchGenbankSequenceDialogController::prepareSummaryRequestTask(const QStr
         summaryTask = new EntrezQueryTask(summaryResultHandler.data(), query);
     } else {
         QStringList queries = splitIds(results);
-        QList<Task *> tasks;
-        foreach (const QString &query, queries) {
+        QList<Task*> tasks;
+        foreach (const QString& query, queries) {
             tasks << new EntrezQueryTask(new ESummaryResultHandler, query);
         }
         summaryTask = new MultiTask("EntrezQueryTask", tasks, false);
     }
 }
 
-QStringList SearchGenbankSequenceDialogController::splitIds(const QStringList &idsList) {
+QStringList SearchGenbankSequenceDialogController::splitIds(const QStringList& idsList) {
     const int fullQueryCount = idsList.size() / MAX_IDS_PER_QUERY;
     const int tailIdsCount = idsList.size() % MAX_IDS_PER_QUERY;
     QStringList queries;
@@ -126,23 +126,23 @@ QStringList SearchGenbankSequenceDialogController::splitIds(const QStringList &i
     return queries;
 }
 
-QString SearchGenbankSequenceDialogController::getIdsString(const QStringList &idsList, int startIndex, int count) {
+QString SearchGenbankSequenceDialogController::getIdsString(const QStringList& idsList, int startIndex, int count) {
     const QStringList midList = idsList.mid(startIndex, count);
     return midList.join(",");
 }
 
 QList<EntrezSummary> SearchGenbankSequenceDialogController::getSummaryResults() const {
     QList<EntrezSummary> results;
-    EntrezQueryTask *singleTask = qobject_cast<EntrezQueryTask *>(summaryTask);
-    MultiTask *multiTask = qobject_cast<MultiTask *>(summaryTask);
+    EntrezQueryTask* singleTask = qobject_cast<EntrezQueryTask*>(summaryTask);
+    MultiTask* multiTask = qobject_cast<MultiTask*>(summaryTask);
     if (nullptr != singleTask) {
         SAFE_POINT(nullptr != summaryResultHandler, L10N::nullPointerError("summary results handler"), results);
         results << summaryResultHandler->getResults();
     } else if (nullptr != multiTask) {
-        foreach (const QPointer<Task> &subtask, multiTask->getSubtasks()) {
-            EntrezQueryTask *summarySubtask = qobject_cast<EntrezQueryTask *>(subtask.data());
+        foreach (const QPointer<Task>& subtask, multiTask->getSubtasks()) {
+            EntrezQueryTask* summarySubtask = qobject_cast<EntrezQueryTask*>(subtask.data());
             SAFE_POINT(nullptr != summarySubtask, L10N::internalError(tr("an unexpected subtask")), results);
-            const ESummaryResultHandler *resultHandler = dynamic_cast<const ESummaryResultHandler *>(summarySubtask->getResultHandler());
+            const ESummaryResultHandler* resultHandler = dynamic_cast<const ESummaryResultHandler*>(summarySubtask->getResultHandler());
             SAFE_POINT(nullptr != resultHandler, L10N::nullPointerError("ESummaryResultHandler"), results);
             results << resultHandler->getResults();
             delete resultHandler;
@@ -169,11 +169,11 @@ void SearchGenbankSequenceDialogController::sl_searchButtonClicked() {
     ui->searchButton->setDisabled(true);
 }
 
-void SearchGenbankSequenceDialogController::sl_taskStateChanged(Task *task) {
+void SearchGenbankSequenceDialogController::sl_taskStateChanged(Task* task) {
     if (task->getState() == Task::State_Finished) {
         if (task == searchTask) {
             ui->treeWidget->clear();
-            const QStringList &results = searchResultHandler->getIdList();
+            const QStringList& results = searchResultHandler->getIdList();
             if (results.size() == 0) {
                 QMessageBox::information(this, windowTitle(), tr("No results found corresponding to the query"));
                 ui->searchButton->setEnabled(true);
@@ -187,8 +187,8 @@ void SearchGenbankSequenceDialogController::sl_taskStateChanged(Task *task) {
         } else if (task == summaryTask) {
             QList<EntrezSummary> results = getSummaryResults();
 
-            foreach (const EntrezSummary &desc, results) {
-                QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget);
+            foreach (const EntrezSummary& desc, results) {
+                QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
                 item->setText(0, desc.name);
                 item->setText(1, desc.title);
                 item->setText(2, QString("%1").arg(desc.size));
@@ -201,10 +201,10 @@ void SearchGenbankSequenceDialogController::sl_taskStateChanged(Task *task) {
 }
 
 void SearchGenbankSequenceDialogController::sl_downloadButtonClicked() {
-    QList<QTreeWidgetItem *> selectedItems = ui->treeWidget->selectedItems();
+    QList<QTreeWidgetItem*> selectedItems = ui->treeWidget->selectedItems();
 
     QStringList ids;
-    foreach (QTreeWidgetItem *item, selectedItems) {
+    foreach (QTreeWidgetItem* item, selectedItems) {
         ids.append(item->text(0));
     }
 
@@ -218,13 +218,13 @@ void SearchGenbankSequenceDialogController::sl_itemSelectionChanged() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-QueryBlockWidget::QueryBlockWidget(QueryBuilderController *controller, bool first)
+QueryBlockWidget::QueryBlockWidget(QueryBuilderController* controller, bool first)
     : conditionBox(nullptr), termBox(nullptr), queryEdit(nullptr) {
-    QBoxLayout *layout = new QBoxLayout(QBoxLayout::LeftToRight, this);
+    QBoxLayout* layout = new QBoxLayout(QBoxLayout::LeftToRight, this);
     layout->setMargin(0);
 
     if (first) {
-        QLabel *label = new QLabel(tr("Term:"));
+        QLabel* label = new QLabel(tr("Term:"));
         layout->addWidget(label);
     } else {
         conditionBox = new QComboBox(this);
@@ -242,20 +242,20 @@ QueryBlockWidget::QueryBlockWidget(QueryBuilderController *controller, bool firs
 
     queryEdit = new QLineEdit(this);
     queryEdit->setObjectName("queryEditLineEdit");
-    connect(queryEdit, SIGNAL(textEdited(const QString &)), controller, SLOT(sl_updateQuery()));
+    connect(queryEdit, SIGNAL(textEdited(const QString&)), controller, SLOT(sl_updateQuery()));
     connect(queryEdit, SIGNAL(returnPressed()), controller, SLOT(sl_queryReturnPressed()));
 
     layout->addWidget(termBox);
     layout->addWidget(queryEdit);
 
     if (first) {
-        QToolButton *addBlockButton = new QToolButton();
+        QToolButton* addBlockButton = new QToolButton();
         addBlockButton->setText("+");
         layout->addWidget(addBlockButton);
         connect(addBlockButton, SIGNAL(clicked()), controller, SLOT(sl_addQueryBlockWidget()));
         addBlockButton->setObjectName("add_block_button");
     } else {
-        QToolButton *removeBlockButton = new QToolButton();
+        QToolButton* removeBlockButton = new QToolButton();
         removeBlockButton->setText("-");
         layout->addWidget(removeBlockButton);
         connect(removeBlockButton, SIGNAL(clicked()), controller, SLOT(sl_removeQueryBlockWidget()));
@@ -290,9 +290,9 @@ QString QueryBlockWidget::getQuery() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-QueryBuilderController::QueryBuilderController(SearchGenbankSequenceDialogController *p)
+QueryBuilderController::QueryBuilderController(SearchGenbankSequenceDialogController* p)
     : QObject(p), parentController(p) {
-    QueryBlockWidget *widget = new QueryBlockWidget(this, true);
+    QueryBlockWidget* widget = new QueryBlockWidget(this, true);
     parentController->addQueryBlockWidget(widget);
     queryBlockWidgets.append(widget);
     widget->setInputFocus();
@@ -302,16 +302,16 @@ QueryBuilderController::~QueryBuilderController() {
 }
 
 void QueryBuilderController::sl_addQueryBlockWidget() {
-    QueryBlockWidget *widget = new QueryBlockWidget(this, false);
+    QueryBlockWidget* widget = new QueryBlockWidget(this, false);
     parentController->addQueryBlockWidget(widget);
     queryBlockWidgets.append(widget);
 }
 
 void QueryBuilderController::sl_removeQueryBlockWidget() {
-    QToolButton *callbackButton = qobject_cast<QToolButton *>(sender());
+    QToolButton* callbackButton = qobject_cast<QToolButton*>(sender());
     assert(callbackButton);
 
-    QueryBlockWidget *queryBlockWidget = qobject_cast<QueryBlockWidget *>(callbackButton->parentWidget());
+    QueryBlockWidget* queryBlockWidget = qobject_cast<QueryBlockWidget*>(callbackButton->parentWidget());
     assert(queryBlockWidget);
 
     parentController->removeQueryBlockWidget(queryBlockWidget);
@@ -324,7 +324,7 @@ void QueryBuilderController::sl_removeQueryBlockWidget() {
 
 void QueryBuilderController::sl_updateQuery() {
     QString query;
-    foreach (QueryBlockWidget *w, queryBlockWidgets) {
+    foreach (QueryBlockWidget* w, queryBlockWidgets) {
         query += w->getQuery();
     }
 

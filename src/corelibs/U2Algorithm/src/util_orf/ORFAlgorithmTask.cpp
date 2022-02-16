@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-ORFFindTask::ORFFindTask(const ORFAlgorithmSettings &s, const U2EntityRef &_entityRef)
+ORFFindTask::ORFFindTask(const ORFAlgorithmSettings& s, const U2EntityRef& _entityRef)
     : Task(tr("ORF find"), TaskFlag_None), config(s), entityRef(_entityRef) {
     GCOUNTER(cvar, "ORFFindTask");
     tpm = Progress_Manual;
@@ -35,14 +35,14 @@ ORFFindTask::ORFFindTask(const ORFAlgorithmSettings &s, const U2EntityRef &_enti
 }
 
 void ORFFindTask::run() {
-    ORFFindAlgorithm::find(dynamic_cast<ORFFindResultsListener *>(this),
+    ORFFindAlgorithm::find(dynamic_cast<ORFFindResultsListener*>(this),
                            config,
                            entityRef,
                            stateInfo.cancelFlag,
                            stateInfo.progress);
 }
 
-void ORFFindTask::onResult(const ORFFindResult &r, U2OpStatus &os) {
+void ORFFindTask::onResult(const ORFFindResult& r, U2OpStatus& os) {
     QMutexLocker locker(&lock);
     if (config.isResultsLimited) {
         if (newResults.size() >= config.maxResult2Search) {

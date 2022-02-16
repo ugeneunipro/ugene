@@ -31,15 +31,15 @@ class AppSettingsDialogController;
 class AppSettingsDialogTree : public QTreeWidget {
     Q_OBJECT
 public:
-    AppSettingsDialogTree(QWidget *w = nullptr)
+    AppSettingsDialogTree(QWidget* w = nullptr)
         : QTreeWidget(w), controller(nullptr) {
     }
-    void setController(U2::AppSettingsDialogController *c) {
+    void setController(U2::AppSettingsDialogController* c) {
         controller = c;
     }
 
 private:
-    U2::AppSettingsDialogController *controller;
+    U2::AppSettingsDialogController* controller;
 };
 
 #endif

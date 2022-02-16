@@ -39,7 +39,7 @@ namespace U2 {
 class PrepareMsaClipboardDataTask : public Task {
     Q_OBJECT
 public:
-    PrepareMsaClipboardDataTask(const QList<qint64> &rowIds, const U2Region &collumnRange, TaskFlags taskFlags = TaskFlags_NR_FOSE_COSC);
+    PrepareMsaClipboardDataTask(const QList<qint64>& rowIds, const U2Region& collumnRange, TaskFlags taskFlags = TaskFlags_NR_FOSE_COSC);
 
     QList<qint64> rowIds;
     U2Region columnRange;
@@ -50,49 +50,49 @@ public:
 class FormatsMsaClipboardTask : public PrepareMsaClipboardDataTask {
     Q_OBJECT
 public:
-    FormatsMsaClipboardTask(MultipleSequenceAlignmentObject *msaObj, const QList<qint64> &rowIds, const U2Region &columnRange, const DocumentFormatId &formatId);
+    FormatsMsaClipboardTask(MultipleSequenceAlignmentObject* msaObj, const QList<qint64>& rowIds, const U2Region& columnRange, const DocumentFormatId& formatId);
 
     void prepare() override;
 
 protected:
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
-    static CreateSubalignmentSettings createSettings(const QList<qint64> &rowIds, const U2Region &columnRange, const DocumentFormatId &formatId, U2OpStatus &os);
+    static CreateSubalignmentSettings createSettings(const QList<qint64>& rowIds, const U2Region& columnRange, const DocumentFormatId& formatId, U2OpStatus& os);
 
 private:
-    CreateSubalignmentTask *createSubalignmentTask;
-    MultipleSequenceAlignmentObject *msaObj;
+    CreateSubalignmentTask* createSubalignmentTask;
+    MultipleSequenceAlignmentObject* msaObj;
     DocumentFormatId formatId;
 };
 
 class RichTextMsaClipboardTask : public PrepareMsaClipboardDataTask {
 public:
-    RichTextMsaClipboardTask(MaEditor *maEditor, const QList<qint64> &rowIds, const U2Region &columnRange);
+    RichTextMsaClipboardTask(MaEditor* maEditor, const QList<qint64>& rowIds, const U2Region& columnRange);
     void prepare() override;
 
 private:
-    MaEditor *maEditor;
+    MaEditor* maEditor;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 class MsaClipboardDataTaskFactory {
 public:
     /** Returns a new PrepareMsaClipboardDataTask instance. */
-    static PrepareMsaClipboardDataTask *newInstance(MSAEditor *context, const QList<qint64> &maRowIds, const U2Region &columnRange, const DocumentFormatId &formatId);
+    static PrepareMsaClipboardDataTask* newInstance(MSAEditor* context, const QList<qint64>& maRowIds, const U2Region& columnRange, const DocumentFormatId& formatId);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 class SubalignmentToClipboardTask : public Task {
     Q_OBJECT
 public:
-    SubalignmentToClipboardTask(MSAEditor *maEditor, const QList<qint64> &rowIds, const U2Region &columnRange, const DocumentFormatId &formatId);
+    SubalignmentToClipboardTask(MSAEditor* maEditor, const QList<qint64>& rowIds, const U2Region& columnRange, const DocumentFormatId& formatId);
 
 protected:
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     DocumentFormatId formatId;
-    PrepareMsaClipboardDataTask *prepareDataTask = nullptr;
+    PrepareMsaClipboardDataTask* prepareDataTask = nullptr;
 };
 
 }  // namespace U2

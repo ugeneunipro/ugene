@@ -33,15 +33,15 @@ class U2CORE_EXPORT DNASequenceSelection : public LRegionsSelection {
     Q_OBJECT
 
 public:
-    DNASequenceSelection(U2SequenceObject *_obj, QObject *p = nullptr)
+    DNASequenceSelection(U2SequenceObject* _obj, QObject* p = nullptr)
         : LRegionsSelection(GSelectionTypes::DNASEQUENCE, p), obj(_obj) {
     }
-    const U2SequenceObject *getSequenceObject() const {
+    const U2SequenceObject* getSequenceObject() const {
         return obj;
     }
 
 private:
-    U2SequenceObject *obj;
+    U2SequenceObject* obj;
 };
 
 }  // namespace U2

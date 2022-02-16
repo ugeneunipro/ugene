@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-float WeightMatrixAlgorithm::getScore(const char *seq, int len, const PWMatrix &m, DNATranslation *complMap) {
+float WeightMatrixAlgorithm::getScore(const char* seq, int len, const PWMatrix& m, DNATranslation* complMap) {
     int l = m.getLength();
 
     float lower = m.getMinSum(), upper = m.getMaxSum();

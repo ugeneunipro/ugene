@@ -45,26 +45,26 @@ class CircularAnnotationItem : public QGraphicsItem {
     friend class CircularAnnotationLabel;
 
 public:
-    CircularAnnotationItem(Annotation *ann, CircularAnnotationRegionItem *region, CircularViewRenderArea *_ra);
-    CircularAnnotationItem(Annotation *ann, QList<CircularAnnotationRegionItem *> &regions, CircularViewRenderArea *_ra);
+    CircularAnnotationItem(Annotation* ann, CircularAnnotationRegionItem* region, CircularViewRenderArea* _ra);
+    CircularAnnotationItem(Annotation* ann, QList<CircularAnnotationRegionItem*>& regions, CircularViewRenderArea* _ra);
     ~CircularAnnotationItem();
-    virtual void paint(QPainter *p, const QStyleOptionGraphicsItem *item, QWidget *widget);
-    Annotation *getAnnotation() const;
+    virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* item, QWidget* widget);
+    Annotation* getAnnotation() const;
     virtual QRectF boundingRect() const;
-    virtual bool contains(const QPointF &point) const;
-    int containsRegion(const QPointF &point);
-    CircularAnnotationRegionItem *getContainingRegion(const QPointF &point);
+    virtual bool contains(const QPointF& point) const;
+    int containsRegion(const QPointF& point);
+    CircularAnnotationRegionItem* getContainingRegion(const QPointF& point);
 
     void setSelected(bool isSelected);
-    const QList<CircularAnnotationRegionItem *> &getRegions();
+    const QList<CircularAnnotationRegionItem*>& getRegions();
 
 protected:
     bool isSelected;
     QColor color;
-    Annotation *annotation;
-    QList<CircularAnnotationRegionItem *> regions;
+    Annotation* annotation;
+    QList<CircularAnnotationRegionItem*> regions;
     QRectF _boundingRect;
-    CircularViewRenderArea *ra;
+    CircularViewRenderArea* ra;
 };
 
 /************************************************************************/
@@ -74,10 +74,10 @@ class CircularAnnotationRegionItem : public QGraphicsPathItem {
     friend class CircularAnnotationItem;
 
 public:
-    CircularAnnotationRegionItem(const QPainterPath &path, bool isShort, int number);
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget /* = 0 */);
-    CircularAnnotationLabel *getLabel() const;
-    void setLabel(CircularAnnotationLabel *label);
+    CircularAnnotationRegionItem(const QPainterPath& path, bool isShort, int number);
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget /* = 0 */);
+    CircularAnnotationLabel* getLabel() const;
+    void setLabel(CircularAnnotationLabel* label);
 
     void setArrowCenterPercentage(qreal arrowCenter) {
         arrowCenterPercentage = arrowCenter;
@@ -93,16 +93,16 @@ public:
     bool hasJoinedRegion() const {
         return !joinedRegion.isEmpty();
     }
-    void setJoinedRegion(const U2Region &reg) {
+    void setJoinedRegion(const U2Region& reg) {
         joinedRegion = reg;
     }
-    const U2Region &getJoinedRegion() const {
+    const U2Region& getJoinedRegion() const {
         return joinedRegion;
     }
 
 protected:
-    CircularAnnotationItem *parent;
-    CircularAnnotationLabel *label;
+    CircularAnnotationItem* parent;
+    CircularAnnotationLabel* label;
     int number;
     bool isShort;
     qreal arrowCenterPercentage;
@@ -114,39 +114,39 @@ protected:
 /************************************************************************/
 class CircularAnnotationLabel : public QGraphicsItem {
 public:
-    CircularAnnotationLabel(Annotation *ann, const QVector<U2Region> &annLocation, bool isAutoAnnotation, int _region, int sequenceLength, const QFont &font, CircularViewRenderArea *renderArea);
+    CircularAnnotationLabel(Annotation* ann, const QVector<U2Region>& annLocation, bool isAutoAnnotation, int _region, int sequenceLength, const QFont& font, CircularViewRenderArea* renderArea);
 
-    void paint(QPainter *p, const QStyleOptionGraphicsItem *item, QWidget *widget);
-    Annotation *getAnnotation() const;
+    void paint(QPainter* p, const QStyleOptionGraphicsItem* item, QWidget* widget);
+    Annotation* getAnnotation() const;
     QRectF boundingRect() const;
-    bool contains(const QPointF &point) const;
+    bool contains(const QPointF& point) const;
     int getRegion() const;
     void setLabelPosition();
-    static void setLabelsVisible(QList<CircularAnnotationLabel *> &labelItems);
+    static void setLabelsVisible(QList<CircularAnnotationLabel*>& labelItems);
 
-    void setAnnRegion(CircularAnnotationRegionItem *region);
+    void setAnnRegion(CircularAnnotationRegionItem* region);
     bool canFitToTheRegion() const;
 
-    void drawLabelInsideRegion(QPainter *p, bool canFit);
-    void drawLabelOutsideRegion(QPainter *p, QPen &pen);
+    void drawLabelInsideRegion(QPainter* p, bool canFit);
+    void drawLabelOutsideRegion(QPainter* p, QPen& pen);
 
     bool tryPushCounterclockwise();
     bool tryPushClockwise();
 
-    const QPoint &getConnectionStart() const;
-    const QPoint &getConnectionEnd() const;
+    const QPoint& getConnectionStart() const;
+    const QPoint& getConnectionEnd() const;
 
 private:
-    int findClosestPoint(const QVector<QRect> &rects);
-    void calculateSuitablePositions(const QVector<QRect> &rects);
+    int findClosestPoint(const QVector<QRect>& rects);
+    void calculateSuitablePositions(const QVector<QRect>& rects);
     void calculateConnectionEnd();
     void calculateConnectionStart();
     void engageLabelPosition(int pos);
     void avoidLinesIntersections();
 
-    static bool labelLengthLessThan(CircularAnnotationLabel *l1, CircularAnnotationLabel *l2);
+    static bool labelLengthLessThan(CircularAnnotationLabel* l1, CircularAnnotationLabel* l2);
 
-    Annotation *annotation;
+    Annotation* annotation;
     QVector<U2Region> location;
     bool isAutoAnnotation;
     float annotationAngle;
@@ -162,8 +162,8 @@ private:
     QVector<int> suitableLabelPositionIndexes;
     QPoint connectionEnd;
     QPoint connectionStart;
-    CircularViewRenderArea *ra;
-    CircularAnnotationRegionItem *regionItem;
+    CircularViewRenderArea* ra;
+    CircularAnnotationRegionItem* regionItem;
     bool hasPosition;
     QString labelText;
 };

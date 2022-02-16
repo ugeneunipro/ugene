@@ -49,24 +49,24 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::SmithWatermanDialogFiller"
 #define GT_METHOD_NAME "run"
 
-SmithWatermanDialogFiller::SmithWatermanDialogFiller(HI::GUITestOpStatus &_os, SwRealization _realization, const SmithWatermanSettings::SWResultView _resultView, const QString &_resultFilesPath, const QString &_pattern, const GTRegionSelector::RegionSelectorSettings &_s)
+SmithWatermanDialogFiller::SmithWatermanDialogFiller(HI::GUITestOpStatus& _os, SwRealization _realization, const SmithWatermanSettings::SWResultView _resultView, const QString& _resultFilesPath, const QString& _pattern, const GTRegionSelector::RegionSelectorSettings& _s)
     : Filler(_os, "SmithWatermanDialogBase"), button(Search), pattern(_pattern), s(_s),
       resultView(_resultView), resultFilesPath(_resultFilesPath), autoSetupAlgorithmParams(true),
       realization(_realization) {
 }
 
-SmithWatermanDialogFiller::SmithWatermanDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario)
+SmithWatermanDialogFiller::SmithWatermanDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
     : Filler(os, "SmithWatermanDialogBase", scenario) {
 }
 
-SmithWatermanDialogFiller::SmithWatermanDialogFiller(HI::GUITestOpStatus &_os, const QString &_pattern, const GTRegionSelector::RegionSelectorSettings &_s, SwRealization _realization)
+SmithWatermanDialogFiller::SmithWatermanDialogFiller(HI::GUITestOpStatus& _os, const QString& _pattern, const GTRegionSelector::RegionSelectorSettings& _s, SwRealization _realization)
     : Filler(_os, "SmithWatermanDialogBase"), button(Search), pattern(_pattern), s(_s),
       resultView(SmithWatermanSettings::ANNOTATIONS), resultFilesPath(""),
       autoSetupAlgorithmParams(false), realization(_realization) {
 }
 
 void SmithWatermanDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
+    QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog, "activeModalWidget is NULL");
 
     if (button == Cancel) {
@@ -74,10 +74,10 @@ void SmithWatermanDialogFiller::commonScenario() {
         return;
     }
 
-    QTabWidget *tabWidget = qobject_cast<QTabWidget *>(GTWidget::findWidget(os, "tabWidget", dialog));
+    QTabWidget* tabWidget = qobject_cast<QTabWidget*>(GTWidget::findWidget(os, "tabWidget", dialog));
 
     GTTabWidget::setCurrentIndex(os, tabWidget, 1);
-    QComboBox *resultViewVariants = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "resultViewVariants", dialog));
+    QComboBox* resultViewVariants = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "resultViewVariants", dialog));
     int resultViewIndex;
     if (resultView == SmithWatermanSettings::MULTIPLE_ALIGNMENT) {
         resultViewIndex = 0;
@@ -89,7 +89,7 @@ void SmithWatermanDialogFiller::commonScenario() {
     GTComboBox::selectItemByIndex(os, resultViewVariants, resultViewIndex);
 
     if (!resultFilesPath.isEmpty()) {
-        QLineEdit *resultFilePathContainer;
+        QLineEdit* resultFilePathContainer;
         if (resultView == SmithWatermanSettings::MULTIPLE_ALIGNMENT) {
             resultFilePathContainer = GTWidget::findLineEdit(os, "alignmentFilesPath", dialog);
         } else {
@@ -116,14 +116,14 @@ void SmithWatermanDialogFiller::commonScenario() {
 
     GTTabWidget::setCurrentIndex(os, tabWidget, 0);
 
-    RegionSelector *regionSelector = qobject_cast<RegionSelector *>(GTWidget::findWidget(os, "range_selector", dialog));
+    RegionSelector* regionSelector = qobject_cast<RegionSelector*>(GTWidget::findWidget(os, "range_selector", dialog));
     GTRegionSelector::setRegion(os, regionSelector, s);
 
-    QTextEdit *textEdit = qobject_cast<QTextEdit *>(GTWidget::findWidget(os, "teditPattern", dialog));
+    QTextEdit* textEdit = qobject_cast<QTextEdit*>(GTWidget::findWidget(os, "teditPattern", dialog));
     GTTextEdit::setText(os, textEdit, pattern);
 
     if (autoSetupAlgorithmParams) {
-        QComboBox *comboRealization = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "comboRealization", dialog));
+        QComboBox* comboRealization = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "comboRealization", dialog));
         QString realizationName;
         switch (realization) {
             case CLASSIC:
@@ -139,16 +139,16 @@ void SmithWatermanDialogFiller::commonScenario() {
         const int swRealizationIndex = comboRealization->findText(realizationName);
         GTComboBox::selectItemByIndex(os, comboRealization, swRealizationIndex);
 
-        QComboBox *comboResultFilter = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "comboResultFilter", dialog));
+        QComboBox* comboResultFilter = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "comboResultFilter", dialog));
         GTComboBox::selectItemByText(os, comboResultFilter, "filter-intersections");
 
-        QSpinBox *spinScorePercent = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "spinScorePercent", dialog));
+        QSpinBox* spinScorePercent = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "spinScorePercent", dialog));
         GTSpinBox::setValue(os, spinScorePercent, RESULT_SCORE_PERCENTAGE, GTGlobals::UseKeyBoard);
 
-        QSpinBox *dblSpinGapOpen = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "spinGapOpen", dialog));
+        QSpinBox* dblSpinGapOpen = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "spinGapOpen", dialog));
         GTSpinBox::setValue(os, dblSpinGapOpen, GAP_OPEN_PENALTY);
 
-        QSpinBox *dblSpinGapExtd = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "spinGapExtd", dialog));
+        QSpinBox* dblSpinGapExtd = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "spinGapExtd", dialog));
         GTSpinBox::setValue(os, dblSpinGapExtd, GAP_EXTENDING_PENALTY);
     }
 

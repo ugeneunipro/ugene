@@ -40,11 +40,11 @@ U2Chromatogram::U2Chromatogram()
     : U2RawData() {
 }
 
-U2Chromatogram::U2Chromatogram(const U2DbiRef &dbiRef)
+U2Chromatogram::U2Chromatogram(const U2DbiRef& dbiRef)
     : U2RawData(dbiRef) {
 }
 
-U2Chromatogram::U2Chromatogram(const U2RawData &rawData)
+U2Chromatogram::U2Chromatogram(const U2RawData& rawData)
     : U2RawData(rawData) {
 }
 
@@ -54,33 +54,33 @@ U2DataType U2Chromatogram::getType() const {
 
 /////// DNAChromatogramObject Implementation //////////////////////////////////////////////////////
 
-DNAChromatogramObject *DNAChromatogramObject::createInstance(const DNAChromatogram &chroma,
-                                                             const QString &objectName,
-                                                             const U2DbiRef &dbiRef,
-                                                             U2OpStatus &os,
-                                                             const QVariantMap &hintsMap) {
+DNAChromatogramObject* DNAChromatogramObject::createInstance(const DNAChromatogram& chroma,
+                                                             const QString& objectName,
+                                                             const U2DbiRef& dbiRef,
+                                                             U2OpStatus& os,
+                                                             const QVariantMap& hintsMap) {
     const QString folder = hintsMap.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
     const U2EntityRef chromatogramRef = ChromatogramUtils::import(os, dbiRef, folder, chroma);
     return new DNAChromatogramObject(objectName, chromatogramRef, hintsMap);
 }
 
-DNAChromatogramObject::DNAChromatogramObject(const QString &objectName, const U2EntityRef &chromaRef, const QVariantMap &hintsMap)
+DNAChromatogramObject::DNAChromatogramObject(const QString& objectName, const U2EntityRef& chromaRef, const QVariantMap& hintsMap)
     : GObject(GObjectTypes::CHROMATOGRAM, objectName, hintsMap), cached(false) {
     entityRef = chromaRef;
 }
 
-const DNAChromatogram &DNAChromatogramObject::getChromatogram() const {
+const DNAChromatogram& DNAChromatogramObject::getChromatogram() const {
     ensureDataLoaded();
     return cache;
 }
 
-void DNAChromatogramObject::setChromatogram(U2OpStatus &os, const DNAChromatogram &chromatogram) {
+void DNAChromatogramObject::setChromatogram(U2OpStatus& os, const DNAChromatogram& chromatogram) {
     ChromatogramUtils::updateChromatogramData(os, getEntityRef(), chromatogram);
     CHECK_OP(os, );
     cache = chromatogram;
 }
 
-void DNAChromatogramObject::loadDataCore(U2OpStatus &os) {
+void DNAChromatogramObject::loadDataCore(U2OpStatus& os) {
     const QString serializer = RawDataUdrSchema::getObject(entityRef, os).serializer;
     CHECK_OP(os, );
     SAFE_POINT(DNAChromatogramSerializer::ID == serializer, "Unknown serializer id", );
@@ -89,7 +89,7 @@ void DNAChromatogramObject::loadDataCore(U2OpStatus &os) {
     cache = DNAChromatogramSerializer::deserialize(data, os);
 }
 
-GObject *DNAChromatogramObject::clone(const U2DbiRef &dstRef, U2OpStatus &os, const QVariantMap &hints) const {
+GObject* DNAChromatogramObject::clone(const U2DbiRef& dstRef, U2OpStatus& os, const QVariantMap& hints) const {
     GHintsDefaultImpl gHints(getGHintsMap());
     gHints.setAll(hints);
     const QString dstFolder = gHints.get(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
@@ -99,7 +99,7 @@ GObject *DNAChromatogramObject::clone(const U2DbiRef &dstRef, U2OpStatus &os, co
     CHECK_OP(os, nullptr);
 
     U2EntityRef dstEntRef(dstRef, dstObject.id);
-    DNAChromatogramObject *dst = new DNAChromatogramObject(getGObjectName(), dstEntRef, gHints.getMap());
+    DNAChromatogramObject* dst = new DNAChromatogramObject(getGObjectName(), dstEntRef, gHints.getMap());
     dst->setIndexInfo(getIndexInfo());
     return dst;
 }

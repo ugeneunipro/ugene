@@ -37,10 +37,10 @@ class StatisticsCache : public StatisticsCacheBase {
 public:
     StatisticsCache();
 
-    const T &getStatistics() const;
-    void setStatistics(const T &statistics, const QVector<U2Region> &regions);
+    const T& getStatistics() const;
+    void setStatistics(const T& statistics, const QVector<U2Region>& regions);
 
-    bool isValid(const QVector<U2Region> &regionsToMatch) const;
+    bool isValid(const QVector<U2Region>& regionsToMatch) const;
 
     void sl_invalidate();
 
@@ -56,19 +56,19 @@ StatisticsCache<T>::StatisticsCache()
 }
 
 template<class T>
-const T &StatisticsCache<T>::getStatistics() const {
+const T& StatisticsCache<T>::getStatistics() const {
     return statistics;
 }
 
 template<class T>
-void StatisticsCache<T>::setStatistics(const T &newStatistics, const QVector<U2Region> &newRegions) {
+void StatisticsCache<T>::setStatistics(const T& newStatistics, const QVector<U2Region>& newRegions) {
     statistics = newStatistics;
     regions = newRegions;
     valid = true;
 }
 
 template<class T>
-bool StatisticsCache<T>::isValid(const QVector<U2Region> &regionsToMatch) const {
+bool StatisticsCache<T>::isValid(const QVector<U2Region>& regionsToMatch) const {
     return regions == regionsToMatch && valid;
 }
 

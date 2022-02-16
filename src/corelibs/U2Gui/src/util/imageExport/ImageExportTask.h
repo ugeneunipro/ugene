@@ -33,9 +33,9 @@ namespace U2 {
 
 class U2GUI_EXPORT ImageExportTaskSettings {
 public:
-    ImageExportTaskSettings(const QString &fileName = QString(),
-                            const QString &format = QString(),
-                            const QSize &size = QSize(),
+    ImageExportTaskSettings(const QString& fileName = QString(),
+                            const QString& format = QString(),
+                            const QSize& size = QSize(),
                             const int quality = -1,
                             const int dpi = 96);
 
@@ -57,7 +57,7 @@ public:
 class U2GUI_EXPORT ImageExportTask : public Task {
     Q_OBJECT
 public:
-    ImageExportTask(const ImageExportTaskSettings &settings);
+    ImageExportTask(const ImageExportTaskSettings& settings);
     virtual void run() = 0;
     ReportResult report();
 
@@ -80,14 +80,14 @@ typedef QFlags<ExportImageFormatFlag> ExportImageFormatPolicy;
 class U2GUI_EXPORT ImageExportController : public QObject {
     Q_OBJECT
 public:
-    ImageExportController(const ExportImageFormatPolicy &fPolicy = ExportImageFormatPolicy(EnableRasterFormats));
+    ImageExportController(const ExportImageFormatPolicy& fPolicy = ExportImageFormatPolicy(EnableRasterFormats));
 
-    Task *getTaskInstance(const ImageExportTaskSettings &settings) const;
+    Task* getTaskInstance(const ImageExportTaskSettings& settings) const;
 
-    const QString &getExportDescription() const {
+    const QString& getExportDescription() const {
         return shortDescription;
     }
-    QWidget *getSettingsWidget();
+    QWidget* getSettingsWidget();
 
     virtual int getImageWidth() const {
         return 0;
@@ -114,27 +114,27 @@ public:
     }
 
 public slots:
-    virtual void sl_onFormatChanged(const QString &) {
+    virtual void sl_onFormatChanged(const QString&) {
     }
 
 signals:
     void si_disableExport(bool);
-    void si_showMessage(const QString &);
+    void si_showMessage(const QString&);
 
 protected:
     virtual void initSettingsWidget() = 0;
 
-    virtual Task *getExportToSvgTask(const ImageExportTaskSettings &) const {
+    virtual Task* getExportToSvgTask(const ImageExportTaskSettings&) const {
         return nullptr;
     }
-    virtual Task *getExportToPdfTask(const ImageExportTaskSettings &) const {
+    virtual Task* getExportToPdfTask(const ImageExportTaskSettings&) const {
         return nullptr;
     }
-    virtual Task *getExportToBitmapTask(const ImageExportTaskSettings &) const {
+    virtual Task* getExportToBitmapTask(const ImageExportTaskSettings&) const {
         return nullptr;
     }
 
-    QWidget *settingsWidget;
+    QWidget* settingsWidget;
     QString shortDescription;
     QString disableMessage;
     ExportImageFormatPolicy formatPolicy;

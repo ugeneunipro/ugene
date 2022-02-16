@@ -33,7 +33,7 @@ namespace LocalWorkflow {
 class FilterAnnotationsByQualifierPrompter : public PrompterBase<FilterAnnotationsByQualifierPrompter> {
     Q_OBJECT
 public:
-    FilterAnnotationsByQualifierPrompter(Actor *p = 0)
+    FilterAnnotationsByQualifierPrompter(Actor* p = 0)
         : PrompterBase<FilterAnnotationsByQualifierPrompter>(p) {
     }
 
@@ -44,14 +44,14 @@ protected:
 class FilterAnnotationsByQualifierWorker : public BaseWorker {
     Q_OBJECT
 public:
-    FilterAnnotationsByQualifierWorker(Actor *a)
+    FilterAnnotationsByQualifierWorker(Actor* a)
         : BaseWorker(a), input(nullptr), output(nullptr) {};
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 private slots:
-    void sl_taskFinished(Task *t);
+    void sl_taskFinished(Task* t);
 
 private:
     IntegralBus *input, *output;
@@ -65,7 +65,7 @@ public:
     FilterAnnotationsByQualifierWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new FilterAnnotationsByQualifierWorker(a);
     }
 };
@@ -73,14 +73,14 @@ public:
 class FilterAnnotationsByQualifierTask : public Task {
     Q_OBJECT
 public:
-    FilterAnnotationsByQualifierTask(QList<SharedAnnotationData> &annotations, const QString &qName, const QString &qVal, bool acceptAnns)
+    FilterAnnotationsByQualifierTask(QList<SharedAnnotationData>& annotations, const QString& qName, const QString& qVal, bool acceptAnns)
         : Task(tr("Filter annotations by qualifier task"), TaskFlag_None), anns(annotations), qualName(qName), qualFilterVal(qVal), accept(acceptAnns) {
     }
 
     void run();
 
 private:
-    QList<SharedAnnotationData> &anns;
+    QList<SharedAnnotationData>& anns;
     QString qualName, qualFilterVal;
     bool accept;
 };

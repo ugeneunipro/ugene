@@ -41,7 +41,7 @@ SWTaskFactory::SWTaskFactory(SW_AlgType _algType) {
 SWTaskFactory::~SWTaskFactory() {
 }
 
-Task *SWTaskFactory::getTaskInstance(const SmithWatermanSettings &config, const QString &taskName) const {
+Task* SWTaskFactory::getTaskInstance(const SmithWatermanSettings& config, const QString& taskName) const {
     return new SWAlgorithmTask(config, taskName, algType);
 }
 
@@ -52,12 +52,12 @@ PairwiseAlignmentSmithWatermanTaskFactory::PairwiseAlignmentSmithWatermanTaskFac
 PairwiseAlignmentSmithWatermanTaskFactory::~PairwiseAlignmentSmithWatermanTaskFactory() {
 }
 
-AbstractAlignmentTask *PairwiseAlignmentSmithWatermanTaskFactory::getTaskInstance(AbstractAlignmentTaskSettings *_settings) const {
-    PairwiseAlignmentTaskSettings *pairwiseSettings = dynamic_cast<PairwiseAlignmentTaskSettings *>(_settings);
+AbstractAlignmentTask* PairwiseAlignmentSmithWatermanTaskFactory::getTaskInstance(AbstractAlignmentTaskSettings* _settings) const {
+    PairwiseAlignmentTaskSettings* pairwiseSettings = dynamic_cast<PairwiseAlignmentTaskSettings*>(_settings);
     SAFE_POINT(pairwiseSettings != nullptr,
                "Pairwise alignment: incorrect settings",
                nullptr);
-    PairwiseAlignmentSmithWatermanTaskSettings *settings = new PairwiseAlignmentSmithWatermanTaskSettings(*pairwiseSettings);
+    PairwiseAlignmentSmithWatermanTaskSettings* settings = new PairwiseAlignmentSmithWatermanTaskSettings(*pairwiseSettings);
     SAFE_POINT(false == settings->inNewWindow || false == settings->resultFileName.isEmpty(),
                "Pairwise alignment: incorrect settings, empty output file name",
                nullptr);
@@ -76,7 +76,7 @@ AbstractAlignmentTask *PairwiseAlignmentSmithWatermanTaskFactory::getTaskInstanc
     }
 
     settings->resultListener = new SmithWatermanResultListener;
-    SWResultFilterRegistry *resFilterReg = AppContext::getSWResultFilterRegistry();
+    SWResultFilterRegistry* resFilterReg = AppContext::getSWResultFilterRegistry();
     SAFE_POINT(nullptr != resFilterReg, "SWResultFilterRegistry is NULL.", nullptr);
     settings->resultFilter = resFilterReg->getFilter(PairwiseAlignmentSmithWatermanTaskSettings::PA_SW_DEFAULT_RESULT_FILTER);
     settings->percentOfScore = PairwiseAlignmentSmithWatermanTaskSettings::PA_SW_DEFAULT_PERCENT_OF_SCORE;

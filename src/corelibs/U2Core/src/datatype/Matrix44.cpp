@@ -30,7 +30,7 @@ Matrix44::Matrix44()
     loadIdentity();
 }
 
-Matrix44::Matrix44(const float *data)
+Matrix44::Matrix44(const float* data)
     : m(16) {
     for (int i = 0; i < 16; ++i) {
         m[i] = data[i];
@@ -44,15 +44,15 @@ void Matrix44::loadIdentity() {
     }
 }
 
-float *Matrix44::data() {
+float* Matrix44::data() {
     return m.data();
 }
 
-const float *Matrix44::data() const {
+const float* Matrix44::data() const {
     return m.constData();
 }
 
-float &Matrix44::operator[](unsigned int i) {
+float& Matrix44::operator[](unsigned int i) {
     return m[i];
 }
 
@@ -60,7 +60,7 @@ float Matrix44::operator[](unsigned int i) const {
     return m[i];
 }
 
-void Matrix44::load(const QVariantList &values) {
+void Matrix44::load(const QVariantList& values) {
     assert(values.size() == 16);
     for (int i = 0; i < 16; ++i) {
         m[i] = values.at(i).value<float>();
@@ -76,7 +76,7 @@ QVariantList Matrix44::store() {
 }
 
 void Matrix44::transpose() {
-    float *data = m.data();
+    float* data = m.data();
 
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < i; ++j) {

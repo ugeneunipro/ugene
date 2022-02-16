@@ -23,16 +23,16 @@
 
 namespace U2 {
 
-GenomeAlignerWriteTask::GenomeAlignerWriteTask(GenomeAlignerWriter *s)
+GenomeAlignerWriteTask::GenomeAlignerWriteTask(GenomeAlignerWriter* s)
     : Task("WriteAlignedReadsSubTask", TaskFlag_None),
       seqWriter(s), end(false), writing(false), readsWritten(0) {
 }
 
-void GenomeAlignerWriteTask::setSeqWriter(GenomeAlignerWriter *seqWriter) {
+void GenomeAlignerWriteTask::setSeqWriter(GenomeAlignerWriter* seqWriter) {
     this->seqWriter = seqWriter;
 }
 
-void GenomeAlignerWriteTask::addResult(SearchQuery *qu) {
+void GenomeAlignerWriteTask::addResult(SearchQuery* qu) {
     listMutex.lock();
     WriteData data;
 
@@ -63,7 +63,7 @@ void GenomeAlignerWriteTask::flush() {
         }
         results.clear();
         writeMutex.unlock();
-    } catch (const QString &exeptionMessage) {
+    } catch (const QString& exeptionMessage) {
         setError(exeptionMessage);
     }
 }
@@ -94,12 +94,12 @@ void GenomeAlignerWriteTask::run() {
             }
             writeMutex.unlock();
         } while (!end);
-    } catch (const QString &exeptionMessage) {
+    } catch (const QString& exeptionMessage) {
         setError(exeptionMessage);
     }
 }
 
-void GenomeAlignerWriteTask::setReadWritten(SearchQuery *read, SearchQuery *revCompl) {
+void GenomeAlignerWriteTask::setReadWritten(SearchQuery* read, SearchQuery* revCompl) {
     if (!read->isWroteResult()) {
         readsWritten++;
         read->writeResult();

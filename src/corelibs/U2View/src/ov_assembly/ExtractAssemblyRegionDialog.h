@@ -39,19 +39,19 @@ class RegionSelector;
 class ExtractAssemblyRegionDialog : public QDialog, public Ui_ExtractAssemblyRegionDialog {
     Q_OBJECT
 public:
-    ExtractAssemblyRegionDialog(QWidget *p, ExtractAssemblyRegionTaskSettings *settings);
+    ExtractAssemblyRegionDialog(QWidget* p, ExtractAssemblyRegionTaskSettings* settings);
 
     virtual void accept();
 
 private slots:
-    void sl_regionChanged(const U2Region &newRegion);
+    void sl_regionChanged(const U2Region& newRegion);
 
 private:
     void initSaveController();
 
-    SaveDocumentController *saveController;
-    RegionSelector *regionSelector;
-    ExtractAssemblyRegionTaskSettings *settings;
+    SaveDocumentController* saveController;
+    RegionSelector* regionSelector;
+    ExtractAssemblyRegionTaskSettings* settings;
 };
 
 }  // namespace U2

@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-DbObjectItem::DbObjectItem(const QString &url, QListWidget *parent)
+DbObjectItem::DbObjectItem(const QString& url, QListWidget* parent)
     : FileItem(url, parent) {
     QIcon fileIcon = GObjectTypes::getTypeInfo(SharedDbUrlUtils::getDbObjectTypeByUrl(url)).icon;
     setIcon(fileIcon);

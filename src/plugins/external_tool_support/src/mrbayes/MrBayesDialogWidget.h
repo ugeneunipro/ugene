@@ -34,23 +34,23 @@ namespace U2 {
 class MrBayesWidget : public CreatePhyTreeWidget, private Ui_MrBayesDialog {
     Q_OBJECT
 public:
-    MrBayesWidget(const MultipleSequenceAlignment &ma, QWidget *parent);
+    MrBayesWidget(const MultipleSequenceAlignment& ma, QWidget* parent);
 
-    void fillSettings(CreatePhyTreeSettings &settings);
+    void fillSettings(CreatePhyTreeSettings& settings);
     void storeSettings();
     void restoreDefault();
     int getRandomSeed();
-    bool checkSettings(QString &message, const CreatePhyTreeSettings &settings);
+    bool checkSettings(QString& message, const CreatePhyTreeSettings& settings);
 
 private:
-    void setComboText(QComboBox *combo, const QString &text);
+    void setComboText(QComboBox* combo, const QString& text);
     QString generateMrBayesSettingsScript();
     bool isAminoAcidAlphabet;
 
 private slots:
-    void sl_onRateChanged(const QString &modelName);
+    void sl_onRateChanged(const QString& modelName);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MR_BAYES_DIALOG_WIDGET_
+#endif  // _U2_MR_BAYES_DIALOG_WIDGET_

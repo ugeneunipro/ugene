@@ -34,11 +34,11 @@ namespace U2 {
 /* MaEditorSelection */
 /************************************************************************/
 
-MaEditorSelection::MaEditorSelection(const QList<QRect> &rects)
+MaEditorSelection::MaEditorSelection(const QList<QRect>& rects)
     : rectList(buildSafeSelectionRects(rects)) {
 }
 
-QList<QRect> MaEditorSelection::buildSafeSelectionRects(const QList<QRect> &rectList) {
+QList<QRect> MaEditorSelection::buildSafeSelectionRects(const QList<QRect>& rectList) {
     if (rectList.size() <= 1) {  // 0 or 1 result: no need to merge, validate only.
         return rectList.isEmpty() || rectList.first().isEmpty() ? QList<QRect>() : rectList;
     }
@@ -53,7 +53,7 @@ QList<QRect> MaEditorSelection::buildSafeSelectionRects(const QList<QRect> &rect
     }
     // Sort & merge rects if needed. Assign unified left & right.
     QList<QRect> sortedRectList = rectList;
-    std::sort(sortedRectList.begin(), sortedRectList.end(), [](const QRect &r1, const QRect &r2) {
+    std::sort(sortedRectList.begin(), sortedRectList.end(), [](const QRect& r1, const QRect& r2) {
         return r1.top() < r2.top();
     });
     QList<QRect> mergedAndSortedRectList;
@@ -116,7 +116,7 @@ QRect MaEditorSelection::toRect() const {
     }
     QRect boundingRect = rectList[0];
     for (int i = 1; i < rectList.length(); i++) {
-        const QRect &rect = rectList[i];
+        const QRect& rect = rectList[i];
         QPoint topLeft(qMin(rect.x(), boundingRect.x()), qMin(rect.y(), boundingRect.y()));
         QPoint bottomRight(qMax(rect.right(), boundingRect.right()), qMax(rect.bottom(), boundingRect.bottom()));
         boundingRect = QRect(topLeft, bottomRight);
@@ -124,30 +124,30 @@ QRect MaEditorSelection::toRect() const {
     return boundingRect;
 }
 
-const QList<QRect> &MaEditorSelection::getRectList() const {
+const QList<QRect>& MaEditorSelection::getRectList() const {
     return rectList;
 }
 
-bool MaEditorSelection::operator==(const MaEditorSelection &other) const {
+bool MaEditorSelection::operator==(const MaEditorSelection& other) const {
     return other.getRectList() == rectList;
 }
 
-bool MaEditorSelection::operator!=(const MaEditorSelection &other) const {
+bool MaEditorSelection::operator!=(const MaEditorSelection& other) const {
     return !(other == *this);
 }
 
 bool MaEditorSelection::contains(int columnIndex, int rowIndex) const {
     CHECK(!isEmpty(), false);
-    const QRect &rect = rectList.first();
+    const QRect& rect = rectList.first();
     return columnIndex >= rect.left() && columnIndex <= rect.right() && containsRow(rowIndex);
 }
 
-bool MaEditorSelection::contains(const QPoint &columnAndRowPoint) const {
+bool MaEditorSelection::contains(const QPoint& columnAndRowPoint) const {
     return contains(columnAndRowPoint.x(), columnAndRowPoint.y());
 }
 
 bool MaEditorSelection::containsRow(int rowIndex) const {
-    for (const QRect &rect : qAsConst(rectList)) {
+    for (const QRect& rect : qAsConst(rectList)) {
         if (rect.top() <= rowIndex && rect.bottom() >= rowIndex) {
             return true;
         }
@@ -157,7 +157,7 @@ bool MaEditorSelection::containsRow(int rowIndex) const {
 
 QList<int> MaEditorSelection::getSelectedRowIndexes() const {
     QList<int> selectedRowIndexes;
-    for (const QRect &rect : qAsConst(rectList)) {
+    for (const QRect& rect : qAsConst(rectList)) {
         for (int rowIndex = rect.top(); rowIndex <= rect.bottom(); rowIndex++) {
             selectedRowIndexes << rowIndex;
         }
@@ -181,14 +181,14 @@ U2Region MaEditorSelection::getColumnRegion() const {
 /* MaEditorSelectionController */
 /************************************************************************/
 
-MaEditorSelectionController::MaEditorSelectionController(MaEditor *_editor)
+MaEditorSelectionController::MaEditorSelectionController(MaEditor* _editor)
     : QObject(_editor), editor(_editor) {
     SAFE_POINT(editor != nullptr, "MAEditor is null!", );
     connect(editor->getCollapseModel(), &MaCollapseModel::si_toggled, this, &MaEditorSelectionController::handleCollapseModelChange);
     connect(editor->getMaObject(), &MultipleAlignmentObject::si_alignmentChanged, this, &MaEditorSelectionController::handleAlignmentChange);
 }
 
-const MaEditorSelection &MaEditorSelectionController::getSelection() const {
+const MaEditorSelection& MaEditorSelectionController::getSelection() const {
     return selection;
 }
 
@@ -196,7 +196,7 @@ void MaEditorSelectionController::clearSelection() {
     setSelection({});
 }
 
-void MaEditorSelectionController::setSelection(const MaEditorSelection &newSelection) {
+void MaEditorSelectionController::setSelection(const MaEditorSelection& newSelection) {
     CHECK(!editor->isAlignmentEmpty() || newSelection.isEmpty(), );
     CHECK(newSelection != selection, );
     CHECK(validateSelectionGeometry(newSelection, editor->getAlignmentLen(), editor->getCollapseModel()->getViewRowCount()), );
@@ -206,7 +206,7 @@ void MaEditorSelectionController::setSelection(const MaEditorSelection &newSelec
     emit si_selectionChanged(selection, oldSelection);
 }
 
-bool MaEditorSelectionController::validateSelectionGeometry(const MaEditorSelection &selection, int alignmentLength, int viewRowCount) {
+bool MaEditorSelectionController::validateSelectionGeometry(const MaEditorSelection& selection, int alignmentLength, int viewRowCount) {
     CHECK(!selection.isEmpty(), true);
 
     // Check column range.
@@ -224,7 +224,7 @@ bool MaEditorSelectionController::validateSelectionGeometry(const MaEditorSelect
 
 int MaEditorSelection::getCountOfSelectedRows() const {
     int count = 0;
-    for (const QRect &rect : qAsConst(rectList)) {
+    for (const QRect& rect : qAsConst(rectList)) {
         count += rect.height();
     }
     return count;
@@ -233,8 +233,8 @@ int MaEditorSelection::getCountOfSelectedRows() const {
 QList<int> MaEditorSelectionController::getSelectedMaRowIndexes() const {
     QList<int> maRowIndexes;
     QList<QRect> selectedRectList = editor->getSelection().getRectList();
-    MaCollapseModel *collapseModel = editor->getCollapseModel();
-    for (const QRect &rect : qAsConst(selectedRectList)) {
+    MaCollapseModel* collapseModel = editor->getCollapseModel();
+    for (const QRect& rect : qAsConst(selectedRectList)) {
         U2Region rowRange = U2Region::fromYRange(rect);
         QList<int> maRowIndexesPerRect = collapseModel->getMaRowIndexesByViewRowIndexes(rowRange, true);
         maRowIndexes << maRowIndexesPerRect;
@@ -262,7 +262,7 @@ void MaEditorSelectionController::handleAlignmentChange() {
 
     // Select the longest continuous region for the new selection
     QList<int> selectedMaRowIndexes = editor->getMaObject()->convertMaRowIdsToMaRowIndexes(selectedRowIdsSnapshot);
-    MaCollapseModel *collapseModel = editor->getCollapseModel();
+    MaCollapseModel* collapseModel = editor->getCollapseModel();
     QList<QRect> newSelectedRects;
     for (int i = 0; i < selectedMaRowIndexes.size(); i++) {
         int viewRowIndex = collapseModel->getViewRowIndexByMaRowIndex(selectedMaRowIndexes[i]);
@@ -281,7 +281,7 @@ void MaEditorSelectionController::handleCollapseModelChange() {
 /* McaEditorSelectionController */
 /************************************************************************/
 
-McaEditorSelectionController::McaEditorSelectionController(McaEditor *_editor)
+McaEditorSelectionController::McaEditorSelectionController(McaEditor* _editor)
     : MaEditorSelectionController(_editor), mcaEditor(_editor) {
 }
 
@@ -290,7 +290,7 @@ void McaEditorSelectionController::clearSelection() {
     mcaEditor->getUI()->getReferenceArea()->clearSelection();
 }
 
-void McaEditorSelectionController::setSelection(const MaEditorSelection &newSelection) {
+void McaEditorSelectionController::setSelection(const MaEditorSelection& newSelection) {
     if (newSelection.isEmpty()) {
         MaEditorSelectionController::setSelection({});
         mcaEditor->getUI()->getReferenceArea()->clearSelection();

@@ -26,23 +26,23 @@
 
 namespace U2 {
 
-void GHints::setAll(const QVariantMap &newMap) {
-    foreach (const QString &key, newMap.keys()) {
+void GHints::setAll(const QVariantMap& newMap) {
+    foreach (const QString& key, newMap.keys()) {
         QVariant val = newMap.value(key);
         set(key, val);
     }
 }
 
-void GHints::dump(const QVariantMap &map) {
+void GHints::dump(const QVariantMap& map) {
     foreach (QString k, map.keys()) {
         QList<QVariant> l = map.values(k);
-        for (const QVariant &v : qAsConst(l)) {
+        for (const QVariant& v : qAsConst(l)) {
             coreLog.trace(QString("Hint: %1=%2").arg(k).arg(v.toString()));
         }
     }
 }
 
-void ModTrackHints::setMap(const QVariantMap &_map) {
+void ModTrackHints::setMap(const QVariantMap& _map) {
     if (map == _map) {
         return;
     }
@@ -50,7 +50,7 @@ void ModTrackHints::setMap(const QVariantMap &_map) {
     setModified();
 }
 
-void ModTrackHints::set(const QString &key, const QVariant &val) {
+void ModTrackHints::set(const QString& key, const QVariant& val) {
     QVariant oldVal = get(key);
     if (oldVal == val) {
         return;
@@ -63,7 +63,7 @@ void ModTrackHints::set(const QString &key, const QVariant &val) {
     setModified();
 }
 
-int ModTrackHints::remove(const QString &key) {
+int ModTrackHints::remove(const QString& key) {
     int r = map.remove(key);
     if (r != 0) {
         setModified();
@@ -72,7 +72,7 @@ int ModTrackHints::remove(const QString &key) {
 }
 
 void ModTrackHints::setModified() {
-    StateLockableTreeItem *modItem = p;
+    StateLockableTreeItem* modItem = p;
     while (modItem->getParentStateLockItem() != nullptr && topParentMode) {
         modItem = modItem->getParentStateLockItem();
     }

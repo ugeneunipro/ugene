@@ -88,7 +88,7 @@ namespace U2 {
 
 namespace {
 
-static void printString(const QString &str) {
+static void printString(const QString& str) {
     std::cout << str.toLocal8Bit().constData();
 }
 
@@ -103,7 +103,7 @@ static QString getLine() {
     return QString::fromStdString(result);
 }
 
-static bool askYesNoQuestion(const QString &question) {
+static bool askYesNoQuestion(const QString& question) {
     QString readKey;
     int yes = -1;
     int no = -1;
@@ -118,7 +118,7 @@ static bool askYesNoQuestion(const QString &question) {
     return 0 == yes;
 }
 
-static bool inputFinish(const QString &key) {
+static bool inputFinish(const QString& key) {
     return (NEW_LINE_STR == key) || (RETURN_STR == key) || (RETURN_STR + NEW_LINE_STR == key);
 }
 
@@ -146,7 +146,7 @@ static QString askPwd() {
 
 }  // namespace
 
-bool CredentialsAskerCli::askWithFixedLogin(const QString &resourceUrl) const {
+bool CredentialsAskerCli::askWithFixedLogin(const QString& resourceUrl) const {
     SAFE_POINT(!AppContext::isGUIMode(), "Unexpected application run mode", false);
 
     QString userName;
@@ -162,7 +162,7 @@ bool CredentialsAskerCli::askWithFixedLogin(const QString &resourceUrl) const {
     return true;
 }
 
-bool CredentialsAskerCli::askWithModifiableLogin(QString &resourceUrl) const {
+bool CredentialsAskerCli::askWithModifiableLogin(QString& resourceUrl) const {
     SAFE_POINT(!AppContext::isGUIMode(), "Unexpected application run mode", false);
 
     QString userName;

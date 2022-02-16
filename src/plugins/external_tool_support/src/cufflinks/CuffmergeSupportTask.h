@@ -43,47 +43,47 @@ struct CuffmergeSettings {
     QString outDir;
     QString workingDir;
 
-    Workflow::DbiDataStorage *storage;
+    Workflow::DbiDataStorage* storage;
     QList<Workflow::SharedDbiDataHandler> annotationTables;
 };
 
 class CuffmergeSupportTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    CuffmergeSupportTask(const CuffmergeSettings &settings);
+    CuffmergeSupportTask(const CuffmergeSettings& settings);
     ~CuffmergeSupportTask();
 
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
     void run();
     QStringList getOutputFiles() const;
 
-    QList<AnnotationTableObject *> takeResult();
+    QList<AnnotationTableObject*> takeResult();
 
 private:
     CuffmergeSettings settings;
     QString workingDir;
     QString listFilePath;
     int fileNum;
-    QList<Document *> docs;
-    QList<Task *> writeTasks;
-    ExternalToolRunTask *mergeTask;
-    LoadDocumentTask *loadResultTask;
-    QList<AnnotationTableObject *> result;
+    QList<Document*> docs;
+    QList<Task*> writeTasks;
+    ExternalToolRunTask* mergeTask;
+    LoadDocumentTask* loadResultTask;
+    QList<AnnotationTableObject*> result;
     QStringList outputFiles;
 
     static const QString outSubDirBaseName;
 
 private:
-    Document *prepareDocument(const Workflow::SharedDbiDataHandler &annTableHandler, const QString &filePath);
-    Task *createWriteTask(const Workflow::SharedDbiDataHandler &annTableHandler, const QString &filePath);
-    Task *createCuffmergeTask();
-    LoadDocumentTask *createLoadResultDocumentTask(const QString &fileName);
+    Document* prepareDocument(const Workflow::SharedDbiDataHandler& annTableHandler, const QString& filePath);
+    Task* createWriteTask(const Workflow::SharedDbiDataHandler& annTableHandler, const QString& filePath);
+    Task* createCuffmergeTask();
+    LoadDocumentTask* createLoadResultDocumentTask(const QString& fileName);
     QString getAnnsFilePath();
     void setupWorkingDirPath();
     void writeFileList();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_CUFFMERGESUPPORTTASK_H_
+#endif  // _U2_CUFFMERGESUPPORTTASK_H_

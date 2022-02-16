@@ -28,13 +28,13 @@ namespace U2 {
 
 class SpadesPortRelationDescriptor : public PortRelationDescriptor {
 public:
-    SpadesPortRelationDescriptor(const QString &portId, const QVariantList &valuesWithEnabledPort);
+    SpadesPortRelationDescriptor(const QString& portId, const QVariantList& valuesWithEnabledPort);
 
-    bool isPortEnabled(const QVariant &attrValue) const;
+    bool isPortEnabled(const QVariant& attrValue) const;
 
-    SpadesPortRelationDescriptor *clone() const;
+    SpadesPortRelationDescriptor* clone() const;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SPADES_PORT_RELATION_DESCRIPTOR_H_
+#endif  // _U2_SPADES_PORT_RELATION_DESCRIPTOR_H_

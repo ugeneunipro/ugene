@@ -60,7 +60,7 @@
 
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT U2::Plugin *U2_PLUGIN_INIT_FUNC() {
+extern "C" Q_DECL_EXPORT U2::Plugin* U2_PLUGIN_INIT_FUNC() {
     return new CoreTests();
 }
 
@@ -72,12 +72,12 @@ CoreTests::~CoreTests() {
 }
 
 template<class Factory>
-bool CoreTests::registerFactory(XMLTestFormat *xmlTestFormat) {
-    GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
+bool CoreTests::registerFactory(XMLTestFormat* xmlTestFormat) {
+    GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = Factory::createTestFactories();
 
     bool res = true;
-    foreach (XMLTestFactory *f, l->qlist) {
+    foreach (XMLTestFactory* f, l->qlist) {
         bool ok = xmlTestFormat->registerTestFactory(f);
         res = res && ok;
     }
@@ -87,8 +87,8 @@ bool CoreTests::registerFactory(XMLTestFormat *xmlTestFormat) {
 }
 
 void CoreTests::registerFactories() {
-    GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
+    GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
+    XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
     assert(xmlTestFormat != nullptr);
 
     registerFactory<SMatrixTests>(xmlTestFormat);

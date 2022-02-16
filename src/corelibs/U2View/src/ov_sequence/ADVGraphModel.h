@@ -48,7 +48,7 @@ public:
      * Calculates graph data for the whole sequence range.
      * TODO: the method is called from non-UI thread and should use objectId instead of GObject.
      */
-    virtual void calculate(QVector<float> &result, U2SequenceObject *sequenceObject, qint64 window, qint64 step, U2OpStatus &os) = 0;
+    virtual void calculate(QVector<float>& result, U2SequenceObject* sequenceObject, qint64 window, qint64 step, U2OpStatus& os) = 0;
 };
 
 /** Cut-off mode state of graph. Contains min & max cutoffs thresholds. */
@@ -65,7 +65,7 @@ public:
 class U2VIEW_EXPORT GSequenceGraphUtils {
 public:
     /** Returns number of steps (data points) to cover 'range' using 'window' & 'step'.*/
-    static qint64 getNumSteps(const U2Region &range, qint64 window, qint64 step);
+    static qint64 getNumSteps(const U2Region& range, qint64 window, qint64 step);
 
     /** Returns true if the value is 'UNDEFINED_GRAPH_VALUE'. */
     static bool isUndefined(float value);
@@ -77,10 +77,10 @@ public:
     static float getMaxValue(float value1, float value2);
 
     /** Returns pair of min and max values in the given screen range. */
-    static QPair<float, float> getMinAndMaxInRange(const QSharedPointer<GSequenceGraphData> &graph, const U2Region &screenRange);
+    static QPair<float, float> getMinAndMaxInRange(const QSharedPointer<GSequenceGraphData>& graph, const U2Region& screenRange);
 
     /** Returns a value for the given x coordinate. In useIntervals mode the value is average between min & max values. */
-    static float getPointValue(const QSharedPointer<GSequenceGraphData> &graph, int x);
+    static float getPointValue(const QSharedPointer<GSequenceGraphData>& graph, int x);
 
     /**
      * A constant with undefined value for a point in a graph.
@@ -96,15 +96,15 @@ typedef QMap<QString, QColor> ColorMap;
 class U2VIEW_EXPORT GSequenceGraphDrawer : public QObject, private GSequenceGraphUtils {
     Q_OBJECT
 public:
-    GSequenceGraphDrawer(GSequenceGraphView *view, qint64 window, qint64 step);
+    GSequenceGraphDrawer(GSequenceGraphView* view, qint64 window, qint64 step);
 
     virtual ~GSequenceGraphDrawer();
 
     /** Re-draws graphs in the given rect. */
-    void draw(QPainter &p, const QList<QSharedPointer<GSequenceGraphData>> &graphs, const QRect &rect);
+    void draw(QPainter& p, const QList<QSharedPointer<GSequenceGraphData>>& graphs, const QRect& rect);
 
     /** Updates moving labels state. */
-    void updateMovingLabels(const QList<QSharedPointer<GSequenceGraphData>> &graphs, const QRect &rect) const;
+    void updateMovingLabels(const QList<QSharedPointer<GSequenceGraphData>>& graphs, const QRect& rect) const;
 
     /** Shows graph set-up dialog. */
     void showSettingsDialog();
@@ -113,7 +113,7 @@ public:
      * Adds local min/max labels for the given sequence region.
      * Only local max points with a value > median value and local min points with a value <a median value got labels.
      */
-    void addLabelsForLocalMinMaxPoints(const QSharedPointer<GSequenceGraphData> &graph, const U2Region &sequenceRange, const QRect &rect);
+    void addLabelsForLocalMinMaxPoints(const QSharedPointer<GSequenceGraphData>& graph, const U2Region& sequenceRange, const QRect& rect);
 
     /** Returns current window value. */
     qint64 getWindow() const;
@@ -122,13 +122,13 @@ public:
     qint64 getStep() const;
 
     /** Returns current cut-off filter state. */
-    const GSequenceGraphMinMaxCutOffState &getCutOffState() const;
+    const GSequenceGraphMinMaxCutOffState& getCutOffState() const;
 
     /** Returns colors map per graph series name. */
-    const ColorMap &getColors() const;
+    const ColorMap& getColors() const;
 
     /** Updates colors map per graph series name. */
-    void setColors(const ColorMap &colorMap);
+    void setColors(const ColorMap& colorMap);
 
 signals:
     /** Emitted on successful graph calculation completion. */
@@ -139,22 +139,22 @@ signals:
 
 private:
     /** Draws a single graph series. */
-    void drawGraph(QPainter &p, const QSharedPointer<GSequenceGraphData> &graph, const QRect &rect) const;
+    void drawGraph(QPainter& p, const QSharedPointer<GSequenceGraphData>& graph, const QRect& rect) const;
 
     /** Re-calculates graph series for the given view width. */
-    void calculatePoints(const QList<QSharedPointer<GSequenceGraphData>> &graphs, int viewWidth);
+    void calculatePoints(const QList<QSharedPointer<GSequenceGraphData>>& graphs, int viewWidth);
 
     /** Updates label text and coordinates. Returns true if label is visible. */
-    bool updateCoordinatesAndText(const QSharedPointer<GSequenceGraphData> &graph, const QRect &rect, GraphLabel *label) const;
+    bool updateCoordinatesAndText(const QSharedPointer<GSequenceGraphData>& graph, const QRect& rect, GraphLabel* label) const;
 
     /** Updates static label state. Returns true if label is visible. */
-    bool updateLabel(const QSharedPointer<GSequenceGraphData> &graph, GraphLabel *label, const QRect &rect) const;
+    bool updateLabel(const QSharedPointer<GSequenceGraphData>& graph, GraphLabel* label, const QRect& rect) const;
 
     /** Packs multiple data points into visible range. Used when there are more data points than pixels. */
-    void packDataPointsIntoView(const QSharedPointer<GSequenceGraphData> &graph, int viewWidth) const;
+    void packDataPointsIntoView(const QSharedPointer<GSequenceGraphData>& graph, int viewWidth) const;
 
     /** Expands a data point on visible range. Used when there are more pixels than data points. */
-    void expandDataPointsToView(const QSharedPointer<GSequenceGraphData> &state, int viewWidth) const;
+    void expandDataPointsToView(const QSharedPointer<GSequenceGraphData>& state, int viewWidth) const;
 
     /**
      * Returns X coordinate for the sequence position.
@@ -164,18 +164,18 @@ private:
     int getScreenOffsetByPos(double sequencePos, int screenWidth) const;
 
     /** Updates label 'mark' (local min/max) state. Returns label value. */
-    void updateMovingLabelMarkState(const QSharedPointer<GSequenceGraphData> &graph, GraphLabel *label) const;
+    void updateMovingLabelMarkState(const QSharedPointer<GSequenceGraphData>& graph, GraphLabel* label) const;
 
     /** Updates moving labels coordinates, so they do not overlap. */
-    static void adjustMovingLabelGroupPositions(const QList<GraphLabel *> &labels, int viewWidth);
+    static void adjustMovingLabelGroupPositions(const QList<GraphLabel*>& labels, int viewWidth);
 
 protected slots:
     /** Emits 'si_graphDataUpdated' or 'si_graphRenderError' based on the calculation task state. */
     void sl_calculationTaskFinished();
 
 private:
-    GSequenceGraphView *view;
-    QFont *defFont;
+    GSequenceGraphView* view;
+    QFont* defFont;
     ColorMap seriesColorByName;
 
     qint64 window;
@@ -190,7 +190,7 @@ private:
 
 class U2VIEW_EXPORT GSequenceGraphData {
 public:
-    GSequenceGraphData(GSequenceGraphView *view, const QString &graphName, GSequenceGraphAlgorithm *algorithm);
+    GSequenceGraphData(GSequenceGraphView* view, const QString& graphName, GSequenceGraphAlgorithm* algorithm);
 
     void clearAllPoints();
 
@@ -235,7 +235,7 @@ public:
 class CalculatePointsTask : public BackgroundTask<QList<QVector<float>>> {
     Q_OBJECT
 public:
-    CalculatePointsTask(const QList<QSharedPointer<GSequenceGraphData>> &graphData, U2SequenceObject *o);
+    CalculatePointsTask(const QList<QSharedPointer<GSequenceGraphData>>& graphData, U2SequenceObject* o);
 
     void run() override;
 

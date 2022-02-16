@@ -33,14 +33,14 @@
 namespace U2 {
 
 TestDbiProvider MsaObjectTestData::dbiProvider = TestDbiProvider();
-const QString &MsaObjectTestData::MAL_OBJ_DB_URL("malignment-object-dbi.ugenedb");
+const QString& MsaObjectTestData::MAL_OBJ_DB_URL("malignment-object-dbi.ugenedb");
 U2DbiRef MsaObjectTestData::dbiRef = U2DbiRef();
 
 void MsaObjectTestData::init() {
     bool ok = dbiProvider.init(MAL_OBJ_DB_URL, false);
     SAFE_POINT(ok, "Dbi provider failed to initialize in MsaObjectTestData::init()!", );
 
-    U2Dbi *dbi = dbiProvider.getDbi();
+    U2Dbi* dbi = dbiProvider.getDbi();
     dbiRef = dbi->getDbiRef();
     dbiProvider.close();
 }
@@ -61,14 +61,14 @@ U2DbiRef MsaObjectTestData::getDbiRef() {
     return dbiRef;
 }
 
-MultipleSequenceAlignmentObject *MsaObjectTestData::getTestAlignmentObject(const U2DbiRef &dbiRef, const QString &name, U2OpStatus &os) {
+MultipleSequenceAlignmentObject* MsaObjectTestData::getTestAlignmentObject(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os) {
     const U2EntityRef entityRef = getTestAlignmentRef(dbiRef, name, os);
     CHECK_OP(os, nullptr);
 
     return new MultipleSequenceAlignmentObject(name, entityRef);
 }
 
-U2EntityRef MsaObjectTestData::getTestAlignmentRef(const U2DbiRef &dbiRef, const QString &name, U2OpStatus &os) {
+U2EntityRef MsaObjectTestData::getTestAlignmentRef(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os) {
     DbiConnection con(dbiRef, os);
     CHECK_OP(os, U2EntityRef());
 
@@ -82,7 +82,7 @@ U2EntityRef MsaObjectTestData::getTestAlignmentRef(const U2DbiRef &dbiRef, const
     return U2EntityRef(dbiRef, msaId);
 }
 
-MultipleSequenceAlignment MsaObjectTestData::getTestAlignment(const U2DbiRef &dbiRef, const QString &name, U2OpStatus &os) {
+MultipleSequenceAlignment MsaObjectTestData::getTestAlignment(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os) {
     U2EntityRef malignmentRef = getTestAlignmentRef(dbiRef, name, os);
     CHECK_OP(os, MultipleSequenceAlignment());
 

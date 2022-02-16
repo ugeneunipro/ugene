@@ -33,20 +33,20 @@ class LoadUnloadedDocumentTask;
 class U2GUI_EXPORT ProjectUtils {
 public:
     /** Returns true if the document is a shared database */
-    static QList<Document *> getConnectedSharedDatabases();
+    static QList<Document*> getConnectedSharedDatabases();
     static bool areSharedDatabasesAvailable();
-    static bool isConnectedDatabaseDoc(const Document *doc);
-    static bool isDatabaseDoc(const Document *doc);
+    static bool isConnectedDatabaseDoc(const Document* doc);
+    static bool isDatabaseDoc(const Document* doc);
 
-    static bool isFolderInRecycleBin(const QString &folderPath);
-    static bool isFolderInRecycleBinSubtree(const QString &folderPath);
+    static bool isFolderInRecycleBin(const QString& folderPath);
+    static bool isFolderInRecycleBinSubtree(const QString& folderPath);
 
-    static bool isSystemFolder(const QString &folderPath);
+    static bool isSystemFolder(const QString& folderPath);
 
-    static Document *findDocument(const QString &url);
-    static bool hasLoadedDocument(const QString &url);
-    static bool hasUnloadedDocument(const QString &url);
-    static LoadUnloadedDocumentTask *findLoadTask(const QString &url);
+    static Document* findDocument(const QString& url);
+    static bool hasLoadedDocument(const QString& url);
+    static bool hasUnloadedDocument(const QString& url);
+    static LoadUnloadedDocumentTask* findLoadTask(const QString& url);
 
     static const int MAX_OBJS_TO_SHOW_LOAD_PROGRESS;
     static const QString RECYCLE_BIN_FOLDER_PATH;

@@ -34,15 +34,15 @@ namespace U2 {
 class U2GUI_EXPORT GroupedComboBoxDelegate : public QItemDelegate {
     Q_OBJECT
 public:
-    explicit GroupedComboBoxDelegate(QObject *parent = 0);
+    explicit GroupedComboBoxDelegate(QObject* parent = 0);
 
-    static void addParentItem(QStandardItemModel *model, const QString &text, bool setItalic = true, bool setBold = true);
-    static void addChildItem(QStandardItemModel *model, const QString &text, const QVariant &data);
-    static void addUngroupedItem(QStandardItemModel *model, const QString &text, const QVariant &data);
+    static void addParentItem(QStandardItemModel* model, const QString& text, bool setItalic = true, bool setBold = true);
+    static void addChildItem(QStandardItemModel* model, const QString& text, const QVariant& data);
+    static void addUngroupedItem(QStandardItemModel* model, const QString& text, const QVariant& data);
 
 protected:
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const;
+    QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const;
 };
 
 }  // namespace U2

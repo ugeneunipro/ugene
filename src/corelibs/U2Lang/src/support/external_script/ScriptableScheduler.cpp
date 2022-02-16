@@ -23,30 +23,30 @@
 
 namespace U2 {
 
-ScriptableScheduler::ScriptableScheduler(Workflow::Schema *scheme)
+ScriptableScheduler::ScriptableScheduler(Workflow::Schema* scheme)
     : LastReadyScheduler(scheme) {
 }
 ScriptableScheduler::~ScriptableScheduler() {
 }
 
-void ScriptableScheduler::addActorToNextTick(const ActorId &actor) {
+void ScriptableScheduler::addActorToNextTick(const ActorId& actor) {
     nextTicks << actor;
 }
 
-QMap<int, QList<Workflow::Actor *>> ScriptableScheduler::getTopologicalSortedGraph() const {
+QMap<int, QList<Workflow::Actor*>> ScriptableScheduler::getTopologicalSortedGraph() const {
     return topologicSortedGraph;
 }
 
-void ScriptableScheduler::setScheme(Workflow::Schema *newScheme) {
+void ScriptableScheduler::setScheme(Workflow::Schema* newScheme) {
     Q_ASSERT(nullptr != newScheme && newScheme != schema);
     schema = newScheme;
 }
 
-Workflow::Actor *ScriptableScheduler::getActorById(const ActorId &id) const {
+Workflow::Actor* ScriptableScheduler::getActorById(const ActorId& id) const {
     return (nullptr != schema) ? schema->actorById(id) : nullptr;
 }
 
-WorkflowDebugStatus *ScriptableScheduler::getDebugStatus() const {
+WorkflowDebugStatus* ScriptableScheduler::getDebugStatus() const {
     return debugInfo;
 }
 

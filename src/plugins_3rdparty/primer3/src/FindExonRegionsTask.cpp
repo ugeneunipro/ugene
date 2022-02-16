@@ -34,15 +34,15 @@
 
 namespace U2 {
 
-FindExonRegionsTask::FindExonRegionsTask(U2SequenceObject *dObj, const QString &annName)
+FindExonRegionsTask::FindExonRegionsTask(U2SequenceObject* dObj, const QString& annName)
     : Task("FindExonRegionsTask", TaskFlags_NR_FOSCOE), dnaObj(dObj), exonAnnName(annName) {
 }
 
 void FindExonRegionsTask::prepare() {
 }
 
-QList<Task *> FindExonRegionsTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> FindExonRegionsTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
 
     if (!subTask->isFinished()) {
         return res;
@@ -86,20 +86,20 @@ QList<Task *> FindExonRegionsTask::onSubTaskFinished(Task *subTask) {
 }
 
 Task::ReportResult FindExonRegionsTask::report() {
-    QList<GObject *> allAnnotationObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::ANNOTATION_TABLE);
-    QList<GObject *> relAnns = GObjectUtils::findObjectsRelatedToObjectByRole(dnaObj, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, allAnnotationObjects, UOF_LoadedOnly);
+    QList<GObject*> allAnnotationObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::ANNOTATION_TABLE);
+    QList<GObject*> relAnns = GObjectUtils::findObjectsRelatedToObjectByRole(dnaObj, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, allAnnotationObjects, UOF_LoadedOnly);
 
     if (relAnns.isEmpty()) {
         setError(tr("Failed to search for exon annotations. The sequence %1 doesn't have any related annotations.").arg(dnaObj->getSequenceName()));
         return ReportResult_Finished;
     }
 
-    foreach (GObject *a, relAnns) {
-        AnnotationTableObject *att = qobject_cast<AnnotationTableObject *>(a);
-        const QList<Annotation *> anns = att->getAnnotations();
-        foreach (Annotation *ann, anns) {
+    foreach (GObject* a, relAnns) {
+        AnnotationTableObject* att = qobject_cast<AnnotationTableObject*>(a);
+        const QList<Annotation*> anns = att->getAnnotations();
+        foreach (Annotation* ann, anns) {
             if (ann->getName() == exonAnnName) {
-                foreach (const U2Region &r, ann->getRegions()) {
+                foreach (const U2Region& r, ann->getRegions()) {
                     exonRegions.append(r);
                 }
             }

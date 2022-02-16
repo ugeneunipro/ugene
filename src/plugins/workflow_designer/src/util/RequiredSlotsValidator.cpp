@@ -24,13 +24,13 @@
 namespace U2 {
 namespace Workflow {
 
-RequiredSlotsValidator::RequiredSlotsValidator(const QList<Descriptor> &_requiredSlots)
+RequiredSlotsValidator::RequiredSlotsValidator(const QList<Descriptor>& _requiredSlots)
     : requiredSlots(_requiredSlots) {
 }
 
-bool RequiredSlotsValidator::validate(const IntegralBusPort *port, NotificationsList &notificationList) const {
+bool RequiredSlotsValidator::validate(const IntegralBusPort* port, NotificationsList& notificationList) const {
     bool noErrors = true;
-    foreach (const Descriptor &d, requiredSlots) {
+    foreach (const Descriptor& d, requiredSlots) {
         if (!isBinded(port, d.getId())) {
             notificationList << WorkflowNotification(QObject::tr("Input '%1' slot is not supplied").arg(d.getDisplayName()));
             noErrors = false;

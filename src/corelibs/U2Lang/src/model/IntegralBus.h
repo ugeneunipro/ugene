@@ -38,15 +38,15 @@ namespace Workflow {
  */
 class U2LANG_EXPORT BusMap {
 public:
-    BusMap(const StrStrMap &busMap, const QMap<QString, QStringList> &listMap, const SlotPathMap &paths);
-    BusMap(const StrStrMap &busMap, bool breaksDataflow, const QString &actorId);
+    BusMap(const StrStrMap& busMap, const QMap<QString, QStringList>& listMap, const SlotPathMap& paths);
+    BusMap(const StrStrMap& busMap, bool breaksDataflow, const QString& actorId);
 
-    Message takeMessageMap(CommunicationChannel *ch, QVariantMap &context);
-    Message lookMessageMap(CommunicationChannel *ch);
-    QVariantMap composeMessageMap(const Message &m, const QVariantMap &context);
+    Message takeMessageMap(CommunicationChannel* ch, QVariantMap& context);
+    Message lookMessageMap(CommunicationChannel* ch);
+    QVariantMap composeMessageMap(const Message& m, const QVariantMap& context);
 
-    static void parseSource(const QString &src, QString &srcId, QStringList &path);
-    static QString getNewSourceId(const QString &srcId, const QString &actorId);
+    static void parseSource(const QString& src, QString& srcId, QStringList& path);
+    static QString getNewSourceId(const QString& srcId, const QString& actorId);
 
 private:
     bool input;
@@ -59,7 +59,7 @@ private:
     QString actorId;
 
 private:
-    QVariantMap getMessageData(const Message &m) const;
+    QVariantMap getMessageData(const Message& m) const;
 };
 
 /**
@@ -71,24 +71,24 @@ private:
 class U2LANG_EXPORT IntegralBus : public QObject, public CommunicationSubject, public CommunicationChannel {
     Q_OBJECT
 public:
-    IntegralBus(Port *peer);
+    IntegralBus(Port* peer);
     ~IntegralBus();
 
     // reimplemented from CommunicationSubject
-    virtual bool addCommunication(const QString &id, CommunicationChannel *ch);
-    virtual CommunicationChannel *getCommunication(const QString &id);
+    virtual bool addCommunication(const QString& id, CommunicationChannel* ch);
+    virtual CommunicationChannel* getCommunication(const QString& id);
 
-    void putWithoutContext(const Message &m);
+    void putWithoutContext(const Message& m);
 
     // reimplemented from CommunicationChannel
     virtual Message get();
     virtual Message look() const;
-    virtual void put(const Message &m, bool isMessageRestored = false);
+    virtual void put(const Message& m, bool isMessageRestored = false);
     // put incoming context to the output channels
     virtual void transit();
     virtual int hasMessage() const;
     virtual int takenMessages() const;
-    virtual int hasRoom(const DataType *t = nullptr) const;
+    virtual int hasRoom(const DataType* t = nullptr) const;
     virtual bool isEnded() const;
     virtual void setEnded();
     virtual int capacity() const {
@@ -105,10 +105,10 @@ public:
     QVariantMap getLastMessageContext() const {
         return lastMessageContext;
     }
-    void setContext(const QVariantMap &m, int metadataId);
+    void setContext(const QVariantMap& m, int metadataId);
     int getContextMetadataId() const;
 
-    virtual void addComplement(IntegralBus *b) {
+    virtual void addComplement(IntegralBus* b) {
         assert(!complement);
         complement = b;
     }
@@ -120,26 +120,26 @@ public:
         return busType;
     }
 
-    void setPrintSlots(bool in, const QList<QString> &printSlots);
+    void setPrintSlots(bool in, const QList<QString>& printSlots);
 
-    void setWorkflowContext(WorkflowContext *context);
+    void setWorkflowContext(WorkflowContext* context);
 
 protected:
-    virtual Message composeMessage(const Message &);
+    virtual Message composeMessage(const Message&);
 
 protected:
     // type of port integral bus is binded to
     DataTypePtr busType;
     // communications with other ports
-    QMap<QString, CommunicationChannel *> outerChannels;
+    QMap<QString, CommunicationChannel*> outerChannels;
     // busmap of port integral bus is binded to
-    BusMap *busMap;
+    BusMap* busMap;
     // context of an output message. See put() for details
     QVariantMap context;
     QVariantMap lastMessageContext;
     int contextMetadataId;
     //
-    IntegralBus *complement;
+    IntegralBus* complement;
     // integral bus is binded to port with this id
     QString portId;
     //
@@ -148,9 +148,9 @@ protected:
     // a content of these slots is printed to the standart output
     QList<QString> printSlots;
     ActorId actorId;
-    WorkflowContext *workflowContext;
+    WorkflowContext* workflowContext;
 
-    QMutex *contextMutex;
+    QMutex* contextMutex;
 
 };  // IntegralBus
 

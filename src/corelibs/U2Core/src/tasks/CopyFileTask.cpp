@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-CopyFileTask::CopyFileTask(const QString &sourceFilePath, const QString &targetFilePath)
+CopyFileTask::CopyFileTask(const QString& sourceFilePath, const QString& targetFilePath)
     : Task(tr("File '%1' copy task").arg(sourceFilePath), TaskFlag_None),
       sourceFilePath(sourceFilePath),
       targetFilePath(GUrlUtils::rollFileName(targetFilePath, "_")) {

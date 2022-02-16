@@ -44,9 +44,9 @@ const QString AbstractVariationFormat::META_INFO_START = "##";
 const QString AbstractVariationFormat::HEADER_START = "#";
 const QString AbstractVariationFormat::COLUMNS_SEPARATOR = "\t";
 
-static QList<U2Variant> splitVariants(const U2Variant &variant, const QList<QString> &altAlleles) {
+static QList<U2Variant> splitVariants(const U2Variant& variant, const QList<QString>& altAlleles) {
     QList<U2Variant> variantList;
-    for (const QString &allele : qAsConst(altAlleles)) {
+    for (const QString& allele : qAsConst(altAlleles)) {
         U2Variant clonedVariant = variant;
         clonedVariant.obsData = allele.toLatin1();
         variantList.append(clonedVariant);
@@ -54,7 +54,7 @@ static QList<U2Variant> splitVariants(const U2Variant &variant, const QList<QStr
     return variantList;
 }
 
-AbstractVariationFormat::AbstractVariationFormat(QObject *p, const DocumentFormatId &id, const QStringList &fileExtensions, bool _isSupportHeader)
+AbstractVariationFormat::AbstractVariationFormat(QObject* p, const DocumentFormatId& id, const QStringList& fileExtensions, bool _isSupportHeader)
     : TextDocumentFormat(p, id, DocumentFormatFlags_SW, fileExtensions),
       isSupportHeader(_isSupportHeader) {
     supportedObjectTypes += GObjectTypes::VARIANT_TRACK;
@@ -62,7 +62,7 @@ AbstractVariationFormat::AbstractVariationFormat(QObject *p, const DocumentForma
     indexing = AbstractVariationFormat::ZeroBased;
 }
 
-static void addStringAttribute(U2OpStatus &os, U2Dbi *dbi, const U2VariantTrack &variantTrack, const QString &name, const QString &value) {
+static void addStringAttribute(U2OpStatus& os, U2Dbi* dbi, const U2VariantTrack& variantTrack, const QString& name, const QString& value) {
     CHECK(!value.isEmpty(), );
     U2StringAttribute attribute;
     U2AttributeUtils::init(attribute, variantTrack, name);
@@ -70,15 +70,15 @@ static void addStringAttribute(U2OpStatus &os, U2Dbi *dbi, const U2VariantTrack 
     dbi->getAttributeDbi()->createStringAttribute(attribute, os);
 }
 
-static constexpr const char *CHR_PREFIX = "chr";
+static constexpr const char* CHR_PREFIX = "chr";
 
 static constexpr int MAX_LINE_LENGTH = 10 * 1024;  // 10 Kb
 
-Document *AbstractVariationFormat::loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) {
+Document* AbstractVariationFormat::loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) {
     DbiConnection con(dbiRef, os);
     SAFE_POINT_OP(os, nullptr);
 
-    U2Dbi *dbi = con.dbi;
+    U2Dbi* dbi = con.dbi;
     SAFE_POINT(dbi->getVariantDbi(), "Variant DBI is NULL!", nullptr);
 
     SplitAlleles splitting = hints.contains(DocumentReadingMode_SplitVariationAlleles)
@@ -126,7 +126,7 @@ Document *AbstractVariationFormat::loadTextDocument(IOAdapterReader &reader, con
 
         for (int columnNumber = 0; columnNumber < columns.size(); columnNumber++) {
             ColumnRole columnRole = columnRoles.value(columnNumber, ColumnRole_Unknown);
-            const QString &columnData = columns[columnNumber];
+            const QString& columnData = columns[columnNumber];
             switch (columnRole) {
                 case ColumnRole_ChromosomeId:
                     seqName = columnData;
@@ -178,7 +178,7 @@ Document *AbstractVariationFormat::loadTextDocument(IOAdapterReader &reader, con
         }
 
         if (splitting == AbstractVariationFormat::Split) {
-            const QList<U2Variant> &alleleVariants = splitVariants(v, altAllele);
+            const QList<U2Variant>& alleleVariants = splitVariants(v, altAllele);
             if (altAllele.isEmpty()) {
                 continue;
             }
@@ -200,7 +200,7 @@ Document *AbstractVariationFormat::loadTextDocument(IOAdapterReader &reader, con
     }
 
     QList<QString> seqNames = snpsMap.keys();
-    for (const QString &seqName : qAsConst(seqNames)) {
+    for (const QString& seqName : qAsConst(seqNames)) {
         U2VariantTrack track;
         track.visualName = "Variant track";
         track.sequenceName = seqName;
@@ -213,7 +213,7 @@ Document *AbstractVariationFormat::loadTextDocument(IOAdapterReader &reader, con
         addStringAttribute(os, dbi, track, U2VariantTrack::HEADER_ATTRIBUTE, StrPackUtils::packStringList(header));
         CHECK_OP(os, nullptr);
 
-        const QList<U2Variant> &variantList = snpsMap.value(seqName);
+        const QList<U2Variant>& variantList = snpsMap.value(seqName);
         if (!variantList.isEmpty()) {
             BufferedDbiIterator<U2Variant> bufIter(variantList);
             dbi->getVariantDbi()->addVariantsToTrack(track, &bufIter, os);
@@ -232,13 +232,13 @@ Document *AbstractVariationFormat::loadTextDocument(IOAdapterReader &reader, con
     return doc;
 }
 
-FormatCheckResult AbstractVariationFormat::checkRawTextData(const QString &dataPrefix, const GUrl &) const {
+FormatCheckResult AbstractVariationFormat::checkRawTextData(const QString& dataPrefix, const GUrl&) const {
     QStringList lines = dataPrefix.split("\n");
     int idx = 0;
     int mismatchesNumber = 0;
     int cellsNumber = 0;
     QRegExp wordExp("\\D+");
-    for (const QString &originalLine : qAsConst(lines)) {
+    for (const QString& originalLine : qAsConst(lines)) {
         bool skipLastLine = lines.size() != 1 && idx == lines.size() - 1;
         if (skipLastLine) {
             continue;
@@ -298,34 +298,34 @@ FormatCheckResult AbstractVariationFormat::checkRawTextData(const QString &dataP
     return FormatDetection_AverageSimilarity;
 }
 
-void AbstractVariationFormat::storeTextDocument(IOAdapterWriter &writer, Document *document, U2OpStatus &os) {
-    QList<GObject *> variantTrackObjects = document->findGObjectByType(GObjectTypes::VARIANT_TRACK);
+void AbstractVariationFormat::storeTextDocument(IOAdapterWriter& writer, Document* document, U2OpStatus& os) {
+    QList<GObject*> variantTrackObjects = document->findGObjectByType(GObjectTypes::VARIANT_TRACK);
     if (!variantTrackObjects.isEmpty()) {
-        auto variantTrackObject = qobject_cast<VariantTrackObject *>(variantTrackObjects.first());
+        auto variantTrackObject = qobject_cast<VariantTrackObject*>(variantTrackObjects.first());
         SAFE_POINT_EXT(variantTrackObject != nullptr, os.setError(L10N::internalError("Not a VariantTrackObject")), );
         storeHeader(variantTrackObject, writer, os);
     }
 
-    for (GObject *obj : qAsConst(variantTrackObjects)) {
-        auto trackObject = qobject_cast<VariantTrackObject *>(obj);
+    for (GObject* obj : qAsConst(variantTrackObjects)) {
+        auto trackObject = qobject_cast<VariantTrackObject*>(obj);
         SAFE_POINT_EXT(trackObject != nullptr, os.setError(L10N::internalError("not a VariantTrackObject")), );
         storeTrack(writer, trackObject, os);
     }
 }
 
-void AbstractVariationFormat::storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) {
+void AbstractVariationFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObjectType, QList<GObject*>>& objectsMap, U2OpStatus& os) {
     SAFE_POINT(objectsMap.contains(GObjectTypes::VARIANT_TRACK), "Variation entry storing: no variations", );
 
-    const QList<GObject *> &vars = objectsMap[GObjectTypes::VARIANT_TRACK];
+    const QList<GObject*>& vars = objectsMap[GObjectTypes::VARIANT_TRACK];
     SAFE_POINT(vars.size() == 1, "Variation entry storing: variation objects count error", );
 
-    auto trackObject = dynamic_cast<VariantTrackObject *>(vars.first());
+    auto trackObject = dynamic_cast<VariantTrackObject*>(vars.first());
     SAFE_POINT(trackObject != nullptr, "Variation entry storing: NULL variation object", );
 
     storeTrack(writer, trackObject, os);
 }
 
-void AbstractVariationFormat::storeTrack(IOAdapterWriter &writer, const VariantTrackObject *trackObj, U2OpStatus &os) const {
+void AbstractVariationFormat::storeTrack(IOAdapterWriter& writer, const VariantTrackObject* trackObj, U2OpStatus& os) const {
     CHECK(trackObj != nullptr, );
 
     U2VariantTrack track = trackObj->getVariantTrack(os);
@@ -415,7 +415,7 @@ void AbstractVariationFormat::storeTrack(IOAdapterWriter &writer, const VariantT
     }
 }
 
-void AbstractVariationFormat::storeHeader(const VariantTrackObject *trackObject, IOAdapterWriter &writer, U2OpStatus &os) const {
+void AbstractVariationFormat::storeHeader(const VariantTrackObject* trackObject, IOAdapterWriter& writer, U2OpStatus& os) const {
     CHECK(isSupportHeader, );
     SAFE_POINT_EXT(trackObject != nullptr, os.setError(L10N::internalError("storeHeader got null object")), );
 
@@ -434,13 +434,13 @@ void AbstractVariationFormat::storeHeader(const VariantTrackObject *trackObject,
     }
 }
 
-QString AbstractVariationFormat::getMetaInfo(const VariantTrackObject *trackObject, U2OpStatus &os) {
+QString AbstractVariationFormat::getMetaInfo(const VariantTrackObject* trackObject, U2OpStatus& os) {
     U2StringAttribute attribute = U2AttributeUtils::findStringAttribute(trackObject, U2VariantTrack::META_INFO_ATTRIBUTE, os);
     CHECK_OP(os, "");
     return attribute.value;
 }
 
-QStringList AbstractVariationFormat::getHeader(const VariantTrackObject *trackObject, U2OpStatus &os) {
+QStringList AbstractVariationFormat::getHeader(const VariantTrackObject* trackObject, U2OpStatus& os) {
     U2StringAttribute attribute = U2AttributeUtils::findStringAttribute(trackObject, U2VariantTrack::HEADER_ATTRIBUTE, os);
     CHECK_OP(os, {});
     return StrPackUtils::unpackStringList(attribute.value);

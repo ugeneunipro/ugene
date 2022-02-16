@@ -40,8 +40,8 @@ namespace U2 {
 
 using namespace Workflow;
 
-extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
-    WorkflowDumpPlugin *plug = new WorkflowDumpPlugin();
+extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
+    WorkflowDumpPlugin* plug = new WorkflowDumpPlugin();
     return plug;
 }
 
@@ -49,8 +49,8 @@ WorkflowDumpPlugin::WorkflowDumpPlugin()
     : Plugin(tr("Workflow Dump"), tr("Workflow Dump exports workflow data.")) {
 #ifdef WORKFLOW_DUMP
     if (AppContext::getMainWindow()) {
-        QAction *dumpAction = new QAction(tr("Dump workers"), this);
-        QMenu *tools = AppContext::getMainWindow()->getTopLevelMenu(MWMENU_TOOLS);
+        QAction* dumpAction = new QAction(tr("Dump workers"), this);
+        QMenu* tools = AppContext::getMainWindow()->getTopLevelMenu(MWMENU_TOOLS);
         tools->addAction(dumpAction);
         connect(dumpAction, SIGNAL(triggered()), SLOT(sl_dumpWorkers()));
     }
@@ -64,7 +64,7 @@ public:
         stack.append(EMPTY_DOCUMENT);
     }
 
-    JsonWriter &name(QString name) {
+    JsonWriter& name(QString name) {
         // if (name == null) {
         //     throw new NullPointerException("name == null");
         // }
@@ -72,33 +72,33 @@ public:
         string(name);
         return *this;
     }
-    JsonWriter &value(QString value) {
+    JsonWriter& value(QString value) {
         beforeValue(false);
         string(value);
         return *this;
     }
-    JsonWriter &boolValue(bool value) {
+    JsonWriter& boolValue(bool value) {
         beforeValue(false);
         out.append(value ? "true" : "false");
         return *this;
     }
-    JsonWriter &intValue(int value) {
+    JsonWriter& intValue(int value) {
         beforeValue(false);
         out.append(QString::number(value));
         return *this;
     }
-    JsonWriter &doubleValue(double value) {
+    JsonWriter& doubleValue(double value) {
         beforeValue(false);
         out.append(QString::number(value));
         return *this;
     }
-    JsonWriter &longValue(long value) {
+    JsonWriter& longValue(long value) {
         beforeValue(false);
         out.append(QString::number(value));
         return *this;
     }
 
-    JsonWriter &plainValue(QByteArray value) {
+    JsonWriter& plainValue(QByteArray value) {
         /*if (value == null) {
             return nullValue();
         }*/
@@ -107,20 +107,20 @@ public:
         return *this;
     }
 
-    JsonWriter &beginArray() {
+    JsonWriter& beginArray() {
         return open(EMPTY_ARRAY, "[");
     }
-    JsonWriter &beginObject() {
+    JsonWriter& beginObject() {
         return open(EMPTY_OBJECT, "{");
     }
-    JsonWriter &endArray() {
+    JsonWriter& endArray() {
         return close(EMPTY_ARRAY, NONEMPTY_ARRAY, "]");
     }
-    JsonWriter &endObject() {
+    JsonWriter& endObject() {
         return close(EMPTY_OBJECT, NONEMPTY_OBJECT, "}");
     }
 
-    QByteArray &getBytes() {
+    QByteArray& getBytes() {
         return out;
     }
 
@@ -199,13 +199,13 @@ private:
         out.append("\"");
     }
 
-    JsonWriter &open(JsonScope empty, QString openBracket) {
+    JsonWriter& open(JsonScope empty, QString openBracket) {
         beforeValue(true);
         stack.append(empty);
         out.append(openBracket);
         return *this;
     }
-    JsonWriter &close(JsonScope empty, JsonScope nonempty, QString closeBracket) {
+    JsonWriter& close(JsonScope empty, JsonScope nonempty, QString closeBracket) {
         JsonScope context = peek();
         if (context != nonempty && context != empty) {
             throw QString("Nesting problem:");
@@ -299,7 +299,7 @@ static QByteArray type2json(DataTypePtr type) {
             break;
         case DataType::Map:
             w.value("Map").name("type").beginObject();
-            foreach (const Descriptor &desc, type->getDatatypesMap().keys()) {
+            foreach (const Descriptor& desc, type->getDatatypesMap().keys()) {
                 w.name(desc.getId())
                     .plainValue(type2json(type->getDatatypesMap()[desc]));
             }
@@ -311,7 +311,7 @@ static QByteArray type2json(DataTypePtr type) {
 }
 
 void WorkflowDumpPlugin::sl_dumpWorkers() {
-    const QMap<Descriptor, QList<ActorPrototype *>> &map = WorkflowEnv::getProtoRegistry()->getProtos();
+    const QMap<Descriptor, QList<ActorPrototype*>>& map = WorkflowEnv::getProtoRegistry()->getProtos();
     JsonWriter w;
     w.beginObject();
     w.name("types");
@@ -329,7 +329,7 @@ void WorkflowDumpPlugin::sl_dumpWorkers() {
     w.endArray();
     w.name("groups");
     w.beginArray();
-    foreach (const Descriptor &desc, WorkflowEnv::getProtoRegistry()->getProtos().keys()) {
+    foreach (const Descriptor& desc, WorkflowEnv::getProtoRegistry()->getProtos().keys()) {
         w.beginObject()
             .name("id")
             .value(desc.getId())
@@ -342,8 +342,8 @@ void WorkflowDumpPlugin::sl_dumpWorkers() {
     w.endArray();
     w.name("workers");
     w.beginArray();
-    foreach (const Descriptor &desc, map.keys()) {
-        foreach (const ActorPrototype *proto, map[desc]) {
+    foreach (const Descriptor& desc, map.keys()) {
+        foreach (const ActorPrototype* proto, map[desc]) {
             w.beginObject()
                 .name("group")
                 .value(desc.getId())
@@ -357,7 +357,7 @@ void WorkflowDumpPlugin::sl_dumpWorkers() {
                 .value(proto->getIconPath())
                 .name("attrs")
                 .beginArray();
-            foreach (const Attribute *attr, proto->getAttributes()) {
+            foreach (const Attribute* attr, proto->getAttributes()) {
                 w.beginObject()
                     .name("id")
                     .value(attr->getId())
@@ -376,7 +376,7 @@ void WorkflowDumpPlugin::sl_dumpWorkers() {
             w.endArray()
                 .name("ports")
                 .beginArray();
-            foreach (const PortDescriptor *port, proto->getPortDesciptors()) {
+            foreach (const PortDescriptor* port, proto->getPortDesciptors()) {
                 w.beginObject()
                     .name("id")
                     .value(port->getId())

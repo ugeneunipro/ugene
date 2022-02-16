@@ -35,16 +35,16 @@ namespace U2 {
 class SpadesSettingsWidget : public GenomeAssemblyAlgorithmMainWidget, Ui_SpadesSettings, U2SavableWidget {
     Q_OBJECT
 public:
-    SpadesSettingsWidget(QWidget *parent);
+    SpadesSettingsWidget(QWidget* parent);
     QMap<QString, QVariant> getGenomeAssemblyCustomSettings();
-    bool isParametersOk(QString &);
+    bool isParametersOk(QString&);
 };
 
 class SpadesGUIExtensionsFactory : public GenomeAssemblyGUIExtensionsFactory {
-    GenomeAssemblyAlgorithmMainWidget *createMainWidget(QWidget *parent);
+    GenomeAssemblyAlgorithmMainWidget* createMainWidget(QWidget* parent);
     bool hasMainWidget();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SPADES_SETTINGS_WIDGET_H_
+#endif  // _U2_SPADES_SETTINGS_WIDGET_H_

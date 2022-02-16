@@ -33,40 +33,40 @@ ElementSelectorWidget::ElementSelectorWidget()
     : WizardWidget() {
 }
 
-void ElementSelectorWidget::accept(WizardWidgetVisitor *visitor) {
+void ElementSelectorWidget::accept(WizardWidgetVisitor* visitor) {
     visitor->visit(this);
 }
 
-void ElementSelectorWidget::setActorId(const QString &value) {
+void ElementSelectorWidget::setActorId(const QString& value) {
     actorId = value;
 }
 
-void ElementSelectorWidget::addValue(const SelectorValue &value) {
+void ElementSelectorWidget::addValue(const SelectorValue& value) {
     values << value;
 }
 
-void ElementSelectorWidget::setLabel(const QString &value) {
+void ElementSelectorWidget::setLabel(const QString& value) {
     label = value;
 }
 
-const QString &ElementSelectorWidget::getActorId() const {
+const QString& ElementSelectorWidget::getActorId() const {
     return actorId;
 }
 
-const QList<SelectorValue> &ElementSelectorWidget::getValues() const {
+const QList<SelectorValue>& ElementSelectorWidget::getValues() const {
     return values;
 }
 
-const QString &ElementSelectorWidget::getLabel() const {
+const QString& ElementSelectorWidget::getLabel() const {
     return label;
 }
 
-void ElementSelectorWidget::validate(const QList<Actor *> &actors, U2OpStatus &os) const {
-    Workflow::Actor *actor = validateActorId(actors, os);
+void ElementSelectorWidget::validate(const QList<Actor*>& actors, U2OpStatus& os) const {
+    Workflow::Actor* actor = validateActorId(actors, os);
     CHECK_OP(os, );
 
     QSet<QString> valueSet;
-    foreach (const SelectorValue &value, values) {
+    foreach (const SelectorValue& value, values) {
         validateDuplicates(value, valueSet, os);
         CHECK_OP(os, );
         valueSet << value.getValue();
@@ -76,9 +76,9 @@ void ElementSelectorWidget::validate(const QList<Actor *> &actors, U2OpStatus &o
     }
 }
 
-Workflow::Actor *ElementSelectorWidget::validateActorId(QList<Workflow::Actor *> actors, U2OpStatus &os) const {
-    Workflow::Actor *result = nullptr;
-    foreach (Workflow::Actor *actor, actors) {
+Workflow::Actor* ElementSelectorWidget::validateActorId(QList<Workflow::Actor*> actors, U2OpStatus& os) const {
+    Workflow::Actor* result = nullptr;
+    foreach (Workflow::Actor* actor, actors) {
         if (actor->getId() == actorId) {
             result = actor;
             break;
@@ -90,9 +90,9 @@ Workflow::Actor *ElementSelectorWidget::validateActorId(QList<Workflow::Actor *>
     return result;
 }
 
-void ElementSelectorWidget::validateDuplicates(const SelectorValue &value,
-                                               const QSet<QString> &valueSet,
-                                               U2OpStatus &os) const {
+void ElementSelectorWidget::validateDuplicates(const SelectorValue& value,
+                                               const QSet<QString>& valueSet,
+                                               U2OpStatus& os) const {
     if (valueSet.contains(value.getValue())) {
         os.setError(QObject::tr("Duplicated selector value: %1").arg(value.getValue()));
     }

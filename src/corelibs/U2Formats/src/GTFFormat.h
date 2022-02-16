@@ -150,25 +150,25 @@ class U2FORMATS_EXPORT GTFFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 
 public:
-    GTFFormat(QObject *parent);
+    GTFFormat(QObject* parent);
 
-    virtual void storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os);
+    virtual void storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os);
 
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray &rawData, const GUrl & = GUrl()) const;
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
-    virtual Document *loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os);
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os);
 
 private:
-    GTFLineData parseAndValidateLine(QString line, GTFLineValidateFlags &status) const;
+    GTFLineData parseAndValidateLine(QString line, GTFLineValidateFlags& status) const;
 
     /**
      * A common method for parsing and validating an input GTF file.
      * It is used during loading the file or just getting the annotations data from it.
      */
-    QMap<QString, QList<SharedAnnotationData>> parseDocument(IOAdapter *io, U2OpStatus &os);
+    QMap<QString, QList<SharedAnnotationData>> parseDocument(IOAdapter* io, U2OpStatus& os);
 
-    void load(IOAdapter *io, QList<GObject *> &objects, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os);
+    void load(IOAdapter* io, QList<GObject*>& objects, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os);
 
     static const int FIELDS_COUNT_IN_EACH_LINE;
     static const QString NO_VALUE_STR;

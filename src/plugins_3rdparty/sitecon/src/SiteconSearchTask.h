@@ -38,7 +38,7 @@ public:
         : strand(U2Strand::Direct), psum(-1), err1(0), err2(1) {
     }
 
-    SharedAnnotationData toAnnotation(const QString &name) const {
+    SharedAnnotationData toAnnotation(const QString& name) const {
         SharedAnnotationData data(new AnnotationData);
         data->name = name;
         data->location->regions << region;
@@ -52,9 +52,9 @@ public:
         return data;
     }
 
-    static QList<SharedAnnotationData> toTable(const QList<SiteconSearchResult> &res, const QString &name) {
+    static QList<SharedAnnotationData> toTable(const QList<SiteconSearchResult>& res, const QString& name) {
         QList<SharedAnnotationData> list;
-        foreach (const SiteconSearchResult &f, res) {
+        foreach (const SiteconSearchResult& f, res) {
             list.append(f.toAnnotation(name));
         }
         return list;
@@ -76,26 +76,26 @@ public:
     int minPSUM;
     float minE1;
     float maxE2;
-    DNATranslation *complTT;
+    DNATranslation* complTT;
     bool complOnly;  // FIXME use strand instead
 };
 
 class SiteconSearchTask : public Task, public SequenceWalkerCallback {
     Q_OBJECT
 public:
-    SiteconSearchTask(const SiteconModel &model, const QByteArray &seq, const SiteconSearchCfg &cfg, int resultsOffset);
+    SiteconSearchTask(const SiteconModel& model, const QByteArray& seq, const SiteconSearchCfg& cfg, int resultsOffset);
     virtual ~SiteconSearchTask();
     virtual void cleanup();
 
-    virtual void onRegion(SequenceWalkerSubtask *t, TaskStateInfo &ti);
+    virtual void onRegion(SequenceWalkerSubtask* t, TaskStateInfo& ti);
     QList<SiteconSearchResult> takeResults();
 
 private:
-    void addResult(const SiteconSearchResult &r);
+    void addResult(const SiteconSearchResult& r);
 
-    QMutex *lock;
-    SiteconModel *model;
-    SiteconSearchCfg *cfg;
+    QMutex* lock;
+    SiteconModel* model;
+    SiteconSearchCfg* cfg;
     QList<SiteconSearchResult> results;
     int resultsOffset;
     QByteArray wholeSeq;

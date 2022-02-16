@@ -48,9 +48,9 @@ public:
     ResidueIndex(int residueIdx, char insertionCode)
         : resId(residueIdx), order(0), insCode(insertionCode) {
     }
-    bool operator<(const ResidueIndex &other) const;
-    bool operator==(const ResidueIndex &other) const;
-    bool operator!=(const ResidueIndex &other) const;
+    bool operator<(const ResidueIndex& other) const;
+    bool operator==(const ResidueIndex& other) const;
+    bool operator!=(const ResidueIndex& other) const;
     int toInt() const {
         return resId;
     }
@@ -109,7 +109,7 @@ class Bond {
     SharedAtom atom2;
 
 public:
-    Bond(const SharedAtom &a1, const SharedAtom &a2)
+    Bond(const SharedAtom& a1, const SharedAtom& a2)
         : atom1(a1), atom2(a2) {
     }
     const SharedAtom getAtom1() const {
@@ -172,7 +172,7 @@ public:
     MoleculeData()
         : chainId(0), engineered(false) {
     }
-    MoleculeData(const QString &molName)
+    MoleculeData(const QString& molName)
         : name(molName), chainId(0), engineered(false) {
     }
     QMap<ResidueIndex, SharedResidue> residueMap;
@@ -203,7 +203,7 @@ public:
 public:
     BioStruct3D();
     /** This is not deep copy constructor */
-    BioStruct3D(const BioStruct3D &other) = default;
+    BioStruct3D(const BioStruct3D& other) = default;
 
     QMap<int, SharedMolecule> moleculeMap;
     QMap<int, AtomCoordSet> modelMap;
@@ -216,12 +216,12 @@ public:
     double getRadius() const {
         return radius;
     }
-    const Vector3D &getCenter() const {
+    const Vector3D& getCenter() const {
         return rotationCenter;
     }
 
     void setRadius(double value);
-    void setCenter(const Vector3D &value);
+    void setCenter(const Vector3D& value);
 
     QByteArray getRawSequenceByChainIndex(int id) const;
     char getChainIdByIndex(int id) const;
@@ -229,7 +229,7 @@ public:
     int getNumberOfAtoms() const;
     QList<SharedAtom> getAllAtoms() const;
     int getNumberOfResidues() const;
-    static int residueIndexToInt(const ResidueIndex &idx);
+    static int residueIndexToInt(const ResidueIndex& idx);
     const SharedAtom getAtomById(int index, int modelIndex) const;
     const SharedResidue getResidueById(int chainIndex, ResidueIndex residueIndex) const;
 
@@ -253,10 +253,10 @@ public:
     QMap<int, QList<SharedAnnotationData>> generateAnnotations() const;
 
     /** Biostruct 3D model should be transforemd with this matrix */
-    void setTransform(const Matrix44 &m) {
+    void setTransform(const Matrix44& m) {
         transform = m;
     }
-    const Matrix44 &getTransform() const {
+    const Matrix44& getTransform() const {
         return transform;
     }
 
@@ -266,7 +266,7 @@ public:
 
 private:
     QMap<int, QList<SharedAnnotationData>> generateChainAnnotations() const;
-    void generateSecStructureAnnotations(QMap<int, QList<SharedAnnotationData>> &result) const;
+    void generateSecStructureAnnotations(QMap<int, QList<SharedAnnotationData>>& result) const;
 
 private:
     double radius;
@@ -280,7 +280,7 @@ public:
     BioStruct3DChainSelectionData()
         : QSharedData() {
     }
-    BioStruct3DChainSelectionData(const BioStruct3DChainSelectionData &other)
+    BioStruct3DChainSelectionData(const BioStruct3DChainSelectionData& other)
         : QSharedData(), selection(other.selection) {
     }
 
@@ -296,10 +296,10 @@ public:
 //! Represents residue chain selection on BioStruct3D.
 class U2CORE_EXPORT BioStruct3DChainSelection {
 public:
-    BioStruct3DChainSelection(const BioStruct3D &biostruct);
-    BioStruct3DChainSelection(const BioStruct3DChainSelection &other);
+    BioStruct3DChainSelection(const BioStruct3D& biostruct);
+    BioStruct3DChainSelection(const BioStruct3DChainSelection& other);
 
-    const BioStruct3D &getBioStruct3D() const {
+    const BioStruct3D& getBioStruct3D() const {
         return biostruct;
     }
 
@@ -308,17 +308,17 @@ public:
         return data->selection.isEmpty();
     }
 
-    void add(int chain, const U2Region &region);
-    void add(int chain, const QVector<U2Region> &regions);
+    void add(int chain, const U2Region& region);
+    void add(int chain, const QVector<U2Region>& regions);
 
-    void remove(int chain, const U2Region &region);
-    void remove(int chain, const QVector<U2Region> &regions);
+    void remove(int chain, const U2Region& region);
+    void remove(int chain, const QVector<U2Region>& regions);
 
-    void update(int chain, const U2Region &add, const U2Region &remove);
-    void update(int chain, const QVector<U2Region> &adds, const QVector<U2Region> &removes);
+    void update(int chain, const U2Region& add, const U2Region& remove);
+    void update(int chain, const QVector<U2Region>& adds, const QVector<U2Region>& removes);
 
 private:
-    const BioStruct3D &biostruct;
+    const BioStruct3D& biostruct;
     QSharedDataPointer<BioStruct3DChainSelectionData> data;
 };  // class U2CORE_EXPORT BioStruct3DChainSelection
 

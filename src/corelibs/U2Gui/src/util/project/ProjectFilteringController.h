@@ -35,26 +35,26 @@ class ProjectTreeControllerModeSettings;
 class ProjectFilteringController : public QObject {
     Q_OBJECT
 public:
-    ProjectFilteringController(QObject *p = nullptr);
+    ProjectFilteringController(QObject* p = nullptr);
 
-    void startFiltering(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document>> &docs);
+    void startFiltering(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs);
     void stopFiltering();
 
 signals:
-    void si_objectsFiltered(const QString &groupName, const QList<QPointer<GObject>> &objs);
+    void si_objectsFiltered(const QString& groupName, const QList<QPointer<GObject>>& objs);
     void si_filteringStarted();
     void si_filteringFinished();
 
 private slots:
-    void sl_objectsFiltered(const QString &groupName, const SafeObjList &objs);
+    void sl_objectsFiltered(const QString& groupName, const SafeObjList& objs);
     void sl_filteringFinished();
     void sl_startFiltering();
 
 private:
-    void addNewActiveTask(AbstractProjectFilterTask *task);
-    void connectNewTask(AbstractProjectFilterTask *task);
+    void addNewActiveTask(AbstractProjectFilterTask* task);
+    void connectNewTask(AbstractProjectFilterTask* task);
 
-    QSet<AbstractProjectFilterTask *> activeFilteringTasks;
+    QSet<AbstractProjectFilterTask*> activeFilteringTasks;
     QTimer filterStarter;
     ProjectTreeControllerModeSettings lastSettings;
     QList<QPointer<Document>> lastDocs;

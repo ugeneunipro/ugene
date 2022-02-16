@@ -32,25 +32,25 @@ class U2AssemblyReadsImportInfo;
 class U2CORE_EXPORT AssemblyImporter {
     Q_DISABLE_COPY(AssemblyImporter)
 public:
-    AssemblyImporter(U2OpStatus &os);
-    AssemblyImporter(const U2DbiRef &dbiRef, U2Assembly &assembly, U2OpStatus &os);
+    AssemblyImporter(U2OpStatus& os);
+    AssemblyImporter(const U2DbiRef& dbiRef, U2Assembly& assembly, U2OpStatus& os);
     ~AssemblyImporter();
 
-    void createAssembly(const U2DbiRef &dbiRef, const QString &folder, U2Assembly &assembly);
-    void createAssembly(const U2DbiRef &dbiRef, const QString &folder, U2DbiIterator<U2AssemblyRead> *readsIterator, U2AssemblyReadsImportInfo &importInfo, U2Assembly &assembly);
+    void createAssembly(const U2DbiRef& dbiRef, const QString& folder, U2Assembly& assembly);
+    void createAssembly(const U2DbiRef& dbiRef, const QString& folder, U2DbiIterator<U2AssemblyRead>* readsIterator, U2AssemblyReadsImportInfo& importInfo, U2Assembly& assembly);
 
-    void addReads(U2DbiIterator<U2AssemblyRead> *readsIterator);
-    void packReads(U2AssemblyReadsImportInfo &importInfo);
+    void addReads(U2DbiIterator<U2AssemblyRead>* readsIterator);
+    void packReads(U2AssemblyReadsImportInfo& importInfo);
 
     bool isObjectExist() const;
-    const U2Assembly &getAssembly() const;
+    const U2Assembly& getAssembly() const;
 
 private:
     void finalizeAssembly();
 
     U2DbiRef dbiRef;
     U2Assembly assembly;
-    U2OpStatus &os;
+    U2OpStatus& os;
     bool objectExists;
 };
 

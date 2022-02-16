@@ -44,7 +44,7 @@
 
 namespace U2 {
 
-CreateDocumentFromTextDialogController::CreateDocumentFromTextDialogController(QWidget *p)
+CreateDocumentFromTextDialogController::CreateDocumentFromTextDialogController(QWidget* p)
     : QDialog(p),
       saveController(nullptr) {
     ui = new Ui_CreateDocumentFromTextDialog();
@@ -97,7 +97,7 @@ void CreateDocumentFromTextDialogController::accept() {
 
     CHECK_OP(os, );
 
-    Task *task = new CreateSequenceFromTextAndOpenViewTask(prepareSequences(), saveController->getFormatIdToSave(), GUrl(fullPath), ui->saveImmediatelyBox->isChecked());
+    Task* task = new CreateSequenceFromTextAndOpenViewTask(prepareSequences(), saveController->getFormatIdToSave(), GUrl(fullPath), ui->saveImmediatelyBox->isChecked());
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
     QDialog::accept();
 }

@@ -34,19 +34,19 @@ class LoadDocumentTask;
 class AceImporterTask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    AceImporterTask(const GUrl &url, const QVariantMap &settings);
+    AceImporterTask(const GUrl& url, const QVariantMap& settings);
 
     void prepare() override;
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
     ReportResult report() override;
 
 private:
     void initCloneObjectTasks();
     void initLoadDocumentTask();
 
-    ConvertAceToSqliteTask *convertTask;
-    QList<Task *> cloneTasks;
-    LoadDocumentTask *loadDocTask;
+    ConvertAceToSqliteTask* convertTask;
+    QList<Task*> cloneTasks;
+    LoadDocumentTask* loadDocTask;
 
     bool isSqliteDbTransit;
 
@@ -67,8 +67,8 @@ class U2FORMATS_EXPORT AceImporter : public DocumentImporter {
 public:
     AceImporter();
 
-    FormatCheckResult checkRawData(const QByteArray &rawData, const GUrl &url) override;
-    DocumentProviderTask *createImportTask(const FormatDetectionResult &res, bool showGui, const QVariantMap &hints) override;
+    FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& url) override;
+    DocumentProviderTask* createImportTask(const FormatDetectionResult& res, bool showGui, const QVariantMap& hints) override;
 
     static const QString ID;
     static const QString SRC_URL;

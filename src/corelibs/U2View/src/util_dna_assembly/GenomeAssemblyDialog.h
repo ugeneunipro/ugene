@@ -22,13 +22,13 @@
 #ifndef GENOMEASSEMBLYDIALOG_H
 #define GENOMEASSEMBLYDIALOG_H
 
-#include <ui_GenomeAssemblyDialog.h>
-
 #include <QStringList>
 #include <QVariant>
 #include <QWidget>
 
 #include <U2Core/GUrl.h>
+
+#include <ui_GenomeAssemblyDialog.h>
 
 namespace U2 {
 
@@ -40,24 +40,24 @@ class AssemblyReads;
 
 class ReadPropertiesItem : public QTreeWidgetItem {
 public:
-    ReadPropertiesItem(QTreeWidget *widget);
+    ReadPropertiesItem(QTreeWidget* widget);
     QString getNumber() const;
     QString getType() const;
     QString getOrientation() const;
-    void setLibraryType(const QString &libraryType);
+    void setLibraryType(const QString& libraryType);
 
-    static void addItemToTable(ReadPropertiesItem *item, QTreeWidget *treeWidget);
+    static void addItemToTable(ReadPropertiesItem* item, QTreeWidget* treeWidget);
 
 private:
-    QComboBox *typeBox;
-    QComboBox *orientationBox;
+    QComboBox* typeBox;
+    QComboBox* orientationBox;
 };
 
 class GenomeAssemblyDialog : public QDialog, public Ui_GenomeAssemblyDialog {
     Q_OBJECT
 
 public:
-    GenomeAssemblyDialog(QWidget *p = nullptr);
+    GenomeAssemblyDialog(QWidget* p = nullptr);
     const QString getAlgorithmName();
     const QString getOutDir();
     QList<AssemblyReads> getReads();
@@ -65,12 +65,12 @@ public:
 
     void updateProperties();
 
-    void addReads(QStringList fileNames, QTreeWidget *readsWidget);
+    void addReads(QStringList fileNames, QTreeWidget* readsWidget);
 private slots:
     void sl_onAddShortReadsButtonClicked();
     void sl_onRemoveShortReadsButtonClicked();
     void sl_onOutDirButtonClicked();
-    void sl_onAlgorithmChanged(const QString &text);
+    void sl_onAlgorithmChanged(const QString& text);
     void sl_onLibraryTypeChanged();
 
 private:
@@ -78,8 +78,8 @@ private:
     void addGuiExtension();
     void accept();
 
-    const GenomeAssemblyAlgRegistry *assemblyRegistry;
-    GenomeAssemblyAlgorithmMainWidget *customGUI;
+    const GenomeAssemblyAlgRegistry* assemblyRegistry;
+    GenomeAssemblyAlgorithmMainWidget* customGUI;
     static QString methodName;
     static QString library;
 };

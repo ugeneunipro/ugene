@@ -39,35 +39,35 @@ namespace U2 {
 
 const GObjectViewFactoryId AssemblyBrowserFactory::ID = "assembly-browser-factory";
 
-AssemblyBrowserFactory::AssemblyBrowserFactory(QObject *parent /* = 0 */)
+AssemblyBrowserFactory::AssemblyBrowserFactory(QObject* parent /* = 0 */)
     : GObjectViewFactory(ID, tr("Assembly Browser"), parent) {
 }
 
-bool AssemblyBrowserFactory::canCreateView(const MultiGSelection &multiSelection) {
+bool AssemblyBrowserFactory::canCreateView(const MultiGSelection& multiSelection) {
     bool hasAssembly = !SelectionUtils::findDocumentsWithObjects(GObjectTypes::ASSEMBLY, &multiSelection, UOF_LoadedAndUnloaded, true).isEmpty();
     return hasAssembly;
 }
 
 #define MAX_VIEWS 5
 
-void addAsmObjs(QList<GObject *> &asmObjs, const QList<GObject *> &docObjs) {
-    foreach (GObject *go, docObjs) {
+void addAsmObjs(QList<GObject*>& asmObjs, const QList<GObject*>& docObjs) {
+    foreach (GObject* go, docObjs) {
         if (!asmObjs.contains(go)) {
             asmObjs.append(go);
         }
     }
 }
 
-Task *AssemblyBrowserFactory::createViewTask(const MultiGSelection &multiSelection, bool single /* = false */) {
-    QList<GObject *> asmObjects = SelectionUtils::findObjects(GObjectTypes::ASSEMBLY, &multiSelection, UOF_LoadedAndUnloaded);
-    QSet<Document *> docsWithAsm = SelectionUtils::findDocumentsWithObjects(GObjectTypes::ASSEMBLY,
-                                                                            &multiSelection,
-                                                                            UOF_LoadedAndUnloaded,
-                                                                            false);
-    QList<OpenAssemblyBrowserTask *> resTasks;
+Task* AssemblyBrowserFactory::createViewTask(const MultiGSelection& multiSelection, bool single /* = false */) {
+    QList<GObject*> asmObjects = SelectionUtils::findObjects(GObjectTypes::ASSEMBLY, &multiSelection, UOF_LoadedAndUnloaded);
+    QSet<Document*> docsWithAsm = SelectionUtils::findDocumentsWithObjects(GObjectTypes::ASSEMBLY,
+                                                                           &multiSelection,
+                                                                           UOF_LoadedAndUnloaded,
+                                                                           false);
+    QList<OpenAssemblyBrowserTask*> resTasks;
 
-    foreach (Document *doc, docsWithAsm) {
-        QList<GObject *> docObjs = doc->findGObjectByType(GObjectTypes::ASSEMBLY, UOF_LoadedAndUnloaded);
+    foreach (Document* doc, docsWithAsm) {
+        QList<GObject*> docObjs = doc->findGObjectByType(GObjectTypes::ASSEMBLY, UOF_LoadedAndUnloaded);
         if (!docObjs.isEmpty()) {
             addAsmObjs(asmObjects, docObjs);
         } else {
@@ -79,15 +79,15 @@ Task *AssemblyBrowserFactory::createViewTask(const MultiGSelection &multiSelecti
     }
 
     if (!asmObjects.isEmpty()) {
-        foreach (GObject *o, asmObjects) {
+        foreach (GObject* o, asmObjects) {
             if (resTasks.size() == MAX_VIEWS) {
                 break;
             }
             if (o->getGObjectType() == GObjectTypes::UNLOADED) {
-                resTasks.append(new OpenAssemblyBrowserTask(qobject_cast<UnloadedObject *>(o)));
+                resTasks.append(new OpenAssemblyBrowserTask(qobject_cast<UnloadedObject*>(o)));
             } else {
                 SAFE_POINT(o->getGObjectType() == GObjectTypes::ASSEMBLY, "Invalid assembly object!", nullptr);
-                resTasks.append(new OpenAssemblyBrowserTask(qobject_cast<AssemblyObject *>(o)));
+                resTasks.append(new OpenAssemblyBrowserTask(qobject_cast<AssemblyObject*>(o)));
             }
         }
     }
@@ -100,37 +100,37 @@ Task *AssemblyBrowserFactory::createViewTask(const MultiGSelection &multiSelecti
         return resTasks.first();
     }
 
-    Task *result = new Task(tr("Open multiple views"), TaskFlag_NoRun);
-    foreach (Task *t, resTasks) {
+    Task* result = new Task(tr("Open multiple views"), TaskFlag_NoRun);
+    foreach (Task* t, resTasks) {
         result->addSubTask(t);
     }
     return result;
 }
 
-bool AssemblyBrowserFactory::isStateInSelection(const MultiGSelection &multiSelection, const QVariantMap &stateData) {
+bool AssemblyBrowserFactory::isStateInSelection(const MultiGSelection& multiSelection, const QVariantMap& stateData) {
     // TODO: this method of AssemblyBrowser, AnnotatedDNAView and MSAEditor is copypaste a little more than entirely
     AssemblyBrowserState state(stateData);
     if (!state.isValid()) {
         return false;
     }
     GObjectReference ref = state.getGObjectRef();
-    Document *doc = AppContext::getProject()->findDocumentByURL(ref.docUrl);
+    Document* doc = AppContext::getProject()->findDocumentByURL(ref.docUrl);
     if (doc == nullptr) {  // todo: accept to use invalid state removal routines of ObjectViewTask ???
         return false;
     }
     // check that document is in selection
-    QList<Document *> selectedDocs = SelectionUtils::getSelectedDocs(multiSelection);
+    QList<Document*> selectedDocs = SelectionUtils::getSelectedDocs(multiSelection);
     if (selectedDocs.contains(doc)) {
         return true;
     }
     // check that object is in selection
-    QList<GObject *> selectedObjects = SelectionUtils::getSelectedObjects(multiSelection);
-    GObject *obj = doc->findGObjectByName(ref.objName);
+    QList<GObject*> selectedObjects = SelectionUtils::getSelectedObjects(multiSelection);
+    GObject* obj = doc->findGObjectByName(ref.objName);
     bool res = obj != nullptr && selectedObjects.contains(obj);
     return res;
 }
 
-Task *AssemblyBrowserFactory::createViewTask(const QString &viewName, const QVariantMap &stateData) {
+Task* AssemblyBrowserFactory::createViewTask(const QString& viewName, const QVariantMap& stateData) {
     return new OpenSavedAssemblyBrowserTask(viewName, stateData);
 }
 

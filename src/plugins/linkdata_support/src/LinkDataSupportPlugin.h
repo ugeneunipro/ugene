@@ -36,7 +36,7 @@ public:
 
 class LinkDataScriptFactory : public WorkflowScriptFactory {
 public:
-    void createScript(WorkflowScriptEngine *engine);
+    void createScript(WorkflowScriptEngine* engine);
 };
 
 }  // namespace U2

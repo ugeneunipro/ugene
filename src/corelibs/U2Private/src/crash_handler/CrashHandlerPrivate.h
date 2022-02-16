@@ -43,9 +43,9 @@ public:
     virtual QString getAdditionalInfo() const;
 
 protected:
-    static void handleException(const QString &exceptionType, const QString &dumpUrl);
+    static void handleException(const QString& exceptionType, const QString& dumpUrl);
 
-    google_breakpad::ExceptionHandler *breakpadHandler;
+    google_breakpad::ExceptionHandler* breakpadHandler;
 };
 
 }  // namespace U2

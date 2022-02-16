@@ -35,15 +35,15 @@ class DNASequence;
 class U2FORMATS_EXPORT SAMFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
-    SAMFormat(QObject *p = nullptr);
+    SAMFormat(QObject* p = nullptr);
 
-    virtual void storeDocument(Document *d, IOAdapter *io, U2OpStatus &os);
+    virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 
-    virtual void storeEntry(IOAdapter *io, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os);
+    virtual void storeEntry(IOAdapter* io, const QMap<GObjectType, QList<GObject*>>& objectsMap, U2OpStatus& os);
 
-    bool storeHeader(IOAdapter *io, const QVector<QByteArray> &names, const QVector<int> &lengths, bool coordinateSorted);
+    bool storeHeader(IOAdapter* io, const QVector<QByteArray>& names, const QVector<int>& lengths, bool coordinateSorted);
 
-    bool storeAlignedRead(int offset, const DNASequence &read, IOAdapter *io, const QByteArray &refName, int refLength, bool first, bool useCigar = false, const QByteArray &cigar = "");
+    bool storeAlignedRead(int offset, const DNASequence& read, IOAdapter* io, const QByteArray& refName, int refLength, bool first, bool useCigar = false, const QByteArray& cigar = "");
 
     /** Temporary method to avoid conflict of SAM and importer */
     void setNeverDetect(bool val) {
@@ -65,14 +65,14 @@ public:
     };
 
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray &rawData, const GUrl & = GUrl()) const;
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
-    virtual Document *loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os);
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
 private:
-    static bool getSectionTags(QByteArray &line, const QByteArray &sectionName, QList<QByteArray> &tags);
+    static bool getSectionTags(QByteArray& line, const QByteArray& sectionName, QList<QByteArray>& tags);
 
-    static bool validateField(int num, QByteArray &field, U2OpStatus *ti = nullptr);
+    static bool validateField(int num, QByteArray& field, U2OpStatus* ti = nullptr);
 
     static const QByteArray VERSION;
 

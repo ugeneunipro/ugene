@@ -43,25 +43,25 @@ class U2VIEW_EXPORT MSAEditorConsensusCache : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY(MSAEditorConsensusCache)
 public:
-    MSAEditorConsensusCache(QObject *p, MultipleAlignmentObject *aliObj, MSAConsensusAlgorithmFactory *algo);
+    MSAEditorConsensusCache(QObject* p, MultipleAlignmentObject* aliObj, MSAConsensusAlgorithmFactory* algo);
     ~MSAEditorConsensusCache();
 
     char getConsensusChar(int pos);
 
     int getConsensusCharPercent(int pos);
-    QList<int> getConsensusPercents(const U2Region &region);
+    QList<int> getConsensusPercents(const U2Region& region);
 
     int getConsensusLength() const {
         return cache.size();
     }
 
-    void setConsensusAlgorithm(MSAConsensusAlgorithmFactory *algo);
+    void setConsensusAlgorithm(MSAConsensusAlgorithmFactory* algo);
 
-    MSAConsensusAlgorithm *getConsensusAlgorithm() const {
+    MSAConsensusAlgorithm* getConsensusAlgorithm() const {
         return algorithm;
     }
 
-    QByteArray getConsensusLine(const U2Region &region, bool withGaps);
+    QByteArray getConsensusLine(const U2Region& region, bool withGaps);
     QByteArray getConsensusLine(bool withGaps);
 
 signals:
@@ -87,8 +87,8 @@ private:
     int curCacheSize;
     QVector<CacheItem> cache;
     QBitArray updateMap;
-    MultipleAlignmentObject *aliObj;
-    MSAConsensusAlgorithm *algorithm;
+    MultipleAlignmentObject* aliObj;
+    MSAConsensusAlgorithm* algorithm;
 };
 
 }  // namespace U2

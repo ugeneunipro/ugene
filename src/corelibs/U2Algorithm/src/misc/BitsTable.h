@@ -42,7 +42,7 @@ public:
     }
 
     quint32 getBitMaskCharBitsNum(DNAAlphabetType alType) const;
-    const quint32 *getBitMaskCharBits(DNAAlphabetType alType) const;
+    const quint32* getBitMaskCharBits(DNAAlphabetType alType) const;
 };
 
 }  // namespace U2

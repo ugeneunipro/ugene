@@ -47,12 +47,12 @@ public:
     QString outDir;
 
     // Input assembly
-    Workflow::DbiDataStorage *storage;
+    Workflow::DbiDataStorage* storage;
     bool fromFile;
     QString url;
     Workflow::SharedDbiDataHandler assemblyId;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

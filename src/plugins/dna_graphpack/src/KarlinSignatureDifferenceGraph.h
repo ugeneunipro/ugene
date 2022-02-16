@@ -35,9 +35,9 @@ namespace U2 {
 class KarlinGraphFactory : public GSequenceGraphFactory {
     Q_OBJECT
 public:
-    KarlinGraphFactory(QObject *p);
-    QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView *v);
-    bool isEnabled(const U2SequenceObject *o) const;
+    KarlinGraphFactory(QObject* p);
+    QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView* v);
+    bool isEnabled(const U2SequenceObject* o) const;
 };
 
 class KarlinGraphAlgorithm : public GSequenceGraphAlgorithm {
@@ -45,13 +45,13 @@ public:
     KarlinGraphAlgorithm();
     ~KarlinGraphAlgorithm();
 
-    void calculate(QVector<float> &result, U2SequenceObject *sequenceObject, qint64 window, qint64 step, U2OpStatus &os) override;
+    void calculate(QVector<float>& result, U2SequenceObject* sequenceObject, qint64 window, qint64 step, U2OpStatus& os) override;
 
 private:
-    float getValue(int start, int end, const QByteArray &s, U2OpStatus &os);
-    void calculateRelativeAbundance(const char *seq, int length, float *results, U2OpStatus &os);
+    float getValue(int start, int end, const QByteArray& s, U2OpStatus& os);
+    void calculateRelativeAbundance(const char* seq, int length, float* results, U2OpStatus& os);
 
-    float *global_relative_abundance_values;
+    float* global_relative_abundance_values;
     QByteArray mapTrans;
 };
 

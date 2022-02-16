@@ -40,12 +40,12 @@ namespace U2 {
 
 /////////////////////////////////////////////////SearchQualifierSettings////////////////////////////////////////////////
 
-SearchQualifierDialog::SearchQualifierSettings::SearchQualifierSettings(AVItem *const groupToSearchIn,
-                                                                        const QString &name,
-                                                                        const QString &value,
+SearchQualifierDialog::SearchQualifierSettings::SearchQualifierSettings(AVItem* const groupToSearchIn,
+                                                                        const QString& name,
+                                                                        const QString& value,
                                                                         const bool isExactMatch,
                                                                         const bool searchAll,
-                                                                        AVItem *const prevAnnotation,
+                                                                        AVItem* const prevAnnotation,
                                                                         const int prevIndex)
     : groupToSearchIn(groupToSearchIn), name(name), value(value), isExactMatch(isExactMatch), searchAll(searchAll),
       prevAnnotation(prevAnnotation), prevIndex(prevIndex) {
@@ -53,17 +53,17 @@ SearchQualifierDialog::SearchQualifierSettings::SearchQualifierSettings(AVItem *
 
 /////////////////////////////////////////////////////SearchQualifier////////////////////////////////////////////////////
 
-SearchQualifierDialog::SearchQualifier::SearchQualifier(AnnotationsTreeView *treeView,
-                                                        const SearchQualifierSettings &settings)
+SearchQualifierDialog::SearchQualifier::SearchQualifier(AnnotationsTreeView* treeView,
+                                                        const SearchQualifierSettings& settings)
     : treeView(treeView), name(settings.name), value(settings.value), isExactMatch(settings.isExactMatch),
       searchAll(settings.searchAll), foundResult(false), resultAnnotation(settings.prevAnnotation),
       resultInd(settings.prevIndex) {
-    AVItem *rootGroup = settings.groupToSearchIn;
+    AVItem* rootGroup = settings.groupToSearchIn;
 
     int childCount = rootGroup->childCount();
     for (int i = getStartGroupIndex(rootGroup); i < childCount; i++) {
         bool found = false;
-        AVItem *child = static_cast<AVItem *>(rootGroup->child(i));
+        AVItem* child = static_cast<AVItem*>(rootGroup->child(i));
         if (child->type == AVItemType_Annotation) {
             searchInAnnotation(child, found);
         } else if (child->type == AVItemType_Group) {
@@ -89,7 +89,7 @@ bool SearchQualifierDialog::SearchQualifier::isFound() const {
     return foundResult;
 }
 
-AVItem *SearchQualifierDialog::SearchQualifier::getResultAnnotation() const {
+AVItem* SearchQualifierDialog::SearchQualifier::getResultAnnotation() const {
     return resultAnnotation;
 }
 
@@ -98,14 +98,14 @@ int SearchQualifierDialog::SearchQualifier::getIndexOfResult() const {
 }
 
 void SearchQualifierDialog::SearchQualifier::showQualifier() const {
-    AVItem *qual = nullptr;
+    AVItem* qual = nullptr;
     int qualsSize = foundQuals.size();
     if (qualsSize > 0) {
         treeView->getTreeWidget()->clearSelection();
     }
 
-    for (const auto &p : qAsConst(foundQuals)) {
-        AVAnnotationItem *ai = p.first;
+    for (const auto& p : qAsConst(foundQuals)) {
+        AVAnnotationItem* ai = p.first;
         SAFE_POINT(ai != nullptr, L10N::nullPointerError("annotation item"), );
         if (!ai->isExpanded()) {
             treeView->getTreeWidget()->expandItem(ai);
@@ -124,7 +124,7 @@ void SearchQualifierDialog::SearchQualifier::showQualifier() const {
         }
     }
 
-    for (AVItem *item : qAsConst(toExpand)) {
+    for (AVItem* item : qAsConst(toExpand)) {
         treeView->getTreeWidget()->expandItem(item);
     }
 
@@ -133,10 +133,10 @@ void SearchQualifierDialog::SearchQualifier::showQualifier() const {
     }
 }
 
-void SearchQualifierDialog::SearchQualifier::searchInGroup(AVItem *group, bool &found) {
+void SearchQualifierDialog::SearchQualifier::searchInGroup(AVItem* group, bool& found) {
     for (int i = getStartGroupIndex(group); i < group->childCount(); i++) {
         found = false;
-        AVItem *child = static_cast<AVItem *>(group->child(i));
+        AVItem* child = static_cast<AVItem*>(group->child(i));
         if (child->type == AVItemType_Annotation) {
             searchInAnnotation(child, found);
         } else if (child->type == AVItemType_Group) {
@@ -155,19 +155,19 @@ void SearchQualifierDialog::SearchQualifier::searchInGroup(AVItem *group, bool &
     }
 }
 
-void SearchQualifierDialog::SearchQualifier::searchInAnnotation(AVItem *annotation, bool &found) {
-    auto matchWords = [](const QString &expected, const QString &current, const bool isExactMatch) {
+void SearchQualifierDialog::SearchQualifier::searchInAnnotation(AVItem* annotation, bool& found) {
+    auto matchWords = [](const QString& expected, const QString& current, const bool isExactMatch) {
         if (expected.isEmpty()) {
             return true;
         }
         return isExactMatch ? current.compare(expected, Qt::CaseInsensitive) == 0 : current.contains(expected, Qt::CaseInsensitive);
     };
 
-    AVAnnotationItem *ai = static_cast<AVAnnotationItem *>(annotation);
-    const QVector<U2Qualifier> &quals = ai->annotation->getQualifiers();
+    AVAnnotationItem* ai = static_cast<AVAnnotationItem*>(annotation);
+    const QVector<U2Qualifier>& quals = ai->annotation->getQualifiers();
     int startIdx = getStartAnnotationIndex(ai);
     for (int j = startIdx; j < quals.size(); j++) {
-        const U2Qualifier &qual = quals.at(j);
+        const U2Qualifier& qual = quals.at(j);
         QString simplifiedValue = AVQualifierItem::simplifyText(qual.value);
         bool matchName = matchWords(name, qual.name, isExactMatch);
         bool matchValue = matchWords(value, simplifiedValue, isExactMatch);
@@ -179,7 +179,7 @@ void SearchQualifierDialog::SearchQualifier::searchInAnnotation(AVItem *annotati
             resultAnnotation = annotation;
             resultInd = j;
 
-            foundQuals.append(QPair<AVAnnotationItem *, int>(ai, resultInd));
+            foundQuals.append(QPair<AVAnnotationItem*, int>(ai, resultInd));
 
             if (!searchAll) {
                 break;
@@ -188,14 +188,14 @@ void SearchQualifierDialog::SearchQualifier::searchInAnnotation(AVItem *annotati
     }
 }
 
-int SearchQualifierDialog::SearchQualifier::getStartGroupIndex(AVItem *group) {
+int SearchQualifierDialog::SearchQualifier::getStartGroupIndex(AVItem* group) {
     int result = 0;
     if (resultAnnotation == nullptr) {
         return result;
     }
 
-    if (AVItem *parentGroup = dynamic_cast<AVItem *>(resultAnnotation->parent())) {
-        AVItem *groupToSearchChild = parentGroup != group
+    if (AVItem* parentGroup = dynamic_cast<AVItem*>(resultAnnotation->parent())) {
+        AVItem* groupToSearchChild = parentGroup != group
                                          ? parentGroup  // If parent group is a subgroup of group seek to its index.
                                          : resultAnnotation;  // If annotation is in the same group seek to its idx.
         int idx = group->indexOfChild(groupToSearchChild);
@@ -206,7 +206,7 @@ int SearchQualifierDialog::SearchQualifier::getStartGroupIndex(AVItem *group) {
     return result;
 }
 
-int SearchQualifierDialog::SearchQualifier::getStartAnnotationIndex(AVItem *annotation) {
+int SearchQualifierDialog::SearchQualifier::getStartAnnotationIndex(AVItem* annotation) {
     int result = 0;
     if (resultAnnotation != nullptr && resultAnnotation == annotation) {
         result = resultInd + 1;  // Start from the next qualifier in the annotation.
@@ -216,7 +216,7 @@ int SearchQualifierDialog::SearchQualifier::getStartAnnotationIndex(AVItem *anno
 
 //////////////////////////////////////////////////SearchQualifierDialog/////////////////////////////////////////////////
 
-SearchQualifierDialog::SearchQualifierDialog(QWidget *p, AnnotationsTreeView *treeView)
+SearchQualifierDialog::SearchQualifierDialog(QWidget* p, AnnotationsTreeView* treeView)
     : QDialog(p),
       treeView(treeView),
       ui(new Ui_SearchQualifierDialog),
@@ -235,7 +235,7 @@ SearchQualifierDialog::SearchQualifierDialog(QWidget *p, AnnotationsTreeView *tr
 
     clearPrevResults();
 
-    AVItem *currentItem = static_cast<AVItem *>(treeView->tree->currentItem());
+    AVItem* currentItem = static_cast<AVItem*>(treeView->tree->currentItem());
     switch (currentItem->type) {
         case AVItemType_Group: {
             groupToSearchIn = currentItem;
@@ -247,7 +247,7 @@ SearchQualifierDialog::SearchQualifierDialog(QWidget *p, AnnotationsTreeView *tr
             break;
         }
         case AVItemType_Qualifier: {
-            AVItem *annotation = dynamic_cast<AVItem *>(currentItem->parent());
+            AVItem* annotation = dynamic_cast<AVItem*>(currentItem->parent());
             if (annotation && annotation->type == AVItemType_Annotation) {
                 parentAnnotationofPrevResult = annotation;
             }
@@ -257,23 +257,23 @@ SearchQualifierDialog::SearchQualifierDialog(QWidget *p, AnnotationsTreeView *tr
     }
     QString groupName = groupToSearchIn->getAnnotationGroup()->getName();
     if (groupName == AnnotationGroup::ROOT_GROUP_NAME) {
-        AnnotationTableObject *aObj = groupToSearchIn->getAnnotationTableObject();
+        AnnotationTableObject* aObj = groupToSearchIn->getAnnotationTableObject();
         groupName = aObj->getGObjectName();
     }
     ui->groupLabel->setText(groupName);
 
     connect(ui->buttonBox->button(QDialogButtonBox::Ok), SIGNAL(clicked()), SLOT(sl_searchNext()));
     connect(ui->buttonBox->button(QDialogButtonBox::Yes), SIGNAL(clicked()), SLOT(sl_searchAll()));
-    connect(ui->valueEdit, SIGNAL(textChanged(const QString &)), SLOT(sl_onSearchSettingsChanged()));
-    connect(ui->nameEdit, SIGNAL(textChanged(const QString &)), SLOT(sl_onSearchSettingsChanged()));
+    connect(ui->valueEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_onSearchSettingsChanged()));
+    connect(ui->nameEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_onSearchSettingsChanged()));
     sl_onSearchSettingsChanged();
 }
 
-bool SearchQualifierDialog::eventFilter(QObject *obj, QEvent *e) {
+bool SearchQualifierDialog::eventFilter(QObject* obj, QEvent* e) {
     Q_UNUSED(obj);
     QEvent::Type t = e->type();
     if (t == QEvent::KeyPress) {
-        QKeyEvent *ke = (QKeyEvent *)e;
+        QKeyEvent* ke = (QKeyEvent*)e;
         int key = ke->key();
         if (key == Qt::Key_Tab) {
             ui->nameEdit->setFocus();
@@ -292,7 +292,7 @@ SearchQualifierDialog::~SearchQualifierDialog() {
     delete ui;
 }
 
-void SearchQualifierDialog::updateResultAndShowWarnings(const SearchQualifier &foundQualifier) {
+void SearchQualifierDialog::updateResultAndShowWarnings(const SearchQualifier& foundQualifier) {
     if (foundQualifier.isFound()) {
         parentAnnotationofPrevResult = foundQualifier.getResultAnnotation();
         indexOfPrevResult = foundQualifier.getIndexOfResult();

@@ -29,7 +29,7 @@ namespace U2 {
 class CrashLogCache : public LogCache {
     Q_OBJECT
 public:
-    void onMessage(const LogMessage &msg);
+    void onMessage(const LogMessage& msg);
 
 private:
     QString formMemInfo();

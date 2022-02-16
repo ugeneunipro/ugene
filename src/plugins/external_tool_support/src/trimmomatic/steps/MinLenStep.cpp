@@ -46,15 +46,15 @@ MinLenStep::MinLenStep()
                      "</body></html>");
 }
 
-TrimmomaticStepSettingsWidget *MinLenStep::createWidget() const {
+TrimmomaticStepSettingsWidget* MinLenStep::createWidget() const {
     return new LengthSettingsWidget(tr("The minimum length of reads to be kept."));
 }
 
-QString MinLenStep::serializeState(const QVariantMap &widgetState) const {
+QString MinLenStep::serializeState(const QVariantMap& widgetState) const {
     return LengthSettingsWidget::serializeState(widgetState);
 }
 
-QVariantMap MinLenStep::parseState(const QString &command) const {
+QVariantMap MinLenStep::parseState(const QString& command) const {
     return LengthSettingsWidget::parseState(command, id);
 }
 
@@ -62,9 +62,9 @@ MinLenStepFactory::MinLenStepFactory()
     : TrimmomaticStepFactory(ID) {
 }
 
-MinLenStep *MinLenStepFactory::createStep() const {
+MinLenStep* MinLenStepFactory::createStep() const {
     return new MinLenStep();
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

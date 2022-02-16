@@ -44,15 +44,15 @@ HeadCropStep::HeadCropStep()
                      "</body></html>");
 }
 
-TrimmomaticStepSettingsWidget *HeadCropStep::createWidget() const {
+TrimmomaticStepSettingsWidget* HeadCropStep::createWidget() const {
     return new LengthSettingsWidget(tr("The number of bases to remove from the start of the read."));
 }
 
-QString HeadCropStep::serializeState(const QVariantMap &widgetState) const {
+QString HeadCropStep::serializeState(const QVariantMap& widgetState) const {
     return LengthSettingsWidget::serializeState(widgetState);
 }
 
-QVariantMap HeadCropStep::parseState(const QString &command) const {
+QVariantMap HeadCropStep::parseState(const QString& command) const {
     return LengthSettingsWidget::parseState(command, id);
 }
 
@@ -60,9 +60,9 @@ HeadCropStepFactory::HeadCropStepFactory()
     : TrimmomaticStepFactory(ID) {
 }
 
-HeadCropStep *HeadCropStepFactory::createStep() const {
+HeadCropStep* HeadCropStepFactory::createStep() const {
     return new HeadCropStep();
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

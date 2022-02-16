@@ -22,11 +22,11 @@
 #ifndef _U2_DOT_PLOT_DIALOG_H_
 #define _U2_DOT_PLOT_DIALOG_H_
 
-#include <ui_DotPlotDialog.h>
-
 #include <QDialog>
 
 #include <U2Algorithm/RepeatFinderSettings.h>
+
+#include <ui_DotPlotDialog.h>
 
 namespace U2 {
 
@@ -39,14 +39,14 @@ class U2SequenceObject;
 class DotPlotDialog : public QDialog, public Ui_DotPlotDialog {
     Q_OBJECT
 public:
-    DotPlotDialog(QWidget *parent, AnnotatedDNAView *currentADV, int minLen, int identity, ADVSequenceObjectContext *seqX, ADVSequenceObjectContext *seqY, bool dir, bool inv, const QColor &dColor = QColor(), const QColor &iColor = QColor(), bool hideLoadSequences = false);
+    DotPlotDialog(QWidget* parent, AnnotatedDNAView* currentADV, int minLen, int identity, ADVSequenceObjectContext* seqX, ADVSequenceObjectContext* seqY, bool dir, bool inv, const QColor& dColor = QColor(), const QColor& iColor = QColor(), bool hideLoadSequences = false);
 
     virtual void accept();
 
-    ADVSequenceObjectContext *getXSeq() const {
+    ADVSequenceObjectContext* getXSeq() const {
         return xSeq;
     }
-    ADVSequenceObjectContext *getYSeq() const {
+    ADVSequenceObjectContext* getYSeq() const {
         return ySeq;
     }
 
@@ -57,10 +57,10 @@ public:
     bool isDirect() const;
     bool isInverted() const;
 
-    const QColor &getDirectColor() const {
+    const QColor& getDirectColor() const {
         return directColor;
     }
-    const QColor &getInvertedColor() const {
+    const QColor& getInvertedColor() const {
         return invertedColor;
     }
 
@@ -79,7 +79,7 @@ protected slots:
 
     void sl_loadSequenceButton();
 
-    void sl_loadTaskStateChanged(Task *t);
+    void sl_loadTaskStateChanged(Task* t);
 
     void sl_documentAddedOrRemoved();
     void sl_objectAddedOrRemoved();
@@ -92,16 +92,16 @@ private:
     void updateSequenceSelectors();
 
     ADVSequenceObjectContext *xSeq, *ySeq;
-    AnnotatedDNAView *adv;
+    AnnotatedDNAView* adv;
 
     QColor directColor, invertedColor;
 
     void updateColors();
 
-    bool isObjectInADV(GObject *obj);
-    GObject *getGObjectByName(const QString &gObjectName);
+    bool isObjectInADV(GObject* obj);
+    GObject* getGObjectByName(const QString& gObjectName);
 
-    Task *openSequenceTask;
+    Task* openSequenceTask;
 };
 
 }  // namespace U2

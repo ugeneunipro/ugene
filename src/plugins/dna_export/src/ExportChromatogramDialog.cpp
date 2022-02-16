@@ -41,7 +41,7 @@
 
 namespace U2 {
 
-ExportChromatogramDialog::ExportChromatogramDialog(QWidget *p, const GUrl &fileUrl)
+ExportChromatogramDialog::ExportChromatogramDialog(QWidget* p, const GUrl& fileUrl)
     : QDialog(p),
       saveController(nullptr) {
     setupUi(this);
@@ -54,7 +54,7 @@ ExportChromatogramDialog::ExportChromatogramDialog(QWidget *p, const GUrl &fileU
     initSaveController(fileUrl);
 }
 
-void ExportChromatogramDialog::initSaveController(const GUrl &fileUrl) {
+void ExportChromatogramDialog::initSaveController(const GUrl& fileUrl) {
     SaveDocumentControllerConfig config;
     config.defaultFileName = GUrlUtils::getNewLocalUrlByExtension(fileUrl, "chromatogram", ".scf", "_copy");
     config.defaultFormatId = BaseDocumentFormats::SCF;

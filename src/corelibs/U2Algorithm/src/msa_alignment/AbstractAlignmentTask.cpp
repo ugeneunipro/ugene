@@ -33,11 +33,11 @@ AbstractAlignmentTaskSettings::AbstractAlignmentTaskSettings()
     : inNewWindow(true) {
 }
 
-AbstractAlignmentTaskSettings::AbstractAlignmentTaskSettings(const QVariantMap &someSettings)
+AbstractAlignmentTaskSettings::AbstractAlignmentTaskSettings(const QVariantMap& someSettings)
     : inNewWindow(true), customSettings(someSettings) {
 }
 
-AbstractAlignmentTaskSettings::AbstractAlignmentTaskSettings(const AbstractAlignmentTaskSettings &s)
+AbstractAlignmentTaskSettings::AbstractAlignmentTaskSettings(const AbstractAlignmentTaskSettings& s)
     : algorithmId(s.algorithmId),
       realizationName(s.realizationName),
       inNewWindow(s.inNewWindow),
@@ -50,11 +50,11 @@ AbstractAlignmentTaskSettings::AbstractAlignmentTaskSettings(const AbstractAlign
 AbstractAlignmentTaskSettings::~AbstractAlignmentTaskSettings() {
 }
 
-QVariant AbstractAlignmentTaskSettings::getCustomValue(const QString &optionName, const QVariant &defaultVal) const {
+QVariant AbstractAlignmentTaskSettings::getCustomValue(const QString& optionName, const QVariant& defaultVal) const {
     return customSettings.value(optionName, defaultVal);
 }
 
-void AbstractAlignmentTaskSettings::setCustomValue(const QString &optionName, const QVariant &val) {
+void AbstractAlignmentTaskSettings::setCustomValue(const QString& optionName, const QVariant& val) {
     customSettings.insert(optionName, val);
 }
 
@@ -78,8 +78,8 @@ bool AbstractAlignmentTaskSettings::convertCustomSettings() {
     return true;
 }
 
-void AbstractAlignmentTaskSettings::appendCustomSettings(const QVariantMap &settings) {
-    foreach (const QString &key, settings.keys()) {
+void AbstractAlignmentTaskSettings::appendCustomSettings(const QVariantMap& settings) {
+    foreach (const QString& key, settings.keys()) {
         customSettings.insert(key, settings.value(key));
     }
 }
@@ -88,7 +88,7 @@ bool AbstractAlignmentTaskSettings::isValid() const {
     return msaRef.isValid() && alphabet.isValid() && (!resultFileName.isEmpty() || !inNewWindow);
 }
 
-AbstractAlignmentTask::AbstractAlignmentTask(const QString &taskName, TaskFlags flags)
+AbstractAlignmentTask::AbstractAlignmentTask(const QString& taskName, TaskFlags flags)
     : Task(taskName, flags) {
 }
 

@@ -37,7 +37,7 @@ namespace {
 
 class CharacterStream {
 public:
-    CharacterStream(const QByteArray &input)
+    CharacterStream(const QByteArray& input)
         : input(input),
           position(0) {
     }
@@ -93,12 +93,12 @@ public:
         NAME
     };
 
-    Token(const QByteArray &string, Type type)
+    Token(const QByteArray& string, Type type)
         : string(string),
           type(type) {
     }
 
-    const QByteArray &getString() const {
+    const QByteArray& getString() const {
         return string;
     }
 
@@ -112,13 +112,13 @@ private:
 };
 
 bool isNameCharacter(char c) {
-    const QBitArray &digitOrAlpha = TextUtils::ALPHA_NUMS;
+    const QBitArray& digitOrAlpha = TextUtils::ALPHA_NUMS;
     return (digitOrAlpha.testBit(c) || ('_' == c) || ('-' == c) || ('\'' == c) || ('*' == c));
 }
 
 class Lexer {
 public:
-    Lexer(const QByteArray &input)
+    Lexer(const QByteArray& input)
         : input(input),
           nextToken("", Token::INVALID),
           nextTokenValid(false) {
@@ -142,7 +142,7 @@ public:
 
 private:
     Token readNext() {
-        const QBitArray &WHITES = TextUtils::WHITES;
+        const QBitArray& WHITES = TextUtils::WHITES;
         char inputChar = input.peek();
         // while(isspace(inputChar)) {       //exclude the locale-specific function
         while (WHITES.testBit(inputChar)) {
@@ -176,7 +176,7 @@ private:
                 return Token(tokenString, Token::PERIOD);
             }
             default: {
-                const QBitArray &NUMS = TextUtils::NUMS;
+                const QBitArray& NUMS = TextUtils::NUMS;
                 QByteArray tokenString;
                 if (NUMS.testBit(input.peek()) || '-' == input.peek()) {
                     if ('-' == input.peek()) {
@@ -233,7 +233,7 @@ U2Region toRegion(quint64 firstBase, quint64 secondBase) {
 // ioLog added to trace an error which occurred on user's OS only
 class Parser {
 public:
-    Parser(const QByteArray &input)
+    Parser(const QByteArray& input)
         : lexer(input),
           join(false),
           order(false),
@@ -241,7 +241,7 @@ public:
         seqLenForCircular = -1;
     }
 
-    LocationParser::ParsingResult parse(U2Location &result, QStringList &messages) {
+    LocationParser::ParsingResult parse(U2Location& result, QStringList& messages) {
         result->regions.clear();
         result->strand = U2Strand::Direct;
         return parseLocation(result, messages);
@@ -254,7 +254,7 @@ public:
 private:
     qint64 seqLenForCircular;
 
-    bool parseNumber(qint64 &result) {
+    bool parseNumber(qint64& result) {
         if (lexer.peek().getType() != Token::NUMBER) {
             return false;
         }
@@ -290,7 +290,7 @@ private:
         FAIL("An unexpected parsing result", LocationParser::Failure);
     }
 
-    LocationParser::ParsingResult parseLocationDescriptor(U2Location &location, QStringList &messages) {
+    LocationParser::ParsingResult parseLocationDescriptor(U2Location& location, QStringList& messages) {
         LocationParser::ParsingResult parsingResult = LocationParser::Success;
         bool remoteEntry = false;
         Token token = lexer.peek();
@@ -480,7 +480,7 @@ private:
         return parsingResult;
     }
 
-    LocationParser::ParsingResult parseLocation(U2Location &location, QStringList &messages) {
+    LocationParser::ParsingResult parseLocation(U2Location& location, QStringList& messages) {
         LocationParser::ParsingResult parsingResult = LocationParser::Success;
         if (match(Token::JOIN)) {
             if (!match(Token::LEFT_PARENTHESIS)) {
@@ -570,7 +570,7 @@ private:
         return parsingResult;
     }
 
-    LocationParser::ParsingResult parseComplement(U2Location &location, QStringList &messages) {
+    LocationParser::ParsingResult parseComplement(U2Location& location, QStringList& messages) {
         LocationParser::ParsingResult parsingResult = LocationParser::Success;
         if (!match(Token::LEFT_PARENTHESIS)) {
             ioLog.trace(QString("GENBANK LOCATION PARSER: Must be LEFT_PARENTHESIS instead of %1").arg(lexer.peek().getString().data()));
@@ -625,12 +625,12 @@ private:
 const QString LocationParser::REMOTE_ENTRY_WARNING = QCoreApplication::translate("LocationParser", "Ignoring remote entry");
 const QString LocationParser::JOIN_COMPLEMENT_WARNING = QCoreApplication::translate("LocationParser", "Ignoring different strands in JOIN");
 
-LocationParser::ParsingResult LocationParser::parseLocation(const char *str, int len, U2Location &location, qint64 seqlenForCircular) {
+LocationParser::ParsingResult LocationParser::parseLocation(const char* str, int len, U2Location& location, qint64 seqlenForCircular) {
     QStringList messages;
     return parseLocation(str, len, location, messages, seqlenForCircular);
 }
 
-LocationParser::ParsingResult LocationParser::parseLocation(const char *str, int len, U2Location &location, QStringList &messages, qint64 seqlenForCircular) {
+LocationParser::ParsingResult LocationParser::parseLocation(const char* str, int len, U2Location& location, QStringList& messages, qint64 seqlenForCircular) {
     Parser parser(QByteArray(str, len));
     parser.setSeqLenForCircular(seqlenForCircular);
 

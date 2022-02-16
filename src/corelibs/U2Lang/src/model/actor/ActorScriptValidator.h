@@ -29,25 +29,25 @@ namespace Workflow {
 
 class ActorScriptValidator : public ActorValidator {
 public:
-    virtual bool validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const;
+    virtual bool validate(const Actor* actor, NotificationsList& notificationList, const QMap<QString, QString>& options) const;
 };
 
 class ValidationContext : public QObject {
     Q_OBJECT
 public:
-    ValidationContext(QScriptEngine &engine, const Actor *actor);
+    ValidationContext(QScriptEngine& engine, const Actor* actor);
 
     NotificationsList notifications() const;
     bool hasErrors() const;
 
 public slots:
-    QScriptValue attributeValue(const QString &attrId);
-    void error(const QString &message);
-    void warning(const QString &message);
+    QScriptValue attributeValue(const QString& attrId);
+    void error(const QString& message);
+    void warning(const QString& message);
 
 private:
-    QScriptEngine &engine;
-    const Actor *actor;
+    QScriptEngine& engine;
+    const Actor* actor;
     QStringList errors;
     QStringList warnings;
 };

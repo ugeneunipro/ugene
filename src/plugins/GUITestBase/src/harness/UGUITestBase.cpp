@@ -25,12 +25,12 @@
 
 namespace U2 {
 
-UGUITestBase *UGUITestBase::getInstance() {
-    static UGUITestBase *instance = new UGUITestBase();
+UGUITestBase* UGUITestBase::getInstance() {
+    static UGUITestBase* instance = new UGUITestBase();
     return instance;
 }
 
-bool UGUITestBase::registerTest(GUITest *test, TestType testType) {
+bool UGUITestBase::registerTest(GUITest* test, TestType testType) {
     Q_ASSERT(test);
     QString fullTestName = test->getFullName();
     if (getTest(fullTestName, type) != nullptr) {
@@ -40,15 +40,15 @@ bool UGUITestBase::registerTest(GUITest *test, TestType testType) {
     return true;
 }
 
-GUITest *UGUITestBase::getTest(const QString &name, TestType testType) const {
+GUITest* UGUITestBase::getTest(const QString& name, TestType testType) const {
     return getConstMap(testType).value(name);
 }
 
-GUITest *UGUITestBase::getTest(const QString &suite, const QString &name, TestType testType) const {
+GUITest* UGUITestBase::getTest(const QString& suite, const QString& name, TestType testType) const {
     return getTest(HI::GUITest::getFullTestName(suite, name), testType);
 }
 
-const QMap<QString, GUITest *> &UGUITestBase::getConstMap(TestType testType) const {
+const QMap<QString, GUITest*>& UGUITestBase::getConstMap(TestType testType) const {
     switch (testType) {
         case PreAdditional:
             return preAdditional;
@@ -62,7 +62,7 @@ const QMap<QString, GUITest *> &UGUITestBase::getConstMap(TestType testType) con
     }
 }
 
-QMap<QString, GUITest *> &UGUITestBase::getMap(TestType testType) {
+QMap<QString, GUITest*>& UGUITestBase::getMap(TestType testType) {
     switch (testType) {
         case PreAdditional:
             return preAdditional;
@@ -80,8 +80,8 @@ QMap<QString, GUITest *> &UGUITestBase::getMap(TestType testType) {
  * Returns true if set1 shares common elements with set2.
  * Note: We can't use QSet::intersects today because it is not available in QT5.4 (was added in QT5.6)
  */
-static bool intersects(const QSet<QString> &set1, const QSet<QString> &set2) {
-    for (const QString &value1 : qAsConst(set1)) {
+static bool intersects(const QSet<QString>& set1, const QSet<QString>& set2) {
+    for (const QString& value1 : qAsConst(set1)) {
         if (set2.contains(value1)) {
             return true;
         }
@@ -89,22 +89,22 @@ static bool intersects(const QSet<QString> &set1, const QSet<QString> &set2) {
     return false;
 }
 
-QList<GUITest *> UGUITestBase::getTests(TestType testType, const QStringList &labelList) const {
-    QList<GUITest *> allTestList = getConstMap(testType).values();
+QList<GUITest*> UGUITestBase::getTests(TestType testType, const QStringList& labelList) const {
+    QList<GUITest*> allTestList = getConstMap(testType).values();
     if (labelList.isEmpty()) {
         return allTestList;
     }
-    QList<GUITest *> filteredTestList;
+    QList<GUITest*> filteredTestList;
     QSet<QString> includeLabelSet;
     QSet<QString> excludeLabelSet;
-    for (const QString &label : qAsConst(labelList)) {
+    for (const QString& label : qAsConst(labelList)) {
         if (label.startsWith("-")) {
             excludeLabelSet << label;
         } else {
             includeLabelSet << label;
         }
     }
-    for (GUITest *test : qAsConst(allTestList)) {
+    for (GUITest* test : qAsConst(allTestList)) {
         if (test->labelSet.contains(includeLabelSet) && !intersects(test->labelSet, excludeLabelSet)) {
             filteredTestList << test;
         }

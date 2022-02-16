@@ -34,9 +34,9 @@ namespace U2 {
 class U2GUI_EXPORT GroupHeaderImageWidget : public QLabel {
     Q_OBJECT
 public:
-    GroupHeaderImageWidget(const QString &groupId, const QPixmap &image);
+    GroupHeaderImageWidget(const QString& groupId, const QPixmap& image);
 
-    inline const QString &getGroupId() {
+    inline const QString& getGroupId() {
         return groupId;
     }
 
@@ -52,7 +52,7 @@ signals:
     void si_groupHeaderPressed(QString groupId);
 
 protected:
-    virtual void mousePressEvent(QMouseEvent *);
+    virtual void mousePressEvent(QMouseEvent*);
 
 private:
     QString groupId;

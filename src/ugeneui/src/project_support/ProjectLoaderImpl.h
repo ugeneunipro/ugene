@@ -46,23 +46,23 @@ class ProjectLoaderImpl : public ProjectLoader {
 public:
     ProjectLoaderImpl();
 
-    void runOpenRecentFileOrProjectTask(const GUrl &url) override;
+    void runOpenRecentFileOrProjectTask(const GUrl& url) override;
 
-    Task *openWithProjectTask(const QList<GUrl> &urls, const QVariantMap &hints = QVariantMap()) override;
+    Task* openWithProjectTask(const QList<GUrl>& urls, const QVariantMap& hints = QVariantMap()) override;
 
-    Task *createNewProjectTask(const GUrl &url = GUrl()) override;
+    Task* createNewProjectTask(const GUrl& url = GUrl()) override;
 
-    Task *createProjectLoadingTask(const GUrl &url, const QVariantMap &hints = QVariantMap()) override;
+    Task* createProjectLoadingTask(const GUrl& url, const QVariantMap& hints = QVariantMap()) override;
 
-    Project *createProject(const QString &name, const QString &url, QList<Document *> &documents, QList<GObjectViewState *> &states) override;
+    Project* createProject(const QString& name, const QString& url, QList<Document*>& documents, QList<GObjectViewState*>& states) override;
 
-    QAction *getAddExistingDocumentAction() override;
+    QAction* getAddExistingDocumentAction() override;
 
     static QString getLastProjectURL();
     static int getMaxObjectsInSingleDocument();
-    static bool detectFormat(const GUrl &url, QList<FormatDetectionResult> &formats, const QVariantMap &hints, FormatDetectionResult &selectedResult);
-    static bool shouldFormatBeSelected(const QList<FormatDetectionResult> &formats, bool forceSelectFormat);
-    static bool processHints(FormatDetectionResult &dr);
+    static bool detectFormat(const GUrl& url, QList<FormatDetectionResult>& formats, const QVariantMap& hints, FormatDetectionResult& selectedResult);
+    static bool shouldFormatBeSelected(const QList<FormatDetectionResult>& formats, bool forceSelectFormat);
+    static bool processHints(FormatDetectionResult& dr);
 
 signals:
     void si_recentListChanged();
@@ -74,27 +74,27 @@ public slots:
 private:
     void updateState();
     void updateRecentProjectsMenu();
-    void prependToRecentProjects(const QString &pFile);
+    void prependToRecentProjects(const QString& pFile);
 
     /** Remove URL from both recent projects & documents list. */
-    void removeUrlFromRecentItems(const GUrl &url);
+    void removeUrlFromRecentItems(const GUrl& url);
 
     void updateRecentItemsMenu();
-    void prependToRecentItems(const QString &url);
+    void prependToRecentItems(const QString& url);
     void rememberProjectURL();
 
     /** Returns true if the url looks like a UGENE project file url. */
-    static bool isProjectFileUrl(const GUrl &url);
+    static bool isProjectFileUrl(const GUrl& url);
 
 private slots:
     void sl_newProject();
     void sl_openRecentFile();
     void sl_openRecentProject();
-    void sl_serviceStateChanged(Service *s, ServiceState prevState);
-    void sl_documentAdded(Document *doc);
+    void sl_serviceStateChanged(Service* s, ServiceState prevState);
+    void sl_documentAdded(Document* doc);
     void sl_paste();
     void sl_documentStateChanged();
-    void sl_projectURLChanged(const QString &oldURL);
+    void sl_projectURLChanged(const QString& oldURL);
     void sl_onAddExistingDocument();
 
     void sl_downloadRemoteFile();
@@ -102,17 +102,17 @@ private slots:
     void sl_searchGenbankEntry();
 
 private:
-    QAction *addExistingDocumentAction;
-    QAction *newProjectAction;
-    QAction *openProjectAction;
-    QAction *pasteAction;
-    QAction *downloadRemoteFileAction;
-    QAction *accessSharedDatabaseAction;
-    QAction *searchGenbankEntryAction;
-    QAction *newDocumentFromTextAction;
+    QAction* addExistingDocumentAction;
+    QAction* newProjectAction;
+    QAction* openProjectAction;
+    QAction* pasteAction;
+    QAction* downloadRemoteFileAction;
+    QAction* accessSharedDatabaseAction;
+    QAction* searchGenbankEntryAction;
+    QAction* newDocumentFromTextAction;
 
-    QMenu *recentProjectsMenu;
-    QMenu *recentItemsMenu;
+    QMenu* recentProjectsMenu;
+    QMenu* recentItemsMenu;
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -120,7 +120,7 @@ private:
 
 class LoadDataWelcomePageAction : public WelcomePageAction {
 public:
-    LoadDataWelcomePageAction(ProjectLoaderImpl *loader);
+    LoadDataWelcomePageAction(ProjectLoaderImpl* loader);
     void perform();
 
 private:
@@ -129,7 +129,7 @@ private:
 
 class CreateSequenceWelcomePageAction : public WelcomePageAction {
 public:
-    CreateSequenceWelcomePageAction(ProjectLoaderImpl *loader);
+    CreateSequenceWelcomePageAction(ProjectLoaderImpl* loader);
     void perform() override;
 
 private:
@@ -144,9 +144,9 @@ private:
 class SaveProjectDialogController : public QDialog, public Ui_SaveProjectDialog {
     Q_OBJECT
 public:
-    SaveProjectDialogController(QWidget *p);
+    SaveProjectDialogController(QWidget* p);
 public slots:
-    void sl_clicked(QAbstractButton *button);
+    void sl_clicked(QAbstractButton* button);
 };
 
 class ProjectDialogController : public QDialog, public Ui_CreateNewProjectDialog {
@@ -156,23 +156,23 @@ public:
         New_Project,
         Save_Project,
     };
-    ProjectDialogController(Mode m, QWidget *p);
+    ProjectDialogController(Mode m, QWidget* p);
 
     void accept() override;
     void updateState();
 
 protected:
-    void keyPressEvent(QKeyEvent *event) override;
+    void keyPressEvent(QKeyEvent* event) override;
 
 private slots:
     void sl_fileSelectClicked();
-    void sl_fileNameEdited(const QString &);
-    void sl_projectNameEdited(const QString &);
+    void sl_fileNameEdited(const QString&);
+    void sl_projectNameEdited(const QString&);
 
 private:
     void setupDefaults();
     bool fileEditIsEmpty;
-    QPushButton *createButton;
+    QPushButton* createButton;
 };
 
 class AD2P_DocumentInfo {
@@ -182,7 +182,7 @@ public:
     }
     GUrl url;
     DocumentFormatId formatId;
-    IOAdapterFactory *iof;
+    IOAdapterFactory* iof;
     QVariantMap hints;
     bool openView;
     bool loadDocuments;
@@ -194,22 +194,22 @@ public:
     AD2P_ProviderInfo()
         : dp(nullptr), openView(false) {
     }
-    DocumentProviderTask *dp;
+    DocumentProviderTask* dp;
     bool openView;
 };
 
 class AddDocumentsToProjectTask : public Task {
     Q_OBJECT
 public:
-    AddDocumentsToProjectTask(const QList<AD2P_DocumentInfo> &docsInfo, const QList<AD2P_ProviderInfo> &providersInfo);
+    AddDocumentsToProjectTask(const QList<AD2P_DocumentInfo>& docsInfo, const QList<AD2P_ProviderInfo>& providersInfo);
     ~AddDocumentsToProjectTask();
 
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
     QString generateReport() const override;
 
 private:
-    QList<Task *> prepareLoadTasks();
-    QList<Document *> docsToMarkAsModified;
+    QList<Task*> prepareLoadTasks();
+    QList<Document*> docsToMarkAsModified;
 
     QList<AD2P_DocumentInfo> docsInfo;
     QList<AD2P_ProviderInfo> providersInfo;
@@ -219,7 +219,7 @@ private:
 class OpenWithProjectTask : public Task {
     Q_OBJECT
 public:
-    OpenWithProjectTask(const QStringList &urls);
+    OpenWithProjectTask(const QStringList& urls);
     void prepare() override;
 
 private:

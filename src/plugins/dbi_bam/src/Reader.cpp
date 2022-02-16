@@ -31,7 +31,7 @@
 namespace U2 {
 namespace BAM {
 
-BamReader::AlignmentReader::AlignmentReader(BamReader *_reader, int _id, int _blockSize)
+BamReader::AlignmentReader::AlignmentReader(BamReader* _reader, int _id, int _blockSize)
     : id(_id), blockSize(_blockSize), r(_reader) {
 }
 
@@ -39,7 +39,7 @@ int BamReader::AlignmentReader::getId() {
     return id;
 }
 
-bool BamReader::AlignmentReader::readNumber(char type, QVariant &value, int &bytesRead) {
+bool BamReader::AlignmentReader::readNumber(char type, QVariant& value, int& bytesRead) {
     switch (type) {
         case 'c':
             value = (int)r->readInt8();
@@ -306,13 +306,13 @@ void BamReader::AlignmentReader::skip() {
     r->reader.skip(blockSize - 4);
 }
 
-BamReader::BamReader(IOAdapter &ioAdapter)
+BamReader::BamReader(IOAdapter& ioAdapter)
     : Reader(ioAdapter),
       reader(ioAdapter) {
     readHeader();
 }
 
-const Header &BamReader::getHeader() const {
+const Header& BamReader::getHeader() const {
     return header;
 }
 
@@ -344,7 +344,7 @@ void BamReader::seek(VirtualOffset offset) {
     reader.seek(offset);
 }
 
-void BamReader::readBytes(char *buffer, qint64 size) {
+void BamReader::readBytes(char* buffer, qint64 size) {
     if (reader.read(buffer, size) < size) {
         throw InvalidFormatException(BAMDbiPlugin::tr("Unexpected end of file"));
     }
@@ -402,7 +402,7 @@ quint8 BamReader::readUint8() {
 
 float BamReader::readFloat32() {
     quint32 bits = readUint32();
-    float *pointer = (float *)&bits;
+    float* pointer = (float*)&bits;
     return *pointer;
 }
 
@@ -471,7 +471,7 @@ void BamReader::readHeader() {
         QList<Header::ReadGroup> readGroups;
         QList<Header::Program> programs;
         QList<QByteArray> previousProgramIds;
-        foreach (const QByteArray &line, text.replace('\r', QString("")).split('\n')) {
+        foreach (const QByteArray& line, text.replace('\r', QString("")).split('\n')) {
             if (line.isEmpty()) {
                 continue;
             }
@@ -545,7 +545,7 @@ void BamReader::readHeader() {
                     }
                 }
             } else if ("SQ" == recordTag) {
-                Header::Reference *reference = nullptr;
+                Header::Reference* reference = nullptr;
                 if (fields.contains("SN")) {
                     QByteArray value = fields["SN"];
                     if (referencesMap.contains(value)) {
@@ -666,7 +666,7 @@ void BamReader::readHeader() {
             }
         }
         for (int index = 0; index < programs.size(); index++) {
-            const QByteArray &previousProgramId = previousProgramIds[index];
+            const QByteArray& previousProgramId = previousProgramIds[index];
             if (!previousProgramId.isEmpty()) {
                 if (programsMap.contains(previousProgramId)) {
                     programs[index].setPreviousId(programsMap[previousProgramId]);

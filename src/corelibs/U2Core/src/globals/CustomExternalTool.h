@@ -31,23 +31,23 @@ class U2CORE_EXPORT CustomExternalTool : public ExternalTool {
 public:
     CustomExternalTool();
 
-    void setId(const QString &id);
-    void setName(const QString &name);
-    void setIcon(const QIcon &icon);
-    void setGrayIcon(const QIcon &icon);
-    void setWarnIcon(const QIcon &icon);
-    void setDescription(const QString &description);
-    void setLauncher(const QString &launcherId);
-    void setBinaryName(const QString &binaryName);
-    void setValidationArguments(const QStringList &arguments);
-    void setValidationExpectedText(const QString &text);
-    void setPredefinedVersion(const QString &version);
-    void setVersionRegExp(const QRegExp &versionRegExp);
-    void setToolkitName(const QString &toolkitName);
-    void setDependencies(const QStringList &dependencies);
-    void setConfigFilePath(const QString &configFilePath);
+    void setId(const QString& id);
+    void setName(const QString& name);
+    void setIcon(const QIcon& icon);
+    void setGrayIcon(const QIcon& icon);
+    void setWarnIcon(const QIcon& icon);
+    void setDescription(const QString& description);
+    void setLauncher(const QString& launcherId);
+    void setBinaryName(const QString& binaryName);
+    void setValidationArguments(const QStringList& arguments);
+    void setValidationExpectedText(const QString& text);
+    void setPredefinedVersion(const QString& version);
+    void setVersionRegExp(const QRegExp& versionRegExp);
+    void setToolkitName(const QString& toolkitName);
+    void setDependencies(const QStringList& dependencies);
+    void setConfigFilePath(const QString& configFilePath);
 
-    const QString &getConfigFilePath() const;
+    const QString& getConfigFilePath() const;
 
 private:
     QString configFilePath;

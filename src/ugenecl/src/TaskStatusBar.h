@@ -40,16 +40,16 @@ public:
     ~TaskStatusBarCon();
 
 private slots:
-    void sl_taskStateChanged(Task *t);
+    void sl_taskStateChanged(Task* t);
     void sl_taskStateChanged();
     void sl_update();
 
 private:
     void setTSBSettings();
     void updateState();
-    void setTaskToTrack(Task *t);
+    void setTaskToTrack(Task* t);
 
-    Task *taskToTrack;
+    Task* taskToTrack;
     QString emptyLine;
 };
 

@@ -34,16 +34,16 @@ class U2GUI_EXPORT ImportOptionsWidget : public QWidget {
     Q_OBJECT
 
 public:
-    ImportOptionsWidget(QWidget *parent = 0);
+    ImportOptionsWidget(QWidget* parent = 0);
     ~ImportOptionsWidget();
 
-    void init(const QString &baseFolder, const ImportToDatabaseOptions &options);
+    void init(const QString& baseFolder, const ImportToDatabaseOptions& options);
 
     QString getFolder() const;
     ImportToDatabaseOptions getOptions() const;
 
 private:
-    Ui_ImportOptionsWidget *ui;
+    Ui_ImportOptionsWidget* ui;
 };
 
 }  // namespace U2

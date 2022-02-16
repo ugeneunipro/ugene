@@ -40,14 +40,14 @@
 
 namespace U2 {
 
-IQTreeTaskContext::IQTreeTaskContext(const MultipleSequenceAlignment &_msa, const CreatePhyTreeSettings &_settings)
+IQTreeTaskContext::IQTreeTaskContext(const MultipleSequenceAlignment& _msa, const CreatePhyTreeSettings& _settings)
     : msa(_msa), settings(_settings) {
 }
 
 //////////////////////////////////////////////////////////////////////////
 /// IQTreeTask
 
-IQTreeTask::IQTreeTask(const MultipleSequenceAlignment &msa, const CreatePhyTreeSettings &settings)
+IQTreeTask::IQTreeTask(const MultipleSequenceAlignment& msa, const CreatePhyTreeSettings& settings)
     : PhyTreeGeneratorTask(msa, settings), context(msa, settings) {
     GCOUNTER(cvar, "IQTreeTask");
     setTaskName(tr("IQTree tree calculation"));
@@ -73,7 +73,7 @@ Task::ReportResult IQTreeTask::report() {
 //////////////////////////////////////////////////////////////////////////
 /// PrepareIQTreeWorkDirTask
 
-PrepareIQTreeWorkDirTask::PrepareIQTreeWorkDirTask(IQTreeTaskContext *_context)
+PrepareIQTreeWorkDirTask::PrepareIQTreeWorkDirTask(IQTreeTaskContext* _context)
     : Task(tr("Prepare IQTree work dir"), TaskFlag_None), context(_context) {
 }
 
@@ -84,11 +84,11 @@ void PrepareIQTreeWorkDirTask::run() {
 
     // Save input MSA into a file in work dir.
     QString alignmentFilePath = context->tmpDirUrl + "/input.phy";
-    IOAdapterFactory *ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-    DocumentFormat *documentFormat = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PHYLIP_INTERLEAVED);
+    IOAdapterFactory* ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+    DocumentFormat* documentFormat = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PHYLIP_INTERLEAVED);
 
     QScopedPointer<Document> document(documentFormat->createNewLoadedDocument(ioAdapterFactory, alignmentFilePath, stateInfo));
-    auto *msaObject = MultipleSequenceAlignmentImporter::createAlignment(document->getDbiRef(), context->msa, stateInfo);
+    auto* msaObject = MultipleSequenceAlignmentImporter::createAlignment(document->getDbiRef(), context->msa, stateInfo);
     CHECK_OP(stateInfo, );
 
     document->addObject(msaObject);
@@ -101,7 +101,7 @@ void PrepareIQTreeWorkDirTask::run() {
 //////////////////////////////////////////////////////////////////////////
 /// RunIQTreeExternalToolTask
 
-RunIQTreeExternalToolTask::RunIQTreeExternalToolTask(IQTreeTaskContext *_context)
+RunIQTreeExternalToolTask::RunIQTreeExternalToolTask(IQTreeTaskContext* _context)
     : Task(tr("Run IQTree tool"), TaskFlags_NR_FOSE_COSC), context(_context) {
 }
 
@@ -117,7 +117,7 @@ void RunIQTreeExternalToolTask::prepare() {
     externalToolTask->setSubtaskProgressWeight(99);
     addSubTask(externalToolTask);
 
-    IOAdapterFactory *ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+    IOAdapterFactory* ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     auto loadResultTask = new LoadDocumentTask(BaseDocumentFormats::NEWICK, context->alignmentFilePath + ".treefile", ioAdapterFactory);
     loadResultTask->setSubtaskProgressWeight(1);
     addSubTask(loadResultTask);
@@ -126,11 +126,11 @@ void RunIQTreeExternalToolTask::prepare() {
 Task::ReportResult RunIQTreeExternalToolTask::report() {
     CHECK_OP(stateInfo, ReportResult_Finished);
 
-    auto loadTask = qobject_cast<LoadDocumentTask *>(getSubtasks().last());
+    auto loadTask = qobject_cast<LoadDocumentTask*>(getSubtasks().last());
     SAFE_POINT_EXT(loadTask != nullptr, L10N::internalError("Invalid subtasks order"), ReportResult_Finished);
 
     auto treeDocument = loadTask->getDocument(false);
-    auto treeObject = qobject_cast<PhyTreeObject *>(treeDocument->getObjects().first());
+    auto treeObject = qobject_cast<PhyTreeObject*>(treeDocument->getObjects().first());
     SAFE_POINT_EXT(treeObject != nullptr, L10N::internalError("Result file has no tree object"), ReportResult_Finished);
 
     context->resultTree = treeObject->getTree();

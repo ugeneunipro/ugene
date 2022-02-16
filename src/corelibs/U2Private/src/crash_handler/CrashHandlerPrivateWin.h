@@ -45,15 +45,15 @@ public:
     QString getAdditionalInfo() const;
 
 private:
-    static bool breakpadCallback(const wchar_t *dump_path,
-                                 const wchar_t *minidump_id,
-                                 void *context,
-                                 EXCEPTION_POINTERS *exinfo,
-                                 MDRawAssertionInfo *assertion,
+    static bool breakpadCallback(const wchar_t* dump_path,
+                                 const wchar_t* minidump_id,
+                                 void* context,
+                                 EXCEPTION_POINTERS* exinfo,
+                                 MDRawAssertionInfo* assertion,
                                  bool succeeded);
 
-    void walkStack(EXCEPTION_POINTERS *exinfo);
-    QString getExceptionText(EXCEPTION_POINTERS *exinfo);
+    void walkStack(EXCEPTION_POINTERS* exinfo);
+    QString getExceptionText(EXCEPTION_POINTERS* exinfo);
 
     StackWalker st;
     bool crashDirWasSucessfullyCreated;

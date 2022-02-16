@@ -43,10 +43,10 @@ namespace U2 {
 
 const QString MultipleChromatogramAlignmentObject::MCAOBJECT_REFERENCE = "MCAOBJECT_REFERENCE";
 
-MultipleChromatogramAlignmentObject::MultipleChromatogramAlignmentObject(const QString &name,
-                                                                         const U2EntityRef &mcaRef,
-                                                                         const QVariantMap &hintsMap,
-                                                                         const MultipleChromatogramAlignment &mca)
+MultipleChromatogramAlignmentObject::MultipleChromatogramAlignmentObject(const QString& name,
+                                                                         const U2EntityRef& mcaRef,
+                                                                         const QVariantMap& hintsMap,
+                                                                         const MultipleChromatogramAlignment& mca)
     : MultipleAlignmentObject(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT, name, mcaRef, hintsMap, mca), referenceObj(nullptr) {
 }
 
@@ -54,7 +54,7 @@ MultipleChromatogramAlignmentObject::~MultipleChromatogramAlignmentObject() {
     delete referenceObj;
 }
 
-GObject *MultipleChromatogramAlignmentObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints) const {
+GObject* MultipleChromatogramAlignmentObject::clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints) const {
     DbiOperationsBlock opBlock(dstDbiRef, os);
     CHECK_OP(os, nullptr);
 
@@ -63,7 +63,7 @@ GObject *MultipleChromatogramAlignmentObject::clone(const U2DbiRef &dstDbiRef, U
     const QString dstFolder = gHints->get(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
     MultipleChromatogramAlignment mca = getMcaCopy();
-    MultipleChromatogramAlignmentObject *clonedObject = MultipleChromatogramAlignmentImporter::createAlignment(os, dstDbiRef, dstFolder, mca);
+    MultipleChromatogramAlignmentObject* clonedObject = MultipleChromatogramAlignmentImporter::createAlignment(os, dstDbiRef, dstFolder, mca);
     CHECK_OP(os, nullptr);
 
     QScopedPointer<MultipleChromatogramAlignmentObject> p(clonedObject);
@@ -92,7 +92,7 @@ GObject *MultipleChromatogramAlignmentObject::clone(const U2DbiRef &dstDbiRef, U
     return p.take();
 }
 
-U2SequenceObject *MultipleChromatogramAlignmentObject::getReferenceObj() const {
+U2SequenceObject* MultipleChromatogramAlignmentObject::getReferenceObj() const {
     if (referenceObj == nullptr) {
         U2OpStatus2Log status;
         DbiConnection con(getEntityRef().dbiRef, status);
@@ -101,11 +101,11 @@ U2SequenceObject *MultipleChromatogramAlignmentObject::getReferenceObj() const {
         U2ByteArrayAttribute attribute = U2AttributeUtils::findByteArrayAttribute(con.dbi->getAttributeDbi(), getEntityRef().entityId, MCAOBJECT_REFERENCE, status);
         CHECK_OP(status, nullptr);
 
-        GObject *obj = GObjectUtils::createObject(con.dbi->getDbiRef(), attribute.value, "reference object");
+        GObject* obj = GObjectUtils::createObject(con.dbi->getDbiRef(), attribute.value, "reference object");
 
-        referenceObj = qobject_cast<U2SequenceObject *>(obj);
-        connect(this, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), referenceObj, SLOT(sl_resetDataCaches()));
-        connect(this, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), referenceObj, SIGNAL(si_sequenceChanged()));
+        referenceObj = qobject_cast<U2SequenceObject*>(obj);
+        connect(this, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), referenceObj, SLOT(sl_resetDataCaches()));
+        connect(this, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), referenceObj, SIGNAL(si_sequenceChanged()));
     }
 
     return referenceObj;
@@ -129,11 +129,11 @@ const MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentObject::getM
     return getRow(row).dynamicCast<MultipleChromatogramAlignmentRow>();
 }
 
-void MultipleChromatogramAlignmentObject::insertGap(const U2Region &rows, int pos, int nGaps) {
+void MultipleChromatogramAlignmentObject::insertGap(const U2Region& rows, int pos, int nGaps) {
     MultipleAlignmentObject::insertGap(rows, pos, nGaps, true);
 }
 
-void MultipleChromatogramAlignmentObject::insertGapByRowIndexList(const QList<int> &rowIndexes, int pos, int nGaps) {
+void MultipleChromatogramAlignmentObject::insertGapByRowIndexList(const QList<int>& rowIndexes, int pos, int nGaps) {
     MultipleAlignmentObject::insertGapByRowIndexList(rowIndexes, pos, nGaps, true);
 }
 
@@ -156,7 +156,7 @@ void MultipleChromatogramAlignmentObject::insertCharacter(int rowIndex, int pos,
     replaceCharacter(pos, rowIndex, newChar);
 }
 
-void MultipleChromatogramAlignmentObject::deleteColumnsWithGaps(U2OpStatus &os) {
+void MultipleChromatogramAlignmentObject::deleteColumnsWithGaps(U2OpStatus& os) {
     const QList<U2Region> regionsToDelete = getColumnsWithGaps();
     CHECK(!regionsToDelete.isEmpty(), );
     CHECK(regionsToDelete.first().length != getLength(), );
@@ -179,7 +179,7 @@ void MultipleChromatogramAlignmentObject::deleteColumnsWithGaps(U2OpStatus &os) 
     updateCachedMultipleAlignment();
 }
 
-void MultipleChromatogramAlignmentObject::trimRow(const int rowIndex, int currentPos, U2OpStatus &os, TrimEdge edge) {
+void MultipleChromatogramAlignmentObject::trimRow(const int rowIndex, int currentPos, U2OpStatus& os, TrimEdge edge) {
     U2EntityRef entityRef = getEntityRef();
     MultipleAlignmentRow row = getRow(rowIndex);
     int rowId = row->getRowId();
@@ -208,9 +208,9 @@ void MultipleChromatogramAlignmentObject::trimRow(const int rowIndex, int curren
     updateCachedMultipleAlignment(modificationInfo);
 }
 
-void MultipleChromatogramAlignmentObject::updateAlternativeMutations(bool showAlternativeMutations, int threshold, U2OpStatus &os) {
+void MultipleChromatogramAlignmentObject::updateAlternativeMutations(bool showAlternativeMutations, int threshold, U2OpStatus& os) {
     for (int i = 0; i < getRowCount(); i++) {
-        const MultipleChromatogramAlignmentRow &mcaRow = static_cast<const MultipleChromatogramAlignmentRow &>(getRow(i));
+        const MultipleChromatogramAlignmentRow& mcaRow = static_cast<const MultipleChromatogramAlignmentRow&>(getRow(i));
         qint64 ungappedLength = mcaRow->getUngappedLength();
 
         QHash<qint64, char> newCharList;
@@ -238,7 +238,7 @@ void MultipleChromatogramAlignmentObject::updateAlternativeMutations(bool showAl
             newCharList.insert(gappedPos, newChar);
         }
 
-        const MultipleAlignment &ma = getMultipleAlignment();
+        const MultipleAlignment& ma = getMultipleAlignment();
         qint64 modifiedRowId = ma->getRow(i)->getRowId();
         McaDbiUtils::replaceCharactersInRow(getEntityRef(), modifiedRowId, newCharList, os);
         SAFE_POINT_OP(os, );
@@ -246,12 +246,12 @@ void MultipleChromatogramAlignmentObject::updateAlternativeMutations(bool showAl
     updateCachedMultipleAlignment();
 }
 
-void MultipleChromatogramAlignmentObject::loadAlignment(U2OpStatus &os) {
+void MultipleChromatogramAlignmentObject::loadAlignment(U2OpStatus& os) {
     MultipleChromatogramAlignmentExporter mcaExporter;
     cachedMa = mcaExporter.getAlignment(os, entityRef.dbiRef, entityRef.entityId);
 }
 
-void MultipleChromatogramAlignmentObject::updateCachedRows(U2OpStatus &os, const QList<qint64> &rowIds) {
+void MultipleChromatogramAlignmentObject::updateCachedRows(U2OpStatus& os, const QList<qint64>& rowIds) {
     MultipleChromatogramAlignment cachedMca = cachedMa.dynamicCast<MultipleChromatogramAlignment>();
 
     MultipleChromatogramAlignmentExporter mcaExporter;
@@ -266,16 +266,16 @@ void MultipleChromatogramAlignmentObject::updateCachedRows(U2OpStatus &os, const
     }
 }
 
-void MultipleChromatogramAlignmentObject::updateDatabase(U2OpStatus &os, const MultipleAlignment &ma) {
+void MultipleChromatogramAlignmentObject::updateDatabase(U2OpStatus& os, const MultipleAlignment& ma) {
     const MultipleChromatogramAlignment mca = ma.dynamicCast<MultipleChromatogramAlignment>();
     McaDbiUtils::updateMca(os, entityRef, mca);
 }
 
-void MultipleChromatogramAlignmentObject::removeRowPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId) {
+void MultipleChromatogramAlignmentObject::removeRowPrivate(U2OpStatus& os, const U2EntityRef& mcaRef, qint64 rowId) {
     McaDbiUtils::removeRow(mcaRef, rowId, os);
 }
 
-void MultipleChromatogramAlignmentObject::removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QList<qint64> &rows, int startPos, int nBases) {
+void MultipleChromatogramAlignmentObject::removeRegionPrivate(U2OpStatus& os, const U2EntityRef& maRef, const QList<qint64>& rows, int startPos, int nBases) {
     McaDbiUtils::removeCharacters(maRef, rows, startPos, nBases, os);
 }
 

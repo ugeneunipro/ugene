@@ -40,11 +40,11 @@ class U2VIEW_EXPORT GraphicsCircularBranchItem : public GraphicsBranchItem {
     bool visible;
 
 public:
-    GraphicsCircularBranchItem(QGraphicsItem *parent, qreal height, GraphicsRectangularBranchItem *from, double nodeValue = -1.0);
+    GraphicsCircularBranchItem(QGraphicsItem* parent, qreal height, GraphicsRectangularBranchItem* from, double nodeValue = -1.0);
 
     QRectF boundingRect() const;
     QPainterPath shape() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
     void setVisibleW(bool v) {
         visible = v;
     }

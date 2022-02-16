@@ -31,8 +31,8 @@ class ReportSender : public QObject {
     Q_OBJECT
 public:
     ReportSender(bool addGuiTestInfo = false);
-    void parse(const QString &str, const QString &dumpUrl);
-    bool send(const QString &additionalInfo, const QString &dumpUrl);
+    void parse(const QString& str, const QString& dumpUrl);
+    bool send(const QString& additionalInfo, const QString& dumpUrl);
     QString getOSVersion();
     QString getReport() const {
         return report;
@@ -40,10 +40,10 @@ public:
     int getTotalPhysicalMemory();
     QString getCPUInfo();
     QString getArchSuffix() const;
-    void setFailedTest(const QString &failedTestStr);
+    void setFailedTest(const QString& failedTestStr);
 
 private slots:
-    void sl_replyFinished(QNetworkReply *);
+    void sl_replyFinished(QNetworkReply*);
 
 private:
     QString report;
@@ -55,7 +55,7 @@ private:
 class SendReportDialog : public QDialog, public Ui_Dialog {
     Q_OBJECT
 public:
-    SendReportDialog(const QString &report, const QString &dumpUrl, QDialog *d = nullptr);
+    SendReportDialog(const QString& report, const QString& dumpUrl, QDialog* d = nullptr);
 
 private:
     void openUgene() const;

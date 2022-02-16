@@ -81,7 +81,7 @@ public:
 //---------------------------------------------------------------------
 class PWMatrixTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

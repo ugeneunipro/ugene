@@ -74,13 +74,13 @@ public:
     };
 
     static void sleep(int msec = 2000);
-    static void sendEvent(QObject *obj, QEvent *e);
+    static void sendEvent(QObject* obj, QEvent* e);
 
     /** Takes a screenshot and saves to file. */
-    static void takeScreenShot(HI::GUITestOpStatus &os, const QString &path);
+    static void takeScreenShot(HI::GUITestOpStatus& os, const QString& path);
 
     /** Takes a screenshot and returns an image. */
-    static QImage takeScreenShot(HI::GUITestOpStatus &os);
+    static QImage takeScreenShot(HI::GUITestOpStatus& os);
 
     static void GUITestFail();
 };

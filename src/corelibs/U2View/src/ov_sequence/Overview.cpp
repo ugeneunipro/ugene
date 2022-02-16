@@ -45,7 +45,7 @@ namespace U2 {
 
 const QString Overview::ANNOTATION_GRAPH_STATE = "sequenceViewSettings/annotationGraphState";
 
-Overview::Overview(ADVSingleSequenceWidget *p, ADVSequenceObjectContext *ctx)
+Overview::Overview(ADVSingleSequenceWidget* p, ADVSequenceObjectContext* ctx)
     : GSequenceLineView(p, ctx),
       seqWidget(p) {
     overviewRenderArea = new OverviewRenderArea(this);
@@ -57,7 +57,7 @@ Overview::Overview(ADVSingleSequenceWidget *p, ADVSequenceObjectContext *ctx)
     panView = p->getPanView();
     detView = p->getDetView();
 
-    QAction *densityGraphAction = new QAction(QIcon(":core/images/sum.png"), "", this);
+    QAction* densityGraphAction = new QAction(QIcon(":core/images/sum.png"), "", this);
     densityGraphAction->setObjectName("density_graph_action");
     densityGraphAction->setCheckable(true);
     densityGraphAction->setToolTip(tr("Toggle annotation density graph"));
@@ -66,12 +66,12 @@ Overview::Overview(ADVSingleSequenceWidget *p, ADVSequenceObjectContext *ctx)
     connect(densityGraphAction, SIGNAL(triggered()), SLOT(sl_graphActionTriggered()));
     connect(panView, SIGNAL(si_visibleRangeChanged()), SLOT(sl_visibleRangeChanged()));
     connect(detView, SIGNAL(si_visibleRangeChanged()), SLOT(sl_visibleRangeChanged()));
-    connect(ctx, SIGNAL(si_annotationObjectAdded(AnnotationTableObject *)), SLOT(sl_annotationObjectAdded(AnnotationTableObject *)));
-    connect(ctx, SIGNAL(si_annotationObjectRemoved(AnnotationTableObject *)), SLOT(sl_annotationObjectRemoved(AnnotationTableObject *)));
-    foreach (AnnotationTableObject *at, ctx->getAnnotationObjects(true)) {
+    connect(ctx, SIGNAL(si_annotationObjectAdded(AnnotationTableObject*)), SLOT(sl_annotationObjectAdded(AnnotationTableObject*)));
+    connect(ctx, SIGNAL(si_annotationObjectRemoved(AnnotationTableObject*)), SLOT(sl_annotationObjectRemoved(AnnotationTableObject*)));
+    foreach (AnnotationTableObject* at, ctx->getAnnotationObjects(true)) {
         connectAnnotationTableObject(at);
     }
-    connect(AppContext::getAnnotationsSettingsRegistry(), SIGNAL(si_annotationSettingsChanged(const QStringList &)), SLOT(sl_onAnnotationSettingsChanged(const QStringList &)));
+    connect(AppContext::getAnnotationsSettingsRegistry(), SIGNAL(si_annotationSettingsChanged(const QStringList&)), SLOT(sl_onAnnotationSettingsChanged(const QStringList&)));
 
     sl_visibleRangeChanged();
     bool graphState = AppContext::getSettings()->getValue(ANNOTATION_GRAPH_STATE, QVariant(false)).toBool();
@@ -80,39 +80,39 @@ Overview::Overview(ADVSingleSequenceWidget *p, ADVSequenceObjectContext *ctx)
     pack();
 }
 
-void Overview::sl_annotationObjectAdded(AnnotationTableObject *obj) {
+void Overview::sl_annotationObjectAdded(AnnotationTableObject* obj) {
     connectAnnotationTableObject(obj);
     addUpdateFlags(GSLV_UF_AnnotationsChanged);
     update();
 }
 
-void Overview::sl_annotationObjectRemoved(AnnotationTableObject *obj) {
+void Overview::sl_annotationObjectRemoved(AnnotationTableObject* obj) {
     disconnect(obj, nullptr, this, nullptr);
     addUpdateFlags(GSLV_UF_AnnotationsChanged);
     update();
 }
 
-void Overview::sl_annotationsAdded(const QList<Annotation *> &a) {
+void Overview::sl_annotationsAdded(const QList<Annotation*>& a) {
     Q_UNUSED(a);
 
     addUpdateFlags(GSLV_UF_AnnotationsChanged);
     update();
 }
 
-void Overview::sl_annotationsRemoved(const QList<Annotation *> &a) {
+void Overview::sl_annotationsRemoved(const QList<Annotation*>& a) {
     Q_UNUSED(a);
 
     addUpdateFlags(GSLV_UF_AnnotationsChanged);
     update();
 }
 
-void Overview::sl_onAnnotationsInGroupRemoved(const QList<Annotation *> &, AnnotationGroup *) {
+void Overview::sl_onAnnotationsInGroupRemoved(const QList<Annotation*>&, AnnotationGroup*) {
     addUpdateFlags(GSLV_UF_AnnotationsChanged);
     update();
 }
 
-void Overview::sl_annotationsModified(const QList<AnnotationModification> &annotationModifications) {
-    foreach (const AnnotationModification &annotationModification, annotationModifications) {
+void Overview::sl_annotationsModified(const QList<AnnotationModification>& annotationModifications) {
+    foreach (const AnnotationModification& annotationModification, annotationModifications) {
         if (annotationModification.type == AnnotationModification_LocationChanged) {
             addUpdateFlags(GSLV_UF_AnnotationsChanged);
             update();
@@ -121,7 +121,7 @@ void Overview::sl_annotationsModified(const QList<AnnotationModification> &annot
     }
 }
 
-void Overview::sl_onAnnotationSettingsChanged(const QStringList &changedSettings) {
+void Overview::sl_onAnnotationSettingsChanged(const QStringList& changedSettings) {
     Q_UNUSED(changedSettings);
 
     addUpdateFlags(GSLV_UF_AnnotationsChanged);
@@ -135,7 +135,7 @@ void Overview::sl_sequenceChanged() {
 }
 
 void Overview::pack() {
-    QHBoxLayout *layout = new QHBoxLayout();
+    QHBoxLayout* layout = new QHBoxLayout();
     layout->setMargin(0);
     layout->setSpacing(0);
     layout->addWidget(renderArea);
@@ -152,7 +152,7 @@ void Overview::sl_visibleRangeChanged() {
     renderArea->update();
 }
 
-void Overview::mousePressEvent(QMouseEvent *me) {
+void Overview::mousePressEvent(QMouseEvent* me) {
     if (me->buttons() & Qt::LeftButton) {
         QPoint renderAreaPos = toRenderAreaPoint(me->pos());
 
@@ -201,14 +201,14 @@ void Overview::mousePressEvent(QMouseEvent *me) {
     QWidget::mousePressEvent(me);
 }
 
-void Overview::mouseReleaseEvent(QMouseEvent *me) {
+void Overview::mouseReleaseEvent(QMouseEvent* me) {
     lastPressPos = -1;
     panSliderMovedRight = false;
     panSliderMovedLeft = false;
     QWidget::mouseReleaseEvent(me);
 }
 
-void Overview::mouseMoveEvent(QMouseEvent *me) {
+void Overview::mouseMoveEvent(QMouseEvent* me) {
     QPoint renderAreaPos = toRenderAreaPoint(me->pos());
 
     QRectF panSlider(overviewRenderArea->getPanSlider());
@@ -275,7 +275,7 @@ void Overview::mouseMoveEvent(QMouseEvent *me) {
     QWidget::mouseMoveEvent(me);
 }
 
-void Overview::mouseDoubleClickEvent(QMouseEvent *me) {
+void Overview::mouseDoubleClickEvent(QMouseEvent* me) {
     if (me->buttons() & Qt::LeftButton) {
         qint64 seqLen = ctx->getSequenceLength();
         QRectF panSlider(overviewRenderArea->getPanSlider());
@@ -299,7 +299,7 @@ void Overview::mouseDoubleClickEvent(QMouseEvent *me) {
     QWidget::mouseDoubleClickEvent(me);
 }
 
-void Overview::wheelEvent(QWheelEvent *we) {
+void Overview::wheelEvent(QWheelEvent* we) {
     bool renderAreaWheel = QRect(renderArea->x(), renderArea->y(), renderArea->width(), renderArea->height()).contains(we->pos());
     if (!renderAreaWheel) {
         QWidget::wheelEvent(we);
@@ -307,15 +307,15 @@ void Overview::wheelEvent(QWheelEvent *we) {
     }
     setFocus();
     bool toMin = we->delta() > 0;
-    QAction *zoomAction = toMin ? panView->getZoomInAction() : panView->getZoomOutAction();
+    QAction* zoomAction = toMin ? panView->getZoomInAction() : panView->getZoomOutAction();
     if (zoomAction != nullptr) {
         zoomAction->activate(QAction::Trigger);
     }
 }
 
-bool Overview::event(QEvent *e) {
+bool Overview::event(QEvent* e) {
     if (e->type() == QEvent::ToolTip) {
-        auto helpEvent = static_cast<QHelpEvent *>(e);
+        auto helpEvent = static_cast<QHelpEvent*>(e);
         int x = overviewRenderArea->mapFrom(this, helpEvent->pos()).x();
         QString tip = createToolTip(x);
         if (!tip.isEmpty()) {
@@ -348,20 +348,20 @@ QString Overview::createToolTip(int renderAreaXOffset) {
     return tip;
 }
 
-PanView *Overview::getPan() const {
+PanView* Overview::getPan() const {
     return panView;
 }
 
-DetView *Overview::getDet() const {
+DetView* Overview::getDet() const {
     return detView;
 }
 
-void Overview::connectAnnotationTableObject(AnnotationTableObject *object) {
+void Overview::connectAnnotationTableObject(AnnotationTableObject* object) {
     CHECK(nullptr != object, );
-    connect(object, SIGNAL(si_onAnnotationsAdded(const QList<Annotation *> &)), SLOT(sl_annotationsAdded(const QList<Annotation *> &)));
-    connect(object, SIGNAL(si_onAnnotationsRemoved(const QList<Annotation *> &)), SLOT(sl_annotationsRemoved(const QList<Annotation *> &)));
-    connect(object, SIGNAL(si_onAnnotationsInGroupRemoved(const QList<Annotation *> &, AnnotationGroup *)), SLOT(sl_onAnnotationsInGroupRemoved(const QList<Annotation *> &, AnnotationGroup *)));
-    connect(object, SIGNAL(si_onAnnotationsModified(const QList<AnnotationModification> &)), SLOT(sl_annotationsModified(const QList<AnnotationModification> &)));
+    connect(object, SIGNAL(si_onAnnotationsAdded(const QList<Annotation*>&)), SLOT(sl_annotationsAdded(const QList<Annotation*>&)));
+    connect(object, SIGNAL(si_onAnnotationsRemoved(const QList<Annotation*>&)), SLOT(sl_annotationsRemoved(const QList<Annotation*>&)));
+    connect(object, SIGNAL(si_onAnnotationsInGroupRemoved(const QList<Annotation*>&, AnnotationGroup*)), SLOT(sl_onAnnotationsInGroupRemoved(const QList<Annotation*>&, AnnotationGroup*)));
+    connect(object, SIGNAL(si_onAnnotationsModified(const QList<AnnotationModification>&)), SLOT(sl_annotationsModified(const QList<AnnotationModification>&)));
 }
 
 void Overview::setGraphActionVisible(const bool setVisible) {
@@ -384,7 +384,7 @@ void Overview::setGraphActionVisible(const bool setVisible) {
 #define PEN_WIDTH 1
 
 #define RENDER_AREA_HEIGHT lineHeight + ANNOTATION_GRAPH_HEIGHT
-OverviewRenderArea::OverviewRenderArea(Overview *p)
+OverviewRenderArea::OverviewRenderArea(Overview* p)
     : GSequenceLineViewRenderArea(p) {
     setFixedHeight(RENDER_AREA_HEIGHT);
     QLinearGradient gradient(0, 0, 0, 1);  // vertical
@@ -423,20 +423,20 @@ bool OverviewRenderArea::isGraphVisible() const {
 
 void OverviewRenderArea::setAnnotationsOnPos() {
     annotationsOnPos.clear();
-    const SequenceObjectContext *ctx = view->getSequenceContext();
+    const SequenceObjectContext* ctx = view->getSequenceContext();
     const qint64 len = ctx->getSequenceLength();
     annotationsOnPos.resize(len);
 
     const U2Region sequenceRange(0, ctx->getSequenceObject()->getSequenceLength());
-    AnnotationSettingsRegistry *asr = AppContext::getAnnotationsSettingsRegistry();
-    const QSet<AnnotationTableObject *> aObjs = ctx->getAnnotationObjects(true);
+    AnnotationSettingsRegistry* asr = AppContext::getAnnotationsSettingsRegistry();
+    const QSet<AnnotationTableObject*> aObjs = ctx->getAnnotationObjects(true);
 
-    foreach (AnnotationTableObject *at, aObjs) {
-        foreach (Annotation *a, at->getAnnotations()) {
-            const SharedAnnotationData &ad = a->getData();
-            const AnnotationSettings *as = asr->getAnnotationSettings(ad);
+    foreach (AnnotationTableObject* at, aObjs) {
+        foreach (Annotation* a, at->getAnnotations()) {
+            const SharedAnnotationData& ad = a->getData();
+            const AnnotationSettings* as = asr->getAnnotationSettings(ad);
             if (as->visible) {
-                foreach (const U2Region &r, ad->getRegions()) {
+                foreach (const U2Region& r, ad->getRegions()) {
                     const U2Region innerRegion = r.intersect(sequenceRange);
                     for (qint64 i = innerRegion.startPos; i < innerRegion.endPos(); i++) {
                         annotationsOnPos[i]++;
@@ -447,7 +447,7 @@ void OverviewRenderArea::setAnnotationsOnPos() {
     }
 }
 
-void OverviewRenderArea::drawAll(QPaintDevice *pd) {
+void OverviewRenderArea::drawAll(QPaintDevice* pd) {
     QPen pen(Qt::SolidLine);
     pen.setWidth(PEN_WIDTH);
     GSLV_UpdateFlags uf = view->getUpdateFlags();
@@ -464,7 +464,7 @@ void OverviewRenderArea::drawAll(QPaintDevice *pd) {
 
     QPainter p(pd);
     p.drawPixmap(0, 0, *cachedView);
-    Overview *gv = static_cast<Overview *>(view);
+    Overview* gv = static_cast<Overview*>(view);
     int panX = posToCoord(gv->getPan()->getVisibleRange().startPos);
     int panW = qMax(posToCoord(gv->getPan()->getVisibleRange().length), SLIDER_MIN_WIDTH);
     int detX = posToCoord(gv->getDet()->getVisibleRange().startPos) - int(ARROW_WIDTH / 2);
@@ -482,9 +482,9 @@ void OverviewRenderArea::drawAll(QPaintDevice *pd) {
     p.setPen(pen);
 
     // don't show arrow when det view collapsed
-    Overview *overview = qobject_cast<Overview *>(view);
+    Overview* overview = qobject_cast<Overview*>(view);
     SAFE_POINT(overview != nullptr, tr("Overview is NULL"), );
-    ADVSingleSequenceWidget *ssw = overview->seqWidget;
+    ADVSingleSequenceWidget* ssw = overview->seqWidget;
     SAFE_POINT(ssw != nullptr, tr("ADVSingleSequenceWidget is NULL"), );
     if (!ssw->isPanViewCollapsed()) {
         drawSlider(p, panSlider, QColor(230, 230, 230));
@@ -498,7 +498,7 @@ void OverviewRenderArea::drawAll(QPaintDevice *pd) {
     drawSelection(p);
 }
 
-void OverviewRenderArea::drawSlider(QPainter &p, QRectF rect, QColor col) {
+void OverviewRenderArea::drawSlider(QPainter& p, QRectF rect, QColor col) {
     QPainterPath path;
     path.addRect(rect);
     path.setFillRule(Qt::WindingFill);
@@ -507,7 +507,7 @@ void OverviewRenderArea::drawSlider(QPainter &p, QRectF rect, QColor col) {
     p.drawPath(path);
 }
 
-void OverviewRenderArea::drawArrow(QPainter &p, QRectF rect, QColor col) {
+void OverviewRenderArea::drawArrow(QPainter& p, QRectF rect, QColor col) {
     QPainterPath arrPath;
     arrPath.moveTo(rect.bottomLeft());
     arrPath.lineTo(rect.center().x(), rect.center().y() - rect.width() / 2);
@@ -519,12 +519,12 @@ void OverviewRenderArea::drawArrow(QPainter &p, QRectF rect, QColor col) {
     p.drawPath(arrPath);
 }
 
-void OverviewRenderArea::drawRuler(QPainter &p) {
+void OverviewRenderArea::drawRuler(QPainter& p) {
     p.save();
     QPen pen(Qt::black);
     pen.setWidth(PEN_WIDTH);
     p.setPen(pen);
-    Overview *gv = static_cast<Overview *>(view);
+    Overview* gv = static_cast<Overview*>(view);
     qint64 seqLen = gv->ctx->getSequenceLength();
     U2Region visibleRange = gv->getVisibleRange();
 
@@ -545,20 +545,20 @@ void OverviewRenderArea::drawRuler(QPainter &p) {
 }
 
 #define SELECTION_LINE_WIDTH 3
-void OverviewRenderArea::drawSelection(QPainter &p) {
+void OverviewRenderArea::drawSelection(QPainter& p) {
     QPen pen(QColor("#007DE3"));
     pen.setWidth(SELECTION_LINE_WIDTH);
     p.setPen(pen);
-    Overview *gv = qobject_cast<Overview *>(view);
-    DNASequenceSelection *sel = gv->ctx->getSequenceSelection();
-    foreach (const U2Region &r, sel->getSelectedRegions()) {
+    Overview* gv = qobject_cast<Overview*>(view);
+    DNASequenceSelection* sel = gv->ctx->getSequenceSelection();
+    foreach (const U2Region& r, sel->getSelectedRegions()) {
         int x1 = posToCoord(r.startPos);
         int x2 = posToCoord(r.endPos());
         p.drawLine(x1, ANNOTATION_GRAPH_HEIGHT, x2, ANNOTATION_GRAPH_HEIGHT);
     }
 }
 
-void OverviewRenderArea::drawGraph(QPainter &p) {
+void OverviewRenderArea::drawGraph(QPainter& p) {
     p.save();
     QPen graphPen;
     graphPen.setWidth(1);

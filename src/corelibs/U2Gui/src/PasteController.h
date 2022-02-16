@@ -39,37 +39,37 @@ public:
     QList<GUrl> getUrls() const {
         return urls;
     }
-    QList<Document *> getDocuments() const {
+    QList<Document*> getDocuments() const {
         return documents;
     }
 
 protected:
     QList<GUrl> urls;
     bool addToProject;
-    QList<Document *> documents;
+    QList<Document*> documents;
 
 protected:
-    QList<Task *> onSubTaskFinished(Task *task);
+    QList<Task*> onSubTaskFinished(Task* task);
 };
 
 class U2GUI_EXPORT PasteFactoryImpl : public PasteFactory {
     Q_OBJECT
 public:
-    PasteFactoryImpl(QObject *parent = nullptr);
+    PasteFactoryImpl(QObject* parent = nullptr);
 
-    PasteTask *createPasteTask(bool isAddToProject) override;
+    PasteTask* createPasteTask(bool isAddToProject) override;
 };
 
 class PasteUrlsTask : public PasteTaskImpl {
     Q_OBJECT
 public:
-    PasteUrlsTask(const QList<QUrl> &urls, bool isAddToProject);
+    PasteUrlsTask(const QList<QUrl>& urls, bool isAddToProject);
 };
 
 class PasteTextTask : public PasteTaskImpl {
     Q_OBJECT
 public:
-    PasteTextTask(const QString &clipboardText, bool isAddToProject);
+    PasteTextTask(const QString& clipboardText, bool isAddToProject);
     Task::ReportResult report() override;
 
 private:

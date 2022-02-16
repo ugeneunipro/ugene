@@ -34,24 +34,24 @@ class WorkflowScriptEngine;
 
 class LinkDataScriptLibrary {
 public:
-    static void init(WorkflowScriptEngine *engine);
+    static void init(WorkflowScriptEngine* engine);
 
-    static QScriptValue fetchFile(QScriptContext *ctx, QScriptEngine *engine);
+    static QScriptValue fetchFile(QScriptContext* ctx, QScriptEngine* engine);
 };
 
 class LinkDataRequestHandler : public QObject {
     Q_OBJECT
 public:
-    LinkDataRequestHandler(QEventLoop *eventLoop);
+    LinkDataRequestHandler(QEventLoop* eventLoop);
     bool hasError() const;
     const QString errorString() const;
     QByteArray getResult() const;
 private slots:
-    void sl_onReplyFinished(QNetworkReply *reply);
-    void onProxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *);
+    void sl_onReplyFinished(QNetworkReply* reply);
+    void onProxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*);
 
 private:
-    QEventLoop *eventLoop;
+    QEventLoop* eventLoop;
     QByteArray result;
     QString error;
 };

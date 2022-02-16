@@ -46,31 +46,31 @@ private:
 
 class TLSContextRef {
 public:
-    TLSContextRef(TLSContext *_ctx)
+    TLSContextRef(TLSContext* _ctx)
         : ctx(_ctx) {
     }
-    TLSContext *ctx;
+    TLSContext* ctx;
 };
 
 class U2CORE_EXPORT TLSUtils {
 public:
     // Gets task local context, assigned to current thread
-    static TLSContext *current(QString contextId);
+    static TLSContext* current(QString contextId);
 
     // Creates TLSContextRef for current thread
-    static void bindToTLSContext(TLSContext *ctx);
+    static void bindToTLSContext(TLSContext* ctx);
 
     // Deletes TLSContextRef for current thread
     static void detachTLSContext();
 
 private:
-    static QThreadStorage<TLSContextRef *> tls;
+    static QThreadStorage<TLSContextRef*> tls;
 };
 
 class U2CORE_EXPORT TLSTask : public Task {
     Q_OBJECT
 public:
-    TLSTask(const QString &_name, TaskFlags _flags = TaskFlags_FOSCOE, bool deleteContext = true);
+    TLSTask(const QString& _name, TaskFlags _flags = TaskFlags_FOSCOE, bool deleteContext = true);
     ~TLSTask();  // tls context removed here
     void run();
     void prepare();
@@ -81,9 +81,9 @@ protected:
     }
 
     // Creates instance of TLSContext. By default invokes in prepare()
-    virtual TLSContext *createContextInstance() = 0;
+    virtual TLSContext* createContextInstance() = 0;
 
-    TLSContext *taskContext;
+    TLSContext* taskContext;
     bool deleteContext;
 };
 

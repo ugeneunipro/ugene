@@ -44,9 +44,9 @@ public:
         Type_Update
     };
 
-    ObjectViewTask(GObjectView *view, const QString &stateName, const QVariantMap &s = QVariantMap());
+    ObjectViewTask(GObjectView* view, const QString& stateName, const QVariantMap& s = QVariantMap());
 
-    ObjectViewTask(GObjectViewFactoryId fid, const QString &viewName = QString(), const QVariantMap &s = QVariantMap());
+    ObjectViewTask(GObjectViewFactoryId fid, const QString& viewName = QString(), const QVariantMap& s = QVariantMap());
 
     virtual void prepare();
     virtual ReportResult report();
@@ -54,11 +54,11 @@ public:
     virtual void open() {};
     virtual void update() {};
 
-    virtual void onDocumentLoaded(Document *d) {
+    virtual void onDocumentLoaded(Document* d) {
         Q_UNUSED(d);
     }
 
-    static Document *createDocumentAndAddToProject(const QString &docUrl, Project *p, U2OpStatus &os);
+    static Document* createDocumentAndAddToProject(const QString& docUrl, Project* p, U2OpStatus& os);
 
 protected:
     Type taskType;
@@ -78,7 +78,7 @@ protected:
 class U2GUI_EXPORT AddToViewTask : public Task {
     Q_OBJECT
 public:
-    AddToViewTask(GObjectView *v, GObject *obj);
+    AddToViewTask(GObjectView* v, GObject* obj);
     ReportResult report();
 
     QPointer<GObjectView> objView;

@@ -32,13 +32,13 @@ namespace U2 {
 
 #define GT_CLASS_NAME "ConstructMoleculeDialogFiller"
 
-ConstructMoleculeDialogFiller::ConstructMoleculeDialogFiller(HI::GUITestOpStatus &os, const QList<Action> &actions)
+ConstructMoleculeDialogFiller::ConstructMoleculeDialogFiller(HI::GUITestOpStatus& os, const QList<Action>& actions)
     : Filler(os, "ConstructMoleculeDialog"),
       dialog(nullptr),
       actions(actions) {
 }
 
-ConstructMoleculeDialogFiller::ConstructMoleculeDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario)
+ConstructMoleculeDialogFiller::ConstructMoleculeDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
     : Filler(os, "ConstructMoleculeDialog", scenario), dialog(nullptr) {
 }
 
@@ -47,7 +47,7 @@ void ConstructMoleculeDialogFiller::commonScenario() {
     dialog = QApplication::activeModalWidget();
     GT_CHECK(nullptr != dialog, "activeModalWidget is NULL");
 
-    foreach (const Action &action, actions) {
+    foreach (const Action& action, actions) {
         CHECK_OP(os, );
 
         switch (action.first) {
@@ -78,11 +78,11 @@ void ConstructMoleculeDialogFiller::addAllFragments() {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "invertAddedFragment"
-void ConstructMoleculeDialogFiller::invertAddedFragment(const QVariant &actionData) {
+void ConstructMoleculeDialogFiller::invertAddedFragment(const QVariant& actionData) {
     GT_CHECK(actionData.canConvert<QString>(), "Can't get a fragment name's part from the action data");
     GTGlobals::FindOptions options;
     options.matchPolicy = Qt::MatchContains;
-    GTTreeWidget::checkItem(os, GTTreeWidget::findItem(os, GTWidget::findExactWidget<QTreeWidget *>(os, "molConstructWidget", dialog), actionData.toString(), nullptr, 1, options), 3);
+    GTTreeWidget::checkItem(os, GTTreeWidget::findItem(os, GTWidget::findExactWidget<QTreeWidget*>(os, "molConstructWidget", dialog), actionData.toString(), nullptr, 1, options), 3);
 }
 #undef GT_METHOD_NAME
 

@@ -23,7 +23,7 @@
 
 namespace U2 {
 
-AlignmentAlgorithmMainWidget::AlignmentAlgorithmMainWidget(QWidget *parent, QVariantMap *s)
+AlignmentAlgorithmMainWidget::AlignmentAlgorithmMainWidget(QWidget* parent, QVariantMap* s)
     : QWidget(parent), externSettings(s), externSettingsExists(s != nullptr) {
 }
 
@@ -47,12 +47,12 @@ QMap<QString, QVariant> AlignmentAlgorithmMainWidget::getAlignmentAlgorithmCusto
 void AlignmentAlgorithmMainWidget::fillInnerSettings() {
 }
 
-bool AlignmentAlgorithmGUIExtensionFactory::hasMainWidget(const QWidget *parent) {
+bool AlignmentAlgorithmGUIExtensionFactory::hasMainWidget(const QWidget* parent) {
     return mainWidgets.contains(parent);
 }
 
-void AlignmentAlgorithmGUIExtensionFactory::sl_widgetDestroyed(QObject *obj) {
-    foreach (AlignmentAlgorithmMainWidget *mainWidget, mainWidgets.values()) {
+void AlignmentAlgorithmGUIExtensionFactory::sl_widgetDestroyed(QObject* obj) {
+    foreach (AlignmentAlgorithmMainWidget* mainWidget, mainWidgets.values()) {
         if (obj == mainWidget) {
             mainWidgets.remove(mainWidgets.key(mainWidget));
         }

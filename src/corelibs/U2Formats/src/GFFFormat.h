@@ -34,21 +34,21 @@ class IOAdapter;
 class U2FORMATS_EXPORT GFFFormat : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
-    GFFFormat(QObject *p);
+    GFFFormat(QObject* p);
 
-    virtual void storeDocument(Document *d, IOAdapter *io, U2OpStatus &os);
+    virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray &rawData, const GUrl & = GUrl()) const;
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
-    virtual Document *loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os);
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
 private:
-    void load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &objects, const QVariantMap &hints, U2OpStatus &si);
+    void load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& si);
 
-    static QString extractSeqObjectName(QString &fastaHeaderName, const QStringList &words, QSet<QString> &names, bool &isNameModified);
+    static QString extractSeqObjectName(QString& fastaHeaderName, const QStringList& words, QSet<QString>& names, bool& isNameModified);
 
-    QStringList parseLine(const QString &line) const;
+    QStringList parseLine(const QString& line) const;
 
     static const int LOCAL_READ_BUFFER_SIZE;
 };

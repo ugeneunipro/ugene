@@ -42,50 +42,50 @@ class SequenceObjectsExtractor {
 public:
     SequenceObjectsExtractor();
 
-    void setAlphabet(const DNAAlphabet *newAlphabet);
+    void setAlphabet(const DNAAlphabet* newAlphabet);
 
-    void extractSequencesFromDocument(Document *doc);
+    void extractSequencesFromDocument(Document* doc);
 
-    void extractSequencesFromObjects(const QList<GObject *> &objects);
+    void extractSequencesFromObjects(const QList<GObject*>& objects);
 
-    const QStringList &getErrorList() const;
+    const QStringList& getErrorList() const;
 
-    const DNAAlphabet *getAlphabet() const;
+    const DNAAlphabet* getAlphabet() const;
 
-    const QList<U2EntityRef> &getSequenceRefs() const;
+    const QList<U2EntityRef>& getSequenceRefs() const;
 
-    const QStringList &getSequenceNames() const;
+    const QStringList& getSequenceNames() const;
 
     qint64 getMaxSequencesLength() const;
 
-    const QList<Document *> &getUsedDocuments() const;
+    const QList<Document*>& getUsedDocuments() const;
 
 private:
-    void checkAlphabet(const DNAAlphabet *alphabet, const QString &objectName);
+    void checkAlphabet(const DNAAlphabet* alphabet, const QString& objectName);
 
     QList<U2EntityRef> sequenceRefs;
     QStringList errorList;
-    const DNAAlphabet *seqsAlphabet;
+    const DNAAlphabet* seqsAlphabet;
     QStringList sequenceNames;
     qint64 sequencesMaxLength;
-    QList<Document *> usedDocuments;
+    QList<Document*> usedDocuments;
 };
 
 class LoadSequencesTask : public Task {
     Q_OBJECT
 public:
-    LoadSequencesTask(const DNAAlphabet *msaAlphabet, const QStringList &filesWithSequences);
+    LoadSequencesTask(const DNAAlphabet* msaAlphabet, const QStringList& filesWithSequences);
 
     void prepare() override;
 
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     ReportResult report() override;
 
-    const SequenceObjectsExtractor &getExtractor() const;
+    const SequenceObjectsExtractor& getExtractor() const;
 
 private:
-    const DNAAlphabet *msaAlphabet;
+    const DNAAlphabet* msaAlphabet;
 
     QStringList urls;
 
@@ -100,9 +100,9 @@ private:
 class AlignSequencesToAlignmentTask : public Task {
     Q_OBJECT
 public:
-    AlignSequencesToAlignmentTask(MultipleSequenceAlignmentObject *obj,
-                                  const QString &algorithmId,
-                                  const SequenceObjectsExtractor &extractor);
+    AlignSequencesToAlignmentTask(MultipleSequenceAlignmentObject* obj,
+                                  const QString& algorithmId,
+                                  const SequenceObjectsExtractor& extractor);
 
     void prepare() override;
 
@@ -111,31 +111,31 @@ public:
 private:
     QPointer<MultipleSequenceAlignmentObject> maObjPointer;
     QStringList urls;
-    StateLock *stateLock;
-    StateLock *docStateLock;
+    StateLock* stateLock;
+    StateLock* docStateLock;
     qint64 sequencesMaxLength;
     AlignSequencesToAlignmentTaskSettings settings;
-    QList<Document *> usedDocuments;
-    const DNAAlphabet *initialMsaAlphabet;
+    QList<Document*> usedDocuments;
+    const DNAAlphabet* initialMsaAlphabet;
     SequenceObjectsExtractor sequenceObjectsExtractor;
 };
 
 class LoadSequencesAndAlignToAlignmentTask : public Task {
     Q_OBJECT
 public:
-    LoadSequencesAndAlignToAlignmentTask(MultipleSequenceAlignmentObject *obj,
-                                         const QString &algorithmId,
-                                         const QStringList &urls);
+    LoadSequencesAndAlignToAlignmentTask(MultipleSequenceAlignmentObject* obj,
+                                         const QString& algorithmId,
+                                         const QStringList& urls);
 
     void prepare() override;
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
     bool propagateSubtaskError() override;
 
 private:
     QStringList urls;
     QString algorithmId;
     QPointer<MultipleSequenceAlignmentObject> maObjPointer;
-    LoadSequencesTask *loadSequencesTask;
+    LoadSequencesTask* loadSequencesTask;
 };
 
 }  // namespace U2

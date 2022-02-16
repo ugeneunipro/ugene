@@ -49,14 +49,14 @@ U2EntityRef PhyTreeObjectTestData::getObjRef() {
     return objRef;
 }
 
-U2ObjectDbi *PhyTreeObjectTestData::getObjDbi() {
+U2ObjectDbi* PhyTreeObjectTestData::getObjDbi() {
     if (!inited) {
         init();
     }
     return dbiProvider.getDbi()->getObjectDbi();
 }
 
-UdrDbi *PhyTreeObjectTestData::getUdrDbi() {
+UdrDbi* PhyTreeObjectTestData::getUdrDbi() {
     if (!inited) {
         init();
     }
@@ -99,15 +99,15 @@ void PhyTreeObjectTestData::shutdown() {
 namespace {
 PhyTree createTree() {
     PhyTree result(new PhyTreeData());
-    PhyNode *root = new PhyNode();
+    PhyNode* root = new PhyNode();
     root->setName("ROOT");
     result->setRootNode(root);
     QStringList names;
     names << "A"
           << "B"
           << "C";
-    foreach (const QString &name, names) {
-        PhyNode *node = new PhyNode();
+    foreach (const QString& name, names) {
+        PhyNode* node = new PhyNode();
         node->setName(name);
         result->addBranch(root, node, 5.1);
     }
@@ -156,8 +156,8 @@ IMPLEMENT_TEST(PhyTreeObjectUnitTests, clone) {
     PhyTreeObject object("object", PhyTreeObjectTestData::getObjRef());
 
     U2OpStatusImpl os;
-    GObject *clonedGObj = object.clone(PhyTreeObjectTestData::getDbiRef(), os);
-    QScopedPointer<PhyTreeObject> cloned(dynamic_cast<PhyTreeObject *>(clonedGObj));
+    GObject* clonedGObj = object.clone(PhyTreeObjectTestData::getDbiRef(), os);
+    QScopedPointer<PhyTreeObject> cloned(dynamic_cast<PhyTreeObject*>(clonedGObj));
     CHECK_NO_ERROR(os);
 
     PhyTree clonedTree = createTree();
@@ -171,7 +171,7 @@ IMPLEMENT_TEST(PhyTreeObjectUnitTests, clone_NullDbi) {
     PhyTreeObject object("object", PhyTreeObjectTestData::getObjRef());
 
     U2OpStatusImpl os;
-    GObject *clonedGObj = object.clone(U2DbiRef(), os);
+    GObject* clonedGObj = object.clone(U2DbiRef(), os);
     Q_UNUSED(clonedGObj);
     CHECK_TRUE(os.hasError(), "no error");
 }
@@ -182,7 +182,7 @@ IMPLEMENT_TEST(PhyTreeObjectUnitTests, clone_NullObj) {
     PhyTreeObject object("object", objRef);
 
     U2OpStatusImpl os;
-    GObject *clonedGObj = object.clone(PhyTreeObjectTestData::getDbiRef(), os);
+    GObject* clonedGObj = object.clone(PhyTreeObjectTestData::getDbiRef(), os);
     Q_UNUSED(clonedGObj);
     CHECK_TRUE(os.hasError(), "no error");
 }

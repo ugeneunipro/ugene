@@ -31,10 +31,10 @@ namespace U2 {
 class ImportSequenceFromRawDataTask : public Task {
     Q_OBJECT
 public:
-    ImportSequenceFromRawDataTask(const U2DbiRef &dbiRef, const QString &folder, const DNASequence &sequence);
+    ImportSequenceFromRawDataTask(const U2DbiRef& dbiRef, const QString& folder, const DNASequence& sequence);
 
     QString getSequenceName() const;
-    const U2EntityRef &getEntityRef() const;
+    const U2EntityRef& getEntityRef() const;
 
 private:
     void run();

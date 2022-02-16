@@ -32,10 +32,10 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::GoToDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void GoToDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
+    QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog != nullptr, "dialog not found");
 
-    QLineEdit *posEdit = dialog->findChild<QLineEdit *>("go_to_pos_line_edit");
+    QLineEdit* posEdit = dialog->findChild<QLineEdit*>("go_to_pos_line_edit");
     GT_CHECK(posEdit != nullptr, "Line edit not found");
 
     GTLineEdit::setText(os, posEdit, QString::number(goTo));

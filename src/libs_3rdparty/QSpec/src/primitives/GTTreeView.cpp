@@ -31,13 +31,13 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTTreeView"
 #define GT_METHOD_NAME "findIndex"
-QModelIndex GTTreeView::findIndex(GUITestOpStatus &os, QTreeView *tree, QVariant data, Qt::ItemDataRole role, const GTGlobals::FindOptions &options) {
+QModelIndex GTTreeView::findIndex(GUITestOpStatus& os, QTreeView* tree, QVariant data, Qt::ItemDataRole role, const GTGlobals::FindOptions& options) {
     return findIndex(os, tree, data, QModelIndex(), role, options);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findIndex"
-QModelIndex GTTreeView::findIndex(GUITestOpStatus &os, QTreeView *tree, QVariant data, QModelIndex parent, Qt::ItemDataRole role, const GTGlobals::FindOptions &options) {
+QModelIndex GTTreeView::findIndex(GUITestOpStatus& os, QTreeView* tree, QVariant data, QModelIndex parent, Qt::ItemDataRole role, const GTGlobals::FindOptions& options) {
     GT_CHECK_RESULT(tree != NULL, "Tree widget is NULL", QModelIndex());
 
     QModelIndexList foundIndexes = findIndexes(os, tree, data, role, parent, 0, options);
@@ -57,13 +57,13 @@ QModelIndex GTTreeView::findIndex(GUITestOpStatus &os, QTreeView *tree, QVariant
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findIndexes"
-QModelIndexList GTTreeView::findIndexes(GUITestOpStatus &os, QTreeView *tree, QVariant data, Qt::ItemDataRole role, QModelIndex parent, int depth, const GTGlobals::FindOptions &options) {
+QModelIndexList GTTreeView::findIndexes(GUITestOpStatus& os, QTreeView* tree, QVariant data, Qt::ItemDataRole role, QModelIndex parent, int depth, const GTGlobals::FindOptions& options) {
     QModelIndexList foundIndexes;
     if (!(GTGlobals::FindOptions::INFINITE_DEPTH == options.depth || depth < options.depth)) {
         return foundIndexes;
     }
 
-    QAbstractItemModel *model = tree->model();
+    QAbstractItemModel* model = tree->model();
     CHECK_SET_ERR_RESULT(NULL != model, "Model is NULL", foundIndexes);
 
     int rowcount = model->rowCount(parent);
@@ -83,7 +83,7 @@ QModelIndexList GTTreeView::findIndexes(GUITestOpStatus &os, QTreeView *tree, QV
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getItemCenter"
-QPoint GTTreeView::getItemCenter(GUITestOpStatus &, QTreeView *tree, const QModelIndex &itemIndex) {
+QPoint GTTreeView::getItemCenter(GUITestOpStatus&, QTreeView* tree, const QModelIndex& itemIndex) {
     QRect r = tree->visualRect(itemIndex);
 
     return tree->mapToGlobal(r.center());
@@ -91,7 +91,7 @@ QPoint GTTreeView::getItemCenter(GUITestOpStatus &, QTreeView *tree, const QMode
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkItemIsExpanded"
-void GTTreeView::checkItemIsExpanded(HI::GUITestOpStatus &os, QTreeView *tree, const QModelIndex &itemIndex) {
+void GTTreeView::checkItemIsExpanded(HI::GUITestOpStatus& os, QTreeView* tree, const QModelIndex& itemIndex) {
     GT_CHECK(tree != nullptr, "Tree view is null!");
     GT_CHECK(itemIndex.isValid(), "Item index is not valid!");
 
@@ -106,7 +106,7 @@ void GTTreeView::checkItemIsExpanded(HI::GUITestOpStatus &os, QTreeView *tree, c
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "expand"
-void GTTreeView::expand(GUITestOpStatus &os, QTreeView *tree, const QModelIndex &itemIndex) {
+void GTTreeView::expand(GUITestOpStatus& os, QTreeView* tree, const QModelIndex& itemIndex) {
     GT_CHECK_RESULT(tree != nullptr, "tree is NULL", );
     GT_CHECK_RESULT(itemIndex.isValid(), "itemIndex is not valid", );
     if (tree->isExpanded(itemIndex)) {
@@ -116,13 +116,13 @@ void GTTreeView::expand(GUITestOpStatus &os, QTreeView *tree, const QModelIndex 
     // Using API call to expand instead of the mouse: because we do not know expander position inside of the item exactly.
     class ExpandInMainThreadScenario : public CustomScenario {
     public:
-        ExpandInMainThreadScenario(QTreeView *_treeView, const QModelIndex &_itemIndex)
+        ExpandInMainThreadScenario(QTreeView* _treeView, const QModelIndex& _itemIndex)
             : tree(_treeView), itemIndex(_itemIndex) {
         }
-        void run(HI::GUITestOpStatus &) override {
+        void run(HI::GUITestOpStatus&) override {
             tree->expand(itemIndex);
         }
-        QTreeView *tree = nullptr;
+        QTreeView* tree = nullptr;
         QModelIndex itemIndex;
     };
     GTThread::runInMainThread(os, new ExpandInMainThreadScenario(tree, itemIndex));
@@ -132,19 +132,19 @@ void GTTreeView::expand(GUITestOpStatus &os, QTreeView *tree, const QModelIndex 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "scrollToItem"
-void GTTreeView::scrollToItem(GUITestOpStatus &os, QTreeView *tree, const QModelIndex &itemIndex) {
+void GTTreeView::scrollToItem(GUITestOpStatus& os, QTreeView* tree, const QModelIndex& itemIndex) {
     GT_CHECK_RESULT(tree != nullptr, "tree is NULL", );
     GT_CHECK_RESULT(itemIndex.isValid(), "itemIndex is not valid", );
 
     class ScrollInMainThreadScenario : public CustomScenario {
     public:
-        ScrollInMainThreadScenario(QTreeView *_treeView, const QModelIndex &_itemIndex)
+        ScrollInMainThreadScenario(QTreeView* _treeView, const QModelIndex& _itemIndex)
             : tree(_treeView), itemIndex(_itemIndex) {
         }
-        void run(HI::GUITestOpStatus &) override {
+        void run(HI::GUITestOpStatus&) override {
             tree->scrollTo(itemIndex);
         }
-        QTreeView *tree = nullptr;
+        QTreeView* tree = nullptr;
         QModelIndex itemIndex;
     };
     GTThread::runInMainThread(os, new ScrollInMainThreadScenario(tree, itemIndex));
@@ -153,7 +153,7 @@ void GTTreeView::scrollToItem(GUITestOpStatus &os, QTreeView *tree, const QModel
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "click"
-void GTTreeView::click(GUITestOpStatus &os, QTreeView *tree, const QModelIndex &itemIndex, const Qt::Key &keyModifier) {
+void GTTreeView::click(GUITestOpStatus& os, QTreeView* tree, const QModelIndex& itemIndex, const Qt::Key& keyModifier) {
     GT_CHECK_RESULT(tree != nullptr, "tree is NULL", );
     GT_CHECK_RESULT(itemIndex.isValid(), "itemIndex is not valid", );
 
@@ -172,7 +172,7 @@ void GTTreeView::click(GUITestOpStatus &os, QTreeView *tree, const QModelIndex &
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "doubleClick"
-void GTTreeView::doubleClick(GUITestOpStatus &os, QTreeView *tree, const QModelIndex &itemIndex) {
+void GTTreeView::doubleClick(GUITestOpStatus& os, QTreeView* tree, const QModelIndex& itemIndex) {
     GT_CHECK_RESULT(tree != nullptr, "tree is NULL", );
     GT_CHECK_RESULT(itemIndex.isValid(), "itemIndex is not valid", );
 

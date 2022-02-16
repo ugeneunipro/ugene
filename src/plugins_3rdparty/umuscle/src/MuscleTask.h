@@ -87,7 +87,7 @@ public:
 class MuscleTask : public Task {
     Q_OBJECT
 public:
-    MuscleTask(const MultipleSequenceAlignment &ma, const MuscleTaskSettings &config);
+    MuscleTask(const MultipleSequenceAlignment& ma, const MuscleTaskSettings& config);
 
     void run();
 
@@ -107,8 +107,8 @@ public:
     MultipleSequenceAlignment inputSubMA;
     MultipleSequenceAlignment resultSubMA;
 
-    MuscleContext *ctx;
-    MuscleParallelTask *parallelSubTask;
+    MuscleContext* ctx;
+    MuscleParallelTask* parallelSubTask;
 };
 
 class MuscleAddSequencesToProfileTask : public Task {
@@ -118,14 +118,14 @@ public:
         Profile2Profile,
         Sequences2Profile,
     };
-    MuscleAddSequencesToProfileTask(MultipleSequenceAlignmentObject *obj, const QString &fileWithSequencesOrProfile, const MMode &mode);
+    MuscleAddSequencesToProfileTask(MultipleSequenceAlignmentObject* obj, const QString& fileWithSequencesOrProfile, const MMode& mode);
 
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     ReportResult report() override;
 
     QPointer<MultipleSequenceAlignmentObject> maObj;
-    LoadDocumentTask *loadTask;
+    LoadDocumentTask* loadTask;
     MMode mode;
 };
 
@@ -133,43 +133,43 @@ public:
 class MuscleAlignOwnSequencesToSelfAction : public Task {
     Q_OBJECT
 public:
-    MuscleAlignOwnSequencesToSelfAction(MultipleSequenceAlignmentObject *msaObject, const QList<int> &maRowIndexes);
+    MuscleAlignOwnSequencesToSelfAction(MultipleSequenceAlignmentObject* msaObject, const QList<int>& maRowIndexes);
 };
 
 // locks MultipleSequenceAlignment object and propagate MuscleTask results to it
 class MuscleGObjectTask : public AlignGObjectTask {
     Q_OBJECT
 public:
-    MuscleGObjectTask(MultipleSequenceAlignmentObject *obj, const MuscleTaskSettings &config);
+    MuscleGObjectTask(MultipleSequenceAlignmentObject* obj, const MuscleTaskSettings& config);
     ~MuscleGObjectTask();
 
     virtual void prepare();
     ReportResult report();
 
     QPointer<StateLock> lock;
-    MuscleTask *muscleTask;
+    MuscleTask* muscleTask;
     MuscleTaskSettings config;
 };
 
 class MuscleWithExtFileSpecifySupportTask : public Task {
     Q_OBJECT
 public:
-    MuscleWithExtFileSpecifySupportTask(const MuscleTaskSettings &config);
+    MuscleWithExtFileSpecifySupportTask(const MuscleTaskSettings& config);
     ~MuscleWithExtFileSpecifySupportTask();
 
     void prepare();
     Task::ReportResult report();
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
-    MultipleSequenceAlignmentObject *mAObject;
-    Document *currentDocument;
+    MultipleSequenceAlignmentObject* mAObject;
+    Document* currentDocument;
     bool cleanDoc;
 
-    SaveDocumentTask *saveDocumentTask;
-    LoadDocumentTask *loadDocumentTask;
-    Task *muscleGObjectTask;
+    SaveDocumentTask* saveDocumentTask;
+    LoadDocumentTask* loadDocumentTask;
+    Task* muscleGObjectTask;
     MuscleTaskSettings config;
 };
 
@@ -188,10 +188,10 @@ private:
 class MuscleGObjectRunFromSchemaTask : public AlignGObjectTask {
     Q_OBJECT
 public:
-    MuscleGObjectRunFromSchemaTask(MultipleSequenceAlignmentObject *obj, const MuscleTaskSettings &config);
+    MuscleGObjectRunFromSchemaTask(MultipleSequenceAlignmentObject* obj, const MuscleTaskSettings& config);
 
     void prepare();
-    void setMAObject(MultipleSequenceAlignmentObject *maobj);
+    void setMAObject(MultipleSequenceAlignmentObject* maobj);
 
 private:
     MuscleTaskSettings config;

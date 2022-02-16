@@ -99,12 +99,12 @@ void TCoffeeSupport::sl_runWithExtFileSpecify() {
 
 ////////////////////////////////////////
 // TCoffeeSupportContext
-TCoffeeSupportContext::TCoffeeSupportContext(QObject *p)
+TCoffeeSupportContext::TCoffeeSupportContext(QObject* p)
     : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
 
-void TCoffeeSupportContext::initViewContext(GObjectView *view) {
-    auto msaEditor = qobject_cast<MSAEditor *>(view);
+void TCoffeeSupportContext::initViewContext(GObjectView* view) {
+    auto msaEditor = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
     msaEditor->registerActionProvider(this);
 
@@ -136,11 +136,11 @@ void TCoffeeSupportContext::sl_align_with_TCoffee() {
     CHECK_OP(os, );
 
     // Call run T-Coffee align dialog
-    AlignMsaAction *action = qobject_cast<AlignMsaAction *>(sender());
+    AlignMsaAction* action = qobject_cast<AlignMsaAction*>(sender());
     CHECK(action != nullptr, );
 
-    MSAEditor *msaEditor = action->getMsaEditor();
-    MultipleSequenceAlignmentObject *obj = msaEditor->getMaObject();
+    MSAEditor* msaEditor = action->getMsaEditor();
+    MultipleSequenceAlignmentObject* obj = msaEditor->getMaObject();
     CHECK(obj != nullptr && !obj->isStateLocked(), )
 
     TCoffeeSupportTaskSettings settings;
@@ -148,7 +148,7 @@ void TCoffeeSupportContext::sl_align_with_TCoffee() {
     tCoffeeRunDialog->exec();
     CHECK(!tCoffeeRunDialog.isNull() && tCoffeeRunDialog->result() == QDialog::Accepted, );
 
-    TCoffeeSupportTask *tCoffeeSupportTask = new TCoffeeSupportTask(obj->getMultipleAlignment(), GObjectReference(obj), settings);
+    TCoffeeSupportTask* tCoffeeSupportTask = new TCoffeeSupportTask(obj->getMultipleAlignment(), GObjectReference(obj), settings);
     connect(obj, SIGNAL(destroyed()), tCoffeeSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(tCoffeeSupportTask);
 

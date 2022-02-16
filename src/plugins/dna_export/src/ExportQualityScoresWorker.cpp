@@ -49,7 +49,7 @@ const QString ExportPhredQualityWorkerFactory::ACTOR_ID("export-phred-qualities"
 // const QString QUALITY_TYPE_ATTR("quality-format");
 
 void ExportPhredQualityWorkerFactory::init() {
-    QList<PortDescriptor *> portDescriptors;
+    QList<PortDescriptor*> portDescriptors;
 
     {
         Descriptor ind(BasePorts::IN_SEQ_PORT_ID(), ExportPhredQualityWorker::tr("DNA sequences"), ExportPhredQualityWorker::tr("The PHRED scores from these sequences will be exported"));
@@ -58,29 +58,29 @@ void ExportPhredQualityWorkerFactory::init() {
         portDescriptors << new PortDescriptor(ind, DataTypePtr(new MapDataType("Export.qual.in", inM)), true /*input*/);
     }
 
-    QList<Attribute *> attributes;
+    QList<Attribute*> attributes;
     {
         Descriptor qualUrl(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), ExportPhredQualityWorker::tr("PHRED output"), ExportPhredQualityWorker::tr("Path to file with PHRED quality scores."));
         attributes << new Attribute(qualUrl, BaseTypes::STRING_TYPE(), true /*required*/, QString());
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         delegates[BaseAttributes::URL_OUT_ATTRIBUTE().getId()] = new URLDelegate(FileFilters::createAllSupportedFormatsFileFilter(), "", false, false);
     }
 
     Descriptor actorDesc(ACTOR_ID, ExportPhredQualityWorker::tr("Export PHRED Qualities"), ExportPhredQualityWorker::tr("Export corresponding PHRED quality scores from input sequences."));
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(actorDesc, portDescriptors, attributes);
+    ActorPrototype* proto = new IntegralBusActorPrototype(actorDesc, portDescriptors, attributes);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new ExportPhredQualityPrompter());
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new ExportPhredQualityWorkerFactory());
 }
 
-Worker *ExportPhredQualityWorkerFactory::createWorker(Actor *a) {
+Worker* ExportPhredQualityWorkerFactory::createWorker(Actor* a) {
     return new ExportPhredQualityWorker(a);
 }
 
@@ -88,8 +88,8 @@ Worker *ExportPhredQualityWorkerFactory::createWorker(Actor *a) {
  * ExportPhredQualityPrompter
  *************************************/
 QString ExportPhredQualityPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
-    Actor *producer = input->getProducer(BasePorts::IN_SEQ_PORT_ID());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
+    Actor* producer = input->getProducer(BasePorts::IN_SEQ_PORT_ID());
     QString producerName = producer ? tr(" from <u>%1</u>").arg(producer->getLabel()) : "";
     QString qualUrl = getParameter(BaseAttributes::URL_OUT_ATTRIBUTE().getId()).toString();
     QString qualSeq = qualUrl.isEmpty() ? "<font color='red'>" + tr("unset") + "</font>" : getHyperlink(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), GUrl(qualUrl).fileName());
@@ -104,7 +104,7 @@ QString ExportPhredQualityPrompter::composeRichDoc() {
 /*************************************
  * ExportPhredQualityWorker
  *************************************/
-ExportPhredQualityWorker::ExportPhredQualityWorker(Actor *a)
+ExportPhredQualityWorker::ExportPhredQualityWorker(Actor* a)
     : BaseWorker(a), input(nullptr), currentTask(nullptr) {
 }
 
@@ -113,7 +113,7 @@ void ExportPhredQualityWorker::init() {
     fileName = getValue<QString>(BaseAttributes::URL_OUT_ATTRIBUTE().getId());
 }
 
-Task *ExportPhredQualityWorker::tick() {
+Task* ExportPhredQualityWorker::tick() {
     if (currentTask != nullptr && currentTask->getState() != Task::State_Finished) {
         return nullptr;
     }
@@ -121,7 +121,7 @@ Task *ExportPhredQualityWorker::tick() {
     if (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         SharedDbiDataHandler seqId = inputMessage.getData().toMap().value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
-        U2SequenceObject *seqObj = StorageUtils::getSequenceObject(context->getDataStorage(), seqId);
+        U2SequenceObject* seqObj = StorageUtils::getSequenceObject(context->getDataStorage(), seqId);
         if (nullptr == seqObj) {
             return nullptr;
         }

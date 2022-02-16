@@ -41,26 +41,26 @@ class RFSArrayWAlgorithm : public RFAlgorithmBase {
     friend class RFSArrayWSubtask;
 
 public:
-    RFSArrayWAlgorithm(RFResultsListener *rl, const char *seqX, int sizeX, const char *seqY, int sizeY, const DNAAlphabet *al, int w);
+    RFSArrayWAlgorithm(RFResultsListener* rl, const char* seqX, int sizeX, const char* seqY, int sizeY, const DNAAlphabet* al, int w);
 
     void prepare();
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
     void run();
 
     /** 8x/GAP mem usage (GAP~=W/2)*/
-    void calculate(RFSArrayWSubtask *t);
+    void calculate(RFSArrayWSubtask* t);
 
 private:
-    void run(RFSArrayWSubtask *t);
-    void addResult(int a, int s, int l, int c, RFSArrayWSubtask *t);
+    void run(RFSArrayWSubtask* t);
+    void addResult(int a, int s, int l, int c, RFSArrayWSubtask* t);
     void processBoundaryResults();
 
     static int getWGap(int w);
 
-    const char *arraySeq;
-    const char *searchSeq;
+    const char* arraySeq;
+    const char* searchSeq;
     int ARRAY_SIZE;
     int SEARCH_SIZE;
     bool arrayIsX;
@@ -69,13 +69,13 @@ private:
     QMutex boundaryMutex;
 
     quint32 bitMaskCharBitsNum;
-    const quint32 *bitMask;
+    const quint32* bitMask;
     BitsTable bt;
 
     /** boundary results */
     QVector<RFResult> bresults;
 
-    CreateSArrayIndexTask *indexTask;
+    CreateSArrayIndexTask* indexTask;
     int nThreads;
 };
 
@@ -84,11 +84,11 @@ class RFSArrayWSubtask : public Task, public SArrayIndex::SAISearchContext {
     friend class RFSArrayWAlgorithm;
 
 public:
-    RFSArrayWSubtask(RFSArrayWAlgorithm *owner, int sStart, int sEnd, int _tid);
+    RFSArrayWSubtask(RFSArrayWAlgorithm* owner, int sStart, int sEnd, int _tid);
 
     void run();
 
-    RFSArrayWAlgorithm *owner;
+    RFSArrayWAlgorithm* owner;
     const int sStart;
     const int sEnd;
     const int tid;
@@ -96,7 +96,7 @@ public:
 
 class CheckEdge {
 public:
-    CheckEdge(const char *_posS = nullptr, const char *_lastS = nullptr, qint32 _diag = 0)
+    CheckEdge(const char* _posS = nullptr, const char* _lastS = nullptr, qint32 _diag = 0)
         : posS(_posS), lastS(_lastS), diag(_diag) {
         next = this;
         prev = this;
@@ -107,17 +107,17 @@ public:
         next->prev = prev;
     }
 
-    void toChain(CheckEdge *chain) {
+    void toChain(CheckEdge* chain) {
         next = chain;
         prev = chain->prev;
         chain->prev->next = this;
         chain->prev = this;
     }
 
-    const char *posS;
-    const char *lastS;
-    CheckEdge *next;
-    CheckEdge *prev;
+    const char* posS;
+    const char* lastS;
+    CheckEdge* next;
+    CheckEdge* prev;
     int diag;
 };
 
@@ -134,10 +134,10 @@ public:
         qDeleteAll(pool);
     }
 
-    CheckEdge *allocEdge(const char *posS, const char *lastS, int diag) {
+    CheckEdge* allocEdge(const char* posS, const char* lastS, int diag) {
         if (nAvailable != 0) {
             assert(nAvailable > 0);
-            CheckEdge *edge = pool[--nAvailable];
+            CheckEdge* edge = pool[--nAvailable];
             edge->posS = posS;
             edge->lastS = lastS;
             edge->diag = diag;
@@ -149,7 +149,7 @@ public:
         return new CheckEdge(posS, lastS, diag);
     }
 
-    void returnEdge(CheckEdge *e) {
+    void returnEdge(CheckEdge* e) {
         if (nAvailable != pool.size()) {
             assert(nAvailable < pool.size() && nAvailable >= 0);
             assert(pool[nAvailable] == nullptr);
@@ -160,7 +160,7 @@ public:
     }
 
     int nAvailable;
-    QVector<CheckEdge *> pool;
+    QVector<CheckEdge*> pool;
 };
 
 }  // namespace U2

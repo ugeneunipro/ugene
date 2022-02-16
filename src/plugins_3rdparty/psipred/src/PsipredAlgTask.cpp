@@ -40,7 +40,7 @@ namespace U2 {
 
 QMutex PsipredAlgTask::runLock;
 
-PsipredAlgTask::PsipredAlgTask(const QByteArray &inputSeq)
+PsipredAlgTask::PsipredAlgTask(const QByteArray& inputSeq)
     : SecStructPredictTask(inputSeq) {
     GCOUNTER(cvar, "PsipredAlgTask");
 }
@@ -64,7 +64,7 @@ void PsipredAlgTask::run() {
     QTemporaryFile matrixFile;
     try {
         seq2mtx(sequence.constData(), sequence.length(), &matrixFile);
-    } catch (const char *msg) {
+    } catch (const char* msg) {
         stateInfo.setError(QString("psipred error: %1").arg(msg));
         return;
     }
@@ -79,13 +79,13 @@ void PsipredAlgTask::run() {
         PsiPassOne pass1(&matrixFile, weightFileNames);
         try {
             pass1.runPsiPass();
-        } catch (const char *msg) {
+        } catch (const char* msg) {
             stateInfo.setError(QString("psipred error: %1").arg(msg));
             return;
         }
     }
 
-    const char *psipass2_args[] =
+    const char* psipass2_args[] =
         {
             "empty",
             ":psipred/datafiles/weights_p2.dat",
@@ -98,7 +98,7 @@ void PsipredAlgTask::run() {
         PsiPassTwo pass2;
         try {
             pass2.runPsiPass(5, psipass2_args, output);
-        } catch (const char *msg) {
+        } catch (const char* msg) {
             stateInfo.setError(QString("psipred error: %1").arg(msg));
             return;
         }

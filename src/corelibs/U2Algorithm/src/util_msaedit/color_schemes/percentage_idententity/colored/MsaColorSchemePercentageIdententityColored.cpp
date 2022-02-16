@@ -30,11 +30,11 @@ const QList<char> MsaColorSchemePercentageIdententityColored::NUCLEOTIDE_LIST = 
 const QList<QColor> MsaColorSchemePercentageIdententityColored::BACKGROUND_COLORS = {Qt::white, Qt::yellow, Qt::green, Qt::cyan};
 const QList<QColor> MsaColorSchemePercentageIdententityColored::FONT_COLORS = {Qt::black, Qt::red, Qt::black, Qt::blue};
 
-MsaColorSchemePercentageIdententityColored::MsaColorSchemePercentageIdententityColored(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj)
+MsaColorSchemePercentageIdententityColored::MsaColorSchemePercentageIdententityColored(QObject* parent, const MsaColorSchemeFactory* factory, MultipleAlignmentObject* maObj)
     : MsaColorScheme(parent, factory, maObj),
       alignmentChanged(false),
       threshold(50.0) {
-    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), this, SLOT(sl_alignmentChanged()));
+    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), this, SLOT(sl_alignmentChanged()));
 }
 
 QColor MsaColorSchemePercentageIdententityColored::getBackgroundColor(int rowNum, int columnNum, char c) const {
@@ -61,7 +61,7 @@ QColor MsaColorSchemePercentageIdententityColored::getFontColor(int rowNum, int 
     return fontColor;
 }
 
-void MsaColorSchemePercentageIdententityColored::applySettings(const QVariantMap &settings) {
+void MsaColorSchemePercentageIdententityColored::applySettings(const QVariantMap& settings) {
     threshold = settings.value(THRESHOLD_PARAMETER_NAME).toDouble();
 }
 
@@ -80,7 +80,7 @@ void MsaColorSchemePercentageIdententityColored::updateCache(const int columnNum
     SAFE_POINT(columnNum < maObj->getLength(), "Unexpected column number", );
 
     ColumnCharsCounter currentRowCounter;
-    foreach (const MultipleAlignmentRow &row, maObj->getRows()) {
+    foreach (const MultipleAlignmentRow& row, maObj->getRows()) {
         char ch = row.data()->charAt(columnNum);
         if (NUCLEOTIDE_LIST.contains(ch)) {
             currentRowCounter.addNucleotide(ch);

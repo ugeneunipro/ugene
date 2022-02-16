@@ -30,7 +30,7 @@ U2VariantTrack::U2VariantTrack()
     : trackType(TrackType_All) {
 }
 
-U2VariantTrack::U2VariantTrack(const U2DataId &id, const QString &dbId, VariantTrackType trackType, qint64 version)
+U2VariantTrack::U2VariantTrack(const U2DataId& id, const QString& dbId, VariantTrackType trackType, qint64 version)
     : U2Object(id, dbId, version),
       trackType(trackType) {
 }

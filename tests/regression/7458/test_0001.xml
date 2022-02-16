@@ -1,0 +1,8 @@
+<!DOCTYPE UGENE_TEST_FRAMEWORK_TEST> 
+<multi-test>
+    <run-cmdline
+        task="!common_data_dir!cmdline/ngs-variant-annotate/ngs_variant_annotation.uwl"
+        in="!common_data_dir!vcf/chr_copy1.vcf"
+        genome="129S1_SvImJ_v1.86"
+    />
+</multi-test>

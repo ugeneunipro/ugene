@@ -26,12 +26,12 @@
 
 namespace U2 {
 
-McaRowHeightController::McaRowHeightController(McaEditorWgt *mcaEditorWgt)
+McaRowHeightController::McaRowHeightController(McaEditorWgt* mcaEditorWgt)
     : RowHeightController(mcaEditorWgt) {
 }
 
 int McaRowHeightController::getRowHeightByMaIndex(int maRowIndex) const {
-    MaEditor *editor = ui->getEditor();
+    MaEditor* editor = ui->getEditor();
     const int fontHeight = QFontMetrics(editor->getFont(), ui).height();
 
     int rowHeigth = fontHeight;

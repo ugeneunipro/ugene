@@ -41,11 +41,11 @@ QString EnzymesIO::getFileDialogFilter() {
     return FileFilters::createFileFilter(tr("Bairoch format"), {"bairoch"});
 }
 
-QList<SEnzymeData> EnzymesIO::readEnzymes(const QString &url, TaskStateInfo &ti) {
+QList<SEnzymeData> EnzymesIO::readEnzymes(const QString& url, TaskStateInfo& ti) {
     QList<SEnzymeData> res;
 
     IOAdapterId ioId = IOAdapterUtils::url2io(url);
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioId);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioId);
     if (iof == nullptr) {
         ti.setError(tr("Unsupported URI type"));
         return res;
@@ -67,7 +67,7 @@ QList<SEnzymeData> EnzymesIO::readEnzymes(const QString &url, TaskStateInfo &ti)
     QList<SEnzymeData> resToDelete;
     // assign alphabet if needed.
     for (int i = 0, n = res.count(); i < n; i++) {
-        SEnzymeData &d = res[i];
+        SEnzymeData& d = res[i];
         if (d->seq == QByteArray("?")) {
             algoLog.trace(tr("The enzyme '%1' has unknown sequence").arg(d->id));
             resToDelete.append(d);
@@ -96,16 +96,16 @@ QList<SEnzymeData> EnzymesIO::readEnzymes(const QString &url, TaskStateInfo &ti)
     return res;
 }
 
-void EnzymesIO::writeEnzymes(const QString &url, const QString &source, const QSet<QString> &enzymes, TaskStateInfo &ti) {
+void EnzymesIO::writeEnzymes(const QString& url, const QString& source, const QSet<QString>& enzymes, TaskStateInfo& ti) {
     IOAdapterId ioId = IOAdapterUtils::url2io(url);
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioId);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioId);
     if (iof == nullptr) {
         ti.setError(tr("Unsupported URI type"));
         return;
     }
 
     IOAdapterId srcioId = IOAdapterUtils::url2io(source);
-    IOAdapterFactory *srciof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(srcioId);
+    IOAdapterFactory* srciof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(srcioId);
     if (srciof == nullptr) {
         ti.setError(tr("Unsupported URI type"));
         return;
@@ -125,7 +125,7 @@ void EnzymesIO::writeEnzymes(const QString &url, const QString &source, const QS
     }
 }
 
-EnzymeFileFormat EnzymesIO::detectFileFormat(const QString &url) {
+EnzymeFileFormat EnzymesIO::detectFileFormat(const QString& url) {
     QByteArray data = IOAdapterUtils::readFileHeader(url, 256);
     if (data.startsWith("CC ") || data.startsWith("ID ")) {
         return EnzymeFileFormat_Bairoch;
@@ -133,7 +133,7 @@ EnzymeFileFormat EnzymesIO::detectFileFormat(const QString &url) {
     return EnzymeFileFormat_Unknown;
 }
 
-QList<SEnzymeData> EnzymesIO::readBairochFile(const QString &url, IOAdapterFactory *iof, TaskStateInfo &ti) {
+QList<SEnzymeData> EnzymesIO::readBairochFile(const QString& url, IOAdapterFactory* iof, TaskStateInfo& ti) {
     QList<SEnzymeData> res;
 
     QScopedPointer<IOAdapter> io(iof->createIOAdapter());
@@ -144,8 +144,8 @@ QList<SEnzymeData> EnzymesIO::readBairochFile(const QString &url, IOAdapterFacto
 
     SEnzymeData currentData(new EnzymeData());
     QByteArray buffArr(DocumentFormat::READ_BUFF_SIZE, 0);
-    char *buff = buffArr.data();
-    const QBitArray &LINE_BREAKS = TextUtils::LINE_BREAKS;
+    char* buff = buffArr.data();
+    const QBitArray& LINE_BREAKS = TextUtils::LINE_BREAKS;
     int line = 0, len = 0;
     bool lineOk = true;
     while ((len = io->readUntil(buff, DocumentFormat::READ_BUFF_SIZE, LINE_BREAKS, IOAdapter::Term_Include, &lineOk)) > 0 && !ti.cancelFlag) {
@@ -193,7 +193,7 @@ QList<SEnzymeData> EnzymesIO::readBairochFile(const QString &url, IOAdapterFacto
             QByteArray rsLine = QByteArray(buff + 3, len - 3);
             QList<QByteArray> strands = rsLine.split(';');
             for (int s = 0, n = qMin(2, strands.count()); s < n; s++) {
-                const QByteArray &strandInfo = strands.at(s);
+                const QByteArray& strandInfo = strands.at(s);
                 QByteArray seq;
                 int cutPos = ENZYME_CUT_UNKNOWN;
                 int cutIdx = strandInfo.indexOf(',');
@@ -223,7 +223,7 @@ QList<SEnzymeData> EnzymesIO::readBairochFile(const QString &url, IOAdapterFacto
     return res;
 }
 
-void EnzymesIO::writeBairochFile(const QString &url, IOAdapterFactory *iof, const QString &source, IOAdapterFactory *srciof, const QSet<QString> &enzymes, TaskStateInfo &ti) {
+void EnzymesIO::writeBairochFile(const QString& url, IOAdapterFactory* iof, const QString& source, IOAdapterFactory* srciof, const QSet<QString>& enzymes, TaskStateInfo& ti) {
     QScopedPointer<IOAdapter> io(iof->createIOAdapter());
     if (!io->open(url, IOAdapterMode_Write)) {
         ti.setError(L10N::errorOpeningFileWrite(url));
@@ -237,8 +237,8 @@ void EnzymesIO::writeBairochFile(const QString &url, IOAdapterFactory *iof, cons
     }
 
     QByteArray buffArr(DocumentFormat::READ_BUFF_SIZE, 0);
-    char *buff = buffArr.data();
-    const QBitArray &LINE_BREAKS = TextUtils::LINE_BREAKS;
+    char* buff = buffArr.data();
+    const QBitArray& LINE_BREAKS = TextUtils::LINE_BREAKS;
     int line = 0, len = 0;
     bool lineOk = true;
     bool writeString = true;
@@ -265,9 +265,9 @@ void EnzymesIO::writeBairochFile(const QString &url, IOAdapterFactory *iof, cons
     io->close();
 }
 
-SEnzymeData EnzymesIO::findEnzymeById(const QString &id, const QList<SEnzymeData> &enzymes) {
+SEnzymeData EnzymesIO::findEnzymeById(const QString& id, const QList<SEnzymeData>& enzymes) {
     const QString idLower = id.toLower();
-    foreach (const SEnzymeData &ed, enzymes) {
+    foreach (const SEnzymeData& ed, enzymes) {
         if (ed->id.toLower() == idLower) {
             return ed;
         }
@@ -301,7 +301,7 @@ QList<SEnzymeData> EnzymesIO::getDefaultEnzymesList() {
 //////////////////////////////////////////////////////////////////////////
 // load task
 
-LoadEnzymeFileTask::LoadEnzymeFileTask(const QString &_url)
+LoadEnzymeFileTask::LoadEnzymeFileTask(const QString& _url)
     : Task(tr("Load enzymes from %1").arg(_url), TaskFlag_None), url(_url) {
 }
 
@@ -312,7 +312,7 @@ void LoadEnzymeFileTask::run() {
 //////////////////////////////////////////////////////////////////////////
 // save task
 
-SaveEnzymeFileTask::SaveEnzymeFileTask(const QString &_url, const QString &_source, const QSet<QString> &_enzymes)
+SaveEnzymeFileTask::SaveEnzymeFileTask(const QString& _url, const QString& _source, const QSet<QString>& _enzymes)
     : Task(tr("Save enzymes to %1").arg(_url), TaskFlag_None), url(_url), source(_source), enzymes(_enzymes) {
 }
 

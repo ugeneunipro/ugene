@@ -53,7 +53,7 @@ namespace U2 {
 #define FILTER_SETTINGS QString("filter")
 
 void SendSelectionDialog::setUpSettings() {
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     shortSequenceCheckBox->setChecked(s->getValue(SETTINGS_ROOT + SHORT_SETTINGS, false).toBool());
     evalueSpinBox->setValue(s->getValue(SETTINGS_ROOT + EXPECT_SETTINGS, 10).toDouble());
     quantitySpinBox->setValue(s->getValue(SETTINGS_ROOT + HITS_SETTINGS, 20).toInt());
@@ -67,7 +67,7 @@ void SendSelectionDialog::setUpSettings() {
 }
 
 void SendSelectionDialog::saveSettings() {
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     s->setValue(SETTINGS_ROOT + SHORT_SETTINGS, shortSequenceCheckBox->isChecked());
     s->setValue(SETTINGS_ROOT + EXPECT_SETTINGS, evalueSpinBox->value());
     s->setValue(SETTINGS_ROOT + HITS_SETTINGS, quantitySpinBox->value());
@@ -129,9 +129,9 @@ void SendSelectionDialog::alignComboBoxes() {
     }
 }
 
-SendSelectionDialog::SendSelectionDialog(ADVSequenceObjectContext *seqCtx, bool _isAminoSeq, QWidget *p)
+SendSelectionDialog::SendSelectionDialog(ADVSequenceObjectContext* seqCtx, bool _isAminoSeq, QWidget* p)
     : QDialog(p), translateToAmino(false), isAminoSeq(_isAminoSeq), extImported(false), seqCtx(seqCtx) {
-    U2SequenceObject *dnaso = seqCtx->getSequenceObject();
+    U2SequenceObject* dnaso = seqCtx->getSequenceObject();
     CreateAnnotationModel ca_m;
     ca_m.hideAnnotationType = true;
     ca_m.hideAnnotationName = true;
@@ -146,7 +146,7 @@ SendSelectionDialog::SendSelectionDialog(ADVSequenceObjectContext *seqCtx, bool 
 
     optionsTab->setCurrentIndex(0);
     int idx = 2;
-    QWidget *wdgt;
+    QWidget* wdgt;
     wdgt = ca_c->getWidget();
     layoutAnnotations->insertWidget(idx, wdgt);
 
@@ -158,8 +158,8 @@ SendSelectionDialog::SendSelectionDialog(ADVSequenceObjectContext *seqCtx, bool 
     alignComboBoxes();
 
     connect(dataBase, SIGNAL(currentIndexChanged(int)), SLOT(sl_scriptSelected(int)));
-    QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
-    QPushButton *cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
+    QPushButton* okButton = buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
 
     connect(okButton, SIGNAL(clicked()), SLOT(sl_OK()));
     connect(cancelButton, SIGNAL(clicked()), SLOT(sl_Cancel()));
@@ -193,15 +193,15 @@ QString SendSelectionDialog::getGroupName() const {
     return ca_c->getModel().groupName;
 }
 
-const QString &SendSelectionDialog::getAnnotationDescription() const {
+const QString& SendSelectionDialog::getAnnotationDescription() const {
     return ca_c->getModel().description;
 }
 
-const CreateAnnotationModel *SendSelectionDialog::getModel() const {
+const CreateAnnotationModel* SendSelectionDialog::getModel() const {
     return &(ca_c->getModel());
 }
 
-AnnotationTableObject *SendSelectionDialog::getAnnotationObject() const {
+AnnotationTableObject* SendSelectionDialog::getAnnotationObject() const {
     return ca_c->getModel().getAnnotationObject();
 }
 

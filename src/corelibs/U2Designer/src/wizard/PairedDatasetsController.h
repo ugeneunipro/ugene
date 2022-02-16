@@ -33,17 +33,17 @@ namespace U2 {
 class PairedDatasetsController : public WidgetController {
     Q_OBJECT
 public:
-    PairedDatasetsController(WizardController *wc, PairedReadsWidget *widget);
+    PairedDatasetsController(WizardController* wc, PairedReadsWidget* widget);
     virtual ~PairedDatasetsController();
 
-    virtual QWidget *createGUI(U2OpStatus &os);
+    virtual QWidget* createGUI(U2OpStatus& os);
 
 private slots:
     void sl_datasetsChanged();
 
 private:
-    PairedReadsWidget *widget;
-    PairedReadsController *dsc;
+    PairedReadsWidget* widget;
+    PairedReadsController* dsc;
 };
 
 }  // namespace U2

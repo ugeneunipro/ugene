@@ -104,12 +104,12 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
                                                                testDir + "_common_data/fasta/",
                                                                "shuffled.fa");
     // Parameters
-    AlignShortReadsFiller *alignShortReadsFiller = new AlignShortReadsFiller(os, &bowtie2Parameters);
+    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(os, &bowtie2Parameters);
     CHECK_OP(os, );
     GTUtilsDialog::waitForDialog(os, alignShortReadsFiller);
     CHECK_OP(os, );
 
-    ImportBAMFileFiller *importBAMFileFiller = new ImportBAMFileFiller(os);
+    ImportBAMFileFiller* importBAMFileFiller = new ImportBAMFileFiller(os);
     CHECK_OP(os, );
     GTUtilsDialog::waitForDialog(os, importBAMFileFiller);
     CHECK_OP(os, );
@@ -168,12 +168,12 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     bowtie2Parameters.noOverlappingMates = true;
     bowtie2Parameters.noMatesContainingOneAnother = true;
 
-    AlignShortReadsFiller *alignShortReadsFiller = new AlignShortReadsFiller(os, &bowtie2Parameters);
+    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(os, &bowtie2Parameters);
     CHECK_OP(os, );
     GTUtilsDialog::waitForDialog(os, alignShortReadsFiller);
     CHECK_OP(os, );
 
-    ImportBAMFileFiller *importBAMFileFiller = new ImportBAMFileFiller(os);
+    ImportBAMFileFiller* importBAMFileFiller = new ImportBAMFileFiller(os);
     CHECK_OP(os, );
     GTUtilsDialog::waitForDialog(os, importBAMFileFiller);
     CHECK_OP(os, );
@@ -239,12 +239,12 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     bowtie2Parameters.noOverlappingMates = false;
     bowtie2Parameters.noMatesContainingOneAnother = false;
 
-    AlignShortReadsFiller *alignShortReadsFiller = new AlignShortReadsFiller(os, &bowtie2Parameters);
+    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(os, &bowtie2Parameters);
     CHECK_OP(os, );
     GTUtilsDialog::waitForDialog(os, alignShortReadsFiller);
     CHECK_OP(os, );
 
-    ImportBAMFileFiller *importBAMFileFiller = new ImportBAMFileFiller(os,
+    ImportBAMFileFiller* importBAMFileFiller = new ImportBAMFileFiller(os,
                                                                        testDir + "_common_data/scenarios/sandbox/human_T1_cutted.sam.ugenedb");
     CHECK_OP(os, );
     GTUtilsDialog::waitForDialog(os, importBAMFileFiller);

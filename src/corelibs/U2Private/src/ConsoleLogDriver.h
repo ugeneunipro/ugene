@@ -54,15 +54,15 @@ public:
     ConsoleLogDriver();
     virtual ~ConsoleLogDriver();
 
-    void onMessage(const LogMessage &msg);
+    void onMessage(const LogMessage& msg);
 
 private:
     void setCmdLineSettings();
-    QString getEffectiveCategory(const LogMessage &msg) const;
+    QString getEffectiveCategory(const LogMessage& msg) const;
     QString getLevelName(int i) const;
 
 private slots:
-    QString prepareText(const LogMessage &msg) const;
+    QString prepareText(const LogMessage& msg) const;
 
 private:
     bool printToConsole;

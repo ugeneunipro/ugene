@@ -32,7 +32,7 @@ class ShowHideSubgroupWidget;
 class CreateAnnotationOptionsPanelWidget : public CreateAnnotationWidget, private Ui_CreateAnnotationOptionsPanelWidget {
     Q_OBJECT
 public:
-    CreateAnnotationOptionsPanelWidget(QWidget *parent = nullptr);
+    CreateAnnotationOptionsPanelWidget(QWidget* parent = nullptr);
 
     void setGroupNameVisible(bool visible);
     void setLocationVisible(bool visible);
@@ -53,12 +53,12 @@ public:
     void focusAnnotationName();
     void focusLocation();
 
-    void setNewTablePath(const QString &path);
-    void setGroupName(const QString &name);
+    void setNewTablePath(const QString& path);
+    void setGroupName(const QString& name);
     void setAnnotationType(U2FeatureType type);
-    void setAnnotationName(const QString &name);
-    void setLocation(const U2Location &location);
-    void setDescription(const QString &description);
+    void setAnnotationName(const QString& name);
+    void setLocation(const U2Location& location);
+    void setDescription(const QString& description);
 
     QString getAnnotationTypeString() const;
     QString getGroupName() const;
@@ -78,18 +78,18 @@ public:
     bool isExistingTableOptionSelected() const;
     bool isAutoTableOptionSelected() const;
 
-    void showSelectGroupMenu(QMenu &menu);
-    GObjectComboBoxController *createGObjectComboBoxController(const GObjectComboBoxControllerConstraints &constraints);
+    void showSelectGroupMenu(QMenu& menu);
+    GObjectComboBoxController* createGObjectComboBoxController(const GObjectComboBoxControllerConstraints& constraints);
 
     void countDescriptionUsage() const;
-    void fillSaveDocumentControllerConfig(SaveDocumentControllerConfig &config) const;
+    void fillSaveDocumentControllerConfig(SaveDocumentControllerConfig& config) const;
 
 private:
     void initLayout();
     void init();
     void connectSignals();
 
-    ShowHideSubgroupWidget *annotationParametersWidget;
+    ShowHideSubgroupWidget* annotationParametersWidget;
 };
 
 }  // namespace U2

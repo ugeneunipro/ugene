@@ -43,19 +43,19 @@ class DistanceMatrixMSAProfileDialog : public QDialog, public Ui_DistanceMatrixM
     Q_OBJECT
 
 public:
-    DistanceMatrixMSAProfileDialog(QWidget *p, MSAEditor *ctx);
+    DistanceMatrixMSAProfileDialog(QWidget* p, MSAEditor* ctx);
 
     void accept();
 
 private slots:
     void sl_formatSelected();
-    void sl_formatChanged(const QString &newFormatId);
+    void sl_formatChanged(const QString& newFormatId);
 
 private:
     void initSaveController();
 
-    MSAEditor *ctx;
-    SaveDocumentController *saveController;
+    MSAEditor* ctx;
+    SaveDocumentController* saveController;
 
     static const QString HTML;
     static const QString CSV;
@@ -80,23 +80,23 @@ public:
     bool showGroupStatistic;
     DistanceMatrixMSAProfileOutputFormat outFormat;
     QString outURL;
-    MSAEditor *ctx;
+    MSAEditor* ctx;
 };
 
 class DistanceMatrixMSAProfileTask : public Task {
     Q_OBJECT
 public:
-    DistanceMatrixMSAProfileTask(const DistanceMatrixMSAProfileTaskSettings &s);
+    DistanceMatrixMSAProfileTask(const DistanceMatrixMSAProfileTaskSettings& s);
 
     virtual void prepare();
     QString generateReport() const;
     virtual bool isReportingEnabled() const;
 
-    void createDistanceTable(MSADistanceAlgorithm *algo, const QList<MultipleSequenceAlignmentRow> &rows, QFile *f);
+    void createDistanceTable(MSADistanceAlgorithm* algo, const QList<MultipleSequenceAlignmentRow>& rows, QFile* f);
 
-    QList<Task *> createStatisticsDocument(Task *subTask);
+    QList<Task*> createStatisticsDocument(Task* subTask);
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
     // void run();
     ReportResult report();
 

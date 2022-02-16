@@ -33,29 +33,29 @@ namespace U2 {
 class U2GUI_EXPORT SeqPasterWidgetController : public QWidget {
     Q_OBJECT
 public:
-    SeqPasterWidgetController(QWidget *p = nullptr, const QByteArray &initText = QByteArray(), bool needWarning = false);
+    SeqPasterWidgetController(QWidget* p = nullptr, const QByteArray& initText = QByteArray(), bool needWarning = false);
     ~SeqPasterWidgetController();
 
     QString validate();
     QList<DNASequence> getSequences() const;
     void disableCustomSettings();
-    void setPreferredAlphabet(const DNAAlphabet *alp);
+    void setPreferredAlphabet(const DNAAlphabet* alp);
     void selectText();
-    void setEventFilter(QObject *evFilter);
+    void setEventFilter(QObject* evFilter);
     void allowFastaFormat(bool allow);
 
-    static QByteArray getNormSequence(const DNAAlphabet *alph, const QByteArray &seq, bool replace, QChar replaceChar);
+    static QByteArray getNormSequence(const DNAAlphabet* alph, const QByteArray& seq, bool replace, QChar replaceChar);
 
 private slots:
-    void sl_currentIndexChanged(const QString &newText);
+    void sl_currentIndexChanged(const QString& newText);
 
 private:
-    QString addSequence(const QString &name, QString data);
-    static bool isFastaFormat(const QString &data);
+    QString addSequence(const QString& name, QString data);
+    static bool isFastaFormat(const QString& data);
 
-    const DNAAlphabet *preferred;
+    const DNAAlphabet* preferred;
     QList<DNASequence> resultSequences;
-    Ui_SeqPasterWidget *ui;
+    Ui_SeqPasterWidget* ui;
     bool additionalWarning;
     bool allowFastaFormatMode;
 };

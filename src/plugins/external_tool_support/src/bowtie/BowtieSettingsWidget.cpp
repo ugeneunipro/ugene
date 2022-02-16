@@ -37,7 +37,7 @@ namespace U2 {
 
 // BowtieSettingsWidget
 
-BowtieSettingsWidget::BowtieSettingsWidget(QWidget *parent)
+BowtieSettingsWidget::BowtieSettingsWidget(QWidget* parent)
     : DnaAssemblyAlgorithmMainWidget(parent) {
     setupUi(this);
     layout()->setContentsMargins(0, 0, 0, 0);
@@ -96,7 +96,7 @@ QMap<QString, QVariant> BowtieSettingsWidget::getDnaAssemblyCustomSettings() con
     return settings;
 }
 
-bool BowtieSettingsWidget::isValidIndex(const QString &oneIndexFileUrl) const {
+bool BowtieSettingsWidget::isValidIndex(const QString& oneIndexFileUrl) const {
     QStringList suffixes;
     suffixes << BowtieTask::indexSuffixes;
     suffixes << BowtieTask::largeIndexSuffixes;
@@ -109,7 +109,7 @@ bool BowtieSettingsWidget::isValidIndex(const QString &oneIndexFileUrl) const {
 
 // BowtieBuildSettingsWidget
 
-BowtieBuildSettingsWidget::BowtieBuildSettingsWidget(QWidget *parent)
+BowtieBuildSettingsWidget::BowtieBuildSettingsWidget(QWidget* parent)
     : DnaAssemblyAlgorithmBuildIndexWidget(parent) {
     setupUi(this);
     layout()->setContentsMargins(0, 0, 0, 0);
@@ -124,17 +124,17 @@ QString BowtieBuildSettingsWidget::getIndexFileExtension() {
     return QString();
 }
 
-GUrl BowtieBuildSettingsWidget::buildIndexUrl(const GUrl &) {
+GUrl BowtieBuildSettingsWidget::buildIndexUrl(const GUrl&) {
     return GUrl();
 }
 
 // BowtieGUIExtensionsFactory
 
-DnaAssemblyAlgorithmMainWidget *BowtieGUIExtensionsFactory::createMainWidget(QWidget *parent) {
+DnaAssemblyAlgorithmMainWidget* BowtieGUIExtensionsFactory::createMainWidget(QWidget* parent) {
     return new BowtieSettingsWidget(parent);
 }
 
-DnaAssemblyAlgorithmBuildIndexWidget *BowtieGUIExtensionsFactory::createBuildIndexWidget(QWidget *parent) {
+DnaAssemblyAlgorithmBuildIndexWidget* BowtieGUIExtensionsFactory::createBuildIndexWidget(QWidget* parent) {
     return new BowtieBuildSettingsWidget(parent);
 }
 
@@ -146,4 +146,4 @@ bool BowtieGUIExtensionsFactory::hasBuildIndexWidget() {
     return true;
 }
 
-}    // namespace U2
+}  // namespace U2

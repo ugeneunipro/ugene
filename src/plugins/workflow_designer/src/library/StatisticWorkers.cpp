@@ -52,8 +52,8 @@ const QString GC2CONTENT("gc2-content");
 const QString GC3CONTENT("gc3-content");
 
 void DNAStatWorkerFactory::init() {
-    QList<PortDescriptor *> portDescs;
-    QList<Attribute *> attribs;
+    QList<PortDescriptor*> portDescs;
+    QList<Attribute*> attribs;
 
     // accept sequence and annotated regions as input
     QMap<Descriptor, DataTypePtr> inputMap;
@@ -89,12 +89,12 @@ void DNAStatWorkerFactory::init() {
     Descriptor desc(ACTOR_ID,
                     DNAStatWorker::tr("DNA Statistics"),
                     DNAStatWorker::tr("Evaluates statistics for DNA sequences."));
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, portDescs, attribs);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, portDescs, attribs);
     proto->setPrompter(new DNAStatWorkerPrompter());
-    proto->setEditor(new DelegateEditor(QMap<QString, PropertyDelegate *>()));
+    proto->setEditor(new DelegateEditor(QMap<QString, PropertyDelegate*>()));
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_STATISTIC(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new DNAStatWorkerFactory());
 }
 
@@ -107,7 +107,7 @@ void DNAStatWorker::init() {
     output = ports.value(BasePorts::OUT_ANNOTATIONS_PORT_ID());
 }
 
-Task *DNAStatWorker::tick() {
+Task* DNAStatWorker::tick() {
     while (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
@@ -170,7 +170,7 @@ Task *DNAStatWorker::tick() {
     return nullptr;
 }
 
-float DNAStatWorker::calcGCContent(const QByteArray &seq) {
+float DNAStatWorker::calcGCContent(const QByteArray& seq) {
     int gc = 0;
     for (int i = 0; i < seq.size(); i++) {
         if (QRegExp("[cCgG]").exactMatch(QString(seq.at(i)))) {
@@ -181,7 +181,7 @@ float DNAStatWorker::calcGCContent(const QByteArray &seq) {
     return gcContent;
 }
 
-float DNAStatWorker::calcGC1Content(const QByteArray &seq) {
+float DNAStatWorker::calcGC1Content(const QByteArray& seq) {
     int gc1 = 0;
     for (int i = 0; i < seq.size(); i += 3) {
         if (QRegExp("[cCgG]").exactMatch(QString(seq.at(i)))) {
@@ -192,7 +192,7 @@ float DNAStatWorker::calcGC1Content(const QByteArray &seq) {
     return gc1Content;
 }
 
-float DNAStatWorker::calcGC2Content(const QByteArray &seq) {
+float DNAStatWorker::calcGC2Content(const QByteArray& seq) {
     int gc2 = 0;
     for (int i = 1; i < seq.size(); i += 3) {
         if (QRegExp("[cCgG]").exactMatch(QString(seq.at(i)))) {
@@ -203,7 +203,7 @@ float DNAStatWorker::calcGC2Content(const QByteArray &seq) {
     return gc2Content;
 }
 
-float DNAStatWorker::calcGC3Content(const QByteArray &seq) {
+float DNAStatWorker::calcGC3Content(const QByteArray& seq) {
     int gc3 = 0;
     for (int i = 2; i < seq.size(); i += 3) {
         if (QRegExp("[cCgG]").exactMatch(QString(seq.at(i)))) {

@@ -29,7 +29,7 @@ using namespace HI;
 
 class PwmSearchDialogFiller : public Filler {
 public:
-    PwmSearchDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario);
+    PwmSearchDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario);
 };
 
 }  // namespace U2

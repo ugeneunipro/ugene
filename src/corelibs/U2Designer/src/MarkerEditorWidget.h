@@ -33,19 +33,19 @@ class Marker;
 class MarkerEditorWidget : public QWidget, public Ui_MarkerEditorWidget {
     Q_OBJECT
 public:
-    MarkerEditorWidget(QAbstractTableModel *markerModel, QWidget *parent = nullptr);
-    bool checkEditMarkerGroupResult(const QString &oldName, Marker *newMarker, QString &message);
-    bool checkAddMarkerGroupResult(Marker *newMarker, QString &message);
+    MarkerEditorWidget(QAbstractTableModel* markerModel, QWidget* parent = nullptr);
+    bool checkEditMarkerGroupResult(const QString& oldName, Marker* newMarker, QString& message);
+    bool checkAddMarkerGroupResult(Marker* newMarker, QString& message);
 
 private:
-    QAbstractTableModel *markerModel;
+    QAbstractTableModel* markerModel;
 
 private slots:
     void sl_onAddButtonClicked();
     void sl_onEditButtonClicked();
     void sl_onRemoveButtonClicked();
-    void sl_onItemSelected(const QModelIndex &idx);
-    void sl_onItemEntered(const QModelIndex &idx);
+    void sl_onItemSelected(const QModelIndex& idx);
+    void sl_onItemEntered(const QModelIndex& idx);
 };
 
 }  // namespace U2

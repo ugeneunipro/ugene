@@ -27,13 +27,13 @@
 
 namespace U2 {
 
-GObjectReference::GObjectReference(const GObject *obj, bool deriveLoadedType) {
+GObjectReference::GObjectReference(const GObject* obj, bool deriveLoadedType) {
     SAFE_POINT(obj != nullptr && obj->getDocument() != nullptr, "GObjectReference:: no object and annotation", );
     docUrl = obj->getDocument()->getURLString();
     objName = obj->getGObjectName();
     entityRef = obj->getEntityRef();
     if (obj->isUnloaded() && deriveLoadedType) {
-        const UnloadedObject *uo = qobject_cast<const UnloadedObject *>(obj);
+        const UnloadedObject* uo = qobject_cast<const UnloadedObject*>(obj);
         SAFE_POINT(uo != nullptr, "GObjectReference:: cannot cast UnloadedObject", );
         objType = uo->getLoadedObjectType();
     } else {
@@ -41,37 +41,37 @@ GObjectReference::GObjectReference(const GObject *obj, bool deriveLoadedType) {
     }
 }
 
-bool GObjectReference::operator==(const GObjectReference &r) const {
+bool GObjectReference::operator==(const GObjectReference& r) const {
     return objName == r.objName && docUrl == r.docUrl && objType == r.objType && (!r.entityRef.isValid() || !entityRef.isValid() || r.entityRef == entityRef);
 }
 
-bool GObjectRelation::operator==(const GObjectRelation &r) const {
+bool GObjectRelation::operator==(const GObjectRelation& r) const {
     return ref == r.ref && role == r.role;
 }
 
-bool GObjectReference::operator<(const GObjectReference &r) const {
+bool GObjectReference::operator<(const GObjectReference& r) const {
     return U2::qHash(this) < U2::qHash(r);
 }
 
-QDataStream &operator<<(QDataStream &out, const GObjectReference &myObj) {
+QDataStream& operator<<(QDataStream& out, const GObjectReference& myObj) {
     out << myObj.docUrl << myObj.objName << myObj.objType;
     return out;
 }
 
-QDataStream &operator>>(QDataStream &in, GObjectReference &myObj) {
+QDataStream& operator>>(QDataStream& in, GObjectReference& myObj) {
     in >> myObj.docUrl;
     in >> myObj.objName;
     in >> myObj.objType;
     return in;
 }
 
-QDataStream &operator<<(QDataStream &out, const GObjectRelation &myObj) {
+QDataStream& operator<<(QDataStream& out, const GObjectRelation& myObj) {
     QString data;  // for compatibility
     out << myObj.ref << GObjectRelationRoleCompatibility::toString(myObj.role) << data;
     return out;
 }
 
-QDataStream &operator>>(QDataStream &in, GObjectRelation &myObj) {
+QDataStream& operator>>(QDataStream& in, GObjectRelation& myObj) {
     QString roleString;
     QString data;  // for compatibility
     in >> myObj.ref;

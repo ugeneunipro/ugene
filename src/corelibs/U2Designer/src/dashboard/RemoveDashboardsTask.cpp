@@ -26,12 +26,12 @@
 
 namespace U2 {
 
-RemoveDashboardsTask::RemoveDashboardsTask(const QList<DashboardInfo> &_dashboardInfos)
+RemoveDashboardsTask::RemoveDashboardsTask(const QList<DashboardInfo>& _dashboardInfos)
     : Task(tr("Remove dashboards"), TaskFlag_None), dashboardInfos(_dashboardInfos) {
 }
 
 void RemoveDashboardsTask::run() {
-    foreach (const DashboardInfo &info, dashboardInfos) {
+    foreach (const DashboardInfo& info, dashboardInfos) {
         U2OpStatus2Log os;
         GUrlUtils::removeDir(info.path, os);
     }

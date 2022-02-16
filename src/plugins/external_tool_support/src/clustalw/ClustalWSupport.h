@@ -35,7 +35,7 @@ class ClustalWSupport : public ExternalTool {
 public:
     ClustalWSupport();
 
-    GObjectViewWindowContext *getViewContext() const {
+    GObjectViewWindowContext* getViewContext() const {
         return viewCtx;
     }
 
@@ -45,20 +45,20 @@ public slots:
     void sl_runWithExtFileSpecify();
 
 private:
-    GObjectViewWindowContext *viewCtx;
+    GObjectViewWindowContext* viewCtx;
 };
 
 class ClustalWSupportContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    ClustalWSupportContext(QObject *p);
+    ClustalWSupportContext(QObject* p);
 
 protected slots:
     void sl_align();
 
 protected:
-    void initViewContext(GObjectView *view) override;
+    void initViewContext(GObjectView* view) override;
 };
 
-}    // namespace U2
-#endif    // _U2_CLUSTALW_SUPPORT_H
+}  // namespace U2
+#endif  // _U2_CLUSTALW_SUPPORT_H

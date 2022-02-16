@@ -36,7 +36,7 @@
 
 namespace U2 {
 
-bool DocumentReadingModeSelectorController::adjustReadingMode(FormatDetectionResult &dr, bool forceOptions, bool optionsAlreadyChoosed) {
+bool DocumentReadingModeSelectorController::adjustReadingMode(FormatDetectionResult& dr, bool forceOptions, bool optionsAlreadyChoosed) {
     // only sequence reading mode options are supported today
 
     // sequence reading:
@@ -45,7 +45,7 @@ bool DocumentReadingModeSelectorController::adjustReadingMode(FormatDetectionRes
     // 3. as a multiple sequence alignment
     // 4. as reads to be aligned to reference
 
-    QVariantMap &props = dr.rawDataCheckResult.properties;
+    QVariantMap& props = dr.rawDataCheckResult.properties;
     if (optionsAlreadyChoosed) {
         return true;
     }

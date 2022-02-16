@@ -32,9 +32,9 @@ namespace U2 {
 class HmmerParseSearchResultsTask : public Task {
     Q_OBJECT
 public:
-    HmmerParseSearchResultsTask(const QString &resultUrl, const AnnotationCreationPattern &pattern);
+    HmmerParseSearchResultsTask(const QString& resultUrl, const AnnotationCreationPattern& pattern);
 
-    const QList<SharedAnnotationData> &getAnnotations() const;
+    const QList<SharedAnnotationData>& getAnnotations() const;
 
 private:
     enum TOKENS {
@@ -65,8 +65,8 @@ private:
 
     void run();
 
-    static bool isComment(const QString &line);
-    void processHit(const QStringList &tokens, qint64 lineNumber);
+    static bool isComment(const QString& line);
+    void processHit(const QStringList& tokens, qint64 lineNumber);
 
     const QString resultUrl;
     const AnnotationCreationPattern pattern;
@@ -75,6 +75,6 @@ private:
     static const qint64 BUFF_SIZE;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_HMMER_PARSE_SEARCH_RESULTS_TASK_H_
+#endif  // _U2_HMMER_PARSE_SEARCH_RESULTS_TASK_H_

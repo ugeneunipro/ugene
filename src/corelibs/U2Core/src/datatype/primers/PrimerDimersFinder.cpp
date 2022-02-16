@@ -42,8 +42,7 @@ QString DimerFinderResult::getShortReport() const {
     return QString("Delta G: %1 kcal/mole<br>Base Pairs: %2").arg(deltaG).arg(baseCounts);
 }
 QString DimerFinderResult::getReportWithMeltingTemp() const {
-    return QString("<b>Delta</b> G: %1 kcal/mole <b>Base Pairs:</b> %2 <b>Melting temperature:</b> %3&deg;C").arg(deltaG)
-        .arg(baseCounts).arg(PrimerStatistics::getMeltingTemperature(dimer.toUtf8())) + "<pre>" + dimersOverlap + "</pre>";
+    return QString("<b>Delta</b> G: %1 kcal/mole <b>Base Pairs:</b> %2 <b>Melting temperature:</b> %3&deg;C").arg(deltaG).arg(baseCounts).arg(PrimerStatistics::getMeltingTemperature(dimer.toUtf8())) + "<pre>" + dimersOverlap + "</pre>";
 }
 
 /************************************************************************/
@@ -51,34 +50,33 @@ QString DimerFinderResult::getReportWithMeltingTemp() const {
 /************************************************************************/
 
 const QMap<QByteArray, qreal> BaseDimersFinder::ENERGY_MAP = {
-        { "AA", -1.9 },
-        { "TT", -1.9 },
+    {"AA", -1.9},
+    {"TT", -1.9},
 
-        { "AT", -1.5 },
-        { "TA", -1.0 },
+    {"AT", -1.5},
+    {"TA", -1.0},
 
-        { "CA", -2.0 },
-        { "TG", -2.0 },
+    {"CA", -2.0},
+    {"TG", -2.0},
 
-        { "AC", -1.3 },
-        { "GT", -1.3 },
+    {"AC", -1.3},
+    {"GT", -1.3},
 
-        { "CT", -1.6 },
-        { "AG", -1.6 },
-        { "GA", -1.6 },
-        { "TC", -1.6 },
+    {"CT", -1.6},
+    {"AG", -1.6},
+    {"GA", -1.6},
+    {"TC", -1.6},
 
-        { "CG", -3.6 },
-        { "GC", -3.1 },
+    {"CG", -3.6},
+    {"GC", -3.1},
 
-        { "GG", -3.1 },
-        { "CC", -3.1 }
-};
+    {"GG", -3.1},
+    {"CC", -3.1}};
 
-BaseDimersFinder::BaseDimersFinder(const QByteArray &forwardPrimer, const QByteArray &reversePrimer, double energyThreshold)
+BaseDimersFinder::BaseDimersFinder(const QByteArray& forwardPrimer, const QByteArray& reversePrimer, double energyThreshold)
     : forwardPrimer(forwardPrimer), reversePrimer(reversePrimer), energyThreshold(energyThreshold), maximumDeltaG(0) {
-    DNATranslationRegistry *tr = AppContext::getDNATranslationRegistry();
-    DNATranslation *dnaTranslation = tr->lookupTranslation(BaseDNATranslationIds::NUCL_DNA_DEFAULT_COMPLEMENT);
+    DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
+    DNATranslation* dnaTranslation = tr->lookupTranslation(BaseDNATranslationIds::NUCL_DNA_DEFAULT_COMPLEMENT);
 
     if (nullptr != dnaTranslation) {
         int bufSize = reversePrimer.size();
@@ -92,7 +90,7 @@ BaseDimersFinder::BaseDimersFinder(const QByteArray &forwardPrimer, const QByteA
     resHomologousRegion.fill(' ');
 }
 
-void BaseDimersFinder::fillResultsForCurrentIteration(const QByteArray &homologousBases, int overlapStartPos) {
+void BaseDimersFinder::fillResultsForCurrentIteration(const QByteArray& homologousBases, int overlapStartPos) {
     double freeEnergy = 0.0;
     int startPos = 0;
     for (int i = 0; i < homologousBases.size() - 1; i++) {
@@ -130,7 +128,7 @@ DimerFinderResult BaseDimersFinder::getResult() const {
 /************************************************************************/
 /* DrimersFinder */
 /************************************************************************/
-SelfDimersFinder::SelfDimersFinder(const QByteArray &_forwardPattern, const qreal energyThreshold)
+SelfDimersFinder::SelfDimersFinder(const QByteArray& _forwardPattern, const qreal energyThreshold)
     : BaseDimersFinder(_forwardPattern, _forwardPattern, energyThreshold) {
     for (int sequenceShift = 1; sequenceShift < forwardPrimer.size(); sequenceShift++) {
         int index = forwardPrimer.size() - 3 - sequenceShift;
@@ -201,7 +199,7 @@ QString SelfDimersFinder::getDimersOverlapping(int dimerFormationPos) {
 /************************************************************************/
 /* HeteroDimersFinder */
 /************************************************************************/
-HeteroDimersFinder::HeteroDimersFinder(const QByteArray &_forwardPattern, const QByteArray &reversePattern, const qreal energyThreshold)
+HeteroDimersFinder::HeteroDimersFinder(const QByteArray& _forwardPattern, const QByteArray& reversePattern, const qreal energyThreshold)
     : BaseDimersFinder(_forwardPattern, reversePattern, energyThreshold) {
     for (int sequenceShift = -forwardPrimer.size(); sequenceShift < forwardPrimer.size(); sequenceShift++) {
         QByteArray homologousRegion(forwardPrimer.size(), ' ');

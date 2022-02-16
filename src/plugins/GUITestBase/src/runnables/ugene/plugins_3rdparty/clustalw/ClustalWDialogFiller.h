@@ -29,7 +29,7 @@ using namespace HI;
 
 class ClustalWDialogFiller : public Filler {
 public:
-    ClustalWDialogFiller(HI::GUITestOpStatus &_os, int _gapOpenVal = 0);
+    ClustalWDialogFiller(HI::GUITestOpStatus& _os, int _gapOpenVal = 0);
 
     void commonScenario();
 

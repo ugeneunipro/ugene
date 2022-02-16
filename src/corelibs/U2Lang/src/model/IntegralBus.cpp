@@ -40,20 +40,20 @@ namespace Workflow {
 static const QString PATH_SEPARATOR = QString(">");
 static const QString PATH_LIST_SEPARATOR = QString(",");
 
-BusMap::BusMap(const StrStrMap &busMap, const QMap<QString, QStringList> &listMap, const SlotPathMap &paths)
+BusMap::BusMap(const StrStrMap& busMap, const QMap<QString, QStringList>& listMap, const SlotPathMap& paths)
     : input(true), busMap(busMap), listMap(listMap), paths(paths) {
 }
 
-BusMap::BusMap(const StrStrMap &busMap, bool breaksDataflow, const QString &actorId)
+BusMap::BusMap(const StrStrMap& busMap, bool breaksDataflow, const QString& actorId)
     : input(false), busMap(busMap), breaksDataflow(breaksDataflow), actorId(actorId) {
 }
 
-void BusMap::parseSource(const QString &src, QString &srcId, QStringList &path) {
+void BusMap::parseSource(const QString& src, QString& srcId, QStringList& path) {
     int sepPos = src.indexOf(PATH_SEPARATOR);
     path.clear();
     if (-1 != sepPos) {
         srcId = src.left(sepPos);
-        foreach (const QString &procId, src.mid(sepPos + 1).split(PATH_LIST_SEPARATOR)) {
+        foreach (const QString& procId, src.mid(sepPos + 1).split(PATH_LIST_SEPARATOR)) {
             path << procId.trimmed();
         }
     } else {
@@ -61,7 +61,7 @@ void BusMap::parseSource(const QString &src, QString &srcId, QStringList &path) 
     }
 }
 
-inline bool equalPaths(const SlotPathMap &allPaths, const QStringList &ipath, const QString &dest, const QString &src) {
+inline bool equalPaths(const SlotPathMap& allPaths, const QStringList& ipath, const QString& dest, const QString& src) {
     QPair<QString, QString> slotPair(dest, src);
     QList<QStringList> paths = allPaths.values(slotPair);
 
@@ -69,9 +69,9 @@ inline bool equalPaths(const SlotPathMap &allPaths, const QStringList &ipath, co
         return ipath.isEmpty();
     }
 
-    for (const QStringList &path : qAsConst(paths)) {
+    for (const QStringList& path : qAsConst(paths)) {
         if (path.size() == ipath.size()) {
-            for (const QString &id : qAsConst(ipath)) {
+            for (const QString& id : qAsConst(ipath)) {
                 if (!path.contains(id)) {
                     return false;
                 }
@@ -82,7 +82,7 @@ inline bool equalPaths(const SlotPathMap &allPaths, const QStringList &ipath, co
     return false;
 }
 
-Message BusMap::takeMessageMap(CommunicationChannel *ch, QVariantMap &context) {
+Message BusMap::takeMessageMap(CommunicationChannel* ch, QVariantMap& context) {
     assert(input);
     Q_UNUSED(input);
 
@@ -93,20 +93,20 @@ Message BusMap::takeMessageMap(CommunicationChannel *ch, QVariantMap &context) {
     return Message(m.getType(), getMessageData(m), m.getMetadataId());
 }
 
-Message BusMap::lookMessageMap(CommunicationChannel *ch) {
+Message BusMap::lookMessageMap(CommunicationChannel* ch) {
     Message m = ch->look();
     return Message(m.getType(), getMessageData(m), m.getMetadataId());
 }
 
-QVariantMap BusMap::getMessageData(const Message &m) const {
+QVariantMap BusMap::getMessageData(const Message& m) const {
     assert(m.getData().type() == QVariant::Map);
     QVariantMap imap = m.getData().toMap();
     QStringList ipath;
     QString ikey;
 
     QVariantMap result;
-    const QList<QString> &dataMapKeys = imap.uniqueKeys();
-    for (const QString &src : qAsConst(dataMapKeys)) {
+    const QList<QString>& dataMapKeys = imap.uniqueKeys();
+    for (const QString& src : qAsConst(dataMapKeys)) {
         QVariant ival = imap.value(src);
 
         parseSource(src, ikey, ipath);
@@ -139,7 +139,7 @@ QVariantMap BusMap::getMessageData(const Message &m) const {
     return result;
 }
 
-QString BusMap::getNewSourceId(const QString &srcId, const QString &actorId) {
+QString BusMap::getNewSourceId(const QString& srcId, const QString& actorId) {
     int sepPos = srcId.indexOf(PATH_SEPARATOR);
     QString path = actorId;
     QString res;
@@ -152,10 +152,10 @@ QString BusMap::getNewSourceId(const QString &srcId, const QString &actorId) {
     return res + PATH_SEPARATOR + path;
 }
 
-QVariantMap BusMap::composeMessageMap(const Message &m, const QVariantMap &context) {
+QVariantMap BusMap::composeMessageMap(const Message& m, const QVariantMap& context) {
     QVariantMap data;
     if (breaksDataflow) {
-        foreach (const QString &key, context.keys()) {
+        foreach (const QString& key, context.keys()) {
             data[getNewSourceId(key, actorId)] = context.value(key);
         }
     } else {
@@ -180,7 +180,7 @@ QVariantMap BusMap::composeMessageMap(const Message &m, const QVariantMap &conte
 /* IntegralBus */
 /************************************************************************/
 
-static QMap<QString, QStringList> getListMappings(const StrStrMap &busMap, const SlotPathMap &pathMap, const Port *p) {
+static QMap<QString, QStringList> getListMappings(const StrStrMap& busMap, const SlotPathMap& pathMap, const Port* p) {
     StrStrMap bm = busMap;
     WorkflowUtils::applyPathsToBusMap(bm, pathMap);
     assert(p->isInput());
@@ -200,13 +200,13 @@ static QMap<QString, QStringList> getListMappings(const StrStrMap &busMap, const
     return res;
 }
 
-IntegralBus::IntegralBus(Port *p)
+IntegralBus::IntegralBus(Port* p)
     : busType(p->getType()), contextMetadataId(-1), complement(nullptr), portId(p->getId()), takenMsgs(0), workflowContext(nullptr) {
     actorId = p->owner()->getId();
     QString name = p->owner()->getLabel() + "[" + p->owner()->getId() + "]";
     contextMutex = new QMutex();
     if (p->isInput()) {
-        Attribute *a = p->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID);
+        Attribute* a = p->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID);
         if (a == nullptr) {
             assert(false);
             return;
@@ -214,7 +214,7 @@ IntegralBus::IntegralBus(Port *p)
 
         StrStrMap map = a->getAttributeValueWithoutScript<StrStrMap>();
         if (map.isEmpty()) {
-            ActorPrototype *proto = p->owner()->getProto();
+            ActorPrototype* proto = p->owner()->getProto();
             assert(proto->isAllowsEmptyPorts());
             Q_UNUSED(proto);
         }
@@ -224,13 +224,13 @@ IntegralBus::IntegralBus(Port *p)
             coreLog.trace(QString("%1 - input bus map key=%2 val=%3").arg(name).arg(it.key()).arg(it.value()));
         }
 
-        IntegralBusPort *busPort = qobject_cast<IntegralBusPort *>(p);
+        IntegralBusPort* busPort = qobject_cast<IntegralBusPort*>(p);
         SlotPathMap pathMap = busPort->getPaths();
         QMap<QString, QStringList> listMap = getListMappings(map, pathMap, p);
         busMap = new BusMap(map, listMap, pathMap);
     } else {  // p is output
         StrStrMap map;
-        IntegralBusPort *bp = qobject_cast<IntegralBusPort *>(p);
+        IntegralBusPort* bp = qobject_cast<IntegralBusPort*>(p);
         DataTypePtr t = bp ? bp->getOwnType() : p->getType();
         if (t->isMap()) {
             foreach (Descriptor d, t->getAllDescriptors()) {
@@ -249,17 +249,17 @@ IntegralBus::IntegralBus(Port *p)
             coreLog.trace(QString("%1 - output bus map key=%2 val=%3").arg(name).arg(it.key()).arg(it.value()));
         }
 
-        Actor *proc = p->owner();
+        Actor* proc = p->owner();
         busMap = new BusMap(map, proc->getProto()->getInfluenceOnPathFlag(), proc->getId());
     }
 }
 
-bool IntegralBus::addCommunication(const QString &id, CommunicationChannel *ch) {
+bool IntegralBus::addCommunication(const QString& id, CommunicationChannel* ch) {
     outerChannels.insertMulti(id, ch);
     return true;
 }
 
-CommunicationChannel *IntegralBus::getCommunication(const QString &id) {
+CommunicationChannel* IntegralBus::getCommunication(const QString& id) {
     return outerChannels.value(id);
 }
 
@@ -267,7 +267,7 @@ Message IntegralBus::get() {
     QVariantMap result;
     int metadataId = MessageMetadata::INVALID_ID;
     lastMessageContext.clear();
-    foreach (CommunicationChannel *ch, outerChannels) {
+    foreach (CommunicationChannel* ch, outerChannels) {
         Message message = busMap->takeMessageMap(ch, lastMessageContext);
         QVariantMap data = message.getData().toMap();
         result.unite(data);
@@ -284,7 +284,7 @@ Message IntegralBus::get() {
     }
 
     if (!printSlots.isEmpty()) {
-        foreach (const QString &key, result.keys()) {
+        foreach (const QString& key, result.keys()) {
             if (printSlots.contains(key)) {
                 QString slotString = actorId + "." + portId + "." + key;
                 DataTypePtr type = busType->getDatatypesMap().value(key, DataTypePtr());
@@ -311,8 +311,8 @@ Message IntegralBus::get() {
 QQueue<Message> IntegralBus::getMessages(int startIndex, int endIndex) const {
     QQueue<Message> result;
 
-    QMap<CommunicationChannel *, QQueue<Message>> messagesFromChannels;
-    foreach (CommunicationChannel *channel, outerChannels) {
+    QMap<CommunicationChannel*, QQueue<Message>> messagesFromChannels;
+    foreach (CommunicationChannel* channel, outerChannels) {
         assert(channel != nullptr);
         QQueue<Message> channelMessages = channel->getMessages(startIndex, endIndex);
         messagesFromChannels[channel] = channelMessages;
@@ -321,7 +321,7 @@ QQueue<Message> IntegralBus::getMessages(int startIndex, int endIndex) const {
     for (qint32 messageCount = 0; messageCount < messagesFromChannels[messagesFromChannels.keys().first()].size(); ++messageCount) {
         QVariantMap resultingMessageMap;
         int metadataId = -1;
-        foreach (CommunicationChannel *channel, messagesFromChannels.keys()) {
+        foreach (CommunicationChannel* channel, messagesFromChannels.keys()) {
             Message message = messagesFromChannels[channel][messageCount];
             if (message.getData().type() != QVariant::Map) {
                 coreLog.error(L10N::internalError("No message map"));
@@ -341,7 +341,7 @@ QQueue<Message> IntegralBus::getMessages(int startIndex, int endIndex) const {
 Message IntegralBus::look() const {
     QVariantMap result;
     int metadataId = -1;
-    foreach (CommunicationChannel *channel, outerChannels) {
+    foreach (CommunicationChannel* channel, outerChannels) {
         assert(channel != nullptr);
         Message message = channel->look();
         assert(message.getData().type() == QVariant::Map);
@@ -356,7 +356,7 @@ Message IntegralBus::look() const {
 Message IntegralBus::lookMessage() const {
     QVariantMap result;
     int metadataId = -1;
-    foreach (CommunicationChannel *ch, outerChannels) {
+    foreach (CommunicationChannel* ch, outerChannels) {
         Message message = busMap->lookMessageMap(ch);
         result.unite(message.getData().toMap());
         if (1 == outerChannels.size()) {
@@ -372,7 +372,7 @@ Message IntegralBus::lookMessage() const {
     return Message(busType, data, metadataId);
 }
 
-Message IntegralBus::composeMessage(const Message &m) {
+Message IntegralBus::composeMessage(const Message& m) {
     QVariantMap data(busMap->composeMessageMap(m, getContext()));
     context.clear();
     int metadataId = m.getMetadataId();
@@ -382,14 +382,14 @@ Message IntegralBus::composeMessage(const Message &m) {
     return Message(busType, data, metadataId);
 }
 
-void IntegralBus::put(const Message &m, bool isMessageRestored) {
+void IntegralBus::put(const Message& m, bool isMessageRestored) {
     Message busMessage = composeMessage(m);
-    foreach (CommunicationChannel *ch, outerChannels) {
+    foreach (CommunicationChannel* ch, outerChannels) {
         ch->put(busMessage, isMessageRestored);
     }
     if (!printSlots.isEmpty() && (m.getData().type() == QVariant::Map)) {
         QVariantMap map = m.getData().toMap();
-        foreach (const QString &key, map.keys()) {
+        foreach (const QString& key, map.keys()) {
             if (printSlots.contains(key)) {
                 QString slotString = actorId + "." + portId + "." + key;
                 IntegralBusSlot slot(key, portId, actorId);
@@ -410,8 +410,8 @@ void IntegralBus::transit() {
     this->put(Message::getEmptyMapMessage());
 }
 
-void IntegralBus::putWithoutContext(const Message &m) {
-    foreach (CommunicationChannel *ch, outerChannels) {
+void IntegralBus::putWithoutContext(const Message& m) {
+    foreach (CommunicationChannel* ch, outerChannels) {
         ch->put(m);
     }
 }
@@ -421,7 +421,7 @@ int IntegralBus::hasMessage() const {
         return 0;
     }
     int num = INT_MAX;
-    foreach (CommunicationChannel *ch, outerChannels) {
+    foreach (CommunicationChannel* ch, outerChannels) {
         num = qMin(num, ch->hasMessage());
     }
     return num;
@@ -431,22 +431,22 @@ int IntegralBus::takenMessages() const {
     return takenMsgs;
 }
 
-int IntegralBus::hasRoom(const DataType *) const {
+int IntegralBus::hasRoom(const DataType*) const {
     if (outerChannels.isEmpty()) {
         return 0;
     }
     int num = INT_MAX;
-    foreach (CommunicationChannel *ch, outerChannels) {
+    foreach (CommunicationChannel* ch, outerChannels) {
         num = qMin(num, ch->hasRoom());
     }
     return num;
 }
 
 bool IntegralBus::isEnded() const {
-    for (CommunicationChannel *ch : qAsConst(outerChannels)) {
+    for (CommunicationChannel* ch : qAsConst(outerChannels)) {
         if (ch->isEnded()) {
 #ifdef _DEBUG
-            for (CommunicationChannel *dbg : qAsConst(outerChannels)) {
+            for (CommunicationChannel* dbg : qAsConst(outerChannels)) {
                 assert(dbg->isEnded());
             }
 #endif
@@ -457,17 +457,17 @@ bool IntegralBus::isEnded() const {
 }
 
 void IntegralBus::setEnded() {
-    foreach (CommunicationChannel *ch, outerChannels) {
+    foreach (CommunicationChannel* ch, outerChannels) {
         ch->setEnded();
     }
 }
 
-void IntegralBus::setPrintSlots(bool in, const QList<QString> &printSlots) {
+void IntegralBus::setPrintSlots(bool in, const QList<QString>& printSlots) {
     Q_UNUSED(in);
     this->printSlots = printSlots;
 }
 
-void IntegralBus::setWorkflowContext(WorkflowContext *context) {
+void IntegralBus::setWorkflowContext(WorkflowContext* context) {
     workflowContext = context;
 }
 
@@ -476,7 +476,7 @@ IntegralBus::~IntegralBus() {
     delete busMap;
 }
 
-void IntegralBus::setContext(const QVariantMap &m, int metadataId) {
+void IntegralBus::setContext(const QVariantMap& m, int metadataId) {
     QMutexLocker lock(contextMutex);
     context.unite(m);
     contextMetadataId = metadataId;

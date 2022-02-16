@@ -37,14 +37,14 @@ public:
         DOUBLE
     };
     struct Column {
-        Column(const QString &name);
-        Column(const QString &name, ColumnType type, const QString defaultValue = "-", bool required = false);
+        Column(const QString& name);
+        Column(const QString& name, ColumnType type, const QString defaultValue = "-", bool required = false);
         QString name;
         ColumnType type;
         QString defaultValue;
         bool required;
 
-        bool operator==(const Column &other) const;
+        bool operator==(const Column& other) const;
     };
     class Iterator {
         friend class ColumnDataParser;
@@ -54,13 +54,13 @@ public:
         ColumnType currentType() const;
         QString currentName() const;
         QString takeString();
-        int takeInt(U2OpStatus &os);
-        double takeDouble(U2OpStatus &os);
+        int takeInt(U2OpStatus& os);
+        double takeDouble(U2OpStatus& os);
         QString getPrevious() const;
         QString look() const;
 
     private:
-        Iterator(const QList<Column> &columns, const QStringList &values);
+        Iterator(const QList<Column>& columns, const QStringList& values);
         QString take();
         bool check() const;
 
@@ -73,10 +73,10 @@ public:
         QString previous;
     };
 
-    ColumnDataParser(const QList<Column> &formatColumns, const QString &separator);
-    void init(const QString &headerLine, U2OpStatus &os);
-    Iterator parseLine(const QString &line, U2OpStatus &os) const;
-    const QList<Column> &getCurrentColumns() const;
+    ColumnDataParser(const QList<Column>& formatColumns, const QString& separator);
+    void init(const QString& headerLine, U2OpStatus& os);
+    Iterator parseLine(const QString& line, U2OpStatus& os) const;
+    const QList<Column>& getCurrentColumns() const;
 
 private:
     bool inited;

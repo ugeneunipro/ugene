@@ -41,11 +41,11 @@ public:
 
     SequenceWalkerConfig();
 
-    const char *seq;  //  sequence to split
+    const char* seq;  //  sequence to split
     quint64 seqSize;  //  size of the sequence to split
     U2Region range;  //  if not empty -> only this region is processed
-    DNATranslation *complTrans;
-    DNATranslation *aminoTrans;
+    DNATranslation* complTrans;
+    DNATranslation* aminoTrans;
 
     quint64 chunkSize;  // optimal chunk size, used by default for all regions except last one
     int lastChunkExtraLen;  // extra length allowed to be added to the last chunk
@@ -62,12 +62,12 @@ public:
     virtual ~SequenceWalkerCallback() {
     }
 
-    virtual void onRegion(SequenceWalkerSubtask *t, TaskStateInfo &ti) = 0;
+    virtual void onRegion(SequenceWalkerSubtask* t, TaskStateInfo& ti) = 0;
 
     /* implement this to give SequenceWalkerSubtask required resources
      * here are resources for ONE(!) SequenceWalkerSubtask execution e.g. for one execution of onRegion function
      */
-    virtual QList<TaskResourceUsage> getResources(SequenceWalkerSubtask *) {
+    virtual QList<TaskResourceUsage> getResources(SequenceWalkerSubtask*) {
         return QList<TaskResourceUsage>();
     }
 };
@@ -75,28 +75,28 @@ public:
 class U2CORE_EXPORT SequenceWalkerTask : public Task {
     Q_OBJECT
 public:
-    SequenceWalkerTask(const SequenceWalkerConfig &config, SequenceWalkerCallback *callback, const QString &name, TaskFlags tf = TaskFlags_NR_FOSE_COSC);
+    SequenceWalkerTask(const SequenceWalkerConfig& config, SequenceWalkerCallback* callback, const QString& name, TaskFlags tf = TaskFlags_NR_FOSE_COSC);
 
-    SequenceWalkerCallback *getCallback() const {
+    SequenceWalkerCallback* getCallback() const {
         return callback;
     }
-    const SequenceWalkerConfig &getConfig() const {
+    const SequenceWalkerConfig& getConfig() const {
         return config;
     }
 
     // reverseMode - start splitting from the end of the range
-    static QVector<U2Region> splitRange(const U2Region &range, int chunkSize, int overlapSize, int lastChunkExtraLen, bool reverseMode);
+    static QVector<U2Region> splitRange(const U2Region& range, int chunkSize, int overlapSize, int lastChunkExtraLen, bool reverseMode);
 
-    void setError(const QString &err) {
+    void setError(const QString& err) {
         stateInfo.setError(err);
     }
 
 private:
-    QList<SequenceWalkerSubtask *> prepareSubtasks();
-    QList<SequenceWalkerSubtask *> createSubs(const QVector<U2Region> &chunks, bool doCompl, bool doAmino);
+    QList<SequenceWalkerSubtask*> prepareSubtasks();
+    QList<SequenceWalkerSubtask*> createSubs(const QVector<U2Region>& chunks, bool doCompl, bool doAmino);
 
     SequenceWalkerConfig config;
-    SequenceWalkerCallback *callback;
+    SequenceWalkerCallback* callback;
 
     QByteArray tempBuffer;
 };
@@ -104,11 +104,11 @@ private:
 class U2CORE_EXPORT SequenceWalkerSubtask : public Task {
     Q_OBJECT
 public:
-    SequenceWalkerSubtask(SequenceWalkerTask *t, const U2Region &globalReg, bool lo, bool ro, const char *localSeq, int localLen, bool doCompl, bool doAmino);
+    SequenceWalkerSubtask(SequenceWalkerTask* t, const U2Region& globalReg, bool lo, bool ro, const char* localSeq, int localLen, bool doCompl, bool doAmino);
 
     void run();
 
-    const char *getRegionSequence();
+    const char* getRegionSequence();
 
     int getRegionSequenceLen();
 
@@ -124,11 +124,11 @@ public:
         return globalRegion;
     }
 
-    const SequenceWalkerConfig &getGlobalConfig() const {
+    const SequenceWalkerConfig& getGlobalConfig() const {
         return t->getConfig();
     }
 
-    bool intersectsWithOverlaps(const U2Region &globalReg) const;
+    bool intersectsWithOverlaps(const U2Region& globalReg) const;
     bool hasLeftOverlap() const {
         return leftOverlap;
     }
@@ -142,10 +142,10 @@ private:
     }
     void prepareLocalRegion();
 
-    SequenceWalkerTask *t;
+    SequenceWalkerTask* t;
     U2Region globalRegion;
-    const char *localSeq;
-    const char *originalLocalSeq;
+    const char* localSeq;
+    const char* originalLocalSeq;
     int localLen;
     int originalLocalLen;
     bool doCompl;

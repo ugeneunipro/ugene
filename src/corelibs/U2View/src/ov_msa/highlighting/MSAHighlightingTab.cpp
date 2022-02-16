@@ -49,8 +49,8 @@ namespace U2 {
 static const int ITEMS_SPACING = 6;
 static const int TITLE_SPACING = 1;
 
-static inline QVBoxLayout *initVBoxLayout(QWidget *w) {
-    QVBoxLayout *layout = new QVBoxLayout;
+static inline QVBoxLayout* initVBoxLayout(QWidget* w) {
+    QVBoxLayout* layout = new QVBoxLayout;
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(5);
 
@@ -58,18 +58,18 @@ static inline QVBoxLayout *initVBoxLayout(QWidget *w) {
     return layout;
 }
 
-static inline QHBoxLayout *initHBoxLayout(QWidget *w) {
-    QHBoxLayout *layout = new QHBoxLayout;
+static inline QHBoxLayout* initHBoxLayout(QWidget* w) {
+    QHBoxLayout* layout = new QHBoxLayout;
     layout->setContentsMargins(0, 0, 0, 0);
 
     w->setLayout(layout);
     return layout;
 }
 
-QWidget *MSAHighlightingTab::createColorGroup() {
-    QWidget *group = new QWidget(this);
+QWidget* MSAHighlightingTab::createColorGroup() {
+    QWidget* group = new QWidget(this);
 
-    QVBoxLayout *layout = initVBoxLayout(group);
+    QVBoxLayout* layout = initVBoxLayout(group);
     colorSchemeController = new MsaSchemeComboBoxController<MsaColorSchemeFactory, MsaColorSchemeRegistry>(msa, AppContext::getMsaColorSchemeRegistry(), this);
     colorSchemeController->getComboBox()->setObjectName("colorScheme");
     colorSchemeController->getComboBox()->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
@@ -90,7 +90,7 @@ QWidget *MSAHighlightingTab::createColorGroup() {
     colorSpinBox->setDecimals(1);
     colorSpinBox->setObjectName("colorSpinBox");
 
-    QHBoxLayout *horizontalLayout = new QHBoxLayout();
+    QHBoxLayout* horizontalLayout = new QHBoxLayout();
     horizontalLayout->addWidget(colorThresholdSlider);
     horizontalLayout->addWidget(colorSpinBox);
     horizontalLayout->setSpacing(10);
@@ -106,10 +106,10 @@ QWidget *MSAHighlightingTab::createColorGroup() {
     return group;
 }
 
-QWidget *MSAHighlightingTab::createHighlightingGroup() {
-    QWidget *group = new QWidget(this);
+QWidget* MSAHighlightingTab::createHighlightingGroup() {
+    QWidget* group = new QWidget(this);
 
-    QVBoxLayout *layout = initVBoxLayout(group);
+    QVBoxLayout* layout = initVBoxLayout(group);
     highlightingSchemeController = new MsaSchemeComboBoxController<MsaHighlightingSchemeFactory, MsaHighlightingSchemeRegistry>(msa, AppContext::getMsaHighlightingSchemeRegistry(), this);
     highlightingSchemeController->getComboBox()->setObjectName("highlightingScheme");
 
@@ -126,8 +126,8 @@ QWidget *MSAHighlightingTab::createHighlightingGroup() {
     exportHighlightning->setMinimumWidth(198);
     exportHighlightning->setMinimumHeight(23);
 
-    QWidget *buttonAndSpacer = new QWidget(this);
-    QHBoxLayout *layout2 = initHBoxLayout(buttonAndSpacer);
+    QWidget* buttonAndSpacer = new QWidget(this);
+    QHBoxLayout* layout2 = initHBoxLayout(buttonAndSpacer);
     layout2->addWidget(exportHighlightning);
     // layout2->addSpacerItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
@@ -167,16 +167,16 @@ QWidget *MSAHighlightingTab::createHighlightingGroup() {
     return group;
 }
 
-MSAHighlightingTab::MSAHighlightingTab(MSAEditor *m)
+MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
     : msa(m), savableTab(this, GObjectViewUtils::findViewByName(m->getName())) {
     setObjectName("HighlightingOptionsPanelWidget");
-    QVBoxLayout *mainLayout = initVBoxLayout(this);
+    QVBoxLayout* mainLayout = initVBoxLayout(this);
     mainLayout->setSpacing(0);
 
-    QWidget *colorGroup = new ShowHideSubgroupWidget("COLOR", tr("Color"), createColorGroup(), true);
+    QWidget* colorGroup = new ShowHideSubgroupWidget("COLOR", tr("Color"), createColorGroup(), true);
     mainLayout->addWidget(colorGroup);
 
-    QWidget *highlightingGroup = new ShowHideSubgroupWidget("HIGHLIGHTING", tr("Highlighting"), createHighlightingGroup(), true);
+    QWidget* highlightingGroup = new ShowHideSubgroupWidget("HIGHLIGHTING", tr("Highlighting"), createHighlightingGroup(), true);
     mainLayout->addWidget(highlightingGroup);
 
     seqArea = msa->getUI()->getSequenceArea();
@@ -191,20 +191,20 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor *m)
 
     sl_sync();
 
-    connect(colorSchemeController, SIGNAL(si_dataChanged(const QString &)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &)));
-    connect(highlightingSchemeController, SIGNAL(si_dataChanged(const QString &)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &)));
+    connect(colorSchemeController, SIGNAL(si_dataChanged(const QString&)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString&)));
+    connect(highlightingSchemeController, SIGNAL(si_dataChanged(const QString&)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString&)));
     connect(useDots, SIGNAL(stateChanged(int)), seqArea, SLOT(sl_triggerUseDots()));
 
     connect(seqArea, SIGNAL(si_highlightingChanged()), SLOT(sl_sync()));
 
-    MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
+    MsaColorSchemeRegistry* msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
     connect(msaColorSchemeRegistry, SIGNAL(si_customSettingsChanged()), SLOT(sl_refreshSchemes()));
 
     connect(m, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_updateHint()));
-    connect(m->getMaObject(), SIGNAL(si_alphabetChanged(MaModificationInfo, const DNAAlphabet *)), SLOT(sl_refreshSchemes()));
+    connect(m->getMaObject(), SIGNAL(si_alphabetChanged(MaModificationInfo, const DNAAlphabet*)), SLOT(sl_refreshSchemes()));
 
-    connect(highlightingSchemeController->getComboBox(), SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_updateHint()));
-    connect(colorSchemeController->getComboBox(), SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_updateColorSchemeWidgets()));
+    connect(highlightingSchemeController->getComboBox(), SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_updateHint()));
+    connect(colorSchemeController->getComboBox(), SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_updateColorSchemeWidgets()));
     connect(exportHighlightning, SIGNAL(clicked()), SLOT(sl_exportHighlightningClicked()));
 
     connect(colorThresholdSlider, SIGNAL(valueChanged(int)), SLOT(sl_colorParametersChanged()));
@@ -220,7 +220,7 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor *m)
 }
 
 void MSAHighlightingTab::sl_sync() {
-    MsaColorScheme *s = seqArea->getCurrentColorScheme();
+    MsaColorScheme* s = seqArea->getCurrentColorScheme();
     SAFE_POINT(s != nullptr, "Current scheme is NULL", );
     SAFE_POINT(s->getFactory() != nullptr, "Current scheme color factory is NULL", );
 
@@ -228,7 +228,7 @@ void MSAHighlightingTab::sl_sync() {
     colorSchemeController->setCurrentItemById(s->getFactory()->getId());
     colorSchemeController->getComboBox()->blockSignals(false);
 
-    MsaHighlightingScheme *sh = seqArea->getCurrentHighlightingScheme();
+    MsaHighlightingScheme* sh = seqArea->getCurrentHighlightingScheme();
     SAFE_POINT(sh != nullptr, "Current highlighting scheme is NULL!", );
     SAFE_POINT(sh->getFactory() != nullptr, "Current highlighting scheme factory is NULL!", );
 
@@ -245,7 +245,7 @@ void MSAHighlightingTab::sl_sync() {
 }
 
 void MSAHighlightingTab::sl_updateHint() {
-    MsaHighlightingScheme *s = seqArea->getCurrentHighlightingScheme();
+    MsaHighlightingScheme* s = seqArea->getCurrentHighlightingScheme();
     SAFE_POINT(s->getFactory() != nullptr, "Highlighting factory is NULL!", );
 
     QVariantMap highlightingSettings;
@@ -293,10 +293,10 @@ void MSAHighlightingTab::sl_updateHint() {
 }
 
 void MSAHighlightingTab::sl_updateColorSchemeWidgets() {
-    MsaColorScheme *currentColorScheme = seqArea->getCurrentColorScheme();
+    MsaColorScheme* currentColorScheme = seqArea->getCurrentColorScheme();
     SAFE_POINT(currentColorScheme != nullptr, "Current Color Scheme is NULL!", );
 
-    const MsaColorSchemeFactory *factory = currentColorScheme->getFactory();
+    const MsaColorSchemeFactory* factory = currentColorScheme->getFactory();
     SAFE_POINT(factory != nullptr, "Current Color Scheme factory is NULL!", );
 
     if (factory->isThresholdNeeded()) {
@@ -329,7 +329,7 @@ void MSAHighlightingTab::sl_colorParametersChanged() {
         int sliderNewValue = int(thresholdValue * 10);
         colorThresholdSlider->setValue(sliderNewValue);
     }
-    MsaColorScheme *currentColorScheme = seqArea->getCurrentColorScheme();
+    MsaColorScheme* currentColorScheme = seqArea->getCurrentColorScheme();
     SAFE_POINT(currentColorScheme != nullptr, "Current Color Scheme is NULL!", );
 
     QVariantMap settings;
@@ -341,7 +341,7 @@ void MSAHighlightingTab::sl_colorParametersChanged() {
 void MSAHighlightingTab::sl_highlightingParametersChanged() {
     QVariantMap highlightingSettings;
     thresholdLabel->setText(tr("Threshold: %1%").arg(highlightingThresholdSlider->value()));
-    MsaHighlightingScheme *s = seqArea->getCurrentHighlightingScheme();
+    MsaHighlightingScheme* s = seqArea->getCurrentHighlightingScheme();
     highlightingSettings.insert(MsaHighlightingScheme::THRESHOLD_PARAMETER_NAME, highlightingThresholdSlider->value());
     highlightingSettings.insert(MsaHighlightingScheme::LESS_THAN_THRESHOLD_PARAMETER_NAME, thresholdLessRb->isChecked());
     s->applySettings(highlightingSettings);

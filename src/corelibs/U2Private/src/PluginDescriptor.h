@@ -61,7 +61,7 @@ public:
 
     PlatformName name;
     PlatformArch arch;
-    bool operator==(const PlatformInfo &p) const {
+    bool operator==(const PlatformInfo& p) const {
         return name == p.name && arch == p.arch;
     }
 };
@@ -90,10 +90,10 @@ public:
     QList<DependsInfo> dependsList;
 
     bool isValid() const {
-        return !id.isEmpty() && !pluginVersion.text.isEmpty() && !ugeneVersion.text.isEmpty() && !libraryUrl.isEmpty();
+        return !id.isEmpty() && pluginVersion.isValid() && ugeneVersion.isValid() && !libraryUrl.isEmpty();
     }
 
-    bool operator==(const PluginDesc &pd) const;
+    bool operator==(const PluginDesc& pd) const;
 };
 
 class U2PRIVATE_EXPORT PluginDescriptorHelper : public QObject {
@@ -103,10 +103,10 @@ private:
     }
 
 public:
-    static PluginDesc readPluginDescriptor(const QString &url, QString &error);
+    static PluginDesc readPluginDescriptor(const QString& url, QString& error);
 
     // orders plugins by loading order
-    static QList<PluginDesc> orderPlugins(const QList<PluginDesc> &unordered, QString &err);
+    static QList<PluginDesc> orderPlugins(const QList<PluginDesc>& unordered, QString& err);
 };
 
 }  // namespace U2

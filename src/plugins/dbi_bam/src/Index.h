@@ -49,23 +49,23 @@ public:
         class Bin {
         public:
             Bin(unsigned int bin, QList<Chunk> chunks);
-            const QList<Chunk> &getChunks() const;
+            const QList<Chunk>& getChunks() const;
             unsigned int getBin() const;
 
         private:
             unsigned int bin;
             QList<Chunk> chunks;
         };
-        ReferenceIndex(const QList<Bin> &bins, const QList<VirtualOffset> &intervals);
-        const QList<Bin> &getBins() const;
-        const QList<VirtualOffset> &getIntervals() const;
+        ReferenceIndex(const QList<Bin>& bins, const QList<VirtualOffset>& intervals);
+        const QList<Bin>& getBins() const;
+        const QList<VirtualOffset>& getIntervals() const;
 
     private:
         QList<Bin> bins;
         QList<VirtualOffset> intervals;
     };
-    Index(const QList<ReferenceIndex> &referenceIndices);
-    const QList<ReferenceIndex> &getReferenceIndices() const;
+    Index(const QList<ReferenceIndex>& referenceIndices);
+    const QList<ReferenceIndex>& getReferenceIndices() const;
 
 private:
     QList<ReferenceIndex> referenceIndices;

@@ -37,23 +37,23 @@ using namespace HI;
 
 #define GT_CLASS_NAME "ProjectTreeItemSelectorDialogFiller"
 
-ProjectTreeItemSelectorDialogFiller::ProjectTreeItemSelectorDialogFiller(HI::GUITestOpStatus &os, const QString &documentName, const QString &objectName, const QSet<GObjectType> &acceptableTypes, SelectionMode mode, int expectedDocCount)
+ProjectTreeItemSelectorDialogFiller::ProjectTreeItemSelectorDialogFiller(HI::GUITestOpStatus& os, const QString& documentName, const QString& objectName, const QSet<GObjectType>& acceptableTypes, SelectionMode mode, int expectedDocCount)
     : Filler(os, "ProjectTreeItemSelectorDialogBase"), acceptableTypes(acceptableTypes), mode(mode), expectedDocCount(expectedDocCount) {
     itemsToSelect.insert(documentName, {objectName});
 }
 
-ProjectTreeItemSelectorDialogFiller::ProjectTreeItemSelectorDialogFiller(HI::GUITestOpStatus &os, const QMap<QString, QStringList> &itemsToSelect, const QSet<GObjectType> &acceptableTypes, SelectionMode mode, int expectedDocCount)
+ProjectTreeItemSelectorDialogFiller::ProjectTreeItemSelectorDialogFiller(HI::GUITestOpStatus& os, const QMap<QString, QStringList>& itemsToSelect, const QSet<GObjectType>& acceptableTypes, SelectionMode mode, int expectedDocCount)
     : Filler(os, "ProjectTreeItemSelectorDialogBase"), itemsToSelect(itemsToSelect), acceptableTypes(acceptableTypes), mode(mode),
       expectedDocCount(expectedDocCount) {
 }
 
-ProjectTreeItemSelectorDialogFiller::ProjectTreeItemSelectorDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario)
+ProjectTreeItemSelectorDialogFiller::ProjectTreeItemSelectorDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
     : Filler(os, "ProjectTreeItemSelectorDialogBase", scenario),
       mode(Single),
       expectedDocCount(0) {
 }
 
-static bool checkTreeRowCount(QTreeView *tree, int expectedDocCount) {
+static bool checkTreeRowCount(QTreeView* tree, int expectedDocCount) {
     int visibleItemCount = 0;
     for (int i = 0; i < tree->model()->rowCount(); ++i) {
         Qt::ItemFlags itemFlags = tree->model()->flags(tree->model()->index(i, 0));
@@ -76,7 +76,7 @@ void ProjectTreeItemSelectorDialogFiller::commonScenario() {
     bool isFirstClick = true;
     QList<QString> allItemKeys = itemsToSelect.keys();
     auto getCurrentClickModifier = [this, &isFirstClick] { return isFirstClick ? Qt::Key_unknown : (mode == Continuous ? Qt::Key_Shift : Qt::Key_Control); };
-    for (const QString &itemKey : qAsConst(allItemKeys)) {
+    for (const QString& itemKey : qAsConst(allItemKeys)) {
         QModelIndex parentItemIndex = GTUtilsProjectTreeView::findIndex(os, treeView, itemKey, options);
         if (!acceptableTypes.isEmpty()) {
             GTUtilsProjectTreeView::checkObjectTypes(os, treeView, acceptableTypes, parentItemIndex);
@@ -87,7 +87,7 @@ void ProjectTreeItemSelectorDialogFiller::commonScenario() {
             isFirstClick = false;
             continue;
         }
-        for (const QString &objectName : qAsConst(objectNames)) {
+        for (const QString& objectName : qAsConst(objectNames)) {
             QModelIndex objectIndex = GTUtilsProjectTreeView::findIndex(os, treeView, objectName, parentItemIndex, options);
             GTTreeView::click(os, treeView, objectIndex, getCurrentClickModifier());
             isFirstClick = false;

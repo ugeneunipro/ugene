@@ -63,120 +63,120 @@ class U2CORE_EXPORT GObject : public StateLockableTreeItem {
 
     Q_OBJECT
 public:
-    GObject(QString _type, const QString &_name, const QVariantMap &hints = QVariantMap());
+    GObject(QString _type, const QString& _name, const QVariantMap& hints = QVariantMap());
     virtual ~GObject();
 
-    virtual Document *getDocument() const;
+    virtual Document* getDocument() const;
 
-    const QString &getGObjectName() const {
+    const QString& getGObjectName() const {
         return name;
     }
 
-    virtual void setGObjectName(const QString &newName);
+    virtual void setGObjectName(const QString& newName);
 
     GObjectType getGObjectType() const {
         return type;
     }
 
-    virtual bool checkConstraints(const GObjectConstraints *c) const {
+    virtual bool checkConstraints(const GObjectConstraints* c) const {
         Q_UNUSED(c);
         return true;
     }
 
-    GHints *getGHints() const {
+    GHints* getGHints() const {
         return hints;
     }
 
     QVariantMap getGHintsMap() const;
 
-    void setGHints(GHints *);
+    void setGHints(GHints*);
 
     QList<GObjectRelation> getObjectRelations() const;
 
-    void setObjectRelations(const QList<GObjectRelation> &obj);
+    void setObjectRelations(const QList<GObjectRelation>& obj);
 
-    QList<GObjectRelation> findRelatedObjectsByRole(const GObjectRelationRole &role) const;
+    QList<GObjectRelation> findRelatedObjectsByRole(const GObjectRelationRole& role) const;
 
-    QList<GObjectRelation> findRelatedObjectsByType(const GObjectType &objType) const;
+    QList<GObjectRelation> findRelatedObjectsByType(const GObjectType& objType) const;
 
-    void addObjectRelation(const GObjectRelation &ref);
+    void addObjectRelation(const GObjectRelation& ref);
 
-    void addObjectRelation(const GObject *obj, const GObjectRelationRole &role);
+    void addObjectRelation(const GObject* obj, const GObjectRelationRole& role);
 
-    void removeObjectRelation(const GObjectRelation &ref);
+    void removeObjectRelation(const GObjectRelation& ref);
 
-    void updateRefInRelations(const GObjectReference &oldRef, const GObjectReference &newRef);
+    void updateRefInRelations(const GObjectReference& oldRef, const GObjectReference& newRef);
 
-    void removeRelations(const QString &removedDocUrl);
+    void removeRelations(const QString& removedDocUrl);
 
-    void updateDocInRelations(const QString &oldDocUrl, const QString &newDocUrl);
+    void updateDocInRelations(const QString& oldDocUrl, const QString& newDocUrl);
 
-    bool hasObjectRelation(const GObject *obj, const GObjectRelationRole &role) const;
+    bool hasObjectRelation(const GObject* obj, const GObjectRelationRole& role) const;
 
-    bool hasObjectRelation(const GObjectRelation &r) const;
+    bool hasObjectRelation(const GObjectRelation& r) const;
 
     QHash<QString, QString> getIndexInfo() const {
         return indexInfo;
     }
 
-    void setIndexInfo(const QHash<QString, QString> &ii) {
+    void setIndexInfo(const QHash<QString, QString>& ii) {
         indexInfo = ii;
     }
 
-    const U2EntityRef &getEntityRef() const {
+    const U2EntityRef& getEntityRef() const {
         return entityRef;
     }
 
     bool isUnloaded() const;
 
-    virtual GObject *clone(const U2DbiRef &dbiRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const = 0;
+    virtual GObject* clone(const U2DbiRef& dbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const = 0;
 
-    StateLock *getGObjectModLock(GObjectModLock type) const;
+    StateLock* getGObjectModLock(GObjectModLock type) const;
 
     void relatedObjectRelationChanged();
 
-    static bool objectLessThan(GObject *first, GObject *second);
+    static bool objectLessThan(GObject* first, GObject* second);
 
     /** Returns object version in the ObjectDbi. Returns '-1' if the dbiRef is invalid. */
     int getObjectVersion() const;
 
 signals:
-    void si_nameChanged(const QString &oldName);
-    void si_relationChanged(const QList<GObjectRelation> &previousRelations);
+    void si_nameChanged(const QString& oldName);
+    void si_relationChanged(const QList<GObjectRelation>& previousRelations);
     void si_relatedObjectRelationChanged();
 
 protected:
-    void setGObjectNameNotDbi(const QString &newName);
+    void setGObjectNameNotDbi(const QString& newName);
     void ensureDataLoaded() const;
-    void ensureDataLoaded(U2OpStatus &os) const;
-    virtual void loadDataCore(U2OpStatus &os);
+    void ensureDataLoaded(U2OpStatus& os) const;
+    virtual void loadDataCore(U2OpStatus& os);
 
 protected:
     mutable QMutex dataGuard;
     mutable bool dataLoaded;
     GObjectType type;
     QString name;
-    GHints *hints;
+    GHints* hints;
     QHash<QString, QString> indexInfo;
     U2EntityRef entityRef;
 
 private:
-    virtual void setParentStateLockItem(StateLockableTreeItem *p);
-    void checkIfBelongToSharedDatabase(StateLockableTreeItem *parent);
-    void setRelationsInDb(QList<GObjectRelation> &list) const;
+    virtual void setParentStateLockItem(StateLockableTreeItem* p);
+    void checkIfBelongToSharedDatabase(StateLockableTreeItem* parent);
+    void setRelationsInDb(QList<GObjectRelation>& list) const;
     void setupHints(QVariantMap hintsMap);
-    void fetchPermanentGObjectRelations(QList<GObjectRelation> &res) const;
+    void fetchPermanentGObjectRelations(QList<GObjectRelation>& res) const;
 
     void removeAllLocks();
 
     bool arePermanentRelationsFetched;
-    QMap<GObjectModLock, StateLock *> modLocks;
+    QMap<GObjectModLock, StateLock*> modLocks;
 };
 
 class GObjectConstraints : public QObject {
     Q_OBJECT
 public:
-    GObjectConstraints(const GObjectType &t, QObject *parent = nullptr)
+    GObjectConstraints(const GObjectType& t, QObject* parent = nullptr)
         : QObject(parent), objectType(t) {
     }
     const GObjectType objectType;
@@ -185,14 +185,14 @@ public:
 class U2CORE_EXPORT GObjectMimeData : public QMimeData {
     Q_OBJECT
 public:
-    GObjectMimeData(GObject *obj)
+    GObjectMimeData(GObject* obj)
         : objPtr(obj) {
     }
 
     QPointer<GObject> objPtr;
 
     // QMimeData
-    bool hasFormat(const QString &mimeType) const;
+    bool hasFormat(const QString& mimeType) const;
     QStringList formats() const;
 
     static const QString MIME_TYPE;

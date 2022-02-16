@@ -14,7 +14,7 @@ SCRIPTS_DIR="${SOURCE_DIR}/etc/script/linux"
 export UGENE_TESTS_PATH="${SOURCE_DIR}/tests"
 
 # Disable crash handler.
-export USE_CRASH_HANDLER=0
+export UGENE_USE_CRASH_HANDLER=0
 export UGENE_DEV=1
 
 # Disable check for updates. TODO: rename.

@@ -35,7 +35,7 @@
 
 namespace U2 {
 
-GSequenceGraphData::GSequenceGraphData(GSequenceGraphView *view, const QString &_graphName, GSequenceGraphAlgorithm *_algorithm)
+GSequenceGraphData::GSequenceGraphData(GSequenceGraphView* view, const QString& _graphName, GSequenceGraphAlgorithm* _algorithm)
     : graphName(_graphName), algorithm(_algorithm), labels(view->getRenderArea()) {
 }
 
@@ -68,11 +68,11 @@ float GSequenceGraphUtils::getMaxValue(float value1, float value2) {
                                                               : qMax(value1, value2);
 }
 
-qint64 GSequenceGraphUtils::getNumSteps(const U2Region &range, qint64 window, qint64 step) {
+qint64 GSequenceGraphUtils::getNumSteps(const U2Region& range, qint64 window, qint64 step) {
     return range.length <= window ? 1 : (range.length - window) / step + 1;
 }
 
-float GSequenceGraphUtils::getPointValue(const QSharedPointer<GSequenceGraphData> &graph, int x) {
+float GSequenceGraphUtils::getPointValue(const QSharedPointer<GSequenceGraphData>& graph, int x) {
     SAFE_POINT(!graph->viewPoints.isEmpty(), "calculatePointValue is called on non-ready state", 0);
     SAFE_POINT(x >= 0 && x < graph->viewPoints.size(), "Illegal X coordinate", 0);
     if (!graph->useIntervals) {
@@ -83,7 +83,7 @@ float GSequenceGraphUtils::getPointValue(const QSharedPointer<GSequenceGraphData
     return isUndefined(maxValue) || isUndefined(minValue) ? UNDEFINED_GRAPH_VALUE : (maxValue + minValue) / 2;
 }
 
-QPair<float, float> GSequenceGraphUtils::getMinAndMaxInRange(const QSharedPointer<GSequenceGraphData> &graph, const U2Region &screenRegion) {
+QPair<float, float> GSequenceGraphUtils::getMinAndMaxInRange(const QSharedPointer<GSequenceGraphData>& graph, const U2Region& screenRegion) {
     QPair<float, float> result(UNDEFINED_GRAPH_VALUE, UNDEFINED_GRAPH_VALUE);
     for (qint64 x = screenRegion.startPos, n = screenRegion.endPos(); x < n; x++) {
         float value = getPointValue(graph, x);
@@ -95,7 +95,7 @@ QPair<float, float> GSequenceGraphUtils::getMinAndMaxInRange(const QSharedPointe
 
 //////////////////////////////////////////////////////////////////////////
 // drawer
-GSequenceGraphDrawer::GSequenceGraphDrawer(GSequenceGraphView *view, qint64 _window, qint64 _step)
+GSequenceGraphDrawer::GSequenceGraphDrawer(GSequenceGraphView* view, qint64 _window, qint64 _step)
     : QObject(view), view(view), window(_window), step(_step), visibleMin(UNDEFINED_GRAPH_VALUE), visibleMax(UNDEFINED_GRAPH_VALUE) {
     DEFAULT_COLOR = tr("Default color");
     defFont = new QFont("Arial", 8);  // TODO: unsafe. MS-only font.
@@ -116,15 +116,15 @@ qint64 GSequenceGraphDrawer::getStep() const {
     return step;
 }
 
-const GSequenceGraphMinMaxCutOffState &GSequenceGraphDrawer::getCutOffState() const {
+const GSequenceGraphMinMaxCutOffState& GSequenceGraphDrawer::getCutOffState() const {
     return cutOffState;
 }
 
-const ColorMap &GSequenceGraphDrawer::getColors() const {
+const ColorMap& GSequenceGraphDrawer::getColors() const {
     return seriesColorByName;
 }
 
-void GSequenceGraphDrawer::setColors(const ColorMap &colorMap) {
+void GSequenceGraphDrawer::setColors(const ColorMap& colorMap) {
     seriesColorByName = colorMap;
 }
 
@@ -136,7 +136,7 @@ void GSequenceGraphDrawer::sl_calculationTaskFinished() {
     }
 }
 
-void GSequenceGraphDrawer::draw(QPainter &p, const QList<QSharedPointer<GSequenceGraphData>> &graphs, const QRect &rect) {
+void GSequenceGraphDrawer::draw(QPainter& p, const QList<QSharedPointer<GSequenceGraphData>>& graphs, const QRect& rect) {
     calculatePoints(graphs, rect.width());
     if (!calculationTaskRunner.isIdle()) {
         p.fillRect(rect, Qt::gray);
@@ -146,7 +146,7 @@ void GSequenceGraphDrawer::draw(QPainter &p, const QList<QSharedPointer<GSequenc
     visibleMin = cutOffState.isEnabled ? cutOffState.min : UNDEFINED_GRAPH_VALUE;
     visibleMax = cutOffState.isEnabled ? cutOffState.max : UNDEFINED_GRAPH_VALUE;
     if (!cutOffState.isEnabled) {
-        for (const QSharedPointer<GSequenceGraphData> &graph : qAsConst(graphs)) {
+        for (const QSharedPointer<GSequenceGraphData>& graph : qAsConst(graphs)) {
             visibleMin = getMinValue(graph->visibleMin, visibleMin);
             visibleMax = getMaxValue(graph->visibleMax, visibleMax);
         }
@@ -156,10 +156,10 @@ void GSequenceGraphDrawer::draw(QPainter &p, const QList<QSharedPointer<GSequenc
         return;
     }
 
-    for (const QSharedPointer<GSequenceGraphData> &graph : qAsConst(graphs)) {
+    for (const QSharedPointer<GSequenceGraphData>& graph : qAsConst(graphs)) {
         drawGraph(p, graph, rect);
-        const QList<GraphLabel *> &labels = graph->labels.getLabels();
-        for (GraphLabel *label : qAsConst(labels)) {
+        const QList<GraphLabel*>& labels = graph->labels.getLabels();
+        for (GraphLabel* label : qAsConst(labels)) {
             bool isVisible = updateLabel(graph, label, rect);
             label->setVisible(isVisible);
         }
@@ -183,7 +183,7 @@ void GSequenceGraphDrawer::draw(QPainter &p, const QList<QSharedPointer<GSequenc
     p.drawText(minTextRect, Qt::AlignRight, QString::number(visibleMin, 'g', 4));
 }
 
-void GSequenceGraphDrawer::drawGraph(QPainter &p, const QSharedPointer<GSequenceGraphData> &graph, const QRect &rect) const {
+void GSequenceGraphDrawer::drawGraph(QPainter& p, const QSharedPointer<GSequenceGraphData>& graph, const QRect& rect) const {
     int width = rect.width();
     SAFE_POINT(graph->viewPoints.size() == width, "Invalid count of view points in graph", );
 
@@ -237,8 +237,8 @@ void GSequenceGraphDrawer::drawGraph(QPainter &p, const QSharedPointer<GSequence
     }
 }
 
-void GSequenceGraphDrawer::addLabelsForLocalMinMaxPoints(const QSharedPointer<GSequenceGraphData> &graph, const U2Region &sequenceRange, const QRect &rect) {
-    const QVector<float> &data = graph->dataPoints;
+void GSequenceGraphDrawer::addLabelsForLocalMinMaxPoints(const QSharedPointer<GSequenceGraphData>& graph, const U2Region& sequenceRange, const QRect& rect) {
+    const QVector<float>& data = graph->dataPoints;
     int firstDataIndex = (int)(qMax((qint64)0, sequenceRange.startPos - (window + 1) / 2) / step);
     int lastDataIndex = qMin((int)((sequenceRange.endPos() - window / 2) / step), data.size() - 1);
     CHECK(firstDataIndex < lastDataIndex, );
@@ -270,7 +270,7 @@ void GSequenceGraphDrawer::addLabelsForLocalMinMaxPoints(const QSharedPointer<GS
     }
 }
 
-bool GSequenceGraphDrawer::updateLabel(const QSharedPointer<GSequenceGraphData> &graph, GraphLabel *label, const QRect &rect) const {
+bool GSequenceGraphDrawer::updateLabel(const QSharedPointer<GSequenceGraphData>& graph, GraphLabel* label, const QRect& rect) const {
     QColor color = seriesColorByName.value(seriesColorByName.contains(graph->graphName) ? graph->graphName : DEFAULT_COLOR);
     label->setColor(color, color);
 
@@ -292,19 +292,19 @@ bool GSequenceGraphDrawer::updateLabel(const QSharedPointer<GSequenceGraphData> 
     return true;
 }
 
-void GSequenceGraphDrawer::adjustMovingLabelGroupPositions(const QList<GraphLabel *> &labels, int viewWidth) {
+void GSequenceGraphDrawer::adjustMovingLabelGroupPositions(const QList<GraphLabel*>& labels, int viewWidth) {
     CHECK(labels.size() > 1, );
     int groupWidth = 0;
     int labelSpacing = 4;  // Spacing between labels.
     int commonY = INT_MAX;  // Align labels on top of all dots to avoid label & dot overlap.
-    for (GraphLabel *label : qAsConst(labels)) {
+    for (GraphLabel* label : qAsConst(labels)) {
         QRect rect = label->getTextBoxRect();
         groupWidth += rect.width() + (groupWidth > 0 ? labelSpacing : 0);
         int dotY = label->getCoord().y();
         commonY = qMin(dotY > rect.y() ? rect.y() : dotY - rect.height() - 1, commonY);
     }
     int x = qBound(2, labels[0]->getCoord().x() - groupWidth / 2, viewWidth - (groupWidth + 2));
-    for (GraphLabel *label : qAsConst(labels)) {
+    for (GraphLabel* label : qAsConst(labels)) {
         QRect rect = label->getTextBoxRect();
         int xShift = x - rect.x();
         int yShift = commonY - rect.y();
@@ -313,10 +313,10 @@ void GSequenceGraphDrawer::adjustMovingLabelGroupPositions(const QList<GraphLabe
     }
 }
 
-void GSequenceGraphDrawer::updateMovingLabels(const QList<QSharedPointer<GSequenceGraphData>> &graphs, const QRect &rect) const {
-    QList<GraphLabel *> visibleMovingLabels;
-    for (const QSharedPointer<GSequenceGraphData> &graph : qAsConst(graphs)) {
-        GraphLabel *label = graph->labels.getMovingLabel();
+void GSequenceGraphDrawer::updateMovingLabels(const QList<QSharedPointer<GSequenceGraphData>>& graphs, const QRect& rect) const {
+    QList<GraphLabel*> visibleMovingLabels;
+    for (const QSharedPointer<GSequenceGraphData>& graph : qAsConst(graphs)) {
+        GraphLabel* label = graph->labels.getMovingLabel();
         bool isVisible = updateLabel(graph, label, rect);
         label->setVisible(isVisible);
         if (isVisible) {
@@ -330,15 +330,15 @@ void GSequenceGraphDrawer::updateMovingLabels(const QList<QSharedPointer<GSequen
 }
 
 int GSequenceGraphDrawer::getScreenOffsetByPos(double sequencePos, int screenWidth) const {
-    const U2Region &visibleRange = view->getVisibleRange();
+    const U2Region& visibleRange = view->getVisibleRange();
     CHECK(sequencePos >= visibleRange.startPos && sequencePos < visibleRange.endPos(), -1);
     double sequenceToScreenScale = (double)screenWidth / visibleRange.length;
     double x = qRound64((sequencePos - visibleRange.startPos) * sequenceToScreenScale);
     return x < 0 || x >= screenWidth ? -1 : (int)x;
 }
 
-bool GSequenceGraphDrawer::updateCoordinatesAndText(const QSharedPointer<GSequenceGraphData> &graph, const QRect &rect, GraphLabel *label) const {
-    const U2Region &visibleRange = view->getVisibleRange();
+bool GSequenceGraphDrawer::updateCoordinatesAndText(const QSharedPointer<GSequenceGraphData>& graph, const QRect& rect, GraphLabel* label) const {
+    const U2Region& visibleRange = view->getVisibleRange();
     CHECK(visibleRange.contains(label->getPosition()), false);
 
     int labelX = getScreenOffsetByPos(label->getPosition(), rect.width());
@@ -383,7 +383,7 @@ bool GSequenceGraphDrawer::updateCoordinatesAndText(const QSharedPointer<GSequen
     return true;
 }
 
-void GSequenceGraphDrawer::updateMovingLabelMarkState(const QSharedPointer<GSequenceGraphData> &graph, GraphLabel *label) const {
+void GSequenceGraphDrawer::updateMovingLabelMarkState(const QSharedPointer<GSequenceGraphData>& graph, GraphLabel* label) const {
     int labelX = label->getCoord().x();
     int rangeToCheck = 50;
     int nPoints = graph->viewPoints.size();
@@ -401,21 +401,21 @@ void GSequenceGraphDrawer::updateMovingLabelMarkState(const QSharedPointer<GSequ
     }
 }
 
-void GSequenceGraphDrawer::calculatePoints(const QList<QSharedPointer<GSequenceGraphData>> &graphs, int viewWidth) {
+void GSequenceGraphDrawer::calculatePoints(const QList<QSharedPointer<GSequenceGraphData>>& graphs, int viewWidth) {
     SAFE_POINT(viewWidth > 0, "Illegal view width", );
     SAFE_POINT(!graphs.isEmpty(), "Graphs are empty!", );
 
-    U2SequenceObject *sequenceObject = view->getSequenceObject();
+    U2SequenceObject* sequenceObject = view->getSequenceObject();
     qint64 sequenceLength = sequenceObject->getSequenceLength();
     SAFE_POINT(sequenceLength > 0, "Illegal sequence length", );
 
-    const QSharedPointer<GSequenceGraphData> &blueprintGraph = graphs[0];
+    const QSharedPointer<GSequenceGraphData>& blueprintGraph = graphs[0];
     bool isAlgorithmParamsChanged = blueprintGraph->window != window ||
                                     blueprintGraph->step != step ||
                                     blueprintGraph->sequenceLength != sequenceLength;
     if (isAlgorithmParamsChanged) {
         // Recompute data points.
-        for (const QSharedPointer<GSequenceGraphData> &graph : qAsConst(graphs)) {
+        for (const QSharedPointer<GSequenceGraphData>& graph : qAsConst(graphs)) {
             graph->clearAllPoints();
             graph->window = window;
             graph->step = step;
@@ -427,11 +427,11 @@ void GSequenceGraphDrawer::calculatePoints(const QList<QSharedPointer<GSequenceG
     if (!calculationTaskRunner.isIdle()) {
         return;  // Calculation is in progress with the same params. Wait until it is finished.
     }
-    const U2Region &visibleRange = view->getVisibleRange();
+    const U2Region& visibleRange = view->getVisibleRange();
     if (blueprintGraph->visibleRange == visibleRange && blueprintGraph->viewPoints.size() == viewWidth) {
         return;  // Graphs are up-to-date.
     }
-    for (const QSharedPointer<GSequenceGraphData> &graph : qAsConst(graphs)) {
+    for (const QSharedPointer<GSequenceGraphData>& graph : qAsConst(graphs)) {
         graph->visibleRange = visibleRange;
         double dataPointsPerViewRange = graph->dataPoints.size() * (double)graph->visibleRange.length / sequenceLength;
         double dataPointsPerPixel = dataPointsPerViewRange / viewWidth;
@@ -459,7 +459,7 @@ void GSequenceGraphDrawer::showSettingsDialog() {
     }
 }
 
-CalculatePointsTask::CalculatePointsTask(const QList<QSharedPointer<GSequenceGraphData>> &_graphDataList, U2SequenceObject *_sequenceObject)
+CalculatePointsTask::CalculatePointsTask(const QList<QSharedPointer<GSequenceGraphData>>& _graphDataList, U2SequenceObject* _sequenceObject)
     : BackgroundTask<QList<QVector<float>>>(tr("Calculate graph points"), TaskFlag_None),
       graphDataList(_graphDataList), sequenceObject(_sequenceObject) {
 }
@@ -474,7 +474,7 @@ void CalculatePointsTask::run() {
             graphData->algorithm->calculate(dataPoints, sequenceObject, graphData->window, graphData->step, stateInfo);
             CHECK_OP(stateInfo, );
             result << dataPoints;
-        } catch (const std::bad_alloc &) {
+        } catch (const std::bad_alloc&) {
             setError(L10N::outOfMemory() + ", graph: " + graphData->graphName);
         } catch (...) {
             setError(L10N::internalError("graph " + graphData->graphName));
@@ -498,9 +498,9 @@ Task::ReportResult CalculatePointsTask::report() {
     return Task::ReportResult_Finished;
 }
 
-void GSequenceGraphDrawer::packDataPointsIntoView(const QSharedPointer<GSequenceGraphData> &graph, int viewWidth) const {
+void GSequenceGraphDrawer::packDataPointsIntoView(const QSharedPointer<GSequenceGraphData>& graph, int viewWidth) const {
     graph->useIntervals = true;
-    const QVector<float> &data = graph->dataPoints;
+    const QVector<float>& data = graph->dataPoints;
     double dataPointsPerBase = (double)data.size() / graph->sequenceLength;
     double dataPointsPerViewRange = dataPointsPerBase * graph->visibleRange.length;
     double dataPointsPerPixel = dataPointsPerViewRange / viewWidth;
@@ -527,11 +527,11 @@ struct DataByX {
     float value = GSequenceGraphUtils::UNDEFINED_GRAPH_VALUE;
 };
 
-void GSequenceGraphDrawer::expandDataPointsToView(const QSharedPointer<GSequenceGraphData> &graph, int viewWidth) const {
+void GSequenceGraphDrawer::expandDataPointsToView(const QSharedPointer<GSequenceGraphData>& graph, int viewWidth) const {
     SAFE_POINT(graph->window == window && graph->step == step, "Computing graph with illegal window & step values!", );
     graph->useIntervals = false;
-    const QVector<float> &data = graph->dataPoints;
-    const U2Region &visibleRange = graph->visibleRange;
+    const QVector<float>& data = graph->dataPoints;
+    const U2Region& visibleRange = graph->visibleRange;
 
     graph->viewPoints = QVector<float>(viewWidth, UNDEFINED_GRAPH_VALUE);
 
@@ -556,7 +556,7 @@ void GSequenceGraphDrawer::expandDataPointsToView(const QSharedPointer<GSequence
     SAFE_POINT(!dataByX.isEmpty(), "Must be at least one data point in visible range!", );
     if (dataByX.size() == 1) {
         // Only 1 point in the range. Can't build a line -> save this point and return.
-        const DataByX &d = dataByX[0];
+        const DataByX& d = dataByX[0];
         if (d.x >= 0 && d.x < viewWidth) {
             graph->viewPoints[d.x] = d.value;
             graph->visibleMin = d.value;
@@ -570,7 +570,7 @@ void GSequenceGraphDrawer::expandDataPointsToView(const QSharedPointer<GSequence
     graph->visibleMin = UNDEFINED_GRAPH_VALUE;
     graph->visibleMax = UNDEFINED_GRAPH_VALUE;
     for (int x = qMax(0, prev.x); x < viewWidth && nextDataIndex < dataByX.size(); x++) {
-        const DataByX &next = dataByX[nextDataIndex];
+        const DataByX& next = dataByX[nextDataIndex];
         float value;
         if (x == next.x) {
             value = next.value;

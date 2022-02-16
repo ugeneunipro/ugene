@@ -40,7 +40,7 @@ const QString FileAndDirectoryUtils::HOME_DIR_IDENTIFIER = "~/";
 const QString FileAndDirectoryUtils::HOME_DIR_IDENTIFIER = "%UserProfile%/";
 #endif
 
-QString FileAndDirectoryUtils::getFormatId(const FormatDetectionResult &r) {
+QString FileAndDirectoryUtils::getFormatId(const FormatDetectionResult& r) {
     if (nullptr != r.format) {
         return r.format->getFormatId();
     }
@@ -50,7 +50,7 @@ QString FileAndDirectoryUtils::getFormatId(const FormatDetectionResult &r) {
     return "";
 }
 
-QString FileAndDirectoryUtils::getWorkingDir(const QString &fileUrl, int dirMode, const QString &customDir, const QString &workingDir) {
+QString FileAndDirectoryUtils::getWorkingDir(const QString& fileUrl, int dirMode, const QString& customDir, const QString& workingDir) {
     QString result;
 
     bool useInternal = false;
@@ -92,7 +92,7 @@ QString FileAndDirectoryUtils::getWorkingDir(const QString &fileUrl, int dirMode
     return result;
 }
 
-QString FileAndDirectoryUtils::createWorkingDir(const QString &fileUrl, int dirMode, const QString &customDir, const QString &workingDir) {
+QString FileAndDirectoryUtils::createWorkingDir(const QString& fileUrl, int dirMode, const QString& customDir, const QString& workingDir) {
     const QString result = getWorkingDir(fileUrl, dirMode, customDir, workingDir);
     QDir dir(result);
     if (!dir.exists(result)) {
@@ -101,7 +101,7 @@ QString FileAndDirectoryUtils::createWorkingDir(const QString &fileUrl, int dirM
     return result;
 }
 
-QString FileAndDirectoryUtils::detectFormat(const QString &url) {
+QString FileAndDirectoryUtils::detectFormat(const QString& url) {
     FormatDetectionConfig cfg;
     cfg.bestMatchesOnly = false;
     cfg.useImporters = true;
@@ -115,7 +115,7 @@ QString FileAndDirectoryUtils::detectFormat(const QString &url) {
     return getFormatId(formats.first());
 }
 
-bool FileAndDirectoryUtils::isFileEmpty(const QString &url) {
+bool FileAndDirectoryUtils::isFileEmpty(const QString& url) {
     QFile file(url);
     if (!file.exists()) {
         return true;
@@ -126,7 +126,7 @@ bool FileAndDirectoryUtils::isFileEmpty(const QString &url) {
     return false;
 }
 
-void FileAndDirectoryUtils::dumpStringToFile(QFile *f, QString &str) {
+void FileAndDirectoryUtils::dumpStringToFile(QFile* f, QString& str) {
     if (Q_LIKELY(f == nullptr || str.length() <= MIN_LENGTH_TO_WRITE)) {
         return;
     }
@@ -134,7 +134,7 @@ void FileAndDirectoryUtils::dumpStringToFile(QFile *f, QString &str) {
     str.clear();
 }
 
-QString FileAndDirectoryUtils::getAbsolutePath(const QString &filePath) {
+QString FileAndDirectoryUtils::getAbsolutePath(const QString& filePath) {
     CHECK(!filePath.isEmpty(), filePath);
     QString result = QDir::fromNativeSeparators(filePath);
     if (result.startsWith(HOME_DIR_IDENTIFIER, Qt::CaseInsensitive)) {
@@ -144,7 +144,7 @@ QString FileAndDirectoryUtils::getAbsolutePath(const QString &filePath) {
     return QFileInfo(result).absoluteFilePath();
 }
 
-bool FileAndDirectoryUtils::isDirectoryWritable(const QString &dirPath) {
+bool FileAndDirectoryUtils::isDirectoryWritable(const QString& dirPath) {
     QDir dir(dirPath);
     if (!dir.exists()) {
         return false;
@@ -160,7 +160,7 @@ bool FileAndDirectoryUtils::isDirectoryWritable(const QString &dirPath) {
     return true;
 }
 
-bool FileAndDirectoryUtils::canWriteToPath(const QString &absoluteDirPath) {
+bool FileAndDirectoryUtils::canWriteToPath(const QString& absoluteDirPath) {
     if (absoluteDirPath.isEmpty()) {
         return true;
     }

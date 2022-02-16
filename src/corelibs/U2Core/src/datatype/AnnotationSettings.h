@@ -34,12 +34,12 @@ class Settings;
 class U2CORE_EXPORT AnnotationSettings {
 public:
     AnnotationSettings();
-    AnnotationSettings(const QString &name, bool amino, const QColor &color, bool visible);
+    AnnotationSettings(const QString& name, bool amino, const QColor& color, bool visible);
 
-    bool operator==(const AnnotationSettings *as) const {
+    bool operator==(const AnnotationSettings* as) const {
         return equals(as);
     }
-    bool equals(const AnnotationSettings *as) const;
+    bool equals(const AnnotationSettings* as) const;
 
     QString name;
     QColor color;
@@ -54,25 +54,25 @@ public:
 class U2CORE_EXPORT AnnotationSettingsRegistry : public QObject {
     Q_OBJECT
 public:
-    AnnotationSettingsRegistry(const QList<AnnotationSettings *> &predefined);
+    AnnotationSettingsRegistry(const QList<AnnotationSettings*>& predefined);
     ~AnnotationSettingsRegistry();
 
     QStringList getAllSettings() const;
-    AnnotationSettings *getAnnotationSettings(const QString &name);
-    AnnotationSettings *getAnnotationSettings(const SharedAnnotationData &a);
+    AnnotationSettings* getAnnotationSettings(const QString& name);
+    AnnotationSettings* getAnnotationSettings(const SharedAnnotationData& a);
 
     // persistent==true -> save settings to file, ==false -> this session only
-    void changeSettings(const QList<AnnotationSettings *> &settings, bool saveAsPersistent);
+    void changeSettings(const QList<AnnotationSettings*>& settings, bool saveAsPersistent);
 
 signals:
-    void si_annotationSettingsChanged(const QStringList &changedSettings);
+    void si_annotationSettingsChanged(const QStringList& changedSettings);
 
 private:
     void read();
     void save();
 
-    QHash<QString, AnnotationSettings *> persistentMap;
-    QHash<QString, AnnotationSettings *> transientMap;
+    QHash<QString, AnnotationSettings*> persistentMap;
+    QHash<QString, AnnotationSettings*> transientMap;
 };
 
 }  // namespace U2

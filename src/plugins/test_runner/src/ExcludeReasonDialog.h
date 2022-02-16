@@ -32,12 +32,12 @@ class ExcludeReasonDialog : public QDialog {
     Q_OBJECT
 
 public:
-    ExcludeReasonDialog(QWidget *parent = 0);
+    ExcludeReasonDialog(QWidget* parent = 0);
     ~ExcludeReasonDialog();
     QString getReason();
 
 private:
-    Ui_ExcludeReasonDialog *ui;
+    Ui_ExcludeReasonDialog* ui;
 };
 
 }  // namespace U2

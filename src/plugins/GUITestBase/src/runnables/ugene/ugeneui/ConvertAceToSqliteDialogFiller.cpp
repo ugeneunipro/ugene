@@ -48,17 +48,17 @@ void ConvertAceToSqliteDialogFiller::commonScenario() {
             button = "Cancel";
             break;
     }
-    MessageBoxDialogFiller *mbf = new MessageBoxDialogFiller(os, button);
+    MessageBoxDialogFiller* mbf = new MessageBoxDialogFiller(os, button);
     if (NOT_SET == action) {
         // when launching filler 2 or more times messagebox is caught by wrong filler
         // GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, mbf);
     } else {
         GTUtilsDialog::waitForDialog(os, mbf);
     }
-    QWidget *dialog = QApplication::activeModalWidget();
+    QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog, "activeModalWidget is NULL");
 
-    QLineEdit *leDest = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "leDest", dialog));
+    QLineEdit* leDest = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "leDest", dialog));
     GT_CHECK(leDest, "destination URL lineedit not found");
     GTLineEdit::setText(os, leDest, leDestUrl);
 

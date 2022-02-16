@@ -36,7 +36,7 @@ public:
     void startWorkaroundForMacCGEvents(int delay, bool waitFinished);
 
 private:
-    QProcess *process = nullptr;
+    QProcess* process = nullptr;
 };
 
 }  // namespace HI

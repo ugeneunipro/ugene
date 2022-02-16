@@ -45,14 +45,14 @@ public:
     CudaSupportPlugin();
 
 private:
-    Error obtainGpusInfo(QString &err);
+    Error obtainGpusInfo(QString& err);
     void loadGpusSettings();
     void registerAvailableGpus();
 
     static QString getCudaErrorString(CUresult code);
     static QString getSettingsErrorString(Error err);
 
-    QList<CudaGpuModel *> gpus;
+    QList<CudaGpuModel*> gpus;
 };
 
 }  // namespace U2

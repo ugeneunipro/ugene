@@ -56,7 +56,7 @@ const QString MARKER_ATTR_ID("marker");
 /*******************************
  * MarkSequenceWorker
  *******************************/
-MarkSequenceWorker::MarkSequenceWorker(Actor *p)
+MarkSequenceWorker::MarkSequenceWorker(Actor* p)
     : BaseWorker(p), inChannel(nullptr), outChannel(nullptr) {
 }
 
@@ -66,7 +66,7 @@ void MarkSequenceWorker::init() {
     mtype = ports.value(MarkerPorts::OUT_MARKER_SEQ_PORT())->getBusType();
 }
 
-Task *MarkSequenceWorker::tick() {
+Task* MarkSequenceWorker::tick() {
     while (inChannel->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(inChannel);
         if (inputMessage.isEmpty()) {
@@ -87,13 +87,13 @@ Task *MarkSequenceWorker::tick() {
                                                                                        data[BaseSlots::ANNOTATION_TABLE_SLOT().getId()]);
 
         QVariantList anns;
-        foreach (const SharedAnnotationData &ad, inputAnns) {
+        foreach (const SharedAnnotationData& ad, inputAnns) {
             anns << QVariant::fromValue(ad);
         }
 
-        MarkerAttribute *attr = dynamic_cast<MarkerAttribute *>(actor->getParameter(MARKER_ATTR_ID));
+        MarkerAttribute* attr = dynamic_cast<MarkerAttribute*>(actor->getParameter(MARKER_ATTR_ID));
         QVariantMap m;
-        foreach (Marker *marker, attr->getMarkers()) {
+        foreach (Marker* marker, attr->getMarkers()) {
             QString res;
             if (SEQUENCE == marker->getGroup()) {
                 res = marker->getMarkingResult(qVariantFromValue<DNASequence>(seq));
@@ -118,8 +118,8 @@ Task *MarkSequenceWorker::tick() {
  * MarkSequenceWorkerFactory
  *******************************/
 void MarkSequenceWorkerFactory::init() {
-    QList<PortDescriptor *> portDescs;
-    QList<Attribute *> attrs;
+    QList<PortDescriptor*> portDescs;
+    QList<Attribute*> attrs;
 
     // input port
     QMap<Descriptor, DataTypePtr> inTypeMap;
@@ -146,7 +146,7 @@ void MarkSequenceWorkerFactory::init() {
     Descriptor markerDesc(MARKER_ATTR_ID, MarkSequenceWorker::tr("Markers"), MarkSequenceWorker::tr("Markers."));
     attrs << new MarkerAttribute(markerDesc, BaseTypes::STRING_TYPE(), false);
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
+    ActorPrototype* proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
 
     proto->setEditor(new MarkerEditor());
     proto->setPrompter(new MarkSequencePrompter());
@@ -156,7 +156,7 @@ void MarkSequenceWorkerFactory::init() {
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new MarkSequenceWorkerFactory());
 }
 
-Worker *MarkSequenceWorkerFactory::createWorker(Actor *a) {
+Worker* MarkSequenceWorkerFactory::createWorker(Actor* a) {
     return new MarkSequenceWorker(a);
 }
 

@@ -22,26 +22,26 @@
 #ifndef _U2_FORMAT_SETTINGS_GUI_CONTROLLER_H_
 #define _U2_FORMAT_SETTINGS_GUI_CONTROLLER_H_
 
-#include <ui_FormatSettingsWidget.h>
-
 #include <U2Core/FormatSettings.h>
 
 #include <U2Gui/AppSettingsGUI.h>
+
+#include <ui_FormatSettingsWidget.h>
 
 namespace U2 {
 
 class FormatSettingsGUIPageController : public AppSettingsGUIPageController {
     Q_OBJECT
 public:
-    FormatSettingsGUIPageController(QObject *p = nullptr);
+    FormatSettingsGUIPageController(QObject* p = nullptr);
 
-    virtual AppSettingsGUIPageState *getSavedState();
+    virtual AppSettingsGUIPageState* getSavedState();
 
-    virtual void saveState(AppSettingsGUIPageState *s);
+    virtual void saveState(AppSettingsGUIPageState* s);
 
-    virtual AppSettingsGUIPageWidget *createWidget(AppSettingsGUIPageState *data);
+    virtual AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* data);
 
-    const QString &getHelpPageId() const {
+    const QString& getHelpPageId() const {
         return helpPageId;
     };
 
@@ -61,11 +61,11 @@ public:
 class FormatSettingsGUIPageWidget : public AppSettingsGUIPageWidget, public Ui_FormatSettingsWidget {
     Q_OBJECT
 public:
-    FormatSettingsGUIPageWidget(FormatSettingsGUIPageController *ctrl);
+    FormatSettingsGUIPageWidget(FormatSettingsGUIPageController* ctrl);
 
-    virtual void setState(AppSettingsGUIPageState *state);
+    virtual void setState(AppSettingsGUIPageState* state);
 
-    virtual AppSettingsGUIPageState *getState(QString &err) const;
+    virtual AppSettingsGUIPageState* getState(QString& err) const;
 
 private:
     QMap<CaseAnnotationsMode, QString> caseAnnsModeNames;

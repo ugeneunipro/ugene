@@ -32,23 +32,23 @@ namespace U2 {
 class BowtieWidgetController : public WidgetController {
     Q_OBJECT
 public:
-    BowtieWidgetController(WizardController *wc, BowtieWidget *bw, int labelSize);
+    BowtieWidgetController(WizardController* wc, BowtieWidget* bw, int labelSize);
     ~BowtieWidgetController();
 
-    virtual QWidget *createGUI(U2OpStatus &os);
+    virtual QWidget* createGUI(U2OpStatus& os);
 
 private slots:
     void sl_browse();
 
 private:
-    QString finalyze(const QString &url);
+    QString finalyze(const QString& url);
 
 private:
-    BowtieWidget *bw;
-    AttributeWidget *dirW;
-    AttributeWidget *nameW;
-    DefaultPropertyController *dirCtrl;
-    DefaultPropertyController *nameCtrl;
+    BowtieWidget* bw;
+    AttributeWidget* dirW;
+    AttributeWidget* nameW;
+    DefaultPropertyController* dirCtrl;
+    DefaultPropertyController* nameCtrl;
 };
 
 }  // namespace U2

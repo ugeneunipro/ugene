@@ -31,9 +31,9 @@ const QString ImageExportTaskSettings::SVG_FORMAT = "SVG";
 const QString ImageExportTaskSettings::PS_FORMAT = "PS";
 const QString ImageExportTaskSettings::PDF_FORMAT = "PDF";
 
-ImageExportTaskSettings::ImageExportTaskSettings(const QString &fileName,
-                                                 const QString &format,
-                                                 const QSize &size,
+ImageExportTaskSettings::ImageExportTaskSettings(const QString& fileName,
+                                                 const QString& format,
+                                                 const QSize& size,
                                                  const int quality,
                                                  const int dpi)
     : fileName(fileName),
@@ -55,7 +55,7 @@ bool ImageExportTaskSettings::isPDFFormat() const {
     return (PS_FORMAT == format || PDF_FORMAT == format);
 }
 
-ImageExportTask::ImageExportTask(const ImageExportTaskSettings &settings)
+ImageExportTask::ImageExportTask(const ImageExportTaskSettings& settings)
     : Task(tr("Image export task"), TaskFlag_RunInMainThread), settings(settings) {
     WRONG_FORMAT_MESSAGE = tr("Format %1 is not supported by %2.");
     EXPORT_FAIL_MESSAGE = tr("Failed to export image to %1.");
@@ -66,12 +66,12 @@ Task::ReportResult ImageExportTask::report() {
     return Task::ReportResult_Finished;
 }
 
-ImageExportController::ImageExportController(const ExportImageFormatPolicy &fPolicy)
+ImageExportController::ImageExportController(const ExportImageFormatPolicy& fPolicy)
     : settingsWidget(nullptr),
       formatPolicy(fPolicy) {
 }
 
-Task *ImageExportController::getTaskInstance(const ImageExportTaskSettings &settings) const {
+Task* ImageExportController::getTaskInstance(const ImageExportTaskSettings& settings) const {
     if (settings.isSVGFormat()) {
         SAFE_POINT(isSvgSupported(), tr("SVG format is not supported"), nullptr);
         return getExportToSvgTask(settings);
@@ -84,7 +84,7 @@ Task *ImageExportController::getTaskInstance(const ImageExportTaskSettings &sett
     return getExportToBitmapTask(settings);
 }
 
-QWidget *ImageExportController::getSettingsWidget() {
+QWidget* ImageExportController::getSettingsWidget() {
     if (settingsWidget == nullptr) {
         initSettingsWidget();
     }

@@ -61,18 +61,18 @@ void AtomConstants::init() {
 
 const float MolecularSurface::TOLERANCE = 1.0f;
 
-const QVector<Face> &MolecularSurface::getFaces() const {
+const QVector<Face>& MolecularSurface::getFaces() const {
     return faces;
 }
 
-QList<SharedAtom> MolecularSurface::findAtomNeighbors(const SharedAtom &a, const QList<SharedAtom> &atoms) {
+QList<SharedAtom> MolecularSurface::findAtomNeighbors(const SharedAtom& a, const QList<SharedAtom>& atoms) {
     QList<SharedAtom> neighbors;
     // maximum covalent radius in angstroms
     static const float maxAtomRadius = 1.0;
     static const float doubleRadius = 2 * maxAtomRadius;
     Vector3D v1 = a->coord3d;
 
-    foreach (const SharedAtom &neighbor, atoms) {
+    foreach (const SharedAtom& neighbor, atoms) {
         if (neighbor == a) {
             continue;
         }
@@ -85,7 +85,7 @@ QList<SharedAtom> MolecularSurface::findAtomNeighbors(const SharedAtom &a, const
     return neighbors;
 }
 
-U2::GeodesicSphere MolecularSurface::getAtomSurfaceDots(const SharedAtom &a, int detaillevel) {
+U2::GeodesicSphere MolecularSurface::getAtomSurfaceDots(const SharedAtom& a, int detaillevel) {
     QVector<Vector3D> surfaceDots;
     float radius = TOLERANCE + AtomConstants::getAtomCovalentRadius(a->atomicNumber);
     // Calculate sphere surface dots
@@ -93,8 +93,8 @@ U2::GeodesicSphere MolecularSurface::getAtomSurfaceDots(const SharedAtom &a, int
     return sphere;
 }
 
-bool MolecularSurface::vertexNeighboursOneOf(const Vector3D &v, const QList<SharedAtom> &atoms) {
-    foreach (const SharedAtom &a, atoms) {
+bool MolecularSurface::vertexNeighboursOneOf(const Vector3D& v, const QList<SharedAtom>& atoms) {
+    foreach (const SharedAtom& a, atoms) {
         float r = AtomConstants::getAtomCovalentRadius(a->atomicNumber) + TOLERANCE;
         // Vector3D v2 = a->coord3d;
         // qDebug("testing if vertex (%f,%f,%f) neighbors atom (%f,%f,%f) of radius %f", v.x, v.y, v.z, v2.x, v2.y, v2.z, radius);
@@ -118,9 +118,9 @@ qint64 MolecularSurface::estimateMemoryUsage(int numberOfAtoms) {
     return maxInt * sizeof(double) * 6;
 }
 
-MolecularSurfaceCalcTask::MolecularSurfaceCalcTask(const QString &surfaceTypeName, const QList<SharedAtom> &_atoms)
+MolecularSurfaceCalcTask::MolecularSurfaceCalcTask(const QString& surfaceTypeName, const QList<SharedAtom>& _atoms)
     : Task(tr("Molecular surface calculation"), TaskFlag_None), typeName(surfaceTypeName), atoms(_atoms) {
-    MolecularSurfaceFactory *factory = AppContext::getMolecularSurfaceFactoryRegistry()->getSurfaceFactory(typeName);
+    MolecularSurfaceFactory* factory = AppContext::getMolecularSurfaceFactoryRegistry()->getSurfaceFactory(typeName);
     molSurface = factory->createInstance();
 
     qint64 memUseMB = (molSurface->estimateMemoryUsage(atoms.size())) / 1024 / 1024;
@@ -136,9 +136,9 @@ void MolecularSurfaceCalcTask::run() {
     molSurface->calculate(atoms, stateInfo.progress);
 }
 
-MolecularSurface *MolecularSurfaceCalcTask::getCalculatedSurface() {
+MolecularSurface* MolecularSurfaceCalcTask::getCalculatedSurface() {
     SAFE_POINT(molSurface != nullptr, "Invalid molecular surface object detected!", nullptr);
-    MolecularSurface *returnValue = molSurface;
+    MolecularSurface* returnValue = molSurface;
     molSurface = nullptr;
 
     return returnValue;

@@ -52,11 +52,11 @@ BAMFormat::BAMFormat()
     supportedObjectTypes += GObjectTypes::ASSEMBLY;
 }
 
-void BAMFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &os) {
+void BAMFormat::storeDocument(Document* d, IOAdapter* io, U2OpStatus& os) {
     CHECK_EXT(d != nullptr, os.setError(L10N::badArgument("doc")), );
     CHECK_EXT(io != nullptr && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), );
 
-    QList<GObject *> als = d->findGObjectByType(GObjectTypes::ASSEMBLY);
+    QList<GObject*> als = d->findGObjectByType(GObjectTypes::ASSEMBLY);
     GUrl url = io->getURL();
     io->close();
 
@@ -69,20 +69,20 @@ void BAMFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &os) {
 
 namespace BAM {
 
-BAMFormatUtils::BAMFormatUtils(QObject *parent)
+BAMFormatUtils::BAMFormatUtils(QObject* parent)
     : QObject(parent),
       fileExtensions(QStringList("bam")) {
 }
 
-FormatCheckResult BAMFormatUtils::checkRawData(const QByteArray &rawData, const GUrl & /*url*/) const {
+FormatCheckResult BAMFormatUtils::checkRawData(const QByteArray& rawData, const GUrl& /*url*/) const {
     z_stream_s stream;
     stream.zalloc = Z_NULL;
     stream.zfree = Z_NULL;
     stream.opaque = Z_NULL;
-    stream.next_in = (Bytef *)rawData.constData();
+    stream.next_in = (Bytef*)rawData.constData();
     stream.avail_in = rawData.size();
     QByteArray magic(4, '\0');
-    stream.next_out = (Bytef *)magic.data();
+    stream.next_out = (Bytef*)magic.data();
     stream.avail_out = magic.size();
     FormatDetectionScore result = FormatDetection_NotMatched;
     if (Z_OK == inflateInit2(&stream, 16 + 15)) {

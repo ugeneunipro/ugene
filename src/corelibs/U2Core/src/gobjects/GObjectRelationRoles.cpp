@@ -47,7 +47,7 @@ QString GObjectRelationRoleCompatibility::toString(GObjectRelationRole role) {
     }
 }
 
-GObjectRelationRole GObjectRelationRoleCompatibility::fromString(const QString &str) {
+GObjectRelationRole GObjectRelationRoleCompatibility::fromString(const QString& str) {
     if (SEQUENCE == str) {
         return ObjectRole_Sequence;
     } else if (ANNOTATION_TABLE == str) {

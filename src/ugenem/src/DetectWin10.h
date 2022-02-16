@@ -35,28 +35,28 @@ public:
     static QString getVersionString();
 
 private:
-    static void detectWinVersion(OSVERSIONINFO *osver);
-    static bool determineWinOsVersionPost8(OSVERSIONINFO *result);
-    static void determineWinOsVersionFallbackPost8(OSVERSIONINFO *result);
+    static void detectWinVersion(OSVERSIONINFO* osver);
+    static bool determineWinOsVersionPost8(OSVERSIONINFO* result);
+    static void determineWinOsVersionFallbackPost8(OSVERSIONINFO* result);
 };
 
 // QT class copied from 5.4.0 for WIN 10 correct detection
 class QSystemLibrary {
 public:
-    explicit QSystemLibrary(const QString &libraryName) {
+    explicit QSystemLibrary(const QString& libraryName) {
         m_libraryName = libraryName;
         m_handle = 0;
         m_didLoad = false;
     }
 
-    explicit QSystemLibrary(const wchar_t *libraryName) {
+    explicit QSystemLibrary(const wchar_t* libraryName) {
         m_libraryName = QString::fromWCharArray(libraryName);
         m_handle = 0;
         m_didLoad = false;
     }
 
     bool load(bool onlySystemDirectory = true) {
-        m_handle = load((const wchar_t *)m_libraryName.utf16(), onlySystemDirectory);
+        m_handle = load((const wchar_t*)m_libraryName.utf16(), onlySystemDirectory);
         m_didLoad = true;
         return (m_handle != 0);
     }
@@ -65,23 +65,23 @@ public:
         return (m_handle != 0);
     }
 
-    QFunctionPointer resolve(const char *symbol) {
+    QFunctionPointer resolve(const char* symbol) {
         if (!m_didLoad)
             load();
         if (!m_handle)
             return 0;
 #    ifdef Q_OS_WINCE
-        return QFunctionPointer(GetProcAddress(m_handle, (const wchar_t *)QString::fromLatin1(symbol).utf16()));
+        return QFunctionPointer(GetProcAddress(m_handle, (const wchar_t*)QString::fromLatin1(symbol).utf16()));
 #    else
         return QFunctionPointer(GetProcAddress(m_handle, symbol));
 #    endif
     }
 
-    static QFunctionPointer resolve(const QString &libraryName, const char *symbol) {
+    static QFunctionPointer resolve(const QString& libraryName, const char* symbol) {
         return QSystemLibrary(libraryName).resolve(symbol);
     }
 
-    static Q_CORE_EXPORT HINSTANCE load(const wchar_t *lpFileName, bool onlySystemDirectory = true);
+    static Q_CORE_EXPORT HINSTANCE load(const wchar_t* lpFileName, bool onlySystemDirectory = true);
 
 private:
     HINSTANCE m_handle;

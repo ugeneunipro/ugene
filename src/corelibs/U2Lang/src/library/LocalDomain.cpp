@@ -43,22 +43,22 @@ const QString LocalDomainFactory::ID("domain.local.bio");
 /*****************************
  * BaseWorker
  *****************************/
-BaseWorker::BaseWorker(Actor *a, bool autoTransitBus)
+BaseWorker::BaseWorker(Actor* a, bool autoTransitBus)
     : processDone(false), actor(a) {
-    foreach (Port *p, a->getPorts()) {
-        if (qobject_cast<IntegralBusPort *>(p)) {
-            IntegralBus *bus = new IntegralBus(p);
+    foreach (Port* p, a->getPorts()) {
+        if (qobject_cast<IntegralBusPort*>(p)) {
+            IntegralBus* bus = new IntegralBus(p);
             ports.insert(p->getId(), bus);
             p->setPeer(bus);
         }
     }
     if (autoTransitBus) {
-        foreach (Port *p, a->getInputPorts()) {
-            IntegralBus *bus = p->castPeer<IntegralBus>();
-            QList<Port *> outputPorts = a->getOutputPorts();
-            for (Port *op : qAsConst(outputPorts)) {
+        foreach (Port* p, a->getInputPorts()) {
+            IntegralBus* bus = p->castPeer<IntegralBus>();
+            QList<Port*> outputPorts = a->getOutputPorts();
+            for (Port* op : qAsConst(outputPorts)) {
                 if (p->isInput() != op->isInput()) {
-                    IntegralBus *ob = op->castPeer<IntegralBus>();
+                    IntegralBus* ob = op->castPeer<IntegralBus>();
                     ob->addComplement(bus);
                     bus->addComplement(ob);
                 }
@@ -70,8 +70,8 @@ BaseWorker::BaseWorker(Actor *a, bool autoTransitBus)
 }
 
 BaseWorker::~BaseWorker() {
-    foreach (Port *p, actor->getPorts()) {
-        if (qobject_cast<IntegralBusPort *>(p)) {
+    foreach (Port* p, actor->getPorts()) {
+        if (qobject_cast<IntegralBusPort*>(p)) {
             p->setPeer(nullptr);
         }
     }
@@ -81,7 +81,7 @@ BaseWorker::~BaseWorker() {
 
 QStringList BaseWorker::getOutputFiles() {
     QStringList res;
-    foreach (Attribute *attr, actor->getProto()->getAttributes()) {
+    foreach (Attribute* attr, actor->getProto()->getAttributes()) {
         if (attr->getId() == BaseAttributes::URL_OUT_ATTRIBUTE().getId()) {
             QString str = actor->getParameter(BaseAttributes::URL_OUT_ATTRIBUTE().getId())->getAttributeValueWithoutScript<QString>();
             QUrl url(str);
@@ -93,14 +93,14 @@ QStringList BaseWorker::getOutputFiles() {
     return res;
 }
 
-bool BaseWorker::addCommunication(const QString &id, CommunicationChannel *ch) {
+bool BaseWorker::addCommunication(const QString& id, CommunicationChannel* ch) {
     Q_UNUSED(id);
     Q_UNUSED(ch);
     assert(0);
     return false;
 }
 
-CommunicationChannel *BaseWorker::getCommunication(const QString &name) {
+CommunicationChannel* BaseWorker::getCommunication(const QString& name) {
     return ports.value(name);
 }
 
@@ -108,7 +108,7 @@ ActorId BaseWorker::getActorId() const {
     return actor->getId();
 }
 
-Message BaseWorker::getMessageAndSetupScriptValues(CommunicationChannel *channel) {
+Message BaseWorker::getMessageAndSetupScriptValues(CommunicationChannel* channel) {
     assert(channel != nullptr);
     assert(channel->hasMessage());
     bindScriptValues();
@@ -120,13 +120,13 @@ Message BaseWorker::getMessageAndSetupScriptValues(CommunicationChannel *channel
 }
 
 void BaseWorker::bindScriptValues() {
-    foreach (IntegralBus *bus, ports.values()) {
+    foreach (IntegralBus* bus, ports.values()) {
         assert(bus != nullptr);
         if (!bus->hasMessage()) {  // means that it is bus for output port
             continue;
         }
 
-        foreach (Attribute *attribute, actor->getParameters().values()) {
+        foreach (Attribute* attribute, actor->getParameters().values()) {
             assert(attribute != nullptr);
             setScriptVariableFromBus(&attribute->getAttributeScript(), bus);
 
@@ -136,7 +136,7 @@ void BaseWorker::bindScriptValues() {
         }
 
         QVariantMap busData = bus->lookMessage().getData().toMap();
-        foreach (const QString &slotId, busData.keys()) {
+        foreach (const QString& slotId, busData.keys()) {
             QString attrId = "in_" + slotId;
             if (actor->getCondition()->hasVarWithId(attrId)) {
                 actor->getCondition()->setVarValueWithId(attrId, busData.value(slotId));
@@ -145,16 +145,16 @@ void BaseWorker::bindScriptValues() {
     }
 }
 
-void BaseWorker::setScriptVariableFromBus(AttributeScript *script, IntegralBus *bus) {
+void BaseWorker::setScriptVariableFromBus(AttributeScript* script, IntegralBus* bus) {
     QVariantMap busData = bus->look().getData().toMap();
-    foreach (const QString &slotDesc, busData.keys()) {
+    foreach (const QString& slotDesc, busData.keys()) {
         ActorId actorId = IntegralBusType::parseSlotDesc(slotDesc);
         QString attrId = IntegralBusType::parseAttributeIdFromSlotDesc(slotDesc);
         QString portId = bus->getPortId();
-        IntegralBusPort *busPort = qobject_cast<IntegralBusPort *>(actor->getPort(portId));
+        IntegralBusPort* busPort = qobject_cast<IntegralBusPort*>(actor->getPort(portId));
         assert(busPort != nullptr);
 
-        Actor *bindedAttrOwner = busPort->getLinkedActorById(actorId);
+        Actor* bindedAttrOwner = busPort->getLinkedActorById(actorId);
         if (bindedAttrOwner == nullptr) {
             continue;
         }
@@ -180,11 +180,11 @@ bool BaseWorker::isReady() const {
         return false;
     }
 
-    QList<Port *> inPorts = actor->getInputPorts();
+    QList<Port*> inPorts = actor->getInputPorts();
     if (inPorts.isEmpty()) {
         return true;
     } else if (1 == inPorts.size()) {
-        IntegralBus *inChannel = ports.value(inPorts.first()->getId());
+        IntegralBus* inChannel = ports.value(inPorts.first()->getId());
         int hasMsg = inChannel->hasMessage();
         bool ended = inChannel->isEnded();
         if (hasMsg || ended) {
@@ -196,8 +196,8 @@ bool BaseWorker::isReady() const {
 }
 
 void BaseWorker::saveCurrentChannelsStateAndRestorePrevious() {
-    foreach (CommunicationChannel *channel, messagesProcessedOnLastTick.keys()) {
-        assert(ports.values().contains(dynamic_cast<IntegralBus *>(channel)));
+    foreach (CommunicationChannel* channel, messagesProcessedOnLastTick.keys()) {
+        assert(ports.values().contains(dynamic_cast<IntegralBus*>(channel)));
 
         QQueue<Message> currentMessagesBackup;
         while (channel->hasMessage()) {
@@ -209,39 +209,39 @@ void BaseWorker::saveCurrentChannelsStateAndRestorePrevious() {
     }
 }
 
-WorkflowMonitor *BaseWorker::monitor() const {
+WorkflowMonitor* BaseWorker::monitor() const {
     CHECK(nullptr != context, nullptr);
     return context->getMonitor();
 }
 
-void BaseWorker::reportError(const QString &message) {
+void BaseWorker::reportError(const QString& message) {
     CHECK(nullptr != monitor(), );
     monitor()->addError(message, getActorId());
 }
 
 void BaseWorker::restoreActualChannelsState() {
-    foreach (CommunicationChannel *channel, messagesProcessedOnLastTick.keys()) {
+    foreach (CommunicationChannel* channel, messagesProcessedOnLastTick.keys()) {
         assert(!channel->hasMessage());
         addMessagesFromBackupToAppropriratePort(channel);
     }
 }
 
-QList<ExternalToolListener *> BaseWorker::createLogListeners(int listenersNumber) const {
+QList<ExternalToolListener*> BaseWorker::createLogListeners(int listenersNumber) const {
     return context->getMonitor()->createWorkflowListeners(actor->getId(), actor->getLabel(), listenersNumber);
 }
 
-void BaseWorker::addMessagesFromBackupToAppropriratePort(CommunicationChannel *channel) {
+void BaseWorker::addMessagesFromBackupToAppropriratePort(CommunicationChannel* channel) {
     while (!messagesProcessedOnLastTick[channel].isEmpty()) {
         channel->put(messagesProcessedOnLastTick[channel].dequeue(), true);
     }
 }
 
-bool BaseWorker::canTaskBeCanceled(Task * /*workerTask*/) const {
+bool BaseWorker::canTaskBeCanceled(Task* /*workerTask*/) const {
     return false;
 }
 
-Task *BaseWorker::tick(bool &canResultBeCanceled) {
-    Task *result = tick();
+Task* BaseWorker::tick(bool& canResultBeCanceled) {
+    Task* result = tick();
     if (nullptr != result) {
         canResultBeCanceled = canTaskBeCanceled(result);
     }
@@ -267,7 +267,7 @@ Message SimpleQueue::look() const {
     return que.head();
 }
 
-void SimpleQueue::put(const Message &m, bool isMessageRestored) {
+void SimpleQueue::put(const Message& m, bool isMessageRestored) {
     que.enqueue(m);
     if (isMessageRestored) {
         --takenMsgs;
@@ -282,7 +282,7 @@ int SimpleQueue::takenMessages() const {
     return takenMsgs;
 }
 
-int SimpleQueue::hasRoom(const DataType *) const {
+int SimpleQueue::hasRoom(const DataType*) const {
     return 1000;
 }
 
@@ -324,7 +324,7 @@ LocalDomainFactory::LocalDomainFactory()
 // It must be called only once and save its result to some registry
 static QMap<QString, QMap<QString, QList<QString>>> getSlotsForPrint() {
     QMap<QString, QMap<QString, QList<QString>>> forPrint;
-    CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
+    CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
 
     int printOpIdx = CMDLineRegistryUtils::getParameterIndex("print");
     while (printOpIdx != -1) {
@@ -346,7 +346,7 @@ static QMap<QString, QMap<QString, QList<QString>>> getSlotsForPrint() {
     return forPrint;
 }
 
-static void addPrintSLots(IntegralBus *bus, Port *p) {
+static void addPrintSLots(IntegralBus* bus, Port* p) {
     QMap<QString, QMap<QString, QList<QString>>> forPrint = getSlotsForPrint();
     QString actorId = p->owner()->getId();
     if (forPrint.contains(actorId)) {
@@ -358,14 +358,14 @@ static void addPrintSLots(IntegralBus *bus, Port *p) {
     }
 }
 
-static CommunicationSubject *setupBus(Port *p) {
+static CommunicationSubject* setupBus(Port* p) {
     QString id = p->getId();
-    BaseWorker *worker = p->owner()->castPeer<BaseWorker>();
+    BaseWorker* worker = p->owner()->castPeer<BaseWorker>();
     assert(worker);
-    CommunicationSubject *subj = worker;
-    IntegralBus *bus = qobject_cast<IntegralBus *>(p->castPeer<QObject>());
+    CommunicationSubject* subj = worker;
+    IntegralBus* bus = qobject_cast<IntegralBus*>(p->castPeer<QObject>());
     if (bus) {
-        assert(subj->getCommunication(id) == dynamic_cast<CommunicationChannel *>(bus));
+        assert(subj->getCommunication(id) == dynamic_cast<CommunicationChannel*>(bus));
         subj = bus;
     } else if (subj) {
         assert(0);
@@ -373,9 +373,9 @@ static CommunicationSubject *setupBus(Port *p) {
         p->setPeer(bus);
         subj->addCommunication(id, bus);
         subj = bus;
-        foreach (Port *op, p->owner()->getPorts()) {
+        foreach (Port* op, p->owner()->getPorts()) {
             if (p->isInput() != op->isInput()) {
-                IntegralBus *ob = qobject_cast<IntegralBus *>(op->castPeer<QObject>());
+                IntegralBus* ob = qobject_cast<IntegralBus*>(op->castPeer<QObject>());
                 if (ob) {
                     ob->addComplement(bus);
                     bus->addComplement(ob);
@@ -387,15 +387,15 @@ static CommunicationSubject *setupBus(Port *p) {
     return subj;
 }
 
-Worker *LocalDomainFactory::createWorker(Actor *a) {
-    Worker *w = nullptr;
-    DomainFactory *f = getById(a->getProto()->getId());
+Worker* LocalDomainFactory::createWorker(Actor* a) {
+    Worker* w = nullptr;
+    DomainFactory* f = getById(a->getProto()->getId());
     if (f) {
         w = f->createWorker(a);
 #ifdef _DEBUG
         assert(w);
-        BaseWorker *bw = dynamic_cast<BaseWorker *>(w);
-        assert(qobject_cast<BaseWorker *>(bw));
+        BaseWorker* bw = dynamic_cast<BaseWorker*>(w);
+        assert(qobject_cast<BaseWorker*>(bw));
         assert(bw == a->getPeer());
 #endif
     }
@@ -403,12 +403,12 @@ Worker *LocalDomainFactory::createWorker(Actor *a) {
     return w;
 }
 
-CommunicationChannel *LocalDomainFactory::createConnection(Link *l) {
-    SimpleQueue *cc = nullptr;
+CommunicationChannel* LocalDomainFactory::createConnection(Link* l) {
+    SimpleQueue* cc = nullptr;
     QString srcId = l->source()->getId();
     QString dstId = l->destination()->getId();
-    CommunicationSubject *src = setupBus(l->source());
-    CommunicationSubject *dst = setupBus(l->destination());
+    CommunicationSubject* src = setupBus(l->source());
+    CommunicationSubject* dst = setupBus(l->destination());
     if (src && dst) {
         cc = new SimpleQueue();
         src->addCommunication(srcId, cc);
@@ -418,18 +418,18 @@ CommunicationChannel *LocalDomainFactory::createConnection(Link *l) {
     return cc;
 }
 
-Scheduler *LocalDomainFactory::createScheduler(Schema *sh) {
-    Scheduler *sc = new LastReadyScheduler(sh);
+Scheduler* LocalDomainFactory::createScheduler(Schema* sh) {
+    Scheduler* sc = new LastReadyScheduler(sh);
     return sc;
 }
 
-void LocalDomainFactory::destroy(Scheduler *sh, Schema *schema) {
-    foreach (Link *l, schema->getFlows()) {
+void LocalDomainFactory::destroy(Scheduler* sh, Schema* schema) {
+    foreach (Link* l, schema->getFlows()) {
         delete l->castPeer<SimpleQueue>();
         l->setPeer(nullptr);
     }
 
-    foreach (Actor *a, schema->getProcesses()) {
+    foreach (Actor* a, schema->getProcesses()) {
         delete a->castPeer<BaseWorker>();
     }
 

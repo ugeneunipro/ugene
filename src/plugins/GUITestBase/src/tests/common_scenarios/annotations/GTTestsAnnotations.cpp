@@ -24,7 +24,6 @@
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
-#include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 
 #include <QTreeWidget>
@@ -76,7 +75,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
     // Click "Hide zoom view"
-    QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
+    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
     CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
@@ -116,7 +115,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
     // Click "Hide zoom view"
-    QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
+    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
     CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
@@ -156,7 +155,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
     // Click "Hide zoom view"
-    QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
+    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
     CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
@@ -418,7 +417,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTMouseDriver::doubleClick();
 
     // Click "Hide zoom view"
-    QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
+    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
     CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
@@ -555,7 +554,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTMouseDriver::doubleClick();
 
     // Click "Hide zoom view"
-    QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
+    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
     CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
@@ -738,7 +737,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Click "Hide zoom view
-    QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "exon", "annotation", "200..300", sandBoxDir + "ann_test_0011_1.gb"));
@@ -770,7 +769,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Click "Hide zoom view
-    QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann", "200..300", sandBoxDir + "ann_test_0011_1.gb"));
@@ -804,7 +803,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Click "Hide zoom view
-    QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    QWidget* toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_human_T1(UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
 
@@ -848,7 +847,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
     GTUtilsProjectTreeView::checkItem(os, "scaffold_90 features");
 
     QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, "scaffold_90 features");
-    QWidget *sequence = GTUtilsSequenceView::getPanOrDetView(os);
+    QWidget* sequence = GTUtilsSequenceView::getPanOrDetView(os);
     CHECK_SET_ERR(sequence != nullptr, "Sequence widget not found");
 
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
@@ -898,7 +897,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
     GTUtilsProjectTreeView::checkItem(os, "scaffold_90 features");
 
     QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, "scaffold_90 features");
-    QWidget *sequence = GTUtilsSequenceView::getPanOrDetView(os);
+    QWidget* sequence = GTUtilsSequenceView::getPanOrDetView(os);
     CHECK_SET_ERR(sequence != nullptr, "Sequence widget not found");
 
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
@@ -949,14 +948,14 @@ GUI_TEST_CLASS_DEFINITION(test_0012_3) {
     GTUtilsProjectTreeView::checkItem(os, "scaffold_90 features");
 
     QModelIndex documentProjectTreeIndex = GTUtilsProjectTreeView::findIndex(os, "scaffold_90 features");
-    QWidget *sequenceView = GTUtilsSequenceView::getPanOrDetView(os);
+    QWidget* sequenceView = GTUtilsSequenceView::getPanOrDetView(os);
 
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
     GTUtilsProjectTreeView::dragAndDrop(os, documentProjectTreeIndex, sequenceView);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QList<QTreeWidgetItem *> exons = GTUtilsAnnotationsTreeView::findItems(os, "exon");
-    QList<QTreeWidgetItem *> utrs = GTUtilsAnnotationsTreeView::findItems(os, "5'UTR");
+    QList<QTreeWidgetItem*> exons = GTUtilsAnnotationsTreeView::findItems(os, "exon");
+    QList<QTreeWidgetItem*> utrs = GTUtilsAnnotationsTreeView::findItems(os, "5'UTR");
     GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", exons[0]);
     GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "TR321", exons[0]);
     GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "XCV", utrs[0]);
@@ -984,16 +983,11 @@ GUI_TEST_CLASS_DEFINITION(test_0012_3) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0013) {
-    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/proj2.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    // Expected state:
-    //     1) Project view with document "1.gb" has been opened
-    GTUtilsDocument::checkDocument(os, "1.gb");
 
     // 2. Open view for "1.gb"
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
-    GTMouseDriver::doubleClick();
+    GTUtilsProjectTreeView::doubleClickItem(os, "NC_001363 features");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     // 3. Create annotation using menu {Actions->Add->New Annotation}, with description field filled
@@ -1001,11 +995,10 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTMenu::clickMainMenuItem(os, {"Actions", "Add", "New annotation..."});
 
     // 4. Check what created annotation has corresponding qualifier 'note'
-    QTreeWidget *treeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
-    QTreeWidgetItem *annotationsRoot = GTUtilsAnnotationsTreeView::findItem(os, "ann1  (0, 1)", treeWidget);
-    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, annotationsRoot->child(0)));
-    GTMouseDriver::doubleClick();
-    GTUtilsAnnotationsTreeView::findItem(os, "note");
+    auto groupItem = GTUtilsAnnotationsTreeView::findItem(os, "ann1  (0, 1)");
+    auto annotationItem = GTUtilsAnnotationsTreeView::findItem(os, "ann1", groupItem);
+    QString qualifierValue = GTUtilsAnnotationsTreeView::getQualifierValue(os, "note", annotationItem);
+    CHECK_SET_ERR(qualifierValue == "description", "Unexpected qualified value: " + qualifierValue);
 }
 
 }  // namespace GUITest_common_scenarios_annotations

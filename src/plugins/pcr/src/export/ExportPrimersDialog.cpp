@@ -51,7 +51,7 @@ namespace U2 {
 const QString ExportPrimersDialog::LOCAL_FILE = QObject::tr("Local file");
 const QString ExportPrimersDialog::SHARED_DB = QObject::tr("Shared database");
 
-ExportPrimersDialog::ExportPrimersDialog(const QList<Primer> &primers, QWidget *parent)
+ExportPrimersDialog::ExportPrimersDialog(const QList<Primer>& primers, QWidget* parent)
     : QDialog(parent),
       primers(primers) {
     setupUi(this);
@@ -86,7 +86,7 @@ void ExportPrimersDialog::sl_connect() {
 }
 
 void ExportPrimersDialog::sl_connectionCompleted() {
-    QObject *connectionDialog = sender();
+    QObject* connectionDialog = sender();
     if (Q_LIKELY(nullptr != connectionDialog)) {
         connectionDialog->deleteLater();
     }
@@ -94,7 +94,7 @@ void ExportPrimersDialog::sl_connectionCompleted() {
     sl_updateState();
 }
 
-void ExportPrimersDialog::sl_documentAdded(Document *document) {
+void ExportPrimersDialog::sl_documentAdded(Document* document) {
     CHECK(document->isDatabaseConnection(), );
     cbDatabase->addItem(document->getName(), QVariant::fromValue<U2DbiRef>(document->getDbiRef()));
     if (cbDatabase->currentIndex() == -1) {
@@ -103,7 +103,7 @@ void ExportPrimersDialog::sl_documentAdded(Document *document) {
     sl_updateState();
 }
 
-void ExportPrimersDialog::sl_documentRemoved(Document *document) {
+void ExportPrimersDialog::sl_documentRemoved(Document* document) {
     CHECK(document->isDatabaseConnection(), );
     for (int i = 0; i < cbDatabase->count(); i++) {
         if (cbDatabase->itemData(i).value<U2DbiRef>() == document->getDbiRef()) {
@@ -142,7 +142,7 @@ void ExportPrimersDialog::accept() {
         return;
     }
 
-    Task *exportTask = nullptr;
+    Task* exportTask = nullptr;
     if (LOCAL_FILE == cbExport->currentText()) {
         exportTask = new ExportPrimersToLocalFileTask(primers, saveController->getFormatIdToSave(), saveController->getSaveFileName());
     } else {
@@ -166,8 +166,8 @@ void ExportPrimersDialog::initDatabases() {
         cbDatabase->removeItem(0);
     }
 
-    const QList<Document *> connectedDatabases = ProjectUtils::getConnectedSharedDatabases();
-    foreach (Document *database, connectedDatabases) {
+    const QList<Document*> connectedDatabases = ProjectUtils::getConnectedSharedDatabases();
+    foreach (Document* database, connectedDatabases) {
         cbDatabase->addItem(database->getName(), QVariant::fromValue<U2DbiRef>(database->getDbiRef()));
     }
 }
@@ -205,8 +205,8 @@ void ExportPrimersDialog::connectSignals() {
 }
 
 void ExportPrimersDialog::connectProjectSignals() {
-    connect(AppContext::getProject(), SIGNAL(si_documentAdded(Document *)), SLOT(sl_documentAdded(Document *)), Qt::UniqueConnection);
-    connect(AppContext::getProject(), SIGNAL(si_documentRemoved(Document *)), SLOT(sl_documentRemoved(Document *)), Qt::UniqueConnection);
+    connect(AppContext::getProject(), SIGNAL(si_documentAdded(Document*)), SLOT(sl_documentAdded(Document*)), Qt::UniqueConnection);
+    connect(AppContext::getProject(), SIGNAL(si_documentRemoved(Document*)), SLOT(sl_documentRemoved(Document*)), Qt::UniqueConnection);
 }
 
 bool ExportPrimersDialog::isFileMode() const {

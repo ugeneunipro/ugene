@@ -49,7 +49,7 @@
 
 namespace U2 {
 
-MaExportConsensusWidget::MaExportConsensusWidget(MaEditor *ma_, QWidget *parent)
+MaExportConsensusWidget::MaExportConsensusWidget(MaEditor* ma_, QWidget* parent)
     : QWidget(parent),
       ma(ma_),
       savableWidget(this, GObjectViewUtils::findViewByName(ma_->getName())),
@@ -60,11 +60,11 @@ MaExportConsensusWidget::MaExportConsensusWidget(MaEditor *ma_, QWidget *parent)
 
     initSaveController();
 
-    MaEditorConsensusArea *consensusArea = ma->getUI()->getConsensusArea();
+    MaEditorConsensusArea* consensusArea = ma->getUI()->getConsensusArea();
     showHint(true);
 
     connect(exportBtn, SIGNAL(clicked()), SLOT(sl_exportClicked()));
-    connect(consensusArea, SIGNAL(si_consensusAlgorithmChanged(const QString &)), SLOT(sl_consensusChanged(const QString &)));
+    connect(consensusArea, SIGNAL(si_consensusAlgorithmChanged(const QString&)), SLOT(sl_consensusChanged(const QString&)));
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
 
     sl_consensusChanged(consensusArea->getConsensusAlgorithm()->getId());
@@ -102,8 +102,8 @@ void MaExportConsensusWidget::showHint(bool showHint) {
     }
 }
 
-void MaExportConsensusWidget::sl_consensusChanged(const QString &algoId) {
-    MSAConsensusAlgorithmFactory *consAlgorithmFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(algoId);
+void MaExportConsensusWidget::sl_consensusChanged(const QString& algoId) {
+    MSAConsensusAlgorithmFactory* consAlgorithmFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(algoId);
     SAFE_POINT(consAlgorithmFactory != nullptr, "Fetched consensus algorithm factory is NULL", );
 
     if (consAlgorithmFactory->isSequenceLikeResult()) {
@@ -128,7 +128,7 @@ void MaExportConsensusWidget::sl_consensusChanged(const QString &algoId) {
 }
 
 void MaExportConsensusWidget::sl_exportTaskStateChanged() {
-    ExportMaConsensusTask *exportTask = qobject_cast<ExportMaConsensusTask *>(sender());
+    ExportMaConsensusTask* exportTask = qobject_cast<ExportMaConsensusTask*>(sender());
     SAFE_POINT(exportTask != nullptr, "ExportMaConsensusTask object is unexpectedly NULL", );
 
     if (exportTask->getState() == Task::State_Finished) {

@@ -31,27 +31,27 @@ namespace U2 {
 class RPSBlastTask : public BlastCommonTask {
     Q_OBJECT
 public:
-    RPSBlastTask(const BlastTaskSettings &settings)
+    RPSBlastTask(const BlastTaskSettings& settings)
         : BlastCommonTask(settings) {
     }
-    ExternalToolRunTask *createBlastTask() override;
+    ExternalToolRunTask* createBlastTask() override;
 };
 
 class LocalCDSearch : public CDSearchResultListener {
 public:
-    LocalCDSearch(const CDSearchSettings &settings);
-    Task *getTask() const override {
+    LocalCDSearch(const CDSearchSettings& settings);
+    Task* getTask() const override {
         return task;
     }
     QList<SharedAnnotationData> getCDSResults() const override;
 
 private:
-    RPSBlastTask *task;
+    RPSBlastTask* task;
 };
 
 class CDSearchLocalTaskFactory : public CDSearchFactory {
 public:
-    virtual CDSearchResultListener *createCDSearch(const CDSearchSettings &settings) const {
+    virtual CDSearchResultListener* createCDSearch(const CDSearchSettings& settings) const {
         return new LocalCDSearch(settings);
     }
 };

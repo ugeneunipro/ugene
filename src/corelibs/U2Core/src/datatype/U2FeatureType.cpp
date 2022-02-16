@@ -29,9 +29,9 @@ namespace U2 {
 QHash<U2FeatureType, int> U2FeatureTypes::typeInfoIndexByType = QHash<U2FeatureType, int>();
 const QList<U2FeatureTypes::U2FeatureTypeInfo> U2FeatureTypes::typeInfos = U2FeatureTypes::initFeatureTypes();
 
-QList<U2FeatureTypes::U2FeatureType> U2FeatureTypes::getTypes(const Alphabets &alphabets) {
+QList<U2FeatureTypes::U2FeatureType> U2FeatureTypes::getTypes(const Alphabets& alphabets) {
     QList<U2FeatureTypes::U2FeatureType> types;
-    foreach (const U2FeatureTypeInfo &info, typeInfos) {
+    foreach (const U2FeatureTypeInfo& info, typeInfos) {
         if (info.alphabets & alphabets) {
             types << info.featureType;
         }
@@ -39,38 +39,38 @@ QList<U2FeatureTypes::U2FeatureType> U2FeatureTypes::getTypes(const Alphabets &a
     return types;
 }
 
-QString U2FeatureTypes::getVisualName(const U2FeatureType &type) {
+QString U2FeatureTypes::getVisualName(const U2FeatureType& type) {
     int typeInfoIndex = typeInfoIndexByType.value(type, -1);
     SAFE_POINT(typeInfoIndex >= 0, "Unexpected feature type", "");
     return typeInfos[typeInfoIndex].visualName;
 }
 
-U2FeatureTypes::Alphabets U2FeatureTypes::getAlphabets(const U2FeatureType &type) {
+U2FeatureTypes::Alphabets U2FeatureTypes::getAlphabets(const U2FeatureType& type) {
     int typeInfoIndex = typeInfoIndexByType.value(type, -1);
     SAFE_POINT(typeInfoIndex >= 0, "Unexpected feature type", Alphabet_None);
     return typeInfos[typeInfoIndex].alphabets;
 }
 
-QColor U2FeatureTypes::getColor(const U2FeatureType &type) {
+QColor U2FeatureTypes::getColor(const U2FeatureType& type) {
     int typeInfoIndex = typeInfoIndexByType.value(type, -1);
     SAFE_POINT(typeInfoIndex >= 0, "Unexpected feature type", {});
     return typeInfos[typeInfoIndex].color;
 }
 
-QColor U2FeatureTypes::getDescription(const U2FeatureType &type) {
+QColor U2FeatureTypes::getDescription(const U2FeatureType& type) {
     int typeInfoIndex = typeInfoIndexByType.value(type, -1);
     SAFE_POINT(typeInfoIndex >= 0, "Unexpected feature type", {});
     return typeInfos[typeInfoIndex].description;
 }
 
-bool U2FeatureTypes::isShowOnAminoFrame(const U2FeatureType &type) {
+bool U2FeatureTypes::isShowOnAminoFrame(const U2FeatureType& type) {
     int typeInfoIndex = typeInfoIndexByType.value(type, -1);
     SAFE_POINT(typeInfoIndex >= 0, "Unexpected feature type", {});
     return typeInfos[typeInfoIndex].isShowOnAminoFrame;
 }
 
-U2FeatureType U2FeatureTypes::getTypeByName(const QString &visualName) {
-    foreach (const U2FeatureTypeInfo &info, typeInfos) {
+U2FeatureType U2FeatureTypes::getTypeByName(const QString& visualName) {
+    foreach (const U2FeatureTypeInfo& info, typeInfos) {
         if (info.visualName == visualName) {
             return info.featureType;
         }
@@ -84,11 +84,11 @@ QList<U2FeatureTypes::U2FeatureTypeInfo> U2FeatureTypes::initFeatureTypes() {
     int typeInfoIndex = 0;
 
     // Registers U2FeatureType.
-    auto r = [&typeInfoList, &typeInfoIndex](const U2FeatureType &type,
-                                             const QString &name,
-                                             const Alphabets &alphabets,
-                                             const QString &description = "",
-                                             const QString &colorName = "",
+    auto r = [&typeInfoList, &typeInfoIndex](const U2FeatureType& type,
+                                             const QString& name,
+                                             const Alphabets& alphabets,
+                                             const QString& description = "",
+                                             const QString& colorName = "",
                                              bool isShowOnAminoFrame = false) {
         SAFE_POINT(colorName.isEmpty() || colorName.startsWith("#"), "Got invalid color name: " + colorName, );
         QColor color(colorName);
@@ -298,11 +298,11 @@ QList<U2FeatureTypes::U2FeatureTypeInfo> U2FeatureTypes::initFeatureTypes() {
     return typeInfoList;
 }
 
-U2FeatureTypes::U2FeatureTypeInfo::U2FeatureTypeInfo(const U2FeatureType &_featureType,
-                                                     const QString &_visualName,
-                                                     const Alphabets &_alphabets,
-                                                     const QColor &_color,
-                                                     const QString &_description,
+U2FeatureTypes::U2FeatureTypeInfo::U2FeatureTypeInfo(const U2FeatureType& _featureType,
+                                                     const QString& _visualName,
+                                                     const Alphabets& _alphabets,
+                                                     const QColor& _color,
+                                                     const QString& _description,
                                                      bool _isShowOnAminoFrame)
     : featureType(_featureType),
       visualName(_visualName),

@@ -44,12 +44,12 @@ public:
     Task::ReportResult report();
 
 private:
-    bool checkPrimerPair(const PrimerPair &primerPair, const PrimerPair &expectedPrimerPair, QString suffix);
-    bool checkPrimer(const Primer *primer, const Primer *expectedPrimer, QString prefix, bool internalOligo);
+    bool checkPrimerPair(const PrimerPair& primerPair, const PrimerPair& expectedPrimerPair, QString suffix);
+    bool checkPrimer(const Primer* primer, const Primer* expectedPrimer, QString prefix, bool internalOligo);
     bool checkIntProperty(int value, int expectedValue, QString name);
     bool checkDoubleProperty(double value, double expectedValue, QString name);
     bool checkAlignProperty(short value, short expectedValue, QString name);
-    Primer3SWTask *task;
+    Primer3SWTask* task;
     Primer3TaskSettings settings;
     QList<PrimerPair> currentBestPairs;
     QList<PrimerPair> expectedBestPairs;

@@ -66,14 +66,14 @@
 namespace U2 {
 namespace BAM {
 
-extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
-    BAMDbiPlugin *plug = new BAMDbiPlugin();
+extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
+    BAMDbiPlugin* plug = new BAMDbiPlugin();
     return plug;
 }
 
 BAMDbiPlugin::BAMDbiPlugin()
     : Plugin(tr("BAM format support"), tr("Interface for indexed read-only access to BAM files")) {
-    DocumentFormat *bamDbi = new BAMFormat();
+    DocumentFormat* bamDbi = new BAMFormat();
     AppContext::getDocumentFormatRegistry()->registerFormat(bamDbi);
     AppContext::getDbiRegistry()->registerDbiFactory(new SamtoolsBasedDbiFactory());
 
@@ -100,7 +100,7 @@ BAMImporter::BAMImporter()
 
 #define SAM_HINT "bam-importer-sam-hint"
 
-FormatCheckResult BAMImporter::checkRawData(const QByteArray &rawData, const GUrl &url) {
+FormatCheckResult BAMImporter::checkRawData(const QByteArray& rawData, const GUrl& url) {
     BAMFormatUtils bamFormatUtils;
     FormatCheckResult bamScore = bamFormatUtils.checkRawData(rawData, url);
 
@@ -114,14 +114,14 @@ FormatCheckResult BAMImporter::checkRawData(const QByteArray &rawData, const GUr
     return samScore;
 }
 
-DocumentProviderTask *BAMImporter::createImportTask(const FormatDetectionResult &res, bool showGui, const QVariantMap &hints) {
+DocumentProviderTask* BAMImporter::createImportTask(const FormatDetectionResult& res, bool showGui, const QVariantMap& hints) {
     bool sam = res.rawDataCheckResult.properties[SAM_HINT].toBool();
     QVariantMap fullHints(hints);
     fullHints[SAM_HINT] = sam;
     return new BAMImporterTask(res.url, showGui, fullHints);
 }
 
-BAMImporterTask::BAMImporterTask(const GUrl &url, bool _useGui, const QVariantMap &hints)
+BAMImporterTask::BAMImporterTask(const GUrl& url, bool _useGui, const QVariantMap& hints)
     : DocumentProviderTask(tr("BAM/SAM file import: %1").arg(url.fileName()), TaskFlags_NR_FOSCOE),
       loadInfoTask(nullptr),
       loadBamInfoTask(nullptr),
@@ -144,13 +144,13 @@ void BAMImporterTask::prepare() {
 }
 
 namespace {
-QString getDirUrl(const GUrl &fileUrl) {
+QString getDirUrl(const GUrl& fileUrl) {
     return QFileInfo(fileUrl.getURLString()).dir().absolutePath();
 }
 }  // namespace
 
-QList<Task *> BAMImporterTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> BAMImporterTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
 
     if (subTask->hasError()) {
         propagateSubtaskError();
@@ -189,7 +189,7 @@ QList<Task *> BAMImporterTask::onSubTaskFinished(Task *subTask) {
 
     else if ((isSqliteDbTransit && cloneTasks.contains(subTask))) {
         cloneTasks.removeOne(subTask);
-        CloneObjectTask *cloneTask = qobject_cast<CloneObjectTask *>(subTask);
+        CloneObjectTask* cloneTask = qobject_cast<CloneObjectTask*>(subTask);
         SAFE_POINT_EXT(nullptr != cloneTask, setError("Unexpected task type: CloneObjectTask expected"), res);
         delete cloneTask->getSourceObject();
 
@@ -224,7 +224,7 @@ void BAMImporterTask::initPrepareToImportTask() {
         QDir().mkpath(tmpDir);
 
         const QString pattern = tmpDir + "XXXXXX.ugenedb";
-        QTemporaryFile *tempLocalDb = new QTemporaryFile(pattern, this);
+        QTemporaryFile* tempLocalDb = new QTemporaryFile(pattern, this);
 
         tempLocalDb->open();
         const QString filePath = tempLocalDb->fileName();
@@ -291,8 +291,8 @@ void BAMImporterTask::initConvertToSqliteTask() {
 
 void BAMImporterTask::initCloneObjectTasks() {
     QList<U2Assembly> assemblies = convertTask->getAssemblies();
-    foreach (const U2Assembly &assembly, assemblies) {
-        AssemblyObject *object = new AssemblyObject(assembly.visualName, U2EntityRef(localDbiRef, assembly.id));
+    foreach (const U2Assembly& assembly, assemblies) {
+        AssemblyObject* object = new AssemblyObject(assembly.visualName, U2EntityRef(localDbiRef, assembly.id));
         cloneTasks << new CloneObjectTask(object, hintedDbiRef, hints.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString());
     }
 }

@@ -34,10 +34,10 @@
 
 namespace U2 {
 
-void WizardUtils::setWizardMinimumSize(QWizard *wizard, const QSize &minimumSize) {
+void WizardUtils::setWizardMinimumSize(QWizard* wizard, const QSize& minimumSize) {
     QSize bestSize = minimumSize;
     foreach (int pageId, wizard->pageIds()) {
-        QWizardPage *page = wizard->page(pageId);
+        QWizardPage* page = wizard->page(pageId);
         page->adjustSize();
         bestSize = bestSize.expandedTo(page->size());
     }

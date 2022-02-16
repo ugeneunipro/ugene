@@ -44,67 +44,67 @@ public:
         SharedDb
     };
 
-    BaseDocWriter(Actor *a, const DocumentFormatId &fid);
-    BaseDocWriter(Actor *a);
+    BaseDocWriter(Actor* a, const DocumentFormatId& fid);
+    BaseDocWriter(Actor* a);
 
     void init() override;
-    Task *tick() override;
+    Task* tick() override;
     void cleanup() override;
 
-    static QString getUniqueObjectName(const Document *doc, const QString &name);
-    static QString generateUrl(const MessageMetadata &metadata, bool groupByDatasets, const QString &suffix, const QString &ext, const QString &defaultName);
+    static QString getUniqueObjectName(const Document* doc, const QString& name);
+    static QString generateUrl(const MessageMetadata& metadata, bool groupByDatasets, const QString& suffix, const QString& ext, const QString& defaultName);
 
 protected:
-    virtual void data2doc(Document *, const QVariantMap &) = 0;
-    virtual bool hasDataToWrite(const QVariantMap &data) const = 0;
-    virtual QSet<GObject *> getObjectsToWrite(const QVariantMap &data) const = 0;
+    virtual void data2doc(Document*, const QVariantMap&) = 0;
+    virtual bool hasDataToWrite(const QVariantMap& data) const = 0;
+    virtual QSet<GObject*> getObjectsToWrite(const QVariantMap& data) const = 0;
     virtual bool isStreamingSupport() const;
     virtual bool isSupportedSeveralMessages() const;
-    virtual void storeEntry(IOAdapter *, const QVariantMap &, int) {
+    virtual void storeEntry(IOAdapter*, const QVariantMap&, int) {
     }
-    virtual Task *getWriteDocTask(Document *doc, const SaveDocFlags &flags);
-    virtual void takeParameters(U2OpStatus &os);
-    virtual QStringList takeUrlList(const QVariantMap &data, int metadataId, U2OpStatus &os);
+    virtual Task* getWriteDocTask(Document* doc, const SaveDocFlags& flags);
+    virtual void takeParameters(U2OpStatus& os);
+    virtual QStringList takeUrlList(const QVariantMap& data, int metadataId, U2OpStatus& os);
 
     /** Default implementation of the 'getObjectsToWrite'. */
-    QSet<GObject *> getObjectsToWriteBaseImpl(const QVariantMap &data) const;
+    QSet<GObject*> getObjectsToWriteBaseImpl(const QVariantMap& data) const;
 
 protected:
-    DocumentFormat *format;
+    DocumentFormat* format;
 
     U2DbiRef dstDbiRef;
 
 private:
     DataStorage dataStorage;
 
-    CommunicationChannel *ch;
+    CommunicationChannel* ch;
     bool append;
     uint fileMode;
     QSet<QString> usedUrls;
     QMap<QString, int> counters;  // url <-> count suffix
-    QMap<QString, IOAdapter *> adapters;
-    QMap<IOAdapter *, Document *> docs;
+    QMap<QString, IOAdapter*> adapters;
+    QMap<IOAdapter*, Document*> docs;
 
     QString dstPathInDb;
     bool objectsReceived;
 
 private slots:
-    void sl_objectImported(Task *importTask);
+    void sl_objectImported(Task* importTask);
 
 private:
-    bool ifCreateAdapter(const QString &url) const;
+    bool ifCreateAdapter(const QString& url) const;
     /**
      * Creates an adapter for @url or returns existing one.
      * The url of the adapter could be not equal to @url.
      */
-    IOAdapter *getAdapter(const QString &url, U2OpStatus &os);
-    void openAdapter(IOAdapter *io, const QString &url, const SaveDocFlags &flags, U2OpStatus &os);
+    IOAdapter* getAdapter(const QString& url, U2OpStatus& os);
+    void openAdapter(IOAdapter* io, const QString& url, const SaveDocFlags& flags, U2OpStatus& os);
     /** Creates a document for @io or returns existing one. */
-    Document *getDocument(IOAdapter *io, U2OpStatus &os);
-    Task *processDocs();
+    Document* getDocument(IOAdapter* io, U2OpStatus& os);
+    Task* processDocs();
     SaveDocFlags getDocFlags() const;
-    void storeData(const QStringList &urls, const QVariantMap &data, U2OpStatus &os);
-    Task *createWriteToSharedDbTask(const QVariantMap &data);
+    void storeData(const QStringList& urls, const QVariantMap& data, U2OpStatus& os);
+    Task* createWriteToSharedDbTask(const QVariantMap& data);
     void reportNoDataReceivedWarning();
 
     QString getDefaultFileName() const;
@@ -112,7 +112,7 @@ private:
     QString getSuffix() const;
     QString getExtension() const;
     QString generateUrl(int metadataId) const;
-    static QString getBaseName(const MessageMetadata &metadata, bool groupByDatasets, const QString &defaultName);
+    static QString getBaseName(const MessageMetadata& metadata, bool groupByDatasets, const QString& defaultName);
 };
 
 }  // namespace LocalWorkflow

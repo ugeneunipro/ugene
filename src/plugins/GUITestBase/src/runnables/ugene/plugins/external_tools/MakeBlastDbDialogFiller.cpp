@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-MakeBlastDbDialogFiller::MakeBlastDbDialogFiller(HI::GUITestOpStatus &os, const Parameters &parameters)
+MakeBlastDbDialogFiller::MakeBlastDbDialogFiller(HI::GUITestOpStatus& os, const Parameters& parameters)
     : Filler(os, "MakeBlastDbDialog"), parameters(parameters) {
 }
 
@@ -38,7 +38,7 @@ MakeBlastDbDialogFiller::MakeBlastDbDialogFiller(HI::GUITestOpStatus &os, const 
 #define GT_METHOD_NAME "commonScenario"
 
 void MakeBlastDbDialogFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     auto inputFilesRadioButton = GTWidget::findRadioButton(os, "inputFilesRadioButton", dialog);
     GTWidget::findLineEdit(os, "inputFilesLineEdit", dialog);

@@ -33,14 +33,14 @@ class AssemblyVariantRowManager;
 class AssemblyAnnotationsArea : public QWidget {
     Q_OBJECT
 public:
-    AssemblyAnnotationsArea(AssemblyBrowserUi *ui);
+    AssemblyAnnotationsArea(AssemblyBrowserUi* ui);
     virtual ~AssemblyAnnotationsArea();
 
 signals:
-    void si_mouseMovedToPos(const QPoint &);
+    void si_mouseMovedToPos(const QPoint&);
 
 private:
-    AssemblyVariantRowManager *variantRowManager;
+    AssemblyVariantRowManager* variantRowManager;
 };
 
 }  // namespace U2

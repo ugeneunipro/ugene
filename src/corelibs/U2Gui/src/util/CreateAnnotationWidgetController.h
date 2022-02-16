@@ -46,9 +46,9 @@ class U2GUI_EXPORT CreateAnnotationModel {
 public:
     CreateAnnotationModel();
 
-    CreateAnnotationModel(CreateAnnotationModel const &) = default;
+    CreateAnnotationModel(CreateAnnotationModel const&) = default;
 
-    CreateAnnotationModel &operator=(const CreateAnnotationModel &other) = default;
+    CreateAnnotationModel& operator=(const CreateAnnotationModel& other) = default;
 
     /** A sequence object the new annotation will be created for. */
     GObjectReference sequenceObjectRef;
@@ -107,7 +107,7 @@ public:
     /** Current annotation data model. */
     SharedAnnotationData data;
 
-    AnnotationTableObject *getAnnotationObject() const;
+    AnnotationTableObject* getAnnotationObject() const;
 };
 
 class U2GUI_EXPORT CreateAnnotationWidgetController : public QObject {
@@ -120,7 +120,7 @@ public:
     };
 
     // useCompact defines the layout of the widget (normal or compact for the Options Panel)
-    CreateAnnotationWidgetController(const CreateAnnotationModel &m, QObject *p, AnnotationWidgetMode layoutMode = Normal);
+    CreateAnnotationWidgetController(const CreateAnnotationModel& m, QObject* p, AnnotationWidgetMode layoutMode = Normal);
     ~CreateAnnotationWidgetController();
 
     // returns error message or empty string if no error found;
@@ -146,19 +146,19 @@ public:
 
     void setEnabledNameEdit(bool enbaled);
 
-    QWidget *getWidget() const;
+    QWidget* getWidget() const;
 
-    const CreateAnnotationModel &getModel() const {
+    const CreateAnnotationModel& getModel() const {
         return model;
     }
     AnnotationCreationPattern getAnnotationPattern() const;
 
-    void updateWidgetForAnnotationModel(const CreateAnnotationModel &model);
+    void updateWidgetForAnnotationModel(const CreateAnnotationModel& model);
 
     /** It is called from the constructor and updateWidgetForAnnotationModel(...) */
     void commonWidgetUpdate();
 
-    QPair<QWidget *, QWidget *> getTaborderEntryAndExitPoints() const;
+    QPair<QWidget*, QWidget*> getTaborderEntryAndExitPoints() const;
 
     void countDescriptionUsage() const;
 
@@ -186,16 +186,16 @@ private:
     bool isAnnotationsTableVirtual();
 
     CreateAnnotationModel model;
-    GObjectComboBoxController *occ;
-    CreateAnnotationWidget *w;
-    SaveDocumentController *saveController;
+    GObjectComboBoxController* occ;
+    CreateAnnotationWidget* w;
+    SaveDocumentController* saveController;
 
     QString GROUP_NAME_AUTO;
     static const QString DESCRIPTION_QUALIFIER_KEY;
     static const QString SETTINGS_LASTDIR;
 
-    CreateAnnotationWidgetController(CreateAnnotationWidgetController &&) = delete;
-    CreateAnnotationWidgetController &operator=(CreateAnnotationWidgetController &&) = delete;
+    CreateAnnotationWidgetController(CreateAnnotationWidgetController&&) = delete;
+    CreateAnnotationWidgetController& operator=(CreateAnnotationWidgetController&&) = delete;
     Q_DISABLE_COPY(CreateAnnotationWidgetController)
 };
 

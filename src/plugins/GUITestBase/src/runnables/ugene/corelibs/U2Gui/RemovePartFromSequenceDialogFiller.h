@@ -34,9 +34,9 @@ public:
     enum FormatToUse { FASTA,
                        Genbank };
 
-    RemovePartFromSequenceDialogFiller(HI::GUITestOpStatus &_os, QString _range, bool recalculateQuals = false);
-    RemovePartFromSequenceDialogFiller(HI::GUITestOpStatus &_os, RemoveType _removeType, bool _saveNew, const QString &_saveToFile, FormatToUse _format);
-    RemovePartFromSequenceDialogFiller(HI::GUITestOpStatus &_os, RemoveType _removeType);
+    RemovePartFromSequenceDialogFiller(HI::GUITestOpStatus& _os, QString _range, bool recalculateQuals = false);
+    RemovePartFromSequenceDialogFiller(HI::GUITestOpStatus& _os, RemoveType _removeType, bool _saveNew, const QString& _saveToFile, FormatToUse _format);
+    RemovePartFromSequenceDialogFiller(HI::GUITestOpStatus& _os, RemoveType _removeType);
 
     void commonScenario();
 

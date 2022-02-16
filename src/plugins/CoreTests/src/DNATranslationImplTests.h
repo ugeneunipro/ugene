@@ -48,7 +48,7 @@ class GTest_DNATranslation3to1Test : public XmlTest {
 //---------------------------------------------------------------------
 class DNATranslationImplTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

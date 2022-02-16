@@ -34,7 +34,7 @@ class CuffmergePrompter : public PrompterBase<CuffmergePrompter> {
     Q_OBJECT
 
 public:
-    CuffmergePrompter(Actor *parent = 0);
+    CuffmergePrompter(Actor* parent = 0);
 
 protected:
     QString composeRichDoc();
@@ -44,23 +44,23 @@ class CuffmergeWorker : public BaseWorker {
     Q_OBJECT
 
 public:
-    CuffmergeWorker(Actor *actor);
+    CuffmergeWorker(Actor* actor);
 
     void init();
-    Task *tick();
+    Task* tick();
     void cleanup();
 
 private slots:
     void sl_taskFinished();
 
 protected:
-    IntegralBus *input;
-    IntegralBus *output;
+    IntegralBus* input;
+    IntegralBus* output;
 
     QList<SharedDbiDataHandler> annTableHandlers;
 
 private:
-    Task *createCuffmergeTask();
+    Task* createCuffmergeTask();
     void takeAnnotations();
 };
 
@@ -71,12 +71,12 @@ public:
     CuffmergeWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *actor) {
+    virtual Worker* createWorker(Actor* actor) {
         return new CuffmergeWorker(actor);
     }
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
 #endif

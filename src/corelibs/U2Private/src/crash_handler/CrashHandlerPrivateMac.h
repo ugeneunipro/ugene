@@ -41,9 +41,9 @@ public:
     QString getAdditionalInfo() const;
 
 private:
-    static bool breakpadCallback(const char *dump_dir,
-                                 const char *minidump_id,
-                                 void *context,
+    static bool breakpadCallback(const char* dump_dir,
+                                 const char* minidump_id,
+                                 void* context,
                                  bool succeeded);
 
     QString stacktraceFilePath;

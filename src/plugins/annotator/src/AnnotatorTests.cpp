@@ -46,7 +46,7 @@ namespace U2 {
 #define RES_ATTR "result"
 #define CIRCULAR_ATTR "circular"
 
-void GTest_AnnotatorSearch::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_AnnotatorSearch::init(XMLTestFormat*, const QDomElement& el) {
     docName = el.attribute(DOC_ATTR);
     if (docName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -115,34 +115,34 @@ void GTest_AnnotatorSearch::init(XMLTestFormat *, const QDomElement &el) {
 
 void GTest_AnnotatorSearch::prepare() {
     searchTask = nullptr;
-    Document *doc = getContext<Document>(this, docName);
+    Document* doc = getContext<Document>(this, docName);
     if (doc == nullptr) {
         stateInfo.setError(QString("context not found %1").arg(docName));
         return;
     }
 
-    QList<GObject *> list = doc->findGObjectByType(GObjectTypes::SEQUENCE);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::SEQUENCE);
     if (list.size() == 0) {
         stateInfo.setError(QString("container of object with type \"%1\" is empty").arg(GObjectTypes::SEQUENCE));
         return;
     }
-    GObject *obj = list.first();
+    GObject* obj = list.first();
     if (obj == nullptr) {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::SEQUENCE));
         return;
     }
     assert(obj != nullptr);
-    U2SequenceObject *mySequence = qobject_cast<U2SequenceObject *>(obj);
+    U2SequenceObject* mySequence = qobject_cast<U2SequenceObject*>(obj);
     if (mySequence == nullptr) {
         stateInfo.setError(QString("error can't cast to sequence from GObject"));
         return;
     }
-    AnnotationTableObject *ao = getContext<AnnotationTableObject>(this, seqName);
+    AnnotationTableObject* ao = getContext<AnnotationTableObject>(this, seqName);
     if (nullptr == ao) {
         stateInfo.setError(QString("context not found %1").arg(seqName));
         return;
     }
-    QList<AnnotationTableObject *> aoList;
+    QList<AnnotationTableObject*> aoList;
     aoList.append(ao);
     CollocationsAlgorithmSettings cfg;
     cfg.distance = regionSize;
@@ -174,7 +174,7 @@ Task::ReportResult GTest_AnnotatorSearch::report() {
 //////////////////////////////////////////////////////////////////////////
 // GTest_PlasmidAutoAnnotation
 
-void GTest_CustomAutoAnnotation::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_CustomAutoAnnotation::init(XMLTestFormat*, const QDomElement& el) {
     docName = el.attribute(DOC_ATTR);
     if (docName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -204,25 +204,25 @@ void GTest_CustomAutoAnnotation::init(XMLTestFormat *, const QDomElement &el) {
 
 void GTest_CustomAutoAnnotation::prepare() {
     searchTask = nullptr;
-    Document *doc = getContext<Document>(this, docName);
+    Document* doc = getContext<Document>(this, docName);
     if (doc == nullptr) {
         stateInfo.setError(QString("context not found %1").arg(docName));
         return;
     }
 
-    QList<GObject *> list = doc->findGObjectByType(GObjectTypes::SEQUENCE);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::SEQUENCE);
     if (list.size() == 0) {
         stateInfo.setError(QString("container of object with type \"%1\" is empty").arg(GObjectTypes::SEQUENCE));
         return;
     }
 
-    GObject *obj = list.first();
+    GObject* obj = list.first();
     if (obj == nullptr) {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::SEQUENCE));
         return;
     }
     assert(obj != nullptr);
-    U2SequenceObject *dnaObj = qobject_cast<U2SequenceObject *>(obj);
+    U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*>(obj);
     if (dnaObj == nullptr) {
         stateInfo.setError(QString("error can't cast to sequence from GObject"));
         return;
@@ -241,7 +241,7 @@ void GTest_CustomAutoAnnotation::prepare() {
         return;
     }
 
-    AnnotationTableObject *ao = new AnnotationTableObject(resultDocContextName, doc->getDbiRef());
+    AnnotationTableObject* ao = new AnnotationTableObject(resultDocContextName, doc->getDbiRef());
     addContext(resultDocContextName, ao);
 
     searchTask = new CustomPatternAnnotationTask(ao, dnaObj->getEntityRef(), store);
@@ -273,7 +273,7 @@ Task::ReportResult GTest_CustomAutoAnnotation::report() {
 #define ANN_NAME_ATTR "ann_name"
 #define EXPECTED_RESULT "exp_result"
 
-void GTest_GeneByGeneApproach::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_GeneByGeneApproach::init(XMLTestFormat*, const QDomElement& el) {
     docName = el.attribute(DOC_ATTR);
     if (docName.isEmpty()) {
         failMissingValue(DOC_ATTR);
@@ -312,19 +312,19 @@ void GTest_GeneByGeneApproach::init(XMLTestFormat *, const QDomElement &el) {
 }
 
 void GTest_GeneByGeneApproach::prepare() {
-    Document *doc = getContext<Document>(this, docName);
+    Document* doc = getContext<Document>(this, docName);
     if (doc == nullptr) {
         stateInfo.setError(QString("context not found %1").arg(docName));
         return;
     }
 
-    QList<GObject *> list = doc->findGObjectByType(GObjectTypes::SEQUENCE);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::SEQUENCE);
     if (list.size() == 0) {
         stateInfo.setError(QString("container of object with type \"%1\" is empty").arg(GObjectTypes::SEQUENCE));
         return;
     }
-    GObject *obj = nullptr;
-    foreach (GObject *o, list) {
+    GObject* obj = nullptr;
+    foreach (GObject* o, list) {
         if (o->getGObjectName() == seqName) {
             obj = o;
             break;
@@ -335,21 +335,21 @@ void GTest_GeneByGeneApproach::prepare() {
         return;
     }
     assert(obj != nullptr);
-    U2SequenceObject *mySequence = qobject_cast<U2SequenceObject *>(obj);
+    U2SequenceObject* mySequence = qobject_cast<U2SequenceObject*>(obj);
     if (mySequence == nullptr) {
         stateInfo.setError(QString("error can't cast to sequence from GObject"));
         return;
     }
-    AnnotationTableObject *ao = getContext<AnnotationTableObject>(this, seqName);
+    AnnotationTableObject* ao = getContext<AnnotationTableObject>(this, seqName);
     if (ao == nullptr) {
         stateInfo.setError(QString("context not found %1").arg(seqName));
         return;
     }
-    const QList<Annotation *> annotations = ao->getAnnotations();
+    const QList<Annotation*> annotations = ao->getAnnotations();
 
     QList<SharedAnnotationData> annData;
 
-    foreach (Annotation *a, annotations) {
+    foreach (Annotation* a, annotations) {
         annData << a->getData();
     }
 

@@ -23,12 +23,12 @@
 
 namespace U2 {
 
-WorkflowScriptEngine::WorkflowScriptEngine(Workflow::WorkflowContext *context)
+WorkflowScriptEngine::WorkflowScriptEngine(Workflow::WorkflowContext* context)
     : QScriptEngine() {
     this->context = context;
 }
 
-Workflow::WorkflowContext *WorkflowScriptEngine::getWorkflowContext() {
+Workflow::WorkflowContext* WorkflowScriptEngine::getWorkflowContext() {
     return context;
 }
 

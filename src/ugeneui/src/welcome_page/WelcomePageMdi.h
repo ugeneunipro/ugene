@@ -32,16 +32,16 @@ class WelcomePageWidget;
 class WelcomePageMdi : public MWMDIWindow {
     Q_OBJECT
 public:
-    WelcomePageMdi(const QString &title, WelcomePageMdiController *controller);
+    WelcomePageMdi(const QString& title, WelcomePageMdiController* controller);
 
-    void updateRecent(const QStringList &recentProjects, const QStringList &recentFiles);
+    void updateRecent(const QStringList& recentProjects, const QStringList& recentFiles);
 
 protected:
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject* obj, QEvent* event);
 
 public:
-    WelcomePageMdiController *controller;
-    WelcomePageWidget *widget;
+    WelcomePageMdiController* controller;
+    WelcomePageWidget* widget;
 };
 
 }  // namespace U2

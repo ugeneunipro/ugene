@@ -35,18 +35,18 @@ struct GZipIndexAccessPoint;
 class U2CORE_EXPORT ZlibAdapter : public IOAdapter {
     Q_OBJECT
 public:
-    ZlibAdapter(IOAdapter *io);
+    ZlibAdapter(IOAdapter* io);
     ~ZlibAdapter();
 
-    virtual bool open(const GUrl &url, IOAdapterMode m_);
+    virtual bool open(const GUrl& url, IOAdapterMode m_);
 
     virtual bool isOpen() const;
 
     virtual void close();
 
-    virtual qint64 readBlock(char *data, qint64 maxSize);
+    virtual qint64 readBlock(char* data, qint64 maxSize);
 
-    virtual qint64 writeBlock(const char *data, qint64 size);
+    virtual qint64 writeBlock(const char* data, qint64 size);
 
     virtual bool skip(qint64 nBytes);
 
@@ -61,20 +61,20 @@ public:
     /**
      * should be invoked after open() ( needs z not null )
      */
-    bool skip(const GZipIndexAccessPoint &point, qint64 offset);
+    bool skip(const GZipIndexAccessPoint& point, qint64 offset);
 
     /**
      * returns -1 if a file is failed to open
      */
-    static qint64 getUncompressedFileSizeInBytes(const GUrl &url);
+    static qint64 getUncompressedFileSizeInBytes(const GUrl& url);
 
     virtual QString errorString() const;
 
 private:
     static const int BUFLEN = 32768;
-    IOAdapter *io;
-    GzipUtil *z;
-    RingBuffer *buf;  // seek buffer
+    IOAdapter* io;
+    GzipUtil* z;
+    RingBuffer* buf;  // seek buffer
     int rewinded;  // how much should read from seek buffer
 };
 

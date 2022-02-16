@@ -46,11 +46,11 @@ namespace Workflow {
 /************************************************************************/
 /* BlastAlignToReferenceMuxTask */
 /************************************************************************/
-BlastAlignToReferenceMuxTask::BlastAlignToReferenceMuxTask(const QString &_blastDbPath,
-                                                           const QList<SharedDbiDataHandler> &_reads,
-                                                           const SharedDbiDataHandler &_reference,
-                                                           const QMap<SharedDbiDataHandler, QString> &_readRenameMap,
-                                                           DbiDataStorage *_storage)
+BlastAlignToReferenceMuxTask::BlastAlignToReferenceMuxTask(const QString& _blastDbPath,
+                                                           const QList<SharedDbiDataHandler>& _reads,
+                                                           const SharedDbiDataHandler& _reference,
+                                                           const QMap<SharedDbiDataHandler, QString>& _readRenameMap,
+                                                           DbiDataStorage* _storage)
     : Task(tr("Align reads with BLAST & Smith-Waterman multiplexer task "), TaskFlag_NoRun | TaskFlag_CancelOnSubtaskCancel),
       blastDbPath(_blastDbPath),
       reads(_reads),
@@ -77,14 +77,14 @@ void BlastAlignToReferenceMuxTask::prepare() {
     addSubTask(createNewSubtask(readsRange));
 }
 
-QList<Task *> BlastAlignToReferenceMuxTask::onSubTaskFinished(Task *) {
+QList<Task*> BlastAlignToReferenceMuxTask::onSubTaskFinished(Task*) {
     CHECK_OP(stateInfo, {});
     CHECK(!readsRangePerSubtask.isEmpty(), {});
     U2Region readsRange = readsRangePerSubtask.takeFirst();
     return {createNewSubtask(readsRange)};
 }
 
-BlastAlignToReferenceTask *BlastAlignToReferenceMuxTask::createNewSubtask(const U2Region &readsRange) const {
+BlastAlignToReferenceTask* BlastAlignToReferenceMuxTask::createNewSubtask(const U2Region& readsRange) const {
     QList<SharedDbiDataHandler> readsPerSubtask = reads.mid(readsRange.startPos, readsRange.length);
     QString subtaskNameSuffix = tr(", reads range %1-%2").arg(readsRange.startPos).arg(readsRange.endPos());
     return new BlastAlignToReferenceTask(blastDbPath, readsPerSubtask, reference, readRenameMap, storage, subtaskNameSuffix);
@@ -92,27 +92,27 @@ BlastAlignToReferenceTask *BlastAlignToReferenceMuxTask::createNewSubtask(const 
 
 Task::ReportResult BlastAlignToReferenceMuxTask::report() {
     QList<QPointer<Task>> subtasks = getSubtasks();
-    for (const auto &task : qAsConst(subtasks)) {
-        auto subtask = qobject_cast<BlastAlignToReferenceTask *>(task.data());
+    for (const auto& task : qAsConst(subtasks)) {
+        auto subtask = qobject_cast<BlastAlignToReferenceTask*>(task.data());
         SAFE_POINT(subtask != nullptr, "BlastAlignToReferenceMuxTask has wrong subtask", ReportResult_Finished);
         alignmentResults << subtask->getAlignmentResults();
     }
     return ReportResult_Finished;
 }
 
-const QList<AlignToReferenceResult> &BlastAlignToReferenceMuxTask::getAlignmentResults() const {
+const QList<AlignToReferenceResult>& BlastAlignToReferenceMuxTask::getAlignmentResults() const {
     return alignmentResults;
 }
 
 /************************************************************************/
 /* BlastAlignToReferenceTask */
 /************************************************************************/
-BlastAlignToReferenceTask::BlastAlignToReferenceTask(const QString &_blastDbPath,
-                                                     const QList<SharedDbiDataHandler> &_reads,
-                                                     const SharedDbiDataHandler &_reference,
-                                                     const QMap<SharedDbiDataHandler, QString> &_readRenameMap,
-                                                     DbiDataStorage *_storage,
-                                                     const QString &taskNameSuffix)
+BlastAlignToReferenceTask::BlastAlignToReferenceTask(const QString& _blastDbPath,
+                                                     const QList<SharedDbiDataHandler>& _reads,
+                                                     const SharedDbiDataHandler& _reference,
+                                                     const QMap<SharedDbiDataHandler, QString>& _readRenameMap,
+                                                     DbiDataStorage* _storage,
+                                                     const QString& taskNameSuffix)
     : Task(tr("Align reads with BLAST & Smith-Waterman task") + taskNameSuffix, TaskFlags_NR_FOSE_COSC),
       dbPath(_blastDbPath),
       reads(_reads),
@@ -143,7 +143,7 @@ void BlastAlignToReferenceTask::prepare() {
     settings.gapExtendCost = 2;
     blastQuerySequenceIndexByReadIndex.resize(reads.size());
     for (int readIndex = 0; readIndex < reads.size(); readIndex++) {
-        const SharedDbiDataHandler &read = reads[readIndex];
+        const SharedDbiDataHandler& read = reads[readIndex];
         blastQuerySequenceIndexByReadIndex[readIndex] = -1;
         QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, read));
         CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("U2SequenceObject")), );
@@ -155,11 +155,11 @@ void BlastAlignToReferenceTask::prepare() {
         settings.querySequences << readSequence;
         blastQuerySequenceIndexByReadIndex[readIndex] = settings.querySequences.size() - 1;
 
-        const DNAAlphabet *readAlphabet = readObject->getAlphabet();
+        const DNAAlphabet* readAlphabet = readObject->getAlphabet();
         if (settings.alphabet == nullptr) {
             settings.alphabet = readAlphabet;
         } else {
-            const DNAAlphabet *commonAlphabet = U2AlphabetUtils::deriveCommonAlphabet(settings.alphabet, readAlphabet);
+            const DNAAlphabet* commonAlphabet = U2AlphabetUtils::deriveCommonAlphabet(settings.alphabet, readAlphabet);
             if (commonAlphabet != settings.alphabet) {
                 CHECK_EXT(commonAlphabet != nullptr, setError(tr("Failed to derive common alphabet for all reads")), );
                 settings.alphabet = commonAlphabet;
@@ -176,35 +176,35 @@ void BlastAlignToReferenceTask::prepare() {
     addSubTask(new BlastNTask(settings));
 }
 
-static const char *READ_ID_KEY = "read-sequence-data-id-property-key";
+static const char* READ_ID_KEY = "read-sequence-data-id-property-key";
 
-QList<Task *> BlastAlignToReferenceTask::onSubTaskFinished(Task *subTask) {
+QList<Task*> BlastAlignToReferenceTask::onSubTaskFinished(Task* subTask) {
     if (subTask->hasError()) {
         QScopedPointer<U2SequenceObject> refObject(StorageUtils::getSequenceObject(storage, reference));
         CHECK_EXT(!refObject.isNull(), setError(tr("Reference sequence is not accessible anymore")), {});
         QString referenceName = refObject->getGObjectName();
         QString error = subTask->getError();
-        if (qobject_cast<BlastNTask *>(subTask) != nullptr) {
+        if (qobject_cast<BlastNTask*>(subTask) != nullptr) {
             setError(tr("Error while running BLAST to align reads to reference: '%1', %2").arg(referenceName).arg(error));
-        } else if (qobject_cast<AbstractAlignmentTask *>(subTask) != nullptr) {
+        } else if (qobject_cast<AbstractAlignmentTask*>(subTask) != nullptr) {
             setError(tr("Error while aligning a read to reference with Smith-Waterman: '%1").arg(error));
         }  // Else inherit an error from the failed sub-task.
         return {};
     }
     CHECK_OP(stateInfo, {});
 
-    QList<Task *> result;
-    if (auto blastTask = qobject_cast<BlastNTask *>(subTask)) {
+    QList<Task*> result;
+    if (auto blastTask = qobject_cast<BlastNTask*>(subTask)) {
         auto pairwiseAlignmentFactory = getAbstractAlignmentTaskFactory("Smith-Waterman", "SW_classic", stateInfo);
         CHECK_OP(stateInfo, result);
 
-        const DNAAlphabet *msaAlphabet = blastTask->getSettings().alphabet;
+        const DNAAlphabet* msaAlphabet = blastTask->getSettings().alphabet;
         QScopedPointer<U2SequenceObject> referenceObject(StorageUtils::getSequenceObject(storage, reference));
         CHECK_EXT(!referenceObject.isNull(), setError(L10N::nullPointerError("Reference sequence")), {});
         DNASequence referenceSequence = referenceObject->getWholeSequence(stateInfo);
         CHECK_OP(stateInfo, {});
         for (int readIndex = 0; readIndex < reads.length(); readIndex++) {
-            const SharedDbiDataHandler &read = reads[readIndex];
+            const SharedDbiDataHandler& read = reads[readIndex];
             QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, read));
             {
                 AlignToReferenceResult alignmentResult;
@@ -223,11 +223,11 @@ QList<Task *> BlastAlignToReferenceTask::onSubTaskFinished(Task *subTask) {
                                                            : blastTask->getResultPerQuerySequence(blastResultIndex);
             CHECK_CONTINUE(!blastResults.isEmpty());
 
-            AlignToReferenceResult &alignmentResult = alignmentResults.last();
+            AlignToReferenceResult& alignmentResult = alignmentResults.last();
             QByteArray readKey = read->getEntityRef().entityId;
             alignmentResultByRead[readKey] = &alignmentResult;
 
-            SharedAnnotationData blastResult = *std::max_element(blastResults.begin(), blastResults.end(), [](const auto &r1, const auto &r2) {
+            SharedAnnotationData blastResult = *std::max_element(blastResults.begin(), blastResults.end(), [](const auto& r1, const auto& r2) {
                 return r1->findFirstQualifierValue("score").toInt() < r2->findFirstQualifierValue("score").toInt();
             });
 
@@ -259,7 +259,7 @@ QList<Task *> BlastAlignToReferenceTask::onSubTaskFinished(Task *subTask) {
             pairwiseAlignmentTask->setProperty(READ_ID_KEY, readKey);
             result << pairwiseAlignmentTask;
         }
-    } else if (auto pairwiseAlignTask = qobject_cast<AbstractAlignmentTask *>(subTask)) {
+    } else if (auto pairwiseAlignTask = qobject_cast<AbstractAlignmentTask*>(subTask)) {
         U2DataId readKey = pairwiseAlignTask->property(READ_ID_KEY).toByteArray();
         U2EntityRef msaRef = pairwiseMsaByRead.value(readKey);
 
@@ -270,7 +270,7 @@ QList<Task *> BlastAlignToReferenceTask::onSubTaskFinished(Task *subTask) {
         // TODO: pairwiseMsaObject is never deallocated in DB: workflow DB is growing until the task ends! See DbiDataStorage::deleteObject!
 
         SAFE_POINT_EXT(alignmentResultByRead.contains(readKey), setError("Internal error! Read not found"), {});
-        AlignToReferenceResult *alignmentResult = alignmentResultByRead[readKey];
+        AlignToReferenceResult* alignmentResult = alignmentResultByRead[readKey];
         SAFE_POINT_EXT(alignmentResult != nullptr, setError("Internal error! Read result is not found"), {});
 
         QVector<U2MsaGap> referenceGaps = pairwiseMsaObject->getMsaRow(0)->getGaps();
@@ -278,7 +278,7 @@ QList<Task *> BlastAlignToReferenceTask::onSubTaskFinished(Task *subTask) {
 
         // Shift reference gaps back to the global coordinates: add a constant offset to all reference gaps.
         int referenceRegionOffset = (int)alignmentResult->pairwiseAlignmentReferenceRegion.startPos;  // Cast is SAFE. We run 2GB check during the start.
-        for (U2MsaGap &referenceGap : referenceGaps) {
+        for (U2MsaGap& referenceGap : referenceGaps) {
             referenceGap.startPos += referenceRegionOffset;
         }
 
@@ -290,21 +290,21 @@ QList<Task *> BlastAlignToReferenceTask::onSubTaskFinished(Task *subTask) {
 
         // Run similarity algorithm for the pairwise alignment to compute 'identity percent'.
         pairwiseMsaObject->crop(pairwiseMsaObject->getRow(1)->getCoreRegion());
-        MSADistanceAlgorithmFactory *factory = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactory(BuiltInDistanceAlgorithms::SIMILARITY_ALGO);
+        MSADistanceAlgorithmFactory* factory = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactory(BuiltInDistanceAlgorithms::SIMILARITY_ALGO);
         CHECK_EXT(factory != nullptr, setError("MSADistanceAlgorithmFactory is NULL"), result);
         factory->resetFlag(DistanceAlgorithmFlag_ExcludeGaps);
 
-        MSADistanceAlgorithm *similarityTask = factory->createAlgorithm(pairwiseMsaObject->getMsa());
+        MSADistanceAlgorithm* similarityTask = factory->createAlgorithm(pairwiseMsaObject->getMsa());
         CHECK_EXT(similarityTask != nullptr, setError(L10N::nullPointerError("MSADistanceAlgorithm")), result);
         similarityTask->setProperty(READ_ID_KEY, readKey);
         result << similarityTask;
-    } else if (auto similarityTask = qobject_cast<MSADistanceAlgorithm *>(subTask)) {
+    } else if (auto similarityTask = qobject_cast<MSADistanceAlgorithm*>(subTask)) {
         U2DataId readKey = similarityTask->property(READ_ID_KEY).toByteArray();
         SAFE_POINT_EXT(alignmentResultByRead.contains(readKey), setError("Internal error! Read not found"), {});
-        AlignToReferenceResult *alignmentResult = alignmentResultByRead[readKey];
+        AlignToReferenceResult* alignmentResult = alignmentResultByRead[readKey];
         SAFE_POINT_EXT(alignmentResult != nullptr, setError("Internal error! Read result is not found"), {});
 
-        const MSADistanceMatrix &matrix = similarityTask->getMatrix();
+        const MSADistanceMatrix& matrix = similarityTask->getMatrix();
         alignmentResult->identityPercent = matrix.getSimilarity(0, 1, true);
     } else {
         FAIL("Unexpected alignment pipeline state: task is unknown: " + subTask->getTaskName(), {})
@@ -319,13 +319,13 @@ Task::ReportResult BlastAlignToReferenceTask::report() {
     for (int i = 0; i < reads.length(); i++) {
         originalIndexByHandle[reads[i]] = i;
     }
-    std::sort(alignmentResults.begin(), alignmentResults.end(), [&originalIndexByHandle](const auto &r1, const auto &r2) {
+    std::sort(alignmentResults.begin(), alignmentResults.end(), [&originalIndexByHandle](const auto& r1, const auto& r2) {
         return originalIndexByHandle[r1.readHandle] < originalIndexByHandle[r2.readHandle];
     });
     return ReportResult_Finished;
 }
 
-void BlastAlignToReferenceTask::convertBlastResultToAlignmentResult(const SharedAnnotationData &blastResult, AlignToReferenceResult &alignResult) {
+void BlastAlignToReferenceTask::convertBlastResultToAlignmentResult(const SharedAnnotationData& blastResult, AlignToReferenceResult& alignResult) {
     alignResult.blastReadRegion = blastResult->getRegions().first();
     alignResult.isOnComplementaryStrand = blastResult->findFirstQualifierValue("source_frame") == "complement";
 
@@ -340,7 +340,7 @@ void BlastAlignToReferenceTask::convertBlastResultToAlignmentResult(const Shared
     alignResult.blastIdentity = identitiesValue.leftRef(identitiesValue.indexOf('/')).toInt();
 }
 
-void BlastAlignToReferenceTask::assignReferencePairwiseAlignmentRegion(AlignToReferenceResult &alignResult, int readLength, int referenceLength) {
+void BlastAlignToReferenceTask::assignReferencePairwiseAlignmentRegion(AlignToReferenceResult& alignResult, int readLength, int referenceLength) {
     // TODO: below is the original algo and it is not correct: even 1 unmapped base can be N symbols away.
     int unmappedReadLength = readLength - alignResult.blastIdentity;
     int pairwiseReferenceRegionStart = qMax<int>(0, alignResult.blastReferenceRegion.startPos - unmappedReadLength);
@@ -350,13 +350,13 @@ void BlastAlignToReferenceTask::assignReferencePairwiseAlignmentRegion(AlignToRe
     alignResult.pairwiseAlignmentLeadingReadGap = unmappedReadLength - alignResult.blastReadRegion.startPos;
 }
 
-MultipleSequenceAlignmentObject *BlastAlignToReferenceTask::createPairwiseAlignment(
-    U2OpStatus &os,
-    const U2DbiRef &dbiRef,
-    const DNASequence &referenceSequence,
-    const DNASequence &readSequence,
-    const DNAAlphabet *alphabet,
-    const AlignToReferenceResult &alignmentResult) {
+MultipleSequenceAlignmentObject* BlastAlignToReferenceTask::createPairwiseAlignment(
+    U2OpStatus& os,
+    const U2DbiRef& dbiRef,
+    const DNASequence& referenceSequence,
+    const DNASequence& readSequence,
+    const DNAAlphabet* alphabet,
+    const AlignToReferenceResult& alignmentResult) {
     MultipleSequenceAlignment pairwiseMsa("pairwise-msa", alphabet);
     QByteArray croppedReferenceSequence = referenceSequence.seq.mid(alignmentResult.pairwiseAlignmentReferenceRegion.startPos,
                                                                     alignmentResult.pairwiseAlignmentReferenceRegion.length);
@@ -374,17 +374,17 @@ MultipleSequenceAlignmentObject *BlastAlignToReferenceTask::createPairwiseAlignm
     return MultipleSequenceAlignmentImporter::createAlignment(dbiRef, pairwiseMsa, os);
 }
 
-const QList<AlignToReferenceResult> &BlastAlignToReferenceTask::getAlignmentResults() const {
+const QList<AlignToReferenceResult>& BlastAlignToReferenceTask::getAlignmentResults() const {
     return alignmentResults;
 }
 
-AbstractAlignmentTaskFactory *BlastAlignToReferenceTask::getAbstractAlignmentTaskFactory(const QString &algoId,
-                                                                                         const QString &implId,
-                                                                                         U2OpStatus &os) {
-    AlignmentAlgorithm *algorithm = AppContext::getAlignmentAlgorithmsRegistry()->getAlgorithm(algoId);
+AbstractAlignmentTaskFactory* BlastAlignToReferenceTask::getAbstractAlignmentTaskFactory(const QString& algoId,
+                                                                                         const QString& implId,
+                                                                                         U2OpStatus& os) {
+    AlignmentAlgorithm* algorithm = AppContext::getAlignmentAlgorithmsRegistry()->getAlgorithm(algoId);
     CHECK_EXT(algorithm != nullptr, os.setError(tr("The %1 algorithm is not found. Add the %1 plugin.").arg(algoId)), nullptr);
 
-    AlgorithmRealization *algorithmRealization = algorithm->getAlgorithmRealization(implId);
+    AlgorithmRealization* algorithmRealization = algorithm->getAlgorithmRealization(implId);
     CHECK_EXT(algorithmRealization != nullptr, os.setError(tr("The %1 algorithm is not found. Check that the %1 plugin is up to date.").arg(algoId)), nullptr);
 
     return algorithmRealization->getTaskFactory();

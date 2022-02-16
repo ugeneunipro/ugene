@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-ImportOptionsWidget::ImportOptionsWidget(QWidget *parent)
+ImportOptionsWidget::ImportOptionsWidget(QWidget* parent)
     : QWidget(parent),
       ui(new Ui_ImportOptionsWidget) {
     ui->setupUi(this);
@@ -40,7 +40,7 @@ ImportOptionsWidget::~ImportOptionsWidget() {
     delete ui;
 }
 
-void ImportOptionsWidget::init(const QString &baseFolder, const ImportToDatabaseOptions &options) {
+void ImportOptionsWidget::init(const QString& baseFolder, const ImportToDatabaseOptions& options) {
     ui->leBaseFolder->setText(baseFolder);
 
     ui->cbRecursively->setChecked(options.processFoldersRecursively);
@@ -63,7 +63,7 @@ void ImportOptionsWidget::init(const QString &baseFolder, const ImportToDatabase
             break;
     }
 
-    foreach (const QString &formatId, options.preferredFormats) {
+    foreach (const QString& formatId, options.preferredFormats) {
         if (BaseDocumentFormats::ACE == formatId) {
             ui->rbAceAsMalignment->setChecked(true);
         } else if (AceImporter::ID == formatId) {

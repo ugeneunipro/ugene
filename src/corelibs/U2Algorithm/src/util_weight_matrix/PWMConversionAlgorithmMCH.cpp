@@ -24,11 +24,11 @@
 
 namespace U2 {
 
-PWMConversionAlgorithmFactoryMCH::PWMConversionAlgorithmFactoryMCH(QObject *p)
+PWMConversionAlgorithmFactoryMCH::PWMConversionAlgorithmFactoryMCH(QObject* p)
     : PWMConversionAlgorithmFactory(BuiltInPWMConversionAlgorithms::MCH_ALGO, p) {
 }
 
-PWMConversionAlgorithm *PWMConversionAlgorithmFactoryMCH::createAlgorithm(QObject *p) {
+PWMConversionAlgorithm* PWMConversionAlgorithmFactoryMCH::createAlgorithm(QObject* p) {
     return new PWMConversionAlgorithmMCH(this, p);
 }
 
@@ -40,7 +40,7 @@ QString PWMConversionAlgorithmFactoryMCH::getDescription() const {
     return tr("Match weight function");
 }
 
-PWMatrix PWMConversionAlgorithmMCH::convert(const PFMatrix &matrix) {
+PWMatrix PWMConversionAlgorithmMCH::convert(const PFMatrix& matrix) {
     int size = (matrix.getType() == PFM_MONONUCLEOTIDE) ? 4 : 16;
     int all_hits = 0;
     if (matrix.getLength() <= 0) {
@@ -74,7 +74,7 @@ PWMatrix PWMConversionAlgorithmMCH::convert(const PFMatrix &matrix) {
     return w;
 }
 
-PWMConversionAlgorithmMCH::PWMConversionAlgorithmMCH(PWMConversionAlgorithmFactory *factory, QObject *p)
+PWMConversionAlgorithmMCH::PWMConversionAlgorithmMCH(PWMConversionAlgorithmFactory* factory, QObject* p)
     : PWMConversionAlgorithm(factory, p) {
 }
 

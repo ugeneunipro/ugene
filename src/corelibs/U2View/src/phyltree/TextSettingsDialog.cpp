@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-TextSettingsDialog::TextSettingsDialog(QWidget *parent, const OptionsMap &settings)
+TextSettingsDialog::TextSettingsDialog(QWidget* parent, const OptionsMap& settings)
     : BaseSettingsDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929735");
@@ -38,7 +38,7 @@ TextSettingsDialog::TextSettingsDialog(QWidget *parent, const OptionsMap &settin
 
     curColor = qvariant_cast<QColor>(settings[LABEL_COLOR]);
 
-    QStyle *buttonStyle = new QProxyStyle(QStyleFactory::create("fusion"));
+    QStyle* buttonStyle = new QProxyStyle(QStyleFactory::create("fusion"));
     buttonStyle->setParent(colorButton);
     colorButton->setStyle(buttonStyle);
 

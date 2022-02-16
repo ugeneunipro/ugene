@@ -35,9 +35,9 @@ class Descriptor;
 
 class U2DESIGNER_EXPORT DesignerGUIUtils {
 public:
-    static void paintSamplesArrow(QPainter *painter);
-    static void paintSamplesDocument(QPainter *painter, QTextDocument *doc, int pageWidth, int pageHeight, const QPalette &pal);
-    static void setupSamplesDocument(const Descriptor &d, const QIcon &ico, QTextDocument *res);
+    static void paintSamplesArrow(QPainter* painter);
+    static void paintSamplesDocument(QPainter* painter, QTextDocument* doc, int pageWidth, int pageHeight, const QPalette& pal);
+    static void setupSamplesDocument(const Descriptor& d, const QIcon& ico, QTextDocument* res);
 };
 
 }  // namespace U2

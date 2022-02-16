@@ -32,7 +32,7 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 ////AbstractScriptEditorDelegate /////////////////////////////////////////
 
-AbstractScriptEditorDelegate::AbstractScriptEditorDelegate(QWidget *parent)
+AbstractScriptEditorDelegate::AbstractScriptEditorDelegate(QWidget* parent)
     : QWidget(parent) {
     layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
     layout->setMargin(0);
@@ -44,9 +44,9 @@ AbstractScriptEditorDelegate::~AbstractScriptEditorDelegate() {
 void AbstractScriptEditorDelegate::installScriptHighlighter() const {
 }
 
-AbstractScriptEditorDelegate *AbstractScriptEditorDelegate::createInstance(QWidget *parent,
+AbstractScriptEditorDelegate* AbstractScriptEditorDelegate::createInstance(QWidget* parent,
                                                                            ScriptEditorType type) {
-    AbstractScriptEditorDelegate *result = nullptr;
+    AbstractScriptEditorDelegate* result = nullptr;
     switch (type) {
         case LINE_EDIT:
             result = new LineEditDelegate(parent);
@@ -63,13 +63,13 @@ AbstractScriptEditorDelegate *AbstractScriptEditorDelegate::createInstance(QWidg
 //////////////////////////////////////////////////////////////////////////
 ////       LineEditDelegate      /////////////////////////////////////////
 
-LineEditDelegate::LineEditDelegate(QWidget *parent)
+LineEditDelegate::LineEditDelegate(QWidget* parent)
     : AbstractScriptEditorDelegate(parent) {
     edit = new QLineEdit(this);
     layout->addWidget(edit);
 }
 
-void LineEditDelegate::setText(const QString &text) {
+void LineEditDelegate::setText(const QString& text) {
     edit->setText(text);
 }
 
@@ -84,7 +84,7 @@ int LineEditDelegate::cursorLineNumber() const {
 //////////////////////////////////////////////////////////////////////////
 ////       TextEditDelegate      /////////////////////////////////////////
 
-TextEditDelegate::TextEditDelegate(QWidget *parent)
+TextEditDelegate::TextEditDelegate(QWidget* parent)
     : AbstractScriptEditorDelegate(parent) {
     edit = new QTextEdit(this);
     layout->addWidget(edit);
@@ -92,7 +92,7 @@ TextEditDelegate::TextEditDelegate(QWidget *parent)
     connect(edit, SIGNAL(cursorPositionChanged()), SIGNAL(si_cursorPositionChanged()));
 }
 
-void TextEditDelegate::setText(const QString &text) {
+void TextEditDelegate::setText(const QString& text) {
     edit->setText(text);
 }
 

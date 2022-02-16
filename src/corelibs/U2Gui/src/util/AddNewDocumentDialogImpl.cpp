@@ -45,7 +45,7 @@ namespace U2 {
 #define SETTINGS_LASTFORMAT "add_new_document/last_format"
 #define SETTINGS_LASTDIR "add_new_document/last_dir"
 
-AddNewDocumentDialogImpl::AddNewDocumentDialogImpl(QWidget *p, AddNewDocumentDialogModel &m, const DocumentFormatConstraints &c)
+AddNewDocumentDialogImpl::AddNewDocumentDialogImpl(QWidget* p, AddNewDocumentDialogModel& m, const DocumentFormatConstraints& c)
     : QDialog(p),
       model(m) {
     setupUi(this);
@@ -89,8 +89,8 @@ void AddNewDocumentDialogImpl::accept() {
     QDialog::accept();
 }
 
-void AddNewDocumentDialogController::run(QWidget *p, AddNewDocumentDialogModel &m, const DocumentFormatConstraints &c) {
-    Project *proj = AppContext::getProject();
+void AddNewDocumentDialogController::run(QWidget* p, AddNewDocumentDialogModel& m, const DocumentFormatConstraints& c) {
+    Project* proj = AppContext::getProject();
     if (proj->isStateLocked()) {
         QMessageBox::critical(nullptr, L10N::errorTitle(), AddNewDocumentDialogImpl::tr("Project is locked"));
         m.successful = false;

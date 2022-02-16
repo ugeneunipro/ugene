@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-ImportObjectToDatabaseTask::ImportObjectToDatabaseTask(GObject *object, const U2DbiRef &dstDbiRef, const QString &dstFolder)
+ImportObjectToDatabaseTask::ImportObjectToDatabaseTask(GObject* object, const U2DbiRef& dstDbiRef, const QString& dstFolder)
     : Task(tr("Import object %1 to database").arg(nullptr != object ? object->getGObjectName() : ""), TaskFlag_None),
       object(object),
       dstDbiRef(dstDbiRef),
@@ -45,7 +45,7 @@ void ImportObjectToDatabaseTask::run() {
     DbiConnection con(dstDbiRef, stateInfo);
     CHECK_OP(stateInfo, );
     SAFE_POINT_EXT(nullptr != con.dbi, setError(tr("Error! No DBI")), );
-    U2ObjectDbi *oDbi = con.dbi->getObjectDbi();
+    U2ObjectDbi* oDbi = con.dbi->getObjectDbi();
     SAFE_POINT_EXT(nullptr != oDbi, setError(tr("Error! No object DBI")), );
 
     QVariantMap hints;
@@ -58,25 +58,25 @@ void ImportObjectToDatabaseTask::run() {
     dstObject->moveToThread(QCoreApplication::instance()->thread());
 }
 
-GObject *ImportObjectToDatabaseTask::takeResult() {
-    GObject *result = dstObject;
+GObject* ImportObjectToDatabaseTask::takeResult() {
+    GObject* result = dstObject;
     dstObject = nullptr;
     return result;
 }
 
-GObject *ImportObjectToDatabaseTask::getSourceObject() const {
+GObject* ImportObjectToDatabaseTask::getSourceObject() const {
     return object.data();
 }
 
-GObject *ImportObjectToDatabaseTask::getDestinationObject() const {
+GObject* ImportObjectToDatabaseTask::getDestinationObject() const {
     return dstObject;
 }
 
-const QString &ImportObjectToDatabaseTask::getFolder() const {
+const QString& ImportObjectToDatabaseTask::getFolder() const {
     return dstFolder;
 }
 
-const U2DbiRef &ImportObjectToDatabaseTask::getDbiRef() const {
+const U2DbiRef& ImportObjectToDatabaseTask::getDbiRef() const {
     return dstDbiRef;
 }
 

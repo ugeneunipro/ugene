@@ -70,7 +70,7 @@ namespace U2 {
 #define BEST_ATTR "best"
 #define ALL_ATTR "all"
 
-void GTest_Bowtie::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_Bowtie::init(XMLTestFormat*, const QDomElement& el) {
     bowtieTask = nullptr;
     indexName = "";
     readsFileName = "";
@@ -243,9 +243,9 @@ void GTest_Bowtie::prepare() {
     addSubTask(bowtieTask);
 }
 
-QList<Task *> GTest_Bowtie::onSubTaskFinished(Task *subTask) {
+QList<Task*> GTest_Bowtie::onSubTaskFinished(Task* subTask) {
     Q_UNUSED(subTask);
-    QList<Task *> res;
+    QList<Task*> res;
     if (hasError() || subTask->hasError() || isCanceled()) {
         subTaskFailed = true;
         return res;
@@ -300,7 +300,7 @@ void GTest_Bowtie::cleanup() {
             }
         }
     }
-    //delete tmp result
+    // delete tmp result
     QFileInfo tmpResult(config.resultFileName.getURLString());
     if (!hasError() && tmpResult.exists()) {
         ioLog.trace(QString("Deleting tmp result file :%1").arg(tmpResult.absoluteFilePath()));
@@ -321,9 +321,9 @@ QString GTest_Bowtie::getTempDataDir() {
     return dir;
 }
 
-QList<XMLTestFactory *> BowtieTests::createTestFactories() {
-    QList<XMLTestFactory *> res;
+QList<XMLTestFactory*> BowtieTests::createTestFactories() {
+    QList<XMLTestFactory*> res;
     res.append(GTest_Bowtie::createFactory());
     return res;
 }
-}    // namespace U2
+}  // namespace U2

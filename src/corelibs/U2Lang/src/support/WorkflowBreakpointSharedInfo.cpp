@@ -21,10 +21,10 @@
 
 #include "WorkflowBreakpointSharedInfo.h"
 
-const char *BREAK_ALWAYS = "break always";
-const char *BREAK_WHEN_HIT_COUNT_EQUAL = "break when the hit count is equal to ";
-const char *BREAK_WHEN_HIT_COUNT_MULTIPLE = "break when the hit count is multiple of ";
-const char *BREAK_WHEN_HIT_COUNT_GREATER_OR_EQUAL = "break when the hit count is greater than or equal to ";
+const char* BREAK_ALWAYS = "break always";
+const char* BREAK_WHEN_HIT_COUNT_EQUAL = "break when the hit count is equal to ";
+const char* BREAK_WHEN_HIT_COUNT_MULTIPLE = "break when the hit count is multiple of ";
+const char* BREAK_WHEN_HIT_COUNT_GREATER_OR_EQUAL = "break when the hit count is greater than or equal to ";
 
 namespace U2 {
 
@@ -33,7 +33,7 @@ BreakpointHitCounterDump::BreakpointHitCounterDump(BreakpointHitCountCondition _
       hitCounterParameter(_hitCounterParameter) {
 }
 
-U2LANG_EXPORT const QMap<BreakpointHitCountCondition, QString> &getNamesOfHitCounters() {
+U2LANG_EXPORT const QMap<BreakpointHitCountCondition, QString>& getNamesOfHitCounters() {
     static QMap<BreakpointHitCountCondition, QString> namesOfHitCounters;
     if (namesOfHitCounters.isEmpty()) {
         namesOfHitCounters[ALWAYS] = QObject::tr(BREAK_ALWAYS);
@@ -45,7 +45,7 @@ U2LANG_EXPORT const QMap<BreakpointHitCountCondition, QString> &getNamesOfHitCou
 }
 
 BreakpointConditionDump::BreakpointConditionDump(BreakpointConditionParameter _conditionParameter,
-                                                 const QString &_condition,
+                                                 const QString& _condition,
                                                  bool _isEnabled)
     : conditionParameter(_conditionParameter),
       condition(_condition), isEnabled(_isEnabled) {

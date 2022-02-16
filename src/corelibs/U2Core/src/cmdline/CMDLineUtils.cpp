@@ -32,7 +32,7 @@ namespace U2 {
 /***************************************************
  * CMDLineRegistryUtils
  ***************************************************/
-int CMDLineRegistryUtils::getParameterIndex(const QString &paramName, int startWith) {
+int CMDLineRegistryUtils::getParameterIndex(const QString& paramName, int startWith) {
     QList<StrStrPair> params;
     setCMDLineParams(params);
     int sz = params.size();
@@ -44,7 +44,7 @@ int CMDLineRegistryUtils::getParameterIndex(const QString &paramName, int startW
     return -1;
 }
 
-QStringList CMDLineRegistryUtils::getParameterValues(const QString &paramName, int startWith) {
+QStringList CMDLineRegistryUtils::getParameterValues(const QString& paramName, int startWith) {
     QList<StrStrPair> params;
     setCMDLineParams(params);
     QStringList res;
@@ -62,7 +62,7 @@ QStringList CMDLineRegistryUtils::getParameterValues(const QString &paramName, i
     return res;
 }
 
-QStringList CMDLineRegistryUtils::getParameterValuesByWords(const QString &paramName, int startWith) {
+QStringList CMDLineRegistryUtils::getParameterValuesByWords(const QString& paramName, int startWith) {
     QStringList words;
     QStringList res = getParameterValues(paramName, startWith);
     QStringList::const_iterator it = res.constBegin();
@@ -79,7 +79,7 @@ QStringList CMDLineRegistryUtils::getPureValues(int startWithIdx) {
     QStringList res;
     int sz = params.size();
     for (int i = qMax(0, startWithIdx); i < sz; ++i) {
-        const StrStrPair &currentPair = params[i];
+        const StrStrPair& currentPair = params[i];
         if (currentPair.first.isEmpty()) {
             res << currentPair.second;
         } else {
@@ -90,14 +90,14 @@ QStringList CMDLineRegistryUtils::getPureValues(int startWithIdx) {
 }
 
 namespace {
-QStringList generateCandidatesWithExt(const QString &path) {
+QStringList generateCandidatesWithExt(const QString& path) {
     QStringList res;
     res << path;
     res << path + ".exe";
     return res;
 }
 
-QStringList generateCandidates(const QString &prefix) {
+QStringList generateCandidates(const QString& prefix) {
     QStringList res;
 #ifndef Q_OS_WIN
     res << generateCandidatesWithExt(prefix + "/" + "ugene");
@@ -112,7 +112,7 @@ QStringList generateCandidates(const QString &prefix) {
 QString CMDLineRegistryUtils::getCmdlineUgenePath() {
     QString executableDir = AppContext::getWorkingDirectoryPath();
     QStringList candidates(generateCandidates(executableDir));
-    foreach (const QString &candidate, candidates) {
+    foreach (const QString& candidate, candidates) {
         if (QFile::exists(candidate)) {
             return candidate;
         }
@@ -120,8 +120,8 @@ QString CMDLineRegistryUtils::getCmdlineUgenePath() {
     return "";
 }
 
-void CMDLineRegistryUtils::setCMDLineParams(QList<StrStrPair> &to) {
-    CMDLineRegistry *cmdlineRegistry = AppContext::getCMDLineRegistry();
+void CMDLineRegistryUtils::setCMDLineParams(QList<StrStrPair>& to) {
+    CMDLineRegistry* cmdlineRegistry = AppContext::getCMDLineRegistry();
     if (cmdlineRegistry != nullptr) {
         to = cmdlineRegistry->getParameters();
     }

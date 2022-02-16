@@ -29,24 +29,24 @@ namespace U2 {
 template<class T, class S>
 class SyncSort {
 public:
-    SyncSort(QVector<T> &arr, QVector<S> &ind);
-    SyncSort(T *arr, S *ind, int first, int length);
+    SyncSort(QVector<T>& arr, QVector<S>& ind);
+    SyncSort(T* arr, S* ind, int first, int length);
     void sort();
 
 private:
-    void sort(T *x, int off, int len);
-    qint64 compare(const T *x1, const T *x2) const;
-    void swap(T *x1, T *x2) const;
-    quint32 med3(T *x, quint32 a, quint32 b, quint32 c);
-    void vecswap(T *x1, T *x2, quint32 n);
+    void sort(T* x, int off, int len);
+    qint64 compare(const T* x1, const T* x2) const;
+    void swap(T* x1, T* x2) const;
+    quint32 med3(T* x, quint32 a, quint32 b, quint32 c);
+    void vecswap(T* x1, T* x2, quint32 n);
 
     int len;
-    T *start;
-    S *indexes;
+    T* start;
+    S* indexes;
 };
 
 template<class T, class S>
-void SyncSort<T, S>::sort(T *x, int off, int len) {
+void SyncSort<T, S>::sort(T* x, int off, int len) {
     // Insertion sort on smallest arrays
     if (len < 7) {
         for (int i = off; i < len + off; i++) {
@@ -70,7 +70,7 @@ void SyncSort<T, S>::sort(T *x, int off, int len) {
         }
         m = med3(x, l, m, n);  // Mid-size, med of 3
     }
-    T *v = x + m;
+    T* v = x + m;
 
     // Establish Invariant: v* (<v)* (>v)* v*
     int a = off, b = a, c = off + len - 1, d = c;
@@ -113,12 +113,12 @@ void SyncSort<T, S>::sort(T *x, int off, int len) {
 }
 
 template<class T, class S>
-qint64 SyncSort<T, S>::compare(const T *x1, const T *x2) const {
+qint64 SyncSort<T, S>::compare(const T* x1, const T* x2) const {
     return *x1 - *x2;
 }
 
 template<class T, class S>
-void SyncSort<T, S>::swap(T *x1, T *x2) const {
+void SyncSort<T, S>::swap(T* x1, T* x2) const {
     int ind1 = x1 - start;
     int ind2 = x2 - start;
 
@@ -127,7 +127,7 @@ void SyncSort<T, S>::swap(T *x1, T *x2) const {
 }
 
 template<class T, class S>
-quint32 SyncSort<T, S>::med3(T *x, quint32 a, quint32 b, quint32 c) {
+quint32 SyncSort<T, S>::med3(T* x, quint32 a, quint32 b, quint32 c) {
     qint64 bc = compare(x + b, x + c);
     qint64 ac = compare(x + a, x + c);
     return compare(x + a, x + b) < 0 ? (bc < 0 ? b : ac < 0 ? c
@@ -137,21 +137,21 @@ quint32 SyncSort<T, S>::med3(T *x, quint32 a, quint32 b, quint32 c) {
 }
 
 template<class T, class S>
-void SyncSort<T, S>::vecswap(T *x1, T *x2, quint32 n) {
+void SyncSort<T, S>::vecswap(T* x1, T* x2, quint32 n) {
     for (quint32 i = 0; i < n; i++) {
         swap(x1 + i, x2 + i);
     }
 }
 
 template<class T, class S>
-SyncSort<T, S>::SyncSort(QVector<T> &arr, QVector<S> &ind) {
+SyncSort<T, S>::SyncSort(QVector<T>& arr, QVector<S>& ind) {
     len = arr.size();
     start = arr.data();
     indexes = ind.data();
 }
 
 template<class T, class S>
-SyncSort<T, S>::SyncSort(T *arr, S *ind, int _start, int _len) {
+SyncSort<T, S>::SyncSort(T* arr, S* ind, int _start, int _len) {
     len = _len;
     start = arr + _start;
     indexes = ind;

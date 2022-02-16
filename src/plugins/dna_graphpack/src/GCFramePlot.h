@@ -37,20 +37,20 @@ class AnnotatedDNAView;
 class GCFramePlotFactory : public GSequenceGraphFactory {
     Q_OBJECT
 public:
-    GCFramePlotFactory(QObject *p);
-    QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView *v);
-    GSequenceGraphDrawer *getDrawer(GSequenceGraphView *v);
-    bool isEnabled(const U2SequenceObject *o) const;
+    GCFramePlotFactory(QObject* p);
+    QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView* v);
+    GSequenceGraphDrawer* getDrawer(GSequenceGraphView* v);
+    bool isEnabled(const U2SequenceObject* o) const;
 };
 
 class GCFramePlotAlgorithm : public GSequenceGraphAlgorithm {
 public:
     GCFramePlotAlgorithm(int offset);
 
-    void calculate(QVector<float> &result, U2SequenceObject *sequenceObject, qint64 window, qint64 step, U2OpStatus &os) override;
+    void calculate(QVector<float>& result, U2SequenceObject* sequenceObject, qint64 window, qint64 step, U2OpStatus& os) override;
 
 private:
-    void windowStrategyWithoutMemorize(QVector<float> &res, const QByteArray &seq, int startPos, qint64 window, qint64 step, qint64 nSteps, U2OpStatus &os);
+    void windowStrategyWithoutMemorize(QVector<float>& res, const QByteArray& seq, int startPos, qint64 window, qint64 step, qint64 nSteps, U2OpStatus& os);
 
     int offset;
 };

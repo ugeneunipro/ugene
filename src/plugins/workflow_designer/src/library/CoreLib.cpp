@@ -120,7 +120,7 @@ static const QString MA_TYPESET_ID("ma.content");
 
 void CoreLib::init() {
     Descriptor writeUrlD(BaseSlots::URL_SLOT().getId(), tr("Location"), tr("Location for writing data"));
-    DataTypeRegistry *dr = WorkflowEnv::getDataTypeRegistry();
+    DataTypeRegistry* dr = WorkflowEnv::getDataTypeRegistry();
     assert(dr);
 
     DataTypePtr writeMAType;
@@ -132,7 +132,7 @@ void CoreLib::init() {
         // dr->registerEntry(writeMAType);
     }
 
-    ActorPrototypeRegistry *r = WorkflowEnv::getProtoRegistry();
+    ActorPrototypeRegistry* r = WorkflowEnv::getProtoRegistry();
     assert(r);
     r->registerProto(BaseActorCategories::CATEGORY_DATASRC(), new GenericMAActorProto());
     r->registerProto(BaseActorCategories::CATEGORY_DATASRC(), new GenericSeqActorProto());
@@ -145,14 +145,14 @@ void CoreLib::init() {
         m[BaseSlots::FASTA_HEADER_SLOT()] = BaseTypes::STRING_TYPE();
         DataTypePtr fastaTypeSet(new MapDataType(Descriptor(FASTA_TYPESET_ID), m));
 
-        QList<PortDescriptor *> p;
-        QList<Attribute *> a;
+        QList<PortDescriptor*> p;
+        QList<Attribute*> a;
         Descriptor acd(CoreLibConstants::WRITE_FASTA_PROTO_ID, tr("Write FASTA"), tr("The element gets message(s) with sequence data"
                                                                                      " and saves the data to the specified file(s) in FASTA format."));
         Descriptor pd(BasePorts::IN_SEQ_PORT_ID(), tr("Sequence"), tr("A sequence along with FASTA header line."));
         p << new PortDescriptor(pd, fastaTypeSet, true);
         a << new Attribute(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE(), BaseTypes::BOOL_TYPE(), false, true);
-        IntegralBusActorPrototype *proto = new WriteDocActorProto(BaseDocumentFormats::FASTA, acd, p, pd.getId(), a, false, false);
+        IntegralBusActorPrototype* proto = new WriteDocActorProto(BaseDocumentFormats::FASTA, acd, p, pd.getId(), a, false, false);
         proto->setPrompter(new WriteFastaPrompter("FASTA"));
         r->registerProto(BaseActorCategories::CATEGORY_DATASINK(), proto);
     }
@@ -166,13 +166,13 @@ void CoreLib::init() {
         DataTypePtr dtl(new MapDataType(Descriptor(CoreLibConstants::TEXT_TYPESET_ID), m));
         dr->registerEntry(dtl);
 
-        QList<PortDescriptor *> p;
-        QList<Attribute *> a;
+        QList<PortDescriptor*> p;
+        QList<Attribute*> a;
         a << new Attribute(BaseAttributes::READ_BY_LINES_ATTRIBUTE(), BaseTypes::BOOL_TYPE(), false, false);
 
         Descriptor acd(CoreLibConstants::READ_TEXT_PROTO_ID, tr("Read Plain Text"), tr("Input one or several text files. The element outputs text message(s), read from the file(s)."));
         p << new PortDescriptor(Descriptor(BasePorts::OUT_TEXT_PORT_ID(), tr("Plain text"), ""), dtl, false, true);
-        ReadDocActorProto *proto = new ReadDocActorProto(BaseDocumentFormats::PLAIN_TEXT, acd, p, a);
+        ReadDocActorProto* proto = new ReadDocActorProto(BaseDocumentFormats::PLAIN_TEXT, acd, p, a);
         proto->setCompatibleDbObjectTypes(QSet<GObjectType>() << GObjectTypes::TEXT);
         proto->setPrompter(new ReadDocPrompter(tr("Reads text from <u>%1</u>.")));
 
@@ -189,16 +189,16 @@ void CoreLib::init() {
         m[BaseSlots::TEXT_SLOT()] = BaseTypes::STRING_LIST_TYPE();
         DataTypePtr dtl(new MapDataType(Descriptor("in.text"), m));
 
-        QList<PortDescriptor *> p;
-        QList<Attribute *> a;
+        QList<PortDescriptor*> p;
+        QList<Attribute*> a;
         Descriptor acd(CoreLibConstants::WRITE_TEXT_PROTO_ID, tr("Write Plain Text"), tr("The element gets message(s) with text data and saved the data"
                                                                                          " to the specified text file(s)."));
         Descriptor pd(BasePorts::IN_TEXT_PORT_ID(), tr("Plain text"), tr("Plain text"));
         p << new PortDescriptor(pd, dtl, true);
-        Attribute *accumulateObjsAttr = new Attribute(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE(), BaseTypes::BOOL_TYPE(), false, true);
+        Attribute* accumulateObjsAttr = new Attribute(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE(), BaseTypes::BOOL_TYPE(), false, true);
         accumulateObjsAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
         a << accumulateObjsAttr;
-        IntegralBusActorPrototype *proto = new WriteDocActorProto(BaseDocumentFormats::PLAIN_TEXT, acd, p, pd.getId(), a, true, false);
+        IntegralBusActorPrototype* proto = new WriteDocActorProto(BaseDocumentFormats::PLAIN_TEXT, acd, p, pd.getId(), a, true, false);
         proto->setPrompter(new WriteDocPrompter(tr("Save text from <u>%1</u> to <u>%2</u>."), BaseSlots::TEXT_SLOT().getId()));
         r->registerProto(BaseActorCategories::CATEGORY_DATASINK(), proto);
     }
@@ -212,20 +212,20 @@ void CoreLib::init() {
 
         if (!supportedFormats.isEmpty()) {
             DocumentFormatId format = supportedFormats.contains(BaseDocumentFormats::CLUSTAL_ALN) ? BaseDocumentFormats::CLUSTAL_ALN : supportedFormats.first();
-            QList<PortDescriptor *> p;
-            QList<Attribute *> a;
+            QList<PortDescriptor*> p;
+            QList<Attribute*> a;
             Descriptor acd(CoreLibConstants::WRITE_MSA_PROTO_ID, tr("Write Alignment"), tr("The element gets message(s) with alignment data and saves the data to the specified file(s)"
                                                                                            " in one of the multiple sequence alignment formats, supported by UGENE (ClustalW, FASTA, etc.)."));
             Descriptor pd(BasePorts::IN_MSA_PORT_ID(), tr("Multiple sequence alignment"), tr("Multiple sequence alignment"));
             p << new PortDescriptor(pd, writeMAType, true);
-            Attribute *docFormatAttr = new Attribute(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), false, format);
+            Attribute* docFormatAttr = new Attribute(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), false, format);
             a << docFormatAttr;
-            WriteDocActorProto *proto = new WriteDocActorProto(format, acd, p, pd.getId(), a, true, false);
+            WriteDocActorProto* proto = new WriteDocActorProto(format, acd, p, pd.getId(), a, true, false);
             docFormatAttr->addRelation(new FileExtensionRelation(proto->getUrlAttr()->getId()));
             docFormatAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
 
             QVariantMap m;
-            foreach (const DocumentFormatId &fid, supportedFormats) {
+            foreach (const DocumentFormatId& fid, supportedFormats) {
                 m[AppContext::getDocumentFormatRegistry()->getFormatById(fid)->getFormatName()] = fid;
             }
             proto->getEditor()->addDelegate(new ComboBoxDelegate(m), BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
@@ -250,40 +250,40 @@ void CoreLib::init() {
             typeMap[BaseSlots::ANNOTATION_TABLE_SLOT()] = BaseTypes::ANNOTATION_TABLE_LIST_TYPE();
             DataTypePtr typeSet(new MapDataType(Descriptor(SEQ_TYPESET_ID), typeMap));
 
-            QList<PortDescriptor *> p;
-            QList<Attribute *> a;
+            QList<PortDescriptor*> p;
+            QList<Attribute*> a;
             Descriptor acd(CoreLibConstants::WRITE_SEQ_PROTO_ID, tr("Write Sequence"), tr("The elements gets message(s) with sequence data and, optionally,"
                                                                                           " associated annotations data and saves the data"
                                                                                           " to the specified file(s) in one of the appropriate formats"
                                                                                           " (GenBank, FASTA, etc.)."));
             Descriptor pd(BasePorts::IN_SEQ_PORT_ID(), tr("Sequence"), tr("Sequence"));
             p << new PortDescriptor(pd, typeSet, true);
-            Attribute *accumulateAttr = new Attribute(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE(), BaseTypes::BOOL_TYPE(), false, true);
+            Attribute* accumulateAttr = new Attribute(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE(), BaseTypes::BOOL_TYPE(), false, true);
             a << accumulateAttr;
             accumulateAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
-            Attribute *docFormatAttr = new Attribute(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), true, format);
+            Attribute* docFormatAttr = new Attribute(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), true, format);
             a << docFormatAttr;
-            Attribute *splitAttr = new Attribute(BaseAttributes::SPLIT_SEQ_ATTRIBUTE(), BaseTypes::NUM_TYPE(), false, 1);
+            Attribute* splitAttr = new Attribute(BaseAttributes::SPLIT_SEQ_ATTRIBUTE(), BaseTypes::NUM_TYPE(), false, 1);
             splitAttr->addRelation(new VisibilityRelation(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId(), BaseDocumentFormats::FASTA));
             splitAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
             a << splitAttr;
-            WriteDocActorProto *proto = new WriteDocActorProto(format, acd, p, pd.getId(), a, true, false, false);
+            WriteDocActorProto* proto = new WriteDocActorProto(format, acd, p, pd.getId(), a, true, false, false);
             proto->setPortValidator(pd.getId(), new WriteSequencePortValidator());
             proto->setValidator(new WriteSequenceValidator(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), BasePorts::IN_SEQ_PORT_ID(), BaseSlots::URL_SLOT().getId()));
             docFormatAttr->addRelation(new FileExtensionRelation(proto->getUrlAttr()->getId()));
             docFormatAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
 
             QVariantMap m;
-            foreach (const DocumentFormatId &fid, supportedFormats) {
+            foreach (const DocumentFormatId& fid, supportedFormats) {
                 m[AppContext::getDocumentFormatRegistry()->getFormatById(fid)->getFormatName()] = fid;
             }
 
-            ComboBoxDelegate *comboDelegate = new ComboBoxDelegate(m);
+            ComboBoxDelegate* comboDelegate = new ComboBoxDelegate(m);
 
             QVariantMap lenMap;
             lenMap["minimum"] = QVariant(1);
             lenMap["maximum"] = QVariant(100);
-            SpinBoxDelegate *spinDelegate = new SpinBoxDelegate(lenMap);
+            SpinBoxDelegate* spinDelegate = new SpinBoxDelegate(lenMap);
 
             proto->getEditor()->addDelegate(comboDelegate, BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
             proto->getEditor()->addDelegate(spinDelegate, BaseAttributes::SPLIT_SEQ_ATTRIBUTE().getId());
@@ -353,7 +353,7 @@ void CoreLib::initUsersWorkers() {
     dir.setNameFilters(QStringList() << "*.usa");  // think about file extension // Answer: Ok :)
     QFileInfoList fileList = dir.entryInfoList();
 
-    foreach (const QFileInfo &fileInfo, fileList) {
+    foreach (const QFileInfo& fileInfo, fileList) {
         QString url = fileInfo.filePath();
         QFile file(url);
         file.open(QIODevice::ReadOnly);
@@ -361,7 +361,7 @@ void CoreLib::initUsersWorkers() {
         file.close();
 
         QString error;
-        ActorPrototype *proto = ScriptWorkerSerializer::string2actor(content, QString(), error, url);
+        ActorPrototype* proto = ScriptWorkerSerializer::string2actor(content, QString(), error, url);
         if (nullptr == proto) {
             coreLog.error(error);
             return;
@@ -369,7 +369,7 @@ void CoreLib::initUsersWorkers() {
 
         WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_SCRIPT(), proto);
 
-        DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+        DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
         localDomain->registerEntry(new ScriptWorkerFactory(proto->getId()));
     }
 }
@@ -383,13 +383,13 @@ void CoreLib::initExternalToolsWorkers() {
     dir.setNameFilters(QStringList() << "*.etc");
     QFileInfoList fileList = dir.entryInfoList();
 
-    foreach (const QFileInfo &fileInfo, fileList) {
+    foreach (const QFileInfo& fileInfo, fileList) {
         QString url = fileInfo.filePath();
         QFile file(url);
         file.open(QIODevice::ReadOnly);
         QString data = file.readAll().data();
 
-        ExternalProcessConfig *cfg = HRSchemaSerializer::string2Actor(data);
+        ExternalProcessConfig* cfg = HRSchemaSerializer::string2Actor(data);
         ;
         if (nullptr != cfg) {
             cfg->filePath = url;
@@ -412,7 +412,7 @@ void CoreLib::initIncludedWorkers() {
     dir.setNameFilters(QStringList() << "*.uwl");
     QFileInfoList fileList = dir.entryInfoList();
 
-    foreach (const QFileInfo &fileInfo, fileList) {
+    foreach (const QFileInfo& fileInfo, fileList) {
         // read file content
         QString url = fileInfo.filePath();
         QFile file(url);
@@ -423,12 +423,12 @@ void CoreLib::initIncludedWorkers() {
         // parse schema from data
         QList<QString> urlList;
         urlList << url;
-        Schema *schema = new Schema();
+        Schema* schema = new Schema();
         QMap<ActorId, ActorId> procMap;
         QString error = HRSchemaSerializer::string2Schema(data, schema, nullptr, &procMap, urlList);
 
         // generate proto from schema
-        ActorPrototype *proto = nullptr;
+        ActorPrototype* proto = nullptr;
         QString actorName;
         if (error.isEmpty()) {
             actorName = schema->getTypeName();

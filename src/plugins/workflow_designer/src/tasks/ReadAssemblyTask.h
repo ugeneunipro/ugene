@@ -38,44 +38,44 @@ class WorkflowContext;
 class ReadAssemblyTask : public ReadDocumentTask {
     Q_OBJECT
 public:
-    ReadAssemblyTask(const QString &url, const QString &datasetName, WorkflowContext *ctx);
+    ReadAssemblyTask(const QString& url, const QString& datasetName, WorkflowContext* ctx);
     virtual void prepare();
     virtual void run();
-    virtual QList<Task *> onSubTaskFinished(Task *subTask);
+    virtual QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
-    WorkflowContext *ctx;
-    DocumentFormat *format;
-    Document *doc;
+    WorkflowContext* ctx;
+    DocumentFormat* format;
+    Document* doc;
 
-    ConvertToIndexedBamTask *convertTask;
-    DocumentProviderTask *importTask;
+    ConvertToIndexedBamTask* convertTask;
+    DocumentProviderTask* importTask;
 };
 
 class ConvertToIndexedBamTask : public Task {
 public:
-    ConvertToIndexedBamTask(const DocumentFormatId &formatId, const GUrl &url, WorkflowContext *ctx);
+    ConvertToIndexedBamTask(const DocumentFormatId& formatId, const GUrl& url, WorkflowContext* ctx);
 
     virtual void run();
     GUrl getResultUrl() const;
-    const QStringList &getConvertedFiles() const;
+    const QStringList& getConvertedFiles() const;
 
 private:
     DocumentFormatId formatId;
     GUrl url;
     GUrl result;
-    WorkflowContext *ctx;
+    WorkflowContext* ctx;
     QStringList convertedFiles;
 
 private:
-    void addConvertedFile(const GUrl &url);
+    void addConvertedFile(const GUrl& url);
 };
 
 class ReadAssemblyTaskFactory : public ReadDocumentTaskFactory {
 public:
     ReadAssemblyTaskFactory();
 
-    virtual ReadDocumentTask *createTask(const QString &url, const QVariantMap &hints, WorkflowContext *ctx);
+    virtual ReadDocumentTask* createTask(const QString& url, const QVariantMap& hints, WorkflowContext* ctx);
 };
 
 }  // namespace Workflow

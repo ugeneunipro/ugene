@@ -39,22 +39,22 @@
 
 namespace U2 {
 
-ProjectTreeItemSelectorDialogImpl::ProjectTreeItemSelectorDialogImpl(QWidget *p, const ProjectTreeControllerModeSettings &s)
+ProjectTreeItemSelectorDialogImpl::ProjectTreeItemSelectorDialogImpl(QWidget* p, const ProjectTreeControllerModeSettings& s)
     : QDialog(p) {
     setupUi(this);
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     controller = new ProjectTreeController(treeView, s, this);
-    connect(controller, SIGNAL(si_doubleClicked(GObject *)), this, SLOT(sl_objectClicked(GObject *)));
+    connect(controller, SIGNAL(si_doubleClicked(GObject*)), this, SLOT(sl_objectClicked(GObject*)));
     acceptByDoubleClick = false;
 }
 
-void ProjectTreeItemSelectorDialogImpl::sl_objectClicked(GObject *obj) {
-    Document *d = obj->getDocument();
+void ProjectTreeItemSelectorDialogImpl::sl_objectClicked(GObject* obj) {
+    Document* d = obj->getDocument();
     assert(d != nullptr);
     if (!d->isLoaded()) {
-        QAction *loadSelectedDocumentsAction = controller->getLoadSeletectedDocumentsAction();
+        QAction* loadSelectedDocumentsAction = controller->getLoadSeletectedDocumentsAction();
         loadSelectedDocumentsAction->trigger();
         return;
     }
@@ -68,43 +68,43 @@ ProjectTreeItemSelectorDialogImpl::~ProjectTreeItemSelectorDialogImpl() {
     delete controller;
 }
 
-QList<Document *> ProjectTreeItemSelectorDialog::selectDocuments(const ProjectTreeControllerModeSettings &s, QWidget *p) {
-    QList<Document *> res;
+QList<Document*> ProjectTreeItemSelectorDialog::selectDocuments(const ProjectTreeControllerModeSettings& s, QWidget* p) {
+    QList<Document*> res;
     QObjectScopedPointer<ProjectTreeItemSelectorDialogImpl> d = new ProjectTreeItemSelectorDialogImpl(p, s);
     const int rc = d->exec();
     CHECK(!d.isNull(), res);
 
     if (rc == QDialog::Accepted) {
-        const DocumentSelection *ds = d->controller->getDocumentSelection();
+        const DocumentSelection* ds = d->controller->getDocumentSelection();
         res << ds->getSelectedDocuments();
     }
     return res;
 }
 
-QList<GObject *> ProjectTreeItemSelectorDialog::selectObjects(const ProjectTreeControllerModeSettings &s, QWidget *p) {
-    QList<GObject *> res;
+QList<GObject*> ProjectTreeItemSelectorDialog::selectObjects(const ProjectTreeControllerModeSettings& s, QWidget* p) {
+    QList<GObject*> res;
     QObjectScopedPointer<ProjectTreeItemSelectorDialogImpl> d = new ProjectTreeItemSelectorDialogImpl(p, s);
     const int rc = d->exec();
     CHECK(!d.isNull(), res);
 
     if (rc == QDialog::Accepted) {
-        const GObjectSelection *os = d->controller->getGObjectSelection();
+        const GObjectSelection* os = d->controller->getGObjectSelection();
         res << os->getSelectedObjects();
     }
     return res;
 }
 
-void ProjectTreeItemSelectorDialog::selectObjectsAndDocuments(const ProjectTreeControllerModeSettings &s, QWidget *p, QList<Document *> &docList, QList<GObject *> &objList) {
+void ProjectTreeItemSelectorDialog::selectObjectsAndDocuments(const ProjectTreeControllerModeSettings& s, QWidget* p, QList<Document*>& docList, QList<GObject*>& objList) {
     QObjectScopedPointer<ProjectTreeItemSelectorDialogImpl> d = new ProjectTreeItemSelectorDialogImpl(p, s);
     const int rc = d->exec();
     CHECK(!d.isNull(), );
 
     if (rc == QDialog::Accepted) {
-        const GObjectSelection *os = d->controller->getGObjectSelection();
-        const DocumentSelection *ds = d->controller->getDocumentSelection();
+        const GObjectSelection* os = d->controller->getGObjectSelection();
+        const DocumentSelection* ds = d->controller->getDocumentSelection();
 
         docList << ds->getSelectedDocuments();
-        foreach (GObject *obj, os->getSelectedObjects()) {
+        foreach (GObject* obj, os->getSelectedObjects()) {
             if (!docList.contains(obj->getDocument())) {
                 objList << obj;
             }
@@ -112,7 +112,7 @@ void ProjectTreeItemSelectorDialog::selectObjectsAndDocuments(const ProjectTreeC
     }
 }
 
-void ProjectTreeItemSelectorDialog::selectObjectsAndFolders(const ProjectTreeControllerModeSettings &s, QWidget *p, QList<Folder> &folderList, QList<GObject *> &objList) {
+void ProjectTreeItemSelectorDialog::selectObjectsAndFolders(const ProjectTreeControllerModeSettings& s, QWidget* p, QList<Folder>& folderList, QList<GObject*>& objList) {
     QObjectScopedPointer<ProjectTreeItemSelectorDialogImpl> d = new ProjectTreeItemSelectorDialogImpl(p, s);
     const int rc = d->exec();
     CHECK(!d.isNull(), );
@@ -121,11 +121,11 @@ void ProjectTreeItemSelectorDialog::selectObjectsAndFolders(const ProjectTreeCon
         SAFE_POINT(nullptr != d->controller, "Invalid project tree controller", );
         folderList << d->controller->getSelectedFolders();  // add folders selected by a user
 
-        const GObjectSelection *os = d->controller->getGObjectSelection();
+        const GObjectSelection* os = d->controller->getGObjectSelection();
         SAFE_POINT(nullptr != os, "Invalid object selection", );
-        foreach (GObject *obj, os->getSelectedObjects()) {
+        foreach (GObject* obj, os->getSelectedObjects()) {
             bool objectIsAlreadySelected = false;
-            foreach (const Folder &selectedFolder, folderList) {
+            foreach (const Folder& selectedFolder, folderList) {
                 if (d->controller->isObjectInFolder(obj, selectedFolder)) {
                     objectIsAlreadySelected = true;
                     break;
@@ -138,7 +138,7 @@ void ProjectTreeItemSelectorDialog::selectObjectsAndFolders(const ProjectTreeCon
     }
 }
 
-Folder ProjectTreeItemSelectorDialog::selectFolder(QWidget *parent) {
+Folder ProjectTreeItemSelectorDialog::selectFolder(QWidget* parent) {
     ProjectTreeControllerModeSettings settings;
     settings.allowMultipleSelection = false;
 

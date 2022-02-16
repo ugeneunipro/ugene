@@ -46,15 +46,15 @@ static const QString E1_ATTR("err1");
 static const QString E2_ATTR("err2");
 static const QString MODEL_ATTR("profile");
 
-QDSiteconActor::QDSiteconActor(QDActorPrototype const *proto)
+QDSiteconActor::QDSiteconActor(QDActorPrototype const* proto)
     : QDActor(proto) {
     units["sitecon"] = new QDSchemeUnit(this);
 }
 
 QString QDSiteconActor::getText() const {
     QString modelName;
-    const QString &urlStr = cfg->getParameter(MODEL_ATTR)->getAttributeValueWithoutScript<QString>();
-    const QStringList &urls = WorkflowUtils::expandToUrls(urlStr);
+    const QString& urlStr = cfg->getParameter(MODEL_ATTR)->getAttributeValueWithoutScript<QString>();
+    const QStringList& urls = WorkflowUtils::expandToUrls(urlStr);
 
     QString modelHyp = QString("<a href=%1>").arg(MODEL_ATTR);
     if (urls.isEmpty() || urlStr.isEmpty()) {
@@ -98,12 +98,12 @@ QString QDSiteconActor::getText() const {
     return QString();
 }
 
-Task *QDSiteconActor::getAlgorithmTask(const QVector<U2Region> &location) {
-    Task *t = nullptr;
+Task* QDSiteconActor::getAlgorithmTask(const QVector<U2Region>& location) {
+    Task* t = nullptr;
     assert(!location.isEmpty());
 
-    const QString &urlStr = cfg->getParameter(MODEL_ATTR)->getAttributeValueWithoutScript<QString>();
-    const QStringList &urls = WorkflowUtils::expandToUrls(urlStr);
+    const QString& urlStr = cfg->getParameter(MODEL_ATTR)->getAttributeValueWithoutScript<QString>();
+    const QStringList& urls = WorkflowUtils::expandToUrls(urlStr);
 
     settings.minPSUM = cfg->getParameter(SCORE_ATTR)->getAttributeValueWithoutScript<int>();
     settings.minE1 = cfg->getParameter(E1_ATTR)->getAttributeValueWithoutScript<double>();
@@ -131,24 +131,24 @@ Task *QDSiteconActor::getAlgorithmTask(const QVector<U2Region> &location) {
         return new FailTask(err);
     }*/
 
-    const DNASequence &dnaSeq = scheme->getSequence();
+    const DNASequence& dnaSeq = scheme->getSequence();
     QDStrandOption stOp = getStrandToRun();
     if (stOp == QDStrand_ComplementOnly || stOp == QDStrand_Both) {
-        DNATranslation *compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(dnaSeq.alphabet);
+        DNATranslation* compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(dnaSeq.alphabet);
         if (compTT != nullptr) {
             settings.complTT = compTT;
         }
     }
 
     t = new QDSiteconTask(urls, settings, dnaSeq, location);
-    connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_onAlgorithmTaskFinished(Task *)));
+    connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_onAlgorithmTaskFinished(Task*)));
     return t;
 }
 
-void QDSiteconActor::sl_onAlgorithmTaskFinished(Task *t) {
-    QDSiteconTask *st = qobject_cast<QDSiteconTask *>(t);
+void QDSiteconActor::sl_onAlgorithmTaskFinished(Task* t) {
+    QDSiteconTask* st = qobject_cast<QDSiteconTask*>(t);
     assert(st);
-    foreach (const SiteconSearchResult &res, st->getResults()) {
+    foreach (const SiteconSearchResult& res, st->getResults()) {
         const SharedAnnotationData ad = res.toAnnotation("");
         QDResultUnit ru(new QDResultUnitData);
         ru->strand = ad->getStrand();
@@ -179,7 +179,7 @@ QDSiteconActorPrototype::QDSiteconActorPrototype() {
         attributes << new Attribute(md, BaseTypes::STRING_TYPE(), true);
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
 
     {
         QVariantMap m;
@@ -211,41 +211,41 @@ QDSiteconActorPrototype::QDSiteconActorPrototype() {
 
 // Task
 //////////////////////////////////////////////////////////////////////////
-QDSiteconTask::QDSiteconTask(const QStringList &urls, const SiteconSearchCfg &_cfg, const DNASequence &_dna, const QVector<U2Region> &_searchRegion)
+QDSiteconTask::QDSiteconTask(const QStringList& urls, const SiteconSearchCfg& _cfg, const DNASequence& _dna, const QVector<U2Region>& _searchRegion)
     : Task(tr("Sitecon Query"), TaskFlag_NoRun),
       cfg(_cfg), dnaSeq(_dna), searchRegion(_searchRegion) {
     loadModelsTask = new SiteconReadMultiTask(urls);
     addSubTask(loadModelsTask);
 }
 
-QList<Task *> QDSiteconTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> st;
+QList<Task*> QDSiteconTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> st;
     if (subTask == loadModelsTask) {
         QList<SiteconModel> models = loadModelsTask->getResult();
-        foreach (const U2Region &r, searchRegion) {
+        foreach (const U2Region& r, searchRegion) {
             QByteArray seq = dnaSeq.seq.mid(r.startPos, r.length);
-            foreach (const SiteconModel &m, models) {
+            foreach (const SiteconModel& m, models) {
                 st.append(new SiteconSearchTask(m, seq, cfg, r.startPos));
             }
         }
     } else {
-        SiteconSearchTask *searchTask = qobject_cast<SiteconSearchTask *>(subTask);
+        SiteconSearchTask* searchTask = qobject_cast<SiteconSearchTask*>(subTask);
         assert(searchTask);
         results.append(searchTask->takeResults());
     }
     return st;
 }
 
-SiteconReadMultiTask::SiteconReadMultiTask(const QStringList &urls)
+SiteconReadMultiTask::SiteconReadMultiTask(const QStringList& urls)
     : Task(tr("Load sitecon models task"), TaskFlag_NoRun) {
-    foreach (const QString &url, urls) {
+    foreach (const QString& url, urls) {
         addSubTask(new SiteconReadTask(url));
     }
 }
 
-QList<Task *> SiteconReadMultiTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> stub;
-    SiteconReadTask *rt = qobject_cast<SiteconReadTask *>(subTask);
+QList<Task*> SiteconReadMultiTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> stub;
+    SiteconReadTask* rt = qobject_cast<SiteconReadTask*>(subTask);
     assert(rt);
     models.append(rt->getResult());
     return stub;

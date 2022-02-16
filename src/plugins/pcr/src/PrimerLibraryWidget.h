@@ -36,7 +36,7 @@ namespace U2 {
 class PrimerLibraryWidget : public QWidget, private Ui_PrimerLibraryWidget {
     Q_OBJECT
 public:
-    PrimerLibraryWidget(QWidget *parent);
+    PrimerLibraryWidget(QWidget* parent);
 
 signals:
     void si_close();
@@ -50,9 +50,9 @@ private slots:
     void sl_selectionChanged();
 
 private:
-    QPushButton *editPrimerButton;
-    QPushButton *removePrimersButton;
-    QPushButton *exportPrimersButton;
+    QPushButton* editPrimerButton;
+    QPushButton* removePrimersButton;
+    QPushButton* exportPrimersButton;
 };
 
 }  // namespace U2

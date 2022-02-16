@@ -38,12 +38,12 @@ namespace U2 {
 class BlastRunCommonDialog : public QDialog, public Ui_BlastLocalSearchDialog {
     Q_OBJECT
 public:
-    BlastRunCommonDialog(QWidget *parent, bool useCompValues, const QStringList &compValues);
+    BlastRunCommonDialog(QWidget* parent, bool useCompValues, const QStringList& compValues);
 
-    const BlastTaskSettings &getSettings() const;
-    QPushButton *okButton;
-    QPushButton *cancelButton;
-    QPushButton *restoreButton;
+    const BlastTaskSettings& getSettings() const;
+    QPushButton* okButton;
+    QPushButton* cancelButton;
+    QPushButton* restoreButton;
 
 protected slots:
     virtual void sl_runQuery() = 0;
@@ -59,13 +59,13 @@ protected slots:
 protected:
     bool checkSelectedToolPath() const;
 
-    void getSettings(BlastTaskSettings &settingsSnapshot);
+    void getSettings(BlastTaskSettings& settingsSnapshot);
     void enableStrandBox(bool enable);
 
     BlastTaskSettings settings;
     bool needRestoreDefault;
-    CreateAnnotationWidgetController *ca_c = nullptr;
-    BlastDBSelectorWidgetController *dbSelector = nullptr;
+    CreateAnnotationWidgetController* ca_c = nullptr;
+    BlastDBSelectorWidgetController* dbSelector = nullptr;
 
 private:
     void setupCompositionBasedStatistics();

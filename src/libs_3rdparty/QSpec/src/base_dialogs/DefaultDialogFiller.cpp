@@ -23,7 +23,7 @@
 
 namespace HI {
 
-DefaultDialogFiller::DefaultDialogFiller(GUITestOpStatus &os, const QString &name, QDialogButtonBox::StandardButton _b, CustomScenario *scenario)
+DefaultDialogFiller::DefaultDialogFiller(GUITestOpStatus& os, const QString& name, QDialogButtonBox::StandardButton _b, CustomScenario* scenario)
     : Filler(os, name, scenario), b(_b) {
 }
 void DefaultDialogFiller::commonScenario() {

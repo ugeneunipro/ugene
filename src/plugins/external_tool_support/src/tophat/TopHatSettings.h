@@ -46,7 +46,7 @@ public:
     QList<Workflow::SharedDbiDataHandler> seqIds;
     QList<Workflow::SharedDbiDataHandler> pairedSeqIds;
 
-    Workflow::WorkflowContext *workflowContext;
+    Workflow::WorkflowContext* workflowContext;
 
 public:
     void cleanupReads();
@@ -92,14 +92,14 @@ public:
 
 public:
     void cleanupReads();
-    Workflow::WorkflowContext *workflowContext() const;
-    Workflow::DbiDataStorage *storage() const;
+    Workflow::WorkflowContext* workflowContext() const;
+    Workflow::DbiDataStorage* storage() const;
 
     static uint getThreadsCount();
 
     static const QString INDEX;
     static const QString SEQUENCE;
 };
-}    // namespace U2
+}  // namespace U2
 
 #endif

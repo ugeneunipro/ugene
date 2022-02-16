@@ -47,7 +47,7 @@ public:
     Task::ReportResult report();
     void cleanup();
     QString getTempDataDir();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
     DnaAssemblyToRefTaskSettings config;
@@ -58,15 +58,15 @@ private:
     QString negativeError;
     bool usePrebuildIndex;
     bool subTaskFailed;
-    BowtieTask *bowtieTask;
+    BowtieTask* bowtieTask;
     DocumentFormatId format;
     DocumentFormatId patternFormat;
 };
 
 class BowtieTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
-}    //namespace U2
+}  // namespace U2
 
-#endif    //_U2_BOWTIE_TESTS_H_
+#endif  //_U2_BOWTIE_TESTS_H_

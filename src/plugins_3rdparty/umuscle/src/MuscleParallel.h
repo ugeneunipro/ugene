@@ -47,27 +47,27 @@ struct MuscleWorkPool;
 class MuscleParallelTask : public Task {
     Q_OBJECT
 public:
-    MuscleParallelTask(const MultipleSequenceAlignment &ma, MultipleSequenceAlignment &res, const MuscleTaskSettings &config, MuscleContext *ctx);
+    MuscleParallelTask(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, const MuscleTaskSettings& config, MuscleContext* ctx);
     ~MuscleParallelTask() {
         cleanup();
     }
     void cleanup();
-    QList<Task *> onSubTaskFinished(Task *subTask);
-    int estimateMemoryUsageInMb(const MultipleSequenceAlignment &ma);
+    QList<Task*> onSubTaskFinished(Task* subTask);
+    int estimateMemoryUsageInMb(const MultipleSequenceAlignment& ma);
 
 private:
-    MuscleWorkPool *workpool;
+    MuscleWorkPool* workpool;
 
-    MusclePrepareTask *prepareTask;
-    ProgressiveAlignTask *progAlignTask;
-    RefineTreeTask *refineTreeTask;
-    RefineTask *refineTask;
+    MusclePrepareTask* prepareTask;
+    ProgressiveAlignTask* progAlignTask;
+    RefineTreeTask* refineTreeTask;
+    RefineTask* refineTask;
 };
 
 class MusclePrepareTask : public Task {
     Q_OBJECT
 public:
-    MusclePrepareTask(MuscleWorkPool *wp);
+    MusclePrepareTask(MuscleWorkPool* wp);
     ~MusclePrepareTask() {
         cleanup();
     }
@@ -77,16 +77,16 @@ public:
     void refinePrepareUnsafe();
     void cleanup();
 
-    QList<Task *> res;
+    QList<Task*> res;
 
 private:
-    MuscleWorkPool *workpool;
+    MuscleWorkPool* workpool;
 };
 
 class ProgressiveAlignTask : public Task {
     Q_OBJECT
 public:
-    ProgressiveAlignTask(MuscleWorkPool *wp);
+    ProgressiveAlignTask(MuscleWorkPool* wp);
     ~ProgressiveAlignTask() {
         cleanup();
     }
@@ -96,60 +96,60 @@ public:
     void cleanup();
 
 private:
-    MuscleWorkPool *workpool;
+    MuscleWorkPool* workpool;
     QTime timer;
 };
 
 class ProgressiveAlignWorker : public Task {
     Q_OBJECT
 public:
-    ProgressiveAlignWorker(MuscleWorkPool *wp, int workerID);
+    ProgressiveAlignWorker(MuscleWorkPool* wp, int workerID);
     void run();
     void _run();
 
 private:
     unsigned uTreeNodeIndex;
-    MuscleWorkPool *workpool;
+    MuscleWorkPool* workpool;
     int workerID;
 };
 
 class RefineTreeTask : public Task {
     Q_OBJECT
 public:
-    RefineTreeTask(MuscleWorkPool *workpool);
+    RefineTreeTask(MuscleWorkPool* workpool);
     void run();
     void _run();
 
 private:
-    MuscleWorkPool *workpool;
+    MuscleWorkPool* workpool;
 };
 
 class RefineTask : public Task {
     Q_OBJECT
 public:
-    RefineTask(MuscleWorkPool *workpool);
+    RefineTask(MuscleWorkPool* workpool);
     void run();
     void _run();
-    bool RefineVertP(MSA *msa, unsigned uIters);
-    bool RefineHorizP(MSA *msa, unsigned uIters, bool bLockLeft, bool bLockRight);
-    void RefineHeightPartsP(bool *ptrbAnyChanges);
+    bool RefineVertP(MSA* msa, unsigned uIters);
+    bool RefineHorizP(MSA* msa, unsigned uIters, bool bLockLeft, bool bLockRight);
+    void RefineHeightPartsP(bool* ptrbAnyChanges);
 
 private:
-    MuscleWorkPool *workpool;
+    MuscleWorkPool* workpool;
 };
 
 class RefineWorker : public Task {
     Q_OBJECT
 public:
-    RefineWorker(MuscleWorkPool *workpool, int workerID);
+    RefineWorker(MuscleWorkPool* workpool, int workerID);
     void run();
     void _run();
 
 private:
-    MuscleWorkPool *workpool;
+    MuscleWorkPool* workpool;
     int workerID;
-    unsigned *Leaves1;
-    unsigned *Leaves2;
+    unsigned* Leaves1;
+    unsigned* Leaves2;
 };
 
 }  // namespace U2

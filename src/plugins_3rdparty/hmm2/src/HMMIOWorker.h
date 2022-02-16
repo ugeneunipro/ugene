@@ -45,27 +45,27 @@ public:
 
 class HMMIOProto : public IntegralBusActorPrototype {
 public:
-    HMMIOProto(const Descriptor &desc, const QList<PortDescriptor *> &ports, const QList<Attribute *> &attrs = QList<Attribute *>());
-    virtual bool isAcceptableDrop(const QMimeData *, QVariantMap *) const = 0;
-    bool isAcceptableDrop(const QMimeData *, QVariantMap *, const QString &) const;
+    HMMIOProto(const Descriptor& desc, const QList<PortDescriptor*>& ports, const QList<Attribute*>& attrs = QList<Attribute*>());
+    virtual bool isAcceptableDrop(const QMimeData*, QVariantMap*) const = 0;
+    bool isAcceptableDrop(const QMimeData*, QVariantMap*, const QString&) const;
 };
 
 class ReadHMMProto : public HMMIOProto {
 public:
-    ReadHMMProto(const Descriptor &_desc, const QList<PortDescriptor *> &_ports, const QList<Attribute *> &_attrs = QList<Attribute *>());
-    virtual bool isAcceptableDrop(const QMimeData *, QVariantMap *) const;
+    ReadHMMProto(const Descriptor& _desc, const QList<PortDescriptor*>& _ports, const QList<Attribute*>& _attrs = QList<Attribute*>());
+    virtual bool isAcceptableDrop(const QMimeData*, QVariantMap*) const;
 };
 
 class WriteHMMProto : public HMMIOProto {
 public:
-    WriteHMMProto(const Descriptor &_desc, const QList<PortDescriptor *> &_ports, const QList<Attribute *> &_attrs = QList<Attribute *>());
-    virtual bool isAcceptableDrop(const QMimeData *, QVariantMap *) const;
+    WriteHMMProto(const Descriptor& _desc, const QList<PortDescriptor*>& _ports, const QList<Attribute*>& _attrs = QList<Attribute*>());
+    virtual bool isAcceptableDrop(const QMimeData*, QVariantMap*) const;
 };
 
 class HMMReadPrompter : public PrompterBase<HMMReadPrompter> {
     Q_OBJECT
 public:
-    HMMReadPrompter(Actor *p = 0)
+    HMMReadPrompter(Actor* p = 0)
         : PrompterBase<HMMReadPrompter>(p) {
     }
 
@@ -76,7 +76,7 @@ protected:
 class HMMWritePrompter : public PrompterBase<HMMWritePrompter> {
     Q_OBJECT
 public:
-    HMMWritePrompter(Actor *p = 0)
+    HMMWritePrompter(Actor* p = 0)
         : PrompterBase<HMMWritePrompter>(p) {
     }
 
@@ -88,18 +88,18 @@ class HMMReader : public BaseWorker {
     Q_OBJECT
 public:
     static const QString ACTOR;
-    HMMReader(Actor *a)
+    HMMReader(Actor* a)
         : BaseWorker(a), output(NULL) {
     }
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup() {
     }
 private slots:
     void sl_taskFinished();
 
 protected:
-    CommunicationChannel *output;
+    CommunicationChannel* output;
     QStringList urls;
 };
 
@@ -107,16 +107,16 @@ class HMMWriter : public BaseWorker {
     Q_OBJECT
 public:
     static const QString ACTOR;
-    HMMWriter(Actor *a)
+    HMMWriter(Actor* a)
         : BaseWorker(a), input(NULL), done(false), fileMode(SaveDoc_Overwrite) {
     }
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup() {
     }
 
 protected:
-    CommunicationChannel *input;
+    CommunicationChannel* input;
     QString url;
     QMap<QString, int> counter;
     bool done;
@@ -127,16 +127,16 @@ class HMMIOWorkerFactory : public DomainFactory {
 public:
     static void init();
     static void cleanup();
-    HMMIOWorkerFactory(const Descriptor &d)
+    HMMIOWorkerFactory(const Descriptor& d)
         : DomainFactory(d) {
     }
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 };
 
 }  // namespace LocalWorkflow
 }  // namespace U2
 
 #include <hmmer2/structs.h>
-Q_DECLARE_METATYPE(plan7_s *);
+Q_DECLARE_METATYPE(plan7_s*);
 
 #endif

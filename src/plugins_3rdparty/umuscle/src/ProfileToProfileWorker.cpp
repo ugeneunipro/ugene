@@ -52,7 +52,7 @@ static const QString SECOND_PROFILE_SLOT_ID("second-msa");
 /************************************************************************/
 /* Worker */
 /************************************************************************/
-ProfileToProfileWorker::ProfileToProfileWorker(Actor *a)
+ProfileToProfileWorker::ProfileToProfileWorker(Actor* a)
     : BaseWorker(a), inPort(nullptr), outPort(nullptr) {
 }
 
@@ -61,7 +61,7 @@ void ProfileToProfileWorker::init() {
     outPort = ports[BasePorts::OUT_MSA_PORT_ID()];
 }
 
-Task *ProfileToProfileWorker::tick() {
+Task* ProfileToProfileWorker::tick() {
     if (inPort->hasMessage()) {
         Message m = getMessageAndSetupScriptValues(inPort);
 
@@ -76,7 +76,7 @@ Task *ProfileToProfileWorker::tick() {
         SAFE_POINT(!secondMsaObj.isNull(), "NULL MSA Object!", nullptr);
         const MultipleSequenceAlignment secondMsa = secondMsaObj->getMultipleAlignment();
 
-        Task *t = new ProfileToProfileTask(masterMsa, secondMsa);
+        Task* t = new ProfileToProfileTask(masterMsa, secondMsa);
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
     } else if (inPort->isEnded()) {
@@ -87,14 +87,14 @@ Task *ProfileToProfileWorker::tick() {
 }
 
 void ProfileToProfileWorker::cleanup() {
-    foreach (MultipleSequenceAlignmentObject *obj, objects) {
+    foreach (MultipleSequenceAlignmentObject* obj, objects) {
         delete obj;
     }
     objects.clear();
 }
 
 void ProfileToProfileWorker::sl_taskFinished() {
-    ProfileToProfileTask *t = dynamic_cast<ProfileToProfileTask *>(sender());
+    ProfileToProfileTask* t = dynamic_cast<ProfileToProfileTask*>(sender());
     if (t->isCanceled()) {
         return;
     }
@@ -116,7 +116,7 @@ void ProfileToProfileWorker::sl_taskFinished() {
 /************************************************************************/
 /* Task */
 /************************************************************************/
-ProfileToProfileTask::ProfileToProfileTask(const MultipleSequenceAlignment &masterMsa, const MultipleSequenceAlignment &secondMsa)
+ProfileToProfileTask::ProfileToProfileTask(const MultipleSequenceAlignment& masterMsa, const MultipleSequenceAlignment& secondMsa)
     : Task(tr("Align profile to profile with MUSCLE"), TaskFlag_NoRun),
       masterMsa(masterMsa->getExplicitCopy()),
       secondMsa(secondMsa->getExplicitCopy()),
@@ -131,19 +131,19 @@ void ProfileToProfileTask::prepare() {
     int maxThreads = 1;  // AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount();
     setMaxParallelSubtasks(maxThreads);
 
-    foreach (const MultipleSequenceAlignmentRow &row, masterMsa->getMsaRows()) {
+    foreach (const MultipleSequenceAlignmentRow& row, masterMsa->getMsaRows()) {
         result->addRow(row->getRowDbInfo(), row->getSequence(), stateInfo);
         CHECK_OP(stateInfo, );
     }
 
-    QList<Task *> tasks = createAlignTasks();
-    foreach (Task *t, tasks) {
+    QList<Task*> tasks = createAlignTasks();
+    foreach (Task* t, tasks) {
         addSubTask(t);
     }
 }
 
-QList<Task *> ProfileToProfileTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> tasks;
+QList<Task*> ProfileToProfileTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> tasks;
     if (subTask->hasError()) {
         return tasks;
     }
@@ -158,14 +158,14 @@ QList<Task *> ProfileToProfileTask::onSubTaskFinished(Task *subTask) {
     return tasks;
 }
 
-const MultipleSequenceAlignment &ProfileToProfileTask::getResult() {
+const MultipleSequenceAlignment& ProfileToProfileTask::getResult() {
     U2AlphabetUtils::assignAlphabet(result);
     return result;
 }
 
-void ProfileToProfileTask::appendResult(Task *task) {
+void ProfileToProfileTask::appendResult(Task* task) {
     subtaskCount--;
-    MuscleTask *t = dynamic_cast<MuscleTask *>(task);
+    MuscleTask* t = dynamic_cast<MuscleTask*>(task);
     SAFE_POINT(nullptr != t, "NULL Muscle task!", );
 
     const QList<MultipleSequenceAlignmentRow> newRows = t->resultMA->getMsaRows();
@@ -175,8 +175,8 @@ void ProfileToProfileTask::appendResult(Task *task) {
     }
 }
 
-QList<Task *> ProfileToProfileTask::createAlignTasks() {
-    QList<Task *> tasks;
+QList<Task*> ProfileToProfileTask::createAlignTasks() {
+    QList<Task*> tasks;
     while (canCreateTask()) {
         U2OpStatus2Log os;
         MuscleTaskSettings cfg;
@@ -201,7 +201,7 @@ bool ProfileToProfileTask::canCreateTask() const {
 /* Factory */
 /************************************************************************/
 void ProfileToProfileWorkerFactory::init() {
-    QList<PortDescriptor *> portDescs;
+    QList<PortDescriptor*> portDescs;
     {
         Descriptor masterProfileD(MASTER_PROFILE_SLOT_ID,
                                   ProfileToProfileWorker::tr("Master profile"),
@@ -224,17 +224,17 @@ void ProfileToProfileWorkerFactory::init() {
                       ProfileToProfileWorker::tr("Align Profile to Profile With MUSCLE"),
                       ProfileToProfileWorker::tr("Aligns second profile to master profile with MUSCLE aligner."));
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(protoD, portDescs, QList<Attribute *>());
-    proto->setEditor(new DelegateEditor(QMap<QString, PropertyDelegate *>()));
+    ActorPrototype* proto = new IntegralBusActorPrototype(protoD, portDescs, QList<Attribute*>());
+    proto->setEditor(new DelegateEditor(QMap<QString, PropertyDelegate*>()));
     proto->setPrompter(new ProfileToProfilePrompter());
     proto->setIconPath(":umuscle/images/muscle_16.png");
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), proto);
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new ProfileToProfileWorkerFactory());
 }
 
-Worker *ProfileToProfileWorkerFactory::createWorker(Actor *a) {
+Worker* ProfileToProfileWorkerFactory::createWorker(Actor* a) {
     return new ProfileToProfileWorker(a);
 }
 

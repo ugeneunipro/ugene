@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-void DnaChromatogramUtils::append(DNAChromatogram &chromatogram, const DNAChromatogram &appendedChromatogram) {
+void DnaChromatogramUtils::append(DNAChromatogram& chromatogram, const DNAChromatogram& appendedChromatogram) {
     chromatogram.traceLength += appendedChromatogram.traceLength;
     chromatogram.seqLength += appendedChromatogram.seqLength;
     chromatogram.baseCalls += appendedChromatogram.baseCalls;
@@ -40,7 +40,7 @@ void DnaChromatogramUtils::append(DNAChromatogram &chromatogram, const DNAChroma
     chromatogram.hasQV &= appendedChromatogram.hasQV;
 }
 
-void DnaChromatogramUtils::crop(DNAChromatogram &chromatogram, int startPos, int length) {
+void DnaChromatogramUtils::crop(DNAChromatogram& chromatogram, int startPos, int length) {
     chromatogram.traceLength = qMin(chromatogram.traceLength - startPos, length);
     chromatogram.seqLength = qMin(chromatogram.seqLength - startPos, length);
     chromatogram.baseCalls = chromatogram.baseCalls.mid(startPos, length);

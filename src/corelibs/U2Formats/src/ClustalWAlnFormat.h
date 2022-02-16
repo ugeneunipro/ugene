@@ -36,18 +36,18 @@ class U2FORMATS_EXPORT ClustalWAlnFormat : public TextDocumentFormat {
 public:
     static const QString CLUSTAL_HEADER;
 
-    ClustalWAlnFormat(QObject *p);
+    ClustalWAlnFormat(QObject* p);
 
-    void storeTextDocument(IOAdapterWriter &writer, Document *d, U2OpStatus &os) override;
+    void storeTextDocument(IOAdapterWriter& writer, Document* d, U2OpStatus& os) override;
 
-    void storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) override;
+    void storeTextEntry(IOAdapterWriter& writer, const QMap<GObjectType, QList<GObject*>>& objectsMap, U2OpStatus& os) override;
 
-    FormatCheckResult checkRawTextData(const QString &dataPrefix, const GUrl &originalDataUrl) const override;
+    FormatCheckResult checkRawTextData(const QString& dataPrefix, const GUrl& originalDataUrl) const override;
 
-    Document *loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) override;
+    Document* loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) override;
 
 private:
-    static void load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QList<GObject *> &objects, const QVariantMap &hints, U2OpStatus &os);
+    static void load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& os);
 
     static const int MAX_LINE_LEN;
     static const int MAX_NAME_LEN;

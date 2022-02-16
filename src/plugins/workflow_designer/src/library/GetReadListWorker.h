@@ -35,7 +35,7 @@ namespace LocalWorkflow {
 class GetReadsListPrompter : public PrompterBase<GetReadsListPrompter> {
     Q_OBJECT
 public:
-    GetReadsListPrompter(Actor *p = nullptr)
+    GetReadsListPrompter(Actor* p = nullptr)
         : PrompterBase<GetReadsListPrompter>(p) {
     }
 
@@ -46,16 +46,16 @@ protected:
 class GetReadsListWorker : public BaseWorker {
     Q_OBJECT
 public:
-    GetReadsListWorker(Actor *p);
+    GetReadsListWorker(Actor* p);
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private:
-    IntegralBus *outChannel;
-    DatasetFilesIterator *files;
-    DatasetFilesIterator *pairedFiles;
+    IntegralBus* outChannel;
+    DatasetFilesIterator* files;
+    DatasetFilesIterator* pairedFiles;
 };
 
 class GetReadsListWorkerFactory : public DomainFactory {
@@ -69,36 +69,36 @@ public:
     static const Descriptor SE_SLOT();
     static const Descriptor PE_SLOT();
 
-    GetReadsListWorkerFactory(const QString &id)
+    GetReadsListWorkerFactory(const QString& id)
         : DomainFactory(id) {
     }
     static void init();
     static void cleanup();
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 };
 
 class SeReadsListSplitter : public Workflow::CandidatesSplitter {
 public:
     SeReadsListSplitter();
 
-    bool canSplit(const Descriptor &toDesc, DataTypePtr toDatatype);
+    bool canSplit(const Descriptor& toDesc, DataTypePtr toDatatype);
 
     static const QString ID;
 
 private:
-    bool isMain(const QString &candidateSlotId);
+    bool isMain(const QString& candidateSlotId);
 };
 
 class PeReadsListSplitter : public Workflow::CandidatesSplitter {
 public:
     PeReadsListSplitter();
 
-    bool canSplit(const Descriptor &toDesc, DataTypePtr toDatatype);
+    bool canSplit(const Descriptor& toDesc, DataTypePtr toDatatype);
 
     static const QString ID;
 
 private:
-    bool isMain(const QString &candidateSlotId);
+    bool isMain(const QString& candidateSlotId);
 };
 
 }  // namespace LocalWorkflow

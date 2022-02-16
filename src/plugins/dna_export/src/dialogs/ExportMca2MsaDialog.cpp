@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-ExportMca2MsaDialog::ExportMca2MsaDialog(const QString &defaultFilePath, QWidget *parent)
+ExportMca2MsaDialog::ExportMca2MsaDialog(const QString& defaultFilePath, QWidget* parent)
     : QDialog(parent),
       saveController(nullptr) {
     setupUi(this);
@@ -60,7 +60,7 @@ bool ExportMca2MsaDialog::getIncludeReferenceOption() const {
     return chbIncludeReference->isChecked();
 }
 
-void ExportMca2MsaDialog::initSaveController(const QString &defaultFilePath) {
+void ExportMca2MsaDialog::initSaveController(const QString& defaultFilePath) {
     SaveDocumentControllerConfig config;
     config.defaultFileName = defaultFilePath;
     config.defaultFormatId = BaseDocumentFormats::CLUSTAL_ALN;

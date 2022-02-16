@@ -36,7 +36,7 @@ public:
     U2Sequence()
         : length(0), circular(false) {
     }
-    U2Sequence(const U2DataId &id, const QString &dbId, qint64 version)
+    U2Sequence(const U2DataId& id, const QString& dbId, qint64 version)
         : U2Object(id, dbId, version), length(0) {
     }
 

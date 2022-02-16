@@ -49,7 +49,7 @@ public:
 
     void prepare();
     void run();
-    U2Region parseRegion(const QString &n, const QDomElement &el);
+    U2Region parseRegion(const QString& n, const QDomElement& el);
 
     QString seq, seq2;
     RFAlgorithm alg;
@@ -74,11 +74,11 @@ public:
 
     void prepare();
     void run();
-    U2Region parseRegion(const QString &n, const QDomElement &el);
+    U2Region parseRegion(const QString& n, const QDomElement& el);
 
     U2Region region;
 
-    char *string;
+    char* string;
     int minD, maxD;
     int minSize, maxSize, repeatCount;
     bool inverted;
@@ -86,7 +86,7 @@ public:
     bool filterNested;
     bool filterUnique;
     RepeatsFilterAlgorithm filter;
-    DNASequence *seqObj;
+    DNASequence* seqObj;
     QString sequence;
     QString results;
 };
@@ -98,11 +98,11 @@ public:
 
     void prepare();
     void run();
-    U2Region parseRegion(const QString &n, const QDomElement &el);
+    U2Region parseRegion(const QString& n, const QDomElement& el);
 
     U2Region region;
 
-    char *string;
+    char* string;
     int minD, maxD;
     int minSize, repeatCount;
     bool inverted;
@@ -110,7 +110,7 @@ public:
     bool filterNested;
     bool filterUnique;
     RepeatsFilterAlgorithm filter;
-    DNASequence *seqObj;
+    DNASequence* seqObj;
     QString sequence;
     QString results;
 };
@@ -132,16 +132,16 @@ public:
     bool useBitMask;
     BitsTable bt;
     int nMismatches;
-    DNASequence *seqObj;
+    DNASequence* seqObj;
     QByteArray wholeSeq;
-    SArrayIndex *index;
-    SArrayBasedFindTask *findTask;
+    SArrayIndex* index;
+    SArrayBasedFindTask* findTask;
     QList<int> expectedResults;
 };
 
 class RepeatFinderTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2
