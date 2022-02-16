@@ -26,6 +26,7 @@
 #include <QDesktopWidget>
 #include <QDoubleSpinBox>
 #include <QGuiApplication>
+#include <QScrollBar>
 #include <QStyle>
 
 #include "drivers/GTMouseDriver.h"
