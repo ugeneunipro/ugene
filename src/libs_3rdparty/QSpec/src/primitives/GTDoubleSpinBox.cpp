@@ -40,7 +40,7 @@ int GTDoubleSpinbox::getValue(GUITestOpStatus& os, QDoubleSpinBox* spinBox) {
 
 #define GT_METHOD_NAME "getValue"
 int GTDoubleSpinbox::getValue(GUITestOpStatus& os, const QString& spinBoxName, QWidget* parent) {
-    return GTDoubleSpinbox::getValue(os, GTWidget::findExactWidget<QDoubleSpinBox*>(os, spinBoxName, parent));
+    return GTDoubleSpinbox::getValue(os, GTWidget::findDoubleSpinBox(os, spinBoxName, parent));
 }
 #undef GT_METHOD_NAME
 
@@ -110,13 +110,13 @@ void GTDoubleSpinbox::setValue(GUITestOpStatus& os, QDoubleSpinBox* spinBox, dou
 
 #define GT_METHOD_NAME "setValue"
 void GTDoubleSpinbox::setValue(GUITestOpStatus& os, const QString& spinBoxName, double v, GTGlobals::UseMethod useMethod, QWidget* parent) {
-    GTDoubleSpinbox::setValue(os, GTWidget::findExactWidget<QDoubleSpinBox*>(os, spinBoxName, parent), v, useMethod);
+    GTDoubleSpinbox::setValue(os, GTWidget::findDoubleSpinBox(os, spinBoxName, parent), v, useMethod);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setValue"
 void GTDoubleSpinbox::setValue(GUITestOpStatus& os, const QString& spinBoxName, double v, QWidget* parent) {
-    GTDoubleSpinbox::setValue(os, GTWidget::findExactWidget<QDoubleSpinBox*>(os, spinBoxName, parent), v);
+    GTDoubleSpinbox::setValue(os, GTWidget::findDoubleSpinBox(os, spinBoxName, parent), v);
 }
 #undef GT_METHOD_NAME
 
@@ -132,7 +132,7 @@ void GTDoubleSpinbox::checkLimits(GUITestOpStatus& os, QDoubleSpinBox* spinBox, 
 
 #define GT_METHOD_NAME "checkLimits"
 void GTDoubleSpinbox::checkLimits(GUITestOpStatus& os, const QString& spinBoxName, int min, int max, QWidget* parent) {
-    GTDoubleSpinbox::checkLimits(os, GTWidget::findExactWidget<QDoubleSpinBox*>(os, spinBoxName, parent), min, max);
+    GTDoubleSpinbox::checkLimits(os, GTWidget::findDoubleSpinBox(os, spinBoxName, parent), min, max);
 }
 #undef GT_METHOD_NAME
 

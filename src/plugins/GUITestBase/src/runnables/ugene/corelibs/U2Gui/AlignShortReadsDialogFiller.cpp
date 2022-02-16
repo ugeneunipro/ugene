@@ -79,7 +79,7 @@ void AlignShortReadsFiller::commonScenario() {
 
 #define GT_METHOD_NAME "setCommonParameters"
 void AlignShortReadsFiller::setCommonParameters(QWidget* dialog) {
-    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "methodNamesBox", dialog), parameters->getAlignmentMethod());
+    GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "methodNamesBox", dialog), parameters->getAlignmentMethod());
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, parameters->referenceFile));
     GTWidget::click(os, GTWidget::findWidget(os, "addRefButton", dialog));
@@ -261,30 +261,30 @@ void AlignShortReadsFiller::setUgaAdditionalParameters(UgeneGenomeAlignerParams*
     if (ugaParameters->mismatchesAllowed) {
         GTGroupBox::setChecked(os, "groupBox_mismatches", dialog);
     }
-    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "firstMatchBox", dialog), ugaParameters->useBestMode);
+    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "firstMatchBox", dialog), ugaParameters->useBestMode);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setBwaAdditionalParameters"
 void AlignShortReadsFiller::setBwaAdditionalParameters(AlignShortReadsFiller::BwaParameters* bwaParameters, QWidget* dialog) {
-    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "indexAlgorithmComboBox", dialog), bwaParameters->getIndexAlgorithmString());
+    GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "indexAlgorithmComboBox", dialog), bwaParameters->getIndexAlgorithmString());
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setAdditionalParameters"
 void AlignShortReadsFiller::setBwaSwAdditionalParameters(AlignShortReadsFiller::BwaSwParameters* bwaSwParameters, QWidget* dialog) {
-    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "matchScoreSpinbox", dialog), bwaSwParameters->matchScore);
-    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "mismatchScoreSpinbox", dialog), bwaSwParameters->mismatchPenalty);
-    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "gapOpenSpinbox", dialog), bwaSwParameters->gapOpenPenalty);
-    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "gapExtSpinbox", dialog), bwaSwParameters->gapExtensionPenalty);
-    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "bandWidthSpinbox", dialog), bwaSwParameters->bandWidth);
-    GTDoubleSpinbox::setValue(os, GTWidget::findExactWidget<QDoubleSpinBox*>(os, "maskLevelSpinbox", dialog), bwaSwParameters->maskLevel);
-    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "numThreadsSpinbox", dialog), bwaSwParameters->threadsNumber);
-    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "chunkSizeSpinbox", dialog), bwaSwParameters->readsChunkSize);
-    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "scoreThresholdSpinbox", dialog), bwaSwParameters->thresholdScore);
-    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "zBestSpinbox", dialog), bwaSwParameters->zBest);
-    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "revAlnThreshold", dialog), bwaSwParameters->seedsNumber);
-    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "hardClippingCheckBox", dialog), bwaSwParameters->preferHardClippingInSam);
+    GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "matchScoreSpinbox", dialog), bwaSwParameters->matchScore);
+    GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "mismatchScoreSpinbox", dialog), bwaSwParameters->mismatchPenalty);
+    GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "gapOpenSpinbox", dialog), bwaSwParameters->gapOpenPenalty);
+    GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "gapExtSpinbox", dialog), bwaSwParameters->gapExtensionPenalty);
+    GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "bandWidthSpinbox", dialog), bwaSwParameters->bandWidth);
+    GTDoubleSpinbox::setValue(os, GTWidget::findDoubleSpinBox(os, "maskLevelSpinbox", dialog), bwaSwParameters->maskLevel);
+    GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "numThreadsSpinbox", dialog), bwaSwParameters->threadsNumber);
+    GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "chunkSizeSpinbox", dialog), bwaSwParameters->readsChunkSize);
+    GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "scoreThresholdSpinbox", dialog), bwaSwParameters->thresholdScore);
+    GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "zBestSpinbox", dialog), bwaSwParameters->zBest);
+    GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "revAlnThreshold", dialog), bwaSwParameters->seedsNumber);
+    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "hardClippingCheckBox", dialog), bwaSwParameters->preferHardClippingInSam);
 }
 #undef GT_METHOD_NAME
 

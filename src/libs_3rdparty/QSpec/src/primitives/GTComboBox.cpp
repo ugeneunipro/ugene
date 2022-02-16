@@ -111,7 +111,7 @@ void GTComboBox::selectItemByText(GUITestOpStatus& os, QComboBox* comboBox, cons
 
 #define GT_METHOD_NAME "selectItemByText"
 void GTComboBox::selectItemByText(GUITestOpStatus& os, const QString& comboBoxName, QWidget* parent, const QString& text, GTGlobals::UseMethod method) {
-    selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, comboBoxName, parent), text, method);
+    selectItemByText(os, GTWidget::findComboBox(os, comboBoxName, parent), text, method);
 }
 #undef GT_METHOD_NAME
 
@@ -125,7 +125,7 @@ QString GTComboBox::getCurrentText(GUITestOpStatus& os, QComboBox* const comboBo
 
 #define GT_METHOD_NAME "getCurrentText"
 QString GTComboBox::getCurrentText(GUITestOpStatus& os, const QString& comboBoxName, QWidget* parent) {
-    return getCurrentText(os, GTWidget::findExactWidget<QComboBox*>(os, comboBoxName, parent));
+    return getCurrentText(os, GTWidget::findComboBox(os, comboBoxName, parent));
 }
 #undef GT_METHOD_NAME
 

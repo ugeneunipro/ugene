@@ -75,7 +75,7 @@ void RemovePartFromSequenceDialogFiller::commonScenario() {
         GTRadioButton::click(os, removeRB);
     }
 
-    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "recalculateQualsCheckBox"), recalculateQuals);
+    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "recalculateQualsCheckBox"), recalculateQuals);
 
     GTGlobals::sleep(1000);
     if (saveNew) {

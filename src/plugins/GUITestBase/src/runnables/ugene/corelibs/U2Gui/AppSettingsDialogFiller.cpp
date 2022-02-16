@@ -130,7 +130,7 @@ void AppSettingsDialogFiller::setExternalToolPath(HI::GUITestOpStatus& os, const
 
     openTab(os, ExternalTools);
 
-    QTreeWidget* treeWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "twIntegratedTools", dialog);
+    auto treeWidget = GTWidget::findTreeWidget(os, "twIntegratedTools", dialog);
     QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
     bool set = false;
     foreach (QTreeWidgetItem* item, listOfItems) {
@@ -183,7 +183,7 @@ bool AppSettingsDialogFiller::isExternalToolValid(HI::GUITestOpStatus& os, const
 
     openTab(os, ExternalTools);
 
-    QTreeWidget* treeWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "twIntegratedTools", dialog);
+    auto treeWidget = GTWidget::findTreeWidget(os, "twIntegratedTools", dialog);
     QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
     foreach (QTreeWidgetItem* item, listOfItems) {
         if (item->text(0) == toolName) {
@@ -204,7 +204,7 @@ void AppSettingsDialogFiller::clearToolPath(HI::GUITestOpStatus& os, const QStri
 
     openTab(os, ExternalTools);
 
-    QTreeWidget* treeWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "twIntegratedTools", dialog);
+    auto treeWidget = GTWidget::findTreeWidget(os, "twIntegratedTools", dialog);
     QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
     foreach (QTreeWidgetItem* item, listOfItems) {
         if (item->text(0) == toolName) {
@@ -276,7 +276,7 @@ void AppSettingsDialogFiller::openTab(HI::GUITestOpStatus& os, Tabs tab) {
     QString itemText = tabMap.value(tab);
     GT_CHECK(!itemText.isEmpty(), "tree element for item not found");
 
-    QTreeWidget* mainTree = GTWidget::findExactWidget<QTreeWidget*>(os, "tree", dialog);
+    auto mainTree = GTWidget::findTreeWidget(os, "tree", dialog);
     if (mainTree->selectedItems().first()->text(0) != itemText) {
         GTTreeWidget::click(os, GTTreeWidget::findItem(os, mainTree, itemText));
     }
@@ -292,7 +292,7 @@ void AppSettingsDialogFiller::clickOnTool(HI::GUITestOpStatus& os, const QString
 
     openTab(os, ExternalTools);
 
-    QTreeWidget* treeWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "twIntegratedTools", dialog);
+    auto treeWidget = GTWidget::findTreeWidget(os, "twIntegratedTools", dialog);
     QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
     foreach (QTreeWidgetItem* item, listOfItems) {
         if (item->text(0) == toolName) {
@@ -377,7 +377,7 @@ void NewColorSchemeCreator::commonScenario() {
             break;
         }
         case Change: {
-            GTListWidget::click(os, GTWidget::findExactWidget<QListWidget*>(os, "colorSchemas", dialog), schemeName);
+            GTListWidget::click(os, GTWidget::findListWidget(os, "colorSchemas", dialog), schemeName);
 
             class Scenario : public CustomScenario {
             public:

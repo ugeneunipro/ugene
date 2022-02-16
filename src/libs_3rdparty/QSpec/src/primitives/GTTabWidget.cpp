@@ -70,7 +70,7 @@ void GTTabWidget::clickTab(GUITestOpStatus& os, QTabWidget* const tabWidget, int
 
 #define GT_METHOD_NAME "clickTab"
 void GTTabWidget::clickTab(GUITestOpStatus& os, const QString& tabWidgetName, QWidget* parent, int tabIndex, Qt::MouseButton button) {
-    clickTab(os, GTWidget::findExactWidget<QTabWidget*>(os, tabWidgetName, parent), tabIndex, button);
+    clickTab(os, GTWidget::findTabWidget(os, tabWidgetName, parent), tabIndex, button);
 }
 #undef GT_METHOD_NAME
 
@@ -83,7 +83,7 @@ void GTTabWidget::clickTab(GUITestOpStatus& os, QTabWidget* const tabWidget, con
 
 #define GT_METHOD_NAME "clickTab"
 void GTTabWidget::clickTab(GUITestOpStatus& os, const QString& tabWidgetName, QWidget* parent, const QString& tabName, Qt::MouseButton button) {
-    clickTab(os, GTWidget::findExactWidget<QTabWidget*>(os, tabWidgetName, parent), tabName, button);
+    clickTab(os, GTWidget::findTabWidget(os, tabWidgetName, parent), tabName, button);
 }
 #undef GT_METHOD_NAME
 
