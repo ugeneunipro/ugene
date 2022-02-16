@@ -44,6 +44,12 @@ public:
      * To pass double-quote as a value use escape character: \".
      */
     static QStringList parse(U2OpStatus& os, const QString& rawParamsString);
+
+    /** Returns the next token after 'name' or empty string if 'name' is not found or of 'name' is the last. */
+    static QString getParameterValue(const QString& name, const QStringList& parameters);
+
+    /** Removes 'name' and the value (next token) from the 'parameters'. */
+    static void removeParameterNameAndValue(const QString& name, QStringList& parameters);
 };
 
 }  // namespace U2

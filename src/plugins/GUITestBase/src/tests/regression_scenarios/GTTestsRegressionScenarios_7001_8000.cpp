@@ -27,6 +27,7 @@
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTListWidget.h>
 #include <primitives/GTMenu.h>
+#include <primitives/GTPlainTextEdit.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTabWidget.h>
@@ -2201,6 +2202,62 @@ GUI_TEST_CLASS_DEFINITION(test_7548) {
         QString color = GTUtilsMSAEditorSequenceArea::getColor(os, position);
         CHECK_SET_ERR(color == colorOfC, "Invalid color: " + color + ", position: " + QString::number(position.x()) + ", expected: " + colorOfC);
     }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7556) {
+    // Check that IQ-TREE parameter input widgets work in sync with a manual parameters input as text.
+    // Check that in Tree-Sync mode Drag & Drop of sequences in the MSA name list is disabled.
+    GTFileDialog::openFile(os, testDir + "_common_data/msf/1.msf");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    class OptionsTestScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) override {
+            auto dialog = GTWidget::getActiveModalWidget(os);
+            GTComboBox::selectItemByText(os, "algorithmBox", dialog, "IQ-TREE");
+
+            auto substModelEdit = GTWidget::findLineEdit(os, "substModelEdit", dialog);
+            auto ultrafastBootstrapEdit = GTWidget::findLineEdit(os, "ultrafastBootstrapEdit", dialog);
+            auto alrtEdit = GTWidget::findLineEdit(os, "alrtEdit", dialog);
+            auto ancestralReconstructionCheckBox = GTWidget::findCheckBox(os, "ancestralReconstructionCheckBox", dialog);
+            auto extraParametersTextEdit = GTWidget::findPlainTextEdit(os, "extraParametersTextEdit", dialog);
+
+            CHECK_SET_ERR(extraParametersTextEdit->toPlainText().isEmpty(), "extraParametersTextEdit is not empty by default");
+            CHECK_SET_ERR(substModelEdit->text().isEmpty(), "substModelEdit is not empty by default");
+            CHECK_SET_ERR(ultrafastBootstrapEdit->text().isEmpty(), "ultrafastBootstrapEdit is not empty by default");
+            CHECK_SET_ERR(alrtEdit->text().isEmpty(), "alrtEdit is not empty by default");
+            CHECK_SET_ERR(!ancestralReconstructionCheckBox->isChecked(), "ancestralReconstructionCheckBox is not unchecked by default");
+
+            // Set values to widgets, check that text is changed.
+            GTPlainTextEdit::setPlainText(os, extraParametersTextEdit, "-custom c1 -m 1 -bb 2 --custom c2 c3 -alrt 3");
+            GTLineEdit::setText(os, substModelEdit, "LM");
+            GTLineEdit::setText(os, ultrafastBootstrapEdit, "1000");
+            GTLineEdit::setText(os, alrtEdit, "1001");
+            GTCheckBox::setChecked(os, ancestralReconstructionCheckBox);
+            CHECK_SET_ERR(extraParametersTextEdit->toPlainText() == "-custom c1 --custom c2 c3 -m LM -bb 1000 -alrt 1001 -asr",
+                          "extraParametersTextEdit is not updated with values from the inputs");
+
+            // Empty text field - widgets must be also reset.
+            GTPlainTextEdit::clear(os, extraParametersTextEdit);
+            CHECK_SET_ERR(substModelEdit->text().isEmpty(), "substModelEdit is not empty");
+            CHECK_SET_ERR(ultrafastBootstrapEdit->text().isEmpty(), "ultrafastBootstrapEdit is not empty");
+            CHECK_SET_ERR(alrtEdit->text().isEmpty(), "alrtEdit is not empty by default");
+            CHECK_SET_ERR(!ancestralReconstructionCheckBox->isChecked(), "ancestralReconstructionCheckBox is not unchecked");
+
+            // Set text with parameters and check the widgets are updated
+            GTPlainTextEdit::setPlainText(os, extraParametersTextEdit, "-m TEST -bb 1000");
+            CHECK_SET_ERR(substModelEdit->text() == "TEST", "substModelEdit is not updated");
+            CHECK_SET_ERR(ultrafastBootstrapEdit->text() == "1000", "ultrafastBootstrapEdit is not updated");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, new OptionsTestScenario()));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsMsaEditor::getTreeView(os);  // Check that tree view is opened.
 }
 
 }  // namespace GUITest_regression_scenarios
