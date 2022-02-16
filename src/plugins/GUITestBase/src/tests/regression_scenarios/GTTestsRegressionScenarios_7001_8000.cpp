@@ -503,6 +503,7 @@ GUI_TEST_CLASS_DEFINITION(test_7151) {
 GUI_TEST_CLASS_DEFINITION(test_7152) {
     // Check that corner characters of an alignment has valid info shown in the status bar.
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/region.full-gap.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(0, 0));
