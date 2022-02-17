@@ -43,8 +43,7 @@ ExportChromatogramFiller::ExportChromatogramFiller(HI::GUITestOpStatus& _os, con
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportChromatogramFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     QLineEdit* lineEdit = dialog->findChild<QLineEdit*>();
     GT_CHECK(lineEdit != nullptr, "line edit not found");

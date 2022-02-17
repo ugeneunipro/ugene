@@ -42,8 +42,7 @@ DotPlotFiller::DotPlotFiller(HI::GUITestOpStatus& _os, CustomScenario* customSce
 }
 
 void DotPlotFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     QSpinBox* minLenBox = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, "minLenBox", dialog));
     if (but1kpressed) {

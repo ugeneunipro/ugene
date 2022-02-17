@@ -73,8 +73,7 @@ ImportToDatabaseDialogFiller::ImportToDatabaseDialogFiller(HI::GUITestOpStatus& 
 
 #define GT_METHOD_NAME "run"
 void ImportToDatabaseDialogFiller::commonScenario() {
-    dialog = QApplication::activeModalWidget();
-    GT_CHECK(nullptr != dialog, "activeModalWidget is NULL");
+    dialog = GTWidget::getActiveModalWidget(os);
 
     foreach (const Action& action, actions) {
         switch (action.type) {

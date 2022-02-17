@@ -52,8 +52,7 @@ ImportAPRFileFiller::ImportAPRFileFiller(HI::GUITestOpStatus& os, CustomScenario
 
 void ImportAPRFileFiller::commonScenario() {
     GTGlobals::sleep(500);
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (isReadOnly) {
         auto rb = GTWidget::findRadioButton(os, "0_radio", dialog);

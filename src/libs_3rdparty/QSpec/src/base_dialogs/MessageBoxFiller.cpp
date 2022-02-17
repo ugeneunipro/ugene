@@ -82,7 +82,7 @@ AppCloseMessageBoxDialogFiller::AppCloseMessageBoxDialogFiller(GUITestOpStatus& 
 
 #define GT_METHOD_NAME "commonScenario"
 void AppCloseMessageBoxDialogFiller::commonScenario() {
-    QWidget* activeModal = QApplication::activeModalWidget();
+    QWidget* activeModal = GTWidget::getActiveModalWidget(os);
     QMessageBox* messageBox = qobject_cast<QMessageBox*>(activeModal);
     GT_CHECK(messageBox != NULL, "messageBox is NULL");
 
@@ -109,7 +109,7 @@ MessageBoxNoToAllOrNo::MessageBoxNoToAllOrNo(GUITestOpStatus& os)
 
 #define GT_METHOD_NAME "commonScenario"
 void MessageBoxNoToAllOrNo::commonScenario() {
-    QWidget* activeModal = QApplication::activeModalWidget();
+    QWidget* activeModal = GTWidget::getActiveModalWidget(os);
     QMessageBox* messageBox = qobject_cast<QMessageBox*>(activeModal);
     GT_CHECK(messageBox != NULL, "messageBox is NULL");
 
@@ -133,7 +133,7 @@ MessageBoxOpenAnotherProject::MessageBoxOpenAnotherProject(GUITestOpStatus& os)
 
 #define GT_METHOD_NAME "commonScenario"
 void MessageBoxOpenAnotherProject::commonScenario() {
-    QWidget* activeModal = QApplication::activeModalWidget();
+    QWidget* activeModal = GTWidget::getActiveModalWidget(os);
     QMessageBox* messageBox = qobject_cast<QMessageBox*>(activeModal);
     GT_CHECK(messageBox != NULL, "messageBox is NULL");
 
@@ -161,7 +161,7 @@ InputIntFiller::InputIntFiller(GUITestOpStatus& os, int value)
 
 #define GT_METHOD_NAME "commonScenario"
 void InputIntFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
     QSpinBox* spinBox = dialog->findChild<QSpinBox*>();
     GT_CHECK(NULL != spinBox, "NULL spinBox");
 

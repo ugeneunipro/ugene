@@ -47,8 +47,7 @@ Primer3DialogFiller::Primer3DialogFiller(HI::GUITestOpStatus& os, const Primer3S
 
 #define GT_METHOD_NAME "run"
 void Primer3DialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (settings.resultsCount != -1) {
         QSpinBox* resultsCountSpinBox = dialog->findChild<QSpinBox*>("edit_PRIMER_NUM_RETURN");

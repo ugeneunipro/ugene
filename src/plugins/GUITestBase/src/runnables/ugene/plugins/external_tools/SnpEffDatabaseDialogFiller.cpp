@@ -43,8 +43,7 @@ SnpEffDatabaseDialogFiller::SnpEffDatabaseDialogFiller(GUITestOpStatus& os, cons
 #define GT_CLASS_NAME "SnpEffDatabaseDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void SnpEffDatabaseDialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     auto lineEdit = GTWidget::findLineEdit(os, "lineEdit", dialog);
     GTLineEdit::setText(os, lineEdit, dbName, false, true);

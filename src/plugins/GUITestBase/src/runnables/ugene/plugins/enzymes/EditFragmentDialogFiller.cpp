@@ -39,8 +39,7 @@ EditFragmentDialogFiller::EditFragmentDialogFiller(HI::GUITestOpStatus& os, cons
 #define GT_METHOD_NAME "commonScenario"
 
 void EditFragmentDialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     // GUITest_regression_scenarios_test_0574
     if (parameters.checkRComplText) {

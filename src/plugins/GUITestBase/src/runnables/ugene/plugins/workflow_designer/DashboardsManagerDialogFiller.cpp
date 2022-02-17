@@ -34,8 +34,7 @@ using namespace HI;
 #define GT_CLASS_NAME "DashboardsManagerDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void DashboardsManagerDialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }
@@ -43,8 +42,7 @@ void DashboardsManagerDialogFiller::commonScenario() {
 
 #define GT_METHOD_NAME "selectDashboards"
 void DashboardsManagerDialogFiller::selectDashboards(HI::GUITestOpStatus& os, QStringList names) {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     auto listWidget = GTWidget::findTreeWidget(os, "listWidget", dialog);
     foreach (QString name, names) {
@@ -58,8 +56,7 @@ void DashboardsManagerDialogFiller::selectDashboards(HI::GUITestOpStatus& os, QS
 
 #define GT_METHOD_NAME "isDashboardPresent"
 bool DashboardsManagerDialogFiller::isDashboardPresent(HI::GUITestOpStatus& os, QString name) {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK_RESULT(dialog, "activeModalWidget is NULL", false);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     auto listWidget = GTWidget::findTreeWidget(os, "listWidget", dialog);
     QTreeWidgetItem* item = GTTreeWidget::findItem(os, listWidget, name, nullptr, 0, {false});
@@ -71,8 +68,7 @@ bool DashboardsManagerDialogFiller::isDashboardPresent(HI::GUITestOpStatus& os, 
 QList<QPair<QString, bool>> DashboardsManagerDialogFiller::getDashboardsState(HI::GUITestOpStatus& os) {
     QList<QPair<QString, bool>> result;
 
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK_RESULT(dialog, "activeModalWidget is NULL", result);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     auto treeWidget = GTWidget::findTreeWidget(os, "listWidget", dialog);
     for (int i = 0; i < treeWidget->topLevelItemCount(); ++i) {

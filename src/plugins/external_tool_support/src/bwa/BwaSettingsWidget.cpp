@@ -284,6 +284,7 @@ BwaMemSettingsWidget::BwaMemSettingsWidget(QWidget* parent)
 
     adjustSize();
 
+    indexSuffixes << BwaTask::indexSuffixes;
     warningReporter->setReportingLabel(warningLabel);
     connect(indexAlgorithmComboBox, SIGNAL(currentIndexChanged(int)), warningReporter, SLOT(sl_IndexAlgorithmChanged(int)));
     requiredExtToolIds << BwaSupport::ET_BWA_ID;

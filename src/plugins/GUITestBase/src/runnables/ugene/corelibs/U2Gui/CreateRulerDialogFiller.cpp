@@ -44,8 +44,7 @@ CreateRulerDialogFiller::CreateRulerDialogFiller(GUITestOpStatus& os, CustomScen
 }
 
 void CreateRulerDialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(nullptr != dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     auto nameEdit = GTWidget::findLineEdit(os, "nameEdit", dialog);
     GTLineEdit::setText(os, nameEdit, rulerName);

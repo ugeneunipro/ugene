@@ -35,8 +35,7 @@ DigestSequenceDialogFiller::DigestSequenceDialogFiller(HI::GUITestOpStatus& os, 
 
 #define GT_METHOD_NAME "commonScenario"
 void DigestSequenceDialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(nullptr != dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     GTWidget::click(os, GTWidget::findWidget(os, "addAllButton", dialog));
 

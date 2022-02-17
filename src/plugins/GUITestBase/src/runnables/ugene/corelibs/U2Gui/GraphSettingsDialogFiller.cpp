@@ -65,8 +65,7 @@ GraphSettingsDialogFiller::GraphSettingsDialogFiller(GUITestOpStatus& os, Custom
 }
 
 void GraphSettingsDialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (window != -1) {
         auto windowEdit = GTWidget::findSpinBox(os, "windowEdit", dialog);

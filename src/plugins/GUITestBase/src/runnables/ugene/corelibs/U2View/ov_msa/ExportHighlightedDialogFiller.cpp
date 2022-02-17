@@ -37,8 +37,7 @@ ExportHighlightedDialogFiller::ExportHighlightedDialogFiller(HI::GUITestOpStatus
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportHighlightedDialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(nullptr != dialog, "dialog not found");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     GTLineEdit::setText(os, GTWidget::findLineEdit(os, "fileNameEdit", dialog), filePath);
 

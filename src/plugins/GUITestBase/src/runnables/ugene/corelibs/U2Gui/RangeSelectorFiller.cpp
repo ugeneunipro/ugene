@@ -31,8 +31,7 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::ZoomToRangeDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void ZoomToRangeDialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     QLineEdit* from = dialog->findChild<QLineEdit*>("start_edit_line");
     QLineEdit* to = dialog->findChild<QLineEdit*>("end_edit_line");

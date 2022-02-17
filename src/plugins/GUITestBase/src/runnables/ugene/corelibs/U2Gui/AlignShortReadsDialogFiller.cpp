@@ -62,8 +62,7 @@ AlignShortReadsFiller::BwaSwParameters::BwaSwParameters(const QString& refDir, c
 void AlignShortReadsFiller::commonScenario() {
     SAFE_POINT_EXT(parameters, GT_CHECK(0, "Invalid input parameters: NULL pointer"), );
 
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     setCommonParameters(dialog);
     CHECK_OP(os, );

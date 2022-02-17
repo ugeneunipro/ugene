@@ -42,8 +42,7 @@ QRadioButton* DocumentFormatSelectorDialogFiller::getButton(HI::GUITestOpStatus&
 
 #define GT_METHOD_NAME "run"
 void DocumentFormatSelectorDialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
     GTGlobals::sleep(500);
 
     QRadioButton* radio = getButton(os);

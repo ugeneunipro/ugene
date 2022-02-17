@@ -46,8 +46,7 @@ CreateElementWithCommandLineToolFiller::CreateElementWithCommandLineToolFiller(H
 
 #define GT_METHOD_NAME "run"
 void CreateElementWithCommandLineToolFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     QString errorMessage;
     bool firstPageResult = processFirstPage(dialog, errorMessage);

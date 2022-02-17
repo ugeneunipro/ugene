@@ -39,8 +39,7 @@ namespace U2 {
 #define GT_METHOD_NAME "commonScenario"
 
 void GenerateAlignmentProfileDialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     GTGlobals::sleep(500);
     if (counts) {

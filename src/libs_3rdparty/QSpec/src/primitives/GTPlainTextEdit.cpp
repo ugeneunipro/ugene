@@ -31,34 +31,42 @@ namespace HI {
 #define GT_CLASS_NAME "GTPlainTextEdit"
 
 #define GT_METHOD_NAME "setPlainText"
-void GTPlainTextEdit::setPlainText(GUITestOpStatus& os, QPlainTextEdit* plainTextEdit, const QString& text) {
-    GT_CHECK(plainTextEdit != NULL, "plainTextEdit is NULL");
-    if (plainTextEdit->toPlainText() == text) {
+void GTPlainTextEdit::setPlainText(GUITestOpStatus& os, QPlainTextEdit* textEdit, const QString& text) {
+    GT_CHECK(textEdit != nullptr, "textEdit is NULL");
+    GT_CHECK(!textEdit->isReadOnly(), "textEdit is read-only: " + textEdit->objectName());
+    if (textEdit->toPlainText() == text) {
         return;
     }
-
-    GTWidget::setFocus(os, plainTextEdit);
-
+    clear(os, textEdit);
+    if (text.isEmpty()) {
+        return;
+    }
+    GTWidget::setFocus(os, textEdit);
     GTKeyboardDriver::keySequence(text);
-    GTGlobals::sleep(500);
 }
 #undef GT_METHOD_NAME
 
-//#define GT_METHOD_NAME "clear"
-// void GTPlainTextEdit::clear(GUITestOpStatus& os, QPlainTextEdit* plainTextEdit) {
-//
-//    GT_CHECK(plainTextEdit != NULL, "plainTextEdit is NULL");
-//
-//    GTWidget::setFocus(os, plainTextEdit);
-//
-//    GTKeyboardUtils::selectAll(os);
-//    GTGlobals::sleep(100);
-//    GTKeyboardDriver::keyClick( Qt::Key_Delete);
-//    GTGlobals::sleep(1000);
-//
-//    QString s = plainTextEdit->toPlainText();
-//    GT_CHECK(s.isEmpty() == true, "Can't clear text, lineEdit is not empty");
-//}
-//#undef GT_METHOD_NAME
+#define GT_METHOD_NAME "clear"
+void GTPlainTextEdit::clear(GUITestOpStatus& os, QPlainTextEdit* textEdit) {
+    GT_CHECK(textEdit != nullptr, "textEdit is NULL");
+    GT_CHECK(!textEdit->isReadOnly(), "textEdit is read-only: " + textEdit->objectName());
+
+    GTWidget::setFocus(os, textEdit);
+    if (textEdit->toPlainText().isEmpty()) {
+        return;
+    }
+    GTKeyboardUtils::selectAll();
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+
+    // Wait up to 5 seconds for the text to be cleaned.
+    QString currentText = textEdit->toPlainText();
+    for (int time = 0; time <= 5000 && !currentText.isEmpty(); time += 100) {
+        GTGlobals::sleep(100);
+        currentText = textEdit->toPlainText();
+    }
+    GT_CHECK(currentText.isEmpty(), "Can't clear text, plainTextEdit is not empty: " + currentText);
+}
+#undef GT_METHOD_NAME
 
 }  // namespace HI
