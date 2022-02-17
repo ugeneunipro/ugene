@@ -241,11 +241,7 @@ void TrimmomaticDialogFiller::removeSteps() {
 
         GTListWidget::click(os, listSteps, stepString, Qt::LeftButton, step.second);
 
-<<<<<<< HEAD
-        GTWidget::click(os, GTWidget::findToolButton(os, "buttonRemove"));
-=======
         GTWidget::click(os, GTWidget::findToolButton(os, "buttonRemove", dialog));
->>>>>>> origin/master
     }
 }
 
