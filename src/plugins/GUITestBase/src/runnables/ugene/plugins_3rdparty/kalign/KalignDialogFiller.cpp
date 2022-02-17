@@ -50,7 +50,7 @@ void KalignDialogFiller::commonScenario() {
         GTDoubleSpinbox::setValue(os, gapOpenSpinBox, gapOpenVal, GTGlobals::UseKeyBoard);
     }
 
-    QCheckBox* translateCheckBox = GTWidget::findExactWidget<QCheckBox*>(os, "translateCheckBox", dialog);
+    auto translateCheckBox = GTWidget::findCheckBox(os, "translateCheckBox", dialog);
     GTCheckBox::setChecked(os, translateCheckBox, toAmino);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

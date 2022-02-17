@@ -926,7 +926,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_SETTINGS"));
     GTUtilsAssemblyBrowser::zoomToReads(os);
     //    3. Change reads highlighting to "strand direction" and "complement"
-    QComboBox* box = GTWidget::findExactWidget<QComboBox*>(os, "READS_HIGHLIGHTNING_COMBO");
+    auto box = GTWidget::findComboBox(os, "READS_HIGHLIGHTNING_COMBO");
     GTComboBox::selectItemByText(os, box, "Strand direction");
     GTComboBox::selectItemByText(os, box, "Paired reads");
 }
@@ -940,7 +940,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_SETTINGS"));
     GTUtilsAssemblyBrowser::zoomToReads(os);
     //    3. Change consensus algorithm
-    QComboBox* box = GTWidget::findExactWidget<QComboBox*>(os, "consensusAlgorithmCombo");
+    auto box = GTWidget::findComboBox(os, "consensusAlgorithmCombo");
     GTComboBox::selectItemByText(os, box, "SAMtools");
 }
 
@@ -957,7 +957,7 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-            QLineEdit* filepathLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "filepathLineEdit", dialog);
+            auto filepathLineEdit = GTWidget::findLineEdit(os, "filepathLineEdit", dialog);
             GTLineEdit::setText(os, filepathLineEdit, sandBoxDir + "chrM.snp");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

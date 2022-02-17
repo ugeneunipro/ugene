@@ -41,9 +41,9 @@ void ExportBlastResultDialogFiller::commonScenario() {
     QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(nullptr != dialog, "Active modal widget is NULL");
 
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "fileNameEdit", dialog), filePath);
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "fileNameEdit", dialog), filePath);
 
-    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "addRefBox", dialog), addRefBoxChecked);
+    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "addRefBox", dialog), addRefBoxChecked);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }

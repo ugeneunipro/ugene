@@ -63,10 +63,10 @@ void ImportPrimersDialogFiller::commonScenario() {
 void ImportPrimersDialogFiller::setImportTarget(HI::GUITestOpStatus& os, ImportSource importSource) {
     switch (importSource) {
         case LocalFiles:
-            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "cbSource", getDialog(os)), "Local file(s)");
+            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "cbSource", getDialog(os)), "Local file(s)");
             break;
         case SharedDb:
-            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "cbSource", getDialog(os)), "Shared database");
+            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "cbSource", getDialog(os)), "Shared database");
             break;
         default:
             os.setError("Unexpected import source");

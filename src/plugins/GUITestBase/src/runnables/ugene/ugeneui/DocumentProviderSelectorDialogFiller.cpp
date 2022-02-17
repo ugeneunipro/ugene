@@ -45,7 +45,7 @@ void DocumentProviderSelectorDialogFiller::commonScenario() {
     QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog, "activeModalWidget is NULL");
 
-    QRadioButton* radio = GTWidget::findExactWidget<QRadioButton*>(os, openWithMap.value(openWith), dialog);
+    auto radio = GTWidget::findRadioButton(os, openWithMap.value(openWith), dialog);
     GTWidget::click(os, radio);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

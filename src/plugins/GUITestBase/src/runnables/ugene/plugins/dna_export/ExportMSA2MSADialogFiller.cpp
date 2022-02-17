@@ -51,11 +51,11 @@ void ExportMSA2MSADialogFiller::commonScenario() {
     GT_CHECK(dialog != nullptr, "dialog not found");
 
     if (!path.isEmpty()) {
-        QLineEdit* fileNameEdit = GTWidget::findExactWidget<QLineEdit*>(os, "fileNameEdit", dialog);
+        QLineEdit* fileNameEdit = GTWidget::findLineEdit(os, "fileNameEdit", dialog);
         GTLineEdit::setText(os, fileNameEdit, path);
     }
     if (formatVal >= 0) {
-        QComboBox* formatCombo = GTWidget::findExactWidget<QComboBox*>(os, "formatCombo", dialog);
+        QComboBox* formatCombo = GTWidget::findComboBox(os, "formatCombo", dialog);
         GTComboBox::selectItemByIndex(os, formatCombo, formatVal);
     }
     if (includeGaps) {

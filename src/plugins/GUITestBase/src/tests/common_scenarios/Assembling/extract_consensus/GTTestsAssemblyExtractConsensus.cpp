@@ -123,7 +123,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_multiple_input) {
             QWidget* const dialog = GTWidget::getActiveModalWidget(os);
 
             // Dialog filling
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "Assembly widget", dialog), inputPaths.join(';'));
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "Assembly widget", dialog), inputPaths.join(';'));
 
             GTWidget::click(os, GTWidget::findButtonByText(os, "Add", dialog));
             GTUtilsDialog::waitForDialog(os,

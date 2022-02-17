@@ -173,7 +173,7 @@ void TrimmomaticDialogFiller::addSteps() {
                 case U2::TrimmomaticDialogFiller::TrimmomaticValues::ProvideOptionalSettings:
                 case U2::TrimmomaticDialogFiller::TrimmomaticValues::MinAdapterLength:
                 case U2::TrimmomaticDialogFiller::TrimmomaticValues::KeepBothReads:
-                    GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "pushButton"));
+                    GTWidget::click(os, GTWidget::findPushButton(os, "pushButton"));
                     GTGlobals::sleep(200);
                     QWidget* addSettingsDialog = QApplication::activeModalWidget();
                     GT_CHECK(addSettingsDialog != nullptr, "Dialog not found");
@@ -232,7 +232,7 @@ void TrimmomaticDialogFiller::moveSteps() {
                 buttonName = "buttonDown";
                 break;
         }
-        GTWidget::click(os, GTWidget::findExactWidget<QToolButton*>(os, buttonName));
+        GTWidget::click(os, GTWidget::findToolButton(os, buttonName));
     }
 }
 
@@ -249,7 +249,7 @@ void TrimmomaticDialogFiller::removeSteps() {
 
         GTListWidget::click(os, listSteps, stepString, Qt::LeftButton, step.second);
 
-        GTWidget::click(os, GTWidget::findExactWidget<QToolButton*>(os, "buttonRemove"));
+        GTWidget::click(os, GTWidget::findToolButton(os, "buttonRemove"));
     }
 }
 

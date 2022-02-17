@@ -1307,9 +1307,9 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
             //    >seq_name3
             //    TTTT
             const QString data = ">seq_name1\n>seq_name2\nCCCC\n>seq_name3\nTTTT";
-            GTPlainTextEdit::setPlainText(os, GTWidget::findExactWidget<QPlainTextEdit*>(os, "sequenceEdit", dialog), data);
+            GTPlainTextEdit::setPlainText(os, GTWidget::findPlainTextEdit(os, "sequenceEdit", dialog), data);
 
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "filepathEdit", dialog), sandBoxDir + "test_0018.fa");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "filepathEdit", dialog), sandBoxDir + "test_0018.fa");
 
             //    3. Specify a created document location and press the "Create" button in the dialog.
             //    Expected state: a message box appears, dialog is not accepted.

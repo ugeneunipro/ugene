@@ -82,7 +82,7 @@ void ConstructMoleculeDialogFiller::invertAddedFragment(const QVariant& actionDa
     GT_CHECK(actionData.canConvert<QString>(), "Can't get a fragment name's part from the action data");
     GTGlobals::FindOptions options;
     options.matchPolicy = Qt::MatchContains;
-    GTTreeWidget::checkItem(os, GTTreeWidget::findItem(os, GTWidget::findExactWidget<QTreeWidget*>(os, "molConstructWidget", dialog), actionData.toString(), nullptr, 1, options), 3);
+    GTTreeWidget::checkItem(os, GTTreeWidget::findItem(os, GTWidget::findTreeWidget(os, "molConstructWidget", dialog), actionData.toString(), nullptr, 1, options), 3);
 }
 #undef GT_METHOD_NAME
 

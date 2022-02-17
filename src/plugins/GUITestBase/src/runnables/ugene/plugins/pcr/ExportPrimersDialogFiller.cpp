@@ -58,10 +58,10 @@ QWidget* ExportPrimersDialogFiller::getDialog(HI::GUITestOpStatus& os) {
 void ExportPrimersDialogFiller::setExportTarget(HI::GUITestOpStatus& os, ExportPrimersDialogFiller::ExportTarget exportTarget) {
     switch (exportTarget) {
         case LocalFile:
-            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "cbExport", getDialog(os)), "Local file");
+            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "cbExport", getDialog(os)), "Local file");
             break;
         case SharedDb:
-            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "cbExport", getDialog(os)), "Shared database");
+            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "cbExport", getDialog(os)), "Shared database");
             break;
         default:
             os.setError("Unexpected export target");
@@ -71,20 +71,19 @@ void ExportPrimersDialogFiller::setExportTarget(HI::GUITestOpStatus& os, ExportP
 
 #define GT_METHOD_NAME "setFormat"
 void ExportPrimersDialogFiller::setFormat(HI::GUITestOpStatus& os, const QString& format) {
-    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "cbFormat", getDialog(os)), format);
+    GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "cbFormat", getDialog(os)), format);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setFilePath"
 void ExportPrimersDialogFiller::setFilePath(HI::GUITestOpStatus& os, const QString& filePath) {
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "leFilePath", getDialog(os)), filePath);
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leFilePath", getDialog(os)), filePath);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setDatabase"
 void ExportPrimersDialogFiller::setDatabase(HI::GUITestOpStatus& os, const QString& database) {
-    QComboBox* cbDatabase = GTWidget::findExactWidget<QComboBox*>(os, "cbDatabase", getDialog(os));
-    GT_CHECK(nullptr != cbDatabase, "Database combobox is NULL");
+    auto cbDatabase = GTWidget::findComboBox(os, "cbDatabase", getDialog(os));
     if (-1 == cbDatabase->findText(database)) {
         QList<SharedConnectionsDialogFiller::Action> actions;
         actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::CLICK, database);
@@ -99,7 +98,7 @@ void ExportPrimersDialogFiller::setDatabase(HI::GUITestOpStatus& os, const QStri
 
 #define GT_METHOD_NAME "setFolder"
 void ExportPrimersDialogFiller::setFolder(HI::GUITestOpStatus& os, const QString& folder) {
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "leFolder", getDialog(os)), folder);
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leFolder", getDialog(os)), folder);
 }
 #undef GT_METHOD_NAME
 

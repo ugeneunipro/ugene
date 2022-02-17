@@ -189,7 +189,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTWidget::click(os, GTUtilsPcr::browseButton(os, U2Strand::Direct));
 
     // Expected: the dialog is closed, the chosen primer sequence is in the forward primer line edit.
-    QLineEdit* primerEdit = GTWidget::findExactWidget<QLineEdit*>(os, "primerEdit", GTUtilsPcr::primerBox(os, U2Strand::Direct));
+    auto primerEdit = GTWidget::findLineEdit(os, "primerEdit", GTUtilsPcr::primerBox(os, U2Strand::Direct));
     CHECK_SET_ERR(primerEdit->text() == "AAAAAAAAAAAAAA", "Wrong primer");
 }
 
