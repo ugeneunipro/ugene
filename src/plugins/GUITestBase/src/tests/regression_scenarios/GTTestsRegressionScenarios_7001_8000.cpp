@@ -2245,9 +2245,11 @@ GUI_TEST_CLASS_DEFINITION(test_7556) {
             CHECK_SET_ERR(!ancestralReconstructionCheckBox->isChecked(), "ancestralReconstructionCheckBox is not unchecked");
 
             // Set text with parameters and check the widgets are updated
-            GTPlainTextEdit::setPlainText(os, extraParametersTextEdit, "-m TEST -bb 1000");
+            GTPlainTextEdit::setPlainText(os, extraParametersTextEdit, "-m TEST -bb 1000 -alrt 1002 -asr");
             CHECK_SET_ERR(substModelEdit->text() == "TEST", "substModelEdit is not updated");
             CHECK_SET_ERR(ultrafastBootstrapEdit->text() == "1000", "ultrafastBootstrapEdit is not updated");
+            CHECK_SET_ERR(alrtEdit->text() == "1002", "alrtEdit is not updated");
+            CHECK_SET_ERR(ancestralReconstructionCheckBox->isChecked(), "ancestralReconstructionCheckBox is not checked");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }

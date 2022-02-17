@@ -200,10 +200,12 @@ DNAChromatogram DNAChromatogramSerializer::deserialize(const QByteArray& binary,
 /* NewickPhyTreeSerializer */
 /************************************************************************/
 namespace {
-enum ReadState { RS_NAME,
-                 RS_WEIGHT,
-                 RS_QUOTED_NAME,
-                 RS_NAME_OR_WEIGHT };
+enum ReadState {
+    RS_NAME,
+    RS_WEIGHT,
+    RS_QUOTED_NAME,
+    RS_AFTER_CLOSING_BRACE
+};
 
 void packTreeNode(QString& resultText, const PhyNode* node, U2OpStatus& os) {
     int branchCount = node->branchCount();
@@ -290,8 +292,8 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapterReader& reader, U2Op
             }
             // use cached value
 
-            if (state == RS_NAME_OR_WEIGHT) {
-                state = ch == ':' ? RS_WEIGHT : RS_NAME;
+            if (state == RS_AFTER_CLOSING_BRACE) {
+                state = ch == ':' && lastStr.isEmpty() ? RS_WEIGHT : RS_NAME;
             }
 
             if (ch == '\'') {
@@ -372,7 +374,7 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapterReader& reader, U2Op
                 }
                 CHECK_EXT_BREAK(!branchStack.isEmpty(), si.setError(DatatypeSerializers::tr("Branch node stack is empty")));
                 branchStack.pop();
-                state = RS_NAME_OR_WEIGHT;
+                state = RS_AFTER_CLOSING_BRACE;
             } else if (ch == ';') {
                 if (!branchStack.isEmpty() || nodeStack.size() != 1) {
                     si.setError(DatatypeSerializers::tr("Unexpected end of file"));
