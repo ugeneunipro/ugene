@@ -417,18 +417,21 @@ GUI_TEST_CLASS_DEFINITION(test_4034) {
 
 GUI_TEST_CLASS_DEFINITION(test_4035) {
     // 1. Open "data/samples/CLUSTALW/COI.aln".
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // 2. Click the "Build tree" button on the main toolbar.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFillerPhyML(os, false, 10));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
 
-    // 3. Select the "PhyML" tool, set "Bootstrap" option to 10, build the tree
+    // 3. Select the "PhyML" tool, set "Bootstrap" option to 10, build the tree.
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    int labelsCount = GTUtilsPhyTree::getDistances(os).count();
-    CHECK_SET_ERR(labelsCount == 49, QString("Number of distances is incorrect: %1").arg(labelsCount));
+    QList<double> distances = GTUtilsPhyTree::getDistancesValues(os);
+    QList<double> expectedDistances = {0.456, 0.008, 0.227, 0.769, 1.186, 0.277, 0, 0.539, 100};  // Some values from the file.
+    for (double expectedDistance : qAsConst(expectedDistances)) {
+        CHECK_SET_ERR(distances.contains(expectedDistance), QString("Distances not found: %1").arg(expectedDistance));
+    }
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4036) {
@@ -4605,7 +4608,6 @@ GUI_TEST_CLASS_DEFINITION(test_4728) {
 
     // 2. Select all sequence by mouse
     ADVSingleSequenceWidget* seqWidget = GTUtilsSequenceView::getSeqWidgetByNumber(os);
-    CHECK_SET_ERR(nullptr != seqWidget, "Can not find ADVSingleSequenceWidget");
 
     QPoint startPos, endPos;
     int indent = 50;
