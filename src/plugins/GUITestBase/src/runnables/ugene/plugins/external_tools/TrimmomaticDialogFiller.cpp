@@ -74,7 +74,7 @@ const QMap<TrimmomaticDialogFiller::TrimmomaticValues, QString> TrimmomaticDialo
 
 void TrimmomaticDialogFiller::openDialog(HI::GUITestOpStatus& os, WorkflowProcessItem* trimmomaticElement) {
     GTUtilsWorkflowDesigner::click(os, trimmomaticElement);
-    QTableView* table = GTWidget::findExactWidget<QTableView*>(os, "table");
+    auto table = GTWidget::findTableView(os, "table");
     GTMouseDriver::moveTo(GTTableView::getCellPoint(os, table, 1, 1));
     GTMouseDriver::click();
     GTGlobals::sleep();

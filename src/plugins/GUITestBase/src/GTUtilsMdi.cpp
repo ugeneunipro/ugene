@@ -216,7 +216,7 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus& os) {
 bool GTUtilsMdi::isTabbedLayout(HI::GUITestOpStatus& os) {
     MainWindow* mainWindow = AppContext::getMainWindow();
     GT_CHECK_RESULT(mainWindow != nullptr, "MainWindow == NULL", false);
-    QMdiArea* mdiArea = GTWidget::findExactWidget<QMdiArea*>(os, "MDI_Area", mainWindow->getQMainWindow());
+    auto mdiArea = GTWidget::findMdiArea(os, "MDI_Area", mainWindow->getQMainWindow());
     GT_CHECK_RESULT(mdiArea != nullptr, "mdiArea == NULL", false);
     return mdiArea->viewMode() == QMdiArea::TabbedView;
 }
@@ -390,8 +390,7 @@ QTabBar* GTUtilsMdi::getTabBar(HI::GUITestOpStatus& os) {
     MainWindow* mainWindow = AppContext::getMainWindow();
     GT_CHECK_RESULT(mainWindow != nullptr, "MainWindow == nullptr", nullptr);
 
-    QMdiArea* mdiArea = GTWidget::findExactWidget<QMdiArea*>(os, "MDI_Area", mainWindow->getQMainWindow());
-    GT_CHECK_RESULT(mdiArea != nullptr, "mdiArea == nullptr", nullptr);
+    auto mdiArea = GTWidget::findMdiArea(os, "MDI_Area", mainWindow->getQMainWindow());
 
     QTabBar* tabBar = mdiArea->findChild<QTabBar*>("", Qt::FindDirectChildrenOnly);
     GT_CHECK_RESULT(tabBar != nullptr, "MDI tabbar not found", nullptr);

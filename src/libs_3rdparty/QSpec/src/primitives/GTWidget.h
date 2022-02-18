@@ -50,6 +50,8 @@
 #include <QTreeView>
 #include <QTreeWidget>
 #include <QWidget>
+#include <QMdiArea>
+#include <QTextBrowser>
 
 #include "GTGlobals.h"
 #include "GTMainWindow.h"
@@ -202,6 +204,18 @@ public:
 
     /** Calls findExactWidget with QLabel type. Shortcut method. */
     static QLabel* findLabel(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget = nullptr, const GTGlobals::FindOptions& options = {});
+
+    /** Calls findExactWidget with QMdiArea type. Shortcut method. */
+    static QMdiArea* findMdiArea(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget = nullptr, const GTGlobals::FindOptions& options = {});
+
+    /** Calls findExactWidget with QScrollArea type. Shortcut method. */
+    static QScrollArea* findScrollArea(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget = nullptr, const GTGlobals::FindOptions& options = {});
+
+    /** Calls findExactWidget with QTextBrowser type. Shortcut method. */
+    static QTextBrowser* findTextBrowser(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget = nullptr, const GTGlobals::FindOptions& options = {});
+
+    /** Calls findExactWidget with QTableView type. Shortcut method. */
+    static QTableView* findTableView(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget = nullptr, const GTGlobals::FindOptions& options = {});
 
 #define GT_METHOD_NAME "findWidgetByType"
     /** Finds a child widget with the given type. Fails is widget can't be found. */

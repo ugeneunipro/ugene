@@ -26,8 +26,10 @@
 #include <QDesktopWidget>
 #include <QDoubleSpinBox>
 #include <QGuiApplication>
+#include <QMdiArea>
 #include <QScrollBar>
 #include <QStyle>
+#include <QTextBrowser>
 
 #include "drivers/GTMouseDriver.h"
 #include "utils/GTThread.h"
@@ -205,6 +207,21 @@ QLabel* GTWidget::findLabel(GUITestOpStatus& os, const QString& widgetName, QWid
     return findExactWidget<QLabel*>(os, widgetName, parentWidget, options);
 }
 
+QMdiArea* GTWidget::findMdiArea(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QMdiArea*>(os, widgetName, parentWidget, options);
+}
+
+QScrollArea* GTWidget::findScrollArea(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QScrollArea*>(os, widgetName, parentWidget, options);
+}
+
+QTextBrowser* GTWidget::findTextBrowser(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QTextBrowser*>(os, widgetName, parentWidget, options);
+}
+
+QTableView* GTWidget::findTableView(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QTableView*>(os, widgetName, parentWidget, options);
+}
 QPoint GTWidget::getWidgetCenter(QWidget* widget) {
     return widget->mapToGlobal(widget->rect().center());
 }
