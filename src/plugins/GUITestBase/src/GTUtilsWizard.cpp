@@ -226,7 +226,7 @@ QString GTUtilsWizard::getPageTitle(HI::GUITestOpStatus& os) {
     QWizard* wizard = qobject_cast<QWizard*>(dialog);
     GT_CHECK_RESULT(wizard, "activeModalWidget is not wizard", QString());
 
-    QLabel* pageTitle = GTWidget::findExactWidget<QLabel*>(os, "pageTitle", wizard->currentPage());
+    auto pageTitle = GTWidget::findLabel(os, "pageTitle", wizard->currentPage());
     return pageTitle->text();
 }
 #undef GT_METHOD_NAME

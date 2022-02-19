@@ -34,7 +34,7 @@ namespace U2 {
 void SetSequenceOriginDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QSpinBox* seqOriginBox = GTWidget::findExactWidget<QSpinBox*>(os, "seqOriginBox", dialog);
+    auto seqOriginBox = GTWidget::findSpinBox(os, "seqOriginBox", dialog);
     GTSpinBox::setValue(os, seqOriginBox, start, GTGlobals::UseKeyBoard);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

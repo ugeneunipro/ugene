@@ -144,7 +144,7 @@ bool GTUtilsOptionPanelSequenceView::checkResultsText(HI::GUITestOpStatus& os, Q
 
 #define GT_METHOD_NAME "setSearchWithAmbiguousBases"
 void GTUtilsOptionPanelSequenceView::setSearchWithAmbiguousBases(HI::GUITestOpStatus& os, bool searchWithAmbiguousBases) {
-    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "useAmbiguousBasesBox"), searchWithAmbiguousBases);
+    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "useAmbiguousBasesBox"), searchWithAmbiguousBases);
 }
 #undef GT_METHOD_NAME
 
@@ -202,13 +202,13 @@ void GTUtilsOptionPanelSequenceView::toggleCircularView(HI::GUITestOpStatus& os)
 
 #define GT_METHOD_NAME "setTitleFontSize"
 void GTUtilsOptionPanelSequenceView::setTitleFontSize(HI::GUITestOpStatus& os, int fontSize) {
-    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "fontSizeSpinBox"), fontSize);
+    GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "fontSizeSpinBox"), fontSize);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getTitleFontSize"
 int GTUtilsOptionPanelSequenceView::getTitleFontSize(HI::GUITestOpStatus& os) {
-    return GTSpinBox::getValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "fontSizeSpinBox", GTUtilsSequenceView::getActiveSequenceViewWindow(os)));
+    return GTSpinBox::getValue(os, GTWidget::findSpinBox(os, "fontSizeSpinBox", GTUtilsSequenceView::getActiveSequenceViewWindow(os)));
 }
 #undef GT_METHOD_NAME
 
@@ -217,7 +217,7 @@ void GTUtilsOptionPanelSequenceView::setForwardPrimer(HI::GUITestOpStatus& os, c
     openTab(os, InSilicoPcr);
     QWidget* primerContainer = GTWidget::findWidget(os, "forwardPrimerBox");
     GT_CHECK(nullptr != primerContainer, "Forward primer container widget is NULL");
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "primerEdit", primerContainer), primer);
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "primerEdit", primerContainer), primer);
 }
 #undef GT_METHOD_NAME
 
@@ -227,7 +227,7 @@ void GTUtilsOptionPanelSequenceView::setForwardPrimerMismatches(HI::GUITestOpSta
     QWidget* primerContainer = GTWidget::findWidget(os, "forwardPrimerBox");
     GT_CHECK(nullptr != primerContainer, "Forward primer container widget is NULL");
 
-    QSpinBox* mismatchesSpinBox = GTWidget::findExactWidget<QSpinBox*>(os, "mismatchesSpinBox", primerContainer);
+    auto mismatchesSpinBox = GTWidget::findSpinBox(os, "mismatchesSpinBox", primerContainer);
     GT_CHECK(nullptr != primerContainer, "Forward primer mismatches SpinBox is NULL");
 
     GTSpinBox::setValue(os, mismatchesSpinBox, mismatches, GTGlobals::UseKey);
@@ -239,7 +239,7 @@ void GTUtilsOptionPanelSequenceView::setReversePrimer(HI::GUITestOpStatus& os, c
     openTab(os, InSilicoPcr);
     QWidget* primerContainer = GTWidget::findWidget(os, "reversePrimerBox");
     GT_CHECK(nullptr != primerContainer, "Reverse primer container widget is NULL");
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "primerEdit", primerContainer), primer);
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "primerEdit", primerContainer), primer);
 }
 #undef GT_METHOD_NAME
 
@@ -249,8 +249,7 @@ void GTUtilsOptionPanelSequenceView::setReversePrimerMismatches(HI::GUITestOpSta
     QWidget* primerContainer = GTWidget::findWidget(os, "reversePrimerBox");
     GT_CHECK(nullptr != primerContainer, "Reverse primer container widget is NULL");
 
-    QSpinBox* mismatchesSpinBox = GTWidget::findExactWidget<QSpinBox*>(os, "mismatchesSpinBox", primerContainer);
-    GT_CHECK(nullptr != primerContainer, "Reverse primer mismatches SpinBox is NULL");
+    auto mismatchesSpinBox = GTWidget::findSpinBox(os, "mismatchesSpinBox", primerContainer);
 
     GTSpinBox::setValue(os, mismatchesSpinBox, mismatches, GTGlobals::UseKey);
 }
@@ -425,15 +424,15 @@ void GTUtilsOptionPanelSequenceView::setStrand(HI::GUITestOpStatus& os, QString 
 #define GT_METHOD_NAME "setRegionType"
 void GTUtilsOptionPanelSequenceView::setRegionType(HI::GUITestOpStatus& os, const QString& regionType) {
     openSearchInShowHideWidget(os);
-    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "boxRegion"), regionType);
+    GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "boxRegion"), regionType);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setRegion"
 void GTUtilsOptionPanelSequenceView::setRegion(HI::GUITestOpStatus& os, int from, int to) {
     openSearchInShowHideWidget(os);
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "editStart"), QString::number(from));
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "editEnd"), QString::number(to));
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "editStart"), QString::number(from));
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "editEnd"), QString::number(to));
 }
 #undef GT_METHOD_NAME
 
@@ -471,8 +470,7 @@ int GTUtilsOptionPanelSequenceView::getMatchPercentage(HI::GUITestOpStatus& os) 
 #define GT_METHOD_NAME "getRegionType"
 QString GTUtilsOptionPanelSequenceView::getRegionType(HI::GUITestOpStatus& os) {
     openSearchInShowHideWidget(os);
-    QComboBox* cbRegionType = GTWidget::findExactWidget<QComboBox*>(os, "boxRegion");
-    GT_CHECK_RESULT(nullptr != cbRegionType, "Region type combobox is NULL", "");
+    QComboBox* cbRegionType = GTWidget::findComboBox(os, "boxRegion");
     return cbRegionType->currentText();
 }
 #undef GT_METHOD_NAME
@@ -482,8 +480,8 @@ QPair<int, int> GTUtilsOptionPanelSequenceView::getRegion(HI::GUITestOpStatus& o
     openSearchInShowHideWidget(os);
 
     QPair<int, int> result;
-    QLineEdit* leRegionStart = GTWidget::findExactWidget<QLineEdit*>(os, "editStart");
-    QLineEdit* leRegionEnd = GTWidget::findExactWidget<QLineEdit*>(os, "editEnd");
+    auto leRegionStart = GTWidget::findLineEdit(os, "editStart");
+    auto leRegionEnd = GTWidget::findLineEdit(os, "editEnd");
 
     bool ok = false;
     const int regionStart = leRegionStart->text().toInt(&ok);
@@ -514,7 +512,7 @@ void GTUtilsOptionPanelSequenceView::setMatchPercentage(HI::GUITestOpStatus& os,
 #define GT_METHOD_NAME "setUsePatternName"
 void GTUtilsOptionPanelSequenceView::setUsePatternName(HI::GUITestOpStatus& os, bool setChecked) {
     openAnnotationParametersShowHideWidget(os);
-    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "chbUsePatternNames"), setChecked);
+    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "chbUsePatternNames"), setChecked);
 }
 #undef GT_METHOD_NAME
 

@@ -35,14 +35,13 @@ namespace U2 {
 #define GT_METHOD_NAME "getStatusWidget"
 QWidget* GTUtilsMcaEditorStatusWidget::getStatusWidget(GUITestOpStatus& os) {
     QWidget* editor = GTUtilsMcaEditor::getEditorUi(os);
-    return GTWidget::findExactWidget<QWidget*>(os, "mca_editor_status_bar", editor);
+    return GTWidget::findWidget(os, "mca_editor_status_bar", editor);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getRowNumberString"
 QString GTUtilsMcaEditorStatusWidget::getRowNumberString(GUITestOpStatus& os) {
-    QLabel* lineLabel = GTWidget::findExactWidget<QLabel*>(os, "Line", getStatusWidget(os));
-    GT_CHECK_RESULT(lineLabel != nullptr, "Line label is NULL", "-1");
+    auto lineLabel = GTWidget::findLabel(os, "Line", getStatusWidget(os));
 
     const QString labelText = lineLabel->text();
     return labelText.mid(QString("Ln ").length() - 1).section('/', 0, 0).trimmed();
@@ -63,8 +62,7 @@ int GTUtilsMcaEditorStatusWidget::getRowNumber(GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "getRowsCountString"
 QString GTUtilsMcaEditorStatusWidget::getRowsCountString(GUITestOpStatus& os) {
-    QLabel* lineLabel = GTWidget::findExactWidget<QLabel*>(os, "Line", getStatusWidget(os));
-    GT_CHECK_RESULT(lineLabel != nullptr, "Line label is NULL", "-1");
+    auto lineLabel = GTWidget::findLabel(os, "Line", getStatusWidget(os));
 
     const QString labelText = lineLabel->text();
     return labelText.mid(QString("Ln ").length() - 1).section('/', 1, 1).trimmed();
@@ -85,8 +83,7 @@ int GTUtilsMcaEditorStatusWidget::getRowsCount(GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "getReferenceUngappedPositionString"
 QString GTUtilsMcaEditorStatusWidget::getReferenceUngappedPositionString(GUITestOpStatus& os) {
-    QLabel* columnLabel = GTWidget::findExactWidget<QLabel*>(os, "Column", getStatusWidget(os));
-    GT_CHECK_RESULT(columnLabel != nullptr, "Column label is NULL", "-1");
+    auto columnLabel = GTWidget::findLabel(os, "Column", getStatusWidget(os));
 
     const QString labelText = columnLabel->text();
     return labelText.mid(QString("RefPos ").length() - 1).section('/', 0, 0).trimmed();
@@ -107,8 +104,7 @@ int GTUtilsMcaEditorStatusWidget::getReferenceUngappedPosition(GUITestOpStatus& 
 
 #define GT_METHOD_NAME "getReferenceUngappedLengthString"
 QString GTUtilsMcaEditorStatusWidget::getReferenceUngappedLengthString(GUITestOpStatus& os) {
-    QLabel* columnLabel = GTWidget::findExactWidget<QLabel*>(os, "Column", getStatusWidget(os));
-    GT_CHECK_RESULT(columnLabel != nullptr, "Column label is NULL", "-1");
+    auto columnLabel = GTWidget::findLabel(os, "Column", getStatusWidget(os));
 
     const QString labelText = columnLabel->text();
     return labelText.mid(QString("RefPos ").length() - 1).section('/', 1, 1).trimmed();
@@ -135,8 +131,7 @@ bool GTUtilsMcaEditorStatusWidget::isGapInReference(GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "getReadUngappedPositionString"
 QString GTUtilsMcaEditorStatusWidget::getReadUngappedPositionString(GUITestOpStatus& os) {
-    QLabel* positionLabel = GTWidget::findExactWidget<QLabel*>(os, "Position", getStatusWidget(os));
-    GT_CHECK_RESULT(positionLabel != nullptr, "Position label is NULL", "-1");
+    auto positionLabel = GTWidget::findLabel(os, "Position", getStatusWidget(os));
 
     const QString labelText = positionLabel->text();
     return labelText.mid(QString("ReadPos ").length() - 1).section('/', 0, 0).trimmed();
@@ -157,8 +152,7 @@ int GTUtilsMcaEditorStatusWidget::getReadUngappedPosition(GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "getReadUngappedLengthString"
 QString GTUtilsMcaEditorStatusWidget::getReadUngappedLengthString(GUITestOpStatus& os) {
-    QLabel* positionLabel = GTWidget::findExactWidget<QLabel*>(os, "Position", getStatusWidget(os));
-    GT_CHECK_RESULT(positionLabel != nullptr, "Position label is NULL", "-1");
+    auto positionLabel = GTWidget::findLabel(os, "Position", getStatusWidget(os));
 
     const QString labelText = positionLabel->text();
     return labelText.mid(QString("ReadPos ").length() - 1).section('/', 1, 1).trimmed();

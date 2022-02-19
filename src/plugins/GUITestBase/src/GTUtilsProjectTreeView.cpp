@@ -399,7 +399,7 @@ void GTUtilsProjectTreeView::filterProject(HI::GUITestOpStatus& os, const QStrin
 #ifdef Q_OS_DARWIN
     GTGlobals::sleep(3000);
 #endif
-    QLineEdit* nameFilterEdit = GTWidget::findExactWidget<QLineEdit*>(os, "nameFilterEdit");
+    auto nameFilterEdit = GTWidget::findLineEdit(os, "nameFilterEdit");
     GTLineEdit::setText(os, nameFilterEdit, searchField);
     GTGlobals::sleep(3000);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -409,7 +409,7 @@ void GTUtilsProjectTreeView::filterProject(HI::GUITestOpStatus& os, const QStrin
 #define GT_METHOD_NAME "filterProjectSequental"
 void GTUtilsProjectTreeView::filterProjectSequental(HI::GUITestOpStatus& os, const QStringList& searchField, bool waitUntilSearchEnd) {
     openView(os);
-    QLineEdit* nameFilterEdit = GTWidget::findExactWidget<QLineEdit*>(os, "nameFilterEdit");
+    auto nameFilterEdit = GTWidget::findLineEdit(os, "nameFilterEdit");
     foreach (const QString& str, searchField) {
         GTLineEdit::setText(os, nameFilterEdit, str);
         GTGlobals::sleep(3000);
@@ -695,7 +695,7 @@ void GTUtilsProjectTreeView::expandProjectView(HI::GUITestOpStatus& os) {
         }
         QSplitter* splitter = nullptr;
     };
-    auto splitter = GTWidget::findExactWidget<QSplitter*>(os, "splitter", GTWidget::findWidget(os, "project_view"));
+    auto splitter = GTWidget::findSplitter(os, "splitter", GTWidget::findWidget(os, "project_view"));
     GTThread::runInMainThread(os, new SetSizesScenario(splitter));
 }
 

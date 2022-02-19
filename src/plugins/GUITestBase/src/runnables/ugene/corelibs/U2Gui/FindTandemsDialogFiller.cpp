@@ -52,7 +52,7 @@ void FindTandemsDialogFiller::commonScenario() {
         return;
     }
 
-    GTTabWidget::clickTab(os, GTWidget::findExactWidget<QTabWidget*>(os, "tabWidget"), 1);
+    GTTabWidget::clickTab(os, GTWidget::findTabWidget(os, "tabWidget"), 1);
     GTGlobals::sleep(100);
 
     QLineEdit* resultLocationEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "leNewTablePath", dialog));

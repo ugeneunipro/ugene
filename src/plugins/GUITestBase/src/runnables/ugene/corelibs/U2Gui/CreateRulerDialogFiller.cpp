@@ -46,10 +46,10 @@ CreateRulerDialogFiller::CreateRulerDialogFiller(GUITestOpStatus& os, CustomScen
 void CreateRulerDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit* nameEdit = GTWidget::findExactWidget<QLineEdit*>(os, "nameEdit", dialog);
+    auto nameEdit = GTWidget::findLineEdit(os, "nameEdit", dialog);
     GTLineEdit::setText(os, nameEdit, rulerName);
 
-    QSpinBox* spinBox = GTWidget::findExactWidget<QSpinBox*>(os, "spinBox", dialog);
+    auto spinBox = GTWidget::findSpinBox(os, "spinBox", dialog);
     GTSpinBox::setValue(os, spinBox, startPos, GTGlobals::UseKeyBoard);
 
     GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);

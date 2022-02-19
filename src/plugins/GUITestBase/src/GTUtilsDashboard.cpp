@@ -101,7 +101,7 @@ ExternalToolsTreeNode* GTUtilsDashboard::getExternalToolNodeByText(GUITestOpStat
 #undef GT_METHOD_NAME
 
 QTabWidget* GTUtilsDashboard::getTabWidget(HI::GUITestOpStatus& os) {
-    return GTWidget::findExactWidget<QTabWidget*>(os, "WorkflowTabView", GTUtilsMdi::activeWindow(os));
+    return GTWidget::findTabWidget(os, "WorkflowTabView", GTUtilsMdi::activeWindow(os));
 }
 
 QToolButton* GTUtilsDashboard::findLoadSchemaButton(HI::GUITestOpStatus& os) {
@@ -251,8 +251,7 @@ void GTUtilsDashboard::openTab(HI::GUITestOpStatus& os, Tabs tab) {
     GT_CHECK(dashboard != nullptr, "Dashboard widget not found");
 
     QString tabButtonObjectName = getTabObjectName(tab);
-    QToolButton* tabButton = GTWidget::findExactWidget<QToolButton*>(os, tabButtonObjectName, dashboard);
-    GT_CHECK(tabButton != nullptr, "Tab button not found: " + tabButtonObjectName);
+    auto tabButton = GTWidget::findToolButton(os, tabButtonObjectName, dashboard);
 
     GTWidget::click(os, tabButton);
 }

@@ -86,8 +86,7 @@ QPoint GTUtilsPcr::getDetailsPoint(HI::GUITestOpStatus& os) {
 }
 
 QString GTUtilsPcr::getPrimerInfo(GUITestOpStatus& os, U2Strand::Direction direction) {
-    QLabel* primerInfo = GTWidget::findExactWidget<QLabel*>(os, "characteristicsLabel", GTWidget::findWidget(os, direction == U2Strand::Direct ? "forwardPrimerBox" : "reversePrimerBox"));
-    CHECK_SET_ERR_RESULT(primerInfo != nullptr, "Cannot find primer info label", QString());
+    auto primerInfo = GTWidget::findLabel(os, "characteristicsLabel", GTWidget::findWidget(os, direction == U2Strand::Direct ? "forwardPrimerBox" : "reversePrimerBox"));
     return primerInfo->text();
 }
 

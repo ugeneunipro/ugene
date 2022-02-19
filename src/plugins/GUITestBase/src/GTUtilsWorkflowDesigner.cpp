@@ -666,9 +666,9 @@ QTreeWidget* GTUtilsWorkflowDesigner::getCurrentTabTreeWidget(HI::GUITestOpStatu
     QWidget* wdWindow = getActiveWorkflowDesignerWindow(os);
     switch (currentTab(os)) {
         case algorithms:
-            return GTWidget::findExactWidget<QTreeWidget*>(os, "WorkflowPaletteElements", wdWindow);
+            return GTWidget::findTreeWidget(os, "WorkflowPaletteElements", wdWindow);
         case samples:
-            return GTWidget::findExactWidget<QTreeWidget*>(os, "samples", wdWindow);
+            return GTWidget::findTreeWidget(os, "samples", wdWindow);
         default:
             os.setError("An unexpected current tab");
             return nullptr;
@@ -687,8 +687,8 @@ void GTUtilsWorkflowDesigner::toggleDebugMode(HI::GUITestOpStatus& os, bool enab
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-            GTTreeWidget::click(os, GTTreeWidget::findItem(os, GTWidget::findExactWidget<QTreeWidget*>(os, "tree"), "  Workflow Designer"));
-            GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "debuggerBox"), enable);
+            GTTreeWidget::click(os, GTTreeWidget::findItem(os, GTWidget::findTreeWidget(os, "tree"), "  Workflow Designer"));
+            GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "debuggerBox"), enable);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -719,7 +719,7 @@ void GTUtilsWorkflowDesigner::setBreakpoint(HI::GUITestOpStatus& os, const QStri
 #define GT_METHOD_NAME "getBreakpointList"
 QStringList GTUtilsWorkflowDesigner::getBreakpointList(HI::GUITestOpStatus& os) {
     QWidget* wdWindow = getActiveWorkflowDesignerWindow(os);
-    return GTTreeWidget::getItemNames(os, GTWidget::findExactWidget<QTreeWidget*>(os, "breakpoints list", wdWindow));
+    return GTTreeWidget::getItemNames(os, GTWidget::findTreeWidget(os, "breakpoints list", wdWindow));
 }
 #undef GT_METHOD_NAME
 
@@ -901,7 +901,7 @@ QWidget* GTUtilsWorkflowDesigner::getDatasetsListWidget(GUITestOpStatus& os) {
 #define GT_METHOD_NAME "getCurrentDatasetWidget"
 QWidget* GTUtilsWorkflowDesigner::getCurrentDatasetWidget(GUITestOpStatus& os) {
     QWidget* wdWindow = getActiveWorkflowDesignerWindow(os);
-    QTabWidget* datasetsTabWidget = GTWidget::findExactWidget<QTabWidget*>(os, "DatasetsTabWidget", wdWindow);
+    auto datasetsTabWidget = GTWidget::findTabWidget(os, "DatasetsTabWidget", wdWindow);
     return datasetsTabWidget->currentWidget();
 }
 #undef GT_METHOD_NAME
@@ -1081,7 +1081,7 @@ void GTUtilsWorkflowDesigner::setCellValue(HI::GUITestOpStatus& os, QWidget* par
             break;
         }
         case (lineEditWithFileSelector): {
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "mainWidget", parent), value.toString());
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "mainWidget", parent), value.toString());
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
             break;
         }
@@ -1492,8 +1492,7 @@ int GTUtilsWorkflowDesigner::checkErrorList(HI::GUITestOpStatus& os, QString err
 #define GT_METHOD_NAME "getErrors"
 QStringList GTUtilsWorkflowDesigner::getErrors(GUITestOpStatus& os) {
     QWidget* wdWindow = getActiveWorkflowDesignerWindow(os);
-    QListWidget* w = GTWidget::findExactWidget<QListWidget*>(os, "infoList", wdWindow);
-    GT_CHECK_RESULT(w, "ErrorList widget not found", QStringList());
+    auto w = GTWidget::findListWidget(os, "infoList", wdWindow);
 
     QStringList errors;
     for (int i = 0; i < w->count(); i++) {
