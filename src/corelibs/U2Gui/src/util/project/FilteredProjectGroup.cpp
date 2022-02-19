@@ -40,10 +40,10 @@ const QList<GObject*> emptyObjList;
 /// WrappedObject
 //////////////////////////////////////////////////////////////////////////
 
-WrappedObject::WrappedObject(GObject* obj, FilteredProjectGroup* parentGroup)
-    : obj(obj), parentGroup(parentGroup) {
-    SAFE_POINT(nullptr != obj, L10N::nullPointerError("object"), );
-    SAFE_POINT(nullptr != parentGroup, L10N::nullPointerError("project filter group"), );
+WrappedObject::WrappedObject(GObject* _obj, FilteredProjectGroup* _parentGroup)
+    : obj(_obj), parentGroup(_parentGroup) {
+    SAFE_POINT(obj != nullptr, L10N::nullPointerError("object"), );
+    SAFE_POINT(parentGroup != nullptr, L10N::nullPointerError("project filter group"), );
 }
 
 GObject* WrappedObject::getObject() const {
@@ -103,7 +103,7 @@ int FilteredProjectGroup::getObjectsCount() const {
 }
 
 int FilteredProjectGroup::getNewObjectNumber(GObject* obj) const {
-    SAFE_POINT(nullptr != obj, L10N::nullPointerError("object"), -1);
+    SAFE_POINT(obj != nullptr, L10N::nullPointerError("object"), -1);
 
     WrappedObject testObject(obj, const_cast<FilteredProjectGroup*>(this));
     const QList<WrappedObject*>::const_iterator begin = filteredObjs.constBegin();
@@ -112,7 +112,7 @@ int FilteredProjectGroup::getNewObjectNumber(GObject* obj) const {
 }
 
 WrappedObject* FilteredProjectGroup::getWrappedObject(GObject* obj) const {
-    SAFE_POINT(nullptr != obj, L10N::nullPointerError("object"), nullptr);
+    SAFE_POINT(obj != nullptr, L10N::nullPointerError("object"), nullptr);
 
     foreach (WrappedObject* wrappedObj, filteredObjs) {
         if (wrappedObj->getObject() == obj) {

@@ -619,7 +619,7 @@ QList<GObject*> ProjectViewModel::getFolderObjects(Document* doc, const QString&
 }
 
 QString ProjectViewModel::getObjectFolder(Document* doc, GObject* obj) const {
-    SAFE_POINT(nullptr != doc, "NULL document", "");
+    SAFE_POINT(doc != nullptr, "NULL document", "");
     SAFE_POINT(folders.contains(doc), "Unknown document", "");
     return folders[doc]->getObjectFolder(obj);
 }

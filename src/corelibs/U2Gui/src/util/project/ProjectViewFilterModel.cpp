@@ -39,7 +39,7 @@ namespace U2 {
 
 ProjectViewFilterModel::ProjectViewFilterModel(ProjectViewModel* srcModel, const ProjectTreeControllerModeSettings& settings, QObject* p)
     : QAbstractItemModel(p), settings(settings), srcModel(srcModel) {
-    SAFE_POINT(nullptr != srcModel, L10N::nullPointerError("Project view model"), );
+    SAFE_POINT(srcModel != nullptr, L10N::nullPointerError("Project view model"), );
     connect(&filterController, SIGNAL(si_objectsFiltered(const QString&, const QList<QPointer<GObject>>&)), SLOT(sl_objectsFiltered(const QString&, const QList<QPointer<GObject>>&)));
     connect(&filterController, SIGNAL(si_filteringStarted()), SIGNAL(si_filteringStarted()));
     connect(&filterController, SIGNAL(si_filteringFinished()), SIGNAL(si_filteringFinished()));
@@ -58,7 +58,7 @@ QList<QPointer<Document>> getAllDocumentsSafely() {
     QList<QPointer<Document>> result;
 
     Project* proj = AppContext::getProject();
-    SAFE_POINT(nullptr != proj, L10N::nullPointerError("project"), result);
+    SAFE_POINT(proj != nullptr, L10N::nullPointerError("project"), result);
     foreach (Document* doc, proj->getDocuments()) {
         result.append(doc);
     }
@@ -80,14 +80,14 @@ void ProjectViewFilterModel::updateSettings(const ProjectTreeControllerModeSetti
 
 void ProjectViewFilterModel::addFilteredObject(const QString& filterGroupName, GObject* obj) {
     SAFE_POINT(!filterGroupName.isEmpty(), "Empty project filter group name", );
-    SAFE_POINT(nullptr != obj, L10N::nullPointerError("object"), );
+    SAFE_POINT(obj != nullptr, L10N::nullPointerError("object"), );
 
     if (!hasFilterGroup(filterGroupName)) {
         addFilterGroup(filterGroupName);
     }
 
     FilteredProjectGroup* group = findFilterGroup(filterGroupName);
-    SAFE_POINT(nullptr != group, L10N::nullPointerError("project filter group"), );
+    SAFE_POINT(group != nullptr, L10N::nullPointerError("project filter group"), );
 
 #ifdef _DEBUG
     SAFE_POINT(!group->contains(obj), "Attempting to add duplicate to a filter group", );
@@ -115,17 +115,18 @@ FilteredProjectGroup* ProjectViewFilterModel::findFilterGroup(const QString& nam
 }
 
 QModelIndex ProjectViewFilterModel::getIndexForGroup(FilteredProjectGroup* group) const {
-    const int groupRow = filterGroups.indexOf(group);
-    SAFE_POINT(-1 != groupRow, "Unexpected filter project group detected", QModelIndex());
+    SAFE_POINT(group != nullptr, "group is nullptr!", {});
+    int groupRow = filterGroups.indexOf(group);
+    SAFE_POINT(groupRow != -1, "Unexpected filter project group detected", QModelIndex());
     return createIndex(groupRow, 0, group);
 }
 
 QModelIndex ProjectViewFilterModel::getIndexForObject(const QString& groupName, GObject* obj) const {
     FilteredProjectGroup* group = findFilterGroup(groupName);
-    SAFE_POINT(nullptr != group, L10N::nullPointerError("project filter group"), QModelIndex());
+    SAFE_POINT(group != nullptr, L10N::nullPointerError("project filter group"), {});
 
     WrappedObject* wrappedObj = group->getWrappedObject(obj);
-    SAFE_POINT(nullptr != wrappedObj, L10N::nullPointerError("filtered object"), QModelIndex());
+    SAFE_POINT(wrappedObj != nullptr, L10N::nullPointerError("filtered object"), {});
     return createIndex(group->getWrappedObjectNumber(wrappedObj), 0, wrappedObj);
 }
 
@@ -135,19 +136,20 @@ void ProjectViewFilterModel::addFilterGroup(const QString& name) {
     SAFE_POINT(!hasFilterGroup(name), "Attempting to add a duplicate filter group", );
 #endif
 
-    FilteredProjectGroup* newGroup = new FilteredProjectGroup(name);
+    auto newGroup = new FilteredProjectGroup(name);
     QList<FilteredProjectGroup*>::iterator insertionPlace = std::upper_bound(filterGroups.begin(), filterGroups.end(), newGroup, FilteredProjectGroup::groupLessThan);
 
-    const int groupNumber = insertionPlace - filterGroups.begin();
+    int groupNumber = insertionPlace - filterGroups.begin();
     beginInsertRows(QModelIndex(), groupNumber, groupNumber);
     filterGroups.insert(insertionPlace, newGroup);
     endInsertRows();
 
-    emit si_filterGroupAdded(createIndex(groupNumber, 0, newGroup));
+    QModelIndex groupIndex = createIndex(groupNumber, 0, newGroup);
+    emit si_filterGroupAdded(groupIndex);
 }
 
 bool ProjectViewFilterModel::hasFilterGroup(const QString& name) const {
-    return nullptr != findFilterGroup(name);
+    return findFilterGroup(name) != nullptr;
 }
 
 void ProjectViewFilterModel::clearFilterGroups() {
@@ -192,25 +194,30 @@ int ProjectViewFilterModel::columnCount(const QModelIndex& /*parent*/) const {
 }
 
 void ProjectViewFilterModel::sl_objectsFiltered(const QString& groupName, const QList<QPointer<GObject>>& objs) {
-    foreach (const QPointer<GObject>& obj, objs) {
-        const QString objPath = srcModel->getObjectFolder(obj->getDocument(), obj.data());
-        if (!obj.isNull() && !ProjectUtils::isFolderInRecycleBinSubtree(objPath)) {
-            addFilteredObject(groupName, obj.data());
+    for (const QPointer<GObject>& obj : qAsConst(objs)) {
+        CHECK_CONTINUE(!obj.isNull());
+        QString objPath = srcModel->getObjectFolder(obj->getDocument(), obj);
+        if (!ProjectUtils::isFolderInRecycleBinSubtree(objPath)) {
+            addFilteredObject(groupName, obj);
         }
     }
 }
 
 QModelIndex ProjectViewFilterModel::index(int row, int column, const QModelIndex& parent) const {
     if (!parent.isValid()) {
-        CHECK(row < filterGroups.size(), QModelIndex());
+        CHECK(row < filterGroups.size(), {});
         return createIndex(row, column, filterGroups[row]);
     }
 
-    switch (getType(parent)) {
-        case GROUP:
-            return createIndex(row, column, toGroup(parent)->getWrappedObject(row));
+    ItemType parentType = getType(parent);
+    switch (parentType) {
+        case GROUP: {
+            FilteredProjectGroup* group = toGroup(parent);
+            SAFE_POINT(group != nullptr, "toGroup(parent) returned nullptr!", {});
+            return createIndex(row, column, group->getWrappedObject(row));
+        }
         default:
-            FAIL("Unexpected parent item type", QModelIndex());
+            FAIL("Unexpected parent item type", {});
     }
 }
 
@@ -302,10 +309,10 @@ void ProjectViewFilterModel::sl_rowsAboutToBeRemoved(const QModelIndex& parent, 
     foreach (GObject* obj, objectsBeingRemoved) {
         foreach (FilteredProjectGroup* group, filterGroups) {
             WrappedObject* wrappedObj = group->getWrappedObject(obj);
-            if (nullptr != wrappedObj) {
-                const QModelIndex parentIndex = getIndexForGroup(group);
-                const int objNumber = group->getWrappedObjectNumber(wrappedObj);
-                SAFE_POINT(-1 != objNumber, "Unexpected object number", );
+            if (wrappedObj != nullptr) {
+                QModelIndex parentIndex = getIndexForGroup(group);
+                int objNumber = group->getWrappedObjectNumber(wrappedObj);
+                SAFE_POINT(objNumber != -1, "Unexpected object number", );
                 beginRemoveRows(parentIndex, objNumber, objNumber);
                 group->removeAt(objNumber);
                 endRemoveRows();
@@ -315,7 +322,7 @@ void ProjectViewFilterModel::sl_rowsAboutToBeRemoved(const QModelIndex& parent, 
 }
 
 QString ProjectViewFilterModel::getStyledObjectName(GObject* obj, FilteredProjectGroup* group) const {
-    SAFE_POINT(nullptr != obj && nullptr != group, "Invalid arguments supplied", QString());
+    SAFE_POINT(obj != nullptr && group != nullptr, "Invalid arguments supplied", QString());
 
     QString result = obj->getGObjectName();
     if (group->getGroupName() == ProjectFilterNames::OBJ_NAME_FILTER_NAME) {
@@ -342,10 +349,10 @@ QString ProjectViewFilterModel::getStyledObjectName(GObject* obj, FilteredProjec
 QVariant ProjectViewFilterModel::getObjectData(const QModelIndex& index, int role) const {
     QVariant result = srcModel->data(mapToSource(index), role);
 
-    if (Qt::DisplayRole == role) {
+    if (role == Qt::DisplayRole) {
         GObject* object = toObject(index)->getObject();
         Document* parentDoc = object->getDocument();
-        if (nullptr != parentDoc) {
+        if (parentDoc != nullptr) {
             const QString objectPath = srcModel->getObjectFolder(parentDoc, object);
             const bool isDatabase = parentDoc->isDatabaseConnection();
             const QString itemDocInfo = parentDoc->getName() + (isDatabase ? ": " + objectPath : QString());
@@ -381,11 +388,11 @@ QStringList ProjectViewFilterModel::mimeTypes() const {
 
 ProjectViewFilterModel::ItemType ProjectViewFilterModel::getType(const QModelIndex& index) {
     QObject* data = toQObject(index);
-    CHECK(nullptr != data, GROUP);
+    CHECK(data != nullptr, GROUP);
 
-    if (nullptr != qobject_cast<WrappedObject*>(data)) {
+    if (qobject_cast<WrappedObject*>(data) != nullptr) {
         return OBJECT;
-    } else if (nullptr != qobject_cast<FilteredProjectGroup*>(data)) {
+    } else if (qobject_cast<FilteredProjectGroup*>(data) != nullptr) {
         return GROUP;
     } else {
         FAIL("Unexpected data type", GROUP);
@@ -393,12 +400,12 @@ ProjectViewFilterModel::ItemType ProjectViewFilterModel::getType(const QModelInd
 }
 
 bool ProjectViewFilterModel::isObject(const QModelIndex& index) {
-    return OBJECT == getType(index);
+    return getType(index) == OBJECT;
 }
 
 QObject* ProjectViewFilterModel::toQObject(const QModelIndex& index) {
-    QObject* internalObj = static_cast<QObject*>(index.internalPointer());
-    SAFE_POINT(nullptr != internalObj, "Invalid index data", nullptr);
+    auto internalObj = static_cast<QObject*>(index.internalPointer());
+    SAFE_POINT(internalObj != nullptr, "Invalid index data", nullptr);
     return internalObj;
 }
 
