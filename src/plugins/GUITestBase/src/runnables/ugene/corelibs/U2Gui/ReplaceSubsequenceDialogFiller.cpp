@@ -53,8 +53,7 @@ ReplaceSubsequenceDialogFiller::ReplaceSubsequenceDialogFiller(HI::GUITestOpStat
 
 #define GT_METHOD_NAME "commonScenario"
 void ReplaceSubsequenceDialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     QPlainTextEdit* plainText = dialog->findChild<QPlainTextEdit*>("sequenceEdit");
     GT_CHECK(plainText != nullptr, "plain text not found");
@@ -64,7 +63,7 @@ void ReplaceSubsequenceDialogFiller::commonScenario() {
     GTGlobals::sleep();
     GTPlainTextEdit::setPlainText(os, plainText, pasteDataHere);
 
-    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "recalculateQualsCheckBox"), recalculateQuals);
+    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "recalculateQualsCheckBox"), recalculateQuals);
 
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
 

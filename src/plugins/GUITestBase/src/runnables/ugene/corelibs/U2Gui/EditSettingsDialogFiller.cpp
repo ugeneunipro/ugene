@@ -21,6 +21,7 @@
 
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTRadioButton.h>
+#include <primitives/GTWidget.h>
 
 #include <QApplication>
 
@@ -39,8 +40,7 @@ EditSettingsDialogFiller::EditSettingsDialogFiller(HI::GUITestOpStatus& _os,
 
 #define GT_METHOD_NAME "commonScenario"
 void EditSettingsDialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     QString radioButtonName;
     switch (policy) {

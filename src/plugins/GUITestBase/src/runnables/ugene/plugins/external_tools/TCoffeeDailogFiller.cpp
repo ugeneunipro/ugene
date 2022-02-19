@@ -40,8 +40,7 @@ TCoffeeDailogFiller::TCoffeeDailogFiller(HI::GUITestOpStatus& os, int gapOpen, i
 }
 
 void TCoffeeDailogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (gapOpen != INT_MAX) {
         QCheckBox* gapOpenCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "gapOpenCheckBox", dialog));

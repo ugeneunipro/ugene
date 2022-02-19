@@ -41,7 +41,7 @@ bool GTGroupBox::getChecked(GUITestOpStatus& os, QGroupBox* groupBox) {
 
 #define GT_METHOD_NAME "getChecked"
 bool GTGroupBox::getChecked(GUITestOpStatus& os, const QString& groupBoxName, QWidget* parent) {
-    return GTGroupBox::getChecked(os, GTWidget::findExactWidget<QGroupBox*>(os, groupBoxName, parent));
+    return GTGroupBox::getChecked(os, GTWidget::findGroupBox(os, groupBoxName, parent));
 }
 #undef GT_METHOD_NAME
 
@@ -81,13 +81,13 @@ void GTGroupBox::setChecked(GUITestOpStatus& os, QGroupBox* groupBox, bool check
 
 #define GT_METHOD_NAME "setChecked"
 void GTGroupBox::setChecked(GUITestOpStatus& os, const QString& groupBoxName, bool checked, QWidget* parent) {
-    GTGroupBox::setChecked(os, GTWidget::findExactWidget<QGroupBox*>(os, groupBoxName, parent), checked);
+    GTGroupBox::setChecked(os, GTWidget::findGroupBox(os, groupBoxName, parent), checked);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setChecked"
 void GTGroupBox::setChecked(GUITestOpStatus& os, const QString& groupBoxName, QWidget* parent) {
-    GTGroupBox::setChecked(os, GTWidget::findExactWidget<QGroupBox*>(os, groupBoxName, parent));
+    GTGroupBox::setChecked(os, GTWidget::findGroupBox(os, groupBoxName, parent));
 }
 #undef GT_METHOD_NAME
 

@@ -38,8 +38,7 @@ ExportBlastResultDialogFiller::ExportBlastResultDialogFiller(HI::GUITestOpStatus
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportBlastResultDialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(nullptr != dialog, "Active modal widget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "fileNameEdit", dialog), filePath);
 

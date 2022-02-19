@@ -57,8 +57,7 @@ InsertSequenceFiller::InsertSequenceFiller(HI::GUITestOpStatus& _os, const QStri
 
 #define GT_METHOD_NAME "commonScenario"
 void InsertSequenceFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     QPlainTextEdit* plainText = dialog->findChild<QPlainTextEdit*>("sequenceEdit");
     GT_CHECK(plainText != nullptr, "plain text not found");
@@ -80,7 +79,7 @@ void InsertSequenceFiller::commonScenario() {
             break;
     }
 
-    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "recalculateQualsCheckBox"), recalculateQuals);
+    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "recalculateQualsCheckBox"), recalculateQuals);
 
     QRadioButton* regionResolvingMode = dialog->findChild<QRadioButton*>(radioButtonName);  //"regionResolvingMode");
     GT_CHECK(regionResolvingMode != nullptr, "regionResolvingMode not found");

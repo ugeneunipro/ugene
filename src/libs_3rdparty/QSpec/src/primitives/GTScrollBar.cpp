@@ -30,7 +30,7 @@ namespace HI {
 
 #define GT_METHOD_NAME "getScrollBar"
 QScrollBar* GTScrollBar::getScrollBar(GUITestOpStatus& os, const QString& scrollBarName) {
-    return GTWidget::findExactWidget<QScrollBar*>(os, scrollBarName);
+    return GTWidget::findScrollBar(os, scrollBarName);
 }
 #undef GT_METHOD_NAME
 

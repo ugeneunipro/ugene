@@ -71,8 +71,7 @@ public:
         : Filler(_os, "EditSequenceDialog"), str(_str) {
     }
     void commonScenario() {
-        QWidget* widget = QApplication::activeModalWidget();
-        GT_CHECK(widget != nullptr, "active widget not found");
+        QWidget* widget = GTWidget::getActiveModalWidget(os);
 
         QPlainTextEdit* textEdit = widget->findChild<QPlainTextEdit*>();
         GT_CHECK(textEdit != nullptr, "PlainTextEdit not found");
@@ -282,8 +281,7 @@ void GTUtilsSequenceView::goToPosition(HI::GUITestOpStatus& os, qint64 position)
     QToolBar* toolbar = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
     GT_CHECK(nullptr != toolbar, "Can't find the toolbar");
 
-    QLineEdit* positionLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "go_to_pos_line_edit", toolbar);
-    GT_CHECK(nullptr != positionLineEdit, "Can't find the position line edit");
+    auto positionLineEdit = GTWidget::findLineEdit(os, "go_to_pos_line_edit", toolbar);
 
     GTLineEdit::setText(os, positionLineEdit, QString::number(position));
     GTKeyboardDriver::keyClick(Qt::Key_Enter);

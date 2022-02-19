@@ -37,8 +37,7 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::EditAnnotationFiller"
 #define GT_METHOD_NAME "run"
 void EditAnnotationFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     QLineEdit* lineEdit = dialog->findChild<QLineEdit*>("leAnnotationName");
     GT_CHECK(lineEdit != nullptr, "line edit leAnnotationName not found");
@@ -67,8 +66,7 @@ void EditAnnotationFiller::commonScenario() {
 
 #define GT_METHOD_NAME "commonScenario"
 void EditAnnotationChecker::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (!annotationName.isEmpty()) {
         QLineEdit* lineEdit = dialog->findChild<QLineEdit*>("leAnnotationName");

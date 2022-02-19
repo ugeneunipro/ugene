@@ -153,8 +153,7 @@ void GTUtilsOptionPanelMsa::removeReference(HI::GUITestOpStatus& os) {
 #define GT_METHOD_NAME "getReference"
 QString GTUtilsOptionPanelMsa::getReference(HI::GUITestOpStatus& os) {
     openTab(os, General);
-    QLineEdit* leReference = GTWidget::findExactWidget<QLineEdit*>(os, "sequenceLineEdit");
-    GT_CHECK_RESULT(nullptr != leReference, "Reference sequence name lineedit is NULL", QString());
+    auto leReference = GTWidget::findLineEdit(os, "sequenceLineEdit");
     return leReference->text();
 }
 #undef GT_METHOD_NAME
@@ -233,15 +232,14 @@ void GTUtilsOptionPanelMsa::copySelection(HI::GUITestOpStatus& os, const CopyFor
 #define GT_METHOD_NAME "setColorScheme"
 void GTUtilsOptionPanelMsa::setColorScheme(HI::GUITestOpStatus& os, const QString& colorSchemeName, GTGlobals::UseMethod method) {
     openTab(os, Highlighting);
-    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "colorScheme"), colorSchemeName, method);
+    GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "colorScheme"), colorSchemeName, method);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getColorScheme"
 QString GTUtilsOptionPanelMsa::getColorScheme(HI::GUITestOpStatus& os) {
     openTab(os, Highlighting);
-    QComboBox* colorScheme = GTWidget::findExactWidget<QComboBox*>(os, "colorScheme");
-    GT_CHECK_RESULT(colorScheme != nullptr, "ColorSCheme combobox is NULL", "");
+    auto colorScheme = GTWidget::findComboBox(os, "colorScheme");
     return colorScheme->currentText();
 }
 #undef GT_METHOD_NAME
@@ -249,7 +247,7 @@ QString GTUtilsOptionPanelMsa::getColorScheme(HI::GUITestOpStatus& os) {
 #define GT_METHOD_NAME "setHighlightingScheme"
 void GTUtilsOptionPanelMsa::setHighlightingScheme(GUITestOpStatus& os, const QString& highlightingSchemeName) {
     openTab(os, Highlighting);
-    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "highlightingScheme"), highlightingSchemeName);
+    GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "highlightingScheme"), highlightingSchemeName);
 }
 #undef GT_METHOD_NAME
 
@@ -314,29 +312,28 @@ QToolButton* GTUtilsOptionPanelMsa::getDeleteButton(HI::GUITestOpStatus& os, int
 #define GT_METHOD_NAME "getAlignButton"
 QPushButton* GTUtilsOptionPanelMsa::getAlignButton(HI::GUITestOpStatus& os) {
     openTab(os, PairwiseAlignment);
-    return GTWidget::findExactWidget<QPushButton*>(os, "alignButton");
+    return GTWidget::findPushButton(os, "alignButton");
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setPairwiseAlignmentAlgorithm"
 void GTUtilsOptionPanelMsa::setPairwiseAlignmentAlgorithm(HI::GUITestOpStatus& os, const QString& algorithm) {
     openTab(os, PairwiseAlignment);
-    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "algorithmListComboBox"), algorithm);
+    GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "algorithmListComboBox"), algorithm);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setThreshold"
 void GTUtilsOptionPanelMsa::setThreshold(GUITestOpStatus& os, int threshold) {
     openTab(os, General);
-    GTSlider::setValue(os, GTWidget::findExactWidget<QSlider*>(os, "thresholdSlider"), threshold);
+    GTSlider::setValue(os, GTWidget::findSlider(os, "thresholdSlider"), threshold);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getThreshold"
 int GTUtilsOptionPanelMsa::getThreshold(GUITestOpStatus& os) {
     openTab(os, General);
-    QSlider* thresholdSlider = GTWidget::findExactWidget<QSlider*>(os, "thresholdSlider");
-    GT_CHECK_RESULT(nullptr != thresholdSlider, "thresholdSlider is NULL", -1);
+    auto thresholdSlider = GTWidget::findSlider(os, "thresholdSlider");
     return thresholdSlider->value();
 }
 #undef GT_METHOD_NAME
@@ -346,10 +343,10 @@ void GTUtilsOptionPanelMsa::setThresholdComparison(GUITestOpStatus& os, GTUtilsO
     openTab(os, Highlighting);
     switch (comparison) {
         case LessOrEqual:
-            GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton*>(os, "thresholdLessRb"));
+            GTRadioButton::click(os, GTWidget::findRadioButton(os, "thresholdLessRb"));
             break;
         case GreaterOrEqual:
-            GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton*>(os, "thresholdMoreRb"));
+            GTRadioButton::click(os, GTWidget::findRadioButton(os, "thresholdMoreRb"));
             break;
         default:
             GT_FAIL(QString("An unknown threshold comparison type: %1").arg(comparison), );
@@ -360,10 +357,8 @@ void GTUtilsOptionPanelMsa::setThresholdComparison(GUITestOpStatus& os, GTUtilsO
 #define GT_METHOD_NAME "getThresholdComparison"
 GTUtilsOptionPanelMsa::ThresholdComparison GTUtilsOptionPanelMsa::getThresholdComparison(GUITestOpStatus& os) {
     openTab(os, Highlighting);
-    QRadioButton* thresholdLessRb = GTWidget::findExactWidget<QRadioButton*>(os, "thresholdLessRb");
-    GT_CHECK_RESULT(nullptr != thresholdLessRb, "thresholdLessRb is NULL", LessOrEqual);
-    QRadioButton* thresholdMoreRb = GTWidget::findExactWidget<QRadioButton*>(os, "thresholdMoreRb");
-    GT_CHECK_RESULT(nullptr != thresholdMoreRb, "thresholdMoreRb is NULL", LessOrEqual);
+    auto thresholdLessRb = GTWidget::findRadioButton(os, "thresholdLessRb");
+    auto thresholdMoreRb = GTWidget::findRadioButton(os, "thresholdMoreRb");
     const bool lessOrEqual = thresholdLessRb->isChecked();
     const bool greaterOrEqual = thresholdMoreRb->isChecked();
     GT_CHECK_RESULT(lessOrEqual ^ greaterOrEqual, "Incorrect state of threshold comparison radiobuttons", LessOrEqual);
@@ -374,14 +369,14 @@ GTUtilsOptionPanelMsa::ThresholdComparison GTUtilsOptionPanelMsa::getThresholdCo
 #define GT_METHOD_NAME "setUseDotsOption"
 void GTUtilsOptionPanelMsa::setUseDotsOption(GUITestOpStatus& os, bool useDots) {
     openTab(os, Highlighting);
-    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "useDots"), useDots);
+    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "useDots"), useDots);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isUseDotsOptionSet"
 bool GTUtilsOptionPanelMsa::isUseDotsOptionSet(GUITestOpStatus& os) {
     openTab(os, Highlighting);
-    QCheckBox* useDots = GTWidget::findExactWidget<QCheckBox*>(os, "useDots");
+    auto useDots = GTWidget::findCheckBox(os, "useDots");
     GT_CHECK_RESULT(nullptr != useDots, "useDots checkbox is NULL", false);
     return useDots->isChecked();
 }
@@ -515,15 +510,15 @@ void GTUtilsOptionPanelMsa::openSearchInShowHideWidget(HI::GUITestOpStatus& os, 
 #define GT_METHOD_NAME "setRegionType"
 void GTUtilsOptionPanelMsa::setRegionType(HI::GUITestOpStatus& os, const QString& regionType) {
     openSearchInShowHideWidget(os);
-    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "boxRegion"), regionType);
+    GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "boxRegion"), regionType);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setRegion"
 void GTUtilsOptionPanelMsa::setRegion(HI::GUITestOpStatus& os, int from, int to) {
     openSearchInShowHideWidget(os);
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "editStart"), QString::number(from));
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "editEnd"), QString::number(to));
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "editStart"), QString::number(from));
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "editEnd"), QString::number(to));
 }
 #undef GT_METHOD_NAME
 
@@ -568,7 +563,7 @@ QWidget* GTUtilsOptionPanelMsa::getWidget(HI::GUITestOpStatus& os, const QString
 #define GT_METHOD_NAME "getAlphabetLabelText"
 QString GTUtilsOptionPanelMsa::getAlphabetLabelText(HI::GUITestOpStatus& os) {
     checkTabIsOpened(os, General);
-    auto label = GTWidget::findExactWidget<QLabel*>(os, "alignmentAlphabet");
+    auto label = GTWidget::findLabel(os, "alignmentAlphabet");
     return label->text();
 }
 #undef GT_METHOD_NAME

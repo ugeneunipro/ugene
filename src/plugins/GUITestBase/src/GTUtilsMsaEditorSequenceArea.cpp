@@ -174,8 +174,7 @@ void GTUtilsMSAEditorSequenceArea::scrollToPosition(GUITestOpStatus& os, const Q
                  .arg(msaSeqArea->getViewRowCount()));
 
     // scroll down
-    GScrollBar* vBar = GTWidget::findExactWidget<GScrollBar*>(os, "vertical_sequence_scroll", GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
-    GT_CHECK(vBar != nullptr, "Vertical scroll bar is not found");
+    auto vBar = GTWidget::findScrollBar(os, "vertical_sequence_scroll", GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
 
     QStyleOptionSlider vScrollBarOptions;
     vScrollBarOptions.initFrom(vBar);
@@ -189,8 +188,7 @@ void GTUtilsMSAEditorSequenceArea::scrollToPosition(GUITestOpStatus& os, const Q
     }
 
     // scroll right
-    GScrollBar* hBar = GTWidget::findExactWidget<GScrollBar*>(os, "horizontal_sequence_scroll", GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
-    GT_CHECK(hBar != nullptr, "Horizontal scroll bar is not found");
+    auto hBar = GTWidget::findScrollBar(os, "horizontal_sequence_scroll", GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
 
     QStyleOptionSlider hScrollBarOptions;
     hScrollBarOptions.initFrom(hBar);
@@ -217,8 +215,7 @@ void GTUtilsMSAEditorSequenceArea::scrollToPosition(GUITestOpStatus& os, const Q
 #define GT_METHOD_NAME "scrollToBottom"
 void GTUtilsMSAEditorSequenceArea::scrollToBottom(GUITestOpStatus& os) {
     // scroll down
-    GScrollBar* vBar = GTWidget::findExactWidget<GScrollBar*>(os, "vertical_sequence_scroll", GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
-    GT_CHECK(vBar != nullptr, "Vertical scroll bar is not found");
+    auto vBar = GTWidget::findScrollBar(os, "vertical_sequence_scroll", GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
 #ifdef Q_OS_DARWIN
     vBar->setValue(vBar->maximum());
     return;

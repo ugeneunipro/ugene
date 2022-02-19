@@ -61,30 +61,29 @@ CreateAnnotationWidgetFiller::CreateAnnotationWidgetFiller(HI::GUITestOpStatus& 
 #define GT_METHOD_NAME "commonScenario"
 
 void CreateAnnotationWidgetFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (newTableRB) {
-        GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton*>(os, "rbCreateNewTable", dialog));
+        GTRadioButton::click(os, GTWidget::findRadioButton(os, "rbCreateNewTable", dialog));
 
         if (!saveTo.isEmpty()) {
             QDir().mkpath(QFileInfo(saveTo).dir().absolutePath());
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "leNewTablePath", dialog), saveTo);
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leNewTablePath", dialog), saveTo);
         }
     } else {
-        GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton*>(os, "rbExistingTable", dialog));
+        GTRadioButton::click(os, GTWidget::findRadioButton(os, "rbExistingTable", dialog));
 
         if (!saveTo.isEmpty()) {
-            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "cbExistingTable", dialog), saveTo);
+            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "cbExistingTable", dialog), saveTo);
         }
     }
 
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "leGroupName", dialog), groupName);
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "leAnnotationName", dialog), annotationName);
-    GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton*>(os, "rbGenbankFormat", dialog));
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "leLocation", dialog), location);
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leGroupName", dialog), groupName);
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leAnnotationName", dialog), annotationName);
+    GTRadioButton::click(os, GTWidget::findRadioButton(os, "rbGenbankFormat", dialog));
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leLocation", dialog), location);
     if (!description.isEmpty()) {
-        GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "leDescription", dialog), description);
+        GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leDescription", dialog), description);
     }
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

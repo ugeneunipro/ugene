@@ -57,8 +57,7 @@ RemovePartFromSequenceDialogFiller::RemovePartFromSequenceDialogFiller(HI::GUITe
 
 #define GT_METHOD_NAME "commonScenario"
 void RemovePartFromSequenceDialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (!range.isEmpty()) {
         QLineEdit* removeLocationEdit = dialog->findChild<QLineEdit*>(QString::fromUtf8("removeLocationEdit"));
@@ -75,7 +74,7 @@ void RemovePartFromSequenceDialogFiller::commonScenario() {
         GTRadioButton::click(os, removeRB);
     }
 
-    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "recalculateQualsCheckBox"), recalculateQuals);
+    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "recalculateQualsCheckBox"), recalculateQuals);
 
     GTGlobals::sleep(1000);
     if (saveNew) {

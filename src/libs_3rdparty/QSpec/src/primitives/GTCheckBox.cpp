@@ -62,7 +62,7 @@ bool GTCheckBox::getState(GUITestOpStatus& os, QCheckBox* checkBox) {
 
 #define GT_METHOD_NAME "getState"
 bool GTCheckBox::getState(GUITestOpStatus& os, const QString& checkBoxName, QWidget* parent) {
-    return getState(os, GTWidget::findExactWidget<QCheckBox*>(os, checkBoxName, parent));
+    return getState(os, GTWidget::findCheckBox(os, checkBoxName, parent));
 }
 #undef GT_METHOD_NAME
 
@@ -80,7 +80,7 @@ void GTCheckBox::checkState(GUITestOpStatus& os, QCheckBox* checkBox, bool expec
 
 #define GT_METHOD_NAME "checkIsChecked"
 void GTCheckBox::checkState(GUITestOpStatus& os, const QString& checkBoxName, bool expectedState, QWidget* parent) {
-    checkState(os, GTWidget::findExactWidget<QCheckBox*>(os, checkBoxName, parent), expectedState);
+    checkState(os, GTWidget::findCheckBox(os, checkBoxName, parent), expectedState);
 }
 #undef GT_METHOD_NAME
 

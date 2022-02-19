@@ -20,6 +20,7 @@
  */
 
 #include "PrimersDetailsDialogFiller.h"
+#include <primitives/GTWidget.h>
 
 #include <QApplication>
 
@@ -36,8 +37,7 @@ PrimersDetailsDialogFiller::PrimersDetailsDialogFiller(HI::GUITestOpStatus& os, 
 #define GT_CLASS_NAME "GTUtilsDialog::PrimersDetailsDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void PrimersDetailsDialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }

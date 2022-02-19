@@ -66,8 +66,7 @@ SmithWatermanDialogFiller::SmithWatermanDialogFiller(HI::GUITestOpStatus& _os, c
 }
 
 void SmithWatermanDialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (button == Cancel) {
         GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);

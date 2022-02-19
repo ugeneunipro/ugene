@@ -36,8 +36,7 @@ namespace U2 {
 #define GT_CLASS_NAME "CreateElementWithScriptDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void CreateElementWithScriptDialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     QLineEdit* nameEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "nameEdit", dialog));
     GT_CHECK(nameEdit, "nameEdit not found");
@@ -86,8 +85,7 @@ void ScriptEditorDialogFiller::commonScenario() {
 #define GT_CLASS_NAME "ScriptEditorDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void ScriptEditorDialogSyntaxChecker::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     QTextEdit* edit = nullptr;
     foreach (QTextEdit* textEdit, dialog->findChildren<QTextEdit*>()) {

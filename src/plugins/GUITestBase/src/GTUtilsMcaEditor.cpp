@@ -95,9 +95,8 @@ McaEditorWgt* GTUtilsMcaEditor::getEditorUi(GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "getReferenceLabel"
 QLabel* GTUtilsMcaEditor::getReferenceLabel(GUITestOpStatus& os) {
-    QWidget* referenceLabelContainerWidget = GTWidget::findExactWidget<QWidget*>(os, "reference label container widget", getEditorUi(os));
-    GT_CHECK_RESULT(nullptr != referenceLabelContainerWidget, "Reference label not found", nullptr);
-    return GTWidget::findExactWidget<QLabel*>(os, "", referenceLabelContainerWidget);
+    auto referenceLabelContainerWidget = GTWidget::findWidget(os, "reference label container widget", getEditorUi(os));
+    return GTWidget::findLabel(os, "", referenceLabelContainerWidget);
 }
 #undef GT_METHOD_NAME
 
@@ -129,13 +128,13 @@ McaEditorReferenceArea* GTUtilsMcaEditor::getReferenceArea(GUITestOpStatus& os) 
 
 #define GT_METHOD_NAME "getHorizontalScrollBar"
 QScrollBar* GTUtilsMcaEditor::getHorizontalScrollBar(GUITestOpStatus& os) {
-    return GTWidget::findExactWidget<QScrollBar*>(os, "horizontal_sequence_scroll", getEditorUi(os));
+    return GTWidget::findScrollBar(os, "horizontal_sequence_scroll", getEditorUi(os));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getVerticalScrollBar"
 QScrollBar* GTUtilsMcaEditor::getVerticalScrollBar(GUITestOpStatus& os) {
-    return GTWidget::findExactWidget<QScrollBar*>(os, "vertical_sequence_scroll", getEditorUi(os));
+    return GTWidget::findScrollBar(os, "vertical_sequence_scroll", getEditorUi(os));
 }
 #undef GT_METHOD_NAME
 
@@ -179,7 +178,7 @@ QString GTUtilsMcaEditor::getReferenceLabelText(GUITestOpStatus& os) {
 #define GT_METHOD_NAME "getReadsCount"
 int GTUtilsMcaEditor::getReadsCount(GUITestOpStatus& os) {
     QWidget* statusBar = GTWidget::findWidget(os, "mca_editor_status_bar", getEditorUi(os));
-    QLabel* readsCountLabel = GTWidget::findExactWidget<QLabel*>(os, "Line", statusBar);
+    auto readsCountLabel = GTWidget::findLabel(os, "Line", statusBar);
 
     QRegExp readsCounRegExp("Ln \\d+|\\- / (\\d+)");
     readsCounRegExp.indexIn(readsCountLabel->text());

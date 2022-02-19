@@ -73,8 +73,7 @@ AppSettingsDialogFiller::AppSettingsDialogFiller(HI::GUITestOpStatus& os, Custom
 
 #define GT_METHOD_NAME "commonScenario"
 void AppSettingsDialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     QTreeWidget* tree = qobject_cast<QTreeWidget*>(GTWidget::findWidget(os, "tree"));
     GT_CHECK(tree, "tree widger not found");
@@ -125,12 +124,11 @@ void AppSettingsDialogFiller::setExternalToolPath(HI::GUITestOpStatus& os, const
 
 #define GT_METHOD_NAME "setExternalToolPath"
 void AppSettingsDialogFiller::setExternalToolPath(HI::GUITestOpStatus& os, const QString& toolName, const QString& path, const QString& name) {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     openTab(os, ExternalTools);
 
-    QTreeWidget* treeWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "twIntegratedTools", dialog);
+    auto treeWidget = GTWidget::findTreeWidget(os, "twIntegratedTools", dialog);
     QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
     bool set = false;
     foreach (QTreeWidgetItem* item, listOfItems) {
@@ -178,12 +176,11 @@ QString AppSettingsDialogFiller::getExternalToolPath(HI::GUITestOpStatus& os, co
 
 #define GT_METHOD_NAME "isExternalToolValid"
 bool AppSettingsDialogFiller::isExternalToolValid(HI::GUITestOpStatus& os, const QString& toolName) {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK_RESULT(dialog, "activeModalWidget is NULL", false);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     openTab(os, ExternalTools);
 
-    QTreeWidget* treeWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "twIntegratedTools", dialog);
+    auto treeWidget = GTWidget::findTreeWidget(os, "twIntegratedTools", dialog);
     QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
     foreach (QTreeWidgetItem* item, listOfItems) {
         if (item->text(0) == toolName) {
@@ -199,12 +196,11 @@ bool AppSettingsDialogFiller::isExternalToolValid(HI::GUITestOpStatus& os, const
 
 #define GT_METHOD_NAME "clearToolPath"
 void AppSettingsDialogFiller::clearToolPath(HI::GUITestOpStatus& os, const QString& toolName) {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     openTab(os, ExternalTools);
 
-    QTreeWidget* treeWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "twIntegratedTools", dialog);
+    auto treeWidget = GTWidget::findTreeWidget(os, "twIntegratedTools", dialog);
     QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
     foreach (QTreeWidgetItem* item, listOfItems) {
         if (item->text(0) == toolName) {
@@ -223,8 +219,7 @@ void AppSettingsDialogFiller::clearToolPath(HI::GUITestOpStatus& os, const QStri
 
 #define GT_METHOD_NAME "isToolDescriptionContainsString"
 bool AppSettingsDialogFiller::isToolDescriptionContainsString(HI::GUITestOpStatus& os, const QString& toolName, const QString& checkIfContains) {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK_RESULT(dialog, "activeModalWidget is NULL", false);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     clickOnTool(os, toolName);
 
@@ -238,8 +233,7 @@ bool AppSettingsDialogFiller::isToolDescriptionContainsString(HI::GUITestOpStatu
 
 #define GT_METHOD_NAME "setTemporaryDirPath"
 void AppSettingsDialogFiller::setTemporaryDirPath(GUITestOpStatus& os, const QString& path) {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(nullptr != dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     openTab(os, Directories);
 
@@ -249,8 +243,7 @@ void AppSettingsDialogFiller::setTemporaryDirPath(GUITestOpStatus& os, const QSt
 
 #define GT_METHOD_NAME "setDocumentsDirPath"
 void AppSettingsDialogFiller::setDocumentsDirPath(GUITestOpStatus& os, const QString& path) {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(nullptr != dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     openTab(os, Directories);
 
@@ -260,8 +253,7 @@ void AppSettingsDialogFiller::setDocumentsDirPath(GUITestOpStatus& os, const QSt
 
 #define GT_METHOD_NAME "setWorkflowOutputDirPath"
 void AppSettingsDialogFiller::setWorkflowOutputDirPath(GUITestOpStatus& os, const QString& path) {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(nullptr != dialog, "activeModalWidget is nullptr");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     openTab(os, WorkflowDesigner);
 
@@ -276,7 +268,7 @@ void AppSettingsDialogFiller::openTab(HI::GUITestOpStatus& os, Tabs tab) {
     QString itemText = tabMap.value(tab);
     GT_CHECK(!itemText.isEmpty(), "tree element for item not found");
 
-    QTreeWidget* mainTree = GTWidget::findExactWidget<QTreeWidget*>(os, "tree", dialog);
+    auto mainTree = GTWidget::findTreeWidget(os, "tree", dialog);
     if (mainTree->selectedItems().first()->text(0) != itemText) {
         GTTreeWidget::click(os, GTTreeWidget::findItem(os, mainTree, itemText));
     }
@@ -287,12 +279,11 @@ void AppSettingsDialogFiller::openTab(HI::GUITestOpStatus& os, Tabs tab) {
 
 #define GT_METHOD_NAME "clickOnTool"
 void AppSettingsDialogFiller::clickOnTool(HI::GUITestOpStatus& os, const QString& toolName) {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK_RESULT(dialog, "activeModalWidget is NULL", );
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     openTab(os, ExternalTools);
 
-    QTreeWidget* treeWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "twIntegratedTools", dialog);
+    auto treeWidget = GTWidget::findTreeWidget(os, "twIntegratedTools", dialog);
     QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
     foreach (QTreeWidgetItem* item, listOfItems) {
         if (item->text(0) == toolName) {
@@ -305,8 +296,7 @@ void AppSettingsDialogFiller::clickOnTool(HI::GUITestOpStatus& os, const QString
 
 #define GT_METHOD_NAME "setExternalToolsDir"
 void AppSettingsDialogFiller::setExternalToolsDir(HI::GUITestOpStatus& os, const QString& dirPath) {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     openTab(os, ExternalTools);
 
@@ -338,8 +328,7 @@ NewColorSchemeCreator::NewColorSchemeCreator(HI::GUITestOpStatus& os, CustomScen
 #define GT_CLASS_NAME "NewColorSchemeCreator"
 #define GT_METHOD_NAME "commonScenario"
 void NewColorSchemeCreator::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     QTreeWidget* tree = qobject_cast<QTreeWidget*>(GTWidget::findWidget(os, "tree"));
     GT_CHECK(tree, "tree widger not found");
@@ -377,13 +366,12 @@ void NewColorSchemeCreator::commonScenario() {
             break;
         }
         case Change: {
-            GTListWidget::click(os, GTWidget::findExactWidget<QListWidget*>(os, "colorSchemas", dialog), schemeName);
+            GTListWidget::click(os, GTWidget::findListWidget(os, "colorSchemas", dialog), schemeName);
 
             class Scenario : public CustomScenario {
             public:
                 void run(HI::GUITestOpStatus& os) {
-                    QWidget* dialog = QApplication::activeModalWidget();
-                    GT_CHECK(nullptr != dialog, "Active modal widget is NULL");
+                    QWidget* dialog = GTWidget::getActiveModalWidget(os);
                     GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, 255, 0, 0));
                     GTWidget::click(os, GTWidget::findWidget(os, "alphabetColorsFrame", dialog), Qt::LeftButton, QPoint(5, 5));
 

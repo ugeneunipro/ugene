@@ -91,7 +91,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             auto dialog = GTWidget::getActiveModalWidget(os);
             GTComboBox::selectItemByText(os, "algorithmBox", dialog, "IQ-TREE");
 
-            auto paramsEditor = GTWidget::findPlainTextEdit(os, "extra_parameters_text_edit");
+            auto paramsEditor = GTWidget::findPlainTextEdit(os, "extraParametersTextEdit");
             GTPlainTextEdit::setPlainText(os, paramsEditor, "-seed\n12345 -m\"ra\"te \"E,I,G,I+G\"");
 
             // Set output file name.

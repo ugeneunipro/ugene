@@ -167,11 +167,17 @@ public:
     /** Calls findExactWidget with QSpinBox type. Shortcut method. */
     static QSpinBox* findSpinBox(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget = nullptr, const GTGlobals::FindOptions& options = {});
 
+    /** Calls findExactWidget with QDoubleSpinBox type. Shortcut method. */
+    static QDoubleSpinBox* findDoubleSpinBox(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget = nullptr, const GTGlobals::FindOptions& options = {});
+
     /** Calls findExactWidget with QToolButton type. Shortcut method. */
     static QToolButton* findToolButton(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget = nullptr, const GTGlobals::FindOptions& options = {});
 
     /** Calls findExactWidget with QToolBar type. Shortcut method. */
     static QToolBar* findToolBar(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget = nullptr, const GTGlobals::FindOptions& options = {});
+
+    /** Calls findExactWidget with QScrollBar type. Shortcut method. */
+    static QScrollBar* findScrollBar(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget = nullptr, const GTGlobals::FindOptions& options = {});
 
     /** Calls findExactWidget with QTreeWidget type. Shortcut method. */
     static QTreeWidget* findTreeWidget(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget = nullptr, const GTGlobals::FindOptions& options = {});

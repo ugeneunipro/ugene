@@ -20,6 +20,7 @@
  */
 
 #include "ClustalOSupportRunDialogFiller.h"
+#include <primitives/GTWidget.h>
 
 #include <QApplication>
 
@@ -32,8 +33,7 @@ ClustalOSupportRunDialogFiller::ClustalOSupportRunDialogFiller(HI::GUITestOpStat
 
 #define GT_METHOD_NAME "commonScenario"
 void ClustalOSupportRunDialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(nullptr != dialog, "Actiove modal widget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }

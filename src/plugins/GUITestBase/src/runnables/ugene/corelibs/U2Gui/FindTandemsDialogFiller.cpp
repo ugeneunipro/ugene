@@ -44,8 +44,7 @@ FindTandemsDialogFiller::FindTandemsDialogFiller(HI::GUITestOpStatus& os, Custom
 }
 
 void FindTandemsDialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (button == Cancel) {
         QAbstractButton* cancelButton = qobject_cast<QAbstractButton*>(GTWidget::findWidget(os, "cancelButton", dialog));
@@ -53,7 +52,7 @@ void FindTandemsDialogFiller::commonScenario() {
         return;
     }
 
-    GTTabWidget::clickTab(os, GTWidget::findExactWidget<QTabWidget*>(os, "tabWidget"), 1);
+    GTTabWidget::clickTab(os, GTWidget::findTabWidget(os, "tabWidget"), 1);
     GTGlobals::sleep(100);
 
     QLineEdit* resultLocationEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "leNewTablePath", dialog));
