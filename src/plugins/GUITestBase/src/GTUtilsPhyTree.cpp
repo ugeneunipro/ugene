@@ -124,9 +124,8 @@ QList<QGraphicsSimpleTextItem*> GTUtilsPhyTree::getDistances(HI::GUITestOpStatus
     GT_CHECK_RESULT(treeView, "treeView not found", result);
     QList<QGraphicsItem*> list = treeView->scene()->items();
 
-    foreach (QGraphicsItem* item, list) {
-        QGraphicsSimpleTextItem* textItem = qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item);
-        if (textItem) {
+    for (QGraphicsItem* item : qAsConst(list)) {
+        if (auto textItem = qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item)) {
             bool ok;
             textItem->text().toDouble(&ok);
             if (ok) {
@@ -156,7 +155,7 @@ QList<double> GTUtilsPhyTree::getDistancesValues(HI::GUITestOpStatus& os) {
     QList<double> result;
     QList<QGraphicsSimpleTextItem*> distList = getDistances(os);
 
-    foreach (QGraphicsSimpleTextItem* item, distList) {
+    for (QGraphicsSimpleTextItem* item : qAsConst(distList)) {
         bool ok;
         QString s = item->text();
         double d = s.toDouble(&ok);
