@@ -59,8 +59,7 @@ MAFFTSupportRunDialogFiller::MAFFTSupportRunDialogFiller(GUITestOpStatus& os, Cu
 
 #define GT_METHOD_NAME "commonScenario"
 void MAFFTSupportRunDialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     QCheckBox* gapOpenCheckBox = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "gapOpenCheckBox", dialog));
     GT_CHECK(gapOpenCheckBox, "gapOpenCheckBox is NULL");

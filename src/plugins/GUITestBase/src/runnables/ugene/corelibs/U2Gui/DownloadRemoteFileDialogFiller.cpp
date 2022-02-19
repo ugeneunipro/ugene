@@ -106,7 +106,7 @@ void DownloadRemoteFileDialogFiller::commonScenario() {
 void DownloadRemoteFileDialogFiller::setResourceIds(const QVariant& actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QStringList>(), "Can't get IDs list from the action data");
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "idLineEdit", dialog), actionData.toStringList().join(" "));
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "idLineEdit", dialog), actionData.toStringList().join(" "));
 }
 #undef GT_METHOD_NAME
 
@@ -114,7 +114,7 @@ void DownloadRemoteFileDialogFiller::setResourceIds(const QVariant& actionData) 
 void DownloadRemoteFileDialogFiller::setDatabase(const QVariant& actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QString>(), "Can't get database name from the action data");
-    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "databasesBox", dialog), actionData.toString());
+    GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "databasesBox", dialog), actionData.toString());
 }
 #undef GT_METHOD_NAME
 
@@ -122,7 +122,7 @@ void DownloadRemoteFileDialogFiller::setDatabase(const QVariant& actionData) {
 void DownloadRemoteFileDialogFiller::enterSaveToDirectoryPath(const QVariant& actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QString>(), "Can't get folder path from the action data");
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "saveFilenameLineEdit", dialog), actionData.toString());
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "saveFilenameLineEdit", dialog), actionData.toString());
 }
 #undef GT_METHOD_NAME
 
@@ -139,7 +139,7 @@ void DownloadRemoteFileDialogFiller::selectSaveToDirectoryPath(const QVariant& a
 void DownloadRemoteFileDialogFiller::setOutputFormat(const QVariant& actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QString>(), "Can't get format name from the action data");
-    QComboBox* formatBox = GTWidget::findExactWidget<QComboBox*>(os, "formatBox", dialog);
+    auto formatBox = GTWidget::findComboBox(os, "formatBox", dialog);
     GT_CHECK(nullptr != formatBox, "Format combobox was not found");
     GT_CHECK(formatBox->isVisible(), "Format combobox is invisible");
     GTComboBox::selectItemByText(os, formatBox, actionData.toString());
@@ -150,7 +150,7 @@ void DownloadRemoteFileDialogFiller::setOutputFormat(const QVariant& actionData)
 void DownloadRemoteFileDialogFiller::setForceSequenceDownload(const QVariant& actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<bool>(), "Can't get checkbox state from the action data");
-    QCheckBox* chbForceDownloadSequence = GTWidget::findExactWidget<QCheckBox*>(os, "chbForceDownloadSequence", dialog);
+    auto chbForceDownloadSequence = GTWidget::findCheckBox(os, "chbForceDownloadSequence", dialog);
     GT_CHECK(nullptr != chbForceDownloadSequence, "Force download sequence checkbox was not found");
     GT_CHECK(chbForceDownloadSequence->isVisible(), "Force download sequence checkbox is invisible");
     GTCheckBox::setChecked(os, chbForceDownloadSequence, actionData.toBool());
@@ -161,8 +161,7 @@ void DownloadRemoteFileDialogFiller::setForceSequenceDownload(const QVariant& ac
 void DownloadRemoteFileDialogFiller::checkDatabase(const QVariant& actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QString>(), "Can't get an expected database name from the action data");
-    QComboBox* databasesBox = GTWidget::findExactWidget<QComboBox*>(os, "databasesBox", dialog);
-    GT_CHECK(nullptr != databasesBox, "Databases combobox wasn't found");
+    auto databasesBox = GTWidget::findComboBox(os, "databasesBox", dialog);
     GT_CHECK(actionData.toString() == databasesBox->currentText(), QString("An unexpected database: expect '%1', got '%2'").arg(actionData.toString()).arg(databasesBox->currentText()));
 }
 #undef GT_METHOD_NAME
@@ -171,8 +170,7 @@ void DownloadRemoteFileDialogFiller::checkDatabase(const QVariant& actionData) {
 void DownloadRemoteFileDialogFiller::checkDatabasesCount(const QVariant& actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<int>(), "Can't get an expected databases count from the action data");
-    QComboBox* databasesBox = GTWidget::findExactWidget<QComboBox*>(os, "databasesBox", dialog);
-    GT_CHECK(nullptr != databasesBox, "Databases combobox wasn't found");
+    auto databasesBox = GTWidget::findComboBox(os, "databasesBox", dialog);
     GT_CHECK(actionData.toInt() == databasesBox->count(), QString("An unexpected databases count: expect '%1', got '%2'").arg(actionData.toInt()).arg(databasesBox->count()));
 }
 #undef GT_METHOD_NAME
@@ -181,8 +179,7 @@ void DownloadRemoteFileDialogFiller::checkDatabasesCount(const QVariant& actionD
 void DownloadRemoteFileDialogFiller::checkOutputFormatVisibility(const QVariant& actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<bool>(), "Can't get an expected format combobox visibility state from the action data");
-    QComboBox* formatBox = GTWidget::findExactWidget<QComboBox*>(os, "formatBox", dialog);
-    GT_CHECK(nullptr != formatBox, "Format combobox was not found");
+    auto formatBox = GTWidget::findComboBox(os, "formatBox", dialog);
     GT_CHECK(actionData.toBool() == formatBox->isVisible(), "Format combobox has an unexpected visibility state");
 }
 #undef GT_METHOD_NAME
@@ -191,8 +188,7 @@ void DownloadRemoteFileDialogFiller::checkOutputFormatVisibility(const QVariant&
 void DownloadRemoteFileDialogFiller::checkOutputFormat(const QVariant& actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QString>(), "Can't get an expected format name from the action data");
-    QComboBox* formatBox = GTWidget::findExactWidget<QComboBox*>(os, "formatBox", dialog);
-    GT_CHECK(nullptr != formatBox, "Format combobox was not found");
+    auto formatBox = GTWidget::findComboBox(os, "formatBox", dialog);
     GT_CHECK(formatBox->isVisible(), "Format combobox is invisible");
     GT_CHECK(actionData.toString() == formatBox->currentText(), QString("An unexpected format: expect '%1', got '%2'").arg(actionData.toString()).arg(formatBox->currentText()));
 }
@@ -202,7 +198,7 @@ void DownloadRemoteFileDialogFiller::checkOutputFormat(const QVariant& actionDat
 void DownloadRemoteFileDialogFiller::checkForceSequenceDownloadVisibility(const QVariant& actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<bool>(), "Can't get expected visibility state from the action data");
-    QCheckBox* chbForceDownloadSequence = GTWidget::findExactWidget<QCheckBox*>(os, "chbForceDownloadSequence", dialog);
+    auto chbForceDownloadSequence = GTWidget::findCheckBox(os, "chbForceDownloadSequence", dialog);
     GT_CHECK(nullptr != chbForceDownloadSequence, "Force download sequence checkbox was not found");
     GT_CHECK(actionData.toBool() == chbForceDownloadSequence->isVisible(), "Force download sequence checkbox has incorrect invisibility state");
 }
@@ -212,7 +208,7 @@ void DownloadRemoteFileDialogFiller::checkForceSequenceDownloadVisibility(const 
 void DownloadRemoteFileDialogFiller::checkForceSequenceDownload(const QVariant& actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<bool>(), "Can't get an expected checkbox state from the action data");
-    QCheckBox* chbForceDownloadSequence = GTWidget::findExactWidget<QCheckBox*>(os, "chbForceDownloadSequence", dialog);
+    auto chbForceDownloadSequence = GTWidget::findCheckBox(os, "chbForceDownloadSequence", dialog);
     GT_CHECK(nullptr != chbForceDownloadSequence, "Force download sequence checkbox was not found");
     GT_CHECK(actionData.toBool() == chbForceDownloadSequence->isChecked(), "Force download sequence checkbox has incorrect state");
 }
@@ -235,8 +231,7 @@ void DownloadRemoteFileDialogFiller::clickCancel() {
 #define GT_CLASS_NAME "GTUtilsDialog::RemoteDBDialogFillerDeprecated"
 #define GT_METHOD_NAME "commonScenario"
 void RemoteDBDialogFillerDeprecated::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (!resID.isEmpty()) {
         QLineEdit* idLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "idLineEdit", dialog));
@@ -251,7 +246,7 @@ void RemoteDBDialogFillerDeprecated::commonScenario() {
     QComboBox* databasesBox = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "databasesBox", dialog));
     GTComboBox::selectItemByIndex(os, databasesBox, DBItemNum, useMethod);
 
-    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "chbForceDownloadSequence", dialog), forceGetSequence);
+    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "chbForceDownloadSequence", dialog), forceGetSequence);
 
     if (outFormatVal != -1) {
         QComboBox* formatBox = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "formatBox"));

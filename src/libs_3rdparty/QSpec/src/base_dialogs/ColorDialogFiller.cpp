@@ -40,8 +40,7 @@ void ColorDialogFiller::commonScenario() {
 #ifdef Q_OS_LINUX
     setWithQt = true;
 #endif
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "dialog is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (setWithQt) {
         class Scenario : public CustomScenario {

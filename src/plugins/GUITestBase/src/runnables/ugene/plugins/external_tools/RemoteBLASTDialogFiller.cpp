@@ -47,8 +47,7 @@ RemoteBLASTDialogFiller::RemoteBLASTDialogFiller(HI::GUITestOpStatus& os, Custom
 
 #define GT_METHOD_NAME "commonScenario"
 void RemoteBLASTDialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }

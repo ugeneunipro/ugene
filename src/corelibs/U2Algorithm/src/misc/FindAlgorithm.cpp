@@ -83,11 +83,7 @@ public:
     }
 
     StrandContext(const char* data, int arr_size, const char* p)  // using rolling array only in subst mode
-        : rollArr(data, arr_size), pattern(p) {
-    }
-
-    StrandContext()
-        : pattern(nullptr) {
+        : dynTable(0, 0, false), rollArr(data, arr_size), pattern(p) {
     }
 
     static quint64 estimateRamUsageForOneContext(int width, int height) {
@@ -96,7 +92,7 @@ public:
 
     DynTable dynTable;
     RollingArray<char> rollArr;
-    const char* pattern;
+    const char* pattern = nullptr;
     FindAlgorithmResult res;
 };
 
@@ -207,6 +203,7 @@ static void findInAmino(FindAlgorithmResultsListener* rl,
             }
             if (err <= maxErr) {
                 int newLen = dt.getLastLen();
+                SAFE_POINT(newLen >= 0, "Internal algorithm error!", )
                 newLen *= 3;
                 if (res.isEmpty() || res.err > err || (res.err == err && newLen < res.region.length)) {
                     SAFE_POINT(newLen + 3 * maxErr >= patternLenInNucl, "Internal algorithm error!", );
@@ -853,6 +850,7 @@ void FindAlgorithm::find(
 
                 if (err <= maxErr) {
                     int newLen = dt.getLastLen();
+                    SAFE_POINT(newLen >= 0, "Internal algorithm error!", )
                     if (res.isEmpty() || res.err > err || (res.err == err && newLen < res.region.length)) {
                         int newStart = i - newLen + 1;
                         bool boundaryCheck = (range.contains(newStart) && range.contains(newStart + newLen - 1));

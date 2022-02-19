@@ -229,7 +229,7 @@ void GTUtilsAssemblyBrowser::zoomToMin(HI::GUITestOpStatus& os) {
 #define GT_METHOD_NAME "zoomToReads"
 void GTUtilsAssemblyBrowser::zoomToReads(GUITestOpStatus& os) {
     checkAssemblyBrowserWindowIsActive(os);
-    QLabel* coveredRegionsLabel = GTWidget::findExactWidget<QLabel*>(os, "CoveredRegionsLabel");
+    auto coveredRegionsLabel = GTWidget::findLabel(os, "CoveredRegionsLabel");
     emit coveredRegionsLabel->linkActivated("zoom");
     GTGlobals::sleep(1000);
 }
@@ -242,7 +242,7 @@ void GTUtilsAssemblyBrowser::goToPosition(HI::GUITestOpStatus& os, qint64 positi
     QToolBar* toolbar = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
     GT_CHECK(toolbar != nullptr, "Can't find the toolbar");
 
-    QLineEdit* positionLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "go_to_pos_line_edit", toolbar);
+    auto positionLineEdit = GTWidget::findLineEdit(os, "go_to_pos_line_edit", toolbar);
     GTLineEdit::setText(os, positionLineEdit, QString::number(position));
 
     switch (method) {

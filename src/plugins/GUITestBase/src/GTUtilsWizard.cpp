@@ -99,8 +99,7 @@ void GTUtilsWizard::setInputFiles(HI::GUITestOpStatus& os, const QList<QStringLi
 
 #define GT_METHOD_NAME "setAllParameters"
 void GTUtilsWizard::setAllParameters(HI::GUITestOpStatus& os, QMap<QString, QVariant> map) {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
     QWizard* wizard = qobject_cast<QWizard*>(dialog);
     GT_CHECK(wizard, "activeModalWidget is not wizard");
 
@@ -223,12 +222,11 @@ void GTUtilsWizard::clickButton(HI::GUITestOpStatus& os, WizardButton button) {
 
 #define GT_METHOD_NAME "getPageTitle"
 QString GTUtilsWizard::getPageTitle(HI::GUITestOpStatus& os) {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK_RESULT(dialog != nullptr, "activeModalWidget is NULL", QString());
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
     QWizard* wizard = qobject_cast<QWizard*>(dialog);
     GT_CHECK_RESULT(wizard, "activeModalWidget is not wizard", QString());
 
-    QLabel* pageTitle = GTWidget::findExactWidget<QLabel*>(os, "pageTitle", wizard->currentPage());
+    auto pageTitle = GTWidget::findLabel(os, "pageTitle", wizard->currentPage());
     return pageTitle->text();
 }
 #undef GT_METHOD_NAME

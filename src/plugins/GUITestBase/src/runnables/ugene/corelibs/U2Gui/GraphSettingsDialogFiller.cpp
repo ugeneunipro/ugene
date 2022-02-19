@@ -65,31 +65,30 @@ GraphSettingsDialogFiller::GraphSettingsDialogFiller(GUITestOpStatus& os, Custom
 }
 
 void GraphSettingsDialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (window != -1) {
-        QSpinBox* windowEdit = GTWidget::findExactWidget<QSpinBox*>(os, "windowEdit", dialog);
+        auto windowEdit = GTWidget::findSpinBox(os, "windowEdit", dialog);
         GTSpinBox::setValue(os, windowEdit, window, GTGlobals::UseKeyBoard);
     }
 
     if (steps != -1) {
-        QSpinBox* stepsPerWindowEdit = GTWidget::findExactWidget<QSpinBox*>(os, "stepsPerWindowEdit", dialog);
+        auto stepsPerWindowEdit = GTWidget::findSpinBox(os, "stepsPerWindowEdit", dialog);
         GTSpinBox::setValue(os, stepsPerWindowEdit, steps, GTGlobals::UseKeyBoard);
     }
 
     if (cutoff_max != 0 || cutoff_min != 0) {
-        auto minmaxGroup = GTWidget::findExactWidget<QGroupBox*>(os, "minmaxGroup", dialog);
+        auto minmaxGroup = GTWidget::findGroupBox(os, "minmaxGroup", dialog);
         GTGroupBox::setChecked(os, minmaxGroup);
     }
 
     if (cutoff_min != 0) {
-        QDoubleSpinBox* minBox = GTWidget::findExactWidget<QDoubleSpinBox*>(os, "minBox", dialog);
+        auto minBox = GTWidget::findDoubleSpinBox(os, "minBox", dialog);
         GTDoubleSpinbox::setValue(os, minBox, cutoff_min, GTGlobals::UseKeyBoard);
     }
 
     if (cutoff_max != 0) {
-        QDoubleSpinBox* maxBox = GTWidget::findExactWidget<QDoubleSpinBox*>(os, "maxBox", dialog);
+        auto maxBox = GTWidget::findDoubleSpinBox(os, "maxBox", dialog);
         GTDoubleSpinbox::setValue(os, maxBox, cutoff_max, GTGlobals::UseKeyBoard);
     }
 

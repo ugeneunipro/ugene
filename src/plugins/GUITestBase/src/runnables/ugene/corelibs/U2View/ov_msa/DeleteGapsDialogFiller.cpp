@@ -35,8 +35,7 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::DeleteGapsDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void DeleteGapsDialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (radioButNum == 1) {
         QRadioButton* allColumnsOfGaps = dialog->findChild<QRadioButton*>("allRadioButton");
@@ -59,8 +58,7 @@ void DeleteGapsDialogFiller::commonScenario() {
 #define GT_METHOD_NAME "commonScenario"
 void RemoveGapColsDialogFiller::commonScenario() {
     GTGlobals::sleep(1000);
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     QRadioButton* radio = dialog->findChild<QRadioButton*>(radioMap[button]);
     GTRadioButton::click(os, radio);

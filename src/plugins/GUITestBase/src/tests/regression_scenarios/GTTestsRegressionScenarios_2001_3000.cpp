@@ -3100,7 +3100,7 @@ GUI_TEST_CLASS_DEFINITION(test_2566) {
 
     // 3. Enter the pattern: GCTAGCTTAAGTAACGCCAC
     QWidget* patternInputLine = QApplication::focusWidget();
-    CHECK_SET_ERR(nullptr != patternInputLine && patternInputLine->objectName() == "textPattern", "Focus is not on FindPattern widget");
+    CHECK_SET_ERR(patternInputLine != nullptr && patternInputLine->objectName() == "textPattern", "Focus is not on FindPattern widget");
 
     GTKeyboardDriver::keySequence("GCTAGCTTAAGTAACGCCAC");
 
@@ -3115,8 +3115,8 @@ GUI_TEST_CLASS_DEFINITION(test_2566) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: 97% is entered.
-    const int matchPercentage = GTUtilsOptionPanelSequenceView::getMatchPercentage(os);
-    CHECK_SET_ERR(97 == matchPercentage, "Entered and actual values don't match");
+    int matchPercentage = GTUtilsOptionPanelSequenceView::getMatchPercentage(os);
+    CHECK_SET_ERR(matchPercentage == 97, "Entered and actual values don't match");
 
     // Expected state: the task finished successfully.
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());

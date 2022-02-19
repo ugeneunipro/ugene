@@ -82,21 +82,21 @@ bool GTUtilsOptionPanelMca::isTabOpened(HI::GUITestOpStatus& os, Tabs tab, QWidg
 #define GT_METHOD_NAME "setConsensusType"
 void GTUtilsOptionPanelMca::setConsensusType(HI::GUITestOpStatus& os, const QString& consensusTypeName) {
     openTab(os, Consensus);
-    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "consensusType"), consensusTypeName);
+    GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "consensusType"), consensusTypeName);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getConsensusType"
 QString GTUtilsOptionPanelMca::getConsensusType(HI::GUITestOpStatus& os) {
     openTab(os, Consensus);
-    return GTComboBox::getCurrentText(os, GTWidget::findExactWidget<QComboBox*>(os, "consensusType"));
+    return GTComboBox::getCurrentText(os, GTWidget::findComboBox(os, "consensusType"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getConsensusTypes"
 QStringList GTUtilsOptionPanelMca::getConsensusTypes(HI::GUITestOpStatus& os) {
     openTab(os, Consensus);
-    QStringList types = GTComboBox::getValues(os, GTWidget::findExactWidget<QComboBox*>(os, "consensusType"));
+    QStringList types = GTComboBox::getValues(os, GTWidget::findComboBox(os, "consensusType"));
     return types;
 }
 #undef GT_METHOD_NAME
@@ -126,15 +126,14 @@ int GTUtilsOptionPanelMca::getLength(HI::GUITestOpStatus& os) {
 #define GT_METHOD_NAME "setThreshold"
 void GTUtilsOptionPanelMca::setThreshold(GUITestOpStatus& os, int threshold) {
     openTab(os, Consensus);
-    GTSlider::setValue(os, GTWidget::findExactWidget<QSlider*>(os, "thresholdSlider"), threshold);
+    GTSlider::setValue(os, GTWidget::findSlider(os, "thresholdSlider"), threshold);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getThreshold"
 int GTUtilsOptionPanelMca::getThreshold(GUITestOpStatus& os) {
     openTab(os, Consensus);
-    QSlider* thresholdSlider = GTWidget::findExactWidget<QSlider*>(os, "thresholdSlider");
-    GT_CHECK_RESULT(nullptr != thresholdSlider, "thresholdSlider is NULL", -1);
+    auto thresholdSlider = GTWidget::findSlider(os, "thresholdSlider");
     return thresholdSlider->value();
 }
 #undef GT_METHOD_NAME
@@ -142,8 +141,7 @@ int GTUtilsOptionPanelMca::getThreshold(GUITestOpStatus& os) {
 #define GT_METHOD_NAME "setExportFileName"
 void GTUtilsOptionPanelMca::setExportFileName(HI::GUITestOpStatus& os, QString exportFileName) {
     openTab(os, Consensus);
-    QLineEdit* exportToFileLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "pathLe");
-    GT_CHECK_RESULT(exportToFileLineEdit != nullptr, "exportToFileLineEdit is NULL", );
+    auto exportToFileLineEdit = GTWidget::findLineEdit(os, "pathLe");
     GTLineEdit::setText(os, exportToFileLineEdit, exportFileName);
 }
 #undef GT_METHOD_NAME
@@ -151,8 +149,7 @@ void GTUtilsOptionPanelMca::setExportFileName(HI::GUITestOpStatus& os, QString e
 #define GT_METHOD_NAME "getExportFileName"
 QString GTUtilsOptionPanelMca::getExportFileName(HI::GUITestOpStatus& os) {
     openTab(os, Consensus);
-    QLineEdit* exportToFileLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "pathLe");
-    GT_CHECK_RESULT(exportToFileLineEdit != nullptr, "exportToFileLineEdit is NULL", QString());
+    auto exportToFileLineEdit = GTWidget::findLineEdit(os, "pathLe");
     return GTLineEdit::getText(os, exportToFileLineEdit);
 }
 #undef GT_METHOD_NAME
@@ -160,7 +157,7 @@ QString GTUtilsOptionPanelMca::getExportFileName(HI::GUITestOpStatus& os) {
 #define GT_METHOD_NAME "setFileFormat"
 void GTUtilsOptionPanelMca::setFileFormat(HI::GUITestOpStatus& os, FileFormat fileFormat) {
     openTab(os, Consensus);
-    QComboBox* formatCb = GTWidget::findExactWidget<QComboBox*>(os, "formatCb");
+    auto formatCb = GTWidget::findComboBox(os, "formatCb");
     GTComboBox::selectItemByIndex(os, formatCb, fileFormat);
     GTGlobals::sleep(1000);
 }
@@ -192,10 +189,10 @@ void GTUtilsOptionPanelMca::showAlternativeMutations(HI::GUITestOpStatus& os, bo
     if (withSpinbox) {
         GTSpinBox::setValue(os, "mutationsThresholdSpinBox", value, parent);
     } else {
-        GTSlider::setValue(os, GTWidget::findExactWidget<QSlider*>(os, "mutationsThresholdSlider", parent), value);
+        GTSlider::setValue(os, GTWidget::findSlider(os, "mutationsThresholdSlider", parent), value);
     }
 
-    GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "updateMutationsPushButton", parent));
+    GTWidget::click(os, GTWidget::findPushButton(os, "updateMutationsPushButton", parent));
     GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME

@@ -45,8 +45,19 @@ public:
     bool checkSettings(QString& message, const CreatePhyTreeSettings& settings) override;
 
 private:
+    void propagateWidgetValuesToTextParameters();
+
+    void propagateTextParametersToWidgetValues();
+
     QPlainTextEdit* extraParametersTextEdit = nullptr;
     PhyTreeDisplayOptionsWidget* displayOptionsWidget = nullptr;
+
+    QLineEdit* substModelEdit = nullptr;
+    QLineEdit* ultrafastBootstrapEdit = nullptr;
+    QLineEdit* alrtEdit = nullptr;
+    QCheckBox* ancestralReconstructionCheckBox = nullptr;
+
+    bool isInsideChangeCallback = false;
 };
 
 }  // namespace U2

@@ -40,8 +40,7 @@ MuscleDialogFiller::MuscleDialogFiller(HI::GUITestOpStatus& os, Mode _mode, bool
 
 #define GT_METHOD_NAME "commonScenario"
 void MuscleDialogFiller::commonScenario() {
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     QComboBox* modeBox = dialog->findChild<QComboBox*>("confBox");
     GT_CHECK(modeBox != nullptr, "combobox not found");

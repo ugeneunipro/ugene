@@ -51,17 +51,14 @@ ImportACEFileFiller::ImportACEFileFiller(HI::GUITestOpStatus& os, CustomScenario
 
 void ImportACEFileFiller::commonScenario() {
     GTGlobals::sleep(500);
-    QWidget* dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (isReadOnly) {
-        QRadioButton* rb = GTWidget::findExactWidget<QRadioButton*>(os, "0_radio", dialog);
-        CHECK_SET_ERR(rb != nullptr, "Radio Button not found");
+        auto rb = GTWidget::findRadioButton(os, "0_radio", dialog);
         GTRadioButton::click(os, rb);
         GTGlobals::sleep();
     } else {
-        QRadioButton* rb = GTWidget::findExactWidget<QRadioButton*>(os, "1_radio", dialog);
-        CHECK_SET_ERR(rb != nullptr, "Radio Button not found");
+        auto rb = GTWidget::findRadioButton(os, "1_radio", dialog);
         GTRadioButton::click(os, rb);
         GTGlobals::sleep();
 

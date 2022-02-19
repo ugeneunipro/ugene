@@ -21,8 +21,10 @@
 
 #include "IQTreeWidget.h"
 
+#include <QCheckBox>
 #include <QDesktopServices>
 #include <QLabel>
+#include <QLineEdit>
 #include <QMessageBox>
 #include <QPlainTextEdit>
 #include <QPushButton>
@@ -57,7 +59,7 @@ IQTreeWidget::IQTreeWidget(const MultipleSequenceAlignment&, QWidget* parent)
 
     auto hintLayout = new QHBoxLayout();
 
-    auto hintLabel = new QLabel(tr("Extra command line options for IQ-TREE:"));
+    auto hintLabel = new QLabel(tr("Command line options for IQ-TREE:"));
     hintLabel->setToolTip(tr("Example: -lmap 2000 -n 0 -m\n Use double-quotes (\") for values with spaces."));
     hintLayout->addWidget(hintLabel);
 
@@ -74,16 +76,57 @@ IQTreeWidget::IQTreeWidget(const MultipleSequenceAlignment&, QWidget* parent)
 
     extraParametersTextEdit = new QPlainTextEdit();
     extraParametersTextEdit->setToolTip(tr("Use one parameter per one line"));
-    extraParametersTextEdit->setObjectName("extra_parameters_text_edit");
+    extraParametersTextEdit->setObjectName("extraParametersTextEdit");
     auto savedParameters = AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + IQTREE_EXTRA_PARAMETERS_SETTINGS_KEY).toStringList();
     extraParametersTextEdit->setPlainText(savedParameters.join("\n"));
+    connect(extraParametersTextEdit, &QPlainTextEdit::textChanged, this, [this] {
+        CHECK(!isInsideChangeCallback, );
+        isInsideChangeCallback = true;
+        propagateTextParametersToWidgetValues();
+        isInsideChangeCallback = false;
+    });
     iqTreeOptionsTabLayout->addWidget(extraParametersTextEdit);
+
+    auto iqTreeOptionsComponentRowLayout = new QHBoxLayout();
+
+    iqTreeOptionsComponentRowLayout->addWidget(new QLabel(tr("Subst. model")));
+    substModelEdit = new QLineEdit();
+    substModelEdit->setObjectName("substModelEdit");
+    substModelEdit->setMinimumWidth(60);
+    connect(substModelEdit, &QLineEdit::textChanged, this, &IQTreeWidget::propagateWidgetValuesToTextParameters);
+    iqTreeOptionsComponentRowLayout->addWidget(substModelEdit);
+    iqTreeOptionsComponentRowLayout->addSpacing(10);
+
+    iqTreeOptionsComponentRowLayout->addWidget(new QLabel(tr("Ultrafast bootstrap")));
+    ultrafastBootstrapEdit = new QLineEdit();
+    ultrafastBootstrapEdit->setObjectName("ultrafastBootstrapEdit");
+    ultrafastBootstrapEdit->setMinimumWidth(60);
+    connect(ultrafastBootstrapEdit, &QLineEdit::textChanged, this, &IQTreeWidget::propagateWidgetValuesToTextParameters);
+    iqTreeOptionsComponentRowLayout->addWidget(ultrafastBootstrapEdit);
+    iqTreeOptionsComponentRowLayout->addSpacing(10);
+
+    iqTreeOptionsComponentRowLayout->addWidget(new QLabel(tr("alrt")));
+    alrtEdit = new QLineEdit();
+    alrtEdit->setObjectName("alrtEdit");
+    alrtEdit->setMinimumWidth(60);
+    connect(alrtEdit, &QLineEdit::textChanged, this, &IQTreeWidget::propagateWidgetValuesToTextParameters);
+    iqTreeOptionsComponentRowLayout->addWidget(alrtEdit);
+    iqTreeOptionsComponentRowLayout->addSpacing(10);
+
+    iqTreeOptionsComponentRowLayout->addWidget(new QLabel(tr("Ancestral reconstruction")));
+    ancestralReconstructionCheckBox = new QCheckBox();
+    ancestralReconstructionCheckBox->setObjectName("ancestralReconstructionCheckBox");
+    connect(ancestralReconstructionCheckBox, &QCheckBox::stateChanged, this, &IQTreeWidget::propagateWidgetValuesToTextParameters);
+    iqTreeOptionsComponentRowLayout->addWidget(ancestralReconstructionCheckBox);
+    iqTreeOptionsTabLayout->addLayout(iqTreeOptionsComponentRowLayout);
 
     tabWidget->addTab(iqTreeOptionsWidget, tr("IQ-TREE options"));
 
     displayOptionsWidget = new PhyTreeDisplayOptionsWidget();
     displayOptionsWidget->setContentsMargins(10, 10, 10, 10);
     tabWidget->addTab(displayOptionsWidget, tr("Display Options"));
+
+    propagateTextParametersToWidgetValues();
 }
 
 void IQTreeWidget::fillSettings(CreatePhyTreeSettings& settings) {
@@ -114,7 +157,55 @@ void IQTreeWidget::restoreDefault() {
 }
 
 bool IQTreeWidget::checkSettings(QString& message, const CreatePhyTreeSettings& settings) {
+    // TODO: parse parameters and return error message (change the API & all impls) not a bool!
     return displayOptionsWidget->checkSettings(message, settings);
+}
+
+void IQTreeWidget::propagateWidgetValuesToTextParameters() {
+    CHECK(!isInsideChangeCallback, );
+    U2OpStatusImpl os;
+    QStringList oldParameters = CmdlineParamsParser::parse(os, extraParametersTextEdit->toPlainText());
+    CHECK_OP(os, );
+
+    isInsideChangeCallback = true;  // TODO: create an utility class that will call lambda in destructor.
+
+    QStringList parameters = oldParameters;
+
+    CmdlineParamsParser::removeParameterNameAndValue("-m", parameters);
+    if (!substModelEdit->text().isEmpty()) {
+        parameters << "-m" << substModelEdit->text();
+    }
+
+    CmdlineParamsParser::removeParameterNameAndValue("-bb", parameters);
+    if (!ultrafastBootstrapEdit->text().isEmpty()) {
+        parameters << "-bb" << ultrafastBootstrapEdit->text();
+    }
+
+    CmdlineParamsParser::removeParameterNameAndValue("-alrt", parameters);
+    if (!alrtEdit->text().isEmpty()) {
+        parameters << "-alrt" << alrtEdit->text();
+    }
+
+    parameters.removeOne("-asr");
+    if (ancestralReconstructionCheckBox->isChecked()) {
+        parameters << "-asr";
+    }
+
+    extraParametersTextEdit->setPlainText(parameters.join(' '));
+
+    isInsideChangeCallback = false;
+}
+
+void IQTreeWidget::propagateTextParametersToWidgetValues() {
+    U2OpStatusImpl os;
+    QString parametersText = extraParametersTextEdit->toPlainText();
+    QStringList parameters = CmdlineParamsParser::parse(os, parametersText);
+    CHECK_OP(os, );
+
+    substModelEdit->setText(CmdlineParamsParser::getParameterValue("-m", parameters));
+    ultrafastBootstrapEdit->setText(CmdlineParamsParser::getParameterValue("-bb", parameters));
+    alrtEdit->setText(CmdlineParamsParser::getParameterValue("-alrt", parameters));
+    ancestralReconstructionCheckBox->setChecked(parameters.contains("-asr"));
 }
 
 }  // namespace U2

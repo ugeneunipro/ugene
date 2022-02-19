@@ -44,16 +44,30 @@ QStringList CmdlineParamsParser::parse(U2OpStatus& os, const QString& rawParamsS
     QStringList tokens;
     for (auto it = regExp.globalMatch(line); it.hasNext();) {
         QStringList matchTokens = it.next().capturedTexts();
-        QStringList fixedTokens;
         for (QString token : qAsConst(matchTokens)) {
             token.replace("\"", "");
             token = token.trimmed();
-            if (token.isEmpty()) {
+            if (!token.isEmpty()) {
                 tokens << token;
             }
         }
     }
     return tokens;
+}
+
+QString CmdlineParamsParser::getParameterValue(const QString& name, const QStringList& parameters) {
+    int parameterIndex = parameters.indexOf(name);
+    CHECK(parameterIndex >= 0 && parameterIndex < parameters.length() - 1, "")
+    return parameters[parameterIndex + 1];
+}
+
+void CmdlineParamsParser::removeParameterNameAndValue(const QString& name, QStringList& parameters) {
+    int nameIndex = parameters.indexOf(name);
+    CHECK(nameIndex >= 0, );
+    parameters.removeAt(nameIndex);  // Remove name.
+    if (parameters.length() > nameIndex) {
+        parameters.removeAt(nameIndex);  // Remove value.
+    }
 }
 
 }  // namespace U2
