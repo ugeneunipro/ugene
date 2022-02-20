@@ -328,7 +328,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Show Names"}));
     GTWidget::click(os, GTWidget::findWidget(os, "Show Labels"));
 
-    QGraphicsView* treeView = GTWidget::findExactWidget<QGraphicsView*>(os, "treeView");
+    auto treeView = GTWidget::findGraphicsView(os, "treeView");
     QList<QGraphicsItem*> list = treeView->scene()->items();
 
     for (const QGraphicsItem* item : qAsConst(list)) {
@@ -374,7 +374,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     // Expected state: "Create Phylogenetic Tree" dialog appears
     // 5. Set save path to _common_data/scenarios/sandbox/COI.nwk Click  OK button
     // Expected state: phylogenetic tree appears
-    GTWidget::findExactWidget<QGraphicsView*>(os, "treeView");
+    GTWidget::findGraphicsView(os, "treeView");
 }
 
 int getCoord(HI::GUITestOpStatus& os, QGraphicsSimpleTextItem* node) {

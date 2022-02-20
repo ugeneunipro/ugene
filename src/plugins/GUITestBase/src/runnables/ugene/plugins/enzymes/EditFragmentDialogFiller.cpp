@@ -44,7 +44,7 @@ void EditFragmentDialogFiller::commonScenario() {
     // GUITest_regression_scenarios_test_0574
     if (parameters.checkRComplText) {
         GTRadioButton::click(os, qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "rStickyButton", dialog)));
-        auto rCustomOverhangBox = GTWidget::findExactWidget<QGroupBox*>(os, "rCustomOverhangBox", dialog);
+        auto rCustomOverhangBox = GTWidget::findGroupBox(os, "rCustomOverhangBox", dialog);
         GTGroupBox::setChecked(os, rCustomOverhangBox, true);
         GTRadioButton::click(os, qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "rComplRadioButton", dialog)));
         QLineEdit* rComplOverhangEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "rComplOverhangEdit", dialog));
@@ -58,7 +58,7 @@ void EditFragmentDialogFiller::commonScenario() {
         GT_CHECK(lStickyButton, "lStickyButton not found");
         GTRadioButton::click(os, lStickyButton);
 
-        auto lCustomOverhangBox = GTWidget::findExactWidget<QGroupBox*>(os, "lCustomOverhangBox", dialog);
+        auto lCustomOverhangBox = GTWidget::findGroupBox(os, "lCustomOverhangBox", dialog);
         GTGroupBox::setChecked(os, lCustomOverhangBox, parameters.lCustom);
 
         if (parameters.lCustom) {
@@ -91,7 +91,7 @@ void EditFragmentDialogFiller::commonScenario() {
         GT_CHECK(rStickyButton, "rStickyButton not found");
         GTRadioButton::click(os, rStickyButton);
 
-        auto rCustomOverhangBox = GTWidget::findExactWidget<QGroupBox*>(os, "rCustomOverhangBox", dialog);
+        auto rCustomOverhangBox = GTWidget::findGroupBox(os, "rCustomOverhangBox", dialog);
         GTGroupBox::setChecked(os, rCustomOverhangBox, parameters.rCustom);
 
         if (parameters.rCustom) {

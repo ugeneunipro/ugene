@@ -39,9 +39,9 @@ ExportHighlightedDialogFiller::ExportHighlightedDialogFiller(HI::GUITestOpStatus
 void ExportHighlightedDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "fileNameEdit", dialog), filePath);
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "fileNameEdit", dialog), filePath);
 
-    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "transposeBox", dialog), invertedExport);
+    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "transposeBox", dialog), invertedExport);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }

@@ -186,7 +186,7 @@ bool AppSettingsDialogFiller::isExternalToolValid(HI::GUITestOpStatus& os, const
         if (item->text(0) == toolName) {
             GTTreeWidget::click(os, item);
             GTMouseDriver::doubleClick();
-            QTextBrowser* descriptionTextBrowser = GTWidget::findExactWidget<QTextBrowser*>(os, "descriptionTextBrowser", dialog);
+            auto descriptionTextBrowser = GTWidget::findTextBrowser(os, "descriptionTextBrowser", dialog);
             return descriptionTextBrowser->toPlainText().contains("Version:");
         }
     }
@@ -223,7 +223,7 @@ bool AppSettingsDialogFiller::isToolDescriptionContainsString(HI::GUITestOpStatu
 
     clickOnTool(os, toolName);
 
-    QTextBrowser* textBrowser = GTWidget::findExactWidget<QTextBrowser*>(os, "descriptionTextBrowser", dialog);
+    auto textBrowser = GTWidget::findTextBrowser(os, "descriptionTextBrowser", dialog);
     GT_CHECK_RESULT(textBrowser, "textBrowser is NULL", false);
 
     QString plainText = textBrowser->toPlainText();

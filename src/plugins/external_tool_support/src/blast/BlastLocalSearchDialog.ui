@@ -266,7 +266,7 @@
          <item>
           <widget class="QLabel" name="label_15">
            <property name="text">
-            <string>Number of CPUs being used</string>
+            <string>Number of threads</string>
            </property>
           </widget>
          </item>

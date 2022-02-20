@@ -105,7 +105,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
             CHECK_SET_ERR(output.contains(".ugenedb", Qt::CaseInsensitive), QString("incorrect output line: do not contain default path: .ugenedb"));
 
             // 2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
 
             // 3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
             QStringList reads;
@@ -117,7 +117,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
                 reads << ("sanger_" + num + ".ab1");
             }
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, testDir + "_common_data/sanger/", reads));
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
 
             // 4. Push "Align" button
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -182,7 +182,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             // 2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
 
             // 3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)
             QStringList reads;
@@ -201,7 +201,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
 
             // 4. Uncheck "Add to project" option
             GTCheckBox::setChecked(os, "addToProjectCheckbox", false);
@@ -216,7 +216,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, path));
 
             // 7.Push Save
-            GTWidget::click(os, GTWidget::findExactWidget<QToolButton*>(os, "setOutputButton"));
+            GTWidget::click(os, GTWidget::findToolButton(os, "setOutputButton"));
 
             // Expected state : "Result alignment" is filled <path> / Sanger.ugenedb
             output = GTLineEdit::getText(os, "outputLineEdit");
@@ -481,7 +481,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
             CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             // 2. Select reference  /test/general/_common_data/alphabets/extended_amino_1000.fa
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/alphabets/extended_amino_1000.fa");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "referenceLineEdit"), testDir + "_common_data/alphabets/extended_amino_1000.fa");
 
             // 3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)
             QStringList reads;
@@ -500,7 +500,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
             GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
 
             // 4. Uncheck "Add to project" option
             GTCheckBox::setChecked(os, "addToProjectCheckbox", false);
@@ -515,7 +515,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, path));
 
             // 7.Push Save
-            GTWidget::click(os, GTWidget::findExactWidget<QToolButton*>(os, "setOutputButton"));
+            GTWidget::click(os, GTWidget::findToolButton(os, "setOutputButton"));
 
             // Expected state : "Result alignment" is filled <path> / Sanger.ugenedb
             output = GTLineEdit::getText(os, "outputLineEdit");
@@ -559,7 +559,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
             CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             // 2. Select reference  /test/general/_common_data/alphabets/standard_dna_rna_amino_1000.fa
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/alphabets/standard_dna_rna_amino_1000.fa");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "referenceLineEdit"), testDir + "_common_data/alphabets/standard_dna_rna_amino_1000.fa");
 
             // 3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)
             QStringList reads;
@@ -578,7 +578,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
             GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
 
             // 4. Uncheck "Add to project" option
             GTCheckBox::setChecked(os, "addToProjectCheckbox", false);
@@ -593,7 +593,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, path));
 
             // 7.Push Save
-            GTWidget::click(os, GTWidget::findExactWidget<QToolButton*>(os, "setOutputButton"));
+            GTWidget::click(os, GTWidget::findToolButton(os, "setOutputButton"));
 
             // Expected state : "Result alignment" is filled <path> / Sanger.ugenedb
             output = GTLineEdit::getText(os, "outputLineEdit");
@@ -690,7 +690,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
             CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             // 2. Select reference  /test/general/_common_data/alphabets/standard_dna_rna_1000.fa
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/alphabets/standard_rna_1000.fa");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "referenceLineEdit"), testDir + "_common_data/alphabets/standard_rna_1000.fa");
 
             // 3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)
             QStringList reads;
@@ -709,7 +709,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
             GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
 
             // 4. Uncheck "Add to project" option
             GTCheckBox::setChecked(os, "addToProjectCheckbox", false);
@@ -724,7 +724,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, path));
 
             // 7.Push Save
-            GTWidget::click(os, GTWidget::findExactWidget<QToolButton*>(os, "setOutputButton"));
+            GTWidget::click(os, GTWidget::findToolButton(os, "setOutputButton"));
 
             // Expected state : "Result alignment" is filled <path> / Sanger.ugenedb
             output = GTLineEdit::getText(os, "outputLineEdit");
@@ -821,7 +821,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
             CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             // 2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
 
             // 3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
             QStringList reads;
@@ -840,7 +840,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
             GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
 
             // 4. Push "Align" button
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -1303,7 +1303,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
-    QScrollBar* hscroll = GTWidget::findExactWidget<QScrollBar*>(os, "horizontal_names_scroll");
+    auto hscroll = GTWidget::findScrollBar(os, "horizontal_names_scroll");
     bool isHidden = hscroll->isHidden();
 
     // 2. Select vertical slider between reads named and read area
@@ -1316,7 +1316,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     // Expected state : Horizontal scrolls bar appears
     CHECK_SET_ERR(!isHidden, "Horizontal scrolls bar not found");
 
-    hscroll = GTWidget::findExactWidget<QScrollBar*>(os, "horizontal_names_scroll");
+    hscroll = GTWidget::findScrollBar(os, "horizontal_names_scroll");
     isHidden = hscroll->isHidden();
 
     // 4. Move the slider to the right until all names become visible
@@ -3738,14 +3738,14 @@ GUI_TEST_CLASS_DEFINITION(test_0045_3) {
     GTUtilsProjectTreeView::callContextMenu(os, "Mapped reads");
 
     // 4. Open the "Reads" tab, check "Show alternative mutations", set threshold to 80 by spinbox and click "Update"
-    auto mcaEditorWidget = GTWidget::findExactWidget<QWidget*>(os, "Mapped reads [test_0045_3.ugenedb] 2");
+    auto mcaEditorWidget = GTWidget::findWidget(os, "Mapped reads [test_0045_3.ugenedb] 2");
     CHECK_SET_ERR(mcaEditorWidget != nullptr, "Cant find \"Mapped reads [test_0045_3.ugenedb] 2\"");
 
     GTUtilsOptionPanelMca::showAlternativeMutations(os, true, 80, true, mcaEditorWidget);
 
     // 5. Switch back to the first view and uncheck "Show alternative mutations"
     GTUtilsMdi::clickTab(os, 1);
-    mcaEditorWidget = GTWidget::findExactWidget<QWidget*>(os, "Mapped reads [test_0045_3.ugenedb]");
+    mcaEditorWidget = GTWidget::findWidget(os, "Mapped reads [test_0045_3.ugenedb]");
     CHECK_SET_ERR(mcaEditorWidget != nullptr, "Cant find \"Mapped reads [test_0045_3.ugenedb]\"");
 
     GTUtilsOptionPanelMca::showAlternativeMutations(os, false, 75, true, mcaEditorWidget);

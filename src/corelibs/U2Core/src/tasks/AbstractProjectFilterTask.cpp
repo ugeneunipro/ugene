@@ -64,7 +64,7 @@ void AbstractProjectFilterTask::filterDocument(const QPointer<Document>& doc) {
         CHECK(!doc.isNull(), );
         if (filterAcceptsObject(obj)) {
             filteredObjs.append(obj);
-            if (0 == filteredObjs.size() % filteredObjCountPerIteration || 1 == filteredObjCountPerIteration) {
+            if (filteredObjs.size() % filteredObjCountPerIteration == 0 || filteredObjCountPerIteration == 1) {
                 emit si_objectsFiltered(filterGroupName, filteredObjs.mid(filteredObjs.size() - filteredObjCountPerIteration));
             }
         }

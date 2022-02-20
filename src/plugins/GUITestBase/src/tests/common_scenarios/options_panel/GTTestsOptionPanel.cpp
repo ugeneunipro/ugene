@@ -189,8 +189,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //    2. Activate Information tab on Options panel at the right edge of UGENE window.
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
 
-    QLabel* statisticsLabel = GTWidget::findExactWidget<QLabel*>(os, "Common Statistics");
-    CHECK_SET_ERR(statisticsLabel != nullptr, "No Common Statistics label");
+    auto statisticsLabel = GTWidget::findLabel(os, "Common Statistics");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -208,8 +207,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
     //    2. Activate Information tab on Options panel at the right edge of UGENE window.
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
 
-    QLabel* statisticsLabel = GTWidget::findExactWidget<QLabel*>(os, "Common Statistics");
-    CHECK_SET_ERR(statisticsLabel != nullptr, "No Common Statistics label");
+    auto statisticsLabel = GTWidget::findLabel(os, "Common Statistics");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -329,8 +327,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
 
-    QLabel* statisticsLabel = GTWidget::findExactWidget<QLabel*>(os, "Common Statistics");
-    CHECK_SET_ERR(statisticsLabel != nullptr, "No Common Statistics widget");
+    auto statisticsLabel = GTWidget::findLabel(os, "Common Statistics");
 
     QString s = QString("<table cellspacing=5>"
                         "<tr><td>Length: </td><td>200 nt</td></tr>"
@@ -362,8 +359,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QLabel* statisticsLabel = GTWidget::findExactWidget<QLabel*>(os, "Common Statistics");
-    CHECK_SET_ERR(statisticsLabel != nullptr, "No Common Statistics widget");
+    auto statisticsLabel = GTWidget::findLabel(os, "Common Statistics");
 
     QString s = QString("Length: </td><td>199 950 nt");
     QString s1 = QString("GC content: </td><td>38.84%");
@@ -405,8 +401,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QLabel* statisticsLabel = GTWidget::findExactWidget<QLabel*>(os, "Common Statistics");
-    CHECK_SET_ERR(statisticsLabel != nullptr, "No Common Statistics widget");
+    auto statisticsLabel = GTWidget::findLabel(os, "Common Statistics");
 
     QString s = QString("<table cellspacing=5>"
                         "<tr><td>Length: </td><td>26 926 aa</td></tr>"
@@ -424,8 +419,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QLabel* statisticsLabel = GTWidget::findExactWidget<QLabel*>(os, "Common Statistics");
-    CHECK_SET_ERR(statisticsLabel != nullptr, "No Common Statistics widget");
+    auto statisticsLabel = GTWidget::findLabel(os, "Common Statistics");
     GTUtilsOptionsPanel::resizeToMaximum(os);
     QString labelText = statisticsLabel->text();
 
@@ -474,8 +468,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QLabel* statisticsLabel = GTWidget::findExactWidget<QLabel*>(os, "Common Statistics");
-    CHECK_SET_ERR(statisticsLabel != nullptr, "No Common Statistics widget");
+    auto statisticsLabel = GTWidget::findLabel(os, "Common Statistics");
 
     QString s = QString("<table cellspacing=5>"
                         "<tr><td>Length: </td><td>230 </td></tr>"
@@ -494,8 +487,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QLabel* statisticsLabel = GTWidget::findExactWidget<QLabel*>(os, "Common Statistics");
-    CHECK_SET_ERR(statisticsLabel != nullptr, "No Common Statistics widget");
+    auto statisticsLabel = GTWidget::findLabel(os, "Common Statistics");
 
     QWidget* w0 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
     CHECK_SET_ERR(w0 != nullptr, "ADV single sequence widget 0 is NULL");

@@ -488,7 +488,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
 
     // 3. Type to the project filter field "polyprotein"
     GTUtilsProjectTreeView::openView(os);
-    QLineEdit* nameFilterEdit = GTWidget::findExactWidget<QLineEdit*>(os, "nameFilterEdit");
+    auto nameFilterEdit = GTWidget::findLineEdit(os, "nameFilterEdit");
     GTLineEdit::setText(os, nameFilterEdit, "polyprotein");
 
     // Expected state: Project filter clear button is visible

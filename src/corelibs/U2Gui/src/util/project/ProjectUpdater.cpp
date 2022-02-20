@@ -40,7 +40,7 @@ ProjectUpdater::ProjectUpdater()
 }
 
 void ProjectUpdater::run() {
-    while (0 == stopped.loadAcquire()) {
+    while (stopped.loadAcquire() == 0) {
         readData();
         msleep(U2ObjectDbi::OBJECT_ACCESS_UPDATE_INTERVAL);
     }
@@ -119,9 +119,9 @@ void ProjectUpdater::readData() {
 
 void ProjectUpdater::fetchObjectsInUse(const U2DbiRef& dbiRef, U2OpStatus& os) {
     DbiConnection connection(dbiRef, os);
-    SAFE_POINT(nullptr != connection.dbi, "Invalid database connection", );
+    SAFE_POINT(connection.dbi != nullptr, "Invalid database connection", );
     U2ObjectDbi* oDbi = connection.dbi->getObjectDbi();
-    SAFE_POINT(nullptr != oDbi, "Invalid database connection", );
+    SAFE_POINT(oDbi != nullptr, "Invalid database connection", );
 
     const QSet<U2DataId> usedObjects = oDbi->getAllObjectsInUse(os).toSet();
     CHECK_OP(os, );

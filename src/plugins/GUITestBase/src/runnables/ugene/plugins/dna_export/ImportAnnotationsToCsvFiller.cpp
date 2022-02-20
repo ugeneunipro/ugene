@@ -199,7 +199,7 @@ void ImportAnnotationsToCsvFiller::commonScenario() {
         QRadioButton* columnSeparator = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "columnSeparatorRadioButton", dialog));
         GTRadioButton::click(os, columnSeparator);
 
-        QLineEdit* separatorEdit = GTWidget::findExactWidget<QLineEdit*>(os, "separatorEdit", dialog);
+        QLineEdit* separatorEdit = GTWidget::findLineEdit(os, "separatorEdit", dialog);
         GTLineEdit::setText(os, separatorEdit, separator, false, true);
 
         //        GTClipboard::setText(os, separator);

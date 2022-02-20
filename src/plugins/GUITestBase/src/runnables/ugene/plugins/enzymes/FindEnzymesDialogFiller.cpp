@@ -67,25 +67,23 @@ void FindEnzymesDialogFiller::commonScenario() {
         QWidget* regionSelector = GTWidget::findWidget(os, "region_selector_with_excluded");
         GT_CHECK(regionSelector != nullptr, "range_selector not found");
 
-        QLineEdit* start = GTWidget::findExactWidget<QLineEdit*>(os, "startLineEdit", regionSelector);
-        GT_CHECK(start != nullptr, "startLineEdit of 'Search In' region not found");
+        auto start = GTWidget::findLineEdit(os, "startLineEdit", regionSelector);
         GTLineEdit::setText(os, start, QString::number(searchStart));
 
-        QLineEdit* end = GTWidget::findExactWidget<QLineEdit*>(os, "endLineEdit", regionSelector);
+        auto end = GTWidget::findLineEdit(os, "endLineEdit", regionSelector);
         GTWidget::click(os, end);
         GT_CHECK(end != nullptr, "endLineEdit of 'Search In' region not found");
         GTLineEdit::setText(os, end, QString::number(searchEnd));
     }
 
     if (excludeStart != -1 && excludeEnd != -1) {
-        QCheckBox* exclude = GTWidget::findExactWidget<QCheckBox*>(os, "excludeCheckBox");
+        auto exclude = GTWidget::findCheckBox(os, "excludeCheckBox");
         GTCheckBox::setChecked(os, exclude);
 
-        QLineEdit* start = GTWidget::findExactWidget<QLineEdit*>(os, "excludeStartLineEdit");
-        GT_CHECK(start != nullptr, "excludeStartLineEdit of 'Exclude' region not found");
+        auto start = GTWidget::findLineEdit(os, "excludeStartLineEdit");
         GTLineEdit::setText(os, start, QString::number(excludeStart));
 
-        QLineEdit* end = GTWidget::findExactWidget<QLineEdit*>(os, "excludeEndLinEdit");
+        auto end = GTWidget::findLineEdit(os, "excludeEndLinEdit");
         GTWidget::click(os, end);
         GT_CHECK(end != nullptr, "excludeEndLinEdit of 'Exclude' region not found");
         GTLineEdit::setText(os, end, QString::number(excludeEnd));

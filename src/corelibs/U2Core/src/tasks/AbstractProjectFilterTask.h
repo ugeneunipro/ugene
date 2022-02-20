@@ -37,7 +37,7 @@ typedef QList<QPointer<GObject>> SafeObjList;
 class U2CORE_EXPORT AbstractProjectFilterTask : public Task {
     Q_OBJECT
 public:
-    void run();
+    void run() override;
 
 signals:
     void si_objectsFiltered(const QString& filterGroupName, const SafeObjList& objects);
