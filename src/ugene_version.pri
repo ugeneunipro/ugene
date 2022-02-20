@@ -3,7 +3,7 @@
 # int version levels for executables
 UGENE_VER_MAJOR=42
 UGENE_VER_MINOR=0
-UGENE_VER_SUFFIX=-dev
+UGENE_VER_SUFFIX=
 
 # product version
 UGENE_VERSION=$${UGENE_VER_MAJOR}.$${UGENE_VER_MINOR}$${UGENE_VER_SUFFIX}
