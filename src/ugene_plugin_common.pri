@@ -29,5 +29,7 @@ unix {
     } else {
         # Make plugins to look for unloaded libraries (Qt*/U2*) in the app folder when loading.
         QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN/..\'"
+        # Check for undefined symbols during the build.
+        QMAKE_LFLAGS += "-Wl,--no-undefined"
     }
 }
