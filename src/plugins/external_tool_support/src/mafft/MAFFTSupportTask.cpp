@@ -278,7 +278,7 @@ Task::ReportResult MAFFTSupportTask::report() {
         foreach (QString file, tmpDir.entryList()) {
             tmpDir.remove(file);
         }
-        if (!tmpDir.rmdir(tmpDir.absolutePath())) {
+        if (!tmpDir.rmdir(tmpDir.absolutePath()) && !hasError()) {
             stateInfo.setError(tr("Can not remove folder for temporary files."));
             emit si_stateChanged();
         }
