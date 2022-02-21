@@ -23,18 +23,18 @@
 
 namespace U2 {
 
-MsaColorSchemePercentageIdententityGrayscale::MsaColorSchemePercentageIdententityGrayscale(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj)
+MsaColorSchemePercentageIdententityGrayscale::MsaColorSchemePercentageIdententityGrayscale(QObject* parent, const MsaColorSchemeFactory* factory, MultipleAlignmentObject* maObj)
     : MsaColorSchemePercentageIdentity(parent, factory, maObj) {
     colorsByRange[0] = QColor("#646464");
     colorsByRange[1] = QColor("#999999");
     colorsByRange[2] = QColor("#CCCCCC");
 }
 
-MsaColorSchemePercentageIdententityGrayscaleFactory::MsaColorSchemePercentageIdententityGrayscaleFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets)
+MsaColorSchemePercentageIdententityGrayscaleFactory::MsaColorSchemePercentageIdententityGrayscaleFactory(QObject* parent, const QString& id, const QString& name, const AlphabetFlags& supportedAlphabets)
     : MsaColorSchemeFactory(parent, id, name, supportedAlphabets) {
 }
 
-MsaColorScheme *MsaColorSchemePercentageIdententityGrayscaleFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
+MsaColorScheme* MsaColorSchemePercentageIdententityGrayscaleFactory::create(QObject* parent, MultipleAlignmentObject* maObj) const {
     return new MsaColorSchemePercentageIdententityGrayscale(parent, this, maObj);
 }
 

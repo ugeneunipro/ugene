@@ -24,11 +24,11 @@
 namespace U2 {
 namespace Workflow {
 
-PairedReadsPortValidator::PairedReadsPortValidator(const QString &inputId, const QString &inputPairedId)
+PairedReadsPortValidator::PairedReadsPortValidator(const QString& inputId, const QString& inputPairedId)
     : PortValidator(), inputSlotId(inputId), pairedInputSlotId(inputPairedId) {
 }
 
-bool PairedReadsPortValidator::validate(const IntegralBusPort *port, NotificationsList &notificationList) const {
+bool PairedReadsPortValidator::validate(const IntegralBusPort* port, NotificationsList& notificationList) const {
     bool res = true;
 
     StrStrMap bm = port->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();

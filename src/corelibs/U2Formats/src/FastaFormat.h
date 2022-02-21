@@ -34,7 +34,7 @@ class IOAdapter;
 class U2FORMATS_EXPORT FastaFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
-    FastaFormat(QObject *parent);
+    FastaFormat(QObject* parent);
 
     /** First header-line symbol for every sequence block in FASTA files. */
     static constexpr char FASTA_HEADER_START_SYMBOL = '>';
@@ -46,25 +46,25 @@ public:
     static constexpr int FASTA_SEQUENCE_LINE_LENGTH = 80;
 
     /** Saves sequence to the ioAdapter in FASTA format. */
-    static void storeSequence(const DNASequence &sequence, IOAdapter *ioAdapter, U2OpStatus &os);
+    static void storeSequence(const DNASequence& sequence, IOAdapter* ioAdapter, U2OpStatus& os);
 
     /** Saves sequence to the ioAdapter in FASTA format. */
-    static void storeSequence(const U2SequenceObject *sequence, IOAdapter *ioAdapter, U2OpStatus &os);
+    static void storeSequence(const U2SequenceObject* sequence, IOAdapter* ioAdapter, U2OpStatus& os);
 
     /** Parses input text and returns map of sequence name -> sequence values. */
-    static QList<QPair<QString, QString>> getSequencesAndNamesFromUserInput(const QString &userInput, U2OpStatus &os);
+    static QList<QPair<QString, QString>> getSequencesAndNamesFromUserInput(const QString& userInput, U2OpStatus& os);
 
 protected:
     /** Checks if the 'rawTextData' text is stored using this document format. */
-    FormatCheckResult checkRawTextData(const QString &dataPrefix, const GUrl &originalDataUrl) const override;
+    FormatCheckResult checkRawTextData(const QString& dataPrefix, const GUrl& originalDataUrl) const override;
 
-    Document *loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) override;
+    Document* loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) override;
 
-    DNASequence *loadTextSequence(IOAdapterReader &reader, U2OpStatus &os) override;
+    DNASequence* loadTextSequence(IOAdapterReader& reader, U2OpStatus& os) override;
 
-    void storeTextDocument(IOAdapterWriter &writer, Document *document, U2OpStatus &os) override;
+    void storeTextDocument(IOAdapterWriter& writer, Document* document, U2OpStatus& os) override;
 
-    void storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) override;
+    void storeTextEntry(IOAdapterWriter& writer, const QMap<GObjectType, QList<GObject*>>& objectsMap, U2OpStatus& os) override;
 };
 
 }  // namespace U2

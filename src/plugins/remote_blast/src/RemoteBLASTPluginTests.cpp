@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-void GTest_RemoteBLAST::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_RemoteBLAST::init(XMLTestFormat*, const QDomElement& el) {
     ao = nullptr;
     task = nullptr;
     sequence = el.attribute(SEQUENCE_ATTR);
@@ -216,9 +216,9 @@ Task::ReportResult GTest_RemoteBLAST::report() {
         return ReportResult_Finished;
     }
     if (ao != nullptr) {
-        QList<Annotation *> alist(ao->getAnnotations());
-        foreach (Annotation *an, alist) {
-            foreach (const U2Qualifier &q, an->getQualifiers()) {
+        QList<Annotation*> alist(ao->getAnnotations());
+        foreach (Annotation* an, alist) {
+            foreach (const U2Qualifier& q, an->getQualifiers()) {
                 if (q.name == "accession") {
                     if (!result.contains(q.value))  // Don't count different hsp
                         result.append(q.value);
@@ -247,7 +247,7 @@ Task::ReportResult GTest_RemoteBLAST::report() {
     if (result != expectedResults) {
         // stateInfo.setError( QString("Expected and actual id's not equal"));
         QString res = "";
-        foreach (const QString &str, result) {
+        foreach (const QString& str, result) {
             res.append(str);
             res.append("  ");
         }

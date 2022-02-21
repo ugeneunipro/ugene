@@ -33,21 +33,21 @@ class Task;
 class U2CORE_EXPORT TaskSignalMapper : public QObject {
     Q_OBJECT
 public:
-    TaskSignalMapper(Task *t);
-    Task *getTask() const;
+    TaskSignalMapper(Task* t);
+    Task* getTask() const;
 
 private slots:
     void sl_taskStateChanged();
 
 signals:
-    void si_taskPrepared(Task *);
-    void si_taskRunning(Task *);
-    void si_taskFinished(Task *);
-    void si_taskSucceeded(Task *);
-    void si_taskFailed(Task *);
+    void si_taskPrepared(Task*);
+    void si_taskRunning(Task*);
+    void si_taskFinished(Task*);
+    void si_taskSucceeded(Task*);
+    void si_taskFailed(Task*);
 
 private:
-    Task *task;
+    Task* task;
 };
 
 }  // namespace U2

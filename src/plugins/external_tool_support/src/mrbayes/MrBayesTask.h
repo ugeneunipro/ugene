@@ -40,18 +40,18 @@ class LoadDocumentTask;
 class MrBayesPrepareDataForCalculation : public Task {
     Q_OBJECT
 public:
-    MrBayesPrepareDataForCalculation(const MultipleSequenceAlignment &_ma, const CreatePhyTreeSettings &s, const QString &url);
+    MrBayesPrepareDataForCalculation(const MultipleSequenceAlignment& _ma, const CreatePhyTreeSettings& s, const QString& url);
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
     QString getInputFileUrl() {
         return inputFileForMrBayes;
     }
 
 private:
-    const MultipleSequenceAlignment &ma;
+    const MultipleSequenceAlignment& ma;
     CreatePhyTreeSettings settings;
     QString tmpDirUrl;
-    SaveAlignmentTask *saveDocumentTask;
+    SaveAlignmentTask* saveDocumentTask;
     QString inputFileForMrBayes;
 };
 
@@ -59,8 +59,8 @@ class MrBayesLogParser : public ExternalToolLogParser {
 public:
     MrBayesLogParser(int _nchains);
     int getProgress();
-    void parseOutput(const QString &partOfLog);
-    void parseErrOutput(const QString &partOfLog);
+    void parseOutput(const QString& partOfLog);
+    void parseErrOutput(const QString& partOfLog);
 
 private:
     QString lastLine;
@@ -73,35 +73,35 @@ private:
 class MrBayesGetCalculatedTreeTask : public Task {
     Q_OBJECT
 public:
-    MrBayesGetCalculatedTreeTask(const QString &url);
+    MrBayesGetCalculatedTreeTask(const QString& url);
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
-    PhyTreeObject *getPhyObject() {
+    QList<Task*> onSubTaskFinished(Task* subTask);
+    PhyTreeObject* getPhyObject() {
         return phyObject;
     }
 
 private:
     QString baseFileName;
-    LoadDocumentTask *loadTmpDocumentTask;
-    PhyTreeObject *phyObject;
+    LoadDocumentTask* loadTmpDocumentTask;
+    PhyTreeObject* phyObject;
 };
 
 class MrBayesSupportTask : public PhyTreeGeneratorTask {
     Q_OBJECT
 public:
-    MrBayesSupportTask(const MultipleSequenceAlignment &_ma, const CreatePhyTreeSettings &s);
+    MrBayesSupportTask(const MultipleSequenceAlignment& _ma, const CreatePhyTreeSettings& s);
     void prepare();
     Task::ReportResult report();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
     QString tmpDirUrl;
     QString tmpNexusFile;
-    MrBayesPrepareDataForCalculation *prepareDataTask;
-    ExternalToolRunTask *mrBayesTask;
-    MrBayesGetCalculatedTreeTask *getTreeTask;
+    MrBayesPrepareDataForCalculation* prepareDataTask;
+    ExternalToolRunTask* mrBayesTask;
+    MrBayesGetCalculatedTreeTask* getTreeTask;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_MRBAYES_TASK_H
+#endif  // _U2_MRBAYES_TASK_H

@@ -25,11 +25,11 @@
 
 namespace U2 {
 
-MsaHighlightingSchemeAgreements::MsaHighlightingSchemeAgreements(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleAlignmentObject *maObj)
+MsaHighlightingSchemeAgreements::MsaHighlightingSchemeAgreements(QObject* parent, const MsaHighlightingSchemeFactory* factory, MultipleAlignmentObject* maObj)
     : MsaHighlightingScheme(parent, factory, maObj) {
 }
 
-void MsaHighlightingSchemeAgreements::process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const {
+void MsaHighlightingSchemeAgreements::process(const char refChar, char& seqChar, QColor& color, bool& highlight, int refCharColumn, int refCharRow) const {
     highlight = (refChar == seqChar);
     if (!highlight) {
         color = QColor();
@@ -37,11 +37,11 @@ void MsaHighlightingSchemeAgreements::process(const char refChar, char &seqChar,
     MsaHighlightingScheme::process(refChar, seqChar, color, highlight, refCharColumn, refCharRow);
 }
 
-MsaHighlightingSchemeAgreementsFactory::MsaHighlightingSchemeAgreementsFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets)
+MsaHighlightingSchemeAgreementsFactory::MsaHighlightingSchemeAgreementsFactory(QObject* parent, const QString& id, const QString& name, const AlphabetFlags& supportedAlphabets)
     : MsaHighlightingSchemeFactory(parent, id, name, supportedAlphabets) {
 }
 
-MsaHighlightingScheme *MsaHighlightingSchemeAgreementsFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
+MsaHighlightingScheme* MsaHighlightingSchemeAgreementsFactory::create(QObject* parent, MultipleAlignmentObject* maObj) const {
     return new MsaHighlightingSchemeAgreements(parent, this, maObj);
 }
 

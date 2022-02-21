@@ -38,7 +38,7 @@ public:
 
     ReportResult report();
 
-    void onRegion(SequenceWalkerSubtask *, TaskStateInfo &) {
+    void onRegion(SequenceWalkerSubtask*, TaskStateInfo&) {
     }
 
 private:
@@ -54,7 +54,7 @@ protected:
 
 class SequenceWalkerTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 }  // namespace U2
 #endif

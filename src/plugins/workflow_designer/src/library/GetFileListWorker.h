@@ -34,7 +34,7 @@ namespace LocalWorkflow {
 class GetFileListPrompter : public PrompterBase<GetFileListPrompter> {
     Q_OBJECT
 public:
-    GetFileListPrompter(Actor *p = nullptr)
+    GetFileListPrompter(Actor* p = nullptr)
         : PrompterBase<GetFileListPrompter>(p) {
     }
 
@@ -46,15 +46,15 @@ protected:
 class GetFileListWorker : public BaseWorker {
     Q_OBJECT
 public:
-    GetFileListWorker(Actor *p);
+    GetFileListWorker(Actor* p);
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private:
-    IntegralBus *outChannel;
-    DatasetFilesIterator *files;
+    IntegralBus* outChannel;
+    DatasetFilesIterator* files;
 
 private:
     QString getNextUrl();
@@ -68,7 +68,7 @@ public:
         : DomainFactory(ACTOR_ID) {
     }
     static void init();
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 
 };  // GetFileListWorkerFactory
 

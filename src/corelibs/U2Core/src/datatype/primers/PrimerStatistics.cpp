@@ -34,7 +34,7 @@
 
 namespace U2 {
 
-QString PrimerStatistics::checkPcrPrimersPair(const QByteArray &forward, const QByteArray &reverse, bool &isCriticalError) {
+QString PrimerStatistics::checkPcrPrimersPair(const QByteArray& forward, const QByteArray& reverse, bool& isCriticalError) {
     QString message;
     isCriticalError = false;
     bool forwardIsValid = validate(forward);
@@ -45,7 +45,7 @@ QString PrimerStatistics::checkPcrPrimersPair(const QByteArray &forward, const Q
         message = tr("The forward primer contains a character from the Extended DNA alphabet.");
     } else if (!reverseIsValid) {
         message = tr("The reverse primer contains a character from the Extended DNA alphabet.");
-    } else if(!validatePrimerLength(forward)) {
+    } else if (!validatePrimerLength(forward)) {
         message = tr("The forward primer length should be between %1 and %2 bp.").arg(QString::number(MINIMUM_PRIMER_LENGTH)).arg(QString::number(MAXIMUM_PRIMER_LENGTH));
     } else if (!validatePrimerLength(reverse)) {
         message = tr("The reverse primer length should be between %1 and %2 bp.").arg(QString::number(MINIMUM_PRIMER_LENGTH)).arg(QString::number(MAXIMUM_PRIMER_LENGTH));
@@ -61,13 +61,13 @@ QString PrimerStatistics::checkPcrPrimersPair(const QByteArray &forward, const Q
     return message;
 }
 
-double PrimerStatistics::getMeltingTemperature(const QByteArray &sequence) {
+double PrimerStatistics::getMeltingTemperature(const QByteArray& sequence) {
     CHECK(validate(sequence), Primer::INVALID_TM);
     PrimerStatisticsCalculator calc(sequence);
     return calc.getTm();
 }
 
-double PrimerStatistics::getMeltingTemperature(const QByteArray &initialPrimer, const QByteArray &alternativePrimer) {
+double PrimerStatistics::getMeltingTemperature(const QByteArray& initialPrimer, const QByteArray& alternativePrimer) {
     if (PrimerStatistics::validate(initialPrimer)) {
         return PrimerStatistics::getMeltingTemperature(initialPrimer);
     }
@@ -77,7 +77,7 @@ double PrimerStatistics::getMeltingTemperature(const QByteArray &initialPrimer, 
     return Primer::INVALID_TM;
 }
 
-double PrimerStatistics::getAnnealingTemperature(const QByteArray &product, const QByteArray &forwardPrimer, const QByteArray &reversePrimer) {
+double PrimerStatistics::getAnnealingTemperature(const QByteArray& product, const QByteArray& forwardPrimer, const QByteArray& reversePrimer) {
     CHECK(validate(product) == true, Primer::INVALID_TM);
 
     double forwardTm = getMeltingTemperature(forwardPrimer, product.left(forwardPrimer.length()));
@@ -90,7 +90,7 @@ double PrimerStatistics::getAnnealingTemperature(const QByteArray &product, cons
     return 0.3 * primersTm + 0.7 * productTm - 14.9;
 }
 
-bool PrimerStatistics::validate(const QByteArray &primer) {
+bool PrimerStatistics::validate(const QByteArray& primer) {
     return validate(QString(primer));
 }
 
@@ -100,7 +100,7 @@ bool PrimerStatistics::validate(QString primer) {
     return pv.validate(primer, pos) == QValidator::Acceptable;
 }
 
-bool PrimerStatistics::validatePrimerLength(const QByteArray &primer) {
+bool PrimerStatistics::validatePrimerLength(const QByteArray& primer) {
     return primer.size() >= MINIMUM_PRIMER_LENGTH && primer.size() <= MAXIMUM_PRIMER_LENGTH;
 }
 
@@ -121,7 +121,7 @@ const int PrimerStatisticsCalculator::CLAMP_BOTTOM = 1;
 const int PrimerStatisticsCalculator::RUNS_TOP = 4;
 const double PrimerStatisticsCalculator::DIMERS_ENERGY_THRESHOLD = -6.0;
 
-PrimerStatisticsCalculator::PrimerStatisticsCalculator(const QByteArray &sequence,
+PrimerStatisticsCalculator::PrimerStatisticsCalculator(const QByteArray& sequence,
                                                        Direction direction,
                                                        const qreal _energyThreshold)
     : sequence(sequence), direction(direction), energyThreshold(_energyThreshold),
@@ -199,7 +199,7 @@ int PrimerStatisticsCalculator::getRuns() const {
     return maxRun;
 }
 
-const DimerFinderResult &PrimerStatisticsCalculator::getDimersInfo() const {
+const DimerFinderResult& PrimerStatisticsCalculator::getDimersInfo() const {
     return dimersInfo;
 }
 
@@ -238,33 +238,33 @@ QString PrimerStatisticsCalculator::getInitializationError() const {
     return initializationError;
 }
 
-bool PrimerStatisticsCalculator::isValidGC(QString &error) const {
+bool PrimerStatisticsCalculator::isValidGC(QString& error) const {
     double value = getGC();
     CHECK_EXT(value >= GC_BOTTOM, error = getMessage(PrimerStatistics::tr("low GC-content")), false);
     CHECK_EXT(value <= GC_TOP, error = getMessage(PrimerStatistics::tr("high GC-content")), false);
     return true;
 }
 
-bool PrimerStatisticsCalculator::isValidTm(QString &error) const {
+bool PrimerStatisticsCalculator::isValidTm(QString& error) const {
     double value = getTm();
     CHECK_EXT(value >= TM_BOTTOM, error = getMessage(PrimerStatistics::tr("low melting temperature")), false);
     CHECK_EXT(value <= TM_TOP, error = getMessage(PrimerStatistics::tr("high melting temperature")), false);
     return true;
 }
 
-bool PrimerStatisticsCalculator::isValidGCClamp(QString &error) const {
+bool PrimerStatisticsCalculator::isValidGCClamp(QString& error) const {
     int value = getGCClamp();
     CHECK_EXT(value >= CLAMP_BOTTOM, error = getMessage(PrimerStatistics::tr("low GC clamp")), false);
     return true;
 }
 
-bool PrimerStatisticsCalculator::isValidRuns(QString &error) const {
+bool PrimerStatisticsCalculator::isValidRuns(QString& error) const {
     int value = getRuns();
     CHECK_EXT(value <= RUNS_TOP, error = getMessage(PrimerStatistics::tr("high base runs value")), false);
     return true;
 }
 
-QString PrimerStatisticsCalculator::getMessage(const QString &error) const {
+QString PrimerStatisticsCalculator::getMessage(const QString& error) const {
     switch (direction) {
         case Forward:
             return PrimerStatistics::tr("forward primer has %1.").arg(error);
@@ -275,7 +275,7 @@ QString PrimerStatisticsCalculator::getMessage(const QString &error) const {
     }
 }
 
-bool PrimerStatisticsCalculator::isSelfDimer(QString &error) const {
+bool PrimerStatisticsCalculator::isSelfDimer(QString& error) const {
     CHECK_EXT(!dimersInfo.canBeFormed, error = "<br>Self-dimer can be formed:<br>" + dimersInfo.getShortReport(), false);
     return true;
 }
@@ -293,7 +293,7 @@ const QString RUNS_RANGE = QString("&lt;=%1 base runs").arg(PrimerStatisticsCalc
 const QString DIMERS_RANGE = QString("&Delta;G &gt;=%1 kcal/mol").arg(PrimerStatisticsCalculator::DIMERS_ENERGY_THRESHOLD);
 }  // namespace
 
-PrimersPairStatistics::PrimersPairStatistics(const QByteArray &_forward, const QByteArray &_reverse)
+PrimersPairStatistics::PrimersPairStatistics(const QByteArray& _forward, const QByteArray& _reverse)
     : forward(_forward, PrimerStatisticsCalculator::Forward),
       reverse(_reverse, PrimerStatisticsCalculator::Reverse) {
     initializationError = forward.getInitializationError().isEmpty() ? reverse.getInitializationError() : forward.getInitializationError();
@@ -365,7 +365,7 @@ const DimerFinderResult& U2::PrimersPairStatistics::getDimersInfo() const {
     return dimersInfo;
 }
 
-void PrimersPairStatistics::addDimersToReport(QString &report) const {
+void PrimersPairStatistics::addDimersToReport(QString& report) const {
     if (forward.getDimersInfo().canBeFormed || reverse.getDimersInfo().canBeFormed) {
         report += "<h4>Self-dimers: </h4>";
         if (forward.getDimersInfo().canBeFormed) {

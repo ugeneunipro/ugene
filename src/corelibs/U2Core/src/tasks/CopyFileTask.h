@@ -29,7 +29,7 @@ namespace U2 {
 class U2CORE_EXPORT CopyFileTask : public Task {
     Q_OBJECT
 public:
-    CopyFileTask(const QString &sourceFilePath, const QString &targetFilePath);
+    CopyFileTask(const QString& sourceFilePath, const QString& targetFilePath);
 
     QString getSourceFilePath() const;
     QString getTargetFilePath() const;

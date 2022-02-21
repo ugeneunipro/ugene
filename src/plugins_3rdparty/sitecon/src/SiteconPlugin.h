@@ -41,7 +41,7 @@ public:
     SiteconPlugin();
     ~SiteconPlugin();
 
-    static QList<DiPropertySitecon *> getDinucleotiteProperties() {
+    static QList<DiPropertySitecon*> getDinucleotiteProperties() {
         return dp.getProperties();
     }
 
@@ -50,25 +50,25 @@ protected slots:
     void sl_search();
 
 private:
-    SiteconADVContext *ctxADV;
+    SiteconADVContext* ctxADV;
     static DinucleotitePropertyRegistry dp;
 };
 
 class SiteconADVContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    SiteconADVContext(QObject *p);
+    SiteconADVContext(QObject* p);
 
 protected slots:
     void sl_search();
 
 protected:
-    void initViewContext(GObjectView *view) override;
+    void initViewContext(GObjectView* view) override;
 };
 
 class SiteconAlgorithmTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

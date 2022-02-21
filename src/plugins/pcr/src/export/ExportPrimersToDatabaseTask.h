@@ -31,12 +31,12 @@ namespace U2 {
 class ExportPrimersToDatabaseTask : public Task {
     Q_OBJECT
 public:
-    ExportPrimersToDatabaseTask(const QList<Primer> &primers, const U2DbiRef &dbiRef, const QString &folder);
+    ExportPrimersToDatabaseTask(const QList<Primer>& primers, const U2DbiRef& dbiRef, const QString& folder);
 
     void run() override;
     ReportResult report() override;
 
-    const QMap<U2DataId, U2DataId> &getImportedObjectIds() const;
+    const QMap<U2DataId, U2DataId>& getImportedObjectIds() const;
 
 private:
     const QList<Primer> primers;

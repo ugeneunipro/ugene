@@ -41,7 +41,7 @@ static QString nameByType(CumulativeSkewGraphFactory::GCumulativeSkewType t) {
     return CumulativeSkewGraphFactory::tr("GC Cumulative Skew");
 }
 
-CumulativeSkewGraphFactory::CumulativeSkewGraphFactory(GCumulativeSkewType t, QObject *p)
+CumulativeSkewGraphFactory::CumulativeSkewGraphFactory(GCumulativeSkewType t, QObject* p)
     : GSequenceGraphFactory(nameByType(t), p) {
     if (t == CumulativeSkewGraphFactory::AT) {
         cumPair.first = 'A';
@@ -52,12 +52,12 @@ CumulativeSkewGraphFactory::CumulativeSkewGraphFactory(GCumulativeSkewType t, QO
     }
 }
 
-bool CumulativeSkewGraphFactory::isEnabled(const U2SequenceObject *o) const {
-    const DNAAlphabet *al = o->getAlphabet();
+bool CumulativeSkewGraphFactory::isEnabled(const U2SequenceObject* o) const {
+    const DNAAlphabet* al = o->getAlphabet();
     return al->isNucleic();
 }
 
-QList<QSharedPointer<GSequenceGraphData>> CumulativeSkewGraphFactory::createGraphs(GSequenceGraphView *view) {
+QList<QSharedPointer<GSequenceGraphData>> CumulativeSkewGraphFactory::createGraphs(GSequenceGraphView* view) {
     assert(isEnabled(view->getSequenceObject()));
     return {QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(view, getGraphName(), new CumulativeSkewGraphAlgorithm(cumPair)))};
 }
@@ -65,11 +65,11 @@ QList<QSharedPointer<GSequenceGraphData>> CumulativeSkewGraphFactory::createGrap
 //////////////////////////////////////////////////////////////////////////
 // CumulativeSkewGraphAlgorithm
 
-CumulativeSkewGraphAlgorithm::CumulativeSkewGraphAlgorithm(const QPair<char, char> &_p)
+CumulativeSkewGraphAlgorithm::CumulativeSkewGraphAlgorithm(const QPair<char, char>& _p)
     : p(_p) {
 }
 
-float CumulativeSkewGraphAlgorithm::getValue(int begin, int end, const QByteArray &seq) const {
+float CumulativeSkewGraphAlgorithm::getValue(int begin, int end, const QByteArray& seq) const {
     int leap = end - begin;
     float resultValue = 0;
     int len;
@@ -96,7 +96,7 @@ float CumulativeSkewGraphAlgorithm::getValue(int begin, int end, const QByteArra
     return resultValue;
 }
 
-void CumulativeSkewGraphAlgorithm::calculate(QVector<float> &result, U2SequenceObject *sequenceObject, qint64 window, qint64 step, U2OpStatus &os) {
+void CumulativeSkewGraphAlgorithm::calculate(QVector<float>& result, U2SequenceObject* sequenceObject, qint64 window, qint64 step, U2OpStatus& os) {
     U2Region vr(0, sequenceObject->getSequenceLength());
     int nSteps = GSequenceGraphUtils::getNumSteps(vr, window, step);
     result.reserve(nSteps);

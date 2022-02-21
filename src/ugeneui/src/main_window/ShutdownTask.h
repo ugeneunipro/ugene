@@ -32,21 +32,21 @@ class MainWindowImpl;
 class ShutdownTask : public Task {
     Q_OBJECT
 public:
-    ShutdownTask(MainWindowImpl *mw);
+    ShutdownTask(MainWindowImpl* mw);
 
     void prepare();
 
     ReportResult report();
 
 protected:
-    virtual QList<Task *> onSubTaskFinished(Task *subTask);
+    virtual QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
     void cancelShutdown();
 
-    MainWindowImpl *mw;
+    MainWindowImpl* mw;
     bool docsToRemoveAreFetched;
-    QList<Document *> docsToRemove;
+    QList<Document*> docsToRemove;
 };
 
 class CloseWindowsTask : public Task {
@@ -56,7 +56,7 @@ public:
 
 private:
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
     ReportResult report();
 };
 

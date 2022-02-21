@@ -37,8 +37,8 @@ class MaEditorStatusBar : public QFrame {
 protected:
     class TwoArgPatternLabel : public QLabel {
     public:
-        TwoArgPatternLabel(const QString &textPattern, const QString &tooltipPattern, const QString &objectName, QWidget *parent = nullptr);
-        void setPatterns(const QString &textPattern, const QString &tooltipPattern);
+        TwoArgPatternLabel(const QString& textPattern, const QString& tooltipPattern, const QString& objectName, QWidget* parent = nullptr);
+        void setPatterns(const QString& textPattern, const QString& tooltipPattern);
 
         void update(const QString& firstArg, int minWidth);
         void update(const QString& firstArg, const QString& secondArg);
@@ -52,7 +52,7 @@ protected:
     };
 
 public:
-    MaEditorStatusBar(MaEditor *editor);
+    MaEditorStatusBar(MaEditor* editor);
 
 private slots:
     void sl_update();
@@ -72,19 +72,19 @@ protected:
     void setStatusBarStyle();
 
 protected:
-    MaEditor *editor;
+    MaEditor* editor;
     QPixmap lockedIcon;
     QPixmap unlockedIcon;
 
-    QHBoxLayout *layout;
+    QHBoxLayout* layout;
 
     /** Sequence line number. As visible on the screen. */
-    TwoArgPatternLabel *lineLabel;
+    TwoArgPatternLabel* lineLabel;
 
-    TwoArgPatternLabel *columnLabel;
-    TwoArgPatternLabel *positionLabel;
-    TwoArgPatternLabel *selectionLabel;
-    QLabel *lockLabel;
+    TwoArgPatternLabel* columnLabel;
+    TwoArgPatternLabel* positionLabel;
+    TwoArgPatternLabel* selectionLabel;
+    QLabel* lockLabel;
 
     static const QString NONE_MARK;
     static const QString GAP_MARK;

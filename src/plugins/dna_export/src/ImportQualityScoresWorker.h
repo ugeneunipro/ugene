@@ -38,7 +38,7 @@ namespace LocalWorkflow {
 class ImportPhredQualityPrompter : public PrompterBase<ImportPhredQualityPrompter> {
     Q_OBJECT
 public:
-    ImportPhredQualityPrompter(Actor *p = 0)
+    ImportPhredQualityPrompter(Actor* p = 0)
         : PrompterBase<ImportPhredQualityPrompter>(p) {
     }
 
@@ -49,15 +49,15 @@ protected:
 class ImportPhredQualityWorker : public BaseWorker {
     Q_OBJECT
 public:
-    ImportPhredQualityWorker(Actor *a);
+    ImportPhredQualityWorker(Actor* a);
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 protected:
     CommunicationChannel *input, *output;
-    ReadQualityScoresTask *readTask;
+    ReadQualityScoresTask* readTask;
     QString fileName;
     DNAQualityType type;
     DNAQualityFormat format;
@@ -70,7 +70,7 @@ public:
     ImportPhredQualityWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new ImportPhredQualityWorker(a);
     }
 };

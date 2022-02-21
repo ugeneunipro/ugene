@@ -31,9 +31,9 @@ namespace U2 {
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactoryStrict : public MSAConsensusAlgorithmFactory {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmFactoryStrict(QObject *p = nullptr);
+    MSAConsensusAlgorithmFactoryStrict(QObject* p = nullptr);
 
-    virtual MSAConsensusAlgorithm *createAlgorithm(const MultipleAlignment &ma, bool ignoreTrailingLeadingGaps, QObject *parent);
+    virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* parent);
 
     virtual QString getDescription() const;
 
@@ -63,13 +63,13 @@ public:
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmStrict : public MSAConsensusAlgorithm {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmStrict(MSAConsensusAlgorithmFactoryStrict *f, bool ignoreTrailingLeadingGaps, QObject *p = nullptr)
+    MSAConsensusAlgorithmStrict(MSAConsensusAlgorithmFactoryStrict* f, bool ignoreTrailingLeadingGaps, QObject* p = nullptr)
         : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p) {
     }
 
-    virtual char getConsensusChar(const MultipleAlignment &ma, int column, QVector<int> seqIdx = QVector<int>()) const;
+    virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx = QVector<int>()) const;
 
-    MSAConsensusAlgorithmStrict *clone() const;
+    MSAConsensusAlgorithmStrict* clone() const;
 };
 
 }  // namespace U2

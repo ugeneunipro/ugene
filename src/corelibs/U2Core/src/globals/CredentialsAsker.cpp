@@ -30,8 +30,8 @@ namespace U2 {
 CredentialsAsker::~CredentialsAsker() {
 }
 
-void CredentialsAsker::saveCredentials(const QString &resourceUrl, const QString &password, bool remember) {
-    PasswordStorage *storage = AppContext::getPasswordStorage();
+void CredentialsAsker::saveCredentials(const QString& resourceUrl, const QString& password, bool remember) {
+    PasswordStorage* storage = AppContext::getPasswordStorage();
     CHECK(nullptr != storage, );
 
     storage->addEntry(resourceUrl, password, remember);

@@ -43,8 +43,8 @@ namespace U2 {
 
 RemovePartFromSequenceDialogController::RemovePartFromSequenceDialogController(U2Region _toDelete,
                                                                                U2Region _source,
-                                                                               const QString &docUrl,
-                                                                               QWidget *p)
+                                                                               const QString& docUrl,
+                                                                               QWidget* p)
     : QDialog(p),
       toDelete(_toDelete),
       source(_source),
@@ -121,7 +121,7 @@ void RemovePartFromSequenceDialogController::sl_mergeAnnotationsToggled(bool) {
     ui->formatBox->model()->sort(0);
 }
 
-void RemovePartFromSequenceDialogController::initSaveController(const QString &docUrl) {
+void RemovePartFromSequenceDialogController::initSaveController(const QString& docUrl) {
     const QFileInfo fi(docUrl);
 
     SaveDocumentControllerConfig config;

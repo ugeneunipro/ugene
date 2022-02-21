@@ -52,7 +52,7 @@ namespace U2 {
 const QString DistanceMatrixMSAProfileDialog::HTML = "html";
 const QString DistanceMatrixMSAProfileDialog::CSV = "csv";
 
-DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget *p, MSAEditor *_c)
+DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget* p, MSAEditor* _c)
     : QDialog(p),
       ctx(_c),
       saveController(nullptr) {
@@ -61,12 +61,12 @@ DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget *p, MSAEd
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Generate"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    QList<MSADistanceAlgorithmFactory *> algos = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactories();
-    foreach (MSADistanceAlgorithmFactory *a, algos) {
+    QList<MSADistanceAlgorithmFactory*> algos = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactories();
+    foreach (MSADistanceAlgorithmFactory* a, algos) {
         algoCombo->addItem(a->getName(), a->getId());
     }
 
-    MultipleSequenceAlignmentObject *msaObj = ctx->getMaObject();
+    MultipleSequenceAlignmentObject* msaObj = ctx->getMaObject();
     if (msaObj != nullptr) {
         QVector<U2Region> unitedRows;
         MultipleSequenceAlignment ma = msaObj->getMsaCopy();
@@ -79,7 +79,7 @@ DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget *p, MSAEd
 }
 
 void DistanceMatrixMSAProfileDialog::initSaveController() {
-    MultipleSequenceAlignmentObject *msaObj = ctx->getMaObject();
+    MultipleSequenceAlignmentObject* msaObj = ctx->getMaObject();
     if (msaObj == nullptr) {
         return;
     }
@@ -102,14 +102,14 @@ void DistanceMatrixMSAProfileDialog::initSaveController() {
 
     saveController = new SaveDocumentController(config, formats, this);
 
-    connect(saveController, SIGNAL(si_formatChanged(const QString &)), SLOT(sl_formatChanged(const QString &)));
+    connect(saveController, SIGNAL(si_formatChanged(const QString&)), SLOT(sl_formatChanged(const QString&)));
     connect(htmlRB, SIGNAL(toggled(bool)), SLOT(sl_formatSelected()));
     connect(csvRB, SIGNAL(toggled(bool)), SLOT(sl_formatSelected()));
 }
 
 void DistanceMatrixMSAProfileDialog::accept() {
     DistanceMatrixMSAProfileTaskSettings s;
-    MultipleSequenceAlignmentObject *msaObj = ctx->getMaObject();
+    MultipleSequenceAlignmentObject* msaObj = ctx->getMaObject();
     if (msaObj == nullptr) {
         return;
     }
@@ -138,7 +138,7 @@ void DistanceMatrixMSAProfileDialog::sl_formatSelected() {
     saveController->setFormat(csvRB->isChecked() ? CSV : HTML);
 }
 
-void DistanceMatrixMSAProfileDialog::sl_formatChanged(const QString &newFormatId) {
+void DistanceMatrixMSAProfileDialog::sl_formatChanged(const QString& newFormatId) {
     if (HTML == newFormatId) {
         htmlRB->setChecked(true);
     } else {
@@ -149,28 +149,28 @@ void DistanceMatrixMSAProfileDialog::sl_formatChanged(const QString &newFormatId
 //////////////////////////////////////////////////////////////////////////
 // task
 
-DistanceMatrixMSAProfileTask::DistanceMatrixMSAProfileTask(const DistanceMatrixMSAProfileTaskSettings &_s)
+DistanceMatrixMSAProfileTask::DistanceMatrixMSAProfileTask(const DistanceMatrixMSAProfileTaskSettings& _s)
     : Task(tr("Generate distance matrix"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled), s(_s) {
     setVerboseLogMode(true);
 }
 
 void DistanceMatrixMSAProfileTask::prepare() {
-    MSADistanceAlgorithmFactory *factory = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactory(s.algoId);
+    MSADistanceAlgorithmFactory* factory = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactory(s.algoId);
     if (s.excludeGaps) {
         factory->setFlag(DistanceAlgorithmFlag_ExcludeGaps);
     } else {
         factory->resetFlag(DistanceAlgorithmFlag_ExcludeGaps);
     }
-    MSADistanceAlgorithm *algo = factory->createAlgorithm(s.ma);
+    MSADistanceAlgorithm* algo = factory->createAlgorithm(s.ma);
     if (algo == nullptr) {
         return;
     }
     addSubTask(algo);
 }
 
-QList<Task *> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task *subTask) {
-    MSADistanceAlgorithm *algo = qobject_cast<MSADistanceAlgorithm *>(subTask);
-    QList<Task *> res;
+QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
+    MSADistanceAlgorithm* algo = qobject_cast<MSADistanceAlgorithm*>(subTask);
+    QList<Task*> res;
     if (algo != nullptr) {
         if (algo->hasError() || algo->isCanceled()) {
             setError(algo->getError());
@@ -180,7 +180,7 @@ QList<Task *> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task *subTask) {
             setError(tr("No output file name specified"));
             return res;
         }
-        QFile *f = nullptr;
+        QFile* f = nullptr;
         if (s.outFormat == DistanceMatrixMSAProfileOutputFormat_Show || s.outFormat == DistanceMatrixMSAProfileOutputFormat_HTML) {
             if (s.outFormat == DistanceMatrixMSAProfileOutputFormat_HTML) {
                 f = new QFile(s.outURL);
@@ -212,7 +212,7 @@ QList<Task *> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task *subTask) {
             bool isSimilarity = algo->isSimilarityMeasure();
             try {
                 createDistanceTable(algo, s.ma->getMsaRows(), f);
-            } catch (std::bad_alloc &e) {
+            } catch (std::bad_alloc& e) {
                 Q_UNUSED(e);
                 setError(tr("There is not enough memory to show this distance matrix in UGENE. You can save it to an HTML file and open it with a web browser."));
                 return res;
@@ -228,7 +228,7 @@ QList<Task *> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task *subTask) {
                 QList<MultipleSequenceAlignmentRow> rows;
                 int i = 1;
                 srand(uint(QDateTime::currentDateTime().toSecsSinceEpoch() / 1000));
-                foreach (const U2Region &reg, unitedRows) {
+                foreach (const U2Region& reg, unitedRows) {
                     MultipleSequenceAlignmentRow row = s.ma->getMsaRow(reg.startPos + qrand() % reg.length);
                     row->setName(QString("Group %1: ").arg(i) + "(" + row->getName() + ")");
                     rows.append(s.ma->getMsaRow(reg.startPos + qrand() % reg.length)->getExplicitCopy());
@@ -245,7 +245,7 @@ QList<Task *> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task *subTask) {
                 resultText += "<br><br>\n";
                 try {
                     createDistanceTable(algo, rows, f);
-                } catch (std::bad_alloc &e) {
+                } catch (std::bad_alloc& e) {
                     Q_UNUSED(e);
                     setError(tr("There is not enough memory to show this distance matrix in UGENE. You can save it to an HTML file and open it with a web browser."));
                     return res;
@@ -308,7 +308,7 @@ QList<Task *> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task *subTask) {
     return res;
 }
 
-void DistanceMatrixMSAProfileTask::createDistanceTable(MSADistanceAlgorithm *algo, const QList<MultipleSequenceAlignmentRow> &rows, QFile *f) {
+void DistanceMatrixMSAProfileTask::createDistanceTable(MSADistanceAlgorithm* algo, const QList<MultipleSequenceAlignmentRow>& rows, QFile* f) {
     int maxVal = s.usePercents ? 100 : s.ma->getLength();
     QString colors[] = {"#ff5555", "#ff9c00", "#60ff00", "#a1d1e5", "#dddddd"};
     bool isSimilarity = algo->isSimilarityMeasure();
@@ -384,7 +384,7 @@ Task::ReportResult DistanceMatrixMSAProfileTask::report() {
     }
     assert(!resultText.isEmpty());
     QString title = s.profileName.isEmpty() ? tr("Distance matrix") : tr("Distance matrix for %1").arg(s.profileName);
-    WebWindow *w = new WebWindow(title, resultText);
+    WebWindow* w = new WebWindow(title, resultText);
 
     // Qt 5.4 has a bug and does not process 'white-space: nowrap' correctly. Enforcing it using rich text styles.
     w->textBrowser->setWordWrapMode(QTextOption::NoWrap);

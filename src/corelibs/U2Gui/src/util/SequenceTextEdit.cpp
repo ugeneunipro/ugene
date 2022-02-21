@@ -30,11 +30,11 @@
 
 namespace U2 {
 
-SequenceTextEdit::SequenceTextEdit(QWidget *p)
+SequenceTextEdit::SequenceTextEdit(QWidget* p)
     : QPlainTextEdit(p) {
 }
 
-void SequenceTextEdit::insertFromMimeData(const QMimeData *source) {
+void SequenceTextEdit::insertFromMimeData(const QMimeData* source) {
     try {
         SAFE_POINT(source != nullptr, tr("Invalid mimedata"), );
         QString data = source->text();
@@ -52,7 +52,7 @@ void SequenceTextEdit::insertFromMimeData(const QMimeData *source) {
             splitter += PARAGRAPH_SIZE + 1;
         }
 
-        QMimeData *mimeData = new QMimeData();
+        QMimeData* mimeData = new QMimeData();
         mimeData->setText(data);
         QPlainTextEdit::insertFromMimeData(mimeData);
         delete mimeData;

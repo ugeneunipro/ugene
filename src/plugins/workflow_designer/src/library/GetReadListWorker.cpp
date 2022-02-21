@@ -62,7 +62,7 @@ const Descriptor GetReadsListWorkerFactory::PE_SLOT() {
 /************************************************************************/
 /* Worker */
 /************************************************************************/
-GetReadsListWorker::GetReadsListWorker(Actor *p)
+GetReadsListWorker::GetReadsListWorker(Actor* p)
     : BaseWorker(p), outChannel(nullptr), files(nullptr), pairedFiles(nullptr) {
 }
 
@@ -79,7 +79,7 @@ void GetReadsListWorker::init() {
     }
 }
 
-Task *GetReadsListWorker::tick() {
+Task* GetReadsListWorker::tick() {
     if (files->hasNext()) {
         QVariantMap m;
         QString url = files->getNextFile();
@@ -117,7 +117,7 @@ void GetReadsListWorker::cleanup() {
 /************************************************************************/
 void GetReadsListWorkerFactory::init() {
     {
-        QList<PortDescriptor *> portDescs;
+        QList<PortDescriptor*> portDescs;
         {
             QMap<Descriptor, DataTypePtr> outTypeMap;
             outTypeMap[SE_SLOT()] = BaseTypes::STRING_TYPE();
@@ -131,7 +131,7 @@ void GetReadsListWorkerFactory::init() {
                                             true);
         }
 
-        QList<Attribute *> attrs;
+        QList<Attribute*> attrs;
         {
             Descriptor seUrl(SE_URL_ATTR, GetReadsListWorker::tr("Input URL"), GetReadsListWorker::tr("Input URL"));
 
@@ -141,8 +141,8 @@ void GetReadsListWorkerFactory::init() {
                              GetReadsListWorker::tr("Read FASTQ File with SE Reads"),
                              GetReadsListWorker::tr("Input one or several files with NGS single-end reads in FASTQ format. The element outputs the file(s) URL(s)."));
 
-        ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
-        proto->setEditor(new DelegateEditor(QMap<QString, PropertyDelegate *>()));
+        ActorPrototype* proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
+        proto->setEditor(new DelegateEditor(QMap<QString, PropertyDelegate*>()));
         proto->setPrompter(new GetReadsListPrompter());
         if (AppContext::isGUIMode()) {
             proto->setIcon(QIcon(":/U2Designer/images/blue_circle.png"));
@@ -152,7 +152,7 @@ void GetReadsListWorkerFactory::init() {
     }
     ///////////////////////// PE reads //////////////////////////////
     {
-        QList<PortDescriptor *> portDescs;
+        QList<PortDescriptor*> portDescs;
         {
             QMap<Descriptor, DataTypePtr> outTypeMap;
             outTypeMap[SE_SLOT()] = BaseTypes::STRING_TYPE();
@@ -167,7 +167,7 @@ void GetReadsListWorkerFactory::init() {
                                             true);
         }
 
-        QList<Attribute *> attrs;
+        QList<Attribute*> attrs;
         {
             Descriptor seUrl(SE_URL_ATTR, GetReadsListWorker::tr("Left PE reads"), GetReadsListWorker::tr("Left PE reads"));
             Descriptor peUrl(PE_URL_ATTR, GetReadsListWorker::tr("Right PE reads"), GetReadsListWorker::tr("Right PE reads"));
@@ -179,8 +179,8 @@ void GetReadsListWorkerFactory::init() {
                              GetReadsListWorker::tr("Read FASTQ Files with PE Reads"),
                              GetReadsListWorker::tr("Input one or several pairs of files with NGS paired-end reads in FASTQ format. The element outputs the corresponding pairs of URLs."));
 
-        ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
-        proto->setEditor(new DelegateEditor(QMap<QString, PropertyDelegate *>()));
+        ActorPrototype* proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
+        proto->setEditor(new DelegateEditor(QMap<QString, PropertyDelegate*>()));
         proto->setPrompter(new GetReadsListPrompter());
         if (AppContext::isGUIMode()) {
             proto->setIcon(QIcon(":/U2Designer/images/blue_circle.png"));
@@ -191,7 +191,7 @@ void GetReadsListWorkerFactory::init() {
 }
 
 void GetReadsListWorkerFactory::cleanup() {
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
 
     delete WorkflowEnv::getProtoRegistry()->unregisterProto(SE_ACTOR_ID);
     delete localDomain->unregisterEntry(SE_ACTOR_ID);
@@ -200,7 +200,7 @@ void GetReadsListWorkerFactory::cleanup() {
     delete localDomain->unregisterEntry(PE_ACTOR_ID);
 }
 
-Worker *GetReadsListWorkerFactory::createWorker(Actor *a) {
+Worker* GetReadsListWorkerFactory::createWorker(Actor* a) {
     return new GetReadsListWorker(a);
 }
 
@@ -220,11 +220,11 @@ SeReadsListSplitter::SeReadsListSplitter()
     : CandidatesSplitter(ID) {
 }
 
-bool SeReadsListSplitter::canSplit(const Descriptor &toDesc, DataTypePtr toDatatype) {
+bool SeReadsListSplitter::canSplit(const Descriptor& toDesc, DataTypePtr toDatatype) {
     return ((BaseTypes::STRING_TYPE() == toDatatype) && (toDesc.getId() == GetReadsListWorkerFactory::SE_SLOT().getId()));
 }
 
-bool SeReadsListSplitter::isMain(const QString &candidateSlotId) {
+bool SeReadsListSplitter::isMain(const QString& candidateSlotId) {
     return (candidateSlotId == GetReadsListWorkerFactory::SE_SLOT().getId());
 }
 
@@ -237,11 +237,11 @@ PeReadsListSplitter::PeReadsListSplitter()
     : CandidatesSplitter(ID) {
 }
 
-bool PeReadsListSplitter::canSplit(const Descriptor &toDesc, DataTypePtr toDatatype) {
+bool PeReadsListSplitter::canSplit(const Descriptor& toDesc, DataTypePtr toDatatype) {
     return ((BaseTypes::STRING_TYPE() == toDatatype) && (toDesc.getId() == GetReadsListWorkerFactory::PE_SLOT().getId()));
 }
 
-bool PeReadsListSplitter::isMain(const QString &candidateSlotId) {
+bool PeReadsListSplitter::isMain(const QString& candidateSlotId) {
     return (candidateSlotId == GetReadsListWorkerFactory::PE_SLOT().getId());
 }
 

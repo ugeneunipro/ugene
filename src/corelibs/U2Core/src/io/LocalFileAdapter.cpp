@@ -28,27 +28,27 @@
 
 namespace U2 {
 
-LocalFileAdapterFactory::LocalFileAdapterFactory(QObject *o)
+LocalFileAdapterFactory::LocalFileAdapterFactory(QObject* o)
     : IOAdapterFactory(o) {
     name = tr("Local file");
 }
 
-IOAdapter *LocalFileAdapterFactory::createIOAdapter() {
+IOAdapter* LocalFileAdapterFactory::createIOAdapter() {
     return new LocalFileAdapter(this);
 }
 
-GzippedLocalFileAdapterFactory::GzippedLocalFileAdapterFactory(QObject *o)
+GzippedLocalFileAdapterFactory::GzippedLocalFileAdapterFactory(QObject* o)
     : LocalFileAdapterFactory(o) {
     name = tr("GZIP file");
 }
 
-IOAdapter *GzippedLocalFileAdapterFactory::createIOAdapter() {
+IOAdapter* GzippedLocalFileAdapterFactory::createIOAdapter() {
     return new ZlibAdapter(new LocalFileAdapter(this));
 }
 
 const quint64 LocalFileAdapter::BUF_SIZE = DocumentFormat::READ_BUFF_SIZE;
 
-LocalFileAdapter::LocalFileAdapter(LocalFileAdapterFactory *factory, QObject *o, bool b)
+LocalFileAdapter::LocalFileAdapter(LocalFileAdapterFactory* factory, QObject* o, bool b)
     : IOAdapter(factory, o), f(nullptr), fileSize(0), bufferOptimization(b) {
     bufferOptimization = true;
     if (bufferOptimization) {
@@ -67,7 +67,7 @@ LocalFileAdapter::~LocalFileAdapter() {
     }
 }
 
-bool LocalFileAdapter::open(const GUrl &url, IOAdapterMode m) {
+bool LocalFileAdapter::open(const GUrl& url, IOAdapterMode m) {
     SAFE_POINT(!isOpen(), "Adapter is already opened!", false);
     SAFE_POINT(f == nullptr, "QFile is not null!", false);
 
@@ -109,7 +109,7 @@ void LocalFileAdapter::close() {
     fileSize = 0;
 }
 
-qint64 LocalFileAdapter::readBlock(char *data, qint64 size) {
+qint64 LocalFileAdapter::readBlock(char* data, qint64 size) {
     SAFE_POINT(isOpen(), "Adapter is not opened!", -1);
     qint64 l = 0;
     if (bufferOptimization) {
@@ -147,7 +147,7 @@ qint64 LocalFileAdapter::readBlock(char *data, qint64 size) {
     return l;
 }
 
-qint64 LocalFileAdapter::writeBlock(const char *data, qint64 size) {
+qint64 LocalFileAdapter::writeBlock(const char* data, qint64 size) {
     SAFE_POINT(isOpen(), "Adapter is not opened!", -1);
     qint64 l = f->write(data, size);
     fileSize += size;

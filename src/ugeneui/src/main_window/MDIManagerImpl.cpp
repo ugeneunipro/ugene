@@ -39,7 +39,7 @@ namespace U2 {
 
 #define SETTINGS_DIR QString("main_window/mdi/")
 
-static QString getWindowName(MDIItem *mdiItem) {
+static QString getWindowName(MDIItem* mdiItem) {
     if (mdiItem == nullptr) {
         return "<no window>";
     }
@@ -52,10 +52,10 @@ MWMDIManagerImpl::~MWMDIManagerImpl() {
 void MWMDIManagerImpl::prepareGUI() {
     mdiContentOwner = nullptr;
 
-    connect(mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow *)), SLOT(sl_onSubWindowActivated(QMdiSubWindow *)));
+    connect(mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), SLOT(sl_onSubWindowActivated(QMdiSubWindow*)));
 
     windowMapper = new QSignalMapper(this);
-    connect(windowMapper, SIGNAL(mapped(QWidget *)), this, SLOT(sl_setActiveSubWindow(QWidget *)));
+    connect(windowMapper, SIGNAL(mapped(QWidget*)), this, SLOT(sl_setActiveSubWindow(QWidget*)));
 
     // prepare Window menu
     closeAct = new QAction(tr("Close active view"), this);
@@ -101,10 +101,10 @@ void MWMDIManagerImpl::prepareGUI() {
     QKeySequence prevActKeySequence(Qt::CTRL + Qt::SHIFT + (Qt::Key)'`');
     QKeySequence prevActKeySequenceAdditional(Qt::META + Qt::SHIFT + Qt::Key_Tab);
 
-    QShortcut *additionalNextShortcut = new QShortcut(nextActKeySequenceAdditional, mdiArea);
+    QShortcut* additionalNextShortcut = new QShortcut(nextActKeySequenceAdditional, mdiArea);
     connect(additionalNextShortcut, SIGNAL(activated()), mdiArea, SLOT(activateNextSubWindow()));
 
-    QShortcut *additionalPrevShortcut = new QShortcut(prevActKeySequenceAdditional, mdiArea);
+    QShortcut* additionalPrevShortcut = new QShortcut(prevActKeySequenceAdditional, mdiArea);
     connect(additionalPrevShortcut, SIGNAL(activated()), mdiArea, SLOT(activatePreviousSubWindow()));
 
 #else
@@ -129,7 +129,7 @@ void MWMDIManagerImpl::prepareGUI() {
 
     defaultIsMaximized = AppContext::getSettings()->getValue(SETTINGS_DIR + "maximized", true).toBool();
 
-    QMenu *windowMenu = mw->getTopLevelMenu(MWMENU_WINDOW);
+    QMenu* windowMenu = mw->getTopLevelMenu(MWMENU_WINDOW);
     connect(windowMenu, SIGNAL(aboutToShow()), this, SLOT(sl_updateWindowMenu()));
 
     updateState();
@@ -139,11 +139,11 @@ void MWMDIManagerImpl::prepareGUI() {
     connect(AppContext::getAppSettings()->getUserAppsSettings(), SIGNAL(si_windowLayoutChanged()), SLOT(sl_updateWindowLayout()));
 }
 
-bool MWMDIManagerImpl::eventFilter(QObject *obj, QEvent *event) {
+bool MWMDIManagerImpl::eventFilter(QObject* obj, QEvent* event) {
     QEvent::Type t = event->type();
     if (t == QEvent::Close) {
-        QMdiSubWindow *qw = qobject_cast<QMdiSubWindow *>(obj);
-        MDIItem *item = getMDIItem(qw);
+        QMdiSubWindow* qw = qobject_cast<QMdiSubWindow*>(obj);
+        MDIItem* item = getMDIItem(qw);
         if (item != nullptr) {
             uiLog.trace(QString("Processing close window request for '%1'").arg(getWindowName(item)));
 
@@ -165,7 +165,7 @@ bool MWMDIManagerImpl::eventFilter(QObject *obj, QEvent *event) {
             updateState();
         }
     } else if (t == QEvent::WindowStateChange) {
-        QMdiSubWindow *qw = qobject_cast<QMdiSubWindow *>(obj);
+        QMdiSubWindow* qw = qobject_cast<QMdiSubWindow*>(obj);
         defaultIsMaximized = qw->isMaximized();
     }
     return QObject::eventFilter(obj, event);
@@ -191,7 +191,7 @@ void MWMDIManagerImpl::updateActions() {
 }
 
 void MWMDIManagerImpl::sl_updateWindowMenu() {
-    QMenu *windowMenu = mw->getTopLevelMenu(MWMENU_WINDOW);
+    QMenu* windowMenu = mw->getTopLevelMenu(MWMENU_WINDOW);
     windowMenu->clear();  // TODO: avoid cleaning 3rd party actions
     windowMenu->addMenu(windowLayout);
     windowLayout->addAction(multipleDocsAct);
@@ -211,16 +211,16 @@ void MWMDIManagerImpl::sl_updateWindowMenu() {
 
     separatorAct->setVisible(!items.isEmpty());
 
-    MDIItem *currentItem = getCurrentMDIItem();
+    MDIItem* currentItem = getCurrentMDIItem();
     for (int i = 0; i < items.size(); ++i) {
-        MDIItem *item = items.at(i);
+        MDIItem* item = items.at(i);
         QString text;
         if (i < 9) {
             text = QString("&%1 %2").arg(i + 1).arg(item->w->windowTitle());
         } else {
             text = QString("%1 %2").arg(i + 1).arg(item->w->windowTitle());
         }
-        QAction *action = windowMenu->addAction(text);
+        QAction* action = windowMenu->addAction(text);
         action->setCheckable(true);
         action->setChecked(item == currentItem);
         connect(action, SIGNAL(triggered()), windowMapper, SLOT(map()));
@@ -228,22 +228,22 @@ void MWMDIManagerImpl::sl_updateWindowMenu() {
     }
 }
 
-MDIItem *MWMDIManagerImpl::getCurrentMDIItem() const {
-    QMdiSubWindow *currentSubWindow = mdiArea->currentSubWindow();
+MDIItem* MWMDIManagerImpl::getCurrentMDIItem() const {
+    QMdiSubWindow* currentSubWindow = mdiArea->currentSubWindow();
     if (currentSubWindow != nullptr) {
         return getMDIItem(currentSubWindow);
     }
     return nullptr;
 }
 
-void MWMDIManagerImpl::addMDIWindow(MWMDIWindow *w) {
+void MWMDIManagerImpl::addMDIWindow(MWMDIWindow* w) {
     bool contains = getWindowById(w->getId()) != nullptr;
     if (contains) {
         assert(0);  // must never happen
         return;
     }
     w->setParent(mdiArea);
-    QMdiSubWindow *qw = mdiArea->addSubWindow(w);
+    QMdiSubWindow* qw = mdiArea->addSubWindow(w);
     qw->setWindowTitle(w->windowTitle());
     QIcon icon = w->windowIcon();
     if (icon.isNull()) {
@@ -251,7 +251,7 @@ void MWMDIManagerImpl::addMDIWindow(MWMDIWindow *w) {
     }
     qw->setWindowIcon(icon);
     // qw->setAttribute(Qt::WA_NativeWindow);
-    MDIItem *i = new MDIItem(w, qw);
+    MDIItem* i = new MDIItem(w, qw);
     items.append(i);
     qw->installEventFilter(this);
 
@@ -269,28 +269,28 @@ void MWMDIManagerImpl::addMDIWindow(MWMDIWindow *w) {
     qw->raise();
 }
 
-QList<MWMDIWindow *> MWMDIManagerImpl::getWindows() const {
-    QList<MWMDIWindow *> res;
-    foreach (MDIItem *i, items) {
+QList<MWMDIWindow*> MWMDIManagerImpl::getWindows() const {
+    QList<MWMDIWindow*> res;
+    foreach (MDIItem* i, items) {
         res.append(i->w);
     }
     return res;
 }
 
-bool MWMDIManagerImpl::closeMDIWindow(MWMDIWindow *w) {
-    MDIItem *i = getMDIItem(w);
+bool MWMDIManagerImpl::closeMDIWindow(MWMDIWindow* w) {
+    MDIItem* i = getMDIItem(w);
     if (nullptr == i)
         return false;
     return i->qw->close();
 }
 
-MWMDIWindow *MWMDIManagerImpl::getWindowById(int id) const {
-    MDIItem *i = getMDIItem(id);
+MWMDIWindow* MWMDIManagerImpl::getWindowById(int id) const {
+    MDIItem* i = getMDIItem(id);
     return i == nullptr ? nullptr : i->w;
 }
 
-MDIItem *MWMDIManagerImpl::getMDIItem(int id) const {
-    foreach (MDIItem *i, items) {
+MDIItem* MWMDIManagerImpl::getMDIItem(int id) const {
+    foreach (MDIItem* i, items) {
         if (i->w->getId() == id) {
             return i;
         }
@@ -298,8 +298,8 @@ MDIItem *MWMDIManagerImpl::getMDIItem(int id) const {
     return nullptr;
 }
 
-MDIItem *MWMDIManagerImpl::getMDIItem(MWMDIWindow *w) const {
-    foreach (MDIItem *i, items) {
+MDIItem* MWMDIManagerImpl::getMDIItem(MWMDIWindow* w) const {
+    foreach (MDIItem* i, items) {
         if (i->w == w) {
             return i;
         }
@@ -307,8 +307,8 @@ MDIItem *MWMDIManagerImpl::getMDIItem(MWMDIWindow *w) const {
     return nullptr;
 }
 
-MDIItem *MWMDIManagerImpl::getMDIItem(QMdiSubWindow *qw) const {
-    foreach (MDIItem *item, items) {
+MDIItem* MWMDIManagerImpl::getMDIItem(QMdiSubWindow* qw) const {
+    foreach (MDIItem* item, items) {
         if (item->qw == qw) {
             return item;
         }
@@ -316,8 +316,8 @@ MDIItem *MWMDIManagerImpl::getMDIItem(QMdiSubWindow *qw) const {
     return nullptr;
 }
 
-void MWMDIManagerImpl::activateWindow(MWMDIWindow *w) {
-    MDIItem *i = getMDIItem(w);
+void MWMDIManagerImpl::activateWindow(MWMDIWindow* w) {
+    MDIItem* i = getMDIItem(w);
     if (i == nullptr) {
         return;
     }
@@ -326,26 +326,26 @@ void MWMDIManagerImpl::activateWindow(MWMDIWindow *w) {
     updateState();
 }
 
-void MWMDIManagerImpl::sl_setActiveSubWindow(QWidget *w) {
+void MWMDIManagerImpl::sl_setActiveSubWindow(QWidget* w) {
     if (!w) {
         return;
     }
-    mdiArea->setActiveSubWindow(qobject_cast<QMdiSubWindow *>(w));
+    mdiArea->setActiveSubWindow(qobject_cast<QMdiSubWindow*>(w));
 }
 
 void MWMDIManagerImpl::clearMDIContent(bool addCloseAction) {
     // clear toolbar
     mdiContentOwner = nullptr;
 
-    QToolBar *tb = mw->getToolbar(MWTOOLBAR_ACTIVEMDI);
-    QMenu *m = mw->getTopLevelMenu(MWMENU_ACTIONS);
+    QToolBar* tb = mw->getToolbar(MWTOOLBAR_ACTIVEMDI);
+    QMenu* m = mw->getTopLevelMenu(MWMENU_ACTIONS);
 
     // delete submenus inserted to toolbar and menu
     // todo: provide a flag to enable/disable this behavior for MDI window
-    QList<QAction *> allMDIActions = tb->actions() + m->actions();
-    QSet<QMenu *> toDel;
-    foreach (QAction *ma, allMDIActions) {
-        QMenu *am = ma->menu();
+    QList<QAction*> allMDIActions = tb->actions() + m->actions();
+    QSet<QMenu*> toDel;
+    foreach (QAction* ma, allMDIActions) {
+        QMenu* am = ma->menu();
         if (am != nullptr) {
             toDel.insert(am);
         }
@@ -354,7 +354,7 @@ void MWMDIManagerImpl::clearMDIContent(bool addCloseAction) {
     tb->clear();
     m->clear();
 
-    foreach (QMenu *mtd, toDel) {
+    foreach (QMenu* mtd, toDel) {
         delete mtd;
     }
 
@@ -363,21 +363,21 @@ void MWMDIManagerImpl::clearMDIContent(bool addCloseAction) {
     }
 }
 
-void MWMDIManagerImpl::onWindowsSwitched(QMdiSubWindow *deactivated, MWMDIWindow *activated) {
-    MDIItem *deItem = getMDIItem(deactivated);
+void MWMDIManagerImpl::onWindowsSwitched(QMdiSubWindow* deactivated, MWMDIWindow* activated) {
+    MDIItem* deItem = getMDIItem(deactivated);
     if ((nullptr != deItem) && (nullptr != deItem->w)) {
         emit si_windowDeactivated(deItem->w);
     }
     emit si_windowActivated(activated);
 }
 
-void MWMDIManagerImpl::sl_onSubWindowActivated(QMdiSubWindow *w) {
+void MWMDIManagerImpl::sl_onSubWindowActivated(QMdiSubWindow* w) {
     // Details: sub-window is activated and deactivated
     //  1) every time user switches MDI windows
     //  2) every time user switches applications
     //  Here we update mdi content only for 1 case and trying to avoid 2 case
 
-    QMdiSubWindow *currentWindow = mdiArea->currentSubWindow();
+    QMdiSubWindow* currentWindow = mdiArea->currentSubWindow();
     if (w == nullptr && currentWindow != nullptr) {  // simple deactivation, current window is not changed
         uiLog.trace(QString("Window deactivation, no MDI context switch, window: '%1'").arg(getWindowName(mdiContentOwner)));
         assert(getMDIItem(currentWindow) == mdiContentOwner);
@@ -395,7 +395,7 @@ void MWMDIManagerImpl::sl_onSubWindowActivated(QMdiSubWindow *w) {
         emit si_windowActivated(nullptr);
         return;
     }
-    MDIItem *mdiItem = getMDIItem(w);
+    MDIItem* mdiItem = getMDIItem(w);
     SAFE_POINT(mdiItem != nullptr, "The window does not belong to the MDI manager!", );
     uiLog.trace(QString("Switching active MDI window from '%1' to '%2'").arg(getWindowName(mdiContentOwner)).arg(getWindowName(mdiItem)));
     // clear old windows menu/tb content
@@ -404,7 +404,7 @@ void MWMDIManagerImpl::sl_onSubWindowActivated(QMdiSubWindow *w) {
 #ifdef Q_OS_DARWIN
     // A workaround for UGENE-6315 (QTBUG-67895): background widgets are drawn over the foreground widget on macOS with the native style
     if (QMdiArea::TabbedView == mdiArea->viewMode()) {
-        foreach (MDIItem *item, items) {
+        foreach (MDIItem* item, items) {
             if (item != mdiItem && nullptr != item && nullptr != item->w && nullptr != item->qw) {
                 item->w->hide();
                 item->qw->setWindowFlags(item->qw->windowFlags() | Qt::FramelessWindowHint);
@@ -419,20 +419,20 @@ void MWMDIManagerImpl::sl_onSubWindowActivated(QMdiSubWindow *w) {
 #endif
 
     // add new content to menu/tb
-    QToolBar *tb = mw->getToolbar(MWTOOLBAR_ACTIVEMDI);
+    QToolBar* tb = mw->getToolbar(MWTOOLBAR_ACTIVEMDI);
     mdiContentOwner = mdiItem;
     SAFE_POINT(mdiContentOwner->w != nullptr, "Incorrect MDI window is detected!", );
     mdiContentOwner->w->setupMDIToolbar(tb);
 
-    QMenu *m = mw->getTopLevelMenu(MWMENU_ACTIONS);
+    QMenu* m = mw->getTopLevelMenu(MWMENU_ACTIONS);
     SAFE_POINT(mdiContentOwner->w != nullptr, "Incorrect menu is detected!", );
     mdiContentOwner->w->setupViewMenu(m);
     m->addAction(closeAct);
     onWindowsSwitched(w, mdiItem->w);
 }
 
-MWMDIWindow *MWMDIManagerImpl::getActiveWindow() const {
-    MDIItem *i = getCurrentMDIItem();
+MWMDIWindow* MWMDIManagerImpl::getActiveWindow() const {
+    MDIItem* i = getCurrentMDIItem();
     if (i == nullptr) {
         return nullptr;
     }
@@ -447,13 +447,13 @@ void MWMDIManagerImpl::sl_updateWindowLayout() {
 }
 
 void MWMDIManagerImpl::sl_setWindowLayoutToMultiDoc() {
-    UserAppsSettings *st = AppContext::getAppSettings()->getUserAppsSettings();
+    UserAppsSettings* st = AppContext::getAppSettings()->getUserAppsSettings();
     st->setTabbedWindowLayout(false);
     sl_updateWindowLayout();
 }
 
 void MWMDIManagerImpl::sl_setWindowLayoutToTabbed() {
-    UserAppsSettings *st = AppContext::getAppSettings()->getUserAppsSettings();
+    UserAppsSettings* st = AppContext::getAppSettings()->getUserAppsSettings();
     st->setTabbedWindowLayout(true);
     sl_updateWindowLayout();
 }

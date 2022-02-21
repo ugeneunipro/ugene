@@ -48,7 +48,7 @@ public:
 class SnpEffTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    SnpEffTask(const SnpEffSetting &settings);
+    SnpEffTask(const SnpEffSetting& settings);
 
     void prepare();
     void run();
@@ -61,7 +61,7 @@ public:
 
 protected:
     QString getDataPath() const;
-    QStringList getParameters(U2OpStatus &os) const;
+    QStringList getParameters(U2OpStatus& os) const;
 
 protected:
     SnpEffSetting settings;
@@ -71,10 +71,10 @@ protected:
 class SnpEffParser : public ExternalToolLogParser {
     Q_OBJECT
 public:
-    SnpEffParser(const QString &genome = QString());
+    SnpEffParser(const QString& genome = QString());
 
-    void parseOutput(const QString &partOfLog);
-    void parseErrOutput(const QString &partOfLog);
+    void parseOutput(const QString& partOfLog);
+    void parseErrOutput(const QString& partOfLog);
 
 private:
     static QStringList initStringsToIgnore();
@@ -85,6 +85,6 @@ private:
     static const QStringList stringsToIgnore;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_SNP_EFF_H_
+#endif  // _U2_SNP_EFF_H_

@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-DocumentProviderTask::DocumentProviderTask(const QString &name, TaskFlags flags)
+DocumentProviderTask::DocumentProviderTask(const QString& name, TaskFlags flags)
     : Task(name, flags), resultDocument(nullptr), docOwner(true) {
     documentDescription = tr("[unknown]");
 }
@@ -39,7 +39,7 @@ void DocumentProviderTask::cleanup() {
     resultDocument = nullptr;
 }
 
-Document *DocumentProviderTask::getDocument(bool mainThread) {
+Document* DocumentProviderTask::getDocument(bool mainThread) {
     if (resultDocument != nullptr && mainThread) {
         if (resultDocument->thread() != QCoreApplication::instance()->thread()) {
             resultDocument->moveToThread(QCoreApplication::instance()->thread());
@@ -48,7 +48,7 @@ Document *DocumentProviderTask::getDocument(bool mainThread) {
     return resultDocument;
 }
 
-Document *DocumentProviderTask::takeDocument(bool mainThread) {
+Document* DocumentProviderTask::takeDocument(bool mainThread) {
     docOwner = false;
     return getDocument(mainThread);
 }

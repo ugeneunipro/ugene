@@ -34,20 +34,20 @@ namespace HI {
 class HI_EXPORT MainThreadRunnable : public QObject {
     Q_OBJECT
 public:
-    MainThreadRunnable(GUITestOpStatus &os, CustomScenario *scenario);
+    MainThreadRunnable(GUITestOpStatus& os, CustomScenario* scenario);
     ~MainThreadRunnable();
 
     void doRequest();
     void run();
 
-    static void runInMainThread(GUITestOpStatus &os, CustomScenario *scenario);
+    static void runInMainThread(GUITestOpStatus& os, CustomScenario* scenario);
 
 signals:
-    void si_request(MainThreadRunnable *mainThreadRunnable);
+    void si_request(MainThreadRunnable* mainThreadRunnable);
 
 private:
-    GUITestOpStatus &os;
-    CustomScenario *scenario;
+    GUITestOpStatus& os;
+    CustomScenario* scenario;
 };
 
 class MainThreadRunnableObject : public QObject {
@@ -56,7 +56,7 @@ public:
     MainThreadRunnableObject();
 
 public slots:
-    void sl_requestAsked(MainThreadRunnable *mainThreadRunnable);
+    void sl_requestAsked(MainThreadRunnable* mainThreadRunnable);
 };
 
 }  // namespace HI

@@ -49,20 +49,20 @@ public:
     static const QString MAX_RESULT;
     static const QString IS_RESULT_LIMITED;
 
-    static void save(const ORFAlgorithmSettings &cfg, Settings *st);
-    static void read(ORFAlgorithmSettings &cfg, const Settings *st);
+    static void save(const ORFAlgorithmSettings& cfg, Settings* st);
+    static void read(ORFAlgorithmSettings& cfg, const Settings* st);
 };
 
 class FindORFsToAnnotationsTask : public Task {
     Q_OBJECT
 public:
-    FindORFsToAnnotationsTask(AnnotationTableObject *aobj, const U2EntityRef &entityRef, const ORFAlgorithmSettings &settings, const QString &groupName = QString(), const QString &annDescription = "");
+    FindORFsToAnnotationsTask(AnnotationTableObject* aobj, const U2EntityRef& entityRef, const ORFAlgorithmSettings& settings, const QString& groupName = QString(), const QString& annDescription = "");
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
     QPointer<AnnotationTableObject> aObj;
-    ORFFindTask *fTask;
+    ORFFindTask* fTask;
     ORFAlgorithmSettings cfg;
     QString groupName;
     const QString annDescription;
@@ -73,8 +73,8 @@ class ORFAutoAnnotationsUpdater : public AutoAnnotationsUpdater {
     Q_OBJECT
 public:
     ORFAutoAnnotationsUpdater();
-    Task *createAutoAnnotationsUpdateTask(const AutoAnnotationObject *aa);
-    bool checkConstraints(const AutoAnnotationConstraints &constraints);
+    Task* createAutoAnnotationsUpdateTask(const AutoAnnotationObject* aa);
+    bool checkConstraints(const AutoAnnotationConstraints& constraints);
 };
 
 }  // namespace U2

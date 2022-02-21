@@ -50,7 +50,7 @@ namespace U2 {
 #define UNKNOWN_AMINO_2_GAP "unknown-amino-to-gap"
 #define TRANSLATION_FRAME "translation-frame"
 
-void GTest_ImportPhredQualityScoresTask::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_ImportPhredQualityScoresTask::init(XMLTestFormat*, const QDomElement& el) {
     QString buf = el.attribute(SEQLIST_ATTR);
     if (buf.isEmpty()) {
         failMissingValue(SEQLIST_ATTR);
@@ -72,14 +72,14 @@ void GTest_ImportPhredQualityScoresTask::init(XMLTestFormat *, const QDomElement
 }
 
 void GTest_ImportPhredQualityScoresTask::prepare() {
-    foreach (const QString &seqName, seqNameList) {
-        GObject *obj = getContext<GObject>(this, seqName);
+    foreach (const QString& seqName, seqNameList) {
+        GObject* obj = getContext<GObject>(this, seqName);
         if (obj == nullptr) {
             stateInfo.setError(QString("wrong sequence name: %1").arg(seqName));
             return;
         }
 
-        auto mySequence = qobject_cast<U2SequenceObject *>(obj);
+        auto mySequence = qobject_cast<U2SequenceObject*>(obj);
         if (mySequence == nullptr) {
             stateInfo.setError(QString("Can't cast to sequence from: %1").arg(obj->getGObjectName()));
             return;
@@ -93,12 +93,12 @@ void GTest_ImportPhredQualityScoresTask::prepare() {
     cfg.fileName = fileName;
     cfg.type = DNAQualityType_Sanger;
 
-    Task *importTask = new ImportPhredQualityScoresTask(seqList, cfg);
+    Task* importTask = new ImportPhredQualityScoresTask(seqList, cfg);
 
     addSubTask(importTask);
 }
 
-void GTest_ExportNucleicToAminoAlignmentTask::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_ExportNucleicToAminoAlignmentTask::init(XMLTestFormat*, const QDomElement& el) {
     QString buf;
 
     buf = el.attribute(NUCL_ALIGN_URL_ATTR);
@@ -185,23 +185,23 @@ void GTest_ExportNucleicToAminoAlignmentTask::prepare() {
     if (hasError()) {
         return;
     }
-    Document *doc = getContext<Document>(this, inputFile);
+    Document* doc = getContext<Document>(this, inputFile);
     if (doc == nullptr) {
         stateInfo.setError(GTest::tr(" context not found %1").arg(inputFile));
         return;
     }
 
-    QList<GObject *> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
         stateInfo.setError(GTest::tr(" container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    auto alObj = qobject_cast<MultipleSequenceAlignmentObject *>(list.first());
+    auto alObj = qobject_cast<MultipleSequenceAlignmentObject*>(list.first());
     srcAl = alObj->getMsaCopy();
 
     QString translationId = DNATranslationID(0);
     translationId.replace("0", QString("%1").arg(transTable));
-    const DNATranslation *translation = AppContext::getDNATranslationRegistry()->lookupTranslation(translationId);
+    const DNATranslation* translation = AppContext::getDNATranslationRegistry()->lookupTranslation(translationId);
 
     bool reverseComplement = translationFrame < 0;
     int offset = qAbs(translationFrame) - 1;
@@ -225,30 +225,30 @@ void GTest_ExportNucleicToAminoAlignmentTask::prepare() {
     addSubTask(exportTask);
 }
 
-QList<Task *> GTest_ExportNucleicToAminoAlignmentTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> GTest_ExportNucleicToAminoAlignmentTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     if (hasError() || subTask->hasError() || isCanceled()) {
         return res;
     }
 
     if (subTask == exportTask) {
-        IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(outputFileName));
+        IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(outputFileName));
         resultLoadTask = new LoadDocumentTask(BaseDocumentFormats::CLUSTAL_ALN, outputFileName, iof);
         res << resultLoadTask;
     } else if (subTask == resultLoadTask) {
-        Document *resdoc = resultLoadTask->getDocument();
+        Document* resdoc = resultLoadTask->getDocument();
 
         if (resdoc == nullptr) {
             stateInfo.setError(GTest::tr("context  not found %1").arg(outputFileName));
             return res;
         }
 
-        QList<GObject *> reslist = resdoc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+        QList<GObject*> reslist = resdoc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (reslist.size() == 0) {
             stateInfo.setError(GTest::tr("container  of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
             return res;
         }
-        auto resAlign = qobject_cast<MultipleSequenceAlignmentObject *>(reslist.first());
+        auto resAlign = qobject_cast<MultipleSequenceAlignmentObject*>(reslist.first());
         resAl = resAlign->getMsaCopy();
     }
     return res;
@@ -260,18 +260,18 @@ Task::ReportResult GTest_ExportNucleicToAminoAlignmentTask::report() {
         return ReportResult_Finished;
     }
 
-    Document *expdoc = getContext<Document>(this, expectedOutputFile);
+    Document* expdoc = getContext<Document>(this, expectedOutputFile);
     if (expdoc == nullptr) {
         stateInfo.setError(GTest::tr("context not  found %1").arg(expectedOutputFile));
         return ReportResult_Finished;
     }
 
-    QList<GObject *> explist = expdoc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    QList<GObject*> explist = expdoc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (explist.size() == 0) {
         stateInfo.setError(GTest::tr("container of  object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return ReportResult_Finished;
     }
-    auto expAlign = qobject_cast<MultipleSequenceAlignmentObject *>(explist.first());
+    auto expAlign = qobject_cast<MultipleSequenceAlignmentObject*>(explist.first());
     const MultipleSequenceAlignment expAl = expAlign->getMultipleAlignment();
 
     if (resAl->getLength() != expAl->getLength()) {
@@ -303,8 +303,8 @@ Task::ReportResult GTest_ExportNucleicToAminoAlignmentTask::report() {
     return ReportResult_Finished;
 }
 
-QList<XMLTestFactory *> DNAExportPluginTests::createTestFactories() {
-    QList<XMLTestFactory *> factories;
+QList<XMLTestFactory*> DNAExportPluginTests::createTestFactories() {
+    QList<XMLTestFactory*> factories;
     factories.append(GTest_ImportPhredQualityScoresTask::createFactory());
     factories.append(GTest_ExportNucleicToAminoAlignmentTask::createFactory());
     return factories;

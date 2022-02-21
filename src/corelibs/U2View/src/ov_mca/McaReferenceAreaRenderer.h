@@ -31,18 +31,18 @@ class MaEditor;
 class U2VIEW_EXPORT McaReferenceAreaRenderer : public PanViewRenderer {
     Q_OBJECT
 public:
-    McaReferenceAreaRenderer(PanView *panView, SequenceObjectContext *ctx, MaEditor *maEditor);
+    McaReferenceAreaRenderer(PanView* panView, SequenceObjectContext* ctx, MaEditor* maEditor);
 
     int getMinimumHeight() const override;
 
-    int posToXCoord(const qint64 position, const QSize &canvasSize, const U2Region &visibleRange) const override;
+    int posToXCoord(const qint64 position, const QSize& canvasSize, const U2Region& visibleRange) const override;
 
-    void setFont(const QFont &font);
+    void setFont(const QFont& font);
 
 private:
-    void drawSequence(QPainter &p, const QSize &canvasSize, const U2Region &region) override;
+    void drawSequence(QPainter& p, const QSize& canvasSize, const U2Region& region) override;
 
-    MaEditor *maEditor;
+    MaEditor* maEditor;
 };
 
 }  // namespace U2

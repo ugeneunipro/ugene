@@ -48,7 +48,7 @@ public:
     RulerInfo()
         : offset(0) {
     }
-    RulerInfo(const QString &_name, int _offset, const QColor &_color)
+    RulerInfo(const QString& _name, int _offset, const QColor& _color)
         : name(_name), offset(_offset), color(_color) {
     }
 
@@ -89,37 +89,37 @@ public:
     class U2VIEW_EXPORT ZoomUseObject {
     public:
         ZoomUseObject();
-        ZoomUseObject(PanView *pv);
+        ZoomUseObject(PanView* pv);
         virtual ~ZoomUseObject();
 
         void useZoom();
         void releaseZoom();
-        void setPanView(PanView *pv);
+        void setPanView(PanView* pv);
 
     private:
         bool usingZoom;
-        PanView *panView;
+        PanView* panView;
     };
 
-    PanView(QWidget *p, SequenceObjectContext *ctx, const PanViewRenderAreaFactory &rendererFactory = PanViewRenderAreaFactory());
+    PanView(QWidget* p, SequenceObjectContext* ctx, const PanViewRenderAreaFactory& rendererFactory = PanViewRenderAreaFactory());
     ~PanView();
 
-    const U2Region &getFrameRange() const {
+    const U2Region& getFrameRange() const {
         return frameView->getVisibleRange();
     }
 
-    QAction *getZoomInAction() const override;
+    QAction* getZoomInAction() const override;
 
-    QAction *getZoomOutAction() const override;
+    QAction* getZoomOutAction() const override;
 
-    QAction *getZoomToSelectionAction() const override;
+    QAction* getZoomToSelectionAction() const override;
 
-    QAction *getZoomToSequenceAction() const override;
+    QAction* getZoomToSequenceAction() const override;
 
     // [0..seqLen)
-    void setVisibleRange(const U2Region &reg, bool signal = true) override;
+    void setVisibleRange(const U2Region& reg, bool signal = true) override;
 
-    PVRowsManager *getRowsManager() const;
+    PVRowsManager* getRowsManager() const;
 
     virtual void setNumBasesVisible(qint64 n);
 
@@ -129,21 +129,21 @@ public:
 
     QList<RulerInfo> getCustomRulers() const;
 
-    void addCustomRuler(const RulerInfo &r);
+    void addCustomRuler(const RulerInfo& r);
 
-    void removeCustomRuler(const QString &name);
+    void removeCustomRuler(const QString& name);
 
     void removeAllCustomRulers();
 
-    QAction *getToggleMainRulerAction() const;
+    QAction* getToggleMainRulerAction() const;
 
-    QAction *getToggleCustomRulersAction() const;
+    QAction* getToggleCustomRulersAction() const;
 
-    void hideEvent(QHideEvent *ev) override;
+    void hideEvent(QHideEvent* ev) override;
 
-    void showEvent(QShowEvent *ev) override;
+    void showEvent(QShowEvent* ev) override;
 
-    PanViewLinesSettings *getLinesSettings() const;
+    PanViewLinesSettings* getLinesSettings() const;
 
 protected:
     qint64 getSingleStep() const override;
@@ -154,13 +154,13 @@ protected:
 
     void pack() override;
 
-    void registerAnnotations(const QList<Annotation *> &l) override;
-    void unregisterAnnotations(const QList<Annotation *> &l) override;
-    void ensureVisible(Annotation *a, int locationIdx) override;
+    void registerAnnotations(const QList<Annotation*>& l) override;
+    void unregisterAnnotations(const QList<Annotation*>& l) override;
+    void ensureVisible(Annotation* a, int locationIdx) override;
 
 protected slots:
     void sl_sequenceChanged() override;
-    void sl_onAnnotationsModified(const QList<AnnotationModification> &annotationModifications) override;
+    void sl_onAnnotationsModified(const QList<AnnotationModification>& annotationModifications) override;
 
 private slots:
     void sl_zoomInAction();
@@ -172,8 +172,8 @@ private slots:
 
     void sl_onRangeChangeRequest(qint64 start, qint64 end);
 
-    void sl_onDNASelectionChanged(LRegionsSelection *s, const QVector<U2Region> &added, const QVector<U2Region> &removed) override;
-    void sl_onAnnotationSettingsChanged(const QStringList &changedSettings) override;
+    void sl_onDNASelectionChanged(LRegionsSelection* s, const QVector<U2Region>& added, const QVector<U2Region>& removed) override;
+    void sl_onAnnotationSettingsChanged(const QStringList& changedSettings) override;
 
     void sl_toggleMainRulerVisibility(bool visible);
     void sl_toggleCustomRulersVisibility(bool visible);
@@ -183,7 +183,7 @@ signals:
     void si_updateRows();
 
 public:
-    void setSelection(const U2Region &r) override;
+    void setSelection(const U2Region& r) override;
     void centerRow(int row);
     int calculateNumRowBarSteps() const;
 
@@ -197,7 +197,7 @@ public:
     void useZoom();
     void releaseZoom();
 
-    PanViewRenderArea *getRenderArea() const;
+    PanViewRenderArea* getRenderArea() const;
 
 private:
     U2Region getRegionToZoom() const;
@@ -206,18 +206,18 @@ public:
     U2Region frameRange;
     int minNuclsPerScreen;
 
-    QAction *zoomInAction;
-    QAction *zoomOutAction;
-    QAction *zoomToSelectionAction;
-    QAction *zoomToSequenceAction;
-    QAction *toggleMainRulerAction;
-    QAction *toggleCustomRulersAction;
+    QAction* zoomInAction;
+    QAction* zoomOutAction;
+    QAction* zoomToSelectionAction;
+    QAction* zoomToSequenceAction;
+    QAction* toggleMainRulerAction;
+    QAction* toggleCustomRulersAction;
 
-    PVRowsManager *rowsManager;
-    QScrollBar *rowBar;
+    PVRowsManager* rowsManager;
+    QScrollBar* rowBar;
     int syncOffset;  // used by ADVSyncViewManager only
 
-    PanViewLinesSettings *settings;
+    PanViewLinesSettings* settings;
 
     int zoomUsing;
 };
@@ -226,34 +226,34 @@ class U2VIEW_EXPORT PanViewRenderArea : public GSequenceLineViewGridAnnotationRe
     friend class PanView;
     Q_OBJECT
 public:
-    PanViewRenderArea(PanView *d, PanViewRenderer *renderer);
+    PanViewRenderArea(PanView* d, PanViewRenderer* renderer);
 
-    PanViewRenderer *getRenderer() const {
+    PanViewRenderer* getRenderer() const {
         return renderer;
     }
 
     /** Returns all y-regions covered by the annotation location region. */
-    QList<U2Region> getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings) const override;
+    QList<U2Region> getAnnotationYRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const override;
 
     /** Returns Y range for the annotation within render area. */
-    U2Region getAnnotationYRange(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings) const;
+    U2Region getAnnotationYRange(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const;
 
     int getRowLineHeight() const;
 
 protected:
-    void drawAll(QPaintDevice *pd) override;
+    void drawAll(QPaintDevice* pd) override;
 
-    void resizeEvent(QResizeEvent *e) override;
+    void resizeEvent(QResizeEvent* e) override;
 
 private:
     bool isSequenceCharsVisible() const;
 
-    PanView *getPanView() const {
-        return static_cast<PanView *>(view);
+    PanView* getPanView() const {
+        return static_cast<PanView*>(view);
     }
 
-    PanView *const panView;
-    PanViewRenderer *const renderer;
+    PanView* const panView;
+    PanViewRenderer* const renderer;
 };
 
 }  // namespace U2

@@ -28,7 +28,7 @@ namespace U2 {
 U2Qualifier::U2Qualifier() {
 }
 
-U2Qualifier::U2Qualifier(const QString &name, const QString &value)
+U2Qualifier::U2Qualifier(const QString& name, const QString& value)
     : name(name),
       value(value) {
     //    SAFE_POINT(isValid(), "An attempt to create an invalid qualifier", );
@@ -38,19 +38,19 @@ bool U2Qualifier::isValid() const {
     return isValidQualifierName(name) && isValidQualifierValue(value);
 }
 
-bool U2Qualifier::operator==(const U2Qualifier &q) const {
+bool U2Qualifier::operator==(const U2Qualifier& q) const {
     return q.name == name && q.value == value;
 }
 
-bool U2Qualifier::operator!=(const U2Qualifier &q) const {
+bool U2Qualifier::operator!=(const U2Qualifier& q) const {
     return !(*this == q);
 }
 
-bool U2Qualifier::isValidQualifierName(const QString &name) {
+bool U2Qualifier::isValidQualifierName(const QString& name) {
     return !name.isEmpty() && TextUtils::fits(TextUtils::QUALIFIER_NAME_CHARS, name.toLocal8Bit().data(), name.length());
 }
 
-bool U2Qualifier::isValidQualifierValue(const QString &) {
+bool U2Qualifier::isValidQualifierValue(const QString&) {
     return true;
 }
 

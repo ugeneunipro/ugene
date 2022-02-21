@@ -33,10 +33,10 @@ namespace U2 {
 class SettingsController : public WidgetController {
     Q_OBJECT
 public:
-    SettingsController(WizardController *wc, SettingsWidget *sw);
+    SettingsController(WizardController* wc, SettingsWidget* sw);
     virtual ~SettingsController();
 
-    virtual QWidget *createGUI(U2OpStatus &os);
+    virtual QWidget* createGUI(U2OpStatus& os);
 
     static const QString TYPE_URL;
 private slots:
@@ -44,11 +44,11 @@ private slots:
     void sl_fileSelect();
 
 private:
-    SettingsWidget *sw;
-    QLineEdit *lineEdit;
+    SettingsWidget* sw;
+    QLineEdit* lineEdit;
 
 private:
-    QWidget *createUrlSettingsWidget(U2OpStatus &os);
+    QWidget* createUrlSettingsWidget(U2OpStatus& os);
     QString getSettingValue();
 };
 

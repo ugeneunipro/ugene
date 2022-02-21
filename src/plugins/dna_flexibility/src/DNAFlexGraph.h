@@ -33,10 +33,10 @@ namespace U2 {
 class DNAFlexGraphFactory : public GSequenceGraphFactory {
     Q_OBJECT
 public:
-    DNAFlexGraphFactory(QObject *);
-    QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView *) override;
-    GSequenceGraphDrawer *getDrawer(GSequenceGraphView *) override;
-    bool isEnabled(const U2SequenceObject *) const override;
+    DNAFlexGraphFactory(QObject*);
+    QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView*) override;
+    GSequenceGraphDrawer* getDrawer(GSequenceGraphView*) override;
+    bool isEnabled(const U2SequenceObject*) const override;
 
 private:
     /** Default size of "window" on a graph */

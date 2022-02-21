@@ -43,11 +43,11 @@
 
 namespace U2 {
 
-static QList<BioStruct3DObject *> findAvailableBioStructs() {
-    QList<GObject *> objs = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::BIOSTRUCTURE_3D);
-    QList<BioStruct3DObject *> biostructs;
-    foreach (GObject *obj, objs) {
-        BioStruct3DObject *bso = qobject_cast<BioStruct3DObject *>(obj);
+static QList<BioStruct3DObject*> findAvailableBioStructs() {
+    QList<GObject*> objs = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::BIOSTRUCTURE_3D);
+    QList<BioStruct3DObject*> biostructs;
+    foreach (GObject* obj, objs) {
+        BioStruct3DObject* bso = qobject_cast<BioStruct3DObject*>(obj);
         assert(bso);
         biostructs << bso;
     }
@@ -55,19 +55,19 @@ static QList<BioStruct3DObject *> findAvailableBioStructs() {
     return biostructs;
 }
 
-StructuralAlignmentDialog::StructuralAlignmentDialog(const BioStruct3DObject *fixedRef /* = 0*/, int fixedRefModel /* = -1*/, QWidget *parent /* = 0*/)
+StructuralAlignmentDialog::StructuralAlignmentDialog(const BioStruct3DObject* fixedRef /* = 0*/, int fixedRefModel /* = -1*/, QWidget* parent /* = 0*/)
     : QDialog(parent), task(0) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929547");
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
 
-    StructuralAlignmentAlgorithmRegistry *reg = AppContext::getStructuralAlignmentAlgorithmRegistry();
-    foreach (const QString &id, reg->getFactoriesIds()) {
+    StructuralAlignmentAlgorithmRegistry* reg = AppContext::getStructuralAlignmentAlgorithmRegistry();
+    foreach (const QString& id, reg->getFactoriesIds()) {
         algorithmCombo->addItem(id, qVariantFromValue(id));
     }
 
-    QList<BioStruct3DObject *> biostructs = findAvailableBioStructs();
+    QList<BioStruct3DObject*> biostructs = findAvailableBioStructs();
     ref = new BioStruct3DSubsetEditor(biostructs, fixedRef, fixedRefModel);
     ref->setObjectName("ref_editor");
     mob = new BioStruct3DSubsetEditor(biostructs);
@@ -80,11 +80,11 @@ StructuralAlignmentDialog::StructuralAlignmentDialog(const BioStruct3DObject *fi
         ref->setModelDisabled();
     }
 
-    QVBoxLayout *refBox = new QVBoxLayout();
+    QVBoxLayout* refBox = new QVBoxLayout();
     refBox->addWidget(ref);
     refGroup->setLayout(refBox);
 
-    QVBoxLayout *altBox = new QVBoxLayout();
+    QVBoxLayout* altBox = new QVBoxLayout();
     altBox->addWidget(mob);
     altGroup->setLayout(altBox);
 
@@ -117,15 +117,15 @@ void StructuralAlignmentDialog::accept() {
     // TODO: clone live-range?
     U2OpStatus2Log os;
     const U2DbiRef dbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
-    BioStruct3DObject *mobClone = qobject_cast<BioStruct3DObject *>(mobSubset.obj->clone(dbiRef, os));
+    BioStruct3DObject* mobClone = qobject_cast<BioStruct3DObject*>(mobSubset.obj->clone(dbiRef, os));
     mobSubset.obj = mobClone;
 
     StructuralAlignmentTaskSettings settings(refSubset, mobSubset);
 
-    StructuralAlignmentAlgorithmRegistry *reg = AppContext::getStructuralAlignmentAlgorithmRegistry();
+    StructuralAlignmentAlgorithmRegistry* reg = AppContext::getStructuralAlignmentAlgorithmRegistry();
 
     QString algorithmId = algorithmCombo->itemData(algorithmCombo->currentIndex()).value<QString>();
-    StructuralAlignmentAlgorithm *algorithm = reg->createStructuralAlignmentAlgorithm(algorithmId);
+    StructuralAlignmentAlgorithm* algorithm = reg->createStructuralAlignmentAlgorithm(algorithmId);
 
     err = algorithm->validate(settings);
     if (!err.isEmpty()) {
@@ -140,7 +140,7 @@ void StructuralAlignmentDialog::accept() {
 }
 
 int StructuralAlignmentDialog::execIfAlgorithmAvailable() {
-    StructuralAlignmentAlgorithmRegistry *reg = AppContext::getStructuralAlignmentAlgorithmRegistry();
+    StructuralAlignmentAlgorithmRegistry* reg = AppContext::getStructuralAlignmentAlgorithmRegistry();
     if (reg->getFactoriesIds().isEmpty()) {
         QMessageBox::warning(this, "Error", "No available algorithms, make sure that appropriate plugin loaded (for ex. PTools)");
         return Rejected;
@@ -149,7 +149,7 @@ int StructuralAlignmentDialog::execIfAlgorithmAvailable() {
     }
 }
 
-StructuralAlignmentTask *StructuralAlignmentDialog::getTask() {
+StructuralAlignmentTask* StructuralAlignmentDialog::getTask() {
     return task;
 }
 }  // namespace U2

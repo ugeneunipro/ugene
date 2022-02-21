@@ -49,7 +49,7 @@ bool InSilicoPcrProduct::isValid() const {
     return ta != Primer::INVALID_TM;
 }
 
-InSilicoPcrTask::InSilicoPcrTask(const InSilicoPcrTaskSettings &_settings)
+InSilicoPcrTask::InSilicoPcrTask(const InSilicoPcrTaskSettings& _settings)
     : Task(tr("In Silico PCR"), TaskFlags(TaskFlag_ReportingIsSupported) | TaskFlag_ReportingIsEnabled | TaskFlag_FailOnSubtaskError),
       settings(_settings), forwardSearch(nullptr), reverseSearch(nullptr), minProductSize(0) {
     GCOUNTER(cvar, "InSilicoPcrTask");
@@ -57,7 +57,7 @@ InSilicoPcrTask::InSilicoPcrTask(const InSilicoPcrTaskSettings &_settings)
 }
 
 namespace {
-int getMaxError(const InSilicoPcrTaskSettings &settings, U2Strand::Direction direction) {
+int getMaxError(const InSilicoPcrTaskSettings& settings, U2Strand::Direction direction) {
     int res = 0;
     if (direction == U2Strand::Direct) {
         res = qMin(settings.forwardMismatches, settings.forwardPrimer.length() - settings.perfectMatch);
@@ -73,9 +73,9 @@ int getMaxError(const InSilicoPcrTaskSettings &settings, U2Strand::Direction dir
 
 FindAlgorithmTaskSettings InSilicoPcrTask::getFindPatternSettings(U2Strand::Direction direction) {
     FindAlgorithmTaskSettings result;
-    const DNAAlphabet *alphabet = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
+    const DNAAlphabet* alphabet = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
     SAFE_POINT_EXT(nullptr != alphabet, setError(L10N::nullPointerError("DNA Alphabet")), result);
-    DNATranslation *translator = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(alphabet);
+    DNATranslation* translator = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(alphabet);
     SAFE_POINT_EXT(nullptr != translator, setError(L10N::nullPointerError("DNA Translator")), result);
 
     result.sequence = settings.sequence;
@@ -129,8 +129,8 @@ void InSilicoPcrTask::run() {
     algoLog.details(tr("Forward primers found: %1").arg(forwardResults.size()));
     algoLog.details(tr("Reverse primers found: %1").arg(reverseResults.size()));
 
-    foreach (const FindAlgorithmResult &forward, forwardResults) {
-        foreach (const FindAlgorithmResult &reverse, reverseResults) {
+    foreach (const FindAlgorithmResult& forward, forwardResults) {
+        foreach (const FindAlgorithmResult& reverse, reverseResults) {
             CHECK(!isCanceled(), );
             if (forward.strand == reverse.strand) {
                 continue;
@@ -151,7 +151,7 @@ void InSilicoPcrTask::run() {
     }
 }
 
-InSilicoPcrTask::PrimerBind InSilicoPcrTask::getPrimerBind(const FindAlgorithmResult &forward, const FindAlgorithmResult &reverse, U2Strand::Direction direction) const {
+InSilicoPcrTask::PrimerBind InSilicoPcrTask::getPrimerBind(const FindAlgorithmResult& forward, const FindAlgorithmResult& reverse, U2Strand::Direction direction) const {
     PrimerBind result;
     bool switched = forward.strand.isComplementary();
     if ((U2Strand::Direct == direction && switched) ||
@@ -187,7 +187,7 @@ InSilicoPcrTask::PrimerBind InSilicoPcrTask::getPrimerBind(const FindAlgorithmRe
     return result;
 }
 
-bool InSilicoPcrTask::filter(const PrimerBind &leftBind, const PrimerBind &rightBind, qint64 productSize) const {
+bool InSilicoPcrTask::filter(const PrimerBind& leftBind, const PrimerBind& rightBind, qint64 productSize) const {
     CHECK(isCorrectProductSize(productSize, minProductSize), false);
 
     if (settings.perfectMatch > 0) {
@@ -205,7 +205,7 @@ bool InSilicoPcrTask::isCorrectProductSize(qint64 productSize, qint64 minPrimerS
     return (productSize >= minPrimerSize) && (productSize <= qint64(settings.maxProductSize));
 }
 
-bool InSilicoPcrTask::checkPerfectMatch(const PrimerBind &bind, U2Strand::Direction direction) const {
+bool InSilicoPcrTask::checkPerfectMatch(const PrimerBind& bind, U2Strand::Direction direction) const {
     const QByteArray sequence = getSequence(bind.region, direction);
     QByteArray croppedPrimer = bind.primer;
     if (bind.ledge > 0) {
@@ -226,7 +226,7 @@ bool InSilicoPcrTask::checkPerfectMatch(const PrimerBind &bind, U2Strand::Direct
     return true;
 }
 
-QByteArray InSilicoPcrTask::getSequence(const U2Region &region, U2Strand::Direction direction) const {
+QByteArray InSilicoPcrTask::getSequence(const U2Region& region, U2Strand::Direction direction) const {
     QByteArray sequence;
     if (settings.isCircular && region.endPos() > settings.sequence.size()) {
         sequence = settings.sequence.mid(region.startPos, settings.sequence.size() - region.startPos);
@@ -260,7 +260,7 @@ QString InSilicoPcrTask::generateReport() const {
         .arg(results.size());
 }
 
-InSilicoPcrProduct InSilicoPcrTask::createResult(const PrimerBind &leftPrimer, const U2Region &product, const PrimerBind &rightPrimer, U2Strand::Direction direction) const {
+InSilicoPcrProduct InSilicoPcrTask::createResult(const PrimerBind& leftPrimer, const U2Region& product, const PrimerBind& rightPrimer, U2Strand::Direction direction) const {
     QByteArray productSequence = settings.sequence.mid(product.startPos, product.length);
     if (productSequence.length() < product.length) {
         if (settings.isCircular) {
@@ -288,7 +288,7 @@ InSilicoPcrProduct InSilicoPcrTask::createResult(const PrimerBind &leftPrimer, c
     return result;
 }
 
-bool InSilicoPcrTask::updateSequenceByPrimers(const PrimerBind &leftPrimer, const PrimerBind &rightPrimer, QByteArray &productSequence) const {
+bool InSilicoPcrTask::updateSequenceByPrimers(const PrimerBind& leftPrimer, const PrimerBind& rightPrimer, QByteArray& productSequence) const {
     SAFE_POINT((leftPrimer.ledge > 0 || rightPrimer.ledge > 0),
                "Error: at least one primer should has a ledge on one side",
                false);
@@ -299,7 +299,7 @@ bool InSilicoPcrTask::updateSequenceByPrimers(const PrimerBind &leftPrimer, cons
     return true;
 }
 
-void InSilicoPcrTask::updateSequenceByPrimer(const PrimerBind &primer, QByteArray &productSequence) const {
+void InSilicoPcrTask::updateSequenceByPrimer(const PrimerBind& primer, QByteArray& productSequence) const {
     if (primer.region.startPos == 0) {
         QByteArray primerPart = primer.primer.left(primer.ledge);
         productSequence.insert(0, primerPart);
@@ -309,7 +309,7 @@ void InSilicoPcrTask::updateSequenceByPrimer(const PrimerBind &primer, QByteArra
     }
 }
 
-qint64 InSilicoPcrTask::getProductSize(const PrimerBind &leftBind, const PrimerBind &rightBind) const {
+qint64 InSilicoPcrTask::getProductSize(const PrimerBind& leftBind, const PrimerBind& rightBind) const {
     const qint64 ledge = rightBind.ledge + leftBind.ledge;
     qint64 result = rightBind.region.endPos() - leftBind.region.startPos + ledge;
     if (result < 0 && settings.isCircular) {
@@ -318,11 +318,11 @@ qint64 InSilicoPcrTask::getProductSize(const PrimerBind &leftBind, const PrimerB
     return result;
 }
 
-const QList<InSilicoPcrProduct> &InSilicoPcrTask::getResults() const {
+const QList<InSilicoPcrProduct>& InSilicoPcrTask::getResults() const {
     return results;
 }
 
-const InSilicoPcrTaskSettings &InSilicoPcrTask::getSettings() const {
+const InSilicoPcrTaskSettings& InSilicoPcrTask::getSettings() const {
     return settings;
 }
 

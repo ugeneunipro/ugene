@@ -37,24 +37,24 @@ public:
     ~ORFMarkerPlugin();
 
 private:
-    GObjectViewWindowContext *viewCtx;
+    GObjectViewWindowContext* viewCtx;
 };
 
 class ORFViewContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    ORFViewContext(QObject *p);
+    ORFViewContext(QObject* p);
 
 protected slots:
     void sl_showDialog();
 
 protected:
-    void initViewContext(GObjectView *view) override;
+    void initViewContext(GObjectView* view) override;
 };
 
 class ORFMarkerTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

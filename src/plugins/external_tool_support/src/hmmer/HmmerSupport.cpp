@@ -55,7 +55,7 @@ const QString HmmerSupport::SEARCH_TOOL_ID = "USUPP_HMMSEARCH";
 const QString HmmerSupport::PHMMER_TOOL = "PHMMER search";
 const QString HmmerSupport::PHMMER_TOOL_ID = "USUPP_PHMMER";
 
-HmmerSupport::HmmerSupport(const QString &id, const QString &name)
+HmmerSupport::HmmerSupport(const QString& id, const QString& name)
     : ExternalTool(id, "hmmer3", name) {
     if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
@@ -85,20 +85,20 @@ void HmmerSupport::sl_buildProfile() {
     }
 
     MultipleSequenceAlignment ma;
-    MWMDIWindow *activeWindow = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
+    MWMDIWindow* activeWindow = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
     if (activeWindow != nullptr) {
-        GObjectViewWindow *objectViewWindow = qobject_cast<GObjectViewWindow *>(activeWindow);
+        GObjectViewWindow* objectViewWindow = qobject_cast<GObjectViewWindow*>(activeWindow);
         if (objectViewWindow != nullptr) {
-            MSAEditor *msaEditor = qobject_cast<MSAEditor *>(objectViewWindow->getObjectView());
+            MSAEditor* msaEditor = qobject_cast<MSAEditor*>(objectViewWindow->getObjectView());
             if (msaEditor != nullptr) {
-                MultipleSequenceAlignmentObject *maObj = msaEditor->getMaObject();
+                MultipleSequenceAlignmentObject* maObj = msaEditor->getMaObject();
                 if (maObj != nullptr) {
                     ma = maObj->getMultipleAlignment();
                 }
             }
         }
     }
-    QWidget *parent = AppContext::getMainWindow()->getQMainWindow();
+    QWidget* parent = AppContext::getMainWindow()->getQMainWindow();
 
     QObjectScopedPointer<HmmerBuildDialog> buildDialog = new HmmerBuildDialog(ma, parent);
     buildDialog->exec();
@@ -106,46 +106,46 @@ void HmmerSupport::sl_buildProfile() {
 
 namespace {
 
-U2SequenceObject *getDnaSequenceObject() {
-    U2SequenceObject *seqObj = nullptr;
-    GObjectViewWindow *activeWindow = qobject_cast<GObjectViewWindow *>(AppContext::getMainWindow()->getMDIManager()->getActiveWindow());
+U2SequenceObject* getDnaSequenceObject() {
+    U2SequenceObject* seqObj = nullptr;
+    GObjectViewWindow* activeWindow = qobject_cast<GObjectViewWindow*>(AppContext::getMainWindow()->getMDIManager()->getActiveWindow());
     if (activeWindow != nullptr) {
-        AnnotatedDNAView *dnaView = qobject_cast<AnnotatedDNAView *>(activeWindow->getObjectView());
+        AnnotatedDNAView* dnaView = qobject_cast<AnnotatedDNAView*>(activeWindow->getObjectView());
         seqObj = (dnaView != nullptr ? dnaView->getActiveSequenceContext()->getSequenceObject() : nullptr);
     }
 
     if (seqObj == nullptr) {
-        ProjectView *projectView = AppContext::getProjectView();
+        ProjectView* projectView = AppContext::getProjectView();
         if (projectView != nullptr) {
-            const GObjectSelection *objSelection = projectView->getGObjectSelection();
-            GObject *obj = (objSelection->getSelectedObjects().size() == 1 ? objSelection->getSelectedObjects().first() : nullptr);
-            seqObj = qobject_cast<U2SequenceObject *>(obj);
+            const GObjectSelection* objSelection = projectView->getGObjectSelection();
+            GObject* obj = (objSelection->getSelectedObjects().size() == 1 ? objSelection->getSelectedObjects().first() : nullptr);
+            seqObj = qobject_cast<U2SequenceObject*>(obj);
         }
     }
 
     return seqObj;
 }
 
-}    // namespace
+}  // namespace
 
 void HmmerSupport::sl_search() {
     if (!isToolSet(SEARCH_TOOL)) {
         return;
     }
 
-    U2SequenceObject *seqObj = getDnaSequenceObject();
+    U2SequenceObject* seqObj = getDnaSequenceObject();
     if (seqObj == nullptr) {
         QMessageBox::critical(nullptr, tr("Error!"), tr("Target sequence not selected: no opened annotated dna view"));
         return;
     }
-    ADVSequenceObjectContext *seqCtx = nullptr;
-    GObjectViewWindow *activeWindow = qobject_cast<GObjectViewWindow *>(AppContext::getMainWindow()->getMDIManager()->getActiveWindow());
+    ADVSequenceObjectContext* seqCtx = nullptr;
+    GObjectViewWindow* activeWindow = qobject_cast<GObjectViewWindow*>(AppContext::getMainWindow()->getMDIManager()->getActiveWindow());
     if (activeWindow != nullptr) {
-        AnnotatedDNAView *dnaView = qobject_cast<AnnotatedDNAView *>(activeWindow->getObjectView());
+        AnnotatedDNAView* dnaView = qobject_cast<AnnotatedDNAView*>(activeWindow->getObjectView());
         seqCtx = (dnaView != nullptr) ? dnaView->getActiveSequenceContext() : nullptr;
     }
 
-    QWidget *parent = AppContext::getMainWindow()->getQMainWindow();
+    QWidget* parent = AppContext::getMainWindow()->getQMainWindow();
     if (seqCtx != nullptr) {
         QObjectScopedPointer<HmmerSearchDialog> searchDlg = new HmmerSearchDialog(seqCtx, parent);
         searchDlg->exec();
@@ -160,19 +160,19 @@ void HmmerSupport::sl_phmmerSearch() {
         return;
     }
 
-    U2SequenceObject *seqObj = getDnaSequenceObject();
+    U2SequenceObject* seqObj = getDnaSequenceObject();
     if (seqObj == nullptr) {
         QMessageBox::critical(nullptr, tr("Error!"), tr("Target sequence not selected: no opened annotated dna view"));
         return;
     }
-    ADVSequenceObjectContext *seqCtx = nullptr;
-    GObjectViewWindow *activeWindow = qobject_cast<GObjectViewWindow *>(AppContext::getMainWindow()->getMDIManager()->getActiveWindow());
+    ADVSequenceObjectContext* seqCtx = nullptr;
+    GObjectViewWindow* activeWindow = qobject_cast<GObjectViewWindow*>(AppContext::getMainWindow()->getMDIManager()->getActiveWindow());
     if (activeWindow != nullptr) {
-        AnnotatedDNAView *dnaView = qobject_cast<AnnotatedDNAView *>(activeWindow->getObjectView());
+        AnnotatedDNAView* dnaView = qobject_cast<AnnotatedDNAView*>(activeWindow->getObjectView());
         seqCtx = (dnaView != nullptr) ? dnaView->getActiveSequenceContext() : nullptr;
     }
 
-    QWidget *parent = AppContext::getMainWindow()->getQMainWindow();
+    QWidget* parent = AppContext::getMainWindow()->getQMainWindow();
     if (seqCtx != nullptr) {
         QObjectScopedPointer<PhmmerSearchDialog> phmmerDialog = new PhmmerSearchDialog(seqCtx, parent);
         phmmerDialog->exec();
@@ -193,9 +193,9 @@ void HmmerSupport::initBuild() {
     validMessage = "hmmbuild";
     description = tr("<i>HMMER build</i> constructs HMM profiles from multiple sequence alignments.");
 
-    MainWindow *mainWindow = AppContext::getMainWindow();
+    MainWindow* mainWindow = AppContext::getMainWindow();
     if (mainWindow != nullptr) {
-        QAction *buildAction = new QAction(tr("Build HMM3 profile..."), this);
+        QAction* buildAction = new QAction(tr("Build HMM3 profile..."), this);
         buildAction->setObjectName(ToolsMenu::HMMER_BUILD3);
         connect(buildAction, SIGNAL(triggered()), SLOT(sl_buildProfile()));
         ToolsMenu::addAction(ToolsMenu::HMMER_MENU, buildAction);
@@ -213,9 +213,9 @@ void HmmerSupport::initSearch() {
     validMessage = "hmmsearch";
     description = tr("<i>HMMER search</i> searches profile(s) against a sequence database.");
 
-    MainWindow *mainWindow = AppContext::getMainWindow();
+    MainWindow* mainWindow = AppContext::getMainWindow();
     if (mainWindow != nullptr) {
-        QAction *searchAction = new QAction(tr("Search with HMMER3..."), this);
+        QAction* searchAction = new QAction(tr("Search with HMMER3..."), this);
         searchAction->setObjectName(ToolsMenu::HMMER_SEARCH3);
         connect(searchAction, SIGNAL(triggered()), SLOT(sl_search()));
         ToolsMenu::addAction(ToolsMenu::HMMER_MENU, searchAction);
@@ -233,16 +233,16 @@ void HmmerSupport::initPhmmer() {
     validMessage = "phmmer";
     description = tr("<i>PHMMER search</i> searches a protein sequence against a protein database.");
 
-    MainWindow *mainWindow = AppContext::getMainWindow();
+    MainWindow* mainWindow = AppContext::getMainWindow();
     if (mainWindow != nullptr) {
-        QAction *searchAction = new QAction(tr("Search with phmmer..."), this);
+        QAction* searchAction = new QAction(tr("Search with phmmer..."), this);
         searchAction->setObjectName(ToolsMenu::HMMER_SEARCH3P);
         connect(searchAction, SIGNAL(triggered()), SLOT(sl_phmmerSearch()));
         ToolsMenu::addAction(ToolsMenu::HMMER_MENU, searchAction);
     }
 }
 
-bool HmmerSupport::isToolSet(const QString &name) const {
+bool HmmerSupport::isToolSet(const QString& name) const {
     if (path.isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle(name);
@@ -271,42 +271,42 @@ bool HmmerSupport::isToolSet(const QString &name) const {
     return true;
 }
 
-HmmerMsaEditorContext::HmmerMsaEditorContext(QObject *parent)
+HmmerMsaEditorContext::HmmerMsaEditorContext(QObject* parent)
     : GObjectViewWindowContext(parent, MsaEditorFactory::ID) {
 }
 
-void HmmerMsaEditorContext::initViewContext(GObjectView *view) {
-    MSAEditor *msaEditor = qobject_cast<MSAEditor *>(view);
+void HmmerMsaEditorContext::initViewContext(GObjectView* view) {
+    MSAEditor* msaEditor = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Msa Editor is NULL", );
     CHECK(msaEditor->getMaObject() != nullptr, );
 
-    GObjectViewAction *action = new GObjectViewAction(this, view, tr("Build HMMER3 profile"));
+    GObjectViewAction* action = new GObjectViewAction(this, view, tr("Build HMMER3 profile"));
     action->setObjectName("Build HMMER3 profile");
     action->setIcon(QIcon(":/external_tool_support/images/hmmer.png"));
     connect(action, SIGNAL(triggered()), SLOT(sl_build()));
     addViewAction(action);
 }
 
-void HmmerMsaEditorContext::buildStaticOrContextMenu(GObjectView *view, QMenu *menu) {
-    MSAEditor *msaEditor = qobject_cast<MSAEditor *>(view);
+void HmmerMsaEditorContext::buildStaticOrContextMenu(GObjectView* view, QMenu* menu) {
+    MSAEditor* msaEditor = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Msa Editor is NULL", );
     SAFE_POINT(menu != nullptr, "Menu is NULL", );
     CHECK(nullptr != msaEditor->getMaObject(), );
 
-    QList<GObjectViewAction *> list = getViewActions(view);
+    QList<GObjectViewAction*> list = getViewActions(view);
     SAFE_POINT(list.size() == 1, "List size is incorrect", );
-    QMenu *advancedMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_ADVANCED);
+    QMenu* advancedMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_ADVANCED);
     SAFE_POINT(advancedMenu != nullptr, "menu 'Advanced' is NULL", );
     advancedMenu->addAction(list.first());
 }
 
 void HmmerMsaEditorContext::sl_build() {
-    GObjectViewAction *action = qobject_cast<GObjectViewAction *>(sender());
+    GObjectViewAction* action = qobject_cast<GObjectViewAction*>(sender());
     SAFE_POINT(action != nullptr, "action is NULL", );
-    MSAEditor *msaEditor = qobject_cast<MSAEditor *>(action->getObjectView());
+    MSAEditor* msaEditor = qobject_cast<MSAEditor*>(action->getObjectView());
     SAFE_POINT(msaEditor != nullptr, "Msa Editor is NULL", );
 
-    MultipleSequenceAlignmentObject *obj = msaEditor->getMaObject();
+    MultipleSequenceAlignmentObject* obj = msaEditor->getMaObject();
     if (obj != nullptr) {
         QObjectScopedPointer<HmmerBuildDialog> buildDlg = new HmmerBuildDialog(obj->getMultipleAlignment());
         buildDlg->exec();
@@ -314,27 +314,27 @@ void HmmerMsaEditorContext::sl_build() {
     }
 }
 
-HmmerAdvContext::HmmerAdvContext(QObject *parent)
+HmmerAdvContext::HmmerAdvContext(QObject* parent)
     : GObjectViewWindowContext(parent, AnnotatedDNAViewFactory::ID) {
 }
 
-void HmmerAdvContext::initViewContext(GObjectView *view) {
-    AnnotatedDNAView *adv = qobject_cast<AnnotatedDNAView *>(view);
+void HmmerAdvContext::initViewContext(GObjectView* view) {
+    AnnotatedDNAView* adv = qobject_cast<AnnotatedDNAView*>(view);
     SAFE_POINT(adv != nullptr, "AnnotatedDNAView is NULL", );
 
-    ADVGlobalAction *searchAction = new ADVGlobalAction(adv, QIcon(":/external_tool_support/images/hmmer.png"), tr("Find HMM signals with HMMER3..."), 70);
+    ADVGlobalAction* searchAction = new ADVGlobalAction(adv, QIcon(":/external_tool_support/images/hmmer.png"), tr("Find HMM signals with HMMER3..."), 70);
     searchAction->setObjectName("Find HMM signals with HMMER3");
     connect(searchAction, SIGNAL(triggered()), SLOT(sl_search()));
 }
 
 void HmmerAdvContext::sl_search() {
-    QWidget *parent = getParentWidget(sender());
+    QWidget* parent = getParentWidget(sender());
     assert(parent != nullptr);
-    GObjectViewAction *action = qobject_cast<GObjectViewAction *>(sender());
+    GObjectViewAction* action = qobject_cast<GObjectViewAction*>(sender());
     SAFE_POINT(action != nullptr, "action is NULL", );
-    AnnotatedDNAView *adv = qobject_cast<AnnotatedDNAView *>(action->getObjectView());
+    AnnotatedDNAView* adv = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
     SAFE_POINT(adv != nullptr, "AnnotatedDNAView is NULL", );
-    ADVSequenceObjectContext *seqCtx = adv->getActiveSequenceContext();
+    ADVSequenceObjectContext* seqCtx = adv->getActiveSequenceContext();
     if (seqCtx == nullptr) {
         QMessageBox::critical(parent, tr("Error"), tr("No sequence in focus found"));
         return;
@@ -344,28 +344,28 @@ void HmmerAdvContext::sl_search() {
     searchDlg->exec();
 }
 
-QWidget *HmmerAdvContext::getParentWidget(QObject *sender) {
-    GObjectViewAction *action = qobject_cast<GObjectViewAction *>(sender);
+QWidget* HmmerAdvContext::getParentWidget(QObject* sender) {
+    GObjectViewAction* action = qobject_cast<GObjectViewAction*>(sender);
     SAFE_POINT(action != nullptr, "action is NULL", nullptr);
-    AnnotatedDNAView *adv = qobject_cast<AnnotatedDNAView *>(action->getObjectView());
+    AnnotatedDNAView* adv = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
     SAFE_POINT(adv != nullptr, "AnnotatedDNAView is NULL", nullptr);
 
     return adv->getWidget() ? adv->getWidget() : AppContext::getMainWindow()->getQMainWindow();
 }
 
-U2SequenceObject *HmmerAdvContext::getSequenceInFocus(QObject *sender) {
-    GObjectViewAction *action = qobject_cast<GObjectViewAction *>(sender);
+U2SequenceObject* HmmerAdvContext::getSequenceInFocus(QObject* sender) {
+    GObjectViewAction* action = qobject_cast<GObjectViewAction*>(sender);
     SAFE_POINT(action != nullptr, "action is NULL", nullptr);
-    AnnotatedDNAView *adv = qobject_cast<AnnotatedDNAView *>(action->getObjectView());
+    AnnotatedDNAView* adv = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
     SAFE_POINT(adv != nullptr, "AnnotatedDNAView is NULL", nullptr);
-    ADVSequenceObjectContext *seqCtx = adv->getActiveSequenceContext();
+    ADVSequenceObjectContext* seqCtx = adv->getActiveSequenceContext();
     if (seqCtx == nullptr) {
         return nullptr;
     }
     return seqCtx->getSequenceObject();
 }
 
-HmmerContext::HmmerContext(QObject *parent)
+HmmerContext::HmmerContext(QObject* parent)
     : QObject(parent),
       msaEditorContext(nullptr),
       advContext(nullptr) {
@@ -382,12 +382,12 @@ void HmmerContext::init() {
 Hmmer3LogParser::Hmmer3LogParser() {
 }
 
-void Hmmer3LogParser::parseErrOutput(const QString &partOfLog) {
+void Hmmer3LogParser::parseErrOutput(const QString& partOfLog) {
     lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
     lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
     lastErrLine = lastPartOfLog.takeLast();
 
-    for (const QString &buf : qAsConst(lastPartOfLog)) {
+    for (const QString& buf : qAsConst(lastPartOfLog)) {
         if (!buf.isEmpty()) {
             algoLog.error("Hmmer3: " + buf);
             setLastError(buf);
@@ -395,4 +395,4 @@ void Hmmer3LogParser::parseErrOutput(const QString &partOfLog) {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

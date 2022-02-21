@@ -43,11 +43,11 @@ public:
 class ExportPhredQualityScoresTask : public Task {
     Q_OBJECT
 public:
-    ExportPhredQualityScoresTask(const U2SequenceObject *seqObj, const ExportQualityScoresConfig &config);
+    ExportPhredQualityScoresTask(const U2SequenceObject* seqObj, const ExportQualityScoresConfig& config);
     void run();
 
 private:
-    const U2SequenceObject *seqObj;
+    const U2SequenceObject* seqObj;
     ExportQualityScoresConfig config;
 };
 

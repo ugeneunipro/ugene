@@ -41,17 +41,17 @@ void VanDerWaalsGLRenderer::drawBioStruct3D() {
     drawAtoms(colorScheme);
 }
 
-void VanDerWaalsGLRenderer::drawAtoms(const BioStruct3DColorScheme *colorScheme) {
+void VanDerWaalsGLRenderer::drawAtoms(const BioStruct3DColorScheme* colorScheme) {
     static float tolerance = 0.45f;
     int numSlices = 10 * settings->detailLevel;
-    GLUquadricObj *pObj = gluNewQuadric();
+    GLUquadricObj* pObj = gluNewQuadric();
     gluQuadricNormals(pObj, GLU_SMOOTH);
 
     // Draw atoms as spheres
 
     foreach (const SharedMolecule mol, bioStruct.moleculeMap) {
         foreach (int index, shownModels) {
-            const Molecule3DModel &model = mol->models.value(index);
+            const Molecule3DModel& model = mol->models.value(index);
             foreach (const SharedAtom atom, model.atoms) {
                 float radius = AtomConstants::getAtomCovalentRadius(atom->atomicNumber);
                 Vector3D pos = atom->coord3d;
@@ -67,7 +67,7 @@ void VanDerWaalsGLRenderer::drawAtoms(const BioStruct3DColorScheme *colorScheme)
     gluDeleteQuadric(pObj);
 }
 
-VanDerWaalsGLRenderer::VanDerWaalsGLRenderer(const BioStruct3D &struc, const BioStruct3DColorScheme *s, const QList<int> &shownModels, const BioStruct3DRendererSettings *settings)
+VanDerWaalsGLRenderer::VanDerWaalsGLRenderer(const BioStruct3D& struc, const BioStruct3DColorScheme* s, const QList<int>& shownModels, const BioStruct3DRendererSettings* settings)
     : BioStruct3DGLRenderer(struc, s, shownModels, settings) {
     create();
 }

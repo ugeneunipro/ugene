@@ -72,17 +72,17 @@ typedef QFlags<GSLV_FeatureFlag> GSLV_FeatureFlags;
 class U2VIEW_EXPORT GSequenceLineView : public WidgetWithLocalToolbar {
     Q_OBJECT
 public:
-    GSequenceLineView(QWidget *p, SequenceObjectContext *ctx);
+    GSequenceLineView(QWidget* p, SequenceObjectContext* ctx);
 
-    const U2Region &getVisibleRange() const {
+    const U2Region& getVisibleRange() const {
         return visibleRange;
     }
 
-    SequenceObjectContext *getSequenceContext() const {
+    SequenceObjectContext* getSequenceContext() const {
         return ctx;
     }
 
-    GSequenceLineViewRenderArea *getRenderArea() const {
+    GSequenceLineViewRenderArea* getRenderArea() const {
         return renderArea;
     }
 
@@ -110,64 +110,64 @@ public:
         return lastUpdateFlags;
     }
 
-    virtual void setFrameView(GSequenceLineView *frameView);
+    virtual void setFrameView(GSequenceLineView* frameView);
 
-    virtual GSequenceLineView *getFrameView() const {
+    virtual GSequenceLineView* getFrameView() const {
         return frameView;
     }
 
-    virtual void setCoherentRangeView(GSequenceLineView *rangeView);
+    virtual void setCoherentRangeView(GSequenceLineView* rangeView);
 
-    virtual GSequenceLineView *getConherentRangeView() const {
+    virtual GSequenceLineView* getConherentRangeView() const {
         return coherentRangeView;
     }
 
     // [0..seqLen)
-    virtual void setVisibleRange(const U2Region &reg, bool signal = true);
+    virtual void setVisibleRange(const U2Region& reg, bool signal = true);
 
-    virtual QAction *getZoomInAction() const {
+    virtual QAction* getZoomInAction() const {
         return coherentRangeView == nullptr ? nullptr : coherentRangeView->getZoomInAction();
     }
 
-    virtual QAction *getZoomOutAction() const {
+    virtual QAction* getZoomOutAction() const {
         return coherentRangeView == nullptr ? nullptr : coherentRangeView->getZoomOutAction();
     }
 
-    virtual QAction *getZoomToSelectionAction() const {
+    virtual QAction* getZoomToSelectionAction() const {
         return coherentRangeView == nullptr ? nullptr : coherentRangeView->getZoomToSelectionAction();
     }
 
-    virtual QAction *getZoomToSequenceAction() const {
+    virtual QAction* getZoomToSequenceAction() const {
         return coherentRangeView == nullptr ? nullptr : coherentRangeView->getZoomToSequenceAction();
     }
 
-    virtual U2SequenceObject *getSequenceObject() const;
+    virtual U2SequenceObject* getSequenceObject() const;
 
-    virtual void buildPopupMenu(QMenu &m) {
+    virtual void buildPopupMenu(QMenu& m) {
         Q_UNUSED(m);
     }
 
-    virtual bool isWidgetOnlyObject(GObject *o) const {
+    virtual bool isWidgetOnlyObject(GObject* o) const {
         Q_UNUSED(o);
         return false;
     }
 
-    virtual bool eventFilter(QObject *watched, QEvent *event);
+    virtual bool eventFilter(QObject* watched, QEvent* event);
 
 signals:
     void si_visibleRangeChanged();
     void si_centerPosition(qint64 pos);
 
 protected:
-    void resizeEvent(QResizeEvent *e);
-    void mousePressEvent(QMouseEvent *me);
-    void mouseReleaseEvent(QMouseEvent *me);
-    void mouseMoveEvent(QMouseEvent *me);
-    void mouseDoubleClickEvent(QMouseEvent *me);
-    void wheelEvent(QWheelEvent *we);
-    void focusInEvent(QFocusEvent *fe);
-    void focusOutEvent(QFocusEvent *fe);
-    void keyPressEvent(QKeyEvent *e);
+    void resizeEvent(QResizeEvent* e);
+    void mousePressEvent(QMouseEvent* me);
+    void mouseReleaseEvent(QMouseEvent* me);
+    void mouseMoveEvent(QMouseEvent* me);
+    void mouseDoubleClickEvent(QMouseEvent* me);
+    void wheelEvent(QWheelEvent* we);
+    void focusInEvent(QFocusEvent* fe);
+    void focusOutEvent(QFocusEvent* fe);
+    void keyPressEvent(QKeyEvent* e);
     virtual void onVisibleRangeChanged(bool signal = true);
 
 public slots:
@@ -177,7 +177,7 @@ public slots:
 
 protected slots:
     virtual void sl_onScrollBarMoved(int pos);
-    virtual void sl_onDNASelectionChanged(LRegionsSelection *thiz, const QVector<U2Region> &added, const QVector<U2Region> &removed);
+    virtual void sl_onDNASelectionChanged(LRegionsSelection* thiz, const QVector<U2Region>& added, const QVector<U2Region>& removed);
     virtual void sl_sequenceChanged();
     void sl_onFrameRangeChanged();
     void sl_onCoherentRangeViewRangeChanged();
@@ -185,7 +185,7 @@ protected slots:
     void completeUpdate();
 
 protected:
-    QPoint toRenderAreaPoint(const QPoint &p) const;
+    QPoint toRenderAreaPoint(const QPoint& p) const;
 
     /**
      * Returns a valid Y-range to react to mouse events for the given 'pos'.
@@ -196,31 +196,31 @@ protected:
     virtual U2Region getCapturingRenderAreaYRegionForPos(qint64 pos) const;
 
     virtual void updateScrollBar();
-    virtual void setSelection(const U2Region &r);
-    void addSelection(const U2Region &r);
-    virtual void updateCursorShapeOnMouseMove(const QPoint &p);
-    virtual void moveBorder(const QPoint &p);
+    virtual void setSelection(const U2Region& r);
+    void addSelection(const U2Region& r);
+    virtual void updateCursorShapeOnMouseMove(const QPoint& p);
+    virtual void moveBorder(const QPoint& p);
     virtual void pack();
     virtual qint64 getSingleStep() const;
     virtual qint64 getPageStep() const;
-    void autoScrolling(const QPoint &areaPoint);
-    virtual void resizeSelection(const QPoint &areaPoint);
+    void autoScrolling(const QPoint& areaPoint);
+    virtual void resizeSelection(const QPoint& areaPoint);
     void cancelSelectionResizing();
-    void changeSelectionOnScrollbarMoving(const U2Region &newSelection);
-    void changeSelection(QVector<U2Region> &regions, const U2Region &newSelection);
+    void changeSelectionOnScrollbarMoving(const U2Region& newSelection);
+    void changeSelection(QVector<U2Region>& regions, const U2Region& newSelection);
 
-    SequenceObjectContext *ctx;
-    GSequenceLineViewRenderArea *renderArea;
+    SequenceObjectContext* ctx;
+    GSequenceLineViewRenderArea* renderArea;
     U2Region visibleRange;
-    GScrollBar *scrollBar;
+    GScrollBar* scrollBar;
     qint64 lastPressPos;
     U2Region resizableRegion;
     QList<U2Region> overlappedRegions;
     qint64 seqLen;
     GSLV_UpdateFlags lastUpdateFlags;
     GSLV_FeatureFlags featureFlags;
-    GSequenceLineView *frameView;
-    GSequenceLineView *coherentRangeView;
+    GSequenceLineView* frameView;
+    GSequenceLineView* coherentRangeView;
     double coefScrollBarMapping;
 
     // special flag setup by child classes that tells to this class do or skip
@@ -233,10 +233,10 @@ protected:
 class U2VIEW_EXPORT GSequenceLineViewRenderArea : public QWidget {
     Q_OBJECT
 public:
-    GSequenceLineViewRenderArea(GSequenceLineView *p);
+    GSequenceLineViewRenderArea(GSequenceLineView* p);
 
     /** Returns in-sequence base index by the current on-screen coordinate. */
-    virtual qint64 coordToPos(const QPoint &coord) const;
+    virtual qint64 coordToPos(const QPoint& coord) const;
 
     /** Returns a minimal on-screen X coordinate of the given sequence position. */
     virtual int posToCoord(qint64 pos, bool useVirtualSpace = false) const;
@@ -250,20 +250,20 @@ public:
     }
 
 protected:
-    void paintEvent(QPaintEvent *e) override;
+    void paintEvent(QPaintEvent* e) override;
 
-    virtual void drawAll(QPaintDevice *pd) = 0;
-    void drawFrame(QPainter &p);
-    virtual void drawFocus(QPainter &p);
+    virtual void drawAll(QPaintDevice* pd) = 0;
+    void drawFrame(QPainter& p);
+    virtual void drawFocus(QPainter& p);
 
     void updateFontMetrics();
 
     /** Returns a cached pixmap used to render the whole area. */
-    QPixmap *getCachedPixmap() const {
+    QPixmap* getCachedPixmap() const {
         return cachedView.data();
     }
 
-    GSequenceLineView *view;
+    GSequenceLineView* view;
     QScopedPointer<QPixmap> cachedView;
 
     //! VIEW_RENDERER_REFACTORING: the following parameters should be stored only in renderer (until they cannot be modified in view).

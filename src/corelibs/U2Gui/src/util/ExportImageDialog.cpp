@@ -39,15 +39,15 @@
 #include "ui_ExportImageDialog.h"
 
 static const QString IMAGE_DIR = "image";
-static const char *DIALOG_ACCEPT_ERROR_TITLE = "Unable to save file";
+static const char* DIALOG_ACCEPT_ERROR_TITLE = "Unable to save file";
 
 namespace U2 {
 
-ExportImageDialog::ExportImageDialog(QWidget *screenShotWidget,
+ExportImageDialog::ExportImageDialog(QWidget* screenShotWidget,
                                      InvokedFrom invoSource,
-                                     const QString &file,
+                                     const QString& file,
                                      ImageScalingPolicy scalingPolicy,
-                                     QWidget *parent)
+                                     QWidget* parent)
     : QDialog(parent),
       scalingPolicy(scalingPolicy),
       filename(file),
@@ -57,11 +57,11 @@ ExportImageDialog::ExportImageDialog(QWidget *screenShotWidget,
     init();
 }
 
-ExportImageDialog::ExportImageDialog(ImageExportController *factory,
+ExportImageDialog::ExportImageDialog(ImageExportController* factory,
                                      InvokedFrom invoSource,
-                                     const QString &file,
+                                     const QString& file,
                                      ImageScalingPolicy scalingPolicy,
-                                     QWidget *parent)
+                                     QWidget* parent)
     : QDialog(parent),
       exportController(factory),
       scalingPolicy(scalingPolicy),
@@ -113,13 +113,13 @@ void ExportImageDialog::accept() {
     ioLog.info(tr("Saving image to '%1'...").arg(filename));
 
     ImageExportTaskSettings settings(filename, format, QSize(getWidth(), getHeight()), (hasQuality() ? getQuality() : -1), ui->dpiSpinBox->value());
-    Task *task = exportController->getTaskInstance(settings);
+    Task* task = exportController->getTaskInstance(settings);
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
 
     QDialog::accept();
 }
 
-void ExportImageDialog::sl_onFormatsBoxItemChanged(const QString &format) {
+void ExportImageDialog::sl_onFormatsBoxItemChanged(const QString& format) {
     setSizeControlsEnabled(!isVectorGraphicFormat(format));
 
     const bool areQualityWidgetsVisible = isLossyFormat(format);
@@ -128,7 +128,7 @@ void ExportImageDialog::sl_onFormatsBoxItemChanged(const QString &format) {
     ui->qualitySpinBox->setVisible(areQualityWidgetsVisible);
 }
 
-void ExportImageDialog::sl_showMessage(const QString &message) {
+void ExportImageDialog::sl_showMessage(const QString& message) {
     ui->hintLabel->setText(message);
     if (!message.isEmpty()) {
         ui->hintLabel->show();
@@ -196,8 +196,8 @@ void ExportImageDialog::init() {
 
     setSizeControlsEnabled(!isVectorGraphicFormat(saveController->getFormatIdToSave()));
 
-    connect(ui->formatsBox, SIGNAL(currentIndexChanged(const QString &)), exportController, SLOT(sl_onFormatChanged(const QString &)));
-    connect(ui->formatsBox, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(sl_onFormatsBoxItemChanged(const QString &)));
+    connect(ui->formatsBox, SIGNAL(currentIndexChanged(const QString&)), exportController, SLOT(sl_onFormatChanged(const QString&)));
+    connect(ui->formatsBox, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(sl_onFormatsBoxItemChanged(const QString&)));
 
     connect(exportController, SIGNAL(si_disableExport(bool)), SLOT(sl_disableExport(bool)));
     connect(exportController, SIGNAL(si_showMessage(QString)), SLOT(sl_showMessage(QString)));
@@ -207,7 +207,7 @@ void ExportImageDialog::init() {
         sl_showMessage(exportController->getDisableMessage());
     }
 
-    QWidget *settingsWidget = exportController->getSettingsWidget();
+    QWidget* settingsWidget = exportController->getSettingsWidget();
     if (settingsWidget == nullptr) {
         ui->settingsGroupBox->hide();
     } else {
@@ -216,7 +216,7 @@ void ExportImageDialog::init() {
     sl_onFormatsBoxItemChanged(defaultFormat);
 }
 
-void ExportImageDialog::initSaveController(const QString &defaultFormat) {
+void ExportImageDialog::initSaveController(const QString& defaultFormat) {
     LastUsedDirHelper dirHelper(IMAGE_DIR, GUrlUtils::getDefaultDataPath());
 
     SaveDocumentControllerConfig config;
@@ -232,7 +232,7 @@ void ExportImageDialog::initSaveController(const QString &defaultFormat) {
 
     SaveDocumentController::SimpleFormatsInfo formatsInfo;
     QStringList formats = getFormats();
-    foreach (const QString &format, formats) {
+    foreach (const QString& format, formats) {
         formatsInfo.addFormat(format, QStringList() << format.toLower());
     }
 
@@ -288,11 +288,11 @@ QStringList ExportImageDialog::getSvgAndPdfFormats() {
     return result;
 }
 
-bool ExportImageDialog::isVectorGraphicFormat(const QString &formatName) {
+bool ExportImageDialog::isVectorGraphicFormat(const QString& formatName) {
     return (ImageExportTaskSettings::SVG_FORMAT == formatName) || (ImageExportTaskSettings::PS_FORMAT == formatName) || (ImageExportTaskSettings::PDF_FORMAT == formatName);
 }
 
-bool ExportImageDialog::isLossyFormat(const QString &formatName) {
+bool ExportImageDialog::isLossyFormat(const QString& formatName) {
     QString lcFormat = formatName.toLower();
     return lcFormat == "jpeg" || lcFormat == "jpg";
 }

@@ -40,15 +40,15 @@
 
 namespace U2 {
 
-Primer3Dialog::Primer3Dialog(const Primer3TaskSettings &defaultSettings, ADVSequenceObjectContext *context)
+Primer3Dialog::Primer3Dialog(const Primer3TaskSettings& defaultSettings, ADVSequenceObjectContext* context)
     : QDialog(context->getAnnotatedDNAView()->getWidget()),
       defaultSettings(defaultSettings),
       context(context) {
     ui.setupUi(this);
     new HelpButton(this, ui.helpButton, "65930919");
 
-    QPushButton *pbPick = ui.pickPrimersButton;
-    QPushButton *pbReset = ui.resetButton;
+    QPushButton* pbPick = ui.pickPrimersButton;
+    QPushButton* pbReset = ui.resetButton;
 
     pbPick->setDefault(true);
 
@@ -106,7 +106,7 @@ Primer3Dialog::Primer3Dialog(const Primer3TaskSettings &defaultSettings, ADVSequ
     }
 
     if (spanIntronExonIdx != -1) {
-        SplicedAlignmentTaskRegistry *sr = AppContext::getSplicedAlignmentTaskRegistry();
+        SplicedAlignmentTaskRegistry* sr = AppContext::getSplicedAlignmentTaskRegistry();
         ui.tabWidget->setTabEnabled(spanIntronExonIdx, sr->getAlgNameList().size() > 0);
     }
 
@@ -117,11 +117,11 @@ Primer3TaskSettings Primer3Dialog::getSettings() const {
     return settings;
 }
 
-const CreateAnnotationModel &Primer3Dialog::getCreateAnnotationModel() const {
+const CreateAnnotationModel& Primer3Dialog::getCreateAnnotationModel() const {
     return createAnnotationWidgetController->getModel();
 }
 
-U2Region Primer3Dialog::getRegion(bool *ok) const {
+U2Region Primer3Dialog::getRegion(bool* ok) const {
     return rs->getRegion(ok);
 }
 
@@ -129,7 +129,7 @@ bool Primer3Dialog::prepareAnnotationObject() {
     return createAnnotationWidgetController->prepareAnnotationObject();
 }
 
-QString Primer3Dialog::intervalListToString(const QList<U2Region> &intervalList, const QString &delimiter, IntervalDefinition definition) {
+QString Primer3Dialog::intervalListToString(const QList<U2Region>& intervalList, const QString& delimiter, IntervalDefinition definition) {
     QString result;
     bool first = true;
     U2Region interval;
@@ -149,7 +149,7 @@ QString Primer3Dialog::intervalListToString(const QList<U2Region> &intervalList,
     return result;
 }
 
-bool Primer3Dialog::parseIntervalList(const QString &inputString, const QString &delimiter, QList<U2Region> *outputList, IntervalDefinition definition) {
+bool Primer3Dialog::parseIntervalList(const QString& inputString, const QString& delimiter, QList<U2Region>* outputList, IntervalDefinition definition) {
     QList<U2Region> result;
     QStringList intervalStringList = inputString.split(QRegExp("\\s+"), QString::SkipEmptyParts);
     foreach (QString intervalString, intervalStringList) {
@@ -187,7 +187,7 @@ void Primer3Dialog::reset() {
     foreach (QString key, defaultSettings.getIntPropertyList()) {
         int value = 0;
         if (defaultSettings.getIntProperty(key, &value)) {
-            QSpinBox *spinBox = findChild<QSpinBox *>("edit_" + key);
+            QSpinBox* spinBox = findChild<QSpinBox*>("edit_" + key);
             if (nullptr != spinBox) {
                 spinBox->setValue(value);
             }
@@ -196,7 +196,7 @@ void Primer3Dialog::reset() {
     foreach (QString key, defaultSettings.getDoublePropertyList()) {
         double value = 0;
         if (defaultSettings.getDoubleProperty(key, &value)) {
-            QDoubleSpinBox *spinBox = findChild<QDoubleSpinBox *>("edit_" + key);
+            QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
             if (nullptr != spinBox) {
                 spinBox->setValue(value);
             }
@@ -205,7 +205,7 @@ void Primer3Dialog::reset() {
     foreach (QString key, defaultSettings.getAlignPropertyList()) {
         short value = 0;
         if (defaultSettings.getAlignProperty(key, &value)) {
-            QDoubleSpinBox *spinBox = findChild<QDoubleSpinBox *>("edit_" + key);
+            QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
             if (nullptr != spinBox) {
                 spinBox->setValue((double)value / 100);
             }
@@ -310,7 +310,7 @@ void Primer3Dialog::reset() {
     }
 }
 
-static U2Range<int> parseExonRange(const QString &text, bool &ok) {
+static U2Range<int> parseExonRange(const QString& text, bool& ok) {
     U2Range<int> res;
     ok = true;
 
@@ -361,19 +361,19 @@ bool Primer3Dialog::doDataExchange() {
         settings.setSpanIntronExonBoundarySettings(s);
     }
     foreach (QString key, settings.getIntPropertyList()) {
-        QSpinBox *spinBox = findChild<QSpinBox *>("edit_" + key);
+        QSpinBox* spinBox = findChild<QSpinBox*>("edit_" + key);
         if (nullptr != spinBox) {
             settings.setIntProperty(key, spinBox->value());
         }
     }
     foreach (QString key, settings.getDoublePropertyList()) {
-        QDoubleSpinBox *spinBox = findChild<QDoubleSpinBox *>("edit_" + key);
+        QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
         if (nullptr != spinBox) {
             settings.setDoubleProperty(key, spinBox->value());
         }
     }
     foreach (QString key, settings.getAlignPropertyList()) {
-        QDoubleSpinBox *spinBox = findChild<QDoubleSpinBox *>("edit_" + key);
+        QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
         if (nullptr != spinBox) {
             settings.setAlignProperty(key, (short)(spinBox->value() * 100));
         }
@@ -562,7 +562,7 @@ bool Primer3Dialog::doDataExchange() {
     return true;
 }
 
-void Primer3Dialog::showInvalidInputMessage(QWidget *field, QString fieldLabel) {
+void Primer3Dialog::showInvalidInputMessage(QWidget* field, QString fieldLabel) {
     ui.tabWidget->setCurrentWidget(field->parentWidget());
     field->setFocus(Qt::OtherFocusReason);
     QMessageBox::critical(this, windowTitle(), tr("The field '%1' has invalid value").arg(fieldLabel));
@@ -581,8 +581,8 @@ void Primer3Dialog::sl_pbPick_clicked() {
             QMessageBox::critical(this, L10N::errorTitle(), tr("Cannot create an annotation object. Please check settings."));
             return;
         }
-        const CreateAnnotationModel &m = createAnnotationWidgetController->getModel();
-        AnnotationTableObject *obj = m.getAnnotationObject();
+        const CreateAnnotationModel& m = createAnnotationWidgetController->getModel();
+        AnnotationTableObject* obj = m.getAnnotationObject();
         context->getAnnotatedDNAView()->tryAddObject(obj);
         accept();
     }
@@ -598,8 +598,8 @@ void Primer3Dialog::sl_saveSettings() {
     QSettings diagSettings(fileName, QSettings::IniFormat);
 
     diagSettings.beginGroup("IntProperties");
-    foreach (const QString &key, settings.getIntPropertyList()) {
-        QSpinBox *spinBox = findChild<QSpinBox *>("edit_" + key);
+    foreach (const QString& key, settings.getIntPropertyList()) {
+        QSpinBox* spinBox = findChild<QSpinBox*>("edit_" + key);
         if (nullptr != spinBox) {
             diagSettings.setValue(key, spinBox->value());
         }
@@ -607,8 +607,8 @@ void Primer3Dialog::sl_saveSettings() {
     diagSettings.endGroup();
 
     diagSettings.beginGroup("DoubleProperties");
-    foreach (const QString &key, settings.getDoublePropertyList()) {
-        QDoubleSpinBox *spinBox = findChild<QDoubleSpinBox *>("edit_" + key);
+    foreach (const QString& key, settings.getDoublePropertyList()) {
+        QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
         if (nullptr != spinBox) {
             diagSettings.setValue(key, spinBox->value());
         }
@@ -616,8 +616,8 @@ void Primer3Dialog::sl_saveSettings() {
     diagSettings.endGroup();
 
     diagSettings.beginGroup("AlignProperties");
-    foreach (const QString &key, settings.getAlignPropertyList()) {
-        QDoubleSpinBox *spinBox = findChild<QDoubleSpinBox *>("edit_" + key);
+    foreach (const QString& key, settings.getAlignPropertyList()) {
+        QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
         if (nullptr != spinBox) {
             diagSettings.setValue(key, spinBox->value());
         }
@@ -677,8 +677,8 @@ void Primer3Dialog::sl_loadSettings() {
 
     diagSettings.beginGroup("IntProperties");
     QStringList groupKeys = diagSettings.childKeys();
-    foreach (const QString &key, settings.getIntPropertyList()) {
-        QSpinBox *spinBox = findChild<QSpinBox *>("edit_" + key);
+    foreach (const QString& key, settings.getIntPropertyList()) {
+        QSpinBox* spinBox = findChild<QSpinBox*>("edit_" + key);
         if (nullptr != spinBox && groupKeys.contains(key)) {
             spinBox->setValue(diagSettings.value(key).toInt());
         }
@@ -687,8 +687,8 @@ void Primer3Dialog::sl_loadSettings() {
 
     diagSettings.beginGroup("DoubleProperties");
     groupKeys = diagSettings.childKeys();
-    foreach (const QString &key, settings.getDoublePropertyList()) {
-        QDoubleSpinBox *spinBox = findChild<QDoubleSpinBox *>("edit_" + key);
+    foreach (const QString& key, settings.getDoublePropertyList()) {
+        QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
         if (nullptr != spinBox && groupKeys.contains(key)) {
             spinBox->setValue(diagSettings.value(key).toDouble());
         }
@@ -697,8 +697,8 @@ void Primer3Dialog::sl_loadSettings() {
 
     diagSettings.beginGroup("AlignProperties");
     groupKeys = diagSettings.childKeys();
-    foreach (const QString &key, settings.getAlignPropertyList()) {
-        QDoubleSpinBox *spinBox = findChild<QDoubleSpinBox *>("edit_" + key);
+    foreach (const QString& key, settings.getAlignPropertyList()) {
+        QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
         if (nullptr != spinBox && groupKeys.contains(key)) {
             spinBox->setValue(diagSettings.value(key).toDouble());
         }

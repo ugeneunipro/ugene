@@ -38,9 +38,9 @@ class U2OpStatus;
 class U2CORE_EXPORT U2BitCompression : public QObject {
 public:
     Q_OBJECT
-    static QByteArray compress(const char *text, int uncompressedLen, int alphabetSize, const int *alphabetCharNums, U2OpStatus &os);
+    static QByteArray compress(const char* text, int uncompressedLen, int alphabetSize, const int* alphabetCharNums, U2OpStatus& os);
 
-    static QByteArray uncompress(const char *data, const QByteArray &alphabetChars, U2OpStatus &os);
+    static QByteArray uncompress(const char* data, const QByteArray& alphabetChars, U2OpStatus& os);
 
     static bool isCompressionNeeded(int textLen, int alphabetSize);
 };
@@ -58,33 +58,33 @@ public:
 
     static QByteArray allocateBits(int nBits);
 
-    static bool getBit(const uchar *bitSet, int idx);
+    static bool getBit(const uchar* bitSet, int idx);
 
-    static void setBit(uchar *bits, int pos, bool val) {
+    static void setBit(uchar* bits, int pos, bool val) {
         if (val)
             setBit(bits, pos);
         else
             clearBit(bits, pos);
     }
 
-    static void setBit(uchar *bits, int pos);
+    static void setBit(uchar* bits, int pos);
 
-    static void clearBit(uchar *bits, int pos);
+    static void clearBit(uchar* bits, int pos);
 
-    static void setBits(uchar *dstBits, int pos, const uchar *srcBits, int nBits);
+    static void setBits(uchar* dstBits, int pos, const uchar* srcBits, int nBits);
 
-    static int bitsRange2Int32(const uchar *bits, int pos, int len);
+    static int bitsRange2Int32(const uchar* bits, int pos, int len);
 
     static qint64 makeFirstNSignedBitsValue(int nBits);
 
-    static qint8 readInt8(const uchar *bits, int pos);
-    static void writeInt8(uchar *bits, int pos, qint8 val);
+    static qint8 readInt8(const uchar* bits, int pos);
+    static void writeInt8(uchar* bits, int pos, qint8 val);
 
-    static qint8 readInt16(const uchar *bits, int pos);
-    static void writeInt16(uchar *bits, int pos, qint16 val);
+    static qint8 readInt16(const uchar* bits, int pos);
+    static void writeInt16(uchar* bits, int pos, qint16 val);
 
-    static qint8 readInt32(const uchar *bits, int pos);
-    static void writeInt32(uchar *bits, int pos, qint32 val);
+    static qint8 readInt32(const uchar* bits, int pos);
+    static void writeInt32(uchar* bits, int pos, qint32 val);
 };
 
 inline int U2Bits::getBitInByte(int pos) {
@@ -99,23 +99,23 @@ inline int U2Bits::getNumberOfBytes(int nBits) {
     return nBits == 0 ? 0 : getByteIndex(nBits - 1) + 1;
 }
 
-inline bool U2Bits::getBit(const uchar *bits, int idx) {
-    const uchar *b = bits + +getByteIndex(idx);
+inline bool U2Bits::getBit(const uchar* bits, int idx) {
+    const uchar* b = bits + +getByteIndex(idx);
     int bitInByte = getBitInByte(idx);
     bool res = bool(*b & uchar(1 << bitInByte));
     return res;
 }
 
-inline void U2Bits::setBit(uchar *bits, int pos) {
+inline void U2Bits::setBit(uchar* bits, int pos) {
     int idx = getByteIndex(pos);
-    uchar *b = bits + idx;
+    uchar* b = bits + idx;
     int bitInByte = getBitInByte(pos);
     *b = *b | uchar(1 << bitInByte);
 }
 
-inline void U2Bits::clearBit(uchar *bits, int pos) {
+inline void U2Bits::clearBit(uchar* bits, int pos) {
     int idx = getByteIndex(pos);
-    uchar *b = bits + idx;
+    uchar* b = bits + idx;
     int bitInByte = getBitInByte(pos);
     *b = *b & ~uchar(1 << bitInByte);
 }

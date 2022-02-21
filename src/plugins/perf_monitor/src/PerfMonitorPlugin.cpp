@@ -31,9 +31,9 @@
 
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
+extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
     if (AppContext::getMainWindow()) {
-        PerfMonitorPlugin *plug = new PerfMonitorPlugin();
+        PerfMonitorPlugin* plug = new PerfMonitorPlugin();
         return plug;
     }
     return nullptr;
@@ -47,13 +47,13 @@ PerfMonitorPlugin::PerfMonitorPlugin()
     openWindowAction->setIcon(QIcon(":perf_monitor/images/mon.png"));
     connect(openWindowAction, SIGNAL(triggered()), SLOT(sl_openWindow()));
 
-    QMenu *toolsMenu = AppContext::getMainWindow()->getTopLevelMenu(MWMENU_TOOLS);
+    QMenu* toolsMenu = AppContext::getMainWindow()->getTopLevelMenu(MWMENU_TOOLS);
     toolsMenu->addAction(openWindowAction);
 }
 
 void PerfMonitorPlugin::sl_openWindow() {
-    MWMDIManager *mdi = AppContext::getMainWindow()->getMDIManager();
-    MWMDIWindow *mdiWindow = mdi->getWindowById(windowId);
+    MWMDIManager* mdi = AppContext::getMainWindow()->getMDIManager();
+    MWMDIWindow* mdiWindow = mdi->getWindowById(windowId);
     if (mdiWindow == nullptr) {
         mdiWindow = new PerfMonitorView();
         mdiWindow->setWindowIcon(QIcon(":perf_monitor/images/mon.png"));

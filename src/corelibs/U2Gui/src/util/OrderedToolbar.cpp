@@ -28,14 +28,14 @@
 
 namespace U2 {
 
-OrderedToolbar::OrderedToolbar(QWidget *parent, Qt::Orientation orientation)
+OrderedToolbar::OrderedToolbar(QWidget* parent, Qt::Orientation orientation)
     : QToolBar(parent),
       tabOrdered(false),
       buttonTabOrderList(nullptr) {
     setOrientation(orientation);
 }
 
-void OrderedToolbar::setButtonTabOrderList(QList<QString> *buttonNamesInNeededOrder) {
+void OrderedToolbar::setButtonTabOrderList(QList<QString>* buttonNamesInNeededOrder) {
     assert(nullptr != buttonNamesInNeededOrder);
     buttonTabOrderList = buttonNamesInNeededOrder;
 }
@@ -52,17 +52,17 @@ void OrderedToolbar::setVisible(bool visible) {
 void OrderedToolbar::setButtonsTabOrder() const {
     assert(!buttonTabOrderList->isEmpty());
 
-    QList<QObject *> barElements = children();
-    QWidget *prevButton = nullptr;
-    QWidget *curButton = nullptr;
+    QList<QObject*> barElements = children();
+    QWidget* prevButton = nullptr;
+    QWidget* curButton = nullptr;
 
     for (QList<QString>::const_iterator it = buttonTabOrderList->constBegin(); it != buttonTabOrderList->constEnd(); it++) {
-        foreach (QObject *element, barElements) {
+        foreach (QObject* element, barElements) {
             if (element->objectName().contains(*it)) {
                 if (nullptr != prevButton) {
-                    curButton = qobject_cast<QWidget *>(element);
+                    curButton = qobject_cast<QWidget*>(element);
                 } else {
-                    prevButton = qobject_cast<QWidget *>(element);
+                    prevButton = qobject_cast<QWidget*>(element);
                 }
                 if (nullptr == curButton || nullptr == prevButton) {
                     break;

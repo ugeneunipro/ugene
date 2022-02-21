@@ -39,7 +39,7 @@ static QString nameByType(BaseContentGraphFactory::GType t) {
     return BaseContentGraphFactory::tr("GC Content (%)");
 }
 
-BaseContentGraphFactory::BaseContentGraphFactory(GType t, QObject *p)
+BaseContentGraphFactory::BaseContentGraphFactory(GType t, QObject* p)
     : GSequenceGraphFactory(nameByType(t), p), map(256, false) {
     if (t == BaseContentGraphFactory::AG) {
         map['A'] = map['G'] = true;
@@ -48,12 +48,12 @@ BaseContentGraphFactory::BaseContentGraphFactory(GType t, QObject *p)
     }
 }
 
-bool BaseContentGraphFactory::isEnabled(const U2SequenceObject *o) const {
-    const DNAAlphabet *al = o->getAlphabet();
+bool BaseContentGraphFactory::isEnabled(const U2SequenceObject* o) const {
+    const DNAAlphabet* al = o->getAlphabet();
     return al->isNucleic();
 }
 
-QList<QSharedPointer<GSequenceGraphData>> BaseContentGraphFactory::createGraphs(GSequenceGraphView *view) {
+QList<QSharedPointer<GSequenceGraphData>> BaseContentGraphFactory::createGraphs(GSequenceGraphView* view) {
     assert(isEnabled(view->getSequenceObject()));
     return {QSharedPointer<GSequenceGraphData>(new GSequenceGraphData(view, getGraphName(), new BaseContentGraphAlgorithm(map)))};
 }
@@ -61,17 +61,17 @@ QList<QSharedPointer<GSequenceGraphData>> BaseContentGraphFactory::createGraphs(
 //////////////////////////////////////////////////////////////////////////
 // BaseContentGraphAlgorithm
 
-BaseContentGraphAlgorithm::BaseContentGraphAlgorithm(const QBitArray &_map)
+BaseContentGraphAlgorithm::BaseContentGraphAlgorithm(const QBitArray& _map)
     : map(_map) {
 }
 
-void BaseContentGraphAlgorithm::windowStrategyWithoutMemorize(QVector<float> &res,
-                                                              const QByteArray &seq,
+void BaseContentGraphAlgorithm::windowStrategyWithoutMemorize(QVector<float>& res,
+                                                              const QByteArray& seq,
                                                               qint64 startPos,
                                                               qint64 window,
                                                               qint64 step,
                                                               qint64 nSteps,
-                                                              U2OpStatus &os) {
+                                                              U2OpStatus& os) {
     for (int i = 0; i < nSteps; i++) {
         int start = startPos + i * step;
         int end = start + window;
@@ -87,7 +87,7 @@ void BaseContentGraphAlgorithm::windowStrategyWithoutMemorize(QVector<float> &re
     }
 }
 
-void BaseContentGraphAlgorithm::calculate(QVector<float> &result, U2SequenceObject *sequenceObject, qint64 window, qint64 step, U2OpStatus &os) {
+void BaseContentGraphAlgorithm::calculate(QVector<float>& result, U2SequenceObject* sequenceObject, qint64 window, qint64 step, U2OpStatus& os) {
     U2Region vr(0, sequenceObject->getSequenceLength());
     int nSteps = GSequenceGraphUtils::getNumSteps(vr, window, step);
     result.reserve(nSteps);

@@ -37,7 +37,7 @@
 
 namespace U2 {
 
-CreateSequenceFromTextAndOpenViewTask::CreateSequenceFromTextAndOpenViewTask(const QList<DNASequence> &sequences, const QString &formatId, const GUrl &saveToPath, bool saveImmediately)
+CreateSequenceFromTextAndOpenViewTask::CreateSequenceFromTextAndOpenViewTask(const QList<DNASequence>& sequences, const QString& formatId, const GUrl& saveToPath, bool saveImmediately)
     : Task(tr("Create sequence from raw data"), TaskFlags_NR_FOSE_COSC),
       sequences(sequences),
       saveToPath(saveToPath),
@@ -50,21 +50,21 @@ CreateSequenceFromTextAndOpenViewTask::CreateSequenceFromTextAndOpenViewTask(con
 }
 
 void CreateSequenceFromTextAndOpenViewTask::prepare() {
-    Project *project = AppContext::getProject();
+    Project* project = AppContext::getProject();
     if (nullptr == project) {
         openProjectTask = AppContext::getProjectLoader()->createNewProjectTask();
         CHECK_EXT(nullptr != openProjectTask, setError(tr("Can't create a project")), );
         addSubTask(openProjectTask);
     } else {
         prepareImportSequenceTasks();
-        foreach (Task *task, importTasks) {
+        foreach (Task* task, importTasks) {
             addSubTask(task);
         }
     }
 }
 
-QList<Task *> CreateSequenceFromTextAndOpenViewTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> CreateSequenceFromTextAndOpenViewTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     CHECK_OP(stateInfo, res);
 
     if (openProjectTask == subTask) {
@@ -87,16 +87,16 @@ QList<Task *> CreateSequenceFromTextAndOpenViewTask::onSubTaskFinished(Task *sub
     return res;
 }
 
-QList<Task *> CreateSequenceFromTextAndOpenViewTask::prepareImportSequenceTasks() {
-    foreach (const DNASequence &sequence, sequences) {
+QList<Task*> CreateSequenceFromTextAndOpenViewTask::prepareImportSequenceTasks() {
+    foreach (const DNASequence& sequence, sequences) {
         importTasks << new ImportSequenceFromRawDataTask(AppContext::getDbiRegistry()->getSessionTmpDbiRef(stateInfo), U2ObjectDbi::ROOT_FOLDER, sequence);
-        CHECK_OP(stateInfo, QList<Task *>());
+        CHECK_OP(stateInfo, QList<Task*>());
     }
     return importTasks;
 }
 
-Document *CreateSequenceFromTextAndOpenViewTask::createEmptyDocument() {
-    IOAdapterFactory *ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(saveToPath));
+Document* CreateSequenceFromTextAndOpenViewTask::createEmptyDocument() {
+    IOAdapterFactory* ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(saveToPath));
     SAFE_POINT_EXT(nullptr != ioAdapterFactory, setError("IO adapter factory is NULL"), nullptr);
     return format->createNewLoadedDocument(ioAdapterFactory, saveToPath, stateInfo);
 }
@@ -105,12 +105,12 @@ void CreateSequenceFromTextAndOpenViewTask::addDocument() {
     document = createEmptyDocument();
     CHECK_OP(stateInfo, );
 
-    foreach (Task *task, importTasks) {
-        ImportSequenceFromRawDataTask *importTask = qobject_cast<ImportSequenceFromRawDataTask *>(task);
+    foreach (Task* task, importTasks) {
+        ImportSequenceFromRawDataTask* importTask = qobject_cast<ImportSequenceFromRawDataTask*>(task);
         document->addObject(new U2SequenceObject(importTask->getSequenceName(), importTask->getEntityRef()));
     }
 
-    Project *project = AppContext::getProject();
+    Project* project = AppContext::getProject();
     SAFE_POINT(nullptr != project, "Project is NULL", );
     project->addDocument(document);
 }

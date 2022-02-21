@@ -30,19 +30,19 @@ class BioStruct3DGLWidget;
 
 class BioStruct3DImageExportTask : public ImageExportTask {
 public:
-    BioStruct3DImageExportTask(BioStruct3DGLWidget *widget, const ImageExportTaskSettings &settings)
+    BioStruct3DImageExportTask(BioStruct3DGLWidget* widget, const ImageExportTaskSettings& settings)
         : ImageExportTask(settings),
           glWidget(widget) {
     }
     virtual void run() = 0;
 
 protected:
-    BioStruct3DGLWidget *glWidget;
+    BioStruct3DGLWidget* glWidget;
 };
 
 class BioStruct3DImageExportToSVGTask : public BioStruct3DImageExportTask {
 public:
-    BioStruct3DImageExportToSVGTask(BioStruct3DGLWidget *widget, const ImageExportTaskSettings &settings)
+    BioStruct3DImageExportToSVGTask(BioStruct3DGLWidget* widget, const ImageExportTaskSettings& settings)
         : BioStruct3DImageExportTask(widget, settings) {
     }
     void run();
@@ -50,7 +50,7 @@ public:
 
 class BioStruct3DImageExportToPDFTask : public BioStruct3DImageExportTask {
 public:
-    BioStruct3DImageExportToPDFTask(BioStruct3DGLWidget *widget, const ImageExportTaskSettings &settings)
+    BioStruct3DImageExportToPDFTask(BioStruct3DGLWidget* widget, const ImageExportTaskSettings& settings)
         : BioStruct3DImageExportTask(widget, settings) {
     }
     void run();
@@ -58,7 +58,7 @@ public:
 
 class BioStruct3DImageExportToBitmapTask : public BioStruct3DImageExportTask {
 public:
-    BioStruct3DImageExportToBitmapTask(BioStruct3DGLWidget *widget, const ImageExportTaskSettings &settings)
+    BioStruct3DImageExportToBitmapTask(BioStruct3DGLWidget* widget, const ImageExportTaskSettings& settings)
         : BioStruct3DImageExportTask(widget, settings) {
     }
     void run();
@@ -66,7 +66,7 @@ public:
 
 class BioStruct3DImageExportController : public ImageExportController {
 public:
-    BioStruct3DImageExportController(BioStruct3DGLWidget *widget)
+    BioStruct3DImageExportController(BioStruct3DGLWidget* widget)
         : ImageExportController(ExportImageFormatPolicy_SupportAll),
           glWidget(widget) {
     }
@@ -78,18 +78,18 @@ protected:
     void initSettingsWidget() {
     }
 
-    Task *getExportToSvgTask(const ImageExportTaskSettings &settings) const {
+    Task* getExportToSvgTask(const ImageExportTaskSettings& settings) const {
         return new BioStruct3DImageExportToSVGTask(glWidget, settings);
     }
-    Task *getExportToPdfTask(const ImageExportTaskSettings &settings) const {
+    Task* getExportToPdfTask(const ImageExportTaskSettings& settings) const {
         return new BioStruct3DImageExportToPDFTask(glWidget, settings);
     }
-    Task *getExportToBitmapTask(const ImageExportTaskSettings &settings) const {
+    Task* getExportToBitmapTask(const ImageExportTaskSettings& settings) const {
         return new BioStruct3DImageExportToBitmapTask(glWidget, settings);
     }
 
 private:
-    BioStruct3DGLWidget *glWidget;
+    BioStruct3DGLWidget* glWidget;
 };
 
 }  // namespace U2

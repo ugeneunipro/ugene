@@ -32,15 +32,15 @@ namespace U2 {
 class U2GUI_EXPORT ReloadDocumentsTask : public Task {
     Q_OBJECT
 public:
-    ReloadDocumentsTask(const QList<Document *> &docs2Reload);
+    ReloadDocumentsTask(const QList<Document*>& docs2Reload);
 
 private:
     void prepare() override;
     ReportResult report() override;
     QString generateReport() const override;
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
-    QList<Document *> docs2Reload;
+    QList<Document*> docs2Reload;
     QStringList subTaskStateInfoErrors;
 };
 

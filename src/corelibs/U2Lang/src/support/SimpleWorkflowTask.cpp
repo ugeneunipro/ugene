@@ -51,8 +51,8 @@ SimpleInOutWorkflowTaskConfig::SimpleInOutWorkflowTaskConfig()
  ***************************/
 static QString SCHEMA_DIR_PATH = QString("%1:cmdline/").arg(PATH_PREFIX_DATA);
 
-static QString findWorkflowPath(const QString &schemaName) {
-    foreach (const QString &ext, WorkflowUtils::WD_FILE_EXTENSIONS) {
+static QString findWorkflowPath(const QString& schemaName) {
+    foreach (const QString& ext, WorkflowUtils::WD_FILE_EXTENSIONS) {
         QString candidate = SCHEMA_DIR_PATH + schemaName + "." + ext;
         if (QFile::exists(candidate)) {
             return candidate;
@@ -61,13 +61,13 @@ static QString findWorkflowPath(const QString &schemaName) {
     return QString();
 }
 
-SimpleInOutWorkflowTask::SimpleInOutWorkflowTask(const SimpleInOutWorkflowTaskConfig &_conf)
+SimpleInOutWorkflowTask::SimpleInOutWorkflowTask(const SimpleInOutWorkflowTaskConfig& _conf)
     : DocumentProviderTask(tr("Run workflow: %1").arg(_conf.schemaName), TaskFlags_NR_FOSCOE), conf(_conf) {
     inDoc = new Document(BaseDocumentFormats::get(conf.inFormat), IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), GUrl("unused"), U2DbiRef(), conf.objects, conf.inDocHints);
     inDoc->setParent(this);
 }
 
-void SimpleInOutWorkflowTask::prepareTmpFile(QTemporaryFile &tmpFile, const QString &tmpl) {
+void SimpleInOutWorkflowTask::prepareTmpFile(QTemporaryFile& tmpFile, const QString& tmpl) {
     tmpFile.setFileTemplate(tmpl);
     if (!tmpFile.open()) {
         setError(tr("Cannot create temporary file for writing"));
@@ -93,8 +93,8 @@ void SimpleInOutWorkflowTask::prepare() {
     addSubTask(saveInputTask);
 }
 
-QList<Task *> SimpleInOutWorkflowTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> SimpleInOutWorkflowTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     CHECK_OP(stateInfo, res);
 
     if (subTask == saveInputTask) {
@@ -120,7 +120,7 @@ QList<Task *> SimpleInOutWorkflowTask::onSubTaskFinished(Task *subTask) {
             }
             return res;
         }
-        IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+        IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
         ioLog.details(tr("Loading result file '%1'").arg(resultTmpFile.fileName()));
         loadResultTask = new LoadDocumentTask(conf.outFormat, resultTmpFile.fileName(), iof, conf.outDocHints);
         res << loadResultTask;
@@ -134,9 +134,9 @@ QList<Task *> SimpleInOutWorkflowTask::onSubTaskFinished(Task *subTask) {
 
 //////////////////////////////////////////////////////////////////////////
 // RunSimpleMSAWorkflow4GObject
-SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString &taskName,
-                                                             MultipleSequenceAlignmentObject *msaObj,
-                                                             const SimpleMSAWorkflowTaskConfig &conf)
+SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString& taskName,
+                                                             MultipleSequenceAlignmentObject* msaObj,
+                                                             const SimpleMSAWorkflowTaskConfig& conf)
     : Task(taskName, TaskFlags_NR_FOSCOE),
       msaObjectPointer(msaObj),
       conf(conf),
@@ -147,7 +147,7 @@ SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString &task
     U2OpStatus2Log os;
     MultipleSequenceAlignment al = MSAUtils::createCopyWithIndexedRowNames(msaObjectPointer->getMultipleAlignment());
 
-    MultipleSequenceAlignmentObject *msaObject = MultipleSequenceAlignmentImporter::createAlignment(msaObjectPointer->getEntityRef().dbiRef, al, os);
+    MultipleSequenceAlignmentObject* msaObject = MultipleSequenceAlignmentImporter::createAlignment(msaObjectPointer->getEntityRef().dbiRef, al, os);
     SAFE_POINT_OP(os, );
 
     SimpleInOutWorkflowTaskConfig sioConf;
@@ -187,7 +187,7 @@ Task::ReportResult SimpleMSAWorkflow4GObjectTask::report() {
     CHECK_EXT(!msaObjectPointer->isStateLocked(), setError(tr("Object '%1' is locked").arg(docName)), ReportResult_Finished);
 
     MultipleSequenceAlignment resultMsa = getResult();
-    const MultipleSequenceAlignment &originalMsa = msaObjectPointer->getMultipleAlignment();
+    const MultipleSequenceAlignment& originalMsa = msaObjectPointer->getMultipleAlignment();
     bool isAllRowsRestored = MSAUtils::restoreOriginalRowProperties(resultMsa, originalMsa);
     if (!isAllRowsRestored) {
         setError(tr("MSA has incompatible changes during the alignment. Ignoring the alignment result: '%1'").arg(docName));
@@ -210,11 +210,11 @@ MultipleSequenceAlignment SimpleMSAWorkflow4GObjectTask::getResult() {
 
     SAFE_POINT(runWorkflowTask != nullptr, "SimpleMSAWorkflow4GObjectTask::getResult. No task has been created.", res);
 
-    Document *d = runWorkflowTask->getDocument();
+    Document* d = runWorkflowTask->getDocument();
     CHECK_EXT(d != nullptr, setError(tr("Result document not found!")), res);
     CHECK_EXT(d->getObjects().size() == 1, setError(tr("Result document content not matched! %1").arg(d->getURLString())), res);
 
-    MultipleSequenceAlignmentObject *maObj = qobject_cast<MultipleSequenceAlignmentObject *>(d->getObjects().first());
+    MultipleSequenceAlignmentObject* maObj = qobject_cast<MultipleSequenceAlignmentObject*>(d->getObjects().first());
     CHECK_EXT(maObj != nullptr, setError(tr("Result document contains no MSA! %1").arg(d->getURLString())), res);
     return maObj->getMsaCopy();
 }

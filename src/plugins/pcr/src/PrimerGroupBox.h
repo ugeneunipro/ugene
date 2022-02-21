@@ -34,8 +34,8 @@ class U2SequenceObject;
 class PrimerGroupBox : public QWidget, public Ui_PrimerGroupBox {
     Q_OBJECT
 public:
-    PrimerGroupBox(QWidget *parent);
-    void setAnnotatedDnaView(AnnotatedDNAView *dnaView);
+    PrimerGroupBox(QWidget* parent);
+    void setAnnotatedDnaView(AnnotatedDNAView* dnaView);
 
     QByteArray getPrimer() const;
     uint getMismatches() const;
@@ -44,7 +44,7 @@ signals:
     void si_primerChanged();
 
 private slots:
-    void sl_onPrimerChanged(const QString &primer);
+    void sl_onPrimerChanged(const QString& primer);
     void sl_translate();
     void sl_browse();
 
@@ -54,15 +54,15 @@ private slots:
     void sl_activeSequenceChanged();
 
 private:
-    static QString getTmString(const QString &sequence);
+    static QString getTmString(const QString& sequence);
 
-    void findPrimerAlternatives(const QString &primer);
+    void findPrimerAlternatives(const QString& primer);
     void cancelFindPrimerTask();
 
-    void updateStatistics(const QString &primer);
+    void updateStatistics(const QString& primer);
 
-    FindAlgorithmTask *findPrimerTask;
-    AnnotatedDNAView *annotatedDnaView;
+    FindAlgorithmTask* findPrimerTask;
+    AnnotatedDNAView* annotatedDnaView;
 };
 
 }  // namespace U2

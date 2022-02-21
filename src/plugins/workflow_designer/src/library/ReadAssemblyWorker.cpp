@@ -55,21 +55,21 @@ const QString ReadAssemblyWorkerFactory::ACTOR_ID("read-assembly");
 /************************************************************************/
 /* Worker */
 /************************************************************************/
-ReadAssemblyWorker::ReadAssemblyWorker(Actor *p)
+ReadAssemblyWorker::ReadAssemblyWorker(Actor* p)
     : GenericDocReader(p) {
 }
 
 void ReadAssemblyWorker::init() {
     GenericDocReader::init();
-    IntegralBus *outBus = dynamic_cast<IntegralBus *>(ch);
+    IntegralBus* outBus = dynamic_cast<IntegralBus*>(ch);
     assert(outBus);
     mtype = outBus->getBusType();
 }
 
-Task *ReadAssemblyWorker::createReadTask(const QString &url, const QString &datasetName) {
-    WorkflowTasksRegistry *registry = WorkflowEnv::getWorkflowTasksRegistry();
+Task* ReadAssemblyWorker::createReadTask(const QString& url, const QString& datasetName) {
+    WorkflowTasksRegistry* registry = WorkflowEnv::getWorkflowTasksRegistry();
     SAFE_POINT(nullptr != registry, "NULL WorkflowTasksRegistry", nullptr);
-    ReadDocumentTaskFactory *factory = registry->getReadDocumentTaskFactory(ReadFactories::READ_ASSEMBLY);
+    ReadDocumentTaskFactory* factory = registry->getReadDocumentTaskFactory(ReadFactories::READ_ASSEMBLY);
     SAFE_POINT(nullptr != factory, QString("NULL WorkflowTasksRegistry: %1").arg(ReadFactories::READ_ASSEMBLY), nullptr);
 
     QVariantMap hints;
@@ -77,14 +77,14 @@ Task *ReadAssemblyWorker::createReadTask(const QString &url, const QString &data
     return factory->createTask(url, hints, context);
 }
 
-void ReadAssemblyWorker::onTaskFinished(Task *task) {
-    auto readDocumentTask = qobject_cast<ReadDocumentTask *>(task);
+void ReadAssemblyWorker::onTaskFinished(Task* task) {
+    auto readDocumentTask = qobject_cast<ReadDocumentTask*>(task);
     QList<SharedDbiDataHandler> result = readDocumentTask->takeResult();
     QString documentUrl = readDocumentTask->getUrl();
     QString datasetName = readDocumentTask->getDatasetName();
     MessageMetadata metadata(documentUrl, datasetName);
     context->getMetadataStorage().put(metadata);
-    for (const SharedDbiDataHandler &handler : qAsConst(result)) {
+    for (const SharedDbiDataHandler& handler : qAsConst(result)) {
         QVariantMap m;
         m[BaseSlots::URL_SLOT().getId()] = documentUrl;
         m[BaseSlots::DATASET_SLOT().getId()] = datasetName;
@@ -92,12 +92,12 @@ void ReadAssemblyWorker::onTaskFinished(Task *task) {
 
         cache.append(Message(mtype, m, metadata.getId()));
     }
-    foreach (const QString &url, readDocumentTask->getProducedFiles()) {
+    foreach (const QString& url, readDocumentTask->getProducedFiles()) {
         context->getMonitor()->addOutputFile(url, getActor()->getId());
     }
 }
 
-QString ReadAssemblyWorker::addReadDbObjectToData(const QString &objUrl, QVariantMap &data) {
+QString ReadAssemblyWorker::addReadDbObjectToData(const QString& objUrl, QVariantMap& data) {
     SharedDbiDataHandler handler = getDbObjectHandlerByUrl(objUrl);
     data[BaseSlots::ASSEMBLY_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(handler);
     // return getObjectName(handler, U2Type::Assembly);
@@ -137,12 +137,12 @@ ReadAssemblyProto::ReadAssemblyProto()
 }
 
 void ReadAssemblyWorkerFactory::init() {
-    ActorPrototype *proto = new ReadAssemblyProto();
+    ActorPrototype* proto = new ReadAssemblyProto();
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_DATASRC(), proto);
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new ReadAssemblyWorkerFactory());
 }
 
-Worker *ReadAssemblyWorkerFactory::createWorker(Actor *a) {
+Worker* ReadAssemblyWorkerFactory::createWorker(Actor* a) {
     return new ReadAssemblyWorker(a);
 }
 

@@ -27,7 +27,7 @@
 namespace U2 {
 namespace LocalWorkflow {
 
-BaseOneOneWorker::BaseOneOneWorker(Actor *a, bool autoTransitBus, const QString &inPortId, const QString &outPortId)
+BaseOneOneWorker::BaseOneOneWorker(Actor* a, bool autoTransitBus, const QString& inPortId, const QString& outPortId)
     : BaseWorker(a, autoTransitBus), inPortId(inPortId), outPortId(outPortId), input(nullptr), output(nullptr), prepared(false) {
 }
 
@@ -38,10 +38,10 @@ void BaseOneOneWorker::init() {
     SAFE_POINT(nullptr != output, QString("Output port '%1' is NULL").arg(outPortId), );
 }
 
-Task *BaseOneOneWorker::tick() {
+Task* BaseOneOneWorker::tick() {
     if (!prepared) {
         U2OpStatusImpl os;
-        Task *prepareTask = prepare(os);
+        Task* prepareTask = prepare(os);
         CHECK_OP(os, nullptr);
         if (nullptr != prepareTask) {
             return prepareTask;
@@ -49,12 +49,12 @@ Task *BaseOneOneWorker::tick() {
     }
 
     if (input->hasMessage()) {
-        Task *tickTask = processNextInputMessage();
+        Task* tickTask = processNextInputMessage();
         CHECK(nullptr != tickTask, nullptr);
         connect(tickTask, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return tickTask;
     } else if (input->isEnded()) {
-        Task *lastTickTask = onInputEnded();
+        Task* lastTickTask = onInputEnded();
         if (nullptr == lastTickTask) {
             output->setEnded();
             setDone();
@@ -66,22 +66,22 @@ Task *BaseOneOneWorker::tick() {
     return nullptr;
 }
 
-Task *BaseOneOneWorker::createPrepareTask(U2OpStatus & /*os*/) const {
+Task* BaseOneOneWorker::createPrepareTask(U2OpStatus& /*os*/) const {
     return nullptr;
 }
 
-void BaseOneOneWorker::onPrepared(Task * /*task*/, U2OpStatus & /*os*/) {
+void BaseOneOneWorker::onPrepared(Task* /*task*/, U2OpStatus& /*os*/) {
 }
 
 void BaseOneOneWorker::sl_taskFinished() {
-    Task *task = dynamic_cast<Task *>(sender());
+    Task* task = dynamic_cast<Task*>(sender());
     CHECK(nullptr != task, );
     CHECK(task->isFinished() && !task->isCanceled() && !task->hasError(), );
     U2OpStatusImpl os;
     QList<Message> result = fetchResult(task, os);
     CHECK_OP_EXT(os, reportError(os.getError()), );
 
-    foreach (const Message &message, result) {
+    foreach (const Message& message, result) {
         if (-1 != message.getMetadataId()) {
             output->setContext(output->getContext(), -1);
         }
@@ -90,7 +90,7 @@ void BaseOneOneWorker::sl_taskFinished() {
 }
 
 void BaseOneOneWorker::sl_prepared() {
-    Task *task = dynamic_cast<Task *>(sender());
+    Task* task = dynamic_cast<Task*>(sender());
     CHECK(nullptr != task, );
     CHECK(task->isFinished(), );
     if (task->isCanceled() || task->hasError()) {
@@ -108,9 +108,9 @@ void BaseOneOneWorker::sl_prepared() {
     }
 }
 
-Task *BaseOneOneWorker::prepare(U2OpStatus &os) {
+Task* BaseOneOneWorker::prepare(U2OpStatus& os) {
     CHECK(!prepared, nullptr);
-    Task *task = createPrepareTask(os);
+    Task* task = createPrepareTask(os);
     if (os.hasError()) {
         reportError(os.getError());
         output->setEnded();

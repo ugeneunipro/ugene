@@ -34,17 +34,17 @@ class MsaEditorSortSequencesWidget : public QWidget {
     Q_OBJECT;
 
 public:
-    MsaEditorSortSequencesWidget(QWidget *parent, MSAEditor *msaEditor);
+    MsaEditorSortSequencesWidget(QWidget* parent, MSAEditor* msaEditor);
 
 private slots:
     void sl_sortClicked();
     void sl_msaObjectStateChanged();
 
 private:
-    MSAEditor *msaEditor;
-    QComboBox *sortByCombo;
-    QComboBox *sortOrderCombo;
-    QPushButton *sortButton;
+    MSAEditor* msaEditor;
+    QComboBox* sortByCombo;
+    QComboBox* sortOrderCombo;
+    QPushButton* sortButton;
 };
 
 }  // namespace U2

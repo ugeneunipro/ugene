@@ -30,11 +30,11 @@ namespace U2 {
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactoryClustal : public MSAConsensusAlgorithmFactory {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmFactoryClustal(QObject *p = nullptr)
+    MSAConsensusAlgorithmFactoryClustal(QObject* p = nullptr)
         : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::CLUSTAL_ALGO, ConsensusAlgorithmFlags_AllAlphabets, p) {
     }
 
-    virtual MSAConsensusAlgorithm *createAlgorithm(const MultipleAlignment &ma, bool ignoreTrailingLeadingGaps, QObject *parent);
+    virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleAlignment& ma, bool ignoreTrailingLeadingGaps, QObject* parent);
 
     virtual QString getDescription() const;
 
@@ -60,13 +60,13 @@ public:
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmClustal : public MSAConsensusAlgorithm {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmClustal(MSAConsensusAlgorithmFactoryClustal *f, bool ignoreTrailingLeadingGaps, QObject *p = nullptr)
+    MSAConsensusAlgorithmClustal(MSAConsensusAlgorithmFactoryClustal* f, bool ignoreTrailingLeadingGaps, QObject* p = nullptr)
         : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p) {
     }
 
-    virtual char getConsensusChar(const MultipleAlignment &ma, int column, QVector<int> seqIdx = QVector<int>()) const;
+    virtual char getConsensusChar(const MultipleAlignment& ma, int column, QVector<int> seqIdx = QVector<int>()) const;
 
-    virtual MSAConsensusAlgorithmClustal *clone() const;
+    virtual MSAConsensusAlgorithmClustal* clone() const;
 };
 
 }  // namespace U2

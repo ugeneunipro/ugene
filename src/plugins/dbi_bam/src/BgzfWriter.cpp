@@ -27,7 +27,7 @@
 namespace U2 {
 namespace BAM {
 
-BgzfWriter::BgzfWriter(IOAdapter &ioAdapter)
+BgzfWriter::BgzfWriter(IOAdapter& ioAdapter)
     : ioAdapter(ioAdapter),
       headerOffset(ioAdapter.bytesRead()),
       blockEnd(false),
@@ -49,7 +49,7 @@ BgzfWriter::~BgzfWriter() {
     deflateEnd(&stream);
 }
 
-void BgzfWriter::write(const char *buff, qint64 size) {
+void BgzfWriter::write(const char* buff, qint64 size) {
     if (size == 0) {
         return;
     }
@@ -61,10 +61,10 @@ void BgzfWriter::write(const char *buff, qint64 size) {
             blockEnd = false;
         }
         qint64 bytesToWrite1 = qMin(size - bytesWritten, BLOCK_SIZE - (qint64)stream.total_in);
-        stream.next_in = (Bytef *)&buff[bytesWritten];
+        stream.next_in = (Bytef*)&buff[bytesWritten];
         stream.avail_in = (uInt)bytesToWrite1;
         while (stream.avail_in > 0) {
-            stream.next_out = (Bytef *)buffer;
+            stream.next_out = (Bytef*)buffer;
             stream.avail_out = sizeof(buffer);
             if (deflate(&stream, Z_NO_FLUSH) != Z_OK) {
                 throw Exception(BAMDbiPlugin::tr("Can't compress data"));
@@ -97,7 +97,7 @@ void BgzfWriter::finishBlock() {
     stream.next_in = Z_NULL;
     stream.avail_in = 0;
     while (true) {
-        stream.next_out = (Bytef *)buffer;
+        stream.next_out = (Bytef*)buffer;
         stream.avail_out = sizeof(buffer);
         int returnedValue = deflate(&stream, Z_FINISH);
         if ((Z_OK == returnedValue) || (Z_STREAM_END == returnedValue)) {

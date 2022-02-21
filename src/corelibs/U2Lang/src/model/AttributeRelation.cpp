@@ -30,23 +30,23 @@
 
 namespace U2 {
 
-void AttributeRelation::updateDelegateTags(const QVariant & /*influencingValue*/, DelegateTags * /*dependentTags*/) const {
+void AttributeRelation::updateDelegateTags(const QVariant& /*influencingValue*/, DelegateTags* /*dependentTags*/) const {
 }
 
-VisibilityRelation::VisibilityRelation(const QString &relatedAttrId, const QVariantList &_visibilityValues, bool invertVisibilityRules)
+VisibilityRelation::VisibilityRelation(const QString& relatedAttrId, const QVariantList& _visibilityValues, bool invertVisibilityRules)
     : AttributeRelation(relatedAttrId),
       visibilityValues(_visibilityValues),
       invertAffectResult(invertVisibilityRules) {
 }
 
-VisibilityRelation::VisibilityRelation(const QString &relatedAttrId, const QVariant &visibilityValue, bool invertVisibilityRules)
+VisibilityRelation::VisibilityRelation(const QString& relatedAttrId, const QVariant& visibilityValue, bool invertVisibilityRules)
     : AttributeRelation(relatedAttrId),
       invertAffectResult(invertVisibilityRules) {
     visibilityValues << visibilityValue;
 }
 
-QVariant VisibilityRelation::getAffectResult(const QVariant &influencingValue, const QVariant &, DelegateTags *, DelegateTags *) const {
-    foreach (const QVariant &v, visibilityValues) {
+QVariant VisibilityRelation::getAffectResult(const QVariant& influencingValue, const QVariant&, DelegateTags*, DelegateTags*) const {
+    foreach (const QVariant& v, visibilityValues) {
         if ((v == influencingValue) != invertAffectResult) {
             return true;
         }
@@ -54,13 +54,13 @@ QVariant VisibilityRelation::getAffectResult(const QVariant &influencingValue, c
     return false;
 }
 
-VisibilityRelation *VisibilityRelation::clone() const {
+VisibilityRelation* VisibilityRelation::clone() const {
     return new VisibilityRelation(*this);
 }
 
-QVariant FileExtensionRelation::getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue, DelegateTags * /*infTags*/, DelegateTags *depTags) const {
+QVariant FileExtensionRelation::getAffectResult(const QVariant& influencingValue, const QVariant& dependentValue, DelegateTags* /*infTags*/, DelegateTags* depTags) const {
     QString newFormatId = influencingValue.toString();
-    DocumentFormat *newFormat = AppContext::getDocumentFormatRegistry()->getFormatById(newFormatId);
+    DocumentFormat* newFormat = AppContext::getDocumentFormatRegistry()->getFormatById(newFormatId);
     updateDelegateTags(influencingValue, depTags);
 
     QString urlStr = dependentValue.toString();
@@ -86,7 +86,7 @@ QVariant FileExtensionRelation::getAffectResult(const QVariant &influencingValue
         }
     }
 
-    DocumentFormat *currentFormat = AppContext::getDocumentFormatRegistry()->selectFormatByFileExtension(lastSuffix);
+    DocumentFormat* currentFormat = AppContext::getDocumentFormatRegistry()->selectFormatByFileExtension(lastSuffix);
     QString currentFormatId("");
     if (currentFormat) {
         currentFormatId = currentFormat->getFormatId();
@@ -126,22 +126,22 @@ QVariant FileExtensionRelation::getAffectResult(const QVariant &influencingValue
     return urlStr;
 }
 
-void FileExtensionRelation::updateDelegateTags(const QVariant &influencingValue, DelegateTags *dependentTags) const {
+void FileExtensionRelation::updateDelegateTags(const QVariant& influencingValue, DelegateTags* dependentTags) const {
     CHECK(dependentTags != nullptr, );
 
     QString formatId = influencingValue.toString();
     dependentTags->set("format", formatId);
 
-    DocumentFormat *newFormat = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
+    DocumentFormat* newFormat = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
     QString filter = newFormat != nullptr ? FileFilters::createFileFilterByDocumentFormatId(formatId) : FileFilters::createAllFilesFilter();
     dependentTags->set("filter", filter);
 }
 
-FileExtensionRelation *FileExtensionRelation::clone() const {
+FileExtensionRelation* FileExtensionRelation::clone() const {
     return new FileExtensionRelation(*this);
 }
 
-QVariant ValuesRelation::getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue, DelegateTags * /*infTags*/, DelegateTags *depTags) const {
+QVariant ValuesRelation::getAffectResult(const QVariant& influencingValue, const QVariant& dependentValue, DelegateTags* /*infTags*/, DelegateTags* depTags) const {
     updateDelegateTags(influencingValue, depTags);
     QVariantMap items = dependencies.value(influencingValue.toString()).toMap();
     if (!items.isEmpty()) {
@@ -150,14 +150,14 @@ QVariant ValuesRelation::getAffectResult(const QVariant &influencingValue, const
     return dependentValue;
 }
 
-void ValuesRelation::updateDelegateTags(const QVariant &influencingValue, DelegateTags *dependentTags) const {
+void ValuesRelation::updateDelegateTags(const QVariant& influencingValue, DelegateTags* dependentTags) const {
     QVariantMap items = dependencies.value(influencingValue.toString()).toMap();
     if (!items.isEmpty()) {
         dependentTags->set("AvailableValues", items);
     }
 }
 
-ValuesRelation *ValuesRelation::clone() const {
+ValuesRelation* ValuesRelation::clone() const {
     return new ValuesRelation(*this);
 }
 

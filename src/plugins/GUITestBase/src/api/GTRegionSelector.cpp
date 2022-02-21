@@ -31,15 +31,15 @@ using namespace HI;
 #define GT_CLASS_NAME "GTRegionSelector"
 
 #define GT_METHOD_NAME "setRegion"
-void GTRegionSelector::setRegion(HI::GUITestOpStatus &os, RegionSelector *regionSelector, const RegionSelectorSettings &s) {
+void GTRegionSelector::setRegion(HI::GUITestOpStatus& os, RegionSelector* regionSelector, const RegionSelectorSettings& s) {
     GT_CHECK(regionSelector != nullptr, "RegionSelector is NULL");
 
     CHECK_EXT(!s.isUnset(), uiLog.trace("GT_DEBUG_MESSAGE RegionSelectorSettings isUnset, returning"), );
 
-    QLineEdit *startEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "start_edit_line", regionSelector));
+    QLineEdit* startEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "start_edit_line", regionSelector));
     GTLineEdit::setText(os, startEdit, QString::number(s.start));
 
-    QLineEdit *endEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "end_edit_line", regionSelector));
+    QLineEdit* endEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "end_edit_line", regionSelector));
     GTLineEdit::setText(os, endEdit, QString::number(s.end));
 }
 #undef GT_METHOD_NAME

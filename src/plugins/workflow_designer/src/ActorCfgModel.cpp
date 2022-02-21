@@ -45,7 +45,7 @@ static const int KEY_COLUMN = 0;
 static const int VALUE_COLUMN = 1;
 static const int SCRIPT_COLUMN = 2;
 
-ActorCfgModel::ActorCfgModel(QObject *parent, SchemaConfig *_schemaConfig)
+ActorCfgModel::ActorCfgModel(QObject* parent, SchemaConfig* _schemaConfig)
     : QAbstractTableModel(parent), schemaConfig(_schemaConfig), subject(nullptr), scriptMode(false) {
     scriptDelegate = new AttributeScriptDelegate();
 }
@@ -54,7 +54,7 @@ ActorCfgModel::~ActorCfgModel() {
     delete scriptDelegate;
 }
 
-void ActorCfgModel::setActor(Actor *cfg) {
+void ActorCfgModel::setActor(Actor* cfg) {
     listValues.clear();
     attrs.clear();
     subject = cfg;
@@ -62,10 +62,10 @@ void ActorCfgModel::setActor(Actor *cfg) {
         attrs = cfg->getAttributes();
         setupAttributesScripts();
 
-        ConfigurationEditor *editor = subject->getEditor();
+        ConfigurationEditor* editor = subject->getEditor();
         if (nullptr != editor) {
-            foreach (Attribute *attr, attrs) {
-                PropertyDelegate *delegate = editor->getDelegate(attr->getId());
+            foreach (Attribute* attr, attrs) {
+                PropertyDelegate* delegate = editor->getDelegate(attr->getId());
                 if (nullptr != delegate) {
                     delegate->setSchemaConfig(schemaConfig);
                 }
@@ -76,14 +76,14 @@ void ActorCfgModel::setActor(Actor *cfg) {
     endResetModel();
 }
 
-void dumpDescriptors(const QList<Descriptor> &descriptors) {
-    foreach (const Descriptor &d, descriptors) {
+void dumpDescriptors(const QList<Descriptor>& descriptors) {
+    foreach (const Descriptor& d, descriptors) {
         qDebug() << d.getId() << d.getDisplayName();
     }
 }
 
 void ActorCfgModel::setupAttributesScripts() {
-    foreach (Attribute *attribute, attrs) {
+    foreach (Attribute* attribute, attrs) {
         assert(attribute != nullptr);
         attribute->getAttributeScript().clearScriptVars();
 
@@ -93,12 +93,12 @@ void ActorCfgModel::setupAttributesScripts() {
             continue;
         }
 
-        foreach (const PortDescriptor *descr, subject->getProto()->getPortDesciptors()) {
+        foreach (const PortDescriptor* descr, subject->getProto()->getPortDesciptors()) {
             if (descr->isInput()) {
                 DataTypePtr dataTypePtr = descr->getType();
                 if (dataTypePtr->isMap()) {
                     QMap<Descriptor, DataTypePtr> map = dataTypePtr->getDatatypesMap();
-                    foreach (const Descriptor &desc, map.keys()) {
+                    foreach (const Descriptor& desc, map.keys()) {
                         QString id = desc.getId().replace(QRegExp("[^a-zA-Z0-9_]"), "_");
                         if (id.at(0).isDigit()) {
                             id.prepend("_");
@@ -107,7 +107,7 @@ void ActorCfgModel::setupAttributesScripts() {
                         attribute->getAttributeScript().setScriptVar(d, QVariant());
                     }
                 } else if (dataTypePtr->isList()) {
-                    foreach (const Descriptor &typeDescr, dataTypePtr->getAllDescriptors()) {
+                    foreach (const Descriptor& typeDescr, dataTypePtr->getAllDescriptors()) {
                         QString id = typeDescr.getId().replace(QRegExp("[^a-zA-Z0-9_]"), "_");
                         if (id.at(0).isDigit()) {
                             id.prepend("_");
@@ -141,7 +141,7 @@ void ActorCfgModel::update() {
     endResetModel();
 }
 
-int ActorCfgModel::columnCount(const QModelIndex &) const {
+int ActorCfgModel::columnCount(const QModelIndex&) const {
     if (scriptMode) {
         return 3;  // key, value and script
     } else {
@@ -149,7 +149,7 @@ int ActorCfgModel::columnCount(const QModelIndex &) const {
     }
 }
 
-int ActorCfgModel::rowCount(const QModelIndex &parent) const {
+int ActorCfgModel::rowCount(const QModelIndex& parent) const {
     if (parent.isValid()) {
         return 0;
     }
@@ -157,19 +157,19 @@ int ActorCfgModel::rowCount(const QModelIndex &parent) const {
     return attrs.isEmpty() || parent.isValid() ? 0 : attrs.size() /*rows*/;
 }
 
-bool ActorCfgModel::isVisible(Attribute *a) const {
+bool ActorCfgModel::isVisible(Attribute* a) const {
     CHECK(nullptr != subject, true);
-    if (nullptr != dynamic_cast<URLAttribute *>(a)) {
+    if (nullptr != dynamic_cast<URLAttribute*>(a)) {
         return false;
     }
     return subject->isAttributeVisible(a);
 }
 
-Qt::ItemFlags ActorCfgModel::flags(const QModelIndex &index) const {
+Qt::ItemFlags ActorCfgModel::flags(const QModelIndex& index) const {
     int col = index.column();
     int row = index.row();
 
-    Attribute *currentAttribute = getAttributeByRow(row);
+    Attribute* currentAttribute = getAttributeByRow(row);
     SAFE_POINT(nullptr != currentAttribute, "Unexpected attribute", Qt::NoItemFlags);
     if (!isVisible(currentAttribute)) {
         return Qt::NoItemFlags;
@@ -216,7 +216,7 @@ QVariant ActorCfgModel::headerData(int section, Qt::Orientation orientation, int
     return QVariant();
 }
 
-bool ActorCfgModel::setAttributeValue(const Attribute *attr, QVariant &attrValue) const {
+bool ActorCfgModel::setAttributeValue(const Attribute* attr, QVariant& attrValue) const {
     assert(attr != nullptr);
     bool isDefaultVal = attr->isDefaultValue();
 
@@ -224,14 +224,14 @@ bool ActorCfgModel::setAttributeValue(const Attribute *attr, QVariant &attrValue
     return isDefaultVal;
 }
 
-Attribute *ActorCfgModel::getAttributeByRow(int row) const {
+Attribute* ActorCfgModel::getAttributeByRow(int row) const {
     SAFE_POINT(row < attrs.size(), "Unexpected row requested", nullptr);
     return attrs.at(row);
 }
 
-QModelIndex ActorCfgModel::modelIndexById(const QString &id) const {
+QModelIndex ActorCfgModel::modelIndexById(const QString& id) const {
     for (int i = 0; i < attrs.size(); i++) {
-        Attribute *a = getAttributeByRow(i);
+        Attribute* a = getAttributeByRow(i);
         if (nullptr != a && a->getId() == id) {
             QModelIndex modelIndex = index(i, 1);
             return modelIndex;
@@ -240,8 +240,8 @@ QModelIndex ActorCfgModel::modelIndexById(const QString &id) const {
     return QModelIndex();
 }
 
-QVariant ActorCfgModel::data(const QModelIndex &index, int role) const {
-    const Attribute *currentAttribute = getAttributeByRow(index.row());
+QVariant ActorCfgModel::data(const QModelIndex& index, int role) const {
+    const Attribute* currentAttribute = getAttributeByRow(index.row());
     SAFE_POINT(nullptr != currentAttribute, "Invalid attribute", QVariant());
     if (role == DescriptorRole) {  // descriptor that will be shown in under editor. 'propDoc' in WorkflowEditor
         return qVariantFromValue<Descriptor>(*currentAttribute);
@@ -273,8 +273,8 @@ QVariant ActorCfgModel::data(const QModelIndex &index, int role) const {
 
             QVariant attributeValue;
             bool isDefaultVal = setAttributeValue(currentAttribute, attributeValue);
-            ConfigurationEditor *confEditor = subject->getEditor();
-            PropertyDelegate *propertyDelegate = confEditor ? confEditor->getDelegate(currentAttribute->getId()) : nullptr;
+            ConfigurationEditor* confEditor = subject->getEditor();
+            PropertyDelegate* propertyDelegate = confEditor ? confEditor->getDelegate(currentAttribute->getId()) : nullptr;
             switch (role) {
                 case Qt::DisplayRole:
                 case Qt::ToolTipRole: {
@@ -288,7 +288,7 @@ QVariant ActorCfgModel::data(const QModelIndex &index, int role) const {
                 case Qt::ForegroundRole:
                     return isDefaultVal ? QVariant(QColor(Qt::gray)) : QVariant();
                 case DelegateRole:
-                    return qVariantFromValue<PropertyDelegate *>(propertyDelegate);
+                    return qVariantFromValue<PropertyDelegate*>(propertyDelegate);
                 case Qt::EditRole:
                 case ConfigurationEditor::ItemValueRole:
                     return attributeValue;
@@ -315,7 +315,7 @@ QVariant ActorCfgModel::data(const QModelIndex &index, int role) const {
                     return currentAttribute->getAttributeScript().isEmpty() ? QVariant(QColor(Qt::gray)) : QVariant();
                 case DelegateRole:
                     assert(scriptDelegate != nullptr);
-                    return qVariantFromValue<PropertyDelegate *>(scriptDelegate);
+                    return qVariantFromValue<PropertyDelegate*>(scriptDelegate);
                 case Qt::EditRole:
                 case ConfigurationEditor::ItemValueRole:
                     return qVariantFromValue<AttributeScript>(currentAttribute->getAttributeScript());
@@ -330,36 +330,36 @@ QVariant ActorCfgModel::data(const QModelIndex &index, int role) const {
     return QVariant();
 }
 
-bool ActorCfgModel::canSetData(Attribute *attr, const QVariant &value) {
+bool ActorCfgModel::canSetData(Attribute* attr, const QVariant& value) {
     bool dir = false;
     bool isOutUrlAttr = RFSUtils::isOutUrlAttribute(attr, subject, dir);
     CHECK(isOutUrlAttr, true);
 
-    RunFileSystem *rfs = schemaConfig->getRFS();
+    RunFileSystem* rfs = schemaConfig->getRFS();
     return rfs->canAdd(value.toString(), dir);
 }
 
 namespace {
 
-DelegateTags *getTags(Actor *subject, const QString &attrId) {
-    ConfigurationEditor *editor = subject->getEditor();
+DelegateTags* getTags(Actor* subject, const QString& attrId) {
+    ConfigurationEditor* editor = subject->getEditor();
     CHECK(nullptr != editor, nullptr);
-    PropertyDelegate *delegate = editor->getDelegate(attrId);
+    PropertyDelegate* delegate = editor->getDelegate(attrId);
     CHECK(nullptr != delegate, nullptr);
     return delegate->tags();
 }
 
 }  // namespace
 
-QMap<Attribute *, bool> ActorCfgModel::getAttributeRelatedVisibility(Attribute *changedAttr, const QMap<Attribute *, bool> &foundRelatedAttrs) const {
-    QMap<Attribute *, bool> relatedAttributesVisibility = foundRelatedAttrs;
-    foreach (Attribute *a, attrs) {
+QMap<Attribute*, bool> ActorCfgModel::getAttributeRelatedVisibility(Attribute* changedAttr, const QMap<Attribute*, bool>& foundRelatedAttrs) const {
+    QMap<Attribute*, bool> relatedAttributesVisibility = foundRelatedAttrs;
+    foreach (Attribute* a, attrs) {
         if (a != changedAttr && !relatedAttributesVisibility.contains(a)) {
-            foreach (const AttributeRelation *rel, a->getRelations()) {
+            foreach (const AttributeRelation* rel, a->getRelations()) {
                 if (rel->getRelatedAttrId() == changedAttr->getId()) {
                     relatedAttributesVisibility.insert(a, isVisible(a));
-                    const QMap<Attribute *, bool> dependentAttributeVisibility = getAttributeRelatedVisibility(a, relatedAttributesVisibility);
-                    foreach (Attribute *dependentAttr, dependentAttributeVisibility.keys()) {
+                    const QMap<Attribute*, bool> dependentAttributeVisibility = getAttributeRelatedVisibility(a, relatedAttributesVisibility);
+                    foreach (Attribute* dependentAttr, dependentAttributeVisibility.keys()) {
                         relatedAttributesVisibility[dependentAttr] = dependentAttributeVisibility[dependentAttr];
                     }
                 }
@@ -369,8 +369,8 @@ QMap<Attribute *, bool> ActorCfgModel::getAttributeRelatedVisibility(Attribute *
     return relatedAttributesVisibility;
 }
 
-void ActorCfgModel::checkIfAttributeVisibilityChanged(const QMap<Attribute *, bool> &attributeVisibility) {
-    foreach (Attribute *a, attributeVisibility.keys()) {
+void ActorCfgModel::checkIfAttributeVisibilityChanged(const QMap<Attribute*, bool>& attributeVisibility) {
+    foreach (Attribute* a, attributeVisibility.keys()) {
         if (attributeVisibility[a] != isVisible(a)) {
             const QModelIndex affectedIndex = modelIndexById(a->getId());
             emit dataChanged(affectedIndex, affectedIndex);
@@ -378,9 +378,9 @@ void ActorCfgModel::checkIfAttributeVisibilityChanged(const QMap<Attribute *, bo
     }
 }
 
-bool ActorCfgModel::setData(const QModelIndex &index, const QVariant &value, int role) {
+bool ActorCfgModel::setData(const QModelIndex& index, const QVariant& value, int role) {
     int col = index.column();
-    Attribute *editingAttribute = getAttributeByRow(index.row());
+    Attribute* editingAttribute = getAttributeByRow(index.row());
     SAFE_POINT(editingAttribute != nullptr, "Invalid attribute detected", false);
 
     switch (col) {
@@ -392,19 +392,19 @@ bool ActorCfgModel::setData(const QModelIndex &index, const QVariant &value, int
                 }
                 case Qt::EditRole:
                 case ConfigurationEditor::ItemValueRole: {
-                    QMap<Attribute *, bool> relatedAttributesVisibility = getAttributeRelatedVisibility(editingAttribute);
+                    QMap<Attribute*, bool> relatedAttributesVisibility = getAttributeRelatedVisibility(editingAttribute);
 
-                    const QString &key = editingAttribute->getId();
+                    const QString& key = editingAttribute->getId();
                     if (editingAttribute->getAttributePureValue() != value) {
                         subject->setParameter(key, value);
                         emit dataChanged(index, index);
                         uiLog.trace("committed property change");
                     }
-                    foreach (const AttributeRelation *relation, editingAttribute->getRelations()) {
+                    foreach (const AttributeRelation* relation, editingAttribute->getRelations()) {
                         if (relation->valueChangingRelation()) {
-                            DelegateTags *inf = getTags(subject, editingAttribute->getId());
-                            DelegateTags *dep = getTags(subject, relation->getRelatedAttrId());
-                            Attribute *depAttr = subject->getParameter(relation->getRelatedAttrId());
+                            DelegateTags* inf = getTags(subject, editingAttribute->getId());
+                            DelegateTags* dep = getTags(subject, relation->getRelatedAttrId());
+                            Attribute* depAttr = subject->getParameter(relation->getRelatedAttrId());
                             QVariant newValue = relation->getAffectResult(value, depAttr->getAttributePureValue(), inf, dep);
 
                             if (canSetData(depAttr, newValue)) {

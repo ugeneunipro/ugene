@@ -32,11 +32,11 @@ class MinLenStep : public TrimmomaticStep {
 public:
     MinLenStep();
 
-    TrimmomaticStepSettingsWidget *createWidget() const;
+    TrimmomaticStepSettingsWidget* createWidget() const;
 
 private:
-    QString serializeState(const QVariantMap &widgetState) const;
-    QVariantMap parseState(const QString &command) const;
+    QString serializeState(const QVariantMap& widgetState) const;
+    QVariantMap parseState(const QString& command) const;
 };
 
 class MinLenStepFactory : public TrimmomaticStepFactory {
@@ -45,10 +45,10 @@ public:
 
     MinLenStepFactory();
 
-    MinLenStep *createStep() const;
+    MinLenStep* createStep() const;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_MIN_LEN_STEP_H_
+#endif  // _U2_MIN_LEN_STEP_H_

@@ -36,7 +36,7 @@ const QString GroupHeaderImageWidget::HEADER_COMMON_STYLE = "border-style: solid
                                                             "margin-top: 4px;"
                                                             "margin-right: 3px;";
 
-GroupHeaderImageWidget::GroupHeaderImageWidget(const QString &_groupId, const QPixmap &image)
+GroupHeaderImageWidget::GroupHeaderImageWidget(const QString& _groupId, const QPixmap& image)
     : groupId(_groupId) {
     this->setPixmap(image);
 
@@ -50,7 +50,7 @@ GroupHeaderImageWidget::GroupHeaderImageWidget(const QString &_groupId, const QP
     this->setObjectName(groupId);
 }
 
-void GroupHeaderImageWidget::mousePressEvent(QMouseEvent * /*event*/) {
+void GroupHeaderImageWidget::mousePressEvent(QMouseEvent* /*event*/) {
     SAFE_POINT(nullptr != groupId, "Internal error: group header with NULL group ID was pressed.", );
 
     emit si_groupHeaderPressed(groupId);

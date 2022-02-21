@@ -31,15 +31,15 @@ namespace U2 {
 class LineEditHighlighter : public QObject {
     Q_OBJECT
 public:
-    LineEditHighlighter(QLineEdit *lineEdit);
+    LineEditHighlighter(QLineEdit* lineEdit);
 
 private slots:
-    void sl_textChanged(const QString &text);
+    void sl_textChanged(const QString& text);
 
 private:
-    QLineEdit *lineEdit;
+    QLineEdit* lineEdit;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_LINE_EDIT_HIGHLIGHTER_H_
+#endif  // _U2_LINE_EDIT_HIGHLIGHTER_H_

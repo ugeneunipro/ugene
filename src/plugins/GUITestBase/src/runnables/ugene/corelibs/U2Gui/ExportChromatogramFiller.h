@@ -30,7 +30,7 @@ using namespace HI;
 class ExportChromatogramFiller : public Filler {
 public:
     enum FormatToUse { SCF };
-    ExportChromatogramFiller(HI::GUITestOpStatus &_os, const QString &_path, const QString &_name, ExportChromatogramFiller::FormatToUse _format, bool reversed, bool complement, bool addDocumentToProject, GTGlobals::UseMethod method = GTGlobals::UseMouse);
+    ExportChromatogramFiller(HI::GUITestOpStatus& _os, const QString& _path, const QString& _name, ExportChromatogramFiller::FormatToUse _format, bool reversed, bool complement, bool addDocumentToProject, GTGlobals::UseMethod method = GTGlobals::UseMouse);
     void commonScenario();
 
 private:

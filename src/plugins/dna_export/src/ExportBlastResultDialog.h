@@ -35,9 +35,9 @@ class SaveDocumentController;
 class ExportBlastResultDialog : public QDialog, private Ui_ExportBlastResultDialog {
     Q_OBJECT
 public:
-    ExportBlastResultDialog(QWidget *p, const QString &defaultUrl = QString());
+    ExportBlastResultDialog(QWidget* p, const QString& defaultUrl = QString());
 
-    void setFileLabelText(const QString &text) const;
+    void setFileLabelText(const QString& text) const;
 
     void accept() override;
 
@@ -49,9 +49,9 @@ public:
     bool addRefFlag;
 
 private:
-    void initSaveController(const QString &defaultUrl);
+    void initSaveController(const QString& defaultUrl);
 
-    SaveDocumentController *saveController;
+    SaveDocumentController* saveController;
 };
 
 }  // namespace U2

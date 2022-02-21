@@ -32,12 +32,12 @@ class McaEditorWgt;
 class McaEditorOverviewArea : public MaEditorOverviewArea {
     Q_OBJECT
 public:
-    McaEditorOverviewArea(MaEditorWgt *ui);
+    McaEditorOverviewArea(MaEditorWgt* ui);
 
     static const QString OVERVIEW_AREA_OBJECT_NAME;
 
 private:
-    MaSangerOverview *sangerOverview;
+    MaSangerOverview* sangerOverview;
 };
 
 }  // namespace U2

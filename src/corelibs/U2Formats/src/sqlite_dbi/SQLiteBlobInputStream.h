@@ -36,11 +36,11 @@ public:
     virtual ~SQLiteBlobStream();
 
 protected:
-    void init(int accessType, DbRef *db, const QByteArray &tableId, const QByteArray &columnId, const U2DataId &rowId, U2OpStatus &os);
+    void init(int accessType, DbRef* db, const QByteArray& tableId, const QByteArray& columnId, const U2DataId& rowId, U2OpStatus& os);
     void releaseHandle();
 
 protected:
-    sqlite3_blob *handle;
+    sqlite3_blob* handle;
     qint64 size;
     qint64 offset;
 
@@ -51,12 +51,12 @@ protected:
 class SQLiteBlobInputStream : public InputStream, public SQLiteBlobStream {
     Q_DISABLE_COPY(SQLiteBlobInputStream)
 public:
-    SQLiteBlobInputStream(DbRef *db, const QByteArray &tableId, const QByteArray &columnId, const U2DataId &rowId, U2OpStatus &os);
+    SQLiteBlobInputStream(DbRef* db, const QByteArray& tableId, const QByteArray& columnId, const U2DataId& rowId, U2OpStatus& os);
 
     qint64 available();
     void close();
-    int read(char *buffer, int length, U2OpStatus &os);
-    qint64 skip(qint64 n, U2OpStatus &os);
+    int read(char* buffer, int length, U2OpStatus& os);
+    qint64 skip(qint64 n, U2OpStatus& os);
 };
 
 }  // namespace U2

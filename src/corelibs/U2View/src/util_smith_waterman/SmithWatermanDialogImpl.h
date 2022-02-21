@@ -22,8 +22,6 @@
 #ifndef _U2_SMITH_WATERMAN_DIALOG_IMPL_H_
 #define _U2_SMITH_WATERMAN_DIALOG_IMPL_H_
 
-#include <ui_SmithWatermanDialogBase.h>
-
 #include <QCloseEvent>
 #include <QDialog>
 
@@ -39,6 +37,8 @@
 
 #include "SmithWatermanDialog.h"
 
+#include <ui_SmithWatermanDialogBase.h>
+
 class QCheckBox;
 
 namespace U2 {
@@ -46,11 +46,11 @@ namespace U2 {
 class SmithWatermanDialog : public QDialog, public Ui_SmithWatermanDialogBase {
     Q_OBJECT
 public:
-    SmithWatermanDialog(QWidget *p,
-                        ADVSequenceObjectContext *ctx,
-                        SWDialogConfig *dialogConfig);
+    SmithWatermanDialog(QWidget* p,
+                        ADVSequenceObjectContext* ctx,
+                        SWDialogConfig* dialogConfig);
     ~SmithWatermanDialog();
-    virtual bool eventFilter(QObject *object, QEvent *event);
+    virtual bool eventFilter(QObject* object, QEvent* event);
 
 private slots:
     void sl_bttnViewMatrix();
@@ -60,7 +60,7 @@ private slots:
 
     // void sl_remoteRunButtonClicked();
     void sl_patternChanged();
-    void sl_resultViewChanged(const QString &text);
+    void sl_resultViewChanged(const QString& text);
     void sl_browseAlignFilesDir();
     void sl_templateButtonPressed();  // suppose that template buttons have the following label: "[tag] tag_name"
     void sl_cancelButton();
@@ -72,7 +72,7 @@ private:
     bool readParameters();
     void updatePatternFieldVisualState();
 
-    bool readPattern(DNATranslation *aminoTT);
+    bool readPattern(DNATranslation* aminoTT);
     bool readRegion();
     bool readRealization();
     bool readSubstMatrix();
@@ -85,37 +85,37 @@ private:
     void templateEditInFocus();
     void templateEditLostFocus();
 
-    void changeResultSavingWidgets(const QString &currentText);
+    void changeResultSavingWidgets(const QString& currentText);
     void initResultDirPath();
     void fillTemplateButtonsList();
     void connectTemplateButtonsGui();
     void fillTemplateNamesFieldsByDefault();
     QString validateResultDirPath() const;
 
-    static bool checkTemplateButtonName(const QString &name);
-    static void stripFormatSymbolsFromPattern(QString &pattern);
+    static bool checkTemplateButtonName(const QString& name);
+    static void stripFormatSymbolsFromPattern(QString& pattern);
 
-    SubstMatrixRegistry *substMatrixRegistry;
-    SWResultFilterRegistry *swResultFilterRegistry;
-    SmithWatermanTaskFactoryRegistry *swTaskFactoryRegistry;
+    SubstMatrixRegistry* substMatrixRegistry;
+    SWResultFilterRegistry* swResultFilterRegistry;
+    SmithWatermanTaskFactoryRegistry* swTaskFactoryRegistry;
 
-    SWDialogConfig *dialogConfig;
+    SWDialogConfig* dialogConfig;
     SmithWatermanSettings config;
-    SmithWatermanTaskFactory *realization;
+    SmithWatermanTaskFactory* realization;
 
-    ADVSequenceObjectContext *ctxSeq;
-    CreateAnnotationWidgetController *annotationController;
-    QCheckBox *addPatternContentQualifier;
+    ADVSequenceObjectContext* ctxSeq;
+    CreateAnnotationWidgetController* annotationController;
+    QCheckBox* addPatternContentQualifier;
 
-    RegionSelector *regionSelector;
+    RegionSelector* regionSelector;
 
-    SWMulAlignResultNamesTagsRegistry *tagsRegistry;
-    QList<QPushButton *> *templateButtons;
-    QBitArray *templateButtonsApplicability;
+    SWMulAlignResultNamesTagsRegistry* tagsRegistry;
+    QList<QPushButton*>* templateButtons;
+    QBitArray* templateButtonsApplicability;
 
-    QPushButton *bttnRun;
-    QPushButton *bttnCancel;
-    QPushButton *remoteRunPushButton;
+    QPushButton* bttnRun;
+    QPushButton* bttnCancel;
+    QPushButton* remoteRunPushButton;
 };
 
 }  // namespace U2

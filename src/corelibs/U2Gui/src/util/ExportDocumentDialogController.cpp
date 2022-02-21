@@ -34,7 +34,7 @@
 
 namespace U2 {
 
-ExportDocumentDialogController::ExportDocumentDialogController(Document *d, QWidget *p)
+ExportDocumentDialogController::ExportDocumentDialogController(Document* d, QWidget* p)
     : QDialog(p),
       saveController(nullptr),
       sourceDoc(d),
@@ -48,14 +48,14 @@ ExportDocumentDialogController::ExportDocumentDialogController(Document *d, QWid
     initSaveController(sourceDoc->getObjects(), sourceDoc->getURLString());
 }
 
-ExportDocumentDialogController::ExportDocumentDialogController(GObject *object, QWidget *parent, const QString &initUrl)
+ExportDocumentDialogController::ExportDocumentDialogController(GObject* object, QWidget* parent, const QString& initUrl)
     : QDialog(parent),
       ui(new Ui_ExportDocumentDialog()),
       sourceDoc(nullptr),
       sourceObject(object) {
     ui->setupUi(this);
 
-    QList<GObject *> objectList = QList<GObject *>() << sourceObject;
+    QList<GObject*> objectList = QList<GObject*>() << sourceObject;
     initSaveController(objectList, initUrl);
 
     new HelpButton(this, ui->buttonBox, "65929295");
@@ -63,7 +63,7 @@ ExportDocumentDialogController::ExportDocumentDialogController(GObject *object, 
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 }
 
-void ExportDocumentDialogController::initSaveController(const QList<GObject *> &objects, const QString &fileUrl) {
+void ExportDocumentDialogController::initSaveController(const QList<GObject*>& objects, const QString& fileUrl) {
     SaveDocumentControllerConfig config;
     config.defaultFileName = fileUrl;
     config.fileDialogButton = ui->browseButton;
@@ -78,11 +78,11 @@ void ExportDocumentDialogController::initSaveController(const QList<GObject *> &
     saveController = new SaveDocumentController(config, formatConstraints, this);
 }
 
-DocumentFormatConstraints ExportDocumentDialogController::getAcceptableConstraints(const QList<GObject *> &objects) {
+DocumentFormatConstraints ExportDocumentDialogController::getAcceptableConstraints(const QList<GObject*>& objects) {
     DocumentFormatConstraints formatConstraints;
 
     QMap<GObjectType, int> objPerTypeMap;
-    foreach (GObject *obj, objects) {
+    foreach (GObject* obj, objects) {
         GObjectType objectType = obj->getGObjectType();
         formatConstraints.supportedObjectTypes += objectType;
         if (objPerTypeMap.contains(objectType)) {
@@ -132,11 +132,11 @@ void ExportDocumentDialogController::setAddToProjectFlag(bool checked) {
     ui->addToProjCheck->setChecked(checked);
 }
 
-Document *ExportDocumentDialogController::getSourceDoc() const {
+Document* ExportDocumentDialogController::getSourceDoc() const {
     return sourceDoc;
 }
 
-GObject *ExportDocumentDialogController::getSourceObject() const {
+GObject* ExportDocumentDialogController::getSourceObject() const {
     return sourceObject;
 }
 

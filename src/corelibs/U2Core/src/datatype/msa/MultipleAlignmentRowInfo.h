@@ -30,11 +30,11 @@ namespace U2 {
 
 class U2CORE_EXPORT MultipleAlignmentRowInfo {
 public:
-    static void setReversed(QVariantMap &info, bool reversed);
-    static bool getReversed(const QVariantMap &info);
+    static void setReversed(QVariantMap& info, bool reversed);
+    static bool getReversed(const QVariantMap& info);
 
-    static void setComplemented(QVariantMap &info, bool complemented);
-    static bool getComplemented(const QVariantMap &info);
+    static void setComplemented(QVariantMap& info, bool complemented);
+    static bool getComplemented(const QVariantMap& info);
 
     static const QString REVERSED;
     static const QString COMPLEMENTED;

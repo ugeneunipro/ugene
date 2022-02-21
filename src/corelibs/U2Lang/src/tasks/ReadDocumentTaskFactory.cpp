@@ -26,7 +26,7 @@ namespace Workflow {
 
 const QString ReadFactories::READ_ASSEMBLY("read-assembly-task-factory");
 
-ReadDocumentTask::ReadDocumentTask(const QString &_url, const QString &name, const QString &_datasetName, TaskFlags f)
+ReadDocumentTask::ReadDocumentTask(const QString& _url, const QString& name, const QString& _datasetName, TaskFlags f)
     : Task(name, f), url(_url), datasetName(_datasetName) {
 }
 
@@ -41,19 +41,19 @@ QList<SharedDbiDataHandler> ReadDocumentTask::takeResult() {
     return ret;
 }
 
-const QString &ReadDocumentTask::getUrl() const {
+const QString& ReadDocumentTask::getUrl() const {
     return url;
 }
 
-const QString &ReadDocumentTask::getDatasetName() const {
+const QString& ReadDocumentTask::getDatasetName() const {
     return datasetName;
 }
 
-const QStringList &ReadDocumentTask::getProducedFiles() const {
+const QStringList& ReadDocumentTask::getProducedFiles() const {
     return producedFiles;
 }
 
-ReadDocumentTaskFactory::ReadDocumentTaskFactory(const QString &_id)
+ReadDocumentTaskFactory::ReadDocumentTaskFactory(const QString& _id)
     : id(_id) {
 }
 

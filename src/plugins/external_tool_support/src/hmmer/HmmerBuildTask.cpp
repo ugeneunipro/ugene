@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-HmmerBuildTask::HmmerBuildTask(const HmmerBuildSettings &settings, const QString &msaUrl)
+HmmerBuildTask::HmmerBuildTask(const HmmerBuildSettings& settings, const QString& msaUrl)
     : ExternalToolRunTask(HmmerSupport::BUILD_TOOL_ID, getArguments(settings, msaUrl), new Hmmer3LogParser()),
       settings(settings),
       stockholmMsaUrl(msaUrl) {
@@ -43,11 +43,11 @@ HmmerBuildTask::HmmerBuildTask(const HmmerBuildSettings &settings, const QString
     setReportingEnabled(true);
 }
 
-const QString &HmmerBuildTask::getHmmProfileUrl() const {
+const QString& HmmerBuildTask::getHmmProfileUrl() const {
     return settings.profileUrl;
 }
 
-QString HmmerBuildTask::getReport(const Task *task, const HmmerBuildSettings &settings, const QString &msaUrl) {
+QString HmmerBuildTask::getReport(const Task* task, const HmmerBuildSettings& settings, const QString& msaUrl) {
     QString res;
 
     res += "<table>";
@@ -127,7 +127,7 @@ QString HmmerBuildTask::generateReport() const {
     return getReport(this, settings, stockholmMsaUrl);
 }
 
-QStringList HmmerBuildTask::getArguments(const HmmerBuildSettings &settings, const QString &msaUrl) {
+QStringList HmmerBuildTask::getArguments(const HmmerBuildSettings& settings, const QString& msaUrl) {
     QStringList arguments;
 
     switch (settings.modelConstructionStrategy) {
@@ -201,4 +201,4 @@ QStringList HmmerBuildTask::getArguments(const HmmerBuildSettings &settings, con
     return arguments;
 }
 
-}    // namespace U2
+}  // namespace U2

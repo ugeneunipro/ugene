@@ -62,8 +62,8 @@ public:
         ConnectResult expectedResult;
     };
 
-    SharedConnectionsDialogFiller(HI::GUITestOpStatus &os, const QList<Action> &actions);
-    SharedConnectionsDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario);
+    SharedConnectionsDialogFiller(HI::GUITestOpStatus& os, const QList<Action>& actions);
+    SharedConnectionsDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario);
 
     void commonScenario();
 

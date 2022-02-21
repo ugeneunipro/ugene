@@ -26,7 +26,7 @@
 
 namespace U2 {
 
-void MaSplitterUtils::insertWidgetWithScale(QSplitter *splitter, int index, QWidget *newWidget, qreal scale) {
+void MaSplitterUtils::insertWidgetWithScale(QSplitter* splitter, int index, QWidget* newWidget, qreal scale) {
     SAFE_POINT(scale >= 0, "Invalid scale: " + QString::number(scale), );
     int wholeSize = splitter->width();
     QList<int> sizes = splitter->sizes();
@@ -41,18 +41,18 @@ void MaSplitterUtils::insertWidgetWithScale(QSplitter *splitter, int index, QWid
     splitter->setSizes(sizes);
 }
 
-void MaSplitterUtils::insertWidgetWithScale(QSplitter *splitter, QWidget *widget, qreal scale, QWidget *insertionPointMarker, int insertionPointMarkerOffset) {
+void MaSplitterUtils::insertWidgetWithScale(QSplitter* splitter, QWidget* widget, qreal scale, QWidget* insertionPointMarker, int insertionPointMarkerOffset) {
     int index = splitter->indexOf(insertionPointMarker) + insertionPointMarkerOffset;
     insertWidgetWithScale(splitter, index, widget, scale);
 }
 
 /** A constant to store the original splitter handle width. */
-static const char *CACHED_HANDLE_WIDTH_PROPERTY = "MaSplitterUtils_handle_width";
+static const char* CACHED_HANDLE_WIDTH_PROPERTY = "MaSplitterUtils_handle_width";
 
-void MaSplitterUtils::updateFixedSizeHandleStyle(QSplitter *splitter) {
+void MaSplitterUtils::updateFixedSizeHandleStyle(QSplitter* splitter) {
     int resizableWidgetCount = 0;
     for (int i = 0; i < splitter->count(); i++) {
-        QWidget *widget = splitter->widget(i);
+        QWidget* widget = splitter->widget(i);
         if (widget->sizePolicy().verticalPolicy() == QSizePolicy::Fixed) {  // Disable resizing.
             splitter->setStretchFactor(i, 0);
             splitter->handle(i)->setEnabled(false);

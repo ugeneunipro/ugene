@@ -31,17 +31,17 @@ namespace U2 {
 using namespace HI;
 class GTUtilsAnnotHighlightingTreeView {
 public:
-    static QTreeWidget *getTreeWidget(HI::GUITestOpStatus &os);
+    static QTreeWidget* getTreeWidget(HI::GUITestOpStatus& os);
 
     // returns center or item's rect
     // fails if the item wasn't found
-    static QPoint getItemCenter(HI::GUITestOpStatus &os, const QString &itemName);
-    static void click(HI::GUITestOpStatus &os, const QString &itemName);
+    static QPoint getItemCenter(HI::GUITestOpStatus& os, const QString& itemName);
+    static void click(HI::GUITestOpStatus& os, const QString& itemName);
 
-    static QTreeWidgetItem *findItem(HI::GUITestOpStatus &os, const QString &itemName, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
-    static QString getSelectedItem(HI::GUITestOpStatus &os);
+    static QTreeWidgetItem* findItem(HI::GUITestOpStatus& os, const QString& itemName, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
+    static QString getSelectedItem(HI::GUITestOpStatus& os);
 
-    static QColor getItemColor(HI::GUITestOpStatus &os, const QString &itemName);
+    static QColor getItemColor(HI::GUITestOpStatus& os, const QString& itemName);
 
     static const QString widgetName;
 };

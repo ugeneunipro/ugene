@@ -42,7 +42,7 @@
 
 namespace U2 {
 
-SecStructPredictViewAction::SecStructPredictViewAction(AnnotatedDNAView *v)
+SecStructPredictViewAction::SecStructPredictViewAction(AnnotatedDNAView* v)
     : ADVGlobalAction(v, QIcon(":core//images//ssp_logo.png"), tr("Predict secondary structure...")) {
     connect(this, SIGNAL(triggered()), SLOT(sl_execute()));
     setObjectName("Predict secondary structure");
@@ -50,14 +50,14 @@ SecStructPredictViewAction::SecStructPredictViewAction(AnnotatedDNAView *v)
 }
 
 void SecStructPredictViewAction::sl_execute() {
-    QAction *a = dynamic_cast<QAction *>(sender());
-    GObjectViewAction *viewAction = dynamic_cast<GObjectViewAction *>(a);
+    QAction* a = dynamic_cast<QAction*>(sender());
+    GObjectViewAction* viewAction = dynamic_cast<GObjectViewAction*>(a);
     SAFE_POINT(nullptr != viewAction, "NULL action", );
 
-    AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(viewAction->getObjectView());
+    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
     SAFE_POINT(nullptr != av, "NULL dna view", );
 
-    SecStructPredictAlgRegistry *sspar = AppContext::getSecStructPredictAlgRegistry();
+    SecStructPredictAlgRegistry* sspar = AppContext::getSecStructPredictAlgRegistry();
     SAFE_POINT(nullptr != sspar, "NULL SecStructPredictAlgRegistry", );
 
     if (sspar->getAlgNameList().isEmpty()) {
@@ -67,7 +67,7 @@ void SecStructPredictViewAction::sl_execute() {
         return;
     }
 
-    ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
+    ADVSequenceObjectContext* seqCtx = av->getActiveSequenceContext();
     SAFE_POINT(nullptr != seqCtx, "NULL sequence context", );
     SAFE_POINT(nullptr != seqCtx->getAlphabet(), "NULL alphabet", );
     SAFE_POINT(seqCtx->getAlphabet()->isAmino(), "Wrong alphabet", );
@@ -76,8 +76,8 @@ void SecStructPredictViewAction::sl_execute() {
     secStructDialog->exec();
 }
 
-ADVGlobalAction *SecStructPredictViewAction::createAction(AnnotatedDNAView *av) {
-    ADVGlobalAction *action = new SecStructPredictViewAction(av);
+ADVGlobalAction* SecStructPredictViewAction::createAction(AnnotatedDNAView* av) {
+    ADVGlobalAction* action = new SecStructPredictViewAction(av);
 
     return action;
 }
@@ -116,7 +116,7 @@ QString SecStructPredictUtils::getStructNameForCharTag(char tag) {
     return BioStruct3D::getSecStructTypeName(type);
 }
 
-QList<SharedAnnotationData> SecStructPredictUtils::saveAlgorithmResultsAsAnnotations(const QByteArray &predicted, const QString &annotationName) {
+QList<SharedAnnotationData> SecStructPredictUtils::saveAlgorithmResultsAsAnnotations(const QByteArray& predicted, const QString& annotationName) {
     char emptyCoil = 'C';
 
     int numAcronyms = predicted.length();

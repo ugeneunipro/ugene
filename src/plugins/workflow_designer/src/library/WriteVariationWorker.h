@@ -30,13 +30,13 @@ namespace LocalWorkflow {
 class WriteVariationWorker : public BaseDocWriter {
     Q_OBJECT
 public:
-    WriteVariationWorker(Actor *p, const DocumentFormatId &fid);
+    WriteVariationWorker(Actor* p, const DocumentFormatId& fid);
 
 protected:
-    virtual void data2doc(Document *doc, const QVariantMap &data);
-    virtual void storeEntry(IOAdapter *io, const QVariantMap &data, int entryNum);
-    virtual bool hasDataToWrite(const QVariantMap &data) const;
-    virtual QSet<GObject *> getObjectsToWrite(const QVariantMap &data) const;
+    virtual void data2doc(Document* doc, const QVariantMap& data);
+    virtual void storeEntry(IOAdapter* io, const QVariantMap& data, int entryNum);
+    virtual bool hasDataToWrite(const QVariantMap& data) const;
+    virtual QSet<GObject*> getObjectsToWrite(const QVariantMap& data) const;
 };  // WriteVariationWorker
 
 class WriteVariationWorkerFactory : public DomainFactory {
@@ -47,7 +47,7 @@ public:
         : DomainFactory(ACTOR_ID) {
     }
     static void init();
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 
 };  // WriteVariationWorkerFactory
 

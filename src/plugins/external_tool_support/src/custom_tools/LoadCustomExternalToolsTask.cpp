@@ -38,12 +38,12 @@ LoadCustomExternalToolsTask::LoadCustomExternalToolsTask()
     : Task(tr("Load custom external tools"), TaskFlag_NoRun | TaskFlag_CancelOnSubtaskCancel) {
 }
 
-const QList<CustomExternalTool *> &LoadCustomExternalToolsTask::getTools() const {
+const QList<CustomExternalTool*>& LoadCustomExternalToolsTask::getTools() const {
     return tools;
 }
 
 void LoadCustomExternalToolsTask::prepare() {
-    QList<Task *> registerTask;
+    QList<Task*> registerTask;
 
     const QString storagePath = AppContext::getAppSettings()->getUserAppsSettings()->getCustomToolsConfigsDirPath();
 
@@ -53,19 +53,19 @@ void LoadCustomExternalToolsTask::prepare() {
     dir.setNameFilters(QStringList() << "*.xml");
     QFileInfoList fileList = dir.entryInfoList();
 
-    foreach (const QFileInfo &fileInfo, fileList) {
+    foreach (const QFileInfo& fileInfo, fileList) {
         addSubTask(new RegisterCustomToolTask(fileInfo.filePath()));
     }
 }
 
-QList<Task *> LoadCustomExternalToolsTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> result;
-    RegisterCustomToolTask *registerTask = qobject_cast<RegisterCustomToolTask *>(subTask);
+QList<Task*> LoadCustomExternalToolsTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> result;
+    RegisterCustomToolTask* registerTask = qobject_cast<RegisterCustomToolTask*>(subTask);
     SAFE_POINT_EXT(nullptr != registerTask, setError("Unexpected task, can't cast it to RegisterCustomToolTask *"), result);
-    CustomExternalTool *tool = registerTask->getTool();
+    CustomExternalTool* tool = registerTask->getTool();
     CHECK(nullptr != tool, result);
     tools << tool;
     return result;
 }
 
-}    // namespace U2
+}  // namespace U2

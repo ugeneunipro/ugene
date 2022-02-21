@@ -39,15 +39,14 @@ namespace U2 {
 #define GT_METHOD_NAME "commonScenario"
 
 void GenerateAlignmentProfileDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     GTGlobals::sleep(500);
     if (counts) {
-        QRadioButton *countsRB = dialog->findChild<QRadioButton *>("countsRB");
+        QRadioButton* countsRB = dialog->findChild<QRadioButton*>("countsRB");
         GTRadioButton::click(os, countsRB);
     } else {
-        QRadioButton *percentsRB = dialog->findChild<QRadioButton *>("percentsRB");
+        QRadioButton* percentsRB = dialog->findChild<QRadioButton*>("percentsRB");
         GTRadioButton::click(os, percentsRB);
     }
 
@@ -55,20 +54,20 @@ void GenerateAlignmentProfileDialogFiller::commonScenario() {
         GTGroupBox::setChecked(os, "saveBox", dialog);
         GTGlobals::sleep(500);
 
-        QLineEdit *fileEdit = dialog->findChild<QLineEdit *>("fileEdit");
+        QLineEdit* fileEdit = dialog->findChild<QLineEdit*>("fileEdit");
         GTLineEdit::setText(os, fileEdit, filePath);
 
-        QRadioButton *formatRB = dialog->findChild<QRadioButton *>(checkBoxItems[format]);
+        QRadioButton* formatRB = dialog->findChild<QRadioButton*>(checkBoxItems[format]);
         GTRadioButton::click(os, formatRB);
     }
 
-    QCheckBox *gapCB = dialog->findChild<QCheckBox *>("gapCB");
+    QCheckBox* gapCB = dialog->findChild<QCheckBox*>("gapCB");
     GTCheckBox::setChecked(os, gapCB, gapScore);
 
-    QCheckBox *unusedCB = dialog->findChild<QCheckBox *>("unusedCB");
+    QCheckBox* unusedCB = dialog->findChild<QCheckBox*>("unusedCB");
     GTCheckBox::setChecked(os, unusedCB, symdolScore);
 
-    QCheckBox *skipGapPositionsCB = dialog->findChild<QCheckBox *>("skipGapPositionsCB");
+    QCheckBox* skipGapPositionsCB = dialog->findChild<QCheckBox*>("skipGapPositionsCB");
     GTCheckBox::setChecked(os, skipGapPositionsCB, skipGaps);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

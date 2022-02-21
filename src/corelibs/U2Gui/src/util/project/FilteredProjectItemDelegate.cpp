@@ -28,15 +28,15 @@
 
 namespace U2 {
 
-FilteredProjectItemDelegate::FilteredProjectItemDelegate(QObject *parent)
+FilteredProjectItemDelegate::FilteredProjectItemDelegate(QObject* parent)
     : QStyledItemDelegate(parent) {
 }
 
-void FilteredProjectItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
+void FilteredProjectItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const {
     QStyleOptionViewItem localOption = option;
     initStyleOption(&localOption, index);
 
-    QStyle *style = localOption.widget ? localOption.widget->style() : QApplication::style();
+    QStyle* style = localOption.widget ? localOption.widget->style() : QApplication::style();
 
     QTextDocument doc;
     doc.setHtml(localOption.text);
@@ -68,7 +68,7 @@ void FilteredProjectItemDelegate::paint(QPainter *painter, const QStyleOptionVie
     painter->restore();
 }
 
-QSize FilteredProjectItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
+QSize FilteredProjectItemDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const {
     QStyleOptionViewItem localOption = option;
     initStyleOption(&localOption, index);
 

@@ -36,11 +36,11 @@ namespace U2 {
 class ScriptEditorWidget : public QWidget {
     Q_OBJECT
 public:
-    ScriptEditorWidget(QWidget *parent, ScriptEditorType typeOfField = TEXT_EDIT);
+    ScriptEditorWidget(QWidget* parent, ScriptEditorType typeOfField = TEXT_EDIT);
 
-    void setVariablesText(const QString &variablesText);
+    void setVariablesText(const QString& variablesText);
     QString variablesText() const;
-    void setScriptText(const QString &text);
+    void setScriptText(const QString& text);
     QString scriptText() const;
     int scriptEditCursorLineNumber() const;
 
@@ -49,9 +49,9 @@ signals:
     void si_cursorPositionChanged();
 
 private:
-    QSplitter *scriptContainer;
-    QTextEdit *variablesEdit;
-    AbstractScriptEditorDelegate *scriptEdit;
+    QSplitter* scriptContainer;
+    QTextEdit* variablesEdit;
+    AbstractScriptEditorDelegate* scriptEdit;
 };
 
 }  // namespace U2

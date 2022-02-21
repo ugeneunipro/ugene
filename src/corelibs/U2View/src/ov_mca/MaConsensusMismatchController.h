@@ -36,13 +36,13 @@ class MaEditor;
 class MaConsensusMismatchController : public QObject {
     Q_OBJECT
 public:
-    MaConsensusMismatchController(QObject *p,
-                                  const QSharedPointer<MSAEditorConsensusCache> &consCache,
-                                  MaEditor *editor);
+    MaConsensusMismatchController(QObject* p,
+                                  const QSharedPointer<MSAEditorConsensusCache>& consCache,
+                                  MaEditor* editor);
     bool isMismatch(int pos) const;
 
-    QAction *getPrevMismatchAction() const;
-    QAction *getNextMismatchAction() const;
+    QAction* getPrevMismatchAction() const;
+    QAction* getNextMismatchAction() const;
 
 signals:
     void si_selectMismatch(int pos);
@@ -60,10 +60,10 @@ private:
 private:
     QBitArray mismatchCache;
     QSharedPointer<MSAEditorConsensusCache> consCache;
-    MaEditor *editor;
+    MaEditor* editor;
 
-    QAction *nextMismatch;
-    QAction *prevMismatch;
+    QAction* nextMismatch;
+    QAction* prevMismatch;
 };
 
 }  // namespace U2

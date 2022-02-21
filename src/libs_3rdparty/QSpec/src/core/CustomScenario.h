@@ -30,7 +30,7 @@ namespace HI {
 class HI_EXPORT CustomScenario {
 public:
     virtual ~CustomScenario();
-    virtual void run(HI::GUITestOpStatus &os) = 0;
+    virtual void run(HI::GUITestOpStatus& os) = 0;
 };
 
 }  // namespace HI

@@ -42,8 +42,8 @@ static const QString VISUAL_KEYWORD = "visual";
 QDDocStatement::~QDDocStatement() {
 }
 
-QString QDDocStatement::getAttribute(const QString &name) const {
-    foreach (const StringAttribute &attr, attributes) {
+QString QDDocStatement::getAttribute(const QString& name) const {
+    foreach (const StringAttribute& attr, attributes) {
         if (attr.first == name) {
             return attr.second;
         }
@@ -51,10 +51,10 @@ QString QDDocStatement::getAttribute(const QString &name) const {
     return QString();
 }
 
-void QDDocStatement::setAttribute(const QString &name, const QString &value) {
+void QDDocStatement::setAttribute(const QString& name, const QString& value) {
     assert(!name.contains(' '));
     for (int i = 0; i < attributes.size(); i++) {
-        StringAttribute &attr = attributes[i];
+        StringAttribute& attr = attributes[i];
         if (attr.first == name) {
             attr.second = value;
             return;
@@ -67,7 +67,7 @@ void QDDocStatement::setAttribute(const QString &name, const QString &value) {
 QString QDDocStatement::toString() const {
     int strLen = evalStringLen();
     QString res;
-    foreach (const StringAttribute &attr, attributes) {
+    foreach (const StringAttribute& attr, attributes) {
         if (strLen > STRING_MAX_LEN) {
             res += "\n";
             res += DOUBLE_TEXT_OFFSET;
@@ -86,7 +86,7 @@ QString QDDocStatement::toString() const {
 
 int QDDocStatement::evalStringLen() const {
     int res = 0;
-    foreach (const StringAttribute &attr, attributes) {
+    foreach (const StringAttribute& attr, attributes) {
         res += attr.first.length() + attr.second.length() + 2;
     }
     return res;
@@ -152,8 +152,8 @@ QDDocument::~QDDocument() {
     qDeleteAll(links);
 }
 
-QDElementStatement *QDDocument::getElement(const QString &id) const {
-    foreach (QDElementStatement *stmt, elements) {
+QDElementStatement* QDDocument::getElement(const QString& id) const {
+    foreach (QDElementStatement* stmt, elements) {
         if (stmt->getId() == id) {
             return stmt;
         }
@@ -161,9 +161,9 @@ QDElementStatement *QDDocument::getElement(const QString &id) const {
     return nullptr;
 }
 
-QList<QDElementStatement *> QDDocument::getElements(QDStatementType type) const {
-    QList<QDElementStatement *> res;
-    foreach (QDElementStatement *stmt, elements) {
+QList<QDElementStatement*> QDDocument::getElements(QDStatementType type) const {
+    QList<QDElementStatement*> res;
+    foreach (QDElementStatement* stmt, elements) {
         if (stmt->getType() == type) {
             res.append(stmt);
         }
@@ -173,21 +173,21 @@ QList<QDElementStatement *> QDDocument::getElements(QDStatementType type) const 
 
 QByteArray QDDocument::toByteArray() const {
     QString content;
-    foreach (QDElementStatement *el, getElements(Group)) {
+    foreach (QDElementStatement* el, getElements(Group)) {
         if (el->getId() == GROUPS_SECTION) {
             continue;
         }
         content += el->toString() + "\n";
     }
     content += "\n";
-    foreach (QDLinkStatement *lnk, getLinks()) {
+    foreach (QDLinkStatement* lnk, getLinks()) {
         content += lnk->toString() + "\n";
     }
     content += "\n";
     QString txtOffset = QString(TEXT_OFFSET);
     content += txtOffset + META_KEYWORD + BLOCK_START + "\n";
     content += txtOffset + txtOffset + VISUAL_KEYWORD + BLOCK_START + "\n";
-    foreach (QDElementStatement *el, getElements(Element)) {
+    foreach (QDElementStatement* el, getElements(Element)) {
         content += txtOffset + txtOffset + txtOffset;
         content += el->toString() + "\n";
     }
@@ -207,7 +207,7 @@ QByteArray QDDocument::toByteArray() const {
         content += " \n";
     }
 
-    QDElementStatement *grEl = getElement(GROUPS_SECTION);
+    QDElementStatement* grEl = getElement(GROUPS_SECTION);
     if (grEl) {
         content += txtOffset + grEl->toString() + "\n";
     }
@@ -219,7 +219,7 @@ QByteArray QDDocument::toByteArray() const {
     return content.toUtf8();
 }
 
-bool QDDocument::setContent(const QString &content) {
+bool QDDocument::setContent(const QString& content) {
     QRegExp reg(DOC_NAME_PATTERN);
     reg.indexIn(content);
     docName = reg.cap(1);
@@ -235,7 +235,7 @@ bool QDDocument::setContent(const QString &content) {
     return true;
 }
 
-void QDDocument::parseSchemaStrand(const QString &str) {
+void QDDocument::parseSchemaStrand(const QString& str) {
     QRegExp reg(SCHEMA_STRAND_PATTERN);
     int pos = reg.indexIn(str);
     if (pos >= 0) {
@@ -246,7 +246,7 @@ void QDDocument::parseSchemaStrand(const QString &str) {
     }
 }
 
-void QDDocument::findComments(const QString &str) {
+void QDDocument::findComments(const QString& str) {
     QRegExp reg("((?:#[^\n]*\n{1,1})+)\\s*" + GRAPH_KEYWORD);
     int pos = reg.indexIn(str);
     if (pos >= 0) {
@@ -259,15 +259,15 @@ void QDDocument::findComments(const QString &str) {
     }
 }
 
-void QDDocument::parseOrder(const QString &str) {
+void QDDocument::parseOrder(const QString& str) {
     order.clear();
     order = str.trimmed().split(QRegExp("\\s*;\\s*"));
 }
 
-bool QDDocument::addElement(QDElementStatement *el) {
+bool QDDocument::addElement(QDElementStatement* el) {
     QDStatementType elType = el->getType();
-    const QString &elId = el->getId();
-    foreach (QDElementStatement *stmt, elements) {
+    const QString& elId = el->getId();
+    foreach (QDElementStatement* stmt, elements) {
         if (stmt->getId() == elId && stmt->getType() == elType) {
             return false;
         }
@@ -278,7 +278,7 @@ bool QDDocument::addElement(QDElementStatement *el) {
     return true;
 }
 
-void QDDocument::findImportedUrls(const QString &str) {
+void QDDocument::findImportedUrls(const QString& str) {
     QRegExp reg(IMPORT_PATTERN);
     int pos = 0;
     while (pos >= 0) {
@@ -291,7 +291,7 @@ void QDDocument::findImportedUrls(const QString &str) {
     }
 }
 
-bool QDDocument::findElementStatements(const QString &str) {
+bool QDDocument::findElementStatements(const QString& str) {
     QRegExp reg;
     reg.setPattern(ELEMENT_STATEMENT_PATTERN);
     int pos = 0;
@@ -302,22 +302,22 @@ bool QDDocument::findElementStatements(const QString &str) {
             QString ch2 = QString(str.at(pos-1));
             QString ch3 = QString(str.at(pos+1));*/
             pos += reg.matchedLength();
-            const QString &id = reg.cap(1);
-            const QString &attrs = reg.cap(2);
+            const QString& id = reg.cap(1);
+            const QString& attrs = reg.cap(2);
             if (id == ORDER_KEYWORD) {
                 parseOrder(attrs);
                 continue;
             }
-            const QMap<QString, QString> &attrsMap = string2attributesMap(attrs);
+            const QMap<QString, QString>& attrsMap = string2attributesMap(attrs);
             QDStatementType type;
             if (id.contains('.')) {
                 type = Element;
             } else {
                 type = Group;
             }
-            QDElementStatement *element = new QDElementStatement(id, type);
-            foreach (const QString &attrName, attrsMap.keys()) {
-                const QString &val = attrsMap.value(attrName);
+            QDElementStatement* element = new QDElementStatement(id, type);
+            foreach (const QString& attrName, attrsMap.keys()) {
+                const QString& val = attrsMap.value(attrName);
                 element->setAttribute(attrName, val);
             }
             addElement(element);
@@ -326,21 +326,21 @@ bool QDDocument::findElementStatements(const QString &str) {
     return true;
 }
 
-bool QDDocument::findLinkStatements(const QString &str) {
+bool QDDocument::findLinkStatements(const QString& str) {
     QRegExp reg(LINK_STATEMENT_PATTERN);
     int pos = 0;
     while (pos >= 0) {
         pos = reg.indexIn(str, pos);
         if (pos >= 0) {
             pos += reg.matchedLength();
-            const QString &elemS = reg.cap(1);
-            const QList<QString> &elIds = idsFromString(elemS);
-            QDLinkStatement *link = new QDLinkStatement(elIds);
+            const QString& elemS = reg.cap(1);
+            const QList<QString>& elIds = idsFromString(elemS);
+            QDLinkStatement* link = new QDLinkStatement(elIds);
             int capCount = reg.captureCount();
-            const QString &attrs = reg.cap(capCount);
-            const QMap<QString, QString> &attrsMap = string2attributesMap(attrs);
-            foreach (const QString &attrName, attrsMap.keys()) {
-                const QString &val = attrsMap.value(attrName);
+            const QString& attrs = reg.cap(capCount);
+            const QMap<QString, QString>& attrsMap = string2attributesMap(attrs);
+            foreach (const QString& attrName, attrsMap.keys()) {
+                const QString& val = attrsMap.value(attrName);
                 link->setAttribute(attrName, val);
             }
             addLink(link);
@@ -349,14 +349,14 @@ bool QDDocument::findLinkStatements(const QString &str) {
     return true;
 }
 
-QMap<QString, QString> QDDocument::string2attributesMap(const QString &str) {
+QMap<QString, QString> QDDocument::string2attributesMap(const QString& str) {
     QMap<QString, QString> res;
     QRegExp reg(ID_PATTERN + "\\s*:\\s*" + VAL_PATTERN);
     int pos = 0;
     while (pos >= 0) {
         pos = reg.indexIn(str, pos);
         if (pos >= 0) {
-            const QString &attrName = reg.cap(1);
+            const QString& attrName = reg.cap(1);
             QString attrVal = reg.cap(2);
             attrVal.remove('"');
             res[attrName] = attrVal;
@@ -366,12 +366,12 @@ QMap<QString, QString> QDDocument::string2attributesMap(const QString &str) {
     return res;
 }
 
-QList<QString> QDDocument::idsFromString(const QString &str) {
+QList<QString> QDDocument::idsFromString(const QString& str) {
     return str.split(QRegExp("\\s*--\\s*"));
 }
 
-QString QDDocument::definedIn(const QString &id) {
-    const QStringList &chunks = id.split('.');
+QString QDDocument::definedIn(const QString& id) {
+    const QStringList& chunks = id.split('.');
     if (chunks.size() < 3) {
         return QString();
     } else {
@@ -381,7 +381,7 @@ QString QDDocument::definedIn(const QString &id) {
     }
 }
 
-QString QDDocument::getLocalName(const QString &id) {
+QString QDDocument::getLocalName(const QString& id) {
     if (id.contains('.')) {
         int dotPos = id.indexOf('.');
         return id.mid(dotPos + 1);
@@ -389,17 +389,17 @@ QString QDDocument::getLocalName(const QString &id) {
     return id;
 }
 
-QDElementStatement *QDDocument::findElementByUnitName(QDElementStatement *parent, const QString &unitName) const {
+QDElementStatement* QDDocument::findElementByUnitName(QDElementStatement* parent, const QString& unitName) const {
     return getElement(parent->getId() + "." + unitName);
 }
 
-void QDDocument::saveOrder(const QList<QDActor *> &actors) {
-    foreach (QDActor *a, actors) {
+void QDDocument::saveOrder(const QList<QDActor*>& actors) {
+    foreach (QDActor* a, actors) {
         order.append(a->getParameters()->getLabel());
     }
 }
 
-bool QDDocument::isHeaderLine(const QString &line) {
+bool QDDocument::isHeaderLine(const QString& line) {
     return (line.startsWith(HEADER_LINE) ||
             line.startsWith(DEPRECATED_HEADER_LINE));
 }
@@ -421,7 +421,7 @@ QString QDIdMapper::distance2string(QDDistanceType type) {
     }
 }
 
-int QDIdMapper::string2distance(const QString &str) {
+int QDIdMapper::string2distance(const QString& str) {
     if (str == "end-to-start") {
         return 0;
     }
@@ -437,14 +437,14 @@ int QDIdMapper::string2distance(const QString &str) {
     return -1;
 }
 
-QDConstraintType QDIdMapper::string2constraintType(const QString &str) {
+QDConstraintType QDIdMapper::string2constraintType(const QString& str) {
     if (str == "distance") {
         return QDConstraintTypes::DISTANCE;
     }
     return QString();
 }
 
-QString QDIdMapper::constraintType2string(const QDConstraintType &type) {
+QString QDIdMapper::constraintType2string(const QDConstraintType& type) {
     if (type == QDConstraintTypes::DISTANCE) {
         return "distance";
     }

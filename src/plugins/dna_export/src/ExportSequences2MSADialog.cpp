@@ -32,7 +32,7 @@
 
 namespace U2 {
 
-ExportSequences2MSADialog::ExportSequences2MSADialog(QWidget *p, const QString &defaultUrl)
+ExportSequences2MSADialog::ExportSequences2MSADialog(QWidget* p, const QString& defaultUrl)
     : QDialog(p), Ui_ExportSequences2MSADialog(),
       saveController(nullptr) {
     setupUi(this);
@@ -61,7 +61,7 @@ void ExportSequences2MSADialog::accept() {
     QDialog::accept();
 }
 
-void ExportSequences2MSADialog::initSaveController(const QString &defaultUrl) {
+void ExportSequences2MSADialog::initSaveController(const QString& defaultUrl) {
     SaveDocumentControllerConfig config;
     config.defaultFileName = defaultUrl;
     config.defaultFormatId = BaseDocumentFormats::CLUSTAL_ALN;
@@ -77,11 +77,11 @@ void ExportSequences2MSADialog::initSaveController(const QString &defaultUrl) {
     saveController = new SaveDocumentController(config, formatConstraints, this);
 }
 
-void ExportSequences2MSADialog::setOkButtonText(const QString &text) const {
+void ExportSequences2MSADialog::setOkButtonText(const QString& text) const {
     okButton->setText(text);
 }
 
-void ExportSequences2MSADialog::setFileLabelText(const QString &text) const {
+void ExportSequences2MSADialog::setFileLabelText(const QString& text) const {
     fileLabel->setText(text);
 }
 

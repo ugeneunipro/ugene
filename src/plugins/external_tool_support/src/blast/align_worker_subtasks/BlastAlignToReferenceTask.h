@@ -82,31 +82,31 @@ struct AlignToReferenceResult {
 class BlastAlignToReferenceMuxTask : public Task {
     Q_OBJECT
 public:
-    BlastAlignToReferenceMuxTask(const QString &blastDbPath,
-                                 const QList<SharedDbiDataHandler> &reads,
-                                 const SharedDbiDataHandler &reference,
-                                 const QMap<SharedDbiDataHandler, QString> &readRenameMap,
-                                 DbiDataStorage *storage);
+    BlastAlignToReferenceMuxTask(const QString& blastDbPath,
+                                 const QList<SharedDbiDataHandler>& reads,
+                                 const SharedDbiDataHandler& reference,
+                                 const QMap<SharedDbiDataHandler, QString>& readRenameMap,
+                                 DbiDataStorage* storage);
 
     void prepare() override;
 
-    QList<Task *> onSubTaskFinished(Task *task) override;
+    QList<Task*> onSubTaskFinished(Task* task) override;
 
     ReportResult report() override;
 
     /** Returns list of pairwise alignments of reads to reference. */
-    const QList<AlignToReferenceResult> &getAlignmentResults() const;
+    const QList<AlignToReferenceResult>& getAlignmentResults() const;
 
 private:
     /** Creates new subtask to process the specified range of reads. */
-    BlastAlignToReferenceTask *createNewSubtask(const U2Region &readsRange) const;
+    BlastAlignToReferenceTask* createNewSubtask(const U2Region& readsRange) const;
 
     const QString blastDbPath;
     const QList<SharedDbiDataHandler> reads;
     const SharedDbiDataHandler reference;
     const QMap<SharedDbiDataHandler, QString> readRenameMap;
 
-    DbiDataStorage *const storage;
+    DbiDataStorage* const storage;
 
     /** List of pending read regions to run blast tasks. */
     QList<U2Region> readsRangePerSubtask;
@@ -124,20 +124,20 @@ private:
 class BlastAlignToReferenceTask : public Task {
     Q_OBJECT
 public:
-    BlastAlignToReferenceTask(const QString &blastDbPath,
-                              const QList<SharedDbiDataHandler> &reads,
-                              const SharedDbiDataHandler &reference,
-                              const QMap<SharedDbiDataHandler, QString> &readRenameMap,
-                              DbiDataStorage *storage,
-                              const QString &taskNameSuffix = "");
+    BlastAlignToReferenceTask(const QString& blastDbPath,
+                              const QList<SharedDbiDataHandler>& reads,
+                              const SharedDbiDataHandler& reference,
+                              const QMap<SharedDbiDataHandler, QString>& readRenameMap,
+                              DbiDataStorage* storage,
+                              const QString& taskNameSuffix = "");
 
     /** Returns list of pairwise alignments of reads to reference. */
-    const QList<AlignToReferenceResult> &getAlignmentResults() const;
+    const QList<AlignToReferenceResult>& getAlignmentResults() const;
 
 private:
     void prepare() override;
 
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     ReportResult report() override;
 
@@ -145,33 +145,33 @@ private:
      * Creates MSA object with 2 sequences: read & region of the reference sequence.
      * The MSA is created in the "storage" and must be cleaned up by the caller.
      */
-    static MultipleSequenceAlignmentObject *createPairwiseAlignment(U2OpStatus &os,
-                                                                    const U2DbiRef &dbiRef,
-                                                                    const DNASequence &referenceSequence,
-                                                                    const DNASequence &readSequence,
-                                                                    const DNAAlphabet *alphabet,
-                                                                    const AlignToReferenceResult &alignmentResult);
+    static MultipleSequenceAlignmentObject* createPairwiseAlignment(U2OpStatus& os,
+                                                                    const U2DbiRef& dbiRef,
+                                                                    const DNASequence& referenceSequence,
+                                                                    const DNASequence& readSequence,
+                                                                    const DNAAlphabet* alphabet,
+                                                                    const AlignToReferenceResult& alignmentResult);
 
-    static AbstractAlignmentTaskFactory *getAbstractAlignmentTaskFactory(const QString &algoId, const QString &implId, U2OpStatus &os);
+    static AbstractAlignmentTaskFactory* getAbstractAlignmentTaskFactory(const QString& algoId, const QString& implId, U2OpStatus& os);
 
     /** Fills related fields in 'alignResult' using 'blastResult' info. */
-    static void convertBlastResultToAlignmentResult(const SharedAnnotationData &blastResult, AlignToReferenceResult &alignResult);
+    static void convertBlastResultToAlignmentResult(const SharedAnnotationData& blastResult, AlignToReferenceResult& alignResult);
 
     /** Picks reference region for a slow pairwise alignment based on the blast result reference/read match regions. */
-    static void assignReferencePairwiseAlignmentRegion(AlignToReferenceResult &alignResult, int readLength, int referenceLength);
+    static void assignReferencePairwiseAlignmentRegion(AlignToReferenceResult& alignResult, int readLength, int referenceLength);
 
     const QString dbPath;
     const QList<SharedDbiDataHandler> reads;
     const SharedDbiDataHandler reference;
     const QMap<SharedDbiDataHandler, QString> readRenameMap;
 
-    DbiDataStorage *const storage;
+    DbiDataStorage* const storage;
 
     /** Final and complete alignment results with identityPercent >= minIdentityPercent. */
     QList<AlignToReferenceResult> alignmentResults;
 
     /** Map of alignment result by read sequence data id. */
-    QMap<U2DataId, AlignToReferenceResult *> alignmentResultByRead;
+    QMap<U2DataId, AlignToReferenceResult*> alignmentResultByRead;
     QMap<U2DataId, U2EntityRef> pairwiseMsaByRead;
 
     /** Keeps mapping of read index -> blast query sequence index. Used because not all reads are passed to BLAST, but only validated ones. */

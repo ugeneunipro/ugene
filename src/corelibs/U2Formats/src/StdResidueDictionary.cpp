@@ -33,8 +33,8 @@ namespace U2 {
 QMutex StdResidueDictionary::standardDictionaryLock;
 QScopedPointer<StdResidueDictionary> StdResidueDictionary::standardDictionary(nullptr);
 
-bool StdResidueDictionary::load(const QString &fileName) {
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+bool StdResidueDictionary::load(const QString& fileName) {
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
 
     if (!iof) {
         return false;
@@ -49,7 +49,7 @@ bool StdResidueDictionary::load(const QString &fileName) {
 
     U2OpStatus2Log ti;
     ASNFormat::AsnParser asnParser(io.data(), ti);
-    AsnNode *rootElem = asnParser.loadAsnTree();
+    AsnNode* rootElem = asnParser.loadAsnTree();
     if (ti.hasError()) {
         return false;
     }
@@ -61,8 +61,8 @@ bool StdResidueDictionary::load(const QString &fileName) {
 
 #define STD_DICT_FILE_NAME ":format/datafiles/MMDBStdResidueDict"
 
-StdResidueDictionary *StdResidueDictionary::createStandardDictionary() {
-    StdResidueDictionary *stdDictionary = new StdResidueDictionary();
+StdResidueDictionary* StdResidueDictionary::createStandardDictionary() {
+    StdResidueDictionary* stdDictionary = new StdResidueDictionary();
     if (!stdDictionary->load(STD_DICT_FILE_NAME)) {
         return nullptr;
     }
@@ -74,7 +74,7 @@ StdResidueDictionary *StdResidueDictionary::createStandardDictionary() {
     return stdDictionary;
 }
 
-void buildStdAtomFromNode(AsnNode *atomNode, StdAtom &atom) {
+void buildStdAtomFromNode(AsnNode* atomNode, StdAtom& atom) {
     /*
         Atom ::= SEQUENCE {
             id			Atom-id,
@@ -95,7 +95,7 @@ void buildStdAtomFromNode(AsnNode *atomNode, StdAtom &atom) {
     atom.atomicNum = PDBFormat::getElementNumberByName(elementName.toUpper());
 }
 
-void buildStdResidueFromNode(AsnNode *residueNode, StdResidue &residue) {
+void buildStdResidueFromNode(AsnNode* residueNode, StdResidue& residue) {
     /*
         Residue-graph ::= SEQUENCE {
             id			Residue-graph-id,
@@ -114,7 +114,7 @@ void buildStdResidueFromNode(AsnNode *residueNode, StdResidue &residue) {
     // we are making some assumptions about children indexes due to real file contents
 
     // Load residue name
-    AsnNode *descrNode = residueNode->getChildById(1);
+    AsnNode* descrNode = residueNode->getChildById(1);
     residue.name = descrNode->getChildById(0)->value;
 
     // Load residue type
@@ -122,12 +122,12 @@ void buildStdResidueFromNode(AsnNode *residueNode, StdResidue &residue) {
     residue.type = StdResidueDictionary::getResidueTypeByName(residueTypeName);
 
     // Load residue code
-    AsnNode *codeNode = residueNode->getChildById(3);
+    AsnNode* codeNode = residueNode->getChildById(3);
     residue.code = codeNode->getChildById(0)->value.at(0);
 
     // Load residue atoms
-    AsnNode *atomsNode = residueNode->getChildById(4);
-    foreach (AsnNode *node, atomsNode->children) {
+    AsnNode* atomsNode = residueNode->getChildById(4);
+    foreach (AsnNode* node, atomsNode->children) {
         bool ok = false;
         int atomId = node->getChildById(0)->value.toInt(&ok);
         Q_ASSERT(ok == true);
@@ -137,8 +137,8 @@ void buildStdResidueFromNode(AsnNode *residueNode, StdResidue &residue) {
     }
 
     // Load intra residue bonds
-    AsnNode *bondsNode = residueNode->getChildById(5);
-    foreach (AsnNode *node, bondsNode->children) {
+    AsnNode* bondsNode = residueNode->getChildById(5);
+    foreach (AsnNode* node, bondsNode->children) {
         StdBond bond;
         bool id1OK = false, id2OK = false;
         bond.atom1Id = node->getChildById(0)->value.toInt(&id1OK);
@@ -148,7 +148,7 @@ void buildStdResidueFromNode(AsnNode *residueNode, StdResidue &residue) {
     }
 }
 
-void StdResidueDictionary::buildDictionaryFromAsnTree(AsnNode *rootElem) {
+void StdResidueDictionary::buildDictionaryFromAsnTree(AsnNode* rootElem) {
     /*
         Biostruc-residue-graph-set ::= SEQUENCE {
             id			    SEQUENCE OF Biostruc-id OPTIONAL,
@@ -162,10 +162,10 @@ void StdResidueDictionary::buildDictionaryFromAsnTree(AsnNode *rootElem) {
         }
     */
 
-    AsnNode *resGraphsNode = rootElem->findChildByName("residue-graphs");
+    AsnNode* resGraphsNode = rootElem->findChildByName("residue-graphs");
 
     // Load residues
-    foreach (AsnNode *child, resGraphsNode->children) {
+    foreach (AsnNode* child, resGraphsNode->children) {
         bool ok = false;
         int id = child->getChildById(0)->value.toInt(&ok);
         Q_ASSERT(ok == true);
@@ -175,7 +175,7 @@ void StdResidueDictionary::buildDictionaryFromAsnTree(AsnNode *rootElem) {
     }
 }
 
-U2::ResidueType StdResidueDictionary::getResidueTypeByName(const QByteArray &name) {
+U2::ResidueType StdResidueDictionary::getResidueTypeByName(const QByteArray& name) {
     if (name == "amino-acid") {
         return AMINO_ACID;
     } else if (name == "deoxyribonucleotide") {
@@ -194,14 +194,14 @@ bool StdResidueDictionary::validate() const {
 #ifdef DEBUG
     Q_ASSERT(residues.count() == 84);
 
-    const StdResidue &asp = residues.value(10);
+    const StdResidue& asp = residues.value(10);
     Q_ASSERT(asp.name == "ASP");
     Q_ASSERT(asp.code == 'D');
     Q_ASSERT(asp.type == AMINO_ACID);
     Q_ASSERT(asp.atoms.count() == 14);
 
     const QHash<int, StdAtom> aspAtoms = asp.atoms;
-    const StdAtom &atom = aspAtoms.value(5);
+    const StdAtom& atom = aspAtoms.value(5);
     Q_ASSERT(atom.name == "H");
     Q_ASSERT(atom.atomicNum == 1);
 #endif
@@ -209,7 +209,7 @@ bool StdResidueDictionary::validate() const {
     return true;
 }
 
-const StdResidueDictionary *StdResidueDictionary::getStandardDictionary() {
+const StdResidueDictionary* StdResidueDictionary::getStandardDictionary() {
     QMutexLocker locker(&standardDictionaryLock);
     if (standardDictionary.isNull()) {
         standardDictionary.reset(createStandardDictionary());
@@ -225,15 +225,15 @@ const StdResidue StdResidueDictionary::getResidueById(int id) const {
     return residues.value(id);
 }
 
-StdResidueDictionary *StdResidueDictionary::createFromAsnTree(AsnNode *rootElem) {
-    AsnNode *resGraphsNode = ASNFormat::findFirstNodeByName(rootElem, "residue-graphs");
+StdResidueDictionary* StdResidueDictionary::createFromAsnTree(AsnNode* rootElem) {
+    AsnNode* resGraphsNode = ASNFormat::findFirstNodeByName(rootElem, "residue-graphs");
     if (resGraphsNode == nullptr) {
         return nullptr;
     }
 
-    StdResidueDictionary *localDictionary = new StdResidueDictionary();
+    StdResidueDictionary* localDictionary = new StdResidueDictionary();
     // Load residues
-    foreach (AsnNode *child, resGraphsNode->children) {
+    foreach (AsnNode* child, resGraphsNode->children) {
         bool ok = false;
         int id = child->getChildById(0)->value.toInt(&ok);
         Q_ASSERT(ok == true);

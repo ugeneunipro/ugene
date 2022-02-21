@@ -32,7 +32,7 @@ public:
     static void showLibrary();
 
 private:
-    PrimerLibraryMdiWindow(const QString &title);
+    PrimerLibraryMdiWindow(const QString& title);
 
 private slots:
     void sl_closeWindow();

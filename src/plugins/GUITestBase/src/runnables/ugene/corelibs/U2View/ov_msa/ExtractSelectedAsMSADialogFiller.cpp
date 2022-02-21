@@ -36,9 +36,9 @@ using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExtractSelectedAsMSADialogFiller"
 #define GT_METHOD_NAME "run"
-ExtractSelectedAsMSADialogFiller::ExtractSelectedAsMSADialogFiller(GUITestOpStatus &os,
-                                                                   const QString &_filepath,
-                                                                   const QStringList &selectedSequenceNameList,
+ExtractSelectedAsMSADialogFiller::ExtractSelectedAsMSADialogFiller(GUITestOpStatus& os,
+                                                                   const QString& _filepath,
+                                                                   const QStringList& selectedSequenceNameList,
                                                                    int _from,
                                                                    int _to,
                                                                    bool _addToProj,
@@ -46,7 +46,7 @@ ExtractSelectedAsMSADialogFiller::ExtractSelectedAsMSADialogFiller(GUITestOpStat
                                                                    bool _allButtonPress,
                                                                    bool _noneButtonPress,
                                                                    bool _dontCheckFilepath,
-                                                                   const QString &format,
+                                                                   const QString& format,
                                                                    bool useDefaultSequenceSelectionFlag)
     : Filler(os, "CreateSubalignmentDialog"),
       filepath(_filepath),
@@ -62,7 +62,7 @@ ExtractSelectedAsMSADialogFiller::ExtractSelectedAsMSADialogFiller(GUITestOpStat
       useDefaultSequenceSelection(useDefaultSequenceSelectionFlag) {
 }
 
-ExtractSelectedAsMSADialogFiller::ExtractSelectedAsMSADialogFiller(GUITestOpStatus &os, CustomScenario *c)
+ExtractSelectedAsMSADialogFiller::ExtractSelectedAsMSADialogFiller(GUITestOpStatus& os, CustomScenario* c)
     : Filler(os, "CreateSubalignmentDialog", c),
       from(0),
       to(0),
@@ -75,7 +75,7 @@ ExtractSelectedAsMSADialogFiller::ExtractSelectedAsMSADialogFiller(GUITestOpStat
 }
 
 void ExtractSelectedAsMSADialogFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (from) {
         GTLineEdit::setText(os, "startLineEdit", QString::number(from), dialog);
@@ -121,8 +121,8 @@ void ExtractSelectedAsMSADialogFiller::commonScenario() {
         GTMouseDriver::moveTo(p);
         GTMouseDriver::click();
         for (int i = 0; i < table->rowCount(); i++) {
-            for (const QString &sequenceName : qAsConst(sequenceNameList)) {
-                auto box = qobject_cast<QCheckBox *>(table->cellWidget(i, 0));
+            for (const QString& sequenceName : qAsConst(sequenceNameList)) {
+                auto box = qobject_cast<QCheckBox*>(table->cellWidget(i, 0));
                 GT_CHECK(box != nullptr, "Not a QCheckBox cell");
                 if (sequenceName == box->text()) {
                     GT_CHECK(box->isEnabled(), QString("%1 box is disabled").arg(box->text()));
@@ -138,13 +138,13 @@ void ExtractSelectedAsMSADialogFiller::commonScenario() {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSelectedSequences"
-QStringList ExtractSelectedAsMSADialogFiller::getSequences(HI::GUITestOpStatus &os, bool selected) {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+QStringList ExtractSelectedAsMSADialogFiller::getSequences(HI::GUITestOpStatus& os, bool selected) {
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
     QStringList result;
 
-    QTableWidget *sequencesTableWidget = GTWidget::findExactWidget<QTableWidget *>(os, "sequencesTableWidget", dialog);
+    QTableWidget* sequencesTableWidget = GTWidget::findTableWidget(os, "sequencesTableWidget", dialog);
     for (int i = 0; i < sequencesTableWidget->rowCount(); i++) {
-        QCheckBox *box = qobject_cast<QCheckBox *>(sequencesTableWidget->cellWidget(i, 0));
+        QCheckBox* box = qobject_cast<QCheckBox*>(sequencesTableWidget->cellWidget(i, 0));
         GT_CHECK_RESULT(box != nullptr, "cell widget is not checkbox", QStringList());
         if (box->isChecked() == selected) {
             result << box->text();

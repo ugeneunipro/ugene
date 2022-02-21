@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-TabulatedFormatReader::TabulatedFormatReader(U2OpStatus &os, IOAdapter *ioAdapter)
+TabulatedFormatReader::TabulatedFormatReader(U2OpStatus& os, IOAdapter* ioAdapter)
     : ioAdapter(ioAdapter),
       currentLine(0) {
     CHECK_EXT(nullptr != ioAdapter, os.setError(L10N::nullPointerError("IO adapter")), );
@@ -51,7 +51,7 @@ qint64 TabulatedFormatReader::getCurrentLineNumber() const {
     return currentLine;
 }
 
-const QStringList &TabulatedFormatReader::getComments() const {
+const QStringList& TabulatedFormatReader::getComments() const {
     return comments;
 }
 
@@ -77,11 +77,11 @@ QString TabulatedFormatReader::read() {
     return line;
 }
 
-bool TabulatedFormatReader::isComment(const QString &line) {
+bool TabulatedFormatReader::isComment(const QString& line) {
     return line.startsWith('#');
 }
 
-void TabulatedFormatReader::storeLine(const QString &line) {
+void TabulatedFormatReader::storeLine(const QString& line) {
     if (isComment(line)) {
         comments << line;
     } else {

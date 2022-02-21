@@ -30,7 +30,7 @@ namespace U2 {
 
 #define DB_XREF_FILE_NAME "DBXRefRegistry.txt"
 
-DBXRefRegistry::DBXRefRegistry(QObject *p)
+DBXRefRegistry::DBXRefRegistry(QObject* p)
     : QObject(p) {
     QFile file(QString(PATH_PREFIX_DATA) + ":" + DB_XREF_FILE_NAME);
 
@@ -54,20 +54,20 @@ DBXRefRegistry::DBXRefRegistry(QObject *p)
     }
     file.close();
 }
-QScriptValue DBXRefRegistry::toScriptValue(QScriptEngine *engine, DBXRefRegistry *const &in) {
+QScriptValue DBXRefRegistry::toScriptValue(QScriptEngine* engine, DBXRefRegistry* const& in) {
     return engine->newQObject(in);
 }
 
-void DBXRefRegistry::fromScriptValue(const QScriptValue &object, DBXRefRegistry *&out) {
-    out = qobject_cast<DBXRefRegistry *>(object.toQObject());
+void DBXRefRegistry::fromScriptValue(const QScriptValue& object, DBXRefRegistry*& out) {
+    out = qobject_cast<DBXRefRegistry*>(object.toQObject());
 }
 
-void DBXRefRegistry::setupToEngine(QScriptEngine *engine) {
+void DBXRefRegistry::setupToEngine(QScriptEngine* engine) {
     DBXRefInfo::setupToEngine(engine);
     qScriptRegisterMetaType(engine, toScriptValue, fromScriptValue);
 }
 
-QScriptValue DBXRefInfo::toScriptValue(QScriptEngine *engine, DBXRefInfo const &in) {
+QScriptValue DBXRefInfo::toScriptValue(QScriptEngine* engine, DBXRefInfo const& in) {
     QScriptValue res = engine->newObject();
     res.setProperty("name", QScriptValue(engine, in.name));
     res.setProperty("url", QScriptValue(engine, in.url));
@@ -76,12 +76,12 @@ QScriptValue DBXRefInfo::toScriptValue(QScriptEngine *engine, DBXRefInfo const &
     return res;
 }
 
-void DBXRefInfo::fromScriptValue(const QScriptValue &object, DBXRefInfo &out) {
-    DBXRefInfo *info = dynamic_cast<DBXRefInfo *>(object.toQObject());
+void DBXRefInfo::fromScriptValue(const QScriptValue& object, DBXRefInfo& out) {
+    DBXRefInfo* info = dynamic_cast<DBXRefInfo*>(object.toQObject());
     out = nullptr != info ? *info : DBXRefInfo();
 }
 
-void DBXRefInfo::setupToEngine(QScriptEngine *engine) {
+void DBXRefInfo::setupToEngine(QScriptEngine* engine) {
     qScriptRegisterMetaType(engine, toScriptValue, fromScriptValue);
 }
 

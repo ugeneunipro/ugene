@@ -73,7 +73,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsDialog::checkNoActiveWaiters(os);
 
     // Expected state: Dot plot view has closed.
-    QWidget *w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
+    QWidget* w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
     CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 GUI_TEST_CLASS_DEFINITION(test_0011_1) {
@@ -89,7 +89,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "dotplot widget"));
     GTUtilsDialog::checkNoActiveWaiters(os);
 
-    QWidget *w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
+    QWidget* w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
     CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 
@@ -105,7 +105,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {  // commit DotPlotWidget.cpp exitButton
     GTWidget::click(os, GTWidget::findWidget(os, "exitButton"));
     GTUtilsDialog::checkNoActiveWaiters(os);
 
-    QWidget *w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
+    QWidget* w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
     CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 GUI_TEST_CLASS_DEFINITION(test_0011_3) {
@@ -121,7 +121,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
     GTWidget::click(os, GTWidget::findWidget(os, "exitButton"));
     GTUtilsDialog::checkNoActiveWaiters(os);
 
-    QWidget *w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
+    QWidget* w = GTWidget::findWidget(os, "dotplot widget", nullptr, {false});
     CHECK_SET_ERR(w == nullptr, "Dotplot not deleted");
 }
 
@@ -165,7 +165,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     for (int i = 0; i < 4; i++) {
         GTUtilsDialog::waitForDialog(os, new GTUtilsEscClicker(os, "dotplot context menu"));
         GTWidget::click(os, GTWidget::findWidget(os, GTUtilsProjectTreeView::widgetName));
-        QWidget *dpWidget = GTWidget::findWidget(os, "dotplot widget");
+        QWidget* dpWidget = GTWidget::findWidget(os, "dotplot widget");
         GTMenu::showContextMenu(os, dpWidget);
         GTUtilsDialog::checkNoActiveWaiters(os);
     }
@@ -184,7 +184,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_1) {
     for (int i = 0; i < 4; i++) {
         GTUtilsDialog::waitForDialog(os, new GTUtilsEscClicker(os, "dotplot context menu"));
         GTWidget::click(os, GTUtilsAnnotationsTreeView::getTreeWidget(os));
-        QWidget *dpWidget = GTWidget::findWidget(os, "dotplot widget");
+        QWidget* dpWidget = GTWidget::findWidget(os, "dotplot widget");
         GTMenu::showContextMenu(os, dpWidget);
         GTUtilsDialog::checkNoActiveWaiters(os);
     }
@@ -203,7 +203,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2) {
     for (int i = 0; i < 4; i++) {
         GTUtilsDialog::waitForDialog(os, new GTUtilsEscClicker(os, "dotplot context menu", true));
         GTWidget::click(os, GTUtilsAnnotationsTreeView::getTreeWidget(os));
-        QWidget *dpWidget = GTWidget::findWidget(os, "dotplot widget");
+        QWidget* dpWidget = GTWidget::findWidget(os, "dotplot widget");
         GTMenu::showContextMenu(os, dpWidget);
         GTUtilsDialog::checkNoActiveWaiters(os);
     }
@@ -255,17 +255,17 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
 
     class DotPlotExportImageFiller : public Filler {
     public:
-        DotPlotExportImageFiller(int scenario, HI::GUITestOpStatus &os)
+        DotPlotExportImageFiller(int scenario, HI::GUITestOpStatus& os)
             : Filler(os, "ImageExportForm"),
               scenario(scenario) {
         }
         virtual void run() {
             CHECK_SET_ERR(1 <= scenario && scenario <= 4, "Wrong scenario number");
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            QCheckBox *includeAreaCheckbox = dialog->findChild<QCheckBox *>("include_area_selection");
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+            QCheckBox* includeAreaCheckbox = dialog->findChild<QCheckBox*>("include_area_selection");
             CHECK_SET_ERR(includeAreaCheckbox != nullptr, "includeAreaCheckbox is NULL");
 
-            QCheckBox *includeRepeatCheckbox = dialog->findChild<QCheckBox *>("include_repeat_selection");
+            QCheckBox* includeRepeatCheckbox = dialog->findChild<QCheckBox*>("include_repeat_selection");
             CHECK_SET_ERR(includeRepeatCheckbox != nullptr, "include_repeat_selection is NULL");
 
             switch (scenario) {
@@ -287,14 +287,14 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
                     break;
             }
 
-            QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
+            QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
             CHECK_SET_ERR(box != nullptr, "buttonBox is NULL");
-            QPushButton *button = box->button(QDialogButtonBox::Cancel);
+            QPushButton* button = box->button(QDialogButtonBox::Cancel);
             CHECK_SET_ERR(button != nullptr, "Cancel button is NULL");
             GTWidget::click(os, button);
         }
 
-        static void runScenario(HI::GUITestOpStatus &os, int scenario) {
+        static void runScenario(HI::GUITestOpStatus& os, int scenario) {
             GTUtilsDialog::waitForDialog(os, new DotPlotExportImageFiller(scenario, os));
             GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Dotplot", "Save/Load", "Save as image"}));
             GTWidget::click(os, GTWidget::findWidget(os, "dotplot widget"), Qt::RightButton);

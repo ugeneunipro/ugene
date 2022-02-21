@@ -63,7 +63,7 @@ QString Utils::getFailedTestName() {
     return getArgumentValue(FAILED_TEST_FILE_ARG);
 }
 
-QString Utils::loadReportFromUrl(const QString &url) {
+QString Utils::loadReportFromUrl(const QString& url) {
     QFile file(url);
     if (!file.exists()) {
         return "";
@@ -78,7 +78,7 @@ QString Utils::loadReportFromUrl(const QString &url) {
     return QString::fromUtf8(data);
 }
 
-bool Utils::hasArgument(const QString &key) {
+bool Utils::hasArgument(const QString& key) {
     QStringList args = QCoreApplication::arguments();
     int idx = args.indexOf(key);
     if (-1 == idx) {
@@ -90,7 +90,7 @@ bool Utils::hasArgument(const QString &key) {
     return true;
 }
 
-QString Utils::getArgumentValue(const QString &key) {
+QString Utils::getArgumentValue(const QString& key) {
     if (!hasArgument(key)) {
         return "";
     }

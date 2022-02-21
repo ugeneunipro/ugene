@@ -42,7 +42,7 @@ public:
 
     void prepare() override;
 
-    QList<U2SequenceObject *> seqList;
+    QList<U2SequenceObject*> seqList;
     QStringList seqNameList;
     QString fileName;
 };
@@ -55,7 +55,7 @@ public:
 
     void prepare() override;
     ReportResult report() override;
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     int transTable;
     bool includeGaps = false;
@@ -65,15 +65,15 @@ public:
     QString outputFileName;
     QString expectedOutputFile;
     U2Region selectedRows;
-    ExportMSA2MSATask *exportTask;
-    LoadDocumentTask *resultLoadTask;
+    ExportMSA2MSATask* exportTask;
+    LoadDocumentTask* resultLoadTask;
     MultipleSequenceAlignment srcAl;
     MultipleSequenceAlignment resAl;
 };
 
 class DNAExportPluginTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

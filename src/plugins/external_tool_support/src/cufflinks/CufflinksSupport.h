@@ -30,7 +30,7 @@ class CufflinksSupport : public ExternalTool {
     Q_OBJECT
 
 public:
-    CufflinksSupport(const QString &id, const QString &name, const QString &path = "");
+    CufflinksSupport(const QString& id, const QString& name, const QString& path = "");
 
     static const QString ET_CUFFCOMPARE;
     static const QString ET_CUFFCOMPARE_ID;
@@ -48,6 +48,6 @@ public:
     static const QString CUFFMERGE_TMP_DIR;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

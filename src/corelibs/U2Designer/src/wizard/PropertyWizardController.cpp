@@ -33,7 +33,7 @@ namespace U2 {
 /************************************************************************/
 /* PropertyWizardController */
 /************************************************************************/
-PropertyWizardController::PropertyWizardController(WizardController *wc, AttributeWidget *_widget)
+PropertyWizardController::PropertyWizardController(WizardController* wc, AttributeWidget* _widget)
     : WidgetController(wc), widget(_widget), _tags(nullptr) {
     actor = WorkflowUtils::actorById(wc->getCurrentActors(), widget->getActorId());
     wc->addPropertyController(widget->getInfo(), this);
@@ -42,15 +42,15 @@ PropertyWizardController::PropertyWizardController(WizardController *wc, Attribu
 PropertyWizardController::~PropertyWizardController() {
 }
 
-Attribute *PropertyWizardController::attribute() {
+Attribute* PropertyWizardController::attribute() {
     return actor->getParameter(widget->getAttributeId());
 }
 
-void PropertyWizardController::sl_valueChanged(const QVariant &newValue) {
+void PropertyWizardController::sl_valueChanged(const QVariant& newValue) {
     wc->setAttributeValue(widget->getInfo(), newValue);
 }
 
-void PropertyWizardController::updateGUI(const QVariant &newValue) {
+void PropertyWizardController::updateGUI(const QVariant& newValue) {
     emit si_updateGUI(newValue);
 }
 
@@ -58,14 +58,14 @@ void PropertyWizardController::updateVisibility(bool newValue) {
     emit si_updateVisibility(newValue);
 }
 
-DelegateTags *PropertyWizardController::tags() const {
+DelegateTags* PropertyWizardController::tags() const {
     return _tags;
 }
 
 /************************************************************************/
 /* InUrlDatasetsController */
 /************************************************************************/
-InUrlDatasetsController::InUrlDatasetsController(WizardController *wc, AttributeWidget *widget)
+InUrlDatasetsController::InUrlDatasetsController(WizardController* wc, AttributeWidget* widget)
     : PropertyWizardController(wc, widget), dsc(nullptr) {
 }
 
@@ -73,7 +73,7 @@ InUrlDatasetsController::~InUrlDatasetsController() {
     delete dsc;
 }
 
-QWidget *InUrlDatasetsController::createGUI(U2OpStatus & /*os*/) {
+QWidget* InUrlDatasetsController::createGUI(U2OpStatus& /*os*/) {
     if (nullptr != dsc) {
         delete dsc;
     }
@@ -86,7 +86,7 @@ QWidget *InUrlDatasetsController::createGUI(U2OpStatus & /*os*/) {
         sets.clear();
         sets << Dataset();
     }
-    URLAttribute *attr = dynamic_cast<URLAttribute *>(attribute());
+    URLAttribute* attr = dynamic_cast<URLAttribute*>(attribute());
     SAFE_POINT(nullptr != attr, "Unexpected attribute value", nullptr);
     const QSet<GObjectType> compatibleObjTypes = nullptr != attr ? attr->getCompatibleObjectTypes() : QSet<GObjectType>();
     dsc = new AttributeDatasetsController(sets, compatibleObjTypes);
@@ -101,23 +101,23 @@ void InUrlDatasetsController::sl_datasetsChanged() {
 /************************************************************************/
 /* DefaultPropertyController */
 /************************************************************************/
-DefaultPropertyController::DefaultPropertyController(WizardController *wc, AttributeWidget *widget, int _labelSize)
+DefaultPropertyController::DefaultPropertyController(WizardController* wc, AttributeWidget* widget, int _labelSize)
     : PropertyWizardController(wc, widget), labelSize(_labelSize), noDelegate(false) {
 }
 
 DefaultPropertyController::~DefaultPropertyController() {
 }
 
-QWidget *DefaultPropertyController::createGUI(U2OpStatus &os) {
+QWidget* DefaultPropertyController::createGUI(U2OpStatus& os) {
     CHECK_EXT(AttributeInfo::DEFAULT == widget->getProperty(AttributeInfo::TYPE),
               os.setError("Widget type is not default"),
               nullptr);
 
-    PropertyWidget *propWidget = createPropertyWidget(os);
+    PropertyWidget* propWidget = createPropertyWidget(os);
     CHECK_OP(os, nullptr);
-    connect(propWidget, SIGNAL(si_valueChanged(const QVariant &)), SLOT(sl_valueChanged(const QVariant &)));
-    connect(this, SIGNAL(si_updateGUI(const QVariant &)), propWidget, SLOT(processDelegateTags()));
-    connect(this, SIGNAL(si_updateGUI(const QVariant &)), propWidget, SLOT(setValue(const QVariant &)));
+    connect(propWidget, SIGNAL(si_valueChanged(const QVariant&)), SLOT(sl_valueChanged(const QVariant&)));
+    connect(this, SIGNAL(si_updateGUI(const QVariant&)), propWidget, SLOT(processDelegateTags()));
+    connect(this, SIGNAL(si_updateGUI(const QVariant&)), propWidget, SLOT(setValue(const QVariant&)));
     propWidget->setSchemaConfig(wc);
     propWidget->setValue(wc->getAttributeValue(widget->getInfo()));
 
@@ -125,7 +125,7 @@ QWidget *DefaultPropertyController::createGUI(U2OpStatus &os) {
     if (label.isEmpty()) {
         label = attribute()->getDisplayName();
     }
-    LabeledPropertyWidget *result = new LabeledPropertyWidget(label, propWidget, nullptr);
+    LabeledPropertyWidget* result = new LabeledPropertyWidget(label, propWidget, nullptr);
     if (labelSize >= 0) {
         result->setLabelWidth(labelSize);
     }
@@ -138,11 +138,11 @@ QWidget *DefaultPropertyController::createGUI(U2OpStatus &os) {
     return result;
 }
 
-PropertyWidget *DefaultPropertyController::createPropertyWidget(U2OpStatus &os) {
-    PropertyWidget *result = nullptr;
-    PropertyDelegate *delegate = nullptr;
+PropertyWidget* DefaultPropertyController::createPropertyWidget(U2OpStatus& os) {
+    PropertyWidget* result = nullptr;
+    PropertyDelegate* delegate = nullptr;
     {
-        ConfigurationEditor *editor = actor->getEditor();
+        ConfigurationEditor* editor = actor->getEditor();
         if (nullptr != editor) {
             delegate = editor->getDelegate(widget->getAttributeId());
         }

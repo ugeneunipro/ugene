@@ -32,7 +32,7 @@ class Task;
 class U2GUI_EXPORT LoadDocumentTaskProvider {
 public:
     virtual ~LoadDocumentTaskProvider() {};
-    virtual QList<Task *> createLoadDocumentTasks(const QList<Document *> &docs) const = 0;
+    virtual QList<Task*> createLoadDocumentTasks(const QList<Document*>& docs) const = 0;
 };
 
 }  // namespace U2

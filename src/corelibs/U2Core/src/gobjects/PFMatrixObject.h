@@ -31,7 +31,7 @@ namespace U2 {
 class U2CORE_EXPORT U2PFMatrix : public U2RawData {
 public:
     U2PFMatrix();
-    U2PFMatrix(const U2DbiRef &dbiRef);
+    U2PFMatrix(const U2DbiRef& dbiRef);
 
     U2DataType getType() const;
 };
@@ -41,20 +41,20 @@ class U2CORE_EXPORT PFMatrixObject : public GObject {
 public:
     static const GObjectType TYPE;
 
-    PFMatrixObject(const QString &objectName,
-                   const U2EntityRef &matrixRef,
-                   const QVariantMap &hintsMap = QVariantMap());
+    PFMatrixObject(const QString& objectName,
+                   const U2EntityRef& matrixRef,
+                   const QVariantMap& hintsMap = QVariantMap());
 
-    static PFMatrixObject *createInstance(const PFMatrix &matrix, const QString &objectName, const U2DbiRef &dbiRef, U2OpStatus &os, const QVariantMap &hintsMap = QVariantMap());
+    static PFMatrixObject* createInstance(const PFMatrix& matrix, const QString& objectName, const U2DbiRef& dbiRef, U2OpStatus& os, const QVariantMap& hintsMap = QVariantMap());
 
-    const PFMatrix &getMatrix() const;
-    GObject *clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const;
+    const PFMatrix& getMatrix() const;
+    GObject* clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const;
 
 protected:
-    void loadDataCore(U2OpStatus &os);
+    void loadDataCore(U2OpStatus& os);
 
 private:
-    PFMatrixObject(const PFMatrix &matrix, const QString &objectName, const U2EntityRef &matrixRef, const QVariantMap &hintsMap);
+    PFMatrixObject(const PFMatrix& matrix, const QString& objectName, const U2EntityRef& matrixRef, const QVariantMap& hintsMap);
 
     PFMatrix m;
 };

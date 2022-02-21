@@ -48,7 +48,7 @@ static QList<QColor> prepareColors() {
     return colors;
 }
 
-QColor FeatureColors::genLightColor(const QString &name) {
+QColor FeatureColors::genLightColor(const QString& name) {
     static QList<QColor> colors = prepareColors();
 
     int hash = 0;

@@ -48,12 +48,12 @@ const qreal MaSangerOverview::ARROW_HEAD_LENGTH = 7;
 const QColor MaSangerOverview::ARROW_DIRECT_COLOR = "blue";
 const QColor MaSangerOverview::ARROW_REVERSE_COLOR = "green";
 
-MaSangerOverview::MaSangerOverview(MaEditorWgt *ui)
+MaSangerOverview::MaSangerOverview(MaEditorWgt* ui)
     : MaOverview(ui),
       vScrollBar(new QScrollBar(Qt::Vertical, this)),
       renderArea(new QWidget(this)),
       completeRedraw(true) {
-    QHBoxLayout *mainLayout = new QHBoxLayout();
+    QHBoxLayout* mainLayout = new QHBoxLayout();
     mainLayout->setSpacing(0);
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSizeConstraint(QLayout::SetMaximumSize);
@@ -145,8 +145,8 @@ void MaSangerOverview::sl_screenMoved() {
     }
 }
 
-McaEditor *MaSangerOverview::getEditor() const {
-    return qobject_cast<McaEditor *>(editor);
+McaEditor* MaSangerOverview::getEditor() const {
+    return qobject_cast<McaEditor*>(editor);
 }
 
 int MaSangerOverview::getContentWidgetWidth() const {
@@ -174,15 +174,15 @@ int MaSangerOverview::getScrollBarValue() const {
     return vScrollBar->isVisible() ? vScrollBar->value() : 0;
 }
 
-void MaSangerOverview::resizeEvent(QResizeEvent *event) {
+void MaSangerOverview::resizeEvent(QResizeEvent* event) {
     sl_resetCaches();
     QWidget::resizeEvent(event);
     sl_updateScrollBar();
     sl_completeRedraw();
 }
 
-bool MaSangerOverview::eventFilter(QObject *object, QEvent *event) {
-    QPaintEvent *paintEvent = dynamic_cast<QPaintEvent *>(event);
+bool MaSangerOverview::eventFilter(QObject* object, QEvent* event) {
+    QPaintEvent* paintEvent = dynamic_cast<QPaintEvent*>(event);
     CHECK(nullptr != paintEvent, MaOverview::eventFilter(object, event));
     if (object == renderArea) {
         QPainter painter(renderArea);
@@ -194,7 +194,7 @@ bool MaSangerOverview::eventFilter(QObject *object, QEvent *event) {
     return true;
 }
 
-void MaSangerOverview::drawOverview(QPainter &painter) {
+void MaSangerOverview::drawOverview(QPainter& painter) {
     CHECK(!editor->isAlignmentEmpty(), );
     recalculateScale();
 
@@ -207,7 +207,7 @@ void MaSangerOverview::drawOverview(QPainter &painter) {
                        QRect(0, getScrollBarValue(), cachedReadsView.width(), height() - cachedReferenceView.height()));
 }
 
-void MaSangerOverview::drawVisibleRange(QPainter &painter) {
+void MaSangerOverview::drawVisibleRange(QPainter& painter) {
     if (editor->isAlignmentEmpty()) {
         setVisibleRangeForEmptyAlignment();
     } else {
@@ -255,7 +255,7 @@ void MaSangerOverview::drawReads() {
     QPainter painter(&cachedReadsView);
     painter.fillRect(cachedReadsView.rect(), Qt::white);
 
-    MultipleChromatogramAlignmentObject const *const mcaObject = getEditor()->getMaObject();
+    MultipleChromatogramAlignmentObject const* const mcaObject = getEditor()->getMaObject();
     SAFE_POINT(nullptr != mcaObject, tr("Incorrect multiple chromatogram alignment object"), );
     const MultipleChromatogramAlignment mca = mcaObject->getMultipleAlignment();
     const int rowsCount = editor->getCollapseModel()->getViewRowCount();

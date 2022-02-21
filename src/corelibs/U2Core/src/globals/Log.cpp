@@ -34,7 +34,7 @@ LogServer::LogServer()
     qRegisterMetaType<LogMessage>("LogMessage");
 }
 
-LogServer *LogServer::getInstance() {
+LogServer* LogServer::getInstance() {
     static LogServer instance;
     return &instance;
 }
@@ -42,8 +42,8 @@ LogServer *LogServer::getInstance() {
 QStringList LogServer::getCategories() const {
     QSet<QString> uniqueNames;
     QStringList result;
-    for (const Logger *l : qAsConst(loggers)) {
-        foreach (const QString &category, l->getCategories()) {
+    for (const Logger* l : qAsConst(loggers)) {
+        foreach (const QString& category, l->getCategories()) {
             if (uniqueNames.contains(category)) {
                 continue;
             }
@@ -54,7 +54,7 @@ QStringList LogServer::getCategories() const {
     return result;
 }
 
-void LogServer::addListener(LogListener *listner) {
+void LogServer::addListener(LogListener* listner) {
     QMutexLocker l(&listenerMutex);
 
     SAFE_POINT(nullptr != listner, "Internal error during adding a log listner: NULL listner!", );
@@ -63,7 +63,7 @@ void LogServer::addListener(LogListener *listner) {
     listeners.append(listner);
 }
 
-void LogServer::removeListener(LogListener *listener) {
+void LogServer::removeListener(LogListener* listener) {
     QMutexLocker l(&listenerMutex);
 
     int numOfListenersRemoved = listeners.removeAll(listener);
@@ -72,47 +72,47 @@ void LogServer::removeListener(LogListener *listener) {
                                                .arg(numOfListenersRemoved), );
 }
 
-void LogServer::message(const LogMessage &m) {
+void LogServer::message(const LogMessage& m) {
     QMutexLocker l(&listenerMutex);
-    foreach (LogListener *listner, listeners) {
+    foreach (LogListener* listner, listeners) {
         listner->onMessage(m);
     }
 }
 
-void LogServer::message(const LogMessage &m, LogListener *listener) {
+void LogServer::message(const LogMessage& m, LogListener* listener) {
     QMutexLocker l(&listenerMutex);
     listener->onMessage(m);
 }
 
-Logger::Logger(const QString &category1) {
+Logger::Logger(const QString& category1) {
     static int test = 0;
     test++;
     categoryNames << category1;
     init();
 }
 
-Logger::Logger(const QString &category1, const QString &category2) {
+Logger::Logger(const QString& category1, const QString& category2) {
     categoryNames << category1 << category2;
     init();
 }
 
-Logger::Logger(const QString &category1, const QString &category2, const QString &category3) {
+Logger::Logger(const QString& category1, const QString& category2, const QString& category3) {
     categoryNames << category1 << category2 << category3;
     init();
 }
 
-Logger::Logger(const QString &category1, const QString &category2, const QString &category3, const QString &category4) {
+Logger::Logger(const QString& category1, const QString& category2, const QString& category3, const QString& category4) {
     categoryNames << category1 << category2 << category3 << category4;
     init();
 }
 
-Logger::Logger(const QStringList &_categoryNames) {
+Logger::Logger(const QStringList& _categoryNames) {
     categoryNames = _categoryNames;
     init();
 }
 
 void Logger::init() {
-    LogServer *s = LogServer::getInstance();
+    LogServer* s = LogServer::getInstance();
     s->loggers.append(this);
 }
 
@@ -123,31 +123,31 @@ Logger::~Logger() {
     //    categoryNames.clear();
 }
 
-LogMessage::LogMessage(const QStringList &cat, LogLevel l, const QString &m)
+LogMessage::LogMessage(const QStringList& cat, LogLevel l, const QString& m)
     : categories(cat), level(l), text(m), time(GTimer::currentTimeMicros()) {
 }
 
-void Logger::message(LogLevel level, const QString &msg) {
+void Logger::message(LogLevel level, const QString& msg) {
     LogMessage m(categoryNames, level, msg);
     LogServer::getInstance()->message(m);
 }
 
-void Logger::message(LogLevel level, const QString &msg, const QString &extraCategory) {
+void Logger::message(LogLevel level, const QString& msg, const QString& extraCategory) {
     message(level, msg, QStringList(extraCategory));
 }
 
-void Logger::message(LogLevel level, const QString &msg, const QStringList &extraCategories) {
+void Logger::message(LogLevel level, const QString& msg, const QStringList& extraCategories) {
     QStringList resultCategories = categoryNames;
     resultCategories << extraCategories;
     LogMessage m(resultCategories, level, msg);
     LogServer::getInstance()->message(m);
 }
 
-void Logger::log(LogLevel level, const QString &message, const QString &category) {
+void Logger::log(LogLevel level, const QString& message, const QString& category) {
     log(level, message, QStringList(category));
 }
 
-void Logger::log(LogLevel level, const QString &message, const QStringList &categoryies) {
+void Logger::log(LogLevel level, const QString& message, const QStringList& categoryies) {
     LogMessage m(categoryies, level, message);
     LogServer::getInstance()->message(m);
 }

@@ -54,7 +54,7 @@ void DotPlotImageExportToBitmapTask::run() {
     SAFE_POINT_EXT(settings.isBitmapFormat(), setError(WRONG_FORMAT_MESSAGE.arg(settings.format).arg("CircularViewImageExportToBitmapTask")), );
 }
 
-DotPlotImageExportController::DotPlotImageExportController(DotPlotWidget *wgt)
+DotPlotImageExportController::DotPlotImageExportController(DotPlotWidget* wgt)
     : ImageExportController(),
       dotplotWidget(wgt) {
     SAFE_POINT(dotplotWidget != nullptr, tr("Dotplot widget is NULL"), );
@@ -71,7 +71,7 @@ int DotPlotImageExportController::getImageHeight() const {
 }
 
 void DotPlotImageExportController::initSettingsWidget() {
-    QVBoxLayout *layout = new QVBoxLayout();
+    QVBoxLayout* layout = new QVBoxLayout();
     layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     layout->setContentsMargins(0, 0, 0, 0);
 
@@ -94,7 +94,7 @@ void DotPlotImageExportController::initSettingsWidget() {
     settingsWidget->setLayout(layout);
 }
 
-Task *DotPlotImageExportController::getExportToBitmapTask(const ImageExportTaskSettings &settings) const {
+Task* DotPlotImageExportController::getExportToBitmapTask(const ImageExportTaskSettings& settings) const {
     DotPlotImageExportSettings dpSettings(includeAreaSelection->isChecked(),
                                           includeRepeatSelection->isChecked());
     return new DotPlotImageExportToBitmapTask(dotplotWidget, dpSettings, settings);

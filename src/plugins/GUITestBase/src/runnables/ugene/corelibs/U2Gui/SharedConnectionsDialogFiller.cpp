@@ -46,19 +46,19 @@ SharedConnectionsDialogFiller::Action::Action(Type type, QString itemName)
     dbName = GTDatabaseConfig::database();
 }
 
-SharedConnectionsDialogFiller::SharedConnectionsDialogFiller(HI::GUITestOpStatus &os, const QList<Action> &actions)
+SharedConnectionsDialogFiller::SharedConnectionsDialogFiller(HI::GUITestOpStatus& os, const QList<Action>& actions)
     : Filler(os, "SharedConnectionsDialog"), actions(actions) {
 }
 
-SharedConnectionsDialogFiller::SharedConnectionsDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario)
+SharedConnectionsDialogFiller::SharedConnectionsDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
     : Filler(os, "SharedConnectionsDialog", scenario) {
 }
 
 namespace {
 
-QListWidgetItem *findConnection(HI::GUITestOpStatus &os, QListWidget *list, const QString &name, GTGlobals::FindOptions options = GTGlobals::FindOptions()) {
+QListWidgetItem* findConnection(HI::GUITestOpStatus& os, QListWidget* list, const QString& name, GTGlobals::FindOptions options = GTGlobals::FindOptions()) {
     GTGlobals::sleep(1000);
-    QList<QListWidgetItem *> items = list->findItems(name, Qt::MatchExactly);
+    QList<QListWidgetItem*> items = list->findItems(name, Qt::MatchExactly);
     if (1 != items.size()) {
         if (options.failIfNotFound) {
             CHECK_SET_ERR_RESULT(false, QString("List item %1 not found").arg(name), nullptr);
@@ -69,8 +69,8 @@ QListWidgetItem *findConnection(HI::GUITestOpStatus &os, QListWidget *list, cons
     return items.first();
 }
 
-void clickConnection(HI::GUITestOpStatus &os, QListWidget *list, const QString &name) {
-    QListWidgetItem *item = findConnection(os, list, name);
+void clickConnection(HI::GUITestOpStatus& os, QListWidget* list, const QString& name) {
+    QListWidgetItem* item = findConnection(os, list, name);
     CHECK_OP(os, );
 
     QRect rect = list->visualItemRect(item);
@@ -79,14 +79,14 @@ void clickConnection(HI::GUITestOpStatus &os, QListWidget *list, const QString &
     GTMouseDriver::click();
 }
 
-void checkDocument(HI::GUITestOpStatus &os, const QString &name, bool mustBe) {
+void checkDocument(HI::GUITestOpStatus& os, const QString& name, bool mustBe) {
     QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, name, {false});
     if (!mustBe) {
         CHECK_SET_ERR(!idx.isValid(), "Document is not deleted");
     }
 }
 
-void waitForConnection(HI::GUITestOpStatus &os, const SharedConnectionsDialogFiller::Action &action) {
+void waitForConnection(HI::GUITestOpStatus& os, const SharedConnectionsDialogFiller::Action& action) {
     switch (action.expectedResult) {
         case SharedConnectionsDialogFiller::Action::OK:
             break;
@@ -109,34 +109,34 @@ void waitForConnection(HI::GUITestOpStatus &os, const SharedConnectionsDialogFil
     }
 }
 
-void establishConnection(HI::GUITestOpStatus &os, const SharedConnectionsDialogFiller::Action &action) {
+void establishConnection(HI::GUITestOpStatus& os, const SharedConnectionsDialogFiller::Action& action) {
     waitForConnection(os, action);
 
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
-    QWidget *connectButton = GTWidget::findWidget(os, "pbConnect", dialog);
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* connectButton = GTWidget::findWidget(os, "pbConnect", dialog);
     GTWidget::checkEnabled(os, connectButton);
     GTWidget::click(os, connectButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
-void deleteConnection(HI::GUITestOpStatus &os, const SharedConnectionsDialogFiller::Action &action) {
-    QListWidget *list = dynamic_cast<QListWidget *>(GTWidget::findWidget(os, "lwConnections"));
+void deleteConnection(HI::GUITestOpStatus& os, const SharedConnectionsDialogFiller::Action& action) {
+    QListWidget* list = dynamic_cast<QListWidget*>(GTWidget::findWidget(os, "lwConnections"));
 
     GTWidget::click(os, GTWidget::findWidget(os, "pbDelete"));
     GTGlobals::sleep(2000);
 
     // Check connection item
-    QListWidgetItem *item = findConnection(os, list, action.itemName, {false});
+    QListWidgetItem* item = findConnection(os, list, action.itemName, {false});
     CHECK_SET_ERR(item == nullptr, "Item is not deleted");
 
     // Check project view
     checkDocument(os, action.dbName, false);
 }
 
-void stopConnection(HI::GUITestOpStatus &os, const SharedConnectionsDialogFiller::Action &action) {
-    QWidget *cnctBtn = GTWidget::findWidget(os, "pbConnect");
-    QWidget *dcntBtn = GTWidget::findWidget(os, "pbDisconnect");
-    QWidget *editBtn = GTWidget::findWidget(os, "pbEdit");
+void stopConnection(HI::GUITestOpStatus& os, const SharedConnectionsDialogFiller::Action& action) {
+    QWidget* cnctBtn = GTWidget::findWidget(os, "pbConnect");
+    QWidget* dcntBtn = GTWidget::findWidget(os, "pbDisconnect");
+    QWidget* editBtn = GTWidget::findWidget(os, "pbEdit");
 
     GTWidget::click(os, GTWidget::findWidget(os, "pbDisconnect"));
     GTGlobals::sleep(2000);
@@ -155,12 +155,12 @@ void stopConnection(HI::GUITestOpStatus &os, const SharedConnectionsDialogFiller
 #define GT_METHOD_NAME "commonScenario"
 
 void SharedConnectionsDialogFiller::commonScenario() {
-    QWidget *dialog = GTWidget::getActiveModalWidget(os);
-    QListWidget *list = dynamic_cast<QListWidget *>(GTWidget::findWidget(os, "lwConnections", dialog));
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QListWidget* list = dynamic_cast<QListWidget*>(GTWidget::findWidget(os, "lwConnections", dialog));
     CHECK_SET_ERR(list != nullptr, "Connections list widget not found");
 
     bool connected = false;
-    foreach (const Action &action, actions) {
+    foreach (const Action& action, actions) {
         CHECK_SET_ERR(!connected, "The dialog must be closed but not all actions are processed");
         switch (action.type) {
             case Action::ADD:

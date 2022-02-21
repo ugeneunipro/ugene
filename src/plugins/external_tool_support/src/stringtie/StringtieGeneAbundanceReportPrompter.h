@@ -30,13 +30,13 @@ namespace LocalWorkflow {
 class StringtieGeneAbundanceReportPrompter : public PrompterBase<StringtieGeneAbundanceReportPrompter> {
     Q_OBJECT
 public:
-    StringtieGeneAbundanceReportPrompter(Actor *actor = nullptr);
+    StringtieGeneAbundanceReportPrompter(Actor* actor = nullptr);
 
 private:
     QString composeRichDoc();
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_STRINGTIE_GENE_ABUNDANCE_REPORT_PROMPTER_H_
+#endif  // _U2_STRINGTIE_GENE_ABUNDANCE_REPORT_PROMPTER_H_

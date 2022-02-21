@@ -29,14 +29,14 @@ using namespace HI;
 
 class AliasesDialogFiller : public Filler {
 public:
-    AliasesDialogFiller(HI::GUITestOpStatus &_os, QMap<QPoint *, QString> _map)
+    AliasesDialogFiller(HI::GUITestOpStatus& _os, QMap<QPoint*, QString> _map)
         : Filler(_os, "SchemaAliasesConfigurationDialog"),
           map(_map) {
     }
     void commonScenario();
 
 private:
-    QMap<QPoint *, QString> map;
+    QMap<QPoint*, QString> map;
 };
 }  // namespace U2
 #endif  // ALIASESDIALOGFILLER_H

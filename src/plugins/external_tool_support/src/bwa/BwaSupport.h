@@ -35,6 +35,6 @@ public:
     static const QString ET_BWA_ID;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_BWA_SUPPORT_H_
+#endif  // _U2_BWA_SUPPORT_H_

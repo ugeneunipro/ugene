@@ -37,13 +37,13 @@ class TaskStateInfo;
 
 class NeighborJoinAdapter : public PhyTreeGenerator {
 public:
-    Task *createCalculatePhyTreeTask(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &s);
-    CreatePhyTreeWidget *createPhyTreeSettingsWidget(const MultipleSequenceAlignment &ma, QWidget *parent = nullptr);
+    Task* createCalculatePhyTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s);
+    CreatePhyTreeWidget* createPhyTreeSettingsWidget(const MultipleSequenceAlignment& ma, QWidget* parent = nullptr);
 };
 
 class NeighborJoinCalculateTreeTask : public PhyTreeGeneratorTask {
 public:
-    NeighborJoinCalculateTreeTask(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &s);
+    NeighborJoinCalculateTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s);
     void run();
 
 private:

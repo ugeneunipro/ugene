@@ -32,9 +32,9 @@ namespace U2 {
 
 class U2GUI_EXPORT LocalToolbar : public OrderedToolbar {
 public:
-    LocalToolbar(QWidget *p);
+    LocalToolbar(QWidget* p);
 
-    virtual void addAction(QAction *a);
+    virtual void addAction(QAction* a);
 };
 
 }  // namespace U2

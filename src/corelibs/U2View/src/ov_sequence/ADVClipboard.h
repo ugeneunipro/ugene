@@ -38,31 +38,31 @@ class ADVSequenceWidget;
 class U2VIEW_EXPORT ADVClipboard : public QObject {
     Q_OBJECT
 public:
-    ADVClipboard(AnnotatedDNAView *ctx);
+    ADVClipboard(AnnotatedDNAView* ctx);
 
-    QAction *getCopySequenceAction() const;
-    QAction *getCopyComplementAction() const;
-    QAction *getCopyTranslationAction() const;
-    QAction *getCopyComplementTranslationAction() const;
+    QAction* getCopySequenceAction() const;
+    QAction* getCopyComplementAction() const;
+    QAction* getCopyTranslationAction() const;
+    QAction* getCopyComplementTranslationAction() const;
 
-    QAction *getCopyAnnotationSequenceAction() const;
-    QAction *getCopyAnnotationSequenceTranslationAction() const;
+    QAction* getCopyAnnotationSequenceAction() const;
+    QAction* getCopyAnnotationSequenceTranslationAction() const;
 
-    QAction *getCopyQualifierAction() const;
-    QAction *getPasteSequenceAction() const;
+    QAction* getCopyQualifierAction() const;
+    QAction* getPasteSequenceAction() const;
 
-    ADVSequenceObjectContext *getSequenceContext() const;
+    ADVSequenceObjectContext* getSequenceContext() const;
 
-    void addCopyMenu(QMenu *m);
+    void addCopyMenu(QMenu* m);
 
-    void connectSequence(ADVSequenceObjectContext *s);
+    void connectSequence(ADVSequenceObjectContext* s);
 
-    static QAction *createPasteSequenceAction(QObject *parent);
+    static QAction* createPasteSequenceAction(QObject* parent);
 
 public slots:
 
-    void sl_onDNASelectionChanged(LRegionsSelection *s, const QVector<U2Region> &added, const QVector<U2Region> &removed);
-    void sl_onAnnotationSelectionChanged(AnnotationSelection *s, const QList<Annotation *> &added, const QList<Annotation *> &removed);
+    void sl_onDNASelectionChanged(LRegionsSelection* s, const QVector<U2Region>& added, const QVector<U2Region>& removed);
+    void sl_onAnnotationSelectionChanged(AnnotationSelection* s, const QList<Annotation*>& added, const QList<Annotation*>& removed);
 
     /** Calls 'updateState' to handle new active sequence correctly. */
     void sl_onActiveSequenceChanged();
@@ -81,20 +81,20 @@ private:
     void updateActions();
     void copySequenceSelection(bool complement, bool amino);
     void copyAnnotationSelection(bool amino);
-    void putIntoClipboard(const QString &data);
+    void putIntoClipboard(const QString& data);
 
-    AnnotatedDNAView *ctx;
-    QAction *copySequenceAction;
-    QAction *copyComplementSequenceAction;
-    QAction *copyTranslationAction;
-    QAction *copyComplementTranslationAction;
+    AnnotatedDNAView* ctx;
+    QAction* copySequenceAction;
+    QAction* copyComplementSequenceAction;
+    QAction* copyTranslationAction;
+    QAction* copyComplementTranslationAction;
 
-    QAction *copyAnnotationSequenceAction;
-    QAction *copyAnnotationSequenceTranslationAction;
+    QAction* copyAnnotationSequenceAction;
+    QAction* copyAnnotationSequenceTranslationAction;
 
-    QAction *copyQualifierAction;
+    QAction* copyQualifierAction;
 
-    QAction *pasteSequenceAction;
+    QAction* pasteSequenceAction;
 
     static const QString COPY_FAILED_MESSAGE;
 };

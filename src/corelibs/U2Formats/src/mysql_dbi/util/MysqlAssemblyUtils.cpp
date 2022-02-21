@@ -34,7 +34,7 @@ namespace U2 {
 
 namespace {
 
-QByteArray getQuality(const U2AssemblyRead &read) {
+QByteArray getQuality(const U2AssemblyRead& read) {
     if (read->readSequence.length() == read->quality.length()) {
         return read->quality;
     }
@@ -44,12 +44,12 @@ QByteArray getQuality(const U2AssemblyRead &read) {
 
 }  // unnamed namespace
 
-QByteArray MysqlAssemblyUtils::packData(MysqlAssemblyDataMethod method, const U2AssemblyRead &read, U2OpStatus &os) {
-    const QByteArray &name = read->name;
-    const QByteArray &seq = read->readSequence;
+QByteArray MysqlAssemblyUtils::packData(MysqlAssemblyDataMethod method, const U2AssemblyRead& read, U2OpStatus& os) {
+    const QByteArray& name = read->name;
+    const QByteArray& seq = read->readSequence;
     QByteArray cigarText = U2AssemblyUtils::cigar2String(read->cigar);
     QByteArray qualityString = getQuality(read);
-    const QByteArray &rnext = read->rnext;
+    const QByteArray& rnext = read->rnext;
     QByteArray pnext = QByteArray::number(read->pnext);
     QByteArray aux = SamtoolsAdapter::aux2string(read->aux);
 
@@ -64,7 +64,7 @@ QByteArray MysqlAssemblyUtils::packData(MysqlAssemblyDataMethod method, const U2
     }
 
     QByteArray res(nBytes, Qt::Uninitialized);
-    char *data = res.data();
+    char* data = res.data();
     int pos = 0;
 
     // packing type
@@ -115,16 +115,16 @@ QByteArray MysqlAssemblyUtils::packData(MysqlAssemblyDataMethod method, const U2
     return res;
 }
 
-void MysqlAssemblyUtils::unpackData(const QByteArray &packedData, U2AssemblyRead &read, U2OpStatus &os) {
-    QByteArray &name = read->name;
-    QByteArray &sequence = read->readSequence;
-    QByteArray &qualityString = read->quality;
+void MysqlAssemblyUtils::unpackData(const QByteArray& packedData, U2AssemblyRead& read, U2OpStatus& os) {
+    QByteArray& name = read->name;
+    QByteArray& sequence = read->readSequence;
+    QByteArray& qualityString = read->quality;
 
     if (packedData.isEmpty()) {
         os.setError(U2DbiL10n::tr("Packed data are empty"));
         return;
     }
-    const char *data = packedData.constData();
+    const char* data = packedData.constData();
 
     // packing type
     if (data[0] != '0') {
@@ -208,7 +208,7 @@ void MysqlAssemblyUtils::unpackData(const QByteArray &packedData, U2AssemblyRead
     }
 }
 
-void MysqlAssemblyUtils::calculateCoverage(U2SqlQuery &q, const U2Region &r, U2AssemblyCoverageStat &coverage, U2OpStatus &os) {
+void MysqlAssemblyUtils::calculateCoverage(U2SqlQuery& q, const U2Region& r, U2AssemblyCoverageStat& coverage, U2OpStatus& os) {
     int csize = coverage.size();
     SAFE_POINT(csize > 0, "illegal coverage vector size!", );
 
@@ -231,7 +231,7 @@ void MysqlAssemblyUtils::calculateCoverage(U2SqlQuery &q, const U2Region &r, U2A
         // we have used effective length of the read, so insertions/deletions are already taken into account
         // cigarString can be longer than needed
         QVector<U2CigarOp> cigarVector;
-        foreach (const U2CigarToken &cigar, read->cigar) {
+        foreach (const U2CigarToken& cigar, read->cigar) {
             cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
         }
         cigarVector.removeAll(U2CigarOp_I);
@@ -255,7 +255,7 @@ void MysqlAssemblyUtils::calculateCoverage(U2SqlQuery &q, const U2Region &r, U2A
     }
 }
 
-void MysqlAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo &ii, const U2AssemblyRead &read) {
+void MysqlAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& ii, const U2AssemblyRead& read) {
     if (!ii.computeCoverage) {
         return;
     }
@@ -263,7 +263,7 @@ void MysqlAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo &ii, const U
     int csize = ii.coverage.size();
 
     QVector<U2CigarOp> cigarVector;
-    foreach (const U2CigarToken &cigar, read->cigar) {
+    foreach (const U2CigarToken& cigar, read->cigar) {
         cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
     }
     cigarVector.removeAll(U2CigarOp_I);
@@ -275,7 +275,7 @@ void MysqlAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo &ii, const U
     if (endPos > csize - 1) {
         endPos = csize - 1;
     }
-    int *coverageData = ii.coverage.data();
+    int* coverageData = ii.coverage.data();
     for (int i = startPos; i <= endPos && i < csize; i++) {
         switch (cigarVector[(i - startPos) * ii.coverageBasesPerPoint]) {
             case U2CigarOp_D:  // skip the deletion

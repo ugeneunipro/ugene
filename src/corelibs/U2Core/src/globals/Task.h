@@ -79,7 +79,7 @@ public:
         QReadLocker r(&lock);
         return error;
     }
-    virtual void setError(const QString &err) {
+    virtual void setError(const QString& err) {
         QWriteLocker w(&lock);
         error = err;
         hasErr = !error.isEmpty();
@@ -103,7 +103,7 @@ public:
         QReadLocker r(&lock);
         return desc;
     }
-    virtual void setDescription(const QString &_desc) {
+    virtual void setDescription(const QString& _desc) {
         QWriteLocker w(&lock);
         desc = _desc;
     }
@@ -116,11 +116,11 @@ public:
         QReadLocker r(&lock);
         return warnings;
     }
-    virtual void addWarning(const QString &warning);
-    virtual void addWarnings(const QStringList &wList);
+    virtual void addWarning(const QString& warning);
+    virtual void addWarnings(const QStringList& wList);
 
     /* The same as addWarnings() but it does not write to log. Used by TaskScheduler. */
-    void insertWarnings(const QStringList &wList);
+    void insertWarnings(const QStringList& wList);
 
 private:
     bool hasErr;
@@ -267,7 +267,7 @@ public:
     };
 
     // Creates new task with State_New state
-    Task(const QString &_name, TaskFlags f);
+    Task(const QString& _name, TaskFlags f);
 
     // Prepares Task to run
     // Task must request/prepare all resources it needs, create subtasks and define progress management type
@@ -297,8 +297,8 @@ public:
     }
 
     // Returns subtasks of the task. Task must prepare it's subtask on prepare() call and can't change them latter.
-    const QList<QPointer<Task>> &getSubtasks() const;
-    QList<Task *> getPureSubtasks() const;
+    const QList<QPointer<Task>>& getSubtasks() const;
+    QList<Task*> getPureSubtasks() const;
 
     QString getTaskName() const {
         return taskName;
@@ -308,11 +308,11 @@ public:
         return state;
     }
 
-    const TaskStateInfo &getStateInfo() const {
+    const TaskStateInfo& getStateInfo() const {
         return stateInfo;
     }
 
-    const TaskTimeInfo &getTimeInfo() const {
+    const TaskTimeInfo& getTimeInfo() const {
         return timeInfo;
     }
 
@@ -332,7 +332,7 @@ public:
         return flags & f;
     }
 
-    void addSubTask(Task *sub);
+    void addSubTask(Task* sub);
 
     bool hasError() const {
         return stateInfo.hasError();
@@ -379,7 +379,7 @@ public:
 
     virtual bool propagateSubtaskError();
 
-    virtual Task *getSubtaskWithErrors() const;
+    virtual Task* getSubtaskWithErrors() const;
 
     virtual qint64 getTaskId() const {
         return taskId;
@@ -389,11 +389,11 @@ public:
         return getParentTask() == 0;
     }
 
-    virtual Task *getParentTask() const {
+    virtual Task* getParentTask() const {
         return parentTask;
     }
 
-    virtual Task *getTopLevelParentTask() {
+    virtual Task* getTopLevelParentTask() {
         return isTopLevelTask() ? this : parentTask->getTopLevelParentTask();
     }
 
@@ -482,7 +482,7 @@ public:
         setFlag(TaskFlag_ConcatenateChildrenErrors, v);
     }
 
-    const TaskResources &getTaskResources() {
+    const TaskResources& getTaskResources() {
         return taskResources;
     }
 
@@ -497,7 +497,7 @@ public:
 
     void setMaxParallelSubtasks(int n);
 
-    void setError(const QString &err) {
+    void setError(const QString& err) {
         stateInfo.setError(err);
     }
 
@@ -513,7 +513,7 @@ public:
         return timeInfo.timeOut;
     }
 
-    void addTaskResource(const TaskResourceUsage &r);
+    void addTaskResource(const TaskResourceUsage& r);
 
     bool isMinimizeSubtaskErrorText() const;
 
@@ -522,7 +522,7 @@ public slots:
     void cancel();
 
 signals:
-    void si_subtaskAdded(Task *sub);
+    void si_subtaskAdded(Task* sub);
 
     void si_progressChanged();
     void si_descriptionChanged();
@@ -530,13 +530,13 @@ signals:
 
 protected:
     /// Called by scheduler when subtask is finished.
-    virtual QList<Task *> onSubTaskFinished(Task *subTask);
-    void setRunResources(const TaskResources &taskR) {
+    virtual QList<Task*> onSubTaskFinished(Task* subTask);
+    void setRunResources(const TaskResources& taskR) {
         assert(state <= State_Prepared);
         taskResources = taskR;
     }
 
-    void setTaskName(const QString &taskName);
+    void setTaskName(const QString& taskName);
 
     void setFlag(TaskFlag f, bool v) {
         flags = v ? (flags | f) : flags & (~f);
@@ -553,7 +553,7 @@ private:
     TaskFlags flags;
     QString taskName;
     State state;
-    Task *parentTask;
+    Task* parentTask;
     QList<QPointer<Task>> subtasks;
     qint64 taskId;
     TaskResources taskResources;
@@ -563,72 +563,69 @@ private:
 class U2CORE_EXPORT TaskScheduler : public QObject {
     Q_OBJECT
 public:
-    virtual void registerTopLevelTask(Task *t) = 0;
+    virtual void registerTopLevelTask(Task* t) = 0;
 
-    virtual void unregisterTopLevelTask(Task *t) = 0;
+    virtual void unregisterTopLevelTask(Task* t) = 0;
 
-    virtual const QList<Task *> &getTopLevelTasks() const = 0;
-
-    virtual Task *getTopLevelTaskById(qint64 id) const = 0;
-
-    virtual QDateTime estimatedFinishTime(Task *) const = 0;
+    virtual const QList<Task*>& getTopLevelTasks() const = 0;
 
     virtual void cancelAllTasks() = 0;
 
-    virtual QString getStateName(Task *t) const = 0;
+    virtual QString getStateName(Task* t) const = 0;
 
     virtual void addThreadId(qint64 taskId, Qt::HANDLE id) = 0;
 
     virtual void removeThreadId(qint64 taskId) = 0;
 
-    virtual qint64 getNameByThreadId(Qt::HANDLE id) const = 0;
+    virtual void pauseThreadWithTask(const Task* task) = 0;
 
-    virtual void pauseThreadWithTask(const Task *task) = 0;
+    virtual void resumeThreadWithTask(const Task* task) = 0;
 
-    virtual void resumeThreadWithTask(const Task *task) = 0;
+    /**
+     * Returns true if the caller method is inside task processing callback (signal).
+     * This method is used to check if it is safe to run a message loop (or a modal dialog) with no side-effects for tasks.
+     */
+    virtual bool isCallerInsideTaskSchedulerCallback() const = 0;
 
 signals:
-    // TODO: remove this signal from TaskScheduler. It is not scheduler responsibliity to track global UGENE state.
-    void si_ugeneIsReadyToWork();
+    void si_topLevelTaskRegistered(Task*);
 
-    void si_topLevelTaskRegistered(Task *);
+    void si_topLevelTaskUnregistered(Task*);
 
-    void si_topLevelTaskUnregistered(Task *);
-
-    void si_stateChanged(Task *task);
+    void si_stateChanged(Task* task);
 
 protected:
-    TaskResources &getTaskResources(Task *t) {
+    TaskResources& getTaskResources(Task* t) {
         return t->taskResources;
     }
 
-    TaskStateInfo &getTaskStateInfo(Task *t) {
+    TaskStateInfo& getTaskStateInfo(Task* t) {
         return t->stateInfo;
     }
 
-    TaskTimeInfo &getTaskTimeInfo(Task *t) {
+    TaskTimeInfo& getTaskTimeInfo(Task* t) {
         return t->timeInfo;
     }
 
-    void emit_taskProgressChanged(Task *t) {
+    void emit_taskProgressChanged(Task* t) {
         emit t->si_progressChanged();
     }
 
-    void emit_taskDescriptionChanged(Task *t) {
+    void emit_taskDescriptionChanged(Task* t) {
         emit t->si_descriptionChanged();
     }
 
-    QList<Task *> onSubTaskFinished(Task *parentTask, Task *subTask) {
+    QList<Task*> onSubTaskFinished(Task* parentTask, Task* subTask) {
         return parentTask->onSubTaskFinished(subTask);
     }
 
-    void addSubTask(Task *t, Task *sub);
+    void addSubTask(Task* t, Task* sub);
 
-    void setTaskState(Task *t, Task::State newState);
+    void setTaskState(Task* t, Task::State newState);
 
-    void setTaskStateDesc(Task *t, const QString &desc);
+    void setTaskStateDesc(Task* t, const QString& desc);
 
-    void setTaskInsidePrepare(Task *t, bool val);
+    void setTaskInsidePrepare(Task* t, bool val);
 };
 
 }  // namespace U2

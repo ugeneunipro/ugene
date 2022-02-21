@@ -35,7 +35,7 @@
 
 namespace U2 {
 
-MatrixAndLogoController::MatrixAndLogoController(PFMatrix matrix, QWidget *p)
+MatrixAndLogoController::MatrixAndLogoController(PFMatrix matrix, QWidget* p)
     : QWidget(p), logoArea(nullptr) {
     setupUi(this);
     if (matrix.getType() == PFM_MONONUCLEOTIDE) {
@@ -83,7 +83,7 @@ MatrixAndLogoController::MatrixAndLogoController(PFMatrix matrix, QWidget *p)
         size += matrix.getValue(i, 0);
     }
 
-    const DNAAlphabet *al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
+    const DNAAlphabet* al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
     MultipleSequenceAlignment ma(QString("Temporary alignment"), al);
     for (int i = 0; i < size; i++) {
         QByteArray arr;
@@ -118,7 +118,7 @@ MatrixAndLogoController::MatrixAndLogoController(PFMatrix matrix, QWidget *p)
     logoArea->repaint();
 }
 
-MatrixAndLogoController::MatrixAndLogoController(PWMatrix matrix, QWidget *p)
+MatrixAndLogoController::MatrixAndLogoController(PWMatrix matrix, QWidget* p)
     : QWidget(p) {
     setupUi(this);
     if (matrix.getType() == PWM_MONONUCLEOTIDE) {
@@ -163,7 +163,7 @@ MatrixAndLogoController::MatrixAndLogoController(PWMatrix matrix, QWidget *p)
     resize(tableWidget->width(), tableWidget->minimumHeight());
 }
 
-ViewMatrixDialogController::ViewMatrixDialogController(PFMatrix matrix, QWidget *w)
+ViewMatrixDialogController::ViewMatrixDialogController(PFMatrix matrix, QWidget* w)
     : QDialog(w) {
     setupUi(this);
     buttonBox->button(QDialogButtonBox::Close)->setText(tr("Close"));
@@ -171,13 +171,13 @@ ViewMatrixDialogController::ViewMatrixDialogController(PFMatrix matrix, QWidget 
     ml = new MatrixAndLogoController(matrix, this);
     MLLayout->addWidget(ml);
 
-    QPushButton *closeButton = buttonBox->button(QDialogButtonBox::Close);
+    QPushButton* closeButton = buttonBox->button(QDialogButtonBox::Close);
     setMinimumHeight(ml->height() + closeButton->height() + layout()->margin() * 2 + layout()->spacing());
     setMinimumWidth(ml->width());
     connect(closeButton, SIGNAL(clicked()), SLOT(sl_onCloseButton()));
 }
 
-ViewMatrixDialogController::ViewMatrixDialogController(PWMatrix matrix, QWidget *w)
+ViewMatrixDialogController::ViewMatrixDialogController(PWMatrix matrix, QWidget* w)
     : QDialog(w) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930915");
@@ -186,7 +186,7 @@ ViewMatrixDialogController::ViewMatrixDialogController(PWMatrix matrix, QWidget 
     ml = new MatrixAndLogoController(matrix, this);
     MLLayout->addWidget(ml);
 
-    QPushButton *closeButton = buttonBox->button(QDialogButtonBox::Close);
+    QPushButton* closeButton = buttonBox->button(QDialogButtonBox::Close);
     setMinimumHeight(ml->height() + closeButton->height() + layout()->margin() * 2 + layout()->spacing());
     setMinimumWidth(ml->width());
     connect(closeButton, SIGNAL(clicked()), SLOT(sl_onCloseButton()));
@@ -199,7 +199,7 @@ void ViewMatrixDialogController::sl_onCloseButton() {
 MatrixViewController::MatrixViewController(PFMatrix matrix)
     : MWMDIWindow(tr("Matrix viewer")) {
     d = new MatrixAndLogoController(matrix, this);
-    QGridLayout *layout = new QGridLayout(this);
+    QGridLayout* layout = new QGridLayout(this);
     layout->addWidget(d);
     setMinimumSize(d->minimumSize());
     setLayout(layout);
@@ -208,7 +208,7 @@ MatrixViewController::MatrixViewController(PFMatrix matrix)
 MatrixViewController::MatrixViewController(PWMatrix matrix)
     : MWMDIWindow(tr("Matrix viewer")) {
     d = new MatrixAndLogoController(matrix, this);
-    QGridLayout *layout = new QGridLayout(this);
+    QGridLayout* layout = new QGridLayout(this);
     layout->addWidget(d);
     setMinimumSize(d->minimumSize());
     setLayout(layout);

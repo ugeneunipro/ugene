@@ -33,11 +33,11 @@
 
 namespace U2 {
 
-PositionSelector::PositionSelector(QWidget *p, qint64 s, qint64 e, bool fixedSize)
+PositionSelector::PositionSelector(QWidget* p, qint64 s, qint64 e, bool fixedSize)
     : QWidget(p), rangeStart(s), rangeEnd(e), posEdit(nullptr), autoclose(false), dialog(nullptr) {
     init(fixedSize);
 
-    QToolButton *goButton = new QToolButton(this);
+    QToolButton* goButton = new QToolButton(this);
     goButton->setText(tr("Go!"));
     goButton->setToolTip(tr("Go to position"));
     goButton->setObjectName("Go!");
@@ -59,7 +59,7 @@ void PositionSelector::init(bool fixedSize) {
     posEdit->setToolTip(tr("Enter position"));
     connect(posEdit, SIGNAL(returnPressed()), SLOT(sl_onReturnPressed()));
 
-    QHBoxLayout *l = new QHBoxLayout(this);
+    QHBoxLayout* l = new QHBoxLayout(this);
     if (fixedSize) {
         l->setContentsMargins(5, 0, 5, 0);
         l->setSizeConstraint(QLayout::SetFixedSize);
@@ -70,7 +70,7 @@ void PositionSelector::init(bool fixedSize) {
     setLayout(l);
 
     if (dialog != nullptr) {
-        QLabel *posLabel = new QLabel(tr("Position"), this);
+        QLabel* posLabel = new QLabel(tr("Position"), this);
         posLabel->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
         l->addWidget(posLabel);
     }
@@ -78,34 +78,34 @@ void PositionSelector::init(bool fixedSize) {
     l->addWidget(posEdit);
 }
 
-PositionSelector::PositionSelector(QDialog *dialog, qint64 rangeStart, qint64 rangeEnd, bool _a)
+PositionSelector::PositionSelector(QDialog* dialog, qint64 rangeStart, qint64 rangeEnd, bool _a)
     : QWidget(dialog), rangeStart(rangeStart), rangeEnd(rangeEnd), posEdit(nullptr), autoclose(_a), dialog(dialog) {
     init(false);
 
-    QPushButton *okButton = new QPushButton(this);
+    QPushButton* okButton = new QPushButton(this);
     okButton->setText(tr("Go!"));
     okButton->setObjectName("okButton");
     okButton->setDefault(true);
     connect(okButton, SIGNAL(clicked(bool)), SLOT(sl_onButtonClicked(bool)));
 
-    QPushButton *cancelButton = new QPushButton(this);
+    QPushButton* cancelButton = new QPushButton(this);
     cancelButton->setText(tr("Cancel"));
     cancelButton->setObjectName("cancelButton");
     connect(cancelButton, SIGNAL(clicked()), dialog, SLOT(reject()));
 
-    QPushButton *helpButton = new QPushButton(this);
+    QPushButton* helpButton = new QPushButton(this);
     helpButton->setText(tr("Help"));
     helpButton->setObjectName("helpButton");
     new HelpButton(dialog, helpButton, "65929411");
 
-    QHBoxLayout *l3 = new QHBoxLayout();
+    QHBoxLayout* l3 = new QHBoxLayout();
     l3->setMargin(0);
     l3->addStretch();
     l3->addWidget(okButton);
     l3->addWidget(cancelButton);
     l3->addWidget(helpButton);
 
-    QVBoxLayout *l2 = new QVBoxLayout();
+    QVBoxLayout* l2 = new QVBoxLayout();
     l2->addWidget(this);
     l2->addStretch();
     l2->addLayout(l3);
@@ -124,7 +124,7 @@ void PositionSelector::updateRange(qint64 _rangeStart, qint64 _rangeEnd) {
     rangeStart = _rangeStart;
     rangeEnd = _rangeEnd;
 
-    const QValidator *oldValidator = posEdit->validator();
+    const QValidator* oldValidator = posEdit->validator();
     posEdit->setValidator(new U2LongLongValidator(_rangeStart, _rangeEnd, posEdit));
     delete oldValidator;
 

@@ -23,7 +23,7 @@
 
 namespace U2 {
 
-TophatSample::TophatSample(const QString &name, const QStringList &datasets)
+TophatSample::TophatSample(const QString& name, const QStringList& datasets)
     : name(name), datasets(datasets) {
 }
 

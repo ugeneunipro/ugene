@@ -36,9 +36,9 @@
 
 namespace U2 {
 
-OutputDirectoryWidget::OutputDirectoryWidget(QWidget *parent, bool commitOnHide)
+OutputDirectoryWidget::OutputDirectoryWidget(QWidget* parent, bool commitOnHide)
     : QWidget(parent), commitOnHide(commitOnHide) {
-    QVBoxLayout *l = new QVBoxLayout(this);
+    QVBoxLayout* l = new QVBoxLayout(this);
     l->setContentsMargins(3, 3, 3, 3);
     label = new QLabel(tr(
                            "The Workflow Output Folder is a common folder that is used to store all output files in the Workflow Designer."
@@ -49,7 +49,7 @@ OutputDirectoryWidget::OutputDirectoryWidget(QWidget *parent, bool commitOnHide)
     label->setWordWrap(true);
     label->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     l->addWidget(label);
-    QHBoxLayout *hl = new QHBoxLayout();
+    QHBoxLayout* hl = new QHBoxLayout();
     hl->setContentsMargins(0, 0, 0, 0);
     pathEdit = new QLineEdit(this);
     pathEdit->setObjectName("pathEdit");
@@ -82,7 +82,7 @@ void OutputDirectoryWidget::commit() {
     WorkflowSettings::setWorkflowOutputDirectory(pathEdit->text());
 }
 
-void OutputDirectoryWidget::hideEvent(QHideEvent *event) {
+void OutputDirectoryWidget::hideEvent(QHideEvent* event) {
     if (commitOnHide) {
         commit();
     }

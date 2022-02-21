@@ -37,11 +37,11 @@ namespace U2 {
 class Primer3Dialog : public QDialog {
     Q_OBJECT
 public:
-    Primer3Dialog(const Primer3TaskSettings &defaultSettings, ADVSequenceObjectContext *context);
+    Primer3Dialog(const Primer3TaskSettings& defaultSettings, ADVSequenceObjectContext* context);
 
     Primer3TaskSettings getSettings() const;
-    const CreateAnnotationModel &getCreateAnnotationModel() const;
-    U2Region getRegion(bool *ok = nullptr) const;
+    const CreateAnnotationModel& getCreateAnnotationModel() const;
+    U2Region getRegion(bool* ok = nullptr) const;
     QString checkModel();
     bool prepareAnnotationObject();
 
@@ -51,19 +51,19 @@ public:
         Start_End
     };
 
-    static bool parseIntervalList(const QString &inputString, const QString &delimiter, QList<U2Region> *outputList, IntervalDefinition way = Start_Length);
-    static QString intervalListToString(const QList<U2Region> &intervalList, const QString &delimiter, IntervalDefinition way = Start_Length);
+    static bool parseIntervalList(const QString& inputString, const QString& delimiter, QList<U2Region>* outputList, IntervalDefinition way = Start_Length);
+    static QString intervalListToString(const QList<U2Region>& intervalList, const QString& delimiter, IntervalDefinition way = Start_Length);
 
 private:
     void reset();
     bool doDataExchange();
 
-    void showInvalidInputMessage(QWidget *field, QString fieldLabel);
+    void showInvalidInputMessage(QWidget* field, QString fieldLabel);
 
 private:
     Ui_Primer3Dialog ui;
 
-    CreateAnnotationWidgetController *createAnnotationWidgetController;
+    CreateAnnotationWidgetController* createAnnotationWidgetController;
     U2Region selection;
     int sequenceLength;
 
@@ -71,8 +71,8 @@ private:
 
     Primer3TaskSettings defaultSettings;
     Primer3TaskSettings settings;
-    RegionSelector *rs;
-    ADVSequenceObjectContext *context;
+    RegionSelector* rs;
+    ADVSequenceObjectContext* context;
 private slots:
     void sl_pbReset_clicked();
     void sl_pbPick_clicked();

@@ -38,7 +38,7 @@ static QString LINKDATA_API_URL = "http://linkdata.org/api/1/%1/%2_rdf.json";
 static QString LINKDATA_OBJ_NAME = "LinkData";
 static QString LINKDATA_USERDATA_OBJ_NAME = "userdata";
 
-LinkDataRequestHandler::LinkDataRequestHandler(QEventLoop *_eventLoop)
+LinkDataRequestHandler::LinkDataRequestHandler(QEventLoop* _eventLoop)
     : eventLoop(_eventLoop), error("") {
     assert(eventLoop != nullptr);
 }
@@ -55,7 +55,7 @@ QByteArray LinkDataRequestHandler::getResult() const {
     return result;
 }
 
-void LinkDataRequestHandler::sl_onReplyFinished(QNetworkReply *reply) {
+void LinkDataRequestHandler::sl_onReplyFinished(QNetworkReply* reply) {
     if (reply->error() == QNetworkReply::NoError) {
         result.append(reply->readAll());
     } else {
@@ -64,13 +64,13 @@ void LinkDataRequestHandler::sl_onReplyFinished(QNetworkReply *reply) {
     eventLoop->exit();
 }
 
-void LinkDataRequestHandler::onProxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *auth) {
+void LinkDataRequestHandler::onProxyAuthenticationRequired(const QNetworkProxy& proxy, QAuthenticator* auth) {
     auth->setUser(proxy.user());
     auth->setPassword(proxy.password());
-    disconnect(this, SLOT(onProxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *)));
+    disconnect(this, SLOT(onProxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*)));
 }
 
-static QString readScript(const QString &filename) {
+static QString readScript(const QString& filename) {
     QFile file(filename);
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QTextStream stream(&file);
@@ -79,7 +79,7 @@ static QString readScript(const QString &filename) {
     return "";
 }
 
-void LinkDataScriptLibrary::init(WorkflowScriptEngine *engine) {
+void LinkDataScriptLibrary::init(WorkflowScriptEngine* engine) {
     QScriptValue global = engine->globalObject();
     QScriptValue linkData = engine->newObject();
     QScriptValue userdata = engine->newObject();
@@ -92,7 +92,7 @@ void LinkDataScriptLibrary::init(WorkflowScriptEngine *engine) {
     scriptLog.trace("LinkData script registered");
 }
 
-QScriptValue LinkDataScriptLibrary::fetchFile(QScriptContext *ctx, QScriptEngine *engine) {
+QScriptValue LinkDataScriptLibrary::fetchFile(QScriptContext* ctx, QScriptEngine* engine) {
     if (ctx->argumentCount() < 2 && ctx->argumentCount() > 3) {
         return ctx->throwError(LinkDataRequestHandler::tr("Incorrect number of arguments"));
     }
@@ -108,14 +108,14 @@ QScriptValue LinkDataScriptLibrary::fetchFile(QScriptContext *ctx, QScriptEngine
 
     QNetworkRequest request(LINKDATA_API_URL.arg(workId).arg(filename));
     QNetworkAccessManager networkManager;
-    NetworkConfiguration *nc = AppContext::getAppSettings()->getNetworkConfiguration();
+    NetworkConfiguration* nc = AppContext::getAppSettings()->getNetworkConfiguration();
     QNetworkProxy proxy = nc->getProxyByUrl(LINKDATA_API_URL.arg(workId).arg(filename));
     networkManager.setProxy(proxy);
 
     QEventLoop eventLoop;
     LinkDataRequestHandler handler(&eventLoop);
-    handler.connect(&networkManager, SIGNAL(finished(QNetworkReply *)), SLOT(sl_onReplyFinished(QNetworkReply *)));
-    handler.connect(&networkManager, SIGNAL(proxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *)), SLOT(onProxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *)));
+    handler.connect(&networkManager, SIGNAL(finished(QNetworkReply*)), SLOT(sl_onReplyFinished(QNetworkReply*)));
+    handler.connect(&networkManager, SIGNAL(proxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*)), SLOT(onProxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*)));
     networkManager.get(request);
     eventLoop.exec();
 

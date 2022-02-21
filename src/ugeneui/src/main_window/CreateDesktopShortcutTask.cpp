@@ -65,13 +65,13 @@ CreateDesktopShortcutTask::CreateDesktopShortcutTask(bool startUp)
 bool CreateDesktopShortcutTask::createDesktopShortcut() {
 #if defined(Q_OS_WIN)
     HRESULT hres;
-    IShellLink *psl;
+    IShellLink* psl;
 
     // Initialize COM
     CoInitialize(0);
     // Get a pointer to the IShellLink interface. It is assumed that CoInitialize
     // has already been called.
-    hres = CoCreateInstance(CLSID_ShellLink, nullptr, CLSCTX_INPROC_SERVER, IID_IShellLink, (LPVOID *)&psl);
+    hres = CoCreateInstance(CLSID_ShellLink, nullptr, CLSCTX_INPROC_SERVER, IID_IShellLink, (LPVOID*)&psl);
     if (SUCCEEDED(hres)) {
         // Set the path to the shortcut target and add the description.
         WCHAR path[MAX_PATH];
@@ -81,8 +81,8 @@ bool CreateDesktopShortcutTask::createDesktopShortcut() {
 
         // Query IShellLink for the IPersistFile interface, used for saving the
         // shortcut in persistent storage.
-        IPersistFile *ppf;
-        hres = psl->QueryInterface(IID_IPersistFile, (LPVOID *)&ppf);
+        IPersistFile* ppf;
+        hres = psl->QueryInterface(IID_IPersistFile, (LPVOID*)&ppf);
 
         if (SUCCEEDED(hres)) {
             WCHAR wsz[MAX_PATH + 1];

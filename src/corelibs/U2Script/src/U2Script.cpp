@@ -30,13 +30,13 @@
 #include "SchemeWrapper.h"
 #include "UgeneContextWrapper.h"
 
-static U2::UgeneContextWrapper *GLOBAL_CONTEXT = nullptr;
+static U2::UgeneContextWrapper* GLOBAL_CONTEXT = nullptr;
 
-U2ErrorType processTask(U2::Task *task) {
+U2ErrorType processTask(U2::Task* task) {
     if (nullptr == GLOBAL_CONTEXT) {  // when script interface was used from inside UGENE
         // now it's being used in unit tests
         CHECK(U2::UgeneContextWrapper::isAppContextInitialized(), U2_INVALID_CALL);
-        U2::TaskScheduler *scheduler = U2::AppContext::getTaskScheduler();
+        U2::TaskScheduler* scheduler = U2::AppContext::getTaskScheduler();
         CHECK(nullptr != scheduler, U2_INVALID_CALL);
         scheduler->registerTopLevelTask(task);
     } else {
@@ -47,7 +47,7 @@ U2ErrorType processTask(U2::Task *task) {
 
 extern "C" {
 
-U2SCRIPT_EXPORT U2ErrorType initContext(const wchar_t *_workingDirectoryPath) {
+U2SCRIPT_EXPORT U2ErrorType initContext(const wchar_t* _workingDirectoryPath) {
     QString workingDirectoryPath = QString::fromWCharArray(_workingDirectoryPath);
     QFileInfo info(workingDirectoryPath);
     if (nullptr == workingDirectoryPath || !info.isDir() || !info.exists()) {
@@ -56,7 +56,7 @@ U2SCRIPT_EXPORT U2ErrorType initContext(const wchar_t *_workingDirectoryPath) {
     if (nullptr == GLOBAL_CONTEXT) {
         try {
             GLOBAL_CONTEXT = new U2::UgeneContextWrapper(workingDirectoryPath);
-        } catch (const std::bad_alloc &) {
+        } catch (const std::bad_alloc&) {
             delete GLOBAL_CONTEXT;
             return U2_NOT_ENOUGH_MEMORY;
         }

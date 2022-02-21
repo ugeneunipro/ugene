@@ -44,7 +44,7 @@
 using namespace std;
 namespace U2 {
 
-void GTest_SmithWatermnan::sortByScore(QList<SmithWatermanResult> &resultsForSort) {
+void GTest_SmithWatermnan::sortByScore(QList<SmithWatermanResult>& resultsForSort) {
     for (int i = 0; i < resultsForSort.size(); i++) {
         for (int j = i + 1; j < resultsForSort.size(); j++) {
             if (resultsForSort.at(i).score < resultsForSort.at(j).score) {
@@ -69,7 +69,7 @@ void GTest_SmithWatermnan::sortByScore(QList<SmithWatermanResult> &resultsForSor
     }
 }
 
-void GTest_SmithWatermnan::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_SmithWatermnan::init(XMLTestFormat*, const QDomElement& el) {
     searchSeqDocName = el.attribute(FILE_FASTA_CONTAIN_SEQUENCE_ATTR);
     if (searchSeqDocName.isEmpty()) {
         failMissingValue(FILE_FASTA_CONTAIN_SEQUENCE_ATTR);
@@ -140,7 +140,7 @@ void GTest_SmithWatermnan::init(XMLTestFormat *, const QDomElement &el) {
 
 void GTest_SmithWatermnan::prepare() {
     // get search sequence
-    U2SequenceObject *searchSeqObj = getContext<U2SequenceObject>(this, searchSeqDocName);
+    U2SequenceObject* searchSeqObj = getContext<U2SequenceObject>(this, searchSeqDocName);
     if (searchSeqObj == nullptr) {
         stateInfo.setError(QString("error can't cast to sequence from GObject"));
         return;
@@ -149,7 +149,7 @@ void GTest_SmithWatermnan::prepare() {
     CHECK_OP(stateInfo, );
 
     // get pattern sequence
-    U2SequenceObject *patternSeqObj = getContext<U2SequenceObject>(this, patternSeqDocName);
+    U2SequenceObject* patternSeqObj = getContext<U2SequenceObject>(this, patternSeqDocName);
     if (patternSeqObj == nullptr) {
         stateInfo.setError(QString("error can't cast to sequence from GObject"));
         return;
@@ -202,7 +202,7 @@ void GTest_SmithWatermnan::prepare() {
     } else { /* run on local machine */
         s.resultListener = new SmithWatermanResultListener();
         if (0 != AppContext::getSmithWatermanTaskFactoryRegistry()->getFactory(impl)) {
-            swAlgorithmTask = (Task *)AppContext::getSmithWatermanTaskFactoryRegistry()->getFactory(impl)->getTaskInstance(s, "tests SmithWaterman");
+            swAlgorithmTask = (Task*)AppContext::getSmithWatermanTaskFactoryRegistry()->getFactory(impl)->getTaskInstance(s, "tests SmithWaterman");
         } else {
             stateInfo.setError(QString("Not known impl of Smith-Waterman: %1").arg(impl));
             return;
@@ -250,7 +250,7 @@ bool GTest_SmithWatermnan::parseExpected_res() {
     return true;
 }
 
-bool GTest_SmithWatermnan::toInt(QString &str, int &num) {
+bool GTest_SmithWatermnan::toInt(QString& str, int& num) {
     bool ok = false;
     if (!str.isEmpty()) {
         num = str.toInt(&ok);
@@ -295,7 +295,7 @@ Task::ReportResult GTest_SmithWatermnan::report() {
     return ReportResult_Finished;
 }
 
-void GTest_SmithWatermnanPerf::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_SmithWatermnanPerf::init(XMLTestFormat*, const QDomElement& el) {
     searchSeqDocName = el.attribute(FILE_FASTA_CONTAIN_SEQUENCE_ATTR);
     if (searchSeqDocName.isEmpty()) {
         failMissingValue(FILE_FASTA_CONTAIN_SEQUENCE_ATTR);
@@ -322,7 +322,7 @@ void GTest_SmithWatermnanPerf::init(XMLTestFormat *, const QDomElement &el) {
 
 void GTest_SmithWatermnanPerf::prepare() {
     // get search sequence
-    U2SequenceObject *searchSeqObj = getContext<U2SequenceObject>(this, searchSeqDocName);
+    U2SequenceObject* searchSeqObj = getContext<U2SequenceObject>(this, searchSeqDocName);
     if (searchSeqObj == nullptr) {
         stateInfo.setError(QString("error can't cast to sequence from GObject"));
         return;
@@ -331,7 +331,7 @@ void GTest_SmithWatermnanPerf::prepare() {
     CHECK_OP(stateInfo, );
 
     // get pattern sequence
-    U2SequenceObject *patternSeqObj = getContext<U2SequenceObject>(this, patternSeqDocName);
+    U2SequenceObject* patternSeqObj = getContext<U2SequenceObject>(this, patternSeqDocName);
     if (patternSeqObj == nullptr) {
         stateInfo.setError(QString("error can't cast to sequence from GObject"));
         return;
@@ -373,7 +373,7 @@ void GTest_SmithWatermnanPerf::prepare() {
     s.resultFilter = 0;
     s.resultListener = new SmithWatermanResultListener();
     if (0 != AppContext::getSmithWatermanTaskFactoryRegistry()->getFactory(impl)) {
-        swAlgorithmTask = (Task *)AppContext::getSmithWatermanTaskFactoryRegistry()->getFactory(impl)->getTaskInstance(s, "test SW performance");
+        swAlgorithmTask = (Task*)AppContext::getSmithWatermanTaskFactoryRegistry()->getFactory(impl)->getTaskInstance(s, "test SW performance");
     } else {
         stateInfo.setError(QString("Not known impl of Smith-Waterman: %1").arg(impl));
         return;

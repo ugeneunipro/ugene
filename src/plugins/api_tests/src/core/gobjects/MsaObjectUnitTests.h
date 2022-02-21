@@ -40,13 +40,13 @@ public:
 
     static U2DbiRef getDbiRef();
 
-    static MultipleSequenceAlignmentObject *getTestAlignmentObject(const U2DbiRef &dbiRef, const QString &name, U2OpStatus &os);
-    static U2EntityRef getTestAlignmentRef(const U2DbiRef &dbiRef, const QString &name, U2OpStatus &os);
-    static MultipleSequenceAlignment getTestAlignment(const U2DbiRef &dbiRef, const QString &name, U2OpStatus &os);
+    static MultipleSequenceAlignmentObject* getTestAlignmentObject(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os);
+    static U2EntityRef getTestAlignmentRef(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os);
+    static MultipleSequenceAlignment getTestAlignment(const U2DbiRef& dbiRef, const QString& name, U2OpStatus& os);
 
 private:
     static TestDbiProvider dbiProvider;
-    static const QString &MAL_OBJ_DB_URL;
+    static const QString& MAL_OBJ_DB_URL;
     static U2DbiRef dbiRef;
 };
 

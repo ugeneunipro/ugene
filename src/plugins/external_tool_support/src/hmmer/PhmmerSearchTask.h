@@ -36,13 +36,13 @@ class SaveSequenceTask;
 class PhmmerSearchTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    PhmmerSearchTask(const PhmmerSearchSettings &settings);
+    PhmmerSearchTask(const PhmmerSearchSettings& settings);
 
     QList<SharedAnnotationData> getAnnotations() const;
 
 private:
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
     QString generateReport() const;
 
     void prepareWorkingDir();
@@ -54,15 +54,15 @@ private:
 
     PhmmerSearchSettings settings;
 
-    SaveSequenceTask *saveSequenceTask;
-    ExternalToolRunTask *phmmerTask;
-    HmmerParseSearchResultsTask *parseTask;
+    SaveSequenceTask* saveSequenceTask;
+    ExternalToolRunTask* phmmerTask;
+    HmmerParseSearchResultsTask* parseTask;
     bool removeWorkingDir;
 
     static const QString INPUT_SEQUENCE_FILENAME;
     static const QString PER_DOMAIN_HITS_FILENAME;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PHMMER_SEARCH_TASK_H_
+#endif  // _U2_PHMMER_SEARCH_TASK_H_

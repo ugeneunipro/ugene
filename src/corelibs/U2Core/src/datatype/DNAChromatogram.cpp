@@ -60,7 +60,7 @@ ushort DNAChromatogram::getValue(Trace trace, qint64 position) const {
     }
 }
 
-bool DNAChromatogram::operator==(const DNAChromatogram &otherChromatogram) const {
+bool DNAChromatogram::operator==(const DNAChromatogram& otherChromatogram) const {
     return traceLength == otherChromatogram.traceLength &&
            seqLength == otherChromatogram.seqLength &&
            baseCalls == otherChromatogram.baseCalls &&

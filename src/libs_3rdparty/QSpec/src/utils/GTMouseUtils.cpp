@@ -31,7 +31,7 @@ namespace HI {
 #define GT_CLASS_NAME "GTMouse"
 
 #define GT_METHOD_NAME "moveCursorToWidget"
-void GTMouseUtils::moveCursorToWidget(GUITestOpStatus &os, QWidget *widget) {
+void GTMouseUtils::moveCursorToWidget(GUITestOpStatus& os, QWidget* widget) {
     GT_CHECK(widget != NULL, "Provided widget is null");
     QPoint widgetCenter = widget->rect().center();
     GTMouseDriver::moveTo(widgetCenter);
@@ -39,7 +39,7 @@ void GTMouseUtils::moveCursorToWidget(GUITestOpStatus &os, QWidget *widget) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "moveCursorOutOfWidget"
-void GTMouseUtils::moveCursorOutOfWidget(GUITestOpStatus &os, QWidget *widget) {
+void GTMouseUtils::moveCursorOutOfWidget(GUITestOpStatus& os, QWidget* widget) {
     GT_CHECK(widget != NULL, "Provided widget is null");
     QPoint currentPosition = QCursor::pos();
     GT_CHECK(widget->rect().contains(currentPosition, false), "Cursor not over widget");

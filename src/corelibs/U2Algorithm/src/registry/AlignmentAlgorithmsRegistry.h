@@ -60,17 +60,17 @@ class U2ALGORITHM_EXPORT AlignmentAlgorithmsRegistry : public QObject {
     Q_DISABLE_COPY(AlignmentAlgorithmsRegistry)
 
 public:
-    AlignmentAlgorithmsRegistry(QObject *pOwn = 0);
+    AlignmentAlgorithmsRegistry(QObject* pOwn = 0);
     ~AlignmentAlgorithmsRegistry();
 
-    bool registerAlgorithm(AlignmentAlgorithm *algorithm);
-    AlignmentAlgorithm *getAlgorithm(const QString &id) const;
+    bool registerAlgorithm(AlignmentAlgorithm* algorithm);
+    AlignmentAlgorithm* getAlgorithm(const QString& id) const;
 
     QStringList getAvailableAlgorithmIds(AlignmentAlgorithmType type) const;
 
 private:
     mutable QMutex mutex;
-    QMap<QString, AlignmentAlgorithm *> algorithms;
+    QMap<QString, AlignmentAlgorithm*> algorithms;
 };
 
 class U2ALGORITHM_EXPORT AlignmentAlgorithm {
@@ -78,29 +78,29 @@ class U2ALGORITHM_EXPORT AlignmentAlgorithm {
 
 public:
     AlignmentAlgorithm(AlignmentAlgorithmType alignmentType,
-                       const QString &id,
-                       const QString &actionName,
-                       AbstractAlignmentTaskFactory *taskFactory,
-                       AlignmentAlgorithmGUIExtensionFactory *guiFactory = nullptr,
-                       const QString &realizationId = "default");
+                       const QString& id,
+                       const QString& actionName,
+                       AbstractAlignmentTaskFactory* taskFactory,
+                       AlignmentAlgorithmGUIExtensionFactory* guiFactory = nullptr,
+                       const QString& realizationId = "default");
 
     virtual ~AlignmentAlgorithm();
-    virtual AbstractAlignmentTaskFactory *getFactory(const QString &_realizationId = QString("default")) const;
-    virtual AlignmentAlgorithmGUIExtensionFactory *getGUIExtFactory(const QString &realizationId = QString("default")) const;
+    virtual AbstractAlignmentTaskFactory* getFactory(const QString& _realizationId = QString("default")) const;
+    virtual AlignmentAlgorithmGUIExtensionFactory* getGUIExtFactory(const QString& realizationId = QString("default")) const;
 
-    const QString &getId() const;
+    const QString& getId() const;
 
     /** Returns visual algorithm action name. */
-    const QString &getActionName() const;
+    const QString& getActionName() const;
 
     QStringList getRealizationsList() const;
-    bool addAlgorithmRealization(AbstractAlignmentTaskFactory *tf, AlignmentAlgorithmGUIExtensionFactory *guif, const QString &_realizationId);
-    AlgorithmRealization *getAlgorithmRealization(const QString &_realizationId) const;
+    bool addAlgorithmRealization(AbstractAlignmentTaskFactory* tf, AlignmentAlgorithmGUIExtensionFactory* guif, const QString& _realizationId);
+    AlgorithmRealization* getAlgorithmRealization(const QString& _realizationId) const;
     AlignmentAlgorithmType getAlignmentType() const;
 
     virtual bool isAlgorithmAvailable() const;
 
-    virtual bool checkAlphabet(const DNAAlphabet *) const {
+    virtual bool checkAlphabet(const DNAAlphabet*) const {
         return true;
     }
 
@@ -113,24 +113,24 @@ protected:
     /** Visual localizable algorithm action name, as shown in menus. */
     QString actionName;
 
-    QMap<QString, AlgorithmRealization *> realizations;
+    QMap<QString, AlgorithmRealization*> realizations;
 
     AlignmentAlgorithmType alignmentType;
 };
 
 class U2ALGORITHM_EXPORT AlgorithmRealization {
 public:
-    AlgorithmRealization(const QString &_realizationId, AbstractAlignmentTaskFactory *tf, AlignmentAlgorithmGUIExtensionFactory *guif);
+    AlgorithmRealization(const QString& _realizationId, AbstractAlignmentTaskFactory* tf, AlignmentAlgorithmGUIExtensionFactory* guif);
     ~AlgorithmRealization();
 
-    const QString &getRealizationId() const;
-    AbstractAlignmentTaskFactory *getTaskFactory() const;
-    AlignmentAlgorithmGUIExtensionFactory *getGUIExtFactory() const;
+    const QString& getRealizationId() const;
+    AbstractAlignmentTaskFactory* getTaskFactory() const;
+    AlignmentAlgorithmGUIExtensionFactory* getGUIExtFactory() const;
 
 private:
     QString realizationId;
-    AbstractAlignmentTaskFactory *alignmentAlgorithmTaskFactory;
-    AlignmentAlgorithmGUIExtensionFactory *alignmentAlgorithmGUIExtensionsFactory;
+    AbstractAlignmentTaskFactory* alignmentAlgorithmTaskFactory;
+    AlignmentAlgorithmGUIExtensionFactory* alignmentAlgorithmGUIExtensionsFactory;
 };
 
 }  // namespace U2

@@ -38,23 +38,23 @@ namespace U2 {
 LogSettingsPageState::LogSettingsPageState() {
 }
 
-LogSettingsPageController::LogSettingsPageController(LogSettingsHolder *h, QObject *p)
+LogSettingsPageController::LogSettingsPageController(LogSettingsHolder* h, QObject* p)
     : AppSettingsGUIPageController(tr("Logging"), APP_SETTINGS_GUI_LOG, p), target(h) {
 }
 
-AppSettingsGUIPageState *LogSettingsPageController::getSavedState() {
-    LogSettingsPageState *state = new LogSettingsPageState();
+AppSettingsGUIPageState* LogSettingsPageController::getSavedState() {
+    LogSettingsPageState* state = new LogSettingsPageState();
     state->settings = target->getSettings();
     return state;
 }
 
-void LogSettingsPageController::saveState(AppSettingsGUIPageState *s) {
-    LogSettingsPageState *state = qobject_cast<LogSettingsPageState *>(s);
+void LogSettingsPageController::saveState(AppSettingsGUIPageState* s) {
+    LogSettingsPageState* state = qobject_cast<LogSettingsPageState*>(s);
     target->setSettings(state->settings);
 }
 
-AppSettingsGUIPageWidget *LogSettingsPageController::createWidget(AppSettingsGUIPageState *data) {
-    LogSettingsPageWidget *w = new LogSettingsPageWidget();
+AppSettingsGUIPageWidget* LogSettingsPageController::createWidget(AppSettingsGUIPageState* data) {
+    LogSettingsPageWidget* w = new LogSettingsPageWidget();
     w->setState(data);
     return w;
 }
@@ -79,9 +79,9 @@ LogSettingsPageWidget::LogSettingsPageWidget() {
 #endif
 }
 
-void LogSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
-    LogSettingsPageState *state = qobject_cast<LogSettingsPageState *>(s);
-    LogSettings &settings = state->settings;
+void LogSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
+    LogSettingsPageState* state = qobject_cast<LogSettingsPageState*>(s);
+    LogSettings& settings = state->settings;
 
     tableWidget->clearContents();
 
@@ -95,14 +95,14 @@ void LogSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
     }
 
     // create global line
-    QTableWidgetItem *item00 = new QTableWidgetItem(tr("<<all>>"));
+    QTableWidgetItem* item00 = new QTableWidgetItem(tr("<<all>>"));
     tableWidget->setItem(0, 0, item00);
     for (int i = 0; i < LogLevel_NumLevels; i++) {
-        QTableWidgetItem *levelItem = new QTableWidgetItem();
+        QTableWidgetItem* levelItem = new QTableWidgetItem();
         tableWidget->setItem(0, i + 1, levelItem);
 
-        LogSettingsTopLineWidget *tw = new LogSettingsTopLineWidget(this, settings.levelColors[i], LogLevel(i));
-        QHBoxLayout *l = new QHBoxLayout();
+        LogSettingsTopLineWidget* tw = new LogSettingsTopLineWidget(this, settings.levelColors[i], LogLevel(i));
+        QHBoxLayout* l = new QHBoxLayout();
 
         int marginLeft = 6;  // TODO: align with usual setCheckState boxes
         l->setContentsMargins(marginLeft, 1, 10, 1);
@@ -113,9 +113,9 @@ void LogSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
         connect(tw->cb, SIGNAL(stateChanged(int)), SLOT(sl_levelStateChanged(int)));
         l->addWidget(tw->cb);
 
-        QLabel *label = new QLabel(tw);
+        QLabel* label = new QLabel(tw);
         updateColorLabel(label, settings.levelColors[i]);
-        connect(label, SIGNAL(linkActivated(const QString &)), SLOT(sl_changeColor(const QString &)));
+        connect(label, SIGNAL(linkActivated(const QString&)), SLOT(sl_changeColor(const QString&)));
         l->addWidget(label);
 
         tw->setLayout(l);
@@ -131,12 +131,12 @@ void LogSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
 
     QList<QString> categoryNames = settings.getLoggerSettings().keys();
     std::sort(categoryNames.begin(), categoryNames.end());
-    foreach (const QString &categoryName, categoryNames) {
-        const LoggerSettings &cs = settings.getLoggerSettings(categoryName);
-        QTableWidgetItem *nameItem = new QTableWidgetItem(cs.categoryName);
+    foreach (const QString& categoryName, categoryNames) {
+        const LoggerSettings& cs = settings.getLoggerSettings(categoryName);
+        QTableWidgetItem* nameItem = new QTableWidgetItem(cs.categoryName);
         tableWidget->setItem(row, 0, nameItem);
         for (int i = 0; i < LogLevel_NumLevels; i++) {
-            QTableWidgetItem *catItem = new QTableWidgetItem();
+            QTableWidgetItem* catItem = new QTableWidgetItem();
             catItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
             catItem->setCheckState(cs.activeLevelFlag[i] ? Qt::Checked : Qt::Unchecked);
             nEqual[i] += cs.activeLevelFlag[i] ? 1 : 0;
@@ -146,13 +146,13 @@ void LogSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
     }
 
     for (int i = 0; i < LogLevel_NumLevels; i++) {
-        LogSettingsTopLineWidget *tw = qobject_cast<LogSettingsTopLineWidget *>(tableWidget->cellWidget(0, i + 1));
+        LogSettingsTopLineWidget* tw = qobject_cast<LogSettingsTopLineWidget*>(tableWidget->cellWidget(0, i + 1));
         tw->cb->setCheckState(nEqual[i] == 0 ? Qt::Unchecked : nEqual[i] == settings.getLoggerSettings().size() ? Qt::Checked
                                                                                                                 : Qt::PartiallyChecked);
     }
 
     tableWidget->resizeRowsToContents();
-    connect(tableWidget, SIGNAL(itemChanged(QTableWidgetItem *)), this, SLOT(sl_catItemStateChanged(QTableWidgetItem *)));
+    connect(tableWidget, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(sl_catItemStateChanged(QTableWidgetItem*)));
 
     showCategoryCB->setChecked(settings.showCategory);
     showDateCB->setChecked(settings.showDate);
@@ -165,15 +165,15 @@ void LogSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
     sl_outFileStateChanged(settings.toFile ? Qt::Checked : Qt::Unchecked);
 }
 
-AppSettingsGUIPageState *LogSettingsPageWidget::getState(QString &err) const {
+AppSettingsGUIPageState* LogSettingsPageWidget::getState(QString& err) const {
     Q_UNUSED(err);
-    LogSettingsPageState *state = new LogSettingsPageState();
-    LogSettings &settings = state->settings;
+    LogSettingsPageState* state = new LogSettingsPageState();
+    LogSettings& settings = state->settings;
 
     // process global settings
     for (int i = 0; i < LogLevel_NumLevels; i++) {
-        QWidget *w = tableWidget->cellWidget(0, i + 1);
-        LogSettingsTopLineWidget *tw = qobject_cast<LogSettingsTopLineWidget *>(w);
+        QWidget* w = tableWidget->cellWidget(0, i + 1);
+        LogSettingsTopLineWidget* tw = qobject_cast<LogSettingsTopLineWidget*>(w);
         settings.levelColors[i] = tw->color;
         settings.activeLevelGlobalFlag[i] = tw->cb->checkState() != Qt::Unchecked;
     }
@@ -189,7 +189,7 @@ AppSettingsGUIPageState *LogSettingsPageWidget::getState(QString &err) const {
     }
 
     if (fileOutCB->isChecked() != settings.toFile || settings.outputFile != saveController->getSaveFileName()) {
-        LogCacheExt *lce = qobject_cast<LogCacheExt *>(LogCache::getAppGlobalInstance());
+        LogCacheExt* lce = qobject_cast<LogCacheExt*>(LogCache::getAppGlobalInstance());
         if (fileOutCB->isChecked()) {
             lce->setFileOutputEnabled(saveController->getSaveFileName());
         } else {
@@ -232,21 +232,21 @@ void LogSettingsPageWidget::sl_levelStateChanged(int state) {
     if (state == Qt::PartiallyChecked) {
         return;
     }
-    disconnect(tableWidget, SIGNAL(itemChanged(QTableWidgetItem *)), this, SLOT(sl_catItemStateChanged(QTableWidgetItem *)));
+    disconnect(tableWidget, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(sl_catItemStateChanged(QTableWidgetItem*)));
 
-    QCheckBox *cb = qobject_cast<QCheckBox *>(sender());
-    int column = 1 + qobject_cast<LogSettingsTopLineWidget *>(cb->parent())->level;
+    QCheckBox* cb = qobject_cast<QCheckBox*>(sender());
+    int column = 1 + qobject_cast<LogSettingsTopLineWidget*>(cb->parent())->level;
     assert(column >= 1 && column <= LogLevel_NumLevels);
 
     for (int row = 1; row < tableWidget->rowCount(); row++) {
-        QTableWidgetItem *catItem = tableWidget->item(row, column);
+        QTableWidgetItem* catItem = tableWidget->item(row, column);
         catItem->setCheckState(cb->checkState());
     }
 
-    connect(tableWidget, SIGNAL(itemChanged(QTableWidgetItem *)), this, SLOT(sl_catItemStateChanged(QTableWidgetItem *)));
+    connect(tableWidget, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(sl_catItemStateChanged(QTableWidgetItem*)));
 }
 
-void LogSettingsPageWidget::sl_catItemStateChanged(QTableWidgetItem *item) {
+void LogSettingsPageWidget::sl_catItemStateChanged(QTableWidgetItem* item) {
     if (tableWidget->row(item) == 0) {
         return;
     }
@@ -254,11 +254,11 @@ void LogSettingsPageWidget::sl_catItemStateChanged(QTableWidgetItem *item) {
     int column = tableWidget->column(item);
     assert(column >= 1 && column <= LogLevel_NumLevels);
 
-    LogSettingsTopLineWidget *mainItem = qobject_cast<LogSettingsTopLineWidget *>(tableWidget->cellWidget(0, column));
+    LogSettingsTopLineWidget* mainItem = qobject_cast<LogSettingsTopLineWidget*>(tableWidget->cellWidget(0, column));
 
     int nEqual = 0;
     for (int row = 1; row < tableWidget->rowCount(); row++) {
-        QTableWidgetItem *catItem = tableWidget->item(row, column);
+        QTableWidgetItem* catItem = tableWidget->item(row, column);
         assert(catItem != nullptr);
         nEqual += catItem->checkState() == item->checkState() ? 1 : 0;
     }
@@ -269,10 +269,10 @@ void LogSettingsPageWidget::sl_catItemStateChanged(QTableWidgetItem *item) {
     }
 }
 
-void LogSettingsPageWidget::sl_changeColor(const QString &v) {
+void LogSettingsPageWidget::sl_changeColor(const QString& v) {
     Q_UNUSED(v);
-    QLabel *label = qobject_cast<QLabel *>(sender());
-    LogSettingsTopLineWidget *tw = qobject_cast<LogSettingsTopLineWidget *>(label->parent());
+    QLabel* label = qobject_cast<QLabel*>(sender());
+    LogSettingsTopLineWidget* tw = qobject_cast<LogSettingsTopLineWidget*>(label->parent());
     QColor color = QColorDialog::getColor(tw->color, this);
     if (color.isValid()) {
         tw->color = color.name();
@@ -291,7 +291,7 @@ void LogSettingsPageWidget::sl_outFileStateChanged(int state) {
     }
 }
 
-void LogSettingsPageWidget::updateColorLabel(QLabel *l, const QString &color) {
+void LogSettingsPageWidget::updateColorLabel(QLabel* l, const QString& color) {
     QString style = "{color: " + color + "; text-decoration: none;};";
     l->setText("<style> a " + style + " a:visited " + style + " a:hover " + style + "</style>" + "<a href=\".\">" + tr("Sample text") + "</a>");
 }

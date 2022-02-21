@@ -29,7 +29,7 @@ using namespace HI;
 
 class DefaultWizardFiller : public Filler {
 public:
-    DefaultWizardFiller(HI::GUITestOpStatus &os, const QString &wizardName = "");
+    DefaultWizardFiller(HI::GUITestOpStatus& os, const QString& wizardName = "");
 
     void commonScenario();
 };

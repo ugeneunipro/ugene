@@ -44,9 +44,9 @@ public:
 class DotPlotImageExportToBitmapTask : public ImageExportTask {
     Q_OBJECT
 public:
-    DotPlotImageExportToBitmapTask(DotPlotWidget *wgt,
-                                   const DotPlotImageExportSettings &dotPlotExportSettings,
-                                   const ImageExportTaskSettings &settings)
+    DotPlotImageExportToBitmapTask(DotPlotWidget* wgt,
+                                   const DotPlotImageExportSettings& dotPlotExportSettings,
+                                   const ImageExportTaskSettings& settings)
         : ImageExportTask(settings),
           dotplotWidget(wgt),
           dpExportSettings(dotPlotExportSettings) {
@@ -54,27 +54,27 @@ public:
     void run();
 
 protected:
-    DotPlotWidget *dotplotWidget;
+    DotPlotWidget* dotplotWidget;
     DotPlotImageExportSettings dpExportSettings;
 };
 
 class DotPlotImageExportController : public ImageExportController {
     Q_OBJECT
 public:
-    DotPlotImageExportController(DotPlotWidget *wgt);
+    DotPlotImageExportController(DotPlotWidget* wgt);
 
     int getImageWidth() const;
     int getImageHeight() const;
 
 protected:
     void initSettingsWidget();
-    Task *getExportToBitmapTask(const ImageExportTaskSettings &settings) const;
+    Task* getExportToBitmapTask(const ImageExportTaskSettings& settings) const;
 
 private:
-    DotPlotWidget *dotplotWidget;
+    DotPlotWidget* dotplotWidget;
 
-    QCheckBox *includeAreaSelection;
-    QCheckBox *includeRepeatSelection;
+    QCheckBox* includeAreaSelection;
+    QCheckBox* includeRepeatSelection;
 };
 
 }  // namespace U2

@@ -25,14 +25,14 @@
 
 namespace U2 {
 
-RemoveAnnotationsTask::RemoveAnnotationsTask(AnnotationTableObject *ao, const QString &gName)
+RemoveAnnotationsTask::RemoveAnnotationsTask(AnnotationTableObject* ao, const QString& gName)
     : Task("Remove Annotations Task", TaskFlag_NoRun), aobj(ao), groupName(gName) {
     SAFE_POINT(!aobj.isNull(), "Invalid annotation table detected!", );
 }
 
 Task::ReportResult RemoveAnnotationsTask::report() {
-    AnnotationGroup *rootGroup = aobj->getRootGroup();
-    AnnotationGroup *subGroup = rootGroup->getSubgroup(groupName, false);
+    AnnotationGroup* rootGroup = aobj->getRootGroup();
+    AnnotationGroup* subGroup = rootGroup->getSubgroup(groupName, false);
     if (subGroup == nullptr) {  // subgroup having @groupName does not exist
         return ReportResult_Finished;
     }

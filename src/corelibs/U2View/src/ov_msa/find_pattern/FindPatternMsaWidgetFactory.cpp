@@ -41,12 +41,12 @@ FindPatternMsaWidgetFactory::FindPatternMsaWidgetFactory() {
 
 #define SEARCH_MODE_OPTION_KEY "FindPatternMsaWidgetFactory_searchMode"
 
-QWidget *FindPatternMsaWidgetFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+QWidget* FindPatternMsaWidgetFactory::createWidget(GObjectView* objView, const QVariantMap& options) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);
 
-    MSAEditor *msaEditor = qobject_cast<MSAEditor *>(objView);
+    MSAEditor* msaEditor = qobject_cast<MSAEditor*>(objView);
     SAFE_POINT(msaEditor != nullptr,
                QString("Internal error: unable to cast object view to MSAEditor for group '%1'.").arg(GROUP_ID),
                nullptr);
@@ -60,8 +60,8 @@ OPGroupParameters FindPatternMsaWidgetFactory::getOPGroupParameters() {
     return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Search in Alignment"), GROUP_DOC_PAGE);
 }
 
-void FindPatternMsaWidgetFactory::applyOptionsToWidget(QWidget *widget, const QVariantMap &options) {
-    FindPatternMsaWidget *findPatternMsaWidget = qobject_cast<FindPatternMsaWidget *>(widget);
+void FindPatternMsaWidgetFactory::applyOptionsToWidget(QWidget* widget, const QVariantMap& options) {
+    FindPatternMsaWidget* findPatternMsaWidget = qobject_cast<FindPatternMsaWidget*>(widget);
     CHECK(findPatternMsaWidget != nullptr, )
     int mode = options.value(SEARCH_MODE_OPTION_KEY).toInt();
     if (mode == 1 || mode == 2) {
@@ -69,7 +69,7 @@ void FindPatternMsaWidgetFactory::applyOptionsToWidget(QWidget *widget, const QV
     }
 }
 
-const QString &FindPatternMsaWidgetFactory::getGroupId() {
+const QString& FindPatternMsaWidgetFactory::getGroupId() {
     return GROUP_ID;
 }
 

@@ -36,9 +36,9 @@
 #include "JsScheduler.h"
 #include "NodeApiUtils.h"
 
-const char *WRONG_ARGUMENT_TYPE_MESSAGE = "Wrong argument type";
-const char *ACTOR_NOT_FOUND_MESSAGE = "Actor with passed id wasn't found on the scheme";
-const char *CONTEXT_NOT_INITIALIZED = "Ugene script context wasn't initialized";
+const char* WRONG_ARGUMENT_TYPE_MESSAGE = "Wrong argument type";
+const char* ACTOR_NOT_FOUND_MESSAGE = "Actor with passed id wasn't found on the scheme";
+const char* CONTEXT_NOT_INITIALIZED = "Ugene script context wasn't initialized";
 
 const int COUNT_OF_NUMBERS_IN_COUNT_OF_SCHEME_TIERS = 3;
 
@@ -59,7 +59,7 @@ void initModule(Handle<Object> target) {
     target->Set(String::NewSymbol("tick"), FunctionTemplate::New(tick)->GetFunction());
 }
 
-Handle<Value> launchSchemeWithScheduler(const Arguments &args) {
+Handle<Value> launchSchemeWithScheduler(const Arguments& args) {
     HandleScope scope;
     if (!NodeApiUtils::isArgumentCountCorrect(args.Length(), 3)) {
         return scope.Close(Undefined());
@@ -69,13 +69,13 @@ Handle<Value> launchSchemeWithScheduler(const Arguments &args) {
         return scope.Close(Undefined());
     }
     Local<Function> schedulerCallback = Local<Function>::Cast(args[1]);
-    JsScheduler *scheduler = new JsScheduler(nullptr, schedulerCallback);
+    JsScheduler* scheduler = new JsScheduler(nullptr, schedulerCallback);
 
     const String::Utf8Value pathToScheme(args[0]->ToString());
     const String::Utf8Value workingDir(args[2]->ToString());
     Handle<Value> result;
     initContext(*workingDir);
-    SchemeHandle *scheme = nullptr;
+    SchemeHandle* scheme = nullptr;
     U2ErrorType error = createScheme(*pathToScheme, scheme);
     CHECK(U2_OK == error, scope.Close(Undefined()));
     result = scope.Close(Number::New(launchScheme(scheme)));
@@ -83,22 +83,22 @@ Handle<Value> launchSchemeWithScheduler(const Arguments &args) {
     return result;
 }
 
-Handle<Value> topologicalSortedGraph(const Arguments &args) {
+Handle<Value> topologicalSortedGraph(const Arguments& args) {
     HandleScope scope;
     if (!NodeApiUtils::isArgumentCountCorrect(args.Length(), 0)) {
         return scope.Close(Undefined());
     }
-    ScriptContext *scriptContext = NodeApiUtils::getScriptContext();
+    ScriptContext* scriptContext = NodeApiUtils::getScriptContext();
     if (nullptr == scriptContext) {
         return scope.Close(Undefined());
     }
-    QMap<int, QList<Actor *>> topologicalSortedGraph = scriptContext->getTopologicalSortedGraph();
+    QMap<int, QList<Actor*>> topologicalSortedGraph = scriptContext->getTopologicalSortedGraph();
     const int schemeTiersCount = topologicalSortedGraph.size();
     Local<Object> scheme = Object::New();
     for (int i = 0; schemeTiersCount > i; ++i) {
         Local<Object> tier = Object::New();
         int actorCounter = 0;
-        foreach (Actor *actor, topologicalSortedGraph[i]) {
+        foreach (Actor* actor, topologicalSortedGraph[i]) {
             Handle<Value> actorInitData[] = {Integer::New(reinterpret_cast<int>(actor))};
             Handle<Value> wrappedActor = ActorWrap::newInstance(1, actorInitData);
             tier->Set(String::NewSymbol(actor->getId().toLocal8Bit().constData()),
@@ -110,7 +110,7 @@ Handle<Value> topologicalSortedGraph(const Arguments &args) {
     return scope.Close(scheme);
 }
 
-Handle<Value> tick(const Arguments &args) {
+Handle<Value> tick(const Arguments& args) {
     HandleScope scope;
     if (!NodeApiUtils::isArgumentCountCorrect(args.Length(), 1)) {
         return scope.Close(Undefined());
@@ -120,7 +120,7 @@ Handle<Value> tick(const Arguments &args) {
         return scope.Close(Undefined());
     }
     const String::Utf8Value actorId(args[0]->ToString());
-    ScriptContext *scriptContext = NodeApiUtils::getScriptContext();
+    ScriptContext* scriptContext = NodeApiUtils::getScriptContext();
     if (nullptr == scriptContext) {
         return scope.Close(Undefined());
     }
@@ -132,17 +132,17 @@ Handle<Value> tick(const Arguments &args) {
     return scope.Close(Undefined());
 }
 
-Handle<Value> debugStatus(const Arguments &args) {
+Handle<Value> debugStatus(const Arguments& args) {
     HandleScope scope;
     if (!NodeApiUtils::isArgumentCountCorrect(args.Length(), 0)) {
         return scope.Close(Undefined());
     }
-    ScriptContext *scriptContext = NodeApiUtils::getScriptContext();
+    ScriptContext* scriptContext = NodeApiUtils::getScriptContext();
     if (nullptr == scriptContext) {
         return scope.Close(Undefined());
     }
     Handle<Value> wrappedDebugInfo;
-    WorkflowDebugStatus *debugInfo = scriptContext->getDebugStatus();
+    WorkflowDebugStatus* debugInfo = scriptContext->getDebugStatus();
     if (nullptr != debugInfo) {
         Handle<Value> debugInfoInitData[] = {Integer::New(reinterpret_cast<int>(debugInfo))};
         wrappedDebugInfo = DebugStatusWrap::newInstance(1, debugInfoInitData);

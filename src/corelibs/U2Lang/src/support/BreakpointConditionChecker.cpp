@@ -31,8 +31,8 @@ const int DEFAULT_CONDITION_EVAL_RESULT = -1;
 
 namespace U2 {
 
-BreakpointConditionChecker::BreakpointConditionChecker(const QString &initConditionText,
-                                                       Workflow::WorkflowContext *context)
+BreakpointConditionChecker::BreakpointConditionChecker(const QString& initConditionText,
+                                                       Workflow::WorkflowContext* context)
     : conditionText(initConditionText),
       engine((nullptr == context) ? nullptr : new WorkflowScriptEngine(context)),
       enabled(false),
@@ -48,7 +48,7 @@ BreakpointConditionChecker::~BreakpointConditionChecker() {
     delete engine;
 }
 
-void BreakpointConditionChecker::setContext(Workflow::WorkflowContext *context) {
+void BreakpointConditionChecker::setContext(Workflow::WorkflowContext* context) {
     QMutexLocker lock(&engineGuard);
     if (nullptr == context) {
         delete engine;
@@ -59,7 +59,7 @@ void BreakpointConditionChecker::setContext(Workflow::WorkflowContext *context) 
     }
 }
 
-bool BreakpointConditionChecker::evaluateCondition(const AttributeScript *conditionContext) {
+bool BreakpointConditionChecker::evaluateCondition(const AttributeScript* conditionContext) {
     Q_ASSERT(nullptr != conditionContext);
 
     QMutexLocker lock(&engineGuard);
@@ -72,7 +72,7 @@ bool BreakpointConditionChecker::evaluateCondition(const AttributeScript *condit
     }
 
     QMap<QString, QScriptValue> scriptVars;
-    foreach (const Descriptor &key, conditionContext->getScriptVars().uniqueKeys()) {
+    foreach (const Descriptor& key, conditionContext->getScriptVars().uniqueKeys()) {
         assert(!key.getId().isEmpty());
         scriptVars[key.getId()] = engine->newVariant(conditionContext->getScriptVars().value(key));
     }
@@ -117,7 +117,7 @@ BreakpointConditionParameter BreakpointConditionChecker::getConditionParameter()
     return parameter;
 }
 
-void BreakpointConditionChecker::setConditionText(const QString &text) {
+void BreakpointConditionChecker::setConditionText(const QString& text) {
     conditionText = text;
 }
 

@@ -51,27 +51,27 @@ private:
     QString translationId;
     ORFAlgorithmSettings settings;
     QVector<U2Region> expectedResults;
-    ORFFindTask *task;
+    ORFFindTask* task;
 };
 
 // FIXME! this class is a partial copy of DetView
 class Translator {
 public:
-    Translator(const U2SequenceObject *s, const QString &tid);
+    Translator(const U2SequenceObject* s, const QString& tid);
 
     // void setAminoTranslation(const QString& id);
-    DNATranslation *getComplTranslation() const {
+    DNATranslation* getComplTranslation() const {
         return complTransl;
     }
-    DNATranslation *getAminoTranslation() const {
+    DNATranslation* getAminoTranslation() const {
         return aminoTransl;
     }
 
 private:
     // QStringList translations;
-    const U2SequenceObject *seq;
-    DNATranslation *complTransl;
-    DNATranslation *aminoTransl;
+    const U2SequenceObject* seq;
+    DNATranslation* complTransl;
+    DNATranslation* aminoTransl;
 };
 
 }  // namespace U2

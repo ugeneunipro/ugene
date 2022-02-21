@@ -31,20 +31,20 @@ using namespace HI;
 
 class GTMSAEditorStatusWidget {
 public:
-    static QWidget *getStatusWidget(HI::GUITestOpStatus &os);
+    static QWidget* getStatusWidget(HI::GUITestOpStatus& os);
 
     // fails if the widget is NULL or can't get length
-    static int length(HI::GUITestOpStatus &os, QWidget *w);
-    static int getSequencesCount(HI::GUITestOpStatus &os, QWidget *w);
+    static int length(HI::GUITestOpStatus& os, QWidget* w);
+    static int getSequencesCount(HI::GUITestOpStatus& os, QWidget* w);
 
-    static QString getRowNumberString(HI::GUITestOpStatus &os);
-    static QString getRowsCountString(HI::GUITestOpStatus &os);
+    static QString getRowNumberString(HI::GUITestOpStatus& os);
+    static QString getRowsCountString(HI::GUITestOpStatus& os);
 
-    static QString getColumnNumberString(HI::GUITestOpStatus &os);
-    static QString getColumnsCountString(HI::GUITestOpStatus &os);
+    static QString getColumnNumberString(HI::GUITestOpStatus& os);
+    static QString getColumnsCountString(HI::GUITestOpStatus& os);
 
-    static QString getSequenceUngappedPositionString(HI::GUITestOpStatus &os);
-    static QString getSequenceUngappedLengthString(HI::GUITestOpStatus &os);
+    static QString getSequenceUngappedPositionString(HI::GUITestOpStatus& os);
+    static QString getSequenceUngappedLengthString(HI::GUITestOpStatus& os);
 };
 
 }  // namespace U2

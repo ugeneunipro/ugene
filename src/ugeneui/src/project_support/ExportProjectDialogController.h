@@ -22,16 +22,16 @@
 #ifndef _U2_EXPORT_PROJECT_DIALOG_CONTROLLER_
 #define _U2_EXPORT_PROJECT_DIALOG_CONTROLLER_
 
-#include <ui_ExportProjectDialog.h>
-
 #include <U2Core/AppContext.h>
+
+#include <ui_ExportProjectDialog.h>
 
 namespace U2 {
 
 class ExportProjectDialogController : public QDialog, public Ui_ExportProjectDialog {
     Q_OBJECT
 public:
-    ExportProjectDialogController(QWidget *p, const QString &defaultProjectFileName);
+    ExportProjectDialogController(QWidget* p, const QString& defaultProjectFileName);
 
     void accept();
 

@@ -36,18 +36,18 @@ namespace U2 {
 
 /////// BaseSerializedSchemeRunner implementation /////////////////////////////////////////////////
 
-BaseSerializedSchemeRunner::BaseSerializedSchemeRunner(const QString &_pathToScheme,
-                                                       ScriptableScheduler *_scheduler,
-                                                       QStringList &outputFiles)
+BaseSerializedSchemeRunner::BaseSerializedSchemeRunner(const QString& _pathToScheme,
+                                                       ScriptableScheduler* _scheduler,
+                                                       QStringList& outputFiles)
     : Task(tr("Workflow run from serialized scheme"), TaskFlag_NoRun),
       workflowResultFiles(outputFiles), pathToScheme(_pathToScheme), scheduler(_scheduler) {
 }
 
 /////// WorkflowRunSerializedSchemeTask implementation ////////////////////////////////////////////
 
-WorkflowRunSerializedSchemeTask::WorkflowRunSerializedSchemeTask(const QString &_pathToScheme,
-                                                                 ScriptableScheduler *_scheduler,
-                                                                 QStringList &outputFiles)
+WorkflowRunSerializedSchemeTask::WorkflowRunSerializedSchemeTask(const QString& _pathToScheme,
+                                                                 ScriptableScheduler* _scheduler,
+                                                                 QStringList& outputFiles)
     : BaseSerializedSchemeRunner(_pathToScheme, _scheduler, outputFiles), scheme(nullptr),
       loadTask(nullptr), runTask(nullptr) {
     GCOUNTER(cvar, "workflow_run_from_script");
@@ -58,9 +58,9 @@ WorkflowRunSerializedSchemeTask::WorkflowRunSerializedSchemeTask(const QString &
     }
 }
 
-QList<Task *> WorkflowRunSerializedSchemeTask::onSubTaskFinished(Task *subtask) {
+QList<Task*> WorkflowRunSerializedSchemeTask::onSubTaskFinished(Task* subtask) {
     Q_ASSERT(subtask != nullptr);
-    QList<Task *> res;
+    QList<Task*> res;
 
     propagateSubtaskError();
     if (hasError() || isCanceled()) {
@@ -89,8 +89,8 @@ QList<Task *> WorkflowRunSerializedSchemeTask::onSubTaskFinished(Task *subtask) 
         runTask = new WorkflowRunTask(*scheme, remapping);
         res.append(runTask);
     } else if (subtask == runTask) {
-        const QList<Workflow::WorkflowMonitor *> workflowMonitors = runTask->getMonitors();
-        for (Workflow::WorkflowMonitor *monitor : qAsConst(workflowMonitors)) {
+        const QList<Workflow::WorkflowMonitor*> workflowMonitors = runTask->getMonitors();
+        for (Workflow::WorkflowMonitor* monitor : qAsConst(workflowMonitors)) {
             foreach (Workflow::Monitor::FileInfo file, monitor->getOutputFiles()) {
                 workflowResultFiles.append(file.url);
             }
@@ -99,7 +99,7 @@ QList<Task *> WorkflowRunSerializedSchemeTask::onSubTaskFinished(Task *subtask) 
     return res;
 }
 
-LoadWorkflowTask *WorkflowRunSerializedSchemeTask::createLoadSchemeTask() {
+LoadWorkflowTask* WorkflowRunSerializedSchemeTask::createLoadSchemeTask() {
     const QString approvedPath = WorkflowUtils::findPathToSchemaFile(pathToScheme);
     if (approvedPath.isEmpty()) {
         setError(tr("Cannot find workflow: %1").arg(pathToScheme));

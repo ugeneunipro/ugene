@@ -29,10 +29,10 @@ namespace U2 {
 class ScriptHighlighter : public QSyntaxHighlighter {
     Q_OBJECT
 public:
-    ScriptHighlighter(QTextDocument *parent = 0);
+    ScriptHighlighter(QTextDocument* parent = 0);
 
 protected:
-    void highlightBlock(const QString &text);
+    void highlightBlock(const QString& text);
 
 private:
     struct HighlightingRule {

@@ -32,14 +32,14 @@ namespace U2 {
 class U2FORMATS_EXPORT PlainTextFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
-    PlainTextFormat(QObject *p);
+    PlainTextFormat(QObject* p);
 
-    void storeTextDocument(IOAdapterWriter &writer, Document *document, U2OpStatus &os) override;
+    void storeTextDocument(IOAdapterWriter& writer, Document* document, U2OpStatus& os) override;
 
 protected:
-    FormatCheckResult checkRawTextData(const QString &dataPrefix, const GUrl &originalDataUrl) const override;
+    FormatCheckResult checkRawTextData(const QString& dataPrefix, const GUrl& originalDataUrl) const override;
 
-    Document *loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) override;
+    Document* loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) override;
 };
 
 }  // namespace U2

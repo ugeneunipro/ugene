@@ -60,20 +60,20 @@ public:
     }
 
     // constructs url specified by string. The type is parsed
-    GUrl(const QString &urlString);
+    GUrl(const QString& urlString);
 
     // constructs url specified by string. The type provided as param
-    GUrl(const QString &urlString, const GUrlType &type);
+    GUrl(const QString& urlString, const GUrlType& type);
 
-    GUrl(const GUrl &url) = default;
+    GUrl(const GUrl& url) = default;
 
-    bool operator==(const GUrl &url) const;
+    bool operator==(const GUrl& url) const;
 
-    bool operator!=(const GUrl &url) const;
+    bool operator!=(const GUrl& url) const;
 
-    GUrl &operator=(const GUrl &url) = default;
+    GUrl& operator=(const GUrl& url) = default;
 
-    const QString &getURLString() const {
+    const QString& getURLString() const {
         return urlString;
     }
 
@@ -117,7 +117,7 @@ public:
 
     QString completeFileSuffix() const;
 
-    static GUrlType getURLType(const QString &rawUrl);
+    static GUrlType getURLType(const QString& rawUrl);
 
 private:
     static bool registerMeta;
@@ -125,8 +125,8 @@ private:
     GUrlType type;
 };
 
-QDataStream &operator<<(QDataStream &out, const GUrl &myObj);
-QDataStream &operator>>(QDataStream &in, GUrl &myObj);
+QDataStream& operator<<(QDataStream& out, const GUrl& myObj);
+QDataStream& operator>>(QDataStream& in, GUrl& myObj);
 
 }  // namespace U2
 

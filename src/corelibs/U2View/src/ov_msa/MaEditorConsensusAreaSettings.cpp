@@ -38,11 +38,11 @@ bool MaEditorConsensusAreaSettings::isVisible(const MaEditorConsElement element)
     return visibleElements.testFlag(element);
 }
 
-const QFont &MaEditorConsensusAreaSettings::getRulerFont() const {
+const QFont& MaEditorConsensusAreaSettings::getRulerFont() const {
     return rulerFont;
 }
 
-void MaEditorConsensusAreaSettings::setRulerFont(const QFont &font) {
+void MaEditorConsensusAreaSettings::setRulerFont(const QFont& font) {
     rulerFont.setFamily("Arial");
     rulerFont.setPointSize(qMax(8, qRound(font.pointSize() * 0.7)));
 }

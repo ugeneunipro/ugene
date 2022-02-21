@@ -31,7 +31,7 @@ class TrimmomaticWorkerFactory : public DomainFactory {
 public:
     TrimmomaticWorkerFactory();
 
-    Worker *createWorker(Actor *actor);
+    Worker* createWorker(Actor* actor);
 
     static void init();
     static void cleanup();
@@ -62,7 +62,7 @@ public:
     static const QString PAIRED_END_TEXT;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_TRIMMOMATIC_WORKER_FACTORY_H_
+#endif  // _U2_TRIMMOMATIC_WORKER_FACTORY_H_

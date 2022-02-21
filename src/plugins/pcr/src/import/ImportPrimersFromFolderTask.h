@@ -30,14 +30,14 @@ namespace U2 {
 class ImportPrimersFromFolderTask : public Task {
     Q_OBJECT
 public:
-    ImportPrimersFromFolderTask(const Folder &folder);
+    ImportPrimersFromFolderTask(const Folder& folder);
 
     void prepare();
     QString generateReport() const;
 
 private:
     QStringList getDirectSubfolders();
-    QList<GObject *> getSubobjects();
+    QList<GObject*> getSubobjects();
 
     Folder folder;
 };

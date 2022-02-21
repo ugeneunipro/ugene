@@ -30,26 +30,26 @@ namespace U2 {
 
 class ETSContextTLSRef {
 public:
-    ETSContextTLSRef(ETSContext *_ctx, int _workerID)
+    ETSContextTLSRef(ETSContext* _ctx, int _workerID)
         : ctx(_ctx), workerID(_workerID) {
     }
-    ETSContext *ctx;
+    ETSContext* ctx;
     int workerID;
 };
 
 class TaskLocalData {
 public:
-    static ETSContext *current();
+    static ETSContext* current();
 
     static unsigned currentWorkerID();
 
-    static void bindToETSTLSContext(ETSContext *ctx, int workerID = 0);
+    static void bindToETSTLSContext(ETSContext* ctx, int workerID = 0);
 
     static void detachETSTLSContext();
 
 private:
-    static QThreadStorage<ETSContextTLSRef *> tls;
+    static QThreadStorage<ETSContextTLSRef*> tls;
 };
-}    // namespace U2
+}  // namespace U2
 
 #endif

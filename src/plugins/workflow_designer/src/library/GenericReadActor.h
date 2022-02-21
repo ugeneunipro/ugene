@@ -31,14 +31,14 @@ namespace Workflow {
 
 class GenericReadDocProto : public ReadDbObjActorPrototype {
 public:
-    GenericReadDocProto(const Descriptor &desc);
+    GenericReadDocProto(const Descriptor& desc);
 };
 
 class GenericMAActorProto : public GenericReadDocProto {
 public:
     static const QString TYPE;
     GenericMAActorProto();
-    virtual bool isAcceptableDrop(const QMimeData *, QVariantMap *) const;
+    virtual bool isAcceptableDrop(const QMimeData*, QVariantMap*) const;
 };
 
 class GenericSeqActorProto : public GenericReadDocProto {
@@ -55,7 +55,7 @@ public:
     static const QString TYPE;
 
     GenericSeqActorProto();
-    virtual bool isAcceptableDrop(const QMimeData *, QVariantMap *) const;
+    virtual bool isAcceptableDrop(const QMimeData*, QVariantMap*) const;
 };
 
 class SeqReadPrompter;
@@ -64,7 +64,7 @@ typedef PrompterBase<SeqReadPrompter> SeqReadPrompterBase;
 class SeqReadPrompter : public SeqReadPrompterBase {
     Q_OBJECT
 public:
-    SeqReadPrompter(Actor *p = 0)
+    SeqReadPrompter(Actor* p = 0)
         : SeqReadPrompterBase(p) {
     }
 

@@ -36,7 +36,7 @@ class ImportFileToDatabaseTask;
 class U2CORE_EXPORT ImportDirToDatabaseTask : public Task {
     Q_OBJECT
 public:
-    ImportDirToDatabaseTask(const QString &srcUrl, const U2DbiRef &dstDbiRef, const QString &dstFolder, const ImportToDatabaseOptions &options);
+    ImportDirToDatabaseTask(const QString& srcUrl, const U2DbiRef& dstDbiRef, const QString& dstFolder, const ImportToDatabaseOptions& options);
 
     void prepare();
 
@@ -49,8 +49,8 @@ private:
     QString dstFolder;
     ImportToDatabaseOptions options;
 
-    QList<ImportDirToDatabaseTask *> importSubdirsTasks;
-    QList<ImportFileToDatabaseTask *> importSubfilesTasks;
+    QList<ImportDirToDatabaseTask*> importSubdirsTasks;
+    QList<ImportFileToDatabaseTask*> importSubfilesTasks;
 };
 
 }  // namespace U2

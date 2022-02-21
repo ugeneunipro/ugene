@@ -33,17 +33,17 @@ namespace U2 {
 class U2GUI_EXPORT RegionSelectorWithExcludedRegion : public QWidget {
     Q_OBJECT
 public:
-    RegionSelectorWithExcludedRegion(QWidget *parent,
+    RegionSelectorWithExcludedRegion(QWidget* parent,
                                      qint64 maxLen,
-                                     DNASequenceSelection *selection = nullptr,
+                                     DNASequenceSelection* selection = nullptr,
                                      bool isCircularAvailable = false);
     ~RegionSelectorWithExcludedRegion();
 
-    U2Region getIncludeRegion(bool *ok = nullptr) const;
-    U2Region getExcludeRegion(bool *ok = nullptr) const;
+    U2Region getIncludeRegion(bool* ok = nullptr) const;
+    U2Region getExcludeRegion(bool* ok = nullptr) const;
 
-    void setIncludeRegion(const U2Region &r);
-    void setExcludeRegion(const U2Region &r);
+    void setIncludeRegion(const U2Region& r);
+    void setExcludeRegion(const U2Region& r);
     void setExcludedCheckboxChecked(bool checked);
 
     bool hasError() const;
@@ -56,10 +56,10 @@ private:
     void connectSlots();
 
 private:
-    Ui_RegionSelectorWithExcludedRegion *ui;
+    Ui_RegionSelectorWithExcludedRegion* ui;
 
-    RegionSelectorController *includeController;
-    RegionSelectorController *excludeController;
+    RegionSelectorController* includeController;
+    RegionSelectorController* excludeController;
 };
 
 }  // namespace U2

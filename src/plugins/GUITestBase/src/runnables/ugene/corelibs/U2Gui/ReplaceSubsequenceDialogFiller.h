@@ -29,8 +29,8 @@ using namespace HI;
 
 class ReplaceSubsequenceDialogFiller : public Filler {
 public:
-    ReplaceSubsequenceDialogFiller(HI::GUITestOpStatus &_os, const QString &_pasteDataHere, bool recalculateQuals = false);
-    ReplaceSubsequenceDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario);
+    ReplaceSubsequenceDialogFiller(HI::GUITestOpStatus& _os, const QString& _pasteDataHere, bool recalculateQuals = false);
+    ReplaceSubsequenceDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario);
     void commonScenario();
 
 private:

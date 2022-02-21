@@ -52,7 +52,7 @@ namespace U2 {
 
 QString DownloadRemoteFileDialog::defaultDB("");
 
-DownloadRemoteFileDialog::DownloadRemoteFileDialog(QWidget *p)
+DownloadRemoteFileDialog::DownloadRemoteFileDialog(QWidget* p)
     : QDialog(p), isQueryDB(false) {
     ui = new Ui_DownloadRemoteFileDialog;
     ui->setupUi(this);
@@ -64,9 +64,9 @@ DownloadRemoteFileDialog::DownloadRemoteFileDialog(QWidget *p)
     ui->formatLabel->hide();
     adjustSize();
 
-    RemoteDBRegistry &registry = RemoteDBRegistry::getRemoteDBRegistry();
+    RemoteDBRegistry& registry = RemoteDBRegistry::getRemoteDBRegistry();
     const QList<QString> dataBases = registry.getDBs();
-    foreach (const QString &dbName, dataBases) {
+    foreach (const QString& dbName, dataBases) {
         ui->databasesBox->addItem(dbName, dbName);
     }
 
@@ -81,14 +81,14 @@ DownloadRemoteFileDialog::DownloadRemoteFileDialog(QWidget *p)
 
     connect(ui->databasesBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_onDbChanged()));
     connect(ui->saveFilenameToolButton, SIGNAL(clicked()), SLOT(sl_saveFilenameButtonClicked()));
-    connect(ui->hintLabel, SIGNAL(linkActivated(const QString &)), SLOT(sl_linkActivated(const QString &)));
+    connect(ui->hintLabel, SIGNAL(linkActivated(const QString&)), SLOT(sl_linkActivated(const QString&)));
 
     sl_onDbChanged();
 
     setSaveFilename();
 }
 
-DownloadRemoteFileDialog::DownloadRemoteFileDialog(const QString &id, const QString &dbId, QWidget *p /* = NULL*/)
+DownloadRemoteFileDialog::DownloadRemoteFileDialog(const QString& id, const QString& dbId, QWidget* p /* = NULL*/)
     : QDialog(p), isQueryDB(false) {
     ui = new Ui_DownloadRemoteFileDialog;
     ui->setupUi(this);
@@ -96,7 +96,7 @@ DownloadRemoteFileDialog::DownloadRemoteFileDialog(const QString &id, const QStr
 
     ui->formatBox->addItem(GENBANK_FORMAT);
     ui->formatBox->addItem(FASTA_FORMAT);
-    connect(ui->formatBox, SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_formatChanged(const QString &)));
+    connect(ui->formatBox, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_formatChanged(const QString&)));
     adjustSize();
 
     ui->databasesBox->clear();
@@ -179,7 +179,7 @@ void DownloadRemoteFileDialog::accept() {
 
     QString dbId = getDBId();
     QStringList resIds = resourceId.split(QRegExp("[\\s,;]+"));
-    QList<Task *> tasks;
+    QList<Task*> tasks;
 
     QString fileFormat;
     if (ui->formatBox->count() > 0) {
@@ -201,7 +201,7 @@ void DownloadRemoteFileDialog::accept() {
         }
     }
     bool hasLoadOnlyDocuments = false;
-    foreach (const QString &resId, resIds) {
+    foreach (const QString& resId, resIds) {
         LoadRemoteDocumentMode mode = LoadRemoteDocumentMode_LoadOnly;
         if (addToProject) {
             mode = taskCount < OpenViewTask::MAX_DOC_NUMBER_TO_OPEN_VIEWS ? LoadRemoteDocumentMode_OpenView : LoadRemoteDocumentMode_AddToProject;
@@ -215,7 +215,7 @@ void DownloadRemoteFileDialog::accept() {
     if (hasLoadOnlyDocuments) {
         flags = flags | TaskFlag_ReportingIsEnabled;
     }
-    Task *topLevelTask = new MultiTask(tr("Download remote documents"), tasks, false, flags);
+    Task* topLevelTask = new MultiTask(tr("Download remote documents"), tasks, false, flags);
     AppContext::getTaskScheduler()->registerTopLevelTask(topLevelTask);
 
     QDialog::accept();
@@ -226,7 +226,7 @@ DownloadRemoteFileDialog::~DownloadRemoteFileDialog() {
     delete ui;
 }
 
-bool DownloadRemoteFileDialog::isNcbiDb(const QString &dbId) const {
+bool DownloadRemoteFileDialog::isNcbiDb(const QString& dbId) const {
     return dbId == RemoteDBRegistry::GENBANK_DNA || dbId == RemoteDBRegistry::GENBANK_PROTEIN;
 }
 
@@ -237,24 +237,24 @@ void DownloadRemoteFileDialog::sl_onDbChanged() {
 
     ui->chbForceDownloadSequence->setVisible(isNcbiDb(dbId));
 
-    RemoteDBRegistry &registry = RemoteDBRegistry::getRemoteDBRegistry();
+    RemoteDBRegistry& registry = RemoteDBRegistry::getRemoteDBRegistry();
     hint = description = registry.getHint(dbId);
 
     setupHintText(hint);
     ui->idLineEdit->setToolTip(description);
 }
 
-void DownloadRemoteFileDialog::sl_formatChanged(const QString &format) {
+void DownloadRemoteFileDialog::sl_formatChanged(const QString& format) {
     ui->chbForceDownloadSequence->setVisible(GENBANK_FORMAT == format);
 }
 
-void DownloadRemoteFileDialog::sl_linkActivated(const QString &link) {
+void DownloadRemoteFileDialog::sl_linkActivated(const QString& link) {
     if (!link.isEmpty()) {
         ui->idLineEdit->setText(link);
     }
 }
 
-void DownloadRemoteFileDialog::setupHintText(const QString &text) {
+void DownloadRemoteFileDialog::setupHintText(const QString& text) {
     SAFE_POINT(nullptr != ui && nullptr != ui->hintLabel, "Invalid dialog content!", );
     const QString hintStart(tr("Hint: "));
     const QString hintSample = (text.isEmpty() ? tr("Use database unique identifier.") : text) + "<br>";

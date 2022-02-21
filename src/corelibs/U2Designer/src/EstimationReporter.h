@@ -32,7 +32,7 @@ namespace U2 {
 
 class U2DESIGNER_EXPORT EstimationReporter {
 public:
-    static QMessageBox *createTimeMessage(const Workflow::EstimationResult &er);
+    static QMessageBox* createTimeMessage(const Workflow::EstimationResult& er);
 };
 
 }  // namespace U2

@@ -36,7 +36,7 @@ typedef PrompterBase<RmdupBamPrompter> RmdupBamBase;
 class RmdupBamPrompter : public RmdupBamBase {
     Q_OBJECT
 public:
-    RmdupBamPrompter(Actor *p = 0)
+    RmdupBamPrompter(Actor* p = 0)
         : RmdupBamBase(p) {
     }
 
@@ -47,22 +47,22 @@ protected:
 class RmdupBamWorker : public BaseWorker {
     Q_OBJECT
 public:
-    RmdupBamWorker(Actor *a);
+    RmdupBamWorker(Actor* a);
     void init();
-    Task *tick();
+    Task* tick();
     void cleanup();
 
 private:
-    IntegralBus *inputUrlPort;
-    IntegralBus *outputUrlPort;
+    IntegralBus* inputUrlPort;
+    IntegralBus* outputUrlPort;
     QStringList outUrls;
 public slots:
-    void sl_taskFinished(Task *task);
+    void sl_taskFinished(Task* task);
 
 private:
     QString takeUrl();
-    QString getTargetName(const QString &fileUrl, const QString &outDir);
-    void sendResult(const QString &url);
+    QString getTargetName(const QString& fileUrl, const QString& outDir);
+    void sendResult(const QString& url);
 };  // RmdupBamWorker
 
 class RmdupBamWorkerFactory : public DomainFactory {
@@ -73,7 +73,7 @@ public:
     RmdupBamWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    Worker *createWorker(Actor *a) {
+    Worker* createWorker(Actor* a) {
         return new RmdupBamWorker(a);
     }
 };  // RmdupBamWorkerFactory
@@ -96,7 +96,7 @@ public:
 class SamtoolsRmdupTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    SamtoolsRmdupTask(const BamRmdupSetting &settings);
+    SamtoolsRmdupTask(const BamRmdupSetting& settings);
 
     void prepare();
     void run();
@@ -106,8 +106,8 @@ public:
     }
 
 private:
-    void start(const ProcessRun &pRun, const QString &toolName);
-    void checkExitCode(QProcess *process, const QString &toolName);
+    void start(const ProcessRun& pRun, const QString& toolName);
+    void checkExitCode(QProcess* process, const QString& toolName);
 
 private:
     BamRmdupSetting settings;

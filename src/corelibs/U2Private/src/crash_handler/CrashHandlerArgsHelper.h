@@ -36,8 +36,8 @@ public:
     int getMaxReportSize() const;
     QStringList getArguments() const;
 
-    void setReportData(const QString &data);
-    void setDumpUrl(const QString &url);
+    void setReportData(const QString& data);
+    void setDumpUrl(const QString& url);
 
 private:
     void shutdownSessionDatabase();
@@ -49,8 +49,8 @@ private:
     QFile file;
     QString report;
 
-    static QString findTempDir(U2OpStatus &os);
-    static QString findFilePathToWrite(U2OpStatus &os);
+    static QString findTempDir(U2OpStatus& os);
+    static QString findFilePathToWrite(U2OpStatus& os);
 
     static const QString SESSION_DB_FILE_ARG;
     static const QString DUMP_FILE_ARG;

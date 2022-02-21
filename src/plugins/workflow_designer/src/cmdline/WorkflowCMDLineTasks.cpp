@@ -55,7 +55,7 @@ WorkflowRunFromCMDLineBase::WorkflowRunFromCMDLineBase()
       workflowRunTask(nullptr) {
     GCOUNTER(cvar, "workflow_run_from_cmdline");
 
-    CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
+    CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
 
     // try to process schema without 'task' option (it can only be the first one)
     QStringList pureValues = CMDLineRegistryUtils::getPureValues();
@@ -80,7 +80,7 @@ WorkflowRunFromCMDLineBase::WorkflowRunFromCMDLineBase()
     addSubTask(loadTask);
 }
 
-void WorkflowRunFromCMDLineBase::processLoadSchemaTask(const QString &schemaNameCandidate, int optionIdx) {
+void WorkflowRunFromCMDLineBase::processLoadSchemaTask(const QString& schemaNameCandidate, int optionIdx) {
     loadTask = prepareLoadSchemaTask(schemaNameCandidate);
     if (loadTask != nullptr) {
         schemaName = schemaNameCandidate;
@@ -88,7 +88,7 @@ void WorkflowRunFromCMDLineBase::processLoadSchemaTask(const QString &schemaName
     }
 }
 
-LoadWorkflowTask *WorkflowRunFromCMDLineBase::prepareLoadSchemaTask(const QString &schemaName) {
+LoadWorkflowTask* WorkflowRunFromCMDLineBase::prepareLoadSchemaTask(const QString& schemaName) {
     QString pathToSchema = WorkflowUtils::findPathToSchemaFile(schemaName);
     if (pathToSchema.isEmpty()) {
         coreLog.error(tr("Cannot find workflow: %1").arg(schemaName));
@@ -100,33 +100,33 @@ LoadWorkflowTask *WorkflowRunFromCMDLineBase::prepareLoadSchemaTask(const QStrin
     return new LoadWorkflowTask(schema, nullptr, pathToSchema);
 }
 
-static void setSchemaCMDLineOptions(Schema *schema, int optionsStartAtIdx) {
+static void setSchemaCMDLineOptions(Schema* schema, int optionsStartAtIdx) {
     assert(schema != nullptr && optionsStartAtIdx > 0);
 
     QList<StrStrPair> parameters = AppContext::getCMDLineRegistry()->getParameters();
     int sz = parameters.size();
     for (int i = optionsStartAtIdx; i < sz; ++i) {
-        const StrStrPair &param = parameters.at(i);
+        const StrStrPair& param = parameters.at(i);
         if (param.first.isEmpty()) {  // TODO: unnamed parameters not supported yet
             continue;
         }
 
         QString paramAlias = param.first;
         QString paramName;
-        Actor *actor = WorkflowUtils::findActorByParamAlias(schema->getProcesses(), paramAlias, paramName);
+        Actor* actor = WorkflowUtils::findActorByParamAlias(schema->getProcesses(), paramAlias, paramName);
         if (actor == nullptr) {
             assert(paramName.isEmpty());
             coreLog.details(WorkflowRunFromCMDLineBase::tr("alias '%1' not set in workflow").arg(paramAlias));
             continue;
         }
 
-        Attribute *attr = actor->getParameter(paramName);
+        Attribute* attr = actor->getParameter(paramName);
         if (attr == nullptr) {
             coreLog.error(WorkflowRunFromCMDLineBase::tr("actor parameter '%1' not found").arg(paramName));
             continue;
         }
 
-        DataTypeValueFactory *valueFactory = WorkflowEnv::getDataTypeValueFactoryRegistry()->getById(attr->getAttributeType()->getId());
+        DataTypeValueFactory* valueFactory = WorkflowEnv::getDataTypeValueFactoryRegistry()->getById(attr->getAttributeType()->getId());
         if (valueFactory == nullptr) {
             coreLog.error(WorkflowRunFromCMDLineBase::tr("cannot parse value from '%1'").arg(param.second));
             continue;
@@ -143,9 +143,9 @@ static void setSchemaCMDLineOptions(Schema *schema, int optionsStartAtIdx) {
     }
 }
 
-QList<Task *> WorkflowRunFromCMDLineBase::onSubTaskFinished(Task *subTask) {
+QList<Task*> WorkflowRunFromCMDLineBase::onSubTaskFinished(Task* subTask) {
     assert(subTask != nullptr);
-    QList<Task *> res;
+    QList<Task*> res;
 
     propagateSubtaskError();
     if (hasError() || isCanceled()) {
@@ -182,7 +182,7 @@ QList<Task *> WorkflowRunFromCMDLineBase::onSubTaskFinished(Task *subTask) {
 }
 
 void WorkflowRunFromCMDLineBase::run() {
-    CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
+    CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
     SAFE_POINT(nullptr != cmdLineRegistry, "CMDLineRegistry is NULL", );
     CHECK(nullptr != workflowRunTask, );
 
@@ -199,7 +199,7 @@ void WorkflowRunFromCMDLineBase::run() {
 /*******************************************
  * WorkflowRunFromCMDLineTask
  *******************************************/
-Task *WorkflowRunFromCMDLineTask::getWorkflowRunTask() const {
+Task* WorkflowRunFromCMDLineTask::getWorkflowRunTask() const {
     return new WorkflowRunTask(*schema, remapping);
 }
 

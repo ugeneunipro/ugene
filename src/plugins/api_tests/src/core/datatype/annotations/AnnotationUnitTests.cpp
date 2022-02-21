@@ -31,7 +31,7 @@
 
 #define CHECK_REGIONS_MATCH(first, second) \
     CHECK_TRUE(first.size() == second.size(), "Invalid annotation's region count"); \
-    foreach (const U2Region &region, first) { \
+    foreach (const U2Region& region, first) { \
         CHECK_TRUE(second.contains(region), "Invalid annotation's region"); \
     }
 
@@ -68,9 +68,9 @@ IMPLEMENT_TEST(AnnotationUnitTest, get_IdObjectData) {
     AnnotationTableObject ft("aname_table_multy", dbiRef);
     ft.addAnnotations(QList<SharedAnnotationData>() << anData);
 
-    const QList<Annotation *> annotations = ft.getAnnotations();
+    const QList<Annotation*> annotations = ft.getAnnotations();
     CHECK_EQUAL(1, annotations.size(), "count of annotations");
-    Annotation *annotation = annotations.first();
+    Annotation* annotation = annotations.first();
 
     CHECK_TRUE(&ft == annotation->getGObject(), "Unexpected value of annotation's parent object");
 
@@ -89,9 +89,9 @@ IMPLEMENT_TEST(AnnotationUnitTest, getSet_Name) {
     AnnotationTableObject ft("aname_table_multy", dbiRef);
     ft.addAnnotations(QList<SharedAnnotationData>() << anData);
 
-    QList<Annotation *> annotations = ft.getAnnotations();
+    QList<Annotation*> annotations = ft.getAnnotations();
     CHECK_EQUAL(1, annotations.size(), "count of annotations");
-    Annotation *annotation = annotations.first();
+    Annotation* annotation = annotations.first();
 
     CHECK_EQUAL(annotation->getName(), anData->name, "Annotation's name");
 
@@ -108,9 +108,9 @@ IMPLEMENT_TEST(AnnotationUnitTest, getSet_LocationOperator) {
     AnnotationTableObject ft("aname_table_multy", dbiRef);
     ft.addAnnotations(QList<SharedAnnotationData>() << anData);
 
-    QList<Annotation *> annotations = ft.getAnnotations();
+    QList<Annotation*> annotations = ft.getAnnotations();
     CHECK_EQUAL(1, annotations.size(), "count of annotations");
-    Annotation *annotation = annotations.first();
+    Annotation* annotation = annotations.first();
 
     CHECK_TRUE(annotation->isJoin(), "Unexpected location op");
     CHECK_EQUAL(annotation->getLocationOperator(), anData->getLocationOperator(), "Annotation's location op");
@@ -129,9 +129,9 @@ IMPLEMENT_TEST(AnnotationUnitTest, getSet_Strand) {
     AnnotationTableObject ft("aname_table_multy", dbiRef);
     ft.addAnnotations(QList<SharedAnnotationData>() << anData);
 
-    QList<Annotation *> annotations = ft.getAnnotations();
+    QList<Annotation*> annotations = ft.getAnnotations();
     CHECK_EQUAL(1, annotations.size(), "count of annotations");
-    Annotation *annotation = annotations.first();
+    Annotation* annotation = annotations.first();
 
     CHECK_TRUE(annotation->getStrand().isDirect(), "Unexpected annotation's direction");
     CHECK_EQUAL(annotation->getStrand().getDirectionValue(), anData->getStrand().getDirectionValue(), "Annotation's direction");
@@ -150,9 +150,9 @@ IMPLEMENT_TEST(AnnotationUnitTest, getSet_Location) {
     AnnotationTableObject ft("aname_table_multy", dbiRef);
     ft.addAnnotations(QList<SharedAnnotationData>() << anData);
 
-    QList<Annotation *> annotations = ft.getAnnotations();
+    QList<Annotation*> annotations = ft.getAnnotations();
     CHECK_EQUAL(1, annotations.size(), "count of annotations");
-    Annotation *annotation = annotations.first();
+    Annotation* annotation = annotations.first();
 
     CHECK_TRUE(*(anData->location) == *(annotation->getLocation()), "Unexpected annotation's location");
 
@@ -179,9 +179,9 @@ IMPLEMENT_TEST(AnnotationUnitTest, getSet_Regions) {
     AnnotationTableObject ft("aname_table_multy", dbiRef);
     ft.addAnnotations(QList<SharedAnnotationData>() << anData);
 
-    QList<Annotation *> annotations = ft.getAnnotations();
+    QList<Annotation*> annotations = ft.getAnnotations();
     CHECK_EQUAL(1, annotations.size(), "count of annotations");
-    Annotation *annotation = annotations.first();
+    Annotation* annotation = annotations.first();
 
     const QVector<U2Region> initRegions = anData->getRegions();
 
@@ -207,9 +207,9 @@ IMPLEMENT_TEST(AnnotationUnitTest, getSet_Qualifiers) {
     AnnotationTableObject ft("aname_table_multy", dbiRef);
     ft.addAnnotations(QList<SharedAnnotationData>() << anData);
 
-    QList<Annotation *> annotations = ft.getAnnotations();
+    QList<Annotation*> annotations = ft.getAnnotations();
     CHECK_EQUAL(1, annotations.size(), "count of annotations");
-    Annotation *annotation = annotations.first();
+    Annotation* annotation = annotations.first();
 
     const QVector<U2Qualifier> initQuals = anData->qualifiers;
 
@@ -235,9 +235,9 @@ IMPLEMENT_TEST(AnnotationUnitTest, find_Qualifiers) {
     AnnotationTableObject ft("aname_table_multy", dbiRef);
     ft.addAnnotations(QList<SharedAnnotationData>() << anData);
 
-    QList<Annotation *> annotations = ft.getAnnotations();
+    QList<Annotation*> annotations = ft.getAnnotations();
     CHECK_EQUAL(1, annotations.size(), "count of annotations");
-    Annotation *annotation = annotations.first();
+    Annotation* annotation = annotations.first();
 
     QList<U2Qualifier> qualifiers1;
     annotation->findQualifiers("key", qualifiers1);
@@ -271,14 +271,14 @@ IMPLEMENT_TEST(AnnotationUnitTest, get_Group) {
     ft.addAnnotations(QList<SharedAnnotationData>() << anData, firstGroupName);
     ft.addAnnotations(QList<SharedAnnotationData>() << anData, secondGroupName);
 
-    QList<Annotation *> annotations = ft.getAnnotations();
+    QList<Annotation*> annotations = ft.getAnnotations();
     CHECK_EQUAL(2, annotations.size(), "count of annotations");
 
     QBitArray groupMatches(2, false);
-    Annotation *ann1 = annotations.first();
-    Annotation *ann2 = annotations.first();
+    Annotation* ann1 = annotations.first();
+    Annotation* ann2 = annotations.first();
 
-    foreach (Annotation *ann, annotations) {
+    foreach (Annotation* ann, annotations) {
         if (ann->getGroup()->getName() == "subgroup") {
             groupMatches.setBit(0, true);
             ann2 = ann;
@@ -287,7 +287,7 @@ IMPLEMENT_TEST(AnnotationUnitTest, get_Group) {
             ann1 = ann;
         }
 
-        const QList<Annotation *> anns = ann->getGroup()->getAnnotations();
+        const QList<Annotation*> anns = ann->getGroup()->getAnnotations();
         CHECK_EQUAL(1, anns.size(), "count of annotations");
     }
     CHECK_EQUAL(2, groupMatches.count(true), "matching groups");
@@ -302,10 +302,10 @@ IMPLEMENT_TEST(AnnotationUnitTest, getSet_Case) {
     AnnotationTableObject ft("ftable", dbiRef);
     ft.addAnnotations(QList<SharedAnnotationData>() << anData);
 
-    QList<Annotation *> annotations = ft.getAnnotations();
+    QList<Annotation*> annotations = ft.getAnnotations();
     CHECK_EQUAL(1, annotations.size(), "count of annotations");
 
-    Annotation *annotation = annotations.first();
+    Annotation* annotation = annotations.first();
     CHECK_FALSE(annotation->isCaseAnnotation(), "Unexpected annotation case!");
     annotation->setCaseAnnotation(false);
     CHECK_FALSE(annotation->isCaseAnnotation(), "Unexpected annotation case!");

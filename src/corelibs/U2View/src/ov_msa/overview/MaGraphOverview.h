@@ -79,7 +79,7 @@ class U2VIEW_EXPORT MaGraphOverview : public MaOverview {
     Q_OBJECT
 
 public:
-    MaGraphOverview(MaEditorWgt *ui);
+    MaGraphOverview(MaEditorWgt* ui);
 
     bool isValid() const override {
         return graphCalculationTaskRunner.getError().isEmpty();
@@ -91,9 +91,9 @@ public:
 
     const static int FIXED_HEIGHT = 70;
 
-    const MaGraphOverviewDisplaySettings &getDisplaySettings() const;
+    const MaGraphOverviewDisplaySettings& getDisplaySettings() const;
 
-    const MaGraphOverviewState &getState() const;
+    const MaGraphOverviewState& getState() const;
 
     /** Restarts graph computation if the widget is visible and 'state' != 'renderedState'. */
     void recomputeGraphIfNeeded();
@@ -105,19 +105,19 @@ public slots:
     void sl_redraw() override final;
     void sl_highlightingChanged();
 
-    void sl_graphOrientationChanged(const MaGraphOverviewDisplaySettings::OrientationMode &orientation);
-    void sl_graphTypeChanged(const MaGraphOverviewDisplaySettings::GraphType &type);
-    void sl_graphColorChanged(const QColor &color);
-    void sl_calculationMethodChanged(const MaGraphCalculationMethod &method);
+    void sl_graphOrientationChanged(const MaGraphOverviewDisplaySettings::OrientationMode& orientation);
+    void sl_graphTypeChanged(const MaGraphOverviewDisplaySettings::GraphType& type);
+    void sl_graphColorChanged(const QColor& color);
+    void sl_calculationMethodChanged(const MaGraphCalculationMethod& method);
 
 protected:
-    void paintEvent(QPaintEvent *e) override;
-    void resizeEvent(QResizeEvent *e) override;
-    void hideEvent(QHideEvent *) override;
-    void showEvent(QShowEvent *event) override;
+    void paintEvent(QPaintEvent* e) override;
+    void resizeEvent(QResizeEvent* e) override;
+    void hideEvent(QHideEvent*) override;
+    void showEvent(QShowEvent* event) override;
 
-    void drawVisibleRange(QPainter &p) override;
-    void drawOverview(QPainter &p) override;
+    void drawVisibleRange(QPainter& p) override;
+    void drawOverview(QPainter& p) override;
     void moveVisibleRange(QPoint pos) override;
 
     /** Updates current highlighting schemes in state based on the selected method & MSA Editor state. */
@@ -145,7 +145,7 @@ protected:
     BackgroundTaskRunner<QPolygonF> graphCalculationTaskRunner;
 };
 
-inline bool operator==(const MaGraphOverviewState &s1, const MaGraphOverviewState &s2) {
+inline bool operator==(const MaGraphOverviewState& s1, const MaGraphOverviewState& s2) {
     return s1.width == s2.width &&
            s1.method == s2.method &&
            s1.maObjectVersion == s2.maObjectVersion &&
@@ -153,7 +153,7 @@ inline bool operator==(const MaGraphOverviewState &s1, const MaGraphOverviewStat
            s1.colorSchemeId == s2.colorSchemeId;
 }
 
-inline bool operator!=(const MaGraphOverviewState &s1, const MaGraphOverviewState &s2) {
+inline bool operator!=(const MaGraphOverviewState& s1, const MaGraphOverviewState& s2) {
     return !(s1 == s2);
 }
 

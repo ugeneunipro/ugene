@@ -45,10 +45,10 @@
 namespace U2 {
 
 typedef QString ActorId;
-inline ActorId str2aid(const QString &s) {
+inline ActorId str2aid(const QString& s) {
     return s;
 }
-inline QString aid2str(const ActorId &s) {
+inline QString aid2str(const ActorId& s) {
     return s;
 }
 
@@ -57,22 +57,22 @@ inline QString aid2str(const ActorId &s) {
  */
 class U2LANG_EXPORT AttributeScript {
 public:
-    AttributeScript(const QString &text);
+    AttributeScript(const QString& text);
     AttributeScript() {
     }
 
     bool isEmpty() const;
 
-    void setScriptText(const QString &t);
-    const QString &getScriptText() const;
+    void setScriptText(const QString& t);
+    const QString& getScriptText() const;
 
-    void setScriptVar(const Descriptor &desc, const QVariant &val);
-    const QMap<Descriptor, QVariant> &getScriptVars() const;
+    void setScriptVar(const Descriptor& desc, const QVariant& val);
+    const QMap<Descriptor, QVariant>& getScriptVars() const;
     void clearScriptVars();
 
-    bool hasVarWithId(const QString &varName) const;
-    bool hasVarWithDesc(const QString &varName) const;
-    void setVarValueWithId(const QString &varName, const QVariant &value);
+    bool hasVarWithId(const QString& varName) const;
+    bool hasVarWithDesc(const QString& varName) const;
+    void setVarValueWithId(const QString& varName, const QVariant& value);
 
 private:
     QString text;
@@ -105,8 +105,8 @@ public:
     };
     Q_DECLARE_FLAGS(Flags, Flag)
 
-    Attribute(const Descriptor &descriptor, const DataTypePtr type, const Flags flags = None, const QVariant &defaultValue = QVariant());
-    Attribute(const Descriptor &descriptor, const DataTypePtr type, bool required, const QVariant &defaultValue = QVariant());
+    Attribute(const Descriptor& descriptor, const DataTypePtr type, const Flags flags = None, const QVariant& defaultValue = QVariant());
+    Attribute(const Descriptor& descriptor, const DataTypePtr type, bool required, const QVariant& defaultValue = QVariant());
     ~Attribute();
 
     // getters/setters
@@ -116,16 +116,16 @@ public:
     bool needValidateEncoding() const;
     Flags getFlags() const;
 
-    virtual void setAttributeValue(const QVariant &newVal);
+    virtual void setAttributeValue(const QVariant& newVal);
     // attribute value is kept in qvariant
     // but it can be transformed to value of specific type using scripting or not (see getAttributeValue)
-    virtual const QVariant &getAttributePureValue() const;
-    virtual const QVariant &getDefaultPureValue() const;
+    virtual const QVariant& getAttributePureValue() const;
+    virtual const QVariant& getDefaultPureValue() const;
     virtual bool isDefaultValue() const;
 
     // base realization without scripting. to support scripting for other types: see template realizations
     template<typename T>
-    T getAttributeValue(Workflow::WorkflowContext *) const {
+    T getAttributeValue(Workflow::WorkflowContext*) const {
         return getAttributeValueWithoutScript<T>();
     }
 
@@ -134,45 +134,45 @@ public:
         return value.value<T>();
     }
 
-    const AttributeScript &getAttributeScript() const;
+    const AttributeScript& getAttributeScript() const;
     // used to change script data
-    AttributeScript &getAttributeScript();
+    AttributeScript& getAttributeScript();
 
     // stores value and script data in variant
     // used in saving schema to xml
     QVariant toVariant() const;
     // reads value and script from variant
     // used in reading schema from xml
-    bool fromVariant(const QVariant &variant);
+    bool fromVariant(const QVariant& variant);
     bool isEmptyString() const;
-    void addRelation(const AttributeRelation *relation);
-    QVector<const AttributeRelation *> &getRelations();
+    void addRelation(const AttributeRelation* relation);
+    QVector<const AttributeRelation*>& getRelations();
 
-    void addPortRelation(PortRelationDescriptor *relationDesc);
-    const QList<PortRelationDescriptor *> &getPortRelations() const;
+    void addPortRelation(PortRelationDescriptor* relationDesc);
+    const QList<PortRelationDescriptor*>& getPortRelations() const;
 
-    void addSlotRelation(SlotRelationDescriptor *relationDesc);
-    const QList<SlotRelationDescriptor *> &getSlotRelations() const;
+    void addSlotRelation(SlotRelationDescriptor* relationDesc);
+    const QList<SlotRelationDescriptor*>& getSlotRelations() const;
 
     virtual bool isEmpty() const;
-    virtual Attribute *clone();
+    virtual Attribute* clone();
     virtual AttributeGroup getGroup();
 
     /**
      * Ids of actors in the scheme can be changed (after copy-paste, for example).
      * It is needed to update all of ids which are used by this attribute
      */
-    virtual void updateActorIds(const QMap<ActorId, ActorId> &actorIdsMap);
+    virtual void updateActorIds(const QMap<ActorId, ActorId>& actorIdsMap);
 
-    virtual bool validate(NotificationsList &notificationList);
+    virtual bool validate(NotificationsList& notificationList);
 
 private:
     void debugCheckAttributeId() const;
-    void copy(const Attribute &other);
+    void copy(const Attribute& other);
 
 protected:
-    Attribute(const Attribute &other);
-    Attribute &operator=(const Attribute &other);
+    Attribute(const Attribute& other);
+    Attribute& operator=(const Attribute& other);
 
     // type of value
     DataTypePtr type;
@@ -185,22 +185,22 @@ protected:
     // script variables get values only in runtime
     AttributeScript scriptData;
 
-    QVector<const AttributeRelation *> relations;
-    QList<PortRelationDescriptor *> portRelations;
-    QList<SlotRelationDescriptor *> slotRelations;
+    QVector<const AttributeRelation*> relations;
+    QList<PortRelationDescriptor*> portRelations;
+    QList<SlotRelationDescriptor*> slotRelations;
 
 };  // Attribute
 
 // getAttributeValue function realizations with scripting support
 template<>
-inline QString Attribute::getAttributeValue(Workflow::WorkflowContext *ctx) const {
+inline QString Attribute::getAttributeValue(Workflow::WorkflowContext* ctx) const {
     if (scriptData.isEmpty()) {
         return getAttributeValueWithoutScript<QString>();
     }
     // run script
     WorkflowScriptEngine engine(ctx);
     QMap<QString, QScriptValue> scriptVars;
-    foreach (const Descriptor &key, scriptData.getScriptVars().uniqueKeys()) {
+    foreach (const Descriptor& key, scriptData.getScriptVars().uniqueKeys()) {
         assert(!key.getId().isEmpty());
         scriptVars[key.getId()] = engine.newVariant(scriptData.getScriptVars().value(key));
     }
@@ -228,14 +228,14 @@ inline QString Attribute::getAttributeValue(Workflow::WorkflowContext *ctx) cons
 }
 
 template<>
-inline int Attribute::getAttributeValue(Workflow::WorkflowContext *ctx) const {
+inline int Attribute::getAttributeValue(Workflow::WorkflowContext* ctx) const {
     if (scriptData.isEmpty()) {
         return getAttributeValueWithoutScript<int>();
     }
 
     WorkflowScriptEngine engine(ctx);
     QMap<QString, QScriptValue> scriptVars;
-    foreach (const Descriptor &key, scriptData.getScriptVars().uniqueKeys()) {
+    foreach (const Descriptor& key, scriptData.getScriptVars().uniqueKeys()) {
         assert(!key.getId().isEmpty());
         scriptVars[key.getId()] = engine.newVariant(scriptData.getScriptVars().value(key));
     }

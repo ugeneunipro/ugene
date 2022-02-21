@@ -23,7 +23,7 @@
 
 namespace U2 {
 
-VCF4VariationFormat::VCF4VariationFormat(QObject *p)
+VCF4VariationFormat::VCF4VariationFormat(QObject* p)
     : AbstractVariationFormat(p, BaseDocumentFormats::VCF4, {"vcf"}, true) {
     formatName = "VCFv4";
 

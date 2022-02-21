@@ -31,11 +31,11 @@
 
 namespace U2 {
 
-SQLiteSequenceDbi::SQLiteSequenceDbi(SQLiteDbi *dbi)
+SQLiteSequenceDbi::SQLiteSequenceDbi(SQLiteDbi* dbi)
     : U2SequenceDbi(dbi), SQLiteChildDBICommon(dbi) {
 }
 
-void SQLiteSequenceDbi::initSqlSchema(U2OpStatus &os) {
+void SQLiteSequenceDbi::initSqlSchema(U2OpStatus& os) {
     // sequence object
     SQLiteWriteQuery("CREATE TABLE Sequence (object INTEGER PRIMARY KEY, length INTEGER NOT NULL DEFAULT 0, alphabet TEXT NOT NULL, circular INTEGER NOT NULL DEFAULT 0, "
                      "FOREIGN KEY(object) REFERENCES Object(id) ON DELETE CASCADE)",
@@ -54,7 +54,7 @@ void SQLiteSequenceDbi::initSqlSchema(U2OpStatus &os) {
     SQLiteWriteQuery("CREATE INDEX SequenceData_sequence_send on SequenceData(sequence, send)", db, os).execute();
 }
 
-U2Sequence SQLiteSequenceDbi::getSequenceObject(const U2DataId &sequenceId, U2OpStatus &os) {
+U2Sequence SQLiteSequenceDbi::getSequenceObject(const U2DataId& sequenceId, U2OpStatus& os) {
     U2Sequence res;
 
     DBI_TYPE_CHECK(sequenceId, U2Type::Sequence, os, res);
@@ -76,7 +76,7 @@ U2Sequence SQLiteSequenceDbi::getSequenceObject(const U2DataId &sequenceId, U2Op
     return res;
 }
 
-QByteArray SQLiteSequenceDbi::getSequenceData(const U2DataId &sequenceId, const U2Region &region, U2OpStatus &os) {
+QByteArray SQLiteSequenceDbi::getSequenceData(const U2DataId& sequenceId, const U2Region& region, U2OpStatus& os) {
     try {
         QByteArray res;
         if (0 == region.length) {
@@ -112,7 +112,7 @@ QByteArray SQLiteSequenceDbi::getSequenceData(const U2DataId &sequenceId, const 
                            QByteArray());
         }
         return res;
-    } catch (const std::bad_alloc &) {
+    } catch (const std::bad_alloc&) {
         os.setError("Out of memory during the sequence processing.");
         return QByteArray();
     } catch (...) {
@@ -122,7 +122,7 @@ QByteArray SQLiteSequenceDbi::getSequenceData(const U2DataId &sequenceId, const 
     }
 }
 
-void SQLiteSequenceDbi::createSequenceObject(U2Sequence &sequence, const QString &folder, U2OpStatus &os, U2DbiObjectRank rank) {
+void SQLiteSequenceDbi::createSequenceObject(U2Sequence& sequence, const QString& folder, U2OpStatus& os, U2DbiObjectRank rank) {
     SQLiteTransaction t(db, os);
     dbi->getSQLiteObjectDbi()->createObject(sequence, folder, rank, os);
     CHECK_OP(os, );
@@ -138,7 +138,7 @@ void SQLiteSequenceDbi::createSequenceObject(U2Sequence &sequence, const QString
     assert(!os.hasError());
 }
 
-void SQLiteSequenceDbi::updateSequenceObject(U2Sequence &sequence, U2OpStatus &os) {
+void SQLiteSequenceDbi::updateSequenceObject(U2Sequence& sequence, U2OpStatus& os) {
     SQLiteTransaction t(db, os);
 
     static const QString queryString("UPDATE Sequence SET alphabet = ?1, circular = ?2 WHERE object = ?3");
@@ -160,10 +160,10 @@ void SQLiteSequenceDbi::updateSequenceObject(U2Sequence &sequence, U2OpStatus &o
 
 #define SEQUENCE_CHUNK_SIZE (1024 * 1024)
 
-static QList<QByteArray> quantify(const QList<QByteArray> &input) {
+static QList<QByteArray> quantify(const QList<QByteArray>& input) {
     QList<QByteArray> res;
     QByteArray currentChunk;
-    foreach (const QByteArray &i, input) {
+    foreach (const QByteArray& i, input) {
         int bytes2Chunk = SEQUENCE_CHUNK_SIZE - currentChunk.length();
         if (i.length() <= bytes2Chunk) {  // if 'i' fits into chunk - just add it
             currentChunk.append(i);
@@ -190,11 +190,11 @@ static QList<QByteArray> quantify(const QList<QByteArray> &input) {
     return res;
 }
 
-void SQLiteSequenceDbi::updateSequenceData(const U2DataId &sequenceId, const U2Region &regionToReplace, const QByteArray &dataToInsert, const QVariantMap &hints, U2OpStatus &os) {
+void SQLiteSequenceDbi::updateSequenceData(const U2DataId& sequenceId, const U2Region& regionToReplace, const QByteArray& dataToInsert, const QVariantMap& hints, U2OpStatus& os) {
     updateSequenceData(sequenceId, sequenceId, regionToReplace, dataToInsert, hints, os);
 }
 
-void SQLiteSequenceDbi::updateSequenceData(const U2DataId &masterId, const U2DataId &sequenceId, const U2Region &regionToReplace, const QByteArray &dataToInsert, const QVariantMap &hints, U2OpStatus &os) {
+void SQLiteSequenceDbi::updateSequenceData(const U2DataId& masterId, const U2DataId& sequenceId, const U2Region& regionToReplace, const QByteArray& dataToInsert, const QVariantMap& hints, U2OpStatus& os) {
     SQLiteTransaction t(db, os);
 
     SQLiteModificationAction updateAction(dbi, masterId);
@@ -208,7 +208,7 @@ void SQLiteSequenceDbi::updateSequenceData(const U2DataId &masterId, const U2Dat
     SAFE_POINT_OP(os, );
 }
 
-void SQLiteSequenceDbi::updateSequenceData(SQLiteModificationAction &updateAction, const U2DataId &sequenceId, const U2Region &regionToReplace, const QByteArray &dataToInsert, const QVariantMap &hints, U2OpStatus &os) {
+void SQLiteSequenceDbi::updateSequenceData(SQLiteModificationAction& updateAction, const U2DataId& sequenceId, const U2Region& regionToReplace, const QByteArray& dataToInsert, const QVariantMap& hints, U2OpStatus& os) {
     QByteArray modDetails;
     if (TrackOnUpdate == updateAction.getTrackModType()) {
         QByteArray oldSeq = dbi->getSequenceDbi()->getSequenceData(sequenceId, regionToReplace, os);
@@ -224,7 +224,7 @@ void SQLiteSequenceDbi::updateSequenceData(SQLiteModificationAction &updateActio
     SAFE_POINT_OP(os, );
 }
 
-void SQLiteSequenceDbi::undo(const U2DataId &seqId, qint64 modType, const QByteArray &modDetails, U2OpStatus &os) {
+void SQLiteSequenceDbi::undo(const U2DataId& seqId, qint64 modType, const QByteArray& modDetails, U2OpStatus& os) {
     if (U2ModType::sequenceUpdatedData == modType) {
         undoUpdateSequenceData(seqId, modDetails, os);
     } else {
@@ -233,7 +233,7 @@ void SQLiteSequenceDbi::undo(const U2DataId &seqId, qint64 modType, const QByteA
     }
 }
 
-void SQLiteSequenceDbi::redo(const U2DataId &seqId, qint64 modType, const QByteArray &modDetails, U2OpStatus &os) {
+void SQLiteSequenceDbi::redo(const U2DataId& seqId, qint64 modType, const QByteArray& modDetails, U2OpStatus& os) {
     if (U2ModType::sequenceUpdatedData == modType) {
         redoUpdateSequenceData(seqId, modDetails, os);
     } else {
@@ -245,7 +245,7 @@ void SQLiteSequenceDbi::redo(const U2DataId &seqId, qint64 modType, const QByteA
 /************************************************************************/
 /* Core methods */
 /************************************************************************/
-void SQLiteSequenceDbi::updateSequenceDataCore(const U2DataId &sequenceId, const U2Region &regionToReplace, const QByteArray &dataToInsert, const QVariantMap &hints, U2OpStatus &os) {
+void SQLiteSequenceDbi::updateSequenceDataCore(const U2DataId& sequenceId, const U2Region& regionToReplace, const QByteArray& dataToInsert, const QVariantMap& hints, U2OpStatus& os) {
     bool updateLenght = hints.value(U2SequenceDbiHints::UPDATE_SEQUENCE_LENGTH, true).toBool();
     bool emptySequence = hints.value(U2SequenceDbiHints::EMPTY_SEQUENCE, false).toBool();
     SQLiteTransaction t(db, os);
@@ -326,7 +326,7 @@ void SQLiteSequenceDbi::updateSequenceDataCore(const U2DataId &sequenceId, const
     QSharedPointer<SQLiteQuery> insertQ = t.getPreparedQuery(insertString, db, os);
     CHECK_OP(os, );
     qint64 startPos = cropLeftPos;
-    foreach (const QByteArray &d, newDataToInsert) {
+    foreach (const QByteArray& d, newDataToInsert) {
         insertQ->reset();
         insertQ->bindDataId(1, sequenceId);
         insertQ->bindInt64(2, startPos);
@@ -369,7 +369,7 @@ void SQLiteSequenceDbi::updateSequenceDataCore(const U2DataId &sequenceId, const
 /************************************************************************/
 /* Undo/redo methods */
 /************************************************************************/
-void SQLiteSequenceDbi::undoUpdateSequenceData(const U2DataId &sequenceId, const QByteArray &modDetails, U2OpStatus &os) {
+void SQLiteSequenceDbi::undoUpdateSequenceData(const U2DataId& sequenceId, const QByteArray& modDetails, U2OpStatus& os) {
     U2Region replacedRegion;
     U2Region replacedByRegion;
     QByteArray oldData;
@@ -387,7 +387,7 @@ void SQLiteSequenceDbi::undoUpdateSequenceData(const U2DataId &sequenceId, const
     updateSequenceDataCore(sequenceId, replacedByRegion, oldData, hints, os);
 }
 
-void SQLiteSequenceDbi::redoUpdateSequenceData(const U2DataId &sequenceId, const QByteArray &modDetails, U2OpStatus &os) {
+void SQLiteSequenceDbi::redoUpdateSequenceData(const U2DataId& sequenceId, const QByteArray& modDetails, U2OpStatus& os) {
     U2Region replacedRegion;
     U2Region replacedByRegion;
     QByteArray oldData;

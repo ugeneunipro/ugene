@@ -46,7 +46,7 @@ const int SequenceWithChromatogramAreaRenderer::INDENT_BETWEEN_ROWS = 15;
 const int SequenceWithChromatogramAreaRenderer::CHROMATOGRAM_MAX_HEIGHT = 100;
 const qreal SequenceWithChromatogramAreaRenderer::TRACE_OR_BC_LINES_DIVIDER = 2;
 
-SequenceWithChromatogramAreaRenderer::SequenceWithChromatogramAreaRenderer(MaEditorWgt *ui, McaEditorSequenceArea *seqAreaWgt)
+SequenceWithChromatogramAreaRenderer::SequenceWithChromatogramAreaRenderer(MaEditorWgt* ui, McaEditorSequenceArea* seqAreaWgt)
     : SequenceAreaRenderer(ui, seqAreaWgt),
       linePen(Qt::gray, 1, Qt::DotLine) {
     drawLeadingAndTrailingGaps = false;
@@ -59,30 +59,30 @@ SequenceWithChromatogramAreaRenderer::SequenceWithChromatogramAreaRenderer(MaEdi
     heightPD = getChromatogramHeight() - INDENT_BETWEEN_ROWS;
     heightQuality = charHeight;
 
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     SAFE_POINT(s != nullptr, "AppContext::settings is NULL", );
     SAFE_POINT(ui->getEditor() != nullptr, "MaEditor is NULL", );
     maxTraceHeight = s->getValue(ui->getEditor()->getSettingsRoot() + MCAE_SETTINGS_PEAK_HEIGHT, heightPD - heightBC).toInt();
 }
 
-void SequenceWithChromatogramAreaRenderer::drawSelectionFrame(QPainter &painter) const {
+void SequenceWithChromatogramAreaRenderer::drawSelectionFrame(QPainter& painter) const {
     if (ui->getEditor()->getSelection().isSingleBaseSelection()) {
         SequenceAreaRenderer::drawSelectionFrame(painter);
     }
 }
 
-void SequenceWithChromatogramAreaRenderer::drawReferenceSelection(QPainter &painter) const {
-    McaEditor *editor = getSeqArea()->getEditor();
-    DNASequenceSelection *selection = editor->getReferenceContext()->getSequenceSelection();
+void SequenceWithChromatogramAreaRenderer::drawReferenceSelection(QPainter& painter) const {
+    McaEditor* editor = getSeqArea()->getEditor();
+    DNASequenceSelection* selection = editor->getReferenceContext()->getSequenceSelection();
     CHECK(!selection->regions.isEmpty(), );
     U2Region region = selection->regions.first();
     U2Region xRange = ui->getBaseWidthController()->getBasesScreenRange(region);
     painter.fillRect((int)xRange.startPos, 0, (int)xRange.length, seqAreaWgt->height(), Theme::selectionBackgroundColor());
 }
 
-void SequenceWithChromatogramAreaRenderer::drawNameListSelection(QPainter &painter) const {
-    const QList<QRect> &selectedRects = getSeqArea()->getEditor()->getSelection().getRectList();
-    for (const QRect &selectedRect : qAsConst(selectedRects)) {
+void SequenceWithChromatogramAreaRenderer::drawNameListSelection(QPainter& painter) const {
+    const QList<QRect>& selectedRects = getSeqArea()->getEditor()->getSelection().getRectList();
+    for (const QRect& selectedRect : qAsConst(selectedRects)) {
         U2Region selectedRowsRegion = U2Region::fromYRange(selectedRect);
         U2Region selectionPxl = ui->getRowHeightController()->getScreenYRegionByViewRowsRegion(selectedRowsRegion);
         painter.fillRect(0, (int)selectionPxl.startPos, seqAreaWgt->width(), (int)selectionPxl.length, Theme::selectionBackgroundColor());
@@ -92,7 +92,7 @@ void SequenceWithChromatogramAreaRenderer::drawNameListSelection(QPainter &paint
 void SequenceWithChromatogramAreaRenderer::setAreaHeight(int h) {
     maxTraceHeight = h;
 
-    Settings *s = AppContext::getSettings();
+    Settings* s = AppContext::getSettings();
     SAFE_POINT(s != nullptr, "AppContext::settings is NULL", );
     SAFE_POINT(ui->getEditor() != nullptr, "MaEditor is NULL", );
     s->setValue(ui->getEditor()->getSettingsRoot() + MCAE_SETTINGS_PEAK_HEIGHT, maxTraceHeight);
@@ -106,8 +106,8 @@ int SequenceWithChromatogramAreaRenderer::getScaleBarValue() const {
     return maxTraceHeight;
 }
 
-int SequenceWithChromatogramAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &mca, int rowIndex, const U2Region &region, int xStart, int yStart) const {
-    McaEditor *editor = getSeqArea()->getEditor();
+int SequenceWithChromatogramAreaRenderer::drawRow(QPainter& painter, const MultipleAlignment& mca, int rowIndex, const U2Region& region, int xStart, int yStart) const {
+    McaEditor* editor = getSeqArea()->getEditor();
     if (editor->isChromatogramRowExpanded(rowIndex)) {
         painter.translate(0, INDENT_BETWEEN_ROWS / 2);
     }
@@ -123,7 +123,7 @@ int SequenceWithChromatogramAreaRenderer::drawRow(QPainter &painter, const Multi
         painter.setPen(QPen(Qt::gray, 1, Qt::DashLine));
         painter.drawLine(0, -INDENT_BETWEEN_ROWS / 2 - seqRowHeight, width, -INDENT_BETWEEN_ROWS / 2 - seqRowHeight);
 
-        const MultipleChromatogramAlignmentRow &row = editor->getMaObject()->getMcaRow(rowIndex);
+        const MultipleChromatogramAlignmentRow& row = editor->getMaObject()->getMcaRow(rowIndex);
         drawChromatogram(painter, row, region, xStart);
         painter.setPen(QPen(Qt::gray, 1, Qt::DashLine));
         painter.restore();
@@ -132,7 +132,7 @@ int SequenceWithChromatogramAreaRenderer::drawRow(QPainter &painter, const Multi
     return seqRowHeight;
 }
 
-void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter &painter, const MultipleChromatogramAlignmentRow &row, const U2Region &visibleRegion, int xStart) const {
+void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter& painter, const MultipleChromatogramAlignmentRow& row, const U2Region& visibleRegion, int xStart) const {
     const DNAChromatogram chroma = row->getGappedChromatogram();
 
     // SANGER_TODO: should not be here
@@ -152,7 +152,7 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter &painter, c
     CHECK(!regionToDraw.isEmpty(), );
 
     if (regionToDraw.startPos > visibleRegion.startPos) {
-        MaEditor *editor = seqAreaWgt->getEditor();
+        MaEditor* editor = seqAreaWgt->getEditor();
         SAFE_POINT(editor != nullptr, "MaEditor is NULL", );
         const int emptySpaceWidth = ui->getBaseWidthController()->getBasesWidth(regionToDraw.startPos - visibleRegion.startPos);
         painter.translate(emptySpaceWidth, 0);
@@ -213,7 +213,7 @@ QColor SequenceWithChromatogramAreaRenderer::getBaseColor(char base) const {
 
 namespace {
 
-static int getPreviousBaseCallEndPosition(const QVector<ushort> &baseCalls, int startPos) {
+static int getPreviousBaseCallEndPosition(const QVector<ushort>& baseCalls, int startPos) {
     int res = 0;
     SAFE_POINT(startPos > 0 && startPos < baseCalls.size(), "Out of array boundary", 0);
     int prevStep = baseCalls[startPos] - baseCalls[startPos - 1];
@@ -234,7 +234,7 @@ static int getPreviousBaseCallEndPosition(const QVector<ushort> &baseCalls, int 
     return res;
 }
 
-static int getCorrectPointsCountVariable(const QVector<ushort> &baseCalls, int pointsCount, int endPos, int currentNumBer) {
+static int getCorrectPointsCountVariable(const QVector<ushort>& baseCalls, int pointsCount, int endPos, int currentNumBer) {
     // The same situation as with "getPreviousBaseCallEndPosition" except in this case we look for correct point for right edge
     if (currentNumBer != endPos - 1) {
         return pointsCount;
@@ -252,12 +252,12 @@ static int getCorrectPointsCountVariable(const QVector<ushort> &baseCalls, int p
 
 }  // namespace
 
-void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChromatogram &chroma,
+void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChromatogram& chroma,
                                                                  qreal x,
                                                                  qreal y,
                                                                  qreal h,
-                                                                 QPainter &p,
-                                                                 const U2Region &visible) const {
+                                                                 QPainter& p,
+                                                                 const U2Region& visible) const {
     if (chromaMax == 0) {
         // nothing to draw
         return;
@@ -324,7 +324,7 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChroma
     p.translate(-x, -h - y);
 }
 
-void SequenceWithChromatogramAreaRenderer::completePolygonsWithLastBaseCallTrace(QPolygonF &polylineA, QPolygonF &polylineC, QPolygonF &polylineG, QPolygonF &polylineT, const DNAChromatogram &chroma, qreal columnWidth, const U2Region &visible, qreal h) const {
+void SequenceWithChromatogramAreaRenderer::completePolygonsWithLastBaseCallTrace(QPolygonF& polylineA, QPolygonF& polylineC, QPolygonF& polylineG, QPolygonF& polylineT, const DNAChromatogram& chroma, qreal columnWidth, const U2Region& visible, qreal h) const {
     // The last character may not to be included in visible area, so the trace for this symbol may be necessary to draw separately.
     int areaHeight = (heightPD - heightBC) * this->maxTraceHeight / 100;
     int startPos = visible.startPos;
@@ -358,7 +358,7 @@ void SequenceWithChromatogramAreaRenderer::completePolygonsWithLastBaseCallTrace
     }
 }
 
-void SequenceWithChromatogramAreaRenderer::drawOriginalBaseCalls(qreal h, QPainter &p, const U2Region &visible, const QByteArray &ba) const {
+void SequenceWithChromatogramAreaRenderer::drawOriginalBaseCalls(qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const {
     p.setPen(Qt::black);
     p.translate(0, h);
 
@@ -376,7 +376,7 @@ void SequenceWithChromatogramAreaRenderer::drawOriginalBaseCalls(qreal h, QPaint
     p.translate(0, -h);
 }
 
-void SequenceWithChromatogramAreaRenderer::drawQualityValues(const DNAChromatogram &chroma, qreal w, qreal h, QPainter &p, const U2Region &visible, const QByteArray &ba) const {
+void SequenceWithChromatogramAreaRenderer::drawQualityValues(const DNAChromatogram& chroma, qreal w, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const {
     p.translate(0, h);
 
     // draw grid
@@ -422,7 +422,7 @@ void SequenceWithChromatogramAreaRenderer::drawQualityValues(const DNAChromatogr
     p.translate(0, -h);
 }
 
-void SequenceWithChromatogramAreaRenderer::drawChromatogramBaseCallsLines(const DNAChromatogram &chroma, qreal h, QPainter &p, const U2Region &visible, const QByteArray &ba) const {
+void SequenceWithChromatogramAreaRenderer::drawChromatogramBaseCallsLines(const DNAChromatogram& chroma, qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const {
     p.setRenderHint(QPainter::Antialiasing, false);
     p.translate(0, h);
 
@@ -464,11 +464,11 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramBaseCallsLines(const 
     p.translate(0, -h);
 }
 
-McaEditorSequenceArea *SequenceWithChromatogramAreaRenderer::getSeqArea() const {
-    return qobject_cast<McaEditorSequenceArea *>(seqAreaWgt);
+McaEditorSequenceArea* SequenceWithChromatogramAreaRenderer::getSeqArea() const {
+    return qobject_cast<McaEditorSequenceArea*>(seqAreaWgt);
 }
 
-const ChromatogramViewSettings &SequenceWithChromatogramAreaRenderer::getSettings() const {
+const ChromatogramViewSettings& SequenceWithChromatogramAreaRenderer::getSettings() const {
     return getSeqArea()->getSettings();
 }
 
@@ -477,10 +477,10 @@ int SequenceWithChromatogramAreaRenderer::getChromatogramHeight() {
 }
 
 bool SequenceWithChromatogramAreaRenderer::hasHighlightedBackground(int columnIndex, int viewRowIndex) const {
-    McaEditor *editor = getSeqArea()->getEditor();
-    const MaEditorSelection &selection = editor->getSelection();
+    McaEditor* editor = getSeqArea()->getEditor();
+    const MaEditorSelection& selection = editor->getSelection();
     CHECK(selection.getRectList().size() == 1, false);
-    const QRect &rect = selection.getRectList().first();
+    const QRect& rect = selection.getRectList().first();
     return rect.width() == 1 && rect.height() == 1 && rect.contains(columnIndex, viewRowIndex);
 }
 

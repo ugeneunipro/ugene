@@ -36,14 +36,14 @@ class U2SequenceDbi;
 
 class FeatureTestData {
 public:
-    static U2FeatureDbi *getFeatureDbi();
-    static U2SequenceDbi *getSequenceDbi();
-    static U2FeatureDbi *getSubgroupDbi();
+    static U2FeatureDbi* getFeatureDbi();
+    static U2SequenceDbi* getSequenceDbi();
+    static U2FeatureDbi* getSubgroupDbi();
 
-    static U2Feature createTestFeature1(const U2Sequence &seq, U2OpStatus &os, const U2Feature &parentFeature = U2Feature());
-    static U2Feature createTestFeature2(const U2Sequence &seq, U2OpStatus &os, const U2Feature &parentFeature = U2Feature());
-    static U2Feature createTestFeature3(const U2Sequence &seq, U2OpStatus &os, const U2Feature &parentFeature = U2Feature());
-    static U2Feature createTestFeatureWithoutKeys(const U2Sequence &seq, U2OpStatus &os, const U2Feature &parentFeature = U2Feature());
+    static U2Feature createTestFeature1(const U2Sequence& seq, U2OpStatus& os, const U2Feature& parentFeature = U2Feature());
+    static U2Feature createTestFeature2(const U2Sequence& seq, U2OpStatus& os, const U2Feature& parentFeature = U2Feature());
+    static U2Feature createTestFeature3(const U2Sequence& seq, U2OpStatus& os, const U2Feature& parentFeature = U2Feature());
+    static U2Feature createTestFeatureWithoutKeys(const U2Sequence& seq, U2OpStatus& os, const U2Feature& parentFeature = U2Feature());
 
     static void shutdown();
 
@@ -54,9 +54,9 @@ private:
     static TestDbiProvider subgroupsDbiProvider;
     static const QString featureDbiUrl;
     static const QString subgroupDbiUrl;
-    static U2FeatureDbi *featureDbi;
-    static U2FeatureDbi *subgroupDbi;
-    static U2SequenceDbi *sequenceDbi;
+    static U2FeatureDbi* featureDbi;
+    static U2FeatureDbi* subgroupDbi;
+    static U2SequenceDbi* sequenceDbi;
 };
 
 /** Creates new feature in DB */

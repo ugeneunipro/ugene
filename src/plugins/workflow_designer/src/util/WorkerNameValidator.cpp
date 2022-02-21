@@ -25,11 +25,11 @@
 
 namespace U2 {
 
-DeprecatedWorkerNameValidator::DeprecatedWorkerNameValidator(QObject *parent)
+DeprecatedWorkerNameValidator::DeprecatedWorkerNameValidator(QObject* parent)
     : QValidator(parent) {
 }
 
-QValidator::State DeprecatedWorkerNameValidator::validate(QString &input, int & /*pos*/) const {
+QValidator::State DeprecatedWorkerNameValidator::validate(QString& input, int& /*pos*/) const {
     QRegExp rx("[^0-9\\s_\\-a-zA-Z]");
     if (-1 != rx.indexIn(input)) {
         return Invalid;

@@ -46,37 +46,37 @@ class QueryScene : public QGraphicsScene {
     friend class QDViewAdapter;
     Q_OBJECT
 public:
-    QueryScene(QueryViewController *parent = 0);
+    QueryScene(QueryViewController* parent = 0);
     ~QueryScene();
 
     void initTitle();
     void initRuler();
     void initDescription();
 
-    QDScheme *getScheme() const {
+    QDScheme* getScheme() const {
         return scheme;
     }
     QRectF rulerArea() const;
     QRectF annotationsArea() const;
     QRectF footnotesArea() const;
-    QList<QDElement *> getElements() const;
-    QList<QGraphicsItem *> getFootnotes() const;
-    QDElement *getUnitView(QDSchemeUnit *su) const;
+    QList<QDElement*> getElements() const;
+    QList<QGraphicsItem*> getFootnotes() const;
+    QDElement* getUnitView(QDSchemeUnit* su) const;
     void updateSceneRect();
     void setRowsNumber(int count);
     int getRowsNumber() {
         return rowsNum;
     }
     void insertRow(int idx);
-    int getRow(QDElement *const uv) const;
-    QDLabelItem *getLabelItem() const {
+    int getRow(QDElement* const uv) const;
+    QDLabelItem* getLabelItem() const {
         return labelTxtItem;
     }
     QString getLabel() const;
-    void setLabel(const QString &lbl);
+    void setLabel(const QString& lbl);
     QString getDescription() const;
-    void setDescription(const QString &dsc);
-    QueryViewController *getViewController() const {
+    void setDescription(const QString& dsc);
+    QueryViewController* getViewController() const {
         return view;
     }
     bool showActorDesc() const {
@@ -87,11 +87,11 @@ public:
     }
 
     void updateDescription();
-    void addActor(QDActor *actor, const QPointF &pos);
-    void addDistanceConstraint(QDElement *src, QDElement *dst, QDDistanceType distType, int min, int max);
-    void removeActor(QDActor *actor);
-    void removeActors(const QList<QDActor *> &actors);
-    void removeConstraint(QDConstraint *c);
+    void addActor(QDActor* actor, const QPointF& pos);
+    void addDistanceConstraint(QDElement* src, QDElement* dst, QDDistanceType distType, int min, int max);
+    void removeActor(QDActor* actor);
+    void removeActors(const QList<QDActor*>& actors);
+    void removeConstraint(QDConstraint* c);
     void clearScene();
 
     bool isModified() const {
@@ -117,31 +117,31 @@ public:
     static const QSizeF DEFAULT_SCENE_SIZE;
 
 protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
-    void dragEnterEvent(QGraphicsSceneDragDropEvent *event);
-    void dragMoveEvent(QGraphicsSceneDragDropEvent *event);
-    void dropEvent(QGraphicsSceneDragDropEvent *event);
-    void drawBackground(QPainter *painter, const QRectF &rect);
+    void mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent);
+    void dragEnterEvent(QGraphicsSceneDragDropEvent* event);
+    void dragMoveEvent(QGraphicsSceneDragDropEvent* event);
+    void dropEvent(QGraphicsSceneDragDropEvent* event);
+    void drawBackground(QPainter* painter, const QRectF& rect);
     void emit_schemeChanged() {
         emit si_schemeChanged();
     }
 
 private:
-    QList<QGraphicsItem *> unitsIntersectedByRow(int idx) const;
-    QList<QGraphicsItem *> getElements(const QRectF &area);
+    QList<QGraphicsItem*> unitsIntersectedByRow(int idx) const;
+    QList<QGraphicsItem*> getElements(const QRectF& area);
     void setupDistanceDialog(QDDistanceType kind);
-    bool ajustPosForNewItem(QDElement *item, QPointF &posToAjust);
+    bool ajustPosForNewItem(QDElement* item, QPointF& posToAjust);
 
 private:
-    QDElement *dropCandidateLeft;
-    QDElement *dropCandidateRight;
-    QueryViewController *view;
+    QDElement* dropCandidateLeft;
+    QDElement* dropCandidateRight;
+    QueryViewController* view;
     int rowsNum;
-    QDScheme *scheme;
+    QDScheme* scheme;
 
-    QDLabelItem *labelTxtItem;
-    QDDescriptionItem *descTxtItem;
-    QDRulerItem *ruler;
+    QDLabelItem* labelTxtItem;
+    QDDescriptionItem* descTxtItem;
+    QDRulerItem* ruler;
 
     bool showSchemeLbl;
     bool showDesc;
@@ -159,22 +159,22 @@ class QueryViewController : public MWMDIWindow {
     Q_OBJECT
 public:
     QueryViewController();
-    virtual void setupMDIToolbar(QToolBar *tb);
-    virtual void setupViewMenu(QMenu *m);
-    void loadScene(const QString &content);
+    virtual void setupMDIToolbar(QToolBar* tb);
+    virtual void setupViewMenu(QMenu* m);
+    void loadScene(const QString& content);
     void switchToGroupsTab();
-    void setDefaultInFile(const QString &inFile) {
+    void setDefaultInFile(const QString& inFile) {
         inFile_ = inFile;
     }
-    void setDefaultOutFile(const QString &outFile) {
+    void setDefaultOutFile(const QString& outFile) {
         outFile_ = outFile;
     }
-    QDScheme *getScheme() const {
+    QDScheme* getScheme() const {
         return scene->getScheme();
     }
-    static void setupConstraintEditor(QDConstraint *c);
+    static void setupConstraintEditor(QDConstraint* c);
     void enableSaveAction(bool enable);
-    QDActor *getActor() {
+    QDActor* getActor() {
         return currentActor;
     }
     void setSchemeUri(QString uri) {
@@ -190,12 +190,12 @@ private slots:
     void sl_saveSceneAs();
     void sl_run();
     void sl_deleteItem();
-    void sl_pasteSample(QDDocument *content);
+    void sl_pasteSample(QDDocument* content);
     void sl_editItem();
-    void sl_elementSelected(QDActorPrototype *proto);
-    void sl_selectEditorCell(const QString &link);
+    void sl_elementSelected(QDActorPrototype* proto);
+    void sl_selectEditorCell(const QString& link);
     void sl_updateTitle();
-    void sl_setGlobalStrand(QAction *a);
+    void sl_setGlobalStrand(QAction* a);
     void sl_itemAdded();
 
     void sl_scrollUp();
@@ -203,56 +203,56 @@ private slots:
 private:
     void createActions();
     void saveState();
-    void setupViewModeMenu(QMenu *m);
-    void setupQuerySequenceModeMenu(QMenu *m);
-    void setupStrandMenu(QMenu *m);
+    void setupViewModeMenu(QMenu* m);
+    void setupQuerySequenceModeMenu(QMenu* m);
+    void setupStrandMenu(QMenu* m);
     bool confirmModified();
 
 private:
-    QueryScene *scene;
-    GlassView *sceneView;
-    QTabWidget *tabs;
-    QueryEditor *editor;
-    QueryPalette *palette;
-    QDGroupsEditor *groupsEditor;
+    QueryScene* scene;
+    GlassView* sceneView;
+    QTabWidget* tabs;
+    QueryEditor* editor;
+    QueryPalette* palette;
+    QDGroupsEditor* groupsEditor;
 
-    QAction *runAction;
-    QAction *newAction;
-    QAction *loadAction;
-    QAction *saveAsAction;
-    QAction *saveAction;
-    QAction *deleteAction;
+    QAction* runAction;
+    QAction* newAction;
+    QAction* loadAction;
+    QAction* saveAsAction;
+    QAction* saveAction;
+    QAction* deleteAction;
 
-    QAction *showLabelAction;
-    QAction *showDescAction;
-    QAction *showItemDescAction;
-    QAction *showOrderAction;
+    QAction* showLabelAction;
+    QAction* showDescAction;
+    QAction* showItemDescAction;
+    QAction* showOrderAction;
 
-    QActionGroup *strandActions;
-    QAction *directStrandAction;
-    QAction *complementStrandAction;
-    QAction *bothStrandsAction;
+    QActionGroup* strandActions;
+    QAction* directStrandAction;
+    QAction* complementStrandAction;
+    QAction* bothStrandsAction;
 
     QString inFile_, outFile_;
     QString schemeUri;
-    QDActor *currentActor;
+    QDActor* currentActor;
 };
 
 class AddConstraintDialog : public QDialog, public Ui_AddConstraintDialog {
     Q_OBJECT
 public:
-    AddConstraintDialog(QueryScene *scene, QDDistanceType kind, QDElement *defSrc, QDElement *defDst);
+    AddConstraintDialog(QueryScene* scene, QDDistanceType kind, QDElement* defSrc, QDElement* defDst);
     void accept();
 
 private:
-    QueryScene *scene;
+    QueryScene* scene;
     QDDistanceType kind;
 };
 
 class QDUtils {
 public:
-    static QPixmap generateSnapShot(QDDocument *doc, const QRect &rect);
-    static QPixmap generateSnapShot(QueryScene *scene, const QRect &rect);
+    static QPixmap generateSnapShot(QDDocument* doc, const QRect& rect);
+    static QPixmap generateSnapShot(QueryScene* scene, const QRect& rect);
 };
 
 }  // namespace U2

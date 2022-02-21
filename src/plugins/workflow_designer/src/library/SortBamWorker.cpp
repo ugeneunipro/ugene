@@ -65,8 +65,8 @@ static const QString INDEX_ID("index");
 /* SortBamPrompter */
 /************************************************************************/
 QString SortBamPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(INPUT_PORT));
-    const Actor *producer = input->getProducer(BaseSlots::URL_SLOT().getId());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT));
+    const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
 
@@ -84,7 +84,7 @@ static const QString DEFAULT_NAME("Default");
 void SortBamWorkerFactory::init() {
     Descriptor desc(ACTOR_ID, SortBamWorker::tr("Sort BAM Files"), SortBamWorker::tr("Sort BAM Files using SAMTools Sort."));
 
-    QList<PortDescriptor *> p;
+    QList<PortDescriptor*> p;
     {
         Descriptor inD(INPUT_PORT, SortBamWorker::tr("BAM File"), SortBamWorker::tr("Set of BAM files to sort"));
         Descriptor outD(OUTPUT_PORT, SortBamWorker::tr("Sorted BAM File"), SortBamWorker::tr("Sorted BAM file"));
@@ -98,7 +98,7 @@ void SortBamWorkerFactory::init() {
         p << new PortDescriptor(outD, DataTypePtr(new MapDataType(SHORT_NAME + ".output-url", outM)), false, true);
     }
 
-    QList<Attribute *> a;
+    QList<Attribute*> a;
     {
         Descriptor outDir(OUT_MODE_ID, SortBamWorker::tr("Output folder"), SortBamWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
                                                                                              "<b>Workflow</b> - internal workflow folder. "
@@ -111,14 +111,14 @@ void SortBamWorkerFactory::init() {
         Descriptor index(INDEX_ID, SortBamWorker::tr("Build index"), SortBamWorker::tr("Build index for the sorted file with SAMTools index."));
 
         a << new Attribute(outDir, BaseTypes::NUM_TYPE(), false, QVariant(FileAndDirectoryUtils::WORKFLOW_INTERNAL));
-        Attribute *customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
+        Attribute* customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
         customDirAttr->addRelation(new VisibilityRelation(OUT_MODE_ID, FileAndDirectoryUtils::CUSTOM));
         a << customDirAttr;
         a << new Attribute(outName, BaseTypes::STRING_TYPE(), false, QVariant(DEFAULT_NAME));
         a << new Attribute(index, BaseTypes::BOOL_TYPE(), false, QVariant(true));
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap directoryMap;
         QString fileDir = SortBamWorker::tr("Input file");
@@ -132,19 +132,19 @@ void SortBamWorkerFactory::init() {
         delegates[CUSTOM_DIR_ID] = new URLDelegate("", "", false, true);
     }
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new SortBamPrompter());
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new SortBamWorkerFactory());
 }
 
 /************************************************************************/
 /* SortBamWorker */
 /************************************************************************/
-SortBamWorker::SortBamWorker(Actor *a)
+SortBamWorker::SortBamWorker(Actor* a)
     : BaseWorker(a), inputUrlPort(nullptr), outputUrlPort(nullptr), outUrls("") {
 }
 
@@ -153,7 +153,7 @@ void SortBamWorker::init() {
     outputUrlPort = ports.value(OUTPUT_PORT);
 }
 
-Task *SortBamWorker::tick() {
+Task* SortBamWorker::tick() {
     if (inputUrlPort->hasMessage()) {
         const QString url = takeUrl();
         CHECK(!url.isEmpty(), nullptr);
@@ -173,8 +173,8 @@ Task *SortBamWorker::tick() {
             setting.inputUrl = url;
             setting.index = getValue<bool>(INDEX_ID);
 
-            Task *t = new SamtoolsSortTask(setting);
-            connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
+            Task* t = new SamtoolsSortTask(setting);
+            connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
             return t;
         }
     }
@@ -191,8 +191,8 @@ void SortBamWorker::cleanup() {
 }
 
 namespace {
-QString getTargetUrl(Task *task) {
-    SamtoolsSortTask *sortTask = dynamic_cast<SamtoolsSortTask *>(task);
+QString getTargetUrl(Task* task) {
+    SamtoolsSortTask* sortTask = dynamic_cast<SamtoolsSortTask*>(task);
 
     if (nullptr != sortTask) {
         return sortTask->getResult();
@@ -201,7 +201,7 @@ QString getTargetUrl(Task *task) {
 }
 }  // namespace
 
-void SortBamWorker::sl_taskFinished(Task *task) {
+void SortBamWorker::sl_taskFinished(Task* task) {
     CHECK(!task->hasError(), );
     CHECK(!task->isCanceled(), );
 
@@ -212,7 +212,7 @@ void SortBamWorker::sl_taskFinished(Task *task) {
     monitor()->addOutputFile(url, getActorId());
 }
 
-QString SortBamWorker::getTargetName(const QString &fileUrl, const QString &outDir) {
+QString SortBamWorker::getTargetName(const QString& fileUrl, const QString& outDir) {
     QString name = getValue<QString>(OUT_NAME_ID);
 
     if (name == DEFAULT_NAME || name.isEmpty()) {
@@ -237,12 +237,12 @@ QString SortBamWorker::takeUrl() {
     return data[BaseSlots::URL_SLOT().getId()].toString();
 }
 
-void SortBamWorker::sendResult(const QString &url) {
+void SortBamWorker::sendResult(const QString& url) {
     const Message message(BaseTypes::STRING_TYPE(), url);
     outputUrlPort->put(message);
 }
 
-SamtoolsSortTask::SamtoolsSortTask(const BamSortSetting &settings)
+SamtoolsSortTask::SamtoolsSortTask(const BamSortSetting& settings)
     : Task(QString("Samtools sort for %1").arg(settings.inputUrl), TaskFlag_None), settings(settings) {
 }
 

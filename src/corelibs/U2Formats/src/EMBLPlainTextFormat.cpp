@@ -39,7 +39,7 @@ namespace U2 {
 /* TRANSLATOR U2::EMBLPlainTextFormat */
 /* TRANSLATOR U2::EMBLGenbankAbstractDocument */
 
-EMBLPlainTextFormat::EMBLPlainTextFormat(QObject *p)
+EMBLPlainTextFormat::EMBLPlainTextFormat(QObject* p)
     : EMBLGenbankAbstractDocument(BaseDocumentFormats::PLAIN_EMBL, tr("EMBL"), 80, DocumentFormatFlag_SupportStreaming, p) {
     fileExtensions << "em"
                    << "emb"
@@ -56,10 +56,10 @@ EMBLPlainTextFormat::EMBLPlainTextFormat(QObject *p)
     tagMap["CO"] = DNAInfo::CONTIG;
 }
 
-FormatCheckResult EMBLPlainTextFormat::checkRawTextData(const QByteArray &rawData, const GUrl &) const {
+FormatCheckResult EMBLPlainTextFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
     // TODO: improve format checking
 
-    const char *data = rawData.constData();
+    const char* data = rawData.constData();
     int size = rawData.size();
 
     bool textOnly = !TextUtils::contains(TextUtils::BINARY, data, size);
@@ -79,7 +79,7 @@ FormatCheckResult EMBLPlainTextFormat::checkRawTextData(const QByteArray &rawDat
 //////////////////////////////////////////////////////////////////////////
 // loading
 
-bool EMBLPlainTextFormat::readIdLine(ParserState *s) {
+bool EMBLPlainTextFormat::readIdLine(ParserState* s) {
     if (!s->hasKey("ID", 2)) {
         s->si.setError(EMBLPlainTextFormat::tr("ID is not the first line"));
         return false;
@@ -129,8 +129,8 @@ bool EMBLPlainTextFormat::readIdLine(ParserState *s) {
     return true;
 }
 
-bool EMBLPlainTextFormat::readEntry(ParserState *st, U2SequenceImporter &seqImporter, int &sequenceLen, int &fullSequenceLen, bool merge, int gapSize, U2OpStatus &os) {
-    U2OpStatus &si = st->si;
+bool EMBLPlainTextFormat::readEntry(ParserState* st, U2SequenceImporter& seqImporter, int& sequenceLen, int& fullSequenceLen, bool merge, int gapSize, U2OpStatus& os) {
+    U2OpStatus& si = st->si;
     QString lastTagName;
     bool hasLine = false;
     while (hasLine || st->readNextLine(false)) {

@@ -50,9 +50,9 @@ typedef QFlags<DistanceAlgorithmFlag> DistanceAlgorithmFlags;
 class U2ALGORITHM_EXPORT MSADistanceAlgorithmFactory : public QObject {
     Q_OBJECT
 public:
-    MSADistanceAlgorithmFactory(const QString &algoId, DistanceAlgorithmFlags flags, QObject *p = nullptr);
+    MSADistanceAlgorithmFactory(const QString& algoId, DistanceAlgorithmFlags flags, QObject* p = nullptr);
 
-    virtual MSADistanceAlgorithm *createAlgorithm(const MultipleSequenceAlignment &ma, QObject *parent = nullptr) = 0;
+    virtual MSADistanceAlgorithm* createAlgorithm(const MultipleSequenceAlignment& ma, QObject* parent = nullptr) = 0;
 
     QString getId() const {
         return algorithmId;
@@ -70,7 +70,7 @@ public:
     virtual QString getName() const = 0;
 
     // utility method
-    static DistanceAlgorithmFlags getAphabetFlags(const DNAAlphabet *al);
+    static DistanceAlgorithmFlags getAphabetFlags(const DNAAlphabet* al);
 
 protected:
     QString algorithmId;
@@ -84,7 +84,7 @@ class U2ALGORITHM_EXPORT MSADistanceMatrix {
 
 private:
     MSADistanceMatrix();
-    MSADistanceMatrix(const MultipleSequenceAlignment &ma, bool _excludeGaps, bool _usePercents);
+    MSADistanceMatrix(const MultipleSequenceAlignment& ma, bool _excludeGaps, bool _usePercents);
 
 public:
     bool isEmpty() {
@@ -111,11 +111,11 @@ class U2ALGORITHM_EXPORT MSADistanceAlgorithm : public Task {
     Q_OBJECT
 
 public:
-    MSADistanceAlgorithm(MSADistanceAlgorithmFactory *factory, const MultipleSequenceAlignment &ma);
+    MSADistanceAlgorithm(MSADistanceAlgorithmFactory* factory, const MultipleSequenceAlignment& ma);
 
     int getSimilarity(int row1, int row2, bool usePercents);
 
-    const MSADistanceMatrix &getMatrix() const;
+    const MSADistanceMatrix& getMatrix() const;
 
     virtual QString getDescription() const {
         return factory->getDescription();
@@ -135,7 +135,7 @@ public:
 
     void setExcludeGaps(bool _excludeGaps);
 
-    MSADistanceAlgorithmFactory *getFactory() const {
+    MSADistanceAlgorithmFactory* getFactory() const {
         return factory;
     }
 
@@ -147,7 +147,7 @@ public:
 
 private:
     MSADistanceMatrix distanceMatrix;
-    MSADistanceAlgorithmFactory *factory;
+    MSADistanceAlgorithmFactory* factory;
     MemoryLocker memoryLocker;
 
 protected:

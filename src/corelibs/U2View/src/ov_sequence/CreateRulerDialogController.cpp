@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-CreateRulerDialogController::CreateRulerDialogController(const QSet<QString> &namesToFilter, int defaultOffset, QWidget *p)
+CreateRulerDialogController::CreateRulerDialogController(const QSet<QString>& namesToFilter, int defaultOffset, QWidget* p)
     : QDialog(p) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929407");

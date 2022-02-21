@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-RunnerTool::RunnerTool(const QStringList &_runParameters, const QString &id, const QString &dirName, const QString &name, const QString &path)
+RunnerTool::RunnerTool(const QStringList& _runParameters, const QString& id, const QString& dirName, const QString& name, const QString& path)
     : ExternalTool(id, dirName, name, path), runParameters(_runParameters) {
     isRunnerTool = true;
     connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_toolValidationStatusChanged(bool)));
@@ -40,4 +40,4 @@ void RunnerTool::sl_toolValidationStatusChanged(bool isValid) {
     ScriptingTool::onPathChanged(this, runParameters);
 }
 
-}    // namespace U2
+}  // namespace U2

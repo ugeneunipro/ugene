@@ -68,7 +68,7 @@ const static QString INPUT_PORT_TYPE("input-for-");
 const static QString OUTPUT_PORT_TYPE("output-for-");
 static const QString OUT_PORT_ID("out");
 
-bool ExternalProcessWorkerFactory::init(ExternalProcessConfig *cfg) {
+bool ExternalProcessWorkerFactory::init(ExternalProcessConfig* cfg) {
     QScopedPointer<ActorPrototype> proto(IncludedProtoFactory::getExternalToolProto(cfg));
     const bool prototypeRegistered = WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_EXTERNAL(), proto.data());
     CHECK(prototypeRegistered, false);
@@ -81,7 +81,7 @@ bool ExternalProcessWorkerFactory::init(ExternalProcessConfig *cfg) {
 }
 
 namespace {
-static QString toStringValue(const QVariantMap &data, U2OpStatus &os) {
+static QString toStringValue(const QVariantMap& data, U2OpStatus& os) {
     QString slot = BaseSlots::TEXT_SLOT().getId();
     if (!data.contains(slot)) {
         os.setError(QObject::tr("Empty text slot"));
@@ -90,21 +90,21 @@ static QString toStringValue(const QVariantMap &data, U2OpStatus &os) {
     return data[slot].value<QString>();
 }
 
-static U2SequenceObject *toSequence(const QVariantMap &data, WorkflowContext *context, U2OpStatus &os) {
+static U2SequenceObject* toSequence(const QVariantMap& data, WorkflowContext* context, U2OpStatus& os) {
     QString slot = BaseSlots::DNA_SEQUENCE_SLOT().getId();
     if (!data.contains(slot)) {
         os.setError(QObject::tr("Empty sequence slot"));
         return nullptr;
     }
     SharedDbiDataHandler seqId = data[slot].value<SharedDbiDataHandler>();
-    U2SequenceObject *seqObj = StorageUtils::getSequenceObject(context->getDataStorage(), seqId);
+    U2SequenceObject* seqObj = StorageUtils::getSequenceObject(context->getDataStorage(), seqId);
     if (nullptr == seqObj) {
         os.setError(QObject::tr("Error with sequence object"));
     }
     return seqObj;
 }
 
-static AnnotationTableObject *toAnotations(const QVariantMap &data, WorkflowContext *context, U2OpStatus &os) {
+static AnnotationTableObject* toAnotations(const QVariantMap& data, WorkflowContext* context, U2OpStatus& os) {
     QString slot = BaseSlots::ANNOTATION_TABLE_SLOT().getId();
     if (!data.contains(slot)) {
         os.setError(QObject::tr("Empty annotations slot"));
@@ -113,27 +113,27 @@ static AnnotationTableObject *toAnotations(const QVariantMap &data, WorkflowCont
     const QVariant annotationsData = data[slot];
     const QList<SharedAnnotationData> annList = StorageUtils::getAnnotationTable(context->getDataStorage(), annotationsData);
 
-    AnnotationTableObject *annsObj = new AnnotationTableObject("Annotations", context->getDataStorage()->getDbiRef());
+    AnnotationTableObject* annsObj = new AnnotationTableObject("Annotations", context->getDataStorage()->getDbiRef());
     annsObj->addAnnotations(annList);
 
     return annsObj;
 }
 
-static MultipleSequenceAlignmentObject *toAlignment(const QVariantMap &data, WorkflowContext *context, U2OpStatus &os) {
+static MultipleSequenceAlignmentObject* toAlignment(const QVariantMap& data, WorkflowContext* context, U2OpStatus& os) {
     QString slot = BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId();
     if (!data.contains(slot)) {
         os.setError(QObject::tr("Empty alignment slot"));
         return nullptr;
     }
     SharedDbiDataHandler msaId = data[slot].value<SharedDbiDataHandler>();
-    MultipleSequenceAlignmentObject *msaObj = StorageUtils::getMsaObject(context->getDataStorage(), msaId);
+    MultipleSequenceAlignmentObject* msaObj = StorageUtils::getMsaObject(context->getDataStorage(), msaId);
     if (nullptr == msaObj) {
         os.setError(QObject::tr("Error with alignment object"));
     }
     return msaObj;
 }
 
-static TextObject *toText(const QVariantMap &data, WorkflowContext *context, U2OpStatus &os) {
+static TextObject* toText(const QVariantMap& data, WorkflowContext* context, U2OpStatus& os) {
     QString slot = BaseSlots::TEXT_SLOT().getId();
     if (!data.contains(slot)) {
         os.setError(QObject::tr("Empty text slot"));
@@ -143,7 +143,7 @@ static TextObject *toText(const QVariantMap &data, WorkflowContext *context, U2O
     return TextObject::createInstance(text, "tmp_text_object", context->getDataStorage()->getDbiRef(), os);
 }
 
-static QString generateAndCreateURL(const QString &extention, const QString &name) {
+static QString generateAndCreateURL(const QString& extention, const QString& name) {
     QString url;
     QString path = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath("wd_external");
     QDir dir(path);
@@ -154,19 +154,19 @@ static QString generateAndCreateURL(const QString &extention, const QString &nam
     return url;
 }
 
-static DocumentFormat *getFormat(const DataConfig &dataCfg, U2OpStatus &os) {
-    DocumentFormat *f = AppContext::getDocumentFormatRegistry()->getFormatById(dataCfg.format);
+static DocumentFormat* getFormat(const DataConfig& dataCfg, U2OpStatus& os) {
+    DocumentFormat* f = AppContext::getDocumentFormatRegistry()->getFormatById(dataCfg.format);
     if (nullptr == f) {
         os.setError(QObject::tr("Unknown document format: %1").arg(dataCfg.format));
     }
     return f;
 }
 
-static Document *createDocument(const DataConfig &dataCfg, U2OpStatus &os) {
-    DocumentFormat *f = getFormat(dataCfg, os);
+static Document* createDocument(const DataConfig& dataCfg, U2OpStatus& os) {
+    DocumentFormat* f = getFormat(dataCfg, os);
     CHECK_OP(os, nullptr);
 
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     QString url = generateAndCreateURL(f->getSupportedDocumentFileExtensions().first(), dataCfg.attrName);
     QScopedPointer<Document> d(f->createNewLoadedDocument(iof, url, os));
     CHECK_OP(os, nullptr);
@@ -174,11 +174,11 @@ static Document *createDocument(const DataConfig &dataCfg, U2OpStatus &os) {
     return d.take();
 }
 
-static Document *loadDocument(const QString &url, const DataConfig &dataCfg, WorkflowContext *context, U2OpStatus &os) {
-    DocumentFormat *f = getFormat(dataCfg, os);
+static Document* loadDocument(const QString& url, const DataConfig& dataCfg, WorkflowContext* context, U2OpStatus& os) {
+    DocumentFormat* f = getFormat(dataCfg, os);
     CHECK_OP(os, nullptr);
 
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     QVariantMap hints;
     U2DbiRef dbiRef = context->getDataStorage()->getDbiRef();
     hints.insert(DocumentFormat::DBI_REF_HINT, qVariantFromValue(dbiRef));
@@ -188,24 +188,24 @@ static Document *loadDocument(const QString &url, const DataConfig &dataCfg, Wor
     return d.take();
 }
 
-static void addObjects(Document *d, WorkflowContext *context, const DataConfig &dataCfg, const QVariantMap &data, U2OpStatus &os) {
+static void addObjects(Document* d, WorkflowContext* context, const DataConfig& dataCfg, const QVariantMap& data, U2OpStatus& os) {
     if (dataCfg.isSequence()) {
-        U2SequenceObject *seqObj = toSequence(data, context, os);
+        U2SequenceObject* seqObj = toSequence(data, context, os);
         CHECK_OP(os, );
         d->addObject(seqObj);
     } else if (dataCfg.isAnnotations()) {
-        AnnotationTableObject *annsObj = toAnotations(data, context, os);
+        AnnotationTableObject* annsObj = toAnotations(data, context, os);
         CHECK_OP(os, );
         d->addObject(annsObj);
     } else if (dataCfg.isAlignment()) {
-        MultipleSequenceAlignmentObject *msaObj = toAlignment(data, context, os);
+        MultipleSequenceAlignmentObject* msaObj = toAlignment(data, context, os);
         CHECK_OP(os, );
         d->addObject(msaObj);
     } else if (dataCfg.isAnnotatedSequence()) {
-        U2SequenceObject *seqObj = toSequence(data, context, os);
+        U2SequenceObject* seqObj = toSequence(data, context, os);
         CHECK_OP(os, );
         d->addObject(seqObj);
-        AnnotationTableObject *annsObj = toAnotations(data, context, os);
+        AnnotationTableObject* annsObj = toAnotations(data, context, os);
         CHECK_OP(os, );
         d->addObject(annsObj);
 
@@ -213,27 +213,27 @@ static void addObjects(Document *d, WorkflowContext *context, const DataConfig &
         rel << GObjectRelation(GObjectReference(seqObj), ObjectRole_Sequence);
         annsObj->setObjectRelations(rel);
     } else if (dataCfg.isText()) {
-        TextObject *textObj = toText(data, context, os);
+        TextObject* textObj = toText(data, context, os);
         CHECK_OP(os, );
         d->addObject(textObj);
     }
 }
 }  // namespace
 
-ExternalProcessWorker::ExternalProcessWorker(Actor *a)
+ExternalProcessWorker::ExternalProcessWorker(Actor* a)
     : BaseWorker(a, false),
       output(nullptr) {
-    ExternalToolCfgRegistry *reg = WorkflowEnv::getExternalCfgRegistry();
+    ExternalToolCfgRegistry* reg = WorkflowEnv::getExternalCfgRegistry();
     cfg = reg->getConfigById(actor->getProto()->getId());
 }
 
-void ExternalProcessWorker::applySpecialInternalEnvvars(QString &execString,
-                                                        ExternalProcessConfig *cfg) {
+void ExternalProcessWorker::applySpecialInternalEnvvars(QString& execString,
+                                                        ExternalProcessConfig* cfg) {
     CustomWorkerUtils::commandReplaceAllSpecialByUgenePath(execString, cfg);
 }
 
-void ExternalProcessWorker::applyAttributes(QString &execString) {
-    foreach (Attribute *a, actor->getAttributes()) {
+void ExternalProcessWorker::applyAttributes(QString& execString) {
+    foreach (Attribute* a, actor->getAttributes()) {
         QString attrValue = a->getAttributePureValue().toString();
         DataTypePtr attrType = a->getAttributeType();
         if (attrType == BaseTypes::STRING_TYPE()) {
@@ -244,7 +244,7 @@ void ExternalProcessWorker::applyAttributes(QString &execString) {
                                                    attrValue);
 
         if (wasReplaced) {
-            foreach (const AttributeConfig &attributeConfig, cfg->attrs) {
+            foreach (const AttributeConfig& attributeConfig, cfg->attrs) {
                 if (attributeConfig.attributeId == a->getId() && attributeConfig.flags.testFlag(AttributeConfig::AddToDashboard)) {
                     urlsForDashboard.insert(attrValue,
                                             !attributeConfig.flags.testFlag(AttributeConfig::OpenWithUgene));
@@ -255,7 +255,7 @@ void ExternalProcessWorker::applyAttributes(QString &execString) {
     }
 }
 
-bool ExternalProcessWorker::applyParamsToExecString(QString &execString, QString parName, QString parValue) {
+bool ExternalProcessWorker::applyParamsToExecString(QString& execString, QString parName, QString parValue) {
     QRegularExpression regex = QRegularExpression(QString("((([^\\\\])|([^\\\\](\\\\\\\\)+)|(^))\\$)") + QString("(") + parName + QString(")") + (QString("(?=([^") + WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE + QString("]|$))")));
     bool wasReplaced = false;
 
@@ -278,7 +278,7 @@ bool ExternalProcessWorker::applyParamsToExecString(QString &execString, QString
     return wasReplaced;
 }
 
-void ExternalProcessWorker::applyEscapedSymbols(QString &execString) {
+void ExternalProcessWorker::applyEscapedSymbols(QString& execString) {
     // Replace escaped symbols
     // Example:
     // "%USUPP_JAVA% \\%USUPP_JAVA% -version \\\$\%\\\\\%\\$"   ─┐
@@ -286,7 +286,7 @@ void ExternalProcessWorker::applyEscapedSymbols(QString &execString) {
     execString.replace(QRegularExpression("\\\\([\\\\\\%\\$])"), "\\1");
 }
 
-QStringList ExternalProcessWorker::applyInputMessage(QString &execString, const DataConfig &dataCfg, const QVariantMap &data, U2OpStatus &os) {
+QStringList ExternalProcessWorker::applyInputMessage(QString& execString, const DataConfig& dataCfg, const QVariantMap& data, U2OpStatus& os) {
     QStringList urls;
     QString paramValue;
 
@@ -299,7 +299,7 @@ QStringList ExternalProcessWorker::applyInputMessage(QString &execString, const 
         addObjects(d.data(), context, dataCfg, data, os);
         CHECK_OP(os, urls);
 
-        DocumentFormat *f = getFormat(dataCfg, os);
+        DocumentFormat* f = getFormat(dataCfg, os);
         CHECK_OP(os, urls);
         f->storeDocument(d.data(), os);
         CHECK_OP(os, urls);
@@ -311,13 +311,13 @@ QStringList ExternalProcessWorker::applyInputMessage(QString &execString, const 
     return urls;
 }
 
-QString ExternalProcessWorker::prepareOutput(QString &execString, const DataConfig &dataCfg, U2OpStatus &os) {
+QString ExternalProcessWorker::prepareOutput(QString& execString, const DataConfig& dataCfg, U2OpStatus& os) {
     QString extension;
 
     if (dataCfg.isFileUrl()) {
         extension = "tmp";
     } else {
-        DocumentFormat *f = getFormat(dataCfg, os);
+        DocumentFormat* f = getFormat(dataCfg, os);
         CHECK_OP(os, "")
         extension = f->getSupportedDocumentFileExtensions().first();
     }
@@ -328,7 +328,7 @@ QString ExternalProcessWorker::prepareOutput(QString &execString, const DataConf
     return url;
 }
 
-Task *ExternalProcessWorker::tick() {
+Task* ExternalProcessWorker::tick() {
     QString error;
     if (!inputs.isEmpty() && finishWorkIfInputEnded(error)) {
         if (!error.isEmpty()) {
@@ -341,7 +341,7 @@ Task *ExternalProcessWorker::tick() {
     QString execString = commandLine;
 
     int i = 0;
-    foreach (const DataConfig &dataCfg, cfg->inputs) {  // write all input data to files
+    foreach (const DataConfig& dataCfg, cfg->inputs) {  // write all input data to files
         Message inputMessage = getMessageAndSetupScriptValues(inputs[i]);
         i++;
         QVariantMap data = inputMessage.getData().toMap();
@@ -351,7 +351,7 @@ Task *ExternalProcessWorker::tick() {
     }
 
     QMap<QString, DataConfig> outputUrls;
-    foreach (const DataConfig &dataCfg, cfg->outputs) {
+    foreach (const DataConfig& dataCfg, cfg->outputs) {
         U2OpStatusImpl os;
         QString url = prepareOutput(execString, dataCfg, os);
         CHECK_OP(os, new FailTask(os.getError()));
@@ -374,8 +374,8 @@ Task *ExternalProcessWorker::tick() {
     const QString externalProcessWorkingDir = GUrlUtils::createDirectory(workingDirectory + externalProcessFolder, "_", os);
     CHECK_OP(os, new FailTask(os.getError()));
 
-    LaunchExternalToolTask *task = new LaunchExternalToolTask(execString, externalProcessWorkingDir, outputUrls);
-    QList<ExternalToolListener *> listeners(createLogListeners());
+    LaunchExternalToolTask* task = new LaunchExternalToolTask(execString, externalProcessWorkingDir, outputUrls);
+    QList<ExternalToolListener*> listeners(createLogListeners());
     task->addListeners(listeners);
     connect(task, SIGNAL(si_stateChanged()), SLOT(sl_onTaskFinishied()));
     if (listeners[0] != nullptr) {
@@ -384,7 +384,7 @@ Task *ExternalProcessWorker::tick() {
     return task;
 }
 
-bool ExternalProcessWorker::finishWorkIfInputEnded(QString &error) {
+bool ExternalProcessWorker::finishWorkIfInputEnded(QString& error) {
     error.clear();
     const InputsCheckResult checkResult = checkInputBusState();
     switch (checkResult) {
@@ -418,8 +418,8 @@ void ExternalProcessWorker::finish() {
 }
 
 namespace {
-static GObject *getObject(Document *d, GObjectType t, U2OpStatus &os) {
-    QList<GObject *> objs = d->findGObjectByType(t, UOF_LoadedAndUnloaded);
+static GObject* getObject(Document* d, GObjectType t, U2OpStatus& os) {
+    QList<GObject*> objs = d->findGObjectByType(t, UOF_LoadedAndUnloaded);
     if (objs.isEmpty()) {
         os.setError(QObject::tr("No target objects in the file: %1").arg(d->getURLString()));
         return nullptr;
@@ -427,11 +427,11 @@ static GObject *getObject(Document *d, GObjectType t, U2OpStatus &os) {
     return objs.first();
 }
 
-static SharedDbiDataHandler getAlignment(Document *d, WorkflowContext *context, U2OpStatus &os) {
-    GObject *obj = getObject(d, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, os);
+static SharedDbiDataHandler getAlignment(Document* d, WorkflowContext* context, U2OpStatus& os) {
+    GObject* obj = getObject(d, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, os);
     CHECK_OP(os, SharedDbiDataHandler());
 
-    MultipleSequenceAlignmentObject *msaObj = static_cast<MultipleSequenceAlignmentObject *>(obj);
+    MultipleSequenceAlignmentObject* msaObj = static_cast<MultipleSequenceAlignmentObject*>(obj);
     if (nullptr == msaObj) {
         os.setError(QObject::tr("Error with alignment object"));
         return SharedDbiDataHandler();
@@ -439,11 +439,11 @@ static SharedDbiDataHandler getAlignment(Document *d, WorkflowContext *context, 
     return context->getDataStorage()->getDataHandler(msaObj->getEntityRef());
 }
 
-static SharedDbiDataHandler getAnnotations(Document *d, WorkflowContext *context, U2OpStatus &os) {
-    GObject *obj = getObject(d, GObjectTypes::ANNOTATION_TABLE, os);
+static SharedDbiDataHandler getAnnotations(Document* d, WorkflowContext* context, U2OpStatus& os) {
+    GObject* obj = getObject(d, GObjectTypes::ANNOTATION_TABLE, os);
     CHECK_OP(os, SharedDbiDataHandler());
 
-    AnnotationTableObject *annsObj = static_cast<AnnotationTableObject *>(obj);
+    AnnotationTableObject* annsObj = static_cast<AnnotationTableObject*>(obj);
     if (nullptr == annsObj) {
         os.setError(QObject::tr("Error with annotations object"));
         return SharedDbiDataHandler();
@@ -454,7 +454,7 @@ static SharedDbiDataHandler getAnnotations(Document *d, WorkflowContext *context
 }  // namespace
 
 void ExternalProcessWorker::sl_onTaskFinishied() {
-    LaunchExternalToolTask *t = qobject_cast<LaunchExternalToolTask *>(sender());
+    LaunchExternalToolTask* t = qobject_cast<LaunchExternalToolTask*>(sender());
     CHECK(t->isFinished(), );
 
     if (inputs.isEmpty()) {
@@ -463,7 +463,7 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
 
     CHECK(!t->hasError(), );
 
-    foreach (const QString &url, urlsForDashboard.keys()) {
+    foreach (const QString& url, urlsForDashboard.keys()) {
         QFileInfo fileInfo(url);
         if (fileInfo.exists()) {
             if (fileInfo.isFile()) {
@@ -505,16 +505,16 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
             d->setDocumentOwnsDbiResources(false);
 
             if (cfg.isSequence()) {
-                QList<GObject *> seqObjects = d->findGObjectByType(GObjectTypes::SEQUENCE, UOF_LoadedAndUnloaded);
+                QList<GObject*> seqObjects = d->findGObjectByType(GObjectTypes::SEQUENCE, UOF_LoadedAndUnloaded);
                 DataTypePtr dataType = WorkflowEnv::getDataTypeRegistry()->getById(cfg.type);
                 QString slotId = WorkflowUtils::getSlotDescOfDatatype(dataType).getId();
                 if (seqObjects.size() == 1) {
-                    GObject *obj = seqObjects.first();
+                    GObject* obj = seqObjects.first();
                     Workflow::SharedDbiDataHandler id = context->getDataStorage()->getDataHandler(obj->getEntityRef());
                     v[slotId] = qVariantFromValue<SharedDbiDataHandler>(id);
                 } else if (1 < seqObjects.size()) {
                     QList<U2EntityRef> refs;
-                    foreach (GObject *obj, seqObjects) {
+                    foreach (GObject* obj, seqObjects) {
                         refs << obj->getEntityRef();
                     }
                     seqsForMergingBySlotId.insert(slotId, refs);
@@ -531,7 +531,7 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
                 v[WorkflowUtils::getSlotDescOfDatatype(dataType).getId()] = qVariantFromValue<SharedDbiDataHandler>(annTableId);
             } else if (cfg.isAnnotatedSequence()) {
                 if (!d->findGObjectByType(GObjectTypes::SEQUENCE, UOF_LoadedAndUnloaded).isEmpty()) {
-                    U2SequenceObject *seqObj = static_cast<U2SequenceObject *>(d->findGObjectByType(GObjectTypes::SEQUENCE, UOF_LoadedAndUnloaded).first());
+                    U2SequenceObject* seqObj = static_cast<U2SequenceObject*>(d->findGObjectByType(GObjectTypes::SEQUENCE, UOF_LoadedAndUnloaded).first());
                     DNASequence seq = seqObj->getWholeSequence(os);
                     CHECK_OP_EXT(os, reportError(os.getError()), );
                     seq.alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::RAW());
@@ -545,7 +545,7 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
                 }
             } else if (cfg.isText()) {
                 if (!d->findGObjectByType(GObjectTypes::TEXT, UOF_LoadedAndUnloaded).isEmpty()) {
-                    TextObject *obj = static_cast<TextObject *>(d->findGObjectByType(GObjectTypes::TEXT, UOF_LoadedAndUnloaded).first());
+                    TextObject* obj = static_cast<TextObject*>(d->findGObjectByType(GObjectTypes::TEXT, UOF_LoadedAndUnloaded).first());
                     DataTypePtr dataType = WorkflowEnv::getDataTypeRegistry()->getById(cfg.type);
                     v[WorkflowUtils::getSlotDescOfDatatype(dataType).getId()] = qVariantFromValue<QString>(obj->getText());
                 }
@@ -562,8 +562,8 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
     } else if (seqsForMergingBySlotId.size() == 1) {
         // create a message for every sequence
         QString slotId = seqsForMergingBySlotId.keys().first();
-        const QList<U2EntityRef> &refs = seqsForMergingBySlotId.value(slotId);
-        foreach (const U2EntityRef &eRef, refs) {
+        const QList<U2EntityRef>& refs = seqsForMergingBySlotId.value(slotId);
+        foreach (const U2EntityRef& eRef, refs) {
             SharedDbiDataHandler id = context->getDataStorage()->getDataHandler(eRef);
             v[slotId] = qVariantFromValue<SharedDbiDataHandler>(id);
             output->put(Message(dataType, v));
@@ -573,10 +573,10 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
         U2SequenceImporter seqImporter = U2SequenceImporter(QVariantMap());
         U2OpStatus2Log os;
 
-        foreach (const QString &slotId, seqsForMergingBySlotId.keys()) {
-            const QList<U2EntityRef> &refs = seqsForMergingBySlotId.value(slotId);
+        foreach (const QString& slotId, seqsForMergingBySlotId.keys()) {
+            const QList<U2EntityRef>& refs = seqsForMergingBySlotId.value(slotId);
             bool first = true;
-            foreach (const U2EntityRef &eRef, refs) {
+            foreach (const U2EntityRef& eRef, refs) {
                 QScopedPointer<U2SequenceObject> obj(new U2SequenceObject("tmp_name", eRef));
                 if (first) {
                     seqImporter.startSequence(os, context->getDataStorage()->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, slotId, false);
@@ -602,8 +602,8 @@ void ExternalProcessWorker::init() {
 
     output = ports.value(OUT_PORT_ID);
 
-    foreach (const DataConfig &input, cfg->inputs) {
-        IntegralBus *inBus = ports.value(input.attributeId);
+    foreach (const DataConfig& input, cfg->inputs) {
+        IntegralBus* inBus = ports.value(input.attributeId);
         inputs << inBus;
 
         inBus->addComplement(output);
@@ -616,7 +616,7 @@ ExternalProcessWorker::InputsCheckResult ExternalProcessWorker::checkInputBusSta
 
     int inputsWithMessagesCount = 0;
     int finishedInputs = 0;
-    foreach (const CommunicationChannel *ch, inputs) {
+    foreach (const CommunicationChannel* ch, inputs) {
         SAFE_POINT(nullptr != ch, "Input is nullptr", INTERNAL_ERROR);
         if (0 != ch->hasMessage()) {
             ++inputsWithMessagesCount;
@@ -657,7 +657,7 @@ bool ExternalProcessWorker::isReady() const {
 }
 
 void ExternalProcessWorker::cleanup() {
-    foreach (const QString &url, inputUrls) {
+    foreach (const QString& url, inputUrls) {
         if (QFile::exists(url)) {
             QFile::remove(url);
         }
@@ -667,12 +667,12 @@ void ExternalProcessWorker::cleanup() {
 /************************************************************************/
 /* LaunchExternalToolTask */
 /************************************************************************/
-LaunchExternalToolTask::LaunchExternalToolTask(const QString &_execString, const QString &_workingDir, const QMap<QString, DataConfig> &_outputUrls)
+LaunchExternalToolTask::LaunchExternalToolTask(const QString& _execString, const QString& _workingDir, const QMap<QString, DataConfig>& _outputUrls)
     : Task(tr("Launch external process task"), TaskFlag_None), outputUrls(_outputUrls), execString(_execString), workingDir(_workingDir) {
 }
 
 LaunchExternalToolTask::~LaunchExternalToolTask() {
-    foreach (const QString &url, outputUrls.keys()) {
+    foreach (const QString& url, outputUrls.keys()) {
         if (QFile::exists(url)) {
             QFile::remove(url);
         }
@@ -684,7 +684,7 @@ LaunchExternalToolTask::~LaunchExternalToolTask() {
 
 void LaunchExternalToolTask::run() {
     GCOUNTER(cvar, "A task for an element with external tool is launched");
-    QProcess *externalProcess = new QProcess();
+    QProcess* externalProcess = new QProcess();
     externalProcess->setWorkingDirectory(workingDir);
     if (execString.contains(">")) {
         QString output = execString.split(">").last();
@@ -738,7 +738,7 @@ QMap<QString, DataConfig> LaunchExternalToolTask::takeOutputUrls() {
     return result;
 }
 
-void LaunchExternalToolTask::addListeners(const QList<ExternalToolListener *> &listenersToAdd) {
+void LaunchExternalToolTask::addListeners(const QList<ExternalToolListener*>& listenersToAdd) {
     listeners.append(listenersToAdd);
 }
 
@@ -746,30 +746,30 @@ void LaunchExternalToolTask::addListeners(const QList<ExternalToolListener *> &l
 /* ExternalProcessWorkerPrompter */
 /************************************************************************/
 QString ExternalProcessWorkerPrompter::composeRichDoc() {
-    ExternalProcessConfig *cfg = WorkflowEnv::getExternalCfgRegistry()->getConfigById(target->getProto()->getId());
+    ExternalProcessConfig* cfg = WorkflowEnv::getExternalCfgRegistry()->getConfigById(target->getProto()->getId());
     assert(cfg);
     QString doc(cfg->templateDescription);
     doc.replace("\n", "<br>");
 
-    foreach (const DataConfig &dataCfg, cfg->inputs) {
+    foreach (const DataConfig& dataCfg, cfg->inputs) {
         QRegExp param(QString("\\$%1[^%2]|$").arg(dataCfg.attributeId).arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
         if (doc.contains(param)) {
-            IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(dataCfg.attributeId));
+            IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(dataCfg.attributeId));
             DataTypePtr dataType = WorkflowEnv::getDataTypeRegistry()->getById(dataCfg.type);
             if (dataCfg.type == SEQ_WITH_ANNS) {
                 dataType = BaseTypes::DNA_SEQUENCE_TYPE();
             }
-            Actor *producer = input->getProducer(WorkflowUtils::getSlotDescOfDatatype(dataType).getId());
+            Actor* producer = input->getProducer(WorkflowUtils::getSlotDescOfDatatype(dataType).getId());
             QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
             QString producerName = tr("<u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
             doc.replace("$" + dataCfg.attributeId, producerName);
         }
     }
 
-    foreach (const DataConfig &dataCfg, cfg->outputs) {
+    foreach (const DataConfig& dataCfg, cfg->outputs) {
         QRegExp param(QString("\\$%1[^%2]|$").arg(dataCfg.attributeId).arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
         if (doc.contains(param)) {
-            IntegralBusPort *output = qobject_cast<IntegralBusPort *>(target->getPort(OUT_PORT_ID));
+            IntegralBusPort* output = qobject_cast<IntegralBusPort*>(target->getPort(OUT_PORT_ID));
             DataTypePtr dataType = WorkflowEnv::getDataTypeRegistry()->getById(dataCfg.type);
             if (dataCfg.type == SEQ_WITH_ANNS) {
                 dataType = BaseTypes::DNA_SEQUENCE_TYPE();
@@ -777,9 +777,9 @@ QString ExternalProcessWorkerPrompter::composeRichDoc() {
             QString destinations;
             QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
             if (!output->getLinks().isEmpty()) {
-                foreach (Port *p, output->getLinks().keys()) {
-                    IntegralBusPort *ibp = qobject_cast<IntegralBusPort *>(p);
-                    Actor *dest = ibp->owner();
+                foreach (Port* p, output->getLinks().keys()) {
+                    IntegralBusPort* ibp = qobject_cast<IntegralBusPort*>(p);
+                    Actor* dest = ibp->owner();
                     destinations += tr("<u>%1</u>").arg(dest ? dest->getLabel() : unsetStr) + ",";
                 }
             }
@@ -792,7 +792,7 @@ QString ExternalProcessWorkerPrompter::composeRichDoc() {
         }
     }
 
-    foreach (const AttributeConfig &attrCfg, cfg->attrs) {
+    foreach (const AttributeConfig& attrCfg, cfg->attrs) {
         QRegExp param(QString("\\$%1([^%2]|$)").arg(attrCfg.attributeId).arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
         if (doc.contains(param)) {
             QString prm = getRequiredParam(attrCfg.attributeId);

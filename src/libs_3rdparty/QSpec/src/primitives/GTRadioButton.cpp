@@ -33,7 +33,7 @@ namespace HI {
 #define GT_CLASS_NAME "GTRadioButton"
 
 #define GT_METHOD_NAME "click"
-void GTRadioButton::click(GUITestOpStatus &os, QRadioButton *radioButton) {
+void GTRadioButton::click(GUITestOpStatus& os, QRadioButton* radioButton) {
     GT_CHECK(radioButton != NULL, "RadioButton is NULL");
     if (radioButton->isChecked() == true) {
         return;
@@ -52,14 +52,14 @@ void GTRadioButton::click(GUITestOpStatus &os, QRadioButton *radioButton) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "click"
-void GTRadioButton::click(GUITestOpStatus &os, const QString &radioButtonName, QWidget *parent) {
+void GTRadioButton::click(GUITestOpStatus& os, const QString& radioButtonName, QWidget* parent) {
     click(os, GTWidget::findRadioButton(os, radioButtonName, parent));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getRadioButtonByText"
-QRadioButton *GTRadioButton::getRadioButtonByText(GUITestOpStatus &os, QString text, QWidget *parent) {
-    QList<QRadioButton *> radioList = getAllButtonsByText(os, text, parent);
+QRadioButton* GTRadioButton::getRadioButtonByText(GUITestOpStatus& os, QString text, QWidget* parent) {
+    QList<QRadioButton*> radioList = getAllButtonsByText(os, text, parent);
     GT_CHECK_RESULT(radioList.size() > 1, "Several radioButtons contain this text", NULL);
     GT_CHECK_RESULT(radioList.size() == 0, "No radioButtons with this text found", NULL);
 
@@ -68,7 +68,7 @@ QRadioButton *GTRadioButton::getRadioButtonByText(GUITestOpStatus &os, QString t
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getAllButtonsByText"
-QList<QRadioButton *> GTRadioButton::getAllButtonsByText(GUITestOpStatus &os, const QString &text, QWidget *parent) {
+QList<QRadioButton*> GTRadioButton::getAllButtonsByText(GUITestOpStatus& os, const QString& text, QWidget* parent) {
     return GTWidget::findChildren<QRadioButton>(os,
                                                 parent,
                                                 [text](auto button) { return button->text() == text; });
@@ -76,7 +76,7 @@ QList<QRadioButton *> GTRadioButton::getAllButtonsByText(GUITestOpStatus &os, co
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkIsChecked"
-void GTRadioButton::checkIsChecked(GUITestOpStatus &os, QRadioButton *button, bool expectedState) {
+void GTRadioButton::checkIsChecked(GUITestOpStatus& os, QRadioButton* button, bool expectedState) {
     GT_CHECK(button != nullptr, "QRadioButton == NULL");
     bool state = button->isChecked();
     for (int time = 0; time <= GT_OP_WAIT_MILLIS && state != expectedState; time += GT_OP_CHECK_MILLIS) {

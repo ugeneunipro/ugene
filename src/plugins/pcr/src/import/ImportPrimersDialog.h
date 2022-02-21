@@ -34,7 +34,7 @@ class ImportPrimersMultiTask;
 class ImportPrimersDialog : public QDialog, private Ui_ImportPrimersDialog {
     Q_OBJECT
 public:
-    ImportPrimersDialog(QWidget *parent = nullptr);
+    ImportPrimersDialog(QWidget* parent = nullptr);
 
 private slots:
     void sl_updateState();
@@ -54,9 +54,9 @@ private:
     ProjectTreeControllerModeSettings prepareProjectItemsSelectionSettings() const;
 
     bool waitForConnection;
-    QMap<QListWidgetItem *, QString> item2file;
-    QMap<QListWidgetItem *, Folder> item2folder;
-    QMap<QListWidgetItem *, GObject *> item2object;
+    QMap<QListWidgetItem*, QString> item2file;
+    QMap<QListWidgetItem*, Folder> item2folder;
+    QMap<QListWidgetItem*, GObject*> item2object;
 
     static const QString LOCAL_FILES;
     static const QString SHARED_DB;

@@ -51,7 +51,7 @@ ReadAssemblyTaskFactory::ReadAssemblyTaskFactory()
     : ReadDocumentTaskFactory(ReadFactories::READ_ASSEMBLY) {
 }
 
-ReadDocumentTask *ReadAssemblyTaskFactory::createTask(const QString &url, const QVariantMap &hints, WorkflowContext *ctx) {
+ReadDocumentTask* ReadAssemblyTaskFactory::createTask(const QString& url, const QVariantMap& hints, WorkflowContext* ctx) {
     QString datasetName = hints.value(BaseSlots::DATASET_SLOT().getId(), "").toString();
     return new ReadAssemblyTask(url, datasetName, ctx);
 }
@@ -59,12 +59,12 @@ ReadDocumentTask *ReadAssemblyTaskFactory::createTask(const QString &url, const 
 /************************************************************************/
 /* Task */
 /************************************************************************/
-ConvertToIndexedBamTask::ConvertToIndexedBamTask(const DocumentFormatId &_formatId, const GUrl &_url, WorkflowContext *_ctx)
+ConvertToIndexedBamTask::ConvertToIndexedBamTask(const DocumentFormatId& _formatId, const GUrl& _url, WorkflowContext* _ctx)
     : Task("Convert assembly file to sorted BAM", TaskFlag_None), formatId(_formatId), url(_url), ctx(_ctx) {
 }
 
 void ConvertToIndexedBamTask::run() {
-    AppFileStorage *fileStorage = AppContext::getAppFileStorage();
+    AppFileStorage* fileStorage = AppContext::getAppFileStorage();
     CHECK_EXT(nullptr != fileStorage, stateInfo.setError("NULL file storage"), );
 
     QString cashedSortedBam = FileStorageUtils::getSortedBamUrl(url.getURLString(), ctx->getWorkflowProcess());
@@ -130,23 +130,23 @@ GUrl ConvertToIndexedBamTask::getResultUrl() const {
     return result;
 }
 
-const QStringList &ConvertToIndexedBamTask::getConvertedFiles() const {
+const QStringList& ConvertToIndexedBamTask::getConvertedFiles() const {
     return convertedFiles;
 }
 
-void ConvertToIndexedBamTask::addConvertedFile(const GUrl &url) {
+void ConvertToIndexedBamTask::addConvertedFile(const GUrl& url) {
     convertedFiles << url.getURLString();
 }
 
 /************************************************************************/
 /* ReadAssemblyTask */
 /************************************************************************/
-ReadAssemblyTask::ReadAssemblyTask(const QString &url, const QString &datasetName, WorkflowContext *_ctx)
+ReadAssemblyTask::ReadAssemblyTask(const QString& url, const QString& datasetName, WorkflowContext* _ctx)
     : ReadDocumentTask(url, tr("Read assembly from %1").arg(url), datasetName, TaskFlags_FOSE_COSC | TaskFlag_CollectChildrenWarnings),
       ctx(_ctx), format(nullptr), doc(nullptr), convertTask(nullptr), importTask(nullptr) {
 }
 
-static bool isConvertingFormat(const DocumentFormatId &formatId) {
+static bool isConvertingFormat(const DocumentFormatId& formatId) {
     return (BaseDocumentFormats::SAM == formatId || BaseDocumentFormats::BAM == formatId);
 }
 
@@ -162,7 +162,7 @@ void ReadAssemblyTask::prepare() {
     conf.excludeHiddenFormats = false;
     QList<FormatDetectionResult> fs = DocumentUtils::detectFormat(url, conf);
 
-    foreach (const FormatDetectionResult &f, fs) {
+    foreach (const FormatDetectionResult& f, fs) {
         if (nullptr != f.format) {
             if (isConvertingFormat(f.format->getFormatId())) {
                 convertTask = new ConvertToIndexedBamTask(f.format->getFormatId(), url, ctx);
@@ -170,7 +170,7 @@ void ReadAssemblyTask::prepare() {
                 return;
             }
 
-            const QSet<GObjectType> &types = f.format->getSupportedObjectTypes();
+            const QSet<GObjectType>& types = f.format->getSupportedObjectTypes();
             if (types.contains(GObjectTypes::ASSEMBLY)) {
                 format = f.format;
                 break;
@@ -194,8 +194,8 @@ void ReadAssemblyTask::prepare() {
     }
 }
 
-QList<Task *> ReadAssemblyTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> result;
+QList<Task*> ReadAssemblyTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> result;
     CHECK(nullptr != subTask, result);
     if (subTask->hasError()) {
         if (convertTask == subTask) {
@@ -225,7 +225,7 @@ void ReadAssemblyTask::run() {
     if (nullptr == doc) {
         useGC = false;
         ioLog.info(tr("Reading assembly from %1 [%2]").arg(url).arg(format->getFormatName()));
-        IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+        IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
         QVariantMap hints;
         {
             // TODO: fix this hardcoded DBI id recognition
@@ -236,7 +236,7 @@ void ReadAssemblyTask::run() {
                 SAFE_POINT(nullptr != convertTask, "Internal error! Converting stage is missed", );
                 fId = BAM_DBI_ID;
             }
-            U2DbiFactory *dbiFactory = AppContext::getDbiRegistry()->getDbiFactoryById(fId);
+            U2DbiFactory* dbiFactory = AppContext::getDbiRegistry()->getDbiFactoryById(fId);
             SAFE_POINT(nullptr != dbiFactory, QString("Unknown dbi factory id: %").arg(fId), );
 
             U2OpStatusImpl os;
@@ -257,13 +257,13 @@ void ReadAssemblyTask::run() {
     CHECK(!docPtr.isNull(), );
     docPtr->setDocumentOwnsDbiResources(false);
 
-    QList<GObject *> assemblies = docPtr->findGObjectByType(GObjectTypes::ASSEMBLY);
+    QList<GObject*> assemblies = docPtr->findGObjectByType(GObjectTypes::ASSEMBLY);
     if (assemblies.isEmpty()) {
         setError(tr("No assemblies in the file: %1").arg(getUrl()));
         return;
     }
-    foreach (GObject *go, assemblies) {
-        AssemblyObject *assemblyObj = dynamic_cast<AssemblyObject *>(go);
+    foreach (GObject* go, assemblies) {
+        AssemblyObject* assemblyObj = dynamic_cast<AssemblyObject*>(go);
         CHECK_EXT(nullptr != assemblyObj, taskLog.error(tr("Incorrect assembly object in %1").arg(url)), );
 
         SharedDbiDataHandler handler = ctx->getDataStorage()->getDataHandler(assemblyObj->getEntityRef(), useGC);

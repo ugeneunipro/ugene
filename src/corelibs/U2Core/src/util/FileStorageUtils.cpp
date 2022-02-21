@@ -31,15 +31,15 @@ namespace U2 {
 
 using namespace FileStorage;
 
-static QString getCommonHashForFile(const QString &url) {
+static QString getCommonHashForFile(const QString& url) {
     QFileInfo info(url);
     qint64 modified = info.lastModified().toSecsSinceEpoch();
 
     return QByteArray::number(modified);
 }
 
-QString FileStorageUtils::getFileToFileInfo(const QString &srcUrl, const QString &role, WorkflowProcess &process) {
-    AppFileStorage *fileStorage = AppContext::getAppFileStorage();
+QString FileStorageUtils::getFileToFileInfo(const QString& srcUrl, const QString& role, WorkflowProcess& process) {
+    AppFileStorage* fileStorage = AppContext::getAppFileStorage();
 
     if (nullptr != fileStorage) {
         U2OpStatus2Log os;
@@ -67,9 +67,9 @@ QString FileStorageUtils::getFileToFileInfo(const QString &srcUrl, const QString
     return "";
 }
 
-void FileStorageUtils::addFileToFileInfo(const FileInfo &fileToFileInfo, WorkflowProcess &process) {
+void FileStorageUtils::addFileToFileInfo(const FileInfo& fileToFileInfo, WorkflowProcess& process) {
     CHECK(fileToFileInfo.isFileToFileInfo(), );
-    AppFileStorage *fileStorage = AppContext::getAppFileStorage();
+    AppFileStorage* fileStorage = AppContext::getAppFileStorage();
     CHECK(nullptr != fileStorage, );
 
     U2OpStatus2Log os;
@@ -85,20 +85,20 @@ void FileStorageUtils::addFileToFileInfo(const FileInfo &fileToFileInfo, Workflo
     CHECK_OP(os, );
 }
 
-QString FileStorageUtils::getSortedBamUrl(const QString &bamUrl, WorkflowProcess &process) {
+QString FileStorageUtils::getSortedBamUrl(const QString& bamUrl, WorkflowProcess& process) {
     return getFileToFileInfo(bamUrl, StorageRoles::SORTED_BAM, process);
 }
 
-QString FileStorageUtils::getSamToBamConvertInfo(const QString &samUrl, WorkflowProcess &process) {
+QString FileStorageUtils::getSamToBamConvertInfo(const QString& samUrl, WorkflowProcess& process) {
     return getFileToFileInfo(samUrl, StorageRoles::SAM_TO_BAM, process);
 }
 
-void FileStorageUtils::addSortedBamUrl(const QString &bamUrl, const QString &sortedBamUrl, WorkflowProcess &process) {
+void FileStorageUtils::addSortedBamUrl(const QString& bamUrl, const QString& sortedBamUrl, WorkflowProcess& process) {
     FileInfo fToFInfo(bamUrl, StorageRoles::SORTED_BAM, sortedBamUrl);
     addFileToFileInfo(fToFInfo, process);
 }
 
-void FileStorageUtils::addSamToBamConvertInfo(const QString &samUrl, const QString &bamUrl, WorkflowProcess &process) {
+void FileStorageUtils::addSamToBamConvertInfo(const QString& samUrl, const QString& bamUrl, WorkflowProcess& process) {
     FileInfo fToFInfo(samUrl, StorageRoles::SAM_TO_BAM, bamUrl);
     addFileToFileInfo(fToFInfo, process);
 }

@@ -29,7 +29,7 @@ namespace U2 {
 class ImportExternalToolDialog : public QDialog, public Ui_ImportExternalToolDialog {
     Q_OBJECT
 public:
-    ImportExternalToolDialog(QWidget *parent);
+    ImportExternalToolDialog(QWidget* parent);
 
 private slots:
     void sl_browse();
@@ -37,6 +37,6 @@ private slots:
     void accept();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_IMPORT_EXTERNAL_TOOL_DIALOG_H_
+#endif  // _U2_IMPORT_EXTERNAL_TOOL_DIALOG_H_

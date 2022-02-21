@@ -34,33 +34,33 @@ public:
 
     bool validate() const;
 
-    double e;    // -E: report sequences <= this e-value threshold in output
-    double t;    // -T: report sequences >= this score threshold in output
-    double z;    // -Z: set # of camparisons done, for e-value calculation
-    double domE;    // --domE: report domains <= this e-value threshold in output
-    double domT;    // --domT: report domains >= this score cutoff in output
-    double domZ;    // --domZ: set number of significant seqs, for domain e-value calibration
+    double e;  // -E: report sequences <= this e-value threshold in output
+    double t;  // -T: report sequences >= this score threshold in output
+    double z;  // -Z: set # of camparisons done, for e-value calculation
+    double domE;  // --domE: report domains <= this e-value threshold in output
+    double domT;  // --domT: report domains >= this score cutoff in output
+    double domZ;  // --domZ: set number of significant seqs, for domain e-value calibration
 
-    double f1;    // --F1: Stage 1 (MSV) threshold: promote hits w/ P <= F1
-    double f2;    // --F2: Stage 2 (Vit) threshold: promote hits w/ P <= F2
-    double f3;    // --F3: Stage 3 (Fwd) threshold: promote hits w/ P <= F3
+    double f1;  // --F1: Stage 1 (MSV) threshold: promote hits w/ P <= F1
+    double f2;  // --F2: Stage 2 (Vit) threshold: promote hits w/ P <= F2
+    double f3;  // --F3: Stage 3 (Fwd) threshold: promote hits w/ P <= F3
 
-    bool doMax;    // --max: Turn all heuristic filters off ( less speed more power )
-    bool noBiasFilter;    // --nobias: turn off composition bias filter
-    bool noNull2;    // --nonull2: turn off biased composition score corrections
+    bool doMax;  // --max: Turn all heuristic filters off ( less speed more power )
+    bool noBiasFilter;  // --nobias: turn off composition bias filter
+    bool noNull2;  // --nonull2: turn off biased composition score corrections
 
-    int eml;    // --EmL. length of sequences for MSV Gumbel mu fit
-    int emn;    // --EmN. number of sequences for MSV Gumbel mu fit
-    int evl;    // --EvL. length of sequences for Viterbi Gumbel mu fit
-    int evn;    // --EvN. number of sequences for Viterbi Gumbel mu fit
-    int efl;    // --EfL. length of sequences for forward exp tail mu fit
-    int efn;    // --Efn. number of sequences for forward exp tail mu fit
-    double eft;    // --Eft. tail mass for forward exponential tail mu fit
+    int eml;  // --EmL. length of sequences for MSV Gumbel mu fit
+    int emn;  // --EmN. number of sequences for MSV Gumbel mu fit
+    int evl;  // --EvL. length of sequences for Viterbi Gumbel mu fit
+    int evn;  // --EvN. number of sequences for Viterbi Gumbel mu fit
+    int efl;  // --EfL. length of sequences for forward exp tail mu fit
+    int efn;  // --Efn. number of sequences for forward exp tail mu fit
+    double eft;  // --Eft. tail mass for forward exponential tail mu fit
 
-    double popen;    // --popen: gap open probability
-    double pextend;    // --pextend: gap extend probability
+    double popen;  // --popen: gap open probability
+    double pextend;  // --pextend: gap extend probability
 
-    int seed;    // --seed : set RNG seed ( if 0: one-time arbitrary seed )
+    int seed;  // --seed : set RNG seed ( if 0: one-time arbitrary seed )
 
     QString workingDir;
     QString querySequenceUrl;
@@ -73,6 +73,6 @@ public:
     static const double OPTION_NOT_SET;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_PHMMER_SEARCH_SETTINGS_H_
+#endif  // _U2_PHMMER_SEARCH_SETTINGS_H_

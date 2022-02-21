@@ -40,20 +40,20 @@ class DNAStatMSAProfileDialog : public QDialog, public Ui_DNAStatMSAProfileDialo
     Q_OBJECT
 
 public:
-    DNAStatMSAProfileDialog(QWidget *p, MSAEditor *ctx);
+    DNAStatMSAProfileDialog(QWidget* p, MSAEditor* ctx);
 
     void accept();
     /*Notify user about problems with big report, and disable opening report in UGENE*/
     void showAlignmentIsTooBigWarning();
 private slots:
     void sl_formatSelected();
-    void sl_formatChanged(const QString &newFormat);
+    void sl_formatChanged(const QString& newFormat);
 
 private:
     void initSaveController();
 
-    MSAEditor *ctx;
-    SaveDocumentController *saveController;
+    MSAEditor* ctx;
+    SaveDocumentController* saveController;
 
     static const QString HTML;
     static const QString CSV;
@@ -89,7 +89,7 @@ public:
 class DNAStatMSAProfileTask : public Task {
     Q_OBJECT
 public:
-    DNAStatMSAProfileTask(const DNAStatMSAProfileTaskSettings &s);
+    DNAStatMSAProfileTask(const DNAStatMSAProfileTaskSettings& s);
 
     void run();
     QString generateReport() const;

@@ -34,7 +34,7 @@ class TmpDbiHandle;
 class PhylipCmdlineTask : public PhyTreeGeneratorTask {
     Q_OBJECT
 public:
-    PhylipCmdlineTask(const MultipleSequenceAlignment &msa, const CreatePhyTreeSettings &settings);
+    PhylipCmdlineTask(const MultipleSequenceAlignment& msa, const CreatePhyTreeSettings& settings);
     ~PhylipCmdlineTask();
 
     void prepare();
@@ -56,9 +56,9 @@ private:
     void prepareTempDbi();
 
 private:
-    CmdlineInOutTaskRunner *cmdlineTask;
-    MultipleSequenceAlignmentObject *msaObject;
-    PhyTreeObject *treeObject;
+    CmdlineInOutTaskRunner* cmdlineTask;
+    MultipleSequenceAlignmentObject* msaObject;
+    PhyTreeObject* treeObject;
     QString dbiPath;
     U2DbiRef dbiRef;
 };

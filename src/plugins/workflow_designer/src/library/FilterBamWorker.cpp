@@ -64,8 +64,8 @@ static const QString FLAG_ID("flag");
 /* FilterBamPrompter */
 /************************************************************************/
 QString FilterBamPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(INPUT_PORT));
-    const Actor *producer = input->getProducer(BaseSlots::URL_SLOT().getId());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT));
+    const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr("<u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
 
@@ -95,7 +95,7 @@ QMap<QString, QString> getFilterCodes() {
     return res;
 }
 
-QString getHexValueByFilterString(const QString &filterString, const QMap<QString, QString> &codes) {
+QString getHexValueByFilterString(const QString& filterString, const QMap<QString, QString>& codes) {
     int val = 0;
     QStringList filterCodes = filterString.split(",");
     foreach (const QString fCode, filterCodes) {
@@ -114,7 +114,7 @@ QString getHexValueByFilterString(const QString &filterString, const QMap<QStrin
 void FilterBamWorkerFactory::init() {
     Descriptor desc(ACTOR_ID, FilterBamWorker::tr("Filter BAM/SAM files"), FilterBamWorker::tr("Filters BAM/SAM files using SAMTools view."));
 
-    QList<PortDescriptor *> p;
+    QList<PortDescriptor*> p;
     {
         Descriptor inD(INPUT_PORT, FilterBamWorker::tr("BAM/SAM File"), FilterBamWorker::tr("Set of BAM/SAM files to filter"));
         Descriptor outD(OUTPUT_PORT, FilterBamWorker::tr("Filtered BAM/SAM files"), FilterBamWorker::tr("Filtered BAM/SAM files"));
@@ -128,7 +128,7 @@ void FilterBamWorkerFactory::init() {
         p << new PortDescriptor(outD, DataTypePtr(new MapDataType(SHORT_NAME + ".output-url", outM)), false, true);
     }
 
-    QList<Attribute *> a;
+    QList<Attribute*> a;
     {
         Descriptor outDir(OUT_MODE_ID, FilterBamWorker::tr("Output folder"), FilterBamWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
                                                                                                  "<b>Workflow</b> - internal workflow folder. "
@@ -150,7 +150,7 @@ void FilterBamWorkerFactory::init() {
         Descriptor flagFilter(FLAG_ID, FilterBamWorker::tr("Skip flag"), FilterBamWorker::tr("Skip alignment with the selected items. Select the items in the combobox to configure bit flag. Do not select the items to avoid filtration by this parameter."));
 
         a << new Attribute(outDir, BaseTypes::NUM_TYPE(), false, QVariant(FileAndDirectoryUtils::WORKFLOW_INTERNAL));
-        Attribute *customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
+        Attribute* customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
         customDirAttr->addRelation(new VisibilityRelation(OUT_MODE_ID, FileAndDirectoryUtils::CUSTOM));
         a << customDirAttr;
         a << new Attribute(outName, BaseTypes::STRING_TYPE(), false, QVariant(DEFAULT_NAME));
@@ -161,7 +161,7 @@ void FilterBamWorkerFactory::init() {
         a << new Attribute(flagFilter, BaseTypes::STRING_TYPE(), false, QVariant(""));
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap directoryMap;
         QString fileDir = FilterBamWorker::tr("Input file");
@@ -188,28 +188,28 @@ void FilterBamWorkerFactory::init() {
 
         QVariantMap flags;
         QMap<QString, QString> filterCodes = getFilterCodes();
-        foreach (const QString &key, filterCodes.keys()) {
+        foreach (const QString& key, filterCodes.keys()) {
             flags[key] = false;
         }
         delegates[ACCEPT_FLAG_ID] = new ComboBoxWithChecksDelegate(flags);
         delegates[FLAG_ID] = new ComboBoxWithChecksDelegate(flags);
     }
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new FilterBamPrompter());
     // no way to include tool support files, so ids passed to functions manually
     proto->addExternalTool("USUPP_SAMTOOLS");  // SamToolsExtToolSupport::ET_SAMTOOLS_EXT_ID
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new FilterBamWorkerFactory());
 }
 
 /************************************************************************/
 /* FilterBamWorker */
 /************************************************************************/
-FilterBamWorker::FilterBamWorker(Actor *a)
+FilterBamWorker::FilterBamWorker(Actor* a)
     : BaseWorker(a), inputUrlPort(nullptr), outputUrlPort(nullptr) {
 }
 
@@ -218,7 +218,7 @@ void FilterBamWorker::init() {
     outputUrlPort = ports.value(OUTPUT_PORT);
 }
 
-Task *FilterBamWorker::tick() {
+Task* FilterBamWorker::tick() {
     if (inputUrlPort->hasMessage()) {
         const QString url = takeUrl();
         CHECK(!url.isEmpty(), nullptr);
@@ -242,9 +242,9 @@ Task *FilterBamWorker::tick() {
             setting.skipFilter = getHexValueByFilterString(getValue<QString>(FLAG_ID), getFilterCodes());
             setting.regionFilter = getValue<QString>(REGION_ID);
 
-            ExternalToolSupportTask *t = new SamtoolsViewFilterTask(setting);
+            ExternalToolSupportTask* t = new SamtoolsViewFilterTask(setting);
             t->addListeners(createLogListeners());
-            connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
+            connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
             return t;
         }
     }
@@ -261,8 +261,8 @@ void FilterBamWorker::cleanup() {
 }
 
 namespace {
-QString getTargetUrl(Task *task) {
-    SamtoolsViewFilterTask *filterTask = dynamic_cast<SamtoolsViewFilterTask *>(task);
+QString getTargetUrl(Task* task) {
+    SamtoolsViewFilterTask* filterTask = dynamic_cast<SamtoolsViewFilterTask*>(task);
 
     if (nullptr != filterTask) {
         return filterTask->getResult();
@@ -271,7 +271,7 @@ QString getTargetUrl(Task *task) {
 }
 }  // namespace
 
-void FilterBamWorker::sl_taskFinished(Task *task) {
+void FilterBamWorker::sl_taskFinished(Task* task) {
     CHECK(!task->hasError(), );
     CHECK(!task->isCanceled(), );
 
@@ -293,12 +293,12 @@ QString FilterBamWorker::takeUrl() {
     return data[BaseSlots::URL_SLOT().getId()].toString();
 }
 
-void FilterBamWorker::sendResult(const QString &url) {
+void FilterBamWorker::sendResult(const QString& url) {
     const Message message(BaseTypes::STRING_TYPE(), url);
     outputUrlPort->put(message);
 }
 
-QString FilterBamWorker::getTargetName(const QString &fileUrl, const QString &outDir) {
+QString FilterBamWorker::getTargetName(const QString& fileUrl, const QString& outDir) {
     QString name = getValue<QString>(OUT_NAME_ID);
 
     if (name == DEFAULT_NAME || name.isEmpty()) {
@@ -340,7 +340,7 @@ QStringList BamFilterSetting::getSamtoolsArguments() const {
 
     if (!regionFilter.isEmpty()) {
         QStringList regions = regionFilter.split(" ");
-        foreach (const QString &reg, regions) {
+        foreach (const QString& reg, regions) {
             result << reg;
         }
     }
@@ -352,7 +352,7 @@ QStringList BamFilterSetting::getSamtoolsArguments() const {
 // SamtoolsViewFilterTask
 const QString SamtoolsViewFilterTask::SAMTOOLS_ID = "USUPP_SAMTOOLS";
 
-SamtoolsViewFilterTask::SamtoolsViewFilterTask(const BamFilterSetting &settings)
+SamtoolsViewFilterTask::SamtoolsViewFilterTask(const BamFilterSetting& settings)
     : ExternalToolSupportTask(tr("Samtool view (filter) for %1 ").arg(settings.inputUrl), TaskFlags(TaskFlag_None)), settings(settings), resultUrl("") {
 }
 
@@ -398,13 +398,13 @@ void SamtoolsViewFilterTask::run() {
     }
 }
 
-void SamtoolsViewFilterTask::start(const ProcessRun &pRun, const QString &toolName) {
+void SamtoolsViewFilterTask::start(const ProcessRun& pRun, const QString& toolName) {
     pRun.process->start(pRun.program, pRun.arguments);
     bool started = pRun.process->waitForStarted();
     CHECK_EXT(started, setError(tr("Can not run %1 tool").arg(toolName)), );
 }
 
-void SamtoolsViewFilterTask::checkExitCode(QProcess *process, const QString &toolName) {
+void SamtoolsViewFilterTask::checkExitCode(QProcess* process, const QString& toolName) {
     int exitCode = process->exitCode();
     if (exitCode != EXIT_SUCCESS && !hasError()) {
         setError(tr("%1 tool exited with code %2").arg(toolName).arg(exitCode));

@@ -36,14 +36,14 @@ class U2DESIGNER_EXPORT EditBreakpointLabelsDialog : public QDialog {
     Q_OBJECT
     Q_DISABLE_COPY(EditBreakpointLabelsDialog)
 public:
-    EditBreakpointLabelsDialog(const QStringList &existingLabels = QStringList(),
-                               const QStringList &initCallingBreakpointLabels = QStringList(),
-                               QWidget *parent = 0,
+    EditBreakpointLabelsDialog(const QStringList& existingLabels = QStringList(),
+                               const QStringList& initCallingBreakpointLabels = QStringList(),
+                               QWidget* parent = 0,
                                Qt::WindowFlags f = 0);
     ~EditBreakpointLabelsDialog();
 
 protected:
-    virtual void keyPressEvent(QKeyEvent *event);
+    virtual void keyPressEvent(QKeyEvent* event);
 
 signals:
     void si_labelsCreated(QStringList newLabels);
@@ -51,19 +51,19 @@ signals:
 
 private slots:
     void sl_labelApplianceStateChanged(int state);
-    void sl_newLabelEditChanged(const QString &text);
+    void sl_newLabelEditChanged(const QString& text);
     void sl_newLabelAdded();
     void sl_dialogAccepted();
 
 private:
-    void initExistingLabelsList(const QStringList &existingLabels);
-    void addNewLabelToList(const QString &newLabel, bool appliedToCallingBreakpoint);
+    void initExistingLabelsList(const QStringList& existingLabels);
+    void addNewLabelToList(const QString& newLabel, bool appliedToCallingBreakpoint);
 
-    QMap<QWidget *, QString> applienceControlsForLabels;
+    QMap<QWidget*, QString> applienceControlsForLabels;
 
     QStringList callingBreakpointLabels;
     QStringList newLabelsAdded;
-    Ui_EditBreakpointLabelsDialog *ui;
+    Ui_EditBreakpointLabelsDialog* ui;
 };
 
 }  // namespace U2

@@ -46,7 +46,7 @@ namespace U2 {
 const QString HmmerSearchTask::INPUT_SEQUENCE_FILENAME = "input_sequence.fa";
 const QString HmmerSearchTask::PER_DOMAIN_HITS_FILENAME = "per_domain_hits.txt";
 
-HmmerSearchTask::HmmerSearchTask(const HmmerSearchSettings &settings)
+HmmerSearchTask::HmmerSearchTask(const HmmerSearchSettings& settings)
     : ExternalToolSupportTask(tr("HMMER search"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
       settings(settings),
       saveSequenceTask(nullptr),
@@ -76,8 +76,8 @@ void HmmerSearchTask::prepare() {
     }
 }
 
-QList<Task *> HmmerSearchTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> result;
+QList<Task*> HmmerSearchTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> result;
     CHECK_OP(stateInfo, result);
 
     if (subTask == saveSequenceTask) {
@@ -89,7 +89,7 @@ QList<Task *> HmmerSearchTask::onSubTaskFinished(Task *subTask) {
     } else if (subTask == parseTask) {
         removeTempDir();
         if (settings.annotationTable != nullptr) {
-            Task *createAnnotationsTask = new CreateAnnotationsTask(settings.annotationTable, parseTask->getAnnotations(), settings.pattern.groupName);
+            Task* createAnnotationsTask = new CreateAnnotationsTask(settings.annotationTable, parseTask->getAnnotations(), settings.pattern.groupName);
             createAnnotationsTask->setSubtaskProgressWeight(5);
             result << createAnnotationsTask;
         }
@@ -124,14 +124,14 @@ namespace {
 
 const QString HMMER_TEMP_DIR = "hmmer";
 
-QString getTaskTempDirName(const QString &prefix, Task *task) {
+QString getTaskTempDirName(const QString& prefix, Task* task) {
     return prefix + QString::number(task->getTaskId()) + "_" +
            QDate::currentDate().toString("dd.MM.yyyy") + "_" +
            QTime::currentTime().toString("hh.mm.ss.zzz") + "_" +
            QString::number(QCoreApplication::applicationPid());
 }
 
-}    // namespace
+}  // namespace
 
 void HmmerSearchTask::prepareWorkingDir() {
     if (settings.workingDir.isEmpty()) {
@@ -229,7 +229,7 @@ void HmmerSearchTask::prepareSequenceSaveTask() {
     saveSequenceTask->setSubtaskProgressWeight(5);
 }
 
-static bool isHmm2Profile(const QString &url) {
+static bool isHmm2Profile(const QString& url) {
     QByteArray header = IOAdapterUtils::readFileHeader(GUrl(url), 6);
     return header.startsWith("HMMER2");
 }
@@ -249,4 +249,4 @@ void HmmerSearchTask::prepareParseTask() {
     parseTask->setSubtaskProgressWeight(5);
 }
 
-}    // namespace U2
+}  // namespace U2

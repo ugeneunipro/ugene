@@ -38,7 +38,7 @@ class GObjectView;
 class MoveToObjectMaController : public QObject, public MaEditorContext {
     Q_OBJECT
 public:
-    MoveToObjectMaController(MaEditor *maEditor);
+    MoveToObjectMaController(MaEditor* maEditor);
 
 private slots:
     /** Shows moveSelectionToAnotherObject at cursor position. */
@@ -48,27 +48,27 @@ private slots:
     void runMoveSelectedRowsToNewFileDialog();
 
     /** Adds 'moveSelectionToAnotherObjectAction' to the export menu. */
-    void buildMenu(GObjectView *view, QMenu *menu, const QString &menuType);
+    void buildMenu(GObjectView* view, QMenu* menu, const QString& menuType);
 
     /** Updates all  si_updateActions from MaEditor. */
     void updateActions();
 
 private:
     /** Builds a new 'Move selection to another object' sub-menu. */
-    QMenu *buildMoveSelectionToAnotherObjectMenu() const;
+    QMenu* buildMoveSelectionToAnotherObjectMenu() const;
 
     /** Moves selected rows into another MSA object. */
-    QAction *moveSelectionToAnotherObjectAction = nullptr;
+    QAction* moveSelectionToAnotherObjectAction = nullptr;
 
     /** Moves selected rows into a new file. Opens file selector dialog to select the file to move. */
-    QAction *moveSelectionToNewFileAction = nullptr;
+    QAction* moveSelectionToNewFileAction = nullptr;
 };
 
 /** Removes set of rows from the MSA object. */
 class RemoveRowsFromMaObjectTask : public Task {
     Q_OBJECT
 public:
-    RemoveRowsFromMaObjectTask(MaEditor *maEditor, const QList<qint64> &rowIds);
+    RemoveRowsFromMaObjectTask(MaEditor* maEditor, const QList<qint64>& rowIds);
 
     void run() override;
 

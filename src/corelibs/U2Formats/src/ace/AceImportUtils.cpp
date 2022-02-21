@@ -38,11 +38,11 @@ namespace U2 {
 Assembly::Assembly() {
 }
 
-const Assembly::Sequence &Assembly::getReference() {
+const Assembly::Sequence& Assembly::getReference() {
     return reference;
 }
 
-void Assembly::setReference(const Sequence &_reference) {
+void Assembly::setReference(const Sequence& _reference) {
     reference = _reference;
     if (name.isEmpty()) {
         name = reference.name;
@@ -56,11 +56,11 @@ QList<U2AssemblyRead> Assembly::getReads() const {
     return convertReads();
 }
 
-void Assembly::addRead(const Sequence &read) {
+void Assembly::addRead(const Sequence& read) {
     reads << read;
 }
 
-void Assembly::setReads(const QList<Sequence> &_reads) {
+void Assembly::setReads(const QList<Sequence>& _reads) {
     reads = _reads;
 }
 
@@ -68,11 +68,11 @@ int Assembly::getReadsCount() const {
     return reads.count();
 }
 
-const QByteArray &Assembly::getName() const {
+const QByteArray& Assembly::getName() const {
     return name;
 }
 
-void Assembly::setName(const QByteArray &_name) {
+void Assembly::setName(const QByteArray& _name) {
     name = _name;
 }
 
@@ -122,12 +122,12 @@ const QByteArray AceReader::QA = "QA";
 const QByteArray AceReader::COMPLEMENT = "C";
 const QByteArray AceReader::UNCOMPLEMENT = "U";
 
-AceReader::AceReader(IOAdapter &_io, U2OpStatus &_os)
+AceReader::AceReader(IOAdapter& _io, U2OpStatus& _os)
     : io(&_io),
       os(&_os),
       currentContig(0) {
     QByteArray readBuff(DocumentFormat::READ_BUFF_SIZE + 1, 0);
-    char *buff = readBuff.data();
+    char* buff = readBuff.data();
     qint64 len = 0;
 
     skipBreaks(io, buff, &len);
@@ -145,7 +145,7 @@ Assembly AceReader::getAssembly() {
     Assembly::Sequence reference;
 
     QByteArray readBuff(DocumentFormat::READ_BUFF_SIZE + 1, 0);
-    char *buff = readBuff.data();
+    char* buff = readBuff.data();
     qint64 len = 0;
     int readsCount = 0;
     QByteArray headerLine;
@@ -206,14 +206,14 @@ bool AceReader::isFinish() {
     return currentContig >= contigsCount || io->isEof();
 }
 
-void AceReader::skipBreaks(IOAdapter *io, char *buff, qint64 *len) {
+void AceReader::skipBreaks(IOAdapter* io, char* buff, qint64* len) {
     bool lineOk = true;
     *len = io->readUntil(buff, DocumentFormat::READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &lineOk);
     CHECK_EXT(*len != 0, os->setError(DocumentFormatUtils::tr("Unexpected end of file")), );
     CHECK_EXT(lineOk || io->isEof(), os->setError(DocumentFormatUtils::tr("Line is too long")), );
 }
 
-int AceReader::getContigCount(const QByteArray &cur_line) {
+int AceReader::getContigCount(const QByteArray& cur_line) {
     QByteArray line = cur_line;
     int contigC = getSubString(line, CONTIG_COUNT_POS);
     CHECK_OP((*os), 0);
@@ -221,7 +221,7 @@ int AceReader::getContigCount(const QByteArray &cur_line) {
     return contigC;
 }
 
-int AceReader::getSubString(QByteArray &line, int pos) {
+int AceReader::getSubString(QByteArray& line, int pos) {
     int curIdx = 0;
     char space = ' ';
 
@@ -245,14 +245,14 @@ int AceReader::getSubString(QByteArray &line, int pos) {
     return result;
 }
 
-int AceReader::getReadsCount(const QByteArray &cur_line) {
+int AceReader::getReadsCount(const QByteArray& cur_line) {
     QByteArray line = cur_line;
     int readsCount = getSubString(line, READS_COUNT_POS);
     CHECK_OP_EXT((*os), os->setError(DocumentFormatUtils::tr("There is no note about reads count")), 0);
     return readsCount;
 }
 
-void AceReader::parseConsensus(IOAdapter *io, char *buff, QSet<QByteArray> &names, QByteArray &headerLine, Assembly::Sequence &consensus) {
+void AceReader::parseConsensus(IOAdapter* io, char* buff, QSet<QByteArray>& names, QByteArray& headerLine, Assembly::Sequence& consensus) {
     char aceBStartChar = 'B';
     QBitArray aceBStart = TextUtils::createBitMap(aceBStartChar);
     qint64 len = 0;
@@ -283,7 +283,7 @@ void AceReader::parseConsensus(IOAdapter *io, char *buff, QSet<QByteArray> &name
     CHECK_EXT(checkSeq(consensus.data), os->setError(DocumentFormatUtils::tr("Unexpected symbols in consensus data")), );
 }
 
-QByteArray AceReader::getName(const QByteArray &line) {
+QByteArray AceReader::getName(const QByteArray& line) {
     int curIdx = 0;
     char space = ' ';
 
@@ -305,16 +305,16 @@ QByteArray AceReader::getName(const QByteArray &line) {
     return name;
 }
 
-bool AceReader::checkSeq(const QByteArray &seq) {
-    DNAAlphabetRegistry *alRegistry = AppContext::getDNAAlphabetRegistry();
+bool AceReader::checkSeq(const QByteArray& seq) {
+    DNAAlphabetRegistry* alRegistry = AppContext::getDNAAlphabetRegistry();
     SAFE_POINT(alRegistry, "Alphabet registry is NULL", false);
-    const DNAAlphabet *al = alRegistry->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
+    const DNAAlphabet* al = alRegistry->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
     SAFE_POINT(al, "Alphabet is NULL", false);
 
     return al->containsAll(seq.constData(), seq.length());
 }
 
-void AceReader::parseAfTag(U2::IOAdapter *io, char *buff, int count, QMap<QByteArray, int> &posMap, QMap<QByteArray, bool> &complMap, QSet<QByteArray> &names) {
+void AceReader::parseAfTag(U2::IOAdapter* io, char* buff, int count, QMap<QByteArray, int>& posMap, QMap<QByteArray, bool>& complMap, QSet<QByteArray>& names) {
     int readsCount = count;
     QByteArray afBlock;
     QByteArray readLine;
@@ -378,7 +378,7 @@ void AceReader::parseAfTag(U2::IOAdapter *io, char *buff, int count, QMap<QByteA
     os->setProgress(io->getProgress());
 }
 
-int AceReader::readsPos(const QByteArray &cur_line) {
+int AceReader::readsPos(const QByteArray& cur_line) {
     QByteArray line = cur_line;
     char space = ' ';
 
@@ -392,7 +392,7 @@ int AceReader::readsPos(const QByteArray &cur_line) {
     return result;
 }
 
-int AceReader::prepareLine(QByteArray &line, int pos) {
+int AceReader::prepareLine(QByteArray& line, int pos) {
     int curIdx = 0;
     char space = ' ';
 
@@ -410,7 +410,7 @@ int AceReader::prepareLine(QByteArray &line, int pos) {
     return curIdx;
 }
 
-int AceReader::readsComplement(const QByteArray &cur_line) {
+int AceReader::readsComplement(const QByteArray& cur_line) {
     QByteArray line = cur_line;
     prepareLine(line, COMPLEMENT_POS);
 
@@ -424,7 +424,7 @@ int AceReader::readsComplement(const QByteArray &cur_line) {
     }
 }
 
-int AceReader::paddedStartCons(const QByteArray &cur_line) {
+int AceReader::paddedStartCons(const QByteArray& cur_line) {
     QByteArray line = cur_line;
     getSubString(line, PADDED_START_POS);
     CHECK_OP((*os), 0);
@@ -436,7 +436,7 @@ int AceReader::paddedStartCons(const QByteArray &cur_line) {
     return result;
 }
 
-int AceReader::getSmallestOffset(const QMap<QByteArray, int> &posMap) {
+int AceReader::getSmallestOffset(const QMap<QByteArray, int>& posMap) {
     int smallestOffset = 0;
     foreach (int value, posMap) {
         smallestOffset = qMin(smallestOffset, value - 1);
@@ -445,7 +445,7 @@ int AceReader::getSmallestOffset(const QMap<QByteArray, int> &posMap) {
     return smallestOffset;
 }
 
-void AceReader::parseRdAndQaTag(U2::IOAdapter *io, char *buff, QSet<QByteArray> &names, Assembly::Sequence &read) {
+void AceReader::parseRdAndQaTag(U2::IOAdapter* io, char* buff, QSet<QByteArray>& names, Assembly::Sequence& read) {
     QByteArray rdBlock;
     qint64 len = 0;
     bool ok = true;
@@ -498,7 +498,7 @@ void AceReader::parseRdAndQaTag(U2::IOAdapter *io, char *buff, QSet<QByteArray> 
     names.remove(read.name);
 }
 
-int AceReader::getClearRangeStart(const QByteArray &cur_line) {
+int AceReader::getClearRangeStart(const QByteArray& cur_line) {
     QByteArray line = cur_line;
     int result = getSubString(line, FIRST_QA_POS);
     CHECK_OP_EXT((*os), os->setError(DocumentFormatUtils::tr("Can't find clear range start in current line")), 0);
@@ -506,7 +506,7 @@ int AceReader::getClearRangeStart(const QByteArray &cur_line) {
     return result;
 }
 
-int AceReader::getClearRangeEnd(const QByteArray &cur_line) {
+int AceReader::getClearRangeEnd(const QByteArray& cur_line) {
     QByteArray line = cur_line;
     int result = getSubString(line, LAST_QA_POS);
     CHECK_OP_EXT((*os), os->setError(DocumentFormatUtils::tr("Can't find clear range end in current line")), 0);
@@ -514,7 +514,7 @@ int AceReader::getClearRangeEnd(const QByteArray &cur_line) {
     return result;
 }
 
-void AceReader::formatSequence(QByteArray &data) {
+void AceReader::formatSequence(QByteArray& data) {
     data = data.toUpper();
     data.replace('X', 'N');
     data.replace('*', 'N');
@@ -524,7 +524,7 @@ void AceReader::formatSequence(QByteArray &data) {
 //// AceIterator
 ///////////////////////////////////
 
-AceIterator::AceIterator(AceReader &_reader, U2OpStatus &_os)
+AceIterator::AceIterator(AceReader& _reader, U2OpStatus& _os)
     : reader(&_reader),
       os(&_os) {
 }

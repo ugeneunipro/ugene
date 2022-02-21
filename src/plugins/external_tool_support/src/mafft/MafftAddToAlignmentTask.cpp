@@ -57,7 +57,7 @@ static const int UNBREAKABLE_SEQUENCE_LENGTH_LIMIT = 50;
 /************************************************************************/
 /* MafftAddToAlignmentTask */
 /************************************************************************/
-MafftAddToAlignmentTask::MafftAddToAlignmentTask(const AlignSequencesToAlignmentTaskSettings &settings)
+MafftAddToAlignmentTask::MafftAddToAlignmentTask(const AlignSequencesToAlignmentTaskSettings& settings)
     : AbstractAlignmentTask(tr("Align sequences to alignment task"), TaskFlag_None),
       settings(settings),
       logParser(nullptr),
@@ -78,8 +78,8 @@ MafftAddToAlignmentTask::MafftAddToAlignmentTask(const AlignSequencesToAlignment
     }
 }
 
-static QString generateTmpFileUrl(const QString &filePathAndPattern) {
-    QTemporaryFile *generatedFile = new QTemporaryFile(filePathAndPattern);
+static QString generateTmpFileUrl(const QString& filePathAndPattern) {
+    QTemporaryFile* generatedFile = new QTemporaryFile(filePathAndPattern);
     QFileInfo generatedFileInfo(generatedFile->fileName());
     while (generatedFile->exists() || generatedFileInfo.baseName().contains(" ") || !generatedFile->open()) {
         delete generatedFile;
@@ -101,16 +101,16 @@ void MafftAddToAlignmentTask::prepare() {
     QString tmpAddedUrl = generateTmpFileUrl(tmpDirUrl + QDir::separator() + "XXXXXXXXXXXXXXXX_add.fa");
     ;
 
-    DocumentFormatRegistry *dfr = AppContext::getDocumentFormatRegistry();
-    DocumentFormat *dfd = dfr->getFormatById(BaseDocumentFormats::FASTA);
-    Document *tempDocument = dfd->createNewLoadedDocument(IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), GUrl(tmpAddedUrl), stateInfo);
+    DocumentFormatRegistry* dfr = AppContext::getDocumentFormatRegistry();
+    DocumentFormat* dfd = dfr->getFormatById(BaseDocumentFormats::FASTA);
+    Document* tempDocument = dfd->createNewLoadedDocument(IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), GUrl(tmpAddedUrl), stateInfo);
 
     QListIterator<QString> namesIterator(settings.addedSequencesNames);
     int currentRowNumber = inputMsa->getRowCount();
-    foreach (const U2EntityRef &sequenceRef, settings.addedSequencesRefs) {
+    foreach (const U2EntityRef& sequenceRef, settings.addedSequencesRefs) {
         uniqueIdsToNames[QString::number(currentRowNumber)] = namesIterator.next();
         U2SequenceObject seqObject(QString::number(currentRowNumber), sequenceRef);
-        GObject *cloned = seqObject.clone(tempDocument->getDbiRef(), stateInfo);
+        GObject* cloned = seqObject.clone(tempDocument->getDbiRef(), stateInfo);
         CHECK_OP(stateInfo, );
         cloned->setGObjectName(QString::number(currentRowNumber));
         tempDocument->addObject(cloned);
@@ -126,8 +126,8 @@ void MafftAddToAlignmentTask::prepare() {
     addSubTask(saveAlignmentDocumentTask);
 }
 
-QList<Task *> MafftAddToAlignmentTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> subTasks;
+QList<Task*> MafftAddToAlignmentTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> subTasks;
 
     propagateSubtaskError();
     if (subTask->isCanceled() || isCanceled() || hasError()) {
@@ -143,7 +143,7 @@ QList<Task *> MafftAddToAlignmentTask::onSubTaskFinished(Task *subTask) {
             arguments << "--add";
         }
         arguments << saveSequencesDocumentTask->getURL().getURLString();
-        const DNAAlphabet *alphabet = U2AlphabetUtils::getById(settings.alphabet);
+        const DNAAlphabet* alphabet = U2AlphabetUtils::getById(settings.alphabet);
         SAFE_POINT_EXT(alphabet != nullptr, setError("Albhabet is invalid."), subTasks);
         if (alphabet->isRaw()) {
             arguments << "--anysymbol";
@@ -177,7 +177,7 @@ QList<Task *> MafftAddToAlignmentTask::onSubTaskFinished(Task *subTask) {
             return subTasks;
         }
         ioLog.details(tr("Loading output file '%1'").arg(resultFilePath));
-        IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+        IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
         loadTmpDocumentTask = new LoadDocumentTask(BaseDocumentFormats::FASTA, resultFilePath, iof);
         loadTmpDocumentTask->setSubtaskProgressWeight(5);
         subTasks.append(loadTmpDocumentTask);
@@ -196,7 +196,7 @@ void MafftAddToAlignmentTask::run() {
     SAFE_POINT(tmpDoc != nullptr, QString("output document '%1' not loaded").arg(tmpDoc->getURLString()), );
     SAFE_POINT(tmpDoc->getObjects().length() != 0, QString("no objects in output document '%1'").arg(tmpDoc->getURLString()), );
 
-    U2MsaDbi *dbi = modStep->getDbi()->getMsaDbi();
+    U2MsaDbi* dbi = modStep->getDbi()->getMsaDbi();
 
     QStringList rowNames = inputMsa->getRowNames();
 
@@ -213,18 +213,18 @@ void MafftAddToAlignmentTask::run() {
         CHECK_OP(stateInfo, );
     }
     QMap<QString, qint64> uniqueNamesToIds;
-    foreach (const MultipleSequenceAlignmentRow &refRow, inputMsa->getMsaRows()) {
+    foreach (const MultipleSequenceAlignmentRow& refRow, inputMsa->getMsaRows()) {
         uniqueNamesToIds[refRow->getName()] = refRow->getRowId();
     }
 
     bool additionalModificationPerformed = false;
     QStringList unalignedSequences;
-    foreach (GObject *object, tmpDoc->getObjects()) {
+    foreach (GObject* object, tmpDoc->getObjects()) {
         if (hasError() || isCanceled()) {
             return;
         }
         stateInfo.setProgress(70 + 30 * posInMsa / objectsCount);
-        U2SequenceObject *sequenceObject = qobject_cast<U2SequenceObject *>(object);
+        U2SequenceObject* sequenceObject = qobject_cast<U2SequenceObject*>(object);
         bool rowWasAdded = true;
         if (!rowNames.contains(sequenceObject->getSequenceName())) {
             // inserting new rows
@@ -306,19 +306,19 @@ Task::ReportResult MafftAddToAlignmentTask::report() {
 bool MafftAddToAlignmentTask::useMemsaveOption() const {
     qint64 maxLength = qMax(qint64(inputMsa->getLength()), settings.maxSequenceLength);
     qint64 memoryInMB = 10 * maxLength * maxLength / 1024 / 1024;
-    AppResourcePool *pool = AppContext::getAppSettings()->getAppResourcePool();
+    AppResourcePool* pool = AppContext::getAppSettings()->getAppResourcePool();
     return memoryInMB > qMin(pool->getMaxMemorySizeInMB(), pool->getTotalPhysicalMemory() / 2);
 }
 
-AbstractAlignmentTask *MafftAddToAlignmentTaskFactory::getTaskInstance(AbstractAlignmentTaskSettings *_settings) const {
-    AlignSequencesToAlignmentTaskSettings *addSettings = dynamic_cast<AlignSequencesToAlignmentTaskSettings *>(_settings);
+AbstractAlignmentTask* MafftAddToAlignmentTaskFactory::getTaskInstance(AbstractAlignmentTaskSettings* _settings) const {
+    AlignSequencesToAlignmentTaskSettings* addSettings = dynamic_cast<AlignSequencesToAlignmentTaskSettings*>(_settings);
     SAFE_POINT(addSettings != nullptr,
                "Add sequences to alignment: incorrect settings",
                nullptr);
     return new MafftAddToAlignmentTask(*addSettings);
 }
 
-MafftAlignSequencesToAlignmentAlgorithm::MafftAlignSequencesToAlignmentAlgorithm(const AlignmentAlgorithmType &type)
+MafftAlignSequencesToAlignmentAlgorithm::MafftAlignSequencesToAlignmentAlgorithm(const AlignmentAlgorithmType& type)
     : AlignmentAlgorithm(type,
                          type == AlignNewSequencesToAlignment
                              ? BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT

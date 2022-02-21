@@ -30,7 +30,7 @@ namespace LocalWorkflow {
 
 const QString QualitySettingsWidget::QUALITY = "quality";
 
-QualitySettingsWidget::QualitySettingsWidget(const QString &toolTip) {
+QualitySettingsWidget::QualitySettingsWidget(const QString& toolTip) {
     setupUi(this);
 
     lblQualityThreshold->setToolTip(toolTip);
@@ -53,7 +53,7 @@ QVariantMap QualitySettingsWidget::getState() const {
     return state;
 }
 
-void QualitySettingsWidget::setState(const QVariantMap &state) {
+void QualitySettingsWidget::setState(const QVariantMap& state) {
     const bool contains = state.contains(QUALITY);
     bool valid = false;
     const int quality = state.value(QUALITY).toInt(&valid);
@@ -62,7 +62,7 @@ void QualitySettingsWidget::setState(const QVariantMap &state) {
     }
 }
 
-QString QualitySettingsWidget::serializeState(const QVariantMap &widgetState) {
+QString QualitySettingsWidget::serializeState(const QVariantMap& widgetState) {
     if (widgetState.contains(QUALITY)) {
         return QString::number(widgetState.value(QUALITY).toInt());
     } else {
@@ -70,7 +70,7 @@ QString QualitySettingsWidget::serializeState(const QVariantMap &widgetState) {
     }
 }
 
-QVariantMap QualitySettingsWidget::parseState(const QString &command, const QString &stepName) {
+QVariantMap QualitySettingsWidget::parseState(const QString& command, const QString& stepName) {
     QVariantMap state;
     QRegExp regExp(stepName + ":" + "(\\d*)");
 
@@ -85,5 +85,5 @@ QVariantMap QualitySettingsWidget::parseState(const QString &command, const QStr
     return state;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

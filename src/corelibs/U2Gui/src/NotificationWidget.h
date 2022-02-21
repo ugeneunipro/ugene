@@ -45,17 +45,17 @@ class Header : public QFrame {
     Q_OBJECT
 
 public:
-    Header(QWidget *w = nullptr);
+    Header(QWidget* w = nullptr);
     bool isFixed() const;
 
 protected:
-    void mousePressEvent(QMouseEvent *me);
-    void mouseMoveEvent(QMouseEvent *me);
-    bool eventFilter(QObject *, QEvent *);
+    void mousePressEvent(QMouseEvent* me);
+    void mouseMoveEvent(QMouseEvent* me);
+    bool eventFilter(QObject*, QEvent*);
 
 private:
-    QLabel *close;
-    QLabel *pin;
+    QLabel* close;
+    QLabel* pin;
 
     bool fix;
 
@@ -68,19 +68,19 @@ class NotificationWidget : public QFrame {
     Q_OBJECT
 
 public:
-    NotificationWidget(QWidget *w);
-    void addNotification(QWidget *w);
-    bool removeNotification(QWidget *w);
+    NotificationWidget(QWidget* w);
+    void addNotification(QWidget* w);
+    bool removeNotification(QWidget* w);
     void setFixed(bool val);
 
 protected:
-    bool event(QEvent *event);
+    bool event(QEvent* event);
 
 private:
-    QScrollArea *scrollArea = nullptr;
-    QVBoxLayout *layout = nullptr;
-    QFrame *frame = nullptr;
-    Header *header = nullptr;
+    QScrollArea* scrollArea = nullptr;
+    QVBoxLayout* layout = nullptr;
+    QFrame* frame = nullptr;
+    Header* header = nullptr;
 
     bool left = false;
     bool right = false;

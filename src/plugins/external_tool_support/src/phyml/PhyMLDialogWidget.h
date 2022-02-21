@@ -64,12 +64,12 @@ public:
 class PhyMlWidget : public CreatePhyTreeWidget, public Ui_PhyMLDialog {
     Q_OBJECT
 public:
-    PhyMlWidget(const MultipleSequenceAlignment &ma, QWidget *parent);
+    PhyMlWidget(const MultipleSequenceAlignment& ma, QWidget* parent);
 
-    void fillSettings(CreatePhyTreeSettings &settings);
+    void fillSettings(CreatePhyTreeSettings& settings);
     void storeSettings();
     void restoreDefault();
-    bool checkSettings(QString &msg, const CreatePhyTreeSettings &settings);
+    bool checkSettings(QString& msg, const CreatePhyTreeSettings& settings);
 
 private:
     void createWidgetsControllers();
@@ -86,7 +86,7 @@ private:
 private slots:
     void sl_checkUserTreeType(int newIndex);
     void sl_checkTreeImprovement(int newIndex);
-    void sl_checkSubModelType(const QString &newModel);
+    void sl_checkSubModelType(const QString& newModel);
     void sl_inputPathButtonClicked();
     void sl_optTopologyCheckboxClicked(bool checked);
 

@@ -31,15 +31,15 @@ namespace U2 {
 class U2CORE_EXPORT VFSAdapterFactory : public IOAdapterFactory {
     Q_OBJECT
 public:
-    VFSAdapterFactory(QObject *p = nullptr);
+    VFSAdapterFactory(QObject* p = nullptr);
 
-    virtual IOAdapter *createIOAdapter();
+    virtual IOAdapter* createIOAdapter();
 
     virtual IOAdapterId getAdapterId() const {
         return BaseIOAdapters::VFS_FILE;
     }
 
-    virtual const QString &getAdapterName() const {
+    virtual const QString& getAdapterName() const {
         return name;
     }
 
@@ -48,7 +48,7 @@ public:
         return true;
     }  // files can be read and be written
 
-    virtual TriState isResourceAvailable(const GUrl &url) const {
+    virtual TriState isResourceAvailable(const GUrl& url) const {
         assert(url.isVFSFile());
         Q_UNUSED(url);
         return TriState_Yes;
@@ -61,13 +61,13 @@ protected:
 class U2CORE_EXPORT VFSAdapter : public IOAdapter {
     Q_OBJECT
 public:
-    VFSAdapter(VFSAdapterFactory *f, QObject *o = nullptr);
+    VFSAdapter(VFSAdapterFactory* f, QObject* o = nullptr);
     ~VFSAdapter() {
         if (isOpen())
             close();
     }
 
-    virtual bool open(const GUrl &url, IOAdapterMode m);
+    virtual bool open(const GUrl& url, IOAdapterMode m);
 
     virtual bool isOpen() const {
         return buffer != nullptr;
@@ -75,9 +75,9 @@ public:
 
     virtual void close();
 
-    virtual qint64 readBlock(char *data, qint64 maxSize);
+    virtual qint64 readBlock(char* data, qint64 maxSize);
 
-    virtual qint64 writeBlock(const char *data, qint64 size);
+    virtual qint64 writeBlock(const char* data, qint64 size);
 
     virtual bool skip(qint64 nBytes);
 
@@ -95,7 +95,7 @@ public:
 
 private:
     GUrl url;
-    QBuffer *buffer;
+    QBuffer* buffer;
 };
 
 }  // namespace U2

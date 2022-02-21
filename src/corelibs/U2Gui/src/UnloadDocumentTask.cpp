@@ -49,7 +49,7 @@ namespace U2 {
 
 const QString UnloadDocumentTask::ACTIVE_VIEW_ERROR = QCoreApplication::translate("UnloadDocumentTask", "There is an active view with the document content.");
 
-UnloadDocumentTask::UnloadDocumentTask(Document *_doc, bool save)
+UnloadDocumentTask::UnloadDocumentTask(Document* _doc, bool save)
     : Task(tr("Unload document task: %1").arg(_doc->getURLString()), TaskFlag_NoRun),
       doc(_doc),
       saveTask(nullptr),
@@ -96,15 +96,15 @@ Task::ReportResult UnloadDocumentTask::report() {
     return Task::ReportResult_Finished;
 }
 
-QList<Task *> UnloadDocumentTask::runUnloadTaskHelper(const QList<Document *> &docs, UnloadDocumentTask_SaveMode sm) {
-    QMap<Document *, QString> failedToUnload;
+QList<Task*> UnloadDocumentTask::runUnloadTaskHelper(const QList<Document*>& docs, UnloadDocumentTask_SaveMode sm) {
+    QMap<Document*, QString> failedToUnload;
 
     // document can be unloaded if there are no active view with this doc + it's not state locked by user
     TriState saveAll = sm == UnloadDocumentTask_SaveMode_Ask ? TriState_Unknown : (sm == UnloadDocumentTask_SaveMode_NotSave ? TriState_No : TriState_Yes);
 
-    QList<Task *> result;
+    QList<Task*> result;
 
-    foreach (Document *doc, docs) {
+    foreach (Document* doc, docs) {
         QString err = checkSafeUnload(doc);
         if (err == ACTIVE_VIEW_ERROR) {
             QMessageBox::StandardButtons buttons = QMessageBox::StandardButtons(QMessageBox::Yes) | QMessageBox::No;
@@ -114,7 +114,7 @@ QList<Task *> UnloadDocumentTask::runUnloadTaskHelper(const QList<Document *> &d
                                                                     buttons,
                                                                     QMessageBox::Yes);
             if (res == QMessageBox::Yes) {
-                foreach (GObjectViewWindow *v, GObjectViewUtils::findViewsWithAnyOfObjects(doc->getObjects())) {
+                foreach (GObjectViewWindow* v, GObjectViewUtils::findViewsWithAnyOfObjects(doc->getObjects())) {
                     v->closeView();
                 }
             }
@@ -151,7 +151,7 @@ QList<Task *> UnloadDocumentTask::runUnloadTaskHelper(const QList<Document *> &d
 
     if (!failedToUnload.isEmpty()) {
         QString text = tr("Failed to unload document") + "<br>";
-        foreach (Document *doc, failedToUnload.keys()) {
+        foreach (Document* doc, failedToUnload.keys()) {
             QString err = failedToUnload[doc];
             text += doc->getName() + " : " + err + "<br>";
             coreLog.error(tr("Failed to unload document: %1, error: %2").arg(doc->getName()).arg(err));
@@ -164,13 +164,13 @@ QList<Task *> UnloadDocumentTask::runUnloadTaskHelper(const QList<Document *> &d
     return result;
 }
 
-QString UnloadDocumentTask::checkSafeUnload(Document *doc) {
+QString UnloadDocumentTask::checkSafeUnload(Document* doc) {
     bool hasViews = !GObjectViewUtils::findViewsWithAnyOfObjects(doc->getObjects()).isEmpty();
     if (hasViews) {
         return ACTIVE_VIEW_ERROR;
     }
 
-    QList<StateLock *> locks = doc->findLocks(StateLockableTreeFlags_ItemAndChildren, StateLockFlag_LiveLock);
+    QList<StateLock*> locks = doc->findLocks(StateLockableTreeFlags_ItemAndChildren, StateLockFlag_LiveLock);
     bool liveLocked = (locks.size() != 1) && (locks.size() != 0);
     if (locks.size() == 1) {
         liveLocked = (locks.first()->getUserDesc() != Document::UNLOAD_LOCK_NAME);
@@ -182,7 +182,7 @@ QString UnloadDocumentTask::checkSafeUnload(Document *doc) {
     return QString();
 }
 
-ReloadDocumentTask::ReloadDocumentTask(Document *d)
+ReloadDocumentTask::ReloadDocumentTask(Document* d)
     : Task("Reloading given document", TaskFlags_NR_FOSE_COSC), doc(d), url(d->getURL()),
       removeDocTask(nullptr), openDocTask(nullptr) {
     GCOUNTER(cvar, "ReloadDocumentTask");
@@ -192,14 +192,14 @@ void ReloadDocumentTask::prepare() {
     saveObjectRelationsFromDoc();
 
     removeDocTask = new RemoveMultipleDocumentsTask(AppContext::getProject(),
-                                                    QList<Document *>() << doc,
+                                                    QList<Document*>() << doc,
                                                     false,
                                                     false);
     addSubTask(removeDocTask);
 }
 
-QList<Task *> ReloadDocumentTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> ReloadDocumentTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
 
     if (subTask == removeDocTask) {
         openDocTask = AppContext::getProjectLoader()->openWithProjectTask(url);
@@ -210,7 +210,7 @@ QList<Task *> ReloadDocumentTask::onSubTaskFinished(Task *subTask) {
         if (openDocTask->hasError()) {
             return res;
         }
-        Project *currentProj = AppContext::getProject();
+        Project* currentProj = AppContext::getProject();
         SAFE_POINT(nullptr != currentProj, "Invalid project state!", res);
         doc = currentProj->findDocumentByURL(url);
         SAFE_POINT(nullptr != doc, "Reloaded document not found!", res);
@@ -227,14 +227,14 @@ QList<Task *> ReloadDocumentTask::onSubTaskFinished(Task *subTask) {
 }
 
 void ReloadDocumentTask::saveObjectRelationsFromDoc() {
-    foreach (GObject *curObj, doc->getObjects()) {
+    foreach (GObject* curObj, doc->getObjects()) {
         const QList<GObjectRelation> curObjRelations = curObj->getObjectRelations();
         if (!curObjRelations.isEmpty()) {
             const QString curObjName = curObj->getGObjectName();
             if (savedObjectRelations.contains(curObjName)) {
                 coreLog.error("Objects with same names detected during saving of object relations!");
             }
-            foreach (const GObjectRelation &relation, curObjRelations) {
+            foreach (const GObjectRelation& relation, curObjRelations) {
                 if (doc->getURLString() != relation.getDocURL()) {  // don't save relations within a single object
                     savedObjectRelations.insert(curObjName, relation);
                 }
@@ -244,7 +244,7 @@ void ReloadDocumentTask::saveObjectRelationsFromDoc() {
 }
 
 void ReloadDocumentTask::restoreObjectRelationsForDoc() {
-    foreach (GObject *curObj, doc->getObjects()) {
+    foreach (GObject* curObj, doc->getObjects()) {
         const QString curObjName = curObj->getGObjectName();
         if (!savedObjectRelations.contains(curObjName)) {
             continue;
@@ -253,18 +253,18 @@ void ReloadDocumentTask::restoreObjectRelationsForDoc() {
     }
 }
 
-void ReloadDocumentTask::restoreObjectRelationsForObject(GObject *obj, const QList<GObjectRelation> &relations) {
-    Project *currentProj = AppContext::getProject();
+void ReloadDocumentTask::restoreObjectRelationsForObject(GObject* obj, const QList<GObjectRelation>& relations) {
+    Project* currentProj = AppContext::getProject();
     SAFE_POINT(nullptr != currentProj, "Invalid project state!", );
 
     obj->setObjectRelations(QList<GObjectRelation>());
 
-    foreach (const GObjectRelation &relation, relations) {
-        Document *relatedDoc = currentProj->findDocumentByURL(relation.ref.docUrl);
+    foreach (const GObjectRelation& relation, relations) {
+        Document* relatedDoc = currentProj->findDocumentByURL(relation.ref.docUrl);
         if (nullptr == relatedDoc) {
             continue;
         }
-        GObject *relatedObj = relatedDoc->findGObjectByName(relation.ref.objName);
+        GObject* relatedObj = relatedDoc->findGObjectByName(relation.ref.objName);
         if (nullptr != relatedObj && relatedObj->getGObjectType() == relation.ref.objType) {
             obj->addObjectRelation(relation);
         }

@@ -79,7 +79,7 @@ void PluginViewerController::createWindow() {
     ui.treeWidget->sortByColumn(1, Qt::AscendingOrder);
 
     mdiWindow->installEventFilter(this);
-    MWMDIManager *mdiManager = AppContext::getMainWindow()->getMDIManager();
+    MWMDIManager* mdiManager = AppContext::getMainWindow()->getMDIManager();
     mdiManager->addMDIWindow(mdiWindow);
 
     if (ui.treeWidget->topLevelItemCount() > 0) {
@@ -91,10 +91,10 @@ void PluginViewerController::createWindow() {
 
 void PluginViewerController::connectStaticActions() {
     // add actions to menu and toolbar
-    MainWindow *mw = AppContext::getMainWindow();
-    QMenu *pluginsMenu = mw->getTopLevelMenu(MWMENU_SETTINGS);
+    MainWindow* mw = AppContext::getMainWindow();
+    QMenu* pluginsMenu = mw->getTopLevelMenu(MWMENU_SETTINGS);
 
-    QAction *viewPluginsAction = new QAction(QIcon(":ugene/images/plugins.png"), tr("Plugins..."), this);
+    QAction* viewPluginsAction = new QAction(QIcon(":ugene/images/plugins.png"), tr("Plugins..."), this);
     connect(viewPluginsAction, SIGNAL(triggered()), SLOT(sl_show()));
     viewPluginsAction->setObjectName(ACTION__PLUGINS_VIEW);
     pluginsMenu->addAction(viewPluginsAction);
@@ -109,12 +109,12 @@ void PluginViewerController::connectStaticActions() {
 void PluginViewerController::connectVisualActions() {
     // connect to plugin support signals
     if (showServices) {
-        ServiceRegistry *sr = AppContext::getServiceRegistry();
-        connect(sr, SIGNAL(si_serviceStateChanged(Service *, ServiceState)), SLOT(sl_onServiceStateChanged(Service *, ServiceState)));
-        connect(sr, SIGNAL(si_serviceUnregistered(Service *)), SLOT(sl_onServiceUnregistered(Service *)));
+        ServiceRegistry* sr = AppContext::getServiceRegistry();
+        connect(sr, SIGNAL(si_serviceStateChanged(Service*, ServiceState)), SLOT(sl_onServiceStateChanged(Service*, ServiceState)));
+        connect(sr, SIGNAL(si_serviceUnregistered(Service*)), SLOT(sl_onServiceUnregistered(Service*)));
     }
 
-    connect(ui.treeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)), SLOT(sl_treeCurrentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)));
+    connect(ui.treeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), SLOT(sl_treeCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
     connect(ui.showLicenseButton, SIGNAL(clicked()), SLOT(sl_showHideLicense()));
     connect(ui.acceptLicenseButton, SIGNAL(clicked()), SLOT(sl_acceptLicense()));
 }
@@ -127,10 +127,10 @@ void PluginViewerController::disconnectVisualActions() {
 }
 
 void PluginViewerController::updateActions() {
-    PlugViewTreeItem *item = static_cast<PlugViewTreeItem *>(ui.treeWidget->currentItem());
+    PlugViewTreeItem* item = static_cast<PlugViewTreeItem*>(ui.treeWidget->currentItem());
 
     bool isService = item != nullptr && item->isServiceItem();
-    Service *s = isService ? (static_cast<PlugViewServiceItem *>(item))->service : nullptr;
+    Service* s = isService ? (static_cast<PlugViewServiceItem*>(item))->service : nullptr;
     bool isServiceEnabled = isService && s->isEnabled();
 
     enableServiceAction->setEnabled(isService && !isServiceEnabled);
@@ -138,18 +138,18 @@ void PluginViewerController::updateActions() {
 }
 
 void PluginViewerController::buildItems() {
-    const QList<Plugin *> &plugins = AppContext::getPluginSupport()->getPlugins();
-    foreach (Plugin *p, plugins) {
-        QTreeWidget *treeWidget = ui.treeWidget;
-        PlugViewPluginItem *pluginItem = new PlugViewPluginItem(nullptr, p, showServices);
+    const QList<Plugin*>& plugins = AppContext::getPluginSupport()->getPlugins();
+    foreach (Plugin* p, plugins) {
+        QTreeWidget* treeWidget = ui.treeWidget;
+        PlugViewPluginItem* pluginItem = new PlugViewPluginItem(nullptr, p, showServices);
         if (showServices) {
-            const QList<Service *> &services = p->getServices();
+            const QList<Service*>& services = p->getServices();
             // this method is called for default state init also -> look for registered plugin services
-            ServiceRegistry *sr = AppContext::getServiceRegistry();
-            QList<Service *> registered = sr->getServices();
-            foreach (Service *s, services) {
+            ServiceRegistry* sr = AppContext::getServiceRegistry();
+            QList<Service*> registered = sr->getServices();
+            foreach (Service* s, services) {
                 if (registered.contains(s)) {
-                    PlugViewTreeItem *serviceItem = new PlugViewServiceItem(pluginItem, s);
+                    PlugViewTreeItem* serviceItem = new PlugViewServiceItem(pluginItem, s);
                     pluginItem->addChild(serviceItem);
                 }
             }
@@ -159,10 +159,10 @@ void PluginViewerController::buildItems() {
     }
 }
 
-PlugViewPluginItem *PluginViewerController::findPluginItem(Plugin *p) const {
+PlugViewPluginItem* PluginViewerController::findPluginItem(Plugin* p) const {
     int nPlugins = ui.treeWidget->topLevelItemCount();
     for (int i = 0; i < nPlugins; i++) {
-        PlugViewPluginItem *item = static_cast<PlugViewPluginItem *>(ui.treeWidget->topLevelItem(i));
+        PlugViewPluginItem* item = static_cast<PlugViewPluginItem*>(ui.treeWidget->topLevelItem(i));
         if (item->plugin == p) {
             return item;
         }
@@ -170,7 +170,7 @@ PlugViewPluginItem *PluginViewerController::findPluginItem(Plugin *p) const {
     return nullptr;
 }
 
-PlugViewServiceItem *PluginViewerController::findServiceItem(Service * /*s*/) const {
+PlugViewServiceItem* PluginViewerController::findServiceItem(Service* /*s*/) const {
     /*PlugViewPluginItem* pi = findPluginItem(s->getPlugin());
     if (!pi) {
         return NULL;
@@ -185,7 +185,7 @@ PlugViewServiceItem *PluginViewerController::findServiceItem(Service * /*s*/) co
     return nullptr;
 }
 
-bool PluginViewerController::eventFilter(QObject *obj, QEvent *event) {
+bool PluginViewerController::eventFilter(QObject* obj, QEvent* event) {
     if (event->type() == QEvent::Close && obj == mdiWindow) {
         mdiWindow = nullptr;
         disconnectVisualActions();
@@ -216,18 +216,18 @@ void PluginViewerController::sl_onPluginAdded(Plugin* p) {
 }
 */
 
-void PluginViewerController::sl_onServiceStateChanged(Service *s, ServiceState oldState) {
+void PluginViewerController::sl_onServiceStateChanged(Service* s, ServiceState oldState) {
     Q_UNUSED(oldState);
     assert(showServices);
-    PlugViewServiceItem *si = findServiceItem(s);
+    PlugViewServiceItem* si = findServiceItem(s);
     assert(si != nullptr);
     si->updateVisual();
     updateState();
 }
 
-void PluginViewerController::sl_onServiceUnregistered(Service *s) {
+void PluginViewerController::sl_onServiceUnregistered(Service* s) {
     assert(showServices);
-    PlugViewServiceItem *item = findServiceItem(s);
+    PlugViewServiceItem* item = findServiceItem(s);
     assert(item != nullptr);
     delete item;
 }
@@ -240,68 +240,68 @@ void PluginViewerController::sl_show() {
     }
 }
 
-PlugViewServiceItem *PluginViewerController::getCurrentServiceItem() const {
-    PlugViewTreeItem *item = static_cast<PlugViewTreeItem *>(ui.treeWidget->currentItem());
+PlugViewServiceItem* PluginViewerController::getCurrentServiceItem() const {
+    PlugViewTreeItem* item = static_cast<PlugViewTreeItem*>(ui.treeWidget->currentItem());
     assert(item != nullptr && item->isServiceItem());
-    PlugViewServiceItem *si = static_cast<PlugViewServiceItem *>(item);
+    PlugViewServiceItem* si = static_cast<PlugViewServiceItem*>(item);
     return si;
 }
 
-PlugViewPluginItem *PluginViewerController::getCurrentPluginItem() const {
-    PlugViewTreeItem *item = static_cast<PlugViewTreeItem *>(ui.treeWidget->currentItem());
+PlugViewPluginItem* PluginViewerController::getCurrentPluginItem() const {
+    PlugViewTreeItem* item = static_cast<PlugViewTreeItem*>(ui.treeWidget->currentItem());
     assert(item != nullptr && item->isPluginItem());
-    PlugViewPluginItem *pi = static_cast<PlugViewPluginItem *>(item);
+    PlugViewPluginItem* pi = static_cast<PlugViewPluginItem*>(item);
     return pi;
 }
 
 void PluginViewerController::sl_enableService() {
     assert(showServices);
-    PlugViewServiceItem *si = getCurrentServiceItem();
+    PlugViewServiceItem* si = getCurrentServiceItem();
     if (si == nullptr || si->service->isEnabled()) {
         return;
     }
-    Task *task = AppContext::getServiceRegistry()->enableServiceTask(si->service);
+    Task* task = AppContext::getServiceRegistry()->enableServiceTask(si->service);
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }
 
 void PluginViewerController::sl_disableService() {
-    PlugViewServiceItem *si = getCurrentServiceItem();
+    PlugViewServiceItem* si = getCurrentServiceItem();
     if (si == nullptr || si->service->isDisabled()) {
         return;
     }
-    Task *task = AppContext::getServiceRegistry()->disableServiceTask(si->service);
+    Task* task = AppContext::getServiceRegistry()->disableServiceTask(si->service);
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }
 
 void PluginViewerController::updateState() {
     updateActions();
     ui.infoView->clear();
-    PlugViewTreeItem *item = static_cast<PlugViewTreeItem *>(ui.treeWidget->currentItem());
+    PlugViewTreeItem* item = static_cast<PlugViewTreeItem*>(ui.treeWidget->currentItem());
     if (item == nullptr) {
         ui.infoView->setText(tr("Select a plugin to view more information about it."));
         return;
     }
     QString text;
     if (item->isPluginItem()) {
-        PlugViewPluginItem *p = static_cast<PlugViewPluginItem *>(item);
+        PlugViewPluginItem* p = static_cast<PlugViewPluginItem*>(item);
         text = "<b>" + p->plugin->getName() + "</b><p>";
         text += p->plugin->getDescription();
     } else {
         assert(item->isServiceItem());
-        PlugViewServiceItem *s = static_cast<PlugViewServiceItem *>(item);
+        PlugViewServiceItem* s = static_cast<PlugViewServiceItem*>(item);
         text = s->service->getDescription();
     }
     ui.infoView->setText(text);
 }
 
-void PluginViewerController::sl_treeCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous) {
+void PluginViewerController::sl_treeCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous) {
     Q_UNUSED(current);
     Q_UNUSED(previous);
     if (current == previous) {
         return;
     }
     ui.showLicenseButton->setEnabled(true);
-    PlugViewPluginItem *curentItem = dynamic_cast<PlugViewPluginItem *>(current);
+    PlugViewPluginItem* curentItem = dynamic_cast<PlugViewPluginItem*>(current);
     if (!curentItem->plugin->isFree()) {
         if (!curentItem->plugin->isLicenseAccepted()) {
             showLicense();
@@ -322,7 +322,7 @@ void PluginViewerController::sl_showHideLicense() {
     }
 }
 void PluginViewerController::sl_acceptLicense() {
-    PlugViewPluginItem *curentItem = dynamic_cast<PlugViewPluginItem *>(ui.treeWidget->currentItem());
+    PlugViewPluginItem* curentItem = dynamic_cast<PlugViewPluginItem*>(ui.treeWidget->currentItem());
     showLicense();
     AppContext::getPluginSupport()->setLicenseAccepted(curentItem->plugin);
 }
@@ -331,7 +331,7 @@ void PluginViewerController::showLicense() {
     ui.showLicenseButton->setText(tr("Hide License"));
     ui.licenseView->show();
     ui.licenseLabel->show();
-    PlugViewPluginItem *curentItem = dynamic_cast<PlugViewPluginItem *>(ui.treeWidget->currentItem());
+    PlugViewPluginItem* curentItem = dynamic_cast<PlugViewPluginItem*>(ui.treeWidget->currentItem());
     if (!curentItem->plugin->isFree()) {
         if (!curentItem->plugin->isLicenseAccepted()) {
             ui.acceptLicenseButton->show();
@@ -360,7 +360,7 @@ void PluginViewerController::hideLicense() {
 //////////////////////////////////////////////////////////////////////////
 // TreeItems
 
-PlugViewPluginItem::PlugViewPluginItem(PlugViewTreeItem *parent, Plugin *p, bool _showServices)
+PlugViewPluginItem::PlugViewPluginItem(PlugViewTreeItem* parent, Plugin* p, bool _showServices)
     : PlugViewTreeItem(parent), plugin(p), showServices(_showServices) {
     updateVisual();
 }
@@ -394,7 +394,7 @@ void PlugViewPluginItem::updateVisual() {
     }
 }
 
-PlugViewServiceItem::PlugViewServiceItem(PlugViewPluginItem *parent, Service *s)
+PlugViewServiceItem::PlugViewServiceItem(PlugViewPluginItem* parent, Service* s)
     : PlugViewTreeItem(parent), service(s) {
     updateVisual();
 }

@@ -34,21 +34,21 @@ public:
     DNAStatPlugin();
 
 private:
-    GObjectViewWindowContext *statViewCtx;
-    GObjectViewWindowContext *distanceViewCtx;
+    GObjectViewWindowContext* statViewCtx;
+    GObjectViewWindowContext* distanceViewCtx;
 };
 
 class DNAStatMSAEditorContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    DNAStatMSAEditorContext(QObject *p);
+    DNAStatMSAEditorContext(QObject* p);
 
 protected slots:
     void sl_showMSAProfileDialog();
-    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
+    void buildStaticOrContextMenu(GObjectView* view, QMenu* menu) override;
 
 protected:
-    void initViewContext(GObjectView *view) override;
+    void initViewContext(GObjectView* view) override;
 
 private:
     /* Alignment length limint for opening grid report in UGENE */
@@ -58,14 +58,14 @@ private:
 class DistanceMatrixMSAEditorContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    DistanceMatrixMSAEditorContext(QObject *p);
+    DistanceMatrixMSAEditorContext(QObject* p);
 
 protected slots:
     void sl_showDistanceMatrixDialog();
-    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
+    void buildStaticOrContextMenu(GObjectView* view, QMenu* menu) override;
 
 protected:
-    void initViewContext(GObjectView *view) override;
+    void initViewContext(GObjectView* view) override;
 };
 
 }  // namespace U2

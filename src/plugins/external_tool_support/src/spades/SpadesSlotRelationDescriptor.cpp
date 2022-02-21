@@ -27,16 +27,16 @@
 
 namespace U2 {
 
-SpadesSlotRelationDescriptor::SpadesSlotRelationDescriptor(const QString &portId, const QString &slotId)
+SpadesSlotRelationDescriptor::SpadesSlotRelationDescriptor(const QString& portId, const QString& slotId)
     : SlotRelationDescriptor(portId, slotId, QVariantList()) {
 }
 
-SpadesSlotRelationDescriptor *SpadesSlotRelationDescriptor::clone() const {
+SpadesSlotRelationDescriptor* SpadesSlotRelationDescriptor::clone() const {
     return new SpadesSlotRelationDescriptor(*this);
 }
 
-bool SpadesSlotRelationDescriptor::isSlotEnabled(const QVariant &attrValue) const {
+bool SpadesSlotRelationDescriptor::isSlotEnabled(const QVariant& attrValue) const {
     return !attrValue.toMap().value(portId).toString().contains(TYPE_INTERLACED);
 }
 
-}    // namespace U2
+}  // namespace U2

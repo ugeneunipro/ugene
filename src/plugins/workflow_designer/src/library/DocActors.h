@@ -36,11 +36,11 @@ namespace Workflow {
 
 class DocActorProto : public ReadDbObjActorPrototype {
 public:
-    DocActorProto(const DocumentFormatId &_fid, const Descriptor &desc, const QList<PortDescriptor *> &ports, const QList<Attribute *> &attrs = QList<Attribute *>());
-    DocActorProto(const Descriptor &desc, const GObjectType &t, const QList<PortDescriptor *> &ports, const QList<Attribute *> &attrs = QList<Attribute *>());
+    DocActorProto(const DocumentFormatId& _fid, const Descriptor& desc, const QList<PortDescriptor*>& ports, const QList<Attribute*>& attrs = QList<Attribute*>());
+    DocActorProto(const Descriptor& desc, const GObjectType& t, const QList<PortDescriptor*>& ports, const QList<Attribute*>& attrs = QList<Attribute*>());
 
-    virtual bool isAcceptableDrop(const QMimeData *, QVariantMap *) const = 0;
-    bool isAcceptableDrop(const QMimeData *, QVariantMap *, const QString &urlAttrId) const;
+    virtual bool isAcceptableDrop(const QMimeData*, QVariantMap*) const = 0;
+    bool isAcceptableDrop(const QMimeData*, QVariantMap*, const QString& urlAttrId) const;
 
 protected:
     QString prepareDocumentFilter();
@@ -52,23 +52,23 @@ protected:
 
 class ReadDocActorProto : public DocActorProto {
 public:
-    ReadDocActorProto(const DocumentFormatId &fid, const Descriptor &desc, const QList<PortDescriptor *> &ports, const QList<Attribute *> &attrs = QList<Attribute *>());
-    virtual bool isAcceptableDrop(const QMimeData *, QVariantMap *) const;
+    ReadDocActorProto(const DocumentFormatId& fid, const Descriptor& desc, const QList<PortDescriptor*>& ports, const QList<Attribute*>& attrs = QList<Attribute*>());
+    virtual bool isAcceptableDrop(const QMimeData*, QVariantMap*) const;
 };
 
 class WriteDocActorProto : public DocActorProto {
 public:
-    WriteDocActorProto(const DocumentFormatId &fid, const Descriptor &desc, const QList<PortDescriptor *> &ports, const QString &portId, const QList<Attribute *> &attrs = QList<Attribute *>(), bool canWriteToSharedDB = true, bool addValidator = true, bool addPortValidator = true);
-    WriteDocActorProto(const Descriptor &desc, const GObjectType &t, const QList<PortDescriptor *> &ports, const QString &portId, const QList<Attribute *> &attrs = QList<Attribute *>(), bool canWriteToSharedDB = true, bool addValidator = true, bool addPortValidator = true);
+    WriteDocActorProto(const DocumentFormatId& fid, const Descriptor& desc, const QList<PortDescriptor*>& ports, const QString& portId, const QList<Attribute*>& attrs = QList<Attribute*>(), bool canWriteToSharedDB = true, bool addValidator = true, bool addPortValidator = true);
+    WriteDocActorProto(const Descriptor& desc, const GObjectType& t, const QList<PortDescriptor*>& ports, const QString& portId, const QList<Attribute*>& attrs = QList<Attribute*>(), bool canWriteToSharedDB = true, bool addValidator = true, bool addPortValidator = true);
 
-    Attribute *getUrlAttr() {
+    Attribute* getUrlAttr() {
         return urlAttr;
     }
 
 private:
     void construct(bool canWriteToSharedDb, bool addValidator, bool addPortValidator);
-    virtual bool isAcceptableDrop(const QMimeData *, QVariantMap *) const;
-    Attribute *urlAttr;
+    virtual bool isAcceptableDrop(const QMimeData*, QVariantMap*) const;
+    Attribute* urlAttr;
 
 private:
     QString outPortId;
@@ -80,14 +80,14 @@ typedef PrompterBase<ReadDocPrompter> ReadDocPrompterBase;
 class ReadDocPrompter : public ReadDocPrompterBase {
     Q_OBJECT
 public:
-    ReadDocPrompter(const QString &s)
+    ReadDocPrompter(const QString& s)
         : spec(s) {
     }
-    ReadDocPrompter(Actor *p = 0)
+    ReadDocPrompter(Actor* p = 0)
         : ReadDocPrompterBase(p) {
     }
-    virtual ActorDocument *createDescription(Actor *a) {
-        ReadDocPrompter *doc = static_cast<ReadDocPrompter *>(ReadDocPrompterBase::createDescription(a));
+    virtual ActorDocument* createDescription(Actor* a) {
+        ReadDocPrompter* doc = static_cast<ReadDocPrompter*>(ReadDocPrompterBase::createDescription(a));
         doc->spec = this->spec;
         return doc;
     }
@@ -103,14 +103,14 @@ typedef PrompterBase<WriteDocPrompter> WriteDocPrompterBase;
 class WriteDocPrompter : public WriteDocPrompterBase {
     Q_OBJECT
 public:
-    WriteDocPrompter(const QString &spec, const QString &slot)
+    WriteDocPrompter(const QString& spec, const QString& slot)
         : spec(spec), slot(slot) {
     }
-    WriteDocPrompter(Actor *p = 0)
+    WriteDocPrompter(Actor* p = 0)
         : WriteDocPrompterBase(p) {
     }
-    virtual ActorDocument *createDescription(Actor *a) {
-        WriteDocPrompter *doc = static_cast<WriteDocPrompter *>(WriteDocPrompterBase::createDescription(a));
+    virtual ActorDocument* createDescription(Actor* a) {
+        WriteDocPrompter* doc = static_cast<WriteDocPrompter*>(WriteDocPrompterBase::createDescription(a));
         doc->spec = this->spec;
         doc->slot = this->slot;
         return doc;
@@ -124,7 +124,7 @@ protected:
 class WriteGenbankPrompter : public PrompterBase<WriteGenbankPrompter> {
     Q_OBJECT
 public:
-    WriteGenbankPrompter(Actor *p = 0)
+    WriteGenbankPrompter(Actor* p = 0)
         : PrompterBase<WriteGenbankPrompter>(p) {
     }
 
@@ -135,12 +135,12 @@ protected:
 class WriteFastaPrompter : public PrompterBaseImpl {
     Q_OBJECT
 public:
-    WriteFastaPrompter(const QString &formatId, Actor *p = 0)
+    WriteFastaPrompter(const QString& formatId, Actor* p = 0)
         : PrompterBaseImpl(p), format(formatId) {
     }
 
     virtual QString composeRichDoc();
-    virtual ActorDocument *createDescription(Actor *);
+    virtual ActorDocument* createDescription(Actor*);
 
 private:
     QString format;

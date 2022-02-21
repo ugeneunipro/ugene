@@ -31,11 +31,11 @@ class U2VIEW_EXPORT MSAGeneralTabFactory : public OPWidgetFactory {
 public:
     MSAGeneralTabFactory();
 
-    QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
+    QWidget* createWidget(GObjectView* objView, const QVariantMap& options) override;
 
     OPGroupParameters getOPGroupParameters() override;
 
-    static const QString &getGroupId();
+    static const QString& getGroupId();
 
 private:
     static const QString GROUP_ID;

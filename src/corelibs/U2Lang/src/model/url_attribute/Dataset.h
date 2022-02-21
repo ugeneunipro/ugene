@@ -32,39 +32,39 @@ class URLContainer;
 class U2LANG_EXPORT Dataset {
 public:
     Dataset();
-    Dataset(const QString &name);
-    Dataset(const Dataset &other);
+    Dataset(const QString& name);
+    Dataset(const Dataset& other);
     ~Dataset();
 
-    const QString &getName() const;
-    void setName(const QString &value);
+    const QString& getName() const;
+    void setName(const QString& value);
 
-    void addUrl(URLContainer *url);
-    void removeUrl(URLContainer *url);
-    QList<URLContainer *> getUrls() const;
-    QList<URLContainer *> &getUrls();
+    void addUrl(URLContainer* url);
+    void removeUrl(URLContainer* url);
+    QList<URLContainer*> getUrls() const;
+    QList<URLContainer*>& getUrls();
 
-    bool contains(const QString &url) const;
+    bool contains(const QString& url) const;
     void clear();
 
     static QList<Dataset> getDefaultDatasetList();
 
-    Dataset &operator=(const Dataset &other);
+    Dataset& operator=(const Dataset& other);
 
 public:
     static const QString DEFAULT_NAME;
 
 private:
-    void copy(const Dataset &other);
+    void copy(const Dataset& other);
 
     QString name;
-    QList<URLContainer *> urls;
+    QList<URLContainer*> urls;
 };
 
 class U2LANG_EXPORT DatasetFilesIterator : public QObject, public FilesIterator {
     Q_OBJECT
 public:
-    DatasetFilesIterator(const QList<Dataset> &exps);
+    DatasetFilesIterator(const QList<Dataset>& exps);
     virtual ~DatasetFilesIterator();
 
     virtual QString getNextFile();
@@ -78,7 +78,7 @@ signals:
 
 private:
     QList<Dataset> sets;
-    FilesIterator *currentIter;
+    FilesIterator* currentIter;
     QString lastDatasetName;
 };
 

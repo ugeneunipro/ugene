@@ -78,7 +78,7 @@ QStringList CrashHandlerArgsHelper::getArguments() const {
     }
 
     if (qgetenv(ENV_GUI_TEST).toInt() == 1) {
-        CMDLineRegistry *cmdLine = AppContext::getCMDLineRegistry();
+        CMDLineRegistry* cmdLine = AppContext::getCMDLineRegistry();
         if (nullptr != cmdLine) {
             QString testName = cmdLine->getParameterValue(CMDLineCoreOptions::LAUNCH_GUI_TEST);
             args << SILENT_SEND_FILE_ARG;
@@ -89,7 +89,7 @@ QStringList CrashHandlerArgsHelper::getArguments() const {
     return args;
 }
 
-void CrashHandlerArgsHelper::setReportData(const QString &data) {
+void CrashHandlerArgsHelper::setReportData(const QString& data) {
     if (useFile) {
         QByteArray bytes = data.toUtf8();
         file.write(bytes);
@@ -99,11 +99,11 @@ void CrashHandlerArgsHelper::setReportData(const QString &data) {
     }
 }
 
-void CrashHandlerArgsHelper::setDumpUrl(const QString &url) {
+void CrashHandlerArgsHelper::setDumpUrl(const QString& url) {
     dumpUrl = url;
 }
 
-QString CrashHandlerArgsHelper::findTempDir(U2OpStatus &os) {
+QString CrashHandlerArgsHelper::findTempDir(U2OpStatus& os) {
     if (FileAndDirectoryUtils::isDirectoryWritable(QDir::tempPath())) {
         return QDir::tempPath();
     }
@@ -114,7 +114,7 @@ QString CrashHandlerArgsHelper::findTempDir(U2OpStatus &os) {
     return "";
 }
 
-QString CrashHandlerArgsHelper::findFilePathToWrite(U2OpStatus &os) {
+QString CrashHandlerArgsHelper::findFilePathToWrite(U2OpStatus& os) {
     QString dirPath = findTempDir(os);
     CHECK_OP(os, "");
 
@@ -122,7 +122,7 @@ QString CrashHandlerArgsHelper::findFilePathToWrite(U2OpStatus &os) {
 }
 
 void CrashHandlerArgsHelper::shutdownSessionDatabase() {
-    U2DbiRegistry *dbiReg = AppContext::getDbiRegistry();
+    U2DbiRegistry* dbiReg = AppContext::getDbiRegistry();
     CHECK(nullptr != dbiReg, );
 
     U2OpStatusImpl os;

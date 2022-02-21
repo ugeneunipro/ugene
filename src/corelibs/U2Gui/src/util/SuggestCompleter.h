@@ -33,22 +33,22 @@ namespace U2 {
 class U2GUI_EXPORT CompletionFiller {
 public:
     virtual ~CompletionFiller() {};
-    virtual QStringList getSuggestions(const QString &str) = 0;
-    virtual QString finalyze(const QString &editorText, const QString &suggestion) = 0;
+    virtual QStringList getSuggestions(const QString& str) = 0;
+    virtual QString finalyze(const QString& editorText, const QString& suggestion) = 0;
 };
 
 class U2GUI_EXPORT MSACompletionFiller : public CompletionFiller {
 public:
     MSACompletionFiller()
         : CompletionFiller(), seqNameList(QStringList()), defaultValue("") {};
-    MSACompletionFiller(QStringList &_seqNameList, const QString &defVal = "")
+    MSACompletionFiller(QStringList& _seqNameList, const QString& defVal = "")
         : CompletionFiller(), seqNameList(_seqNameList), defaultValue(defVal) {};
 
-    QStringList getSuggestions(const QString &str);
+    QStringList getSuggestions(const QString& str);
     void updateSeqList(QStringList list) {
         seqNameList = list;
     };
-    QString finalyze(const QString &editorText, const QString &suggestion);
+    QString finalyze(const QString& editorText, const QString& suggestion);
 
 private:
     QStringList seqNameList;
@@ -58,10 +58,10 @@ private:
 class U2GUI_EXPORT BaseCompleter : public QObject {
     Q_OBJECT
 public:
-    BaseCompleter(CompletionFiller *filler, QLineEdit *parent = 0);
+    BaseCompleter(CompletionFiller* filler, QLineEdit* parent = 0);
     ~BaseCompleter();
-    bool eventFilter(QObject *obj, QEvent *ev);
-    void showCompletion(const QStringList &choices);
+    bool eventFilter(QObject* obj, QEvent* ev);
+    void showCompletion(const QStringList& choices);
     int getLastChosenItemIndex() const;
 
 signals:
@@ -70,12 +70,12 @@ signals:
 
 protected slots:
     void doneCompletion();
-    void sl_textChanged(const QString &);
+    void sl_textChanged(const QString&);
 
 private:
-    CompletionFiller *filler;
-    QLineEdit *editor;
-    QTreeWidget *popup;
+    CompletionFiller* filler;
+    QLineEdit* editor;
+    QTreeWidget* popup;
     int lastChosenItemIndex;
 };
 

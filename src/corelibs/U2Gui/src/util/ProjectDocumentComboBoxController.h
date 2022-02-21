@@ -34,27 +34,27 @@ class Project;
 class U2GUI_EXPORT ProjectDocumentComboBoxController : public QObject {
     Q_OBJECT
 public:
-    ProjectDocumentComboBoxController(Project *p, QComboBox *cb, QObject *parent, const DocumentFilter *f);
+    ProjectDocumentComboBoxController(Project* p, QComboBox* cb, QObject* parent, const DocumentFilter* f);
     ~ProjectDocumentComboBoxController();
 
-    Document *getDocument() const;
+    Document* getDocument() const;
 
-    void selectDocument(Document *d);
+    void selectDocument(Document* d);
 
-    void selectDocument(const QString &url);
+    void selectDocument(const QString& url);
 
 private slots:
-    void sl_onDocumentAdded(Document *d);
-    void sl_onDocumentRemoved(Document *d);
+    void sl_onDocumentAdded(Document* d);
+    void sl_onDocumentRemoved(Document* d);
 
 private:
-    bool checkConstraints(Document *d);
-    void addDocument(Document *d);
-    void removeDocument(Document *d);
+    bool checkConstraints(Document* d);
+    void addDocument(Document* d);
+    void removeDocument(Document* d);
 
-    Project *p;
-    QComboBox *cb;
-    const DocumentFilter *filter;
+    Project* p;
+    QComboBox* cb;
+    const DocumentFilter* filter;
 };
 
 }  // namespace U2

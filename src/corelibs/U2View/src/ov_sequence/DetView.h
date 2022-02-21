@@ -46,14 +46,14 @@ class U2VIEW_EXPORT DetView : public GSequenceLineViewAnnotated {
     friend class DetViewSequenceEditor;
 
 public:
-    DetView(QWidget *p, SequenceObjectContext *ctx);
+    DetView(QWidget* p, SequenceObjectContext* ctx);
     ~DetView();
 
-    DetViewSequenceEditor *getEditor() const {
+    DetViewSequenceEditor* getEditor() const {
         return editor;
     }
 
-    DetViewRenderArea *getDetViewRenderArea() const;
+    DetViewRenderArea* getDetViewRenderArea() const;
 
     bool hasTranslations() const;
     bool hasComplementaryStrand() const;
@@ -63,8 +63,8 @@ public:
     void setStartPos(qint64 pos) override;
     void setCenterPos(qint64 pos) override;
 
-    DNATranslation *getComplementTT() const;
-    DNATranslation *getAminoTT() const;
+    DNATranslation* getComplementTT() const;
+    DNATranslation* getAminoTT() const;
     int getSymbolsPerLine() const;
 
     void setWrapSequence(bool v);
@@ -81,7 +81,7 @@ public:
 
 protected slots:
     void sl_sequenceChanged() override;
-    void sl_onDNASelectionChanged(LRegionsSelection *thiz, const QVector<U2Region> &added, const QVector<U2Region> &removed) override;
+    void sl_onDNASelectionChanged(LRegionsSelection* thiz, const QVector<U2Region>& added, const QVector<U2Region>& removed) override;
     void sl_onAminoTTChanged();
     void sl_translationRowsChanged();
     void sl_showComplementToggle(bool v);
@@ -96,14 +96,14 @@ protected slots:
 protected:
     virtual void pack() override;
 
-    void showEvent(QShowEvent *e) override;
-    void hideEvent(QHideEvent *e) override;
+    void showEvent(QShowEvent* e) override;
+    void hideEvent(QHideEvent* e) override;
 
-    void mouseMoveEvent(QMouseEvent *me) override;
-    void mouseReleaseEvent(QMouseEvent *me) override;
-    void wheelEvent(QWheelEvent *we) override;
-    void resizeEvent(QResizeEvent *e) override;
-    void keyPressEvent(QKeyEvent *e) override;
+    void mouseMoveEvent(QMouseEvent* me) override;
+    void mouseReleaseEvent(QMouseEvent* me) override;
+    void wheelEvent(QWheelEvent* we) override;
+    void resizeEvent(QResizeEvent* e) override;
+    void keyPressEvent(QKeyEvent* e) override;
 
     void updateVisibleRange();
     void updateActions();
@@ -111,17 +111,17 @@ protected:
     void updateVerticalScrollBar();
     void updateVerticalScrollBarPosition();
 
-    QAction *showComplementAction;
-    QAction *showTranslationAction;
-    QAction *wrapSequenceAction;
-    QAction *doNotTranslateAction;
-    QAction *translateAnnotationsOrSelectionAction;
-    QAction *setUpFramesManuallyAction;
-    QAction *showAllFramesAction;
+    QAction* showComplementAction;
+    QAction* showTranslationAction;
+    QAction* wrapSequenceAction;
+    QAction* doNotTranslateAction;
+    QAction* translateAnnotationsOrSelectionAction;
+    QAction* setUpFramesManuallyAction;
+    QAction* showAllFramesAction;
 
-    DetViewSequenceEditor *editor;
+    DetViewSequenceEditor* editor;
 
-    GScrollBar *verticalScrollBar;
+    GScrollBar* verticalScrollBar;
 
     int numShiftsInOneLine;
     int currentShiftsCounter;
@@ -129,8 +129,8 @@ protected:
 private:
     void setupTranslationsMenu();
     void setupGeneticCodeMenu();
-    QPoint getRenderAreaPointAfterAutoScroll(const QPoint &pos);
-    void moveBorder(const QPoint &p);
+    QPoint getRenderAreaPointAfterAutoScroll(const QPoint& pos);
+    void moveBorder(const QPoint& p);
 
     /** Returns whole rendering area height region for the normal mode & limited Y range for the wrap mode. */
     U2Region getCapturingRenderAreaYRegionForPos(qint64 pos) const override;
@@ -138,7 +138,7 @@ private:
     void setDefaultState();
 
     void updateTranslationRowsVisibilityBySelectionState();
-    void updateSelectedTranslations(const SequenceObjectContext::TranslationState &state);
+    void updateSelectedTranslations(const SequenceObjectContext::TranslationState& state);
 
     static const QString SEQUENCE_SETTINGS;
     static const QString SEQUENCE_WRAPPED;
@@ -149,25 +149,25 @@ private:
 class U2VIEW_EXPORT DetViewRenderArea : public GSequenceLineViewGridAnnotationRenderArea {
     Q_OBJECT
 public:
-    DetViewRenderArea(DetView *d);
+    DetViewRenderArea(DetView* d);
     ~DetViewRenderArea();
 
-    DetViewRenderer *getRenderer() {
+    DetViewRenderer* getRenderer() {
         return renderer;
     }
 
     /** Returns all y regions covered by the given location of the annotation. */
-    QList<U2Region> getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings) const override;
+    QList<U2Region> getAnnotationYRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const override;
 
     double getCurrentScale() const override;
 
     void setWrapSequence(bool v);
 
-    qint64 coordToPos(const QPoint &coord) const override;
+    qint64 coordToPos(const QPoint& coord) const override;
 
     int posToCoord(qint64 pos, bool useVirtualSpace = false) const override;
 
-    DetView *getDetView() const;
+    DetView* getDetView() const;
 
     /** Returns number of bases in a single line. */
     int getSymbolsPerLine() const;
@@ -189,13 +189,13 @@ public:
 
     void updateSize();
 
-    bool isOnTranslationsLine(const QPoint &p) const;
+    bool isOnTranslationsLine(const QPoint& p) const;
 
 protected:
-    void drawAll(QPaintDevice *pd) override;
+    void drawAll(QPaintDevice* pd) override;
 
 private:
-    DetViewRenderer *renderer;
+    DetViewRenderer* renderer;
 };
 
 }  // namespace U2

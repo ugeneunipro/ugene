@@ -29,18 +29,18 @@
 
 namespace U2 {
 
-MysqlUpgraderFrom_1_16_To_1_17::MysqlUpgraderFrom_1_16_To_1_17(MysqlDbi *dbi)
+MysqlUpgraderFrom_1_16_To_1_17::MysqlUpgraderFrom_1_16_To_1_17(MysqlDbi* dbi)
     : MysqlUpgrader(Version::parseVersion("1.16.0"), Version::parseVersion("1.17.0"), dbi) {
 }
 
-void MysqlUpgraderFrom_1_16_To_1_17::upgrade(U2OpStatus &os) const {
+void MysqlUpgraderFrom_1_16_To_1_17::upgrade(U2OpStatus& os) const {
     MysqlTransaction t(dbi->getDbRef(), os);
 
     upgradeFeatureDbi(os, dbi->getDbRef());
     CHECK_OP(os, );
 }
 
-void MysqlUpgraderFrom_1_16_To_1_17::upgradeFeatureDbi(U2OpStatus &os, MysqlDbRef *dbRef) const {
+void MysqlUpgraderFrom_1_16_To_1_17::upgradeFeatureDbi(U2OpStatus& os, MysqlDbRef* dbRef) const {
     U2OpStatus2Log nonCriticalOs;
     U2SqlQuery("DROP INDEX FeatureRootIndex ON Feature", dbRef, nonCriticalOs).execute();
 

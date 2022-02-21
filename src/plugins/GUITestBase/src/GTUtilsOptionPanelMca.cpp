@@ -47,7 +47,7 @@ const QMap<GTUtilsOptionPanelMca::Tabs, QString> GTUtilsOptionPanelMca::innerWid
 #define GT_CLASS_NAME "GTUtilsOptionPanelMca"
 
 #define GT_METHOD_NAME "toggleTab"
-void GTUtilsOptionPanelMca::toggleTab(HI::GUITestOpStatus &os, Tabs tab, QWidget *parent) {
+void GTUtilsOptionPanelMca::toggleTab(HI::GUITestOpStatus& os, Tabs tab, QWidget* parent) {
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
     GTWidget::click(os, GTWidget::findWidget(os, tabsNames[tab], parent));
     GTGlobals::sleep(500);
@@ -55,7 +55,7 @@ void GTUtilsOptionPanelMca::toggleTab(HI::GUITestOpStatus &os, Tabs tab, QWidget
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openTab"
-void GTUtilsOptionPanelMca::openTab(HI::GUITestOpStatus &os, Tabs tab, QWidget *parent) {
+void GTUtilsOptionPanelMca::openTab(HI::GUITestOpStatus& os, Tabs tab, QWidget* parent) {
     if (!isTabOpened(os, tab, parent)) {
         toggleTab(os, tab, parent);
     }
@@ -63,7 +63,7 @@ void GTUtilsOptionPanelMca::openTab(HI::GUITestOpStatus &os, Tabs tab, QWidget *
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "closeTab"
-void GTUtilsOptionPanelMca::closeTab(HI::GUITestOpStatus &os, Tabs tab) {
+void GTUtilsOptionPanelMca::closeTab(HI::GUITestOpStatus& os, Tabs tab) {
     if (isTabOpened(os, tab)) {
         toggleTab(os, tab);
     }
@@ -71,39 +71,39 @@ void GTUtilsOptionPanelMca::closeTab(HI::GUITestOpStatus &os, Tabs tab) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isTabOpened"
-bool GTUtilsOptionPanelMca::isTabOpened(HI::GUITestOpStatus &os, Tabs tab, QWidget *parent) {
+bool GTUtilsOptionPanelMca::isTabOpened(HI::GUITestOpStatus& os, Tabs tab, QWidget* parent) {
     GTGlobals::FindOptions options;
     options.failIfNotFound = false;
-    QWidget *innerTabWidget = GTWidget::findWidget(os, innerWidgetNames[tab], parent, options);
+    QWidget* innerTabWidget = GTWidget::findWidget(os, innerWidgetNames[tab], parent, options);
     return nullptr != innerTabWidget && innerTabWidget->isVisible();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setConsensusType"
-void GTUtilsOptionPanelMca::setConsensusType(HI::GUITestOpStatus &os, const QString &consensusTypeName) {
+void GTUtilsOptionPanelMca::setConsensusType(HI::GUITestOpStatus& os, const QString& consensusTypeName) {
     openTab(os, Consensus);
-    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "consensusType"), consensusTypeName);
+    GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "consensusType"), consensusTypeName);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getConsensusType"
-QString GTUtilsOptionPanelMca::getConsensusType(HI::GUITestOpStatus &os) {
+QString GTUtilsOptionPanelMca::getConsensusType(HI::GUITestOpStatus& os) {
     openTab(os, Consensus);
-    return GTComboBox::getCurrentText(os, GTWidget::findExactWidget<QComboBox *>(os, "consensusType"));
+    return GTComboBox::getCurrentText(os, GTWidget::findComboBox(os, "consensusType"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getConsensusTypes"
-QStringList GTUtilsOptionPanelMca::getConsensusTypes(HI::GUITestOpStatus &os) {
+QStringList GTUtilsOptionPanelMca::getConsensusTypes(HI::GUITestOpStatus& os) {
     openTab(os, Consensus);
-    QStringList types = GTComboBox::getValues(os, GTWidget::findExactWidget<QComboBox *>(os, "consensusType"));
+    QStringList types = GTComboBox::getValues(os, GTWidget::findComboBox(os, "consensusType"));
     return types;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getHeight"
-int GTUtilsOptionPanelMca::getHeight(HI::GUITestOpStatus &os) {
-    QLabel *alignmentHeightLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "seqNumLabel"));
+int GTUtilsOptionPanelMca::getHeight(HI::GUITestOpStatus& os) {
+    QLabel* alignmentHeightLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "seqNumLabel"));
     GT_CHECK_RESULT(alignmentHeightLabel != nullptr, "alignmentHeightLabel not found", -1);
     bool ok;
     int result = alignmentHeightLabel->text().toInt(&ok);
@@ -113,8 +113,8 @@ int GTUtilsOptionPanelMca::getHeight(HI::GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getLength"
-int GTUtilsOptionPanelMca::getLength(HI::GUITestOpStatus &os) {
-    QLabel *alignmentLengthLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "lengthLabel"));
+int GTUtilsOptionPanelMca::getLength(HI::GUITestOpStatus& os) {
+    QLabel* alignmentLengthLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "lengthLabel"));
     GT_CHECK_RESULT(alignmentLengthLabel != nullptr, "alignmentLengthLabel not found", -1);
     bool ok;
     int result = alignmentLengthLabel->text().toInt(&ok);
@@ -124,64 +124,61 @@ int GTUtilsOptionPanelMca::getLength(HI::GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setThreshold"
-void GTUtilsOptionPanelMca::setThreshold(GUITestOpStatus &os, int threshold) {
+void GTUtilsOptionPanelMca::setThreshold(GUITestOpStatus& os, int threshold) {
     openTab(os, Consensus);
-    GTSlider::setValue(os, GTWidget::findExactWidget<QSlider *>(os, "thresholdSlider"), threshold);
+    GTSlider::setValue(os, GTWidget::findSlider(os, "thresholdSlider"), threshold);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getThreshold"
-int GTUtilsOptionPanelMca::getThreshold(GUITestOpStatus &os) {
+int GTUtilsOptionPanelMca::getThreshold(GUITestOpStatus& os) {
     openTab(os, Consensus);
-    QSlider *thresholdSlider = GTWidget::findExactWidget<QSlider *>(os, "thresholdSlider");
-    GT_CHECK_RESULT(nullptr != thresholdSlider, "thresholdSlider is NULL", -1);
+    auto thresholdSlider = GTWidget::findSlider(os, "thresholdSlider");
     return thresholdSlider->value();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setExportFileName"
-void GTUtilsOptionPanelMca::setExportFileName(HI::GUITestOpStatus &os, QString exportFileName) {
+void GTUtilsOptionPanelMca::setExportFileName(HI::GUITestOpStatus& os, QString exportFileName) {
     openTab(os, Consensus);
-    QLineEdit *exportToFileLineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "pathLe");
-    GT_CHECK_RESULT(exportToFileLineEdit != nullptr, "exportToFileLineEdit is NULL", );
+    auto exportToFileLineEdit = GTWidget::findLineEdit(os, "pathLe");
     GTLineEdit::setText(os, exportToFileLineEdit, exportFileName);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getExportFileName"
-QString GTUtilsOptionPanelMca::getExportFileName(HI::GUITestOpStatus &os) {
+QString GTUtilsOptionPanelMca::getExportFileName(HI::GUITestOpStatus& os) {
     openTab(os, Consensus);
-    QLineEdit *exportToFileLineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "pathLe");
-    GT_CHECK_RESULT(exportToFileLineEdit != nullptr, "exportToFileLineEdit is NULL", QString());
+    auto exportToFileLineEdit = GTWidget::findLineEdit(os, "pathLe");
     return GTLineEdit::getText(os, exportToFileLineEdit);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setFileFormat"
-void GTUtilsOptionPanelMca::setFileFormat(HI::GUITestOpStatus &os, FileFormat fileFormat) {
+void GTUtilsOptionPanelMca::setFileFormat(HI::GUITestOpStatus& os, FileFormat fileFormat) {
     openTab(os, Consensus);
-    QComboBox *formatCb = GTWidget::findExactWidget<QComboBox *>(os, "formatCb");
+    auto formatCb = GTWidget::findComboBox(os, "formatCb");
     GTComboBox::selectItemByIndex(os, formatCb, fileFormat);
     GTGlobals::sleep(1000);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "pushResetButton"
-void GTUtilsOptionPanelMca::pushResetButton(HI::GUITestOpStatus &os) {
+void GTUtilsOptionPanelMca::pushResetButton(HI::GUITestOpStatus& os) {
     openTab(os, Consensus);
     GTWidget::click(os, GTWidget::findToolButton(os, "thresholdResetButton"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "pushExportButton"
-void GTUtilsOptionPanelMca::pushExportButton(HI::GUITestOpStatus &os) {
+void GTUtilsOptionPanelMca::pushExportButton(HI::GUITestOpStatus& os) {
     openTab(os, Consensus);
     GTWidget::click(os, GTWidget::findToolButton(os, "exportBtn"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "showAlternativeMutations"
-void GTUtilsOptionPanelMca::showAlternativeMutations(HI::GUITestOpStatus &os, bool show, int value, bool withSpinbox, QWidget *parent) {
+void GTUtilsOptionPanelMca::showAlternativeMutations(HI::GUITestOpStatus& os, bool show, int value, bool withSpinbox, QWidget* parent) {
     GTUtilsOptionPanelMca::openTab(os, Tabs::Reads, parent);
     GTGroupBox::setChecked(os, "mutationsGroupBox", show, parent);
     if (!show) {
@@ -192,10 +189,10 @@ void GTUtilsOptionPanelMca::showAlternativeMutations(HI::GUITestOpStatus &os, bo
     if (withSpinbox) {
         GTSpinBox::setValue(os, "mutationsThresholdSpinBox", value, parent);
     } else {
-        GTSlider::setValue(os, GTWidget::findExactWidget<QSlider *>(os, "mutationsThresholdSlider", parent), value);
+        GTSlider::setValue(os, GTWidget::findSlider(os, "mutationsThresholdSlider", parent), value);
     }
 
-    GTWidget::click(os, GTWidget::findExactWidget<QPushButton *>(os, "updateMutationsPushButton", parent));
+    GTWidget::click(os, GTWidget::findPushButton(os, "updateMutationsPushButton", parent));
     GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME

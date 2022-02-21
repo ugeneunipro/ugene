@@ -27,8 +27,8 @@ public:
     void prepare() override;
 
 private:
-    Task *searchTask = nullptr;
-    Task *saveTask = nullptr;
+    Task* searchTask = nullptr;
+    Task* saveTask = nullptr;
     QString hmmFileName;
     QString seqDocCtxName;
     QString resultDocName;
@@ -41,10 +41,10 @@ private:
     float evalueCutoff = 0;
     float domEvalueCutoff = 0;
     float minScoreCutoff = 0;
-    Document *aDoc = nullptr;
+    Document* aDoc = nullptr;
 
 protected:
-    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 };
 
 class GTest_uHMMERBuild : public XmlTest {
@@ -56,7 +56,7 @@ public:
 
 private:
     QString outFile;
-    HMMBuildToFileTask *buildTask = nullptr;
+    HMMBuildToFileTask* buildTask = nullptr;
     bool deleteTempFile = false;
 };
 
@@ -81,9 +81,9 @@ public:
 private:
     class GTest_uHMMERCalibrateSubtask : public Task {
     public:
-        GTest_uHMMERCalibrateSubtask(HMMCalibrateToFileTask **calibrateTask, int n);
+        GTest_uHMMERCalibrateSubtask(HMMCalibrateToFileTask** calibrateTask, int n);
     };
-    HMMCalibrateToFileTask **calibrateTask = nullptr;
+    HMMCalibrateToFileTask** calibrateTask = nullptr;
     float mu = 0;
     float lambda = 0;
     int nCalibrates = 0;
@@ -91,7 +91,7 @@ private:
 
 class UHMMERTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };
 
 }  // namespace U2

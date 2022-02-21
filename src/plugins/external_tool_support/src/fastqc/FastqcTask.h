@@ -59,19 +59,19 @@ public:
 class FastQCTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    FastQCTask(const FastQCSetting &settings);
+    FastQCTask(const FastQCSetting& settings);
 
     void prepare() override;
     void run() override;
 
-    const QString &getResult() const {
+    const QString& getResult() const {
         return resultFileUrl;
     }
 
     QString getTmpResultFileUrl() const;
 
 protected:
-    QStringList getParameters(U2OpStatus &os) const;
+    QStringList getParameters(U2OpStatus& os) const;
 
 protected:
     FastQCSetting settings;
@@ -84,13 +84,13 @@ private:
 class FastQCParser : public ExternalToolLogParser {
     Q_OBJECT
 public:
-    FastQCParser(const QString &inputFile);
+    FastQCParser(const QString& inputFile);
 
     int getProgress() override;
 
 protected:
-    void processErrLine(const QString &line) override;
-    void setLastError(const QString &value) override;
+    void processErrLine(const QString& line) override;
+    void setLastError(const QString& value) override;
 
 private:
     enum ErrorType {
@@ -98,8 +98,8 @@ private:
         Multiline
     };
 
-    bool isCommonError(const QString &err) const;
-    bool isMultiLineError(const QString &err);
+    bool isCommonError(const QString& err) const;
+    bool isMultiLineError(const QString& err);
 
     static const QMap<ErrorType, QString> initWellKnownErrors();
 
@@ -110,6 +110,6 @@ private:
     static const QMap<ErrorType, QString> WELL_KNOWN_ERRORS;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_FASTQC_TASK_H_
+#endif  // _U2_FASTQC_TASK_H_

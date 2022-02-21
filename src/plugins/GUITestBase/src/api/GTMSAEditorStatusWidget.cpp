@@ -31,15 +31,15 @@ namespace U2 {
 #define GT_CLASS_NAME "GTMSAEditorStatusWidget"
 
 #define GT_METHOD_NAME "getStatusWidget"
-QWidget *GTMSAEditorStatusWidget::getStatusWidget(GUITestOpStatus &os) {
-    QWidget *editor = GTUtilsMsaEditor::getEditorUi(os);
-    return GTWidget::findExactWidget<QWidget *>(os, "msa_editor_status_bar", editor);
+QWidget* GTMSAEditorStatusWidget::getStatusWidget(GUITestOpStatus& os) {
+    QWidget* editor = GTUtilsMsaEditor::getEditorUi(os);
+    return GTWidget::findWidget(os, "msa_editor_status_bar", editor);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "length"
-int GTMSAEditorStatusWidget::length(HI::GUITestOpStatus &os, QWidget *w) {
-    QLabel *label = qobject_cast<QLabel *>(GTWidget::findWidget(os, "Column", w));
+int GTMSAEditorStatusWidget::length(HI::GUITestOpStatus& os, QWidget* w) {
+    QLabel* label = qobject_cast<QLabel*>(GTWidget::findWidget(os, "Column", w));
     GT_CHECK_RESULT(label != nullptr, "label is NULL", -1);
 
     QString labelText = label->text();
@@ -54,9 +54,8 @@ int GTMSAEditorStatusWidget::length(HI::GUITestOpStatus &os, QWidget *w) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSequencesCount"
-int GTMSAEditorStatusWidget::getSequencesCount(HI::GUITestOpStatus &os, QWidget *w) {
-    QLabel *label = GTWidget::findExactWidget<QLabel *>(os, "Line", w);
-    GT_CHECK_RESULT(label != nullptr, "label is NULL", -1);
+int GTMSAEditorStatusWidget::getSequencesCount(HI::GUITestOpStatus& os, QWidget* w) {
+    auto label = GTWidget::findLabel(os, "Line", w);
 
     QString labelText = label->text();
     QString countString = labelText.section('/', -1, -1);
@@ -70,9 +69,8 @@ int GTMSAEditorStatusWidget::getSequencesCount(HI::GUITestOpStatus &os, QWidget 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getRowNumberString"
-QString GTMSAEditorStatusWidget::getRowNumberString(GUITestOpStatus &os) {
-    QLabel *lineLabel = GTWidget::findExactWidget<QLabel *>(os, "Line", getStatusWidget(os));
-    GT_CHECK_RESULT(lineLabel != nullptr, "Line label is NULL", "-1");
+QString GTMSAEditorStatusWidget::getRowNumberString(GUITestOpStatus& os) {
+    auto lineLabel = GTWidget::findLabel(os, "Line", getStatusWidget(os));
 
     const QString labelText = lineLabel->text();
     return labelText.mid(QString("Seq ").length() - 1).section('/', 0, 0).trimmed();
@@ -80,9 +78,8 @@ QString GTMSAEditorStatusWidget::getRowNumberString(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getRowsCountString"
-QString GTMSAEditorStatusWidget::getRowsCountString(GUITestOpStatus &os) {
-    QLabel *lineLabel = GTWidget::findExactWidget<QLabel *>(os, "Line", getStatusWidget(os));
-    GT_CHECK_RESULT(lineLabel != nullptr, "Line label is NULL", "-1");
+QString GTMSAEditorStatusWidget::getRowsCountString(GUITestOpStatus& os) {
+    auto lineLabel = GTWidget::findLabel(os, "Line", getStatusWidget(os));
 
     const QString labelText = lineLabel->text();
     return labelText.mid(QString("Seq ").length() - 1).section('/', 1, 1).trimmed();
@@ -90,9 +87,8 @@ QString GTMSAEditorStatusWidget::getRowsCountString(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getColumnNumberString"
-QString GTMSAEditorStatusWidget::getColumnNumberString(GUITestOpStatus &os) {
-    QLabel *columnLabel = GTWidget::findExactWidget<QLabel *>(os, "Column", getStatusWidget(os));
-    GT_CHECK_RESULT(columnLabel != nullptr, "Column label is NULL", "-1");
+QString GTMSAEditorStatusWidget::getColumnNumberString(GUITestOpStatus& os) {
+    auto columnLabel = GTWidget::findLabel(os, "Column", getStatusWidget(os));
 
     const QString labelText = columnLabel->text();
     return labelText.mid(QString("Col ").length() - 1).section('/', 0, 0).trimmed();
@@ -100,9 +96,8 @@ QString GTMSAEditorStatusWidget::getColumnNumberString(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getColumnsCountString"
-QString GTMSAEditorStatusWidget::getColumnsCountString(GUITestOpStatus &os) {
-    QLabel *columnLabel = GTWidget::findExactWidget<QLabel *>(os, "Column", getStatusWidget(os));
-    GT_CHECK_RESULT(columnLabel != nullptr, "Column label is NULL", "-1");
+QString GTMSAEditorStatusWidget::getColumnsCountString(GUITestOpStatus& os) {
+    auto columnLabel = GTWidget::findLabel(os, "Column", getStatusWidget(os));
 
     const QString labelText = columnLabel->text();
     return labelText.mid(QString("Col ").length() - 1).section('/', 1, 1).trimmed();
@@ -110,9 +105,8 @@ QString GTMSAEditorStatusWidget::getColumnsCountString(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSequenceUngappedPositionString"
-QString GTMSAEditorStatusWidget::getSequenceUngappedPositionString(GUITestOpStatus &os) {
-    QLabel *positionLabel = GTWidget::findExactWidget<QLabel *>(os, "Position", getStatusWidget(os));
-    GT_CHECK_RESULT(positionLabel != nullptr, "Position label is NULL", "-1");
+QString GTMSAEditorStatusWidget::getSequenceUngappedPositionString(GUITestOpStatus& os) {
+    auto positionLabel = GTWidget::findLabel(os, "Position", getStatusWidget(os));
 
     const QString labelText = positionLabel->text();
     return labelText.mid(QString("Pos ").length() - 1).section('/', 0, 0).trimmed();
@@ -120,9 +114,8 @@ QString GTMSAEditorStatusWidget::getSequenceUngappedPositionString(GUITestOpStat
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSequenceUngappedLengthString"
-QString GTMSAEditorStatusWidget::getSequenceUngappedLengthString(GUITestOpStatus &os) {
-    QLabel *positionLabel = GTWidget::findExactWidget<QLabel *>(os, "Position", getStatusWidget(os));
-    GT_CHECK_RESULT(positionLabel != nullptr, "Position label is NULL", "-1");
+QString GTMSAEditorStatusWidget::getSequenceUngappedLengthString(GUITestOpStatus& os) {
+    auto positionLabel = GTWidget::findLabel(os, "Position", getStatusWidget(os));
 
     const QString labelText = positionLabel->text();
     return labelText.mid(QString("Pos ").length() - 1).section('/', 1, 1).trimmed();

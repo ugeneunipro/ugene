@@ -36,7 +36,7 @@ typedef PrompterBase<RemoteBLASTPrompter> RemoteBLASTPrompterBase;
 class RemoteBLASTPrompter : public RemoteBLASTPrompterBase {
     Q_OBJECT
 public:
-    RemoteBLASTPrompter(Actor *p = 0)
+    RemoteBLASTPrompter(Actor* p = 0)
         : RemoteBLASTPrompterBase(p) {
     }
 
@@ -47,11 +47,11 @@ protected:
 class RemoteBLASTWorker : public BaseWorker {
     Q_OBJECT
 public:
-    RemoteBLASTWorker(Actor *a)
+    RemoteBLASTWorker(Actor* a)
         : BaseWorker(a), input(nullptr), output(nullptr) {
     }
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup() {};
 private slots:
     void sl_taskFinished();
@@ -70,7 +70,7 @@ public:
     RemoteBLASTWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new RemoteBLASTWorker(a);
     }
 };

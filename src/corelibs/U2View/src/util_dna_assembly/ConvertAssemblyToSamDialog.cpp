@@ -39,7 +39,7 @@ namespace U2 {
 
 GUrl ConvertAssemblyToSamDialog::dbFileUrl;
 
-ConvertAssemblyToSamDialog::ConvertAssemblyToSamDialog(QWidget *parent, QString dbPath)
+ConvertAssemblyToSamDialog::ConvertAssemblyToSamDialog(QWidget* parent, QString dbPath)
     : QDialog(parent),
       ui(new Ui_AssemblyToSamDialog),
       saveController(nullptr) {
@@ -86,7 +86,7 @@ void ConvertAssemblyToSamDialog::reject() {
     QDialog::reject();
 }
 
-void ConvertAssemblyToSamDialog::buildSamUrl(const GUrl &dbUrl) {
+void ConvertAssemblyToSamDialog::buildSamUrl(const GUrl& dbUrl) {
     GUrl url = GUrlUtils::rollFileName(dbUrl.dirPath() + "/" + dbUrl.baseFileName() + ".sam", DocumentUtils::getNewDocFileNameExcludesHint());
     ui->samPathEdit->setText(url.getURLString());
 }

@@ -34,7 +34,7 @@ namespace U2 {
 
 const QString MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME = "msa_overview_area";
 
-MSAEditorOverviewArea::MSAEditorOverviewArea(MaEditorWgt *ui)
+MSAEditorOverviewArea::MSAEditorOverviewArea(MaEditorWgt* ui)
     : MaEditorOverviewArea(ui, OVERVIEW_AREA_OBJECT_NAME) {
     // The MSAEditorOverviewArea can't be resized vertically.
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -68,7 +68,7 @@ MSAEditorOverviewArea::MSAEditorOverviewArea(MaEditorWgt *ui)
     graphOverview->installEventFilter(this);
 }
 
-bool MSAEditorOverviewArea::eventFilter(QObject *watched, QEvent *event) {
+bool MSAEditorOverviewArea::eventFilter(QObject* watched, QEvent* event) {
     CHECK(watched == simpleOverview || watched == graphOverview, false);
     auto type = event->type();
     if (type == QEvent::Show || type == QEvent::Hide) {
@@ -83,7 +83,7 @@ void MSAEditorOverviewArea::updateFixedHeightGeometry() {
     setFixedHeight(height);
 }
 
-void MSAEditorOverviewArea::contextMenuEvent(QContextMenuEvent *event) {
+void MSAEditorOverviewArea::contextMenuEvent(QContextMenuEvent* event) {
     contextMenu->exec(event->globalPos());
 }
 

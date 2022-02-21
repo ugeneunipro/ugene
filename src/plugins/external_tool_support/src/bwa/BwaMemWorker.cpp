@@ -68,7 +68,7 @@ const QString OUTPUT_SUBDIR("BWA-MEM");
 /************************************************************************/
 /* Worker */
 /************************************************************************/
-BwaMemWorker::BwaMemWorker(Actor *p)
+BwaMemWorker::BwaMemWorker(Actor* p)
     : BaseShortReadsAlignerWorker(p, BwaTask::ALGORITHM_BWA_MEM) {
 }
 
@@ -113,7 +113,7 @@ QString BwaMemWorker::getBaseSubdir() const {
     return BASE_BWA_SUBDIR;
 }
 
-void BwaMemWorker::setGenomeIndex(DnaAssemblyToRefTaskSettings &settings) {
+void BwaMemWorker::setGenomeIndex(DnaAssemblyToRefTaskSettings& settings) {
     QString referenceInputType = getValue<QString>(REFERENCE_INPUT_TYPE);
     if (referenceInputType == DnaAssemblyToRefTaskSettings::INDEX) {
         settings.prebuiltIndex = true;
@@ -145,8 +145,8 @@ QString BwaMemWorker::getAlignerSubdir() const {
 /* Factory */
 /************************************************************************/
 void BwaMemWorkerFactory::init() {
-    QList<Attribute *> attrs;
-    QMap<QString, PropertyDelegate *> delegates;
+    QList<Attribute*> attrs;
+    QMap<QString, PropertyDelegate*> delegates;
 
     addCommonAttributes(attrs, delegates, BwaMemWorker::tr("BWA index folder"), BwaMemWorker::tr("BWA index basename"));
     {
@@ -251,7 +251,6 @@ void BwaMemWorkerFactory::init() {
         delegates[BAND_WIDTH] = new SpinBoxDelegate(spinMap);
         delegates[DROPOFF] = new SpinBoxDelegate(spinMap);
         delegates[INTERNAL_SEED_LOOKUP] = new DoubleSpinBoxDelegate(spinMap);
-        delegates[SKIP_MATE_RESCUES] = new SpinBoxDelegate(spinMap);
         delegates[DROP_CHAINS_THRESHOLD] = new DoubleSpinBoxDelegate(spinMap);
         delegates[MAX_MATE_RESCUES] = new SpinBoxDelegate(spinMap);
         delegates[MATCH_SCORE] = new SpinBoxDelegate(spinMap);
@@ -280,7 +279,7 @@ void BwaMemWorkerFactory::init() {
                                           " The result is saved to the specified SAM file, URL to the file is passed"
                                           " to the output port."));
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, getPortDescriptors(), attrs);
+    ActorPrototype* proto = new IntegralBusActorPrototype(protoDesc, getPortDescriptors(), attrs);
     proto->setPrompter(new ShortReadsAlignerPrompter());
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPortValidator(IN_PORT_DESCR, new ShortReadsAlignerSlotsValidator());
@@ -289,8 +288,8 @@ void BwaMemWorkerFactory::init() {
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new BwaMemWorkerFactory());
 }
 
-Worker *BwaMemWorkerFactory::createWorker(Actor *a) {
+Worker* BwaMemWorkerFactory::createWorker(Actor* a) {
     return new BwaMemWorker(a);
 }
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

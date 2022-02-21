@@ -55,4 +55,4 @@ QString RnaSeqLibraryType::getLibraryTypeAsStr() {
     }
 }
 
-}    // namespace U2
+}  // namespace U2

@@ -48,7 +48,7 @@ public:
     bool isAlignment() const;
     bool isText() const;
 
-    bool operator==(const DataConfig &other) const;
+    bool operator==(const DataConfig& other) const;
 
     static const DocumentFormatId STRING_VALUE;
     static const DocumentFormatId OUTPUT_FILE_URL;
@@ -88,7 +88,7 @@ public:
     bool isOutputUrl() const;
     bool isFile() const;
     bool isFolder() const;
-    bool operator==(const AttributeConfig &other) const;
+    bool operator==(const AttributeConfig& other) const;
 };
 
 class U2LANG_EXPORT ExternalProcessConfig {
@@ -108,23 +108,23 @@ public:
     QString customToolPath;
     QString integratedToolId;
 
-    bool operator==(const ExternalProcessConfig &other) const;
-    bool operator!=(const ExternalProcessConfig &other) const;
+    bool operator==(const ExternalProcessConfig& other) const;
+    bool operator!=(const ExternalProcessConfig& other) const;
 };
 
 class U2LANG_EXPORT ExternalToolCfgRegistry : public QObject {
     Q_OBJECT
 public:
-    ExternalToolCfgRegistry(QObject *parent = nullptr);
+    ExternalToolCfgRegistry(QObject* parent = nullptr);
 
-    bool registerExternalTool(ExternalProcessConfig *cfg);
-    void unregisterConfig(const QString &id);
+    bool registerExternalTool(ExternalProcessConfig* cfg);
+    void unregisterConfig(const QString& id);
 
-    ExternalProcessConfig *getConfigById(const QString &id) const;
-    QList<ExternalProcessConfig *> getConfigs() const;
+    ExternalProcessConfig* getConfigById(const QString& id) const;
+    QList<ExternalProcessConfig*> getConfigs() const;
 
 private:
-    QMap<QString, ExternalProcessConfig *> configs;
+    QMap<QString, ExternalProcessConfig*> configs;
 };
 
 }  // namespace U2

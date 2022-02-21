@@ -37,7 +37,7 @@ const QString Gtest_PToolsAlignerTask::RMSD_ATTR("rmsd");
 const QString Gtest_PToolsAlignerTask::ACCURACY_ATTR("accuracy");
 const QString Gtest_PToolsAlignerTask::TRANSFORM_ATTR("transform");
 
-void Gtest_PToolsAlignerTask::init(XMLTestFormat *, const QDomElement &el) {
+void Gtest_PToolsAlignerTask::init(XMLTestFormat*, const QDomElement& el) {
     {
         refName = el.attribute(REFO_ATTR);
         if (refName.isEmpty()) {
@@ -92,7 +92,7 @@ void Gtest_PToolsAlignerTask::init(XMLTestFormat *, const QDomElement &el) {
             return;
         } else {
             int i = 0;
-            foreach (const QString &str_elem, str_telements) {
+            foreach (const QString& str_elem, str_telements) {
                 bool ok;
                 expected.transform[i++] = str_elem.trimmed().toDouble(&ok);
                 if (!ok) {
@@ -126,7 +126,7 @@ void Gtest_PToolsAlignerTask::run() {
 }
 
 /** Compare alignment results with given accuracy  */
-static bool isEqual(const StructuralAlignment &first, const StructuralAlignment &second, double accuracy) {
+static bool isEqual(const StructuralAlignment& first, const StructuralAlignment& second, double accuracy) {
     if (fabs(first.rmsd - second.rmsd) > accuracy) {
         return false;
     }
@@ -143,7 +143,7 @@ static bool isEqual(const StructuralAlignment &first, const StructuralAlignment 
 /** Pretty print the alignment result with given accuracy
  * so you can see the missmatches
  */
-static QString alignmentToStr(const StructuralAlignment &al, double acc = 0) {
+static QString alignmentToStr(const StructuralAlignment& al, double acc = 0) {
     int prec = 6;
     if (acc != 0.0) {
         prec = (int)log10(1.0 / acc);

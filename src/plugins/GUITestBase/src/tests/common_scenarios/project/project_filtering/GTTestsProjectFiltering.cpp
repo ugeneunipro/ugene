@@ -296,7 +296,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
 namespace {
 
-void checkEditMenu(HI::GUITestOpStatus &os, const QString &groupName, const QString &objectName) {
+void checkEditMenu(HI::GUITestOpStatus& os, const QString& groupName, const QString& objectName) {
     const QModelIndexList groupIndexes = GTUtilsProjectTreeView::findFilteredIndexes(os, groupName);
     CHECK_SET_ERR(groupIndexes.size() == 1, QString("Expected a single '%1' filter group in the project view").arg(groupName));
 
@@ -309,7 +309,7 @@ void checkEditMenu(HI::GUITestOpStatus &os, const QString &groupName, const QStr
     GTMouseDriver::click(Qt::RightButton);
 }
 
-void checkDeleteButton(HI::GUITestOpStatus &os, const QString &groupName, const QString &objectName) {
+void checkDeleteButton(HI::GUITestOpStatus& os, const QString& groupName, const QString& objectName) {
     QModelIndexList groupIndexes = GTUtilsProjectTreeView::findFilteredIndexes(os, groupName);
     CHECK_SET_ERR(groupIndexes.size() == 1, QString("Expected a single '%1' filter group in the project view").arg(groupName));
 
@@ -328,7 +328,7 @@ void checkDeleteButton(HI::GUITestOpStatus &os, const QString &groupName, const 
     CHECK_SET_ERR(filteredObjectCount == groupIndexes.first().model()->rowCount(groupIndexes.first()), "Filtered object count changed unexpectedly");
 }
 
-void makeRightClick(HI::GUITestOpStatus &os, const QString &groupName) {
+void makeRightClick(HI::GUITestOpStatus& os, const QString& groupName) {
     const QModelIndexList groupIndexes = GTUtilsProjectTreeView::findFilteredIndexes(os, groupName);
     CHECK_SET_ERR(groupIndexes.size() == 1, QString("Expected a single '%1' filter group in the project view").arg(groupName));
     GTUtilsProjectTreeView::getTreeView(os)->scrollTo(groupIndexes.first());
@@ -468,8 +468,8 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTUtilsProjectTreeView::filterProject(os, "gag polyprotein");
 
     // Expected : There are 3 top - level groups named "CDS", "Multiple alignment content" and "Sequence content".
-    QTreeView *projectTreeView = GTUtilsProjectTreeView::getTreeView(os);
-    QAbstractItemModel *filterModel = projectTreeView->model();
+    QTreeView* projectTreeView = GTUtilsProjectTreeView::getTreeView(os);
+    QAbstractItemModel* filterModel = projectTreeView->model();
     CHECK_SET_ERR(filterModel->rowCount() == 3 && "CDS" == filterModel->index(0, 0).data().toString() && "Multiple alignment content" == filterModel->index(1, 0).data().toString() && "Sequence content" == filterModel->index(2, 0).data().toString(), "Unexpected project filter groups");
 }
 
@@ -483,12 +483,12 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: Project filter clear button is invisible
-    QWidget *clearButton = GTWidget::findWidget(os, "project filter clear button");
+    QWidget* clearButton = GTWidget::findWidget(os, "project filter clear button");
     CHECK_SET_ERR(!clearButton->isVisible(), "Project filter clear button is unexpectedly visible");
 
     // 3. Type to the project filter field "polyprotein"
     GTUtilsProjectTreeView::openView(os);
-    QLineEdit *nameFilterEdit = GTWidget::findExactWidget<QLineEdit *>(os, "nameFilterEdit");
+    auto nameFilterEdit = GTWidget::findLineEdit(os, "nameFilterEdit");
     GTLineEdit::setText(os, nameFilterEdit, "polyprotein");
 
     // Expected state: Project filter clear button is visible

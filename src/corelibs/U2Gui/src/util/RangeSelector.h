@@ -37,7 +37,7 @@ namespace U2 {
 class U2GUI_EXPORT RangeSelector : public QWidget {
     Q_OBJECT
 public:
-    RangeSelector(QDialog *dialog, int rangeStart, int rangeEnd, int len, bool autoClose);
+    RangeSelector(QDialog* dialog, int rangeStart, int rangeEnd, int len, bool autoClose);
 
     int getStart() const;
 
@@ -66,13 +66,13 @@ private:
     int rangeEnd;
     int len;
 
-    QLineEdit *startEdit;
-    QLineEdit *endEdit;
-    QToolButton *minButton;
-    QToolButton *maxButton;
-    QLabel *rangeLabel;
+    QLineEdit* startEdit;
+    QLineEdit* endEdit;
+    QToolButton* minButton;
+    QToolButton* maxButton;
+    QLabel* rangeLabel;
 
-    QDialog *dialog;
+    QDialog* dialog;
 
     bool autoClose;
 };
@@ -80,7 +80,7 @@ private:
 class U2GUI_EXPORT MultipleRangeSelector : public QDialog {
     Q_OBJECT
 public:
-    MultipleRangeSelector(QWidget *parent, const QVector<U2Region> &_regions, int _seqLen, bool isCircular);
+    MultipleRangeSelector(QWidget* parent, const QVector<U2Region>& _regions, int _seqLen, bool isCircular);
 
     ~MultipleRangeSelector();
 
@@ -94,13 +94,13 @@ private:
     bool isCircular;
     QPalette normalPalette;
 
-    Ui_RangeSelectionDialog *ui;
+    Ui_RangeSelectionDialog* ui;
 
 protected slots:
 
     void sl_multipleButtonToggled(bool);
 
-    void sl_buttonClicked(QAbstractButton *b);
+    void sl_buttonClicked(QAbstractButton* b);
 
     void sl_minButton();
 
@@ -108,7 +108,7 @@ protected slots:
 
     void sl_returnPressed();
 
-    void sl_textEdited(const QString &);
+    void sl_textEdited(const QString&);
 };
 
 }  // namespace U2

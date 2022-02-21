@@ -28,67 +28,67 @@ CustomExternalTool::CustomExternalTool()
     isCustomTool = true;
 }
 
-void CustomExternalTool::setId(const QString &_id) {
+void CustomExternalTool::setId(const QString& _id) {
     id = _id;
 }
 
-void CustomExternalTool::setName(const QString &_name) {
+void CustomExternalTool::setName(const QString& _name) {
     name = _name;
 }
 
-void CustomExternalTool::setIcon(const QIcon &_icon) {
+void CustomExternalTool::setIcon(const QIcon& _icon) {
     icon = _icon;
 }
 
-void CustomExternalTool::setGrayIcon(const QIcon &_icon) {
+void CustomExternalTool::setGrayIcon(const QIcon& _icon) {
     grayIcon = _icon;
 }
 
-void CustomExternalTool::setWarnIcon(const QIcon &_icon) {
+void CustomExternalTool::setWarnIcon(const QIcon& _icon) {
     warnIcon = _icon;
 }
 
-void CustomExternalTool::setDescription(const QString &_description) {
+void CustomExternalTool::setDescription(const QString& _description) {
     description = _description;
 }
 
-void CustomExternalTool::setLauncher(const QString &launcherId) {
+void CustomExternalTool::setLauncher(const QString& launcherId) {
     toolRunnerProgram = launcherId;
 }
 
-void CustomExternalTool::setBinaryName(const QString &binaryName) {
+void CustomExternalTool::setBinaryName(const QString& binaryName) {
     executableFileName = binaryName;
 }
 
-void CustomExternalTool::setValidationArguments(const QStringList &arguments) {
+void CustomExternalTool::setValidationArguments(const QStringList& arguments) {
     validationArguments = arguments;
 }
 
-void CustomExternalTool::setValidationExpectedText(const QString &text) {
+void CustomExternalTool::setValidationExpectedText(const QString& text) {
     validMessage = text;
 }
 
-void CustomExternalTool::setPredefinedVersion(const QString &version) {
+void CustomExternalTool::setPredefinedVersion(const QString& version) {
     predefinedVersion = version;
 }
 
-void CustomExternalTool::setVersionRegExp(const QRegExp &_versionRegExp) {
+void CustomExternalTool::setVersionRegExp(const QRegExp& _versionRegExp) {
     versionRegExp = _versionRegExp;
 }
 
-void CustomExternalTool::setToolkitName(const QString &_toolkitName) {
+void CustomExternalTool::setToolkitName(const QString& _toolkitName) {
     toolKitName = _toolkitName;
 }
 
-void CustomExternalTool::setDependencies(const QStringList &_dependencies) {
+void CustomExternalTool::setDependencies(const QStringList& _dependencies) {
     dependencies = _dependencies;
 }
 
-void CustomExternalTool::setConfigFilePath(const QString &_configFilePath) {
+void CustomExternalTool::setConfigFilePath(const QString& _configFilePath) {
     configFilePath = _configFilePath;
 }
 
-const QString &CustomExternalTool::getConfigFilePath() const {
+const QString& CustomExternalTool::getConfigFilePath() const {
     return configFilePath;
 }
 

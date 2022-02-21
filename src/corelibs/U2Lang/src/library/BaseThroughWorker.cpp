@@ -26,28 +26,28 @@
 namespace U2 {
 namespace LocalWorkflow {
 
-BaseThroughWorker::BaseThroughWorker(Actor *a, const QString &inPortId, const QString &outPortId)
+BaseThroughWorker::BaseThroughWorker(Actor* a, const QString& inPortId, const QString& outPortId)
     : BaseOneOneWorker(a, /* autoTransitBus= */ true, inPortId, outPortId) {
 }
 
 void BaseThroughWorker::cleanup() {
 }
 
-Task *BaseThroughWorker::processNextInputMessage() {
+Task* BaseThroughWorker::processNextInputMessage() {
     const Message message = getMessageAndSetupScriptValues(input);
     U2OpStatusImpl os;
-    Task *task = createTask(message, os);
+    Task* task = createTask(message, os);
     if (os.hasError()) {
         reportError(os.getError());
     }
     return task;
 }
 
-Task *BaseThroughWorker::onInputEnded() {
+Task* BaseThroughWorker::onInputEnded() {
     return nullptr;
 }
 
-Message BaseThroughWorker::composeMessage(const QVariantMap &data) {
+Message BaseThroughWorker::composeMessage(const QVariantMap& data) {
     return Message(output->getBusType(), data);
 }
 

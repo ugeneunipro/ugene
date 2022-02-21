@@ -151,7 +151,7 @@
     </message>
     <message>
         <location filename="../src/utils/BlastAllSupportDialog.ui" line="274"/>
-        <source>Number of CPUs being used</source>
+        <source>Number of threads</source>
         <translation>Kullanılan CPU sayısı</translation>
     </message>
     <message>
@@ -1654,7 +1654,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="227"/>
-        <source>Number of CPUs being used</source>
+        <source>Number of threads</source>
         <translation>Kullanılan CPU sayısı</translation>
     </message>
     <message>

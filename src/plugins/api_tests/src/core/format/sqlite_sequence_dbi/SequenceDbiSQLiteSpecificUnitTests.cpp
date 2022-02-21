@@ -33,8 +33,8 @@
 namespace U2 {
 
 TestDbiProvider SequenceSQLiteSpecificTestData::dbiProvider = TestDbiProvider();
-const QString &SequenceSQLiteSpecificTestData::SQLITE_SEQUENCE_DB_URL("sqlite-sequence-dbi.ugenedb");
-SQLiteDbi *SequenceSQLiteSpecificTestData::sqliteDbi = nullptr;
+const QString& SequenceSQLiteSpecificTestData::SQLITE_SEQUENCE_DB_URL("sqlite-sequence-dbi.ugenedb");
+SQLiteDbi* SequenceSQLiteSpecificTestData::sqliteDbi = nullptr;
 
 const QString SequenceSQLiteSpecificTestData::TEST_SEQUENCE_NAME = "Test sequence";
 
@@ -45,7 +45,7 @@ void SequenceSQLiteSpecificTestData::init() {
     bool ok = dbiProvider.init(SQLITE_SEQUENCE_DB_URL, false);
     SAFE_POINT(ok, "Dbi provider failed to initialize!", );
 
-    U2Dbi *dbi = dbiProvider.getDbi();
+    U2Dbi* dbi = dbiProvider.getDbi();
     QString url = dbi->getDbiRef().dbiId;
     dbiProvider.close();
 
@@ -72,14 +72,14 @@ void SequenceSQLiteSpecificTestData::shutdown() {
     }
 }
 
-SQLiteDbi *SequenceSQLiteSpecificTestData::getSQLiteDbi() {
+SQLiteDbi* SequenceSQLiteSpecificTestData::getSQLiteDbi() {
     if (nullptr == sqliteDbi) {
         init();
     }
     return sqliteDbi;
 }
 
-U2DataId SequenceSQLiteSpecificTestData::createTestSequence(bool enableModTracking, qint64 seqLength, U2OpStatus &os) {
+U2DataId SequenceSQLiteSpecificTestData::createTestSequence(bool enableModTracking, qint64 seqLength, U2OpStatus& os) {
     U2Sequence sequence;
     sequence.alphabet = BaseDNAAlphabetIds::NUCL_DNA_DEFAULT();
     sequence.visualName = TEST_SEQUENCE_NAME;
@@ -100,7 +100,7 @@ U2DataId SequenceSQLiteSpecificTestData::createTestSequence(bool enableModTracki
     return sequence.id;
 }
 
-U2DataId SequenceSQLiteSpecificTestData::createTestSequence(bool enableModTracking, const QByteArray &seqData, U2OpStatus &os) {
+U2DataId SequenceSQLiteSpecificTestData::createTestSequence(bool enableModTracking, const QByteArray& seqData, U2OpStatus& os) {
     U2Sequence sequence;
     sequence.alphabet = BaseDNAAlphabetIds::NUCL_DNA_DEFAULT();
     sequence.visualName = "Test sequence";
@@ -118,7 +118,7 @@ U2DataId SequenceSQLiteSpecificTestData::createTestSequence(bool enableModTracki
     return sequence.id;
 }
 
-qint64 SequenceSQLiteSpecificTestData::getModStepsNum(const U2DataId &objId, U2OpStatus &os) {
+qint64 SequenceSQLiteSpecificTestData::getModStepsNum(const U2DataId& objId, U2OpStatus& os) {
     SQLiteReadQuery qModSteps("SELECT COUNT(*) FROM SingleModStep WHERE object = ?1", sqliteDbi->getDbRef(), os);
     qModSteps.bindDataId(1, objId);
     return qModSteps.selectInt64();
@@ -126,7 +126,7 @@ qint64 SequenceSQLiteSpecificTestData::getModStepsNum(const U2DataId &objId, U2O
 
 IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_noModTrack) {
     U2OpStatusImpl os;
-    SQLiteDbi *sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
+    SQLiteDbi* sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
 
     U2Sequence sequence;
     sequence.alphabet = BaseDNAAlphabetIds::NUCL_DNA_DEFAULT();
@@ -182,7 +182,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_noModTrack) {
 
 IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_emptyHint) {
     U2OpStatusImpl os;
-    SQLiteDbi *sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
+    SQLiteDbi* sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
 
     qint64 seqLength = 0;
     U2DataId seqId = SequenceSQLiteSpecificTestData::createTestSequence(true, seqLength, os);
@@ -237,7 +237,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_emptyHint) {
 
 IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_emptyNoHint) {
     U2OpStatusImpl os;
-    SQLiteDbi *sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
+    SQLiteDbi* sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
 
     qint64 seqLength = 0;
     U2DataId seqId = SequenceSQLiteSpecificTestData::createTestSequence(true, seqLength, os);
@@ -291,7 +291,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_emptyNoHint) {
 
 IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_clear) {
     U2OpStatusImpl os;
-    SQLiteDbi *sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
+    SQLiteDbi* sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
 
     QByteArray baseData("AAAAAAA");
     U2DataId seqId = SequenceSQLiteSpecificTestData::createTestSequence(true, baseData, os);
@@ -345,7 +345,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_clear) {
 
 IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_begin) {
     U2OpStatusImpl os;
-    SQLiteDbi *sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
+    SQLiteDbi* sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
 
     QByteArray baseData("AAAAAAA");
     U2DataId seqId = SequenceSQLiteSpecificTestData::createTestSequence(true, baseData, os);
@@ -402,7 +402,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_begin) {
 
 IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle) {
     U2OpStatusImpl os;
-    SQLiteDbi *sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
+    SQLiteDbi* sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
 
     QByteArray baseData("AAAAAAA");
     U2DataId seqId = SequenceSQLiteSpecificTestData::createTestSequence(true, baseData, os);
@@ -459,7 +459,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle) {
 
 IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle_middleNoLength) {
     U2OpStatusImpl os;
-    SQLiteDbi *sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
+    SQLiteDbi* sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
 
     QByteArray baseData("AAAAAAA");
     U2DataId seqId = SequenceSQLiteSpecificTestData::createTestSequence(true, baseData, os);
@@ -517,7 +517,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle_middleNo
 
 IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_end) {
     U2OpStatusImpl os;
-    SQLiteDbi *sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
+    SQLiteDbi* sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
 
     QByteArray baseData("AAAAAAA");
     U2DataId seqId = SequenceSQLiteSpecificTestData::createTestSequence(true, baseData, os);
@@ -574,7 +574,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_end) {
 
 IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_emptyHint_undo) {
     U2OpStatusImpl os;
-    SQLiteDbi *sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
+    SQLiteDbi* sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
 
     qint64 seqLength = 0;
     U2DataId seqId = SequenceSQLiteSpecificTestData::createTestSequence(true, seqLength, os);
@@ -631,7 +631,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_emptyHint_undo)
 
 IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_emptyNoHint_undo) {
     U2OpStatusImpl os;
-    SQLiteDbi *sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
+    SQLiteDbi* sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
 
     qint64 seqLength = 0;
     U2DataId seqId = SequenceSQLiteSpecificTestData::createTestSequence(true, seqLength, os);
@@ -687,7 +687,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_emptyNoHint_und
 
 IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_clear_undo) {
     U2OpStatusImpl os;
-    SQLiteDbi *sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
+    SQLiteDbi* sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
 
     QByteArray baseData("AAAAAAA");
     U2DataId seqId = SequenceSQLiteSpecificTestData::createTestSequence(true, baseData, os);
@@ -743,7 +743,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_clear_undo) {
 
 IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_begin_undo) {
     U2OpStatusImpl os;
-    SQLiteDbi *sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
+    SQLiteDbi* sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
 
     QByteArray baseData("AAAAAAA");
     U2DataId seqId = SequenceSQLiteSpecificTestData::createTestSequence(true, baseData, os);
@@ -799,7 +799,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_begin_undo) {
 
 IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle_undo) {
     U2OpStatusImpl os;
-    SQLiteDbi *sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
+    SQLiteDbi* sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
 
     QByteArray baseData("AAAAAAA");
     U2DataId seqId = SequenceSQLiteSpecificTestData::createTestSequence(true, baseData, os);
@@ -855,7 +855,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle_undo) {
 
 IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle_middleNoLength_undo) {
     U2OpStatusImpl os;
-    SQLiteDbi *sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
+    SQLiteDbi* sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
 
     QByteArray baseData("AAAAAAA");
     U2DataId seqId = SequenceSQLiteSpecificTestData::createTestSequence(true, baseData, os);
@@ -912,7 +912,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle_middleNo
 
 IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_end_undo) {
     U2OpStatusImpl os;
-    SQLiteDbi *sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
+    SQLiteDbi* sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
 
     QByteArray baseData("AAAAAAA");
     U2DataId seqId = SequenceSQLiteSpecificTestData::createTestSequence(true, baseData, os);
@@ -968,7 +968,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_end_undo) {
 
 IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_emptyHint_redo) {
     U2OpStatusImpl os;
-    SQLiteDbi *sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
+    SQLiteDbi* sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
 
     qint64 seqLength = 0;
     U2DataId seqId = SequenceSQLiteSpecificTestData::createTestSequence(true, seqLength, os);
@@ -1028,7 +1028,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_emptyHint_redo)
 
 IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_emptyNoHint_redo) {
     U2OpStatusImpl os;
-    SQLiteDbi *sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
+    SQLiteDbi* sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
 
     qint64 seqLength = 0;
     U2DataId seqId = SequenceSQLiteSpecificTestData::createTestSequence(true, seqLength, os);
@@ -1087,7 +1087,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_emptyNoHint_red
 
 IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_clear_redo) {
     U2OpStatusImpl os;
-    SQLiteDbi *sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
+    SQLiteDbi* sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
 
     QByteArray baseData("AAAAAAA");
     U2DataId seqId = SequenceSQLiteSpecificTestData::createTestSequence(true, baseData, os);
@@ -1146,7 +1146,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_clear_redo) {
 
 IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_begin_redo) {
     U2OpStatusImpl os;
-    SQLiteDbi *sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
+    SQLiteDbi* sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
 
     QByteArray baseData("AAAAAAA");
     U2DataId seqId = SequenceSQLiteSpecificTestData::createTestSequence(true, baseData, os);
@@ -1208,7 +1208,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_begin_redo) {
 
 IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle_redo) {
     U2OpStatusImpl os;
-    SQLiteDbi *sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
+    SQLiteDbi* sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
 
     QByteArray baseData("AAAAAAA");
     U2DataId seqId = SequenceSQLiteSpecificTestData::createTestSequence(true, baseData, os);
@@ -1270,7 +1270,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle_redo) {
 
 IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle_middleNoLength_redo) {
     U2OpStatusImpl os;
-    SQLiteDbi *sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
+    SQLiteDbi* sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
 
     QByteArray baseData("AAAAAAA");
     U2DataId seqId = SequenceSQLiteSpecificTestData::createTestSequence(true, baseData, os);
@@ -1333,7 +1333,7 @@ IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle_middleNo
 
 IMPLEMENT_TEST(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_end_redo) {
     U2OpStatusImpl os;
-    SQLiteDbi *sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
+    SQLiteDbi* sqliteDbi = SequenceSQLiteSpecificTestData::getSQLiteDbi();
 
     QByteArray baseData("AAAAAAA");
     U2DataId seqId = SequenceSQLiteSpecificTestData::createTestSequence(true, baseData, os);

@@ -30,8 +30,8 @@
 
 namespace U2 {
 
-QFont *TreeViewerUtils::font = nullptr;
-const char *TreeViewerUtils::IMAGE_FILTERS =
+QFont* TreeViewerUtils::font = nullptr;
+const char* TreeViewerUtils::IMAGE_FILTERS =
     "BMP - Windows Bitmap (*.bmp);;"
     "GIF - Graphic Interchange Format (*.gif);;"
     "JPG/JPEG format (*.jpg);;"
@@ -42,7 +42,7 @@ const char *TreeViewerUtils::IMAGE_FILTERS =
     "XBM - X11 Bitmap (*.xbm);;"
     "XPM - X11 Pixmap (*.xpm)";
 
-void TreeViewerUtils::saveImageDialog(const QString &filters, QString &fileName, QString &format) {
+void TreeViewerUtils::saveImageDialog(const QString& filters, QString& fileName, QString& format) {
     LastUsedDirHelper lod(IMAGE_DIR);
     int i = fileName.lastIndexOf('.');
     if (i != -1) {
@@ -66,7 +66,7 @@ void TreeViewerUtils::saveImageDialog(const QString &filters, QString &fileName,
     }
 }
 
-const QFont &TreeViewerUtils::getFont() {
+const QFont& TreeViewerUtils::getFont() {
     if (font == nullptr) {
         font = new QFont();
         font->setPointSize(8);

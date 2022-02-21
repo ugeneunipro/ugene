@@ -112,8 +112,8 @@
 using namespace U2;
 
 static void registerCoreServices() {
-    ServiceRegistry *sr = AppContext::getServiceRegistry();
-    TaskScheduler *ts = AppContext::getTaskScheduler();
+    ServiceRegistry* sr = AppContext::getServiceRegistry();
+    TaskScheduler* ts = AppContext::getTaskScheduler();
     Q_UNUSED(sr);
     Q_UNUSED(ts);
     // unlike ugene's UI Main.cpp we don't create PluginViewerImpl, ProjectViewImpl
@@ -123,9 +123,9 @@ static bool openDocs() {
     bool ret = false;
     QStringList suiteUrls = CMDLineRegistryUtils::getParameterValuesByWords(CMDLineCoreOptions::SUITE_URLS);
     if (suiteUrls.size() > 0) {
-        TestStarter *ts = new TestStarter(suiteUrls);
+        TestStarter* ts = new TestStarter(suiteUrls);
 
-        GTestEnvironment *envs = ts->getEnv();
+        GTestEnvironment* envs = ts->getEnv();
         envs->setVar(TIME_OUT_VAR, AppContext::getSettings()->getValue(TR_SETTINGS_ROOT + TIME_OUT_VAR, QString("0")).toString());
         envs->setVar(NUM_THREADS_VAR, AppContext::getSettings()->getValue(TR_SETTINGS_ROOT + NUM_THREADS_VAR, QString("5")).toString());
 
@@ -137,8 +137,8 @@ static bool openDocs() {
 
 static void setScriptsSearchPath() {
     QStringList scriptsSearchPath;
-    const static char *RELATIVE_SCRIPTS_DIR = "/scripts";
-    const static char *RELATIVE_DEV_SCRIPTS_DIR = "/../../scripts";
+    const static char* RELATIVE_SCRIPTS_DIR = "/scripts";
+    const static char* RELATIVE_DEV_SCRIPTS_DIR = "/../../scripts";
 
     QString appDirPath = AppContext::getWorkingDirectoryPath();
     if (QDir(appDirPath + RELATIVE_SCRIPTS_DIR).exists()) {
@@ -155,8 +155,8 @@ static void setScriptsSearchPath() {
 static void setDataSearchPaths() {
     // set search paths for data files
     QStringList dataSearchPaths;
-    const static char *RELATIVE_DATA_DIR = "/data";
-    const static char *RELATIVE_DEV_DATA_DIR = "/../../data";
+    const static char* RELATIVE_DATA_DIR = "/data";
+    const static char* RELATIVE_DEV_DATA_DIR = "/../../data";
     // on windows data is normally located in the application folder
     QString appDirPath = AppContext::getWorkingDirectoryPath();
 
@@ -186,7 +186,7 @@ static void setSearchPaths() {
     setScriptsSearchPath();
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
     if (CrashHandler::isEnabled()) {
         CrashHandler::setupHandler();
     }
@@ -219,27 +219,27 @@ int main(int argc, char **argv) {
 
     QCoreApplication app(argc, argv);
 
-    AppContextImpl *appContext = AppContextImpl::getApplicationContext();
+    AppContextImpl* appContext = AppContextImpl::getApplicationContext();
     appContext->setWorkingDirectoryPath(QCoreApplication::applicationDirPath());
 
     QCoreApplication::addLibraryPath(AppContext::getWorkingDirectoryPath());
     setSearchPaths();
 
     // parse all cmdline arguments
-    CMDLineRegistry *cmdLineRegistry = new CMDLineRegistry(app.arguments());
+    CMDLineRegistry* cmdLineRegistry = new CMDLineRegistry(app.arguments());
     appContext->setCMDLineRegistry(cmdLineRegistry);
 
     // 1 create settings
-    SettingsImpl *globalSettings = new SettingsImpl(QSettings::SystemScope);
+    SettingsImpl* globalSettings = new SettingsImpl(QSettings::SystemScope);
     appContext->setGlobalSettings(globalSettings);
 
-    SettingsImpl *settings = new SettingsImpl(QSettings::UserScope);
+    SettingsImpl* settings = new SettingsImpl(QSettings::UserScope);
     appContext->setSettings(settings);
 
-    AppSettings *appSettings = new AppSettingsImpl();
+    AppSettings* appSettings = new AppSettingsImpl();
     appContext->setAppSettings(appSettings);
 
-    UserAppsSettings *userAppSettings = AppContext::getAppSettings()->getUserAppsSettings();
+    UserAppsSettings* userAppSettings = AppContext::getAppSettings()->getUserAppsSettings();
 
     // Set translations if needed: use value in the settings or cmd-line parameter override.
     // The default case 'en' does not need any files: the values for this locale are hardcoded in the code.
@@ -255,7 +255,7 @@ int main(int argc, char **argv) {
     translationFileList.removeAll("transl_");
     translationFileList.removeDuplicates();
     // Use the first translation from the list that works.
-    for (const QString &translationFile : qAsConst(translationFileList)) {
+    for (const QString& translationFile : qAsConst(translationFileList)) {
         if (translationFile == "transl_en" || translator.load(translationFile, AppContext::getWorkingDirectoryPath())) {
             break;
         }
@@ -270,153 +270,153 @@ int main(int argc, char **argv) {
     ConsoleLogDriver logs;
     Q_UNUSED(logs);
     coreLog.details(AppContextImpl::tr("UGENE initialization started"));
-    for (const QString &fileName : failedToLoadTranslatorFiles) {
+    for (const QString& fileName : failedToLoadTranslatorFiles) {
         coreLog.trace(QObject::tr("Translation file not found: %1").arg(fileName));
     }
 
-    ResourceTracker *resTrack = new ResourceTracker();
+    ResourceTracker* resTrack = new ResourceTracker();
     appContext->setResourceTracker(resTrack);
 
-    TaskSchedulerImpl *ts = new TaskSchedulerImpl(appSettings->getAppResourcePool());
+    TaskSchedulerImpl* ts = new TaskSchedulerImpl(appSettings->getAppResourcePool());
     appContext->setTaskScheduler(ts);
 
-    AnnotationSettingsRegistry *asr = new AnnotationSettingsRegistry(DocumentFormatUtils::predefinedSettings());
+    AnnotationSettingsRegistry* asr = new AnnotationSettingsRegistry(DocumentFormatUtils::predefinedSettings());
     appContext->setAnnotationSettingsRegistry(asr);
 
-    TestFramework *tf = new TestFramework();
+    TestFramework* tf = new TestFramework();
     appContext->setTestFramework(tf);
 
-    RepeatFinderTaskFactoryRegistry *rfr = new RepeatFinderTaskFactoryRegistry();
+    RepeatFinderTaskFactoryRegistry* rfr = new RepeatFinderTaskFactoryRegistry();
     appContext->setRepeatFinderTaskFactoryRegistry(rfr);
 
-    QDActorPrototypeRegistry *qpr = new QDActorPrototypeRegistry();
+    QDActorPrototypeRegistry* qpr = new QDActorPrototypeRegistry();
     appContext->setQDActorFactoryRegistry(qpr);
 
     CMDLineUtils::init();
     DumpLicenseTask::initHelp();
     DumpVersionTask::initHelp();
 
-    PhyTreeGeneratorRegistry *phyreg = new PhyTreeGeneratorRegistry();
+    PhyTreeGeneratorRegistry* phyreg = new PhyTreeGeneratorRegistry();
     appContext->setPhyTreeGeneratorRegistry(phyreg);
 
     // unlike ugene's main.cpp we don't create MainWindowImpl, AppSettingsGUI and GObjectViewFactoryRegistry
 
-    ScriptingToolRegistry *str = new ScriptingToolRegistry();
+    ScriptingToolRegistry* str = new ScriptingToolRegistry();
     appContext->setScriptingToolRegistry(str);
 
-    ExternalToolRegistry *etr = new ExternalToolRegistry();
+    ExternalToolRegistry* etr = new ExternalToolRegistry();
     appContext->setExternalToolRegistry(etr);
 
-    UdrSchemaRegistry *schemaRegistry = new UdrSchemaRegistry();
+    UdrSchemaRegistry* schemaRegistry = new UdrSchemaRegistry();
     appContext->setUdrSchemaRegistry(schemaRegistry);
 
-    U2DbiRegistry *dbiRegistry = new U2DbiRegistry();
+    U2DbiRegistry* dbiRegistry = new U2DbiRegistry();
     appContext->setDbiRegistry(dbiRegistry);
 
-    DocumentFormatRegistryImpl *dfr = new DocumentFormatRegistryImpl();
+    DocumentFormatRegistryImpl* dfr = new DocumentFormatRegistryImpl();
     appContext->setDocumentFormatRegistry(dfr);
 
-    PluginSupportImpl *psp = new PluginSupportImpl();
+    PluginSupportImpl* psp = new PluginSupportImpl();
     appContext->setPluginSupport(psp);
 
-    ServiceRegistryImpl *sreg = new ServiceRegistryImpl();
+    ServiceRegistryImpl* sreg = new ServiceRegistryImpl();
     appContext->setServiceRegistry(sreg);
 
-    IOAdapterRegistryImpl *io = new IOAdapterRegistryImpl();
+    IOAdapterRegistryImpl* io = new IOAdapterRegistryImpl();
     appContext->setIOAdapterRegistry(io);
 
-    DNATranslationRegistry *dtr = new DNATranslationRegistry();
+    DNATranslationRegistry* dtr = new DNATranslationRegistry();
     appContext->setDNATranslationRegistry(dtr);
 
-    DNAAlphabetRegistry *dal = new DNAAlphabetRegistryImpl(dtr);
+    DNAAlphabetRegistry* dal = new DNAAlphabetRegistryImpl(dtr);
     appContext->setDNAAlphabetRegistry(dal);
 
     // unlike ugene's main.cpp we don't create ScriptManagerView, MsaColorSchemeRegistry
-    DBXRefRegistry *dbxrr = new DBXRefRegistry();
+    DBXRefRegistry* dbxrr = new DBXRefRegistry();
     appContext->setDBXRefRegistry(dbxrr);
 
-    MSAConsensusAlgorithmRegistry *msaConsReg = new MSAConsensusAlgorithmRegistry();
+    MSAConsensusAlgorithmRegistry* msaConsReg = new MSAConsensusAlgorithmRegistry();
     appContext->setMSAConsensusAlgorithmRegistry(msaConsReg);
 
-    MSADistanceAlgorithmRegistry *msaDistReg = new MSADistanceAlgorithmRegistry();
+    MSADistanceAlgorithmRegistry* msaDistReg = new MSADistanceAlgorithmRegistry();
     appContext->setMSADistanceAlgorithmRegistry(msaDistReg);
 
-    AssemblyConsensusAlgorithmRegistry *assemblyConsReg = new AssemblyConsensusAlgorithmRegistry();
+    AssemblyConsensusAlgorithmRegistry* assemblyConsReg = new AssemblyConsensusAlgorithmRegistry();
     appContext->setAssemblyConsensusAlgorithmRegistry(assemblyConsReg);
 
-    PWMConversionAlgorithmRegistry *pwmConvReg = new PWMConversionAlgorithmRegistry();
+    PWMConversionAlgorithmRegistry* pwmConvReg = new PWMConversionAlgorithmRegistry();
     appContext->setPWMConversionAlgorithmRegistry(pwmConvReg);
 
-    SubstMatrixRegistry *smr = new SubstMatrixRegistry();
+    SubstMatrixRegistry* smr = new SubstMatrixRegistry();
     appContext->setSubstMatrixRegistry(smr);
 
-    SmithWatermanTaskFactoryRegistry *swar = new SmithWatermanTaskFactoryRegistry();
+    SmithWatermanTaskFactoryRegistry* swar = new SmithWatermanTaskFactoryRegistry();
     appContext->setSmithWatermanTaskFactoryRegistry(swar);
 
-    MolecularSurfaceFactoryRegistry *msfr = new MolecularSurfaceFactoryRegistry();
+    MolecularSurfaceFactoryRegistry* msfr = new MolecularSurfaceFactoryRegistry();
     appContext->setMolecularSurfaceFactoryRegistry(msfr);
 
-    SWResultFilterRegistry *swrfr = new SWResultFilterRegistry();
+    SWResultFilterRegistry* swrfr = new SWResultFilterRegistry();
     appContext->setSWResultFilterRegistry(swrfr);
 
-    SecStructPredictAlgRegistry *sspar = new SecStructPredictAlgRegistry();
+    SecStructPredictAlgRegistry* sspar = new SecStructPredictAlgRegistry();
     appContext->setSecStructPedictAlgRegistry(sspar);
 
-    CudaGpuRegistry *cgr = new CudaGpuRegistry();
+    CudaGpuRegistry* cgr = new CudaGpuRegistry();
     appContext->setCudaGpuRegistry(cgr);
 
-    AlignmentAlgorithmsRegistry *pwr = new AlignmentAlgorithmsRegistry();
+    AlignmentAlgorithmsRegistry* pwr = new AlignmentAlgorithmsRegistry();
     appContext->setAlignmentAlgorithmsRegistry(pwr);
 
 #ifdef OPENCL_SUPPORT
-    OpenCLGpuRegistry *oclgr = new OpenCLGpuRegistry();
+    OpenCLGpuRegistry* oclgr = new OpenCLGpuRegistry();
     appContext->setOpenCLGpuRegistry(oclgr);
 #endif
 
-    RecentlyDownloadedCache *rdc = new RecentlyDownloadedCache();
+    RecentlyDownloadedCache* rdc = new RecentlyDownloadedCache();
     appContext->setRecentlyDownloadedCache(rdc);
 
-    VirtualFileSystemRegistry *vfsReg = new VirtualFileSystemRegistry();
+    VirtualFileSystemRegistry* vfsReg = new VirtualFileSystemRegistry();
     appContext->setVirtualFileSystemRegistry(vfsReg);
 
-    DashboardInfoRegistry *dashboardInfoRegistry = new DashboardInfoRegistry;
+    DashboardInfoRegistry* dashboardInfoRegistry = new DashboardInfoRegistry;
     appContext->setDashboardInfoRegistry(dashboardInfoRegistry);
 
     Workflow::WorkflowEnv::init(new Workflow::WorkflowEnvImpl());
     Workflow::WorkflowEnv::getDomainRegistry()->registerEntry(new LocalWorkflow::LocalDomainFactory());
 
-    DnaAssemblyAlgRegistry *assemblyReg = new DnaAssemblyAlgRegistry();
+    DnaAssemblyAlgRegistry* assemblyReg = new DnaAssemblyAlgRegistry();
     appContext->setDnaAssemblyAlgRegistry(assemblyReg);
 
-    GenomeAssemblyAlgRegistry *genomeAssemblyReg = new GenomeAssemblyAlgRegistry();
+    GenomeAssemblyAlgRegistry* genomeAssemblyReg = new GenomeAssemblyAlgRegistry();
     appContext->setGenomeAssemblyAlgRegistry(genomeAssemblyReg);
 
-    DataBaseRegistry *dbr = new DataBaseRegistry();
+    DataBaseRegistry* dbr = new DataBaseRegistry();
     appContext->setDataBaseRegistry(dbr);
 
-    CDSearchFactoryRegistry *cdsfr = new CDSearchFactoryRegistry();
+    CDSearchFactoryRegistry* cdsfr = new CDSearchFactoryRegistry();
     appContext->setCDSearchFactoryRegistry(cdsfr);
 
-    StructuralAlignmentAlgorithmRegistry *saar = new StructuralAlignmentAlgorithmRegistry();
+    StructuralAlignmentAlgorithmRegistry* saar = new StructuralAlignmentAlgorithmRegistry();
     appContext->setStructuralAlignmentAlgorithmRegistry(saar);
 
-    ConvertFactoryRegistry *convertFactoryRegistry = new ConvertFactoryRegistry();
+    ConvertFactoryRegistry* convertFactoryRegistry = new ConvertFactoryRegistry();
     appContext->setConvertFactoryRegistry(convertFactoryRegistry);
 
-    SplicedAlignmentTaskRegistry *splicedAlignmentTaskRegistry = new SplicedAlignmentTaskRegistry();
+    SplicedAlignmentTaskRegistry* splicedAlignmentTaskRegistry = new SplicedAlignmentTaskRegistry();
     appContext->setSplicedAlignmentTaskRegistry(splicedAlignmentTaskRegistry);
 
-    WorkflowScriptRegistry *workflowScriptRegistry = new WorkflowScriptRegistry();
+    WorkflowScriptRegistry* workflowScriptRegistry = new WorkflowScriptRegistry();
     appContext->setWorkflowScriptRegistry(workflowScriptRegistry);
 
-    PasswordStorage *passwordStorage = new PasswordStorage();
+    PasswordStorage* passwordStorage = new PasswordStorage();
     appContext->setPasswordStorage(passwordStorage);
     AppSettingsImpl::addPublicDbCredentials2Settings();
 
-    CredentialsAsker *credentialsAsker = new CredentialsAskerCli();
+    CredentialsAsker* credentialsAsker = new CredentialsAskerCli();
     appContext->setCredentialsAsker(credentialsAsker);
 
-    AppFileStorage *appFileStorage = new AppFileStorage();
+    AppFileStorage* appFileStorage = new AppFileStorage();
     U2OpStatusImpl os;
     appFileStorage->init(os);
     if (os.hasError()) {
@@ -426,10 +426,10 @@ int main(int argc, char **argv) {
         appContext->setAppFileStorage(appFileStorage);
     }
 
-    U2DataPathRegistry *dpr = new U2DataPathRegistry();
+    U2DataPathRegistry* dpr = new U2DataPathRegistry();
     appContext->setDataPathRegistry(dpr);
 
-    TaskStatusBarCon *tsbc = new TaskStatusBarCon();
+    TaskStatusBarCon* tsbc = new TaskStatusBarCon();
 
     // show help if need
     bool showHelp = cmdLineRegistry->hasParameter(CMDLineCoreOptions::HELP) ||

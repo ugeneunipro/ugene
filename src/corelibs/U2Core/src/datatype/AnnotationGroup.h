@@ -36,7 +36,7 @@ class U2Feature;
 class U2CORE_EXPORT AnnotationGroup : public U2Entity {
 public:
     AnnotationGroup();
-    AnnotationGroup(const U2DataId &featureId, const QString &name, AnnotationGroup *parentGroup, AnnotationTableObject *parentObject);
+    AnnotationGroup(const U2DataId& featureId, const QString& name, AnnotationGroup* parentGroup, AnnotationTableObject* parentObject);
 
     ~AnnotationGroup();
     /*
@@ -44,53 +44,53 @@ public:
      * @pathMode allows to take into account group path separation symbol (currently "/")
      * I.e. if @pathMode is true then that symbol is allowed, otherwise it is not.
      */
-    static bool isValidGroupName(const QString &name, bool pathMode);
+    static bool isValidGroupName(const QString& name, bool pathMode);
     /*
      * After calling this function @set additionally contains all the distinct annotations
      * belonging to the subtree of this annotation group
      */
-    void findAllAnnotationsInGroupSubTree(QList<Annotation *> &set) const;
+    void findAllAnnotationsInGroupSubTree(QList<Annotation*>& set) const;
 
-    QList<Annotation *> getAnnotations(bool recurcively = false) const;
+    QList<Annotation*> getAnnotations(bool recurcively = false) const;
 
     bool hasAnnotations() const;
 
-    QList<Annotation *> addAnnotations(const QList<SharedAnnotationData> &anns);
+    QList<Annotation*> addAnnotations(const QList<SharedAnnotationData>& anns);
 
-    void addShallowAnnotations(const QList<Annotation *> &anns, bool newAnnotations);
+    void addShallowAnnotations(const QList<Annotation*>& anns, bool newAnnotations);
 
-    void removeAnnotations(const QList<Annotation *> &anns);
+    void removeAnnotations(const QList<Annotation*>& anns);
 
-    QList<AnnotationGroup *> getSubgroups() const;
+    QList<AnnotationGroup*> getSubgroups() const;
 
-    void removeSubgroup(AnnotationGroup *g);
+    void removeSubgroup(AnnotationGroup* g);
 
     QString getName() const;
 
-    void setName(const QString &newName);
+    void setName(const QString& newName);
 
     QString getGroupPath() const;
 
-    AnnotationTableObject *getGObject() const;
+    AnnotationTableObject* getGObject() const;
 
     /*
      * Returns parent annotation group. Returns *this (i.e. the same group) for a top-level group
      */
-    AnnotationGroup *getParentGroup();
+    AnnotationGroup* getParentGroup();
     /*
      * Returns subgroup located in @path. @create specifies whether it's required to create
      * a new group(s) accordingly to @path if they are not exist. If @create == false and
      * there are no subgroups satisfying @path, then *this is returned.
      */
-    AnnotationGroup *getSubgroup(const QString &path, bool create);
+    AnnotationGroup* getSubgroup(const QString& path, bool create);
 
-    AnnotationGroup *addSubgroup(const U2Feature &feature);
+    AnnotationGroup* addSubgroup(const U2Feature& feature);
 
-    Annotation *findAnnotationById(const U2DataId &featureId) const;
+    Annotation* findAnnotationById(const U2DataId& featureId) const;
 
-    AnnotationGroup *findSubgroupById(const U2DataId &featureId) const;
+    AnnotationGroup* findSubgroupById(const U2DataId& featureId) const;
 
-    void getSubgroupPaths(QStringList &res) const;
+    void getSubgroupPaths(QStringList& res) const;
     /**
      * Removes all references to subgroups and annotations
      */
@@ -100,7 +100,7 @@ public:
      */
     int getGroupDepth() const;
 
-    bool isParentOf(AnnotationGroup *g) const;
+    bool isParentOf(AnnotationGroup* g) const;
 
     bool isRootGroup() const;
     /**
@@ -108,19 +108,19 @@ public:
      */
     bool isTopLevelGroup() const;
 
-    bool operator==(const AnnotationGroup &other) const;
+    bool operator==(const AnnotationGroup& other) const;
 
     static const QString ROOT_GROUP_NAME;
     static const QChar GROUP_PATH_SEPARATOR;
 
 private:
-    AnnotationTableObject *parentObject;
+    AnnotationTableObject* parentObject;
     QString name;
 
-    AnnotationGroup *parentGroup;
-    QList<AnnotationGroup *> subgroups;
-    QList<Annotation *> annotations;
-    QHash<U2DataId, Annotation *> annotationById;
+    AnnotationGroup* parentGroup;
+    QList<AnnotationGroup*> subgroups;
+    QList<Annotation*> annotations;
+    QHash<U2DataId, Annotation*> annotationById;
 
     static const bool annotationGroupMetaRegistered;
 };
@@ -128,6 +128,6 @@ private:
 }  // namespace U2
 
 Q_DECLARE_METATYPE(U2::AnnotationGroup)
-Q_DECLARE_METATYPE(U2::AnnotationGroup *)
+Q_DECLARE_METATYPE(U2::AnnotationGroup*)
 
 #endif  //

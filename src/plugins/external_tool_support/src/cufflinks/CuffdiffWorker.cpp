@@ -49,7 +49,7 @@ namespace LocalWorkflow {
 /************************************************************************/
 class InputSlotValidator : public PortValidator {
 public:
-    virtual bool validate(const IntegralBusPort *port, NotificationsList &notificationList) const {
+    virtual bool validate(const IntegralBusPort* port, NotificationsList& notificationList) const {
         bool binded = isBinded(port, BaseSlots::URL_SLOT().getId());
         if (!binded) {
             QString name = slotName(port, BaseSlots::URL_SLOT().getId());
@@ -84,8 +84,8 @@ static const QString TMP_DIR_PATH("tmp-dir");
 static const QString SAMPLE_SLOT_ID("sample");
 
 void CuffdiffWorkerFactory::init() {
-    QList<PortDescriptor *> portDescriptors;
-    QList<Attribute *> attributes;
+    QList<PortDescriptor*> portDescriptors;
+    QList<Attribute*> attributes;
 
     // Description of the element
     Descriptor cuffdiffDescriptor(ACTOR_ID,
@@ -225,12 +225,12 @@ void CuffdiffWorkerFactory::init() {
     }
 
     // Create the actor prototype
-    ActorPrototype *proto = new IntegralBusActorPrototype(cuffdiffDescriptor,
+    ActorPrototype* proto = new IntegralBusActorPrototype(cuffdiffDescriptor,
                                                           portDescriptors,
                                                           attributes);
 
     // Values range of some parameters
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
 
     {
         QVariantMap vm;
@@ -279,14 +279,14 @@ void CuffdiffWorkerFactory::init() {
         BaseActorCategories::CATEGORY_RNA_SEQ(),
         proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new CuffdiffWorkerFactory());
 }
 
 /*****************************
  * CuffdiffPrompter
  *****************************/
-CuffdiffPrompter::CuffdiffPrompter(Actor *parent)
+CuffdiffPrompter::CuffdiffPrompter(Actor* parent)
     : PrompterBase<CuffdiffPrompter>(parent) {
 }
 
@@ -301,15 +301,15 @@ QString CuffdiffPrompter::composeRichDoc() {
 /*****************************
  * CuffdiffWorker
  *****************************/
-CuffdiffWorker::CuffdiffWorker(Actor *actor)
+CuffdiffWorker::CuffdiffWorker(Actor* actor)
     : BaseWorker(actor, false), inAssembly(nullptr), inTranscript(nullptr), groupBySamples(false) {
 }
 
 void CuffdiffWorker::initSlotsState() {
-    Port *port = actor->getPort(BasePorts::IN_ASSEMBLY_PORT_ID());
-    IntegralBusPort *bus = dynamic_cast<IntegralBusPort *>(port);
+    Port* port = actor->getPort(BasePorts::IN_ASSEMBLY_PORT_ID());
+    IntegralBusPort* bus = dynamic_cast<IntegralBusPort*>(port);
 
-    QList<Actor *> producers = bus->getProducers(SAMPLE_SLOT_ID);
+    QList<Actor*> producers = bus->getProducers(SAMPLE_SLOT_ID);
     groupBySamples = !producers.isEmpty();
 }
 
@@ -334,7 +334,7 @@ bool CuffdiffWorker::isReady() const {
     return (inTranscript->hasMessage() || inTranscript->isEnded());
 }
 
-Task *CuffdiffWorker::tick() {
+Task* CuffdiffWorker::tick() {
     while (inAssembly->hasMessage()) {
         takeAssembly();
     }
@@ -343,7 +343,7 @@ Task *CuffdiffWorker::tick() {
     }
 
     if (inTranscript->hasMessage()) {
-        CuffdiffSupportTask *t = new CuffdiffSupportTask(takeSettings());
+        CuffdiffSupportTask* t = new CuffdiffSupportTask(takeSettings());
         t->addListeners(createLogListeners());
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_onTaskFinished()));
         return t;
@@ -354,13 +354,13 @@ Task *CuffdiffWorker::tick() {
 }
 
 void CuffdiffWorker::sl_onTaskFinished() {
-    CuffdiffSupportTask *task = qobject_cast<CuffdiffSupportTask *>(sender());
+    CuffdiffSupportTask* task = qobject_cast<CuffdiffSupportTask*>(sender());
     if (Task::State_Finished != task->getState()) {
         return;
     }
 
     QStringList systemOutputFiles = task->getSystemOutputFiles();
-    foreach (const QString &url, task->getOutputFiles()) {
+    foreach (const QString& url, task->getOutputFiles()) {
         bool openBySystem = systemOutputFiles.contains(url);
         context->getMonitor()->addOutputFile(url, getActor()->getId(), openBySystem);
     }

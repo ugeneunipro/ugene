@@ -34,15 +34,15 @@ namespace U2 {
 
 const QString SettingsController::TYPE_URL = "url";
 
-SettingsController::SettingsController(WizardController *wc, SettingsWidget *_sw)
+SettingsController::SettingsController(WizardController* wc, SettingsWidget* _sw)
     : WidgetController(wc), sw(_sw), lineEdit(nullptr) {
 }
 
 SettingsController::~SettingsController() {
 }
 
-QWidget *SettingsController::createGUI(U2OpStatus &os) {
-    QWidget *result = nullptr;
+QWidget* SettingsController::createGUI(U2OpStatus& os) {
+    QWidget* result = nullptr;
 
     if (sw->type() == TYPE_URL) {
         result = createUrlSettingsWidget(os);
@@ -67,12 +67,12 @@ void SettingsController::sl_fileSelect() {
     }
 }
 
-QWidget *SettingsController::createUrlSettingsWidget(U2OpStatus & /*os*/) {
-    QWidget *result = new QWidget;
-    QHBoxLayout *mainLayout = new QHBoxLayout(result);
+QWidget* SettingsController::createUrlSettingsWidget(U2OpStatus& /*os*/) {
+    QWidget* result = new QWidget;
+    QHBoxLayout* mainLayout = new QHBoxLayout(result);
     mainLayout->setMargin(0);
 
-    QLabel *label = new QLabel(sw->label());
+    QLabel* label = new QLabel(sw->label());
     mainLayout->addWidget(label);
 
     lineEdit = new QLineEdit;
@@ -86,7 +86,7 @@ QWidget *SettingsController::createUrlSettingsWidget(U2OpStatus & /*os*/) {
     connect(lineEdit, SIGNAL(editingFinished()), SLOT(sl_valueChanged()));
     mainLayout->addWidget(lineEdit);
 
-    QToolButton *toolButton = new QToolButton;
+    QToolButton* toolButton = new QToolButton;
     toolButton->setText("...");
     connect(toolButton, SIGNAL(clicked()), SLOT(sl_fileSelect()));
     mainLayout->addWidget(toolButton);

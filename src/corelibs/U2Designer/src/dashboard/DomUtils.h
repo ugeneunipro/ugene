@@ -30,21 +30,21 @@ namespace U2 {
 
 class DomUtils {
 public:
-    static QDomDocument fromString(const QString &string, QString &parseError);
+    static QDomDocument fromString(const QString& string, QString& parseError);
 
-    static QDomElement findElementById(const QDomElement &element, const QString &id);
+    static QDomElement findElementById(const QDomElement& element, const QString& id);
 
-    static QDomElement findParentByTag(const QDomElement &element, const QString &tagName);
+    static QDomElement findParentByTag(const QDomElement& element, const QString& tagName);
 
-    static bool hasClass(const QDomElement &element, const QString &className);
+    static bool hasClass(const QDomElement& element, const QString& className);
 
-    static QList<QDomElement> findChildElementsByClass(const QDomNode &node, const QString &className, int maxDepth = -1);
+    static QList<QDomElement> findChildElementsByClass(const QDomNode& node, const QString& className, int maxDepth = -1);
 
-    static void findChildElementsByClass(const QDomNode &node, const QString &className, QList<QDomElement> &result, int maxDepth = -1);
+    static void findChildElementsByClass(const QDomNode& node, const QString& className, QList<QDomElement>& result, int maxDepth = -1);
 
-    static QDomElement findChildElementByClass(const QDomNode &element, const QString &className, int maxDepth = -1);
+    static QDomElement findChildElementByClass(const QDomNode& element, const QString& className, int maxDepth = -1);
 
-    static QString toString(const QDomElement &element, bool includeElement);
+    static QString toString(const QDomElement& element, bool includeElement);
 };
 
 }  // namespace U2

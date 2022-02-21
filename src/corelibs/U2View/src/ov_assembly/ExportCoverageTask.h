@@ -67,13 +67,13 @@ public:
 class GetAssemblyVisibleNameTask : public Task {
     Q_OBJECT
 public:
-    GetAssemblyVisibleNameTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId)
+    GetAssemblyVisibleNameTask(const U2DbiRef& dbiRef, const U2DataId& assemblyId)
         : Task(tr("Get visible name of Assembly"), TaskFlag_None), dbiRef(dbiRef), assemblyId(assemblyId) {
     }
 
     void run();
 
-    const QString &getAssemblyVisibleName() const {
+    const QString& getAssemblyVisibleName() const {
         return assemblyName;
     }
 
@@ -86,30 +86,30 @@ private:
 class U2VIEW_EXPORT ExportCoverageTask : public Task {
     Q_OBJECT
 public:
-    ExportCoverageTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, const ExportCoverageSettings &settings, TaskFlags flags = TaskFlags_NR_FOSE_COSC);
+    ExportCoverageTask(const U2DbiRef& dbiRef, const U2DataId& assemblyId, const ExportCoverageSettings& settings, TaskFlags flags = TaskFlags_NR_FOSE_COSC);
 
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
     ReportResult report();
 
-    const QString &getUrl() const;
+    const QString& getUrl() const;
 
 private slots:
     void sl_regionIsProcessed(qint64 startPos);
 
 protected:
-    virtual void processRegion(const QVector<CoveragePerBaseInfo> *data) = 0;
+    virtual void processRegion(const QVector<CoveragePerBaseInfo>* data) = 0;
     virtual void writeHeader();
-    void write(const QByteArray &dataToWrite);
-    void identifyAlphabet(QVector<CoveragePerBaseInfo> *regionCoverage);
+    void write(const QByteArray& dataToWrite);
+    void identifyAlphabet(QVector<CoveragePerBaseInfo>* regionCoverage);
 
     const U2DbiRef dbiRef;
     const U2DataId assemblyId;
     const ExportCoverageSettings settings;
 
     QString assemblyName;
-    GetAssemblyVisibleNameTask *getAssemblyNameTask;
-    CalculateCoveragePerBaseTask *calculateTask;
+    GetAssemblyVisibleNameTask* getAssemblyNameTask;
+    CalculateCoveragePerBaseTask* calculateTask;
     QScopedPointer<IOAdapter> ioAdapter;
     qint64 alreadyProcessed;
     QList<char> alphabetChars;
@@ -121,12 +121,12 @@ protected:
 class U2VIEW_EXPORT ExportCoverageHistogramTask : public ExportCoverageTask {
     Q_OBJECT
 public:
-    ExportCoverageHistogramTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, const ExportCoverageSettings &settings);
+    ExportCoverageHistogramTask(const U2DbiRef& dbiRef, const U2DataId& assemblyId, const ExportCoverageSettings& settings);
 
     void run();
 
 protected:
-    void processRegion(const QVector<CoveragePerBaseInfo> *data);
+    void processRegion(const QVector<CoveragePerBaseInfo>* data);
 
 private:
     QByteArray toByteArray(int coverage, qint64 assemblyLength) const;
@@ -136,28 +136,28 @@ private:
 
 class U2VIEW_EXPORT ExportCoveragePerBaseTask : public ExportCoverageTask {
 public:
-    ExportCoveragePerBaseTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, const ExportCoverageSettings &settings);
+    ExportCoveragePerBaseTask(const U2DbiRef& dbiRef, const U2DataId& assemblyId, const ExportCoverageSettings& settings);
 
     // void prepare();
 
 protected:
-    void processRegion(const QVector<CoveragePerBaseInfo> *data);
+    void processRegion(const QVector<CoveragePerBaseInfo>* data);
     void writeHeader();
 
 private:
-    QByteArray toByteArray(const CoveragePerBaseInfo &info, int pos) const;  // pos - 1-based position
-    void writeResult(const QVector<CoveragePerBaseInfo> *data);
+    QByteArray toByteArray(const CoveragePerBaseInfo& info, int pos) const;  // pos - 1-based position
+    void writeResult(const QVector<CoveragePerBaseInfo>* data);
 };
 
 class U2VIEW_EXPORT ExportCoverageBedgraphTask : public ExportCoverageTask {
 public:
-    ExportCoverageBedgraphTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, const ExportCoverageSettings &settings);
+    ExportCoverageBedgraphTask(const U2DbiRef& dbiRef, const U2DataId& assemblyId, const ExportCoverageSettings& settings);
 
     // void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 protected:
-    void processRegion(const QVector<CoveragePerBaseInfo> *data);
+    void processRegion(const QVector<CoveragePerBaseInfo>* data);
     void writeHeader();
 
 private:

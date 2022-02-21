@@ -36,21 +36,21 @@ typedef PrompterBase<FastQCPrompter> FastQCBase;
 class FastQCPrompter : public FastQCBase {
     Q_OBJECT
 public:
-    FastQCPrompter(Actor *p = 0)
+    FastQCPrompter(Actor* p = 0)
         : FastQCBase(p) {
     }
 
 protected:
     QString composeRichDoc();
-};    //FastQCPrompter
+};  // FastQCPrompter
 
 class FastQCWorker : public BaseWorker {
     Q_OBJECT
 public:
-    FastQCWorker(Actor *a);
+    FastQCWorker(Actor* a);
 
     void init() override;
-    Task *tick() override;
+    Task* tick() override;
     void cleanup() override;
 
     static const QString BASE_FASTQC_SUBDIR;
@@ -64,14 +64,14 @@ public:
     static const QString CONTAMINANTS;
 
 private:
-    IntegralBus *inputUrlPort;
+    IntegralBus* inputUrlPort;
 
 public slots:
-    void sl_taskFinished(Task *task);
+    void sl_taskFinished(Task* task);
 
 private:
     QString getUrlAndSetupScriptValues();
-};    //FastQCWorker
+};  // FastQCWorker
 
 class FastQCFactory : public DomainFactory {
     static const QString ACTOR_ID;
@@ -81,12 +81,12 @@ public:
     FastQCFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    Worker *createWorker(Actor *a) {
+    Worker* createWorker(Actor* a) {
         return new FastQCWorker(a);
     }
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    //_U2_FASTQC_WORKER_H_
+#endif  //_U2_FASTQC_WORKER_H_

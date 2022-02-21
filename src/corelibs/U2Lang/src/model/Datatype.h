@@ -53,8 +53,8 @@ public:
         Map
     };  // Kind
 
-    DataType(const QString &id, const QString &name, const QString &desc);
-    DataType(const Descriptor &d);
+    DataType(const QString& id, const QString& name, const QString& desc);
+    DataType(const Descriptor& d);
     virtual ~DataType() {
     }
 
@@ -75,7 +75,7 @@ public:
     // default: empty descriptor
     // in map type: corresponding descriptor
     // in list type: element type
-    virtual DataTypePtr getDatatypeByDescriptor(const Descriptor &idd = Descriptor(QString())) const;
+    virtual DataTypePtr getDatatypeByDescriptor(const Descriptor& idd = Descriptor(QString())) const;
 
     // used only in map type: returns list of all types from map
     // default: empty list
@@ -86,7 +86,7 @@ public:
     virtual QMap<Descriptor, DataTypePtr> getDatatypesMap() const;
 
     // finds Descriptor identified with 'id' in list of Descriptors from getAllDescriptors function
-    Descriptor getDatatypeDescriptor(const QString &id) const;
+    Descriptor getDatatypeDescriptor(const QString& id) const;
 
     static const QString EMPTY_TYPESET_ID;
 
@@ -99,11 +99,11 @@ public:
  */
 class U2LANG_EXPORT MapDataType : public DataType {
 public:
-    MapDataType(const Descriptor &d, const QMap<Descriptor, DataTypePtr> &m);
+    MapDataType(const Descriptor& d, const QMap<Descriptor, DataTypePtr>& m);
 
     // reimplemented from Datatype
     virtual DataType::Kind kind() const;
-    virtual DataTypePtr getDatatypeByDescriptor(const Descriptor &d) const;
+    virtual DataTypePtr getDatatypeByDescriptor(const Descriptor& d) const;
     virtual QList<Descriptor> getAllDescriptors() const;
     virtual QMap<Descriptor, DataTypePtr> getDatatypesMap() const;
 
@@ -119,11 +119,11 @@ protected:
  */
 class U2LANG_EXPORT ListDataType : public DataType {
 public:
-    ListDataType(const Descriptor &d, DataTypePtr el);
+    ListDataType(const Descriptor& d, DataTypePtr el);
 
     // reimplemented from Datatype
     virtual DataType::Kind kind() const;
-    virtual DataTypePtr getDatatypeByDescriptor(const Descriptor &idd = Descriptor(QString())) const;
+    virtual DataTypePtr getDatatypeByDescriptor(const Descriptor& idd = Descriptor(QString())) const;
 
 protected:
     //
@@ -141,9 +141,9 @@ class DataTypeRegistry {
 public:
     virtual ~DataTypeRegistry();
 
-    virtual DataTypePtr getById(const QString &id) const;
+    virtual DataTypePtr getById(const QString& id) const;
     virtual bool registerEntry(DataTypePtr t);
-    virtual DataTypePtr unregisterEntry(const QString &id);
+    virtual DataTypePtr unregisterEntry(const QString& id);
 
     virtual QList<DataTypePtr> getAllEntries() const;
     virtual QList<QString> getAllIds() const;
@@ -166,7 +166,7 @@ public:
     virtual ~DataTypeValueFactory() {
     }
 
-    virtual QVariant getValueFromString(const QString &str, bool *ok = nullptr) const = 0;
+    virtual QVariant getValueFromString(const QString& str, bool* ok = nullptr) const = 0;
     virtual QString getId() const = 0;
 
 };  // DataTypeValueFactory

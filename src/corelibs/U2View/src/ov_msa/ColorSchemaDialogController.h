@@ -22,9 +22,6 @@
 #ifndef _U2_COLOR_SCHEMA_DIALOG_CONTROLLER_H_
 #define _U2_COLOR_SCHEMA_DIALOG_CONTROLLER_H_
 
-#include <ui_ColorSchemaSettingsWidget.h>
-#include <ui_CreateMSAScheme.h>
-
 #include <QDialog>
 #include <QMap>
 #include <QMouseEvent>
@@ -38,25 +35,28 @@
 
 #include "ui_ColorSchemaDialog.h"
 
+#include <ui_ColorSchemaSettingsWidget.h>
+#include <ui_CreateMSAScheme.h>
+
 namespace U2 {
 
 class ColorSchemaDialogController : public QDialog, public Ui_ColorSchemaDialog {
     Q_OBJECT
 public:
-    ColorSchemaDialogController(QMap<char, QColor> &colors);
+    ColorSchemaDialogController(QMap<char, QColor>& colors);
     ~ColorSchemaDialogController();
     int adjustAlphabetColors();
 
 protected:
-    void mouseReleaseEvent(QMouseEvent *);
-    void paintEvent(QPaintEvent *);
+    void mouseReleaseEvent(QMouseEvent*);
+    void paintEvent(QPaintEvent*);
 private slots:
     void sl_onClear();
     void sl_onRestore();
 
 private:
-    QPixmap *alphabetColorsView;
-    QMap<char, QColor> &newColors;
+    QPixmap* alphabetColorsView;
+    QMap<char, QColor>& newColors;
     QMap<char, QColor> storedColors;
     QMap<char, QRect> charsPlacement;
 };
@@ -72,11 +72,11 @@ public:
 class ColorSchemaSettingsPageWidget : public AppSettingsGUIPageWidget, public Ui_ColorSchemaSettingsWidget {
     Q_OBJECT
 public:
-    ColorSchemaSettingsPageWidget(ColorSchemaSettingsPageController *ctrl);
+    ColorSchemaSettingsPageWidget(ColorSchemaSettingsPageController* ctrl);
 
-    virtual void setState(AppSettingsGUIPageState *state);
+    virtual void setState(AppSettingsGUIPageState* state);
 
-    virtual AppSettingsGUIPageState *getState(QString &err) const;
+    virtual AppSettingsGUIPageState* getState(QString& err) const;
 
 private slots:
     void sl_onColorsDirButton();
@@ -93,21 +93,21 @@ private:
 class CreateColorSchemaDialog : public QDialog, public Ui_CreateMSAScheme {
     Q_OBJECT
 public:
-    CreateColorSchemaDialog(ColorSchemeData *, QStringList usedNames);
+    CreateColorSchemaDialog(ColorSchemeData*, QStringList usedNames);
     int createNewScheme();
 
 private slots:
     void sl_createSchema();
     void sl_cancel();
-    void sl_schemaNameEdited(const QString &);
+    void sl_schemaNameEdited(const QString&);
     void sl_alphabetChanged(int);
 
 private:
-    bool isNameExist(const QString &);
-    bool isSchemaNameValid(const QString &, QString &);
+    bool isNameExist(const QString&);
+    bool isSchemaNameValid(const QString&, QString&);
 
     QStringList usedNames;
-    ColorSchemeData *newSchema;
+    ColorSchemeData* newSchema;
 };
 
 }  // namespace U2

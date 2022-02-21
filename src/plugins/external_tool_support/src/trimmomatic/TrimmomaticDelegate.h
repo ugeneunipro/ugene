@@ -37,18 +37,18 @@ namespace LocalWorkflow {
 class TrimmomaticDelegate : public PropertyDelegate {
     Q_OBJECT
 public:
-    TrimmomaticDelegate(QObject *parent = 0);
+    TrimmomaticDelegate(QObject* parent = 0);
 
-    QVariant getDisplayValue(const QVariant &value) const;
-    PropertyDelegate *clone();
-    QWidget *createEditor(QWidget *parent,
-                          const QStyleOptionViewItem &option,
-                          const QModelIndex &index) const;
-    PropertyWidget *createWizardWidget(U2OpStatus &os,
-                                       QWidget *parent) const;
+    QVariant getDisplayValue(const QVariant& value) const;
+    PropertyDelegate* clone();
+    QWidget* createEditor(QWidget* parent,
+                          const QStyleOptionViewItem& option,
+                          const QModelIndex& index) const;
+    PropertyWidget* createWizardWidget(U2OpStatus& os,
+                                       QWidget* parent) const;
 
-    void setEditorData(QWidget *editor, const QModelIndex &index) const;
-    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
+    void setEditorData(QWidget* editor, const QModelIndex& index) const;
+    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
 
 private slots:
     void sl_commit();
@@ -57,32 +57,32 @@ private slots:
 class TrimmomaticPropertyWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    TrimmomaticPropertyWidget(QWidget *parent = nullptr, DelegateTags *tags = nullptr);
+    TrimmomaticPropertyWidget(QWidget* parent = nullptr, DelegateTags* tags = nullptr);
 
     QVariant value();
 
 public slots:
-    void setValue(const QVariant &value);
+    void setValue(const QVariant& value);
 
 private slots:
     void sl_textEdited();
     void sl_showDialog();
 
 private:
-    QLineEdit *lineEdit;
-    QToolButton *toolButton;
+    QLineEdit* lineEdit;
+    QToolButton* toolButton;
 };
 
 class TrimmomaticPropertyDialog : public QDialog, private Ui_TrimmomaticPropertyDialog {
     Q_OBJECT
 public:
-    TrimmomaticPropertyDialog(const QString &value, QWidget *parent);
+    TrimmomaticPropertyDialog(const QString& value, QWidget* parent);
 
     QString getValue() const;
 
 private slots:
     void sl_currentRowChanged();
-    void sl_addStep(QAction *a);
+    void sl_addStep(QAction* a);
     void sl_moveStepUp();
     void sl_moveStepDown();
     void sl_removeStep();
@@ -93,19 +93,19 @@ private:
     void enableButtons(bool setEnabled);
     static QString defaultDir();
 
-    void addStep(TrimmomaticStep *step);
-    void parseCommand(const QString &command);
+    void addStep(TrimmomaticStep* step);
+    void parseCommand(const QString& command);
 
-    QList<TrimmomaticStep *> steps;
-    QWidget *currentWidget;
-    QWidget *defaultSettingsWidget;
-    QMenu *menu;
+    QList<TrimmomaticStep*> steps;
+    QWidget* currentWidget;
+    QWidget* defaultSettingsWidget;
+    QMenu* menu;
 
     static const QString DEFAULT_DESCRIPTION;
     static const QString DEFAULT_SETTINGS_TEXT;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_TRIMMOMATIC_DELEGATE_H_
+#endif  // _U2_TRIMMOMATIC_DELEGATE_H_

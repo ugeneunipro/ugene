@@ -22,10 +22,10 @@
 #ifndef _U2_APPSETTINGS_DIALOG_CONTROLLER_H_
 #define _U2_APPSETTINGS_DIALOG_CONTROLLER_H_
 
-#include <ui_AppSettingsDialog.h>
-
 #include <QTimerEvent>
 #include <QTreeWidgetItem>
+
+#include <ui_AppSettingsDialog.h>
 
 class AppSettingsDialogTree;
 
@@ -41,36 +41,36 @@ class AppSettingsDialogController : public QDialog, public Ui_AppSettingsDialog 
     Q_OBJECT
 
 public:
-    AppSettingsDialogController(const QString &pageId = QString(), QWidget *p = nullptr);
+    AppSettingsDialogController(const QString& pageId = QString(), QWidget* p = nullptr);
 
 public slots:
     virtual void accept();
     virtual void reject();
-    void sl_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
+    void sl_currentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous);
 
 protected:
-    void timerEvent(QTimerEvent *e);
+    void timerEvent(QTimerEvent* e);
 
 private slots:
     void sl_setLockState(bool);
 
 private:
     bool checkCurrentState(bool saveStateInItem, bool showError);
-    bool turnPage(AppSettingsTreeItem *page);
-    void registerPage(AppSettingsGUIPageController *page);
+    bool turnPage(AppSettingsTreeItem* page);
+    void registerPage(AppSettingsGUIPageController* page);
 
-    AppSettingsTreeItem *findPageItem(const QString &id) const;
+    AppSettingsTreeItem* findPageItem(const QString& id) const;
 
-    AppSettingsTreeItem *currentPage;
-    HelpButton *helpButton;
+    AppSettingsTreeItem* currentPage;
+    HelpButton* helpButton;
 };
 
 class AppSettingsTreeItem : public QTreeWidgetItem {
 public:
-    AppSettingsTreeItem(AppSettingsGUIPageController *pageController);
-    AppSettingsGUIPageController *pageController;
-    AppSettingsGUIPageState *pageState;
-    AppSettingsGUIPageWidget *pageWidget;
+    AppSettingsTreeItem(AppSettingsGUIPageController* pageController);
+    AppSettingsGUIPageController* pageController;
+    AppSettingsGUIPageState* pageState;
+    AppSettingsGUIPageWidget* pageWidget;
 };
 
 }  // namespace U2

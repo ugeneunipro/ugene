@@ -29,31 +29,31 @@
 
 namespace U2 {
 
-ProjectFilterProxyModel::ProjectFilterProxyModel(const ProjectTreeControllerModeSettings &settings, QObject *p)
+ProjectFilterProxyModel::ProjectFilterProxyModel(const ProjectTreeControllerModeSettings& settings, QObject* p)
     : QSortFilterProxyModel(p), settings(settings) {
     setDynamicSortFilter(true);
     setFilterKeyColumn(0);
 }
 
-void ProjectFilterProxyModel::updateSettings(const ProjectTreeControllerModeSettings &newSettings) {
+void ProjectFilterProxyModel::updateSettings(const ProjectTreeControllerModeSettings& newSettings) {
     settings = newSettings;
     invalidateFilter();
 }
 
-ProjectViewModel *ProjectFilterProxyModel::sourceModel() const {
-    ProjectViewModel *srcModel = qobject_cast<ProjectViewModel *>(QSortFilterProxyModel::sourceModel());
+ProjectViewModel* ProjectFilterProxyModel::sourceModel() const {
+    ProjectViewModel* srcModel = qobject_cast<ProjectViewModel*>(QSortFilterProxyModel::sourceModel());
     SAFE_POINT(nullptr != srcModel, L10N::nullPointerError("project view model"), nullptr);
     return srcModel;
 }
 
-QModelIndex ProjectFilterProxyModel::getIndexForDoc(Document *doc) const {
-    ProjectViewModel *srcModel = sourceModel();
+QModelIndex ProjectFilterProxyModel::getIndexForDoc(Document* doc) const {
+    ProjectViewModel* srcModel = sourceModel();
     CHECK(nullptr != srcModel, QModelIndex());
     return mapFromSource(srcModel->getIndexForDoc(doc));
 }
 
-bool ProjectFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const {
-    ProjectViewModel *srcModel = sourceModel();
+bool ProjectFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const {
+    ProjectViewModel* srcModel = sourceModel();
     CHECK(nullptr != srcModel, false);
 
     const QModelIndex index = srcModel->index(sourceRow, 0, sourceParent);
@@ -70,10 +70,10 @@ bool ProjectFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex 
     }
 }
 
-bool ProjectFilterProxyModel::filterAcceptsFolder(const Folder *folder) const {
+bool ProjectFilterProxyModel::filterAcceptsFolder(const Folder* folder) const {
     SAFE_POINT(nullptr != folder, "Invalid folder detected", false);
 
-    ProjectViewModel *srcModel = sourceModel();
+    ProjectViewModel* srcModel = sourceModel();
     CHECK(nullptr != srcModel, true);
 
     const QString path = folder->getFolderPath();
@@ -84,15 +84,15 @@ bool ProjectFilterProxyModel::filterAcceptsFolder(const Folder *folder) const {
         return false;
     }
 
-    Document *doc = folder->getDocument();
-    QList<GObject *> objs = srcModel->getFolderObjects(doc, path);
-    foreach (GObject *obj, objs) {
+    Document* doc = folder->getDocument();
+    QList<GObject*> objs = srcModel->getFolderObjects(doc, path);
+    foreach (GObject* obj, objs) {
         if (settings.isObjectShown(obj)) {
             return true;
         }
     }
 
-    foreach (Folder *subFolder, srcModel->getSubfolders(doc, path)) {
+    foreach (Folder* subFolder, srcModel->getSubfolders(doc, path)) {
         if (filterAcceptsFolder(subFolder)) {
             return true;
         }

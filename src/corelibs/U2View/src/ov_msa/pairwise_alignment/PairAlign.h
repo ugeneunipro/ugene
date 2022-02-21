@@ -57,11 +57,11 @@ class U2VIEW_EXPORT PairAlign : public QWidget, public Ui_PairwiseAlignmentOptio
     Q_DISABLE_COPY(PairAlign)
 
 public:
-    PairAlign(MSAEditor *_msa);
+    PairAlign(MSAEditor* _msa);
 
 private slots:
-    void sl_algorithmSelected(const QString &algorithmName);
-    void sl_subwidgetStateChanged(const QString &id);
+    void sl_algorithmSelected(const QString& algorithmName);
+    void sl_subwidgetStateChanged(const QString& id);
     void sl_inNewWindowCheckBoxChangeState(bool newState);
     void sl_alignButtonPressed();
     void sl_outputFileChanged();
@@ -79,7 +79,7 @@ private:
     void checkState();
     void updatePercentOfSimilarity();
     bool checkSequenceNames();
-    AlignmentAlgorithm *getAlgorithmById(const QString &algorithmId);
+    AlignmentAlgorithm* getAlgorithmById(const QString& algorithmId);
     /* Updates label with warning message. Types: 0 -> bad alphabet, 1 -> same sequences in selectors. */
     void updateWarningMessage(int warningMessageType);
     void initSaveController();
@@ -87,20 +87,20 @@ private:
     bool isValidSequenceId(qint64 sequenceId) const;
     static QString getDefaultFilePath();
 
-    MSAEditor *msa;
-    PairwiseAlignmentWidgetsSettings *pairwiseAlignmentWidgetsSettings;
-    MSADistanceAlgorithm *distanceCalcTask;
+    MSAEditor* msa;
+    PairwiseAlignmentWidgetsSettings* pairwiseAlignmentWidgetsSettings;
+    MSADistanceAlgorithm* distanceCalcTask;
 
-    AlignmentAlgorithmMainWidget *settingsWidget;  // created by factories on demand
+    AlignmentAlgorithmMainWidget* settingsWidget;  // created by factories on demand
 
-    ShowHideSubgroupWidget *showHideSequenceWidget;
-    ShowHideSubgroupWidget *showHideSettingsWidget;
-    ShowHideSubgroupWidget *showHideOutputWidget;
+    ShowHideSubgroupWidget* showHideSequenceWidget;
+    ShowHideSubgroupWidget* showHideSettingsWidget;
+    ShowHideSubgroupWidget* showHideOutputWidget;
 
-    SequenceSelectorWidgetController *firstSeqSelectorWC;
-    SequenceSelectorWidgetController *secondSeqSelectorWC;
+    SequenceSelectorWidgetController* firstSeqSelectorWC;
+    SequenceSelectorWidgetController* secondSeqSelectorWC;
 
-    SaveDocumentController *saveController;
+    SaveDocumentController* saveController;
     MsaOpSavableTab savableTab;
 
     bool showSequenceWidget;

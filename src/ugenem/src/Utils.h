@@ -36,13 +36,13 @@ public:
     static QString getDumpUrl();
     static bool hasSilentModeFlag();
     static QString getFailedTestName();
-    static QString loadReportFromUrl(const QString &url);
+    static QString loadReportFromUrl(const QString& url);
 
     static const QString SESSION_DB_UGENE_ARG;
 
 private:
-    static bool hasArgument(const QString &key);
-    static QString getArgumentValue(const QString &key);
+    static bool hasArgument(const QString& key);
+    static QString getArgumentValue(const QString& key);
 };
 
 #endif  // _UGENEM_UTILS_H_

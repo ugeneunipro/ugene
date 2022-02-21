@@ -32,24 +32,24 @@ namespace LocalWorkflow {
 class ImportAnnotationsWorker : public BaseWorker {
     Q_OBJECT
 public:
-    ImportAnnotationsWorker(Actor *p)
+    ImportAnnotationsWorker(Actor* p)
         : BaseWorker(p), inPort(nullptr), outPort(nullptr) {
     }
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private slots:
-    void sl_docsLoaded(Task *);
+    void sl_docsLoaded(Task*);
 
 private:
-    IntegralBus *inPort;
-    IntegralBus *outPort;
-    QMap<Task *, QList<SharedAnnotationData>> annsMap;
+    IntegralBus* inPort;
+    IntegralBus* outPort;
+    QMap<Task*, QList<SharedAnnotationData>> annsMap;
 
 private:
-    void addTaskAnnotations(const QVariant &data, Task *t);
+    void addTaskAnnotations(const QVariant& data, Task* t);
 };  // ImportAnnotationsWorker
 
 class ImportAnnotationsWorkerFactory : public DomainFactory {
@@ -60,7 +60,7 @@ public:
         : DomainFactory(ACTOR_ID) {
     }
     static void init();
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 
 };  // ImportAnnotationsWorkerFactory
 

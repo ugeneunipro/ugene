@@ -44,7 +44,7 @@ const QString ColorSchemeUtils::COLOR_SCHEME_COLOR_SCHEMA_DIR = "colors_scheme_d
 
 namespace {
 
-bool lineValid(const QStringList &properties, const QMap<char, QColor> &alphColors) {
+bool lineValid(const QStringList& properties, const QMap<char, QColor>& alphColors) {
     if (properties.size() != 2) {
         return false;
     }
@@ -60,7 +60,7 @@ bool lineValid(const QStringList &properties, const QMap<char, QColor> &alphColo
     return true;
 }
 
-QByteArray uniteAlphabetChars(const QByteArray &firstAlphabetChars, const QByteArray &secondAlphabetChars) {
+QByteArray uniteAlphabetChars(const QByteArray& firstAlphabetChars, const QByteArray& secondAlphabetChars) {
     QByteArray unitedAlphabetChars = firstAlphabetChars;
     for (int i = 0; i < secondAlphabetChars.size(); ++i) {
         if (!unitedAlphabetChars.contains(secondAlphabetChars[i])) {
@@ -73,11 +73,11 @@ QByteArray uniteAlphabetChars(const QByteArray &firstAlphabetChars, const QByteA
 
 }  // namespace
 
-bool ColorSchemeUtils::getSchemaColors(ColorSchemeData &customScheme) {
-    QMap<char, QColor> &alphColors = customScheme.alpColors;
-    const QString &file = customScheme.name + COLOR_SCHEME_NAME_FILTERS;
-    DNAAlphabetType &type = customScheme.type;
-    bool &defaultAlpType = customScheme.defaultAlpType = true;
+bool ColorSchemeUtils::getSchemaColors(ColorSchemeData& customScheme) {
+    QMap<char, QColor>& alphColors = customScheme.alpColors;
+    const QString& file = customScheme.name + COLOR_SCHEME_NAME_FILTERS;
+    DNAAlphabetType& type = customScheme.type;
+    bool& defaultAlpType = customScheme.defaultAlpType = true;
 
     QString dirPath = getColorsDir();
     QDir dir(dirPath);
@@ -86,7 +86,7 @@ bool ColorSchemeUtils::getSchemaColors(ColorSchemeData &customScheme) {
         return false;
     }
 
-    IOAdapterFactory *factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+    IOAdapterFactory* factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
 
     QScopedPointer<IOAdapter> io(factory->createIOAdapter());
     if (!io->open(dir.filePath(file), IOAdapterMode_Read)) {
@@ -167,7 +167,7 @@ QList<ColorSchemeData> ColorSchemeUtils::getSchemas() {
     filters.append(QString("*%1").arg(COLOR_SCHEME_NAME_FILTERS));
 
     QStringList schemaFiles = dir.entryList(filters);
-    foreach (const QString &schemaName, schemaFiles) {
+    foreach (const QString& schemaName, schemaFiles) {
         ColorSchemeData schema;
         schema.name = schemaName.split(".").first();
         bool ok = getSchemaColors(schema);
@@ -188,7 +188,7 @@ QString ColorSchemeUtils::getColorsDir() {
     return res;
 }
 
-void ColorSchemeUtils::getDefaultUgeneColors(DNAAlphabetType type, QMap<char, QColor> &alphColors) {
+void ColorSchemeUtils::getDefaultUgeneColors(DNAAlphabetType type, QMap<char, QColor>& alphColors) {
     if (type == DNAAlphabet_AMINO) {
         alphColors['I'] = "#ff0000";
         alphColors['V'] = "#f60009";
@@ -224,9 +224,9 @@ void ColorSchemeUtils::getDefaultUgeneColors(DNAAlphabetType type, QMap<char, QC
 }
 
 QMap<char, QColor> ColorSchemeUtils::getDefaultSchemaColors(DNAAlphabetType type, bool defaultAlpType) {
-    QList<const DNAAlphabet *> alphabets = AppContext::getDNAAlphabetRegistry()->getRegisteredAlphabets();
+    QList<const DNAAlphabet*> alphabets = AppContext::getDNAAlphabetRegistry()->getRegisteredAlphabets();
     QMap<DNAAlphabetType, QByteArray> alphabetChars;
-    foreach (const DNAAlphabet *alphabet, alphabets) {  // default initialization
+    foreach (const DNAAlphabet* alphabet, alphabets) {  // default initialization
         if (defaultAlpType == alphabet->isDefault()) {
             alphabetChars[alphabet->getType()] = uniteAlphabetChars(alphabetChars.value(alphabet->getType()), alphabet->getAlphabetChars());
         }
@@ -251,7 +251,7 @@ QMap<char, QColor> ColorSchemeUtils::getDefaultSchemaColors(DNAAlphabetType type
     return alphColors;
 }
 
-void ColorSchemeUtils::setColorsDir(const QString &colorsDir) {
+void ColorSchemeUtils::setColorsDir(const QString& colorsDir) {
     QString settingsFile = AppContext::getSettings()->fileName();
     QString settingsDir = QFileInfo(settingsFile).absolutePath();
     QString finalColorDir = colorsDir;
@@ -265,7 +265,7 @@ void ColorSchemeUtils::setColorsDir(const QString &colorsDir) {
     }
 }
 
-void ColorSchemeUtils::fillEmptyColorScheme(QVector<QColor> &colorsPerChar) {
+void ColorSchemeUtils::fillEmptyColorScheme(QVector<QColor>& colorsPerChar) {
     colorsPerChar.fill(QColor(), 256);
 }
 

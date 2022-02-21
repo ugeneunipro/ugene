@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-MSAConsensusAlgorithmRegistry::MSAConsensusAlgorithmRegistry(QObject *p)
+MSAConsensusAlgorithmRegistry::MSAConsensusAlgorithmRegistry(QObject* p)
     : QObject(p) {
     addAlgorithm(new MSAConsensusAlgorithmFactoryDefault());
     addAlgorithm(new MSAConsensusAlgorithmFactoryStrict());
@@ -39,19 +39,19 @@ MSAConsensusAlgorithmRegistry::MSAConsensusAlgorithmRegistry(QObject *p)
 }
 
 MSAConsensusAlgorithmRegistry::~MSAConsensusAlgorithmRegistry() {
-    QList<MSAConsensusAlgorithmFactory *> list = algorithms.values();
-    foreach (MSAConsensusAlgorithmFactory *algo, list) {
+    QList<MSAConsensusAlgorithmFactory*> list = algorithms.values();
+    foreach (MSAConsensusAlgorithmFactory* algo, list) {
         delete algo;
     }
 }
 
-MSAConsensusAlgorithmFactory *MSAConsensusAlgorithmRegistry::getAlgorithmFactory(const QString &algoId) {
+MSAConsensusAlgorithmFactory* MSAConsensusAlgorithmRegistry::getAlgorithmFactory(const QString& algoId) {
     return algorithms.value(algoId);
 }
 
-void MSAConsensusAlgorithmRegistry::addAlgorithm(MSAConsensusAlgorithmFactory *algo) {
-    const QString &id = algo->getId();
-    MSAConsensusAlgorithmFactory *oldVersion = algorithms.value(id);
+void MSAConsensusAlgorithmRegistry::addAlgorithm(MSAConsensusAlgorithmFactory* algo) {
+    const QString& id = algo->getId();
+    MSAConsensusAlgorithmFactory* oldVersion = algorithms.value(id);
     if (oldVersion != nullptr) {
         delete oldVersion;
         oldVersion = nullptr;
@@ -60,18 +60,18 @@ void MSAConsensusAlgorithmRegistry::addAlgorithm(MSAConsensusAlgorithmFactory *a
 }
 
 QStringList MSAConsensusAlgorithmRegistry::getAlgorithmIds() const {
-    QList<MSAConsensusAlgorithmFactory *> list = algorithms.values();
+    QList<MSAConsensusAlgorithmFactory*> list = algorithms.values();
     QStringList result;
-    foreach (MSAConsensusAlgorithmFactory *algo, list) {
+    foreach (MSAConsensusAlgorithmFactory* algo, list) {
         result.append(algo->getId());
     }
     return result;
 }
 
-QList<MSAConsensusAlgorithmFactory *> MSAConsensusAlgorithmRegistry::getAlgorithmFactories(ConsensusAlgorithmFlags flags) const {
-    QList<MSAConsensusAlgorithmFactory *> allFactories = getAlgorithmFactories();
-    QList<MSAConsensusAlgorithmFactory *> result;
-    foreach (MSAConsensusAlgorithmFactory *f, allFactories) {
+QList<MSAConsensusAlgorithmFactory*> MSAConsensusAlgorithmRegistry::getAlgorithmFactories(ConsensusAlgorithmFlags flags) const {
+    QList<MSAConsensusAlgorithmFactory*> allFactories = getAlgorithmFactories();
+    QList<MSAConsensusAlgorithmFactory*> result;
+    foreach (MSAConsensusAlgorithmFactory* f, allFactories) {
         if ((flags & f->getFlags()) == flags) {
             result.append(f);
         }

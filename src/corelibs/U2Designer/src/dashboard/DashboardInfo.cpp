@@ -29,17 +29,17 @@ DashboardInfo::DashboardInfo()
     : opened(false) {
 }
 
-DashboardInfo::DashboardInfo(const QString &dirPath, bool opened)
+DashboardInfo::DashboardInfo(const QString& dirPath, bool opened)
     : path(dirPath),
       opened(opened) {
     dirName = QDir(path).dirName();
 }
 
-const QString &DashboardInfo::getId() const {
+const QString& DashboardInfo::getId() const {
     return path;
 }
 
-bool DashboardInfo::operator==(const DashboardInfo &other) const {
+bool DashboardInfo::operator==(const DashboardInfo& other) const {
     return path == other.path;
 }
 

@@ -106,18 +106,18 @@ void ClustalOSupport::sl_runWithExtFileSpecify() {
     }
     assert(!settings.inputFilePath.isEmpty());
 
-    ClustalOWithExtFileSpecifySupportTask *ClustalOSupportTask = new ClustalOWithExtFileSpecifySupportTask(settings);
+    ClustalOWithExtFileSpecifySupportTask* ClustalOSupportTask = new ClustalOWithExtFileSpecifySupportTask(settings);
     AppContext::getTaskScheduler()->registerTopLevelTask(ClustalOSupportTask);
 }
 
 ////////////////////////////////////////
 // ExternalToolSupportMSAContext
-ClustalOSupportContext::ClustalOSupportContext(QObject *p)
+ClustalOSupportContext::ClustalOSupportContext(QObject* p)
     : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
 
-void ClustalOSupportContext::initViewContext(GObjectView *view) {
-    MSAEditor *msaEditor = qobject_cast<MSAEditor *>(view);
+void ClustalOSupportContext::initViewContext(GObjectView* view) {
+    MSAEditor* msaEditor = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
 
     msaEditor->registerActionProvider(this);
@@ -141,10 +141,10 @@ void ClustalOSupportContext::sl_align() {
     CHECK_OP(os, );
 
     // Call run ClustalO align dialog
-    auto action = qobject_cast<AlignMsaAction *>(sender());
+    auto action = qobject_cast<AlignMsaAction*>(sender());
     SAFE_POINT(action != nullptr, "Sender is not 'AlignMsaAction'", );
-    MSAEditor *msaEditor = action->getMsaEditor();
-    MultipleSequenceAlignmentObject *obj = msaEditor->getMaObject();
+    MSAEditor* msaEditor = action->getMsaEditor();
+    MultipleSequenceAlignmentObject* obj = msaEditor->getMaObject();
     if (obj == nullptr || obj->isStateLocked()) {
         return;
     }
@@ -174,10 +174,10 @@ void ClustalOSupportContext::sl_addAlignmentToAlignment() {
     CHECK_OP(os, );
 
     // Call run ClustalO align dialog
-    auto action = qobject_cast<AlignMsaAction *>(sender());
+    auto action = qobject_cast<AlignMsaAction*>(sender());
     SAFE_POINT(action != nullptr, "Sender is not 'AlignMsaAction'", );
-    MSAEditor *msaEditor = action->getMsaEditor();
-    MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
+    MSAEditor* msaEditor = action->getMsaEditor();
+    MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
 
     DocumentFormatConstraints c;
     QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, GObjectTypes::SEQUENCE});
@@ -195,7 +195,7 @@ void ClustalOSupportContext::sl_addAlignmentToAlignment() {
     msaEditor->resetCollapseModel();
 }
 
-void ClustalOSupportContext::checkClustalOSetup(U2OpStatus &os) {
+void ClustalOSupportContext::checkClustalOSetup(U2OpStatus& os) {
     QString pathToClustalO = AppContext::getExternalToolRegistry()->getById(ClustalOSupport::ET_CLUSTALO_ID)->getPath();
     if (pathToClustalO.isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox();

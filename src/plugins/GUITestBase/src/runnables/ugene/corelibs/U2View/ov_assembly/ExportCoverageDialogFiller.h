@@ -52,31 +52,31 @@ public:
 
     typedef QPair<ActionType, QVariant> Action;
 
-    ExportCoverageDialogFiller(HI::GUITestOpStatus &os, const QList<Action> &actions);
+    ExportCoverageDialogFiller(HI::GUITestOpStatus& os, const QList<Action>& actions);
 
     void commonScenario();
 
 private:
-    void enterFilePath(const QVariant &actionData);
-    void selectFile(const QVariant &actionData);
-    void setFormat(const QVariant &actionData);
-    void setCompress(const QVariant &actionData);
-    void setExportCoverage(const QVariant &actionData);
-    void setExportBasesQuantity(const QVariant &actionData);
-    void setThreshold(const QVariant &actionData);
-    void checkFilePath(const QVariant &actionData);
-    void checkFormat(const QVariant &actionData);
-    void checkCompress(const QVariant &actionData);
-    void checkOptionsVisibility(const QVariant &actionData);
-    void checkExportCoverage(const QVariant &actionData);
-    void checkExportBasesQuantity(const QVariant &actionData);
-    void checkThreshold(const QVariant &actionData);
-    void checkThresholdBounds(const QVariant &actionData);
+    void enterFilePath(const QVariant& actionData);
+    void selectFile(const QVariant& actionData);
+    void setFormat(const QVariant& actionData);
+    void setCompress(const QVariant& actionData);
+    void setExportCoverage(const QVariant& actionData);
+    void setExportBasesQuantity(const QVariant& actionData);
+    void setThreshold(const QVariant& actionData);
+    void checkFilePath(const QVariant& actionData);
+    void checkFormat(const QVariant& actionData);
+    void checkCompress(const QVariant& actionData);
+    void checkOptionsVisibility(const QVariant& actionData);
+    void checkExportCoverage(const QVariant& actionData);
+    void checkExportBasesQuantity(const QVariant& actionData);
+    void checkThreshold(const QVariant& actionData);
+    void checkThresholdBounds(const QVariant& actionData);
     void expectMessageBox();
     void clickOk();
     void clickCancel();
 
-    QWidget *dialog;
+    QWidget* dialog;
     const QList<Action> actions;
 };
 

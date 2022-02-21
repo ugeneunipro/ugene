@@ -36,20 +36,20 @@ namespace LocalWorkflow {
 class ProfileToProfileWorker : public BaseWorker {
     Q_OBJECT
 public:
-    ProfileToProfileWorker(Actor *a);
+    ProfileToProfileWorker(Actor* a);
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private slots:
     void sl_taskFinished();
 
 private:
-    IntegralBus *inPort;
-    IntegralBus *outPort;
+    IntegralBus* inPort;
+    IntegralBus* outPort;
 
-    QList<MultipleSequenceAlignmentObject *> objects;
+    QList<MultipleSequenceAlignmentObject*> objects;
 };
 
 class ProfileToProfileWorkerFactory : public DomainFactory {
@@ -59,7 +59,7 @@ public:
     }
 
     static void init();
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 
 private:
     static const QString ACTOR_ID;
@@ -68,7 +68,7 @@ private:
 class ProfileToProfilePrompter : public PrompterBase<ProfileToProfilePrompter> {
     Q_OBJECT
 public:
-    ProfileToProfilePrompter(Actor *p = 0)
+    ProfileToProfilePrompter(Actor* p = 0)
         : PrompterBase<ProfileToProfilePrompter>(p) {
     }
 
@@ -79,13 +79,13 @@ protected:
 class ProfileToProfileTask : public Task {
     Q_OBJECT
 public:
-    ProfileToProfileTask(const MultipleSequenceAlignment &masterMsa, const MultipleSequenceAlignment &secondMsa);
+    ProfileToProfileTask(const MultipleSequenceAlignment& masterMsa, const MultipleSequenceAlignment& secondMsa);
     ~ProfileToProfileTask();
 
     virtual void prepare();
-    virtual QList<Task *> onSubTaskFinished(Task *subTask);
+    virtual QList<Task*> onSubTaskFinished(Task* subTask);
 
-    const MultipleSequenceAlignment &getResult();
+    const MultipleSequenceAlignment& getResult();
 
 private:
     MultipleSequenceAlignment masterMsa;
@@ -95,8 +95,8 @@ private:
     int subtaskCount;
 
 private:
-    void appendResult(Task *task);
-    QList<Task *> createAlignTasks();
+    void appendResult(Task* task);
+    QList<Task*> createAlignTasks();
     bool canCreateTask() const;
 };
 

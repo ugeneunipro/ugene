@@ -47,31 +47,31 @@ public:
                    CUTOFF_NC2
     };
 
-    static bool isValid(const QVariantMap &map); /* Checks obligatory fields in info */
+    static bool isValid(const QVariantMap& map); /* Checks obligatory fields in info */
 
-    static QString getName(const QVariantMap &map);
-    static void setName(QVariantMap &map, const QString &name);
-    static bool hasName(const QVariantMap &map);
+    static QString getName(const QVariantMap& map);
+    static void setName(QVariantMap& map, const QString& name);
+    static bool hasName(const QVariantMap& map);
 
-    static QString getAccession(const QVariantMap &map);
-    static void setAccession(QVariantMap &map, const QString &acc);
-    static bool hasAccession(const QVariantMap &map);
+    static QString getAccession(const QVariantMap& map);
+    static void setAccession(QVariantMap& map, const QString& acc);
+    static bool hasAccession(const QVariantMap& map);
 
-    static QString getDescription(const QVariantMap &map);
-    static void setDescription(QVariantMap &map, const QString &desc);
-    static bool hasDescription(const QVariantMap &map);
+    static QString getDescription(const QVariantMap& map);
+    static void setDescription(QVariantMap& map, const QString& desc);
+    static bool hasDescription(const QVariantMap& map);
 
-    static QString getSSConsensus(const QVariantMap &map);
-    static void setSSConsensus(QVariantMap &map, const QString &cs);
-    static bool hasSSConsensus(const QVariantMap &map);
+    static QString getSSConsensus(const QVariantMap& map);
+    static void setSSConsensus(QVariantMap& map, const QString& cs);
+    static bool hasSSConsensus(const QVariantMap& map);
 
-    static QString getReferenceLine(const QVariantMap &map);
-    static void setReferenceLine(QVariantMap &map, const QString &rf);
-    static bool hasReferenceLine(const QVariantMap &map);
+    static QString getReferenceLine(const QVariantMap& map);
+    static void setReferenceLine(QVariantMap& map, const QString& rf);
+    static bool hasReferenceLine(const QVariantMap& map);
 
-    static float getCutoff(const QVariantMap &map, Cutoffs coff);
-    static bool hasCutoff(const QVariantMap &map, Cutoffs coff);
-    static void setCutoff(QVariantMap &map, Cutoffs coff, float val);
+    static float getCutoff(const QVariantMap& map, Cutoffs coff);
+    static bool hasCutoff(const QVariantMap& map, Cutoffs coff);
+    static void setCutoff(QVariantMap& map, Cutoffs coff, float val);
 };
 
 }  // namespace U2

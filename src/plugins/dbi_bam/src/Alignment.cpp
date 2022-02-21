@@ -96,23 +96,23 @@ int Alignment::getTemplateLength() const {
     return templateLength;
 }
 
-const QByteArray &Alignment::getName() const {
+const QByteArray& Alignment::getName() const {
     return name;
 }
 
-const QList<Alignment::CigarOperation> &Alignment::getCigar() const {
+const QList<Alignment::CigarOperation>& Alignment::getCigar() const {
     return cigar;
 }
 
-const QByteArray &Alignment::getSequence() const {
+const QByteArray& Alignment::getSequence() const {
     return sequence;
 }
 
-const QByteArray &Alignment::getQuality() const {
+const QByteArray& Alignment::getQuality() const {
     return quality;
 }
 
-const QList<U2AuxData> &Alignment::getAuxData() const {
+const QList<U2AuxData>& Alignment::getAuxData() const {
     return aux;
 }
 
@@ -140,7 +140,7 @@ void Alignment::setNextReferenceId(int nextReferenceId) {
     this->nextReferenceId = nextReferenceId;
 }
 
-void Alignment::setNextReferenceName(const QByteArray &nextReferenceName) {
+void Alignment::setNextReferenceName(const QByteArray& nextReferenceName) {
     if (nextReferenceName.isEmpty()) {
         this->nextReferenceName = "*";
     }
@@ -155,29 +155,29 @@ void Alignment::setTemplateLength(int templateLength) {
     this->templateLength = templateLength;
 }
 
-void Alignment::setName(const QByteArray &name) {
+void Alignment::setName(const QByteArray& name) {
     this->name = name;
 }
 
-void Alignment::setCigar(const QList<CigarOperation> &cigar) {
+void Alignment::setCigar(const QList<CigarOperation>& cigar) {
     this->cigar = cigar;
 }
 
-void Alignment::setSequence(const QByteArray &sequence) {
+void Alignment::setSequence(const QByteArray& sequence) {
     this->sequence = sequence;
 }
 
-void Alignment::setQuality(const QByteArray &quality) {
+void Alignment::setQuality(const QByteArray& quality) {
     this->quality = quality;
 }
 
-void Alignment::setAuxData(const QList<U2AuxData> &aux) {
+void Alignment::setAuxData(const QList<U2AuxData>& aux) {
     this->aux = aux;
 }
 
-int Alignment::computeLength(const QList<CigarOperation> &cigar) {
+int Alignment::computeLength(const QList<CigarOperation>& cigar) {
     int length = 0;
-    foreach (const Alignment::CigarOperation &operation, cigar) {
+    foreach (const Alignment::CigarOperation& operation, cigar) {
         if ((operation.getOperation() != Alignment::CigarOperation::Insertion)) {
             length += operation.getLength();
         }
@@ -185,9 +185,9 @@ int Alignment::computeLength(const QList<CigarOperation> &cigar) {
     return length;
 }
 
-int Alignment::computeLength(const QList<U2CigarToken> &cigar) {
+int Alignment::computeLength(const QList<U2CigarToken>& cigar) {
     int length = 0;
-    foreach (const U2CigarToken &operation, cigar) {
+    foreach (const U2CigarToken& operation, cigar) {
         if ((operation.op != U2CigarOp_I)) {
             length += operation.count;
         }

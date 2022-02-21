@@ -26,12 +26,12 @@
 
 namespace U2 {
 
-static QList<Document *> emptyDocs;
-DocumentSelection::DocumentSelection(QObject *p)
+static QList<Document*> emptyDocs;
+DocumentSelection::DocumentSelection(QObject* p)
     : GSelection(GSelectionTypes::DOCUMENTS, p) {
-    connect(this, SIGNAL(si_selectionChanged(DocumentSelection *, QList<Document *>, QList<Document *>)), SLOT(sl_selectionChanged()));
+    connect(this, SIGNAL(si_selectionChanged(DocumentSelection*, QList<Document*>, QList<Document*>)), SLOT(sl_selectionChanged()));
 }
-const QList<Document *> &DocumentSelection::getSelectedDocuments() const {
+const QList<Document*>& DocumentSelection::getSelectedDocuments() const {
     return selectedDocs;
 }
 
@@ -39,19 +39,19 @@ bool DocumentSelection::isEmpty() const {
     return selectedDocs.isEmpty();
 }
 
-bool DocumentSelection::contains(Document *doc) const {
+bool DocumentSelection::contains(Document* doc) const {
     return selectedDocs.contains(doc);
 }
 
 void DocumentSelection::clear() {
-    QList<Document *> tmpRemoved = selectedDocs;
+    QList<Document*> tmpRemoved = selectedDocs;
     selectedDocs.clear();
     if (!tmpRemoved.isEmpty()) {
         emit si_selectionChanged(this, emptyDocs, tmpRemoved);
     }
 }
 
-void DocumentSelection::setSelection(const QList<Document *> &docs) {
+void DocumentSelection::setSelection(const QList<Document*>& docs) {
     if (docs.isEmpty()) {
         clear();
         return;
@@ -61,23 +61,23 @@ void DocumentSelection::setSelection(const QList<Document *> &docs) {
         return;
     }
 
-    QList<Document *> addedDocuments;
-    QList<Document *> removedDocuments;
+    QList<Document*> addedDocuments;
+    QList<Document*> removedDocuments;
 
-    for (Document *document : qAsConst(docs)) {
+    for (Document* document : qAsConst(docs)) {
         if (!selectedDocs.contains(document)) {
             addedDocuments.append(document);
         }
     }
-    for (Document *document : qAsConst(selectedDocs)) {
+    for (Document* document : qAsConst(selectedDocs)) {
         if (!docs.contains(document)) {
             removedDocuments.append(document);
         }
     }
-    for (Document *document : qAsConst(removedDocuments)) {
+    for (Document* document : qAsConst(removedDocuments)) {
         selectedDocs.removeAll(document);
     }
-    for (Document *document : qAsConst(addedDocuments)) {
+    for (Document* document : qAsConst(addedDocuments)) {
         selectedDocs.append(document);
     }
     if (!addedDocuments.isEmpty() || !removedDocuments.isEmpty()) {
@@ -85,10 +85,10 @@ void DocumentSelection::setSelection(const QList<Document *> &docs) {
     }
 }
 
-void DocumentSelection::addToSelection(const QList<Document *> &documentsToAdd) {
-    QList<Document *> addedDocuments;
+void DocumentSelection::addToSelection(const QList<Document*>& documentsToAdd) {
+    QList<Document*> addedDocuments;
     int documentCountBefore = selectedDocs.size();
-    for (Document *document : qAsConst(documentsToAdd)) {
+    for (Document* document : qAsConst(documentsToAdd)) {
         if (!selectedDocs.contains(document)) {
             addedDocuments.append(document);
             selectedDocs.append(document);
@@ -99,10 +99,10 @@ void DocumentSelection::addToSelection(const QList<Document *> &documentsToAdd) 
     }
 }
 
-void DocumentSelection::removeFromSelection(const QList<Document *> &documentsToRemove) {
-    QList<Document *> removedDocuments;
+void DocumentSelection::removeFromSelection(const QList<Document*>& documentsToRemove) {
+    QList<Document*> removedDocuments;
     int documentCountBefore = selectedDocs.size();
-    for (Document *document : qAsConst(documentsToRemove)) {
+    for (Document* document : qAsConst(documentsToRemove)) {
         if (selectedDocs.removeAll(document) != 0) {
             removedDocuments.append(document);
         }

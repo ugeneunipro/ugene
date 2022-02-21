@@ -54,8 +54,8 @@ static const QString OUT_HMM_URL_PORT_ID("out-hmm3");
 static const QString SEED_ATTR("seed");
 
 void HmmerBuildWorkerFactory::init() {
-    QList<PortDescriptor *> p;
-    QList<Attribute *> a;
+    QList<PortDescriptor*> p;
+    QList<Attribute*> a;
     {
         Descriptor id(BasePorts::IN_MSA_PORT_ID(), HmmerBuildWorker::tr("Input MSA"), HmmerBuildWorker::tr("Input multiple sequence alignment for building statistical model."));
         Descriptor od(OUT_HMM_URL_PORT_ID, HmmerBuildWorker::tr("HMM3 profile"), HmmerBuildWorker::tr("Produced HMM3 profile URL"));
@@ -74,7 +74,7 @@ void HmmerBuildWorkerFactory::init() {
     auto outputFileNameAttribute = new Attribute(BaseAttributes::URL_OUT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), false);
     a << outputFileNameAttribute;
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     delegates[BaseAttributes::URL_OUT_ATTRIBUTE().getId()] = new URLDelegate("", "", false, false, true);
 
     Descriptor desc(HmmerBuildWorkerFactory::ACTOR,
@@ -96,13 +96,13 @@ void HmmerBuildWorkerFactory::init() {
     proto->addExternalTool(HmmerSupport::BUILD_TOOL_ID);
     WorkflowEnv::getProtoRegistry()->registerProto(Descriptor("hmmer3", HmmerBuildWorker::tr("HMMER3 Tools"), ""), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new HmmerBuildWorkerFactory());
 }
 
 void HmmerBuildWorkerFactory::cleanup() {
     delete WorkflowEnv::getProtoRegistry()->unregisterProto(ACTOR);
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     delete localDomain->unregisterEntry(ACTOR);
 }
 
@@ -110,20 +110,20 @@ HmmerBuildWorkerFactory::HmmerBuildWorkerFactory()
     : DomainFactory(ACTOR) {
 }
 
-Worker *HmmerBuildWorkerFactory::createWorker(Actor *a) {
+Worker* HmmerBuildWorkerFactory::createWorker(Actor* a) {
     return new HmmerBuildWorker(a);
 }
 
 /******************************
  * HmmerBuildPrompter
  ******************************/
-HmmerBuildPrompter::HmmerBuildPrompter(Actor *p)
+HmmerBuildPrompter::HmmerBuildPrompter(Actor* p)
     : PrompterBase<HmmerBuildPrompter>(p) {
 }
 
 QString HmmerBuildPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
-    Actor *msaProducer = input->getProducer(BasePorts::IN_MSA_PORT_ID());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
+    Actor* msaProducer = input->getProducer(BasePorts::IN_MSA_PORT_ID());
 
     QString msaName = (msaProducer ? tr("For each MSA from <u>%1</u>,").arg(msaProducer->getLabel()) : "");
 
@@ -133,9 +133,9 @@ QString HmmerBuildPrompter::composeRichDoc() {
 }
 
 /******************************
-* HmmerBuildWorker
-******************************/
-HmmerBuildWorker::HmmerBuildWorker(Actor *a)
+ * HmmerBuildWorker
+ ******************************/
+HmmerBuildWorker::HmmerBuildWorker(Actor* a)
     : BaseWorker(a),
       input(nullptr),
       output(nullptr) {
@@ -154,7 +154,7 @@ bool HmmerBuildWorker::isReady() const {
     return input->hasMessage() || input->isEnded();
 }
 
-Task *HmmerBuildWorker::tick() {
+Task* HmmerBuildWorker::tick() {
     if (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
@@ -177,7 +177,7 @@ Task *HmmerBuildWorker::tick() {
         }
         auto task = new HmmerBuildFromMsaTask(cfg, msa);
         task->addListeners(createLogListeners());
-        connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
+        connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
         return task;
     } else if (input->isEnded()) {
         setDone();
@@ -186,8 +186,8 @@ Task *HmmerBuildWorker::tick() {
     return nullptr;
 }
 
-void HmmerBuildWorker::sl_taskFinished(Task *task) {
-    HmmerBuildFromMsaTask *buildTask = qobject_cast<HmmerBuildFromMsaTask *>(task);
+void HmmerBuildWorker::sl_taskFinished(Task* task) {
+    HmmerBuildFromMsaTask* buildTask = qobject_cast<HmmerBuildFromMsaTask*>(task);
     SAFE_POINT(nullptr != task, "Invalid task is encountered", );
     if (task->isCanceled()) {
         return;
@@ -201,5 +201,5 @@ void HmmerBuildWorker::sl_taskFinished(Task *task) {
 void HmmerBuildWorker::cleanup() {
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

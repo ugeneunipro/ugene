@@ -32,24 +32,24 @@ namespace U2 {
 
 class GTUtilsMcaEditorStatusWidget {
 public:
-    static QWidget *getStatusWidget(HI::GUITestOpStatus &os);
+    static QWidget* getStatusWidget(HI::GUITestOpStatus& os);
 
-    static QString getRowNumberString(HI::GUITestOpStatus &os);
-    static int getRowNumber(HI::GUITestOpStatus &os);
-    static QString getRowsCountString(HI::GUITestOpStatus &os);
-    static int getRowsCount(HI::GUITestOpStatus &os);
+    static QString getRowNumberString(HI::GUITestOpStatus& os);
+    static int getRowNumber(HI::GUITestOpStatus& os);
+    static QString getRowsCountString(HI::GUITestOpStatus& os);
+    static int getRowsCount(HI::GUITestOpStatus& os);
 
-    static QString getReferenceUngappedPositionString(HI::GUITestOpStatus &os);
-    static int getReferenceUngappedPosition(HI::GUITestOpStatus &os);
-    static QString getReferenceUngappedLengthString(HI::GUITestOpStatus &os);
-    static int getReferenceUngappedLength(HI::GUITestOpStatus &os);
-    static bool isGapInReference(HI::GUITestOpStatus &os);
+    static QString getReferenceUngappedPositionString(HI::GUITestOpStatus& os);
+    static int getReferenceUngappedPosition(HI::GUITestOpStatus& os);
+    static QString getReferenceUngappedLengthString(HI::GUITestOpStatus& os);
+    static int getReferenceUngappedLength(HI::GUITestOpStatus& os);
+    static bool isGapInReference(HI::GUITestOpStatus& os);
 
-    static QString getReadUngappedPositionString(HI::GUITestOpStatus &os);
-    static int getReadUngappedPosition(HI::GUITestOpStatus &os);
-    static QString getReadUngappedLengthString(HI::GUITestOpStatus &os);
-    static int getReadUngappedLength(HI::GUITestOpStatus &os);
-    static bool isGapInRead(HI::GUITestOpStatus &os);
+    static QString getReadUngappedPositionString(HI::GUITestOpStatus& os);
+    static int getReadUngappedPosition(HI::GUITestOpStatus& os);
+    static QString getReadUngappedLengthString(HI::GUITestOpStatus& os);
+    static int getReadUngappedLength(HI::GUITestOpStatus& os);
+    static bool isGapInRead(HI::GUITestOpStatus& os);
 };
 
 }  // namespace U2

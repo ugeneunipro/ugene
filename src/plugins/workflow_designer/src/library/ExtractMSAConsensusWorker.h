@@ -37,58 +37,58 @@ class ExtractMSAConsensusTaskHelper;
 class ExtractMSAConsensusWorker : public BaseWorker {
     Q_OBJECT
 public:
-    ExtractMSAConsensusWorker(Actor *actor);
+    ExtractMSAConsensusWorker(Actor* actor);
 
     void init();
-    Task *tick();
+    Task* tick();
     void cleanup();
 
 protected:
-    virtual ExtractMSAConsensusTaskHelper *createTask(const MultipleSequenceAlignment &msa) = 0;
+    virtual ExtractMSAConsensusTaskHelper* createTask(const MultipleSequenceAlignment& msa) = 0;
     virtual void finish() = 0;
-    virtual void sendResult(const SharedDbiDataHandler &seqId) = 0;
-    ExtractMSAConsensusTaskHelper *extractMsaConsensus;
+    virtual void sendResult(const SharedDbiDataHandler& seqId) = 0;
+    ExtractMSAConsensusTaskHelper* extractMsaConsensus;
 private slots:
     void sl_taskFinished();
 
 private:
     bool hasMsa() const;
-    MultipleSequenceAlignment takeMsa(U2OpStatus &os);
+    MultipleSequenceAlignment takeMsa(U2OpStatus& os);
 };
 
 class ExtractMSAConsensusStringWorker : public ExtractMSAConsensusWorker {
     Q_OBJECT
 public:
-    ExtractMSAConsensusStringWorker(Actor *actor);
+    ExtractMSAConsensusStringWorker(Actor* actor);
 
 protected:
-    virtual ExtractMSAConsensusTaskHelper *createTask(const MultipleSequenceAlignment &msa);
+    virtual ExtractMSAConsensusTaskHelper* createTask(const MultipleSequenceAlignment& msa);
     virtual void finish();
-    virtual void sendResult(const SharedDbiDataHandler &seqId);
+    virtual void sendResult(const SharedDbiDataHandler& seqId);
 };
 
 class ExtractMSAConsensusSequenceWorker : public ExtractMSAConsensusWorker {
     Q_OBJECT
 public:
-    ExtractMSAConsensusSequenceWorker(Actor *actor);
+    ExtractMSAConsensusSequenceWorker(Actor* actor);
 
 protected:
-    virtual ExtractMSAConsensusTaskHelper *createTask(const MultipleSequenceAlignment &msa);
+    virtual ExtractMSAConsensusTaskHelper* createTask(const MultipleSequenceAlignment& msa);
     virtual void finish();
-    virtual void sendResult(const SharedDbiDataHandler &seqId);
+    virtual void sendResult(const SharedDbiDataHandler& seqId);
 };
 
 class ExtractMSAConsensusTaskHelper : public Task {
     Q_OBJECT
 public:
-    ExtractMSAConsensusTaskHelper(const QString &algoId, int threshold, bool keepGaps, const MultipleSequenceAlignment &msa, const U2DbiRef &targetDbi);
+    ExtractMSAConsensusTaskHelper(const QString& algoId, int threshold, bool keepGaps, const MultipleSequenceAlignment& msa, const U2DbiRef& targetDbi);
 
     void prepare();
     U2EntityRef getResult() const;
     QByteArray getResultAsText() const;
 
 private:
-    MSAConsensusAlgorithm *createAlgorithm();
+    MSAConsensusAlgorithm* createAlgorithm();
     QString getResultName() const;
 
     const QString algoId;
@@ -104,7 +104,7 @@ class ExtractMSAConsensusSequenceWorkerFactory : public DomainFactory {
 public:
     ExtractMSAConsensusSequenceWorkerFactory();
 
-    Worker *createWorker(Actor *actor);
+    Worker* createWorker(Actor* actor);
 
     static void init();
 
@@ -115,7 +115,7 @@ class ExtractMSAConsensusStringWorkerFactory : public DomainFactory {
 public:
     ExtractMSAConsensusStringWorkerFactory();
 
-    Worker *createWorker(Actor *actor);
+    Worker* createWorker(Actor* actor);
 
     static void init();
 
@@ -125,7 +125,7 @@ public:
 class ExtractMSAConsensusWorkerPrompter : public PrompterBase<ExtractMSAConsensusWorkerPrompter> {
     Q_OBJECT
 public:
-    ExtractMSAConsensusWorkerPrompter(Actor *actor = nullptr);
+    ExtractMSAConsensusWorkerPrompter(Actor* actor = nullptr);
 
 protected:
     QString composeRichDoc();
@@ -133,17 +133,17 @@ protected:
 
 class SpinBoxDelegatePropertyRelation : public AttributeRelation {
 public:
-    SpinBoxDelegatePropertyRelation(const QString &relatedAttrId)
+    SpinBoxDelegatePropertyRelation(const QString& relatedAttrId)
         : AttributeRelation(relatedAttrId) {
     }
 
     virtual RelationType getType() const {
         return PROPERTY_CHANGER;
     }
-    SpinBoxDelegatePropertyRelation *clone() const;
+    SpinBoxDelegatePropertyRelation* clone() const;
 
-    virtual QVariant getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue, DelegateTags *infTags, DelegateTags *depTags) const;
-    virtual void updateDelegateTags(const QVariant &influencingValue, DelegateTags *dependentTags) const;
+    virtual QVariant getAffectResult(const QVariant& influencingValue, const QVariant& dependentValue, DelegateTags* infTags, DelegateTags* depTags) const;
+    virtual void updateDelegateTags(const QVariant& influencingValue, DelegateTags* dependentTags) const;
 };
 
 }  // namespace LocalWorkflow

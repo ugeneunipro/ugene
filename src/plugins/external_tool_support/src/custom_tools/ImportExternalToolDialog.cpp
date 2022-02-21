@@ -35,13 +35,13 @@
 
 namespace U2 {
 
-ImportExternalToolDialog::ImportExternalToolDialog(QWidget *_parent)
+ImportExternalToolDialog::ImportExternalToolDialog(QWidget* _parent)
     : QDialog(_parent) {
     setupUi(this);
 
     new HelpButton(this, buttonBox, "65929365");
 
-    connect(lePath, SIGNAL(textChanged(const QString &)), SLOT(sl_pathChanged()));
+    connect(lePath, SIGNAL(textChanged(const QString&)), SLOT(sl_pathChanged()));
     connect(tbBrowse, SIGNAL(clicked()), SLOT(sl_browse()));
 
     sl_pathChanged();

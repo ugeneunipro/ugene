@@ -36,6 +36,6 @@ public:
     static const QString ET_SAMTOOLS_EXT_ID;
 };
 
-}    // namespace U2
+}  // namespace U2
 
 #endif

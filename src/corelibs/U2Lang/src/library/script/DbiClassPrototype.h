@@ -41,9 +41,9 @@ class ScriptDbiData {
 public:
     ScriptDbiData();
     virtual ~ScriptDbiData();
-    ScriptDbiData(const Workflow::SharedDbiDataHandler &seqId);
+    ScriptDbiData(const Workflow::SharedDbiDataHandler& seqId);
 
-    const Workflow::SharedDbiDataHandler &getId() const;
+    const Workflow::SharedDbiDataHandler& getId() const;
 
     /** Removes own dbi data handler */
     void release();
@@ -58,12 +58,12 @@ private:
 class DbiClassPrototype : public QObject, public QScriptable {
     Q_OBJECT
 public:
-    DbiClassPrototype(QObject *parent = nullptr);
+    DbiClassPrototype(QObject* parent = nullptr);
     virtual ~DbiClassPrototype();
 
 public:
     template<class T>
-    static void registerScriptClass(QScriptEngine *engine);
+    static void registerScriptClass(QScriptEngine* engine);
 
 public slots:
     /** Returns NullValue if the id was released */
@@ -73,9 +73,9 @@ public slots:
     void release();
 
 protected:
-    ScriptDbiData *thisData() const;
-    WorkflowScriptEngine *workflowEngine() const;
-    Workflow::DbiDataStorage *dataStorage() const;
+    ScriptDbiData* thisData() const;
+    WorkflowScriptEngine* workflowEngine() const;
+    Workflow::DbiDataStorage* dataStorage() const;
 };
 
 /**
@@ -88,21 +88,21 @@ protected:
  */
 class DbiScriptClass : public QObject, public QScriptClass {
 public:
-    DbiScriptClass(QScriptEngine *engine);
+    DbiScriptClass(QScriptEngine* engine);
 
     QScriptValue prototype() const;
-    QScriptValue newInstance(const Workflow::SharedDbiDataHandler &id);
+    QScriptValue newInstance(const Workflow::SharedDbiDataHandler& id);
 
     /** Virtual copy constructor for dbi types */
-    virtual QScriptValue newInstance(const ScriptDbiData &id, bool deepCopy) = 0;
+    virtual QScriptValue newInstance(const ScriptDbiData& id, bool deepCopy) = 0;
 
 protected:
     QScriptValue proto;
 
 protected:
     template<class T>
-    static QScriptValue toScriptValue(QScriptEngine *engine, const ScriptDbiData &id);
-    static void fromScriptValue(const QScriptValue &obj, ScriptDbiData &id);
+    static QScriptValue toScriptValue(QScriptEngine* engine, const ScriptDbiData& id);
+    static void fromScriptValue(const QScriptValue& obj, ScriptDbiData& id);
 };
 
 }  // namespace U2
@@ -111,17 +111,17 @@ protected:
 namespace U2 {
 
 template<class T>
-void DbiClassPrototype::registerScriptClass(QScriptEngine *engine) {
-    T *sClass = new T(engine);
+void DbiClassPrototype::registerScriptClass(QScriptEngine* engine) {
+    T* sClass = new T(engine);
     QScriptValue constructorFun = engine->newFunction(T::constructor, sClass->prototype());
     constructorFun.setData(qScriptValueFromValue(engine, sClass));
     engine->globalObject().setProperty(sClass->name(), constructorFun);
 }
 
 template<class T>
-QScriptValue DbiScriptClass::toScriptValue(QScriptEngine *engine, const ScriptDbiData &id) {
+QScriptValue DbiScriptClass::toScriptValue(QScriptEngine* engine, const ScriptDbiData& id) {
     QScriptValue factory = engine->globalObject().property(T::CLASS_NAME);
-    T *sClass = qscriptvalue_cast<T *>(factory.data());
+    T* sClass = qscriptvalue_cast<T*>(factory.data());
     if (!sClass) {
         return engine->newVariant(qVariantFromValue(id));
     }
@@ -131,6 +131,6 @@ QScriptValue DbiScriptClass::toScriptValue(QScriptEngine *engine, const ScriptDb
 }  // namespace U2
 
 Q_DECLARE_METATYPE(U2::ScriptDbiData)
-Q_DECLARE_METATYPE(U2::ScriptDbiData *)
+Q_DECLARE_METATYPE(U2::ScriptDbiData*)
 
 #endif  // _U2_DBICLASSPROTOTYPE_H_

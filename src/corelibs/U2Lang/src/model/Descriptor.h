@@ -37,9 +37,9 @@ namespace U2 {
  */
 class U2LANG_EXPORT Descriptor {
 public:
-    Descriptor(const QString &id, const QString &name, const QString &doc);
-    Descriptor(const QString &_id);
-    Descriptor(const char *_id);
+    Descriptor(const QString& id, const QString& name, const QString& doc);
+    Descriptor(const QString& _id);
+    Descriptor(const char* _id);
     Descriptor();
     virtual ~Descriptor() {
     }
@@ -48,26 +48,26 @@ public:
     QString getId() const;
     QString getDisplayName() const;
     QString getDocumentation() const;
-    void setId(const QString &i);
-    virtual void setDisplayName(const QString &n);
-    virtual void setDocumentation(const QString &d);
+    void setId(const QString& i);
+    virtual void setDisplayName(const QString& n);
+    virtual void setDocumentation(const QString& d);
 
     // descriptors with equal id's are equal
-    inline bool operator==(const Descriptor &d) const {
+    inline bool operator==(const Descriptor& d) const {
         return id == d.id;
     }
-    inline bool operator!=(const Descriptor &d) const {
+    inline bool operator!=(const Descriptor& d) const {
         return id != d.id;
     }
-    inline bool operator==(const QString &s) const {
+    inline bool operator==(const QString& s) const {
         return id == s;
     }
-    inline bool operator!=(const QString &s) const {
+    inline bool operator!=(const QString& s) const {
         return id != s;
     }
 
     // necessary for using with QMap e.g. QMap<Descriptor, Attribute>
-    inline bool operator<(const Descriptor &d) const {
+    inline bool operator<(const Descriptor& d) const {
         return id < d.id;
     }
 
@@ -86,13 +86,13 @@ protected:
  */
 class U2LANG_EXPORT VisualDescriptor : public Descriptor {
 public:
-    VisualDescriptor(const Descriptor &d, const QString &_iconPath = QString());
+    VisualDescriptor(const Descriptor& d, const QString& _iconPath = QString());
 
     // getIcon will create icon from its path (if path exists) on the first call.
     // This is compatibility issue for congene.
     QIcon getIcon();
     void setIcon(QIcon icon_);
-    void setIconPath(const QString &iconPath_);
+    void setIconPath(const QString& iconPath_);
 
 private:
     // full path to the icon

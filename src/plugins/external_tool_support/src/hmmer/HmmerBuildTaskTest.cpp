@@ -1,23 +1,23 @@
 /**
-* UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
-* http://ugene.net
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-* MA 02110-1301, USA.
-*/
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * http://ugene.net
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
 
 #include "HmmerBuildTaskTest.h"
 
@@ -31,8 +31,8 @@
 namespace U2 {
 
 /**************************
-* GTest_UHMMER3Build
-**************************/
+ * GTest_UHMMER3Build
+ **************************/
 
 const QString GTest_UHMMER3Build::INPUT_FILE_TAG = "inputFile";
 const QString GTest_UHMMER3Build::OUTPUT_FILE_TAG = "outputFile";
@@ -74,9 +74,9 @@ float roundf(float x) {
 }
 #    endif
 
-#endif    // _WINDOWS
+#endif  // _WINDOWS
 
-static void setSeedOption(HmmerBuildSettings &settings, TaskStateInfo &stateInfo, const QString &str) {
+static void setSeedOption(HmmerBuildSettings& settings, TaskStateInfo& stateInfo, const QString& str) {
     if (str.isEmpty()) {
         return;
     }
@@ -90,7 +90,7 @@ static void setSeedOption(HmmerBuildSettings &settings, TaskStateInfo &stateInfo
     settings.seed = num;
 }
 
-static void setModelConstructionOption(HmmerBuildSettings &settings, TaskStateInfo &stateInfo, const QString &s) {
+static void setModelConstructionOption(HmmerBuildSettings& settings, TaskStateInfo& stateInfo, const QString& s) {
     QString str = s.toLower();
     if (str.startsWith("fast")) {
         settings.modelConstructionStrategy = HmmerBuildSettings::p7_ARCH_FAST;
@@ -116,7 +116,7 @@ static void setModelConstructionOption(HmmerBuildSettings &settings, TaskStateIn
     }
 }
 
-static void setRelativeWeightingOption(HmmerBuildSettings &settings, TaskStateInfo &stateInfo, const QString &s) {
+static void setRelativeWeightingOption(HmmerBuildSettings& settings, TaskStateInfo& stateInfo, const QString& s) {
     QString str = s.toLower();
     if (str.startsWith("wgsc")) {
         settings.relativeSequenceWeightingStrategy = HmmerBuildSettings::p7_WGT_GSC;
@@ -153,7 +153,7 @@ static void setRelativeWeightingOption(HmmerBuildSettings &settings, TaskStateIn
     }
 }
 
-static void setEffectiveWeightingOption(HmmerBuildSettings &settings, TaskStateInfo &stateInfo, const QString &s) {
+static void setEffectiveWeightingOption(HmmerBuildSettings& settings, TaskStateInfo& stateInfo, const QString& s) {
     QString str = s.toLower();
     if (str.startsWith("eent")) {
         settings.effectiveSequenceWeightingStrategy = HmmerBuildSettings::p7_EFFN_ENTROPY;
@@ -216,7 +216,7 @@ static void setEffectiveWeightingOption(HmmerBuildSettings &settings, TaskStateI
     }
 }
 
-static void setEvalueCalibrationOption(HmmerBuildSettings &settings, TaskStateInfo &stateInfo, const QString &s) {
+static void setEvalueCalibrationOption(HmmerBuildSettings& settings, TaskStateInfo& stateInfo, const QString& s) {
     QString str = s.toLower();
     if (str.isEmpty()) {
         return;
@@ -233,7 +233,7 @@ static void setEvalueCalibrationOption(HmmerBuildSettings &settings, TaskStateIn
     settings.eft = l[4].toDouble();
 }
 
-void GTest_UHMMER3Build::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_UHMMER3Build::init(XMLTestFormat*, const QDomElement& el) {
     inFile = el.attribute(INPUT_FILE_TAG);
     outFile = el.attribute(OUTPUT_FILE_TAG);
     outputDir = el.attribute(OUTPUT_DIR_TAG);
@@ -243,7 +243,7 @@ void GTest_UHMMER3Build::init(XMLTestFormat *, const QDomElement &el) {
     setBuildSettings(bldSettings, el, stateInfo);
 }
 
-void GTest_UHMMER3Build::setBuildSettings(HmmerBuildSettings &settings, const QDomElement &el, TaskStateInfo &ti) {
+void GTest_UHMMER3Build::setBuildSettings(HmmerBuildSettings& settings, const QDomElement& el, TaskStateInfo& ti) {
     setModelConstructionOption(settings, ti, el.attribute(MODEL_CONSTRUCTION_OPTION_TAG));
     setRelativeWeightingOption(settings, ti, el.attribute(RELATIVE_WEIGHTING_OPTION_TAG));
     setEffectiveWeightingOption(settings, ti, el.attribute(EFFECTIVE_WEIGHTING_OPTION_TAG));
@@ -302,8 +302,8 @@ void GTest_UHMMER3Build::cleanup() {
 }
 
 /**************************
-* GTest_CompareHmmFiles
-**************************/
+ * GTest_CompareHmmFiles
+ **************************/
 
 const QString GTest_CompareHmmFiles::FILE1_NAME_TAG = "file1";
 const QString GTest_CompareHmmFiles::FILE2_NAME_TAG = "file2";
@@ -317,7 +317,7 @@ const QByteArray DATE_STR = "DATE";
 const QByteArray NAME_STR = "NAME";
 const QByteArray HEADER_STR = "HMMER3/";
 
-void GTest_CompareHmmFiles::init(XMLTestFormat *, const QDomElement &el) {
+void GTest_CompareHmmFiles::init(XMLTestFormat*, const QDomElement& el) {
     filename1 = el.attribute(FILE1_NAME_TAG);
     filename2 = el.attribute(FILE2_NAME_TAG);
 
@@ -344,7 +344,7 @@ void GTest_CompareHmmFiles::setAndCheckArgs() {
 
 static const float BUILD_COMPARE_FLOAT_EPS = (float)0.00002;
 
-static bool compareStr(const QString &s1, const QString &s2) {
+static bool compareStr(const QString& s1, const QString& s2) {
     assert(s1.size() == s2.size());
 
     QStringList words1 = s1.split(QRegExp("\\s+"), QString::SkipEmptyParts);
@@ -390,7 +390,7 @@ Task::ReportResult GTest_CompareHmmFiles::report() {
         return ReportResult_Finished;
     }
 
-    IOAdapterFactory *iof1 = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(filename1));
+    IOAdapterFactory* iof1 = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(filename1));
     QScopedPointer<IOAdapter> io1(iof1->createIOAdapter());
     if (io1.isNull()) {
         stateInfo.setError(QString("Error creating io-adapter for the first file: %1").arg(filename1));
@@ -401,7 +401,7 @@ Task::ReportResult GTest_CompareHmmFiles::report() {
         return ReportResult_Finished;
     }
 
-    IOAdapterFactory *iof2 = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(filename2));
+    IOAdapterFactory* iof2 = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(filename2));
     QScopedPointer<IOAdapter> io2(iof2->createIOAdapter());
     if (io2.isNull()) {
         stateInfo.setError(QString("Error creating io-adapter for the second file: %1").arg(filename2));
@@ -452,4 +452,4 @@ Task::ReportResult GTest_CompareHmmFiles::report() {
     return ReportResult_Finished;
 }
 
-}    // namespace U2
+}  // namespace U2

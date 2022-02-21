@@ -53,7 +53,7 @@ public:
     U2Region getRegion() const;
     SequenceExportType getType() const;
 
-    void setRegion(const U2Region &r);
+    void setRegion(const U2Region& r);
     void setType(SequenceExportType t);
 
 private:
@@ -67,17 +67,17 @@ private:
 class CurrentViewPainter : public ExportImagePainter {
     Q_OBJECT
 public:
-    CurrentViewPainter(ADVSingleSequenceWidget *seqWidget)
+    CurrentViewPainter(ADVSingleSequenceWidget* seqWidget)
         : ExportImagePainter(),
           seqWidget(seqWidget) {
     }
 
-    void paint(QPainter &p, CustomExportSettings *settings) const;
-    QSize getImageSize(CustomExportSettings *settings) const;
-    bool canPaintSvg(CustomExportSettings *settings, U2OpStatus &os) const;
+    void paint(QPainter& p, CustomExportSettings* settings) const;
+    QSize getImageSize(CustomExportSettings* settings) const;
+    bool canPaintSvg(CustomExportSettings* settings, U2OpStatus& os) const;
 
 private:
-    ADVSingleSequenceWidget *seqWidget;
+    ADVSingleSequenceWidget* seqWidget;
 };
 
 /************************************************************************/
@@ -85,15 +85,15 @@ private:
 /************************************************************************/
 class ZoomedViewPainter : public ExportImagePainter {
 public:
-    ZoomedViewPainter(PanView *panView);
+    ZoomedViewPainter(PanView* panView);
 
-    void paint(QPainter &p, CustomExportSettings *settings) const;
-    QSize getImageSize(CustomExportSettings *settings) const;
-    bool canPaintSvg(CustomExportSettings *settings, U2OpStatus &os) const;
+    void paint(QPainter& p, CustomExportSettings* settings) const;
+    QSize getImageSize(CustomExportSettings* settings) const;
+    bool canPaintSvg(CustomExportSettings* settings, U2OpStatus& os) const;
 
 private:
-    PanView *panView;
-    PanViewRenderer *panViewRenderer;
+    PanView* panView;
+    PanViewRenderer* panViewRenderer;
 };
 
 /************************************************************************/
@@ -101,16 +101,16 @@ private:
 /************************************************************************/
 class DetailsViewPainter : public ExportImagePainter {
 public:
-    DetailsViewPainter(DetView *detView);
+    DetailsViewPainter(DetView* detView);
 
-    void paint(QPainter &p, CustomExportSettings *settings) const;
-    QSize getImageSize(CustomExportSettings *settings) const;
-    bool canPaintSvg(CustomExportSettings * /*settings*/, U2OpStatus & /*os*/) const {
+    void paint(QPainter& p, CustomExportSettings* settings) const;
+    QSize getImageSize(CustomExportSettings* settings) const;
+    bool canPaintSvg(CustomExportSettings* /*settings*/, U2OpStatus& /*os*/) const {
         return true;
     }
 
 private:
-    DetViewRenderer *detViewRenderer;
+    DetViewRenderer* detViewRenderer;
 };
 
 /************************************************************************/
@@ -118,7 +118,7 @@ private:
 /************************************************************************/
 class SequencePainterFactory {
 public:
-    static QSharedPointer<ExportImagePainter> createPainter(ADVSingleSequenceWidget *seqWidget, SequenceExportType exportType);
+    static QSharedPointer<ExportImagePainter> createPainter(ADVSingleSequenceWidget* seqWidget, SequenceExportType exportType);
 };
 
 }  // namespace U2

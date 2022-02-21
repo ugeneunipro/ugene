@@ -40,7 +40,7 @@ U2PFMatrix::U2PFMatrix()
     : U2RawData() {
 }
 
-U2PFMatrix::U2PFMatrix(const U2DbiRef &dbiRef)
+U2PFMatrix::U2PFMatrix(const U2DbiRef& dbiRef)
     : U2RawData(dbiRef) {
 }
 
@@ -50,7 +50,7 @@ U2DataType U2PFMatrix::getType() const {
 
 // PFMatrixObject
 //////////////////////////////////////////////////////////////////////////
-PFMatrixObject *PFMatrixObject::createInstance(const PFMatrix &matrix, const QString &objectName, const U2DbiRef &dbiRef, U2OpStatus &os, const QVariantMap &hintsMap) {
+PFMatrixObject* PFMatrixObject::createInstance(const PFMatrix& matrix, const QString& objectName, const U2DbiRef& dbiRef, U2OpStatus& os, const QVariantMap& hintsMap) {
     U2PFMatrix object(dbiRef);
     const QString dstFolder = hintsMap.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
     const U2EntityRef entRef = PMatrixSerializeUtils<FMatrixSerializer, PFMatrix>::commit(matrix,
@@ -63,39 +63,39 @@ PFMatrixObject *PFMatrixObject::createInstance(const PFMatrix &matrix, const QSt
     return new PFMatrixObject(matrix, objectName, entRef, hintsMap);
 }
 
-PFMatrixObject::PFMatrixObject(const QString &objectName, const U2EntityRef &matrixRef, const QVariantMap &hintsMap)
+PFMatrixObject::PFMatrixObject(const QString& objectName, const U2EntityRef& matrixRef, const QVariantMap& hintsMap)
     : GObject(TYPE, objectName, hintsMap) {
     entityRef = matrixRef;
 }
 
-PFMatrixObject::PFMatrixObject(const PFMatrix &matrix, const QString &objectName, const U2EntityRef &matrixRef, const QVariantMap &hintsMap)
+PFMatrixObject::PFMatrixObject(const PFMatrix& matrix, const QString& objectName, const U2EntityRef& matrixRef, const QVariantMap& hintsMap)
     : GObject(TYPE, objectName, hintsMap), m(matrix) {
     entityRef = matrixRef;
 }
 
-void PFMatrixObject::loadDataCore(U2OpStatus &os) {
+void PFMatrixObject::loadDataCore(U2OpStatus& os) {
     PMatrixSerializeUtils<FMatrixSerializer, PFMatrix>::retrieve(entityRef, m, os);
 }
 
-const PFMatrix &PFMatrixObject::getMatrix() const {
+const PFMatrix& PFMatrixObject::getMatrix() const {
     ensureDataLoaded();
     return m;
 }
 
-GObject *PFMatrixObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints) const {
+GObject* PFMatrixObject::clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints) const {
     DbiOperationsBlock opBlock(dstDbiRef, os);
     CHECK_OP(os, nullptr);
 
     GHintsDefaultImpl gHints(getGHintsMap());
     gHints.setAll(hints);
-    const QString &dstFolder = gHints.get(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
+    const QString& dstFolder = gHints.get(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
     U2PFMatrix dstObject;
     RawDataUdrSchema::cloneObject(entityRef, dstDbiRef, dstFolder, dstObject, os);
     CHECK_OP(os, nullptr);
 
     const U2EntityRef dstEntRef(dstDbiRef, dstObject.id);
-    PFMatrixObject *dst = new PFMatrixObject(getGObjectName(), dstEntRef, gHints.getMap());
+    PFMatrixObject* dst = new PFMatrixObject(getGObjectName(), dstEntRef, gHints.getMap());
     dst->setIndexInfo(getIndexInfo());
     return dst;
 }

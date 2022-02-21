@@ -38,28 +38,28 @@ using namespace Workflow;
 class U2LANG_EXPORT WorkflowAbstractRunner : public CmdlineTask {
     Q_OBJECT
 public:
-    WorkflowAbstractRunner(const QString &name, TaskFlags flags);
-    virtual QList<WorkerState> getState(Actor *) = 0;
-    virtual int getMsgNum(const Link *) = 0;
-    virtual int getMsgPassed(const Link *) = 0;
+    WorkflowAbstractRunner(const QString& name, TaskFlags flags);
+    virtual QList<WorkerState> getState(Actor*) = 0;
+    virtual int getMsgNum(const Link*) = 0;
+    virtual int getMsgPassed(const Link*) = 0;
 
-    const QList<WorkflowMonitor *> &getMonitors() const;
+    const QList<WorkflowMonitor*>& getMonitors() const;
 
 protected:
-    QList<WorkflowMonitor *> monitors;
+    QList<WorkflowMonitor*> monitors;
 };  // WorkflowAbstractRunner
 
 class U2LANG_EXPORT WorkflowAbstractIterationRunner : public Task {
     Q_OBJECT
 public:
-    WorkflowAbstractIterationRunner(const QString &name, TaskFlags flags);
+    WorkflowAbstractIterationRunner(const QString& name, TaskFlags flags);
     virtual ~WorkflowAbstractIterationRunner() {
     }
-    virtual WorkerState getState(const ActorId &actor) = 0;
-    virtual int getMsgNum(const Link *l) = 0;
-    virtual int getMsgPassed(const Link *l) = 0;
+    virtual WorkerState getState(const ActorId& actor) = 0;
+    virtual int getMsgNum(const Link* l) = 0;
+    virtual int getMsgPassed(const Link* l) = 0;
 
-    virtual int getDataProduced(const ActorId &actor) = 0;
+    virtual int getDataProduced(const ActorId& actor) = 0;
 
 signals:
     void si_updateProducers();
@@ -70,10 +70,10 @@ typedef QMap<ActorId, ActorId> ActorMap;
 class U2LANG_EXPORT WorkflowRunTask : public WorkflowAbstractRunner {
     Q_OBJECT
 public:
-    WorkflowRunTask(const Schema &, const ActorMap &rmap = ActorMap(), WorkflowDebugStatus *debugInfo = nullptr);
-    virtual QList<WorkerState> getState(Actor *);
-    virtual int getMsgNum(const Link *);
-    virtual int getMsgPassed(const Link *);
+    WorkflowRunTask(const Schema&, const ActorMap& rmap = ActorMap(), WorkflowDebugStatus* debugInfo = nullptr);
+    virtual QList<WorkerState> getState(Actor*);
+    virtual int getMsgNum(const Link*);
+    virtual int getMsgPassed(const Link*);
 
 private:
     QString generateReport() const;
@@ -85,50 +85,50 @@ signals:
 
 private:
     QMap<ActorId, ActorId> rmap;
-    QList<Link *> flows;
+    QList<Link*> flows;
 
 };  // WorkflowRunTask
 
 class WorkflowIterationRunTask : public WorkflowAbstractIterationRunner {
     Q_OBJECT
 public:
-    WorkflowIterationRunTask(const Schema &, WorkflowDebugStatus *initDebugInfo);
+    WorkflowIterationRunTask(const Schema&, WorkflowDebugStatus* initDebugInfo);
     ~WorkflowIterationRunTask();
     virtual void prepare();
     virtual ReportResult report();
 
-    virtual WorkerState getState(const ActorId &actor);
-    virtual int getMsgNum(const Link *l);
-    virtual int getMsgPassed(const Link *l);
-    virtual int getDataProduced(const ActorId &actor);
+    virtual WorkerState getState(const ActorId& actor);
+    virtual int getMsgNum(const Link* l);
+    virtual int getMsgPassed(const Link* l);
+    virtual int getDataProduced(const ActorId& actor);
 
-    WorkflowMonitor *getMonitor() const;
+    WorkflowMonitor* getMonitor() const;
 
 signals:
     void si_ticked();
 
 protected:
-    virtual QList<Task *> onSubTaskFinished(Task *subTask);
+    virtual QList<Task*> onSubTaskFinished(Task* subTask);
 
 private slots:
     void sl_pauseStateChanged(bool isPaused);
-    void sl_busInvestigationIsRequested(const Workflow::Link *bus, int messageNumber);
-    void sl_busCountOfMessagesRequested(const Workflow::Link *bus);
-    void sl_singleStepIsRequested(const ActorId &actor);
-    void sl_convertMessages2Documents(const Workflow::Link *bus, const QString &messageType, int messageNumber, const QString &schemeName);
+    void sl_busInvestigationIsRequested(const Workflow::Link* bus, int messageNumber);
+    void sl_busCountOfMessagesRequested(const Workflow::Link* bus);
+    void sl_singleStepIsRequested(const ActorId& actor);
+    void sl_convertMessages2Documents(const Workflow::Link* bus, const QString& messageType, int messageNumber, const QString& schemeName);
 
 private:
     static TaskFlags getAdditionalFlags();
 
-    QList<CommunicationChannel *> getActorLinks(const QString &actor);
+    QList<CommunicationChannel*> getActorLinks(const QString& actor);
 
-    WorkflowContext *context;
-    Schema *schema;
-    Scheduler *scheduler;
+    WorkflowContext* context;
+    Schema* schema;
+    Scheduler* scheduler;
     QMap<ActorId, ActorId> rmap;
-    QMap<QString, CommunicationChannel *> lmap;
+    QMap<QString, CommunicationChannel*> lmap;
 
-    WorkflowDebugStatus *debugInfo;
+    WorkflowDebugStatus* debugInfo;
     bool nextTickRestoring;
     bool contextInitialized;
 };

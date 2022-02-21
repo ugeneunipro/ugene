@@ -38,7 +38,7 @@
 
 namespace U2 {
 
-CopyDocumentTask::CopyDocumentTask(Document *_srcDoc, const DocumentFormatId &_formatId, const QString &_dstUrl, bool _addToProject)
+CopyDocumentTask::CopyDocumentTask(Document* _srcDoc, const DocumentFormatId& _formatId, const QString& _dstUrl, bool _addToProject)
     : Task("Copy document", TaskFlag_NoRun), srcDoc(_srcDoc), dstDoc(nullptr), formatId(_formatId),
       dstUrl(_dstUrl), addToProject(_addToProject), cloneTask(nullptr), saveTask(nullptr) {
 }
@@ -56,10 +56,10 @@ void CopyDocumentTask::prepare() {
     if (!GUrlUtils::renameFileWithNameRoll(dstUrl, stateInfo, excludeFileNames, &coreLog)) {
         return;
     }
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(dstUrl));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(dstUrl));
     CHECK_EXT(iof != nullptr, stateInfo.setError(QString("Can not create IO factory for %1").arg(dstUrl)), );
-    DocumentFormatRegistry *dfr = AppContext::getDocumentFormatRegistry();
-    DocumentFormat *df = dfr->getFormatById(formatId);
+    DocumentFormatRegistry* dfr = AppContext::getDocumentFormatRegistry();
+    DocumentFormat* df = dfr->getFormatById(formatId);
     CHECK_EXT(df != nullptr, stateInfo.setError(QString("Unknown document format IO factory: %1").arg(formatId)), );
 
     QVariantMap hints = srcDoc->getGHintsMap();
@@ -72,23 +72,23 @@ void CopyDocumentTask::prepare() {
     addSubTask(cloneTask);
 }
 
-QList<Task *> CopyDocumentTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> result;
+QList<Task*> CopyDocumentTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> result;
     if (hasError() || isCanceled()) {
         return result;
     }
 
     if (cloneTask == subTask) {
-        QList<GObject *> objs = cloneTask->takeResult();
-        foreach (GObject *dstObj, objs) {
+        QList<GObject*> objs = cloneTask->takeResult();
+        foreach (GObject* dstObj, objs) {
             dstObj->moveToThread(QCoreApplication::instance()->thread());
             dstDoc->addObject(dstObj);
         }
-        foreach (GObject *dstObj, objs) {
+        foreach (GObject* dstObj, objs) {
             GObjectUtils::updateRelationsURL(dstObj, srcDoc->getURL(), dstUrl);
         }
         if (addToProject) {
-            Project *p = AppContext::getProject();
+            Project* p = AppContext::getProject();
             if (nullptr != p) {
                 dstDoc->setModified(true);
                 p->addDocument(dstDoc);
@@ -108,20 +108,20 @@ QList<Task *> CopyDocumentTask::onSubTaskFinished(Task *subTask) {
 void CopyDocumentTask::sl_onCopySaved() {
 }
 
-CloneObjectsTask::CloneObjectsTask(Document *_srcDoc, Document *_dstDoc)
+CloneObjectsTask::CloneObjectsTask(Document* _srcDoc, Document* _dstDoc)
     : Task("Clone objects", TaskFlag_None), srcDoc(_srcDoc), dstDoc(_dstDoc) {
     CHECK_EXT(nullptr != srcDoc, stateInfo.setError("NULL source document"), );
     CHECK_EXT(nullptr != dstDoc, stateInfo.setError("NULL destination document"), );
 }
 
 void CloneObjectsTask::run() {
-    DocumentFormat *df = dstDoc->getDocumentFormat();
+    DocumentFormat* df = dstDoc->getDocumentFormat();
     CHECK_EXT(nullptr != df, stateInfo.setError("NULL document format"), );
 
-    QList<GObject *> objs = srcDoc->getObjects();
-    foreach (GObject *srcObj, objs) {
+    QList<GObject*> objs = srcDoc->getObjects();
+    foreach (GObject* srcObj, objs) {
         if (df->isObjectOpSupported(dstDoc, DocumentFormat::DocObjectOp_Add, srcObj->getGObjectType())) {
-            GObject *dstObj = srcObj->clone(dstDoc->getDbiRef(), stateInfo);
+            GObject* dstObj = srcObj->clone(dstDoc->getDbiRef(), stateInfo);
             CHECK_OP(stateInfo, );
             if (dstObj->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
                 QString name = QFileInfo(dstDoc->getURLString()).baseName();
@@ -133,8 +133,8 @@ void CloneObjectsTask::run() {
     }
 }
 
-QList<GObject *> CloneObjectsTask::takeResult() {
-    QList<GObject *> result = cloned;
+QList<GObject*> CloneObjectsTask::takeResult() {
+    QList<GObject*> result = cloned;
     cloned.clear();
 
     return result;

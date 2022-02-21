@@ -30,23 +30,23 @@ namespace U2 {
 
 class WorkflowElementFacade {
 public:
-    static U2ErrorType doesElementTypeExist(const QString &type, bool *exists);
-    static U2ErrorType getElementNameByType(const QString &type, QString &name);
+    static U2ErrorType doesElementTypeExist(const QString& type, bool* exists);
+    static U2ErrorType getElementNameByType(const QString& type, QString& name);
 
-    static U2ErrorType doesElementHaveParameter(const QString &elementType,
-                                                const QString &parameterName,
-                                                bool *has);
-    static U2ErrorType doesElementHavePort(const QString &elementType,
-                                           const QString &portId,
-                                           bool *has);
-    static U2ErrorType doesElementHaveOutputSlot(const QString &elementType,
-                                                 const QString &slotId,
-                                                 bool *has);
-    static U2ErrorType doesElementHaveInputSlot(const QString &elementType,
-                                                const QString &portId,
-                                                const QString &slotId,
-                                                bool *has);
-    static U2ErrorType doesElementSuitForSas(const QString &elementType, bool *suits);
+    static U2ErrorType doesElementHaveParameter(const QString& elementType,
+                                                const QString& parameterName,
+                                                bool* has);
+    static U2ErrorType doesElementHavePort(const QString& elementType,
+                                           const QString& portId,
+                                           bool* has);
+    static U2ErrorType doesElementHaveOutputSlot(const QString& elementType,
+                                                 const QString& slotId,
+                                                 bool* has);
+    static U2ErrorType doesElementHaveInputSlot(const QString& elementType,
+                                                const QString& portId,
+                                                const QString& slotId,
+                                                bool* has);
+    static U2ErrorType doesElementSuitForSas(const QString& elementType, bool* suits);
     /*
      * If `portId` is an empty string then `slotId` will contain an arbitrary slot id
      * from an arbitrary element port with given direction. Such behavior might be useful
@@ -54,11 +54,11 @@ public:
      *
      * If `portId` is non empty string then the `inputSlot` value is ignored
      */
-    static U2ErrorType getElementSlotIds(const QString &elementType, bool inputSlot, const QString &portId, QStringList &slotIds);
-    static U2ErrorType getReadElementTypeForSlot(const QString &slotId, QString &readerType);
-    static U2ErrorType getWriteElementTypeForSlot(const QString &slotId, QString &writerType);
-    static U2ErrorType getInputPortIdForSlot(const QString &elementId, const QString &slotId, QString &portId);
-    static U2ErrorType getOutputPortIdForSlot(const QString &elementId, const QString &slotId, QString &portId);
+    static U2ErrorType getElementSlotIds(const QString& elementType, bool inputSlot, const QString& portId, QStringList& slotIds);
+    static U2ErrorType getReadElementTypeForSlot(const QString& slotId, QString& readerType);
+    static U2ErrorType getWriteElementTypeForSlot(const QString& slotId, QString& writerType);
+    static U2ErrorType getInputPortIdForSlot(const QString& elementId, const QString& slotId, QString& portId);
+    static U2ErrorType getOutputPortIdForSlot(const QString& elementId, const QString& slotId, QString& portId);
 };
 
 }  // namespace U2

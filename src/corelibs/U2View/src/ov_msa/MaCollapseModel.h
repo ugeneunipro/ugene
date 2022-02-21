@@ -38,13 +38,13 @@ public:
     MaCollapsibleGroup(int maRowIndex, qint64 maRowId, bool isCollapsed = false);
 
     /* Creates new collapsible group item that starts with maRowIndex and has numRows inside. */
-    MaCollapsibleGroup(const QList<int> &maRowIndexList, const QList<qint64> &maRowIds, bool isCollapsed = false);
+    MaCollapsibleGroup(const QList<int>& maRowIndexList, const QList<qint64>& maRowIds, bool isCollapsed = false);
 
     /* Creates empty group. This method should not be used directly but is required by the Vector<MaCollapsibleGroup>. */
     MaCollapsibleGroup();
 
     /* Compares this group with another group. Returns true if groups are equal. */
-    bool operator==(const MaCollapsibleGroup &other) const;
+    bool operator==(const MaCollapsibleGroup& other) const;
 
     /* Returns number of rows in the group. */
     int size() const;
@@ -74,16 +74,16 @@ class U2Region;
 class U2VIEW_EXPORT MaCollapseModel : public QObject {
     Q_OBJECT
 public:
-    MaCollapseModel(QObject *p, const QList<qint64> &allOrderedMaRowIds);
+    MaCollapseModel(QObject* p, const QList<qint64>& allOrderedMaRowIds);
 
     /* Updates model to the given groups. */
-    void update(const QVector<MaCollapsibleGroup> &groups);
+    void update(const QVector<MaCollapsibleGroup>& groups);
 
     /*
      * Flattens all collapsible groups: makes every group contain only 1 sequence.
      * 'allOrderedMaRowIds' is a list of all ma row ids in the alignment.
      */
-    void reset(const QList<qint64> &allOrderedMaRowIds, const QSet<int> &expandedGroupIndexes = QSet<int>());
+    void reset(const QList<qint64>& allOrderedMaRowIds, const QSet<int>& expandedGroupIndexes = QSet<int>());
 
     /* Toggle 'isCollapsed' state for the group at the given row. */
     void toggle(int viewRowIndex);
@@ -105,10 +105,10 @@ public:
      * If 'includeChildRowsForCollapsedGroups' is true adds all MA rows in the group
      * for every viewRow that is a header of the collapsed group.
      */
-    QList<int> getMaRowIndexesByViewRowIndexes(const U2Region &viewRowIndexesRegion, bool includeChildRowsForCollapsedGroups = false);
+    QList<int> getMaRowIndexesByViewRowIndexes(const U2Region& viewRowIndexesRegion, bool includeChildRowsForCollapsedGroups = false);
 
     /** Returns list of MA row indexes for the given view row indexes. */
-    QList<int> getMaRowIndexesByViewRowIndexes(const QList<int> &viewRowIndexes, bool includeChildRowsForCollapsedGroups = false);
+    QList<int> getMaRowIndexesByViewRowIndexes(const QList<int>& viewRowIndexes, bool includeChildRowsForCollapsedGroups = false);
 
     /* Returns list of all MA row indexes that have valid view row index (not hidden by collapsing). */
     QList<int> getMaRowsIndexesWithViewRowIndexes() const;
@@ -133,13 +133,13 @@ public:
     int getCollapsibleGroupIndexByViewRowIndex(int viewRowIndex) const;
 
     /* Returns collapsible group by index or NULL if there is no group for the index. */
-    const MaCollapsibleGroup *getCollapsibleGroup(int collapsibleGroupIndex) const;
+    const MaCollapsibleGroup* getCollapsibleGroup(int collapsibleGroupIndex) const;
 
     /* Returns collapsible group by view row index or NULL if there is no group for the index. */
-    const MaCollapsibleGroup *getCollapsibleGroupByViewRow(int viewRowIndex) const;
+    const MaCollapsibleGroup* getCollapsibleGroupByViewRow(int viewRowIndex) const;
 
     /* Returns collapsible group by MA row index or NULL if there is no group for the index. */
-    const MaCollapsibleGroup *getCollapsibleGroupByMaRow(int maRowIndex) const;
+    const MaCollapsibleGroup* getCollapsibleGroupByMaRow(int maRowIndex) const;
 
     /* Returns number of view rows. Every collapsible group has at least one (the first) row counted. */
     int getViewRowCount() const;
@@ -157,7 +157,7 @@ public:
     QSet<qint64> getAllRowIds() const;
 
     /** Returns list of maRowIndexes for all rows in the selection. Asserts that all rows are mapped. */
-    QList<int> getMaRowIndexesFromSelectionRects(const QList<QRect> &selectionRects) const;
+    QList<int> getMaRowIndexesFromSelectionRects(const QList<QRect>& selectionRects) const;
 
 signals:
     void si_aboutToBeToggled();

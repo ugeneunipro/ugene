@@ -38,26 +38,26 @@ class IOAdapter;
 
 class U2CORE_EXPORT IOAdapterFactory : public QObject {
 public:
-    IOAdapterFactory(QObject *p)
+    IOAdapterFactory(QObject* p)
         : QObject(p) {
     }
 
-    virtual IOAdapter *createIOAdapter() = 0;
+    virtual IOAdapter* createIOAdapter() = 0;
 
     virtual IOAdapterId getAdapterId() const = 0;
 
-    virtual const QString &getAdapterName() const = 0;
+    virtual const QString& getAdapterName() const = 0;
 
     virtual bool isIOModeSupported(IOAdapterMode m) const = 0;
 
     /** Returns YES if resource exists and available to read */
-    virtual TriState isResourceAvailable(const GUrl &url) const = 0;
+    virtual TriState isResourceAvailable(const GUrl& url) const = 0;
 };
 
 class U2CORE_EXPORT IOAdapter : public QObject {
     Q_OBJECT
 public:
-    IOAdapter(IOAdapterFactory *f, QObject *o = nullptr)
+    IOAdapter(IOAdapterFactory* f, QObject* o = nullptr)
         : QObject(o), formatMode(BinaryMode), factory(f) {
     }
 
@@ -68,7 +68,7 @@ public:
         return factory->getAdapterId();
     }
 
-    virtual const QString &getAdapterName() const {
+    virtual const QString& getAdapterName() const {
         return factory->getAdapterName();
     }
 
@@ -76,11 +76,11 @@ public:
         return factory->isIOModeSupported(m);
     }
 
-    IOAdapterFactory *getFactory() const {
+    IOAdapterFactory* getFactory() const {
         return factory;
     }
 
-    virtual bool open(const GUrl &url, IOAdapterMode m) = 0;
+    virtual bool open(const GUrl& url, IOAdapterMode m) = 0;
 
     virtual bool isOpen() const = 0;
 
@@ -103,21 +103,21 @@ public:
     }
 
     // return 0 if at the end of file, -1 if error
-    virtual qint64 readUntil(char *buff, qint64 maxSize, const QBitArray &readTerminators, TerminatorHandling th, bool *terminatorFound = 0);
+    virtual qint64 readUntil(char* buff, qint64 maxSize, const QBitArray& readTerminators, TerminatorHandling th, bool* terminatorFound = 0);
 
-    virtual bool getChar(char *buff) {
+    virtual bool getChar(char* buff) {
         return 1 == readBlock(buff, 1);
     }
 
     // If an error occurs, this function returns -1
-    virtual qint64 readBlock(char *buff, qint64 maxSize) = 0;
+    virtual qint64 readBlock(char* buff, qint64 maxSize) = 0;
 
     // read a single line of text and skips one EOL, returns length of line w/o terminator or -1
-    virtual qint64 readLine(char *buff, qint64 maxSize, bool *terminatorFound = 0);
+    virtual qint64 readLine(char* buff, qint64 maxSize, bool* terminatorFound = 0);
 
-    virtual qint64 writeBlock(const char *buff, qint64 size) = 0;
+    virtual qint64 writeBlock(const char* buff, qint64 size) = 0;
 
-    qint64 writeBlock(const QByteArray &a) {
+    qint64 writeBlock(const QByteArray& a) {
         return writeBlock(a.data(), a.size());
     }
 
@@ -153,28 +153,28 @@ public:
     }
 
 protected:
-    static void cutByteOrderMarks(char *data, QString &errorString, qint64 &length);
+    static void cutByteOrderMarks(char* data, QString& errorString, qint64& length);
 
     FormatMode formatMode;
     QString errorMessage;
 
 private:
-    IOAdapterFactory *factory;
+    IOAdapterFactory* factory;
 };
 
 class U2CORE_EXPORT IOAdapterRegistry : public QObject {
 public:
-    IOAdapterRegistry(QObject *p = nullptr)
+    IOAdapterRegistry(QObject* p = nullptr)
         : QObject(p) {
     }
 
-    virtual bool registerIOAdapter(IOAdapterFactory *io) = 0;
+    virtual bool registerIOAdapter(IOAdapterFactory* io) = 0;
 
-    virtual bool unregisterIOAdapter(IOAdapterFactory *io) = 0;
+    virtual bool unregisterIOAdapter(IOAdapterFactory* io) = 0;
 
-    virtual const QList<IOAdapterFactory *> &getRegisteredIOAdapters() const = 0;
+    virtual const QList<IOAdapterFactory*>& getRegisteredIOAdapters() const = 0;
 
-    virtual IOAdapterFactory *getIOAdapterFactoryById(IOAdapterId id) const = 0;
+    virtual IOAdapterFactory* getIOAdapterFactoryById(IOAdapterId id) const = 0;
 };
 
 class U2CORE_EXPORT BaseIOAdapters {

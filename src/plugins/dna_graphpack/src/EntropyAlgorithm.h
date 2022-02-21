@@ -37,14 +37,14 @@ class AnnotatedDNAView;
 class EntropyGraphFactory : public GSequenceGraphFactory {
     Q_OBJECT
 public:
-    EntropyGraphFactory(QObject *p);
-    QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView *v);
-    bool isEnabled(const U2SequenceObject *o) const;
+    EntropyGraphFactory(QObject* p);
+    QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView* v);
+    bool isEnabled(const U2SequenceObject* o) const;
 };
 
 class EntropyGraphAlgorithm : public GSequenceGraphAlgorithm {
 public:
-    void calculate(QVector<float> &result, U2SequenceObject *sequenceObject, qint64 window, qint64 step, U2OpStatus &os) override;
+    void calculate(QVector<float>& result, U2SequenceObject* sequenceObject, qint64 window, qint64 step, U2OpStatus& os) override;
 };
 
 }  // namespace U2

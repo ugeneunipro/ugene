@@ -35,7 +35,7 @@ static const QString MAX("max");
 static const QString ATTR("attribute");
 
 namespace {
-int minimum(const QMap<QString, QString> &options) {
+int minimum(const QMap<QString, QString>& options) {
     if (options.contains(MIN)) {
         bool ok = true;
         int val = options[MIN].toInt(&ok);
@@ -45,7 +45,7 @@ int minimum(const QMap<QString, QString> &options) {
     }
     return 0;
 }
-int maximum(const QMap<QString, QString> &options) {
+int maximum(const QMap<QString, QString>& options) {
     if (options.contains(MAX)) {
         bool ok = true;
         int val = options[MAX].toInt(&ok);
@@ -55,7 +55,7 @@ int maximum(const QMap<QString, QString> &options) {
     }
     return INT_MAX;
 }
-QString attributeId(const QMap<QString, QString> &options) {
+QString attributeId(const QMap<QString, QString>& options) {
     if (options.contains(ATTR)) {
         return options[ATTR];
     }
@@ -63,7 +63,7 @@ QString attributeId(const QMap<QString, QString> &options) {
 }
 }  // namespace
 
-bool DatasetsCountValidator::validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const {
+bool DatasetsCountValidator::validate(const Actor* actor, NotificationsList& notificationList, const QMap<QString, QString>& options) const {
     int min = minimum(options);
     int max = maximum(options);
     QString attrId = attributeId(options);

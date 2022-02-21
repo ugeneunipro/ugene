@@ -42,19 +42,19 @@ public:
 class ReadAnnotationsWorker : public GenericDocReader {
     Q_OBJECT
 public:
-    ReadAnnotationsWorker(Actor *p);
+    ReadAnnotationsWorker(Actor* p);
     virtual void init();
 
 protected slots:
     virtual void sl_datasetEnded();
 
 protected:
-    virtual void onTaskFinished(Task *task);
-    virtual Task *createReadTask(const QString &url, const QString &datasetName);
-    virtual QString addReadDbObjectToData(const QString &objUrl, QVariantMap &data);
+    virtual void onTaskFinished(Task* task);
+    virtual Task* createReadTask(const QString& url, const QString& datasetName);
+    virtual QString addReadDbObjectToData(const QString& objUrl, QVariantMap& data);
 
 private:
-    void sendData(const QList<QVariantMap> &data);
+    void sendData(const QList<QVariantMap>& data);
 
 private:
     ReadAnnotationsProto::Mode mode;
@@ -69,14 +69,14 @@ public:
         : DomainFactory(ACTOR_ID) {
     }
     static void init();
-    virtual Worker *createWorker(Actor *a);
+    virtual Worker* createWorker(Actor* a);
 
 };  // ReadAnnotationsWorkerFactory
 
 class ReadAnnotationsTask : public Task {
     Q_OBJECT
 public:
-    ReadAnnotationsTask(const QString &url, const QString &datasetName, WorkflowContext *context, bool mergeAnnotations, const QString &mergedAnnTableName = QString());
+    ReadAnnotationsTask(const QString& url, const QString& datasetName, WorkflowContext* context, bool mergeAnnotations, const QString& mergedAnnTableName = QString());
     virtual void prepare();
     virtual void run();
     virtual void cleanup();
@@ -88,7 +88,7 @@ private:
     QString datasetName;
     bool mergeAnnotations;
     QString mergedAnnTableName;
-    WorkflowContext *context;
+    WorkflowContext* context;
 
     QList<QVariantMap> results;
 };

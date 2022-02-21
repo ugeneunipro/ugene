@@ -27,48 +27,40 @@
 namespace U2 {
 
 struct U2ALGORITHM_EXPORT MatchScores {
-    int match;
-    int mismatch;
-    int ins;
-    int del;
+    int match = 0;
+    int mismatch = 1;
+    int ins = 1;
+    int del = 1;
 };
 
 class U2ALGORITHM_EXPORT DynTable : public RollingMatrix {
 public:
-    enum FillStrategy {
-        Strategy_Max,
-        Strategy_Min
-    };
-    DynTable(int n, int m, bool _allowInsDel)
-        : RollingMatrix(n, m), allowInsDel(_allowInsDel) {
-        init();
-        scores.match = DEFAULT_SCORE_MATCH;
-        scores.ins = DEFAULT_SCORE_INS;
-        scores.del = DEFAULT_SCORE_DEL;
-        scores.mismatch = DEFAULT_SCORE_MISMATCH;
-        strategy = Strategy_Min;
-    }
-    DynTable()
-        : RollingMatrix(0, 0), allowInsDel(false) {
-    }
-    DynTable(int n, int m, bool _allowInsDel, MatchScores _scores, FillStrategy _strategy = Strategy_Min)
-        : RollingMatrix(n, m), allowInsDel(_allowInsDel), scores(_scores), strategy(_strategy) {
-        init();
+    DynTable(int sizeX, int sizeY, bool _allowInsDel, const MatchScores& _scores = {})
+        : RollingMatrix(sizeX, sizeY), allowInsDel(_allowInsDel), scores(_scores) {
+        for (int x = 0; x < sizeX; x++) {
+            for (int y = 0; y < sizeY; y++) {
+                setValue(x, y, y + 1, false);
+            }
+        }
     }
 
     int getLast() const {
-        return get_value(n - 1, m - 1);
+        return getValue(sizeX - 1, sizeY - 1);
     }
 
+    /**
+     * Returns maximum match length for in the matrix.
+     * Returns -1 if some unexpected error occurs.
+     */
     int getLastLen() const {
-        return getLen(n - 1, m - 1);
+        return getLen(sizeX - 1, sizeY - 1);
     }
 
-    void match(int y, bool ok) {
-        match(n - 1, y, ok);
+    void match(int y, bool isMatch) {
+        match(sizeX - 1, y, isMatch);
     }
 
-    virtual int get(int x, int y) const {
+    int get(int x, int y) const override {
         if (y < 0) {
             return 0;
         }
@@ -78,105 +70,93 @@ public:
         return RollingMatrix::get(x, y);
     }
 
-    static quint64 estimateTableSizeInBytes(const int n, const int m) {
+    static qint64 estimateTableSizeInBytes(int n, int m) {
         return RollingMatrix::getMatrixSizeInBytes(n, m);
     }
 
 protected:
-    void match(int x, int y, bool ok) {
-        int d = get_value(x - 1, y - 1);
-        int res = d + (ok ? scores.match : scores.mismatch);
+    void match(int x, int y, bool isMatch) {
+        int d = getValue(x - 1, y - 1);
+        int res = d + (isMatch ? scores.match : scores.mismatch);
         if (allowInsDel) {
-            int u = get_value(x, y - 1);
-            int l = get_value(x - 1, y);
-            int insdelRes = 0;
-            switch (strategy) {
-                case Strategy_Min:
-                    insdelRes = qMin(l + scores.ins, u + scores.del);
-                    res = qMin(insdelRes, res);
-                    break;
-                default:
-                    assert(false);
-            }
+            int u = getValue(x, y - 1);
+            int l = getValue(x - 1, y);
+            int insDelRes = qMin(l + scores.ins, u + scores.del);
+            res = qMin(insDelRes, res);
         }
-        set_pair(x, y, res, ok);
+        setValue(x, y, res, isMatch);
     }
 
-    int getLen(int x, int y) const {
-        if (y == -1) {
-            return 0;
+    /**
+     * Returns match length for the current point in the matrix.
+     * Returns -1 if some unexpected error occurs.
+     */
+    int getLen(int x, int y) const { // NOLINT(misc-no-recursion)
+        if (y == -1 || x == -1) {
+            return 0;  // End of the matrix.
         }
-        assert(x != -1);
+        SAFE_POINT(x >= 0 && y >= 0, "Invalid X/Y range", -1);
 
         if (!allowInsDel) {
-            return 1 + getLen(x - 1, y - 1);
+            int lengthBefore = getLen(x - 1, y - 1);
+            CHECK(lengthBefore >= 0, -1);
+            return 1 + lengthBefore;
         }
-        int v = get_value(x, y);
-        bool match = get_flag(x, y);
-        int d = get_value(x - 1, y - 1);
-        int l = get_value(x - 1, y);
-        int u = get_value(x, y - 1);
+        int v = getValue(x, y);
+        bool match = isMatch(x, y);
+        int d = getValue(x - 1, y - 1);
+        int l = getValue(x - 1, y);
+        int u = getValue(x, y - 1);
 
         if (match && v == d + scores.match) {
-            return 1 + getLen(x - 1, y - 1);
+            int lengthBefore = getLen(x - 1, y - 1);
+            CHECK(lengthBefore >= 0, -1);
+            return 1 + lengthBefore;
         }
-        if (v == u + scores.del) {  // prefer deletion in X sequence to minimize result len
-            return getLen(x, y - 1);
+        if (v == u + scores.del) {  // Prefer deletion in X sequence to minimize result length.
+            int lengthBefore = getLen(x, y - 1);
+            CHECK(lengthBefore >= 0, -1);
+            return lengthBefore;
         }
-        if (!match && v == d + scores.mismatch) {  // prefer mismatch instead of insertion into X sequence
-            return 1 + getLen(x - 1, y - 1);
+        if (!match && v == d + scores.mismatch) {  // Prefer a mismatch instead of insertion into X sequence.
+            int lengthBefore = getLen(x - 1, y - 1);
+            CHECK(lengthBefore >= 0, -1);
+            return 1 + lengthBefore;
         }
-        assert(v == l + scores.ins);
-        Q_UNUSED(l);
-        return 1 + getLen(x - 1, y);  // this is insertion into X sequence
+        SAFE_POINT(v == l + scores.ins, "Invalid value", -1);
+        int lengthBefore = getLen(x - 1, y);  // This is an insertion into X sequence.
+        CHECK(lengthBefore >= 0, -1);
+        return 1 + lengthBefore;
     }
 
 private:
-    void init() {
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                set_pair(i, j, j + 1, false);
-            }
-        }
+    void setValue(int x, int y, int val, bool isMatch) {
+        U2_ASSERT(((qint32)val & MATCH_MASK) == 0);
+        int valueWithMatchMask = int((quint32)val | (isMatch ? Flag_Match : Flag_Mismatch));
+        set(x, y, valueWithMatchMask);
     }
-    void set_value(int x, int y, int val) {
-        assert(!(val & MASK_FLAG_MISMATCH));
-        int oldval = get(x, y);
-        set(x, y, (oldval & MASK_FLAG_MISMATCH) | val);
+
+    int getValue(int x, int y) const {
+        return (int)((quint32)get(x, y) & VALUE_MASK);
     }
-    void set_mm_flag(int x, int y, bool flag) {
-        int oldval = get(x, y);
-        set(x, y, (oldval & MASK_VALUE) | (flag ? Flag_Match : Flag_Mismatch));
-    }
-    void set_pair(int x, int y, int val, bool flag) {
-        assert(!(val & MASK_FLAG_MISMATCH));
-        set(x, y, val | (flag ? Flag_Match : Flag_Mismatch));
-    }
-    int get_value(int x, int y) const {
-        return get(x, y) & MASK_VALUE;
-    }
-    bool get_flag(int x, int y) const {
-        return get(x, y) & MASK_FLAG_MISMATCH;
+
+    bool isMatch(int x, int y) const {
+        return (get(x, y) & MATCH_MASK) != 0;
     }
 
 protected:
-    bool allowInsDel;
+    const bool allowInsDel;
 
 private:
-    const static int DEFAULT_SCORE_MATCH = 0;
-    const static int DEFAULT_SCORE_MISMATCH = 1;
-    const static int DEFAULT_SCORE_DEL = 1;
-    const static int DEFAULT_SCORE_INS = 1;
+    const static quint32 VALUE_MASK = 0x7FFFFFFF;
+    const static quint32 MATCH_MASK = 0x80000000;
 
-    const static int MASK_VALUE = 0x7FFFFFFF;
-    const static int MASK_FLAG_MISMATCH = 0x80000000;
     enum MismatchFlag {
         Flag_Mismatch = 0x00000000,
         Flag_Match = 0x80000000
     };
 
     MatchScores scores;
-    FillStrategy strategy;
 };
 
 }  // namespace U2

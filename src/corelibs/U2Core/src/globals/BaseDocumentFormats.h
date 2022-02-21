@@ -70,10 +70,10 @@ public:
     static const DocumentFormatId VECTOR_NTI_ALIGNX;
     static const DocumentFormatId VECTOR_NTI_SEQUENCE;
 
-    static DocumentFormat *get(const DocumentFormatId &formatId);
-    static bool equal(const DocumentFormatId &first, const DocumentFormatId &second);  // a workaround for UGENE-5521, use this method to compare format IDs
-    static bool isInvalidId(const DocumentFormatId &formatId);
-    static DocumentFormatId toValidId(const DocumentFormatId &invalidFormatId);
+    static DocumentFormat* get(const DocumentFormatId& formatId);
+    static bool equal(const DocumentFormatId& first, const DocumentFormatId& second);  // a workaround for UGENE-5521, use this method to compare format IDs
+    static bool isInvalidId(const DocumentFormatId& formatId);
+    static DocumentFormatId toValidId(const DocumentFormatId& invalidFormatId);
 };
 
 }  // namespace U2

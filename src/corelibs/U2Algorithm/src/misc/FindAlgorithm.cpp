@@ -44,7 +44,7 @@ void FindAlgorithmResult::clear() {
     err = 0;
 }
 
-SharedAnnotationData FindAlgorithmResult::toAnnotation(const QString &name, bool splitCircular, int seqLen) const {
+SharedAnnotationData FindAlgorithmResult::toAnnotation(const QString& name, bool splitCircular, int seqLen) const {
     SAFE_POINT(!splitCircular || (seqLen != -1), "Sequence length is not set!", SharedAnnotationData());
     SharedAnnotationData data(new AnnotationData);
     data->name = name;
@@ -64,30 +64,26 @@ SharedAnnotationData FindAlgorithmResult::toAnnotation(const QString &name, bool
     return data;
 }
 
-QList<SharedAnnotationData> FindAlgorithmResult::toTable(const QList<FindAlgorithmResult> &res, const QString &name, bool splitCircular, int seqLen) {
+QList<SharedAnnotationData> FindAlgorithmResult::toTable(const QList<FindAlgorithmResult>& res, const QString& name, bool splitCircular, int seqLen) {
     QList<SharedAnnotationData> list;
-    foreach (const FindAlgorithmResult &f, res) {
+    foreach (const FindAlgorithmResult& f, res) {
         list.append(f.toAnnotation(name, splitCircular, seqLen));
     }
     return list;
 }
 
-bool FindAlgorithmResult::lessByRegionStartPos(const U2::FindAlgorithmResult &r1, const U2::FindAlgorithmResult &r2) {
+bool FindAlgorithmResult::lessByRegionStartPos(const U2::FindAlgorithmResult& r1, const U2::FindAlgorithmResult& r2) {
     return r1.region.startPos < r2.region.startPos;
 }
 
 class StrandContext {
 public:
-    StrandContext(int width, int height, bool insDel, const char *p)
+    StrandContext(int width, int height, bool insDel, const char* p)
         : dynTable(width, height, insDel), pattern(p) {
     }
 
-    StrandContext(const char *data, int arr_size, const char *p)  // using rolling array only in subst mode
-        : rollArr(data, arr_size), pattern(p) {
-    }
-
-    StrandContext()
-        : pattern(nullptr) {
+    StrandContext(const char* data, int arr_size, const char* p)  // using rolling array only in subst mode
+        : dynTable(0, 0, false), rollArr(data, arr_size), pattern(p) {
     }
 
     static quint64 estimateRamUsageForOneContext(int width, int height) {
@@ -96,7 +92,7 @@ public:
 
     DynTable dynTable;
     RollingArray<char> rollArr;
-    const char *pattern;
+    const char* pattern = nullptr;
     FindAlgorithmResult res;
 };
 
@@ -108,7 +104,7 @@ static bool isComplement(FindAlgorithmStrand s) {
     return s == FindAlgorithmStrand_Both || s == FindAlgorithmStrand_Complement;
 }
 
-FindAlgorithmSettings::FindAlgorithmSettings(const QByteArray &pattern, FindAlgorithmStrand strand, DNATranslation *complementTT, DNATranslation *proteinTT, const DNAAlphabet *sequenceAlphabet, const U2Region &searchRegion, int maxErr, FindAlgorithmPatternSettings _patternSettings, bool ambBases, int _maxRegExpResult, int _maxResult2Find)
+FindAlgorithmSettings::FindAlgorithmSettings(const QByteArray& pattern, FindAlgorithmStrand strand, DNATranslation* complementTT, DNATranslation* proteinTT, const DNAAlphabet* sequenceAlphabet, const U2Region& searchRegion, int maxErr, FindAlgorithmPatternSettings _patternSettings, bool ambBases, int _maxRegExpResult, int _maxResult2Find)
     : pattern(pattern), strand(strand), complementTT(complementTT), proteinTT(proteinTT), sequenceAlphabet(sequenceAlphabet),
       searchRegion(searchRegion), maxErr(maxErr), patternSettings(_patternSettings),
       useAmbiguousBases(ambBases), maxRegExpResultLength(_maxRegExpResult),
@@ -119,7 +115,7 @@ static qint64 cycleIndex(qint64 segmentLen, qint64 index) {
     return (index >= segmentLen ? index - segmentLen : index);
 }
 
-static qint64 getCircularOverlap(const char *seq, const U2Region &searchRange, int defaultCircularOverlap) {
+static qint64 getCircularOverlap(const char* seq, const U2Region& searchRange, int defaultCircularOverlap) {
     int seqLen = QByteArray(seq).size();
     if (searchRange.length == seqLen && searchRange.startPos == 0) {
         return defaultCircularOverlap;
@@ -127,7 +123,7 @@ static qint64 getCircularOverlap(const char *seq, const U2Region &searchRange, i
     return searchRange.endPos() - seqLen;
 }
 
-static qint64 getSearchEndPos(const char *seq, const U2Region &searchRange, int defaultCircularOverlap, bool searchIsCircular) {
+static qint64 getSearchEndPos(const char* seq, const U2Region& searchRange, int defaultCircularOverlap, bool searchIsCircular) {
     int seqLen = QByteArray(seq).size();
     if (searchIsCircular && searchRange.length == seqLen && searchRange.startPos == 0) {
         return searchRange.endPos() + defaultCircularOverlap;
@@ -137,19 +133,19 @@ static qint64 getSearchEndPos(const char *seq, const U2Region &searchRange, int 
 
 // TODO: in BothStrands&SingleShot mode it's impossible to find result on complement strand if there also a result on direct strand from the same pos!
 
-static void findInAmino(FindAlgorithmResultsListener *rl,
-                        DNATranslation *aminoTT,
-                        DNATranslation *complTT,
+static void findInAmino(FindAlgorithmResultsListener* rl,
+                        DNATranslation* aminoTT,
+                        DNATranslation* complTT,
                         FindAlgorithmStrand strand,
                         bool insDel,
-                        const char *seq,
-                        const U2Region &range,
+                        const char* seq,
+                        const U2Region& range,
                         bool searchIsCircular,
-                        const char *pattern,
+                        const char* pattern,
                         int patternLen,
                         int maxErr,
-                        int &stopFlag,
-                        int &percentsCompleted) {
+                        int& stopFlag,
+                        int& percentsCompleted) {
     SAFE_POINT(aminoTT->getSrcAlphabet()->isNucleic() && aminoTT->getDstAlphabet()->isAmino(),
                "Invalid alphabet detected!", );
 
@@ -182,10 +178,10 @@ static void findInAmino(FindAlgorithmResultsListener *rl,
          i < end - 2 && !stopFlag;
          i++, leftTillPercent--, translStrand = translStrand == 2 ? 0 : translStrand + 1) {
         for (int ci = conStart; ci < conEnd && !stopFlag; ci++) {
-            StrandContext &ctx = context[3 * ci + translStrand];
-            DynTable &dt = ctx.dynTable;
-            const char *p = ctx.pattern;
-            FindAlgorithmResult &res = ctx.res;
+            StrandContext& ctx = context[3 * ci + translStrand];
+            DynTable& dt = ctx.dynTable;
+            const char* p = ctx.pattern;
+            FindAlgorithmResult& res = ctx.res;
 
             for (int j = 0; j < patternLen && !stopFlag; j++) {  // TODO: optimize -> specialize loops
                 int k = cycleIndex(seqLen, i);
@@ -207,6 +203,7 @@ static void findInAmino(FindAlgorithmResultsListener *rl,
             }
             if (err <= maxErr) {
                 int newLen = dt.getLastLen();
+                SAFE_POINT(newLen >= 0, "Internal algorithm error!", )
                 newLen *= 3;
                 if (res.isEmpty() || res.err > err || (res.err == err && newLen < res.region.length)) {
                     SAFE_POINT(newLen + 3 * maxErr >= patternLenInNucl, "Internal algorithm error!", );
@@ -241,18 +238,18 @@ static void findInAmino(FindAlgorithmResultsListener *rl,
         }
     }
 }
-static void findInAmino_subst(FindAlgorithmResultsListener *rl,
-                              DNATranslation *aminoTT,
-                              DNATranslation *complTT,
+static void findInAmino_subst(FindAlgorithmResultsListener* rl,
+                              DNATranslation* aminoTT,
+                              DNATranslation* complTT,
                               FindAlgorithmStrand strand,
-                              const char *seq,
-                              const U2Region &range,
+                              const char* seq,
+                              const U2Region& range,
                               bool searchIsCircular,
-                              const char *pattern,
+                              const char* pattern,
                               int patternLen,
                               int maxErr,
-                              int &stopFlag,
-                              int &percentsCompleted) {
+                              int& stopFlag,
+                              int& percentsCompleted) {
     SAFE_POINT(nullptr != complTT && nullptr != aminoTT && aminoTT->getSrcAlphabet()->isNucleic() && aminoTT->getDstAlphabet()->isAmino(), "Invalid alphabet supplied!", );
 
     int seqLen = QByteArray(seq).size();
@@ -318,9 +315,9 @@ static void findInAmino_subst(FindAlgorithmResultsListener *rl,
          i < end - patternLenInNucl + 1 && !stopFlag;
          i++, leftTillPercent--, translStrand = translStrand == 2 ? 0 : translStrand + 1) {
         for (int ci = conStart; ci < conEnd && !stopFlag; ci++) {
-            StrandContext &ctx = context[ci * 3 + translStrand];
-            const char *p = ctx.pattern;
-            FindAlgorithmResult &res = ctx.res;
+            StrandContext& ctx = context[ci * 3 + translStrand];
+            const char* p = ctx.pattern;
+            FindAlgorithmResult& res = ctx.res;
             bool match = true;
             int curErr = 0;
             for (int j = 0; j < patternLen && !stopFlag; j++) {
@@ -357,7 +354,7 @@ static void findInAmino_subst(FindAlgorithmResultsListener *rl,
     }  // base pos
 }
 
-static char *createAmbiguousBaseMap() {
+static char* createAmbiguousBaseMap() {
     // Source: http://www.ncbi.nlm.nih.gov/blast/fasta.shtml
     // Unknown symbol is zero: no match
 
@@ -390,7 +387,7 @@ static char *createAmbiguousBaseMap() {
 }
 
 bool FindAlgorithm::cmpAmbiguous(char a, char b) {
-    static char *charMap = createAmbiguousBaseMap();
+    static char* charMap = createAmbiguousBaseMap();
 
     SAFE_POINT(a >= 0 && b >= 0, "Invalid characters supplied!", false);
 
@@ -400,7 +397,7 @@ bool FindAlgorithm::cmpAmbiguous(char a, char b) {
     return c1 & c2;
 }
 
-inline bool match_pattern(const char *seq, const char *p, int start, int patternLen, int maxErr, int &curErr) {
+inline bool match_pattern(const char* seq, const char* p, int start, int patternLen, int maxErr, int& curErr) {
     bool match = true;
     curErr = 0;
     for (int j = 0; j < patternLen; j++) {
@@ -412,7 +409,7 @@ inline bool match_pattern(const char *seq, const char *p, int start, int pattern
     return match;
 }
 
-inline bool match_pattern_ambiguous(const char *seq, const char *p, int start, int patternLen, int maxErr, int &curErr) {
+inline bool match_pattern_ambiguous(const char* seq, const char* p, int start, int patternLen, int maxErr, int& curErr) {
     bool match = true;
     curErr = 0;
     for (int j = 0; j < patternLen; j++) {
@@ -425,11 +422,11 @@ inline bool match_pattern_ambiguous(const char *seq, const char *p, int start, i
 }
 
 // reverses found result if it's located on the reverse complement strand
-inline void prepareResultPosition(int regionStart, int regionLength, int &foundStart, int foundLength, U2Strand resultStrand) {
+inline void prepareResultPosition(int regionStart, int regionLength, int& foundStart, int foundLength, U2Strand resultStrand) {
     foundStart = resultStrand.isComplementary() ? regionStart + regionLength - foundStart - foundLength : regionStart + foundStart;
 }
 
-static void sendResultToListener(int resultStartPos, int resultLength, U2Strand resultStrand, FindAlgorithmResultsListener *rl) {
+static void sendResultToListener(int resultStartPos, int resultLength, U2Strand resultStrand, FindAlgorithmResultsListener* rl) {
     SAFE_POINT(resultLength >= 0 && resultStartPos >= 0, "Invalid find algorithm results", );
     CHECK(resultLength > 0, );  // zero-length regions may satisfy some regular expressions though they don't make sense
 
@@ -441,19 +438,19 @@ static void sendResultToListener(int resultStartPos, int resultLength, U2Strand 
     rl->onResult(res);
 }
 
-static void regExpSearch(const QString &refSequence,
-                         const QRegExp &regExp,
-                         const U2Strand &searchStrand,
-                         const U2Region &sequenceRange,
+static void regExpSearch(const QString& refSequence,
+                         const QRegExp& regExp,
+                         const U2Strand& searchStrand,
+                         const U2Region& sequenceRange,
                          int maxResultLen,
                          int currentStrand,
                          int tailCut,  // only for translation on complementary strand, it is size of the tail that can not form amino acid
                          int totalStrandCount,
                          bool refSeqIsAminoTranslation,
                          int aminoFrameNumber,
-                         int &percentsCompleted,
-                         int &stopFlag,
-                         FindAlgorithmResultsListener *rl,
+                         int& percentsCompleted,
+                         int& stopFlag,
+                         FindAlgorithmResultsListener* rl,
                          int cyclePoint = -1)  // in cyclePoint position copy of the sequence beginning starts (for circular search)
 {
     if (cyclePoint == -1) {
@@ -507,17 +504,17 @@ static void regExpSearch(const QString &refSequence,
     }
 }
 
-static void findInAmino_regExp(FindAlgorithmResultsListener *rl,
-                               DNATranslation *aminoTT,
-                               DNATranslation *complTT,
+static void findInAmino_regExp(FindAlgorithmResultsListener* rl,
+                               DNATranslation* aminoTT,
+                               DNATranslation* complTT,
                                FindAlgorithmStrand strand,
-                               const char *seq,
-                               const U2Region &range,
+                               const char* seq,
+                               const U2Region& range,
                                bool searchIsCircular,
-                               const char *pattern,
+                               const char* pattern,
                                int maxRegExpResult,
-                               int &stopFlag,
-                               int &percentsCompleted) {
+                               int& stopFlag,
+                               int& percentsCompleted) {
     QRegExp regExp(pattern, Qt::CaseInsensitive);
     CHECK(regExp.isValid(), );
 
@@ -530,7 +527,7 @@ static void findInAmino_regExp(FindAlgorithmResultsListener *rl,
     int seqLen = QByteArray(seq).size();
 
     int bufferSize = 0;
-    const char *sequence = nullptr;
+    const char* sequence = nullptr;
     QByteArray temp;
     if (searchIsCircular) {
         bufferSize = getCircularOverlap(seq, range, (seqLen > maxRegExpResult) ? maxRegExpResult - 1 : seqLen - 1);
@@ -578,17 +575,17 @@ static void findInAmino_regExp(FindAlgorithmResultsListener *rl,
     }
 }
 
-static void findRegExp(FindAlgorithmResultsListener *rl,
-                       DNATranslation *aminoTT,
-                       DNATranslation *complTT,
+static void findRegExp(FindAlgorithmResultsListener* rl,
+                       DNATranslation* aminoTT,
+                       DNATranslation* complTT,
                        FindAlgorithmStrand strand,
-                       const char *seq,
+                       const char* seq,
                        bool searchIsCircular,
-                       const U2Region &range,
-                       const char *pattern,
+                       const U2Region& range,
+                       const char* pattern,
                        int maxRegExpResult,
-                       int &stopFlag,
-                       int &percentsCompleted) {
+                       int& stopFlag,
+                       int& percentsCompleted) {
     QRegExp regExp(pattern, Qt::CaseInsensitive);
     CHECK(regExp.isValid(), );
 
@@ -609,14 +606,14 @@ static void findRegExp(FindAlgorithmResultsListener *rl,
         U2Strand resultStrand;
 
         if (ci == 1) {  // complementary
-            char *complSeq = tmp.data();
+            char* complSeq = tmp.data();
             TextUtils::translate(complTT->getOne2OneMapper(), seq + range.startPos, qMin(range.length, seqLen - range.startPos), complSeq);
             TextUtils::reverse(complSeq, qMin(range.length, seqLen - range.startPos));
             substr = QString(QByteArray(complSeq, qMin(range.length, seqLen - range.startPos)));
             if (searchIsCircular) {
                 int bufferSize = getCircularOverlap(seq, range, (range.length > maxRegExpResult) ? maxRegExpResult - 1 : range.length);
                 QByteArray buffer(bufferSize, 0);
-                char *complBuffer = buffer.data();
+                char* complBuffer = buffer.data();
                 TextUtils::translate(complTT->getOne2OneMapper(), seq, bufferSize, complBuffer);
                 TextUtils::reverse(complBuffer, bufferSize);
                 substr.prepend(buffer);
@@ -645,19 +642,19 @@ static void findRegExp(FindAlgorithmResultsListener *rl,
     }
 }
 
-static void find_subst(FindAlgorithmResultsListener *rl,
-                       DNATranslation *aminoTT,
-                       DNATranslation *complTT,
+static void find_subst(FindAlgorithmResultsListener* rl,
+                       DNATranslation* aminoTT,
+                       DNATranslation* complTT,
                        FindAlgorithmStrand strand,
-                       const char *seq,
+                       const char* seq,
                        bool searchIsCircular,
-                       const U2Region &range,
-                       const char *pattern,
+                       const U2Region& range,
+                       const char* pattern,
                        int patternLen,
                        bool useAmbiguousBases,
                        int maxErr,
-                       int &stopFlag,
-                       int &percentsCompleted) {
+                       int& stopFlag,
+                       int& percentsCompleted) {
     SAFE_POINT(nullptr == complTT || complTT->isOne2One(), "Invalid translation supplied!", );
 
     if (aminoTT != nullptr) {
@@ -667,7 +664,7 @@ static void find_subst(FindAlgorithmResultsListener *rl,
     if (range.length - patternLen < 0) {
         return;
     }
-    char *complPattern = nullptr;
+    char* complPattern = nullptr;
     QByteArray tmp;
     if (isComplement(strand)) {
         SAFE_POINT(nullptr != complTT, "Invalid translation supplied!", );
@@ -689,7 +686,7 @@ static void find_subst(FindAlgorithmResultsListener *rl,
     int conEnd = isComplement(strand) ? 2 : 1;
     SAFE_POINT(conStart < conEnd, "Internal algorithm error: incorrect strand order!", );
 
-    const char *sequence = nullptr;
+    const char* sequence = nullptr;
     QByteArray temp;
     int end = range.endPos();
     if (searchIsCircular) {
@@ -704,9 +701,9 @@ static void find_subst(FindAlgorithmResultsListener *rl,
          i < end - patternLen + 1 && !stopFlag;
          i++, leftTillPercent--) {
         for (int ci = conStart; ci < conEnd && !stopFlag; ci++) {
-            StrandContext &ctx = context[ci];
-            const char *p = ctx.pattern;
-            FindAlgorithmResult &res = ctx.res;
+            StrandContext& ctx = context[ci];
+            const char* p = ctx.pattern;
+            FindAlgorithmResult& res = ctx.res;
 
             bool match = true;
             int curErr = 0;
@@ -737,23 +734,23 @@ static void find_subst(FindAlgorithmResultsListener *rl,
 const int FindAlgorithmResult::NOT_ENOUGH_MEMORY_ERROR = -12;
 
 void FindAlgorithm::find(
-    FindAlgorithmResultsListener *rl,
-    DNATranslation *aminoTT,  // if aminoTT!=NULL -> pattern must contain amino data and sequence must contain DNA data
-    DNATranslation *complTT,  // if complTT!=NULL -> sequence is complemented before comparison with pattern
+    FindAlgorithmResultsListener* rl,
+    DNATranslation* aminoTT,  // if aminoTT!=NULL -> pattern must contain amino data and sequence must contain DNA data
+    DNATranslation* complTT,  // if complTT!=NULL -> sequence is complemented before comparison with pattern
     FindAlgorithmStrand strand,  // if not direct there complTT must not be NULL
     FindAlgorithmPatternSettings patternSettings,
     bool useAmbiguousBases,
-    const char *seq,
+    const char* seq,
     int seqLen,
-    const DNAAlphabet *sequenceAlphabet,
+    const DNAAlphabet* sequenceAlphabet,
     bool searchIsCircular,
-    const U2Region &range,
-    const char *pattern,
+    const U2Region& range,
+    const char* pattern,
     int patternLen,
     int maxErr,
     int maxRegExpResult,
-    int &stopFlag,
-    int &percentsCompleted) {
+    int& stopFlag,
+    int& percentsCompleted) {
     Q_UNUSED(seqLen);
     SAFE_POINT(nullptr == complTT || complTT->isOne2One(), "Invalid translation supplied!", );
     SAFE_POINT(patternLen > maxErr, "Invalid maximum error count supplied!", );
@@ -766,9 +763,9 @@ void FindAlgorithm::find(
         searchIsCircular = false;
     }
 
-    DNATranslation *newComplTT = complTT;
+    DNATranslation* newComplTT = complTT;
     if (complTT != nullptr) {
-        const DNAAlphabet *destinationAlphabet = complTT->getDstAlphabet();
+        const DNAAlphabet* destinationAlphabet = complTT->getDstAlphabet();
         if (destinationAlphabet->isExtended()) {
             newComplTT = complTT;
         } else {
@@ -799,7 +796,7 @@ void FindAlgorithm::find(
         findInAmino(rl, aminoTT, newComplTT, strand, insDel, seq, range, searchIsCircular, pattern, patternLen, maxErr, stopFlag, percentsCompleted);
         return;
     }
-    char *complPattern = nullptr;
+    char* complPattern = nullptr;
     QByteArray tmp;
     if (isComplement(strand)) {
         SAFE_POINT(nullptr != newComplTT, "Invalid translation supplied!", );
@@ -834,10 +831,10 @@ void FindAlgorithm::find(
         int end = getSearchEndPos(seq, range, patternLen - 1, searchIsCircular);
         for (int i = range.startPos; i < end && !stopFlag; i++, leftTillPercent--) {
             for (int ci = conStart; ci < conEnd && !stopFlag; ci++) {
-                StrandContext &ctx = context[ci];
-                DynTable &dt = ctx.dynTable;
-                const char *p = ctx.pattern;
-                FindAlgorithmResult &res = ctx.res;
+                StrandContext& ctx = context[ci];
+                DynTable& dt = ctx.dynTable;
+                const char* p = ctx.pattern;
+                FindAlgorithmResult& res = ctx.res;
 
                 for (int j = 0; j < patternLen && !stopFlag; j++) {
                     bool matched = seq[cycleIndex(seqLen, i)] == p[j];
@@ -853,6 +850,7 @@ void FindAlgorithm::find(
 
                 if (err <= maxErr) {
                     int newLen = dt.getLastLen();
+                    SAFE_POINT(newLen >= 0, "Internal algorithm error!", )
                     if (res.isEmpty() || res.err > err || (res.err == err && newLen < res.region.length)) {
                         int newStart = i - newLen + 1;
                         bool boundaryCheck = (range.contains(newStart) && range.contains(newStart + newLen - 1));
@@ -887,7 +885,7 @@ void FindAlgorithm::find(
             }
         }
 
-    } catch (std::bad_alloc &) {
+    } catch (std::bad_alloc&) {
         const FindAlgorithmResult result(FindAlgorithmResult::NOT_ENOUGH_MEMORY_ERROR);
         rl->onResult(result);
         return;

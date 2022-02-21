@@ -27,7 +27,7 @@ U2McaRow::U2McaRow()
     : U2MsaRow() {
 }
 
-U2McaRow::U2McaRow(const U2MsaRow &msaRow)
+U2McaRow::U2McaRow(const U2MsaRow& msaRow)
     : U2MsaRow(msaRow) {
 }
 
@@ -38,11 +38,11 @@ bool U2McaRow::hasValidChildObjectIds() const {
 U2Mca::U2Mca() {
 }
 
-U2Mca::U2Mca(const U2Msa &dbMsa)
+U2Mca::U2Mca(const U2Msa& dbMsa)
     : U2Msa(dbMsa) {
 }
 
-U2Mca::U2Mca(const U2DataId &id, const QString &dbId, qint64 version)
+U2Mca::U2Mca(const U2DataId& id, const QString& dbId, qint64 version)
     : U2Msa(id, dbId, version) {
 }
 

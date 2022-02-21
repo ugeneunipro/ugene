@@ -52,14 +52,14 @@
 namespace U2 {
 
 ////////////////////////////////////////////////////////////////////////////////
-PrepareMsaClipboardDataTask::PrepareMsaClipboardDataTask(const QList<qint64> &_rowIds, const U2Region &_columnRange, TaskFlags taskFlags)
+PrepareMsaClipboardDataTask::PrepareMsaClipboardDataTask(const QList<qint64>& _rowIds, const U2Region& _columnRange, TaskFlags taskFlags)
     : Task(tr("Copy formatted alignment to the clipboard"), taskFlags), rowIds(_rowIds), columnRange(_columnRange) {
 }
 
-PrepareMsaClipboardDataTask *MsaClipboardDataTaskFactory::newInstance(MSAEditor *maEditor,
-                                                                      const QList<qint64> &maRowIds,
-                                                                      const U2Region &columnRange,
-                                                                      const DocumentFormatId &formatId) {
+PrepareMsaClipboardDataTask* MsaClipboardDataTaskFactory::newInstance(MSAEditor* maEditor,
+                                                                      const QList<qint64>& maRowIds,
+                                                                      const U2Region& columnRange,
+                                                                      const DocumentFormatId& formatId) {
     if (formatId == "RTF") {
         return new RichTextMsaClipboardTask(maEditor, maRowIds, columnRange);
     } else {
@@ -67,7 +67,7 @@ PrepareMsaClipboardDataTask *MsaClipboardDataTaskFactory::newInstance(MSAEditor 
     }
 }
 
-FormatsMsaClipboardTask::FormatsMsaClipboardTask(MultipleSequenceAlignmentObject *msaObj, const QList<qint64> &_rowIds, const U2Region &_columnRange, const DocumentFormatId &formatId)
+FormatsMsaClipboardTask::FormatsMsaClipboardTask(MultipleSequenceAlignmentObject* msaObj, const QList<qint64>& _rowIds, const U2Region& _columnRange, const DocumentFormatId& formatId)
     : PrepareMsaClipboardDataTask(_rowIds, _columnRange), createSubalignmentTask(nullptr), msaObj(msaObj), formatId(formatId) {
 }
 
@@ -78,7 +78,7 @@ void FormatsMsaClipboardTask::prepare() {
         CHECK_OP(stateInfo, )
 
         for (int i = 0; i < msa->getRowCount(); i++) {
-            const MultipleSequenceAlignmentRow &row = msa->getMsaRow(i);
+            const MultipleSequenceAlignmentRow& row = msa->getMsaRow(i);
             if (i > 0) {
                 resultText.append("\n");
             }
@@ -95,15 +95,15 @@ void FormatsMsaClipboardTask::prepare() {
 }
 
 #define READ_BUF_SIZE 4096
-QList<Task *> FormatsMsaClipboardTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
-    QList<Task *> subTasks;
+QList<Task*> FormatsMsaClipboardTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
+    QList<Task*> subTasks;
     if (subTask->hasError() || isCanceled()) {
         return subTasks;
     }
 
     if (subTask == createSubalignmentTask) {
-        Document *doc = createSubalignmentTask->getDocument();
+        Document* doc = createSubalignmentTask->getDocument();
         SAFE_POINT_EXT(doc != nullptr, setError(tr("No temporary document.")), subTasks);
         QScopedPointer<LocalFileAdapterFactory> factory(new LocalFileAdapterFactory());
         QScopedPointer<IOAdapter> io(factory->createIOAdapter());
@@ -128,13 +128,13 @@ QList<Task *> FormatsMsaClipboardTask::onSubTaskFinished(Task *subTask) {
     return res;
 }
 
-CreateSubalignmentSettings FormatsMsaClipboardTask::createSettings(const QList<qint64> &rowIds,
-                                                                   const U2Region &columnRange,
-                                                                   const DocumentFormatId &formatId,
-                                                                   U2OpStatus &os) {
+CreateSubalignmentSettings FormatsMsaClipboardTask::createSettings(const QList<qint64>& rowIds,
+                                                                   const U2Region& columnRange,
+                                                                   const DocumentFormatId& formatId,
+                                                                   U2OpStatus& os) {
     // Create temporal document for the workflow run task
-    const AppSettings *appSettings = AppContext::getAppSettings();
-    UserAppsSettings *usersSettings = appSettings->getUserAppsSettings();
+    const AppSettings* appSettings = AppContext::getAppSettings();
+    UserAppsSettings* usersSettings = appSettings->getUserAppsSettings();
     QString tmpDirPath = usersSettings->getCurrentProcessTemporaryDirPath();
     GUrl path = GUrlUtils::prepareTmpFileLocation(tmpDirPath, "clipboard", "tmp", os);
     bool saveFlag = true;
@@ -142,21 +142,21 @@ CreateSubalignmentSettings FormatsMsaClipboardTask::createSettings(const QList<q
     return {rowIds, columnRange, path, saveFlag, addFlag, formatId};
 }
 
-RichTextMsaClipboardTask::RichTextMsaClipboardTask(MaEditor *_maEditor, const QList<qint64> &rowIds, const U2Region &columnRange)
+RichTextMsaClipboardTask::RichTextMsaClipboardTask(MaEditor* _maEditor, const QList<qint64>& rowIds, const U2Region& columnRange)
     : PrepareMsaClipboardDataTask(rowIds, columnRange), maEditor(_maEditor) {
 }
 
 void RichTextMsaClipboardTask::prepare() {
-    MultipleAlignmentObject *maObject = maEditor->getMaObject();
-    const DNAAlphabet *al = maObject->getAlphabet();
+    MultipleAlignmentObject* maObject = maEditor->getMaObject();
+    const DNAAlphabet* al = maObject->getAlphabet();
 
-    Settings *appSettings = AppContext::getSettings();
+    Settings* appSettings = AppContext::getSettings();
     SAFE_POINT(appSettings != nullptr, "RTFMSA entry storing: NULL settings object", );
 
-    MsaColorSchemeRegistry *colorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
+    MsaColorSchemeRegistry* colorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
     QString colorSchemeId = al->getType() == DNAAlphabet_AMINO ? appSettings->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_COLOR_AMINO, MsaColorScheme::UGENE_AMINO).toString() : appSettings->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_COLOR_NUCL, MsaColorScheme::UGENE_NUCL).toString();
 
-    MsaColorSchemeFactory *colorSchemeFactory = colorSchemeRegistry->getSchemeFactoryById(colorSchemeId);
+    MsaColorSchemeFactory* colorSchemeFactory = colorSchemeRegistry->getSchemeFactoryById(colorSchemeId);
     if (colorSchemeFactory == nullptr) {
         colorSchemeFactory = colorSchemeRegistry->getSchemeFactoryById(al->getType() == DNAAlphabet_AMINO ? MsaColorScheme::UGENE_AMINO : MsaColorScheme::UGENE_NUCL);
     }
@@ -166,7 +166,7 @@ void RichTextMsaClipboardTask::prepare() {
     QString fontFamily = appSettings->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_FONT_FAMILY, MOBJECT_DEFAULT_FONT_FAMILY).toString();
     int pointSize = appSettings->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_FONT_SIZE, MOBJECT_DEFAULT_FONT_SIZE).toInt();
 
-    MsaHighlightingScheme *highlightingScheme = maEditor->getUI()->getSequenceArea()->getCurrentHighlightingScheme();
+    MsaHighlightingScheme* highlightingScheme = maEditor->getUI()->getSequenceArea()->getCurrentHighlightingScheme();
     SAFE_POINT(highlightingScheme != nullptr, "RTFMSA entry storing: NULL highlightingScheme object", );
 
     QString schemeName = highlightingScheme->metaObject()->className();
@@ -212,19 +212,19 @@ void RichTextMsaClipboardTask::prepare() {
     resultText.append("</span>");
 }
 
-SubalignmentToClipboardTask::SubalignmentToClipboardTask(MSAEditor *maEditor, const QList<qint64> &maRowIds, const U2Region &columnRange, const DocumentFormatId &formatId)
+SubalignmentToClipboardTask::SubalignmentToClipboardTask(MSAEditor* maEditor, const QList<qint64>& maRowIds, const U2Region& columnRange, const DocumentFormatId& formatId)
     : Task(tr("Copy formatted alignment to the clipboard"), TaskFlags_NR_FOSE_COSC), formatId(formatId) {
     prepareDataTask = MsaClipboardDataTaskFactory::newInstance(maEditor, maRowIds, columnRange, formatId);
     addSubTask(prepareDataTask);
 }
 
-QList<Task *> SubalignmentToClipboardTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> result;
+QList<Task*> SubalignmentToClipboardTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> result;
     CHECK(subTask == prepareDataTask, result);
     CHECK(!prepareDataTask->getStateInfo().isCoR(), result);
     QString clipboardData = prepareDataTask->resultText;
     if (formatId == "RTF") {
-        QMimeData *reportRichTextMime = new QMimeData();
+        QMimeData* reportRichTextMime = new QMimeData();
         reportRichTextMime->setHtml(clipboardData);
         reportRichTextMime->setText(clipboardData);
         QApplication::clipboard()->setMimeData(reportRichTextMime);

@@ -40,11 +40,11 @@ class U2SequenceObject;
 class SaveDotPlotTask : public Task {
     Q_OBJECT
 public:
-    SaveDotPlotTask(const QString &file,
+    SaveDotPlotTask(const QString& file,
                     QSharedPointer<QList<DotPlotResults>> dotPlotDirectList,
                     QSharedPointer<QList<DotPlotResults>> dotPlotInverseList,
-                    U2SequenceObject *seqX,
-                    U2SequenceObject *seqY,
+                    U2SequenceObject* seqX,
+                    U2SequenceObject* seqY,
                     int mLen,
                     int ident)
         : Task(tr("DotPlot saving"), TaskFlags_FOSCOE),
@@ -60,7 +60,7 @@ public:
 
     void run();
 
-    static DotPlotErrors checkFile(const QString &filename);
+    static DotPlotErrors checkFile(const QString& filename);
 
 private:
     QString filename;
@@ -69,22 +69,22 @@ private:
     U2SequenceObject *sequenceX, *sequenceY;
     int minLen, identity;
 
-    void saveDotPlot(QTextStream &stream);
+    void saveDotPlot(QTextStream& stream);
 };
 
 // load dotplot from file
 class LoadDotPlotTask : public Task {
     Q_OBJECT
 public:
-    LoadDotPlotTask(const QString &file,
+    LoadDotPlotTask(const QString& file,
                     QSharedPointer<QList<DotPlotResults>> dotPlotDirectList,
                     QSharedPointer<QList<DotPlotResults>> dotPlotInverseList,
-                    U2SequenceObject *seqX,
-                    U2SequenceObject *seqY,
-                    int *mLen,
-                    int *ident,
-                    bool *dir,
-                    bool *inv)
+                    U2SequenceObject* seqX,
+                    U2SequenceObject* seqY,
+                    int* mLen,
+                    int* ident,
+                    bool* dir,
+                    bool* inv)
         : Task(tr("DotPlot loading"), TaskFlags_FOSCOE),
           filename(file),
           directList(dotPlotDirectList),
@@ -100,7 +100,7 @@ public:
 
     void run();
 
-    static DotPlotErrors checkFile(const QString &filename, const QString &seqXName, const QString &seqYName);
+    static DotPlotErrors checkFile(const QString& filename, const QString& seqXName, const QString& seqYName);
 
 private:
     QString filename;
@@ -110,7 +110,7 @@ private:
     int *minLen, *identity;
     bool *direct, *inverted;
 
-    bool loadDotPlot(QTextStream &stream, int fileSize);
+    bool loadDotPlot(QTextStream& stream, int fileSize);
 };
 
 // dotplot wizard: load needed files, open sequence view and build dotplot
@@ -124,7 +124,7 @@ public:
     }
     void prepare();
 
-    QList<Document *> getDocuments() const {
+    QList<Document*> getDocuments() const {
         return docs;
     }
     bool isNoView() {
@@ -141,23 +141,23 @@ public:
 private:
     QString firstFile, secondFile;
     int firstGap, secondGap;
-    QList<Document *> docs;
+    QList<Document*> docs;
     bool noView;
 
-    Document *loadFile(QString inFile, int gapSize);
+    Document* loadFile(QString inFile, int gapSize);
 
 signals:
-    void si_stateChanged(Task *task);
+    void si_stateChanged(Task* task);
 };
 
 //
 class DotPlotFilterTask : public Task {
     Q_OBJECT
 public:
-    DotPlotFilterTask(ADVSequenceObjectContext *_sequenceX,
-                      ADVSequenceObjectContext *_sequenceY,
+    DotPlotFilterTask(ADVSequenceObjectContext* _sequenceX,
+                      ADVSequenceObjectContext* _sequenceY,
                       const QMultiMap<FilterIntersectionParameter,
-                                      QString> &_annotationNames,
+                                      QString>& _annotationNames,
                       QSharedPointer<QList<DotPlotResults>> _initialResults,
                       QSharedPointer<QList<DotPlotResults>> _filteredResults,
                       FilterType _type);
@@ -167,8 +167,8 @@ public:
     ReportResult report();
 
 private:
-    ADVSequenceObjectContext *sequenceX;
-    ADVSequenceObjectContext *sequenceY;
+    ADVSequenceObjectContext* sequenceX;
+    ADVSequenceObjectContext* sequenceY;
     QMultiMap<FilterIntersectionParameter, QString> annotationNames;
     QSharedPointer<QList<DotPlotResults>> initialResults;
     QSharedPointer<QList<DotPlotResults>> filteredResults;
@@ -179,7 +179,7 @@ private:
 
     QVector<U2Region> superRegions;
 
-    void createSuperRegionsList(ADVSequenceObjectContext *seq, FilterIntersectionParameter currentIntersParam);
+    void createSuperRegionsList(ADVSequenceObjectContext* seq, FilterIntersectionParameter currentIntersParam);
     void filterForCurrentSuperRegions(FilterIntersectionParameter currentIntersParam);
     void copyInitialResults();
 };

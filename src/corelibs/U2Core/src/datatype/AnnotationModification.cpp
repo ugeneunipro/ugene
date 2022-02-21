@@ -23,11 +23,11 @@
 
 namespace U2 {
 
-AnnotationModification::AnnotationModification(AnnotationModificationType type, Annotation *a)
+AnnotationModification::AnnotationModification(AnnotationModificationType type, Annotation* a)
     : type(type), annotation(a) {
 }
 
-QualifierModification::QualifierModification(AnnotationModificationType t, Annotation *a, const U2Qualifier &q)
+QualifierModification::QualifierModification(AnnotationModificationType t, Annotation* a, const U2Qualifier& q)
     : AnnotationModification(t, a) {
     additionalData = QVariant::fromValue<U2Qualifier>(q);
 }
@@ -36,13 +36,13 @@ U2Qualifier QualifierModification::getQualifier() const {
     return additionalData.value<U2Qualifier>();
 }
 
-AnnotationGroupModification::AnnotationGroupModification(AnnotationModificationType t, Annotation *a, AnnotationGroup *g)
+AnnotationGroupModification::AnnotationGroupModification(AnnotationModificationType t, Annotation* a, AnnotationGroup* g)
     : AnnotationModification(t, a) {
-    additionalData = QVariant::fromValue<AnnotationGroup *>(g);
+    additionalData = QVariant::fromValue<AnnotationGroup*>(g);
 }
 
-AnnotationGroup *AnnotationGroupModification::getGroup() const {
-    return additionalData.value<AnnotationGroup *>();
+AnnotationGroup* AnnotationGroupModification::getGroup() const {
+    return additionalData.value<AnnotationGroup*>();
 }
 
 }  // namespace U2

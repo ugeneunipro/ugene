@@ -41,9 +41,9 @@
 namespace U2 {
 namespace Workflow {
 
-MakeBlastDbAlignerSubtask::MakeBlastDbAlignerSubtask(const QString &referenceUrl,
-                                                     const SharedDbiDataHandler &referenceDbHandler,
-                                                     DbiDataStorage *storage)
+MakeBlastDbAlignerSubtask::MakeBlastDbAlignerSubtask(const QString& referenceUrl,
+                                                     const SharedDbiDataHandler& referenceDbHandler,
+                                                     DbiDataStorage* storage)
     : Task(tr("'makeblastdb' task wrapper"), TaskFlags_NR_FOSE_COSC),
       referenceUrl(referenceUrl),
       referenceDbHandler(referenceDbHandler),
@@ -75,12 +75,12 @@ void MakeBlastDbAlignerSubtask::prepare() {
     databaseNameAndPath = settings.outputPath;
 }
 
-const QString &MakeBlastDbAlignerSubtask::getResultPath() const {
+const QString& MakeBlastDbAlignerSubtask::getResultPath() const {
     return databaseNameAndPath;
 }
 
 QString MakeBlastDbAlignerSubtask::getAcceptableTempDir() const {
-    auto isTempDirAcceptable = [](const QString &tempDir) {
+    auto isTempDirAcceptable = [](const QString& tempDir) {
         CHECK(!tempDir.contains(QRegExp("\\s")), false);
         QTemporaryDir testSubDir(tempDir + "/XXXXXX");
         return testSubDir.isValid();

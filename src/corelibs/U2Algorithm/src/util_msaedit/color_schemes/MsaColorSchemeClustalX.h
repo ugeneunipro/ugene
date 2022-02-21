@@ -33,7 +33,7 @@ namespace U2 {
 class U2ALGORITHM_EXPORT MsaColorSchemeClustalX : public MsaColorScheme {
     Q_OBJECT
 public:
-    MsaColorSchemeClustalX(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj);
+    MsaColorSchemeClustalX(QObject* parent, const MsaColorSchemeFactory* factory, MultipleAlignmentObject* maObj);
 
     QColor getBackgroundColor(int seq, int pos, char c) const override;
     QColor getFontColor(int seq, int pos, char c) const override;
@@ -43,7 +43,7 @@ private slots:
 
 private:
     void updateCache() const;
-    int getCacheIdx(int seq, int pos, bool &low) const;
+    int getCacheIdx(int seq, int pos, bool& low) const;
 
     int getColorIdx(int seq, int pos) const;
     void setColorIdx(int seq, int pos, int cidx) const;
@@ -71,9 +71,9 @@ private:
 class MsaColorSchemeClustalXFactory : public MsaColorSchemeFactory {
     Q_OBJECT
 public:
-    MsaColorSchemeClustalXFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets);
+    MsaColorSchemeClustalXFactory(QObject* parent, const QString& id, const QString& name, const AlphabetFlags& supportedAlphabets);
 
-    MsaColorScheme *create(QObject *parent, MultipleAlignmentObject *maObj) const;
+    MsaColorScheme* create(QObject* parent, MultipleAlignmentObject* maObj) const;
 };
 
 }  // namespace U2

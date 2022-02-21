@@ -93,7 +93,7 @@ namespace U2 {
 const double AssemblyBrowser::ZOOM_MULT = 1.25;
 const double AssemblyBrowser::INITIAL_ZOOM_FACTOR = 1.;
 
-AssemblyBrowser::AssemblyBrowser(QString viewName, AssemblyObject *o)
+AssemblyBrowser::AssemblyBrowser(QString viewName, AssemblyObject* o)
     : GObjectView(AssemblyBrowserFactory::ID, viewName), ui(nullptr),
       gobject(o), model(nullptr), zoomFactor(INITIAL_ZOOM_FACTOR), xOffsetInAssembly(0), yOffsetInAssembly(0), coverageReady(false),
       cellRendererRegistry(new AssemblyCellRendererFactoryRegistry(this)),
@@ -106,7 +106,7 @@ AssemblyBrowser::AssemblyBrowser(QString viewName, AssemblyObject *o)
     if (gobject) {
         objects.append(o);
         requiredObjects.append(o);
-        const U2EntityRef &ref = gobject->getEntityRef();
+        const U2EntityRef& ref = gobject->getEntityRef();
         model = QSharedPointer<AssemblyModel>(new AssemblyModel(DbiConnection(ref.dbiRef, dbiOpStatus)));
         connect(model.data(), SIGNAL(si_referenceChanged()), SLOT(sl_referenceChanged()));
         assemblyLoaded();
@@ -117,7 +117,7 @@ AssemblyBrowser::AssemblyBrowser(QString viewName, AssemblyObject *o)
 
 void AssemblyBrowser::removeReferenceSequence() {
     // Only one sequence object can be in assembly browser, it is a reference
-    foreach (GObject *o, objects) {
+    foreach (GObject* o, objects) {
         if (o->getGObjectType() == GObjectTypes::SEQUENCE) {
             removeObjectFromView(o);
             return;
@@ -128,14 +128,14 @@ void AssemblyBrowser::removeReferenceSequence() {
 void AssemblyBrowser::sl_referenceChanged() {
     removeReferenceSequence();
 
-    U2SequenceObject *so = model->getRefObj();
+    U2SequenceObject* so = model->getRefObj();
     if (so != nullptr) {
         addObjectToView(so);
     }
     setReferenceAction->setEnabled(!model->isLoadingReference());
 }
 
-bool AssemblyBrowser::checkValid(U2OpStatus &os) {
+bool AssemblyBrowser::checkValid(U2OpStatus& os) {
     if (dbiOpStatus.hasError()) {
         os.setError(tr("Error opening open assembly browser for %1, assembly %2")
                         .arg(gobject->getDocument()->getURLString())
@@ -155,7 +155,7 @@ bool AssemblyBrowser::checkValid(U2OpStatus &os) {
     return true;
 }
 
-QWidget *AssemblyBrowser::createWidget() {
+QWidget* AssemblyBrowser::createWidget() {
     optionsPanel = new OptionsPanel(this);
     ui = new AssemblyBrowserUi(this);
 
@@ -182,20 +182,20 @@ QVariantMap AssemblyBrowser::saveState() {
     }
 }
 
-Task *AssemblyBrowser::updateViewTask(const QString &stateName, const QVariantMap &stateData) {
+Task* AssemblyBrowser::updateViewTask(const QString& stateName, const QVariantMap& stateData) {
     return new UpdateAssemblyBrowserTask(this, stateName, stateData);
 }
 
-OptionsPanel *AssemblyBrowser::getOptionsPanel() {
+OptionsPanel* AssemblyBrowser::getOptionsPanel() {
     return optionsPanel;
 }
 
-bool AssemblyBrowser::eventFilter(QObject *o, QEvent *e) {
+bool AssemblyBrowser::eventFilter(QObject* o, QEvent* e) {
     if (o == ui) {
         if (e->type() == QEvent::DragEnter || e->type() == QEvent::Drop) {
-            QDropEvent *de = (QDropEvent *)e;
-            const QMimeData *md = de->mimeData();
-            const GObjectMimeData *gomd = qobject_cast<const GObjectMimeData *>(md);
+            QDropEvent* de = (QDropEvent*)e;
+            const QMimeData* md = de->mimeData();
+            const GObjectMimeData* gomd = qobject_cast<const GObjectMimeData*>(md);
             if (gomd != nullptr) {
                 if (e->type() == QEvent::DragEnter) {
                     de->acceptProposedAction();
@@ -212,21 +212,21 @@ bool AssemblyBrowser::eventFilter(QObject *o, QEvent *e) {
     return false;
 }
 
-QString AssemblyBrowser::tryAddObject(GObject *obj) {
-    Document *objDoc = obj->getDocument();
+QString AssemblyBrowser::tryAddObject(GObject* obj) {
+    Document* objDoc = obj->getDocument();
     SAFE_POINT(nullptr != objDoc, "", tr("Internal error: only object with document can be added to browser"));
 
     static const QString unacceptableObjectError = tr("Only a nucleotide sequence or a variant track objects can be added to the Assembly Browser.");
 
     if (GObjectTypes::SEQUENCE == obj->getGObjectType()) {
-        U2SequenceObject *seqObj = qobject_cast<U2SequenceObject *>(obj);
+        U2SequenceObject* seqObj = qobject_cast<U2SequenceObject*>(obj);
         CHECK(nullptr != seqObj, tr("Internal error: broken sequence object"));
         SAFE_POINT(nullptr != objDoc->getDocumentFormat(), "", tr("Internal error: empty document format"));
 
         bool setRef = !isAssemblyObjectLocked(true) && !model->isLoadingReference();
         setRef &= model->checkPermissions(QFile::WriteUser, setRef);
         if (setRef) {
-            const DNAAlphabet *alphabet = seqObj->getAlphabet();
+            const DNAAlphabet* alphabet = seqObj->getAlphabet();
             if (!alphabet->isNucleic()) {
                 return unacceptableObjectError;
             }
@@ -249,7 +249,7 @@ QString AssemblyBrowser::tryAddObject(GObject *obj) {
             if (seqObj->getEntityRef().dbiRef == model->getDbiConnection().dbi->getDbiRef()) {
                 refId = seqObj->getEntityRef().entityId;
             } else {
-                U2CrossDatabaseReferenceDbi *crossDbi = model->getDbiConnection().dbi->getCrossDatabaseReferenceDbi();
+                U2CrossDatabaseReferenceDbi* crossDbi = model->getDbiConnection().dbi->getCrossDatabaseReferenceDbi();
                 U2CrossDatabaseReference crossDbRef;
                 // Cannot simply use seqObj->getSequenceRef(), since it points to a temporary dbi
                 // TODO: make similar method seqObj->getPersistentSequenctRef()
@@ -266,12 +266,12 @@ QString AssemblyBrowser::tryAddObject(GObject *obj) {
             model->associateWithReference(refId);
         }
     } else if (GObjectTypes::VARIANT_TRACK == obj->getGObjectType()) {
-        VariantTrackObject *trackObj = qobject_cast<VariantTrackObject *>(obj);
+        VariantTrackObject* trackObj = qobject_cast<VariantTrackObject*>(obj);
         CHECK(nullptr != trackObj, tr("Internal error: broken variant track object"));
 
         model->addTrackObject(trackObj);
         addObjectToView(obj);
-        connect(model.data(), SIGNAL(si_trackRemoved(VariantTrackObject *)), SLOT(sl_trackRemoved(VariantTrackObject *)));
+        connect(model.data(), SIGNAL(si_trackRemoved(VariantTrackObject*)), SLOT(sl_trackRemoved(VariantTrackObject*)));
     } else {
         return unacceptableObjectError;
     }
@@ -287,7 +287,7 @@ bool AssemblyBrowser::isAssemblyObjectLocked(bool showDialog) const {
     return isLocked;
 }
 
-void AssemblyBrowser::buildStaticToolbar(QToolBar *staticToolBar) {
+void AssemblyBrowser::buildStaticToolbar(QToolBar* staticToolBar) {
     U2OpStatusImpl os;
     if (model->hasReads(os)) {
         staticToolBar->addAction(zoomInAction);
@@ -329,7 +329,7 @@ void AssemblyBrowser::sl_onPosChangeRequest(int pos) {
     setXOffsetInAssembly(normalizeXoffset(pos - 1));
     ui->getReadsArea()->setFocus();
 }
-void AssemblyBrowser::buildMenu(QMenu *menu, const QString &type) {
+void AssemblyBrowser::buildMenu(QMenu* menu, const QString& type) {
     if (type != GObjectViewMenuType::STATIC) {
         GObjectView::buildMenu(menu, type);
         return;
@@ -616,7 +616,7 @@ void AssemblyBrowser::setFocusToPosSelector() {
     posSelector->getPosEdit()->setFocus();
 }
 
-void AssemblyBrowser::navigateToRegion(const U2Region &region) {
+void AssemblyBrowser::navigateToRegion(const U2Region& region) {
     int requiredCellSize = qMax(1, qRound((double)ui->getReadsArea()->width() / region.length));
     zoomToSize(requiredCellSize);
 
@@ -644,9 +644,9 @@ void AssemblyBrowser::setupActions() {
     zoomOutAction = new QAction(QIcon(":core/images/zoom_out.png"), tr("Zoom out"), this);
     connect(zoomOutAction, SIGNAL(triggered()), SLOT(sl_zoomOut()));
 
-    QAction *linearScaleAction = new QAction(tr("Linear"), this);
+    QAction* linearScaleAction = new QAction(tr("Linear"), this);
     linearScaleAction->setCheckable(true);
-    QAction *logScaleAction = new QAction(tr("Logarithmic"), this);
+    QAction* logScaleAction = new QAction(tr("Logarithmic"), this);
     logScaleAction->setCheckable(true);
     connect(linearScaleAction, SIGNAL(triggered()), SLOT(sl_changeOverviewType()));
     connect(logScaleAction, SIGNAL(triggered()), SLOT(sl_changeOverviewType()));
@@ -681,7 +681,7 @@ void AssemblyBrowser::setupActions() {
 }
 
 void AssemblyBrowser::sl_saveScreenshot() {
-    QWidget *p = (QWidget *)AppContext::getMainWindow()->getQMainWindow();
+    QWidget* p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
     QString fileName = GUrlUtils::fixFileName(gobject->getGObjectName());
     QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(ui, ExportImageDialog::AssemblyView, fileName, ExportImageDialog::NoScaling, p);
     dialog->exec();
@@ -696,7 +696,7 @@ void AssemblyBrowser::sl_exportToSam() {
     CHECK(!dialog.isNull(), );
 
     if (QDialog::Accepted == dialogResult) {
-        ConvertAssemblyToSamTask *convertTask = new ConvertAssemblyToSamTask(&(model->getDbiConnection()), dialog->getSamFileUrl());
+        ConvertAssemblyToSamTask* convertTask = new ConvertAssemblyToSamTask(&(model->getDbiConnection()), dialog->getSamFileUrl());
         AppContext::getTaskScheduler()->registerTopLevelTask(convertTask);
     }
 }
@@ -708,7 +708,7 @@ void AssemblyBrowser::sl_exportCoverage() {
     CHECK(!d.isNull(), );
 
     if (QDialog::Accepted == dialogResult) {
-        Task *exportTask = nullptr;
+        Task* exportTask = nullptr;
         switch (d->getFormat()) {
             case ExportCoverageSettings::Histogram:
                 exportTask = new ExportCoverageHistogramTask(getModel()->getDbiConnection().dbi->getDbiRef(), assembly.id, d->getSettings());
@@ -747,7 +747,7 @@ void AssemblyBrowser::sl_onReadHintEnabledChanged(bool checked) {
 }
 
 void AssemblyBrowser::sl_changeOverviewType() {
-    QAction *a = qobject_cast<QAction *>(sender());
+    QAction* a = qobject_cast<QAction*>(sender());
     if (a == nullptr) {
         assert(false);
         return;
@@ -786,7 +786,7 @@ void AssemblyBrowser::updateOverviewTypeActions() {
     overviewScaleTypeActions[1]->setChecked(t == AssemblyBrowserSettings::Scale_Logarithmic);
 }
 
-void AssemblyBrowser::sl_zoomIn(const QPoint &pos) {
+void AssemblyBrowser::sl_zoomIn(const QPoint& pos) {
     if (!canPerformZoomIn()) {
         return;
     }
@@ -822,7 +822,7 @@ void AssemblyBrowser::sl_zoomIn(const QPoint &pos) {
     emit si_zoomOperationPerformed();
 }
 
-void AssemblyBrowser::sl_zoomOut(const QPoint &pos) {
+void AssemblyBrowser::sl_zoomOut(const QPoint& pos) {
     if (!canPerformZoomOut()) {
         return;
     }
@@ -905,7 +905,7 @@ void AssemblyBrowser::zoomToSize(int reqCellSize) {
     emit si_zoomOperationPerformed();
 }
 
-void AssemblyBrowser::onObjectRenamed(GObject *, const QString &) {
+void AssemblyBrowser::onObjectRenamed(GObject*, const QString&) {
     OpenAssemblyBrowserTask::updateTitle(this);
 }
 
@@ -932,12 +932,12 @@ void AssemblyBrowser::sl_coveredRegionClicked(const QString link) {
 void AssemblyBrowser::assemblyLoaded() {
     GTIMER(c1, t1, "AssemblyBrowser::assemblyLoaded");
     LOG_OP(dbiOpStatus);
-    U2Dbi *dbi = model->getDbiConnection().dbi;
+    U2Dbi* dbi = model->getDbiConnection().dbi;
     CHECK(nullptr != dbi, );
 
     assert(U2DbiState_Ready == dbi->getState());
 
-    U2AssemblyDbi *assmDbi = dbi->getAssemblyDbi();
+    U2AssemblyDbi* assmDbi = dbi->getAssemblyDbi();
 
     U2DataId objectId = gobject->getEntityRef().entityId;
     U2Assembly assm = dbi->getAssemblyDbi()->getAssemblyObject(objectId, dbiOpStatus);
@@ -946,25 +946,25 @@ void AssemblyBrowser::assemblyLoaded() {
     model->setAssembly(assmDbi, assm);
 }
 
-void AssemblyBrowser::addObjectToView(GObject *o) {
+void AssemblyBrowser::addObjectToView(GObject* o) {
     objects.append(o);
     onObjectAdded(o);
     emit si_objectAdded(this, o);
 }
 
-void AssemblyBrowser::removeObjectFromView(GObject *o) {
+void AssemblyBrowser::removeObjectFromView(GObject* o) {
     objects.removeAll(o);
     emit si_objectRemoved(this, o);
 }
 
-void AssemblyBrowser::sl_trackRemoved(VariantTrackObject *obj) {
+void AssemblyBrowser::sl_trackRemoved(VariantTrackObject* obj) {
     removeObjectFromView(obj);
 }
 
 namespace {
-QList<GObject *> extractSequenceObjects(const QList<GObject *> &objects) {
-    QList<GObject *> result;
-    foreach (GObject *object, objects) {
+QList<GObject*> extractSequenceObjects(const QList<GObject*>& objects) {
+    QList<GObject*> result;
+    foreach (GObject* object, objects) {
         if (object->getGObjectType() == GObjectTypes::SEQUENCE) {
             result << object;
         }
@@ -972,17 +972,17 @@ QList<GObject *> extractSequenceObjects(const QList<GObject *> &objects) {
     return result;
 }
 
-const char *REFERENCE_URL_PROPERTY = "reference-url";
+const char* REFERENCE_URL_PROPERTY = "reference-url";
 
-QString getReferenceUrl(Task *loadReferenceTask) {
+QString getReferenceUrl(Task* loadReferenceTask) {
     return loadReferenceTask->property(REFERENCE_URL_PROPERTY).toString();
 }
 
-void prepareLoadReferenceTask(const QString &referenceUrl, Task *loadReferenceTask) {
+void prepareLoadReferenceTask(const QString& referenceUrl, Task* loadReferenceTask) {
     loadReferenceTask->setProperty(REFERENCE_URL_PROPERTY, referenceUrl);
 }
 
-Task *createLoadReferenceTask(const QString &url) {
+Task* createLoadReferenceTask(const QString& url) {
     QVariantMap hints;
     hints[ProjectLoaderHint_LoadWithoutView] = true;
     return AppContext::getProjectLoader()->openWithProjectTask(QList<GUrl>() << url, hints);
@@ -998,7 +998,7 @@ QString AssemblyBrowser::chooseReferenceUrl() const {
     return url;
 }
 
-void AssemblyBrowser::showReferenceLoadingError(const QList<GObject *> &sequenceObjects, const QString &url) const {
+void AssemblyBrowser::showReferenceLoadingError(const QList<GObject*>& sequenceObjects, const QString& url) const {
     QString message;
     if (sequenceObjects.isEmpty()) {
         message = tr("An error occurred while setting reference to \"%1\" assembly. The selected file \"%2\" does not contain sequences.").arg(gobject->getGObjectName()).arg(url);
@@ -1040,9 +1040,9 @@ void AssemblyBrowser::loadReferenceFromFile() {
     }
 }
 
-void AssemblyBrowser::setReference(const Document *doc) {
+void AssemblyBrowser::setReference(const Document* doc) {
     CHECK(nullptr != doc, );
-    const QList<GObject *> objects = doc->findGObjectByType(GObjectTypes::SEQUENCE);
+    const QList<GObject*> objects = doc->findGObjectByType(GObjectTypes::SEQUENCE);
 
     if (1 == objects.size()) {
         tryAddObject(objects.first());
@@ -1052,11 +1052,11 @@ void AssemblyBrowser::setReference(const Document *doc) {
 }
 
 void AssemblyBrowser::sl_setReference() {
-    const ProjectView *projectView = AppContext::getProjectView();
+    const ProjectView* projectView = AppContext::getProjectView();
     SAFE_POINT(nullptr != projectView, L10N::nullPointerError("ProjectView"), );
 
-    const GObjectSelection *selection = projectView->getGObjectSelection();
-    const QList<GObject *> objects = extractSequenceObjects(selection->getSelectedObjects());
+    const GObjectSelection* selection = projectView->getGObjectSelection();
+    const QList<GObject*> objects = extractSequenceObjects(selection->getSelectedObjects());
 
     if (objects.isEmpty()) {
         loadReferenceFromFile();
@@ -1084,7 +1084,7 @@ void AssemblyBrowser::sl_extractAssemblyRegion() {
 }
 
 void AssemblyBrowser::sl_onReferenceLoaded() {
-    Task *task = loadReferenceTask;
+    Task* task = loadReferenceTask;
     CHECK(nullptr != task, );
     CHECK(task->isFinished(), );
 
@@ -1096,7 +1096,7 @@ void AssemblyBrowser::sl_onReferenceLoaded() {
     const QString url = getReferenceUrl(task);
     CHECK(!url.isEmpty(), );
 
-    const Project *project = AppContext::getProject();
+    const Project* project = AppContext::getProject();
     CHECK(nullptr != project, );
 
     setReference(project->findDocumentByURL(url));
@@ -1106,15 +1106,15 @@ void AssemblyBrowser::sl_onReferenceLoaded() {
 // AssemblyBrowserUi
 //==============================================================================
 
-AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser *browser_)
+AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser* browser_)
     : browser(browser_), zoomableOverview(0),
       referenceArea(0), coverageGraph(0), ruler(0), readsArea(0), annotationsArea(0), nothingToVisualize(true) {
     U2OpStatusImpl os;
     if (browser->getModel()->hasReads(os)) {  // has mapped reads -> show rich visualization
         setMinimumSize(300, 200);
 
-        QScrollBar *readsHBar = new QScrollBar(Qt::Horizontal);
-        QScrollBar *readsVBar = new QScrollBar(Qt::Vertical);
+        QScrollBar* readsHBar = new QScrollBar(Qt::Horizontal);
+        QScrollBar* readsVBar = new QScrollBar(Qt::Vertical);
 
         zoomableOverview = new ZoomableAssemblyOverview(this, true);  // zooming temporarily disabled -iefremov
         referenceArea = new AssemblyReferenceArea(this);
@@ -1124,12 +1124,12 @@ AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser *browser_)
         readsArea = new AssemblyReadsArea(this, readsHBar, readsVBar);
         annotationsArea = new AssemblyAnnotationsArea(this);
 
-        QVBoxLayout *mainLayout = new QVBoxLayout();
+        QVBoxLayout* mainLayout = new QVBoxLayout();
         mainLayout->setMargin(0);
         mainLayout->setSpacing(2);
         mainLayout->addWidget(zoomableOverview);
 
-        QGridLayout *readsLayout = new QGridLayout();
+        QGridLayout* readsLayout = new QGridLayout();
         readsLayout->setMargin(0);
         readsLayout->setSpacing(0);
 
@@ -1143,20 +1143,20 @@ AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser *browser_)
         readsLayout->addWidget(readsVBar, 5, 1, 1, 1);
         readsLayout->addWidget(readsHBar, 5, 0);
 
-        QWidget *readsLayoutWidget = new QWidget;
+        QWidget* readsLayoutWidget = new QWidget;
         readsLayoutWidget->setLayout(readsLayout);
         mainLayout->addWidget(readsLayoutWidget);
         mainLayout->addWidget(readsHBar);
 
-        OPWidgetFactoryRegistry *opWidgetFactoryRegistry = AppContext::getOPWidgetFactoryRegistry();
-        OptionsPanel *optionsPanel = browser->getOptionsPanel();
+        OPWidgetFactoryRegistry* opWidgetFactoryRegistry = AppContext::getOPWidgetFactoryRegistry();
+        OptionsPanel* optionsPanel = browser->getOptionsPanel();
 
-        QList<OPFactoryFilterVisitorInterface *> filters;
+        QList<OPFactoryFilterVisitorInterface*> filters;
         filters.append(new OPFactoryFilterVisitor(ObjViewType_AssemblyBrowser));
 
-        QList<OPWidgetFactory *> opWidgetFactoriesForAssBr =
+        QList<OPWidgetFactory*> opWidgetFactoriesForAssBr =
             opWidgetFactoryRegistry->getRegisteredFactories(filters);
-        foreach (OPWidgetFactory *factory, opWidgetFactoriesForAssBr) {
+        foreach (OPWidgetFactory* factory, opWidgetFactoriesForAssBr) {
             optionsPanel->addGroup(factory);
         }
 
@@ -1166,11 +1166,11 @@ AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser *browser_)
         nothingToVisualize = false;
 
         connect(readsArea, SIGNAL(si_heightChanged()), zoomableOverview, SLOT(sl_visibleAreaChanged()));
-        connect(readsArea, SIGNAL(si_mouseMovedToPos(const QPoint &)), ruler, SLOT(sl_handleMoveToPos(const QPoint &)));
-        connect(referenceArea, SIGNAL(si_mouseMovedToPos(const QPoint &)), ruler, SLOT(sl_handleMoveToPos(const QPoint &)));
-        connect(consensusArea, SIGNAL(si_mouseMovedToPos(const QPoint &)), ruler, SLOT(sl_handleMoveToPos(const QPoint &)));
-        connect(coverageGraph, SIGNAL(si_mouseMovedToPos(const QPoint &)), ruler, SLOT(sl_handleMoveToPos(const QPoint &)));
-        connect(annotationsArea, SIGNAL(si_mouseMovedToPos(const QPoint &)), ruler, SLOT(sl_handleMoveToPos(const QPoint &)));
+        connect(readsArea, SIGNAL(si_mouseMovedToPos(const QPoint&)), ruler, SLOT(sl_handleMoveToPos(const QPoint&)));
+        connect(referenceArea, SIGNAL(si_mouseMovedToPos(const QPoint&)), ruler, SLOT(sl_handleMoveToPos(const QPoint&)));
+        connect(consensusArea, SIGNAL(si_mouseMovedToPos(const QPoint&)), ruler, SLOT(sl_handleMoveToPos(const QPoint&)));
+        connect(coverageGraph, SIGNAL(si_mouseMovedToPos(const QPoint&)), ruler, SLOT(sl_handleMoveToPos(const QPoint&)));
+        connect(annotationsArea, SIGNAL(si_mouseMovedToPos(const QPoint&)), ruler, SLOT(sl_handleMoveToPos(const QPoint&)));
         connect(browser, SIGNAL(si_offsetsChanged()), readsArea, SLOT(sl_hideHint()));
         connect(browser->getModel().data(), SIGNAL(si_referenceChanged()), referenceArea, SLOT(sl_redraw()));
         connect(browser->getModel().data(), SIGNAL(si_referenceChanged()), readsArea, SLOT(sl_redraw()));
@@ -1180,9 +1180,9 @@ AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser *browser_)
     }
     // do not how to show them
     else {
-        QVBoxLayout *mainLayout = new QVBoxLayout();
+        QVBoxLayout* mainLayout = new QVBoxLayout();
         QString msg = tr("Assembly has no mapped reads. Nothing to visualize.");
-        QLabel *infoLabel = new QLabel(QString("<table align=\"center\"><tr><td>%1</td></tr></table>").arg(msg), this);
+        QLabel* infoLabel = new QLabel(QString("<table align=\"center\"><tr><td>%1</td></tr></table>").arg(msg), this);
         infoLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         mainLayout->addWidget(infoLabel);
         setLayout(mainLayout);

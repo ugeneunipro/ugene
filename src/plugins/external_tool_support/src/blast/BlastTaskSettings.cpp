@@ -68,4 +68,4 @@ void BlastTaskSettings::reset() {
     querySequenceObject = nullptr;
 }
 
-}    // namespace U2
+}  // namespace U2

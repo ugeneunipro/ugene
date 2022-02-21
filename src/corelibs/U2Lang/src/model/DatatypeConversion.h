@@ -33,7 +33,7 @@ public:
         Wide,
         None
     };
-    virtual QVariant convert(const QVariant &d, const DataTypePtr from, const DataTypePtr to) = 0;
+    virtual QVariant convert(const QVariant& d, const DataTypePtr from, const DataTypePtr to) = 0;
     virtual ConvertionType canConvert(const DataTypePtr from, const DataTypePtr to) = 0;
 };
 

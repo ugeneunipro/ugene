@@ -74,7 +74,7 @@ void Text2SequenceWorker::init() {
     outSeqPort = ports.value(BasePorts::OUT_SEQ_PORT_ID());
 }
 
-Task *Text2SequenceWorker::tick() {
+Task* Text2SequenceWorker::tick() {
     while (txtPort->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(txtPort);
         if (inputMessage.isEmpty()) {
@@ -106,7 +106,7 @@ Task *Text2SequenceWorker::tick() {
         }
         QByteArray txt = inputMessage.getData().toMap().value(BaseSlots::TEXT_SLOT().getId()).value<QString>().toUtf8();
 
-        const DNAAlphabet *alphabet = (alId == ALPHABET_ATTR_ID_DEF_VAL) ? U2AlphabetUtils::findBestAlphabet(txt) : U2AlphabetUtils::getById(alId);
+        const DNAAlphabet* alphabet = (alId == ALPHABET_ATTR_ID_DEF_VAL) ? U2AlphabetUtils::findBestAlphabet(txt) : U2AlphabetUtils::getById(alId);
         if (alphabet == nullptr) {
             QString msg;
             if (alId == ALPHABET_ATTR_ID_DEF_VAL) {
@@ -143,7 +143,7 @@ void Text2SequenceWorker::cleanup() {
  *******************************/
 void Text2SequenceWorkerFactory::init() {
     // ports description
-    QList<PortDescriptor *> portDescs;
+    QList<PortDescriptor*> portDescs;
     {
         QMap<Descriptor, DataTypePtr> inM;
         inM[BaseSlots::TEXT_SLOT()] = BaseTypes::STRING_TYPE();
@@ -158,7 +158,7 @@ void Text2SequenceWorkerFactory::init() {
         portDescs << new PortDescriptor(outPortDesc, outSet, false);
     }
     // attributes description
-    QList<Attribute *> attrs;
+    QList<Attribute*> attrs;
     {
         Descriptor seqNameDesc(SEQ_NAME_ATTR_ID, Text2SequenceWorker::tr("Sequence name"), Text2SequenceWorker::tr("Result sequence name."));
         Descriptor alphabetDesc(ALPHABET_ATTR_ID, Text2SequenceWorker::tr("Sequence alphabet"), Text2SequenceWorker::tr("Select one of the listed alphabets or choose auto to auto-detect."));
@@ -174,14 +174,14 @@ void Text2SequenceWorkerFactory::init() {
     Descriptor protoDesc(Text2SequenceWorkerFactory::ACTOR_ID,
                          Text2SequenceWorker::tr("Convert Text to Sequence"),
                          Text2SequenceWorker::tr("Converts input text to sequence."));
-    ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
+    ActorPrototype* proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
 
     // proto delegates
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap alMap;
-        QList<const DNAAlphabet *> alps = AppContext::getDNAAlphabetRegistry()->getRegisteredAlphabets();
-        foreach (const DNAAlphabet *a, alps) {
+        QList<const DNAAlphabet*> alps = AppContext::getDNAAlphabetRegistry()->getRegisteredAlphabets();
+        foreach (const DNAAlphabet* a, alps) {
             alMap[a->getName()] = Text2SequenceWorker::cuteAlIdNames[a->getId()];
         }
         alMap[ALPHABET_ATTR_ID_DEF_VAL] = ALPHABET_ATTR_ID_DEF_VAL;
@@ -196,7 +196,7 @@ void Text2SequenceWorkerFactory::init() {
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new Text2SequenceWorkerFactory());
 }
 
-Worker *Text2SequenceWorkerFactory::createWorker(Actor *a) {
+Worker* Text2SequenceWorkerFactory::createWorker(Actor* a) {
     return new Text2SequenceWorker(a);
 }
 
@@ -205,8 +205,8 @@ Worker *Text2SequenceWorkerFactory::createWorker(Actor *a) {
  *******************************/
 QString Text2SequencePrompter::composeRichDoc() {
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_TEXT_PORT_ID()));
-    Actor *txtProducer = input->getProducer(BaseSlots::TEXT_SLOT().getId());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_TEXT_PORT_ID()));
+    Actor* txtProducer = input->getProducer(BaseSlots::TEXT_SLOT().getId());
     QString txtProducetStr = tr(" from <u>%1</u>").arg(txtProducer ? txtProducer->getLabel() : unsetStr);
 
     QString seqName = getRequiredParam(SEQ_NAME_ATTR_ID);
@@ -218,7 +218,7 @@ QString Text2SequencePrompter::composeRichDoc() {
         seqAlStr = getHyperlink(ALPHABET_ATTR_ID, tr("Automatically detect sequence alphabet"));
     } else {
         alId = Text2SequenceWorker::cuteAlIdNames.key(alId, "");
-        const DNAAlphabet *alphabet = AppContext::getDNAAlphabetRegistry()->findById(alId);
+        const DNAAlphabet* alphabet = AppContext::getDNAAlphabetRegistry()->findById(alId);
         QString alphStr = getHyperlink(ALPHABET_ATTR_ID, alphabet ? alphabet->getName() : unsetStr);
         seqAlStr = tr("Set sequence alphabet to %1").arg(alphStr);
     }

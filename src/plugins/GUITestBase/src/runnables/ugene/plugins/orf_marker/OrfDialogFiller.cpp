@@ -20,6 +20,7 @@
  */
 
 #include "OrfDialogFiller.h"
+#include <primitives/GTWidget.h>
 
 #include <QApplication>
 
@@ -27,18 +28,17 @@ namespace U2 {
 
 #define GT_CLASS_NAME "OrfDialogFiller"
 
-OrfDialogFiller::OrfDialogFiller(GUITestOpStatus &os)
+OrfDialogFiller::OrfDialogFiller(GUITestOpStatus& os)
     : Filler(os, "ORFDialogBase") {
 }
 
-OrfDialogFiller::OrfDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario)
+OrfDialogFiller::OrfDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
     : Filler(os, "ORFDialogBase", scenario) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void OrfDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(nullptr != dialog, "Active modal widget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }

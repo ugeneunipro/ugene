@@ -33,17 +33,17 @@ namespace U2 {
 class UrlAndDatasetWizardController : public WidgetController {
     Q_OBJECT
 public:
-    UrlAndDatasetWizardController(WizardController *wc, UrlAndDatasetWidget *widget);
+    UrlAndDatasetWizardController(WizardController* wc, UrlAndDatasetWidget* widget);
     virtual ~UrlAndDatasetWizardController();
 
-    virtual QWidget *createGUI(U2OpStatus &os);
+    virtual QWidget* createGUI(U2OpStatus& os);
 
 private slots:
     void sl_datasetsChanged();
 
 private:
-    UrlAndDatasetWidget *widget;
-    UrlAndDatasetController *dsc;
+    UrlAndDatasetWidget* widget;
+    UrlAndDatasetController* dsc;
 };
 
 }  // namespace U2

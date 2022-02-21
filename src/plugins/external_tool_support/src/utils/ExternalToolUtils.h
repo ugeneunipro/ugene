@@ -29,9 +29,9 @@ namespace U2 {
 class ExternalToolUtils : public QObject {
     Q_OBJECT
 public:
-    static void checkExtToolsPath(const QStringList &ids);
+    static void checkExtToolsPath(const QStringList& ids);
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_EXTERNAL_TOOL_UTILS_H_
+#endif  // _U2_EXTERNAL_TOOL_UTILS_H_

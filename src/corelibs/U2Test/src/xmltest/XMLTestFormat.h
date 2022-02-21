@@ -32,14 +32,14 @@ class XMLTestFormat;
 
 class U2TEST_EXPORT XMLTestFactory {
 public:
-    XMLTestFactory(const QString &_tagName)
+    XMLTestFactory(const QString& _tagName)
         : tagName(_tagName) {
     }
     virtual ~XMLTestFactory();
 
-    virtual GTest *createTest(XMLTestFormat *tf, const QString &testName, GTest *cp, const GTestEnvironment *env, const QList<GTest *> &subtasks, const QDomElement &el) = 0;
+    virtual GTest* createTest(XMLTestFormat* tf, const QString& testName, GTest* cp, const GTestEnvironment* env, const QList<GTest*>& subtasks, const QDomElement& el) = 0;
 
-    const QString &getTagName() const {
+    const QString& getTagName() const {
         return tagName;
     }
 
@@ -53,19 +53,19 @@ public:
     XMLTestFormat();
     virtual ~XMLTestFormat();
 
-    virtual GTest *createTest(const QString &name, GTest *cp, const GTestEnvironment *env, const QByteArray &testData, QString &err);
+    virtual GTest* createTest(const QString& name, GTest* cp, const GTestEnvironment* env, const QByteArray& testData, QString& err);
 
-    virtual GTest *createTest(const QString &name, GTest *cp, const GTestEnvironment *env, const QDomElement &el, QString &err);
+    virtual GTest* createTest(const QString& name, GTest* cp, const GTestEnvironment* env, const QDomElement& el, QString& err);
 
-    virtual bool registerTestFactory(XMLTestFactory *tf);
+    virtual bool registerTestFactory(XMLTestFactory* tf);
 
     /** Registers all factories from the list. Asserts that there are no duplicates in the registry as the result. */
-    void registerTestFactories(const QList<XMLTestFactory *> &factoryList);
+    void registerTestFactories(const QList<XMLTestFactory*>& factoryList);
 
-    virtual bool unregisterTestFactory(XMLTestFactory *tf);
+    virtual bool unregisterTestFactory(XMLTestFactory* tf);
 
 private:
-    QMap<QString, XMLTestFactory *> testFactories;
+    QMap<QString, XMLTestFactory*> testFactories;
 };
 
 }  // namespace U2

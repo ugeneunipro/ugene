@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-EditSettingsDialog::EditSettingsDialog(const EditSettings &settings, QWidget *parent)
+EditSettingsDialog::EditSettingsDialog(const EditSettings& settings, QWidget* parent)
     : QDialog(parent) {
     ui = new Ui_EditSettingDialogForm;
     ui->setupUi(this);

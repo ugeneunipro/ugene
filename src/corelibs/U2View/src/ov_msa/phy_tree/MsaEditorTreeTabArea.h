@@ -35,16 +35,16 @@ class MSAEditor;
 class MsaEditorTreeTab : public QTabWidget {
     Q_OBJECT
 public:
-    MsaEditorTreeTab(MSAEditor *msaEditor, QWidget *parent);
+    MsaEditorTreeTab(MSAEditor* msaEditor, QWidget* parent);
 
     // TODO: method hides base class method to emit 'si_tabsCountChanged'.
     //  The signal should be emitted from inside of 'virtual void tabInserted(int index)'
     //  Need to re-check all use-cases before update.
-    int addTab(QWidget *page, const QString &label);
+    int addTab(QWidget* page, const QString& label);
 
     void deleteTree(int index);
 
-    QWidget *getCurrentWidget() const {
+    QWidget* getCurrentWidget() const {
         return currentWidget();
     }
 
@@ -59,47 +59,47 @@ private slots:
     void sl_onCloseAllTabs();
     void sl_onCloseTab();
     void sl_onCountChanged(int count);
-    void sl_onContextMenuRequested(const QPoint &pos);
+    void sl_onContextMenuRequested(const QPoint& pos);
 signals:
     void si_tabsCountChanged(int curTabsNumber);
 
 private:
-    MSAEditor *editor;
-    QPushButton *addTabButton;
+    MSAEditor* editor;
+    QPushButton* addTabButton;
     QPoint menuPos;
-    QAction *closeOtherTabs;
-    QAction *closeAllTabs;
-    QAction *closeTab;
+    QAction* closeOtherTabs;
+    QAction* closeAllTabs;
+    QAction* closeTab;
 };
 
 class MsaEditorTreeTabArea : public QWidget {
     Q_OBJECT
 public:
-    MsaEditorTreeTabArea(MSAEditor *msaEditor, QWidget *parent);
+    MsaEditorTreeTabArea(MSAEditor* msaEditor, QWidget* parent);
 
     /** Adds new tab with the given content and title. Activates the tab if 'activate' is true. */
-    void addTab(QWidget *page, const QString &label, bool activate = false);
+    void addTab(QWidget* page, const QString& label, bool activate = false);
 
-    MsaEditorTreeTab *getCurrentTabWidget() const {
+    MsaEditorTreeTab* getCurrentTabWidget() const {
         return treeTabWidget;
     }
 
-    QWidget *getCurrentWidget() const {
+    QWidget* getCurrentWidget() const {
         return treeTabWidget->getCurrentWidget();
     }
 
 protected:
-    void paintEvent(QPaintEvent *) override;
-    virtual MsaEditorTreeTab *createTabWidget();
+    void paintEvent(QPaintEvent*) override;
+    virtual MsaEditorTreeTab* createTabWidget();
     void initialize();
 
 signals:
     void si_tabsCountChanged(int curTabsNumber);
 
 private:
-    MSAEditor *editor;
-    MsaEditorTreeTab *treeTabWidget;
-    QLayout *currentLayout;
+    MSAEditor* editor;
+    MsaEditorTreeTab* treeTabWidget;
+    QLayout* currentLayout;
 };
 }  // namespace U2
 

@@ -34,10 +34,10 @@ namespace Js {
 
 class JsScheduler : public ScriptableScheduler {
 public:
-    JsScheduler(Workflow::Schema *scheme, const Local<Function> &callback);
+    JsScheduler(Workflow::Schema* scheme, const Local<Function>& callback);
     ~JsScheduler();
 
-    virtual Task *tick();
+    virtual Task* tick();
 
 private:
     Local<Function> schedulerCallback;

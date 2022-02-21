@@ -34,7 +34,7 @@
 
 namespace U2 {
 
-ExternalToolRunTask *TBlastXTask::createBlastTask() {
+ExternalToolRunTask* TBlastXTask::createBlastTask() {
     QStringList arguments;
 
     arguments << "-db" << settings.databaseNameAndPath;

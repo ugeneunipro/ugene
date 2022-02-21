@@ -28,7 +28,7 @@ namespace U2 {
 
 const int U2AssemblyUtils::MAX_COVERAGE_VECTOR_SIZE = 1000 * 1000;
 
-U2CigarOp U2AssemblyUtils::char2Cigar(char c, QString &err) {
+U2CigarOp U2AssemblyUtils::char2Cigar(char c, QString& err) {
     char cu = TextUtils::UPPER_CASE_MAP[c];
     switch (cu) {
         case 'D':
@@ -91,10 +91,10 @@ char U2AssemblyUtils::cigar2Char(U2CigarOp op) {
     return c;
 }
 
-QList<U2CigarToken> U2AssemblyUtils::parseCigar(const QByteArray &cigarString, QString &err) {
+QList<U2CigarToken> U2AssemblyUtils::parseCigar(const QByteArray& cigarString, QString& err) {
     QList<U2CigarToken> result;
     int pos = 0, len = cigarString.length();
-    const char *cigar = cigarString.constData();
+    const char* cigar = cigarString.constData();
     int count = 0;
     // count numbers
     while (pos < len) {
@@ -114,9 +114,9 @@ QList<U2CigarToken> U2AssemblyUtils::parseCigar(const QByteArray &cigarString, Q
     return result;
 }
 
-QByteArray U2AssemblyUtils::cigar2String(const QList<U2CigarToken> &cigar) {
+QByteArray U2AssemblyUtils::cigar2String(const QList<U2CigarToken>& cigar) {
     QByteArray res;
-    foreach (const U2CigarToken &t, cigar) {
+    foreach (const U2CigarToken& t, cigar) {
         if (t.op != U2CigarOp_Invalid) {
             res = res + QByteArray::number(t.count) + cigar2Char(t.op);
         }
@@ -124,13 +124,13 @@ QByteArray U2AssemblyUtils::cigar2String(const QList<U2CigarToken> &cigar) {
     return res;
 }
 
-qint64 U2AssemblyUtils::getEffectiveReadLength(const U2AssemblyRead &read) {
+qint64 U2AssemblyUtils::getEffectiveReadLength(const U2AssemblyRead& read) {
     return read->readSequence.length() + getCigarExtraLength(read->cigar);
 }
 
-qint64 U2AssemblyUtils::getCigarExtraLength(const QList<U2CigarToken> &cigar) {
+qint64 U2AssemblyUtils::getCigarExtraLength(const QList<U2CigarToken>& cigar) {
     qint64 res = 0;
-    foreach (const U2CigarToken &t, cigar) {
+    foreach (const U2CigarToken& t, cigar) {
         switch (t.op) {
             case U2CigarOp_I:
             case U2CigarOp_S:
@@ -146,7 +146,7 @@ qint64 U2AssemblyUtils::getCigarExtraLength(const QList<U2CigarToken> &cigar) {
     return res;
 }
 
-QByteArray U2AssemblyUtils::serializeCoverageStat(const U2AssemblyCoverageStat &coverageStat) {
+QByteArray U2AssemblyUtils::serializeCoverageStat(const U2AssemblyCoverageStat& coverageStat) {
     QByteArray data;
     for (int index = 0; index < coverageStat.size(); index++) {
         for (int i = 0; i < 4; i++) {
@@ -156,7 +156,7 @@ QByteArray U2AssemblyUtils::serializeCoverageStat(const U2AssemblyCoverageStat &
     return data;
 }
 
-void U2AssemblyUtils::deserializeCoverageStat(QByteArray data, U2AssemblyCoverageStat &res, U2OpStatus &os) {
+void U2AssemblyUtils::deserializeCoverageStat(QByteArray data, U2AssemblyCoverageStat& res, U2OpStatus& os) {
     res.clear();
     if (!data.isEmpty() && 0 == (data.size() % 4)) {
         for (int index = 0; index < data.size() / 4; index++) {

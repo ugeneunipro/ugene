@@ -74,12 +74,12 @@ AlignToReferenceBlastWorkerFactory::AlignToReferenceBlastWorkerFactory()
     : DomainFactory(ACTOR_ID) {
 }
 
-Worker *AlignToReferenceBlastWorkerFactory::createWorker(Actor *a) {
+Worker* AlignToReferenceBlastWorkerFactory::createWorker(Actor* a) {
     return new AlignToReferenceBlastWorker(a);
 }
 
 void AlignToReferenceBlastWorkerFactory::init() {
-    QList<PortDescriptor *> ports;
+    QList<PortDescriptor*> ports;
     {
         Descriptor inDesc(BasePorts::IN_SEQ_PORT_ID(), AlignToReferenceBlastPrompter::tr("Input sequence"), AlignToReferenceBlastPrompter::tr("Input sequence."));
         Descriptor outDesc(OUT_PORT_ID, AlignToReferenceBlastPrompter::tr("Aligned data"), AlignToReferenceBlastPrompter::tr("Aligned data."));
@@ -97,7 +97,7 @@ void AlignToReferenceBlastWorkerFactory::init() {
         ports << new PortDescriptor(inDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-in", inType)), true /*input*/);
         ports << new PortDescriptor(outDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-out", outType)), false /*input*/, true /*multi*/);
     }
-    QList<Attribute *> attributes;
+    QList<Attribute*> attributes;
     {
         Descriptor refDesc(REF_ATTR_ID, AlignToReferenceBlastPrompter::tr("Reference URL"), AlignToReferenceBlastPrompter::tr("A URL to the file with a reference sequence."));
         attributes << new Attribute(refDesc, BaseTypes::STRING_TYPE(), true);
@@ -113,7 +113,7 @@ void AlignToReferenceBlastWorkerFactory::init() {
         attributes << new Attribute(rowNamingDesc, BaseTypes::STRING_TYPE(), false, ROW_NAMING_SEQUENCE_NAME_VALUE);
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         delegates[REF_ATTR_ID] = new URLDelegate("", "", false, false, false);
         delegates[RESULT_URL_ATTR_ID] = new URLDelegate(FileFilters::createFileFilterByObjectTypes({BaseDocumentFormats::UGENEDB}, true), "", false, false, true, nullptr, BaseDocumentFormats::UGENEDB);
@@ -130,28 +130,28 @@ void AlignToReferenceBlastWorkerFactory::init() {
     }
 
     Descriptor desc(ACTOR_ID, AlignToReferenceBlastWorker::tr("Map to Reference"), AlignToReferenceBlastWorker::tr("Align input sequences (e.g. Sanger reads) to the reference sequence."));
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new AlignToReferenceBlastPrompter(nullptr));
     proto->addExternalTool(BlastSupport::ET_BLASTN_ID);
     proto->addExternalTool(BlastSupport::ET_MAKEBLASTDB_ID);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new AlignToReferenceBlastWorkerFactory());
 }
 
 /************************************************************************/
 /* AlignToReferenceBlastPrompter */
 /************************************************************************/
-AlignToReferenceBlastPrompter::AlignToReferenceBlastPrompter(Actor *a)
+AlignToReferenceBlastPrompter::AlignToReferenceBlastPrompter(Actor* a)
     : PrompterBase<AlignToReferenceBlastPrompter>(a) {
 }
 
 QString AlignToReferenceBlastPrompter::composeRichDoc() {
-    auto input = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
     SAFE_POINT(input != nullptr, "No input port", "");
-    Actor *producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
+    Actor* producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     const QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     const QString producerName = producer != nullptr ? producer->getLabel() : unsetStr;
     const QString refLink = getHyperlink(REF_ATTR_ID, getURL(REF_ATTR_ID));
@@ -161,26 +161,26 @@ QString AlignToReferenceBlastPrompter::composeRichDoc() {
 /************************************************************************/
 /* AlignToReferenceBlastWorker */
 /************************************************************************/
-AlignToReferenceBlastWorker::AlignToReferenceBlastWorker(Actor *a)
+AlignToReferenceBlastWorker::AlignToReferenceBlastWorker(Actor* a)
     : BaseDatasetWorker(a, BasePorts::IN_SEQ_PORT_ID(), OUT_PORT_ID) {
 }
 
-Task *AlignToReferenceBlastWorker::createPrepareTask(U2OpStatus & /*os*/) const {
+Task* AlignToReferenceBlastWorker::createPrepareTask(U2OpStatus& /*os*/) const {
     QString referenceUrlValue = getValue<QString>(REF_ATTR_ID);
     return new PrepareReferenceSequenceTask(referenceUrlValue, context->getDataStorage()->getDbiRef());
 }
 
-void AlignToReferenceBlastWorker::onPrepared(Task *task, U2OpStatus &os) {
-    auto prepareTask = qobject_cast<PrepareReferenceSequenceTask *>(task);
+void AlignToReferenceBlastWorker::onPrepared(Task* task, U2OpStatus& os) {
+    auto prepareTask = qobject_cast<PrepareReferenceSequenceTask*>(task);
     CHECK_EXT(prepareTask != nullptr, os.setError(L10N::internalError("Unexpected prepare task")), );
     reference = context->getDataStorage()->getDataHandler(prepareTask->getReferenceEntityRef());
     referenceUrl = prepareTask->getPreparedReferenceUrl();
 }
 
-Task *AlignToReferenceBlastWorker::createTask(const QList<Message> &messages) const {
+Task* AlignToReferenceBlastWorker::createTask(const QList<Message>& messages) const {
     QList<SharedDbiDataHandler> reads;
     QMap<SharedDbiDataHandler, QString> readNameById;
-    for (const Message &message : qAsConst(messages)) {
+    for (const Message& message : qAsConst(messages)) {
         QVariantMap data = message.getData().toMap();
         if (data.contains(BaseSlots::DNA_SEQUENCE_SLOT().getId())) {
             SharedDbiDataHandler read = data[BaseSlots::DNA_SEQUENCE_SLOT().getId()].value<SharedDbiDataHandler>();
@@ -195,19 +195,19 @@ Task *AlignToReferenceBlastWorker::createTask(const QList<Message> &messages) co
     return new AlignToReferenceBlastTask(referenceUrl, getValue<QString>(RESULT_URL_ATTR_ID), reference, reads, readNameById, readIdentity, context->getDataStorage());
 }
 
-QVariantMap AlignToReferenceBlastWorker::getResult(Task *task, U2OpStatus &os) const {
-    auto alignTask = qobject_cast<AlignToReferenceBlastTask *>(task);
+QVariantMap AlignToReferenceBlastWorker::getResult(Task* task, U2OpStatus& os) const {
+    auto alignTask = qobject_cast<AlignToReferenceBlastTask*>(task);
     CHECK_EXT(alignTask != nullptr, os.setError(L10N::internalError("Unexpected task")), QVariantMap());
 
     QList<QPair<QString, QPair<int, bool>>> acceptedReads = alignTask->getAcceptedReads();
     QList<QPair<QString, int>> discardedReads = alignTask->getDiscardedReads();
 
     algoLog.details(QString("Reads discarded by the mapper: %1").arg(discardedReads.count()));
-    for (const auto &discardedPair : qAsConst(discardedReads)) {
+    for (const auto& discardedPair : qAsConst(discardedReads)) {
         algoLog.details(discardedPair.first);
     }
     algoLog.trace(QString("Reads accepted by the mapper: %1").arg(acceptedReads.count()));
-    for (const auto &pair : qAsConst(acceptedReads)) {
+    for (const auto& pair : qAsConst(acceptedReads)) {
         algoLog.details((pair.second.second ? "&#x2190;&nbsp;&nbsp;" : "&#x2192;&nbsp;&nbsp;") + pair.first);
     }
     algoLog.details(QString("Total reads processed by the mapper: %1").arg(acceptedReads.count() + discardedReads.count()));
@@ -236,11 +236,11 @@ QVariantMap AlignToReferenceBlastWorker::getResult(Task *task, U2OpStatus &os) c
     return result;
 }
 
-MessageMetadata AlignToReferenceBlastWorker::generateMetadata(const QString &datasetName) const {
+MessageMetadata AlignToReferenceBlastWorker::generateMetadata(const QString& datasetName) const {
     return MessageMetadata(getValue<QString>(REF_ATTR_ID), datasetName);
 }
 
-QString AlignToReferenceBlastWorker::getReadName(const Message &message) const {
+QString AlignToReferenceBlastWorker::getReadName(const Message& message) const {
     CHECK(getValue<QString>(ROW_NAMING_ID) == AlignToReferenceBlastWorkerFactory::ROW_NAMING_FILE_NAME_VALUE, "");
     const int metadataId = message.getMetadataId();
     const MessageMetadata metadata = context->getMetadataStorage().get(metadataId);
@@ -250,13 +250,13 @@ QString AlignToReferenceBlastWorker::getReadName(const Message &message) const {
 /************************************************************************/
 /* AlignToReferenceBlastTask */
 /************************************************************************/
-AlignToReferenceBlastTask::AlignToReferenceBlastTask(const QString &_referenceUrl,
-                                                     const QString &_resultUrl,
-                                                     const SharedDbiDataHandler &_reference,
-                                                     const QList<SharedDbiDataHandler> &_reads,
-                                                     const QMap<SharedDbiDataHandler, QString> &_readNameById,
+AlignToReferenceBlastTask::AlignToReferenceBlastTask(const QString& _referenceUrl,
+                                                     const QString& _resultUrl,
+                                                     const SharedDbiDataHandler& _reference,
+                                                     const QList<SharedDbiDataHandler>& _reads,
+                                                     const QMap<SharedDbiDataHandler, QString>& _readNameById,
                                                      int _minIdentityPercent,
-                                                     DbiDataStorage *_storage)
+                                                     DbiDataStorage* _storage)
     : Task(tr("Map to reference"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
       referenceUrl(_referenceUrl),
       resultUrl(_resultUrl),
@@ -273,8 +273,8 @@ void AlignToReferenceBlastTask::prepare() {
     addSubTask(formatDbSubTask);
 }
 
-QList<Task *> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> result;
+QList<Task*> AlignToReferenceBlastTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> result;
     CHECK(subTask != nullptr, result);
     CHECK(!subTask->isCanceled() && !subTask->hasError(), result);
 
@@ -283,9 +283,9 @@ QList<Task *> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
         blastTask = new BlastAlignToReferenceMuxTask(dbPath, reads, reference, readNameById, storage);
         result << blastTask;
     } else if (subTask == blastTask) {
-        const QList<AlignToReferenceResult> &alignmentResults = blastTask->getAlignmentResults();
+        const QList<AlignToReferenceResult>& alignmentResults = blastTask->getAlignmentResults();
         QList<AlignToReferenceResult> acceptedResults;
-        for (const auto &alignmentResult : qAsConst(alignmentResults)) {
+        for (const auto& alignmentResult : qAsConst(alignmentResults)) {
             if (alignmentResult.identityPercent >= minIdentityPercent) {
                 acceptedResults << alignmentResult;
             }
@@ -294,17 +294,17 @@ QList<Task *> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
         composeSubTask->setSubtaskProgressWeight(0.5f);
         result << composeSubTask;
     } else if (subTask == composeSubTask) {
-        DocumentFormat *ugenedbFormat = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::UGENEDB);
+        DocumentFormat* ugenedbFormat = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::UGENEDB);
         QScopedPointer<Document> document(ugenedbFormat->createNewLoadedDocument(IOAdapterUtils::get(IOAdapterUtils::url2io(resultUrl)), resultUrl, stateInfo));
         CHECK_OP(stateInfo, result);
 
         document->setDocumentOwnsDbiResources(false);
 
-        MultipleChromatogramAlignmentObject *mcaObject = composeSubTask->takeMcaObject();
+        MultipleChromatogramAlignmentObject* mcaObject = composeSubTask->takeMcaObject();
         SAFE_POINT_EXT(mcaObject != nullptr, setError("Result MCA object is NULL"), result);
         document->addObject(mcaObject);
 
-        U2SequenceObject *referenceSequenceObject = composeSubTask->takeReferenceSequenceObject();
+        U2SequenceObject* referenceSequenceObject = composeSubTask->takeReferenceSequenceObject();
         SAFE_POINT_EXT(referenceSequenceObject != nullptr, setError("Result reference sequence object is NULL"), result);
         document->addObject(referenceSequenceObject);
 
@@ -334,7 +334,7 @@ QString AlignToReferenceBlastTask::generateReport() const {
     result += "<u>" + tr("Reference sequence:") + QString("</u> %1<br>").arg(refObject->getSequenceName());
     result += "<u>" + tr("Mapped reads (%1):").arg(acceptedReads.size()) + "</u>";
     result += "<table>";
-    for (const auto &acceptedPair : qAsConst(acceptedReads)) {
+    for (const auto& acceptedPair : qAsConst(acceptedReads)) {
         QString arrow = acceptedPair.second.second ? "&#x2190;" : "&#x2192;";
         QString read = QString(acceptedPair.first).replace("-", "&#8209;");
         QString readIdentity = tr("similarity") + "&nbsp;&nbsp;" + QString::number(acceptedPair.second.first) + "%";
@@ -342,7 +342,7 @@ QString AlignToReferenceBlastTask::generateReport() const {
     }
     if (!filteredReads.isEmpty()) {
         result += "<tr><td colspan=3><u>" + tr("Filtered by low similarity (%1):").arg(filteredReads.size()) + "</u></td></tr>";
-        for (const auto &filteredPair : qAsConst(filteredReads)) {
+        for (const auto& filteredPair : qAsConst(filteredReads)) {
             QString readIdentity = tr("similarity") + "&nbsp;&nbsp;" + QString::number(filteredPair.second) + "%";
             result += QString("<tr><td></td><td style=white-space:nowrap>") + QString(filteredPair.first).replace("-", "&#8209;") + "&nbsp; &nbsp;" + "</td><td><div style=\"margin-left:7px;\">" + readIdentity + "</div></td></tr>";
         }
@@ -365,8 +365,8 @@ SharedDbiDataHandler AlignToReferenceBlastTask::getAnnotations() const {
 QList<QPair<QString, QPair<int, bool>>> AlignToReferenceBlastTask::getAcceptedReads() const {
     SAFE_POINT(blastTask != nullptr, "Task is not finished!", {});
     QList<QPair<QString, QPair<int, bool>>> acceptedReads;
-    const QList<AlignToReferenceResult> &alignmentResults = blastTask->getAlignmentResults();
-    for (const auto &alignmentResult : qAsConst(alignmentResults)) {
+    const QList<AlignToReferenceResult>& alignmentResults = blastTask->getAlignmentResults();
+    for (const auto& alignmentResult : qAsConst(alignmentResults)) {
         if (alignmentResult.identityPercent >= minIdentityPercent) {
             QPair<int, bool> identityAndStrandPair(alignmentResult.identityPercent, alignmentResult.isOnComplementaryStrand);
             acceptedReads.append({alignmentResult.readName, identityAndStrandPair});
@@ -378,8 +378,8 @@ QList<QPair<QString, QPair<int, bool>>> AlignToReferenceBlastTask::getAcceptedRe
 QList<QPair<QString, int>> AlignToReferenceBlastTask::getDiscardedReads() const {
     SAFE_POINT(blastTask != nullptr, "Task is not finished!", {});
     QList<QPair<QString, int>> discardedReads;
-    const QList<AlignToReferenceResult> &alignmentResults = blastTask->getAlignmentResults();
-    for (const auto &alignmentResult : qAsConst(alignmentResults)) {
+    const QList<AlignToReferenceResult>& alignmentResults = blastTask->getAlignmentResults();
+    for (const auto& alignmentResult : qAsConst(alignmentResults)) {
         if (alignmentResult.identityPercent < minIdentityPercent) {
             discardedReads.append({alignmentResult.readName, alignmentResult.identityPercent});
         }

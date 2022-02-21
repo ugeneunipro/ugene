@@ -27,22 +27,22 @@
 
 namespace U2 {
 
-AlignMsaAction::AlignMsaAction(QObject *parent, const QString &toolId, MSAEditor *_msaEditor, const QString &text, int order)
+AlignMsaAction::AlignMsaAction(QObject* parent, const QString& toolId, MSAEditor* _msaEditor, const QString& text, int order)
     : ExternalToolSupportAction(parent, _msaEditor, text, order, QStringList(toolId)), msaEditor(_msaEditor) {
     sl_updateState();
 
-    MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
+    MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
     connect(msaObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_updateState()));
     connect(msaObject, SIGNAL(si_alignmentBecomesEmpty(bool)), SLOT(sl_updateState()));
 }
 
-MSAEditor *AlignMsaAction::getMsaEditor() const {
+MSAEditor* AlignMsaAction::getMsaEditor() const {
     return msaEditor;
 }
 
 void AlignMsaAction::sl_updateState() {
-    auto *msaObject = msaEditor->getMaObject();
+    auto* msaObject = msaEditor->getMaObject();
     setEnabled(!msaObject->isStateLocked() && !msaEditor->isAlignmentEmpty());
 }
 
-}    // namespace U2
+}  // namespace U2

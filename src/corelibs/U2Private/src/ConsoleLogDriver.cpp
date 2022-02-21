@@ -73,10 +73,10 @@ void ConsoleLogDriver::setLogCmdlineHelp() {
     assert(!helpRegistered);
     helpRegistered = true;
 
-    CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
+    CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
     assert(nullptr != cmdLineRegistry);
 
-    CMDLineHelpProvider *logFormat = new CMDLineHelpProvider(
+    CMDLineHelpProvider* logFormat = new CMDLineHelpProvider(
         CMDLineCoreOptions::LOG_FORMAT,
         tr("Specifies the format of a log line."),
         tr("Specifies the format of a log line."
@@ -86,7 +86,7 @@ void ConsoleLogDriver::setLogCmdlineHelp() {
            " \n\nBy default, logformat=\"[L][hh:mm]\"."),
         tr("\"<format_string>\""));
 
-    CMDLineHelpProvider *logLevel = new CMDLineHelpProvider(
+    CMDLineHelpProvider* logLevel = new CMDLineHelpProvider(
         CMDLineCoreOptions::LOG_LEVEL,
         tr("Sets the log level."),
         tr("Sets the log level per category. If a category is not specified,"
@@ -98,7 +98,7 @@ void ConsoleLogDriver::setLogCmdlineHelp() {
            "\n\nBy default, loglevel=\"ERROR\"."),
         tr("\"<category1>=<level1> [<category2>=<level2> ...]\" | <level>"));
 
-    CMDLineHelpProvider *coloredOutput = new CMDLineHelpProvider(
+    CMDLineHelpProvider* coloredOutput = new CMDLineHelpProvider(
         ConsoleLogDriver::COLOR_OUTPUT_CMD_OPTION, tr("Enables colored output."));
 
     cmdLineRegistry->registerCMDLineHelpProvider(logFormat);
@@ -122,7 +122,7 @@ QString ConsoleLogDriver::getLevelName(int i) const {
 }
 
 void ConsoleLogDriver::setLogSettings() {
-    CMDLineRegistry *cmd = AppContext::getCMDLineRegistry();
+    CMDLineRegistry* cmd = AppContext::getCMDLineRegistry();
     if (cmd->hasParameter(CMDLineCoreOptions::LOG_FORMAT)) {
         QString logFormat = cmd->getParameterValue(CMDLineCoreOptions::LOG_FORMAT);
         settings.showLevel = logFormat.contains("L", Qt::CaseSensitive);
@@ -166,8 +166,8 @@ void ConsoleLogDriver::setLogSettings() {
         logLevel = "ERROR";
     }
 
-    LogServer *ls = LogServer::getInstance();
-    const QStringList &categoryList = ls->getCategories();
+    LogServer* ls = LogServer::getInstance();
+    const QStringList& categoryList = ls->getCategories();
     logLevel = logLevel.remove(" ");
     QStringList cats = logLevel.split(QRegExp("[,=]"));
 
@@ -182,7 +182,7 @@ void ConsoleLogDriver::setLogSettings() {
         for (int i = 0; i < LogLevel_NumLevels; i++) {
             settings.activeLevelGlobalFlag[i] = (i >= minLevel);
         }
-        foreach (const QString &str, categoryList) {
+        foreach (const QString& str, categoryList) {
             LoggerSettings cs;
             cs.categoryName = str;
             for (int i = 0; i < LogLevel_NumLevels; i++) {
@@ -191,7 +191,7 @@ void ConsoleLogDriver::setLogSettings() {
             settings.categories[str] = cs;
         }
     } else {
-        foreach (const QString &str, categoryList) {
+        foreach (const QString& str, categoryList) {
             LoggerSettings cs;
             cs.categoryName = str;
             QString catWithoutSpaces = str;
@@ -220,9 +220,9 @@ void ConsoleLogDriver::setLogSettings() {
 }
 
 void ConsoleLogDriver::setCmdLineSettings() {
-    CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
+    CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
     assert(nullptr != cmdLineRegistry);
-    Settings *settings = AppContext::getSettings();
+    Settings* settings = AppContext::getSettings();
     assert(nullptr != settings);
 
     if (cmdLineRegistry->hasParameter(COLOR_OUTPUT_CMD_OPTION)) {
@@ -235,7 +235,7 @@ void ConsoleLogDriver::setCmdLineSettings() {
     }
 }
 
-QString ConsoleLogDriver::prepareText(const LogMessage &msg) const {
+QString ConsoleLogDriver::prepareText(const LogMessage& msg) const {
     QString prefix = settings.logPattern;
     prefix.replace("C", getEffectiveCategory(msg));
     prefix.replace("L", LogCategories::getLocalizedLevelName(msg.level));
@@ -254,7 +254,7 @@ QString ConsoleLogDriver::prepareText(const LogMessage &msg) const {
     return text;
 }
 
-void ConsoleLogDriver::onMessage(const LogMessage &msg) {
+void ConsoleLogDriver::onMessage(const LogMessage& msg) {
     if (!printToConsole || !settings.activeLevelGlobalFlag[msg.level]) {
         return;
     }
@@ -271,7 +271,7 @@ void ConsoleLogDriver::onMessage(const LogMessage &msg) {
         return;  // do not print UI related messages
     }
     QByteArray ba = prepareText(msg).toLocal8Bit();
-    char *buf = ba.data();
+    char* buf = ba.data();
 #ifdef Q_OS_WIN32
     // a bit of magic to workaround Windows console encoding issues
     CharToOemA(buf, buf);
@@ -306,10 +306,10 @@ void ConsoleLogDriver::onMessage(const LogMessage &msg) {
     fflush(stdout);
 }
 
-QString ConsoleLogDriver::getEffectiveCategory(const LogMessage &msg) const {
+QString ConsoleLogDriver::getEffectiveCategory(const LogMessage& msg) const {
     QString result;
-    foreach (const QString &category, msg.categories) {
-        const LoggerSettings &cs = settings.getLoggerSettings(category);
+    foreach (const QString& category, msg.categories) {
+        const LoggerSettings& cs = settings.getLoggerSettings(category);
         if (cs.activeLevelFlag[msg.level]) {
             result = category;
             break;

@@ -30,9 +30,9 @@ namespace U2 {
 class U2ALGORITHM_EXPORT SecStructPredictTask : public Task {
     Q_OBJECT
 public:
-    SecStructPredictTask(const QByteArray &seq);
+    SecStructPredictTask(const QByteArray& seq);
     void prepare();
-    const QList<SharedAnnotationData> &getResults() const {
+    const QList<SharedAnnotationData>& getResults() const {
         return results;
     }
     const QByteArray getSSFormatResults() const {
@@ -46,7 +46,7 @@ protected:
 
 class U2ALGORITHM_EXPORT SecStructPredictTaskFactory {
 public:
-    virtual SecStructPredictTask *createTaskInstance(const QByteArray &inputSeq) = 0;
+    virtual SecStructPredictTask* createTaskInstance(const QByteArray& inputSeq) = 0;
     virtual ~SecStructPredictTaskFactory() {
     }
 };
@@ -58,7 +58,7 @@ public: \
     public: \
         Factory() { \
         } \
-        SecStructPredictTask *createTaskInstance(const QByteArray &inputSeq) { \
+        SecStructPredictTask* createTaskInstance(const QByteArray& inputSeq) { \
             return new c(inputSeq); \
         } \
     };

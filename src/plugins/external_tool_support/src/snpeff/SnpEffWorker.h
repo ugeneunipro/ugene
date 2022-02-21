@@ -36,20 +36,20 @@ typedef PrompterBase<SnpEffPrompter> SnpEffBase;
 class SnpEffPrompter : public SnpEffBase {
     Q_OBJECT
 public:
-    SnpEffPrompter(Actor *p = 0)
+    SnpEffPrompter(Actor* p = 0)
         : SnpEffBase(p) {
     }
 
 protected:
     QString composeRichDoc();
-};    //SnpEffPrompter
+};  // SnpEffPrompter
 
 class SnpEffWorker : public BaseWorker {
     Q_OBJECT
 public:
-    SnpEffWorker(Actor *a);
+    SnpEffWorker(Actor* a);
     void init();
-    Task *tick();
+    Task* tick();
     void cleanup();
 
     static const QString BASE_SNPEFF_SUBDIR;
@@ -71,16 +71,16 @@ public:
     static const QString MOTIF;
 
 private:
-    IntegralBus *inputUrlPort;
-    IntegralBus *outputUrlPort;
+    IntegralBus* inputUrlPort;
+    IntegralBus* outputUrlPort;
 
 public slots:
-    void sl_taskFinished(Task *task);
+    void sl_taskFinished(Task* task);
 
 private:
     QString takeUrl();
-    void sendResult(const QString &url);
-};    //SnpEffWorker
+    void sendResult(const QString& url);
+};  // SnpEffWorker
 
 class SnpEffFactory : public DomainFactory {
     static const QString ACTOR_ID;
@@ -90,30 +90,30 @@ public:
     SnpEffFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    Worker *createWorker(Actor *a) {
+    Worker* createWorker(Actor* a) {
         return new SnpEffWorker(a);
     }
-};    //RmdupBamWorkerFactory
+};  // RmdupBamWorkerFactory
 
 class SnpEffLogProcessor : public ExternalToolLogProcessor {
 public:
-    SnpEffLogProcessor(WorkflowMonitor *monitor, const QString &actor);
+    SnpEffLogProcessor(WorkflowMonitor* monitor, const QString& actor);
 
-    void processLogMessage(const QString &message);
+    void processLogMessage(const QString& message);
 
 private:
-    void addNotification(const QString &key, int count);
+    void addNotification(const QString& key, int count);
     static StrStrMap initWellKnownMessages();
     static QMap<QString, QRegExp> initWellKnownCatchers();
 
-    WorkflowMonitor *monitor;
+    WorkflowMonitor* monitor;
     const QString actor;
 
     static const StrStrMap wellKnownMessages;
     static const QMap<QString, QRegExp> messageCatchers;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    //_U2_SNPEFF_WORKER_H_
+#endif  //_U2_SNPEFF_WORKER_H_

@@ -37,7 +37,7 @@ class U2LANG_EXPORT DbiDataHandler : public QSharedData {
     friend class DbiDataStorage;
 
 public:
-    DbiDataHandler(const U2EntityRef &entityRef, U2ObjectDbi *dbi, bool useGC);
+    DbiDataHandler(const U2EntityRef& entityRef, U2ObjectDbi* dbi, bool useGC);
     virtual ~DbiDataHandler();
 
     int getReferenceCount() const;
@@ -46,17 +46,17 @@ public:
     /** Returns entity-ref this data handler holds. */
     const U2EntityRef& getEntityRef() const;
 
-    bool equals(const DbiDataHandler *other) const;
+    bool equals(const DbiDataHandler* other) const;
 
     bool isValid() const;
 
 private:
     const U2EntityRef entityRef;
-    U2ObjectDbi *dbi;
+    U2ObjectDbi* dbi;
     bool useGC;
 
-    DbiDataHandler(const DbiDataHandler &);
-    DbiDataHandler &operator=(const DbiDataHandler &);
+    DbiDataHandler(const DbiDataHandler&);
+    DbiDataHandler& operator=(const DbiDataHandler&);
 };
 
 }  // namespace Workflow

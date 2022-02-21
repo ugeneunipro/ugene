@@ -40,7 +40,7 @@ class RegionSelector;
 class BlastRunDialog : public BlastRunCommonDialog {
     Q_OBJECT
 public:
-    BlastRunDialog(ADVSequenceObjectContext *seqCtx, QWidget *parent);
+    BlastRunDialog(ADVSequenceObjectContext* seqCtx, QWidget* parent);
 
     U2Region getSelectedRegion() const;
 
@@ -49,16 +49,16 @@ protected slots:
     void sl_lineEditChanged() override;
 
 private:
-    U2SequenceObject *sequenceObject = nullptr;
-    ADVSequenceObjectContext *seqCtx = nullptr;
-    RegionSelector *regionSelector = nullptr;
+    U2SequenceObject* sequenceObject = nullptr;
+    ADVSequenceObjectContext* seqCtx = nullptr;
+    RegionSelector* regionSelector = nullptr;
 };
 
 class BlastWithExtFileRunDialog : public BlastRunCommonDialog {
     Q_OBJECT
 public:
-    BlastWithExtFileRunDialog(QWidget *parent);
-    const QList<BlastTaskSettings> &getSettingsList() const;
+    BlastWithExtFileRunDialog(QWidget* parent);
+    const QList<BlastTaskSettings>& getSettingsList() const;
 
 protected slots:
     void sl_runQuery() override;
@@ -67,15 +67,15 @@ protected slots:
 private slots:
     void sl_cancel();
 
-    void sl_inputFileLineEditChanged(const QString &str);
+    void sl_inputFileLineEditChanged(const QString& str);
     void sl_inputFileOpened();
 
 private:
-    void tryApplyDoc(Document *doc);
+    void tryApplyDoc(Document* doc);
     void onFormatError();
-    void loadDoc(const QString &url);
+    void loadDoc(const QString& url);
 
-    FileLineEdit *inputFileLineEdit = nullptr;
+    FileLineEdit* inputFileLineEdit = nullptr;
     bool wasNoOpenProject = false;
 
     QList<BlastTaskSettings> settingsList;

@@ -30,11 +30,11 @@ const QString PairwiseAlignmentTaskSettings::DEFAULT_NAME("PairwiseAlignmentResu
 PairwiseAlignmentTaskSettings::PairwiseAlignmentTaskSettings() {
 }
 
-PairwiseAlignmentTaskSettings::PairwiseAlignmentTaskSettings(const QVariantMap &someSettings)
+PairwiseAlignmentTaskSettings::PairwiseAlignmentTaskSettings(const QVariantMap& someSettings)
     : AbstractAlignmentTaskSettings(someSettings) {
 }
 
-PairwiseAlignmentTaskSettings::PairwiseAlignmentTaskSettings(const PairwiseAlignmentTaskSettings &s)
+PairwiseAlignmentTaskSettings::PairwiseAlignmentTaskSettings(const PairwiseAlignmentTaskSettings& s)
     : AbstractAlignmentTaskSettings(s),
       firstSequenceRef(s.firstSequenceRef),
       secondSequenceRef(s.secondSequenceRef) {

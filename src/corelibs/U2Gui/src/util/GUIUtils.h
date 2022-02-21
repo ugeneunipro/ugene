@@ -38,35 +38,35 @@ namespace U2 {
 class U2GUI_EXPORT GUIUtils : public QObject {
     Q_OBJECT
 public:
-    static QAction *findAction(const QList<QAction *> &actions, const QString &name);
+    static QAction* findAction(const QList<QAction*>& actions, const QString& name);
 
-    static QAction *getCheckedAction(QList<QAction *> actions);
-    static QAction *findActionByData(QList<QAction *> actions, const QString &data);
+    static QAction* getCheckedAction(QList<QAction*> actions);
+    static QAction* findActionByData(QList<QAction*> actions, const QString& data);
 
-    static QAction *findActionAfter(const QList<QAction *> &actions, const QString &name);
+    static QAction* findActionAfter(const QList<QAction*>& actions, const QString& name);
 
-    static QMenu *findSubMenu(QMenu *m, const QString &name);
+    static QMenu* findSubMenu(QMenu* m, const QString& name);
 
     /** Inserts 'actionToInsert' right after 'insertionPointMarkerAction' in the menu. */
-    static void insertActionAfter(QMenu *menu, QAction *insertionPointMarkerAction, QAction *actionToInsert);
+    static void insertActionAfter(QMenu* menu, QAction* insertionPointMarkerAction, QAction* actionToInsert);
 
-    static void updateActionToolTip(QAction *action);
-    static void updateButtonToolTip(QAbstractButton *button, const QKeySequence &shortcut);
+    static void updateActionToolTip(QAction* action);
+    static void updateButtonToolTip(QAbstractButton* button, const QKeySequence& shortcut);
 
-    static void disableEmptySubmenus(QMenu *m);
+    static void disableEmptySubmenus(QMenu* m);
 
-    static QIcon createSquareIcon(const QColor &c, int size);
-    static QIcon createRoundIcon(const QColor &c, int size);
+    static QIcon createSquareIcon(const QColor& c, int size);
+    static QIcon createRoundIcon(const QColor& c, int size);
 
     // Sets 'muted' look and feel. The item looks like disabled but still active and can be selected
-    static void setMutedLnF(QTreeWidgetItem *item, bool disabled, bool recursive = false);
-    static bool isMutedLnF(QTreeWidgetItem *item);
+    static void setMutedLnF(QTreeWidgetItem* item, bool disabled, bool recursive = false);
+    static bool isMutedLnF(QTreeWidgetItem* item);
 
-    static bool runWebBrowser(const QString &url);
+    static bool runWebBrowser(const QString& url);
 
-    static void setWidgetWarning(QWidget *widget, bool value);
+    static void setWidgetWarning(QWidget* widget, bool value);
 
-    static void showMessage(QWidget *widgetToPaintOn, QPainter &painter, const QString &message);
+    static void showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QString& message);
 
     static const QColor WARNING_COLOR;
     static const QColor OK_COLOR;

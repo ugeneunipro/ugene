@@ -38,43 +38,43 @@ class ExternalToolsTreeNode;
 class U2DESIGNER_EXPORT ExternalToolsDashboardWidget : public QWidget {
     Q_OBJECT
 public:
-    ExternalToolsDashboardWidget(const QDomElement &dom, const WorkflowMonitor *monitor = nullptr);
+    ExternalToolsDashboardWidget(const QDomElement& dom, const WorkflowMonitor* monitor = nullptr);
 
     QString toHtml() const;
 
-    void addLogEntry(const Monitor::LogEntry &entry);
+    void addLogEntry(const Monitor::LogEntry& entry);
 
-    const QList<ExternalToolsTreeNode *> getTopLevelNodes() const {
+    const QList<ExternalToolsTreeNode*> getTopLevelNodes() const {
         return topLevelNodes;
     }
-    const QString &getLimitationWarningHtml() const {
+    const QString& getLimitationWarningHtml() const {
         return limitationWarningHtml;
     }
 
     /** Object name and DOM element it for external tools tree. */
     static const QString TREE_ID;
 
-    static bool isValidDom(const QDomElement &dom);
+    static bool isValidDom(const QDomElement& dom);
 
 private:
-    void addLimitationWarning(ExternalToolsTreeNode *parentNode = nullptr, const QString &limitationMessage = "");
+    void addLimitationWarning(ExternalToolsTreeNode* parentNode = nullptr, const QString& limitationMessage = "");
 
-    void addLimitationWarningIfNeeded(ExternalToolsTreeNode *parentNode, const QDomElement &listHeadElement);
+    void addLimitationWarningIfNeeded(ExternalToolsTreeNode* parentNode, const QDomElement& listHeadElement);
 
-    ExternalToolsTreeNode *addNodeToLayout(ExternalToolsTreeNode *node);
+    ExternalToolsTreeNode* addNodeToLayout(ExternalToolsTreeNode* node);
 
-    const WorkflowMonitor *monitor;
-    QVBoxLayout *layout;
-    QList<ExternalToolsTreeNode *> topLevelNodes;
+    const WorkflowMonitor* monitor;
+    QVBoxLayout* layout;
+    QList<ExternalToolsTreeNode*> topLevelNodes;
     QString limitationWarningHtml;
 };
 
 class U2DESIGNER_EXPORT ExternalToolsTreeNode : public QWidget {
     Q_OBJECT
 public:
-    ExternalToolsTreeNode(int kind, const QString &objectName, const QString &content, ExternalToolsTreeNode *parent, bool isImportant = false);
+    ExternalToolsTreeNode(int kind, const QString& objectName, const QString& content, ExternalToolsTreeNode* parent, bool isImportant = false);
 
-    void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent* event);
 
     QString toHtml() const;
 
@@ -84,9 +84,9 @@ public:
 
     const int kind;
 
-    ExternalToolsTreeNode *parent;
+    ExternalToolsTreeNode* parent;
 
-    QList<ExternalToolsTreeNode *> children;
+    QList<ExternalToolsTreeNode*> children;
 
     QString content;
 
@@ -94,11 +94,11 @@ public:
 
     bool isLogFull;
 
-    BadgeLabel *badgeLabel;
+    BadgeLabel* badgeLabel;
 
     QString limitationWarningHtml;
 
-    ExternalToolsTreeNode *getLastChildInHierarchyOrSelf();
+    ExternalToolsTreeNode* getLastChildInHierarchyOrSelf();
 
 public slots:
     void sl_toggle();
@@ -111,14 +111,14 @@ private:
 class U2DESIGNER_EXPORT BadgeLabel : public QWidget {
     Q_OBJECT
 public:
-    BadgeLabel(int kind, const QString &text, bool isImportant);
+    BadgeLabel(int kind, const QString& text, bool isImportant);
 
     void switchToImportantStyle();
 
     const int kind;
-    HoverQLabel *titleLabel;
-    HoverQLabel *copyButton;
-    QTextBrowser *logView;
+    HoverQLabel* titleLabel;
+    HoverQLabel* copyButton;
+    QTextBrowser* logView;
 };
 
 }  // namespace U2

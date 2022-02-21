@@ -37,7 +37,7 @@
 
 namespace U2 {
 
-MaGraphCalculationTask::MaGraphCalculationTask(MultipleAlignmentObject *maObject, int width, int height)
+MaGraphCalculationTask::MaGraphCalculationTask(MultipleAlignmentObject* maObject, int width, int height)
     : BackgroundTask<QPolygonF>(tr("Render overview"), TaskFlag_None),
       ma(maObject->getMultipleAlignmentCopy()),  // SANGER_TODO: getting before any check
       memLocker(stateInfo),
@@ -65,7 +65,7 @@ void MaGraphCalculationTask::run() {
     emit si_calculationStoped();
 }
 
-void MaGraphCalculationTask::constructPolygon(QPolygonF &polygon) {
+void MaGraphCalculationTask::constructPolygon(QPolygonF& polygon) {
     SAFE_POINT_EXT(width != 0, setError(tr("Overview width is zero")), );
     stateInfo.setProgress(0);
     emit si_progressChanged();
@@ -125,13 +125,13 @@ void MaGraphCalculationTask::constructPolygon(QPolygonF &polygon) {
     emit si_progressChanged();
 }
 
-MaConsensusOverviewCalculationTask::MaConsensusOverviewCalculationTask(MultipleAlignmentObject *msa,
+MaConsensusOverviewCalculationTask::MaConsensusOverviewCalculationTask(MultipleAlignmentObject* msa,
                                                                        int width,
                                                                        int height)
     : MaGraphCalculationTask(msa, width, height) {
     SAFE_POINT_EXT(AppContext::getMSAConsensusAlgorithmRegistry() != nullptr, setError(tr("MSAConsensusAlgorithmRegistry is NULL!")), );
 
-    MSAConsensusAlgorithmFactory *factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::STRICT_ALGO);
+    MSAConsensusAlgorithmFactory* factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::STRICT_ALGO);
     SAFE_POINT_EXT(factory != nullptr, setError(tr("Strict consensus algorithm factory is NULL")), );
 
     SAFE_POINT_EXT(msa != nullptr, setError(tr("MSA is NULL")), );
@@ -145,7 +145,7 @@ int MaConsensusOverviewCalculationTask::getGraphValue(int pos) const {
     return qRound(score * 100. / seqNumber);
 }
 
-MaGapOverviewCalculationTask::MaGapOverviewCalculationTask(MultipleAlignmentObject *msa, int width, int height)
+MaGapOverviewCalculationTask::MaGapOverviewCalculationTask(MultipleAlignmentObject* msa, int width, int height)
     : MaGraphCalculationTask(msa, width, height) {
 }
 
@@ -164,11 +164,11 @@ int MaGapOverviewCalculationTask::getGraphValue(int pos) const {
     return qRound(gapCounter * 100. / seqNumber);
 }
 
-MaClustalOverviewCalculationTask::MaClustalOverviewCalculationTask(MultipleAlignmentObject *msa, int width, int height)
+MaClustalOverviewCalculationTask::MaClustalOverviewCalculationTask(MultipleAlignmentObject* msa, int width, int height)
     : MaGraphCalculationTask(msa, width, height) {
     SAFE_POINT_EXT(AppContext::getMSAConsensusAlgorithmRegistry() != nullptr, setError(tr("MSAConsensusAlgorithmRegistry is NULL!")), );
 
-    MSAConsensusAlgorithmFactory *factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::CLUSTAL_ALGO);
+    MSAConsensusAlgorithmFactory* factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::CLUSTAL_ALGO);
     SAFE_POINT_EXT(factory != nullptr, setError(tr("Clustal algorithm factory is NULL")), );
 
     SAFE_POINT_EXT(msa != nullptr, setError(tr("MSA is NULL")), );
@@ -191,28 +191,28 @@ int MaClustalOverviewCalculationTask::getGraphValue(int pos) const {
     }
 }
 
-MaHighlightingOverviewCalculationTask::MaHighlightingOverviewCalculationTask(MaEditor *editor,
-                                                                             const QString &colorSchemeId,
-                                                                             const QString &highlightingSchemeId,
+MaHighlightingOverviewCalculationTask::MaHighlightingOverviewCalculationTask(MaEditor* editor,
+                                                                             const QString& colorSchemeId,
+                                                                             const QString& highlightingSchemeId,
                                                                              int width,
                                                                              int height)
     : MaGraphCalculationTask(editor->getMaObject(), width, height) {
     SAFE_POINT_EXT(AppContext::getMsaHighlightingSchemeRegistry() != nullptr,
                    setError(tr("MSA highlighting scheme registry is NULL")), );
-    MsaHighlightingSchemeFactory *f_hs = AppContext::getMsaHighlightingSchemeRegistry()->getSchemeFactoryById(highlightingSchemeId);
+    MsaHighlightingSchemeFactory* f_hs = AppContext::getMsaHighlightingSchemeRegistry()->getSchemeFactoryById(highlightingSchemeId);
     SAFE_POINT_EXT(f_hs != nullptr, setError(tr("MSA highlighting scheme factory with '%1' id is NULL").arg(highlightingSchemeId)), );
 
     highlightingScheme = f_hs->create(this, editor->getMaObject());
     schemeId = f_hs->getId();
 
-    MsaColorSchemeFactory *f_cs = AppContext::getMsaColorSchemeRegistry()->getSchemeFactoryById(colorSchemeId);
+    MsaColorSchemeFactory* f_cs = AppContext::getMsaColorSchemeRegistry()->getSchemeFactoryById(colorSchemeId);
     colorScheme = f_cs->create(this, editor->getMaObject());
 
     U2OpStatusImpl os;
     refSequenceId = ma->getRowIndexByRowId(editor->getReferenceRowId(), os);
 }
 
-bool MaHighlightingOverviewCalculationTask::isCellHighlighted(const MultipleAlignment &ma, MsaHighlightingScheme *highlightingScheme, MsaColorScheme *colorScheme, int seq, int pos, int refSeq) {
+bool MaHighlightingOverviewCalculationTask::isCellHighlighted(const MultipleAlignment& ma, MsaHighlightingScheme* highlightingScheme, MsaColorScheme* colorScheme, int seq, int pos, int refSeq) {
     SAFE_POINT(colorScheme != nullptr, tr("Color scheme is NULL"), false);
     SAFE_POINT(highlightingScheme != nullptr, tr("Highlighting scheme is NULL"), false);
     SAFE_POINT(highlightingScheme->getFactory() != nullptr, tr("Highlighting scheme factory is NULL"), false);
@@ -257,11 +257,11 @@ int MaHighlightingOverviewCalculationTask::getGraphValue(int pos) const {
     return 100 * counter / seqNumber;
 }
 
-bool MaHighlightingOverviewCalculationTask::isGapScheme(const QString &schemeId) {
+bool MaHighlightingOverviewCalculationTask::isGapScheme(const QString& schemeId) {
     return (schemeId == MsaHighlightingScheme::GAPS);
 }
 
-bool MaHighlightingOverviewCalculationTask::isEmptyScheme(const QString &schemeId) {
+bool MaHighlightingOverviewCalculationTask::isEmptyScheme(const QString& schemeId) {
     return (schemeId == MsaHighlightingScheme::EMPTY);
 }
 

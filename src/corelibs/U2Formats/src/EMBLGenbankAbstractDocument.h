@@ -41,7 +41,7 @@ class ParserState;
 class U2FORMATS_EXPORT EMBLGenbankAbstractDocument : public TextDocumentFormatDeprecated {
     Q_OBJECT
 public:
-    EMBLGenbankAbstractDocument(const DocumentFormatId &id, const QString &formatName, int maxLineSize, DocumentFormatFlags flags, QObject *p);
+    EMBLGenbankAbstractDocument(const DocumentFormatId& id, const QString& formatName, int maxLineSize, DocumentFormatFlags flags, QObject* p);
 
     static const QString UGENE_MARK;
     static const QString DEFAULT_OBJ_NAME;
@@ -54,30 +54,30 @@ public:
     static const QString SEQ_LEN_WARNING_MESSAGE;
 
     // move to utils??
-    static QString genObjectName(QSet<QString> &usedNames, const QString &name, const QVariantMap &info, int n, const GObjectType &t);
+    static QString genObjectName(QSet<QString>& usedNames, const QString& name, const QVariantMap& info, int n, const GObjectType& t);
 
 protected:
-    virtual DNASequence *loadTextSequence(IOAdapter *, U2OpStatus &os);
+    virtual DNASequence* loadTextSequence(IOAdapter*, U2OpStatus& os);
 
-    virtual Document *loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os);
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
-    int readMultilineQualifier(IOAdapter *io, char *cbuff, int maxSize, bool prevLineHasMaxSize, int lenFirstQualLine, U2OpStatus &os);
+    int readMultilineQualifier(IOAdapter* io, char* cbuff, int maxSize, bool prevLineHasMaxSize, int lenFirstQualLine, U2OpStatus& os);
 
-    virtual bool readSequence(ParserState *, U2SequenceImporter &, int &, int &, U2OpStatus &);
+    virtual bool readSequence(ParserState*, U2SequenceImporter&, int&, int&, U2OpStatus&);
 
-    virtual bool readEntry(ParserState *, U2SequenceImporter &, int &seqSize, int &fullSeqSize, bool merge, int gapSize, U2OpStatus &) = 0;
-    virtual void readAnnotations(ParserState *, int offset);
-    virtual void readHeaderAttributes(QVariantMap &tags, DbiConnection &con, U2SequenceObject *so) {
+    virtual bool readEntry(ParserState*, U2SequenceImporter&, int& seqSize, int& fullSeqSize, bool merge, int gapSize, U2OpStatus&) = 0;
+    virtual void readAnnotations(ParserState*, int offset);
+    virtual void readHeaderAttributes(QVariantMap& tags, DbiConnection& con, U2SequenceObject* so) {
         Q_UNUSED(tags);
         Q_UNUSED(con);
         Q_UNUSED(so);
     }  // does nothing if not overloaded
 
     virtual bool isNcbiLikeFormat() const;
-    virtual void createCommentAnnotation(const QStringList &comments, int sequenceLength, AnnotationTableObject *annTable) const;
-    virtual U2FeatureType getFeatureType(const QString &typeString) const;
-    virtual U2Qualifier createQualifier(const QString &qualifierName, const QString &qualifierValue, bool containsDoubleQuotes) const;
-    virtual bool breakQualifierOnSpaceOnly(const QString &qualifierName) const;
+    virtual void createCommentAnnotation(const QStringList& comments, int sequenceLength, AnnotationTableObject* annTable) const;
+    virtual U2FeatureType getFeatureType(const QString& typeString) const;
+    virtual U2Qualifier createQualifier(const QString& qualifierName, const QString& qualifierValue, bool containsDoubleQuotes) const;
+    virtual bool breakQualifierOnSpaceOnly(const QString& qualifierName) const;
 
     QByteArray fPrefix;
     QByteArray sequenceStartPrefix;
@@ -85,9 +85,9 @@ protected:
     bool savedInUgene;  // saveInUgene marker is a hack for opening genbank files that were saved incorrectly(!) in UGENE version <1.14.1
 
 private:
-    SharedAnnotationData readAnnotation(IOAdapter *io, char *cbuff, int contentLen, int bufSize, U2OpStatus &si, int offset, int seqLen = -1);
-    void load(const U2DbiRef &dbiRef, IOAdapter *io, QList<GObject *> &objects, QVariantMap &fs, U2OpStatus &si, QString &writeLockReason);
-    void skipInvalidAnnotation(U2OpStatus &si, int len, IOAdapter *io, char *cbuff, int READ_BUFF_SIZE);
+    SharedAnnotationData readAnnotation(IOAdapter* io, char* cbuff, int contentLen, int bufSize, U2OpStatus& si, int offset, int seqLen = -1);
+    void load(const U2DbiRef& dbiRef, IOAdapter* io, QList<GObject*>& objects, QVariantMap& fs, U2OpStatus& si, QString& writeLockReason);
+    void skipInvalidAnnotation(U2OpStatus& si, int len, IOAdapter* io, char* cbuff, int READ_BUFF_SIZE);
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -115,21 +115,21 @@ public:
 
 class ParserState {
 public:
-    ParserState(int off, IOAdapter *io, EMBLGenbankDataEntry *e, U2OpStatus &si)
+    ParserState(int off, IOAdapter* io, EMBLGenbankDataEntry* e, U2OpStatus& si)
         : valOffset(off), entry(e), io(io), buff(nullptr), len(0), si(si) {
     }
 
     const int valOffset;
-    EMBLGenbankDataEntry *entry;
-    IOAdapter *io;
-    char *buff;
+    EMBLGenbankDataEntry* entry;
+    IOAdapter* io;
+    char* buff;
     int len;
-    U2OpStatus &si;
+    U2OpStatus& si;
 
     QString value() const;
     QString key() const;
-    bool hasKey(const char *, int slen) const;
-    bool hasKey(const char *s) const {
+    bool hasKey(const char*, int slen) const;
+    bool hasKey(const char* s) const {
         return hasKey(s, (int)strlen(s));
     }
     bool hasContinuation() const {

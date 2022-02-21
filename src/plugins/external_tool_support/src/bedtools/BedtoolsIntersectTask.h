@@ -35,8 +35,8 @@ public:
     static const double DEFAULT_MIN_OVERLAP;
 
     enum Report {
-        Report_OverlapedA = 0,    // -wa
-        Report_NonOverlappedA = 1,    // -v
+        Report_OverlapedA = 0,  // -wa
+        Report_NonOverlappedA = 1,  // -v
         Report_Intervals = 2
     };
 
@@ -46,8 +46,8 @@ public:
           report(r) {
     }
 
-    double minOverlap;    // -f (0..1]
-    bool unique;    // -u
+    double minOverlap;  // -f (0..1]
+    bool unique;  // -u
     Report report;
 };
 
@@ -59,27 +59,27 @@ public:
         : BedtoolsIntersectSettings() {
     }
 
-    BedtoolsIntersectByEntityRefSettings(const QList<U2EntityRef> &entityA, const QList<U2EntityRef> &entityB, double minOverlap = DEFAULT_MIN_OVERLAP, bool unique = true, Report r = Report_OverlapedA)
+    BedtoolsIntersectByEntityRefSettings(const QList<U2EntityRef>& entityA, const QList<U2EntityRef>& entityB, double minOverlap = DEFAULT_MIN_OVERLAP, bool unique = true, Report r = Report_OverlapedA)
         : BedtoolsIntersectSettings(minOverlap, unique, r),
           entitiesA(entityA),
           entitiesB(entityB) {
     }
 
-    QList<U2EntityRef> entitiesA;    // -a
-    QList<U2EntityRef> entitiesB;    // -b
+    QList<U2EntityRef> entitiesA;  // -a
+    QList<U2EntityRef> entitiesB;  // -b
 };
 
 class BedtoolsIntersectFilesSettings : public BedtoolsIntersectSettings {
 public:
-    BedtoolsIntersectFilesSettings(const QString &inputA, const QStringList &inputB, const QString &output, double minOverlap = DEFAULT_MIN_OVERLAP, bool unique = true, Report r = Report_OverlapedA)
+    BedtoolsIntersectFilesSettings(const QString& inputA, const QStringList& inputB, const QString& output, double minOverlap = DEFAULT_MIN_OVERLAP, bool unique = true, Report r = Report_OverlapedA)
         : BedtoolsIntersectSettings(minOverlap, unique, r),
           inputA(inputA),
           inputB(inputB),
           out(output) {
     }
 
-    QString inputA;    // -a
-    QStringList inputB;    // -b
+    QString inputA;  // -a
+    QStringList inputB;  // -b
     QString out;
 };
 
@@ -88,7 +88,7 @@ public:
 class BedtoolsIntersectTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    BedtoolsIntersectTask(const BedtoolsIntersectFilesSettings &settings);
+    BedtoolsIntersectTask(const BedtoolsIntersectFilesSettings& settings);
     void prepare();
 
 protected:
@@ -100,10 +100,10 @@ private:
 
 class BedtoolsIntersectLogParser : public ExternalToolLogParser {
 public:
-    BedtoolsIntersectLogParser(const QString &resultFile);
+    BedtoolsIntersectLogParser(const QString& resultFile);
 
-    void parseOutput(const QString &partOfLog);
-    void parseErrOutput(const QString & /*partOfLog*/) {
+    void parseOutput(const QString& partOfLog);
+    void parseErrOutput(const QString& /*partOfLog*/) {
     }
 
 private:
@@ -119,31 +119,31 @@ class LoadDocumentTask;
 class BedtoolsIntersectAnnotationsByEntityTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    BedtoolsIntersectAnnotationsByEntityTask(const BedtoolsIntersectByEntityRefSettings &settings);
+    BedtoolsIntersectAnnotationsByEntityTask(const BedtoolsIntersectByEntityRefSettings& settings);
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
-    QList<GObject *> getResult() {
+    QList<GObject*> getResult() {
         return result;
     }
 
 private:
-    Document *createAnnotationsDocument(const QString &url, const QList<U2EntityRef> &enities);
-    void renameAnnotationsForBed(AnnotationGroup *group);
-    void renameAnnotationsFromBed(AnnotationGroup *group);
+    Document* createAnnotationsDocument(const QString& url, const QList<U2EntityRef>& enities);
+    void renameAnnotationsForBed(AnnotationGroup* group);
+    void renameAnnotationsFromBed(AnnotationGroup* group);
 
     BedtoolsIntersectByEntityRefSettings settings;
-    QList<GObject *> result;
+    QList<GObject*> result;
 
     QString tmpUrlA;
     QString tmpUrlB;
     QString tmpUrlResult;
 
-    SaveMultipleDocuments *saveAnnotationsTask;
-    BedtoolsIntersectTask *intersectTask;
-    LoadDocumentTask *loadResultTask;
+    SaveMultipleDocuments* saveAnnotationsTask;
+    BedtoolsIntersectTask* intersectTask;
+    LoadDocumentTask* loadResultTask;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_BEDTOOLS_INTERSECT_TASK_H_
+#endif  // _U2_BEDTOOLS_INTERSECT_TASK_H_

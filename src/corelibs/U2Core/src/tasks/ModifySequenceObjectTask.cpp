@@ -45,7 +45,7 @@ namespace U2 {
 
 typedef QPair<QString, QString> QStrStrPair;
 
-ModifySequenceContentTask::ModifySequenceContentTask(const DocumentFormatId &dfId, U2SequenceObject *seqObj, const U2Region &regionTodelete, const DNASequence &seq2Insert, bool recalculateQualifiers, U1AnnotationUtils::AnnotationStrategyForResize str, const GUrl &url, bool mergeAnnotations)
+ModifySequenceContentTask::ModifySequenceContentTask(const DocumentFormatId& dfId, U2SequenceObject* seqObj, const U2Region& regionTodelete, const DNASequence& seq2Insert, bool recalculateQualifiers, U1AnnotationUtils::AnnotationStrategyForResize str, const GUrl& url, bool mergeAnnotations)
     : Task(tr("Modify sequence task"), TaskFlags(TaskFlag_NoRun) | TaskFlag_ReportingIsSupported), resultFormatId(dfId),
       mergeAnnotations(mergeAnnotations), recalculateQualifiers(recalculateQualifiers), curDoc(seqObj->getDocument()), newDoc(nullptr), url(url), strat(str),
       seqObj(seqObj), regionToReplace(regionTodelete), sequence2Insert(seq2Insert) {
@@ -63,7 +63,7 @@ Task::ReportResult ModifySequenceContentTask::report() {
         return ReportResult_Finished;
     }
 
-    Project *project = AppContext::getProject();
+    Project* project = AppContext::getProject();
     if (project != nullptr) {
         CHECK(!project->isStateLocked(), ReportResult_CallMeAgain);
         docs = project->getDocuments();
@@ -85,8 +85,8 @@ Task::ReportResult ModifySequenceContentTask::report() {
     }
 
     if (!inplaceMod) {
-        QList<Task *> tasks;
-        IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+        QList<Task*> tasks;
+        IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
         tasks.append(new SaveDocumentTask(seqObj->getDocument(), iof, url.getURLString()));
         if (project != nullptr) {
             tasks.append(new AddDocumentTask(newDoc));
@@ -98,10 +98,10 @@ Task::ReportResult ModifySequenceContentTask::report() {
 
 namespace {
 
-QString formatPairList(const QList<QStrStrPair> &pairList, bool useFirst) {
+QString formatPairList(const QList<QStrStrPair>& pairList, bool useFirst) {
     QString result;
     const QString lineSeparator = "<br>";
-    foreach (const QStrStrPair &pair, pairList) {
+    foreach (const QStrStrPair& pair, pairList) {
         result += useFirst ? pair.first : pair.second;
         result += lineSeparator;
     }
@@ -127,7 +127,7 @@ QString ModifySequenceContentTask::generateReport() const {
     report += tr("Referenced Region");
     report += "</th></tr>";
 
-    foreach (Annotation *an, annotationForReport.keys()) {
+    foreach (Annotation* an, annotationForReport.keys()) {
         if (annotationForReport[an].isEmpty()) {
             coreLog.error(tr("Unexpected qualifiers count"));
             assert(false);
@@ -150,14 +150,14 @@ qint64 ModifySequenceContentTask::getSequenceLengthDelta() const {
 }
 
 void ModifySequenceContentTask::cloneSequenceAndAnnotations() {
-    IOAdapterRegistry *ioReg = AppContext::getIOAdapterRegistry();
-    IOAdapterFactory *iof = ioReg->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+    IOAdapterRegistry* ioReg = AppContext::getIOAdapterRegistry();
+    IOAdapterFactory* iof = ioReg->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     CHECK(iof != nullptr, );
-    DocumentFormatRegistry *dfReg = AppContext::getDocumentFormatRegistry();
-    DocumentFormat *df = dfReg->getFormatById(resultFormatId);
+    DocumentFormatRegistry* dfReg = AppContext::getDocumentFormatRegistry();
+    DocumentFormat* df = dfReg->getFormatById(resultFormatId);
     SAFE_POINT(df != nullptr, "Invalid document format!", );
 
-    U2SequenceObject *oldSeqObj = seqObj;
+    U2SequenceObject* oldSeqObj = seqObj;
     newDoc = df->createNewLoadedDocument(iof, url, stateInfo, curDoc->getGHintsMap());
     CHECK_OP(stateInfo, );
 
@@ -172,15 +172,15 @@ void ModifySequenceContentTask::cloneSequenceAndAnnotations() {
 
     if (df->isObjectOpSupported(newDoc, DocumentFormat::DocObjectOp_Add, GObjectTypes::ANNOTATION_TABLE)) {
         if (mergeAnnotations) {
-            AnnotationTableObject *newDocAto = new AnnotationTableObject("Annotations", newDoc->getDbiRef());
+            AnnotationTableObject* newDocAto = new AnnotationTableObject("Annotations", newDoc->getDbiRef());
             newDocAto->addObjectRelation(seqObj, ObjectRole_Sequence);
 
-            for (Document *d : qAsConst(docs)) {
-                QList<GObject *> annotationTablesList = d->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
-                for (GObject *table : qAsConst(annotationTablesList)) {
-                    auto ato = qobject_cast<AnnotationTableObject *>(table);
+            for (Document* d : qAsConst(docs)) {
+                QList<GObject*> annotationTablesList = d->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
+                for (GObject* table : qAsConst(annotationTablesList)) {
+                    auto ato = qobject_cast<AnnotationTableObject*>(table);
                     if (ato != nullptr && ato->hasObjectRelation(oldSeqObj, ObjectRole_Sequence)) {
-                        foreach (Annotation *ann, ato->getAnnotations()) {
+                        foreach (Annotation* ann, ato->getAnnotations()) {
                             newDocAto->addAnnotations(QList<SharedAnnotationData>() << ann->getData(), ann->getGroup()->getName());
                         }
                     }
@@ -189,9 +189,9 @@ void ModifySequenceContentTask::cloneSequenceAndAnnotations() {
             newDoc->addObject(newDocAto);
         } else {
             // use only sequence-doc annotations
-            foreach (GObject *o, curDoc->getObjects()) {
-                if (auto aObj = qobject_cast<AnnotationTableObject *>(o)) {
-                    GObject *cl = aObj->clone(newDoc->getDbiRef(), stateInfo);
+            foreach (GObject* o, curDoc->getObjects()) {
+                if (auto aObj = qobject_cast<AnnotationTableObject*>(o)) {
+                    GObject* cl = aObj->clone(newDoc->getDbiRef(), stateInfo);
                     CHECK_OP(stateInfo, );
                     newDoc->addObject(cl);
                     GObjectUtils::updateRelationsURL(cl, curDoc->getURL(), newDoc->getURL());

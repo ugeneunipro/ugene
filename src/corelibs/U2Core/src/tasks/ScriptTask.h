@@ -47,15 +47,15 @@ public:
 class U2CORE_EXPORT ScriptTask : public Task {
     Q_OBJECT
 public:
-    ScriptTask(const QString &taskName, const QString &scriptText, const ScriptTaskSettings &settings = ScriptTaskSettings());
+    ScriptTask(const QString& taskName, const QString& scriptText, const ScriptTaskSettings& settings = ScriptTaskSettings());
 
     // Returns settings this task was/will run with
-    const ScriptTaskSettings &getSettings() const {
+    const ScriptTaskSettings& getSettings() const {
         return conf;
     }
 
     // Returns the result of script execution
-    const QScriptValue &getResult() const {
+    const QScriptValue& getResult() const {
         return result;
     }
 
@@ -72,7 +72,7 @@ public:
     // Runs the script using given input parameters
     // Returns the result of the script
     // If error occurs -> sets the error message into 'errorMessage' parameter
-    static QScriptValue runScript(QScriptEngine *engine, const QMap<QString, QScriptValue> &inputParametersMap, const QString &scriptText, TaskStateInfo &stateInfo);
+    static QScriptValue runScript(QScriptEngine* engine, const QMap<QString, QScriptValue>& inputParametersMap, const QString& scriptText, TaskStateInfo& stateInfo);
 
 private:
     QString scriptText;

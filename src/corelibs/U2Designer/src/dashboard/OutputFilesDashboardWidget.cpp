@@ -29,7 +29,7 @@ namespace U2 {
 
 #define OUTPUT_FILES_WIDGET_ID QString("outputWidget123")
 
-static void addUrlToResult(const QDomElement &element, QStringList &result) {
+static void addUrlToResult(const QDomElement& element, QStringList& result) {
     QString url = DashboardWidgetUtils::parseOpenUrlValueFromOnClick(element.attribute("onclick"));
     if (url.isEmpty()) {
         url = element.text();
@@ -37,7 +37,7 @@ static void addUrlToResult(const QDomElement &element, QStringList &result) {
     result << url;
 }
 
-static QStringList readFilesList(const QDomElement &td) {
+static QStringList readFilesList(const QDomElement& td) {
     QStringList result;
     QDomElement button = td.firstChildElement("div").firstChildElement("div").firstChildElement("button");
     if (button.hasAttribute("onclick")) {
@@ -51,7 +51,7 @@ static QStringList readFilesList(const QDomElement &td) {
     return result;
 }
 
-static QList<WorkerOutputInfo> dom2WorkerOutputInfo(const QDomElement &dom) {
+static QList<WorkerOutputInfo> dom2WorkerOutputInfo(const QDomElement& dom) {
     QList<WorkerOutputInfo> result;
     QDomElement tBody = DomUtils::findElementById(dom, OUTPUT_FILES_WIDGET_ID);
     for (QDomElement tr = tBody.firstChildElement("tr"); !tr.isNull(); tr = tr.nextSiblingElement("tr")) {
@@ -65,7 +65,7 @@ static QList<WorkerOutputInfo> dom2WorkerOutputInfo(const QDomElement &dom) {
 /** When number of files will be > MIN_FILE_COUNT_TO_USE_SINGLE_BUTTON a single DashboardFileButton will be used to show all of them. */
 #define MIN_FILE_COUNT_TO_USE_SINGLE_BUTTON 11
 
-OutputFilesDashboardWidget::OutputFilesDashboardWidget(const QString &dashboardDir, const QDomElement &dom, const WorkflowMonitor *monitor)
+OutputFilesDashboardWidget::OutputFilesDashboardWidget(const QString& dashboardDir, const QDomElement& dom, const WorkflowMonitor* monitor)
     : dashboardDir(dashboardDir), monitor(monitor) {
     setFixedWidth(550);
     setObjectName("OutputFilesDashboardWidget");
@@ -82,7 +82,7 @@ OutputFilesDashboardWidget::OutputFilesDashboardWidget(const QString &dashboardD
         updateWorkerRow(workerIndex);
     }
     if (monitor != nullptr) {
-        connect(monitor, SIGNAL(si_newOutputFile(const Monitor::FileInfo &)), SLOT(sl_newOutputFile(const Monitor::FileInfo &)));
+        connect(monitor, SIGNAL(si_newOutputFile(const Monitor::FileInfo&)), SLOT(sl_newOutputFile(const Monitor::FileInfo&)));
     }
 }
 
@@ -95,9 +95,9 @@ void OutputFilesDashboardWidget::addTrailingEmptyRows(bool callTableUpdate) {
     }
 }
 
-void OutputFilesDashboardWidget::sl_newOutputFile(const Monitor::FileInfo &info) {
+void OutputFilesDashboardWidget::sl_newOutputFile(const Monitor::FileInfo& info) {
     for (int i = 0; i < workerOutputList.size(); i++) {
-        WorkerOutputInfo &worker = workerOutputList[i];
+        WorkerOutputInfo& worker = workerOutputList[i];
         if (worker.id == info.actor) {
             worker.files << info.url;
             updateWorkerRow(i);
@@ -142,7 +142,7 @@ void OutputFilesDashboardWidget::updateWorkerRow(int workerIndex) {
     addTableCell(tableGridLayout, worker.name, worker.name, workerIndex + 1, 1, isLastRow, true);
 }
 
-bool OutputFilesDashboardWidget::isValidDom(const QDomElement &dom) {
+bool OutputFilesDashboardWidget::isValidDom(const QDomElement& dom) {
     return !DomUtils::findElementById(dom, OUTPUT_FILES_WIDGET_ID).isNull();
 }
 
@@ -167,7 +167,7 @@ QString OutputFilesDashboardWidget::toHtml() const {
     return html;
 }
 
-WorkerOutputInfo::WorkerOutputInfo(const QString &id, const QString &name, const QStringList &files)
+WorkerOutputInfo::WorkerOutputInfo(const QString& id, const QString& name, const QStringList& files)
     : id(id), name(name), files(files) {
 }
 

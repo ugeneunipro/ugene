@@ -23,7 +23,7 @@
 
 namespace U2 {
 
-MsaColorSchemeStatic::MsaColorSchemeStatic(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj, const QVector<QColor> &colorsPerChar)
+MsaColorSchemeStatic::MsaColorSchemeStatic(QObject* parent, const MsaColorSchemeFactory* factory, MultipleAlignmentObject* maObj, const QVector<QColor>& colorsPerChar)
     : MsaColorScheme(parent, factory, maObj),
       colorsPerChar(colorsPerChar) {
 }
@@ -43,12 +43,12 @@ QColor MsaColorSchemeStatic::getFontColor(int seq, int pos, char c) const {
     return QColor();
 }
 
-MsaColorSchemeStaticFactory::MsaColorSchemeStaticFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets, const QVector<QColor> &colorsPerChar)
+MsaColorSchemeStaticFactory::MsaColorSchemeStaticFactory(QObject* parent, const QString& id, const QString& name, const AlphabetFlags& supportedAlphabets, const QVector<QColor>& colorsPerChar)
     : MsaColorSchemeFactory(parent, id, name, supportedAlphabets),
       colorsPerChar(colorsPerChar) {
 }
 
-MsaColorScheme *MsaColorSchemeStaticFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
+MsaColorScheme* MsaColorSchemeStaticFactory::create(QObject* parent, MultipleAlignmentObject* maObj) const {
     return new MsaColorSchemeStatic(parent, this, maObj, colorsPerChar);
 }
 

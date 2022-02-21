@@ -36,14 +36,14 @@ class WorkflowScriptEngine;
 class BreakpointConditionChecker {
     Q_DISABLE_COPY(BreakpointConditionChecker)
 public:
-    BreakpointConditionChecker(const QString &initConditionText,
-                               Workflow::WorkflowContext *context = nullptr);
+    BreakpointConditionChecker(const QString& initConditionText,
+                               Workflow::WorkflowContext* context = nullptr);
     ~BreakpointConditionChecker();
 
-    void setContext(Workflow::WorkflowContext *context);
-    bool evaluateCondition(const AttributeScript *conditionContext);
+    void setContext(Workflow::WorkflowContext* context);
+    bool evaluateCondition(const AttributeScript* conditionContext);
 
-    void setConditionText(const QString &text);
+    void setConditionText(const QString& text);
     QString getConditionText() const;
     void setEnabled(bool enable);
     bool isEnabled() const;
@@ -52,7 +52,7 @@ public:
 
 private:
     QString conditionText;
-    WorkflowScriptEngine *engine;
+    WorkflowScriptEngine* engine;
     bool enabled;
     BreakpointConditionParameter parameter;
     int lastConditionEvaluation;

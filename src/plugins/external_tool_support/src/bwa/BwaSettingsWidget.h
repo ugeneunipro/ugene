@@ -32,9 +32,9 @@
 class BwaIndexAlgorithmWarningReporter : public QObject {
     Q_OBJECT
 public:
-    BwaIndexAlgorithmWarningReporter(QObject *parent);
-    void setReportingLabel(QLabel *reportLabel);
-    void setRefSequencePath(const U2::GUrl &path);
+    BwaIndexAlgorithmWarningReporter(QObject* parent);
+    void setReportingLabel(QLabel* reportLabel);
+    void setRefSequencePath(const U2::GUrl& path);
 
 public slots:
     void sl_IndexAlgorithmChanged(int index);
@@ -42,7 +42,7 @@ public slots:
 private:
     void setReportLabelStyle();
 
-    QLabel *reportLabel;
+    QLabel* reportLabel;
     U2::GUrl referenceSequencePath;
 };
 
@@ -51,70 +51,70 @@ namespace U2 {
 class BwaSettingsWidget : public DnaAssemblyAlgorithmMainWidget, Ui_BwaSettings {
     Q_OBJECT
 public:
-    BwaSettingsWidget(QWidget *parent);
+    BwaSettingsWidget(QWidget* parent);
     QMap<QString, QVariant> getDnaAssemblyCustomSettings() const;
-    void validateReferenceSequence(const GUrl &url) const;
+    void validateReferenceSequence(const GUrl& url) const;
 
 private:
-    BwaIndexAlgorithmWarningReporter *warningReporter;
+    BwaIndexAlgorithmWarningReporter* warningReporter;
 };
 
 class BwaSwSettingsWidget : public DnaAssemblyAlgorithmMainWidget, Ui_BwaSwSettings {
     Q_OBJECT
 public:
-    BwaSwSettingsWidget(QWidget *parent);
+    BwaSwSettingsWidget(QWidget* parent);
     QMap<QString, QVariant> getDnaAssemblyCustomSettings() const;
-    void validateReferenceSequence(const GUrl &url) const;
+    void validateReferenceSequence(const GUrl& url) const;
 
 private:
-    BwaIndexAlgorithmWarningReporter *warningReporter;
+    BwaIndexAlgorithmWarningReporter* warningReporter;
 };
 
 class BwaMemSettingsWidget : public DnaAssemblyAlgorithmMainWidget, Ui_BwaMemSettings {
     Q_OBJECT
 public:
-    BwaMemSettingsWidget(QWidget *parent);
+    BwaMemSettingsWidget(QWidget* parent);
     QMap<QString, QVariant> getDnaAssemblyCustomSettings() const;
-    void validateReferenceSequence(const GUrl &url) const;
+    void validateReferenceSequence(const GUrl& url) const;
 
 private:
-    BwaIndexAlgorithmWarningReporter *warningReporter;
+    BwaIndexAlgorithmWarningReporter* warningReporter;
 };
 
 class BwaBuildSettingsWidget : public DnaAssemblyAlgorithmBuildIndexWidget, Ui_BwaBuildSettings {
     Q_OBJECT
 public:
-    BwaBuildSettingsWidget(QWidget *parent);
+    BwaBuildSettingsWidget(QWidget* parent);
     virtual QMap<QString, QVariant> getBuildIndexCustomSettings();
     virtual QString getIndexFileExtension();
-    virtual GUrl buildIndexUrl(const GUrl &url);
-    void validateReferenceSequence(const GUrl &url) const;
+    virtual GUrl buildIndexUrl(const GUrl& url);
+    void validateReferenceSequence(const GUrl& url) const;
 
 private:
-    BwaIndexAlgorithmWarningReporter *warningReporter;
+    BwaIndexAlgorithmWarningReporter* warningReporter;
 };
 
 class BwaGUIExtensionsFactory : public DnaAssemblyGUIExtensionsFactory {
-    DnaAssemblyAlgorithmMainWidget *createMainWidget(QWidget *parent);
-    DnaAssemblyAlgorithmBuildIndexWidget *createBuildIndexWidget(QWidget *parent);
+    DnaAssemblyAlgorithmMainWidget* createMainWidget(QWidget* parent);
+    DnaAssemblyAlgorithmBuildIndexWidget* createBuildIndexWidget(QWidget* parent);
     bool hasMainWidget();
     bool hasBuildIndexWidget();
 };
 
 class BwaSwGUIExtensionsFactory : public DnaAssemblyGUIExtensionsFactory {
-    DnaAssemblyAlgorithmMainWidget *createMainWidget(QWidget *parent);
-    DnaAssemblyAlgorithmBuildIndexWidget *createBuildIndexWidget(QWidget *parent);
+    DnaAssemblyAlgorithmMainWidget* createMainWidget(QWidget* parent);
+    DnaAssemblyAlgorithmBuildIndexWidget* createBuildIndexWidget(QWidget* parent);
     bool hasMainWidget();
     bool hasBuildIndexWidget();
 };
 
 class BwaMemGUIExtensionsFactory : public DnaAssemblyGUIExtensionsFactory {
-    DnaAssemblyAlgorithmMainWidget *createMainWidget(QWidget *parent);
-    DnaAssemblyAlgorithmBuildIndexWidget *createBuildIndexWidget(QWidget *parent);
+    DnaAssemblyAlgorithmMainWidget* createMainWidget(QWidget* parent);
+    DnaAssemblyAlgorithmBuildIndexWidget* createBuildIndexWidget(QWidget* parent);
     bool hasMainWidget();
     bool hasBuildIndexWidget();
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_BWA_SETTINGS_WIDGET_H_
+#endif  // _U2_BWA_SETTINGS_WIDGET_H_

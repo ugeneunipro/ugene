@@ -28,34 +28,34 @@
 
 namespace U2 {
 
-const static char *clGetPlatformIDs_n("clGetPlatformIDs");
-const static char *clGetPlatformInfo_n("clGetPlatformInfo");
-const static char *clGetDeviceIDs_n("clGetDeviceIDs");
-const static char *clGetDeviceInfo_n("clGetDeviceInfo");
+const static char* clGetPlatformIDs_n("clGetPlatformIDs");
+const static char* clGetPlatformInfo_n("clGetPlatformInfo");
+const static char* clGetDeviceIDs_n("clGetDeviceIDs");
+const static char* clGetDeviceInfo_n("clGetDeviceInfo");
 
-const static char *clCreateContext_n("clCreateContext");
-const static char *clCreateBuffer_n("clCreateBuffer");
-const static char *clCreateProgramWithSource_n("clCreateProgramWithSource");
-const static char *clGetProgramBuildInfo_n("clGetProgramBuildInfo");
-const static char *clCreateKernel_n("clCreateKernel");
-const static char *clSetKernelArg_n("clSetKernelArg");
-const static char *clCreateCommandQueue_n("clCreateCommandQueue");
-const static char *clEnqueueNDRangeKernel_n("clEnqueueNDRangeKernel");
-const static char *clWaitForEvents_n("clWaitForEvents");
-const static char *clEnqueueReadBuffer_n("clEnqueueReadBuffer");
-const static char *clFlush_n("clFlush");
-const static char *clFinish_n("clFinish");
-const static char *clBuildProgram_n("clBuildProgram");
-const static char *clReleaseEvent_n("clReleaseEvent");
+const static char* clCreateContext_n("clCreateContext");
+const static char* clCreateBuffer_n("clCreateBuffer");
+const static char* clCreateProgramWithSource_n("clCreateProgramWithSource");
+const static char* clGetProgramBuildInfo_n("clGetProgramBuildInfo");
+const static char* clCreateKernel_n("clCreateKernel");
+const static char* clSetKernelArg_n("clSetKernelArg");
+const static char* clCreateCommandQueue_n("clCreateCommandQueue");
+const static char* clEnqueueNDRangeKernel_n("clEnqueueNDRangeKernel");
+const static char* clWaitForEvents_n("clWaitForEvents");
+const static char* clEnqueueReadBuffer_n("clEnqueueReadBuffer");
+const static char* clFlush_n("clFlush");
+const static char* clFinish_n("clFinish");
+const static char* clBuildProgram_n("clBuildProgram");
+const static char* clReleaseEvent_n("clReleaseEvent");
 
-const static char *clReleaseKernel_n("clReleaseKernel");
-const static char *clReleaseProgram_n("clReleaseProgram");
-const static char *clReleaseCommandQueue_n("clReleaseCommandQueue");
-const static char *clReleaseContext_n("clReleaseContext");
-const static char *clReleaseMemObject_n("clReleaseMemObject");
+const static char* clReleaseKernel_n("clReleaseKernel");
+const static char* clReleaseProgram_n("clReleaseProgram");
+const static char* clReleaseCommandQueue_n("clReleaseCommandQueue");
+const static char* clReleaseContext_n("clReleaseContext");
+const static char* clReleaseMemObject_n("clReleaseMemObject");
 
-const static char *clGetKernelWorkGroupInfo_n("clGetKernelWorkGroupInfo");
-const static char *clGetEventProfilingInfo_n("clGetEventProfilingInfo");
+const static char* clGetKernelWorkGroupInfo_n("clGetKernelWorkGroupInfo");
+const static char* clGetEventProfilingInfo_n("clGetEventProfilingInfo");
 
 OpenCLHelper::OpenCLHelper()
     : openclLib(OPENCL_DRIVER_LIB) {

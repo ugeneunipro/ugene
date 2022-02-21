@@ -94,58 +94,58 @@ class FindTandemsToAnnotationsTask;
 class FindRepeatsTask : public Task, public RFResultsListener {
     Q_OBJECT
 public:
-    FindRepeatsTask(const FindRepeatsTaskSettings &s, const DNASequence &seq, const DNASequence &seq2);
+    FindRepeatsTask(const FindRepeatsTaskSettings& s, const DNASequence& seq, const DNASequence& seq2);
 
     void prepare();
     void run();
     ReportResult report();
     void cleanup();
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
-    virtual void onResult(const RFResult &r);
-    virtual void onResults(const QVector<RFResult> &v);
+    virtual void onResult(const RFResult& r);
+    virtual void onResults(const QVector<RFResult>& v);
 
     QVector<RFResult> getResults() const {
         return results;
     }  // used if createAnnotations == false
-    const FindRepeatsTaskSettings &getSettings() const {
+    const FindRepeatsTaskSettings& getSettings() const {
         return settings;
     }
 
 protected:
-    void addResult(const RFResult &r);
+    void addResult(const RFResult& r);
     void _addResult(int x, int y, int l, int c);
-    bool isFilteredByRegions(const RFResult &r);
-    RFAlgorithmBase *createRFTask();
+    bool isFilteredByRegions(const RFResult& r);
+    RFAlgorithmBase* createRFTask();
     void filterNestedRepeats();
     void filterUniqueRepeats();
-    Task *createRepeatFinderTask();
-    void filterTandems(const QList<SharedAnnotationData> &tandems, DNASequence &se);
+    Task* createRepeatFinderTask();
+    void filterTandems(const QList<SharedAnnotationData>& tandems, DNASequence& se);
 
     bool oneSequence;
     FindRepeatsTaskSettings settings;
     DNASequence seq1, seq2;
     QVector<RFResult> results;
     QMutex resultsLock;
-    RevComplSequenceTask *revComplTask;
-    RFAlgorithmBase *rfTask;
+    RevComplSequenceTask* revComplTask;
+    RFAlgorithmBase* rfTask;
     quint64 startTime;
-    FindTandemsToAnnotationsTask *tandemTask1;
-    FindTandemsToAnnotationsTask *tandemTask2;
+    FindTandemsToAnnotationsTask* tandemTask1;
+    FindTandemsToAnnotationsTask* tandemTask2;
 };
 
 class FindRepeatsToAnnotationsTask : public Task {
     Q_OBJECT
 public:
-    FindRepeatsToAnnotationsTask(const FindRepeatsTaskSettings &s,
-                                 const DNASequence &seq,
-                                 const QString &annName,
-                                 const QString &groupName,
-                                 const QString &annDescription,
-                                 const GObjectReference &annObjRef);
+    FindRepeatsToAnnotationsTask(const FindRepeatsTaskSettings& s,
+                                 const DNASequence& seq,
+                                 const QString& annName,
+                                 const QString& groupName,
+                                 const QString& annDescription,
+                                 const GObjectReference& annObjRef);
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
     QList<SharedAnnotationData> importAnnotations();
 
 private:
@@ -153,14 +153,14 @@ private:
     QString annGroup;
     const QString annDescription;
     GObjectReference annObjRef;
-    FindRepeatsTask *findTask;
+    FindRepeatsTask* findTask;
     FindRepeatsTaskSettings settings;
 };
 
 class RevComplSequenceTask : public Task {
     Q_OBJECT
 public:
-    RevComplSequenceTask(const DNASequence &s, const U2Region &reg);
+    RevComplSequenceTask(const DNASequence& s, const U2Region& reg);
 
     void run();
     void cleanup();

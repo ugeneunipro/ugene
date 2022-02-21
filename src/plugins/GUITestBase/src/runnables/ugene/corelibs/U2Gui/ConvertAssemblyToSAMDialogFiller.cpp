@@ -31,10 +31,9 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::ConvertAssemblytoSamFiller"
 #define GT_METHOD_NAME "commonScenario"
 void ConvertAssemblyToSAMDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    GTFileDialogUtils *ob = new GTFileDialogUtils(os, databasePath, databaseFileName);
+    GTFileDialogUtils* ob = new GTFileDialogUtils(os, databasePath, databaseFileName);
     GTUtilsDialog::waitForDialog(os, ob);
     GTWidget::click(os, GTWidget::findWidget(os, "setDbPathButton", dialog));
 

@@ -40,11 +40,11 @@ using namespace HI;
 #define GT_CLASS_NAME "GTUtilsOptionsPanel"
 
 #define GT_METHOD_NAME "runFindPatternWithHotKey"
-void GTUtilsOptionsPanel::runFindPatternWithHotKey(const QString &pattern, HI::GUITestOpStatus &os) {
+void GTUtilsOptionsPanel::runFindPatternWithHotKey(const QString& pattern, HI::GUITestOpStatus& os) {
     GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
     GTGlobals::sleep();
 
-    QWidget *w = QApplication::focusWidget();
+    QWidget* w = QApplication::focusWidget();
     GT_CHECK(w && w->objectName() == "textPattern", "Focus is not on FindPattern widget");
 
     GTKeyboardDriver::keySequence(pattern);
@@ -55,10 +55,9 @@ void GTUtilsOptionsPanel::runFindPatternWithHotKey(const QString &pattern, HI::G
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "resizeToMaximum"
-void GTUtilsOptionsPanel::resizeToMaximum(GUITestOpStatus &os) {
-    QSplitter *optionsPanelSplitter = GTWidget::findExactWidget<QSplitter *>(os, "OPTIONS_PANEL_SPLITTER");
-    GT_CHECK(nullptr != optionsPanelSplitter, "Options panel splitter is nullptr");
-    QSplitterHandle *handle = optionsPanelSplitter->handle(1);
+void GTUtilsOptionsPanel::resizeToMaximum(GUITestOpStatus& os) {
+    auto optionsPanelSplitter = GTWidget::findSplitter(os, "OPTIONS_PANEL_SPLITTER");
+    QSplitterHandle* handle = optionsPanelSplitter->handle(1);
     GT_CHECK(nullptr != handle, "Options panel splitter handle is nullptr");
 
     const QPoint handleCenter = optionsPanelSplitter->mapToGlobal(handle->geometry().center());
@@ -68,9 +67,9 @@ void GTUtilsOptionsPanel::resizeToMaximum(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getActiveOptionsWidget"
-QWidget *GTUtilsOptionsPanel::getActiveOptionsWidget(GUITestOpStatus &os) {
-    QWidget *contentWidget = GTWidget::findWidget(os, "object_view_window_content_widget");
-    auto optionsPanelWidget = GTWidget::findWidgetByType<OptionsPanelWidget *>(os, contentWidget, "OptionsPanelWidget is not found!");
+QWidget* GTUtilsOptionsPanel::getActiveOptionsWidget(GUITestOpStatus& os) {
+    QWidget* contentWidget = GTWidget::findWidget(os, "object_view_window_content_widget");
+    auto optionsPanelWidget = GTWidget::findWidgetByType<OptionsPanelWidget*>(os, contentWidget, "OptionsPanelWidget is not found!");
     return optionsPanelWidget->getOptionsWidget();
 }
 #undef GT_METHOD_NAME

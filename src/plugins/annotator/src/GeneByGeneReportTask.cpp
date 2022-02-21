@@ -57,11 +57,11 @@ const QString GeneByGeneCompareResult::IDENTICAL_NO = "No";
 
 #define BLAST_IDENT "identities"
 #define BLAST_GAPS "gaps"
-GeneByGeneCompareResult GeneByGeneComparator::compareGeneAnnotation(const DNASequence &seq, const QList<SharedAnnotationData> &annData, const QString &annName, float identity) {
+GeneByGeneCompareResult GeneByGeneComparator::compareGeneAnnotation(const DNASequence& seq, const QList<SharedAnnotationData>& annData, const QString& annName, float identity) {
     GeneByGeneCompareResult result;
 
     float maxIdentity = -1.0F;
-    foreach (const SharedAnnotationData &adata, annData) {
+    foreach (const SharedAnnotationData& adata, annData) {
         if (adata->name == annName) {
             U2Location location = adata->location;
             if (location->isSingleRegion()) {
@@ -104,7 +104,7 @@ GeneByGeneCompareResult GeneByGeneComparator::compareGeneAnnotation(const DNASeq
     return result;
 }
 
-float GeneByGeneComparator::parseBlastQual(const QString &ident) {
+float GeneByGeneComparator::parseBlastQual(const QString& ident) {
     float res = -1.0f;
 
     // identities="1881/1881 (100%)"
@@ -122,14 +122,14 @@ float GeneByGeneComparator::parseBlastQual(const QString &ident) {
 
 //////////////////////////////////////////////////////////////////////////
 // GeneByGeneReportIO
-GeneByGeneReportIO::GeneByGeneReportIO(const QString &_outFile, const QString &_existingMode)
+GeneByGeneReportIO::GeneByGeneReportIO(const QString& _outFile, const QString& _existingMode)
     : outFile(_outFile), existingMode(_existingMode), io(nullptr), mergedGenomesSize(0) {
 }
 
 GeneByGeneReportIO::~GeneByGeneReportIO() {
-    const QList<QString> &keys = mergedTable.keys();
+    const QList<QString>& keys = mergedTable.keys();
 
-    foreach (const QString &key, keys) {
+    foreach (const QString& key, keys) {
         QList<QString> toWrite;
         toWrite.append(key);
         toWrite.append(mergedTable.take(key));
@@ -144,7 +144,7 @@ GeneByGeneReportIO::~GeneByGeneReportIO() {
     }
 }
 
-void GeneByGeneReportIO::prepareOutputFile(U2OpStatus &os) {
+void GeneByGeneReportIO::prepareOutputFile(U2OpStatus& os) {
     if (QFile::exists(outFile)) {
         if (GeneByGeneReportSettings::RENAME_EXISTING == existingMode) {
             outFile = GUrlUtils::rollFileName(outFile, QSet<QString>());
@@ -165,7 +165,7 @@ void GeneByGeneReportIO::prepareOutputFile(U2OpStatus &os) {
     writeHeader(io);
 }
 
-void GeneByGeneReportIO::writeTableItem(const QString &geneName, const QString &identicalString, U2OpStatus &os) {
+void GeneByGeneReportIO::writeTableItem(const QString& geneName, const QString& identicalString, U2OpStatus& os) {
     if (io == nullptr) {
         os.setError("Gene by gene writer has not prepared an output file");
         return;
@@ -192,7 +192,7 @@ void GeneByGeneReportIO::writeTableItem(const QString &geneName, const QString &
 }
 
 #define READ_BUF_SIZE 2 * 4096
-void GeneByGeneReportIO::readMergedTable(const QString &filePath, U2OpStatus &os) {
+void GeneByGeneReportIO::readMergedTable(const QString& filePath, U2OpStatus& os) {
     QScopedPointer<IOAdapter> readIO(IOAdapterUtils::open(filePath, os, IOAdapterMode_Read));
     if (os.hasError()) {
         return;
@@ -211,7 +211,7 @@ void GeneByGeneReportIO::readMergedTable(const QString &filePath, U2OpStatus &os
         if (data.isEmpty() || data.startsWith("#")) {  // skip comments
             continue;
         }
-        const QList<QByteArray> &columns = data.left(len).split('\t');
+        const QList<QByteArray>& columns = data.left(len).split('\t');
 
         // check/get columns count
         if (columnsCount == -1 && columns.size() > 1) {
@@ -239,7 +239,7 @@ void GeneByGeneReportIO::readMergedTable(const QString &filePath, U2OpStatus &os
     readIO->close();
 }
 
-void GeneByGeneReportIO::writeHeader(IOAdapter *io) {
+void GeneByGeneReportIO::writeHeader(IOAdapter* io) {
     if (io == nullptr) {
         return;
     }
@@ -258,7 +258,7 @@ void GeneByGeneReportIO::writeHeader(IOAdapter *io) {
     io->writeBlock(header.toLatin1());
 }
 
-void GeneByGeneReportIO::writeRow(const QList<QString> &rowData) {
+void GeneByGeneReportIO::writeRow(const QList<QString>& rowData) {
     if (io == nullptr) {
         return;
     }
@@ -266,7 +266,7 @@ void GeneByGeneReportIO::writeRow(const QList<QString> &rowData) {
     QString toWrite;
 
     bool first = true;
-    foreach (const QString &item, rowData) {
+    foreach (const QString& item, rowData) {
         if (!first) {
             toWrite.append("\t");
         } else {
@@ -281,8 +281,8 @@ void GeneByGeneReportIO::writeRow(const QList<QString> &rowData) {
 
 //////////////////////////////////////////////////////////////////////////
 // GeneByGeneReportTask
-GeneByGeneReportTask::GeneByGeneReportTask(const GeneByGeneReportSettings &settings,
-                                           const QMap<QString, QPair<DNASequence, QList<SharedAnnotationData>>> &geneData)
+GeneByGeneReportTask::GeneByGeneReportTask(const GeneByGeneReportSettings& settings,
+                                           const QMap<QString, QPair<DNASequence, QList<SharedAnnotationData>>>& geneData)
     : Task(tr("Generating gene-by-gene approach report"), TaskFlag_None), settings(settings), geneData(geneData) {
 }
 
@@ -290,7 +290,7 @@ GeneByGeneReportTask::~GeneByGeneReportTask() {
     geneData.clear();
 }
 
-const GeneByGeneReportSettings &GeneByGeneReportTask::getSettings() const {
+const GeneByGeneReportSettings& GeneByGeneReportTask::getSettings() const {
     return settings;
 }
 
@@ -309,17 +309,17 @@ void GeneByGeneReportTask::run() {
     stateInfo.progress = 0;
     float progressCounter = 0;
 
-    const QList<QString> &keys = geneData.keys();
+    const QList<QString>& keys = geneData.keys();
     float progressStep = keys.size() / static_cast<float>(100);
 
-    foreach (const QString &key, keys) {
+    foreach (const QString& key, keys) {
         if (isCanceled()) {
             return;
         }
 
         {
-            const QPair<DNASequence, QList<SharedAnnotationData>> &seqAnnData = geneData[key];
-            const GeneByGeneCompareResult &res = GeneByGeneComparator::compareGeneAnnotation(seqAnnData.first, seqAnnData.second, settings.annName, settings.identity);
+            const QPair<DNASequence, QList<SharedAnnotationData>>& seqAnnData = geneData[key];
+            const GeneByGeneCompareResult& res = GeneByGeneComparator::compareGeneAnnotation(seqAnnData.first, seqAnnData.second, settings.annName, settings.identity);
             io.writeTableItem(key, res.identityString, stateInfo);
             if (stateInfo.hasError()) {
                 return;

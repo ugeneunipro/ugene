@@ -31,15 +31,15 @@ class TextObject;
 
 class U2CORE_EXPORT TextSelection : public LRegionsSelection {
 public:
-    TextSelection(TextObject *_obj, QObject *p = nullptr)
+    TextSelection(TextObject* _obj, QObject* p = nullptr)
         : LRegionsSelection(GSelectionTypes::TEXT, p), obj(_obj) {
     }
-    TextObject *getObject() const {
+    TextObject* getObject() const {
         return obj;
     }
 
 private:
-    TextObject *obj;
+    TextObject* obj;
 };
 
 }  // namespace U2

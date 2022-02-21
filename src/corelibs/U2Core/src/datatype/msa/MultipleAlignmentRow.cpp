@@ -27,35 +27,35 @@
 
 namespace U2 {
 
-MultipleAlignmentRow::MultipleAlignmentRow(MultipleAlignmentRowData *ma)
+MultipleAlignmentRow::MultipleAlignmentRow(MultipleAlignmentRowData* ma)
     : maRowData(ma) {
 }
 
-MultipleAlignmentRowData *MultipleAlignmentRow::data() const {
+MultipleAlignmentRowData* MultipleAlignmentRow::data() const {
     return maRowData.data();
 }
 
-MultipleAlignmentRowData &MultipleAlignmentRow::operator*() {
+MultipleAlignmentRowData& MultipleAlignmentRow::operator*() {
     return *maRowData;
 }
 
-const MultipleAlignmentRowData &MultipleAlignmentRow::operator*() const {
+const MultipleAlignmentRowData& MultipleAlignmentRow::operator*() const {
     return *maRowData;
 }
 
-MultipleAlignmentRowData *MultipleAlignmentRow::operator->() {
+MultipleAlignmentRowData* MultipleAlignmentRow::operator->() {
     return maRowData.data();
 }
 
-const MultipleAlignmentRowData *MultipleAlignmentRow::operator->() const {
+const MultipleAlignmentRowData* MultipleAlignmentRow::operator->() const {
     return maRowData.data();
 }
 
-MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleAlignmentDataType &_type)
+MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleAlignmentDataType& _type)
     : type(_type) {
 }
 
-MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleAlignmentDataType &_type, const DNASequence &sequence, const QVector<U2MsaGap> &gaps)
+MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleAlignmentDataType& _type, const DNASequence& sequence, const QVector<U2MsaGap>& gaps)
     : type(_type), sequence(sequence), gaps(gaps) {
 }
 
@@ -67,15 +67,15 @@ DNASequence MultipleAlignmentRowData::getUngappedSequence() const {
     return sequence;
 }
 
-U2Region MultipleAlignmentRowData::getGapped(const U2Region &region) {
+U2Region MultipleAlignmentRowData::getGapped(const U2Region& region) {
     return MsaRowUtils::getGappedRegion(gaps, region);
 }
 
-bool MultipleAlignmentRowData::operator==(const MultipleAlignmentRowData &other) const {
+bool MultipleAlignmentRowData::operator==(const MultipleAlignmentRowData& other) const {
     return isEqual(other);
 }
 
-bool MultipleAlignmentRowData::operator!=(const MultipleAlignmentRowData &other) const {
+bool MultipleAlignmentRowData::operator!=(const MultipleAlignmentRowData& other) const {
     return !isEqual(other);
 }
 
@@ -88,7 +88,7 @@ U2Region MultipleAlignmentRowData::getCoreRegion() const {
     return U2Region(getCoreStart(), getCoreLength());
 }
 
-U2Region MultipleAlignmentRowData::getUngappedRegion(const U2Region &gappedRegion) const {
+U2Region MultipleAlignmentRowData::getUngappedRegion(const U2Region& gappedRegion) const {
     if (gappedRegion == U2Region(0, 0)) {
         return gappedRegion;
     }
@@ -101,7 +101,7 @@ U2Region MultipleAlignmentRowData::getUngappedRegion(const U2Region &gappedRegio
 }
 
 /* Compares sequences of 2 rows ignoring gaps. */
-bool MultipleAlignmentRowData::isEqualIgnoreGaps(const MultipleAlignmentRowData *row1, const MultipleAlignmentRowData *row2) {
+bool MultipleAlignmentRowData::isEqualIgnoreGaps(const MultipleAlignmentRowData* row1, const MultipleAlignmentRowData* row2) {
     SAFE_POINT(row1 != nullptr && row2 != nullptr, "One of the rows is nullptr!", false);
     if (row1 == row2) {
         return true;
@@ -112,7 +112,7 @@ bool MultipleAlignmentRowData::isEqualIgnoreGaps(const MultipleAlignmentRowData 
     return row1->getUngappedSequence().seq == row2->getUngappedSequence().seq;
 }
 
-bool MultipleAlignmentRowData::isEqualCore(const MultipleAlignmentRowData &other) const {
+bool MultipleAlignmentRowData::isEqualCore(const MultipleAlignmentRowData& other) const {
     CHECK(sequence.seq == other.sequence.seq, false);
     CHECK(sequence.length() > 0, true);
 
@@ -147,7 +147,7 @@ QByteArray MultipleAlignmentRowData::getSequenceWithGaps(bool keepLeadingGaps, b
         gapsBytes.fill(U2Msa::GAP_CHAR, gaps[i].length);
         bytes.insert(gaps[i].startPos - beginningOffset, gapsBytes);
     }
-    MultipleAlignmentData *alignment = getMultipleAlignmentData();
+    MultipleAlignmentData* alignment = getMultipleAlignmentData();
     SAFE_POINT(alignment != nullptr, "Parent MAlignment is NULL", QByteArray());
     if (keepTrailingGaps && bytes.size() < alignment->getLength()) {
         QByteArray gapsBytes;

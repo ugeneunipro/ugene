@@ -56,11 +56,11 @@ void BioStruct3D::calcCenterAndMaxDistance() {
     // loop trough all atoms twice - once to get average center, then once to
     // find max distance from this center
     for (int i = 0; i < 2; ++i) {
-        for (const SharedMolecule &molecule : qAsConst(moleculeMap)) {
+        for (const SharedMolecule& molecule : qAsConst(moleculeMap)) {
             QList<Molecule3DModel> models = molecule->models.values();
-            for (const Molecule3DModel &model3d : qAsConst(models)) {
-                for (const AtomData *atom : qAsConst(model3d.atoms)) {
-                    const Vector3D &site = atom->coord3d;
+            for (const Molecule3DModel& model3d : qAsConst(models)) {
+                for (const AtomData* atom : qAsConst(model3d.atoms)) {
+                    const Vector3D& site = atom->coord3d;
                     if (i == 0) {
                         siteSum += atom->coord3d;
                         numberOfAtoms++;
@@ -89,12 +89,12 @@ void BioStruct3D::calcCenterAndMaxDistance() {
 
 int BioStruct3D::getNumberOfAtoms() const {
     // get first coordinates set
-    const AtomCoordSet &coordSet = modelMap.begin().value();
+    const AtomCoordSet& coordSet = modelMap.begin().value();
     return coordSet.count();
 }
 
 QList<SharedAtom> BioStruct3D::getAllAtoms() const {
-    const AtomCoordSet &coordSet = modelMap.begin().value();
+    const AtomCoordSet& coordSet = modelMap.begin().value();
     return coordSet.values();
 }
 
@@ -106,7 +106,7 @@ QMap<int, QList<SharedAnnotationData>> BioStruct3D::generateAnnotations() const 
 
 QMap<int, QList<SharedAnnotationData>> BioStruct3D::generateChainAnnotations() const {
     QMap<int, QList<SharedAnnotationData>> result;
-    const char *molNameQualifier = "molecule_name";
+    const char* molNameQualifier = "molecule_name";
     // const char* pdbChainIdQualifier = "pdb_id";
 
     QMap<int, SharedMolecule>::ConstIterator iter = moleculeMap.constBegin();
@@ -140,7 +140,7 @@ int BioStruct3D::getNumberOfResidues() const {
 
 const SharedAtom BioStruct3D::getAtomById(int atomIndex, int modelIndex) const {
     if (modelMap.contains(modelIndex)) {
-        const AtomCoordSet &coordSet = modelMap.value(modelIndex);
+        const AtomCoordSet& coordSet = modelMap.value(modelIndex);
         if (coordSet.contains(atomIndex)) {
             return coordSet.value(atomIndex);
         }
@@ -151,7 +151,7 @@ const SharedAtom BioStruct3D::getAtomById(int atomIndex, int modelIndex) const {
 
 const SharedResidue BioStruct3D::getResidueById(int chainIndex, ResidueIndex residueIndex) const {
     const SharedMolecule mol = moleculeMap.value(chainIndex);
-    foreach (const ResidueIndex &id, mol->residueMap.keys()) {
+    foreach (const ResidueIndex& id, mol->residueMap.keys()) {
         if (id.toInt() == residueIndex.toInt()) {
             return mol->residueMap.value(id);
         }
@@ -181,12 +181,12 @@ const QString BioStruct3D::getSecStructTypeName(SecondaryStructure::Type type) {
     }
 }
 
-void BioStruct3D::generateSecStructureAnnotations(QMap<int, QList<SharedAnnotationData>> &result) const {
+void BioStruct3D::generateSecStructureAnnotations(QMap<int, QList<SharedAnnotationData>>& result) const {
     // TODO: issue 0000637
     if (moleculeMap.isEmpty())
         return;
 
-    foreach (const SharedSecondaryStructure &struc, secondaryStructures) {
+    foreach (const SharedSecondaryStructure& struc, secondaryStructures) {
         SharedAnnotationData sd(nullptr);
         int chainId = struc->chainIndex;
         assert(chainId != 0);
@@ -254,17 +254,17 @@ void BioStruct3D::setRadius(double value) {
     radius = value;
 }
 
-void BioStruct3D::setCenter(const Vector3D &value) {
+void BioStruct3D::setCenter(const Vector3D& value) {
     rotationCenter = value;
 }
 
 /* class U2CORE_EXPORT BioStruct3DChainSelection */
 
-BioStruct3DChainSelection::BioStruct3DChainSelection(const BioStruct3D &biostruct_)
+BioStruct3DChainSelection::BioStruct3DChainSelection(const BioStruct3D& biostruct_)
     : biostruct(biostruct_), data(new BioStruct3DChainSelectionData()) {
 }
 
-BioStruct3DChainSelection::BioStruct3DChainSelection(const BioStruct3DChainSelection &other)
+BioStruct3DChainSelection::BioStruct3DChainSelection(const BioStruct3DChainSelection& other)
     : biostruct(other.biostruct), data(other.data) {
 }
 
@@ -272,7 +272,7 @@ bool BioStruct3DChainSelection::inSelection(int chainId, int residueId) const {
     return data->selection.contains(chainId, residueId);
 }
 
-void BioStruct3DChainSelection::add(int chain, const U2Region &region) {
+void BioStruct3DChainSelection::add(int chain, const U2Region& region) {
     int start = biostruct.moleculeMap[chain]->residueMap.begin().key().toInt();
     for (int i = region.startPos; i < region.endPos(); ++i) {
         if (!data->selection.contains(chain, start + i)) {
@@ -281,36 +281,36 @@ void BioStruct3DChainSelection::add(int chain, const U2Region &region) {
     }
 }
 
-void BioStruct3DChainSelection::add(int chain, const QVector<U2Region> &regions) {
-    foreach (const U2Region &region, regions) {
+void BioStruct3DChainSelection::add(int chain, const QVector<U2Region>& regions) {
+    foreach (const U2Region& region, regions) {
         add(chain, region);
     }
 }
 
-void BioStruct3DChainSelection::remove(int chain, const U2Region &region) {
+void BioStruct3DChainSelection::remove(int chain, const U2Region& region) {
     int start = biostruct.moleculeMap[chain]->residueMap.begin().key().toInt();
     for (int i = region.startPos; i < region.endPos(); ++i) {
         data->selection.remove(chain, start + i);
     }
 }
 
-void BioStruct3DChainSelection::remove(int chain, const QVector<U2Region> &regions) {
-    foreach (const U2Region &region, regions) {
+void BioStruct3DChainSelection::remove(int chain, const QVector<U2Region>& regions) {
+    foreach (const U2Region& region, regions) {
         remove(chain, region);
     }
 }
 
-void BioStruct3DChainSelection::update(int chain, const U2Region &add, const U2Region &remove) {
+void BioStruct3DChainSelection::update(int chain, const U2Region& add, const U2Region& remove) {
     this->remove(chain, remove);
     this->add(chain, add);
 }
 
-void BioStruct3DChainSelection::update(int chain, const QVector<U2Region> &adds, const QVector<U2Region> &removes) {
+void BioStruct3DChainSelection::update(int chain, const QVector<U2Region>& adds, const QVector<U2Region>& removes) {
     remove(chain, removes);
     add(chain, adds);
 }
 
-bool ResidueIndex::operator<(const ResidueIndex &other) const {
+bool ResidueIndex::operator<(const ResidueIndex& other) const {
     if (order == other.order) {
         if (resId == other.resId) {
             return insCode < other.insCode;
@@ -322,11 +322,11 @@ bool ResidueIndex::operator<(const ResidueIndex &other) const {
     }
 }
 
-bool ResidueIndex::operator==(const ResidueIndex &other) const {
+bool ResidueIndex::operator==(const ResidueIndex& other) const {
     return (other.insCode == insCode) && (other.resId == resId);
 }
 
-bool ResidueIndex::operator!=(const ResidueIndex &other) const {
+bool ResidueIndex::operator!=(const ResidueIndex& other) const {
     return !(*this == other);
 }
 

@@ -28,10 +28,10 @@
 
 namespace HI {
 
-void SynchronizedCall::run(QWebEngineView *view, const QString &scriptSource, const std::function<void(QVariant)> &resultCallback) {
+void SynchronizedCall::run(QWebEngineView* view, const QString& scriptSource, const std::function<void(QVariant)>& resultCallback) {
     SynchronizedCall instance;
     connect(&instance, SIGNAL(callbackFinished()), &instance.eventLoop, SLOT(quit()));
-    auto innerCallback = [&](const QVariant &v) {
+    auto innerCallback = [&](const QVariant& v) {
         resultCallback(v);
         emit instance.callbackFinished();
     };
@@ -53,17 +53,17 @@ const QString GTWebEngineView::ATTRIBUTES_MAP = "attributes_map";
 const QString GTWebEngineView::VISIBLE = "visible";
 
 #define GT_METHOD_NAME "findElementsBySelector"
-QList<HIWebElement> GTWebEngineView::findElementsBySelector(GUITestOpStatus &os, QWebEngineView *view, const QString &selector, const GTGlobals::FindOptions &options) {
+QList<HIWebElement> GTWebEngineView::findElementsBySelector(GUITestOpStatus& os, QWebEngineView* view, const QString& selector, const GTGlobals::FindOptions& options) {
     class Scenario : public CustomScenario {
     public:
-        Scenario(QWebEngineView *view, const QString &selector, const GTGlobals::FindOptions &options, QList<HIWebElement> &elements)
+        Scenario(QWebEngineView* view, const QString& selector, const GTGlobals::FindOptions& options, QList<HIWebElement>& elements)
             : view(view),
               selector(selector),
               options(options),
               elements(elements) {
         }
 
-        void run(GUITestOpStatus &os) {
+        void run(GUITestOpStatus& os) {
             Q_UNUSED(os);
 
             const QString code = QString("var elements = document.querySelectorAll('%1');"
@@ -98,9 +98,9 @@ QList<HIWebElement> GTWebEngineView::findElementsBySelector(GUITestOpStatus &os,
                                      .arg(ID)
                                      .arg(ATTRIBUTES_MAP)
                                      .arg(VISIBLE);
-            auto callback = [&](const QVariant &v) {
+            auto callback = [&](const QVariant& v) {
                 const QVariantList elementsMaps = v.toList();
-                foreach (const QVariant &map, elementsMaps) {
+                foreach (const QVariant& map, elementsMaps) {
                     elements << toHiWebElement(map.toMap());
                 }
             };
@@ -109,10 +109,10 @@ QList<HIWebElement> GTWebEngineView::findElementsBySelector(GUITestOpStatus &os,
         }
 
     private:
-        QWebEngineView *view;
+        QWebEngineView* view;
         const QString selector;
         const GTGlobals::FindOptions options;
-        QList<HIWebElement> &elements;
+        QList<HIWebElement>& elements;
     };
 
     QList<HIWebElement> elements;
@@ -123,7 +123,7 @@ QList<HIWebElement> GTWebEngineView::findElementsBySelector(GUITestOpStatus &os,
     if (options.searchInHidden) {
         filteredElements = elements;
     } else {
-        foreach (const HIWebElement &element, elements) {
+        foreach (const HIWebElement& element, elements) {
             if (element.isVisible()) {
                 filteredElements << element;
             }
@@ -135,10 +135,10 @@ QList<HIWebElement> GTWebEngineView::findElementsBySelector(GUITestOpStatus &os,
 }
 #undef GT_METHOD_NAME
 
-HIWebElement GTWebEngineView::toHiWebElement(const QMap<QString, QVariant> &map) {
+HIWebElement GTWebEngineView::toHiWebElement(const QMap<QString, QVariant>& map) {
     QMap<QString, QString> attributesMap;
     QMap<QString, QVariant> rawAttributesMap = map[ATTRIBUTES_MAP].toMap();
-    foreach (const QString &key, rawAttributesMap.keys()) {
+    foreach (const QString& key, rawAttributesMap.keys()) {
         attributesMap.insert(key, rawAttributesMap[key].toString());
     }
     return HIWebElement(QRect(map.value(X, -1).toInt(),

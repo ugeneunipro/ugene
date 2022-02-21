@@ -32,7 +32,7 @@ namespace U2 {
 class QDPrimerActor : public QDActor {
     Q_OBJECT
 public:
-    QDPrimerActor(QDActorPrototype const *proto);
+    QDPrimerActor(QDActorPrototype const* proto);
     int getMinResultLen() const {
         return 1;
     }
@@ -40,7 +40,7 @@ public:
         return 1000;
     }
     QString getText() const;
-    Task *getAlgorithmTask(const QVector<U2Region> &location);
+    Task* getAlgorithmTask(const QVector<U2Region>& location);
     QColor defaultColor() const {
         return QColor(0x88, 0x78, 0xEC);
     }
@@ -48,7 +48,7 @@ public:
 private:
     void setDefaultSettings();
 private slots:
-    void sl_onAlgorithmTaskFinished(Task *t);
+    void sl_onAlgorithmTaskFinished(Task* t);
 
 private:
     Primer3TaskSettings settings;
@@ -60,7 +60,7 @@ public:
     QIcon getIcon() const {
         return QIcon(":primer3/images/primer3.png");
     }
-    QDActor *createInstance() const {
+    QDActor* createInstance() const {
         return new QDPrimerActor(this);
     }
 };

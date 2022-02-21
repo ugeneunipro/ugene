@@ -64,21 +64,21 @@ const QString MsaColorScheme::CUSTOM_AMINO = "COLOR_SCHEME_CUSTOM_AMINO";
 
 const QString MsaColorScheme::THRESHOLD_PARAMETER_NAME = "threshold";
 
-MsaColorScheme::MsaColorScheme(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj)
+MsaColorScheme::MsaColorScheme(QObject* parent, const MsaColorSchemeFactory* factory, MultipleAlignmentObject* maObj)
     : QObject(parent),
       factory(factory),
       maObj(maObj) {
 }
 
-void MsaColorScheme::applySettings(const QVariantMap &settings) {
+void MsaColorScheme::applySettings(const QVariantMap& settings) {
     Q_UNUSED(settings);
 }
 
-const MsaColorSchemeFactory *MsaColorScheme::getFactory() const {
+const MsaColorSchemeFactory* MsaColorScheme::getFactory() const {
     return factory;
 }
 
-MsaColorSchemeFactory::MsaColorSchemeFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets)
+MsaColorSchemeFactory::MsaColorSchemeFactory(QObject* parent, const QString& id, const QString& name, const AlphabetFlags& supportedAlphabets)
     : QObject(parent),
       id(id),
       name(name),
@@ -86,7 +86,7 @@ MsaColorSchemeFactory::MsaColorSchemeFactory(QObject *parent, const QString &id,
       needThreshold(false) {
 }
 
-const QString &MsaColorSchemeFactory::getId() const {
+const QString& MsaColorSchemeFactory::getId() const {
     return id;
 }
 
@@ -94,7 +94,7 @@ const QString MsaColorSchemeFactory::getName() const {
     return name;
 }
 
-bool MsaColorSchemeFactory::isAlphabetTypeSupported(const DNAAlphabetType &alphabetType) const {
+bool MsaColorSchemeFactory::isAlphabetTypeSupported(const DNAAlphabetType& alphabetType) const {
     return supportedAlphabets.testFlag(alphabetType);
 }
 
@@ -115,21 +115,21 @@ MsaColorSchemeRegistry::~MsaColorSchemeRegistry() {
     deleteOldCustomFactories();
 }
 
-const QList<MsaColorSchemeFactory *> &MsaColorSchemeRegistry::getSchemes() const {
+const QList<MsaColorSchemeFactory*>& MsaColorSchemeRegistry::getSchemes() const {
     return colorers;
 }
 
-const QList<MsaColorSchemeCustomFactory *> &MsaColorSchemeRegistry::getCustomColorSchemes() const {
+const QList<MsaColorSchemeCustomFactory*>& MsaColorSchemeRegistry::getCustomColorSchemes() const {
     return customColorers;
 }
 
-QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getAllSchemes(DNAAlphabetType alphabet) const {
-    return QList<MsaColorSchemeFactory *>() << getSchemes(alphabet) << getCustomSchemes(alphabet);
+QList<MsaColorSchemeFactory*> MsaColorSchemeRegistry::getAllSchemes(DNAAlphabetType alphabet) const {
+    return QList<MsaColorSchemeFactory*>() << getSchemes(alphabet) << getCustomSchemes(alphabet);
 }
 
-QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getSchemes(DNAAlphabetType alphabetType) const {
-    QList<MsaColorSchemeFactory *> res;
-    foreach (MsaColorSchemeFactory *factory, colorers) {
+QList<MsaColorSchemeFactory*> MsaColorSchemeRegistry::getSchemes(DNAAlphabetType alphabetType) const {
+    QList<MsaColorSchemeFactory*> res;
+    foreach (MsaColorSchemeFactory* factory, colorers) {
         if (factory->isAlphabetTypeSupported(alphabetType)) {
             res.append(factory);
         }
@@ -137,9 +137,9 @@ QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getSchemes(DNAAlphabetTyp
     return res;
 }
 
-QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getCustomSchemes(DNAAlphabetType alphabetType) const {
-    QList<MsaColorSchemeFactory *> res;
-    foreach (MsaColorSchemeFactory *factory, customColorers) {
+QList<MsaColorSchemeFactory*> MsaColorSchemeRegistry::getCustomSchemes(DNAAlphabetType alphabetType) const {
+    QList<MsaColorSchemeFactory*> res;
+    foreach (MsaColorSchemeFactory* factory, customColorers) {
         if (factory->isAlphabetTypeSupported(alphabetType)) {
             res.append(factory);
         }
@@ -147,42 +147,42 @@ QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getCustomSchemes(DNAAlpha
     return res;
 }
 
-QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::customSchemesToCommon() const {
-    QList<MsaColorSchemeFactory *> res;
-    foreach (MsaColorSchemeFactory *factory, customColorers) {
+QList<MsaColorSchemeFactory*> MsaColorSchemeRegistry::customSchemesToCommon() const {
+    QList<MsaColorSchemeFactory*> res;
+    foreach (MsaColorSchemeFactory* factory, customColorers) {
         res.append(factory);
     }
     return res;
 }
 
-QMap<AlphabetFlags, QList<MsaColorSchemeFactory *>> MsaColorSchemeRegistry::getAllSchemesGrouped() const {
-    QList<MsaColorSchemeFactory *> allSchemes;
+QMap<AlphabetFlags, QList<MsaColorSchemeFactory*>> MsaColorSchemeRegistry::getAllSchemesGrouped() const {
+    QList<MsaColorSchemeFactory*> allSchemes;
     allSchemes << colorers << customSchemesToCommon();
-    QMap<AlphabetFlags, QList<MsaColorSchemeFactory *>> result;
-    foreach (MsaColorSchemeFactory *factory, allSchemes) {
+    QMap<AlphabetFlags, QList<MsaColorSchemeFactory*>> result;
+    foreach (MsaColorSchemeFactory* factory, allSchemes) {
         result[factory->getSupportedAlphabets()].append(factory);
     }
     return result;
 }
 
-QMap<AlphabetFlags, QList<MsaColorSchemeFactory *>> MsaColorSchemeRegistry::getSchemesGrouped() const {
-    QMap<AlphabetFlags, QList<MsaColorSchemeFactory *>> result;
-    foreach (MsaColorSchemeFactory *factory, colorers) {
+QMap<AlphabetFlags, QList<MsaColorSchemeFactory*>> MsaColorSchemeRegistry::getSchemesGrouped() const {
+    QMap<AlphabetFlags, QList<MsaColorSchemeFactory*>> result;
+    foreach (MsaColorSchemeFactory* factory, colorers) {
         result[factory->getSupportedAlphabets()].append(factory);
     }
     return result;
 }
 
-QMap<AlphabetFlags, QList<MsaColorSchemeFactory *>> MsaColorSchemeRegistry::getCustomSchemesGrouped() const {
-    QMap<AlphabetFlags, QList<MsaColorSchemeFactory *>> result;
-    foreach (MsaColorSchemeFactory *factory, customColorers) {
+QMap<AlphabetFlags, QList<MsaColorSchemeFactory*>> MsaColorSchemeRegistry::getCustomSchemesGrouped() const {
+    QMap<AlphabetFlags, QList<MsaColorSchemeFactory*>> result;
+    foreach (MsaColorSchemeFactory* factory, customColorers) {
         result[factory->getSupportedAlphabets()].append(factory);
     }
     return result;
 }
 
-MsaColorSchemeCustomFactory *MsaColorSchemeRegistry::getCustomSchemeFactoryById(const QString &id) const {
-    foreach (MsaColorSchemeCustomFactory *customFactory, customColorers) {
+MsaColorSchemeCustomFactory* MsaColorSchemeRegistry::getCustomSchemeFactoryById(const QString& id) const {
+    foreach (MsaColorSchemeCustomFactory* customFactory, customColorers) {
         if (customFactory->getId() == id) {
             return customFactory;
         }
@@ -191,8 +191,8 @@ MsaColorSchemeCustomFactory *MsaColorSchemeRegistry::getCustomSchemeFactoryById(
     return nullptr;
 }
 
-MsaColorSchemeFactory *MsaColorSchemeRegistry::getSchemeFactoryById(const QString &id) const {
-    foreach (MsaColorSchemeFactory *commonFactory, colorers) {
+MsaColorSchemeFactory* MsaColorSchemeRegistry::getSchemeFactoryById(const QString& id) const {
+    foreach (MsaColorSchemeFactory* commonFactory, colorers) {
         if (commonFactory->getId() == id) {
             return commonFactory;
         }
@@ -201,29 +201,29 @@ MsaColorSchemeFactory *MsaColorSchemeRegistry::getSchemeFactoryById(const QStrin
     return getCustomSchemeFactoryById(id);
 }
 
-MsaColorSchemeFactory *MsaColorSchemeRegistry::getEmptySchemeFactory() const {
+MsaColorSchemeFactory* MsaColorSchemeRegistry::getEmptySchemeFactory() const {
     return getSchemeFactoryById(MsaColorScheme::EMPTY);
 }
 
-void MsaColorSchemeRegistry::addCustomScheme(const ColorSchemeData &scheme) {
+void MsaColorSchemeRegistry::addCustomScheme(const ColorSchemeData& scheme) {
     addMsaCustomColorSchemeFactory(new MsaColorSchemeCustomFactory(nullptr, scheme));
 }
 
 namespace {
 
-bool compareNames(const MsaColorSchemeFactory *a1, const MsaColorSchemeFactory *a2) {
+bool compareNames(const MsaColorSchemeFactory* a1, const MsaColorSchemeFactory* a2) {
     return a1->getName() < a2->getName();
 }
 
 }  // namespace
 
-void MsaColorSchemeRegistry::addMsaColorSchemeFactory(MsaColorSchemeFactory *commonFactory) {
+void MsaColorSchemeRegistry::addMsaColorSchemeFactory(MsaColorSchemeFactory* commonFactory) {
     assert(getSchemeFactoryById(commonFactory->getId()) == nullptr);
     colorers.append(commonFactory);
     std::stable_sort(colorers.begin(), colorers.end(), compareNames);
 }
 
-void MsaColorSchemeRegistry::addMsaCustomColorSchemeFactory(MsaColorSchemeCustomFactory *customFactory) {
+void MsaColorSchemeRegistry::addMsaCustomColorSchemeFactory(MsaColorSchemeCustomFactory* customFactory) {
     assert(getSchemeFactoryById(customFactory->getId()) == nullptr);
     customColorers.append(customFactory);
     std::stable_sort(colorers.begin(), colorers.end(), compareNames);
@@ -232,9 +232,9 @@ void MsaColorSchemeRegistry::addMsaCustomColorSchemeFactory(MsaColorSchemeCustom
 void MsaColorSchemeRegistry::sl_onCustomSettingsChanged() {
     bool schemesListChanged = false;
 
-    QList<MsaColorSchemeCustomFactory *> factoriesToRemove = customColorers;
-    foreach (const ColorSchemeData &scheme, ColorSchemeUtils::getSchemas()) {
-        MsaColorSchemeCustomFactory *customSchemeFactory = getCustomSchemeFactoryById(scheme.name);
+    QList<MsaColorSchemeCustomFactory*> factoriesToRemove = customColorers;
+    foreach (const ColorSchemeData& scheme, ColorSchemeUtils::getSchemas()) {
+        MsaColorSchemeCustomFactory* customSchemeFactory = getCustomSchemeFactoryById(scheme.name);
         if (nullptr == customSchemeFactory) {
             addCustomScheme(scheme);
             schemesListChanged = true;
@@ -247,7 +247,7 @@ void MsaColorSchemeRegistry::sl_onCustomSettingsChanged() {
     schemesListChanged |= !factoriesToRemove.isEmpty();
     CHECK(schemesListChanged, );
 
-    foreach (MsaColorSchemeCustomFactory *factory, factoriesToRemove) {
+    foreach (MsaColorSchemeCustomFactory* factory, factoriesToRemove) {
         customColorers.removeOne(factory);
     }
 
@@ -264,14 +264,14 @@ namespace {
 
 #define SET_C(ch, cl) colorsPerChar[ch] = colorsPerChar[ch + ('a' - 'A')] = cl
 
-void fillLightColorsColorScheme(QVector<QColor> &colorsPerChar) {
+void fillLightColorsColorScheme(QVector<QColor>& colorsPerChar) {
     for (int i = 0; i < 256; i++) {
         colorsPerChar[i] = FeatureColors::genLightColor(QString((char)i));
     }
     colorsPerChar[U2Msa::GAP_CHAR] = QColor();  // invalid color -> no color at all
 }
 
-void addUgeneAmino(QVector<QColor> &colorsPerChar) {
+void addUgeneAmino(QVector<QColor>& colorsPerChar) {
     Q_UNUSED(colorsPerChar);
 
     // Note: Using direct RGB colors instead of .lighter()/.darker()
@@ -306,7 +306,7 @@ void addUgeneAmino(QVector<QColor> &colorsPerChar) {
     SET_C('X', "#fcfcfc");
 }
 
-void addUgeneNucleotide(QVector<QColor> &colorsPerChar) {
+void addUgeneNucleotide(QVector<QColor>& colorsPerChar) {
     Q_UNUSED(colorsPerChar);
 
     SET_C('A', "#FCFF92");  // yellow
@@ -317,7 +317,7 @@ void addUgeneNucleotide(QVector<QColor> &colorsPerChar) {
     SET_C('N', "#FCFCFC");
 }
 
-void addUgeneSangerNucleotide(QVector<QColor> &colorsPerChar) {
+void addUgeneSangerNucleotide(QVector<QColor>& colorsPerChar) {
     Q_UNUSED(colorsPerChar);
 
     SET_C('A', "#36D695");
@@ -340,7 +340,7 @@ void addUgeneSangerNucleotide(QVector<QColor> &colorsPerChar) {
     colorsPerChar[U2Msa::GAP_CHAR] = "#FF9700";
 }
 
-void addZappoAmino(QVector<QColor> &colorsPerChar) {
+void addZappoAmino(QVector<QColor>& colorsPerChar) {
     Q_UNUSED(colorsPerChar);
 
     // Aliphatic/hydrophobic:    ILVAM       #ffafaf
@@ -378,7 +378,7 @@ void addZappoAmino(QVector<QColor> &colorsPerChar) {
     SET_C('C', "#ffff00");
 }
 
-void addTailorAmino(QVector<QColor> &colorsPerChar) {
+void addTailorAmino(QVector<QColor>& colorsPerChar) {
     Q_UNUSED(colorsPerChar);
 
     SET_C('A', "#ccff00");
@@ -403,7 +403,7 @@ void addTailorAmino(QVector<QColor> &colorsPerChar) {
     SET_C('C', "#ffff00");
 }
 
-void addHydroAmino(QVector<QColor> &colorsPerChar) {
+void addHydroAmino(QVector<QColor>& colorsPerChar) {
     Q_UNUSED(colorsPerChar);
 
     // The most hydrophobic residues according to this table are colored red and the most hydrophilic ones are colored blue.
@@ -432,7 +432,7 @@ void addHydroAmino(QVector<QColor> &colorsPerChar) {
     SET_C('R', "#0000ff");
 }
 
-void addHelixAmino(QVector<QColor> &colorsPerChar) {
+void addHelixAmino(QVector<QColor>& colorsPerChar) {
     Q_UNUSED(colorsPerChar);
 
     SET_C('E', "#ff00ff");
@@ -460,7 +460,7 @@ void addHelixAmino(QVector<QColor> &colorsPerChar) {
     SET_C('P', "#00ff00");
 }
 
-void addStrandAmino(QVector<QColor> &colorsPerChar) {
+void addStrandAmino(QVector<QColor>& colorsPerChar) {
     Q_UNUSED(colorsPerChar);
 
     SET_C('V', "#ffff00");
@@ -488,7 +488,7 @@ void addStrandAmino(QVector<QColor> &colorsPerChar) {
     SET_C('E', "#0000ff");
 }
 
-void addTurnAmino(QVector<QColor> &colorsPerChar) {
+void addTurnAmino(QVector<QColor>& colorsPerChar) {
     Q_UNUSED(colorsPerChar);
 
     SET_C('N', "#ff0000");
@@ -516,7 +516,7 @@ void addTurnAmino(QVector<QColor> &colorsPerChar) {
     SET_C('I', "#00ffff");
 }
 
-void addBuriedAmino(QVector<QColor> &colorsPerChar) {
+void addBuriedAmino(QVector<QColor>& colorsPerChar) {
     Q_UNUSED(colorsPerChar);
 
     SET_C('C', "#0000ff");
@@ -544,7 +544,7 @@ void addBuriedAmino(QVector<QColor> &colorsPerChar) {
     SET_C('K', "#00ff00");
 }
 
-void addJalviewNucleotide(QVector<QColor> &colorsPerChar) {
+void addJalviewNucleotide(QVector<QColor>& colorsPerChar) {
     Q_UNUSED(colorsPerChar);
 
     SET_C('A', "#64F73F");
@@ -623,7 +623,7 @@ void MsaColorSchemeRegistry::initBuiltInSchemes() {
 }
 
 void MsaColorSchemeRegistry::initCustomSchema() {
-    foreach (const ColorSchemeData &schema, ColorSchemeUtils::getSchemas()) {
+    foreach (const ColorSchemeData& schema, ColorSchemeUtils::getSchemas()) {
         addCustomScheme(schema);
     }
 }

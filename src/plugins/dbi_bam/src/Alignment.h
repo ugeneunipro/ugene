@@ -67,28 +67,28 @@ public:
     QByteArray getNextReferenceName() const;
     int getNextPosition() const;
     int getTemplateLength() const;
-    const QByteArray &getName() const;
-    const QList<CigarOperation> &getCigar() const;
-    const QByteArray &getSequence() const;
-    const QByteArray &getQuality() const;
-    const QList<U2AuxData> &getAuxData() const;
+    const QByteArray& getName() const;
+    const QList<CigarOperation>& getCigar() const;
+    const QByteArray& getSequence() const;
+    const QByteArray& getQuality() const;
+    const QList<U2AuxData>& getAuxData() const;
     void setReferenceId(int referenceId);
     void setPosition(int position);
     void setBin(int bin);
     void setMapQuality(int mapQuality);
     void setFlags(qint64 flags);
     void setNextReferenceId(int nextReferenceId);
-    void setNextReferenceName(const QByteArray &nextReferenceName);
+    void setNextReferenceName(const QByteArray& nextReferenceName);
     void setNextPosition(int nextPosition);
     void setTemplateLength(int templateLength);
-    void setName(const QByteArray &name);
-    void setCigar(const QList<CigarOperation> &cigar);
-    void setSequence(const QByteArray &sequence);
-    void setQuality(const QByteArray &quality);
-    void setAuxData(const QList<U2AuxData> &aux);
+    void setName(const QByteArray& name);
+    void setCigar(const QList<CigarOperation>& cigar);
+    void setSequence(const QByteArray& sequence);
+    void setQuality(const QByteArray& quality);
+    void setAuxData(const QList<U2AuxData>& aux);
 
-    static int computeLength(const QList<CigarOperation> &cigar);
-    static int computeLength(const QList<U2CigarToken> &cigar);
+    static int computeLength(const QList<CigarOperation>& cigar);
+    static int computeLength(const QList<U2CigarToken>& cigar);
 
 private:
     int referenceId;

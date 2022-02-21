@@ -34,10 +34,10 @@ class U2SavableWidget;
 
 class WidgetParamSnapshot {
 public:
-    explicit WidgetParamSnapshot(const QString &widgetId = QString());
+    explicit WidgetParamSnapshot(const QString& widgetId = QString());
 
-    const QString &getWidgetId() const;
-    void setParameter(const QString &name, const QVariant &value);
+    const QString& getWidgetId() const;
+    void setParameter(const QString& name, const QVariant& value);
     QVariantMap getParameters() const;
     bool isValid() const;
 
@@ -48,15 +48,15 @@ private:
 
 class U2GUI_EXPORT U2WidgetStateStorage {
 public:
-    static void saveWidgetState(const U2SavableWidget &widget);
-    static void restoreWidgetState(U2SavableWidget &widget);
-    static void onWindowClose(MWMDIWindow *closedWindow);
+    static void saveWidgetState(const U2SavableWidget& widget);
+    static void restoreWidgetState(U2SavableWidget& widget);
+    static void onWindowClose(MWMDIWindow* closedWindow);
 
 private:
-    static WidgetParamSnapshot findWidgetParams(const U2SavableWidget &widget);
-    static bool windowExists(MWMDIWindow *window);
+    static WidgetParamSnapshot findWidgetParams(const U2SavableWidget& widget);
+    static bool windowExists(MWMDIWindow* window);
 
-    static QMultiMap<MWMDIWindow *, WidgetParamSnapshot> window2widgetSnapshots;
+    static QMultiMap<MWMDIWindow*, WidgetParamSnapshot> window2widgetSnapshots;
 };
 
 }  // namespace U2

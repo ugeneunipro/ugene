@@ -68,7 +68,7 @@ bool GTKeyboardDriver::keyClick(Qt::Key key, Qt::KeyboardModifiers modifiers, bo
 }
 #undef GT_METHOD_NAME
 
-bool GTKeyboardDriver::keySequence(const QString &str, Qt::KeyboardModifiers modifiers) {
+bool GTKeyboardDriver::keySequence(const QString& str, Qt::KeyboardModifiers modifiers) {
     QList<Qt::Key> modifierKeys = modifiersToKeys(modifiers);
     foreach (Qt::Key mod, modifierKeys) {
         DRIVER_CHECK(keyPress(mod), "modifier could not be pressed");
@@ -92,7 +92,7 @@ bool GTKeyboardDriver::keySequence(const QString &str, Qt::KeyboardModifiers mod
 }
 
 /******************************************************************************/
-int GTKeyboardDriver::keys::operator[](const Qt::Key &key) const {
+int GTKeyboardDriver::keys::operator[](const Qt::Key& key) const {
     return value(key);
 }
 

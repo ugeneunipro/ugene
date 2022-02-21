@@ -32,7 +32,7 @@ const QString PairwiseAlignmentHirschbergTaskSettings::PA_H_BONUS_SCORE("H_bonus
 const QString PairwiseAlignmentHirschbergTaskSettings::PA_H_REALIZATION_NAME("H_realizationName");
 const QString PairwiseAlignmentHirschbergTaskSettings::PA_H_DEFAULT_RESULT_FILE_NAME("H_Alignment_Result.aln");
 
-PairwiseAlignmentHirschbergTaskSettings::PairwiseAlignmentHirschbergTaskSettings(const PairwiseAlignmentTaskSettings &s)
+PairwiseAlignmentHirschbergTaskSettings::PairwiseAlignmentHirschbergTaskSettings(const PairwiseAlignmentTaskSettings& s)
     : PairwiseAlignmentTaskSettings(s),
       gapOpen(0),
       gapExtd(0),
@@ -54,7 +54,7 @@ bool PairwiseAlignmentHirschbergTaskSettings::convertCustomSettings() {
     return true;
 }
 
-PairwiseAlignmentHirschbergTask::PairwiseAlignmentHirschbergTask(PairwiseAlignmentHirschbergTaskSettings *_settings)
+PairwiseAlignmentHirschbergTask::PairwiseAlignmentHirschbergTask(PairwiseAlignmentHirschbergTaskSettings* _settings)
     : PairwiseAlignmentTask(TaskFlag_NoRun),
       settings(_settings),
       kalignSubTask(nullptr),
@@ -102,8 +102,8 @@ PairwiseAlignmentHirschbergTask::~PairwiseAlignmentHirschbergTask() {
     delete settings;
 }
 
-QList<Task *> PairwiseAlignmentHirschbergTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> res;
+QList<Task*> PairwiseAlignmentHirschbergTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> res;
     if (hasError() || isCanceled()) {
         return res;
     }
@@ -114,19 +114,19 @@ QList<Task *> PairwiseAlignmentHirschbergTask::onSubTaskFinished(Task *subTask) 
     if (subTask == kalignSubTask) {
         if (settings->inNewWindow) {
             TaskStateInfo localStateInfo;
-            Project *currentProject = AppContext::getProject();
+            Project* currentProject = AppContext::getProject();
 
-            DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::CLUSTAL_ALN);
+            DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::CLUSTAL_ALN);
 
             QString newFileUrl = settings->resultFileName.getURLString();
             changeGivenUrlIfDocumentExists(newFileUrl, currentProject);
 
-            Document *alignmentDoc = format->createNewLoadedDocument(IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), GUrl(newFileUrl), localStateInfo);
+            Document* alignmentDoc = format->createNewLoadedDocument(IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), GUrl(newFileUrl), localStateInfo);
             CHECK_OP(localStateInfo, res);
 
             MultipleSequenceAlignment resultMa = kalignSubTask->resultMA;
 
-            MultipleSequenceAlignmentObject *docObject = MultipleSequenceAlignmentImporter::createAlignment(alignmentDoc->getDbiRef(), resultMa, localStateInfo);
+            MultipleSequenceAlignmentObject* docObject = MultipleSequenceAlignmentImporter::createAlignment(alignmentDoc->getDbiRef(), resultMa, localStateInfo);
             CHECK_OP(localStateInfo, res);
 
             alignmentDoc->addObject(docObject);
@@ -163,7 +163,7 @@ Task::ReportResult PairwiseAlignmentHirschbergTask::report() {
     return ReportResult_Finished;
 }
 
-void PairwiseAlignmentHirschbergTask::changeGivenUrlIfDocumentExists(QString &givenUrl, const Project *curProject) {
+void PairwiseAlignmentHirschbergTask::changeGivenUrlIfDocumentExists(QString& givenUrl, const Project* curProject) {
     if (curProject->findDocumentByURL(GUrl(givenUrl)) != nullptr) {
         for (size_t i = 1;; i++) {
             QString tmpUrl = givenUrl;

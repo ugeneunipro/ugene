@@ -57,7 +57,7 @@ public:
         NoSplit
     };
 
-    AbstractVariationFormat(QObject *p, const DocumentFormatId &id, const QStringList &fileExtensions, bool _isSupportHeader = false);
+    AbstractVariationFormat(QObject* p, const DocumentFormatId& id, const QStringList& fileExtensions, bool _isSupportHeader = false);
 
 protected:
     bool isSupportHeader;
@@ -68,29 +68,28 @@ protected:
 
     PositionIndexing indexing;
 
-    FormatCheckResult checkRawTextData(const QString &dataPrefix, const GUrl &originalDataUrl) const override;
+    FormatCheckResult checkRawTextData(const QString& dataPrefix, const GUrl& originalDataUrl) const override;
 
-    Document *loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) override;
+    Document* loadTextDocument(IOAdapterReader& reader, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os) override;
 
-    void storeTextDocument(IOAdapterWriter &writer, Document *document, U2OpStatus &os) override;
+    void storeTextDocument(IOAdapterWriter& writer, Document* document, U2OpStatus& os) override;
 
-    void storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) override;
+    void storeTextEntry(IOAdapterWriter& writer, const QMap<GObjectType, QList<GObject*>>& objectsMap, U2OpStatus& os) override;
 
     virtual bool checkFormatByColumnCount(int columnCount) const = 0;
-
 
     static const QString META_INFO_START;
     static const QString HEADER_START;
     static const QString COLUMNS_SEPARATOR;
 
 public:
-    void storeHeader(const VariantTrackObject *trackObject, IOAdapterWriter &writer, U2OpStatus &os) const;
+    void storeHeader(const VariantTrackObject* trackObject, IOAdapterWriter& writer, U2OpStatus& os) const;
 
-    void storeTrack(IOAdapterWriter &writer, const VariantTrackObject *trackObject, U2OpStatus &os) const;
+    void storeTrack(IOAdapterWriter& writer, const VariantTrackObject* trackObject, U2OpStatus& os) const;
 
-    static QString getMetaInfo(const VariantTrackObject *trackObject, U2OpStatus &os);
+    static QString getMetaInfo(const VariantTrackObject* trackObject, U2OpStatus& os);
 
-    static QStringList getHeader(const VariantTrackObject *trackObject, U2OpStatus &os);
+    static QStringList getHeader(const VariantTrackObject* trackObject, U2OpStatus& os);
 };
 
 }  // namespace U2

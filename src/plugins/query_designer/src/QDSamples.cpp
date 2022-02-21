@@ -31,32 +31,32 @@
 #include "QDSceneIOTasks.h"
 #include "QueryViewController.h"
 
-Q_DECLARE_METATYPE(QTextDocument *);
+Q_DECLARE_METATYPE(QTextDocument*);
 
 namespace U2 {
 
 QList<QDSample> QDSamplesRegistry::data;
 
-QDLoadSamplesTask::QDLoadSamplesTask(const QStringList &_dirs)
+QDLoadSamplesTask::QDLoadSamplesTask(const QStringList& _dirs)
     : Task(tr("Load query samples"), TaskFlag_NoRun) {
-    foreach (const QString &s, _dirs) {
+    foreach (const QString& s, _dirs) {
         QDir dir(s);
         QStringList names(QString("*.%1").arg(QUERY_SCHEME_EXTENSION));
-        foreach (const QFileInfo &fi, dir.entryInfoList(names, QDir::Files | QDir::NoSymLinks)) {
-            const QString &file = fi.absoluteFilePath();
-            QDLoadDocumentTask *t = new QDLoadDocumentTask(file);
+        foreach (const QFileInfo& fi, dir.entryInfoList(names, QDir::Files | QDir::NoSymLinks)) {
+            const QString& file = fi.absoluteFilePath();
+            QDLoadDocumentTask* t = new QDLoadDocumentTask(file);
             addSubTask(t);
             idMap[t] = file;
         }
     }
 }
 
-QList<Task *> QDLoadSamplesTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> st;
+QList<Task*> QDLoadSamplesTask::onSubTaskFinished(Task* subTask) {
+    QList<Task*> st;
     if (isCanceled()) {
         return st;
     }
-    QDLoadDocumentTask *loadTask = qobject_cast<QDLoadDocumentTask *>(subTask);
+    QDLoadDocumentTask* loadTask = qobject_cast<QDLoadDocumentTask*>(subTask);
     assert(loadTask);
     QDSample sample;
     sample.content = loadTask->getDocument();
@@ -77,31 +77,31 @@ Task::ReportResult QDLoadSamplesTask::report() {
 #define DATA_ROLE Qt::UserRole
 #define DOC_ROLE Qt::UserRole + 1
 
-QDSamplesWidget::QDSamplesWidget(QueryScene *scene, QWidget *parent /* =NULL */)
+QDSamplesWidget::QDSamplesWidget(QueryScene* scene, QWidget* parent /* =NULL */)
     : QListWidget(parent) {
     setWordWrap(true);
-    foreach (const QDSample &sample, QDSamplesRegistry::getSamples()) {
+    foreach (const QDSample& sample, QDSamplesRegistry::getSamples()) {
         addSample(sample);
     }
 
     glass = new QDSamplePane(scene);
 
-    connect(this, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), SLOT(sl_onItemChanged(QListWidgetItem *)));
-    connect(this, SIGNAL(itemDoubleClicked(QListWidgetItem *)), SLOT(sl_onItemSelected(QListWidgetItem *)));
-    connect(glass, SIGNAL(itemActivated(QListWidgetItem *)), SLOT(sl_onItemSelected(QListWidgetItem *)));
+    connect(this, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), SLOT(sl_onItemChanged(QListWidgetItem*)));
+    connect(this, SIGNAL(itemDoubleClicked(QListWidgetItem*)), SLOT(sl_onItemSelected(QListWidgetItem*)));
+    connect(glass, SIGNAL(itemActivated(QListWidgetItem*)), SLOT(sl_onItemSelected(QListWidgetItem*)));
 }
 
-void QDSamplesWidget::addSample(const QDSample &sample) {
-    QListWidgetItem *item = new QListWidgetItem(sample.d.getDisplayName(), this);
-    item->setData(DATA_ROLE, qVariantFromValue<QDDocument *>(sample.content));
-    QTextDocument *txtDoc = new QTextDocument(this);
+void QDSamplesWidget::addSample(const QDSample& sample) {
+    QListWidgetItem* item = new QListWidgetItem(sample.d.getDisplayName(), this);
+    item->setData(DATA_ROLE, qVariantFromValue<QDDocument*>(sample.content));
+    QTextDocument* txtDoc = new QTextDocument(this);
     QIcon ico;
     ico.addPixmap(QDUtils::generateSnapShot(sample.content, QRect()));
     DesignerGUIUtils::setupSamplesDocument(sample.d, ico, txtDoc);
-    item->setData(DOC_ROLE, qVariantFromValue<QTextDocument *>(txtDoc));
+    item->setData(DOC_ROLE, qVariantFromValue<QTextDocument*>(txtDoc));
 }
 
-void QDSamplesWidget::sl_onItemChanged(QListWidgetItem *item) {
+void QDSamplesWidget::sl_onItemChanged(QListWidgetItem* item) {
     if (item && !item->data(DATA_ROLE).isValid()) {
         item = nullptr;
     }
@@ -110,8 +110,8 @@ void QDSamplesWidget::sl_onItemChanged(QListWidgetItem *item) {
     emit setupGlass(glass);
 }
 
-void QDSamplesWidget::sl_onItemSelected(QListWidgetItem *item) {
-    QDDocument *doc = item->data(DATA_ROLE).value<QDDocument *>();
+void QDSamplesWidget::sl_onItemSelected(QListWidgetItem* item) {
+    QDDocument* doc = item->data(DATA_ROLE).value<QDDocument*>();
     assert(doc);
     emit itemActivated(doc);
 }
@@ -126,27 +126,27 @@ void QDSamplesWidget::sl_cancel() {
     }
 }
 
-QDSamplePane::QDSamplePane(QueryScene *_scene)
+QDSamplePane::QDSamplePane(QueryScene* _scene)
     : scene(_scene), current(nullptr) {
 }
 
-void QDSamplePane::paint(QPainter *painter) {
+void QDSamplePane::paint(QPainter* painter) {
     if (!current && scene->getScheme()->getActors().isEmpty()) {
         DesignerGUIUtils::paintSamplesArrow(painter);
         return;
     }
 
     if (current) {
-        QTextDocument *doc = current->data(DOC_ROLE).value<QTextDocument *>();
+        QTextDocument* doc = current->data(DOC_ROLE).value<QTextDocument*>();
         DesignerGUIUtils::paintSamplesDocument(painter, doc, width(), height(), palette());
     }
 }
 
-void QDSamplePane::mouseDoubleClickEvent(QMouseEvent *e) {
+void QDSamplePane::mouseDoubleClickEvent(QMouseEvent* e) {
     if (current == nullptr) {
         return;
     }
-    QTextDocument *doc = current->data(DOC_ROLE).value<QTextDocument *>();
+    QTextDocument* doc = current->data(DOC_ROLE).value<QTextDocument*>();
     int pageWidth = qMax(width() - 100, 100);
     int pageHeight = qMax(height() - 100, 100);
     if (pageWidth != doc->pageSize().width()) {

@@ -43,7 +43,7 @@ public:
 class GetAssemblyLengthTask : public Task {
     Q_OBJECT
 public:
-    GetAssemblyLengthTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId)
+    GetAssemblyLengthTask(const U2DbiRef& dbiRef, const U2DataId& assemblyId)
         : Task(tr("Get length of Assembly"), TaskFlag_None), dbiRef(dbiRef), assemblyId(assemblyId) {
     }
 
@@ -62,36 +62,36 @@ private:
 class CalculateCoveragePerBaseOnRegionTask : public Task {
     Q_OBJECT
 public:
-    CalculateCoveragePerBaseOnRegionTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, const U2Region &region);
+    CalculateCoveragePerBaseOnRegionTask(const U2DbiRef& dbiRef, const U2DataId& assemblyId, const U2Region& region);
     ~CalculateCoveragePerBaseOnRegionTask();
 
     void run();
 
-    const U2Region &getRegion() const;
-    QVector<CoveragePerBaseInfo> *takeResult();
+    const U2Region& getRegion() const;
+    QVector<CoveragePerBaseInfo>* takeResult();
 
 private:
-    void processRead(const U2AssemblyRead &read);
-    U2CigarOp nextCigarOp(const QVector<U2CigarOp> &cigarVector, int &index, int &insertionsCount);
+    void processRead(const U2AssemblyRead& read);
+    U2CigarOp nextCigarOp(const QVector<U2CigarOp>& cigarVector, int& index, int& insertionsCount);
 
     const U2DbiRef dbiRef;
     const U2DataId assemblyId;
     const U2Region region;
-    QVector<CoveragePerBaseInfo> *results;
+    QVector<CoveragePerBaseInfo>* results;
 };
 
 class CalculateCoveragePerBaseTask : public Task {
     Q_OBJECT
 public:
-    CalculateCoveragePerBaseTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId);
+    CalculateCoveragePerBaseTask(const U2DbiRef& dbiRef, const U2DataId& assemblyId);
     ~CalculateCoveragePerBaseTask();
 
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
     bool isResultReady(qint64 startPos) const;
     bool areThereUnprocessedResults() const;
-    QVector<CoveragePerBaseInfo> *takeResult(qint64 startPos);
+    QVector<CoveragePerBaseInfo>* takeResult(qint64 startPos);
 
 signals:
     void si_regionIsProcessed(qint64 startPos);
@@ -101,10 +101,10 @@ private slots:
 private:
     const U2DbiRef dbiRef;
     const U2DataId assemblyId;
-    QHash<qint64, QVector<CoveragePerBaseInfo> *> results;
+    QHash<qint64, QVector<CoveragePerBaseInfo>*> results;
 
     static const qint64 MAX_REGION_LENGTH = 100000;
-    GetAssemblyLengthTask *getLengthTask;
+    GetAssemblyLengthTask* getLengthTask;
 };
 
 }  // namespace U2

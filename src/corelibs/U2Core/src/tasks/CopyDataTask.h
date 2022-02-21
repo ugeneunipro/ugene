@@ -32,14 +32,14 @@ class IOAdapterFactory;
 class U2CORE_EXPORT CopyDataTask : public Task {
     Q_OBJECT
 public:
-    CopyDataTask(IOAdapterFactory *ioFrom, const GUrl &urlFrom, IOAdapterFactory *ioTo, const GUrl &urlTo);
+    CopyDataTask(IOAdapterFactory* ioFrom, const GUrl& urlFrom, IOAdapterFactory* ioTo, const GUrl& urlTo);
 
     virtual void run();
 
 private:
     static const int BUFFSIZE = 32 * 1024;
-    IOAdapterFactory *ioFrom;
-    IOAdapterFactory *ioTo;
+    IOAdapterFactory* ioFrom;
+    IOAdapterFactory* ioTo;
     GUrl urlFrom;
     GUrl urlTo;
 };

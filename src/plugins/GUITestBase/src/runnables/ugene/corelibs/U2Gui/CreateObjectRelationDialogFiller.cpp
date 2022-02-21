@@ -31,13 +31,12 @@ using namespace HI;
 #define GT_CLASS_NAME "GTUtilsDialog::FindRepeatsDialogFiller"
 #define GT_METHOD_NAME "run"
 
-CreateObjectRelationDialogFiller::CreateObjectRelationDialogFiller(HI::GUITestOpStatus &os)
+CreateObjectRelationDialogFiller::CreateObjectRelationDialogFiller(HI::GUITestOpStatus& os)
     : Filler(os, "CreateObjectRelationDialog") {
 }
 
 void CreateObjectRelationDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(nullptr != dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
     if (nullptr != QApplication::activeModalWidget()) {

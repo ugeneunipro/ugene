@@ -33,18 +33,18 @@ class U2CORE_EXPORT VariantTrackObject : public GObject {
     Q_OBJECT
 
 public:
-    VariantTrackObject(const QString &objectName, const U2EntityRef &trackRef, const QVariantMap &hintsMap = QVariantMap());
+    VariantTrackObject(const QString& objectName, const U2EntityRef& trackRef, const QVariantMap& hintsMap = QVariantMap());
     ~VariantTrackObject();
 
-    GObject *clone(const U2DbiRef &dbiRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const;
+    GObject* clone(const U2DbiRef& dbiRef, U2OpStatus& os, const QVariantMap& hints = QVariantMap()) const;
 
     /**U2_REGION_MAX to get all variants*/
-    U2DbiIterator<U2Variant> *getVariants(const U2Region &reg, U2OpStatus &os) const;
-    int getVariantCount(U2OpStatus &os) const;
+    U2DbiIterator<U2Variant>* getVariants(const U2Region& reg, U2OpStatus& os) const;
+    int getVariantCount(U2OpStatus& os) const;
 
-    void addVariants(const QList<U2Variant> &variants, U2OpStatus &os);
+    void addVariants(const QList<U2Variant>& variants, U2OpStatus& os);
 
-    U2VariantTrack getVariantTrack(U2OpStatus &os) const;
+    U2VariantTrack getVariantTrack(U2OpStatus& os) const;
 };
 
 }  // namespace U2

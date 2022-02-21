@@ -29,7 +29,7 @@ namespace U2 {
 class RunnerTool : public ExternalTool {
     Q_OBJECT
 public:
-    RunnerTool(const QStringList &runParameters, const QString &id, const QString &dirName, const QString &name, const QString &path = "");
+    RunnerTool(const QStringList& runParameters, const QString& id, const QString& dirName, const QString& name, const QString& path = "");
 
     QStringList getRunParameters() const override;
 
@@ -40,5 +40,5 @@ private:
     QStringList runParameters;
 };
 
-}    // namespace U2
+}  // namespace U2
 #endif

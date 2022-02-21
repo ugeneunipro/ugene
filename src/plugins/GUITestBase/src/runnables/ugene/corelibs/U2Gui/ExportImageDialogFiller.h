@@ -33,8 +33,8 @@ using namespace HI;
 
 class ExportImage : public Filler {
 public:
-    ExportImage(HI::GUITestOpStatus &os, const QString &filePath, const QString &comboValue = "", int spinValue = 0);
-    ExportImage(HI::GUITestOpStatus &os, CustomScenario *scenario);
+    ExportImage(HI::GUITestOpStatus& os, const QString& filePath, const QString& comboValue = "", int spinValue = 0);
+    ExportImage(HI::GUITestOpStatus& os, CustomScenario* scenario);
 
     void commonScenario();
 
@@ -46,14 +46,14 @@ protected:
 
 class CircularViewExportImage : public Filler {
 public:
-    CircularViewExportImage(HI::GUITestOpStatus &_os, QString _filePath, QString _comboValue = "", QString exportedSequenceName = "", int _spinValue = 0)
+    CircularViewExportImage(HI::GUITestOpStatus& _os, QString _filePath, QString _comboValue = "", QString exportedSequenceName = "", int _spinValue = 0)
         : Filler(_os, "ImageExportForm"),
           filePath(QDir::toNativeSeparators(_filePath)),
           comboValue(_comboValue),
           spinValue(_spinValue),
           exportedSequenceName(exportedSequenceName) {
     }
-    CircularViewExportImage(HI::GUITestOpStatus &os, CustomScenario *scenario)
+    CircularViewExportImage(HI::GUITestOpStatus& os, CustomScenario* scenario)
         : Filler(os, "ImageExportForm", scenario), spinValue(0) {
     }
     void commonScenario();
@@ -65,8 +65,8 @@ protected:
 };
 
 struct RegionMsa {
-    RegionMsa(const U2Region &region = U2Region(),
-              const QStringList &seqList = QStringList())
+    RegionMsa(const U2Region& region = U2Region(),
+              const QStringList& seqList = QStringList())
         : region(region),
           sequences(seqList) {
     }
@@ -90,7 +90,7 @@ public:
     };
 
     // default
-    ExportMsaImage(HI::GUITestOpStatus &os, QString filePath, QString comboValue = "", int spinValue = 0)
+    ExportMsaImage(HI::GUITestOpStatus& os, QString filePath, QString comboValue = "", int spinValue = 0)
         : ExportImage(os, filePath, comboValue, spinValue) {
     }
 
@@ -98,7 +98,7 @@ public:
     //  exportWholeAlignment = false,   exportCurrentSelection = true   : export of currently selected region, selection must be
     //  exportWholeAlignment = true,    exportCurrentSelection = false  : whole selection export
     //  exportWholeAlignment = true,    exportCurrentSelection = true   : error
-    ExportMsaImage(HI::GUITestOpStatus &os, QString filePath, Settings settings, bool exportWholeAlignment = true, bool exportCurrentSelection = false, RegionMsa region = RegionMsa(), QString comboValue = "", int spinValue = 0)
+    ExportMsaImage(HI::GUITestOpStatus& os, QString filePath, Settings settings, bool exportWholeAlignment = true, bool exportCurrentSelection = false, RegionMsa region = RegionMsa(), QString comboValue = "", int spinValue = 0)
         : ExportImage(os, filePath, comboValue, spinValue),
           settings(settings),
           exportWholeAlignment(exportWholeAlignment),
@@ -132,11 +132,11 @@ public:
         U2Region region;
     };
 
-    ExportSequenceImage(HI::GUITestOpStatus &os, QString filePath, QString comboValue = "", int spinValue = 0)
+    ExportSequenceImage(HI::GUITestOpStatus& os, QString filePath, QString comboValue = "", int spinValue = 0)
         : ExportImage(os, filePath, comboValue, spinValue) {
     }
 
-    ExportSequenceImage(HI::GUITestOpStatus &os, QString filePath, Settings settings, QString comboValue = "", int spinValue = 0)
+    ExportSequenceImage(HI::GUITestOpStatus& os, QString filePath, Settings settings, QString comboValue = "", int spinValue = 0)
         : ExportImage(os, filePath, comboValue, spinValue),
           settings(settings) {
     }
@@ -149,7 +149,7 @@ private:
 
 class SelectSubalignmentFiller : public Filler {
 public:
-    SelectSubalignmentFiller(HI::GUITestOpStatus &_os, const RegionMsa &regionMsa)
+    SelectSubalignmentFiller(HI::GUITestOpStatus& _os, const RegionMsa& regionMsa)
         : Filler(_os, "SelectSubalignmentDialog"),
           msaRegion(regionMsa) {
     }
@@ -176,7 +176,7 @@ public:
         QString format;
     };
 
-    ImageExportFormFiller(HI::GUITestOpStatus &os, const Parameters &parameters);
+    ImageExportFormFiller(HI::GUITestOpStatus& os, const Parameters& parameters);
     void commonScenario();
 
 private:

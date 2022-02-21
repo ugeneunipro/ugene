@@ -27,11 +27,11 @@
 namespace U2 {
 class TableViewTabKey : public QTableView {
 public:
-    explicit TableViewTabKey(QWidget *parent = 0);
+    explicit TableViewTabKey(QWidget* parent = 0);
 
 protected:
-    virtual void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint);
-    virtual void keyPressEvent(QKeyEvent *event);
+    virtual void closeEditor(QWidget* editor, QAbstractItemDelegate::EndEditHint hint);
+    virtual void keyPressEvent(QKeyEvent* event);
 
 private:
     void setNextIndex();

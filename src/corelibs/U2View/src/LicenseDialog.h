@@ -22,12 +22,12 @@
 #ifndef LICENSEDIALOG_H
 #define LICENSEDIALOG_H
 
-#include <ui_LicenseDialog.h>
-
 #include <QDialog>
 
 #include <U2Core/GUrl.h>
 #include <U2Core/PluginModel.h>
+
+#include <ui_LicenseDialog.h>
 
 namespace U2 {
 
@@ -35,14 +35,14 @@ class LicenseDialog : public QDialog, private Ui_LicenseDialog {
     Q_OBJECT
 
 public:
-    explicit LicenseDialog(Plugin *plugin, QWidget *parent = 0);
+    explicit LicenseDialog(Plugin* plugin, QWidget* parent = 0);
     ~LicenseDialog();
 public slots:
     void sl_accept();
 
 private:
-    Ui_LicenseDialog *ui;
-    Plugin *plugin;
+    Ui_LicenseDialog* ui;
+    Plugin* plugin;
 };
 }  // namespace U2
 #endif  // LICENSEDIALOG_H

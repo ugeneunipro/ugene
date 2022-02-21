@@ -40,10 +40,10 @@ class InputWidgetController;
 
 class U2GUI_EXPORT ParameterDependence {
 public:
-    ParameterDependence(InputWidgetController *parameterController, bool checkboxState)
+    ParameterDependence(InputWidgetController* parameterController, bool checkboxState)
         : parameterController(parameterController), checkboxState(checkboxState) {
     }
-    InputWidgetController *parameterController;
+    InputWidgetController* parameterController;
     bool checkboxState;
 };
 
@@ -57,112 +57,112 @@ public:
     /** If true, a command line option will be emitted even if the default value is selected. */
     void setEmitCommandLineOptionForDefaultFlag(bool flag);
 
-    virtual void addParameterToCmdLineSettings(QStringList &settings);
+    virtual void addParameterToCmdLineSettings(QStringList& settings);
     virtual void setWidgetEnabled(bool isEnabled);
     virtual void addDependentParameter(ParameterDependence dependence) {
         Q_UNUSED(dependence);
     }
 
 protected:
-    virtual void setWidgetValue(const QVariant &newValue) = 0;
+    virtual void setWidgetValue(const QVariant& newValue) = 0;
     virtual QVariant getWidgetValue() = 0;
 
-    InputWidgetController(QWidget *baseWidget, const QString &settingsPath, const QString &cmdLinePrefix, const QVariant &defaultValue);
+    InputWidgetController(QWidget* baseWidget, const QString& settingsPath, const QString& cmdLinePrefix, const QVariant& defaultValue);
     QString cmdLinePrefix;
     QString settingsPath;
     QVariant curValue;
     QVariant defaultValue;
     bool isEmitCommandLineOptionForDefaultFlag = false;
-    QWidget *baseWidget;
+    QWidget* baseWidget;
 };
 
 class U2GUI_EXPORT SpinBoxController : public InputWidgetController {
     Q_OBJECT
 public:
-    SpinBoxController(QSpinBox *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix, const QVariant &defaultValue);
+    SpinBoxController(QSpinBox* inputWidget, const QString& settingsPath, const QString& cmdLinePrefix, const QVariant& defaultValue);
     void setWidgetEnabled(bool isEnabled);
 
 protected:
-    void setWidgetValue(const QVariant &newValue);
+    void setWidgetValue(const QVariant& newValue);
     QVariant getWidgetValue();
 
 private:
-    QSpinBox *inputWidget;
+    QSpinBox* inputWidget;
     int minimumValue;
 };
 
 class U2GUI_EXPORT DoubleSpinBoxController : public InputWidgetController {
     Q_OBJECT
 public:
-    DoubleSpinBoxController(QDoubleSpinBox *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix, const QVariant &defaultValue);
+    DoubleSpinBoxController(QDoubleSpinBox* inputWidget, const QString& settingsPath, const QString& cmdLinePrefix, const QVariant& defaultValue);
     void setWidgetEnabled(bool isEnabled);
 
 protected:
-    void setWidgetValue(const QVariant &newValue);
+    void setWidgetValue(const QVariant& newValue);
     QVariant getWidgetValue();
 
 private:
-    QDoubleSpinBox *inputWidget;
+    QDoubleSpinBox* inputWidget;
 };
 
 class U2GUI_EXPORT CheckBoxController : public InputWidgetController {
     Q_OBJECT
 public:
-    CheckBoxController(QCheckBox *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix, const QVariant &defaultValue);
+    CheckBoxController(QCheckBox* inputWidget, const QString& settingsPath, const QString& cmdLinePrefix, const QVariant& defaultValue);
 
     void addDependentParameter(ParameterDependence dependence);
 
 protected:
-    void setWidgetValue(const QVariant &newValue);
+    void setWidgetValue(const QVariant& newValue);
     QVariant getWidgetValue();
 private slots:
     void stateChanged(int newState);
 
 private:
-    QCheckBox *inputWidget;
+    QCheckBox* inputWidget;
     QList<ParameterDependence> dependentParameters;
 };
 
 class U2GUI_EXPORT RadioButtonController : public InputWidgetController {
     Q_OBJECT
 public:
-    RadioButtonController(QRadioButton *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix, const QVariant &defaultValue);
+    RadioButtonController(QRadioButton* inputWidget, const QString& settingsPath, const QString& cmdLinePrefix, const QVariant& defaultValue);
 
 protected:
-    void setWidgetValue(const QVariant &newValue);
+    void setWidgetValue(const QVariant& newValue);
     QVariant getWidgetValue();
 
 private:
-    QRadioButton *inputWidget;
+    QRadioButton* inputWidget;
 };
 
 class U2GUI_EXPORT ComboBoxController : public InputWidgetController {
     Q_OBJECT
 public:
-    ComboBoxController(QComboBox *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix, const QVariant &defaultValue, const QStringList &parameters = QStringList());
+    ComboBoxController(QComboBox* inputWidget, const QString& settingsPath, const QString& cmdLinePrefix, const QVariant& defaultValue, const QStringList& parameters = QStringList());
 
-    void addParameterToCmdLineSettings(QStringList &settings);
+    void addParameterToCmdLineSettings(QStringList& settings);
 
 protected:
-    void setWidgetValue(const QVariant &newValue);
+    void setWidgetValue(const QVariant& newValue);
     QVariant getWidgetValue();
 
 private:
-    QComboBox *inputWidget;
+    QComboBox* inputWidget;
     QStringList parameters;
 };
 
 class U2GUI_EXPORT LineEditController : public InputWidgetController {
     Q_OBJECT
 public:
-    LineEditController(QLineEdit *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix, const QVariant &defaultValue);
+    LineEditController(QLineEdit* inputWidget, const QString& settingsPath, const QString& cmdLinePrefix, const QVariant& defaultValue);
 
 protected:
-    void setWidgetValue(const QVariant &newValue);
+    void setWidgetValue(const QVariant& newValue);
     QVariant getWidgetValue();
 
 private:
-    QLineEdit *inputWidget;
+    QLineEdit* inputWidget;
 };
 
 class U2GUI_EXPORT WidgetControllersContainer {
@@ -171,21 +171,21 @@ public:
     }
     ~WidgetControllersContainer();
 
-    InputWidgetController *addWidgetController(QCheckBox *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix);
-    InputWidgetController *addWidgetController(QRadioButton *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix);
-    InputWidgetController *addWidgetController(QSpinBox *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix);
-    InputWidgetController *addWidgetController(QDoubleSpinBox *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix);
-    InputWidgetController *addWidgetController(QComboBox *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix, const QStringList &parameters = QStringList());
-    InputWidgetController *addWidgetController(QLineEdit *inputWidget, const QString &settingsPath, const QString &cmdLinePrefix);
+    InputWidgetController* addWidgetController(QCheckBox* inputWidget, const QString& settingsPath, const QString& cmdLinePrefix);
+    InputWidgetController* addWidgetController(QRadioButton* inputWidget, const QString& settingsPath, const QString& cmdLinePrefix);
+    InputWidgetController* addWidgetController(QSpinBox* inputWidget, const QString& settingsPath, const QString& cmdLinePrefix);
+    InputWidgetController* addWidgetController(QDoubleSpinBox* inputWidget, const QString& settingsPath, const QString& cmdLinePrefix);
+    InputWidgetController* addWidgetController(QComboBox* inputWidget, const QString& settingsPath, const QString& cmdLinePrefix, const QStringList& parameters = QStringList());
+    InputWidgetController* addWidgetController(QLineEdit* inputWidget, const QString& settingsPath, const QString& cmdLinePrefix);
 
     void storeSettings();
     void restoreDefault();
     void getDataFromSettings();
-    void addParametersToCmdLine(QStringList &cmdLineSettings);
+    void addParametersToCmdLine(QStringList& cmdLineSettings);
 
 private:
-    InputWidgetController *addWidget(InputWidgetController *inputWidget);
-    QList<InputWidgetController *> widgetControllers;
+    InputWidgetController* addWidget(InputWidgetController* inputWidget);
+    QList<InputWidgetController*> widgetControllers;
 };
 }  // namespace U2
 

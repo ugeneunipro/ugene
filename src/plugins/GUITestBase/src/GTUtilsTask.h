@@ -36,12 +36,12 @@ using namespace HI;
  */
 class GTUtilsTask {
 public:
-    static void checkNoTask(HI::GUITestOpStatus &os, const QString &taskName);
+    static void checkNoTask(HI::GUITestOpStatus& os, const QString& taskName);
 
-    static void waitTaskStart(HI::GUITestOpStatus &os, const QString &taskName, int timeout = 180000);
+    static void waitTaskStart(HI::GUITestOpStatus& os, const QString& taskName, int timeout = 180000);
 
 private:
-    static Task *getTaskByName(HI::GUITestOpStatus &os, const QString &taskName, const GTGlobals::FindOptions &options = {});
+    static Task* getTaskByName(HI::GUITestOpStatus& os, const QString& taskName, const GTGlobals::FindOptions& options = {});
 };
 
 }  // namespace U2

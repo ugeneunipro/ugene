@@ -53,10 +53,10 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     // 1. Click the menu Tools -> Primer -> Primer Library.
     // Expected: the library MDI window is opened.
-    QWidget *libraryMdi1 = GTUtilsPrimerLibrary::openLibrary(os);
+    QWidget* libraryMdi1 = GTUtilsPrimerLibrary::openLibrary(os);
 
     // 2. Click the menu again.
-    QWidget *libraryMdi2 = GTUtilsPrimerLibrary::openLibrary(os);
+    QWidget* libraryMdi2 = GTUtilsPrimerLibrary::openLibrary(os);
 
     // Expected: the same MDI windows is opened (not the second one).
     CHECK_SET_ERR(libraryMdi1 == libraryMdi2, "Different MDI windows");
@@ -64,7 +64,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     // 3. Click the close button.
     GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Close);
     // Expected: The window is closed.
-    QWidget *libraryMdi3 = GTUtilsMdi::activeWindow(os, {false});
+    QWidget* libraryMdi3 = GTUtilsMdi::activeWindow(os, {false});
     CHECK_SET_ERR(nullptr == libraryMdi3, "Library MDI is not closed");
 }
 
@@ -81,9 +81,9 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     // Expected: the dialog appears. The OK button is disabled.
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus& os) {
             // 3. Set the focus at the primer line edit and write "Q%1" (not ACGT).
-            QLineEdit *primerEdit = dynamic_cast<QLineEdit *>(GTWidget::findWidget(os, "primerEdit"));
+            QLineEdit* primerEdit = dynamic_cast<QLineEdit*>(GTWidget::findWidget(os, "primerEdit"));
             GTLineEdit::setText(os, primerEdit, "Q%1", true);
 
             // Expected: the line edit is empty.
@@ -96,12 +96,12 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             CHECK_SET_ERR(primerEdit->text() == "ATCG", "No upper-case");
 
             // 5. Remove the primer name.
-            QLineEdit *nameEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "nameEdit"));
+            QLineEdit* nameEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "nameEdit"));
             GTLineEdit::setText(os, nameEdit, "");
 
             // Expected: The OK button is disabled.
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            QPushButton *okButton = GTUtilsDialog::buttonBox(os, dialog)->button(QDialogButtonBox::Ok);
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+            QPushButton* okButton = GTUtilsDialog::buttonBox(os, dialog)->button(QDialogButtonBox::Ok);
             CHECK_SET_ERR(!okButton->isEnabled(), "The OK button is enabled");
 
             // 6. Set the name "Primer".
@@ -142,7 +142,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTMouseDriver::click();
 
     // Expected: The remove button is disabled.
-    QAbstractButton *removeButton = GTUtilsPrimerLibrary::getButton(os, GTUtilsPrimerLibrary::Remove);
+    QAbstractButton* removeButton = GTUtilsPrimerLibrary::getButton(os, GTUtilsPrimerLibrary::Remove);
     CHECK_SET_ERR(!removeButton->isEnabled(), "The remove button is enabled");
 
     // 4. Select the primer.
@@ -189,7 +189,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTWidget::click(os, GTUtilsPcr::browseButton(os, U2Strand::Direct));
 
     // Expected: the dialog is closed, the chosen primer sequence is in the forward primer line edit.
-    QLineEdit *primerEdit = GTWidget::findExactWidget<QLineEdit *>(os, "primerEdit", GTUtilsPcr::primerBox(os, U2Strand::Direct));
+    auto primerEdit = GTWidget::findLineEdit(os, "primerEdit", GTUtilsPcr::primerBox(os, U2Strand::Direct));
     CHECK_SET_ERR(primerEdit->text() == "AAAAAAAAAAAAAA", "Wrong primer");
 }
 
@@ -216,7 +216,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTMouseDriver::click();
 
     // Expected: The edit button is disabled.
-    QAbstractButton *editButton = GTUtilsPrimerLibrary::getButton(os, GTUtilsPrimerLibrary::Edit);
+    QAbstractButton* editButton = GTUtilsPrimerLibrary::getButton(os, GTUtilsPrimerLibrary::Edit);
     CHECK_SET_ERR(!editButton->isEnabled(), "The remove button is enabled");
 
     // 4. Select several primers.
@@ -272,7 +272,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     //        File path: any valid path;
     //    and accept the dialog.
     class ExportToFastaScenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus& os) {
             ExportPrimersDialogFiller::setExportTarget(os, ExportPrimersDialogFiller::LocalFile);
             ExportPrimersDialogFiller::setFormat(os, "FASTA");
             ExportPrimersDialogFiller::setFilePath(os, sandBoxDir + "pcrlib/test_0006/primers.fa");
@@ -325,7 +325,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     //        File path: any valid path;
     //    and accept the dialog.
     class ExportToGenbankScenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus& os) {
             ExportPrimersDialogFiller::setExportTarget(os, ExportPrimersDialogFiller::LocalFile);
             ExportPrimersDialogFiller::setFormat(os, "GenBank");
             ExportPrimersDialogFiller::setFilePath(os, sandBoxDir + "pcrlib/test_0007/primers.gb");
@@ -349,7 +349,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     const QString secondSeq = GTUtilsSequenceView::getSequenceAsString(os, 1);
     CHECK_SET_ERR("GGGG" == secondSeq, QString("Incorrect sequence data: expect '%1', got '%2'").arg("GGGG").arg(secondSeq));
 
-    const QList<QTreeWidgetItem *> items = GTUtilsAnnotationsTreeView::findItems(os, "primer_bind");
+    const QList<QTreeWidgetItem*> items = GTUtilsAnnotationsTreeView::findItems(os, "primer_bind");
     CHECK_SET_ERR(items.size() == 2, QString("Unexpected annotations count: epxect %1, got %2").arg(2).arg(items.size()));
 
     GTUtilsAnnotationsTreeView::selectItemsByName(os, {"primer_bind"});
@@ -385,7 +385,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     //  Folder: any valid path;
     // and click OK.
     class ExportToSharedDbScenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) override {
+        void run(HI::GUITestOpStatus& os) override {
             GTWidget::getActiveModalWidget(os);
             ExportPrimersDialogFiller::setExportTarget(os, ExportPrimersDialogFiller::SharedDb);
             ExportPrimersDialogFiller::setDatabase(os, "ugene_gui_test");
@@ -400,7 +400,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
     // Check the database.
     // Expected state: there are four sequence objects and four annotation table objects with relations between them.
-    Document *databaseConnection = GTUtilsSharedDatabaseDocument::getDatabaseDocumentByName(os, "ugene_gui_test");
+    Document* databaseConnection = GTUtilsSharedDatabaseDocument::getDatabaseDocumentByName(os, "ugene_gui_test");
     GTUtilsSharedDatabaseDocument::openView(os, databaseConnection, "/pcrlib/test_0008/primer1");
     QString firstSeq = GTUtilsSequenceView::getSequenceAsString(os);
     CHECK_SET_ERR(firstSeq == "AAAA", QString("Incorrect sequence data: expect '%1', got '%2'").arg("AAAA", firstSeq));
@@ -426,7 +426,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     //        Files: "_common_data/fasta/random_primers.fa"
     //    and accept the dialog.
     class ImportFromMultifasta : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus& os) {
             ImportPrimersDialogFiller::setImportTarget(os, ImportPrimersDialogFiller::LocalFiles);
             ImportPrimersDialogFiller::addFile(os, testDir + "_common_data/fasta/random_primers.fa");
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -470,7 +470,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     //               "_common_data/fasta/random_primers.fa2"
     //    and accept the dialog.
     class ImportFromSeveralFiles : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus& os) {
             ImportPrimersDialogFiller::setImportTarget(os, ImportPrimersDialogFiller::LocalFiles);
             ImportPrimersDialogFiller::addFile(os, testDir + "_common_data/fasta/random_primers.fa");
             ImportPrimersDialogFiller::addFile(os, testDir + "_common_data/fasta/random_primers2.fa");
@@ -524,7 +524,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     //                 "/pcrlib/test_0011/primer4",
     //    and accept the dialog.
     class ImportFromSharedDatabaseObjects : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus& os) {
             ImportPrimersDialogFiller::setImportTarget(os, ImportPrimersDialogFiller::SharedDb);
             ImportPrimersDialogFiller::connectDatabase(os, "ugene_gui_test");
             ImportPrimersDialogFiller::addObjects(os, "ugene_gui_test", {"primerToImport1", "primerToImport2", "primerToImport3", "primerToImport4"});
@@ -569,7 +569,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     //        Objects: "/pcrlib/test_0012/"
     //    and accept the dialog.
     class ImportFromSharedDatabaseFolder : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus& os) {
             ImportPrimersDialogFiller::setImportTarget(os, ImportPrimersDialogFiller::SharedDb);
             ImportPrimersDialogFiller::connectDatabase(os, "ugene_gui_test");
             ImportPrimersDialogFiller::addObjects(os, "ugene_gui_test", {"test_0012"});
@@ -614,7 +614,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     //                 "user2@ugene_gui_test/pcrlib/test_0013/primerToImport9"
     //    and accept the dialog.
     class ImportFromTwoSharedDatabases : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus& os) {
             ImportPrimersDialogFiller::setImportTarget(os, ImportPrimersDialogFiller::SharedDb);
             ImportPrimersDialogFiller::connectDatabase(os, "ugene_gui_test");
             ImportPrimersDialogFiller::connectDatabase(os, "ugene_gui_test_ro");
@@ -724,7 +724,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     //               "_common_data/cmdline/primers/primer_degenerated_2.fasta"
     //    and accept the dialog.
     class ImportFromSeveralFiles : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus& os) {
             ImportPrimersDialogFiller::setImportTarget(os, ImportPrimersDialogFiller::LocalFiles);
             ImportPrimersDialogFiller::addFile(os, testDir + "_common_data/cmdline/primers/primer_degenerated_1.fasta");
             ImportPrimersDialogFiller::addFile(os, testDir + "_common_data/cmdline/primers/primer_degenerated_2.fasta");

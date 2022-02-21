@@ -31,7 +31,7 @@ namespace U2 {
 
 #define STATISTICS_WIDGET_ID QString("statisticsWidget123")
 
-static QList<StatisticsRow> dom2StatisticRows(const QDomElement &dom) {
+static QList<StatisticsRow> dom2StatisticRows(const QDomElement& dom) {
     QList<StatisticsRow> statisticsRows;
     QDomElement tbody = DomUtils::findElementById(dom, STATISTICS_WIDGET_ID);
     for (auto tr = tbody.firstChildElement("tr"); !tr.isNull(); tr = tr.nextSiblingElement("tr")) {
@@ -47,7 +47,7 @@ static QList<StatisticsRow> dom2StatisticRows(const QDomElement &dom) {
     return statisticsRows;
 }
 
-StatisticsDashboardWidget::StatisticsDashboardWidget(const QDomElement &dom, const WorkflowMonitor *monitor)
+StatisticsDashboardWidget::StatisticsDashboardWidget(const QDomElement& dom, const WorkflowMonitor* monitor)
     : monitor(monitor) {
     setFixedWidth(550);
     tableGridLayout = new QGridLayout();
@@ -56,8 +56,8 @@ StatisticsDashboardWidget::StatisticsDashboardWidget(const QDomElement &dom, con
 
     if (monitor != nullptr) {
         connect(monitor,
-                SIGNAL(si_workerInfoChanged(const QString &, const Monitor::WorkerInfo &)),
-                SLOT(sl_workerInfoChanged(const QString &, const Monitor::WorkerInfo &)));
+                SIGNAL(si_workerInfoChanged(const QString&, const Monitor::WorkerInfo&)),
+                SLOT(sl_workerInfoChanged(const QString&, const Monitor::WorkerInfo&)));
         connect(monitor, SIGNAL(si_updateProducers()), SLOT(sl_updateProducers()));
     }
 
@@ -68,7 +68,7 @@ StatisticsDashboardWidget::StatisticsDashboardWidget(const QDomElement &dom, con
     }
 }
 
-bool StatisticsDashboardWidget::isValidDom(const QDomElement &dom) {
+bool StatisticsDashboardWidget::isValidDom(const QDomElement& dom) {
     return !DomUtils::findElementById(dom, STATISTICS_WIDGET_ID).isNull();
 }
 
@@ -100,7 +100,7 @@ static QString formatTimeString(qint64 microseconds) {
         .arg(QString::number(milliseconds % 1000), 3, '0');
 }
 
-void StatisticsDashboardWidget::sl_workerInfoChanged(const QString &actorId, const Monitor::WorkerInfo &info) {
+void StatisticsDashboardWidget::sl_workerInfoChanged(const QString& actorId, const Monitor::WorkerInfo& info) {
     QString name = monitor->actorName(actorId);
     QString time = formatTimeString(info.timeMks);
     QString count = QString::number(monitor->getDataProduced(actorId));
@@ -111,15 +111,15 @@ void StatisticsDashboardWidget::sl_workerInfoChanged(const QString &actorId, con
 }
 
 void StatisticsDashboardWidget::sl_updateProducers() {
-    const QMap<QString, Monitor::WorkerInfo> &workerInfoMap = monitor->getWorkersInfo();
+    const QMap<QString, Monitor::WorkerInfo>& workerInfoMap = monitor->getWorkersInfo();
     const QList<QString> actorIdList = workerInfoMap.keys();
-    for (const QString &actorId : qAsConst(actorIdList)) {
-        const Monitor::WorkerInfo &info = workerInfoMap[actorId];
+    for (const QString& actorId : qAsConst(actorIdList)) {
+        const Monitor::WorkerInfo& info = workerInfoMap[actorId];
         sl_workerInfoChanged(actorId, info);
     }
 }
 
-StatisticsRow::StatisticsRow(const QString &id, const QString &name, const QString &time, const QString &count)
+StatisticsRow::StatisticsRow(const QString& id, const QString& name, const QString& time, const QString& count)
     : id(id), name(name), time(time), count(count) {
 }
 

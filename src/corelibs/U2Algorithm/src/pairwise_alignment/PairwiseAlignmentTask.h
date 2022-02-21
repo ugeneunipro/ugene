@@ -34,8 +34,8 @@ class PairwiseAlignmentTask;
 class U2ALGORITHM_EXPORT PairwiseAlignmentTaskSettings : public AbstractAlignmentTaskSettings {
 public:
     PairwiseAlignmentTaskSettings();
-    PairwiseAlignmentTaskSettings(const QVariantMap &someSettings);
-    PairwiseAlignmentTaskSettings(const PairwiseAlignmentTaskSettings &s);
+    PairwiseAlignmentTaskSettings(const QVariantMap& someSettings);
+    PairwiseAlignmentTaskSettings(const PairwiseAlignmentTaskSettings& s);
 
     virtual bool isValid() const;
 

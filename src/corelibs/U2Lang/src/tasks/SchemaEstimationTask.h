@@ -43,7 +43,7 @@ public:
 class U2LANG_EXPORT SchemaEstimationTask : public Task {
     Q_OBJECT
 public:
-    SchemaEstimationTask(const QSharedPointer<const Schema> &schema, const Metadata *meta);
+    SchemaEstimationTask(const QSharedPointer<const Schema>& schema, const Metadata* meta);
 
     void run();
 
@@ -51,31 +51,31 @@ public:
 
 private:
     const QSharedPointer<const Schema> schema;
-    const Metadata *meta;
+    const Metadata* meta;
     EstimationResult er;
 };
 
 class ExtimationsUtilsClass : public QObject {
     Q_OBJECT
 public:
-    ExtimationsUtilsClass(QScriptEngine &engine, const QSharedPointer<const Schema> &schema);
+    ExtimationsUtilsClass(QScriptEngine& engine, const QSharedPointer<const Schema>& schema);
 
 public slots:
-    QScriptValue attributeValue(const QString &attrStr);
+    QScriptValue attributeValue(const QString& attrStr);
     void test(QScriptValue v);
-    qint64 fileSize(const QString &url);
-    QString fileFormat(const QString &url);
-    bool testAttr(const QString &attrId);
-    qint64 bowtieIndexSize(const QString &dir, const QString &name, int versionId);
+    qint64 fileSize(const QString& url);
+    QString fileFormat(const QString& url);
+    bool testAttr(const QString& attrId);
+    qint64 bowtieIndexSize(const QString& dir, const QString& name, int versionId);
 
 private:
-    QStringList parseTokens(const QString &attrStr, U2OpStatus &os);
-    Attribute *getAttribute(const QString &attrStr, U2OpStatus &os);
-    QScriptValue prepareDatasets(const QList<Dataset> &sets);
-    void checkFile(const QString &url, U2OpStatus &os);
+    QStringList parseTokens(const QString& attrStr, U2OpStatus& os);
+    Attribute* getAttribute(const QString& attrStr, U2OpStatus& os);
+    QScriptValue prepareDatasets(const QList<Dataset>& sets);
+    void checkFile(const QString& url, U2OpStatus& os);
 
 private:
-    QScriptEngine &engine;
+    QScriptEngine& engine;
     const QSharedPointer<const Schema> schema;
 };
 

@@ -37,7 +37,7 @@ typedef PrompterBase<ORFPrompter> ORFPrompterBase;
 class ORFPrompter : public ORFPrompterBase {
     Q_OBJECT
 public:
-    ORFPrompter(Actor *p = 0)
+    ORFPrompter(Actor* p = 0)
         : ORFPrompterBase(p) {
     }
 
@@ -48,10 +48,10 @@ protected:
 class ORFWorker : public BaseWorker {
     Q_OBJECT
 public:
-    ORFWorker(Actor *a);
+    ORFWorker(Actor* a);
 
     virtual void init();
-    virtual Task *tick();
+    virtual Task* tick();
     virtual void cleanup();
 
 private slots:
@@ -70,7 +70,7 @@ public:
     ORFWorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
-    virtual Worker *createWorker(Actor *a) {
+    virtual Worker* createWorker(Actor* a) {
         return new ORFWorker(a);
     }
 };

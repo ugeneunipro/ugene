@@ -62,10 +62,10 @@ void BaseBreakpointHitCounter::reset() {
     hitCount = HIT_COUNTER_INITIAL_VALUE;
 }
 
-BaseBreakpointHitCounter *BaseBreakpointHitCounter::createInstance(
+BaseBreakpointHitCounter* BaseBreakpointHitCounter::createInstance(
     BreakpointHitCountCondition kindOfCondition,
-    const QVariant &hitCounterParameter) {
-    BaseBreakpointHitCounter *result = nullptr;
+    const QVariant& hitCounterParameter) {
+    BaseBreakpointHitCounter* result = nullptr;
     bool conversionResult = true;
     switch (kindOfCondition) {
         case ALWAYS:

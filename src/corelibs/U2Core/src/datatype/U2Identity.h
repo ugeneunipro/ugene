@@ -30,7 +30,7 @@ namespace U2 {
 template<class T>
 class AbstractId {
 protected:
-    AbstractId(const T &_id)
+    AbstractId(const T& _id)
         : id(_id) {
     }
     virtual ~AbstractId() {
@@ -39,15 +39,15 @@ protected:
 public:
     virtual bool isValid() const = 0;
 
-    bool operator==(const AbstractId<T> &oid) const {
+    bool operator==(const AbstractId<T>& oid) const {
         return oid.id == id;
     }
 
-    bool operator!=(const AbstractId<T> &oid) const {
+    bool operator!=(const AbstractId<T>& oid) const {
         return !(*this == oid);
     }
 
-    bool operator<(const AbstractId<T> &oid) const {
+    bool operator<(const AbstractId<T>& oid) const {
         return id < oid.id;
     }
 
@@ -56,7 +56,7 @@ public:
 
 class AbstractStringId : public AbstractId<QString> {
 protected:
-    AbstractStringId(const QString &id = QString())
+    AbstractStringId(const QString& id = QString())
         : AbstractId<QString>(id) {
     }
 
@@ -79,7 +79,7 @@ public:
 };
 
 template<class T>
-uint qHash(const AbstractId<T> &key) {
+uint qHash(const AbstractId<T>& key) {
     return ::qHash(key.id);
 }
 
@@ -97,9 +97,9 @@ uint qHash(const AbstractId<T> &key) {
     public: \
         Class() : QString() { \
         } \
-        Class(const QString &id) : QString(id) { \
+        Class(const QString& id) : QString(id) { \
         } \
-        Class(const char *id) : QString(QString(id)) { \
+        Class(const char* id) : QString(QString(id)) { \
         } \
     };
 

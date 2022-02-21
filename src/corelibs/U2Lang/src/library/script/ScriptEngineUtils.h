@@ -37,13 +37,13 @@ using namespace Workflow;
 
 class U2LANG_EXPORT ScriptEngineUtils {
 public:
-    static WorkflowScriptEngine *workflowEngine(QScriptEngine *engine);
-    static DbiDataStorage *dataStorage(QScriptEngine *engine);
-    static SequenceScriptClass *getSequenceClass(QScriptEngine *engine);
-    static SharedDbiDataHandler getDbiId(QScriptEngine *engine, const QScriptValue &value, const QString &className);
-    static SharedDbiDataHandler getDbiId(QScriptEngine *engine, const QScriptValue &value);
-    static QScriptValue toScriptValue(QScriptEngine *engine, const QVariant &value, DataTypePtr type);
-    static QVariant fromScriptValue(QScriptEngine *engine, const QScriptValue &value, DataTypePtr type);
+    static WorkflowScriptEngine* workflowEngine(QScriptEngine* engine);
+    static DbiDataStorage* dataStorage(QScriptEngine* engine);
+    static SequenceScriptClass* getSequenceClass(QScriptEngine* engine);
+    static SharedDbiDataHandler getDbiId(QScriptEngine* engine, const QScriptValue& value, const QString& className);
+    static SharedDbiDataHandler getDbiId(QScriptEngine* engine, const QScriptValue& value);
+    static QScriptValue toScriptValue(QScriptEngine* engine, const QVariant& value, DataTypePtr type);
+    static QVariant fromScriptValue(QScriptEngine* engine, const QScriptValue& value, DataTypePtr type);
 };
 
 }  // namespace U2

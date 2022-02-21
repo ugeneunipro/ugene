@@ -34,7 +34,7 @@ class StringtieGeneAbundanceReportWorkerFactory : public DomainFactory {
 public:
     StringtieGeneAbundanceReportWorkerFactory();
 
-    Worker *createWorker(Actor *actor);
+    Worker* createWorker(Actor* actor);
 
     static void init();
     static void cleanup();
@@ -44,7 +44,7 @@ public:
     static const QString OUTPUT_FILE_ATTR_ID;
 };
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2
 
-#endif    // _U2_STRINGTIE_GENE_ABUNDANCE_REPORT_WORKER_FACTORY_H_
+#endif  // _U2_STRINGTIE_GENE_ABUNDANCE_REPORT_WORKER_FACTORY_H_

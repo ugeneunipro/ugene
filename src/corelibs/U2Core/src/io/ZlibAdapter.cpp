@@ -33,26 +33,26 @@ namespace U2 {
 
 class GzipUtil {
 public:
-    GzipUtil(IOAdapter *io, bool doCompression);
+    GzipUtil(IOAdapter* io, bool doCompression);
     ~GzipUtil();
-    qint64 uncompress(char *outBuff, qint64 outSize);
-    qint64 compress(const char *inBuff, qint64 inSize, bool finish = false);
+    qint64 uncompress(char* outBuff, qint64 outSize);
+    qint64 compress(const char* inBuff, qint64 inSize, bool finish = false);
     bool isCompressing() const {
         return doCompression;
     }
     qint64 getPos() const;
-    bool skip(const GZipIndexAccessPoint &index, qint64 offset);
+    bool skip(const GZipIndexAccessPoint& index, qint64 offset);
 
 private:
     static const int CHUNK = 16384;
     z_stream strm;
     char buf[CHUNK];
-    IOAdapter *io;
+    IOAdapter* io;
     bool doCompression;
     qint64 curPos;  // position of uncompressed file
 };
 
-GzipUtil::GzipUtil(IOAdapter *io, bool doCompression)
+GzipUtil::GzipUtil(IOAdapter* io, bool doCompression)
     : io(io), doCompression(doCompression), curPos(0) {
     //#ifdef _DEBUG
     memset(buf, 0xDD, CHUNK);
@@ -91,16 +91,16 @@ qint64 GzipUtil::getPos() const {
     return curPos;
 }
 
-qint64 GzipUtil::uncompress(char *outBuff, qint64 outSize) {
+qint64 GzipUtil::uncompress(char* outBuff, qint64 outSize) {
     /* Based on gun.c (example from zlib, copyrighted (C) 2003, 2005 Mark Adler) */
     strm.avail_out = outSize;
-    strm.next_out = (Bytef *)outBuff;
+    strm.next_out = (Bytef*)outBuff;
     do {
         /* run inflate() on input until output buffer is full */
         if (strm.avail_in == 0) {
             // need more input
             strm.avail_in = io->readBlock(buf, CHUNK);
-            strm.next_in = (Bytef *)buf;
+            strm.next_in = (Bytef*)buf;
         }
         if (strm.avail_in == quint32(-1)) {
             // TODO log error
@@ -139,16 +139,16 @@ qint64 GzipUtil::uncompress(char *outBuff, qint64 outSize) {
     return outSize - strm.avail_out;
 }
 
-qint64 GzipUtil::compress(const char *inBuff, qint64 inSize, bool finish) {
+qint64 GzipUtil::compress(const char* inBuff, qint64 inSize, bool finish) {
     int ret = Z_OK;
     Q_UNUSED(ret);
     /* Based on gun.c (example from zlib, copyrighted (C) 2003, 2005 Mark Adler) */
     strm.avail_in = inSize;
-    strm.next_in = (Bytef *)inBuff;
+    strm.next_in = (Bytef*)inBuff;
     do {
         /* run deflate() on input until output buffer not full */
         strm.avail_out = CHUNK;
-        strm.next_out = (Bytef *)buf;
+        strm.next_out = (Bytef*)buf;
         ret = deflate(&strm, finish ? Z_FINISH : Z_NO_FLUSH);
         assert(ret != Z_STREAM_ERROR); /* state not clobbered */
         int have = CHUNK - strm.avail_out;
@@ -171,14 +171,14 @@ qint64 GzipUtil::compress(const char *inBuff, qint64 inSize, bool finish) {
 }
 
 // based on zran.c ( example from zlib Copyright (C) 2005 Mark Adler )
-bool GzipUtil::skip(const GZipIndexAccessPoint &here, qint64 offset) {
+bool GzipUtil::skip(const GZipIndexAccessPoint& here, qint64 offset) {
     if (here.out > offset || 0 > offset) {
         return false;
     }
     int ret = 0;
     char discard[GZipIndex::WINSIZE];
 
-    LocalFileAdapter *localIO = qobject_cast<LocalFileAdapter *>(io);
+    LocalFileAdapter* localIO = qobject_cast<LocalFileAdapter*>(io);
     if (nullptr == localIO) {
         return false;
     }
@@ -196,7 +196,7 @@ bool GzipUtil::skip(const GZipIndexAccessPoint &here, qint64 offset) {
         ret = chr;
         inflatePrime(&strm, here.bits, ret >> (8 - here.bits));
     }
-    inflateSetDictionary(&strm, (const Bytef *)here.window.data(), GZipIndex::WINSIZE);
+    inflateSetDictionary(&strm, (const Bytef*)here.window.data(), GZipIndex::WINSIZE);
 
     /* skip uncompressed bytes until offset reached, then satisfy request */
     offset -= here.out;
@@ -220,7 +220,7 @@ bool GzipUtil::skip(const GZipIndexAccessPoint &here, qint64 offset) {
     return true;
 }
 
-ZlibAdapter::ZlibAdapter(IOAdapter *io)
+ZlibAdapter::ZlibAdapter(IOAdapter* io)
     : IOAdapter(io->getFactory()), io(io), z(nullptr), buf(nullptr), rewinded(0) {
 }
 
@@ -245,7 +245,7 @@ void ZlibAdapter::close() {
         io->close();
 }
 
-bool ZlibAdapter::open(const GUrl &url, IOAdapterMode m) {
+bool ZlibAdapter::open(const GUrl& url, IOAdapterMode m) {
     assert(!isOpen());
     close();
     bool res = io->open(url, m);
@@ -260,7 +260,7 @@ bool ZlibAdapter::open(const GUrl &url, IOAdapterMode m) {
     return res;
 }
 
-qint64 ZlibAdapter::readBlock(char *data, qint64 size) {
+qint64 ZlibAdapter::readBlock(char* data, qint64 size) {
     if (!isOpen() || z->isCompressing()) {
         qCritical("not ready to read");
         Q_ASSERT(false);
@@ -294,7 +294,7 @@ qint64 ZlibAdapter::readBlock(char *data, qint64 size) {
     return size + cached;
 }
 
-qint64 ZlibAdapter::writeBlock(const char *data, qint64 size) {
+qint64 ZlibAdapter::writeBlock(const char* data, qint64 size) {
     if (!isOpen() || !z->isCompressing()) {
         qCritical("not ready to write");
         Q_ASSERT(false);
@@ -320,14 +320,14 @@ bool ZlibAdapter::skip(qint64 nBytes) {
         return false;
     }
     rewinded = 0;
-    char *tmp = new char[nBytes];
+    char* tmp = new char[nBytes];
     qint64 skipped = readBlock(tmp, nBytes);
     delete[] tmp;
 
     return skipped == nBytes;
 }
 
-bool ZlibAdapter::skip(const GZipIndexAccessPoint &point, qint64 offset) {
+bool ZlibAdapter::skip(const GZipIndexAccessPoint& point, qint64 offset) {
     if (nullptr == z) {
         return false;
     }
@@ -349,7 +349,7 @@ qint64 ZlibAdapter::bytesRead() const {
     return z->getPos() - rewinded;
 }
 
-qint64 ZlibAdapter::getUncompressedFileSizeInBytes(const GUrl &url) {
+qint64 ZlibAdapter::getUncompressedFileSizeInBytes(const GUrl& url) {
     QFile file(url.getURLString());
     if (!file.open(QIODevice::ReadOnly)) {
         return -1;
@@ -360,7 +360,7 @@ qint64 ZlibAdapter::getUncompressedFileSizeInBytes(const GUrl &url) {
     QByteArray buffer = file.read(wordSizeInBytes);
     assert(buffer.size() == wordSizeInBytes);
 
-    quint32 result = qFromLittleEndian<quint32>((uchar *)buffer.data());
+    quint32 result = qFromLittleEndian<quint32>((uchar*)buffer.data());
     file.close();
     return result;
 }

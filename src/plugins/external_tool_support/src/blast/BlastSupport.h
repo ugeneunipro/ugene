@@ -31,7 +31,7 @@ namespace U2 {
 class BlastSupport : public ExternalTool {
     Q_OBJECT
 public:
-    BlastSupport(const QString &id);
+    BlastSupport(const QString& id);
 
     static const QString ET_BLASTN_ID;
     static const QString ET_BLASTP_ID;
@@ -48,13 +48,13 @@ public:
      * Checks if the tool is configured correctly and is ready to run.
      * Asks user to set-up the BLAST tool correctly (shows a dialog) if needed.
      */
-    static bool checkBlastTool(const QString &toolId);
+    static bool checkBlastTool(const QString& toolId);
 
     /** Returns BLAST tool id (ex: 'USUPP_BLASTX') by the visual program name (ex: 'blastx'). */
-    static QString getToolIdByProgramName(const QString &programName);
+    static QString getToolIdByProgramName(const QString& programName);
 
     /** Returns BLAST program name (ex: 'blastp') by  the tool id (ex: 'USUPP_BLASTP'). */
-    static QString getProgramNameByToolId(const QString &toolId);
+    static QString getProgramNameByToolId(const QString& toolId);
 
 public slots:
     void sl_runAlignToReference();
@@ -69,20 +69,20 @@ public slots:
 class BlastSupportContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    BlastSupportContext(QObject *p);
+    BlastSupportContext(QObject* p);
 
 protected slots:
     void sl_showDialog();
     void sl_fetchSequenceById();
 
 protected:
-    void initViewContext(GObjectView *view) override;
-    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
+    void initViewContext(GObjectView* view) override;
+    void buildStaticOrContextMenu(GObjectView* view, QMenu* menu) override;
 
 private:
     QStringList searchToolIds;
     QString commaSeparatedSelectedSequenceIds;
-    QAction *fetchSequenceByIdAction = nullptr;
+    QAction* fetchSequenceByIdAction = nullptr;
 };
 
 }  // namespace U2

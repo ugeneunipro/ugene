@@ -28,12 +28,12 @@
 namespace U2 {
 
 void FindHighFlexRegionsAlgorithm::find(
-    FindHighFlexRegionsListener *resultsListener,
-    const HighFlexSettings &settings,
+    FindHighFlexRegionsListener* resultsListener,
+    const HighFlexSettings& settings,
     const QByteArray sequence,
     const int seqLength,
-    int &stopFlag,
-    int &percentsCompleted) {
+    int& stopFlag,
+    int& percentsCompleted) {
     Q_UNUSED(stopFlag);
     Q_UNUSED(percentsCompleted);  // TODO: fix it
 
@@ -206,8 +206,8 @@ double FindHighFlexRegionsAlgorithm::flexibilityAngle(char firstNucleotide, char
 }
 
 void FindHighFlexRegionsAlgorithm::addToResults(
-    FindHighFlexRegionsListener *resultsListener,
-    const HighFlexResult &result) {
+    FindHighFlexRegionsListener* resultsListener,
+    const HighFlexResult& result) {
     SAFE_POINT(resultsListener, "FindHighFlexRegionsListener is not available!", );
 
     resultsListener->onResult(result);

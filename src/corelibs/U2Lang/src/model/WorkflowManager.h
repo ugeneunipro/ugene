@@ -64,18 +64,18 @@ public:
     // get data from actor and return task
     // if you want your worker support scripting:
     // use BaseWorker::getMessageAndSetupScriptValues to take data from port
-    virtual Task *tick() = 0;
+    virtual Task* tick() = 0;
     // nothing to do
     virtual bool isDone() const = 0;
     // opened files, etc...
     virtual void cleanup() = 0;
 
-    void setContext(WorkflowContext *newContext) {
+    void setContext(WorkflowContext* newContext) {
         context = newContext;
     }
 
 protected:
-    WorkflowContext *context;
+    WorkflowContext* context;
 
 };  // Worker
 
@@ -96,25 +96,25 @@ enum WorkerState {
  */
 class U2LANG_EXPORT Scheduler : public Worker {
 public:
-    Scheduler(Schema *sch)
+    Scheduler(Schema* sch)
         : schema(sch), lastTask(nullptr) {
     }
-    virtual WorkerState getWorkerState(const ActorId &) = 0;
-    virtual Task *replayLastWorkerTick() = 0;
+    virtual WorkerState getWorkerState(const ActorId&) = 0;
+    virtual Task* replayLastWorkerTick() = 0;
     // returning value indicates if current task was canceled
     virtual bool cancelCurrentTaskIfAllowed() = 0;
-    virtual void makeOneTick(const ActorId &) = 0;
-    virtual void setDebugInfo(WorkflowDebugStatus *newDebugInfo) {
+    virtual void makeOneTick(const ActorId&) = 0;
+    virtual void setDebugInfo(WorkflowDebugStatus* newDebugInfo) {
         Q_ASSERT(nullptr != newDebugInfo);
         debugInfo = newDebugInfo;
     }
 
 protected:
-    Schema *schema;
-    Task *lastTask;
-    WorkflowDebugStatus *debugInfo;
+    Schema* schema;
+    Task* lastTask;
+    WorkflowDebugStatus* debugInfo;
 
-    virtual WorkerState getWorkerState(const Actor *) = 0;
+    virtual WorkerState getWorkerState(const Actor*) = 0;
 };  // Scheduler
 
 /**
@@ -127,30 +127,30 @@ protected:
  */
 class U2LANG_EXPORT DomainFactory : public IdRegistry<DomainFactory>, public Descriptor {
 public:
-    DomainFactory(const Descriptor &d)
+    DomainFactory(const Descriptor& d)
         : Descriptor(d) {
     }
-    DomainFactory(const QString &id)
+    DomainFactory(const QString& id)
         : Descriptor(id) {
     }
     virtual ~DomainFactory() {
     }
 
     // computational tasks domain
-    virtual Worker *createWorker(Actor *) = 0;
+    virtual Worker* createWorker(Actor*) = 0;
 
     // execution domain
-    virtual CommunicationChannel *createConnection(Link *) {
+    virtual CommunicationChannel* createConnection(Link*) {
         return nullptr;
     }
-    virtual Scheduler *createScheduler(Schema *) {
+    virtual Scheduler* createScheduler(Schema*) {
         return nullptr;
     }
-    virtual void destroy(Scheduler *, Schema *) {
+    virtual void destroy(Scheduler*, Schema*) {
     }
-    static void addParametersSetToMap(QVariantMap &map, const QString &attrValue, const QStringList &parametersList) {
+    static void addParametersSetToMap(QVariantMap& map, const QString& attrValue, const QStringList& parametersList) {
         QVariantMap parametersMap;
-        foreach (const QString &curStr, parametersList) {
+        foreach (const QString& curStr, parametersList) {
             parametersMap[curStr] = curStr;
         }
         map.insert(attrValue, parametersMap);

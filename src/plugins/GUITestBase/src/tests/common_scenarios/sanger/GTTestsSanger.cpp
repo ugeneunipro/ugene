@@ -70,26 +70,26 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     class CheckerFiller : public Filler {
     public:
-        CheckerFiller(HI::GUITestOpStatus &os, const AlignToReferenceBlastDialogFiller::Settings &settings)
+        CheckerFiller(HI::GUITestOpStatus& os, const AlignToReferenceBlastDialogFiller::Settings& settings)
             : Filler(os, "AlignToReferenceBlastDialog"),
               settings(settings) {
         }
 
         virtual void run() {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 
-            QLineEdit *reference = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "referenceLineEdit", dialog));
+            QLineEdit* reference = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "referenceLineEdit", dialog));
             CHECK_SET_ERR(reference, "referenceLineEdit is NULL");
             GTLineEdit::setText(os, reference, settings.referenceUrl);
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 
-            QWidget *addReadButton = GTWidget::findWidget(os, "addReadButton");
+            QWidget* addReadButton = GTWidget::findWidget(os, "addReadButton");
             CHECK_SET_ERR(addReadButton, "addReadButton is NULL");
-            foreach (const QString &read, settings.readUrls) {
+            foreach (const QString& read, settings.readUrls) {
                 GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, read));
                 GTWidget::click(os, addReadButton);
             }
@@ -176,8 +176,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+        void run(HI::GUITestOpStatus& os) {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
             //    Expected state: 'Sequence name from file' value is set by default.
             const QString expectedRowNamingPolicy = "Sequence name from file";
             const QString currentRowNamingPolicy = GTComboBox::getCurrentText(os, "cbRowNaming", dialog);
@@ -234,8 +234,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
             //    Expected state: 'Sequence name from file' value is set by default.
             QString expectedRowNamingPolicy = "Sequence name from file";
             QString currentRowNamingPolicy = GTComboBox::getCurrentText(os, "cbRowNaming", dialog);
@@ -296,9 +296,9 @@ GUI_TEST_CLASS_DEFINITION(test_0005_3) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus& os) {
             //    Expected state: wizard has appeared.
-            QWidget *wizard = GTWidget::getActiveModalWidget(os);
+            QWidget* wizard = GTWidget::getActiveModalWidget(os);
             GTWidget::clickWindowTitle(os, wizard);
 
             //    2. Fill it with any valid data until the 'Mapping settings' page.
@@ -364,9 +364,9 @@ GUI_TEST_CLASS_DEFINITION(test_0005_4) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) override {
+        void run(HI::GUITestOpStatus& os) override {
             //    Expected state: wizard has appeared.
-            QWidget *wizard = GTWidget::getActiveModalWidget(os);
+            QWidget* wizard = GTWidget::getActiveModalWidget(os);
             GTWidget::clickWindowTitle(os, wizard);
 
             //    2. Fill it with any valid data until the 'Mapping settings' page.
@@ -434,8 +434,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
             //    2. Set '_common_data/sanger/dataset3/reference.gb' as reference and the next files as reads:
             //        '_common_data/sanger/dataset3/gaps.ab1'
             //        '_common_data/sanger/dataset3/N.ab1'

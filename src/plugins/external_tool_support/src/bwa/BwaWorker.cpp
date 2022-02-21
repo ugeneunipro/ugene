@@ -66,7 +66,7 @@ static const QString BASE_BWA_OUTFILE("out.sam");
 /************************************************************************/
 /* Worker */
 /************************************************************************/
-BwaWorker::BwaWorker(Actor *p)
+BwaWorker::BwaWorker(Actor* p)
     : BaseShortReadsAlignerWorker(p, BwaTask::ALGORITHM_BWA_ALN) {
 }
 
@@ -110,7 +110,7 @@ QString BwaWorker::getBaseSubdir() const {
     return BASE_BWA_SUBDIR;
 }
 
-void BwaWorker::setGenomeIndex(DnaAssemblyToRefTaskSettings &settings) {
+void BwaWorker::setGenomeIndex(DnaAssemblyToRefTaskSettings& settings) {
     settings.refSeqUrl = getValue<QString>(REFERENCE_GENOME);
     settings.prebuiltIndex = DnaAssemblyToReferenceTask::isIndexUrl(settings.refSeqUrl.getURLString(), BwaTask::indexSuffixes);
 
@@ -124,8 +124,8 @@ void BwaWorker::setGenomeIndex(DnaAssemblyToRefTaskSettings &settings) {
 /************************************************************************/
 
 void BwaWorkerFactory::init() {
-    QList<Attribute *> attrs;
-    QMap<QString, PropertyDelegate *> delegates;
+    QList<Attribute*> attrs;
+    QMap<QString, PropertyDelegate*> delegates;
     addCommonAttributes(attrs, delegates, BwaWorker::tr("BWA index folder"), BwaWorker::tr("BWA index basename"));
     {
         Descriptor useMissProb(USE_MISS_PROB,
@@ -214,11 +214,11 @@ void BwaWorkerFactory::init() {
 
         attrs << new Attribute(useMissProb, BaseTypes::BOOL_TYPE(), false, QVariant(true));
 
-        Attribute *maxDiffAttr = new Attribute(maxDiff, BaseTypes::NUM_TYPE(), false, QVariant(0));
+        Attribute* maxDiffAttr = new Attribute(maxDiff, BaseTypes::NUM_TYPE(), false, QVariant(0));
         maxDiffAttr->addRelation(new VisibilityRelation(USE_MISS_PROB, QVariant(false)));
         attrs << maxDiffAttr;
 
-        Attribute *missProbAttr = new Attribute(missProb, BaseTypes::NUM_TYPE(), false, QVariant(0.04));
+        Attribute* missProbAttr = new Attribute(missProb, BaseTypes::NUM_TYPE(), false, QVariant(0.04));
         missProbAttr->addRelation(new VisibilityRelation(USE_MISS_PROB, QVariant(true)));
         attrs << missProbAttr;
 
@@ -230,7 +230,7 @@ void BwaWorkerFactory::init() {
         attrs << new Attribute(nonIterative, BaseTypes::BOOL_TYPE(), false, QVariant(false));
         attrs << new Attribute(enableLongGaps, BaseTypes::BOOL_TYPE(), false, QVariant(true));
 
-        Attribute *maxGapExtensionsAttr = new Attribute(maxGapExtensions, BaseTypes::NUM_TYPE(), false, QVariant(0));
+        Attribute* maxGapExtensionsAttr = new Attribute(maxGapExtensions, BaseTypes::NUM_TYPE(), false, QVariant(0));
         maxGapExtensionsAttr->addRelation(new VisibilityRelation(ENABLE_LONG_GAPS, QVariant(true)));
         attrs << maxGapExtensionsAttr;
 
@@ -287,7 +287,7 @@ void BwaWorkerFactory::init() {
                                        " The result is saved to the specified SAM file, URL to the file is passed"
                                        " to the output port."));
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, getPortDescriptors(), attrs);
+    ActorPrototype* proto = new IntegralBusActorPrototype(protoDesc, getPortDescriptors(), attrs);
     proto->setPrompter(new ShortReadsAlignerPrompter());
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPortValidator(IN_PORT_DESCR, new ShortReadsAlignerSlotsValidator());
@@ -296,9 +296,9 @@ void BwaWorkerFactory::init() {
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new BwaWorkerFactory());
 }
 
-Worker *BwaWorkerFactory::createWorker(Actor *a) {
+Worker* BwaWorkerFactory::createWorker(Actor* a) {
     return new BwaWorker(a);
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

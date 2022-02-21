@@ -35,7 +35,7 @@ SelectorActors::SelectorActors() {
     srcActor = nullptr;
 }
 
-SelectorActors::SelectorActors(ElementSelectorWidget *_widget, const QList<Actor *> &allActors, U2OpStatus &os)
+SelectorActors::SelectorActors(ElementSelectorWidget* _widget, const QList<Actor*>& allActors, U2OpStatus& os)
     : widget(_widget) {
     srcActor = WorkflowUtils::actorById(allActors, widget->getActorId());
     if (nullptr == srcActor) {
@@ -43,12 +43,12 @@ SelectorActors::SelectorActors(ElementSelectorWidget *_widget, const QList<Actor
         return;
     }
 
-    foreach (const SelectorValue &value, widget->getValues()) {
-        Actor *a = nullptr;
+    foreach (const SelectorValue& value, widget->getValues()) {
+        Actor* a = nullptr;
         if (value.getProtoId() == srcActor->getProto()->getId()) {
             a = srcActor;
         } else {
-            ActorPrototype *proto = WorkflowEnv::getProtoRegistry()->getProto(value.getProtoId());
+            ActorPrototype* proto = WorkflowEnv::getProtoRegistry()->getProto(value.getProtoId());
             a = proto->createInstance(widget->getActorId());
         }
         actors[value.getValue()] = a;
@@ -58,16 +58,16 @@ SelectorActors::SelectorActors(ElementSelectorWidget *_widget, const QList<Actor
 SelectorActors::~SelectorActors() {
 }
 
-Actor *SelectorActors::getActor(const QString &value) const {
+Actor* SelectorActors::getActor(const QString& value) const {
     return actors.value(value, nullptr);
 }
 
-Actor *SelectorActors::getSourceActor() const {
+Actor* SelectorActors::getSourceActor() const {
     return srcActor;
 }
 
-QList<PortMapping> SelectorActors::getMappings(const QString &value) const {
-    foreach (const SelectorValue &sv, widget->getValues()) {
+QList<PortMapping> SelectorActors::getMappings(const QString& value) const {
+    foreach (const SelectorValue& sv, widget->getValues()) {
         if (sv.getValue() == value) {
             return sv.getMappings();
         }

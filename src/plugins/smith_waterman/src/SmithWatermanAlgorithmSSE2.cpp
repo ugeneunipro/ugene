@@ -32,23 +32,23 @@ extern "C" {
 // http://sourceforge.net/p/predef/wiki/Compilers/
 
 #ifdef _MSC_VER
-#        define LAME_MSC
+#    define LAME_MSC
 #endif
 
 #if defined(LAME_MSC) || defined(Q_OS_DARWIN)
-inline void xmm_store8(__m64 *m, __m128i x) {
-    *(int *)m = _mm_cvtsi128_si32(x);
-    *((int *)m + 1) = _mm_cvtsi128_si32(_mm_srli_epi64(x, 32));
+inline void xmm_store8(__m64* m, __m128i x) {
+    *(int*)m = _mm_cvtsi128_si32(x);
+    *((int*)m + 1) = _mm_cvtsi128_si32(_mm_srli_epi64(x, 32));
 }
 
-inline __m128i xmm_load8(__m64 *m) {
-    return _mm_or_si128(_mm_cvtsi32_si128(*(int *)m), _mm_slli_si128(_mm_cvtsi32_si128(*((int *)m + 1)), 4));
+inline __m128i xmm_load8(__m64* m) {
+    return _mm_or_si128(_mm_cvtsi32_si128(*(int*)m), _mm_slli_si128(_mm_cvtsi32_si128(*((int*)m + 1)), 4));
 }
 #else
-inline void xmm_store8(__m64 *m, __m128i x) {
+inline void xmm_store8(__m64* m, __m128i x) {
     *m = _mm_movepi64_pi64(x);
 }
-inline __m128i xmm_load8(__m64 *m) {
+inline __m128i xmm_load8(__m64* m) {
     return _mm_movpi64_epi64(*m);
 }
 #endif
@@ -63,9 +63,8 @@ using namespace std;
 
 namespace U2 {
 
-quint64 SmithWatermanAlgorithmSSE2::estimateNeededRamAmount(const QByteArray
-                                                                &_patternSeq,
-                                                            const QByteArray &_searchSeq,
+quint64 SmithWatermanAlgorithmSSE2::estimateNeededRamAmount(const QByteArray& _patternSeq,
+                                                            const QByteArray& _searchSeq,
                                                             const qint32 gapOpen,
                                                             const qint32 gapExtension,
                                                             const quint32 minScore,
@@ -98,11 +97,11 @@ quint64 SmithWatermanAlgorithmSSE2::estimateNeededRamAmount(const QByteArray
     return memNeeded / b_to_mb_factor;
 }
 
-void SmithWatermanAlgorithmSSE2::launch(const SMatrix &_substitutionMatrix, const QByteArray &_patternSeq, const QByteArray &_searchSeq, int _gapOpen, int _gapExtension, int _minScore, SmithWatermanSettings::SWResultView _resultView) {
+void SmithWatermanAlgorithmSSE2::launch(const SMatrix& _substitutionMatrix, const QByteArray& _patternSeq, const QByteArray& _searchSeq, int _gapOpen, int _gapExtension, int _minScore, SmithWatermanSettings::SWResultView _resultView) {
     setValues(_substitutionMatrix, _patternSeq, _searchSeq, _gapOpen, _gapExtension, _minScore, _resultView);
     int maxScore = 0;
     if (isValidParams() && calculateMatrixLength()) {
-        maxScore = calculateMatrixSSE2(patternSeq.length(), (unsigned char *)searchSeq.data(), searchSeq.length(), (-1) * (gapOpen + gapExtension), (-1) * (gapExtension));
+        maxScore = calculateMatrixSSE2(patternSeq.length(), (unsigned char*)searchSeq.data(), searchSeq.length(), (-1) * (gapOpen + gapExtension), (-1) * (gapExtension));
 
         if (minScore <= maxScore) {
             if (maxScore >= 0x8000 || matrixLength >= 0x10000) {
@@ -136,7 +135,7 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForMultipleAlignmentResultWithSh
     int i, j, alphaCharSize, k, max1;
     __m128i f1 = _mm_setzero_si128(), f2 = _mm_setzero_si128(), f3 = _mm_setzero_si128(), f4 = _mm_setzero_si128(), e1 = _mm_setzero_si128();
     unsigned int src_n = searchSeq.length(), pat_n = patternSeq.length();
-    unsigned char *src = (unsigned char *)searchSeq.data(), *pat = (unsigned char *)patternSeq.data();
+    unsigned char *src = (unsigned char*)searchSeq.data(), *pat = (unsigned char*)patternSeq.data();
     unsigned int iter = (pat_n + 7) >> 3;
 
     alphaCharSize = iter * 2;
@@ -145,14 +144,14 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForMultipleAlignmentResultWithSh
         setMemoryLimitError();
         return;
     }
-    __m128i *buf, *matrix = (__m128i *)_mm_malloc(memory, 16);
+    __m128i *buf, *matrix = (__m128i*)_mm_malloc(memory, 16);
     if (matrix == nullptr) {
         std::bad_alloc e;
         throw e;
     }
-    short *score, *score1 = (short *)(matrix + alphaCharSize);
-    int *map = (int *)(score1 + iter * 0x80 * 8);
-    char *dir, *dir2, *dir1 = (char *)(map + iter * 8);
+    short *score, *score1 = (short*)(matrix + alphaCharSize);
+    int* map = (int*)(score1 + iter * 0x80 * 8);
+    char *dir, *dir2, *dir1 = (char*)(map + iter * 8);
     memset(matrix, 0, alphaCharSize * sizeof(__m128i));
     memset(dir1, 0, iter * 8);
     dir = dir1 + iter * 8;
@@ -165,7 +164,7 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForMultipleAlignmentResultWithSh
     }
 
     QByteArray alphaChars = substitutionMatrix.getAlphabet()->getAlphabetChars();
-    char *alphaCharsData = alphaChars.data();
+    char* alphaCharsData = alphaChars.data();
     alphaCharSize = alphaChars.size();
     for (i = 0; i < alphaCharSize; i++) {
         int n;
@@ -208,7 +207,7 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForMultipleAlignmentResultWithSh
             dir = dir1;
         j = iter;
         do {
-            f2 = _mm_adds_epi16(f1, *((__m128i *)score));
+            f2 = _mm_adds_epi16(f1, *((__m128i*)score));
             score += 8; /* subst */
 
             f3 = _mm_xor_si128(f3, f3);
@@ -237,7 +236,7 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForMultipleAlignmentResultWithSh
             _mm_store_si128(buf, f2);
             f3 = _mm_packs_epi16(f3, f3);
             // *(__m64*)dir = _mm_movepi64_pi64(f3); dir += 8;
-            xmm_store8((__m64 *)dir, f3);
+            xmm_store8((__m64*)dir, f3);
             dir += 8;
 
             f2 = _mm_adds_epi16(f2, xOpen);
@@ -263,10 +262,10 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForMultipleAlignmentResultWithSh
                 f2 = _mm_adds_epi16(f2, xOpen);
                 f1 = _mm_packs_epi16(f1, f1);
                 // f1 = _mm_or_si128(f1, _mm_movpi64_epi64(*((__m64*)dir + j)));
-                f1 = _mm_or_si128(f1, xmm_load8((__m64 *)dir + j));
+                f1 = _mm_or_si128(f1, xmm_load8((__m64*)dir + j));
                 f2 = _mm_max_epi16(f2, *(buf + 1));
                 // *((__m64*)dir + j) = _mm_movepi64_pi64(f1);
-                xmm_store8((__m64 *)dir + j, f1);
+                xmm_store8((__m64*)dir + j, f1);
                 _mm_store_si128(buf + 1, f2);
 
                 e1 = _mm_adds_epi16(e1, xExt);
@@ -286,11 +285,11 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForMultipleAlignmentResultWithSh
         printf(" %02X", *((unsigned short*)(matrix + (j % iter) * 2) + (j / iter)));
         printf("\n");
     */
-        max1 = *((short *)(&xMax));
+        max1 = *((short*)(&xMax));
         alphaCharSize = 0;
         k = 1;
         do {
-            j = ((short *)(&xMax))[k];
+            j = ((short*)(&xMax))[k];
             if (j >= max1) {
                 max1 = j;
                 alphaCharSize = k;
@@ -299,10 +298,10 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForMultipleAlignmentResultWithSh
 
         if (max1 >= minScore) {
             QByteArray pairAlign;
-            int xpos = 1 + alphaCharSize * iter + iter - ((unsigned short *)(&xPos))[alphaCharSize];
+            int xpos = 1 + alphaCharSize * iter + iter - ((unsigned short*)(&xPos))[alphaCharSize];
             j = i;
             int xend = xpos;
-            char *xdir = dir - iter * 8;
+            char* xdir = dir - iter * 8;
             for (;;) {
                 if (!xpos)
                     break;
@@ -350,7 +349,7 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForAnnotationsResultWithShort() 
     int i, j, n, k, max1;
     __m128i f1 = _mm_setzero_si128(), f2 = _mm_setzero_si128(), f3 = _mm_setzero_si128(), f4 = _mm_setzero_si128(), e1 = _mm_setzero_si128();
     unsigned int src_n = searchSeq.length(), pat_n = patternSeq.length();
-    unsigned char *src = (unsigned char *)searchSeq.data(), *pat = (unsigned char *)patternSeq.data();
+    unsigned char *src = (unsigned char*)searchSeq.data(), *pat = (unsigned char*)patternSeq.data();
     unsigned int iter = (pat_n + 7) >> 3;
 
     n = (iter + 1) * 5;
@@ -359,16 +358,16 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForAnnotationsResultWithShort() 
         setMemoryLimitError();
         return;
     }
-    __m128i *buf, *matrix = (__m128i *)_mm_malloc(memory, 16);
+    __m128i *buf, *matrix = (__m128i*)_mm_malloc(memory, 16);
     if (matrix == nullptr) {
         std::bad_alloc e;
         throw e;
     }
-    short *score, *score1 = (short *)(matrix + n);
+    short *score, *score1 = (short*)(matrix + n);
     memset(matrix, 0, n * sizeof(__m128i));
 
     QByteArray alphaChars = substitutionMatrix.getAlphabet()->getAlphabetChars();
-    char *alphaCharsData = alphaChars.data();
+    char* alphaCharsData = alphaChars.data();
     n = alphaChars.size();
     for (i = 0; i < n; i++) {
         int n2;
@@ -413,7 +412,7 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForAnnotationsResultWithShort() 
     e1 = _mm_xor_si128(e1, e1); \
     j = iter; \
     do { \
-        f2 = _mm_adds_epi16(f2, *((__m128i *)score)); \
+        f2 = _mm_adds_epi16(f2, *((__m128i*)score)); \
         score += 8; /* subst */ \
         /* f2 f1 */ \
         f3 = _mm_xor_si128(f3, f3); \
@@ -479,11 +478,11 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForAnnotationsResultWithShort() 
             k = _mm_movemask_epi8(_mm_cmpgt_epi16(e1, f3)); \
         } while (k); \
 \
-    max1 = *((short *)(&xMax)); \
+    max1 = *((short*)(&xMax)); \
     n = 0; \
     k = 1; \
     do { \
-        j = ((short *)(&xMax))[k]; \
+        j = ((short*)(&xMax))[k]; \
         if (j >= max1) { \
             max1 = j; \
             n = k; \
@@ -491,7 +490,7 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForAnnotationsResultWithShort() 
     } while (++k < 8); \
 \
     if (max1 >= minScore) { \
-        j = ((((short *)(&xPos))[n] - i - 1) | -0x10000) + i + 1; \
+        j = ((((short*)(&xPos))[n] - i - 1) | -0x10000) + i + 1; \
         SW_FILT_MACRO; \
     }
 
@@ -545,14 +544,14 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForMultipleAlignmentResultWithIn
     int i, j, n, k, max1;
     __m128i f1 = _mm_setzero_si128(), f2 = _mm_setzero_si128(), f3 = _mm_setzero_si128(), f4 = _mm_setzero_si128(), e1 = _mm_setzero_si128();
     unsigned int src_n = searchSeq.length(), pat_n = patternSeq.length();
-    unsigned char *src = (unsigned char *)searchSeq.data(), *pat = (unsigned char *)patternSeq.data();
+    unsigned char *src = (unsigned char*)searchSeq.data(), *pat = (unsigned char*)patternSeq.data();
     unsigned int iter = (pat_n + 3) >> 2;
 
     n = iter * 2;
-    __m128i *buf, *matrix = (__m128i *)_mm_malloc((n + iter * 0x80 + iter) * 16 + matrixLength * iter * 4, 16);
-    int *score, *score1 = (int *)(matrix + n);
-    int *map = score1 + iter * 0x80 * 4;
-    char *dir, *dir2, *dir1 = (char *)(map + iter * 4);
+    __m128i *buf, *matrix = (__m128i*)_mm_malloc((n + iter * 0x80 + iter) * 16 + matrixLength * iter * 4, 16);
+    int *score, *score1 = (int*)(matrix + n);
+    int* map = score1 + iter * 0x80 * 4;
+    char *dir, *dir2, *dir1 = (char*)(map + iter * 4);
     memset(matrix, 0, n * sizeof(__m128i));
     memset(dir1, 0, iter * 4);
     dir = dir1 + iter * 4;
@@ -565,7 +564,7 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForMultipleAlignmentResultWithIn
     }
 
     QByteArray alphaChars = substitutionMatrix.getAlphabet()->getAlphabetChars();
-    char *alphaCharsData = alphaChars.data();
+    char* alphaCharsData = alphaChars.data();
     n = alphaChars.size();
     for (i = 0; i < n; i++) {
         int n2;
@@ -604,7 +603,7 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForMultipleAlignmentResultWithIn
             dir = dir1;
         j = iter;
         do {
-            f2 = _mm_add_epi32(f1, *((__m128i *)score));
+            f2 = _mm_add_epi32(f1, *((__m128i*)score));
             score += 4; /* subst */
 
             n = alphaChars.size();
@@ -654,7 +653,7 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForMultipleAlignmentResultWithIn
             _mm_store_si128(buf, f2);
             f3 = _mm_packs_epi32(f3, f3);
             f3 = _mm_packs_epi16(f3, f3);
-            *(int *)dir = _mm_cvtsi128_si32(f3);
+            *(int*)dir = _mm_cvtsi128_si32(f3);
             dir += 4;
             f2 = _mm_add_epi32(f2, xOpen);
 
@@ -695,9 +694,9 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForMultipleAlignmentResultWithIn
                 f2 = _mm_add_epi32(f2, xOpen);
                 f4 = _mm_packs_epi32(f4, f4);
                 f4 = _mm_packs_epi16(f4, f4);
-                f4 = _mm_or_si128(f4, _mm_cvtsi32_si128(*((int *)dir + j)));
+                f4 = _mm_or_si128(f4, _mm_cvtsi32_si128(*((int*)dir + j)));
                 f1 = _mm_load_si128(buf + 1);
-                *((int *)dir + j) = _mm_cvtsi128_si32(f4);
+                *((int*)dir + j) = _mm_cvtsi128_si32(f4);
                 f3 = _mm_cmpgt_epi32(f1, f2);
                 f1 = _mm_xor_si128(f1, f2);
                 f1 = _mm_and_si128(f1, f3);
@@ -724,11 +723,11 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForMultipleAlignmentResultWithIn
         printf(" %02X", *((int*)(matrix + (j % iter) * 2) + (j / iter)));
         printf("\n");
     */
-        max1 = *((int *)(&xMax));
+        max1 = *((int*)(&xMax));
         n = 0;
         k = 1;
         do {
-            j = ((int *)(&xMax))[k];
+            j = ((int*)(&xMax))[k];
             if (j >= max1) {
                 max1 = j;
                 n = k;
@@ -737,10 +736,10 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForMultipleAlignmentResultWithIn
 
         if (max1 >= minScore) {
             QByteArray pairAlign;
-            int xpos = 1 + n * iter + iter - ((int *)(&xPos))[n];
+            int xpos = 1 + n * iter + iter - ((int*)(&xPos))[n];
             j = i;
             int xend = xpos;
-            char *xdir = dir - iter * 4;
+            char* xdir = dir - iter * 4;
             for (;;) {
                 if (!xpos)
                     break;
@@ -787,16 +786,16 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForAnnotationsResultWithInt() {
     int i, j, n, k, max1;
     __m128i f1 = _mm_setzero_si128(), f2 = _mm_setzero_si128(), f3 = _mm_setzero_si128(), f4 = _mm_setzero_si128(), e1 = _mm_setzero_si128();
     unsigned int src_n = searchSeq.length(), pat_n = patternSeq.length();
-    unsigned char *src = (unsigned char *)searchSeq.data(), *pat = (unsigned char *)patternSeq.data();
+    unsigned char *src = (unsigned char*)searchSeq.data(), *pat = (unsigned char*)patternSeq.data();
     unsigned int iter = (pat_n + 3) >> 2;
 
     n = (iter + 1) * 5;
-    __m128i *buf, *matrix = (__m128i *)_mm_malloc((n + iter * 0x80) * sizeof(__m128i), 16);
-    int *score, *score1 = (int *)(matrix + n);
+    __m128i *buf, *matrix = (__m128i*)_mm_malloc((n + iter * 0x80) * sizeof(__m128i), 16);
+    int *score, *score1 = (int*)(matrix + n);
     memset(matrix, 0, n * sizeof(__m128i));
 
     QByteArray alphaChars = substitutionMatrix.getAlphabet()->getAlphabetChars();
-    char *alphaCharsData = alphaChars.data();
+    char* alphaCharsData = alphaChars.data();
     n = alphaChars.size();
     for (i = 0; i < n; i++) {
         int n2;
@@ -836,7 +835,7 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForAnnotationsResultWithInt() {
     e1 = _mm_xor_si128(e1, e1); \
     j = iter; \
     do { \
-        f2 = _mm_add_epi32(f2, *((__m128i *)score)); \
+        f2 = _mm_add_epi32(f2, *((__m128i*)score)); \
         score += 4; /* subst */ \
         /* f2 f1 */ \
         f4 = _mm_cvtsi32_si128(i); \
@@ -930,11 +929,11 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForAnnotationsResultWithInt() {
             k = _mm_movemask_epi8(_mm_cmpgt_epi32(e1, f1)); \
         } while (k); \
 \
-    max1 = *((int *)(&xMax)); \
+    max1 = *((int*)(&xMax)); \
     n = 0; \
     k = 1; \
     do { \
-        j = ((int *)(&xMax))[k]; \
+        j = ((int*)(&xMax))[k]; \
         if (j >= max1) { \
             max1 = j; \
             n = k; \
@@ -942,7 +941,7 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForAnnotationsResultWithInt() {
     } while (++k < 4); \
 \
     if (max1 >= minScore) { \
-        j = ((int *)(&xPos))[n]; \
+        j = ((int*)(&xPos))[n]; \
         SW_FILT_MACRO; \
     }
 
@@ -992,10 +991,10 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForAnnotationsResultWithInt() {
     _mm_free(matrix);
 }
 
-inline void SmithWatermanAlgorithmSSE2::printVector(__m128i &toprint, int add) {
-    ScoreType *tmpArray = (ScoreType *)_mm_malloc(nElementsInVec * sizeof(ScoreType), 16);
+inline void SmithWatermanAlgorithmSSE2::printVector(__m128i& toprint, int add) {
+    ScoreType* tmpArray = (ScoreType*)_mm_malloc(nElementsInVec * sizeof(ScoreType), 16);
 
-    _mm_store_si128((__m128i *)&tmpArray[0], toprint);
+    _mm_store_si128((__m128i*)&tmpArray[0], toprint);
     cout << "printVector" << endl;
     for (int i = 0; i < nElementsInVec; i++)
         cout << tmpArray[i] + add << " ";
@@ -1003,15 +1002,15 @@ inline void SmithWatermanAlgorithmSSE2::printVector(__m128i &toprint, int add) {
     cout << endl;
 }
 
-int SmithWatermanAlgorithmSSE2::calculateMatrixSSE2(unsigned queryLength, unsigned char *dbSeq, unsigned dbLength, unsigned short gapOpenOrig, unsigned short gapExtend) {
+int SmithWatermanAlgorithmSSE2::calculateMatrixSSE2(unsigned queryLength, unsigned char* dbSeq, unsigned dbLength, unsigned short gapOpenOrig, unsigned short gapExtend) {
     unsigned iter = (queryLength + nElementsInVec - 1) / nElementsInVec;
 
     int ALPHA_SIZE = substitutionMatrix.getAlphabet()->getNumAlphabetChars();
 
-    __m128i *pvQueryProf = (__m128i *)_mm_malloc('Z' * ALPHA_SIZE * iter * sizeof(__m128i), 16);
+    __m128i* pvQueryProf = (__m128i*)_mm_malloc('Z' * ALPHA_SIZE * iter * sizeof(__m128i), 16);
 
     int weight = 0;
-    unsigned short *queryProfile = (unsigned short *)pvQueryProf;
+    unsigned short* queryProfile = (unsigned short*)pvQueryProf;
     int segSize = (queryLength + 7) / 8;  // iter
     int nCount = segSize * 8;
     char curChar = ' ';
@@ -1035,9 +1034,9 @@ int SmithWatermanAlgorithmSSE2::calculateMatrixSSE2(unsigned queryLength, unsign
         }
     }
 
-    __m128i *pvHLoad = (__m128i *)_mm_malloc(iter * sizeof(__m128i), 16);
-    __m128i *pvHStore = (__m128i *)_mm_malloc(iter * sizeof(__m128i), 16);
-    __m128i *pvE = (__m128i *)_mm_malloc(iter * sizeof(__m128i), 16);
+    __m128i* pvHLoad = (__m128i*)_mm_malloc(iter * sizeof(__m128i), 16);
+    __m128i* pvHStore = (__m128i*)_mm_malloc(iter * sizeof(__m128i), 16);
+    __m128i* pvE = (__m128i*)_mm_malloc(iter * sizeof(__m128i), 16);
 
     unsigned i = 0, j = 0;
     int score = 0;
@@ -1046,7 +1045,7 @@ int SmithWatermanAlgorithmSSE2::calculateMatrixSSE2(unsigned queryLength, unsign
 
     unsigned short gapOpenFarrar = gapOpenOrig - gapExtend;
 
-    __m128i *pv = 0;
+    __m128i* pv = 0;
 
     __m128i vE = _mm_set1_epi32(0), vF = _mm_set1_epi32(0), vH = _mm_set1_epi32(0);
 
@@ -1058,7 +1057,7 @@ int SmithWatermanAlgorithmSSE2::calculateMatrixSSE2(unsigned queryLength, unsign
     __m128i vMinimums = _mm_set1_epi32(0);
     __m128i vTemp = _mm_set1_epi32(0);
 
-    __m128i *pvScore = 0;
+    __m128i* pvScore = 0;
 
     /* Load gap opening penalty to all elements of a constant */
     vGapOpen = _mm_insert_epi16(vGapOpen, gapOpenFarrar, 0);

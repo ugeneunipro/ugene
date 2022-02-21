@@ -110,12 +110,12 @@
 namespace U2 {
 
 /** Returns the given labels list as is. Used to improve readability of macros. */
-static QStringList labels(const QStringList &labelList) {
+static QStringList labels(const QStringList& labelList) {
     return labelList;
 }
 
 /** Converts list of label args into QStringList and adds 'Nightly' and all supported platform labels to the list. */
-static QStringList nightly(const QStringList &labelList = QStringList()) {
+static QStringList nightly(const QStringList& labelList = QStringList()) {
     QStringList resultLabelList = labelList;
     resultLabelList << UGUITestLabels::Nightly << UGUITestLabels::Linux << UGUITestLabels::MacOS << UGUITestLabels::Windows;
     return resultLabelList;
@@ -160,7 +160,7 @@ static QStringList nightly(const QStringList &labelList = QStringList()) {
 #define REGISTER_TEST_LINUX_AND_MAC(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, Linux, MacOS}))
 #define REGISTER_TEST_LINUX_AND_WINDOWS(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, Linux, Windows}))
 
-extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
+extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
     CHECK(AppContext::getMainWindow() != nullptr, nullptr);
     if (GUITestService::isGuiTestServiceNeeded()) {
         new GUITestService();
@@ -170,7 +170,7 @@ extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
 
 GUITestBasePlugin::GUITestBasePlugin()
     : Plugin(tr("GUITestBase"), tr("GUI Test Base")) {
-    UGUITestBase *guiTestBase = UGUITestBase::getInstance();
+    UGUITestBase* guiTestBase = UGUITestBase::getInstance();
 
     registerTests(guiTestBase);
     registerAdditionalActions(guiTestBase);
@@ -192,7 +192,7 @@ void GUITestBasePlugin::sl_showWindow() {
     }
 }
 
-void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
+void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     SAFE_POINT(guiTestBase != nullptr, "guiTestBase is null!", );
 
     //////////////////////////////////////////////////////////////////////////
@@ -1790,6 +1790,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7487_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_7487_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_7490);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7491);
     REGISTER_TEST(GUITest_regression_scenarios::test_7499);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_7504);
@@ -1802,6 +1803,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7531);
     REGISTER_TEST(GUITest_regression_scenarios::test_7535);
     REGISTER_TEST(GUITest_regression_scenarios::test_7539);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7548);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7556);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
@@ -3455,7 +3458,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_start_page::test_0008);
 }
 
-void GUITestBasePlugin::registerAdditionalActions(UGUITestBase *guiTestBase) {
+void GUITestBasePlugin::registerAdditionalActions(UGUITestBase* guiTestBase) {
     // TODO: add custom timeouts for actions.
     guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0000, UGUITestBase::PreAdditional);
     guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0001, UGUITestBase::PreAdditional);

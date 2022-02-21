@@ -36,7 +36,7 @@
 
 namespace U2 {
 
-ExportConsensusVariationsDialog::ExportConsensusVariationsDialog(QWidget *p, const ExportConsensusVariationsTaskSettings &settings_, const U2Region &visibleRegion)
+ExportConsensusVariationsDialog::ExportConsensusVariationsDialog(QWidget* p, const ExportConsensusVariationsTaskSettings& settings_, const U2Region& visibleRegion)
     : QDialog(p), settings(settings_) {
     setupUi(this);
     setWindowTitle(tr("Export Consensus Variations"));
@@ -70,8 +70,8 @@ ExportConsensusVariationsDialog::ExportConsensusVariationsDialog(QWidget *p, con
     variationModeComboBox->addItem(tr("Similar"), Mode_Similar);
     variationModeComboBox->addItem(tr("All"), Mode_All);
 
-    QPushButton *okPushButton = buttonBox->button(QDialogButtonBox::Ok);
-    QPushButton *cancelPushButton = buttonBox->button(QDialogButtonBox::Cancel);
+    QPushButton* okPushButton = buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* cancelPushButton = buttonBox->button(QDialogButtonBox::Cancel);
 
     connect(okPushButton, SIGNAL(clicked()), SLOT(accept()));
     connect(cancelPushButton, SIGNAL(clicked()), SLOT(reject()));
@@ -89,7 +89,7 @@ void ExportConsensusVariationsDialog::accept() {
 
     QString algoId = algorithmComboBox->currentText();
     if (algoId != settings.consensusAlgorithm->getId()) {
-        AssemblyConsensusAlgorithmFactory *f = AppContext::getAssemblyConsensusAlgorithmRegistry()->getAlgorithmFactory(algoId);
+        AssemblyConsensusAlgorithmFactory* f = AppContext::getAssemblyConsensusAlgorithmRegistry()->getAlgorithmFactory(algoId);
         SAFE_POINT(f != nullptr, QString("ExportConsensusDialog: consensus algorithm factory %1 not found").arg(algoId), );
         settings.consensusAlgorithm = QSharedPointer<AssemblyConsensusAlgorithm>(f->createAlgorithm());
     }
@@ -122,7 +122,7 @@ void ExportConsensusVariationsDialog::accept() {
     QDialog::accept();
 }
 
-const ExportConsensusVariationsTaskSettings &ExportConsensusVariationsDialog::getSettings() const {
+const ExportConsensusVariationsTaskSettings& ExportConsensusVariationsDialog::getSettings() const {
     return settings;
 }
 

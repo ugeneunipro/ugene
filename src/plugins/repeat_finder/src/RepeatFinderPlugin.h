@@ -34,20 +34,20 @@ public:
     RepeatFinderPlugin();
 
 private:
-    GObjectViewWindowContext *viewCtx;
+    GObjectViewWindowContext* viewCtx;
 };
 
 class RepeatViewContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    RepeatViewContext(QObject *p);
+    RepeatViewContext(QObject* p);
 
 protected slots:
     void sl_showDialog();
     void sl_showTandemDialog();
 
 protected:
-    void initViewContext(GObjectView *view) override;
+    void initViewContext(GObjectView* view) override;
 };
 
 }  // namespace U2

@@ -30,15 +30,15 @@ namespace U2 {
 
 class U2VIEW_EXPORT PhyTreeDisplayOptionsWidget : public CreatePhyTreeWidget {
 public:
-    PhyTreeDisplayOptionsWidget(QWidget *parent = nullptr);
+    PhyTreeDisplayOptionsWidget(QWidget* parent = nullptr);
     ~PhyTreeDisplayOptionsWidget();
 
-    void fillSettings(CreatePhyTreeSettings &settings);
+    void fillSettings(CreatePhyTreeSettings& settings);
     void storeSettings();
     void restoreDefault();
 
 private:
-    Ui_PhyTreeDisplayOptionsWidget *ui;
+    Ui_PhyTreeDisplayOptionsWidget* ui;
 
     static const QString displayWithMsaEditor;
     static const QString synchronizeWithMsa;

@@ -29,7 +29,7 @@ using namespace HI;
 
 class UHMM3PhmmerDialogFiller : public Filler {
 public:
-    UHMM3PhmmerDialogFiller(HI::GUITestOpStatus &os, QString _input)
+    UHMM3PhmmerDialogFiller(HI::GUITestOpStatus& os, QString _input)
         : Filler(os, "PhmmerSearchDialog"), input(_input) {
     }
     void commonScenario();

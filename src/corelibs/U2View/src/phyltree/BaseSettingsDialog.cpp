@@ -23,11 +23,11 @@
 
 namespace U2 {
 
-BaseSettingsDialog::BaseSettingsDialog(QWidget *parent)
+BaseSettingsDialog::BaseSettingsDialog(QWidget* parent)
     : QDialog(parent) {
 }
 
-const OptionsMap &BaseSettingsDialog::getSettings() const {
+const OptionsMap& BaseSettingsDialog::getSettings() const {
     return updatedSettings;
 }
 

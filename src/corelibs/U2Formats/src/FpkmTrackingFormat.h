@@ -130,21 +130,21 @@ class U2FORMATS_EXPORT FpkmTrackingFormat : public TextDocumentFormatDeprecated 
     Q_OBJECT
 
 public:
-    FpkmTrackingFormat(QObject *parent);
+    FpkmTrackingFormat(QObject* parent);
 
-    virtual void storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os);
+    virtual void storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os);
 
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray &rawData, const GUrl & = GUrl()) const;
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
-    virtual Document *loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os);
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os);
 
-    QList<SharedAnnotationData> parseDocument(IOAdapter *io, QString &seqName, QString annotName, U2OpStatus &os);
+    QList<SharedAnnotationData> parseDocument(IOAdapter* io, QString& seqName, QString annotName, U2OpStatus& os);
 
-    void load(IOAdapter *io, QList<GObject *> &objects, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os);
+    void load(IOAdapter* io, QList<GObject*>& objects, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os);
 
 private:
-    FpkmTrackingLineData parseAndValidateLine(QString line, QStringList columns, FpkmTrackingLineValidateFlags &status) const;
+    FpkmTrackingLineData parseAndValidateLine(QString line, QStringList columns, FpkmTrackingLineValidateFlags& status) const;
 
     static const QString NO_VALUE_STR;
     static const QString TRACKING_ID_COLUMN;
@@ -162,7 +162,7 @@ private:
      * If the header is appropriate returns true and the columns list contains the columns names.
      * Otherwise returns "false".
      */
-    bool parseHeader(const QString &headerLine, QStringList &columns) const;
+    bool parseHeader(const QString& headerLine, QStringList& columns) const;
 
     /**
      * Qualifiers from the FIRST FOUND annotation are used to restore names of "additional"
@@ -174,9 +174,9 @@ private:
      * goes before a "samplename_FPKM_hi" (or "samplename_FPKM_conf_hi") column.
      * The function returns the list of all columns names.
      */
-    QStringList writeHeader(QList<GObject *> annotTables, Document *doc, IOAdapter *io, U2OpStatus &os);
+    QStringList writeHeader(QList<GObject*> annotTables, Document* doc, IOAdapter* io, U2OpStatus& os);
 
-    void addQualifierIfValuePresent(SharedAnnotationData &annotData, const QString &name, const QString &val);
+    void addQualifierIfValuePresent(SharedAnnotationData& annotData, const QString& name, const QString& val);
 };
 
 }  // namespace U2

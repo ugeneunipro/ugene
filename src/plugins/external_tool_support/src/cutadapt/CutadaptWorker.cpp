@@ -58,7 +58,7 @@ namespace U2 {
 namespace LocalWorkflow {
 
 ///////////////////////////////////////////////////////////////
-//CutAdaptFastq
+// CutAdaptFastq
 const QString CutAdaptFastqWorkerFactory::ACTOR_ID("CutAdaptFastq");
 
 static const QString INPUT_URLS_ID("input-urls");
@@ -70,8 +70,8 @@ static const QString ANYWHERE_URL("anywhere-url");
 /* CutAdaptFastqPrompter */
 /************************************************************************/
 QString CutAdaptFastqPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BaseNGSWorker::INPUT_PORT));
-    const Actor *producer = input->getProducer(BaseSlots::URL_SLOT().getId());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BaseNGSWorker::INPUT_PORT));
+    const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
 
@@ -83,11 +83,11 @@ QString CutAdaptFastqPrompter::composeRichDoc() {
 /* CutAdaptFastqWorkerFactory */
 /************************************************************************/
 void CutAdaptFastqWorkerFactory::init() {
-    //init data path
-    U2DataPath *dataPath = nullptr;
-    U2DataPathRegistry *dpr = AppContext::getDataPathRegistry();
+    // init data path
+    U2DataPath* dataPath = nullptr;
+    U2DataPathRegistry* dpr = AppContext::getDataPathRegistry();
     if (dpr) {
-        U2DataPath *dp = dpr->getDataPathByName(CutadaptSupport::ADAPTERS_DATA_NAME);
+        U2DataPath* dp = dpr->getDataPathByName(CutadaptSupport::ADAPTERS_DATA_NAME);
         if (dp && dp->isValid()) {
             dataPath = dp;
         }
@@ -95,7 +95,7 @@ void CutAdaptFastqWorkerFactory::init() {
 
     Descriptor desc(ACTOR_ID, CutAdaptFastqWorker::tr("Cut Adapter"), CutAdaptFastqWorker::tr("Removes adapter sequences"));
 
-    QList<PortDescriptor *> p;
+    QList<PortDescriptor*> p;
     {
         Descriptor inD(BaseNGSWorker::INPUT_PORT, CutAdaptFastqWorker::tr("Input File"), CutAdaptFastqWorker::tr("Set of FASTQ reads files"));
         Descriptor outD(BaseNGSWorker::OUTPUT_PORT, CutAdaptFastqWorker::tr("Output File"), CutAdaptFastqWorker::tr("Output FASTQ file(s)"));
@@ -109,7 +109,7 @@ void CutAdaptFastqWorkerFactory::init() {
         p << new PortDescriptor(outD, DataTypePtr(new MapDataType("cf.output-url", outM)), false, true);
     }
 
-    QList<Attribute *> a;
+    QList<Attribute*> a;
     {
         Descriptor outDir(BaseNGSWorker::OUT_MODE_ID, CutAdaptFastqWorker::tr("Output folder"), CutAdaptFastqWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
                                                                                                                         "<b>Workflow</b> - internal workflow folder. "
@@ -138,14 +138,14 @@ void CutAdaptFastqWorkerFactory::init() {
         Descriptor anywhere(ANYWHERE_URL, CutAdaptFastqWorker::tr("FASTA file with 5' and 3' adapters"), CutAdaptFastqWorker::tr("A FASTA file with one or multiple sequences of adapters that were ligated to the 5' end or 3' end."));
 
         a << new Attribute(outDir, BaseTypes::NUM_TYPE(), false, QVariant(FileAndDirectoryUtils::WORKFLOW_INTERNAL));
-        Attribute *customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
+        Attribute* customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
         customDirAttr->addRelation(new VisibilityRelation(BaseNGSWorker::OUT_MODE_ID, FileAndDirectoryUtils::CUSTOM));
         a << customDirAttr;
         a << new Attribute(outName, BaseTypes::STRING_TYPE(), false, QVariant(BaseNGSWorker::DEFAULT_NAME));
 
-        Attribute *adaptersAttr = nullptr;
+        Attribute* adaptersAttr = nullptr;
         if (dataPath) {
-            const QList<QString> &dataNames = dataPath->getDataNames();
+            const QList<QString>& dataNames = dataPath->getDataNames();
             if (!dataNames.isEmpty()) {
                 adaptersAttr = new Attribute(adapters, BaseTypes::STRING_TYPE(), false, dataPath->getPathByName(dataNames.first()));
             } else {
@@ -160,7 +160,7 @@ void CutAdaptFastqWorkerFactory::init() {
         a << new Attribute(anywhere, BaseTypes::STRING_TYPE(), false, "");
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap directoryMap;
         QString fileDir = CutAdaptFastqWorker::tr("Input file");
@@ -178,20 +178,20 @@ void CutAdaptFastqWorkerFactory::init() {
         delegates[ANYWHERE_URL] = new URLDelegate("", "", false, false, false);
     }
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new CutAdaptFastqPrompter());
     proto->addExternalTool(CutadaptSupport::ET_CUTADAPT_ID);
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new CutAdaptFastqWorkerFactory());
 }
 
 /************************************************************************/
 /* CutAdaptFastqWorker */
 /************************************************************************/
-CutAdaptFastqWorker::CutAdaptFastqWorker(Actor *a)
+CutAdaptFastqWorker::CutAdaptFastqWorker(Actor* a)
     : BaseNGSWorker(a) {
 }
 
@@ -207,7 +207,7 @@ QString CutAdaptFastqWorker::getDefaultFileName() const {
     return ".cutadapt.fastq";
 }
 
-Task *CutAdaptFastqWorker::getTask(const BaseNGSSetting &settings) const {
+Task* CutAdaptFastqWorker::getTask(const BaseNGSSetting& settings) const {
     if (settings.listeners[0] != nullptr) {
         settings.listeners[0]->setLogProcessor(new CutAdaptLogProcessor(monitor(), getActorId()));
     }
@@ -215,8 +215,8 @@ Task *CutAdaptFastqWorker::getTask(const BaseNGSSetting &settings) const {
 }
 
 //////////////////////////////////////////////////////
-//CutAdaptFastqTask
-CutAdaptFastqTask::CutAdaptFastqTask(const BaseNGSSetting &settings)
+// CutAdaptFastqTask
+CutAdaptFastqTask::CutAdaptFastqTask(const BaseNGSSetting& settings)
     : BaseNGSTask(settings) {
     GCOUNTER(cvar, "NGS:FASTQCutAdaptTask");
 }
@@ -230,14 +230,14 @@ void CutAdaptFastqTask::prepareStep() {
             algoLog.error(tr("Can not copy the result file to: %1").arg(settings.outDir + settings.outName));
         }
     } else {
-        ExternalToolRunTask *etTask = getExternalToolTask(CutadaptSupport::ET_CUTADAPT_ID, new CutAdaptParser());
+        ExternalToolRunTask* etTask = getExternalToolTask(CutadaptSupport::ET_CUTADAPT_ID, new CutAdaptParser());
         CHECK(etTask != nullptr, );
 
         addSubTask(etTask);
     }
 }
 
-QStringList CutAdaptFastqTask::getParameters(U2OpStatus & /*os*/) {
+QStringList CutAdaptFastqTask::getParameters(U2OpStatus& /*os*/) {
     QStringList res;
 
     QString val;
@@ -283,7 +283,7 @@ QStringList CutAdaptFastqTask::getParameters(U2OpStatus & /*os*/) {
 
 const QStringList CutAdaptParser::stringsToIgnore = CutAdaptParser::initStringsToIgnore();
 
-void CutAdaptParser::parseErrOutput(const QString &partOfLog) {
+void CutAdaptParser::parseErrOutput(const QString& partOfLog) {
     lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
     lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
     lastErrLine = lastPartOfLog.takeLast();
@@ -293,10 +293,10 @@ void CutAdaptParser::parseErrOutput(const QString &partOfLog) {
     }
 }
 
-QString CutAdaptParser::parseTextForErrors(const QStringList &lastPartOfLog) {
-    foreach (const QString &buf, lastPartOfLog) {
+QString CutAdaptParser::parseTextForErrors(const QStringList& lastPartOfLog) {
+    foreach (const QString& buf, lastPartOfLog) {
         bool ignoredStringFound = false;
-        foreach (const QString &ignoredStr, stringsToIgnore) {
+        foreach (const QString& ignoredStr, stringsToIgnore) {
             if (buf.contains(ignoredStr, Qt::CaseInsensitive)) {
                 ignoredStringFound = true;
                 break;
@@ -320,18 +320,18 @@ QStringList CutAdaptParser::initStringsToIgnore() {
     return result;
 }
 
-CutAdaptLogProcessor::CutAdaptLogProcessor(WorkflowMonitor *monitor, const QString &actor)
+CutAdaptLogProcessor::CutAdaptLogProcessor(WorkflowMonitor* monitor, const QString& actor)
     : ExternalToolLogProcessor(),
       monitor(monitor),
       actor(actor) {
 }
 
-void CutAdaptLogProcessor::processLogMessage(const QString &message) {
+void CutAdaptLogProcessor::processLogMessage(const QString& message) {
     QString error = CutAdaptParser::parseTextForErrors(QStringList() << message);
     if (!error.isEmpty()) {
         monitor->addError(error, actor, WorkflowNotification::U2_ERROR);
     }
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

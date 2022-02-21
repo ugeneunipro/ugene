@@ -31,10 +31,10 @@ namespace U2 {
 
 class DNATranslation1to1Impl : public DNATranslation {
 public:
-    DNATranslation1to1Impl(const QString &id, const QString &_name, const DNAAlphabet *src, const DNAAlphabet *dst, QByteArray mapper121);
+    DNATranslation1to1Impl(const QString& id, const QString& _name, const DNAAlphabet* src, const DNAAlphabet* dst, QByteArray mapper121);
 
-    virtual qint64 translate(const char *src, qint64 src_len, char *dst, qint64 dst_capacity) const;
-    virtual int translate(char *src_and_dst, int len) const;
+    virtual qint64 translate(const char* src, qint64 src_len, char* dst, qint64 dst_capacity) const;
+    virtual int translate(char* src_and_dst, int len) const;
 
     virtual bool isOne2One() const {
         return true;
@@ -53,7 +53,7 @@ public:
     Triplet() {
         c[0] = c[1] = c[2] = '\0';
     }
-    Triplet(const char *s) {
+    Triplet(const char* s) {
         c[0] = s[0];
         c[1] = s[1];
         c[2] = s[2];
@@ -74,7 +74,7 @@ public:
         c[0] = c[1] = c[2] = '\0';
         p = 0;
     }
-    TripletP(const char *s) {
+    TripletP(const char* s) {
         c[0] = s[0];
         c[1] = s[1];
         c[2] = s[2];
@@ -87,7 +87,7 @@ public:
         p = 0;
     }
 
-    TripletP(const char *s, int p0) {
+    TripletP(const char* s, int p0) {
         c[0] = s[0];
         c[1] = s[1];
         c[2] = s[2];
@@ -100,7 +100,7 @@ public:
         p = p0;
     }
 
-    bool operator<(const TripletP &other) const {
+    bool operator<(const TripletP& other) const {
         return (p > other.p);
     }
 
@@ -112,15 +112,15 @@ class U2CORE_EXPORT Index3To1 {
 public:
     Index3To1();
 
-    void init(const QList<Triplet> &t);
+    void init(const QList<Triplet>& t);
 
-    void init(const QByteArray &alphabetChars);
+    void init(const QByteArray& alphabetChars);
 
-    int indexOf(const Triplet &t) const {
+    int indexOf(const Triplet& t) const {
         return indexOf(t.c[0], t.c[1], t.c[2]);
     }
 
-    int indexOf(const char *str) const {
+    int indexOf(const char* str) const {
         return indexOf(str[0], str[1], str[2]);
     }
 
@@ -147,7 +147,7 @@ private:
 template<typename T>
 class Mapping3To1 {
 public:
-    Mapping3To1(const Triplet &_t, const T &_res)
+    Mapping3To1(const Triplet& _t, const T& _res)
         : t(_t), res(_res) {
     }
 
@@ -159,10 +159,10 @@ template<typename T>
 class IndexedMapping3To1 {
     Q_DISABLE_COPY(IndexedMapping3To1)
 public:
-    IndexedMapping3To1(const QList<Mapping3To1<T>> &rawMapping, const T &defaultVal) {
+    IndexedMapping3To1(const QList<Mapping3To1<T>>& rawMapping, const T& defaultVal) {
         // init index;
         QList<Triplet> ts;
-        foreach (const Mapping3To1<T> &m, rawMapping) {
+        foreach (const Mapping3To1<T>& m, rawMapping) {
             ts.append(m.t);
         }
         index.init(ts);
@@ -174,13 +174,13 @@ public:
         std::fill(resultByIndex, resultByIndex + size, defaultVal);
 
         // assign indexed values
-        foreach (const Mapping3To1<T> &m, rawMapping) {
+        foreach (const Mapping3To1<T>& m, rawMapping) {
             int i = index.indexOf(m.t);
             resultByIndex[i] = m.res;
         }
     }
 
-    IndexedMapping3To1(const QByteArray &alphabetChars, const T &defaultVal) {
+    IndexedMapping3To1(const QByteArray& alphabetChars, const T& defaultVal) {
         // init index
         index.init(alphabetChars);
 
@@ -195,37 +195,37 @@ public:
         delete[] resultByIndex;
     }
 
-    const T &map(char c1, char c2, char c3) const {
+    const T& map(char c1, char c2, char c3) const {
         int i = index.indexOf(c1, c2, c3);
         return resultByIndex[i];
     }
 
-    const T &map(const char *str) const {
+    const T& map(const char* str) const {
         int i = index.indexOf(str);
         return resultByIndex[i];
     }
 
-    const T &map(const Triplet &t) const {
+    const T& map(const Triplet& t) const {
         int i = index.indexOf(&t.c[0]);
         return resultByIndex[i];
     }
 
-    T &mapNC(char c1, char c2, char c3) {
+    T& mapNC(char c1, char c2, char c3) {
         int i = index.indexOf(c1, c2, c3);
         return resultByIndex[i];
     }
 
-    T &mapNC(const char *str) {
+    T& mapNC(const char* str) {
         int i = index.indexOf(str);
         return resultByIndex[i];
     }
 
-    T &mapNC(const Triplet &t) {
+    T& mapNC(const Triplet& t) {
         int i = index.indexOf(&t.c[0]);
         return resultByIndex[i];
     }
 
-    T *&mapData() {
+    T*& mapData() {
         return resultByIndex;
     }
 
@@ -235,7 +235,7 @@ public:
 
 private:
     Index3To1 index;
-    T *resultByIndex;
+    T* resultByIndex;
 };
 
 enum DNATranslationRole {
@@ -248,11 +248,11 @@ enum DNATranslationRole {
 
 class DNATranslation3to1Impl : public DNATranslation {
 public:
-    DNATranslation3to1Impl(const QString &_id, const QString &_name, const DNAAlphabet *src, const DNAAlphabet *dst, const QList<Mapping3To1<char>> &mapping, char defaultChar, const QMap<DNATranslationRole, QList<Triplet>> &roles);
+    DNATranslation3to1Impl(const QString& _id, const QString& _name, const DNAAlphabet* src, const DNAAlphabet* dst, const QList<Mapping3To1<char>>& mapping, char defaultChar, const QMap<DNATranslationRole, QList<Triplet>>& roles);
     virtual ~DNATranslation3to1Impl();
 
-    virtual qint64 translate(const char *src, qint64 src_len, char *dst, qint64 dst_capacity) const;
-    virtual int translate(char *src_and_dst, int len) const;
+    virtual qint64 translate(const char* src, qint64 src_len, char* dst, qint64 dst_capacity) const;
+    virtual int translate(char* src_and_dst, int len) const;
 
     virtual bool isThree2One() const {
         return true;
@@ -266,24 +266,24 @@ public:
         return roles;
     }
 
-    bool isStartCodon(const char *s) const;
+    bool isStartCodon(const char* s) const;
     bool isStartCodon(char c1, char c2, char c3) const;
-    bool isStopCodon(const char *s) const;
+    bool isStopCodon(const char* s) const;
     bool isStopCodon(char c1, char c2, char c3) const;
-    bool isCodon(DNATranslationRole role, const char *s) const;
+    bool isCodon(DNATranslationRole role, const char* s) const;
     bool isCodon(DNATranslationRole role, char c1, char c2, char c3) const;
 
 private:
     IndexedMapping3To1<char> index;
     QMap<DNATranslationRole, QList<Triplet>> roles;
-    char **codons;
-    int *cod_lens;
+    char** codons;
+    int* cod_lens;
 };
 
 inline bool DNATranslation3to1Impl::isCodon(DNATranslationRole role, char c1, char c2, char c3) const {
     assert(role >= 0 && role < DNATranslationRole_Num);
     const int len = cod_lens[role];
-    const char *arr = codons[role];
+    const char* arr = codons[role];
     for (int i = 0; i < len; i += 3) {
         if (arr[i] == c1 && arr[i + 1] == c2 && arr[i + 2] == c3)
             return true;
@@ -291,7 +291,7 @@ inline bool DNATranslation3to1Impl::isCodon(DNATranslationRole role, char c1, ch
     return false;
 }
 
-inline bool DNATranslation3to1Impl::isStartCodon(const char *s) const {
+inline bool DNATranslation3to1Impl::isStartCodon(const char* s) const {
     return isCodon(DNATranslationRole_Start, s[0], s[1], s[2]);
 }
 
@@ -299,7 +299,7 @@ inline bool DNATranslation3to1Impl::isStartCodon(char c1, char c2, char c3) cons
     return isCodon(DNATranslationRole_Start, c1, c2, c3);
 }
 
-inline bool DNATranslation3to1Impl::isStopCodon(const char *s) const {
+inline bool DNATranslation3to1Impl::isStopCodon(const char* s) const {
     return isCodon(DNATranslationRole_Stop, s[0], s[1], s[2]);
 }
 
@@ -307,7 +307,7 @@ inline bool DNATranslation3to1Impl::isStopCodon(char c1, char c2, char c3) const
     return isCodon(DNATranslationRole_Stop, c1, c2, c3);
 }
 
-inline bool DNATranslation3to1Impl::isCodon(DNATranslationRole role, const char *s) const {
+inline bool DNATranslation3to1Impl::isCodon(DNATranslationRole role, const char* s) const {
     return isCodon(role, s[0], s[1], s[2]);
 }
 
@@ -325,12 +325,12 @@ enum BackTranslationMode {
 
 class DNATranslation1to3Impl : public DNATranslation {
 public:
-    DNATranslation1to3Impl(const QString &_id, const QString &_name, const DNAAlphabet *src, const DNAAlphabet *dst, const BackTranslationRules &rules);
+    DNATranslation1to3Impl(const QString& _id, const QString& _name, const DNAAlphabet* src, const DNAAlphabet* dst, const BackTranslationRules& rules);
     virtual ~DNATranslation1to3Impl();
 
-    virtual qint64 translate(const char *src, qint64 src_len, char *dst, qint64 dst_capacity, BackTranslationMode mode) const;
-    virtual qint64 translate(const char *src, qint64 src_len, char *dst, qint64 dst_capacity) const;
-    virtual int translate(char *src_and_dst, int len) const;
+    virtual qint64 translate(const char* src, qint64 src_len, char* dst, qint64 dst_capacity, BackTranslationMode mode) const;
+    virtual qint64 translate(const char* src, qint64 src_len, char* dst, qint64 dst_capacity) const;
+    virtual int translate(char* src_and_dst, int len) const;
 
     virtual bool isOne2Three() const {
         return true;

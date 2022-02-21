@@ -45,10 +45,10 @@ struct ExportConsensusVariationsTaskSettings : public AssemblyConsensusTaskSetti
 class ExportConsensusVariationsTask : public DocumentProviderTask, ConsensusSettingsQueue {
     Q_OBJECT
 public:
-    ExportConsensusVariationsTask(const ExportConsensusVariationsTaskSettings &settings_);
+    ExportConsensusVariationsTask(const ExportConsensusVariationsTaskSettings& settings_);
 
     virtual void prepare();
-    virtual QList<Task *> onSubTaskFinished(Task *subTask);
+    virtual QList<Task*> onSubTaskFinished(Task* subTask);
 
     // implement ConsensusSettingsQueue interface
     virtual int count() {
@@ -58,12 +58,12 @@ public:
         return !consensusRegions.isEmpty();
     }
     virtual AssemblyConsensusTaskSettings getNextSettings();
-    virtual void reportResult(const ConsensusInfo &result);
+    virtual void reportResult(const ConsensusInfo& result);
 
 private:
     ExportConsensusVariationsTaskSettings settings;
-    AssemblyConsensusWorker *consensusTask;
-    VariantTrackObject *varTrackObject;
+    AssemblyConsensusWorker* consensusTask;
+    VariantTrackObject* varTrackObject;
 
     // A region to analyze at a time
     static const qint64 REGION_TO_ANALAYZE = 1000000;

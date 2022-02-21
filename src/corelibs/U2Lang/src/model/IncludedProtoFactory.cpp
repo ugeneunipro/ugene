@@ -27,13 +27,13 @@
 namespace U2 {
 namespace Workflow {
 
-IncludedProtoFactory *IncludedProtoFactory::instance = nullptr;
+IncludedProtoFactory* IncludedProtoFactory::instance = nullptr;
 
-void IncludedProtoFactory::init(IncludedProtoFactory *protoMaker) {
+void IncludedProtoFactory::init(IncludedProtoFactory* protoMaker) {
     instance = protoMaker;
 }
 
-ActorPrototype *IncludedProtoFactory::getScriptProto(QList<DataTypePtr> input, QList<DataTypePtr> output, QList<Attribute *> attrs, const QString &name, const QString &description, const QString &actorFilePath, bool isAliasName) {
+ActorPrototype* IncludedProtoFactory::getScriptProto(QList<DataTypePtr> input, QList<DataTypePtr> output, QList<Attribute*> attrs, const QString& name, const QString& description, const QString& actorFilePath, bool isAliasName) {
     if (nullptr != instance) {
         return instance->_getScriptProto(input, output, attrs, name, description, actorFilePath, isAliasName);
     } else {
@@ -41,7 +41,7 @@ ActorPrototype *IncludedProtoFactory::getScriptProto(QList<DataTypePtr> input, Q
     }
 }
 
-ActorPrototype *IncludedProtoFactory::getExternalToolProto(ExternalProcessConfig *cfg) {
+ActorPrototype* IncludedProtoFactory::getExternalToolProto(ExternalProcessConfig* cfg) {
     if (nullptr != instance) {
         return instance->_getExternalToolProto(cfg);
     } else {
@@ -49,7 +49,7 @@ ActorPrototype *IncludedProtoFactory::getExternalToolProto(ExternalProcessConfig
     }
 }
 
-ActorPrototype *IncludedProtoFactory::getSchemaActorProto(Schema *schema, const QString &name, const QString &actorFilePath) {
+ActorPrototype* IncludedProtoFactory::getSchemaActorProto(Schema* schema, const QString& name, const QString& actorFilePath) {
     if (nullptr != instance) {
         return instance->_getSchemaActorProto(schema, name, actorFilePath);
     } else {
@@ -57,7 +57,7 @@ ActorPrototype *IncludedProtoFactory::getSchemaActorProto(Schema *schema, const 
     }
 }
 
-bool IncludedProtoFactory::registerExternalToolWorker(ExternalProcessConfig *cfg) {
+bool IncludedProtoFactory::registerExternalToolWorker(ExternalProcessConfig* cfg) {
     if (nullptr != instance) {
         return instance->_registerExternalToolWorker(cfg);
     } else {
@@ -65,7 +65,7 @@ bool IncludedProtoFactory::registerExternalToolWorker(ExternalProcessConfig *cfg
     }
 }
 
-void IncludedProtoFactory::registerScriptWorker(const QString &actorName) {
+void IncludedProtoFactory::registerScriptWorker(const QString& actorName) {
     if (nullptr != instance) {
         return instance->_registerScriptWorker(actorName);
     } else {
@@ -73,7 +73,7 @@ void IncludedProtoFactory::registerScriptWorker(const QString &actorName) {
     }
 }
 
-ExternalProcessConfig *IncludedProtoFactory::getExternalToolWorker(const QString &id) {
+ExternalProcessConfig* IncludedProtoFactory::getExternalToolWorker(const QString& id) {
     if (nullptr != instance) {
         return instance->_getExternalToolWorker(id);
     } else {
@@ -81,7 +81,7 @@ ExternalProcessConfig *IncludedProtoFactory::getExternalToolWorker(const QString
     }
 }
 
-ExternalProcessConfig *IncludedProtoFactory::unregisterExternalToolWorker(const QString &id) {
+ExternalProcessConfig* IncludedProtoFactory::unregisterExternalToolWorker(const QString& id) {
     if (nullptr != instance) {
         return instance->_unregisterExternalToolWorker(id);
     } else {
@@ -89,8 +89,8 @@ ExternalProcessConfig *IncludedProtoFactory::unregisterExternalToolWorker(const 
     }
 }
 
-bool IncludedProtoFactory::isRegistered(const QString &actorName) {
-    ActorPrototype *proto = WorkflowEnv::getProtoRegistry()->getProto(actorName);
+bool IncludedProtoFactory::isRegistered(const QString& actorName) {
+    ActorPrototype* proto = WorkflowEnv::getProtoRegistry()->getProto(actorName);
 
     if (nullptr == proto) {
         return false;
@@ -99,8 +99,8 @@ bool IncludedProtoFactory::isRegistered(const QString &actorName) {
     }
 }
 
-bool IncludedProtoFactory::isRegisteredTheSameProto(const QString &actorId, ActorPrototype *proto) {
-    ActorPrototype *regProto = WorkflowEnv::getProtoRegistry()->getProto(actorId);
+bool IncludedProtoFactory::isRegisteredTheSameProto(const QString& actorId, ActorPrototype* proto) {
+    ActorPrototype* regProto = WorkflowEnv::getProtoRegistry()->getProto(actorId);
     assert(nullptr != proto);
 
     // compare simple proto parameters
@@ -110,14 +110,14 @@ bool IncludedProtoFactory::isRegisteredTheSameProto(const QString &actorId, Acto
 
     // compare attributes
     {
-        QList<Attribute *> attrList = proto->getAttributes();
-        QList<Attribute *> regAttrList = regProto->getAttributes();
+        QList<Attribute*> attrList = proto->getAttributes();
+        QList<Attribute*> regAttrList = regProto->getAttributes();
         if (attrList.size() != regAttrList.size()) {
             return false;
         }
-        for (Attribute *attr : qAsConst(attrList)) {
+        for (Attribute* attr : qAsConst(attrList)) {
             bool found = false;
-            for (Attribute *regAttr : qAsConst(regAttrList)) {
+            for (Attribute* regAttr : qAsConst(regAttrList)) {
                 if (*attr == *regAttr) {
                     found = true;
                     break;
@@ -131,14 +131,14 @@ bool IncludedProtoFactory::isRegisteredTheSameProto(const QString &actorId, Acto
 
     // compare ports
     {
-        QList<PortDescriptor *> portList = proto->getPortDesciptors();
-        QList<PortDescriptor *> regPortList = regProto->getPortDesciptors();
+        QList<PortDescriptor*> portList = proto->getPortDesciptors();
+        QList<PortDescriptor*> regPortList = regProto->getPortDesciptors();
         if (portList.size() != regPortList.size()) {
             return false;
         }
-        for (PortDescriptor *port : qAsConst(portList)) {
+        for (PortDescriptor* port : qAsConst(portList)) {
             bool found = false;
-            for (PortDescriptor *regPort : qAsConst(regPortList)) {
+            for (PortDescriptor* regPort : qAsConst(regPortList)) {
                 if (*port == *regPort) {
                     found = true;
                     break;

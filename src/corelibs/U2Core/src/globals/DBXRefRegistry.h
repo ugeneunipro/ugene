@@ -35,7 +35,7 @@ class U2CORE_EXPORT DBXRefInfo {
 public:
     DBXRefInfo() {
     }
-    DBXRefInfo(const QString &_name, const QString &_url, const QString &_fileUrl, const QString &_comment)
+    DBXRefInfo(const QString& _name, const QString& _url, const QString& _fileUrl, const QString& _comment)
         : name(_name), url(_url), fileUrl(_fileUrl), comment(_comment) {
     }
 
@@ -44,35 +44,35 @@ public:
     QString fileUrl;
     QString comment;
 
-    static void setupToEngine(QScriptEngine *engine);
+    static void setupToEngine(QScriptEngine* engine);
 
 private:
-    static QScriptValue toScriptValue(QScriptEngine *engine, DBXRefInfo const &in);
-    static void fromScriptValue(const QScriptValue &object, DBXRefInfo &out);
+    static QScriptValue toScriptValue(QScriptEngine* engine, DBXRefInfo const& in);
+    static void fromScriptValue(const QScriptValue& object, DBXRefInfo& out);
 };
 
 class U2CORE_EXPORT DBXRefRegistry : public QObject {
     Q_OBJECT
 public:
-    DBXRefRegistry(QObject *p = nullptr);
+    DBXRefRegistry(QObject* p = nullptr);
 
-    Q_INVOKABLE DBXRefInfo getRefByKey(const QString &dbxrefKey) const {
+    Q_INVOKABLE DBXRefInfo getRefByKey(const QString& dbxrefKey) const {
         return refsByKey.value(dbxrefKey);
     }
 
-    static void setupToEngine(QScriptEngine *engine);
-    const QMap<QString, DBXRefInfo> &getEntries() {
+    static void setupToEngine(QScriptEngine* engine);
+    const QMap<QString, DBXRefInfo>& getEntries() {
         return refsByKey;
     }
 
 private:
-    static QScriptValue toScriptValue(QScriptEngine *engine, DBXRefRegistry *const &in);
-    static void fromScriptValue(const QScriptValue &object, DBXRefRegistry *&out);
+    static QScriptValue toScriptValue(QScriptEngine* engine, DBXRefRegistry* const& in);
+    static void fromScriptValue(const QScriptValue& object, DBXRefRegistry*& out);
 
     QMap<QString, DBXRefInfo> refsByKey;
 };
 }  // namespace U2
-Q_DECLARE_METATYPE(U2::DBXRefRegistry *)
+Q_DECLARE_METATYPE(U2::DBXRefRegistry*)
 Q_DECLARE_METATYPE(U2::DBXRefInfo)
 
 #endif

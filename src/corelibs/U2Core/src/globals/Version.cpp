@@ -45,7 +45,7 @@ Version::Version(int _major, int _minor, int _patch) {
     patch = _patch;
 }
 
-Version Version::parseVersion(const QString &versionText) {
+Version Version::parseVersion(const QString& versionText) {
     Version version;
 
     // parse sub-numbers and suffix
@@ -104,15 +104,15 @@ Version Version::qtVersion() {
     return parseVersion(QT_VERSION_STR);
 }
 
-bool Version::operator>(const Version &v) const {
+bool Version::operator>(const Version& v) const {
     return v < *this;
 }
 
-bool Version::operator>=(const Version &v) const {
+bool Version::operator>=(const Version& v) const {
     return v <= *this;
 }
 
-bool Version::operator<(const Version &v) const {
+bool Version::operator<(const Version& v) const {
     if (v.major != major) {
         return v.major > major;
     }
@@ -128,11 +128,11 @@ bool Version::operator<(const Version &v) const {
     return false;
 }
 
-bool Version::operator<=(const Version &v) const {
+bool Version::operator<=(const Version& v) const {
     return *this < v || *this == v;
 }
 
-bool Version::operator==(const Version &v) const {
+bool Version::operator==(const Version& v) const {
     return major == v.major && minor == v.minor && patch == v.patch;
 }
 

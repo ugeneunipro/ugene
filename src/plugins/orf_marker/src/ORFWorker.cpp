@@ -67,8 +67,8 @@ static const QString LIMIT_ATTR("limit-results");
 const QString ORFWorkerFactory::ACTOR_ID("orf-search");
 
 void ORFWorkerFactory::init() {
-    QList<PortDescriptor *> p;
-    QList<Attribute *> a;
+    QList<PortDescriptor*> p;
+    QList<Attribute*> a;
 
     {
         Descriptor id(BasePorts::IN_SEQ_PORT_ID(), ORFWorker::tr("Input sequences"), ORFWorker::tr("A nucleotide sequence to search ORFs in. Protein sequences are skipped."));
@@ -116,8 +116,8 @@ void ORFWorkerFactory::init() {
                                                                          " and usually give a good indication of the presence of a gene in the surrounding sequence.</dfn></p>"
                                                                          "<p>In the sequence, ORFs are located between a start-code sequence (initiation codon) and a stop-code sequence (termination codon),"
                                                                          " defined by the selected genetic code.</p>"));
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
-    QMap<QString, PropertyDelegate *> delegates;
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
+    QMap<QString, PropertyDelegate*> delegates;
 
     QVariantMap lenMap;
     lenMap["minimum"] = QVariant(0);
@@ -127,9 +127,9 @@ void ORFWorkerFactory::init() {
     delegates[BaseAttributes::STRAND_ATTRIBUTE().getId()] = new ComboBoxDelegate(BaseAttributes::STRAND_ATTRIBUTE_VALUES_MAP());
 
     QList<ComboItem> idMap;
-    QList<DNATranslation *> TTs = AppContext::getDNATranslationRegistry()->lookupTranslation(AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()),
-                                                                                             DNATranslationType_NUCL_2_AMINO);
-    foreach (DNATranslation *tt, TTs) {
+    QList<DNATranslation*> TTs = AppContext::getDNATranslationRegistry()->lookupTranslation(AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()),
+                                                                                            DNATranslationType_NUCL_2_AMINO);
+    foreach (DNATranslation* tt, TTs) {
         idMap.append(qMakePair(tt->getTranslationName(), tt->getTranslationId()));
     }
     delegates[ID_ATTR] = new ComboBoxDelegate(idMap);
@@ -139,11 +139,11 @@ void ORFWorkerFactory::init() {
     proto->setIconPath(":orf_marker/images/orf_marker.png");
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new ORFWorkerFactory());
 }
 
-static ORFAlgorithmStrand getStrand(const QString &s) {
+static ORFAlgorithmStrand getStrand(const QString& s) {
     QString str = s.toLower();
     if (BaseAttributes::STRAND_BOTH().startsWith(str)) {
         return ORFAlgorithmStrand_Both;
@@ -166,8 +166,8 @@ static ORFAlgorithmStrand getStrand(const QString &s) {
  * ORFPrompter
  *****************************/
 QString ORFPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
-    Actor *producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
+    Actor* producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
 
@@ -228,7 +228,7 @@ QString ORFPrompter::composeRichDoc() {
 /*****************************
  * ORFWorker
  *****************************/
-ORFWorker::ORFWorker(Actor *a)
+ORFWorker::ORFWorker(Actor* a)
     : BaseWorker(a), input(nullptr), output(nullptr) {
 }
 
@@ -237,7 +237,7 @@ void ORFWorker::init() {
     output = ports.value(BasePorts::OUT_ANNOTATIONS_PORT_ID());
 }
 
-Task *ORFWorker::tick() {
+Task* ORFWorker::tick() {
     if (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
@@ -268,12 +268,12 @@ Task *ORFWorker::tick() {
             return nullptr;
         }
 
-        const DNAAlphabet *alphabet = seqObj->getAlphabet();
+        const DNAAlphabet* alphabet = seqObj->getAlphabet();
         if (alphabet && alphabet->getType() == DNAAlphabet_NUCL) {
             ORFAlgorithmSettings config(cfg);
             config.searchRegion.length = seqObj->getSequenceLength();
             if (config.strand != ORFAlgorithmStrand_Direct) {
-                DNATranslation *compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(alphabet);
+                DNATranslation* compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(alphabet);
                 if (compTT != nullptr) {
                     config.complementTT = compTT;
                 } else {
@@ -282,7 +282,7 @@ Task *ORFWorker::tick() {
             }
             config.proteinTT = AppContext::getDNATranslationRegistry()->lookupTranslation(alphabet, DNATranslationType_NUCL_2_AMINO, transId);
             if (config.proteinTT) {
-                Task *t = new ORFFindTask(config, seqObj->getEntityRef());
+                Task* t = new ORFFindTask(config, seqObj->getEntityRef());
                 connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
                 return t;
             }
@@ -298,7 +298,7 @@ Task *ORFWorker::tick() {
 }
 
 void ORFWorker::sl_taskFinished() {
-    ORFFindTask *t = qobject_cast<ORFFindTask *>(sender());
+    ORFFindTask* t = qobject_cast<ORFFindTask*>(sender());
     if (t->getState() != Task::State_Finished || t->isCanceled() || t->hasError()) {
         return;
     }

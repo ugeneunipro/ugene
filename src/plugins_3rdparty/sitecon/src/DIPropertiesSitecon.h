@@ -38,13 +38,13 @@ public:
     DinucleotitePropertyRegistry();
     ~DinucleotitePropertyRegistry();
 
-    QList<DiPropertySitecon *> getProperties() const {
+    QList<DiPropertySitecon*> getProperties() const {
         return props;
     }
 
 private:
-    void registerProperty(const QString &str);
-    QList<DiPropertySitecon *> props;
+    void registerProperty(const QString& str);
+    QList<DiPropertySitecon*> props;
 };
 
 class DiPropertySitecon : public DiProperty {

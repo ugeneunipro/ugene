@@ -33,18 +33,18 @@ class CustomExternalTool;
 class RegisterCustomToolTask : public Task {
     Q_OBJECT
 public:
-    RegisterCustomToolTask(const QString &url);
+    RegisterCustomToolTask(const QString& url);
 
-    CustomExternalTool *getTool() const;
+    CustomExternalTool* getTool() const;
 
 private:
     void run() override;
 
     const QDomDocument config;
     const QString url;
-    CustomExternalTool *registeredTool;
+    CustomExternalTool* registeredTool;
 };
 
-}    // namespace U2
+}  // namespace U2
 
-#endif    // _U2_REGISTER_CUSTOM_TOOL_TASK_H_
+#endif  // _U2_REGISTER_CUSTOM_TOOL_TASK_H_

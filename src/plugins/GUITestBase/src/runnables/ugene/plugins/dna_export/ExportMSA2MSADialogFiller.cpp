@@ -36,7 +36,7 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportToSequenceFormatFiller"
 
-ExportMSA2MSADialogFiller::ExportMSA2MSADialogFiller(HI::GUITestOpStatus &_os, int _formatVal, QString _path, bool _includeGaps, bool _unknownAsGaps, int _frame)
+ExportMSA2MSADialogFiller::ExportMSA2MSADialogFiller(HI::GUITestOpStatus& _os, int _formatVal, QString _path, bool _includeGaps, bool _unknownAsGaps, int _frame)
     : Filler(_os, "U2__ExportMSA2MSADialog"),
       formatVal(_formatVal),
       path(_path),
@@ -47,15 +47,14 @@ ExportMSA2MSADialogFiller::ExportMSA2MSADialogFiller(HI::GUITestOpStatus &_os, i
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportMSA2MSADialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (!path.isEmpty()) {
-        QLineEdit *fileNameEdit = GTWidget::findExactWidget<QLineEdit *>(os, "fileNameEdit", dialog);
+        QLineEdit* fileNameEdit = GTWidget::findLineEdit(os, "fileNameEdit", dialog);
         GTLineEdit::setText(os, fileNameEdit, path);
     }
     if (formatVal >= 0) {
-        QComboBox *formatCombo = GTWidget::findExactWidget<QComboBox *>(os, "formatCombo", dialog);
+        QComboBox* formatCombo = GTWidget::findComboBox(os, "formatCombo", dialog);
         GTComboBox::selectItemByIndex(os, formatCombo, formatVal);
     }
     if (includeGaps) {

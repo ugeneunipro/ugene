@@ -35,7 +35,7 @@ namespace Workflow {
  */
 class DatasetsCountValidator : public ActorValidator {
 public:
-    virtual bool validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const;
+    virtual bool validate(const Actor* actor, NotificationsList& notificationList, const QMap<QString, QString>& options) const;
     static const QString ID;
 };
 

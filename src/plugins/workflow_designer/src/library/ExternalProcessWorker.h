@@ -34,10 +34,10 @@ namespace LocalWorkflow {
 class ExternalProcessWorker : public BaseWorker {
     Q_OBJECT
 public:
-    ExternalProcessWorker(Actor *a);
+    ExternalProcessWorker(Actor* a);
 
     bool isReady() const;
-    Task *tick();
+    Task* tick();
     void init();
     void cleanup();
 
@@ -53,21 +53,21 @@ private:
         INTERNAL_ERROR
     };
 
-    void applySpecialInternalEnvvars(QString &execString, ExternalProcessConfig *cfg);
-    void applyAttributes(QString &execString);
-    static bool applyParamsToExecString(QString &execString, QString parName, QString parValue);
-    void applyEscapedSymbols(QString &execString);
-    QStringList applyInputMessage(QString &execString, const DataConfig &dataCfg, const QVariantMap &data, U2OpStatus &os);
-    QString prepareOutput(QString &execString, const DataConfig &dataCfg, U2OpStatus &os);
+    void applySpecialInternalEnvvars(QString& execString, ExternalProcessConfig* cfg);
+    void applyAttributes(QString& execString);
+    static bool applyParamsToExecString(QString& execString, QString parName, QString parValue);
+    void applyEscapedSymbols(QString& execString);
+    QStringList applyInputMessage(QString& execString, const DataConfig& dataCfg, const QVariantMap& data, U2OpStatus& os);
+    QString prepareOutput(QString& execString, const DataConfig& dataCfg, U2OpStatus& os);
 
     InputsCheckResult checkInputBusState() const;
-    bool finishWorkIfInputEnded(QString &error);
+    bool finishWorkIfInputEnded(QString& error);
     void finish();
 
-    IntegralBus *output;
-    QList<IntegralBus *> inputs;
+    IntegralBus* output;
+    QList<IntegralBus*> inputs;
     QString commandLine;
-    ExternalProcessConfig *cfg;
+    ExternalProcessConfig* cfg;
 
     QMap<QString, bool> urlsForDashboard;  // url -> open by system
     QStringList inputUrls;
@@ -78,8 +78,8 @@ public:
     ExternalProcessWorkerFactory(QString name)
         : DomainFactory(name) {
     }
-    static bool init(ExternalProcessConfig *cfg);
-    virtual Worker *createWorker(Actor *a) {
+    static bool init(ExternalProcessConfig* cfg);
+    virtual Worker* createWorker(Actor* a) {
         return new ExternalProcessWorker(a);
     }
 };
@@ -87,7 +87,7 @@ public:
 class ExternalProcessWorkerPrompter : public PrompterBase<ExternalProcessWorkerPrompter> {
     Q_OBJECT
 public:
-    ExternalProcessWorkerPrompter(Actor *p = nullptr)
+    ExternalProcessWorkerPrompter(Actor* p = nullptr)
         : PrompterBase<ExternalProcessWorkerPrompter>(p) {
     }
     QString composeRichDoc();
@@ -97,19 +97,19 @@ class LaunchExternalToolTask : public Task {
     Q_OBJECT
     Q_DISABLE_COPY(LaunchExternalToolTask)
 public:
-    LaunchExternalToolTask(const QString &execString, const QString &workingDir, const QMap<QString, DataConfig> &outputUrls);
+    LaunchExternalToolTask(const QString& execString, const QString& workingDir, const QMap<QString, DataConfig>& outputUrls);
     ~LaunchExternalToolTask();
 
     void run();
 
     QMap<QString, DataConfig> takeOutputUrls();
-    void addListeners(const QList<ExternalToolListener *> &listenersToAdd);
+    void addListeners(const QList<ExternalToolListener*>& listenersToAdd);
 
 private:
     QMap<QString, DataConfig> outputUrls;
     QString execString;
     QString workingDir;
-    QList<ExternalToolListener *> listeners;
+    QList<ExternalToolListener*> listeners;
 };
 
 }  // namespace LocalWorkflow

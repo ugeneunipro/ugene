@@ -40,7 +40,7 @@ U2PWMatrix::U2PWMatrix()
     : U2RawData() {
 }
 
-U2PWMatrix::U2PWMatrix(const U2DbiRef &dbiRef)
+U2PWMatrix::U2PWMatrix(const U2DbiRef& dbiRef)
     : U2RawData(dbiRef) {
 }
 
@@ -50,7 +50,7 @@ U2DataType U2PWMatrix::getType() const {
 
 // PWMatrixObject
 //////////////////////////////////////////////////////////////////////////
-PWMatrixObject *PWMatrixObject::createInstance(const PWMatrix &matrix, const QString &objectName, const U2DbiRef &dbiRef, U2OpStatus &os, const QVariantMap &hintsMap) {
+PWMatrixObject* PWMatrixObject::createInstance(const PWMatrix& matrix, const QString& objectName, const U2DbiRef& dbiRef, U2OpStatus& os, const QVariantMap& hintsMap) {
     U2PWMatrix object(dbiRef);
     const QString dstFolder = hintsMap.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
     const U2EntityRef entRef = PMatrixSerializeUtils<WMatrixSerializer, PWMatrix>::commit(matrix,
@@ -63,26 +63,26 @@ PWMatrixObject *PWMatrixObject::createInstance(const PWMatrix &matrix, const QSt
     return new PWMatrixObject(matrix, objectName, entRef, hintsMap);
 }
 
-PWMatrixObject::PWMatrixObject(const QString &objectName, const U2EntityRef &matrixRef, const QVariantMap &hintsMap)
+PWMatrixObject::PWMatrixObject(const QString& objectName, const U2EntityRef& matrixRef, const QVariantMap& hintsMap)
     : GObject(TYPE, objectName, hintsMap) {
     entityRef = matrixRef;
 }
 
-PWMatrixObject::PWMatrixObject(const PWMatrix &matrix, const QString &objectName, const U2EntityRef &matrixRef, const QVariantMap &hintsMap)
+PWMatrixObject::PWMatrixObject(const PWMatrix& matrix, const QString& objectName, const U2EntityRef& matrixRef, const QVariantMap& hintsMap)
     : GObject(TYPE, objectName, hintsMap), m(matrix) {
     entityRef = matrixRef;
 }
 
-void PWMatrixObject::loadDataCore(U2OpStatus &os) {
+void PWMatrixObject::loadDataCore(U2OpStatus& os) {
     PMatrixSerializeUtils<WMatrixSerializer, PWMatrix>::retrieve(entityRef, m, os);
 }
 
-const PWMatrix &PWMatrixObject::getMatrix() const {
+const PWMatrix& PWMatrixObject::getMatrix() const {
     ensureDataLoaded();
     return m;
 }
 
-GObject *PWMatrixObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints) const {
+GObject* PWMatrixObject::clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, const QVariantMap& hints) const {
     DbiOperationsBlock opBlock(dstDbiRef, os);
     CHECK_OP(os, nullptr);
 
@@ -95,7 +95,7 @@ GObject *PWMatrixObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const 
     CHECK_OP(os, nullptr);
 
     const U2EntityRef dstEntRef(dstDbiRef, dstObject.id);
-    PWMatrixObject *dst = new PWMatrixObject(getGObjectName(), dstEntRef, gHints.getMap());
+    PWMatrixObject* dst = new PWMatrixObject(getGObjectName(), dstEntRef, gHints.getMap());
     dst->setIndexInfo(getIndexInfo());
     return dst;
 }

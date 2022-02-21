@@ -53,13 +53,13 @@ class TCoffeeSupportTask : public ExternalToolSupportTask {
     Q_OBJECT
     Q_DISABLE_COPY(TCoffeeSupportTask)
 public:
-    TCoffeeSupportTask(const MultipleSequenceAlignment &_inputMsa, const GObjectReference &_objRef, const TCoffeeSupportTaskSettings &_settings);
+    TCoffeeSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const TCoffeeSupportTaskSettings& _settings);
     ~TCoffeeSupportTask();
 
     void prepare();
     Task::ReportResult report();
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
     MultipleSequenceAlignment resultMA;
 
@@ -69,9 +69,9 @@ private:
     QPointer<Document> tmpDoc;
     QString url;
 
-    SaveMSA2SequencesTask *saveTemporaryDocumentTask;
-    ExternalToolRunTask *tCoffeeTask;
-    LoadDocumentTask *loadTmpDocumentTask;
+    SaveMSA2SequencesTask* saveTemporaryDocumentTask;
+    ExternalToolRunTask* tCoffeeTask;
+    LoadDocumentTask* loadTmpDocumentTask;
     TCoffeeSupportTaskSettings settings;
     QPointer<StateLock> lock;
 };
@@ -82,21 +82,21 @@ class TCoffeeWithExtFileSpecifySupportTask : public Task {
     Q_OBJECT
     Q_DISABLE_COPY(TCoffeeWithExtFileSpecifySupportTask)
 public:
-    TCoffeeWithExtFileSpecifySupportTask(const TCoffeeSupportTaskSettings &settings);
+    TCoffeeWithExtFileSpecifySupportTask(const TCoffeeSupportTaskSettings& settings);
     ~TCoffeeWithExtFileSpecifySupportTask();
     void prepare();
     Task::ReportResult report();
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
-    MultipleSequenceAlignmentObject *mAObject;
-    Document *currentDocument;
+    MultipleSequenceAlignmentObject* mAObject;
+    Document* currentDocument;
     bool cleanDoc;
 
-    SaveDocumentTask *saveDocumentTask;
-    LoadDocumentTask *loadDocumentTask;
-    TCoffeeSupportTask *tCoffeeSupportTask;
+    SaveDocumentTask* saveDocumentTask;
+    LoadDocumentTask* loadDocumentTask;
+    TCoffeeSupportTask* tCoffeeSupportTask;
     TCoffeeSupportTaskSettings settings;
 };
 
@@ -105,13 +105,13 @@ public:
     TCoffeeLogParser();
 
     int getProgress();
-    void parseOutput(const QString &partOfLog);
-    void parseErrOutput(const QString &partOfLog);
+    void parseOutput(const QString& partOfLog);
+    void parseErrOutput(const QString& partOfLog);
 
 private:
     QString lastErrLine;
     int progress;
 };
 
-}    // namespace U2
-#endif    // _U2_TCOFFEE_SUPPORT_TASK_H
+}  // namespace U2
+#endif  // _U2_TCOFFEE_SUPPORT_TASK_H

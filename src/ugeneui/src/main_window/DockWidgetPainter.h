@@ -30,25 +30,25 @@ class DockData;
 
 class DockWidgetPainter {
 public:
-    static void updateLabel(DockData *d, bool active);
+    static void updateLabel(DockData* d, bool active);
 
 private:
-    static QString findKeyPrefix(const QAction *action);
+    static QString findKeyPrefix(const QAction* action);
     static QColor getBackgroundColor();
-    static QColor getInnerColor(bool active, const QColor &backgroundColor);
-    static void drawBorder(bool active, const QSize &widgetSize, const QColor &backgroundColor, QPainter &updateLabel);
-    static void setupOrientation(MWDockArea area, QPainter &updateLabel);
-    static void drawIcon(const QIcon &icon, const QPoint &iconPoint, int iconSize, QPainter &updateLabel);
-    static void drawText(const QString &keyPrefix, const QString &text, const QPoint &textPoint, QPainter &updateLabel);
+    static QColor getInnerColor(bool active, const QColor& backgroundColor);
+    static void drawBorder(bool active, const QSize& widgetSize, const QColor& backgroundColor, QPainter& updateLabel);
+    static void setupOrientation(MWDockArea area, QPainter& updateLabel);
+    static void drawIcon(const QIcon& icon, const QPoint& iconPoint, int iconSize, QPainter& updateLabel);
+    static void drawText(const QString& keyPrefix, const QString& text, const QPoint& textPoint, QPainter& updateLabel);
 };
 
 class DockWidgetPaintData {
 public:
-    DockWidgetPaintData(const QIcon &icon, const QString &text, MWDockArea area);
+    DockWidgetPaintData(const QIcon& icon, const QString& text, MWDockArea area);
 
     QSize calculateWidgetSize() const;
-    QPoint calculateTextPoint(const QSize &widgetSize) const;
-    QPoint calculateIconPoint(const QPoint &textPoint, const QSize &widgetSize) const;
+    QPoint calculateTextPoint(const QSize& widgetSize) const;
+    QPoint calculateIconPoint(const QPoint& textPoint, const QSize& widgetSize) const;
 
     bool getHasIcon() const;
     int getIconSize() const;

@@ -60,11 +60,11 @@ QString SiteconIO::getFileFilter() {
 #define BUFF_SIZE 4096
 #define MATRIX_VAL_SEPARATOR ';'
 
-SiteconModel SiteconIO::readModel(IOAdapterFactory *iof, const QString &url, TaskStateInfo &si) {
+SiteconModel SiteconIO::readModel(IOAdapterFactory* iof, const QString& url, TaskStateInfo& si) {
     SiteconModel model;
     model.modelName = QFileInfo(url).baseName();
 
-    QList<DiPropertySitecon *> props = SiteconPlugin::getDinucleotiteProperties();
+    QList<DiPropertySitecon*> props = SiteconPlugin::getDinucleotiteProperties();
     model.settings.props = props;
 
     float defaultVal = -1;
@@ -164,7 +164,7 @@ SiteconModel SiteconIO::readModel(IOAdapterFactory *iof, const QString &url, Tas
                     }
                     model.matrix.resize(model.settings.windowSize - 1);
                     for (int pos = 0; pos < model.matrix.size(); pos++) {
-                        PositionStats &pList = model.matrix[pos];
+                        PositionStats& pList = model.matrix[pos];
                         for (int p = 0; p < props.size(); p++) {
                             pList.append(DiStat(props[p], 0, 0));
                         }
@@ -215,7 +215,7 @@ SiteconModel SiteconIO::readModel(IOAdapterFactory *iof, const QString &url, Tas
                 // compute property idx
                 int idx = -1;
                 for (int i = 0; i < props.size(); i++) {
-                    const DiPropertySitecon *p = props[i];
+                    const DiPropertySitecon* p = props[i];
                     QString thisPNum = p->keys.value("MI");
                     if (thisPNum == propNum) {
                         idx = i;
@@ -247,8 +247,8 @@ SiteconModel SiteconIO::readModel(IOAdapterFactory *iof, const QString &url, Tas
                 // setup position specific value for property
                 bool ok = true;
                 for (int i = 2; i < l.size(); i++) {
-                    const QString &valStr = l[i];
-                    PositionStats &ps = model.matrix[i - 2];
+                    const QString& valStr = l[i];
+                    PositionStats& ps = model.matrix[i - 2];
                     float fval = 0;
                     bool wval = false;
                     if (state == WEIGHT_S) {
@@ -277,8 +277,8 @@ SiteconModel SiteconIO::readModel(IOAdapterFactory *iof, const QString &url, Tas
                     break;
                 }
                 bool ok = true;
-                const QString &percentStr = l[0];
-                const QString &errStr = l[1];
+                const QString& percentStr = l[0];
+                const QString& errStr = l[1];
                 // TODO: what purpose is this code needed for? Why does UGENE work without it?
                 // percentStr.left(percentStr.length()-1);
                 int p = percentStr.toInt(&ok);
@@ -366,13 +366,13 @@ static bool eq(float v1, float v2, int degree) {
     return (d1 < d2);
 }
 
-void SiteconIO::writeModel(IOAdapterFactory *iof, const QString &url, TaskStateInfo &si, const SiteconModel &model) {
+void SiteconIO::writeModel(IOAdapterFactory* iof, const QString& url, TaskStateInfo& si, const SiteconModel& model) {
     model.checkState();
     QByteArray res;
     res.append(FILE_HEADER).append("\n\n");
     assert(model.settings.windowSize == model.matrix.size() + 1);
 
-    const QList<DiPropertySitecon *> &props = model.settings.props;
+    const QList<DiPropertySitecon*>& props = model.settings.props;
     int nProps = props.size();
     QVector<QByteArray> aves, sdev, wght;
     aves.resize(nProps);
@@ -380,7 +380,7 @@ void SiteconIO::writeModel(IOAdapterFactory *iof, const QString &url, TaskStateI
     wght.resize(nProps);
 
     for (int j = 0; j < nProps; j++) {
-        const DiPropertySitecon *p = props[j];
+        const DiPropertySitecon* p = props[j];
         QString name = p->keys.value("PV");
         QString index = p->keys.value("MI");
         aves[j].append(index).append(MATRIX_VAL_SEPARATOR).append(name);
@@ -388,10 +388,10 @@ void SiteconIO::writeModel(IOAdapterFactory *iof, const QString &url, TaskStateI
         wght[j].append(index).append(MATRIX_VAL_SEPARATOR).append(name);
     }
     for (int i = 0; i < model.matrix.size(); i++) {
-        const PositionStats &posM = model.matrix[i];
+        const PositionStats& posM = model.matrix[i];
         assert(posM.size() == nProps);
         for (int j = 0; j < nProps; j++) {
-            const DiStat &ds = posM[j];
+            const DiStat& ds = posM[j];
             assert(ds.prop == props[j]);
             QString aveVal = QByteArray::number(ds.average, 'f', 4);
             QString devVal = QByteArray::number(ds.sdeviation, 'e', 4);
@@ -399,9 +399,9 @@ void SiteconIO::writeModel(IOAdapterFactory *iof, const QString &url, TaskStateI
             int aveEnd = aves[j].length() + 1 + aveVal.length();
             int devEnd = sdev[j].length() + 1 + devVal.length();
             int wgtEnd = wght[j].length() + 1 + wgtVal.length();
-            const char *aliAve = TextUtils::getLineOfSpaces(aveEnd < 35 && i == 0 ? 35 - aveEnd : 14 - (aveEnd - 35) % 15);
-            const char *aliDev = TextUtils::getLineOfSpaces(devEnd < 35 && i == 0 ? 35 - devEnd : 14 - (devEnd - 35) % 15);
-            const char *aliWgt = TextUtils::getLineOfSpaces(wgtEnd < 35 && i == 0 ? 35 - wgtEnd : (wgtEnd - 35) % 2);
+            const char* aliAve = TextUtils::getLineOfSpaces(aveEnd < 35 && i == 0 ? 35 - aveEnd : 14 - (aveEnd - 35) % 15);
+            const char* aliDev = TextUtils::getLineOfSpaces(devEnd < 35 && i == 0 ? 35 - devEnd : 14 - (devEnd - 35) % 15);
+            const char* aliWgt = TextUtils::getLineOfSpaces(wgtEnd < 35 && i == 0 ? 35 - wgtEnd : (wgtEnd - 35) % 2);
             aves[j].append(MATRIX_VAL_SEPARATOR).append(aliAve).append(aveVal);
             sdev[j].append(MATRIX_VAL_SEPARATOR).append(aliDev).append(devVal);
             wght[j].append(MATRIX_VAL_SEPARATOR).append(aliWgt).append(wgtVal);
@@ -417,17 +417,17 @@ void SiteconIO::writeModel(IOAdapterFactory *iof, const QString &url, TaskStateI
     res.append("WALG ").append(model.settings.weightAlg == SiteconWeightAlg_None ? "0" : "2").append('\n');
 
     res.append('\n').append(AVE_HEADER).append("\n");
-    foreach (const QByteArray &a, aves) {
+    foreach (const QByteArray& a, aves) {
         res.append(a).append('\n');
     }
 
     res.append('\n').append(SDEV_HEADER).append('\n');
-    foreach (const QByteArray &d, sdev) {
+    foreach (const QByteArray& d, sdev) {
         res.append(d).append('\n');
     }
 
     res.append('\n').append(WEIGHT_HEADER).append('\n');
-    foreach (const QByteArray &w, wght) {
+    foreach (const QByteArray& w, wght) {
         res.append(w).append('\n');
     }
 
@@ -465,12 +465,12 @@ void SiteconIO::writeModel(IOAdapterFactory *iof, const QString &url, TaskStateI
 }
 
 void SiteconReadTask::run() {
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     model = SiteconIO::readModel(iof, url, stateInfo);
 }
 
 void SiteconWriteTask::run() {
-    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     if (fileMode & SaveDoc_Roll && !GUrlUtils::renameFileWithNameRoll(url, stateInfo)) {
         return;
     }

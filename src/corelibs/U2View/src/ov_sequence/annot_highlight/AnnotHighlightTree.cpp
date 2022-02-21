@@ -66,15 +66,15 @@ AnnotHighlightTree::AnnotHighlightTree() {
                   " }");
 
     // Emit signal that annotation type has changed
-    connect(this, SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)), SLOT(sl_onCurrentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)));
+    connect(this, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), SLOT(sl_onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
 
     // Listen for click on "Color" column
-    connect(this, SIGNAL(itemClicked(QTreeWidgetItem *, int)), SLOT(sl_onItemClicked(QTreeWidgetItem *, int)));
+    connect(this, SIGNAL(itemClicked(QTreeWidgetItem*, int)), SLOT(sl_onItemClicked(QTreeWidgetItem*, int)));
 }
 
 void AnnotHighlightTree::addItem(QString annotName, QColor annotColor) {
     // Create and initialize the tree item
-    QTreeWidgetItem *item = new AnnotHighlightTreeItem(annotName, annotColor);
+    QTreeWidgetItem* item = new AnnotHighlightTreeItem(annotName, annotColor);
 
     // Add the item and increase the tree height
     annotTreeHeight += AnnotHighlightTreeItem::ROW_HEIGHT;
@@ -88,13 +88,13 @@ void AnnotHighlightTree::clear() {
 }
 
 void AnnotHighlightTree::setFirstItemSelected() {
-    QTreeWidgetItem *firstItem = topLevelItem(0);
+    QTreeWidgetItem* firstItem = topLevelItem(0);
     SAFE_POINT(0 != firstItem, "There is no first item in the tree!", );
     setCurrentItem(firstItem);
 }
 
 QString AnnotHighlightTree::getFirstItemAnnotName() {
-    QTreeWidgetItem *firstItem = topLevelItem(0);
+    QTreeWidgetItem* firstItem = topLevelItem(0);
     SAFE_POINT(0 != firstItem, "There is no first item in the tree!", QString());
 
     QString annotName = firstItem->text(COL_NUM_ANNOT_NAME);
@@ -102,7 +102,7 @@ QString AnnotHighlightTree::getFirstItemAnnotName() {
 }
 
 QString AnnotHighlightTree::getCurrentItemAnnotName() {
-    QTreeWidgetItem *current = currentItem();
+    QTreeWidgetItem* current = currentItem();
     if (0 != current) {
         return current->text(COL_NUM_ANNOT_NAME);
     } else {
@@ -112,25 +112,25 @@ QString AnnotHighlightTree::getCurrentItemAnnotName() {
 
 void AnnotHighlightTree::setItemSelectedWithAnnotName(QString annotName) {
     CHECK(!annotName.isEmpty(), );
-    QList<QTreeWidgetItem *> items = findItems(annotName, Qt::MatchExactly, COL_NUM_ANNOT_NAME);
+    QList<QTreeWidgetItem*> items = findItems(annotName, Qt::MatchExactly, COL_NUM_ANNOT_NAME);
     SAFE_POINT(1 == items.count(), "Exactly one tree item with the specified annotation name should have been found.", );
 
     setCurrentItem(items[0]);
 }
 
-void AnnotHighlightTree::sl_onCurrentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem * /* previous */) {
+void AnnotHighlightTree::sl_onCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* /* previous */) {
     if (0 != current) {
         QString annotName = current->text(COL_NUM_ANNOT_NAME);
         emit si_selectedItemChanged(annotName);
     }
 }
 
-void AnnotHighlightTree::sl_onItemClicked(QTreeWidgetItem *item, int column) {
+void AnnotHighlightTree::sl_onItemClicked(QTreeWidgetItem* item, int column) {
     if (column != COL_NUM_COLOR) {
         return;
     }
 
-    AnnotHighlightTreeItem *annotHighlightItem = static_cast<AnnotHighlightTreeItem *>(item);
+    AnnotHighlightTreeItem* annotHighlightItem = static_cast<AnnotHighlightTreeItem*>(item);
 
     QColorDialog::ColorDialogOption options = static_cast<QColorDialog::ColorDialogOption>(0);
     if (qgetenv(ENV_GUI_TEST) == "1") {

@@ -27,14 +27,14 @@
 
 namespace U2 {
 
-ExternalToolSupportAction::ExternalToolSupportAction(QObject *p, GObjectView *v, const QString &_text, int order, const QStringList &_toolIds)
+ExternalToolSupportAction::ExternalToolSupportAction(QObject* p, GObjectView* v, const QString& _text, int order, const QStringList& _toolIds)
     : GObjectViewAction(p, v, _text, order),
       toolIds(_toolIds) {
     bool isAnyToolConfigured = checkTools(true);
     setState(isAnyToolConfigured);
 }
 
-ExternalToolSupportAction::ExternalToolSupportAction(const QString &_text, QObject *p, const QStringList &_toolIds)
+ExternalToolSupportAction::ExternalToolSupportAction(const QString& _text, QObject* p, const QStringList& _toolIds)
     : GObjectViewAction(p, nullptr, _text),
       toolIds(_toolIds) {
     bool isAnyToolConfigured = checkTools(true);
@@ -52,7 +52,7 @@ bool ExternalToolSupportAction::checkTools(bool connectSignals) {
         if (!AppContext::getExternalToolRegistry()->getById(toolId)->getPath().isEmpty()) {
             result = true;
         }
-        ExternalTool *exTool = AppContext::getExternalToolRegistry()->getById(toolId);
+        ExternalTool* exTool = AppContext::getExternalToolRegistry()->getById(toolId);
         if (connectSignals) {
             connect(exTool, SIGNAL(si_pathChanged()), SLOT(sl_pathChanged()));
             connect(exTool, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_toolStateChanged(bool)));
@@ -89,4 +89,4 @@ void ExternalToolSupportAction::setState(bool isAnyToolConfigured) {
     setFont(isConfiguredToolFont);
 #endif
 }
-}    // namespace U2
+}  // namespace U2

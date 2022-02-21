@@ -36,7 +36,7 @@ namespace U2 {
 
 class U2DESIGNER_EXPORT StatisticsRow {
 public:
-    StatisticsRow(const QString &id, const QString &name, const QString &time, const QString &count);
+    StatisticsRow(const QString& id, const QString& name, const QString& time, const QString& count);
 
     QString id;
     QString name;
@@ -47,19 +47,19 @@ public:
 class U2DESIGNER_EXPORT StatisticsDashboardWidget : public QWidget, public DashboardWidgetUtils {
     Q_OBJECT
 public:
-    StatisticsDashboardWidget(const QDomElement &dom, const WorkflowMonitor *monitor = nullptr);
+    StatisticsDashboardWidget(const QDomElement& dom, const WorkflowMonitor* monitor = nullptr);
 
-    static bool isValidDom(const QDomElement &dom);
+    static bool isValidDom(const QDomElement& dom);
 
     QString toHtml() const;
 
 private slots:
-    void sl_workerInfoChanged(const QString &actorId, const Monitor::WorkerInfo &info);
+    void sl_workerInfoChanged(const QString& actorId, const Monitor::WorkerInfo& info);
     void sl_updateProducers();
 
 private:
-    const WorkflowMonitor *monitor;
-    QGridLayout *tableGridLayout;
+    const WorkflowMonitor* monitor;
+    QGridLayout* tableGridLayout;
     QList<StatisticsRow> statisticsRows;
 };
 

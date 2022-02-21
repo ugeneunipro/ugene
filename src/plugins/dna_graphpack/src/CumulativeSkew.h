@@ -37,9 +37,9 @@ class CumulativeSkewGraphFactory : public GSequenceGraphFactory {
 public:
     enum GCumulativeSkewType { GC,
                                AT };
-    CumulativeSkewGraphFactory(GCumulativeSkewType t, QObject *p);
-    virtual QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView *v);
-    virtual bool isEnabled(const U2SequenceObject *o) const;
+    CumulativeSkewGraphFactory(GCumulativeSkewType t, QObject* p);
+    virtual QList<QSharedPointer<GSequenceGraphData>> createGraphs(GSequenceGraphView* v);
+    virtual bool isEnabled(const U2SequenceObject* o) const;
 
 private:
     QPair<char, char> cumPair;
@@ -47,11 +47,11 @@ private:
 
 class CumulativeSkewGraphAlgorithm : public GSequenceGraphAlgorithm {
 public:
-    CumulativeSkewGraphAlgorithm(const QPair<char, char> &_p);
+    CumulativeSkewGraphAlgorithm(const QPair<char, char>& _p);
 
-    void calculate(QVector<float> &result, U2SequenceObject *sequenceObject, qint64 window, qint64 step, U2OpStatus &os) override;
+    void calculate(QVector<float>& result, U2SequenceObject* sequenceObject, qint64 window, qint64 step, U2OpStatus& os) override;
 
-    float getValue(int begin, int end, const QByteArray &seq) const;
+    float getValue(int begin, int end, const QByteArray& seq) const;
 
 private:
     QPair<char, char> p;

@@ -43,7 +43,7 @@ namespace U2 {
 
 class GTestBuilder {
 public:
-    bool addTestCase(const QString &testCase) {
+    bool addTestCase(const QString& testCase) {
         if (testCase.isEmpty() || tests.keys().contains(testCase)) {
             return false;
         }
@@ -51,7 +51,7 @@ public:
         return true;
     }
 
-    bool addTest(const QString &testCase, const QString &test) {
+    bool addTest(const QString& testCase, const QString& test) {
         if (!tests.keys().contains(testCase)) {
             return false;
         }
@@ -67,7 +67,7 @@ private:
     QMap<QString, QStringList> tests;
 };
 
-void UnitTestSuite::init(XMLTestFormat *, const QDomElement &el) {
+void UnitTestSuite::init(XMLTestFormat*, const QDomElement& el) {
     GTestBuilder builder;
 
     passed = 0;
@@ -101,8 +101,8 @@ void UnitTestSuite::prepare() {
     runAllTests();
 }
 
-void UnitTestSuite::runTest(const QString &testName) {
-    UnitTest *t = (UnitTest *)QMetaType::create(QMetaType::type(testName.toStdString().c_str()));
+void UnitTestSuite::runTest(const QString& testName) {
+    UnitTest* t = (UnitTest*)QMetaType::create(QMetaType::type(testName.toStdString().c_str()));
     if (t != nullptr) {
         t->SetUp();
         t->Test();
@@ -120,9 +120,9 @@ void UnitTestSuite::runTest(const QString &testName) {
 }
 
 void UnitTestSuite::runAllTests() {
-    foreach (const QString &suite, tests.keys()) {
+    foreach (const QString& suite, tests.keys()) {
         QStringList testList = tests.value(suite);
-        foreach (const QString &testName, testList) {
+        foreach (const QString& testName, testList) {
             runTest(suite + "_" + testName);
         }
     }

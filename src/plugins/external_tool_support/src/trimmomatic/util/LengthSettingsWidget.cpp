@@ -32,7 +32,7 @@ namespace LocalWorkflow {
 
 const QString LengthSettingsWidget::LENGTH = "length";
 
-LengthSettingsWidget::LengthSettingsWidget(const QString &toolTip) {
+LengthSettingsWidget::LengthSettingsWidget(const QString& toolTip) {
     setupUi(this);
 
     leLength->setValidator(new QIntValidator(1, std::numeric_limits<int>::max(), this));
@@ -67,7 +67,7 @@ QVariantMap LengthSettingsWidget::getState() const {
     return state;
 }
 
-void LengthSettingsWidget::setState(const QVariantMap &state) {
+void LengthSettingsWidget::setState(const QVariantMap& state) {
     const bool contains = state.contains(LENGTH);
     bool valid = false;
     const int length = state.value(LENGTH).toInt(&valid);
@@ -76,7 +76,7 @@ void LengthSettingsWidget::setState(const QVariantMap &state) {
     }
 }
 
-QString LengthSettingsWidget::serializeState(const QVariantMap &widgetState) {
+QString LengthSettingsWidget::serializeState(const QVariantMap& widgetState) {
     if (widgetState.contains(LENGTH)) {
         return QString::number(widgetState.value(LENGTH).toInt());
     } else {
@@ -84,7 +84,7 @@ QString LengthSettingsWidget::serializeState(const QVariantMap &widgetState) {
     }
 }
 
-QVariantMap LengthSettingsWidget::parseState(const QString &command, const QString &stepName) {
+QVariantMap LengthSettingsWidget::parseState(const QString& command, const QString& stepName) {
     QVariantMap state;
     QRegExp regExp(stepName + ":" + "(\\d*)");
 
@@ -99,5 +99,5 @@ QVariantMap LengthSettingsWidget::parseState(const QString &command, const QStri
     return state;
 }
 
-}    // namespace LocalWorkflow
-}    // namespace U2
+}  // namespace LocalWorkflow
+}  // namespace U2

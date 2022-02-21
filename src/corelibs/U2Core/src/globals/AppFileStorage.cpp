@@ -45,11 +45,11 @@ namespace FileStorage {
 /************************************************************************/
 /* FileInfo */
 /************************************************************************/
-FileInfo::FileInfo(const QString &url, const QString &role, const QString &info)
+FileInfo::FileInfo(const QString& url, const QString& role, const QString& info)
     : U2Triplet(url, role, info) {
 }
 
-FileInfo::FileInfo(const U2Triplet &triplet)
+FileInfo::FileInfo(const U2Triplet& triplet)
     : U2Triplet(triplet) {
 }
 
@@ -72,7 +72,7 @@ bool FileInfo::isFileToFileInfo() const {
 /************************************************************************/
 /* WorkflowProcess */
 /************************************************************************/
-WorkflowProcess::WorkflowProcess(const QString &_id)
+WorkflowProcess::WorkflowProcess(const QString& _id)
     : id(_id) {
 }
 
@@ -95,8 +95,8 @@ QString WorkflowProcess::getTempDirectory() const {
     return tempDirectory;
 }
 
-void WorkflowProcess::addFile(const QString &url) {
-    QFile *f = new QFile(url);
+void WorkflowProcess::addFile(const QString& url) {
+    QFile* f = new QFile(url);
     bool opened = f->open(QIODevice::ReadOnly);
     if (!opened) {
         delete f;
@@ -106,7 +106,7 @@ void WorkflowProcess::addFile(const QString &url) {
 }
 
 void WorkflowProcess::unuseFiles() {
-    foreach (QFile *f, usedFiles) {
+    foreach (QFile* f, usedFiles) {
         f->close();
         delete f;
     }
@@ -122,8 +122,8 @@ AppFileStorage::AppFileStorage()
     : storage(nullptr) {
 }
 
-void AppFileStorage::init(U2OpStatus &os) {
-    UserAppsSettings *settings = AppContext::getAppSettings()->getUserAppsSettings();
+void AppFileStorage::init(U2OpStatus& os) {
+    UserAppsSettings* settings = AppContext::getAppSettings()->getUserAppsSettings();
     CHECK_EXT(nullptr != settings, os.setError("NULL user application settings"), );
 
     storageDir = settings->getFileStorageDir();
@@ -154,7 +154,7 @@ QString AppFileStorage::getStorageDir() const {
     return storageDir;
 }
 
-void AppFileStorage::addFileInfo(const FileStorage::FileInfo &info, FileStorage::WorkflowProcess &process, U2OpStatus &os) {
+void AppFileStorage::addFileInfo(const FileStorage::FileInfo& info, FileStorage::WorkflowProcess& process, U2OpStatus& os) {
     storage->addValue(info, os);
     CHECK_OP(os, );
 
@@ -163,11 +163,11 @@ void AppFileStorage::addFileInfo(const FileStorage::FileInfo &info, FileStorage:
     }
 }
 
-bool AppFileStorage::contains(const QString &url, const QString &role, U2OpStatus &os) const {
+bool AppFileStorage::contains(const QString& url, const QString& role, U2OpStatus& os) const {
     return storage->contains(url, role, os);
 }
 
-QString AppFileStorage::getFileInfo(const QString &url, const QString &role, FileStorage::WorkflowProcess &process, U2OpStatus &os) const {
+QString AppFileStorage::getFileInfo(const QString& url, const QString& role, FileStorage::WorkflowProcess& process, U2OpStatus& os) const {
     QString info = storage->getValue(url, role, os);
     if (!info.isEmpty()) {
         FileStorage::FileInfo i(url, role, info);
@@ -178,7 +178,7 @@ QString AppFileStorage::getFileInfo(const QString &url, const QString &role, Fil
     return info;
 }
 
-void AppFileStorage::addFileOwner(const FileStorage::FileInfo &info, FileStorage::WorkflowProcess &process, U2OpStatus &os) {
+void AppFileStorage::addFileOwner(const FileStorage::FileInfo& info, FileStorage::WorkflowProcess& process, U2OpStatus& os) {
     bool exists = storage->contains(info, os);
     CHECK_OP(os, );
     if (exists) {
@@ -190,7 +190,7 @@ void AppFileStorage::addFileOwner(const FileStorage::FileInfo &info, FileStorage
     }
 }
 
-void AppFileStorage::registerWorkflowProcess(FileStorage::WorkflowProcess &process, U2OpStatus &os) {
+void AppFileStorage::registerWorkflowProcess(FileStorage::WorkflowProcess& process, U2OpStatus& os) {
     QString wdDirPath = storageDir + "/" + WD_DIR_NAME + "/" + process.getId();
     QDir wdDir(wdDirPath);
     bool created = wdDir.mkpath(wdDirPath);
@@ -202,7 +202,7 @@ void AppFileStorage::registerWorkflowProcess(FileStorage::WorkflowProcess &proce
     process.tempDirectory = wdDirPath;
 }
 
-bool removeFile(const QString &url) {
+bool removeFile(const QString& url) {
     if (!QFile::exists(url)) {
         return true;
     }
@@ -213,7 +213,7 @@ bool removeFile(const QString &url) {
     return ok;
 }
 
-void removeDirIfEmpty(const QString &url) {
+void removeDirIfEmpty(const QString& url) {
     QDir dir(url);
     if (dir.exists()) {
         QStringList subFiles = dir.entryList();
@@ -225,13 +225,13 @@ void removeDirIfEmpty(const QString &url) {
     }
 }
 
-void AppFileStorage::unregisterWorkflowProcess(FileStorage::WorkflowProcess &process, U2OpStatus & /*os*/) {
+void AppFileStorage::unregisterWorkflowProcess(FileStorage::WorkflowProcess& process, U2OpStatus& /*os*/) {
     process.unuseFiles();
 
     removeDirIfEmpty(process.tempDirectory);
 }
 
-void AppFileStorage::cleanup(U2OpStatus &os) {
+void AppFileStorage::cleanup(U2OpStatus& os) {
     QMutexLocker lock(&cleanupMutex);
     // 1. Find data
     QList<U2Triplet> data = storage->getTriplets(os);
@@ -240,7 +240,7 @@ void AppFileStorage::cleanup(U2OpStatus &os) {
     QList<U2Triplet> newData;
     QStringList unremovedFiles;
     // 2. Remove triplets' files
-    foreach (const U2Triplet &triplet, data) {
+    foreach (const U2Triplet& triplet, data) {
         FileStorage::FileInfo info(triplet);
         if (info.isFileToFileInfo()) {
             QString url = info.getValue();
@@ -262,7 +262,7 @@ void AppFileStorage::cleanup(U2OpStatus &os) {
     }
 
     // 3. Remove triplets' data
-    foreach (const U2Triplet &t, newData) {
+    foreach (const U2Triplet& t, newData) {
         if (unremovedFiles.contains(t.getKey())) {
             continue;
         }
@@ -272,7 +272,7 @@ void AppFileStorage::cleanup(U2OpStatus &os) {
 
     // 4. Remove empty directories
     QDir stDir(storageDir + "/" + WD_DIR_NAME);
-    foreach (const QFileInfo &info, stDir.entryInfoList()) {
+    foreach (const QFileInfo& info, stDir.entryInfoList()) {
         if (info.isDir()) {
             QString name = info.fileName();
             if ("." == name || ".." == name) {

@@ -61,7 +61,7 @@ const QString BaseNGSWorker::DEFAULT_NAME = "Default";
 
 //////////////////////////////////////////////////////////////////////////
 // BaseNGSWorker
-BaseNGSWorker::BaseNGSWorker(Actor *a)
+BaseNGSWorker::BaseNGSWorker(Actor* a)
     : BaseWorker(a), inputUrlPort(nullptr), outputUrlPort(nullptr), outUrls("") {
 }
 
@@ -70,7 +70,7 @@ void BaseNGSWorker::init() {
     outputUrlPort = ports.value(OUTPUT_PORT);
 }
 
-Task *BaseNGSWorker::tick() {
+Task* BaseNGSWorker::tick() {
     if (inputUrlPort->hasMessage()) {
         const QString url = takeUrl();
         CHECK(!url.isEmpty(), nullptr);
@@ -83,8 +83,8 @@ Task *BaseNGSWorker::tick() {
         setting.inputUrl = url;
         setting.customParameters = getCustomParameters();
         setting.listeners = createLogListeners();
-        Task *t = getTask(setting);
-        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
+        Task* t = getTask(setting);
+        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
         return t;
     }
 
@@ -100,8 +100,8 @@ void BaseNGSWorker::cleanup() {
 }
 
 namespace {
-QString getTargetUrl(Task *task) {
-    BaseNGSTask *NGSTask = dynamic_cast<BaseNGSTask *>(task);
+QString getTargetUrl(Task* task) {
+    BaseNGSTask* NGSTask = dynamic_cast<BaseNGSTask*>(task);
 
     if (nullptr != NGSTask) {
         return NGSTask->getResult();
@@ -110,7 +110,7 @@ QString getTargetUrl(Task *task) {
 }
 }  // namespace
 
-void BaseNGSWorker::sl_taskFinished(Task *task) {
+void BaseNGSWorker::sl_taskFinished(Task* task) {
     CHECK(!task->hasError(), );
     CHECK(!task->isCanceled(), );
 
@@ -121,7 +121,7 @@ void BaseNGSWorker::sl_taskFinished(Task *task) {
     monitor()->addOutputFile(url, getActorId());
 }
 
-QString BaseNGSWorker::getTargetName(const QString &fileUrl, const QString &outDir) {
+QString BaseNGSWorker::getTargetName(const QString& fileUrl, const QString& outDir) {
     QString name = getValue<QString>(OUT_NAME_ID);
 
     if (name == DEFAULT_NAME || name.isEmpty()) {
@@ -145,7 +145,7 @@ QString BaseNGSWorker::takeUrl() {
     return data[BaseSlots::URL_SLOT().getId()].toString();
 }
 
-void BaseNGSWorker::sendResult(const QString &url) {
+void BaseNGSWorker::sendResult(const QString& url) {
     const Message message(BaseTypes::STRING_TYPE(), url);
     outputUrlPort->put(message);
 }
@@ -156,11 +156,11 @@ BaseNGSParser::BaseNGSParser()
     : ExternalToolLogParser() {
 }
 
-void BaseNGSParser::parseOutput(const QString &partOfLog) {
+void BaseNGSParser::parseOutput(const QString& partOfLog) {
     ExternalToolLogParser::parseOutput(partOfLog);
 }
 
-void BaseNGSParser::parseErrOutput(const QString &partOfLog) {
+void BaseNGSParser::parseErrOutput(const QString& partOfLog) {
     lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
     lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
     lastErrLine = lastPartOfLog.takeLast();
@@ -173,7 +173,7 @@ void BaseNGSParser::parseErrOutput(const QString &partOfLog) {
 
 //////////////////////////////////////////////////////////////////////////
 // BaseNGSTask
-BaseNGSTask::BaseNGSTask(const BaseNGSSetting &settings)
+BaseNGSTask::BaseNGSTask(const BaseNGSSetting& settings)
     : Task(QString("NGS for %1").arg(settings.inputUrl), TaskFlags_FOSE_COSC), settings(settings) {
 }
 
@@ -210,11 +210,11 @@ void BaseNGSTask::run() {
     finishStep();
 }
 
-ExternalToolRunTask *BaseNGSTask::getExternalToolTask(const QString &toolId, ExternalToolLogParser *customParser) {
+ExternalToolRunTask* BaseNGSTask::getExternalToolTask(const QString& toolId, ExternalToolLogParser* customParser) {
     const QStringList args = getParameters(stateInfo);
     CHECK_OP(stateInfo, nullptr);
 
-    ExternalToolRunTask *etTask = nullptr;
+    ExternalToolRunTask* etTask = nullptr;
     if (customParser == nullptr) {
         etTask = new ExternalToolRunTask(toolId, args, new BaseNGSParser(), settings.outDir);
     } else {

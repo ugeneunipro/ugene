@@ -35,21 +35,21 @@ class PositionSelector;
 class AssemblyNavigationWidget : public QWidget {
     Q_OBJECT
 public:
-    AssemblyNavigationWidget(AssemblyBrowser *browser, QWidget *p = nullptr);
+    AssemblyNavigationWidget(AssemblyBrowser* browser, QWidget* p = nullptr);
 
 public slots:
     void sl_updateZoomingState();
 
 private:
-    AssemblyBrowser *browser;
-    PositionSelector *posSelector;
+    AssemblyBrowser* browser;
+    PositionSelector* posSelector;
     U2SavableWidget savableTab;
 };
 
 class U2VIEW_EXPORT CoveredRegionsLabel : public QLabel {
     Q_OBJECT
 public:
-    CoveredRegionsLabel(AssemblyBrowser *browser, QWidget *p = nullptr);
+    CoveredRegionsLabel(AssemblyBrowser* browser, QWidget* p = nullptr);
 
     void setAdditionalText(QString prefix, QString postfix);
 
@@ -57,7 +57,7 @@ public slots:
     void sl_updateContent();
 
 private:
-    AssemblyBrowser *browser;
+    AssemblyBrowser* browser;
     QString prefix;
     QString postfix;
 };
@@ -67,7 +67,7 @@ class U2VIEW_EXPORT AssemblyNavigationWidgetFactory : public OPWidgetFactory {
 public:
     AssemblyNavigationWidgetFactory();
 
-    QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
+    QWidget* createWidget(GObjectView* objView, const QVariantMap& options) override;
 
     OPGroupParameters getOPGroupParameters() override;
 

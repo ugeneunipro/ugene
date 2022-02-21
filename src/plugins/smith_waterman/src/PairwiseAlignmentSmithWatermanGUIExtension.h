@@ -39,7 +39,7 @@ class PairwiseAlignmentSmithWatermanMainWidget : public AlignmentAlgorithmMainWi
     Q_OBJECT
 
 public:
-    PairwiseAlignmentSmithWatermanMainWidget(QWidget *parent, QVariantMap *s);
+    PairwiseAlignmentSmithWatermanMainWidget(QWidget* parent, QVariantMap* s);
     virtual ~PairwiseAlignmentSmithWatermanMainWidget();
     virtual QVariantMap getAlignmentAlgorithmCustomSettings(bool append);
     virtual void updateWidget();
@@ -63,7 +63,7 @@ class PairwiseAlignmentSmithWatermanGUIExtensionFactory : public AlignmentAlgori
 
 public:
     PairwiseAlignmentSmithWatermanGUIExtensionFactory(SW_AlgType _algType);
-    virtual AlignmentAlgorithmMainWidget *createMainWidget(QWidget *parent, QVariantMap *s);
+    virtual AlignmentAlgorithmMainWidget* createMainWidget(QWidget* parent, QVariantMap* s);
 
 private:
     SW_AlgType algType;

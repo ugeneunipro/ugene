@@ -51,11 +51,11 @@ CommonSequenceViewMetrics::CommonSequenceViewMetrics() {
 /************************************************************************/
 /* SequenceViewRenderer */
 /************************************************************************/
-SequenceViewRenderer::SequenceViewRenderer(SequenceObjectContext *ctx)
+SequenceViewRenderer::SequenceViewRenderer(SequenceObjectContext* ctx)
     : ctx(ctx) {
 }
 
-int SequenceViewRenderer::posToXCoord(qint64 pos, const QSize &, const U2Region &visibleRange) const {
+int SequenceViewRenderer::posToXCoord(qint64 pos, const QSize&, const U2Region& visibleRange) const {
     CHECK(visibleRange.contains(pos) || pos == visibleRange.endPos(), -1);
 
     double res = (double)(pos - visibleRange.startPos) * getCurrentScale();

@@ -33,7 +33,7 @@ const QByteArray UdrSchema::RECORD_ID_FIELD_NAME("record_id");
 const QByteArray UdrSchema::OBJECT_FIELD_NAME("object");
 const int UdrSchema::OBJECT_FIELD_NUM = 0;
 
-UdrSchema::FieldDesc::FieldDesc(const QByteArray &name, UdrSchema::DataType dataType, UdrSchema::IndexType indexType)
+UdrSchema::FieldDesc::FieldDesc(const QByteArray& name, UdrSchema::DataType dataType, UdrSchema::IndexType indexType)
     : name(name), dataType(dataType), indexType(indexType) {
 }
 
@@ -49,7 +49,7 @@ UdrSchema::IndexType UdrSchema::FieldDesc::getIndexType() const {
     return indexType;
 }
 
-UdrSchema::UdrSchema(const UdrSchemaId &id, bool useObjectReference)
+UdrSchema::UdrSchema(const UdrSchemaId& id, bool useObjectReference)
     : id(id), withObjectReference(useObjectReference) {
     if (useObjectReference) {
         U2OpStatusImpl os;
@@ -58,10 +58,10 @@ UdrSchema::UdrSchema(const UdrSchemaId &id, bool useObjectReference)
     }
 }
 
-bool UdrSchema::contains(const QByteArray &name) const {
+bool UdrSchema::contains(const QByteArray& name) const {
     CHECK(RECORD_ID_FIELD_NAME != name, true);
 
-    foreach (const FieldDesc &field, fields) {
+    foreach (const FieldDesc& field, fields) {
         if (name == field.getName()) {
             return true;
         }
@@ -69,7 +69,7 @@ bool UdrSchema::contains(const QByteArray &name) const {
     return false;
 }
 
-void UdrSchema::addField(const FieldDesc &desc, U2OpStatus &os) {
+void UdrSchema::addField(const FieldDesc& desc, U2OpStatus& os) {
     CHECK_EXT(!contains(desc.getName()), os.setError("Duplicate name"), );
     if (BLOB == desc.getDataType()) {
         CHECK_EXT(NOT_INDEXED == desc.getIndexType(), os.setError("BLOB data can not be indexed"), );
@@ -78,7 +78,7 @@ void UdrSchema::addField(const FieldDesc &desc, U2OpStatus &os) {
     fields << desc;
 }
 
-void UdrSchema::addMultiIndex(const QList<int> &multiIndex, U2OpStatus &os) {
+void UdrSchema::addMultiIndex(const QList<int>& multiIndex, U2OpStatus& os) {
     CHECK_EXT(multiIndex.toSet().size() == multiIndex.size(), os.setError("Not unique fields"), );
     foreach (int fieldNum, multiIndex) {
         FieldDesc field = getField(fieldNum, os);
@@ -89,11 +89,11 @@ void UdrSchema::addMultiIndex(const QList<int> &multiIndex, U2OpStatus &os) {
     multiIndexes << multiIndex;
 }
 
-const QList<QList<int>> &UdrSchema::getMultiIndexes() const {
+const QList<QList<int>>& UdrSchema::getMultiIndexes() const {
     return multiIndexes;
 }
 
-const UdrSchemaId &UdrSchema::getId() const {
+const UdrSchemaId& UdrSchema::getId() const {
     return id;
 }
 
@@ -101,12 +101,12 @@ int UdrSchema::size() const {
     return fields.size();
 }
 
-UdrSchema::FieldDesc UdrSchema::getField(int fieldNum, U2OpStatus &os) const {
+UdrSchema::FieldDesc UdrSchema::getField(int fieldNum, U2OpStatus& os) const {
     CHECK_EXT(0 <= fieldNum && fieldNum < size(), os.setError("Out of range"), FieldDesc("", INTEGER));
     return fields[fieldNum];
 }
 
-QStringList UdrSchema::fieldNames(const UdrSchema *schema, U2OpStatus &os, const QList<int> &nums) {
+QStringList UdrSchema::fieldNames(const UdrSchema* schema, U2OpStatus& os, const QList<int>& nums) {
     QStringList result;
     QList<int> target = nums;
     if (nums.isEmpty()) {
@@ -122,7 +122,7 @@ QStringList UdrSchema::fieldNames(const UdrSchema *schema, U2OpStatus &os, const
     return result;
 }
 
-QList<int> UdrSchema::notBinary(const UdrSchema *schema, U2OpStatus &os) {
+QList<int> UdrSchema::notBinary(const UdrSchema* schema, U2OpStatus& os) {
     QList<int> result;
     for (int i = 0; i < schema->size(); i++) {
         UdrSchema::FieldDesc field = schema->getField(i, os);
@@ -134,7 +134,7 @@ QList<int> UdrSchema::notBinary(const UdrSchema *schema, U2OpStatus &os) {
     return result;
 }
 
-UdrSchema::FieldDesc UdrSchema::getBlobField(const UdrSchema *schema, int fieldNum, U2OpStatus &os) {
+UdrSchema::FieldDesc UdrSchema::getBlobField(const UdrSchema* schema, int fieldNum, U2OpStatus& os) {
     UdrSchema::FieldDesc field = schema->getField(fieldNum, os);
     CHECK_OP(os, field);
 

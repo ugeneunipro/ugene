@@ -30,10 +30,10 @@ class MysqlDbi;
 
 class MysqlUpgrader : public U2DbiUpgrader {
 public:
-    MysqlUpgrader(const Version &versionFrom, const Version &versionTo, MysqlDbi *dbi);
+    MysqlUpgrader(const Version& versionFrom, const Version& versionTo, MysqlDbi* dbi);
 
 protected:
-    MysqlDbi *dbi;
+    MysqlDbi* dbi;
 };
 
 }  // namespace U2

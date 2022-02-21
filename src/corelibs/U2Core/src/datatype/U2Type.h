@@ -123,13 +123,13 @@ enum U2TrackModType {
 /** Dbi reference: dbiURL & DBI type */
 class U2CORE_EXPORT U2DbiRef {
 public:
-    U2DbiRef(const U2DbiFactoryId &dbiFactoryId = U2DbiFactoryId(), const U2DbiId &dbiId = U2DbiId());
+    U2DbiRef(const U2DbiFactoryId& dbiFactoryId = U2DbiFactoryId(), const U2DbiId& dbiId = U2DbiId());
 
     bool isValid() const;
 
-    bool operator!=(const U2DbiRef &r2) const;
-    bool operator==(const U2DbiRef &r2) const;
-    bool operator<(const U2DbiRef &r2) const;
+    bool operator!=(const U2DbiRef& r2) const;
+    bool operator==(const U2DbiRef& r2) const;
+    bool operator<(const U2DbiRef& r2) const;
 
     U2DbiFactoryId dbiFactoryId;
     U2DbiId dbiId;
@@ -138,8 +138,8 @@ private:
     static bool metaInfoRegistered;
 };
 
-QDataStream &operator<<(QDataStream &out, const U2DbiRef &dbiRef);
-QDataStream &operator>>(QDataStream &in, U2DbiRef &dbiRef);
+QDataStream& operator<<(QDataStream& out, const U2DbiRef& dbiRef);
+QDataStream& operator>>(QDataStream& in, U2DbiRef& dbiRef);
 
 /**
     Cross database data reference
@@ -147,12 +147,12 @@ QDataStream &operator>>(QDataStream &in, U2DbiRef &dbiRef);
 class U2CORE_EXPORT U2EntityRef {
 public:
     U2EntityRef();
-    U2EntityRef(const U2DbiRef &dbiRef, const U2DataId &entityId);
+    U2EntityRef(const U2DbiRef& dbiRef, const U2DataId& entityId);
     bool isValid() const;
 
-    bool operator==(const U2EntityRef &other) const;
-    bool operator!=(const U2EntityRef &other) const;
-    bool operator<(const U2EntityRef &other) const;
+    bool operator==(const U2EntityRef& other) const;
+    bool operator!=(const U2EntityRef& other) const;
+    bool operator<(const U2EntityRef& other) const;
 
     /** database  id */
     U2DbiRef dbiRef;
@@ -169,16 +169,16 @@ public:
 */
 class U2CORE_EXPORT U2Entity {
 public:
-    U2Entity(const U2DataId &id = U2DataId());
-    U2Entity(const U2Entity &) = default;
+    U2Entity(const U2DataId& id = U2DataId());
+    U2Entity(const U2Entity&) = default;
 
     virtual ~U2Entity() = default;
 
     bool hasValidId() const;
 
-    bool operator==(const U2Entity &other) const;
-    bool operator!=(const U2Entity &other) const;
-    bool operator<(const U2Entity &other) const;
+    bool operator==(const U2Entity& other) const;
+    bool operator!=(const U2Entity& other) const;
+    bool operator<(const U2Entity& other) const;
 
     U2DataId id;
 };
@@ -191,7 +191,7 @@ public:
     U2Object()
         : version(0), trackModType(NoTrack) {
     }
-    U2Object(U2DataId id, const U2DbiId &_dbId, qint64 v)
+    U2Object(U2DataId id, const U2DbiId& _dbId, qint64 v)
         : U2Entity(id), dbiId(_dbId), version(v), trackModType(NoTrack) {
     }
 
@@ -213,7 +213,7 @@ public:
     }
 };
 
-inline uint qHash(const U2Object &obj) {
+inline uint qHash(const U2Object& obj) {
     return qHash(QPair<U2DataId, U2DbiId>(obj.id, obj.dbiId));
 }
 
@@ -276,11 +276,11 @@ public:
         return value == Complementary;
     }
 
-    bool operator==(const U2Strand &s) const {
+    bool operator==(const U2Strand& s) const {
         return value == s.value;
     }
 
-    bool operator!=(const U2Strand &s) const {
+    bool operator!=(const U2Strand& s) const {
         return value != s.value;
     }
 

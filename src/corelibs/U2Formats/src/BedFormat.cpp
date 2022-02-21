@@ -94,40 +94,40 @@ const QString BLOCK_SIZES_QULAIFIER_NAME = "block_sizes";
 const QString BLOCK_STARTS_QUALIFIER_NAME = "block_starts";
 }  // namespace
 
-BedFormat::BedFormat(QObject *p)
+BedFormat::BedFormat(QObject* p)
     : TextDocumentFormatDeprecated(p, BaseDocumentFormats::BED, DocumentFormatFlag_SupportWriting, QStringList("bed")) {
     formatName = tr("BED");
     formatDescription = tr("The BED (Browser Extensible Data) format was developed by UCSC for displaying transcript structures in the genome browser.");
     supportedObjectTypes += GObjectTypes::ANNOTATION_TABLE;
 }
 
-Document *BedFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
+Document* BedFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) {
     CHECK_EXT(io != nullptr && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), nullptr);
-    QList<GObject *> objects;
+    QList<GObject*> objects;
 
     load(io, objects, dbiRef, os, fs);
     CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
 
-    Document *doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects);
+    Document* doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects);
     return doc;
 }
 
-void BedFormat::load(IOAdapter *io, QList<GObject *> &objects, const U2DbiRef &dbiRef, U2OpStatus &os, const QVariantMap &fs) {
+void BedFormat::load(IOAdapter* io, QList<GObject*>& objects, const U2DbiRef& dbiRef, U2OpStatus& os, const QVariantMap& fs) {
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, );
 
     QString defaultAnnotName = "misc_feature";
     BedFormatParser parser(io, defaultAnnotName, os);
-    const QHash<QString, QList<SharedAnnotationData>> &annotationsHash = parser.parseDocument();
+    const QHash<QString, QList<SharedAnnotationData>>& annotationsHash = parser.parseDocument();
     CHECK_OP(os, );
     const int objectsCountLimit = fs.contains(DocumentReadingMode_MaxObjectsInDoc) ? fs[DocumentReadingMode_MaxObjectsInDoc].toInt() : -1;
 
-    foreach (const QString &sequenceName, annotationsHash.keys()) {
+    foreach (const QString& sequenceName, annotationsHash.keys()) {
         const QString annotTableName = sequenceName + FEATURES_TAG;
-        AnnotationTableObject *annotTable = nullptr;
-        for (GObject *object : qAsConst(objects)) {
+        AnnotationTableObject* annotTable = nullptr;
+        for (GObject* object : qAsConst(objects)) {
             if (object->getGObjectName() == annotTableName) {
-                annotTable = dynamic_cast<AnnotationTableObject *>(object);
+                annotTable = dynamic_cast<AnnotationTableObject*>(object);
             }
         }
         if (!annotTable) {
@@ -149,13 +149,13 @@ void BedFormat::load(IOAdapter *io, QList<GObject *> &objects, const U2DbiRef &d
             groupName = "Group";  // or set this name if the annotation name is not appropriate
         }
 
-        const QList<SharedAnnotationData> &annotations = annotationsHash.value(sequenceName);
+        const QList<SharedAnnotationData>& annotations = annotationsHash.value(sequenceName);
         annotTable->addAnnotations(annotations, groupName);
     }
 }
 
 /** Validate the values: they must be integer and within the bound of the region */
-bool validateThickCoordinates(const QString &thickStartStr, const QString &thickEndStr) {
+bool validateThickCoordinates(const QString& thickStartStr, const QString& thickEndStr) {
     if (thickStartStr.isEmpty() || thickEndStr.isEmpty()) {
         return false;
     }
@@ -174,7 +174,7 @@ bool validateThickCoordinates(const QString &thickStartStr, const QString &thick
  * If color is "0", then it is not set, otherwise it has format r,g,b
  * If color is valid, corresponding QColor is set.
  */
-bool validateAnnotationColor(const QString &itemRgbStr, QColor &annotColor) {
+bool validateAnnotationColor(const QString& itemRgbStr, QColor& annotColor) {
     if ("0" == itemRgbStr) {
         return true;
     }
@@ -218,7 +218,7 @@ bool validateAnnotationColor(const QString &itemRgbStr, QColor &annotColor) {
  * relative to chromStart. The number of items must correspond to blockCount.
  * Note that the validated/calculated exons are not currently remembered.
  */
-bool validateBlocks(const QString &blockCountStr, const QString &blockSizesStr, const QString &blockStartsStr, const U2Region &region) {
+bool validateBlocks(const QString& blockCountStr, const QString& blockSizesStr, const QString& blockStartsStr, const U2Region& region) {
     bool blockCountIsInt;
     int blockCount = blockCountStr.toInt(&blockCountIsInt);
     if (!blockCountIsInt || (blockCount == 0)) {
@@ -258,8 +258,8 @@ bool validateBlocks(const QString &blockCountStr, const QString &blockSizesStr, 
     return true;
 }
 
-FormatCheckResult BedFormat::checkRawTextData(const QByteArray &rawData, const GUrl & /* = GUrl */) const {
-    const char *data = rawData.constData();
+FormatCheckResult BedFormat::checkRawTextData(const QByteArray& rawData, const GUrl& /* = GUrl */) const {
+    const char* data = rawData.constData();
     int size = rawData.size();
 
     bool hasBinaryData = TextUtils::contains(TextUtils::BINARY, data, size);
@@ -318,14 +318,14 @@ FormatCheckResult BedFormat::checkRawTextData(const QByteArray &rawData, const G
     return validationStatus.getFormatDetectionScore();
 }
 
-QList<SharedAnnotationData> BedFormat::getAnnotData(IOAdapter *io, U2OpStatus &os) {
+QList<SharedAnnotationData> BedFormat::getAnnotData(IOAdapter* io, U2OpStatus& os) {
     BedFormat bedFormat(nullptr);
     QString annotName = "misc_feature";
     QList<SharedAnnotationData> res;
     BedFormatParser parser(io, annotName, os);
-    const QHash<QString, QList<SharedAnnotationData>> &resHash = parser.parseDocument();
+    const QHash<QString, QList<SharedAnnotationData>>& resHash = parser.parseDocument();
     CHECK_OP(os, res);
-    foreach (const QString &seqName, resHash.keys()) {
+    foreach (const QString& seqName, resHash.keys()) {
         res.append(resHash.value(seqName));
     }
     return res;
@@ -338,7 +338,7 @@ QList<SharedAnnotationData> BedFormat::getAnnotData(IOAdapter *io, U2OpStatus &o
  * If the value is found or the attribute is absent, returns true.
  * If the format of the value is incorrect, returns false.
  */
-bool getAttributeValue(const QString &line, const QString &attrName, QString &attrValue) {
+bool getAttributeValue(const QString& line, const QString& attrName, QString& attrValue) {
     QString attrStr = attrName + "=";
     int attrIndex = line.indexOf(attrStr);
 
@@ -380,7 +380,7 @@ bool getAttributeValue(const QString &line, const QString &attrName, QString &at
 }
 
 /** Get name and description from the track line */
-bool parseTrackLine(const QString &trackLine, QString &trackName, QString &trackDescr) {
+bool parseTrackLine(const QString& trackLine, QString& trackName, QString& trackDescr) {
     SAFE_POINT(trackLine.startsWith("track "), "Internal error while parsing track header line of a BED file:"
                                                " the line doesn't starts with 'track'!",
                false);
@@ -395,21 +395,21 @@ bool parseTrackLine(const QString &trackLine, QString &trackName, QString &track
     return attrFormatStatus;
 }
 
-void BedFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
+void BedFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os) {
     SAFE_POINT(nullptr != doc, "Internal error: NULL document was provided to BEDFormat::storeDocument!", );
     SAFE_POINT(nullptr != io, "Internal error: NULL IO adapter was provided to BEDFormat::storeDocument!", );
 
     ioLog.trace(tr("Starting BED saving: '%1'").arg(doc->getURLString()));
 
-    QList<GObject *> annotTables = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
+    QList<GObject*> annotTables = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
 
     QByteArray lineData;
 
     int fieldsNumberPerLine = 0;
     bool firstLine = true;
 
-    foreach (GObject *annotTableGObject, annotTables) {
-        AnnotationTableObject *annotTable = qobject_cast<AnnotationTableObject *>(annotTableGObject);
+    foreach (GObject* annotTableGObject, annotTables) {
+        AnnotationTableObject* annotTable = qobject_cast<AnnotationTableObject*>(annotTableGObject);
         SAFE_POINT_EXT(annotTable != nullptr, os.setError(tr("Can not convert GObject to AnnotationTableObject")), );
 
         QString chromName;
@@ -428,9 +428,9 @@ void BedFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
             chromName = "chr";
         }
 
-        QList<Annotation *> annotationsList = annotTable->getAnnotations();
+        QList<Annotation*> annotationsList = annotTable->getAnnotations();
 
-        for (Annotation *annot : qAsConst(annotationsList)) {
+        for (Annotation* annot : qAsConst(annotationsList)) {
             QString annotName = annot->getName();
             if (annotName == U1AnnotationUtils::lowerCaseAnnotationName ||
                 annotName == U1AnnotationUtils::upperCaseAnnotationName) {
@@ -443,7 +443,7 @@ void BedFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
                 coreLog.info(tr("You are trying to save joined annotation to BED format! The joining will be lost"));
             }
 
-            for (const U2Region &region : qAsConst(annotRegions)) {
+            for (const U2Region& region : qAsConst(annotRegions)) {
                 lineFields << chromName;
 
                 // chromStart and chromEnd
@@ -618,7 +618,7 @@ void BedFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
 const int BedFormatParser::BufferSize = 1024 * 4;  // 4 Kb
 const int BedFormatParser::MinimumColumnsNumber = 3;  // "3" as there must be at least "chrom", "chromStart" and "chromEnd" fields
 
-BedFormatParser::BedFormatParser(IOAdapter *io, const QString &defaultAnnotName, U2OpStatus &os)
+BedFormatParser::BedFormatParser(IOAdapter* io, const QString& defaultAnnotName, U2OpStatus& os)
     : io(io), os(os), defaultAnnotName(defaultAnnotName), buff(new char[BufferSize]), lineNumber(1), fileIsValid(true), noHeader(false) {
 }
 
@@ -689,7 +689,7 @@ QHash<QString, QList<SharedAnnotationData>> BedFormatParser::parseDocument() {
                    " see TRACE log for details!");
     }
     if (result.isEmpty()) {
-        foreach (const QString &warning, os.getWarnings()) {
+        foreach (const QString& warning, os.getWarnings()) {
             ioLog.error(warning);
         }
         os.setError(BedFormat::tr("The file does not contain valid annotations!"));
@@ -705,7 +705,7 @@ QHash<QString, QList<SharedAnnotationData>> BedFormatParser::parseDocument() {
         return parsedData; \
     }
 
-BedLineData BedFormatParser::parseAndValidateLine(const QString &line, int numOfFields, BEDLineValidateFlags &status) {
+BedLineData BedFormatParser::parseAndValidateLine(const QString& line, int numOfFields, BEDLineValidateFlags& status) {
     BedLineData parsedData;
 
     // All fields are separated by a single tab
@@ -846,7 +846,7 @@ BedLineData BedFormatParser::parseAndValidateLine(const QString &line, int numOf
     return parsedData;
 }
 
-void BedFormatParser::parseHeader(QString &trackName, QString &trackDescr) {
+void BedFormatParser::parseHeader(QString& trackName, QString& trackDescr) {
     // Parse and validate the header: ignore lines with "browser"
     // Search the 'track' line and get parameters from it
     bool headerLine = true;
@@ -869,7 +869,7 @@ void BedFormatParser::parseHeader(QString &trackName, QString &trackDescr) {
     }
 }
 
-void BedFormatParser::createAnnotation(const BedLineData &bedLineData, QList<SharedAnnotationData> &result, QString &trackName, QString &trackDescr) {
+void BedFormatParser::createAnnotation(const BedLineData& bedLineData, QList<SharedAnnotationData>& result, QString& trackName, QString& trackDescr) {
     // Create the annotation
     SharedAnnotationData annotData(new AnnotationData());
     annotData->name = bedLineData.additionalFields[ANNOT_QUALIFIER_NAME].isEmpty() ? defaultAnnotName : bedLineData.additionalFields[ANNOT_QUALIFIER_NAME];
@@ -906,7 +906,7 @@ void BedFormatParser::createAnnotation(const BedLineData &bedLineData, QList<Sha
     result.append(annotData);
 }
 
-void BedFormatParser::addToResults(QHash<QString, QList<SharedAnnotationData>> &resHash, QList<SharedAnnotationData> &result, const QString &seqName) {
+void BedFormatParser::addToResults(QHash<QString, QList<SharedAnnotationData>>& resHash, QList<SharedAnnotationData>& result, const QString& seqName) {
     QHash<QString, QList<SharedAnnotationData>>::iterator i = resHash.find(seqName);
     if (i != resHash.end()) {
         i.value().append(result);
@@ -918,14 +918,14 @@ void BedFormatParser::addToResults(QHash<QString, QList<SharedAnnotationData>> &
 
 namespace {
 const int maxStringLength = 100;
-QString getAbridgedString(const QString &value) {
+QString getAbridgedString(const QString& value) {
     QString resultString = value.left(maxStringLength);
     resultString += (value.length() > 100) ? "..." : "";
     return resultString;
 }
 }  // namespace
 
-bool BedFormatParser::checkAnnotationParsingErrors(const BEDLineValidateFlags &validationStatus, const BedLineData &bedLineData) {
+bool BedFormatParser::checkAnnotationParsingErrors(const BEDLineValidateFlags& validationStatus, const BedLineData& bedLineData) {
     // If there were some errors during parsing the output, write it to the log
     if (validationStatus.incorrectNumberOfFields) {
         os.addWarning(BedFormat::tr("BED parsing error: incorrect number of fields at line %1!").arg(lineNumber));

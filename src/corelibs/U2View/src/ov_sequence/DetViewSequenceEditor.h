@@ -43,16 +43,16 @@ class DetViewSequenceEditor : public QObject {
     Q_OBJECT
 public:
     // DetView can be reduced to GSequenceView or template for MA
-    DetViewSequenceEditor(DetView *view);
+    DetViewSequenceEditor(DetView* view);
     ~DetViewSequenceEditor();
 
     void reset();
     bool isEditMode() const;
-    QAction *getEditAction() const {
+    QAction* getEditAction() const {
         return editAction;
     }
 
-    bool eventFilter(QObject *watched, QEvent *event) override;
+    bool eventFilter(QObject* watched, QEvent* event) override;
 
     int getCursorPosition() const {
         return cursor;
@@ -68,7 +68,7 @@ private:
     void insertChar(int character);
     void deleteChar(int key);
 
-    void modifySequence(U2SequenceObject *seqObj, const U2Region &region, const DNASequence &sequence);
+    void modifySequence(U2SequenceObject* seqObj, const U2Region& region, const DNASequence& sequence);
     void cancelSelectionResizing();
 
 private slots:
@@ -78,15 +78,15 @@ private slots:
     void sl_cursorAnimationTimerCallback();
 
     void sl_objectLockStateChanged();
-    void sl_paste(Task *pasteTask);
+    void sl_paste(Task* pasteTask);
 
 private:
     qint64 cursor = 0;  // TODO_SVEDIT: can be separate class
     QColor cursorColor;
     QTimer animationTimer;
-    DetView *view;
+    DetView* view;
 
-    QAction *editAction;
+    QAction* editAction;
 };
 
 }  // namespace U2

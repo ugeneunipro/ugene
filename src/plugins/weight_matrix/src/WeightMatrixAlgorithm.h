@@ -51,7 +51,7 @@ public:
 class WeightMatrixAlgorithm : public QObject {
     Q_OBJECT
 public:
-    static float getScore(const char *seq, int len, const PWMatrix &m, DNATranslation *complMap);
+    static float getScore(const char* seq, int len, const PWMatrix& m, DNATranslation* complMap);
 };
 
 }  // namespace U2

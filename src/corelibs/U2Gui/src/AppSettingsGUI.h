@@ -35,23 +35,23 @@ class AppSettingsGUIPageController;
 class U2GUI_EXPORT AppSettingsGUI : public QObject {
     Q_OBJECT
 public:
-    AppSettingsGUI(QObject *p = nullptr)
+    AppSettingsGUI(QObject* p = nullptr)
         : QObject(p) {};
 
-    virtual bool registerPage(AppSettingsGUIPageController *page, const QString &beforePage = QString()) = 0;
+    virtual bool registerPage(AppSettingsGUIPageController* page, const QString& beforePage = QString()) = 0;
 
-    virtual bool unregisterPage(AppSettingsGUIPageController *page) = 0;
+    virtual bool unregisterPage(AppSettingsGUIPageController* page) = 0;
 
-    virtual void showSettingsDialog(const QString &pageId = QString()) const = 0;
+    virtual void showSettingsDialog(const QString& pageId = QString()) const = 0;
 
-    virtual QList<AppSettingsGUIPageController *> getRegisteredPages() const = 0;
+    virtual QList<AppSettingsGUIPageController*> getRegisteredPages() const = 0;
 };
 
 /** Data stored on the page */
 class U2GUI_EXPORT AppSettingsGUIPageState : public QObject {
     Q_OBJECT
 public:
-    AppSettingsGUIPageState(QObject *p = nullptr)
+    AppSettingsGUIPageState(QObject* p = nullptr)
         : QObject(p) {
     }
 };
@@ -60,16 +60,16 @@ public:
 class U2GUI_EXPORT AppSettingsGUIPageWidget : public QWidget {
     Q_OBJECT
 public:
-    AppSettingsGUIPageWidget(QWidget *w = nullptr)
+    AppSettingsGUIPageWidget(QWidget* w = nullptr)
         : QWidget(w) {
     }
 
     // reads data from 'state' and initializes the widget state
-    virtual void setState(AppSettingsGUIPageState *state) = 0;
+    virtual void setState(AppSettingsGUIPageState* state) = 0;
 
     // returns 'state' of the widget or error if state is not complete
     //  the result structure is automatically deleted by controller
-    virtual AppSettingsGUIPageState *getState(QString &errMsg) const = 0;
+    virtual AppSettingsGUIPageState* getState(QString& errMsg) const = 0;
 
 signals:
     void si_setLockState(bool);
@@ -79,27 +79,27 @@ signals:
 class U2GUI_EXPORT AppSettingsGUIPageController : public QObject {
     Q_OBJECT
 public:
-    AppSettingsGUIPageController(const QString &s, const QString &_id, QObject *p = nullptr)
+    AppSettingsGUIPageController(const QString& s, const QString& _id, QObject* p = nullptr)
         : QObject(p), name(s), id(_id) {
     }
 
-    const QString &getPageName() const {
+    const QString& getPageName() const {
         return name;
     }
 
-    const QString &getPageId() const {
+    const QString& getPageId() const {
         return id;
     }
 
     // should be pure virtual, because every page should have own help page index
-    virtual const QString &getHelpPageId() const = 0;
+    virtual const QString& getHelpPageId() const = 0;
 
-    virtual AppSettingsGUIPageState *getSavedState() = 0;
+    virtual AppSettingsGUIPageState* getSavedState() = 0;
 
-    virtual void saveState(AppSettingsGUIPageState *s) = 0;
+    virtual void saveState(AppSettingsGUIPageState* s) = 0;
 
     // creates widget and initializes its values with 'data' content
-    virtual AppSettingsGUIPageWidget *createWidget(AppSettingsGUIPageState *data) = 0;
+    virtual AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* data) = 0;
 
 private:
     QString name;

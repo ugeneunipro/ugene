@@ -50,7 +50,7 @@ static int SUBSTRING_NOT_FOUND = -1;
 namespace U2 {
 using namespace WorkflowSerialize;
 
-SchemeWrapper::SchemeWrapper(const QString &initPathToScheme, U2ErrorType *result)
+SchemeWrapper::SchemeWrapper(const QString& initPathToScheme, U2ErrorType* result)
     : pathToScheme(), schemeContent(), elementNamesAndIds(), commentLinesPositions() {
     if (QFile::exists(initPathToScheme)) {
         QFile schemeFile(initPathToScheme);
@@ -85,25 +85,25 @@ SchemeWrapper::~SchemeWrapper() {
     }
 }
 
-U2ErrorType SchemeWrapper::addReaderAndGetItsName(const QString &readerType,
-                                                  const QString &inputFilePath,
-                                                  QString &name) {
+U2ErrorType SchemeWrapper::addReaderAndGetItsName(const QString& readerType,
+                                                  const QString& inputFilePath,
+                                                  QString& name) {
     const QString inputFileAttributeName = Workflow::BaseAttributes::URL_IN_ATTRIBUTE().getId() + Constants::DOT + Constants::FILE_URL;
     return addElementWithAttributeAndGetItsName(readerType, inputFileAttributeName, inputFilePath, name);
 }
 
-U2ErrorType SchemeWrapper::addWriterAndGetItsName(const QString &writerType,
-                                                  const QString &outputFilePath,
-                                                  QString &name) {
+U2ErrorType SchemeWrapper::addWriterAndGetItsName(const QString& writerType,
+                                                  const QString& outputFilePath,
+                                                  QString& name) {
     return addElementWithAttributeAndGetItsName(writerType,
                                                 Workflow::BaseAttributes::URL_OUT_ATTRIBUTE().getId(),
                                                 outputFilePath,
                                                 name);
 }
 
-U2ErrorType SchemeWrapper::setElementAttribute(const QString &elementName,
-                                               const QString &attributeName,
-                                               const QString &attributeValue) {
+U2ErrorType SchemeWrapper::setElementAttribute(const QString& elementName,
+                                               const QString& attributeName,
+                                               const QString& attributeValue) {
     CHECK(elementNamesAndIds.contains(elementName), U2_ELEMENT_NOT_FOUND);
     QString elementType;
     U2ErrorType result = getElementType(elementName, elementType);
@@ -145,9 +145,9 @@ U2ErrorType SchemeWrapper::setElementAttribute(const QString &elementName,
     return U2_OK;
 }
 
-U2ErrorType SchemeWrapper::getElementAttribute(const QString &elementName,
-                                               const QString &attributeName,
-                                               QString &attributeValue) {
+U2ErrorType SchemeWrapper::getElementAttribute(const QString& elementName,
+                                               const QString& attributeName,
+                                               QString& attributeValue) {
     CHECK(elementNamesAndIds.contains(elementName), U2_ELEMENT_NOT_FOUND);
     QString elementType;
     U2ErrorType result = getElementType(elementName, elementType);
@@ -178,8 +178,8 @@ U2ErrorType SchemeWrapper::getElementAttribute(const QString &elementName,
     return U2_OK;
 }
 
-U2ErrorType SchemeWrapper::addNewElementAndGetItsName(const QString &elementType,
-                                                      QString &elementName) {
+U2ErrorType SchemeWrapper::addNewElementAndGetItsName(const QString& elementType,
+                                                      QString& elementName) {
     QString newElementId;
     elementName = QString();
     U2ErrorType result = setUniqueElementNameAndId(elementType, elementName, newElementId);
@@ -211,7 +211,7 @@ U2ErrorType SchemeWrapper::addNewElementAndGetItsName(const QString &elementType
     return U2_OK;
 }
 
-U2ErrorType SchemeWrapper::addFlow(const QString &srcElementName, const QString &srcPortName, const QString &dstElementName, const QString &dstPortName) {
+U2ErrorType SchemeWrapper::addFlow(const QString& srcElementName, const QString& srcPortName, const QString& dstElementName, const QString& dstPortName) {
     // validate input data
     U2ErrorType result = validatePortAndSlot(srcElementName, srcPortName, QString());
     CHECK(U2_OK == result, result);
@@ -243,10 +243,10 @@ U2ErrorType SchemeWrapper::addFlow(const QString &srcElementName, const QString 
     return U2_OK;
 }
 
-U2ErrorType SchemeWrapper::addActorsBinding(const QString &srcElementName,
-                                            const QString &srcSlotName,
-                                            const QString &dstElementName,
-                                            const QString &dstPortAndSlotNames) {
+U2ErrorType SchemeWrapper::addActorsBinding(const QString& srcElementName,
+                                            const QString& srcSlotName,
+                                            const QString& dstElementName,
+                                            const QString& dstPortAndSlotNames) {
     const int dstPortAndSlotDelimeterPos = dstPortAndSlotNames.indexOf(Constants::DOT);
     CHECK(SUBSTRING_NOT_FOUND != dstPortAndSlotDelimeterPos, U2_INVALID_STRING);
     CHECK(SUBSTRING_NOT_FOUND == dstPortAndSlotNames.indexOf(Constants::DOT,
@@ -285,7 +285,7 @@ U2ErrorType SchemeWrapper::addActorsBinding(const QString &srcElementName,
     return U2_OK;
 }
 
-U2ErrorType SchemeWrapper::saveToFile(QString &path) {
+U2ErrorType SchemeWrapper::saveToFile(QString& path) {
     if (path.isEmpty()) {
         path = pathToScheme;
         CHECK(validateSchemeContent(), U2_INVALID_SCHEME);
@@ -305,13 +305,13 @@ U2ErrorType SchemeWrapper::saveToFile(QString &path) {
 #define CHECK_DEL_OBJECT(statement, object) \
     CHECK_EXT(U2_OK == statement, delete object; object = nullptr, statement)
 
-U2ErrorType SchemeWrapper::createSas(const QString &elementType, const QString &inputFilePath, const QString &outputFilePath, SchemeWrapper **sas) {
+U2ErrorType SchemeWrapper::createSas(const QString& elementType, const QString& inputFilePath, const QString& outputFilePath, SchemeWrapper** sas) {
     bool suits = false;
     U2ErrorType result = WorkflowElementFacade::doesElementSuitForSas(elementType, &suits);
     CHECK(U2_OK == result, result);
     CHECK(suits, U2_ELEMENT_NOT_SUIT_SAS);
 
-    SchemeWrapper *newSas = nullptr;
+    SchemeWrapper* newSas = nullptr;
     try {
         newSas = new SchemeWrapper(QString(), &result);
         CHECK(U2_OK == result, result);
@@ -395,7 +395,7 @@ U2ErrorType SchemeWrapper::createSas(const QString &elementType, const QString &
                 CHECK_DEL_OBJECT(result, newSas);
             }
         }
-    } catch (const std::bad_alloc &) {
+    } catch (const std::bad_alloc&) {
         delete newSas;
         newSas = nullptr;
         return U2_NOT_ENOUGH_MEMORY;
@@ -406,7 +406,7 @@ U2ErrorType SchemeWrapper::createSas(const QString &elementType, const QString &
 
 #undef CHECK_DEL_OBJECT
 
-U2ErrorType SchemeWrapper::getEnclosingElementBoundaries(const QString &elementName, int *start, int *end) const {
+U2ErrorType SchemeWrapper::getEnclosingElementBoundaries(const QString& elementName, int* start, int* end) const {
     int elementNamePosition = SUBSTRING_NOT_FOUND;
     U2ErrorType result = getElementNameAttributePosition(elementName, &elementNamePosition);
     CHECK(U2_OK == result, result);
@@ -468,7 +468,7 @@ U2ErrorType SchemeWrapper::getEnclosingElementBoundaries(const QString &elementN
     return U2_OK;
 }
 
-U2ErrorType SchemeWrapper::checkBracesBalanceInRange(int startPos, int endPos, int *disbalance)
+U2ErrorType SchemeWrapper::checkBracesBalanceInRange(int startPos, int endPos, int* disbalance)
     const {
     CHECK(0 < startPos && 0 < endPos && (schemeContent.length() - 1) > startPos && (schemeContent.length() - 1) > endPos, U2_NUM_ARG_OUT_OF_RANGE);
     *disbalance = 0;
@@ -489,8 +489,8 @@ U2ErrorType SchemeWrapper::checkBracesBalanceInRange(int startPos, int endPos, i
     return U2_OK;
 }
 
-U2ErrorType SchemeWrapper::getElementNameAttributePosition(const QString &elementName,
-                                                           int *position) const {
+U2ErrorType SchemeWrapper::getElementNameAttributePosition(const QString& elementName,
+                                                           int* position) const {
     *position = SUBSTRING_NOT_FOUND;
     const int nameStartPosition = schemeContent.indexOf(
         HRSchemaSerializer::valueString(elementName));
@@ -577,7 +577,7 @@ void SchemeWrapper::initSchemeContentWithEmptyScheme() {
     HRSchemaSerializer::addPart(schemeContent, HRSchemaSerializer::makeBlock(Constants::BODY_START, Constants::NO_NAME, QString(), 0, true));
 }
 
-U2ErrorType SchemeWrapper::addActorBindingsBlock(int *position) {
+U2ErrorType SchemeWrapper::addActorBindingsBlock(int* position) {
     *position = -1;
     const int schemeDescriptionEndPos = schemeContent.lastIndexOf(
         QRegExp(BLOCK_END_PATTERN));
@@ -597,9 +597,9 @@ U2ErrorType SchemeWrapper::addActorBindingsBlock(int *position) {
     return U2_OK;
 }
 
-U2ErrorType SchemeWrapper::setUniqueElementNameAndId(const QString &elementType,
-                                                     QString &elementName,
-                                                     QString &elementId) const {
+U2ErrorType SchemeWrapper::setUniqueElementNameAndId(const QString& elementType,
+                                                     QString& elementName,
+                                                     QString& elementId) const {
     elementName = QString();
     elementId = QString();
     U2ErrorType result = WorkflowElementFacade::getElementNameByType(elementType, elementName);
@@ -612,7 +612,7 @@ U2ErrorType SchemeWrapper::setUniqueElementNameAndId(const QString &elementType,
     return U2_OK;
 }
 
-U2ErrorType SchemeWrapper::getElementType(const QString &elementName, QString &type) const {
+U2ErrorType SchemeWrapper::getElementType(const QString& elementName, QString& type) const {
     type = QString();
     int elementDescStartPosition = SUBSTRING_NOT_FOUND;
     int elementDescEndPosition = SUBSTRING_NOT_FOUND;
@@ -661,7 +661,7 @@ U2ErrorType SchemeWrapper::getElementType(const QString &elementName, QString &t
 }
 
 bool SchemeWrapper::validateSchemeContent() const {
-    Workflow::Schema *scheme = new Workflow::Schema();
+    Workflow::Schema* scheme = new Workflow::Schema();
     const QString conversionResult = HRSchemaSerializer::string2Schema(schemeContent, scheme);
     CHECK(Constants::NO_ERROR == conversionResult && nullptr != scheme, false);
     QStringList validationErrors;
@@ -670,10 +670,10 @@ bool SchemeWrapper::validateSchemeContent() const {
     return result;
 }
 
-U2ErrorType SchemeWrapper::addElementWithAttributeAndGetItsName(const QString &elementType,
-                                                                const QString &attributeName,
-                                                                const QString &attributeValue,
-                                                                QString &name) {
+U2ErrorType SchemeWrapper::addElementWithAttributeAndGetItsName(const QString& elementType,
+                                                                const QString& attributeName,
+                                                                const QString& attributeValue,
+                                                                QString& name) {
     const QString schemeContentBackup = schemeContent;
     U2ErrorType result = addNewElementAndGetItsName(elementType, name);
     CHECK_EXT(U2_OK == result, schemeContent = schemeContentBackup, result);
@@ -684,8 +684,8 @@ U2ErrorType SchemeWrapper::addElementWithAttributeAndGetItsName(const QString &e
     return U2_OK;
 }
 
-U2ErrorType SchemeWrapper::setElementAttributeInRange(const QString &attributeName,
-                                                      const QString &attributeValue,
+U2ErrorType SchemeWrapper::setElementAttributeInRange(const QString& attributeName,
+                                                      const QString& attributeValue,
                                                       int start,
                                                       int end,
                                                       bool replaceIfExists) {
@@ -706,7 +706,7 @@ U2ErrorType SchemeWrapper::setElementAttributeInRange(const QString &attributeNa
     return result;
 }
 
-U2ErrorType SchemeWrapper::getElementAttributeFromRange(const QString &attributeName, int start, int end, QString &attributeValue) {
+U2ErrorType SchemeWrapper::getElementAttributeFromRange(const QString& attributeName, int start, int end, QString& attributeValue) {
     attributeValue = QString();
     int valueStart = start, valueEnd = end;
     QStringList valuesTuple;
@@ -724,7 +724,7 @@ U2ErrorType SchemeWrapper::getElementAttributeFromRange(const QString &attribute
     return U2_OK;
 }
 
-U2ErrorType SchemeWrapper::getBlockBoundaries(const QString &blockName, int *start, int *end)
+U2ErrorType SchemeWrapper::getBlockBoundaries(const QString& blockName, int* start, int* end)
     const {
     CHECK(0 < *start && 0 < *end && *start < *end && *start < schemeContent.length() && *end < schemeContent.length(), U2_NUM_ARG_OUT_OF_RANGE);
     QRegExp blockStartPattern = getBlockStartPattern(blockName);
@@ -760,9 +760,9 @@ U2ErrorType SchemeWrapper::getBlockBoundaries(const QString &blockName, int *sta
     return U2_OK;
 }
 
-U2ErrorType SchemeWrapper::validatePortAndSlot(const QString &elementName,
-                                               const QString &portName,
-                                               const QString &slotName) const {
+U2ErrorType SchemeWrapper::validatePortAndSlot(const QString& elementName,
+                                               const QString& portName,
+                                               const QString& slotName) const {
     CHECK(elementNamesAndIds.contains(elementName), U2_ELEMENT_NOT_FOUND);
     CHECK(!portName.isEmpty() || !slotName.isEmpty(), U2_INVALID_STRING);
 
@@ -790,10 +790,10 @@ U2ErrorType SchemeWrapper::validatePortAndSlot(const QString &elementName,
     return U2_OK;
 }
 
-U2ErrorType SchemeWrapper::getBoundariesOfUrlInAttribute(const QString &datasetName,
+U2ErrorType SchemeWrapper::getBoundariesOfUrlInAttribute(const QString& datasetName,
                                                          bool createIfNotExists,
-                                                         int *start,
-                                                         int *end) {
+                                                         int* start,
+                                                         int* end) {
     int blockStart = *start, blockEnd = *end;
     const QString urlBlockName = Workflow::BaseAttributes::URL_IN_ATTRIBUTE().getId();
     U2ErrorType result = getBlockBoundaries(urlBlockName, &blockStart, &blockEnd);
@@ -866,7 +866,7 @@ void SchemeWrapper::restoreComments() {
     }
 }
 
-U2ErrorType SchemeWrapper::insertStringToScheme(int i, const QString &string) {
+U2ErrorType SchemeWrapper::insertStringToScheme(int i, const QString& string) {
     CHECK(0 <= i && schemeContent.length() > i, U2_NUM_ARG_OUT_OF_RANGE);
     const int shift = string.length();
     U2ErrorType result = updateCommentPositionsOnShift(i, shift);
@@ -875,7 +875,7 @@ U2ErrorType SchemeWrapper::insertStringToScheme(int i, const QString &string) {
     return U2_OK;
 }
 
-U2ErrorType SchemeWrapper::replaceStringInScheme(int i, int len, const QString &string) {
+U2ErrorType SchemeWrapper::replaceStringInScheme(int i, int len, const QString& string) {
     CHECK(0 <= i && 0 < len && schemeContent.length() > i, U2_NUM_ARG_OUT_OF_RANGE);
     const int shift = string.length() - len;
     U2ErrorType result = updateCommentPositionsOnShift(i, shift);
@@ -884,7 +884,7 @@ U2ErrorType SchemeWrapper::replaceStringInScheme(int i, int len, const QString &
     return U2_OK;
 }
 
-U2ErrorType SchemeWrapper::getSchemeDescriptionStart(int *pos) const {
+U2ErrorType SchemeWrapper::getSchemeDescriptionStart(int* pos) const {
     QRegExp blockStartPattern(BLOCK_START_PATTERN);
     QRegExp schemeNamePattern("\"[^\"]*\"");
     *pos = schemeContent.indexOf(Constants::BODY_START);
@@ -919,9 +919,9 @@ U2ErrorType SchemeWrapper::updateCommentPositionsOnShift(int shiftStartPosition,
     return U2_OK;
 }
 
-U2ErrorType SchemeWrapper::getAttributeValuePositionFromRange(const QString &attributeName,
-                                                              int *start,
-                                                              int *end) const {
+U2ErrorType SchemeWrapper::getAttributeValuePositionFromRange(const QString& attributeName,
+                                                              int* start,
+                                                              int* end) const {
     CHECK(0 < *start && 0 < *end && *start < *end && *start < schemeContent.length() && *end < schemeContent.length(), U2_NUM_ARG_OUT_OF_RANGE);
     const QRegExp letterOrNumberPattern("\\w");
     const QRegExp attributeNamePattern = QRegExp("[\\s\\" + Constants::SEMICOLON + "]" + attributeName + "\\s*\\" + Constants::EQUALS_SIGN);
@@ -949,12 +949,12 @@ U2ErrorType SchemeWrapper::getAttributeValuePositionFromRange(const QString &att
     return U2_OK;
 }
 
-U2ErrorType SchemeWrapper::getUrlInAttributePositionByName(const QStringList &attributesHierarchy,
+U2ErrorType SchemeWrapper::getUrlInAttributePositionByName(const QStringList& attributesHierarchy,
                                                            bool createIfNotExists,
-                                                           int *start,
-                                                           int *end,
-                                                           QString &deepestAttributeName,
-                                                           bool &replaceIfExists) {
+                                                           int* start,
+                                                           int* end,
+                                                           QString& deepestAttributeName,
+                                                           bool& replaceIfExists) {
     replaceIfExists = false;
     CHECK(0 < *start && 0 < *end && *start < *end && *start < schemeContent.length() && *end < schemeContent.length(), U2_NUM_ARG_OUT_OF_RANGE);
     U2ErrorType result = U2_OK;
@@ -986,7 +986,7 @@ U2ErrorType SchemeWrapper::getUrlInAttributePositionByName(const QStringList &at
     return result;
 }
 
-U2ErrorType SchemeWrapper::insertUrlInAttributeInRange(int *start, int *end) {
+U2ErrorType SchemeWrapper::insertUrlInAttributeInRange(int* start, int* end) {
     CHECK(0 < *start && 0 < *end && *start < *end && *start < schemeContent.length() && *end < schemeContent.length(), U2_NUM_ARG_OUT_OF_RANGE);
     const QString urlBlockName = Workflow::BaseAttributes::URL_IN_ATTRIBUTE().getId();
     QString blockContent(HRSchemaSerializer::makeEqualsPair(Constants::DATASET_NAME,
@@ -1007,7 +1007,7 @@ U2ErrorType SchemeWrapper::insertUrlInAttributeInRange(int *start, int *end) {
     return U2_OK;
 }
 
-QRegExp SchemeWrapper::getBlockStartPattern(const QString &blockName) {
+QRegExp SchemeWrapper::getBlockStartPattern(const QString& blockName) {
     return QRegExp("\\s" + QRegExp::escape(blockName) + "\\s*" + QRegExp::escape(Constants::BLOCK_START));
 }
 

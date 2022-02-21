@@ -40,7 +40,7 @@
 
 namespace U2 {
 
-DotPlotSplitter::DotPlotSplitter(AnnotatedDNAView *a)
+DotPlotSplitter::DotPlotSplitter(AnnotatedDNAView* a)
     : ADVSplitWidget(a),
       locked(false) {
     syncLockAction = createAction(":core/images/sync_lock.png", tr("Multiple view synchronization lock"), SLOT(sl_toggleSyncLock(bool)));
@@ -53,8 +53,8 @@ DotPlotSplitter::DotPlotSplitter(AnnotatedDNAView *a)
 
     splitter = new QSplitter(Qt::Horizontal);
 
-    WidgetWithLocalToolbar *wgt = new WidgetWithLocalToolbar(this);
-    QLayout *l = new QVBoxLayout();
+    WidgetWithLocalToolbar* wgt = new WidgetWithLocalToolbar(this);
+    QLayout* l = new QVBoxLayout();
     l->setMargin(0);
     l->setSpacing(0);
     l->addWidget(splitter);
@@ -68,7 +68,7 @@ DotPlotSplitter::DotPlotSplitter(AnnotatedDNAView *a)
     wgt->addActionToLocalToolbar(selAction);
     wgt->addActionToLocalToolbar(handAction);
 
-    QLayout *mainLayout = new QVBoxLayout();
+    QLayout* mainLayout = new QVBoxLayout();
     mainLayout->setSpacing(0);
     mainLayout->setMargin(0);
     mainLayout->addWidget(wgt);
@@ -80,7 +80,7 @@ DotPlotSplitter::DotPlotSplitter(AnnotatedDNAView *a)
 }
 
 bool DotPlotSplitter::onCloseEvent() {
-    foreach (DotPlotWidget *w, dotPlotList) {
+    foreach (DotPlotWidget* w, dotPlotList) {
         bool canClose = w->onCloseEvent();
         if (!canClose) {
             return false;
@@ -90,8 +90,8 @@ bool DotPlotSplitter::onCloseEvent() {
     return true;
 }
 
-QAction *DotPlotSplitter::createAction(const QIcon &ic, const QString &toolTip, const char *slot, bool checkable) {
-    QAction *a = new QAction(this);
+QAction* DotPlotSplitter::createAction(const QIcon& ic, const QString& toolTip, const char* slot, bool checkable) {
+    QAction* a = new QAction(this);
     if (a != nullptr) {
         a->setIcon(ic);
         a->setToolTip(toolTip);
@@ -106,18 +106,18 @@ QAction *DotPlotSplitter::createAction(const QIcon &ic, const QString &toolTip, 
     return a;
 }
 
-QAction *DotPlotSplitter::createAction(const QString &iconPath, const QString &toolTip, const char *slot, bool checkable) {
+QAction* DotPlotSplitter::createAction(const QString& iconPath, const QString& toolTip, const char* slot, bool checkable) {
     return createAction(QIcon(iconPath), toolTip, slot, checkable);
 }
 
-void DotPlotSplitter::addView(DotPlotWidget *view) {
+void DotPlotSplitter::addView(DotPlotWidget* view) {
     dotPlotList.append(view);
     SAFE_POINT(splitter, "splitter is NULL", );
     splitter->addWidget(view);
 
     connect(view,
-            SIGNAL(si_dotPlotChanged(ADVSequenceObjectContext *, ADVSequenceObjectContext *, float, float, QPointF)),
-            SLOT(sl_dotPlotChanged(ADVSequenceObjectContext *, ADVSequenceObjectContext *, float, float, QPointF)));
+            SIGNAL(si_dotPlotChanged(ADVSequenceObjectContext*, ADVSequenceObjectContext*, float, float, QPointF)),
+            SLOT(sl_dotPlotChanged(ADVSequenceObjectContext*, ADVSequenceObjectContext*, float, float, QPointF)));
 
     connect(view,
             SIGNAL(si_dotPlotSelecting()),
@@ -128,7 +128,7 @@ void DotPlotSplitter::addView(DotPlotWidget *view) {
     updateButtonState();
 }
 
-void DotPlotSplitter::removeView(DotPlotWidget *view) {
+void DotPlotSplitter::removeView(DotPlotWidget* view) {
     dotPlotList.removeAll(view);
     checkLockButtonState();
 }
@@ -141,7 +141,7 @@ void DotPlotSplitter::checkLockButtonState() {
     bool enableLockButton = false;
 
     int dotPlotCount = dotPlotList.count();
-    foreach (DotPlotWidget *dpWidget, dotPlotList) {
+    foreach (DotPlotWidget* dpWidget, dotPlotList) {
         QString nameX = dpWidget->getXSequenceName();
         QString nameY = dpWidget->getYSequenceName();
 
@@ -174,8 +174,8 @@ bool DotPlotSplitter::isEmpty() const {
 
 // build popup menu for all DotPlotWidgets
 // each DotPlotWidget defines if it should add menu
-void DotPlotSplitter::buildPopupMenu(QMenu *m) {
-    foreach (DotPlotWidget *w, dotPlotList) {
+void DotPlotSplitter::buildPopupMenu(QMenu* m) {
+    foreach (DotPlotWidget* w, dotPlotList) {
         SAFE_POINT(w, "w is NULL", );
         w->buildPopupMenu(m);
     }
@@ -186,7 +186,7 @@ void DotPlotSplitter::sl_toggleSyncLock(bool l) {
 }
 
 void DotPlotSplitter::sl_toggleFilter() {
-    foreach (DotPlotWidget *w, dotPlotList) {
+    foreach (DotPlotWidget* w, dotPlotList) {
         SAFE_POINT(w, "w is NULL", );
         w->sl_filter();
         break;  // todo: support several widgets
@@ -195,7 +195,7 @@ void DotPlotSplitter::sl_toggleFilter() {
 
 void DotPlotSplitter::sl_toggleAspectRatio(bool aspectRatio) {
     bool noFocus = true;
-    foreach (DotPlotWidget *dpWidget, dotPlotList) {
+    foreach (DotPlotWidget* dpWidget, dotPlotList) {
         if (dpWidget->hasFocus()) {
             dpWidget->setKeepAspectRatio(aspectRatio);
             noFocus = false;
@@ -203,7 +203,7 @@ void DotPlotSplitter::sl_toggleAspectRatio(bool aspectRatio) {
         }
     }
     if (noFocus) {
-        foreach (DotPlotWidget *dpWidget, dotPlotList) {
+        foreach (DotPlotWidget* dpWidget, dotPlotList) {
             dpWidget->setKeepAspectRatio(aspectRatio);
         }
     }
@@ -211,7 +211,7 @@ void DotPlotSplitter::sl_toggleAspectRatio(bool aspectRatio) {
 
 void DotPlotSplitter::sl_toggleZoomIn() {
     bool noFocus = true;
-    foreach (DotPlotWidget *dpWidget, dotPlotList) {
+    foreach (DotPlotWidget* dpWidget, dotPlotList) {
         if (dpWidget->hasFocus()) {
             dpWidget->zoomIn();
             noFocus = false;
@@ -219,7 +219,7 @@ void DotPlotSplitter::sl_toggleZoomIn() {
         }
     }
     if (noFocus) {
-        foreach (DotPlotWidget *dpWidget, dotPlotList) {
+        foreach (DotPlotWidget* dpWidget, dotPlotList) {
             dpWidget->zoomIn();
         }
     }
@@ -228,7 +228,7 @@ void DotPlotSplitter::sl_toggleZoomIn() {
 
 void DotPlotSplitter::sl_toggleZoomOut() {
     bool noFocus = true;
-    foreach (DotPlotWidget *dpWidget, dotPlotList) {
+    foreach (DotPlotWidget* dpWidget, dotPlotList) {
         if (dpWidget->hasFocus()) {
             dpWidget->zoomOut();
             noFocus = false;
@@ -236,7 +236,7 @@ void DotPlotSplitter::sl_toggleZoomOut() {
         }
     }
     if (noFocus) {
-        foreach (DotPlotWidget *dpWidget, dotPlotList) {
+        foreach (DotPlotWidget* dpWidget, dotPlotList) {
             dpWidget->zoomOut();
         }
     }
@@ -245,7 +245,7 @@ void DotPlotSplitter::sl_toggleZoomOut() {
 
 void DotPlotSplitter::sl_toggleZoomReset() {
     bool noFocus = true;
-    foreach (DotPlotWidget *dpWidget, dotPlotList) {
+    foreach (DotPlotWidget* dpWidget, dotPlotList) {
         if (dpWidget->hasFocus()) {
             dpWidget->zoomReset();
             noFocus = false;
@@ -253,7 +253,7 @@ void DotPlotSplitter::sl_toggleZoomReset() {
         }
     }
     if (noFocus) {
-        foreach (DotPlotWidget *dpWidget, dotPlotList) {
+        foreach (DotPlotWidget* dpWidget, dotPlotList) {
             dpWidget->zoomReset();
         }
     }
@@ -263,25 +263,25 @@ void DotPlotSplitter::sl_toggleZoomReset() {
 void DotPlotSplitter::sl_toggleSel() {
     handAction->setChecked(!selAction->isChecked());
 
-    foreach (DotPlotWidget *dpWidget, dotPlotList) {
+    foreach (DotPlotWidget* dpWidget, dotPlotList) {
         dpWidget->setSelActive(selAction->isChecked());
     }
 }
 void DotPlotSplitter::sl_toggleHand() {
     selAction->setChecked(!handAction->isChecked());
 
-    foreach (DotPlotWidget *dpWidget, dotPlotList) {
+    foreach (DotPlotWidget* dpWidget, dotPlotList) {
         dpWidget->setSelActive(selAction->isChecked());
     }
 }
 
-void DotPlotSplitter::sl_dotPlotChanged(ADVSequenceObjectContext *sequenceX, ADVSequenceObjectContext *sequenceY, float shiftX, float shiftY, QPointF zoom) {
+void DotPlotSplitter::sl_dotPlotChanged(ADVSequenceObjectContext* sequenceX, ADVSequenceObjectContext* sequenceY, float shiftX, float shiftY, QPointF zoom) {
     SAFE_POINT(sequenceX != nullptr && sequenceY != nullptr, tr("One of the sequences in dotplot is NULL"), );
 
     checkLockButtonState();
 
     if (locked) {
-        foreach (DotPlotWidget *w, dotPlotList) {
+        foreach (DotPlotWidget* w, dotPlotList) {
             w->setShiftZoom(sequenceX, sequenceY, shiftX, shiftY, zoom);
         }
         update();
@@ -290,7 +290,7 @@ void DotPlotSplitter::sl_dotPlotChanged(ADVSequenceObjectContext *sequenceX, ADV
 }
 
 void DotPlotSplitter::sl_dotPlotSelecting() {
-    foreach (DotPlotWidget *w, dotPlotList) {
+    foreach (DotPlotWidget* w, dotPlotList) {
         if (w->hasSelection()) {
             break;
         }
@@ -299,7 +299,7 @@ void DotPlotSplitter::sl_dotPlotSelecting() {
 
 void DotPlotSplitter::updateButtonState() {
     bool noFocus = true;
-    foreach (DotPlotWidget *dpWidget, dotPlotList) {
+    foreach (DotPlotWidget* dpWidget, dotPlotList) {
         if (dpWidget->hasFocus()) {
             zoomInAction->setEnabled(dpWidget->canZoomIn());
             zoomOutAction->setEnabled(dpWidget->canZoomOut());
@@ -309,7 +309,7 @@ void DotPlotSplitter::updateButtonState() {
         }
     }
     if (noFocus && !dotPlotList.isEmpty()) {
-        DotPlotWidget *dpWidget = dotPlotList.first();
+        DotPlotWidget* dpWidget = dotPlotList.first();
         zoomInAction->setEnabled(dpWidget->canZoomIn());
         zoomOutAction->setEnabled(dpWidget->canZoomOut());
         resetZoomingAction->setEnabled(dpWidget->canZoomOut());

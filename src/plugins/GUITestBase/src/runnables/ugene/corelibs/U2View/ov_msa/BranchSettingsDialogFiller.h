@@ -29,7 +29,7 @@ using namespace HI;
 
 class BranchSettingsDialogFiller : public Filler {
 public:
-    BranchSettingsDialogFiller(HI::GUITestOpStatus &os)
+    BranchSettingsDialogFiller(HI::GUITestOpStatus& os)
         : Filler(os, "BranchSettingsDialog") {
     }
     void commonScenario();

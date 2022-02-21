@@ -34,22 +34,22 @@ const QString CircularViewSettingsWidgetFactory::GROUP_ID = "OP_CV_SETTINGS";
 const QString CircularViewSettingsWidgetFactory::GROUP_ICON_STR = ":circular_view/images/circular.png";
 const QString CircularViewSettingsWidgetFactory::GROUP_DOC_PAGE = "65929523";
 
-CircularViewSettingsWidgetFactory::CircularViewSettingsWidgetFactory(CircularViewContext *context)
+CircularViewSettingsWidgetFactory::CircularViewSettingsWidgetFactory(CircularViewContext* context)
     : ctx(context) {
     SAFE_POINT(context != nullptr, tr("Circular view context is NULL"), );
     objectViewOfWidget = ObjViewType_SequenceView;
 }
 
-QWidget *CircularViewSettingsWidgetFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
+QWidget* CircularViewSettingsWidgetFactory::createWidget(GObjectView* objView, const QVariantMap& /*options*/) {
     SAFE_POINT(objView != nullptr, tr("Object view is NULL"), nullptr);
 
-    CircularViewSplitter *cvSplitter = ctx->getView(objView, false);
-    AnnotatedDNAView *annotatedDnaView = qobject_cast<AnnotatedDNAView *>(objView);
+    CircularViewSplitter* cvSplitter = ctx->getView(objView, false);
+    AnnotatedDNAView* annotatedDnaView = qobject_cast<AnnotatedDNAView*>(objView);
     SAFE_POINT(annotatedDnaView != nullptr, "Can not cast GObjectView to AnnotatedDNAView", nullptr);
 
-    CircularViewSettingsWidget *widget = new CircularViewSettingsWidget(ctx->getSettings(annotatedDnaView), cvSplitter);
-    connect(ctx, SIGNAL(si_cvSplitterWasCreatedOrRemoved(CircularViewSplitter *, CircularViewSettings *)), widget, SLOT(sl_cvSplitterWasCreatedOrRemoved(CircularViewSplitter *, CircularViewSettings *)));
-    connect(widget, SIGNAL(si_openCvButtonClicked(CircularViewSettings *)), ctx, SLOT(sl_toggleBySettings(CircularViewSettings *)));
+    CircularViewSettingsWidget* widget = new CircularViewSettingsWidget(ctx->getSettings(annotatedDnaView), cvSplitter);
+    connect(ctx, SIGNAL(si_cvSplitterWasCreatedOrRemoved(CircularViewSplitter*, CircularViewSettings*)), widget, SLOT(sl_cvSplitterWasCreatedOrRemoved(CircularViewSplitter*, CircularViewSettings*)));
+    connect(widget, SIGNAL(si_openCvButtonClicked(CircularViewSettings*)), ctx, SLOT(sl_toggleBySettings(CircularViewSettings*)));
     widget->setObjectName("CircularViewSettingsWidget");
     return widget;
 }
@@ -58,7 +58,7 @@ OPGroupParameters CircularViewSettingsWidgetFactory::getOPGroupParameters() {
     return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Circular View Settings"), GROUP_DOC_PAGE);
 }
 
-bool CircularViewSettingsWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface *filter) {
+bool CircularViewSettingsWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface* filter) {
     bool res = false;
     SAFE_POINT(filter != nullptr, "OPFactoryFilterVisitorInterface::filter is NULL", res);
 

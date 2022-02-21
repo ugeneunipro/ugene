@@ -29,7 +29,7 @@ Variable::Variable() {
     assigned = false;
 }
 
-Variable::Variable(const QString &_name)
+Variable::Variable(const QString& _name)
     : name(_name) {
     assigned = false;
 }
@@ -37,16 +37,16 @@ Variable::Variable(const QString &_name)
 Variable::~Variable() {
 }
 
-const QString &Variable::getName() const {
+const QString& Variable::getName() const {
     return name;
 }
 
-const QString &Variable::getValue() const {
+const QString& Variable::getValue() const {
     SAFE_POINT(assigned, QObject::tr("Retrieving value of unassigned variable: %1").arg(name), value);
     return value;
 }
 
-void Variable::setValue(const QString &value) {
+void Variable::setValue(const QString& value) {
     assigned = true;
     this->value = value;
 }
@@ -55,7 +55,7 @@ bool Variable::isAssigned() const {
     return assigned;
 }
 
-bool Variable::operator==(const Variable &other) const {
+bool Variable::operator==(const Variable& other) const {
     CHECK(name == other.name, false);
     SAFE_POINT(assigned, QObject::tr("Unassigned variable: %1").arg(name), false);
     SAFE_POINT(other.assigned, QObject::tr("Unassigned variable: %1").arg(other.name), false);
@@ -65,7 +65,7 @@ bool Variable::operator==(const Variable &other) const {
 Predicate::Predicate() {
 }
 
-Predicate::Predicate(const Variable &v, const QString &value)
+Predicate::Predicate(const Variable& v, const QString& value)
     : var(v) {
     var.setValue(value);
 }
@@ -74,7 +74,7 @@ Variable Predicate::variable() const {
     return var;
 }
 
-bool Predicate::isTrue(const QMap<QString, Variable> &vars) const {
+bool Predicate::isTrue(const QMap<QString, Variable>& vars) const {
     SAFE_POINT(vars.contains(var.getName()), QObject::tr("Variable is not defined: %1").arg(var.getName()), false);
     return (var == vars[var.getName()]);
 }
@@ -83,7 +83,7 @@ QString Predicate::toString() const {
     return var.getName() + "." + var.getValue();
 }
 
-Predicate Predicate::fromString(const QString &string, U2OpStatus &os) {
+Predicate Predicate::fromString(const QString& string, U2OpStatus& os) {
     QStringList token = string.split(".");  // var.value
     if (2 != token.size()) {
         os.setError(QObject::tr("Can not parse predicate from the string: %1").arg(string));
@@ -92,7 +92,7 @@ Predicate Predicate::fromString(const QString &string, U2OpStatus &os) {
     return Predicate(Variable(token[0]), token[1]);
 }
 
-bool Predicate::operator<(const Predicate &other) const {
+bool Predicate::operator<(const Predicate& other) const {
     return (toString() < other.toString());
 }
 

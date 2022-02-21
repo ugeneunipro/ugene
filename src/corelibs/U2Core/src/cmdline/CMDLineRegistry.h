@@ -44,28 +44,28 @@ public:
     static const QString PLUGINS_ARG;
     static const QString VERIFY_ARG;
 
-    CMDLineRegistry(const QStringList &arguments);
+    CMDLineRegistry(const QStringList& arguments);
     virtual ~CMDLineRegistry();
 
-    const QList<StrStrPair> &getParameters() const;
+    const QList<StrStrPair>& getParameters() const;
     // as they were in cmdline. Empty keys also here
     QStringList getOrderedParameterNames() const;
 
     // finding starts at startsWithIdx
-    bool hasParameter(const QString &paramName, int startsWithIdx = 0) const;
+    bool hasParameter(const QString& paramName, int startsWithIdx = 0) const;
     // returns value of first appearance from startWithIdx of paramName key
-    QString getParameterValue(const QString &paramName, int startWithIdx = 0) const;
+    QString getParameterValue(const QString& paramName, int startWithIdx = 0) const;
 
-    void registerCMDLineHelpProvider(CMDLineHelpProvider *provider);
-    void unregisterCMDLineHelpProvider(CMDLineHelpProvider *provider);
+    void registerCMDLineHelpProvider(CMDLineHelpProvider* provider);
+    void unregisterCMDLineHelpProvider(CMDLineHelpProvider* provider);
 
-    const QList<CMDLineHelpProvider *> &listCMDLineHelpProviders() const {
+    const QList<CMDLineHelpProvider*>& listCMDLineHelpProviders() const {
         return helpProviders;
     }
 
 private:
     QList<StrStrPair> params;  // pairs (paramName, paramValue) ordered as in the cmdline
-    QList<CMDLineHelpProvider *> helpProviders;  // sorted by section name
+    QList<CMDLineHelpProvider*> helpProviders;  // sorted by section name
 
 };  // CMDLineRegistry
 

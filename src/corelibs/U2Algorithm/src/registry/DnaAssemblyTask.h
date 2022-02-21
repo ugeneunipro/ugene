@@ -46,10 +46,10 @@ public:
     GUrl url;
     LibraryType type;
     MateOrder order;
-    ShortReadSet(const GUrl &_url)
+    ShortReadSet(const GUrl& _url)
         : url(_url), type(SingleEndReads), order(UpstreamMate) {
     }
-    ShortReadSet(const GUrl &_url, LibraryType t, MateOrder m)
+    ShortReadSet(const GUrl& _url, LibraryType t, MateOrder m)
         : url(_url), type(t), order(m) {
     }
 };
@@ -58,10 +58,10 @@ class U2ALGORITHM_EXPORT DnaAssemblyToRefTaskSettings {
 public:
     DnaAssemblyToRefTaskSettings();
 
-    void setCustomSettings(const QMap<QString, QVariant> &settings);
-    QVariant getCustomValue(const QString &optionName, const QVariant &defaultVal) const;
-    bool hasCustomValue(const QString &name) const;
-    void setCustomValue(const QString &optionName, const QVariant &val);
+    void setCustomSettings(const QMap<QString, QVariant>& settings);
+    QVariant getCustomValue(const QString& optionName, const QVariant& defaultVal) const;
+    bool hasCustomValue(const QString& name) const;
+    void setCustomValue(const QString& optionName, const QVariant& val);
     QList<GUrl> getShortReadUrls() const;
 
 public:
@@ -91,21 +91,21 @@ private:
 class U2ALGORITHM_EXPORT DnaAssemblyToReferenceTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    DnaAssemblyToReferenceTask(const DnaAssemblyToRefTaskSettings &settings, TaskFlags flags = TaskFlags_FOSCOE, bool justBuildIndex = false);
+    DnaAssemblyToReferenceTask(const DnaAssemblyToRefTaskSettings& settings, TaskFlags flags = TaskFlags_FOSCOE, bool justBuildIndex = false);
 
     bool hasResult() const {
         return hasResults;
     }
-    const DnaAssemblyToRefTaskSettings &getSettings() const {
+    const DnaAssemblyToRefTaskSettings& getSettings() const {
         return settings;
     }
 
-    static bool isIndexUrl(const QString &url, const QStringList &indexSuffixes);
-    static QString getBaseUrl(const QString &url, const QStringList &indexSuffixes);
-    static bool isPrebuiltIndex(const QString &baseFileName, const QStringList &indexExtensions);
+    static bool isIndexUrl(const QString& url, const QStringList& indexSuffixes);
+    static QString getBaseUrl(const QString& url, const QStringList& indexSuffixes);
+    static bool isPrebuiltIndex(const QString& baseFileName, const QStringList& indexExtensions);
 
 protected:
-    void setUpIndexBuilding(const QStringList &indexExtensions);
+    void setUpIndexBuilding(const QStringList& indexExtensions);
 
     DnaAssemblyToRefTaskSettings settings;
     bool isBuildOnlyTask;
@@ -114,7 +114,7 @@ protected:
 
 class U2ALGORITHM_EXPORT DnaAssemblyToRefTaskFactory {
 public:
-    virtual DnaAssemblyToReferenceTask *createTaskInstance(const DnaAssemblyToRefTaskSettings &settings, bool justBuildIndex = false) = 0;
+    virtual DnaAssemblyToReferenceTask* createTaskInstance(const DnaAssemblyToRefTaskSettings& settings, bool justBuildIndex = false) = 0;
     virtual ~DnaAssemblyToRefTaskFactory() {
     }
 };
@@ -126,7 +126,7 @@ public: \
     public: \
         Factory() { \
         } \
-        DnaAssemblyToReferenceTask *createTaskInstance(const DnaAssemblyToRefTaskSettings &s, bool justBuildIndex = false) { \
+        DnaAssemblyToReferenceTask* createTaskInstance(const DnaAssemblyToRefTaskSettings& s, bool justBuildIndex = false) { \
             return new c(s, justBuildIndex); \
         } \
     };

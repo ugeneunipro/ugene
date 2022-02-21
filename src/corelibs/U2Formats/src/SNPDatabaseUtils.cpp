@@ -30,8 +30,8 @@ namespace U2 {
 
 #define S3_DATABASE_KEY "s3-database"
 
-Database *SNPDatabaseUtils::openDatabase(const QString &path) {
-    Database *res = nullptr;
+Database* SNPDatabaseUtils::openDatabase(const QString& path) {
+    Database* res = nullptr;
 
     if (QFile::exists(path)) {
         U2OpStatusImpl os;
@@ -42,7 +42,7 @@ Database *SNPDatabaseUtils::openDatabase(const QString &path) {
     return res;
 }
 
-U2DataId SNPDatabaseUtils::getSequenceId(const QString &sequenceName, U2ObjectDbi *objectDbi) {
+U2DataId SNPDatabaseUtils::getSequenceId(const QString& sequenceName, U2ObjectDbi* objectDbi) {
     U2DataId seqId;
     if (sequenceName.isEmpty()) {
         return seqId;

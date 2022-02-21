@@ -44,15 +44,15 @@ public:
 
 private:
     void setUgeneclPath();
-    void setArgs(const QDomElement &owner);
-    QString getVal(const QString &val);
-    QString splitVal(const QString &val, const QString &prefValue, const QString &prefix, bool isTmp);
+    void setArgs(const QDomElement& owner);
+    QString getVal(const QString& val);
+    QString splitVal(const QString& val, const QString& prefValue, const QString& prefix, bool isTmp);
 
 private:
     QString expectedMessage;
     QString unexpectedMessage;
     QStringList args;
-    QProcess *proc = nullptr;
+    QProcess* proc = nullptr;
     QString ugeneclPath;
     QStringList tmpFiles;
     QString workingDir;
@@ -61,7 +61,7 @@ private:
 
 class CMDLineTests {
 public:
-    static QList<XMLTestFactory *> createTestFactories();
+    static QList<XMLTestFactory*> createTestFactories();
 };  // CMDLineTests
 
 }  // namespace U2

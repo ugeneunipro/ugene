@@ -35,9 +35,9 @@ class U2VIEW_EXPORT DnaAssemblySupport : public QObject {
 public:
     DnaAssemblySupport();
 
-    static QMap<QString, QString> toConvert(const DnaAssemblyToRefTaskSettings &settings, QList<GUrl> &unknownFormatFiles);
-    static QString toConvertText(const QMap<QString, QString> &files);
-    static QString unknownText(const QList<GUrl> &unknownFormatFiles);
+    static QMap<QString, QString> toConvert(const DnaAssemblyToRefTaskSettings& settings, QList<GUrl>& unknownFormatFiles);
+    static QString toConvertText(const QMap<QString, QString>& files);
+    static QString unknownText(const QList<GUrl>& unknownFormatFiles);
 
 private slots:
     void sl_showDnaAssemblyDialog();
@@ -49,15 +49,15 @@ private slots:
 class FilterUnpairedReadsTask : public Task {
     Q_OBJECT
 public:
-    FilterUnpairedReadsTask(const DnaAssemblyToRefTaskSettings &settings);
+    FilterUnpairedReadsTask(const DnaAssemblyToRefTaskSettings& settings);
     void run();
-    const QList<ShortReadSet> &getFilteredReadList() const {
+    const QList<ShortReadSet>& getFilteredReadList() const {
         return filteredReads;
     }
 
 private:
-    QString getTmpFilePath(const GUrl &initialFile);
-    void compareFiles(const GUrl &upstream, const GUrl &downstream, const GUrl &upstreamFiltered, const GUrl &downstreamFiltered);
+    QString getTmpFilePath(const GUrl& initialFile);
+    void compareFiles(const GUrl& upstream, const GUrl& downstream, const GUrl& upstreamFiltered, const GUrl& downstreamFiltered);
 
     DnaAssemblyToRefTaskSettings settings;
     QList<ShortReadSet> filteredReads;
@@ -67,11 +67,11 @@ private:
 class U2VIEW_EXPORT DnaAssemblyTaskWithConversions : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    DnaAssemblyTaskWithConversions(const DnaAssemblyToRefTaskSettings &settings, bool viewResult = false, bool justBuildIndex = false);
+    DnaAssemblyTaskWithConversions(const DnaAssemblyToRefTaskSettings& settings, bool viewResult = false, bool justBuildIndex = false);
 
     void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
-    const DnaAssemblyToRefTaskSettings &getSettings() const;
+    QList<Task*> onSubTaskFinished(Task* subTask);
+    const DnaAssemblyToRefTaskSettings& getSettings() const;
     ReportResult report();
 
 private:
@@ -79,7 +79,7 @@ private:
     bool viewResult;
     bool justBuildIndex;
     int conversionTasksCount;
-    DnaAssemblyMultiTask *assemblyTask;
+    DnaAssemblyMultiTask* assemblyTask;
 };
 
 }  // namespace U2

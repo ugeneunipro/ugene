@@ -34,7 +34,7 @@ namespace U2 {
 /************************************************************************/
 /* MysqlUseCommonMultiModStep                                           */
 /************************************************************************/
-MysqlUseCommonMultiModStep::MysqlUseCommonMultiModStep(MysqlDbi *_mysqlDbi, const U2DataId &_masterObjId, U2OpStatus &os)
+MysqlUseCommonMultiModStep::MysqlUseCommonMultiModStep(MysqlDbi* _mysqlDbi, const U2DataId& _masterObjId, U2OpStatus& os)
     : mysqlDbi(_mysqlDbi),
       valid(false),
       masterObjId(_masterObjId) {
@@ -70,11 +70,11 @@ MysqlModStepsDescriptor::MysqlModStepsDescriptor()
 /************************************************************************/
 QMap<U2DataId, MysqlModStepsDescriptor> MysqlModDbi::modStepsByObject;
 
-MysqlModDbi::MysqlModDbi(MysqlDbi *dbi)
+MysqlModDbi::MysqlModDbi(MysqlDbi* dbi)
     : U2ModDbi(dbi), MysqlChildDbiCommon(dbi) {
 }
 
-void MysqlModDbi::initSqlSchema(U2OpStatus &os) {
+void MysqlModDbi::initSqlSchema(U2OpStatus& os) {
     MysqlTransaction t(db, os);
     Q_UNUSED(t);
 
@@ -126,7 +126,7 @@ void MysqlModDbi::initSqlSchema(U2OpStatus &os) {
     U2SqlQuery("CREATE INDEX SingleModStep_object_version ON SingleModStep(object, version)", db, os).execute();
 }
 
-U2SingleModStep MysqlModDbi::getModStep(const U2DataId &objectId, qint64 trackVersion, U2OpStatus &os) {
+U2SingleModStep MysqlModDbi::getModStep(const U2DataId& objectId, qint64 trackVersion, U2OpStatus& os) {
     U2SingleModStep res;
 
     static const QString queryString = "SELECT id, object, otype, oextra, version, modType, details FROM SingleModStep WHERE object = :object AND version = :version LIMIT 1";
@@ -148,7 +148,7 @@ U2SingleModStep MysqlModDbi::getModStep(const U2DataId &objectId, qint64 trackVe
     return res;
 }
 
-qint64 MysqlModDbi::getNearestUserModStepVersion(const U2DataId &masterObjId, qint64 version, U2OpStatus &os) {
+qint64 MysqlModDbi::getNearestUserModStepVersion(const U2DataId& masterObjId, qint64 version, U2OpStatus& os) {
     qint64 userStepVersion = version;
 
     static const QString qeuryString = "SELECT MAX(version) FROM UserModStep WHERE object = :object AND version <= :version";
@@ -163,7 +163,7 @@ qint64 MysqlModDbi::getNearestUserModStepVersion(const U2DataId &masterObjId, qi
     return userStepVersion;
 }
 
-QList<QList<U2SingleModStep>> MysqlModDbi::getModSteps(const U2DataId &masterObjId, qint64 version, U2OpStatus &os) {
+QList<QList<U2SingleModStep>> MysqlModDbi::getModSteps(const U2DataId& masterObjId, qint64 version, U2OpStatus& os) {
     QList<QList<U2SingleModStep>> steps;
     MysqlTransaction t(db, os);
     Q_UNUSED(t);
@@ -215,7 +215,7 @@ QList<QList<U2SingleModStep>> MysqlModDbi::getModSteps(const U2DataId &masterObj
     return steps;
 }
 
-void MysqlModDbi::createModStep(const U2DataId &masterObjId, U2SingleModStep &step, U2OpStatus &os) {
+void MysqlModDbi::createModStep(const U2DataId& masterObjId, U2SingleModStep& step, U2OpStatus& os) {
     MysqlTransaction t(db, os);
     Q_UNUSED(t);
 
@@ -247,7 +247,7 @@ void MysqlModDbi::createModStep(const U2DataId &masterObjId, U2SingleModStep &st
     }
 }
 
-void MysqlModDbi::removeModsWithGreaterVersion(const U2DataId &masterObjId, qint64 masterObjVersion, U2OpStatus &os) {
+void MysqlModDbi::removeModsWithGreaterVersion(const U2DataId& masterObjId, qint64 masterObjVersion, U2OpStatus& os) {
     MysqlTransaction t(db, os);
     Q_UNUSED(t);
 
@@ -268,7 +268,7 @@ void MysqlModDbi::removeModsWithGreaterVersion(const U2DataId &masterObjId, qint
     removeSteps(userStepIds, os);
 }
 
-void MysqlModDbi::removeDuplicateUserStep(const U2DataId &masterObjId, qint64 masterObjVersion, U2OpStatus &os) {
+void MysqlModDbi::removeDuplicateUserStep(const U2DataId& masterObjId, qint64 masterObjVersion, U2OpStatus& os) {
     MysqlTransaction t(db, os);
     Q_UNUSED(t);
 
@@ -299,7 +299,7 @@ void MysqlModDbi::removeDuplicateUserStep(const U2DataId &masterObjId, qint64 ma
     removeSteps(userStepIds, os);
 }
 
-void MysqlModDbi::removeSteps(QList<qint64> userStepIds, U2OpStatus &os) {
+void MysqlModDbi::removeSteps(QList<qint64> userStepIds, U2OpStatus& os) {
     if (userStepIds.isEmpty()) {
         return;
     }
@@ -349,7 +349,7 @@ void MysqlModDbi::removeSteps(QList<qint64> userStepIds, U2OpStatus &os) {
     }
 }
 
-void MysqlModDbi::removeObjectMods(const U2DataId &objectId, U2OpStatus &os) {
+void MysqlModDbi::removeObjectMods(const U2DataId& objectId, U2OpStatus& os) {
     MysqlTransaction t(db, os);
     Q_UNUSED(t);
 
@@ -381,16 +381,16 @@ void MysqlModDbi::cleanUpAllStepsOnError() {
     U2SqlQuery("DELETE FROM UserModStep", db, os).execute();
 }
 
-static void checkMainThread(U2OpStatus &os) {
-    QThread *mainThread = QCoreApplication::instance()->thread();
-    QThread *thisThread = QThread::currentThread();
+static void checkMainThread(U2OpStatus& os) {
+    QThread* mainThread = QCoreApplication::instance()->thread();
+    QThread* thisThread = QThread::currentThread();
 
     if (mainThread != thisThread) {
         os.setError(U2DbiL10n::tr("Not main thread"));
     }
 }
 
-void MysqlModDbi::startCommonUserModStep(const U2DataId &masterObjId, U2OpStatus &os) {
+void MysqlModDbi::startCommonUserModStep(const U2DataId& masterObjId, U2OpStatus& os) {
     checkMainThread(os);
     CHECK_OP(os, );
 
@@ -409,7 +409,7 @@ void MysqlModDbi::startCommonUserModStep(const U2DataId &masterObjId, U2OpStatus
     CHECK_OP(os, );
 }
 
-void MysqlModDbi::endCommonUserModStep(const U2DataId &userMasterObjId, U2OpStatus &os) {
+void MysqlModDbi::endCommonUserModStep(const U2DataId& userMasterObjId, U2OpStatus& os) {
     checkMainThread(os);
     CHECK_OP(os, );
     SAFE_POINT(modStepsByObject.contains(userMasterObjId), QString("There are not modification steps for object with id %1").arg(userMasterObjId.toLong()), );
@@ -441,7 +441,7 @@ void MysqlModDbi::endCommonUserModStep(const U2DataId &userMasterObjId, U2OpStat
     }
 }
 
-void MysqlModDbi::startCommonMultiModStep(const U2DataId &userMasterObjId, U2OpStatus &os) {
+void MysqlModDbi::startCommonMultiModStep(const U2DataId& userMasterObjId, U2OpStatus& os) {
     MysqlTransaction t(db, os);
     Q_UNUSED(t);
 
@@ -469,7 +469,7 @@ void MysqlModDbi::startCommonMultiModStep(const U2DataId &userMasterObjId, U2OpS
     createMultiModStep(userMasterObjId, os);
 }
 
-void MysqlModDbi::endCommonMultiModStep(const U2DataId &masterObjId, U2OpStatus &os) {
+void MysqlModDbi::endCommonMultiModStep(const U2DataId& masterObjId, U2OpStatus& os) {
     if (modStepsByObject[masterObjId].removeUserStepWithMulti) {
         endCommonUserModStep(masterObjId, os);
     } else {
@@ -477,7 +477,7 @@ void MysqlModDbi::endCommonMultiModStep(const U2DataId &masterObjId, U2OpStatus 
     }
 }
 
-void MysqlModDbi::createUserModStep(const U2DataId &masterObjId, U2OpStatus &os) {
+void MysqlModDbi::createUserModStep(const U2DataId& masterObjId, U2OpStatus& os) {
     MysqlTransaction t(db, os);
     Q_UNUSED(t);
 
@@ -502,7 +502,7 @@ void MysqlModDbi::createUserModStep(const U2DataId &masterObjId, U2OpStatus &os)
     }
 }
 
-void MysqlModDbi::createMultiModStep(const U2DataId &masterObjId, U2OpStatus &os) {
+void MysqlModDbi::createMultiModStep(const U2DataId& masterObjId, U2OpStatus& os) {
     SAFE_POINT(isUserStepStarted(masterObjId), "A user modifications step must have been started", );
 
     MysqlTransaction t(db, os);
@@ -523,14 +523,14 @@ void MysqlModDbi::createMultiModStep(const U2DataId &masterObjId, U2OpStatus &os
     }
 }
 
-bool MysqlModDbi::isUserStepStarted(const U2DataId &userMasterObjId) {
+bool MysqlModDbi::isUserStepStarted(const U2DataId& userMasterObjId) {
     if (!modStepsByObject.contains(userMasterObjId)) {
         return false;
     }
 
     return modStepsByObject[userMasterObjId].userModStepId != -1;
 }
-bool MysqlModDbi::isMultiStepStarted(const U2DataId &userMasterObjId) {
+bool MysqlModDbi::isMultiStepStarted(const U2DataId& userMasterObjId) {
     if (!modStepsByObject.contains(userMasterObjId)) {
         return false;
     }
@@ -538,7 +538,7 @@ bool MysqlModDbi::isMultiStepStarted(const U2DataId &userMasterObjId) {
     return modStepsByObject[userMasterObjId].multiModStepId != -1;
 }
 
-bool MysqlModDbi::canUndo(const U2DataId &objectId, U2OpStatus &os) {
+bool MysqlModDbi::canUndo(const U2DataId& objectId, U2OpStatus& os) {
     MysqlTransaction t(db, os);
     Q_UNUSED(t);
 
@@ -555,7 +555,7 @@ bool MysqlModDbi::canUndo(const U2DataId &objectId, U2OpStatus &os) {
     return q.step();
 }
 
-bool MysqlModDbi::canRedo(const U2DataId &objectId, U2OpStatus &os) {
+bool MysqlModDbi::canRedo(const U2DataId& objectId, U2OpStatus& os) {
     MysqlTransaction t(db, os);
     Q_UNUSED(t);
 

@@ -35,20 +35,19 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::DeleteGapsDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void DeleteGapsDialogFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (radioButNum == 1) {
-        QRadioButton *allColumnsOfGaps = dialog->findChild<QRadioButton *>("allRadioButton");
+        QRadioButton* allColumnsOfGaps = dialog->findChild<QRadioButton*>("allRadioButton");
         GTRadioButton::click(os, allColumnsOfGaps);
     } else {
-        QRadioButton *withNumberOfGaps = dialog->findChild<QRadioButton *>("absoluteRadioButton");
+        QRadioButton* withNumberOfGaps = dialog->findChild<QRadioButton*>("absoluteRadioButton");
         GTRadioButton::click(os, withNumberOfGaps);
     }
 
-    QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
+    QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
     GT_CHECK(box != nullptr, "buttonBox is NULL");
-    QPushButton *button = box->button(QDialogButtonBox::Ok);
+    QPushButton* button = box->button(QDialogButtonBox::Ok);
     GT_CHECK(button != nullptr, "cancel button is NULL");
     GTWidget::click(os, button);
 }
@@ -59,17 +58,16 @@ void DeleteGapsDialogFiller::commonScenario() {
 #define GT_METHOD_NAME "commonScenario"
 void RemoveGapColsDialogFiller::commonScenario() {
     GTGlobals::sleep(1000);
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QRadioButton *radio = dialog->findChild<QRadioButton *>(radioMap[button]);
+    QRadioButton* radio = dialog->findChild<QRadioButton*>(radioMap[button]);
     GTRadioButton::click(os, radio);
 
     if (button == Number) {
-        QSpinBox *box = dialog->findChild<QSpinBox *>("absoluteSpinBox");
+        QSpinBox* box = dialog->findChild<QSpinBox*>("absoluteSpinBox");
         GTSpinBox::setValue(os, box, spinValue);
     } else if (button == Percent) {
-        QSpinBox *box = dialog->findChild<QSpinBox *>("relativeSpinBox");
+        QSpinBox* box = dialog->findChild<QSpinBox*>("relativeSpinBox");
         GTSpinBox::setValue(os, box, spinValue);
     }
 

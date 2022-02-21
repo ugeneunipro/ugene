@@ -34,11 +34,11 @@ class MsaImporterExporterTestData {
 public:
     static void init();
 
-    static const U2DbiRef &getDbiRef();
+    static const U2DbiRef& getDbiRef();
 
 private:
     static TestDbiProvider dbiProvider;
-    static const QString &IMP_EXP_DB_URL;
+    static const QString& IMP_EXP_DB_URL;
     static U2DbiRef dbiRef;
 };
 

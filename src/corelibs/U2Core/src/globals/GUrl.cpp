@@ -32,7 +32,7 @@
 
 namespace U2 {
 
-static QString makeFilePathCanonical(const QString &originalUrl) {
+static QString makeFilePathCanonical(const QString& originalUrl) {
     // ensure that name is canonical
     QString result = originalUrl.trimmed();
 
@@ -99,7 +99,7 @@ static QString makeFilePathCanonical(const QString &originalUrl) {
     return result;
 }
 
-GUrlType GUrl::getURLType(const QString &rawUrl) {
+GUrlType GUrl::getURLType(const QString& rawUrl) {
     GUrlType result = GUrl_File;
     if (rawUrl.startsWith("http://") || rawUrl.startsWith("https://")) {
         result = GUrl_Http;
@@ -114,7 +114,7 @@ GUrlType GUrl::getURLType(const QString &rawUrl) {
 }
 
 // constructs url specified by string. The type is parsed
-GUrl::GUrl(const QString &_urlString) {
+GUrl::GUrl(const QString& _urlString) {
     urlString = _urlString;
     type = getURLType(urlString);
     if (type == GUrl_File) {
@@ -123,7 +123,7 @@ GUrl::GUrl(const QString &_urlString) {
 }
 
 // constructs url specified by string. The type provided as param
-GUrl::GUrl(const QString &_urlString, const GUrlType &_type) {
+GUrl::GUrl(const QString& _urlString, const GUrlType& _type) {
     urlString = _urlString;
     type = _type;
     if (type == GUrl_File) {
@@ -131,11 +131,11 @@ GUrl::GUrl(const QString &_urlString, const GUrlType &_type) {
     }
 }
 
-bool GUrl::operator==(const GUrl &url) const {
+bool GUrl::operator==(const GUrl& url) const {
     return urlString == url.getURLString();
 }
 
-bool GUrl::operator!=(const GUrl &url) const {
+bool GUrl::operator!=(const GUrl& url) const {
     return !(*this == url);
 }
 
@@ -149,7 +149,7 @@ QByteArray GUrl::getURLStringAnsi(int codePage) const {
         return QByteArray();
     }
 
-    char *buffer = new char[buffSize + 1];
+    char* buffer = new char[buffSize + 1];
     if (!WideCharToMultiByte(codePage, 0, wPath.c_str(), -1, buffer, buffSize, nullptr, nullptr)) {
         delete[] buffer;
         return QByteArray();
@@ -163,7 +163,7 @@ QByteArray GUrl::getURLStringAnsi(int codePage) const {
 #endif  // Q_OS_WIN
 }
 
-static QString path(const GUrl *url) {
+static QString path(const GUrl* url) {
     // TODO: parse HTTP and other formats for path part
     QString result;
     if (url->isVFSFile()) {
@@ -245,12 +245,12 @@ static bool registerMetas() {
     return true;
 }
 
-QDataStream &operator<<(QDataStream &out, const GUrl &myObj) {
+QDataStream& operator<<(QDataStream& out, const GUrl& myObj) {
     out << myObj.getURLString() << myObj.getType();
     return out;
 }
 
-QDataStream &operator>>(QDataStream &in, GUrl &myObj) {
+QDataStream& operator>>(QDataStream& in, GUrl& myObj) {
     QString urlString;
     in >> urlString;
     int t;

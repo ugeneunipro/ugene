@@ -43,22 +43,21 @@ using namespace HI;
 #define GT_CLASS_NAME "GTUtilsDialog::EditQualifierFiller"
 #define GT_METHOD_NAME "commonScenario"
 void EditQualifierFiller::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != nullptr, "dialog not found");
+    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-    QLineEdit *nameEdit = dialog->findChild<QLineEdit *>("nameEdit");
+    QLineEdit* nameEdit = dialog->findChild<QLineEdit*>("nameEdit");
     GT_CHECK(nameEdit != nullptr, "line edit not found");
     GTLineEdit::setText(os, nameEdit, qualifierName, noCheck);
 
-    QTextEdit *valueEdit = dialog->findChild<QTextEdit *>("valueEdit");
+    QTextEdit* valueEdit = dialog->findChild<QTextEdit*>("valueEdit");
     GT_CHECK(valueEdit != nullptr, "value line edit not found");
     if (!valueName.isEmpty()) {
         GTTextEdit::setText(os, valueEdit, valueName);
     }
 
-    QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
+    QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
     GT_CHECK(box != nullptr, "buttonBox is NULL");
-    QPushButton *button = box->button(QDialogButtonBox::Ok);
+    QPushButton* button = box->button(QDialogButtonBox::Ok);
     GT_CHECK(button != nullptr, "ok button is NULL");
 
     if (closeErrormessageBox) {

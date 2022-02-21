@@ -33,7 +33,7 @@ public:
     virtual ~U2Formatter() = default;
 
     /** Returns formatted text for the given value. */
-    virtual QString format(const ValueType &value) const = 0;
+    virtual QString format(const ValueType& value) const = 0;
 };
 
 typedef U2Formatter<QString> StringFormatter;
@@ -41,7 +41,7 @@ typedef U2Formatter<QString> StringFormatter;
 /** Interprets property name as document format id and returns the related document format name. */
 class U2CORE_EXPORT DocumentNameByIdFormatter : public StringFormatter {
 public:
-    QString format(const QString &documentFormatId) const override;
+    QString format(const QString& documentFormatId) const override;
 };
 
 }  // namespace U2

@@ -33,7 +33,7 @@ class U2CORE_EXPORT CmdlineInOutTaskConfig : public CmdlineTaskConfig {
 public:
     CmdlineInOutTaskConfig();
 
-    QList<GObject *> inputObjects;
+    QList<GObject*> inputObjects;
     U2DbiRef outDbiRef;
     bool emptyOutputPossible;
 };
@@ -41,25 +41,25 @@ public:
 class U2CORE_EXPORT CmdlineInOutTaskRunner : public CmdlineTaskRunner {
     Q_OBJECT
 public:
-    CmdlineInOutTaskRunner(const CmdlineInOutTaskConfig &config);
+    CmdlineInOutTaskRunner(const CmdlineInOutTaskConfig& config);
 
     ReportResult report();
 
-    const QList<U2DataId> &getOutputObjects() const;
+    const QList<U2DataId>& getOutputObjects() const;
 
-    static QString toString(const U2DbiRef &dbiRef);
-    static U2DbiRef parseDbiRef(const QString &string, U2OpStatus &os);
-    static QString toString(const U2DataId &id);
-    static U2DataId parseDataId(const QString &string, const U2DbiRef &dbiRef, U2OpStatus &os);
-    static void logOutputObject(const U2DataId &id);
+    static QString toString(const U2DbiRef& dbiRef);
+    static U2DbiRef parseDbiRef(const QString& string, U2OpStatus& os);
+    static QString toString(const U2DataId& id);
+    static U2DataId parseDataId(const QString& string, const U2DbiRef& dbiRef, U2OpStatus& os);
+    static void logOutputObject(const U2DataId& id);
     static const QString IN_DB_ARG;
     static const QString IN_ID_ARG;
     static const QString OUT_DB_ARG;
 
 private:
     // CmdlineTaskRunner
-    bool isCommandLogLine(const QString &logLine) const;
-    bool parseCommandLogWord(const QString &logWord);
+    bool isCommandLogLine(const QString& logLine) const;
+    bool parseCommandLogWord(const QString& logWord);
 
 private:
     CmdlineInOutTaskConfig config;

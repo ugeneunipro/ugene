@@ -24,11 +24,11 @@
 
 namespace U2 {
 
-PWMConversionAlgorithmFactoryNLG::PWMConversionAlgorithmFactoryNLG(QObject *p)
+PWMConversionAlgorithmFactoryNLG::PWMConversionAlgorithmFactoryNLG(QObject* p)
     : PWMConversionAlgorithmFactory(BuiltInPWMConversionAlgorithms::NLG_ALGO, p) {
 }
 
-PWMConversionAlgorithm *PWMConversionAlgorithmFactoryNLG::createAlgorithm(QObject *p) {
+PWMConversionAlgorithm* PWMConversionAlgorithmFactoryNLG::createAlgorithm(QObject* p) {
     return new PWMConversionAlgorithmNLG(this, p);
 }
 
@@ -40,7 +40,7 @@ QString PWMConversionAlgorithmFactoryNLG::getDescription() const {
     return tr("NLG weight function");
 }
 
-PWMatrix PWMConversionAlgorithmNLG::convert(const PFMatrix &matrix) {
+PWMatrix PWMConversionAlgorithmNLG::convert(const PFMatrix& matrix) {
     int size = (matrix.getType() == PFM_MONONUCLEOTIDE) ? 4 : 16;
     int sum[16];
     memset(sum, 0, size * sizeof(int));
@@ -75,7 +75,7 @@ PWMatrix PWMConversionAlgorithmNLG::convert(const PFMatrix &matrix) {
     return w;
 }
 
-PWMConversionAlgorithmNLG::PWMConversionAlgorithmNLG(PWMConversionAlgorithmFactory *factory, QObject *p)
+PWMConversionAlgorithmNLG::PWMConversionAlgorithmNLG(PWMConversionAlgorithmFactory* factory, QObject* p)
     : PWMConversionAlgorithm(factory, p) {
 }
 

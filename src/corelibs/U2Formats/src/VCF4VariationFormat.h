@@ -29,7 +29,7 @@ namespace U2 {
 class U2FORMATS_EXPORT VCF4VariationFormat : public AbstractVariationFormat {
     Q_OBJECT
 public:
-    VCF4VariationFormat(QObject *p);
+    VCF4VariationFormat(QObject* p);
 
 protected:
     bool checkFormatByColumnCount(int columnCount) const override;

@@ -58,8 +58,8 @@ const QString CASAVAFilterWorkerFactory::ACTOR_ID("CASAVAFilter");
 /* CASAVAFilterPrompter */
 /************************************************************************/
 QString CASAVAFilterPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BaseNGSWorker::INPUT_PORT));
-    const Actor *producer = input->getProducer(BaseSlots::URL_SLOT().getId());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BaseNGSWorker::INPUT_PORT));
+    const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr("<u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
 
@@ -82,7 +82,7 @@ void CASAVAFilterWorkerFactory::init() {
                                                                                                     "+\n"
                                                                                                     "11++4222322<CEE2<:3<3333333<A<CAFE:1?C??::C?00?BD90.\n"));
 
-    QList<PortDescriptor *> p;
+    QList<PortDescriptor*> p;
     {
         Descriptor inD(BaseNGSWorker::INPUT_PORT, CASAVAFilterWorker::tr("Input File"), CASAVAFilterWorker::tr("Set of FASTQ reads files"));
         Descriptor outD(BaseNGSWorker::OUTPUT_PORT, CASAVAFilterWorker::tr("Output File"), CASAVAFilterWorker::tr("Output FASTQ files"));
@@ -96,7 +96,7 @@ void CASAVAFilterWorkerFactory::init() {
         p << new PortDescriptor(outD, DataTypePtr(new MapDataType("cf.output-url", outM)), false, true);
     }
 
-    QList<Attribute *> a;
+    QList<Attribute*> a;
     {
         Descriptor outDir(BaseNGSWorker::OUT_MODE_ID, CASAVAFilterWorker::tr("Output folder"), CASAVAFilterWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
                                                                                                                       "<b>Workflow</b> - internal workflow folder. "
@@ -107,13 +107,13 @@ void CASAVAFilterWorkerFactory::init() {
         Descriptor outName(BaseNGSWorker::OUT_NAME_ID, CASAVAFilterWorker::tr("Output file name"), CASAVAFilterWorker::tr("A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extension."));
 
         a << new Attribute(outDir, BaseTypes::NUM_TYPE(), false, QVariant(FileAndDirectoryUtils::WORKFLOW_INTERNAL));
-        Attribute *customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
+        Attribute* customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
         customDirAttr->addRelation(new VisibilityRelation(BaseNGSWorker::OUT_MODE_ID, FileAndDirectoryUtils::CUSTOM));
         a << customDirAttr;
         a << new Attribute(outName, BaseTypes::STRING_TYPE(), false, QVariant(BaseNGSWorker::DEFAULT_NAME));
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap directoryMap;
         QString fileDir = CASAVAFilterWorker::tr("Input file");
@@ -127,19 +127,19 @@ void CASAVAFilterWorkerFactory::init() {
         delegates[BaseNGSWorker::CUSTOM_DIR_ID] = new URLDelegate("", "", false, true);
     }
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new CASAVAFilterPrompter());
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new CASAVAFilterWorkerFactory());
 }
 
 /************************************************************************/
 /* CASAVAFilterWorker */
 /************************************************************************/
-CASAVAFilterWorker::CASAVAFilterWorker(Actor *a)
+CASAVAFilterWorker::CASAVAFilterWorker(Actor* a)
     : BaseNGSWorker(a) {
 }
 
@@ -152,13 +152,13 @@ QString CASAVAFilterWorker::getDefaultFileName() const {
     return ".filtered.fastq";
 }
 
-Task *CASAVAFilterWorker::getTask(const BaseNGSSetting &settings) const {
+Task* CASAVAFilterWorker::getTask(const BaseNGSSetting& settings) const {
     return new CASAVAFilterTask(settings);
 }
 
 //////////////////////////////////////////////////////
 // CASAVAFilterTask
-CASAVAFilterTask::CASAVAFilterTask(const BaseNGSSetting &settings)
+CASAVAFilterTask::CASAVAFilterTask(const BaseNGSSetting& settings)
     : BaseNGSTask(settings) {
     GCOUNTER(cvar, "NGS:CASAVAFilterTask");
 }
@@ -194,7 +194,7 @@ void CASAVAFilterTask::runStep() {
     algoLog.info(QString("Total by CASAVA FILTER: %1").arg(ncount + ycount));
 }
 
-QStringList CASAVAFilterTask::getParameters(U2OpStatus & /*os*/) {
+QStringList CASAVAFilterTask::getParameters(U2OpStatus& /*os*/) {
     QStringList res;
     return res;
 }
@@ -211,8 +211,8 @@ static const QString BOTH_ID("both-ends");
 /* QualityTrimPrompter */
 /************************************************************************/
 QString FastqQualityTrimPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BaseNGSWorker::INPUT_PORT));
-    const Actor *producer = input->getProducer(BaseSlots::URL_SLOT().getId());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BaseNGSWorker::INPUT_PORT));
+    const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr("<u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
 
@@ -228,7 +228,7 @@ void FastqQualityTrimWorkerFactory::init() {
                                                                                                               "Then it trims the sequence to that position. If a the whole sequence has quality less than the threshold or the length of the output sequence less than "
                                                                                                               "the minimum length threshold then the sequence is skipped."));
 
-    QList<PortDescriptor *> p;
+    QList<PortDescriptor*> p;
     {
         Descriptor inD(BaseNGSWorker::INPUT_PORT, FastqQualityTrimWorker::tr("Input File"), FastqQualityTrimWorker::tr("Set of FASTQ reads files"));
         Descriptor outD(BaseNGSWorker::OUTPUT_PORT, FastqQualityTrimWorker::tr("Output File"), FastqQualityTrimWorker::tr("Output FASTQ files"));
@@ -242,7 +242,7 @@ void FastqQualityTrimWorkerFactory::init() {
         p << new PortDescriptor(outD, DataTypePtr(new MapDataType("cf.output-url", outM)), false, true);
     }
 
-    QList<Attribute *> a;
+    QList<Attribute*> a;
     {
         Descriptor outDir(BaseNGSWorker::OUT_MODE_ID, FastqQualityTrimWorker::tr("Output folder"), FastqQualityTrimWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
                                                                                                                               "<b>Workflow</b> - internal workflow folder. "
@@ -259,7 +259,7 @@ void FastqQualityTrimWorkerFactory::init() {
         Descriptor bothD(BOTH_ID, FastqQualityTrimWorker::tr("Trim both ends"), FastqQualityTrimWorker::tr("Trim the both ends of a read or not. Usually, you need to set <b>True</b> for <b>Sanger</b> sequencing and <b>False</b> for <b>NGS</b>"));
 
         a << new Attribute(outDir, BaseTypes::NUM_TYPE(), false, QVariant(FileAndDirectoryUtils::WORKFLOW_INTERNAL));
-        Attribute *customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
+        Attribute* customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
         customDirAttr->addRelation(new VisibilityRelation(BaseNGSWorker::OUT_MODE_ID, FileAndDirectoryUtils::CUSTOM));
         a << customDirAttr;
         a << new Attribute(outName, BaseTypes::STRING_TYPE(), false, QVariant(BaseNGSWorker::DEFAULT_NAME));
@@ -268,7 +268,7 @@ void FastqQualityTrimWorkerFactory::init() {
         a << new Attribute(bothD, BaseTypes::BOOL_TYPE(), false, true);
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap directoryMap;
         QString fileDir = FastqQualityTrimWorker::tr("Input file");
@@ -288,19 +288,19 @@ void FastqQualityTrimWorkerFactory::init() {
         delegates[LEN_ID] = new SpinBoxDelegate(len);
     }
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new FastqQualityTrimPrompter());
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new FastqQualityTrimWorkerFactory());
 }
 
 /************************************************************************/
 /* QualityTrimWorker */
 /************************************************************************/
-FastqQualityTrimWorker::FastqQualityTrimWorker(Actor *a)
+FastqQualityTrimWorker::FastqQualityTrimWorker(Actor* a)
     : BaseNGSWorker(a) {
 }
 
@@ -316,13 +316,13 @@ QString FastqQualityTrimWorker::getDefaultFileName() const {
     return ".trimmed.fastq";
 }
 
-Task *FastqQualityTrimWorker::getTask(const BaseNGSSetting &settings) const {
+Task* FastqQualityTrimWorker::getTask(const BaseNGSSetting& settings) const {
     return new FastqQualityTrimTask(settings);
 }
 
 //////////////////////////////////////////////////////
 // QualityTrimTask
-FastqQualityTrimTask::FastqQualityTrimTask(const BaseNGSSetting &settings)
+FastqQualityTrimTask::FastqQualityTrimTask(const BaseNGSSetting& settings)
     : BaseNGSTask(settings) {
     GCOUNTER(cvar, "NGS:FASTQQualityTrimmerTask");
 }
@@ -413,7 +413,7 @@ void FastqQualityTrimTask::runStep() {
     algoLog.info(QString("Total by trimmer %1").arg(ncount + ycount));
 }
 
-QStringList FastqQualityTrimTask::getParameters(U2OpStatus & /*os*/) {
+QStringList FastqQualityTrimTask::getParameters(U2OpStatus& /*os*/) {
     QStringList res;
     return res;
 }
@@ -428,8 +428,8 @@ static const QString INPUT_URLS_ID("input-urls");
 /* MergeFastqPrompter */
 /************************************************************************/
 QString MergeFastqPrompter::composeRichDoc() {
-    IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(BaseNGSWorker::INPUT_PORT));
-    const Actor *producer = input->getProducer(BaseSlots::URL_SLOT().getId());
+    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BaseNGSWorker::INPUT_PORT));
+    const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
 
@@ -443,7 +443,7 @@ QString MergeFastqPrompter::composeRichDoc() {
 void MergeFastqWorkerFactory::init() {
     Descriptor desc(ACTOR_ID, MergeFastqWorker::tr("FASTQ Merger"), MergeFastqWorker::tr("Merges input sequences to one output file"));
 
-    QList<PortDescriptor *> p;
+    QList<PortDescriptor*> p;
     {
         Descriptor inD(BaseNGSWorker::INPUT_PORT, MergeFastqWorker::tr("Input File"), MergeFastqWorker::tr("Set of FASTQ reads files"));
         Descriptor outD(BaseNGSWorker::OUTPUT_PORT, MergeFastqWorker::tr("Output File"), MergeFastqWorker::tr("Output FASTQ file"));
@@ -457,7 +457,7 @@ void MergeFastqWorkerFactory::init() {
         p << new PortDescriptor(outD, DataTypePtr(new MapDataType("cf.output-url", outM)), false, true);
     }
 
-    QList<Attribute *> a;
+    QList<Attribute*> a;
     {
         Descriptor outDir(BaseNGSWorker::OUT_MODE_ID, MergeFastqWorker::tr("Output folder"), MergeFastqWorker::tr("Select an output folder. <b>Custom</b> - specify the output folder in the 'Custom folder' parameter. "
                                                                                                                   "<b>Workflow</b> - internal workflow folder. "
@@ -468,13 +468,13 @@ void MergeFastqWorkerFactory::init() {
         Descriptor outName(BaseNGSWorker::OUT_NAME_ID, MergeFastqWorker::tr("Output file name"), MergeFastqWorker::tr("A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extension."));
 
         a << new Attribute(outDir, BaseTypes::NUM_TYPE(), false, QVariant(FileAndDirectoryUtils::WORKFLOW_INTERNAL));
-        Attribute *customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
+        Attribute* customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
         customDirAttr->addRelation(new VisibilityRelation(BaseNGSWorker::OUT_MODE_ID, FileAndDirectoryUtils::CUSTOM));
         a << customDirAttr;
         a << new Attribute(outName, BaseTypes::STRING_TYPE(), false, QVariant(BaseNGSWorker::DEFAULT_NAME));
     }
 
-    QMap<QString, PropertyDelegate *> delegates;
+    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap directoryMap;
         QString fileDir = MergeFastqWorker::tr("Input file");
@@ -488,23 +488,23 @@ void MergeFastqWorkerFactory::init() {
         delegates[BaseNGSWorker::CUSTOM_DIR_ID] = new URLDelegate("", "", false, true);
     }
 
-    ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
+    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new MergeFastqPrompter());
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
-    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
+    DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new MergeFastqWorkerFactory());
 }
 
 /************************************************************************/
 /* MergeFastqWorker */
 /************************************************************************/
-MergeFastqWorker::MergeFastqWorker(Actor *a)
+MergeFastqWorker::MergeFastqWorker(Actor* a)
     : BaseNGSWorker(a) {
 }
 
-Task *MergeFastqWorker::tick() {
+Task* MergeFastqWorker::tick() {
     while (inputUrlPort->hasMessage()) {
         const QString url = takeUrl();
         CHECK(!url.isEmpty(), nullptr);
@@ -523,8 +523,8 @@ Task *MergeFastqWorker::tick() {
         setting.inputUrl = inputUrls.first();
         setting.customParameters = getCustomParameters();
         setting.listeners = createLogListeners();
-        Task *t = getTask(setting);
-        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
+        Task* t = getTask(setting);
+        connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
         inputUrls.clear();
         ;
         return t;
@@ -547,13 +547,13 @@ QString MergeFastqWorker::getDefaultFileName() const {
     return ".merged.fastq";
 }
 
-Task *MergeFastqWorker::getTask(const BaseNGSSetting &settings) const {
+Task* MergeFastqWorker::getTask(const BaseNGSSetting& settings) const {
     return new MergeFastqTask(settings);
 }
 
 //////////////////////////////////////////////////////
 // MergeFastqTask
-MergeFastqTask::MergeFastqTask(const BaseNGSSetting &settings)
+MergeFastqTask::MergeFastqTask(const BaseNGSSetting& settings)
     : BaseNGSTask(settings) {
     GCOUNTER(cvar, "NGS:FASTQMergeFastqmerTask");
 }
@@ -584,7 +584,7 @@ void MergeFastqTask::runStep() {
     algoLog.info(QString("Files merged %1").arg(numberOfFiles));
 }
 
-QStringList MergeFastqTask::getParameters(U2OpStatus & /*os*/) {
+QStringList MergeFastqTask::getParameters(U2OpStatus& /*os*/) {
     QStringList res;
     return res;
 }

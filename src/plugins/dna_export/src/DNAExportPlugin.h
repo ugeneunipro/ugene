@@ -49,10 +49,10 @@ public:
 protected:
     virtual void serviceStateChangedCallback(ServiceState oldState, bool enabledStateChanged);
 
-    ExportProjectViewItemsContoller *projectViewController;
-    ExportSequenceViewItemsController *sequenceViewController;
-    ExportAlignmentViewItemsController *alignmentViewController;
-    McaEditorContext *mcaEditorContext;
+    ExportProjectViewItemsContoller* projectViewController;
+    ExportSequenceViewItemsController* sequenceViewController;
+    ExportAlignmentViewItemsController* alignmentViewController;
+    McaEditorContext* mcaEditorContext;
 };
 
 }  // namespace U2

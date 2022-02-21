@@ -33,7 +33,7 @@ namespace U2 {
 
 ////////////////////////////////////////
 // MakeBlastDbDialog
-MakeBlastDbDialog::MakeBlastDbDialog(QWidget *parent, const MakeBlastDbSettings &_settings)
+MakeBlastDbDialog::MakeBlastDbDialog(QWidget* parent, const MakeBlastDbSettings& _settings)
     : QDialog(parent), settings(_settings) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930721");
@@ -192,7 +192,7 @@ QStringList getAllFiles(QDir inputDir, QString filter, bool isIncludeFilter) {
     }
 }
 
-const MakeBlastDbSettings &MakeBlastDbDialog::getTaskSettings() const {
+const MakeBlastDbSettings& MakeBlastDbDialog::getTaskSettings() const {
     return settings;
 }
 

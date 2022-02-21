@@ -32,7 +32,7 @@
 
 namespace U2 {
 
-GSequenceGraphDrawer *GSequenceGraphFactory::getDrawer(GSequenceGraphView *v) {
+GSequenceGraphDrawer* GSequenceGraphFactory::getDrawer(GSequenceGraphView* v) {
     qint64 seqLen = v->getSequenceLength();
     // By default, we have max window = 500: it is normal for DNA regions to have some meaningful content in this range.
     qint64 window = qBound((qint64)40, GraphUtils::pickRoundedNumberBelow(seqLen / 300), (qint64)500);
@@ -44,8 +44,8 @@ GSequenceGraphDrawer *GSequenceGraphFactory::getDrawer(GSequenceGraphView *v) {
  * Constructor of a graph view with factory
  */
 GSequenceGraphViewWithFactory::GSequenceGraphViewWithFactory(
-    ADVSingleSequenceWidget *sequenceWidget,
-    GSequenceGraphFactory *_factory)
+    ADVSingleSequenceWidget* sequenceWidget,
+    GSequenceGraphFactory* _factory)
     : GSequenceGraphView(
           sequenceWidget,
           sequenceWidget->getSequenceContext(),

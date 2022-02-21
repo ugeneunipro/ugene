@@ -35,14 +35,14 @@ const qreal CreateCircularBranchesTask::DEGENERATED_WIDTH = 300;
 const qreal CreateCircularBranchesTask::WIDTH_RADIUS = 30;
 const qreal CreateCircularBranchesTask::SCALE = 6.0;
 
-CreateCircularBranchesTask::CreateCircularBranchesTask(GraphicsRectangularBranchItem *r, bool _degeneratedCase)
+CreateCircularBranchesTask::CreateCircularBranchesTask(GraphicsRectangularBranchItem* r, bool _degeneratedCase)
     : root1(r), degeneratedCase(_degeneratedCase) {
 }
 
-GraphicsCircularBranchItem *CreateCircularBranchesTask::getBranch(GraphicsRectangularBranchItem *from, GraphicsCircularBranchItem *parent) {
-    GraphicsCircularBranchItem *res = new GraphicsCircularBranchItem(parent, coef * from->getHeight(), from, from->getNodeLabel());
-    foreach (QGraphicsItem *item, from->childItems()) {
-        GraphicsRectangularBranchItem *ri = dynamic_cast<GraphicsRectangularBranchItem *>(item);
+GraphicsCircularBranchItem* CreateCircularBranchesTask::getBranch(GraphicsRectangularBranchItem* from, GraphicsCircularBranchItem* parent) {
+    GraphicsCircularBranchItem* res = new GraphicsCircularBranchItem(parent, coef * from->getHeight(), from, from->getNodeLabel());
+    foreach (QGraphicsItem* item, from->childItems()) {
+        GraphicsRectangularBranchItem* ri = dynamic_cast<GraphicsRectangularBranchItem*>(item);
         if (ri != nullptr) {
             getBranch(ri, res);
         }
@@ -59,7 +59,7 @@ void CreateCircularBranchesTask::run() {
         root1->setWidthW(WIDTH_RADIUS);
     }
 
-    GraphicsCircularBranchItem *r = getBranch(root1, nullptr);
+    GraphicsCircularBranchItem* r = getBranch(root1, nullptr);
     r->setVisibleW(false);
     root = r;
     root1->setWidthW(0);

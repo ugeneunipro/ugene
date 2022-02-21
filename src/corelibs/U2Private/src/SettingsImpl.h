@@ -35,18 +35,18 @@ public:
     SettingsImpl(QSettings::Scope scope);
     ~SettingsImpl();
 
-    QStringList getAllKeys(const QString &path) const;
-    QStringList getChildGroups(const QString &path) const;
-    void cleanSection(const QString &path);
+    QStringList getAllKeys(const QString& path) const;
+    QStringList getChildGroups(const QString& path) const;
+    void cleanSection(const QString& path);
 
-    virtual bool contains(const QString &key) const;
-    virtual void remove(const QString &key);
+    virtual bool contains(const QString& key) const;
+    virtual void remove(const QString& key);
 
-    virtual QVariant getValue(const QString &key, const QVariant &defaultValue = QVariant(), bool versionedValue = false) const;
-    virtual void setValue(const QString &key, const QVariant &value, bool versionedValue = false);
+    virtual QVariant getValue(const QString& key, const QVariant& defaultValue = QVariant(), bool versionedValue = false) const;
+    virtual void setValue(const QString& key, const QVariant& value, bool versionedValue = false);
 
-    virtual QString toVersionKey(const QString &key) const;
-    virtual QString toMinorVersionKey(const QString &key) const;
+    virtual QString toVersionKey(const QString& key) const;
+    virtual QString toMinorVersionKey(const QString& key) const;
 
     virtual void sync();
 
@@ -54,7 +54,7 @@ public:
 
 private:
     mutable QMutex threadSafityLock;
-    QSettings *settings;
+    QSettings* settings;
 };
 }  // namespace U2
 #endif

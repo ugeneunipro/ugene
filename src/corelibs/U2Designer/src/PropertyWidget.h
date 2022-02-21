@@ -52,18 +52,18 @@ static const int NO_LIMIT = -1;
 class BaseDefaultPropertyWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    BaseDefaultPropertyWidget(QWidget *parent);
+    BaseDefaultPropertyWidget(QWidget* parent);
     virtual QVariant value();
-    virtual void setValue(const QVariant &value);
+    virtual void setValue(const QVariant& value);
     virtual void setRequired();
 
 protected:
     void configureLineEdit(const int maxLength);
 
-    QLineEdit *lineEdit;
+    QLineEdit* lineEdit;
 
 private slots:
-    void sl_valueChanged(const QString &value);
+    void sl_valueChanged(const QString& value);
 };
 
 /************************************************************************/
@@ -73,7 +73,7 @@ private slots:
 class DefaultPropertyWidget : public BaseDefaultPropertyWidget {
     Q_OBJECT
 public:
-    DefaultPropertyWidget(int maxLength = NO_LIMIT, QWidget *parent = nullptr);
+    DefaultPropertyWidget(int maxLength = NO_LIMIT, QWidget* parent = nullptr);
 };
 
 /************************************************************************/
@@ -83,7 +83,7 @@ public:
 class IgnoreUpDownPropertyWidget : public BaseDefaultPropertyWidget {
     Q_OBJECT
 public:
-    IgnoreUpDownPropertyWidget(int maxLength = NO_LIMIT, QWidget *parent = nullptr);
+    IgnoreUpDownPropertyWidget(int maxLength = NO_LIMIT, QWidget* parent = nullptr);
 };
 
 /************************************************************************/
@@ -92,10 +92,10 @@ public:
 
 class LineEditIgnoreUpDown : public QLineEdit {
 public:
-    LineEditIgnoreUpDown(QWidget *parent = nullptr);
+    LineEditIgnoreUpDown(QWidget* parent = nullptr);
 
 private:
-    void keyPressEvent(QKeyEvent *e) override;
+    void keyPressEvent(QKeyEvent* e) override;
 };
 
 /************************************************************************/
@@ -104,19 +104,19 @@ private:
 class SpinBoxWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    SpinBoxWidget(const QVariantMap &spinProperties, QWidget *parent = nullptr);
+    SpinBoxWidget(const QVariantMap& spinProperties, QWidget* parent = nullptr);
     virtual QVariant value();
-    virtual void setValue(const QVariant &value);
+    virtual void setValue(const QVariant& value);
     virtual void processDelegateTags();
 
     /** Override */
-    bool setProperty(const char *name, const QVariant &value);
+    bool setProperty(const char* name, const QVariant& value);
 
 signals:
     void valueChanged(int value);
 
 private:
-    QSpinBox *spinBox;
+    QSpinBox* spinBox;
 
 private slots:
     void sl_valueChanged(int value);
@@ -128,12 +128,12 @@ private slots:
 class DoubleSpinBoxWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    DoubleSpinBoxWidget(const QVariantMap &spinProperties, QWidget *parent = nullptr);
+    DoubleSpinBoxWidget(const QVariantMap& spinProperties, QWidget* parent = nullptr);
     virtual QVariant value();
-    virtual void setValue(const QVariant &value);
+    virtual void setValue(const QVariant& value);
 
 private:
-    QDoubleSpinBox *spinBox;
+    QDoubleSpinBox* spinBox;
 
 private slots:
     void sl_valueChanged(double value);
@@ -142,16 +142,16 @@ private slots:
 /** Base class for different kinds of ComboBox widgets that adds support of features like value formatting, sorting, etc.. */
 class ComboBoxWidgetBase : public PropertyWidget {
 public:
-    ComboBoxWidgetBase(QWidget *parent = nullptr,
-                       const QSharedPointer<StringFormatter> &formatter = nullptr,
+    ComboBoxWidgetBase(QWidget* parent = nullptr,
+                       const QSharedPointer<StringFormatter>& formatter = nullptr,
                        bool isSorted = false);
 
     /** Returns formatted value for the item with the given name. */
-    QString getFormattedItemText(const QString &itemKey) const;
+    QString getFormattedItemText(const QString& itemKey) const;
 
 protected:
     /** Sorts in-place combo box items by name (item.first) in case-insensitive mode. */
-    static void sortComboItemsByName(QList<ComboItem> &itemList);
+    static void sortComboItemsByName(QList<ComboItem>& itemList);
 
     QSharedPointer<StringFormatter> formatter;
 
@@ -165,21 +165,21 @@ protected:
 class ComboBoxWidget : public ComboBoxWidgetBase {
     Q_OBJECT
 public:
-    ComboBoxWidget(const QList<ComboItem> &items,
-                   QWidget *parent = nullptr,
-                   const QSharedPointer<StringFormatter> &formatter = nullptr,
+    ComboBoxWidget(const QList<ComboItem>& items,
+                   QWidget* parent = nullptr,
+                   const QSharedPointer<StringFormatter>& formatter = nullptr,
                    bool isSorted = false);
 
     QVariant value() override;
-    void setValue(const QVariant &value) override;
+    void setValue(const QVariant& value) override;
 
-    static ComboBoxWidget *createBooleanWidget(QWidget *parent = nullptr);
+    static ComboBoxWidget* createBooleanWidget(QWidget* parent = nullptr);
 
 signals:
-    void valueChanged(const QString &value);
+    void valueChanged(const QString& value);
 
 private:
-    QComboBox *comboBox;
+    QComboBox* comboBox;
 
 private slots:
     void sl_valueChanged(int index);
@@ -191,18 +191,18 @@ private slots:
 class ComboBoxEditableWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    ComboBoxEditableWidget(const QVariantMap &items, QWidget *parent = nullptr);
+    ComboBoxEditableWidget(const QVariantMap& items, QWidget* parent = nullptr);
     virtual QVariant value();
-    virtual void setValue(const QVariant &value);
+    virtual void setValue(const QVariant& value);
 
 signals:
-    void valueChanged(const QString &value);
+    void valueChanged(const QString& value);
 
 protected slots:
-    virtual void sl_edit(const QString &val);
+    virtual void sl_edit(const QString& val);
 
 protected:
-    QComboBox *comboBox;
+    QComboBox* comboBox;
     int customIdx;
 
 private slots:
@@ -215,18 +215,18 @@ private slots:
 class ComboBoxWithUrlWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    ComboBoxWithUrlWidget(const QVariantMap &items, bool isPath = false, QWidget *parent = nullptr);
+    ComboBoxWithUrlWidget(const QVariantMap& items, bool isPath = false, QWidget* parent = nullptr);
     virtual QVariant value();
-    virtual void setValue(const QVariant &value);
+    virtual void setValue(const QVariant& value);
 
 signals:
-    void valueChanged(const QString &value);
+    void valueChanged(const QString& value);
 
 protected slots:
     virtual void sl_browse();
 
 protected:
-    QComboBox *comboBox;
+    QComboBox* comboBox;
     int customIdx;
     bool isPath;
 
@@ -240,7 +240,7 @@ private slots:
 class ComboBoxWithDbUrlWidget : public ComboBoxWithUrlWidget {
     Q_OBJECT
 public:
-    ComboBoxWithDbUrlWidget(QWidget *parent = nullptr);
+    ComboBoxWithDbUrlWidget(QWidget* parent = nullptr);
 
     QVariantMap getItems() const;
 
@@ -257,26 +257,26 @@ private:
 class U2DESIGNER_EXPORT ComboBoxWithChecksWidget : public ComboBoxWidgetBase {
     Q_OBJECT
 public:
-    ComboBoxWithChecksWidget(const QVariantMap &items,
-                             QWidget *parent = nullptr,
-                             const QSharedPointer<StringFormatter> &formatter = nullptr,
+    ComboBoxWithChecksWidget(const QVariantMap& items,
+                             QWidget* parent = nullptr,
+                             const QSharedPointer<StringFormatter>& formatter = nullptr,
                              bool isSorted = false);
 
     QVariant value() override;
 
-    void setValue(const QVariant &value) override;
+    void setValue(const QVariant& value) override;
 
 signals:
-    void valueChanged(const QString &value);
+    void valueChanged(const QString& value);
 
 protected:
-    QComboBox *comboBox;
-    QStandardItemModel *cm;
+    QComboBox* comboBox;
+    QStandardItemModel* cm;
     QVariantMap items;
 
 protected slots:
     virtual void sl_valueChanged(int index);
-    virtual void sl_itemChanged(QStandardItem *item);
+    virtual void sl_itemChanged(QStandardItem* item);
 
 private:
     void initModelView();
@@ -293,11 +293,11 @@ class RunFileSystem;
 class U2DESIGNER_EXPORT URLWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    URLWidget(const QString &type, bool multi, bool isPath, bool saveFile, DelegateTags *tags, QWidget *parent = nullptr);
+    URLWidget(const QString& type, bool multi, bool isPath, bool saveFile, DelegateTags* tags, QWidget* parent = nullptr);
 
     // PropertyWidget
     virtual QVariant value();
-    virtual void setValue(const QVariant &value);
+    virtual void setValue(const QVariant& value);
     virtual void setRequired();
     virtual void activate();
 
@@ -309,19 +309,19 @@ private slots:
     void sl_finished();
 
 protected:
-    virtual QString finalyze(const QString &url);
+    virtual QString finalyze(const QString& url);
 
 private:
-    RunFileSystem *getRFS();
+    RunFileSystem* getRFS();
 
 private:
-    URLLineEdit *urlLine;
-    QToolButton *browseButton;
-    QToolButton *addButton;
+    URLLineEdit* urlLine;
+    QToolButton* browseButton;
+    QToolButton* addButton;
     QString initialValue;
 
 private slots:
-    void sl_textChanged(const QString &text);
+    void sl_textChanged(const QString& text);
 };
 
 /************************************************************************/
@@ -329,12 +329,12 @@ private slots:
 /************************************************************************/
 class NoFileURLWidget : public URLWidget {
 public:
-    NoFileURLWidget(const QString &type, bool multi, bool isPath, bool saveFile, DelegateTags *tags, QWidget *parent = nullptr);
+    NoFileURLWidget(const QString& type, bool multi, bool isPath, bool saveFile, DelegateTags* tags, QWidget* parent = nullptr);
 
-    static QString finalyze(const QString &url, DelegateTags *tags);
+    static QString finalyze(const QString& url, DelegateTags* tags);
 
 protected:
-    virtual QString finalyze(const QString &url);
+    virtual QString finalyze(const QString& url);
 };
 
 }  // namespace U2

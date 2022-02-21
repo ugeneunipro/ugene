@@ -37,12 +37,12 @@
 
 namespace U2 {
 
-WorkflowSettingsPageController::WorkflowSettingsPageController(QObject *p)
+WorkflowSettingsPageController::WorkflowSettingsPageController(QObject* p)
     : AppSettingsGUIPageController(tr("Workflow Designer"), WorkflowSettingsPageId, p) {
 }
 
-AppSettingsGUIPageState *WorkflowSettingsPageController::getSavedState() {
-    WorkflowSettingsPageState *state = new WorkflowSettingsPageState();
+AppSettingsGUIPageState* WorkflowSettingsPageController::getSavedState() {
+    WorkflowSettingsPageState* state = new WorkflowSettingsPageState();
     state->showGrid = WorkflowSettings::showGrid();
     state->snap2grid = WorkflowSettings::snap2Grid();
     state->lockRun = WorkflowSettings::monitorRun();
@@ -57,8 +57,8 @@ AppSettingsGUIPageState *WorkflowSettingsPageController::getSavedState() {
     return state;
 }
 
-void WorkflowSettingsPageController::saveState(AppSettingsGUIPageState *s) {
-    WorkflowSettingsPageState *state = qobject_cast<WorkflowSettingsPageState *>(s);
+void WorkflowSettingsPageController::saveState(AppSettingsGUIPageState* s) {
+    WorkflowSettingsPageState* state = qobject_cast<WorkflowSettingsPageState*>(s);
     WorkflowSettings::setShowGrid(state->showGrid);
     WorkflowSettings::setSnap2Grid(state->snap2grid);
     WorkflowSettings::setMonitorRun(state->lockRun);
@@ -78,15 +78,15 @@ void WorkflowSettingsPageController::saveState(AppSettingsGUIPageState *s) {
     }
 }
 
-AppSettingsGUIPageWidget *WorkflowSettingsPageController::createWidget(AppSettingsGUIPageState *state) {
-    WorkflowSettingsPageWidget *r = new WorkflowSettingsPageWidget(this);
+AppSettingsGUIPageWidget* WorkflowSettingsPageController::createWidget(AppSettingsGUIPageState* state) {
+    WorkflowSettingsPageWidget* r = new WorkflowSettingsPageWidget(this);
     r->setState(state);
     return r;
 }
 
 const QString WorkflowSettingsPageController::helpPageId = QString("65929366");
 
-WorkflowSettingsPageWidget::WorkflowSettingsPageWidget(WorkflowSettingsPageController *) {
+WorkflowSettingsPageWidget::WorkflowSettingsPageWidget(WorkflowSettingsPageController*) {
     setupUi(this);
     styleCombo->addItem(U2::WorkflowView::tr("Minimal"), ItemStyles::SIMPLE);
     styleCombo->addItem(U2::WorkflowView::tr("Extended"), ItemStyles::EXTENDED);
@@ -120,9 +120,9 @@ void WorkflowSettingsPageWidget::sl_getColor() {
     }
 }
 
-bool WorkflowSettingsPageWidget::eventFilter(QObject *, QEvent *event) {
+bool WorkflowSettingsPageWidget::eventFilter(QObject*, QEvent* event) {
     if (event->type() == QEvent::MouseButtonPress) {
-        QMouseEvent *e = static_cast<QMouseEvent *>(event);
+        QMouseEvent* e = static_cast<QMouseEvent*>(event);
         if (e->button() == Qt::LeftButton) {
             sl_getColor();
         }
@@ -130,8 +130,8 @@ bool WorkflowSettingsPageWidget::eventFilter(QObject *, QEvent *event) {
     return false;
 }
 
-void WorkflowSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
-    WorkflowSettingsPageState *state = qobject_cast<WorkflowSettingsPageState *>(s);
+void WorkflowSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
+    WorkflowSettingsPageState* state = qobject_cast<WorkflowSettingsPageState*>(s);
     gridBox->setChecked(state->showGrid);
     snapBox->setChecked(state->snap2grid);
     lockBox->setChecked(state->lockRun);
@@ -151,8 +151,8 @@ void WorkflowSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
     workflowOutputEdit->setText(state->workflowOutputDir);
 }
 
-AppSettingsGUIPageState *WorkflowSettingsPageWidget::getState(QString &) const {
-    WorkflowSettingsPageState *state = new WorkflowSettingsPageState();
+AppSettingsGUIPageState* WorkflowSettingsPageWidget::getState(QString&) const {
+    WorkflowSettingsPageState* state = new WorkflowSettingsPageState();
     state->showGrid = gridBox->isChecked();
     state->snap2grid = snapBox->isChecked();
     state->lockRun = lockBox->isChecked();
@@ -167,7 +167,7 @@ AppSettingsGUIPageState *WorkflowSettingsPageWidget::getState(QString &) const {
     return state;
 }
 
-static void chooseDir(const QString &current, QLineEdit *edit, QWidget *parent) {
+static void chooseDir(const QString& current, QLineEdit* edit, QWidget* parent) {
     QFileDialog dialog(parent);
     dialog.setFileMode(QFileDialog::Directory);
     dialog.setViewMode(QFileDialog::List);
@@ -191,4 +191,4 @@ void WorkflowSettingsPageWidget::sl_getWorkflowOutputDir() {
     chooseDir(WorkflowSettings::getWorkflowOutputDirectory(), workflowOutputEdit, this);
 }
 
-}    // namespace U2
+}  // namespace U2

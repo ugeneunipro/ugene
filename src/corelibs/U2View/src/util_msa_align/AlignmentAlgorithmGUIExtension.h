@@ -43,7 +43,7 @@ class U2VIEW_EXPORT AlignmentAlgorithmMainWidget : public QWidget {
     Q_OBJECT
 
 public:
-    AlignmentAlgorithmMainWidget(QWidget *parent, QVariantMap *s);
+    AlignmentAlgorithmMainWidget(QWidget* parent, QVariantMap* s);
     virtual ~AlignmentAlgorithmMainWidget();
 
     virtual QVariantMap getAlignmentAlgorithmCustomSettings(bool append);
@@ -59,7 +59,7 @@ protected:
 
 protected:
     QVariantMap innerSettings;  // inner settings
-    QVariantMap *externSettings;  // extern settings (from msa)
+    QVariantMap* externSettings;  // extern settings (from msa)
     bool externSettingsExists;  // msa editor is alive, pointer externSettings is valid
 };
 
@@ -67,14 +67,14 @@ class U2VIEW_EXPORT AlignmentAlgorithmGUIExtensionFactory : public QObject {
     Q_OBJECT
 
 public:
-    virtual AlignmentAlgorithmMainWidget *createMainWidget(QWidget *parent, QVariantMap *s) = 0;
-    virtual bool hasMainWidget(const QWidget *parent);
+    virtual AlignmentAlgorithmMainWidget* createMainWidget(QWidget* parent, QVariantMap* s) = 0;
+    virtual bool hasMainWidget(const QWidget* parent);
 
 protected slots:
-    virtual void sl_widgetDestroyed(QObject *obj);
+    virtual void sl_widgetDestroyed(QObject* obj);
 
 protected:
-    QMap<const QWidget *, AlignmentAlgorithmMainWidget *> mainWidgets;
+    QMap<const QWidget*, AlignmentAlgorithmMainWidget*> mainWidgets;
 };
 
 }  // namespace U2

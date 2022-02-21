@@ -37,8 +37,8 @@ public:
                        Sam,
                        Stockholm };
 
-    ExportSequenceAsAlignmentFiller(HI::GUITestOpStatus &_os, const QString &_path, const QString &_name, ExportSequenceAsAlignmentFiller::FormatToUse _format, bool addDocumentToProject = false, GTGlobals::UseMethod method = GTGlobals::UseMouse);
-    ExportSequenceAsAlignmentFiller(HI::GUITestOpStatus &_os, CustomScenario *scenario);
+    ExportSequenceAsAlignmentFiller(HI::GUITestOpStatus& _os, const QString& _path, const QString& _name, ExportSequenceAsAlignmentFiller::FormatToUse _format, bool addDocumentToProject = false, GTGlobals::UseMethod method = GTGlobals::UseMouse);
+    ExportSequenceAsAlignmentFiller(HI::GUITestOpStatus& _os, CustomScenario* scenario);
 
     void commonScenario();
 

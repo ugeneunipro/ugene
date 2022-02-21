@@ -63,7 +63,7 @@ public:
         SystemMemory
     };
 
-    AppResource(int id, int _maxUse, const QString &_name, const QString &_suffix = QString())
+    AppResource(int id, int _maxUse, const QString& _name, const QString& _suffix = QString())
         : name(_name), suffix(_suffix), resourceId(id), _maxUse(_maxUse), systemUse(0) {
     }
 
@@ -102,13 +102,13 @@ protected:
     int systemUse;
 
 private:
-    AppResource(const AppResource &other);
-    AppResource &operator=(const AppResource &other);
+    AppResource(const AppResource& other);
+    AppResource& operator=(const AppResource& other);
 };
 
 class U2CORE_EXPORT AppResourceReadWriteLock : public AppResource {
 public:
-    AppResourceReadWriteLock(int id, const QString &_name, const QString &_suffix = QString())
+    AppResourceReadWriteLock(int id, const QString& _name, const QString& _suffix = QString())
         : AppResource(id, Write, _name, _suffix), resource(nullptr) {
         resource = new QReadWriteLock;
     }
@@ -172,12 +172,12 @@ public:
     }
 
 private:
-    QReadWriteLock *resource;
+    QReadWriteLock* resource;
 };
 
 class U2CORE_EXPORT AppResourceSemaphore : public AppResource {
 public:
-    AppResourceSemaphore(int id, int _maxUse, const QString &_name, const QString &_suffix = QString())
+    AppResourceSemaphore(int id, int _maxUse, const QString& _name, const QString& _suffix = QString())
         : AppResource(id, _maxUse, _name, _suffix), resource(nullptr) {
         resource = new QSemaphore(_maxUse);
     }
@@ -256,7 +256,7 @@ public:
     }
 
 private:
-    QSemaphore *resource;
+    QSemaphore* resource;
 };
 
 #define MIN_MEMORY_SIZE 200
@@ -284,12 +284,12 @@ public:
 
     static size_t getCurrentAppMemory();
 
-    void registerResource(AppResource *r);
+    void registerResource(AppResource* r);
     void unregisterResource(int id);
 
-    AppResource *getResource(int id) const;
+    AppResource* getResource(int id) const;
 
-    static AppResourcePool *instance();
+    static AppResourcePool* instance();
 
     static int getTotalPhysicalMemory();
 
@@ -297,19 +297,19 @@ public:
 private:
     static const int defaultMemoryLimitMb = 8 * 1024;
 
-    QHash<int, AppResource *> resources;
+    QHash<int, AppResource*> resources;
 
     int idealThreadCount;
 
-    AppResourceSemaphore *threadResource;
-    AppResourceSemaphore *memResource;
-    AppResourceSemaphore *projectResouce;
-    AppResourceReadWriteLock *listenLogInGTest;
+    AppResourceSemaphore* threadResource;
+    AppResourceSemaphore* memResource;
+    AppResourceSemaphore* projectResouce;
+    AppResourceReadWriteLock* listenLogInGTest;
 };
 
 class MemoryLocker {
 public:
-    MemoryLocker(U2OpStatus &os, int preLockMB = 10, AppResource::MemoryLockType memoryLockType = AppResource::TaskMemory)
+    MemoryLocker(U2OpStatus& os, int preLockMB = 10, AppResource::MemoryLockType memoryLockType = AppResource::TaskMemory)
         : os(&os),
           preLockMB(preLockMB > 0 ? preLockMB : 0),
           lockedMB(0),
@@ -331,7 +331,7 @@ public:
         tryAcquire(0);
     }
 
-    MemoryLocker(MemoryLocker &other) {
+    MemoryLocker(MemoryLocker& other) {
         resource = other.resource;
         memoryLockType = other.memoryLockType;
         os = nullptr;
@@ -344,7 +344,7 @@ public:
         errorMessage = "";
     }
 
-    MemoryLocker &operator=(MemoryLocker &other);
+    MemoryLocker& operator=(MemoryLocker& other);
 
     virtual ~MemoryLocker() {
         release();
@@ -384,16 +384,16 @@ public:
         return !errorMessage.isEmpty();
     }
 
-    const QString &getError() {
+    const QString& getError() {
         return errorMessage;
     }
 
 private:
-    U2OpStatus *os;
+    U2OpStatus* os;
     int preLockMB;
     int lockedMB;
     qint64 needBytes;
-    AppResource *resource;
+    AppResource* resource;
     AppResource::MemoryLockType memoryLockType;
     QString errorMessage;
 };

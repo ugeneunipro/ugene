@@ -51,9 +51,9 @@ public:
     QString message;
     QString reads;
     QMessageBox::StandardButton b;
-    void run(HI::GUITestOpStatus &os) {
-        QWidget *dialog = GTWidget::getActiveModalWidget(os);
-        GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "methodNamesBox", dialog), aligner);
+    void run(HI::GUITestOpStatus& os) {
+        QWidget* dialog = GTWidget::getActiveModalWidget(os);
+        GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "methodNamesBox", dialog), aligner);
 
         //    2. Set wrong file as reference
         GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, wrongRef));

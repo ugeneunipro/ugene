@@ -45,13 +45,13 @@ class MultipleChromatogramAlignmentObject;
 class McaAlternativeMutationsWidget : public QWidget, private Ui_McaAlternativeMutationsWidget {
     Q_OBJECT
 public:
-    McaAlternativeMutationsWidget(QWidget *parent = nullptr);
+    McaAlternativeMutationsWidget(QWidget* parent = nullptr);
 
     /*
      * Initialize object.
      * Call this function right after instance creation.
      */
-    void init(MultipleAlignmentObject *maObject, MaEditorSequenceArea *seqArea, MaEditorStatusBar *statusBar);
+    void init(MultipleAlignmentObject* maObject, MaEditorSequenceArea* seqArea, MaEditorStatusBar* statusBar);
 
     static const QString getAlternativeMutationsCheckedId();
 
@@ -66,7 +66,7 @@ private slots:
     void sl_updateLockState();
 
 private:
-    void showEvent(QShowEvent *e) override;
+    void showEvent(QShowEvent* e) override;
     /*
      * Updates GUI with values from the database
      **/
@@ -74,11 +74,11 @@ private:
     /*
      * Update the database with values from GUI
      **/
-    void updateDb(U2OpStatus &os);
+    void updateDb(U2OpStatus& os);
 
-    McaEditorSequenceArea *seqArea = nullptr;
-    MultipleChromatogramAlignmentObject *mcaObject = nullptr;
-    McaEditorStatusBar *statusBar = nullptr;
+    McaEditorSequenceArea* seqArea = nullptr;
+    MultipleChromatogramAlignmentObject* mcaObject = nullptr;
+    McaEditorStatusBar* statusBar = nullptr;
     U2IntegerAttribute checkedStateAttribute;
     U2IntegerAttribute thresholdAttribute;
     U2Object mcaDbiObj;

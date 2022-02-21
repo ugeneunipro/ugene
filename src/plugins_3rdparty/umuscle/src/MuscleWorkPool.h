@@ -47,27 +47,27 @@ enum RefineTreeNodeStatus {
 };
 
 struct MuscleWorkPool {
-    MuscleWorkPool(MuscleContext *_ctx, const MuscleTaskSettings &_config, TaskStateInfo &_ti, int _nThreads, const MultipleSequenceAlignment &_ma, MultipleSequenceAlignment &_res, bool _mhack);
+    MuscleWorkPool(MuscleContext* _ctx, const MuscleTaskSettings& _config, TaskStateInfo& _ti, int _nThreads, const MultipleSequenceAlignment& _ma, MultipleSequenceAlignment& _res, bool _mhack);
 
     ~MuscleWorkPool();
 
     unsigned getJob();
     unsigned getNextJob(unsigned uNodeIndex);
 
-    MuscleContext *ctx;
-    const MuscleTaskSettings &config;
+    MuscleContext* ctx;
+    const MuscleTaskSettings& config;
     MultipleSequenceAlignment ma;
-    MultipleSequenceAlignment &res;
+    MultipleSequenceAlignment& res;
     bool mhack;
     SeqVect v;
     Tree GuideTree;
     MSA a;
-    WEIGHT *Weights;
-    ProgNode *ProgNodes;
-    MuscleParamsHelper *ph;
-    TaskStateInfo &ti;
-    TreeNodeStatus *treeNodeStatus;
-    unsigned *treeNodeIndexes;
+    WEIGHT* Weights;
+    ProgNode* ProgNodes;
+    MuscleParamsHelper* ph;
+    TaskStateInfo& ti;
+    TreeNodeStatus* treeNodeStatus;
+    unsigned* treeNodeIndexes;
     int nThreads;
     unsigned uJoin;
     QMutex jobMgrMutex;
@@ -79,23 +79,23 @@ struct MuscleWorkPool {
     void refineClear();
     void reset();
 
-    unsigned refineGetJob(MSA *_msaIn, int workerID);
+    unsigned refineGetJob(MSA* _msaIn, int workerID);
 
-    unsigned refineGetNextJob(MSA *_msaIn, bool accepted, SCORE scoreMax, unsigned index, int workerID);
+    unsigned refineGetNextJob(MSA* _msaIn, bool accepted, SCORE scoreMax, unsigned index, int workerID);
 
     unsigned isRefineDone() {
         return refineDone; /*|| ctx->isCanceled();*/
     }
 
-    bool *ptrbOscillating;
+    bool* ptrbOscillating;
     unsigned oscillatingIter;
     bool bAnyAccepted;
-    unsigned *InternalNodeIndexes;
+    unsigned* InternalNodeIndexes;
     unsigned uInternalNodeCount;
     bool bReversed;
     bool bRight;
     unsigned uIter;
-    ScoreHistory *History;
+    ScoreHistory* History;
     bool bLockLeft;
     bool bLockRight;
 
@@ -103,17 +103,17 @@ struct MuscleWorkPool {
     QSemaphore mainSem;
     QSemaphore childSem;
     QMutex mut;
-    RefineTreeNodeStatus *refineNodeStatuses;
-    bool *needRestart;
+    RefineTreeNodeStatus* refineNodeStatuses;
+    bool* needRestart;
     unsigned lastAcceptedIndex;
-    unsigned *currentNodeIndex;
-    unsigned *workerStartPos;
-    MSA *msaIn;
+    unsigned* currentNodeIndex;
+    unsigned* workerStartPos;
+    MSA* msaIn;
 
     unsigned uIters;
     unsigned uRangeIndex;
     unsigned uRangeCount;
-    TaskStateInfo *refineTI;
+    TaskStateInfo* refineTI;
 };
 
 #endif  //_MUSCLEWORKPOOL_H_
