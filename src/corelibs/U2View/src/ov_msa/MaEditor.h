@@ -336,6 +336,7 @@ public:
     QAction* changeFontAction = nullptr;
     QAction* resetZoomAction = nullptr;
     QAction* exportHighlightedAction = nullptr;
+    QAction* multilineViewAction = nullptr;
 
     /** Clears selection in normal mode or exits from editing mode in the edit mode. */
     QAction* clearSelectionAction = nullptr;
