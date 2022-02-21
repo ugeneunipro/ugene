@@ -381,7 +381,6 @@ void MaEditor::initActions() {
             getMaEditorWgt(0)->getOverviewArea(), &QWidget::setVisible);
     ui->addAction(showOverviewAction);
 
-    MaEditorSelectionController *selectionController = getSelectionController();
     clearSelectionAction = new QAction(tr("Clear selection"), this);
     clearSelectionAction->setShortcut(Qt::Key_Escape);
     clearSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
