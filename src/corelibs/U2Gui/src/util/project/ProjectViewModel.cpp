@@ -367,7 +367,7 @@ void ProjectViewModel::addDocument(Document* doc) {
     connectDocument(doc);
 
     connect(doc, SIGNAL(si_objectAdded(GObject*)), SLOT(sl_objectAdded(GObject*)));
-    connect(doc, SIGNAL(si_objectRemoved(GObject*)), SLOT(sl_objectRemoved(GObject*)));
+    connect(doc, SIGNAL(si_afterObjectRemoved(GObject*)), SLOT(sl_objectRemoved(GObject*)));
 }
 
 void ProjectViewModel::removeDocument(Document* doc) {

@@ -482,7 +482,7 @@ bool AssemblyModel::referenceAssociated() const {
 void AssemblyModel::setReference(U2SequenceObject* seqObj) {
     refObj = seqObj;
     if (seqObj != nullptr) {
-        connect(seqObj->getDocument(), SIGNAL(si_objectRemoved(GObject*)), SLOT(sl_referenceObjRemoved(GObject*)));
+        connect(seqObj->getDocument(), SIGNAL(si_afterObjectRemoved(GObject*)), SLOT(sl_referenceObjRemoved(GObject*)));
     }
     emit si_referenceChanged();
 }
@@ -595,7 +595,7 @@ void AssemblyModel::addTrackObject(VariantTrackObject* trackObj) {
     if (!trackObjList.contains(trackObj)) {
         trackObjList << trackObj;
 
-        connect(trackObj->getDocument(), SIGNAL(si_objectRemoved(GObject*)), SLOT(sl_trackObjRemoved(GObject*)));
+        connect(trackObj->getDocument(), SIGNAL(si_afterObjectRemoved(GObject*)), SLOT(sl_trackObjRemoved(GObject*)));
         emit si_trackAdded(trackObj);
     }
 }

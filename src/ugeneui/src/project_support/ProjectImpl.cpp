@@ -71,7 +71,7 @@ void ProjectImpl::makeClean() {
     assert(!isTreeItemModified());
 }
 
-void ProjectImpl::sl_removeAllrelationsWithObject(GObject* obj) {
+void ProjectImpl::sl_removeAllRelationsWithObject(GObject* obj) {
     QList<GObject*> allObjs;
     for (Document *d : getDocuments()) {
         allObjs << d->getObjects();
@@ -135,8 +135,8 @@ void ProjectImpl::addDocument(Document* d) {
     setModified(true);
 
     connect(d, SIGNAL(si_objectAdded(GObject*)), SLOT(sl_onObjectAdded(GObject*)));
-    connect(d, SIGNAL(si_objectRemoved(GObject*)), SLOT(sl_onObjectRemoved(GObject*)));
-    connect(d, SIGNAL(si_removeRelations(GObject*)), SLOT(sl_removeAllrelationsWithObject(GObject*)));
+    connect(d, SIGNAL(si_afterObjectRemoved(GObject*)), SLOT(sl_onObjectRemoved(GObject*)));
+    connect(d, &Document::si_beforeObjectRemoved, this, &ProjectImpl::sl_removeAllRelationsWithObject);
     foreach (GObject* obj, d->getObjects()) {
         sl_onObjectAdded(obj);
     }

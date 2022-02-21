@@ -113,7 +113,7 @@ void GObjectSelection::removeFromSelection(const QList<GObject*>& obj) {
 void GDocumentObjectSelection::_append(GObject* o) {
     Document* d = o->getDocument();
     assert(d!=NULL);
-    connect(d, SIGNAL(si_objectRemoved(GObject*)), SLOT(void sl_onObjectRemoved(GObject*)));
+    connect(d, SIGNAL(si_afterObjectRemoved(GObject*)), SLOT(void sl_onObjectRemoved(GObject*)));
     GObjectSelection::_append(o);
 }
 

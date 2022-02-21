@@ -157,7 +157,7 @@ void GObjectView::_removeObject(GObject* o) {
     assert(i == 1);
     Q_UNUSED(i);
     closing = onObjectRemoved(o) || closing;
-    emit si_objectRemoved(this, o);
+    emit si_afterObjectRemoved(this, o);
 
     if (requiredObjects.contains(o)) {
         closing = true;
@@ -202,7 +202,7 @@ void GObjectView::onObjectRenamed(GObject*, const QString&) {
 }
 
 void GObjectView::sl_onDocumentAdded(Document* d) {
-    connect(d, SIGNAL(si_objectRemoved(GObject*)), SLOT(sl_onObjectRemovedFromDocument(GObject*)));
+    connect(d, SIGNAL(si_afterObjectRemoved(GObject*)), SLOT(sl_onObjectRemovedFromDocument(GObject*)));
     connect(d, SIGNAL(si_loadedStateChanged()), SLOT(sl_onDocumentLoadedStateChanged()));
 }
 

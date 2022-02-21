@@ -853,7 +853,7 @@ void ProjectTreeController::sl_windowActivated(MWMDIWindow* w) {
     uiLog.trace(QString("Project view now listens object events in '%1' view").arg(ow->windowTitle()));
     markActiveView = ow->getObjectView();
     connect(markActiveView, SIGNAL(si_objectAdded(GObjectView*, GObject*)), SLOT(sl_objectAddedToActiveView(GObjectView*, GObject*)));
-    connect(markActiveView, SIGNAL(si_objectRemoved(GObjectView*, GObject*)), SLOT(sl_objectRemovedFromActiveView(GObjectView*, GObject*)));
+    connect(markActiveView, SIGNAL(si_afterObjectRemoved(GObjectView*, GObject*)), SLOT(sl_objectRemovedFromActiveView(GObjectView*, GObject*)));
     foreach (GObject* obj, ow->getObjects()) {
         updateObjectActiveStateVisual(obj);
     }
