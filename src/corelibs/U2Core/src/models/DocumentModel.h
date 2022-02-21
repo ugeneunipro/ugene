@@ -533,6 +533,7 @@ signals:
     void si_nameChanged();
     void si_objectAdded(GObject* o);
     void si_objectRemoved(GObject* o);
+    void si_removeRelations(GObject* o);
     void si_loadedStateChanged();
 };
 

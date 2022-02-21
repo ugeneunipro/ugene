@@ -71,6 +71,23 @@ void ProjectImpl::makeClean() {
     assert(!isTreeItemModified());
 }
 
+void ProjectImpl::sl_removeAllrelationsWithObject(GObject* obj) {
+    QList<GObject*> allObjs;
+    for (Document *d : getDocuments()) {
+        allObjs << d->getObjects();
+    }
+    for (GObject* object : qAsConst(allObjs)) {
+        if (object != obj) {
+            const QList<GObjectRelation> relationList = object->getObjectRelations();
+            for (const GObjectRelation& rel : relationList) {
+                if (rel.ref.entityRef == obj->getEntityRef()) {
+                    object->removeObjectRelation(rel);
+                }
+            }
+        }
+    }
+}
+
 void ProjectImpl::setProjectName(const QString& newName) {
     if (name == newName) {
         return;
@@ -119,6 +136,7 @@ void ProjectImpl::addDocument(Document* d) {
 
     connect(d, SIGNAL(si_objectAdded(GObject*)), SLOT(sl_onObjectAdded(GObject*)));
     connect(d, SIGNAL(si_objectRemoved(GObject*)), SLOT(sl_onObjectRemoved(GObject*)));
+    connect(d, SIGNAL(si_removeRelations(GObject*)), SLOT(sl_removeAllrelationsWithObject(GObject*)));
     foreach (GObject* obj, d->getObjects()) {
         sl_onObjectAdded(obj);
     }

@@ -84,6 +84,7 @@
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/plugins/annotator/FindAnnotationCollocationsDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
+#include "runnables/ugene/plugins/dna_export/ExportAnnotationsDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
@@ -557,6 +558,27 @@ GUI_TEST_CLASS_DEFINITION(test_7183) {
     // 5. Push Export button in the dialog.
     // 6. Repeat steps 2-5 8 times
     // Expected state: UGENE is not crash
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7191) {
+    /*
+    * 1. Open data/samples/sars.gb
+    * 2. Delete sequence object
+    * 3. Export annotation object
+    * Expected state: there is no errors in the log
+    */
+    GTFileDialog::openFile(os, dataDir + "/samples/Genbank/", "sars.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProjectTreeView::click(os, "NC_004718");
+    
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
+    GTMouseDriver::click(Qt::RightButton);
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "test_7191.gb", ExportAnnotationsFiller::ugenedb, os));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export/Import", "Export annotations..."}));
+    GTUtilsProjectTreeView::callContextMenu(os, "NC_004718 features");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7193) {
