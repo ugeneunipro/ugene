@@ -52,6 +52,8 @@
 #include <QWidget>
 #include <QMdiArea>
 #include <QTextBrowser>
+#include <QDialogButtonBox>
+#include <QProgressBar>
 
 #include "GTGlobals.h"
 #include "GTMainWindow.h"
@@ -216,6 +218,12 @@ public:
 
     /** Calls findExactWidget with QTableView type. Shortcut method. */
     static QTableView* findTableView(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget = nullptr, const GTGlobals::FindOptions& options = {});
+
+    /** Calls findExactWidget with QDialogButtonBox type. Shortcut method. */
+    static QDialogButtonBox* findDialogButtonBox(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget = nullptr, const GTGlobals::FindOptions& options = {});
+
+    /** Calls findExactWidget with QProgressBar type. Shortcut method. */
+    static QProgressBar* findProgressBar(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget = nullptr, const GTGlobals::FindOptions& options = {});
 
 #define GT_METHOD_NAME "findWidgetByType"
     /** Finds a child widget with the given type. Fails is widget can't be found. */

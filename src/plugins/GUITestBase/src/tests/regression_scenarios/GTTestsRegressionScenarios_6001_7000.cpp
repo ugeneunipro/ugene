@@ -553,16 +553,16 @@ GUI_TEST_CLASS_DEFINITION(test_6102) {
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            GTTextEdit::setText(os, GTWidget::findExactWidget<QTextEdit*>(os, "teditPattern", dialog), "RPHP*VAS*LK*RHFARHGKIHN*E*KSSDQGQ");
+            GTTextEdit::setText(os, GTWidget::findTextEdit(os, "teditPattern", dialog), "RPHP*VAS*LK*RHFARHGKIHN*E*KSSDQGQ");
 
             GTRadioButton::click(os, "radioTranslation", dialog);
 
-            GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget*>(os, "tabWidget", dialog), 1);
+            GTTabWidget::setCurrentIndex(os, GTWidget::findTabWidget(os, "tabWidget", dialog), 1);
             //    3. Open tab "Input and output"
-            GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget*>(os, "tabWidget", dialog), 1);
+            GTTabWidget::setCurrentIndex(os, GTWidget::findTabWidget(os, "tabWidget", dialog), 1);
 
             //    4. Chose in the combobox "Multiple alignment"
-            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "resultViewVariants", dialog), "Multiple alignment");
+            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "resultViewVariants", dialog), "Multiple alignment");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
@@ -635,7 +635,7 @@ GUI_TEST_CLASS_DEFINITION(test_6118) {
 
     GTUtilsWorkflowDesigner::click(os, trimmomaticElement);
     GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "TrimmomaticPropertyDialog", QDialogButtonBox::Ok, new TrimmomaticScenario()));
-    auto table = GTWidget::findExactWidget<QTableView*>(os, "table");
+    auto table = GTWidget::findTableView(os, "table");
     GTMouseDriver::moveTo(GTTableView::getCellPoint(os, table, 1, 1));
     GTMouseDriver::click();
     GTWidget::click(os, GTWidget::findWidget(os, "trimmomaticPropertyToolButton", table));
@@ -734,13 +734,11 @@ GUI_TEST_CLASS_DEFINITION(test_6167) {
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QTreeWidget* tree = GTWidget::findExactWidget<QTreeWidget*>(os, "tree", dialog);
-            CHECK_SET_ERR(tree != nullptr, "QTreeWidget unexpectedly not found");
+            auto tree = GTWidget::findTreeWidget(os, "tree", dialog);
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::WorkflowDesigner);
 
-            QLineEdit* workflowOutputEdit = GTWidget::findExactWidget<QLineEdit*>(os, "workflowOutputEdit", dialog);
-            CHECK_SET_ERR(workflowOutputEdit != nullptr, "QLineEdit unexpectedly not found");
+            auto workflowOutputEdit = GTWidget::findLineEdit(os, "workflowOutputEdit", dialog);
 
             GTLineEdit::setText(os, workflowOutputEdit, sandBoxDir);
 
@@ -762,8 +760,7 @@ GUI_TEST_CLASS_DEFINITION(test_6167) {
     class TrimmomaticCustomScenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QToolButton* addButton = GTWidget::findExactWidget<QToolButton*>(os, "buttonAdd", dialog);
-            CHECK_SET_ERR(addButton != nullptr, "addButton unexpectedly not found");
+            auto addButton = GTWidget::findToolButton(os, "buttonAdd", dialog);
 
             GTWidget::click(os, addButton);
             for (int i = 0; i < 4; i++) {
@@ -840,8 +837,7 @@ GUI_TEST_CLASS_DEFINITION(test_6212) {
     class TrimmomaticCustomScenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QDialogButtonBox* buttonBox = GTWidget::findExactWidget<QDialogButtonBox*>(os, "buttonBox", dialog);
-            CHECK_SET_ERR(buttonBox != nullptr, "QDialogButtonBox unexpectedly not found");
+            auto buttonBox = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
 
             QPushButton* buttonOk = buttonBox->button(QDialogButtonBox::Ok);
             CHECK_SET_ERR(buttonOk != nullptr, "buttonOk unexpectedly not found");
@@ -1463,7 +1459,7 @@ GUI_TEST_CLASS_DEFINITION(test_6256) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             QDir().mkpath(tempDir);
             GTFile::setReadOnly(os, tempDir);
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "workflowOutputEdit", dialog), tempDir);
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "workflowOutputEdit", dialog), tempDir);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
 
@@ -1544,8 +1540,7 @@ GUI_TEST_CLASS_DEFINITION(test_6277) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::AnnotationsHighlighting);
 
     //    Expected state: the second column's width is 60 pixels; it took at least 20% of the table width; the first column took all available space.
-    QTreeWidget* table = GTWidget::findExactWidget<QTreeWidget*>(os, "OP_ANNOT_HIGHLIGHT_TREE");
-    CHECK_SET_ERR(nullptr != table, "OP_ANNOT_HIGHLIGHT_TREE widget is NULL");
+    auto table = GTWidget::findTreeWidget(os, "OP_ANNOT_HIGHLIGHT_TREE");
 
     QScrollBar* scrollBar = table->verticalScrollBar();
     const int scrollBarWidth = nullptr == scrollBar ? 0 : (scrollBar->isVisible() ? scrollBar->width() : 0);
@@ -2310,7 +2305,7 @@ GUI_TEST_CLASS_DEFINITION(test_6488_1) {
             GTWidget::click(os, wizard->button(QWizard::NextButton));
             GTWidget::click(os, wizard->button(QWizard::NextButton));
 
-            GTTextEdit::setText(os, GTWidget::findExactWidget<QTextEdit*>(os, "teCommand", dialog), "a modified command");
+            GTTextEdit::setText(os, GTWidget::findTextEdit(os, "teCommand", dialog), "a modified command");
 
             GTWidget::click(os, wizard->button(QWizard::NextButton));
             GTWidget::click(os, wizard->button(QWizard::NextButton));
@@ -2338,7 +2333,7 @@ GUI_TEST_CLASS_DEFINITION(test_6488_1) {
             GTWidget::click(os, wizard->button(QWizard::NextButton));
 
             const QString expectedText = "a modified command";
-            const QString actualText = GTTextEdit::getText(os, GTWidget::findExactWidget<QTextEdit*>(os, "teCommand", dialog));
+            const QString actualText = GTTextEdit::getText(os, GTWidget::findTextEdit(os, "teCommand", dialog));
             CHECK_SET_ERR(actualText == expectedText, QString("Unexpected command text: expected '%1', got '%2'").arg(expectedText).arg(actualText));
 
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -2396,7 +2391,7 @@ GUI_TEST_CLASS_DEFINITION(test_6488_2) {
             GTWidget::click(os, wizard->button(QWizard::NextButton));
             GTWidget::click(os, wizard->button(QWizard::NextButton));
 
-            GTTextEdit::setText(os, GTWidget::findExactWidget<QTextEdit*>(os, "tePrompter", dialog), "a modified description on the scene");
+            GTTextEdit::setText(os, GTWidget::findTextEdit(os, "tePrompter", dialog), "a modified description on the scene");
 
             GTWidget::click(os, wizard->button(QWizard::NextButton));
 
@@ -2424,7 +2419,7 @@ GUI_TEST_CLASS_DEFINITION(test_6488_2) {
             GTWidget::click(os, wizard->button(QWizard::NextButton));
 
             const QString expectedText = "a modified description on the scene";
-            const QString actualText = GTTextEdit::getText(os, GTWidget::findExactWidget<QTextEdit*>(os, "tePrompter", dialog));
+            const QString actualText = GTTextEdit::getText(os, GTWidget::findTextEdit(os, "tePrompter", dialog));
             CHECK_SET_ERR(actualText == expectedText, QString("Unexpected command text: expected '%1', got '%2'").arg(expectedText).arg(actualText));
 
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -2608,7 +2603,7 @@ GUI_TEST_CLASS_DEFINITION(test_6544) {
     GTUtilsOptionPanelSequenceView::setAlgorithm(os, "Substitute");
 
     // 5. Expected/current result: the search field background is red.
-    QTextEdit* editPatterns = GTWidget::findExactWidget<QTextEdit*>(os, "textPattern");
+    auto editPatterns = GTWidget::findTextEdit(os, "textPattern");
     QString style0 = editPatterns->styleSheet();
     CHECK_SET_ERR(style0 == "background-color: " + GUIUtils::WARNING_COLOR.name() + ";", "unexpected styleSheet: " + style0);
 
@@ -4000,7 +3995,7 @@ GUI_TEST_CLASS_DEFINITION(test_6676_2) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
 
     //    3. Enter the following reference sequence name: "TAAGACTTCT".
-    QLineEdit* sequenceLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "sequenceLineEdit");
+    auto sequenceLineEdit = GTWidget::findLineEdit(os, "sequenceLineEdit");
     GTWidget::click(os, sequenceLineEdit);
     GTKeyboardDriver::keySequence("TAAGACTTCT");
 
@@ -4591,7 +4586,7 @@ GUI_TEST_CLASS_DEFINITION(test_6707) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::AlignmentColorScheme);
-            QLineEdit* colorsDirEdit = GTWidget::findExactWidget<QLineEdit*>(os, "colorsDirEdit", dialog);
+            auto colorsDirEdit = GTWidget::findLineEdit(os, "colorsDirEdit", dialog);
 
             GTLineEdit::setText(os, colorsDirEdit, sandBoxDir + "test_6707/file.txt");
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Folder is a regular file."));
@@ -5014,7 +5009,7 @@ GUI_TEST_CLASS_DEFINITION(test_6749_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected result; red background and warning "Input value contains characters that do not match the active alphabet!"
-    QTextEdit* editPatterns = GTWidget::findExactWidget<QTextEdit*>(os, "textPattern");
+    auto editPatterns = GTWidget::findTextEdit(os, "textPattern");
     QString style0 = editPatterns->styleSheet();
     CHECK_SET_ERR(style0 == "background-color: " + GUIUtils::WARNING_COLOR.name() + ";", "unexpected styleSheet: " + style0);
 
@@ -5235,7 +5230,7 @@ GUI_TEST_CLASS_DEFINITION(test_6759) {
     int seqNum = GTUtilsSequenceView::getSeqWidgetsNumber(os);
     CHECK_SET_ERR(seqNum == 1, QString("Too many seqWidgets count: %1").arg(seqNum));
 
-    QScrollBar* horScroll = GTWidget::findExactWidget<QScrollBar*>(os, "CircularViewSplitter_horScroll");
+    auto horScroll = GTWidget::findScrollBar(os, "CircularViewSplitter_horScroll");
 
     // We use sleep as scrolling is executing too fast without sleep
     // Also, we don't want to break different scrolls by some optimizations (if any)
@@ -5325,8 +5320,7 @@ GUI_TEST_CLASS_DEFINITION(test_6807) {
     class CheckWarningScenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QLabel* warningLabel = GTWidget::findExactWidget<QLabel*>(os, "warningLabel", dialog);
-            CHECK_SET_ERR(!warningLabel->text().isEmpty(), "Warning message is empty");
+            auto warningLabel = GTWidget::findLabel(os, "warningLabel", dialog);
 
             GTLineEdit::setText(os, "fileEdit", sandBoxDir + "/test_6807.html", dialog);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -5534,10 +5528,10 @@ GUI_TEST_CLASS_DEFINITION(test_6826) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
 
-            QSpinBox* cpuBox = GTWidget::findExactWidget<QSpinBox*>(os, "cpuBox", dialog);
+            auto cpuBox = GTWidget::findSpinBox(os, "cpuBox", dialog);
             GTSpinBox::setValue(os, cpuBox, 1, GTGlobals::UseKeyBoard);
 
-            QSpinBox* threadsBox = GTWidget::findExactWidget<QSpinBox*>(os, "threadBox", dialog);
+            auto threadsBox = GTWidget::findSpinBox(os, "threadBox", dialog);
             GTSpinBox::setValue(os, threadsBox, 1, GTGlobals::UseKeyBoard);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -5637,7 +5631,7 @@ GUI_TEST_CLASS_DEFINITION(test_6862) {
     GTUtilsWorkflowDesigner::click(os, "Filter BAM/SAM files");
     GTUtilsWorkflowDesigner::setParameter(os, "Accept flag", "Mate strand", GTUtilsWorkflowDesigner::ComboChecks);
 
-    QString checkboxValue = GTComboBox::getCurrentText(os, GTWidget::findExactWidget<QComboBox*>(os, "mainWidget"));
+    QString checkboxValue = GTComboBox::getCurrentText(os, GTWidget::findComboBox(os, "mainWidget"));
     CHECK_SET_ERR(checkboxValue == "Mate strand", QString("Accept flag value: expected 'Mate strand', current: '%1'").arg(checkboxValue))
 
     // Click on an empty place on the scene
@@ -5648,7 +5642,7 @@ GUI_TEST_CLASS_DEFINITION(test_6862) {
     // Check that Mate strand is checked
     GTUtilsWorkflowDesigner::clickParameter(os, "Accept flag");
     GTUtilsWorkflowDesigner::clickParameter(os, "Accept flag");
-    checkboxValue = GTComboBox::getCurrentText(os, GTWidget::findExactWidget<QComboBox*>(os, "mainWidget"));
+    checkboxValue = GTComboBox::getCurrentText(os, GTWidget::findComboBox(os, "mainWidget"));
     CHECK_SET_ERR(checkboxValue == "Mate strand", QString("Accept flag value (1): expected 'Mate strand', current: '%1'").arg(checkboxValue))
 
     // To successfully complete the test
@@ -5876,7 +5870,7 @@ GUI_TEST_CLASS_DEFINITION(test_6901) {
 
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
 
-    QComboBox* copyType = GTWidget::findExactWidget<QComboBox*>(os, "copyType");
+    auto copyType = GTWidget::findComboBox(os, "copyType");
     GTComboBox::selectItemByText(os, copyType, "Plain text");
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(5, 5), QPoint(16, 9));
@@ -5899,7 +5893,7 @@ GUI_TEST_CLASS_DEFINITION(test_6903) {
     QToolButton* toDnaButton = GTWidget::findToolButton(os, "convertNucleicAlphabetButton");
     GTWidget::click(os, toDnaButton);
 
-    QComboBox* copyType = GTWidget::findExactWidget<QComboBox*>(os, "copyType");
+    auto copyType = GTWidget::findComboBox(os, "copyType");
     GTComboBox::selectItemByText(os, copyType, "Plain text");
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(5, 5), QPoint(16, 9));
@@ -6040,7 +6034,7 @@ GUI_TEST_CLASS_DEFINITION(test_6926) {
         void run(HI::GUITestOpStatus& os) {
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
 
-            QTreeWidget* treeWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "twCustomTools");
+            auto treeWidget = GTWidget::findTreeWidget(os, "twCustomTools");
             QStringList itemNames = GTTreeWidget::getItemNames(os, treeWidget);
             CHECK_SET_ERR(itemNames.length() == 1, "Expected to have 1 item in the tree, got: " + QString::number(itemNames.length()));
             CHECK_SET_ERR(itemNames.first() == "My custom tool", "Expected to find 'My custom tool' in the list, got: " + itemNames.first());
@@ -6316,7 +6310,7 @@ GUI_TEST_CLASS_DEFINITION(test_6960) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* const dialog = GTWidget::getActiveModalWidget(os);
-            const auto lePath = GTWidget::findExactWidget<QLineEdit*>(os, "projectFilePathEdit", dialog);
+            const auto lePath = GTWidget::findLineEdit(os, "projectFilePathEdit", dialog);
 
             const QString expected = U2::UserAppsSettings().getDefaultDataDirPath() + "/project.uprj";
             const QString actual = lePath->text();
@@ -6357,7 +6351,7 @@ GUI_TEST_CLASS_DEFINITION(test_6963) {
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::General);
 
-            QComboBox* styleCombo = GTWidget::findExactWidget<QComboBox*>(os, "styleCombo", dialog);
+            auto styleCombo = GTWidget::findComboBox(os, "styleCombo", dialog);
 
             QString text;
             if (isOsWindows()) {
@@ -6453,7 +6447,7 @@ GUI_TEST_CLASS_DEFINITION(test_6979) {
 
     // Check tree widget with tabs was created.
 
-    QTabWidget* tabWidget = GTWidget::findExactWidget<QTabWidget*>(os, "MsaEditorTreeTab");
+    auto tabWidget = GTWidget::findTabWidget(os, "MsaEditorTreeTab");
     CHECK_SET_ERR(tabWidget->currentIndex() == 0, "Expected first tab to be active")
 
     // Build another phy-tree
@@ -6533,10 +6527,10 @@ GUI_TEST_CLASS_DEFINITION(test_6990_2) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
     GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::General);
 
-    auto sortByCombo = GTWidget::findExactWidget<QComboBox*>(os, "sortByComboBox");
+    auto sortByCombo = GTWidget::findComboBox(os, "sortByComboBox");
     GTComboBox::selectItemByText(os, sortByCombo, "Leading gap");
 
-    auto sortOrderCombo = GTWidget::findExactWidget<QComboBox*>(os, "sortOrderComboBox");
+    auto sortOrderCombo = GTWidget::findComboBox(os, "sortOrderComboBox");
     GTComboBox::selectItemByText(os, sortOrderCombo, "Ascending");
     GTWidget::click(os, GTWidget::findWidget(os, "sortButton"));
 

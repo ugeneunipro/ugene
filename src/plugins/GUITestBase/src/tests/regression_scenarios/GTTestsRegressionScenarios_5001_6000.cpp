@@ -665,13 +665,12 @@ GUI_TEST_CLASS_DEFINITION(test_5199) {
     public:
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "algorithmComboBox", dialog), "PsiPred");
+            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "algorithmComboBox", dialog), "PsiPred");
             GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
             GTUtilsTaskTreeView::waitTaskFinished(os);
 
-            QTableWidget* resultsTable = GTWidget::findExactWidget<QTableWidget*>(os, "resultsTable", dialog);
-            CHECK_SET_ERR(nullptr != resultsTable, "resultsTable is NULL");
+            auto resultsTable = GTWidget::findTableWidget(os, "resultsTable", dialog);
             const int resultsCount = resultsTable->rowCount();
             CHECK_SET_ERR(4 == resultsCount, QString("Unexpected results count: expected %1, got %2").arg(4).arg(resultsCount));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -871,7 +870,7 @@ GUI_TEST_CLASS_DEFINITION(test_5231) {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             // pattern: "ATCGAT"; note that pattern length is 6.
-            GTTextEdit::setText(os, GTWidget::findExactWidget<QTextEdit*>(os, "teditPattern", dialog), "K*KTPPVGGKLA*VTP");
+            GTTextEdit::setText(os, GTWidget::findTextEdit(os, "teditPattern", dialog), "K*KTPPVGGKLA*VTP");
 
             GTRadioButton::click(os, "radioTranslation", dialog);
 
@@ -880,12 +879,12 @@ GUI_TEST_CLASS_DEFINITION(test_5231) {
             const int swRealizationIndex = comboRealization->findText("Classic 2");
             GTComboBox::selectItemByIndex(os, comboRealization, swRealizationIndex);
 
-            GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget*>(os, "tabWidget", dialog), 1);
+            GTTabWidget::setCurrentIndex(os, GTWidget::findTabWidget(os, "tabWidget", dialog), 1);
             // 3. Open tab "Input and output"
-            GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget*>(os, "tabWidget", dialog), 1);
+            GTTabWidget::setCurrentIndex(os, GTWidget::findTabWidget(os, "tabWidget", dialog), 1);
 
             // 4. Chose in the combobox "Multiple alignment"
-            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "resultViewVariants", dialog), "Multiple alignment");
+            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "resultViewVariants", dialog), "Multiple alignment");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -1399,12 +1398,10 @@ GUI_TEST_CLASS_DEFINITION(test_5377) {
             GTWidget::click(os, GTWidget::findWidget(os, "downButton"));
             GTWidget::click(os, GTWidget::findWidget(os, "downButton"));
 
-            QTabWidget* tabWidget = GTWidget::findExactWidget<QTabWidget*>(os, "tabWidget", dialog);
-            CHECK_SET_ERR(tabWidget != nullptr, "tabWidget not found");
+            auto tabWidget = GTWidget::findTabWidget(os, "tabWidget", dialog);
             GTTabWidget::clickTab(os, tabWidget, "Output");
 
-            QLineEdit* linEdit = GTWidget::findExactWidget<QLineEdit*>(os, "filePathEdit");
-            CHECK_SET_ERR(linEdit != nullptr, "filePathEdit not found");
+            auto linEdit = GTWidget::findLineEdit(os, "filePathEdit");
             GTLineEdit::setText(os, linEdit, QFileInfo(sandBoxDir + "test_5377").absoluteFilePath());
 
             GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
@@ -1719,16 +1716,15 @@ GUI_TEST_CLASS_DEFINITION(test_5447_1) {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             //    Expected state: an "Export Annotations" dialog opens, "GenBank" format is selected, there is an "Add to project" checkbox, it is enabled and checked.
-            GTComboBox::checkCurrentValue(os, GTWidget::findExactWidget<QComboBox*>(os, "formatsBox", dialog), "GenBank");
+            GTComboBox::checkCurrentValue(os, GTWidget::findComboBox(os, "formatsBox", dialog), "GenBank");
 
-            QCheckBox* addToProjectCheck = GTWidget::findExactWidget<QCheckBox*>(os, "addToProjectCheck", dialog);
-            CHECK_SET_ERR(nullptr != addToProjectCheck, "addToProjectCheck is NULL");
+            auto addToProjectCheck = GTWidget::findCheckBox(os, "addToProjectCheck", dialog);
             CHECK_SET_ERR(addToProjectCheck->isVisible(), "addToProjectCheck is not visible");
             CHECK_SET_ERR(addToProjectCheck->isEnabled(), "addToProjectCheck is not enabled");
             CHECK_SET_ERR(addToProjectCheck->isChecked(), "addToProjectCheck is not checked by default");
 
             //    4. Set a valid result file path, accept the dialog.
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "fileNameEdit", dialog), sandBoxDir + "test_5447_1.gb");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "fileNameEdit", dialog), sandBoxDir + "test_5447_1.gb");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -1777,22 +1773,21 @@ GUI_TEST_CLASS_DEFINITION(test_5447_2) {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             //    Expected state: an "Export Annotations" dialog opens, "GenBank" format is selected, there is an "Add to project" checkbox, it is enabled and checked.
-            GTComboBox::checkCurrentValue(os, GTWidget::findExactWidget<QComboBox*>(os, "formatsBox", dialog), "GenBank");
+            GTComboBox::checkCurrentValue(os, GTWidget::findComboBox(os, "formatsBox", dialog), "GenBank");
 
-            QCheckBox* addToProjectCheck = GTWidget::findExactWidget<QCheckBox*>(os, "addToProjectCheck", dialog);
-            CHECK_SET_ERR(nullptr != addToProjectCheck, "addToProjectCheck is NULL");
+            auto addToProjectCheck = GTWidget::findCheckBox(os, "addToProjectCheck", dialog);
             CHECK_SET_ERR(addToProjectCheck->isVisible(), "addToProjectCheck is not visible");
             CHECK_SET_ERR(addToProjectCheck->isEnabled(), "addToProjectCheck is not enabled");
             CHECK_SET_ERR(addToProjectCheck->isChecked(), "addToProjectCheck is not checked by default");
 
             //    4. Select "CSV" format.
             //    Expected state: a "CSV" format is selected, the "Add to project" checkbox is disabled.
-            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "formatsBox", dialog), "CSV");
+            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "formatsBox", dialog), "CSV");
             CHECK_SET_ERR(addToProjectCheck->isVisible(), "addToProjectCheck is not visible");
             CHECK_SET_ERR(!addToProjectCheck->isEnabled(), "addToProjectCheck is unexpectedly enabled");
 
             //    5. Set a valid result file path, accept the dialog.
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "fileNameEdit", dialog), sandBoxDir + "test_5447_2.csv");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "fileNameEdit", dialog), sandBoxDir + "test_5447_2.csv");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -1823,9 +1818,9 @@ GUI_TEST_CLASS_DEFINITION(test_5447_3) {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             //    Expected state: an "Export Annotations" dialog opens, "GenBank" format is selected, there is an "Add to project" checkbox, it is enabled and checked.
-            GTComboBox::checkCurrentValue(os, GTWidget::findExactWidget<QComboBox*>(os, "formatsBox", dialog), "GenBank");
+            GTComboBox::checkCurrentValue(os, GTWidget::findComboBox(os, "formatsBox", dialog), "GenBank");
 
-            QCheckBox* addToProjectCheck = GTWidget::findExactWidget<QCheckBox*>(os, "addToProjectCheck", dialog);
+            auto addToProjectCheck = GTWidget::findCheckBox(os, "addToProjectCheck", dialog);
             CHECK_SET_ERR(nullptr != addToProjectCheck, "addToProjectCheck is NULL");
             CHECK_SET_ERR(addToProjectCheck->isVisible(), "addToProjectCheck is not visible");
             CHECK_SET_ERR(addToProjectCheck->isEnabled(), "addToProjectCheck is not enabled");
@@ -1833,9 +1828,9 @@ GUI_TEST_CLASS_DEFINITION(test_5447_3) {
 
             //    4. Select each format.
             //    Expected state: the "Add to project" checkbox becomes disabled only for CSV format.
-            const QStringList formats = GTComboBox::getValues(os, GTWidget::findExactWidget<QComboBox*>(os, "formatsBox", dialog));
+            const QStringList formats = GTComboBox::getValues(os, GTWidget::findComboBox(os, "formatsBox", dialog));
             foreach (const QString& format, formats) {
-                GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "formatsBox", dialog), format);
+                GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "formatsBox", dialog), format);
                 CHECK_SET_ERR(addToProjectCheck->isVisible(), "addToProjectCheck is not visible");
                 CHECK_SET_ERR(addToProjectCheck->isEnabled() != (format == "CSV"), QString("addToProjectCheck is unexpectedly enabled for format '%1'").arg(format));
             }
@@ -1997,12 +1992,10 @@ GUI_TEST_CLASS_DEFINITION(test_5520_2) {
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "/_common_data/cmdline/external-tool-support/blastall/sars_middle.nhr"));
             GTWidget::click(os, GTWidget::findWidget(os, "selectDatabasePushButton"));
 
-            QRadioButton* rbNewTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbCreateNewTable");
-            CHECK_SET_ERR(rbNewTable != nullptr, "rbCreateNewTable not found");
+            auto rbNewTable = GTWidget::findRadioButton(os, "rbCreateNewTable");
             GTRadioButton::click(os, rbNewTable);
 
-            QLineEdit* leTablePath = GTWidget::findExactWidget<QLineEdit*>(os, "leNewTablePath");
-            CHECK_SET_ERR(leTablePath != nullptr, "leNewTablePath not found");
+            auto leTablePath = GTWidget::findLineEdit(os, "leNewTablePath");
             GTLineEdit::setText(os, leTablePath, sandBoxDir + "/test_5520_2.gb");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -2046,14 +2039,14 @@ GUI_TEST_CLASS_DEFINITION(test_5562_1) {
     GTUtilsOptionPanelMsa::addReference(os, "sf170");
 
     // 4. Click check box "Show distance coloumn"
-    // GTWidget::findExactWidget<QComboBox*>(os, "showDistancesColumnCheck");
+    // GTWidget::findComboBox(os, "showDistancesColumnCheck");
     GTCheckBox::setChecked(os, "showDistancesColumnCheck", true);
 
     // 5. Set combo box value "Hamming dissimilarity"
-    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "algoComboBox"), "Hamming dissimilarity");
+    GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "algoComboBox"), "Hamming dissimilarity");
 
     // 6. Set radio button value "Percents"
-    GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton*>(os, "percentsButton"));
+    GTRadioButton::click(os, GTWidget::findRadioButton(os, "percentsButton"));
 
     // 7. Click check box "Exclude gaps"
     GTCheckBox::setChecked(os, "excludeGapsCheckBox", true);
@@ -2081,16 +2074,16 @@ GUI_TEST_CLASS_DEFINITION(test_5562_2) {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             // 4. Set combo box value "Hamming dissimilarity"
-            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "algoCombo", dialog), "Hamming dissimilarity");
+            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "algoCombo", dialog), "Hamming dissimilarity");
             // 5. Set radio button value "Percents"
-            GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton*>(os, "percentsRB", dialog));
+            GTRadioButton::click(os, GTWidget::findRadioButton(os, "percentsRB", dialog));
             // 6. Click check box "Exclude gaps"
             GTCheckBox::setChecked(os, "checkBox", true, dialog);
             // 7. Click check box "Save profile to file"
             GTGroupBox::setChecked(os, "saveBox", dialog);
             // 8. Set radio button value "Hypertext"
             // 9. Set any valid file name
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "fileEdit", dialog), sandBoxDir + "5562_2_HTML.html");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "fileEdit", dialog), sandBoxDir + "5562_2_HTML.html");
             // 10. Accept the dialog.
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
@@ -2130,17 +2123,17 @@ GUI_TEST_CLASS_DEFINITION(test_5562_3) {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             // 4. Set combo box value "Hamming dissimilarity"
-            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "algoCombo", dialog), "Hamming dissimilarity");
+            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "algoCombo", dialog), "Hamming dissimilarity");
             // 5. Set radio button value "Percents"
-            GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton*>(os, "percentsRB", dialog));
+            GTRadioButton::click(os, GTWidget::findRadioButton(os, "percentsRB", dialog));
             // 6. Click check box "Exclude gaps"
             GTCheckBox::setChecked(os, "checkBox", true, dialog);
             // 7. Click check box "Save profile to file"
             GTGroupBox::setChecked(os, "saveBox", dialog);
             // 8. Set radio button value "Comma Separated"
-            GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton*>(os, "csvRB", dialog));
+            GTRadioButton::click(os, GTWidget::findRadioButton(os, "csvRB", dialog));
             // 9. Set any valid file name
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "fileEdit", dialog), sandBoxDir + "5562_3_CSV.csv");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "fileEdit", dialog), sandBoxDir + "5562_3_CSV.csv");
             // 10. Accept the dialog.
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
@@ -2204,7 +2197,7 @@ GUI_TEST_CLASS_DEFINITION(test_5594_1) {
             CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             // 2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
 
             // 3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
             QStringList reads;
@@ -2223,7 +2216,7 @@ GUI_TEST_CLASS_DEFINITION(test_5594_1) {
             GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
 
             // 4. Push "Align" button
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -2270,7 +2263,7 @@ GUI_TEST_CLASS_DEFINITION(test_5594_2) {
             CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             // 2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
 
             // 3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
             QStringList reads;
@@ -2289,7 +2282,7 @@ GUI_TEST_CLASS_DEFINITION(test_5594_2) {
             GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
 
             // 4. Push "Align" button
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -2342,7 +2335,7 @@ GUI_TEST_CLASS_DEFINITION(test_5594_3) {
             CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             // 2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
 
             // 3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
             QStringList reads;
@@ -2361,7 +2354,7 @@ GUI_TEST_CLASS_DEFINITION(test_5594_3) {
             GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
 
             // 4. Push "Align" button
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -2410,7 +2403,7 @@ GUI_TEST_CLASS_DEFINITION(test_5594_4) {
             CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             // 2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
 
             // 3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
             QStringList reads;
@@ -2429,7 +2422,7 @@ GUI_TEST_CLASS_DEFINITION(test_5594_4) {
             GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
 
             // 4. Push "Align" button
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -2507,7 +2500,7 @@ GUI_TEST_CLASS_DEFINITION(test_5622) {
             CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             // 2. Select reference  .../test/general/_common_data/sanger/reference_gapped.gb (reference with gaps);
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference_gapped.gb");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference_gapped.gb");
 
             // 3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
             QStringList reads;
@@ -2526,7 +2519,7 @@ GUI_TEST_CLASS_DEFINITION(test_5622) {
             GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
 
             // 4. Push "Align" button
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -2699,7 +2692,7 @@ GUI_TEST_CLASS_DEFINITION(test_5665) {
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QLineEdit* filepathLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "fileNameEdit", dialog);
+            auto filepathLineEdit = GTWidget::findLineEdit(os, "fileNameEdit", dialog);
             GTLineEdit::setText(os, filepathLineEdit, dataDir + "long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_.fa");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -2798,7 +2791,7 @@ GUI_TEST_CLASS_DEFINITION(test_5714_1) {
             CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             // 2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
 
             // 3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
             QStringList reads;
@@ -2817,7 +2810,7 @@ GUI_TEST_CLASS_DEFINITION(test_5714_1) {
             GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
 
             // 4. Push "Align" button
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -2885,7 +2878,7 @@ GUI_TEST_CLASS_DEFINITION(test_5714_2) {
             CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             // 2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
 
             // 3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
             QStringList reads;
@@ -2904,7 +2897,7 @@ GUI_TEST_CLASS_DEFINITION(test_5714_2) {
             GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
 
             // 4. Push "Align" button
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -2972,7 +2965,7 @@ GUI_TEST_CLASS_DEFINITION(test_5714_3) {
             CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             // 2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
 
             // 3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
             QStringList reads;
@@ -2991,7 +2984,7 @@ GUI_TEST_CLASS_DEFINITION(test_5714_3) {
             GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
 
             // 4. Push "Align" button
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -3161,7 +3154,7 @@ GUI_TEST_CLASS_DEFINITION(test_5739) {
             GTUtilsTaskTreeView::waitTaskFinished(os);
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, testDir + "_common_data/sanger", reads));
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
 
             // Push "Align" button.
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -3263,7 +3256,7 @@ GUI_TEST_CLASS_DEFINITION(test_5751) {
             CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             // 2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
 
             // 3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
             QStringList reads;
@@ -3282,13 +3275,13 @@ GUI_TEST_CLASS_DEFINITION(test_5751) {
             GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
 
             GTUtilsTaskTreeView::waitTaskFinished(os);
             QStringList path;
             path << sandBoxDir + "Sanger";
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, path));
-            GTWidget::click(os, GTWidget::findExactWidget<QToolButton*>(os, "setOutputButton"));
+            GTWidget::click(os, GTWidget::findToolButton(os, "setOutputButton"));
 
             // 4. Push "Align" button
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -3407,7 +3400,7 @@ GUI_TEST_CLASS_DEFINITION(test_5753) {
             CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             // 2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
 
             // 3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
             QStringList reads;
@@ -3426,13 +3419,13 @@ GUI_TEST_CLASS_DEFINITION(test_5753) {
             GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
 
             GTUtilsTaskTreeView::waitTaskFinished(os);
             QStringList path;
             path << sandBoxDir + "Sanger";
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, path));
-            GTWidget::click(os, GTWidget::findExactWidget<QToolButton*>(os, "setOutputButton"));
+            GTWidget::click(os, GTWidget::findToolButton(os, "setOutputButton"));
 
             // 4. Push "Align" button
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -3538,7 +3531,7 @@ GUI_TEST_CLASS_DEFINITION(test_5758) {
             CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             // 2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
 
             // 3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
             QStringList reads;
@@ -3557,13 +3550,13 @@ GUI_TEST_CLASS_DEFINITION(test_5758) {
             GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
 
             GTUtilsTaskTreeView::waitTaskFinished(os);
             QStringList path;
             path << sandBoxDir + "Sanger";
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, path));
-            GTWidget::click(os, GTWidget::findExactWidget<QToolButton*>(os, "setOutputButton"));
+            GTWidget::click(os, GTWidget::findToolButton(os, "setOutputButton"));
 
             // 4. Push "Align" button
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -3698,7 +3691,7 @@ GUI_TEST_CLASS_DEFINITION(test_5769_1) {
             CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             // 2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
 
             // 3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
             QStringList reads;
@@ -3715,7 +3708,7 @@ GUI_TEST_CLASS_DEFINITION(test_5769_1) {
             GTUtilsTaskTreeView::waitTaskFinished(os);
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, testDir + "_common_data/sanger/", reads));
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
 
             // 4. Push "Align" button
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -3774,7 +3767,7 @@ GUI_TEST_CLASS_DEFINITION(test_5769_2) {
             CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             // 2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference.gb");
 
             // 3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
             QStringList reads;
@@ -3793,7 +3786,7 @@ GUI_TEST_CLASS_DEFINITION(test_5769_2) {
             GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
-            GTWidget::click(os, GTWidget::findExactWidget<QPushButton*>(os, "addReadButton"));
+            GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
 
             // 4. Push "Align" button
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -3880,7 +3873,7 @@ GUI_TEST_CLASS_DEFINITION(test_5775) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
 
     GTUtilsOptionPanelSequenceView::openAnnotationParametersShowHideWidget(os, true);
-    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "chbUsePatternNames"), true);
+    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "chbUsePatternNames"), true);
 
     GTUtilsOptionPanelSequenceView::toggleInputFromFilePattern(os);
 
@@ -3955,8 +3948,7 @@ GUI_TEST_CLASS_DEFINITION(test_5786_1) {
             GTTabWidget::clickTab(os, "twSettings", dialog, "Branch Support");
 
             //    Expected state: "Use fast likelihood-based method" radionbutton is selected, "Use fast likelihood-based method" combobox is enabled, "Perform bootstrap" spinbox is disabled.
-            QRadioButton* rbFastMethod = GTWidget::findExactWidget<QRadioButton*>(os, "fastMethodCheckbox", dialog);
-            CHECK_SET_ERR(nullptr != rbFastMethod, "fastMethodCheckbox is NULL");
+            auto rbFastMethod = GTWidget::findRadioButton(os, "fastMethodCheckbox", dialog);
             CHECK_SET_ERR(rbFastMethod->isChecked(), "fastMethodCheckbox is not checked");
             GTWidget::checkEnabled(os, "fastMethodCombo", true, dialog);
             GTWidget::checkEnabled(os, "bootstrapSpinBox", false, dialog);
@@ -4698,10 +4690,10 @@ GUI_TEST_CLASS_DEFINITION(test_5903) {
             GTKeyboardDriver::keyClick('o');
             GTKeyboardDriver::keyClick('p');
 
-            GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton*>(os, "rbGenbankFormat", dialog));
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "leAnnotationName", dialog), "NewAnn");
+            GTRadioButton::click(os, GTWidget::findRadioButton(os, "rbGenbankFormat", dialog));
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leAnnotationName", dialog), "NewAnn");
 
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "leLocation", dialog), "100..200");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leLocation", dialog), "100..200");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
@@ -4781,13 +4773,12 @@ GUI_TEST_CLASS_DEFINITION(test_5947) {
             // GT_CHECK(endLineEdit != NULL, "Start lineEdit is NULL");
             GTLineEdit::setText(os, endLineEdit, "50");
 
-            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "algorithmComboBox", dialog), "PsiPred");
+            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "algorithmComboBox", dialog), "PsiPred");
             GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
             GTUtilsTaskTreeView::waitTaskFinished(os);
 
-            QTableWidget* resultsTable = GTWidget::findExactWidget<QTableWidget*>(os, "resultsTable", dialog);
-            CHECK_SET_ERR(resultsTable != nullptr, "resultsTable is NULL");
+            auto resultsTable = GTWidget::findTableWidget(os, "resultsTable", dialog);
             const int resultsCount = resultsTable->rowCount();
             CHECK_SET_ERR(resultsCount == 3, QString("Unexpected results count: expected %1, got %2").arg(4).arg(resultsCount));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);

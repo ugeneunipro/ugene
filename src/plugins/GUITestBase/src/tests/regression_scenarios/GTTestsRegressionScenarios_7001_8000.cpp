@@ -344,10 +344,10 @@ GUI_TEST_CLASS_DEFINITION(test_7125) {
         void run(GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-            auto currentCombobox = GTWidget::findExactWidget<QComboBox*>(os, "algorithmBox", dialog);
+            auto currentCombobox = GTWidget::findComboBox(os, "algorithmBox", dialog);
             GTComboBox::selectItemByText(os, currentCombobox, "PhyML Maximum Likelihood");
 
-            currentCombobox = GTWidget::findExactWidget<QComboBox*>(os, "subModelCombo", dialog);
+            currentCombobox = GTWidget::findComboBox(os, "subModelCombo", dialog);
             GTComboBox::selectItemByText(os, currentCombobox, "CpREV");
 
             GTWidget::click(os, GTWidget::findButtonByText(os, "Save Settings", dialog));
@@ -532,8 +532,8 @@ GUI_TEST_CLASS_DEFINITION(test_7183) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton*>(os, "bothStrandsButton", dialog));
-            GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "translateButton", dialog), true);
+            GTRadioButton::click(os, GTWidget::findRadioButton(os, "bothStrandsButton", dialog));
+            GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "translateButton", dialog), true);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
@@ -756,7 +756,7 @@ GUI_TEST_CLASS_DEFINITION(test_7293) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            auto textEdit = GTWidget::findExactWidget<QPlainTextEdit*>(os, "previewEdit", dialog);
+            auto textEdit = GTWidget::findPlainTextEdit(os, "previewEdit", dialog);
             QString previewText = textEdit->toPlainText();
             CHECK_SET_ERR(previewText.contains("Первый"), "Expected text is not found in previewEdit");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -772,7 +772,7 @@ GUI_TEST_CLASS_DEFINITION(test_7293) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            auto textEdit = GTWidget::findExactWidget<QPlainTextEdit*>(os, "previewEdit", dialog);
+            auto textEdit = GTWidget::findPlainTextEdit(os, "previewEdit", dialog);
             QString previewText = textEdit->toPlainText();
             CHECK_SET_ERR(previewText.contains("Первый"), "Expected text is not found in previewEdit");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -812,10 +812,10 @@ GUI_TEST_CLASS_DEFINITION(test_7360) {
 
         void run(GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            GTTextEdit::setText(os, GTWidget::findExactWidget<QTextEdit*>(os, "teditPattern", dialog), pattern);
+            GTTextEdit::setText(os, GTWidget::findTextEdit(os, "teditPattern", dialog), pattern);
             GTRadioButton::click(os, "radioTranslation", dialog);
             GTRegionSelector::setRegion(os, GTWidget::findExactWidget<RegionSelector*>(os, "range_selector", dialog), region);
-            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "comboRealization", dialog), "CUDA");
+            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "comboRealization", dialog), "CUDA");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
 
@@ -1560,7 +1560,7 @@ GUI_TEST_CLASS_DEFINITION(test_7455) {
             // 4. Select "AaaI" and click "Add---->"
             // 5. Go to the "Conserved annotations" tab
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            auto availableEnzymeWidget = GTWidget::findExactWidget<QListWidget*>(os, "availableEnzymeWidget", dialog);
+            auto availableEnzymeWidget = GTWidget::findListWidget(os, "availableEnzymeWidget", dialog);
             QList<QListWidgetItem*> items = availableEnzymeWidget->findItems("AaaI : 2 cut(s)", Qt::MatchExactly);
             CHECK_SET_ERR(items.size() == 1, "Unexpected number of enzymes");
 

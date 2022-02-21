@@ -30,6 +30,8 @@
 #include <QScrollBar>
 #include <QStyle>
 #include <QTextBrowser>
+#include <QDialogButtonBox>
+#include <QProgressBar>
 
 #include "drivers/GTMouseDriver.h"
 #include "utils/GTThread.h"
@@ -222,6 +224,15 @@ QTextBrowser* GTWidget::findTextBrowser(GUITestOpStatus& os, const QString& widg
 QTableView* GTWidget::findTableView(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
     return findExactWidget<QTableView*>(os, widgetName, parentWidget, options);
 }
+
+QDialogButtonBox* GTWidget::findDialogButtonBox(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QDialogButtonBox*>(os, widgetName, parentWidget, options);
+}
+
+QProgressBar* GTWidget::findProgressBar(GUITestOpStatus& os, const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    return findExactWidget<QProgressBar*>(os, widgetName, parentWidget, options);
+}
+
 QPoint GTWidget::getWidgetCenter(QWidget* widget) {
     return widget->mapToGlobal(widget->rect().center());
 }

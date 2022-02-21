@@ -252,7 +252,7 @@ GUI_TEST_CLASS_DEFINITION(test_4010) {
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            GTTextEdit::containsString(os, GTWidget::findExactWidget<QTextEdit*>(os, "textEdit"), "||||||||||||||");
+            GTTextEdit::containsString(os, GTWidget::findTextEdit(os, "textEdit"), "||||||||||||||");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
@@ -309,7 +309,7 @@ GUI_TEST_CLASS_DEFINITION(test_4022) {
     public:
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            GTWidget::click(os, GTWidget::findExactWidget<QPlainTextEdit*>(os, "sequenceEdit", dialog));
+            GTWidget::click(os, GTWidget::findPlainTextEdit(os, "sequenceEdit", dialog));
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "amount of data"));
             GTKeyboardUtils::paste();
@@ -1151,7 +1151,7 @@ GUI_TEST_CLASS_DEFINITION(test_4116) {
 
             //    4. Click the added item.
             const QString filePath = QDir::cleanPath(QFileInfo(dataDir + "samples/FASTA/human_T1.fa").absoluteFilePath());
-            GTListWidget::click(os, GTWidget::findExactWidget<QListWidget*>(os, "lwFiles", dialog), filePath);
+            GTListWidget::click(os, GTWidget::findListWidget(os, "lwFiles", dialog), filePath);
 
             //    Expected: the "Remove" button is enabled.
             QWidget* removeButton = GTWidget::findWidget(os, "pbRemoveFile", dialog);
@@ -1159,13 +1159,13 @@ GUI_TEST_CLASS_DEFINITION(test_4116) {
             CHECK_SET_ERR(removeButton->isEnabled(), "Remove button is unexpectedly disabled");
 
             //    5. Choose "Shared database" in the combobox.
-            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "cbSource", dialog), "Shared database");
+            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "cbSource", dialog), "Shared database");
 
             //    Expected: the "OK" button is disabled.
             CHECK_SET_ERR(!okButton->isEnabled(), "OK button is unexpectedly enabled");
 
             //    6. Choose "Local file(s)" in the combobox.
-            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "cbSource", dialog), "Local file(s)");
+            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "cbSource", dialog), "Local file(s)");
 
             //    Expected: the "OK" button is enabled.
             CHECK_SET_ERR(okButton->isEnabled(), "OK button is unexpectedly disabled");
@@ -1285,7 +1285,7 @@ GUI_TEST_CLASS_DEFINITION(test_4124) {
     public:
         virtual void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QComboBox* methodNamesBox = GTWidget::findExactWidget<QComboBox*>(os, "methodNamesBox", dialog);
+            auto methodNamesBox = GTWidget::findComboBox(os, "methodNamesBox", dialog);
             GTComboBox::selectItemByText(os, methodNamesBox, "UGENE Genome Aligner");
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTA/human_T1.fa"));
@@ -1368,7 +1368,7 @@ GUI_TEST_CLASS_DEFINITION(test_4131) {
 
     // 4. Set output annotations name : -=_\,.<>;:[]#()$
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Annotation parameters"));
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "leAnnotationName"), "-=_\\,.<>;:[]#()$");
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "leAnnotationName"), "-=_\\,.<>;:[]#()$");
 
     // Create annotations from results.
     GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
@@ -1410,7 +1410,7 @@ GUI_TEST_CLASS_DEFINITION(test_4141) {
 
     // 3. Check "Show distances column"
     // Expected state : distances column has appeared between the name list and the sequence area
-    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "showDistancesColumnCheck"));
+    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "showDistancesColumnCheck"));
     GTWidget::findWidget(os, "msa_editor_similarity_column");
     CHECK_SET_ERR(QApplication::activeWindow() == appWindow, "Active window changed");
 }
@@ -1451,7 +1451,7 @@ GUI_TEST_CLASS_DEFINITION(test_4148) {
                      << "BWA-MEM"
                      << "Bowtie"
                      << "Bowtie2";
-            QComboBox* methodNamesBox = GTWidget::findExactWidget<QComboBox*>(os, "methodNamesBox", dialog);
+            auto methodNamesBox = GTWidget::findComboBox(os, "methodNamesBox", dialog);
             foreach (const QString& al, aligners) {
                 GTComboBox::selectItemByText(os, methodNamesBox, al);
                 GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
@@ -1578,8 +1578,7 @@ GUI_TEST_CLASS_DEFINITION(test_4153) {
     QComboBox* highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
     GTComboBox::selectItemByText(os, highlightingScheme, "Conservation level");
 
-    QSlider* thresholdSlider = GTWidget::findExactWidget<QSlider*>(os, "thresholdSlider");
-    CHECK_SET_ERR(thresholdSlider != nullptr, "Threshold slider is null");
+    auto thresholdSlider = GTWidget::findSlider(os, "thresholdSlider");
 
     GTSlider::setValue(os, thresholdSlider, 78);
 
@@ -1733,21 +1732,21 @@ GUI_TEST_CLASS_DEFINITION(test_4177) {
     class FontSettingsHelper {
     public:
         static void changeFontAndSize(HI::GUITestOpStatus& os, const QString& fontFamilyStr, int fontSize) {
-            QComboBox* fontComboBox = GTWidget::findExactWidget<QComboBox*>(os, "fontComboBox");
+            auto fontComboBox = GTWidget::findComboBox(os, "fontComboBox");
             GTComboBox::selectItemByText(os, fontComboBox, fontFamilyStr);
-            GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "fontSizeSpinBox"), fontSize, GTGlobals::UseMouse);
+            GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "fontSizeSpinBox"), fontSize, GTGlobals::UseMouse);
         }
 
         static void fontChecker(HI::GUITestOpStatus& os, const QString& expectedFamilyStr, int expectedSize) {
             QString comboText = GTComboBox::getCurrentText(os, "fontComboBox");
             CHECK_SET_ERR(comboText == expectedFamilyStr, "unexpected style: " + comboText);
-            int actualSize = GTSpinBox::getValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "fontSizeSpinBox"));
+            int actualSize = GTSpinBox::getValue(os, GTWidget::findSpinBox(os, "fontSizeSpinBox"));
             CHECK_SET_ERR(actualSize == expectedSize, QString("unexpected point size: %1").arg(QString::number(actualSize)));
         }
 
         static void getFontSettings(HI::GUITestOpStatus& os, QString& familyStr, int& size) {
             familyStr = GTComboBox::getCurrentText(os, "fontComboBox");
-            size = GTSpinBox::getValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "fontSizeSpinBox"));
+            size = GTSpinBox::getValue(os, GTWidget::findSpinBox(os, "fontSizeSpinBox"));
         }
     };
 
@@ -1802,21 +1801,21 @@ GUI_TEST_CLASS_DEFINITION(test_4177_1) {
     class FontSettingsHelper {
     public:
         static void changeFontAndSize(HI::GUITestOpStatus& os, const QString& fontFamilyStr, int fontSize) {
-            QComboBox* fontComboBox = GTWidget::findExactWidget<QComboBox*>(os, "fontComboBox");
+            auto fontComboBox = GTWidget::findComboBox(os, "fontComboBox");
             GTComboBox::selectItemByText(os, fontComboBox, fontFamilyStr);
-            GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "fontSizeSpinBox"), fontSize, GTGlobals::UseMouse);
+            GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "fontSizeSpinBox"), fontSize, GTGlobals::UseMouse);
         }
 
         static void fontChecker(HI::GUITestOpStatus& os, const QString& expectedFamilyStr, int expectedSize) {
             QString comboText = GTComboBox::getCurrentText(os, "fontComboBox");
             CHECK_SET_ERR(comboText == expectedFamilyStr, "unexpected style: " + comboText);
-            int actualSize = GTSpinBox::getValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "fontSizeSpinBox"));
+            int actualSize = GTSpinBox::getValue(os, GTWidget::findSpinBox(os, "fontSizeSpinBox"));
             CHECK_SET_ERR(actualSize == expectedSize, QString("unexpected point size: %1").arg(QString::number(actualSize)));
         }
 
         static void getFontSettings(HI::GUITestOpStatus& os, QString& familyStr, int& size) {
             familyStr = GTComboBox::getCurrentText(os, "fontComboBox");
-            size = GTSpinBox::getValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "fontSizeSpinBox"));
+            size = GTSpinBox::getValue(os, GTWidget::findSpinBox(os, "fontSizeSpinBox"));
         }
     };
 
@@ -1849,8 +1848,7 @@ GUI_TEST_CLASS_DEFINITION(test_4177_1) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_TREES_WIDGET"));
     // 4. Click to empty space near the node to reset selection
     GTThread::waitForMainThread();
-    QGraphicsView* treeView = GTWidget::findExactWidget<QGraphicsView*>(os, "treeView");
-    CHECK_SET_ERR(treeView, "treeView not found");
+    auto treeView = GTWidget::findGraphicsView(os, "treeView");
     QPointF sceneCoord = nodes[1]->mapToScene(nodes[1]->boundingRect().topLeft());
     QPoint viewCord = treeView->mapFromScene(sceneCoord);
     QPoint globalCoord = treeView->mapToGlobal(viewCord);
@@ -2649,8 +2647,7 @@ GUI_TEST_CLASS_DEFINITION(test_4323_2) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 
     //    Expected state: there is a message that the msa alphabet is no applicable.
-    QLabel* errorLabel = GTWidget::findExactWidget<QLabel*>(os, "lblMessage");
-    CHECK_SET_ERR(nullptr != errorLabel, "Error label is NULL");
+    auto errorLabel = GTWidget::findLabel(os, "lblMessage");
     CHECK_SET_ERR(errorLabel->isVisible(), "Error label is invisible");
     CHECK_SET_ERR(errorLabel->text().contains("Pairwise alignment is not available for alignments with \"Raw\" alphabet."),
                   QString("An unexpected error message: '%1'").arg(errorLabel->text()));
@@ -3083,8 +3080,7 @@ GUI_TEST_CLASS_DEFINITION(test_4439) {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             //    Expected state: a "Find Qualifier" dialog appears, search buttons are disabled.
-            QDialogButtonBox* buttonBox = GTWidget::findExactWidget<QDialogButtonBox*>(os, "buttonBox", dialog);
-            CHECK_SET_ERR(nullptr != buttonBox, "buttonBox is NULL");
+            auto buttonBox = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
             QPushButton* nextButton = buttonBox->button(QDialogButtonBox::Ok);
             QPushButton* allButton = buttonBox->button(QDialogButtonBox::Yes);
             CHECK_SET_ERR(!nextButton->isEnabled(), "'Next' button is enabled");
@@ -3092,7 +3088,7 @@ GUI_TEST_CLASS_DEFINITION(test_4439) {
 
             //    3. Enter "1" as qualifier name. Click "Select all" button. Close the dialog.
             //    Expected state: search buttons are enabled, a comment annotation with its qualifier are selected.
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "nameEdit", dialog), "1");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "nameEdit", dialog), "1");
 
             CHECK_SET_ERR(nextButton->isEnabled(), "'Next' button is disabled");
             CHECK_SET_ERR(allButton->isEnabled(), "'Select all' button is disabled");
@@ -3224,7 +3220,7 @@ GUI_TEST_CLASS_DEFINITION(test_4488) {
     GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
 
     // 5. Switch off auto updating.
-    QCheckBox* autoUpdateCheck = GTWidget::findExactWidget<QCheckBox*>(os, "autoUpdateCheck");
+    auto autoUpdateCheck = GTWidget::findCheckBox(os, "autoUpdateCheck");
     GTCheckBox::setChecked(os, autoUpdateCheck, false);
 
     // 6. Alignment context menu -> Add -> Sequence from file.
@@ -3294,8 +3290,8 @@ GUI_TEST_CLASS_DEFINITION(test_4508) {
     class Scenario1 : public CustomScenario {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "formatsBox", dialog), "SVG", GTGlobals::UseMouse);
-            QLabel* hintLabel = GTWidget::findExactWidget<QLabel*>(os, "hintLabel", dialog);
+            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "formatsBox", dialog), "SVG", GTGlobals::UseMouse);
+            auto hintLabel = GTWidget::findLabel(os, "hintLabel", dialog);
             CHECK_SET_ERR(hintLabel->isVisible(), "hintLabel is invisible");
             QString expectedSubstring = "selected region is too big";
             CHECK_SET_ERR(hintLabel->text().contains(expectedSubstring), QString("An expected substring not found: substring - '%1', text - '%2'").arg(expectedSubstring).arg(hintLabel->text()));
@@ -3323,14 +3319,14 @@ GUI_TEST_CLASS_DEFINITION(test_4508) {
     class Scenario2 : public CustomScenario {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "formatsBox", dialog), "SVG", GTGlobals::UseMouse);
-            QLabel* hintLabel = GTWidget::findExactWidget<QLabel*>(os, "hintLabel", dialog);
+            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "formatsBox", dialog), "SVG", GTGlobals::UseMouse);
+            auto hintLabel = GTWidget::findLabel(os, "hintLabel", dialog);
             CHECK_SET_ERR(!hintLabel->isVisible(), "hintLabel is visible");
 
             QDir().mkpath(sandBoxDir + "test_4508");
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "fileNameEdit", dialog), sandBoxDir + "test_4508/test_4508.svg");
-            GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "exportSeqNames", dialog));
-            GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "exportConsensus", dialog));
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "fileNameEdit", dialog), sandBoxDir + "test_4508/test_4508.svg");
+            GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "exportSeqNames", dialog));
+            GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "exportConsensus", dialog));
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -3462,7 +3458,7 @@ GUI_TEST_CLASS_DEFINITION(test_4537) {
     public:
         virtual void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QComboBox* userSelectedFormat = GTWidget::findExactWidget<QComboBox*>(os, "userSelectedFormat", dialog);
+            auto userSelectedFormat = GTWidget::findComboBox(os, "userSelectedFormat", dialog);
             QStringList values = GTComboBox::getValues(os, userSelectedFormat);
 
             // Expected: there is no format SAM in the formats combobox.
@@ -3510,7 +3506,7 @@ GUI_TEST_CLASS_DEFINITION(test_4563) {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
-            GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "memBox", dialog), 200);
+            GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "memBox", dialog), 200);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -3569,7 +3565,7 @@ GUI_TEST_CLASS_DEFINITION(test_4588) {
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, outputPath, GTGlobals::UseMouse, GTFileDialogUtils::Save));
             GTWidget::click(os, GTWidget::findWidget(os, "browseOutputButton", dialog));
 
-            auto buttonBox = GTWidget::findExactWidget<QDialogButtonBox*>(os, "buttonBox", dialog);
+            auto buttonBox = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
             GTWidget::click(os, buttonBox->button(QDialogButtonBox::Ok));
         };
 
@@ -3613,7 +3609,7 @@ GUI_TEST_CLASS_DEFINITION(test_4588_1) {
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, outputPath, GTGlobals::UseMouse, GTFileDialogUtils::Save));
             GTWidget::click(os, GTWidget::findWidget(os, "browseOutputButton", dialog));
 
-            auto buttonBox = GTWidget::findExactWidget<QDialogButtonBox*>(os, "buttonBox", dialog);
+            auto buttonBox = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
             GTWidget::click(os, buttonBox->button(QDialogButtonBox::Ok));
         }
 
@@ -4113,17 +4109,17 @@ GUI_TEST_CLASS_DEFINITION(test_4689_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Open general option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
-    QComboBox* consensusType = GTWidget::findExactWidget<QComboBox*>(os, "consensusType");
-    QSpinBox* thresholdSpinBox = GTWidget::findExactWidget<QSpinBox*>(os, "thresholdSpinBox");
+    auto consensusType = GTWidget::findComboBox(os, "consensusType");
+    auto thresholdSpinBox = GTWidget::findSpinBox(os, "thresholdSpinBox");
 
     //    3. Set "Strict" consensus algorithm
     GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
     GTComboBox::selectItemByText(os, consensusType, "Strict");
     GTSpinBox::setValue(os, thresholdSpinBox, 50, GTGlobals::UseKeyBoard);
 
-    QLineEdit* sequenceLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "sequenceLineEdit");
-    consensusType = GTWidget::findExactWidget<QComboBox*>(os, "consensusType");
-    thresholdSpinBox = GTWidget::findExactWidget<QSpinBox*>(os, "thresholdSpinBox");
+    auto sequenceLineEdit = GTWidget::findLineEdit(os, "sequenceLineEdit");
+    consensusType = GTWidget::findComboBox(os, "consensusType");
+    thresholdSpinBox = GTWidget::findSpinBox(os, "thresholdSpinBox");
 
     CHECK_SET_ERR(sequenceLineEdit->text() == "Phaneroptera_falcata", QString("unexpected reference: %1").arg(sequenceLineEdit->text()));
     CHECK_SET_ERR(consensusType->currentText() == "Strict", QString("unexpected consensus: %1").arg(consensusType->currentText()));
@@ -4134,7 +4130,7 @@ GUI_TEST_CLASS_DEFINITION(test_4689_1) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_LOAD << "Sequence from file"));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
     //    5. Check that algorithm is "Strict", but set of algorithms correspont to raw alphabet
-    consensusType = GTWidget::findExactWidget<QComboBox*>(os, "consensusType");
+    consensusType = GTWidget::findComboBox(os, "consensusType");
 
     CHECK_SET_ERR(consensusType->currentText() == "Strict", QString("unexpected consensus: %1").arg(consensusType->currentText()));
     CHECK_SET_ERR(consensusType->count() == 2, QString("Incorrect consensus algorithms count: %1").arg(consensusType->count()));
@@ -4155,7 +4151,7 @@ GUI_TEST_CLASS_DEFINITION(test_4689_2) {
     //    4. Open general option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
     //    5. Set consensus algorithm "Levitsky"
-    QComboBox* consensusType = GTWidget::findExactWidget<QComboBox*>(os, "consensusType");
+    auto consensusType = GTWidget::findComboBox(os, "consensusType");
     GTComboBox::selectItemByText(os, consensusType, "Levitsky");
     //    6. Close the tab
     GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::General);
@@ -4167,7 +4163,7 @@ GUI_TEST_CLASS_DEFINITION(test_4689_2) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
 
     //    9. Check that algorithm is "ClustalW"
-    consensusType = GTWidget::findExactWidget<QComboBox*>(os, "consensusType");
+    consensusType = GTWidget::findComboBox(os, "consensusType");
     CHECK_SET_ERR(consensusType->currentText() == "ClustalW", QString("unexpected consensus: %1").arg(consensusType->currentText()));
     //    10. Change algorithm
     GTComboBox::selectItemByText(os, consensusType, "Strict");
@@ -4348,7 +4344,7 @@ GUI_TEST_CLASS_DEFINITION(test_4710) {
         void run(HI::GUITestOpStatus& os) {
             //    4) Select some dashboards in the dialog
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QTreeWidget* listWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "listWidget", dialog);
+            auto listWidget = GTWidget::findTreeWidget(os, "listWidget", dialog);
             GTTreeWidget::click(os, listWidget->invisibleRootItem()->child(0));
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Confirm"));
@@ -5014,8 +5010,8 @@ GUI_TEST_CLASS_DEFINITION(test_4803_1) {
     // 3. Call context menu on tree tab.Press "Close tab" menu item
     // bug state : tab is colsed, but tree view is empty, and tree settings on options panel still present.Any change of tree settings causes crash
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Close tab"}));
-    GTTabWidget::clickTab(os, GTWidget::findExactWidget<QTabWidget*>(os, "MsaEditorTreeTab"), 0, Qt::RightButton);
-    CHECK_SET_ERR(nullptr == GTWidget::findExactWidget<QTabWidget*>(os, "MsaEditorTreeTab", nullptr, {false}), "Msa editor tree tab widget is not closed");
+    GTTabWidget::clickTab(os, GTWidget::findTabWidget(os, "MsaEditorTreeTab"), 0, Qt::RightButton);
+    CHECK_SET_ERR(nullptr == GTWidget::findTabWidget(os, "MsaEditorTreeTab", nullptr, {false}), "Msa editor tree tab widget is not closed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4803_2) {
@@ -5030,12 +5026,12 @@ GUI_TEST_CLASS_DEFINITION(test_4803_2) {
 
     // 3. Call context menu on tree tab. Check that there are not items "Add horizontal splitter" or "Add vertical splitter"
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Add horizontal splitter"}, PopupChecker::CheckOptions(PopupChecker::NotExists)));
-    GTTabWidget::clickTab(os, GTWidget::findExactWidget<QTabWidget*>(os, "MsaEditorTreeTab"), 0, Qt::RightButton);
+    GTTabWidget::clickTab(os, GTWidget::findTabWidget(os, "MsaEditorTreeTab"), 0, Qt::RightButton);
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Add vertical splitter"}, PopupChecker::CheckOptions(PopupChecker::NotExists)));
-    GTTabWidget::clickTab(os, GTWidget::findExactWidget<QTabWidget*>(os, "MsaEditorTreeTab"), 0, Qt::RightButton);
+    GTTabWidget::clickTab(os, GTWidget::findTabWidget(os, "MsaEditorTreeTab"), 0, Qt::RightButton);
     // 3. Call context menu on tree tab. Check that "Close other tabs" is disabled
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Close other tabs"}, PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
-    GTTabWidget::clickTab(os, GTWidget::findExactWidget<QTabWidget*>(os, "MsaEditorTreeTab"), 0, Qt::RightButton);
+    GTTabWidget::clickTab(os, GTWidget::findTabWidget(os, "MsaEditorTreeTab"), 0, Qt::RightButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4803_3) {
@@ -5056,19 +5052,19 @@ GUI_TEST_CLASS_DEFINITION(test_4803_3) {
     // 4. Call context menu on tree tab.Press "Close other tabs" menu item
     // bug state : UGENE hangs up
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Close other tabs"}));
-    GTTabWidget::clickTab(os, GTWidget::findExactWidget<QTabWidget*>(os, "MsaEditorTreeTab"), 0, Qt::RightButton);
+    GTTabWidget::clickTab(os, GTWidget::findTabWidget(os, "MsaEditorTreeTab"), 0, Qt::RightButton);
 
     // 5. Call context menu on tree tab. Check that "Close other tabs" item is disabled.
     // Bug state : both tabs are closed
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Close other tabs"}, PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
-    GTTabWidget::clickTab(os, GTWidget::findExactWidget<QTabWidget*>(os, "MsaEditorTreeTab"), 0, Qt::RightButton);
+    GTTabWidget::clickTab(os, GTWidget::findTabWidget(os, "MsaEditorTreeTab"), 0, Qt::RightButton);
 
     // 6. Call context menu on tree tab. Press "Close tab".
     // Expected state: tree tab widget is closed
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Close tab"}));
-    GTTabWidget::clickTab(os, GTWidget::findExactWidget<QTabWidget*>(os, "MsaEditorTreeTab"), 0, Qt::RightButton);
+    GTTabWidget::clickTab(os, GTWidget::findTabWidget(os, "MsaEditorTreeTab"), 0, Qt::RightButton);
 
-    CHECK_SET_ERR(nullptr == GTWidget::findExactWidget<QTabWidget*>(os, "MsaEditorTreeTab", nullptr, {false}), "Msa editor tree tab widget is not closed");
+    CHECK_SET_ERR(nullptr == GTWidget::findTabWidget(os, "MsaEditorTreeTab", nullptr, {false}), "Msa editor tree tab widget is not closed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4803_4) {
@@ -5083,9 +5079,9 @@ GUI_TEST_CLASS_DEFINITION(test_4803_4) {
 
     // 3. Call context menu on tree tab. Check that there are not items "Refresh tab" and "Refresh all tabs"
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Refresh tab"}, PopupChecker::CheckOptions(PopupChecker::NotExists)));
-    GTTabWidget::clickTab(os, GTWidget::findExactWidget<QTabWidget*>(os, "MsaEditorTreeTab"), 0, Qt::RightButton);
+    GTTabWidget::clickTab(os, GTWidget::findTabWidget(os, "MsaEditorTreeTab"), 0, Qt::RightButton);
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Refresh all tabs"}, PopupChecker::CheckOptions(PopupChecker::NotExists)));
-    GTTabWidget::clickTab(os, GTWidget::findExactWidget<QTabWidget*>(os, "MsaEditorTreeTab"), 0, Qt::RightButton);
+    GTTabWidget::clickTab(os, GTWidget::findTabWidget(os, "MsaEditorTreeTab"), 0, Qt::RightButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4804_1) {
@@ -5548,7 +5544,7 @@ GUI_TEST_CLASS_DEFINITION(test_4913) {
             CHECK_SET_ERR(comboAlg != nullptr, "dataBase not found!");
             CHECK_SET_ERR(comboAlg->currentText() == "blastp", QString("Value of dataBase not equal blastp, it has other default value: %1!").arg(comboAlg->currentText()));
 
-            GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget*>(os, "optionsTab"), 1);
+            GTTabWidget::setCurrentIndex(os, GTWidget::findTabWidget(os, "optionsTab"), 1);
             QComboBox* combo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "wordSizeComboBox"));
             CHECK_SET_ERR(combo != nullptr, "wordSizeComboBox not found!");
             CHECK_SET_ERR(combo->currentText() == "6", QString("Value of wordSizeComboBox not equal 6, it has other default value: %1!").arg(combo->currentText()));
@@ -5890,7 +5886,7 @@ GUI_TEST_CLASS_DEFINITION(test_4996) {
 
     // Expected state: the pattern enter field becomes red.
 
-    QTextEdit* editPatterns = GTWidget::findExactWidget<QTextEdit*>(os, "textPattern");
+    auto editPatterns = GTWidget::findTextEdit(os, "textPattern");
     QString style0 = editPatterns->styleSheet();
     CHECK_SET_ERR(style0 == "background-color: " + GUIUtils::WARNING_COLOR.name() + ";", "unexpected styleSheet: " + style0);
 

@@ -1470,7 +1470,7 @@ GUI_TEST_CLASS_DEFINITION(test_2269) {
     public:
         virtual void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QComboBox* methodNamesBox = GTWidget::findExactWidget<QComboBox*>(os, "methodNamesBox", dialog);
+            auto methodNamesBox = GTWidget::findComboBox(os, "methodNamesBox", dialog);
             GTComboBox::selectItemByText(os, methodNamesBox, "Bowtie2");
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/1093/refrence.fa"));
@@ -1481,10 +1481,10 @@ GUI_TEST_CLASS_DEFINITION(test_2269) {
             QWidget* addShortreadsButton = GTWidget::findWidget(os, "addShortreadsButton", dialog);
             GTWidget::click(os, addShortreadsButton);
 
-            QCheckBox* seedCheckBox = GTWidget::findExactWidget<QCheckBox*>(os, "seedlenCheckBox", dialog);
+            auto seedCheckBox = GTWidget::findCheckBox(os, "seedlenCheckBox", dialog);
             GTCheckBox::setChecked(os, seedCheckBox, true);
 
-            QSpinBox* seedSpinBox = GTWidget::findExactWidget<QSpinBox*>(os, "seedlenSpinBox", dialog);
+            auto seedSpinBox = GTWidget::findSpinBox(os, "seedlenSpinBox", dialog);
             int max = seedSpinBox->maximum();
             CHECK_SET_ERR(max == 31, QString("wrong seed maximim: %1").arg(max));
 
@@ -2870,7 +2870,7 @@ GUI_TEST_CLASS_DEFINITION(test_2513) {
 
     //    Switch to the circular layout on the tree view.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_TREES_WIDGET"));
-    QComboBox* layoutCombo = GTWidget::findExactWidget<QComboBox*>(os, "layoutCombo");
+    auto layoutCombo = GTWidget::findComboBox(os, "layoutCombo");
     GTComboBox::selectItemByText(os, layoutCombo, "Circular");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -3622,7 +3622,7 @@ GUI_TEST_CLASS_DEFINITION(test_2640) {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
-            QSpinBox* cpuBox = GTWidget::findExactWidget<QSpinBox*>(os, "cpuBox", dialog);
+            auto cpuBox = GTWidget::findSpinBox(os, "cpuBox", dialog);
             GTSpinBox::setValue(os, cpuBox, 94, GTGlobals::UseKeyBoard);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -3734,7 +3734,7 @@ GUI_TEST_CLASS_DEFINITION(test_2656) {
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, seqPath, seqName));
             GTWidget::click(os, GTWidget::findPushButton(os, "loadSequenceButton", dialog));
 
-            auto box = GTWidget::findExactWidget<QDialogButtonBox*>(os, "buttonBox", dialog);
+            auto box = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
             QPushButton* button = box->button(QDialogButtonBox::Cancel);
             CHECK_SET_ERR(button != nullptr, "Cancel button is NULL");
             GTWidget::click(os, button);
@@ -5322,10 +5322,10 @@ GUI_TEST_CLASS_DEFINITION(test_2981) {
     //    Expected state: the tree is shown in the MSA Editor.
 
     //    4. Click a "Layout" button on the tree view toolbar, select a "Circular" menu item.
-    QComboBox* layoutCombo = GTWidget::findExactWidget<QComboBox*>(os, "layoutCombo");
+    auto layoutCombo = GTWidget::findComboBox(os, "layoutCombo");
     GTComboBox::selectItemByText(os, layoutCombo, "Circular");
     //    Expected state: the tree becomes circular.
-    QGraphicsView* treeView = GTWidget::findExactWidget<QGraphicsView*>(os, "treeView");
+    auto treeView = GTWidget::findGraphicsView(os, "treeView");
     int initW = treeView->rect().width();
     //    5. Hide/show a project view.
     GTKeyboardDriver::keyClick('1', Qt::AltModifier);

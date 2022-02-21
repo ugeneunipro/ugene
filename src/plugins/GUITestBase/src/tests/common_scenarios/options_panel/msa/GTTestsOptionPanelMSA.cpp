@@ -2168,7 +2168,7 @@ GUI_TEST_CLASS_DEFINITION(statistics_test_0002) {
     QString s1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 1);
     CHECK_SET_ERR(s1 == "82%", QString("Unexpected similarity at line 2: %1").arg(s1));
 //    6. Check counts mode
-    QRadioButton* countsButton = GTWidget::findExactWidget<QRadioButton*>(os, "countsButton");
+    QRadioButton* countsButton = GTWidget::findRadioButton(os, "countsButton");
     GTRadioButton::click(os, countsButton);
 
     s0 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 0);

@@ -761,7 +761,7 @@ GUI_TEST_CLASS_DEFINITION(test_1047) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Choose a color scheme in options panel of assembly browser. Try zooming with mouse wheel.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_SETTINGS"));
-    QComboBox* colorBox = GTWidget::findExactWidget<QComboBox*>(os, "READS_HIGHLIGHTNING_COMBO");
+    auto colorBox = GTWidget::findComboBox(os, "READS_HIGHLIGHTNING_COMBO");
     GTComboBox::selectItemByText(os, colorBox, "Strand direction");
     //    Bug state: Zoom and color scheme changing simultaneously.
     QWidget* assembly_reads_area = GTWidget::findWidget(os, "assembly_reads_area");
@@ -827,7 +827,7 @@ GUI_TEST_CLASS_DEFINITION(test_1049) {
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             //    4. Check the "Show group statistics of multiple alignment" checkbox and press the "Generate" button.
-            QCheckBox* groupStatisticsCheck = GTWidget::findExactWidget<QCheckBox*>(os, "groupStatisticsCheck", dialog);
+            auto groupStatisticsCheck = GTWidget::findCheckBox(os, "groupStatisticsCheck", dialog);
             GTCheckBox::setChecked(os, groupStatisticsCheck, true);
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
@@ -904,7 +904,7 @@ GUI_TEST_CLASS_DEFINITION(test_1059) {
     GTMouseDriver::release();
     GTThread::waitForMainThread();
 
-    GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "nameEdit"), "Write Sequence 1");
+    GTLineEdit::setText(os, GTWidget::findLineEdit(os, "nameEdit"), "Write Sequence 1");
 
     // 5. Change 'Output file' parameter to 'ssss' at fist worker
     // Expected state : 'Output file' parameter for 2nd worker not 'sssss'
@@ -925,11 +925,11 @@ GUI_TEST_CLASS_DEFINITION(test_1061) {
 
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QLineEdit* markerNameEdit = GTWidget::findExactWidget<QLineEdit*>(os, "markerNameEdit", dialog);
+            auto markerNameEdit = GTWidget::findLineEdit(os, "markerNameEdit", dialog);
             GTLineEdit::setText(os, markerNameEdit, "1");
 
             GTWidget::click(os, GTWidget::findWidget(os, "containsButton", dialog));
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit*>(os, "containsEdit"), "1");
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "containsEdit"), "1");
 
             GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
         }
@@ -943,10 +943,10 @@ GUI_TEST_CLASS_DEFINITION(test_1061) {
 
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QComboBox* typeBox = GTWidget::findExactWidget<QComboBox*>(os, "typeBox", dialog);
+            auto typeBox = GTWidget::findComboBox(os, "typeBox", dialog);
             GTComboBox::selectItemByText(os, typeBox, "Qualifier text value markers");
 
-            QLineEdit* addParamEdit = GTWidget::findExactWidget<QLineEdit*>(os, "addParamEdit", dialog);
+            auto addParamEdit = GTWidget::findLineEdit(os, "addParamEdit", dialog);
             GTLineEdit::setText(os, addParamEdit, "protein_id");
 
             GTUtilsDialog::waitForDialog(os, new CreateMarkerDialogFiller(os));
@@ -1004,7 +1004,7 @@ GUI_TEST_CLASS_DEFINITION(test_1063) {
                 }
             }
 
-            GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "debuggerBox", dialog), true);
+            GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "debuggerBox", dialog), true);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -1558,7 +1558,7 @@ GUI_TEST_CLASS_DEFINITION(test_1124) {
             GTGlobals::sleep();
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             //    2. Hover the {Input files (long DNA reads to assembly)} field with mouse and wait the tooltip appeares.
-            QListWidget* seqList = GTWidget::findExactWidget<QListWidget*>(os, "seqList", dialog);
+            auto seqList = GTWidget::findListWidget(os, "seqList", dialog);
             GTWidget::click(os, seqList);
             GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(10, 10));
             //    Expected state: tooltip is presented.
@@ -1676,8 +1676,7 @@ GUI_TEST_CLASS_DEFINITION(test_1156) {
     public:
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QListWidget* availableEnzymeWidget = GTWidget::findExactWidget<QListWidget*>(os, "availableEnzymeWidget", dialog);
-            CHECK_SET_ERR(nullptr != availableEnzymeWidget, "Cannot find available enzyme list widget");
+            auto availableEnzymeWidget = GTWidget::findListWidget(os, "availableEnzymeWidget", dialog);
 
             QList<QListWidgetItem*> items = availableEnzymeWidget->findItems("BamHI", Qt::MatchStartsWith);
             CHECK_SET_ERR(items.size() == 1, "Unexpected number of enzymes starting with 'BamHI'");
@@ -1688,7 +1687,7 @@ GUI_TEST_CLASS_DEFINITION(test_1156) {
 
             GTWidget::click(os, GTWidget::findWidget(os, "addAllButton"));
 
-            GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "circularBox"));
+            GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "circularBox"));
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -2132,27 +2131,24 @@ GUI_TEST_CLASS_DEFINITION(test_1203_2) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             //    3) Set "Search the search type" to "blastn"
             //    Expected state: "Entrez query" presents on "Advanced options" tab
-            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "dataBase", dialog), "blastn");
-            GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget*>(os, "optionsTab", dialog), 1);
-            QLineEdit* entrezQueryEdit = GTWidget::findExactWidget<QLineEdit*>(os, "entrezQueryEdit", dialog);
-            CHECK_SET_ERR(nullptr != entrezQueryEdit, "entrezQueryEdit is NULL");
+            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "dataBase", dialog), "blastn");
+            GTTabWidget::setCurrentIndex(os, GTWidget::findTabWidget(os, "optionsTab", dialog), 1);
+            auto entrezQueryEdit = GTWidget::findLineEdit(os, "entrezQueryEdit", dialog);
             CHECK_SET_ERR(entrezQueryEdit->isVisible(), "entrezQueryEdit is unexpectedly not visible");
 
             //    4) Set "Search the search type" to "blastp"
             //    Expected state: "Entrez query" presents on "Advanced options" tab
-            GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget*>(os, "optionsTab", dialog), 0);
-            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "dataBase", dialog), "blastp");
-            GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget*>(os, "optionsTab", dialog), 1);
-            entrezQueryEdit = GTWidget::findExactWidget<QLineEdit*>(os, "entrezQueryEdit", dialog);
-            CHECK_SET_ERR(nullptr != entrezQueryEdit, "entrezQueryEdit is NULL");
+            GTTabWidget::setCurrentIndex(os, GTWidget::findTabWidget(os, "optionsTab", dialog), 0);
+            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "dataBase", dialog), "blastp");
+            GTTabWidget::setCurrentIndex(os, GTWidget::findTabWidget(os, "optionsTab", dialog), 1);
+            entrezQueryEdit = GTWidget::findLineEdit(os, "entrezQueryEdit", dialog);
             CHECK_SET_ERR(entrezQueryEdit->isVisible(), "entrezQueryEdit is unexpectedly not visible");
 
             //    5) Set "Search the search type" to "cdd"
             //    Expected state: "Advanced options" tab is disabled
-            GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget*>(os, "optionsTab", dialog), 0);
-            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "dataBase", dialog), "cdd");
-            QTabWidget* tabWidget = GTWidget::findExactWidget<QTabWidget*>(os, "optionsTab", dialog);
-            CHECK_SET_ERR(nullptr != tabWidget, "tabWidget is NULL");
+            GTTabWidget::setCurrentIndex(os, GTWidget::findTabWidget(os, "optionsTab", dialog), 0);
+            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "dataBase", dialog), "cdd");
+            auto tabWidget = GTWidget::findTabWidget(os, "optionsTab", dialog);
             CHECK_SET_ERR(!tabWidget->isTabEnabled(1), "'Advanced options' tab is unexpectedly enabled");
 
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -2263,16 +2259,16 @@ GUI_TEST_CLASS_DEFINITION(test_1219) {
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            GTTextEdit::setText(os, GTWidget::findExactWidget<QTextEdit*>(os, "teditPattern", dialog), "CTAAGGG");
+            GTTextEdit::setText(os, GTWidget::findTextEdit(os, "teditPattern", dialog), "CTAAGGG");
 
             //    3. Open tab "Input and output"
-            GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget*>(os, "tabWidget", dialog), 1);
+            GTTabWidget::setCurrentIndex(os, GTWidget::findTabWidget(os, "tabWidget", dialog), 1);
 
             //    4. Chose in the combobox "Multiple alignment"
-            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "resultViewVariants", dialog), "Multiple alignment");
+            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "resultViewVariants", dialog), "Multiple alignment");
 
             //    5. Check that "pattern sequence name" is "PN", where "N" is number of SW search launch.
-            GTLineEdit::checkText(os, GTWidget::findExactWidget<QLineEdit*>(os, "patternSequenceName", dialog), "P1");
+            GTLineEdit::checkText(os, GTWidget::findLineEdit(os, "patternSequenceName", dialog), "P1");
 
             //    6. Click "Align" button
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -2317,13 +2313,13 @@ GUI_TEST_CLASS_DEFINITION(test_1220) {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             //    pattern: "ATCGAT"; note that pattern length is 6.
-            GTTextEdit::setText(os, GTWidget::findExactWidget<QTextEdit*>(os, "teditPattern", dialog), "ATCGAT");
+            GTTextEdit::setText(os, GTWidget::findTextEdit(os, "teditPattern", dialog), "ATCGAT");
             //    min: 100%
-            QSpinBox* spinScorePercent = GTWidget::findExactWidget<QSpinBox*>(os, "spinScorePercent", dialog);
+            auto spinScorePercent = GTWidget::findSpinBox(os, "spinScorePercent", dialog);
             GTSpinBox::setValue(os, spinScorePercent, 100);
             //    {input-output tab} "Add qualifier...": checked
-            GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget*>(os, "tabWidget", dialog), 1);
-            QCheckBox* addPatternContentQualifierCheck = GTWidget::findExactWidget<QCheckBox*>(os, "addPatternContentQualifierCheck", dialog);
+            GTTabWidget::setCurrentIndex(os, GTWidget::findTabWidget(os, "tabWidget", dialog), 1);
+            auto addPatternContentQualifierCheck = GTWidget::findCheckBox(os, "addPatternContentQualifierCheck", dialog);
             GTCheckBox::setChecked(os, addPatternContentQualifierCheck, true);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -2536,7 +2532,7 @@ GUI_TEST_CLASS_DEFINITION(test_1249) {
     public:
         virtual void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QLabel* totalNumberOfEnzymesLabel = GTWidget::findExactWidget<QLabel*>(os, "statusLabel");
+            auto totalNumberOfEnzymesLabel = GTWidget::findLabel(os, "statusLabel");
             QString labelText = totalNumberOfEnzymesLabel->text();
             QString s = QString("4862");
             CHECK_SET_ERR(labelText.contains(s), QString("label text: %1. It does not contais %2").arg(labelText).arg(s));
@@ -2680,9 +2676,9 @@ GUI_TEST_CLASS_DEFINITION(test_1253) {
     GTUtilsOptionPanelSequenceView::enterPattern(os, "AAAAAAA", true);
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Annotation parameters"));
     //    3. Rename annotation and annotation group
-    QLineEdit* leGroupName = GTWidget::findExactWidget<QLineEdit*>(os, "leGroupName");
+    auto leGroupName = GTWidget::findLineEdit(os, "leGroupName");
     GTLineEdit::setText(os, leGroupName, "groupName");
-    QLineEdit* leAnnotationName = GTWidget::findExactWidget<QLineEdit*>(os, "leAnnotationName");
+    auto leAnnotationName = GTWidget::findLineEdit(os, "leAnnotationName");
     GTLineEdit::setText(os, leAnnotationName, "annName");
     GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3328,22 +3324,22 @@ GUI_TEST_CLASS_DEFINITION(test_1321_2) {
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget*>(os, "tabWidget"), 1);
+            GTTabWidget::setCurrentIndex(os, GTWidget::findTabWidget(os, "tabWidget"), 1);
 
-            GTWidget::findExactWidget<QCheckBox*>(os, "algoCheck", dialog);
-            GTWidget::findExactWidget<QComboBox*>(os, "algoCombo", dialog);
-            GTWidget::findExactWidget<QCheckBox*>(os, "annotationFitCheck", dialog);
-            GTWidget::findExactWidget<QLineEdit*>(os, "annotationFitEdit", dialog);
-            GTWidget::findExactWidget<QToolButton*>(os, "annotationFitButton", dialog);
-            GTWidget::findExactWidget<QCheckBox*>(os, "annotationAroundKeepCheck", dialog);
-            GTWidget::findExactWidget<QLineEdit*>(os, "annotationAroundKeepEdit", dialog);
-            GTWidget::findExactWidget<QToolButton*>(os, "annotationAroundKeepButton", dialog);
-            GTWidget::findExactWidget<QCheckBox*>(os, "annotationAroundFilterCheck", dialog);
-            GTWidget::findExactWidget<QLineEdit*>(os, "annotationAroundFilterEdit", dialog);
-            GTWidget::findExactWidget<QToolButton*>(os, "annotationAroundFilterButton", dialog);
-            GTWidget::findExactWidget<QComboBox*>(os, "filterAlgorithms", dialog);
-            GTWidget::findExactWidget<QCheckBox*>(os, "invertCheck", dialog);
-            GTWidget::findExactWidget<QCheckBox*>(os, "excludeTandemsBox", dialog);
+            GTWidget::findCheckBox(os, "algoCheck", dialog);
+            GTWidget::findComboBox(os, "algoCombo", dialog);
+            GTWidget::findCheckBox(os, "annotationFitCheck", dialog);
+            GTWidget::findLineEdit(os, "annotationFitEdit", dialog);
+            GTWidget::findToolButton(os, "annotationFitButton", dialog);
+            GTWidget::findCheckBox(os, "annotationAroundKeepCheck", dialog);
+            GTWidget::findLineEdit(os, "annotationAroundKeepEdit", dialog);
+            GTWidget::findToolButton(os, "annotationAroundKeepButton", dialog);
+            GTWidget::findCheckBox(os, "annotationAroundFilterCheck", dialog);
+            GTWidget::findLineEdit(os, "annotationAroundFilterEdit", dialog);
+            GTWidget::findToolButton(os, "annotationAroundFilterButton", dialog);
+            GTWidget::findComboBox(os, "filterAlgorithms", dialog);
+            GTWidget::findCheckBox(os, "invertCheck", dialog);
+            GTWidget::findCheckBox(os, "excludeTandemsBox", dialog);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
@@ -3863,7 +3859,7 @@ GUI_TEST_CLASS_DEFINITION(test_1408) {
     class outerScenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QLineEdit* readFileLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "readFileName", dialog);
+            auto readFileLineEdit = GTWidget::findLineEdit(os, "readFileName", dialog);
             GTLineEdit::setText(os, readFileLineEdit, testDir + "_common_data/scenarios/annotations_import/anns1.csv");
 
             GTWidget::click(os, GTWidget::findWidget(os, "guessButton", dialog));
@@ -4440,9 +4436,9 @@ GUI_TEST_CLASS_DEFINITION(test_1443) {
     class InnerScenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QLineEdit* start_edit_line = GTWidget::findExactWidget<QLineEdit*>(os, "start_edit_line", dialog);
+            auto start_edit_line = GTWidget::findLineEdit(os, "start_edit_line", dialog);
             CHECK_SET_ERR(start_edit_line->text() == "1", "unexpected start text " + start_edit_line->text());
-            QLineEdit* end_edit_line = GTWidget::findExactWidget<QLineEdit*>(os, "end_edit_line", dialog);
+            auto end_edit_line = GTWidget::findLineEdit(os, "end_edit_line", dialog);
             CHECK_SET_ERR(end_edit_line->text() == "199950", "unexpected end text " + end_edit_line->text());
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -4459,14 +4455,14 @@ GUI_TEST_CLASS_DEFINITION(test_1443) {
             GTWidget::click(os, GTWidget::findWidget(os, "fromProjectButton"));
 
             //    6. Select the only available fragment and click "Add"
-            QListWidget* fragmentListWidget = GTWidget::findExactWidget<QListWidget*>(os, "fragmentListWidget", dialog);
+            auto fragmentListWidget = GTWidget::findListWidget(os, "fragmentListWidget", dialog);
             GTListWidget::click(os, fragmentListWidget, "human_T1 (UCSC April 2002 chr7:115977709-117855134) (human_T1.fa) Fragment (1-199950)");
             GTWidget::click(os, GTWidget::findWidget(os, "takeButton", dialog));
             //    7. Uncheck "Force blunt and omit all overhangs"
-            QCheckBox* makeBluntBox = GTWidget::findExactWidget<QCheckBox*>(os, "makeBluntBox", dialog);
+            auto makeBluntBox = GTWidget::findCheckBox(os, "makeBluntBox", dialog);
             GTCheckBox::setChecked(os, makeBluntBox, false);
             //    8. Check "Make circular"
-            QCheckBox* makeCircularBox = GTWidget::findExactWidget<QCheckBox*>(os, "makeCircularBox", dialog);
+            auto makeCircularBox = GTWidget::findCheckBox(os, "makeCircularBox", dialog);
             GTCheckBox::setChecked(os, makeCircularBox, true);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -4506,7 +4502,7 @@ GUI_TEST_CLASS_DEFINITION(test_1461_1) {
     //    Expected state: "Scoring matrix" field not contain "rna" value.
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) {
-            QComboBox* comboMatrix = GTWidget::findExactWidget<QComboBox*>(os, "comboMatrix", GTWidget::getActiveModalWidget(os));
+            auto comboMatrix = GTWidget::findComboBox(os, "comboMatrix", GTWidget::getActiveModalWidget(os));
             for (int i = 0; i < comboMatrix->count(); i++) {
                 CHECK_SET_ERR(!comboMatrix->itemText(i).contains("rna", Qt::CaseInsensitive),
                               QString("'rna' item unexpectidly found at index: %1, text is %2").arg(i).arg(comboMatrix->itemText(i)));
@@ -4531,8 +4527,7 @@ GUI_TEST_CLASS_DEFINITION(test_1461_2) {
     //    Expected state: "Scoring matrix" field contain only "rna" value.
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) {
-            QComboBox* comboMatrix = GTWidget::findExactWidget<QComboBox*>(os, "comboMatrix", GTWidget::getActiveModalWidget(os));
-            CHECK_SET_ERR(nullptr != comboMatrix, "Matrix combobox is NULL");
+            auto comboMatrix = GTWidget::findComboBox(os, "comboMatrix", GTWidget::getActiveModalWidget(os));
             GTComboBox::selectItemByText(os, comboMatrix, "rna");
             CHECK_SET_ERR(1 == comboMatrix->count(), "There are several unexpected matrices");
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
@@ -4672,13 +4667,13 @@ GUI_TEST_CLASS_DEFINITION(test_1499) {
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-            auto algorithmBox = GTWidget::findExactWidget<QComboBox*>(os, "algorithmBox", dialog);
+            auto algorithmBox = GTWidget::findComboBox(os, "algorithmBox", dialog);
             GTComboBox::selectItemByText(os, algorithmBox, "MrBayes");
 
-            auto saveLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "fileNameEdit", dialog);
+            auto saveLineEdit = GTWidget::findLineEdit(os, "fileNameEdit", dialog);
             GTLineEdit::setText(os, saveLineEdit, sandBoxDir + "1499.nwk");
 
-            auto box = GTWidget::findExactWidget<QDialogButtonBox*>(os, "buttonBox", dialog);
+            auto box = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
 
             QPushButton* button = box->button(QDialogButtonBox::Ok);
             GTWidget::click(os, button);
@@ -4739,7 +4734,7 @@ GUI_TEST_CLASS_DEFINITION(test_1506) {
     //    4) Build.
     //    Expected: the tree appears synchronized with the MSA Editor. Clustering blue line is shown.
     //    5) Click the "Layout" button on the Tree View toolbar and choose the circular or unrooted layout.
-    QComboBox* layoutCombo = GTWidget::findExactWidget<QComboBox*>(os, "layoutCombo");
+    auto layoutCombo = GTWidget::findComboBox(os, "layoutCombo");
     GTComboBox::selectItemByText(os, layoutCombo, "Circular");
     //    6) Zoom in the tree using mouse scroll.
     GTWidget::click(os, GTWidget::findWidget(os, "treeView"));
@@ -5463,7 +5458,7 @@ GUI_TEST_CLASS_DEFINITION(test_1595) {
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Genbank/sars.gb");
     //    5) Select some of the added items in the list.
     QWidget* datasetWidget = GTWidget::findWidget(os, "DatasetWidget");
-    QListWidget* items = GTWidget::findExactWidget<QListWidget*>(os, "itemsArea", datasetWidget);
+    auto items = GTWidget::findListWidget(os, "itemsArea", datasetWidget);
     GTListWidget::click(os, items, "sars.gb");
     //    6) Press Delete button.
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
@@ -6026,12 +6021,12 @@ GUI_TEST_CLASS_DEFINITION(test_1651) {
         void run(HI::GUITestOpStatus& os) {
             GTGlobals::sleep();
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QLabel* hintLabel = GTWidget::findExactWidget<QLabel*>(os, "hintLabel", dialog);
+            auto hintLabel = GTWidget::findLabel(os, "hintLabel", dialog);
             //    2. There are sample IDs in the hints
             GTWidget::clickLabelLink(os, hintLabel, 20, 6);
 
             //    3. Clicking on a sample ID must out in in the LineEdit automatically
-            QLineEdit* idLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "idLineEdit", dialog);
+            auto idLineEdit = GTWidget::findLineEdit(os, "idLineEdit", dialog);
             CHECK_SET_ERR(idLineEdit->text() == "NC_001363", "Unexpected lineEdit text: " + idLineEdit->text());
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
@@ -6952,7 +6947,7 @@ GUI_TEST_CLASS_DEFINITION(test_1747) {
     GTUtilsDialog::waitForDialog(os, new DistanceMatrixDialogFiller(os));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
-    QProgressBar* taskProgressBar = GTWidget::findExactWidget<QProgressBar*>(os, "taskProgressBar");
+    auto taskProgressBar = GTWidget::findProgressBar(os, "taskProgressBar");
     QString text = taskProgressBar->text();
     CHECK_SET_ERR(text.contains("%"), "unexpected text: " + text);
     text = text.left(text.length() - 1);
@@ -7038,7 +7033,7 @@ GUI_TEST_CLASS_DEFINITION(test_1734) {
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/bam/small.bam.sorted.bam"));
             GTWidget::click(os, GTWidget::findWidget(os, "addFileButton", wizard->currentPage()));
 
-            QListWidget* itemsArea = GTWidget::findExactWidget<QListWidget*>(os, "itemsArea", wizard);
+            auto itemsArea = GTWidget::findListWidget(os, "itemsArea", wizard);
             CHECK_SET_ERR(itemsArea->count() == 3, "unexpected items number");
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
@@ -7208,7 +7203,7 @@ GUI_TEST_CLASS_DEFINITION(test_1763_1) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Expected state: Workflow dasboard tab opened.
-    QTabWidget* tabView = GTWidget::findExactWidget<QTabWidget*>(os, "WorkflowTabView");
+    auto tabView = GTWidget::findTabWidget(os, "WorkflowTabView");
     //    4. On opened tab click right mouse button
     class custom : public CustomScenario {
     public:
@@ -7351,7 +7346,7 @@ GUI_TEST_CLASS_DEFINITION(test_1798) {
 
     // 3. Open Tasks tab
     //    Expected state: check tasks progress percentage is correct
-    QProgressBar* taskProgressBar = GTWidget::findExactWidget<QProgressBar*>(os, "taskProgressBar");
+    auto taskProgressBar = GTWidget::findProgressBar(os, "taskProgressBar");
     QString text = taskProgressBar->text();
     CHECK_SET_ERR(text.contains("%"), "unexpected text: " + text);
     text = text.left(text.length() - 1);

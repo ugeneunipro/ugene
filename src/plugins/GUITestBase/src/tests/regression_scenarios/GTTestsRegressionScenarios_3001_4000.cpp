@@ -1266,7 +1266,7 @@ GUI_TEST_CLASS_DEFINITION(test_3221) {
 
     GTUtilsOptionPanelSequenceView::openAnnotationParametersShowHideWidget(os, true);
 
-    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "chbUsePatternNames"), true);
+    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "chbUsePatternNames"), true);
     GTUtilsOptionPanelSequenceView::clickGetAnnotation(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1283,7 +1283,7 @@ GUI_TEST_CLASS_DEFINITION(test_3223) {
                       "ATTGACA\n";
     GTUtilsOptionPanelSequenceView::enterPattern(os, pattern, true);
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Annotation parameters"));
-    QCheckBox* chbUsePatternNames = GTWidget::findExactWidget<QCheckBox*>(os, "chbUsePatternNames");
+    auto chbUsePatternNames = GTWidget::findCheckBox(os, "chbUsePatternNames");
     GTCheckBox::setChecked(os, chbUsePatternNames, true);
     GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1767,7 +1767,7 @@ GUI_TEST_CLASS_DEFINITION(test_3288) {
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
 
     // 3. Select the "PhyML" tool, set "Equilibrium frequencies" option to "optimized", build the tree
-    auto taskProgressBar = GTWidget::findExactWidget<QProgressBar*>(os, "taskProgressBar");
+    auto taskProgressBar = GTWidget::findProgressBar(os, "taskProgressBar");
     int percent = 0;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && percent == 0; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
@@ -2927,7 +2927,7 @@ GUI_TEST_CLASS_DEFINITION(test_3484) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Check that tree is visible.
-    GTWidget::findExactWidget<QGraphicsView*>(os, "treeView");
+    GTWidget::findGraphicsView(os, "treeView");
 
     GTUtilsDocument::unloadDocument(os, "COI_3484.nwk", false);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3174,7 +3174,7 @@ GUI_TEST_CLASS_DEFINITION(test_3552) {
     GTWidget::findLabelByText(os, "Running task: Render overview", statusBar);
 
     // Check progress bar text.
-    QString taskProgressBarText = GTWidget::findExactWidget<QProgressBar*>(os, "taskProgressBar", statusBar)->text();
+    QString taskProgressBarText = GTWidget::findProgressBar(os, "taskProgressBar", statusBar)->text();
     CHECK_SET_ERR(taskProgressBarText.contains("%"), "Unexpected progress bar text: " + taskProgressBarText);
     GTUtilsTaskTreeView::waitTaskFinished(os, 10000);
 }
@@ -3465,7 +3465,7 @@ GUI_TEST_CLASS_DEFINITION(test_3603) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     GTWidget::click(os, GTWidget::findWidget(os, "OP_FIND_PATTERN"));
-    QComboBox* regionComboBox = GTWidget::findExactWidget<QComboBox*>(os, "boxRegion");
+    auto regionComboBox = GTWidget::findComboBox(os, "boxRegion");
     if (!regionComboBox->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
     }
@@ -3476,8 +3476,8 @@ GUI_TEST_CLASS_DEFINITION(test_3603) {
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os));
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
 
-    QLineEdit* startEdit = GTWidget::findExactWidget<QLineEdit*>(os, "editStart");
-    QLineEdit* endEdit = GTWidget::findExactWidget<QLineEdit*>(os, "editEnd");
+    auto startEdit = GTWidget::findLineEdit(os, "editStart");
+    auto endEdit = GTWidget::findLineEdit(os, "editEnd");
     CHECK_SET_ERR(startEdit->text() == "1" && endEdit->text() == "199950", "Selection is wrong!");
     GTUtilsLog::check(os, l);
 }
@@ -3647,9 +3647,9 @@ GUI_TEST_CLASS_DEFINITION(test_3612) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Algorithm settings"));
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Output settings"));
-    GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox*>(os, "algorithmListComboBox"), "Smith-Waterman");
-    GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox*>(os, "gapOpen"), 1);
-    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "inNewWindowCheckBox"), false);
+    GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "algorithmListComboBox"), "Smith-Waterman");
+    GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "gapOpen"), 1);
+    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "inNewWindowCheckBox"), false);
     GTWidget::click(os, GTWidget::findWidget(os, "alignButton"));
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3793,7 +3793,7 @@ GUI_TEST_CLASS_DEFINITION(test_3625) {
     CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/33"), "Results string not match. Expected 33.");
 
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Other settings"));
-    QCheckBox* removeOverlapsBox = GTWidget::findExactWidget<QCheckBox*>(os, "removeOverlapsBox");
+    auto removeOverlapsBox = GTWidget::findCheckBox(os, "removeOverlapsBox");
     GTWidget::click(os, removeOverlapsBox);
 
     CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/7"), "Results string not match. Expected 7.");
@@ -4653,7 +4653,7 @@ GUI_TEST_CLASS_DEFINITION(test_3778) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QLineEdit* fileNameEdit = GTWidget::findExactWidget<QLineEdit*>(os, "fileNameEdit", dialog);
+            auto fileNameEdit = GTWidget::findLineEdit(os, "fileNameEdit", dialog);
             GTLineEdit::setText(os, fileNameEdit, sandBoxDir + "circular_human_T1 (UCSC April 2002 chr7:115977709-117855134).png");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -4991,7 +4991,7 @@ GUI_TEST_CLASS_DEFINITION(test_3850) {
 
     // 5. Check "Use pattern name" checkbox.
     GTUtilsOptionPanelSequenceView::openAnnotationParametersShowHideWidget(os, true);
-    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "chbUsePatternNames"), true);
+    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "chbUsePatternNames"), true);
 
     // 3. Check "Load patterns from file" checkbox.
     GTUtilsOptionPanelSequenceView::toggleInputFromFilePattern(os);
