@@ -251,7 +251,6 @@ void BwaMemWorkerFactory::init() {
         delegates[BAND_WIDTH] = new SpinBoxDelegate(spinMap);
         delegates[DROPOFF] = new SpinBoxDelegate(spinMap);
         delegates[INTERNAL_SEED_LOOKUP] = new DoubleSpinBoxDelegate(spinMap);
-        delegates[SKIP_MATE_RESCUES] = new SpinBoxDelegate(spinMap);
         delegates[DROP_CHAINS_THRESHOLD] = new DoubleSpinBoxDelegate(spinMap);
         delegates[MAX_MATE_RESCUES] = new SpinBoxDelegate(spinMap);
         delegates[MATCH_SCORE] = new SpinBoxDelegate(spinMap);
