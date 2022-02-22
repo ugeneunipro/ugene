@@ -414,33 +414,44 @@ GUI_TEST_CLASS_DEFINITION(test_7128) {
     // Open COI.aln and Align with MAFFT.
     // Expected: the log contains errors like "file "sandbox_dir/mafft/mafft.bat" doesn't exist".
 
+    QString mafftDirToRemove = sandBoxDir + "mafft";
+    QString mafftPathToRemove = mafftDirToRemove + "/mafft.bat";
+
     class SetMafft : public CustomScenario {
+    public:
+        SetMafft(const QString& mafftDir, const QString& mafftPath)
+            : mafftDir(mafftDir), mafftPath(mafftPath) {
+        }
         void run(GUITestOpStatus& os) override {
             QString toolPath = AppSettingsDialogFiller::getExternalToolPath(os, "MAFFT");
-            GTFile::copy(os, toolPath, sandBoxDir + "mafft.bat");
-            GTFile::copy(os, toolPath.replace("mafft.bat", "version.txt"), sandBoxDir + "version.txt");
-            toolPath = sandBoxDir + "mafft.bat";
-            AppSettingsDialogFiller::setExternalToolPath(os, "MAFFT", QFileInfo(toolPath).absoluteFilePath());
-            CHECK_SET_ERR(AppSettingsDialogFiller::isExternalToolValid(os, "MAFFT"),
-                          "MAFFT is expected to be invalid, but in fact it is valid");
+            GTFile::copyDir(os, toolPath.remove("mafft.bat"), mafftDir);
+            AppSettingsDialogFiller::setExternalToolPath(os, "MAFFT", QFileInfo(mafftPath).absoluteFilePath());
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+
+            toolPath = AppSettingsDialogFiller::getExternalToolPath(os, "MAFFT");
+            bool isValid = AppSettingsDialogFiller::isExternalToolValid(os, "MAFFT");
+            CHECK_SET_ERR(isValid, QString("MAFFT with path '%1' is expected to be valid, but in fact it is invalid").arg(toolPath));
             GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
         }
+
+    private:
+        QString mafftDir;
+        QString mafftPath;
     };
 
-    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new SetMafft()));
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new SetMafft(mafftDirToRemove, mafftPathToRemove)));
     GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."}, GTGlobals::UseMouse);
 
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     GTLogTracer logTracer;
-    bool isRemoved = QFile::remove(sandBoxDir + "mafft.bat");
-    CHECK_SET_ERR(isRemoved, "Can't remove mafft from sandbox");
+    GTFile::removeDir(mafftDirToRemove);
     GTUtilsDialog::waitForDialog(os, new MAFFTSupportRunDialogFiller(os, new MAFFTSupportRunDialogFiller::Parameters()));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with MAFFT"));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
 
-    GTUtilsLog::checkContainsError(os, logTracer, QString("External tool '%1' doesn't exist").arg(QFileInfo(sandBoxDir + "mafft.bat").absoluteFilePath()));
+    GTUtilsLog::checkContainsError(os, logTracer, QString("External tool '%1' doesn't exist").arg(QFileInfo(mafftPathToRemove).absoluteFilePath()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7151) {
