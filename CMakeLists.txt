@@ -47,7 +47,8 @@ if (CMAKE_COMPILER_IS_GNUCXX)
             " -Werror=unused-variable"
             )
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_WARNING_FLAGS}")
-    LIST(APPEND COMPILER_FLAGS -Wl,-no-undefined )
+    LIST(APPEND COMPILER_FLAGS -Wl,-no-undefined)
+    LIST(APPEND COMPILER_FLAGS -Wl,--no-undefined)
 endif ()
 
 # 3rd party libraries.
