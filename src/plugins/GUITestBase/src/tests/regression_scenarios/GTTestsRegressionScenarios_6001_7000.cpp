@@ -734,7 +734,6 @@ GUI_TEST_CLASS_DEFINITION(test_6167) {
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            auto tree = GTWidget::findTreeWidget(os, "tree", dialog);
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::WorkflowDesigner);
 
@@ -5320,7 +5319,7 @@ GUI_TEST_CLASS_DEFINITION(test_6807) {
     class CheckWarningScenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            auto warningLabel = GTWidget::findLabel(os, "warningLabel", dialog);
+            GTWidget::findLabel(os, "warningLabel", dialog);
 
             GTLineEdit::setText(os, "fileEdit", sandBoxDir + "/test_6807.html", dialog);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
