@@ -27,7 +27,7 @@ CONFIG(release, debug|release) {
 
 unix {
     !macx {
-        LIBS += -lXtst
+        LIBS += -lXtst -lX11
         QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
     }
     macx {
