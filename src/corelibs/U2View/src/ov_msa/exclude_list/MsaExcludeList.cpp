@@ -384,7 +384,7 @@ void MsaExcludeListWidget::moveMsaSelectionToExcludeList() {
     const MaEditorSelection& selection = msaEditor->getSelection();
     SAFE_POINT(!selection.isEmpty(), "Msa editor selection is empty!", );
     QList<QRect> selectedRects = selection.getRectList();
-    QList<int> selectedMsaRowIndexes = msaEditor->getCollapseModel()->getMaRowIndexesFromSelectionRects(selectedRects);
+    QList<int> selectedMsaRowIndexes = msaEditor->getCollapseModel()->getMaRowIndexesFromSelectionRects(selectedRects, true);
     if (loadTask == nullptr) {
         GCOUNTER(cvar, "MsaExcludeListWidget::moveFromMsa");
         moveMsaRowIndexesToExcludeList(selectedMsaRowIndexes);

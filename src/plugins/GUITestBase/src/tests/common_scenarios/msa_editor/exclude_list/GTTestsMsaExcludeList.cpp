@@ -310,5 +310,26 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     CHECK_SET_ERR(moveToMsaButton->isEnabled(), "moveToMsaButton must be enabled/4");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0009) {
+    // Check that collapsed groups are moved with the nested content.
+    QString baseFileName = GTUtils::genUniqueString("exclude-list-test-0009");
+    GTFile::copy(os, testDir + "_common_data/clustal/collapse_mode_1.aln", sandBoxDir + baseFileName + ".aln");
+    GTFileDialog::openFile(os, sandBoxDir + baseFileName + ".aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+    GTUtilsMsaEditor::clickSequenceName(os, "c");
+
+    GTUtilsMsaEditor::openExcludeList(os);
+    auto msaEditorWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow(os);
+    auto moveToMsaButton = GTWidget::findToolButton(os, "exclude_list_move_to_msa_button", msaEditorWindow);
+
+    GTWidget::click(os, moveToMsaButton);
+    GTUtilsMsaEditor::checkExcludeList(os, {"c", "e", "g"});
+
+    GTUtilsMsaEditor::undo(os);
+    GTUtilsMsaEditor::checkExcludeList(os, {});
+}
+
 }  // namespace GUITest_common_scenarios_msa_exclude_list
 }  // namespace U2.

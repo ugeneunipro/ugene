@@ -116,7 +116,7 @@ int MaCollapseModel::getMaRowIndexByViewRowIndex(int viewRowIndex) const {
     return maRowByViewRow.value(viewRowIndex, -1);
 }
 
-QList<int> MaCollapseModel::getMaRowIndexesByViewRowIndexes(const U2Region& viewRowIndexesRegion, bool includeChildRowsForCollapsedGroups) {
+QList<int> MaCollapseModel::getMaRowIndexesByViewRowIndexes(const U2Region& viewRowIndexesRegion, bool includeChildRowsForCollapsedGroups) const {
     QList<int> maRows;
     QSet<int> visitedRows;
     for (int viewRow = viewRowIndexesRegion.startPos, n = viewRowIndexesRegion.endPos(); viewRow < n; viewRow++) {
@@ -143,7 +143,7 @@ QList<int> MaCollapseModel::getMaRowIndexesByViewRowIndexes(const U2Region& view
     return maRows;
 }
 
-QList<int> MaCollapseModel::getMaRowIndexesByViewRowIndexes(const QList<int>& viewRowIndexes, bool includeChildRowsForCollapsedGroups) {
+QList<int> MaCollapseModel::getMaRowIndexesByViewRowIndexes(const QList<int>& viewRowIndexes, bool includeChildRowsForCollapsedGroups) const {
     QList<int> maRowIndexes;
     for (int viewRowIndex : qAsConst(viewRowIndexes)) {
         maRowIndexes << getMaRowIndexesByViewRowIndexes(U2Region(viewRowIndex, 1), includeChildRowsForCollapsedGroups);
@@ -245,14 +245,11 @@ QSet<qint64> MaCollapseModel::getAllRowIds() const {
     return rowIdSet;
 }
 
-QList<int> MaCollapseModel::getMaRowIndexesFromSelectionRects(const QList<QRect>& selectionRects) const {
+QList<int> MaCollapseModel::getMaRowIndexesFromSelectionRects(const QList<QRect>& selectionRects, bool includeChildRowsForCollapsedGroups) const {
     QList<int> maRowIndexes;
     for (const QRect& selectionRect : qAsConst(selectionRects)) {
-        for (int viewRowIndex = selectionRect.top(); viewRowIndex <= selectionRect.bottom(); viewRowIndex++) {
-            int maRowIndex = getMaRowIndexByViewRowIndex(viewRowIndex);
-            SAFE_POINT_EXT(maRowIndex >= 0, "Failed to map view row index: " + QString::number(viewRowIndex), {});
-            maRowIndexes.append(maRowIndex);
-        }
+        U2Region viewRowRegion(selectionRect.top(), selectionRect.height());
+        maRowIndexes << getMaRowIndexesByViewRowIndexes(viewRowRegion, includeChildRowsForCollapsedGroups);
     }
     return maRowIndexes;
 }
