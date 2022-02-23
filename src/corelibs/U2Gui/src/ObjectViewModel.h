@@ -243,7 +243,7 @@ signals:
 
     void si_buildStaticToolbar(GObjectView* v, QToolBar* tb);
     void si_objectAdded(GObjectView* v, GObject* obj);
-    void si_afterObjectRemoved(GObjectView* v, GObject* obj);
+    void si_objectRemoved(GObjectView* v, GObject* obj);
     void si_nameChanged(const QString& oldName);
 
 protected slots:

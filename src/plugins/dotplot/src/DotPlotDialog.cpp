@@ -104,7 +104,7 @@ void DotPlotDialog::reconnectAllProjectDocuments() {
     foreach (Document* d, project->getDocuments()) {
         d->disconnect(this);
         connect(d, SIGNAL(si_objectAdded(GObject*)), SLOT(sl_objectAddedOrRemoved()));
-        connect(d, SIGNAL(si_afterObjectRemoved(GObject*)), SLOT(sl_objectAddedOrRemoved()));
+        connect(d, &Document::si_afterObjectRemoved, this, &DotPlotDialog::sl_objectAddedOrRemoved);
         connect(d, SIGNAL(si_loadedStateChanged()), SLOT(sl_loadedStateChanged()));
     }
 }

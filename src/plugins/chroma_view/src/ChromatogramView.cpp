@@ -115,7 +115,7 @@ ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSeq
     removeChanges = new QAction(tr("Undo changes"), this);
     connect(removeChanges, SIGNAL(triggered()), SLOT(sl_removeChanges()));
 
-    connect(dnaView, SIGNAL(si_afterObjectRemoved(GObjectView*, GObject*)), SLOT(sl_onObjectRemoved(GObjectView*, GObject*)));
+    connect(dnaView, SIGNAL(si_objectRemoved(GObjectView*, GObject*)), SLOT(sl_onObjectRemoved(GObjectView*, GObject*)));
     pack();
 
     addActionToLocalToolbar(showQVAction);

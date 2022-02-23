@@ -954,7 +954,7 @@ void AssemblyBrowser::addObjectToView(GObject* o) {
 
 void AssemblyBrowser::removeObjectFromView(GObject* o) {
     objects.removeAll(o);
-    emit si_afterObjectRemoved(this, o);
+    emit si_objectRemoved(this, o);
 }
 
 void AssemblyBrowser::sl_trackRemoved(VariantTrackObject* obj) {

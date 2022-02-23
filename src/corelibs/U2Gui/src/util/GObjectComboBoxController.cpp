@@ -75,7 +75,7 @@ void GObjectComboBoxController::connectDocument(Document* document) {
         return;
     }
     connect(document, SIGNAL(si_objectAdded(GObject*)), SLOT(sl_onObjectAdded(GObject*)));
-    connect(document, SIGNAL(si_afterObjectRemoved(GObject*)), SLOT(sl_onObjectRemoved(GObject*)));
+    connect(document, &Document::si_afterObjectRemoved, this, &GObjectComboBoxController::sl_onObjectRemoved);
 }
 
 void GObjectComboBoxController::addDocumentObjects(Document* d) {
