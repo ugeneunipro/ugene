@@ -93,6 +93,7 @@
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
+#include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
@@ -403,6 +404,54 @@ GUI_TEST_CLASS_DEFINITION(test_7127) {
         QString expectedRowNumber = QString::number(i + 1);
         CHECK_SET_ERR(rowNumber == expectedRowNumber, "Unexpected row number! Expected:  " + expectedRowNumber + ", got: " + rowNumber);
     }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7128) {
+    // Copy mafft folder in sandbox_dir.
+    // Open UGENE, open Preferences...->External Tools.
+    // Set MAFFT path as "sandbox_dir/mafft/mafft.bat", wait for validating, click OK.
+    // Remove "sandbox_dir/mafft/".
+    // Open COI.aln and Align with MAFFT.
+    // Expected: the log contains errors like "file "sandbox_dir/mafft/mafft.bat" doesn't exist".
+
+    QString mafftDirToRemove = sandBoxDir + "mafft";
+    QString mafftPathToRemove = mafftDirToRemove + "/mafft.bat";
+
+    class SetMafft : public CustomScenario {
+    public:
+        SetMafft(const QString& mafftDir, const QString& mafftPath)
+            : mafftDir(mafftDir), mafftPath(mafftPath) {
+        }
+        void run(GUITestOpStatus& os) override {
+            QString toolPath = AppSettingsDialogFiller::getExternalToolPath(os, "MAFFT");
+            GTFile::copyDir(os, toolPath.remove("mafft.bat"), mafftDir);
+            AppSettingsDialogFiller::setExternalToolPath(os, "MAFFT", QFileInfo(mafftPath).absoluteFilePath());
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+
+            toolPath = AppSettingsDialogFiller::getExternalToolPath(os, "MAFFT");
+            bool isValid = AppSettingsDialogFiller::isExternalToolValid(os, "MAFFT");
+            CHECK_SET_ERR(isValid, QString("MAFFT with path '%1' is expected to be valid, but in fact it is invalid").arg(toolPath));
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
+        }
+
+    private:
+        QString mafftDir;
+        QString mafftPath;
+    };
+
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new SetMafft(mafftDirToRemove, mafftPathToRemove)));
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."}, GTGlobals::UseMouse);
+
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTLogTracer logTracer;
+    GTFile::removeDir(mafftDirToRemove);
+    GTUtilsDialog::waitForDialog(os, new MAFFTSupportRunDialogFiller(os, new MAFFTSupportRunDialogFiller::Parameters()));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with MAFFT"));
+    GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
+
+    GTUtilsLog::checkContainsError(os, logTracer, QString("External tool '%1' doesn't exist").arg(QFileInfo(mafftPathToRemove).absoluteFilePath()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7151) {
