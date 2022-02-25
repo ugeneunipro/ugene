@@ -209,7 +209,8 @@ bool U2DbiUtils::isDbiReadOnly(const U2DbiRef& dbiRef) {
 Version U2DbiUtils::getDbMinRequiredVersion(const U2DbiRef& dbiRef, U2OpStatus& os) {
     DbiConnection con(dbiRef, os);
     CHECK_OP(os, Version());
-    return Version::parseVersion(con.dbi->getProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, "", os));
+    QString minCompatibleVersionFromDb = con.dbi->getProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, "", os);
+    return Version::parseVersion(minCompatibleVersionFromDb);
 }
 
 bool U2DbiUtils::isDatabaseTooNew(const U2DbiRef& dbiRef, const Version& ugeneVersion, QString& minRequiredVersionString, U2OpStatus& os) {
@@ -220,7 +221,7 @@ bool U2DbiUtils::isDatabaseTooNew(const U2DbiRef& dbiRef, const Version& ugeneVe
 }
 
 bool U2DbiUtils::isDatabaseTooOld(const U2DbiRef& dbiRef, const Version& ugeneVersion, U2OpStatus& os) {
-    const Version minRequiredVersion = getDbMinRequiredVersion(dbiRef, os);
+    Version minRequiredVersion = getDbMinRequiredVersion(dbiRef, os);
     CHECK_OP(os, false);
     return minRequiredVersion < ugeneVersion;
 }
