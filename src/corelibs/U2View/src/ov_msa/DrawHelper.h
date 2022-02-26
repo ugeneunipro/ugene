@@ -28,15 +28,28 @@ namespace U2 {
 
 class MaEditorWgt;
 
+#define COUNT_FIRST_CLIPPED_BASE true
+#define COUNT_LAST_CLIPPED_BASE false
+#define COUNT_FIRST_CLIPPED_ROW true
+#define COUNT_LAST_CLIPPED_ROW true
+
 class U2VIEW_EXPORT DrawHelper {
 public:
     DrawHelper(MaEditorWgt *ui);
 
-    U2Region getVisibleBases(int widgetWidth, bool countFirstClippedBase = true, bool countLastClippedBase = true) const;
-    U2Region getVisibleViewRowsRegion(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
-    QList<int> getVisibleMaRowIndexes(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
+    U2Region getVisibleBases(int widgetWidth,
+                             bool countFirstClippedBase = COUNT_FIRST_CLIPPED_BASE,
+                             bool countLastClippedBase = COUNT_LAST_CLIPPED_BASE) const;
+    U2Region getVisibleViewRowsRegion(int widgetHeight,
+                                      bool countFirstClippedRow = COUNT_FIRST_CLIPPED_ROW,
+                                      bool countLastClippedRow = COUNT_LAST_CLIPPED_ROW) const;
+    QList<int> getVisibleMaRowIndexes(int widgetHeight,
+                                      bool countFirstClippedRow = COUNT_FIRST_CLIPPED_ROW,
+                                      bool countLastClippedRow = COUNT_LAST_CLIPPED_ROW) const;
 
-    int getVisibleBasesCount(int widgetWidth, bool countFirstClippedBase = true, bool countLastClippedBase = true) const;
+    int getVisibleBasesCount(int widgetWidth,
+                             bool countFirstClippedBase = COUNT_FIRST_CLIPPED_BASE,
+                             bool countLastClippedBase = COUNT_LAST_CLIPPED_BASE) const;
 
     /** Returns screen coordinates for the given rect of columns and rows. */
     QRect getScreenRect(const QRect& columnsAndRowsRect) const;

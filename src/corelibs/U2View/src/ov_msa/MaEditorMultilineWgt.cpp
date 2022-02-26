@@ -39,6 +39,7 @@
 
 #include "MaEditorUtils.h"
 #include "SequenceAreaRenderer.h"
+#include "ov_msa/BaseWidthController.h"
 #include "ov_msa/DrawHelper.h"
 #include "ov_msa/ScrollController.h"
 #include "ov_msa/MultilineScrollController.h"
@@ -227,7 +228,14 @@ int MaEditorMultilineWgt::getSequenceAreaBaseWidth(uint index) const
     if (index >= getChildrenCount()) {
         return 0;
     }
-    return getUI(index)->getSequenceArea()->width();
+
+    getUI(index)->getDrawHelper()->getVisibleBases(width());
+    const U2Region region = getUI(index)->getDrawHelper()->getVisibleBases(
+        getUI(index)->getSequenceArea()->width());
+    const U2Region region2 = getUI(index)->getBaseWidthController()->getBasesScreenRange(region);
+
+    return region2.length - region2.startPos;
+     //getUI(index)->getSequenceArea()->width();
 }
 
 int MaEditorMultilineWgt::getSequenceAreaAllBaseLen() const
