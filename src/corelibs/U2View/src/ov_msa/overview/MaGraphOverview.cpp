@@ -310,14 +310,24 @@ void MaGraphOverview::drawOverview(QPainter& p) {
 
 void MaGraphOverview::moveVisibleRange(QPoint pos) {
     QRect newVisibleRange(cachedVisibleRange);
-    QPoint newPos(qBound((cachedVisibleRange.width() - 1) / 2, pos.x(), width() - (cachedVisibleRange.width() - 1) / 2), height() / 2);
+    QPoint newPos(qBound((cachedVisibleRange.width() - 1) / 2,
+                         pos.x(),
+                         width() - (cachedVisibleRange.width() - 1) / 2),
+                  height() / 2);
 
     newVisibleRange.moveCenter(newPos);
 
-    const int newScrollBarValue = newVisibleRange.x() * stepX;
+    int newScrollBarValue = newVisibleRange.x() * stepX;
     MaEditorMultilineWgt *mui = qobject_cast<MaEditorMultilineWgt *>(ui);
     if (mui != nullptr) {
-        mui->getScrollController()->setMultilineHScrollbarValue(newScrollBarValue);
+        if (mui->getMultilineMode()) {
+            newScrollBarValue = newVisibleRange.x() * (double) editor->getAlignmentLen()
+                                / (double) width();
+            mui->getChildrenScrollArea()->verticalScrollBar()->setValue(0);
+            mui->getScrollController()->setFirstVisibleBase(newScrollBarValue);
+        } else {
+            mui->getScrollController()->setMultilineHScrollbarValue(newScrollBarValue);
+        }
     }
 
     update();
