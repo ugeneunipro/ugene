@@ -573,7 +573,7 @@ void MaEditorSequenceArea::drawVisibleContent(QPainter& painter) {
     QList<int> maRows = ui->getDrawHelper()->getVisibleMaRowIndexes(height());
     CHECK(!columns.isEmpty() || !maRows.isEmpty(), );
     int xStart = ui->getBaseWidthController()->getBaseScreenRange(columns.startPos).startPos;
-    int yStart = ui->getRowHeightController()->getScreenYPositionOfTheFirstVisibleRow(true);
+    int yStart = ui->getRowHeightController()->getScreenYPositionOfTheFirstVisibleRow(COUNT_FIRST_CLIPPED_ROW);
     drawContent(painter, columns, maRows, xStart, yStart);
 }
 
